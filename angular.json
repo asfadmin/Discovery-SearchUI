@@ -123,5 +123,8 @@
       }
     }
   },
-  "defaultProject": "search-ui"
+  "defaultProject": "search-ui",
+  "cli": {
+    "defaultCollection": "@ngrx/schematics"
+  }
 }
