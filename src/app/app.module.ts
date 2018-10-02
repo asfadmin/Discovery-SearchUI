@@ -7,16 +7,20 @@ import { EffectsModule } from '@ngrx/effects';
 import { reducers, metaReducers } from './store/reducers';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { environment } from '../environments/environment';
-import { AppEffects } from './store/effects/app.effects';
+import { appEffects } from './store/reducers/effects';
+import { GranuleListComponent } from './granule-list/granule-list.component';
+import { GranuleComponent } from './granule-list/granule/granule.component';
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    GranuleListComponent,
+    GranuleComponent
   ],
   imports: [
     BrowserModule,
     StoreModule.forRoot(reducers, { metaReducers }),
-    EffectsModule.forRoot([AppEffects]),
+    EffectsModule.forRoot(appEffects),
     !environment.production ? StoreDevtoolsModule.instrument() : []
   ],
   providers: [],
