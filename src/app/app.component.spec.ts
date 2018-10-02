@@ -1,31 +1,55 @@
-import { TestBed, async } from '@angular/core/testing';
+import { TestBed, ComponentFixture, async, inject } from '@angular/core/testing';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
+
+import { Component, DebugElement } from '@angular/core';
+
+import { Store } from '@ngrx/store';
+
+import { TestStore } from './testing/store';
+
+import { GranuleListModule } from './granule-list/granule-list.module';
 import { AppComponent } from './app.component';
 
+import { GranulesState } from './store/reducers/granules/reducer';
+import { SentinelGranule } from './models/sentinel-granule.model';
+
+
 describe('AppComponent', () => {
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      declarations: [
-        AppComponent
-      ],
-    }).compileComponents();
-  }));
+    let app: AppComponent;
+    let fixture: ComponentFixture<AppComponent>;
 
-  it('should create the app', () => {
-    const fixture = TestBed.createComponent(AppComponent);
-    const app = fixture.debugElement.componentInstance;
-    expect(app).toBeTruthy();
-  });
+    let store: TestStore<GranulesState>;
 
-  it(`should have as title 'search-ui'`, () => {
-    const fixture = TestBed.createComponent(AppComponent);
-    const app = fixture.debugElement.componentInstance;
-    expect(app.title).toEqual('search-ui');
-  });
+    const granule = new SentinelGranule(
+        'SomeGranule',
+        'www.dlurl.com',
+        'ACENDING'
+    );
 
-  it('should render title in a h1 tag', () => {
-    const fixture = TestBed.createComponent(AppComponent);
-    fixture.detectChanges();
-    const compiled = fixture.debugElement.nativeElement;
-    expect(compiled.querySelector('h1').textContent).toContain('Welcome to search-ui!');
-  });
+    beforeEach(async(() => {
+        TestBed.configureTestingModule({
+            providers: [
+                { provide: Store, useClass: TestStore },
+            ],
+            declarations: [
+                AppComponent
+            ],
+            imports: [
+                HttpClientTestingModule,
+                GranuleListModule
+            ]
+        }).compileComponents();
+
+        fixture = TestBed.createComponent(AppComponent);
+        app = fixture.debugElement.componentInstance;
+    }));
+
+    beforeEach(inject([Store], (testStore: TestStore<GranulesState>) => {
+        store = testStore;                            // save store reference for use in tests
+        store.setState({ granules: [granule] }); // set default state
+    }));
+
+    it('should create the app', () => {
+        expect(app).toBeTruthy();
+    });
 });

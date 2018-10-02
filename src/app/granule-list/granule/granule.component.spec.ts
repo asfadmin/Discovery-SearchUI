@@ -2,24 +2,32 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { GranuleComponent } from './granule.component';
 
+import { SentinelGranule } from '../../models/sentinel-granule.model';
+
 describe('GranuleComponent', () => {
-  let component: GranuleComponent;
-  let fixture: ComponentFixture<GranuleComponent>;
+    let component: GranuleComponent;
+    let fixture: ComponentFixture<GranuleComponent>;
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      declarations: [ GranuleComponent ]
-    })
-    .compileComponents();
-  }));
+    const granule = new SentinelGranule(
+        'SomeGranule',
+        'www.dlurl.com',
+        'ACENDING'
+    );
 
-  beforeEach(() => {
-    fixture = TestBed.createComponent(GranuleComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
-  });
+    beforeEach(async(() => {
+        TestBed.configureTestingModule({
+            declarations: [ GranuleComponent ]
+        }).compileComponents();
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
+        fixture = TestBed.createComponent(GranuleComponent);
+        component = fixture.componentInstance;
+
+        component.granule = granule;
+        fixture.detectChanges();
+
+    }));
+
+    it('should create', () => {
+        expect(component).toBeTruthy();
+    });
 });
