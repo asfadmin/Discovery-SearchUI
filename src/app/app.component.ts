@@ -5,6 +5,7 @@ import { Store, Action  } from '@ngrx/store';
 import { AppState } from './store/reducers';
 import * as GranulesActions from './store/reducers/granules/action';
 
+import { AsfApiService } from './services/asf-api.service';
 
 @Component({
   selector: 'app-root',
@@ -12,7 +13,10 @@ import * as GranulesActions from './store/reducers/granules/action';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent implements OnInit {
-    constructor(public store$: Store<AppState>) {}
+    constructor(
+        public store$: Store<AppState>,
+        public asfApi: AsfApiService
+    ) {}
 
     public ngOnInit(): void {
         console.log('dispatching action...');
