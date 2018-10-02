@@ -1,5 +1,7 @@
 export class SentinelGranule {
-    name: string;
-    downloadUrl: string;
-    flightDirection: string;
+    constructor(
+        public name: string,
+        public downloadUrl: string,
+        public flightDirection: string) {
+    }
 }

@@ -8,13 +8,13 @@ import {
 import { environment } from '../../../environments/environment';
 import { GranulesState, granulesReducer } from './granules/reducer';
 
-export interface State {
+export interface AppState {
     granules: GranulesState;
 }
 
-export const reducers: ActionReducerMap<State> = {
+export const reducers: ActionReducerMap<AppState> = {
     granules: granulesReducer
 };
 
 
-export const metaReducers: MetaReducer<State>[] = !environment.production ? [] : [];
+export const metaReducers: MetaReducer<AppState>[] = !environment.production ? [] : [];
