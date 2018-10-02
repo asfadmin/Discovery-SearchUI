@@ -1,3 +1,7 @@
-<app-granule-list
-  [granules]="(store$.select('granules') | async).granules">
-</app-granule-list>
+<div>
+  <h1> Search API </h1>
+
+  <app-granule-list
+    [granules]="(store$.select('granules') | async).granules">
+  </app-granule-list>
+</div>
