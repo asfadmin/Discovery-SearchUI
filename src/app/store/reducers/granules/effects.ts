@@ -4,7 +4,7 @@ import { Actions, Effect } from '@ngrx/effects';
 import { Action, Store } from '@ngrx/store';
 
 import { Observable } from 'rxjs';
-import { mergeMap, map } from 'rxjs/operators';
+import { switchMap, map } from 'rxjs/operators';
 
 import { AppState } from '../index';
 
@@ -27,19 +27,16 @@ export class GranulesEffects {
     private load: Observable<Action> = this.actions$.
         ofType<GranulesActions.LoadGranules>(GranulesActionTypes.LOAD)
             .pipe(
-            mergeMap(
-                action => this.asfapi.getGranules().pipe(
-                map(resp => resp[0]),
-                map(granules => new GranulesActions.AddGranules(
-                    granules.map(
-                        g => new SentinelGranule(
-                            g['granuleName'],
-                            g['downloadUrl'],
-                            g['flightDirection']
-                        )
+            switchMap(action => this.asfapi.getGranules()),
+            map(resp => resp[0]),
+            map(granules => new GranulesActions.AddGranules(
+                granules.map(
+                    g => new SentinelGranule(
+                        g['granuleName'],
+                        g['downloadUrl'],
+                        g['flightDirection']
                     )
-
-                ))
-            )
-        ));
+                )
+            ))
+        );
 }
