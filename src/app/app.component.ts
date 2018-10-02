@@ -12,14 +12,17 @@ import { AsfApiService } from './services/asf-api.service';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
-export class AppComponent implements OnInit {
+export class AppComponent {
     constructor(
         public store$: Store<AppState>,
         public asfApi: AsfApiService
     ) {}
 
-    public ngOnInit(): void {
-        console.log('dispatching action...');
+    public onLoadGranules(): void {
         this.store$.dispatch(new GranulesActions.LoadGranules());
+    }
+
+    public onClearGranules(): void {
+        this.store$.dispatch(new GranulesActions.ClearGranules());
     }
 }

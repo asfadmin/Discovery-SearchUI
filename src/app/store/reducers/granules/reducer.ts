@@ -20,6 +20,14 @@ export function granulesReducer(state = initState, action: GranulesActions): Gra
             };
         }
 
+        case GranulesActionTypes.CLEAR: {
+            return {
+                ...state,
+                granules: []
+            };
+        }
+
+
         default: {
             return state;
         }

@@ -4,7 +4,8 @@ import { SentinelGranule } from '../../../models/sentinel-granule.model';
 
 export enum GranulesActionTypes {
     LOAD = '[Granules] Load Granules',
-    ADD = '[Granuels] Add Granules'
+    ADD = '[Granuels] Add Granules',
+    CLEAR = '[Granuels] Clear Granules'
 }
 
 export class LoadGranules implements Action {
@@ -17,7 +18,12 @@ export class AddGranules implements Action {
     constructor(public payload: SentinelGranule[]) {}
 }
 
+export class ClearGranules implements Action {
+    public readonly type = GranulesActionTypes.CLEAR;
+}
+
 export type GranulesActions =
     LoadGranules |
-    AddGranules;
+    AddGranules |
+    ClearGranules;
 

@@ -1,6 +1,16 @@
 <div>
   <h1> Search API </h1>
 
+  <button
+    type="button"
+    class="btn btn-success"
+    (click)="onLoadGranules()">
+    Success</button>
+  <button
+    type="button"
+    class="btn btn-danger"
+    (click)="onClearGranules()">
+    Clear</button>
   <app-granule-list
     [granules]="(store$.select('granules') | async).granules">
   </app-granule-list>
