@@ -12,5 +12,5 @@ phases:
       - ng build --prod
   post_build:
     commands:
-      - cd dist/search-ui
+      - cd dist/${APPLICATION}
       - aws s3 sync . "s3://${S3_BUCKET}"

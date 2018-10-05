@@ -13,9 +13,7 @@ export class AsfApiService {
 
     public getGranules(): Observable<any[]> {
         // This is just dummy data to fill out the toilet paper ui
-        return this.http.get<any[]>(
-            'http://localhost:4200/assets/search.json'
-        );
+        return this.http.get<any[]>('/assets/search.json');
     }
 
 }
