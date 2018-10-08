@@ -7,11 +7,17 @@ interface GranuleEntities { [id: string]: SentinelGranule; }
 export interface GranulesState {
     ids: string[];
     entities: GranuleEntities;
+
+    loading: boolean;
+    error: string | undefined;
 }
 
 export const initState: GranulesState = {
     ids: [],
-    entities: {}
+    entities: {},
+
+    loading: false,
+    error: undefined,
 };
 
 
@@ -26,8 +32,26 @@ export function granulesReducer(state = initState, action: GranulesActions.Actio
 
             return {
                 ...state,
+                loading: false,
+
                 ids: Object.keys(totalGranules),
                 entities: totalGranules
+            };
+        }
+
+        case GranulesActionTypes.QUERY: {
+            return {
+                ...state,
+                loading: true,
+                error: undefined,
+            };
+        }
+
+        case GranulesActionTypes.QUERY_ERROR: {
+            return {
+                ...state,
+                loading: false,
+                error: action.payload
             };
         }
 
@@ -47,4 +71,14 @@ export const getGranulesState = createFeatureSelector<GranulesState>('granules')
 export const getGranules = createSelector(
     getGranulesState,
     (state: GranulesState) => state.ids.map(id => state.entities[id])
+);
+
+export const getLoading = createSelector(
+    getGranulesState,
+    (state: GranulesState) => state.loading
+);
+
+export const getError = createSelector(
+    getGranulesState,
+    (state: GranulesState) => state.error
 );

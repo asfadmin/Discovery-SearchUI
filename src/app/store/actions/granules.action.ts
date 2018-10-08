@@ -3,13 +3,23 @@ import { Action } from '@ngrx/store';
 import { SentinelGranule } from './../../models/sentinel-granule.model';
 
 export enum GranulesActionTypes {
-    LOAD = '[Granules] Load Granules',
+    QUERY = '[Asf Api] Query Api',
+    QUERY_ERROR = '[Asf Api] Query failed',
+
     ADD = '[Granuels] Add Granules',
-    CLEAR = '[Granuels] Clear Granules'
+    CLEAR = '[Granuels] Clear Granules',
 }
 
-export class LoadGranules implements Action {
-    public readonly type = GranulesActionTypes.LOAD;
+export class QueryApi implements Action {
+    public readonly type = GranulesActionTypes.QUERY;
+
+    constructor(public payload: string) {}
+}
+
+export class QueryError implements Action {
+    public readonly type = GranulesActionTypes.QUERY_ERROR;
+
+    constructor(public payload: string) {}
 }
 
 export class AddGranules implements Action {
@@ -23,7 +33,8 @@ export class ClearGranules implements Action {
 }
 
 export type Actions =
-    LoadGranules |
-    AddGranules |
-    ClearGranules;
+    | QueryApi
+    | QueryError
+    | AddGranules
+    | ClearGranules;
 

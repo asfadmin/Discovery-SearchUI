@@ -7,7 +7,7 @@ import { filter } from 'rxjs/operators';
 
 import { AppState } from './store';
 import { GranulesActions } from './store/actions';
-import { getGranules, getRouterUrlState } from './store/reducers';
+import * as fromReducers from './store/reducers';
 
 import { AsfApiService } from './services/asf-api.service';
 
@@ -20,6 +20,8 @@ import { SentinelGranule } from './models/sentinel-granule.model';
 })
 export class AppComponent implements OnInit {
     public granules$: Observable<SentinelGranule[]>;
+    public loading$: Observable<boolean>;
+    public error$: Observable<string>;
 
     constructor(
         public store$: Store<AppState>,
@@ -27,15 +29,17 @@ export class AppComponent implements OnInit {
     ) {}
 
     public ngOnInit() {
-        this.granules$ = this.store$.select(getGranules);
+        this.granules$ = this.store$.select(fromReducers.getGranules);
+        this.loading$ = this.store$.select(fromReducers.getLoading);
+        this.error$ = this.store$.select(fromReducers.getError);
 
-        this.store$.select(getRouterUrlState).pipe(
+        this.store$.select(fromReducers.getRouterUrlState).pipe(
             filter(s => !!s)
         ).subscribe(s => console.log(s));
     }
 
-    public onLoadGranules(): void {
-        this.store$.dispatch(new GranulesActions.LoadGranules());
+    public onNewSearch(query: string) {
+        this.store$.dispatch(new GranulesActions.QueryApi(query));
     }
 
     public onClearGranules(): void {

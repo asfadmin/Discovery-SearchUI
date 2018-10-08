@@ -3,8 +3,8 @@ import { Injectable  } from '@angular/core';
 import { Actions, Effect } from '@ngrx/effects';
 import { Action, Store } from '@ngrx/store';
 
-import { Observable } from 'rxjs';
-import { switchMap, map } from 'rxjs/operators';
+import { Observable, of } from 'rxjs';
+import { switchMap, map, catchError } from 'rxjs/operators';
 
 import { AppState } from '../index';
 
@@ -21,19 +21,22 @@ export class GranulesEffects {
     }
 
     @Effect()
-    private load: Observable<Action> = this.actions$.
-        ofType<GranulesActions.LoadGranules>(GranulesActionTypes.LOAD)
-            .pipe(
-            switchMap(action => this.asfapi.getGranules()),
-            map(resp => resp[0]),
-            map(granules => new GranulesActions.AddGranules(
-                granules.map(
-                    g => new SentinelGranule(
-                        g['granuleName'],
-                        g['downloadUrl'],
-                        g['flightDirection']
-                    )
-                )
-            ))
+    private query: Observable<Action> = this.actions$.
+        ofType<GranulesActions.QueryApi>(GranulesActionTypes.QUERY)
+        .pipe(
+            switchMap(action => this.asfapi.query(action.payload)),
+            map(addNewGranules)
         );
 }
+
+const addNewGranules =
+    resp => new GranulesActions.AddGranules(
+        resp[0].map(
+            g => new SentinelGranule(
+                g['granuleName'],
+                g['downloadUrl'],
+                g['flightDirection']
+            )
+        )
+    );
+
