@@ -3,7 +3,7 @@ import { NgModule } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
 
 import { AppStoreModule } from './store';
-import { GranuleListModule } from './granule-list/granule-list.module';
+import { GranuleListModule } from './granule-list';
 
 import { AppComponent } from './app.component';
 
@@ -19,7 +19,6 @@ import { AsfApiService } from './services/asf-api.service';
         HttpClientModule,
 
         AppStoreModule,
-
         GranuleListModule,
     ],
     providers: [ AsfApiService ],
