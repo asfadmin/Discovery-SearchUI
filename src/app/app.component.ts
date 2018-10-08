@@ -3,10 +3,11 @@ import { Component, OnInit } from '@angular/core';
 import { Store, Action  } from '@ngrx/store';
 
 import { Observable } from 'rxjs';
+import { filter } from 'rxjs/operators';
 
 import { AppState } from './store';
 import { GranulesActions } from './store/actions';
-import { getGranules } from './store/reducers';
+import { getGranules, getRouterUrlState } from './store/reducers';
 
 import { AsfApiService } from './services/asf-api.service';
 
@@ -27,6 +28,10 @@ export class AppComponent implements OnInit {
 
     public ngOnInit() {
         this.granules$ = this.store$.select(getGranules);
+
+        this.store$.select(getRouterUrlState).pipe(
+            filter(s => !!s)
+        ).subscribe(s => console.log(s));
     }
 
     public onLoadGranules(): void {
