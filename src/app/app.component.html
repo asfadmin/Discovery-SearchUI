@@ -12,6 +12,6 @@
     (click)="onClearGranules()">
     Clear</button>
   <app-granule-list
-    [granules]="(store$.select('granules') | async).granules">
+    [granules]="granules$ | async">
   </app-granule-list>
 </div>

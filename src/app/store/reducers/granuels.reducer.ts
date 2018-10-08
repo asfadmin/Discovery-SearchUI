@@ -2,31 +2,38 @@ import { SentinelGranule } from '../../models/sentinel-granule.model';
 
 import { GranulesActionTypes, GranulesActions } from '../actions';
 
+interface GranuleEntities { [id: string]: SentinelGranule; }
+
 export interface GranulesState {
-    granules: SentinelGranule[];
+    ids: string[];
+    entities: GranuleEntities;
 }
 
 export const initState: GranulesState = {
-    granules: []
+    ids: [],
+    entities: {}
 };
 
 
 export function granulesReducer(state = initState, action: GranulesActions.Actions): GranulesState {
     switch (action.type) {
         case GranulesActionTypes.ADD: {
+            const totalGranules: GranuleEntities = { ...state.entities };
+
+            for (const g of action.payload) {
+                totalGranules[g.name] = g;
+            }
+
             return {
                 ...state,
-                granules: [...state.granules, ...action.payload]
+                ids: Object.keys(totalGranules),
+                entities: totalGranules
             };
         }
 
         case GranulesActionTypes.CLEAR: {
-            return {
-                ...state,
-                granules: []
-            };
+            return initState;
         }
-
 
         default: {
             return state;
