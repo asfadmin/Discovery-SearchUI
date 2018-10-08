@@ -1,17 +1,21 @@
 <div>
   <h1>Search API</h1>
 
-  <button
-    type="button"
-    class="btn btn-success"
-    (click)="onLoadGranules()">
-    Load</button>
+  <div *ngIf="error$ | async" class="alert alert-danger" role="alert">
+    {{ error$ | async | json }}
+  </div>
+  <app-search-bar
+    (newSearch)="onNewSearch($event)"
+    [isLoading]="loading$ | async">
+  </app-search-bar>
+
   <button
     type="button"
     class="btn btn-danger"
     (click)="onClearGranules()">
     Clear</button>
+
   <app-granule-list
-    [granules]="(store$.select('granules') | async).granules">
+    [granules]="granules$ | async">
   </app-granule-list>
 </div>

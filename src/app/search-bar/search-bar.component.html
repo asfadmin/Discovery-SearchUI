@@ -1,0 +1,10 @@
+
+<form style="padding: 20px" [formGroup]="queryForm" (ngSubmit)="onSubmit()">
+  <mat-form-field>
+    <input matInput formControlName="query" placeholder="ASF API queiry">
+    <mat-progress-spinner *ngIf="isLoading"
+      color="primary"
+      mode="indeterminate">
+    </mat-progress-spinner>
+  </mat-form-field>
+</form>
