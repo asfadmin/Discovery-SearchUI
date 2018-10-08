@@ -2,21 +2,32 @@ import { Component, OnInit } from '@angular/core';
 
 import { Store, Action  } from '@ngrx/store';
 
-import { AppState } from './store/reducers';
-import * as GranulesActions from './store/reducers/granules/action';
+import { Observable } from 'rxjs';
+
+import { AppState } from './store';
+import { GranulesActions } from './store/actions';
+import { getGranules } from './store/reducers';
 
 import { AsfApiService } from './services/asf-api.service';
+
+import { SentinelGranule } from './models/sentinel-granule.model';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
-export class AppComponent {
+export class AppComponent implements OnInit {
+    public granules$: Observable<SentinelGranule[]>;
+
     constructor(
         public store$: Store<AppState>,
         public asfApi: AsfApiService
     ) {}
+
+    public ngOnInit() {
+        this.granules$ = this.store$.select(getGranules);
+    }
 
     public onLoadGranules(): void {
         this.store$.dispatch(new GranulesActions.LoadGranules());

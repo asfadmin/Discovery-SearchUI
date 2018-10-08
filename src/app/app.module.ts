@@ -11,8 +11,7 @@ import { GranuleListModule } from './granule-list/granule-list.module';
 import { AppComponent } from './app.component';
 
 import { environment } from '../environments/environment';
-import { reducers, metaReducers } from './store/reducers';
-import { appEffects } from './store/reducers/effects';
+import { reducers, metaReducers, appEffects } from './store';
 
 import { AsfApiService } from './services/asf-api.service';
 

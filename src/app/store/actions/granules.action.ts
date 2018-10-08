@@ -1,6 +1,6 @@
 import { Action } from '@ngrx/store';
 
-import { SentinelGranule } from '../../../models/sentinel-granule.model';
+import { SentinelGranule } from './../../models/sentinel-granule.model';
 
 export enum GranulesActionTypes {
     LOAD = '[Granules] Load Granules',
@@ -22,7 +22,7 @@ export class ClearGranules implements Action {
     public readonly type = GranulesActionTypes.CLEAR;
 }
 
-export type GranulesActions =
+export type Actions =
     LoadGranules |
     AddGranules |
     ClearGranules;

@@ -8,12 +8,9 @@ import { switchMap, map } from 'rxjs/operators';
 
 import { AppState } from '../index';
 
-import * as GranulesActions from './action';
-const GranulesActionTypes = GranulesActions.GranulesActionTypes;
-
-import { SentinelGranule } from '../../../models/sentinel-granule.model';
-
-import { AsfApiService } from '../../../services/asf-api.service';
+import { GranulesActions, GranulesActionTypes } from '../actions';
+import { SentinelGranule } from '../../models/sentinel-granule.model';
+import { AsfApiService } from '../../services/asf-api.service';
 
 @Injectable()
 export class GranulesEffects {
