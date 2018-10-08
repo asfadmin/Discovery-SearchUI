@@ -6,6 +6,8 @@ import {
   MetaReducer
 } from '@ngrx/store';
 
+import { environment } from '../../../environments/environment';
+
 import { GranulesState, granulesReducer } from './granuels.reducer';
 
 export const getGranulesState = createFeatureSelector<GranulesState>('granules');
@@ -23,4 +25,5 @@ export const reducers: ActionReducerMap<AppState> = {
     granules: granulesReducer
 };
 
+export const metaReducers: MetaReducer<AppState>[] = !environment.production ? [] : [];
 
