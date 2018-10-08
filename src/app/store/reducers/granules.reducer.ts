@@ -1,9 +1,9 @@
-import { SentinelGranule } from '../../models/sentinel-granule.model';
+import { createFeatureSelector, createSelector } from '@ngrx/store';
 
+import { SentinelGranule } from '../../models/sentinel-granule.model';
 import { GranulesActionTypes, GranulesActions } from '../actions';
 
 interface GranuleEntities { [id: string]: SentinelGranule; }
-
 export interface GranulesState {
     ids: string[];
     entities: GranuleEntities;
@@ -41,3 +41,10 @@ export function granulesReducer(state = initState, action: GranulesActions.Actio
     }
 }
 
+
+export const getGranulesState = createFeatureSelector<GranulesState>('granules');
+
+export const getGranules = createSelector(
+    getGranulesState,
+    (state: GranulesState) => state.ids.map(id => state.entities[id])
+);
