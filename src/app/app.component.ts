@@ -3,7 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { Store, Action  } from '@ngrx/store';
 
 import { AppState } from './store/reducers';
-import * as GranulesActions from './store/reducers/granules/action';
+import { GranulesActions } from './store/actions';
 
 import { AsfApiService } from './services/asf-api.service';
 

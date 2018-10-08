@@ -1,6 +1,6 @@
-import { SentinelGranule } from '../../../models/sentinel-granule.model';
+import { SentinelGranule } from '../../models/sentinel-granule.model';
 
-import { GranulesActionTypes, GranulesActions } from './action';
+import { GranulesActionTypes, GranulesActions } from '../actions';
 
 export interface GranulesState {
     granules: SentinelGranule[];
@@ -11,7 +11,7 @@ export const initState: GranulesState = {
 };
 
 
-export function granulesReducer(state = initState, action: GranulesActions): GranulesState {
+export function granulesReducer(state = initState, action: GranulesActions.Actions): GranulesState {
     switch (action.type) {
         case GranulesActionTypes.ADD: {
             return {
