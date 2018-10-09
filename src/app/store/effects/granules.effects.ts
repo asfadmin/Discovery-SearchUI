@@ -24,8 +24,10 @@ export class GranulesEffects {
     private query: Observable<Action> = this.actions$.
         ofType<GranulesActions.QueryApi>(GranulesActionTypes.QUERY)
         .pipe(
-            switchMap(action => this.asfapi.query(action.payload)),
-            map(addNewGranules)
+            switchMap(action => this.asfapi.query(action.payload).pipe(
+                map(addNewGranules),
+                catchError(() => of(new GranulesActions.QueryError('Api Query failed to load results.')))
+            )),
         );
 }
 
