@@ -6,14 +6,9 @@
   </div>
   <app-search-bar
     (newSearch)="onNewSearch($event)"
+    (clearSearches)="onClearGranules()"
     [isLoading]="loading$ | async">
   </app-search-bar>
-
-  <button
-    type="button"
-    class="btn btn-danger"
-    (click)="onClearGranules()">
-    Clear</button>
 
   <app-granule-list
     [granules]="granules$ | async">

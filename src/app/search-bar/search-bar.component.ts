@@ -11,6 +11,7 @@ export class SearchBarComponent {
     @Input() isLoading: boolean;
 
     @Output() newSearch = new EventEmitter<string>();
+    @Output() clearSearches = new EventEmitter<void>();
 
     queryForm = this.fb.group({
         query: ['']

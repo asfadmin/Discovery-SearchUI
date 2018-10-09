@@ -1,10 +1,13 @@
 
-<form style="padding: 20px" [formGroup]="queryForm" (ngSubmit)="onSubmit()">
-  <mat-form-field>
-    <input matInput formControlName="query" placeholder="ASF API queiry">
-    <mat-progress-spinner *ngIf="isLoading"
-      color="primary"
-      mode="indeterminate">
-    </mat-progress-spinner>
-  </mat-form-field>
+<form class="search-form" [formGroup]="queryForm">
+    <mat-form-field class="full-width">
+      <input matInput formControlName="query" placeholder="ASF API queiry">
+    </mat-form-field>
+    <button (click)="onSubmit()" mat-raised-button color="primary" class="mr-2">
+      <span *ngIf="isLoading">Loading...</span>
+      <span *ngIf="!isLoading">Search</span>
+    </button>
+    <button (click)="clearSearches.emit()" mat-raised-button color="warn">
+      Clear
+    </button>
 </form>

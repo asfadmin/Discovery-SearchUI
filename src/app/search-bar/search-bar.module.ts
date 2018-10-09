@@ -5,7 +5,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
-import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
+import { MatButtonModule } from '@angular/material/button';
 
 import { SearchBarComponent } from './search-bar.component';
 
@@ -17,7 +17,7 @@ import { SearchBarComponent } from './search-bar.component';
         ReactiveFormsModule,
         MatInputModule,
         MatFormFieldModule,
-        MatProgressSpinnerModule,
+        MatButtonModule
     ],
     declarations: [ SearchBarComponent ],
     exports: [ SearchBarComponent ]
