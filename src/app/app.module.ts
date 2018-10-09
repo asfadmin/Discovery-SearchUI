@@ -37,7 +37,7 @@ import { AsfApiService } from './services/asf-api.service';
         RouterModule.forRoot([
             { path: 'search', component: AppComponent },
             { path: '**', redirectTo: 'search' }
-        ]),
+        ], { useHash: true }),
         StoreRouterConnectingModule,
         EffectsModule.forRoot(appEffects),
         !environment.production ? StoreDevtoolsModule.instrument() : [],
