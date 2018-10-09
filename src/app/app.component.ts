@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router, ActivatedRoute } from '@angular/router';
 
 import { Store, Action  } from '@ngrx/store';
 
@@ -24,25 +25,57 @@ export class AppComponent implements OnInit {
     public error$: Observable<string>;
 
     constructor(
-        public store$: Store<AppState>,
-        public asfApi: AsfApiService
+        private store$: Store<AppState>,
+        private activatedRoute: ActivatedRoute,
+        private router: Router
     ) {}
 
     public ngOnInit() {
         this.granules$ = this.store$.select(fromReducers.getGranules);
         this.loading$ = this.store$.select(fromReducers.getLoading);
         this.error$ = this.store$.select(fromReducers.getError);
-
-        this.store$.select(fromReducers.getRouterUrlState).pipe(
-            filter(s => !!s)
-        ).subscribe(s => console.log(s));
     }
 
     public onNewSearch(query: string) {
-        this.store$.dispatch(new GranulesActions.QueryApi(query));
+        const baseParams = {
+            maxResults: 5,
+            output: 'json'
+        };
+
+        const queryParams = {
+            ...baseParams,
+            ...parseQueryStringToDictionary(query)
+        };
+
+        this.router.navigate(['.'], { queryParams });
     }
 
     public onClearGranules(): void {
+        this.router.navigate(['.'], { queryParams: {} });
         this.store$.dispatch(new GranulesActions.ClearGranules());
     }
+}
+
+function parseQueryStringToDictionary(queryString) {
+    const dictionary = {};
+
+    if (queryString.indexOf('?') === 0) {
+        queryString = queryString.substr(1);
+    }
+
+    const parts = queryString.split('&');
+
+    for (const p of parts) {
+        const keyValuePair = p.split('=');
+
+        const key = keyValuePair[0];
+        let value = keyValuePair[1];
+
+        value = decodeURIComponent(value);
+        value = value.replace(/\+/g, ' ');
+
+        dictionary[key] = value;
+    }
+
+    return dictionary;
 }

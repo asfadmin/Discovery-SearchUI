@@ -6,7 +6,7 @@ export enum GranulesActionTypes {
     QUERY = '[Asf Api] Query Api',
     QUERY_ERROR = '[Asf Api] Query failed',
 
-    ADD = '[Granuels] Add Granules',
+    SET = '[Granuels] Set Granules',
     CLEAR = '[Granuels] Clear Granules',
 }
 
@@ -22,8 +22,8 @@ export class QueryError implements Action {
     constructor(public payload: string) {}
 }
 
-export class AddGranules implements Action {
-    public readonly type = GranulesActionTypes.ADD;
+export class SetGranules implements Action {
+    public readonly type = GranulesActionTypes.SET;
 
     constructor(public payload: SentinelGranule[]) {}
 }
@@ -35,6 +35,6 @@ export class ClearGranules implements Action {
 export type Actions =
     | QueryApi
     | QueryError
-    | AddGranules
+    | SetGranules
     | ClearGranules;
 

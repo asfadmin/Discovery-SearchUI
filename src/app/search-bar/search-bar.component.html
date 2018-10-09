@@ -1,7 +1,7 @@
 
 <form class="search-form" [formGroup]="queryForm">
     <mat-form-field class="full-width">
-      <input matInput formControlName="query" placeholder="ASF API queiry">
+      <input matInput formControlName="query" placeholder="ASF API query">
     </mat-form-field>
     <button (click)="onSubmit()" mat-raised-button color="primary" class="mr-2">
       <span *ngIf="isLoading">Loading...</span>

@@ -1,7 +1,7 @@
 import { Injectable  } from '@angular/core';
 
 import { Actions, Effect } from '@ngrx/effects';
-import { Action, Store } from '@ngrx/store';
+import { Action } from '@ngrx/store';
 
 import { Observable, of } from 'rxjs';
 import { switchMap, map, catchError } from 'rxjs/operators';
@@ -16,8 +16,7 @@ import { AsfApiService } from '../../services/asf-api.service';
 export class GranulesEffects {
     constructor(
         private asfapi: AsfApiService,
-        private actions$: Actions,
-        private store$: Store<AppState>) {
+        private actions$: Actions) {
     }
 
     @Effect()
@@ -25,14 +24,14 @@ export class GranulesEffects {
         ofType<GranulesActions.QueryApi>(GranulesActionTypes.QUERY)
         .pipe(
             switchMap(action => this.asfapi.query(action.payload).pipe(
-                map(addNewGranules),
+                map(setGranules),
                 catchError(() => of(new GranulesActions.QueryError('Api Query failed to load results.')))
             )),
         );
 }
 
-const addNewGranules =
-    resp => new GranulesActions.AddGranules(
+const setGranules =
+    resp => new GranulesActions.SetGranules(
         resp[0].map(
             g => new SentinelGranule(
                 g['granuleName'],

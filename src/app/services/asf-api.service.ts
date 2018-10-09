@@ -13,7 +13,7 @@ export class AsfApiService {
     constructor(private http: HttpClient) {}
 
     public query(params): Observable<any[]> {
-        const queryUrl = `${this.apiUrl}?maxResults=100&output=json&${params}`;
+        const queryUrl = `${this.apiUrl}?${params}`;
 
         console.log(queryUrl);
         return this.http.get<any[]>(queryUrl);
