@@ -2,7 +2,7 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { GranuleComponent } from './granule.component';
 
-import { SentinelGranule } from '../../models/sentinel-granule.model';
+import { SentinelGranule } from '../../models';
 
 describe('GranuleComponent', () => {
     let component: GranuleComponent;

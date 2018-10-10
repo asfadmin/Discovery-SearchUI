@@ -7,11 +7,11 @@ import { Store } from '@ngrx/store';
 
 import { TestStore } from './testing/store';
 
-import { GranuleListModule } from './granule-list/granule-list.module';
+import { GranuleListModule } from './granule-list';
 import { AppComponent } from './app.component';
 
-import { GranulesState } from './store/reducers/granules/reducer';
-import { SentinelGranule } from './models/sentinel-granule.model';
+import { GranulesState } from './store';
+import { SentinelGranule } from './models';
 
 
 describe('AppComponent', () => {

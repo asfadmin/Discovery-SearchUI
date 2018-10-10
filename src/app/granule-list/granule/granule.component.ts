@@ -1,6 +1,6 @@
 import { Component, Input } from '@angular/core';
 
-import { SentinelGranule } from '../../models/sentinel-granule.model';
+import { SentinelGranule } from '../../models';
 
 @Component({
     selector: 'app-granule',

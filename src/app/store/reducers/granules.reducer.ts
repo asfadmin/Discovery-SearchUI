@@ -1,6 +1,6 @@
 import { createFeatureSelector, createSelector } from '@ngrx/store';
 
-import { SentinelGranule } from '../../models/sentinel-granule.model';
+import { SentinelGranule } from '../../models';
 import { GranulesActionTypes, GranulesActions } from '../actions';
 
 interface GranuleEntities { [id: string]: SentinelGranule; }

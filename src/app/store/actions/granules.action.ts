@@ -1,6 +1,6 @@
 import { Action } from '@ngrx/store';
 
-import { SentinelGranule } from './../../models/sentinel-granule.model';
+import { SentinelGranule } from './../../models';
 
 export enum GranulesActionTypes {
     QUERY = '[Asf Api] Query Api',

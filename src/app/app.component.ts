@@ -11,7 +11,7 @@ import * as fromReducers from './store/reducers';
 
 import { AsfApiService, RoutedSearchService } from './services';
 
-import { SentinelGranule } from './models/sentinel-granule.model';
+import { SentinelGranule } from './models';
 
 @Component({
     selector: 'app-root',

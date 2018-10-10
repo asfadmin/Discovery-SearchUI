@@ -9,8 +9,8 @@ import { switchMap, map, catchError } from 'rxjs/operators';
 import { AppState } from '../index';
 
 import { GranulesActions, GranulesActionTypes } from '../actions';
-import { SentinelGranule } from '../../models/sentinel-granule.model';
-import { AsfApiService } from '../../services/asf-api.service';
+import { SentinelGranule } from '../../models';
+import { AsfApiService } from '../../services';
 
 @Injectable()
 export class GranulesEffects {
