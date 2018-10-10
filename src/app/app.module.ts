@@ -22,7 +22,7 @@ import { GranuleListModule } from './granule-list';
 import { SearchBarModule } from './search-bar';
 
 import { AppComponent } from './app.component';
-import { AsfApiService } from './services/asf-api.service';
+import { AsfApiService, RoutedSearchService } from './services';
 
 
 @NgModule({
@@ -33,11 +33,11 @@ import { AsfApiService } from './services/asf-api.service';
         BrowserModule,
         HttpClientModule,
 
-        StoreModule.forRoot(reducers, { metaReducers }),
         RouterModule.forRoot([
             { path: 'search', component: AppComponent },
             { path: '**', redirectTo: 'search' }
         ], { useHash: true }),
+        StoreModule.forRoot(reducers, { metaReducers }),
         StoreRouterConnectingModule,
         EffectsModule.forRoot(appEffects),
         !environment.production ? StoreDevtoolsModule.instrument() : [],
@@ -45,7 +45,11 @@ import { AsfApiService } from './services/asf-api.service';
         GranuleListModule,
         SearchBarModule
     ],
-    providers: [ AsfApiService, { provide: RouterStateSerializer, useClass: CustomSerializer } ],
+    providers: [
+        AsfApiService,
+        RoutedSearchService,
+        { provide: RouterStateSerializer, useClass: CustomSerializer }
+    ],
     bootstrap: [ AppComponent ]
 })
 export class AppModule { }

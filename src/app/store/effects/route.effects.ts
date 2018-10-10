@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Actions, Effect } from '@ngrx/effects';
+import { Actions, Effect, ofType } from '@ngrx/effects';
 import { Action } from '@ngrx/store';
 
 import { Observable } from 'rxjs';
@@ -13,17 +13,19 @@ export class RouteEffects {
     constructor(private actions$: Actions) {}
 
     @Effect()
-    private routeChanged: Observable<Action> = this.actions$.
-        ofType<any>('ROUTER_NAVIGATION')
+    private routeChanged: Observable<Action> = this.actions$
         .pipe(
+            ofType<any>('ROUTER_NAVIGATION'),
             map(action => action.payload.routerState.queryParams),
-            filter(params => !!Object.keys(params).length),
-            map(params => paramsToStr(params)),
-            map(query => new GranulesActions.QueryApi(query)));
+            filter(isNonEmptyObject),
+            map(paramsToQueryStr),
+            map(query => new GranulesActions.QueryApi(query))
+        );
 }
 
+const isNonEmptyObject = params => !!Object.keys(params).length;
 
-const paramsToStr = (params)  => {
+const paramsToQueryStr = (params)  => {
     console.log(params);
     let paramStr = '';
 

@@ -1,6 +1,6 @@
 import { Injectable  } from '@angular/core';
 
-import { Actions, Effect } from '@ngrx/effects';
+import { Actions, Effect, ofType } from '@ngrx/effects';
 import { Action } from '@ngrx/store';
 
 import { Observable, of } from 'rxjs';
@@ -20,13 +20,16 @@ export class GranulesEffects {
     }
 
     @Effect()
-    private query: Observable<Action> = this.actions$.
-        ofType<GranulesActions.QueryApi>(GranulesActionTypes.QUERY)
+    private query: Observable<Action> = this.actions$
         .pipe(
-            switchMap(action => this.asfapi.query(action.payload).pipe(
-                map(setGranules),
-                catchError(() => of(new GranulesActions.QueryError('Api Query failed to load results.')))
-            )),
+            ofType<GranulesActions.QueryApi>(GranulesActionTypes.QUERY),
+            switchMap(action => this.asfapi.query(action.payload)
+                .pipe(
+                    map(setGranules),
+                    catchError((err) => of(new GranulesActions.QueryError(
+                        `Api Query failed to load results. ERROR: ${err['message']}`
+                    )))
+                )),
         );
 }
 
