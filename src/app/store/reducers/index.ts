@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core';
 import { Params, RouterStateSnapshot } from '@angular/router';
+
 import { ActionReducerMap, MetaReducer } from '@ngrx/store';
+import { storeFreeze } from 'ngrx-store-freeze';
 import {
     routerReducer,
     RouterReducerState,
@@ -25,7 +27,10 @@ export const reducers: ActionReducerMap<AppState> = {
     router: routerReducer,
 };
 
-export const metaReducers: MetaReducer<AppState>[] = !environment.production ? [] : [];
+export const metaReducers: MetaReducer<AppState>[] =
+    !environment.production ?
+        [ storeFreeze ] :
+        [];
 
 
 @Injectable()
