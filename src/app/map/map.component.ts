@@ -30,13 +30,15 @@ export class MapComponent implements OnInit {
   ngOnInit() {
     this.map = this.northPolarMap();
 
-    this.granulePolygonsLayer()
+    const [granulePolyProj, northPoleProj] = ['EPSG:4326', 'EPSG:3572'];
+
+    this.granulePolygonsLayer(granulePolyProj, northPoleProj)
       .subscribe(
         layer => this.map.addLayer(layer)
       );
   }
 
-  private northPolarMap() {
+  private northPolarMap(): Map {
     proj4.defs(
       'EPSG:3572',
       '+title=Alaska Albers +proj=laea +lat_0=90 +lon_0=-150 +x_0=0 +y_0=0 +ellps=WGS84 +datum=WGS84 +units=m +no_defs'
@@ -62,13 +64,18 @@ export class MapComponent implements OnInit {
     });
   }
 
-  private granulePolygonsLayer(): Observable<VectorSource> {
-    const format = new WKT();
+  private granulePolygonsLayer(fromProj: string, toProj: string): Observable<VectorSource> {
+    const wktFormat = new WKT();
 
     return this.granules$.pipe(
       map(granules => granules
         .map(g => g.wktPoly)
-        .map(wkt => format.readFeature(wkt, { dataProjection: 'EPSG:4326', featureProjection: 'EPSG:3572' }))
+        .map(wkt =>
+          wktFormat.readFeature(wkt, {
+            dataProjection: fromProj,
+            featureProjection: toProj
+          })
+        )
       ),
       map(features => new VectorLayer({
         source: new VectorSource({ features })
