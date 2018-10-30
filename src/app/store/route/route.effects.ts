@@ -5,7 +5,7 @@ import { Action } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import { map, filter } from 'rxjs/operators';
 
-import { GranulesActions } from '../actions';
+import * as fromGranuleActions from '../granules/granules.action';
 
 @Injectable()
 export class RouteEffects {
@@ -19,7 +19,7 @@ export class RouteEffects {
             map(action => action.payload.routerState.queryParams),
             filter(isNonEmptyObject),
             map(paramsToQueryStr),
-            map(query => new GranulesActions.QueryApi(query))
+            map(query => new fromGranuleActions.QueryApi(query))
         );
 }
 

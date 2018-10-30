@@ -9,11 +9,12 @@ import {
     RouterStateSerializer,
 } from '@ngrx/router-store';
 
-import { environment } from '../../../environments/environment';
-import { GranulesState, granulesReducer } from './granules.reducer';
-import { RouterStateUrl } from './router.reducer';
-export * from './router.reducer';
-export * from './granules.reducer';
+import { environment } from '../../environments/environment';
+import { GranulesState, granulesReducer } from './granules';
+import { RouterStateUrl } from './route';
+
+export * from './route';
+export * from './granules';
 
 
 export interface AppState {

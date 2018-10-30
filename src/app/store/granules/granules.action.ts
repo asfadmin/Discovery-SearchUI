@@ -32,7 +32,7 @@ export class ClearGranules implements Action {
     public readonly type = GranulesActionTypes.CLEAR;
 }
 
-export type Actions =
+export type GranulesActions =
     | QueryApi
     | QueryError
     | SetGranules

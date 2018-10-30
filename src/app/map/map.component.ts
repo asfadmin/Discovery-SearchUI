@@ -1,6 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 
-import { Observable } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 import { Map, View } from 'ol';
@@ -22,7 +22,8 @@ import { SentinelGranule } from '../models/sentinel-granule.model';
 })
 export class MapComponent implements OnInit {
   @Input() granules$: Observable<SentinelGranule[]>;
-  private projection;
+  @Input() projectionType: string;
+  private projection: string;
   private map: Map;
 
   ngOnInit() {
@@ -34,6 +35,10 @@ export class MapComponent implements OnInit {
       .subscribe(
         layer => this.map.addLayer(layer)
       );
+  }
+
+  public onNewProjection(projectionType: string): void {
+    console.log(projectionType);
   }
 
   private equatorial(): void {

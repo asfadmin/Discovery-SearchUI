@@ -1,7 +1,7 @@
 import { createFeatureSelector, createSelector } from '@ngrx/store';
 
 import { SentinelGranule } from '../../models';
-import { GranulesActionTypes, GranulesActions } from '../actions';
+import { GranulesActionTypes, GranulesActions } from './granules.action';
 
 interface GranuleEntities { [id: string]: SentinelGranule; }
 export interface GranulesState {
@@ -21,7 +21,7 @@ export const initState: GranulesState = {
 };
 
 
-export function granulesReducer(state = initState, action: GranulesActions.Actions): GranulesState {
+export function granulesReducer(state = initState, action: GranulesActions): GranulesState {
     switch (action.type) {
         case GranulesActionTypes.SET: {
             const totalGranules: GranuleEntities = {};
