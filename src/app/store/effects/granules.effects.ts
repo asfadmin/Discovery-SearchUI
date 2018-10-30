@@ -36,7 +36,7 @@ export class GranulesEffects {
 const setGranules =
     resp => new GranulesActions.SetGranules(
         resp[0].map(
-            g => console.log(g) || new SentinelGranule(
+            g => new SentinelGranule(
                 g['granuleName'],
                 g['downloadUrl'],
                 g['flightDirection'],

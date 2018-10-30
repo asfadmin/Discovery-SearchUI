@@ -3,15 +3,12 @@ import { Component, OnInit, Input } from '@angular/core';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
-import Map from 'ol/Map.js';
-import View from 'ol/View.js';
+import { Map, View } from 'ol';
 import WKT from 'ol/format/WKT.js';
-import {Tile as TileLayer, Vector as VectorLayer} from 'ol/layer.js';
-import { OSM, Vector as VectorSource } from 'ol/source';
-import Projection from 'ol/proj/Projection';
-import register from 'ol/proj/proj4.js';
+import {Tile as TileLayer, Vector as VectorLayer} from 'ol/layer';
+import { OSM, Vector as VectorSource, TileWMS, Layer } from 'ol/source';
 import * as proj from 'ol/proj';
-import * as olproj4 from 'ol/proj/proj4';
+import * as customProj4 from 'ol/proj/proj4';
 
 import proj4 from 'proj4';
 
@@ -25,55 +22,66 @@ import { SentinelGranule } from '../models/sentinel-granule.model';
 })
 export class MapComponent implements OnInit {
   @Input() granules$: Observable<SentinelGranule[]>;
-  map: Map;
+  private projection;
+  private map: Map;
 
   ngOnInit() {
-    this.map = this.northPolarMap();
+    this.registerCustomProjections();
 
-    const [granulePolyProj, northPoleProj] = ['EPSG:4326', 'EPSG:3572'];
+    this.arctic();
 
-    this.granulePolygonsLayer(granulePolyProj, northPoleProj)
+    this.granulePolygonsLayer()
       .subscribe(
         layer => this.map.addLayer(layer)
       );
   }
 
-  private northPolarMap(): Map {
-    proj4.defs(
-      'EPSG:3572',
-      '+title=Alaska Albers +proj=laea +lat_0=90 +lon_0=-150 +x_0=0 +y_0=0 +ellps=WGS84 +datum=WGS84 +units=m +no_defs'
-    );
-    olproj4.register(proj4);
+  private mercator(): void {
+    this.projection = 'EPSG:3857';
+    this.map = this.olMap(new OSM(), this.projection, 2);
+  }
 
-    const destProj = proj.get('EPSG:3572');
+  private antarctic(): Map {
+    this.projection = 'EPSG:3031';
+    const antarcticLayer = new TileWMS({
+      url:  'https://mapserver-prod.asf.alaska.edu/wms/amm',
+      params: { LAYERS: '8bit', CRS: this.projection, transparent: true },
+      serverType: 'geoserver'
+    });
 
-    const layers = [
-      new TileLayer({
-        source: new OSM()
-      })
-    ];
+    this.map = this.olMap(antarcticLayer, this.projection, 4);
+  }
 
+  private arctic(): Map {
+    this.projection = 'EPSG:3572';
+    this.map = this.olMap(new OSM(), this.projection, 2);
+  }
+
+  private olMap(source: Layer, projectionEPSG: string, zoom: number): Map {
     return new Map({
-      layers: layers,
+      layers: [
+        new TileLayer({ source })
+      ],
       target: 'map',
       view: new View({
         center: [0, 0],
-        projection: destProj,
-        zoom: 4
+        projection: proj.get(projectionEPSG),
+        zoom
       })
     });
   }
 
-  private granulePolygonsLayer(fromProj: string, toProj: string): Observable<VectorSource> {
+  private granulePolygonsLayer(): Observable<VectorSource> {
     const wktFormat = new WKT();
+    const granuleProjection = 'EPSG:4326';
 
     return this.granules$.pipe(
       map(granules => granules
         .map(g => g.wktPoly)
         .map(wkt =>
           wktFormat.readFeature(wkt, {
-            dataProjection: fromProj,
-            featureProjection: toProj
+            dataProjection: granuleProjection,
+            featureProjection: this.projection
           })
         )
       ),
@@ -81,5 +89,24 @@ export class MapComponent implements OnInit {
         source: new VectorSource({ features })
       }))
     );
+  }
+
+  private registerCustomProjections(): void {
+    proj4.defs(
+      'EPSG:3413',
+      '+proj=stere +lat_0=90 +lat_ts=70 +lon_0=-45 +k=1 ' +
+      '+x_0=0 +y_0=0 +datum=WGS84 +units=m +no_defs'
+    );
+    proj4.defs(
+      'EPSG:3572',
+      '+title=Alaska Albers +proj=laea +lat_0=90 +lon_0=-150 +x_0=0 +y_0=0' +
+      ' +ellps=WGS84 +datum=WGS84 +units=m +no_defs'
+    );
+    proj4.defs(
+      'EPSG:3031',
+      '+proj=stere +lat_0=-90 +lat_ts=-71 +lon_0=0 +k=1 +x_0=0 +y_0=0 ' +
+      '+ellps=WGS84 +datum=WGS84 +units=m +no_defs'
+    );
+    customProj4.register(proj4);
   }
 }
