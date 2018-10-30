@@ -5,5 +5,13 @@
 .search-form {
   min-width: 150px;
   max-width: 500px;
-  padding: 20px;
+}
+
+.position {
+  width: 500px;
+  max-width: 100%;
+  position:fixed;
+  left: 10px;
+  top: 10px;
+  z-index: 1203;
 }

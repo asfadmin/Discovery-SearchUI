@@ -28,7 +28,7 @@ export class MapComponent implements OnInit {
   ngOnInit() {
     this.registerCustomProjections();
 
-    this.arctic();
+    this.equatorial();
 
     this.granulePolygonsLayer()
       .subscribe(
@@ -36,9 +36,9 @@ export class MapComponent implements OnInit {
       );
   }
 
-  private mercator(): void {
+  private equatorial(): void {
     this.projection = 'EPSG:3857';
-    this.map = this.olMap(new OSM(), this.projection, 2);
+    this.map = this.olMap(new OSM(), this.projection, 0);
   }
 
   private antarctic(): Map {
@@ -54,7 +54,7 @@ export class MapComponent implements OnInit {
 
   private arctic(): Map {
     this.projection = 'EPSG:3572';
-    this.map = this.olMap(new OSM(), this.projection, 2);
+    this.map = this.olMap(new OSM(), this.projection, 3);
   }
 
   private olMap(source: Layer, projectionEPSG: string, zoom: number): Map {
@@ -66,8 +66,10 @@ export class MapComponent implements OnInit {
       view: new View({
         center: [0, 0],
         projection: proj.get(projectionEPSG),
+        maxResolution: 25000,
         zoom
-      })
+      }),
+      controls: [],
     });
   }
 

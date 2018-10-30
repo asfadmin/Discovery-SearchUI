@@ -1,0 +1,8 @@
+.granule-list-pos {
+  width: 500px;
+  max-width: 100%;
+  height: 100%;
+  position:fixed;
+  right: 0px;
+  z-index:1003;
+}

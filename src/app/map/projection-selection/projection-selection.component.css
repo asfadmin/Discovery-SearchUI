@@ -1,0 +1,28 @@
+.position {
+  position:fixed;
+  right: 10px;
+  bottom: 10px;
+  z-index: 1203;
+}
+
+button {
+  background-image: url("/assets/icons/projection-icons.png");
+  background-size: 90px 30px;
+  content: '';
+  width: 25px;
+  height: 25px;
+  margin-top: -3px;
+  margin-left: -25px;
+}
+
+.arctic {
+  background-position: 32px -2px;
+}
+
+.equatorial {
+  background-position: -30px -2px;
+}
+
+.antarctic {
+  background-position: -92px -2px;
+}
