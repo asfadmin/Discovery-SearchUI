@@ -5,6 +5,8 @@
   position:fixed;
   right: 0px;
   z-index:1003;
+
+  visibility: hidden;
 }
 
 .transparent-bg {
