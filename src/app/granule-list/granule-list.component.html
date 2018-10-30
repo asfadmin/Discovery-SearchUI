@@ -1,6 +1,8 @@
-<ul class="granule-list-pos list-group">
-  <li *ngFor="let granule of granules"
+<div class="position transparent-bg">
+  <ul class="position list-group">
+    <li *ngFor="let granule of granules"
       class="list-group-item">
-    <app-granule [granule]="granule" ></app-granule>
-  </li>
-</ul>
+      <app-granule [granule]="granule" ></app-granule>
+    </li>
+  </ul>
+</div>
