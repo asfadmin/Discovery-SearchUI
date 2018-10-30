@@ -22,7 +22,7 @@ export class GranulesEffects {
     @Effect()
     private query: Observable<Action> = this.actions$
         .pipe(
-            ofType<fromGranuleActions.QueryApi>(fromGranuleActions.GranulesActionTypes.QUERY),
+            ofType<fromGranuleActions.QueryApi>(fromGranuleActions.GranulesActionType.QUERY),
             switchMap(action => this.asfapi.query(action.payload)
                 .pipe(
                     map(setGranules),

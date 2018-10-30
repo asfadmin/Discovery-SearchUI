@@ -1,84 +1,84 @@
 import { createFeatureSelector, createSelector } from '@ngrx/store';
 
 import { SentinelGranule } from '../../models';
-import { GranulesActionTypes, GranulesActions } from './granules.action';
+import { GranulesActionType, GranulesActions } from './granules.action';
 
 interface GranuleEntities { [id: string]: SentinelGranule; }
 export interface GranulesState {
-    ids: string[];
-    entities: GranuleEntities;
+  ids: string[];
+  entities: GranuleEntities;
 
-    loading: boolean;
-    error: string | undefined;
+  loading: boolean;
+  error: string | undefined;
 }
 
 export const initState: GranulesState = {
-    ids: [],
-    entities: {},
+  ids: [],
+  entities: {},
 
-    loading: false,
-    error: undefined,
+  loading: false,
+  error: undefined,
 };
 
 
 export function granulesReducer(state = initState, action: GranulesActions): GranulesState {
-    switch (action.type) {
-        case GranulesActionTypes.SET: {
-            const totalGranules: GranuleEntities = {};
+  switch (action.type) {
+    case GranulesActionType.SET: {
+      const totalGranules: GranuleEntities = {};
 
-            for (const g of action.payload) {
-                totalGranules[g.name] = g;
-            }
+      for (const g of action.payload) {
+        totalGranules[g.name] = g;
+      }
 
-            return {
-                ...state,
-                loading: false,
+      return {
+        ...state,
+        loading: false,
 
-                ids: Object.keys(totalGranules),
-                entities: totalGranules
-            };
-        }
-
-        case GranulesActionTypes.QUERY: {
-            return {
-                ...state,
-                loading: true,
-                error: undefined,
-            };
-        }
-
-        case GranulesActionTypes.QUERY_ERROR: {
-            return {
-                ...state,
-                loading: false,
-                error: action.payload
-            };
-        }
-
-        case GranulesActionTypes.CLEAR: {
-            return initState;
-        }
-
-        default: {
-            return state;
-        }
+        ids: Object.keys(totalGranules),
+        entities: totalGranules
+      };
     }
+
+    case GranulesActionType.QUERY: {
+      return {
+        ...state,
+        loading: true,
+        error: undefined,
+      };
+    }
+
+    case GranulesActionType.QUERY_ERROR: {
+      return {
+        ...state,
+        loading: false,
+        error: action.payload
+      };
+    }
+
+    case GranulesActionType.CLEAR: {
+      return initState;
+    }
+
+    default: {
+      return state;
+    }
+  }
 }
 
 
 export const getGranulesState = createFeatureSelector<GranulesState>('granules');
 
 export const getGranules = createSelector(
-    getGranulesState,
-    (state: GranulesState) => state.ids.map(id => state.entities[id])
+  getGranulesState,
+  (state: GranulesState) => state.ids.map(id => state.entities[id])
 );
 
 export const getLoading = createSelector(
-    getGranulesState,
-    (state: GranulesState) => state.loading
+  getGranulesState,
+  (state: GranulesState) => state.loading
 );
 
 export const getError = createSelector(
-    getGranulesState,
-    (state: GranulesState) => state.error
+  getGranulesState,
+  (state: GranulesState) => state.error
 );
