@@ -12,10 +12,11 @@ import {
   getError,
   ClearGranules
 } from './store/granules';
+import { SetMapView } from './store/map';
 
 import { AsfApiService, RoutedSearchService } from './services';
 
-import { SentinelGranule } from './models';
+import { SentinelGranule, MapView } from './models';
 
 @Component({
   selector: 'app-root',
@@ -45,5 +46,9 @@ export class AppComponent implements OnInit {
   public onClearGranules(): void {
     this.routedSearchService.clear();
     this.store$.dispatch(new ClearGranules());
+  }
+
+  public onNewMapView(view: MapView): void {
+    this.store$.dispatch(new SetMapView(view));
   }
 }

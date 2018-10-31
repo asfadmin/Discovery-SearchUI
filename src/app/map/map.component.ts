@@ -1,4 +1,8 @@
-import { Component, OnInit, Input } from '@angular/core';
+import {
+  Component, OnInit,
+  Input, Output,
+  EventEmitter
+} from '@angular/core';
 
 import { Observable, Subject } from 'rxjs';
 import { map } from 'rxjs/operators';
@@ -12,7 +16,7 @@ import * as customProj4 from 'ol/proj/proj4';
 
 import proj4 from 'proj4';
 
-import { SentinelGranule } from '../models/sentinel-granule.model';
+import { SentinelGranule, MapView } from '../models/';
 
 
 @Component({
@@ -23,6 +27,9 @@ import { SentinelGranule } from '../models/sentinel-granule.model';
 export class MapComponent implements OnInit {
   @Input() granules$: Observable<SentinelGranule[]>;
   @Input() projectionType: string;
+
+  @Output() newMapView = new EventEmitter<MapView>();
+
   private projection: string;
   private map: Map;
 
@@ -37,8 +44,8 @@ export class MapComponent implements OnInit {
       );
   }
 
-  public onNewProjection(projectionType: string): void {
-    console.log(projectionType);
+  public onNewProjection(view: MapView): void {
+    this.newMapView.emit(view);
   }
 
   private equatorial(): void {

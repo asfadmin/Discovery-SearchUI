@@ -1,6 +1,6 @@
 import { createFeatureSelector, createSelector } from '@ngrx/store';
 
-import { MapActions } from './map.action';
+import { MapActionType, MapActions } from './map.action';
 import { MapView } from '../../models';
 
 
@@ -15,6 +15,13 @@ export const initState: MapState = {
 
 export function mapReducer(state = initState, action: MapActions): MapState {
   switch (action.type) {
+    case MapActionType.SET_MAP_VIEW: {
+      return {
+        ...state,
+        view: action.payload
+      };
+    }
+
     default: {
       return state;
     }

@@ -13,6 +13,7 @@
   </app-granule-list>
 
   <app-map
+    (newMapView)="onNewMapView($event)"
     [granules$]="granules$"
     ></app-map>
 </div>
