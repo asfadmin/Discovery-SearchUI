@@ -1,12 +1,8 @@
 import { createFeatureSelector, createSelector } from '@ngrx/store';
 
 import { MapActions } from './map.action';
+import { MapView } from '../../models';
 
-export enum MapView {
-  ARCTIC = 'arctic',
-  EQUITORIAL = 'equitorial',
-  ANTARCTIC = 'antarctic',
-}
 
 export interface MapState {
   view: MapView;
