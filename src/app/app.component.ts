@@ -12,7 +12,7 @@ import {
   getError,
   ClearGranules
 } from './store/granules';
-import { SetMapView } from './store/map';
+import { SetMapView, getMapView } from './store/map';
 
 import { AsfApiService, RoutedSearchService } from './services';
 
@@ -27,6 +27,7 @@ export class AppComponent implements OnInit {
   public granules$: Observable<SentinelGranule[]>;
   public loading$: Observable<boolean>;
   public error$: Observable<string>;
+  public view$: Observable<MapView>;
 
   constructor(
     private routedSearchService: RoutedSearchService,
@@ -37,6 +38,7 @@ export class AppComponent implements OnInit {
     this.granules$ = this.store$.select(getGranules);
     this.loading$ = this.store$.select(getLoading);
     this.error$ = this.store$.select(getError);
+    this.view$ = this.store$.select(getMapView);
   }
 
   public onNewSearch(query: string): void {

@@ -5,7 +5,7 @@ import {
 } from '@angular/core';
 
 import { Observable, combineLatest } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { map, switchMap } from 'rxjs/operators';
 
 import { Map, View } from 'ol';
 import WKT from 'ol/format/WKT.js';
@@ -27,7 +27,6 @@ import { SentinelGranule, MapView } from '../models/';
 export class MapComponent implements OnInit {
   @Input() granules$: Observable<SentinelGranule[]>;
   @Input() view$: Observable<MapView>;
-  @Input() projectionType: string;
 
   @Output() newMapView = new EventEmitter<MapView>();
 
@@ -39,42 +38,46 @@ export class MapComponent implements OnInit {
 
     this.equatorial();
 
-    combineLatest<Map, VectorLayer>(
-      this.mapWith(this.view$),
-      this.granulePolygonsLayer()
+    this.view$.pipe(
+      map(view => this.setMapWith(view)),
+      switchMap(newMap =>
+        this.granulePolygonsLayer(this.projection)
+      )
     ).subscribe(
-        ([newMap, layer]) => newMap.addLayer(layer)
-      );
+      layer => this.map.addLayer(layer)
+    ) ;
+
   }
 
   public onNewProjection(view: MapView): void {
     this.newMapView.emit(view);
   }
 
-  private mapWith(view$: Observable<MapView>): Observable<Map> {
-    return view$.pipe(
-      map(view => {
-        switch (view) {
-          case MapView.ARCTIC:
-            return this.arctic();
-          case MapView.EQUITORIAL:
-            return this.equatorial();
-          case MapView.ANTARCTIC:
-            return this.antarctic();
-        }
-      })
-    );
+  private setMapWith(view: MapView): void {
+    switch (view) {
+      case MapView.ARCTIC: {
+        this.arctic();
+        break;
+      }
+      case MapView.EQUITORIAL: {
+        this.equatorial();
+        break;
+      }
+      case MapView.ANTARCTIC: {
+        this.antarctic();
+        break;
+      }
+    }
   }
 
-  private equatorial(): Map {
+  private equatorial(): void {
     this.projection = 'EPSG:3857';
     this.map = this.olMap(new OSM(), this.projection, 0);
-
-    return this.map;
   }
 
-  private antarctic(): Map {
+  private antarctic(): void {
     this.projection = 'EPSG:3031';
+
     const antarcticLayer = new TileWMS({
       url:  'https://mapserver-prod.asf.alaska.edu/wms/amm',
       params: { LAYERS: '8bit', CRS: this.projection, transparent: true },
@@ -82,20 +85,23 @@ export class MapComponent implements OnInit {
     });
 
     this.map = this.olMap(antarcticLayer, this.projection, 4);
-    return this.map;
   }
 
-  private arctic(): Map {
+  private arctic(): void  {
     this.projection = 'EPSG:3572';
     this.map = this.olMap(new OSM(), this.projection, 3);
-
-    return this.map;
   }
 
-  private olMap(source: Layer, projectionEPSG: string, zoom: number): Map {
+  private olMap(layer: Layer, projectionEPSG: string, zoom: number): Map {
+    return (!this.map) ?
+      this.newMap(layer, projectionEPSG, zoom) :
+      this.updatedExistingMap(layer, projectionEPSG, zoom);
+  }
+
+  private newMap(layer: Layer, projectionEPSG: string, zoom: number): Map {
     return new Map({
       layers: [
-        new TileLayer({ source })
+        new TileLayer({ source: layer })
       ],
       target: 'map',
       view: new View({
@@ -108,7 +114,25 @@ export class MapComponent implements OnInit {
     });
   }
 
-  private granulePolygonsLayer(): Observable<VectorSource> {
+  private updatedExistingMap(source: Layer, projectionEPSG: string, zoom: number) {
+    const newView = new View({
+      projection: proj.get(projectionEPSG),
+      center: [0, 0],
+      maxResolution: 25000,
+      zoom
+    });
+    this.map.setView(newView);
+
+    const layer = new TileLayer({ source });
+    console.log(layer);
+    layer.setOpacity(1);
+    this.map.getLayers().setAt(0, layer);
+
+
+    return this.map;
+  }
+
+  private granulePolygonsLayer(projection: string): Observable<VectorSource> {
     const wktFormat = new WKT();
     const granuleProjection = 'EPSG:4326';
 
@@ -118,7 +142,7 @@ export class MapComponent implements OnInit {
         .map(wkt =>
           wktFormat.readFeature(wkt, {
             dataProjection: granuleProjection,
-            featureProjection: this.projection
+            featureProjection: projection
           })
         )
       ),
