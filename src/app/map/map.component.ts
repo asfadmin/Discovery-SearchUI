@@ -4,7 +4,7 @@ import {
   EventEmitter
 } from '@angular/core';
 
-import { Observable, Subject } from 'rxjs';
+import { Observable, combineLatest } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 import { Map, View } from 'ol';
@@ -26,6 +26,7 @@ import { SentinelGranule, MapView } from '../models/';
 })
 export class MapComponent implements OnInit {
   @Input() granules$: Observable<SentinelGranule[]>;
+  @Input() view$: Observable<MapView>;
   @Input() projectionType: string;
 
   @Output() newMapView = new EventEmitter<MapView>();
@@ -38,9 +39,11 @@ export class MapComponent implements OnInit {
 
     this.equatorial();
 
-    this.granulePolygonsLayer()
-      .subscribe(
-        layer => this.map.addLayer(layer)
+    combineLatest<Map, VectorLayer>(
+      this.mapWith(this.view$),
+      this.granulePolygonsLayer()
+    ).subscribe(
+        ([newMap, layer]) => newMap.addLayer(layer)
       );
   }
 
@@ -48,9 +51,26 @@ export class MapComponent implements OnInit {
     this.newMapView.emit(view);
   }
 
-  private equatorial(): void {
+  private mapWith(view$: Observable<MapView>): Observable<Map> {
+    return view$.pipe(
+      map(view => {
+        switch (view) {
+          case MapView.ARCTIC:
+            return this.arctic();
+          case MapView.EQUITORIAL:
+            return this.equatorial();
+          case MapView.ANTARCTIC:
+            return this.antarctic();
+        }
+      })
+    );
+  }
+
+  private equatorial(): Map {
     this.projection = 'EPSG:3857';
     this.map = this.olMap(new OSM(), this.projection, 0);
+
+    return this.map;
   }
 
   private antarctic(): Map {
@@ -62,11 +82,14 @@ export class MapComponent implements OnInit {
     });
 
     this.map = this.olMap(antarcticLayer, this.projection, 4);
+    return this.map;
   }
 
   private arctic(): Map {
     this.projection = 'EPSG:3572';
     this.map = this.olMap(new OSM(), this.projection, 3);
+
+    return this.map;
   }
 
   private olMap(source: Layer, projectionEPSG: string, zoom: number): Map {
