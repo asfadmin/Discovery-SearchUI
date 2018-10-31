@@ -5,7 +5,7 @@ import {
 } from '@angular/core';
 
 import { Observable, combineLatest } from 'rxjs';
-import { map, switchMap } from 'rxjs/operators';
+import { map, filter, switchMap } from 'rxjs/operators';
 
 import { Map, View } from 'ol';
 import WKT from 'ol/format/WKT.js';
@@ -42,7 +42,7 @@ export class MapComponent implements OnInit {
       map(view => this.setMapWith(view)),
       switchMap(newMap =>
         this.granulePolygonsLayer(this.projection)
-      )
+      ),
     ).subscribe(
       layer => this.map.addLayer(layer)
     ) ;
@@ -72,7 +72,7 @@ export class MapComponent implements OnInit {
 
   private equatorial(): void {
     this.projection = 'EPSG:3857';
-    this.map = this.olMap(new OSM(), this.projection, 0);
+    this.map = this.setMap(new OSM(), this.projection, 0);
   }
 
   private antarctic(): void {
@@ -84,15 +84,15 @@ export class MapComponent implements OnInit {
       serverType: 'geoserver'
     });
 
-    this.map = this.olMap(antarcticLayer, this.projection, 4);
+    this.map = this.setMap(antarcticLayer, this.projection, 2);
   }
 
   private arctic(): void  {
     this.projection = 'EPSG:3572';
-    this.map = this.olMap(new OSM(), this.projection, 3);
+    this.map = this.setMap(new OSM(), this.projection, 1);
   }
 
-  private olMap(layer: Layer, projectionEPSG: string, zoom: number): Map {
+  private setMap(layer: Layer, projectionEPSG: string, zoom: number): Map {
     return (!this.map) ?
       this.newMap(layer, projectionEPSG, zoom) :
       this.updatedExistingMap(layer, projectionEPSG, zoom);
@@ -124,10 +124,8 @@ export class MapComponent implements OnInit {
     this.map.setView(newView);
 
     const layer = new TileLayer({ source });
-    console.log(layer);
     layer.setOpacity(1);
     this.map.getLayers().setAt(0, layer);
-
 
     return this.map;
   }
@@ -146,6 +144,7 @@ export class MapComponent implements OnInit {
           })
         )
       ),
+      filter(granules => granules.length !== 0),
       map(features => new VectorLayer({
         source: new VectorSource({ features })
       }))
