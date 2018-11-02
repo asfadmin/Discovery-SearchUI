@@ -10,7 +10,7 @@ import { map, filter, switchMap } from 'rxjs/operators';
 import { Map, View } from 'ol';
 import WKT from 'ol/format/WKT.js';
 import {Tile as TileLayer, Vector as VectorLayer} from 'ol/layer';
-import { OSM, Vector as VectorSource, TileWMS, Layer } from 'ol/source';
+import { OSM, Vector as VectorSource, TileWMS, Layer, XYZ } from 'ol/source';
 import * as proj from 'ol/proj';
 import * as customProj4 from 'ol/proj/proj4';
 
@@ -72,7 +72,9 @@ export class MapComponent implements OnInit {
 
   private equatorial(): void {
     this.projection = 'EPSG:3857';
-    this.map = this.setMap(new OSM(), this.projection, 0);
+    const token = 'pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw';
+    const url = `https://api.tiles.mapbox.com/v4/mapbox.streets/{z}/{x}/{y}.png?access_token=${token}`;
+    this.map = this.setMap(new XYZ({ url }), this.projection, 0);
   }
 
   private antarctic(): void {
@@ -89,7 +91,16 @@ export class MapComponent implements OnInit {
 
   private arctic(): void  {
     this.projection = 'EPSG:3572';
-    this.map = this.setMap(new OSM(), this.projection, 1);
+    const layer = new TileWMS({
+      url: 'https://ahocevar.com/geoserver/wms',
+      crossOrigin: '',
+      params: {
+        'LAYERS': 'ne:NE1_HR_LC_SR_W_DR',
+        'TILED': true
+      },
+      projection: 'EPSG:4326'
+    })
+    this.map = this.setMap(layer, this.projection, 1);
   }
 
   private setMap(layer: Layer, projectionEPSG: string, zoom: number): Map {
