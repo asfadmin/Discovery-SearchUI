@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 
 import { MapComponent } from './map.component';
 import { ProjectionSelectionComponent } from './projection-selection';
+import { MapService } from '../services';
 
 @NgModule({
   imports: [
@@ -11,6 +12,9 @@ import { ProjectionSelectionComponent } from './projection-selection';
   declarations: [
     MapComponent,
     ProjectionSelectionComponent,
+  ],
+  providers: [
+    MapService
   ],
   exports: [
     MapComponent

@@ -7,16 +7,12 @@ import {
 import { Observable, combineLatest } from 'rxjs';
 import { map, filter, switchMap } from 'rxjs/operators';
 
-import { Map, View } from 'ol';
 import WKT from 'ol/format/WKT.js';
 import {Tile as TileLayer, Vector as VectorLayer} from 'ol/layer';
 import { OSM, Vector as VectorSource, TileWMS, Layer, XYZ } from 'ol/source';
-import * as proj from 'ol/proj';
-import * as customProj4 from 'ol/proj/proj4';
-
-import proj4 from 'proj4';
 
 import { SentinelGranule, MapView } from '../models/';
+import { MapService } from '../services';
 
 
 @Component({
@@ -30,21 +26,16 @@ export class MapComponent implements OnInit {
 
   @Output() newMapView = new EventEmitter<MapView>();
 
-  private projection: string;
-  private map: Map;
+  constructor(private mapService: MapService) {}
 
   ngOnInit() {
-    this.registerCustomProjections();
-
-    this.equatorial();
-
     this.view$.pipe(
       map(view => this.setMapWith(view)),
       switchMap(newMap =>
-        this.granulePolygonsLayer(this.projection)
+        this.granulePolygonsLayer(this.mapService.getProj())
       ),
     ).subscribe(
-      layer => this.map.addLayer(layer)
+      layer => this.mapService.addLayer(layer)
     ) ;
 
   }
@@ -71,29 +62,33 @@ export class MapComponent implements OnInit {
   }
 
   private equatorial(): void {
-    this.projection = 'EPSG:3857';
+    const projection = 'EPSG:3857';
 
-    const p = proj.get(this.projection);
+    const url = this.mapboxUrl();
+
+    this.mapService.setMap(new XYZ({ url }), projection, 3);
+  }
+
+  private mapboxUrl(): string {
     const token = 'pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw';
     const styleUrl = 'williamh890/cjo0daohlaa972smsrpr0ow4d';
-    const url = `https://api.mapbox.com/styles/v1/${styleUrl}/tiles/256/{z}/{x}/{y}?access_token=${token}`;
-    this.map = this.setMap(new XYZ({ url }), this.projection, 3);
+    return `https://api.mapbox.com/styles/v1/${styleUrl}/tiles/256/{z}/{x}/{y}?access_token=${token}`;
   }
 
   private antarctic(): void {
-    this.projection = 'EPSG:3031';
+    const projection = 'EPSG:3031';
 
     const antarcticLayer = new TileWMS({
       url:  'https://mapserver-prod.asf.alaska.edu/wms/amm',
-      params: { LAYERS: '8bit', CRS: this.projection, transparent: true },
+      params: { LAYERS: '8bit', CRS: projection, transparent: true },
       serverType: 'geoserver'
     });
 
-    this.map = this.setMap(antarcticLayer, this.projection, 2);
+    this.mapService.setMap(antarcticLayer, projection, 2);
   }
 
   private arctic(): void  {
-    this.projection = 'EPSG:3572';
+    const projection = 'EPSG:3572';
 
     const layer = new TileWMS({
       url: 'https://ahocevar.com/geoserver/wms',
@@ -105,47 +100,7 @@ export class MapComponent implements OnInit {
       projection: 'EPSG:4326'
     });
 
-    this.map = this.setMap(layer, this.projection, 1);
-  }
-
-  private setMap(layer: Layer, projectionEPSG: string, zoom: number, newExtent?: number[]): Map {
-    return (!this.map) ?
-      this.newMap(layer, projectionEPSG, zoom, newExtent) :
-      this.updatedExistingMap(layer, projectionEPSG, zoom);
-  }
-
-  private newMap(layer: Layer, projectionEPSG: string, zoom: number, newExtent?: number[]): Map {
-    const m = new Map({
-      layers: [
-        new TileLayer({ source: layer })
-      ],
-      target: 'map',
-      view: new View({
-        center: [0, 0],
-        projection: projectionEPSG,
-        zoom,
-      }),
-      controls: [],
-    });
-
-    console.log(m.getView().calculateExtent(m.getSize()));
-
-    return m;
-  }
-
-  private updatedExistingMap(source: Layer, projectionEPSG: string, zoom: number) {
-    const newView = new View({
-      projection: projectionEPSG,
-      center: [0, 0],
-      zoom
-    });
-    this.map.setView(newView);
-
-    const layer = new TileLayer({ source });
-    layer.setOpacity(1);
-    this.map.getLayers().setAt(0, layer);
-
-    return this.map;
+    this.mapService.setMap(layer, projection, 1);
   }
 
   private granulePolygonsLayer(projection: string): Observable<VectorSource> {
@@ -167,27 +122,5 @@ export class MapComponent implements OnInit {
         source: new VectorSource({ features })
       }))
     );
-  }
-
-  private registerCustomProjections(): void {
-    proj4.defs('EPSG:3413', '+proj=stere +lat_0=90 +lat_ts=70 +lon_0=-45 +k=1 ' +
-          '+x_0=0 +y_0=0 +datum=WGS84 +units=m +no_defs');
-    proj4.defs(
-      'EPSG:3413',
-      '+proj=stere +lat_0=90 +lat_ts=70 +lon_0=-45 +k=1 ' +
-      '+x_0=0 +y_0=0 +datum=WGS84 +units=m +no_defs'
-    );
-    proj4.defs(
-      'EPSG:3572',
-      '+title=Alaska Albers +proj=laea +lat_0=90 +lon_0=-150 +x_0=0 +y_0=0' +
-      ' +ellps=WGS84 +datum=WGS84 +units=m +no_defs'
-    );
-    proj4.defs(
-      'EPSG:3031',
-      '+proj=stere +lat_0=-90 +lat_ts=-71 +lon_0=0 +k=1 +x_0=0 +y_0=0 ' +
-      '+ellps=WGS84 +datum=WGS84 +units=m +no_defs'
-    );
-    customProj4.register(proj4);
-
   }
 }
