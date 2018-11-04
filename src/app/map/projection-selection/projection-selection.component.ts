@@ -4,7 +4,18 @@ import { MapView } from '../../models';
 
 @Component({
   selector: 'app-projection-selection',
-  templateUrl: './projection-selection.component.html',
+  template: `
+    <div class="position">
+      <div class="btn-group" role="group" aria-label="Projection Selection">
+        <button (click)="onArcticSelected()"
+          type="button" class="btn btn-light arctic"></button>
+        <button (click)="onEquitorialSelected()"
+          type="button" class="btn btn-light equatorial"></button>
+        <button (click)="onAntarcticSelected()"
+          type="button" class="btn btn-light antarctic"></button>
+      </div>
+    </div>
+  `,
   styleUrls: ['./projection-selection.component.css']
 })
 export class ProjectionSelectionComponent {
