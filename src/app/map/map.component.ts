@@ -53,60 +53,18 @@ export class MapComponent implements OnInit {
   private setMapWith(view: MapView): void {
     switch (view) {
       case MapView.ARCTIC: {
-        this.arctic();
+        this.mapService.arctic();
         break;
       }
       case MapView.EQUITORIAL: {
-        this.equatorial();
+        this.mapService.equatorial();
         break;
       }
       case MapView.ANTARCTIC: {
-        this.antarctic();
+        this.mapService.antarctic();
         break;
       }
     }
-  }
-
-  private equatorial(): void {
-    const projection = 'EPSG:3857';
-
-    const url = this.mapboxUrl();
-
-    this.mapService.setMap(new XYZ({ url }), projection, 3);
-  }
-
-  private mapboxUrl(): string {
-    const token = 'pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw';
-    const styleUrl = 'williamh890/cjo0daohlaa972smsrpr0ow4d';
-    return `https://api.mapbox.com/styles/v1/${styleUrl}/tiles/256/{z}/{x}/{y}?access_token=${token}`;
-  }
-
-  private antarctic(): void {
-    const projection = 'EPSG:3031';
-
-    const antarcticLayer = new TileWMS({
-      url:  'https://mapserver-prod.asf.alaska.edu/wms/amm',
-      params: { LAYERS: '8bit', CRS: projection, transparent: true },
-      serverType: 'geoserver'
-    });
-
-    this.mapService.setMap(antarcticLayer, projection, 2);
-  }
-
-  private arctic(): void  {
-    const projection = 'EPSG:3572';
-
-    const layer = new TileWMS({
-      url: 'https://ahocevar.com/geoserver/wms',
-      crossOrigin: '',
-      params: {
-        'LAYERS': 'ne:NE1_HR_LC_SR_W_DR',
-        'TILED': true
-      },
-      projection: 'EPSG:4326'
-    });
-
-    this.mapService.setMap(layer, projection, 1);
   }
 
   private granulePolygonsLayer(projection: string): Observable<VectorSource> {

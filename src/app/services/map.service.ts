@@ -28,31 +28,87 @@ export class MapService {
     this.map.addLayer(layer);
   }
 
-  public setMap(layer: Layer, projectionEPSG: string, zoom: number, newExtent?: number[]): void {
-    this.projection = projectionEPSG;
+  public equatorial(): void {
+    this.projection = 'EPSG:3857';
 
-    this.map = (!this.map) ?
-      this.newMap(layer, projectionEPSG, zoom, newExtent) :
-      this.updatedExistingMap(layer, projectionEPSG, zoom);
-  }
+    const token = 'pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw';
+    const styleUrl = 'williamh890/cjo0daohlaa972smsrpr0ow4d';
+    const url = `https://api.mapbox.com/styles/v1/${styleUrl}/tiles/256/{z}/{x}/{y}?access_token=${token}`;
 
-  private newMap(layer: Layer, projectionEPSG: string, zoom: number, newExtent?: number[]): Map {
-    const m = new Map({
-      layers: [
-        new TileLayer({ source: layer })
-      ],
-      target: 'map',
-      view: new View({
+    const layer = new XYZ({ url });
+
+    const view = new View({
         center: [0, 0],
-        projection: projectionEPSG,
-        zoom,
-        minZoom: zoom,
-        extent: this.transform([-360, -90, 360, 90])
-      }),
-      controls: [],
+        projection: this.projection,
+        zoom: 3,
+        minZoom: 3,
+        extent: this.transform([-320, -90, 320, 90])
     });
 
-    console.log(m.getView().calculateExtent(m.getSize()));
+    this.setMap(view, layer);
+  }
+
+  public antarctic(): void {
+    this.projection = 'EPSG:3031';
+
+    const layer = new TileWMS({
+      url:  'https://mapserver-prod.asf.alaska.edu/wms/amm',
+      params: { LAYERS: '8bit', CRS: this.projection, transparent: true },
+      serverType: 'geoserver'
+    });
+
+    const view = new View({
+        center: [0, 0],
+        projection: this.projection,
+        zoom: 2,
+        minZoom: 2,
+        extent: this.transform([-360, -90, 360, 90])
+      });
+
+    this.setMap(view, layer);
+  }
+
+  public arctic(): void  {
+    this.projection = 'EPSG:3572';
+
+    const layer = new TileWMS({
+      url: 'https://ahocevar.com/geoserver/wms',
+      crossOrigin: '',
+      params: {
+        'LAYERS': 'ne:NE1_HR_LC_SR_W_DR',
+        'TILED': true
+      },
+      projection: 'EPSG:4326'
+    });
+
+    const view = new View({
+        center: [0, 0],
+        projection: this.projection,
+        zoom: 2,
+        minZoom: 2,
+        extent: this.transform([-360, -90, 360, 90])
+      });
+
+    this.setMap(view, layer);
+  }
+
+  private setMap(view: View, layer: Layer): void {
+    const baseLayer = new TileLayer({ source: layer });
+
+    this.map = (!this.map) ?
+      this.newMap(view, baseLayer) :
+      this.updatedExistingMap(view, baseLayer);
+  }
+
+  private newMap(view: View, baseLayer: TileLayer): Map {
+    const m = new Map({
+      layers: [
+        baseLayer
+      ],
+      target: 'map',
+      view,
+      controls: [],
+    });
 
     return m;
   }
@@ -61,18 +117,11 @@ export class MapService {
     return proj.transformExtent(extent, 'EPSG:4326', this.projection);
   }
 
-  private updatedExistingMap(source: Layer, projectionEPSG: string, zoom: number) {
-    const newView = new View({
-      projection: projectionEPSG,
-      center: [0, 0],
-      minZoom: zoom,
-      zoom,
-    });
-    this.map.setView(newView);
+  private updatedExistingMap(view: View, baseLayer: TileLayer ): Map {
+    this.map.setView(view);
 
-    const layer = new TileLayer({ source });
-    layer.setOpacity(1);
-    this.map.getLayers().setAt(0, layer);
+    baseLayer.setOpacity(1);
+    this.map.getLayers().setAt(0, baseLayer);
 
     return this.map;
   }
