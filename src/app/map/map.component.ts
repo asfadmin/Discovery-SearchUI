@@ -17,7 +17,13 @@ import { MapService } from '../services';
 
 @Component({
   selector: 'app-map',
-  templateUrl: './map.component.html',
+  template: `
+    <div id="map" class="map"></div>
+
+    <app-projection-selection
+        (newProjection)="onNewProjection($event)">
+    </app-projection-selection>
+  `,
   styleUrls: ['./map.component.css']
 })
 export class MapComponent implements OnInit {
