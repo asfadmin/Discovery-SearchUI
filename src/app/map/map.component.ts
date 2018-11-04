@@ -72,9 +72,12 @@ export class MapComponent implements OnInit {
 
   private equatorial(): void {
     this.projection = 'EPSG:3857';
+
+    const p = proj.get(this.projection);
     const token = 'pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw';
-    const url = `https://api.tiles.mapbox.com/v4/mapbox.streets/{z}/{x}/{y}.png?access_token=${token}`;
-    this.map = this.setMap(new XYZ({ url }), this.projection, 0);
+    const styleUrl = 'williamh890/cjo0daohlaa972smsrpr0ow4d';
+    const url = `https://api.mapbox.com/styles/v1/${styleUrl}/tiles/256/{z}/{x}/{y}?access_token=${token}`;
+    this.map = this.setMap(new XYZ({ url }), this.projection, 3);
   }
 
   private antarctic(): void {
@@ -91,6 +94,7 @@ export class MapComponent implements OnInit {
 
   private arctic(): void  {
     this.projection = 'EPSG:3572';
+
     const layer = new TileWMS({
       url: 'https://ahocevar.com/geoserver/wms',
       crossOrigin: '',
@@ -99,37 +103,40 @@ export class MapComponent implements OnInit {
         'TILED': true
       },
       projection: 'EPSG:4326'
-    })
+    });
+
     this.map = this.setMap(layer, this.projection, 1);
   }
 
-  private setMap(layer: Layer, projectionEPSG: string, zoom: number): Map {
+  private setMap(layer: Layer, projectionEPSG: string, zoom: number, newExtent?: number[]): Map {
     return (!this.map) ?
-      this.newMap(layer, projectionEPSG, zoom) :
+      this.newMap(layer, projectionEPSG, zoom, newExtent) :
       this.updatedExistingMap(layer, projectionEPSG, zoom);
   }
 
-  private newMap(layer: Layer, projectionEPSG: string, zoom: number): Map {
-    return new Map({
+  private newMap(layer: Layer, projectionEPSG: string, zoom: number, newExtent?: number[]): Map {
+    const m = new Map({
       layers: [
         new TileLayer({ source: layer })
       ],
       target: 'map',
       view: new View({
         center: [0, 0],
-        projection: proj.get(projectionEPSG),
-        maxResolution: 25000,
-        zoom
+        projection: projectionEPSG,
+        zoom,
       }),
       controls: [],
     });
+
+    console.log(m.getView().calculateExtent(m.getSize()));
+
+    return m;
   }
 
   private updatedExistingMap(source: Layer, projectionEPSG: string, zoom: number) {
     const newView = new View({
-      projection: proj.get(projectionEPSG),
+      projection: projectionEPSG,
       center: [0, 0],
-      maxResolution: 25000,
       zoom
     });
     this.map.setView(newView);
@@ -163,6 +170,8 @@ export class MapComponent implements OnInit {
   }
 
   private registerCustomProjections(): void {
+    proj4.defs('EPSG:3413', '+proj=stere +lat_0=90 +lat_ts=70 +lon_0=-45 +k=1 ' +
+          '+x_0=0 +y_0=0 +datum=WGS84 +units=m +no_defs');
     proj4.defs(
       'EPSG:3413',
       '+proj=stere +lat_0=90 +lat_ts=70 +lon_0=-45 +k=1 ' +
@@ -179,5 +188,6 @@ export class MapComponent implements OnInit {
       '+ellps=WGS84 +datum=WGS84 +units=m +no_defs'
     );
     customProj4.register(proj4);
+
   }
 }
