@@ -1,16 +1,24 @@
 import { Action } from '@ngrx/store';
 
-import { MapView } from '../../models';
-
 export enum MapActionType {
-  SET_MAP_VIEW = '[Map] Set Map View',
+  SET_ARCTIC_VIEW = '[Map] Set Arctic Map View',
+  SET_EQUITORIAL_VIEW = '[Map] Set Equitorial Map View',
+  SET_ANTARCTIC_VIEW = '[Map] Set Antarctic Map View ',
 }
 
-export class SetMapView implements Action {
-  public readonly type = MapActionType.SET_MAP_VIEW;
+export class SetAntarcticView implements Action {
+  public readonly type = MapActionType.SET_ANTARCTIC_VIEW;
+}
 
-  constructor(public payload: MapView) {}
+export class SetArcticView implements Action {
+  public readonly type = MapActionType.SET_ARCTIC_VIEW;
+}
+
+export class SetEquitorialView implements Action {
+  public readonly type = MapActionType.SET_EQUITORIAL_VIEW;
 }
 
 export type MapActions =
-  | SetMapView;
+  | SetArcticView
+  | SetEquitorialView
+  | SetAntarcticView;

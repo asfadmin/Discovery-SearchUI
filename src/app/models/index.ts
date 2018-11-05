@@ -1,2 +1,2 @@
 export { SentinelGranule } from './sentinel-granule.model';
-export { MapView } from './map.model';
+export { MapViewType } from './map.model';

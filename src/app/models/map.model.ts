@@ -1,4 +1,4 @@
-export enum MapView {
+export enum MapViewType {
   ARCTIC = 'arctic',
   EQUITORIAL = 'equitorial',
   ANTARCTIC = 'antarctic',

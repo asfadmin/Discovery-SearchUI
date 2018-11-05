@@ -1,6 +1,6 @@
 import { Component, Output, EventEmitter } from '@angular/core';
 
-import { MapView } from '../../models';
+import { MapViewType } from '../../models';
 
 @Component({
   selector: 'app-view-selector',
@@ -19,14 +19,14 @@ import { MapView } from '../../models';
   styleUrls: ['./view-selector.component.css']
 })
 export class ViewSelectorComponent {
-  @Output() newProjection = new EventEmitter<MapView>();
+  @Output() newProjection = new EventEmitter<MapViewType>();
 
   public onArcticSelected =
-    () => this.newProjection.emit(MapView.ARCTIC)
+    () => this.newProjection.emit(MapViewType.ARCTIC)
 
   public onEquitorialSelected =
-    () => this.newProjection.emit(MapView.EQUITORIAL)
+    () => this.newProjection.emit(MapViewType.EQUITORIAL)
 
   public onAntarcticSelected =
-    () => this.newProjection.emit(MapView.ANTARCTIC)
+    () => this.newProjection.emit(MapViewType.ANTARCTIC)
 }

@@ -1,24 +1,37 @@
 import { createFeatureSelector, createSelector } from '@ngrx/store';
 
 import { MapActionType, MapActions } from './map.action';
-import { MapView } from '../../models';
+import { MapViewType } from '../../models';
 
 
 export interface MapState {
-  view: MapView;
+  view: MapViewType;
 }
 
 export const initState: MapState = {
-  view: MapView.ARCTIC
+  view: MapViewType.ARCTIC
 };
 
 
 export function mapReducer(state = initState, action: MapActions): MapState {
   switch (action.type) {
-    case MapActionType.SET_MAP_VIEW: {
+    case MapActionType.SET_EQUITORIAL_VIEW: {
       return {
         ...state,
-        view: action.payload
+        view: MapViewType.EQUITORIAL
+      };
+    }
+    case MapActionType.SET_ANTARCTIC_VIEW: {
+
+      return {
+        ...state,
+        view: MapViewType.ANTARCTIC
+      };
+    }
+    case MapActionType.SET_ARCTIC_VIEW: {
+      return {
+        ...state,
+        view: MapViewType.ARCTIC
       };
     }
 

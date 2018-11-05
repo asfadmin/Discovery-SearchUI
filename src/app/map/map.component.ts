@@ -11,7 +11,7 @@ import WKT from 'ol/format/WKT.js';
 import {Tile as TileLayer, Vector as VectorLayer} from 'ol/layer';
 import { OSM, Vector as VectorSource, TileWMS, Layer, XYZ } from 'ol/source';
 
-import { SentinelGranule, MapView } from '../models/';
+import { SentinelGranule, MapViewType } from '../models/';
 import { MapService } from '../services';
 
 
@@ -28,9 +28,9 @@ import { MapService } from '../services';
 })
 export class MapComponent implements OnInit {
   @Input() granules$: Observable<SentinelGranule[]>;
-  @Input() view$: Observable<MapView>;
+  @Input() view$: Observable<MapViewType>;
 
-  @Output() newMapView = new EventEmitter<MapView>();
+  @Output() newMapView = new EventEmitter<MapViewType>();
 
   constructor(private mapService: MapService) {}
 
@@ -46,21 +46,21 @@ export class MapComponent implements OnInit {
 
   }
 
-  public onNewProjection(view: MapView): void {
+  public onNewProjection(view: MapViewType): void {
     this.newMapView.emit(view);
   }
 
-  private setMapWith(view: MapView): void {
+  private setMapWith(view: MapViewType): void {
     switch (view) {
-      case MapView.ARCTIC: {
+      case MapViewType.ARCTIC: {
         this.mapService.arctic();
         break;
       }
-      case MapView.EQUITORIAL: {
+      case MapViewType.EQUITORIAL: {
         this.mapService.equatorial();
         break;
       }
-      case MapView.ANTARCTIC: {
+      case MapViewType.ANTARCTIC: {
         this.mapService.antarctic();
         break;
       }
