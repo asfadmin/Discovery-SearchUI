@@ -20,9 +20,9 @@ import { MapService } from '../services';
   template: `
     <div id="map" class="map"></div>
 
-    <app-projection-selection
-        (newProjection)="onNewProjection($event)">
-    </app-projection-selection>
+    <app-view-selector
+      (newProjection)="onNewProjection($event)">
+    </app-view-selector>
   `,
   styleUrls: ['./map.component.css']
 })

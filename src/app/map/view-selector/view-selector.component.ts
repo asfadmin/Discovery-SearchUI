@@ -3,7 +3,7 @@ import { Component, Output, EventEmitter } from '@angular/core';
 import { MapView } from '../../models';
 
 @Component({
-  selector: 'app-projection-selection',
+  selector: 'app-view-selector',
   template: `
     <div class="position">
       <div class="btn-group" role="group" aria-label="Projection Selection">
@@ -16,9 +16,9 @@ import { MapView } from '../../models';
       </div>
     </div>
   `,
-  styleUrls: ['./projection-selection.component.css']
+  styleUrls: ['./view-selector.component.css']
 })
-export class ProjectionSelectionComponent {
+export class ViewSelectorComponent {
   @Output() newProjection = new EventEmitter<MapView>();
 
   public onArcticSelected =

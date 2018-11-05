@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 import { MapComponent } from './map.component';
-import { ProjectionSelectionComponent } from './projection-selection';
+import { ViewSelectorComponent } from './projection-selection';
 import { MapService } from '../services';
 
 @NgModule({
@@ -11,7 +11,7 @@ import { MapService } from '../services';
   ],
   declarations: [
     MapComponent,
-    ProjectionSelectionComponent,
+    ViewSelectorComponent,
   ],
   providers: [
     MapService
