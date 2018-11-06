@@ -27,7 +27,7 @@ import { SentinelGranule, MapViewType } from './models';
 export class AppComponent implements OnInit {
   public granules$: Observable<SentinelGranule[]>;
   public loading$: Observable<boolean>;
-  public error$: Observable<string>;
+  public error$: Observable<string | undefined>;
   public view$: Observable<MapViewType>;
 
   constructor(

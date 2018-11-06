@@ -14,34 +14,34 @@ import { AsfApiService } from '../../services';
 
 @Injectable()
 export class GranulesEffects {
-    constructor(
-        private asfapi: AsfApiService,
-        private actions$: Actions) {
-    }
+  constructor(
+    private asfapi: AsfApiService,
+    private actions$: Actions) {
+  }
 
-    @Effect()
-    private query: Observable<Action> = this.actions$
+  @Effect()
+  private query: Observable<Action> = this.actions$
+    .pipe(
+      ofType<fromGranuleActions.QueryApi>(fromGranuleActions.GranulesActionType.QUERY),
+      switchMap(action => this.asfapi.query(action.payload)
         .pipe(
-            ofType<fromGranuleActions.QueryApi>(fromGranuleActions.GranulesActionType.QUERY),
-            switchMap(action => this.asfapi.query(action.payload)
-                .pipe(
-                    map(setGranules),
-                    catchError((err) => of(new fromGranuleActions.QueryError(
-                        `Api Query failed to load results. ERROR: ${err['message']}`
-                    )))
-                )),
-        );
+          map(setGranules),
+          catchError((err) => of(new fromGranuleActions.QueryError(
+            `Api Query failed to load results. ERROR: ${err['message']}`
+          )))
+        )),
+    );
 }
 
 const setGranules =
-    resp => new fromGranuleActions.SetGranules(
-        resp[0].map(
-            g => new SentinelGranule(
-                g['granuleName'],
-                g['downloadUrl'],
-                g['flightDirection'],
-                g['stringFootprint']
-            )
-        )
-    );
+  (resp: any) => new fromGranuleActions.SetGranules(
+    resp[0].map(
+      (g: any) => new SentinelGranule(
+        g['granuleName'],
+        g['downloadUrl'],
+        g['flightDirection'],
+        g['stringFootprint']
+      )
+    )
+  );
 
