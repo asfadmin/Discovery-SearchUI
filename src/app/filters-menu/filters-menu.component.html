@@ -1,5 +1,10 @@
-<app-search-bar
-  (newSearch)="newSearch.emit($event)"
-  (clearSearches)="clearSearches.emit()"
-  [isLoading]="isLoading">
-</app-search-bar>
+<div class="filter-menu filter-menu--sizing filter-menu--position">
+  <app-search-bar
+    (newSearch)="newSearch.emit($event)"
+    (clearSearches)="clearSearches.emit()"
+    [isLoading]="isLoading">
+  </app-search-bar>
+
+  <app-platform-selector>
+  </app-platform-selector>
+</div>

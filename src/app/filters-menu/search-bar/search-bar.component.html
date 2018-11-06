@@ -1,6 +1,6 @@
-<mat-card class="position">
-  <form class="search-form" [formGroup]="queryForm">
-    <mat-form-field class="full-width">
+<mat-card class="m-2">
+  <form [formGroup]="queryForm">
+    <mat-form-field class="w-100">
       <input matInput formControlName="query" placeholder="ASF API query">
     </mat-form-field>
     <button (click)="onSubmit()" mat-raised-button color="primary" class="mr-2">
