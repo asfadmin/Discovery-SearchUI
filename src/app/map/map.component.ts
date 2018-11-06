@@ -7,9 +7,9 @@ import {
 import { Observable, combineLatest } from 'rxjs';
 import { map, filter, switchMap } from 'rxjs/operators';
 
-import WKT from 'ol/format/WKT.js';
-import {Tile as TileLayer, Vector as VectorLayer} from 'ol/layer';
-import { OSM, Vector as VectorSource, TileWMS, Layer, XYZ } from 'ol/source';
+import { WKT } from 'ol/format';
+import { Vector as VectorLayer} from 'ol/layer';
+import { Vector as VectorSource } from 'ol/source';
 
 import { SentinelGranule, MapViewType } from '../models/';
 import { MapService } from '../services';
