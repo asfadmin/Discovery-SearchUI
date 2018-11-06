@@ -1,5 +1,10 @@
 # SearchUi
 
+## Deployments
+
+- **Devel:** http://asf-search-ui-dev.s3-website-us-east-1.amazonaws.com
+- **Test:** http://asf-search-ui-test.s3-website-us-east-1.amazonaws.com
+
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 6.2.4.
 
 ## Development server
