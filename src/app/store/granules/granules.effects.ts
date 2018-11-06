@@ -6,9 +6,9 @@ import { Action } from '@ngrx/store';
 import { Observable, of } from 'rxjs';
 import { switchMap, map, catchError } from 'rxjs/operators';
 
-import { AppState } from '../index';
+import { AppState } from '../app.reducer';
 
-import { GranulesActions, GranulesActionTypes } from '../actions';
+import * as fromGranuleActions from './granules.action';
 import { SentinelGranule } from '../../models';
 import { AsfApiService } from '../../services';
 
@@ -22,11 +22,11 @@ export class GranulesEffects {
     @Effect()
     private query: Observable<Action> = this.actions$
         .pipe(
-            ofType<GranulesActions.QueryApi>(GranulesActionTypes.QUERY),
+            ofType<fromGranuleActions.QueryApi>(fromGranuleActions.GranulesActionType.QUERY),
             switchMap(action => this.asfapi.query(action.payload)
                 .pipe(
                     map(setGranules),
-                    catchError((err) => of(new GranulesActions.QueryError(
+                    catchError((err) => of(new fromGranuleActions.QueryError(
                         `Api Query failed to load results. ERROR: ${err['message']}`
                     )))
                 )),
@@ -34,12 +34,13 @@ export class GranulesEffects {
 }
 
 const setGranules =
-    resp => new GranulesActions.SetGranules(
+    resp => new fromGranuleActions.SetGranules(
         resp[0].map(
             g => new SentinelGranule(
                 g['granuleName'],
                 g['downloadUrl'],
-                g['flightDirection']
+                g['flightDirection'],
+                g['stringFootprint']
             )
         )
     );

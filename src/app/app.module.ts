@@ -20,36 +20,39 @@ import { reducers, metaReducers, appEffects, CustomSerializer } from './store';
 
 import { GranuleListModule } from './granule-list';
 import { SearchBarModule } from './search-bar';
+import { MapModule } from './map';
+
 
 import { AppComponent } from './app.component';
 import { AsfApiService, RoutedSearchService } from './services';
 
 
 @NgModule({
-    declarations: [
-        AppComponent,
-    ],
-    imports: [
-        BrowserModule,
-        HttpClientModule,
+  declarations: [
+    AppComponent,
+  ],
+  imports: [
+    BrowserModule,
+    HttpClientModule,
 
-        RouterModule.forRoot([
-            { path: 'search', component: AppComponent },
-            { path: '**', redirectTo: 'search' }
-        ], { useHash: true }),
-        StoreModule.forRoot(reducers, { metaReducers }),
-        StoreRouterConnectingModule,
-        EffectsModule.forRoot(appEffects),
-        !environment.production ? StoreDevtoolsModule.instrument() : [],
+    RouterModule.forRoot([
+      { path: 'search', component: AppComponent },
+      { path: '**', redirectTo: 'search' }
+    ], { useHash: true }),
+    StoreModule.forRoot(reducers, { metaReducers }),
+    StoreRouterConnectingModule,
+    EffectsModule.forRoot(appEffects),
+    !environment.production ? StoreDevtoolsModule.instrument() : [],
 
-        GranuleListModule,
-        SearchBarModule
-    ],
-    providers: [
-        AsfApiService,
-        RoutedSearchService,
-        { provide: RouterStateSerializer, useClass: CustomSerializer }
-    ],
-    bootstrap: [ AppComponent ]
+    GranuleListModule,
+    SearchBarModule,
+    MapModule
+  ],
+  providers: [
+    AsfApiService,
+    RoutedSearchService,
+    { provide: RouterStateSerializer, useClass: CustomSerializer }
+  ],
+  bootstrap: [ AppComponent ]
 })
 export class AppModule { }

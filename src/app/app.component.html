@@ -1,6 +1,4 @@
 <div>
-  <h1>Search API</h1>
-
   <div *ngIf="error$ | async" class="alert alert-danger" role="alert">
     {{ error$ | async }}
   </div>
@@ -13,4 +11,10 @@
   <app-granule-list
     [granules]="granules$ | async">
   </app-granule-list>
+
+  <app-map
+    (newMapView)="onNewMapView($event)"
+    [granules$]="granules$"
+    [view$]="view$"
+    ></app-map>
 </div>
