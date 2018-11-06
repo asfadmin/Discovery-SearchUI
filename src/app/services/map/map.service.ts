@@ -32,7 +32,7 @@ export class MapService {
   }
 
   public antarctic(): void {
-    this.setMap(arctic());
+    this.setMap(antarctic());
   }
 
   public arctic(): void  {

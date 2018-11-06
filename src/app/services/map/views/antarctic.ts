@@ -38,8 +38,8 @@ export function antarctic(): MapView {
     projection: proj.get(projection.epsg),
     extent ,
     center: proj.transform([0, -90], 'EPSG:4326', projection.epsg),
-    zoom: 0,
-    maxZoom: 5
+    zoom: 1,
+    maxZoom: 5,
   });
 
   return new MapView(

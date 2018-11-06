@@ -22,7 +22,8 @@ export function arctic(): MapView  {
     extent,
     center: [0, 0],
     zoom: 1,
-    maxZoom: 5
+    maxZoom: 5,
+    minZoom: 1
   });
 
   const source = new WMTS({
