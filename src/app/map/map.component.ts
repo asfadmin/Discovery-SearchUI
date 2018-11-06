@@ -38,7 +38,7 @@ export class MapComponent implements OnInit {
     this.view$.pipe(
       map(view => this.setMapWith(view)),
       switchMap(newMap =>
-        this.granulePolygonsLayer(this.mapService.getProj())
+        this.granulePolygonsLayer(this.mapService.epsg())
       ),
     ).subscribe(
       layer => this.mapService.addLayer(layer)
