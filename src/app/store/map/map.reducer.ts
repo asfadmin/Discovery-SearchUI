@@ -34,7 +34,6 @@ export function mapReducer(state = initState, action: MapActions): MapState {
         view: MapViewType.ARCTIC
       };
     }
-
     default: {
       return state;
     }
