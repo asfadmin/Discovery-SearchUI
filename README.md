@@ -1,5 +1,7 @@
 # SearchUi
 
+Angular rewrite of ASF's Vertex search web app
+
 ## Deployments
 
 - **Devel:** http://asf-search-ui-dev.s3-website-us-east-1.amazonaws.com
