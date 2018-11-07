@@ -1,0 +1,10 @@
+.platform__date {
+  letter-spacing: 1px;
+  font-size: 13px;
+}
+
+.platform__name {
+  letter-spacing: 1px;
+  font-size: 16px;
+  font: verdana, sans-serif;
+}
