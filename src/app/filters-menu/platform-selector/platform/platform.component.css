@@ -1,10 +1,19 @@
+.platform {
+  display: flex;
+  justify-content: space-between;
+  cursor: pointer;
+}
+
 .platform__date {
-  letter-spacing: 1px;
-  font-size: 13px;
+  font-size: 11px;
 }
 
 .platform__name {
   letter-spacing: 1px;
   font-size: 16px;
   font: verdana, sans-serif;
+}
+
+.platform__info:hover {
+  color: black;
 }

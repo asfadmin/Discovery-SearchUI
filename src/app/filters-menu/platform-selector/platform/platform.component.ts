@@ -6,13 +6,7 @@ import { Platform, DateRange } from '../../../models';
 
 @Component({
   selector: 'app-platform',
-  template: `
-      <span class="float-left platform__name">{{ platform.name }}</span>
-      <span class="float-right text-secondary">
-         <span class="platform__date">{{ prettyDateRange(platform.date) }}</span>
-          <fa-icon class="ml-3" [icon]="detailedPlatformInfoIcon"></fa-icon>
-      </span>
-  `,
+  templateUrl: './platform.component.html',
   styleUrls: ['./platform.component.css']
 })
 export class PlatformComponent {

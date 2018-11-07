@@ -1,10 +1,9 @@
 <mat-card class="m-2">
   <ul class="list-group">
-    <li
+    <app-platform
       *ngFor="let platform of platforms"
-      class="list-group-item btn btn-light">
-    <app-platform [platform]="platform">
+      class="platform__item list-group-item list-group-item-action"
+      [platform]="platform">
     </app-platform>
-    </li>
   </ul>
 </mat-card>

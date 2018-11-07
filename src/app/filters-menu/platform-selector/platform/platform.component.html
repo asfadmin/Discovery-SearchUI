@@ -1,3 +1,9 @@
-<p>
-  platform works!
-</p>
+<div class="platform">
+  <span class="platform__name">{{ platform.name }}</span>
+  <span class="text-secondary">
+    <span class="platform__date">{{ prettyDateRange(platform.date) }}</span>
+    <span class="platform__info ml-2">
+      <fa-icon [icon]="detailedPlatformInfoIcon"></fa-icon>
+    </span>
+  </span>
+</div>
