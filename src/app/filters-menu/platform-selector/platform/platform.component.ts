@@ -1,21 +1,17 @@
 import { Component, Input } from '@angular/core';
 
+import { Platform, DateRange } from '../../../models';
+
 @Component({
   selector: 'app-platform',
   template: `
-    <button
-      (mouseover)="hoverStart()"
-      (mouseleave)="hoverEnd()"
-    type="button" class="btn btn-secondary">
-      {{ isHovered ? dateRange : name }}
-    </button>
-
+      <span class="float-left"><b>{{ platform.name }}</b></span>
+      <span class="float-right">{{ prettyDateRange(platform.date) }}</span>
   `,
   styleUrls: ['./platform.component.css']
 })
 export class PlatformComponent {
-  @Input() name: string;
-  @Input() dateRange: string;
+  @Input() platform: Platform;
 
   public isHovered = false;
 
@@ -25,5 +21,18 @@ export class PlatformComponent {
 
   public hoverEnd(e) {
     this.isHovered = false;
+  }
+
+  public prettyDateRange(dateRange: DateRange): string {
+    const { start, end } = dateRange;
+
+    const startYear = start.getFullYear();
+    const endYear = (!end) ? 'Present' : end.getFullYear();
+
+    return `${startYear} to ${endYear}`;
+  }
+
+  public onSelected(e): void {
+    console.log(e);
   }
 }

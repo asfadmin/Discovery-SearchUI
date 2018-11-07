@@ -3,7 +3,10 @@ import { CommonModule } from '@angular/common';
 
 import {
   MatCardModule,
-  MatButtonModule
+  MatButtonModule,
+  MatListModule,
+  MatExpansionModule,
+  MatCheckboxModule
 } from '@angular/material';
 
 import { PlatformSelectorComponent } from './platform-selector.component';
@@ -15,9 +18,15 @@ import { PlatformComponent } from './platform/platform.component';
     CommonModule,
 
     MatCardModule,
-    MatButtonModule
+    MatButtonModule,
+    MatListModule,
+    MatExpansionModule,
+    MatCheckboxModule,
   ],
-  declarations: [ PlatformSelectorComponent, PlatformComponent ],
+  declarations: [
+    PlatformSelectorComponent,
+    PlatformComponent
+  ],
   exports: [ PlatformSelectorComponent ]
 })
 export class PlatformSelectorModule { }

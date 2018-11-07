@@ -36,12 +36,12 @@ export class GranulesEffects {
 const setGranules =
   (resp: any) => new fromGranuleActions.SetGranules(
     resp[0].map(
-      (g: any) => new SentinelGranule(
-        g['granuleName'],
-        g['downloadUrl'],
-        g['flightDirection'],
-        g['stringFootprint']
-      )
+      (g: any) => ({
+        name: g['granuleName'],
+        downloadUrl: g['downloadUrl'],
+        flightDirection: g['flightDirection'],
+        wktPoly: g['stringFootprint']
+      })
     )
   );
 

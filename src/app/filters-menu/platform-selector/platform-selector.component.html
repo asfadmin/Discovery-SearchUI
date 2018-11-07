@@ -1,6 +1,10 @@
 <mat-card class="m-2">
-  <app-platform
-    [name]="'Sentinel-1A'"
-    [dateRange]="'1994 🡒 Present'"
-    ></app-platform>
+  <ul class="list-group">
+    <li
+      *ngFor="let platform of platforms"
+      class="list-group-item btn btn-light">
+    <app-platform [platform]="platform">
+    </app-platform>
+    </li>
+  </ul>
 </mat-card>
