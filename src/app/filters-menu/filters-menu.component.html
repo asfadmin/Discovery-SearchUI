@@ -5,6 +5,7 @@
     [isLoading]="isLoading">
   </app-search-bar>
 
-  <app-platform-selector>
+  <app-platform-selector
+    [platforms]="platforms$ | async">
   </app-platform-selector>
 </div>

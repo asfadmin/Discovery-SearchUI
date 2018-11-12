@@ -12,7 +12,7 @@ export interface GranulesState {
   error: string | undefined;
 }
 
-export const initState: GranulesState = {
+const initState: GranulesState = {
   ids: [],
   entities: {},
 

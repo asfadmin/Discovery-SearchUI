@@ -13,21 +13,26 @@ import { environment } from '../../environments/environment';
 import { GranulesState, granulesReducer } from './granules';
 import { RouterStateUrl } from './route';
 import { MapState, mapReducer } from './map';
+import { FiltersState, filtersReducer } from './filters';
 
 export * from './route';
+export * from './map';
 export * from './granules';
+export * from './filters';
 
 
 export interface AppState {
   granules: GranulesState;
   router: RouterReducerState<RouterStateUrl>;
   map: MapState;
+  filters: FiltersState;
 }
 
 export const reducers: ActionReducerMap<AppState> = {
   granules: granulesReducer,
   router: routerReducer,
   map: mapReducer,
+  filters: filtersReducer
 };
 
 export const metaReducers: MetaReducer<AppState>[] =

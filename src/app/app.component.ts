@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 
-import { Store, Action  } from '@ngrx/store';
+import { Store, Action } from '@ngrx/store';
 
 import { Observable } from 'rxjs';
 import { filter } from 'rxjs/operators';
@@ -25,10 +25,10 @@ import { SentinelGranule, MapViewType } from './models';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent implements OnInit {
-  public granules$: Observable<SentinelGranule[]>;
-  public loading$: Observable<boolean>;
-  public error$: Observable<string | undefined>;
-  public view$: Observable<MapViewType>;
+  public granules$ = this.store$.select(getGranules);
+  public loading$  = this.store$.select(getLoading);
+  public error$ = this.store$.select(getError);
+  public view$ = this.store$.select(getMapView);
 
   constructor(
     private routedSearchService: RoutedSearchService,
@@ -36,10 +36,6 @@ export class AppComponent implements OnInit {
   ) {}
 
   public ngOnInit() {
-    this.granules$ = this.store$.select(getGranules);
-    this.loading$ = this.store$.select(getLoading);
-    this.error$ = this.store$.select(getError);
-    this.view$ = this.store$.select(getMapView);
   }
 
   public onNewSearch(query: string): void {
