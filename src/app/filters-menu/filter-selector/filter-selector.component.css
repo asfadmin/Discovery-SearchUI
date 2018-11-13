@@ -1,0 +1,10 @@
+.filter-selector--layout {
+  display: flex;
+  justify-content: space-between;
+}
+
+.filter-selector__btn {
+  width: 18%;
+  height: 18%;
+  border: none;
+}
