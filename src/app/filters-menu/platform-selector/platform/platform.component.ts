@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, Output, EventEmitter } from '@angular/core';
 
 import { faInfoCircle } from '@fortawesome/free-solid-svg-icons';
 
@@ -11,17 +11,8 @@ import { Platform, DateRange } from '../../../models';
 })
 export class PlatformComponent {
   @Input() platform: Platform;
+
   public detailedPlatformInfoIcon = faInfoCircle;
-
-  public isHovered = false;
-
-  public hoverStart(e) {
-    this.isHovered = true;
-  }
-
-  public hoverEnd(e) {
-    this.isHovered = false;
-  }
 
   public prettyDateRange(dateRange: DateRange): string {
     const { start, end } = dateRange;
@@ -30,9 +21,5 @@ export class PlatformComponent {
     const endYear = (!end) ? 'Present' : end.getFullYear();
 
     return `${startYear} to ${endYear}`;
-  }
-
-  public onSelected(e): void {
-    console.log(e);
   }
 }

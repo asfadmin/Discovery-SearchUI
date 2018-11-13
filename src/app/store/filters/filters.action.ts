@@ -5,13 +5,13 @@ export enum FiltersActionType {
   REMOVE_SELECTED_PLATFORM = '[Filters] Remove Platform Filter'
 }
 
-export class AddPlatform implements Action {
+export class AddSelectedPlatform implements Action {
   public readonly type = FiltersActionType.ADD_SELECTED_PLATFORM;
 
   constructor(public payload: string) {}
 }
 
-export class RemovePlatform implements Action {
+export class RemoveSelectedPlatform implements Action {
   public readonly type = FiltersActionType.REMOVE_SELECTED_PLATFORM;
 
   constructor(public payload: string) {}
@@ -19,5 +19,5 @@ export class RemovePlatform implements Action {
 
 
 export type FiltersActions =
-  | AddPlatform
-  | RemovePlatform;
+  | AddSelectedPlatform
+  | RemoveSelectedPlatform;

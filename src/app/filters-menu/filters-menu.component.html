@@ -6,6 +6,9 @@
   </app-search-bar>
 
   <app-platform-selector
-    [platforms]="platforms$ | async">
+    [platforms]="platforms$ | async"
+    [selected]="selectedPlatforms$ | async"
+    (removeSelected)="onPlatformRemoved($event)"
+    (addSelected)="onPlatformAdded($event)">
   </app-platform-selector>
 </div>

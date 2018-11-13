@@ -12,14 +12,6 @@ export interface PlatformsState {
   selected: Set<string>;
 }
 
-console.log(platforms.reduce(
-  (acc, cur) => {
-    acc[cur.name] = cur;
-    return acc;
-  },
-      {}
-    ));
-
 const initState: FiltersState = {
   platforms: {
     entities: platforms.reduce(
@@ -30,7 +22,7 @@ const initState: FiltersState = {
       },
       {}
     ),
-    selected: new Set<string>()
+    selected: new Set<string>(['Sentinel-1A'])
   }
 };
 
