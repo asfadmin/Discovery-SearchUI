@@ -1,17 +1,20 @@
 <div class="filter-menu filter-menu--sizing filter-menu--position">
   <app-search-bar
+    class="filter-menu__item"
     (newSearch)="newSearch.emit($event)"
     (clearSearches)="clearSearches.emit()"
     [isLoading]="isLoading">
   </app-search-bar>
 
   <app-filter-selector
+    class="filter-menu__item"
     [selectedFilter]="selectedFilter$ | async"
     (newFilterSelected)="onNewFilterSelected($event)"
     ></app-filter-selector>
 
   <ng-container *ngIf="selectedFilter$ | async as selected">
     <app-platform-selector
+      class="filter-menu__item"
       *ngIf="selected === filterType.PLATFORM"
       [platforms]="platforms$ | async"
       [selected]="selectedPlatforms$ | async"
@@ -20,14 +23,17 @@
     </app-platform-selector>
 
     <app-date-selector
+      class="filter-menu__item"
       *ngIf="selected === filterType.DATE"
       ></app-date-selector>
 
     <app-path-selector
+      class="filter-menu__item"
       *ngIf="selected === filterType.PATH"
       ></app-path-selector>
 
     <app-other-selector
+      class="filter-menu__item"
       *ngIf="selected === filterType.OTHER"
       ></app-other-selector>
   </ng-container>

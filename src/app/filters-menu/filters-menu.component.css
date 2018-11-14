@@ -1,5 +1,11 @@
 .filter-menu {
   background-color: rgba(255, 255, 255, 0.15);
+  direction: rtl;
+  overflow: auto;
+}
+
+.filter-menu__item {
+  direction: ltr;
 }
 
 .filter-menu--sizing {
