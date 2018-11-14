@@ -1,9 +1,10 @@
 import { createFeatureSelector, createSelector } from '@ngrx/store';
 
 import { FiltersActionType, FiltersActions } from './filters.action';
-import { Platform, platforms } from '../../models';
+import { Platform, platforms, FilterType } from '../../models';
 
 export interface FiltersState {
+  selected: FilterType | undefined;
   platforms: PlatformsState;
 }
 
@@ -13,6 +14,7 @@ export interface PlatformsState {
 }
 
 const initState: FiltersState = {
+  selected: undefined,
   platforms: {
     entities: platforms.reduce(
       (platformsObj, platform) => {
@@ -22,7 +24,7 @@ const initState: FiltersState = {
       },
       {}
     ),
-    selected: new Set<string>(['Sentinel-1A'])
+    selected: new Set<string>([])
   }
 };
 
@@ -55,6 +57,17 @@ export function filtersReducer(state = initState, action: FiltersActions): Filte
       };
     }
 
+    case FiltersActionType.SET_SELECTED_FILTER: {
+      const selected =  (state.selected !== action.payload) ?
+        action.payload :
+        undefined;
+
+      return {
+        ...state,
+        selected
+      };
+    }
+
     default: {
       return state;
     }
@@ -62,6 +75,11 @@ export function filtersReducer(state = initState, action: FiltersActions): Filte
 }
 
 export const getFiltersState = createFeatureSelector<FiltersState>('filters');
+
+export const getSelectedFilter = createSelector(
+  getFiltersState,
+  (state: FiltersState) => state.selected
+);
 
 export const getPlatforms = createSelector(
   getFiltersState,
@@ -77,3 +95,4 @@ export const getSelectedPlatforms = createSelector(
   getPlatforms,
   (state: PlatformsState) => state.selected
 );
+

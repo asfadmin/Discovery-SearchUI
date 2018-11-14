@@ -1,26 +1,31 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, Output, EventEmitter } from '@angular/core';
+
+import { FilterType } from '../../models';
 
 @Component({
   selector: 'app-filter-selector',
   templateUrl: './filter-selector.component.html',
   styleUrls: ['./filter-selector.component.css']
 })
-export class FilterSelectorComponent implements OnInit {
+export class FilterSelectorComponent {
+  @Input() selectedFilter: FilterType;
+  @Output() newFilterSelected = new EventEmitter<FilterType>();
 
-  constructor() { }
+  public filterType = FilterType;
 
-  public ngOnInit(): void {
+  public onPlatformFilterSelected(): void {
+    this.newFilterSelected.emit(FilterType.PLATFORM);
   }
 
-  public btnClasses(): string {
-    return `
-      filter-selector__btn
-      btn btn-outline-light
-      p-2
-    `;
+  public onDateFilterSelected(): void {
+    this.newFilterSelected.emit(FilterType.DATE);
   }
 
-  public iconPath(name: string): string {
-    return `assets/icons/${name}.png`;
+  public onPathFilterSelected(): void {
+    this.newFilterSelected.emit(FilterType.PATH);
+  }
+
+  public onOtherFilterSelected(): void {
+    this.newFilterSelected.emit(FilterType.OTHER);
   }
 }

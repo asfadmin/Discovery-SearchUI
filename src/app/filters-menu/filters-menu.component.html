@@ -5,12 +5,18 @@
     [isLoading]="isLoading">
   </app-search-bar>
 
-  <app-filter-selector></app-filter-selector>
+  <app-filter-selector
+    [selectedFilter]="selectedFilter$ | async"
+    (newFilterSelected)="onNewFilterSelected($event)"
+    ></app-filter-selector>
 
-  <app-platform-selector
-    [platforms]="platforms$ | async"
-    [selected]="selectedPlatforms$ | async"
-    (removeSelected)="onPlatformRemoved($event)"
-    (addSelected)="onPlatformAdded($event)">
-  </app-platform-selector>
+  <ng-container *ngIf="selectedFilter$ | async as selected">
+    <app-platform-selector
+      *ngIf="selected === filterType.PLATFORM"
+      [platforms]="platforms$ | async"
+      [selected]="selectedPlatforms$ | async"
+      (removeSelected)="onPlatformRemoved($event)"
+      (addSelected)="onPlatformAdded($event)">
+    </app-platform-selector>
+  </ng-container>
 </div>

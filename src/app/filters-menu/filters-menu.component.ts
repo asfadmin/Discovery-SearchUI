@@ -2,11 +2,13 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 
 import { Store } from '@ngrx/store';
 
+
 import {
   FiltersState,
-  getPlatformsList, getSelectedPlatforms,
-  AddSelectedPlatform, RemoveSelectedPlatform
+  getPlatformsList, getSelectedPlatforms, getSelectedFilter,
+  AddSelectedPlatform, RemoveSelectedPlatform, SetSelectedFilter
 } from './../store/filters';
+import { FilterType } from '../models';
 
 @Component({
   selector: 'app-filters-menu',
@@ -21,6 +23,9 @@ export class FiltersMenuComponent {
 
   public platforms$ = this.store$.select(getPlatformsList);
   public selectedPlatforms$ = this.store$.select(getSelectedPlatforms);
+  public selectedFilter$ = this.store$.select(getSelectedFilter);
+
+  public filterType = FilterType;
 
   constructor(private store$: Store<FiltersState>) {
     this.selectedPlatforms$.subscribe(
@@ -34,5 +39,9 @@ export class FiltersMenuComponent {
 
   public onPlatformAdded(platformName: string): void {
     this.store$.dispatch(new AddSelectedPlatform(platformName));
+  }
+
+  public onNewFilterSelected(filter: FilterType): void {
+    this.store$.dispatch(new SetSelectedFilter(filter));
   }
 }
