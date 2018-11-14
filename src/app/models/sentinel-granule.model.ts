@@ -1,9 +1,6 @@
-export class SentinelGranule {
-    constructor(
-        public name: string,
-        public downloadUrl: string,
-        public flightDirection: string,
-        public wktPoly: string
-    ) {
-    }
+export interface SentinelGranule {
+  name: string;
+  downloadUrl: string;
+  flightDirection: string;
+  wktPoly: string;
 }

@@ -1,0 +1,10 @@
+.filter-selector--layout {
+  display: flex;
+  justify-content: space-between;
+}
+
+.filter-icon--size {
+  width: 20%;
+  height: 20%;
+  border: none;
+}

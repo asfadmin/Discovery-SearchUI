@@ -2,11 +2,12 @@
   <div *ngIf="error$ | async" class="alert alert-danger" role="alert">
     {{ error$ | async }}
   </div>
-  <app-search-bar
+
+  <app-filters-menu
     (newSearch)="onNewSearch($event)"
     (clearSearches)="onClearGranules()"
     [isLoading]="loading$ | async">
-  </app-search-bar>
+  </app-filters-menu>
 
   <app-granule-list
     [granules]="granules$ | async">

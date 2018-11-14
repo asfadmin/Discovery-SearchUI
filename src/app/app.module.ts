@@ -19,9 +19,8 @@ import { environment } from '../environments/environment';
 import { reducers, metaReducers, appEffects, CustomSerializer } from './store';
 
 import { GranuleListModule } from './granule-list';
-import { SearchBarModule } from './search-bar';
+import { FiltersMenuModule } from './filters-menu';
 import { MapModule } from './map';
-
 
 import { AppComponent } from './app.component';
 import { AsfApiService, RoutedSearchService } from './services';
@@ -45,7 +44,7 @@ import { AsfApiService, RoutedSearchService } from './services';
     !environment.production ? StoreDevtoolsModule.instrument() : [],
 
     GranuleListModule,
-    SearchBarModule,
+    FiltersMenuModule,
     MapModule
   ],
   providers: [

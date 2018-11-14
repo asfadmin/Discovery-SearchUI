@@ -1,0 +1,11 @@
+<mat-card class="m-2">
+  <ul class="list-group list-group-flush">
+    <app-platform
+      *ngFor="let platform of platforms"
+      (click)="onClick(platform)"
+      class="list-group-item list-group-item-action"
+      [ngClass]="{'active': selected.has(platform.name)}"
+      [platform]="platform">
+    </app-platform>
+  </ul>
+</mat-card>

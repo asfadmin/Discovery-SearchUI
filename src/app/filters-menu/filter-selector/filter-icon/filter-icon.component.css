@@ -1,0 +1,10 @@
+.filter-icon {
+  border: none;
+  display: flex;
+  flex-direction: column;
+  font-size: smaller;
+}
+
+.filter-icon__image {
+  opacity: 0.85;
+}

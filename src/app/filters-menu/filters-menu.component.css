@@ -1,0 +1,17 @@
+.filter-menu {
+  background-color: rgba(255, 255, 255, 0.15);
+}
+
+.filter-menu--sizing {
+  max-width: 100%;
+  width: 400px;
+  height: 100%;
+}
+
+.filter-menu--position {
+  position: fixed;
+  left: 0px;
+  top: 0px;
+  z-index: 1203;
+  clear: both;
+}
