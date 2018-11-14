@@ -2,6 +2,12 @@ import { Component, Input, Output, EventEmitter } from '@angular/core';
 
 import { FilterType } from '../../models';
 
+export interface FilterSelector {
+    title: string;
+    iconName: string;
+    type: FilterType;
+}
+
 @Component({
   selector: 'app-filter-selector',
   templateUrl: './filter-selector.component.html',
@@ -13,19 +19,25 @@ export class FilterSelectorComponent {
 
   public filterType = FilterType;
 
-  public onPlatformFilterSelected(): void {
-    this.newFilterSelected.emit(FilterType.PLATFORM);
-  }
+  filters: FilterSelector[] = [{
+    title: 'Platform',
+    iconName: 'satellite',
+    type: FilterType.PLATFORM
+  }, {
+    title: 'Date',
+    iconName: 'calendar',
+    type: FilterType.DATE
+  }, {
+    title: 'Path',
+    iconName: 'path',
+    type: FilterType.PATH
+  }, {
+    title: 'Other',
+    iconName: 'other',
+    type: FilterType.OTHER
+  }];
 
-  public onDateFilterSelected(): void {
-    this.newFilterSelected.emit(FilterType.DATE);
-  }
-
-  public onPathFilterSelected(): void {
-    this.newFilterSelected.emit(FilterType.PATH);
-  }
-
-  public onOtherFilterSelected(): void {
-    this.newFilterSelected.emit(FilterType.OTHER);
+  public onFilterSelected(filterType: FilterType): void {
+    this.newFilterSelected.emit(filterType);
   }
 }

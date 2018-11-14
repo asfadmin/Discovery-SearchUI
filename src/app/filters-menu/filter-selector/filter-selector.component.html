@@ -1,37 +1,9 @@
 <mat-card class="m-2 filter-selector--layout">
-  <app-filter-icon
-    [filterTitle]="'Platform'"
-    [name]="'satellite'"
-    [isSelected]="selectedFilter === filterType.PLATFORM"
-    (click)="onPlatformFilterSelected()"
-    class="filter-icon--size active"
-    >
-  </app-filter-icon>
-
-  <app-filter-icon
-    [filterTitle]="'Date'"
-    [name]="'calendar'"
-    [isSelected]="selectedFilter === filterType.DATE"
-    (click)="onDateFilterSelected()"
+  <app-filter-icon *ngFor="let filter of filters"
     class="filter-icon--size"
-    >
-  </app-filter-icon>
-
-  <app-filter-icon
-    [filterTitle]="'Path'"
-    [name]="'path'"
-    [isSelected]="selectedFilter === filterType.PATH"
-    (click)="onPathFilterSelected()"
-    class="filter-icon--size"
-    >
-  </app-filter-icon>
-
-  <app-filter-icon
-    [filterTitle]="'Other'"
-    [name]="'other'"
-    [isSelected]="selectedFilter === filterType.OTHER"
-    (click)="onOtherFilterSelected()"
-    class="filter-icon--size"
-    >
-  </app-filter-icon>
+    (click)="onFilterSelected(filter.type)"
+    [filterTitle]="filter.title"
+    [name]="filter.iconName"
+    [isSelected]="selectedFilter === filter.type"
+    ></app-filter-icon>
 </mat-card>
