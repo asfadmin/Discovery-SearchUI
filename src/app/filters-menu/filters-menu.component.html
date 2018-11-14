@@ -18,5 +18,17 @@
       (removeSelected)="onPlatformRemoved($event)"
       (addSelected)="onPlatformAdded($event)">
     </app-platform-selector>
+
+    <app-date-selector
+      *ngIf="selected === filterType.DATE"
+      ></app-date-selector>
+
+    <app-path-selector
+      *ngIf="selected === filterType.PATH"
+      ></app-path-selector>
+
+    <app-other-selector
+      *ngIf="selected === filterType.OTHER"
+      ></app-other-selector>
   </ng-container>
 </div>
