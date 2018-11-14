@@ -2,7 +2,10 @@
   <span class="platform__name">{{ platform.name }}</span>
   <span>
     <span class="platform__date">{{ prettyDateRange(platform.date) }}</span>
-    <span class="platform__info ml-2">
+    <span
+      (click)="onInfoClicked($event)"
+      class="platform__info ml-2"
+      >
       <fa-icon [icon]="detailedPlatformInfoIcon"></fa-icon>
     </span>
   </span>

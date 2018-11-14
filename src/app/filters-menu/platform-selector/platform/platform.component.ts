@@ -22,4 +22,8 @@ export class PlatformComponent {
 
     return `${startYear} to ${endYear}`;
   }
+
+  public onInfoClicked(e: Event): void {
+    e.stopPropagation();
+  }
 }

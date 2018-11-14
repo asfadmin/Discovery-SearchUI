@@ -2,7 +2,6 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 
 import { Store } from '@ngrx/store';
 
-
 import {
   FiltersState,
   getPlatformsList, getSelectedPlatforms, getSelectedFilter,
@@ -27,11 +26,7 @@ export class FiltersMenuComponent {
 
   public filterType = FilterType;
 
-  constructor(private store$: Store<FiltersState>) {
-    this.selectedPlatforms$.subscribe(
-      v => console.log(v)
-    );
-  }
+  constructor(private store$: Store<FiltersState>) {}
 
   public onPlatformRemoved(platformName: string): void {
     this.store$.dispatch(new RemoveSelectedPlatform(platformName));
