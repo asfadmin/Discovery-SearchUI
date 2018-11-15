@@ -11,5 +11,4 @@ export class DateSelectorComponent implements OnInit {
 
   ngOnInit() {
   }
-
 }

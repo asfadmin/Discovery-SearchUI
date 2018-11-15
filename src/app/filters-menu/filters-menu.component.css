@@ -15,9 +15,8 @@
 }
 
 .filter-menu--position {
-  position: fixed;
+  position: absolute;
   left: 0px;
   top: 0px;
-  z-index: 1203;
-  clear: both;
+  z-index: 999; /* Angular Materials Z-Index is 1000*/
 }
