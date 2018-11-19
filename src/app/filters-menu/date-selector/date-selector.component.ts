@@ -1,4 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
+
+import { Platform } from '../../models';
 
 @Component({
   selector: 'app-date-selector',
@@ -6,6 +8,7 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./date-selector.component.css']
 })
 export class DateSelectorComponent implements OnInit {
+  @Input() selected: Platform;
 
   constructor() { }
 

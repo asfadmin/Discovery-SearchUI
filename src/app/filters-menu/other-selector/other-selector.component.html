@@ -1,5 +1,19 @@
 <mat-card class="m-2">
-  <p>
-    other-selector works!
-  </p>
+  <div class="">
+    <h5>Beam Mode</h5>
+
+    <mat-form-field *ngFor="let platform of selected">
+      <mat-select *ngIf="platform.beamModes !== []" placeholder="{{ platform.name }}" multiple>
+        <mat-option *ngFor="let mode of platform.beamModes" [value]="beamModes">
+          {{mode}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <h5>Product Type</h5>
+
+    <h5>Polarization</h5>
+
+    <h5>Flight Direction</h5>
+  </div>
 </mat-card>

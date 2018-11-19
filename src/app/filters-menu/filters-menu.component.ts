@@ -4,7 +4,7 @@ import { Store } from '@ngrx/store';
 
 import {
   FiltersState,
-  getPlatformsList, getSelectedPlatforms, getSelectedFilter,
+  getPlatformsList, getSelectedPlatforms, getSelectedFilter, getSelectedPlatformNames,
   AddSelectedPlatform, RemoveSelectedPlatform, SetSelectedFilter
 } from './../store/filters';
 import { FilterType } from '../models';
@@ -21,7 +21,9 @@ export class FiltersMenuComponent {
   @Output() clearSearches = new EventEmitter<void>();
 
   public platforms$ = this.store$.select(getPlatformsList);
+  public selectedPlatformNames$ = this.store$.select(getSelectedPlatformNames);
   public selectedPlatforms$ = this.store$.select(getSelectedPlatforms);
+
   public selectedFilter$ = this.store$.select(getSelectedFilter);
 
   public filterType = FilterType;

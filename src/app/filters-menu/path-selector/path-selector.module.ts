@@ -1,7 +1,11 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
-import { MatCardModule } from '@angular/material';
+import {
+  MatCardModule,
+  MatFormFieldModule,
+  MatInputModule,
+} from '@angular/material';
 
 import { PathSelectorComponent } from './path-selector.component';
 
@@ -9,7 +13,9 @@ import { PathSelectorComponent } from './path-selector.component';
   declarations: [PathSelectorComponent],
   imports: [
     CommonModule,
-    MatCardModule
+    MatCardModule,
+    MatFormFieldModule,
+    MatInputModule,
   ],
   exports: [PathSelectorComponent],
 })

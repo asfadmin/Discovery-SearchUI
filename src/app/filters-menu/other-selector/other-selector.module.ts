@@ -1,15 +1,20 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
-import { MatCardModule } from '@angular/material';
+import {
+  MatCardModule ,
+  MatSelectModule ,
+} from '@angular/material';
 
 import { OtherSelectorComponent } from './other-selector.component';
+import { ListClusterComponent } from './list-cluster/list-cluster.component';
 
 @NgModule({
-  declarations: [ OtherSelectorComponent ],
+  declarations: [ OtherSelectorComponent, ListClusterComponent ],
   imports: [
     CommonModule,
-    MatCardModule
+    MatCardModule,
+    MatSelectModule ,
   ],
   exports: [ OtherSelectorComponent ],
 })
