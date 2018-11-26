@@ -1,4 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
+
+import { Platform } from '../../models';
 
 @Component({
   selector: 'app-path-selector',
@@ -6,6 +8,7 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./path-selector.component.css']
 })
 export class PathSelectorComponent implements OnInit {
+  @Input() selected: Platform[];
 
   constructor() { }
 

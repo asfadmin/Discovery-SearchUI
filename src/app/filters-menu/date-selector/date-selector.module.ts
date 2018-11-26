@@ -1,7 +1,13 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
-import { MatCardModule } from '@angular/material';
+import {
+  MatCardModule,
+  MatDatepickerModule,
+  MatFormFieldModule,
+  MatNativeDateModule,
+  MatInputModule,
+} from '@angular/material';
 
 import { DateSelectorComponent } from './date-selector.component';
 
@@ -9,7 +15,11 @@ import { DateSelectorComponent } from './date-selector.component';
   declarations: [DateSelectorComponent],
   imports: [
     CommonModule,
-    MatCardModule
+    MatCardModule,
+    MatDatepickerModule,
+    MatFormFieldModule,
+    MatNativeDateModule,
+    MatInputModule,
   ],
   exports: [ DateSelectorComponent ],
 })

@@ -17,7 +17,7 @@
       class="filter-menu__item"
       *ngIf="selected === filterType.PLATFORM"
       [platforms]="platforms$ | async"
-      [selected]="selectedPlatforms$ | async"
+      [selected]="selectedPlatformNames$ | async"
       (removeSelected)="onPlatformRemoved($event)"
       (addSelected)="onPlatformAdded($event)">
     </app-platform-selector>
@@ -25,16 +25,19 @@
     <app-date-selector
       class="filter-menu__item"
       *ngIf="selected === filterType.DATE"
+      [selected]="selectedPlatforms$ | async"
       ></app-date-selector>
 
     <app-path-selector
       class="filter-menu__item"
       *ngIf="selected === filterType.PATH"
+      [selected]="selectedPlatforms$ | async"
       ></app-path-selector>
 
     <app-other-selector
       class="filter-menu__item"
       *ngIf="selected === filterType.OTHER"
+      [selected]="selectedPlatforms$ | async"
       ></app-other-selector>
   </ng-container>
 </div>

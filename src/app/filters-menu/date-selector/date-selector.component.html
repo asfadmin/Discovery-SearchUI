@@ -1,5 +1,15 @@
 <mat-card class="m-2">
-  <p>
-    date-selector works!
-  </p>
+  <mat-card-title>Acquisition Date</mat-card-title>
+
+  <mat-form-field>
+    <input matInput [matDatepicker]="start" placeholder="Start Date">
+    <mat-datepicker-toggle matSuffix [for]="start"></mat-datepicker-toggle>
+    <mat-datepicker #start></mat-datepicker>
+  </mat-form-field>
+
+  <mat-form-field>
+    <input matInput [matDatepicker]="end" placeholder="End Date">
+    <mat-datepicker-toggle matSuffix [for]="end"></mat-datepicker-toggle>
+    <mat-datepicker #end></mat-datepicker>
+  </mat-form-field>
 </mat-card>

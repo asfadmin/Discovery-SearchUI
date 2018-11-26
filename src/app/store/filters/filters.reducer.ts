@@ -14,7 +14,7 @@ export interface PlatformsState {
 }
 
 const initState: FiltersState = {
-  selected: undefined,
+  selected: FilterType.OTHER,
   platforms: {
     entities: platforms.reduce(
       (platformsObj, platform) => {
@@ -24,7 +24,7 @@ const initState: FiltersState = {
       },
       {}
     ),
-    selected: new Set<string>([])
+    selected: new Set<string>(['Sentinel-1A'])
   }
 };
 
@@ -91,8 +91,16 @@ export const getPlatformsList = createSelector(
   (state: PlatformsState) => Object.values(state.entities)
 );
 
-export const getSelectedPlatforms = createSelector(
+export const getSelectedPlatformNames = createSelector(
   getPlatforms,
   (state: PlatformsState) => state.selected
+);
+
+export const getSelectedPlatforms = createSelector(
+  getPlatforms,
+  (state: PlatformsState) => Array.from(state.selected).reduce(
+    (selected: Platform[], name: string) => [...selected, state.entities[name]],
+    []
+  )
 );
 
