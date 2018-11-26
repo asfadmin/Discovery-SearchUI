@@ -1,6 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 
-import { Platform } from '../../models';
+import { Platform, polarizations, flightDirections } from '../../models';
 
 @Component({
   selector: 'app-other-selector',
@@ -9,6 +9,8 @@ import { Platform } from '../../models';
 })
 export class OtherSelectorComponent implements OnInit {
   @Input() selected: Platform[];
+  public polarizations = polarizations;
+  public flightDirections = flightDirections;
 
   constructor() { }
 

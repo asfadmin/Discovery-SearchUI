@@ -7,10 +7,9 @@ import {
 } from '@angular/material';
 
 import { OtherSelectorComponent } from './other-selector.component';
-import { ListClusterComponent } from './list-cluster/list-cluster.component';
 
 @NgModule({
-  declarations: [ OtherSelectorComponent, ListClusterComponent ],
+  declarations: [ OtherSelectorComponent ],
   imports: [
     CommonModule,
     MatCardModule,

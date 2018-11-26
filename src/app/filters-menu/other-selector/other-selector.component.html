@@ -12,8 +12,32 @@
 
     <h5>Product Type</h5>
 
+    <mat-form-field *ngFor="let platform of selected">
+      <mat-select *ngIf="platform.types !== []" placeholder="{{ platform.name }}" multiple>
+        <mat-option *ngFor="let type of platform.types" [value]="type">
+          {{type}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+
     <h5>Polarization</h5>
 
+    <mat-form-field>
+      <mat-select placeholder="{{ polarizations[0] }}" multiple>
+        <mat-option *ngFor="let polarization of polarizations" [value]="polarization">
+          {{polarization}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+
     <h5>Flight Direction</h5>
+
+    <mat-form-field>
+      <mat-select placeholder="{{ flightDirections[0] }}" multiple>
+        <mat-option *ngFor="let direction of flightDirections" [value]="direction">
+          {{direction}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
   </div>
 </mat-card>

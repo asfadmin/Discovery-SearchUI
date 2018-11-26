@@ -101,8 +101,7 @@ export const platforms: Platform[] = [{
   },
   types: [
     'Level Zero',
-    'Level One Image'
-  ],
+    'Level One Image' ],
   beamModes: [ 'STD' ]
 }, {
   name: 'JERS-1',
@@ -154,3 +153,20 @@ export const platforms: Platform[] = [{
   types: [ 'Level One GeoTIFF product' ],
   beamModes: [ 'STD' ]
 }];
+
+export const polarizations = [
+ 'VV',
+ 'HH',
+ 'VV+VH',
+ 'HH+HV',
+ 'Dual HH',
+ 'Dual HV',
+ 'Dual VV',
+ 'Dual VH',
+ 'Quadrature'
+];
+
+export const flightDirections = [
+  'Ascending',
+  'Descending'
+];
