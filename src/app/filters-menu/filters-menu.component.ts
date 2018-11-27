@@ -1,6 +1,7 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 
 import { Store } from '@ngrx/store';
+import { faChevronLeft } from '@fortawesome/free-solid-svg-icons';
 
 import {
   FiltersState,
@@ -20,6 +21,7 @@ export class FiltersMenuComponent {
   @Output() newSearch = new EventEmitter<string>();
   @Output() clearSearches = new EventEmitter<void>();
 
+  public closeIcon = faChevronLeft;
   public platforms$ = this.store$.select(getPlatformsList);
   public selectedPlatformNames$ = this.store$.select(getSelectedPlatformNames);
   public selectedPlatforms$ = this.store$.select(getSelectedPlatforms);

@@ -9,9 +9,14 @@ import { DateSelectorModule } from './date-selector';
 import { PathSelectorModule } from './path-selector';
 import { OtherSelectorModule } from './other-selector';
 
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { MatButtonModule } from '@angular/material/button';
+
 @NgModule({
   imports: [
     CommonModule,
+    FontAwesomeModule,
+    MatButtonModule,
 
     SearchBarModule,
 

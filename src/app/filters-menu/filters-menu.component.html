@@ -1,4 +1,13 @@
+<div class="filter-menu__close">
+ <button class="btn btn-light hide-btn">
+    <div>
+      <fa-icon [icon]="closeIcon"></fa-icon>
+    </div>
+  </button>
+</div>
+
 <div class="filter-menu filter-menu--sizing filter-menu--position">
+  <div class="filter-menu__content">
   <app-search-bar
     class="filter-menu__item"
     (newSearch)="newSearch.emit($event)"
@@ -12,32 +21,33 @@
     (newFilterSelected)="onNewFilterSelected($event)"
     ></app-filter-selector>
 
-  <ng-container *ngIf="selectedFilter$ | async as selected">
-    <app-platform-selector
-      class="filter-menu__item"
-      *ngIf="selected === filterType.PLATFORM"
-      [platforms]="platforms$ | async"
-      [selected]="selectedPlatformNames$ | async"
-      (removeSelected)="onPlatformRemoved($event)"
-      (addSelected)="onPlatformAdded($event)">
-    </app-platform-selector>
+    <ng-container *ngIf="selectedFilter$ | async as selected">
+      <app-platform-selector
+        class="filter-menu__item"
+        *ngIf="selected === filterType.PLATFORM"
+        [platforms]="platforms$ | async"
+        [selected]="selectedPlatformNames$ | async"
+        (removeSelected)="onPlatformRemoved($event)"
+        (addSelected)="onPlatformAdded($event)">
+      </app-platform-selector>
 
-    <app-date-selector
-      class="filter-menu__item"
-      *ngIf="selected === filterType.DATE"
-      [selected]="selectedPlatforms$ | async"
-      ></app-date-selector>
+      <app-date-selector
+        class="filter-menu__item"
+        *ngIf="selected === filterType.DATE"
+        [selected]="selectedPlatforms$ | async"
+        ></app-date-selector>
 
-    <app-path-selector
-      class="filter-menu__item"
-      *ngIf="selected === filterType.PATH"
-      [selected]="selectedPlatforms$ | async"
-      ></app-path-selector>
+      <app-path-selector
+        class="filter-menu__item"
+        *ngIf="selected === filterType.PATH"
+        [selected]="selectedPlatforms$ | async"
+        ></app-path-selector>
 
-    <app-other-selector
-      class="filter-menu__item"
-      *ngIf="selected === filterType.OTHER"
-      [selected]="selectedPlatforms$ | async"
-      ></app-other-selector>
-  </ng-container>
+      <app-other-selector
+        class="filter-menu__item"
+        *ngIf="selected === filterType.OTHER"
+        [selected]="selectedPlatforms$ | async"
+        ></app-other-selector>
+    </ng-container>
+  </div>
 </div>
