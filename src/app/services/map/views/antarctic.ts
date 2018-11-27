@@ -16,10 +16,10 @@ export function antarctic(): MapView {
   );
 
   const source = new WMTS({
-    url: 'https://gibs-{a-c}.earthdata.nasa.gov/wmts/epsg3031/best/wmts.cgi?TIME=2018-02-28',
-    layer: 'MODIS_Terra_CorrectedReflectance_TrueColor',
+    url: 'https://gibs-{a-c}.earthdata.nasa.gov/wmts/epsg3031/best/wmts.cgi?TIME=2018-11-27T00:00:00Z',
+    layer: 'BlueMarble_ShadedRelief_Bathymetry',
     format: 'image/jpeg',
-    matrixSet: 'EPSG3031_250m',
+    matrixSet: '500m',
 
     tileGrid: new WMTSTileGrid({
       origin: [-4194304, 4194304],
