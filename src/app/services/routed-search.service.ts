@@ -11,7 +11,7 @@ export class RoutedSearchService {
         private router: Router
     ) {}
 
-    public query(query: string) {
+    public query(granuleName: string) {
         const baseParams = {
             maxResults: 5,
             output: 'json'
@@ -19,7 +19,7 @@ export class RoutedSearchService {
 
         const queryParams = {
             ...baseParams,
-            ...parseQueryStringToDictionary(query)
+            granule_list: granuleName
         };
 
         this.router.navigate(['.'], { queryParams });

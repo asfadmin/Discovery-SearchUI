@@ -18,13 +18,19 @@ import { equatorial, antarctic, arctic, MapView } from './views';
 export class MapService {
   private mapView: MapView;
   private map: Map;
+  private polygonLayer: Layer;
 
   public epsg(): string {
     return this.mapView.projection.epsg;
   }
 
-  public addLayer(layer: Layer): void {
-    this.map.addLayer(layer);
+  public setLayer(layer: Layer): void {
+    if (!!this.polygonLayer) {
+      this.map.removeLayer(this.polygonLayer);
+    }
+
+    this.polygonLayer = layer;
+    this.map.addLayer(this.polygonLayer);
   }
 
   public equatorial() {

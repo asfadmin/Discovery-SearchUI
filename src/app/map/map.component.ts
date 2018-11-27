@@ -41,7 +41,7 @@ export class MapComponent implements OnInit {
         this.granulePolygonsLayer(this.mapService.epsg())
       ),
     ).subscribe(
-      layer => this.mapService.addLayer(layer)
+      layer => this.mapService.setLayer(layer)
     ) ;
 
   }
