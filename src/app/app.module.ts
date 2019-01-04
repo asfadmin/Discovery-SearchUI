@@ -26,8 +26,8 @@ import { AppComponent } from './app.component';
 import { AsfApiService, RoutedSearchService } from './services';
 
 export const routes = [
-      { path: 'search/projection/:projection/filter/:filter', name: 'AppComponent', component: AppComponent },
-      { path: '**', redirectTo: 'search/projection/equitorial/filter/other' }
+      { path: 'search', name: 'AppComponent', component: AppComponent },
+      { path: '**', redirectTo: 'search' }
 ];
 
 @NgModule({

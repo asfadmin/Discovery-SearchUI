@@ -7,7 +7,7 @@ import { filter } from 'rxjs/operators';
 
 import { AppState } from './store';
 import {
-  getGranules, getLoading, getError,
+  getGranules, getLoading,
   ClearGranules
 } from './store/granules';
 import {
@@ -27,7 +27,6 @@ import { SentinelGranule, MapViewType } from './models';
 export class AppComponent implements OnInit {
   public granules$ = this.store$.select(getGranules);
   public loading$  = this.store$.select(getLoading);
-  public error$ = this.store$.select(getError);
   public view$ = this.store$.select(getMapView);
 
   constructor(

@@ -8,31 +8,7 @@
     z-index:999;
 }
 
-
-.menu-toggle-button {
-    position: fixed;
-    bottom: 94%;
-    left: 100%;
-
-    margin: 0;
-    padding: 0;
-
-    width: 28px;
-    height: 60px;
-
-    float: left;
-    clear: both;
-
-    border-bottom-right-radius: 5px;
-    border-top-right-radius: 5px;
-
-    border-bottom-left-radius: 0px;
-    border-top-left-radius: 0px;
-
-    outline: none;
-}
-
-.subs-data {
+.filter-list {
     height: 100%;
     width: 94%;
 
@@ -43,18 +19,9 @@
     margin: 0;
     padding: 0;
 
-    background: rgba(238, 238, 238, 0.2);
+    background: rgba(238, 238, 238, 0.3);
 }
 
-.subs-data div {
+.filter-list div {
     direction: ltr;
-}
-
-.subs-list {
-    list-style-type: none;
-}
-
-* {
-  margin: 0;
-  padding: 0;
 }
