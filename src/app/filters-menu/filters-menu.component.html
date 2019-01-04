@@ -1,43 +1,58 @@
-<div class="filter-menu filter-menu--sizing filter-menu--position">
+<div [@changeMenuState]="isHidden ? 'hidden' : 'shown'"
+  class="position"
+  >
+
+<button
+  (click)="onToggleHide()"
+  class="menu-toggle-button btn btn-light clickable">
+  <div>
+    <fa-icon [icon]="toggleIcon"></fa-icon>
+  </div>
+</button>
+
+<div class="subs-data">
+  <div class="subs-list">
   <app-search-bar
-    class="filter-menu__item"
+    class=""
     (newSearch)="newSearch.emit($event)"
     (clearSearches)="clearSearches.emit()"
     [isLoading]="isLoading">
   </app-search-bar>
 
   <app-filter-selector
-    class="filter-menu__item"
+    class=""
     [selectedFilter]="selectedFilter$ | async"
     (newFilterSelected)="onNewFilterSelected($event)"
     ></app-filter-selector>
 
-  <ng-container *ngIf="selectedFilter$ | async as selected">
-    <app-platform-selector
-      class="filter-menu__item"
-      *ngIf="selected === filterType.PLATFORM"
-      [platforms]="platforms$ | async"
-      [selected]="selectedPlatformNames$ | async"
-      (removeSelected)="onPlatformRemoved($event)"
-      (addSelected)="onPlatformAdded($event)">
-    </app-platform-selector>
+    <ng-container *ngIf="selectedFilter$ | async as selected">
+      <app-platform-selector
+        class=""
+        *ngIf="selected === filterType.PLATFORM"
+        [platforms]="platforms$ | async"
+        [selected]="selectedPlatformNames$ | async"
+        (removeSelected)="onPlatformRemoved($event)"
+        (addSelected)="onPlatformAdded($event)">
+      </app-platform-selector>
 
-    <app-date-selector
-      class="filter-menu__item"
-      *ngIf="selected === filterType.DATE"
-      [selected]="selectedPlatforms$ | async"
-      ></app-date-selector>
+      <app-date-selector
+        class=""
+        *ngIf="selected === filterType.DATE"
+        [selected]="selectedPlatforms$ | async"
+        ></app-date-selector>
 
-    <app-path-selector
-      class="filter-menu__item"
-      *ngIf="selected === filterType.PATH"
-      [selected]="selectedPlatforms$ | async"
-      ></app-path-selector>
+      <app-path-selector
+        class=""
+        *ngIf="selected === filterType.PATH"
+        [selected]="selectedPlatforms$ | async"
+        ></app-path-selector>
 
-    <app-other-selector
-      class="filter-menu__item"
-      *ngIf="selected === filterType.OTHER"
-      [selected]="selectedPlatforms$ | async"
-      ></app-other-selector>
-  </ng-container>
+      <app-other-selector
+        class=""
+        *ngIf="selected === filterType.OTHER"
+        [selected]="selectedPlatforms$ | async"
+        ></app-other-selector>
+    </ng-container>
+  </div>
+</div>
 </div>
