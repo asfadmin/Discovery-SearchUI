@@ -25,6 +25,10 @@ import { MapModule } from './map';
 import { AppComponent } from './app.component';
 import { AsfApiService, RoutedSearchService } from './services';
 
+export const routes = [
+      { path: 'search/projection/:projection/filter/:filter', name: 'AppComponent', component: AppComponent },
+      { path: '**', redirectTo: 'search/projection/equitorial/filter/other' }
+];
 
 @NgModule({
   declarations: [
@@ -34,10 +38,7 @@ import { AsfApiService, RoutedSearchService } from './services';
     BrowserModule,
     HttpClientModule,
 
-    RouterModule.forRoot([
-      { path: 'search', component: AppComponent },
-      { path: '**', redirectTo: 'search' }
-    ], { useHash: true }),
+    RouterModule.forRoot(routes, { useHash: true }),
     StoreModule.forRoot(reducers, { metaReducers }),
     StoreRouterConnectingModule,
     EffectsModule.forRoot(appEffects),

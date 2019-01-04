@@ -1,29 +1,33 @@
-<div class="filter-menu__close">
- <button class="btn btn-light hide-btn">
-    <div>
-      <fa-icon [icon]="closeIcon"></fa-icon>
-    </div>
-  </button>
-</div>
+<div [@changeMenuState]="isHidden ? 'hidden' : 'shown'"
+  class="position"
+  >
 
-<div class="filter-menu filter-menu--sizing filter-menu--position">
-  <div class="filter-menu__content">
+<button
+  (click)="onToggleHide()"
+  class="menu-toggle-button btn btn-light clickable">
+  <div>
+    <fa-icon [icon]="toggleIcon"></fa-icon>
+  </div>
+</button>
+
+<div class="subs-data">
+  <div class="subs-list">
   <app-search-bar
-    class="filter-menu__item"
+    class=""
     (newSearch)="newSearch.emit($event)"
     (clearSearches)="clearSearches.emit()"
     [isLoading]="isLoading">
   </app-search-bar>
 
   <app-filter-selector
-    class="filter-menu__item"
+    class=""
     [selectedFilter]="selectedFilter$ | async"
     (newFilterSelected)="onNewFilterSelected($event)"
     ></app-filter-selector>
 
     <ng-container *ngIf="selectedFilter$ | async as selected">
       <app-platform-selector
-        class="filter-menu__item"
+        class=""
         *ngIf="selected === filterType.PLATFORM"
         [platforms]="platforms$ | async"
         [selected]="selectedPlatformNames$ | async"
@@ -32,22 +36,23 @@
       </app-platform-selector>
 
       <app-date-selector
-        class="filter-menu__item"
+        class=""
         *ngIf="selected === filterType.DATE"
         [selected]="selectedPlatforms$ | async"
         ></app-date-selector>
 
       <app-path-selector
-        class="filter-menu__item"
+        class=""
         *ngIf="selected === filterType.PATH"
         [selected]="selectedPlatforms$ | async"
         ></app-path-selector>
 
       <app-other-selector
-        class="filter-menu__item"
+        class=""
         *ngIf="selected === filterType.OTHER"
         [selected]="selectedPlatforms$ | async"
         ></app-other-selector>
     </ng-container>
   </div>
+</div>
 </div>
