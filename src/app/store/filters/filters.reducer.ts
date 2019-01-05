@@ -4,7 +4,6 @@ import { FiltersActionType, FiltersActions } from './filters.action';
 import { Platform, platforms, FilterType } from '../../models';
 
 export interface FiltersState {
-  selected: FilterType | undefined;
   platforms: PlatformsState;
 }
 
@@ -14,7 +13,6 @@ export interface PlatformsState {
 }
 
 const initState: FiltersState = {
-  selected: FilterType.OTHER,
   platforms: {
     entities: platforms.reduce(
       (platformsObj, platform) => {
@@ -54,17 +52,6 @@ export function filtersReducer(state = initState, action: FiltersActions): Filte
           ...state.platforms,
           selected
         }
-      };
-    }
-
-    case FiltersActionType.SET_SELECTED_FILTER: {
-      const selected =  (state.selected !== action.payload) ?
-        action.payload :
-        undefined;
-
-      return {
-        ...state,
-        selected
       };
     }
 

@@ -7,6 +7,7 @@ import {
 
 import { Store } from '@ngrx/store';
 
+import { AppState } from './../store';
 import * as fromFilters from './../store/filters';
 import * as fromUI from './../store/ui';
 import * as fromGranule from './../store/granules';
@@ -40,12 +41,11 @@ export class FiltersMenuComponent {
   public selectedPlatforms$ = this.store$.select(fromFilters.getSelectedPlatforms);
   public error$ = this.store$.select(fromGranule.getError);
   public isFiltersMenuOpen$ = this.store$.select(fromUI.getIsFiltersMenuOpen);
-
-  public selectedFilter$ = this.store$.select(fromFilters.getSelectedFilter);
+  public selectedFilter$ = this.store$.select(fromUI.getSelectedFilter);
 
   public filterType = FilterType;
 
-  constructor(private store$: Store<fromFilters.FiltersState>) {}
+  constructor(private store$: Store<AppState>) {}
 
   public onPlatformRemoved(platformName: string): void {
     this.store$.dispatch(new fromFilters.RemoveSelectedPlatform(platformName));
@@ -56,7 +56,7 @@ export class FiltersMenuComponent {
   }
 
   public onNewFilterSelected(filter: FilterType): void {
-    this.store$.dispatch(new fromFilters.SetSelectedFilter(filter));
+    this.store$.dispatch(new fromUI.SetSelectedFilter(filter));
   }
 
   public onToggleHide(): void {
