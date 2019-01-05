@@ -63,11 +63,6 @@ export function filtersReducer(state = initState, action: FiltersActions): Filte
 
 export const getFiltersState = createFeatureSelector<FiltersState>('filters');
 
-export const getSelectedFilter = createSelector(
-  getFiltersState,
-  (state: FiltersState) => state.selected
-);
-
 export const getPlatforms = createSelector(
   getFiltersState,
   (state: FiltersState) => state.platforms
