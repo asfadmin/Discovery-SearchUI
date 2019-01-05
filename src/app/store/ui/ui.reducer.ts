@@ -65,3 +65,9 @@ export const getFiltersMenuState = createSelector(
   getUIState,
   (state: UIState) => state.filtersMenu
 );
+
+export const getIsFiltersMenuOpen = createSelector(
+  getFiltersMenuState,
+  state => state.isOpen
+);
+

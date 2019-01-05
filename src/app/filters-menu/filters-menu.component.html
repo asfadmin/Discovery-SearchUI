@@ -1,10 +1,9 @@
-<div [@changeMenuState]="isHidden ? 'hidden' : 'shown'"
-  class="position"
-  >
+<div [@changeMenuState]="(isFiltersMenuOpen$ | async) ? 'shown' : 'hidden'"
+  class="position">
 
 <app-toggle-button
   (click)="onToggleHide()"
-  [isOpen]="!isHidden"
+  [isOpen]="isFiltersMenuOpen$ | async"
   ></app-toggle-button>
 
 <div class="filter-list">

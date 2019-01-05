@@ -1,22 +1,16 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 
 import {
-    trigger,
-    state,
-    style,
-    animate,
-    transition
+  trigger, state, style,
+  animate, transition
 } from '@angular/animations';
 
 import { Store } from '@ngrx/store';
 
-import {
-  FiltersState,
-  getPlatformsList, getSelectedPlatforms,
-  getSelectedFilter, getSelectedPlatformNames,
-  AddSelectedPlatform, RemoveSelectedPlatform, SetSelectedFilter
-} from './../store/filters';
-import { getError } from './../store/granules';
+import * as fromFilters from './../store/filters';
+import * as fromUI from './../store/ui';
+import * as fromGranule from './../store/granules';
+
 import { FilterType } from '../models';
 
 @Component({
@@ -24,16 +18,16 @@ import { FilterType } from '../models';
   templateUrl: './filters-menu.component.html',
   styleUrls: ['./filters-menu.component.css'],
   animations: [
-        trigger('changeMenuState', [
-            state('shown', style({
-                transform: 'translateX(100%) translateX(-25px)'
-            })),
-            state('hidden',   style({
-                transform: 'translateX(0%)'
-            })),
-            transition('shown <=> hidden', animate('200ms ease-out'))
-        ])
-    ],
+    trigger('changeMenuState', [
+      state('shown', style({
+        transform: 'translateX(100%) translateX(-25px)'
+      })),
+      state('hidden',   style({
+        transform: 'translateX(0%)'
+      })),
+      transition('shown <=> hidden', animate('200ms ease-out'))
+    ])
+  ],
 })
 export class FiltersMenuComponent {
   @Input() isLoading: boolean;
@@ -41,32 +35,31 @@ export class FiltersMenuComponent {
   @Output() newSearch = new EventEmitter<string>();
   @Output() clearSearches = new EventEmitter<void>();
 
-  public isHidden = false;
+  public platforms$ = this.store$.select(fromFilters.getPlatformsList);
+  public selectedPlatformNames$ = this.store$.select(fromFilters.getSelectedPlatformNames);
+  public selectedPlatforms$ = this.store$.select(fromFilters.getSelectedPlatforms);
+  public error$ = this.store$.select(fromGranule.getError);
+  public isFiltersMenuOpen$ = this.store$.select(fromUI.getIsFiltersMenuOpen);
 
-  public platforms$ = this.store$.select(getPlatformsList);
-  public selectedPlatformNames$ = this.store$.select(getSelectedPlatformNames);
-  public selectedPlatforms$ = this.store$.select(getSelectedPlatforms);
-  public error$ = this.store$.select(getError);
-
-  public selectedFilter$ = this.store$.select(getSelectedFilter);
+  public selectedFilter$ = this.store$.select(fromFilters.getSelectedFilter);
 
   public filterType = FilterType;
 
-  constructor(private store$: Store<FiltersState>) {}
+  constructor(private store$: Store<fromFilters.FiltersState>) {}
 
   public onPlatformRemoved(platformName: string): void {
-    this.store$.dispatch(new RemoveSelectedPlatform(platformName));
+    this.store$.dispatch(new fromFilters.RemoveSelectedPlatform(platformName));
   }
 
   public onPlatformAdded(platformName: string): void {
-    this.store$.dispatch(new AddSelectedPlatform(platformName));
+    this.store$.dispatch(new fromFilters.AddSelectedPlatform(platformName));
   }
 
   public onNewFilterSelected(filter: FilterType): void {
-    this.store$.dispatch(new SetSelectedFilter(filter));
+    this.store$.dispatch(new fromFilters.SetSelectedFilter(filter));
   }
 
   public onToggleHide(): void {
-    this.isHidden = !this.isHidden;
+    this.store$.dispatch(new fromUI.ToggleFiltersMenu());
   }
 }
