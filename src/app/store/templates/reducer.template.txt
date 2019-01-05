@@ -1,0 +1,35 @@
+import { createFeatureSelector, createSelector } from '@ngrx/store';
+
+import { %%Name%%ActionType, %%Name%%Actions } from './%name%.action';
+
+/* State */
+
+export interface %%Name%%State {
+  entities: {[id: string]: Platform };
+  selected: Set<string>;
+}
+
+const initState: %%Name%%State = {
+};
+
+/* Reducer */
+
+export function %name%Reducer(state = initState, action: %%Name%%Actions): %%Name%%State {
+  switch (action.type) {
+    case %%Name%%ActionType./some action type/: {
+    }
+
+    default: {
+      return state;
+    }
+  }
+}
+
+/* Selectors */
+
+export const get%%Name%%State = createFeatureSelector<%%Name%%State>('%Name%');
+
+export const get%SomeProperty% = createSelector(
+  get%%Name%%State,
+  (state: %%Name%%State) => %state.someproperty%
+);

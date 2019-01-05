@@ -4,6 +4,7 @@ import { SentinelGranule } from '../../models';
 import { GranulesActionType, GranulesActions } from './granules.action';
 
 interface GranuleEntities { [id: string]: SentinelGranule; }
+
 export interface GranulesState {
   ids: string[];
   entities: GranuleEntities;
