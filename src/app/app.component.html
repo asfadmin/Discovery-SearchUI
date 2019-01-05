@@ -1,8 +1,4 @@
 <div>
-  <div *ngIf="error$ | async" class="alert alert-danger" role="alert">
-    {{ error$ | async }}
-  </div>
-
   <app-filters-menu
     (newSearch)="onNewSearch($event)"
     (clearSearches)="onClearGranules()"

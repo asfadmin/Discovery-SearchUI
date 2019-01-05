@@ -8,15 +8,15 @@ import {
     transition
 } from '@angular/animations';
 
-
 import { Store } from '@ngrx/store';
-import { faChevronLeft, faChevronRight } from '@fortawesome/free-solid-svg-icons';
 
 import {
   FiltersState,
-  getPlatformsList, getSelectedPlatforms, getSelectedFilter, getSelectedPlatformNames,
+  getPlatformsList, getSelectedPlatforms,
+  getSelectedFilter, getSelectedPlatformNames,
   AddSelectedPlatform, RemoveSelectedPlatform, SetSelectedFilter
 } from './../store/filters';
+import { getError } from './../store/granules';
 import { FilterType } from '../models';
 
 @Component({
@@ -26,7 +26,7 @@ import { FilterType } from '../models';
   animations: [
         trigger('changeMenuState', [
             state('shown', style({
-                transform: 'translateX(100%) translateX(-29px)'
+                transform: 'translateX(100%) translateX(-25px)'
             })),
             state('hidden',   style({
                 transform: 'translateX(0%)'
@@ -41,20 +41,18 @@ export class FiltersMenuComponent {
   @Output() newSearch = new EventEmitter<string>();
   @Output() clearSearches = new EventEmitter<void>();
 
-  public isHidden: boolean;
-  public toggleIcon: Object;
+  public isHidden = false;
 
   public platforms$ = this.store$.select(getPlatformsList);
   public selectedPlatformNames$ = this.store$.select(getSelectedPlatformNames);
   public selectedPlatforms$ = this.store$.select(getSelectedPlatforms);
+  public error$ = this.store$.select(getError);
 
   public selectedFilter$ = this.store$.select(getSelectedFilter);
 
   public filterType = FilterType;
 
-  constructor(private store$: Store<FiltersState>) {
-    this.setMenuState(false);
-  }
+  constructor(private store$: Store<FiltersState>) {}
 
   public onPlatformRemoved(platformName: string): void {
     this.store$.dispatch(new RemoveSelectedPlatform(platformName));
@@ -69,11 +67,6 @@ export class FiltersMenuComponent {
   }
 
   public onToggleHide(): void {
-    this.setMenuState(!this.isHidden);
-  }
-
-  private setMenuState(menuState: boolean): void {
-    this.isHidden = menuState;
-    this.toggleIcon = this.isHidden ? faChevronRight : faChevronLeft ;
+    this.isHidden = !this.isHidden;
   }
 }
