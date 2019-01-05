@@ -1,23 +1,23 @@
-
 .menu-toggle-button {
-    position: fixed;
-    bottom: 94%;
-    left: 100%;
+  box-shadow: 2px 2px 15px rgba(0,0,0,0.2);
+  position: fixed;
+  bottom: 94%;
+  left: 100%;
 
-    margin: 0;
-    padding: 0;
+  margin: 0;
+  padding: 0;
 
-    width: 28px;
-    height: 60px;
+  width: 28px;
+  height: 60px;
 
-    float: left;
-    clear: both;
+  float: left;
+  clear: both;
 
-    border-bottom-right-radius: 5px;
-    border-top-right-radius: 5px;
+  border-bottom-right-radius: 5px;
+  border-top-right-radius: 5px;
 
-    border-bottom-left-radius: 0px;
-    border-top-left-radius: 0px;
+  border-bottom-left-radius: 0px;
+  border-top-left-radius: 0px;
 
-    outline: none;
+  outline: none;
 }
