@@ -14,11 +14,13 @@ import { GranulesState, granulesReducer } from './granules';
 import { RouterStateUrl } from './route';
 import { MapState, mapReducer } from './map';
 import { FiltersState, filtersReducer } from './filters';
+import { UIState, uiReducer } from './ui';
 
 export * from './route';
 export * from './map';
 export * from './granules';
 export * from './filters';
+export * from './ui';
 
 
 export interface AppState {
@@ -26,13 +28,15 @@ export interface AppState {
   router: RouterReducerState<RouterStateUrl>;
   map: MapState;
   filters: FiltersState;
+  ui: UIState;
 }
 
 export const reducers: ActionReducerMap<AppState> = {
   granules: granulesReducer,
   router: routerReducer,
   map: mapReducer,
-  filters: filtersReducer
+  filters: filtersReducer,
+  ui: uiReducer,
 };
 
 export const metaReducers: MetaReducer<AppState>[] =
