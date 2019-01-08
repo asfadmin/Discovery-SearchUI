@@ -3,4 +3,6 @@ export interface SentinelGranule {
   downloadUrl: string;
   flightDirection: string;
   wktPoly: string;
+  sizeMB: number;
+  thumbnail: string;
 }

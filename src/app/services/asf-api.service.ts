@@ -15,8 +15,7 @@ export class AsfApiService {
     public query(params): Observable<any[]> {
         const queryUrl = `${this.apiUrl}?${params}`;
 
-        console.log(queryUrl);
-        return this.http.get<any[]>(queryUrl);
+        return this.http.get<any[]>('assets/sample-data/sentinel-1a.json');
     }
 
 }

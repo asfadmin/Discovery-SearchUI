@@ -6,10 +6,7 @@ import { Observable } from 'rxjs';
 import { filter } from 'rxjs/operators';
 
 import { AppState } from './store';
-import {
-  getGranules, getLoading,
-  ClearGranules
-} from './store/granules';
+import { getGranules, getLoading, ClearGranules } from './store/granules';
 import {
   getMapView,
   SetArcticView, SetEquitorialView, SetAntarcticView
@@ -24,7 +21,7 @@ import { SentinelGranule, MapViewType } from './models';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
-export class AppComponent implements OnInit {
+export class AppComponent {
   public granules$ = this.store$.select(getGranules);
   public loading$  = this.store$.select(getLoading);
   public view$ = this.store$.select(getMapView);
@@ -32,9 +29,8 @@ export class AppComponent implements OnInit {
   constructor(
     private routedSearchService: RoutedSearchService,
     private store$: Store<AppState>
-  ) {}
-
-  public ngOnInit() {
+  ) {
+    this.routedSearchService.query('');
   }
 
   public onNewSearch(query: string): void {

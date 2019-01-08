@@ -1,0 +1,8 @@
+Sentinel 1:
+    Example:
+    Pattern:
+SMAP:
+    Example: SP_20198_A_006
+    Pattern: SP_<Absolute Orbit>_<Ascending "A" or Descending "D">_<Version>
+
+

@@ -10,7 +10,7 @@ import { Store } from '@ngrx/store';
 import { AppState } from './../store';
 import * as fromFilters from './../store/filters';
 import * as fromUI from './../store/ui';
-import * as fromGranule from './../store/granules';
+import * as fromGranules from './../store/granules';
 
 import { FilterType } from '../models';
 
@@ -39,9 +39,10 @@ export class FiltersMenuComponent {
   public platforms$ = this.store$.select(fromFilters.getPlatformsList);
   public selectedPlatformNames$ = this.store$.select(fromFilters.getSelectedPlatformNames);
   public selectedPlatforms$ = this.store$.select(fromFilters.getSelectedPlatforms);
-  public error$ = this.store$.select(fromGranule.getError);
+  public error$ = this.store$.select(fromGranules.getError);
   public isFiltersMenuOpen$ = this.store$.select(fromUI.getIsFiltersMenuOpen);
   public selectedFilter$ = this.store$.select(fromUI.getSelectedFilter);
+  public granules$ = this.store$.select(fromGranules.getGranules);
 
   public filterType = FilterType;
 

@@ -16,7 +16,7 @@ import {
 } from '@ngrx/router-store';
 
 import { environment } from '../environments/environment';
-import { reducers, metaReducers, appEffects, CustomSerializer } from './store';
+import { reducers, metaReducers, appEffects } from './store';
 
 import { GranuleListModule } from './granule-list';
 import { FiltersMenuModule } from './filters-menu';
@@ -50,8 +50,7 @@ export const routes = [
   ],
   providers: [
     AsfApiService,
-    RoutedSearchService,
-    { provide: RouterStateSerializer, useClass: CustomSerializer }
+    RoutedSearchService
   ],
   bootstrap: [ AppComponent ]
 })

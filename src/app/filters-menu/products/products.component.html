@@ -1,0 +1,18 @@
+<mat-card class="m-2 p-0">
+  <ul class="list-group m-0 p-0">
+  <li class="list-group-item" *ngFor="let product of products">
+        <img [src]="product.thumbnail" class="p-0 m-0 img-thumbnail img-fluid product--thumbnail">
+
+        <div class="p-0 mr-5 float-right product--info">
+          <div>
+              {{ product.name | truncate : 10 }}
+              <fa-icon class="ml-2" [icon]="copyIcon"></fa-icon>
+          </div>
+          <a [href]="product.downloadUrl" class="p-1 badge badge-success">
+            {{ getReadableSize(product.bytes) }}
+            <fa-icon class="ml-2" [icon]="downloadIcon"></fa-icon>
+          </a>
+        </div>
+    </li>
+  </ul>
+</mat-card>

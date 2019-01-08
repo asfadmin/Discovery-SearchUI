@@ -12,6 +12,7 @@ import { PathSelectorModule } from './path-selector';
 import { OtherSelectorModule } from './other-selector';
 
 import { MatButtonModule } from '@angular/material/button';
+import { ProductsModule } from './products';
 
 @NgModule({
   imports: [
@@ -20,6 +21,7 @@ import { MatButtonModule } from '@angular/material/button';
 
     SearchBarModule,
     ToggleButtonModule,
+    ProductsModule,
 
     FilterSelectorModule,
     PlatformSelectorModule,
@@ -27,7 +29,9 @@ import { MatButtonModule } from '@angular/material/button';
     PathSelectorModule,
     OtherSelectorModule,
   ],
-  declarations: [FiltersMenuComponent],
+  declarations: [
+    FiltersMenuComponent,
+  ],
   exports: [FiltersMenuComponent]
 })
 export class FiltersMenuModule { }
