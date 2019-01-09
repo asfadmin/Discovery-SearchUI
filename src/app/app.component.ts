@@ -14,7 +14,7 @@ import * as filterStore from './store/filters';
 
 import { AsfApiService, RoutedSearchService } from './services';
 
-import { SentinelGranule, MapViewType, FilterType, platformNames } from './models';
+import * as models from './models';
 
 @Component({
   selector: 'app-root',
@@ -77,20 +77,20 @@ export class AppComponent {
 
       this.store$.dispatch(menuAction);
     }
-    if (urlParams.selectedFilter && Object.values(FilterType).includes(urlParams.selectedFilter)) {
-      const selectedFilter = <FilterType>urlParams.selectedFilter;
+    if (urlParams.selectedFilter && Object.values(models.FilterType).includes(urlParams.selectedFilter)) {
+      const selectedFilter = <models.FilterType>urlParams.selectedFilter;
 
       this.store$.dispatch(new uiStore.SetSelectedFilter(selectedFilter));
     }
     if (urlParams.selectedPlatforms) {
       const selectedPlatforms = urlParams.selectedPlatforms
         .split(',')
-        .filter(name => platformNames.includes(name));
+        .filter(name => models.platformNames.includes(name));
 
       this.store$.dispatch(new filterStore.SetSelectedPlatforms(selectedPlatforms));
     }
-    if (urlParams.view && Object.values(MapViewType).includes(urlParams.view)) {
-      const mapView = <MapViewType>urlParams.view;
+    if (urlParams.view && Object.values(models.MapViewType).includes(urlParams.view)) {
+      const mapView = <models.MapViewType>urlParams.view;
       this.onNewMapView(mapView);
     }
   }
@@ -104,20 +104,20 @@ export class AppComponent {
     this.store$.dispatch(new granulesStore.ClearGranules());
   }
 
-  public onNewMapView(view: MapViewType): void {
+  public onNewMapView(view: models.MapViewType): void {
     const newMapViewAction = this.getActionFor(view);
     this.store$.dispatch(newMapViewAction);
   }
 
-  private getActionFor(view: MapViewType): Action {
+  private getActionFor(view: models.MapViewType): Action {
     switch (view) {
-      case MapViewType.ARCTIC: {
+      case models.MapViewType.ARCTIC: {
         return new mapStore.SetArcticView();
       }
-      case MapViewType.EQUITORIAL: {
+      case models.MapViewType.EQUITORIAL: {
         return new mapStore.SetEquitorialView();
       }
-      case MapViewType.ANTARCTIC: {
+      case models.MapViewType.ANTARCTIC: {
         return new mapStore.SetAntarcticView();
       }
     }
