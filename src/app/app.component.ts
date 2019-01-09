@@ -4,7 +4,7 @@ import { Router, ActivatedRoute, Params } from '@angular/router';
 import { Store, Action } from '@ngrx/store';
 
 import { combineLatest } from 'rxjs';
-import { filter, map, switchMap, skip } from 'rxjs/operators';
+import { filter, map, switchMap, skip, tap } from 'rxjs/operators';
 
 import { AppState } from './store';
 import * as granulesStore from './store/granules';
@@ -30,6 +30,7 @@ export class AppComponent {
     this.store$.select(uiStore.getUIState),
     this.store$.select(filterStore.getSelectedPlatformNames),
     this.store$.select(mapStore.getMapState),
+    this.activatedRoute.queryParams
   );
 
   private isNotLoaded = true;
@@ -42,27 +43,25 @@ export class AppComponent {
   ) {
     this.routedSearchService.query('');
 
-    this.activatedRoute.queryParams.pipe(
+    this.urlAppState$.pipe(
       skip(1),
-      map(urlParams => {
+      map(state => {
+        const urlParams = state.pop();
         if (this.isNotLoaded) {
           this.loadStateFrom(urlParams);
           this.isNotLoaded = false;
         }
-
-        return urlParams;
+        return state;
       }),
-      switchMap(urlParams => this.urlAppState$.pipe(
-        map(state => {
-          const [uiState, selectedPlatforms, mapState] = state;
+      map(state => {
+        const [uiState, selectedPlatforms, mapState] = state;
 
-          return {
-            ...uiState,
-            ...mapState,
-            selectedPlatforms: Array.from(selectedPlatforms).join(','),
-          };
-        })
-      ))
+        return {
+          ...uiState,
+          ...mapState,
+          selectedPlatforms: Array.from(selectedPlatforms).join(','),
+        };
+      })
     ).subscribe(
       queryParams => {
         this.router.navigate(['.'], { queryParams });
