@@ -38,6 +38,10 @@ export class FilterSelectorComponent {
   }];
 
   public onFilterSelected(filterType: FilterType): void {
-    this.newFilterSelected.emit(filterType);
+    const newFilter = filterType === this.selectedFilter ?
+      FilterType.NONE :
+      filterType;
+
+    this.newFilterSelected.emit(newFilter);
   }
 }

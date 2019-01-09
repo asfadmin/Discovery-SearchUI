@@ -48,8 +48,8 @@ export class AppComponent {
       map(state => {
         const urlParams = state.pop();
         if (this.isNotLoaded) {
-          this.loadStateFrom(urlParams);
           this.isNotLoaded = false;
+          this.loadStateFrom(urlParams);
         }
         return state;
       }),
