@@ -27,19 +27,23 @@ export class UrlStateService {
     private router: Router,
     private activatedRoute: ActivatedRoute,
   ) {
-  combineLatest(
+  const urlAppState$ = combineLatest(
     this.store$.select(uiStore.getUIState),
     this.store$.select(filterStore.getSelectedPlatformNames),
     this.store$.select(mapStore.getMapState),
     this.activatedRoute.queryParams
-  ).pipe(
+  );
+
+  urlAppState$.pipe(
       skip(1),
       map(state => {
         const params = state.pop();
+
         if (this.isNotLoaded) {
           this.isNotLoaded = false;
           this.loadStateFrom(params);
         }
+
         state.push(params);
         return state;
       }),
@@ -62,15 +66,19 @@ export class UrlStateService {
 
   private loadStateFrom(params: Params): void {
     for (const urlParam of Object.values(urlParameters)) {
-      console.log(urlParam.name);
-
       const loadVal = params[urlParam.name()];
 
-      if (loadVal) {
-        const action = urlParam.load(loadVal);
-
-        this.store$.dispatch(action);
+      if (!loadVal) {
+        continue;
       }
+
+      const action = urlParam.load(loadVal);
+
+      if (!action) {
+        continue;
+      }
+
+      this.store$.dispatch(action);
     }
 
     if (params.granuleList) {

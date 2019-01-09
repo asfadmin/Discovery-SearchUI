@@ -20,5 +20,3 @@ export abstract class UrlParameter {
     return val;
   }
 }
-
-

@@ -11,4 +11,3 @@ export const urlParameters: {[id: string]: UrlParameter} = {
   selectedPlatforms: new SelectedPlatforms(),
   view: new View(),
 };
-
