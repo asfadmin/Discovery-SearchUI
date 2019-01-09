@@ -2,5 +2,6 @@ export enum FilterType {
   PLATFORM = 'Platform',
   DATE = 'Date',
   PATH = 'Path',
-  OTHER = 'Other'
+  OTHER = 'Other',
+  NONE = 'None'
 }

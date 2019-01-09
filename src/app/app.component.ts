@@ -78,7 +78,7 @@ export class AppComponent {
 
       this.store$.dispatch(menuAction);
     }
-    if (urlParams.selectedFilter) {
+    if (urlParams.selectedFilter && Object.values(FilterType).includes(urlParams.selectedFilter)) {
       const selectedFilter = <FilterType>urlParams.selectedFilter;
 
       this.store$.dispatch(new uiStore.SetSelectedFilter(selectedFilter));

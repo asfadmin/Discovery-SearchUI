@@ -44,7 +44,7 @@ export function uiReducer(state = initState, action: UIActions): UIState {
     case UIActionType.SET_SELECTED_FILTER: {
       const selectedFilter = (state.selectedFilter !== action.payload) ?
         action.payload :
-        undefined;
+        FilterType.NONE;
 
       return {
         ...state,
