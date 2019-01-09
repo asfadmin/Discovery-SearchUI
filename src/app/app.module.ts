@@ -9,12 +9,6 @@ import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 
-import {
-  StoreRouterConnectingModule,
-  RouterReducerState,
-  RouterStateSerializer,
-} from '@ngrx/router-store';
-
 import { environment } from '../environments/environment';
 import { reducers, metaReducers, appEffects } from './store';
 
@@ -26,8 +20,7 @@ import { AppComponent } from './app.component';
 import { AsfApiService, RoutedSearchService } from './services';
 
 export const routes = [
-      { path: 'search', name: 'AppComponent', component: AppComponent },
-      { path: '**', redirectTo: 'search' }
+  { path: '**', name: 'AppComponent', component: AppComponent },
 ];
 
 @NgModule({
@@ -38,9 +31,8 @@ export const routes = [
     BrowserModule,
     HttpClientModule,
 
-    RouterModule.forRoot(routes, { useHash: true }),
+    RouterModule.forRoot(routes, {}),
     StoreModule.forRoot(reducers, { metaReducers }),
-    StoreRouterConnectingModule,
     EffectsModule.forRoot(appEffects),
     !environment.production ? StoreDevtoolsModule.instrument() : [],
 

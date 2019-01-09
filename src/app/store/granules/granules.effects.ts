@@ -25,7 +25,6 @@ export class GranulesEffects {
       ofType<fromGranuleActions.QueryApi>(fromGranuleActions.GranulesActionType.QUERY),
       switchMap(action => this.asfapi.query(action.payload)
         .pipe(
-          tap(resp => console.log(resp)),
           map(setGranules),
           catchError((err) => of(new fromGranuleActions.QueryError(
             `Api Query failed to load results. ERROR: ${err['message']}`

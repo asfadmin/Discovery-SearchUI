@@ -6,17 +6,13 @@ import { FilterType } from '../../models/';
 /* State */
 
 export interface UIState {
-  filtersMenu: {
-    isOpen: boolean
-    selected: FilterType | undefined;
-  };
+  isFiltersMenuOpen: boolean;
+  selectedFilter: FilterType | undefined;
 }
 
 const initState: UIState = {
-  filtersMenu: {
-    isOpen: true,
-    selected: FilterType.OTHER,
-  }
+  isFiltersMenuOpen: true,
+  selectedFilter: FilterType.OTHER
 };
 
 /* Reducer */
@@ -26,46 +22,34 @@ export function uiReducer(state = initState, action: UIActions): UIState {
     case UIActionType.TOGGLE_FILTERS_MENU: {
 
       return {
-        ...state,
-        filtersMenu: {
-          ...state.filtersMenu,
-          isOpen: !state.filtersMenu.isOpen
-        }
-      };
+          ...state,
+          isFiltersMenuOpen: !state.isFiltersMenuOpen
+        };
     }
 
     case UIActionType.CLOSE_FILTERS_MENU: {
       return {
         ...state,
-        filtersMenu: {
-          ...state.filtersMenu,
-          isOpen: false
-        }
-      };
+          isFiltersMenuOpen: false
+        };
     }
 
     case UIActionType.OPEN_FILTERS_MENU: {
       return {
         ...state,
-        filtersMenu: {
-          ...state.filtersMenu,
-          isOpen: true
-        }
+          isFiltersMenuOpen: true
       };
     }
 
     case UIActionType.SET_SELECTED_FILTER: {
-      const selected = (state.filtersMenu.selected !== action.payload) ?
+      const selectedFilter = (state.selectedFilter !== action.payload) ?
         action.payload :
         undefined;
 
       return {
         ...state,
-        filtersMenu: {
-          ...state.filtersMenu,
-          selected
-        }
-      };
+          selectedFilter
+        };
     }
 
     default: {
@@ -80,15 +64,15 @@ export const getUIState = createFeatureSelector<UIState>('ui');
 
 export const getFiltersMenuState = createSelector(
   getUIState,
-  (state: UIState) => state.filtersMenu
+  (state: UIState) => state
 );
 
 export const getSelectedFilter = createSelector(
   getFiltersMenuState,
-  state => state.selected
+  state => state.selectedFilter
 );
 
 export const getIsFiltersMenuOpen = createSelector(
   getFiltersMenuState,
-  state => state.isOpen
+  state => state.isFiltersMenuOpen
 );
