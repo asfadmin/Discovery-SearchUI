@@ -16,20 +16,6 @@ export class View extends UrlParameter {
   }
 
   public loadParameter(val: string): Action {
-    return getActionFor(<models.MapViewType>val);
+    return new mapStore.SetMapView(<models.MapViewType>val);
   }
 }
-
-const getActionFor = (view: models.MapViewType): Action => {
-  switch (view) {
-    case models.MapViewType.ARCTIC: {
-      return new mapStore.SetArcticView();
-    }
-    case models.MapViewType.EQUITORIAL: {
-      return new mapStore.SetEquitorialView();
-    }
-    case models.MapViewType.ANTARCTIC: {
-      return new mapStore.SetAntarcticView();
-    }
-  }
-};

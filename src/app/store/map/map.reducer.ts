@@ -15,25 +15,13 @@ const initState: MapState = {
 
 export function mapReducer(state = initState, action: MapActions): MapState {
   switch (action.type) {
-    case MapActionType.SET_EQUITORIAL_VIEW: {
+    case MapActionType.SET_MAP_VIEW: {
       return {
         ...state,
-        view: MapViewType.EQUITORIAL
+        view: action.payload
       };
     }
-    case MapActionType.SET_ANTARCTIC_VIEW: {
 
-      return {
-        ...state,
-        view: MapViewType.ANTARCTIC
-      };
-    }
-    case MapActionType.SET_ARCTIC_VIEW: {
-      return {
-        ...state,
-        view: MapViewType.ARCTIC
-      };
-    }
     default: {
       return state;
     }

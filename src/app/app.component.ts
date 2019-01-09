@@ -12,7 +12,6 @@ import * as uiStore from './store/ui';
 import * as filterStore from './store/filters';
 
 import { AsfApiService, RoutedSearchService, UrlStateService } from './services';
-
 import * as models from './models';
 
 @Component({
@@ -45,21 +44,6 @@ export class AppComponent implements OnInit {
   }
 
   public onNewMapView(view: models.MapViewType): void {
-    const newMapViewAction = this.getActionFor(view);
-    this.store$.dispatch(newMapViewAction);
-  }
-
-  private getActionFor(view: models.MapViewType): Action {
-    switch (view) {
-      case models.MapViewType.ARCTIC: {
-        return new mapStore.SetArcticView();
-      }
-      case models.MapViewType.EQUITORIAL: {
-        return new mapStore.SetEquitorialView();
-      }
-      case models.MapViewType.ANTARCTIC: {
-        return new mapStore.SetAntarcticView();
-      }
-    }
+    this.store$.dispatch(new mapStore.SetMapView(view));
   }
 }
