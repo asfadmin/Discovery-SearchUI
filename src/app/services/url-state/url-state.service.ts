@@ -13,6 +13,7 @@ import * as uiStore from './../../store/ui';
 import * as filterStore from './../../store/filters';
 
 import * as models from './../../models';
+import { urlParameters } from './url-params/url-params';
 
 @Injectable({
   providedIn: 'root'
@@ -34,22 +35,22 @@ export class UrlStateService {
   ).pipe(
       skip(1),
       map(state => {
-        const urlParams = state.pop();
+        const params = state.pop();
         if (this.isNotLoaded) {
           this.isNotLoaded = false;
-          this.loadStateFrom(urlParams);
+          this.loadStateFrom(params);
         }
-        state.push(urlParams);
+        state.push(params);
         return state;
       }),
       map(state => {
-        const [uiState, selectedPlatforms, mapState, urlParams] = state;
+        const [uiState, currentSelectedPlatforms, mapState, params] = state;
 
         return {
           ...uiState,
           ...mapState,
-          selectedPlatforms: Array.from(selectedPlatforms).join(','),
-          granuleList: urlParams.granuleList
+          selectedPlatforms: urlParameters.selectedPlatforms.toString(currentSelectedPlatforms),
+          granuleList: params.granuleList
         };
       })
     ).subscribe(
@@ -59,52 +60,21 @@ export class UrlStateService {
     );
   }
 
-  private loadStateFrom(urlParams: Params): void {
-    if (urlParams.isFiltersMenuOpen) {
-      const menuAction = urlParams.isFiltersMenuOpen === 'true' ?
-        new uiStore.OpenFiltersMenu() :
-        new uiStore.CloseFiltersMenu();
+  private loadStateFrom(params: Params): void {
+    for (const urlParam of Object.values(urlParameters)) {
+      console.log(urlParam.name);
 
-      this.store$.dispatch(menuAction);
+      const loadVal = params[urlParam.name()];
+
+      if (loadVal) {
+        const action = urlParam.load(loadVal);
+
+        this.store$.dispatch(action);
+      }
     }
 
-    if (urlParams.granuleList) {
-      console.log(urlParams.granuleList.split(',').length);
-    }
-
-    if (urlParams.selectedFilter && Object.values(models.FilterType).includes(urlParams.selectedFilter)) {
-      const selectedFilter = <models.FilterType>urlParams.selectedFilter;
-
-      this.store$.dispatch(new uiStore.SetSelectedFilter(selectedFilter));
-    }
-
-    if (urlParams.selectedPlatforms) {
-      const selectedPlatforms = urlParams.selectedPlatforms
-        .split(',')
-        .filter(name => models.platformNames.includes(name));
-
-      this.store$.dispatch(new filterStore.SetSelectedPlatforms(selectedPlatforms));
-    }
-
-    if (urlParams.view && Object.values(models.MapViewType).includes(urlParams.view)) {
-      const mapView = <models.MapViewType>urlParams.view;
-
-      this.store$.dispatch(this.getActionFor(mapView));
+    if (params.granuleList) {
+      console.log(params.granuleList.split(',').length);
     }
   }
-
-  private getActionFor(view: models.MapViewType): Action {
-    switch (view) {
-      case models.MapViewType.ARCTIC: {
-        return new mapStore.SetArcticView();
-      }
-      case models.MapViewType.EQUITORIAL: {
-        return new mapStore.SetEquitorialView();
-      }
-      case models.MapViewType.ANTARCTIC: {
-        return new mapStore.SetAntarcticView();
-      }
-    }
-  }
-
 }
