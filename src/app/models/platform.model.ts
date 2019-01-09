@@ -154,6 +154,8 @@ export const platforms: Platform[] = [{
   beamModes: [ 'STD' ]
 }];
 
+export const platformNames = platforms.map(platform => platform.name);
+
 export const polarizations = [
  'VV',
  'HH',
