@@ -4,7 +4,7 @@ import { Router, ActivatedRoute, Params } from '@angular/router';
 import { Store, Action } from '@ngrx/store';
 
 import { combineLatest } from 'rxjs';
-import { filter, map, switchMap } from 'rxjs/operators';
+import { filter, map, switchMap, skip } from 'rxjs/operators';
 
 import { AppState } from './store';
 import * as granulesStore from './store/granules';
@@ -14,7 +14,7 @@ import * as filterStore from './store/filters';
 
 import { AsfApiService, RoutedSearchService } from './services';
 
-import { SentinelGranule, MapViewType, FilterType } from './models';
+import { SentinelGranule, MapViewType, FilterType, platformNames } from './models';
 
 @Component({
   selector: 'app-root',
@@ -32,6 +32,8 @@ export class AppComponent {
     this.store$.select(mapStore.getMapState),
   );
 
+  private isNotLoaded = true;
+
   constructor(
     private routedSearchService: RoutedSearchService,
     private router: Router,
@@ -41,21 +43,36 @@ export class AppComponent {
     this.routedSearchService.query('');
 
     this.activatedRoute.queryParams.pipe(
+      skip(1),
       map(urlParams => {
-        this.loadStateFrom(urlParams);
+        if (this.isNotLoaded) {
+          this.loadStateFrom(urlParams);
+          this.isNotLoaded = false;
+        }
 
         return urlParams;
+      }),
+      switchMap(urlParams => this.urlAppState$.pipe(
+        map(state => {
+          const [uiState, selectedPlatforms, mapState] = state;
+
+          return {
+            ...uiState,
+            ...mapState,
+            selectedPlatforms: Array.from(selectedPlatforms).join(','),
+          };
+        })
+      ))
+    ).subscribe(
+      queryParams => {
+        this.router.navigate(['.'], { queryParams });
       }
-    )).subscribe(
-      queryParams => queryParams
     );
   }
 
   private loadStateFrom(urlParams: Params): void {
     if (urlParams.isFiltersMenuOpen) {
-      const isFiltersMenuOpen = JSON.parse(urlParams.isFiltersMenuOpen);
-
-      const menuAction = isFiltersMenuOpen ?
+      const menuAction = urlParams.isFiltersMenuOpen === 'true' ?
         new uiStore.OpenFiltersMenu() :
         new uiStore.CloseFiltersMenu();
 
@@ -67,11 +84,13 @@ export class AppComponent {
       this.store$.dispatch(new uiStore.SetSelectedFilter(selectedFilter));
     }
     if (urlParams.selectedPlatforms) {
-      const selectedPlatforms = urlParams.selectedPlatforms.split(',');
+      const selectedPlatforms = urlParams.selectedPlatforms
+        .split(',')
+        .filter(name => platformNames.includes(name));
 
       this.store$.dispatch(new filterStore.SetSelectedPlatforms(selectedPlatforms));
     }
-    if (urlParams.view) {
+    if (urlParams.view && Object.values(MapViewType).includes(urlParams.view)) {
       const mapView = <MapViewType>urlParams.view;
       this.onNewMapView(mapView);
     }
