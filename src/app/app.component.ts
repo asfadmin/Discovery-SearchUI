@@ -1,5 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
-import { Router, ActivatedRoute, Params } from '@angular/router';
+import { Component, OnInit } from '@angular/core';
 
 import { Store, Action } from '@ngrx/store';
 
@@ -12,7 +11,7 @@ import * as mapStore from './store/map';
 import * as uiStore from './store/ui';
 import * as filterStore from './store/filters';
 
-import { AsfApiService, RoutedSearchService } from './services';
+import { AsfApiService, RoutedSearchService, UrlStateService } from './services';
 
 import * as models from './models';
 
@@ -21,85 +20,19 @@ import * as models from './models';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
-export class AppComponent implements OnInit, OnDestroy {
+export class AppComponent implements OnInit {
   public granules$ = this.store$.select(granulesStore.getGranules);
   public loading$  = this.store$.select(granulesStore.getLoading);
   public view$ = this.store$.select(mapStore.getMapView);
 
-  public urlAppState: Subscription;
-  private isNotLoaded = true;
-
   constructor(
     private routedSearchService: RoutedSearchService,
-    private router: Router,
-    private activatedRoute: ActivatedRoute,
+    private urlStateService: UrlStateService,
     private store$: Store<AppState>
   ) {}
 
   public ngOnInit() {
     this.routedSearchService.query('');
-
-  combineLatest(
-    this.store$.select(uiStore.getUIState),
-    this.store$.select(filterStore.getSelectedPlatformNames),
-    this.store$.select(mapStore.getMapState),
-    this.activatedRoute.queryParams
-  ).pipe(
-      skip(1),
-      map(state => {
-        const urlParams = state.pop();
-        if (this.isNotLoaded) {
-          this.isNotLoaded = false;
-          this.loadStateFrom(urlParams);
-        }
-        state.push(urlParams);
-        return state;
-      }),
-      map(state => {
-        const [uiState, selectedPlatforms, mapState, urlParams] = state;
-
-        return {
-          ...uiState,
-          ...mapState,
-          selectedPlatforms: Array.from(selectedPlatforms).join(','),
-          granuleList: urlParams.granuleList
-        };
-      })
-    ).subscribe(
-      queryParams => {
-        this.router.navigate(['.'], { queryParams });
-      }
-    );
-  }
-
-  private loadStateFrom(urlParams: Params): void {
-    if (urlParams.isFiltersMenuOpen) {
-      const menuAction = urlParams.isFiltersMenuOpen === 'true' ?
-        new uiStore.OpenFiltersMenu() :
-        new uiStore.CloseFiltersMenu();
-
-      this.store$.dispatch(menuAction);
-    }
-    if (urlParams.granuleList) {
-      console.log(urlParams.granuleList.split(',').length);
-    }
-
-    if (urlParams.selectedFilter && Object.values(models.FilterType).includes(urlParams.selectedFilter)) {
-      const selectedFilter = <models.FilterType>urlParams.selectedFilter;
-
-      this.store$.dispatch(new uiStore.SetSelectedFilter(selectedFilter));
-    }
-    if (urlParams.selectedPlatforms) {
-      const selectedPlatforms = urlParams.selectedPlatforms
-        .split(',')
-        .filter(name => models.platformNames.includes(name));
-
-      this.store$.dispatch(new filterStore.SetSelectedPlatforms(selectedPlatforms));
-    }
-    if (urlParams.view && Object.values(models.MapViewType).includes(urlParams.view)) {
-      const mapView = <models.MapViewType>urlParams.view;
-      this.onNewMapView(mapView);
-    }
   }
 
   public onNewSearch(query: string): void {
@@ -128,9 +61,5 @@ export class AppComponent implements OnInit, OnDestroy {
         return new mapStore.SetAntarcticView();
       }
     }
-  }
-
-  public ngOnDestroy() {
-    this.urlAppState.unsubscribe();
   }
 }
