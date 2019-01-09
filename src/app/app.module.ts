@@ -31,7 +31,7 @@ export const routes = [
     BrowserModule,
     HttpClientModule,
 
-    RouterModule.forRoot(routes, {}),
+    RouterModule.forRoot(routes, {useHash: true}),
     StoreModule.forRoot(reducers, { metaReducers }),
     EffectsModule.forRoot(appEffects),
     !environment.production ? StoreDevtoolsModule.instrument() : [],
