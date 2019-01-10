@@ -17,7 +17,7 @@ import { FiltersMenuModule } from './filters-menu';
 import { MapModule } from './map';
 
 import { AppComponent } from './app.component';
-import { AsfApiService, RoutedSearchService, UrlStateService } from './services';
+import { AsfApiService, RoutedSearchService, UrlStateService, MapService } from './services';
 
 export const routes = [
   { path: '**', name: 'AppComponent', component: AppComponent },
@@ -44,6 +44,7 @@ export const routes = [
     AsfApiService,
     RoutedSearchService,
     UrlStateService,
+    MapService,
   ],
   bootstrap: [ AppComponent ]
 })
