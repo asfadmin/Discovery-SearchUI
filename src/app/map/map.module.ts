@@ -3,7 +3,6 @@ import { CommonModule } from '@angular/common';
 
 import { MapComponent } from './map.component';
 import { ViewSelectorComponent } from './view-selector';
-import { MapService } from '../services';
 
 @NgModule({
   imports: [
@@ -12,9 +11,6 @@ import { MapService } from '../services';
   declarations: [
     MapComponent,
     ViewSelectorComponent,
-  ],
-  providers: [
-    MapService
   ],
   exports: [
     MapComponent

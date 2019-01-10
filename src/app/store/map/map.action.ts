@@ -1,24 +1,33 @@
 import { Action } from '@ngrx/store';
 
+import { MapViewType, LonLat } from '../../models';
+
 export enum MapActionType {
-  SET_ARCTIC_VIEW = '[Map] Set Arctic Map View',
-  SET_EQUITORIAL_VIEW = '[Map] Set Equitorial Map View',
-  SET_ANTARCTIC_VIEW = '[Map] Set Antarctic Map View ',
+  SET_MAP_VIEW = '[Map] Set Map View',
+  UPDATE_MAP_CENTER = '[Map] Update Map Center',
+  UPDATE_MAP_ZOOM = '[Map] Update Map Zoom',
 }
 
-export class SetAntarcticView implements Action {
-  public readonly type = MapActionType.SET_ANTARCTIC_VIEW;
+
+export class SetMapView implements Action {
+  public readonly type = MapActionType.SET_MAP_VIEW;
+
+  constructor(public payload: MapViewType) {}
 }
 
-export class SetArcticView implements Action {
-  public readonly type = MapActionType.SET_ARCTIC_VIEW;
+export class UpdateMapCenter implements Action {
+  public readonly type = MapActionType.UPDATE_MAP_CENTER;
+
+  constructor(public payload: LonLat) {}
 }
 
-export class SetEquitorialView implements Action {
-  public readonly type = MapActionType.SET_EQUITORIAL_VIEW;
+export class UpdateMapZoom implements Action {
+  public readonly type = MapActionType.UPDATE_MAP_ZOOM;
+
+  constructor(public payload: number) {}
 }
 
 export type MapActions =
-  | SetArcticView
-  | SetEquitorialView
-  | SetAntarcticView;
+  | SetMapView
+  | UpdateMapCenter
+  | UpdateMapZoom;

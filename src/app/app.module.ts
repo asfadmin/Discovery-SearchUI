@@ -17,7 +17,7 @@ import { FiltersMenuModule } from './filters-menu';
 import { MapModule } from './map';
 
 import { AppComponent } from './app.component';
-import { AsfApiService, RoutedSearchService } from './services';
+import { AsfApiService, RoutedSearchService, UrlStateService, MapService } from './services';
 
 export const routes = [
   { path: '**', name: 'AppComponent', component: AppComponent },
@@ -31,18 +31,20 @@ export const routes = [
     BrowserModule,
     HttpClientModule,
 
-    RouterModule.forRoot(routes, {}),
+    RouterModule.forRoot(routes, {useHash: true}),
     StoreModule.forRoot(reducers, { metaReducers }),
     EffectsModule.forRoot(appEffects),
     !environment.production ? StoreDevtoolsModule.instrument() : [],
 
     GranuleListModule,
     FiltersMenuModule,
-    MapModule
+    MapModule,
   ],
   providers: [
     AsfApiService,
-    RoutedSearchService
+    RoutedSearchService,
+    UrlStateService,
+    MapService,
   ],
   bootstrap: [ AppComponent ]
 })

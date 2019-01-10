@@ -1,39 +1,45 @@
 import { createFeatureSelector, createSelector } from '@ngrx/store';
 
 import { MapActionType, MapActions } from './map.action';
-import { MapViewType } from '../../models';
+import { MapViewType, LonLat } from '../../models';
 
 
 export interface MapState {
   view: MapViewType;
+  mapCenter: LonLat;
+  mapZoom: number;
 }
 
 const initState: MapState = {
-  view: MapViewType.EQUITORIAL
+  view: MapViewType.EQUITORIAL,
+  mapCenter: { lon: 0, lat: 0 },
+  mapZoom: 3
 };
 
 
 export function mapReducer(state = initState, action: MapActions): MapState {
   switch (action.type) {
-    case MapActionType.SET_EQUITORIAL_VIEW: {
+    case MapActionType.SET_MAP_VIEW: {
       return {
         ...state,
-        view: MapViewType.EQUITORIAL
+        view: action.payload
       };
     }
-    case MapActionType.SET_ANTARCTIC_VIEW: {
 
+    case MapActionType.UPDATE_MAP_CENTER: {
       return {
         ...state,
-        view: MapViewType.ANTARCTIC
+        mapCenter: action.payload
       };
     }
-    case MapActionType.SET_ARCTIC_VIEW: {
+
+    case MapActionType.UPDATE_MAP_ZOOM: {
       return {
         ...state,
-        view: MapViewType.ARCTIC
+        mapZoom: action.payload
       };
     }
+
     default: {
       return state;
     }
