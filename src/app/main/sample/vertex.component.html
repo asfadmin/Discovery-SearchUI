@@ -1,0 +1,17 @@
+<div>
+  <app-filters-menu
+    (newSearch)="onNewSearch($event)"
+    (clearSearches)="onClearGranules()"
+    [isLoading]="loading$ | async">
+  </app-filters-menu>
+
+  <app-granule-list
+    [granules]="granules$ | async">
+  </app-granule-list>
+
+  <app-map
+    (newMapView)="onNewMapView($event)"
+    [granules$]="granules$"
+    [view$]="view$"
+    ></app-map>
+</div>

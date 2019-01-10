@@ -1,51 +1,62 @@
-import { BrowserModule } from '@angular/platform-browser';
-
 import { NgModule } from '@angular/core';
+import { BrowserModule } from '@angular/platform-browser';
 import { HttpClientModule } from '@angular/common/http';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { RouterModule, Routes } from '@angular/router';
+import { MatMomentDateModule } from '@angular/material-moment-adapter';
+import { MatButtonModule, MatIconModule } from '@angular/material';
+import { TranslateModule } from '@ngx-translate/core';
+import 'hammerjs';
 
-import { RouterModule } from '@angular/router';
+import { FuseModule } from '@fuse/fuse.module';
+import { FuseSharedModule } from '@fuse/shared.module';
+import { FuseProgressBarModule, FuseSidebarModule, FuseThemeOptionsModule } from '@fuse/components';
 
-import { StoreModule } from '@ngrx/store';
-import { EffectsModule } from '@ngrx/effects';
-import { StoreDevtoolsModule } from '@ngrx/store-devtools';
+import { fuseConfig } from 'app/fuse-config';
 
-import { environment } from '../environments/environment';
-import { reducers, metaReducers, appEffects } from './store';
+import { AppComponent } from 'app/app.component';
+import { LayoutModule } from 'app/layout/layout.module';
+import { SampleModule } from 'app/main/sample/sample.module';
 
-import { GranuleListModule } from './granule-list';
-import { FiltersMenuModule } from './filters-menu';
-import { MapModule } from './map';
-
-import { AppComponent } from './app.component';
-import { AsfApiService, RoutedSearchService, UrlStateService, MapService } from './services';
-
-export const routes = [
-  { path: '**', name: 'AppComponent', component: AppComponent },
-];
+const appRoutes: Routes = [{
+  path      : '**',
+  redirectTo: 'sample'
+}];
 
 @NgModule({
   declarations: [
-    AppComponent,
+    AppComponent
   ],
   imports: [
     BrowserModule,
+    BrowserAnimationsModule,
     HttpClientModule,
+    RouterModule.forRoot(appRoutes),
 
-    RouterModule.forRoot(routes, {useHash: true}),
-    StoreModule.forRoot(reducers, { metaReducers }),
-    EffectsModule.forRoot(appEffects),
-    !environment.production ? StoreDevtoolsModule.instrument() : [],
+    TranslateModule.forRoot(),
 
-    GranuleListModule,
-    FiltersMenuModule,
-    MapModule,
+    // Material moment date module
+    MatMomentDateModule,
+
+    // Material
+    MatButtonModule,
+    MatIconModule,
+
+    // Fuse modules
+    FuseModule.forRoot(fuseConfig),
+    FuseProgressBarModule,
+    FuseSharedModule,
+    FuseSidebarModule,
+    FuseThemeOptionsModule,
+
+    // App modules
+    LayoutModule,
+    SampleModule
   ],
-  providers: [
-    AsfApiService,
-    RoutedSearchService,
-    UrlStateService,
-    MapService,
-  ],
-  bootstrap: [ AppComponent ]
+  bootstrap: [
+    AppComponent
+  ]
 })
-export class AppModule { }
+export class AppModule
+{
+}
