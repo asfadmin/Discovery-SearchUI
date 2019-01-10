@@ -10,12 +10,13 @@ import {Tile as TileLayer, Vector as VectorLayer} from 'ol/layer';
 import { OSM, Vector as VectorSource, TileWMS, Layer, XYZ, WMTS } from 'ol/source';
 import * as proj from 'ol/proj';
 import * as customProj4 from 'ol/proj/proj4';
-
 import proj4 from 'proj4';
 
 import { AppState } from '../../store';
 import * as mapStore from '../../store/map';
 import { equatorial, antarctic, arctic, MapView } from './views';
+import { LonLat } from './../../models';
+
 
 @Injectable({
   providedIn: 'root'
@@ -41,7 +42,23 @@ export class MapService {
     this.map.addLayer(this.polygonLayer);
   }
 
-  public equatorial() {
+  public setCenter(center: LonLat): void {
+    console.log('setting center too ', center);
+
+    this.map.getView().animate({
+      center, duration: 500
+    });
+  }
+
+  public setZoom(zoom: number): void {
+    console.log('setting zoom too', zoom);
+
+    this.map.getView().animate({
+      zoom, duration: 500
+    });
+  }
+
+  public equatorial(): void {
     this.setMap(equatorial());
   }
 

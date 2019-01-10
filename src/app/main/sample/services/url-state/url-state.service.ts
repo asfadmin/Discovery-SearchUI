@@ -53,6 +53,7 @@ export class UrlStateService {
         return {
           ...uiState,
           ...mapState,
+          mapCenter: urlParameters.mapCenter.toString(mapState.mapCenter),
           selectedPlatforms: urlParameters.selectedPlatforms.toString(currentSelectedPlatforms),
           granuleList: params.granuleList
         };
