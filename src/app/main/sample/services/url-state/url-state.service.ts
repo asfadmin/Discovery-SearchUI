@@ -21,6 +21,8 @@ import * as models from './../../models';
 })
 export class UrlStateService {
   public urlAppState: Subscription;
+
+  private params = {};
   private isNotLoaded = true;
 
   constructor(
@@ -28,58 +30,59 @@ export class UrlStateService {
     private mapService: MapService,
     private router: Router,
     private activatedRoute: ActivatedRoute,
-  ) {
-  const urlAppState$ = combineLatest(
-    this.store$.select(uiStore.getUIState),
-    this.store$.select(filterStore.getSelectedPlatformNames),
-    this.store$.select(mapStore.getMapState),
-    this.mapService.center$,
-    this.mapService.zoom$,
-    this.activatedRoute.queryParams,
-  );
+  ) {}
 
-  urlAppState$.pipe(
-      skip(1),
-      map(state => {
-        const params: Params = state.pop();
-
+  public load(): void {
+    this.activatedRoute.queryParams.subscribe(params => {
         if (this.isNotLoaded) {
           this.isNotLoaded = false;
           this.loadStateFrom(params);
         }
+      });
 
-        state.push(params);
-
-        return state;
-      }),
-      map(state => {
-        const [
-          uiState, currentSelectedPlatforms,
-          mapState, center, zoom, params
-        ] = state;
-        console.log(zoom, center);
-
-        return {
+    this.store$.select(uiStore.getUIState).pipe(
+      skip(1),
+      map(uiState => ({
           isFiltersMenuOpen: uiState.isFiltersMenuOpen,
           selectedFilter: uiState.selectedFilter,
+      }))
+    ).subscribe(this.updateRouteWithParams);
 
-          view: mapState.view,
-          center: `${center.lon},${center.lat}`,
-          zoom,
+    this.store$.select(filterStore.getSelectedPlatformNames).pipe(
+      skip(1),
+      map(platforms => ({
+          selectedPlatforms: Array.from(platforms).join(','),
+      }))
+    ).subscribe(this.updateRouteWithParams);
 
-          selectedPlatforms: Array.from(currentSelectedPlatforms).join(','),
+    this.store$.select(mapStore.getMapState).pipe(
+      skip(1),
+      map(mapState => ({ view: mapState.view }))
+    ).subscribe(this.updateRouteWithParams);
 
-          granuleList: params.granuleList
-        };
-      })
-    ).subscribe(
-      queryParams => {
-        this.router.navigate(['.'], { queryParams });
-      }
-    );
+    this.mapService.center$.pipe(
+      skip(1),
+      map(center => ({ center: `${center.lon},${center.lat}` }))
+    ).subscribe(this.updateRouteWithParams);
+
+    this.mapService.zoom$.pipe(
+      skip(1),
+      map(zoom => ({ zoom }))
+    ).subscribe(this.updateRouteWithParams);
+
+  }
+
+  private updateRouteWithParams = (queryParams: Params): void => {
+    this.params = {...this.params, ...queryParams};
+
+    this.router.navigate(['.'], {
+      queryParams: this.params,
+    });
   }
 
   private loadStateFrom(params: Params): void {
+    this.params = { ...this.params, ...params };
+
     if (params.isFiltersMenuOpen) {
       const action = params.isFiltersMenuOpen !== 'false' ?
         new uiStore.OpenFiltersMenu() :

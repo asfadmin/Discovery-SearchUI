@@ -33,7 +33,6 @@ export class SampleComponent implements OnInit {
   constructor(
     private _fuseTranslationLoaderService: FuseTranslationLoaderService,
     private routedSearchService: RoutedSearchService,
-    private urlStateService: UrlStateService,
     private store$: Store<AppState>
   ) {
     this._fuseTranslationLoaderService.loadTranslations(english, turkish);
