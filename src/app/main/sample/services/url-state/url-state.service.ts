@@ -13,7 +13,7 @@ import * as uiStore from './../../store/ui';
 import * as filterStore from './../../store/filters';
 
 import * as models from './../../models';
-import { urlParameters } from './url-params/url-params';
+
 
 @Injectable({
   providedIn: 'root'
@@ -49,12 +49,16 @@ export class UrlStateService {
       }),
       map(state => {
         const [uiState, currentSelectedPlatforms, mapState, params] = state;
+        const center =  mapState.mapCenter;
+        const mapCenter = `${center.lon},${center.lat}`;
+
+        const selectedPlatforms = Array.from(currentSelectedPlatforms).join(',');
 
         return {
           ...uiState,
           ...mapState,
-          mapCenter: urlParameters.mapCenter.toString(mapState.mapCenter),
-          selectedPlatforms: urlParameters.selectedPlatforms.toString(currentSelectedPlatforms),
+          mapCenter,
+          selectedPlatforms,
           granuleList: params.granuleList
         };
       })
@@ -66,24 +70,69 @@ export class UrlStateService {
   }
 
   private loadStateFrom(params: Params): void {
-    for (const urlParam of Object.values(urlParameters)) {
-      const loadVal = params[urlParam.name()];
-
-      if (!loadVal) {
-        continue;
-      }
-
-      const action = urlParam.load(loadVal);
-
-      if (!action) {
-        continue;
-      }
+    if (params.isFiltersMenuOpen) {
+      const action = params.isFiltersMenuOpen !== 'false' ?
+        new uiStore.OpenFiltersMenu() :
+        new uiStore.CloseFiltersMenu();
 
       this.store$.dispatch(action);
     }
 
-    if (params.granuleList) {
-      console.log(params.granuleList.split(',').length);
+    if (params.selectedFilter) {
+      const selected = params.selectedFilter;
+
+      if (Object.values(models.FilterType).includes(selected)) {
+
+        const action = new uiStore.SetSelectedFilter(<models.FilterType>selected);
+        this.store$.dispatch(action);
+      }
+    }
+
+    if (params.view) {
+      const view = params.view;
+
+      if (Object.values(models.MapViewType).includes(view)) {
+        const action = new mapStore.SetMapView(<models.MapViewType>view);
+
+        this.store$.dispatch(action);
+      }
+    }
+
+    if (params.mapCenter) {
+      const centerStr = params.mapCenter;
+      const center = centerStr.split(',').map(v => +v);
+
+      if (center.length === 2 && center.every(this.isNumber)) {
+        const [lon, lat] = center;
+
+        const action = new mapStore.SetMapCenter({ lon, lat });
+
+        this.store$.dispatch(action);
+      }
+    }
+
+    if (params.mapZoom) {
+      const zoom = +params.mapZoom;
+
+      if (this.isNumber(zoom)) {
+        const action = new mapStore.SetMapZoom(zoom);
+
+        this.store$.dispatch(action);
+      }
+    }
+
+    if (params.selectedPlatforms) {
+      const platforms = params.selectedPlatforms;
+
+      const selectedPlatforms = platforms
+        .split(',')
+        .filter(name => models.platformNames.includes(name));
+
+      const action = new filterStore.SetSelectedPlatforms(selectedPlatforms);
+
+      this.store$.dispatch(action);
     }
   }
+
+  private isNumber = n => !isNaN(n) && isFinite(n);
 }

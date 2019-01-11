@@ -57,6 +57,7 @@ export function filtersReducer(state = initState, action: FiltersActions): Filte
 
     case FiltersActionType.SET_SELECTED_PLATFORMS: {
       const selected = new Set(action.payload);
+
       return {
         ...state,
         platforms: {
