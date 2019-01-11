@@ -45,8 +45,11 @@ export class MapService {
   public setCenter(center: LonLat): void {
     console.log('setting center too ', center);
 
+    const { lon, lat } = center;
+
+
     this.map.getView().animate({
-      center, duration: 500
+      'center': proj.fromLonLat([lon, lat]), duration: 500
     });
   }
 
@@ -80,12 +83,12 @@ export class MapService {
         const map = e.map;
 
         const view = map.getView();
-        const extent = view.calculateExtent(map.getSize());
 
-        const [lon, lat] = proj.toLonLat(getCenter(extent));
+        const [lon, lat] = proj.toLonLat(view.getCenter());
         const zoom = view.getZoom();
 
-        console.log(lon, lat, zoom);
+        this.setCenter({'lon': 10, 'lat': 10});
+        this.setZoom(5);
       });
     } else {
       this.map = this.updatedMap();

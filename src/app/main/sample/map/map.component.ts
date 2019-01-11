@@ -34,7 +34,7 @@ export class MapComponent implements OnInit {
 
   constructor(private mapService: MapService) {}
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.view$.pipe(
       map(view => this.setMapWith(view)),
       switchMap(newMap =>
