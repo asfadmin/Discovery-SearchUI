@@ -49,16 +49,15 @@ export class UrlStateService {
       }),
       map(state => {
         const [uiState, currentSelectedPlatforms, mapState, params] = state;
-        const center =  mapState.mapCenter;
-        const mapCenter = `${center.lon},${center.lat}`;
-
-        const selectedPlatforms = Array.from(currentSelectedPlatforms).join(',');
 
         return {
-          ...uiState,
-          ...mapState,
-          mapCenter,
-          selectedPlatforms,
+          isFiltersMenuOpen: uiState.isFiltersMenuOpen,
+          selectedFilter: uiState.selectedFilter,
+
+          view: mapState.view,
+
+          selectedPlatforms: Array.from(currentSelectedPlatforms).join(','),
+
           granuleList: params.granuleList
         };
       })
@@ -105,9 +104,7 @@ export class UrlStateService {
       if (center.length === 2 && center.every(this.isNumber)) {
         const [lon, lat] = center;
 
-        const action = new mapStore.SetMapCenter({ lon, lat });
-
-        this.store$.dispatch(action);
+        console.log('TODO: set center from param');
       }
     }
 
@@ -115,9 +112,7 @@ export class UrlStateService {
       const zoom = +params.mapZoom;
 
       if (this.isNumber(zoom)) {
-        const action = new mapStore.SetMapZoom(zoom);
-
-        this.store$.dispatch(action);
+        console.log('TODO: set zoom from param');
       }
     }
 

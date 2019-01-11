@@ -26,7 +26,7 @@ export class MapService {
   private map: Map;
   private polygonLayer: Layer;
 
-  constructor(private store$: Store<AppState>) {
+  constructor() {
   }
 
   public epsg(): string {
@@ -76,12 +76,6 @@ export class MapService {
     if (!this.map) {
       this.map = this.newMap();
 
-      // this.map.getView().animate({
-      //   center: proj.fromLonLat([-0.12755, 51.507222]),
-      //   zoom: 4,
-      //   duration: 1000
-      // });
-
       this.map.on('moveend', e => {
         const map = e.map;
 
@@ -91,8 +85,7 @@ export class MapService {
         const [lon, lat] = proj.toLonLat(getCenter(extent));
         const zoom = view.getZoom();
 
-        this.store$.dispatch(new mapStore.UpdateMapCenter({lon, lat}));
-        this.store$.dispatch(new mapStore.UpdateMapZoom(zoom));
+        console.log(lon, lat, zoom);
       });
     } else {
       this.map = this.updatedMap();
