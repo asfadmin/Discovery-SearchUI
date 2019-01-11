@@ -12,6 +12,7 @@ import * as mapStore from './../../store/map';
 import * as uiStore from './../../store/ui';
 import * as filterStore from './../../store/filters';
 
+import { MapService } from './../../services';
 import * as models from './../../models';
 
 
@@ -24,6 +25,7 @@ export class UrlStateService {
 
   constructor(
     private store$: Store<AppState>,
+    private mapService: MapService,
     private router: Router,
     private activatedRoute: ActivatedRoute,
   ) {
@@ -31,13 +33,15 @@ export class UrlStateService {
     this.store$.select(uiStore.getUIState),
     this.store$.select(filterStore.getSelectedPlatformNames),
     this.store$.select(mapStore.getMapState),
-    this.activatedRoute.queryParams
+    this.mapService.center$,
+    this.mapService.zoom$,
+    this.activatedRoute.queryParams,
   );
 
   urlAppState$.pipe(
       skip(1),
       map(state => {
-        const params = state.pop();
+        const params: Params = state.pop();
 
         if (this.isNotLoaded) {
           this.isNotLoaded = false;
@@ -45,16 +49,23 @@ export class UrlStateService {
         }
 
         state.push(params);
+
         return state;
       }),
       map(state => {
-        const [uiState, currentSelectedPlatforms, mapState, params] = state;
+        const [
+          uiState, currentSelectedPlatforms,
+          mapState, center, zoom, params
+        ] = state;
+        console.log(zoom, center);
 
         return {
           isFiltersMenuOpen: uiState.isFiltersMenuOpen,
           selectedFilter: uiState.selectedFilter,
 
           view: mapState.view,
+          center: `${center.lon},${center.lat}`,
+          zoom,
 
           selectedPlatforms: Array.from(currentSelectedPlatforms).join(','),
 
@@ -97,22 +108,21 @@ export class UrlStateService {
       }
     }
 
-    if (params.mapCenter) {
-      const centerStr = params.mapCenter;
-      const center = centerStr.split(',').map(v => +v);
+    if (params.zoom) {
+      const zoom = +params.zoom;
+
+      if (this.isNumber(zoom)) {
+        this.mapService.setZoom(zoom);
+      }
+    }
+
+    if (params.center) {
+      const center = params.center.split(',').map(v => +v);
 
       if (center.length === 2 && center.every(this.isNumber)) {
         const [lon, lat] = center;
 
-        console.log('TODO: set center from param');
-      }
-    }
-
-    if (params.mapZoom) {
-      const zoom = +params.mapZoom;
-
-      if (this.isNumber(zoom)) {
-        console.log('TODO: set zoom from param');
+        this.mapService.setCenter({ lon, lat });
       }
     }
 

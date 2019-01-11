@@ -2,6 +2,8 @@ import { Injectable } from '@angular/core';
 
 import { Store } from '@ngrx/store';
 
+import { Subject } from 'rxjs';
+
 import { Map, View } from 'ol';
 import {getCenter} from 'ol/extent.js';
 import WMTSTileGrid from 'ol/tilegrid/WMTS.js';
@@ -26,8 +28,10 @@ export class MapService {
   private map: Map;
   private polygonLayer: Layer;
 
-  constructor() {
-  }
+  public zoom$ = new Subject<number>();
+  public center$ = new Subject<LonLat>();
+
+  constructor() {}
 
   public epsg(): string {
     return this.mapView.projection.epsg;
@@ -87,8 +91,8 @@ export class MapService {
         const [lon, lat] = proj.toLonLat(view.getCenter());
         const zoom = view.getZoom();
 
-        this.setCenter({'lon': 10, 'lat': 10});
-        this.setZoom(5);
+        this.zoom$.next(zoom);
+        this.center$.next({lon, lat});
       });
     } else {
       this.map = this.updatedMap();
