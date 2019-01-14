@@ -14,12 +14,10 @@ import { FuseSidebarService } from '@fuse/components/sidebar/sidebar.service';
   styleUrls    : ['./style-2.component.scss'],
   encapsulation: ViewEncapsulation.None
 })
-export class NavbarVerticalStyle2Component implements OnInit, OnDestroy
-{
+export class NavbarVerticalStyle2Component implements OnInit, OnDestroy {
   fuseConfig: any;
   navigation: any;
 
-  // Private
   private _fusePerfectScrollbar: FusePerfectScrollbarDirective;
   private _unsubscribeAll: Subject<any>;
 
@@ -29,7 +27,6 @@ export class NavbarVerticalStyle2Component implements OnInit, OnDestroy
     private _fuseSidebarService: FuseSidebarService,
     private _router: Router
   ) {
-    // Set the private defaults
     this._unsubscribeAll = new Subject();
   }
 
@@ -41,98 +38,84 @@ export class NavbarVerticalStyle2Component implements OnInit, OnDestroy
 
     this._fusePerfectScrollbar = theDirective;
 
-    // Update the scrollbar on collapsable item toggle
-    this._fuseNavigationService.onItemCollapseToggled
-      .pipe(
-        delay(500),
-        takeUntil(this._unsubscribeAll)
-      )
-      .subscribe(() => {
-        this._fusePerfectScrollbar.update();
-      });
-
-    // Scroll to the active item position
-    this._router.events
-      .pipe(
-        filter((event) => event instanceof NavigationEnd),
-        take(1)
-      )
-      .subscribe(() => {
-        setTimeout(() => {
-          const activeNavItem: any = document.querySelector('navbar .nav-link.active');
-
-          if ( activeNavItem ) {
-            const activeItemOffsetTop = activeNavItem.offsetTop;
-            const activeItemOffsetParentTop = activeNavItem.offsetParent.offsetTop;
-            const scrollDistance = activeItemOffsetTop - activeItemOffsetParentTop - (48 * 3);
-
-            this._fusePerfectScrollbar.scrollToTop(scrollDistance);
-          }
-        });
-      }
-      );
+    this.updateScrollbarOnCollapseToggle();
+    this.scrollToActive();
   }
 
-  ngOnInit(): void
-    {
-      this._router.events
-      .pipe(
-        filter((event) => event instanceof NavigationEnd),
-        takeUntil(this._unsubscribeAll)
-      )
-      .subscribe(() => {
-        if ( this._fuseSidebarService.getSidebar('navbar') )
-        {
-          this._fuseSidebarService.getSidebar('navbar').close();
+  private updateScrollbarOnCollapseToggle(): void {
+    this._fuseNavigationService.onItemCollapseToggled
+    .pipe(
+      delay(500),
+      takeUntil(this._unsubscribeAll)
+    )
+    .subscribe(() => {
+      this._fusePerfectScrollbar.update();
+    });
+  }
+
+  private scrollToActive(): void {
+    this._router.events
+    .pipe(
+      filter((event) => event instanceof NavigationEnd),
+      take(1)
+    )
+    .subscribe(() => {
+      setTimeout(() => {
+        const activeNavItem: any = document.querySelector('navbar .nav-link.active');
+
+        if ( activeNavItem ) {
+          const activeItemOffsetTop = activeNavItem.offsetTop;
+          const activeItemOffsetParentTop = activeNavItem.offsetParent.offsetTop;
+          const scrollDistance = activeItemOffsetTop - activeItemOffsetParentTop - (48 * 3);
+
+          this._fusePerfectScrollbar.scrollToTop(scrollDistance);
         }
+      });
+    }
+    );
+  }
+
+  ngOnInit(): void {
+    this._router.events
+    .pipe(
+      filter((event) => event instanceof NavigationEnd),
+      takeUntil(this._unsubscribeAll)
+    )
+    .subscribe(() => {
+      if ( this._fuseSidebarService.getSidebar('navbar') ) {
+        this._fuseSidebarService.getSidebar('navbar').close();
       }
-      );
-
-      // Get current navigation
-      this._fuseNavigationService.onNavigationChanged
-      .pipe(
-        filter(value => value !== null),
-        takeUntil(this._unsubscribeAll)
-      )
-      .subscribe(() => {
-        this.navigation = this._fuseNavigationService.getCurrentNavigation();
-      });
-
-      // Subscribe to the config changes
-      this._fuseConfigService.config
-      .pipe(takeUntil(this._unsubscribeAll))
-      .subscribe((config) => {
-        this.fuseConfig = config;
-      });
     }
+    );
 
-  /**
-   * On destroy
-   */
-  ngOnDestroy(): void
-    {
-      // Unsubscribe from all subscriptions
-      this._unsubscribeAll.next();
-      this._unsubscribeAll.complete();
-    }
+    // Get current navigation
+    this._fuseNavigationService.onNavigationChanged
+    .pipe(
+      filter(value => value !== null),
+      takeUntil(this._unsubscribeAll)
+    )
+    .subscribe(() => {
+      this.navigation = this._fuseNavigationService.getCurrentNavigation();
+    });
 
-  // -----------------------------------------------------------------------------------------------------
-  // @ Public methods
-  // -----------------------------------------------------------------------------------------------------
+    // Subscribe to the config changes
+    this._fuseConfigService.config
+    .pipe(takeUntil(this._unsubscribeAll))
+    .subscribe((config) => {
+      this.fuseConfig = config;
+    });
+  }
 
-  /**
-   * Toggle sidebar opened status
-   */
-  toggleSidebarOpened(): void
-    {
-      this._fuseSidebarService.getSidebar('navbar').toggleOpen();
-    }
+  ngOnDestroy(): void {
+    this._unsubscribeAll.next();
+    this._unsubscribeAll.complete();
+  }
 
-  /**
-   * Toggle sidebar folded status
-   */
-  toggleSidebarFolded(): void
-    {
-      this._fuseSidebarService.getSidebar('navbar').toggleFold();
-    }
+  toggleSidebarOpened(): void {
+    this._fuseSidebarService.getSidebar('navbar').toggleOpen();
+  }
+
+  toggleSidebarFolded(): void {
+    this._fuseSidebarService.getSidebar('navbar').toggleFold();
+  }
 }
