@@ -13,6 +13,7 @@ import { OtherSelectorModule } from './other-selector';
 
 import { MatButtonModule } from '@angular/material/button';
 import { ProductsModule } from './products';
+import { ProductDetailComponent } from './product-detail/product-detail.component';
 
 @NgModule({
   imports: [
@@ -31,6 +32,7 @@ import { ProductsModule } from './products';
   ],
   declarations: [
     FiltersMenuComponent,
+    ProductDetailComponent,
   ],
   exports: [FiltersMenuComponent]
 })

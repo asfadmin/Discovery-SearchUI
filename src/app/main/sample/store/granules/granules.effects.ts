@@ -42,7 +42,7 @@ const setGranules =
         flightDirection: g['flightDirection'],
         wktPoly: g['stringFootprint'],
         bytes: +g['sizeMB'] * 1000000,
-        thumbnail: 'assets/error.png'
+        thumbnail: g['browse'] || 'assets/error.png'
       })
     )
   );

@@ -8,14 +8,12 @@
   background-color: grey;
 }
 
+.product-name {
+}
+
 .product--thumbnail {
   width: 30%;
 }
 
 .product--info {
-  clear: both
-}
-
-li {
-  list-style: none;
 }

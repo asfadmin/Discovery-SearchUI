@@ -1,23 +1,23 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, ViewEncapsulation } from '@angular/core';
 
-import { faCopy, faFileDownload } from '@fortawesome/free-solid-svg-icons';
+import { faFileDownload } from '@fortawesome/free-solid-svg-icons';
 
 import { SentinelGranule } from '../../models';
 
 @Component({
   selector: 'app-products',
   templateUrl: './products.component.html',
-  styleUrls: ['./products.component.css']
+  styleUrls: ['./products.component.css'],
+  encapsulation: ViewEncapsulation.None
 })
 export class ProductsComponent implements OnInit {
   @Input() products: SentinelGranule[];
 
-  public copyIcon = faCopy;
   public downloadIcon = faFileDownload;
 
   constructor() { }
 
-  ngOnInit() {
+  ngOnInit(): void {
   }
 
   public getReadableSize(size: number): string {
