@@ -1,5 +1,5 @@
 <mat-card class="m-2">
-  <ul class="list-group list-group-flush">
+  <mat-selection-list>
     <app-platform
       *ngFor="let platform of platforms"
       (click)="onClick(platform)"
@@ -7,5 +7,5 @@
       [ngClass]="{'active': selected.has(platform.name)}"
       [platform]="platform">
     </app-platform>
-  </ul>
+  </mat-selection-list>
 </mat-card>
