@@ -43,19 +43,7 @@
                 <content></content>
                 <!-- / CONTENT -->
 
-                <!-- FOOTER: Below static -->
-                <ng-container *ngIf="fuseConfig.layout.footer.position === 'below-static'">
-                    <ng-container *ngTemplateOutlet="footer"></ng-container>
-                </ng-container>
-                <!-- / FOOTER: Below static -->
-
             </div>
-
-            <!-- FOOTER: Below fixed -->
-            <ng-container *ngIf="fuseConfig.layout.footer.position === 'below-fixed'">
-                <ng-container *ngTemplateOutlet="footer"></ng-container>
-            </ng-container>
-            <!-- / FOOTER: Below fixed -->
 
         </div>
 

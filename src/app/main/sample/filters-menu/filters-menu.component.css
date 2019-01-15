@@ -5,6 +5,7 @@
     position:fixed;
     background: transparent;
     right: 0;
+    top: 65px;
     z-index:999;
 }
 
