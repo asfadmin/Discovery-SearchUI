@@ -1,7 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
 
-import { faChevronLeft, faChevronRight } from '@fortawesome/free-solid-svg-icons';
-
 @Component({
   selector: 'app-toggle-button',
   templateUrl: './toggle-button.component.html',
@@ -10,8 +8,8 @@ import { faChevronLeft, faChevronRight } from '@fortawesome/free-solid-svg-icons
 export class ToggleButtonComponent implements OnInit {
   @Input() isOpen: boolean;
 
-  public openIcon = faChevronLeft;
-  public closedIcon = faChevronRight;
+  public openIcon = 'keyboard_arrow_down';
+  public closedIcon = 'keyboard_arrow_up';
 
   constructor() { }
 

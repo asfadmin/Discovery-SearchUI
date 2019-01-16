@@ -1,6 +1,7 @@
 <div
   [@changeMenuState]="(isFiltersMenuOpen$ | async) ? 'shown' : 'hidden'"
-  class="position">
+  class="position"
+  >
 
 <app-toggle-button
   (click)="onToggleHide()"
