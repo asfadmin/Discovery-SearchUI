@@ -1,7 +1,21 @@
-.position {
+.position-1 {
   position:fixed;
   right: 10px;
-  bottom: 10px;
+  bottom: 100px;
+  z-index: 1203;
+}
+
+.position-2 {
+  position:fixed;
+  right: 40px;
+  bottom: 100px;
+  z-index: 1203;
+}
+
+.position-3 {
+  position:fixed;
+  right: 70px;
+  bottom: 100px;
   z-index: 1203;
 }
 

@@ -5,14 +5,14 @@ import {
 } from '@angular/core';
 
 import { Observable, combineLatest } from 'rxjs';
-import { map, filter, switchMap } from 'rxjs/operators';
+import { map, filter, switchMap, tap } from 'rxjs/operators';
 
 import { WKT } from 'ol/format';
 import { Vector as VectorLayer} from 'ol/layer';
 import { Vector as VectorSource } from 'ol/source';
 
 import { SentinelGranule, MapViewType } from '../models/';
-import { MapService } from '../services';
+import { MapService, UrlStateService } from '../services';
 
 
 @Component({
@@ -32,17 +32,30 @@ export class MapComponent implements OnInit {
 
   @Output() newMapView = new EventEmitter<MapViewType>();
 
-  constructor(private mapService: MapService) {}
+  private isInitMap = true;
 
-  ngOnInit() {
+  constructor(
+    private mapService: MapService,
+    private urlStateService: UrlStateService,
+  ) {}
+
+  ngOnInit(): void {
     this.view$.pipe(
       map(view => this.setMapWith(view)),
+      tap(() => {
+        if (this.isInitMap) {
+          this.urlStateService.load();
+        }
+
+        this.isInitMap = false;
+      }),
       switchMap(newMap =>
         this.granulePolygonsLayer(this.mapService.epsg())
       ),
     ).subscribe(
       layer => this.mapService.setLayer(layer)
     );
+
   }
 
   public onNewProjection(view: MapViewType): void {

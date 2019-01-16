@@ -1,18 +1,24 @@
-<mat-card class="m-2 p-0">
-  <ul class="list-group m-0 p-0">
-  <li class="list-group-item" *ngFor="let product of products">
-        <img [src]="product.thumbnail" class="p-0 m-0 img-thumbnail img-fluid product--thumbnail">
+<mat-card>
+  <mat-action-list>
+    <button mat-list-item *ngFor="let product of products">
 
-        <div class="p-0 mr-5 float-right product--info">
-          <div>
-              {{ product.name | truncate : 10 }}
-              <fa-icon class="ml-2" [icon]="copyIcon"></fa-icon>
-          </div>
-          <a [href]="product.downloadUrl" class="p-1 badge badge-success">
-            {{ getReadableSize(product.bytes) }}
-            <fa-icon class="ml-2" [icon]="downloadIcon"></fa-icon>
-          </a>
+        <img matListAvatar class="size" [src]="product.thumbnail">
+
+        <app-product-name [name]="product.name" matLine></app-product-name>
+
+        <div matLine>
+          <span matTooltip="Path" matTooltipPosition="after"> 100</span>,
+          <span matTooltip="Frame" matTooltipPosition="after"> 100</span>,
+          <span matTooltip="Polarization" matTooltipPosition="after">VV</span>,
+          <span matTooltip="Flight Direction" matTooltipPosition="after">Ascending</span>,
+          <span matTooltip="Absolute Orbit" matTooltipPosition="after">15390</span>
         </div>
-    </li>
-  </ul>
+
+        <a matLine [href]="product.downloadUrl">
+          {{ getReadableSize(product.bytes) }}
+          <fa-icon class="ml-2" [icon]="downloadIcon"></fa-icon>
+        </a>
+
+    </button>
+  </mat-action-list>
 </mat-card>

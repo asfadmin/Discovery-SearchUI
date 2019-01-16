@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
-import { MatCardModule } from '@angular/material';
+import { MatCardModule, MatButtonModule } from '@angular/material';
 
 import { FilterSelectorComponent } from './filter-selector.component';
 import { FilterIconComponent } from './filter-icon/filter-icon.component';
@@ -14,6 +14,7 @@ import { FilterIconComponent } from './filter-icon/filter-icon.component';
   imports: [
     CommonModule,
     MatCardModule,
+    MatButtonModule,
   ],
   exports: [ FilterSelectorComponent ],
 })

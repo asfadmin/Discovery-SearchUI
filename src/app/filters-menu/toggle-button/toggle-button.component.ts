@@ -15,6 +15,6 @@ export class ToggleButtonComponent implements OnInit {
 
   constructor() { }
 
-  ngOnInit() {
+  ngOnInit(): void {
   }
 }

@@ -1,7 +1,7 @@
-<div
-  class="filter-icon btn btn-outline-light p-2 w-100"
-  [ngClass]="{'active': isSelected}"
-  >
+<button
+  mat-button
+  [ngClass]="{'active': isSelected}" >
+
   <img
     [title]="filterTitle"
     class='filter-icon__image img-fluid'
@@ -9,4 +9,4 @@
   <div class="text-secondary text-center pt-1 mt-2">
     {{ filterTitle }}
   </div>
-</div>
+</button>

@@ -15,22 +15,22 @@ import { AsfApiService, RoutedSearchService, UrlStateService } from './services'
 import * as models from './models';
 
 @Component({
-  selector: 'app-root',
+  selector   : 'app-root',
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.css']
+  styleUrls  : ['./app.component.css']
 })
 export class AppComponent implements OnInit {
+
   public granules$ = this.store$.select(granulesStore.getGranules);
   public loading$  = this.store$.select(granulesStore.getLoading);
   public view$ = this.store$.select(mapStore.getMapView);
 
   constructor(
     private routedSearchService: RoutedSearchService,
-    private urlStateService: UrlStateService,
     private store$: Store<AppState>
   ) {}
 
-  public ngOnInit() {
+  public ngOnInit(): void {
     this.routedSearchService.query('');
   }
 

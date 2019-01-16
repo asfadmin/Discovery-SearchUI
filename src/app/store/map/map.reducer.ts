@@ -6,14 +6,10 @@ import { MapViewType, LonLat } from '../../models';
 
 export interface MapState {
   view: MapViewType;
-  mapCenter: LonLat;
-  mapZoom: number;
 }
 
 const initState: MapState = {
-  view: MapViewType.EQUITORIAL,
-  mapCenter: { lon: 0, lat: 0 },
-  mapZoom: 3
+  view: MapViewType.EQUITORIAL
 };
 
 
@@ -23,20 +19,6 @@ export function mapReducer(state = initState, action: MapActions): MapState {
       return {
         ...state,
         view: action.payload
-      };
-    }
-
-    case MapActionType.UPDATE_MAP_CENTER: {
-      return {
-        ...state,
-        mapCenter: action.payload
-      };
-    }
-
-    case MapActionType.UPDATE_MAP_ZOOM: {
-      return {
-        ...state,
-        mapZoom: action.payload
       };
     }
 
