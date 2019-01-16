@@ -4,7 +4,7 @@ import { Router, ActivatedRoute, Params } from '@angular/router';
 import { Store, Action } from '@ngrx/store';
 
 import { combineLatest, Subscription } from 'rxjs';
-import { filter, map, switchMap, skip } from 'rxjs/operators';
+import { filter, map, switchMap, skip, tap } from 'rxjs/operators';
 
 import { AppState } from './../../store';
 import * as granulesStore from './../../store/granules';
@@ -33,25 +33,27 @@ export class UrlStateService {
   ) {}
 
   public load(): void {
-    this.activatedRoute.queryParams.subscribe(params => {
-        if (this.isNotLoaded) {
-          this.isNotLoaded = false;
-          this.loadStateFrom(params);
-        }
-      });
+    this.activatedRoute.queryParams.pipe(
+      skip(1),
+      filter(params => this.isNotLoaded),
+      tap(() => this.isNotLoaded = false)
+    )
+    .subscribe(params => {
+      this.loadStateFrom(params);
+    });
 
     this.store$.select(uiStore.getUIState).pipe(
       skip(1),
       map(uiState => ({
-          isFiltersMenuOpen: uiState.isFiltersMenuOpen,
-          selectedFilter: uiState.selectedFilter,
+        isFiltersMenuOpen: uiState.isFiltersMenuOpen,
+        selectedFilter: uiState.selectedFilter,
       }))
     ).subscribe(this.updateRouteWithParams);
 
     this.store$.select(filterStore.getSelectedPlatformNames).pipe(
       skip(1),
       map(platforms => ({
-          selectedPlatforms: Array.from(platforms).join(','),
+        selectedPlatforms: Array.from(platforms).join(','),
       }))
     ).subscribe(this.updateRouteWithParams);
 
@@ -82,6 +84,7 @@ export class UrlStateService {
 
   private loadStateFrom(params: Params): void {
     this.params = { ...this.params, ...params };
+    console.log('loading state from url', params);
 
     if (params.isFiltersMenuOpen) {
       const action = params.isFiltersMenuOpen !== 'false' ?
