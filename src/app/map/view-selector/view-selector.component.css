@@ -1,7 +1,7 @@
 .position-1 {
   position:fixed;
   right: 10px;
-  bottom: 100px;
+  bottom: 10px;
   z-index: 1203;
 }
 
@@ -19,14 +19,12 @@
   z-index: 1203;
 }
 
-button {
+.view-btn {
   background-image: url("/assets/icons/projection-icons.png");
   background-size: 90px 30px;
   content: '';
   width: 25px;
   height: 25px;
-  margin-top: -3px;
-  margin-left: -25px;
 }
 
 .arctic {

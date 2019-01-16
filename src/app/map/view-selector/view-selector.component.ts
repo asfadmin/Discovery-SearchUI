@@ -5,20 +5,18 @@ import { MapViewType } from '../../models';
 @Component({
   selector: 'app-view-selector',
   template: `
-    <div class="position-1">
-      <button  (click)="onArcticSelected()"
-        type="button" class="btn btn-light arctic"></button>
-    </div>
+    <mat-button-toggle-group class="position-1" name="viewSelect" aria-label="Font Style">
+      <mat-button-toggle (click)="onArcticSelected()" >
+        <div class="view-btn arctic"></div>
+      </mat-button-toggle>
+      <mat-button-toggle (click)="onEquitorialSelected()" >
+        <div class="view-btn equatorial"></div>
+      </mat-button-toggle>
 
-    <div class="position-2">
-      <button  (click)="onEquitorialSelected()"
-        type="button" class="btn btn-light equatorial"></button>
-    </div>
-
-    <div class="position-3">
-      <button  (click)="onAntarcticSelected()"
-        type="button" class="btn btn-light antarctic"></button>
-    </div>
+      <mat-button-toggle (click)="onAntarcticSelected()" >
+        <div class="view-btn antarctic"></div>
+      </mat-button-toggle>
+    </mat-button-toggle-group>
   `,
   styleUrls: ['./view-selector.component.css']
 })
