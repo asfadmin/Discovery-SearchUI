@@ -2,6 +2,8 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ToggleButtonComponent } from './toggle-button.component';
 
+import { MatIconModule, MatButtonModule } from '@angular/material';
+
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 @NgModule({
@@ -9,6 +11,8 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
   imports: [
     CommonModule,
     FontAwesomeModule,
+    MatIconModule,
+    MatButtonModule,
   ],
   exports: [
     ToggleButtonComponent

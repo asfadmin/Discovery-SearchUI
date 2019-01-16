@@ -1,6 +1,5 @@
-<button
-  class="menu-toggle-button btn btn-light clickable">
-  <div>
-    <fa-icon [icon]="isOpen ? openIcon : closedIcon"></fa-icon>
-  </div>
+<button mat-raised-button class="menu-toggle-button">
+
+  <mat-icon>{{ isOpen ? openIcon : closedIcon }}</mat-icon>
+
 </button>
