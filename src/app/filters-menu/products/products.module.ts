@@ -1,15 +1,11 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
-import {
-  MatCardModule,
-  MatButtonModule,
-  MatListModule,
-  MatTooltipModule,
-} from '@angular/material';
 import { TruncateModule } from '@yellowspot/ng-truncate';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { ClipboardModule } from 'ngx-clipboard';
+
+import { MatSharedModule } from '../../mat-shared.module';
 
 import { ProductsComponent } from './products.component';
 import { Sentinel1ProductComponent } from './sentinel1-product/sentinel1-product.component';
@@ -24,11 +20,7 @@ import { ProductNameComponent } from './sentinel1-product/product-name/product-n
   ],
   imports: [
     CommonModule,
-
-    MatCardModule,
-    MatButtonModule,
-    MatListModule,
-    MatTooltipModule,
+    MatSharedModule,
 
     TruncateModule,
     FontAwesomeModule,

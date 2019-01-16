@@ -3,13 +3,9 @@ import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
-import {
-  MatInputModule,
-  MatCardModule,
-  MatFormFieldModule ,
-  MatButtonModule
-} from '@angular/material';
+import { MatFormFieldModule, MatInputModule } from '@angular/material';
 
+import { MatSharedModule } from '../../mat-shared.module';
 import { SearchBarComponent } from './search-bar.component';
 
 
@@ -21,8 +17,8 @@ import { SearchBarComponent } from './search-bar.component';
 
     MatInputModule,
     MatFormFieldModule,
-    MatButtonModule,
-    MatCardModule
+
+    MatSharedModule,
   ],
   declarations: [ SearchBarComponent ],
   exports: [ SearchBarComponent ]

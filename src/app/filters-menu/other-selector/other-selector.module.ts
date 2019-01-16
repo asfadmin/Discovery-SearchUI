@@ -1,10 +1,8 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
-import {
-  MatCardModule ,
-  MatSelectModule ,
-} from '@angular/material';
+import { MatSelectModule } from '@angular/material';
+import { MatSharedModule } from '../../mat-shared.module';
 
 import { OtherSelectorComponent } from './other-selector.component';
 
@@ -12,8 +10,8 @@ import { OtherSelectorComponent } from './other-selector.component';
   declarations: [ OtherSelectorComponent ],
   imports: [
     CommonModule,
-    MatCardModule,
-    MatSelectModule ,
+    MatSelectModule,
+    MatSharedModule,
   ],
   exports: [ OtherSelectorComponent ],
 })
