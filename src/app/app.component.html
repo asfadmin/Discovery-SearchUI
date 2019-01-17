@@ -1,6 +1,7 @@
 <div class="page-layout blank p-24" fusePerfectScrollbar>
 
 <div>
+  <app-spreadsheet></app-spreadsheet>
   <app-filters-menu
     (newSearch)="onNewSearch($event)"
     (clearSearches)="onClearGranules()"
@@ -11,7 +12,6 @@
     [granules]="granules$ | async">
   </app-granule-list>
 
-  <app-spreadsheet></app-spreadsheet>
 
   <app-map
     (newMapView)="onNewMapView($event)"

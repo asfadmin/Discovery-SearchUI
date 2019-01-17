@@ -1,7 +1,10 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
-import { MatFormFieldModule, MatInputModule, MatTableModule, MatPaginatorModule } from '@angular/material';
+import {
+  MatFormFieldModule, MatInputModule, MatTableModule,
+  MatPaginatorModule, MatSortModule
+} from '@angular/material';
 
 import { MatSharedModule } from '../mat-shared.module';
 import { SpreadsheetComponent } from './spreadsheet.component';
@@ -11,6 +14,7 @@ import { SpreadsheetComponent } from './spreadsheet.component';
   imports: [
     CommonModule,
 
+    MatSortModule,
     MatPaginatorModule,
     MatTableModule,
     MatFormFieldModule,
