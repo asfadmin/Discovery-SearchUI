@@ -5,6 +5,7 @@
     position:fixed;
     background: transparent;
     right: 100%;
+    top: 0;
     z-index:999;
 }
 
@@ -14,14 +15,9 @@
 
     float: right;
     overflow-y: auto;
-    direction: rtl;
 
     margin: 0;
     padding: 0;
 
     background: rgba(238, 238, 238, 0.3);
-}
-
-.filter-list div {
-    direction: ltr;
 }
