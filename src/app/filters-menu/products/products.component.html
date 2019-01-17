@@ -15,7 +15,7 @@
         </div>
 
         <a matLine [href]="product.downloadUrl">
-          {{ getReadableSize(product.bytes) }}
+          {{ product.bytes | readableSizeFromBytes }}
           <fa-icon class="ml-2" [icon]="downloadIcon"></fa-icon>
         </a>
 

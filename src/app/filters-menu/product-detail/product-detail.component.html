@@ -54,7 +54,7 @@
     <a mat-raised-button
       matTooltip="Accessing this data requires you to log in. Some datasets also require a proposal, or agreement with a EULA which is presented after log in."
       color="primary" [href]="product.downloadUrl">
-      {{ getReadableSize(product.bytes) }}
+      {{ product.bytes | readableSizeFromBytes }}
       <fa-icon class="dl-icon" [icon]="downloadIcon"></fa-icon>
     </a>
 

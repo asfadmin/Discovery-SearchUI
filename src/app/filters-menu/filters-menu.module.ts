@@ -5,6 +5,7 @@ import { TruncateModule } from '@yellowspot/ng-truncate';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 import { MatSharedModule } from '../mat-shared.module';
+import { PipesModule } from '../pipes';
 
 import { FiltersMenuComponent } from './filters-menu.component';
 
@@ -28,6 +29,7 @@ import { ProductDetailComponent } from './product-detail/product-detail.componen
     FontAwesomeModule,
 
     MatSharedModule,
+    PipesModule,
 
     SearchBarModule,
     ToggleButtonModule,

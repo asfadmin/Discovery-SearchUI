@@ -6,6 +6,7 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { ClipboardModule } from 'ngx-clipboard';
 
 import { MatSharedModule } from '../../mat-shared.module';
+import { PipesModule } from '../../pipes';
 
 import { ProductsComponent } from './products.component';
 import { Sentinel1ProductComponent } from './sentinel1-product/sentinel1-product.component';
@@ -21,6 +22,7 @@ import { ProductNameComponent } from './sentinel1-product/product-name/product-n
   imports: [
     CommonModule,
     MatSharedModule,
+    PipesModule,
 
     TruncateModule,
     FontAwesomeModule,
