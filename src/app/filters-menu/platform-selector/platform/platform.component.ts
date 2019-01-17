@@ -11,6 +11,7 @@ import { Platform, DateRange } from '../../../models';
 })
 export class PlatformComponent {
   @Input() platform: Platform;
+  @Input() isSelected: boolean;
 
   public detailedPlatformInfoIcon = faInfoCircle;
 

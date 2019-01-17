@@ -1,4 +1,5 @@
-<mat-list-option>
+<mat-list-option [selected]="isSelected">
+
   <span matLine class="platform__name">{{ platform.name }}</span>
   <span matLine>
     <span class="platform__date">{{ prettyDateRange(platform.date) }}</span>
@@ -8,4 +9,5 @@
       <fa-icon [icon]="detailedPlatformInfoIcon"></fa-icon>
     </span>
   </span>
+
 </mat-list-option>
