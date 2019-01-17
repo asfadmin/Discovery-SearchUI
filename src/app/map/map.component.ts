@@ -11,7 +11,7 @@ import { WKT } from 'ol/format';
 import { Vector as VectorLayer} from 'ol/layer';
 import { Vector as VectorSource } from 'ol/source';
 
-import { SentinelGranule, MapViewType } from '../models/';
+import { Sentinel1Product, MapViewType } from '../models/';
 import { MapService, UrlStateService } from '../services';
 
 
@@ -27,7 +27,7 @@ import { MapService, UrlStateService } from '../services';
   styleUrls: ['./map.component.css']
 })
 export class MapComponent implements OnInit {
-  @Input() granules$: Observable<SentinelGranule[]>;
+  @Input() granules$: Observable<Sentinel1Product[]>;
   @Input() view$: Observable<MapViewType>;
 
   @Output() newMapView = new EventEmitter<MapViewType>();
@@ -86,7 +86,7 @@ export class MapComponent implements OnInit {
     return this.granules$.pipe(
       filter(granules => granules.length > 0),
       map(granules => granules
-        .map(g => g.wktPoly)
+        .map(g => g.metadata.polygon)
         .map(wkt =>
           wktFormat.readFeature(wkt, {
             dataProjection: granuleProjection,

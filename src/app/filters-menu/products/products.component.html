@@ -2,16 +2,17 @@
   <mat-action-list>
     <button mat-list-item *ngFor="let product of products">
 
-        <img matListAvatar class="size" [src]="product.thumbnail">
+        <img matListAvatar class="size" [src]="product.browse">
 
         <app-product-name [name]="product.name" matLine></app-product-name>
 
         <div matLine>
-          <span matTooltip="Path" matTooltipPosition="after"> 100</span>,
-          <span matTooltip="Frame" matTooltipPosition="after"> 100</span>,
-          <span matTooltip="Polarization" matTooltipPosition="after">VV</span>,
-          <span matTooltip="Flight Direction" matTooltipPosition="after">Ascending</span>,
-          <span matTooltip="Absolute Orbit" matTooltipPosition="after">15390</span>
+          <span matTooltip="Path" matTooltipPosition="after">{{ product.metadata.path }}</span>,
+          <span matTooltip="Frame" matTooltipPosition="after">{{ product.metadata.frame }}</span>,
+          <span matTooltip="Polarization" matTooltipPosition="after">{{ product.metadata.polarization }}</span>,
+          <span matTooltip="Flight Direction" matTooltipPosition="after"
+            >{{ product.metadata.flightDirection === 'ASCENDING' ? 'ASC' : 'DES' }}</span>,
+          <span matTooltip="Absolute Orbit" matTooltipPosition="after">{{ product.metadata.absoluteOrbit }}</span>
         </div>
 
         <a matLine [href]="product.downloadUrl">
