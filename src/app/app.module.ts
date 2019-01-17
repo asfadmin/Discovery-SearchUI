@@ -14,6 +14,7 @@ import { reducers, metaReducers, appEffects } from './store';
 
 import { GranuleListModule } from './granule-list';
 import { FiltersMenuModule } from './filters-menu';
+import { SpreadsheetModule } from './spreadsheet';
 import { MapModule } from './map';
 
 import { AsfApiService, RoutedSearchService, UrlStateService, MapService } from './services';
@@ -42,6 +43,7 @@ export const routes = [
 
     GranuleListModule,
     FiltersMenuModule,
+    SpreadsheetModule,
     MapModule,
   ],
   providers: [

@@ -11,11 +11,13 @@
     [granules]="granules$ | async">
   </app-granule-list>
 
+  <app-spreadsheet></app-spreadsheet>
+
   <app-map
     (newMapView)="onNewMapView($event)"
     [granules$]="granules$"
-    [view$]="view$"
-    ></app-map>
+    [view$]="view$">
+  </app-map>
 </div>
 
 </div>
