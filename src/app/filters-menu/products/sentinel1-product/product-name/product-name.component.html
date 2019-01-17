@@ -8,7 +8,8 @@
   <fa-icon
     (click)="onCopyIconClicked($event)"
     class="copy-icon"
-    matTooltip="Copy to clipboard"
+    [matTooltip]="copyTooltipMessage"
+    matTooltipPosition="left"
     [icon]="copyIcon">
   </fa-icon>
 </div>
