@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 
 import {
   MatFormFieldModule, MatInputModule, MatTableModule,
-  MatPaginatorModule, MatSortModule
+  MatPaginatorModule, MatSortModule, MatCheckboxModule
 } from '@angular/material';
 
 import { MatSharedModule } from '../mat-shared.module';
@@ -19,6 +19,7 @@ import { SpreadsheetComponent } from './spreadsheet.component';
     MatTableModule,
     MatFormFieldModule,
     MatInputModule,
+    MatCheckboxModule,
 
     MatSharedModule,
   ],
