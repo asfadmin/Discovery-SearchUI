@@ -7,19 +7,19 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { MatSharedModule } from '@shared';
 import { PipesModule } from '@pipes';
 
-import { FiltersMenuComponent } from './filters-menu.component';
+import { SidebarComponent } from './sidebar.component';
 
 import { ToggleButtonModule } from './toggle-button';
-import { SearchBarModule } from './search-bar';
+import { SearchBarModule } from './search/search-bar';
 
-import { PlatformSelectorModule } from './platform-selector';
-import { FilterSelectorModule } from './filter-selector';
-import { DateSelectorModule } from './date-selector';
-import { PathSelectorModule } from './path-selector';
-import { OtherSelectorModule } from './other-selector';
+import { PlatformSelectorModule } from './search/platform-selector';
+import { FilterSelectorModule } from './search/filter-selector';
+import { DateSelectorModule } from './search/date-selector';
+import { PathSelectorModule } from './search/path-selector';
+import { OtherSelectorModule } from './search/other-selector';
 
-import { ProductsModule } from './products';
-import { ProductDetailComponent } from './product-detail/product-detail.component';
+import { ProductsListModule } from './products/products-list';
+import { ProductDetailComponent } from './products/product-detail/product-detail.component';
 
 @NgModule({
   imports: [
@@ -33,7 +33,7 @@ import { ProductDetailComponent } from './product-detail/product-detail.componen
 
     SearchBarModule,
     ToggleButtonModule,
-    ProductsModule,
+    ProductsListModule,
 
     FilterSelectorModule,
     PlatformSelectorModule,
@@ -42,9 +42,11 @@ import { ProductDetailComponent } from './product-detail/product-detail.componen
     OtherSelectorModule,
   ],
   declarations: [
-    FiltersMenuComponent,
+    SidebarComponent,
     ProductDetailComponent,
   ],
-  exports: [FiltersMenuComponent]
+  exports: [
+    SidebarComponent
+  ]
 })
-export class FiltersMenuModule { }
+export class SidebarModule { }

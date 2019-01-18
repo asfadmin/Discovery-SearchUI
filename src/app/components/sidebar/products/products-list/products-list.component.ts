@@ -5,12 +5,12 @@ import { faFileDownload } from '@fortawesome/free-solid-svg-icons';
 import { Sentinel1Product } from '@models';
 
 @Component({
-  selector: 'app-products',
-  templateUrl: './products.component.html',
-  styleUrls: ['./products.component.css'],
+  selector: 'app-products-list',
+  templateUrl: './products-list.component.html',
+  styleUrls: ['./products-list.component.css'],
   encapsulation: ViewEncapsulation.None
 })
-export class ProductsComponent {
+export class ProductsListComponent  {
   @Input() products: Sentinel1Product[];
 
   public downloadIcon = faFileDownload;

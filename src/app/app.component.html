@@ -3,11 +3,11 @@
 <div>
   <app-spreadsheet></app-spreadsheet>
 
-  <app-filters-menu
+  <app-sidebar
     (newSearch)="onNewSearch($event)"
     (clearSearches)="onClearGranules()"
     [isLoading]="loading$ | async">
-  </app-filters-menu>
+  </app-sidebar>
 
   <app-map
     (newMapView)="onNewMapView($event)"

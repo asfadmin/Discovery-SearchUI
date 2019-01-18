@@ -50,7 +50,7 @@
   </ng-container>
 
   <ng-container *ngIf="granules$ | async as granules">
-    <app-products [products]="granules"></app-products>
+    <app-products-list [products]="granules"></app-products-list>
 
     <app-product-detail
         *ngIf="granules.length > 0"

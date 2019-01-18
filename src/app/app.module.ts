@@ -12,7 +12,7 @@ import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 
 import { reducers, metaReducers, appEffects } from './store';
 
-import { FiltersMenuModule } from '@components/filters-menu';
+import { SidebarModule } from '@components/sidebar';
 import { SpreadsheetModule } from '@components/spreadsheet';
 import { MapModule } from '@components/map';
 
@@ -40,7 +40,7 @@ export const routes = [
     EffectsModule.forRoot(appEffects),
     !environment.production ? StoreDevtoolsModule.instrument() : [],
 
-    FiltersMenuModule,
+    SidebarModule,
     SpreadsheetModule,
     MapModule,
   ],

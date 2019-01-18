@@ -15,9 +15,9 @@ import * as fromGranules from '@store/granules';
 import { FilterType } from '@models';
 
 @Component({
-  selector: 'app-filters-menu',
-  templateUrl: './filters-menu.component.html',
-  styleUrls: ['./filters-menu.component.css'],
+  selector: 'app-sidebar',
+  templateUrl: './sidebar.component.html',
+  styleUrls: ['./sidebar.component.css'],
   animations: [
     trigger('changeMenuState', [
       state('shown', style({
@@ -30,7 +30,7 @@ import { FilterType } from '@models';
     ])
   ],
 })
-export class FiltersMenuComponent {
+export class SidebarComponent {
   @Input() isLoading: boolean;
 
   @Output() newSearch = new EventEmitter<string>();

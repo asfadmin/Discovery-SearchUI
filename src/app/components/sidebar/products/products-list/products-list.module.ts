@@ -8,14 +8,14 @@ import { ClipboardModule } from 'ngx-clipboard';
 import { MatSharedModule } from '@shared';
 import { PipesModule } from '@pipes';
 
-import { ProductsComponent } from './products.component';
+import { ProductsListComponent } from './products-list.component';
 import { Sentinel1ProductComponent } from './sentinel1-product/sentinel1-product.component';
 import { ProductNameComponent } from './sentinel1-product/product-name/product-name.component';
 
 
 @NgModule({
   declarations: [
-    ProductsComponent,
+    ProductsListComponent,
     Sentinel1ProductComponent,
     ProductNameComponent,
   ],
@@ -29,7 +29,7 @@ import { ProductNameComponent } from './sentinel1-product/product-name/product-n
     ClipboardModule,
   ],
   exports: [
-    ProductsComponent
+    ProductsListComponent
   ]
 })
-export class ProductsModule { }
+export class ProductsListModule { }
