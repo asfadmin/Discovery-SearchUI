@@ -12,9 +12,9 @@ import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 
 import { reducers, metaReducers, appEffects } from './store';
 
-import { FiltersMenuModule } from './filters-menu';
-import { SpreadsheetModule } from './spreadsheet';
-import { MapModule } from './map';
+import { FiltersMenuModule } from '@components/filters-menu';
+import { SpreadsheetModule } from '@components/spreadsheet';
+import { MapModule } from '@components/map';
 
 import { AsfApiService, RoutedSearchService, UrlStateService, MapService } from './services';
 import { environment } from './../environments/environment';

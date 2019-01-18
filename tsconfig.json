@@ -13,6 +13,23 @@
     "typeRoots": [
       "node_modules/@types"
     ],
+    "paths": {
+      "@components": ["src/app/components"],
+      "@services": ["src/app/services"],
+      "@pipes": ["src/app/pipes"],
+      "@models": ["src/app/models"],
+      "@store": ["src/app/store"],
+      "@shared": ["src/app/shared"],
+      "@environments": ["src/environments"],
+
+      "@components/*": ["src/app/components/*"],
+      "@services/*": ["src/app/services/*"],
+      "@pipes/*": ["src/app/pipes/*"],
+      "@models/*": ["src/app/models/*"],
+      "@store/*": ["src/app/store/*"],
+      "@shared/*": ["src/app/shared/*"],
+      "@environments/*": ["src/environments/*"]
+    },
     "lib": [
       "es2017",
       "dom"
