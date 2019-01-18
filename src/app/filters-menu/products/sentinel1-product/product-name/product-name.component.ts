@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, ViewChild, ElementRef } from '@angular/core';
 
 import { of } from 'rxjs';
 import { tap, delay } from 'rxjs/operators';
@@ -13,6 +13,8 @@ import { ClipboardService } from 'ngx-clipboard';
 })
 export class ProductNameComponent {
   @Input() name = '';
+
+  @ViewChild('copyTooltip') copyTooltip: ElementRef;
 
   constructor(private clipboardService: ClipboardService) {}
 
@@ -33,8 +35,9 @@ export class ProductNameComponent {
 
     of(this.copyPrompt).pipe(
       tap(() => this.copyTooltipMessage = this.copyNotification),
-      delay(2200)
-    ).subscribe(
+      delay(2200),
+      tap(() => console.log(this.copyTooltip)
+    )).subscribe(
       msg => this.copyTooltipMessage = msg
     );
 

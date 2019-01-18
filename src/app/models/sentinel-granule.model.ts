@@ -3,6 +3,7 @@ export interface Sentinel1Product {
   downloadUrl: string;
   bytes: number;
   browse: string;
+  platform: string;
   metadata: Sentinel1Metadata;
 }
 
@@ -13,6 +14,7 @@ export interface Sentinel1Metadata {
   beamMode: Sentinel1BeamMode;
   polarization: Sentinel1Polarization;
   flightDirection: FlightDirection;
+  frequency: string;
 
   path: number;
   frame: number;

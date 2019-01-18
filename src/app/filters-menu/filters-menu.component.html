@@ -49,10 +49,12 @@
     </app-other-selector>
   </ng-container>
 
-  <app-product-detail></app-product-detail>
-
   <app-products
     [products]="granules$ | async">
   </app-products>
+
+  <app-product-detail
+    [product]="(granules$ | async)[0]">
+  </app-product-detail>
 </div></div>
 </div>

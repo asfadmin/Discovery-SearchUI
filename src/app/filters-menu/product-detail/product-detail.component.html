@@ -1,6 +1,6 @@
 <mat-card class="card-spacing example-card">
   <mat-card-header>
-    <mat-card-title>{{ product.granuleName | truncate : 21 }}</mat-card-title>
+    <mat-card-title>{{ product.name | truncate : 21 }}</mat-card-title>
     <mat-card-subtitle>{{ product.platform }}</mat-card-subtitle>
 
   </mat-card-header>
@@ -11,35 +11,35 @@
   <mat-list>
     <h3 mat-subheader>Details</h3>
     <mat-list-item>
-      <h4 mat-line> <b>Aquisition Date:</b> {{ product.processingDate }}</h4>
+      <h4 mat-line> <b>Aquisition Date:</b> {{ product.metadata.date }}</h4>
     </mat-list-item>
 
     <mat-list-item>
-      <h4 mat-line><b>Beam Mode:</b> {{ product.beamMode }}</h4>
+      <h4 mat-line><b>Beam Mode:</b> {{ product.metadata.beamMode }}</h4>
     </mat-list-item>
 
     <mat-list-item>
-      <h4 mat-line><b>Path: </b> {{ product.relativeOrbit }}</h4>
+      <h4 mat-line><b>Path: </b> {{ product.metadata.path }}</h4>
     </mat-list-item>
 
     <mat-list-item>
-      <h4 mat-line><b>Frame:</b> {{ product.frameNumber }}</h4>
+      <h4 mat-line><b>Frame:</b> {{ product.metadata.frame }}</h4>
     </mat-list-item>
 
     <mat-list-item>
-      <h4 mat-line><b>Flight Direction:</b> {{ product.flightDirection }}</h4>
+      <h4 mat-line><b>Flight Direction:</b> {{ product.metadata.flightDirection }}</h4>
     </mat-list-item>
 
     <mat-list-item>
-      <h4 mat-line><b>Polarization: </b> {{ product.polarization }}</h4>
+      <h4 mat-line><b>Polarization: </b> {{ product.metadata.polarization }}</h4>
     </mat-list-item>
 
     <mat-list-item>
-      <h4 mat-line><b>Absolute Orbit: </b> {{ product.absoluteOrbit }}</h4>
+      <h4 mat-line><b>Absolute Orbit: </b> {{ product.metadata.absoluteOrbit }}</h4>
     </mat-list-item>
 
     <mat-list-item>
-      <h4 mat-line><b>Frequency: </b> {{ product.frequency }}</h4>
+      <h4 mat-line><b>Frequency: </b> {{ product.metadata.frequency }}</h4>
     </mat-list-item>
 
     <mat-list-item>
@@ -58,9 +58,8 @@
       <fa-icon class="dl-icon" [icon]="downloadIcon"></fa-icon>
     </a>
 
-    <a mat-raised-button color="primary" href="https://baseline.asf.alaska.edu/#/baseline?granule={{ product.granuleName }}">Baseline Tool</a>
+    <a mat-raised-button color="primary" href="https://baseline.asf.alaska.edu/#/baseline?granule={{ product.name }}">Baseline Tool</a>
     <a mat-raised-button color="primary" href="https://www.asf.alaska.edu/about/how-to-cite-data/">Citation</a>
-
 
   </mat-card-actions>
 </mat-card>
