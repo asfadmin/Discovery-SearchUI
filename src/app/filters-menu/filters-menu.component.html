@@ -49,12 +49,14 @@
     </app-other-selector>
   </ng-container>
 
-  <app-products
-    [products]="granules$ | async">
-  </app-products>
+  <ng-container *ngIf="granules$ | async as granules">
+    <app-products [products]="granules"></app-products>
 
-  <app-product-detail
-    [product]="(granules$ | async)[0]">
-  </app-product-detail>
+    <app-product-detail
+        *ngIf="granules.length > 0"
+        [product]="granules[0]">
+    </app-product-detail>
+  </ng-container>
+
 </div></div>
 </div>
