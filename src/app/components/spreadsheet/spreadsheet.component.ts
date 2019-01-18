@@ -17,7 +17,11 @@ import * as models from '@models';
   styleUrls: ['./spreadsheet.component.css']
 })
 export class SpreadsheetComponent implements OnInit {
-  displayedColumns: string[] = ['select', 'id', 'name', 'progress', 'color'];
+  displayedColumns: string[] = [
+    'name', 'date', 'type', 'beamMode',
+    'polarization', 'path', 'frame', 'absolute orbit', 'size'
+  ];
+
   dataSource: MatTableDataSource<models.Sentinel1Product>;
   selection = new SelectionModel<models.Sentinel1Product>(true, []);
 

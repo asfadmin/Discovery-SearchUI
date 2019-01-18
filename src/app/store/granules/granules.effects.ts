@@ -52,6 +52,7 @@ const getMetadataFrom = (g: any): models.Sentinel1Metadata => {
       date:  fromCMRDate(g.processingDate),
       polygon: g.stringFootprint,
 
+      productType: <models.Sentinel1ProductType>g.processingLevel,
       beamMode: <models.Sentinel1BeamMode>g.beamMode,
       polarization: <models.Sentinel1Polarization>g.polarization,
       flightDirection: <models.FlightDirection>g.flightDirection,

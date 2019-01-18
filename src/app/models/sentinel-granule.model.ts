@@ -11,6 +11,7 @@ export interface Sentinel1Metadata {
   date: Date;
   polygon: string;
 
+  productType: Sentinel1ProductType;
   beamMode: Sentinel1BeamMode;
   polarization: Sentinel1Polarization;
   flightDirection: FlightDirection;
@@ -24,6 +25,10 @@ export interface Sentinel1Metadata {
 export type FlightDirection =
   'ASCENDING' |
   'DESCENDING';
+
+export type Sentinel1ProductType =
+  'GRD' | 'SLC' | 'OCN' | 'RAW'
+;
 
 export type Sentinel1BeamMode =
   'IW'| 'EW'| 'WV'|
