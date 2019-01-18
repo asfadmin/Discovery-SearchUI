@@ -12,7 +12,6 @@ import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 
 import { reducers, metaReducers, appEffects } from './store';
 
-import { GranuleListModule } from './granule-list';
 import { FiltersMenuModule } from './filters-menu';
 import { SpreadsheetModule } from './spreadsheet';
 import { MapModule } from './map';
@@ -41,7 +40,6 @@ export const routes = [
     EffectsModule.forRoot(appEffects),
     !environment.production ? StoreDevtoolsModule.instrument() : [],
 
-    GranuleListModule,
     FiltersMenuModule,
     SpreadsheetModule,
     MapModule,
