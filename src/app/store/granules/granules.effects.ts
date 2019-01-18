@@ -9,7 +9,7 @@ import { switchMap, map, catchError, tap } from 'rxjs/operators';
 import { AppState } from '../app.reducer';
 
 import * as fromGranuleActions from './granules.action';
-import { SentinelGranule } from '../../models';
+import * as models from '../../models';
 import { AsfApiService } from '../../services';
 
 @Injectable()
@@ -36,14 +36,34 @@ export class GranulesEffects {
 const setGranules =
   (resp: any) => new fromGranuleActions.SetGranules(
     resp[0].map(
-      (g: any) => ({
-        name: g['granuleName'],
-        downloadUrl: g['downloadUrl'],
-        flightDirection: g['flightDirection'],
-        wktPoly: g['stringFootprint'],
-        bytes: +g['sizeMB'] * 1000000,
-        thumbnail: g['browse'] || 'https://datapool.asf.alaska.edu/BROWSE/SB/S1B_EW_GRDM_1SDH_20170108T192334_20170108T192434_003761_00676D_4E7B.jpg'
+      (g: any): models.Sentinel1Product => ({
+        name: g.granuleName,
+        downloadUrl: g.downloadUrl,
+        bytes: +g.sizeMB * 1000000,
+        platform: g.platform,
+        browse: g.browse || 'https://datapool.asf.alaska.edu/BROWSE/SB/S1B_EW_GRDM_1SDH_20170108T192334_20170108T192434_003761_00676D_4E7B.jpg',
+        metadata: getMetadataFrom(g)
       })
     )
   );
 
+const getMetadataFrom = (g: any): models.Sentinel1Metadata => {
+  return {
+      date:  fromCMRDate(g.processingDate),
+      polygon: g.stringFootprint,
+
+      productType: <models.Sentinel1ProductType>g.processingLevel,
+      beamMode: <models.Sentinel1BeamMode>g.beamMode,
+      polarization: <models.Sentinel1Polarization>g.polarization,
+      flightDirection: <models.FlightDirection>g.flightDirection,
+      frequency: g.frequency,
+
+      path: +g.relativeOrbit,
+      frame:  +g.frameNumber,
+      absoluteOrbit: +g.absoluteOrbit
+  };
+};
+
+const fromCMRDate = (dateString: string): Date => {
+  return new Date(dateString);
+};

@@ -1,6 +1,6 @@
 import { Action } from '@ngrx/store';
 
-import { SentinelGranule } from './../../models';
+import { Sentinel1Product } from './../../models';
 
 export enum GranulesActionType {
   QUERY = '[Asf Api] Query Api',
@@ -25,7 +25,7 @@ export class QueryError implements Action {
 export class SetGranules implements Action {
   public readonly type = GranulesActionType.SET;
 
-  constructor(public payload: SentinelGranule[]) {}
+  constructor(public payload: Sentinel1Product[]) {}
 }
 
 export class ClearGranules implements Action {

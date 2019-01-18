@@ -1,0 +1,9 @@
+<mat-card class="card-spacing filter-selector--layout">
+  <app-filter-icon *ngFor="let filter of filters"
+    class="filter-icon--size"
+    (click)="onFilterSelected(filter.type)"
+    [filterTitle]="filter.title"
+    [name]="filter.iconName"
+    [isSelected]="selectedFilter === filter.type"
+    ></app-filter-icon>
+</mat-card>
