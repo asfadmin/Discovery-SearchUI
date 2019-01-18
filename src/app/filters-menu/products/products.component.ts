@@ -2,7 +2,7 @@ import { Component, OnInit, Input, ViewEncapsulation } from '@angular/core';
 
 import { faFileDownload } from '@fortawesome/free-solid-svg-icons';
 
-import { SentinelGranule } from '../../models';
+import { Sentinel1Product } from '../../models';
 
 @Component({
   selector: 'app-products',
@@ -11,7 +11,7 @@ import { SentinelGranule } from '../../models';
   encapsulation: ViewEncapsulation.None
 })
 export class ProductsComponent {
-  @Input() products: SentinelGranule[];
+  @Input() products: Sentinel1Product[];
 
   public downloadIcon = faFileDownload;
 }
