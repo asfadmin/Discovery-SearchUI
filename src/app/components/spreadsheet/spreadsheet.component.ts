@@ -3,9 +3,10 @@ import {Component, OnInit, ViewChild} from '@angular/core';
 import { Store } from '@ngrx/store';
 
 import { of, Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 
-import {SelectionModel} from '@angular/cdk/collections';
-import {MatPaginator, MatSort, MatTableDataSource} from '@angular/material';
+import { SelectionModel } from '@angular/cdk/collections';
+import { MatPaginator, MatSort, MatTableDataSource } from '@angular/material';
 
 import { AppState } from '@store';
 import * as granuleStore from '@store/granules';
@@ -16,10 +17,10 @@ import * as models from '@models';
   templateUrl: './spreadsheet.component.html',
   styleUrls: ['./spreadsheet.component.css']
 })
-export class SpreadsheetComponent implements OnInit {
+export class SpreadsheetComponent {
   displayedColumns: string[] = [
-    'name', 'date', 'type', 'beamMode',
-    'polarization', 'path', 'frame', 'absolute orbit', 'size'
+    'select', 'name', 'date', 'productType', 'beamMode',
+    'polarization', 'path', 'frame', 'absoluteOrbit', 'bytes'
   ];
 
   dataSource: MatTableDataSource<models.Sentinel1Product>;
@@ -29,14 +30,52 @@ export class SpreadsheetComponent implements OnInit {
   @ViewChild(MatSort) sort: MatSort;
 
   constructor(private store$: Store<AppState>) {
-    this.store$.select(granuleStore.getGranules).subscribe(
-      granules => this.dataSource = new MatTableDataSource(granules)
+    this.store$.select(granuleStore.getGranules).pipe(
+      map(granules => new MatTableDataSource(granules)),
+      map(this.keepCurrentFilter),
+      map(this.addCustomProductDataAccessors)
+    ).subscribe(
+      (dataSource: MatTableDataSource<models.Sentinel1Product>) => {
+        this.dataSource = dataSource;
+        this.dataSource.paginator = this.paginator;
+        this.dataSource.sort = this.sort;
+      }
     );
   }
 
-  ngOnInit() {
-    this.dataSource.paginator = this.paginator;
-    this.dataSource.sort = this.sort;
+  private addCustomProductDataAccessors = dataSource => {
+
+    dataSource.sortingDataAccessor = (product, property) => {
+      return product[property] || product.metadata[property];
+    };
+
+    dataSource.filterPredicate = (product, filter) => {
+      const flatProduct = {...product, ...product.metadata};
+
+      const onlyTableFields = {};
+      for (const key of this.displayedColumns) {
+        if (flatProduct[key]) {
+          onlyTableFields[key] = flatProduct[key];
+        }
+      }
+
+      return Object.values(onlyTableFields)
+        .join('')
+        .toLowerCase()
+        .indexOf(filter) !== -1;
+    };
+
+    return dataSource;
+  }
+
+  private keepCurrentFilter = dataSource => {
+    const oldFilter = this.dataSource && this.dataSource.filter;
+
+    if (oldFilter) {
+      dataSource.filter = this.dataSource.filter;
+    }
+
+    return dataSource;
   }
 
   applyFilter(filterValue: string) {
@@ -56,7 +95,17 @@ export class SpreadsheetComponent implements OnInit {
   /** Selects all rows if they are not all selected; otherwise clear selection. */
   masterToggle() {
     this.isAllSelected() ?
-        this.selection.clear() :
-        this.dataSource.data.forEach(row => this.selection.select(row));
+      this.selection.clear() :
+      this.dataSource.data.forEach(row => this.selection.select(row));
+  }
+
+  public shortDate(date: Date): string {
+    const [month, day, year] = [
+      date.getUTCMonth() + 1,
+      date.getUTCDate(),
+      date.getUTCFullYear()
+    ];
+
+    return `${year}-${month}-${day}`;
   }
 }
