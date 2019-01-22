@@ -4,8 +4,8 @@
       <mat-form-field style="width: 500px; margin: 10px">
         <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Filter">
       </mat-form-field>
-      <button mat-raised-button matTooltip="Reset Columns" style="margin: 10px">
-        <mat-icon style="font-size: 15px; margin-top: 10px" (click)="onColumnsReset()">restore</mat-icon>
+      <button mat-raised-button (click)="onColumnsReset()" matTooltip="Reset Columns" style="margin: 10px" >
+        <mat-icon style="font-size: 15px; margin-top: 10px" >restore</mat-icon>
       </button>
       <div>
       </div>
