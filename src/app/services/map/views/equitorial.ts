@@ -10,7 +10,7 @@ export function equatorial(): MapView {
 
   const token = 'pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw';
   const styleUrl = 'williamh890/cjo0daohlaa972smsrpr0ow4d';
-  const url = `https://api.mapbox.com/styles/v1/${styleUrl}/tiles/256/{z}/{x}/{y}?access_token=${token}`;
+  const url = `https://api.mapbox.com/styles/v1/${styleUrl}/tiles/{z}/{x}/{y}?access_token=${token}`;
 
   const source = new XYZ({ url });
 

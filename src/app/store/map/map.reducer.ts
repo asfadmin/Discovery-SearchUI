@@ -9,7 +9,7 @@ export interface MapState {
 }
 
 const initState: MapState = {
-  view: MapViewType.EQUITORIAL
+  view: MapViewType.EQUITORIAL,
 };
 
 

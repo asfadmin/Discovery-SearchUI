@@ -3,23 +3,23 @@ import { Action } from '@ngrx/store';
 import { FilterType } from '../../models/';
 
 export enum UIActionType {
-  TOGGLE_FILTERS_MENU = '[UI] Toggle Filters Menu',
-  CLOSE_FILTERS_MENU = '[UI] Close Filters Menu',
-  OPEN_FILTERS_MENU = '[UI] Open Filters Menu',
+  TOGGLE_SIDEBAR = '[UI] Toggle Sidebar',
+  CLOSE_SIDEBAR = '[UI] Close Sidebar',
+  OPEN_SIDEBAR = '[UI] Open Sidebar ',
 
   SET_SELECTED_FILTER = '[UI] Set Selected Filter'
 }
 
-export class ToggleFiltersMenu implements Action {
-  public readonly type = UIActionType.TOGGLE_FILTERS_MENU;
+export class ToggleSidebar implements Action {
+  public readonly type = UIActionType.TOGGLE_SIDEBAR;
 }
 
-export class CloseFiltersMenu implements Action {
-  public readonly type = UIActionType.CLOSE_FILTERS_MENU;
+export class CloseSidebar implements Action {
+  public readonly type = UIActionType.CLOSE_SIDEBAR;
 }
 
-export class OpenFiltersMenu implements Action {
-  public readonly type = UIActionType.OPEN_FILTERS_MENU;
+export class OpenSidebar implements Action {
+  public readonly type = UIActionType.OPEN_SIDEBAR;
 }
 
 export class SetSelectedFilter implements Action {
@@ -29,7 +29,7 @@ export class SetSelectedFilter implements Action {
 }
 
 export type UIActions =
-  | ToggleFiltersMenu
-  | CloseFiltersMenu
-  | OpenFiltersMenu
+  | ToggleSidebar
+  | CloseSidebar
+  | OpenSidebar
   | SetSelectedFilter;
