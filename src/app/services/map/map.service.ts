@@ -4,12 +4,17 @@ import { Store } from '@ngrx/store';
 
 import { Subject } from 'rxjs';
 
+
 import { Map, View } from 'ol';
 import {getCenter} from 'ol/extent.js';
 import WMTSTileGrid from 'ol/tilegrid/WMTS.js';
+
+import Draw from 'ol/interaction/Draw.js';
 import WKT from 'ol/format/WKT.js';
+
 import {Tile as TileLayer, Vector as VectorLayer} from 'ol/layer';
 import { OSM, Vector as VectorSource, TileWMS, Layer, XYZ, WMTS } from 'ol/source';
+
 import * as proj from 'ol/proj';
 import * as customProj4 from 'ol/proj/proj4';
 import proj4 from 'proj4';
@@ -27,6 +32,14 @@ export class MapService {
   private mapView: MapView;
   private map: Map;
   private polygonLayer: Layer;
+
+  private drawSource = new VectorSource({ wrapX: false });
+  private drawLayer = new VectorLayer({ source: this.drawSource });
+  private draw = new Draw({
+      source: this.drawSource,
+      type: 'Polygon'
+    });
+
 
   public zoom$ = new Subject<number>();
   public center$ = new Subject<LonLat>();
@@ -83,6 +96,21 @@ export class MapService {
     if (!this.map) {
       this.map = this.newMap();
 
+      const wkt = new WKT();
+      const granuleProjection = 'EPSG:4326';
+
+      this.draw.on('drawend', e => {
+        const geometry = e.feature.getGeometry();
+        const wktStr = wkt.writeGeometry(geometry, {
+            dataProjection: granuleProjection,
+            featureProjection: this.epsg()
+        });
+
+        console.log(wktStr);
+      });
+
+      this.map.addInteraction(this.draw);
+
       this.map.on('moveend', e => {
         const map = e.map;
 
@@ -101,19 +129,24 @@ export class MapService {
 
   private newMap(): Map {
     return new Map({
-      layers: [ this.mapView.layer ],
+      layers: [ this.mapView.layer, this.drawLayer ],
       target: 'map',
       view: this.mapView.view,
       controls: [],
       loadTilesWhileAnimating: true
     });
+
   }
 
   private updatedMap(): Map {
     this.map.setView(this.mapView.view);
 
     this.mapView.layer.setOpacity(1);
-    this.map.getLayers().setAt(0, this.mapView.layer);
+
+    const mapLayers = this.map.getLayers();
+
+    mapLayers.setAt(0, this.mapView.layer);
+    this.drawSource.clear();
 
     return this.map;
   }
