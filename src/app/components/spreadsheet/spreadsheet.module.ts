@@ -10,9 +10,10 @@ import { TruncateModule } from '@yellowspot/ng-truncate';
 import { MatSharedModule } from '@shared';
 import { PipesModule } from '@pipes';
 import { SpreadsheetComponent } from './spreadsheet.component';
+import { HideIconComponent } from './hide-icon/hide-icon.component';
 
 @NgModule({
-  declarations: [SpreadsheetComponent],
+  declarations: [SpreadsheetComponent, HideIconComponent],
   imports: [
     CommonModule,
 
