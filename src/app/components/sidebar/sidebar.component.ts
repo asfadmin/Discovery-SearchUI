@@ -40,7 +40,7 @@ export class SidebarComponent {
   public selectedPlatformNames$ = this.store$.select(fromFilters.getSelectedPlatformNames);
   public selectedPlatforms$ = this.store$.select(fromFilters.getSelectedPlatforms);
   public error$ = this.store$.select(fromGranules.getError);
-  public isFiltersMenuOpen$ = this.store$.select(fromUI.getIsFiltersMenuOpen);
+  public isSidebarOpen$ = this.store$.select(fromUI.getIsSidebarOpen);
   public selectedFilter$ = this.store$.select(fromUI.getSelectedFilter);
   public granules$ = this.store$.select(fromGranules.getGranules);
 
@@ -61,6 +61,6 @@ export class SidebarComponent {
   }
 
   public onToggleHide(): void {
-    this.store$.dispatch(new fromUI.ToggleFiltersMenu());
+    this.store$.dispatch(new fromUI.ToggleSidebar());
   }
 }

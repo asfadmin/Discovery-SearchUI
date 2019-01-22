@@ -45,7 +45,7 @@ export class UrlStateService {
     this.store$.select(uiStore.getUIState).pipe(
       skip(1),
       map(uiState => ({
-        isFiltersMenuOpen: uiState.isFiltersMenuOpen,
+        isSidebarOpen: uiState.isSidebarOpen,
         selectedFilter: uiState.selectedFilter,
       }))
     ).subscribe(this.updateRouteWithParams);
@@ -71,7 +71,6 @@ export class UrlStateService {
       skip(1),
       map(zoom => ({ zoom }))
     ).subscribe(this.updateRouteWithParams);
-
   }
 
   private updateRouteWithParams = (queryParams: Params): void => {
@@ -84,65 +83,72 @@ export class UrlStateService {
 
   private loadStateFrom(params: Params): void {
     this.params = { ...this.params, ...params };
-    console.log('loading state from url', params);
 
-    if (params.isFiltersMenuOpen) {
-      const action = params.isFiltersMenuOpen !== 'false' ?
-        new uiStore.OpenFiltersMenu() :
-        new uiStore.CloseFiltersMenu();
+    const urlParamLoaders: { [id: string]: (string) => void } = {
+      isSidebarOpen: this.loadIsSidebarOpen,
+      selectedFilter: this.loadSelectedFilter,
+      view: this.loadMapView,
+      zoom: this.loadMapZoom,
+      center: this.loadMapCenter,
+      selectedPlatforms: this.loadSelectedPlatforms
+    };
+
+    Object.entries(urlParamLoaders)
+    .map(
+      ([paramName, load]) => load(params[paramName])
+    );
+  }
+
+  private loadIsSidebarOpen = (isSidebarOpenStr: string): void => {
+    const action = isSidebarOpenStr !== 'false' ?
+    new uiStore.OpenSidebar() :
+    new uiStore.CloseSidebar();
+
+    this.store$.dispatch(action);
+  }
+
+  private loadSelectedFilter = (selected: string): void => {
+    if (Object.values(models.FilterType).includes(selected)) {
+
+      const action = new uiStore.SetSelectedFilter(<models.FilterType>selected);
+      this.store$.dispatch(action);
+    }
+  }
+
+  private loadMapView = (view: string): void => {
+    if (Object.values(models.MapViewType).includes(view)) {
+      const action = new mapStore.SetMapView(<models.MapViewType>view);
 
       this.store$.dispatch(action);
     }
+  }
 
-    if (params.selectedFilter) {
-      const selected = params.selectedFilter;
+  private loadMapZoom = (zoomStr: string): void => {
+    const zoom = +zoomStr;
 
-      if (Object.values(models.FilterType).includes(selected)) {
-
-        const action = new uiStore.SetSelectedFilter(<models.FilterType>selected);
-        this.store$.dispatch(action);
-      }
+    if (this.isNumber(zoom)) {
+      this.mapService.setZoom(zoom);
     }
+  }
 
-    if (params.view) {
-      const view = params.view;
+  private loadMapCenter = (centerStr: string): void => {
+    const center = centerStr.split(',').map(v => +v);
 
-      if (Object.values(models.MapViewType).includes(view)) {
-        const action = new mapStore.SetMapView(<models.MapViewType>view);
+    if (center.length === 2 && center.every(this.isNumber)) {
+      const [lon, lat] = center;
 
-        this.store$.dispatch(action);
-      }
+      this.mapService.setCenter({ lon, lat });
     }
+  }
 
-    if (params.zoom) {
-      const zoom = +params.zoom;
+  private loadSelectedPlatforms = (platforms: string): void => {
+    const selectedPlatforms = platforms
+    .split(',')
+    .filter(name => models.platformNames.includes(name));
 
-      if (this.isNumber(zoom)) {
-        this.mapService.setZoom(zoom);
-      }
-    }
+    const action = new filterStore.SetSelectedPlatforms(selectedPlatforms);
 
-    if (params.center) {
-      const center = params.center.split(',').map(v => +v);
-
-      if (center.length === 2 && center.every(this.isNumber)) {
-        const [lon, lat] = center;
-
-        this.mapService.setCenter({ lon, lat });
-      }
-    }
-
-    if (params.selectedPlatforms) {
-      const platforms = params.selectedPlatforms;
-
-      const selectedPlatforms = platforms
-        .split(',')
-        .filter(name => models.platformNames.includes(name));
-
-      const action = new filterStore.SetSelectedPlatforms(selectedPlatforms);
-
-      this.store$.dispatch(action);
-    }
+    this.store$.dispatch(action);
   }
 
   private isNumber = n => !isNaN(n) && isFinite(n);

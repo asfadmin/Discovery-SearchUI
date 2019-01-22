@@ -6,12 +6,12 @@ import { FilterType } from '../../models/';
 /* State */
 
 export interface UIState {
-  isFiltersMenuOpen: boolean;
+  isSidebarOpen: boolean;
   selectedFilter: FilterType | undefined;
 }
 
 const initState: UIState = {
-  isFiltersMenuOpen: true,
+  isSidebarOpen: true,
   selectedFilter: FilterType.OTHER
 };
 
@@ -19,25 +19,25 @@ const initState: UIState = {
 
 export function uiReducer(state = initState, action: UIActions): UIState {
   switch (action.type) {
-    case UIActionType.TOGGLE_FILTERS_MENU: {
+    case UIActionType.TOGGLE_SIDEBAR: {
 
       return {
           ...state,
-          isFiltersMenuOpen: !state.isFiltersMenuOpen
+          isSidebarOpen: !state.isSidebarOpen
         };
     }
 
-    case UIActionType.CLOSE_FILTERS_MENU: {
+    case UIActionType.CLOSE_SIDEBAR: {
       return {
         ...state,
-          isFiltersMenuOpen: false
+          isSidebarOpen: false
         };
     }
 
-    case UIActionType.OPEN_FILTERS_MENU: {
+    case UIActionType.OPEN_SIDEBAR: {
       return {
         ...state,
-          isFiltersMenuOpen: true
+          isSidebarOpen: true
       };
     }
 
@@ -68,7 +68,7 @@ export const getSelectedFilter = createSelector(
   state => state.selectedFilter
 );
 
-export const getIsFiltersMenuOpen = createSelector(
+export const getIsSidebarOpen = createSelector(
   getFiltersMenuState,
-  state => state.isFiltersMenuOpen
+  state => state.isSidebarOpen
 );
