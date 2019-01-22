@@ -18,10 +18,13 @@ import * as models from '@models';
   styleUrls: ['./spreadsheet.component.css']
 })
 export class SpreadsheetComponent {
-  displayedColumns: string[] = [
+  allColumns: string[] = [
     'select', 'name', 'date', 'productType', 'beamMode',
     'polarization', 'path', 'frame', 'absoluteOrbit', 'bytes'
   ];
+
+  isColumnDisplayed: boolean[] = this.allColumns.map(_ => true);
+  displayedColumns = this.allColumns;
 
   dataSource: MatTableDataSource<models.Sentinel1Product>;
   selection = new SelectionModel<models.Sentinel1Product>(true, []);
@@ -51,7 +54,7 @@ export class SpreadsheetComponent {
 
     dataSource.filterPredicate = (product, filter) => {
       const onlyTableFieldsProduct = this.filterObject(
-        this.displayedColumns,
+        this.allColumns,
         {...product, ...product.metadata}
       );
 
@@ -71,6 +74,23 @@ export class SpreadsheetComponent {
         prod[key] = product[key];
         return prod;
       }, {});
+  }
+
+  public onRemoveColumn(e: Event, columnToRemove): void {
+    console.log(columnToRemove);
+
+    const colIndex = this.allColumns.indexOf(columnToRemove);
+    this.isColumnDisplayed[colIndex] = false;
+
+    this.displayedColumns = this.allColumns
+      .filter((_, index) => this.isColumnDisplayed[index]);
+
+    e.stopPropagation();
+  }
+
+  public onColumnsReset(): void {
+    this.displayedColumns = this.allColumns;
+    this.isColumnDisplayed = this.displayedColumns.map(_ => true);
   }
 
   private keepCurrentFilter = dataSource => {
