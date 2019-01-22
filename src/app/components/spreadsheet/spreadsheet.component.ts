@@ -76,7 +76,7 @@ export class SpreadsheetComponent {
       }, {});
   }
 
-  public onRemoveColumn(e: Event, columnToRemove): void {
+  public onRemoveColumn(columnToRemove: string): void {
     console.log(columnToRemove);
 
     const colIndex = this.allColumns.indexOf(columnToRemove);
@@ -84,8 +84,6 @@ export class SpreadsheetComponent {
 
     this.displayedColumns = this.allColumns
       .filter((_, index) => this.isColumnDisplayed[index]);
-
-    e.stopPropagation();
   }
 
   public onColumnsReset(): void {

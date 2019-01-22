@@ -26,11 +26,6 @@ table {
   width: 100%;
 }
 
-.hide-column-button {
-  font-size: 15px;
-  margin-top: 10px
-}
-
 .mat-column-select {
   overflow: initial;
 }
