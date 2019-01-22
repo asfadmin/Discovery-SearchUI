@@ -50,22 +50,27 @@ export class SpreadsheetComponent {
     };
 
     dataSource.filterPredicate = (product, filter) => {
-      const flatProduct = {...product, ...product.metadata};
+      const onlyTableFieldsProduct = this.filterObject(
+        this.displayedColumns,
+        {...product, ...product.metadata}
+      );
 
-      const onlyTableFields = {};
-      for (const key of this.displayedColumns) {
-        if (flatProduct[key]) {
-          onlyTableFields[key] = flatProduct[key];
-        }
-      }
-
-      return Object.values(onlyTableFields)
+      return Object.values(onlyTableFieldsProduct)
         .join('')
         .toLowerCase()
         .indexOf(filter) !== -1;
     };
 
     return dataSource;
+  }
+
+  private filterObject(allowedKeys: string[], product: Object): Object {
+    return Object.keys(product)
+      .filter(key => allowedKeys.includes(key))
+      .reduce((prod, key) => {
+        prod[key] = product[key];
+        return prod;
+      }, {});
   }
 
   private keepCurrentFilter = dataSource => {
