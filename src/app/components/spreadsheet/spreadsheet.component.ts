@@ -18,8 +18,8 @@ import * as models from '@models';
 })
 export class SpreadsheetComponent implements OnInit {
   displayedColumns: string[] = [
-    'name', 'date', 'type', 'beamMode',
-    'polarization', 'path', 'frame', 'absolute orbit', 'size'
+    'select', 'name', 'date', 'productType', 'beamMode',
+    'polarization', 'path', 'frame', 'absolute orbit', 'bytes'
   ];
 
   dataSource: MatTableDataSource<models.Sentinel1Product>;
@@ -30,13 +30,39 @@ export class SpreadsheetComponent implements OnInit {
 
   constructor(private store$: Store<AppState>) {
     this.store$.select(granuleStore.getGranules).subscribe(
-      granules => this.dataSource = new MatTableDataSource(granules)
+      granules => {
+        let oldFilter: string;
+
+        if (this.dataSource) {
+         oldFilter = this.dataSource.filter;
+        }
+
+        this.dataSource = new MatTableDataSource(granules);
+
+        if (!!oldFilter) {
+          this.dataSource.filter = oldFilter;
+        }
+
+        this.dataSource.sortingDataAccessor = (product, property) => {
+          return product[property] || product.metadata[property];
+        };
+
+        this.dataSource.filterPredicate = (product, filter) => {
+          const flatProduct = {...product, ...product.metadata};
+
+          return Object.values(flatProduct)
+            .join('')
+            .toLowerCase()
+            .includes(filter);
+        };
+
+        this.dataSource.paginator = this.paginator;
+        this.dataSource.sort = this.sort;
+      }
     );
   }
 
   ngOnInit() {
-    this.dataSource.paginator = this.paginator;
-    this.dataSource.sort = this.sort;
   }
 
   applyFilter(filterValue: string) {
@@ -58,5 +84,15 @@ export class SpreadsheetComponent implements OnInit {
     this.isAllSelected() ?
         this.selection.clear() :
         this.dataSource.data.forEach(row => this.selection.select(row));
+  }
+
+  public shortDate(date: Date): string {
+    const [month, day, year] = [
+      date.getUTCMonth() + 1,
+      date.getUTCDate(),
+      date.getUTCFullYear()
+    ];
+
+    return `${year}-${month}-${day}`;
   }
 }
