@@ -36,13 +36,13 @@ export class MapService {
   private drawSource = new VectorSource({ wrapX: false });
   private drawLayer = new VectorLayer({ source: this.drawSource });
   private draw = new Draw({
-      source: this.drawSource,
-      type: 'Polygon'
-    });
-
+    source: this.drawSource,
+    type: 'Polygon'
+  });
 
   public zoom$ = new Subject<number>();
   public center$ = new Subject<LonLat>();
+  public searchPolygon$ = new Subject<string>();
 
   constructor() {}
 
@@ -59,9 +59,11 @@ export class MapService {
     this.map.addLayer(this.polygonLayer);
   }
 
-  public setCenter(center: LonLat): void {
-    console.log('setting center too ', center);
+  public clearDrawLayer(): void {
+    this.drawSource.clear();
+  }
 
+  public setCenter(center: LonLat): void {
     const { lon, lat } = center;
 
 
@@ -71,8 +73,6 @@ export class MapService {
   }
 
   public setZoom(zoom: number): void {
-    console.log('setting zoom too', zoom);
-
     this.map.getView().animate({
       zoom, duration: 500
     });
@@ -101,12 +101,12 @@ export class MapService {
 
       this.draw.on('drawend', e => {
         const geometry = e.feature.getGeometry();
-        const wktStr = wkt.writeGeometry(geometry, {
-            dataProjection: granuleProjection,
-            featureProjection: this.epsg()
+        const wktString = wkt.writeGeometry(geometry, {
+          dataProjection: granuleProjection,
+          featureProjection: this.epsg()
         });
 
-        console.log(wktStr);
+        this.searchPolygon$.next(wktString);
       });
 
       this.map.addInteraction(this.draw);
@@ -146,7 +146,7 @@ export class MapService {
     const mapLayers = this.map.getLayers();
 
     mapLayers.setAt(0, this.mapView.layer);
-    this.drawSource.clear();
+    this.clearDrawLayer();
 
     return this.map;
   }
