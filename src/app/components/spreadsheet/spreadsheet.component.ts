@@ -20,7 +20,7 @@ import * as models from '@models';
 export class SpreadsheetComponent {
   displayedColumns: string[] = [
     'select', 'name', 'date', 'productType', 'beamMode',
-    'polarization', 'path', 'frame', 'absolute orbit', 'bytes'
+    'polarization', 'path', 'frame', 'absoluteOrbit', 'bytes'
   ];
 
   dataSource: MatTableDataSource<models.Sentinel1Product>;
@@ -52,10 +52,17 @@ export class SpreadsheetComponent {
     dataSource.filterPredicate = (product, filter) => {
       const flatProduct = {...product, ...product.metadata};
 
-      return Object.values(flatProduct)
+      const onlyTableFields = {};
+      for (const key of this.displayedColumns) {
+        if (flatProduct[key]) {
+          onlyTableFields[key] = flatProduct[key];
+        }
+      }
+
+      return Object.values(onlyTableFields)
         .join('')
         .toLowerCase()
-        .includes(filter);
+        .indexOf(filter) !== -1;
     };
 
     return dataSource;
