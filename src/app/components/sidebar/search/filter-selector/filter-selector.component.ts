@@ -11,7 +11,7 @@ export interface FilterSelector {
 @Component({
   selector: 'app-filter-selector',
   templateUrl: './filter-selector.component.html',
-  styleUrls: ['./filter-selector.component.css']
+  styleUrls: ['./filter-selector.component.scss']
 })
 export class FilterSelectorComponent {
   @Input() selectedFilter: FilterType;

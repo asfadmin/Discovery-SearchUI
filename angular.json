@@ -24,7 +24,7 @@
             ],
             "styles": [
               "./node_modules/ol/ol.css",
-              "src/styles.css"
+              "src/styles.scss"
             ],
             "scripts": []
           },

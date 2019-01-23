@@ -24,7 +24,7 @@ import { MapService, UrlStateService } from '@services';
       (newProjection)="onNewProjection($event)">
     </app-view-selector>
   `,
-  styleUrls: ['./map.component.css']
+  styleUrls: ['./map.component.scss']
 })
 export class MapComponent implements OnInit {
   @Input() granules$: Observable<Sentinel1Product[]>;
