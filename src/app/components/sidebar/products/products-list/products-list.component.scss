@@ -1,11 +1,11 @@
-.product--container: {
+.product--container {
   display: flex;
   flex-direction: row;
   justify-content: flex-start;
-}
 
-.product--container:hover {
-  background-color: grey;
+  &:hover {
+    background-color: grey;
+  }
 }
 
 .product--thumbnail {

@@ -7,7 +7,7 @@ import { Sentinel1Product } from '@models';
 @Component({
   selector: 'app-products-list',
   templateUrl: './products-list.component.html',
-  styleUrls: ['./products-list.component.css'],
+  styleUrls: ['./products-list.component.scss'],
   encapsulation: ViewEncapsulation.None
 })
 export class ProductsListComponent  {

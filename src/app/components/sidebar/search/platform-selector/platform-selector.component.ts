@@ -4,7 +4,7 @@ import { Platform, platforms } from '@models';
 @Component({
   selector: 'app-platform-selector',
   templateUrl: './platform-selector.component.html',
-  styleUrls: ['./platform-selector.component.css']
+  styleUrls: ['./platform-selector.component.scss']
 })
 export class PlatformSelectorComponent {
   @Input() platforms: Platform[] = [];

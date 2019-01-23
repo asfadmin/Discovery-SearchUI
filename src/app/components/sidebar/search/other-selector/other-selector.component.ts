@@ -5,7 +5,7 @@ import * as models from '@models';
 @Component({
   selector: 'app-other-selector',
   templateUrl: './other-selector.component.html',
-  styleUrls: ['./other-selector.component.css']
+  styleUrls: ['./other-selector.component.scss']
 })
 export class OtherSelectorComponent implements OnInit {
   @Input() selected: models.Platform[];

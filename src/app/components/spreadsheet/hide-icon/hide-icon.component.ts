@@ -3,7 +3,7 @@ import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 @Component({
   selector: 'app-hide-icon',
   templateUrl: './hide-icon.component.html',
-  styleUrls: ['./hide-icon.component.css']
+  styleUrls: ['./hide-icon.component.scss']
 })
 export class HideIconComponent implements OnInit {
   @Output() hide = new EventEmitter<void>();

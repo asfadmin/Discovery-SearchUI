@@ -5,7 +5,7 @@ import { MapViewType } from '@models';
 @Component({
   selector: 'app-view-selector',
   templateUrl: './view-selector.component.html',
-  styleUrls: ['./view-selector.component.css']
+  styleUrls: ['./view-selector.component.scss']
 })
 export class ViewSelectorComponent {
   @Output() newProjection = new EventEmitter<MapViewType>();

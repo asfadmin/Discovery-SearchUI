@@ -24,7 +24,7 @@
             ],
             "styles": [
               "./node_modules/ol/ol.css",
-              "src/styles.css"
+              "src/styles.scss"
             ],
             "scripts": []
           },
@@ -127,5 +127,10 @@
   "defaultProject": "search-ui",
   "cli": {
     "defaultCollection": "@ngrx/schematics"
+  },
+  "schematics": {
+    "@schematics/angular:component": {
+      "styleext": "scss"
+    }
   }
 }

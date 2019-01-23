@@ -57,7 +57,10 @@
     "karma-jasmine": "~1.1.2",
     "karma-jasmine-html-reporter": "^1.4.0",
     "ngrx-store-freeze": "^0.2.4",
+    "node-sass": "^4.11.0",
     "protractor": "^5.4.2",
+    "stylelint": "^9.10.1",
+    "stylelint-config-standard": "^18.2.0",
     "ts-node": "~7.0.0",
     "tslint": "~5.11.0",
     "typescript": "3.1.6"

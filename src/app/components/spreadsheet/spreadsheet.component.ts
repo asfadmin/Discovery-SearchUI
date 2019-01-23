@@ -15,7 +15,7 @@ import * as models from '@models';
 @Component({
   selector: 'app-spreadsheet',
   templateUrl: './spreadsheet.component.html',
-  styleUrls: ['./spreadsheet.component.css']
+  styleUrls: ['./spreadsheet.component.scss']
 })
 export class SpreadsheetComponent {
   allColumns: string[] = [

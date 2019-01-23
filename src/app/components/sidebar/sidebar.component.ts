@@ -17,7 +17,7 @@ import { FilterType } from '@models';
 @Component({
   selector: 'app-sidebar',
   templateUrl: './sidebar.component.html',
-  styleUrls: ['./sidebar.component.css'],
+  styleUrls: ['./sidebar.component.scss'],
   animations: [
     trigger('changeMenuState', [
       state('shown', style({
