@@ -53,7 +53,6 @@ export class MapComponent implements OnInit {
     ).subscribe(
       layer => this.mapService.setLayer(layer)
     );
-
   }
 
   public onNewProjection(view: MapViewType): void {

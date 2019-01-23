@@ -4,7 +4,6 @@ import { Store } from '@ngrx/store';
 
 import { Subject } from 'rxjs';
 
-
 import { Map, View } from 'ol';
 import {getCenter} from 'ol/extent.js';
 import WMTSTileGrid from 'ol/tilegrid/WMTS.js';
@@ -19,8 +18,8 @@ import * as proj from 'ol/proj';
 import * as customProj4 from 'ol/proj/proj4';
 import proj4 from 'proj4';
 
-import { AppState } from '../../store';
-import * as mapStore from '../../store/map';
+import { AppState } from '@store';
+import * as mapStore from '@store/map';
 import { equatorial, antarctic, arctic, MapView } from './views';
 import { LonLat, MapViewType } from '@models';
 
@@ -44,8 +43,6 @@ export class MapService {
   public center$ = new Subject<LonLat>();
   public searchPolygon$ = new Subject<string>();
 
-  constructor() {}
-
   public epsg(): string {
     return this.mapView.projection.epsg;
   }
@@ -63,12 +60,12 @@ export class MapService {
     this.drawSource.clear();
   }
 
-  public setCenter(center: LonLat): void {
-    const { lon, lat } = center;
-
+  public setCenter(centerPos: LonLat): void {
+    const { lon, lat } = centerPos;
 
     this.map.getView().animate({
-      'center': proj.fromLonLat([lon, lat]), duration: 500
+      center: proj.fromLonLat([lon, lat]),
+      duration: 500
     });
   }
 
@@ -91,42 +88,13 @@ export class MapService {
   private setMap(mapView: MapView): void {
     this.mapView = mapView;
 
-    if (!this.map) {
-      this.map = this.newMap();
-
-      const wkt = new WKT();
-      const granuleProjection = 'EPSG:4326';
-
-      this.draw.on('drawend', e => {
-        const geometry = e.feature.getGeometry();
-        const wktString = wkt.writeGeometry(geometry, {
-          dataProjection: granuleProjection,
-          featureProjection: this.epsg()
-        });
-
-        this.searchPolygon$.next(wktString);
-      });
-
-      this.map.addInteraction(this.draw);
-
-      this.map.on('moveend', e => {
-        const map = e.map;
-
-        const view = map.getView();
-
-        const [lon, lat] = proj.toLonLat(view.getCenter());
-        const zoom = view.getZoom();
-
-        this.zoom$.next(zoom);
-        this.center$.next({lon, lat});
-      });
-    } else {
-      this.map = this.updatedMap();
-    }
+    this.map = (!this.map) ?
+      this.createNewMap() :
+      this.updatedMap();
   }
 
-  private newMap(): Map {
-    return new Map({
+  private createNewMap(): Map {
+    const newMap = new Map({
       layers: [ this.mapView.layer, this.drawLayer ],
       target: 'map',
       view: this.mapView.view,
@@ -134,6 +102,34 @@ export class MapService {
       loadTilesWhileAnimating: true
     });
 
+    const wkt = new WKT();
+    const granuleProjection = 'EPSG:4326';
+
+    this.draw.on('drawend', e => {
+      const geometry = e.feature.getGeometry();
+      const wktString = wkt.writeGeometry(geometry, {
+        dataProjection: granuleProjection,
+        featureProjection: this.epsg()
+      });
+
+      this.searchPolygon$.next(wktString);
+    });
+
+    newMap.addInteraction(this.draw);
+
+    newMap.on('moveend', e => {
+      const map = e.map;
+
+      const view = map.getView();
+
+      const [lon, lat] = proj.toLonLat(view.getCenter());
+      const zoom = view.getZoom();
+
+      this.zoom$.next(zoom);
+      this.center$.next({lon, lat});
+    });
+
+    return newMap;
   }
 
   private updatedMap(): Map {
