@@ -11,7 +11,7 @@
       </div>
     </div>
 
-    <div class="mat-elevation-z8">
+    <div class="table-div mat-elevation-z8">
       <table mat-table [dataSource]="dataSource" matSort>
 
         <!-- Checkbox Column -->
@@ -36,7 +36,7 @@
             <app-hide-icon (hide)="onRemoveColumn('name')"></app-hide-icon>
           </th>
           <td mat-cell *matCellDef="let product">
-            {{product.name | truncate : 21 : "....."}}{{product.name | truncate : -4 : ""}} </td>
+            {{product.name | truncate : 10 : "....."}}{{product.name | truncate : -4 : ""}} </td>
         </ng-container>
 
         <ng-container matColumnDef="date">
