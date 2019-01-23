@@ -95,7 +95,7 @@ export class UrlStateService {
 
     Object.entries(urlParamLoaders)
     .map(
-      ([paramName, load]) => load(params[paramName])
+      ([paramName, load]) => params[paramName] && load(params[paramName])
     );
   }
 
