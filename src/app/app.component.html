@@ -4,10 +4,9 @@
   <app-spreadsheet></app-spreadsheet>
 
   <app-sidebar
-    (newSearch)="onNewSearch($event)"
-    (clearSearches)="onClearGranules()"
-    [isLoading]="loading$ | async">
-  </app-sidebar>
+     (newSearch)="onNewSearch()"
+     (clearSearch)="onClearSearch()"
+    ></app-sidebar>
 
   <app-map
     (newMapView)="onNewMapView($event)"

@@ -6,10 +6,10 @@ import { combineLatest, Subscription } from 'rxjs';
 import { filter, map, switchMap, skip } from 'rxjs/operators';
 
 import { AppState } from './store';
-import * as granulesStore from './store/granules';
-import * as mapStore from './store/map';
-import * as uiStore from './store/ui';
-import * as filterStore from './store/filters';
+import * as granulesStore from '@store/granules';
+import * as mapStore from '@store/map';
+import * as uiStore from '@store/ui';
+import * as filterStore from '@store/filters';
 
 import { AsfApiService, RoutedSearchService, UrlStateService } from './services';
 import * as models from './models';
@@ -19,26 +19,21 @@ import * as models from './models';
   templateUrl: './app.component.html',
   styleUrls  : ['./app.component.scss']
 })
-export class AppComponent implements OnInit {
+export class AppComponent {
 
   public granules$ = this.store$.select(granulesStore.getGranules);
-  public loading$  = this.store$.select(granulesStore.getLoading);
   public view$ = this.store$.select(mapStore.getMapView);
 
   constructor(
+    private store$: Store<AppState>,
     private routedSearchService: RoutedSearchService,
-    private store$: Store<AppState>
   ) {}
 
-  public ngOnInit(): void {
+  public onNewSearch(): void {
     this.routedSearchService.query('');
   }
 
-  public onNewSearch(query: string): void {
-    this.routedSearchService.query(query);
-  }
-
-  public onClearGranules(): void {
+  public onClearSearch(): void {
     this.routedSearchService.clear();
     this.store$.dispatch(new granulesStore.ClearGranules());
   }

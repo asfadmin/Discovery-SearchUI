@@ -8,11 +8,12 @@ import {
 import { Store } from '@ngrx/store';
 
 import { AppState } from '@store';
-import * as fromFilters from '@store/filters';
-import * as fromUI from '@store/ui';
-import * as fromGranules from '@store/granules';
+import * as filtersStore from '@store/filters';
+import * as uiStore from '@store/ui';
+import * as granulesStore from '@store/granules';
 
 import { FilterType } from '@models';
+import { RoutedSearchService } from '@services';
 
 @Component({
   selector: 'app-sidebar',
@@ -33,34 +34,48 @@ import { FilterType } from '@models';
 export class SidebarComponent {
   @Input() isLoading: boolean;
 
-  @Output() newSearch = new EventEmitter<string>();
-  @Output() clearSearches = new EventEmitter<void>();
+  @Output() newSearch = new EventEmitter<void>();
+  @Output() clearSearch = new EventEmitter<void>();
 
-  public platforms$ = this.store$.select(fromFilters.getPlatformsList);
-  public selectedPlatformNames$ = this.store$.select(fromFilters.getSelectedPlatformNames);
-  public selectedPlatforms$ = this.store$.select(fromFilters.getSelectedPlatforms);
-  public error$ = this.store$.select(fromGranules.getError);
-  public isSidebarOpen$ = this.store$.select(fromUI.getIsSidebarOpen);
-  public selectedFilter$ = this.store$.select(fromUI.getSelectedFilter);
-  public granules$ = this.store$.select(fromGranules.getGranules);
+  public platforms$ = this.store$.select(filtersStore.getPlatformsList);
+  public selectedPlatformNames$ = this.store$.select(filtersStore.getSelectedPlatformNames);
+  public selectedPlatforms$ = this.store$.select(filtersStore.getSelectedPlatforms);
+
+  public isSidebarOpen$ = this.store$.select(uiStore.getIsSidebarOpen);
+  public selectedFilter$ = this.store$.select(uiStore.getSelectedFilter);
+
+  public error$ = this.store$.select(granulesStore.getError);
+  public granules$ = this.store$.select(granulesStore.getGranules);
+  public loading$  = this.store$.select(granulesStore.getLoading);
 
   public filterType = FilterType;
 
-  constructor(private store$: Store<AppState>) {}
+  constructor(
+    private store$: Store<AppState>,
+    private routedSearchService: RoutedSearchService,
+  ) {}
 
   public onPlatformRemoved(platformName: string): void {
-    this.store$.dispatch(new fromFilters.RemoveSelectedPlatform(platformName));
+    this.store$.dispatch(new filtersStore.RemoveSelectedPlatform(platformName));
   }
 
   public onPlatformAdded(platformName: string): void {
-    this.store$.dispatch(new fromFilters.AddSelectedPlatform(platformName));
+    this.store$.dispatch(new filtersStore.AddSelectedPlatform(platformName));
   }
 
   public onNewFilterSelected(filter: FilterType): void {
-    this.store$.dispatch(new fromUI.SetSelectedFilter(filter));
+    this.store$.dispatch(new uiStore.SetSelectedFilter(filter));
   }
 
   public onToggleHide(): void {
-    this.store$.dispatch(new fromUI.ToggleSidebar());
+    this.store$.dispatch(new uiStore.ToggleSidebar());
+  }
+
+  public onNewSearch(): void {
+    this.newSearch.emit();
+  }
+
+  public onClearSearch(): void {
+    this.clearSearch.emit();
   }
 }
