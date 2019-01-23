@@ -8,14 +8,14 @@ import { HttpClient } from '@angular/common/http';
     providedIn: 'root'
 })
 export class AsfApiService {
-    constructor(private http: HttpClient) {
-    }
+    public readonly apiUrl = 'https://api.daac.asf.alaska.edu/services/search/param';
 
-    public getGranules(): Observable<any[]> {
-        // This is just dummy data to fill out the toilet paper ui
-        return this.http.get<any[]>(
-            'http://localhost:4200/assets/search.json'
-        );
+    constructor(private http: HttpClient) {}
+
+    public query(params): Observable<any[]> {
+        const queryUrl = `${this.apiUrl}?${params}`;
+
+        return this.http.get<any[]>('assets/sample-data/sentinel-1a.json');
     }
 
 }

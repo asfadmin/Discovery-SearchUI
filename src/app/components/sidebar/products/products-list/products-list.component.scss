@@ -1,0 +1,13 @@
+.product--container {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+
+  &:hover {
+    background-color: grey;
+  }
+}
+
+.product--thumbnail {
+  width: 30%;
+}

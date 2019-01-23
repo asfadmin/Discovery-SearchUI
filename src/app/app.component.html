@@ -1,7 +1,19 @@
-<div>
-  <h1> Search API </h1>
+<div class="page-layout blank p-24" fusePerfectScrollbar>
 
-  <app-granule-list
-    [granules]="(store$.select('granules') | async).granules">
-  </app-granule-list>
+<div>
+  <app-spreadsheet></app-spreadsheet>
+
+  <app-sidebar
+    (newSearch)="onNewSearch($event)"
+    (clearSearches)="onClearGranules()"
+    [isLoading]="loading$ | async">
+  </app-sidebar>
+
+  <app-map
+    (newMapView)="onNewMapView($event)"
+    [granules$]="granules$"
+    [view$]="view$">
+  </app-map>
+</div>
+
 </div>

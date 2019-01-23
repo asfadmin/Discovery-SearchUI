@@ -1,0 +1,62 @@
+<div
+  [@changeMenuState]="(isSidebarOpen$ | async) ? 'shown' : 'hidden'"
+  class="position ">
+
+<app-toggle-button
+  (click)="onToggleHide()"
+  [isOpen]="isSidebarOpen$ | async">
+</app-toggle-button>
+
+<div class="filter-list "><div>
+  <div
+    *ngIf="error$ | async" class="m-2 alert alert-danger" role="alert">
+    {{ error$ | async }}
+  </div>
+
+  <app-search-bar
+    (newSearch)="newSearch.emit($event)"
+    (clearSearches)="clearSearches.emit()"
+    [isLoading]="isLoading">
+  </app-search-bar>
+
+  <app-filter-selector
+    [selectedFilter]="selectedFilter$ | async"
+    (newFilterSelected)="onNewFilterSelected($event)">
+  </app-filter-selector>
+
+  <ng-container *ngIf="selectedFilter$ | async as selected">
+    <app-platform-selector
+      *ngIf="selected === filterType.PLATFORM"
+      [platforms]="platforms$ | async"
+      [selected]="selectedPlatformNames$ | async"
+      (removeSelected)="onPlatformRemoved($event)"
+      (addSelected)="onPlatformAdded($event)">
+    </app-platform-selector>
+
+    <app-date-selector
+      *ngIf="selected === filterType.DATE"
+      [selected]="selectedPlatforms$ | async">
+    </app-date-selector>
+
+    <app-path-selector
+      *ngIf="selected === filterType.PATH"
+      [selected]="selectedPlatforms$ | async">
+    </app-path-selector>
+
+    <app-other-selector
+      *ngIf="selected === filterType.OTHER"
+      [selected]="selectedPlatforms$ | async">
+    </app-other-selector>
+  </ng-container>
+
+  <ng-container *ngIf="granules$ | async as granules">
+    <app-products-list [products]="granules"></app-products-list>
+
+    <app-product-detail
+        *ngIf="granules.length > 0"
+        [product]="granules[0]">
+    </app-product-detail>
+  </ng-container>
+
+</div></div>
+</div>

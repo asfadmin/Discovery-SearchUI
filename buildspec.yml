@@ -1,0 +1,16 @@
+version: 0.2
+
+phases:
+  install:
+    commands:
+      - npm install -g @angular/cli@6.2.4
+  pre_build:
+    commands:
+      - npm install
+  build:
+    commands:
+      - ng build --prod
+  post_build:
+    commands:
+      - cd dist/${APPLICATION}
+      - aws s3 sync . "s3://${S3_BUCKET}"

@@ -1,0 +1,15 @@
+<div
+  (mouseenter) ="onNameHover()"
+  (mouseleave) ="onNameHover()"
+  class="product-name">
+
+  {{ name | truncate : 16 }}
+
+  <fa-icon
+    (click)="onCopyIconClicked($event)"
+    class="copy-icon"
+    [matTooltip]="copyTooltipMessage"
+    matTooltipPosition="left"
+    [icon]="copyIcon">
+  </fa-icon>
+</div>

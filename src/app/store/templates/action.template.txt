@@ -1,0 +1,14 @@
+import { Action } from '@ngrx/store';
+
+export enum %%Name%%ActionType {
+}
+
+export class ??? implements Action {
+  public readonly type = %%Name%%ActionType.???;
+
+  constructor(public payload: ???) {}
+}
+
+export type %%Name%%Actions =
+  |  Some Actions...
+  |  Some Actions... ;

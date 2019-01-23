@@ -1,0 +1,66 @@
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+
+import {
+  trigger, state, style,
+  animate, transition
+} from '@angular/animations';
+
+import { Store } from '@ngrx/store';
+
+import { AppState } from '@store';
+import * as fromFilters from '@store/filters';
+import * as fromUI from '@store/ui';
+import * as fromGranules from '@store/granules';
+
+import { FilterType } from '@models';
+
+@Component({
+  selector: 'app-sidebar',
+  templateUrl: './sidebar.component.html',
+  styleUrls: ['./sidebar.component.scss'],
+  animations: [
+    trigger('changeMenuState', [
+      state('shown', style({
+        transform: 'translateX(100%) translateX(-25px)'
+      })),
+      state('hidden',   style({
+        transform: 'translateX(0%)'
+      })),
+      transition('shown <=> hidden', animate('200ms ease-out'))
+    ])
+  ],
+})
+export class SidebarComponent {
+  @Input() isLoading: boolean;
+
+  @Output() newSearch = new EventEmitter<string>();
+  @Output() clearSearches = new EventEmitter<void>();
+
+  public platforms$ = this.store$.select(fromFilters.getPlatformsList);
+  public selectedPlatformNames$ = this.store$.select(fromFilters.getSelectedPlatformNames);
+  public selectedPlatforms$ = this.store$.select(fromFilters.getSelectedPlatforms);
+  public error$ = this.store$.select(fromGranules.getError);
+  public isSidebarOpen$ = this.store$.select(fromUI.getIsSidebarOpen);
+  public selectedFilter$ = this.store$.select(fromUI.getSelectedFilter);
+  public granules$ = this.store$.select(fromGranules.getGranules);
+
+  public filterType = FilterType;
+
+  constructor(private store$: Store<AppState>) {}
+
+  public onPlatformRemoved(platformName: string): void {
+    this.store$.dispatch(new fromFilters.RemoveSelectedPlatform(platformName));
+  }
+
+  public onPlatformAdded(platformName: string): void {
+    this.store$.dispatch(new fromFilters.AddSelectedPlatform(platformName));
+  }
+
+  public onNewFilterSelected(filter: FilterType): void {
+    this.store$.dispatch(new fromUI.SetSelectedFilter(filter));
+  }
+
+  public onToggleHide(): void {
+    this.store$.dispatch(new fromUI.ToggleSidebar());
+  }
+}
