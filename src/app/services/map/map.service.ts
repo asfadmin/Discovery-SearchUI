@@ -102,12 +102,12 @@ export class MapService {
       loadTilesWhileAnimating: true
     });
 
-    const wkt = new WKT();
+    const format = new WKT();
     const granuleProjection = 'EPSG:4326';
 
     this.draw.on('drawend', e => {
       const geometry = e.feature.getGeometry();
-      const wktString = wkt.writeGeometry(geometry, {
+      const wktString = format.writeGeometry(geometry, {
         dataProjection: granuleProjection,
         featureProjection: this.epsg()
       });
