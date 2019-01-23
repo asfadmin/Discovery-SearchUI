@@ -13,7 +13,6 @@ import * as uiStore from '@store/ui';
 import * as granulesStore from '@store/granules';
 
 import { FilterType } from '@models';
-import { RoutedSearchService } from '@services';
 
 @Component({
   selector: 'app-sidebar',
@@ -50,10 +49,7 @@ export class SidebarComponent {
 
   public filterType = FilterType;
 
-  constructor(
-    private store$: Store<AppState>,
-    private routedSearchService: RoutedSearchService,
-  ) {}
+  constructor(private store$: Store<AppState>) {}
 
   public onPlatformRemoved(platformName: string): void {
     this.store$.dispatch(new filtersStore.RemoveSelectedPlatform(platformName));

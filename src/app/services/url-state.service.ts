@@ -6,14 +6,14 @@ import { Store, Action } from '@ngrx/store';
 import { combineLatest, Subscription } from 'rxjs';
 import { filter, map, switchMap, skip, tap } from 'rxjs/operators';
 
-import { AppState } from './../../store';
-import * as granulesStore from './../../store/granules';
-import * as mapStore from './../../store/map';
-import * as uiStore from './../../store/ui';
-import * as filterStore from './../../store/filters';
+import { AppState } from '@store';
+import * as granulesStore from '@store/granules';
+import * as mapStore from '@store/map';
+import * as uiStore from '@store/ui';
+import * as filterStore from '@store/filters';
 
-import { MapService } from './../../services/map/map.service';
-import * as models from './../../models';
+import { MapService } from '@services/map/map.service';
+import * as models from '@models';
 
 
 @Injectable({

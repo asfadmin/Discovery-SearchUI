@@ -11,7 +11,7 @@ import * as mapStore from '@store/map';
 import * as uiStore from '@store/ui';
 import * as filterStore from '@store/filters';
 
-import { AsfApiService, RoutedSearchService, UrlStateService } from './services';
+import { AsfApiService, UrlStateService } from './services';
 import * as models from './models';
 
 @Component({
@@ -26,15 +26,18 @@ export class AppComponent {
 
   constructor(
     private store$: Store<AppState>,
-    private routedSearchService: RoutedSearchService,
+    private urlStateService: UrlStateService,
   ) {}
 
+  public onLoadUrlState(): void {
+    this.urlStateService.load();
+  }
+
   public onNewSearch(): void {
-    this.routedSearchService.query('');
+    this.store$.dispatch(new granulesStore.QueryApi());
   }
 
   public onClearSearch(): void {
-    this.routedSearchService.clear();
     this.store$.dispatch(new granulesStore.ClearGranules());
   }
 

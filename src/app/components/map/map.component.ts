@@ -31,20 +31,18 @@ export class MapComponent implements OnInit {
   @Input() view$: Observable<MapViewType>;
 
   @Output() newMapView = new EventEmitter<MapViewType>();
+  @Output() loadUrlState = new EventEmitter<void>();
 
   private isInitMap = true;
 
-  constructor(
-    private mapService: MapService,
-    private urlStateService: UrlStateService,
-  ) {}
+  constructor(private mapService: MapService) {}
 
   ngOnInit(): void {
     this.view$.pipe(
       map(view => this.setMapWith(view)),
       tap(() => {
         if (this.isInitMap) {
-          this.urlStateService.load();
+          this.loadUrlState.emit();
         }
 
         this.isInitMap = false;

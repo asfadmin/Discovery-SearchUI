@@ -12,10 +12,16 @@ export class AsfApiService {
 
     constructor(private http: HttpClient) {}
 
-    public query(params): Observable<any[]> {
+    public query(params: string): Observable<any[]> {
         const queryUrl = `${this.apiUrl}?${params}`;
 
         return this.http.get<any[]>('assets/sample-data/sentinel-1a.json');
     }
 
+  private baseParams() {
+    return {
+      maxResults: 5,
+      output: 'json'
+    };
+  }
 }

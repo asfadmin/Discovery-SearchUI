@@ -1,7 +1,7 @@
 import { createFeatureSelector, createSelector } from '@ngrx/store';
 
 import { UIActionType, UIActions } from './ui.action';
-import { FilterType } from '../../models/';
+import { FilterType } from '@models';
 
 /* State */
 
@@ -12,7 +12,7 @@ export interface UIState {
 
 const initState: UIState = {
   isSidebarOpen: true,
-  selectedFilter: FilterType.OTHER
+  selectedFilter: FilterType.PLATFORM
 };
 
 /* Reducer */
