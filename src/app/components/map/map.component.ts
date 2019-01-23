@@ -60,21 +60,8 @@ export class MapComponent implements OnInit {
     this.newMapView.emit(view);
   }
 
-  private setMapWith(view: MapViewType): void {
-    switch (view) {
-      case MapViewType.ARCTIC: {
-        this.mapService.arctic();
-        break;
-      }
-      case MapViewType.EQUITORIAL: {
-        this.mapService.equatorial();
-        break;
-      }
-      case MapViewType.ANTARCTIC: {
-        this.mapService.antarctic();
-        break;
-      }
-    }
+  private setMapWith(viewType: MapViewType): void {
+    this.mapService.setMapView(viewType);
   }
 
   private granulePolygonsLayer(projection: string): Observable<VectorSource> {

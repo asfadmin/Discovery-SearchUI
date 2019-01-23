@@ -22,7 +22,7 @@ import proj4 from 'proj4';
 import { AppState } from '../../store';
 import * as mapStore from '../../store/map';
 import { equatorial, antarctic, arctic, MapView } from './views';
-import { LonLat } from './../../models';
+import { LonLat, MapViewType } from '@models';
 
 
 @Injectable({
@@ -78,16 +78,14 @@ export class MapService {
     });
   }
 
-  public equatorial(): void {
-    this.setMap(equatorial());
-  }
+  public setMapView(viewType: MapViewType): void {
+    const view = {
+      [MapViewType.ANTARCTIC]: antarctic(),
+      [MapViewType.ARCTIC]: arctic(),
+      [MapViewType.EQUITORIAL]: equatorial()
+    }[viewType];
 
-  public antarctic(): void {
-    this.setMap(antarctic());
-  }
-
-  public arctic(): void  {
-    this.setMap(arctic());
+    this.setMap(view);
   }
 
   private setMap(mapView: MapView): void {
