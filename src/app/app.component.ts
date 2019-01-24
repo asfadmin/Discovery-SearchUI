@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { HttpParams } from '@angular/common/http';
 
 import { Store, Action } from '@ngrx/store';
 
@@ -29,6 +30,7 @@ export class AppComponent implements OnInit {
   constructor(
     private store$: Store<AppState>,
     private mapService: MapService,
+    private asfApiService: AsfApiService,
     private urlStateService: UrlStateService,
   ) {}
 
@@ -38,11 +40,11 @@ export class AppComponent implements OnInit {
           startWith(null)
         ),
       this.store$.select(filterStore.getSelectedPlatforms).pipe(
-        map(platforms => {
-          return platforms.map(
-            platform => platform.name
-          ).join(',');
-        }))
+        map(platforms => platforms
+          .map(platform => platform.name)
+          .join(',')
+        )
+      )
     );
 
     this.doSearch.pipe(
@@ -50,10 +52,24 @@ export class AppComponent implements OnInit {
       map(([_, searchState]) => searchState),
       map(
         ([polygon, platforms]) => {
-          console.log(polygon, platforms);
-          return polygon;
-        })
-    ).subscribe(v => v);
+          const params = {
+            intersectsWith: polygon,
+            platform: platforms
+          };
+
+          return Object.entries(params)
+            .filter(([key, val]) => !!val)
+            .reduce(
+              (queryParams, [key, val]) => queryParams.append(key, val),
+              new HttpParams()
+            );
+        }),
+      switchMap(
+        params => this.asfApiService.query(params).pipe(
+          map(setGranules)
+        )
+      )
+    ).subscribe(action => this.store$.dispatch(action));
   }
 
   public onLoadUrlState(): void {
@@ -73,3 +89,40 @@ export class AppComponent implements OnInit {
     this.store$.dispatch(new mapStore.SetMapView(view));
   }
 }
+
+
+const setGranules =
+  (resp: any) => new granulesStore.SetGranules(
+    resp[0].map(
+      (g: any): models.Sentinel1Product => ({
+        name: g.granuleName,
+        downloadUrl: g.downloadUrl,
+        bytes: +g.sizeMB * 1000000,
+        platform: g.platform,
+        browse: g.browse || 'https://datapool.asf.alaska.edu/BROWSE/SB/S1B_EW_GRDM_1SDH_20170108T192334_20170108T192434_003761_00676D_4E7B.jpg',
+        metadata: getMetadataFrom(g)
+      })
+    )
+  );
+
+const getMetadataFrom = (g: any): models.Sentinel1Metadata => {
+  return {
+    date:  fromCMRDate(g.processingDate),
+    polygon: g.stringFootprint,
+
+    productType: <models.Sentinel1ProductType>g.processingLevel,
+    beamMode: <models.Sentinel1BeamMode>g.beamMode,
+    polarization: <models.Sentinel1Polarization>g.polarization,
+    flightDirection: <models.FlightDirection>g.flightDirection,
+    frequency: g.frequency,
+
+    path: +g.relativeOrbit,
+    frame:  +g.frameNumber,
+    absoluteOrbit: +g.absoluteOrbit
+  };
+};
+
+const fromCMRDate = (dateString: string): Date => {
+  return new Date(dateString);
+};
+
