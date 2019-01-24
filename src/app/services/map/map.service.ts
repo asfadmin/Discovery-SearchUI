@@ -57,8 +57,13 @@ export class MapService {
     this.map.addLayer(this.polygonLayer);
   }
 
-  public addDrawFeature(feature): void {
+  public setDrawFeature(feature): void {
+    this.drawSource.clear();
     this.drawSource.addFeature(feature);
+
+    this.searchPolygon$.next(
+      this.featureToWKT(feature)
+    );
   }
 
   public clearDrawLayer(): void {
@@ -108,17 +113,11 @@ export class MapService {
       loadTilesWhileAnimating: true
     });
 
-    const format = new WKT();
-    const granuleProjection = 'EPSG:4326';
 
     this.draw.on('drawend', e => {
-      const geometry = e.feature.getGeometry();
-      const wktString = format.writeGeometry(geometry, {
-        dataProjection: granuleProjection,
-        featureProjection: this.epsg()
-      });
+      const wktPolygon = this.featureToWKT(e.feature);
 
-      this.searchPolygon$.next(wktString);
+      this.searchPolygon$.next(wktPolygon);
       this.epsg$.next(this.epsg());
     });
 
@@ -137,6 +136,18 @@ export class MapService {
     });
 
     return newMap;
+  }
+
+  private featureToWKT(feature): string {
+    const format = new WKT();
+    const granuleProjection = 'EPSG:4326';
+
+    const geometry = feature.getGeometry();
+
+    return format.writeGeometry(geometry, {
+      dataProjection: granuleProjection,
+      featureProjection: this.epsg()
+    });
   }
 
   private updatedMap(): Map {

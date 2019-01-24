@@ -170,7 +170,7 @@ export class UrlStateService {
       featureProjection: this.mapService.epsg()
     });
 
-    this.mapService.addDrawFeature(features);
+    this.mapService.setDrawFeature(features);
   }
 
   private isNumber = n => !isNaN(n) && isFinite(n);
