@@ -42,7 +42,7 @@ export class MapService {
       }),
       stroke: new Stroke({
         color: '#ffcc33',
-        width: 2
+        width: 4
       }),
       image: new CircleStyle({
         radius: 7,
@@ -150,6 +150,7 @@ export class MapService {
 
     this.draw.on('drawstart', e => this.clearDrawLayer());
     this.draw.on('drawend', e => setSearchPolygon(e.feature));
+    this.drawLayer.setZIndex(100);
 
     newMap.addInteraction(this.draw);
 
