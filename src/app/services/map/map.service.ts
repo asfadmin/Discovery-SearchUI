@@ -41,7 +41,8 @@ export class MapService {
 
   public zoom$ = new Subject<number>();
   public center$ = new Subject<LonLat>();
-  public searchPolygon$ = new Subject<string>();
+  public searchPolygon$ = new Subject<string | null>();
+  public epsg$ = new Subject<string>();
 
   public epsg(): string {
     return this.mapView.projection.epsg;
@@ -56,8 +57,13 @@ export class MapService {
     this.map.addLayer(this.polygonLayer);
   }
 
+  public addDrawFeature(feature): void {
+    this.drawSource.addFeature(feature);
+  }
+
   public clearDrawLayer(): void {
     this.drawSource.clear();
+    this.searchPolygon$.next(null);
   }
 
   public setCenter(centerPos: LonLat): void {
@@ -113,6 +119,7 @@ export class MapService {
       });
 
       this.searchPolygon$.next(wktString);
+      this.epsg$.next(this.epsg());
     });
 
     newMap.addInteraction(this.draw);
