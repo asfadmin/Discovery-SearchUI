@@ -1,15 +1,17 @@
 import { createFeatureSelector, createSelector } from '@ngrx/store';
 
 import { MapActionType, MapActions } from './map.action';
-import { MapViewType, LonLat } from '../../models';
+import { MapViewType, LonLat, MapDrawModeType } from '@models';
 
 
 export interface MapState {
   view: MapViewType;
+  drawMode: MapDrawModeType;
 }
 
 const initState: MapState = {
   view: MapViewType.EQUITORIAL,
+  drawMode: MapDrawModeType.POLYGON
 };
 
 
@@ -19,6 +21,13 @@ export function mapReducer(state = initState, action: MapActions): MapState {
       return {
         ...state,
         view: action.payload
+      };
+    }
+
+    case MapActionType.SET_MAP_DRAW_MODE: {
+      return {
+        ...state,
+        drawMode: action.payload
       };
     }
 
@@ -34,4 +43,9 @@ export const getMapState = createFeatureSelector<MapState>('map');
 export const getMapView = createSelector(
   getMapState,
   (state: MapState) => state.view
+);
+
+export const getMapDrawMode = createSelector(
+  getMapState,
+  (state: MapState) => state.drawMode
 );

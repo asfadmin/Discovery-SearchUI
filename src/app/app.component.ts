@@ -23,7 +23,9 @@ import * as models from './models';
 export class AppComponent implements OnInit {
 
   public granules$ = this.store$.select(granulesStore.getGranules);
+
   public view$ = this.store$.select(mapStore.getMapView);
+  public drawMode$ = this.store$.select(mapStore.getMapDrawMode);
 
   private doSearch = new Subject<void>();
 
@@ -87,6 +89,10 @@ export class AppComponent implements OnInit {
 
   public onNewMapView(view: models.MapViewType): void {
     this.store$.dispatch(new mapStore.SetMapView(view));
+  }
+
+  public onNewMapDrawMode(mode: models.MapDrawModeType): void {
+    this.store$.dispatch(new mapStore.SetMapDrawMode(mode));
   }
 }
 

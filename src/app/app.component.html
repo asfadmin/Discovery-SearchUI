@@ -10,9 +10,11 @@
 
   <app-map
     (newMapView)="onNewMapView($event)"
+    (newMapDrawMode)="onNewMapDrawMode($event)"
     (loadUrlState)="onLoadUrlState()"
     [granules$]="granules$"
-    [view$]="view$">
+    [view$]="view$"
+    [drawMode$]="drawMode$">
   </app-map>
 </div>
 

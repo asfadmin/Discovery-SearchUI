@@ -11,7 +11,7 @@ import { WKT } from 'ol/format';
 import { Vector as VectorLayer} from 'ol/layer';
 import { Vector as VectorSource } from 'ol/source';
 
-import { Sentinel1Product, MapViewType } from '@models';
+import { Sentinel1Product, MapViewType, MapDrawModeType } from '@models';
 import { MapService, UrlStateService } from '@services';
 
 
@@ -23,14 +23,20 @@ import { MapService, UrlStateService } from '@services';
     <app-view-selector
       (newProjection)="onNewProjection($event)">
     </app-view-selector>
+
+    <app-draw-selector
+      (newDrawMode)="onNewDrawMode($event)">
+    ></app-draw-selector>
   `,
   styleUrls: ['./map.component.scss']
 })
 export class MapComponent implements OnInit {
   @Input() granules$: Observable<Sentinel1Product[]>;
   @Input() view$: Observable<MapViewType>;
+  @Input() drawMode$: Observable<MapDrawModeType>;
 
   @Output() newMapView = new EventEmitter<MapViewType>();
+  @Output() newMapDrawMode = new EventEmitter<MapDrawModeType>();
   @Output() loadUrlState = new EventEmitter<void>();
 
   private isInitMap = true;
@@ -60,6 +66,10 @@ export class MapComponent implements OnInit {
     ).subscribe(
       layer => this.mapService.setLayer(layer)
     );
+
+    this.drawMode$.subscribe(
+      mode => this.mapService.setDrawMode(mode)
+    );
   }
 
   public loadSearchPolygon = (polygon: string): void => {
@@ -76,6 +86,10 @@ export class MapComponent implements OnInit {
 
   public onNewProjection(view: MapViewType): void {
     this.newMapView.emit(view);
+  }
+
+  public onNewDrawMode(mode: MapDrawModeType): void {
+    this.newMapDrawMode.emit(mode);
   }
 
   private setMapWith(viewType: MapViewType): void {
