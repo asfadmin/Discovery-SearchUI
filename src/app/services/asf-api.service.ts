@@ -20,7 +20,6 @@ export class AsfApiService {
       stateParams
     );
 
-    console.log('Query params:', params);
     return this.http.get<any[]>(this.apiUrl, { params });
   }
 
