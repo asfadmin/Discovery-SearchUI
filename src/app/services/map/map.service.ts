@@ -133,7 +133,6 @@ export class MapService {
     });
 
     const setSearchPolygon = feature => {
-      console.log('Setting polygon');
       const wktPolygon = this.featureToWKT(feature);
 
       this.searchPolygon$.next(wktPolygon);
