@@ -33,7 +33,7 @@ export class MapService {
   private map: Map;
   private polygonLayer: Layer;
 
-  private drawSource = new VectorSource({ wrapX: false });
+  private drawSource = new VectorSource();
   private drawLayer = new VectorLayer({
     source: this.drawSource,
     style: new Style({
@@ -192,7 +192,6 @@ export class MapService {
     const mapLayers = this.map.getLayers();
 
     mapLayers.setAt(0, this.mapView.layer);
-    this.clearDrawLayer();
 
     return this.map;
   }

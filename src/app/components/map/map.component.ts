@@ -5,7 +5,7 @@ import {
 } from '@angular/core';
 
 import { Observable, combineLatest } from 'rxjs';
-import { map, filter, switchMap, tap } from 'rxjs/operators';
+import { map, filter, switchMap, tap, withLatestFrom } from 'rxjs/operators';
 
 import { WKT } from 'ol/format';
 import { Vector as VectorLayer} from 'ol/layer';
@@ -40,6 +40,7 @@ export class MapComponent implements OnInit {
   ngOnInit(): void {
     this.view$.pipe(
       map(view => this.setMapWith(view)),
+
       tap(() => {
         if (this.isInitMap) {
           this.loadUrlState.emit();
@@ -47,12 +48,30 @@ export class MapComponent implements OnInit {
 
         this.isInitMap = false;
       }),
-      switchMap(newMap =>
+
+      withLatestFrom(this.mapService.searchPolygon$),
+      map(([_, polygon]) => polygon),
+      filter(polygon => !!polygon),
+      map(polygon => this.loadSearchPolygon(polygon)),
+
+      switchMap(_ =>
         this.granulePolygonsLayer(this.mapService.epsg())
       ),
     ).subscribe(
       layer => this.mapService.setLayer(layer)
     );
+  }
+
+  public loadSearchPolygon = (polygon: string): void => {
+    const format = new WKT();
+    const granuleProjection = 'EPSG:4326';
+
+    const features = format.readFeature(polygon, {
+      dataProjection: granuleProjection,
+      featureProjection: this.mapService.epsg()
+    });
+
+    this.mapService.setDrawFeature(features);
   }
 
   public onNewProjection(view: MapViewType): void {
