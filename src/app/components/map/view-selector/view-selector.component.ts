@@ -1,4 +1,5 @@
-import { Component, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Observable } from 'rxjs';
 
 import { MapViewType } from '@models';
 
@@ -7,8 +8,15 @@ import { MapViewType } from '@models';
   templateUrl: './view-selector.component.html',
   styleUrls: ['./view-selector.component.scss']
 })
-export class ViewSelectorComponent {
+export class ViewSelectorComponent implements OnInit {
+  @Input() view: MapViewType;
+
   @Output() newProjection = new EventEmitter<MapViewType>();
+
+  public types = MapViewType;
+
+  public ngOnInit(): void {
+  }
 
   public onArcticSelected =
     () => this.newProjection.emit(MapViewType.ARCTIC)

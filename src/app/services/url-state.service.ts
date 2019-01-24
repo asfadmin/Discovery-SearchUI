@@ -63,7 +63,10 @@ export class UrlStateService {
 
     this.store$.select(mapStore.getMapState).pipe(
       skip(1),
-      map(mapState => ({ view: mapState.view }))
+      map(mapState => ({
+        view: mapState.view,
+        drawMode: mapState.drawMode
+      }))
     ).subscribe(this.updateRouteWithParams);
 
     this.mapService.center$.pipe(
@@ -97,6 +100,7 @@ export class UrlStateService {
       isSidebarOpen: this.loadIsSidebarOpen,
       selectedFilter: this.loadSelectedFilter,
       view: this.loadMapView,
+      drawMode: this.loadMapDrawMode,
       zoom: this.loadMapZoom,
       center: this.loadMapCenter,
       selectedPlatforms: this.loadSelectedPlatforms,
@@ -121,6 +125,14 @@ export class UrlStateService {
     if (Object.values(models.FilterType).includes(selected)) {
 
       const action = new uiStore.SetSelectedFilter(<models.FilterType>selected);
+      this.store$.dispatch(action);
+    }
+  }
+
+  private loadMapDrawMode = (mode: string): void => {
+    if (Object.values(models.MapDrawModeType).includes(mode)) {
+      const action = new mapStore.SetMapDrawMode(<models.MapDrawModeType>mode);
+
       this.store$.dispatch(action);
     }
   }

@@ -1,14 +1,17 @@
-<mat-button-toggle-group class="position" name="viewSelect" aria-label="Font Style">
+<mat-button-toggle-group
+  [value]="view"
+  class="position" name="viewSelect" aria-label="Font Style">
 
-  <mat-button-toggle (click)="onArcticSelected()" >
+  <mat-button-toggle (click)="onArcticSelected()" [value]="types.ARCTIC">
     <div class="view-btn arctic"></div>
   </mat-button-toggle>
 
-  <mat-button-toggle (click)="onEquitorialSelected()" >
+  <mat-button-toggle (click)="onEquitorialSelected()" [value]="types.EQUITORIAL">
     <div class="view-btn equatorial"></div>
   </mat-button-toggle>
 
-  <mat-button-toggle (click)="onAntarcticSelected()" >
+  <mat-button-toggle (click)="onAntarcticSelected()" [value]="types.ANTARCTIC">
     <div class="view-btn antarctic"></div>
   </mat-button-toggle>
+
 </mat-button-toggle-group>

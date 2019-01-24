@@ -21,7 +21,8 @@ import { MapService, UrlStateService } from '@services';
     <div id="map" class="map"></div>
 
     <app-view-selector
-      (newProjection)="onNewProjection($event)">
+      (newProjection)="onNewProjection($event)"
+      [view]="view$ | async">
     </app-view-selector>
 
     <app-draw-selector
