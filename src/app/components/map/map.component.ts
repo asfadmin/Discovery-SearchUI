@@ -55,16 +55,20 @@ export class MapComponent implements OnInit {
         this.isInitMap = false;
       }),
 
-      withLatestFrom(this.mapService.searchPolygon$),
-      map(([_, polygon]) => polygon),
-      filter(polygon => !!polygon),
-      map(polygon => this.loadSearchPolygon(polygon)),
 
       switchMap(_ =>
         this.granulePolygonsLayer(this.mapService.epsg())
       ),
     ).subscribe(
       layer => this.mapService.setLayer(layer)
+    );
+
+    this.view$.pipe(
+      withLatestFrom(this.mapService.searchPolygon$),
+      map(([_, polygon]) => polygon),
+      filter(polygon => !!polygon),
+    ).subscribe(
+      polygon => this.loadSearchPolygon(polygon)
     );
 
     this.drawMode$.subscribe(
