@@ -1,13 +1,22 @@
-<mat-button-toggle-group class="position" aria-label="Font Style">
-  <mat-button-toggle (click)="onPointSelected()" matTooltip="Point draw">
+<mat-button-toggle-group [value]="drawMode" class="position" aria-label="Font Style">
+  <mat-button-toggle
+    (click)="onPointSelected()"
+    [value]="types.POINT"
+    matTooltip="Point draw">
     <mat-icon class="draw-icon">place</mat-icon>
   </mat-button-toggle>
 
-  <mat-button-toggle (click)="onLineStringSelected()" matTooltip="Line draw">
+  <mat-button-toggle
+    (click)="onLineStringSelected()"
+    [value]="types.LINESTRING"
+    matTooltip="Line draw">
     <mat-icon class="draw-icon">timeline</mat-icon>
   </mat-button-toggle>
 
-  <mat-button-toggle (click)="onPolygonSelected()" matTooltip="Polygon draw">
+  <mat-button-toggle
+    (click)="onPolygonSelected()"
+    [value]="types.POLYGON"
+    matTooltip="Polygon draw">
     <mat-icon class="draw-icon">format_shapes</mat-icon>
   </mat-button-toggle>
 </mat-button-toggle-group>

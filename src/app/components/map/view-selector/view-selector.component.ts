@@ -8,15 +8,12 @@ import { MapViewType } from '@models';
   templateUrl: './view-selector.component.html',
   styleUrls: ['./view-selector.component.scss']
 })
-export class ViewSelectorComponent implements OnInit {
+export class ViewSelectorComponent {
   @Input() view: MapViewType;
 
   @Output() newProjection = new EventEmitter<MapViewType>();
 
   public types = MapViewType;
-
-  public ngOnInit(): void {
-  }
 
   public onArcticSelected =
     () => this.newProjection.emit(MapViewType.ARCTIC)

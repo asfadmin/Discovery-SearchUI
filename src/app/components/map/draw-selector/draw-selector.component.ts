@@ -1,4 +1,4 @@
-import { Component, OnInit, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 
 import { MapDrawModeType } from '@models';
 
@@ -8,7 +8,11 @@ import { MapDrawModeType } from '@models';
   styleUrls: ['./draw-selector.component.css']
 })
 export class DrawSelectorComponent {
+  @Input() drawMode: MapDrawModeType;
+
   @Output() newDrawMode = new EventEmitter<MapDrawModeType>();
+
+  public types = MapDrawModeType;
 
   public onPolygonSelected =
     () => this.newDrawMode.emit(MapDrawModeType.POLYGON)

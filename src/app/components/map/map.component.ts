@@ -26,7 +26,8 @@ import { MapService, UrlStateService } from '@services';
     </app-view-selector>
 
     <app-draw-selector
-      (newDrawMode)="onNewDrawMode($event)">
+      (newDrawMode)="onNewDrawMode($event)"
+      [drawMode]="drawMode$ | async">
     ></app-draw-selector>
   `,
   styleUrls: ['./map.component.scss']
