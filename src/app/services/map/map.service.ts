@@ -8,11 +8,12 @@ import { Map, View } from 'ol';
 import {getCenter} from 'ol/extent.js';
 import WMTSTileGrid from 'ol/tilegrid/WMTS.js';
 
-import Draw from 'ol/interaction/Draw.js';
+import { Draw, Modify, Snap } from 'ol/interaction.js';
 import WKT from 'ol/format/WKT.js';
 
 import {Tile as TileLayer, Vector as VectorLayer} from 'ol/layer';
 import { OSM, Vector as VectorSource, TileWMS, Layer, XYZ, WMTS } from 'ol/source';
+import {Circle as CircleStyle, Fill, Stroke, Style} from 'ol/style.js';
 
 import * as proj from 'ol/proj';
 import * as customProj4 from 'ol/proj/proj4';
@@ -32,8 +33,26 @@ export class MapService {
   private map: Map;
   private polygonLayer: Layer;
 
-  private drawSource = new VectorSource({ wrapX: false });
-  private drawLayer = new VectorLayer({ source: this.drawSource });
+  private drawSource = new VectorSource();
+  private drawLayer = new VectorLayer({
+    source: this.drawSource,
+    style: new Style({
+      fill: new Fill({
+        color: 'rgba(255, 255, 255, 0.2)'
+      }),
+      stroke: new Stroke({
+        color: '#ffcc33',
+        width: 4
+      }),
+      image: new CircleStyle({
+        radius: 7,
+        fill: new Fill({
+          color: '#ffcc33'
+        })
+      })
+    })
+  });
+
   private draw = new Draw({
     source: this.drawSource,
     type: 'Polygon'
@@ -100,8 +119,8 @@ export class MapService {
     this.mapView = mapView;
 
     this.map = (!this.map) ?
-      this.createNewMap() :
-      this.updatedMap();
+    this.createNewMap() :
+    this.updatedMap();
   }
 
   private createNewMap(): Map {
@@ -113,15 +132,30 @@ export class MapService {
       loadTilesWhileAnimating: true
     });
 
-
-    this.draw.on('drawend', e => {
-      const wktPolygon = this.featureToWKT(e.feature);
+    const setSearchPolygon = feature => {
+      console.log('Setting polygon');
+      const wktPolygon = this.featureToWKT(feature);
 
       this.searchPolygon$.next(wktPolygon);
       this.epsg$.next(this.epsg());
+    };
+
+    const modify = new Modify({ source: this.drawSource });
+    modify.on('modifyend', e => {
+      const feature = e.features.getArray()[0];
+      setSearchPolygon(feature);
     });
 
+    newMap.addInteraction(modify);
+
+    this.draw.on('drawstart', e => this.clearDrawLayer());
+    this.draw.on('drawend', e => setSearchPolygon(e.feature));
+    this.drawLayer.setZIndex(100);
+
     newMap.addInteraction(this.draw);
+
+    const snap = new Snap({source: this.drawSource});
+    newMap.addInteraction(snap);
 
     newMap.on('moveend', e => {
       const map = e.map;
@@ -158,7 +192,6 @@ export class MapService {
     const mapLayers = this.map.getLayers();
 
     mapLayers.setAt(0, this.mapView.layer);
-    this.clearDrawLayer();
 
     return this.map;
   }

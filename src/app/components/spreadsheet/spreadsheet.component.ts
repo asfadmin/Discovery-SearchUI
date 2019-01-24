@@ -46,6 +46,10 @@ export class SpreadsheetComponent {
     );
   }
 
+  public onRowHover(row) {
+    /* Triggered when table row is hovered */
+  }
+
   private addCustomProductDataAccessors = dataSource => {
 
     dataSource.sortingDataAccessor = (product, property) => {
