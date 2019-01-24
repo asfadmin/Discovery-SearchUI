@@ -132,17 +132,24 @@ export class MapService {
       loadTilesWhileAnimating: true
     });
 
-    const modify = new Modify({ source: this.drawSource });
-    newMap.addInteraction(modify);
-
-    this.draw.on('drawstart', e => this.clearDrawLayer());
-
-    this.draw.on('drawend', e => {
-      const wktPolygon = this.featureToWKT(e.feature);
+    const setSearchPolygon = feature => {
+      console.log('Setting polygon');
+      const wktPolygon = this.featureToWKT(feature);
 
       this.searchPolygon$.next(wktPolygon);
       this.epsg$.next(this.epsg());
+    };
+
+    const modify = new Modify({ source: this.drawSource });
+    modify.on('modifyend', e => {
+      const feature = e.features.getArray()[0];
+      setSearchPolygon(feature);
     });
+
+    newMap.addInteraction(modify);
+
+    this.draw.on('drawstart', e => this.clearDrawLayer());
+    this.draw.on('drawend', e => setSearchPolygon(e.feature));
 
     newMap.addInteraction(this.draw);
 
