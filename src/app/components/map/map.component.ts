@@ -68,7 +68,6 @@ export class MapComponent implements OnInit {
     const granuleProjection = 'EPSG:4326';
 
     return this.granules$.pipe(
-      filter(granules => granules.length > 0),
       map(granules => granules
         .map(g => g.metadata.polygon)
         .map(wkt =>
