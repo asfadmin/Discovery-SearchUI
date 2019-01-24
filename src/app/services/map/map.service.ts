@@ -4,7 +4,6 @@ import { Store } from '@ngrx/store';
 
 import { Subject } from 'rxjs';
 
-
 import { Map, View } from 'ol';
 import {getCenter} from 'ol/extent.js';
 import WMTSTileGrid from 'ol/tilegrid/WMTS.js';
@@ -19,10 +18,10 @@ import * as proj from 'ol/proj';
 import * as customProj4 from 'ol/proj/proj4';
 import proj4 from 'proj4';
 
-import { AppState } from '../../store';
-import * as mapStore from '../../store/map';
+import { AppState } from '@store';
+import * as mapStore from '@store/map';
 import { equatorial, antarctic, arctic, MapView } from './views';
-import { LonLat } from './../../models';
+import { LonLat, MapViewType } from '@models';
 
 
 @Injectable({
@@ -42,9 +41,8 @@ export class MapService {
 
   public zoom$ = new Subject<number>();
   public center$ = new Subject<LonLat>();
-  public searchPolygon$ = new Subject<string>();
-
-  constructor() {}
+  public searchPolygon$ = new Subject<string | null>();
+  public epsg$ = new Subject<string>();
 
   public epsg(): string {
     return this.mapView.projection.epsg;
@@ -59,16 +57,21 @@ export class MapService {
     this.map.addLayer(this.polygonLayer);
   }
 
-  public clearDrawLayer(): void {
-    this.drawSource.clear();
+  public addDrawFeature(feature): void {
+    this.drawSource.addFeature(feature);
   }
 
-  public setCenter(center: LonLat): void {
-    const { lon, lat } = center;
+  public clearDrawLayer(): void {
+    this.drawSource.clear();
+    this.searchPolygon$.next(null);
+  }
 
+  public setCenter(centerPos: LonLat): void {
+    const { lon, lat } = centerPos;
 
     this.map.getView().animate({
-      'center': proj.fromLonLat([lon, lat]), duration: 500
+      center: proj.fromLonLat([lon, lat]),
+      duration: 500
     });
   }
 
@@ -78,57 +81,26 @@ export class MapService {
     });
   }
 
-  public equatorial(): void {
-    this.setMap(equatorial());
-  }
+  public setMapView(viewType: MapViewType): void {
+    const view = {
+      [MapViewType.ANTARCTIC]: antarctic(),
+      [MapViewType.ARCTIC]: arctic(),
+      [MapViewType.EQUITORIAL]: equatorial()
+    }[viewType];
 
-  public antarctic(): void {
-    this.setMap(antarctic());
-  }
-
-  public arctic(): void  {
-    this.setMap(arctic());
+    this.setMap(view);
   }
 
   private setMap(mapView: MapView): void {
     this.mapView = mapView;
 
-    if (!this.map) {
-      this.map = this.newMap();
-
-      const wkt = new WKT();
-      const granuleProjection = 'EPSG:4326';
-
-      this.draw.on('drawend', e => {
-        const geometry = e.feature.getGeometry();
-        const wktString = wkt.writeGeometry(geometry, {
-          dataProjection: granuleProjection,
-          featureProjection: this.epsg()
-        });
-
-        this.searchPolygon$.next(wktString);
-      });
-
-      this.map.addInteraction(this.draw);
-
-      this.map.on('moveend', e => {
-        const map = e.map;
-
-        const view = map.getView();
-
-        const [lon, lat] = proj.toLonLat(view.getCenter());
-        const zoom = view.getZoom();
-
-        this.zoom$.next(zoom);
-        this.center$.next({lon, lat});
-      });
-    } else {
-      this.map = this.updatedMap();
-    }
+    this.map = (!this.map) ?
+      this.createNewMap() :
+      this.updatedMap();
   }
 
-  private newMap(): Map {
-    return new Map({
+  private createNewMap(): Map {
+    const newMap = new Map({
       layers: [ this.mapView.layer, this.drawLayer ],
       target: 'map',
       view: this.mapView.view,
@@ -136,6 +108,35 @@ export class MapService {
       loadTilesWhileAnimating: true
     });
 
+    const format = new WKT();
+    const granuleProjection = 'EPSG:4326';
+
+    this.draw.on('drawend', e => {
+      const geometry = e.feature.getGeometry();
+      const wktString = format.writeGeometry(geometry, {
+        dataProjection: granuleProjection,
+        featureProjection: this.epsg()
+      });
+
+      this.searchPolygon$.next(wktString);
+      this.epsg$.next(this.epsg());
+    });
+
+    newMap.addInteraction(this.draw);
+
+    newMap.on('moveend', e => {
+      const map = e.map;
+
+      const view = map.getView();
+
+      const [lon, lat] = proj.toLonLat(view.getCenter());
+      const zoom = view.getZoom();
+
+      this.zoom$.next(zoom);
+      this.center$.next({lon, lat});
+    });
+
+    return newMap;
   }
 
   private updatedMap(): Map {

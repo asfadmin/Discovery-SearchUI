@@ -16,7 +16,7 @@ import { SidebarModule } from '@components/sidebar';
 import { SpreadsheetModule } from '@components/spreadsheet';
 import { MapModule } from '@components/map';
 
-import { AsfApiService, RoutedSearchService, UrlStateService, MapService } from './services';
+import { AsfApiService, UrlStateService, MapService } from './services';
 import { environment } from './../environments/environment';
 
 import { AppComponent } from './app.component';
@@ -46,7 +46,6 @@ export const routes = [
   ],
   providers: [
     AsfApiService,
-    RoutedSearchService,
     UrlStateService,
     MapService,
   ],

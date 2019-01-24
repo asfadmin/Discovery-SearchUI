@@ -10,16 +10,8 @@ import { FormBuilder } from '@angular/forms';
 export class SearchBarComponent {
     @Input() isLoading: boolean;
 
-    @Output() newSearch = new EventEmitter<string>();
+    @Output() newSearch = new EventEmitter<void>();
     @Output() clearSearches = new EventEmitter<void>();
 
-    queryForm = this.fb.group({
-        query: ['']
-    });
-
     constructor(private fb: FormBuilder) {}
-
-    public onSubmit() {
-        this.newSearch.emit(this.queryForm.value.query);
-    }
 }

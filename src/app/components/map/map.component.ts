@@ -31,20 +31,18 @@ export class MapComponent implements OnInit {
   @Input() view$: Observable<MapViewType>;
 
   @Output() newMapView = new EventEmitter<MapViewType>();
+  @Output() loadUrlState = new EventEmitter<void>();
 
   private isInitMap = true;
 
-  constructor(
-    private mapService: MapService,
-    private urlStateService: UrlStateService,
-  ) {}
+  constructor(private mapService: MapService) {}
 
   ngOnInit(): void {
     this.view$.pipe(
       map(view => this.setMapWith(view)),
       tap(() => {
         if (this.isInitMap) {
-          this.urlStateService.load();
+          this.loadUrlState.emit();
         }
 
         this.isInitMap = false;
@@ -55,28 +53,14 @@ export class MapComponent implements OnInit {
     ).subscribe(
       layer => this.mapService.setLayer(layer)
     );
-
   }
 
   public onNewProjection(view: MapViewType): void {
     this.newMapView.emit(view);
   }
 
-  private setMapWith(view: MapViewType): void {
-    switch (view) {
-      case MapViewType.ARCTIC: {
-        this.mapService.arctic();
-        break;
-      }
-      case MapViewType.EQUITORIAL: {
-        this.mapService.equatorial();
-        break;
-      }
-      case MapViewType.ANTARCTIC: {
-        this.mapService.antarctic();
-        break;
-      }
-    }
+  private setMapWith(viewType: MapViewType): void {
+    this.mapService.setMapView(viewType);
   }
 
   private granulePolygonsLayer(projection: string): Observable<VectorSource> {

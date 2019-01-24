@@ -13,7 +13,7 @@ export enum GranulesActionType {
 export class QueryApi implements Action {
   public readonly type = GranulesActionType.QUERY;
 
-  constructor(public payload: string) {}
+  constructor() {}
 }
 
 export class QueryError implements Action {

@@ -6,14 +6,18 @@ import { Store, Action } from '@ngrx/store';
 import { combineLatest, Subscription } from 'rxjs';
 import { filter, map, switchMap, skip, tap } from 'rxjs/operators';
 
-import { AppState } from './../../store';
-import * as granulesStore from './../../store/granules';
-import * as mapStore from './../../store/map';
-import * as uiStore from './../../store/ui';
-import * as filterStore from './../../store/filters';
+import WKT from 'ol/format/WKT.js';
+import { Vector as VectorLayer } from 'ol/layer';
+import { Vector as VectorSource } from 'ol/source';
 
-import { MapService } from './../../services/map/map.service';
-import * as models from './../../models';
+import { AppState } from '@store';
+import * as granulesStore from '@store/granules';
+import * as mapStore from '@store/map';
+import * as uiStore from '@store/ui';
+import * as filterStore from '@store/filters';
+
+import { MapService } from '@services/map/map.service';
+import * as models from '@models';
 
 
 @Injectable({
@@ -71,6 +75,11 @@ export class UrlStateService {
       skip(1),
       map(zoom => ({ zoom }))
     ).subscribe(this.updateRouteWithParams);
+
+    this.mapService.searchPolygon$.pipe(
+      map(polygon => ({ polygon }))
+    )
+    .subscribe(this.updateRouteWithParams);
   }
 
   private updateRouteWithParams = (queryParams: Params): void => {
@@ -90,7 +99,8 @@ export class UrlStateService {
       view: this.loadMapView,
       zoom: this.loadMapZoom,
       center: this.loadMapCenter,
-      selectedPlatforms: this.loadSelectedPlatforms
+      selectedPlatforms: this.loadSelectedPlatforms,
+      polygon: this.loadSearchPolygon,
     };
 
     Object.entries(urlParamLoaders)
@@ -149,6 +159,18 @@ export class UrlStateService {
     const action = new filterStore.SetSelectedPlatforms(selectedPlatforms);
 
     this.store$.dispatch(action);
+  }
+
+  public loadSearchPolygon = (polygon: string): void => {
+    const format = new WKT();
+    const granuleProjection = 'EPSG:4326';
+
+    const features = format.readFeature(polygon, {
+      dataProjection: granuleProjection,
+      featureProjection: this.mapService.epsg()
+    });
+
+    this.mapService.addDrawFeature(features);
   }
 
   private isNumber = n => !isNaN(n) && isFinite(n);
