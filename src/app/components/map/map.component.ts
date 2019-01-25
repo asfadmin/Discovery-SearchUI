@@ -39,6 +39,9 @@ export class MapComponent implements OnInit {
     this.updateMapOnViewChange();
     this.redrawSearchPolygonWhenViewChanges();
     this.updateDrawMode();
+
+    this.interactionMode$
+      .subscribe(mode => this.mapService.setInteractionMode(mode));
   }
 
   private redrawSearchPolygonWhenViewChanges(): void {
