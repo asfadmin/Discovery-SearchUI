@@ -1,12 +1,6 @@
 <div class="page-layout blank p-24" fusePerfectScrollbar>
 
 <div>
-  <app-spreadsheet></app-spreadsheet>
-
-  <app-sidebar
-     (newSearch)="onNewSearch()"
-     (clearSearch)="onClearSearch()"
-    ></app-sidebar>
 
   <app-map
     (newMapView)="onNewMapView($event)"
@@ -16,6 +10,13 @@
     [view$]="view$"
     [drawMode$]="drawMode$">
   </app-map>
+
+  <app-spreadsheet></app-spreadsheet>
+
+  <app-sidebar
+     (newSearch)="onNewSearch()"
+     (clearSearch)="onClearSearch()"
+    ></app-sidebar>
 </div>
 
 </div>
