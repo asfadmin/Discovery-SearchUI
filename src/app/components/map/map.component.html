@@ -10,3 +10,7 @@
   [drawMode]="drawMode$ | async">
 </app-draw-selector>
 
+<app-interaction-selector
+  (newInteraction)="onNewInteractionMode($event)"
+  [interaction]="interactionMode$ | async">
+></app-interaction-selector>

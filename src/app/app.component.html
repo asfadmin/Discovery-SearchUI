@@ -5,10 +5,12 @@
   <app-map
     (newMapView)="onNewMapView($event)"
     (newMapDrawMode)="onNewMapDrawMode($event)"
+    (newMapInteractionMode)="onNewMapInteractionMode($event)"
     (loadUrlState)="onLoadUrlState()"
     [granules$]="granules$"
     [view$]="view$"
-    [drawMode$]="drawMode$">
+    [drawMode$]="drawMode$"
+    [interactionMode$]="interactionMode$">
   </app-map>
 
   <app-spreadsheet></app-spreadsheet>

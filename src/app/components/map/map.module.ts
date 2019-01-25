@@ -6,6 +6,7 @@ import { MatSharedModule } from '@shared';
 
 import { MapComponent } from './map.component';
 import { ViewSelectorComponent } from './view-selector';
+import { InteractionSelectorComponent } from './interaction-selector';
 import { DrawSelectorComponent } from './draw-selector/draw-selector.component';
 
 @NgModule({
@@ -19,6 +20,7 @@ import { DrawSelectorComponent } from './draw-selector/draw-selector.component';
     MapComponent,
     ViewSelectorComponent,
     DrawSelectorComponent,
+    InteractionSelectorComponent
   ],
   exports: [
     MapComponent
