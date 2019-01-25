@@ -1,0 +1,12 @@
+<div id="map" class="map"></div>
+
+<app-view-selector
+  (newProjection)="onNewProjection($event)"
+  [view]="view$ | async">
+</app-view-selector>
+
+<app-draw-selector
+  (newDrawMode)="onNewDrawMode($event)"
+  [drawMode]="drawMode$ | async">
+</app-draw-selector>
+

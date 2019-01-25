@@ -17,19 +17,7 @@ import { MapService, UrlStateService } from '@services';
 
 @Component({
   selector: 'app-map',
-  template: `
-    <div id="map" class="map"></div>
-
-    <app-view-selector
-      (newProjection)="onNewProjection($event)"
-      [view]="view$ | async">
-    </app-view-selector>
-
-    <app-draw-selector
-      (newDrawMode)="onNewDrawMode($event)"
-      [drawMode]="drawMode$ | async">
-    ></app-draw-selector>
-  `,
+  templateUrl: './map.component.html',
   styleUrls: ['./map.component.scss']
 })
 export class MapComponent implements OnInit {
@@ -46,25 +34,12 @@ export class MapComponent implements OnInit {
   constructor(private mapService: MapService) {}
 
   ngOnInit(): void {
-    this.view$.pipe(
-      map(view => this.setMapWith(view)),
+    this.updateMapOnViewChange();
+    this.redrawSearchPolygonWhenViewChanges();
+    this.updateDrawMode();
+  }
 
-      tap(() => {
-        if (this.isInitMap) {
-          this.loadUrlState.emit();
-        }
-
-        this.isInitMap = false;
-      }),
-
-
-      switchMap(_ =>
-        this.granulePolygonsLayer(this.mapService.epsg())
-      ),
-    ).subscribe(
-      layer => this.mapService.setLayer(layer)
-    );
-
+  private redrawSearchPolygonWhenViewChanges(): void {
     this.view$.pipe(
       withLatestFrom(this.mapService.searchPolygon$),
       map(([_, polygon]) => polygon),
@@ -73,12 +48,36 @@ export class MapComponent implements OnInit {
       polygon => this.loadSearchPolygon(polygon)
     );
 
+  }
+
+  private updateMapOnViewChange(): void {
+    this.view$.pipe(
+      map(view => this.setMapWith(view)),
+
+      // Load state from url after map is set
+      tap(() => {
+        if (this.isInitMap) {
+          this.loadUrlState.emit();
+        }
+
+        this.isInitMap = false;
+      }),
+
+      switchMap(_ =>
+        this.granulePolygonsLayer(this.mapService.epsg())
+      ),
+    ).subscribe(
+      layer => this.mapService.setLayer(layer)
+    );
+  }
+
+  private updateDrawMode(): void {
     this.drawMode$.subscribe(
       mode => this.mapService.setDrawMode(mode)
     );
   }
 
-  public loadSearchPolygon = (polygon: string): void => {
+  private loadSearchPolygon = (polygon: string): void => {
     const format = new WKT();
     const granuleProjection = 'EPSG:4326';
 
