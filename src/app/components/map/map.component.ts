@@ -11,7 +11,7 @@ import { WKT } from 'ol/format';
 import { Vector as VectorLayer} from 'ol/layer';
 import { Vector as VectorSource } from 'ol/source';
 
-import { Sentinel1Product, MapViewType } from '@models';
+import { Sentinel1Product, MapViewType, MapDrawModeType } from '@models';
 import { MapService, UrlStateService } from '@services';
 
 
@@ -21,16 +21,24 @@ import { MapService, UrlStateService } from '@services';
     <div id="map" class="map"></div>
 
     <app-view-selector
-      (newProjection)="onNewProjection($event)">
+      (newProjection)="onNewProjection($event)"
+      [view]="view$ | async">
     </app-view-selector>
+
+    <app-draw-selector
+      (newDrawMode)="onNewDrawMode($event)"
+      [drawMode]="drawMode$ | async">
+    ></app-draw-selector>
   `,
   styleUrls: ['./map.component.scss']
 })
 export class MapComponent implements OnInit {
   @Input() granules$: Observable<Sentinel1Product[]>;
   @Input() view$: Observable<MapViewType>;
+  @Input() drawMode$: Observable<MapDrawModeType>;
 
   @Output() newMapView = new EventEmitter<MapViewType>();
+  @Output() newMapDrawMode = new EventEmitter<MapDrawModeType>();
   @Output() loadUrlState = new EventEmitter<void>();
 
   private isInitMap = true;
@@ -49,16 +57,24 @@ export class MapComponent implements OnInit {
         this.isInitMap = false;
       }),
 
-      withLatestFrom(this.mapService.searchPolygon$),
-      map(([_, polygon]) => polygon),
-      filter(polygon => !!polygon),
-      map(polygon => this.loadSearchPolygon(polygon)),
 
       switchMap(_ =>
         this.granulePolygonsLayer(this.mapService.epsg())
       ),
     ).subscribe(
       layer => this.mapService.setLayer(layer)
+    );
+
+    this.view$.pipe(
+      withLatestFrom(this.mapService.searchPolygon$),
+      map(([_, polygon]) => polygon),
+      filter(polygon => !!polygon),
+    ).subscribe(
+      polygon => this.loadSearchPolygon(polygon)
+    );
+
+    this.drawMode$.subscribe(
+      mode => this.mapService.setDrawMode(mode)
     );
   }
 
@@ -76,6 +92,10 @@ export class MapComponent implements OnInit {
 
   public onNewProjection(view: MapViewType): void {
     this.newMapView.emit(view);
+  }
+
+  public onNewDrawMode(mode: MapDrawModeType): void {
+    this.newMapDrawMode.emit(mode);
   }
 
   private setMapWith(viewType: MapViewType): void {

@@ -22,7 +22,7 @@ import proj4 from 'proj4';
 import { AppState } from '@store';
 import * as mapStore from '@store/map';
 import { equatorial, antarctic, arctic, MapView } from './views';
-import { LonLat, MapViewType } from '@models';
+import { LonLat, MapViewType, MapDrawModeType } from '@models';
 
 
 @Injectable({
@@ -53,11 +53,7 @@ export class MapService {
     })
   });
 
-  private draw = new Draw({
-    source: this.drawSource,
-    type: 'Polygon'
-  });
-
+  private draw;
   public zoom$ = new Subject<number>();
   public center$ = new Subject<LonLat>();
   public searchPolygon$ = new Subject<string | null>();
@@ -83,6 +79,13 @@ export class MapService {
     this.searchPolygon$.next(
       this.featureToWKT(feature)
     );
+  }
+
+  public setDrawMode(mode: MapDrawModeType): void {
+    this.map.removeInteraction(this.draw);
+
+    this.draw = this.createDraw(mode);
+    this.map.addInteraction(this.draw);
   }
 
   public clearDrawLayer(): void {
@@ -132,23 +135,15 @@ export class MapService {
       loadTilesWhileAnimating: true
     });
 
-    const setSearchPolygon = feature => {
-      const wktPolygon = this.featureToWKT(feature);
-
-      this.searchPolygon$.next(wktPolygon);
-      this.epsg$.next(this.epsg());
-    };
-
     const modify = new Modify({ source: this.drawSource });
     modify.on('modifyend', e => {
       const feature = e.features.getArray()[0];
-      setSearchPolygon(feature);
+      this.setSearchPolygon(feature);
     });
 
     newMap.addInteraction(modify);
 
-    this.draw.on('drawstart', e => this.clearDrawLayer());
-    this.draw.on('drawend', e => setSearchPolygon(e.feature));
+    this.draw = this.createDraw(MapDrawModeType.POLYGON);
     this.drawLayer.setZIndex(100);
 
     newMap.addInteraction(this.draw);
@@ -170,6 +165,26 @@ export class MapService {
 
     return newMap;
   }
+
+  public createDraw(drawMode: MapDrawModeType) {
+    const draw = new Draw({
+      source: this.drawSource,
+      type: drawMode
+    });
+
+    draw.on('drawstart', e => this.clearDrawLayer());
+    draw.on('drawend', e => this.setSearchPolygon(e.feature));
+
+    return draw;
+  }
+
+  private setSearchPolygon = feature => {
+    const wktPolygon = this.featureToWKT(feature);
+
+    this.searchPolygon$.next(wktPolygon);
+    this.epsg$.next(this.epsg());
+  }
+
 
   private featureToWKT(feature): string {
     const format = new WKT();

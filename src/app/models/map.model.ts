@@ -3,3 +3,9 @@ export enum MapViewType {
   EQUITORIAL = 'equitorial',
   ANTARCTIC = 'antarctic',
 }
+
+export enum MapDrawModeType {
+  POINT = 'Point',
+  LINESTRING = 'LineString',
+  POLYGON = 'Polygon',
+}

@@ -1,19 +1,22 @@
 <div class="page-layout blank p-24" fusePerfectScrollbar>
 
 <div>
+
+  <app-map
+    (newMapView)="onNewMapView($event)"
+    (newMapDrawMode)="onNewMapDrawMode($event)"
+    (loadUrlState)="onLoadUrlState()"
+    [granules$]="granules$"
+    [view$]="view$"
+    [drawMode$]="drawMode$">
+  </app-map>
+
   <app-spreadsheet></app-spreadsheet>
 
   <app-sidebar
      (newSearch)="onNewSearch()"
      (clearSearch)="onClearSearch()"
     ></app-sidebar>
-
-  <app-map
-    (newMapView)="onNewMapView($event)"
-    (loadUrlState)="onLoadUrlState()"
-    [granules$]="granules$"
-    [view$]="view$">
-  </app-map>
 </div>
 
 </div>

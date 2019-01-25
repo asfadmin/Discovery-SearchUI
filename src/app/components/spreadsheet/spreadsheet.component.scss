@@ -6,6 +6,10 @@
   width: 90vw;
   z-index: 999;
   overflow: auto;
+
+  @media screen and (max-width: 900px) {
+    display: none;
+  }
 }
 
 .inner-card {
