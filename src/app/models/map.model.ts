@@ -9,3 +9,8 @@ export enum MapDrawModeType {
   LINESTRING = 'LineString',
   POLYGON = 'Polygon',
 }
+
+export enum MapInteractionModeType {
+  DRAW = 'Draw',
+  EDIT = 'Edit'
+}

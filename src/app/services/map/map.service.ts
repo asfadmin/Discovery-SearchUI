@@ -53,7 +53,7 @@ export class MapService {
     })
   });
 
-  private draw;
+  private draw: Draw;
   public zoom$ = new Subject<number>();
   public center$ = new Subject<LonLat>();
   public searchPolygon$ = new Subject<string | null>();
