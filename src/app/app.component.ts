@@ -45,6 +45,7 @@ export class AppComponent implements OnInit {
         map(platforms => platforms
           .map(platform => platform.name)
           .join(',')
+          .replace('ALOS PALSAR', 'ALOS')
         )
       )
     );
