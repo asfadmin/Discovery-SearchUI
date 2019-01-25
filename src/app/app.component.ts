@@ -26,6 +26,7 @@ export class AppComponent implements OnInit {
 
   public view$ = this.store$.select(mapStore.getMapView);
   public drawMode$ = this.store$.select(mapStore.getMapDrawMode);
+  public interactionMode$ = this.store$.select(mapStore.getMapInteractionMode);
 
   private doSearch = new Subject<void>();
 
@@ -38,9 +39,9 @@ export class AppComponent implements OnInit {
 
   public ngOnInit(): void {
     const searchState$ = combineLatest(
-        this.mapService.searchPolygon$.pipe(
-          startWith(null)
-        ),
+      this.mapService.searchPolygon$.pipe(
+        startWith(null)
+      ),
       this.store$.select(filterStore.getSelectedPlatforms).pipe(
         map(platforms => platforms
           .map(platform => platform.name)
@@ -94,6 +95,10 @@ export class AppComponent implements OnInit {
 
   public onNewMapDrawMode(mode: models.MapDrawModeType): void {
     this.store$.dispatch(new mapStore.SetMapDrawMode(mode));
+  }
+
+  public onNewMapInteractionMode(mode: models.MapInteractionModeType): void {
+    this.store$.dispatch(new mapStore.SetMapInteractionMode(mode));
   }
 }
 

@@ -11,7 +11,7 @@ import { WKT } from 'ol/format';
 import { Vector as VectorLayer} from 'ol/layer';
 import { Vector as VectorSource } from 'ol/source';
 
-import { Sentinel1Product, MapViewType, MapDrawModeType } from '@models';
+import { Sentinel1Product, MapViewType, MapDrawModeType, MapInteractionModeType } from '@models';
 import { MapService, UrlStateService } from '@services';
 
 
@@ -24,9 +24,11 @@ export class MapComponent implements OnInit {
   @Input() granules$: Observable<Sentinel1Product[]>;
   @Input() view$: Observable<MapViewType>;
   @Input() drawMode$: Observable<MapDrawModeType>;
+  @Input() interactionMode$: Observable<MapInteractionModeType>;
 
   @Output() newMapView = new EventEmitter<MapViewType>();
   @Output() newMapDrawMode = new EventEmitter<MapDrawModeType>();
+  @Output() newMapInteractionMode = new EventEmitter<MapInteractionModeType>();
   @Output() loadUrlState = new EventEmitter<void>();
 
   private isInitMap = true;
@@ -37,6 +39,9 @@ export class MapComponent implements OnInit {
     this.updateMapOnViewChange();
     this.redrawSearchPolygonWhenViewChanges();
     this.updateDrawMode();
+
+    this.interactionMode$
+      .subscribe(mode => this.mapService.setInteractionMode(mode));
   }
 
   private redrawSearchPolygonWhenViewChanges(): void {
@@ -95,6 +100,10 @@ export class MapComponent implements OnInit {
 
   public onNewDrawMode(mode: MapDrawModeType): void {
     this.newMapDrawMode.emit(mode);
+  }
+
+  public onNewInteractionMode(mode: MapInteractionModeType): void {
+    this.newMapInteractionMode.emit(mode);
   }
 
   private setMapWith(viewType: MapViewType): void {

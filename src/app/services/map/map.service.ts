@@ -22,7 +22,7 @@ import proj4 from 'proj4';
 import { AppState } from '@store';
 import * as mapStore from '@store/map';
 import { equatorial, antarctic, arctic, MapView } from './views';
-import { LonLat, MapViewType, MapDrawModeType } from '@models';
+import { LonLat, MapViewType, MapDrawModeType, MapInteractionModeType } from '@models';
 
 
 @Injectable({
@@ -53,7 +53,10 @@ export class MapService {
     })
   });
 
-  private draw;
+  private draw: Draw;
+  private modify: Modify;
+  private snap: Snap;
+
   public zoom$ = new Subject<number>();
   public center$ = new Subject<LonLat>();
   public searchPolygon$ = new Subject<string | null>();
@@ -79,6 +82,19 @@ export class MapService {
     this.searchPolygon$.next(
       this.featureToWKT(feature)
     );
+  }
+
+  public setInteractionMode(mode: MapInteractionModeType) {
+    console.log(mode);
+    if (mode === MapInteractionModeType.DRAW) {
+      this.map.removeInteraction(this.modify);
+      this.map.removeInteraction(this.snap);
+      this.map.addInteraction(this.draw);
+    } else if (mode === MapInteractionModeType.EDIT) {
+      this.map.removeInteraction(this.draw);
+      this.map.addInteraction(this.snap);
+      this.map.addInteraction(this.modify);
+    }
   }
 
   public setDrawMode(mode: MapDrawModeType): void {
@@ -135,21 +151,16 @@ export class MapService {
       loadTilesWhileAnimating: true
     });
 
-    const modify = new Modify({ source: this.drawSource });
-    modify.on('modifyend', e => {
+    this.modify = new Modify({ source: this.drawSource });
+    this.modify.on('modifyend', e => {
       const feature = e.features.getArray()[0];
       this.setSearchPolygon(feature);
     });
 
-    newMap.addInteraction(modify);
-
     this.draw = this.createDraw(MapDrawModeType.POLYGON);
     this.drawLayer.setZIndex(100);
 
-    newMap.addInteraction(this.draw);
-
-    const snap = new Snap({source: this.drawSource});
-    newMap.addInteraction(snap);
+    this.snap = new Snap({source: this.drawSource});
 
     newMap.on('moveend', e => {
       const map = e.map;
