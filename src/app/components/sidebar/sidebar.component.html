@@ -51,12 +51,12 @@
   </app-search-bar>
 
   <ng-container *ngIf="granules$ | async as granules">
-    <app-products-list [products]="granules"></app-products-list>
-
     <app-product-detail
         *ngIf="granules.length > 0"
         [product]="granules[0]">
     </app-product-detail>
+
+    <app-products-list [products]="granules"></app-products-list>
   </ng-container>
 
 </div></div>
