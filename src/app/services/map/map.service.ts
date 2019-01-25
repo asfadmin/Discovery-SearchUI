@@ -73,6 +73,7 @@ export class MapService {
   }
 
   public setDrawFeature(feature): void {
+    this.drawSource.clear();
     this.drawSource.addFeature(feature);
 
     this.searchPolygon$.next(
@@ -81,15 +82,10 @@ export class MapService {
   }
 
   public setDrawMode(mode: MapDrawModeType): void {
-    console.log(mode);
-
     this.map.removeInteraction(this.draw);
 
     this.draw = this.createDraw(mode);
     this.map.addInteraction(this.draw);
-  }
-
-  public addInteractions(mode: MapDrawModeType) {
   }
 
   public clearDrawLayer(): void {
