@@ -15,6 +15,7 @@ import { reducers, metaReducers, appEffects } from './store';
 import { SidebarModule } from '@components/sidebar';
 import { SpreadsheetModule } from '@components/spreadsheet';
 import { MapModule } from '@components/map';
+import { FileUploadModule } from '@components/file-upload';
 
 import { AsfApiService, UrlStateService, MapService } from './services';
 import { environment } from './../environments/environment';
@@ -43,6 +44,7 @@ export const routes = [
     SidebarModule,
     SpreadsheetModule,
     MapModule,
+    FileUploadModule,
   ],
   providers: [
     AsfApiService,

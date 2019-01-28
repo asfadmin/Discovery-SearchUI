@@ -27,6 +27,7 @@ export class AppComponent implements OnInit {
   public view$ = this.store$.select(mapStore.getMapView);
   public drawMode$ = this.store$.select(mapStore.getMapDrawMode);
   public interactionMode$ = this.store$.select(mapStore.getMapInteractionMode);
+  public interactionTypes = models.MapInteractionModeType;
 
   private doSearch = new Subject<void>();
 
@@ -99,6 +100,10 @@ export class AppComponent implements OnInit {
 
   public onNewMapInteractionMode(mode: models.MapInteractionModeType): void {
     this.store$.dispatch(new mapStore.SetMapInteractionMode(mode));
+  }
+
+  public onFileUploadDialogClosed(): void {
+    this.onNewMapInteractionMode(models.MapInteractionModeType.EDIT);
   }
 }
 

@@ -1,6 +1,10 @@
 <div class="page-layout blank p-24" fusePerfectScrollbar>
 
 <div>
+  <app-file-upload
+    (dialogClose)="onFileUploadDialogClosed()"
+    [interaction$]="interactionMode$">
+  </app-file-upload>
 
   <app-map
     (newMapView)="onNewMapView($event)"
