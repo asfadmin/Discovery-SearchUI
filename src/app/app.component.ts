@@ -62,9 +62,9 @@ export class AppComponent implements OnInit {
           };
 
           return Object.entries(params)
-            .filter(([key, val]) => !!val)
+            .filter(([param, val]) => !!val)
             .reduce(
-              (queryParams, [key, val]) => queryParams.append(key, val),
+              (queryParams, [param, val]) => queryParams.append(param, val),
               new HttpParams()
             );
         }),
