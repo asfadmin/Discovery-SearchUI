@@ -13,7 +13,6 @@
     {{ error$ | async }}
   </div>
 
-
   <app-filter-selector
     [selectedFilter]="selectedFilter$ | async"
     (newFilterSelected)="onNewFilterSelected($event)">
@@ -30,7 +29,10 @@
 
     <app-date-selector
       *ngIf="selected === filterType.DATE"
-      [selected]="selectedPlatforms$ | async"
+      [startMin]="startMin$ | async"
+      [startMax]="startMax$ | async"
+      [endMin]="endMin$ | async"
+      [endMax]="endMax$ | async"
       (newStart)="onNewStartDate($event)"
       (newEnd)="onNewEndDate($event)">
     </app-date-selector>

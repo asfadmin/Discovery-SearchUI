@@ -5,6 +5,9 @@ import {
   animate, transition
 } from '@angular/animations';
 
+import { combineLatest } from 'rxjs';
+import { map, tap } from 'rxjs/operators';
+
 import { Store } from '@ngrx/store';
 
 import { AppState } from '@store';
@@ -13,6 +16,9 @@ import * as uiStore from '@store/ui';
 import * as granulesStore from '@store/granules';
 
 import { FilterType } from '@models';
+
+const oldest = (d1, d2) => d1 < d2 ? d1 : d2;
+const youngest = (d1, d2) => d1 > d2 ? d1 : d2;
 
 @Component({
   selector: 'app-sidebar',
@@ -40,6 +46,9 @@ export class SidebarComponent {
   public selectedPlatformNames$ = this.store$.select(filtersStore.getSelectedPlatformNames);
   public selectedPlatforms$ = this.store$.select(filtersStore.getSelectedPlatforms);
 
+  public startDate$ = this.store$.select(filtersStore.getStartDate);
+  public endDate$ = this.store$.select(filtersStore.getEndDate);
+
   public isSidebarOpen$ = this.store$.select(uiStore.getIsSidebarOpen);
   public selectedFilter$ = this.store$.select(uiStore.getSelectedFilter);
 
@@ -48,6 +57,83 @@ export class SidebarComponent {
   public loading$  = this.store$.select(granulesStore.getLoading);
 
   public filterType = FilterType;
+
+  public startMin$ = combineLatest(
+    this.platforms$,
+    this.selectedPlatforms$
+  ).pipe(
+    map(([platforms, selected]) => {
+      const dates = selected.length > 0 ?
+        selected :
+        platforms;
+
+      return dates
+        .map(platform => platform.date.start)
+        .reduce(oldest);
+    })
+  );
+
+  public startMax$ = combineLatest(
+    this.platforms$,
+    this.selectedPlatforms$,
+    this.endDate$
+  ).pipe(
+    map(([platforms, selected, userEnd]) => {
+      if (!!userEnd) {
+        return userEnd;
+      }
+
+      const dates = selected.length > 0 ?
+        selected :
+        platforms;
+
+      const max = dates
+        .map(platform => platform.date.end || new Date(Date.now()))
+        .reduce(youngest);
+
+      return max;
+    })
+  );
+
+  public endMin$ = combineLatest(
+    this.platforms$,
+    this.selectedPlatforms$,
+    this.startDate$
+  ).pipe(
+    map(([platforms, selected, userStart]) => {
+      if (!!userStart) {
+        return userStart;
+      }
+
+      const dates = selected.length > 0 ?
+        selected :
+        platforms;
+
+      const min = dates
+        .map(platform => platform.date.start)
+        .reduce(oldest);
+
+      return min;
+    })
+  );
+
+  public endMax$ = combineLatest(
+    this.platforms$,
+    this.selectedPlatforms$
+  ).pipe(
+    map(([platforms, selected]) => {
+      const dates = selected.length > 0 ?
+        selected :
+        platforms;
+
+      const max = dates
+        .map(platform => platform.date.end || new Date(Date.now()))
+        .reduce(youngest);
+
+      return max;
+    })
+  );
+
 
   constructor(private store$: Store<AppState>) {}
 
@@ -83,3 +169,4 @@ export class SidebarComponent {
     this.store$.dispatch(new filtersStore.SetEndDate(end));
   }
 }
+

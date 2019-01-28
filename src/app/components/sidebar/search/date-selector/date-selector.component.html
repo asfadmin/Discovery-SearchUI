@@ -2,14 +2,14 @@
   <mat-card-title>Acquisition Date</mat-card-title>
 
   <mat-form-field>
-    <input matInput [matDatepicker]="start" placeholder="Start Date"
+    <input matInput [min]="startMin" [max]="startMax" [matDatepicker]="start" placeholder="Start Date"
       (dateInput)="onStartDateChange($event)">
     <mat-datepicker-toggle matSuffix [for]="start"></mat-datepicker-toggle>
     <mat-datepicker #start></mat-datepicker>
   </mat-form-field>
 
   <mat-form-field>
-    <input matInput [matDatepicker]="end" placeholder="End Date"
+    <input matInput [min]="endMin" [max]="endMax" [matDatepicker]="end" placeholder="End Date"
     (dateInput)="onEndDateChange($event)">
     <mat-datepicker-toggle matSuffix [for]="end"></mat-datepicker-toggle>
     <mat-datepicker #end></mat-datepicker>
