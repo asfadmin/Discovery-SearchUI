@@ -74,4 +74,12 @@ export class SidebarComponent {
   public onClearSearch(): void {
     this.clearSearch.emit();
   }
+
+  public onNewStartDate(start: Date): void {
+    this.store$.dispatch(new filtersStore.SetStartDate(start));
+  }
+
+  public onNewEndDate(end: Date): void {
+    this.store$.dispatch(new filtersStore.SetEndDate(end));
+  }
 }

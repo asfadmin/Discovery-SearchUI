@@ -30,7 +30,9 @@
 
     <app-date-selector
       *ngIf="selected === filterType.DATE"
-      [selected]="selectedPlatforms$ | async">
+      [selected]="selectedPlatforms$ | async"
+      (newStart)="onNewStartDate($event)"
+      (newEnd)="onNewEndDate($event)">
     </app-date-selector>
 
     <app-path-selector
