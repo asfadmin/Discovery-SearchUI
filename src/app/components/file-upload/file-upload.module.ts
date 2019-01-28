@@ -9,7 +9,8 @@ import {
 import { FlexLayoutModule } from '@angular/flex-layout';
 
 import { MatSharedModule } from '@shared/mat-shared.module';
-import { FileUploadComponent, FileUploadDialogComponent  } from './file-upload.component';
+import { FileUploadComponent } from './file-upload.component';
+import { FileUploadDialogComponent } from './file-upload-dialog';
 
 @NgModule({
   declarations: [

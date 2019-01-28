@@ -3,13 +3,10 @@ import { Component, OnInit, Inject, Input, Output, EventEmitter } from '@angular
 import { Observable } from 'rxjs';
 import { filter } from 'rxjs/operators';
 
-import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material';
 import { MapInteractionModeType } from '@models';
+import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material';
 
-export interface FileUploadData {
-  animal: string;
-  name: string;
-}
+import { FileUploadDialogComponent } from './file-upload-dialog';
 
 @Component({
   selector: 'app-file-upload',
@@ -33,30 +30,13 @@ export class FileUploadComponent implements OnInit {
 
   openDialog(): void {
     const dialogRef = this.dialog.open(FileUploadDialogComponent , {
-      width: '50%', height: '50%',
-      data: {name: this.name, animal: this.animal}
+      width: '50%', height: '50%'
     });
 
     dialogRef.afterClosed().subscribe(result => {
       console.log('The dialog was closed');
-      this.animal = result;
       this.dialogClose.emit();
     });
   }
 }
 
-@Component({
-  selector: 'app-file-upload-dialog',
-  templateUrl: 'file-upload-dialog.component.html',
-  styleUrls: ['./file-upload-dialog.component.css']
-})
-export class FileUploadDialogComponent {
-
-  constructor(
-    public dialogRef: MatDialogRef<FileUploadDialogComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: FileUploadData) {}
-
-  onNoClick(): void {
-    this.dialogRef.close();
-  }
-}
