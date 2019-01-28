@@ -69,7 +69,8 @@ export class AppComponent implements OnInit {
           const params = {
             intersectsWith: polygon,
             platform: platforms,
-            start, end,
+            start,
+            end,
           };
 
           return Object.entries(params)
