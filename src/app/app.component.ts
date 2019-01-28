@@ -4,7 +4,7 @@ import { HttpParams } from '@angular/common/http';
 import { Store, Action } from '@ngrx/store';
 
 import { combineLatest, Subscription, Subject } from 'rxjs';
-import { filter, map, switchMap, skip, withLatestFrom, startWith } from 'rxjs/operators';
+import { filter, map, switchMap, skip, withLatestFrom, startWith, tap } from 'rxjs/operators';
 
 import { AppState } from './store';
 import * as granulesStore from '@store/granules';
@@ -49,6 +49,13 @@ export class AppComponent implements OnInit {
           .join(',')
           .replace('ALOS PALSAR', 'ALOS')
         )
+      ),
+      this.store$.select(filterStore.getDateRange).pipe(
+        map(range => {
+          return [range.start, range.end]
+            .filter(date => !!date)
+            .map(date => date.toISOString());
+        })
       )
     );
 
@@ -56,10 +63,13 @@ export class AppComponent implements OnInit {
       withLatestFrom(searchState$),
       map(([_, searchState]) => searchState),
       map(
-        ([polygon, platforms]) => {
+        ([polygon, platforms, [start, end]]) => {
+          console.log(start, end);
+
           const params = {
             intersectsWith: polygon,
-            platform: platforms
+            platform: platforms,
+            start, end,
           };
 
           return Object.entries(params)
