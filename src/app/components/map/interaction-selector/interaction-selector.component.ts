@@ -20,4 +20,7 @@ export class InteractionSelectorComponent {
 
   public onEditSelected =
     () => this.newInteraction.emit(MapInteractionModeType.EDIT)
+
+  public onUploadSelected =
+    () => this.newInteraction.emit(MapInteractionModeType.UPLOAD)
 }

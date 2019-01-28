@@ -12,5 +12,6 @@ export enum MapDrawModeType {
 
 export enum MapInteractionModeType {
   DRAW = 'Draw',
-  EDIT = 'Edit'
+  EDIT = 'Edit',
+  UPLOAD = 'Upload',
 }
