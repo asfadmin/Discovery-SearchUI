@@ -36,25 +36,33 @@ export class UrlStateService {
     private router: Router,
     private activatedRoute: ActivatedRoute,
   ) {
-    this.urlParams = [{
+    this.urlParams = [
+      ...this.mapParameters(),
+      ...this.uiParameters(),
+      ...this.filtersParameters(),
+    ];
+  }
+
+  private uiParameters() {
+    return [{
       name: 'isSidebarOpen',
       source: this.store$.select(uiStore.getIsSidebarOpen).pipe(
         skip(1),
-        map(isSidebarOpen => ({
-          isSidebarOpen
-        }))
+        map(isSidebarOpen => ({ isSidebarOpen }))
       ),
       loader: this.loadIsSidebarOpen
     }, {
       name: 'selectedFilter',
       source: this.store$.select(uiStore.getSelectedFilter).pipe(
         skip(1),
-        map(selectedFilter => ({
-          selectedFilter
-        }))
+        map(selectedFilter => ({ selectedFilter }))
       ),
       loader: this.loadSelectedFilter
-    }, {
+    }];
+  }
+
+  private filtersParameters() {
+    return [{
       name: 'platforms',
       source: this.store$.select(filterStore.getSelectedPlatformNames).pipe(
         skip(1),
@@ -64,21 +72,6 @@ export class UrlStateService {
         }))
       ),
       loader: this.loadSelectedPlatforms
-    }, {
-      name: 'view',
-      source: this.store$.select(mapStore.getMapView).pipe(
-        skip(1),
-        map(view => ({ view }))
-      ),
-      loader: this.loadMapView
-    }, {
-      name: 'drawMode',
-      source: this.store$.select(mapStore.getMapDrawMode).pipe(
-        skip(1),
-        map(drawMode => ({ drawMode })
-        )
-      ),
-      loader: this.loadMapDrawMode
     }, {
       name: 'start',
       source: this.store$.select(filterStore.getStartDate).pipe(
@@ -93,6 +86,25 @@ export class UrlStateService {
         map(end => ({ end }))
       ),
       loader: this.loadEndDate
+    }];
+  }
+
+  private mapParameters() {
+    return [{
+      name: 'view',
+      source: this.store$.select(mapStore.getMapView).pipe(
+        skip(1),
+        map(view => ({ view }))
+      ),
+      loader: this.loadMapView
+    }, {
+      name: 'drawMode',
+      source: this.store$.select(mapStore.getMapDrawMode).pipe(
+        skip(1),
+        map(drawMode => ({ drawMode })
+        )
+      ),
+      loader: this.loadMapDrawMode
     }, {
       name: 'center',
       source: this.mapService.center$.pipe(
@@ -114,7 +126,6 @@ export class UrlStateService {
       ),
       loader: this.loadSearchPolygon
     }];
-
   }
 
   public load(): void {
