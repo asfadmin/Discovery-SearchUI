@@ -26,7 +26,7 @@ export class AsfApiService {
   }
 
   public validate(wkt: string): Observable<any> {
-    const url = 'http://127.0.0.1:5000/services/validate/wkt';
+    const url = 'https://api-test.asf.alaska.edu/services/validate/wkt';
 
     const params = new HttpParams()
       .append('wkt', wkt);
