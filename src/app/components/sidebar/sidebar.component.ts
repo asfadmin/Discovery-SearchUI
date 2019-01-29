@@ -5,11 +5,11 @@ import {
   animate, transition
 } from '@angular/animations';
 
-import { combineLatest } from 'rxjs';
-import { map, tap } from 'rxjs/operators';
+import { Observable } from 'rxjs';
 
 import { Store } from '@ngrx/store';
 
+import { DateExtremaService } from '@services';
 import { AppState } from '@store';
 import * as filtersStore from '@store/filters';
 import * as uiStore from '@store/ui';
@@ -17,8 +17,6 @@ import * as granulesStore from '@store/granules';
 
 import { FilterType } from '@models';
 
-const oldest = (d1, d2) => d1 < d2 ? d1 : d2;
-const youngest = (d1, d2) => d1 > d2 ? d1 : d2;
 
 @Component({
   selector: 'app-sidebar',
@@ -56,86 +54,30 @@ export class SidebarComponent {
   public granules$ = this.store$.select(granulesStore.getGranules);
   public loading$  = this.store$.select(granulesStore.getLoading);
 
+  public startMin$: Observable<Date>;
+  public startMax$: Observable<Date>;
+  public endMin$: Observable<Date>;
+  public endMax$: Observable<Date>;
+
   public filterType = FilterType;
 
-  public startMin$ = combineLatest(
-    this.platforms$,
-    this.selectedPlatforms$
-  ).pipe(
-    map(([platforms, selected]) => {
-      const dates = selected.length > 0 ?
-        selected :
-        platforms;
+  constructor(
+    private dateExtremaService: DateExtremaService,
+    private store$: Store<AppState>,
+  ) {
+    const [ startMin$, startMax$, endMin$, endMax$ ] =
+      this.dateExtremaService.getExtrema$(
+        this.platforms$,
+        this.selectedPlatforms$,
+        this.startDate$,
+        this.endDate$,
+      );
 
-      return dates
-        .map(platform => platform.date.start)
-        .reduce(oldest);
-    })
-  );
-
-  public startMax$ = combineLatest(
-    this.platforms$,
-    this.selectedPlatforms$,
-    this.endDate$
-  ).pipe(
-    map(([platforms, selected, userEnd]) => {
-      if (!!userEnd) {
-        return userEnd;
-      }
-
-      const dates = selected.length > 0 ?
-        selected :
-        platforms;
-
-      const max = dates
-        .map(platform => platform.date.end || new Date(Date.now()))
-        .reduce(youngest);
-
-      return max;
-    })
-  );
-
-  public endMin$ = combineLatest(
-    this.platforms$,
-    this.selectedPlatforms$,
-    this.startDate$
-  ).pipe(
-    map(([platforms, selected, userStart]) => {
-      if (!!userStart) {
-        return userStart;
-      }
-
-      const dates = selected.length > 0 ?
-        selected :
-        platforms;
-
-      const min = dates
-        .map(platform => platform.date.start)
-        .reduce(oldest);
-
-      return min;
-    })
-  );
-
-  public endMax$ = combineLatest(
-    this.platforms$,
-    this.selectedPlatforms$
-  ).pipe(
-    map(([platforms, selected]) => {
-      const dates = selected.length > 0 ?
-        selected :
-        platforms;
-
-      const max = dates
-        .map(platform => platform.date.end || new Date(Date.now()))
-        .reduce(youngest);
-
-      return max;
-    })
-  );
-
-
-  constructor(private store$: Store<AppState>) {}
+    this.startMin$ = startMin$;
+    this.startMax$ = startMax$;
+    this.endMin$ = endMin$;
+    this.endMax$ = endMax$;
+  }
 
   public onPlatformRemoved(platformName: string): void {
     this.store$.dispatch(new filtersStore.RemoveSelectedPlatform(platformName));
