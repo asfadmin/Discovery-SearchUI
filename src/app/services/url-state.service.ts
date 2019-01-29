@@ -201,14 +201,23 @@ export class UrlStateService {
   private loadStartDate = (start: string): void => {
     const startDate = new Date(start);
 
+    if (!this.isValidDate(startDate)) {
+      return;
+    }
+
     this.store$.dispatch(new filterStore.SetStartDate(startDate));
   }
 
   private loadEndDate = (end: string): void => {
     const endDate = new Date(end);
 
+    if (!this.isValidDate(endDate)) {
+      return;
+    }
+
     this.store$.dispatch(new filterStore.SetEndDate(endDate));
   }
 
   private isNumber = n => !isNaN(n) && isFinite(n);
+  private isValidDate = (d: Date): boolean => d instanceof Date && !isNaN(d.valueOf());
 }
