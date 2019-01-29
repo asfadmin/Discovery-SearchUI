@@ -10,6 +10,8 @@ import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 
+import { MatSnackBarModule } from '@angular/material';
+
 import { reducers, metaReducers, appEffects } from './store';
 
 import { SidebarModule } from '@components/sidebar';
@@ -35,6 +37,7 @@ export const routes = [
   imports: [
     BrowserModule,
     HttpClientModule,
+    MatSnackBarModule,
 
     RouterModule.forRoot(routes, { useHash: true }),
     StoreModule.forRoot(reducers, { metaReducers }),

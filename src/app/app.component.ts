@@ -2,9 +2,15 @@ import { Component, OnInit } from '@angular/core';
 import { HttpParams } from '@angular/common/http';
 
 import { Store, Action } from '@ngrx/store';
+import { MatSnackBar } from '@angular/material';
 
-import { combineLatest, Subscription, Subject } from 'rxjs';
-import { filter, map, switchMap, skip, withLatestFrom, startWith, tap } from 'rxjs/operators';
+import { combineLatest, Subscription, Subject, of } from 'rxjs';
+import {
+  filter, map, mergeMap, switchMap, skip,
+  withLatestFrom, startWith, tap, catchError
+} from 'rxjs/operators';
+
+import WKT from 'ol/format/WKT.js';
 
 import { AppState } from './store';
 import * as granulesStore from '@store/granules';
@@ -36,9 +42,54 @@ export class AppComponent implements OnInit {
     private mapService: MapService,
     private asfApiService: AsfApiService,
     private urlStateService: UrlStateService,
+    private snackBar: MatSnackBar,
   ) {}
 
   public ngOnInit(): void {
+
+    this.mapService.searchPolygon$.pipe(
+      startWith(null),
+      filter(p => !!p),
+      mergeMap(polygon => this.asfApiService.validate(polygon)),
+      map(resp => {
+        if (resp.error) {
+          const { report, type } = resp.error;
+
+          this.mapService.setPolygonError();
+          this.snackBar.open(
+            report, 'INVALID POLYGON',
+            { duration: 4000, }
+          );
+
+          return;
+        }
+
+        this.mapService.setValidPolygon();
+
+        const repairs = resp.repairs
+          .filter(repair =>
+            repair.type !== models.PolygonRepairTypes.ROUND
+          );
+
+        if (repairs.length === 0) {
+          return resp.wkt;
+        }
+
+        const polygon = resp.wkt;
+
+        const format = new WKT();
+        const granuleProjection = 'EPSG:4326';
+
+        const features = format.readFeature(polygon, {
+          dataProjection: granuleProjection,
+          featureProjection: this.mapService.epsg()
+        });
+
+        this.mapService.setDrawFeature(features);
+      }),
+      catchError((val, source) => source)
+    ).subscribe(_ => _);
+
     const searchState$ = combineLatest(
       this.mapService.searchPolygon$.pipe(
         startWith(null)

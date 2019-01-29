@@ -34,9 +34,8 @@ export class MapService {
   private polygonLayer: Layer;
 
   private drawSource = new VectorSource();
-  private drawLayer = new VectorLayer({
-    source: this.drawSource,
-    style: new Style({
+
+  private validPolygonStyle = new Style({
       fill: new Fill({
         color: 'rgba(255, 255, 255, 0.2)'
       }),
@@ -50,7 +49,27 @@ export class MapService {
           color: '#ffcc33'
         })
       })
-    })
+  });
+
+  private invalidPolygonStyle = new Style({
+      fill: new Fill({
+        color: 'rgba(255, 255, 255, 0.2)'
+      }),
+      stroke: new Stroke({
+        color: '#f44336',
+        width: 4
+      }),
+      image: new CircleStyle({
+        radius: 7,
+        fill: new Fill({
+          color: '#f44336'
+        })
+      })
+  });
+
+  private drawLayer = new VectorLayer({
+    source: this.drawSource,
+    style: this.invalidPolygonStyle
   });
 
   private draw: Draw;
@@ -75,9 +94,18 @@ export class MapService {
     this.map.addLayer(this.polygonLayer);
   }
 
+  public setPolygonError() {
+    this.drawLayer.setStyle(this.invalidPolygonStyle);
+  }
+
+  public setValidPolygon() {
+    this.drawLayer.setStyle(this.validPolygonStyle);
+  }
+
   public setDrawFeature(feature): void {
     this.drawSource.clear();
     this.drawSource.addFeature(feature);
+    this.drawLayer.setStyle(this.validPolygonStyle);
 
     this.searchPolygon$.next(
       this.featureToWKT(feature)
@@ -106,6 +134,7 @@ export class MapService {
 
   public clearDrawLayer(): void {
     this.drawSource.clear();
+    this.drawLayer.setStyle(this.validPolygonStyle);
     this.searchPolygon$.next(null);
   }
 
@@ -154,6 +183,7 @@ export class MapService {
     this.modify = new Modify({ source: this.drawSource });
     this.modify.on('modifyend', e => {
       const feature = e.features.getArray()[0];
+      this.setValidPolygon();
       this.setSearchPolygon(feature);
     });
 
