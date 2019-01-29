@@ -69,8 +69,8 @@ export class UrlStateService {
       source: this.store$.select(filterStore.getSelectedPlatformNames).pipe(
         skip(1),
         filter(platforms => platforms.size > 0),
-        map(platforms => ({
-          selectedPlatforms: Array.from(platforms).join(','),
+        map(selected => ({
+          platforms: Array.from(selected).join(','),
         }))
       ),
       loader: this.loadSelectedPlatforms
