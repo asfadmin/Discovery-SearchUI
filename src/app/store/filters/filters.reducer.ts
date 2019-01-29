@@ -29,7 +29,7 @@ const initState: FiltersState = {
       },
       {}
     ),
-    selected: new Set<string>(['Sentinel-1A'])
+    selected: new Set<string>(['Sentinel-1A', 'Sentinel-1B'])
   },
   dateRange: {
     start: null,

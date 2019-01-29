@@ -29,6 +29,8 @@
 
     <app-date-selector
       *ngIf="selected === filterType.DATE"
+      [startDate]="startDate$ | async"
+      [endDate]="endDate$ | async"
       [startMin]="startMin$ | async"
       [startMax]="startMax$ | async"
       [endMin]="endMin$ | async"

@@ -10,6 +10,9 @@ import { Platform } from '@models';
   styleUrls: ['./date-selector.component.scss']
 })
 export class DateSelectorComponent implements OnInit {
+  @Input() startDate: Date;
+  @Input() endDate: Date;
+
   @Input() startMin: Date;
   @Input() startMax: Date;
 
