@@ -25,11 +25,13 @@ const initState: GranulesState = {
 export function granulesReducer(state = initState, action: GranulesActions): GranulesState {
   switch (action.type) {
     case GranulesActionType.SET: {
-      const totalGranules: GranuleEntities = {};
 
-      for (const g of action.payload) {
-        totalGranules[g.name] = g;
-      }
+      const totalGranules = action.payload
+        .reduce((total, granule) => {
+          total[granule.name] = granule;
+
+          return total;
+        }, {});
 
       return {
         ...state,
