@@ -115,8 +115,6 @@ export class AppComponent implements OnInit {
       map(([_, searchState]) => searchState),
       map(
         ([polygon, platforms, [start, end]]) => {
-          console.log(start, end);
-
           const params = {
             intersectsWith: polygon,
             platform: platforms,

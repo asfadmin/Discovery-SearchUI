@@ -221,7 +221,6 @@ export class MapService {
   private setSearchPolygon = feature => {
     const wktPolygon = this.featureToWKT(feature);
 
-    console.log(wktPolygon);
     this.searchPolygon$.next(wktPolygon);
     this.epsg$.next(this.epsg());
   }
