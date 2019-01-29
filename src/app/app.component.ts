@@ -50,7 +50,7 @@ export class AppComponent implements OnInit {
     this.mapService.searchPolygon$.pipe(
       startWith(null),
       filter(p => !!p),
-      mergeMap(polygon => this.asfApiService.validate(polygon)),
+      switchMap(polygon => this.asfApiService.validate(polygon)),
       map(resp => {
         if (resp.error) {
           const { report, type } = resp.error;
@@ -85,7 +85,7 @@ export class AppComponent implements OnInit {
           featureProjection: this.mapService.epsg()
         });
 
-        this.mapService.setDrawFeature(features);
+        //this.mapService.setDrawFeature(features);
       }),
       catchError((val, source) => source)
     ).subscribe(_ => _);

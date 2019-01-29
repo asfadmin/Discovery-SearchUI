@@ -113,13 +113,13 @@ export class MapService {
   }
 
   public setInteractionMode(mode: MapInteractionModeType) {
-    console.log(mode);
+    this.map.removeInteraction(this.modify);
+    this.map.removeInteraction(this.snap);
+    this.map.removeInteraction(this.draw);
+
     if (mode === MapInteractionModeType.DRAW) {
-      this.map.removeInteraction(this.modify);
-      this.map.removeInteraction(this.snap);
       this.map.addInteraction(this.draw);
     } else if (mode === MapInteractionModeType.EDIT) {
-      this.map.removeInteraction(this.draw);
       this.map.addInteraction(this.snap);
       this.map.addInteraction(this.modify);
     }
@@ -187,7 +187,6 @@ export class MapService {
       this.setSearchPolygon(feature);
     });
 
-    this.draw = this.createDraw(MapDrawModeType.POLYGON);
     this.drawLayer.setZIndex(100);
 
     this.snap = new Snap({source: this.drawSource});
@@ -222,6 +221,7 @@ export class MapService {
   private setSearchPolygon = feature => {
     const wktPolygon = this.featureToWKT(feature);
 
+    console.log(wktPolygon);
     this.searchPolygon$.next(wktPolygon);
     this.epsg$.next(this.epsg());
   }
