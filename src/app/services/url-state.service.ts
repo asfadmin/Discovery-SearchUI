@@ -26,6 +26,7 @@ import * as models from '@models';
 export class UrlStateService {
   public urlAppState: Subscription;
 
+  private urlParams: models.UrlParameter[];
   private params = {};
   private isNotLoaded = true;
 
@@ -34,7 +35,98 @@ export class UrlStateService {
     private mapService: MapService,
     private router: Router,
     private activatedRoute: ActivatedRoute,
-  ) {}
+  ) {
+    this.urlParams = [
+      ...this.mapParameters(),
+      ...this.uiParameters(),
+      ...this.filtersParameters(),
+    ];
+  }
+
+  private uiParameters() {
+    return [{
+      name: 'isSidebarOpen',
+      source: this.store$.select(uiStore.getIsSidebarOpen).pipe(
+        skip(1),
+        map(isSidebarOpen => ({ isSidebarOpen }))
+      ),
+      loader: this.loadIsSidebarOpen
+    }, {
+      name: 'selectedFilter',
+      source: this.store$.select(uiStore.getSelectedFilter).pipe(
+        skip(1),
+        map(selectedFilter => ({ selectedFilter }))
+      ),
+      loader: this.loadSelectedFilter
+    }];
+  }
+
+  private filtersParameters() {
+    return [{
+      name: 'platforms',
+      source: this.store$.select(filterStore.getSelectedPlatformNames).pipe(
+        skip(1),
+        filter(platforms => platforms.size > 0),
+        map(platforms => ({
+          selectedPlatforms: Array.from(platforms).join(','),
+        }))
+      ),
+      loader: this.loadSelectedPlatforms
+    }, {
+      name: 'start',
+      source: this.store$.select(filterStore.getStartDate).pipe(
+        skip(1),
+        map(start => ({ start }))
+      ),
+      loader: this.loadStartDate
+    }, {
+      name: 'end',
+      source: this.store$.select(filterStore.getEndDate).pipe(
+        skip(1),
+        map(end => ({ end }))
+      ),
+      loader: this.loadEndDate
+    }];
+  }
+
+  private mapParameters() {
+    return [{
+      name: 'view',
+      source: this.store$.select(mapStore.getMapView).pipe(
+        skip(1),
+        map(view => ({ view }))
+      ),
+      loader: this.loadMapView
+    }, {
+      name: 'drawMode',
+      source: this.store$.select(mapStore.getMapDrawMode).pipe(
+        skip(1),
+        map(drawMode => ({ drawMode })
+        )
+      ),
+      loader: this.loadMapDrawMode
+    }, {
+      name: 'center',
+      source: this.mapService.center$.pipe(
+        skip(1),
+        map(center => ({ center: `${center.lon},${center.lat}` }))
+      ),
+      loader: this.loadMapCenter
+    }, {
+      name: 'zoom',
+      source: this.mapService.zoom$.pipe(
+        skip(1),
+        map(zoom => ({ zoom }))
+      ),
+      loader: this.loadMapZoom
+    }, {
+      name: 'polygon',
+      source: this.mapService.searchPolygon$.pipe(
+        map(polygon => ({ polygon }))
+      ),
+      loader: this.loadSearchPolygon
+    }];
+  }
 
   public load(): void {
     this.activatedRoute.queryParams.pipe(
@@ -46,54 +138,11 @@ export class UrlStateService {
       this.loadStateFrom(params);
     });
 
-    this.store$.select(uiStore.getUIState).pipe(
-      skip(1),
-      map(uiState => ({
-        isSidebarOpen: uiState.isSidebarOpen,
-        selectedFilter: uiState.selectedFilter,
-      }))
-    ).subscribe(this.updateRouteWithParams);
-
-    this.store$.select(filterStore.getSelectedPlatformNames).pipe(
-      skip(1),
-      filter(platforms => platforms.size > 0),
-      map(platforms => ({
-        selectedPlatforms: Array.from(platforms).join(','),
-      }))
-    ).subscribe(this.updateRouteWithParams);
-
-    this.store$.select(mapStore.getMapState).pipe(
-      skip(1),
-      map(mapState => ({
-        view: mapState.view,
-        drawMode: mapState.drawMode
-      }))
-    ).subscribe(this.updateRouteWithParams);
-
-    this.store$.select(filterStore.getStartDate).pipe(
-      skip(1),
-      map(start => ({ start }))
-    ).subscribe(this.updateRouteWithParams);
-
-    this.store$.select(filterStore.getEndDate).pipe(
-      skip(1),
-      map(end => ({ end }))
-    ).subscribe(this.updateRouteWithParams);
-
-    this.mapService.center$.pipe(
-      skip(1),
-      map(center => ({ center: `${center.lon},${center.lat}` }))
-    ).subscribe(this.updateRouteWithParams);
-
-    this.mapService.zoom$.pipe(
-      skip(1),
-      map(zoom => ({ zoom }))
-    ).subscribe(this.updateRouteWithParams);
-
-    this.mapService.searchPolygon$.pipe(
-      map(polygon => ({ polygon }))
-    )
-    .subscribe(this.updateRouteWithParams);
+    this.urlParams.forEach(
+      param => param.source.subscribe(
+        this.updateRouteWithParams
+      )
+    );
   }
 
   private updateRouteWithParams = (queryParams: Params): void => {
@@ -107,29 +156,24 @@ export class UrlStateService {
   private loadStateFrom(params: Params): void {
     this.params = { ...this.params, ...params };
 
-    const urlParamLoaders: { [id: string]: (string) => void } = {
-      isSidebarOpen: this.loadIsSidebarOpen,
-      selectedFilter: this.loadSelectedFilter,
-      view: this.loadMapView,
-      drawMode: this.loadMapDrawMode,
-      zoom: this.loadMapZoom,
-      center: this.loadMapCenter,
-      selectedPlatforms: this.loadSelectedPlatforms,
-      polygon: this.loadSearchPolygon,
-      start: this.loadStartDate,
-      end: this.loadEndDate,
-    };
+    const urlParamLoaders: { [id: string]: (string) => void } = this.urlParams.reduce(
+      (loaders, param) => {
+        loaders[param.name] = param.loader;
 
-    Object.entries(urlParamLoaders)
-    .map(
+        return loaders;
+      },
+      {}
+    );
+
+    Object.entries(urlParamLoaders).forEach(
       ([paramName, load]) => params[paramName] && load(params[paramName])
     );
   }
 
   private loadIsSidebarOpen = (isSidebarOpenStr: string): void => {
     const action = isSidebarOpenStr !== 'false' ?
-    new uiStore.OpenSidebar() :
-    new uiStore.CloseSidebar();
+      new uiStore.OpenSidebar() :
+      new uiStore.CloseSidebar();
 
     this.store$.dispatch(action);
   }
@@ -178,8 +222,8 @@ export class UrlStateService {
 
   private loadSelectedPlatforms = (platforms: string): void => {
     const selectedPlatforms = platforms
-    .split(',')
-    .filter(name => models.platformNames.includes(name));
+      .split(',')
+      .filter(name => models.platformNames.includes(name));
 
     const action = new filterStore.SetSelectedPlatforms(selectedPlatforms);
 
