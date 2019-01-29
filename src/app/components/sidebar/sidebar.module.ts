@@ -6,6 +6,7 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 import { MatSharedModule } from '@shared';
 import { PipesModule } from '@pipes';
+import { DateExtremaService } from '@services';
 
 import { SidebarComponent } from './sidebar.component';
 
@@ -44,6 +45,9 @@ import { ProductDetailComponent } from './products/product-detail/product-detail
   declarations: [
     SidebarComponent,
     ProductDetailComponent,
+  ],
+  providers: [
+    DateExtremaService,
   ],
   exports: [
     SidebarComponent

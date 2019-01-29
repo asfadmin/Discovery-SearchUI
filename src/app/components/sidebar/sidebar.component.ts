@@ -5,14 +5,18 @@ import {
   animate, transition
 } from '@angular/animations';
 
+import { Observable } from 'rxjs';
+
 import { Store } from '@ngrx/store';
 
+import { DateExtremaService } from '@services';
 import { AppState } from '@store';
 import * as filtersStore from '@store/filters';
 import * as uiStore from '@store/ui';
 import * as granulesStore from '@store/granules';
 
 import { FilterType } from '@models';
+
 
 @Component({
   selector: 'app-sidebar',
@@ -40,6 +44,9 @@ export class SidebarComponent {
   public selectedPlatformNames$ = this.store$.select(filtersStore.getSelectedPlatformNames);
   public selectedPlatforms$ = this.store$.select(filtersStore.getSelectedPlatforms);
 
+  public startDate$ = this.store$.select(filtersStore.getStartDate);
+  public endDate$ = this.store$.select(filtersStore.getEndDate);
+
   public isSidebarOpen$ = this.store$.select(uiStore.getIsSidebarOpen);
   public selectedFilter$ = this.store$.select(uiStore.getSelectedFilter);
 
@@ -47,9 +54,30 @@ export class SidebarComponent {
   public granules$ = this.store$.select(granulesStore.getGranules);
   public loading$  = this.store$.select(granulesStore.getLoading);
 
+  public startMin$: Observable<Date>;
+  public startMax$: Observable<Date>;
+  public endMin$: Observable<Date>;
+  public endMax$: Observable<Date>;
+
   public filterType = FilterType;
 
-  constructor(private store$: Store<AppState>) {}
+  constructor(
+    private dateExtremaService: DateExtremaService,
+    private store$: Store<AppState>,
+  ) {
+    const [ startMin$, startMax$, endMin$, endMax$ ] =
+      this.dateExtremaService.getExtrema$(
+        this.platforms$,
+        this.selectedPlatforms$,
+        this.startDate$,
+        this.endDate$,
+      );
+
+    this.startMin$ = startMin$;
+    this.startMax$ = startMax$;
+    this.endMin$ = endMin$;
+    this.endMax$ = endMax$;
+  }
 
   public onPlatformRemoved(platformName: string): void {
     this.store$.dispatch(new filtersStore.RemoveSelectedPlatform(platformName));
@@ -74,4 +102,13 @@ export class SidebarComponent {
   public onClearSearch(): void {
     this.clearSearch.emit();
   }
+
+  public onNewStartDate(start: Date): void {
+    this.store$.dispatch(new filtersStore.SetStartDate(start));
+  }
+
+  public onNewEndDate(end: Date): void {
+    this.store$.dispatch(new filtersStore.SetEndDate(end));
+  }
 }
+

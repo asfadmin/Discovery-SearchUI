@@ -13,7 +13,6 @@
     {{ error$ | async }}
   </div>
 
-
   <app-filter-selector
     [selectedFilter]="selectedFilter$ | async"
     (newFilterSelected)="onNewFilterSelected($event)">
@@ -30,7 +29,14 @@
 
     <app-date-selector
       *ngIf="selected === filterType.DATE"
-      [selected]="selectedPlatforms$ | async">
+      [startDate]="startDate$ | async"
+      [endDate]="endDate$ | async"
+      [startMin]="startMin$ | async"
+      [startMax]="startMax$ | async"
+      [endMin]="endMin$ | async"
+      [endMax]="endMax$ | async"
+      (newStart)="onNewStartDate($event)"
+      (newEnd)="onNewEndDate($event)">
     </app-date-selector>
 
     <app-path-selector
@@ -56,7 +62,9 @@
         [product]="granules[0]">
     </app-product-detail>
 
-    <app-products-list [products]="granules"></app-products-list>
+    <app-products-list
+      *ngIf="granules.length > 0"
+      [products]="granules"></app-products-list>
   </ng-container>
 
 </div></div>

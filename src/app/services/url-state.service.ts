@@ -56,6 +56,7 @@ export class UrlStateService {
 
     this.store$.select(filterStore.getSelectedPlatformNames).pipe(
       skip(1),
+      filter(platforms => platforms.size > 0),
       map(platforms => ({
         selectedPlatforms: Array.from(platforms).join(','),
       }))
@@ -67,6 +68,16 @@ export class UrlStateService {
         view: mapState.view,
         drawMode: mapState.drawMode
       }))
+    ).subscribe(this.updateRouteWithParams);
+
+    this.store$.select(filterStore.getStartDate).pipe(
+      skip(1),
+      map(start => ({ start }))
+    ).subscribe(this.updateRouteWithParams);
+
+    this.store$.select(filterStore.getEndDate).pipe(
+      skip(1),
+      map(end => ({ end }))
     ).subscribe(this.updateRouteWithParams);
 
     this.mapService.center$.pipe(
@@ -105,6 +116,8 @@ export class UrlStateService {
       center: this.loadMapCenter,
       selectedPlatforms: this.loadSelectedPlatforms,
       polygon: this.loadSearchPolygon,
+      start: this.loadStartDate,
+      end: this.loadEndDate,
     };
 
     Object.entries(urlParamLoaders)
@@ -185,5 +198,26 @@ export class UrlStateService {
     this.mapService.setDrawFeature(features);
   }
 
+  private loadStartDate = (start: string): void => {
+    const startDate = new Date(start);
+
+    if (!this.isValidDate(startDate)) {
+      return;
+    }
+
+    this.store$.dispatch(new filterStore.SetStartDate(startDate));
+  }
+
+  private loadEndDate = (end: string): void => {
+    const endDate = new Date(end);
+
+    if (!this.isValidDate(endDate)) {
+      return;
+    }
+
+    this.store$.dispatch(new filterStore.SetEndDate(endDate));
+  }
+
   private isNumber = n => !isNaN(n) && isFinite(n);
+  private isValidDate = (d: Date): boolean => d instanceof Date && !isNaN(d.valueOf());
 }
