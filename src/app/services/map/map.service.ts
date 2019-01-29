@@ -9,7 +9,6 @@ import {getCenter} from 'ol/extent.js';
 import WMTSTileGrid from 'ol/tilegrid/WMTS.js';
 
 import { Draw, Modify, Snap } from 'ol/interaction.js';
-import WKT from 'ol/format/WKT.js';
 
 import {Tile as TileLayer, Vector as VectorLayer} from 'ol/layer';
 import { OSM, Vector as VectorSource, TileWMS, Layer, XYZ, WMTS } from 'ol/source';
@@ -22,6 +21,9 @@ import proj4 from 'proj4';
 import { AppState } from '@store';
 import * as mapStore from '@store/map';
 import { equatorial, antarctic, arctic, MapView } from './views';
+
+import { WktService } from '../wkt.service';
+
 import { LonLat, MapViewType, MapDrawModeType, MapInteractionModeType } from '@models';
 
 
@@ -81,6 +83,8 @@ export class MapService {
   public searchPolygon$ = new Subject<string | null>();
   public epsg$ = new Subject<string>();
 
+  constructor(private wktService: WktService) {}
+
   public epsg(): string {
     return this.mapView.projection.epsg;
   }
@@ -108,7 +112,7 @@ export class MapService {
     this.drawLayer.setStyle(this.validPolygonStyle);
 
     this.searchPolygon$.next(
-      this.featureToWKT(feature)
+      this.wktService.featureToWkt(feature, this.epsg())
     );
   }
 
@@ -219,23 +223,10 @@ export class MapService {
   }
 
   private setSearchPolygon = feature => {
-    const wktPolygon = this.featureToWKT(feature);
+    const wktPolygon = this.wktService.featureToWkt(feature, this.epsg());
 
     this.searchPolygon$.next(wktPolygon);
     this.epsg$.next(this.epsg());
-  }
-
-
-  private featureToWKT(feature): string {
-    const format = new WKT();
-    const granuleProjection = 'EPSG:4326';
-
-    const geometry = feature.getGeometry();
-
-    return format.writeGeometry(geometry, {
-      dataProjection: granuleProjection,
-      featureProjection: this.epsg()
-    });
   }
 
   private updatedMap(): Map {

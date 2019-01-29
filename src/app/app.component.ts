@@ -10,15 +10,13 @@ import {
   withLatestFrom, startWith, tap, catchError
 } from 'rxjs/operators';
 
-import WKT from 'ol/format/WKT.js';
-
 import { AppState } from './store';
 import * as granulesStore from '@store/granules';
 import * as mapStore from '@store/map';
 import * as uiStore from '@store/ui';
 import * as filterStore from '@store/filters';
 
-import { AsfApiService, UrlStateService, MapService } from './services';
+import { AsfApiService, UrlStateService, MapService, WktService } from './services';
 import * as models from './models';
 
 @Component({
@@ -39,10 +37,11 @@ export class AppComponent implements OnInit {
 
   constructor(
     private store$: Store<AppState>,
+    private snackBar: MatSnackBar,
     private mapService: MapService,
     private asfApiService: AsfApiService,
     private urlStateService: UrlStateService,
-    private snackBar: MatSnackBar,
+    private wktService: WktService,
   ) {}
 
   public ngOnInit(): void {
@@ -75,17 +74,12 @@ export class AppComponent implements OnInit {
           return resp.wkt;
         }
 
-        const polygon = resp.wkt;
+        const features = this.wktService.wktToFeature(
+          resp.wkt,
+          this.mapService.epsg()
+        );
 
-        const format = new WKT();
-        const granuleProjection = 'EPSG:4326';
-
-        const features = format.readFeature(polygon, {
-          dataProjection: granuleProjection,
-          featureProjection: this.mapService.epsg()
-        });
-
-        //this.mapService.setDrawFeature(features);
+        this.mapService.setDrawFeature(features);
       }),
       catchError((val, source) => source)
     ).subscribe(_ => _);

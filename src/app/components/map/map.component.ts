@@ -7,12 +7,11 @@ import {
 import { Observable, combineLatest } from 'rxjs';
 import { map, filter, switchMap, tap, withLatestFrom } from 'rxjs/operators';
 
-import { WKT } from 'ol/format';
 import { Vector as VectorLayer} from 'ol/layer';
 import { Vector as VectorSource } from 'ol/source';
 
 import { Sentinel1Product, MapViewType, MapDrawModeType, MapInteractionModeType } from '@models';
-import { MapService, UrlStateService } from '@services';
+import { MapService, WktService } from '@services';
 
 
 @Component({
@@ -33,7 +32,10 @@ export class MapComponent implements OnInit {
 
   private isInitMap = true;
 
-  constructor(private mapService: MapService) {}
+  constructor(
+    private mapService: MapService,
+    private wktService: WktService,
+  ) {}
 
   ngOnInit(): void {
     this.updateMapOnViewChange();
@@ -83,13 +85,10 @@ export class MapComponent implements OnInit {
   }
 
   private loadSearchPolygon = (polygon: string): void => {
-    const format = new WKT();
-    const granuleProjection = 'EPSG:4326';
-
-    const features = format.readFeature(polygon, {
-      dataProjection: granuleProjection,
-      featureProjection: this.mapService.epsg()
-    });
+    const features = this.wktService.wktToFeature(
+      polygon,
+      this.mapService.epsg()
+    );
 
     this.mapService.setDrawFeature(features);
   }
@@ -111,17 +110,13 @@ export class MapComponent implements OnInit {
   }
 
   private granulePolygonsLayer(projection: string): Observable<VectorSource> {
-    const wktFormat = new WKT();
     const granuleProjection = 'EPSG:4326';
 
     return this.granules$.pipe(
       map(granules => granules
         .map(g => g.metadata.polygon)
         .map(wkt =>
-          wktFormat.readFeature(wkt, {
-            dataProjection: granuleProjection,
-            featureProjection: projection
-          })
+          this.wktService.wktToFeature(wkt, granuleProjection)
         )
       ),
       map(features => new VectorLayer({

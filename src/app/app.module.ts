@@ -19,7 +19,7 @@ import { SpreadsheetModule } from '@components/spreadsheet';
 import { MapModule } from '@components/map';
 import { FileUploadModule } from '@components/file-upload';
 
-import { AsfApiService, UrlStateService, MapService } from './services';
+import { AsfApiService, UrlStateService, MapService, WktService } from '@services';
 import { environment } from './../environments/environment';
 
 import { AppComponent } from './app.component';
@@ -53,6 +53,7 @@ export const routes = [
     AsfApiService,
     UrlStateService,
     MapService,
+    WktService,
   ],
   bootstrap: [ AppComponent ]
 })
