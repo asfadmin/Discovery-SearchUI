@@ -6,7 +6,6 @@ import { Store, Action } from '@ngrx/store';
 import { combineLatest, Subscription } from 'rxjs';
 import { filter, map, switchMap, skip, tap } from 'rxjs/operators';
 
-import WKT from 'ol/format/WKT.js';
 import { Vector as VectorLayer } from 'ol/layer';
 import { Vector as VectorSource } from 'ol/source';
 
@@ -16,7 +15,9 @@ import * as mapStore from '@store/map';
 import * as uiStore from '@store/ui';
 import * as filterStore from '@store/filters';
 
-import { MapService } from '@services/map/map.service';
+import { MapService } from './map/map.service';
+import { WktService } from './wkt.service';
+
 import * as models from '@models';
 
 
@@ -32,9 +33,10 @@ export class UrlStateService {
 
   constructor(
     private store$: Store<AppState>,
-    private mapService: MapService,
-    private router: Router,
     private activatedRoute: ActivatedRoute,
+    private mapService: MapService,
+    private wktService: WktService,
+    private router: Router,
   ) {
     this.urlParams = [
       ...this.mapParameters(),
@@ -231,13 +233,10 @@ export class UrlStateService {
   }
 
   public loadSearchPolygon = (polygon: string): void => {
-    const format = new WKT();
-    const granuleProjection = 'EPSG:4326';
-
-    const features = format.readFeature(polygon, {
-      dataProjection: granuleProjection,
-      featureProjection: this.mapService.epsg()
-    });
+    const features = this.wktService.wktToFeature(
+      polygon,
+      this.mapService.epsg()
+    );
 
     this.mapService.setDrawFeature(features);
   }

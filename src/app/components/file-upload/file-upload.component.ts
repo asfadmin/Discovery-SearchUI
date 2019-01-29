@@ -34,7 +34,6 @@ export class FileUploadComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      console.log('The dialog was closed');
       this.dialogClose.emit();
     });
   }

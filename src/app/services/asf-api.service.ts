@@ -4,6 +4,8 @@ import { Observable } from 'rxjs';
 
 import { HttpClient, HttpParams } from '@angular/common/http';
 
+import { PolygonValidateResponse } from '@models';
+
 @Injectable({
   providedIn: 'root'
 })
@@ -21,6 +23,15 @@ export class AsfApiService {
     );
 
     return this.http.get<any[]>(this.apiUrl, { params });
+  }
+
+  public validate(wkt: string): Observable<any> {
+    const url = 'https://api-test.asf.alaska.edu/services/validate/wkt';
+
+    const params = new HttpParams()
+      .append('wkt', wkt);
+
+    return this.http.get<PolygonValidateResponse>(url, { params });
   }
 
   private dummyData(): Observable<any[]>  {

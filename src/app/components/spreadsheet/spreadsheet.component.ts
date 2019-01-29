@@ -81,8 +81,6 @@ export class SpreadsheetComponent {
   }
 
   public onRemoveColumn(columnToRemove: string): void {
-    console.log(columnToRemove);
-
     const colIndex = this.allColumns.indexOf(columnToRemove);
     this.isColumnDisplayed[colIndex] = false;
 

@@ -2,9 +2,13 @@ import { Component, OnInit } from '@angular/core';
 import { HttpParams } from '@angular/common/http';
 
 import { Store, Action } from '@ngrx/store';
+import { MatSnackBar } from '@angular/material';
 
-import { combineLatest, Subscription, Subject } from 'rxjs';
-import { filter, map, switchMap, skip, withLatestFrom, startWith, tap } from 'rxjs/operators';
+import { combineLatest, Subscription, Subject, of } from 'rxjs';
+import {
+  filter, map, mergeMap, switchMap, skip,
+  withLatestFrom, startWith, tap, catchError
+} from 'rxjs/operators';
 
 import { AppState } from './store';
 import * as granulesStore from '@store/granules';
@@ -12,7 +16,7 @@ import * as mapStore from '@store/map';
 import * as uiStore from '@store/ui';
 import * as filterStore from '@store/filters';
 
-import { AsfApiService, UrlStateService, MapService } from './services';
+import { AsfApiService, UrlStateService, MapService, WktService } from './services';
 import * as models from './models';
 
 @Component({
@@ -33,12 +37,53 @@ export class AppComponent implements OnInit {
 
   constructor(
     private store$: Store<AppState>,
+    private snackBar: MatSnackBar,
     private mapService: MapService,
     private asfApiService: AsfApiService,
     private urlStateService: UrlStateService,
+    private wktService: WktService,
   ) {}
 
   public ngOnInit(): void {
+
+    this.mapService.searchPolygon$.pipe(
+      startWith(null),
+      filter(p => !!p),
+      switchMap(polygon => this.asfApiService.validate(polygon)),
+      map(resp => {
+        if (resp.error) {
+          const { report, type } = resp.error;
+
+          this.mapService.setPolygonError();
+          this.snackBar.open(
+            report, 'INVALID POLYGON',
+            { duration: 4000, }
+          );
+
+          return;
+        }
+
+        this.mapService.setValidPolygon();
+
+        const repairs = resp.repairs
+          .filter(repair =>
+            repair.type !== models.PolygonRepairTypes.ROUND
+          );
+
+        if (repairs.length === 0) {
+          return resp.wkt;
+        }
+
+        const features = this.wktService.wktToFeature(
+          resp.wkt,
+          this.mapService.epsg()
+        );
+
+        this.mapService.setDrawFeature(features);
+      }),
+      catchError((val, source) => source)
+    ).subscribe(_ => _);
+
     const searchState$ = combineLatest(
       this.mapService.searchPolygon$.pipe(
         startWith(null)
@@ -64,8 +109,6 @@ export class AppComponent implements OnInit {
       map(([_, searchState]) => searchState),
       map(
         ([polygon, platforms, [start, end]]) => {
-          console.log(start, end);
-
           const params = {
             intersectsWith: polygon,
             platform: platforms,

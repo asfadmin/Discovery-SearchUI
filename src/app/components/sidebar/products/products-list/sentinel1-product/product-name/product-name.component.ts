@@ -35,9 +35,8 @@ export class ProductNameComponent {
 
     of(this.copyPrompt).pipe(
       tap(() => this.copyTooltipMessage = this.copyNotification),
-      delay(2200),
-      tap(() => console.log(this.copyTooltip)
-    )).subscribe(
+      delay(2200)
+    ).subscribe(
       msg => this.copyTooltipMessage = msg
     );
 

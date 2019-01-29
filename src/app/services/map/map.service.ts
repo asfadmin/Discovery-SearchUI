@@ -9,7 +9,6 @@ import {getCenter} from 'ol/extent.js';
 import WMTSTileGrid from 'ol/tilegrid/WMTS.js';
 
 import { Draw, Modify, Snap } from 'ol/interaction.js';
-import WKT from 'ol/format/WKT.js';
 
 import {Tile as TileLayer, Vector as VectorLayer} from 'ol/layer';
 import { OSM, Vector as VectorSource, TileWMS, Layer, XYZ, WMTS } from 'ol/source';
@@ -22,6 +21,9 @@ import proj4 from 'proj4';
 import { AppState } from '@store';
 import * as mapStore from '@store/map';
 import { equatorial, antarctic, arctic, MapView } from './views';
+
+import { WktService } from '../wkt.service';
+
 import { LonLat, MapViewType, MapDrawModeType, MapInteractionModeType } from '@models';
 
 
@@ -34,9 +36,8 @@ export class MapService {
   private polygonLayer: Layer;
 
   private drawSource = new VectorSource();
-  private drawLayer = new VectorLayer({
-    source: this.drawSource,
-    style: new Style({
+
+  private validPolygonStyle = new Style({
       fill: new Fill({
         color: 'rgba(255, 255, 255, 0.2)'
       }),
@@ -50,7 +51,27 @@ export class MapService {
           color: '#ffcc33'
         })
       })
-    })
+  });
+
+  private invalidPolygonStyle = new Style({
+      fill: new Fill({
+        color: 'rgba(255, 255, 255, 0.2)'
+      }),
+      stroke: new Stroke({
+        color: '#f44336',
+        width: 4
+      }),
+      image: new CircleStyle({
+        radius: 7,
+        fill: new Fill({
+          color: '#f44336'
+        })
+      })
+  });
+
+  private drawLayer = new VectorLayer({
+    source: this.drawSource,
+    style: this.invalidPolygonStyle
   });
 
   private draw: Draw;
@@ -61,6 +82,8 @@ export class MapService {
   public center$ = new Subject<LonLat>();
   public searchPolygon$ = new Subject<string | null>();
   public epsg$ = new Subject<string>();
+
+  constructor(private wktService: WktService) {}
 
   public epsg(): string {
     return this.mapView.projection.epsg;
@@ -75,23 +98,32 @@ export class MapService {
     this.map.addLayer(this.polygonLayer);
   }
 
+  public setPolygonError() {
+    this.drawLayer.setStyle(this.invalidPolygonStyle);
+  }
+
+  public setValidPolygon() {
+    this.drawLayer.setStyle(this.validPolygonStyle);
+  }
+
   public setDrawFeature(feature): void {
     this.drawSource.clear();
     this.drawSource.addFeature(feature);
+    this.drawLayer.setStyle(this.validPolygonStyle);
 
     this.searchPolygon$.next(
-      this.featureToWKT(feature)
+      this.wktService.featureToWkt(feature, this.epsg())
     );
   }
 
   public setInteractionMode(mode: MapInteractionModeType) {
-    console.log(mode);
+    this.map.removeInteraction(this.modify);
+    this.map.removeInteraction(this.snap);
+    this.map.removeInteraction(this.draw);
+
     if (mode === MapInteractionModeType.DRAW) {
-      this.map.removeInteraction(this.modify);
-      this.map.removeInteraction(this.snap);
       this.map.addInteraction(this.draw);
     } else if (mode === MapInteractionModeType.EDIT) {
-      this.map.removeInteraction(this.draw);
       this.map.addInteraction(this.snap);
       this.map.addInteraction(this.modify);
     }
@@ -106,6 +138,7 @@ export class MapService {
 
   public clearDrawLayer(): void {
     this.drawSource.clear();
+    this.drawLayer.setStyle(this.validPolygonStyle);
     this.searchPolygon$.next(null);
   }
 
@@ -154,10 +187,10 @@ export class MapService {
     this.modify = new Modify({ source: this.drawSource });
     this.modify.on('modifyend', e => {
       const feature = e.features.getArray()[0];
+      this.setValidPolygon();
       this.setSearchPolygon(feature);
     });
 
-    this.draw = this.createDraw(MapDrawModeType.POLYGON);
     this.drawLayer.setZIndex(100);
 
     this.snap = new Snap({source: this.drawSource});
@@ -190,23 +223,10 @@ export class MapService {
   }
 
   private setSearchPolygon = feature => {
-    const wktPolygon = this.featureToWKT(feature);
+    const wktPolygon = this.wktService.featureToWkt(feature, this.epsg());
 
     this.searchPolygon$.next(wktPolygon);
     this.epsg$.next(this.epsg());
-  }
-
-
-  private featureToWKT(feature): string {
-    const format = new WKT();
-    const granuleProjection = 'EPSG:4326';
-
-    const geometry = feature.getGeometry();
-
-    return format.writeGeometry(geometry, {
-      dataProjection: granuleProjection,
-      featureProjection: this.epsg()
-    });
   }
 
   private updatedMap(): Map {
