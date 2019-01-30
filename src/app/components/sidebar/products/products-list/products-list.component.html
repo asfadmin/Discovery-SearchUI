@@ -4,7 +4,7 @@
       *ngFor="let product of products"
       mat-list-item
       (click)="onProductSelected(product.name)"
-      [ngClass]="{'selected': product.name === (selected && selected.name)}" >
+      [ngClass]="{'selected': product.name === selected}" >
 
         <img matListAvatar
           [src]="product.browse"

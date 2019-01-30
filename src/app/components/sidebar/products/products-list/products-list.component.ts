@@ -15,7 +15,7 @@ import { Sentinel1Product } from '@models';
 })
 export class ProductsListComponent  {
   @Input() products: Sentinel1Product[];
-  @Input() selected: Sentinel1Product;
+  @Input() selected: string;
 
   @Output() newSelected = new EventEmitter<string>();
 
