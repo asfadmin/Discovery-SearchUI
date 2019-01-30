@@ -13,6 +13,12 @@
     {{ error$ | async }}
   </div>
 
+  <app-search-bar
+    (newSearch)="onNewSearch()"
+    (clearSearches)="onClearSearch()"
+    [isLoading]="loading$ | async">
+  </app-search-bar>
+
   <app-filter-selector
     [selectedFilter]="selectedFilter$ | async"
     (newFilterSelected)="onNewFilterSelected($event)">
@@ -50,12 +56,6 @@
     </app-other-selector>
   </ng-container>
 
-  <app-search-bar
-    (newSearch)="onNewSearch()"
-    (clearSearches)="onClearSearch()"
-    [isLoading]="loading$ | async">
-  </app-search-bar>
-
   <ng-container *ngIf="selectedGranule$ | async as selected">
     <app-product-detail
         *ngIf="!!selected"
@@ -67,6 +67,7 @@
     <app-products-list
       *ngIf="granules.length > 0"
       [products]="granules"
+      [selected]="selectedGranule$ | async"
       (newSelected)="onNewProductSelected($event)">
     </app-products-list>
   </ng-container>

@@ -2,8 +2,9 @@
   <mat-action-list>
     <button
       *ngFor="let product of products"
+      mat-list-item
       (click)="onProductSelected(product.name)"
-      mat-list-item >
+      [ngClass]="{'selected': product.name === (selected && selected.name)}" >
 
         <img matListAvatar
           [src]="product.browse"

@@ -15,6 +15,8 @@ import { Sentinel1Product } from '@models';
 })
 export class ProductsListComponent  {
   @Input() products: Sentinel1Product[];
+  @Input() selected: Sentinel1Product;
+
   @Output() newSelected = new EventEmitter<string>();
 
   public downloadIcon = faFileDownload;
