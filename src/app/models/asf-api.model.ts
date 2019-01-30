@@ -1,4 +1,3 @@
-
 export type PolygonValidateResponse =
   | PolygonErrorResponse
   | PolygonRepairResponse;

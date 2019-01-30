@@ -1,5 +1,4 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
-import { FormBuilder } from '@angular/forms';
+import { Component, Input, Output, EventEmitter } from '@angular/core';
 
 
 @Component({
@@ -12,6 +11,4 @@ export class SearchBarComponent {
 
     @Output() newSearch = new EventEmitter<void>();
     @Output() clearSearches = new EventEmitter<void>();
-
-    constructor(private fb: FormBuilder) {}
 }

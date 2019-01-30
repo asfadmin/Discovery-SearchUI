@@ -1,7 +1,9 @@
 import { createFeatureSelector, createSelector } from '@ngrx/store';
 
-import { Sentinel1Product } from '../../models';
 import { GranulesActionType, GranulesActions } from './granules.action';
+
+import { Sentinel1Product } from '@models';
+
 
 interface GranuleEntities { [id: string]: Sentinel1Product; }
 
@@ -28,8 +30,7 @@ const initState: GranulesState = {
 
 export function granulesReducer(state = initState, action: GranulesActions): GranulesState {
   switch (action.type) {
-    case GranulesActionType.SET: {
-
+    case GranulesActionType.SET_GRANULES: {
       const totalGranules = action.payload
         .reduce((total, granule) => {
           total[granule.name] = granule;

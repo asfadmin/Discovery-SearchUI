@@ -1,9 +1,9 @@
 import { createFeatureSelector, createSelector } from '@ngrx/store';
 
-import { UIActionType, UIActions } from './ui.action';
 import { FilterType } from '@models';
 
-/* State */
+import { UIActionType, UIActions } from './ui.action';
+
 
 export interface UIState {
   isSidebarOpen: boolean;
@@ -15,7 +15,6 @@ const initState: UIState = {
   selectedFilter: FilterType.PLATFORM
 };
 
-/* Reducer */
 
 export function uiReducer(state = initState, action: UIActions): UIState {
   switch (action.type) {
@@ -54,7 +53,6 @@ export function uiReducer(state = initState, action: UIActions): UIState {
   }
 }
 
-/* Selectors */
 
 export const getUIState = createFeatureSelector<UIState>('ui');
 

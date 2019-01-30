@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, Input } from '@angular/core';
 
 import * as models from '@models';
 
@@ -7,15 +7,11 @@ import * as models from '@models';
   templateUrl: './other-selector.component.html',
   styleUrls: ['./other-selector.component.scss']
 })
-export class OtherSelectorComponent implements OnInit {
+export class OtherSelectorComponent {
   @Input() selected: models.Platform[];
+
   public polarizations = models.polarizations;
   public flightDirections = models.flightDirections;
-
-  constructor() { }
-
-  ngOnInit() {
-  }
 
   public beamModes(): string[] {
     return this.selected.reduce(

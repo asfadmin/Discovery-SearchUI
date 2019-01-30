@@ -1,6 +1,6 @@
 import { View } from 'ol';
 import WMTSTileGrid from 'ol/tilegrid/WMTS.js';
-import { Vector as VectorSource, TileWMS, Layer, XYZ, WMTS } from 'ol/source';
+import { WMTS } from 'ol/source';
 import { Tile as TileLayer } from 'ol/layer';
 import * as proj from 'ol/proj';
 
@@ -34,12 +34,12 @@ export function antarctic(): MapView {
   const layer = new TileLayer({ source, extent });
 
   const view = new View({
-    maxResolution: 8192.0,
-    projection: proj.get(projection.epsg),
-    extent ,
     center: proj.transform([0, -90], 'EPSG:4326', projection.epsg),
-    zoom: 1,
-    maxZoom: 5,
+    projection: proj.get(projection.epsg),
+    zoom: 2.5,
+    minZoom: 2.5,
+    maxZoom: 6,
+    extent,
   });
 
   return new MapView(

@@ -1,19 +1,14 @@
-import { Component, OnInit, Output, EventEmitter } from '@angular/core';
+import { Component, Output, EventEmitter } from '@angular/core';
 
 @Component({
   selector: 'app-hide-icon',
   templateUrl: './hide-icon.component.html',
   styleUrls: ['./hide-icon.component.scss']
 })
-export class HideIconComponent implements OnInit {
+export class HideIconComponent {
   @Output() hide = new EventEmitter<void>();
 
-  constructor() { }
-
-  ngOnInit() {
-  }
-
-  onHide(e: Event): void {
+  public onHide(e: Event): void {
     e.stopPropagation();
     this.hide.emit();
   }

@@ -13,16 +13,17 @@
     {{ error$ | async }}
   </div>
 
-  <app-search-bar
-    (newSearch)="onNewSearch()"
-    (clearSearches)="onClearSearch()"
-    [isLoading]="loading$ | async">
-  </app-search-bar>
 
   <app-filter-selector
     [selectedFilter]="selectedFilter$ | async"
     (newFilterSelected)="onNewFilterSelected($event)">
   </app-filter-selector>
+
+  <app-search-bar
+    (newSearch)="onNewSearch()"
+    (clearSearches)="onClearSearch()"
+    [isLoading]="loading$ | async">
+  </app-search-bar>
 
   <ng-container *ngIf="selectedFilter$ | async as selected">
     <app-platform-selector

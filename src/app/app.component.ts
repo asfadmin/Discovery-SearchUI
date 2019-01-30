@@ -1,13 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpParams } from '@angular/common/http';
+import { MatSnackBar } from '@angular/material';
 
 import { Store, Action } from '@ngrx/store';
-import { MatSnackBar } from '@angular/material';
 
 import { combineLatest, Subscription, Subject, of } from 'rxjs';
 import {
-  filter, map, mergeMap, switchMap, skip,
-  withLatestFrom, startWith, tap, catchError
+  filter, map, switchMap, withLatestFrom,
+  startWith, tap, catchError
 } from 'rxjs/operators';
 
 import { AppState } from './store';
@@ -16,7 +16,7 @@ import * as mapStore from '@store/map';
 import * as uiStore from '@store/ui';
 import * as filterStore from '@store/filters';
 
-import { AsfApiService, UrlStateService, MapService, WktService } from './services';
+import * as services from '@services';
 import * as models from './models';
 
 @Component({
@@ -25,7 +25,6 @@ import * as models from './models';
   styleUrls  : ['./app.component.scss']
 })
 export class AppComponent implements OnInit {
-
   public granules$ = this.store$.select(granulesStore.getGranules);
 
   public view$ = this.store$.select(mapStore.getMapView);
@@ -38,52 +37,14 @@ export class AppComponent implements OnInit {
   constructor(
     private store$: Store<AppState>,
     private snackBar: MatSnackBar,
-    private mapService: MapService,
-    private asfApiService: AsfApiService,
-    private urlStateService: UrlStateService,
-    private wktService: WktService,
+    private mapService: services.MapService,
+    private asfApiService: services.AsfApiService,
+    private urlStateService: services.UrlStateService,
+    private wktService: services.WktService,
   ) {}
 
   public ngOnInit(): void {
-
-    this.mapService.searchPolygon$.pipe(
-      startWith(null),
-      filter(p => !!p),
-      switchMap(polygon => this.asfApiService.validate(polygon)),
-      map(resp => {
-        if (resp.error) {
-          const { report, type } = resp.error;
-
-          this.mapService.setPolygonError();
-          this.snackBar.open(
-            report, 'INVALID POLYGON',
-            { duration: 4000, }
-          );
-
-          return;
-        }
-
-        this.mapService.setValidPolygon();
-
-        const repairs = resp.repairs
-          .filter(repair =>
-            repair.type !== models.PolygonRepairTypes.ROUND
-          );
-
-        if (repairs.length === 0) {
-          return resp.wkt;
-        }
-
-        const features = this.wktService.wktToFeature(
-          resp.wkt,
-          this.mapService.epsg()
-        );
-
-        this.mapService.setDrawFeature(features);
-      }),
-      catchError((val, source) => source)
-    ).subscribe(_ => _);
-
+    this.validateSearchPolygons();
     const searchState$ = combineLatest(
       this.mapService.searchPolygon$.pipe(
         startWith(null)
@@ -158,6 +119,45 @@ export class AppComponent implements OnInit {
 
   public onFileUploadDialogClosed(): void {
     this.onNewMapInteractionMode(models.MapInteractionModeType.EDIT);
+  }
+
+  private validateSearchPolygons(): void {
+    this.mapService.searchPolygon$.pipe(
+      filter(p => !!p),
+      switchMap(polygon => this.asfApiService.validate(polygon)),
+      map(resp => {
+        if (resp.error) {
+          const { report, type } = resp.error;
+
+          this.mapService.setPolygonError();
+          this.snackBar.open(
+            report, 'INVALID POLYGON',
+            { duration: 4000, }
+          );
+
+          return;
+        }
+
+        this.mapService.setValidPolygon();
+
+        const repairs = resp.repairs
+          .filter(repair =>
+            repair.type !== models.PolygonRepairTypes.ROUND
+          );
+
+        if (repairs.length === 0) {
+          return resp.wkt;
+        }
+
+        const features = this.wktService.wktToFeature(
+          resp.wkt,
+          this.mapService.epsg()
+        );
+
+        this.mapService.setDrawFeature(features);
+      }),
+      catchError((val, source) => source)
+    ).subscribe(_ => _);
   }
 }
 

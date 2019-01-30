@@ -52,19 +52,28 @@ export class SpreadsheetComponent {
     /* Triggered when table row is hovered */
   }
 
-  private addCustomProductDataAccessors = dataSource => {
+  private keepCurrentFilter = dataSource => {
+    const oldFilter = this.dataSource && this.dataSource.filter;
 
+    if (oldFilter) {
+      dataSource.filter = this.dataSource.filter;
+    }
+
+    return dataSource;
+  }
+
+  private addCustomProductDataAccessors = dataSource => {
     dataSource.sortingDataAccessor = (product, property) => {
       return product[property] || product.metadata[property];
     };
 
     dataSource.filterPredicate = (product, filter) => {
-      const onlyTableFieldsProduct = this.filterObject(
+      const productWithOnlyTableFields = this.filterObject(
         this.allColumns,
         {...product, ...product.metadata}
       );
 
-      return Object.values(onlyTableFieldsProduct)
+      return Object.values(productWithOnlyTableFields)
         .join('')
         .toLowerCase()
         .indexOf(filter) !== -1;
@@ -87,7 +96,9 @@ export class SpreadsheetComponent {
     this.isColumnDisplayed[colIndex] = false;
 
     this.displayedColumns = this.allColumns
-      .filter((_, index) => this.isColumnDisplayed[index]);
+      .filter(
+        (_, index) => this.isColumnDisplayed[index]
+      );
   }
 
   public onColumnsReset(): void {
@@ -95,15 +106,6 @@ export class SpreadsheetComponent {
     this.isColumnDisplayed = this.displayedColumns.map(_ => true);
   }
 
-  private keepCurrentFilter = dataSource => {
-    const oldFilter = this.dataSource && this.dataSource.filter;
-
-    if (oldFilter) {
-      dataSource.filter = this.dataSource.filter;
-    }
-
-    return dataSource;
-  }
 
   public onHideSpreadsheet(): void {
     this.isShown = false;
@@ -120,6 +122,7 @@ export class SpreadsheetComponent {
   isAllSelected() {
     const numSelected = this.selection.selected.length;
     const numRows = this.dataSource.data.length;
+
     return numSelected === numRows;
   }
 
