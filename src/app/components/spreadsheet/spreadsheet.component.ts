@@ -18,16 +18,18 @@ import * as models from '@models';
   styleUrls: ['./spreadsheet.component.scss']
 })
 export class SpreadsheetComponent {
-  allColumns: string[] = [
+  public isShown = true;
+
+  public allColumns: string[] = [
     'select', 'name', 'date', 'productType', 'beamMode',
     'polarization', 'path', 'frame', 'absoluteOrbit', 'bytes'
   ];
 
-  isColumnDisplayed: boolean[] = this.allColumns.map(_ => true);
-  displayedColumns = this.allColumns;
+  public isColumnDisplayed: boolean[] = this.allColumns.map(_ => true);
+  public displayedColumns = this.allColumns;
 
-  dataSource: MatTableDataSource<models.Sentinel1Product>;
-  selection = new SelectionModel<models.Sentinel1Product>(true, []);
+  public dataSource: MatTableDataSource<models.Sentinel1Product>;
+  public selection = new SelectionModel<models.Sentinel1Product>(true, []);
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
@@ -103,6 +105,10 @@ export class SpreadsheetComponent {
     return dataSource;
   }
 
+  public onHideSpreadsheet(): void {
+    this.isShown = false;
+  }
+
   applyFilter(filterValue: string) {
     this.dataSource.filter = filterValue.trim().toLowerCase();
 
@@ -117,20 +123,9 @@ export class SpreadsheetComponent {
     return numSelected === numRows;
   }
 
-  /** Selects all rows if they are not all selected; otherwise clear selection. */
   masterToggle() {
     this.isAllSelected() ?
       this.selection.clear() :
       this.dataSource.data.forEach(row => this.selection.select(row));
-  }
-
-  public shortDate(date: Date): string {
-    const [month, day, year] = [
-      date.getUTCMonth() + 1,
-      date.getUTCDate(),
-      date.getUTCFullYear()
-    ];
-
-    return `${year}-${month}-${day}`;
   }
 }

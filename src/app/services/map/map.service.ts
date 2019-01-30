@@ -35,7 +35,9 @@ export class MapService {
   private map: Map;
   private polygonLayer: Layer;
 
-  private drawSource = new VectorSource();
+  private drawSource = new VectorSource({
+    noWrap: true, wrapX: false
+  });
 
   private validPolygonStyle = new Style({
       fill: new Fill({

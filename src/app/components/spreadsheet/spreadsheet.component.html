@@ -1,4 +1,5 @@
-<mat-card class="spreadsheet-card">
+<mat-card class="spreadsheet-card"
+  [ngClass]="{'hide': !isShown}" >
   <div class="inner-card">
     <div>
       <mat-form-field style="width: 500px; margin: 10px">
@@ -6,6 +7,10 @@
       </mat-form-field>
       <button mat-raised-button (click)="onColumnsReset()" matTooltip="Reset Columns" style="margin: 10px" >
         <mat-icon style="font-size: 15px; margin-top: 10px" >restore</mat-icon>
+      </button>
+
+      <button mat-raised-button (click)="onHideSpreadsheet()" style="margin: 10px" >
+        Hide
       </button>
       <div>
       </div>
@@ -44,7 +49,7 @@
             Acquisition Date
             <app-hide-icon (hide)="onRemoveColumn('date')"></app-hide-icon>
           </th>
-          <td mat-cell *matCellDef="let product"> {{shortDate(product.metadata.date)}} </td>
+          <td mat-cell *matCellDef="let product"> {{product.metadata.date | shortDate}} </td>
         </ng-container>
 
         <ng-container matColumnDef="productType">

@@ -9,6 +9,8 @@ export interface GranulesState {
   ids: string[];
   entities: GranuleEntities;
 
+  selected: string | null;
+
   loading: boolean;
   error: string | undefined;
 }
@@ -16,6 +18,8 @@ export interface GranulesState {
 const initState: GranulesState = {
   ids: [],
   entities: {},
+
+  selected: null,
 
   loading: false,
   error: undefined,
@@ -39,6 +43,13 @@ export function granulesReducer(state = initState, action: GranulesActions): Gra
 
         ids: Object.keys(totalGranules),
         entities: totalGranules
+      };
+    }
+
+    case GranulesActionType.SET_SELECTED: {
+      return {
+        ...state,
+        selected: action.payload
       };
     }
 
@@ -84,4 +95,9 @@ export const getLoading = createSelector(
 export const getError = createSelector(
   getGranulesState,
   (state: GranulesState) => state.error
+);
+
+export const getSelectedGranule = createSelector(
+  getGranulesState,
+  (state: GranulesState) => state.entities[state.selected]
 );

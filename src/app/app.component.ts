@@ -170,7 +170,7 @@ const setGranules =
         downloadUrl: g.downloadUrl,
         bytes: +g.sizeMB * 1000000,
         platform: g.platform,
-        browse: g.browse || 'https://datapool.asf.alaska.edu/BROWSE/SB/S1B_EW_GRDM_1SDH_20170108T192334_20170108T192434_003761_00676D_4E7B.jpg',
+        browse: g.browse || 'assets/error.png',
         metadata: getMetadataFrom(g)
       })
     )
