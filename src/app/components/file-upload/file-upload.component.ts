@@ -1,11 +1,11 @@
-import { Component, OnInit, Inject, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 
 import { Observable } from 'rxjs';
 import { filter } from 'rxjs/operators';
 
-import { MapInteractionModeType } from '@models';
-import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material';
+import { MatDialog } from '@angular/material';
 
+import { MapInteractionModeType } from '@models';
 import { FileUploadDialogComponent } from './file-upload-dialog';
 
 @Component({
@@ -33,9 +33,9 @@ export class FileUploadComponent implements OnInit {
       width: '50%', height: '50%'
     });
 
-    dialogRef.afterClosed().subscribe(result => {
-      this.dialogClose.emit();
-    });
+    dialogRef.afterClosed().subscribe(
+      result => this.dialogClose.emit()
+    );
   }
 }
 
