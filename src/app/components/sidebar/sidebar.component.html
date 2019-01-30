@@ -56,15 +56,19 @@
     [isLoading]="loading$ | async">
   </app-search-bar>
 
-  <ng-container *ngIf="granules$ | async as granules">
+  <ng-container *ngIf="selectedGranule$ | async as selected">
     <app-product-detail
-        *ngIf="granules.length > 0"
-        [product]="granules[0]">
+        *ngIf="!!selected"
+        [product]="selected">
     </app-product-detail>
+  </ng-container>
 
+  <ng-container *ngIf="granules$ | async as granules">
     <app-products-list
       *ngIf="granules.length > 0"
-      [products]="granules"></app-products-list>
+      [products]="granules"
+      (newSelected)="onNewProductSelected($event)">
+    </app-products-list>
   </ng-container>
 
 </div></div>

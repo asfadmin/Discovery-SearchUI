@@ -1,4 +1,7 @@
-import { Component, OnInit, Input, ViewEncapsulation } from '@angular/core';
+import {
+  Component, OnInit, Input,
+  ViewEncapsulation, Output, EventEmitter
+} from '@angular/core';
 
 import { faFileDownload } from '@fortawesome/free-solid-svg-icons';
 
@@ -12,6 +15,11 @@ import { Sentinel1Product } from '@models';
 })
 export class ProductsListComponent  {
   @Input() products: Sentinel1Product[];
+  @Output() newSelected = new EventEmitter<string>();
 
   public downloadIcon = faFileDownload;
+
+  public onProductSelected(name: string): void {
+    this.newSelected.emit(name);
+  }
 }

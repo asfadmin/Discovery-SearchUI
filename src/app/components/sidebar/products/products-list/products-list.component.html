@@ -1,6 +1,9 @@
 <mat-card class="card-spacing">
   <mat-action-list>
-    <button mat-list-item *ngFor="let product of products">
+    <button
+      *ngFor="let product of products"
+      (click)="onProductSelected(product.name)"
+      mat-list-item >
 
         <img matListAvatar class="size" [src]="product.browse">
 

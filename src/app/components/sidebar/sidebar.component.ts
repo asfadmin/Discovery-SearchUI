@@ -52,6 +52,7 @@ export class SidebarComponent {
 
   public error$ = this.store$.select(granulesStore.getError);
   public granules$ = this.store$.select(granulesStore.getGranules);
+  public selectedGranule$ = this.store$.select(granulesStore.getSelectedGranule);
   public loading$  = this.store$.select(granulesStore.getLoading);
 
   public startMin$: Observable<Date>;
@@ -109,6 +110,10 @@ export class SidebarComponent {
 
   public onNewEndDate(end: Date): void {
     this.store$.dispatch(new filtersStore.SetEndDate(end));
+  }
+
+  public onNewProductSelected(name: string): void {
+    this.store$.dispatch(new granulesStore.SetSelectedGranule(name));
   }
 }
 
