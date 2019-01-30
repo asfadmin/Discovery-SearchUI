@@ -117,20 +117,9 @@ export class SpreadsheetComponent {
     return numSelected === numRows;
   }
 
-  /** Selects all rows if they are not all selected; otherwise clear selection. */
   masterToggle() {
     this.isAllSelected() ?
       this.selection.clear() :
       this.dataSource.data.forEach(row => this.selection.select(row));
-  }
-
-  public shortDate(date: Date): string {
-    const [month, day, year] = [
-      date.getUTCMonth() + 1,
-      date.getUTCDate(),
-      date.getUTCFullYear()
-    ];
-
-    return `${year}-${month}-${day}`;
   }
 }

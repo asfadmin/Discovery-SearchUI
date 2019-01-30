@@ -5,7 +5,10 @@
       (click)="onProductSelected(product.name)"
       mat-list-item >
 
-        <img matListAvatar class="size" [src]="product.browse">
+        <img matListAvatar
+          [src]="product.browse"
+          onerror="this.src='assets/error.png'"
+          class="size" >
 
         <app-product-name [name]="product.name" matLine></app-product-name>
 
