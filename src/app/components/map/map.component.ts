@@ -110,13 +110,12 @@ export class MapComponent implements OnInit {
   }
 
   private granulePolygonsLayer(projection: string): Observable<VectorSource> {
-    const granuleProjection = 'EPSG:4326';
 
     return this.granules$.pipe(
       map(granules => granules
         .map(g => g.metadata.polygon)
         .map(wkt =>
-          this.wktService.wktToFeature(wkt, granuleProjection)
+          this.wktService.wktToFeature(wkt, projection)
         )
       ),
       map(features => new VectorLayer({
