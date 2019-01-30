@@ -17,13 +17,12 @@ export function arctic(): MapView  {
   );
 
   const view = new View({
-    maxResolution: 8192.0,
     projection: proj.get(projection.epsg),
     extent,
     center: [0, 0],
-    zoom: 1,
-    maxZoom: 5,
-    minZoom: 1
+    zoom: 2.5,
+    minZoom: 2.5,
+    maxZoom: 6,
   });
 
   const source = new WMTS({

@@ -1,50 +1,47 @@
 import { Injectable } from '@angular/core';
 
-import { Store } from '@ngrx/store';
-
 import { Subject } from 'rxjs';
 
-
-import { Map, View } from 'ol';
-import {getCenter} from 'ol/extent.js';
-import WMTSTileGrid from 'ol/tilegrid/WMTS.js';
-
-import Draw from 'ol/interaction/Draw.js';
-import WKT from 'ol/format/WKT.js';
-
-import {Tile as TileLayer, Vector as VectorLayer} from 'ol/layer';
-import { OSM, Vector as VectorSource, TileWMS, Layer, XYZ, WMTS } from 'ol/source';
-
+import { Map } from 'ol';
+import { Draw, Modify, Snap } from 'ol/interaction.js';
+import { Vector as VectorLayer } from 'ol/layer';
+import { Vector as VectorSource, Layer } from 'ol/source';
 import * as proj from 'ol/proj';
-import * as customProj4 from 'ol/proj/proj4';
-import proj4 from 'proj4';
 
-import { AppState } from '../../store';
-import * as mapStore from '../../store/map';
-import { equatorial, antarctic, arctic, MapView } from './views';
-import { LonLat } from './../../models';
+import { WktService } from '../wkt.service';
+import * as models from '@models';
+
+import * as polygonStyle from './polygon.style';
+import * as views from './views';
 
 
 @Injectable({
   providedIn: 'root'
 })
 export class MapService {
-  private mapView: MapView;
+  private mapView: views.MapView;
   private map: Map;
   private polygonLayer: Layer;
 
-  private drawSource = new VectorSource({ wrapX: false });
-  private drawLayer = new VectorLayer({ source: this.drawSource });
-  private draw = new Draw({
-    source: this.drawSource,
-    type: 'Polygon'
+  private drawSource = new VectorSource({
+    noWrap: true, wrapX: false
   });
 
-  public zoom$ = new Subject<number>();
-  public center$ = new Subject<LonLat>();
-  public searchPolygon$ = new Subject<string>();
+  private drawLayer = new VectorLayer({
+    source: this.drawSource,
+    style: polygonStyle.invalid
+  });
 
-  constructor() {}
+  private draw: Draw;
+  private modify: Modify;
+  private snap: Snap;
+
+  public zoom$ = new Subject<number>();
+  public center$ = new Subject<models.LonLat>();
+  public searchPolygon$ = new Subject<string | null>();
+  public epsg$ = new Subject<string>();
+
+  constructor(private wktService: WktService) {}
 
   public epsg(): string {
     return this.mapView.projection.epsg;
@@ -59,16 +56,56 @@ export class MapService {
     this.map.addLayer(this.polygonLayer);
   }
 
-  public clearDrawLayer(): void {
-    this.drawSource.clear();
+  public setPolygonError() {
+    this.drawLayer.setStyle(polygonStyle.invalid);
   }
 
-  public setCenter(center: LonLat): void {
-    const { lon, lat } = center;
+  public setValidPolygon() {
+    this.drawLayer.setStyle(polygonStyle.valid);
+  }
 
+  public setDrawFeature(feature): void {
+    this.drawSource.clear();
+    this.drawSource.addFeature(feature);
+    this.drawLayer.setStyle(polygonStyle.valid);
+
+    this.searchPolygon$.next(
+      this.wktService.featureToWkt(feature, this.epsg())
+    );
+  }
+
+  public setInteractionMode(mode: models.MapInteractionModeType) {
+    this.map.removeInteraction(this.modify);
+    this.map.removeInteraction(this.snap);
+    this.map.removeInteraction(this.draw);
+
+    if (mode === models.MapInteractionModeType.DRAW) {
+      this.map.addInteraction(this.draw);
+    } else if (mode === models.MapInteractionModeType.EDIT) {
+      this.map.addInteraction(this.snap);
+      this.map.addInteraction(this.modify);
+    }
+  }
+
+  public setDrawMode(mode: models.MapDrawModeType): void {
+    this.map.removeInteraction(this.draw);
+
+    this.draw = this.createDraw(mode);
+    this.map.addInteraction(this.draw);
+  }
+
+  public clearDrawLayer(): void {
+    this.drawSource.clear();
+    this.drawLayer.setStyle(polygonStyle.valid);
+    this.searchPolygon$.next(null);
+  }
+
+  public setCenter(centerPos: models.LonLat): void {
+    const { lon, lat } = centerPos;
 
     this.map.getView().animate({
-      'center': proj.fromLonLat([lon, lat]), duration: 500
+      center: proj.fromLonLat([lon, lat]),
+      duration: 500
     });
   }
 
@@ -78,57 +115,26 @@ export class MapService {
     });
   }
 
-  public equatorial(): void {
-    this.setMap(equatorial());
+  public setMapView(viewType: models.MapViewType): void {
+    const view = {
+      [models.MapViewType.ANTARCTIC]: views.antarctic(),
+      [models.MapViewType.ARCTIC]: views.arctic(),
+      [models.MapViewType.EQUITORIAL]: views.equatorial()
+    }[viewType];
+
+    this.setMap(view);
   }
 
-  public antarctic(): void {
-    this.setMap(antarctic());
-  }
-
-  public arctic(): void  {
-    this.setMap(arctic());
-  }
-
-  private setMap(mapView: MapView): void {
+  private setMap(mapView: views.MapView): void {
     this.mapView = mapView;
 
-    if (!this.map) {
-      this.map = this.newMap();
-
-      const wkt = new WKT();
-      const granuleProjection = 'EPSG:4326';
-
-      this.draw.on('drawend', e => {
-        const geometry = e.feature.getGeometry();
-        const wktString = wkt.writeGeometry(geometry, {
-          dataProjection: granuleProjection,
-          featureProjection: this.epsg()
-        });
-
-        this.searchPolygon$.next(wktString);
-      });
-
-      this.map.addInteraction(this.draw);
-
-      this.map.on('moveend', e => {
-        const map = e.map;
-
-        const view = map.getView();
-
-        const [lon, lat] = proj.toLonLat(view.getCenter());
-        const zoom = view.getZoom();
-
-        this.zoom$.next(zoom);
-        this.center$.next({lon, lat});
-      });
-    } else {
-      this.map = this.updatedMap();
-    }
+    this.map = (!this.map) ?
+      this.createNewMap() :
+      this.updatedMap();
   }
 
-  private newMap(): Map {
-    return new Map({
+  private createNewMap(): Map {
+    const newMap = new Map({
       layers: [ this.mapView.layer, this.drawLayer ],
       target: 'map',
       view: this.mapView.view,
@@ -136,17 +142,58 @@ export class MapService {
       loadTilesWhileAnimating: true
     });
 
+    this.modify = new Modify({ source: this.drawSource });
+    this.modify.on('modifyend', e => {
+      const feature = e.features.getArray()[0];
+      this.setValidPolygon();
+      this.setSearchPolygon(feature);
+    });
+
+    this.drawLayer.setZIndex(100);
+
+    this.snap = new Snap({source: this.drawSource});
+
+    newMap.on('moveend', e => {
+      const map = e.map;
+
+      const view = map.getView();
+
+      const [lon, lat] = proj.toLonLat(view.getCenter());
+      const zoom = view.getZoom();
+
+      this.zoom$.next(zoom);
+      this.center$.next({lon, lat});
+    });
+
+    return newMap;
+  }
+
+  public createDraw(drawMode: models.MapDrawModeType) {
+    const draw = new Draw({
+      source: this.drawSource,
+      type: drawMode
+    });
+
+    draw.on('drawstart', e => this.clearDrawLayer());
+    draw.on('drawend', e => this.setSearchPolygon(e.feature));
+
+    return draw;
+  }
+
+  private setSearchPolygon = feature => {
+    const wktPolygon = this.wktService.featureToWkt(feature, this.epsg());
+
+    this.searchPolygon$.next(wktPolygon);
+    this.epsg$.next(this.epsg());
   }
 
   private updatedMap(): Map {
     this.map.setView(this.mapView.view);
+    console.log(this.map.getView());
 
     this.mapView.layer.setOpacity(1);
-
     const mapLayers = this.map.getLayers();
-
     mapLayers.setAt(0, this.mapView.layer);
-    this.clearDrawLayer();
 
     return this.map;
   }

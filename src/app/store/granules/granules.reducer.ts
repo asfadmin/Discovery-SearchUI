@@ -1,13 +1,17 @@
 import { createFeatureSelector, createSelector } from '@ngrx/store';
 
-import { Sentinel1Product } from '../../models';
 import { GranulesActionType, GranulesActions } from './granules.action';
+
+import { Sentinel1Product } from '@models';
+
 
 interface GranuleEntities { [id: string]: Sentinel1Product; }
 
 export interface GranulesState {
   ids: string[];
   entities: GranuleEntities;
+
+  selected: string | null;
 
   loading: boolean;
   error: string | undefined;
@@ -17,6 +21,8 @@ const initState: GranulesState = {
   ids: [],
   entities: {},
 
+  selected: null,
+
   loading: false,
   error: undefined,
 };
@@ -24,12 +30,13 @@ const initState: GranulesState = {
 
 export function granulesReducer(state = initState, action: GranulesActions): GranulesState {
   switch (action.type) {
-    case GranulesActionType.SET: {
-      const totalGranules: GranuleEntities = {};
+    case GranulesActionType.SET_GRANULES: {
+      const totalGranules = action.payload
+        .reduce((total, granule) => {
+          total[granule.name] = granule;
 
-      for (const g of action.payload) {
-        totalGranules[g.name] = g;
-      }
+          return total;
+        }, {});
 
       return {
         ...state,
@@ -37,6 +44,13 @@ export function granulesReducer(state = initState, action: GranulesActions): Gra
 
         ids: Object.keys(totalGranules),
         entities: totalGranules
+      };
+    }
+
+    case GranulesActionType.SET_SELECTED: {
+      return {
+        ...state,
+        selected: action.payload
       };
     }
 
@@ -82,4 +96,9 @@ export const getLoading = createSelector(
 export const getError = createSelector(
   getGranulesState,
   (state: GranulesState) => state.error
+);
+
+export const getSelectedGranule = createSelector(
+  getGranulesState,
+  (state: GranulesState) => state.entities[state.selected]
 );

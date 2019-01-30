@@ -1,19 +1,21 @@
 import { Action } from '@ngrx/store';
 
-import { Sentinel1Product } from './../../models';
+import { Sentinel1Product } from '@models';
 
 export enum GranulesActionType {
   QUERY = '[Asf Api] Query Api',
   QUERY_ERROR = '[Asf Api] Query failed',
 
-  SET = '[Granuels] Set Granules',
+  SET_GRANULES = '[Granuels] Set Granules',
   CLEAR = '[Granuels] Clear Granules',
+
+  SET_SELECTED = '[Granules] Set Selected Granule',
 }
 
 export class QueryApi implements Action {
   public readonly type = GranulesActionType.QUERY;
 
-  constructor(public payload: string) {}
+  constructor() {}
 }
 
 export class QueryError implements Action {
@@ -23,7 +25,7 @@ export class QueryError implements Action {
 }
 
 export class SetGranules implements Action {
-  public readonly type = GranulesActionType.SET;
+  public readonly type = GranulesActionType.SET_GRANULES;
 
   constructor(public payload: Sentinel1Product[]) {}
 }
@@ -32,9 +34,15 @@ export class ClearGranules implements Action {
   public readonly type = GranulesActionType.CLEAR;
 }
 
+export class SetSelectedGranule implements Action {
+  public readonly type = GranulesActionType.SET_SELECTED;
+
+  constructor(public payload: string) {}
+}
+
 export type GranulesActions =
   | QueryApi
   | QueryError
   | SetGranules
-  | ClearGranules;
-
+  | ClearGranules
+  | SetSelectedGranule;

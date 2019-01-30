@@ -12,7 +12,11 @@ export function equatorial(): MapView {
   const styleUrl = 'williamh890/cjo0daohlaa972smsrpr0ow4d';
   const url = `https://api.mapbox.com/styles/v1/${styleUrl}/tiles/{z}/{x}/{y}?access_token=${token}`;
 
-  const source = new XYZ({ url });
+  const source = new XYZ({
+    url,
+    wrapX: false,
+    noWrap: true,
+  });
 
   const layer = new TileLayer({ source });
 
@@ -21,7 +25,8 @@ export function equatorial(): MapView {
     projection: projection.epsg,
     zoom: 3,
     minZoom: 3,
-    extent: proj.transformExtent([-320, -90, 320, 90], 'EPSG:4326', projection.epsg)
+    maxZoom: 10,
+    extent: proj.transformExtent([-180, -90, 180, 90], 'EPSG:4326', projection.epsg)
   });
 
   return new MapView(

@@ -1,19 +1,28 @@
 <div class="page-layout blank p-24" fusePerfectScrollbar>
 
 <div>
-  <app-spreadsheet></app-spreadsheet>
-
-  <app-sidebar
-    (newSearch)="onNewSearch($event)"
-    (clearSearches)="onClearGranules()"
-    [isLoading]="loading$ | async">
-  </app-sidebar>
+  <app-file-upload
+    (dialogClose)="onFileUploadDialogClosed()"
+    [interaction$]="interactionMode$">
+  </app-file-upload>
 
   <app-map
     (newMapView)="onNewMapView($event)"
+    (newMapDrawMode)="onNewMapDrawMode($event)"
+    (newMapInteractionMode)="onNewMapInteractionMode($event)"
+    (loadUrlState)="onLoadUrlState()"
     [granules$]="granules$"
-    [view$]="view$">
+    [view$]="view$"
+    [drawMode$]="drawMode$"
+    [interactionMode$]="interactionMode$">
   </app-map>
+
+  <app-spreadsheet></app-spreadsheet>
+
+  <app-sidebar
+     (newSearch)="onNewSearch()"
+     (clearSearch)="onClearSearch()"
+    ></app-sidebar>
 </div>
 
 </div>

@@ -18,16 +18,18 @@ import * as models from '@models';
   styleUrls: ['./spreadsheet.component.scss']
 })
 export class SpreadsheetComponent {
-  allColumns: string[] = [
+  public isShown = true;
+
+  public allColumns: string[] = [
     'select', 'name', 'date', 'productType', 'beamMode',
     'polarization', 'path', 'frame', 'absoluteOrbit', 'bytes'
   ];
 
-  isColumnDisplayed: boolean[] = this.allColumns.map(_ => true);
-  displayedColumns = this.allColumns;
+  public isColumnDisplayed: boolean[] = this.allColumns.map(_ => true);
+  public displayedColumns = this.allColumns;
 
-  dataSource: MatTableDataSource<models.Sentinel1Product>;
-  selection = new SelectionModel<models.Sentinel1Product>(true, []);
+  public dataSource: MatTableDataSource<models.Sentinel1Product>;
+  public selection = new SelectionModel<models.Sentinel1Product>(true, []);
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
@@ -46,19 +48,32 @@ export class SpreadsheetComponent {
     );
   }
 
-  private addCustomProductDataAccessors = dataSource => {
+  public onRowHover(row) {
+    /* Triggered when table row is hovered */
+  }
 
+  private keepCurrentFilter = dataSource => {
+    const oldFilter = this.dataSource && this.dataSource.filter;
+
+    if (oldFilter) {
+      dataSource.filter = this.dataSource.filter;
+    }
+
+    return dataSource;
+  }
+
+  private addCustomProductDataAccessors = dataSource => {
     dataSource.sortingDataAccessor = (product, property) => {
       return product[property] || product.metadata[property];
     };
 
     dataSource.filterPredicate = (product, filter) => {
-      const onlyTableFieldsProduct = this.filterObject(
+      const productWithOnlyTableFields = this.filterObject(
         this.allColumns,
         {...product, ...product.metadata}
       );
 
-      return Object.values(onlyTableFieldsProduct)
+      return Object.values(productWithOnlyTableFields)
         .join('')
         .toLowerCase()
         .indexOf(filter) !== -1;
@@ -77,13 +92,13 @@ export class SpreadsheetComponent {
   }
 
   public onRemoveColumn(columnToRemove: string): void {
-    console.log(columnToRemove);
-
     const colIndex = this.allColumns.indexOf(columnToRemove);
     this.isColumnDisplayed[colIndex] = false;
 
     this.displayedColumns = this.allColumns
-      .filter((_, index) => this.isColumnDisplayed[index]);
+      .filter(
+        (_, index) => this.isColumnDisplayed[index]
+      );
   }
 
   public onColumnsReset(): void {
@@ -91,14 +106,9 @@ export class SpreadsheetComponent {
     this.isColumnDisplayed = this.displayedColumns.map(_ => true);
   }
 
-  private keepCurrentFilter = dataSource => {
-    const oldFilter = this.dataSource && this.dataSource.filter;
 
-    if (oldFilter) {
-      dataSource.filter = this.dataSource.filter;
-    }
-
-    return dataSource;
+  public onHideSpreadsheet(): void {
+    this.isShown = false;
   }
 
   applyFilter(filterValue: string) {
@@ -112,23 +122,13 @@ export class SpreadsheetComponent {
   isAllSelected() {
     const numSelected = this.selection.selected.length;
     const numRows = this.dataSource.data.length;
+
     return numSelected === numRows;
   }
 
-  /** Selects all rows if they are not all selected; otherwise clear selection. */
   masterToggle() {
     this.isAllSelected() ?
       this.selection.clear() :
       this.dataSource.data.forEach(row => this.selection.select(row));
-  }
-
-  public shortDate(date: Date): string {
-    const [month, day, year] = [
-      date.getUTCMonth() + 1,
-      date.getUTCDate(),
-      date.getUTCFullYear()
-    ];
-
-    return `${year}-${month}-${day}`;
   }
 }

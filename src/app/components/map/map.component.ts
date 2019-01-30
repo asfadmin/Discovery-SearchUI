@@ -1,102 +1,124 @@
 import {
-  Component, OnInit,
-  Input, Output,
+  Component, OnInit, Input, Output,
   EventEmitter
 } from '@angular/core';
 
 import { Observable, combineLatest } from 'rxjs';
-import { map, filter, switchMap, tap } from 'rxjs/operators';
+import { map, filter, switchMap, tap, withLatestFrom } from 'rxjs/operators';
 
-import { WKT } from 'ol/format';
 import { Vector as VectorLayer} from 'ol/layer';
 import { Vector as VectorSource } from 'ol/source';
 
-import { Sentinel1Product, MapViewType } from '@models';
-import { MapService, UrlStateService } from '@services';
+import * as models from '@models';
+import { MapService, WktService } from '@services';
 
 
 @Component({
   selector: 'app-map',
-  template: `
-    <div id="map" class="map"></div>
-
-    <app-view-selector
-      (newProjection)="onNewProjection($event)">
-    </app-view-selector>
-  `,
+  templateUrl: './map.component.html',
   styleUrls: ['./map.component.scss']
 })
 export class MapComponent implements OnInit {
-  @Input() granules$: Observable<Sentinel1Product[]>;
-  @Input() view$: Observable<MapViewType>;
+  @Input() granules$: Observable<models.Sentinel1Product[]>;
+  @Input() view$: Observable<models.MapViewType>;
+  @Input() drawMode$: Observable<models.MapDrawModeType>;
+  @Input() interactionMode$: Observable<models.MapInteractionModeType>;
 
-  @Output() newMapView = new EventEmitter<MapViewType>();
+  @Output() newMapView = new EventEmitter<models.MapViewType>();
+  @Output() newMapDrawMode = new EventEmitter<models.MapDrawModeType>();
+  @Output() newMapInteractionMode = new EventEmitter<models.MapInteractionModeType>();
+  @Output() loadUrlState = new EventEmitter<void>();
 
   private isInitMap = true;
 
   constructor(
     private mapService: MapService,
-    private urlStateService: UrlStateService,
+    private wktService: WktService,
   ) {}
 
   ngOnInit(): void {
+    this.updateMapOnViewChange();
+    this.redrawSearchPolygonWhenViewChanges();
+    this.updateDrawMode();
+
+    this.interactionMode$
+      .subscribe(mode => this.mapService.setInteractionMode(mode));
+  }
+
+  public onNewProjection(view: models.MapViewType): void {
+    this.newMapView.emit(view);
+  }
+
+  public onNewDrawMode(mode: models.MapDrawModeType): void {
+    this.newMapDrawMode.emit(mode);
+  }
+
+  public onNewInteractionMode(mode: models.MapInteractionModeType): void {
+    this.newMapInteractionMode.emit(mode);
+  }
+
+  private updateMapOnViewChange(): void {
     this.view$.pipe(
       map(view => this.setMapWith(view)),
+
+      // Load state from url after map is set
       tap(() => {
         if (this.isInitMap) {
-          this.urlStateService.load();
+          this.loadUrlState.emit();
         }
 
         this.isInitMap = false;
       }),
-      switchMap(newMap =>
+
+      switchMap(_ =>
         this.granulePolygonsLayer(this.mapService.epsg())
       ),
     ).subscribe(
       layer => this.mapService.setLayer(layer)
     );
+  }
+
+  private redrawSearchPolygonWhenViewChanges(): void {
+    this.view$.pipe(
+      withLatestFrom(this.mapService.searchPolygon$),
+      map(([_, polygon]) => polygon),
+      filter(polygon => !!polygon),
+    ).subscribe(
+      polygon => this.loadSearchPolygon(polygon)
+    );
 
   }
 
-  public onNewProjection(view: MapViewType): void {
-    this.newMapView.emit(view);
+  private updateDrawMode(): void {
+    this.drawMode$.subscribe(
+      mode => this.mapService.setDrawMode(mode)
+    );
   }
 
-  private setMapWith(view: MapViewType): void {
-    switch (view) {
-      case MapViewType.ARCTIC: {
-        this.mapService.arctic();
-        break;
-      }
-      case MapViewType.EQUITORIAL: {
-        this.mapService.equatorial();
-        break;
-      }
-      case MapViewType.ANTARCTIC: {
-        this.mapService.antarctic();
-        break;
-      }
-    }
+  private loadSearchPolygon = (polygon: string): void => {
+    const features = this.wktService.wktToFeature(
+      polygon,
+      this.mapService.epsg()
+    );
+
+    this.mapService.setDrawFeature(features);
   }
 
   private granulePolygonsLayer(projection: string): Observable<VectorSource> {
-    const wktFormat = new WKT();
-    const granuleProjection = 'EPSG:4326';
-
     return this.granules$.pipe(
-      filter(granules => granules.length > 0),
       map(granules => granules
         .map(g => g.metadata.polygon)
         .map(wkt =>
-          wktFormat.readFeature(wkt, {
-            dataProjection: granuleProjection,
-            featureProjection: projection
-          })
+          this.wktService.wktToFeature(wkt, projection)
         )
       ),
       map(features => new VectorLayer({
         source: new VectorSource({ features })
       }))
     );
+  }
+
+  private setMapWith(viewType: models.MapViewType): void {
+    this.mapService.setMapView(viewType);
   }
 }

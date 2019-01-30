@@ -1,20 +1,27 @@
 import { createFeatureSelector, createSelector } from '@ngrx/store';
 
 import { FiltersActionType, FiltersActions } from './filters.action';
-import { Platform, platforms, FilterType } from '../../models';
+import * as models from '@models';
+
 
 export interface FiltersState {
   platforms: PlatformsState;
+  dateRange: DateRangeState;
+}
+
+export interface DateRangeState {
+  start: null | Date;
+  end: null | Date;
 }
 
 export interface PlatformsState {
-  entities: {[id: string]: Platform };
+  entities: {[id: string]: models.Platform };
   selected: Set<string>;
 }
 
 const initState: FiltersState = {
   platforms: {
-    entities: platforms.reduce(
+    entities: models.platforms.reduce(
       (platformsObj, platform) => {
         platformsObj[platform.name] = platform;
 
@@ -22,7 +29,11 @@ const initState: FiltersState = {
       },
       {}
     ),
-    selected: new Set<string>(['Sentinel-1A'])
+    selected: new Set<string>(['Sentinel-1A', 'Sentinel-1B'])
+  },
+  dateRange: {
+    start: null,
+    end: null
   }
 };
 
@@ -67,6 +78,26 @@ export function filtersReducer(state = initState, action: FiltersActions): Filte
       };
     }
 
+    case FiltersActionType.SET_START_DATE: {
+      return {
+        ...state,
+        dateRange: {
+          ...state.dateRange,
+          start: action.payload
+        }
+      };
+    }
+
+    case FiltersActionType.SET_END_DATE: {
+      return {
+        ...state,
+        dateRange: {
+          ...state.dateRange,
+          end: action.payload
+        }
+      };
+    }
+
     default: {
       return state;
     }
@@ -80,10 +111,26 @@ export const getPlatforms = createSelector(
   (state: FiltersState) => state.platforms
 );
 
+export const getDateRange = createSelector(
+  getFiltersState,
+  (state: FiltersState) => state.dateRange
+);
+
+export const getStartDate = createSelector(
+  getDateRange,
+  (state: DateRangeState) => state.start
+);
+
+export const getEndDate = createSelector(
+  getDateRange,
+  (state: DateRangeState) => state.end
+);
+
 export const getPlatformsList = createSelector(
   getPlatforms,
   (state: PlatformsState) => Object.values(state.entities)
 );
+
 
 export const getSelectedPlatformNames = createSelector(
   getPlatforms,
@@ -93,8 +140,7 @@ export const getSelectedPlatformNames = createSelector(
 export const getSelectedPlatforms = createSelector(
   getPlatforms,
   (state: PlatformsState) => Array.from(state.selected).reduce(
-    (selected: Platform[], name: string) => [...selected, state.entities[name]],
+    (selected: models.Platform[], name: string) => [...selected, state.entities[name]],
     []
   )
 );
-

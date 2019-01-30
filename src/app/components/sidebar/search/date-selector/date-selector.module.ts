@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 
 import {
   MatDatepickerModule, MatFormFieldModule,
@@ -13,7 +14,7 @@ import { DateSelectorComponent } from './date-selector.component';
   declarations: [DateSelectorComponent],
   imports: [
     CommonModule,
-
+    FormsModule,
     MatDatepickerModule,
     MatFormFieldModule,
     MatNativeDateModule,

@@ -13,16 +13,17 @@
     {{ error$ | async }}
   </div>
 
-  <app-search-bar
-    (newSearch)="newSearch.emit($event)"
-    (clearSearches)="clearSearches.emit()"
-    [isLoading]="isLoading">
-  </app-search-bar>
 
   <app-filter-selector
     [selectedFilter]="selectedFilter$ | async"
     (newFilterSelected)="onNewFilterSelected($event)">
   </app-filter-selector>
+
+  <app-search-bar
+    (newSearch)="onNewSearch()"
+    (clearSearches)="onClearSearch()"
+    [isLoading]="loading$ | async">
+  </app-search-bar>
 
   <ng-container *ngIf="selectedFilter$ | async as selected">
     <app-platform-selector
@@ -35,7 +36,11 @@
 
     <app-date-selector
       *ngIf="selected === filterType.DATE"
-      [selected]="selectedPlatforms$ | async">
+      [startDate]="startDate$ | async"
+      [endDate]="endDate$ | async"
+      [extrema]="dateRangeExtrema$ | async"
+      (newStart)="onNewStartDate($event)"
+      (newEnd)="onNewEndDate($event)">
     </app-date-selector>
 
     <app-path-selector
@@ -49,13 +54,20 @@
     </app-other-selector>
   </ng-container>
 
-  <ng-container *ngIf="granules$ | async as granules">
-    <app-products-list [products]="granules"></app-products-list>
-
+  <ng-container *ngIf="selectedGranule$ | async as selected">
     <app-product-detail
-        *ngIf="granules.length > 0"
-        [product]="granules[0]">
+        *ngIf="!!selected"
+        [product]="selected">
     </app-product-detail>
+  </ng-container>
+
+  <ng-container *ngIf="granules$ | async as granules">
+    <app-products-list
+      *ngIf="granules.length > 0"
+      [products]="granules"
+      [selected]="(selectedGranule$ | async)?.name"
+      (newSelected)="onNewProductSelected($event)">
+    </app-products-list>
   </ng-container>
 
 </div></div>
