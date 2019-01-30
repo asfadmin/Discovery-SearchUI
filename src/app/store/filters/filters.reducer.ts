@@ -1,13 +1,13 @@
 import { createFeatureSelector, createSelector } from '@ngrx/store';
 
 import { FiltersActionType, FiltersActions } from './filters.action';
-import { Platform, platforms, FilterType } from '../../models';
+import * as models from '@models';
+
 
 export interface FiltersState {
   platforms: PlatformsState;
   dateRange: DateRangeState;
 }
-
 
 export interface DateRangeState {
   start: null | Date;
@@ -15,13 +15,13 @@ export interface DateRangeState {
 }
 
 export interface PlatformsState {
-  entities: {[id: string]: Platform };
+  entities: {[id: string]: models.Platform };
   selected: Set<string>;
 }
 
 const initState: FiltersState = {
   platforms: {
-    entities: platforms.reduce(
+    entities: models.platforms.reduce(
       (platformsObj, platform) => {
         platformsObj[platform.name] = platform;
 
@@ -140,8 +140,7 @@ export const getSelectedPlatformNames = createSelector(
 export const getSelectedPlatforms = createSelector(
   getPlatforms,
   (state: PlatformsState) => Array.from(state.selected).reduce(
-    (selected: Platform[], name: string) => [...selected, state.entities[name]],
+    (selected: models.Platform[], name: string) => [...selected, state.entities[name]],
     []
   )
 );
-

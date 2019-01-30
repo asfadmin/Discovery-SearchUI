@@ -13,16 +13,17 @@
     {{ error$ | async }}
   </div>
 
-  <app-search-bar
-    (newSearch)="onNewSearch()"
-    (clearSearches)="onClearSearch()"
-    [isLoading]="loading$ | async">
-  </app-search-bar>
 
   <app-filter-selector
     [selectedFilter]="selectedFilter$ | async"
     (newFilterSelected)="onNewFilterSelected($event)">
   </app-filter-selector>
+
+  <app-search-bar
+    (newSearch)="onNewSearch()"
+    (clearSearches)="onClearSearch()"
+    [isLoading]="loading$ | async">
+  </app-search-bar>
 
   <ng-container *ngIf="selectedFilter$ | async as selected">
     <app-platform-selector
@@ -37,10 +38,7 @@
       *ngIf="selected === filterType.DATE"
       [startDate]="startDate$ | async"
       [endDate]="endDate$ | async"
-      [startMin]="startMin$ | async"
-      [startMax]="startMax$ | async"
-      [endMin]="endMin$ | async"
-      [endMax]="endMax$ | async"
+      [extrema]="dateRangeExtrema$ | async"
       (newStart)="onNewStartDate($event)"
       (newEnd)="onNewEndDate($event)">
     </app-date-selector>

@@ -1,6 +1,8 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
 
-import { Platform, platforms } from '@models';
+import { Platform } from '@models';
+
+
 @Component({
   selector: 'app-platform-selector',
   templateUrl: './platform-selector.component.html',
@@ -16,10 +18,8 @@ export class PlatformSelectorComponent {
   public onClick(platform) {
     const { name } = platform;
 
-    if (this.selected.has(name)) {
-      this.removeSelected.emit(name);
-    } else {
+    this.selected.has(name) ?
+      this.removeSelected.emit(name) :
       this.addSelected.emit(name);
-    }
   }
 }

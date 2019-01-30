@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, Input } from '@angular/core';
 
 import { Platform } from '@models';
 
@@ -7,12 +7,6 @@ import { Platform } from '@models';
   templateUrl: './path-selector.component.html',
   styleUrls: ['./path-selector.component.scss']
 })
-export class PathSelectorComponent implements OnInit {
+export class PathSelectorComponent {
   @Input() selected: Platform[];
-
-  constructor() { }
-
-  ngOnInit() {
-  }
-
 }

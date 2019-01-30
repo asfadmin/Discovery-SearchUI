@@ -1,37 +1,25 @@
 import { Injectable } from '@angular/core';
 
-import { Store } from '@ngrx/store';
-
 import { Subject } from 'rxjs';
 
-import { Map, View } from 'ol';
-import {getCenter} from 'ol/extent.js';
-import WMTSTileGrid from 'ol/tilegrid/WMTS.js';
-
+import { Map } from 'ol';
 import { Draw, Modify, Snap } from 'ol/interaction.js';
-
-import {Tile as TileLayer, Vector as VectorLayer} from 'ol/layer';
-import { OSM, Vector as VectorSource, TileWMS, Layer, XYZ, WMTS } from 'ol/source';
-import {Circle as CircleStyle, Fill, Stroke, Style} from 'ol/style.js';
-
+import { Vector as VectorLayer } from 'ol/layer';
+import { Vector as VectorSource, Layer } from 'ol/source';
 import * as proj from 'ol/proj';
-import * as customProj4 from 'ol/proj/proj4';
-import proj4 from 'proj4';
-
-import { AppState } from '@store';
-import * as mapStore from '@store/map';
-import { equatorial, antarctic, arctic, MapView } from './views';
 
 import { WktService } from '../wkt.service';
+import * as models from '@models';
 
-import { LonLat, MapViewType, MapDrawModeType, MapInteractionModeType } from '@models';
+import * as polygonStyle from './polygon.style';
+import * as views from './views';
 
 
 @Injectable({
   providedIn: 'root'
 })
 export class MapService {
-  private mapView: MapView;
+  private mapView: views.MapView;
   private map: Map;
   private polygonLayer: Layer;
 
@@ -39,41 +27,9 @@ export class MapService {
     noWrap: true, wrapX: false
   });
 
-  private validPolygonStyle = new Style({
-      fill: new Fill({
-        color: 'rgba(255, 255, 255, 0.2)'
-      }),
-      stroke: new Stroke({
-        color: '#ffcc33',
-        width: 4
-      }),
-      image: new CircleStyle({
-        radius: 7,
-        fill: new Fill({
-          color: '#ffcc33'
-        })
-      })
-  });
-
-  private invalidPolygonStyle = new Style({
-      fill: new Fill({
-        color: 'rgba(255, 255, 255, 0.2)'
-      }),
-      stroke: new Stroke({
-        color: '#f44336',
-        width: 4
-      }),
-      image: new CircleStyle({
-        radius: 7,
-        fill: new Fill({
-          color: '#f44336'
-        })
-      })
-  });
-
   private drawLayer = new VectorLayer({
     source: this.drawSource,
-    style: this.invalidPolygonStyle
+    style: polygonStyle.invalid
   });
 
   private draw: Draw;
@@ -81,7 +37,7 @@ export class MapService {
   private snap: Snap;
 
   public zoom$ = new Subject<number>();
-  public center$ = new Subject<LonLat>();
+  public center$ = new Subject<models.LonLat>();
   public searchPolygon$ = new Subject<string | null>();
   public epsg$ = new Subject<string>();
 
@@ -101,37 +57,37 @@ export class MapService {
   }
 
   public setPolygonError() {
-    this.drawLayer.setStyle(this.invalidPolygonStyle);
+    this.drawLayer.setStyle(polygonStyle.invalid);
   }
 
   public setValidPolygon() {
-    this.drawLayer.setStyle(this.validPolygonStyle);
+    this.drawLayer.setStyle(polygonStyle.valid);
   }
 
   public setDrawFeature(feature): void {
     this.drawSource.clear();
     this.drawSource.addFeature(feature);
-    this.drawLayer.setStyle(this.validPolygonStyle);
+    this.drawLayer.setStyle(polygonStyle.valid);
 
     this.searchPolygon$.next(
       this.wktService.featureToWkt(feature, this.epsg())
     );
   }
 
-  public setInteractionMode(mode: MapInteractionModeType) {
+  public setInteractionMode(mode: models.MapInteractionModeType) {
     this.map.removeInteraction(this.modify);
     this.map.removeInteraction(this.snap);
     this.map.removeInteraction(this.draw);
 
-    if (mode === MapInteractionModeType.DRAW) {
+    if (mode === models.MapInteractionModeType.DRAW) {
       this.map.addInteraction(this.draw);
-    } else if (mode === MapInteractionModeType.EDIT) {
+    } else if (mode === models.MapInteractionModeType.EDIT) {
       this.map.addInteraction(this.snap);
       this.map.addInteraction(this.modify);
     }
   }
 
-  public setDrawMode(mode: MapDrawModeType): void {
+  public setDrawMode(mode: models.MapDrawModeType): void {
     this.map.removeInteraction(this.draw);
 
     this.draw = this.createDraw(mode);
@@ -140,11 +96,11 @@ export class MapService {
 
   public clearDrawLayer(): void {
     this.drawSource.clear();
-    this.drawLayer.setStyle(this.validPolygonStyle);
+    this.drawLayer.setStyle(polygonStyle.valid);
     this.searchPolygon$.next(null);
   }
 
-  public setCenter(centerPos: LonLat): void {
+  public setCenter(centerPos: models.LonLat): void {
     const { lon, lat } = centerPos;
 
     this.map.getView().animate({
@@ -159,22 +115,22 @@ export class MapService {
     });
   }
 
-  public setMapView(viewType: MapViewType): void {
+  public setMapView(viewType: models.MapViewType): void {
     const view = {
-      [MapViewType.ANTARCTIC]: antarctic(),
-      [MapViewType.ARCTIC]: arctic(),
-      [MapViewType.EQUITORIAL]: equatorial()
+      [models.MapViewType.ANTARCTIC]: views.antarctic(),
+      [models.MapViewType.ARCTIC]: views.arctic(),
+      [models.MapViewType.EQUITORIAL]: views.equatorial()
     }[viewType];
 
     this.setMap(view);
   }
 
-  private setMap(mapView: MapView): void {
+  private setMap(mapView: views.MapView): void {
     this.mapView = mapView;
 
     this.map = (!this.map) ?
-    this.createNewMap() :
-    this.updatedMap();
+      this.createNewMap() :
+      this.updatedMap();
   }
 
   private createNewMap(): Map {
@@ -212,7 +168,7 @@ export class MapService {
     return newMap;
   }
 
-  public createDraw(drawMode: MapDrawModeType) {
+  public createDraw(drawMode: models.MapDrawModeType) {
     const draw = new Draw({
       source: this.drawSource,
       type: drawMode
@@ -233,11 +189,10 @@ export class MapService {
 
   private updatedMap(): Map {
     this.map.setView(this.mapView.view);
+    console.log(this.map.getView());
 
     this.mapView.layer.setOpacity(1);
-
     const mapLayers = this.map.getLayers();
-
     mapLayers.setAt(0, this.mapView.layer);
 
     return this.map;

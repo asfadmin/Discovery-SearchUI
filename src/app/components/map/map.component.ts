@@ -1,6 +1,5 @@
 import {
-  Component, OnInit,
-  Input, Output,
+  Component, OnInit, Input, Output,
   EventEmitter
 } from '@angular/core';
 
@@ -10,7 +9,7 @@ import { map, filter, switchMap, tap, withLatestFrom } from 'rxjs/operators';
 import { Vector as VectorLayer} from 'ol/layer';
 import { Vector as VectorSource } from 'ol/source';
 
-import { Sentinel1Product, MapViewType, MapDrawModeType, MapInteractionModeType } from '@models';
+import * as models from '@models';
 import { MapService, WktService } from '@services';
 
 
@@ -20,14 +19,14 @@ import { MapService, WktService } from '@services';
   styleUrls: ['./map.component.scss']
 })
 export class MapComponent implements OnInit {
-  @Input() granules$: Observable<Sentinel1Product[]>;
-  @Input() view$: Observable<MapViewType>;
-  @Input() drawMode$: Observable<MapDrawModeType>;
-  @Input() interactionMode$: Observable<MapInteractionModeType>;
+  @Input() granules$: Observable<models.Sentinel1Product[]>;
+  @Input() view$: Observable<models.MapViewType>;
+  @Input() drawMode$: Observable<models.MapDrawModeType>;
+  @Input() interactionMode$: Observable<models.MapInteractionModeType>;
 
-  @Output() newMapView = new EventEmitter<MapViewType>();
-  @Output() newMapDrawMode = new EventEmitter<MapDrawModeType>();
-  @Output() newMapInteractionMode = new EventEmitter<MapInteractionModeType>();
+  @Output() newMapView = new EventEmitter<models.MapViewType>();
+  @Output() newMapDrawMode = new EventEmitter<models.MapDrawModeType>();
+  @Output() newMapInteractionMode = new EventEmitter<models.MapInteractionModeType>();
   @Output() loadUrlState = new EventEmitter<void>();
 
   private isInitMap = true;
@@ -46,15 +45,16 @@ export class MapComponent implements OnInit {
       .subscribe(mode => this.mapService.setInteractionMode(mode));
   }
 
-  private redrawSearchPolygonWhenViewChanges(): void {
-    this.view$.pipe(
-      withLatestFrom(this.mapService.searchPolygon$),
-      map(([_, polygon]) => polygon),
-      filter(polygon => !!polygon),
-    ).subscribe(
-      polygon => this.loadSearchPolygon(polygon)
-    );
+  public onNewProjection(view: models.MapViewType): void {
+    this.newMapView.emit(view);
+  }
 
+  public onNewDrawMode(mode: models.MapDrawModeType): void {
+    this.newMapDrawMode.emit(mode);
+  }
+
+  public onNewInteractionMode(mode: models.MapInteractionModeType): void {
+    this.newMapInteractionMode.emit(mode);
   }
 
   private updateMapOnViewChange(): void {
@@ -78,6 +78,17 @@ export class MapComponent implements OnInit {
     );
   }
 
+  private redrawSearchPolygonWhenViewChanges(): void {
+    this.view$.pipe(
+      withLatestFrom(this.mapService.searchPolygon$),
+      map(([_, polygon]) => polygon),
+      filter(polygon => !!polygon),
+    ).subscribe(
+      polygon => this.loadSearchPolygon(polygon)
+    );
+
+  }
+
   private updateDrawMode(): void {
     this.drawMode$.subscribe(
       mode => this.mapService.setDrawMode(mode)
@@ -93,24 +104,7 @@ export class MapComponent implements OnInit {
     this.mapService.setDrawFeature(features);
   }
 
-  public onNewProjection(view: MapViewType): void {
-    this.newMapView.emit(view);
-  }
-
-  public onNewDrawMode(mode: MapDrawModeType): void {
-    this.newMapDrawMode.emit(mode);
-  }
-
-  public onNewInteractionMode(mode: MapInteractionModeType): void {
-    this.newMapInteractionMode.emit(mode);
-  }
-
-  private setMapWith(viewType: MapViewType): void {
-    this.mapService.setMapView(viewType);
-  }
-
   private granulePolygonsLayer(projection: string): Observable<VectorSource> {
-
     return this.granules$.pipe(
       map(granules => granules
         .map(g => g.metadata.polygon)
@@ -122,5 +116,9 @@ export class MapComponent implements OnInit {
         source: new VectorSource({ features })
       }))
     );
+  }
+
+  private setMapWith(viewType: models.MapViewType): void {
+    this.mapService.setMapView(viewType);
   }
 }

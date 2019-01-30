@@ -1,13 +1,10 @@
 import { Injectable } from '@angular/core';
 import { Router, ActivatedRoute, Params } from '@angular/router';
 
-import { Store, Action } from '@ngrx/store';
+import { Store } from '@ngrx/store';
 
-import { combineLatest, Subscription } from 'rxjs';
+import { combineLatest } from 'rxjs';
 import { filter, map, switchMap, skip, tap } from 'rxjs/operators';
-
-import { Vector as VectorLayer } from 'ol/layer';
-import { Vector as VectorSource } from 'ol/source';
 
 import { AppState } from '@store';
 import * as granulesStore from '@store/granules';
@@ -15,18 +12,17 @@ import * as mapStore from '@store/map';
 import * as uiStore from '@store/ui';
 import * as filterStore from '@store/filters';
 
+import * as models from '@models';
+
 import { MapService } from './map/map.service';
 import { WktService } from './wkt.service';
 
-import * as models from '@models';
 
 
 @Injectable({
   providedIn: 'root'
 })
 export class UrlStateService {
-  public urlAppState: Subscription;
-
   private urlParams: models.UrlParameter[];
   private params = {};
   private isNotLoaded = true;
@@ -43,6 +39,48 @@ export class UrlStateService {
       ...this.uiParameters(),
       ...this.filtersParameters(),
     ];
+  }
+
+  public load(): void {
+    this.activatedRoute.queryParams.pipe(
+      skip(1),
+      filter(params => this.isNotLoaded),
+      tap(() => this.isNotLoaded = false)
+    )
+    .subscribe(params => {
+      this.loadStateFrom(params);
+    });
+
+    this.urlParams.forEach(
+      param => param.source.subscribe(
+        this.updateRouteWithParams
+      )
+    );
+  }
+
+  private updateRouteWithParams = (queryParams: Params): void => {
+    this.params = {...this.params, ...queryParams};
+
+    this.router.navigate(['.'], {
+      queryParams: this.params,
+    });
+  }
+
+  private loadStateFrom(params: Params): void {
+    this.params = { ...this.params, ...params };
+
+    const urlParamLoaders: { [id: string]: (string) => void } = this.urlParams.reduce(
+      (loaders, param) => {
+        loaders[param.name] = param.loader;
+
+        return loaders;
+      },
+      {}
+    );
+
+    Object.entries(urlParamLoaders).forEach(
+      ([paramName, load]) => params[paramName] && load(params[paramName])
+    );
   }
 
   private uiParameters() {
@@ -128,48 +166,6 @@ export class UrlStateService {
       ),
       loader: this.loadSearchPolygon
     }];
-  }
-
-  public load(): void {
-    this.activatedRoute.queryParams.pipe(
-      skip(1),
-      filter(params => this.isNotLoaded),
-      tap(() => this.isNotLoaded = false)
-    )
-    .subscribe(params => {
-      this.loadStateFrom(params);
-    });
-
-    this.urlParams.forEach(
-      param => param.source.subscribe(
-        this.updateRouteWithParams
-      )
-    );
-  }
-
-  private updateRouteWithParams = (queryParams: Params): void => {
-    this.params = {...this.params, ...queryParams};
-
-    this.router.navigate(['.'], {
-      queryParams: this.params,
-    });
-  }
-
-  private loadStateFrom(params: Params): void {
-    this.params = { ...this.params, ...params };
-
-    const urlParamLoaders: { [id: string]: (string) => void } = this.urlParams.reduce(
-      (loaders, param) => {
-        loaders[param.name] = param.loader;
-
-        return loaders;
-      },
-      {}
-    );
-
-    Object.entries(urlParamLoaders).forEach(
-      ([paramName, load]) => params[paramName] && load(params[paramName])
-    );
   }
 
   private loadIsSidebarOpen = (isSidebarOpenStr: string): void => {

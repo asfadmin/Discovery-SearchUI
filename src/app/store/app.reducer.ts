@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { ActionReducerMap, MetaReducer } from '@ngrx/store';
 import { storeFreeze } from 'ngrx-store-freeze';
 
-import { environment } from './../../environments/environment';
+import { environment } from '@environments/environment';
 import { GranulesState, granulesReducer } from './granules';
 import { MapState, mapReducer } from './map';
 import { FiltersState, filtersReducer } from './filters';

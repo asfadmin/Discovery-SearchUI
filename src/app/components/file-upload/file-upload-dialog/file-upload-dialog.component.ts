@@ -1,6 +1,6 @@
-import { Component, OnInit, Inject, Input, Output, EventEmitter } from '@angular/core';
+import { Component } from '@angular/core';
 
-import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material';
+import { MatDialogRef } from '@angular/material';
 
 @Component({
   selector: 'app-file-upload-dialog',
@@ -11,7 +11,7 @@ export class FileUploadDialogComponent {
 
   constructor(
     public dialogRef: MatDialogRef<FileUploadDialogComponent>,
-    ) {}
+  ) {}
 
   onNoClick(): void {
     this.dialogRef.close();

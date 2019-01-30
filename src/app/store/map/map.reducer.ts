@@ -1,19 +1,20 @@
 import { createFeatureSelector, createSelector } from '@ngrx/store';
 
+import * as models from '@models';
+
 import { MapActionType, MapActions } from './map.action';
-import { MapViewType, LonLat, MapDrawModeType, MapInteractionModeType  } from '@models';
 
 
 export interface MapState {
-  view: MapViewType;
-  drawMode: MapDrawModeType;
-  interactionMode: MapInteractionModeType;
+  view: models.MapViewType;
+  drawMode: models.MapDrawModeType;
+  interactionMode: models.MapInteractionModeType;
 }
 
 const initState: MapState = {
-  view: MapViewType.EQUITORIAL,
-  drawMode: MapDrawModeType.POLYGON,
-  interactionMode: MapInteractionModeType.DRAW
+  view: models.MapViewType.ARCTIC,
+  drawMode: models.MapDrawModeType.POLYGON,
+  interactionMode: models.MapInteractionModeType.DRAW
 };
 
 

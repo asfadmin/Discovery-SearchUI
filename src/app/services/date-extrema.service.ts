@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { Observable, combineLatest } from 'rxjs';
 import { map, tap } from 'rxjs/operators';
 
-import { Platform } from '@models';
+import { Platform, DateRangeExtrema, DateExtrema } from '@models';
 
 @Injectable({
   providedIn: 'root'
@@ -39,9 +39,20 @@ export class DateExtremaService {
       selectedPlatforms$,
     );
 
-    return [
-      startMin$, startMax$, endMin$, endMax$
-    ];
+    return combineLatest(startMin$, startMax$, endMin$, endMax$).pipe(
+      map(
+        ([startMin, startMax, endMin, endMax]): DateRangeExtrema => ({
+          start: {
+            min: startMin,
+            max: startMax
+          },
+          end: {
+            min: endMin,
+            max: endMax
+          }
+        })
+      )
+    );
   }
 
   private startMin$(

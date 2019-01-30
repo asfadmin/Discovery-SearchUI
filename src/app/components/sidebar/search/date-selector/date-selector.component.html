@@ -2,7 +2,7 @@
   <mat-card-title>Acquisition Date</mat-card-title>
 
   <mat-form-field>
-    <input matInput [(ngModel)]="startDate" [min]="startMin" [max]="startMax" [matDatepicker]="start" placeholder="Start Date"
+    <input matInput [(ngModel)]="startDate" [min]="extrema.start.min" [max]="extrema.start.max" [matDatepicker]="start" placeholder="Start Date"
       (dateInput)="onStartDateChange($event)"
       (dateChanged)="onStartDateChange($event)">
     <mat-datepicker-toggle matSuffix [for]="start"></mat-datepicker-toggle>
@@ -10,7 +10,7 @@
   </mat-form-field>
 
   <mat-form-field>
-    <input matInput [(ngModel)]="endDate" [min]="endMin" [max]="endMax" [matDatepicker]="end" placeholder="End Date"
+    <input matInput [(ngModel)]="endDate" [min]="extrema.end.min" [max]="extrema.end.max" [matDatepicker]="end" placeholder="End Date"
     (dateInput)="onEndDateChange($event)"
     (dateChanged)="onEndDateChange($event)">
     <mat-datepicker-toggle matSuffix [for]="end"></mat-datepicker-toggle>

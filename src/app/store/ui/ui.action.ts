@@ -1,6 +1,6 @@
 import { Action } from '@ngrx/store';
 
-import { FilterType } from '../../models/';
+import { FilterType } from '@models';
 
 export enum UIActionType {
   TOGGLE_SIDEBAR = '[UI] Toggle Sidebar',
