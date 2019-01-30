@@ -12,7 +12,7 @@ export interface MapState {
 }
 
 const initState: MapState = {
-  view: models.MapViewType.ARCTIC,
+  view: models.MapViewType.EQUITORIAL,
   drawMode: models.MapDrawModeType.POLYGON,
   interactionMode: models.MapInteractionModeType.DRAW
 };
