@@ -189,7 +189,6 @@ export class MapService {
 
   private updatedMap(): Map {
     this.map.setView(this.mapView.view);
-    console.log(this.map.getView());
 
     this.mapView.layer.setOpacity(1);
     const mapLayers = this.map.getLayers();
