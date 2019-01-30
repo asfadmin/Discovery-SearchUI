@@ -37,10 +37,7 @@
       *ngIf="selected === filterType.DATE"
       [startDate]="startDate$ | async"
       [endDate]="endDate$ | async"
-      [startMin]="startMin$ | async"
-      [startMax]="startMax$ | async"
-      [endMin]="endMin$ | async"
-      [endMax]="endMax$ | async"
+      [extrema]="dateRangeExtrema$ | async"
       (newStart)="onNewStartDate($event)"
       (newEnd)="onNewEndDate($event)">
     </app-date-selector>

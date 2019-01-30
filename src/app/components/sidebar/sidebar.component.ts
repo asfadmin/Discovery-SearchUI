@@ -55,30 +55,19 @@ export class SidebarComponent {
   public selectedGranule$ = this.store$.select(granulesStore.getSelectedGranule);
   public loading$  = this.store$.select(granulesStore.getLoading);
 
-  public startMin$: Observable<Date>;
-  public startMax$: Observable<Date>;
-  public endMin$: Observable<Date>;
-  public endMax$: Observable<Date>;
+  public dateRangeExtrema$ = this.dateExtremaService.getExtrema$(
+    this.platforms$,
+    this.selectedPlatforms$,
+    this.startDate$,
+    this.endDate$,
+  );
 
   public filterType = FilterType;
 
   constructor(
     private dateExtremaService: DateExtremaService,
     private store$: Store<AppState>,
-  ) {
-    const [ startMin$, startMax$, endMin$, endMax$ ] =
-      this.dateExtremaService.getExtrema$(
-        this.platforms$,
-        this.selectedPlatforms$,
-        this.startDate$,
-        this.endDate$,
-      );
-
-    this.startMin$ = startMin$;
-    this.startMax$ = startMax$;
-    this.endMin$ = endMin$;
-    this.endMax$ = endMax$;
-  }
+  ) {}
 
   public onPlatformRemoved(platformName: string): void {
     this.store$.dispatch(new filtersStore.RemoveSelectedPlatform(platformName));
