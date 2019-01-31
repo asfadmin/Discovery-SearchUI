@@ -46,6 +46,8 @@ export class SidebarComponent {
 
   public startDate$ = this.store$.select(filtersStore.getStartDate);
   public endDate$ = this.store$.select(filtersStore.getEndDate);
+  public pathRange$ = this.store$.select(filtersStore.getPathRange);
+  public frameRange$ = this.store$.select(filtersStore.getFrameRange);
 
   public isSidebarOpen$ = this.store$.select(uiStore.getIsSidebarOpen);
   public selectedFilter$ = this.store$.select(uiStore.getSelectedFilter);

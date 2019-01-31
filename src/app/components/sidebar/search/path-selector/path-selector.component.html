@@ -5,15 +5,17 @@
       <mat-form-field class="number-input--size">
 
         <input matInput
-        (input)="onPathStartChanged($event.target.value)"
-        type="number" placeholder="Start">
+          (input)="onPathStartChanged($event.target.value)"
+          [(ngModel)]="pathRange.start"
+          type="number" name="pathStart" placeholder="Start">
 
       </mat-form-field>
       <mat-form-field class="number-input--size">
 
         <input matInput
           (input)="onPathEndChanged($event.target.value)"
-          type="number" placeholder="End">
+          [(ngModel)]="pathRange.end"
+          type="number" name="pathEnd" placeholder="End">
 
       </mat-form-field>
     </div>
@@ -24,14 +26,16 @@
 
         <input matInput
           (input)="onFrameStartChanged($event.target.value)"
-          type="number" placeholder="Start">
+          [(ngModel)]="frameRange.start"
+          type="number" name="frameStart" placeholder="Start">
 
       </mat-form-field>
       <mat-form-field class="number-input--size">
 
         <input matInput
           (input)="onFrameEndChanged($event.target.value)"
-          type="number" placeholder="End">
+          [(ngModel)]="frameRange.end"
+          type="number" name="frameEnd" placeholder="End">
 
       </mat-form-field>
     </div>

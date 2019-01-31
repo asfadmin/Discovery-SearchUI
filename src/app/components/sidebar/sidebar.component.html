@@ -49,6 +49,8 @@
       (newPathEnd)="onNewPathEnd($event)"
       (newFrameStart)="onNewFrameStart($event)"
       (newFrameEnd)="onNewFrameEnd($event)"
+      [pathRange]="pathRange$ | async"
+      [frameRange]="frameRange$ | async"
       [selected]="selectedPlatforms$ | async">
     </app-path-selector>
 

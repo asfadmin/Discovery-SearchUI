@@ -194,12 +194,12 @@ export const getSelectedPlatforms = createSelector(
   )
 );
 
-export const getPath = createSelector(
+export const getPathRange = createSelector(
   getFiltersState,
-  (state: FiltersState) => state.path
+  (state: FiltersState) => state.pathRange
 );
 
-export const getFrame = createSelector(
+export const getFrameRange = createSelector(
   getFiltersState,
-  (state: FiltersState) => state.frame
+  (state: FiltersState) => state.frameRange
 );

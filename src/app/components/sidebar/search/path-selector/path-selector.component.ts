@@ -1,6 +1,6 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
 
-import { Platform } from '@models';
+import { Platform, Range } from '@models';
 
 @Component({
   selector: 'app-path-selector',
@@ -9,6 +9,9 @@ import { Platform } from '@models';
 })
 export class PathSelectorComponent {
   @Input() selected: Platform[];
+
+  @Input() pathRange: Range<number | null>;
+  @Input() frameRange: Range<number | null>;
 
   @Output() newPathStart = new EventEmitter<number>();
   @Output() newPathEnd = new EventEmitter<number>();
