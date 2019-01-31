@@ -6,16 +6,14 @@ import * as models from '@models';
 
 export interface FiltersState {
   platforms: PlatformsState;
+
   dateRange: DateRangeState;
 
-  path: number | null;
-  frame: number | null;
+  pathRange: models.Range<number | null>;
+  frameRange: models.Range<number | null>;
 }
 
-export interface DateRangeState {
-  start: null | Date;
-  end: null | Date;
-}
+export type DateRangeState = models.Range<null | Date>;
 
 export interface PlatformsState {
   entities: {[id: string]: models.Platform };
@@ -38,8 +36,14 @@ const initState: FiltersState = {
     start: null,
     end: null
   },
-  path: null,
-  frame: null
+  pathRange: {
+    start: null,
+    end: null
+  },
+  frameRange: {
+    start: null,
+    end: null
+  }
 };
 
 

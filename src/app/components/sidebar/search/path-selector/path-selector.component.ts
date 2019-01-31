@@ -9,4 +9,8 @@ import { Platform } from '@models';
 })
 export class PathSelectorComponent {
   @Input() selected: Platform[];
+
+  public onPathStartChanged(path: number): void {
+
+  }
 }

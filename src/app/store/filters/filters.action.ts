@@ -8,8 +8,10 @@ export enum FiltersActionType {
   SET_START_DATE = '[Filters-Date] Set Start Date',
   SET_END_DATE = '[Filters-Date] Set End Date',
 
-  SET_PATH = '[Filters-Path] Set Path',
-  SET_FRAME = '[FIlters-Frame] Set Frame'
+  SET_PATH_START = '[Filters-Path] Set Path Start',
+  SET_PATH_END = '[Filters-Path] Set Path End',
+  SET_FRAME_START = '[FIlters-Frame] Set Frame Start',
+  SET_FRAME_END = '[FIlters-Frame] Set Frame End',
 }
 
 export class AddSelectedPlatform implements Action {
@@ -42,14 +44,26 @@ export class SetEndDate implements Action {
   constructor(public payload: Date) {}
 }
 
-export class SetPath implements Action {
-  public readonly type = FiltersActionType.SET_PATH;
+export class SetPathStart implements Action {
+  public readonly type = FiltersActionType.SET_PATH_START;
 
   constructor(public payload: number) {}
 }
 
-export class SetFrame implements Action {
-  public readonly type = FiltersActionType.SET_FRAME;
+export class SetPathEnd implements Action {
+  public readonly type = FiltersActionType.SET_PATH_END;
+
+  constructor(public payload: number) {}
+}
+
+export class SetFrameStart implements Action {
+  public readonly type = FiltersActionType.SET_FRAME_START;
+
+  constructor(public payload: number) {}
+}
+
+export class SetFrameEnd implements Action {
+  public readonly type = FiltersActionType.SET_FRAME_END;
 
   constructor(public payload: number) {}
 }
@@ -60,5 +74,7 @@ export type FiltersActions =
   | SetSelectedPlatforms
   | SetStartDate
   | SetEndDate
-  | SetPath
-  | SetFrame;
+  | SetPathStart
+  | SetPathEnd
+  | SetFrameStart
+  | SetFrameEnd;
