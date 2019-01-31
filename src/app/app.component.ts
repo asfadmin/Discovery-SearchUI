@@ -62,19 +62,42 @@ export class AppComponent implements OnInit {
             .filter(date => !!date)
             .map(date => date.toISOString());
         })
+      ),
+      this.store$.select(filterStore.getPathRange).pipe(
+        map(range => Object.values(range)
+          .filter(v => !!v)
+        ),
+        map(range => Array.from(new Set(range))),
+        map(range => range.length === 2 ?
+          range.join('-') :
+          range.pop() || null
+        )
+      ),
+      this.store$.select(filterStore.getFrameRange).pipe(
+        map(range => Object.values(range)
+          .filter(v => !!v)
+        ),
+        map(range => Array.from(new Set(range))),
+        map(range => range.length === 2 ?
+          range.join('-') :
+          range.pop() || null
+        )
       )
     );
+
 
     this.doSearch.pipe(
       withLatestFrom(searchState$),
       map(([_, searchState]) => searchState),
       map(
-        ([polygon, platforms, [start, end]]) => {
+        ([polygon, platforms, [start, end], pathRange, frame]) => {
           const params = {
             intersectsWith: polygon,
             platform: platforms,
             start,
             end,
+            relativeOrbit: pathRange,
+            frame,
           };
 
           return Object.entries(params)
