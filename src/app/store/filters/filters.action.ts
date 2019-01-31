@@ -7,6 +7,9 @@ export enum FiltersActionType {
 
   SET_START_DATE = '[Filters-Date] Set Start Date',
   SET_END_DATE = '[Filters-Date] Set End Date',
+
+  SET_PATH = '[Filters-Path] Set Path',
+  SET_FRAME = '[FIlters-Frame] Set Frame'
 }
 
 export class AddSelectedPlatform implements Action {
@@ -39,9 +42,23 @@ export class SetEndDate implements Action {
   constructor(public payload: Date) {}
 }
 
+export class SetPath implements Action {
+  public readonly type = FiltersActionType.SET_PATH;
+
+  constructor(public payload: number) {}
+}
+
+export class SetFrame implements Action {
+  public readonly type = FiltersActionType.SET_FRAME;
+
+  constructor(public payload: number) {}
+}
+
 export type FiltersActions =
   | AddSelectedPlatform
   | RemoveSelectedPlatform
   | SetSelectedPlatforms
   | SetStartDate
-  | SetEndDate;
+  | SetEndDate
+  | SetPath
+  | SetFrame;

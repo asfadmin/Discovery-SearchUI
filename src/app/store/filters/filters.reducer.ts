@@ -7,6 +7,9 @@ import * as models from '@models';
 export interface FiltersState {
   platforms: PlatformsState;
   dateRange: DateRangeState;
+
+  path: number | null;
+  frame: number | null;
 }
 
 export interface DateRangeState {
@@ -34,7 +37,9 @@ const initState: FiltersState = {
   dateRange: {
     start: null,
     end: null
-  }
+  },
+  path: null,
+  frame: null
 };
 
 
@@ -143,4 +148,14 @@ export const getSelectedPlatforms = createSelector(
     (selected: models.Platform[], name: string) => [...selected, state.entities[name]],
     []
   )
+);
+
+export const getPath = createSelector(
+  getFiltersState,
+  (state: FiltersState) => state.path
+);
+
+export const getFrame = createSelector(
+  getFiltersState,
+  (state: FiltersState) => state.frame
 );
