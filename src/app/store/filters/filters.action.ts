@@ -12,6 +12,8 @@ export enum FiltersActionType {
   SET_PATH_END = '[Filters-Path] Set Path End',
   SET_FRAME_START = '[FIlters-Frame] Set Frame Start',
   SET_FRAME_END = '[FIlters-Frame] Set Frame End',
+
+  CLEAR_FILTERS = '[Filters-Clear] Clear Filters',
 }
 
 export class AddSelectedPlatform implements Action {
@@ -68,6 +70,10 @@ export class SetFrameEnd implements Action {
   constructor(public payload: number) {}
 }
 
+export class ClearFilters implements Action {
+  public readonly type = FiltersActionType.CLEAR_FILTERS;
+}
+
 export type FiltersActions =
   | AddSelectedPlatform
   | RemoveSelectedPlatform
@@ -77,4 +83,5 @@ export type FiltersActions =
   | SetPathStart
   | SetPathEnd
   | SetFrameStart
-  | SetFrameEnd;
+  | SetFrameEnd
+  | ClearFilters;

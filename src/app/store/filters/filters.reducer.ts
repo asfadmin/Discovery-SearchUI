@@ -131,7 +131,7 @@ export function filtersReducer(state = initState, action: FiltersActions): Filte
       return {
         ...state,
         frameRange: {
-          ...state.pathRange,
+          ...state.frameRange,
           start: action.payload
         }
       };
@@ -141,10 +141,14 @@ export function filtersReducer(state = initState, action: FiltersActions): Filte
       return {
         ...state,
         frameRange: {
-          ...state.pathRange,
+          ...state.frameRange,
           end: action.payload
         }
       };
+    }
+
+    case FiltersActionType.CLEAR_FILTERS: {
+      return initState;
     }
 
     default: {

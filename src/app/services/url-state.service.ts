@@ -126,7 +126,55 @@ export class UrlStateService {
         map(end => ({ end }))
       ),
       loader: this.loadEndDate
+    }, {
+      name: 'path',
+      source: this.store$.select(filterStore.getPathRange).pipe(
+        skip(1),
+        map(range => Object.values(range)
+          .filter(v => !!v)
+        ),
+        map(range => Array.from(new Set(range))),
+        map(range => range.length === 2 ?
+          range.join('-') :
+          range.pop() || null
+        ),
+        map(path => ({ path }))
+      ),
+      loader: this.loadPathRange
+    }, {
+      name: 'frame',
+      source: this.store$.select(filterStore.getFrameRange).pipe(
+        skip(1),
+        map(range => Object.values(range)
+          .filter(v => !!v)
+        ),
+        map(range => Array.from(new Set(range))),
+        map(range => range.length === 2 ?
+          range.join('-') :
+          range.pop() || null
+        ),
+        map(frame => ({ frame }))
+      ),
+      loader: this.loadFrameRange
     }];
+  }
+
+  private loadPathRange = (rangeStr: string): void => {
+    const range = rangeStr
+      .split('-')
+      .map(v => +v);
+
+    this.store$.dispatch(new filterStore.SetPathStart(range[0] || null));
+    this.store$.dispatch(new filterStore.SetPathEnd(range[1] || null));
+  }
+
+  private loadFrameRange = (rangeStr: string): void => {
+    const range = rangeStr
+      .split('-')
+      .map(v => +v);
+
+    this.store$.dispatch(new filterStore.SetFrameStart(range[0] || null));
+    this.store$.dispatch(new filterStore.SetFrameEnd(range[1] || null));
   }
 
   private mapParameters() {
