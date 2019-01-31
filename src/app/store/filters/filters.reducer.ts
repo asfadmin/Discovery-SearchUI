@@ -6,13 +6,14 @@ import * as models from '@models';
 
 export interface FiltersState {
   platforms: PlatformsState;
+
   dateRange: DateRangeState;
+
+  pathRange: models.Range<number | null>;
+  frameRange: models.Range<number | null>;
 }
 
-export interface DateRangeState {
-  start: null | Date;
-  end: null | Date;
-}
+export type DateRangeState = models.Range<null | Date>;
 
 export interface PlatformsState {
   entities: {[id: string]: models.Platform };
@@ -32,6 +33,14 @@ const initState: FiltersState = {
     selected: new Set<string>(['Sentinel-1A', 'Sentinel-1B'])
   },
   dateRange: {
+    start: null,
+    end: null
+  },
+  pathRange: {
+    start: null,
+    end: null
+  },
+  frameRange: {
     start: null,
     end: null
   }
@@ -98,6 +107,50 @@ export function filtersReducer(state = initState, action: FiltersActions): Filte
       };
     }
 
+    case FiltersActionType.SET_PATH_START: {
+      return {
+        ...state,
+        pathRange: {
+          ...state.pathRange,
+          start: action.payload
+        }
+      };
+    }
+
+    case FiltersActionType.SET_PATH_END: {
+      return {
+        ...state,
+        pathRange: {
+          ...state.pathRange,
+          end: action.payload
+        }
+      };
+    }
+
+    case FiltersActionType.SET_FRAME_START: {
+      return {
+        ...state,
+        frameRange: {
+          ...state.frameRange,
+          start: action.payload
+        }
+      };
+    }
+
+    case FiltersActionType.SET_FRAME_END: {
+      return {
+        ...state,
+        frameRange: {
+          ...state.frameRange,
+          end: action.payload
+        }
+      };
+    }
+
+    case FiltersActionType.CLEAR_FILTERS: {
+      return initState;
+    }
+
     default: {
       return state;
     }
@@ -143,4 +196,14 @@ export const getSelectedPlatforms = createSelector(
     (selected: models.Platform[], name: string) => [...selected, state.entities[name]],
     []
   )
+);
+
+export const getPathRange = createSelector(
+  getFiltersState,
+  (state: FiltersState) => state.pathRange
+);
+
+export const getFrameRange = createSelector(
+  getFiltersState,
+  (state: FiltersState) => state.frameRange
 );

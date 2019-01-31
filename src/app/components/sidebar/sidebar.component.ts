@@ -46,6 +46,8 @@ export class SidebarComponent {
 
   public startDate$ = this.store$.select(filtersStore.getStartDate);
   public endDate$ = this.store$.select(filtersStore.getEndDate);
+  public pathRange$ = this.store$.select(filtersStore.getPathRange);
+  public frameRange$ = this.store$.select(filtersStore.getFrameRange);
 
   public isSidebarOpen$ = this.store$.select(uiStore.getIsSidebarOpen);
   public selectedFilter$ = this.store$.select(uiStore.getSelectedFilter);
@@ -103,6 +105,22 @@ export class SidebarComponent {
 
   public onNewProductSelected(name: string): void {
     this.store$.dispatch(new granulesStore.SetSelectedGranule(name));
+  }
+
+  public onNewPathStart(path: number): void {
+    this.store$.dispatch(new filtersStore.SetPathStart(path));
+  }
+
+  public onNewPathEnd(path: number): void {
+    this.store$.dispatch(new filtersStore.SetPathEnd(path));
+  }
+
+  public onNewFrameStart(frame: number): void {
+    this.store$.dispatch(new filtersStore.SetFrameStart(frame));
+  }
+
+  public onNewFrameEnd(frame: number): void {
+    this.store$.dispatch(new filtersStore.SetFrameEnd(frame));
   }
 }
 
