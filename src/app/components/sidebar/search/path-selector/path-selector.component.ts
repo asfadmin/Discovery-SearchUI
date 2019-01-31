@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, Output, EventEmitter } from '@angular/core';
 
 import { Platform } from '@models';
 
@@ -10,7 +10,24 @@ import { Platform } from '@models';
 export class PathSelectorComponent {
   @Input() selected: Platform[];
 
-  public onPathStartChanged(path: number): void {
+  @Output() newPathStart = new EventEmitter<number>();
+  @Output() newPathEnd = new EventEmitter<number>();
+  @Output() newFrameStart = new EventEmitter<number>();
+  @Output() newFrameEnd = new EventEmitter<number>();
 
+  public onPathStartChanged(path: string): void {
+    this.newPathStart.emit(+path);
+  }
+
+  public onPathEndChanged(path: string): void {
+    this.newPathEnd.emit(+path);
+  }
+
+  public onFrameStartChanged(frame: string): void {
+    this.newFrameStart.emit(+frame);
+  }
+
+  public onFrameEndChanged(frame: string): void {
+    this.newFrameEnd.emit(+frame);
   }
 }

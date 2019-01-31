@@ -10,17 +10,29 @@
 
       </mat-form-field>
       <mat-form-field class="number-input--size">
-        <input matInput type="number" placeholder="End">
+
+        <input matInput
+          (input)="onPathEndChanged($event.target.value)"
+          type="number" placeholder="End">
+
       </mat-form-field>
     </div>
 
     <b>Frame</b>
     <div class="range-selector">
       <mat-form-field class="number-input--size">
-        <input matInput type="number" placeholder="Start">
+
+        <input matInput
+          (input)="onFrameStartChanged($event.target.value)"
+          type="number" placeholder="Start">
+
       </mat-form-field>
       <mat-form-field class="number-input--size">
-        <input matInput type="number" placeholder="End">
+
+        <input matInput
+          (input)="onFrameEndChanged($event.target.value)"
+          type="number" placeholder="End">
+
       </mat-form-field>
     </div>
   </form>

@@ -104,5 +104,21 @@ export class SidebarComponent {
   public onNewProductSelected(name: string): void {
     this.store$.dispatch(new granulesStore.SetSelectedGranule(name));
   }
+
+  public onNewPathStart(path: number): void {
+    this.store$.dispatch(new filtersStore.SetPathStart(path));
+  }
+
+  public onNewPathEnd(path: number): void {
+    this.store$.dispatch(new filtersStore.SetPathEnd(path));
+  }
+
+  public onNewFrameStart(frame: number): void {
+    this.store$.dispatch(new filtersStore.SetFrameStart(frame));
+  }
+
+  public onNewFrameEnd(frame: number): void {
+    this.store$.dispatch(new filtersStore.SetFrameEnd(frame));
+  }
 }
 

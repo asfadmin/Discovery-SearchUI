@@ -45,6 +45,10 @@
 
     <app-path-selector
       *ngIf="selected === filterType.PATH"
+      (newPathStart)="onNewPathStart($event)"
+      (newPathEnd)="onNewPathEnd($event)"
+      (newFrameStart)="onNewFrameStart($event)"
+      (newFrameEnd)="onNewFrameEnd($event)"
       [selected]="selectedPlatforms$ | async">
     </app-path-selector>
 

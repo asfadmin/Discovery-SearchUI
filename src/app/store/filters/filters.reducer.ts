@@ -107,6 +107,46 @@ export function filtersReducer(state = initState, action: FiltersActions): Filte
       };
     }
 
+    case FiltersActionType.SET_PATH_START: {
+      return {
+        ...state,
+        pathRange: {
+          ...state.pathRange,
+          start: action.payload
+        }
+      };
+    }
+
+    case FiltersActionType.SET_PATH_END: {
+      return {
+        ...state,
+        pathRange: {
+          ...state.pathRange,
+          end: action.payload
+        }
+      };
+    }
+
+    case FiltersActionType.SET_FRAME_START: {
+      return {
+        ...state,
+        frameRange: {
+          ...state.pathRange,
+          start: action.payload
+        }
+      };
+    }
+
+    case FiltersActionType.SET_FRAME_END: {
+      return {
+        ...state,
+        frameRange: {
+          ...state.pathRange,
+          end: action.payload
+        }
+      };
+    }
+
     default: {
       return state;
     }
