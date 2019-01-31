@@ -159,24 +159,6 @@ export class UrlStateService {
     }];
   }
 
-  private loadPathRange = (rangeStr: string): void => {
-    const range = rangeStr
-      .split('-')
-      .map(v => +v);
-
-    this.store$.dispatch(new filterStore.SetPathStart(range[0] || null));
-    this.store$.dispatch(new filterStore.SetPathEnd(range[1] || null));
-  }
-
-  private loadFrameRange = (rangeStr: string): void => {
-    const range = rangeStr
-      .split('-')
-      .map(v => +v);
-
-    this.store$.dispatch(new filterStore.SetFrameStart(range[0] || null));
-    this.store$.dispatch(new filterStore.SetFrameEnd(range[1] || null));
-  }
-
   private mapParameters() {
     return [{
       name: 'view',
@@ -303,6 +285,24 @@ export class UrlStateService {
     }
 
     this.store$.dispatch(new filterStore.SetEndDate(endDate));
+  }
+
+  private loadPathRange = (rangeStr: string): void => {
+    const range = rangeStr
+      .split('-')
+      .map(v => +v);
+
+    this.store$.dispatch(new filterStore.SetPathStart(range[0] || null));
+    this.store$.dispatch(new filterStore.SetPathEnd(range[1] || null));
+  }
+
+  private loadFrameRange = (rangeStr: string): void => {
+    const range = rangeStr
+      .split('-')
+      .map(v => +v);
+
+    this.store$.dispatch(new filterStore.SetFrameStart(range[0] || null));
+    this.store$.dispatch(new filterStore.SetFrameEnd(range[1] || null));
   }
 
   private isNumber = n => !isNaN(n) && isFinite(n);
