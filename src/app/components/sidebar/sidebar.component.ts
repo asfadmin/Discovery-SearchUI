@@ -48,6 +48,7 @@ export class SidebarComponent {
   public endDate$ = this.store$.select(filtersStore.getEndDate);
   public pathRange$ = this.store$.select(filtersStore.getPathRange);
   public frameRange$ = this.store$.select(filtersStore.getFrameRange);
+  public shouldOmitSearchPolygon$ = this.store$.select(filtersStore.getShouldOmitSearchPolygon);
 
   public isSidebarOpen$ = this.store$.select(uiStore.getIsSidebarOpen);
   public selectedFilter$ = this.store$.select(uiStore.getSelectedFilter);
@@ -121,6 +122,13 @@ export class SidebarComponent {
 
   public onNewFrameEnd(frame: number): void {
     this.store$.dispatch(new filtersStore.SetFrameEnd(frame));
+  }
+  public onNewOmitGeoRegion(shouldOmitGeoRegion: boolean): void {
+    const action = shouldOmitGeoRegion ?
+      new filtersStore.OmitSearchPolygon() :
+      new filtersStore.UseSearchPolygon();
+
+    this.store$.dispatch(action);
   }
 }
 

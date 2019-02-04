@@ -41,7 +41,11 @@
     </div>
 
     <div class="geo-toggle">
-      <mat-slide-toggle>Omit Geographic Region from search</mat-slide-toggle>
+      <mat-slide-toggle
+        (change)="onNewOmitGeoRegion($event)"
+        [checked]="shouldOmitSearchPolygon">
+        Omit Geographic Region from search
+      </mat-slide-toggle>
     </div>
   </form>
 </mat-card>

@@ -12,7 +12,10 @@ export enum FiltersActionType {
   SET_PATH_START = '[Filters-Path] Set Path Start',
   SET_PATH_END = '[Filters-Path] Set Path End',
   SET_FRAME_START = '[FIlters-Frame] Set Frame Start',
-  SET_FRAME_END = '[FIlters-Frame] Set Frame End',
+  SET_FRAME_END = '[Filters-Frame] Set Frame End',
+
+  OMIT_SEARCH_POLYGON = '[Filters-Search] Omit Search Polygon',
+  USE_SEARCH_POLYGON = '[Filters-Search] Use Search Polygon',
 
   CLEAR_FILTERS = '[Filters-Clear] Clear Filters',
 }
@@ -51,6 +54,14 @@ export class ClearDateRange implements Action {
   public readonly type = FiltersActionType.CLEAR_DATE_RANGE;
 }
 
+export class OmitSearchPolygon implements Action {
+  public readonly type = FiltersActionType.OMIT_SEARCH_POLYGON;
+}
+
+export class UseSearchPolygon implements Action {
+  public readonly type = FiltersActionType.USE_SEARCH_POLYGON;
+}
+
 export class SetPathStart implements Action {
   public readonly type = FiltersActionType.SET_PATH_START;
 
@@ -86,6 +97,8 @@ export type FiltersActions =
   | SetStartDate
   | SetEndDate
   | ClearDateRange
+  | OmitSearchPolygon
+  | UseSearchPolygon
   | SetPathStart
   | SetPathEnd
   | SetFrameStart
