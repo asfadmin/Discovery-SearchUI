@@ -7,6 +7,7 @@ export enum FiltersActionType {
 
   SET_START_DATE = '[Filters-Date] Set Start Date',
   SET_END_DATE = '[Filters-Date] Set End Date',
+  CLEAR_DATE_RANGE = '[Filters-Date] Clear Date Range',
 
   SET_PATH_START = '[Filters-Path] Set Path Start',
   SET_PATH_END = '[Filters-Path] Set Path End',
@@ -46,6 +47,10 @@ export class SetEndDate implements Action {
   constructor(public payload: Date) {}
 }
 
+export class ClearDateRange implements Action {
+  public readonly type = FiltersActionType.CLEAR_DATE_RANGE;
+}
+
 export class SetPathStart implements Action {
   public readonly type = FiltersActionType.SET_PATH_START;
 
@@ -80,6 +85,7 @@ export type FiltersActions =
   | SetSelectedPlatforms
   | SetStartDate
   | SetEndDate
+  | ClearDateRange
   | SetPathStart
   | SetPathEnd
   | SetFrameStart

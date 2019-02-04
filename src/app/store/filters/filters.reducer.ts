@@ -107,6 +107,13 @@ export function filtersReducer(state = initState, action: FiltersActions): Filte
       };
     }
 
+    case FiltersActionType.CLEAR_DATE_RANGE: {
+      return {
+        ...state,
+        dateRange: initState.dateRange
+      };
+    }
+
     case FiltersActionType.SET_PATH_START: {
       return {
         ...state,
