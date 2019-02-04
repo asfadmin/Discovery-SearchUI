@@ -17,11 +17,6 @@ export class FiltersEffects {
     private store$: Store<AppState>,
     private actions$: Actions) {}
 
-  @Effect() updateDateRangeWithNewPlatform$: Observable<Action> = this.actions$.pipe(
-    ofType<filtersAction.AddSelectedPlatform>(filtersAction.FiltersActionType.ADD_SELECTED_PLATFORM),
-    map(action => new filtersAction.ClearDateRange())
-  );
-
   @Effect() updateDateRangeOnPlatformRemoved$: Observable<Action> = this.actions$.pipe(
     ofType<filtersAction.RemoveSelectedPlatform>(filtersAction.FiltersActionType.REMOVE_SELECTED_PLATFORM),
     map(action => new filtersAction.ClearDateRange())
