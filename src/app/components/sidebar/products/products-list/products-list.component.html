@@ -3,7 +3,7 @@
     <button
       *ngFor="let product of products"
       mat-list-item
-      (click)="onProductSelected(product.name)"
+      (click)="onProductSelected(product.file)"
       [ngClass]="{'selected': product.name === selected}" >
 
         <img matListAvatar

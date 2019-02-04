@@ -194,13 +194,16 @@ export class AppComponent implements OnInit {
 
 const setGranules =
   (resp: any) => new granulesStore.SetGranules(
-    resp[0].map(
+    resp[0]
+      .map(
       (g: any): models.Sentinel1Product => ({
         name: g.granuleName,
+        file: g.fileName,
         downloadUrl: g.downloadUrl,
         bytes: +g.sizeMB * 1000000,
         platform: g.platform,
         browse: g.browse || 'assets/error.png',
+        groupId: g.groupID,
         metadata: getMetadataFrom(g)
       })
     )
