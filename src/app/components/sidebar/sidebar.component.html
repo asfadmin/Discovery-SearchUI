@@ -49,7 +49,9 @@
       (newPathEnd)="onNewPathEnd($event)"
       (newFrameStart)="onNewFrameStart($event)"
       (newFrameEnd)="onNewFrameEnd($event)"
+      (newOmitSearchPolygon)="onNewOmitGeoRegion($event)"
       [pathRange]="pathRange$ | async"
+      [shouldOmitSearchPolygon]="shouldOmitSearchPolygon$ | async"
       [frameRange]="frameRange$ | async"
       [selected]="selectedPlatforms$ | async">
     </app-path-selector>

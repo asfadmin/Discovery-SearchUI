@@ -9,14 +9,15 @@ import { Platform, Range } from '@models';
 })
 export class PathSelectorComponent {
   @Input() selected: Platform[];
-
   @Input() pathRange: Range<number | null>;
   @Input() frameRange: Range<number | null>;
+  @Input() shouldOmitSearchPolygon: boolean;
 
   @Output() newPathStart = new EventEmitter<number>();
   @Output() newPathEnd = new EventEmitter<number>();
   @Output() newFrameStart = new EventEmitter<number>();
   @Output() newFrameEnd = new EventEmitter<number>();
+  @Output() newOmitSearchPolygon = new EventEmitter<boolean>();
 
   public onPathStartChanged(path: string): void {
     this.newPathStart.emit(+path);
@@ -32,5 +33,9 @@ export class PathSelectorComponent {
 
   public onFrameEndChanged(frame: string): void {
     this.newFrameEnd.emit(+frame);
+  }
+
+  public onNewOmitGeoRegion(e): void {
+    this.newOmitSearchPolygon.emit(e.checked);
   }
 }

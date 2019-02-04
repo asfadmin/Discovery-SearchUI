@@ -11,6 +11,7 @@ export interface FiltersState {
 
   pathRange: models.Range<number | null>;
   frameRange: models.Range<number | null>;
+  shouldOmitSearchPolygon: boolean;
 }
 
 export type DateRangeState = models.Range<null | Date>;
@@ -43,7 +44,8 @@ const initState: FiltersState = {
   frameRange: {
     start: null,
     end: null
-  }
+  },
+  shouldOmitSearchPolygon: false
 };
 
 
@@ -158,6 +160,14 @@ export function filtersReducer(state = initState, action: FiltersActions): Filte
       return initState;
     }
 
+    case FiltersActionType.USE_SEARCH_POLYGON: {
+      return { ...state, shouldOmitSearchPolygon: false };
+    }
+
+    case FiltersActionType.OMIT_SEARCH_POLYGON: {
+      return { ...state, shouldOmitSearchPolygon: true };
+    }
+
     default: {
       return state;
     }
@@ -213,4 +223,9 @@ export const getPathRange = createSelector(
 export const getFrameRange = createSelector(
   getFiltersState,
   (state: FiltersState) => state.frameRange
+);
+
+export const getShouldOmitSearchPolygon = createSelector(
+  getFiltersState,
+  (state: FiltersState) => state.shouldOmitSearchPolygon
 );
