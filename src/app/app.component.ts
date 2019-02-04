@@ -30,6 +30,7 @@ export class AppComponent implements OnInit {
   public view$ = this.store$.select(mapStore.getMapView);
   public drawMode$ = this.store$.select(mapStore.getMapDrawMode);
   public interactionMode$ = this.store$.select(mapStore.getMapInteractionMode);
+  public shouldOmitSearchPolygon$ = this.store$.select(filterStore.getShouldOmitSearchPolygon);
   public interactionTypes = models.MapInteractionModeType;
 
   private doSearch = new Subject<void>();
@@ -45,9 +46,13 @@ export class AppComponent implements OnInit {
 
   public ngOnInit(): void {
     this.validateSearchPolygons();
+
     const searchState$ = combineLatest(
-      this.mapService.searchPolygon$.pipe(
-        startWith(null)
+      combineLatest(
+        this.mapService.searchPolygon$.pipe(startWith(null)),
+        this.shouldOmitSearchPolygon$
+      ).pipe(
+        map(([polygon, shouldOmitGeoRegion]) => shouldOmitGeoRegion ? null : polygon)
       ),
       this.store$.select(filterStore.getSelectedPlatforms).pipe(
         map(platforms => platforms
@@ -99,6 +104,7 @@ export class AppComponent implements OnInit {
             relativeOrbit: pathRange,
             frame,
           };
+          console.log(params);
 
           return Object.entries(params)
             .filter(([param, val]) => !!val)

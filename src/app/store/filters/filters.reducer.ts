@@ -45,7 +45,7 @@ const initState: FiltersState = {
     start: null,
     end: null
   },
-  shouldOmitSearchPolygon: true
+  shouldOmitSearchPolygon: false
 };
 
 
@@ -161,11 +161,11 @@ export function filtersReducer(state = initState, action: FiltersActions): Filte
     }
 
     case FiltersActionType.USE_SEARCH_POLYGON: {
-      return { ...state, shouldOmitSearchPolygon: true };
+      return { ...state, shouldOmitSearchPolygon: false };
     }
 
     case FiltersActionType.OMIT_SEARCH_POLYGON: {
-      return { ...state, shouldOmitSearchPolygon: false };
+      return { ...state, shouldOmitSearchPolygon: true };
     }
 
     default: {
