@@ -16,6 +16,22 @@ export const valid = new Style({
   })
 });
 
+export const omitted = new Style({
+  fill: new Fill({
+    color: 'rgba(255, 255, 255, 0.2)'
+  }),
+  stroke: new Stroke({
+    color: '#aaaaaa',
+    width: 4
+  }),
+  image: new CircleStyle({
+    radius: 7,
+    fill: new Fill({
+      color: '#ffcc33'
+    })
+  })
+});
+
 export const invalid = new Style({
   fill: new Fill({
     color: 'rgba(255, 255, 255, 0.2)'

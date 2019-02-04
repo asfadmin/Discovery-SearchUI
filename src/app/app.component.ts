@@ -168,7 +168,7 @@ export class AppComponent implements OnInit {
           return;
         }
 
-        this.mapService.setValidPolygon();
+        this.mapService.setGoodPolygon();
 
         const repairs = resp.repairs
           .filter(repair =>

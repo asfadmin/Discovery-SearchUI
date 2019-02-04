@@ -36,6 +36,8 @@ export class MapService {
   private modify: Modify;
   private snap: Snap;
 
+  private style = polygonStyle.valid;
+
   public zoom$ = new Subject<number>();
   public center$ = new Subject<models.LonLat>();
   public searchPolygon$ = new Subject<string | null>();
@@ -56,18 +58,32 @@ export class MapService {
     this.map.addLayer(this.polygonLayer);
   }
 
-  public setPolygonError() {
+  public setPolygonError(): void {
     this.drawLayer.setStyle(polygonStyle.invalid);
   }
 
-  public setValidPolygon() {
-    this.drawLayer.setStyle(polygonStyle.valid);
+  public setGoodPolygon(): void {
+    if (this.style === polygonStyle.omitted) {
+      return;
+    }
+
+    this.drawLayer.setStyle(this.style);
+  }
+
+  public setValidPolygon(): void {
+    this.style = polygonStyle.valid;
+    this.drawLayer.setStyle(this.style);
+  }
+
+  public setOmittedPolygon(): void {
+    this.style = polygonStyle.omitted;
+    this.drawLayer.setStyle(this.style);
   }
 
   public setDrawFeature(feature): void {
     this.drawSource.clear();
     this.drawSource.addFeature(feature);
-    this.drawLayer.setStyle(polygonStyle.valid);
+    this.drawLayer.setStyle(this.style);
 
     this.searchPolygon$.next(
       this.wktService.featureToWkt(feature, this.epsg())
@@ -96,7 +112,7 @@ export class MapService {
 
   public clearDrawLayer(): void {
     this.drawSource.clear();
-    this.drawLayer.setStyle(polygonStyle.valid);
+    this.drawLayer.setStyle(this.style);
     this.searchPolygon$.next(null);
   }
 
