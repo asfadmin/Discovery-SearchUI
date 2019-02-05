@@ -72,7 +72,7 @@ export class MapComponent implements OnInit {
 
       switchMap(_ =>
         this.granulePolygonsLayer(this.mapService.epsg())
-      ),
+      )
     ).subscribe(
       layer => this.mapService.setLayer(layer)
     );
