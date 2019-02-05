@@ -46,7 +46,6 @@ export function granulesReducer(state = initState, action: GranulesActions): Gra
         total[product.groupId] = [...granule, product.file];
         return total;
       }, {});
-      console.log(granules);
 
       return {
         ...state,
@@ -98,13 +97,29 @@ export const getGranulesState = createFeatureSelector<GranulesState>('granules')
 export const getGranules = createSelector(
   getGranulesState,
   (state: GranulesState) => {
+    const data = Object.values(state.granules)
+      .map(group => {
+        return state.products[group[0]];
+      });
 
-    const data = Object.values(state.granules).map(group => {
-      return state.products[group[0]];
-    });
-    console.log(data);
     return data;
   });
+
+export const getSelectedGranuleProducts = createSelector(
+  getGranulesState,
+  (state: GranulesState) => {
+    const selected = state.products[state.selected];
+
+    const products = state.granules[selected.groupId] || [];
+
+    return products
+      .map(id => state.products[id])
+      .sort(function(a, b) {
+        return a.bytes - b.bytes;
+      }).reverse()
+    ;
+  }
+);
 
 export const getLoading = createSelector(
   getGranulesState,

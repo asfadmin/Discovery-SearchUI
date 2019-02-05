@@ -104,7 +104,6 @@ export class AppComponent implements OnInit {
             relativeOrbit: pathRange,
             frame,
           };
-          console.log(params);
 
           return Object.entries(params)
             .filter(([param, val]) => !!val)

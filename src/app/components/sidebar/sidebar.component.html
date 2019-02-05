@@ -13,59 +13,48 @@
     {{ error$ | async }}
   </div>
 
-
-  <app-filter-selector
-    [selectedFilter]="selectedFilter$ | async"
-    (newFilterSelected)="onNewFilterSelected($event)">
-  </app-filter-selector>
-
   <app-search-bar
     (newSearch)="onNewSearch()"
     (clearSearches)="onClearSearch()"
     [isLoading]="loading$ | async">
   </app-search-bar>
 
-  <ng-container *ngIf="selectedFilter$ | async as selected">
-    <app-platform-selector
-      *ngIf="selected === filterType.PLATFORM"
-      [platforms]="platforms$ | async"
-      [selected]="selectedPlatformNames$ | async"
-      (removeSelected)="onPlatformRemoved($event)"
-      (addSelected)="onPlatformAdded($event)">
-    </app-platform-selector>
+  <app-platform-selector
+    [platforms]="platforms$ | async"
+    [selected]="selectedPlatformNames$ | async"
+    (removeSelected)="onPlatformRemoved($event)"
+    (addSelected)="onPlatformAdded($event)">
+  </app-platform-selector>
 
-    <app-date-selector
-      *ngIf="selected === filterType.DATE"
-      [startDate]="startDate$ | async"
-      [endDate]="endDate$ | async"
-      [extrema]="dateRangeExtrema$ | async"
-      (newStart)="onNewStartDate($event)"
-      (newEnd)="onNewEndDate($event)">
-    </app-date-selector>
+  <app-date-selector
+    [startDate]="startDate$ | async"
+    [endDate]="endDate$ | async"
+    [extrema]="dateRangeExtrema$ | async"
+    (newStart)="onNewStartDate($event)"
+    (newEnd)="onNewEndDate($event)">
+  </app-date-selector>
 
-    <app-path-selector
-      *ngIf="selected === filterType.PATH"
-      (newPathStart)="onNewPathStart($event)"
-      (newPathEnd)="onNewPathEnd($event)"
-      (newFrameStart)="onNewFrameStart($event)"
-      (newFrameEnd)="onNewFrameEnd($event)"
-      (newOmitSearchPolygon)="onNewOmitGeoRegion($event)"
-      [pathRange]="pathRange$ | async"
-      [shouldOmitSearchPolygon]="shouldOmitSearchPolygon$ | async"
-      [frameRange]="frameRange$ | async"
-      [selected]="selectedPlatforms$ | async">
-    </app-path-selector>
+  <app-path-selector
+    (newPathStart)="onNewPathStart($event)"
+    (newPathEnd)="onNewPathEnd($event)"
+    (newFrameStart)="onNewFrameStart($event)"
+    (newFrameEnd)="onNewFrameEnd($event)"
+    (newOmitSearchPolygon)="onNewOmitGeoRegion($event)"
+    [pathRange]="pathRange$ | async"
+    [shouldOmitSearchPolygon]="shouldOmitSearchPolygon$ | async"
+    [frameRange]="frameRange$ | async"
+    [selected]="selectedPlatforms$ | async">
+  </app-path-selector>
 
-    <app-other-selector
-      *ngIf="selected === filterType.OTHER"
-      [selected]="selectedPlatforms$ | async">
-    </app-other-selector>
-  </ng-container>
+  <app-other-selector
+    [selected]="selectedPlatforms$ | async">
+  </app-other-selector>
 
   <ng-container *ngIf="selectedGranule$ | async as selected">
     <app-product-detail
         *ngIf="!!selected"
-        [product]="selected">
+        [granule]="selected"
+        [products]="selectedProducts$ | async">
     </app-product-detail>
   </ng-container>
 
