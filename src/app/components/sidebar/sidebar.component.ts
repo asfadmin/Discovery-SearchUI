@@ -125,6 +125,11 @@ export class SidebarComponent {
   public onNewFrameEnd(frame: number): void {
     this.store$.dispatch(new filtersStore.SetFrameEnd(frame));
   }
+
+  public onNewGranuleList(granuleList: string[]): void {
+    this.store$.dispatch(new granulesStore.SetGranuleSearchList(granuleList));
+  }
+
   public onNewOmitGeoRegion(shouldOmitGeoRegion: boolean): void {
     const action = shouldOmitGeoRegion ?
       new filtersStore.OmitSearchPolygon() :

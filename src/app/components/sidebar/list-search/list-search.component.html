@@ -1,0 +1,21 @@
+<mat-card class="card-spacing">
+  Enter a list of granule names.
+  <br>
+  For example:
+  <ul>
+    <li> ALPSRP253527180 </li>
+    <li> E2_15295_STD_F469 </li>
+  </ul>
+
+  Note: this option will supersede other search parameters.
+  <br>
+
+  <h4>Granule List Search</h4>
+
+  <mat-form-field style="width: 90%">
+    <textarea matInput
+      (change)="onTextInputChange($event.target.value)"
+      placeholder="Granule List">
+    </textarea>
+  </mat-form-field>
+</mat-card>

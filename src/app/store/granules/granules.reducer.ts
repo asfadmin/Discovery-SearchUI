@@ -14,6 +14,8 @@ export interface GranulesState {
 
   selected: string | null;
 
+  searchList: string[];
+
   loading: boolean;
   error: string | undefined;
 }
@@ -24,6 +26,8 @@ const initState: GranulesState = {
   products: {},
 
   selected: null,
+
+  searchList: [],
 
   loading: false,
   error: undefined,
@@ -80,6 +84,14 @@ export function granulesReducer(state = initState, action: GranulesActions): Gra
         error: action.payload
       };
     }
+
+    case GranulesActionType.SET_GRANULE_SEARCH_LIST: {
+      return {
+        ...state,
+        searchList: action.payload
+      };
+    }
+
 
     case GranulesActionType.CLEAR: {
       return initState;

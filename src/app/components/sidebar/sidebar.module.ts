@@ -19,6 +19,7 @@ import { FilterSelectorModule } from './search/filter-selector';
 import { DateSelectorModule } from './search/date-selector';
 import { PathSelectorModule } from './search/path-selector';
 import { OtherSelectorModule } from './search/other-selector';
+import { ListSearchModule } from './list-search';
 
 import { ProductsListModule } from './products/products-list';
 import { ProductDetailComponent } from './products/product-detail/product-detail.component';
@@ -37,6 +38,7 @@ import { ProductDetailComponent } from './products/product-detail/product-detail
     SearchBarModule,
     ToggleButtonModule,
     ProductsListModule,
+    ListSearchModule,
 
     FilterSelectorModule,
     PlatformSelectorModule,

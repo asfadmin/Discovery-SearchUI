@@ -22,7 +22,8 @@
   <mat-tab-group color="primary" backgroundColor="primary">
 
     <mat-tab label="Granule">
-
+      <app-list-search
+        (newGranuleList)="onNewGranuleList($event)"></app-list-search>
     </mat-tab>
 
     <mat-tab label="Filters">

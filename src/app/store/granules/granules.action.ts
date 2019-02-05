@@ -10,6 +10,8 @@ export enum GranulesActionType {
   CLEAR = '[Granuels] Clear Granules',
 
   SET_SELECTED = '[Granules] Set Selected Granule',
+
+  SET_GRANULE_SEARCH_LIST = '[Granules] Set Granule Search List',
 }
 
 export class QueryApi implements Action {
@@ -40,9 +42,16 @@ export class SetSelectedGranule implements Action {
   constructor(public payload: string) {}
 }
 
+export class SetGranuleSearchList implements Action {
+  public readonly type = GranulesActionType.SET_GRANULE_SEARCH_LIST;
+
+  constructor(public payload: string[]) {}
+}
+
 export type GranulesActions =
   | QueryApi
   | QueryError
   | SetGranules
   | ClearGranules
-  | SetSelectedGranule;
+  | SetSelectedGranule
+  | SetGranuleSearchList;
