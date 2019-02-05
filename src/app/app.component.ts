@@ -199,7 +199,7 @@ export class AppComponent implements OnInit {
 
 const setGranules =
   (resp: any) => new granulesStore.SetGranules(
-    resp[0]
+    (resp[0] || [])
       .map(
       (g: any): models.Sentinel1Product => ({
         name: g.granuleName,
