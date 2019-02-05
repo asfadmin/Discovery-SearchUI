@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 
 import { TruncateModule } from '@yellowspot/ng-truncate';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { MatTabsModule } from '@angular/material';
 
 import { MatSharedModule } from '@shared';
 import { PipesModule } from '@pipes';
@@ -28,6 +29,7 @@ import { ProductDetailComponent } from './products/product-detail/product-detail
 
     TruncateModule,
     FontAwesomeModule,
+    MatTabsModule,
 
     MatSharedModule,
     PipesModule,

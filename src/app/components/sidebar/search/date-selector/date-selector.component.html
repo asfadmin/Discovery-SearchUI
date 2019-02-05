@@ -1,4 +1,6 @@
 <mat-card class="card-spacing">
+    <h4>Acquisition Date</h4>
+
   <mat-form-field>
     <input matInput [(ngModel)]="startDate" [min]="extrema.start.min" [max]="extrema.start.max" [matDatepicker]="start" placeholder="Start Date"
       (dateInput)="onStartDateChange($event)"

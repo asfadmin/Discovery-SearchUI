@@ -19,53 +19,67 @@
     [isLoading]="loading$ | async">
   </app-search-bar>
 
-  <app-platform-selector
-    [platforms]="platforms$ | async"
-    [selected]="selectedPlatformNames$ | async"
-    (removeSelected)="onPlatformRemoved($event)"
-    (addSelected)="onPlatformAdded($event)">
-  </app-platform-selector>
+  <mat-tab-group color="primary" backgroundColor="primary">
 
-  <app-date-selector
-    [startDate]="startDate$ | async"
-    [endDate]="endDate$ | async"
-    [extrema]="dateRangeExtrema$ | async"
-    (newStart)="onNewStartDate($event)"
-    (newEnd)="onNewEndDate($event)">
-  </app-date-selector>
+    <mat-tab label="Granule">
 
-  <app-path-selector
-    (newPathStart)="onNewPathStart($event)"
-    (newPathEnd)="onNewPathEnd($event)"
-    (newFrameStart)="onNewFrameStart($event)"
-    (newFrameEnd)="onNewFrameEnd($event)"
-    (newOmitSearchPolygon)="onNewOmitGeoRegion($event)"
-    [pathRange]="pathRange$ | async"
-    [shouldOmitSearchPolygon]="shouldOmitSearchPolygon$ | async"
-    [frameRange]="frameRange$ | async"
-    [selected]="selectedPlatforms$ | async">
-  </app-path-selector>
+    </mat-tab>
 
-  <app-other-selector
-    [selected]="selectedPlatforms$ | async">
-  </app-other-selector>
+    <mat-tab label="Filters">
+      <app-platform-selector
+        [platforms]="platforms$ | async"
+        [selected]="selectedPlatformNames$ | async"
+        (removeSelected)="onPlatformRemoved($event)"
+        (addSelected)="onPlatformAdded($event)">
+      </app-platform-selector>
 
-  <ng-container *ngIf="selectedGranule$ | async as selected">
-    <app-product-detail
-        *ngIf="!!selected"
-        [granule]="selected"
-        [products]="selectedProducts$ | async">
-    </app-product-detail>
-  </ng-container>
+      <app-date-selector
+        [startDate]="startDate$ | async"
+        [endDate]="endDate$ | async"
+        [extrema]="dateRangeExtrema$ | async"
+        (newStart)="onNewStartDate($event)"
+        (newEnd)="onNewEndDate($event)">
+      </app-date-selector>
 
-  <ng-container *ngIf="granules$ | async as granules">
-    <app-products-list
-      *ngIf="granules.length > 0"
-      [products]="granules"
-      [selected]="(selectedGranule$ | async)?.name"
-      (newSelected)="onNewProductSelected($event)">
-    </app-products-list>
-  </ng-container>
+      <app-path-selector
+        (newPathStart)="onNewPathStart($event)"
+        (newPathEnd)="onNewPathEnd($event)"
+        (newFrameStart)="onNewFrameStart($event)"
+        (newFrameEnd)="onNewFrameEnd($event)"
+        (newOmitSearchPolygon)="onNewOmitGeoRegion($event)"
+        [pathRange]="pathRange$ | async"
+        [shouldOmitSearchPolygon]="shouldOmitSearchPolygon$ | async"
+        [frameRange]="frameRange$ | async"
+        [selected]="selectedPlatforms$ | async">
+      </app-path-selector>
 
-</div></div>
+      <app-other-selector
+        [selected]="selectedPlatforms$ | async">
+      </app-other-selector>
+    </mat-tab>
+
+    <ng-container *ngIf="granules$ | async as granules">
+      <mat-tab
+        *ngIf="granules.length > 0"
+        label="Results">
+        <ng-container *ngIf="selectedGranule$ | async as selected">
+          <app-product-detail
+              *ngIf="!!selected"
+              [granule]="selected"
+              [products]="selectedProducts$ | async">
+          </app-product-detail>
+        </ng-container>
+
+          <app-products-list
+            *ngIf="granules.length > 0"
+            [products]="granules"
+            [selected]="(selectedGranule$ | async)?.name"
+            (newSelected)="onNewProductSelected($event)">
+          </app-products-list>
+      </mat-tab>
+    </ng-container>
+
+  </mat-tab-group>
+  </div></div>
+
 </div>
