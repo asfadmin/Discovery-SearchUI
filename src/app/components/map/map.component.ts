@@ -4,7 +4,7 @@ import {
 } from '@angular/core';
 
 import { Observable, combineLatest } from 'rxjs';
-import { map, filter, switchMap, tap, withLatestFrom } from 'rxjs/operators';
+import { map, filter, switchMap, tap, withLatestFrom, distinctUntilChanged } from 'rxjs/operators';
 
 import { Vector as VectorLayer} from 'ol/layer';
 import { Vector as VectorSource } from 'ol/source';
@@ -106,6 +106,7 @@ export class MapComponent implements OnInit {
 
   private granulePolygonsLayer(projection: string): Observable<VectorSource> {
     return this.granules$.pipe(
+      distinctUntilChanged(),
       map(granules => granules
         .map(g => g.metadata.polygon)
         .map(wkt =>
