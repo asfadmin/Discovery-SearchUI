@@ -9,7 +9,8 @@ import { map, withLatestFrom, tap } from 'rxjs/operators';
 import { AppState } from '../app.reducer';
 import * as filtersAction from './filters.action';
 import * as filtersReducer from './filters.reducer';
-import { MapService } from '@services';
+
+import { MapService } from '../../services/map/map.service';
 
 @Injectable()
 export class FiltersEffects {

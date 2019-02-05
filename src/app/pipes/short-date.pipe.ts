@@ -7,9 +7,9 @@ export class ShortDatePipe implements PipeTransform {
 
   transform(date: Date): string {
     const [month, day, year] = [
+      date.getUTCFullYear(),
       date.getUTCMonth() + 1,
       date.getUTCDate(),
-      date.getUTCFullYear()
     ];
 
     return `${month}-${day}-${year}`;

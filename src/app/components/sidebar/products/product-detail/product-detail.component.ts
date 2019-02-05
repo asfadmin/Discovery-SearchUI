@@ -1,6 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 
-import { faDownload } from '@fortawesome/free-solid-svg-icons';
+import { faDownload, faPlus } from '@fortawesome/free-solid-svg-icons';
 
 import { Sentinel1Product } from '@models';
 
@@ -11,6 +11,8 @@ import { Sentinel1Product } from '@models';
 })
 export class ProductDetailComponent {
   public downloadIcon = faDownload;
+  public selectIcon = faPlus;
 
-  @Input() product: Sentinel1Product;
+  @Input() granule: Sentinel1Product;
+  @Input() products: Sentinel1Product[];
 }

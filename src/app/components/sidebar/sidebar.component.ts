@@ -6,6 +6,7 @@ import {
 } from '@angular/animations';
 
 import { Observable } from 'rxjs';
+import { map, tap } from 'rxjs/operators';
 
 import { Store } from '@ngrx/store';
 
@@ -57,6 +58,7 @@ export class SidebarComponent {
   public granules$ = this.store$.select(granulesStore.getGranules);
   public selectedGranule$ = this.store$.select(granulesStore.getSelectedGranule);
   public loading$  = this.store$.select(granulesStore.getLoading);
+  public selectedProducts$ = this.store$.select(granulesStore.getSelectedGranuleProducts);
 
   public dateRangeExtrema$ = this.dateExtremaService.getExtrema$(
     this.platforms$,
@@ -123,6 +125,11 @@ export class SidebarComponent {
   public onNewFrameEnd(frame: number): void {
     this.store$.dispatch(new filtersStore.SetFrameEnd(frame));
   }
+
+  public onNewGranuleList(granuleList: string[]): void {
+    this.store$.dispatch(new granulesStore.SetGranuleSearchList(granuleList));
+  }
+
   public onNewOmitGeoRegion(shouldOmitGeoRegion: boolean): void {
     const action = shouldOmitGeoRegion ?
       new filtersStore.OmitSearchPolygon() :

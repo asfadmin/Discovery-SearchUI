@@ -1,53 +1,70 @@
 <mat-card class="card-spacing example-card">
   <mat-card-header>
-    <mat-card-title [title]="product.name">{{ product.name | truncate : 21 }}</mat-card-title>
-    <mat-card-subtitle>{{ product.platform }}</mat-card-subtitle>
+    <mat-card-title [title]="granule.name">{{ granule.name | truncate : 21 }}</mat-card-title>
+    <mat-card-subtitle>{{ granule.platform }}</mat-card-subtitle>
 
   </mat-card-header>
 
   <img mat-card-image
-    [src]="product.browse"
+    [src]="granule.browse"
     onerror="this.src='assets/error.png'"
-    alt="Sentinel1 Product browse image">
+    alt="Sentinel1 granule browse image">
 
   <mat-card-content>
   <mat-list>
+    <h3 mat-subheader>Products</h3>
+
+    <mat-list-item *ngFor="let product of products">
+        <h4 mat-line fxLayout="row" fxLayoutAlign="space-between">
+
+        <b>{{ product.file | truncate : 10 }}{{ product.file | truncate : -4 : '' }}</b>
+        <div>
+          <span style="margin-right: 10px">{{ product.bytes | readableSizeFromBytes }}</span>
+          <fa-icon class="dl-icon" [icon]="selectIcon"></fa-icon>
+          <a matTooltip="Download" target="_blank" [href]="granule.downloadUrl">
+            <fa-icon class="dl-icon" [icon]="downloadIcon"></fa-icon>
+          </a>
+        </div>
+      </h4>
+    </mat-list-item>
+
     <h3 mat-subheader>Details</h3>
     <mat-list-item>
-      <h4 mat-line> <b>Aquisition Date:</b> {{ product.metadata.date | shortDate }}</h4>
+      <h4 mat-line> <b>Aquisition Date:</b> {{ granule.metadata.date | shortDate }}</h4>
     </mat-list-item>
 
     <mat-list-item>
-      <h4 mat-line><b>Beam Mode:</b> {{ product.metadata.beamMode }}</h4>
+      <h4 mat-line><b>Beam Mode:</b> {{ granule.metadata.beamMode }}</h4>
     </mat-list-item>
 
     <mat-list-item>
-      <h4 mat-line><b>Path: </b> {{ product.metadata.path }}</h4>
+      <h4 mat-line><b>Path: </b> {{ granule.metadata.path }}</h4>
     </mat-list-item>
 
     <mat-list-item>
-      <h4 mat-line><b>Frame:</b> {{ product.metadata.frame }}</h4>
+      <h4 mat-line><b>Frame:</b> {{ granule.metadata.frame }}</h4>
     </mat-list-item>
 
     <mat-list-item>
-      <h4 mat-line><b>Flight Direction:</b> {{ product.metadata.flightDirection }}</h4>
+      <h4 mat-line><b>Flight Direction:</b> {{ granule.metadata.flightDirection }}</h4>
     </mat-list-item>
 
     <mat-list-item>
-      <h4 mat-line><b>Polarization: </b> {{ product.metadata.polarization }}</h4>
+      <h4 mat-line><b>Polarization: </b> {{ granule.metadata.polarization }}</h4>
     </mat-list-item>
 
     <mat-list-item>
-      <h4 mat-line><b>Absolute Orbit: </b> {{ product.metadata.absoluteOrbit }}</h4>
+      <h4 mat-line><b>Absolute Orbit: </b> {{ granule.metadata.absoluteOrbit }}</h4>
     </mat-list-item>
 
     <mat-list-item>
-      <h4 mat-line><b>Frequency: </b> {{ product.metadata.frequency }}</h4>
+      <h4 mat-line><b>Frequency: </b> {{ granule.metadata.frequency }}</h4>
     </mat-list-item>
 
     <mat-list-item>
       <h4 mat-line> <a href="http://www.esa.int/ESA"> Data courtesy of ESA</a> </h4>
     </mat-list-item>
+
   </mat-list>
 
   </mat-card-content>
@@ -58,14 +75,14 @@
       matTooltip="Accessing this data requires you to log in. Some datasets also require a proposal, or agreement with a EULA which is presented after log in."
       color="primary"
       target="_blank"
-      [href]="product.downloadUrl">
-      {{ product.bytes | readableSizeFromBytes }}
+      [href]="granule.downloadUrl">
+      {{ granule.bytes | readableSizeFromBytes }}
       <fa-icon class="dl-icon" [icon]="downloadIcon"></fa-icon>
     </a>
 
     <a mat-raised-button color="primary"
       target="_blank"
-      href="https://baseline.asf.alaska.edu/#/baseline?granule={{ product.name }}">
+      href="https://baseline.asf.alaska.edu/#/baseline?granule={{ granule.name }}">
       Baseline
     </a>
 

@@ -1,9 +1,11 @@
 export interface Sentinel1Product {
   name: string;
+  file: string;
   downloadUrl: string;
   bytes: number;
   browse: string;
   platform: string;
+  groupId: string;
   metadata: Sentinel1Metadata;
 }
 

@@ -9,9 +9,12 @@ interface GranuleEntities { [id: string]: Sentinel1Product; }
 
 export interface GranulesState {
   ids: string[];
-  entities: GranuleEntities;
+  products: GranuleEntities;
+  granules: {[id: string]: string[]};
 
   selected: string | null;
+
+  searchList: string[];
 
   loading: boolean;
   error: string | undefined;
@@ -19,9 +22,12 @@ export interface GranulesState {
 
 const initState: GranulesState = {
   ids: [],
-  entities: {},
+  granules: {},
+  products: {},
 
   selected: null,
+
+  searchList: [],
 
   loading: false,
   error: undefined,
@@ -31,19 +37,28 @@ const initState: GranulesState = {
 export function granulesReducer(state = initState, action: GranulesActions): GranulesState {
   switch (action.type) {
     case GranulesActionType.SET_GRANULES: {
-      const totalGranules = action.payload
-        .reduce((total, granule) => {
-          total[granule.name] = granule;
+      const products = action.payload
+        .reduce((total, product) => {
+          total[product.file] = product;
 
           return total;
         }, {});
+
+      const granules = action.payload.reduce((total, product) => {
+        const granule = total[product.groupId] || [];
+
+        total[product.groupId] = [...granule, product.file];
+        return total;
+      }, {});
 
       return {
         ...state,
         loading: false,
 
-        ids: Object.keys(totalGranules),
-        entities: totalGranules
+        ids: Object.keys(products),
+        products,
+        granules
+
       };
     }
 
@@ -70,6 +85,14 @@ export function granulesReducer(state = initState, action: GranulesActions): Gra
       };
     }
 
+    case GranulesActionType.SET_GRANULE_SEARCH_LIST: {
+      return {
+        ...state,
+        searchList: action.payload
+      };
+    }
+
+
     case GranulesActionType.CLEAR: {
       return initState;
     }
@@ -85,7 +108,29 @@ export const getGranulesState = createFeatureSelector<GranulesState>('granules')
 
 export const getGranules = createSelector(
   getGranulesState,
-  (state: GranulesState) => state.ids.map(id => state.entities[id])
+  (state: GranulesState) => {
+    const data = Object.values(state.granules)
+      .map(group => {
+        return state.products[group[0]];
+      });
+
+    return data;
+  });
+
+export const getSelectedGranuleProducts = createSelector(
+  getGranulesState,
+  (state: GranulesState) => {
+    const selected = state.products[state.selected];
+
+    const products = state.granules[selected.groupId] || [];
+
+    return products
+      .map(id => state.products[id])
+      .sort(function(a, b) {
+        return a.bytes - b.bytes;
+      }).reverse()
+    ;
+  }
 );
 
 export const getLoading = createSelector(
@@ -100,5 +145,11 @@ export const getError = createSelector(
 
 export const getSelectedGranule = createSelector(
   getGranulesState,
-  (state: GranulesState) => state.entities[state.selected]
+  (state: GranulesState) => state.products[state.selected]
 );
+
+export const getGranuleSearchList = createSelector(
+  getGranulesState,
+  (state: GranulesState) => state.searchList
+);
+

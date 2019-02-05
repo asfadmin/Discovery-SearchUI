@@ -1,16 +1,5 @@
 <mat-card class="card-spacing">
-  <div class="">
-    <h5>Beam Mode</h5>
-
-    <mat-form-field *ngFor="let platform of selected">
-      <mat-select *ngIf="platform.beamModes !== []" placeholder="{{ platform.name }}" multiple>
-        <mat-option *ngFor="let mode of platform.beamModes" [value]="beamModes">
-          {{mode}}
-        </mat-option>
-      </mat-select>
-    </mat-form-field>
-
-    <h5>Product Type</h5>
+    <h4>Product Type</h4>
 
     <mat-form-field *ngFor="let platform of selected">
       <mat-select *ngIf="platform.types !== []" placeholder="{{ platform.name }}" multiple>
@@ -20,7 +9,17 @@
       </mat-select>
     </mat-form-field>
 
-    <h5>Polarization</h5>
+    <h4>Beam Mode</h4>
+
+    <mat-form-field *ngFor="let platform of selected">
+      <mat-select *ngIf="platform.beamModes !== []" placeholder="{{ platform.name }}" multiple>
+        <mat-option *ngFor="let mode of platform.beamModes" [value]="beamModes">
+          {{mode}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <h4>Polarization</h4>
 
     <mat-form-field>
       <mat-select placeholder="{{ polarizations[0] }}" multiple>
@@ -30,7 +29,7 @@
       </mat-select>
     </mat-form-field>
 
-    <h5>Flight Direction</h5>
+    <h4>Flight Direction</h4>
 
     <mat-form-field>
       <mat-select placeholder="{{ flightDirections[0] }}" multiple>
@@ -39,5 +38,4 @@
         </mat-option>
       </mat-select>
     </mat-form-field>
-  </div>
 </mat-card>
