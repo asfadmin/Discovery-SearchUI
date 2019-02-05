@@ -13,6 +13,8 @@ export class ListSearchComponent {
       .split(/[\s\n,\t]+/)
       .filter(v => v);
 
-    this.newGranuleList.emit(granules);
+    const unique = Array.from(new Set(granules));
+
+    this.newGranuleList.emit(unique);
   }
 }

@@ -48,6 +48,7 @@ export class AppComponent implements OnInit {
     this.validateSearchPolygons();
 
     const searchState$ = combineLatest(
+      this.store$.select(granulesStore.getGranuleSearchList),
       combineLatest(
         this.mapService.searchPolygon$.pipe(startWith(null)),
         this.shouldOmitSearchPolygon$
@@ -95,15 +96,19 @@ export class AppComponent implements OnInit {
       withLatestFrom(searchState$),
       map(([_, searchState]) => searchState),
       map(
-        ([polygon, platforms, [start, end], pathRange, frame]) => {
-          const params = {
-            intersectsWith: polygon,
-            platform: platforms,
-            start,
-            end,
-            relativeOrbit: pathRange,
-            frame,
-          };
+        ([searchList, polygon, platforms, [start, end], pathRange, frame]) => {
+          const params = (searchList.length > 0) ?
+            { granule_list: searchList.join(',') } :
+            {
+              intersectsWith: polygon,
+              platform: platforms,
+              start,
+              end,
+              relativeOrbit: pathRange,
+              frame,
+            };
+
+          console.log(params);
 
           return Object.entries(params)
             .filter(([param, val]) => !!val)
@@ -114,6 +119,7 @@ export class AppComponent implements OnInit {
         }),
       switchMap(
         params => this.asfApiService.query(params).pipe(
+          tap(console.log),
           map(setGranules)
         )
       )
@@ -202,7 +208,8 @@ const setGranules =
         bytes: +g.sizeMB * 1000000,
         platform: g.platform,
         browse: g.browse || 'assets/error.png',
-        groupId: g.groupID,
+        groupId: g.groupID === 'NA' ?
+          g.granuleName : g.groupID,
         metadata: getMetadataFrom(g)
       })
     )

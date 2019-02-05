@@ -147,3 +147,9 @@ export const getSelectedGranule = createSelector(
   getGranulesState,
   (state: GranulesState) => state.products[state.selected]
 );
+
+export const getGranuleSearchList = createSelector(
+  getGranulesState,
+  (state: GranulesState) => state.searchList
+);
+
