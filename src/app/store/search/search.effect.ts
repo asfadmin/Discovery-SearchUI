@@ -35,7 +35,7 @@ export class SearchEffects {
     map(([_, params]) => params),
     switchMap(
       params => this.asfApiService.query(params).pipe(
-        map(makeGranules),
+        map(response => getProductsFromResponse(response)),
         map(granules => new granulesStore.SetGranules(granules))
       )
     )
@@ -146,10 +146,9 @@ export class SearchEffects {
       map(frameRange => ({ frame: frameRange }))
     );
   }
-
 }
 
-const makeGranules =
+const getProductsFromResponse =
   (resp: any) => (
     (resp[0] || [])
     .map(
@@ -184,7 +183,4 @@ const getMetadataFrom = (g: any): models.Sentinel1Metadata => {
   };
 };
 
-const fromCMRDate = (dateString: string): Date => {
-  return new Date(dateString);
-};
-
+const fromCMRDate = (dateString: string): Date => new Date(dateString);
