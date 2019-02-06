@@ -8,7 +8,7 @@ export enum GranulesActionType {
 
   SET_SELECTED = '[Granules] Set Selected Granule',
 
-  SET_GRANULE_SEARCH_LIST = '[Granules] Set Granule Search List',
+  SET_SEARCH_LIST = '[Granules] Set Search List',
 }
 
 export class SetGranules implements Action {
@@ -27,8 +27,8 @@ export class SetSelectedGranule implements Action {
   constructor(public payload: string) {}
 }
 
-export class SetGranuleSearchList implements Action {
-  public readonly type = GranulesActionType.SET_GRANULE_SEARCH_LIST;
+export class SetSearchList implements Action {
+  public readonly type = GranulesActionType.SET_SEARCH_LIST;
 
   constructor(public payload: string[]) {}
 }

@@ -87,7 +87,7 @@ export class SearchEffects {
   }
 
   private listParam$() {
-    return this.store$.select(granulesStore.getGranuleSearchList).pipe(
+    return this.store$.select(granulesStore.getSearchList).pipe(
       withLatestFrom(this.store$.select(filterStore.getListSearchMode).pipe(
         map(mode => mode === models.ListSearchType.GRANULE ? 'granule_list' : 'product_list')
       )),

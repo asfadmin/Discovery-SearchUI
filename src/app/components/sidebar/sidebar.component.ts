@@ -60,7 +60,7 @@ export class SidebarComponent {
   public selectedGranule$ = this.store$.select(granulesStore.getSelectedGranule);
   public loading$ = this.store$.select(searchStore.getIsLoading);
   public selectedProducts$ = this.store$.select(granulesStore.getSelectedGranuleProducts);
-  public searchList$ = this.store$.select(granulesStore.getGranuleSearchList).pipe(
+  public searchList$ = this.store$.select(granulesStore.getSearchList).pipe(
     map(list => list.join('\n'))
   );
 
@@ -130,8 +130,8 @@ export class SidebarComponent {
     this.store$.dispatch(new filtersStore.SetFrameEnd(frame));
   }
 
-  public onNewGranuleList(granuleList: string[]): void {
-    this.store$.dispatch(new granulesStore.SetGranuleSearchList(granuleList));
+  public onNewGranuleList(searchList: string[]): void {
+    this.store$.dispatch(new granulesStore.SetSearchList(searchList));
   }
 
   public onNewOmitGeoRegion(shouldOmitGeoRegion: boolean): void {
