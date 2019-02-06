@@ -50,12 +50,12 @@ export class SearchEffects {
 
   private searchParams$() {
     return combineLatest(
-      this.granuleListParam$(),
+      this.listParam$(),
       this.filterSearchParams$()
     ).pipe(
       map(
         ([listParam, filterParams]) =>
-        listParam.granule_list.length > 0 ?
+        Object.values(listParam)[0].length > 0 ?
           listParam :
           filterParams
       ),
@@ -86,9 +86,13 @@ export class SearchEffects {
     );
   }
 
-  private granuleListParam$() {
+  private listParam$() {
     return this.store$.select(granulesStore.getGranuleSearchList).pipe(
-      map(granuleList => ({ granule_list: granuleList.join(',') }))
+      withLatestFrom(this.store$.select(filterStore.getListSearchMode).pipe(
+        map(mode => mode === models.ListSearchType.GRANULE ? 'granule_list' : 'product_list')
+      )),
+      tap(v => console.log(v)),
+      map(([searchList, param]) => ({ [param]: searchList.join(',') }))
     );
   }
 

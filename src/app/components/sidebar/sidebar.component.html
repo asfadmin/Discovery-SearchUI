@@ -23,7 +23,10 @@
 
     <mat-tab label="Granule">
       <app-list-search
-        (newGranuleList)="onNewGranuleList($event)"></app-list-search>
+        (newListSearchMode)="onNewListSearchMode($event)"
+        (newListSearch)="onNewGranuleList($event)"
+        [mode]="listSearchMode$ | async"
+        ></app-list-search>
     </mat-tab>
 
     <mat-tab label="Filters">

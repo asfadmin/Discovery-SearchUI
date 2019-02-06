@@ -239,3 +239,8 @@ export const getShouldOmitSearchPolygon = createSelector(
   getFiltersState,
   (state: FiltersState) => state.shouldOmitSearchPolygon
 );
+
+export const getListSearchMode = createSelector(
+  getFiltersState,
+  (state: FiltersState) => state.listSearchMode
+);

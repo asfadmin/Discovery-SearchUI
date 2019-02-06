@@ -1,6 +1,8 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { MatFormFieldModule, MatInputModule } from '@angular/material';
+import {
+  MatFormFieldModule, MatInputModule, MatButtonToggleModule
+} from '@angular/material';
 
 import { MatSharedModule } from '@shared';
 
@@ -14,6 +16,7 @@ import { ListSearchComponent } from './list-search.component';
     CommonModule,
     MatFormFieldModule,
     MatInputModule,
+    MatButtonToggleModule,
     MatSharedModule
   ],
   exports: [
