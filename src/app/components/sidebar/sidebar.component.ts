@@ -15,6 +15,7 @@ import { AppState } from '@store';
 import * as filtersStore from '@store/filters';
 import * as uiStore from '@store/ui';
 import * as granulesStore from '@store/granules';
+import * as searchStore from '@store/search';
 
 import { FilterType } from '@models';
 
@@ -54,10 +55,9 @@ export class SidebarComponent {
   public isSidebarOpen$ = this.store$.select(uiStore.getIsSidebarOpen);
   public selectedFilter$ = this.store$.select(uiStore.getSelectedFilter);
 
-  public error$ = this.store$.select(granulesStore.getError);
   public granules$ = this.store$.select(granulesStore.getGranules);
   public selectedGranule$ = this.store$.select(granulesStore.getSelectedGranule);
-  public loading$  = this.store$.select(granulesStore.getLoading);
+  public loading$ = this.store$.select(searchStore.getIsLoading);
   public selectedProducts$ = this.store$.select(granulesStore.getSelectedGranuleProducts);
 
   public dateRangeExtrema$ = this.dateExtremaService.getExtrema$(

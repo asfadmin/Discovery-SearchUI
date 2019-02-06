@@ -12,6 +12,7 @@ import * as granulesStore from '@store/granules';
 import * as mapStore from '@store/map';
 import * as uiStore from '@store/ui';
 import * as filterStore from '@store/filters';
+import { SearchResponse } from './search.action';
 
 import * as services from '@services';
 import * as models from '@models';
@@ -38,7 +39,13 @@ export class SearchEffects {
         map(response => getProductsFromResponse(response)),
       )
     ),
-    map(granules => new granulesStore.SetGranules(granules))
+    map(granules => new SearchResponse(granules))
+  );
+
+  @Effect()
+  private searchResponse: Observable<Action> = this.actions$.pipe(
+    ofType<SearchResponse>(SearchActionType.SEARCH_RESPONSE),
+    map(action => new granulesStore.SetGranules(action.payload))
   );
 
   private searchParams$() {
