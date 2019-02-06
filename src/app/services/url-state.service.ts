@@ -157,12 +157,12 @@ export class UrlStateService {
       ),
       loader: this.loadFrameRange
     }, {
-      name: 'searchList',
-      source: this.store$.select(granulesStore.getGranuleSearchList).pipe(
+      name: 'listSearchType',
+      source: this.store$.select(filterStore.getListSearchMode).pipe(
         skip(1),
-        map(list => ({ searchList: list.join(',') }))
+        map(mode => ({ listSearchType: mode }))
       ),
-      loader: this.loadSearchList
+      loader: this.loadListSearchType
     }];
   }
 
@@ -202,6 +202,13 @@ export class UrlStateService {
         map(polygon => ({ polygon }))
       ),
       loader: this.loadSearchPolygon
+    }, {
+      name: 'searchList',
+      source: this.store$.select(granulesStore.getGranuleSearchList).pipe(
+        skip(1),
+        map(list => ({ searchList: list.join(',') }))
+      ),
+      loader: this.loadSearchList
     }];
   }
 
@@ -316,6 +323,14 @@ export class UrlStateService {
     const list = listStr.split(',');
 
     this.store$.dispatch(new granulesStore.SetGranuleSearchList(list));
+  }
+
+  private loadListSearchType = (mode: string): void => {
+    if (Object.values(models.ListSearchType).includes(mode)) {
+      const action = new filterStore.SetListSearchType(<models.ListSearchType>mode);
+
+      this.store$.dispatch(action);
+    }
   }
 
   private isNumber = n => !isNaN(n) && isFinite(n);
