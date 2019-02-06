@@ -37,4 +37,4 @@ export type GranulesActions =
   | SetGranules
   | ClearGranules
   | SetSelectedGranule
-  | SetGranuleSearchList;
+  | SetSearchList;
