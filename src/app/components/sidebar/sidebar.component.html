@@ -26,6 +26,7 @@
         (newListSearchMode)="onNewListSearchMode($event)"
         (newListSearch)="onNewGranuleList($event)"
         [mode]="listSearchMode$ | async"
+        [searchList]="searchList$ | async"
         ></app-list-search>
     </mat-tab>
 

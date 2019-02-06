@@ -7,7 +7,8 @@ import { ListSearchType } from '@models';
   styleUrls: ['./list-search.component.css']
 })
 export class ListSearchComponent {
-  @Input() mode = ListSearchType;
+  @Input() mode: ListSearchType;
+  @Input() searchList: string[];
 
   @Output() newListSearchMode = new EventEmitter<ListSearchType>();
   @Output() newListSearch = new EventEmitter<string[]>();

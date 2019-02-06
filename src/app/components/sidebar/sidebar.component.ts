@@ -60,6 +60,9 @@ export class SidebarComponent {
   public selectedGranule$ = this.store$.select(granulesStore.getSelectedGranule);
   public loading$ = this.store$.select(searchStore.getIsLoading);
   public selectedProducts$ = this.store$.select(granulesStore.getSelectedGranuleProducts);
+  public searchList$ = this.store$.select(granulesStore.getGranuleSearchList).pipe(
+    map(list => list.join('\n'))
+  );
 
   public dateRangeExtrema$ = this.dateExtremaService.getExtrema$(
     this.platforms$,

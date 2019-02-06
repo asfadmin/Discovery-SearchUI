@@ -45,6 +45,7 @@
   <mat-form-field style="width: 90%">
     <textarea matInput
       (change)="onTextInputChange($event.target.value)"
+      [(ngModel)]="searchList"
       placeholder="{{ mode === types.GRANULE ? 'Granule' : 'Product' }} List">
     </textarea>
   </mat-form-field>

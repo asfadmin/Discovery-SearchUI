@@ -156,6 +156,13 @@ export class UrlStateService {
         map(frame => ({ frame }))
       ),
       loader: this.loadFrameRange
+    }, {
+      name: 'searchList',
+      source: this.store$.select(granulesStore.getGranuleSearchList).pipe(
+        skip(1),
+        map(list => ({ searchList: list.join(',') }))
+      ),
+      loader: this.loadSearchList
     }];
   }
 
@@ -303,6 +310,12 @@ export class UrlStateService {
 
     this.store$.dispatch(new filterStore.SetFrameStart(range[0] || null));
     this.store$.dispatch(new filterStore.SetFrameEnd(range[1] || null));
+  }
+
+  private loadSearchList = (listStr: string): void => {
+    const list = listStr.split(',');
+
+    this.store$.dispatch(new granulesStore.SetGranuleSearchList(list));
   }
 
   private isNumber = n => !isNaN(n) && isFinite(n);
