@@ -11,18 +11,18 @@ import { PolygonValidateResponse } from '@models';
 })
 export class AsfApiService {
   public readonly apiUrl = 'https://api.daac.asf.alaska.edu/services/search/param';
+  public readonly testUrl = 'https://api-test.asf.alaska.edu/services/search/param';
 
   constructor(private http: HttpClient) {}
 
   public query(stateParams: HttpParams): Observable<any[]> {
-
     const params = Object.entries(this.baseParams())
     .reduce(
       (queryParams, [key, val]) => queryParams.append(key, `${val}`),
       stateParams
     );
 
-    return this.http.get<any[]>(this.apiUrl, { params });
+    return this.http.get<any[]>(this.testUrl, { params });
   }
 
   public validate(wkt: string): Observable<any> {
@@ -41,7 +41,7 @@ export class AsfApiService {
   private baseParams() {
     return {
       maxResults: 100,
-      output: 'json'
+      output: 'jsonlite'
     };
   }
 }
