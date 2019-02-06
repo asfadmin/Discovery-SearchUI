@@ -2,19 +2,17 @@ import { Component, OnInit } from '@angular/core';
 import { HttpParams } from '@angular/common/http';
 import { MatSnackBar } from '@angular/material';
 
-import { Store, Action } from '@ngrx/store';
+import { Store } from '@ngrx/store';
 
-import { combineLatest, Subscription, Subject, of } from 'rxjs';
 import {
-  filter, map, switchMap, withLatestFrom,
-  startWith, tap, catchError
+  filter, map, switchMap, tap, catchError
 } from 'rxjs/operators';
 
 import { AppState } from './store';
 import * as granulesStore from '@store/granules';
 import * as mapStore from '@store/map';
-import * as uiStore from '@store/ui';
 import * as filterStore from '@store/filters';
+import * as searchStore from '@store/search';
 
 import * as services from '@services';
 import * as models from './models';
@@ -33,8 +31,6 @@ export class AppComponent implements OnInit {
   public shouldOmitSearchPolygon$ = this.store$.select(filterStore.getShouldOmitSearchPolygon);
   public interactionTypes = models.MapInteractionModeType;
 
-  private doSearch = new Subject<void>();
-
   constructor(
     private store$: Store<AppState>,
     private snackBar: MatSnackBar,
@@ -46,93 +42,6 @@ export class AppComponent implements OnInit {
 
   public ngOnInit(): void {
     this.validateSearchPolygons();
-
-    const searchState$ = combineLatest(
-
-      this.store$.select(granulesStore.getGranuleSearchList).pipe(
-        map(granuleList => ({ granule_list: granuleList.join(',') }))
-      ),
-
-      combineLatest(
-        combineLatest(
-          this.mapService.searchPolygon$.pipe(startWith(null)),
-          this.shouldOmitSearchPolygon$
-        ).pipe(
-          map(([polygon, shouldOmitGeoRegion]) => shouldOmitGeoRegion ? null : polygon),
-          map(polygon => ({ intersectsWith: polygon }))
-        ),
-        this.store$.select(filterStore.getSelectedPlatforms).pipe(
-          map(platforms => platforms
-            .map(platform => platform.name)
-            .join(',')
-            .replace('ALOS PALSAR', 'ALOS')
-          ),
-          map(platforms => ({ platform: platforms }))
-        ),
-        this.store$.select(filterStore.getDateRange).pipe(
-          map(range => {
-            return [range.start, range.end]
-              .filter(date => !!date)
-              .map(date => date.toISOString());
-          }),
-          map(([start, end]) => ({ start, end }))
-        ),
-        this.store$.select(filterStore.getPathRange).pipe(
-          map(range => Object.values(range)
-            .filter(v => !!v)
-          ),
-          map(range => Array.from(new Set(range))),
-          map(range => range.length === 2 ?
-            range.join('-') :
-            range.pop() || null
-          ),
-          map(pathRange => ({ relativeOrbit: pathRange }))
-        ),
-        this.store$.select(filterStore.getFrameRange).pipe(
-          map(range => Object.values(range)
-            .filter(v => !!v)
-          ),
-          map(range => Array.from(new Set(range))),
-          map(range => range.length === 2 ?
-            range.join('-') :
-            range.pop() || null
-          ),
-          map(frameRange => ({ frame: frameRange }))
-        )
-      ).pipe(
-        map(params => params
-          .filter(param => !!Object.values(param)[0])
-          .reduce(
-            (total, param) =>  ({...total, ...param}),
-            {})
-        )
-      )
-    );
-
-
-    this.doSearch.pipe(
-      withLatestFrom(searchState$),
-      map(([_, searchState]) => searchState),
-      map(
-        ([listParam, filterParams]) => {
-          const params = (listParam.granule_list.length > 0) ?
-            listParam :
-            filterParams;
-
-          return Object.entries(params)
-            .filter(([param, val]) => !!val)
-            .reduce(
-              (queryParams, [param, val]) => queryParams.append(param, <string>val),
-              new HttpParams()
-            );
-        }),
-      switchMap(
-        params => this.asfApiService.query(params).pipe(
-          tap(console.log),
-          map(setGranules)
-        )
-      )
-    ).subscribe(action => this.store$.dispatch(action));
   }
 
   public onLoadUrlState(): void {
@@ -140,7 +49,7 @@ export class AppComponent implements OnInit {
   }
 
   public onNewSearch(): void {
-    this.doSearch.next();
+    this.store$.dispatch(new searchStore.MakeSearch());
   }
 
   public onClearSearch(): void {
@@ -204,44 +113,3 @@ export class AppComponent implements OnInit {
     ).subscribe(_ => _);
   }
 }
-
-
-const setGranules =
-  (resp: any) => new granulesStore.SetGranules(
-    (resp[0] || [])
-    .map(
-      (g: any): models.Sentinel1Product => ({
-        name: g.granuleName,
-        file: g.fileName,
-        downloadUrl: g.downloadUrl,
-        bytes: +g.sizeMB * 1000000,
-        platform: g.platform,
-        browse: g.browse || 'assets/error.png',
-        groupId: g.groupID === 'NA' ?
-        g.granuleName : g.groupID,
-        metadata: getMetadataFrom(g)
-      })
-    )
-  );
-
-const getMetadataFrom = (g: any): models.Sentinel1Metadata => {
-  return {
-    date:  fromCMRDate(g.processingDate),
-    polygon: g.stringFootprint,
-
-    productType: <models.Sentinel1ProductType>g.processingLevel,
-    beamMode: <models.Sentinel1BeamMode>g.beamMode,
-    polarization: <models.Sentinel1Polarization>g.polarization,
-    flightDirection: <models.FlightDirection>g.flightDirection,
-    frequency: g.frequency,
-
-    path: +g.relativeOrbit,
-    frame:  +g.frameNumber,
-    absoluteOrbit: +g.absoluteOrbit
-  };
-};
-
-const fromCMRDate = (dateString: string): Date => {
-  return new Date(dateString);
-};
-
