@@ -12,6 +12,8 @@ export interface FiltersState {
   pathRange: models.Range<number | null>;
   frameRange: models.Range<number | null>;
   shouldOmitSearchPolygon: boolean;
+
+  listSearchMode: models.ListSearchType;
 }
 
 export type DateRangeState = models.Range<null | Date>;
@@ -45,7 +47,8 @@ const initState: FiltersState = {
     start: null,
     end: null
   },
-  shouldOmitSearchPolygon: false
+  shouldOmitSearchPolygon: false,
+  listSearchMode: models.ListSearchType.GRANULE,
 };
 
 
@@ -166,6 +169,13 @@ export function filtersReducer(state = initState, action: FiltersActions): Filte
 
     case FiltersActionType.OMIT_SEARCH_POLYGON: {
       return { ...state, shouldOmitSearchPolygon: true };
+    }
+
+    case FiltersActionType.SET_LIST_SEARCH_TYPE: {
+      return {
+        ...state,
+        listSearchMode: action.payload
+      };
     }
 
     default: {
