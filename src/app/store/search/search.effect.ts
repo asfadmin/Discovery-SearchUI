@@ -125,21 +125,23 @@ export class SearchEffects {
   }
 
   private pathRange$() {
-    return this.store$.select(filterStore.getPathRange).pipe(
-      map(range => Object.values(range)
-        .filter(v => !!v)
-      ),
-      map(range => Array.from(new Set(range))),
-      map(range => range.length === 2 ?
-        range.join('-') :
-        range.pop() || null
-      ),
+    return this.rangeToApiFormat$(
+        this.store$.select(filterStore.getPathRange)
+    ).pipe(
       map(pathRange => ({ relativeOrbit: pathRange }))
     );
   }
 
   private frameRange$() {
-    return this.store$.select(filterStore.getFrameRange).pipe(
+    return this.rangeToApiFormat$(
+      this.store$.select(filterStore.getFrameRange)
+    ).pipe(
+      map(frameRange => ({ frame: frameRange }))
+    );
+  }
+
+  private rangeToApiFormat$(source: Observable<models.Range<number | null>>) {
+    return source.pipe(
       map(range => Object.values(range)
         .filter(v => !!v)
       ),
@@ -147,8 +149,7 @@ export class SearchEffects {
       map(range => range.length === 2 ?
         range.join('-') :
         range.pop() || null
-      ),
-      map(frameRange => ({ frame: frameRange }))
+      )
     );
   }
 }
