@@ -57,20 +57,6 @@ export class MapService {
 
     this.polygonLayer = layer;
     this.map.addLayer(this.polygonLayer);
-
-    const source = layer
-      .getSource();
-
-    if (source.getFeatures().length === 0) {
-      this.setMapView(this.viewType);
-      return;
-    }
-
-    const extent = source.getExtent();
-
-    this.map
-      .getView()
-      .fit(extent, this.map.getSize());
   }
 
   public setPolygonError(): void {

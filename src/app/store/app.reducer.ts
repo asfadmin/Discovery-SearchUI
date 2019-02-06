@@ -8,6 +8,7 @@ import { GranulesState, granulesReducer } from './granules';
 import { MapState, mapReducer } from './map';
 import { FiltersState, filtersReducer } from './filters';
 import { UIState, uiReducer } from './ui';
+import { SearchState, searchReducer } from './search';
 
 export * from './map';
 export * from './granules';
@@ -20,6 +21,7 @@ export interface AppState {
   map: MapState;
   filters: FiltersState;
   ui: UIState;
+  search: SearchState;
 }
 
 export const reducers: ActionReducerMap<AppState> = {
@@ -27,6 +29,7 @@ export const reducers: ActionReducerMap<AppState> = {
   map: mapReducer,
   filters: filtersReducer,
   ui: uiReducer,
+  search: searchReducer,
 };
 
 export const metaReducers: MetaReducer<AppState>[] =

@@ -1,5 +1,7 @@
 import { FiltersEffects } from './filters';
+import { SearchEffects } from './search';
 
 export const appEffects = [
-  FiltersEffects
+  FiltersEffects,
+  SearchEffects,
 ];

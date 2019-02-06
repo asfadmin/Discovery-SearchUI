@@ -27,7 +27,7 @@ export const omitted = new Style({
   image: new CircleStyle({
     radius: 7,
     fill: new Fill({
-      color: '#ffcc33'
+      color: '#aaaaaa',
     })
   })
 });
@@ -43,7 +43,7 @@ export const invalid = new Style({
   image: new CircleStyle({
     radius: 7,
     fill: new Fill({
-      color: '#f44336'
+      color: '#f44336',
     })
   })
 });

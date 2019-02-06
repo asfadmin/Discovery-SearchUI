@@ -15,9 +15,6 @@ export interface GranulesState {
   selected: string | null;
 
   searchList: string[];
-
-  loading: boolean;
-  error: string | undefined;
 }
 
 const initState: GranulesState = {
@@ -28,9 +25,6 @@ const initState: GranulesState = {
   selected: null,
 
   searchList: [],
-
-  loading: false,
-  error: undefined,
 };
 
 
@@ -53,7 +47,6 @@ export function granulesReducer(state = initState, action: GranulesActions): Gra
 
       return {
         ...state,
-        loading: false,
 
         ids: Object.keys(products),
         products,
@@ -66,22 +59,6 @@ export function granulesReducer(state = initState, action: GranulesActions): Gra
       return {
         ...state,
         selected: action.payload
-      };
-    }
-
-    case GranulesActionType.QUERY: {
-      return {
-        ...state,
-        loading: true,
-        error: undefined,
-      };
-    }
-
-    case GranulesActionType.QUERY_ERROR: {
-      return {
-        ...state,
-        loading: false,
-        error: action.payload
       };
     }
 
@@ -131,16 +108,6 @@ export const getSelectedGranuleProducts = createSelector(
       }).reverse()
     ;
   }
-);
-
-export const getLoading = createSelector(
-  getGranulesState,
-  (state: GranulesState) => state.loading
-);
-
-export const getError = createSelector(
-  getGranulesState,
-  (state: GranulesState) => state.error
 );
 
 export const getSelectedGranule = createSelector(
