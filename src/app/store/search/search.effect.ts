@@ -36,9 +36,9 @@ export class SearchEffects {
     switchMap(
       params => this.asfApiService.query(params).pipe(
         map(response => getProductsFromResponse(response)),
-        map(granules => new granulesStore.SetGranules(granules))
       )
-    )
+    ),
+    map(granules => new granulesStore.SetGranules(granules))
   );
 
   private searchParams$() {
@@ -96,7 +96,6 @@ export class SearchEffects {
   }
 
   private selectedPlatforms$() {
-
     return this.store$.select(filterStore.getSelectedPlatforms).pipe(
       map(platforms => platforms
         .map(platform => platform.name)
@@ -108,7 +107,6 @@ export class SearchEffects {
   }
 
   private dateRange$() {
-
     return this.store$.select(filterStore.getDateRange).pipe(
       map(range => {
         return [range.start, range.end]
@@ -160,8 +158,8 @@ const getProductsFromResponse =
         platform: g.platform,
         browse: g.browse || 'assets/error.png',
         groupId: g.groupID === 'NA' ?
-        g.granuleName : g.groupID,
-        metadata: getMetadataFrom(g)
+          g.granuleName : g.groupID,
+          metadata: getMetadataFrom(g)
       })
     )
   );
