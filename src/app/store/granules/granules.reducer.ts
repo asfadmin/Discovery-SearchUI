@@ -51,7 +51,6 @@ export function granulesReducer(state = initState, action: GranulesActions): Gra
         ids: Object.keys(products),
         products,
         granules
-
       };
     }
 

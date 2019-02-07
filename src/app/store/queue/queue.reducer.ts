@@ -5,27 +5,52 @@ import { Sentinel1Product } from '@models';
 
 
 export interface QueueState {
-  entities: {[id: string]: Sentinel1Product };
+  products: {[id: string]: Sentinel1Product };
   ids: string[];
 }
 
 const initState: QueueState = {
-  entities: {},
+  products: {},
   ids: [],
 };
 
 export function queueReducer(state = initState, action: QueueActions): QueueState {
   switch (action.type) {
     case QueueActionType.ADD_ITEM: {
-      return { ...state };
+      const newProduct = action.payload;
+
+      const products = {
+          ...state.products,
+          [newProduct.file]:  newProduct
+        };
+
+      const ids = Array.from(
+        new Set([...state.ids, newProduct.file])
+      );
+
+      return {
+        ...state,
+        products, ids
+      };
     }
 
     case QueueActionType.REMOVE_ITEM: {
-      return { ...state };
+      const toRemove = action.payload;
+
+      const products = { ...state.products };
+      delete products[toRemove.file];
+
+      const ids = [ ...state.ids ]
+        .filter(id => id !== toRemove.file);
+
+      return {
+        ...state,
+        products, ids
+      };
     }
 
     case QueueActionType.CLEARN_QUEUE: {
-      return { ...state };
+      return initState;
     }
 
     default: {
@@ -36,7 +61,10 @@ export function queueReducer(state = initState, action: QueueActions): QueueStat
 
 export const getQueueState = createFeatureSelector<QueueState>('queue');
 
-export const getFullState = createSelector(
+export const getQueuedProducts = createSelector(
   getQueueState,
-  (state: QueueState) => state
+  (state: QueueState) => state.ids.reduce(
+    (total, id) => [...total, state.products[id]]
+    , []
+  )
 );
