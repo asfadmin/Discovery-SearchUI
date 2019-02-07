@@ -1,7 +1,7 @@
-import { Component, ViewChild, OnInit, Renderer2, ElementRef, OnDestroy } from '@angular/core';
+import { Component, ViewChild, OnInit } from '@angular/core';
 
 import { MatDialogRef } from '@angular/material';
-import { forkJoin, Subscription } from 'rxjs';
+import { Subscription } from 'rxjs';
 
 import { AsfApiService } from '@services';
 
@@ -10,7 +10,7 @@ import { AsfApiService } from '@services';
   templateUrl: 'file-upload-dialog.component.html',
   styleUrls: ['./file-upload-dialog.component.css']
 })
-export class FileUploadDialogComponent implements OnInit, OnDestroy {
+export class FileUploadDialogComponent {
   @ViewChild('file') file;
 
   public dropEvent: any;
@@ -23,32 +23,26 @@ export class FileUploadDialogComponent implements OnInit, OnDestroy {
   public uploadSuccessful = false;
 
   constructor(
-    private elementRef: ElementRef,
-    private renderer: Renderer2,
     private dialogRef: MatDialogRef<FileUploadDialogComponent>,
     private asfApiService: AsfApiService,
   ) {}
 
-  public ngOnInit() {
-    this.dropEvent = this.renderer.listen(this.elementRef.nativeElement, 'drop', (ev) => {
-      if (ev.dataTransfer.items) {
-        // Use DataTransferItemList interface to access the file(s)
-        for (let i = 0; i < ev.dataTransfer.items.length; i++) {
-          // If dropped items aren't files, reject them
-          if (ev.dataTransfer.items[i].kind === 'file') {
-            const file = ev.dataTransfer.items[i].getAsFile();
-            this.files.add(file);
-          }
-        }
-      } else {
-        for (let i = 0; i < ev.dataTransfer.files.length; i++) {
-          const file = ev.dataTransfer.files[i];
+  onFileDrop(ev) {
+    if (ev.dataTransfer.items) {
+      for (let i = 0; i < ev.dataTransfer.items.length; i++) {
+        if (ev.dataTransfer.items[i].kind === 'file') {
+          const file = ev.dataTransfer.items[i].getAsFile();
           this.files.add(file);
         }
       }
+    } else {
+      for (let i = 0; i < ev.dataTransfer.files.length; i++) {
+        const file = ev.dataTransfer.files[i];
+        this.files.add(file);
+      }
+    }
 
-      ev.preventDefault();
-    });
+    ev.preventDefault();
   }
 
   onNoClick(): void {
@@ -70,21 +64,8 @@ export class FileUploadDialogComponent implements OnInit, OnDestroy {
     }
   }
 
-  public drop(ev) {
-    console.log('from dialog', ev);
-    ev.preventDefault();
-    if (ev.dataTransfer.items) {
-      for (let i = 0; i < ev.dataTransfer.items.length; i++) {
-        if (ev.dataTransfer.items[i].kind === 'file') {
-          const file = ev.dataTransfer.items[i].getAsFile();
-          console.log(file);
-        }
-      }
-    } else {
-      for (let i = 0; i < ev.dataTransfer.files.length; i++) {
-        console.log('... file[' + i + '].name = ' + ev.dataTransfer.files[i].name);
-      }
-    }
+  onRemoveFile(file) {
+    this.files.delete(file);
   }
 
   onUpload() {
@@ -105,9 +86,5 @@ export class FileUploadDialogComponent implements OnInit, OnDestroy {
     this.dialogRef.disableClose = true;
 
     this.showCancelButton = false;
-  }
-
-  public ngOnDestroy(): void {
-    this.dropEvent();
   }
 }
