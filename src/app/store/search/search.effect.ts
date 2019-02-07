@@ -44,8 +44,8 @@ export class SearchEffects {
   @Effect()
   private searchResponse: Observable<Action> = this.actions$.pipe(
     ofType<SearchResponse>(SearchActionType.SEARCH_RESPONSE),
-    map(response => this.productService.fromResponse(response)),
-    map(action => new granulesStore.SetGranules(action.payload))
+    map(action => this.productService.fromResponse(action.payload)),
+    map(granule => new granulesStore.SetGranules(granule))
   );
 
   private searchParams$() {
