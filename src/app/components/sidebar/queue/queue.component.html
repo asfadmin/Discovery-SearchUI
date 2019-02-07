@@ -6,11 +6,13 @@
     <mat-list-item
       *ngFor="let product of products"
       role="listitem">
-        {{product.name}}
+        <h4 mat-line fxLayout="row" fxLayoutAlign="space-between">
+          <div>{{ product.file | truncate : 10 }}{{ product.file | truncate : -4 : '' }}</div>
 
-        <mat-icon (click)="onRemoveProduct(product)" style="cursor: pointer">
-            close
-        </mat-icon>
+          <mat-icon (click)="onRemoveProduct(product)" style="cursor: pointer">
+              close
+          </mat-icon>
+        </h4>
     </mat-list-item>
   </mat-list>
 </mat-card>

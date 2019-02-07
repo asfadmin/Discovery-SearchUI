@@ -14,7 +14,7 @@ export class QueueComponent {
   @Output() itemRemoved = new EventEmitter<Sentinel1Product>();
   @Output() clear = new EventEmitter<void>();
 
-  public onItemRemoved(product: Sentinel1Product): void {
+  public onRemoveProduct(product: Sentinel1Product): void {
     this.itemRemoved.emit(product);
   }
 

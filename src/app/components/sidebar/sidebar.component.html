@@ -15,14 +15,6 @@
   </app-search-bar>
 
   <mat-tab-group color="primary" backgroundColor="primary">
-    <mat-tab label="Queue">
-      <app-queue
-        (itemRemoved)="onRemoveItem($event)"
-        (clear)="onClearQueue()"
-        [products]="queueProducts$ | async"
-        ></app-queue>
-    </mat-tab>
-
     <mat-tab label="List Search">
       <app-list-search
         (newListSearchMode)="onNewListSearchMode($event)"
@@ -72,6 +64,7 @@
         <ng-container *ngIf="selectedGranule$ | async as selected">
           <app-product-detail
               *ngIf="!!selected"
+              (newQueueItem)="onNewQueueItem($event)"
               [granule]="selected"
               [products]="selectedProducts$ | async">
           </app-product-detail>
@@ -86,6 +79,13 @@
       </mat-tab>
     </ng-container>
 
+    <mat-tab label="Queue">
+      <app-queue
+        (itemRemoved)="onRemoveItem($event)"
+        (clear)="onClearQueue()"
+        [products]="queueProducts$ | async"
+        ></app-queue>
+    </mat-tab>
   </mat-tab-group>
   </div></div>
 

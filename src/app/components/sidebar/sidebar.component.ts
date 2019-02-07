@@ -156,5 +156,9 @@ export class SidebarComponent {
   public onRemoveItem(product: models.Sentinel1Product): void {
     this.store$.dispatch(new queueStore.RemoveItem(product));
   }
+
+  public onNewQueueItem(product: models.Sentinel1Product): void {
+    this.store$.dispatch(new queueStore.AddItem(product));
+  }
 }
 
