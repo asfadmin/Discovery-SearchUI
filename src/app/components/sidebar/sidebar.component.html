@@ -8,11 +8,6 @@
 </app-toggle-button>
 
 <div class="filter-list "><div>
-  <div
-    *ngIf="error$ | async" class="m-2 alert alert-danger" role="alert">
-    {{ error$ | async }}
-  </div>
-
   <app-search-bar
     (newSearch)="onNewSearch()"
     (clearSearches)="onClearSearch()"

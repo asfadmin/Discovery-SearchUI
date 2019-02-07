@@ -7,36 +7,36 @@ import * as models from '@models';
 })
 export class ProductService {
   public fromResponse = (resp: any) => (
-    (resp[0] || [])
+    (resp.results || [])
     .map(
       (g: any): models.Sentinel1Product => ({
         name: g.granuleName,
         file: g.fileName,
         downloadUrl: g.downloadUrl,
-        bytes: +g.sizeMB * 1000000,
+        bytes: g.sizeMB * 1000000,
         platform: g.platform,
         browse: g.browse || 'assets/error.png',
-        groupId: g.groupID === 'NA' ?
-        g.granuleName : g.groupID,
+        groupId: g.groupID,
         metadata: this.getMetadataFrom(g)
       })
     )
   )
 
-  private getMetadataFrom = (g: any): models.Sentinel1Metadata => ({
-    date:  this.fromCMRDate(g.processingDate),
-    polygon: g.stringFootprint,
+  private getMetadataFrom =
+    (g: any): models.Sentinel1Metadata => ({
+      date:  this.fromCMRDate(g.startTime),
+      polygon: g.wkt,
 
-    productType: <models.Sentinel1ProductType>g.processingLevel,
-    beamMode: <models.Sentinel1BeamMode>g.beamMode,
-    polarization: <models.Sentinel1Polarization>g.polarization,
-    flightDirection: <models.FlightDirection>g.flightDirection,
-    frequency: g.frequency,
+      productType: <models.Sentinel1ProductType>g.productType,
+      beamMode: <models.Sentinel1BeamMode>g.beamMode,
+      polarization: <models.Sentinel1Polarization>g.polarization,
+      flightDirection: <models.FlightDirection>g.flightDirection,
+      frequency: g.frequency || 'NA',
 
-    path: +g.relativeOrbit,
-    frame:  +g.frameNumber,
-    absoluteOrbit: +g.absoluteOrbit
-  })
+      path: +g.path,
+      frame:  +g.frame,
+      absoluteOrbit: +g.orbit
+    })
 
   private fromCMRDate =
     (dateString: string): Date => new Date(dateString)

@@ -99,6 +99,10 @@ export const getSelectedGranuleProducts = createSelector(
   (state: GranulesState) => {
     const selected = state.products[state.selected];
 
+    if (!selected) {
+      return;
+    }
+
     const products = state.granules[selected.groupId] || [];
 
     return products
