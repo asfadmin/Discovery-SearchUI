@@ -27,7 +27,6 @@ export class AsfApiService {
   }
 
   public upload(files): Observable<any> {
-
     const formData: FormData = new FormData();
     files.forEach(file => {
       formData.append('files', file, file.name);

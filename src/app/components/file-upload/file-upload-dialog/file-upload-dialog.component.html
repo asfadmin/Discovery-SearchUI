@@ -12,7 +12,7 @@
     <mat-list>
       <mat-list-item *ngFor="let file of files">
         <h4 mat-line>{{file.name}}</h4>
-        <mat-progress-bar *ngIf="progress" mode="determinate" [value]="100"></mat-progress-bar>
+        <mat-progress-bar *ngIf="request" mode="determinate" [value]="100"></mat-progress-bar>
       </mat-list-item>
     </mat-list>
   </mat-dialog-content>

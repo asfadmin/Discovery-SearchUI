@@ -14,7 +14,7 @@ export class FileUploadDialogComponent {
   @ViewChild('file') file;
 
   public files: Set<File> = new Set();
-  public progress: Subscription;
+  public request: Subscription;
   public canBeClosed = true;
   public primaryButtonText = 'Upload';
   public showCancelButton = true;
@@ -48,7 +48,7 @@ export class FileUploadDialogComponent {
   onUpload() {
     this.uploading = true;
 
-    this.progress = this.asfApiService.upload(this.files).subscribe(resp => {
+    this.request = this.asfApiService.upload(this.files).subscribe(resp => {
       this.canBeClosed = true;
       this.dialogRef.disableClose = false;
 
