@@ -26,6 +26,7 @@ export class SearchEffects {
     private store$: Store<AppState>,
     private asfApiService: services.AsfApiService,
     private mapService: services.MapService,
+    private productService: services.ProductService,
   ) {}
 
   @Effect()
@@ -35,27 +36,26 @@ export class SearchEffects {
     withLatestFrom(this.searchParams$()),
     map(([_, params]) => params),
     switchMap(
-      params => this.asfApiService.query(params).pipe(
-        map(response => getProductsFromResponse(response)),
-      )
+      params => this.asfApiService.query(params)
     ),
-    map(granules => new SearchResponse(granules))
+    map(response => new SearchResponse(response))
   );
 
   @Effect()
   private searchResponse: Observable<Action> = this.actions$.pipe(
     ofType<SearchResponse>(SearchActionType.SEARCH_RESPONSE),
+    map(response => this.productService.fromResponse(response)),
     map(action => new granulesStore.SetGranules(action.payload))
   );
 
   private searchParams$() {
     return combineLatest(
-      this.granuleListParam$(),
+      this.listParam$(),
       this.filterSearchParams$()
     ).pipe(
       map(
         ([listParam, filterParams]) =>
-        listParam.granule_list.length > 0 ?
+        Object.values(listParam)[0].length > 0 ?
           listParam :
           filterParams
       ),
@@ -86,9 +86,13 @@ export class SearchEffects {
     );
   }
 
-  private granuleListParam$() {
-    return this.store$.select(granulesStore.getGranuleSearchList).pipe(
-      map(granuleList => ({ granule_list: granuleList.join(',') }))
+  private listParam$() {
+    return this.store$.select(granulesStore.getSearchList).pipe(
+      withLatestFrom(this.store$.select(filterStore.getListSearchMode).pipe(
+        map(mode => mode === models.ListSearchType.GRANULE ? 'granule_list' : 'product_list')
+      )),
+      tap(v => console.log(v)),
+      map(([searchList, param]) => ({ [param]: searchList.join(',') }))
     );
   }
 
@@ -153,40 +157,3 @@ export class SearchEffects {
     );
   }
 }
-
-const getProductsFromResponse =
-  (resp: any) => (
-    (resp[0] || [])
-    .map(
-      (g: any): models.Sentinel1Product => ({
-        name: g.granuleName,
-        file: g.fileName,
-        downloadUrl: g.downloadUrl,
-        bytes: +g.sizeMB * 1000000,
-        platform: g.platform,
-        browse: g.browse || 'assets/error.png',
-        groupId: g.groupID === 'NA' ?
-          g.granuleName : g.groupID,
-          metadata: getMetadataFrom(g)
-      })
-    )
-  );
-
-const getMetadataFrom = (g: any): models.Sentinel1Metadata => {
-  return {
-    date:  fromCMRDate(g.processingDate),
-    polygon: g.stringFootprint,
-
-    productType: <models.Sentinel1ProductType>g.processingLevel,
-    beamMode: <models.Sentinel1BeamMode>g.beamMode,
-    polarization: <models.Sentinel1Polarization>g.polarization,
-    flightDirection: <models.FlightDirection>g.flightDirection,
-    frequency: g.frequency,
-
-    path: +g.relativeOrbit,
-    frame:  +g.frameNumber,
-    absoluteOrbit: +g.absoluteOrbit
-  };
-};
-
-const fromCMRDate = (dateString: string): Date => new Date(dateString);

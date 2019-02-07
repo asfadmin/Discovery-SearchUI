@@ -70,10 +70,6 @@ export class AppComponent implements OnInit {
     this.store$.dispatch(new mapStore.SetMapInteractionMode(mode));
   }
 
-  public onFileUploadDialogClosed(): void {
-    this.onNewMapInteractionMode(models.MapInteractionModeType.EDIT);
-  }
-
   private validateSearchPolygons(): void {
     this.mapService.searchPolygon$.pipe(
       filter(p => !!p),

@@ -1,4 +1,5 @@
-import { Component, Output, EventEmitter } from '@angular/core';
+import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { ListSearchType } from '@models';
 
 @Component({
   selector: 'app-list-search',
@@ -6,7 +7,21 @@ import { Component, Output, EventEmitter } from '@angular/core';
   styleUrls: ['./list-search.component.css']
 })
 export class ListSearchComponent {
-  @Output() newGranuleList = new EventEmitter<string[]>();
+  @Input() mode: ListSearchType;
+  @Input() searchList: string[];
+
+  @Output() newListSearchMode = new EventEmitter<ListSearchType>();
+  @Output() newListSearch = new EventEmitter<string[]>();
+
+  public types = ListSearchType;
+
+  public onGranuleModeSelected(): void {
+    this.newListSearchMode.emit(ListSearchType.GRANULE);
+  }
+
+  public onProductModeSelected(): void {
+    this.newListSearchMode.emit(ListSearchType.PRODUCT);
+  }
 
   public onTextInputChange(text: string): void {
     const granules = text
@@ -15,6 +30,6 @@ export class ListSearchComponent {
 
     const unique = Array.from(new Set(granules));
 
-    this.newGranuleList.emit(unique);
+    this.newListSearch.emit(unique);
   }
 }

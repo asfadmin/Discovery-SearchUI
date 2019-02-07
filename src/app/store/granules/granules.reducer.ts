@@ -62,7 +62,7 @@ export function granulesReducer(state = initState, action: GranulesActions): Gra
       };
     }
 
-    case GranulesActionType.SET_GRANULE_SEARCH_LIST: {
+    case GranulesActionType.SET_SEARCH_LIST: {
       return {
         ...state,
         searchList: action.payload
@@ -99,6 +99,10 @@ export const getSelectedGranuleProducts = createSelector(
   (state: GranulesState) => {
     const selected = state.products[state.selected];
 
+    if (!selected) {
+      return;
+    }
+
     const products = state.granules[selected.groupId] || [];
 
     return products
@@ -115,7 +119,7 @@ export const getSelectedGranule = createSelector(
   (state: GranulesState) => state.products[state.selected]
 );
 
-export const getGranuleSearchList = createSelector(
+export const getSearchList = createSelector(
   getGranulesState,
   (state: GranulesState) => state.searchList
 );

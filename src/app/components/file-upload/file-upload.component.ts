@@ -18,7 +18,9 @@ export class FileUploadComponent implements OnInit {
   name: string;
 
   @Input() interaction$: Observable<MapInteractionModeType>;
+
   @Output() dialogClose = new EventEmitter<void>();
+  @Output() newSearchPolygon = new EventEmitter<string>();
 
   constructor(public dialog: MatDialog) {}
 
@@ -34,7 +36,12 @@ export class FileUploadComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe(
-      result => this.dialogClose.emit()
+      wkt => {
+        if (wkt) {
+          this.newSearchPolygon.emit(wkt);
+        }
+        this.dialogClose.emit();
+      }
     );
   }
 }

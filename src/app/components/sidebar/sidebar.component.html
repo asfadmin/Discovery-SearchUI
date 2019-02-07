@@ -8,11 +8,6 @@
 </app-toggle-button>
 
 <div class="filter-list "><div>
-  <div
-    *ngIf="error$ | async" class="m-2 alert alert-danger" role="alert">
-    {{ error$ | async }}
-  </div>
-
   <app-search-bar
     (newSearch)="onNewSearch()"
     (clearSearches)="onClearSearch()"
@@ -21,9 +16,13 @@
 
   <mat-tab-group color="primary" backgroundColor="primary">
 
-    <mat-tab label="Granule">
+    <mat-tab label="List Search">
       <app-list-search
-        (newGranuleList)="onNewGranuleList($event)"></app-list-search>
+        (newListSearchMode)="onNewListSearchMode($event)"
+        (newListSearch)="onNewGranuleList($event)"
+        [mode]="listSearchMode$ | async"
+        [searchList]="searchList$ | async"
+        ></app-list-search>
     </mat-tab>
 
     <mat-tab label="Filters">

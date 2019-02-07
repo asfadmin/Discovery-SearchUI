@@ -1,8 +1,8 @@
-<input type="file" #file style="display: none" (change)="true" multiple />
+<input type="file" #file style="display: none" (change)="onFilesAdded()" multiple />
 <div class="container" fxLayout="column" fxLayoutAlign="space-evenly stretch">
-  <h1 mat-dialog-title>Upload Shapefile</h1>
+  <h1 mat-dialog-title>Upload Files</h1>
   <div>
-    <button mat-raised-button color="primary" class="add-files-btn" (click)="true">
+    <button [disabled]="uploading || uploadSuccessful" mat-raised-button color="primary" class="add-files-btn" (click)="addFiles()">
       Add Files
     </button>
   </div>
@@ -10,25 +10,16 @@
   <!-- This is the content of the dialog, containing a list of the files to upload -->
   <mat-dialog-content fxFlex>
     <mat-list>
-      <mat-list-item>
-        <h4 mat-line>test-file.shp</h4>
-        <mat-progress-bar *ngIf="true" mode="determinate" value="40"></mat-progress-bar>
+      <mat-list-item *ngFor="let file of files">
+        <h4 mat-line>{{file.name}}</h4>
+        <mat-progress-bar *ngIf="request" mode="determinate" [value]="100"></mat-progress-bar>
       </mat-list-item>
-      <mat-list-item>
-        <h4 mat-line>test-file.dbf</h4>
-        <mat-progress-bar *ngIf="true" mode="determinate" value="70"></mat-progress-bar>
-      </mat-list-item>
-      <mat-list-item>
-        <h4 mat-line>test-file.shp</h4>
-        <mat-progress-bar *ngIf="true" mode="determinate" value="30"></mat-progress-bar>
-      </mat-list-item>
-
     </mat-list>
   </mat-dialog-content>
 
   <!-- This are the actions of the dialog, containing the primary and the cancel button-->
   <mat-dialog-actions class="actions">
-    <button *ngIf="true" mat-button mat-dialog-close>Cancel</button>
-    <button mat-raised-button color="primary" disabled="!false" (click)="true">Upload</button>
+    <button *ngIf="showCancelButton" mat-button mat-dialog-close>Cancel</button>
+    <button mat-raised-button color="primary" [disabled]="!canBeClosed" (click)="onUpload()">{{primaryButtonText}}</button>
   </mat-dialog-actions>
 </div>

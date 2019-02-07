@@ -1,5 +1,11 @@
 <div id="map" class="map"></div>
 
+<app-file-upload
+  (dialogClose)="onFileUploadDialogClosed()"
+  (newSearchPolygon)="onNewSearchPolygon($event)"
+  [interaction$]="interactionMode$">
+</app-file-upload>
+
 <app-view-selector
   (newProjection)="onNewProjection($event)"
   [view]="view$ | async">

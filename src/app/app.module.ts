@@ -14,7 +14,6 @@ import * as store from './store';
 import { SidebarModule } from '@components/sidebar';
 import { SpreadsheetModule } from '@components/spreadsheet';
 import { MapModule } from '@components/map';
-import { FileUploadModule } from '@components/file-upload';
 
 import * as services from '@services';
 
@@ -43,13 +42,13 @@ export const routes = [
     SidebarModule,
     SpreadsheetModule,
     MapModule,
-    FileUploadModule,
   ],
   providers: [
     services.AsfApiService,
     services.UrlStateService,
     services.MapService,
     services.WktService,
+    services.ProductService,
   ],
   bootstrap: [ AppComponent ]
 })
