@@ -26,6 +26,7 @@ export class SearchEffects {
     private store$: Store<AppState>,
     private asfApiService: services.AsfApiService,
     private mapService: services.MapService,
+    private productService: services.ProductService,
   ) {}
 
   @Effect()
@@ -35,16 +36,15 @@ export class SearchEffects {
     withLatestFrom(this.searchParams$()),
     map(([_, params]) => params),
     switchMap(
-      params => this.asfApiService.query(params).pipe(
-        map(response => getProductsFromResponse(response)),
-      )
+      params => this.asfApiService.query(params)
     ),
-    map(granules => new SearchResponse(granules))
+    map(response => new SearchResponse(response))
   );
 
   @Effect()
   private searchResponse: Observable<Action> = this.actions$.pipe(
     ofType<SearchResponse>(SearchActionType.SEARCH_RESPONSE),
+    map(response => this.productService.fromResponse(response)),
     map(action => new granulesStore.SetGranules(action.payload))
   );
 
@@ -153,40 +153,3 @@ export class SearchEffects {
     );
   }
 }
-
-const getProductsFromResponse =
-  (resp: any) => (
-    (resp[0] || [])
-    .map(
-      (g: any): models.Sentinel1Product => ({
-        name: g.granuleName,
-        file: g.fileName,
-        downloadUrl: g.downloadUrl,
-        bytes: +g.sizeMB * 1000000,
-        platform: g.platform,
-        browse: g.browse || 'assets/error.png',
-        groupId: g.groupID === 'NA' ?
-          g.granuleName : g.groupID,
-          metadata: getMetadataFrom(g)
-      })
-    )
-  );
-
-const getMetadataFrom = (g: any): models.Sentinel1Metadata => {
-  return {
-    date:  fromCMRDate(g.processingDate),
-    polygon: g.stringFootprint,
-
-    productType: <models.Sentinel1ProductType>g.processingLevel,
-    beamMode: <models.Sentinel1BeamMode>g.beamMode,
-    polarization: <models.Sentinel1Polarization>g.polarization,
-    flightDirection: <models.FlightDirection>g.flightDirection,
-    frequency: g.frequency,
-
-    path: +g.relativeOrbit,
-    frame:  +g.frameNumber,
-    absoluteOrbit: +g.absoluteOrbit
-  };
-};
-
-const fromCMRDate = (dateString: string): Date => new Date(dateString);

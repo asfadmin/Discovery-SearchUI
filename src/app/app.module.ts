@@ -48,6 +48,7 @@ export const routes = [
     services.UrlStateService,
     services.MapService,
     services.WktService,
+    services.ProductService,
   ],
   bootstrap: [ AppComponent ]
 })
