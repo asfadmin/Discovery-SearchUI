@@ -1,5 +1,7 @@
 import { Action } from '@ngrx/store';
 
+import { ListSearchType } from '@models';
+
 export enum FiltersActionType {
   ADD_SELECTED_PLATFORM = '[Filters-Platform] Add Platform Filter',
   REMOVE_SELECTED_PLATFORM = '[Filters-Platform] Remove Platform Filter',
@@ -18,6 +20,8 @@ export enum FiltersActionType {
   USE_SEARCH_POLYGON = '[Filters-Search] Use Search Polygon',
 
   CLEAR_FILTERS = '[Filters-Clear] Clear Filters',
+
+  SET_LIST_SEARCH_TYPE = '[Filtesr-List] Set List Search Type',
 }
 
 export class AddSelectedPlatform implements Action {
@@ -86,9 +90,16 @@ export class SetFrameEnd implements Action {
   constructor(public payload: number) {}
 }
 
+export class SetListSearchType implements Action {
+  public readonly type = FiltersActionType.SET_LIST_SEARCH_TYPE;
+
+  constructor(public payload: ListSearchType) {}
+}
+
 export class ClearFilters implements Action {
   public readonly type = FiltersActionType.CLEAR_FILTERS;
 }
+
 
 export type FiltersActions =
   | AddSelectedPlatform
@@ -103,4 +114,5 @@ export type FiltersActions =
   | SetPathEnd
   | SetFrameStart
   | SetFrameEnd
+  | SetListSearchType
   | ClearFilters;

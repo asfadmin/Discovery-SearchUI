@@ -17,7 +17,7 @@ import * as uiStore from '@store/ui';
 import * as granulesStore from '@store/granules';
 import * as searchStore from '@store/search';
 
-import { FilterType } from '@models';
+import * as models from '@models';
 
 
 @Component({
@@ -51,6 +51,7 @@ export class SidebarComponent {
   public pathRange$ = this.store$.select(filtersStore.getPathRange);
   public frameRange$ = this.store$.select(filtersStore.getFrameRange);
   public shouldOmitSearchPolygon$ = this.store$.select(filtersStore.getShouldOmitSearchPolygon);
+  public listSearchMode$ = this.store$.select(filtersStore.getListSearchMode);
 
   public isSidebarOpen$ = this.store$.select(uiStore.getIsSidebarOpen);
   public selectedFilter$ = this.store$.select(uiStore.getSelectedFilter);
@@ -59,6 +60,9 @@ export class SidebarComponent {
   public selectedGranule$ = this.store$.select(granulesStore.getSelectedGranule);
   public loading$ = this.store$.select(searchStore.getIsLoading);
   public selectedProducts$ = this.store$.select(granulesStore.getSelectedGranuleProducts);
+  public searchList$ = this.store$.select(granulesStore.getSearchList).pipe(
+    map(list => list.join('\n'))
+  );
 
   public dateRangeExtrema$ = this.dateExtremaService.getExtrema$(
     this.platforms$,
@@ -67,7 +71,7 @@ export class SidebarComponent {
     this.endDate$,
   );
 
-  public filterType = FilterType;
+  public filterType = models.FilterType;
 
   constructor(
     private dateExtremaService: DateExtremaService,
@@ -82,7 +86,7 @@ export class SidebarComponent {
     this.store$.dispatch(new filtersStore.AddSelectedPlatform(platformName));
   }
 
-  public onNewFilterSelected(filter: FilterType): void {
+  public onNewFilterSelected(filter: models.FilterType): void {
     this.store$.dispatch(new uiStore.SetSelectedFilter(filter));
   }
 
@@ -126,8 +130,8 @@ export class SidebarComponent {
     this.store$.dispatch(new filtersStore.SetFrameEnd(frame));
   }
 
-  public onNewGranuleList(granuleList: string[]): void {
-    this.store$.dispatch(new granulesStore.SetGranuleSearchList(granuleList));
+  public onNewGranuleList(searchList: string[]): void {
+    this.store$.dispatch(new granulesStore.SetSearchList(searchList));
   }
 
   public onNewOmitGeoRegion(shouldOmitGeoRegion: boolean): void {
@@ -136,6 +140,10 @@ export class SidebarComponent {
       new filtersStore.UseSearchPolygon();
 
     this.store$.dispatch(action);
+  }
+
+  public onNewListSearchMode(mode: models.ListSearchType): void {
+    this.store$.dispatch(new filtersStore.SetListSearchType(mode));
   }
 }
 

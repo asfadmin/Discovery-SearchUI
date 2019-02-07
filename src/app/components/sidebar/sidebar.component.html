@@ -21,9 +21,13 @@
 
   <mat-tab-group color="primary" backgroundColor="primary">
 
-    <mat-tab label="Granule">
+    <mat-tab label="List Search">
       <app-list-search
-        (newGranuleList)="onNewGranuleList($event)"></app-list-search>
+        (newListSearchMode)="onNewListSearchMode($event)"
+        (newListSearch)="onNewGranuleList($event)"
+        [mode]="listSearchMode$ | async"
+        [searchList]="searchList$ | async"
+        ></app-list-search>
     </mat-tab>
 
     <mat-tab label="Filters">
