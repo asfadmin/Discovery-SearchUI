@@ -15,6 +15,13 @@
   </app-search-bar>
 
   <mat-tab-group color="primary" backgroundColor="primary">
+    <mat-tab label="Queue">
+      <app-queue
+        (itemRemoved)="onRemoveItem($event)"
+        (clear)="onClearQueue()"
+        [products]="queueProducts$ | async"
+        ></app-queue>
+    </mat-tab>
 
     <mat-tab label="List Search">
       <app-list-search

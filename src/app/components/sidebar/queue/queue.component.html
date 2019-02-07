@@ -1,0 +1,16 @@
+<mat-card class="card-spacing">
+  <h4>Download Queue</h4>
+  <button mat-raised-button color="warn" (click)="onClearQueue()">Clear</button>
+
+  <mat-list role="list">
+    <mat-list-item
+      *ngFor="let product of products"
+      role="listitem">
+        {{product.name}}
+
+        <mat-icon (click)="onRemoveProduct(product)" style="cursor: pointer">
+            close
+        </mat-icon>
+    </mat-list-item>
+  </mat-list>
+</mat-card>

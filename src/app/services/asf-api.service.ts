@@ -12,6 +12,7 @@ import { PolygonValidateResponse } from '@models';
 export class AsfApiService {
   public readonly apiUrl = 'https://api.daac.asf.alaska.edu';
   public readonly testUrl = 'https://api-test.asf.alaska.edu';
+  public readonly localUrl = 'http://127.0.0.1:5000';
 
   constructor(private http: HttpClient) {}
 
@@ -35,12 +36,12 @@ export class AsfApiService {
   }
 
   public validate(wkt: string): Observable<any> {
-    const url = 'https://api-test.asf.alaska.edu/services/validate/wkt';
-
     const params = new HttpParams()
     .append('wkt', wkt);
 
-    return this.http.get<PolygonValidateResponse>(url, { params });
+    return this.http.get<PolygonValidateResponse>(
+      `${this.testUrl}/services/validate/wkt`, { params }
+    );
   }
 
   private dummyData(): Observable<any[]>  {

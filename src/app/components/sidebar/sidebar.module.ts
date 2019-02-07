@@ -20,6 +20,7 @@ import { DateSelectorModule } from './search/date-selector';
 import { PathSelectorModule } from './search/path-selector';
 import { OtherSelectorModule } from './search/other-selector';
 import { ListSearchModule } from './list-search';
+import { QueueModule } from './queue';
 
 import { ProductsListModule } from './products/products-list';
 import { ProductDetailComponent } from './products/product-detail/product-detail.component';
@@ -45,6 +46,7 @@ import { ProductDetailComponent } from './products/product-detail/product-detail
     DateSelectorModule,
     PathSelectorModule,
     OtherSelectorModule,
+    QueueModule,
   ],
   declarations: [
     SidebarComponent,
