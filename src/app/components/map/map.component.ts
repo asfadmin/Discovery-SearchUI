@@ -29,6 +29,7 @@ export class MapComponent implements OnInit {
   @Output() newMapInteractionMode = new EventEmitter<models.MapInteractionModeType>();
   @Output() loadUrlState = new EventEmitter<void>();
 
+
   private isInitMap = true;
 
   constructor(
@@ -102,6 +103,14 @@ export class MapComponent implements OnInit {
     );
 
     this.mapService.setDrawFeature(features);
+  }
+
+  private onNewSearchPolygon(polygon: string): void {
+    this.loadSearchPolygon(polygon);
+  }
+
+  private onFileUploadDialogClosed(): void {
+    this.newMapInteractionMode.emit(models.MapInteractionModeType.EDIT);
   }
 
   private granulePolygonsLayer(projection: string): Observable<VectorSource> {
