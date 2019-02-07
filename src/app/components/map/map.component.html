@@ -1,4 +1,6 @@
-<div id="map" class="map"></div>
+<div id="map" class="map"
+  (dragover)="onFileHovered($event)"
+  ></div>
 
 <app-file-upload
   (dialogClose)="onFileUploadDialogClosed()"

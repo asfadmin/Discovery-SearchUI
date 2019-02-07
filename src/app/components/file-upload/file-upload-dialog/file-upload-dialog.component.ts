@@ -1,7 +1,7 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component, ViewChild, OnInit } from '@angular/core';
 
 import { MatDialogRef } from '@angular/material';
-import { forkJoin, Subscription } from 'rxjs';
+import { Subscription } from 'rxjs';
 
 import { AsfApiService } from '@services';
 
@@ -13,6 +13,7 @@ import { AsfApiService } from '@services';
 export class FileUploadDialogComponent {
   @ViewChild('file') file;
 
+  public dropEvent: any;
   public files: Set<File> = new Set();
   public request: Subscription;
   public canBeClosed = true;
@@ -25,6 +26,24 @@ export class FileUploadDialogComponent {
     private dialogRef: MatDialogRef<FileUploadDialogComponent>,
     private asfApiService: AsfApiService,
   ) {}
+
+  onFileDrop(ev) {
+    if (ev.dataTransfer.items) {
+      for (let i = 0; i < ev.dataTransfer.items.length; i++) {
+        if (ev.dataTransfer.items[i].kind === 'file') {
+          const file = ev.dataTransfer.items[i].getAsFile();
+          this.files.add(file);
+        }
+      }
+    } else {
+      for (let i = 0; i < ev.dataTransfer.files.length; i++) {
+        const file = ev.dataTransfer.files[i];
+        this.files.add(file);
+      }
+    }
+
+    ev.preventDefault();
+  }
 
   onNoClick(): void {
     this.dialogRef.close();
@@ -43,6 +62,10 @@ export class FileUploadDialogComponent {
         this.files.add(files[key]);
       }
     }
+  }
+
+  onRemoveFile(file) {
+    this.files.delete(file);
   }
 
   onUpload() {

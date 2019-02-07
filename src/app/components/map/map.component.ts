@@ -29,7 +29,6 @@ export class MapComponent implements OnInit {
   @Output() newMapInteractionMode = new EventEmitter<models.MapInteractionModeType>();
   @Output() loadUrlState = new EventEmitter<void>();
 
-
   private isInitMap = true;
 
   constructor(
@@ -56,6 +55,11 @@ export class MapComponent implements OnInit {
 
   public onNewInteractionMode(mode: models.MapInteractionModeType): void {
     this.newMapInteractionMode.emit(mode);
+  }
+
+  public onFileHovered(e): void {
+    this.newMapInteractionMode.emit(models.MapInteractionModeType.UPLOAD);
+    e.preventDefault();
   }
 
   private updateMapOnViewChange(): void {
