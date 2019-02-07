@@ -105,11 +105,11 @@ export class MapComponent implements OnInit {
     this.mapService.setDrawFeature(features);
   }
 
-  private onNewSearchPolygon(polygon: string): void {
+  public onNewSearchPolygon(polygon: string): void {
     this.loadSearchPolygon(polygon);
   }
 
-  private onFileUploadDialogClosed(): void {
+  public onFileUploadDialogClosed(): void {
     this.newMapInteractionMode.emit(models.MapInteractionModeType.EDIT);
   }
 

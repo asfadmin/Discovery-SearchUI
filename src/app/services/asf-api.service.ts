@@ -10,20 +10,19 @@ import { PolygonValidateResponse } from '@models';
   providedIn: 'root'
 })
 export class AsfApiService {
-  public readonly apiUrl = 'https://api.daac.asf.alaska.edu/services/search/param';
+  public readonly apiUrl = 'https://api.daac.asf.alaska.edu';
   public readonly testUrl = 'https://api-test.asf.alaska.edu';
 
   constructor(private http: HttpClient) {}
 
   public query(stateParams: HttpParams): Observable<any[]> {
-
     const params = Object.entries(this.baseParams())
     .reduce(
       (queryParams, [key, val]) => queryParams.append(key, `${val}`),
       stateParams
     );
 
-    return this.http.get<any[]>(this.apiUrl, { params });
+    return this.http.get<any[]>(`${this.testUrl}/services/search/param`, { params });
   }
 
   public upload(files): Observable<any> {
@@ -51,7 +50,7 @@ export class AsfApiService {
   private baseParams() {
     return {
       maxResults: 100,
-      output: 'json'
+      output: 'jsonlite'
     };
   }
 }
