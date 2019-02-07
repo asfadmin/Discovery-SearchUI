@@ -14,9 +14,6 @@ import { FileUploadDialogComponent } from './file-upload-dialog';
   styleUrls: ['./file-upload.component.css']
 })
 export class FileUploadComponent implements OnInit {
-  animal: string;
-  name: string;
-
   @Input() interaction$: Observable<MapInteractionModeType>;
 
   @Output() dialogClose = new EventEmitter<void>();
