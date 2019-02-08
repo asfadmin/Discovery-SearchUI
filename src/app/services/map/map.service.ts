@@ -192,8 +192,7 @@ export class MapService {
     let draw: Draw;
 
     if (drawMode === models.MapDrawModeType.BOX) {
-      const mode = 'Circle';
-      console.log(createBox);
+      const mode = 'Circle'; // Actually a box...
       const geometryFunction = createBox();
 
       draw = new Draw({
@@ -207,7 +206,6 @@ export class MapService {
         type: drawMode
       });
     }
-
 
     draw.on('drawstart', e => this.clearDrawLayer());
     draw.on('drawend', e => this.setSearchPolygon(e.feature));
