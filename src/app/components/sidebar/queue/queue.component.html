@@ -21,10 +21,33 @@
     </mat-list-item>
   </mat-list>
 
-  <mat-card-actions>
-    <button mat-raised-button color="primary"
-      (click)="onMakeDownloadScript()">
-        Download Python Script (.py)
-    </button>
-  </mat-card-actions>
+  <button mat-raised-button color="primary"
+    class="metadata-dl-btn"
+    (click)="onMakeDownloadScript()">
+      Download Python Script (.py)
+  </button>
+
+  <button mat-raised-button color="primary"
+    class="metadata-dl-btn"
+    (click)="onCsvDownload()">
+    Metadata (csv)
+  </button>
+
+  <button mat-raised-button color="primary"
+    class="metadata-dl-btn"
+    (click)="onKmlDownload()">
+    Metadata (kml)
+  </button>
+
+  <button mat-raised-button color="primary"
+    class="metadata-dl-btn"
+    (click)="onGeojsonDownload()">
+    Metadata (geojson)
+  </button>
+
+  <button mat-raised-button color="primary"
+    class="metadata-dl-btn"
+    (click)="onMetalinkDownload()">
+    Metadata (metalink)
+  </button>
 </mat-card>

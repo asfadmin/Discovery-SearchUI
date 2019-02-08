@@ -10,17 +10,24 @@ import { Observable, combineLatest } from 'rxjs';
 import { map, withLatestFrom, startWith, switchMap, tap, filter } from 'rxjs/operators';
 
 import { AppState } from '../app.reducer';
-import { QueueActionType } from './queue.action';
+import { QueueActionType, DownloadMetadata} from './queue.action';
 import { getQueuedProducts } from './queue.reducer';
 
 import * as services from '@services';
 import * as models from '@models';
+
+export interface MetadataDownload {
+  params: HttpParams;
+  format: models.AsfApiOutputFormat;
+}
 
 @Injectable()
 export class QueueEffects {
   constructor(
     private actions$: Actions,
     private store$: Store<AppState>,
+    private searchParams$: services.SearchParamsService,
+    private asfApiService: services.AsfApiService,
     private bulkDownloadService: services.BulkDownloadService,
   ) {}
 
@@ -34,7 +41,27 @@ export class QueueEffects {
     ),
     map(
       blob => FileSaver.saveAs(blob, 'download-all.py')
+    )
+  );
+
+  @Effect({ dispatch: false })
+  private downloadMetadata: Observable<void> = this.actions$.pipe(
+    ofType<DownloadMetadata>(QueueActionType.DOWNLOAD_METADATA),
+    map(action => action.payload),
+    withLatestFrom(this.searchParams$.getParams()),
+    map(
+      ([format, params]): MetadataDownload => ({
+        params: params.append('output', format),
+        format
+      })
     ),
-    map(_ => _)
+    switchMap(
+      (search: MetadataDownload) => this.asfApiService.query<string>(search.params).pipe(
+        map(resp => new Blob([resp], { type: 'text/plain'})),
+        map(
+          blob => FileSaver.saveAs(blob, `results.${search.format.toLowerCase()}`)
+        )
+      ),
+    ),
   );
 }

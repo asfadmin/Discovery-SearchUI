@@ -15,14 +15,23 @@ export class AsfApiService {
 
   constructor(private http: HttpClient) {}
 
-  public query(stateParams: HttpParams): Observable<any[]> {
+  public query<T>(stateParams: HttpParams): Observable<T> {
+
     const params = Object.entries(this.baseParams())
+    .filter(
+      ([key, val]) => !stateParams.get(key)
+    )
     .reduce(
-      (queryParams, [key, val]) => queryParams.append(key, `${val}`),
-      stateParams
+      (queryParams, [key, val]) => queryParams.append(key, `${val}`)
+      , stateParams
     );
 
-    return this.http.get<any[]>(`${this.testUrl}/services/search/param`, { params });
+    const responseType: any = params.get('output') === 'jsonlite' ?
+      'json' : 'text';
+
+    return this.http.get<T>(`${this.testUrl}/services/search/param`, {
+      params, responseType
+    });
   }
 
   public upload(files): Observable<any> {

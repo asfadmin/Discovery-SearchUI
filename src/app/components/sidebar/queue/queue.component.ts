@@ -1,6 +1,6 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
 
-import { Sentinel1Product } from '@models';
+import { Sentinel1Product, AsfApiOutputFormat } from '@models';
 
 
 @Component({
@@ -15,6 +15,7 @@ export class QueueComponent {
   @Output() clear = new EventEmitter<void>();
 
   @Output() makeDownloadScript = new EventEmitter<void>();
+  @Output() metadataDownload = new EventEmitter<AsfApiOutputFormat>();
 
   public onRemoveProduct(product: Sentinel1Product): void {
     this.itemRemoved.emit(product);
@@ -25,7 +26,22 @@ export class QueueComponent {
   }
 
   public onMakeDownloadScript(): void {
-    console.log('event')
     this.makeDownloadScript.emit();
+  }
+
+  public onCsvDownload(): void {
+    this.metadataDownload.emit(AsfApiOutputFormat.CSV);
+  }
+
+  public onKmlDownload(): void {
+    this.metadataDownload.emit(AsfApiOutputFormat.KML);
+  }
+
+  public onGeojsonDownload(): void {
+    this.metadataDownload.emit(AsfApiOutputFormat.GEOJSON);
+  }
+
+  public onMetalinkDownload(): void {
+    this.metadataDownload.emit(AsfApiOutputFormat.METALINK);
   }
 }

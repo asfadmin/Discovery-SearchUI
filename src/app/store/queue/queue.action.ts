@@ -1,6 +1,6 @@
 import { Action } from '@ngrx/store';
 
-import { Sentinel1Product } from '@models';
+import { Sentinel1Product, AsfApiOutputFormat } from '@models';
 
 export enum QueueActionType {
   ADD_ITEM = '[Queue] Add Item',
@@ -8,6 +8,7 @@ export enum QueueActionType {
   CLEARN_QUEUE = '[Queue] Clear Queue',
 
   MAKE_DOWNLOAD_SCRIPT  = '[Queue] Make Bulk Download From Queue',
+  DOWNLOAD_METADATA = '[Queue] Download Metadata',
 }
 
 export class AddItem implements Action {
@@ -30,8 +31,15 @@ export class MakeDownloadScript implements Action {
   public readonly type = QueueActionType.MAKE_DOWNLOAD_SCRIPT;
 }
 
+export class DownloadMetadata implements Action {
+  public readonly type = QueueActionType.DOWNLOAD_METADATA;
+
+  constructor(public payload: AsfApiOutputFormat) {}
+}
+
 export type QueueActions =
   | AddItem
   | RemoveItem
   | ClearQueue
-  | MakeDownloadScript;
+  | MakeDownloadScript
+  | DownloadMetadata;
