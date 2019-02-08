@@ -8,6 +8,7 @@ export enum MapDrawModeType {
   POINT = 'Point',
   LINESTRING = 'LineString',
   POLYGON = 'Polygon',
+  BOX = 'Box',
 }
 
 export enum MapInteractionModeType {

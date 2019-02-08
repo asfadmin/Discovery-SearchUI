@@ -22,4 +22,7 @@ export class DrawSelectorComponent {
 
   public onPointSelected =
     () => this.newDrawMode.emit(MapDrawModeType.POINT)
+
+  public onBoxSelected =
+    () => this.newDrawMode.emit(MapDrawModeType.BOX)
 }

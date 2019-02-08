@@ -69,7 +69,6 @@ export class SearchParamsService {
       withLatestFrom(this.store$.select(filterStore.getListSearchMode).pipe(
         map(mode => mode === models.ListSearchType.GRANULE ? 'granule_list' : 'product_list')
       )),
-      tap(v => console.log(v)),
       map(([searchList, param]) => ({ [param]: searchList.join(',') }))
     );
   }
