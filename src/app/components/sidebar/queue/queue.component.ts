@@ -40,4 +40,8 @@ export class QueueComponent {
   public onGeojsonDownload(): void {
     this.metadataDownload.emit(AsfApiOutputFormat.GEOJSON);
   }
+
+  public onMetalinkDownload(): void {
+    this.metadataDownload.emit(AsfApiOutputFormat.METALINK);
+  }
 }
