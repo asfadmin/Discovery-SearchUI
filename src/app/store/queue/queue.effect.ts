@@ -21,6 +21,8 @@ export class QueueEffects {
   constructor(
     private actions$: Actions,
     private store$: Store<AppState>,
+    private searchParams$: services.SearchParamsService,
+    private asfApiService: services.AsfApiService,
     private bulkDownloadService: services.BulkDownloadService,
   ) {}
 
@@ -40,7 +42,17 @@ export class QueueEffects {
   @Effect({ dispatch: false })
   private downloadCsvMetadata: Observable<void> = this.actions$.pipe(
     ofType(QueueActionType.DOWNLOAD_CSV_METADATA),
-    map(action => console.log(action))
+    withLatestFrom(this.searchParams$.getParams()),
+    map(([action, params]) => params),
+    map(params => params.append('output', 'csv')),
+    switchMap(
+      params => this.asfApiService.query<string>(params).pipe(
+        map(resp => new Blob([resp], { type: 'text/plain'})),
+      )
+    ),
+    map(
+      blob => FileSaver.saveAs(blob, 'results.csv')
+    )
   );
 
 }
