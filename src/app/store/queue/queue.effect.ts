@@ -10,7 +10,7 @@ import { Observable, combineLatest } from 'rxjs';
 import { map, withLatestFrom, startWith, switchMap, tap, filter } from 'rxjs/operators';
 
 import { AppState } from '../app.reducer';
-import { QueueActionType } from './queue.action';
+import { QueueActionType, DownloadMetadata} from './queue.action';
 import { getQueuedProducts } from './queue.reducer';
 
 import * as services from '@services';
@@ -40,19 +40,24 @@ export class QueueEffects {
   );
 
   @Effect({ dispatch: false })
-  private downloadCsvMetadata: Observable<void> = this.actions$.pipe(
-    ofType(QueueActionType.DOWNLOAD_CSV_METADATA),
+  private downloadMetadata: Observable<void> = this.actions$.pipe(
+    ofType<DownloadMetadata>(QueueActionType.DOWNLOAD_METADATA),
+    map(action => action.payload),
     withLatestFrom(this.searchParams$.getParams()),
-    map(([action, params]) => params),
-    map(params => params.append('output', 'csv')),
-    switchMap(
-      params => this.asfApiService.query<string>(params).pipe(
-        map(resp => new Blob([resp], { type: 'text/plain'})),
-      )
-    ),
     map(
-      blob => FileSaver.saveAs(blob, 'results.csv')
-    )
+      ([format, params]): any => ({
+        params: params.append('output', format),
+        format
+      })
+    ),
+    switchMap(
+      (search: any) => this.asfApiService.query<string>(search.params).pipe(
+        map(resp => new Blob([resp], { type: 'text/plain'})),
+        map(
+          blob => FileSaver.saveAs(blob, `results.${search.format.toLowerCase()}`)
+        )
+      ),
+    ),
   );
 
 }

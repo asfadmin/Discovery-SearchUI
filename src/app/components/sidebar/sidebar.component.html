@@ -23,7 +23,7 @@
             (itemRemoved)="onRemoveItem($event)"
             (clear)="onClearQueue()"
             (makeDownloadScript)="onMakeDownloadScript()"
-            (csvDownload)="onCsvDownload()"
+            (metadataDownload)="onMetadataDownload($event)"
             [products]="queue">
           </app-queue>
       </mat-tab>
