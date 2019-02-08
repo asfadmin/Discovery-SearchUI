@@ -50,7 +50,7 @@ export class QueueEffects {
     map(action => action.payload),
     withLatestFrom(this.searchParams$.getParams()),
     map(
-      ([format, params]): any => ({
+      ([format, params]): MetadataDownload => ({
         params: params.append('output', format),
         format
       })
