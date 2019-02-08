@@ -15,6 +15,19 @@
   </app-search-bar>
 
   <mat-tab-group color="primary" backgroundColor="primary">
+    <ng-container *ngIf="queueProducts$ | async as queue">
+      <mat-tab
+        *ngIf="queue.length > 0"
+        label="Queue">
+          <app-queue
+            (itemRemoved)="onRemoveItem($event)"
+            (clear)="onClearQueue()"
+            (makeDownloadScript)="onMakeDownloadScript()"
+            [products]="queue">
+          </app-queue>
+      </mat-tab>
+
+    </ng-container>
     <mat-tab label="List Search">
       <app-list-search
         (newListSearchMode)="onNewListSearchMode($event)"
@@ -79,17 +92,6 @@
       </mat-tab>
     </ng-container>
 
-    <ng-container *ngIf="queueProducts$ | async as queue">
-      <mat-tab
-        *ngIf="queue.length > 0"
-        label="Queue">
-          <app-queue
-            (itemRemoved)="onRemoveItem($event)"
-            (clear)="onClearQueue()"
-            [products]="queue">
-          </app-queue>
-      </mat-tab>
-    </ng-container>
   </mat-tab-group>
   </div></div>
 

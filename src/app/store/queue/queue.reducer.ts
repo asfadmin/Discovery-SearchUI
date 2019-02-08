@@ -20,9 +20,9 @@ export function queueReducer(state = initState, action: QueueActions): QueueStat
       const newProduct = action.payload;
 
       const products = {
-          ...state.products,
-          [newProduct.file]:  newProduct
-        };
+        ...state.products,
+        [newProduct.file]:  newProduct
+      };
 
       const ids = Array.from(
         new Set([...state.ids, newProduct.file])

@@ -6,6 +6,8 @@ export enum QueueActionType {
   ADD_ITEM = '[Queue] Add Item',
   REMOVE_ITEM = '[Queue] Remove Item',
   CLEARN_QUEUE = '[Queue] Clear Queue',
+
+  MAKE_DOWNLOAD_SCRIPT  = '[Queue] Make Bulk Download From Queue',
 }
 
 export class AddItem implements Action {
@@ -24,7 +26,12 @@ export class ClearQueue implements Action {
   public readonly type = QueueActionType.CLEARN_QUEUE;
 }
 
+export class MakeDownloadScript implements Action {
+  public readonly type = QueueActionType.MAKE_DOWNLOAD_SCRIPT;
+}
+
 export type QueueActions =
   | AddItem
   | RemoveItem
-  | ClearQueue;
+  | ClearQueue
+  | MakeDownloadScript;

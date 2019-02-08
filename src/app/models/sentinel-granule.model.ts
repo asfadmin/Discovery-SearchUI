@@ -29,7 +29,8 @@ export type FlightDirection =
   'DESCENDING';
 
 export type Sentinel1ProductType =
-  'GRD' | 'SLC' | 'OCN' | 'RAW'
+  'GRD' | 'SLC' | 'OCN' | 'RAW' |
+  'METADATA_SLC'
 ;
 
 export type Sentinel1BeamMode =
