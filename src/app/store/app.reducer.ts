@@ -9,6 +9,7 @@ import { MapState, mapReducer } from './map';
 import { FiltersState, filtersReducer } from './filters';
 import { UIState, uiReducer } from './ui';
 import { SearchState, searchReducer } from './search';
+import { QueueState, queueReducer } from './queue';
 
 export * from './map';
 export * from './granules';
@@ -22,6 +23,7 @@ export interface AppState {
   filters: FiltersState;
   ui: UIState;
   search: SearchState;
+  queue: QueueState;
 }
 
 export const reducers: ActionReducerMap<AppState> = {
@@ -30,6 +32,7 @@ export const reducers: ActionReducerMap<AppState> = {
   filters: filtersReducer,
   ui: uiReducer,
   search: searchReducer,
+  queue: queueReducer,
 };
 
 export const metaReducers: MetaReducer<AppState>[] =

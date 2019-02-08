@@ -1,0 +1,18 @@
+<mat-card class="card-spacing">
+  <h4>Download Queue</h4>
+  <button mat-raised-button color="warn" (click)="onClearQueue()">Clear</button>
+
+  <mat-list role="list">
+    <mat-list-item
+      *ngFor="let product of products"
+      role="listitem">
+        <h4 mat-line fxLayout="row" fxLayoutAlign="space-between">
+          <div>{{ product.file | truncate : 10 }}{{ product.file | truncate : -4 : '' }}</div>
+
+          <mat-icon (click)="onRemoveProduct(product)" style="cursor: pointer">
+              close
+          </mat-icon>
+        </h4>
+    </mat-list-item>
+  </mat-list>
+</mat-card>

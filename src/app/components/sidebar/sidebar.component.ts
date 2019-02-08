@@ -16,6 +16,7 @@ import * as filtersStore from '@store/filters';
 import * as uiStore from '@store/ui';
 import * as granulesStore from '@store/granules';
 import * as searchStore from '@store/search';
+import * as queueStore from '@store/queue';
 
 import * as models from '@models';
 
@@ -63,6 +64,8 @@ export class SidebarComponent {
   public searchList$ = this.store$.select(granulesStore.getSearchList).pipe(
     map(list => list.join('\n'))
   );
+
+  public queueProducts$ = this.store$.select(queueStore.getQueuedProducts);
 
   public dateRangeExtrema$ = this.dateExtremaService.getExtrema$(
     this.platforms$,
@@ -144,6 +147,18 @@ export class SidebarComponent {
 
   public onNewListSearchMode(mode: models.ListSearchType): void {
     this.store$.dispatch(new filtersStore.SetListSearchType(mode));
+  }
+
+  public onClearQueue(): void {
+    this.store$.dispatch(new queueStore.ClearQueue());
+  }
+
+  public onRemoveItem(product: models.Sentinel1Product): void {
+    this.store$.dispatch(new queueStore.RemoveItem(product));
+  }
+
+  public onNewQueueItem(product: models.Sentinel1Product): void {
+    this.store$.dispatch(new queueStore.AddItem(product));
   }
 }
 

@@ -20,7 +20,7 @@
         <b>{{ product.file | truncate : 10 }}{{ product.file | truncate : -4 : '' }}</b>
         <div>
           <span style="margin-right: 10px">{{ product.bytes | readableSizeFromBytes }}</span>
-          <fa-icon class="dl-icon" [icon]="selectIcon"></fa-icon>
+          <fa-icon (click)="onNewQueueProduct(product)" matTooltip="Add to Queue" class="dl-icon" [icon]="selectIcon"></fa-icon>
           <a matTooltip="Download" target="_blank" [href]="granule.downloadUrl">
             <fa-icon class="dl-icon" [icon]="downloadIcon"></fa-icon>
           </a>

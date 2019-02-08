@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 
 import { faDownload, faPlus } from '@fortawesome/free-solid-svg-icons';
 
@@ -15,4 +15,10 @@ export class ProductDetailComponent {
 
   @Input() granule: Sentinel1Product;
   @Input() products: Sentinel1Product[];
+
+  @Output() newQueueItem = new EventEmitter<Sentinel1Product>();
+
+  public onNewQueueProduct(product: Sentinel1Product): void {
+    this.newQueueItem.emit(product);
+  }
 }
