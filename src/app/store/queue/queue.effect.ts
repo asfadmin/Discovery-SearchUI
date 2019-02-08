@@ -32,8 +32,6 @@ export class QueueEffects {
     switchMap(
       products => this.bulkDownloadService.downloadScript$(products)
     ),
-    tap(console.log),
-    map(resp => new Blob([resp], { type: 'text/plain'})),
     map(
       blob => FileSaver.saveAs(blob, 'download-all.py')
     ),

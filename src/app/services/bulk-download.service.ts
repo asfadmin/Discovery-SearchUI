@@ -21,6 +21,12 @@ export class BulkDownloadService {
     const formData = new FormData();
     formData.append('products', productsStr);
 
-    return this.http.post(this.url, formData, { responseType: 'text' });
+    const headers = new HttpHeaders()
+      .append('Access-Control-Expose-Headers', 'Content-Disposition');
+
+    return this.http.post(this.url, formData, {
+      responseType: 'blob',
+      headers
+    });
   }
 }
