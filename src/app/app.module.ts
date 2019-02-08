@@ -49,6 +49,7 @@ export const routes = [
     services.MapService,
     services.WktService,
     services.ProductService,
+    services.BulkDownloadService,
   ],
   bootstrap: [ AppComponent ]
 })

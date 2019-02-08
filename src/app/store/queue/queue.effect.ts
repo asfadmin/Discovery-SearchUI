@@ -4,6 +4,8 @@ import { HttpParams } from '@angular/common/http';
 import { Actions, Effect, ofType } from '@ngrx/effects';
 import { Store, Action } from '@ngrx/store';
 
+import * as FileSaver from 'file-saver';
+
 import { Observable, combineLatest } from 'rxjs';
 import { map, withLatestFrom, startWith, switchMap, tap, filter } from 'rxjs/operators';
 
@@ -19,7 +21,7 @@ export class QueueEffects {
   constructor(
     private actions$: Actions,
     private store$: Store<AppState>,
-    private asfApiService: services.AsfApiService,
+    private bulkDownloadService: services.BulkDownloadService,
   ) {}
 
   @Effect({ dispatch: false })
@@ -27,11 +29,14 @@ export class QueueEffects {
     ofType(QueueActionType.MAKE_DOWNLOAD_SCRIPT),
     withLatestFrom(this.store$.select(getQueuedProducts)),
     map(([action, products]) => products),
-    map(
-      products => products
-        .map(product => product.file)
-        .join(',')
+    switchMap(
+      products => this.bulkDownloadService.downloadScript$(products)
     ),
-    map(productsStr => console.log(productsStr))
+    tap(console.log),
+    map(resp => new Blob([resp], { type: 'text/plain'})),
+    map(
+      blob => FileSaver.saveAs(blob, 'download-all.py')
+    ),
+    map(_ => _)
   );
 }
