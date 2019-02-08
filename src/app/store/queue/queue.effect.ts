@@ -34,7 +34,13 @@ export class QueueEffects {
     ),
     map(
       blob => FileSaver.saveAs(blob, 'download-all.py')
-    ),
-    map(_ => _)
+    )
   );
+
+  @Effect({ dispatch: false })
+  private downloadCsvMetadata: Observable<void> = this.actions$.pipe(
+    ofType(QueueActionType.DOWNLOAD_CSV_METADATA),
+    map(action => console.log(action))
+  );
+
 }

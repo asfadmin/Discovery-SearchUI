@@ -164,5 +164,9 @@ export class SidebarComponent {
   public onMakeDownloadScript(): void {
     this.store$.dispatch(new queueStore.MakeDownloadScript());
   }
+
+  public onCsvDownload(): void {
+    this.store$.dispatch(new queueStore.DownloadCsvMetadata());
+  }
 }
 

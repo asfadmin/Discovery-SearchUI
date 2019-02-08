@@ -8,6 +8,7 @@ export enum QueueActionType {
   CLEARN_QUEUE = '[Queue] Clear Queue',
 
   MAKE_DOWNLOAD_SCRIPT  = '[Queue] Make Bulk Download From Queue',
+  DOWNLOAD_CSV_METADATA = '[Queue] Download csv metadata',
 }
 
 export class AddItem implements Action {
@@ -30,8 +31,13 @@ export class MakeDownloadScript implements Action {
   public readonly type = QueueActionType.MAKE_DOWNLOAD_SCRIPT;
 }
 
+export class DownloadCsvMetadata implements Action {
+  public readonly type = QueueActionType.DOWNLOAD_CSV_METADATA;
+}
+
 export type QueueActions =
   | AddItem
   | RemoveItem
   | ClearQueue
-  | MakeDownloadScript;
+  | MakeDownloadScript
+  | DownloadCsvMetadata;

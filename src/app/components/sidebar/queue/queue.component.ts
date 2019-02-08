@@ -15,6 +15,7 @@ export class QueueComponent {
   @Output() clear = new EventEmitter<void>();
 
   @Output() makeDownloadScript = new EventEmitter<void>();
+  @Output() csvDownload = new EventEmitter<void>();
 
   public onRemoveProduct(product: Sentinel1Product): void {
     this.itemRemoved.emit(product);
@@ -25,7 +26,10 @@ export class QueueComponent {
   }
 
   public onMakeDownloadScript(): void {
-    console.log('event')
     this.makeDownloadScript.emit();
+  }
+
+  public onCsvDownload(): void {
+    this.csvDownload.emit();
   }
 }

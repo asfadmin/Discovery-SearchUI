@@ -21,10 +21,14 @@
     </mat-list-item>
   </mat-list>
 
-  <mat-card-actions>
-    <button mat-raised-button color="primary"
-      (click)="onMakeDownloadScript()">
-        Download Python Script (.py)
-    </button>
-  </mat-card-actions>
+  <button mat-raised-button color="primary"
+    (click)="onMakeDownloadScript()">
+      Download Python Script (.py)
+  </button>
+
+  <button mat-raised-button color="primary"
+    (click)="onCsvDownload()">
+    Metadata (csv)
+  </button>
+
 </mat-card>
