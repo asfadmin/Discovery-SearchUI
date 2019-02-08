@@ -4,6 +4,7 @@ import { Subject } from 'rxjs';
 
 import { Map } from 'ol';
 import { Draw, Modify, Snap } from 'ol/interaction.js';
+import { createBox } from 'ol/interaction/Draw.js';
 import { Vector as VectorLayer } from 'ol/layer';
 import { Vector as VectorSource, Layer } from 'ol/source';
 import * as proj from 'ol/proj';
@@ -188,10 +189,25 @@ export class MapService {
   }
 
   public createDraw(drawMode: models.MapDrawModeType) {
-    const draw = new Draw({
-      source: this.drawSource,
-      type: drawMode
-    });
+    let draw: Draw;
+
+    if (drawMode === models.MapDrawModeType.BOX) {
+      const mode = 'Circle';
+      console.log(createBox);
+      const geometryFunction = createBox();
+
+      draw = new Draw({
+        source: this.drawSource,
+        type: mode,
+        geometryFunction
+      });
+    } else {
+      draw = new Draw({
+        source: this.drawSource,
+        type: drawMode
+      });
+    }
+
 
     draw.on('drawstart', e => this.clearDrawLayer());
     draw.on('drawend', e => this.setSearchPolygon(e.feature));
