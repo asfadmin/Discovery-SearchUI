@@ -160,5 +160,9 @@ export class SidebarComponent {
   public onNewQueueItem(product: models.Sentinel1Product): void {
     this.store$.dispatch(new queueStore.AddItem(product));
   }
+
+  public onMakeDownloadScript(): void {
+    this.store$.dispatch(new queueStore.MakeDownloadScript());
+  }
 }
 
