@@ -30,7 +30,7 @@ export class SearchEffects {
     withLatestFrom(this.searchParams$.getParams()),
     map(([_, params]) => params),
     switchMap(
-      params => this.asfApiService.query(params)
+      params => this.asfApiService.query<any[]>(params)
     ),
     map(response => new SearchResponse(response))
   );

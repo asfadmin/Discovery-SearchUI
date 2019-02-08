@@ -6,6 +6,18 @@ export interface PolygonErrorResponse {
   error: PolygonError;
 }
 
+export enum AsfApiOutputFormat {
+  CSV = 'CSV',
+  JSON = 'JSON' ,
+  KML = 'KML',
+  METALINK = 'METALINK',
+  COUNT = 'COUNT',
+  DOWNLOAD = 'DOWNLOAD',
+  GEOJSON = 'GEOJSON',
+  JSONLITE = 'JSONLITE'
+}
+
+
 export interface PolygonError {
   type: PolygonErrorTypes;
   report: string;
@@ -23,14 +35,14 @@ export interface PolygonRepair {
 
 export enum PolygonRepairTypes {
   ROUND = 'ROUND',
-  TRIM = 'TRIM',
-  CLOSE = 'CLOSE',
-  REVERSE = 'REVERSE',
+    TRIM = 'TRIM',
+    CLOSE = 'CLOSE',
+    REVERSE = 'REVERSE',
 }
 
 export enum PolygonErrorTypes {
   SYNTAX = 'SYNTAX',
-  TYPE = 'TYPE',
-  SELF_INTERSECTION = 'SELF_INTERSECTIOn',
-  UNKNOWN = 'UNKNOWN',
+    TYPE = 'TYPE',
+    SELF_INTERSECTION = 'SELF_INTERSECTIOn',
+    UNKNOWN = 'UNKNOWN',
 }

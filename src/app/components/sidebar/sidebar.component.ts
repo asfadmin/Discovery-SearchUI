@@ -165,8 +165,8 @@ export class SidebarComponent {
     this.store$.dispatch(new queueStore.MakeDownloadScript());
   }
 
-  public onCsvDownload(): void {
-    this.store$.dispatch(new queueStore.DownloadCsvMetadata());
+  public onMetadataDownload(format: models.AsfApiOutputFormat): void {
+    this.store$.dispatch(new queueStore.DownloadMetadata(format));
   }
 }
 
