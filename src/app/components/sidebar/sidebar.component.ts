@@ -161,6 +161,10 @@ export class SidebarComponent {
     this.store$.dispatch(new queueStore.AddItem(product));
   }
 
+  public onNewQueueItems(products: models.Sentinel1Product[]): void {
+    this.store$.dispatch(new queueStore.AddItems(products));
+  }
+
   public onMakeDownloadScript(): void {
     this.store$.dispatch(new queueStore.MakeDownloadScript());
   }

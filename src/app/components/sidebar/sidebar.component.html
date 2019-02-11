@@ -65,6 +65,7 @@
           <app-product-detail
               *ngIf="!!selected"
               (newQueueItem)="onNewQueueItem($event)"
+              (newQueueItems)="onNewQueueItems($event)"
               [granule]="selected"
               [products]="selectedProducts$ | async">
           </app-product-detail>
