@@ -48,7 +48,9 @@ export function granulesReducer(state = initState, action: GranulesActions): Gra
       return {
         ...state,
 
-        ids: Object.keys(products),
+        ids: Object.keys(products).sort(
+          (a, b) => granules[a] - granules[b]
+        ),
         products,
         granules
       };
