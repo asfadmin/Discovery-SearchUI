@@ -113,6 +113,23 @@ export const getSelectedGranuleProducts = createSelector(
   }
 );
 
+export const getGranuleProducts = createSelector(
+  getGranulesState,
+  (state: GranulesState) => {
+    const granuleProducts = {};
+
+    Object.entries(state.granules).forEach(
+      ([granule, products]) => {
+
+        granuleProducts[granule] = products
+          .map(name => state.products[name]);
+      }
+    );
+
+    return granuleProducts;
+  }
+);
+
 export const getSelectedGranule = createSelector(
   getGranulesState,
   (state: GranulesState) => state.products[state.selected]

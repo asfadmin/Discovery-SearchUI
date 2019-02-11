@@ -9,6 +9,8 @@ export enum QueueActionType {
   REMOVE_ITEMS = '[Queue] Removes Item',
   CLEARN_QUEUE = '[Queue] Clear Queue',
 
+  QUEUE_GRANULE = '[Granules] Queue Granule',
+
   MAKE_DOWNLOAD_SCRIPT  = '[Queue] Make Bulk Download From Queue',
   DOWNLOAD_METADATA = '[Queue] Download Metadata',
 }
@@ -51,9 +53,16 @@ export class DownloadMetadata implements Action {
   constructor(public payload: AsfApiOutputFormat) {}
 }
 
+export class QueueGranule implements Action {
+  public readonly type = QueueActionType.QUEUE_GRANULE;
+
+  constructor(public payload: string) {}
+}
+
 export type QueueActions =
   | AddItem
   | AddItems
+  | QueueGranule
   | RemoveItem
   | RemoveItems
   | ClearQueue

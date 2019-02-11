@@ -172,5 +172,9 @@ export class SidebarComponent {
   public onMetadataDownload(format: models.AsfApiOutputFormat): void {
     this.store$.dispatch(new queueStore.DownloadMetadata(format));
   }
+
+  public onQueueGranuleProducts(name: string): void {
+    this.store$.dispatch(new queueStore.QueueGranule(name));
+  }
 }
 
