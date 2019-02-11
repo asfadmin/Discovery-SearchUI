@@ -10,8 +10,9 @@ import { Observable, combineLatest } from 'rxjs';
 import { map, withLatestFrom, startWith, switchMap, tap, filter } from 'rxjs/operators';
 
 import { AppState } from '../app.reducer';
-import { QueueActionType, DownloadMetadata} from './queue.action';
+import { QueueActionType, DownloadMetadata, QueueGranule, AddItems } from './queue.action';
 import { getQueuedProducts } from './queue.reducer';
+import * as granulesStore from '@store/granules';
 
 import * as services from '@services';
 import * as models from '@models';
@@ -63,5 +64,14 @@ export class QueueEffects {
         )
       ),
     ),
+  );
+
+  @Effect()
+  private queueGranule: Observable<Action> = this.actions$.pipe(
+    ofType<QueueGranule>(QueueActionType.QUEUE_GRANULE),
+    withLatestFrom(this.store$.select(granulesStore.getGranuleProducts)),
+    tap(console.log),
+    map(([action, granuleProducts]) => granuleProducts[action.payload]),
+    map(products => new AddItems(products))
   );
 }

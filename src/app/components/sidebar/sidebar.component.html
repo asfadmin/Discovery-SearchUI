@@ -62,20 +62,22 @@
         *ngIf="granules.length > 0"
         label="Results">
         <ng-container *ngIf="selectedGranule$ | async as selected">
-          <app-product-detail
+          <app-granule-detail
               *ngIf="!!selected"
               (newQueueItem)="onNewQueueItem($event)"
+              (newQueueItems)="onNewQueueItems($event)"
               [granule]="selected"
               [products]="selectedProducts$ | async">
-          </app-product-detail>
+          </app-granule-detail>
         </ng-container>
 
-          <app-products-list
+          <app-granules-list
             *ngIf="granules.length > 0"
-            [products]="granules"
+            [granules]="granules"
             [selected]="(selectedGranule$ | async)?.name"
-            (newSelected)="onNewProductSelected($event)">
-          </app-products-list>
+            (newSelected)="onNewGranuleSelected($event)"
+            (queueGranule)="onQueueGranuleProducts($event)">
+          </app-granules-list>
       </mat-tab>
     </ng-container>
 

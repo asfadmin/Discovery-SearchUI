@@ -48,7 +48,9 @@ export function granulesReducer(state = initState, action: GranulesActions): Gra
       return {
         ...state,
 
-        ids: Object.keys(products),
+        ids: Object.keys(products).sort(
+          (a, b) => granules[a] - granules[b]
+        ),
         products,
         granules
       };
@@ -110,6 +112,23 @@ export const getSelectedGranuleProducts = createSelector(
         return a.bytes - b.bytes;
       }).reverse()
     ;
+  }
+);
+
+export const getGranuleProducts = createSelector(
+  getGranulesState,
+  (state: GranulesState) => {
+    const granuleProducts = {};
+
+    Object.entries(state.granules).forEach(
+      ([granule, products]) => {
+
+        granuleProducts[granule] = products
+          .map(name => state.products[name]);
+      }
+    );
+
+    return granuleProducts;
   }
 );
 

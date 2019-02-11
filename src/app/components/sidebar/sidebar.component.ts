@@ -113,7 +113,7 @@ export class SidebarComponent {
     this.store$.dispatch(new filtersStore.SetEndDate(end));
   }
 
-  public onNewProductSelected(name: string): void {
+  public onNewGranuleSelected(name: string): void {
     this.store$.dispatch(new granulesStore.SetSelectedGranule(name));
   }
 
@@ -161,12 +161,20 @@ export class SidebarComponent {
     this.store$.dispatch(new queueStore.AddItem(product));
   }
 
+  public onNewQueueItems(products: models.Sentinel1Product[]): void {
+    this.store$.dispatch(new queueStore.AddItems(products));
+  }
+
   public onMakeDownloadScript(): void {
     this.store$.dispatch(new queueStore.MakeDownloadScript());
   }
 
   public onMetadataDownload(format: models.AsfApiOutputFormat): void {
     this.store$.dispatch(new queueStore.DownloadMetadata(format));
+  }
+
+  public onQueueGranuleProducts(name: string): void {
+    this.store$.dispatch(new queueStore.QueueGranule(name));
   }
 }
 
