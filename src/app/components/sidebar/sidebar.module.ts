@@ -22,8 +22,8 @@ import { OtherSelectorModule } from './search/other-selector';
 import { ListSearchModule } from './list-search';
 import { QueueModule } from './queue';
 
-import { ProductsListModule } from './products/products-list';
-import { ProductDetailComponent } from './products/product-detail/product-detail.component';
+import { GranulesListModule } from './granules/granules-list';
+import { GranuleDetailComponent } from './granules/granule-detail/granule-detail.component';
 
 @NgModule({
   imports: [
@@ -38,7 +38,7 @@ import { ProductDetailComponent } from './products/product-detail/product-detail
 
     SearchBarModule,
     ToggleButtonModule,
-    ProductsListModule,
+    GranulesListModule,
     ListSearchModule,
 
     FilterSelectorModule,
@@ -50,7 +50,7 @@ import { ProductDetailComponent } from './products/product-detail/product-detail
   ],
   declarations: [
     SidebarComponent,
-    ProductDetailComponent,
+    GranuleDetailComponent,
   ],
   providers: [
     DateExtremaService,

@@ -8,12 +8,12 @@ import { faFileDownload, faPlus } from '@fortawesome/free-solid-svg-icons';
 import { Sentinel1Product } from '@models';
 
 @Component({
-  selector: 'app-products-list',
-  templateUrl: './products-list.component.html',
-  styleUrls: ['./products-list.component.scss'],
+  selector: 'app-granules-list',
+  templateUrl: './granules-list.component.html',
+  styleUrls: ['./granules-list.component.scss'],
   encapsulation: ViewEncapsulation.None
 })
-export class ProductsListComponent  {
+export class GranulesListComponent  {
   @Input() granules: Sentinel1Product[];
   @Input() selected: string;
 

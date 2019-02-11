@@ -5,11 +5,11 @@ import { faDownload, faPlus } from '@fortawesome/free-solid-svg-icons';
 import { Sentinel1Product } from '@models';
 
 @Component({
-  selector: 'app-product-detail',
-  templateUrl: './product-detail.component.html',
-  styleUrls: ['./product-detail.component.scss']
+  selector: 'app-granule-detail',
+  templateUrl: './granule-detail.component.html',
+  styleUrls: ['./granule-detail.component.scss']
 })
-export class ProductDetailComponent {
+export class GranuleDetailComponent {
   public downloadIcon = faDownload;
   public selectIcon = faPlus;
 

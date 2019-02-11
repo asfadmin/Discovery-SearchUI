@@ -113,7 +113,7 @@ export class SidebarComponent {
     this.store$.dispatch(new filtersStore.SetEndDate(end));
   }
 
-  public onNewProductSelected(name: string): void {
+  public onNewGranuleSelected(name: string): void {
     this.store$.dispatch(new granulesStore.SetSelectedGranule(name));
   }
 
