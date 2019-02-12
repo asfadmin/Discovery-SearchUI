@@ -54,6 +54,7 @@ export class SearchParamsService {
         this.dateRange$(),
         this.pathRange$(),
         this.frameRange$(),
+        this.productType$(),
       ).pipe(
         map(params => params
           .filter(param => !!Object.values(param)[0])
@@ -131,6 +132,22 @@ export class SearchParamsService {
         range.join('-') :
         range.pop() || null
       )
+    );
+  }
+
+  private productType$() {
+    return this.store$.select(filterStore.getProductTypes).pipe(
+      map(types => Object.values(types)
+        .reduce((allTypes, platformProductTypes) => [
+          ...allTypes, ...platformProductTypes
+        ], [])
+        .map(productType => productType.apiValue)
+      ),
+      map(
+        types => Array.from(new Set(types))
+          .join(',')
+      ),
+      map(types => ({ processinglevel: types }))
     );
   }
 }
