@@ -97,6 +97,7 @@ export class AppComponent implements OnInit {
         if (repairs.length === 0) {
           return resp.wkt;
         }
+        return; // TODO: Take this out when the api false wrapping is fixed
 
         const features = this.wktService.wktToFeature(
           resp.wkt,

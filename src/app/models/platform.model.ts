@@ -1,8 +1,13 @@
 export interface Platform {
   name: string;
   date: DateRange;
-  types: ProductType[];
+  productTypes: ProductType[];
   beamModes: string[];
+}
+
+export interface ProductType {
+  displayName: string;
+  apiValue: string;
 }
 
 export interface DateRange {
@@ -15,30 +20,26 @@ export interface PlatformProductType {
   platform: string;
 }
 
-export interface ProductType {
-  name: string;
-  apiName: string;
-}
 
 export const platforms: Platform[] = [{
   name: 'Sentinel-1A',
   date: { start: new Date(2014, 3, 25) },
-  types: [{
-    name: 'L0 Raw Data (RAW)', apiName: 'RAW',
+  productTypes: [{
+    displayName: 'L0 Raw Data (RAW)', apiValue: 'RAW',
   }, {
-    name: 'L1 Detected Full-Res Dual-Pol (GRD-FD)', apiName: 'GRD_FD',
+    displayName: 'L1 Detected Full-Res Dual-Pol (GRD-FD)', apiValue: 'GRD_FD',
   }, {
-    name: 'L1 Detected High-Res Dual-Pol (GRD-HD)', apiName: 'GRD_HD',
+    displayName: 'L1 Detected High-Res Dual-Pol (GRD-HD)', apiValue: 'GRD_HD',
   }, {
-    name: 'L1 Detected High-Res Single-Pol (GRD-HS)', apiName: 'GRD_HS',
+    displayName: 'L1 Detected High-Res Single-Pol (GRD-HS)', apiValue: 'GRD_HS',
   }, {
-    name: 'L1 Detected Mid-Res Dual-Pol (GRD-MD)', apiName: 'GRD_MD',
+    displayName: 'L1 Detected Mid-Res Dual-Pol (GRD-MD)', apiValue: 'GRD_MD',
   }, {
-    name: 'L1 Detected Mid-Res Single-Pol (GRD-MS)', apiName: 'GRD_MS',
+    displayName: 'L1 Detected Mid-Res Single-Pol (GRD-MS)', apiValue: 'GRD_MS',
   }, {
-    name: 'L1 Single Look Complex (SLC)', apiName: 'SLC',
+    displayName: 'L1 Single Look Complex (SLC)', apiValue: 'SLC',
   }, {
-    name: 'L2 Ocean (OCN)', apiName: 'OCN',
+    displayName: 'L2 Ocean (OCN)', apiValue: 'OCN',
   }],
   beamModes: [
     'EW', 'IW', 'S1', 'S2', 'S3', 'S4', 'S5', 'S6', 'WV'
@@ -46,22 +47,22 @@ export const platforms: Platform[] = [{
 }, {
   name: 'Sentinel-1B',
   date: { start: new Date(2016, 3, 3) },
-  types: [{
-    name: 'L0 Raw Data (RAW)', apiName: 'RAW',
+  productTypes: [{
+    displayName: 'L0 Raw Data (RAW)', apiValue: 'RAW',
   }, {
-    name: 'L1 Detected Full-Res Dual-Pol (GRD-FD)', apiName: 'GRD_FD',
+    displayName: 'L1 Detected Full-Res Dual-Pol (GRD-FD)', apiValue: 'GRD_FD',
   }, {
-    name: 'L1 Detected High-Res Dual-Pol (GRD-HD)', apiName: 'GRD_HD',
+    displayName: 'L1 Detected High-Res Dual-Pol (GRD-HD)', apiValue: 'GRD_HD',
   }, {
-    name: 'L1 Detected High-Res Single-Pol (GRD-HS)', apiName: 'GRD_HS',
+    displayName: 'L1 Detected High-Res Single-Pol (GRD-HS)', apiValue: 'GRD_HS',
   }, {
-    name: 'L1 Detected Mid-Res Dual-Pol (GRD-MD)', apiName: 'GRD_MD',
+    displayName: 'L1 Detected Mid-Res Dual-Pol (GRD-MD)', apiValue: 'GRD_MD',
   }, {
-    name: 'L1 Detected Mid-Res Single-Pol (GRD-MS)', apiName: 'GRD_MS',
+    displayName: 'L1 Detected Mid-Res Single-Pol (GRD-MS)', apiValue: 'GRD_MS',
   }, {
-    name: 'L1 Single Look Complex (SLC)', apiName: 'SLC',
+    displayName: 'L1 Single Look Complex (SLC)', apiValue: 'SLC',
   }, {
-    name: 'L2 Ocean (OCN)', apiName: 'OCN',
+    displayName: 'L2 Ocean (OCN)', apiValue: 'OCN',
   }  ],
   beamModes: [
     'EW', 'IW', 'S1', 'S2', 'S3', 'S4', 'S5', 'S6', 'WV'
@@ -69,7 +70,7 @@ export const platforms: Platform[] = [{
 }, {
   name: 'SMAP',
   date: { start: new Date(2015, 0, 15) },
-  types: [{
+  productTypes: [{
     /*
  L1A_Radar_RO_QA,
  L1B_S0_LoRes_HDF5 === L1B S0 LoRes Product,
@@ -82,17 +83,17 @@ export const platforms: Platform[] = [{
  L1C_S0_HiRes_HDF5 === L1C S0 HiRes Product,
  L1A_Radar_HDF5 === L1A Radar Product
      */
-    name: 'L1A Radar Product', apiName: 'L1A_Radar_HDF5 ',
+    displayName: 'L1A Radar Product', apiValue: 'L1A_Radar_HDF5 ',
   }, {
-    name: 'L1B S0 LoRes Product', apiName:  'L1B_S0_LoRes_HDF5'
+    displayName: 'L1B S0 LoRes Product', apiValue:  'L1B_S0_LoRes_HDF5'
   }, {
-    name: 'L1C S0 HiRes Product', apiName:  'L1C_S0_HiRes_HDF5 '
+    displayName: 'L1C S0 HiRes Product', apiValue:  'L1C_S0_HiRes_HDF5 '
   }],
   beamModes: [ 'STD' ]
 }, {
   name: 'UAVSAR',
   date: { start: new Date(2008, 0, 1) },
-  types: [{
+  productTypes: [{
 
 /*
  KMZ,
@@ -102,23 +103,23 @@ export const platforms: Platform[] = [{
  METADATA,
  THUMBNAIL
  */
-    name: 'Amplitude', apiName: 'AMPLITUDE'
+    displayName: 'Amplitude', apiValue: 'AMPLITUDE'
   }, {
-    name: 'Compressed Stokes Matrix', apiName: 'STOKES',
+    displayName: 'Compressed Stokes Matrix', apiValue: 'STOKES',
   }, {
-    name: 'Ground Projected Amplitude', apiName: 'AMPLITUDE_GRD'
+    displayName: 'Ground Projected Amplitude', apiValue: 'AMPLITUDE_GRD'
   }, {
-    name: 'Ground Projected Complex', apiName: 'PROJECTED'
+    displayName: 'Ground Projected Complex', apiValue: 'PROJECTED'
   }, {
-    name: 'Ground Projected Complex, 3X3 Resampled', apiName: 'PROJECTED_ML3X3'
+    displayName: 'Ground Projected Complex, 3X3 Resampled', apiValue: 'PROJECTED_ML3X3'
   }, {
-    name: 'Ground Projected Complex, 5X5 Resampled', apiName: 'PROJECTED_ML5X5'
+    displayName: 'Ground Projected Complex, 5X5 Resampled', apiValue: 'PROJECTED_ML5X5'
   }, {
-    name: 'Ground Projected Interferogram', apiName: 'INTERFEROMETRY_GRD'
+    displayName: 'Ground Projected Interferogram', apiValue: 'INTERFEROMETRY_GRD'
   }, {
-    name: 'Interferogram', apiName: 'INTERFEROMETRY'
+    displayName: 'Interferogram', apiValue: 'INTERFEROMETRY'
   }, {
-    name: 'Multi-look Complex', apiName: 'COMPLEXE'
+    displayName: 'Multi-look Complex', apiValue: 'COMPLEXE'
   }],
   beamModes: [ 'POL', 'RPI' ]
 }, {
@@ -127,12 +128,12 @@ export const platforms: Platform[] = [{
     start: new Date(2006, 0, 1),
     end: new Date(2011, 0, 1)
   },
-  types: [{
-    name: 'Level 1.0', apiName: 'L1.0'
+  productTypes: [{
+    displayName: 'Level 1.0', apiValue: 'L1.0'
   }, {
-    name: 'Level 1.1 Complex', apiName: 'L1.1'
+    displayName: 'Level 1.1 Complex', apiValue: 'L1.1'
   }, {
-    name: 'Level 1.5 Image', apiName: 'L1.5'
+    displayName: 'Level 1.5 Image', apiValue: 'L1.5'
   }],
   beamModes: []
 }, {
@@ -141,10 +142,10 @@ export const platforms: Platform[] = [{
     start: new Date(1995, 0, 1),
     end: new Date(2008, 0, 1)
   },
-  types: [{
-    name: 'Level Zero', apiName: 'L0'
+  productTypes: [{
+    displayName: 'Level Zero', apiValue: 'L0'
   }, {
-    name: 'Level One Image', apiName: 'L1'
+    displayName: 'Level One Image', apiValue: 'L1'
   }],
   beamModes: [
     'EH3', 'EH4', 'EH6', 'EL1', 'FN1', 'FN2', 'FN3', 'FN4',
@@ -157,10 +158,10 @@ export const platforms: Platform[] = [{
     start: new Date(1995, 0, 1),
     end: new Date(2011, 0, 1)
   },
-  types: [{
-    name: 'Level Zero', apiName: 'L0'
+  productTypes: [{
+    displayName: 'Level Zero', apiValue: 'L0'
   }, {
-    name: 'Level One Image', apiName: 'L1'
+    displayName: 'Level One Image', apiValue: 'L1'
   }],
   beamModes: [ 'STD' ]
 }, {
@@ -169,10 +170,10 @@ export const platforms: Platform[] = [{
     start: new Date(1992, 0, 1),
     end: new Date(1998, 0, 1)
   },
-  types: [{
-    name: 'Level Zero', apiName: 'L0'
+  productTypes: [{
+    displayName: 'Level Zero', apiValue: 'L0'
   }, {
-    name: 'Level One Image', apiName: 'L1'
+    displayName: 'Level One Image', apiValue: 'L1'
   }],
   beamModes: [ 'STD' ]
 }, {
@@ -181,10 +182,10 @@ export const platforms: Platform[] = [{
     start: new Date(1991, 0, 1),
     end: new Date(1997, 0, 1)
   },
-  types: [{
-    name: 'Level Zero', apiName: 'L0'
+  productTypes: [{
+    displayName: 'Level Zero', apiValue: 'L0'
   }, {
-    name: 'Level One Image', apiName: 'L1'
+    displayName: 'Level One Image', apiValue: 'L1'
   }],
   beamModes: [ 'STD' ]
 }, {
@@ -193,7 +194,7 @@ export const platforms: Platform[] = [{
     start: new Date(1990, 0, 1),
     end: new Date(2004, 0, 1)
   },
-  types: [{
+  productTypes: [{
     /*
      3FP,
      ATI,
@@ -208,23 +209,23 @@ export const platforms: Platform[] = [{
      LSTOKES,
      THUMBNAIL
      */
-    name: '3-Frequency Polarimetry', apiName: '3FP'
+    displayName: '3-Frequency Polarimetry', apiValue: '3FP'
   }, {
-    name: 'Along-Track Interferometry', apiName: 'ATI'
+    displayName: 'Along-Track Interferometry', apiValue: 'ATI'
   }, {
-    name: 'C-Band DEM & Compressed Stokes Matrix', apiName: 'CSTOKES'
+    displayName: 'C-Band DEM & Compressed Stokes Matrix', apiValue: 'CSTOKES'
   }, {
-    name: 'C-Band JPG', apiName: 'CTIF'
+    displayName: 'C-Band JPG', apiValue: 'CTIF'
   }, {
-    name: 'JPG', apiName: 'JPG'
+    displayName: 'JPG', apiValue: 'JPG'
   }, {
-    name: 'L-Band Compressed Stokes Matrix', apiName: 'LSTOKES'
+    displayName: 'L-Band Compressed Stokes Matrix', apiValue: 'LSTOKES'
   }, {
-    name: 'L-Band JPG', apiName: 'LTIF'
+    displayName: 'L-Band JPG', apiValue: 'LTIF'
   }, {
-    name: 'P-Band Compressed Stokes Matrix', apiName: 'PSTOKES'
+    displayName: 'P-Band Compressed Stokes Matrix', apiValue: 'PSTOKES'
   }, {
-    name: 'P-Band JPG', apiName: 'PTIF'
+    displayName: 'P-Band JPG', apiValue: 'PTIF'
   }],
   beamModes: [ '3FP', 'ATI', 'XTI' ]
 }, {
@@ -233,8 +234,8 @@ export const platforms: Platform[] = [{
     start: new Date(1978, 0, 1),
     end: new Date(1978, 0, 1)
   },
-  types: [{
-    name: 'Level One GeoTIFF product' , apiName: 'L1'
+  productTypes: [{
+    displayName: 'Level One GeoTIFF product' , apiValue: 'L1'
   }],
   beamModes: [ 'STD' ]
 }];

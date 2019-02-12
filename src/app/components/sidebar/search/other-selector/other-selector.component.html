@@ -3,16 +3,16 @@
 
     <mat-form-field *ngFor="let platform of selected">
       <mat-select
-        *ngIf="platform.types !== []"
+        *ngIf="platform.productTypes !== []"
         [(ngModel)]="productTypes[platform.name]"
         (selectionChange)="onTypesChanged($event)"
         placeholder="{{ platform.name }}" multiple>
           <mat-option
-            *ngFor="let type of platform.types"
+            *ngFor="let type of platform.productTypes"
             (click)="onTypeSelected(platform.name, type)"
             [value]="type"
-            [matTooltip]="type.name">
-              {{type.name}}
+            [matTooltip]="type.displayName">
+              {{type.displayName}}
           </mat-option>
       </mat-select>
     </mat-form-field>
