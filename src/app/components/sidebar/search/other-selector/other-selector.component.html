@@ -2,10 +2,18 @@
     <h4>Product Type</h4>
 
     <mat-form-field *ngFor="let platform of selected">
-      <mat-select *ngIf="platform.types !== []" placeholder="{{ platform.name }}" multiple>
-        <mat-option *ngFor="let type of platform.types" [value]="type">
-          {{type}}
-        </mat-option>
+      <mat-select
+        *ngIf="platform.types !== []"
+        [(ngModel)]="productTypes[platform.name]"
+        (selectionChange)="onTypesChanged($event)"
+        placeholder="{{ platform.name }}" multiple>
+          <mat-option
+            *ngFor="let type of platform.types"
+            (click)="onTypeSelected(platform.name, type)"
+            [value]="type"
+            [matTooltip]="type.name">
+              {{type.name}}
+          </mat-option>
       </mat-select>
     </mat-form-field>
 

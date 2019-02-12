@@ -14,6 +14,11 @@ export interface FiltersState {
   shouldOmitSearchPolygon: boolean;
 
   listSearchMode: models.ListSearchType;
+  productTypes: PlatformProductTypes;
+}
+
+export interface PlatformProductTypes {
+  [platformName: string]: models.ProductType[];
 }
 
 export type DateRangeState = models.Range<null | Date>;
@@ -49,6 +54,7 @@ const initState: FiltersState = {
   },
   shouldOmitSearchPolygon: false,
   listSearchMode: models.ListSearchType.GRANULE,
+  productTypes: {},
 };
 
 
@@ -178,6 +184,34 @@ export function filtersReducer(state = initState, action: FiltersActions): Filte
       };
     }
 
+    case FiltersActionType.ADD_PRODUCT_TYPE: {
+      const productTypes = { ...state.productTypes };
+      const oldTypes = productTypes[action.payload.platform] || [];
+
+      productTypes[action.payload.platform] = [
+        ...oldTypes, action.payload.productType
+      ];
+
+      return {
+        ...state,
+        productTypes
+      };
+    }
+
+    case FiltersActionType.REMOVE_PRODUCT_TYPE: {
+      const productTypes = { ...state.productTypes };
+
+      const types = [...productTypes[action.payload.platform]]
+        .filter(productType => productType !== action.payload.productType);
+
+      productTypes[action.payload.platform] = types;
+
+      return {
+        ...state,
+        productTypes
+      };
+    }
+
     default: {
       return state;
     }
@@ -243,4 +277,9 @@ export const getShouldOmitSearchPolygon = createSelector(
 export const getListSearchMode = createSelector(
   getFiltersState,
   (state: FiltersState) => state.listSearchMode
+);
+
+export const getProductTypes = createSelector(
+  getFiltersState,
+  (state: FiltersState) => state.productTypes
 );

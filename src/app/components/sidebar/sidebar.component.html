@@ -15,15 +15,6 @@
   </app-search-bar>
 
   <mat-tab-group color="primary" backgroundColor="primary">
-    <mat-tab label="List Search">
-      <app-list-search
-        (newListSearchMode)="onNewListSearchMode($event)"
-        (newListSearch)="onNewGranuleList($event)"
-        [mode]="listSearchMode$ | async"
-        [searchList]="searchList$ | async"
-        ></app-list-search>
-    </mat-tab>
-
     <mat-tab label="Filters">
       <app-platform-selector
         [platforms]="platforms$ | async"
@@ -53,8 +44,20 @@
       </app-path-selector>
 
       <app-other-selector
+        (newProductType)="onNewProductType($event)"
+        (removeProductType)="onRemoveProductType($event)"
+        [productTypes]="platformProductTypes$ | async"
         [selected]="selectedPlatforms$ | async">
       </app-other-selector>
+    </mat-tab>
+
+    <mat-tab label="List Search">
+      <app-list-search
+        (newListSearchMode)="onNewListSearchMode($event)"
+        (newListSearch)="onNewGranuleList($event)"
+        [mode]="listSearchMode$ | async"
+        [searchList]="searchList$ | async"
+        ></app-list-search>
     </mat-tab>
 
     <ng-container *ngIf="granules$ | async as granules">

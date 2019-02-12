@@ -10,6 +10,11 @@ export interface DateRange {
   end?: Date;
 }
 
+export interface PlatformProductType {
+  productType: ProductType;
+  platform: string;
+}
+
 export interface ProductType {
   name: string;
   apiName: string;
@@ -110,8 +115,6 @@ export const platforms: Platform[] = [{
     name: 'Ground Projected Complex, 5X5 Resampled', apiName: 'PROJECTED_ML5X5'
   }, {
     name: 'Ground Projected Interferogram', apiName: 'INTERFEROMETRY_GRD'
-  }, {
-    name: 'HDF5', apiName: '???'
   }, {
     name: 'Interferogram', apiName: 'INTERFEROMETRY'
   }, {
