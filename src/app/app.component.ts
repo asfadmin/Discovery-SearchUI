@@ -97,7 +97,13 @@ export class AppComponent implements OnInit {
         if (repairs.length === 0) {
           return resp.wkt;
         }
-        return; // TODO: Take this out when the api false wrapping is fixed
+
+        const { report, type }  = resp.repairs.pop();
+
+        this.snackBar.open(
+          report, type,
+          { duration: 4000, }
+        );
 
         const features = this.wktService.wktToFeature(
           resp.wkt,
