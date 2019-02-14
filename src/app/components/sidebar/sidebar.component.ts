@@ -54,6 +54,7 @@ export class SidebarComponent {
   public frameRange$ = this.store$.select(filtersStore.getFrameRange);
   public shouldOmitSearchPolygon$ = this.store$.select(filtersStore.getShouldOmitSearchPolygon);
   public listSearchMode$ = this.store$.select(filtersStore.getListSearchMode);
+  public flightDirections$ = this.store$.select(filtersStore.getFlightDirections);
 
   public isSidebarOpen$ = this.store$.select(uiStore.getIsSidebarOpen);
   public selectedFilter$ = this.store$.select(uiStore.getSelectedFilter);
@@ -184,6 +185,10 @@ export class SidebarComponent {
 
   public onRemoveProductType(productType: models.PlatformProductType): void {
     this.store$.dispatch(new filtersStore.RemoveProductType(productType));
+  }
+
+  public onNewFlightDirections(directions: models.FlightDirection[]): void {
+    this.store$.dispatch(new filtersStore.SetFlightDirections(directions));
   }
 }
 

@@ -1,6 +1,6 @@
 import { Action } from '@ngrx/store';
 
-import { ListSearchType, PlatformProductType, PlatformProductTypes } from '@models';
+import * as models from '@models';
 
 export enum FiltersActionType {
   ADD_SELECTED_PLATFORM = '[Filters-Platform] Add Platform Filter',
@@ -19,6 +19,8 @@ export enum FiltersActionType {
   ADD_PRODUCT_TYPE = '[Filters-Product-Type] Add Product Type',
   REMOVE_PRODUCT_TYPE = '[Filters-Product-Type] Remove Product Type',
   SET_PRODUCT_TYPES = '[Filters-Prodcut-Type] Set Product Types',
+
+  SET_FLIGHT_DIRECTIONS = '[Filters-Flight-Dir] Set Flight Directions',
 
   OMIT_SEARCH_POLYGON = '[Filters-Search] Omit Search Polygon',
   USE_SEARCH_POLYGON = '[Filters-Search] Use Search Polygon',
@@ -97,29 +99,35 @@ export class SetFrameEnd implements Action {
 export class AddProductType implements Action {
   public readonly type = FiltersActionType.ADD_PRODUCT_TYPE;
 
-  constructor(public payload: PlatformProductType) {}
+  constructor(public payload: models.PlatformProductType) {}
 }
 
 export class RemoveProductType implements Action {
   public readonly type = FiltersActionType.REMOVE_PRODUCT_TYPE;
 
-  constructor(public payload: PlatformProductType) {}
+  constructor(public payload: models.PlatformProductType) {}
 }
 
 export class SetProductTypes implements Action {
   public readonly type = FiltersActionType.SET_PRODUCT_TYPES;
 
-  constructor(public payload: PlatformProductTypes) {}
+  constructor(public payload: models.PlatformProductTypes) {}
 }
 
 export class SetListSearchType implements Action {
   public readonly type = FiltersActionType.SET_LIST_SEARCH_TYPE;
 
-  constructor(public payload: ListSearchType) {}
+  constructor(public payload: models.ListSearchType) {}
 }
 
 export class ClearFilters implements Action {
   public readonly type = FiltersActionType.CLEAR_FILTERS;
+}
+
+export class SetFlightDirections implements Action {
+  public readonly type = FiltersActionType.SET_FLIGHT_DIRECTIONS;
+
+  constructor(public payload: models.FlightDirection[]) {}
 }
 
 
@@ -140,4 +148,5 @@ export type FiltersActions =
   | RemoveProductType
   | SetProductTypes
   | SetListSearchType
+  | SetFlightDirections
   | ClearFilters;

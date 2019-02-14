@@ -1,7 +1,5 @@
 import { Component, Input, EventEmitter, Output } from '@angular/core';
 
-import { PlatformProductTypes  } from '@store/filters';
-
 import * as models from '@models';
 
 @Component({
@@ -11,12 +9,14 @@ import * as models from '@models';
 })
 export class OtherSelectorComponent {
   @Input() selected: models.Platform[];
-  @Input() productTypes: PlatformProductTypes;
+  @Input() productTypes: models.PlatformProductTypes;
+  @Input() flightDirections: models.FlightDirection[];
 
   @Output() newProductType = new EventEmitter<models.PlatformProductType>();
   @Output() removeProductType = new EventEmitter<models.PlatformProductType>();
+  @Output() newFlightDirections = new EventEmitter<models.FlightDirection[]>();
 
-  public flightDirections = models.flightDirections;
+  public flightDirectionTypes = models.flightDirections;
 
   public beamModes(): string[] {
     return this.selected.reduce(
@@ -36,5 +36,9 @@ export class OtherSelectorComponent {
     } else {
       this.newProductType.emit({ platform, productType });
     }
+  }
+
+  public onNewFlightDirectionsSelected(directions: models.FlightDirection[]): void {
+    this.newFlightDirections.emit(directions);
   }
 }

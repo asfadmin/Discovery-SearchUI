@@ -42,8 +42,12 @@
 
     <h4>Flight Direction</h4>
     <mat-form-field>
-      <mat-select placeholder="{{ flightDirections[0] }}" multiple>
-        <mat-option *ngFor="let direction of flightDirections" [value]="direction">
+      <mat-select
+        (selectionChange)="onNewFlightDirectionsSelected($event.value)"
+        [(ngModel)]="flightDirections"
+        placeholder="Direction"
+        multiple>
+        <mat-option *ngFor="let direction of flightDirectionTypes" [value]="direction">
           {{direction}}
         </mat-option>
       </mat-select>

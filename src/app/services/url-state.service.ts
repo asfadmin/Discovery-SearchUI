@@ -183,6 +183,14 @@ export class UrlStateService {
         })
       ),
       loader: this.loadProductTypes
+    }, {
+      name: 'flightDirs',
+      source: this.store$.select(filterStore.getFlightDirections).pipe(
+        skip(1),
+        map(dirs => dirs.join(',')),
+        map(flightDirs => ({ flightDirs }))
+      ),
+      loader: this.loadFlightDirections
     }];
   }
 
@@ -398,6 +406,17 @@ export class UrlStateService {
     }
 
     this.store$.dispatch(new filterStore.SetProductTypes(validPlatforms));
+  }
+
+  private loadFlightDirections = (dirsStr: string): void => {
+    const directions: models.FlightDirection[] = dirsStr
+      .split(',')
+      .filter(direction => !Object.values(models.FlightDirection).includes(direction))
+      .map(direction => <models.FlightDirection>direction);
+
+    const action = new filterStore.SetFlightDirections(directions);
+
+    this.store$.dispatch(action);
   }
 
   private isNumber = n => !isNaN(n) && isFinite(n);

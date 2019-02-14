@@ -44,10 +44,12 @@
       </app-path-selector>
 
       <app-other-selector
+        (newFlightDirections)="onNewFlightDirections($event)"
         (newProductType)="onNewProductType($event)"
         (removeProductType)="onRemoveProductType($event)"
         [productTypes]="platformProductTypes$ | async"
-        [selected]="selectedPlatforms$ | async">
+        [selected]="selectedPlatforms$ | async"
+        [flightDirections]="flightDirections$ | async">
       </app-other-selector>
     </mat-tab>
 

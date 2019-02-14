@@ -17,6 +17,7 @@ export interface FiltersState {
 
   productTypes: models.PlatformProductTypes;
   beamModes: PlatformBeamModes;
+  flightDirections: Set<models.FlightDirection>;
 }
 
 export interface PlatformBeamModes {
@@ -59,6 +60,7 @@ const initState: FiltersState = {
 
   productTypes: {},
   beamModes: {},
+  flightDirections: new Set<models.FlightDirection>([]),
 };
 
 
@@ -233,6 +235,13 @@ export function filtersReducer(state = initState, action: FiltersActions): Filte
       };
     }
 
+    case FiltersActionType.SET_FLIGHT_DIRECTIONS: {
+      return {
+        ...state,
+        flightDirections: new Set(action.payload)
+      };
+    }
+
     default: {
       return state;
     }
@@ -303,4 +312,9 @@ export const getListSearchMode = createSelector(
 export const getProductTypes = createSelector(
   getFiltersState,
   (state: FiltersState) => state.productTypes
+);
+
+export const getFlightDirections = createSelector(
+  getFiltersState,
+  (state: FiltersState) => Array.from(state.flightDirections)
 );
