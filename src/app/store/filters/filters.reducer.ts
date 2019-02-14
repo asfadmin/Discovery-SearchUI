@@ -63,6 +63,7 @@ export function filtersReducer(state = initState, action: FiltersActions): Filte
     case FiltersActionType.ADD_SELECTED_PLATFORM: {
       const selected = new Set<string>(state.platforms.selected);
       selected.add(action.payload);
+      console.log('selected', selected);
 
       return {
         ...state,
@@ -76,12 +77,17 @@ export function filtersReducer(state = initState, action: FiltersActions): Filte
     case FiltersActionType.REMOVE_SELECTED_PLATFORM: {
       const selected = new Set<string>(state.platforms.selected);
       selected.delete(action.payload);
+      console.log('selected', selected);
 
       return {
         ...state,
         platforms: {
           ...state.platforms,
           selected
+        },
+        productTypes: {
+          ...state.productTypes,
+          [action.payload]: []
         }
       };
     }

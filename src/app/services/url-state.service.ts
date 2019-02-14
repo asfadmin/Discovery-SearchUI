@@ -163,6 +163,26 @@ export class UrlStateService {
         map(mode => ({ listSearchType: mode }))
       ),
       loader: this.loadListSearchType
+    }, {
+      name: 'productTypes',
+      source: this.store$.select(filterStore.getProductTypes).pipe(
+        skip(1),
+        map(types => {
+
+          let param = '';
+
+          for (const [platformName, productTypes] of Object.entries(types)) {
+            const typesStr = productTypes
+              .map(type => type.apiValue)
+              .join(',');
+
+            param += `$$${platformName},${typesStr}`;
+          }
+
+          return { productTypes: param };
+        })
+      ),
+      loader: this.loadProductTypes
     }];
   }
 
@@ -331,6 +351,17 @@ export class UrlStateService {
 
       this.store$.dispatch(action);
     }
+  }
+
+  private loadProductTypes = (typesStr: string): void => {
+    const types = {};
+    typesStr
+      .split('$$')
+      .filter(s => !!s)
+      .map(platformTypes => platformTypes.split(','))
+      .forEach(([platform, ...platformTypes]) => types[platform] = platformTypes);
+
+    console.log(types);
   }
 
   private isNumber = n => !isNaN(n) && isFinite(n);
