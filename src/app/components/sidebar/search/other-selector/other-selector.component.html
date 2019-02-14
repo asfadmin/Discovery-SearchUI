@@ -4,7 +4,6 @@
       <mat-form-field *ngIf="platform.productTypes.length > 1" >
         <mat-select
           [(ngModel)]="productTypes[platform.name]"
-          (selectionChange)="onTypesChanged($event)"
           placeholder="{{ platform.name }}" multiple>
             <mat-option
               *ngFor="let type of platform.productTypes"
@@ -20,10 +19,14 @@
     <h4>Beam Mode</h4>
     <ng-container *ngFor="let platform of selected">
         <mat-form-field *ngIf="platform.beamModes.length > 1">
-          <mat-select (selectionChange)="onNewPlatformBeamMode(platform, $event.value)" placeholder="{{ platform.name }}" multiple>
-            <mat-option *ngFor="let mode of platform.beamModes" [value]="mode">
-              {{mode}}
-            </mat-option>
+          <mat-select
+            (selectionChange)="onNewPlatformBeamMode(platform, $event.value)"
+            [(ngModel)]="beamModes[platform.name]"
+            placeholder="{{ platform.name }}"
+            multiple>
+              <mat-option *ngFor="let mode of platform.beamModes" [value]="mode">
+                {{mode}}
+              </mat-option>
           </mat-select>
         </mat-form-field>
     </ng-container>

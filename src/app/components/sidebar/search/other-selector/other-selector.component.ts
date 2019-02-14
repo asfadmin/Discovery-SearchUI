@@ -11,6 +11,7 @@ export class OtherSelectorComponent {
   @Input() selected: models.Platform[];
   @Input() productTypes: models.PlatformProductTypes;
   @Input() flightDirections: models.FlightDirection[];
+  @Input() beamModes: models.PlatformBeamModes;
 
   @Output() newProductType = new EventEmitter<models.PlatformProductType>();
   @Output() removeProductType = new EventEmitter<models.PlatformProductType>();
@@ -18,16 +19,6 @@ export class OtherSelectorComponent {
   @Output() newBeamModes = new EventEmitter<models.PlatformBeamModes>();
 
   public flightDirectionTypes = models.flightDirections;
-
-  public beamModes(): string[] {
-    return this.selected.reduce(
-      (modes, platform) => [...modes, ...platform.beamModes], []
-    );
-  }
-
-  public onTypesChanged(e): void {
-    console.log(e);
-  }
 
   public onNewPlatformBeamMode(platform: models.Platform, beamModes: string[]): void {
     this.newBeamModes.emit({ [platform.name]: beamModes });

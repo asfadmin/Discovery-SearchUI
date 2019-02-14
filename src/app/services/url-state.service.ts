@@ -184,6 +184,25 @@ export class UrlStateService {
       ),
       loader: this.loadProductTypes
     }, {
+      name: 'beamModes',
+      source: this.store$.select(filterStore.getBeamModes).pipe(
+        skip(1),
+        map(types => {
+
+          let param = '';
+
+          for (const [platformName, productTypes] of Object.entries(types)) {
+            const typesStr = productTypes
+              .join(',');
+
+            param += `$$${platformName},${typesStr}`;
+          }
+
+          return { beamModes: param };
+        })
+      ),
+      loader: this.loadBeamModes
+    }, {
       name: 'flightDirs',
       source: this.store$.select(filterStore.getFlightDirections).pipe(
         skip(1),
@@ -361,20 +380,51 @@ export class UrlStateService {
     }
   }
 
-  private loadProductTypes = (typesStr: string): void => {
-
-    const possiblePlatforms = typesStr
+  private parseValuesByPlatform(str: string) {
+    return str
       .split('$$')
       .filter(s => !!s)
       .map(platformTypes => platformTypes.split(','))
       .map(
-        ([platform, ...platformTypes]) => ({ platform, platformTypes })
+        ([platform, ...beamModes]) => ({ platform, beamModes })
       ).reduce(
-        (total, { platform, platformTypes }) => {
-          total[platform] = platformTypes;
+        (total, { platform, beamModes }) => {
+          total[platform] = beamModes;
 
           return total;
         }, {});
+  }
+
+  private loadBeamModes = (modesStr: string): void => {
+    const possiblePlatforms = this.parseValuesByPlatform(modesStr);
+
+    const validPlatforms = {};
+
+    for (const platformName of Object.keys(possiblePlatforms)) {
+      const platform = models.platforms
+        .filter(plat => platformName === plat.name)
+        .pop();
+
+      if (!platform) {
+        continue;
+      }
+
+      const possibleBeamModes = possiblePlatforms[platform.name];
+      const platformBeamModes = new Set(platform.beamModes);
+
+      const validBeamModesFromUrl = new Set(
+        [...possibleBeamModes]
+        .filter(mode => platformBeamModes.has(mode))
+      );
+
+      validPlatforms[platform.name] = Array.from(validBeamModesFromUrl);
+    }
+
+    this.store$.dispatch(new filterStore.SetAllBeamModes(validPlatforms));
+  }
+
+  private loadProductTypes = (typesStr: string): void => {
+    const possiblePlatforms = this.parseValuesByPlatform(typesStr);
 
     const validPlatforms = {};
 

@@ -55,6 +55,7 @@ export class SidebarComponent {
   public shouldOmitSearchPolygon$ = this.store$.select(filtersStore.getShouldOmitSearchPolygon);
   public listSearchMode$ = this.store$.select(filtersStore.getListSearchMode);
   public flightDirections$ = this.store$.select(filtersStore.getFlightDirections);
+  public beamModes$ = this.store$.select(filtersStore.getBeamModes);
 
   public isSidebarOpen$ = this.store$.select(uiStore.getIsSidebarOpen);
   public selectedFilter$ = this.store$.select(uiStore.getSelectedFilter);
