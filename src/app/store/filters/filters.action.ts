@@ -23,6 +23,9 @@ export enum FiltersActionType {
   SET_PLATFORM_BEAM_MODES = '[Filters-Beam-Mode] Set Platform Beam Modes',
   SET_ALL_BEAM_MODES= '[Filters-Beam-Mode] Set All Beam Modes',
 
+  SET_PLATFORM_POLARIZATIONS = '[Filters-Polarization] Set Platform Polarizations',
+  SET_ALL_POLARIZATIONS = '[Filters-Polarization] Set All Polarizations',
+
   SET_FLIGHT_DIRECTIONS = '[Filters-Flight-Dir] Set Flight Directions',
 
   OMIT_SEARCH_POLYGON = '[Filters-Search] Omit Search Polygon',
@@ -145,6 +148,17 @@ export class SetAllBeamModes implements Action {
   constructor(public payload: models.PlatformBeamModes) {}
 }
 
+export class SetPlatformPolarizations implements Action {
+  public readonly type = FiltersActionType.SET_PLATFORM_POLARIZATIONS;
+
+  constructor(public payload: models.PlatformPolarizations) {}
+}
+
+export class SetAllPolarizations implements Action {
+  public readonly type = FiltersActionType.SET_ALL_POLARIZATIONS;
+
+  constructor(public payload: models.PlatformPolarizations) {}
+}
 
 export type FiltersActions =
   | AddSelectedPlatform
@@ -166,4 +180,6 @@ export type FiltersActions =
   | SetFlightDirections
   | SetPlatformBeamModes
   | SetAllBeamModes
+  | SetPlatformPolarizations
+  | SetAllPolarizations
   | ClearFilters;

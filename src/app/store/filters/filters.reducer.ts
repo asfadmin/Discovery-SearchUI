@@ -17,6 +17,7 @@ export interface FiltersState {
 
   productTypes: models.PlatformProductTypes;
   beamModes: models.PlatformBeamModes;
+  polarizations: models.PlatformPolarizations;
   flightDirections: Set<models.FlightDirection>;
 }
 
@@ -56,6 +57,7 @@ const initState: FiltersState = {
 
   productTypes: {},
   beamModes: {},
+  polarizations: {},
   flightDirections: new Set<models.FlightDirection>([]),
 };
 
@@ -245,6 +247,20 @@ export function filtersReducer(state = initState, action: FiltersActions): Filte
       };
     }
 
+    case FiltersActionType.SET_PLATFORM_POLARIZATIONS: {
+      return {
+        ...state,
+        polarizations: { ...state.polarizations, ...action.payload }
+      };
+    }
+
+    case FiltersActionType.SET_ALL_POLARIZATIONS: {
+      return {
+        ...state,
+        polarizations: { ...action.payload }
+      };
+    }
+
     case FiltersActionType.SET_FLIGHT_DIRECTIONS: {
       return {
         ...state,
@@ -327,6 +343,11 @@ export const getProductTypes = createSelector(
 export const getBeamModes = createSelector(
   getFiltersState,
   (state: FiltersState) => state.beamModes
+);
+
+export const getPolarizations = createSelector(
+  getFiltersState,
+  (state: FiltersState) => state.polarizations
 );
 
 export const getFlightDirections = createSelector(
