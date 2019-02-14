@@ -195,5 +195,9 @@ export class SidebarComponent {
   public onNewBeamModes(platformBeamModes: models.PlatformBeamModes): void {
     this.store$.dispatch(new filtersStore.SetPlatformBeamModes(platformBeamModes));
   }
+
+  public onNewPolarizations(platformPolarizations: models.PlatformPolarizations): void {
+    this.store$.dispatch(new filtersStore.SetPlatformPolarizations(platformPolarizations));
+  }
 }
 

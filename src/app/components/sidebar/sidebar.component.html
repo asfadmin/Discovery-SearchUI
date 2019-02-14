@@ -48,6 +48,7 @@
         (newProductType)="onNewProductType($event)"
         (removeProductType)="onRemoveProductType($event)"
         (newBeamModes)="onNewBeamModes($event)"
+        (newPolarizations)="onNewPolarizations($event)"
         [productTypes]="platformProductTypes$ | async"
         [selected]="selectedPlatforms$ | async"
         [flightDirections]="flightDirections$ | async"

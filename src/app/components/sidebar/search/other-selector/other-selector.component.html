@@ -20,7 +20,7 @@
     <ng-container *ngFor="let platform of selected">
         <mat-form-field *ngIf="platform.beamModes.length > 1">
           <mat-select
-            (selectionChange)="onNewPlatformBeamMode(platform, $event.value)"
+            (selectionChange)="onNewPlatformBeamModes(platform, $event.value)"
             [(ngModel)]="beamModes[platform.name]"
             placeholder="{{ platform.name }}"
             multiple>
@@ -35,7 +35,9 @@
     <h4>Polarization</h4>
     <ng-container *ngFor="let platform of selected">
       <mat-form-field *ngIf="platform.polarizations.length > 1">
-        <mat-select placeholder="{{ platform.name }}" multiple>
+        <mat-select
+          (selectionChange)="onNewPlatformPolarizations(platform, $event.value)"
+          placeholder="{{ platform.name }}" multiple>
           <mat-option *ngFor="let pol of platform.polarizations" [value]="pol">
             {{pol}}
           </mat-option>

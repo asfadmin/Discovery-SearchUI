@@ -43,7 +43,7 @@ export class SearchParamsService {
           (queryParams, [param, val]) => queryParams.append(param, <string>val),
           new HttpParams()
         )
-      )
+      ),
     );
   }
 
@@ -57,6 +57,7 @@ export class SearchParamsService {
         this.productType$(),
         this.flightDirections$(),
         this.beamModes$(),
+        this.polarizations$(),
       ).pipe(
         map((params: any[]) => params
           .filter(param => !!Object.values(param)[0])
@@ -165,6 +166,21 @@ export class SearchParamsService {
           .join(',')
       ),
       map(beamModes => ({ beamSwath: beamModes }))
+    );
+  }
+
+  private polarizations$() {
+    return this.store$.select(filterStore.getPolarizations).pipe(
+      map(polarizations => Object.values(polarizations)
+        .reduce((allPolarizations, platformPolarizations) => [
+          ...allPolarizations, ...platformPolarizations
+        ], [])
+      ),
+      map(
+        polarizations => Array.from(new Set(polarizations))
+          .join(',')
+      ),
+      map(polarization => ({ polarization })),
     );
   }
 

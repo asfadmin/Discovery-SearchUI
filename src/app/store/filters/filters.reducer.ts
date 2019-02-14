@@ -96,6 +96,10 @@ export function filtersReducer(state = initState, action: FiltersActions): Filte
         beamModes: {
           ...state.beamModes,
           [action.payload]: []
+        },
+        polarizations: {
+          ...state.polarizations,
+          [action.payload]: []
         }
       };
     }

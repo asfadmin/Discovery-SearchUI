@@ -17,10 +17,11 @@ export class OtherSelectorComponent {
   @Output() removeProductType = new EventEmitter<models.PlatformProductType>();
   @Output() newFlightDirections = new EventEmitter<models.FlightDirection[]>();
   @Output() newBeamModes = new EventEmitter<models.PlatformBeamModes>();
+  @Output() newPolarizations = new EventEmitter<models.PlatformPolarizations>();
 
   public flightDirectionTypes = models.flightDirections;
 
-  public onNewPlatformBeamMode(platform: models.Platform, beamModes: string[]): void {
+  public onNewPlatformBeamModes(platform: models.Platform, beamModes: string[]): void {
     this.newBeamModes.emit({ [platform.name]: beamModes });
   }
 
@@ -36,5 +37,9 @@ export class OtherSelectorComponent {
 
   public onNewFlightDirectionsSelected(directions: models.FlightDirection[]): void {
     this.newFlightDirections.emit(directions);
+  }
+
+  public onNewPlatformPolarizations(platform: models.Platform, polarizations: string[]): void {
+    this.newPolarizations.emit({ [platform.name]: polarizations });
   }
 }
