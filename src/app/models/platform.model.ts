@@ -21,6 +21,9 @@ export interface ProductType {
   apiValue: string;
 }
 
+export interface PlatformProductTypes {
+  [platformName: string]: ProductType[];
+}
 
 export const platforms: Platform[] = [{
   name: 'Sentinel-1A',

@@ -14,11 +14,13 @@ export interface FiltersState {
   shouldOmitSearchPolygon: boolean;
 
   listSearchMode: models.ListSearchType;
-  productTypes: PlatformProductTypes;
+
+  productTypes: models.PlatformProductTypes;
+  beamModes: PlatformBeamModes;
 }
 
-export interface PlatformProductTypes {
-  [platformName: string]: models.ProductType[];
+export interface PlatformBeamModes {
+  [platformName: string]: string[];
 }
 
 export type DateRangeState = models.Range<null | Date>;
@@ -54,7 +56,9 @@ const initState: FiltersState = {
   },
   shouldOmitSearchPolygon: false,
   listSearchMode: models.ListSearchType.GRANULE,
+
   productTypes: {},
+  beamModes: {},
 };
 
 
@@ -87,6 +91,10 @@ export function filtersReducer(state = initState, action: FiltersActions): Filte
         },
         productTypes: {
           ...state.productTypes,
+          [action.payload]: []
+        },
+        beamModes: {
+          ...state.beamModes,
           [action.payload]: []
         }
       };
@@ -201,6 +209,13 @@ export function filtersReducer(state = initState, action: FiltersActions): Filte
       return {
         ...state,
         productTypes
+      };
+    }
+
+    case FiltersActionType.SET_PRODUCT_TYPES: {
+      return {
+        ...state,
+        productTypes: action.payload
       };
     }
 

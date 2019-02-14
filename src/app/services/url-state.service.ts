@@ -354,14 +354,50 @@ export class UrlStateService {
   }
 
   private loadProductTypes = (typesStr: string): void => {
-    const types = {};
-    typesStr
+
+    const possiblePlatforms = typesStr
       .split('$$')
       .filter(s => !!s)
       .map(platformTypes => platformTypes.split(','))
-      .forEach(([platform, ...platformTypes]) => types[platform] = platformTypes);
+      .map(
+        ([platform, ...platformTypes]) => ({ platform, platformTypes })
+      ).reduce(
+        (total, { platform, platformTypes }) => {
+          total[platform] = platformTypes;
 
-    console.log(types);
+          return total;
+        }, {});
+
+    const validPlatforms = {};
+
+    for (const platformName of Object.keys(possiblePlatforms)) {
+      const platform = models.platforms
+        .filter(plat => platformName === plat.name)
+        .pop();
+
+      if (!platform) {
+        continue;
+      }
+
+      const possibleTypes = possiblePlatforms[platform.name];
+      const platformTypes = new Set(platform.productTypes
+        .map(t => t.apiValue)
+      );
+
+      const validTypeNamesFromUrl = new Set(
+        [...possibleTypes]
+        .filter(type => platformTypes.has(type))
+      );
+
+      const validTypesFromUrl = [...platform.productTypes]
+        .filter(
+          type => validTypeNamesFromUrl.has(type.apiValue)
+        );
+
+      validPlatforms[platform.name] = validTypesFromUrl;
+    }
+
+    this.store$.dispatch(new filterStore.SetProductTypes(validPlatforms));
   }
 
   private isNumber = n => !isNaN(n) && isFinite(n);
