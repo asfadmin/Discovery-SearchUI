@@ -40,7 +40,7 @@ export class SearchParamsService {
       map(params => Object.entries(params)
         .filter(([param, val]) => !!val)
         .reduce(
-          (queryParams, [param, val]) => queryParams.append(param, <string>val),
+          (queryParams, [param, val]) => queryParams.set(param, <string>val),
           new HttpParams()
         )
       ),
@@ -178,8 +178,10 @@ export class SearchParamsService {
       ),
       map(
         polarizations => Array.from(new Set(polarizations))
+          .map(pol => pol)
           .join(',')
       ),
+      tap(console.log),
       map(polarization => ({ polarization })),
     );
   }
