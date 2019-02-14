@@ -187,21 +187,40 @@ export class UrlStateService {
       name: 'beamModes',
       source: this.store$.select(filterStore.getBeamModes).pipe(
         skip(1),
-        map(types => {
+        map(modes => {
 
           let param = '';
 
-          for (const [platformName, productTypes] of Object.entries(types)) {
-            const typesStr = productTypes
+          for (const [platformName, beamModes] of Object.entries(modes)) {
+            const beamModesStr = beamModes
               .join(',');
 
-            param += `$$${platformName},${typesStr}`;
+            param += `$$${platformName},${beamModesStr}`;
           }
 
           return { beamModes: param };
         })
       ),
       loader: this.loadBeamModes
+    }, {
+      name: 'polarizations',
+      source: this.store$.select(filterStore.getPolarizations).pipe(
+        skip(1),
+        map(pols => {
+
+          let param = '';
+
+          for (const [platformName, polarizations] of Object.entries(pols)) {
+            const polarizationsStr = polarizations
+              .join(',');
+
+            param += `$$${platformName},${polarizationsStr}`;
+          }
+
+          return { polarizations: param };
+        })
+      ),
+      loader: this.loadPolarizations
     }, {
       name: 'flightDirs',
       source: this.store$.select(filterStore.getFlightDirections).pipe(
@@ -458,6 +477,36 @@ export class UrlStateService {
     this.store$.dispatch(new filterStore.SetProductTypes(validPlatforms));
   }
 
+
+  private loadPolarizations = (polarizationsStr: string): void => {
+    const possiblePlatforms = this.parseValuesByPlatform(polarizationsStr);
+
+    const validPlatforms = {};
+
+    for (const platformName of Object.keys(possiblePlatforms)) {
+      const platform = models.platforms
+        .filter(plat => platformName === plat.name)
+        .pop();
+
+      if (!platform) {
+        continue;
+      }
+
+      const possiblePolarizations = possiblePlatforms[platform.name];
+      const platformPolarizations = new Set(platform.polarizations);
+
+      const validPolarizationsFromUrl = new Set(
+        [...possiblePolarizations]
+        .filter(mode => platformPolarizations.has(mode))
+      );
+
+      validPlatforms[platform.name] = Array.from(validPolarizationsFromUrl);
+    }
+
+    this.store$.dispatch(new filterStore.SetAllPolarizations(validPlatforms));
+  }
+
+
   private loadFlightDirections = (dirsStr: string): void => {
     const directions: models.FlightDirection[] = dirsStr
       .split(',')
@@ -468,6 +517,7 @@ export class UrlStateService {
 
     this.store$.dispatch(action);
   }
+
 
   private isNumber = n => !isNaN(n) && isFinite(n);
   private isValidDate = (d: Date): boolean => d instanceof Date && !isNaN(d.valueOf());

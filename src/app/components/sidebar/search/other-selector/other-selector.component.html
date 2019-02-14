@@ -37,6 +37,7 @@
       <mat-form-field *ngIf="platform.polarizations.length > 1">
         <mat-select
           (selectionChange)="onNewPlatformPolarizations(platform, $event.value)"
+          [(ngModel)]="polarizations[platform.name]"
           placeholder="{{ platform.name }}" multiple>
           <mat-option *ngFor="let pol of platform.polarizations" [value]="pol">
             {{pol}}

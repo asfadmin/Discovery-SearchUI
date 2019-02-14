@@ -12,6 +12,7 @@ export class OtherSelectorComponent {
   @Input() productTypes: models.PlatformProductTypes;
   @Input() flightDirections: models.FlightDirection[];
   @Input() beamModes: models.PlatformBeamModes;
+  @Input() polarizations: models.PlatformPolarizations;
 
   @Output() newProductType = new EventEmitter<models.PlatformProductType>();
   @Output() removeProductType = new EventEmitter<models.PlatformProductType>();
