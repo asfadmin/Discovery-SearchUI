@@ -56,8 +56,9 @@ export class SearchParamsService {
         this.frameRange$(),
         this.productType$(),
         this.flightDirections$(),
+        this.beamModes$(),
       ).pipe(
-        map(params => params
+        map((params: any[]) => params
           .filter(param => !!Object.values(param)[0])
           .reduce(
             (total, param) =>  ({...total, ...param}),
@@ -149,6 +150,21 @@ export class SearchParamsService {
           .join(',')
       ),
       map(types => ({ processinglevel: types }))
+    );
+  }
+
+  private beamModes$() {
+    return this.store$.select(filterStore.getBeamModes).pipe(
+      map(beamModes => Object.values(beamModes)
+        .reduce((allModes, platformBeamModes) => [
+          ...allModes, ...platformBeamModes
+        ], [])
+      ),
+      map(
+        types => Array.from(new Set(types))
+          .join(',')
+      ),
+      map(beamModes => ({ beamSwath: beamModes }))
     );
   }
 

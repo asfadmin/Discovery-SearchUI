@@ -20,6 +20,9 @@ export enum FiltersActionType {
   REMOVE_PRODUCT_TYPE = '[Filters-Product-Type] Remove Product Type',
   SET_PRODUCT_TYPES = '[Filters-Prodcut-Type] Set Product Types',
 
+  SET_PLATFORM_BEAM_MODES = '[Filters-Beam-Mode] Set Platform Beam Modes',
+  SET_ALL_BEAM_MODES= '[Filters-Beam-Mode] Set All Beam Modes',
+
   SET_FLIGHT_DIRECTIONS = '[Filters-Flight-Dir] Set Flight Directions',
 
   OMIT_SEARCH_POLYGON = '[Filters-Search] Omit Search Polygon',
@@ -130,6 +133,18 @@ export class SetFlightDirections implements Action {
   constructor(public payload: models.FlightDirection[]) {}
 }
 
+export class SetPlatformBeamModes implements Action {
+  public readonly type = FiltersActionType.SET_PLATFORM_BEAM_MODES;
+
+  constructor(public payload: models.PlatformBeamModes) {}
+}
+
+export class SetAllBeamModes implements Action {
+  public readonly type = FiltersActionType.SET_ALL_BEAM_MODES;
+
+  constructor(public payload: models.PlatformBeamModes) {}
+}
+
 
 export type FiltersActions =
   | AddSelectedPlatform
@@ -149,4 +164,6 @@ export type FiltersActions =
   | SetProductTypes
   | SetListSearchType
   | SetFlightDirections
+  | SetPlatformBeamModes
+  | SetAllBeamModes
   | ClearFilters;

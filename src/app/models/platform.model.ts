@@ -25,6 +25,10 @@ export interface PlatformProductTypes {
   [platformName: string]: ProductType[];
 }
 
+export interface PlatformBeamModes {
+  [platformName: string]: string[];
+}
+
 export const platforms: Platform[] = [{
   name: 'Sentinel-1A',
   date: { start: new Date(2014, 3, 25) },

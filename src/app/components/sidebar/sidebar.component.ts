@@ -190,5 +190,9 @@ export class SidebarComponent {
   public onNewFlightDirections(directions: models.FlightDirection[]): void {
     this.store$.dispatch(new filtersStore.SetFlightDirections(directions));
   }
+
+  public onNewBeamModes(platformBeamModes: models.PlatformBeamModes): void {
+    this.store$.dispatch(new filtersStore.SetPlatformBeamModes(platformBeamModes));
+  }
 }
 

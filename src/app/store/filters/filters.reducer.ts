@@ -16,12 +16,8 @@ export interface FiltersState {
   listSearchMode: models.ListSearchType;
 
   productTypes: models.PlatformProductTypes;
-  beamModes: PlatformBeamModes;
+  beamModes: models.PlatformBeamModes;
   flightDirections: Set<models.FlightDirection>;
-}
-
-export interface PlatformBeamModes {
-  [platformName: string]: string[];
 }
 
 export type DateRangeState = models.Range<null | Date>;
@@ -235,6 +231,20 @@ export function filtersReducer(state = initState, action: FiltersActions): Filte
       };
     }
 
+    case FiltersActionType.SET_PLATFORM_BEAM_MODES: {
+      return {
+        ...state,
+        beamModes: { ...state.beamModes, ...action.payload }
+      };
+    }
+
+    case FiltersActionType.SET_ALL_BEAM_MODES: {
+      return {
+        ...state,
+        beamModes: { ...action.payload }
+      };
+    }
+
     case FiltersActionType.SET_FLIGHT_DIRECTIONS: {
       return {
         ...state,
@@ -312,6 +322,11 @@ export const getListSearchMode = createSelector(
 export const getProductTypes = createSelector(
   getFiltersState,
   (state: FiltersState) => state.productTypes
+);
+
+export const getBeamModes = createSelector(
+  getFiltersState,
+  (state: FiltersState) => state.beamModes
 );
 
 export const getFlightDirections = createSelector(
