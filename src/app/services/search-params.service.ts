@@ -55,6 +55,7 @@ export class SearchParamsService {
         this.pathRange$(),
         this.frameRange$(),
         this.productType$(),
+        this.flightDirections$(),
       ).pipe(
         map(params => params
           .filter(param => !!Object.values(param)[0])
@@ -148,6 +149,13 @@ export class SearchParamsService {
           .join(',')
       ),
       map(types => ({ processinglevel: types }))
+    );
+  }
+
+  private flightDirections$() {
+    return this.store$.select(filterStore.getFlightDirections).pipe(
+      map(dirs => dirs.join(',')),
+      map(directions => ({ flightDirection: directions }))
     );
   }
 }
