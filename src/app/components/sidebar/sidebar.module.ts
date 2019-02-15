@@ -24,6 +24,7 @@ import { QueueModule } from './queue';
 
 import { GranulesListModule } from './granules/granules-list';
 import { GranuleDetailComponent } from './granules/granule-detail/granule-detail.component';
+import { LogoComponent } from './logo/logo.component';
 
 @NgModule({
   imports: [
@@ -51,6 +52,7 @@ import { GranuleDetailComponent } from './granules/granule-detail/granule-detail
   declarations: [
     SidebarComponent,
     GranuleDetailComponent,
+    LogoComponent,
   ],
   providers: [
     DateExtremaService,

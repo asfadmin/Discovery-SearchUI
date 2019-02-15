@@ -1,0 +1,4 @@
+.example-header-image {
+  background-image: url('/assets/meatball.jpg');
+  background-size: cover;
+}
