@@ -38,12 +38,22 @@ export function granulesReducer(state = initState, action: GranulesActions): Gra
           return total;
         }, {});
 
-      const granules = action.payload.reduce((total, product) => {
+      const productGroups = action.payload.reduce((total, product) => {
         const granule = total[product.groupId] || [];
 
         total[product.groupId] = [...granule, product.file];
         return total;
       }, {});
+
+      const granules = {};
+      for (const [groupId, productNames] of Object.entries(productGroups)) {
+
+        (<string[]>productNames).sort(
+          (a, b) => products[a].bytes - products[b].bytes
+        ).reverse();
+
+        granules[groupId] = productNames;
+      }
 
       return {
         ...state,

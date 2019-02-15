@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 
-import { Subject } from 'rxjs';
+import { BehaviorSubject, Subject } from 'rxjs';
 
 import { Map } from 'ol';
 import { Draw, Modify, Snap } from 'ol/interaction.js';
@@ -44,6 +44,9 @@ export class MapService {
   public center$ = new Subject<models.LonLat>();
   public searchPolygon$ = new Subject<string | null>();
   public epsg$ = new Subject<string>();
+  public mousePosition$ = new BehaviorSubject<models.LonLat>({
+    lon: 0, lat: 0
+  });
 
   constructor(private wktService: WktService) {}
 
@@ -154,12 +157,18 @@ export class MapService {
   }
 
   private createNewMap(): Map {
+
     const newMap = new Map({
       layers: [ this.mapView.layer, this.drawLayer ],
       target: 'map',
       view: this.mapView.view,
       controls: [],
       loadTilesWhileAnimating: true
+    });
+
+    newMap.on('pointermove', e => {
+      const [ lon, lat ] = proj.toLonLat(e.coordinate, this.epsg());
+      this.mousePosition$.next({ lon, lat });
     });
 
     this.modify = new Modify({ source: this.drawSource });
