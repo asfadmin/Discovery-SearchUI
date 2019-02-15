@@ -6,6 +6,9 @@ export enum GranulesActionType {
   SET_GRANULES = '[Granuels] Set Granules',
   CLEAR = '[Granuels] Clear Granules',
 
+  SET_FOCUSED_GRANULE = '[Granules] Set Focused Granule',
+  CLEAR_FOCUSED_GRANULE = '[Granules] Clear Focused Granule',
+
   SET_SELECTED = '[Granules] Set Selected Granule',
 
   SET_SEARCH_LIST = '[Granules] Set Search List',
@@ -33,8 +36,20 @@ export class SetSearchList implements Action {
   constructor(public payload: string[]) {}
 }
 
+export class SetFocusedGranule implements Action {
+  public readonly type = GranulesActionType.SET_FOCUSED_GRANULE;
+
+  constructor(public payload: Sentinel1Product) {}
+}
+
+export class ClearFocusedGranule implements Action {
+  public readonly type = GranulesActionType.CLEAR_FOCUSED_GRANULE;
+}
+
 export type GranulesActions =
   | SetGranules
   | ClearGranules
   | SetSelectedGranule
-  | SetSearchList;
+  | SetSearchList
+  | SetFocusedGranule
+  | ClearFocusedGranule;

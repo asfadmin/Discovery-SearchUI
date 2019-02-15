@@ -13,6 +13,7 @@ export interface GranulesState {
   granules: {[id: string]: string[]};
 
   selected: string | null;
+  focused: string | null;
 
   searchList: string[];
 }
@@ -23,6 +24,7 @@ const initState: GranulesState = {
   products: {},
 
   selected: null,
+  focused: null,
 
   searchList: [],
 };
@@ -80,6 +82,19 @@ export function granulesReducer(state = initState, action: GranulesActions): Gra
       };
     }
 
+    case GranulesActionType.SET_FOCUSED_GRANULE: {
+      return {
+        ...state,
+        focused: action.payload.name,
+      };
+    }
+
+    case GranulesActionType.CLEAR_FOCUSED_GRANULE: {
+      return {
+        ...state,
+        focused: null,
+      };
+    }
 
     case GranulesActionType.CLEAR: {
       return initState;
