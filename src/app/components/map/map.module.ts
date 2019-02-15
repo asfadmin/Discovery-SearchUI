@@ -9,6 +9,7 @@ import { ViewSelectorComponent } from './view-selector';
 import { InteractionSelectorComponent } from './interaction-selector';
 import { DrawSelectorComponent } from './draw-selector/draw-selector.component';
 import { FileUploadModule } from './file-upload';
+import { AttributionsComponent } from './attributions/attributions.component';
 
 @NgModule({
   imports: [
@@ -23,7 +24,8 @@ import { FileUploadModule } from './file-upload';
     MapComponent,
     ViewSelectorComponent,
     DrawSelectorComponent,
-    InteractionSelectorComponent
+    InteractionSelectorComponent,
+    AttributionsComponent
   ],
   exports: [
     MapComponent

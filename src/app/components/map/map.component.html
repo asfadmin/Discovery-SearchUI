@@ -22,3 +22,7 @@
   (newInteraction)="onNewInteractionMode($event)"
   [interaction]="interactionMode$ | async">
 ></app-interaction-selector>
+
+<app-attributions
+  [mousePos]="mapService.mousePosition$ | async">
+</app-attributions>

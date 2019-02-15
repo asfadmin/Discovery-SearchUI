@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 
-import { Subject } from 'rxjs';
+import { BehaviorSubject, Subject } from 'rxjs';
 
 import { Map } from 'ol';
 import { Draw, Modify, Snap } from 'ol/interaction.js';
@@ -44,7 +44,9 @@ export class MapService {
   public center$ = new Subject<models.LonLat>();
   public searchPolygon$ = new Subject<string | null>();
   public epsg$ = new Subject<string>();
-  public mousePosition$ = new Subject<models.LonLat>();
+  public mousePosition$ = new BehaviorSubject<models.LonLat>({
+    lon: 0, lat: 0
+  });
 
   constructor(private wktService: WktService) {}
 
