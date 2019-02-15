@@ -30,6 +30,7 @@ export class MapComponent implements OnInit {
   @Output() loadUrlState = new EventEmitter<void>();
 
   private isInitMap = true;
+  public mousePosition$ = this.mapService.mousePosition$;
 
   constructor(
     private mapService: MapService,
