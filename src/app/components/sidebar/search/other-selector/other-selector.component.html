@@ -1,39 +1,59 @@
 <mat-card class="card-spacing">
     <h4>Product Type</h4>
-
-    <mat-form-field *ngFor="let platform of selected">
-      <mat-select *ngIf="platform.types !== []" placeholder="{{ platform.name }}" multiple>
-        <mat-option *ngFor="let type of platform.types" [value]="type">
-          {{type}}
-        </mat-option>
-      </mat-select>
-    </mat-form-field>
+    <ng-container *ngFor="let platform of selected">
+      <mat-form-field *ngIf="platform.productTypes.length > 1" >
+        <mat-select
+          [(ngModel)]="productTypes[platform.name]"
+          placeholder="{{ platform.name }}" multiple>
+            <mat-option
+              *ngFor="let type of platform.productTypes"
+              (click)="onTypeSelected(platform.name, type)"
+              [value]="type"
+              [matTooltip]="type.displayName">
+                {{type.displayName}}
+            </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </ng-container>
 
     <h4>Beam Mode</h4>
+    <ng-container *ngFor="let platform of selected">
+        <mat-form-field *ngIf="platform.beamModes.length > 1">
+          <mat-select
+            (selectionChange)="onNewPlatformBeamModes(platform, $event.value)"
+            [(ngModel)]="beamModes[platform.name]"
+            placeholder="{{ platform.name }}"
+            multiple>
+              <mat-option *ngFor="let mode of platform.beamModes" [value]="mode">
+                {{mode}}
+              </mat-option>
+          </mat-select>
+        </mat-form-field>
+    </ng-container>
 
-    <mat-form-field *ngFor="let platform of selected">
-      <mat-select *ngIf="platform.beamModes !== []" placeholder="{{ platform.name }}" multiple>
-        <mat-option *ngFor="let mode of platform.beamModes" [value]="beamModes">
-          {{mode}}
-        </mat-option>
-      </mat-select>
-    </mat-form-field>
 
     <h4>Polarization</h4>
-
-    <mat-form-field>
-      <mat-select placeholder="{{ polarizations[0] }}" multiple>
-        <mat-option *ngFor="let polarization of polarizations" [value]="polarization">
-          {{polarization}}
-        </mat-option>
-      </mat-select>
-    </mat-form-field>
+    <ng-container *ngFor="let platform of selected">
+      <mat-form-field *ngIf="platform.polarizations.length > 1">
+        <mat-select
+          (selectionChange)="onNewPlatformPolarizations(platform, $event.value)"
+          [(ngModel)]="polarizations[platform.name]"
+          placeholder="{{ platform.name }}" multiple>
+          <mat-option *ngFor="let pol of platform.polarizations" [value]="pol">
+            {{pol}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </ng-container>
 
     <h4>Flight Direction</h4>
-
     <mat-form-field>
-      <mat-select placeholder="{{ flightDirections[0] }}" multiple>
-        <mat-option *ngFor="let direction of flightDirections" [value]="direction">
+      <mat-select
+        (selectionChange)="onNewFlightDirectionsSelected($event.value)"
+        [(ngModel)]="flightDirections"
+        placeholder="Direction"
+        multiple>
+        <mat-option *ngFor="let direction of flightDirectionTypes" [value]="direction">
           {{direction}}
         </mat-option>
       </mat-select>

@@ -14,6 +14,11 @@ export interface FiltersState {
   shouldOmitSearchPolygon: boolean;
 
   listSearchMode: models.ListSearchType;
+
+  productTypes: models.PlatformProductTypes;
+  beamModes: models.PlatformBeamModes;
+  polarizations: models.PlatformPolarizations;
+  flightDirections: Set<models.FlightDirection>;
 }
 
 export type DateRangeState = models.Range<null | Date>;
@@ -49,6 +54,11 @@ const initState: FiltersState = {
   },
   shouldOmitSearchPolygon: false,
   listSearchMode: models.ListSearchType.GRANULE,
+
+  productTypes: {},
+  beamModes: {},
+  polarizations: {},
+  flightDirections: new Set<models.FlightDirection>([]),
 };
 
 
@@ -57,6 +67,7 @@ export function filtersReducer(state = initState, action: FiltersActions): Filte
     case FiltersActionType.ADD_SELECTED_PLATFORM: {
       const selected = new Set<string>(state.platforms.selected);
       selected.add(action.payload);
+      console.log('selected', selected);
 
       return {
         ...state,
@@ -70,12 +81,25 @@ export function filtersReducer(state = initState, action: FiltersActions): Filte
     case FiltersActionType.REMOVE_SELECTED_PLATFORM: {
       const selected = new Set<string>(state.platforms.selected);
       selected.delete(action.payload);
+      console.log('selected', selected);
 
       return {
         ...state,
         platforms: {
           ...state.platforms,
           selected
+        },
+        productTypes: {
+          ...state.productTypes,
+          [action.payload]: []
+        },
+        beamModes: {
+          ...state.beamModes,
+          [action.payload]: []
+        },
+        polarizations: {
+          ...state.polarizations,
+          [action.payload]: []
         }
       };
     }
@@ -178,6 +202,76 @@ export function filtersReducer(state = initState, action: FiltersActions): Filte
       };
     }
 
+    case FiltersActionType.ADD_PRODUCT_TYPE: {
+      const productTypes = { ...state.productTypes };
+      const oldTypes = productTypes[action.payload.platform] || [];
+
+      productTypes[action.payload.platform] = [
+        ...oldTypes, action.payload.productType
+      ];
+
+      return {
+        ...state,
+        productTypes
+      };
+    }
+
+    case FiltersActionType.SET_PRODUCT_TYPES: {
+      return {
+        ...state,
+        productTypes: action.payload
+      };
+    }
+
+    case FiltersActionType.REMOVE_PRODUCT_TYPE: {
+      const productTypes = { ...state.productTypes };
+
+      const types = [...productTypes[action.payload.platform]]
+        .filter(productType => productType !== action.payload.productType);
+
+      productTypes[action.payload.platform] = types;
+
+      return {
+        ...state,
+        productTypes
+      };
+    }
+
+    case FiltersActionType.SET_PLATFORM_BEAM_MODES: {
+      return {
+        ...state,
+        beamModes: { ...state.beamModes, ...action.payload }
+      };
+    }
+
+    case FiltersActionType.SET_ALL_BEAM_MODES: {
+      return {
+        ...state,
+        beamModes: { ...action.payload }
+      };
+    }
+
+    case FiltersActionType.SET_PLATFORM_POLARIZATIONS: {
+      return {
+        ...state,
+        polarizations: { ...state.polarizations, ...action.payload }
+      };
+    }
+
+    case FiltersActionType.SET_ALL_POLARIZATIONS: {
+      return {
+        ...state,
+        polarizations: { ...action.payload }
+      };
+    }
+
+    case FiltersActionType.SET_FLIGHT_DIRECTIONS: {
+      return {
+        ...state,
+        flightDirections: new Set(action.payload)
+      };
+    }
+
     default: {
       return state;
     }
@@ -243,4 +337,24 @@ export const getShouldOmitSearchPolygon = createSelector(
 export const getListSearchMode = createSelector(
   getFiltersState,
   (state: FiltersState) => state.listSearchMode
+);
+
+export const getProductTypes = createSelector(
+  getFiltersState,
+  (state: FiltersState) => state.productTypes
+);
+
+export const getBeamModes = createSelector(
+  getFiltersState,
+  (state: FiltersState) => state.beamModes
+);
+
+export const getPolarizations = createSelector(
+  getFiltersState,
+  (state: FiltersState) => state.polarizations
+);
+
+export const getFlightDirections = createSelector(
+  getFiltersState,
+  (state: FiltersState) => Array.from(state.flightDirections)
 );

@@ -44,6 +44,7 @@ export class SidebarComponent {
   @Output() clearSearch = new EventEmitter<void>();
 
   public platforms$ = this.store$.select(filtersStore.getPlatformsList);
+  public platformProductTypes$ = this.store$.select(filtersStore.getProductTypes);
   public selectedPlatformNames$ = this.store$.select(filtersStore.getSelectedPlatformNames);
   public selectedPlatforms$ = this.store$.select(filtersStore.getSelectedPlatforms);
 
@@ -53,6 +54,9 @@ export class SidebarComponent {
   public frameRange$ = this.store$.select(filtersStore.getFrameRange);
   public shouldOmitSearchPolygon$ = this.store$.select(filtersStore.getShouldOmitSearchPolygon);
   public listSearchMode$ = this.store$.select(filtersStore.getListSearchMode);
+  public flightDirections$ = this.store$.select(filtersStore.getFlightDirections);
+  public beamModes$ = this.store$.select(filtersStore.getBeamModes);
+  public polarizations$ = this.store$.select(filtersStore.getPolarizations);
 
   public isSidebarOpen$ = this.store$.select(uiStore.getIsSidebarOpen);
   public selectedFilter$ = this.store$.select(uiStore.getSelectedFilter);
@@ -175,6 +179,26 @@ export class SidebarComponent {
 
   public onQueueGranuleProducts(name: string): void {
     this.store$.dispatch(new queueStore.QueueGranule(name));
+  }
+
+  public onNewProductType(productType: models.PlatformProductType): void {
+    this.store$.dispatch(new filtersStore.AddProductType(productType));
+  }
+
+  public onRemoveProductType(productType: models.PlatformProductType): void {
+    this.store$.dispatch(new filtersStore.RemoveProductType(productType));
+  }
+
+  public onNewFlightDirections(directions: models.FlightDirection[]): void {
+    this.store$.dispatch(new filtersStore.SetFlightDirections(directions));
+  }
+
+  public onNewBeamModes(platformBeamModes: models.PlatformBeamModes): void {
+    this.store$.dispatch(new filtersStore.SetPlatformBeamModes(platformBeamModes));
+  }
+
+  public onNewPolarizations(platformPolarizations: models.PlatformPolarizations): void {
+    this.store$.dispatch(new filtersStore.SetPlatformPolarizations(platformPolarizations));
   }
 }
 

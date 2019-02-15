@@ -98,6 +98,13 @@ export class AppComponent implements OnInit {
           return resp.wkt;
         }
 
+        const { report, type }  = resp.repairs.pop();
+
+        this.snackBar.open(
+          report, type,
+          { duration: 4000, }
+        );
+
         const features = this.wktService.wktToFeature(
           resp.wkt,
           this.mapService.epsg()

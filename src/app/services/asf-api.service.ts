@@ -16,6 +16,7 @@ export class AsfApiService {
   constructor(private http: HttpClient) {}
 
   public query<T>(stateParams: HttpParams): Observable<T> {
+    console.log(stateParams);
 
     const params = Object.entries(this.baseParams())
     .filter(
@@ -29,8 +30,11 @@ export class AsfApiService {
     const responseType: any = params.get('output') === 'jsonlite' ?
       'json' : 'text';
 
-    return this.http.get<T>(`${this.testUrl}/services/search/param`, {
-      params, responseType
+    const queryParamsStr = params.toString()
+      .replace('+', '%2B');
+
+    return this.http.get<T>(`${this.testUrl}/services/search/param?${queryParamsStr}`, {
+      responseType
     });
   }
 

@@ -24,9 +24,10 @@ export interface Sentinel1Metadata {
   absoluteOrbit: number;
 }
 
-export type FlightDirection =
-  'ASCENDING' |
-  'DESCENDING';
+export enum FlightDirection {
+  ASCENDING = 'ASCENDING',
+  DESCENDING = 'DESCENDING',
+}
 
 export type Sentinel1ProductType =
   'GRD' | 'SLC' | 'OCN' | 'RAW' |

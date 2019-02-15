@@ -1,6 +1,6 @@
 import { Action } from '@ngrx/store';
 
-import { ListSearchType } from '@models';
+import * as models from '@models';
 
 export enum FiltersActionType {
   ADD_SELECTED_PLATFORM = '[Filters-Platform] Add Platform Filter',
@@ -15,6 +15,18 @@ export enum FiltersActionType {
   SET_PATH_END = '[Filters-Path] Set Path End',
   SET_FRAME_START = '[FIlters-Frame] Set Frame Start',
   SET_FRAME_END = '[Filters-Frame] Set Frame End',
+
+  ADD_PRODUCT_TYPE = '[Filters-Product-Type] Add Product Type',
+  REMOVE_PRODUCT_TYPE = '[Filters-Product-Type] Remove Product Type',
+  SET_PRODUCT_TYPES = '[Filters-Prodcut-Type] Set Product Types',
+
+  SET_PLATFORM_BEAM_MODES = '[Filters-Beam-Mode] Set Platform Beam Modes',
+  SET_ALL_BEAM_MODES= '[Filters-Beam-Mode] Set All Beam Modes',
+
+  SET_PLATFORM_POLARIZATIONS = '[Filters-Polarization] Set Platform Polarizations',
+  SET_ALL_POLARIZATIONS = '[Filters-Polarization] Set All Polarizations',
+
+  SET_FLIGHT_DIRECTIONS = '[Filters-Flight-Dir] Set Flight Directions',
 
   OMIT_SEARCH_POLYGON = '[Filters-Search] Omit Search Polygon',
   USE_SEARCH_POLYGON = '[Filters-Search] Use Search Polygon',
@@ -90,16 +102,63 @@ export class SetFrameEnd implements Action {
   constructor(public payload: number) {}
 }
 
+export class AddProductType implements Action {
+  public readonly type = FiltersActionType.ADD_PRODUCT_TYPE;
+
+  constructor(public payload: models.PlatformProductType) {}
+}
+
+export class RemoveProductType implements Action {
+  public readonly type = FiltersActionType.REMOVE_PRODUCT_TYPE;
+
+  constructor(public payload: models.PlatformProductType) {}
+}
+
+export class SetProductTypes implements Action {
+  public readonly type = FiltersActionType.SET_PRODUCT_TYPES;
+
+  constructor(public payload: models.PlatformProductTypes) {}
+}
+
 export class SetListSearchType implements Action {
   public readonly type = FiltersActionType.SET_LIST_SEARCH_TYPE;
 
-  constructor(public payload: ListSearchType) {}
+  constructor(public payload: models.ListSearchType) {}
 }
 
 export class ClearFilters implements Action {
   public readonly type = FiltersActionType.CLEAR_FILTERS;
 }
 
+export class SetFlightDirections implements Action {
+  public readonly type = FiltersActionType.SET_FLIGHT_DIRECTIONS;
+
+  constructor(public payload: models.FlightDirection[]) {}
+}
+
+export class SetPlatformBeamModes implements Action {
+  public readonly type = FiltersActionType.SET_PLATFORM_BEAM_MODES;
+
+  constructor(public payload: models.PlatformBeamModes) {}
+}
+
+export class SetAllBeamModes implements Action {
+  public readonly type = FiltersActionType.SET_ALL_BEAM_MODES;
+
+  constructor(public payload: models.PlatformBeamModes) {}
+}
+
+export class SetPlatformPolarizations implements Action {
+  public readonly type = FiltersActionType.SET_PLATFORM_POLARIZATIONS;
+
+  constructor(public payload: models.PlatformPolarizations) {}
+}
+
+export class SetAllPolarizations implements Action {
+  public readonly type = FiltersActionType.SET_ALL_POLARIZATIONS;
+
+  constructor(public payload: models.PlatformPolarizations) {}
+}
 
 export type FiltersActions =
   | AddSelectedPlatform
@@ -114,5 +173,13 @@ export type FiltersActions =
   | SetPathEnd
   | SetFrameStart
   | SetFrameEnd
+  | AddProductType
+  | RemoveProductType
+  | SetProductTypes
   | SetListSearchType
+  | SetFlightDirections
+  | SetPlatformBeamModes
+  | SetAllBeamModes
+  | SetPlatformPolarizations
+  | SetAllPolarizations
   | ClearFilters;

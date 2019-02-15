@@ -40,10 +40,10 @@ export class SearchParamsService {
       map(params => Object.entries(params)
         .filter(([param, val]) => !!val)
         .reduce(
-          (queryParams, [param, val]) => queryParams.append(param, <string>val),
+          (queryParams, [param, val]) => queryParams.set(param, <string>val),
           new HttpParams()
         )
-      )
+      ),
     );
   }
 
@@ -54,8 +54,12 @@ export class SearchParamsService {
         this.dateRange$(),
         this.pathRange$(),
         this.frameRange$(),
+        this.productType$(),
+        this.flightDirections$(),
+        this.beamModes$(),
+        this.polarizations$(),
       ).pipe(
-        map(params => params
+        map((params: any[]) => params
           .filter(param => !!Object.values(param)[0])
           .reduce(
             (total, param) =>  ({...total, ...param}),
@@ -131,6 +135,61 @@ export class SearchParamsService {
         range.join('-') :
         range.pop() || null
       )
+    );
+  }
+
+  private productType$() {
+    return this.store$.select(filterStore.getProductTypes).pipe(
+      map(types => Object.values(types)
+        .reduce((allTypes, platformProductTypes) => [
+          ...allTypes, ...platformProductTypes
+        ], [])
+        .map(productType => productType.apiValue)
+      ),
+      map(
+        types => Array.from(new Set(types))
+          .join(',')
+      ),
+      map(types => ({ processinglevel: types }))
+    );
+  }
+
+  private beamModes$() {
+    return this.store$.select(filterStore.getBeamModes).pipe(
+      map(beamModes => Object.values(beamModes)
+        .reduce((allModes, platformBeamModes) => [
+          ...allModes, ...platformBeamModes
+        ], [])
+      ),
+      map(
+        types => Array.from(new Set(types))
+          .join(',')
+      ),
+      map(beamModes => ({ beamSwath: beamModes }))
+    );
+  }
+
+  private polarizations$() {
+    return this.store$.select(filterStore.getPolarizations).pipe(
+      map(polarizations => Object.values(polarizations)
+        .reduce((allPolarizations, platformPolarizations) => [
+          ...allPolarizations, ...platformPolarizations
+        ], [])
+      ),
+      map(
+        polarizations => Array.from(new Set(polarizations))
+          .map(pol => pol)
+          .join(',')
+      ),
+      tap(console.log),
+      map(polarization => ({ polarization })),
+    );
+  }
+
+  private flightDirections$() {
+    return this.store$.select(filterStore.getFlightDirections).pipe(
+      map(dirs => dirs.join(',')),
+      map(directions => ({ flightDirection: directions }))
     );
   }
 }
