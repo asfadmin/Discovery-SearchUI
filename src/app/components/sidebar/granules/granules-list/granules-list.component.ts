@@ -22,6 +22,10 @@ export class GranulesListComponent  {
   @Output() newFocusedGranule = new EventEmitter<Sentinel1Product>();
   @Output() clearFocusedGranule = new EventEmitter<void>();
 
+  public pageSizeOptions = [5, 10, 25, 100];
+  public pageSize = this.pageSizeOptions[1];
+  public pageIndex = 0;
+
   public downloadIcon = faFileDownload;
   public queueIcon = faPlus;
 
@@ -42,4 +46,14 @@ export class GranulesListComponent  {
   public onClearFocusedGranule(): void {
     this.clearFocusedGranule.emit();
   }
+
+  public currentPageOf(granules, pageSize, pageIndex): Sentinel1Product[] {
+      const offset = this.pageIndex * this.pageSize;
+      return granules.slice(offset, offset + this.pageSize);
+  }
+
+  public onNewPage(page): void {
+    console.log(page);
+  }
+
 }

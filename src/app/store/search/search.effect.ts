@@ -3,16 +3,16 @@ import { Injectable } from '@angular/core';
 import { Actions, Effect, ofType } from '@ngrx/effects';
 import { Action } from '@ngrx/store';
 
-import { Observable } from 'rxjs';
-import { map, withLatestFrom, switchMap } from 'rxjs/operators';
+import { Observable, of } from 'rxjs';
+import { map, withLatestFrom, switchMap, catchError } from 'rxjs/operators';
 
 import { AppState } from '../app.reducer';
 import * as granulesStore from '@store/granules';
-import { SearchResponse } from './search.action';
+import { } from './search.action';
 
 import * as services from '@services';
 
-import { SearchActionType } from './search.action';
+import { SearchActionType, SearchResponse, SearchError } from './search.action';
 
 @Injectable()
 export class SearchEffects {
@@ -32,13 +32,14 @@ export class SearchEffects {
     switchMap(
       params => this.asfApiService.query<any[]>(params)
     ),
-    map(response => new SearchResponse(response))
+    map(response => new SearchResponse(response)),
+    catchError(error => of(new SearchError(`${error.message}`)))
   );
 
   @Effect()
   private searchResponse: Observable<Action> = this.actions$.pipe(
     ofType<SearchResponse>(SearchActionType.SEARCH_RESPONSE),
     map(action => this.productService.fromResponse(action.payload)),
-    map(granule => new granulesStore.SetGranules(granule))
+    map(granule => new granulesStore.SetGranules(granule)),
   );
 }
