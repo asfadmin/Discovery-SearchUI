@@ -48,12 +48,14 @@ export class GranulesListComponent  {
   }
 
   public currentPageOf(granules, pageSize, pageIndex): Sentinel1Product[] {
-      const offset = this.pageIndex * this.pageSize;
-      return granules.slice(offset, offset + this.pageSize);
+    const offset = pageIndex * pageSize;
+    return granules.slice(offset, offset + pageSize);
   }
 
   public onNewPage(page): void {
     console.log(page);
+    this.pageIndex = page.pageIndex;
+    this.pageSize = page.pageSize;
   }
 
 }
