@@ -1,4 +1,5 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Router } from '@angular/router';
 
 import {
   trigger, state, style,
@@ -84,8 +85,14 @@ export class SidebarComponent {
 
   constructor(
     private dateExtremaService: DateExtremaService,
+    private router: Router,
     private store$: Store<AppState>,
   ) {}
+
+  public onAppReset() {
+    this.router.navigate(['/'], { queryParams: {} }) ;
+    window.location.reload();
+  }
 
   public onPlatformRemoved(platformName: string): void {
     this.store$.dispatch(new filtersStore.RemoveSelectedPlatform(platformName));
@@ -95,8 +102,8 @@ export class SidebarComponent {
     this.store$.dispatch(new filtersStore.AddSelectedPlatform(platformName));
   }
 
-  public onNewFilterSelected(filter: models.FilterType): void {
-    this.store$.dispatch(new uiStore.SetSelectedFilter(filter));
+  public onNewFilterSelected(selectedFilter: models.FilterType): void {
+    this.store$.dispatch(new uiStore.SetSelectedFilter(selectedFilter));
   }
 
   public onToggleHide(): void {

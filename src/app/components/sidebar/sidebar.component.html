@@ -8,7 +8,10 @@
 </app-toggle-button>
 
 <div class="filter-list "><div>
-  <app-logo></app-logo>
+  <app-logo
+     class="clickable"
+    (click)="onAppReset()">
+  </app-logo>
   <app-search-bar
     (newSearch)="onNewSearch()"
     (clearSearches)="onClearSearch()"

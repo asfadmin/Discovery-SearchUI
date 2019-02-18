@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { RouterModule } from '@angular/router';
 
 import { TruncateModule } from '@yellowspot/ng-truncate';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
@@ -29,6 +30,7 @@ import { LogoComponent } from './logo/logo.component';
 @NgModule({
   imports: [
     CommonModule,
+    RouterModule,
 
     TruncateModule,
     FontAwesomeModule,
