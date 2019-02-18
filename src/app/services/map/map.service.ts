@@ -34,6 +34,16 @@ export class MapService {
     style: polygonStyle.invalid
   });
 
+  private focusSource = new VectorSource({
+    noWrap: true, wrapX: false
+  });
+
+  private focusLayer = new VectorLayer({
+    source: this.focusSource,
+    style: polygonStyle.invalid
+  });
+
+
   private draw: Draw;
   private modify: Modify;
   private snap: Snap;
@@ -148,6 +158,16 @@ export class MapService {
     this.setMap(view);
   }
 
+  public clearFocusedGranule(): void {
+    this.focusSource.clear();
+  }
+
+  public setFocusedFeature(feature): void {
+    this.focusSource.clear();
+    this.focusSource.addFeature(feature);
+
+  }
+
   private setMap(mapView: views.MapView): void {
     this.mapView = mapView;
 
@@ -159,7 +179,7 @@ export class MapService {
   private createNewMap(): Map {
 
     const newMap = new Map({
-      layers: [ this.mapView.layer, this.drawLayer ],
+      layers: [ this.mapView.layer, this.drawLayer, this.focusLayer ],
       target: 'map',
       view: this.mapView.view,
       controls: [],
@@ -179,6 +199,7 @@ export class MapService {
     });
 
     this.drawLayer.setZIndex(100);
+    this.focusLayer.setZIndex(99);
 
     this.snap = new Snap({source: this.drawSource});
 
@@ -201,13 +222,10 @@ export class MapService {
     let draw: Draw;
 
     if (drawMode === models.MapDrawModeType.BOX) {
-      const mode = 'Circle'; // Actually a box...
-      const geometryFunction = createBox();
-
       draw = new Draw({
         source: this.drawSource,
-        type: mode,
-        geometryFunction
+        type: 'Circle', // Actually a box...
+        geometryFunction: createBox()
       });
     } else {
       draw = new Draw({

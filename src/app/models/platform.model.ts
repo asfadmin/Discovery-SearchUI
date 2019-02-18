@@ -11,11 +11,6 @@ export interface DateRange {
   end?: Date;
 }
 
-export interface PlatformProductType {
-  productType: ProductType;
-  platform: string;
-}
-
 export interface ProductType {
   displayName: string;
   apiValue: string;

@@ -29,6 +29,8 @@ export class AppComponent implements OnInit {
   public drawMode$ = this.store$.select(mapStore.getMapDrawMode);
   public interactionMode$ = this.store$.select(mapStore.getMapInteractionMode);
   public shouldOmitSearchPolygon$ = this.store$.select(filterStore.getShouldOmitSearchPolygon);
+  public focusedGranule$ = this.store$.select(granulesStore.getFocusedGranule);
+
   public interactionTypes = models.MapInteractionModeType;
 
   constructor(

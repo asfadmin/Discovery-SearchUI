@@ -16,9 +16,8 @@ export enum FiltersActionType {
   SET_FRAME_START = '[FIlters-Frame] Set Frame Start',
   SET_FRAME_END = '[Filters-Frame] Set Frame End',
 
-  ADD_PRODUCT_TYPE = '[Filters-Product-Type] Add Product Type',
-  REMOVE_PRODUCT_TYPE = '[Filters-Product-Type] Remove Product Type',
-  SET_PRODUCT_TYPES = '[Filters-Prodcut-Type] Set Product Types',
+  SET_PLATFORM_PRODUCT_TYPES = '[Filters-Prodcut-Type] Set PLATFORM Product Types',
+  SET_ALL_PRODUCT_TYPES = '[Filters-Prodcut-Type] Set All Product Types',
 
   SET_PLATFORM_BEAM_MODES = '[Filters-Beam-Mode] Set Platform Beam Modes',
   SET_ALL_BEAM_MODES= '[Filters-Beam-Mode] Set All Beam Modes',
@@ -102,20 +101,14 @@ export class SetFrameEnd implements Action {
   constructor(public payload: number) {}
 }
 
-export class AddProductType implements Action {
-  public readonly type = FiltersActionType.ADD_PRODUCT_TYPE;
+export class SetPlatformProductTypes implements Action {
+  public readonly type = FiltersActionType.SET_PLATFORM_PRODUCT_TYPES;
 
-  constructor(public payload: models.PlatformProductType) {}
+  constructor(public payload: models.PlatformProductTypes) {}
 }
 
-export class RemoveProductType implements Action {
-  public readonly type = FiltersActionType.REMOVE_PRODUCT_TYPE;
-
-  constructor(public payload: models.PlatformProductType) {}
-}
-
-export class SetProductTypes implements Action {
-  public readonly type = FiltersActionType.SET_PRODUCT_TYPES;
+export class SetAllProductTypes implements Action {
+  public readonly type = FiltersActionType.SET_ALL_PRODUCT_TYPES;
 
   constructor(public payload: models.PlatformProductTypes) {}
 }
@@ -173,9 +166,8 @@ export type FiltersActions =
   | SetPathEnd
   | SetFrameStart
   | SetFrameEnd
-  | AddProductType
-  | RemoveProductType
-  | SetProductTypes
+  | SetPlatformProductTypes
+  | SetAllProductTypes
   | SetListSearchType
   | SetFlightDirections
   | SetPlatformBeamModes

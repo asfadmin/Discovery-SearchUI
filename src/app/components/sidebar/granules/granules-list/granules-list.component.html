@@ -3,6 +3,8 @@
     <button
       *ngFor="let granule of granules"
       mat-list-item
+      (mouseenter)="onSetFocusedGranule(granule)"
+      (mouseleave) ="onClearFocusedGranule(granule)"
       (click)="onGranuleSelected(granule.file)"
       [ngClass]="{'selected': granule.name === selected}" >
 

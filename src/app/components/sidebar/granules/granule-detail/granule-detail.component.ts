@@ -18,6 +18,8 @@ export class GranuleDetailComponent {
 
   @Output() newQueueItem = new EventEmitter<Sentinel1Product>();
   @Output() newQueueItems = new EventEmitter<Sentinel1Product[]>();
+  @Output() newFocusedGranule = new EventEmitter<Sentinel1Product>();
+  @Output() clearFocusedGranule = new EventEmitter<void>();
 
   public onNewQueueProduct(product: Sentinel1Product): void {
     this.newQueueItem.emit(product);
@@ -25,5 +27,13 @@ export class GranuleDetailComponent {
 
   public onQueueAllProducts(): void {
     this.newQueueItems.emit(this.products);
+  }
+
+  public onSetFocusedGranule(granule: Sentinel1Product): void {
+    this.newFocusedGranule.emit(granule);
+  }
+
+  public onClearFocusedGranule(): void {
+    this.clearFocusedGranule.emit();
   }
 }

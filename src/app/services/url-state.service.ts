@@ -474,7 +474,7 @@ export class UrlStateService {
       validPlatforms[platform.name] = validTypesFromUrl;
     }
 
-    this.store$.dispatch(new filterStore.SetProductTypes(validPlatforms));
+    this.store$.dispatch(new filterStore.SetAllProductTypes(validPlatforms));
   }
 
 

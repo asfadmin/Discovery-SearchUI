@@ -181,7 +181,6 @@ export class SearchParamsService {
           .map(pol => pol)
           .join(',')
       ),
-      tap(console.log),
       map(polarization => ({ polarization })),
     );
   }

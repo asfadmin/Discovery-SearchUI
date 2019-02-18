@@ -23,6 +23,7 @@ export class MapComponent implements OnInit {
   @Input() view$: Observable<models.MapViewType>;
   @Input() drawMode$: Observable<models.MapDrawModeType>;
   @Input() interactionMode$: Observable<models.MapInteractionModeType>;
+  @Input() focusedGranule$: Observable<models.Sentinel1Product>;
 
   @Output() newMapView = new EventEmitter<models.MapViewType>();
   @Output() newMapDrawMode = new EventEmitter<models.MapDrawModeType>();
@@ -44,6 +45,8 @@ export class MapComponent implements OnInit {
 
     this.interactionMode$
       .subscribe(mode => this.mapService.setInteractionMode(mode));
+
+    this.focusedGranule$.subscribe(_ => _);
   }
 
   public onNewProjection(view: models.MapViewType): void {
@@ -81,6 +84,20 @@ export class MapComponent implements OnInit {
       )
     ).subscribe(
       layer => this.mapService.setLayer(layer)
+    );
+
+    this.focusedGranule$.pipe(
+      filter(_ => !this.isInitMap),
+      tap(granule => !!granule || this.mapService.clearFocusedGranule()),
+      filter(g => g !== null),
+      map(
+        granule => this.wktService.wktToFeature(
+          granule.metadata.polygon,
+          this.mapService.epsg()
+        )
+      ),
+    ).subscribe(
+      feature => this.mapService.setFocusedFeature(feature)
     );
   }
 
@@ -121,16 +138,25 @@ export class MapComponent implements OnInit {
   private granulePolygonsLayer(projection: string): Observable<VectorSource> {
     return this.granules$.pipe(
       distinctUntilChanged(),
-      map(granules => granules
+      map(
+        granules => this.granulesToFeature(granules, projection)
+      ),
+      map(features => this.featuresToSource(features))
+    );
+  }
+
+  private granulesToFeature(granules: models.Sentinel1Product[], projection: string) {
+    return granules
         .map(g => g.metadata.polygon)
         .map(wkt =>
           this.wktService.wktToFeature(wkt, projection)
-        )
-      ),
-      map(features => new VectorLayer({
-        source: new VectorSource({ features })
-      }))
-    );
+        );
+  }
+
+  private featuresToSource(features): VectorSource {
+    return new VectorLayer({
+      source: new VectorSource({ features })
+    });
   }
 
   private setMapWith(viewType: models.MapViewType): void {

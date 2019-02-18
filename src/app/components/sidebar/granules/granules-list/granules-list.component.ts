@@ -19,6 +19,8 @@ export class GranulesListComponent  {
 
   @Output() newSelected = new EventEmitter<string>();
   @Output() queueGranule = new EventEmitter<string>();
+  @Output() newFocusedGranule = new EventEmitter<Sentinel1Product>();
+  @Output() clearFocusedGranule = new EventEmitter<void>();
 
   public downloadIcon = faFileDownload;
   public queueIcon = faPlus;
@@ -31,5 +33,13 @@ export class GranulesListComponent  {
     this.queueGranule.emit(groupId);
 
     e.stopPropagation();
+  }
+
+  public onSetFocusedGranule(granule: Sentinel1Product): void {
+    this.newFocusedGranule.emit(granule);
+  }
+
+  public onClearFocusedGranule(): void {
+    this.clearFocusedGranule.emit();
   }
 }
