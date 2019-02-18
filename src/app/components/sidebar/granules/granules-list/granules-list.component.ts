@@ -53,7 +53,6 @@ export class GranulesListComponent  {
   }
 
   public onNewPage(page): void {
-    console.log(page);
     this.pageIndex = page.pageIndex;
     this.pageSize = page.pageSize;
   }
