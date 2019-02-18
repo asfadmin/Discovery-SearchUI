@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { MatPaginatorModule } from '@angular/material/paginator';
 
 import { TruncateModule } from '@yellowspot/ng-truncate';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
@@ -21,12 +22,13 @@ import { ProductNameComponent } from './sentinel1-product/product-name/product-n
   ],
   imports: [
     CommonModule,
-    MatSharedModule,
-    PipesModule,
-
+    MatPaginatorModule,
     TruncateModule,
     FontAwesomeModule,
     ClipboardModule,
+
+    MatSharedModule,
+    PipesModule,
   ],
   exports: [
     GranulesListComponent

@@ -14,6 +14,9 @@
     (clearSearches)="onClearSearch()"
     [isLoading]="loading$ | async">
   </app-search-bar>
+  <mat-card *ngIf="searchError$ | async as error" class="card-spacing">
+    <b>Error:</b> {{error}}
+  </mat-card>
 
   <mat-tab-group color="primary" backgroundColor="primary">
     <mat-tab label="Filters">

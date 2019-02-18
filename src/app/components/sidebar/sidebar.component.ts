@@ -6,7 +6,7 @@ import {
 } from '@angular/animations';
 
 import { Observable } from 'rxjs';
-import { map, tap } from 'rxjs/operators';
+import { map, tap, filter } from 'rxjs/operators';
 
 import { Store } from '@ngrx/store';
 
@@ -63,11 +63,13 @@ export class SidebarComponent {
 
   public granules$ = this.store$.select(granulesStore.getGranules);
   public selectedGranule$ = this.store$.select(granulesStore.getSelectedGranule);
-  public loading$ = this.store$.select(searchStore.getIsLoading);
   public selectedProducts$ = this.store$.select(granulesStore.getSelectedGranuleProducts);
   public searchList$ = this.store$.select(granulesStore.getSearchList).pipe(
     map(list => list.join('\n'))
   );
+
+  public loading$ = this.store$.select(searchStore.getIsLoading);
+  public searchError$ = this.store$.select(searchStore.getSearchError);
 
   public queueProducts$ = this.store$.select(queueStore.getQueuedProducts);
 
