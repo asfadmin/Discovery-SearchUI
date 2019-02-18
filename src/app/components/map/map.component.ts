@@ -23,6 +23,7 @@ export class MapComponent implements OnInit {
   @Input() view$: Observable<models.MapViewType>;
   @Input() drawMode$: Observable<models.MapDrawModeType>;
   @Input() interactionMode$: Observable<models.MapInteractionModeType>;
+  @Input() focusedGranule$: Observable<models.Sentinel1Product>;
 
   @Output() newMapView = new EventEmitter<models.MapViewType>();
   @Output() newMapDrawMode = new EventEmitter<models.MapDrawModeType>();
@@ -44,6 +45,8 @@ export class MapComponent implements OnInit {
 
     this.interactionMode$
       .subscribe(mode => this.mapService.setInteractionMode(mode));
+
+    this.focusedGranule$.subscribe(_ => _);
   }
 
   public onNewProjection(view: models.MapViewType): void {

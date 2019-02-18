@@ -70,7 +70,6 @@ export class QueueEffects {
   private queueGranule: Observable<Action> = this.actions$.pipe(
     ofType<QueueGranule>(QueueActionType.QUEUE_GRANULE),
     withLatestFrom(this.store$.select(granulesStore.getGranuleProducts)),
-    tap(console.log),
     map(([action, granuleProducts]) => granuleProducts[action.payload]),
     map(products => new AddItems(products))
   );

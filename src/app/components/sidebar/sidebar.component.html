@@ -56,15 +56,13 @@
         [beamModes]="beamModes$ | async"
         [polarizations]="polarizations$ | async">
       </app-other-selector>
-    </mat-tab>
 
-    <mat-tab label="List Search">
       <app-list-search
         (newListSearchMode)="onNewListSearchMode($event)"
         (newListSearch)="onNewGranuleList($event)"
         [mode]="listSearchMode$ | async"
-        [searchList]="searchList$ | async"
-        ></app-list-search>
+        [searchList]="searchList$ | async">
+      </app-list-search>
     </mat-tab>
 
     <ng-container *ngIf="granules$ | async as granules">
@@ -74,6 +72,8 @@
         <ng-container *ngIf="selectedGranule$ | async as selected">
           <app-granule-detail
               *ngIf="!!selected"
+              (newFocusedGranule)="onNewFocusedGranule($event)"
+              (clearFocusedGranule)="onClearFocusedGranule($event)"
               (newQueueItem)="onNewQueueItem($event)"
               (newQueueItems)="onNewQueueItems($event)"
               [granule]="selected"
@@ -83,10 +83,12 @@
 
           <app-granules-list
             *ngIf="granules.length > 0"
-            [granules]="granules"
-            [selected]="(selectedGranule$ | async)?.name"
+            (newFocusedGranule)="onNewFocusedGranule($event)"
+            (clearFocusedGranule)="onClearFocusedGranule($event)"
             (newSelected)="onNewGranuleSelected($event)"
-            (queueGranule)="onQueueGranuleProducts($event)">
+            (queueGranule)="onQueueGranuleProducts($event)"
+            [granules]="granules"
+            [selected]="(selectedGranule$ | async)?.name">
           </app-granules-list>
       </mat-tab>
     </ng-container>

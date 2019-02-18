@@ -1,7 +1,6 @@
 <div class="page-layout blank p-24" fusePerfectScrollbar>
 
 <div>
-
   <app-map
     (newMapView)="onNewMapView($event)"
     (newMapDrawMode)="onNewMapDrawMode($event)"
@@ -10,7 +9,8 @@
     [granules$]="granules$"
     [view$]="view$"
     [drawMode$]="drawMode$"
-    [interactionMode$]="interactionMode$">
+    [interactionMode$]="interactionMode$"
+    [focusedGranule$]="focusedGranule$">
   </app-map>
 
   <app-spreadsheet></app-spreadsheet>

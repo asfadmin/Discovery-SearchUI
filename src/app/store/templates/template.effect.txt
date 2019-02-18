@@ -23,7 +23,7 @@ export class %%Name%%Effects {
   @Effect({ dispatch: false })
   private %someEffect%: Observable<void> = this.actions$.pipe(
     map(action => {
-      console.log(action);
+      ...
     })
   );
 }

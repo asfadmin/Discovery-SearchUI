@@ -16,8 +16,6 @@ export class AsfApiService {
   constructor(private http: HttpClient) {}
 
   public query<T>(stateParams: HttpParams): Observable<T> {
-    console.log(stateParams);
-
     const params = Object.entries(this.baseParams())
     .filter(
       ([key, val]) => !stateParams.get(key)

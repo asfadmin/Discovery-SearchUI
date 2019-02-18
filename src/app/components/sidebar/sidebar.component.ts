@@ -200,5 +200,13 @@ export class SidebarComponent {
   public onNewPolarizations(platformPolarizations: models.PlatformPolarizations): void {
     this.store$.dispatch(new filtersStore.SetPlatformPolarizations(platformPolarizations));
   }
+
+  public onNewFocusedGranule(granule: models.Sentinel1Product): void {
+    this.store$.dispatch(new granulesStore.SetFocusedGranule(granule));
+  }
+
+  public onClearFocusedGranule(): void {
+    this.store$.dispatch(new granulesStore.ClearFocusedGranule());
+  }
 }
 
