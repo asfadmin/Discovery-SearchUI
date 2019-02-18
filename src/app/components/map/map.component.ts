@@ -85,6 +85,20 @@ export class MapComponent implements OnInit {
     ).subscribe(
       layer => this.mapService.setLayer(layer)
     );
+
+    this.focusedGranule$.pipe(
+      filter(_ => !this.isInitMap),
+      tap(granule => !!granule || this.mapService.clearFocusedGranule()),
+      filter(g => g !== null),
+      map(
+        granule => this.wktService.wktToFeature(
+          granule.metadata.polygon,
+          this.mapService.epsg()
+        )
+      ),
+    ).subscribe(
+      feature => this.mapService.setFocusedFeature(feature)
+    );
   }
 
   private redrawSearchPolygonWhenViewChanges(): void {
@@ -124,16 +138,25 @@ export class MapComponent implements OnInit {
   private granulePolygonsLayer(projection: string): Observable<VectorSource> {
     return this.granules$.pipe(
       distinctUntilChanged(),
-      map(granules => granules
+      map(
+        granules => this.granulesToFeature(granules, projection)
+      ),
+      map(features => this.featuresToSource(features))
+    );
+  }
+
+  private granulesToFeature(granules: models.Sentinel1Product[], projection: string) {
+    return granules
         .map(g => g.metadata.polygon)
         .map(wkt =>
           this.wktService.wktToFeature(wkt, projection)
-        )
-      ),
-      map(features => new VectorLayer({
-        source: new VectorSource({ features })
-      }))
-    );
+        );
+  }
+
+  private featuresToSource(features): VectorSource {
+    return new VectorLayer({
+      source: new VectorSource({ features })
+    });
   }
 
   private setMapWith(viewType: models.MapViewType): void {
