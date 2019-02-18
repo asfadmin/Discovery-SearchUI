@@ -43,6 +43,7 @@ export class SidebarComponent {
 
   @Output() newSearch = new EventEmitter<void>();
   @Output() clearSearch = new EventEmitter<void>();
+  @Output() openSpreadsheet = new EventEmitter<void>();
 
   public platforms$ = this.store$.select(filtersStore.getPlatformsList);
   public platformProductTypes$ = this.store$.select(filtersStore.getProductTypes);
@@ -92,6 +93,10 @@ export class SidebarComponent {
   public onAppReset() {
     this.router.navigate(['/'], { queryParams: {} }) ;
     window.location.reload();
+  }
+
+  public onOpenSpreadsheet(): void {
+    this.openSpreadsheet.emit();
   }
 
   public onPlatformRemoved(platformName: string): void {

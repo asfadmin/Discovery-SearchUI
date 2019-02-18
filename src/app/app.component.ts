@@ -1,12 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpParams } from '@angular/common/http';
-import { MatSnackBar } from '@angular/material';
+import { MatSnackBar, MatBottomSheet } from '@angular/material';
 
 import { Store } from '@ngrx/store';
 
 import {
   filter, map, switchMap, tap, catchError
 } from 'rxjs/operators';
+
+import { SpreadsheetComponent } from '@components/spreadsheet';
 
 import { AppState } from './store';
 import * as granulesStore from '@store/granules';
@@ -36,6 +38,7 @@ export class AppComponent implements OnInit {
   constructor(
     private store$: Store<AppState>,
     private snackBar: MatSnackBar,
+    private bottomSheet: MatBottomSheet,
     private mapService: services.MapService,
     private asfApiService: services.AsfApiService,
     private urlStateService: services.UrlStateService,
@@ -48,6 +51,12 @@ export class AppComponent implements OnInit {
 
   public onLoadUrlState(): void {
     this.urlStateService.load();
+  }
+
+  public onOpenSpreadsheet(): void {
+    this.bottomSheet.open(SpreadsheetComponent, {
+      panelClass: 'spreadsheet-width'
+    });
   }
 
   public onNewSearch(): void {

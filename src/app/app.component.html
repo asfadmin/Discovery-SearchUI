@@ -13,11 +13,10 @@
     [focusedGranule$]="focusedGranule$">
   </app-map>
 
-  <app-spreadsheet></app-spreadsheet>
-
   <app-sidebar
      (newSearch)="onNewSearch()"
      (clearSearch)="onClearSearch()"
+     (openSpreadsheet)="onOpenSpreadsheet()"
     ></app-sidebar>
 </div>
 
