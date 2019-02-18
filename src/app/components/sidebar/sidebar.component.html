@@ -46,8 +46,7 @@
 
       <app-other-selector
         (newFlightDirections)="onNewFlightDirections($event)"
-        (newProductType)="onNewProductType($event)"
-        (removeProductType)="onRemoveProductType($event)"
+        (newProductTypes)="onNewProductTypes($event)"
         (newBeamModes)="onNewBeamModes($event)"
         (newPolarizations)="onNewPolarizations($event)"
         [productTypes]="platformProductTypes$ | async"

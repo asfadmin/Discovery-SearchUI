@@ -1,6 +1,6 @@
 <mat-card
   (mouseenter)="onSetFocusedGranule(granule)"
-  (mouseleave) ="onClearFocusedGranule(granule)"
+  (mouseleave) ="onClearFocusedGranule()"
   class="card-spacing example-card">
   <mat-card-header>
     <mat-card-title [title]="granule.name">{{ granule.name | truncate : 21 }}</mat-card-title>

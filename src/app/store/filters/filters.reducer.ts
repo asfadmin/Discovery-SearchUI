@@ -200,38 +200,17 @@ export function filtersReducer(state = initState, action: FiltersActions): Filte
       };
     }
 
-    case FiltersActionType.ADD_PRODUCT_TYPE: {
-      const productTypes = { ...state.productTypes };
-      const oldTypes = productTypes[action.payload.platform] || [];
-
-      productTypes[action.payload.platform] = [
-        ...oldTypes, action.payload.productType
-      ];
-
+    case FiltersActionType.SET_PLATFORM_PRODUCT_TYPES: {
       return {
         ...state,
-        productTypes
+        productTypes: { ...state.productTypes, ...action.payload }
       };
     }
 
-    case FiltersActionType.SET_PRODUCT_TYPES: {
+    case FiltersActionType.SET_ALL_PRODUCT_TYPES: {
       return {
         ...state,
         productTypes: action.payload
-      };
-    }
-
-    case FiltersActionType.REMOVE_PRODUCT_TYPE: {
-      const productTypes = { ...state.productTypes };
-
-      const types = [...productTypes[action.payload.platform]]
-        .filter(productType => productType !== action.payload.productType);
-
-      productTypes[action.payload.platform] = types;
-
-      return {
-        ...state,
-        productTypes
       };
     }
 

@@ -181,12 +181,8 @@ export class SidebarComponent {
     this.store$.dispatch(new queueStore.QueueGranule(name));
   }
 
-  public onNewProductType(productType: models.PlatformProductType): void {
-    this.store$.dispatch(new filtersStore.AddProductType(productType));
-  }
-
-  public onRemoveProductType(productType: models.PlatformProductType): void {
-    this.store$.dispatch(new filtersStore.RemoveProductType(productType));
+  public onNewProductTypes(productTypes: models.PlatformProductTypes): void {
+    this.store$.dispatch(new filtersStore.SetPlatformProductTypes(productTypes));
   }
 
   public onNewFlightDirections(directions: models.FlightDirection[]): void {

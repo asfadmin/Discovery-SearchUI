@@ -4,10 +4,10 @@
       <mat-form-field *ngIf="platform.productTypes.length > 1" >
         <mat-select
           [(ngModel)]="productTypes[platform.name]"
+          (selectionChange)="onNewProductTypes(platform, $event.value)"
           placeholder="{{ platform.name }}" multiple>
             <mat-option
               *ngFor="let type of platform.productTypes"
-              (click)="onTypeSelected(platform.name, type)"
               [value]="type"
               [matTooltip]="type.displayName">
                 {{type.displayName}}

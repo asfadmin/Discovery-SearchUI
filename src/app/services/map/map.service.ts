@@ -199,6 +199,7 @@ export class MapService {
     });
 
     this.drawLayer.setZIndex(100);
+    this.focusLayer.setZIndex(99);
 
     this.snap = new Snap({source: this.drawSource});
 
