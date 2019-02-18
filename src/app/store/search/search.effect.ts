@@ -8,7 +8,6 @@ import { map, withLatestFrom, switchMap, catchError } from 'rxjs/operators';
 
 import { AppState } from '../app.reducer';
 import * as granulesStore from '@store/granules';
-import { } from './search.action';
 
 import * as services from '@services';
 
