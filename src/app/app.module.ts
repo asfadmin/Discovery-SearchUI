@@ -47,6 +47,7 @@ export const routes = [
     services.AsfApiService,
     services.UrlStateService,
     services.MapService,
+    services.DrawService,
     services.WktService,
     services.ProductService,
     services.BulkDownloadService,
