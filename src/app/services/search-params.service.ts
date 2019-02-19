@@ -14,6 +14,7 @@ import * as filterStore from '@store/filters';
 
 
 import { MapService } from './map/map.service';
+import { RangeService } from './range.service';
 import * as models from '@models';
 
 @Injectable({
@@ -24,6 +25,7 @@ export class SearchParamsService {
   constructor(
     private store$: Store<AppState>,
     private mapService: MapService,
+    private rangeService: RangeService,
   ) { }
 
   public getParams() {
@@ -111,31 +113,16 @@ export class SearchParamsService {
   }
 
   private pathRange$() {
-    return this.rangeToApiFormat$(
-        this.store$.select(filterStore.getPathRange)
-    ).pipe(
+    return this.store$.select(filterStore.getPathRange).pipe(
+      map(range => this.rangeService.toString(range)),
       map(pathRange => ({ relativeOrbit: pathRange }))
     );
   }
 
   private frameRange$() {
-    return this.rangeToApiFormat$(
-      this.store$.select(filterStore.getFrameRange)
-    ).pipe(
+    return this.store$.select(filterStore.getFrameRange).pipe(
+      map(range => this.rangeService.toString(range)),
       map(frameRange => ({ frame: frameRange }))
-    );
-  }
-
-  private rangeToApiFormat$(source: Observable<models.Range<number | null>>) {
-    return source.pipe(
-      map(range => Object.values(range)
-        .filter(v => !!v)
-      ),
-      map(range => Array.from(new Set(range))),
-      map(range => range.length === 2 ?
-        range.join('-') :
-        range.pop() || null
-      )
     );
   }
 
@@ -179,7 +166,6 @@ export class SearchParamsService {
       ),
       map(
         polarizations => Array.from(new Set(polarizations))
-          .map(pol => pol)
           .join(',')
       ),
       map(polarization => ({ polarization })),

@@ -16,6 +16,7 @@ import * as models from '@models';
 
 import { MapService } from './map/map.service';
 import { WktService } from './wkt.service';
+import { RangeService } from './range.service';
 
 
 
@@ -32,6 +33,7 @@ export class UrlStateService {
     private activatedRoute: ActivatedRoute,
     private mapService: MapService,
     private wktService: WktService,
+    private rangeService: RangeService,
     private router: Router,
   ) {
     this.urlParams = [
@@ -130,14 +132,7 @@ export class UrlStateService {
       name: 'path',
       source: this.store$.select(filterStore.getPathRange).pipe(
         skip(1),
-        map(range => Object.values(range)
-          .filter(v => !!v)
-        ),
-        map(range => Array.from(new Set(range))),
-        map(range => range.length === 2 ?
-          range.join('-') :
-          range.pop() || null
-        ),
+        map(range => this.rangeService.toString(range)),
         map(path => ({ path }))
       ),
       loader: this.loadPathRange
@@ -145,14 +140,7 @@ export class UrlStateService {
       name: 'frame',
       source: this.store$.select(filterStore.getFrameRange).pipe(
         skip(1),
-        map(range => Object.values(range)
-          .filter(v => !!v)
-        ),
-        map(range => Array.from(new Set(range))),
-        map(range => range.length === 2 ?
-          range.join('-') :
-          range.pop() || null
-        ),
+        map(range => this.rangeService.toString(range)),
         map(frame => ({ frame }))
       ),
       loader: this.loadFrameRange
@@ -167,58 +155,24 @@ export class UrlStateService {
       name: 'productTypes',
       source: this.store$.select(filterStore.getProductTypes).pipe(
         skip(1),
-        map(types => {
-
-          let param = '';
-
-          for (const [platformName, productTypes] of Object.entries(types)) {
-            const typesStr = productTypes
-              .map(type => type.apiValue)
-              .join(',');
-
-            param += `$$${platformName},${typesStr}`;
-          }
-
-          return { productTypes: param };
-        })
+        map(types => this.objToString(types, key => key.apiValue)),
+        map(param => ({ productTypes: param }))
       ),
       loader: this.loadProductTypes
     }, {
       name: 'beamModes',
       source: this.store$.select(filterStore.getBeamModes).pipe(
         skip(1),
-        map(modes => {
-
-          let param = '';
-
-          for (const [platformName, beamModes] of Object.entries(modes)) {
-            const beamModesStr = beamModes
-              .join(',');
-
-            param += `$$${platformName},${beamModesStr}`;
-          }
-
-          return { beamModes: param };
-        })
+        map(modes => this.objToString(modes)),
+        map(param => ({ beamModes: param }))
       ),
       loader: this.loadBeamModes
     }, {
       name: 'polarizations',
       source: this.store$.select(filterStore.getPolarizations).pipe(
         skip(1),
-        map(pols => {
-
-          let param = '';
-
-          for (const [platformName, polarizations] of Object.entries(pols)) {
-            const polarizationsStr = polarizations
-              .join(',');
-
-            param += `$$${platformName},${polarizationsStr}`;
-          }
-
-          return { polarizations: param };
-        })
+        map(pols =>  this.objToString(pols)),
+        map(param => ({ polarizations: param }))
       ),
       loader: this.loadPolarizations
     }, {
@@ -230,6 +184,20 @@ export class UrlStateService {
       ),
       loader: this.loadFlightDirections
     }];
+  }
+
+  private objToString(obj: any, key = v => v): string {
+    let param = '';
+
+    for (const [name, values] of Object.entries(obj)) {
+      const valuesStr = (<any[]>values)
+        .map(key)
+        .join(',');
+
+      param += `$$${name},${valuesStr}`;
+    }
+
+    return param;
   }
 
   private mapParameters() {
