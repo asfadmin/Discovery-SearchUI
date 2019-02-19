@@ -89,39 +89,39 @@ export class AppComponent implements OnInit {
         if (resp.error) {
           const { report, type } = resp.error;
 
-          this.mapService.setPolygonError();
+          this.mapService.setDrawStyle(models.DrawPolygonStyle.INVALID);
           this.snackBar.open(
             report, 'INVALID POLYGON',
             { duration: 4000, }
           );
 
           return;
-        }
+        } else {
+          this.mapService.setDrawStyle(models.DrawPolygonStyle.VALID);
 
-        this.mapService.setGoodPolygon();
+          const repairs = resp.repairs
+            .filter(repair =>
+              repair.type !== models.PolygonRepairTypes.ROUND
+            );
 
-        const repairs = resp.repairs
-          .filter(repair =>
-            repair.type !== models.PolygonRepairTypes.ROUND
+          if (repairs.length === 0) {
+            return resp.wkt;
+          }
+
+          const { report, type }  = resp.repairs.pop();
+
+          this.snackBar.open(
+            report, type,
+            { duration: 4000, }
           );
 
-        if (repairs.length === 0) {
-          return resp.wkt;
+          const features = this.wktService.wktToFeature(
+            resp.wkt,
+            this.mapService.epsg()
+          );
+
+          this.mapService.setDrawFeature(features);
         }
-
-        const { report, type }  = resp.repairs.pop();
-
-        this.snackBar.open(
-          report, type,
-          { duration: 4000, }
-        );
-
-        const features = this.wktService.wktToFeature(
-          resp.wkt,
-          this.mapService.epsg()
-        );
-
-        this.mapService.setDrawFeature(features);
       }),
       catchError((val, source) => source)
     ).subscribe(_ => _);

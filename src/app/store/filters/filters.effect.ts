@@ -11,6 +11,7 @@ import * as filtersAction from './filters.action';
 import * as filtersReducer from './filters.reducer';
 
 import { MapService } from '../../services/map/map.service';
+import * as models from '@models';
 
 @Injectable()
 export class FiltersEffects {
@@ -27,11 +28,15 @@ export class FiltersEffects {
 
   @Effect({ dispatch: false }) setPolygonStyleWhenOmittingSearchPolygon$: Observable<void> = this.actions$.pipe(
     ofType<filtersAction.OmitSearchPolygon>(filtersAction.FiltersActionType.OMIT_SEARCH_POLYGON),
-    map(action => this.mapService.setOmittedPolygon())
+    map(
+      action => this.mapService.setDrawStyle(models.DrawPolygonStyle.OMITTED)
+    )
   );
 
   @Effect({ dispatch: false }) setPolygonStyleWhenUsingSearchPolygon: Observable<void> = this.actions$.pipe(
     ofType<filtersAction.UseSearchPolygon>(filtersAction.FiltersActionType.USE_SEARCH_POLYGON),
-    map(action => this.mapService.setValidPolygon())
+    map(
+      action => this.mapService.setDrawStyle(models.DrawPolygonStyle.VALID)
+    )
   );
 }
