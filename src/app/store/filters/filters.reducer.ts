@@ -19,6 +19,8 @@ export interface FiltersState {
   beamModes: models.PlatformBeamModes;
   polarizations: models.PlatformPolarizations;
   flightDirections: Set<models.FlightDirection>;
+
+  maxResults: number;
 }
 
 export type DateRangeState = models.Range<null | Date>;
@@ -59,6 +61,7 @@ const initState: FiltersState = {
   beamModes: {},
   polarizations: {},
   flightDirections: new Set<models.FlightDirection>([]),
+  maxResults: 100,
 };
 
 
@@ -249,6 +252,14 @@ export function filtersReducer(state = initState, action: FiltersActions): Filte
       };
     }
 
+    case FiltersActionType.SET_MAX_RESULTS: {
+      return {
+        ...state,
+        maxResults: action.payload,
+      };
+    }
+
+
     default: {
       return state;
     }
@@ -334,4 +345,9 @@ export const getPolarizations = createSelector(
 export const getFlightDirections = createSelector(
   getFiltersState,
   (state: FiltersState) => Array.from(state.flightDirections)
+);
+
+export const getSearchMaxResults = createSelector(
+  getFiltersState,
+  (state: FiltersState) => state.maxResults
 );

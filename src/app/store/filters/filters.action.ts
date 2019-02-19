@@ -32,7 +32,8 @@ export enum FiltersActionType {
 
   CLEAR_FILTERS = '[Filters-Clear] Clear Filters',
 
-  SET_LIST_SEARCH_TYPE = '[Filtesr-List] Set List Search Type',
+  SET_LIST_SEARCH_TYPE = '[Filters-List] Set List Search Type',
+  SET_MAX_RESULTS = '[Filters] Set Max Results',
 }
 
 export class AddSelectedPlatform implements Action {
@@ -153,6 +154,12 @@ export class SetAllPolarizations implements Action {
   constructor(public payload: models.PlatformPolarizations) {}
 }
 
+export class SetMaxResults implements Action {
+  public readonly type = FiltersActionType.SET_MAX_RESULTS;
+
+  constructor(public payload: number) {}
+}
+
 export type FiltersActions =
   | AddSelectedPlatform
   | RemoveSelectedPlatform
@@ -174,4 +181,5 @@ export type FiltersActions =
   | SetAllBeamModes
   | SetPlatformPolarizations
   | SetAllPolarizations
-  | ClearFilters;
+  | ClearFilters
+  | SetMaxResults;
