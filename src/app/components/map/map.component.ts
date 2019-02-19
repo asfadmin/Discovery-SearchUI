@@ -155,7 +155,9 @@ export class MapComponent implements OnInit {
 
   private featuresToSource(features): VectorSource {
     return new VectorLayer({
-      source: new VectorSource({ features })
+      source: new VectorSource({
+        features, noWrap: true, wrapX: false
+      })
     });
   }
 
