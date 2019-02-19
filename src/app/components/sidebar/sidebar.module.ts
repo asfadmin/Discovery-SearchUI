@@ -1,10 +1,11 @@
 import { NgModule } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 
 import { TruncateModule } from '@yellowspot/ng-truncate';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import { MatTabsModule } from '@angular/material';
+import { MatTabsModule, MatSelectModule } from '@angular/material';
 
 import { MatSharedModule } from '@shared';
 import { PipesModule } from '@pipes';
@@ -26,11 +27,14 @@ import { QueueModule } from './queue';
 import { GranulesListModule } from './granules/granules-list';
 import { GranuleDetailComponent } from './granules/granule-detail/granule-detail.component';
 import { LogoComponent } from './logo/logo.component';
+import { MaxResultsSelectorComponent } from './search/max-results-selector/max-results-selector.component';
 
 @NgModule({
   imports: [
     CommonModule,
     RouterModule,
+    FormsModule,
+    MatSelectModule,
 
     TruncateModule,
     FontAwesomeModule,
@@ -55,6 +59,7 @@ import { LogoComponent } from './logo/logo.component';
     SidebarComponent,
     GranuleDetailComponent,
     LogoComponent,
+    MaxResultsSelectorComponent,
   ],
   providers: [
     DateExtremaService,

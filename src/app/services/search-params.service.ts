@@ -194,7 +194,7 @@ export class SearchParamsService {
   }
 
   private maxResults$() {
-    return this.store$.select(filterStore.getSearchMaxResults).pipe(
+    return this.store$.select(filterStore.getMaxSearchResults).pipe(
       map(maxResults => ({ maxResults }))
     );
   }

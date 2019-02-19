@@ -28,8 +28,7 @@ import * as models from '@models';
   styleUrls: ['./sidebar.component.scss'],
   animations: [
     trigger('changeMenuState', [
-      state('shown', style({
-        transform: 'translateX(100%) translateX(-25px)'
+      state('shown', style({ transform: 'translateX(100%) translateX(-25px)'
       })),
       state('hidden',   style({
         transform: 'translateX(0%)'
@@ -59,6 +58,9 @@ export class SidebarComponent {
   public flightDirections$ = this.store$.select(filtersStore.getFlightDirections);
   public beamModes$ = this.store$.select(filtersStore.getBeamModes);
   public polarizations$ = this.store$.select(filtersStore.getPolarizations);
+  public maxResults$ = this.store$.select(filtersStore.getMaxSearchResults).pipe(
+    map(maxResults => maxResults.toString())
+  );
 
   public isSidebarOpen$ = this.store$.select(uiStore.getIsSidebarOpen);
   public selectedFilter$ = this.store$.select(uiStore.getSelectedFilter);
@@ -217,6 +219,10 @@ export class SidebarComponent {
 
   public onClearFocusedGranule(): void {
     this.store$.dispatch(new granulesStore.ClearFocusedGranule());
+  }
+
+  public onNewMaxResults(maxResults): void {
+    this.store$.dispatch(new filtersStore.SetMaxResults(maxResults));
   }
 }
 

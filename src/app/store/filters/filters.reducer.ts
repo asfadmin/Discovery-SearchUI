@@ -347,7 +347,7 @@ export const getFlightDirections = createSelector(
   (state: FiltersState) => Array.from(state.flightDirections)
 );
 
-export const getSearchMaxResults = createSelector(
+export const getMaxSearchResults = createSelector(
   getFiltersState,
   (state: FiltersState) => state.maxResults
 );

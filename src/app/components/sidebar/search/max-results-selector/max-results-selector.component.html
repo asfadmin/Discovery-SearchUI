@@ -1,0 +1,12 @@
+<mat-card class="card-spacing">
+  <mat-form-field>
+    <mat-select
+      (selectionChange)="onNewMaxResults(+$event.value)"
+      [(ngModel)]="maxResults"
+      placeholder="Max Results">
+      <mat-option value="100">100</mat-option>
+      <mat-option value="1000">1000</mat-option>
+      <mat-option value="10000">10000</mat-option>
+    </mat-select>
+  </mat-form-field>
+</mat-card>

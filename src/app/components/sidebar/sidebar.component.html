@@ -69,6 +69,11 @@
         [polarizations]="polarizations$ | async">
       </app-other-selector>
 
+      <app-max-results-selector
+        [maxResults]="maxResults$ | async"
+        (newMaxResults)="onNewMaxResults($event)">
+      </app-max-results-selector>
+
       <app-list-search
         (newListSearchMode)="onNewListSearchMode($event)"
         (newListSearch)="onNewGranuleList($event)"
