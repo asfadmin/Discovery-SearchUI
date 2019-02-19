@@ -20,10 +20,6 @@
     [isLoading]="loading$ | async">
   </app-search-bar>
 
-  <mat-card *ngIf="(granules$ | async).length > 0" class="card-spacing">
-    <button (click)="onOpenSpreadsheet()" mat-raised-button>Open Spreadsheet</button>
-  </mat-card>
-
   <mat-card *ngIf="searchError$ | async as error" class="card-spacing">
     <b>Error:</b> {{error}}
   </mat-card>
@@ -69,6 +65,11 @@
         [polarizations]="polarizations$ | async">
       </app-other-selector>
 
+      <app-max-results-selector
+        [maxResults]="maxResults$ | async"
+        (newMaxResults)="onNewMaxResults($event)">
+      </app-max-results-selector>
+
       <app-list-search
         (newListSearchMode)="onNewListSearchMode($event)"
         (newListSearch)="onNewGranuleList($event)"
@@ -81,6 +82,7 @@
       <mat-tab
         *ngIf="granules.length > 0"
         label="Results">
+
         <ng-container *ngIf="selectedGranule$ | async as selected">
           <app-granule-detail
               *ngIf="!!selected"
@@ -93,15 +95,18 @@
           </app-granule-detail>
         </ng-container>
 
-          <app-granules-list
-            *ngIf="granules.length > 0"
-            (newFocusedGranule)="onNewFocusedGranule($event)"
-            (clearFocusedGranule)="onClearFocusedGranule($event)"
-            (newSelected)="onNewGranuleSelected($event)"
-            (queueGranule)="onQueueGranuleProducts($event)"
-            [granules]="granules"
-            [selected]="(selectedGranule$ | async)?.name">
-          </app-granules-list>
+        <mat-card class="card-spacing">
+          <button (click)="onOpenSpreadsheet()" mat-raised-button>Open Spreadsheet</button>
+        </mat-card>
+
+        <app-granules-list
+          (newFocusedGranule)="onNewFocusedGranule($event)"
+          (clearFocusedGranule)="onClearFocusedGranule($event)"
+          (newSelected)="onNewGranuleSelected($event)"
+          (queueGranule)="onQueueGranuleProducts($event)"
+          [granules]="granules"
+          [selected]="(selectedGranule$ | async)?.name">
+        </app-granules-list>
       </mat-tab>
     </ng-container>
 

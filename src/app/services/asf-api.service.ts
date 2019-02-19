@@ -60,7 +60,6 @@ export class AsfApiService {
 
   private baseParams() {
     return {
-      maxResults: 100,
       output: 'jsonlite'
     };
   }

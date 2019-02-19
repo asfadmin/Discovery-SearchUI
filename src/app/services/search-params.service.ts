@@ -58,6 +58,7 @@ export class SearchParamsService {
         this.flightDirections$(),
         this.beamModes$(),
         this.polarizations$(),
+        this.maxResults$(),
       ).pipe(
         map((params: any[]) => params
           .filter(param => !!Object.values(param)[0])
@@ -189,6 +190,12 @@ export class SearchParamsService {
     return this.store$.select(filterStore.getFlightDirections).pipe(
       map(dirs => dirs.join(',')),
       map(directions => ({ flightDirection: directions }))
+    );
+  }
+
+  private maxResults$() {
+    return this.store$.select(filterStore.getMaxSearchResults).pipe(
+      map(maxResults => ({ maxResults }))
     );
   }
 }

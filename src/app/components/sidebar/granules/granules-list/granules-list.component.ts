@@ -22,7 +22,7 @@ export class GranulesListComponent  {
   @Output() newFocusedGranule = new EventEmitter<Sentinel1Product>();
   @Output() clearFocusedGranule = new EventEmitter<void>();
 
-  public pageSizeOptions = [5, 10, 25, 100];
+  public pageSizeOptions = [5, 10, 25];
   public pageSize = this.pageSizeOptions[1];
   public pageIndex = 0;
 
