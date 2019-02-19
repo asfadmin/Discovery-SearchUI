@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { BrowserModule } from '@angular/platform-browser';
 import { HttpClientModule } from '@angular/common/http';
-import { MatSnackBarModule } from '@angular/material';
+import { MatSnackBarModule, MatBottomSheetModule } from '@angular/material';
 import { environment } from '@environments/environment';
 
 import { StoreModule } from '@ngrx/store';
@@ -19,7 +19,6 @@ import * as services from '@services';
 
 import { AppComponent } from './app.component';
 
-
 export const routes = [
   { path: '**', name: 'AppComponent', component: AppComponent },
 ];
@@ -33,6 +32,7 @@ export const routes = [
     BrowserModule,
     HttpClientModule,
     MatSnackBarModule,
+    MatBottomSheetModule,
 
     RouterModule.forRoot(routes, { useHash: true }),
     StoreModule.forRoot(store.reducers, { metaReducers: store.metaReducers }),
@@ -52,6 +52,6 @@ export const routes = [
     services.BulkDownloadService,
     services.SearchParamsService,
   ],
-  bootstrap: [ AppComponent ]
+  bootstrap: [ AppComponent ],
 })
 export class AppModule {}

@@ -5,7 +5,7 @@
   position: fixed;
   background: transparent;
   right: 100%;
-  top: 0;
+  top: 32px;
   z-index: 999;
 }
 
@@ -17,4 +17,8 @@
   margin: 0;
   padding: 0;
   background: rgba(238, 238, 238, 0.7);
+}
+
+.clickable {
+  cursor: pointer;
 }

@@ -31,6 +31,9 @@ import { HideIconComponent } from './hide-icon/hide-icon.component';
   ],
   exports: [
     SpreadsheetComponent
+  ],
+  entryComponents: [
+    SpreadsheetComponent
   ]
 })
 export class SpreadsheetModule { }

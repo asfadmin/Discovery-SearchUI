@@ -1,5 +1,3 @@
-<div class="page-layout blank p-24" fusePerfectScrollbar>
-
 <div>
   <app-map
     (newMapView)="onNewMapView($event)"
@@ -13,12 +11,9 @@
     [focusedGranule$]="focusedGranule$">
   </app-map>
 
-  <app-spreadsheet></app-spreadsheet>
-
   <app-sidebar
      (newSearch)="onNewSearch()"
      (clearSearch)="onClearSearch()"
+     (openSpreadsheet)="onOpenSpreadsheet()"
     ></app-sidebar>
-</div>
-
 </div>
