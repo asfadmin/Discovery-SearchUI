@@ -19,7 +19,6 @@ import * as services from '@services';
 
 import { AppComponent } from './app.component';
 
-
 export const routes = [
   { path: '**', name: 'AppComponent', component: AppComponent },
 ];

@@ -6,10 +6,21 @@
   <base href="/">
 
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-  <link rel="icon" type="image/x-icon" href="favicon.ico">
 </head>
 <body>
+<style>
+* {
+  padding: 0;
+  margin: 0;
+}
+</style>
+<script type="text/javascript" src="https://cdn.earthdata.nasa.gov/tophat2/tophat2.js"
+        id="earthdata-tophat-script"
+        data-show-fbm="false"
+        data-show-status="false"
+>
+</script>
+<!-- END NASA TopHat Code -->
   <script>
     window.addEventListener('dragover',function(e){
       e = e || event;
@@ -26,4 +37,6 @@
   </script>
   <app-root></app-root>
 </body>
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+<link rel="icon" type="image/x-icon" href="favicon.ico">
 </html>
