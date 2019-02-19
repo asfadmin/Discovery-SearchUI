@@ -10,6 +10,7 @@ import { Sentinel1Product } from '@models';
 })
 export class BulkDownloadService {
   private readonly url = 'https://bulk-download.asf.alaska.edu';
+  private readonly testUrl = 'https://bulk-download-test.asf.alaska.edu';
 
   constructor(private http: HttpClient) {}
 
@@ -21,12 +22,8 @@ export class BulkDownloadService {
     const formData = new FormData();
     formData.append('products', productsStr);
 
-    const headers = new HttpHeaders()
-      .append('Access-Control-Expose-Headers', 'Content-Disposition');
-
-    return this.http.post(this.url, formData, {
+    return this.http.post(this.testUrl, formData, {
       responseType: 'blob',
-      headers
     });
   }
 }
