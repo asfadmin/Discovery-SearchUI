@@ -51,6 +51,7 @@ export const routes = [
     services.ProductService,
     services.BulkDownloadService,
     services.SearchParamsService,
+    services.RangeService,
   ],
   bootstrap: [ AppComponent ],
 })
