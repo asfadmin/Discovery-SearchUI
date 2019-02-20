@@ -30,6 +30,7 @@ export class AppComponent implements OnInit {
   public view$ = this.store$.select(mapStore.getMapView);
   public drawMode$ = this.store$.select(mapStore.getMapDrawMode);
   public interactionMode$ = this.store$.select(mapStore.getMapInteractionMode);
+  public isMapInitialized$ = this.store$.select(mapStore.getIsMapInitialization);
   public shouldOmitSearchPolygon$ = this.store$.select(filterStore.getShouldOmitSearchPolygon);
   public focusedGranule$ = this.store$.select(granulesStore.getFocusedGranule);
 
@@ -79,6 +80,10 @@ export class AppComponent implements OnInit {
 
   public onNewMapInteractionMode(mode: models.MapInteractionModeType): void {
     this.store$.dispatch(new mapStore.SetMapInteractionMode(mode));
+  }
+
+  public onMapInitialized(): void {
+    this.store$.dispatch(new mapStore.MapInitialzed());
   }
 
   private validateSearchPolygons(): void {

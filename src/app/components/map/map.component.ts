@@ -24,11 +24,13 @@ export class MapComponent implements OnInit {
   @Input() drawMode$: Observable<models.MapDrawModeType>;
   @Input() interactionMode$: Observable<models.MapInteractionModeType>;
   @Input() focusedGranule$: Observable<models.Sentinel1Product>;
+  @Input() isMapInitialized$: Observable<boolean>;
 
   @Output() newMapView = new EventEmitter<models.MapViewType>();
   @Output() newMapDrawMode = new EventEmitter<models.MapDrawModeType>();
   @Output() newMapInteractionMode = new EventEmitter<models.MapInteractionModeType>();
   @Output() loadUrlState = new EventEmitter<void>();
+  @Output() mapInitialized = new EventEmitter<void>();
 
   private isInitMap = true;
   public mousePosition$ = this.mapService.mousePosition$;
@@ -66,22 +68,25 @@ export class MapComponent implements OnInit {
 
   private updateMapOnViewChange(): void {
     this.view$.pipe(
+        withLatestFrom(this.isMapInitialized$),
+        filter(([view, isInit]) => !isInit),
+        map(([view, isInit]) => this.setMapWith(view)),
+    ).subscribe(
+      _ => {
+        this.loadUrlState.emit();
+        this.mapInitialized.emit();
+      }
+    );
+
+    this.isMapInitialized$.pipe(
+      filter(isMapInitiliazed => isMapInitiliazed),
+      switchMap(_ => this.view$),
       map(view => this.setMapWith(view)),
-
-      // Load state from url after map is set
-      tap(() => {
-        if (this.isInitMap) {
-          this.loadUrlState.emit();
-        }
-
-        this.isInitMap = false;
-      }),
-
       switchMap(_ =>
         this.granulePolygonsLayer(this.mapService.epsg())
       )
     ).subscribe(
-      layer => this.mapService.setLayer(layer)
+      _ => _
     );
 
     this.focusedGranule$.pipe(
