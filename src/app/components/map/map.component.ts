@@ -45,8 +45,6 @@ export class MapComponent implements OnInit {
 
     this.interactionMode$
       .subscribe(mode => this.mapService.setInteractionMode(mode));
-
-    this.focusedGranule$.subscribe(_ => _);
   }
 
   public onNewProjection(view: models.MapViewType): void {

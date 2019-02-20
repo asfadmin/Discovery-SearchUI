@@ -56,5 +56,4 @@ export class GranulesListComponent  {
     this.pageIndex = page.pageIndex;
     this.pageSize = page.pageSize;
   }
-
 }
