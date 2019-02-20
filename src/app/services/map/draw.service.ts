@@ -16,22 +16,27 @@ import * as models from '@models';
   providedIn: 'root'
 })
 export class DrawService {
+  private source: VectorSource;
+  private layer: VectorLayer;
+
   private draw: Draw;
   private modify: Modify;
   private snap: Snap;
 
   private defaultStyle = polygonStyle.valid;
 
-  private source = new VectorSource({
-    noWrap: true, wrapX: false
-  });
-
-  private layer = new VectorLayer({
-    source: this.source,
-    style: polygonStyle.valid
-  });
-
   public polygon$ = new Subject<string | null>();
+
+  constructor() {
+    this.source = new VectorSource({
+      noWrap: true, wrapX: false
+    });
+
+    this.layer = new VectorLayer({
+      source: this.source,
+      style: polygonStyle.valid
+    });
+  }
 
   public getLayer(): VectorLayer {
     return this.layer;
