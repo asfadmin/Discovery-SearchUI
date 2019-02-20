@@ -76,11 +76,11 @@ export class MapService {
   }
 
   public setInteractionMode(mode: models.MapInteractionModeType) {
-    this.drawService.setInteractionMode(map, mode);
+    this.drawService.setInteractionMode(this.map, mode);
   }
 
   public setDrawMode(mode: models.MapDrawModeType): void {
-    this.drawService.setDrawMode(map, mode);
+    this.drawService.setDrawMode(this.map, mode);
   }
 
   public clearDrawLayer(): void {
