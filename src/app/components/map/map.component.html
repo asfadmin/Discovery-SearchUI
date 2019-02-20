@@ -1,4 +1,12 @@
-<div id="map" class="map"></div>
+<div id="map" class="map"
+  (dragover)="onFileHovered($event)"
+  ></div>
+
+<app-file-upload
+  (dialogClose)="onFileUploadDialogClosed()"
+  (newSearchPolygon)="onNewSearchPolygon($event)"
+  [interaction$]="interactionMode$">
+</app-file-upload>
 
 <app-view-selector
   (newProjection)="onNewProjection($event)"
@@ -14,3 +22,11 @@
   (newInteraction)="onNewInteractionMode($event)"
   [interaction]="interactionMode$ | async">
 ></app-interaction-selector>
+
+<div class="meatball__position">
+  <img width="1000" height="1000" src="assets/spicy-meatball.gif">
+</div>
+
+<app-attributions
+  [mousePos]="mousePosition$ | async">
+</app-attributions>

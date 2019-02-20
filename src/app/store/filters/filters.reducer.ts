@@ -6,13 +6,24 @@ import * as models from '@models';
 
 export interface FiltersState {
   platforms: PlatformsState;
+
   dateRange: DateRangeState;
+
+  pathRange: models.Range<number | null>;
+  frameRange: models.Range<number | null>;
+  shouldOmitSearchPolygon: boolean;
+
+  listSearchMode: models.ListSearchType;
+
+  productTypes: models.PlatformProductTypes;
+  beamModes: models.PlatformBeamModes;
+  polarizations: models.PlatformPolarizations;
+  flightDirections: Set<models.FlightDirection>;
+
+  maxResults: number;
 }
 
-export interface DateRangeState {
-  start: null | Date;
-  end: null | Date;
-}
+export type DateRangeState = models.Range<null | Date>;
 
 export interface PlatformsState {
   entities: {[id: string]: models.Platform };
@@ -34,7 +45,23 @@ const initState: FiltersState = {
   dateRange: {
     start: null,
     end: null
-  }
+  },
+  pathRange: {
+    start: null,
+    end: null
+  },
+  frameRange: {
+    start: null,
+    end: null
+  },
+  shouldOmitSearchPolygon: false,
+  listSearchMode: models.ListSearchType.GRANULE,
+
+  productTypes: {},
+  beamModes: {},
+  polarizations: {},
+  flightDirections: new Set<models.FlightDirection>([]),
+  maxResults: 100,
 };
 
 
@@ -62,6 +89,18 @@ export function filtersReducer(state = initState, action: FiltersActions): Filte
         platforms: {
           ...state.platforms,
           selected
+        },
+        productTypes: {
+          ...state.productTypes,
+          [action.payload]: []
+        },
+        beamModes: {
+          ...state.beamModes,
+          [action.payload]: []
+        },
+        polarizations: {
+          ...state.polarizations,
+          [action.payload]: []
         }
       };
     }
@@ -97,6 +136,129 @@ export function filtersReducer(state = initState, action: FiltersActions): Filte
         }
       };
     }
+
+    case FiltersActionType.CLEAR_DATE_RANGE: {
+      return {
+        ...state,
+        dateRange: initState.dateRange
+      };
+    }
+
+    case FiltersActionType.SET_PATH_START: {
+      return {
+        ...state,
+        pathRange: {
+          ...state.pathRange,
+          start: action.payload
+        }
+      };
+    }
+
+    case FiltersActionType.SET_PATH_END: {
+      return {
+        ...state,
+        pathRange: {
+          ...state.pathRange,
+          end: action.payload
+        }
+      };
+    }
+
+    case FiltersActionType.SET_FRAME_START: {
+      return {
+        ...state,
+        frameRange: {
+          ...state.frameRange,
+          start: action.payload
+        }
+      };
+    }
+
+    case FiltersActionType.SET_FRAME_END: {
+      return {
+        ...state,
+        frameRange: {
+          ...state.frameRange,
+          end: action.payload
+        }
+      };
+    }
+
+    case FiltersActionType.CLEAR_FILTERS: {
+      return initState;
+    }
+
+    case FiltersActionType.USE_SEARCH_POLYGON: {
+      return { ...state, shouldOmitSearchPolygon: false };
+    }
+
+    case FiltersActionType.OMIT_SEARCH_POLYGON: {
+      return { ...state, shouldOmitSearchPolygon: true };
+    }
+
+    case FiltersActionType.SET_LIST_SEARCH_TYPE: {
+      return {
+        ...state,
+        listSearchMode: action.payload
+      };
+    }
+
+    case FiltersActionType.SET_PLATFORM_PRODUCT_TYPES: {
+      return {
+        ...state,
+        productTypes: { ...state.productTypes, ...action.payload }
+      };
+    }
+
+    case FiltersActionType.SET_ALL_PRODUCT_TYPES: {
+      return {
+        ...state,
+        productTypes: action.payload
+      };
+    }
+
+    case FiltersActionType.SET_PLATFORM_BEAM_MODES: {
+      return {
+        ...state,
+        beamModes: { ...state.beamModes, ...action.payload }
+      };
+    }
+
+    case FiltersActionType.SET_ALL_BEAM_MODES: {
+      return {
+        ...state,
+        beamModes: { ...action.payload }
+      };
+    }
+
+    case FiltersActionType.SET_PLATFORM_POLARIZATIONS: {
+      return {
+        ...state,
+        polarizations: { ...state.polarizations, ...action.payload }
+      };
+    }
+
+    case FiltersActionType.SET_ALL_POLARIZATIONS: {
+      return {
+        ...state,
+        polarizations: { ...action.payload }
+      };
+    }
+
+    case FiltersActionType.SET_FLIGHT_DIRECTIONS: {
+      return {
+        ...state,
+        flightDirections: new Set(action.payload)
+      };
+    }
+
+    case FiltersActionType.SET_MAX_RESULTS: {
+      return {
+        ...state,
+        maxResults: action.payload,
+      };
+    }
+
 
     default: {
       return state;
@@ -143,4 +305,49 @@ export const getSelectedPlatforms = createSelector(
     (selected: models.Platform[], name: string) => [...selected, state.entities[name]],
     []
   )
+);
+
+export const getPathRange = createSelector(
+  getFiltersState,
+  (state: FiltersState) => state.pathRange
+);
+
+export const getFrameRange = createSelector(
+  getFiltersState,
+  (state: FiltersState) => state.frameRange
+);
+
+export const getShouldOmitSearchPolygon = createSelector(
+  getFiltersState,
+  (state: FiltersState) => state.shouldOmitSearchPolygon
+);
+
+export const getListSearchMode = createSelector(
+  getFiltersState,
+  (state: FiltersState) => state.listSearchMode
+);
+
+export const getProductTypes = createSelector(
+  getFiltersState,
+  (state: FiltersState) => state.productTypes
+);
+
+export const getBeamModes = createSelector(
+  getFiltersState,
+  (state: FiltersState) => state.beamModes
+);
+
+export const getPolarizations = createSelector(
+  getFiltersState,
+  (state: FiltersState) => state.polarizations
+);
+
+export const getFlightDirections = createSelector(
+  getFiltersState,
+  (state: FiltersState) => Array.from(state.flightDirections)
+);
+
+export const getMaxSearchResults = createSelector(
+  getFiltersState,
+  (state: FiltersState) => state.maxResults
 );

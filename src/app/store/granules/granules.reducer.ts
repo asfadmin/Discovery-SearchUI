@@ -9,41 +9,62 @@ interface GranuleEntities { [id: string]: Sentinel1Product; }
 
 export interface GranulesState {
   ids: string[];
-  entities: GranuleEntities;
+  products: GranuleEntities;
+  granules: {[id: string]: string[]};
 
   selected: string | null;
+  focused: string | null;
 
-  loading: boolean;
-  error: string | undefined;
+  searchList: string[];
 }
 
 const initState: GranulesState = {
   ids: [],
-  entities: {},
+  granules: {},
+  products: {},
 
   selected: null,
+  focused: null,
 
-  loading: false,
-  error: undefined,
+  searchList: [],
 };
 
 
 export function granulesReducer(state = initState, action: GranulesActions): GranulesState {
   switch (action.type) {
     case GranulesActionType.SET_GRANULES: {
-      const totalGranules = action.payload
-        .reduce((total, granule) => {
-          total[granule.name] = granule;
+      const products = action.payload
+        .reduce((total, product) => {
+          total[product.file] = product;
 
           return total;
         }, {});
 
+      const productGroups = action.payload.reduce((total, product) => {
+        const granule = total[product.groupId] || [];
+
+        total[product.groupId] = [...granule, product.file];
+        return total;
+      }, {});
+
+      const granules = {};
+      for (const [groupId, productNames] of Object.entries(productGroups)) {
+
+        (<string[]>productNames).sort(
+          (a, b) => products[a].bytes - products[b].bytes
+        ).reverse();
+
+        granules[groupId] = productNames;
+      }
+
       return {
         ...state,
-        loading: false,
 
-        ids: Object.keys(totalGranules),
-        entities: totalGranules
+        ids: Object.keys(products).sort(
+          (a, b) => granules[a] - granules[b]
+        ),
+        products,
+        granules
       };
     }
 
@@ -54,19 +75,24 @@ export function granulesReducer(state = initState, action: GranulesActions): Gra
       };
     }
 
-    case GranulesActionType.QUERY: {
+    case GranulesActionType.SET_SEARCH_LIST: {
       return {
         ...state,
-        loading: true,
-        error: undefined,
+        searchList: action.payload
       };
     }
 
-    case GranulesActionType.QUERY_ERROR: {
+    case GranulesActionType.SET_FOCUSED_GRANULE: {
       return {
         ...state,
-        loading: false,
-        error: action.payload
+        focused: action.payload.file,
+      };
+    }
+
+    case GranulesActionType.CLEAR_FOCUSED_GRANULE: {
+      return {
+        ...state,
+        focused: null,
       };
     }
 
@@ -85,20 +111,63 @@ export const getGranulesState = createFeatureSelector<GranulesState>('granules')
 
 export const getGranules = createSelector(
   getGranulesState,
-  (state: GranulesState) => state.ids.map(id => state.entities[id])
+  (state: GranulesState) => {
+    const data = Object.values(state.granules)
+      .map(group => {
+        return state.products[group[0]];
+      });
+
+    return data;
+  });
+
+export const getSelectedGranuleProducts = createSelector(
+  getGranulesState,
+  (state: GranulesState) => {
+    const selected = state.products[state.selected];
+
+    if (!selected) {
+      return;
+    }
+
+    const products = state.granules[selected.groupId] || [];
+
+    return products
+      .map(id => state.products[id])
+      .sort(function(a, b) {
+        return a.bytes - b.bytes;
+      }).reverse()
+    ;
+  }
 );
 
-export const getLoading = createSelector(
+export const getGranuleProducts = createSelector(
   getGranulesState,
-  (state: GranulesState) => state.loading
-);
+  (state: GranulesState) => {
+    const granuleProducts = {};
 
-export const getError = createSelector(
-  getGranulesState,
-  (state: GranulesState) => state.error
+    Object.entries(state.granules).forEach(
+      ([granule, products]) => {
+
+        granuleProducts[granule] = products
+          .map(name => state.products[name]);
+      }
+    );
+
+    return granuleProducts;
+  }
 );
 
 export const getSelectedGranule = createSelector(
   getGranulesState,
-  (state: GranulesState) => state.entities[state.selected]
+  (state: GranulesState) => state.products[state.selected] || null
+);
+
+export const getSearchList = createSelector(
+  getGranulesState,
+  (state: GranulesState) => state.searchList
+);
+
+export const getFocusedGranule = createSelector(
+  getGranulesState,
+  (state: GranulesState) => state.products[state.focused] || null
 );

@@ -16,6 +16,7 @@ import * as models from '@models';
 
 import { MapService } from './map/map.service';
 import { WktService } from './wkt.service';
+import { RangeService } from './range.service';
 
 
 
@@ -32,6 +33,7 @@ export class UrlStateService {
     private activatedRoute: ActivatedRoute,
     private mapService: MapService,
     private wktService: WktService,
+    private rangeService: RangeService,
     private router: Router,
   ) {
     this.urlParams = [
@@ -126,7 +128,76 @@ export class UrlStateService {
         map(end => ({ end }))
       ),
       loader: this.loadEndDate
+    }, {
+      name: 'path',
+      source: this.store$.select(filterStore.getPathRange).pipe(
+        skip(1),
+        map(range => this.rangeService.toString(range)),
+        map(path => ({ path }))
+      ),
+      loader: this.loadPathRange
+    }, {
+      name: 'frame',
+      source: this.store$.select(filterStore.getFrameRange).pipe(
+        skip(1),
+        map(range => this.rangeService.toString(range)),
+        map(frame => ({ frame }))
+      ),
+      loader: this.loadFrameRange
+    }, {
+      name: 'listSearchType',
+      source: this.store$.select(filterStore.getListSearchMode).pipe(
+        skip(1),
+        map(mode => ({ listSearchType: mode }))
+      ),
+      loader: this.loadListSearchType
+    }, {
+      name: 'productTypes',
+      source: this.store$.select(filterStore.getProductTypes).pipe(
+        skip(1),
+        map(types => this.objToString(types, key => key.apiValue)),
+        map(param => ({ productTypes: param }))
+      ),
+      loader: this.loadProductTypes
+    }, {
+      name: 'beamModes',
+      source: this.store$.select(filterStore.getBeamModes).pipe(
+        skip(1),
+        map(modes => this.objToString(modes)),
+        map(param => ({ beamModes: param }))
+      ),
+      loader: this.loadBeamModes
+    }, {
+      name: 'polarizations',
+      source: this.store$.select(filterStore.getPolarizations).pipe(
+        skip(1),
+        map(pols =>  this.objToString(pols)),
+        map(param => ({ polarizations: param }))
+      ),
+      loader: this.loadPolarizations
+    }, {
+      name: 'flightDirs',
+      source: this.store$.select(filterStore.getFlightDirections).pipe(
+        skip(1),
+        map(dirs => dirs.join(',')),
+        map(flightDirs => ({ flightDirs }))
+      ),
+      loader: this.loadFlightDirections
     }];
+  }
+
+  private objToString(obj: any, key = v => v): string {
+    let param = '';
+
+    for (const [name, values] of Object.entries(obj)) {
+      const valuesStr = (<any[]>values)
+        .map(key)
+        .join(',');
+
+      param += `$$${name},${valuesStr}`;
+    }
+
+    return param;
   }
 
   private mapParameters() {
@@ -165,6 +236,13 @@ export class UrlStateService {
         map(polygon => ({ polygon }))
       ),
       loader: this.loadSearchPolygon
+    }, {
+      name: 'searchList',
+      source: this.store$.select(granulesStore.getSearchList).pipe(
+        skip(1),
+        map(list => ({ searchList: list.join(',') }))
+      ),
+      loader: this.loadSearchList
     }];
   }
 
@@ -256,6 +334,158 @@ export class UrlStateService {
 
     this.store$.dispatch(new filterStore.SetEndDate(endDate));
   }
+
+  private loadPathRange = (rangeStr: string): void => {
+    const range = rangeStr
+      .split('-')
+      .map(v => +v);
+
+    this.store$.dispatch(new filterStore.SetPathStart(range[0] || null));
+    this.store$.dispatch(new filterStore.SetPathEnd(range[1] || null));
+  }
+
+  private loadFrameRange = (rangeStr: string): void => {
+    const range = rangeStr
+      .split('-')
+      .map(v => +v);
+
+    this.store$.dispatch(new filterStore.SetFrameStart(range[0] || null));
+    this.store$.dispatch(new filterStore.SetFrameEnd(range[1] || null));
+  }
+
+  private loadSearchList = (listStr: string): void => {
+    const list = listStr.split(',');
+
+    this.store$.dispatch(new granulesStore.SetSearchList(list));
+  }
+
+  private loadListSearchType = (mode: string): void => {
+    if (Object.values(models.ListSearchType).includes(mode)) {
+      const action = new filterStore.SetListSearchType(<models.ListSearchType>mode);
+
+      this.store$.dispatch(action);
+    }
+  }
+
+  private parseValuesByPlatform(str: string) {
+    return str
+      .split('$$')
+      .filter(s => !!s)
+      .map(platformTypes => platformTypes.split(','))
+      .map(
+        ([platform, ...beamModes]) => ({ platform, beamModes })
+      ).reduce(
+        (total, { platform, beamModes }) => {
+          total[platform] = beamModes;
+
+          return total;
+        }, {});
+  }
+
+  private loadBeamModes = (modesStr: string): void => {
+    const possiblePlatforms = this.parseValuesByPlatform(modesStr);
+
+    const validPlatforms = {};
+
+    for (const platformName of Object.keys(possiblePlatforms)) {
+      const platform = models.platforms
+        .filter(plat => platformName === plat.name)
+        .pop();
+
+      if (!platform) {
+        continue;
+      }
+
+      const possibleBeamModes = possiblePlatforms[platform.name];
+      const platformBeamModes = new Set(platform.beamModes);
+
+      const validBeamModesFromUrl = new Set(
+        [...possibleBeamModes]
+        .filter(mode => platformBeamModes.has(mode))
+      );
+
+      validPlatforms[platform.name] = Array.from(validBeamModesFromUrl);
+    }
+
+    this.store$.dispatch(new filterStore.SetAllBeamModes(validPlatforms));
+  }
+
+  private loadProductTypes = (typesStr: string): void => {
+    const possiblePlatforms = this.parseValuesByPlatform(typesStr);
+
+    const validPlatforms = {};
+
+    for (const platformName of Object.keys(possiblePlatforms)) {
+      const platform = models.platforms
+        .filter(plat => platformName === plat.name)
+        .pop();
+
+      if (!platform) {
+        continue;
+      }
+
+      const possibleTypes = possiblePlatforms[platform.name];
+      const platformTypes = new Set(platform.productTypes
+        .map(t => t.apiValue)
+      );
+
+      const validTypeNamesFromUrl = new Set(
+        [...possibleTypes]
+        .filter(type => platformTypes.has(type))
+      );
+
+      const validTypesFromUrl = [...platform.productTypes]
+        .filter(
+          type => validTypeNamesFromUrl.has(type.apiValue)
+        );
+
+      validPlatforms[platform.name] = validTypesFromUrl;
+    }
+
+    this.store$.dispatch(new filterStore.SetAllProductTypes(validPlatforms));
+  }
+
+
+  private loadPolarizations = (polarizationsStr: string): void => {
+    const possiblePlatforms = this.parseValuesByPlatform(polarizationsStr);
+
+    const validPlatforms = {};
+
+    for (const platformName of Object.keys(possiblePlatforms)) {
+      const platform = models.platforms
+        .filter(plat => platformName === plat.name)
+        .pop();
+
+      if (!platform) {
+        continue;
+      }
+
+      const possiblePolarizations = possiblePlatforms[platform.name];
+      const platformPolarizations = new Set(platform.polarizations);
+
+      const validPolarizationsFromUrl = new Set(
+        [...possiblePolarizations]
+        .filter(mode => platformPolarizations.has(mode))
+      );
+
+      validPlatforms[platform.name] = Array.from(validPolarizationsFromUrl);
+    }
+
+    this.store$.dispatch(new filterStore.SetAllPolarizations(validPlatforms));
+  }
+
+
+  private loadFlightDirections = (dirsStr: string): void => {
+    const directions: models.FlightDirection[] = dirsStr
+      .split(',')
+      .filter(direction => !Object.values(models.FlightDirection).includes(direction))
+      .map(direction => <models.FlightDirection>direction);
+
+    const action = new filterStore.SetFlightDirections(directions);
+
+    this.store$.dispatch(action);
+  }
+
 
   private isNumber = n => !isNaN(n) && isFinite(n);
   private isValidDate = (d: Date): boolean => d instanceof Date && !isNaN(d.valueOf());

@@ -1,0 +1,53 @@
+<mat-card class="card-spacing">
+  <h4>Download Queue</h4>
+  <button mat-raised-button color="warn" (click)="onClearQueue()">Clear</button>
+
+  <mat-list role="list">
+    <mat-list-item
+      *ngFor="let product of products"
+      role="listitem">
+        <h4 mat-line fxLayout="row" fxLayoutAlign="space-between">
+          <div>{{ product.file | truncate : 10 }}{{ product.file | truncate : -4 : '' }}</div>
+
+          <a matTooltip="Download" target="_blank" [href]="product.downloadUrl">
+            <mat-icon style="cursor: pointer">
+                cloud_download
+            </mat-icon>
+          </a>
+          <mat-icon (click)="onRemoveProduct(product)" style="cursor: pointer">
+              close
+          </mat-icon>
+        </h4>
+    </mat-list-item>
+  </mat-list>
+
+  <button mat-raised-button color="primary"
+    class="metadata-dl-btn"
+    (click)="onMakeDownloadScript()">
+      Download Python Script (.py)
+  </button>
+
+  <button mat-raised-button color="primary"
+    class="metadata-dl-btn"
+    (click)="onCsvDownload()">
+    Metadata (csv)
+  </button>
+
+  <button mat-raised-button color="primary"
+    class="metadata-dl-btn"
+    (click)="onKmlDownload()">
+    Metadata (kml)
+  </button>
+
+  <button mat-raised-button color="primary"
+    class="metadata-dl-btn"
+    (click)="onGeojsonDownload()">
+    Metadata (geojson)
+  </button>
+
+  <button mat-raised-button color="primary"
+    class="metadata-dl-btn"
+    (click)="onMetalinkDownload()">
+    Metadata (metalink)
+  </button>
+</mat-card>

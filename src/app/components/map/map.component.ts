@@ -4,7 +4,7 @@ import {
 } from '@angular/core';
 
 import { Observable, combineLatest } from 'rxjs';
-import { map, filter, switchMap, tap, withLatestFrom } from 'rxjs/operators';
+import { map, filter, switchMap, tap, withLatestFrom, distinctUntilChanged } from 'rxjs/operators';
 
 import { Vector as VectorLayer} from 'ol/layer';
 import { Vector as VectorSource } from 'ol/source';
@@ -23,6 +23,7 @@ export class MapComponent implements OnInit {
   @Input() view$: Observable<models.MapViewType>;
   @Input() drawMode$: Observable<models.MapDrawModeType>;
   @Input() interactionMode$: Observable<models.MapInteractionModeType>;
+  @Input() focusedGranule$: Observable<models.Sentinel1Product>;
 
   @Output() newMapView = new EventEmitter<models.MapViewType>();
   @Output() newMapDrawMode = new EventEmitter<models.MapDrawModeType>();
@@ -30,6 +31,7 @@ export class MapComponent implements OnInit {
   @Output() loadUrlState = new EventEmitter<void>();
 
   private isInitMap = true;
+  public mousePosition$ = this.mapService.mousePosition$;
 
   constructor(
     private mapService: MapService,
@@ -57,6 +59,11 @@ export class MapComponent implements OnInit {
     this.newMapInteractionMode.emit(mode);
   }
 
+  public onFileHovered(e): void {
+    this.newMapInteractionMode.emit(models.MapInteractionModeType.UPLOAD);
+    e.preventDefault();
+  }
+
   private updateMapOnViewChange(): void {
     this.view$.pipe(
       map(view => this.setMapWith(view)),
@@ -72,9 +79,23 @@ export class MapComponent implements OnInit {
 
       switchMap(_ =>
         this.granulePolygonsLayer(this.mapService.epsg())
-      ),
+      )
     ).subscribe(
       layer => this.mapService.setLayer(layer)
+    );
+
+    this.focusedGranule$.pipe(
+      filter(_ => !this.isInitMap),
+      tap(granule => !!granule || this.mapService.clearFocusedGranule()),
+      filter(g => g !== null),
+      map(
+        granule => this.wktService.wktToFeature(
+          granule.metadata.polygon,
+          this.mapService.epsg()
+        )
+      ),
+    ).subscribe(
+      feature => this.mapService.setFocusedFeature(feature)
     );
   }
 
@@ -104,18 +125,38 @@ export class MapComponent implements OnInit {
     this.mapService.setDrawFeature(features);
   }
 
+  public onNewSearchPolygon(polygon: string): void {
+    this.loadSearchPolygon(polygon);
+  }
+
+  public onFileUploadDialogClosed(): void {
+    this.newMapInteractionMode.emit(models.MapInteractionModeType.EDIT);
+  }
+
   private granulePolygonsLayer(projection: string): Observable<VectorSource> {
     return this.granules$.pipe(
-      map(granules => granules
+      distinctUntilChanged(),
+      map(
+        granules => this.granulesToFeature(granules, projection)
+      ),
+      map(features => this.featuresToSource(features))
+    );
+  }
+
+  private granulesToFeature(granules: models.Sentinel1Product[], projection: string) {
+    return granules
         .map(g => g.metadata.polygon)
         .map(wkt =>
           this.wktService.wktToFeature(wkt, projection)
-        )
-      ),
-      map(features => new VectorLayer({
-        source: new VectorSource({ features })
-      }))
-    );
+        );
+  }
+
+  private featuresToSource(features): VectorSource {
+    return new VectorLayer({
+      source: new VectorSource({
+        features, noWrap: true, wrapX: false
+      })
+    });
   }
 
   private setMapWith(viewType: models.MapViewType): void {

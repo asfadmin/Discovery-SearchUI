@@ -1,4 +1,5 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Router } from '@angular/router';
 
 import {
   trigger, state, style,
@@ -6,6 +7,7 @@ import {
 } from '@angular/animations';
 
 import { Observable } from 'rxjs';
+import { map, tap, filter } from 'rxjs/operators';
 
 import { Store } from '@ngrx/store';
 
@@ -14,8 +16,10 @@ import { AppState } from '@store';
 import * as filtersStore from '@store/filters';
 import * as uiStore from '@store/ui';
 import * as granulesStore from '@store/granules';
+import * as searchStore from '@store/search';
+import * as queueStore from '@store/queue';
 
-import { FilterType } from '@models';
+import * as models from '@models';
 
 
 @Component({
@@ -24,8 +28,7 @@ import { FilterType } from '@models';
   styleUrls: ['./sidebar.component.scss'],
   animations: [
     trigger('changeMenuState', [
-      state('shown', style({
-        transform: 'translateX(100%) translateX(-25px)'
+      state('shown', style({ transform: 'translateX(100%) translateX(-25px)'
       })),
       state('hidden',   style({
         transform: 'translateX(0%)'
@@ -39,21 +42,40 @@ export class SidebarComponent {
 
   @Output() newSearch = new EventEmitter<void>();
   @Output() clearSearch = new EventEmitter<void>();
+  @Output() openSpreadsheet = new EventEmitter<void>();
 
   public platforms$ = this.store$.select(filtersStore.getPlatformsList);
+  public platformProductTypes$ = this.store$.select(filtersStore.getProductTypes);
   public selectedPlatformNames$ = this.store$.select(filtersStore.getSelectedPlatformNames);
   public selectedPlatforms$ = this.store$.select(filtersStore.getSelectedPlatforms);
 
   public startDate$ = this.store$.select(filtersStore.getStartDate);
   public endDate$ = this.store$.select(filtersStore.getEndDate);
+  public pathRange$ = this.store$.select(filtersStore.getPathRange);
+  public frameRange$ = this.store$.select(filtersStore.getFrameRange);
+  public shouldOmitSearchPolygon$ = this.store$.select(filtersStore.getShouldOmitSearchPolygon);
+  public listSearchMode$ = this.store$.select(filtersStore.getListSearchMode);
+  public flightDirections$ = this.store$.select(filtersStore.getFlightDirections);
+  public beamModes$ = this.store$.select(filtersStore.getBeamModes);
+  public polarizations$ = this.store$.select(filtersStore.getPolarizations);
+  public maxResults$ = this.store$.select(filtersStore.getMaxSearchResults).pipe(
+    map(maxResults => maxResults.toString())
+  );
 
   public isSidebarOpen$ = this.store$.select(uiStore.getIsSidebarOpen);
   public selectedFilter$ = this.store$.select(uiStore.getSelectedFilter);
 
-  public error$ = this.store$.select(granulesStore.getError);
   public granules$ = this.store$.select(granulesStore.getGranules);
   public selectedGranule$ = this.store$.select(granulesStore.getSelectedGranule);
-  public loading$  = this.store$.select(granulesStore.getLoading);
+  public selectedProducts$ = this.store$.select(granulesStore.getSelectedGranuleProducts);
+  public searchList$ = this.store$.select(granulesStore.getSearchList).pipe(
+    map(list => list.join('\n'))
+  );
+
+  public loading$ = this.store$.select(searchStore.getIsLoading);
+  public searchError$ = this.store$.select(searchStore.getSearchError);
+
+  public queueProducts$ = this.store$.select(queueStore.getQueuedProducts);
 
   public dateRangeExtrema$ = this.dateExtremaService.getExtrema$(
     this.platforms$,
@@ -62,12 +84,22 @@ export class SidebarComponent {
     this.endDate$,
   );
 
-  public filterType = FilterType;
+  public filterType = models.FilterType;
 
   constructor(
     private dateExtremaService: DateExtremaService,
+    private router: Router,
     private store$: Store<AppState>,
   ) {}
+
+  public onAppReset() {
+    this.router.navigate(['/'], { queryParams: {} }) ;
+    window.location.reload();
+  }
+
+  public onOpenSpreadsheet(): void {
+    this.openSpreadsheet.emit();
+  }
 
   public onPlatformRemoved(platformName: string): void {
     this.store$.dispatch(new filtersStore.RemoveSelectedPlatform(platformName));
@@ -77,8 +109,8 @@ export class SidebarComponent {
     this.store$.dispatch(new filtersStore.AddSelectedPlatform(platformName));
   }
 
-  public onNewFilterSelected(filter: FilterType): void {
-    this.store$.dispatch(new uiStore.SetSelectedFilter(filter));
+  public onNewFilterSelected(selectedFilter: models.FilterType): void {
+    this.store$.dispatch(new uiStore.SetSelectedFilter(selectedFilter));
   }
 
   public onToggleHide(): void {
@@ -101,8 +133,96 @@ export class SidebarComponent {
     this.store$.dispatch(new filtersStore.SetEndDate(end));
   }
 
-  public onNewProductSelected(name: string): void {
+  public onNewGranuleSelected(name: string): void {
     this.store$.dispatch(new granulesStore.SetSelectedGranule(name));
+  }
+
+  public onNewPathStart(path: number): void {
+    this.store$.dispatch(new filtersStore.SetPathStart(path));
+  }
+
+  public onNewPathEnd(path: number): void {
+    this.store$.dispatch(new filtersStore.SetPathEnd(path));
+  }
+
+  public onNewFrameStart(frame: number): void {
+    this.store$.dispatch(new filtersStore.SetFrameStart(frame));
+  }
+
+  public onNewFrameEnd(frame: number): void {
+    this.store$.dispatch(new filtersStore.SetFrameEnd(frame));
+  }
+
+  public onNewGranuleList(searchList: string[]): void {
+    this.store$.dispatch(new granulesStore.SetSearchList(searchList));
+  }
+
+  public onNewOmitGeoRegion(shouldOmitGeoRegion: boolean): void {
+    const action = shouldOmitGeoRegion ?
+      new filtersStore.OmitSearchPolygon() :
+      new filtersStore.UseSearchPolygon();
+
+    this.store$.dispatch(action);
+  }
+
+  public onNewListSearchMode(mode: models.ListSearchType): void {
+    this.store$.dispatch(new filtersStore.SetListSearchType(mode));
+  }
+
+  public onClearQueue(): void {
+    this.store$.dispatch(new queueStore.ClearQueue());
+  }
+
+  public onRemoveItem(product: models.Sentinel1Product): void {
+    this.store$.dispatch(new queueStore.RemoveItem(product));
+  }
+
+  public onNewQueueItem(product: models.Sentinel1Product): void {
+    this.store$.dispatch(new queueStore.AddItem(product));
+  }
+
+  public onNewQueueItems(products: models.Sentinel1Product[]): void {
+    this.store$.dispatch(new queueStore.AddItems(products));
+  }
+
+  public onMakeDownloadScript(): void {
+    this.store$.dispatch(new queueStore.MakeDownloadScript());
+  }
+
+  public onMetadataDownload(format: models.AsfApiOutputFormat): void {
+    this.store$.dispatch(new queueStore.DownloadMetadata(format));
+  }
+
+  public onQueueGranuleProducts(name: string): void {
+    this.store$.dispatch(new queueStore.QueueGranule(name));
+  }
+
+  public onNewProductTypes(productTypes: models.PlatformProductTypes): void {
+    this.store$.dispatch(new filtersStore.SetPlatformProductTypes(productTypes));
+  }
+
+  public onNewFlightDirections(directions: models.FlightDirection[]): void {
+    this.store$.dispatch(new filtersStore.SetFlightDirections(directions));
+  }
+
+  public onNewBeamModes(platformBeamModes: models.PlatformBeamModes): void {
+    this.store$.dispatch(new filtersStore.SetPlatformBeamModes(platformBeamModes));
+  }
+
+  public onNewPolarizations(platformPolarizations: models.PlatformPolarizations): void {
+    this.store$.dispatch(new filtersStore.SetPlatformPolarizations(platformPolarizations));
+  }
+
+  public onNewFocusedGranule(granule: models.Sentinel1Product): void {
+    this.store$.dispatch(new granulesStore.SetFocusedGranule(granule));
+  }
+
+  public onClearFocusedGranule(): void {
+    this.store$.dispatch(new granulesStore.ClearFocusedGranule());
+  }
+
+  public onNewMaxResults(maxResults): void {
+    this.store$.dispatch(new filtersStore.SetMaxResults(maxResults));
   }
 }
 

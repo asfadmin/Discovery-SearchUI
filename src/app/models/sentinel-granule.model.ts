@@ -1,9 +1,11 @@
 export interface Sentinel1Product {
   name: string;
+  file: string;
   downloadUrl: string;
   bytes: number;
   browse: string;
   platform: string;
+  groupId: string;
   metadata: Sentinel1Metadata;
 }
 
@@ -22,12 +24,14 @@ export interface Sentinel1Metadata {
   absoluteOrbit: number;
 }
 
-export type FlightDirection =
-  'ASCENDING' |
-  'DESCENDING';
+export enum FlightDirection {
+  ASCENDING = 'ASCENDING',
+  DESCENDING = 'DESCENDING',
+}
 
 export type Sentinel1ProductType =
-  'GRD' | 'SLC' | 'OCN' | 'RAW'
+  'GRD' | 'SLC' | 'OCN' | 'RAW' |
+  'METADATA_SLC'
 ;
 
 export type Sentinel1BeamMode =

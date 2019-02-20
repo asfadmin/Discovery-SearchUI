@@ -25,7 +25,7 @@ export function equatorial(): MapView {
     projection: projection.epsg,
     zoom: 3,
     minZoom: 3,
-    maxZoom: 10,
+    maxZoom: 13,
     extent: proj.transformExtent([-180, -90, 180, 90], 'EPSG:4326', projection.epsg)
   });
 

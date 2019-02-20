@@ -1,0 +1,13 @@
+.position {
+  position: fixed;
+  right: 0;
+  bottom: 0;
+  z-index: 999;
+  margin: 0;
+  padding: 2px 5px;
+}
+
+.attribute-box {
+  background-color: rgba(255, 255, 255, 0.8);
+  color: #333;
+}

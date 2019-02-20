@@ -1,11 +1,4 @@
-<div class="page-layout blank p-24" fusePerfectScrollbar>
-
 <div>
-  <app-file-upload
-    (dialogClose)="onFileUploadDialogClosed()"
-    [interaction$]="interactionMode$">
-  </app-file-upload>
-
   <app-map
     (newMapView)="onNewMapView($event)"
     (newMapDrawMode)="onNewMapDrawMode($event)"
@@ -14,15 +7,13 @@
     [granules$]="granules$"
     [view$]="view$"
     [drawMode$]="drawMode$"
-    [interactionMode$]="interactionMode$">
+    [interactionMode$]="interactionMode$"
+    [focusedGranule$]="focusedGranule$">
   </app-map>
-
-  <app-spreadsheet></app-spreadsheet>
 
   <app-sidebar
      (newSearch)="onNewSearch()"
      (clearSearch)="onClearSearch()"
+     (openSpreadsheet)="onOpenSpreadsheet()"
     ></app-sidebar>
-</div>
-
 </div>

@@ -8,16 +8,11 @@
 </app-toggle-button>
 
 <div class="filter-list "><div>
-  <div
-    *ngIf="error$ | async" class="m-2 alert alert-danger" role="alert">
-    {{ error$ | async }}
-  </div>
+  <app-logo
+     class="clickable"
+    (click)="onAppReset()">
+  </app-logo>
 
-
-  <app-filter-selector
-    [selectedFilter]="selectedFilter$ | async"
-    (newFilterSelected)="onNewFilterSelected($event)">
-  </app-filter-selector>
 
   <app-search-bar
     (newSearch)="onNewSearch()"
@@ -25,50 +20,112 @@
     [isLoading]="loading$ | async">
   </app-search-bar>
 
-  <ng-container *ngIf="selectedFilter$ | async as selected">
-    <app-platform-selector
-      *ngIf="selected === filterType.PLATFORM"
-      [platforms]="platforms$ | async"
-      [selected]="selectedPlatformNames$ | async"
-      (removeSelected)="onPlatformRemoved($event)"
-      (addSelected)="onPlatformAdded($event)">
-    </app-platform-selector>
+  <mat-card *ngIf="searchError$ | async as error" class="card-spacing">
+    <b>Error:</b> {{error}}
+  </mat-card>
 
-    <app-date-selector
-      *ngIf="selected === filterType.DATE"
-      [startDate]="startDate$ | async"
-      [endDate]="endDate$ | async"
-      [extrema]="dateRangeExtrema$ | async"
-      (newStart)="onNewStartDate($event)"
-      (newEnd)="onNewEndDate($event)">
-    </app-date-selector>
+  <mat-tab-group color="primary" backgroundColor="primary">
+    <mat-tab label="Filters">
+      <app-platform-selector
+        [platforms]="platforms$ | async"
+        [selected]="selectedPlatformNames$ | async"
+        (removeSelected)="onPlatformRemoved($event)"
+        (addSelected)="onPlatformAdded($event)">
+      </app-platform-selector>
 
-    <app-path-selector
-      *ngIf="selected === filterType.PATH"
-      [selected]="selectedPlatforms$ | async">
-    </app-path-selector>
+      <app-date-selector
+        [startDate]="startDate$ | async"
+        [endDate]="endDate$ | async"
+        [extrema]="dateRangeExtrema$ | async"
+        (newStart)="onNewStartDate($event)"
+        (newEnd)="onNewEndDate($event)">
+      </app-date-selector>
 
-    <app-other-selector
-      *ngIf="selected === filterType.OTHER"
-      [selected]="selectedPlatforms$ | async">
-    </app-other-selector>
-  </ng-container>
+      <app-path-selector
+        (newPathStart)="onNewPathStart($event)"
+        (newPathEnd)="onNewPathEnd($event)"
+        (newFrameStart)="onNewFrameStart($event)"
+        (newFrameEnd)="onNewFrameEnd($event)"
+        (newOmitSearchPolygon)="onNewOmitGeoRegion($event)"
+        [pathRange]="pathRange$ | async"
+        [shouldOmitSearchPolygon]="shouldOmitSearchPolygon$ | async"
+        [frameRange]="frameRange$ | async"
+        [selected]="selectedPlatforms$ | async">
+      </app-path-selector>
 
-  <ng-container *ngIf="selectedGranule$ | async as selected">
-    <app-product-detail
-        *ngIf="!!selected"
-        [product]="selected">
-    </app-product-detail>
-  </ng-container>
+      <app-other-selector
+        (newFlightDirections)="onNewFlightDirections($event)"
+        (newProductTypes)="onNewProductTypes($event)"
+        (newBeamModes)="onNewBeamModes($event)"
+        (newPolarizations)="onNewPolarizations($event)"
+        [productTypes]="platformProductTypes$ | async"
+        [selected]="selectedPlatforms$ | async"
+        [flightDirections]="flightDirections$ | async"
+        [beamModes]="beamModes$ | async"
+        [polarizations]="polarizations$ | async">
+      </app-other-selector>
 
-  <ng-container *ngIf="granules$ | async as granules">
-    <app-products-list
-      *ngIf="granules.length > 0"
-      [products]="granules"
-      [selected]="(selectedGranule$ | async)?.name"
-      (newSelected)="onNewProductSelected($event)">
-    </app-products-list>
-  </ng-container>
+      <app-max-results-selector
+        [maxResults]="maxResults$ | async"
+        (newMaxResults)="onNewMaxResults($event)">
+      </app-max-results-selector>
 
-</div></div>
+      <app-list-search
+        (newListSearchMode)="onNewListSearchMode($event)"
+        (newListSearch)="onNewGranuleList($event)"
+        [mode]="listSearchMode$ | async"
+        [searchList]="searchList$ | async">
+      </app-list-search>
+    </mat-tab>
+
+    <ng-container *ngIf="granules$ | async as granules">
+      <mat-tab
+        *ngIf="granules.length > 0"
+        label="Results">
+
+        <ng-container *ngIf="selectedGranule$ | async as selected">
+          <app-granule-detail
+              *ngIf="!!selected"
+              (newFocusedGranule)="onNewFocusedGranule($event)"
+              (clearFocusedGranule)="onClearFocusedGranule($event)"
+              (newQueueItem)="onNewQueueItem($event)"
+              (newQueueItems)="onNewQueueItems($event)"
+              [granule]="selected"
+              [products]="selectedProducts$ | async">
+          </app-granule-detail>
+        </ng-container>
+
+        <mat-card class="card-spacing">
+          <button (click)="onOpenSpreadsheet()" mat-raised-button>Open Spreadsheet</button>
+        </mat-card>
+
+        <app-granules-list
+          (newFocusedGranule)="onNewFocusedGranule($event)"
+          (clearFocusedGranule)="onClearFocusedGranule($event)"
+          (newSelected)="onNewGranuleSelected($event)"
+          (queueGranule)="onQueueGranuleProducts($event)"
+          [granules]="granules"
+          [selected]="(selectedGranule$ | async)?.name">
+        </app-granules-list>
+      </mat-tab>
+    </ng-container>
+
+    <ng-container *ngIf="queueProducts$ | async as queue">
+      <mat-tab
+        *ngIf="queue.length > 0"
+        label="Queue">
+          <app-queue
+            (itemRemoved)="onRemoveItem($event)"
+            (clear)="onClearQueue()"
+            (makeDownloadScript)="onMakeDownloadScript()"
+            (metadataDownload)="onMetadataDownload($event)"
+            [products]="queue">
+          </app-queue>
+      </mat-tab>
+
+    </ng-container>
+
+  </mat-tab-group>
+  </div></div>
+
 </div>

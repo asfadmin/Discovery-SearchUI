@@ -19,4 +19,11 @@
     matTooltip="Polygon draw">
     <mat-icon class="draw-icon">format_shapes</mat-icon>
   </mat-button-toggle>
+
+  <mat-button-toggle
+    (click)="onBoxSelected()"
+    [value]="types.BOX"
+    matTooltip="Box Draw">
+    Box
+  </mat-button-toggle>
 </mat-button-toggle-group>

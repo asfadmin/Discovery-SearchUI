@@ -14,11 +14,10 @@ import { FileUploadDialogComponent } from './file-upload-dialog';
   styleUrls: ['./file-upload.component.css']
 })
 export class FileUploadComponent implements OnInit {
-  animal: string;
-  name: string;
-
   @Input() interaction$: Observable<MapInteractionModeType>;
+
   @Output() dialogClose = new EventEmitter<void>();
+  @Output() newSearchPolygon = new EventEmitter<string>();
 
   constructor(public dialog: MatDialog) {}
 
@@ -30,11 +29,16 @@ export class FileUploadComponent implements OnInit {
 
   openDialog(): void {
     const dialogRef = this.dialog.open(FileUploadDialogComponent , {
-      width: '50%', height: '50%'
+      width: '550px', height: '500px', minHeight: '50%'
     });
 
     dialogRef.afterClosed().subscribe(
-      result => this.dialogClose.emit()
+      wkt => {
+        if (wkt) {
+          this.newSearchPolygon.emit(wkt);
+        }
+        this.dialogClose.emit();
+      }
     );
   }
 }

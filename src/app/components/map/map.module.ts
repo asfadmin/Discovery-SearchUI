@@ -8,19 +8,24 @@ import { MapComponent } from './map.component';
 import { ViewSelectorComponent } from './view-selector';
 import { InteractionSelectorComponent } from './interaction-selector';
 import { DrawSelectorComponent } from './draw-selector/draw-selector.component';
+import { FileUploadModule } from './file-upload';
+import { AttributionsComponent } from './attributions/attributions.component';
 
 @NgModule({
   imports: [
     CommonModule,
 
     MatButtonToggleModule,
-    MatSharedModule
+    MatSharedModule,
+
+    FileUploadModule,
   ],
   declarations: [
     MapComponent,
     ViewSelectorComponent,
     DrawSelectorComponent,
-    InteractionSelectorComponent
+    InteractionSelectorComponent,
+    AttributionsComponent
   ],
   exports: [
     MapComponent

@@ -1,0 +1,29 @@
+import { Injectable } from '@angular/core';
+import { HttpParams } from '@angular/common/http';
+
+import { Actions, Effect, ofType } from '@ngrx/effects';
+import { Store, Action } from '@ngrx/store';
+
+import { Observable, combineLatest } from 'rxjs';
+import { map, withLatestFrom, startWith, switchMap, tap, filter } from 'rxjs/operators';
+
+import { AppState } from '../app.reducer';
+
+import * as services from '@services';
+import * as models from '@models';
+
+@Injectable()
+export class %%Name%%Effects {
+  constructor(
+    private actions$: Actions,
+    private store$: Store<AppState>,
+    private asfApiService: services.AsfApiService,
+  ) {}
+
+  @Effect({ dispatch: false })
+  private %someEffect%: Observable<void> = this.actions$.pipe(
+    map(action => {
+      ...
+    })
+  );
+}

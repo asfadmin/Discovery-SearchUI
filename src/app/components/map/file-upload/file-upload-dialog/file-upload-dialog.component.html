@@ -1,0 +1,59 @@
+<input
+  (change)="onFilesAdded()"
+  type="file" style="display: none"
+  multiple #file/>
+
+<div
+  (drop)="onFileDrop($event)"
+  class="container"
+  fxLayout="column"
+  fxLayoutAlign="space-evenly stretch">
+  <h1 mat-dialog-title>Upload Files</h1>
+
+  <div>
+    <button mat-raised-button
+      (click)="addFiles()"
+      [disabled]="uploading || uploadSuccessful"
+      color="primary"
+      class="add-files-btn" >
+        Add Files
+    </button>
+  </div>
+
+  <mat-dialog-content fxFlex>
+    <mat-list style="margin-top: 10px">
+      <mat-list-item *ngFor="let file of files">
+          <h4 mat-line>{{file.name}}</h4>
+
+          <mat-icon
+            *ngIf="!request"
+            (click)="onRemoveFile(file)"
+            style="cursor: pointer">
+              close
+          </mat-icon>
+
+        <mat-progress-bar
+          *ngIf="request"
+          mode="determinate"
+          value="100">
+        </mat-progress-bar>
+
+      </mat-list-item>
+    </mat-list>
+  </mat-dialog-content>
+
+  <mat-dialog-actions class="actions">
+
+    <button mat-button mat-dialog-close
+      *ngIf="showCancelButton">
+        Cancel
+    </button>
+
+    <button mat-raised-button color="primary"
+      (click)="onUpload()"
+      [disabled]="!canBeClosed">
+        {{primaryButtonText}}
+    </button>
+
+  </mat-dialog-actions>
+</div>

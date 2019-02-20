@@ -1,14 +1,15 @@
 import { Injectable } from '@angular/core';
 
-import { Subject } from 'rxjs';
+import { BehaviorSubject, Subject } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 import { Map } from 'ol';
-import { Draw, Modify, Snap } from 'ol/interaction.js';
 import { Vector as VectorLayer } from 'ol/layer';
 import { Vector as VectorSource, Layer } from 'ol/source';
 import * as proj from 'ol/proj';
 
 import { WktService } from '../wkt.service';
+import { DrawService } from './draw.service';
 import * as models from '@models';
 
 import * as polygonStyle from './polygon.style';
@@ -20,28 +21,38 @@ import * as views from './views';
 })
 export class MapService {
   private mapView: views.MapView;
+  private viewType: models.MapViewType;
   private map: Map;
   private polygonLayer: Layer;
 
-  private drawSource = new VectorSource({
+  private focusSource = new VectorSource({
     noWrap: true, wrapX: false
   });
 
-  private drawLayer = new VectorLayer({
-    source: this.drawSource,
+  private focusLayer = new VectorLayer({
+    source: this.focusSource,
     style: polygonStyle.invalid
   });
 
-  private draw: Draw;
-  private modify: Modify;
-  private snap: Snap;
-
   public zoom$ = new Subject<number>();
   public center$ = new Subject<models.LonLat>();
-  public searchPolygon$ = new Subject<string | null>();
   public epsg$ = new Subject<string>();
+  public mousePosition$ = new BehaviorSubject<models.LonLat>({
+    lon: 0, lat: 0
+  });
 
-  constructor(private wktService: WktService) {}
+  public searchPolygon$ = this.drawService.polygon$.pipe(
+    map(
+      feature => feature !== null ?
+        this.wktService.featureToWkt(feature, this.epsg()) :
+        null
+    )
+  );
+
+  constructor(
+    private wktService: WktService,
+    private drawService: DrawService,
+  ) {}
 
   public epsg(): string {
     return this.mapView.projection.epsg;
@@ -56,49 +67,26 @@ export class MapService {
     this.map.addLayer(this.polygonLayer);
   }
 
-  public setPolygonError() {
-    this.drawLayer.setStyle(polygonStyle.invalid);
-  }
-
-  public setValidPolygon() {
-    this.drawLayer.setStyle(polygonStyle.valid);
+  public setDrawStyle(style: models.DrawPolygonStyle): void {
+    this.drawService.setDrawStyle(style);
   }
 
   public setDrawFeature(feature): void {
-    this.drawSource.clear();
-    this.drawSource.addFeature(feature);
-    this.drawLayer.setStyle(polygonStyle.valid);
-
-    this.searchPolygon$.next(
-      this.wktService.featureToWkt(feature, this.epsg())
-    );
+    this.drawService.setFeature(feature, this.epsg());
   }
 
   public setInteractionMode(mode: models.MapInteractionModeType) {
-    this.map.removeInteraction(this.modify);
-    this.map.removeInteraction(this.snap);
-    this.map.removeInteraction(this.draw);
-
-    if (mode === models.MapInteractionModeType.DRAW) {
-      this.map.addInteraction(this.draw);
-    } else if (mode === models.MapInteractionModeType.EDIT) {
-      this.map.addInteraction(this.snap);
-      this.map.addInteraction(this.modify);
-    }
+    this.drawService.setInteractionMode(this.map, mode);
   }
 
   public setDrawMode(mode: models.MapDrawModeType): void {
-    this.map.removeInteraction(this.draw);
-
-    this.draw = this.createDraw(mode);
-    this.map.addInteraction(this.draw);
+    this.drawService.setDrawMode(this.map, mode);
   }
 
   public clearDrawLayer(): void {
-    this.drawSource.clear();
-    this.drawLayer.setStyle(polygonStyle.valid);
-    this.searchPolygon$.next(null);
+    this.drawService.clear();
   }
+
 
   public setCenter(centerPos: models.LonLat): void {
     const { lon, lat } = centerPos;
@@ -116,6 +104,8 @@ export class MapService {
   }
 
   public setMapView(viewType: models.MapViewType): void {
+    this.viewType = viewType;
+
     const view = {
       [models.MapViewType.ANTARCTIC]: views.antarctic(),
       [models.MapViewType.ARCTIC]: views.arctic(),
@@ -123,6 +113,15 @@ export class MapService {
     }[viewType];
 
     this.setMap(view);
+  }
+
+  public clearFocusedGranule(): void {
+    this.focusSource.clear();
+  }
+
+  public setFocusedFeature(feature): void {
+    this.focusSource.clear();
+    this.focusSource.addFeature(feature);
   }
 
   private setMap(mapView: views.MapView): void {
@@ -135,28 +134,25 @@ export class MapService {
 
   private createNewMap(): Map {
     const newMap = new Map({
-      layers: [ this.mapView.layer, this.drawLayer ],
+      layers: [ this.mapView.layer, this.drawService.getLayer(), this.focusLayer ],
       target: 'map',
       view: this.mapView.view,
       controls: [],
       loadTilesWhileAnimating: true
     });
 
-    this.modify = new Modify({ source: this.drawSource });
-    this.modify.on('modifyend', e => {
-      const feature = e.features.getArray()[0];
-      this.setValidPolygon();
-      this.setSearchPolygon(feature);
+    newMap.on('pointermove', e => {
+      const [ lon, lat ] = proj.toLonLat(e.coordinate, this.epsg());
+      this.mousePosition$.next({ lon, lat });
     });
 
-    this.drawLayer.setZIndex(100);
-
-    this.snap = new Snap({source: this.drawSource});
+    this.drawService.getLayer().setZIndex(100);
+    this.focusLayer.setZIndex(99);
 
     newMap.on('moveend', e => {
-      const map = e.map;
+      const currentMap = e.map;
 
-      const view = map.getView();
+      const view = currentMap.getView();
 
       const [lon, lat] = proj.toLonLat(view.getCenter());
       const zoom = view.getZoom();
@@ -168,28 +164,8 @@ export class MapService {
     return newMap;
   }
 
-  public createDraw(drawMode: models.MapDrawModeType) {
-    const draw = new Draw({
-      source: this.drawSource,
-      type: drawMode
-    });
-
-    draw.on('drawstart', e => this.clearDrawLayer());
-    draw.on('drawend', e => this.setSearchPolygon(e.feature));
-
-    return draw;
-  }
-
-  private setSearchPolygon = feature => {
-    const wktPolygon = this.wktService.featureToWkt(feature, this.epsg());
-
-    this.searchPolygon$.next(wktPolygon);
-    this.epsg$.next(this.epsg());
-  }
-
   private updatedMap(): Map {
     this.map.setView(this.mapView.view);
-    console.log(this.map.getView());
 
     this.mapView.layer.setOpacity(1);
     const mapLayers = this.map.getLayers();

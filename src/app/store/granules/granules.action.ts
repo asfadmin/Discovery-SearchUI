@@ -3,25 +3,15 @@ import { Action } from '@ngrx/store';
 import { Sentinel1Product } from '@models';
 
 export enum GranulesActionType {
-  QUERY = '[Asf Api] Query Api',
-  QUERY_ERROR = '[Asf Api] Query failed',
-
   SET_GRANULES = '[Granuels] Set Granules',
   CLEAR = '[Granuels] Clear Granules',
 
+  SET_FOCUSED_GRANULE = '[Granules] Set Focused Granule',
+  CLEAR_FOCUSED_GRANULE = '[Granules] Clear Focused Granule',
+
   SET_SELECTED = '[Granules] Set Selected Granule',
-}
 
-export class QueryApi implements Action {
-  public readonly type = GranulesActionType.QUERY;
-
-  constructor() {}
-}
-
-export class QueryError implements Action {
-  public readonly type = GranulesActionType.QUERY_ERROR;
-
-  constructor(public payload: string) {}
+  SET_SEARCH_LIST = '[Granules] Set Search List',
 }
 
 export class SetGranules implements Action {
@@ -40,9 +30,26 @@ export class SetSelectedGranule implements Action {
   constructor(public payload: string) {}
 }
 
+export class SetSearchList implements Action {
+  public readonly type = GranulesActionType.SET_SEARCH_LIST;
+
+  constructor(public payload: string[]) {}
+}
+
+export class SetFocusedGranule implements Action {
+  public readonly type = GranulesActionType.SET_FOCUSED_GRANULE;
+
+  constructor(public payload: Sentinel1Product) {}
+}
+
+export class ClearFocusedGranule implements Action {
+  public readonly type = GranulesActionType.CLEAR_FOCUSED_GRANULE;
+}
+
 export type GranulesActions =
-  | QueryApi
-  | QueryError
   | SetGranules
   | ClearGranules
-  | SetSelectedGranule;
+  | SetSelectedGranule
+  | SetSearchList
+  | SetFocusedGranule
+  | ClearFocusedGranule;
