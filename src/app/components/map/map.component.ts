@@ -32,7 +32,6 @@ export class MapComponent implements OnInit {
   @Output() loadUrlState = new EventEmitter<void>();
   @Output() mapInitialized = new EventEmitter<void>();
 
-  private isInitMap = true;
   public mousePosition$ = this.mapService.mousePosition$;
 
   constructor(
@@ -70,7 +69,7 @@ export class MapComponent implements OnInit {
     this.view$.pipe(
         withLatestFrom(this.isMapInitialized$),
         filter(([view, isInit]) => !isInit),
-        map(([view, isInit]) => this.setMapWith(view)),
+        tap(([view, isInit]) => this.setMapWith(view)),
     ).subscribe(
       _ => {
         this.loadUrlState.emit();
@@ -81,16 +80,18 @@ export class MapComponent implements OnInit {
     this.isMapInitialized$.pipe(
       filter(isMapInitiliazed => isMapInitiliazed),
       switchMap(_ => this.view$),
-      map(view => this.setMapWith(view)),
+      tap(view => this.setMapWith(view)),
       switchMap(_ =>
         this.granulePolygonsLayer(this.mapService.epsg())
       )
     ).subscribe(
-      _ => _
+      layer => this.mapService.setLayer(layer)
     );
 
-    this.focusedGranule$.pipe(
-      filter(_ => !this.isInitMap),
+    this.isMapInitialized$.pipe(
+      filter(isMapInitiliazed => isMapInitiliazed),
+      switchMap(_ => this.focusedGranule$),
+
       tap(granule => !!granule || this.mapService.clearFocusedGranule()),
       filter(g => g !== null),
       map(
@@ -112,7 +113,6 @@ export class MapComponent implements OnInit {
     ).subscribe(
       polygon => this.loadSearchPolygon(polygon)
     );
-
   }
 
   private updateDrawMode(): void {
