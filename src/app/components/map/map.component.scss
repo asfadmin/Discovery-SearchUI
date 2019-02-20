@@ -4,3 +4,11 @@
   position: fixed;
   background-color: #1a1e27;
 }
+
+.meatball__position {
+  position: fixed;
+  right: 0;
+  bottom: 30px;
+  z-index: 1000;
+  margin: 0;
+}
