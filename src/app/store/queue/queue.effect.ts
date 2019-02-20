@@ -49,7 +49,18 @@ export class QueueEffects {
   private downloadMetadata: Observable<void> = this.actions$.pipe(
     ofType<DownloadMetadata>(QueueActionType.DOWNLOAD_METADATA),
     map(action => action.payload),
-    withLatestFrom(this.searchParams$.getParams()),
+    withLatestFrom(this.store$.select(getQueuedProducts).pipe(
+        map(
+          products => products
+            .map(product => product.name)
+            .join(',')
+        ),
+        map(
+          granuleNames => new HttpParams()
+            .set('granule_list', granuleNames)
+        )
+      )
+    ),
     map(
       ([format, params]): MetadataDownload => ({
         params: params.append('output', format),
