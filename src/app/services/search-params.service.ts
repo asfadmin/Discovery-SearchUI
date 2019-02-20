@@ -28,7 +28,7 @@ export class SearchParamsService {
     private rangeService: RangeService,
   ) { }
 
-  public getParams() {
+  public getParams(): Observable<HttpParams> {
     return combineLatest(
       this.listParam$(),
       this.filterSearchParams$()
