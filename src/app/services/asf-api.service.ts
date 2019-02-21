@@ -47,11 +47,24 @@ export class AsfApiService {
 
   public validate(wkt: string): Observable<any> {
     const params = new HttpParams()
-    .append('wkt', wkt);
+      .append('wkt', wkt);
 
-    return this.http.get<PolygonValidateResponse>(
-      `${this.testUrl}/services/validate/wkt`, { params }
-    );
+    const url = `${this.testUrl}/services/validate/wkt`;
+
+    const paramsStr = params.toString();
+
+    const formData: FormData = new FormData();
+    formData.append('wkt', params.get('wkt'));
+
+    return (!this.isUrlToLong(url, paramsStr)) ?
+      this.http.get(url, { params }) :
+      this.http.post(url, formData);
+  }
+
+  private isUrlToLong(url: string, params: string): boolean {
+    const max_url_length = 1500;
+
+    return (url.length + params.length) > max_url_length;
   }
 
   private dummyData(): Observable<any[]>  {
