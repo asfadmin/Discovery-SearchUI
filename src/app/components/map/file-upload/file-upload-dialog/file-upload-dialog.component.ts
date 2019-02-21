@@ -95,13 +95,18 @@ export class FileUploadDialogComponent implements OnInit {
 
     this.request = this.asfApiService.upload(this.files).subscribe(
       resp => {
-        this.dialogRef.close(resp.wkt);
+        console.log(resp);
+        if (resp.error) {
+          const { report, type } = resp.error;
+          this.snackBar.open(report, type, { duration: 5000 });
+          this.dialogRef.close();
+        } else {
+          this.dialogRef.close(resp.wkt);
+        }
       },
       err => {
-        console.log(err);
         this.snackBar.open('Error loading geospatial file',  'FILE ERROR', { duration: 3000 });
         this.dialogRef.close();
-        return this.dialogRef.close();
       }
     );
 
