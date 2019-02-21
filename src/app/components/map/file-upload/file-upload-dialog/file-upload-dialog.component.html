@@ -11,7 +11,7 @@
   <h1 mat-dialog-title>Upload Geospatial Files</h1>
 
   <div>
-    Accepted formats are <b>shapefiles</b> (.shp), <b>geojson</b> (.geojson)
+    Accepted formats are <b>shapefiles</b> (.shp), <b>geojson</b> (.geojson), <b>kml</b> (.kml)
     or a <b>zip archive</b> (.zip) of a shapefile.
   </div>
 
@@ -29,14 +29,14 @@
     <div fxFlex fxLayout="column">
       <mat-list style="margin-top: 10px">
         <mat-list-item *ngFor="let file of files">
-            <h4 mat-line>{{file.name}}</h4>
+          <h4 mat-line>{{file.name}}</h4>
 
-            <mat-icon
-              *ngIf="!request"
-              (click)="onRemoveFile(file)"
-              style="cursor: pointer">
-                close
-            </mat-icon>
+          <button
+            mat-icon-button
+            *ngIf="!request"
+            (click)="onRemoveFile(file)">
+              <mat-icon>close</mat-icon>
+          </button>
 
           <mat-progress-bar
             *ngIf="request"

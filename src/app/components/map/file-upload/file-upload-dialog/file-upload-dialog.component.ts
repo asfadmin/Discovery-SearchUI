@@ -1,8 +1,8 @@
 import { Component, ViewChild, OnInit } from '@angular/core';
 import { MatSnackBar } from '@angular/material';
 
-import { Subject } from 'rxjs';
-import { delay, tap } from 'rxjs/operators';
+import { Subject, of } from 'rxjs';
+import { delay, tap, catchError } from 'rxjs/operators';
 
 import { MatDialogRef } from '@angular/material';
 import { Subscription } from 'rxjs';
@@ -93,16 +93,17 @@ export class FileUploadDialogComponent implements OnInit {
   onUpload() {
     this.uploading = true;
 
-    this.request = this.asfApiService.upload(this.files).subscribe(resp => {
-      this.canBeClosed = true;
-      this.dialogRef.disableClose = false;
-
-      this.uploadSuccessful = true;
-
-      this.uploading = false;
-
-      return this.dialogRef.close(resp.wkt);
-    });
+    this.request = this.asfApiService.upload(this.files).subscribe(
+      resp => {
+        this.dialogRef.close(resp.wkt);
+      },
+      err => {
+        console.log(err);
+        this.snackBar.open('Error loading geospatial file',  'FILE ERROR', { duration: 3000 });
+        this.dialogRef.close();
+        return this.dialogRef.close();
+      }
+    );
 
     this.canBeClosed = false;
     this.dialogRef.disableClose = true;
@@ -123,7 +124,7 @@ export class FileUploadDialogComponent implements OnInit {
   }
 
   private isValidFileType(fileName: string): boolean {
-    const validFileTypes = ['zip', 'shp', 'geojson'];
+    const validFileTypes = ['zip', 'shp', 'geojson', 'kml'];
 
     const fileExtension = this.getFileType(fileName);
 

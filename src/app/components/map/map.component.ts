@@ -73,8 +73,12 @@ export class MapComponent implements OnInit {
     this.loadSearchPolygon(polygon);
   }
 
-  public onFileUploadDialogClosed(): void {
-    this.onNewInteractionMode(models.MapInteractionModeType.EDIT);
+  public onFileUploadDialogClosed(successful: boolean): void {
+    if (successful) {
+      this.onNewInteractionMode(models.MapInteractionModeType.EDIT);
+    } else {
+      this.onNewInteractionMode(models.MapInteractionModeType.DRAW);
+    }
   }
 
   private updateMapOnViewChange(): void {

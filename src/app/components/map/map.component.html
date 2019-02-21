@@ -3,7 +3,7 @@
   ></div>
 
 <app-file-upload
-  (dialogClose)="onFileUploadDialogClosed()"
+  (dialogClose)="onFileUploadDialogClosed($event)"
   (newSearchPolygon)="onNewSearchPolygon($event)"
   [interaction$]="interactionMode$">
 </app-file-upload>
