@@ -8,9 +8,14 @@
   class="container"
   fxLayout="column"
   fxLayoutAlign="space-evenly stretch">
-  <h1 mat-dialog-title>Upload Files</h1>
+  <h1 mat-dialog-title>Upload Geospatial Files</h1>
 
   <div>
+    Accepted formats are <b>shapefiles</b> (.shp), <b>geojson</b> (.geojson)
+    or a <b>zip archive</b> (.zip) of a shapefile.
+  </div>
+
+  <div style="margin: 10px 0">
     <button mat-raised-button
       (click)="addFiles()"
       [disabled]="uploading || uploadSuccessful"
@@ -21,25 +26,33 @@
   </div>
 
   <mat-dialog-content fxFlex>
-    <mat-list style="margin-top: 10px">
-      <mat-list-item *ngFor="let file of files">
-          <h4 mat-line>{{file.name}}</h4>
+    <div fxFlex fxLayout="column">
+      <mat-list style="margin-top: 10px">
+        <mat-list-item *ngFor="let file of files">
+            <h4 mat-line>{{file.name}}</h4>
 
-          <mat-icon
-            *ngIf="!request"
-            (click)="onRemoveFile(file)"
-            style="cursor: pointer">
-              close
-          </mat-icon>
+            <mat-icon
+              *ngIf="!request"
+              (click)="onRemoveFile(file)"
+              style="cursor: pointer">
+                close
+            </mat-icon>
 
-        <mat-progress-bar
-          *ngIf="request"
-          mode="determinate"
-          value="100">
-        </mat-progress-bar>
+          <mat-progress-bar
+            *ngIf="request"
+            mode="determinate"
+            value="100">
+          </mat-progress-bar>
 
-      </mat-list-item>
-    </mat-list>
+        </mat-list-item>
+      </mat-list>
+
+      <div class="drop-text-box" [ngClass]="{ 'is-file-error': isFileError }" fxFlex fxLayoutAlign="center" gdAlignColumns="center">
+        <div>
+           Drag geospatial files here.
+        </div>
+      </div>
+    </div>
   </mat-dialog-content>
 
   <mat-dialog-actions class="actions">
