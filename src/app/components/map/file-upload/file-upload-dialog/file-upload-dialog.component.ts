@@ -95,7 +95,6 @@ export class FileUploadDialogComponent implements OnInit {
 
     this.request = this.asfApiService.upload(this.files).subscribe(
       resp => {
-        console.log(resp);
         if (resp.error) {
           const { report, type } = resp.error;
           this.snackBar.open(report, type, { duration: 5000 });

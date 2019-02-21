@@ -47,14 +47,10 @@ export class AsfApiService {
 
   public validate(wkt: string): Observable<any> {
     const params = new HttpParams()
-    .append('wkt', wkt);
+      .append('wkt', wkt);
 
-    return this.validateRequest(
-      `${this.testUrl}/services/validate/wkt`, params
-    );
-  }
+    const url = `${this.testUrl}/services/validate/wkt`;
 
-  private validateRequest(url, params): Observable<Object> {
     const paramsStr = params.toString();
 
     const formData: FormData = new FormData();

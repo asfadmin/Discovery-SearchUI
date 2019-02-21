@@ -48,8 +48,21 @@
       </mat-list>
 
       <div class="drop-text-box" [ngClass]="{ 'is-file-error': isFileError }" fxFlex fxLayoutAlign="center" gdAlignColumns="center">
-        <div>
+        <div *ngIf="canBeClosed">
            Drag geospatial files here.
+        </div>
+
+        <div *ngIf="!canBeClosed">
+          <div style="margin-bottom: 30px">
+           Loading area of interest from provided files...
+          </div>
+          <div>
+            <mat-progress-spinner
+              style="margin: 0 auto;"
+              color="primary"
+              mode="indeterminate">
+            </mat-progress-spinner>
+          </div>
         </div>
       </div>
     </div>
