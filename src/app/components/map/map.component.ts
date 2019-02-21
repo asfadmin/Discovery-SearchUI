@@ -65,8 +65,16 @@ export class MapComponent implements OnInit {
   }
 
   public onFileHovered(e): void {
-    this.store$.dispatch(new mapStore.SetMapInteractionMode(models.MapInteractionModeType.UPLOAD));
+    this.onNewInteractionMode(models.MapInteractionModeType.UPLOAD);
     e.preventDefault();
+  }
+
+  public onNewSearchPolygon(polygon: string): void {
+    this.loadSearchPolygon(polygon);
+  }
+
+  public onFileUploadDialogClosed(): void {
+    this.onNewInteractionMode(models.MapInteractionModeType.EDIT);
   }
 
   private updateMapOnViewChange(): void {
@@ -142,13 +150,6 @@ export class MapComponent implements OnInit {
     this.mapService.setDrawFeature(features);
   }
 
-  public onNewSearchPolygon(polygon: string): void {
-    this.loadSearchPolygon(polygon);
-  }
-
-  public onFileUploadDialogClosed(): void {
-    this.store$.dispatch(new mapStore.SetMapInteractionMode(models.MapInteractionModeType.EDIT));
-  }
 
   private granulePolygonsLayer(projection: string): Observable<VectorSource> {
     return this.granules$.pipe(
