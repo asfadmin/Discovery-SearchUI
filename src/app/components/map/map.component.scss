@@ -7,8 +7,16 @@
 
 .meatball__position {
   position: fixed;
-  right: 100px;
+  width: 800px;
+  max-width: 100%;
+  height: auto;
+  right: 10px;
   bottom: 30px;
   z-index: 1000;
   margin: 0;
+}
+
+.meatball__sizing {
+  width: 100%;
+  height: auto;
 }
