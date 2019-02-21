@@ -1,16 +1,5 @@
 <div>
-  <app-map
-    (newMapView)="onNewMapView($event)"
-    (newMapDrawMode)="onNewMapDrawMode($event)"
-    (newMapInteractionMode)="onNewMapInteractionMode($event)"
-    (loadUrlState)="onLoadUrlState()"
-    (mapInitialized)="onMapInitialized()"
-    [granules$]="granules$"
-    [isMapInitialized$]="isMapInitialized$"
-    [view$]="view$"
-    [drawMode$]="drawMode$"
-    [interactionMode$]="interactionMode$"
-    [focusedGranule$]="focusedGranule$">
+  <app-map (loadUrlState)="onLoadUrlState()">
   </app-map>
 
   <app-sidebar
