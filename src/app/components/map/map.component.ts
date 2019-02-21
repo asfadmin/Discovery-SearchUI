@@ -66,20 +66,26 @@ export class MapComponent implements OnInit {
   }
 
   private updateMapOnViewChange(): void {
-    this.view$.pipe(
+    const viewBeforInitialization = this.view$.pipe(
         withLatestFrom(this.isMapInitialized$),
         filter(([view, isInit]) => !isInit),
-        tap(([view, isInit]) => this.setMapWith(view)),
-    ).subscribe(
-      _ => {
+        map(([view, isInit]) => view)
+    );
+
+    viewBeforInitialization.subscribe(
+      view => {
+        this.setMapWith(view);
         this.loadUrlState.emit();
         this.mapInitialized.emit();
       }
     );
 
-    this.isMapInitialized$.pipe(
+    const granulesLayerAfterInitialization = this.isMapInitialized$.pipe(
       filter(isMapInitiliazed => isMapInitiliazed),
       switchMap(_ => this.view$),
+    );
+
+    granulesLayerAfterInitialization.pipe(
       tap(view => this.setMapWith(view)),
       switchMap(_ =>
         this.granulePolygonsLayer(this.mapService.epsg())
@@ -88,10 +94,12 @@ export class MapComponent implements OnInit {
       layer => this.mapService.setLayer(layer)
     );
 
-    this.isMapInitialized$.pipe(
+    const focuseGranuleAfterInitialization = this.isMapInitialized$.pipe(
       filter(isMapInitiliazed => isMapInitiliazed),
       switchMap(_ => this.focusedGranule$),
+    );
 
+    focuseGranuleAfterInitialization.pipe(
       tap(granule => !!granule || this.mapService.clearFocusedGranule()),
       filter(g => g !== null),
       map(
