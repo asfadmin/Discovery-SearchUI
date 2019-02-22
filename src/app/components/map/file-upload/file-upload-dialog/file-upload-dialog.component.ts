@@ -40,7 +40,7 @@ export class FileUploadDialogComponent implements OnInit {
       tap(_ => this.isFileError = true),
       tap(
         fileType => this.snackBar.open(
-          `Invalid File Type (.${fileType})`, 'FILE ERROR', { duration: 3000 }
+          `Invalid File Type (.${fileType})`, 'FILE ERROR', { duration: 5000 }
         )
       ),
       delay(820),

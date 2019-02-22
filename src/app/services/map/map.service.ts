@@ -87,7 +87,6 @@ export class MapService {
     this.drawService.clear();
   }
 
-
   public setCenter(centerPos: models.LonLat): void {
     const { lon, lat } = centerPos;
 
