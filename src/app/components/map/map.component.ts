@@ -25,6 +25,8 @@ import { MapService, WktService } from '@services';
   styleUrls: ['./map.component.scss']
 })
 export class MapComponent implements OnInit {
+  @Output() loadUrlState = new EventEmitter<void>();
+
   public view$ = this.store$.select(mapStore.getMapView);
   public drawMode$ = this.store$.select(mapStore.getMapDrawMode);
   public interactionMode$ = this.store$.select(mapStore.getMapInteractionMode);
@@ -35,8 +37,6 @@ export class MapComponent implements OnInit {
 
   public granules$ = this.store$.select(granulesStore.getGranules);
   public focusedGranule$ = this.store$.select(granulesStore.getFocusedGranule);
-
-  @Output() loadUrlState = new EventEmitter<void>();
 
   public mousePosition$ = this.mapService.mousePosition$;
 

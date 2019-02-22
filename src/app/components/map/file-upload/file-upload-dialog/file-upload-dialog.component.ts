@@ -21,10 +21,8 @@ export class FileUploadDialogComponent implements OnInit {
   public files: Set<File> = new Set();
   public request: Subscription;
   public canBeClosed = true;
-  public primaryButtonText = 'Upload';
   public showCancelButton = true;
   public uploading = false;
-  public uploadSuccessful = false;
 
   public isFileInvalidType$ = new Subject<string>();
   public isFileError = false;
@@ -35,7 +33,7 @@ export class FileUploadDialogComponent implements OnInit {
     private asfApiService: AsfApiService,
   ) {}
 
-  public ngOnInit() {
+  public ngOnInit(): void {
     this.isFileInvalidType$.pipe(
       tap(_ => this.isFileError = true),
       tap(
@@ -50,17 +48,16 @@ export class FileUploadDialogComponent implements OnInit {
     );
   }
 
-  onFileDrop(ev) {
+  public onFileDrop(ev): void {
     if (ev.dataTransfer.items) {
-      for (let i = 0; i < ev.dataTransfer.items.length; i++) {
-        if (ev.dataTransfer.items[i].kind === 'file') {
-          const file = ev.dataTransfer.items[i].getAsFile();
+      for (const item of ev.dataTransfer.items) {
+        if (item.kind === 'file') {
+          const file = item.getAsFile();
           this.addFile(file);
         }
       }
     } else {
-      for (let i = 0; i < ev.dataTransfer.files.length; i++) {
-        const file = ev.dataTransfer.files[i];
+      for (const file of ev.dataTransfer.files) {
         this.addFile(file);
       }
     }
@@ -68,15 +65,11 @@ export class FileUploadDialogComponent implements OnInit {
     ev.preventDefault();
   }
 
-  onNoClick(): void {
-    this.dialogRef.close();
-  }
-
-  addFiles() {
+  public addFiles(): void {
     this.file.nativeElement.click();
   }
 
-  onFilesAdded() {
+  public onFilesAdded(): void {
     const files: { [key: string]: File } = this.file.nativeElement.files;
 
     for (const key in files) {
@@ -86,11 +79,11 @@ export class FileUploadDialogComponent implements OnInit {
     }
   }
 
-  onRemoveFile(file) {
+  public onRemoveFile(file): void {
     this.files.delete(file);
   }
 
-  onUpload() {
+  public onUpload(): void {
     this.uploading = true;
 
     this.request = this.asfApiService.upload(this.files).subscribe(
