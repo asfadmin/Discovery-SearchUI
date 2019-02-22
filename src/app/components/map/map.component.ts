@@ -29,6 +29,9 @@ export class MapComponent implements OnInit {
   public drawMode$ = this.store$.select(mapStore.getMapDrawMode);
   public interactionMode$ = this.store$.select(mapStore.getMapInteractionMode);
   public isMapInitialized$ = this.store$.select(mapStore.getIsMapInitialization);
+  public isDrawMenuDisabled$ = this.interactionMode$.pipe(
+    map(mode => mode !== models.MapInteractionModeType.DRAW)
+  );
 
   public granules$ = this.store$.select(granulesStore.getGranules);
   public focusedGranule$ = this.store$.select(granulesStore.getFocusedGranule);
