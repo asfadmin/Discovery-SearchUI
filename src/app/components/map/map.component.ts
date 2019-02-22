@@ -70,7 +70,13 @@ export class MapComponent implements OnInit {
   }
 
   public onNewSearchPolygon(polygon: string): void {
-    this.loadSearchPolygon(polygon);
+    const features = this.wktService.wktToFeature(
+      polygon,
+      this.mapService.epsg()
+    );
+
+    this.mapService.setDrawFeature(features);
+    this.mapService.zoomTo(features);
   }
 
   public onFileUploadDialogClosed(successful: boolean): void {

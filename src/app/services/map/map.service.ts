@@ -124,6 +124,20 @@ export class MapService {
     this.focusSource.addFeature(feature);
   }
 
+  public zoomTo(feature): void {
+    const extent = feature
+      .getGeometry()
+      .getExtent();
+
+    this.map
+      .getView()
+      .fit(extent, {
+        size: this.map.getSize(),
+        padding: [100, 100, 100, 100],
+        duration: 1000,
+      });
+  }
+
   private setMap(mapView: views.MapView): void {
     this.mapView = mapView;
 
