@@ -8,3 +8,4 @@ export { ProductService } from './product.service';
 export { BulkDownloadService } from './bulk-download.service';
 export { SearchParamsService } from './search-params.service';
 export { RangeService } from './range.service';
+export { PolygonValidationService } from './polygon-validation.service';
