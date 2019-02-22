@@ -70,7 +70,9 @@ export class MapComponent implements OnInit {
   }
 
   public onNewSearchPolygon(polygon: string): void {
-    this.loadSearchPolygon(polygon);
+    const features = this.loadSearchPolygon(polygon);
+
+    this.mapService.zoomTo(features);
   }
 
   public onFileUploadDialogClosed(successful: boolean): void {
@@ -145,13 +147,15 @@ export class MapComponent implements OnInit {
     );
   }
 
-  private loadSearchPolygon = (polygon: string): void => {
+  private loadSearchPolygon = (polygon: string) => {
     const features = this.wktService.wktToFeature(
       polygon,
       this.mapService.epsg()
     );
 
     this.mapService.setDrawFeature(features);
+
+    return features;
   }
 
 

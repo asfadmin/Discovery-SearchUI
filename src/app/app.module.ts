@@ -53,6 +53,7 @@ export const routes = [
     services.BulkDownloadService,
     services.SearchParamsService,
     services.RangeService,
+    services.PolygonValidationService,
   ],
   bootstrap: [ AppComponent ],
 })
