@@ -34,12 +34,16 @@ export class FileUploadComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(
       wkt => {
+        let wasSuccessful: boolean;
+
         if (wkt) {
           this.newSearchPolygon.emit(wkt);
-          this.dialogClose.emit(true);
+          wasSuccessful = true;
         } else {
-          this.dialogClose.emit(false);
+          wasSuccessful = false;
         }
+
+        this.dialogClose.emit(wasSuccessful);
       }
     );
   }

@@ -15,6 +15,7 @@
 
 <app-draw-selector
   (newDrawMode)="onNewDrawMode($event)"
+  [isDisabled]="isDrawMenuDisabled$ | async"
   [drawMode]="drawMode$ | async">
 </app-draw-selector>
 
