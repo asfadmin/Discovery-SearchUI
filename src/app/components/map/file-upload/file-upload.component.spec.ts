@@ -8,22 +8,24 @@ import { By } from '@angular/platform-browser';
 // import 'rxjs/add/observable/throw';
 
 import {Component, Directive} from '@angular/core';
-import {DrawSelectorComponent} from './draw-selector.component';
+import {FileUploadComponent} from './file-upload.component';
+import {MatDialog} from '@angular/material';
 
-describe('DrawSelectorComponent', () => {
+describe('FileUploadComponent', () => {
   let fixture;
   let component;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
       declarations: [
-        DrawSelectorComponent
+        FileUploadComponent
       ],
       providers: [
+        MatDialog,
       ],
       schemas: [ CUSTOM_ELEMENTS_SCHEMA ]
     }).compileComponents();
-    fixture = TestBed.createComponent(DrawSelectorComponent);
+    fixture = TestBed.createComponent(FileUploadComponent);
     component = fixture.debugElement.componentInstance;
   });
 
@@ -31,12 +33,12 @@ describe('DrawSelectorComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should run #selectMode()', async () => {
-    // component.selectMode(mode);
+  it('should run #ngOnInit()', async () => {
+    // component.ngOnInit();
   });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
+  it('should run #openDialog()', async () => {
+    // component.openDialog();
   });
 
 });

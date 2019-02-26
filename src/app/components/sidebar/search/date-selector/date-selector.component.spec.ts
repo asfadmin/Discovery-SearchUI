@@ -8,22 +8,22 @@ import { By } from '@angular/platform-browser';
 // import 'rxjs/add/observable/throw';
 
 import {Component, Directive} from '@angular/core';
-import {DrawSelectorComponent} from './draw-selector.component';
+import {DateSelectorComponent} from './date-selector.component';
 
-describe('DrawSelectorComponent', () => {
+describe('DateSelectorComponent', () => {
   let fixture;
   let component;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
       declarations: [
-        DrawSelectorComponent
+        DateSelectorComponent
       ],
       providers: [
       ],
       schemas: [ CUSTOM_ELEMENTS_SCHEMA ]
     }).compileComponents();
-    fixture = TestBed.createComponent(DrawSelectorComponent);
+    fixture = TestBed.createComponent(DateSelectorComponent);
     component = fixture.debugElement.componentInstance;
   });
 
@@ -31,12 +31,12 @@ describe('DrawSelectorComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should run #selectMode()', async () => {
-    // component.selectMode(mode);
+  it('should run #onStartDateChange()', async () => {
+    // const result = component.onStartDateChange(e);
   });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
+  it('should run #onEndDateChange()', async () => {
+    // const result = component.onEndDateChange(e);
   });
 
 });

@@ -8,22 +8,22 @@ import { By } from '@angular/platform-browser';
 // import 'rxjs/add/observable/throw';
 
 import {Component, Directive} from '@angular/core';
-import {DrawSelectorComponent} from './draw-selector.component';
+import {PathSelectorComponent} from './path-selector.component';
 
-describe('DrawSelectorComponent', () => {
+describe('PathSelectorComponent', () => {
   let fixture;
   let component;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
       declarations: [
-        DrawSelectorComponent
+        PathSelectorComponent
       ],
       providers: [
       ],
       schemas: [ CUSTOM_ELEMENTS_SCHEMA ]
     }).compileComponents();
-    fixture = TestBed.createComponent(DrawSelectorComponent);
+    fixture = TestBed.createComponent(PathSelectorComponent);
     component = fixture.debugElement.componentInstance;
   });
 
@@ -31,12 +31,24 @@ describe('DrawSelectorComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should run #selectMode()', async () => {
-    // component.selectMode(mode);
+  it('should run #onPathStartChanged()', async () => {
+    // component.onPathStartChanged(path);
   });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
+  it('should run #onPathEndChanged()', async () => {
+    // component.onPathEndChanged(path);
+  });
+
+  it('should run #onFrameStartChanged()', async () => {
+    // component.onFrameStartChanged(frame);
+  });
+
+  it('should run #onFrameEndChanged()', async () => {
+    // component.onFrameEndChanged(frame);
+  });
+
+  it('should run #onNewOmitGeoRegion()', async () => {
+    // component.onNewOmitGeoRegion(e);
   });
 
 });

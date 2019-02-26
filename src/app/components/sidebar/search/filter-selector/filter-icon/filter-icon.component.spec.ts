@@ -8,34 +8,26 @@ import { By } from '@angular/platform-browser';
 // import 'rxjs/add/observable/throw';
 
 import {Component, Directive} from '@angular/core';
-import {DrawSelectorComponent} from './draw-selector.component';
+import {FilterIconComponent} from './filter-icon.component';
 
-describe('DrawSelectorComponent', () => {
+describe('FilterIconComponent', () => {
   let fixture;
   let component;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
       declarations: [
-        DrawSelectorComponent
+        FilterIconComponent
       ],
       providers: [
       ],
       schemas: [ CUSTOM_ELEMENTS_SCHEMA ]
     }).compileComponents();
-    fixture = TestBed.createComponent(DrawSelectorComponent);
+    fixture = TestBed.createComponent(FilterIconComponent);
     component = fixture.debugElement.componentInstance;
   });
 
   it('should create a component', async () => {
-    expect(component).toBeTruthy();
-  });
-
-  it('should run #selectMode()', async () => {
-    // component.selectMode(mode);
-  });
-
-  it('should create', () => {
     expect(component).toBeTruthy();
   });
 

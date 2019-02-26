@@ -8,22 +8,22 @@ import { By } from '@angular/platform-browser';
 // import 'rxjs/add/observable/throw';
 
 import {Component, Directive} from '@angular/core';
-import {DrawSelectorComponent} from './draw-selector.component';
+import {HideIconComponent} from './hide-icon.component';
 
-describe('DrawSelectorComponent', () => {
+describe('HideIconComponent', () => {
   let fixture;
   let component;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
       declarations: [
-        DrawSelectorComponent
+        HideIconComponent
       ],
       providers: [
       ],
       schemas: [ CUSTOM_ELEMENTS_SCHEMA ]
     }).compileComponents();
-    fixture = TestBed.createComponent(DrawSelectorComponent);
+    fixture = TestBed.createComponent(HideIconComponent);
     component = fixture.debugElement.componentInstance;
   });
 
@@ -31,12 +31,8 @@ describe('DrawSelectorComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should run #selectMode()', async () => {
-    // component.selectMode(mode);
-  });
-
-  it('should create', () => {
-    expect(component).toBeTruthy();
+  it('should run #onHide()', async () => {
+    // component.onHide(e);
   });
 
 });

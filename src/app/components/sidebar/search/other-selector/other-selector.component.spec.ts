@@ -8,22 +8,22 @@ import { By } from '@angular/platform-browser';
 // import 'rxjs/add/observable/throw';
 
 import {Component, Directive} from '@angular/core';
-import {DrawSelectorComponent} from './draw-selector.component';
+import {OtherSelectorComponent} from './other-selector.component';
 
-describe('DrawSelectorComponent', () => {
+describe('OtherSelectorComponent', () => {
   let fixture;
   let component;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
       declarations: [
-        DrawSelectorComponent
+        OtherSelectorComponent
       ],
       providers: [
       ],
       schemas: [ CUSTOM_ELEMENTS_SCHEMA ]
     }).compileComponents();
-    fixture = TestBed.createComponent(DrawSelectorComponent);
+    fixture = TestBed.createComponent(OtherSelectorComponent);
     component = fixture.debugElement.componentInstance;
   });
 
@@ -31,12 +31,20 @@ describe('DrawSelectorComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should run #selectMode()', async () => {
-    // component.selectMode(mode);
+  it('should run #onNewPlatformBeamModes()', async () => {
+    // component.onNewPlatformBeamModes(platform, beamModes);
   });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
+  it('should run #onNewProductTypes()', async () => {
+    // component.onNewProductTypes(platform, productTypes);
+  });
+
+  it('should run #onNewFlightDirectionsSelected()', async () => {
+    // component.onNewFlightDirectionsSelected(directions);
+  });
+
+  it('should run #onNewPlatformPolarizations()', async () => {
+    // component.onNewPlatformPolarizations(platform, polarizations);
   });
 
 });

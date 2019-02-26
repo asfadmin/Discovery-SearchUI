@@ -8,34 +8,26 @@ import { By } from '@angular/platform-browser';
 // import 'rxjs/add/observable/throw';
 
 import {Component, Directive} from '@angular/core';
-import {DrawSelectorComponent} from './draw-selector.component';
+import {SearchBarComponent} from './search-bar.component';
 
-describe('DrawSelectorComponent', () => {
+describe('SearchBarComponent', () => {
   let fixture;
   let component;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
       declarations: [
-        DrawSelectorComponent
+        SearchBarComponent
       ],
       providers: [
       ],
       schemas: [ CUSTOM_ELEMENTS_SCHEMA ]
     }).compileComponents();
-    fixture = TestBed.createComponent(DrawSelectorComponent);
+    fixture = TestBed.createComponent(SearchBarComponent);
     component = fixture.debugElement.componentInstance;
   });
 
   it('should create a component', async () => {
-    expect(component).toBeTruthy();
-  });
-
-  it('should run #selectMode()', async () => {
-    // component.selectMode(mode);
-  });
-
-  it('should create', () => {
     expect(component).toBeTruthy();
   });
 
