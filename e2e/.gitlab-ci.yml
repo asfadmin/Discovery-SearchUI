@@ -1,0 +1,44 @@
+image: node:8
+
+stages:
+  - test
+  - build
+
+test:
+  stage: test
+  before_script:
+    # Add Google Chrome to aptitude's (package manager) sources
+    - echo "deb http://dl.google.com/linux/chrome/deb/ stable main" | tee -a /etc/apt/sources.list
+    # Fetch Chrome's PGP keys for secure installation
+    - wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add -
+    # Update aptitude's package sources
+    - apt-get -qq update -y
+    # Install latest Chrome stable, Xvfb packages
+    - apt-get -qq install -y google-chrome-stable xvfb gtk2-engines-pixbuf xfonts-cyrillic xfonts-100dpi xfonts-75dpi xfonts-base xfonts-scalable imagemagick x11-apps default-jre
+    # Launch Xvfb
+    - Xvfb :0 -ac -screen 0 1024x768x24 &
+    # Export display for Chrome
+    - export DISPLAY=:99
+    # Install AngularJS CLI exclusively
+    # Add --unsafe-perm to resolve problems with node-gyp infinite loop on Docker
+    - npm install --silent --unsafe-perm -g @angular/cli@1.1.2
+    # Install remaining project dependencies
+    - npm install --silent
+    # Download Selenium server JAR, drivers for Chrome
+    - node ./node_modules/.bin/webdriver-manager update
+  script:
+    - ng test --single-run --progress false
+    - ng e2e --progress false
+
+build:
+  stage: build
+  before_script:
+    - npm install --silent --unsafe-perm -g @angular/cli@1.1.2
+    - npm install --silent
+  script:
+    - ng build --prod --progress false
+  artifacts:
+    paths:
+      - dist/
+  only:
+    - master
