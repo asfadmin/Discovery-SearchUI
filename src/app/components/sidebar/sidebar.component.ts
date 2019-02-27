@@ -44,6 +44,7 @@ export class SidebarComponent {
   @Output() clearSearch = new EventEmitter<void>();
   @Output() openSpreadsheet = new EventEmitter<void>();
 
+
   public platforms$ = this.store$.select(filtersStore.getPlatformsList);
   public platformProductTypes$ = this.store$.select(filtersStore.getProductTypes);
   public selectedPlatformNames$ = this.store$.select(filtersStore.getSelectedPlatformNames);
@@ -65,7 +66,13 @@ export class SidebarComponent {
   public isSidebarOpen$ = this.store$.select(uiStore.getIsSidebarOpen);
   public selectedFilter$ = this.store$.select(uiStore.getSelectedFilter);
 
-  public granules$ = this.store$.select(granulesStore.getGranules);
+  public granules$ = this.store$.select(granulesStore.getGranules).pipe(
+    tap(granules => {
+      if (granules.length > 0) {
+        this.selectedTab = 1;
+      }
+    })
+  );
   public selectedGranule$ = this.store$.select(granulesStore.getSelectedGranule);
   public selectedProducts$ = this.store$.select(granulesStore.getSelectedGranuleProducts);
   public searchList$ = this.store$.select(granulesStore.getSearchList).pipe(
@@ -85,6 +92,11 @@ export class SidebarComponent {
   );
 
   public filterType = models.FilterType;
+  public selectedTab = 0;
+
+  public onTabChange(tabIndex: number): void {
+    this.selectedTab = tabIndex;
+  }
 
   constructor(
     private dateExtremaService: DateExtremaService,

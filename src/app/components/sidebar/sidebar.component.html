@@ -20,7 +20,11 @@
 
   <div class="filters-scoll">
 
-  <mat-tab-group color="primary" backgroundColor="primary">
+  <mat-tab-group
+    [selectedIndex]="selectedTab"
+    (selectedIndexChange)="onTabChange($event)"
+    color="primary" backgroundColor="primary">
+
     <mat-tab label="Filters">
       <app-platform-selector
         [platforms]="platforms$ | async"
