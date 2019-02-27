@@ -25,7 +25,7 @@
     (selectedIndexChange)="onTabChange($event)"
     color="primary" backgroundColor="primary">
 
-    <mat-tab label="Filters">
+    <mat-tab label="Search">
       <app-platform-selector
         [platforms]="platforms$ | async"
         [selected]="selectedPlatformNames$ | async"
@@ -126,7 +126,7 @@
 
   </mat-tab-group>
   </div>
-  <div class="bottom-list-elements">
+  <div *ngIf="selectedTab === 0" class="bottom-list-elements">
     <app-search-bar
       (newSearch)="onNewSearch()"
       (clearSearches)="onClearSearch()"

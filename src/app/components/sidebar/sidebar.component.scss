@@ -1,6 +1,6 @@
 .position {
   width: 450px;
-  max-width: 100%;
+  max-width: calc(100% - 28px);
   height: calc(100vh - 32px);
   position: fixed;
   background: white;
