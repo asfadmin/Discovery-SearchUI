@@ -3,7 +3,9 @@
   <span matLine class="platform__name">
     {{ platform.name }}
 
-    <span
+    <a
+      [href]="platform.infoUrl"
+      target="_blank"
       (click)="onInfoClicked($event)"
       class="platform__info" >
       <fa-icon
@@ -11,7 +13,7 @@
         matTooltip="Click for coverage maps and platform information">
       </fa-icon>
 
-    </span>
+    </a>
   </span>
   <span matLine>
     <span class="platform__date">{{ prettyDateRange(platform.date) }}</span>
