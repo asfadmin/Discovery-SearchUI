@@ -17,7 +17,7 @@ import * as models from '@models';
   templateUrl: './spreadsheet.component.html',
   styleUrls: ['./spreadsheet.component.scss']
 })
-export class SpreadsheetComponent {
+export class SpreadsheetComponent implements OnInit {
   public isShown = true;
 
   public allColumns: string[] = [
@@ -35,6 +35,9 @@ export class SpreadsheetComponent {
   @ViewChild(MatSort) sort: MatSort;
 
   constructor(private store$: Store<AppState>) {
+  }
+
+  public ngOnInit(): void {
     this.store$.select(granuleStore.getGranules).pipe(
       map(granules => new MatTableDataSource(granules)),
       map(this.keepCurrentFilter),
