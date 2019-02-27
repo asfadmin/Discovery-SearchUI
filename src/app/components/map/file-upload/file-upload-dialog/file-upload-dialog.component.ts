@@ -44,7 +44,7 @@ export class FileUploadDialogComponent implements OnInit {
       delay(820),
       tap(_ => this.isFileError = false),
     ).subscribe(
-      _ => console.log('file is invalid')
+      _ => _
     );
   }
 
