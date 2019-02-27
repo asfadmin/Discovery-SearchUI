@@ -7,25 +7,25 @@
   [isOpen]="isSidebarOpen$ | async">
 </app-toggle-button>
 
-<div class="filter-list "><div>
-  <app-logo
-     class="clickable"
-    (click)="onAppReset()">
-  </app-logo>
+<div class="filter-list">
+  <div class="top-list-elements">
+    <app-logo
+       class="clickable"
+      (click)="onAppReset()">
+    </app-logo>
+    <mat-card *ngIf="searchError$ | async as error" class="card-spacing">
+      <b>Error:</b> {{error}}
+    </mat-card>
+  </div>
 
+  <div class="filters-scoll">
 
-  <app-search-bar
-    (newSearch)="onNewSearch()"
-    (clearSearches)="onClearSearch()"
-    [isLoading]="loading$ | async">
-  </app-search-bar>
+  <mat-tab-group
+    [selectedIndex]="selectedTab"
+    (selectedIndexChange)="onTabChange($event)"
+    color="primary" backgroundColor="primary">
 
-  <mat-card *ngIf="searchError$ | async as error" class="card-spacing">
-    <b>Error:</b> {{error}}
-  </mat-card>
-
-  <mat-tab-group color="primary" backgroundColor="primary">
-    <mat-tab label="Filters">
+    <mat-tab label="Search">
       <app-platform-selector
         [platforms]="platforms$ | async"
         [selected]="selectedPlatformNames$ | async"
@@ -122,10 +122,17 @@
             [products]="queue">
           </app-queue>
       </mat-tab>
-
     </ng-container>
 
   </mat-tab-group>
-  </div></div>
+  </div>
+  <div *ngIf="selectedTab === 0" class="bottom-list-elements">
+    <app-search-bar
+      (newSearch)="onNewSearch()"
+      (clearSearches)="onClearSearch()"
+      [isLoading]="loading$ | async">
+    </app-search-bar>
+  </div>
+</div>
 
 </div>

@@ -21,7 +21,7 @@ export function equatorial(): MapView {
   const layer = new TileLayer({ source });
 
   const view = new View({
-    center: [0, 0],
+    center: [-10852977.98, 4818505.78],
     projection: projection.epsg,
     zoom: 3,
     minZoom: 3,
