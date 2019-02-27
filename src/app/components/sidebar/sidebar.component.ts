@@ -28,7 +28,7 @@ import * as models from '@models';
   styleUrls: ['./sidebar.component.scss'],
   animations: [
     trigger('changeMenuState', [
-      state('shown', style({ transform: 'translateX(100%) translateX(-25px)'
+      state('shown', style({ transform: 'translateX(100%) translateX(-28px)'
       })),
       state('hidden',   style({
         transform: 'translateX(0%)'
