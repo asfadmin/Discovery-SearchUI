@@ -10,6 +10,7 @@
 
   <img mat-card-image
     [src]="granule.browse"
+    (click)="onOpenImage(granule);"
     onerror="this.src='assets/error.png'"
     alt="Sentinel1 granule browse image">
 
