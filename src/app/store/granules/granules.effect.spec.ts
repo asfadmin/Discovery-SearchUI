@@ -5,15 +5,15 @@ describe('GranulesEffects', () => {
   let service;
 
   const actions$: any = {
-    // mock properties here 
-  }
+    // mock properties here
+  };
 
   const store$: any = {
-    // mock properties here 
-  }
+    // mock properties here
+  };
 
   beforeEach(() => {
-    service = new GranulesEffects(actions$,store$);
+    service = new GranulesEffects(actions$, store$);
   });
 
 });

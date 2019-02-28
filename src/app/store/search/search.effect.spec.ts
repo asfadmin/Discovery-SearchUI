@@ -5,23 +5,23 @@ describe('SearchEffects', () => {
   let service;
 
   const actions$: any = {
-    // mock properties here 
-  }
+    // mock properties here
+  };
 
   const searchParams$: any = {
-    // mock properties here 
-  }
+    // mock properties here
+  };
 
   const asfApiService: any = {
-    // mock properties here 
-  }
+    // mock properties here
+  };
 
   const productService: any = {
-    // mock properties here 
-  }
+    // mock properties here
+  };
 
   beforeEach(() => {
-    service = new SearchEffects(actions$,searchParams$,asfApiService,productService);
+    service = new SearchEffects(actions$, searchParams$, asfApiService, productService);
   });
 
 });

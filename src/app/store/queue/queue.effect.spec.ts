@@ -5,27 +5,27 @@ describe('QueueEffects', () => {
   let service;
 
   const actions$: any = {
-    // mock properties here 
-  }
+    // mock properties here
+  };
 
   const store$: any = {
-    // mock properties here 
-  }
+    // mock properties here
+  };
 
   const searchParams$: any = {
-    // mock properties here 
-  }
+    // mock properties here
+  };
 
   const asfApiService: any = {
-    // mock properties here 
-  }
+    // mock properties here
+  };
 
   const bulkDownloadService: any = {
-    // mock properties here 
-  }
+    // mock properties here
+  };
 
   beforeEach(() => {
-    service = new QueueEffects(actions$,store$,searchParams$,asfApiService,bulkDownloadService);
+    service = new QueueEffects(actions$, store$, searchParams$, asfApiService, bulkDownloadService);
   });
 
 });

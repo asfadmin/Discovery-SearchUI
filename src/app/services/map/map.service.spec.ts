@@ -5,15 +5,15 @@ describe('MapService', () => {
   let service;
 
   const wktService: any = {
-    // mock properties here 
-  }
+    // mock properties here
+  };
 
   const drawService: any = {
-    // mock properties here 
-  }
+    // mock properties here
+  };
 
   beforeEach(() => {
-    service = new MapService(wktService,drawService);
+    service = new MapService(wktService, drawService);
   });
 
   it('should run #epsg()', async () => {

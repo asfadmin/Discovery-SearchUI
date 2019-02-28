@@ -5,8 +5,8 @@ describe('BulkDownloadService', () => {
   let service;
 
   const http: any = {
-    // mock properties here 
-  }
+    // mock properties here
+  };
 
   beforeEach(() => {
     service = new BulkDownloadService(http);

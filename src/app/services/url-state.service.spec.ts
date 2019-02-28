@@ -5,31 +5,31 @@ describe('UrlStateService', () => {
   let service;
 
   const store$: any = {
-    // mock properties here 
-  }
+    // mock properties here
+  };
 
   const activatedRoute: any = {
-    // mock properties here 
-  }
+    // mock properties here
+  };
 
   const mapService: any = {
-    // mock properties here 
-  }
+    // mock properties here
+  };
 
   const wktService: any = {
-    // mock properties here 
-  }
+    // mock properties here
+  };
 
   const rangeService: any = {
-    // mock properties here 
-  }
+    // mock properties here
+  };
 
   const router: any = {
-    // mock properties here 
-  }
+    // mock properties here
+  };
 
   beforeEach(() => {
-    service = new UrlStateService(store$,activatedRoute,mapService,wktService,rangeService,router);
+    service = new UrlStateService(store$, activatedRoute, mapService, wktService, rangeService, router);
   });
 
   it('should run #load()', async () => {
