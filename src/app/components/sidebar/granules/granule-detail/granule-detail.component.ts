@@ -36,4 +36,8 @@ export class GranuleDetailComponent {
   public onClearFocusedGranule(): void {
     this.clearFocusedGranule.emit();
   }
+
+  public onOpenImage(granule: Sentinel1Product): void {
+    window.open(granule.browse, '_blank');
+  }
 }
