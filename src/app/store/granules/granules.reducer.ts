@@ -54,7 +54,7 @@ export function granulesReducer(state = initState, action: GranulesActions): Gra
           (a, b) => products[a].bytes - products[b].bytes
         ).reverse();
 
-        granules[groupId] = productNames;
+        granules[groupId] = Array.from(new Set(productNames)) ;
       }
 
       return {
