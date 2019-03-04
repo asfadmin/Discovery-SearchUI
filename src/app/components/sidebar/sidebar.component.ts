@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, ViewEncapsulation } from '@angular/core';
 import { Router } from '@angular/router';
 
 import {
@@ -44,6 +44,7 @@ export class SidebarComponent {
   @Output() clearSearch = new EventEmitter<void>();
   @Output() openSpreadsheet = new EventEmitter<void>();
 
+  public searchType = models.SearchType;
 
   public platforms$ = this.store$.select(filtersStore.getPlatformsList);
   public platformProductTypes$ = this.store$.select(filtersStore.getProductTypes);
@@ -73,6 +74,7 @@ export class SidebarComponent {
       }
     })
   );
+
   public selectedGranule$ = this.store$.select(granulesStore.getSelectedGranule);
   public selectedProducts$ = this.store$.select(granulesStore.getSelectedGranuleProducts);
   public searchList$ = this.store$.select(granulesStore.getSearchList).pipe(
@@ -93,16 +95,23 @@ export class SidebarComponent {
 
   public filterType = models.FilterType;
   public selectedTab = 0;
-
-  public onTabChange(tabIndex: number): void {
-    this.selectedTab = tabIndex;
-  }
+  public selectedSearchType: null | models.SearchType = null;
 
   constructor(
     private dateExtremaService: DateExtremaService,
     private router: Router,
     private store$: Store<AppState>,
   ) {}
+
+  public onTabChange(tabIndex: number): void {
+    this.selectedTab = tabIndex;
+  }
+
+  public onSetSearchType(searchType: models.SearchType): void {
+
+    this.selectedSearchType =
+      searchType === this.selectedSearchType ?  null : searchType;
+  }
 
   public onAppReset() {
     this.router.navigate(['/'], { queryParams: {} }) ;
