@@ -209,7 +209,7 @@
 
   </mat-tab-group>
   </div>
-  <div *ngIf="false" class="bottom-list-elements">
+  <div *ngIf="selectedSearchType !== null" class="bottom-list-elements">
     <app-search-bar
       (newSearch)="onNewSearch()"
       (clearSearches)="onClearSearch()"
