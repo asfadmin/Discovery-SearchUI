@@ -24,6 +24,7 @@ export class SpreadsheetComponent implements OnInit {
     'select', 'name', 'date', 'productType', 'beamMode',
     'polarization', 'path', 'frame', 'absoluteOrbit', 'bytes'
   ];
+  public filterStr = '';
 
   public isColumnDisplayed: boolean[] = this.allColumns.map(_ => true);
   public displayedColumns = this.allColumns;
@@ -107,6 +108,7 @@ export class SpreadsheetComponent implements OnInit {
   public onColumnsReset(): void {
     this.displayedColumns = this.allColumns;
     this.isColumnDisplayed = this.displayedColumns.map(_ => true);
+    this.applyFilter('');
   }
 
 
@@ -114,8 +116,9 @@ export class SpreadsheetComponent implements OnInit {
     this.isShown = false;
   }
 
-  applyFilter(filterValue: string) {
-    this.dataSource.filter = filterValue.trim().toLowerCase();
+  applyFilter(filterStr: string) {
+    this.filterStr = filterStr;
+    this.dataSource.filter = this.filterStr.trim().toLowerCase();
 
     if (this.dataSource.paginator) {
       this.dataSource.paginator.firstPage();
