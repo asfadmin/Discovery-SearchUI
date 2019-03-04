@@ -5,7 +5,7 @@ import { RouterModule } from '@angular/router';
 
 import { TruncateModule } from '@yellowspot/ng-truncate';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import { MatTabsModule, MatSelectModule } from '@angular/material';
+import { MatTabsModule, MatSelectModule, MatExpansionModule, MatButtonToggleModule } from '@angular/material';
 
 import { MatSharedModule } from '@shared';
 import { PipesModule } from '@pipes';
@@ -39,6 +39,8 @@ import { MaxResultsSelectorComponent } from './search/max-results-selector/max-r
     TruncateModule,
     FontAwesomeModule,
     MatTabsModule,
+    MatExpansionModule,
+    MatButtonToggleModule,
 
     MatSharedModule,
     PipesModule,

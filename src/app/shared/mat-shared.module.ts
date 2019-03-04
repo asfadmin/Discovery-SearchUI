@@ -4,6 +4,7 @@ import { CommonModule } from '@angular/common';
 import {
   MatCardModule, MatButtonModule, MatIconModule,
   MatListModule, MatTooltipModule,
+  MatDividerModule,
 } from '@angular/material';
 
 @NgModule({
@@ -16,6 +17,7 @@ import {
     MatIconModule,
     MatListModule,
     MatTooltipModule,
+    MatDividerModule,
   ],
   exports: [
     MatCardModule,
