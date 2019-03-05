@@ -197,19 +197,13 @@
       <mat-tab
         *ngIf="queue.length > 0"
         label="Queue">
-          <app-queue
-            (itemRemoved)="onRemoveItem($event)"
-            (clear)="onClearQueue()"
-            (makeDownloadScript)="onMakeDownloadScript()"
-            (metadataDownload)="onMetadataDownload($event)"
-            [products]="queue">
-          </app-queue>
+          <app-queue></app-queue>
       </mat-tab>
     </ng-container>
 
   </mat-tab-group>
   </div>
-  <div *ngIf="selectedSearchType !== null" class="bottom-list-elements">
+  <div *ngIf="selectedSearchType !== null && selectedTab === 0" class="bottom-list-elements">
     <app-search-bar
       (newSearch)="onNewSearch()"
       (clearSearches)="onClearSearch()"

@@ -1,5 +1,10 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
 
+import { Store } from '@ngrx/store';
+
+import { AppState } from '@store';
+import * as queueStore from '@store/queue';
+
 import { Sentinel1Product, AsfApiOutputFormat } from '@models';
 
 
@@ -9,39 +14,39 @@ import { Sentinel1Product, AsfApiOutputFormat } from '@models';
   styleUrls: ['./queue.component.css']
 })
 export class QueueComponent {
-  @Input() products: Sentinel1Product[];
+  public products$ = this.store$.select(queueStore.getQueuedProducts);
 
-  @Output() itemRemoved = new EventEmitter<Sentinel1Product>();
-  @Output() clear = new EventEmitter<void>();
-
-  @Output() makeDownloadScript = new EventEmitter<void>();
-  @Output() metadataDownload = new EventEmitter<AsfApiOutputFormat>();
+  constructor(private store$: Store<AppState>) {}
 
   public onRemoveProduct(product: Sentinel1Product): void {
-    this.itemRemoved.emit(product);
+    this.store$.dispatch(new queueStore.RemoveItem(product));
   }
 
   public onClearQueue(): void {
-    this.clear.emit();
+    this.store$.dispatch(new queueStore.ClearQueue());
   }
 
   public onMakeDownloadScript(): void {
-    this.makeDownloadScript.emit();
+    this.store$.dispatch(new queueStore.MakeDownloadScript());
   }
 
   public onCsvDownload(): void {
-    this.metadataDownload.emit(AsfApiOutputFormat.CSV);
+    this.downloadMetadata(AsfApiOutputFormat.CSV);
   }
 
   public onKmlDownload(): void {
-    this.metadataDownload.emit(AsfApiOutputFormat.KML);
+    this.downloadMetadata(AsfApiOutputFormat.KML);
   }
 
   public onGeojsonDownload(): void {
-    this.metadataDownload.emit(AsfApiOutputFormat.GEOJSON);
+    this.downloadMetadata(AsfApiOutputFormat.GEOJSON);
   }
 
   public onMetalinkDownload(): void {
-    this.metadataDownload.emit(AsfApiOutputFormat.METALINK);
+    this.downloadMetadata(AsfApiOutputFormat.METALINK);
+  }
+
+  public downloadMetadata(format: AsfApiOutputFormat): void {
+    this.store$.dispatch(new queueStore.DownloadMetadata(format));
   }
 }
