@@ -192,15 +192,6 @@
         </app-granules-list>
       </mat-tab>
     </ng-container>
-
-    <ng-container *ngIf="queueProducts$ | async as queue">
-      <mat-tab
-        *ngIf="queue.length > 0"
-        label="Queue">
-          <app-queue></app-queue>
-      </mat-tab>
-    </ng-container>
-
   </mat-tab-group>
   </div>
   <div *ngIf="selectedSearchType !== null && selectedTab === 0" class="bottom-list-elements">

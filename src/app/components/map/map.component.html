@@ -2,11 +2,25 @@
   (dragover)="onFileHovered($event)"
   ></div>
 
-<button (click)="onOpenDownloadQueue()" matTooltip="Download Queue" class="download-queue-btn" color="basic" mat-fab>
-  <mat-icon matBadge="400" matBadgePosition="below" matBadgeOverlap="false">cloud_download</mat-icon>
-</button>
-<button (click)="onToggleSettings()" matTooltip="Settings" class="settings-btn" color="basic" mat-fab>
-  <mat-icon>settings</mat-icon>
+<ng-container *ngIf="queuedProducts$ | async as products">
+  <button
+    style="background: white" class="download-queue-btn"
+    (click)="onOpenDownloadQueue()"
+    matTooltip="Download Queue"
+    [disabled]="products.length <= 0"  color="basic"
+    mat-fab>
+      <mat-icon
+        [matBadge]="products.length" matBadgePosition="below" matBadgeOverlap="false">
+          cloud_download
+      </mat-icon>
+  </button>
+</ng-container>
+<button
+  (click)="onToggleSettings()"
+  matTooltip="Settings"
+  class="settings-btn" color="basic"
+  mat-fab>
+    <mat-icon>settings</mat-icon>
 </button>
 
 <ng-container *ngIf="showSettings">
