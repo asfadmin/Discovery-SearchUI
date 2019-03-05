@@ -72,7 +72,7 @@ export class MapComponent implements OnInit {
 
   public onOpenDownloadQueue(): void {
     this.dialog.open(QueueComponent, {
-      width: '450px',
+      width: '550px', height: '700px', minHeight: '50%'
     });
   }
 
