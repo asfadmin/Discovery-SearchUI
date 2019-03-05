@@ -27,6 +27,8 @@ import { MapService, WktService } from '@services';
 export class MapComponent implements OnInit {
   @Output() loadUrlState = new EventEmitter<void>();
 
+  public showSettings = false;
+
   public view$ = this.store$.select(mapStore.getMapView);
   public drawMode$ = this.store$.select(mapStore.getMapDrawMode);
   public interactionMode$ = this.store$.select(mapStore.getMapInteractionMode);
@@ -57,6 +59,13 @@ export class MapComponent implements OnInit {
 
   public onNewProjection(view: models.MapViewType): void {
     this.store$.dispatch(new mapStore.SetMapView(view));
+  }
+
+  public onToggleSettings(): void {
+    this.showSettings = !this.showSettings;
+  }
+
+  public onOpenDownloadQueue(): void {
   }
 
   public onNewDrawMode(mode: models.MapDrawModeType): void {

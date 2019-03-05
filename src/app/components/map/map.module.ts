@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
+import { MatBadgeModule } from '@angular/material';
 import { MatSharedModule } from '@shared';
 
 import { MapComponent } from './map.component';
@@ -16,6 +17,7 @@ import { AttributionsComponent } from './attributions/attributions.component';
     CommonModule,
 
     MatButtonToggleModule,
+    MatBadgeModule,
     MatSharedModule,
 
     FileUploadModule,
