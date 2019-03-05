@@ -190,28 +190,12 @@ export class SidebarComponent {
     this.store$.dispatch(new filtersStore.SetListSearchType(mode));
   }
 
-  public onClearQueue(): void {
-    this.store$.dispatch(new queueStore.ClearQueue());
-  }
-
-  public onRemoveItem(product: models.Sentinel1Product): void {
-    this.store$.dispatch(new queueStore.RemoveItem(product));
-  }
-
   public onNewQueueItem(product: models.Sentinel1Product): void {
     this.store$.dispatch(new queueStore.AddItem(product));
   }
 
   public onNewQueueItems(products: models.Sentinel1Product[]): void {
     this.store$.dispatch(new queueStore.AddItems(products));
-  }
-
-  public onMakeDownloadScript(): void {
-    this.store$.dispatch(new queueStore.MakeDownloadScript());
-  }
-
-  public onMetadataDownload(format: models.AsfApiOutputFormat): void {
-    this.store$.dispatch(new queueStore.DownloadMetadata(format));
   }
 
   public onQueueGranuleProducts(name: string): void {

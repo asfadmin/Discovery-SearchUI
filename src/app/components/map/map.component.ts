@@ -2,6 +2,7 @@ import {
   Component, OnInit, Input, Output,
   EventEmitter
 } from '@angular/core';
+import { MatDialog } from '@angular/material';
 
 import { Store } from '@ngrx/store';
 
@@ -14,9 +15,11 @@ import { Vector as VectorSource } from 'ol/source';
 import { AppState } from '@store';
 import * as granulesStore from '@store/granules';
 import * as mapStore from '@store/map';
+import * as queueStore from '@store/queue';
 
 import * as models from '@models';
 import { MapService, WktService } from '@services';
+import { QueueComponent } from './queue';
 
 
 @Component({
@@ -26,6 +29,8 @@ import { MapService, WktService } from '@services';
 })
 export class MapComponent implements OnInit {
   @Output() loadUrlState = new EventEmitter<void>();
+
+  public showSettings = false;
 
   public view$ = this.store$.select(mapStore.getMapView);
   public drawMode$ = this.store$.select(mapStore.getMapDrawMode);
@@ -37,6 +42,7 @@ export class MapComponent implements OnInit {
 
   public granules$ = this.store$.select(granulesStore.getGranules);
   public focusedGranule$ = this.store$.select(granulesStore.getFocusedGranule);
+  public queuedProducts$ = this.store$.select(queueStore.getQueuedProducts);
 
   public mousePosition$ = this.mapService.mousePosition$;
 
@@ -44,6 +50,7 @@ export class MapComponent implements OnInit {
     private store$: Store<AppState>,
     private mapService: MapService,
     private wktService: WktService,
+    private dialog: MatDialog,
   ) {}
 
   ngOnInit(): void {
@@ -57,6 +64,16 @@ export class MapComponent implements OnInit {
 
   public onNewProjection(view: models.MapViewType): void {
     this.store$.dispatch(new mapStore.SetMapView(view));
+  }
+
+  public onToggleSettings(): void {
+    this.showSettings = !this.showSettings;
+  }
+
+  public onOpenDownloadQueue(): void {
+    this.dialog.open(QueueComponent, {
+      width: '550px', height: '700px', minHeight: '50%'
+    });
   }
 
   public onNewDrawMode(mode: models.MapDrawModeType): void {

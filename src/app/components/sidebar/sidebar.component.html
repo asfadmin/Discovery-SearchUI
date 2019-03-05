@@ -46,7 +46,7 @@
             </mat-expansion-panel-header>
               <h3>Dataset Search (most common)</h3>
               <p>
-                Search for products from a dataset using a area of intrest and filter based
+                Search for products from a dataset using a area of interest and filter based
                 on date, dataset, product type and other metadata parameters.
               </p>
               <h3>List Search</h3>
@@ -192,24 +192,9 @@
         </app-granules-list>
       </mat-tab>
     </ng-container>
-
-    <ng-container *ngIf="queueProducts$ | async as queue">
-      <mat-tab
-        *ngIf="queue.length > 0"
-        label="Queue">
-          <app-queue
-            (itemRemoved)="onRemoveItem($event)"
-            (clear)="onClearQueue()"
-            (makeDownloadScript)="onMakeDownloadScript()"
-            (metadataDownload)="onMetadataDownload($event)"
-            [products]="queue">
-          </app-queue>
-      </mat-tab>
-    </ng-container>
-
   </mat-tab-group>
   </div>
-  <div *ngIf="selectedSearchType !== null" class="bottom-list-elements">
+  <div *ngIf="selectedSearchType !== null && selectedTab === 0" class="bottom-list-elements">
     <app-search-bar
       (newSearch)="onNewSearch()"
       (clearSearches)="onClearSearch()"

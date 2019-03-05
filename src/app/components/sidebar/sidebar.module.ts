@@ -22,7 +22,6 @@ import { DateSelectorModule } from './search/date-selector';
 import { PathSelectorModule } from './search/path-selector';
 import { OtherSelectorModule } from './search/other-selector';
 import { ListSearchModule } from './list-search';
-import { QueueModule } from './queue';
 
 import { GranulesListModule } from './granules/granules-list';
 import { GranuleDetailComponent } from './granules/granule-detail/granule-detail.component';
@@ -55,7 +54,6 @@ import { MaxResultsSelectorComponent } from './search/max-results-selector/max-r
     DateSelectorModule,
     PathSelectorModule,
     OtherSelectorModule,
-    QueueModule,
   ],
   declarations: [
     SidebarComponent,
