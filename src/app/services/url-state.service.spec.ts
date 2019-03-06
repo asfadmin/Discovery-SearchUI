@@ -1,63 +1,74 @@
-import { async } from '@angular/core/testing';
-import {UrlStateService} from './url-state.service';
+import { async, TestBed, inject } from '@angular/core/testing';
+import { Router, ActivatedRoute } from '@angular/router';
 
-describe('UrlStateService', () => {
-  let service;
+import { Subject, BehaviorSubject } from 'rxjs';
+import { Store } from '@ngrx/store';
 
-  const store$: any = {
-    // mock properties here 
-  }
+import { AppState } from '@store';
+import { TestStore } from '@testing/services';
+import { defaultAppState } from '@testing/data';
+import * as models from '@models';
 
-  const activatedRoute: any = {
-    // mock properties here 
-  }
+import { UrlStateService } from './url-state.service';
+import { MapService } from './map/map.service';
+import { WktService } from './wkt.service';
+import { RangeService } from './range.service';
 
-  const mapService: any = {
-    // mock properties here 
-  }
 
-  const wktService: any = {
-    // mock properties here 
-  }
+class TestMapService {
+  public zoom$ = new BehaviorSubject<number>(5);
+  public center$ = new BehaviorSubject<models.LonLat>({lon: 10, lat: 10});
+  public epsg$ = new BehaviorSubject<string>('EPSG');
+  public searchPolygon$ = new BehaviorSubject<string>('wkt here...');
+  public mousePosition$ = new BehaviorSubject<models.LonLat>({
+    lon: 0, lat: 0
+  });
 
-  const rangeService: any = {
-    // mock properties here 
-  }
+  public setZoom(zoom) {}
 
-  const router: any = {
-    // mock properties here 
-  }
+  public setCenter() {}
+
+  public epsg() { return 'EPSG'; }
+
+  public setDrawFeature(feature) {}
+}
+
+class TestRouter {
+ public navigate(_, __) {}
+}
+
+class TestActivatedRoute {
+  public queryParams = new BehaviorSubject<string>('');
+}
+
+fdescribe('UrlStateService', () => {
+  let service: UrlStateService;
+  let store: TestStore<AppState>;
+  let dispatchSpy;
 
   beforeEach(() => {
-    service = new UrlStateService(store$,activatedRoute,mapService,wktService,rangeService,router);
+    TestBed.configureTestingModule({
+      providers: [
+        UrlStateService,
+        WktService,
+        RangeService,
+        { provide: MapService, useClass: TestMapService },
+        { provide: Store, useClass: TestStore },
+        { provide: Router, useClass: TestRouter },
+        { provide: ActivatedRoute, useClass: TestActivatedRoute },
+      ]
+    });
+
+    service = TestBed.get(UrlStateService);
   });
+
+  beforeEach(inject([Store], (testStore: TestStore<AppState>) => {
+    store = testStore;
+    dispatchSpy = spyOn(store, 'dispatch');
+    store.setState(defaultAppState);
+  }));
 
   it('should run #load()', async () => {
     // load();
   });
-
-  it('should run #loadStateFrom()', async () => {
-    // loadStateFrom(params);
-  });
-
-  it('should run #uiParameters()', async () => {
-    // const result = uiParameters();
-  });
-
-  it('should run #filtersParameters()', async () => {
-    // const result = filtersParameters();
-  });
-
-  it('should run #objToString()', async () => {
-    // const result = objToString(obj, key);
-  });
-
-  it('should run #mapParameters()', async () => {
-    // const result = mapParameters();
-  });
-
-  it('should run #parseValuesByPlatform()', async () => {
-    // const result = parseValuesByPlatform(str);
-  });
-
 });

@@ -3,11 +3,11 @@ import { Injectable, CUSTOM_ELEMENTS_SCHEMA, Component, Directive  } from '@angu
 
 import { isPlatformBrowser } from '@angular/common';
 import { By } from '@angular/platform-browser';
-import { TruncateModule } from '@yellowspot/ng-truncate';
 
+import { TruncateModule } from '@yellowspot/ng-truncate';
 import { PipesModule } from '@pipes';
-import { GranuleDetailComponent } from './granule-detail.component';
 import { Sentinel1Product } from '@models';
+import { GranuleDetailComponent } from './granule-detail.component';
 
 import { testProduct } from '@testing/data';
 

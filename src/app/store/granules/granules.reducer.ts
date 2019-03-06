@@ -18,7 +18,7 @@ export interface GranulesState {
   searchList: string[];
 }
 
-const initState: GranulesState = {
+export const initState: GranulesState = {
   ids: [],
   granules: {},
   products: {},

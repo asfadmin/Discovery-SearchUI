@@ -306,7 +306,7 @@ export class UrlStateService {
     this.store$.dispatch(action);
   }
 
-  public loadSearchPolygon = (polygon: string): void => {
+  private loadSearchPolygon = (polygon: string): void => {
     const features = this.wktService.wktToFeature(
       polygon,
       this.mapService.epsg()

@@ -10,7 +10,7 @@ export interface UIState {
   selectedFilter: FilterType | undefined;
 }
 
-const initState: UIState = {
+export const initState: UIState = {
   isSidebarOpen: true,
   selectedFilter: FilterType.PLATFORM
 };
