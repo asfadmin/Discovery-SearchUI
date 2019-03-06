@@ -22,13 +22,13 @@
 
         <mat-list>
          <mat-list-item>
-            <button (click)="onSetSearchType(searchType.DATASET)" class="block-btn" mat-raised-button>Dataset</button>
+            <button (click)="onSetSearchType(searchTypes.DATASET)" class="block-btn" mat-raised-button>Dataset</button>
          </mat-list-item>
          <mat-list-item>
-            <button (click)="onSetSearchType(searchType.LIST)" class="block-btn" mat-raised-button>List</button>
+            <button (click)="onSetSearchType(searchTypes.LIST)" class="block-btn" mat-raised-button>List</button>
          </mat-list-item>
          <mat-list-item>
-            <button (click)="onSetSearchType(searchType.MISSION)" class="block-btn" mat-raised-button>Mission</button>
+            <button (click)="onSetSearchType(searchTypes.MISSION)" class="block-btn" mat-raised-button>Mission</button>
          </mat-list-item>
         </mat-list>
 
@@ -64,18 +64,18 @@
 
         <ng-container *ngIf="selectedSearchType !== null">
           <div class="horizontal-btn-group">
-            <button (click)="onSetSearchType(searchType.DATASET)"
-              [ngClass]="{'active-btn': selectedSearchType === searchType.DATASET}"
+            <button (click)="onSetSearchType(searchTypes.DATASET)"
+              [ngClass]="{'active-btn': selectedSearchType === searchTypes.DATASET}"
               class="horizontal-btn" mat-raised-button>
                 Dataset
             </button>
-            <button (click)="onSetSearchType(searchType.LIST)"
-              [ngClass]="{'active-btn': selectedSearchType === searchType.LIST}"
+            <button (click)="onSetSearchType(searchTypes.LIST)"
+              [ngClass]="{'active-btn': selectedSearchType === searchTypes.LIST}"
               class="horizontal-btn" mat-raised-button>
                 List
             </button>
-            <button (click)="onSetSearchType(searchType.MISSION)"
-              [ngClass]="{'active-btn': selectedSearchType === searchType.MISSION}"
+            <button (click)="onSetSearchType(searchTypes.MISSION)"
+              [ngClass]="{'active-btn': selectedSearchType === searchTypes.MISSION}"
               class="horizontal-btn" mat-raised-button>
                 Mission
             </button>
@@ -95,7 +95,7 @@
     (selectedIndexChange)="onTabChange($event)"
     >
     <mat-tab label="Search">
-      <ng-container *ngIf="selectedSearchType === searchType.DATASET">
+      <ng-container *ngIf="selectedSearchType === searchTypes.DATASET">
         <app-platform-selector
           [platforms]="platforms$ | async"
           [selected]="selectedPlatformNames$ | async"
@@ -140,7 +140,7 @@
           (newMaxResults)="onNewMaxResults($event)">
         </app-max-results-selector>
       </ng-container>
-      <ng-container *ngIf="selectedSearchType === searchType.LIST">
+      <ng-container *ngIf="selectedSearchType === searchTypes.LIST">
         <app-list-search
           (newListSearchMode)="onNewListSearchMode($event)"
           (newListSearch)="onNewGranuleList($event)"
@@ -148,7 +148,7 @@
           [searchList]="searchList$ | async">
         </app-list-search>
       </ng-container>
-      <ng-container *ngIf="selectedSearchType === searchType.MISSION">
+      <ng-container *ngIf="selectedSearchType === searchTypes.MISSION">
         <mat-card class="card-spacing">
           <h2>Mission Component Here...</h2>
         </mat-card>

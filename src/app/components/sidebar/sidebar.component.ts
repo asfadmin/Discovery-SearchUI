@@ -37,14 +37,14 @@ import * as models from '@models';
     ])
   ],
 })
-export class SidebarComponent {
+export class SidebarComponent implements OnInit {
   @Input() isLoading: boolean;
 
   @Output() newSearch = new EventEmitter<void>();
   @Output() clearSearch = new EventEmitter<void>();
   @Output() openSpreadsheet = new EventEmitter<void>();
 
-  public searchType = models.SearchType;
+  public searchTypes = models.SearchType;
 
   public platforms$ = this.store$.select(filtersStore.getPlatformsList);
   public platformProductTypes$ = this.store$.select(filtersStore.getProductTypes);
@@ -95,7 +95,9 @@ export class SidebarComponent {
 
   public filterType = models.FilterType;
   public selectedTab = 0;
-  public selectedSearchType: null | models.SearchType = null;
+
+  public searchType$ = this.store$.select(uiStore.getSearchType);
+  public selectedSearchType;
 
   constructor(
     private dateExtremaService: DateExtremaService,
@@ -103,14 +105,18 @@ export class SidebarComponent {
     private store$: Store<AppState>,
   ) {}
 
+  ngOnInit(): void {
+    this.searchType$.subscribe(
+      searchType => this.selectedSearchType = searchType
+    );
+  }
+
   public onTabChange(tabIndex: number): void {
     this.selectedTab = tabIndex;
   }
 
   public onSetSearchType(searchType: models.SearchType): void {
-
-    this.selectedSearchType =
-      searchType === this.selectedSearchType ?  null : searchType;
+    this.store$.dispatch(new uiStore.SetSearchType(searchType));
   }
 
   public onAppReset() {
