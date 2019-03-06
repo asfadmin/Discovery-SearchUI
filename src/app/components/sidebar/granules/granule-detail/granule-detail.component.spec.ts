@@ -7,7 +7,9 @@ import { TruncateModule } from '@yellowspot/ng-truncate';
 
 import { PipesModule } from '@pipes';
 import { GranuleDetailComponent } from './granule-detail.component';
-import { testProduct, Sentinel1Product } from '@models';
+import { Sentinel1Product } from '@models';
+
+import { testProduct } from '@testing/data';
 
 
 describe('GranuleDetailComponent', () => {
