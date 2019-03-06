@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, ViewEncapsulation } from '@angular/core';
 import { Router } from '@angular/router';
 
 import {
@@ -28,7 +28,7 @@ import * as models from '@models';
   styleUrls: ['./sidebar.component.scss'],
   animations: [
     trigger('changeMenuState', [
-      state('shown', style({ transform: 'translateX(100%) translateX(-25px)'
+      state('shown', style({ transform: 'translateX(100%)'
       })),
       state('hidden',   style({
         transform: 'translateX(0%)'
@@ -43,6 +43,8 @@ export class SidebarComponent {
   @Output() newSearch = new EventEmitter<void>();
   @Output() clearSearch = new EventEmitter<void>();
   @Output() openSpreadsheet = new EventEmitter<void>();
+
+  public searchType = models.SearchType;
 
   public platforms$ = this.store$.select(filtersStore.getPlatformsList);
   public platformProductTypes$ = this.store$.select(filtersStore.getProductTypes);
@@ -65,7 +67,14 @@ export class SidebarComponent {
   public isSidebarOpen$ = this.store$.select(uiStore.getIsSidebarOpen);
   public selectedFilter$ = this.store$.select(uiStore.getSelectedFilter);
 
-  public granules$ = this.store$.select(granulesStore.getGranules);
+  public granules$ = this.store$.select(granulesStore.getGranules).pipe(
+    tap(granules => {
+      if (granules.length > 0) {
+        this.selectedTab = 1;
+      }
+    })
+  );
+
   public selectedGranule$ = this.store$.select(granulesStore.getSelectedGranule);
   public selectedProducts$ = this.store$.select(granulesStore.getSelectedGranuleProducts);
   public searchList$ = this.store$.select(granulesStore.getSearchList).pipe(
@@ -85,12 +94,24 @@ export class SidebarComponent {
   );
 
   public filterType = models.FilterType;
+  public selectedTab = 0;
+  public selectedSearchType: null | models.SearchType = null;
 
   constructor(
     private dateExtremaService: DateExtremaService,
     private router: Router,
     private store$: Store<AppState>,
   ) {}
+
+  public onTabChange(tabIndex: number): void {
+    this.selectedTab = tabIndex;
+  }
+
+  public onSetSearchType(searchType: models.SearchType): void {
+
+    this.selectedSearchType =
+      searchType === this.selectedSearchType ?  null : searchType;
+  }
 
   public onAppReset() {
     this.router.navigate(['/'], { queryParams: {} }) ;
@@ -169,28 +190,12 @@ export class SidebarComponent {
     this.store$.dispatch(new filtersStore.SetListSearchType(mode));
   }
 
-  public onClearQueue(): void {
-    this.store$.dispatch(new queueStore.ClearQueue());
-  }
-
-  public onRemoveItem(product: models.Sentinel1Product): void {
-    this.store$.dispatch(new queueStore.RemoveItem(product));
-  }
-
   public onNewQueueItem(product: models.Sentinel1Product): void {
     this.store$.dispatch(new queueStore.AddItem(product));
   }
 
   public onNewQueueItems(products: models.Sentinel1Product[]): void {
     this.store$.dispatch(new queueStore.AddItems(products));
-  }
-
-  public onMakeDownloadScript(): void {
-    this.store$.dispatch(new queueStore.MakeDownloadScript());
-  }
-
-  public onMetadataDownload(format: models.AsfApiOutputFormat): void {
-    this.store$.dispatch(new queueStore.DownloadMetadata(format));
   }
 
   public onQueueGranuleProducts(name: string): void {

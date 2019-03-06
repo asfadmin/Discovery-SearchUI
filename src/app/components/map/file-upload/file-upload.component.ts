@@ -16,7 +16,7 @@ import { FileUploadDialogComponent } from './file-upload-dialog';
 export class FileUploadComponent implements OnInit {
   @Input() interaction$: Observable<MapInteractionModeType>;
 
-  @Output() dialogClose = new EventEmitter<void>();
+  @Output() dialogClose = new EventEmitter<boolean>();
   @Output() newSearchPolygon = new EventEmitter<string>();
 
   constructor(public dialog: MatDialog) {}
@@ -29,15 +29,21 @@ export class FileUploadComponent implements OnInit {
 
   openDialog(): void {
     const dialogRef = this.dialog.open(FileUploadDialogComponent , {
-      width: '550px', height: '500px', minHeight: '50%'
+      width: '550px', height: '700px', minHeight: '50%'
     });
 
     dialogRef.afterClosed().subscribe(
       wkt => {
+        let wasSuccessful: boolean;
+
         if (wkt) {
           this.newSearchPolygon.emit(wkt);
+          wasSuccessful = true;
+        } else {
+          wasSuccessful = false;
         }
-        this.dialogClose.emit();
+
+        this.dialogClose.emit(wasSuccessful);
       }
     );
   }

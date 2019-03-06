@@ -40,29 +40,27 @@ export function granulesReducer(state = initState, action: GranulesActions): Gra
           return total;
         }, {});
 
-      const productGroups = action.payload.reduce((total, product) => {
+      const productGroups: {[id: string]: string[]} = action.payload.reduce((total, product) => {
         const granule = total[product.groupId] || [];
 
         total[product.groupId] = [...granule, product.file];
         return total;
       }, {});
 
-      const granules = {};
+      const granules: {[id: string]: string[]} = {};
       for (const [groupId, productNames] of Object.entries(productGroups)) {
 
         (<string[]>productNames).sort(
           (a, b) => products[a].bytes - products[b].bytes
         ).reverse();
 
-        granules[groupId] = productNames;
+        granules[groupId] = Array.from(new Set(productNames)) ;
       }
 
       return {
         ...state,
 
-        ids: Object.keys(products).sort(
-          (a, b) => granules[a] - granules[b]
-        ),
+        ids: Object.keys(products),
         products,
         granules
       };
@@ -114,7 +112,13 @@ export const getGranules = createSelector(
   (state: GranulesState) => {
     const data = Object.values(state.granules)
       .map(group => {
-        return state.products[group[0]];
+
+        const browse = group
+          .map(name => state.products[name])
+          .filter(product => !product.browse.includes('error.png'))
+          .pop();
+
+        return browse ? browse : state.products[group[0]];
       });
 
     return data;
@@ -146,10 +150,11 @@ export const getGranuleProducts = createSelector(
     const granuleProducts = {};
 
     Object.entries(state.granules).forEach(
-      ([granule, products]) => {
-
-        granuleProducts[granule] = products
+      ([granuleId, granule]) => {
+        const products = granule
           .map(name => state.products[name]);
+
+        granuleProducts[granuleId] = products;
       }
     );
 

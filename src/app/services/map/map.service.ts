@@ -87,7 +87,6 @@ export class MapService {
     this.drawService.clear();
   }
 
-
   public setCenter(centerPos: models.LonLat): void {
     const { lon, lat } = centerPos;
 
@@ -122,6 +121,20 @@ export class MapService {
   public setFocusedFeature(feature): void {
     this.focusSource.clear();
     this.focusSource.addFeature(feature);
+  }
+
+  public zoomTo(feature): void {
+    const extent = feature
+      .getGeometry()
+      .getExtent();
+
+    this.map
+      .getView()
+      .fit(extent, {
+        size: this.map.getSize(),
+        padding: [100, 100, 100, 100],
+        duration: 1000,
+      });
   }
 
   private setMap(mapView: views.MapView): void {

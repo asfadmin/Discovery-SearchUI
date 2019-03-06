@@ -9,12 +9,14 @@ export interface MapState {
   view: models.MapViewType;
   drawMode: models.MapDrawModeType;
   interactionMode: models.MapInteractionModeType;
+  isMapInitialized: boolean;
 }
 
 const initState: MapState = {
   view: models.MapViewType.EQUITORIAL,
   drawMode: models.MapDrawModeType.POLYGON,
-  interactionMode: models.MapInteractionModeType.DRAW
+  interactionMode: models.MapInteractionModeType.DRAW,
+  isMapInitialized: false,
 };
 
 
@@ -41,6 +43,13 @@ export function mapReducer(state = initState, action: MapActions): MapState {
       };
     }
 
+    case MapActionType.MAP_INITIALIZED: {
+      return {
+        ...state,
+        isMapInitialized: true,
+      };
+    }
+
     default: {
       return state;
     }
@@ -63,4 +72,9 @@ export const getMapDrawMode = createSelector(
 export const getMapInteractionMode = createSelector(
   getMapState,
   (state: MapState) => state.interactionMode
+);
+
+export const getIsMapInitialization = createSelector(
+  getMapState,
+  (state: MapState) => state.isMapInitialized
 );

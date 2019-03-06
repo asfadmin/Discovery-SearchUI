@@ -2,6 +2,9 @@ import {
   Component, OnInit, Input, Output,
   EventEmitter
 } from '@angular/core';
+import { MatDialog } from '@angular/material';
+
+import { Store } from '@ngrx/store';
 
 import { Observable, combineLatest } from 'rxjs';
 import { map, filter, switchMap, tap, withLatestFrom, distinctUntilChanged } from 'rxjs/operators';
@@ -9,8 +12,14 @@ import { map, filter, switchMap, tap, withLatestFrom, distinctUntilChanged } fro
 import { Vector as VectorLayer} from 'ol/layer';
 import { Vector as VectorSource } from 'ol/source';
 
+import { AppState } from '@store';
+import * as granulesStore from '@store/granules';
+import * as mapStore from '@store/map';
+import * as queueStore from '@store/queue';
+
 import * as models from '@models';
 import { MapService, WktService } from '@services';
+import { QueueComponent } from './queue';
 
 
 @Component({
@@ -19,23 +28,29 @@ import { MapService, WktService } from '@services';
   styleUrls: ['./map.component.scss']
 })
 export class MapComponent implements OnInit {
-  @Input() granules$: Observable<models.Sentinel1Product[]>;
-  @Input() view$: Observable<models.MapViewType>;
-  @Input() drawMode$: Observable<models.MapDrawModeType>;
-  @Input() interactionMode$: Observable<models.MapInteractionModeType>;
-  @Input() focusedGranule$: Observable<models.Sentinel1Product>;
-
-  @Output() newMapView = new EventEmitter<models.MapViewType>();
-  @Output() newMapDrawMode = new EventEmitter<models.MapDrawModeType>();
-  @Output() newMapInteractionMode = new EventEmitter<models.MapInteractionModeType>();
   @Output() loadUrlState = new EventEmitter<void>();
 
-  private isInitMap = true;
+  public showSettings = false;
+
+  public view$ = this.store$.select(mapStore.getMapView);
+  public drawMode$ = this.store$.select(mapStore.getMapDrawMode);
+  public interactionMode$ = this.store$.select(mapStore.getMapInteractionMode);
+  public isMapInitialized$ = this.store$.select(mapStore.getIsMapInitialization);
+  public isDrawMenuDisabled$ = this.interactionMode$.pipe(
+    map(mode => mode !== models.MapInteractionModeType.DRAW)
+  );
+
+  public granules$ = this.store$.select(granulesStore.getGranules);
+  public focusedGranule$ = this.store$.select(granulesStore.getFocusedGranule);
+  public queuedProducts$ = this.store$.select(queueStore.getQueuedProducts);
+
   public mousePosition$ = this.mapService.mousePosition$;
 
   constructor(
+    private store$: Store<AppState>,
     private mapService: MapService,
     private wktService: WktService,
+    private dialog: MatDialog,
   ) {}
 
   ngOnInit(): void {
@@ -48,35 +63,68 @@ export class MapComponent implements OnInit {
   }
 
   public onNewProjection(view: models.MapViewType): void {
-    this.newMapView.emit(view);
+    this.store$.dispatch(new mapStore.SetMapView(view));
+  }
+
+  public onToggleSettings(): void {
+    this.showSettings = !this.showSettings;
+  }
+
+  public onOpenDownloadQueue(): void {
+    this.dialog.open(QueueComponent, {
+      width: '550px', height: '700px', minHeight: '50%'
+    });
   }
 
   public onNewDrawMode(mode: models.MapDrawModeType): void {
-    this.newMapDrawMode.emit(mode);
+    this.store$.dispatch(new mapStore.SetMapDrawMode(mode));
   }
 
   public onNewInteractionMode(mode: models.MapInteractionModeType): void {
-    this.newMapInteractionMode.emit(mode);
+    this.store$.dispatch(new mapStore.SetMapInteractionMode(mode));
   }
 
   public onFileHovered(e): void {
-    this.newMapInteractionMode.emit(models.MapInteractionModeType.UPLOAD);
+    this.onNewInteractionMode(models.MapInteractionModeType.UPLOAD);
     e.preventDefault();
   }
 
+  public onNewSearchPolygon(polygon: string): void {
+    const features = this.loadSearchPolygon(polygon);
+
+    this.mapService.zoomTo(features);
+  }
+
+  public onFileUploadDialogClosed(successful: boolean): void {
+    if (successful) {
+      this.onNewInteractionMode(models.MapInteractionModeType.EDIT);
+    } else {
+      this.onNewInteractionMode(models.MapInteractionModeType.DRAW);
+    }
+  }
+
   private updateMapOnViewChange(): void {
-    this.view$.pipe(
-      map(view => this.setMapWith(view)),
+    const viewBeforInitialization = this.view$.pipe(
+        withLatestFrom(this.isMapInitialized$),
+        filter(([view, isInit]) => !isInit),
+        map(([view, isInit]) => view)
+    );
 
-      // Load state from url after map is set
-      tap(() => {
-        if (this.isInitMap) {
-          this.loadUrlState.emit();
-        }
+    viewBeforInitialization.subscribe(
+      view => {
+        this.setMapWith(view);
+        this.loadUrlState.emit();
+        this.store$.dispatch(new mapStore.MapInitialzed());
+      }
+    );
 
-        this.isInitMap = false;
-      }),
+    const granulesLayerAfterInitialization = this.isMapInitialized$.pipe(
+      filter(isMapInitiliazed => isMapInitiliazed),
+      switchMap(_ => this.view$),
+    );
 
+    granulesLayerAfterInitialization.pipe(
+      tap(view => this.setMapWith(view)),
       switchMap(_ =>
         this.granulePolygonsLayer(this.mapService.epsg())
       )
@@ -84,8 +132,12 @@ export class MapComponent implements OnInit {
       layer => this.mapService.setLayer(layer)
     );
 
-    this.focusedGranule$.pipe(
-      filter(_ => !this.isInitMap),
+    const focuseGranuleAfterInitialization = this.isMapInitialized$.pipe(
+      filter(isMapInitiliazed => isMapInitiliazed),
+      switchMap(_ => this.focusedGranule$),
+    );
+
+    focuseGranuleAfterInitialization.pipe(
       tap(granule => !!granule || this.mapService.clearFocusedGranule()),
       filter(g => g !== null),
       map(
@@ -107,7 +159,6 @@ export class MapComponent implements OnInit {
     ).subscribe(
       polygon => this.loadSearchPolygon(polygon)
     );
-
   }
 
   private updateDrawMode(): void {
@@ -116,22 +167,17 @@ export class MapComponent implements OnInit {
     );
   }
 
-  private loadSearchPolygon = (polygon: string): void => {
+  private loadSearchPolygon = (polygon: string) => {
     const features = this.wktService.wktToFeature(
       polygon,
       this.mapService.epsg()
     );
 
     this.mapService.setDrawFeature(features);
+
+    return features;
   }
 
-  public onNewSearchPolygon(polygon: string): void {
-    this.loadSearchPolygon(polygon);
-  }
-
-  public onFileUploadDialogClosed(): void {
-    this.newMapInteractionMode.emit(models.MapInteractionModeType.EDIT);
-  }
 
   private granulePolygonsLayer(projection: string): Observable<VectorSource> {
     return this.granules$.pipe(

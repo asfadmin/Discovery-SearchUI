@@ -1,6 +1,6 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 
-import { MapDrawModeType } from '@models';
+import { MapDrawModeType, MapInteractionModeType } from '@models';
 
 @Component({
   selector: 'app-draw-selector',
@@ -9,20 +9,27 @@ import { MapDrawModeType } from '@models';
 })
 export class DrawSelectorComponent {
   @Input() drawMode: MapDrawModeType;
+  @Input() isDisabled: boolean;
 
   @Output() newDrawMode = new EventEmitter<MapDrawModeType>();
 
   public types = MapDrawModeType;
 
   public onPolygonSelected =
-    () => this.newDrawMode.emit(MapDrawModeType.POLYGON)
+    () => this.selectMode(MapDrawModeType.POLYGON)
 
   public onLineStringSelected =
-    () => this.newDrawMode.emit(MapDrawModeType.LINESTRING)
+    () => this.selectMode(MapDrawModeType.LINESTRING)
 
   public onPointSelected =
-    () => this.newDrawMode.emit(MapDrawModeType.POINT)
+    () => this.selectMode(MapDrawModeType.POINT)
 
   public onBoxSelected =
-    () => this.newDrawMode.emit(MapDrawModeType.BOX)
+    () => this.selectMode(MapDrawModeType.BOX)
+
+  private selectMode(mode): void {
+    if (!this.isDisabled) {
+      this.newDrawMode.emit(mode);
+    }
+  }
 }

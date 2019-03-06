@@ -5,7 +5,7 @@ import { RouterModule } from '@angular/router';
 
 import { TruncateModule } from '@yellowspot/ng-truncate';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import { MatTabsModule, MatSelectModule } from '@angular/material';
+import { MatTabsModule, MatSelectModule, MatExpansionModule, MatButtonToggleModule } from '@angular/material';
 
 import { MatSharedModule } from '@shared';
 import { PipesModule } from '@pipes';
@@ -22,7 +22,6 @@ import { DateSelectorModule } from './search/date-selector';
 import { PathSelectorModule } from './search/path-selector';
 import { OtherSelectorModule } from './search/other-selector';
 import { ListSearchModule } from './list-search';
-import { QueueModule } from './queue';
 
 import { GranulesListModule } from './granules/granules-list';
 import { GranuleDetailComponent } from './granules/granule-detail/granule-detail.component';
@@ -39,6 +38,8 @@ import { MaxResultsSelectorComponent } from './search/max-results-selector/max-r
     TruncateModule,
     FontAwesomeModule,
     MatTabsModule,
+    MatExpansionModule,
+    MatButtonToggleModule,
 
     MatSharedModule,
     PipesModule,
@@ -53,7 +54,6 @@ import { MaxResultsSelectorComponent } from './search/max-results-selector/max-r
     DateSelectorModule,
     PathSelectorModule,
     OtherSelectorModule,
-    QueueModule,
   ],
   declarations: [
     SidebarComponent,

@@ -8,12 +8,17 @@
   class="container"
   fxLayout="column"
   fxLayoutAlign="space-evenly stretch">
-  <h1 mat-dialog-title>Upload Files</h1>
+  <h1 mat-dialog-title>Upload Geospatial Files</h1>
 
   <div>
+    Accepted formats are <b>shapefiles</b> (.shp), <b>geojson</b> (.geojson), <b>kml</b> (.kml)
+    or a <b>zip archive</b> (.zip) of a shapefile.
+  </div>
+
+  <div style="margin: 10px 0">
     <button mat-raised-button
       (click)="addFiles()"
-      [disabled]="uploading || uploadSuccessful"
+      [disabled]="uploading"
       color="primary"
       class="add-files-btn" >
         Add Files
@@ -21,25 +26,46 @@
   </div>
 
   <mat-dialog-content fxFlex>
-    <mat-list style="margin-top: 10px">
-      <mat-list-item *ngFor="let file of files">
+    <div fxFlex fxLayout="column">
+      <mat-list style="margin-top: 10px">
+        <mat-list-item *ngFor="let file of files">
           <h4 mat-line>{{file.name}}</h4>
 
-          <mat-icon
+          <button
+            mat-icon-button
             *ngIf="!request"
-            (click)="onRemoveFile(file)"
-            style="cursor: pointer">
-              close
-          </mat-icon>
+            (click)="onRemoveFile(file)">
+              <mat-icon>close</mat-icon>
+          </button>
 
-        <mat-progress-bar
-          *ngIf="request"
-          mode="determinate"
-          value="100">
-        </mat-progress-bar>
+          <mat-progress-bar
+            *ngIf="request"
+            mode="determinate"
+            value="100">
+          </mat-progress-bar>
 
-      </mat-list-item>
-    </mat-list>
+        </mat-list-item>
+      </mat-list>
+
+      <div class="drop-text-box" [ngClass]="{ 'is-file-error': isFileError }" fxFlex fxLayoutAlign="center" gdAlignColumns="center">
+        <div *ngIf="canBeClosed">
+           Drag geospatial files here.
+        </div>
+
+        <div *ngIf="!canBeClosed">
+          <div style="margin-bottom: 30px">
+           Loading area of interest from provided files...
+          </div>
+          <div>
+            <mat-progress-spinner
+              style="margin: 0 auto;"
+              color="primary"
+              mode="indeterminate">
+            </mat-progress-spinner>
+          </div>
+        </div>
+      </div>
+    </div>
   </mat-dialog-content>
 
   <mat-dialog-actions class="actions">
@@ -52,7 +78,7 @@
     <button mat-raised-button color="primary"
       (click)="onUpload()"
       [disabled]="!canBeClosed">
-        {{primaryButtonText}}
+      Upload
     </button>
 
   </mat-dialog-actions>

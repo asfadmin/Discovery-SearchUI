@@ -7,3 +7,4 @@ export * from './url-parameter.model';
 export * from './asf-api.model';
 export * from './date-extrema.models';
 export * from './range.model';
+export * from './ui.model';

@@ -2,29 +2,55 @@
   (dragover)="onFileHovered($event)"
   ></div>
 
-<app-file-upload
-  (dialogClose)="onFileUploadDialogClosed()"
-  (newSearchPolygon)="onNewSearchPolygon($event)"
-  [interaction$]="interactionMode$">
-</app-file-upload>
+<ng-container *ngIf="queuedProducts$ | async as products">
+  <button
+    style="background: white" class="download-queue-btn"
+    (click)="onOpenDownloadQueue()"
+    matTooltip="Download Queue"
+    [disabled]="products.length <= 0"  color="basic"
+    mat-fab>
+      <mat-icon
+        [matBadge]="products.length" matBadgePosition="below" matBadgeOverlap="false">
+          cloud_download
+      </mat-icon>
+  </button>
+</ng-container>
+<button
+  (click)="onToggleSettings()"
+  matTooltip="Settings"
+  class="settings-btn" color="basic"
+  mat-fab>
+    <mat-icon>settings</mat-icon>
+</button>
 
-<app-view-selector
-  (newProjection)="onNewProjection($event)"
-  [view]="view$ | async">
-</app-view-selector>
+<ng-container *ngIf="showSettings">
+  <app-file-upload
+    (dialogClose)="onFileUploadDialogClosed($event)"
+    (newSearchPolygon)="onNewSearchPolygon($event)"
+    [interaction$]="interactionMode$">
+  </app-file-upload>
 
-<app-draw-selector
-  (newDrawMode)="onNewDrawMode($event)"
-  [drawMode]="drawMode$ | async">
-</app-draw-selector>
+  <app-view-selector
+    (newProjection)="onNewProjection($event)"
+    [view]="view$ | async">
+  </app-view-selector>
 
-<app-interaction-selector
-  (newInteraction)="onNewInteractionMode($event)"
-  [interaction]="interactionMode$ | async">
-></app-interaction-selector>
+  <app-draw-selector
+    (newDrawMode)="onNewDrawMode($event)"
+    [isDisabled]="isDrawMenuDisabled$ | async"
+    [drawMode]="drawMode$ | async">
+  </app-draw-selector>
+
+  <app-interaction-selector
+    (newInteraction)="onNewInteractionMode($event)"
+    [interaction]="interactionMode$ | async">
+  ></app-interaction-selector>
+</ng-container>
 
 <div class="meatball__position">
-  <img class="meatball__sizing" src="assets/spicy-meatball.gif">
+  <a href="https://earthdata.nasa.gov/" target="_blank">
+    <img width="88" height="75" src="assets/meatball.png">
+  </a>
 </div>
 
 <app-attributions

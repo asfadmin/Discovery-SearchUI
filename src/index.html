@@ -14,12 +14,6 @@ body {
   margin: 0;
 }
 </style>
-<script type="text/javascript" src="https://cdn.earthdata.nasa.gov/tophat2/tophat2.js"
-        id="earthdata-tophat-script"
-        data-show-fbm="false"
-        data-show-status="false"
->
-</script>
 <!-- END NASA TopHat Code -->
   <script>
     window.addEventListener('dragover',function(e){
@@ -36,7 +30,25 @@ body {
     },false);
   </script>
   <app-root></app-root>
-</body>
+
 <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 <link rel="icon" type="image/x-icon" href="favicon.ico">
+
+<script src="https://fbm.earthdata.nasa.gov/for/ASF/feedback.js" type="text/javascript"></script>
+<script type="text/javascript">
+feedback.init({
+  showIcon : false,
+  title : "How can we help you?",
+  subject : "",
+  details : ""
+});
+</script>
+<script type="text/javascript" src="https://cdn.earthdata.nasa.gov/tophat2/tophat2.js"
+  id="earthdata-tophat-script"
+  data-show-fbm="false"
+  data-show-status="false"
+>
+</script>
+</body>
+
 </html>

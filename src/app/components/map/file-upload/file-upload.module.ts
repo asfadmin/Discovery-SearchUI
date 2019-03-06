@@ -4,7 +4,7 @@ import { FormsModule } from '@angular/forms';
 
 import {
   MatInputModule, MatFormFieldModule, MatDialogModule,
-  MatListModule, MatProgressBarModule,
+  MatListModule, MatProgressBarModule, MatProgressSpinnerModule
 } from '@angular/material';
 import { FlexLayoutModule } from '@angular/flex-layout';
 
@@ -27,7 +27,7 @@ import { FileUploadDialogComponent } from './file-upload-dialog';
     MatInputModule,
     MatListModule,
     MatProgressBarModule,
-
+    MatProgressSpinnerModule,
 
     MatSharedModule,
   ],

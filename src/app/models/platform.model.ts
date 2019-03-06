@@ -1,6 +1,7 @@
 export interface Platform {
   name: string;
   date: DateRange;
+  infoUrl: string;
   productTypes: ProductType[];
   beamModes: string[];
   polarizations: string[];
@@ -31,6 +32,7 @@ export interface PlatformPolarizations {
 export const platforms: Platform[] = [{
   name: 'Sentinel-1A',
   date: { start: new Date(2014, 3, 25) },
+  infoUrl: 'https://www.asf.alaska.edu/sentinel/',
   productTypes: [{
     apiValue: 'METADATA_SLC',
     displayName: 'XML Metadata (SLC)'
@@ -99,6 +101,7 @@ export const platforms: Platform[] = [{
 }, {
   name: 'Sentinel-1B',
   date: { start: new Date(2016, 3, 3) },
+  infoUrl: 'https://www.asf.alaska.edu/sentinel/',
   productTypes: [{
     apiValue: 'METADATA_GRD_HS',
     displayName: 'XML Metadata (GRD-HS)'
@@ -160,6 +163,7 @@ export const platforms: Platform[] = [{
 }, {
   name: 'SMAP',
   date: { start: new Date(2015, 0, 15) },
+  infoUrl: 'https://www.asf.alaska.edu/smap/',
   productTypes: [{
     apiValue: 'L1A_Radar_RO_QA',
     displayName: 'L1A Radar Receive Only Data Quality'
@@ -199,6 +203,7 @@ export const platforms: Platform[] = [{
 }, {
   name: 'UAVSAR',
   date: { start: new Date(2008, 0, 1) },
+  infoUrl: 'https://www.asf.alaska.edu/sar-data/uavsar/',
   productTypes: [{
     apiValue: 'KMZ',
     displayName: 'GoogleEarth KMZ'
@@ -262,6 +267,7 @@ export const platforms: Platform[] = [{
     start: new Date(2006, 0, 1),
     end: new Date(2011, 0, 1)
   },
+  infoUrl: 'https://www.asf.alaska.edu/sar-data/palsar/',
   productTypes: [{
     apiValue: 'KMZ',
     displayName: 'GoogleEarth KMZ'
@@ -311,6 +317,7 @@ export const platforms: Platform[] = [{
     start: new Date(1995, 0, 1),
     end: new Date(2008, 0, 1)
   },
+  infoUrl: 'https://www.asf.alaska.edu/sar-data/radarsat-1/',
   productTypes: [{
     apiValue: 'L0',
     displayName: 'Level Zero'
@@ -338,6 +345,7 @@ export const platforms: Platform[] = [{
     start: new Date(1995, 0, 1),
     end: new Date(2011, 0, 1)
   },
+  infoUrl: 'https://www.asf.alaska.edu/sar-data/ers-2/',
   productTypes: [{
     apiValue: 'THUMBNAIL',
     displayName: 'Thumbnail Image'
@@ -361,6 +369,7 @@ export const platforms: Platform[] = [{
     start: new Date(1992, 0, 1),
     end: new Date(1998, 0, 1)
   },
+  infoUrl: 'https://www.asf.alaska.edu/sar-data/jers-1/',
   productTypes: [{
     apiValue: 'BROWSE',
     displayName: 'Browse Image'
@@ -384,6 +393,7 @@ export const platforms: Platform[] = [{
     start: new Date(1991, 0, 1),
     end: new Date(1997, 0, 1)
   },
+  infoUrl: 'https://www.asf.alaska.edu/sar-data/ers-1/',
   productTypes: [{
     apiValue: 'BROWSE',
     displayName: 'Browse Image'
@@ -407,6 +417,7 @@ export const platforms: Platform[] = [{
     start: new Date(1990, 0, 1),
     end: new Date(2004, 0, 1)
   },
+  infoUrl: 'https://www.asf.alaska.edu/sar-data/airsar/',
   productTypes: [{
     apiValue: 'CTIF',
     displayName: 'C-Band JPG'
@@ -445,6 +456,7 @@ export const platforms: Platform[] = [{
     start: new Date(1978, 0, 1),
     end: new Date(1978, 0, 1)
   },
+  infoUrl: 'https://www.asf.alaska.edu/seasat/',
   productTypes: [{
     apiValue: 'THUMBNAIL',
     displayName: 'Thumbnail Image'
