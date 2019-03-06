@@ -7,10 +7,12 @@ import { TruncateModule } from '@yellowspot/ng-truncate';
 
 import { PipesModule } from '@pipes';
 import { GranuleDetailComponent } from './granule-detail.component';
+import { testProduct, Sentinel1Product } from '@models';
 
-fdescribe('GranuleDetailComponent', () => {
+
+describe('GranuleDetailComponent', () => {
   let fixture;
-  let component;
+  let component: GranuleDetailComponent;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -34,17 +36,39 @@ fdescribe('GranuleDetailComponent', () => {
   });
 
   it('should run #onNewQueueProduct()', async () => {
+    let product: Sentinel1Product;
+    component.newQueueItem.subscribe((newProduct) => product = newProduct);
+
+    const result = component.onNewQueueProduct(testProduct);
+
+    expect(product).toEqual(testProduct);
   });
 
   it('should run #onQueueAllProducts()', async () => {
-    // component.onQueueAllProducts();
+    let products: Sentinel1Product[];
+    component.newQueueItems.subscribe((newProducts) => products = newProducts);
+
+    component.products = [ testProduct ];
+    const result = component.onQueueAllProducts();
+
+    expect(products).toEqual(component.products);
   });
 
   it('should run #onSetFocusedGranule()', async () => {
-    // component.onSetFocusedGranule(granule);
+    let product: Sentinel1Product;
+    component.newFocusedGranule.subscribe((newProduct) => product = newProduct);
+
+    const result = component.onSetFocusedGranule(testProduct);
+
+    expect(product).toEqual(testProduct);
   });
 
   it('should run #onClearFocusedGranule()', async () => {
-    // component.onClearFocusedGranule();
+    let didEmit = false;
+    component.clearFocusedGranule.subscribe(_ => didEmit = true);
+
+    const result = component.onClearFocusedGranule();
+
+    expect(didEmit).toBeTruthy();
   });
 });
