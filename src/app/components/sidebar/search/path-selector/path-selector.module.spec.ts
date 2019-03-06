@@ -1,6 +1,6 @@
 import { async } from '@angular/core/testing';
-import {PathSelectorModule} from './path-selector.module';
-import {Directive} from '@angular/core';
+import { PathSelectorModule } from './path-selector.module';
+import { Directive } from '@angular/core';
 
 describe('My Test', () => {
   let service;
@@ -8,5 +8,4 @@ describe('My Test', () => {
   beforeEach(() => {
     // TODO
   });
-
 });

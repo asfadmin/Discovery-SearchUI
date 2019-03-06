@@ -1,21 +1,26 @@
 // tslint:disable
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { Injectable, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+import { MatDatepickerModule, MatNativeDateModule } from '@angular/material'
 import { isPlatformBrowser } from '@angular/common';
 import { By } from '@angular/platform-browser';
-// import { Observable } from 'rxjs/Observable';
-// import 'rxjs/add/observable/of';
-// import 'rxjs/add/observable/throw';
 
 import {Component, Directive} from '@angular/core';
 import {DateSelectorComponent} from './date-selector.component';
 
 describe('DateSelectorComponent', () => {
+  const testDate = new Date(2018, 11, 24, 10, 33, 30, 0);
   let fixture;
   let component;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
+      imports: [
+        FormsModule,
+        MatDatepickerModule,
+        MatNativeDateModule,
+      ],
       declarations: [
         DateSelectorComponent
       ],
@@ -32,11 +37,20 @@ describe('DateSelectorComponent', () => {
   });
 
   it('should run #onStartDateChange()', async () => {
-    // const result = component.onStartDateChange(e);
+    let date: Date;
+    component.newStart.subscribe((newDate) => date = newDate);
+
+    const result = component.onStartDateChange({value: testDate});
+
+    expect(date).toBe(testDate);
   });
 
   it('should run #onEndDateChange()', async () => {
-    // const result = component.onEndDateChange(e);
-  });
+    let date: Date;
+    component.newEnd.subscribe((newDate) => date = newDate);
 
+    const result = component.onEndDateChange({value: testDate});
+
+    expect(date).toBe(testDate);
+  });
 });

@@ -1,19 +1,19 @@
 import { async } from '@angular/core/testing';
-import {MapService} from './map.service';
+import { MapService } from './map.service';
 
 describe('MapService', () => {
   let service;
 
   const wktService: any = {
-    // mock properties here 
-  }
+    // mock properties here
+  };
 
   const drawService: any = {
-    // mock properties here 
-  }
+    // mock properties here
+  };
 
   beforeEach(() => {
-    service = new MapService(wktService,drawService);
+    service = new MapService(wktService, drawService);
   });
 
   it('should run #epsg()', async () => {

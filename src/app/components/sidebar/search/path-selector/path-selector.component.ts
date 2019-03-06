@@ -35,7 +35,7 @@ export class PathSelectorComponent {
     this.newFrameEnd.emit(+frame);
   }
 
-  public onNewOmitGeoRegion(e): void {
+  public onNewOmitPolygon(e): void {
     this.newOmitSearchPolygon.emit(e.checked);
   }
 }

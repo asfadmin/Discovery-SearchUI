@@ -1,21 +1,23 @@
-// tslint:disable
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { Injectable, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { Injectable, CUSTOM_ELEMENTS_SCHEMA, Component, Directive  } from '@angular/core';
+
 import { isPlatformBrowser } from '@angular/common';
 import { By } from '@angular/platform-browser';
-// import { Observable } from 'rxjs/Observable';
-// import 'rxjs/add/observable/of';
-// import 'rxjs/add/observable/throw';
+import { TruncateModule } from '@yellowspot/ng-truncate';
 
-import {Component, Directive} from '@angular/core';
-import {GranuleDetailComponent} from './granule-detail.component';
+import { PipesModule } from '@pipes';
+import { GranuleDetailComponent } from './granule-detail.component';
 
-describe('GranuleDetailComponent', () => {
+fdescribe('GranuleDetailComponent', () => {
   let fixture;
   let component;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
+      imports: [
+        PipesModule,
+        TruncateModule
+      ],
       declarations: [
         GranuleDetailComponent
       ],
@@ -32,7 +34,6 @@ describe('GranuleDetailComponent', () => {
   });
 
   it('should run #onNewQueueProduct()', async () => {
-    // component.onNewQueueProduct(product);
   });
 
   it('should run #onQueueAllProducts()', async () => {
@@ -46,5 +47,4 @@ describe('GranuleDetailComponent', () => {
   it('should run #onClearFocusedGranule()', async () => {
     // component.onClearFocusedGranule();
   });
-
 });
