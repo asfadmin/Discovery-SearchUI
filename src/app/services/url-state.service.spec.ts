@@ -52,6 +52,8 @@ describe('UrlStateService', () => {
     getTestScheduler().flush();
     service.load();
     expect(routerNavigateSpy).toHaveBeenCalled();
+
+    // TODO: Write more indepth tests!
   });
 });
 

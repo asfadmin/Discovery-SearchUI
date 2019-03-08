@@ -1,30 +1,30 @@
-// tslint:disable
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { Injectable, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { Injectable, CUSTOM_ELEMENTS_SCHEMA, Component, Directive  } from '@angular/core';
 import { isPlatformBrowser } from '@angular/common';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { By } from '@angular/platform-browser';
-// import { Observable } from 'rxjs/Observable';
-// import 'rxjs/add/observable/of';
-// import 'rxjs/add/observable/throw';
 
-import {Component, Directive} from '@angular/core';
-import {FileUploadComponent} from './file-upload.component';
-import {MatDialog} from '@angular/material';
+import { cold, getTestScheduler } from 'jasmine-marbles';
+import { MatDialog } from '@angular/material';
+
+import { FileUploadComponent, FileUploadModule } from '.';
 
 describe('FileUploadComponent', () => {
   let fixture;
-  let component;
+  let component: FileUploadComponent;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [
-        FileUploadComponent
+      imports: [
+        BrowserAnimationsModule,
+        FileUploadModule,
       ],
       providers: [
-        MatDialog,
+        { provide: MatDialog, useClass: TestDialog }
       ],
       schemas: [ CUSTOM_ELEMENTS_SCHEMA ]
     }).compileComponents();
+
     fixture = TestBed.createComponent(FileUploadComponent);
     component = fixture.debugElement.componentInstance;
   });
@@ -33,12 +33,41 @@ describe('FileUploadComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should run #ngOnInit()', async () => {
-    // component.ngOnInit();
-  });
-
   it('should run #openDialog()', async () => {
-    // component.openDialog();
+    let wasSuccessful: boolean;
+    let polygon: string;
+    component.dialogClose.subscribe(v => wasSuccessful = v);
+    component.newSearchPolygon.subscribe(v => polygon = v);
+
+    (<any>component.dialog).returnValue = 'good wkt';
+
+    component.openDialog();
+    getTestScheduler().flush();
+
+    expect(wasSuccessful).toEqual(true);
+    expect(polygon).toEqual('good wkt');
+
+    (<any>component.dialog).returnValue = null;
+
+    component.openDialog();
+    getTestScheduler().flush();
+    expect(wasSuccessful).toEqual(false);
   });
 
 });
+
+class TestDialog {
+  public returnValue: string | null;
+
+  public open(_, __) {
+    return {
+      afterClosed: () => {
+        return cold('--v', {v: this.returnValue});
+      }
+    };
+  }
+
+  private getReturn() {
+    return this.returnValue;
+  }
+}
