@@ -1,19 +1,21 @@
-import { async } from '@angular/core/testing';
+import { async, fakeAsync, tick, TestBed, inject } from '@angular/core/testing';
 import { MapService } from './map.service';
+import { DrawService } from './draw.service';
+import { WktService } from '../wkt.service';
+
 
 describe('MapService', () => {
-  let service;
-
-  const wktService: any = {
-    // mock properties here
-  };
-
-  const drawService: any = {
-    // mock properties here
-  };
+  let service: MapService;
 
   beforeEach(() => {
-    service = new MapService(wktService, drawService);
+    TestBed.configureTestingModule({
+      providers: [
+        MapService,
+        WktService,
+        DrawService,
+      ]
+    });
+    service = TestBed.get(MapService);
   });
 
   it('should run #epsg()', async () => {

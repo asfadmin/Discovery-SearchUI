@@ -58,6 +58,7 @@ describe('UrlStateService', () => {
 });
 
 class TestMapService {
+  // TODO: These observables should be dynamic based on test
   public zoom$ = cold('-vv', {v: 5});
   public center$ = cold('-vv', {v: {lon: 10, lat: 10}});
   public epsg$ = new BehaviorSubject<string>('EPSG');
