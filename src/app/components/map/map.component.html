@@ -16,11 +16,16 @@
   </button>
 </ng-container>
 <button
-  (click)="onToggleSettings()"
-  matTooltip="Settings"
+  matTooltip="Share Search"
+  class="share-btn" color="basic"
+  mat-fab>
+    <mat-icon>share</mat-icon>
+</button>
+<button
+  matTooltip="ASF Apps"
   class="settings-btn" color="basic"
   mat-fab>
-    <mat-icon>settings</mat-icon>
+    <mat-icon>apps</mat-icon>
 </button>
 
 <ng-container *ngIf="showSettings">

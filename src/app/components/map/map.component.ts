@@ -30,7 +30,7 @@ import { QueueComponent } from './queue';
 export class MapComponent implements OnInit {
   @Output() loadUrlState = new EventEmitter<void>();
 
-  public showSettings = false;
+  public showSettings = true;
 
   public view$ = this.store$.select(mapStore.getMapView);
   public drawMode$ = this.store$.select(mapStore.getMapDrawMode);
