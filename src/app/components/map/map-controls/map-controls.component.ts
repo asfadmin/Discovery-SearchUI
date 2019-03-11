@@ -31,4 +31,15 @@ export class MapControlsComponent implements OnInit {
   ngOnInit() {
   }
 
+  public onNewProjection(view: models.MapViewType): void {
+    this.store$.dispatch(new mapStore.SetMapView(view));
+  }
+
+  public onNewDrawMode(mode: models.MapDrawModeType): void {
+    this.store$.dispatch(new mapStore.SetMapDrawMode(mode));
+  }
+
+  public onNewInteractionMode(mode: models.MapInteractionModeType): void {
+    this.store$.dispatch(new mapStore.SetMapInteractionMode(mode));
+  }
 }

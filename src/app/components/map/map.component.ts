@@ -62,10 +62,6 @@ export class MapComponent implements OnInit {
       .subscribe(mode => this.mapService.setInteractionMode(mode));
   }
 
-  public onNewProjection(view: models.MapViewType): void {
-    this.store$.dispatch(new mapStore.SetMapView(view));
-  }
-
   public onToggleSettings(): void {
     this.showSettings = !this.showSettings;
   }
@@ -76,17 +72,13 @@ export class MapComponent implements OnInit {
     });
   }
 
-  public onNewDrawMode(mode: models.MapDrawModeType): void {
-    this.store$.dispatch(new mapStore.SetMapDrawMode(mode));
+  public onFileHovered(e): void {
+    this.onNewInteractionMode(models.MapInteractionModeType.UPLOAD);
+    e.preventDefault();
   }
 
   public onNewInteractionMode(mode: models.MapInteractionModeType): void {
     this.store$.dispatch(new mapStore.SetMapInteractionMode(mode));
-  }
-
-  public onFileHovered(e): void {
-    this.onNewInteractionMode(models.MapInteractionModeType.UPLOAD);
-    e.preventDefault();
   }
 
   public onNewSearchPolygon(polygon: string): void {

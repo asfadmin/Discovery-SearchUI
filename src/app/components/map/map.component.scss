@@ -7,8 +7,9 @@
 
 .meatball__position {
   position: fixed;
-  right: 0;
-  bottom: 30px;
+  left: 50%;
+  bottom: 5px;
+  transform: translate(-50%, 0);
   z-index: 999;
   margin: 0;
 }
