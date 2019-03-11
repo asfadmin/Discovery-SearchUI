@@ -12,7 +12,7 @@ export interface MapState {
   isMapInitialized: boolean;
 }
 
-const initState: MapState = {
+export const initState: MapState = {
   view: models.MapViewType.EQUITORIAL,
   drawMode: models.MapDrawModeType.POLYGON,
   interactionMode: models.MapInteractionModeType.DRAW,

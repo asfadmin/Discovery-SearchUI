@@ -44,4 +44,3 @@ export type Sentinel1Polarization =
   'VV'|
   'HH+HV'|
   'VV+VH';
-

@@ -8,7 +8,7 @@ export interface SearchState {
   error: null | string;
 }
 
-const initState: SearchState = {
+export const initState: SearchState = {
   isLoading: false,
   error: null,
 };

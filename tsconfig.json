@@ -21,6 +21,7 @@
       "@store": ["src/app/store"],
       "@shared": ["src/app/shared"],
       "@environments": ["src/environments"],
+      "@testing": ["src/app/testing"],
 
       "@components/*": ["src/app/components/*"],
       "@services/*": ["src/app/services/*"],
@@ -28,7 +29,8 @@
       "@models/*": ["src/app/models/*"],
       "@store/*": ["src/app/store/*"],
       "@shared/*": ["src/app/shared/*"],
-      "@environments/*": ["src/environments/*"]
+      "@environments/*": ["src/environments/*"],
+      "@testing/*": ["src/app/testing/*"]
     },
     "lib": [
       "es2017",

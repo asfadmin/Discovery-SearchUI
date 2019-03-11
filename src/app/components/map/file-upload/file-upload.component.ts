@@ -27,7 +27,7 @@ export class FileUploadComponent implements OnInit {
     ).subscribe(_ => this.openDialog());
   }
 
-  openDialog(): void {
+  public openDialog(): void {
     const dialogRef = this.dialog.open(FileUploadDialogComponent , {
       width: '550px', height: '700px', minHeight: '50%'
     });
