@@ -44,10 +44,7 @@ export class SidebarComponent implements OnInit {
   @Output() clearSearch = new EventEmitter<void>();
   @Output() openSpreadsheet = new EventEmitter<void>();
 
-  public listSearchMode$ = this.store$.select(filtersStore.getListSearchMode);
-
   public isSidebarOpen$ = this.store$.select(uiStore.getIsSidebarOpen);
-  public selectedFilter$ = this.store$.select(uiStore.getSelectedFilter);
 
   public granules$ = this.store$.select(granulesStore.getGranules).pipe(
     tap(granules => {
