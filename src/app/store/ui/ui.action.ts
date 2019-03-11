@@ -1,13 +1,14 @@
 import { Action } from '@ngrx/store';
 
-import { FilterType } from '@models';
+import { FilterType, SearchType } from '@models';
 
 export enum UIActionType {
   TOGGLE_SIDEBAR = '[UI] Toggle Sidebar',
   CLOSE_SIDEBAR = '[UI] Close Sidebar',
   OPEN_SIDEBAR = '[UI] Open Sidebar ',
 
-  SET_SELECTED_FILTER = '[UI] Set Selected Filter'
+  SET_SELECTED_FILTER = '[UI] Set Selected Filter',
+  SET_SEARCH_TYPE = '[UI] Set Search Type',
 }
 
 export class ToggleSidebar implements Action {
@@ -28,8 +29,15 @@ export class SetSelectedFilter implements Action {
   constructor(public payload: FilterType) {}
 }
 
+export class SetSearchType implements Action {
+  public readonly type = UIActionType.SET_SEARCH_TYPE;
+
+  constructor(public payload: SearchType) {}
+}
+
 export type UIActions =
   | ToggleSidebar
   | CloseSidebar
   | OpenSidebar
-  | SetSelectedFilter;
+  | SetSelectedFilter
+  | SetSearchType;

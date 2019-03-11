@@ -100,6 +100,13 @@ export class UrlStateService {
         map(selectedFilter => ({ selectedFilter }))
       ),
       loader: this.loadSelectedFilter
+    }, {
+      name: 'searchType',
+      source: this.store$.select(uiStore.getSearchType).pipe(
+        skip(1),
+        map(searchType => ({ searchType }))
+      ),
+      loader: this.loadSearchType
     }];
   }
 
@@ -258,6 +265,14 @@ export class UrlStateService {
     if (Object.values(models.FilterType).includes(selected)) {
 
       const action = new uiStore.SetSelectedFilter(<models.FilterType>selected);
+      this.store$.dispatch(action);
+    }
+  }
+
+  private loadSearchType = (searchType: string): void => {
+    if (Object.values(models.SearchType).includes(searchType)) {
+
+      const action = new uiStore.SetSearchType(<models.SearchType>searchType);
       this.store$.dispatch(action);
     }
   }
