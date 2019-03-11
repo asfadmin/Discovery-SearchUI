@@ -44,7 +44,6 @@ export class SidebarComponent implements OnInit {
   @Output() clearSearch = new EventEmitter<void>();
   @Output() openSpreadsheet = new EventEmitter<void>();
 
-  public searchTypes = models.SearchType;
   public listSearchMode$ = this.store$.select(filtersStore.getListSearchMode);
 
   public isSidebarOpen$ = this.store$.select(uiStore.getIsSidebarOpen);
@@ -60,9 +59,6 @@ export class SidebarComponent implements OnInit {
 
   public selectedGranule$ = this.store$.select(granulesStore.getSelectedGranule);
   public selectedProducts$ = this.store$.select(granulesStore.getSelectedGranuleProducts);
-  public searchList$ = this.store$.select(granulesStore.getSearchList).pipe(
-    map(list => list.join('\n'))
-  );
 
   public loading$ = this.store$.select(searchStore.getIsLoading);
   public searchError$ = this.store$.select(searchStore.getSearchError);
@@ -72,6 +68,7 @@ export class SidebarComponent implements OnInit {
   public filterType = models.FilterType;
   public selectedTab = 0;
 
+  public searchTypes = models.SearchType;
   public searchType$ = this.store$.select(uiStore.getSearchType);
   public selectedSearchType: models.SearchType;
 

@@ -33,32 +33,8 @@
     (selectedIndexChange)="onTabChange($event)"
     >
     <mat-tab label="Search">
-
-      <ng-container *ngIf="selectedSearchType === searchTypes.DATASET">
-        <app-dataset-search></app-dataset-search>
-      </ng-container>
-
-      <ng-container *ngIf="selectedSearchType === searchTypes.LIST">
-        <app-list-search
-          (newListSearchMode)="onNewListSearchMode($event)"
-          (newListSearch)="onNewGranuleList($event)"
-          [mode]="listSearchMode$ | async"
-          [searchList]="searchList$ | async">
-        </app-list-search>
-      </ng-container>
-
-      <ng-container *ngIf="selectedSearchType === searchTypes.MISSION">
-        <mat-card class="card-spacing">
-          <h2>Mission Component Here...</h2>
-        </mat-card>
-      </ng-container>
+      <app-search></app-search>
     </mat-tab>
-
-    <ng-container *ngIf="selectedSearchType !== null">
-      <div>
-        {{ selectedSearchType }}
-      </div>
-    </ng-container>
 
     <ng-container *ngIf="granules$ | async as granules">
       <mat-tab

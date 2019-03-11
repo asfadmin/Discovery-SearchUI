@@ -16,9 +16,8 @@ import { SidebarComponent } from './sidebar.component';
 import { ToggleButtonModule } from './toggle-button';
 import { SearchBarModule } from './search/search-bar';
 
-import { ListSearchModule } from './list-search';
 import { SearchSelectorModule } from './search/search-selector';
-import { DatasetSearchModule } from './search/dataset-search';
+import { SearchModule } from './search';
 
 import { GranulesListModule } from './granules/granules-list';
 import { GranuleDetailComponent } from './granules/granule-detail/granule-detail.component';
@@ -43,9 +42,8 @@ import { LogoComponent } from './logo/logo.component';
     SearchBarModule,
     ToggleButtonModule,
     GranulesListModule,
-    ListSearchModule,
 
-    DatasetSearchModule,
+    SearchModule,
     SearchSelectorModule,
   ],
   declarations: [

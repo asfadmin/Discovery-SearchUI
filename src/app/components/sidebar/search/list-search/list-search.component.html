@@ -1,4 +1,4 @@
-<mat-card class="card-spacing">
+<mat-card class="card-spacing" *ngIf="listSearchMode$ | async as mode">
   <div *ngIf="mode === types.GRANULE">
     Enter a list of granule names.
     <br>

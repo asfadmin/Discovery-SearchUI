@@ -1,0 +1,14 @@
+<ng-container *ngIf="selectedSearchType === searchTypes.DATASET">
+  <app-dataset-search></app-dataset-search>
+</ng-container>
+
+<ng-container *ngIf="selectedSearchType === searchTypes.LIST">
+  <app-list-search></app-list-search>
+</ng-container>
+
+<ng-container *ngIf="selectedSearchType === searchTypes.MISSION">
+  <mat-card class="card-spacing">
+    <h2>Mission Component Here...</h2>
+  </mat-card>
+</ng-container>
+
