@@ -97,7 +97,7 @@ export class SidebarComponent implements OnInit {
   public selectedTab = 0;
 
   public searchType$ = this.store$.select(uiStore.getSearchType);
-  public selectedSearchType;
+  public selectedSearchType: models.SearchType;
 
   constructor(
     private dateExtremaService: DateExtremaService,
