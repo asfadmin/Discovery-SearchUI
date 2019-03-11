@@ -1,0 +1,20 @@
+<div class="position layout">
+  <app-view-selector
+    (newProjection)="onNewProjection($event)"
+    [view]="view$ | async">
+  </app-view-selector>
+
+  <app-draw-selector
+    (newDrawMode)="onNewDrawMode($event)"
+    [isDisabled]="isDrawMenuDisabled$ | async"
+    [drawMode]="drawMode$ | async">
+  </app-draw-selector>
+
+  <app-interaction-selector
+    (newInteraction)="onNewInteractionMode($event)"
+    [interaction]="interactionMode$ | async">
+  ></app-interaction-selector>
+</div>
+
+
+

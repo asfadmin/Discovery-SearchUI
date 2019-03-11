@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { DrawSelectorComponent } from './draw-selector.component';
+import { NavButtonsComponent } from './nav-buttons.component';
 
-describe('DrawSelectorComponent', () => {
-  let component: DrawSelectorComponent;
-  let fixture: ComponentFixture<DrawSelectorComponent>;
+describe('NavButtonsComponent', () => {
+  let component: NavButtonsComponent;
+  let fixture: ComponentFixture<NavButtonsComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ DrawSelectorComponent ]
+      declarations: [ NavButtonsComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(DrawSelectorComponent);
+    fixture = TestBed.createComponent(NavButtonsComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

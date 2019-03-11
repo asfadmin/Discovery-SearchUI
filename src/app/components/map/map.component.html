@@ -28,28 +28,14 @@
     <mat-icon>apps</mat-icon>
 </button>
 
+<app-file-upload
+  (dialogClose)="onFileUploadDialogClosed($event)"
+  (newSearchPolygon)="onNewSearchPolygon($event)"
+  [interaction$]="interactionMode$">
+</app-file-upload>
+
 <ng-container *ngIf="showSettings">
-  <app-file-upload
-    (dialogClose)="onFileUploadDialogClosed($event)"
-    (newSearchPolygon)="onNewSearchPolygon($event)"
-    [interaction$]="interactionMode$">
-  </app-file-upload>
-
-  <app-view-selector
-    (newProjection)="onNewProjection($event)"
-    [view]="view$ | async">
-  </app-view-selector>
-
-  <app-draw-selector
-    (newDrawMode)="onNewDrawMode($event)"
-    [isDisabled]="isDrawMenuDisabled$ | async"
-    [drawMode]="drawMode$ | async">
-  </app-draw-selector>
-
-  <app-interaction-selector
-    (newInteraction)="onNewInteractionMode($event)"
-    [interaction]="interactionMode$ | async">
-  ></app-interaction-selector>
+  <app-map-controls></app-map-controls>
 </ng-container>
 
 <div class="meatball__position">

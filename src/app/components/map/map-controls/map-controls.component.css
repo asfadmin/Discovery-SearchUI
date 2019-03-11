@@ -1,0 +1,12 @@
+.position {
+  position: fixed;
+  right: 10px;
+  top: 106px;
+  z-index: 999;
+}
+
+.layout {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
