@@ -18,9 +18,8 @@ import { SearchBarModule } from './search/search-bar';
 
 import { SearchSelectorModule } from './search/search-selector';
 import { SearchModule } from './search';
+import { ResultsModule } from './results';
 
-import { GranulesListModule } from './granules/granules-list';
-import { GranuleDetailComponent } from './granules/granule-detail/granule-detail.component';
 import { LogoComponent } from './logo/logo.component';
 
 @NgModule({
@@ -41,14 +40,13 @@ import { LogoComponent } from './logo/logo.component';
 
     SearchBarModule,
     ToggleButtonModule,
-    GranulesListModule,
+    ResultsModule,
 
     SearchModule,
     SearchSelectorModule,
   ],
   declarations: [
     SidebarComponent,
-    GranuleDetailComponent,
     LogoComponent,
   ],
   providers: [

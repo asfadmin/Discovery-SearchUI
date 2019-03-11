@@ -98,10 +98,6 @@ export class SidebarComponent implements OnInit {
     this.openSpreadsheet.emit();
   }
 
-  public onNewFilterSelected(selectedFilter: models.FilterType): void {
-    this.store$.dispatch(new uiStore.SetSelectedFilter(selectedFilter));
-  }
-
   public onToggleHide(): void {
     this.store$.dispatch(new uiStore.ToggleSidebar());
   }

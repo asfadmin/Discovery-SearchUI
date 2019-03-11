@@ -1,0 +1,24 @@
+<ng-container *ngIf="selectedGranule$ | async as selected">
+  <app-granule-detail
+      *ngIf="!!selected"
+      (newFocusedGranule)="onNewFocusedGranule($event)"
+      (clearFocusedGranule)="onClearFocusedGranule($event)"
+      (newQueueItem)="onNewQueueItem($event)"
+      (newQueueItems)="onNewQueueItems($event)"
+      [granule]="selected"
+      [products]="selectedProducts$ | async">
+  </app-granule-detail>
+</ng-container>
+
+<mat-card class="card-spacing">
+  <button (click)="onOpenSpreadsheet()" mat-raised-button>Open Spreadsheet</button>
+</mat-card>
+
+<app-granules-list
+  (newFocusedGranule)="onNewFocusedGranule($event)"
+  (clearFocusedGranule)="onClearFocusedGranule($event)"
+  (newSelected)="onNewGranuleSelected($event)"
+  (queueGranule)="onQueueGranuleProducts($event)"
+  [granules]="granules$ | async"
+  [selected]="(selectedGranule$ | async)?.name">
+</app-granules-list>

@@ -30,41 +30,18 @@
   <mat-tab-group
     *ngIf="selectedSearchType !== null"
     [selectedIndex]="selectedTab"
-    (selectedIndexChange)="onTabChange($event)"
-    >
+    (selectedIndexChange)="onTabChange($event)">
     <mat-tab label="Search">
+
       <app-search></app-search>
+
     </mat-tab>
 
     <ng-container *ngIf="granules$ | async as granules">
-      <mat-tab
-        *ngIf="granules.length > 0"
-        label="Results">
+      <mat-tab *ngIf="granules.length > 0" label="Results">
 
-        <ng-container *ngIf="selectedGranule$ | async as selected">
-          <app-granule-detail
-              *ngIf="!!selected"
-              (newFocusedGranule)="onNewFocusedGranule($event)"
-              (clearFocusedGranule)="onClearFocusedGranule($event)"
-              (newQueueItem)="onNewQueueItem($event)"
-              (newQueueItems)="onNewQueueItems($event)"
-              [granule]="selected"
-              [products]="selectedProducts$ | async">
-          </app-granule-detail>
-        </ng-container>
+        <app-results></app-results>
 
-        <mat-card class="card-spacing">
-          <button (click)="onOpenSpreadsheet()" mat-raised-button>Open Spreadsheet</button>
-        </mat-card>
-
-        <app-granules-list
-          (newFocusedGranule)="onNewFocusedGranule($event)"
-          (clearFocusedGranule)="onClearFocusedGranule($event)"
-          (newSelected)="onNewGranuleSelected($event)"
-          (queueGranule)="onQueueGranuleProducts($event)"
-          [granules]="granules"
-          [selected]="(selectedGranule$ | async)?.name">
-        </app-granules-list>
       </mat-tab>
     </ng-container>
   </mat-tab-group>
