@@ -9,7 +9,6 @@ import * as granulesStore from '@store/granules';
 import * as queueStore from '@store/queue';
 
 import * as models from '@models';
-
 @Component({
   selector: 'app-results',
   templateUrl: './results.component.html',

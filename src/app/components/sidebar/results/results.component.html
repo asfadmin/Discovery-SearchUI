@@ -16,7 +16,7 @@
 
 <app-granules-list
   (newFocusedGranule)="onNewFocusedGranule($event)"
-  (clearFocusedGranule)="onClearFocusedGranule($event)"
+  (clearFocusedGranule)="onClearFocusedGranule()"
   (newSelected)="onNewGranuleSelected($event)"
   (queueGranule)="onQueueGranuleProducts($event)"
   [granules]="granules$ | async"

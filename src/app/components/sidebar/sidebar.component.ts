@@ -36,11 +36,8 @@ import * as models from '@models';
   ],
 })
 export class SidebarComponent implements OnInit {
-  @Input() isLoading: boolean;
-
   @Output() newSearch = new EventEmitter<void>();
   @Output() clearSearch = new EventEmitter<void>();
-  @Output() openSpreadsheet = new EventEmitter<void>();
 
   public isSidebarOpen$ = this.store$.select(uiStore.getIsSidebarOpen);
 
