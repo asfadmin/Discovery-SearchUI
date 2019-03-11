@@ -1,16 +1,19 @@
 <div class="position layout">
   <app-view-selector
+    class="spacing"
     (newProjection)="onNewProjection($event)"
     [view]="view$ | async">
   </app-view-selector>
 
   <app-draw-selector
+    class="spacing"
     (newDrawMode)="onNewDrawMode($event)"
     [isDisabled]="isDrawMenuDisabled$ | async"
     [drawMode]="drawMode$ | async">
   </app-draw-selector>
 
   <app-interaction-selector
+    class="spacing"
     (newInteraction)="onNewInteractionMode($event)"
     [interaction]="interactionMode$ | async">
   ></app-interaction-selector>

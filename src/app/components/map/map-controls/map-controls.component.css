@@ -1,7 +1,7 @@
 .position {
   position: fixed;
-  right: 10px;
-  bottom: 30px;
+  right: 4px;
+  bottom: 28px;
   z-index: 999;
 }
 
@@ -9,4 +9,8 @@
   display: flex;
   flex-direction: column;
   align-items: flex-end;
+}
+
+.spacing {
+  margin: 2px;
 }
