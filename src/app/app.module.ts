@@ -52,6 +52,7 @@ export const routes = [
     services.SearchParamsService,
     services.RangeService,
     services.PolygonValidationService,
+    services.DateExtremaService,
   ],
   bootstrap: [ AppComponent ],
 })

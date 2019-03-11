@@ -21,7 +21,6 @@ import * as models from './models';
   styleUrls  : ['./app.component.scss']
 })
 export class AppComponent implements OnInit {
-
   public shouldOmitSearchPolygon$ = this.store$.select(filterStore.getShouldOmitSearchPolygon);
 
   public interactionTypes = models.MapInteractionModeType;

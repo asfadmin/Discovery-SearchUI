@@ -1,6 +1,5 @@
-<div
-  [@changeMenuState]="(isSidebarOpen$ | async) ? 'shown' : 'hidden'"
-  class="position ">
+<div [@changeMenuState]="(isSidebarOpen$ | async) ? 'shown' : 'hidden'"
+  class="position">
 
 <app-toggle-button
   (click)="onToggleHide()"
@@ -26,32 +25,31 @@
   </div>
 
   <div class="filters-scoll">
+    <mat-tab-group
+      *ngIf="selectedSearchType !== null"
+      [selectedIndex]="selectedTab"
+      (selectedIndexChange)="onTabChange($event)">
 
-  <mat-tab-group
-    *ngIf="selectedSearchType !== null"
-    [selectedIndex]="selectedTab"
-    (selectedIndexChange)="onTabChange($event)">
-    <mat-tab label="Search">
-
-      <app-search></app-search>
-
-    </mat-tab>
-
-    <ng-container *ngIf="granules$ | async as granules">
-      <mat-tab *ngIf="granules.length > 0" label="Results">
-
-        <app-results></app-results>
-
+      <mat-tab label="Search">
+        <app-search></app-search>
       </mat-tab>
-    </ng-container>
-  </mat-tab-group>
+
+      <ng-container *ngIf="granules$ | async as granules">
+        <mat-tab *ngIf="granules.length > 0" label="Results">
+          <app-results></app-results>
+        </mat-tab>
+      </ng-container>
+
+    </mat-tab-group>
   </div>
-  <div *ngIf="selectedSearchType !== null && selectedTab === 0" class="bottom-list-elements">
-    <app-search-bar
-      (newSearch)="onNewSearch()"
-      (clearSearches)="onClearSearch()"
-      [isLoading]="loading$ | async">
-    </app-search-bar>
+
+  <div *ngIf="selectedSearchType !== null && selectedTab === 0"
+    class="bottom-list-elements">
+      <app-search-bar
+        (newSearch)="onNewSearch()"
+        (clearSearches)="onClearSearch()"
+        [isLoading]="loading$ | async">
+      </app-search-bar>
   </div>
 </div>
 </div>

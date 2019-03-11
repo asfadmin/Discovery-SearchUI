@@ -13,11 +13,9 @@ import { Store } from '@ngrx/store';
 
 import { DateExtremaService } from '@services';
 import { AppState } from '@store';
-import * as filtersStore from '@store/filters';
 import * as uiStore from '@store/ui';
 import * as granulesStore from '@store/granules';
 import * as searchStore from '@store/search';
-import * as queueStore from '@store/queue';
 
 import * as models from '@models';
 
@@ -54,13 +52,8 @@ export class SidebarComponent implements OnInit {
     })
   );
 
-  public selectedGranule$ = this.store$.select(granulesStore.getSelectedGranule);
-  public selectedProducts$ = this.store$.select(granulesStore.getSelectedGranuleProducts);
-
   public loading$ = this.store$.select(searchStore.getIsLoading);
   public searchError$ = this.store$.select(searchStore.getSearchError);
-
-  public queueProducts$ = this.store$.select(queueStore.getQueuedProducts);
 
   public filterType = models.FilterType;
   public selectedTab = 0;
@@ -94,10 +87,6 @@ export class SidebarComponent implements OnInit {
     window.location.reload();
   }
 
-  public onOpenSpreadsheet(): void {
-    this.openSpreadsheet.emit();
-  }
-
   public onToggleHide(): void {
     this.store$.dispatch(new uiStore.ToggleSidebar());
   }
@@ -108,38 +97,6 @@ export class SidebarComponent implements OnInit {
 
   public onClearSearch(): void {
     this.clearSearch.emit();
-  }
-
-  public onNewGranuleSelected(name: string): void {
-    this.store$.dispatch(new granulesStore.SetSelectedGranule(name));
-  }
-
-  public onNewGranuleList(searchList: string[]): void {
-    this.store$.dispatch(new granulesStore.SetSearchList(searchList));
-  }
-
-  public onNewListSearchMode(mode: models.ListSearchType): void {
-    this.store$.dispatch(new filtersStore.SetListSearchType(mode));
-  }
-
-  public onNewQueueItem(product: models.Sentinel1Product): void {
-    this.store$.dispatch(new queueStore.AddItem(product));
-  }
-
-  public onNewQueueItems(products: models.Sentinel1Product[]): void {
-    this.store$.dispatch(new queueStore.AddItems(products));
-  }
-
-  public onQueueGranuleProducts(name: string): void {
-    this.store$.dispatch(new queueStore.QueueGranule(name));
-  }
-
-  public onNewFocusedGranule(granule: models.Sentinel1Product): void {
-    this.store$.dispatch(new granulesStore.SetFocusedGranule(granule));
-  }
-
-  public onClearFocusedGranule(): void {
-    this.store$.dispatch(new granulesStore.ClearFocusedGranule());
   }
 }
 
