@@ -29,19 +29,14 @@ import { QueueComponent } from './queue';
 export class MapComponent implements OnInit {
   @Output() loadUrlState = new EventEmitter<void>();
 
-  public view$ = this.store$.select(mapStore.getMapView);
-  public drawMode$ = this.store$.select(mapStore.getMapDrawMode);
   public interactionMode$ = this.store$.select(mapStore.getMapInteractionMode);
-  public isMapInitialized$ = this.store$.select(mapStore.getIsMapInitialization);
-  public isDrawMenuDisabled$ = this.interactionMode$.pipe(
-    map(mode => mode !== models.MapInteractionModeType.DRAW)
-  );
-
-  public granules$ = this.store$.select(granulesStore.getGranules);
-  public focusedGranule$ = this.store$.select(granulesStore.getFocusedGranule);
-  public queuedProducts$ = this.store$.select(queueStore.getQueuedProducts);
-
   public mousePosition$ = this.mapService.mousePosition$;
+
+  private isMapInitialized$ = this.store$.select(mapStore.getIsMapInitialization);
+  private granules$ = this.store$.select(granulesStore.getGranules);
+  private focusedGranule$ = this.store$.select(granulesStore.getFocusedGranule);
+  private view$ = this.store$.select(mapStore.getMapView);
+  private drawMode$ = this.store$.select(mapStore.getMapDrawMode);
 
   constructor(
     private store$: Store<AppState>,
