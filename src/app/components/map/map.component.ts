@@ -21,7 +21,6 @@ import * as models from '@models';
 import { MapService, WktService } from '@services';
 import { QueueComponent } from './queue';
 
-
 @Component({
   selector: 'app-map',
   templateUrl: './map.component.html',
@@ -29,8 +28,6 @@ import { QueueComponent } from './queue';
 })
 export class MapComponent implements OnInit {
   @Output() loadUrlState = new EventEmitter<void>();
-
-  public showSettings = true;
 
   public view$ = this.store$.select(mapStore.getMapView);
   public drawMode$ = this.store$.select(mapStore.getMapDrawMode);
@@ -60,10 +57,6 @@ export class MapComponent implements OnInit {
 
     this.interactionMode$
       .subscribe(mode => this.mapService.setInteractionMode(mode));
-  }
-
-  public onToggleSettings(): void {
-    this.showSettings = !this.showSettings;
   }
 
   public onOpenDownloadQueue(): void {

@@ -7,6 +7,7 @@ import { MatSharedModule } from '@shared';
 
 import { MapComponent } from './map.component';
 import { MapControlsModule } from './map-controls';
+import { NavBarModule } from './nav-bar';
 import { FileUploadModule } from './file-upload';
 import { AttributionsComponent } from './attributions/attributions.component';
 import { QueueModule, QueueComponent } from './queue';
@@ -15,12 +16,12 @@ import { QueueModule, QueueComponent } from './queue';
   imports: [
     CommonModule,
 
-    MatBadgeModule,
     MatDialogModule,
 
     MatSharedModule,
 
     MapControlsModule,
+    NavBarModule,
     QueueModule,
     FileUploadModule,
   ],

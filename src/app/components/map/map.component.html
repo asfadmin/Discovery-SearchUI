@@ -2,31 +2,9 @@
   (dragover)="onFileHovered($event)"
   ></div>
 
-<ng-container *ngIf="queuedProducts$ | async as products">
-  <button
-    style="background: white" class="download-queue-btn"
-    (click)="onOpenDownloadQueue()"
-    matTooltip="Download Queue"
-    [disabled]="products.length <= 0"  color="basic"
-    mat-fab>
-      <mat-icon
-        [matBadge]="products.length" matBadgePosition="below" matBadgeOverlap="false">
-          cloud_download
-      </mat-icon>
-  </button>
-</ng-container>
-<button
-  matTooltip="Share Search"
-  class="share-btn" color="basic"
-  mat-fab>
-    <mat-icon>share</mat-icon>
-</button>
-<button
-  matTooltip="ASF Apps"
-  class="settings-btn" color="basic"
-  mat-fab>
-    <mat-icon>apps</mat-icon>
-</button>
+<app-nav-bar
+  (openQueue)="onOpenDownloadQueue()"
+  ></app-nav-bar>
 
 <app-file-upload
   (dialogClose)="onFileUploadDialogClosed($event)"
@@ -34,9 +12,7 @@
   [interaction$]="interactionMode$">
 </app-file-upload>
 
-<ng-container *ngIf="showSettings">
-  <app-map-controls></app-map-controls>
-</ng-container>
+<app-map-controls></app-map-controls>
 
 <div class="meatball__position">
   <a href="https://earthdata.nasa.gov/" target="_blank">
