@@ -16,18 +16,13 @@ import { SidebarComponent } from './sidebar.component';
 import { ToggleButtonModule } from './toggle-button';
 import { SearchBarModule } from './search/search-bar';
 
-import { PlatformSelectorModule } from './search/platform-selector';
-import { FilterSelectorModule } from './search/filter-selector';
-import { DateSelectorModule } from './search/date-selector';
-import { PathSelectorModule } from './search/path-selector';
-import { OtherSelectorModule } from './search/other-selector';
 import { ListSearchModule } from './list-search';
 import { SearchSelectorModule } from './search/search-selector';
+import { DatasetSearchModule } from './search/dataset-search';
 
 import { GranulesListModule } from './granules/granules-list';
 import { GranuleDetailComponent } from './granules/granule-detail/granule-detail.component';
 import { LogoComponent } from './logo/logo.component';
-import { MaxResultsSelectorComponent } from './search/max-results-selector/max-results-selector.component';
 
 @NgModule({
   imports: [
@@ -50,18 +45,13 @@ import { MaxResultsSelectorComponent } from './search/max-results-selector/max-r
     GranulesListModule,
     ListSearchModule,
 
+    DatasetSearchModule,
     SearchSelectorModule,
-    FilterSelectorModule,
-    PlatformSelectorModule,
-    DateSelectorModule,
-    PathSelectorModule,
-    OtherSelectorModule,
   ],
   declarations: [
     SidebarComponent,
     GranuleDetailComponent,
     LogoComponent,
-    MaxResultsSelectorComponent,
   ],
   providers: [
     DateExtremaService,
