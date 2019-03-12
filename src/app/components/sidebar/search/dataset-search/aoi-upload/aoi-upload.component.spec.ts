@@ -1,6 +1,8 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { AoiUploadComponent } from './aoi-upload.component';
+import { AoiUploadModule } from './aoi-upload.module';
 
 describe('AoiUploadComponent', () => {
   let component: AoiUploadComponent;
@@ -8,7 +10,10 @@ describe('AoiUploadComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ AoiUploadComponent ]
+      imports: [
+        BrowserAnimationsModule,
+        AoiUploadModule
+      ]
     })
     .compileComponents();
   }));
