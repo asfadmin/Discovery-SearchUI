@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
+import { MatListModule } from '@angular/material';
 import { MatSharedModule } from '@shared';
 import { PlatformSelectorComponent } from './platform-selector.component';
 import { PlatformComponent } from './platform/platform.component';
@@ -13,11 +14,12 @@ import { PlatformComponent } from './platform/platform.component';
     CommonModule,
     FontAwesomeModule,
     MatSharedModule,
+    MatListModule,
   ],
   declarations: [
     PlatformSelectorComponent,
     PlatformComponent
   ],
-  exports: [ PlatformSelectorComponent ]
+  exports: [ PlatformSelectorComponent, PlatformComponent ]
 })
 export class PlatformSelectorModule { }

@@ -14,8 +14,7 @@ import * as models from '@models';
   templateUrl: './map-controls.component.html',
   styleUrls: ['./map-controls.component.css']
 })
-export class MapControlsComponent implements OnInit {
-
+export class MapControlsComponent {
   public view$ = this.store$.select(mapStore.getMapView);
   public drawMode$ = this.store$.select(mapStore.getMapDrawMode);
   public interactionMode$ = this.store$.select(mapStore.getMapInteractionMode);
@@ -27,9 +26,6 @@ export class MapControlsComponent implements OnInit {
   constructor(
     private store$: Store<AppState>,
   ) { }
-
-  ngOnInit() {
-  }
 
   public onNewProjection(view: models.MapViewType): void {
     this.store$.dispatch(new mapStore.SetMapView(view));

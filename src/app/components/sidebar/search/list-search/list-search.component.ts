@@ -47,7 +47,7 @@ export class ListSearchComponent implements OnInit {
 
     const unique = Array.from(new Set(granules));
 
-    this.store$.dispatch(new granulesStore.SetSearchList(granules));
+    this.store$.dispatch(new granulesStore.SetSearchList(unique));
   }
 
   public onNewListSearchMode(mode: models.ListSearchType): void {

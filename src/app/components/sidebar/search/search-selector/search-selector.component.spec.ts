@@ -1,6 +1,7 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { SearchSelectorComponent } from './search-selector.component';
+import { SearchSelectorModule } from './search-selector.module';
 
 describe('SearchSelectorComponent', () => {
   let component: SearchSelectorComponent;
@@ -8,7 +9,7 @@ describe('SearchSelectorComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ SearchSelectorComponent ]
+      imports: [ SearchSelectorModule ]
     })
     .compileComponents();
   }));

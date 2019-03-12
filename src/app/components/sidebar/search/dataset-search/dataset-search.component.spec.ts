@@ -1,6 +1,11 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+
+import { Store, StoreModule } from '@ngrx/store';
+import * as appStore from '@store';
 
 import { DatasetSearchComponent } from './dataset-search.component';
+import { DatasetSearchModule } from './dataset-search.module';
 
 describe('DatasetSearchComponent', () => {
   let component: DatasetSearchComponent;
@@ -8,7 +13,11 @@ describe('DatasetSearchComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ DatasetSearchComponent ]
+      imports: [
+        BrowserAnimationsModule,
+        DatasetSearchModule,
+        StoreModule.forRoot(appStore.reducers, { metaReducers: appStore.metaReducers }),
+      ]
     })
     .compileComponents();
   }));

@@ -4,6 +4,7 @@
 
 <app-nav-bar
   (openQueue)="onOpenDownloadQueue()"
+  [products]="queuedProducts$ | async"
   ></app-nav-bar>
 
 <app-file-upload

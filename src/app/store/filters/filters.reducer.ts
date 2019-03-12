@@ -61,7 +61,7 @@ export const initState: FiltersState = {
   beamModes: {},
   polarizations: {},
   flightDirections: new Set<models.FlightDirection>([]),
-  maxResults: 100,
+  maxResults: 10,
 };
 
 

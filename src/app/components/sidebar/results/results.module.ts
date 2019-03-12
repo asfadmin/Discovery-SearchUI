@@ -4,6 +4,7 @@ import { ResultsComponent } from './results.component';
 
 import { TruncateModule } from '@yellowspot/ng-truncate';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { MatBottomSheetModule } from '@angular/material';
 
 import { PipesModule } from '@pipes';
 import { MatSharedModule } from '@shared';
@@ -24,6 +25,7 @@ import { GranuleDetailComponent } from './granule-detail/granule-detail.componen
     FontAwesomeModule,
 
     MatSharedModule,
+    MatBottomSheetModule,
     PipesModule,
 
     SpreadsheetModule,

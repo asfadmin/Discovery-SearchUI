@@ -38,6 +38,10 @@ export class MapComponent implements OnInit {
   private view$ = this.store$.select(mapStore.getMapView);
   private drawMode$ = this.store$.select(mapStore.getMapDrawMode);
 
+  public queuedProducts$ = this.store$.select(queueStore.getQueuedProducts).pipe(
+    map(q => q || [])
+  );
+
   constructor(
     private store$: Store<AppState>,
     private mapService: MapService,

@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { MatBottomSheet } from '@angular/material';
 
+import { map, tap } from 'rxjs/operators';
+
 import { Store } from '@ngrx/store';
 
 import { SpreadsheetComponent } from './spreadsheet';
@@ -9,6 +11,7 @@ import * as granulesStore from '@store/granules';
 import * as queueStore from '@store/queue';
 
 import * as models from '@models';
+
 @Component({
   selector: 'app-results',
   templateUrl: './results.component.html',

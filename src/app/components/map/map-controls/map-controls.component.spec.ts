@@ -1,20 +1,27 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { async, ComponentFixture, fakeAsync, TestBed, inject, tick } from '@angular/core/testing';
 
-import { NavButtonsComponent } from './nav-buttons.component';
+import { Store, StoreModule } from '@ngrx/store';
+import * as appStore from '@store';
 
-describe('NavButtonsComponent', () => {
-  let component: NavButtonsComponent;
-  let fixture: ComponentFixture<NavButtonsComponent>;
+import { MapControlsComponent } from './map-controls.component';
+import { MapControlsModule } from './map-controls.module';
+
+describe('MapControlsComponent', () => {
+  let component: MapControlsComponent ;
+  let fixture: ComponentFixture<MapControlsComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ NavButtonsComponent ]
+      imports: [
+        MapControlsModule,
+        StoreModule.forRoot(appStore.reducers, { metaReducers: appStore.metaReducers }),
+      ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(NavButtonsComponent);
+    fixture = TestBed.createComponent(MapControlsComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
