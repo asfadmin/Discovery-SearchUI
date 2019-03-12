@@ -25,6 +25,7 @@ import {
     MatIconModule,
     MatListModule,
     MatTooltipModule,
+    MatDividerModule,
   ]
 })
 export class MatSharedModule { }

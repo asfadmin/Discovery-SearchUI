@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 
-import { Subject } from 'rxjs';
+import { Subject, BehaviorSubject } from 'rxjs';
 
 import { Map } from 'ol';
 import { Vector as VectorSource, Layer } from 'ol/source';
@@ -25,7 +25,7 @@ export class DrawService {
 
   private defaultStyle = polygonStyle.valid;
 
-  public polygon$ = new Subject<string | null>();
+  public polygon$ = new BehaviorSubject<string | null>(null);
 
   constructor() {
     this.source = new VectorSource({

@@ -13,6 +13,11 @@
   (newEnd)="onNewEndDate($event)">
 </app-date-selector>
 
+<app-aoi-upload
+  (openFileUpload)="onOpenFileDialog()"
+  [polygon]="polygon$ | async">
+</app-aoi-upload>
+
 <app-path-selector
   (newPathStart)="onNewPathStart($event)"
   (newPathEnd)="onNewPathEnd($event)"

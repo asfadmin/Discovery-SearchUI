@@ -1,12 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 
-import { map } from 'rxjs/operators';
+import { combineLatest } from 'rxjs';
+import { map, tap, filter } from 'rxjs/operators';
 
 import { Store } from '@ngrx/store';
 
-import { DateExtremaService } from '@services';
+import { DateExtremaService, MapService } from '@services';
 import { AppState } from '@store';
 import * as filtersStore from '@store/filters';
+import * as mapStore from '@store/map';
 
 import * as models from '@models';
 
@@ -16,6 +18,7 @@ import * as models from '@models';
   styleUrls: ['./dataset-search.component.css']
 })
 export class DatasetSearchComponent {
+
   public platforms$ = this.store$.select(filtersStore.getPlatformsList);
   public platformProductTypes$ = this.store$.select(filtersStore.getProductTypes);
   public selectedPlatformNames$ = this.store$.select(filtersStore.getSelectedPlatformNames);
@@ -34,6 +37,8 @@ export class DatasetSearchComponent {
     map(maxResults => maxResults.toString())
   );
 
+  public polygon$ = this.mapService.searchPolygon$;
+
   public dateRangeExtrema$ = this.dateExtremaService.getExtrema$(
     this.platforms$,
     this.selectedPlatforms$,
@@ -42,6 +47,7 @@ export class DatasetSearchComponent {
   );
 
   constructor(
+    private mapService: MapService,
     private store$: Store<AppState>,
     private dateExtremaService: DateExtremaService,
   ) { }
@@ -104,5 +110,10 @@ export class DatasetSearchComponent {
 
   public onNewProductTypes(productTypes: models.PlatformProductTypes): void {
     this.store$.dispatch(new filtersStore.SetPlatformProductTypes(productTypes));
+  }
+
+  public onOpenFileDialog(): void {
+    const action = new mapStore.SetMapInteractionMode(models.MapInteractionModeType.UPLOAD);
+    this.store$.dispatch(action);
   }
 }
