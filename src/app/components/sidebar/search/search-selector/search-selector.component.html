@@ -4,13 +4,19 @@
 
     <mat-list>
      <mat-list-item>
-        <button (click)="onSetSearchType(searchTypes.DATASET)" class="block-btn" mat-raised-button>Dataset</button>
+       <button (click)="onSetSearchType(searchTypes.DATASET)" class="block-btn" mat-raised-button>
+         <span>By <b>data set</b></span>
+       </button>
      </mat-list-item>
      <mat-list-item>
-        <button (click)="onSetSearchType(searchTypes.LIST)" class="block-btn" mat-raised-button>List</button>
+       <button (click)="onSetSearchType(searchTypes.LIST)" class="block-btn" mat-raised-button>
+         <span>With a <b>list</b></span>
+       </button>
      </mat-list-item>
      <mat-list-item>
-        <button (click)="onSetSearchType(searchTypes.MISSION)" class="block-btn" mat-raised-button>Mission</button>
+        <button (click)="onSetSearchType(searchTypes.MISSION)" class="block-btn" mat-raised-button>
+          <span>By <b>mission</b></span>
+        </button>
      </mat-list-item>
     </mat-list>
 
@@ -26,7 +32,7 @@
           <mat-panel-description>
           </mat-panel-description>
         </mat-expansion-panel-header>
-          <h3>Dataset Search (most common)</h3>
+          <h3>Data Set Search (most common)</h3>
           <p>
             Search for products from a dataset using a area of interest and filter based
             on date, dataset, product type and other metadata parameters.
@@ -49,7 +55,7 @@
       <button (click)="onSetSearchType(searchTypes.DATASET)"
         [ngClass]="{'active-btn': selectedSearchType === searchTypes.DATASET}"
         class="horizontal-btn" mat-raised-button>
-          Dataset
+          Data set
       </button>
       <button (click)="onSetSearchType(searchTypes.LIST)"
         [ngClass]="{'active-btn': selectedSearchType === searchTypes.LIST}"
