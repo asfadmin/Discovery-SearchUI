@@ -1,0 +1,14 @@
+.position {
+  position: fixed;
+  right: 2px;
+  top: 42px;
+  z-index: 999;
+}
+
+.layout {
+  display: flex;
+}
+
+.spacing {
+  margin: 4px;
+}

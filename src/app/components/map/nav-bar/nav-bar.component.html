@@ -1,0 +1,33 @@
+<div class="position layout">
+  <div
+     *ngIf="products"
+      matTooltip="Download Queue"
+    >
+    <button
+      style="background: white"
+      class="spacing"
+      (click)="onOpenDownloadQueue()"
+      [disabled]="products.length <= 0"  color="basic"
+      mat-fab>
+        <mat-icon
+          [matBadge]="products.length" matBadgePosition="below" matBadgeOverlap="false">
+            cloud_download
+        </mat-icon>
+    </button>
+  </div>
+
+  <button
+    matTooltip="Share Search"
+    class="spacing"
+    color="basic"
+    mat-fab>
+      <mat-icon>share</mat-icon>
+  </button>
+  <button
+    matTooltip="ASF Apps"
+    class="spacing"
+    color="basic"
+    mat-fab>
+      <mat-icon>apps</mat-icon>
+  </button>
+</div>

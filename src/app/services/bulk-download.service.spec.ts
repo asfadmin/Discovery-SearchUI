@@ -1,15 +1,21 @@
-import { async } from '@angular/core/testing';
-import {BulkDownloadService} from './bulk-download.service';
+import { async, fakeAsync, tick, TestBed, inject } from '@angular/core/testing';
+import { HttpClientModule } from '@angular/common/http';
+
+import { BulkDownloadService } from './bulk-download.service';
 
 describe('BulkDownloadService', () => {
-  let service;
-
-  const http: any = {
-    // mock properties here 
-  }
+  let service: BulkDownloadService;
 
   beforeEach(() => {
-    service = new BulkDownloadService(http);
+    TestBed.configureTestingModule({
+      imports: [
+        HttpClientModule,
+      ],
+      providers: [
+        BulkDownloadService,
+      ]
+    });
+    service = TestBed.get(BulkDownloadService);
   });
 
   it('should run #downloadScript$()', async () => {

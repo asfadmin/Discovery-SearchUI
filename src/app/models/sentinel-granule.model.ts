@@ -31,7 +31,8 @@ export enum FlightDirection {
 
 export type Sentinel1ProductType =
   'GRD' | 'SLC' | 'OCN' | 'RAW' |
-  'METADATA_SLC'
+  'METADATA_SLC' | 'METADATA_RAW' |
+  'METADATA_GRD_MD' | 'GRD_MD'
 ;
 
 export type Sentinel1BeamMode =
