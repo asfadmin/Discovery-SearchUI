@@ -2,7 +2,8 @@ import { async, fakeAsync, TestBed, inject, tick } from '@angular/core/testing';
 import { BrowserModule } from '@angular/platform-browser';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 
-import { Store } from '@ngrx/store';
+import { Store, StoreModule } from '@ngrx/store';
+import * as appStore from '@store';
 import * as queueStore from '@store/queue';
 import { AsfApiOutputFormat } from '@models';
 
@@ -22,12 +23,8 @@ describe('QueueComponent', () => {
     TestBed.configureTestingModule({
       imports: [
         QueueModule,
-        BrowserModule
-      ],
-      declarations: [
-      ],
-      providers: [
-        { provide: Store, useClass: TestStore }
+        BrowserModule,
+        StoreModule.forRoot(appStore.reducers, { metaReducers: appStore.metaReducers }),
       ],
       schemas: [ CUSTOM_ELEMENTS_SCHEMA ]
     }).compileComponents();
@@ -35,10 +32,9 @@ describe('QueueComponent', () => {
     component = fixture.debugElement.componentInstance;
   }));
 
-  beforeEach(inject([Store], (testStore: TestStore<queueStore.QueueState>) => {
+  beforeEach(inject([Store], (testStore: Store<queueStore.QueueState>) => {
     store = testStore;
     dispatchSpy = spyOn(store, 'dispatch');
-    store.setState(queueState);
   }));
 
   it('should create a component', async () => {

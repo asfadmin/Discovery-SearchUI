@@ -19,7 +19,6 @@ import { WktService } from './wkt.service';
 import { RangeService } from './range.service';
 
 
-
 @Injectable({
   providedIn: 'root'
 })
@@ -240,6 +239,7 @@ export class UrlStateService {
     }, {
       name: 'polygon',
       source: this.mapService.searchPolygon$.pipe(
+        skip(1),
         map(polygon => ({ polygon }))
       ),
       loader: this.loadSearchPolygon

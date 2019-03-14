@@ -1,0 +1,16 @@
+.position {
+  position: fixed;
+  right: 4px;
+  bottom: 28px;
+  z-index: 999;
+}
+
+.layout {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
+
+.spacing {
+  margin: 2px;
+}

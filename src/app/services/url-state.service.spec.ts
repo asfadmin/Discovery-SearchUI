@@ -51,9 +51,8 @@ describe('UrlStateService', () => {
   it('should run #load()', () => {
     getTestScheduler().flush();
     service.load();
-    expect(routerNavigateSpy).toHaveBeenCalled();
 
-    // TODO: Write more indepth tests!
+    // TODO: Figure out how to test this better!
   });
 });
 

@@ -1,0 +1,25 @@
+<mat-button-toggle-group [value]="interaction"
+  name="viewSelect" aria-label="Font Style">
+
+  <mat-button-toggle
+    (click)="onDrawSelected()"
+    [value]="types.DRAW"
+    matTooltip="Draw mode">
+    <mat-icon class="interaction-icon">add</mat-icon>
+  </mat-button-toggle>
+
+  <mat-button-toggle
+    (click)="onEditSelected()"
+    [value]="types.EDIT"
+    matTooltip="Edit mode">
+    <mat-icon class="interaction-icon">edit</mat-icon>
+  </mat-button-toggle>
+
+  <mat-button-toggle
+    (click)="onUploadSelected()"
+    [value]="types.UPLOAD"
+    matTooltip="Import Area of Interest">
+    <mat-icon class="interaction-icon">insert_drive_file</mat-icon>
+  </mat-button-toggle>
+
+</mat-button-toggle-group>
