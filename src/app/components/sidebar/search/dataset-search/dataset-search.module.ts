@@ -10,6 +10,7 @@ import { PlatformSelectorModule } from './platform-selector';
 import { DateSelectorModule } from './date-selector';
 import { OtherSelectorModule } from './other-selector';
 import { MaxResultsSelectorComponent } from './max-results-selector/max-results-selector.component';
+import { AoiUploadModule } from './aoi-upload';
 
 import { DatasetSearchComponent } from './dataset-search.component';
 
@@ -29,6 +30,7 @@ import { DatasetSearchComponent } from './dataset-search.component';
     DateSelectorModule,
     PathSelectorModule,
     OtherSelectorModule,
+    AoiUploadModule,
   ],
   exports: [
     DatasetSearchComponent,
