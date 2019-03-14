@@ -17,12 +17,22 @@
   </div>
 
   <button
+    (click)="onEarthdataLogin()"
+    matTooltip="Login"
+    class="spacing"
+    color="basic"
+    mat-fab>
+      <mat-icon>account_circle</mat-icon>
+  </button>
+
+  <button
     matTooltip="Share Search"
     class="spacing"
     color="basic"
     mat-fab>
       <mat-icon>share</mat-icon>
   </button>
+
   <button
     matTooltip="ASF Apps"
     class="spacing"
