@@ -17,12 +17,12 @@
   </div>
 
   <button
-    (click)="onEarthdataLogin()"
+    (click)="onAccountButtonClicked()"
     matTooltip="Login"
     class="spacing"
     color="basic"
     mat-fab>
-      <mat-icon>account_circle</mat-icon>
+    <mat-icon>{{ isLoggedIn ? 'check_circle' : 'account_circle' }}</mat-icon>
   </button>
 
   <button

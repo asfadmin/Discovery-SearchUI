@@ -1,6 +1,7 @@
 import { Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
 
-import { interval, Subject } from 'rxjs';
+import { interval, Subject, Subscription } from 'rxjs';
 import { map, takeUntil, tap, delay, take } from 'rxjs/operators';
 
 import { Store } from '@ngrx/store';
@@ -8,6 +9,7 @@ import { Store } from '@ngrx/store';
 import { AppState } from '@store';
 import * as queueStore from '@store/queue';
 import { Sentinel1Product, ViewType } from '@models';
+import { environment } from '@environments/environment';
 
 @Component({
   selector: 'app-nav-bar',
@@ -19,19 +21,39 @@ export class NavBarComponent {
 
   @Input() products: Sentinel1Product[];
 
+  private isLoggedIn = false;
+  private loginProcess: Subscription;
+
+  // FIXME: When the dev/test/prod sites have asf links this can be enabled
+  private vertexAuthUrl = false /* environment.production */ ?
+    'https://vertex.daac.asf.alaska.edu' :
+    'https://vertex-dev.asf.alaska.edu';
+
+  constructor(private http: HttpClient) {}
+
   public onOpenDownloadQueue(): void {
     this.openQueue.emit();
   }
 
-  public onEarthdataLogin(): void {
-    const vertexUrl = window.location.origin;
-    const appRedirect = `${vertexUrl}?uiView=${ViewType.LOGIN}`;
+  private onAccountButtonClicked() {
+    if (!this.isLoggedIn) {
+      this.earthdataLogin();
+    } else {
+      console.log('use is logged in...');
+    }
+  }
+
+  private earthdataLogin(): void {
+    const localUrl = window.location.origin;
+
+    const appRedirect = `${localUrl}?uiView=${ViewType.LOGIN}`;
 
     const url = 'https://urs.earthdata.nasa.gov/oauth/authorize' +
       '?client_id=BO_n7nTIlMljdvU6kRRB3g&response_type=code' +
-      '&redirect_uri=https://vertex.daac.asf.alaska.edu/services/urs4_token_request' +
+      `&redirect_uri=${this.vertexAuthUrl}/services/urs4_token_request` +
       `&state=${appRedirect}`;
 
+    console.log(url);
     const loginWindow = window.open(
       url,
       'Vertex: URS Earth Data Authorization',
@@ -40,12 +62,18 @@ export class NavBarComponent {
 
     const loginDone = new Subject();
 
-    const closeWindow = interval(500).pipe(
+    if (this.loginProcess) {
+      this.loginProcess.unsubscribe();
+    }
+
+    this.loginProcess = interval(500).pipe(
       take(50),
       takeUntil(loginDone),
     ).subscribe(_ => {
         try {
-          if (loginWindow.location.href === appRedirect) {
+          if (loginWindow.location.host === window.location.host) {
+            loginWindow.close();
+            this.isLoggedIn = true;
             loginDone.next();
           }
         } catch (e) {
