@@ -1,18 +1,20 @@
 import { createFeatureSelector, createSelector } from '@ngrx/store';
 
-import { FilterType, SearchType } from '@models';
+import { FilterType, SearchType, ViewType } from '@models';
 
 import { UIActionType, UIActions } from './ui.action';
 
 
 export interface UIState {
   isSidebarOpen: boolean;
+  uiView: ViewType;
   selectedFilter: FilterType | undefined;
   searchType: SearchType | null;
 }
 
 export const initState: UIState = {
   isSidebarOpen: true,
+  uiView: ViewType.MAIN,
   selectedFilter: FilterType.PLATFORM,
   searchType: null,
 };
@@ -56,6 +58,13 @@ export function uiReducer(state = initState, action: UIActions): UIState {
         };
     }
 
+    case UIActionType.SET_UI_VIEW: {
+      return {
+          ...state,
+          uiView: action.payload
+        };
+    }
+
     default: {
       return state;
     }
@@ -83,4 +92,9 @@ export const getSearchType = createSelector(
 export const getIsSidebarOpen = createSelector(
   getFiltersMenuState,
   state => state.isSidebarOpen
+);
+
+export const getUiView = createSelector(
+  getUIState,
+  state => state.uiView
 );
