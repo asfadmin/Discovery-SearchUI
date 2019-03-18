@@ -18,6 +18,7 @@ export function searchReducer(state = initState, action: SearchActions): SearchS
     case SearchActionType.MAKE_SEARCH: {
       return {
         ...state,
+        error: null,
         isLoading: true
       };
     }

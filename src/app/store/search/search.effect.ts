@@ -29,10 +29,11 @@ export class SearchEffects {
     withLatestFrom(this.searchParams$.getParams()),
     map(([_, params]) => params),
     switchMap(
-      params => this.asfApiService.query<any[]>(params)
+      params => this.asfApiService.query<any[]>(params).pipe(
+        map(response => new SearchResponse(response)),
+        catchError(error => of(new SearchError(`${error.message}`))),
+      )
     ),
-    map(response => new SearchResponse(response)),
-    catchError(error => of(new SearchError(`${error.message}`)))
   );
 
   @Effect()
