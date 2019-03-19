@@ -1,6 +1,6 @@
 /* Jenkinsfile for SearchUI */
 pipeline {
-    agent any
+    agent { label 'nodejs' }
     stages {
         stage('dependencies') {
             steps {
