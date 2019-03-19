@@ -76,6 +76,7 @@ export class SidebarComponent implements OnInit {
   }
 
   public onSetSearchType(searchType: models.SearchType): void {
+    this.clearSearch.emit();
     this.store$.dispatch(new uiStore.SetSearchType(searchType));
   }
 

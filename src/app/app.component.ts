@@ -8,9 +8,9 @@ import { filter, map, switchMap, tap, catchError } from 'rxjs/operators';
 
 import { AppState } from '@store';
 import * as granulesStore from '@store/granules';
-import * as mapStore from '@store/map';
 import * as filterStore from '@store/filters';
 import * as searchStore from '@store/search';
+import * as uiStore from '@store/ui';
 
 import * as services from '@services';
 import * as models from './models';
@@ -22,6 +22,7 @@ import * as models from './models';
 })
 export class AppComponent implements OnInit {
   public shouldOmitSearchPolygon$ = this.store$.select(filterStore.getShouldOmitSearchPolygon);
+  public uiView$ = this.store$.select(uiStore.getUiView);
 
   public interactionTypes = models.MapInteractionModeType;
 

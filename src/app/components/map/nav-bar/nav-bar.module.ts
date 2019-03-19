@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { HttpClientModule } from '@angular/common/http';
 
 import { MatBadgeModule } from '@angular/material';
 
@@ -12,6 +13,7 @@ import { NavBarComponent } from './nav-bar.component';
   ],
   imports: [
     CommonModule,
+    HttpClientModule,
     MatBadgeModule,
     MatSharedModule,
   ],
