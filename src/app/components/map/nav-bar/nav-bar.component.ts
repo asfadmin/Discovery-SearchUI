@@ -21,7 +21,7 @@ export class NavBarComponent {
 
   @Input() products: Sentinel1Product[];
 
-  private isLoggedIn = false;
+  public isLoggedIn = false;
   private loginProcess: Subscription;
 
   // FIXME: When the dev/test/prod sites have asf links this can be enabled
@@ -35,7 +35,7 @@ export class NavBarComponent {
     this.openQueue.emit();
   }
 
-  private onAccountButtonClicked() {
+  public onAccountButtonClicked() {
     if (!this.isLoggedIn) {
       this.earthdataLogin();
     } else {
