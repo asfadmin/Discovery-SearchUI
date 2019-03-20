@@ -12,8 +12,8 @@ import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import * as store from './store';
 
 import { SidebarModule } from '@components/sidebar';
-import { SpreadsheetModule } from '@components/spreadsheet';
 import { MapModule } from '@components/map';
+import { LoginModule } from '@components/login';
 
 import * as services from '@services';
 
@@ -40,8 +40,8 @@ export const routes = [
     !environment.production ? StoreDevtoolsModule.instrument() : [],
 
     SidebarModule,
-    SpreadsheetModule,
     MapModule,
+    LoginModule,
   ],
   providers: [
     services.AsfApiService,
@@ -54,6 +54,7 @@ export const routes = [
     services.SearchParamsService,
     services.RangeService,
     services.PolygonValidationService,
+    services.DateExtremaService,
   ],
   bootstrap: [ AppComponent ],
 })

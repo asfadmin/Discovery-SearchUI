@@ -11,11 +11,6 @@ import { UIState, uiReducer } from './ui';
 import { SearchState, searchReducer } from './search';
 import { QueueState, queueReducer } from './queue';
 
-export * from './map';
-export * from './granules';
-export * from './filters';
-export * from './ui';
-
 
 export interface AppState {
   granules: GranulesState;

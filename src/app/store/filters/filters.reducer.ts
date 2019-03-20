@@ -30,7 +30,7 @@ export interface PlatformsState {
   selected: Set<string>;
 }
 
-const initState: FiltersState = {
+export const initState: FiltersState = {
   platforms: {
     entities: models.platforms.reduce(
       (platformsObj, platform) => {

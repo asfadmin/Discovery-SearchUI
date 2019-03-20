@@ -19,7 +19,6 @@ import { WktService } from './wkt.service';
 import { RangeService } from './range.service';
 
 
-
 @Injectable({
   providedIn: 'root'
 })
@@ -100,6 +99,20 @@ export class UrlStateService {
         map(selectedFilter => ({ selectedFilter }))
       ),
       loader: this.loadSelectedFilter
+    }, {
+      name: 'searchType',
+      source: this.store$.select(uiStore.getSearchType).pipe(
+        skip(1),
+        map(searchType => ({ searchType }))
+      ),
+      loader: this.loadSearchType
+    }, {
+      name: 'uiView',
+      source: this.store$.select(uiStore.getUiView).pipe(
+        skip(1),
+        map(uiView => ({ uiView }))
+      ),
+      loader: this.loadUiView
     }];
   }
 
@@ -233,6 +246,7 @@ export class UrlStateService {
     }, {
       name: 'polygon',
       source: this.mapService.searchPolygon$.pipe(
+        skip(1),
         map(polygon => ({ polygon }))
       ),
       loader: this.loadSearchPolygon
@@ -258,6 +272,14 @@ export class UrlStateService {
     if (Object.values(models.FilterType).includes(selected)) {
 
       const action = new uiStore.SetSelectedFilter(<models.FilterType>selected);
+      this.store$.dispatch(action);
+    }
+  }
+
+  private loadSearchType = (searchType: string): void => {
+    if (Object.values(models.SearchType).includes(searchType)) {
+
+      const action = new uiStore.SetSearchType(<models.SearchType>searchType);
       this.store$.dispatch(action);
     }
   }
@@ -306,7 +328,7 @@ export class UrlStateService {
     this.store$.dispatch(action);
   }
 
-  public loadSearchPolygon = (polygon: string): void => {
+  private loadSearchPolygon = (polygon: string): void => {
     const features = this.wktService.wktToFeature(
       polygon,
       this.mapService.epsg()
@@ -484,6 +506,14 @@ export class UrlStateService {
     const action = new filterStore.SetFlightDirections(directions);
 
     this.store$.dispatch(action);
+  }
+
+  private loadUiView = (viewType: string): void => {
+    if (Object.values(models.ViewType).includes(viewType)) {
+      const action = new uiStore.SetUiView(<models.ViewType>viewType);
+
+      this.store$.dispatch(action);
+    }
   }
 
 

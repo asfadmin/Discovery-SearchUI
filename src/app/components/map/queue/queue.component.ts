@@ -46,7 +46,7 @@ export class QueueComponent {
     this.downloadMetadata(AsfApiOutputFormat.METALINK);
   }
 
-  public downloadMetadata(format: AsfApiOutputFormat): void {
+  private downloadMetadata(format: AsfApiOutputFormat): void {
     this.store$.dispatch(new queueStore.DownloadMetadata(format));
   }
 }

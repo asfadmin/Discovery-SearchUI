@@ -12,7 +12,7 @@ export interface QueueState {
   ids: string[];
 }
 
-const initState: QueueState = {
+export const initState: QueueState = {
   products: {},
   ids: [],
 };

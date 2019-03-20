@@ -5,6 +5,8 @@
   <app-sidebar
      (newSearch)="onNewSearch()"
      (clearSearch)="onClearSearch()"
-     (openSpreadsheet)="onOpenSpreadsheet()"
     ></app-sidebar>
+
+  <app-login
+    [view$]="uiView$"></app-login>
 </div>

@@ -21,7 +21,6 @@ import * as models from '@models';
 import { MapService, WktService } from '@services';
 import { QueueComponent } from './queue';
 
-
 @Component({
   selector: 'app-map',
   templateUrl: './map.component.html',
@@ -30,21 +29,18 @@ import { QueueComponent } from './queue';
 export class MapComponent implements OnInit {
   @Output() loadUrlState = new EventEmitter<void>();
 
-  public showSettings = false;
-
-  public view$ = this.store$.select(mapStore.getMapView);
-  public drawMode$ = this.store$.select(mapStore.getMapDrawMode);
   public interactionMode$ = this.store$.select(mapStore.getMapInteractionMode);
-  public isMapInitialized$ = this.store$.select(mapStore.getIsMapInitialization);
-  public isDrawMenuDisabled$ = this.interactionMode$.pipe(
-    map(mode => mode !== models.MapInteractionModeType.DRAW)
-  );
-
-  public granules$ = this.store$.select(granulesStore.getGranules);
-  public focusedGranule$ = this.store$.select(granulesStore.getFocusedGranule);
-  public queuedProducts$ = this.store$.select(queueStore.getQueuedProducts);
-
   public mousePosition$ = this.mapService.mousePosition$;
+
+  private isMapInitialized$ = this.store$.select(mapStore.getIsMapInitialization);
+  private granules$ = this.store$.select(granulesStore.getGranules);
+  private focusedGranule$ = this.store$.select(granulesStore.getFocusedGranule);
+  private view$ = this.store$.select(mapStore.getMapView);
+  private drawMode$ = this.store$.select(mapStore.getMapDrawMode);
+
+  public queuedProducts$ = this.store$.select(queueStore.getQueuedProducts).pipe(
+    map(q => q || [])
+  );
 
   constructor(
     private store$: Store<AppState>,
@@ -62,31 +58,19 @@ export class MapComponent implements OnInit {
       .subscribe(mode => this.mapService.setInteractionMode(mode));
   }
 
-  public onNewProjection(view: models.MapViewType): void {
-    this.store$.dispatch(new mapStore.SetMapView(view));
-  }
-
-  public onToggleSettings(): void {
-    this.showSettings = !this.showSettings;
-  }
-
   public onOpenDownloadQueue(): void {
     this.dialog.open(QueueComponent, {
       width: '550px', height: '700px', minHeight: '50%'
     });
   }
 
-  public onNewDrawMode(mode: models.MapDrawModeType): void {
-    this.store$.dispatch(new mapStore.SetMapDrawMode(mode));
+  public onFileHovered(e): void {
+    this.onNewInteractionMode(models.MapInteractionModeType.UPLOAD);
+    e.preventDefault();
   }
 
   public onNewInteractionMode(mode: models.MapInteractionModeType): void {
     this.store$.dispatch(new mapStore.SetMapInteractionMode(mode));
-  }
-
-  public onFileHovered(e): void {
-    this.onNewInteractionMode(models.MapInteractionModeType.UPLOAD);
-    e.preventDefault();
   }
 
   public onNewSearchPolygon(polygon: string): void {

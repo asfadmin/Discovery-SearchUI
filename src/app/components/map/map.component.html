@@ -2,50 +2,18 @@
   (dragover)="onFileHovered($event)"
   ></div>
 
-<ng-container *ngIf="queuedProducts$ | async as products">
-  <button
-    style="background: white" class="download-queue-btn"
-    (click)="onOpenDownloadQueue()"
-    matTooltip="Download Queue"
-    [disabled]="products.length <= 0"  color="basic"
-    mat-fab>
-      <mat-icon
-        [matBadge]="products.length" matBadgePosition="below" matBadgeOverlap="false">
-          cloud_download
-      </mat-icon>
-  </button>
-</ng-container>
-<button
-  (click)="onToggleSettings()"
-  matTooltip="Settings"
-  class="settings-btn" color="basic"
-  mat-fab>
-    <mat-icon>settings</mat-icon>
-</button>
+<app-nav-bar
+  (openQueue)="onOpenDownloadQueue()"
+  [products]="queuedProducts$ | async"
+  ></app-nav-bar>
 
-<ng-container *ngIf="showSettings">
-  <app-file-upload
-    (dialogClose)="onFileUploadDialogClosed($event)"
-    (newSearchPolygon)="onNewSearchPolygon($event)"
-    [interaction$]="interactionMode$">
-  </app-file-upload>
+<app-file-upload
+  (dialogClose)="onFileUploadDialogClosed($event)"
+  (newSearchPolygon)="onNewSearchPolygon($event)"
+  [interaction$]="interactionMode$">
+</app-file-upload>
 
-  <app-view-selector
-    (newProjection)="onNewProjection($event)"
-    [view]="view$ | async">
-  </app-view-selector>
-
-  <app-draw-selector
-    (newDrawMode)="onNewDrawMode($event)"
-    [isDisabled]="isDrawMenuDisabled$ | async"
-    [drawMode]="drawMode$ | async">
-  </app-draw-selector>
-
-  <app-interaction-selector
-    (newInteraction)="onNewInteractionMode($event)"
-    [interaction]="interactionMode$ | async">
-  ></app-interaction-selector>
-</ng-container>
+<app-map-controls></app-map-controls>
 
 <div class="meatball__position">
   <a href="https://earthdata.nasa.gov/" target="_blank">

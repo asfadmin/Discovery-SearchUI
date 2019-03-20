@@ -1,22 +1,28 @@
 import { Injectable } from '@angular/core';
 
 import { Actions, Effect, ofType } from '@ngrx/effects';
-import { Action } from '@ngrx/store';
+import { Action, Store } from '@ngrx/store';
 
 import { Observable, of } from 'rxjs';
 import { map, withLatestFrom, switchMap, catchError } from 'rxjs/operators';
 
 import { AppState } from '../app.reducer';
 import * as granulesStore from '@store/granules';
+import * as filtersStore from '@store/filters';
 
 import * as services from '@services';
 
-import { SearchActionType, SearchResponse, SearchError } from './search.action';
+import {
+  SearchActionType,
+  SearchResponse, SearchError, CancelSearch, SearchCanceled
+} from './search.action';
+import { getIsCanceled } from './search.reducer';
 
 @Injectable()
 export class SearchEffects {
   constructor(
     private actions$: Actions,
+    private store$: Store<AppState>,
     private searchParams$: services.SearchParamsService,
     private asfApiService: services.AsfApiService,
     private productService: services.ProductService,
@@ -29,10 +35,20 @@ export class SearchEffects {
     withLatestFrom(this.searchParams$.getParams()),
     map(([_, params]) => params),
     switchMap(
-      params => this.asfApiService.query<any[]>(params)
+      params => this.asfApiService.query<any[]>(params).pipe(
+        withLatestFrom(this.store$.select(getIsCanceled)),
+        map(([response, isCanceled]) =>
+          !isCanceled ?  new SearchResponse(response) : new SearchCanceled()
+        ),
+        catchError(error => of(new SearchError(`${error.message}`))),
+      )
     ),
-    map(response => new SearchResponse(response)),
-    catchError(error => of(new SearchError(`${error.message}`)))
+  );
+
+  @Effect()
+  private cancelSearchWhenFiltersCleared: Observable<Action> = this.actions$.pipe(
+    ofType(filtersStore.FiltersActionType.CLEAR_FILTERS),
+    map(_ => new CancelSearch())
   );
 
   @Effect()

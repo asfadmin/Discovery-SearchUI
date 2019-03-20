@@ -6,13 +6,11 @@ import { Store } from '@ngrx/store';
 
 import { filter, map, switchMap, tap, catchError } from 'rxjs/operators';
 
-import { SpreadsheetComponent } from '@components/spreadsheet';
-
 import { AppState } from '@store';
 import * as granulesStore from '@store/granules';
-import * as mapStore from '@store/map';
 import * as filterStore from '@store/filters';
 import * as searchStore from '@store/search';
+import * as uiStore from '@store/ui';
 
 import * as services from '@services';
 import * as models from './models';
@@ -23,14 +21,13 @@ import * as models from './models';
   styleUrls  : ['./app.component.scss']
 })
 export class AppComponent implements OnInit {
-
   public shouldOmitSearchPolygon$ = this.store$.select(filterStore.getShouldOmitSearchPolygon);
+  public uiView$ = this.store$.select(uiStore.getUiView);
 
   public interactionTypes = models.MapInteractionModeType;
 
   constructor(
     private store$: Store<AppState>,
-    private bottomSheet: MatBottomSheet,
     private mapService: services.MapService,
     private urlStateService: services.UrlStateService,
     private polygonValidationService: services.PolygonValidationService,
@@ -42,12 +39,6 @@ export class AppComponent implements OnInit {
 
   public onLoadUrlState(): void {
     this.urlStateService.load();
-  }
-
-  public onOpenSpreadsheet(): void {
-    this.bottomSheet.open(SpreadsheetComponent, {
-      panelClass: 'spreadsheet-width'
-    });
   }
 
   public onNewSearch(): void {

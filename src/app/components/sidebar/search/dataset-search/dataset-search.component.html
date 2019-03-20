@@ -1,0 +1,49 @@
+<app-platform-selector
+  [platforms]="platforms$ | async"
+  [selected]="selectedPlatformNames$ | async"
+  (removeSelected)="onPlatformRemoved($event)"
+  (addSelected)="onPlatformAdded($event)">
+</app-platform-selector>
+
+<app-date-selector
+  [startDate]="startDate$ | async"
+  [endDate]="endDate$ | async"
+  [extrema]="dateRangeExtrema$ | async"
+  (newStart)="onNewStartDate($event)"
+  (newEnd)="onNewEndDate($event)">
+</app-date-selector>
+
+<app-aoi-upload
+  (openFileUpload)="onOpenFileDialog()"
+  [polygon]="polygon$ | async">
+</app-aoi-upload>
+
+<app-path-selector
+  (newPathStart)="onNewPathStart($event)"
+  (newPathEnd)="onNewPathEnd($event)"
+  (newFrameStart)="onNewFrameStart($event)"
+  (newFrameEnd)="onNewFrameEnd($event)"
+  (newOmitSearchPolygon)="onNewOmitGeoRegion($event)"
+  [pathRange]="pathRange$ | async"
+  [shouldOmitSearchPolygon]="shouldOmitSearchPolygon$ | async"
+  [frameRange]="frameRange$ | async"
+  [selected]="selectedPlatforms$ | async">
+</app-path-selector>
+
+<app-other-selector
+  (newFlightDirections)="onNewFlightDirections($event)"
+  (newProductTypes)="onNewProductTypes($event)"
+  (newBeamModes)="onNewBeamModes($event)"
+  (newPolarizations)="onNewPolarizations($event)"
+  [productTypes]="platformProductTypes$ | async"
+  [selected]="selectedPlatforms$ | async"
+  [flightDirections]="flightDirections$ | async"
+  [beamModes]="beamModes$ | async"
+  [polarizations]="polarizations$ | async">
+</app-other-selector>
+
+<app-max-results-selector
+  [maxResults]="maxResults$ | async"
+  (newMaxResults)="onNewMaxResults($event)">
+</app-max-results-selector>
+
