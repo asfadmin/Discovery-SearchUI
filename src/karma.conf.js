@@ -19,10 +19,10 @@ module.exports = function (config) {
       { pattern: './src/test/ts', watched: false}
     ],
     preprocessors: {
-      './src/test.ts': ['@angular/cli']
+      './src/test.ts': ['@angular-devkit/build-angular']
     },
     mime:  {
-      'text/x-typescript': ['@angular/cli']
+      'text/x-typescript': ['@angular-devkit/build-angular']
     },
     coverageIstanbulReporter: {
       dir: require('path').join(__dirname, '../coverage'),
