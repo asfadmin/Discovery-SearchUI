@@ -1,15 +1,12 @@
 /* Jenkinsfile for SearchUI */
 pipeline {
     agent { label 'nodejs' }
-    environment {
-        CHROME_BIN = '/bin/google-chrome'
     }
     stages {
         stage('dependencies') {
             steps {
                 echo 'Setting up dependencies ...'
                 sh 'npm install'
-                sh 'npm install -g @angular/cli@6.2.4'
             }
         }
         stage('build') {
