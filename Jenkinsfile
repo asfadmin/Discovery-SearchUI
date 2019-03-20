@@ -11,19 +11,19 @@ pipeline {
         stage('build') {
             steps {
                 echo 'Building ...'
-                sh 'ng build'
+                sh 'npm build'
             }
         }
         stage('unit test') {
 	    steps {
 		echo 'Running Unit Tests ...'
-                sh 'ng test'
+                sh 'npm test'
             }
         }
         stage('e2e test') {
             steps {
                 echo 'Running end-to-end Tests ...'
-                sh 'ng e2e'
+                sh 'npm e2e'
             }
         }
 	stage('deploy') {
