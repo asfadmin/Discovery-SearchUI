@@ -39,7 +39,12 @@ export class NavBarComponent {
     if (!this.isLoggedIn) {
       this.earthdataLogin();
     } else {
-      console.log('use is logged in...');
+      console.log('user is logged in...');
+
+      this.http.get(`${this.vertexAuthUrl}/services/profile_info`, {
+        withCredentials: true
+      })
+        .subscribe(console.log);
     }
   }
 
