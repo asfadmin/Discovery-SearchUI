@@ -14,19 +14,19 @@ pipeline {
         stage('build') {
             steps {
                 echo 'Building ...'
-                sh 'npm build'
+                sh 'npm run build'
             }
         }
         stage('unit test') {
 	    steps {
 		echo 'Running Unit Tests ...'
-                sh 'npm test'
+                sh 'npm run test'
             }
         }
         stage('e2e test') {
             steps {
                 echo 'Running end-to-end Tests ...'
-                sh 'npm e2e'
+                sh 'npm run e2e'
             }
         }
 	stage('deploy') {
