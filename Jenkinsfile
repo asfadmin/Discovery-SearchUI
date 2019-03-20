@@ -1,6 +1,9 @@
 /* Jenkinsfile for SearchUI */
 pipeline {
     agent { label 'nodejs' }
+    environment {
+        CHROME_BIN = '/bin/google-chrome'
+    }
     stages {
         stage('dependencies') {
             steps {
