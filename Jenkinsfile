@@ -1,7 +1,6 @@
 /* Jenkinsfile for SearchUI */
 pipeline {
     agent { label 'nodejs' }
-    }
     stages {
         stage('dependencies') {
             steps {
@@ -33,5 +32,6 @@ pipeline {
 	/* cd dist${APPLICATION}	      */
 	/* aws s3 sync . "s3://${S3_BUCKET}"  */
        }
-   }
+    }
+  }
 }
