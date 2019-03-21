@@ -1,3 +1,8 @@
+<app-compact-search-selector
+  (newSearchType)="onSetSearchType($event)"
+  [selectedSearchType]="searchType$ | async">
+</app-compact-search-selector>
+
 <ng-container *ngIf="selectedSearchType === searchTypes.DATASET">
   <app-dataset-search></app-dataset-search>
 </ng-container>
