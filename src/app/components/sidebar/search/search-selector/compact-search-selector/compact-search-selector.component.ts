@@ -1,15 +1,23 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+
+import * as models from '@models';
 
 @Component({
   selector: 'app-compact-search-selector',
   templateUrl: './compact-search-selector.component.html',
   styleUrls: ['./compact-search-selector.component.css']
 })
-export class CompactSearchSelectorComponent implements OnInit {
+export class CompactSearchSelectorComponent {
+  @Input() selectedSearchType: models.SearchType;
 
-  constructor() { }
+  @Output() newSearchType = new EventEmitter<models.SearchType>();
 
-  ngOnInit() {
+  public searchTypes = models.SearchType;
+
+  public onSetSearchType(searchType: models.SearchType): void {
+    this.newSearchType.emit(
+      searchType === this.selectedSearchType ?
+        null : searchType
+    );
   }
-
 }
