@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 
 import { Store } from '@ngrx/store';
 
@@ -13,6 +13,8 @@ import * as models from '@models';
   styleUrls: ['./search.component.css']
 })
 export class SearchComponent implements OnInit {
+  @Output() newSearchType = new EventEmitter<models.SearchType>();
+
   public searchTypes = models.SearchType;
   public searchType$ = this.store$.select(uiStore.getSearchType);
   public selectedSearchType: models.SearchType;
@@ -27,4 +29,7 @@ export class SearchComponent implements OnInit {
     );
   }
 
+  public onSetSearchType(searchType: models.SearchType): void {
+    this.newSearchType.emit(searchType);
+  }
 }

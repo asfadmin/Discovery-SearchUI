@@ -5,6 +5,7 @@ import { MatSharedModule } from '@shared';
 
 import { ListSearchModule, ListSearchComponent } from './list-search';
 import { DatasetSearchModule, DatasetSearchComponent } from './dataset-search';
+import { CompactSearchSelectorModule } from './search-selector';
 import { SearchComponent } from './search.component';
 
 @NgModule({
@@ -14,6 +15,7 @@ import { SearchComponent } from './search.component';
     MatSharedModule,
     ListSearchModule,
     DatasetSearchModule,
+    CompactSearchSelectorModule,
   ],
   exports: [
     SearchComponent

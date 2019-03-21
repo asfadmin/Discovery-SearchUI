@@ -13,6 +13,6 @@ describe('Open the link', () => {
 
   it('should present viewpoint', () => {
     page.navigateTo();
-    expect(page.getTitleText()).toEqual("ASF's Data Portal");
+    expect(page.getTitleText()).toEqual('ASF Data Portal');
   });
 });
