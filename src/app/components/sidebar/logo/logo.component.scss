@@ -10,7 +10,7 @@
   color: $uaf-neutrals-3;
 }
 
-mat-card {
+.mat-card {
   @extend %mat-card-shared;
   border-bottom-color: black;
   border-bottom-style: solid;
@@ -18,12 +18,12 @@ mat-card {
   border-radius: 0;
 }
 
-mat-card-title {
+.mat-card-title {
   @extend %mat-card-shared;
   text-align: center;
   color: $uaf-primary-yellow;
 }
 
-mat-card-subtitle {
+.mat-card-subtitle {
   @extend %mat-card-shared;
 }
