@@ -9,7 +9,7 @@ import { SidebarComponent } from './sidebar.component';
 import { ToggleButtonModule } from './toggle-button';
 import { SearchBarModule } from './search/search-bar';
 
-import { SearchSelectorModule } from './search/search-selector';
+import { DetailedSearchSelectorModule } from './search/search-selector';
 import { SearchModule } from './search';
 import { ResultsModule } from './results';
 
@@ -28,7 +28,7 @@ import { LogoComponent } from './logo/logo.component';
     ResultsModule,
 
     SearchModule,
-    SearchSelectorModule,
+    DetailedSearchSelectorModule,
   ],
   declarations: [
     SidebarComponent,

@@ -3,11 +3,11 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import * as models from '@models';
 
 @Component({
-  selector: 'app-search-selector',
-  templateUrl: './search-selector.component.html',
-  styleUrls: ['./search-selector.component.css']
+  selector: 'app-detailed-search-selector',
+  templateUrl: './detailed-search-selector.component.html',
+  styleUrls: ['./detailed-search-selector.component.css']
 })
-export class SearchSelectorComponent {
+export class DetailedSearchSelectorComponent {
   @Input() selectedSearchType: models.SearchType;
 
   @Output() newSearchType = new EventEmitter<models.SearchType>();

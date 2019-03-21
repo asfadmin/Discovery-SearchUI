@@ -14,10 +14,10 @@
       (click)="onAppReset()">
     </app-logo>
 
-    <app-search-selector
+    <app-detailed-search-selector
       (newSearchType)="onSetSearchType($event)"
       [selectedSearchType]="searchType$ | async">
-    </app-search-selector>
+    </app-detailed-search-selector>
 
     <mat-card *ngIf="searchError$ | async as error" class="card-spacing">
       <b>Error:</b> {{error}}
