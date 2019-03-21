@@ -22,11 +22,20 @@
     <mat-list-item *ngFor="let product of products">
         <h4 mat-line fxLayout="row" fxLayoutAlign="space-between">
 
-        <b>{{ product.file | truncate : 10 }}{{ product.file | truncate : -4 : '' }}</b>
+          <span *ngIf="product.file.length > 29">
+            <b>{{ product.file | truncate : 25 }}{{ product.file | truncate : -4 : '' }}</b>
+          </span>
+          <span *ngIf="product.file.length <= 29">
+            <b>{{ product.file }}</b>
+          </span>
         <div>
-          <span style="margin-right: 10px">{{ product.bytes | readableSizeFromBytes }}</span>
+
+          <span *ngIf="product.bytes !== 0" style="margin-right: 10px">
+            {{ product.bytes | readableSizeFromBytes }}
+          </span>
+
           <fa-icon (click)="onNewQueueProduct(product)" matTooltip="Add to Queue" class="dl-icon" [icon]="selectIcon"></fa-icon>
-          <a matTooltip="Download" target="_blank" [href]="granule.downloadUrl">
+          <a matTooltip="Download" target="_blank" [href]="product.downloadUrl">
             <fa-icon class="dl-icon" [icon]="downloadIcon"></fa-icon>
           </a>
         </div>
@@ -85,7 +94,7 @@
       color="primary"
       target="_blank"
       [href]="granule.downloadUrl">
-      {{ granule.bytes | readableSizeFromBytes }}
+      Download
       <fa-icon class="dl-icon" [icon]="downloadIcon"></fa-icon>
     </a>
 
