@@ -2,3 +2,7 @@
   margin-left: 4px;
   vertical-align: middle;
 }
+
+.aoi-form {
+  display: flex;
+}

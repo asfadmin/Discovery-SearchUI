@@ -4,21 +4,15 @@
   <div class="form-layout">
     <mat-form-field style="margin-right: 10px; width: 90%;">
       <input matInput placeholder="Current Area of Intreset" [value]="polygon">
+
+      <button matTooltip="Copy to clipboard" style="margin-left: 10px" mat-icon-button matSuffix>
+        <mat-icon>file_copy</mat-icon>
+      </button>
     </mat-form-field>
 
+
     <button (click)="onFileUpload()" mat-raised-button color="primary" matTooltip="Import Area of Intreset">
-      <mat-icon>insert_drive_file</mat-icon>
+      Import Search Area
     </button>
-
-    <button mat-raised-button class="export-btn" color="basic" [matMenuTriggerFor]="menu" matTooltip="Export Area of Intreset">
-      Export As <mat-icon>arrow_right</mat-icon>
-    </button>
-
-    <mat-menu #menu="matMenu">
-      <button mat-menu-item>Shapefile</button>
-      <button mat-menu-item>KML</button>
-      <button mat-menu-item>Geojson</button>
-      <button mat-menu-item>Well Known Text (WKT)</button>
-    </mat-menu>
   </div>
 </mat-card>
