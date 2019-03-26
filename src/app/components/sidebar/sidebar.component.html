@@ -6,7 +6,9 @@
   [isOpen]="isSidebarOpen$ | async">
 </app-toggle-button>
 
-<app-ribbon>
+<app-ribbon
+  (newAppView)="onNewAppView($event)"
+  [appView]="uiView$ | async">
 </app-ribbon>
 
 <div class="filter-list">

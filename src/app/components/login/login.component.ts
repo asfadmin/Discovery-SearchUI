@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { MatDialog } from '@angular/material';
 
 import { Observable } from 'rxjs';
@@ -16,6 +16,8 @@ import { ViewType } from '@models';
 export class LoginComponent implements OnInit {
   @Input() view$: Observable<ViewType>;
 
+  @Output() closed = new EventEmitter<void>();
+
   constructor(private dialog: MatDialog) { }
 
   ngOnInit(): void {
@@ -28,10 +30,14 @@ export class LoginComponent implements OnInit {
   }
 
   private openLoginDialog(): void {
-     this.dialog.open(LoginDialogComponent , {
+     const dialogRef = this.dialog.open(LoginDialogComponent , {
        maxWidth: '100vw', maxHeight: '100vh',
        height: '100%', width: '100%'
      });
+
+    dialogRef.afterClosed().subscribe(
+      _ => this.closed.emit()
+    );
   }
 
 

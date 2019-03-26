@@ -40,6 +40,7 @@ export class SidebarComponent implements OnInit {
   @Output() clearSearch = new EventEmitter<void>();
 
   public isSidebarOpen$ = this.store$.select(uiStore.getIsSidebarOpen);
+  public uiView$ = this.store$.select(uiStore.getUiView);
 
   public granules$ = this.store$.select(granulesStore.getGranules).pipe(
     tap(granules => {
@@ -95,6 +96,10 @@ export class SidebarComponent implements OnInit {
 
   public onClearSearch(): void {
     this.clearSearch.emit();
+  }
+
+  public onNewAppView(uiView: models.ViewType): void {
+    this.store$.dispatch(new uiStore.SetUiView(uiView));
   }
 }
 
