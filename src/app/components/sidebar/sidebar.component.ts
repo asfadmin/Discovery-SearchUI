@@ -42,6 +42,8 @@ export class SidebarComponent implements OnInit {
   public isSidebarOpen$ = this.store$.select(uiStore.getIsSidebarOpen);
   public uiView$ = this.store$.select(uiStore.getUiView);
 
+  public isHidden = false;
+
   public granules$ = this.store$.select(granulesStore.getGranules).pipe(
     tap(granules => {
       if (granules.length > 0) {
@@ -69,6 +71,10 @@ export class SidebarComponent implements OnInit {
   ngOnInit(): void {
     this.searchType$.subscribe(
       searchType => this.selectedSearchType = searchType
+    );
+
+    this.store$.select(uiStore.getIsHidden).subscribe(
+      isHidden => this.isHidden = isHidden
     );
   }
 
