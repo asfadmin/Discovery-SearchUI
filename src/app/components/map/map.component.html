@@ -4,6 +4,7 @@
 
 <app-nav-bar
   (openQueue)="onOpenDownloadQueue()"
+  [ngClass]="{'hidden': isUiHidden}"
   [products]="queuedProducts$ | async"
   ></app-nav-bar>
 
@@ -13,12 +14,20 @@
   [interaction$]="interactionMode$">
 </app-file-upload>
 
-<app-map-controls></app-map-controls>
+<app-map-controls
+  [ngClass]="{'hidden': isUiHidden}"
+  ></app-map-controls>
 
-<div class="meatball__position">
+<div [ngClass]="{'no-ui-position': isUiHidden, 'default-position': !isUiHidden}">
   <a href="https://earthdata.nasa.gov/" target="_blank">
     <img width="88" height="75" src="assets/meatball.png">
   </a>
+</div>
+
+<div class="view-reset-button-position" [ngClass]="{'hidden': !isUiHidden}">
+  <button (click)="onShowUi()" mat-raised-button>
+    <mat-icon>settings_backup_restore</mat-icon>
+  </button>
 </div>
 
 <app-attributions

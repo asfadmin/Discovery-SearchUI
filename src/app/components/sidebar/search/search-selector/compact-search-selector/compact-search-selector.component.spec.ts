@@ -1,5 +1,6 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
+import { CompactSearchSelectorModule } from './compact-search-selector.module';
 import { CompactSearchSelectorComponent } from './compact-search-selector.component';
 
 describe('CompactSearchSelectorComponent', () => {
@@ -8,7 +9,7 @@ describe('CompactSearchSelectorComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ CompactSearchSelectorComponent ]
+      imports: [ CompactSearchSelectorModule ]
     })
     .compileComponents();
   }));

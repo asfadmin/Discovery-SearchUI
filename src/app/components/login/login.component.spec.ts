@@ -1,6 +1,9 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { cold, getTestScheduler } from 'jasmine-marbles';
+import { ViewType } from '@models';
 
 import { LoginComponent } from './login.component';
+import { LoginModule } from './login.module';
 
 describe('LoginComponent', () => {
   let component: LoginComponent;
@@ -8,14 +11,16 @@ describe('LoginComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ LoginComponent ]
+      imports: [ LoginModule ]
     })
     .compileComponents();
   }));
 
-  beforeEach(() => {
+  beforeEach(async() => {
     fixture = TestBed.createComponent(LoginComponent);
     component = fixture.componentInstance;
+    component.view$ = cold('---x', {x: ViewType.LOGIN});
+
     fixture.detectChanges();
   });
 

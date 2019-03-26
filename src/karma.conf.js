@@ -5,14 +5,14 @@ process.env.CHROME_BIN = require('puppeteer').executablePath()
 module.exports = function (config) {
   config.set({
     basePath: '',
-    frameworks: ['jasmine'],
+    frameworks: ['jasmine', '@angular-devkit/build-angular'],
     plugins: [
       require('karma-jasmine'),
       require('karma-jasmine-html-reporter'),
       require('karma-chrome-launcher'),
       require('karma-coverage-istanbul-reporter'),
+      require('@angular-devkit/build-angular/plugins/karma'),
     ],
-    files: ['tests.js'],
     autoWatch: false,
     browsers: ['ChromeHeadless'],
     customLaunchers: {
@@ -26,7 +26,7 @@ module.exports = function (config) {
               '--disable-extensions'
 	    ]
   	}
-    },	
+    },
     singleRun: true,
     browserNoActivityTimeout: 120000,
     urlRoot: ''

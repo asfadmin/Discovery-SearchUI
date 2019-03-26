@@ -50,4 +50,8 @@ export class AppComponent implements OnInit {
     this.store$.dispatch(new filterStore.ClearFilters());
     this.mapService.clearDrawLayer();
   }
+
+  public onLoginClosed(): void {
+    this.store$.dispatch(new uiStore.SetUiView(models.ViewType.MAIN));
+  }
 }

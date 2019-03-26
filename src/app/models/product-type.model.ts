@@ -1,5 +1,5 @@
 
-const productTypes = [{
+export const productTypes = [{
     platform: 'ALOS PALSAR',
     apiValue: 'KMZ',
     displayName: 'GoogleEarth KMZ'

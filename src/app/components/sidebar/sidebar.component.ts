@@ -40,6 +40,9 @@ export class SidebarComponent implements OnInit {
   @Output() clearSearch = new EventEmitter<void>();
 
   public isSidebarOpen$ = this.store$.select(uiStore.getIsSidebarOpen);
+  public uiView$ = this.store$.select(uiStore.getUiView);
+
+  public isHidden = false;
 
   public granules$ = this.store$.select(granulesStore.getGranules).pipe(
     tap(granules => {
@@ -69,6 +72,10 @@ export class SidebarComponent implements OnInit {
     this.searchType$.subscribe(
       searchType => this.selectedSearchType = searchType
     );
+
+    this.store$.select(uiStore.getIsHidden).subscribe(
+      isHidden => this.isHidden = isHidden
+    );
   }
 
   public onTabChange(tabIndex: number): void {
@@ -95,6 +102,10 @@ export class SidebarComponent implements OnInit {
 
   public onClearSearch(): void {
     this.clearSearch.emit();
+  }
+
+  public onNewAppView(uiView: models.ViewType): void {
+    this.store$.dispatch(new uiStore.SetUiView(uiView));
   }
 }
 

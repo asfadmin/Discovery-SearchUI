@@ -1,10 +1,16 @@
 <div [@changeMenuState]="(isSidebarOpen$ | async) ? 'shown' : 'hidden'"
+  [ngClass]="{'hidden': isHidden}"
   class="position">
 
 <app-toggle-button
   (click)="onToggleHide()"
   [isOpen]="isSidebarOpen$ | async">
 </app-toggle-button>
+
+<app-ribbon
+  (newAppView)="onNewAppView($event)"
+  [appView]="uiView$ | async">
+</app-ribbon>
 
 <div class="filter-list">
 
