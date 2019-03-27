@@ -1,12 +1,13 @@
 import { Component, OnInit } from '@angular/core';
-import { MatBottomSheet } from '@angular/material';
+import { MatBottomSheet, MatDialog } from '@angular/material';
 
-import { map, tap } from 'rxjs/operators';
+import { map, tap, filter } from 'rxjs/operators';
 
 import { Store } from '@ngrx/store';
 
 import { SpreadsheetComponent } from './spreadsheet';
 import { AppState } from '@store';
+import * as uiStore from '@store/ui';
 import * as granulesStore from '@store/granules';
 import * as queueStore from '@store/queue';
 
@@ -25,14 +26,7 @@ export class ResultsComponent {
 
   constructor(
     private store$: Store<AppState>,
-    private bottomSheet: MatBottomSheet,
   ) {}
-
-  public onOpenSpreadsheet(): void {
-    this.bottomSheet.open(SpreadsheetComponent, {
-      panelClass: 'spreadsheet-width'
-    });
-  }
 
   public onNewGranuleSelected(name: string): void {
     this.store$.dispatch(new granulesStore.SetSelectedGranule(name));

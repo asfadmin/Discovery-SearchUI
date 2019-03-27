@@ -10,10 +10,6 @@
   </app-granule-detail>
 </ng-container>
 
-<mat-card class="card-spacing">
-  <button (click)="onOpenSpreadsheet()" mat-raised-button>Open Spreadsheet</button>
-</mat-card>
-
 <app-granules-list
   (newFocusedGranule)="onNewFocusedGranule($event)"
   (clearFocusedGranule)="onClearFocusedGranule()"
