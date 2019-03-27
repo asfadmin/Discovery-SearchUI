@@ -11,6 +11,7 @@ import * as granulesStore from '@store/granules';
 import * as filterStore from '@store/filters';
 import * as searchStore from '@store/search';
 import * as uiStore from '@store/ui';
+import * as missionStore from '@store/mission';
 
 import * as services from '@services';
 import * as models from './models';
@@ -35,6 +36,7 @@ export class AppComponent implements OnInit {
 
   public ngOnInit(): void {
     this.polygonValidationService.validate();
+    this.store$.dispatch(new missionStore.LoadMissions());
   }
 
   public onLoadUrlState(): void {

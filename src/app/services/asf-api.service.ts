@@ -3,7 +3,7 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 
 import { Observable, Subject } from 'rxjs';
 
-import { PolygonValidateResponse } from '@models';
+import { PolygonValidateResponse, MissionPlatform } from '@models';
 
 @Injectable({
   providedIn: 'root'
@@ -34,6 +34,15 @@ export class AsfApiService {
     return this.http.get<T>(`${this.testUrl}/services/search/param?${queryParamsStr}`, {
       responseType
     });
+  }
+
+  public missionSearch(platform: MissionPlatform): Observable<{result: string[]}> {
+    const params = new HttpParams()
+      .append('platform', platform);
+
+    const url = `${this.testUrl}/services/utils/mission_list?platform=${platform}`;
+
+    return this.http.get<{result: string[]}>(url, { params });
   }
 
   public upload(files): Observable<any> {
