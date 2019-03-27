@@ -37,7 +37,16 @@
     matTooltip="ASF Apps"
     class="spacing"
     color="basic"
+    [matMenuTriggerFor]="menu"
     mat-fab>
       <mat-icon>apps</mat-icon>
   </button>
+  <mat-menu #menu="matMenu">
+    <a mat-menu-item href="https://www.asf.alaska.edu/" target="_blank">
+      ASF Website
+    </a>
+    <a mat-menu-item href="https://baseline.asf.alaska.edu" target="_blank">
+      Baseline Tool
+    </a>
+  </mat-menu>
 </div>
