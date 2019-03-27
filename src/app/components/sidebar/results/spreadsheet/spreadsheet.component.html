@@ -1,4 +1,8 @@
 <div class="inner-card">
+  <button (click)="onCloseDialog()" class="close-button" mat-icon-button>
+    <mat-icon>close</mat-icon>
+  </button>
+
   <div>
     <mat-form-field style="width: 500px; margin: 10px">
       <input matInput [(ngModel)]="filterStr" (keyup)="applyFilter($event.target.value)" placeholder="Filter">
@@ -107,6 +111,6 @@
       </tr>
     </table>
 
-    <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]"></mat-paginator>
+    <mat-paginator [pageSizeOptions]="[10, 25, 100]"></mat-paginator>
   </div>
 </div>

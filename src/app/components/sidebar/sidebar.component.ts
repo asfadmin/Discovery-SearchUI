@@ -5,6 +5,7 @@ import {
   trigger, state, style,
   animate, transition
 } from '@angular/animations';
+import { MatDialog } from '@angular/material';
 
 import { Observable } from 'rxjs';
 import { map, tap, filter } from 'rxjs/operators';
@@ -19,6 +20,7 @@ import * as searchStore from '@store/search';
 
 import * as models from '@models';
 
+import { SpreadsheetComponent } from './results/spreadsheet';
 
 @Component({
   selector: 'app-sidebar',
@@ -63,6 +65,7 @@ export class SidebarComponent implements OnInit {
   public selectedSearchType: models.SearchType;
 
   constructor(
+    public dialog: MatDialog,
     private dateExtremaService: DateExtremaService,
     private router: Router,
     private store$: Store<AppState>,
@@ -75,6 +78,25 @@ export class SidebarComponent implements OnInit {
 
     this.store$.select(uiStore.getIsHidden).subscribe(
       isHidden => this.isHidden = isHidden
+    );
+
+    this.store$.select(uiStore.getUiView).pipe(
+      filter(view => view === models.ViewType.SPREADSHEET)
+    ).subscribe(
+      _ => this.onOpenSpreadsheet()
+    );
+  }
+
+  public onOpenSpreadsheet(): void {
+    const dialogRef = this.dialog.open(SpreadsheetComponent, {
+       maxWidth: '100vw', maxHeight: '100vh',
+       height: '100%', width: '100%'
+    });
+
+    const closeAction = new uiStore.SetUiView(models.ViewType.MAIN);
+
+    dialogRef.afterClosed().subscribe(
+      _ => this.store$.dispatch(closeAction)
     );
   }
 
