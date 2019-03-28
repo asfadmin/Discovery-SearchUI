@@ -7,6 +7,13 @@ export interface Platform {
   polarizations: string[];
 }
 
+export enum MissionPlatform {
+  UAVSAR = 'UAVSAR',
+  AIRSAR = 'AIRSAR',
+  S1_BETA = 'Sentinel-1 Interferogram (BETA)',
+}
+
+
 export interface DateRange {
   start: Date;
   end?: Date;

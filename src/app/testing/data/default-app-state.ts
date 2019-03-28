@@ -5,6 +5,7 @@ import * as filtersStore from '@store/filters';
 import * as uiStore from '@store/ui';
 import * as queueStore from '@store/queue';
 import * as searchStore from '@store/search';
+import * as missionStore from '@store/mission';
 
 export const defaultAppState: AppState = {
   granules: granuleStore.initState,
@@ -13,4 +14,5 @@ export const defaultAppState: AppState = {
   ui: uiStore.initState,
   search: searchStore.initState,
   queue: queueStore.initState ,
+  mission: missionStore.initState,
 };

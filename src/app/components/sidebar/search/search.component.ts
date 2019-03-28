@@ -1,9 +1,11 @@
 import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 
 import { Store } from '@ngrx/store';
+import { map } from 'rxjs/operators';
 
 import { AppState } from '@store';
 import * as uiStore from '@store/ui';
+import * as missionStore from '@store/mission';
 
 import * as models from '@models';
 
@@ -19,6 +21,11 @@ export class SearchComponent implements OnInit {
   public searchType$ = this.store$.select(uiStore.getSearchType);
   public selectedSearchType: models.SearchType;
 
+  public missionsByPlatform$ = this.store$.select(missionStore.getMissionsByPlatform);
+  public missionPlatforms$ = this.missionsByPlatform$.pipe(
+    map(missions => Object.keys(missions))
+  );
+
   constructor(
     private store$: Store<AppState>,
   ) { }
@@ -31,5 +38,9 @@ export class SearchComponent implements OnInit {
 
   public onSetSearchType(searchType: models.SearchType): void {
     this.newSearchType.emit(searchType);
+  }
+
+  public onNewMissionSelected(selectedMission: string): void {
+    console.log('Mission', selectedMission);
   }
 }
