@@ -1,0 +1,20 @@
+<mat-button-toggle-group [value]="appView" vertical="true" class="view-selector-ribbon">
+  <mat-button-toggle
+    (click)="onMainViewSelected()"
+    [value]="viewType.MAIN"
+    matTooltip="Default view">
+    n
+  </mat-button-toggle>
+  <mat-button-toggle
+    (click)="onSpreadsheetViewSelected()"
+    [value]="viewType.SPREADSHEET"
+    matTooltip="Speadsheet view">
+    s
+  </mat-button-toggle>
+  <mat-button-toggle
+    (click)="onMapOnlyViewSelected()"
+    [value]="viewType.MAP_ONLY"
+    matTooltip="Map only view">
+    m
+  </mat-button-toggle>
+</mat-button-toggle-group>

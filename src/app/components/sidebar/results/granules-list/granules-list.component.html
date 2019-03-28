@@ -24,12 +24,9 @@
           <span matTooltip="Absolute Orbit" matTooltipPosition="after">{{ granule.metadata.absoluteOrbit }}</span>
         </div>
 
-        <a matLine [href]="granule.downloadUrl">
-          {{ granule.bytes | readableSizeFromBytes }}
-          <fa-icon class="ml-2" [icon]="downloadIcon"></fa-icon>
-        </a>
         <fa-icon class="ml-2"
           (click)="onQueueGranule($event, granule.groupId)"
+          matTooltip="Queue this granules products"
           [icon]="queueIcon"></fa-icon>
 
     </button>

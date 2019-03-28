@@ -1,4 +1,5 @@
-import {Component, OnInit, ViewChild} from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { MatDialogRef } from '@angular/material';
 
 import { Store } from '@ngrx/store';
 
@@ -35,7 +36,9 @@ export class SpreadsheetComponent implements OnInit {
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
 
-  constructor(private store$: Store<AppState>) {
+  constructor(
+    private dialogRef: MatDialogRef<SpreadsheetComponent>,
+    private store$: Store<AppState>) {
   }
 
   public ngOnInit(): void {
@@ -50,6 +53,10 @@ export class SpreadsheetComponent implements OnInit {
         this.dataSource.sort = this.sort;
       }
     );
+  }
+
+  public onCloseDialog() {
+    this.dialogRef.close();
   }
 
   public onRowHover(row) {

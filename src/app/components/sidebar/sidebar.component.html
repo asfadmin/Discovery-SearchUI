@@ -1,10 +1,16 @@
 <div [@changeMenuState]="(isSidebarOpen$ | async) ? 'shown' : 'hidden'"
+  [ngClass]="{'hidden': isHidden}"
   class="position">
 
 <app-toggle-button
   (click)="onToggleHide()"
   [isOpen]="isSidebarOpen$ | async">
 </app-toggle-button>
+
+<app-ribbon
+  (newAppView)="onNewAppView($event)"
+  [appView]="uiView$ | async">
+</app-ribbon>
 
 <div class="filter-list">
 
@@ -14,10 +20,13 @@
       (click)="onAppReset()">
     </app-logo>
 
-    <app-search-selector
+
+  <ng-container *ngIf="selectedSearchType === null">
+    <app-detailed-search-selector
       (newSearchType)="onSetSearchType($event)"
       [selectedSearchType]="searchType$ | async">
-    </app-search-selector>
+    </app-detailed-search-selector>
+  </ng-container>
 
     <mat-card *ngIf="searchError$ | async as error" class="card-spacing">
       <b>Error:</b> {{error}}
@@ -31,7 +40,9 @@
       (selectedIndexChange)="onTabChange($event)">
 
       <mat-tab label="Search">
-        <app-search></app-search>
+        <app-search
+          (newSearchType)="onSetSearchType($event)"
+          ></app-search>
       </mat-tab>
 
       <ng-container *ngIf="granules$ | async as granules">

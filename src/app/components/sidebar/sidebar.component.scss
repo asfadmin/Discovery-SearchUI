@@ -1,3 +1,7 @@
+.hidden {
+  display: none;
+}
+
 .position {
   width: 450px;
   max-width: calc(100% - 28px);
@@ -11,7 +15,7 @@
 }
 
 .top-list-elements {
-  padding: 1px 0;
+  padding: 0;
   position: sticky;
   top: 0;
   z-index: 2;

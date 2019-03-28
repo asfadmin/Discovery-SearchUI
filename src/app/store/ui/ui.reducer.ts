@@ -98,3 +98,8 @@ export const getUiView = createSelector(
   getUIState,
   state => state.uiView
 );
+
+export const getIsHidden = createSelector(
+  getUIState,
+  state => state.uiView === ViewType.MAP_ONLY
+);

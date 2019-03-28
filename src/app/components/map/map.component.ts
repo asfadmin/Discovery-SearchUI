@@ -13,6 +13,7 @@ import { Vector as VectorLayer} from 'ol/layer';
 import { Vector as VectorSource } from 'ol/source';
 
 import { AppState } from '@store';
+import * as uiStore from '@store/ui';
 import * as granulesStore from '@store/granules';
 import * as mapStore from '@store/map';
 import * as queueStore from '@store/queue';
@@ -31,6 +32,7 @@ export class MapComponent implements OnInit {
 
   public interactionMode$ = this.store$.select(mapStore.getMapInteractionMode);
   public mousePosition$ = this.mapService.mousePosition$;
+  public isUiHidden = false;
 
   private isMapInitialized$ = this.store$.select(mapStore.getIsMapInitialization);
   private granules$ = this.store$.select(granulesStore.getGranules);
@@ -56,6 +58,9 @@ export class MapComponent implements OnInit {
 
     this.interactionMode$
       .subscribe(mode => this.mapService.setInteractionMode(mode));
+
+    this.store$.select(uiStore.getIsHidden)
+      .subscribe(isHidden => this.isUiHidden = isHidden);
   }
 
   public onOpenDownloadQueue(): void {
@@ -191,5 +196,9 @@ export class MapComponent implements OnInit {
 
   private setMapWith(viewType: models.MapViewType): void {
     this.mapService.setMapView(viewType);
+  }
+
+  public onShowUi(): void {
+    this.store$.dispatch(new uiStore.SetUiView(models.ViewType.MAIN));
   }
 }

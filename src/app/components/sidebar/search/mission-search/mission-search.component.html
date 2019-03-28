@@ -1,0 +1,25 @@
+<mat-card class="card-spacing">
+  <h2>Mission Search</h2>
+
+  <mat-button-toggle-group name="fontStyle" aria-label="Font Style">
+
+    <mat-button-toggle *ngFor="let platform of missionPlatforms" [value]="platform">
+      {{ platform.toLowerCase().includes('beta') ?  'Beta Products' : platform }}
+    </mat-button-toggle>
+  </mat-button-toggle-group>
+
+  <form [formGroup]="stateForm">
+    <mat-form-field>
+      <input type="text" matInput placeholder="Filter Mission" formControlName="missionFilter" required>
+    </mat-form-field>
+  </form>
+
+  <mat-nav-list role="list">
+    <a mat-list-item
+      *ngFor="let mission of filteredMissions"
+      (click)="setMission(mission)"
+      role="listitem">
+        {{ mission }}
+    </a>
+  </mat-nav-list>
+</mat-card>

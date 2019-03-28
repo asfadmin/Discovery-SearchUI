@@ -3,7 +3,7 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 
 import { Observable, Subject } from 'rxjs';
 
-import { PolygonValidateResponse } from '@models';
+import { PolygonValidateResponse, MissionPlatform } from '@models';
 
 @Injectable({
   providedIn: 'root'
@@ -36,20 +36,29 @@ export class AsfApiService {
     });
   }
 
+  public missionSearch(platform: MissionPlatform): Observable<{result: string[]}> {
+    const params = new HttpParams()
+      .append('platform', platform);
+
+    const url = `${this.testUrl}/services/utils/mission_list?platform=${platform}`;
+
+    return this.http.get<{result: string[]}>(url, { params });
+  }
+
   public upload(files): Observable<any> {
     const formData: FormData = new FormData();
     files.forEach(file => {
       formData.append('files', file, file.name);
     });
 
-    return this.http.post(`${this.testUrl}/services/convert/files_to_wkt`, formData);
+    return this.http.post(`${this.testUrl}/services/utils/files_to_wkt`, formData);
   }
 
   public validate(wkt: string): Observable<any> {
     const params = new HttpParams()
       .append('wkt', wkt);
 
-    const url = `${this.testUrl}/services/validate/wkt`;
+    const url = `${this.testUrl}/services/utils/wkt`;
 
     const paramsStr = params.toString();
 

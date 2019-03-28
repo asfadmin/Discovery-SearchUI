@@ -8,5 +8,7 @@
     ></app-sidebar>
 
   <app-login
-    [view$]="uiView$"></app-login>
+    (closed)="onLoginClosed()"
+    [view$]="uiView$">
+  </app-login>
 </div>

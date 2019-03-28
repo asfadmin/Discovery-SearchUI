@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { SearchSelectorComponent } from './search-selector.component';
+import { DetailedSearchSelectorComponent } from './detailed-search-selector.component';
 
 import { MatExpansionModule } from '@angular/material';
 
@@ -8,13 +8,13 @@ import { MatSharedModule } from '@shared';
 
 @NgModule({
   declarations: [
-    SearchSelectorComponent
+    DetailedSearchSelectorComponent
   ],
   imports: [
     CommonModule,
     MatExpansionModule,
     MatSharedModule
   ],
-  exports: [SearchSelectorComponent],
+  exports: [DetailedSearchSelectorComponent],
 })
-export class SearchSelectorModule { }
+export class DetailedSearchSelectorModule { }
