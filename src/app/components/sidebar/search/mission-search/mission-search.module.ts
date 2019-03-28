@@ -5,7 +5,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatSharedModule } from '@shared';
 import {
   MatCheckboxModule, MatListModule, MatButtonToggleModule,
-  MatAutocompleteModule, MatFormFieldModule, MatInputModule
+  MatAutocompleteModule, MatFormFieldModule, MatInputModule,
+  MatPaginatorModule
 } from '@angular/material';
 
 import { MissionSearchComponent } from './mission-search.component';
@@ -25,6 +26,7 @@ import { MissionSearchComponent } from './mission-search.component';
     MatAutocompleteModule,
     MatListModule,
     MatInputModule,
+    MatPaginatorModule,
 
     MatSharedModule,
   ],

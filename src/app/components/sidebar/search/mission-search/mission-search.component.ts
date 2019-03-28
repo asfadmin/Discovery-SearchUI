@@ -50,10 +50,10 @@ export class MissionSearchComponent implements OnInit {
     return _filter(
       Object.values(this.missionsByPlatform).reduce(
       (allMissions, missions) => [...allMissions, ...missions], []
-    ), filterValue).slice(0, 50);
+    ), filterValue).slice(0, 20);
   }
 
   public setMission(mission: string): void {
-    this.stateForm.get('missionFilter').setValue(mission);
+    console.log('Selected', mission);
   }
 }
