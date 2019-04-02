@@ -20,7 +20,10 @@
 
   <mat-nav-list role="list">
     <ng-container *ngIf="!!selectedMission">
-      <mat-list-item  class="mat-primary"><b>{{ selectedMission }}</b></mat-list-item>
+      <mat-list-item  class="mat-primary">
+        <mat-icon mat-list-icon>arrow_right</mat-icon>
+        <b>{{ selectedMission }}</b>
+      </mat-list-item>
       <mat-divider [inset]="true"></mat-divider>
     </ng-container>
 
