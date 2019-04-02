@@ -22,6 +22,7 @@ export class SearchComponent implements OnInit {
   public selectedSearchType: models.SearchType;
 
   public missionsByPlatform$ = this.store$.select(missionStore.getMissionsByPlatform);
+  public selectedMission$ = this.store$.select(missionStore.getSelectedMission);
   public missionPlatforms$ = this.missionsByPlatform$.pipe(
     map(missions => Object.keys(missions))
   );
@@ -41,6 +42,6 @@ export class SearchComponent implements OnInit {
   }
 
   public onNewMissionSelected(selectedMission: string): void {
-    console.log('Mission', selectedMission);
+    this.store$.dispatch(new missionStore.SelectMission(selectedMission));
   }
 }

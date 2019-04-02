@@ -50,6 +50,7 @@ export class AppComponent implements OnInit {
   public onClearSearch(): void {
     this.store$.dispatch(new granulesStore.ClearGranules());
     this.store$.dispatch(new filterStore.ClearFilters());
+    this.store$.dispatch(new missionStore.SelectMission(null));
     this.mapService.clearDrawLayer();
   }
 
