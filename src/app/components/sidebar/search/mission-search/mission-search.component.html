@@ -16,15 +16,16 @@
 
   <mat-nav-list role="list">
     <a mat-list-item
-      *ngFor="let mission of filteredMissions"
+      *ngFor="let mission of currentPageOf(filteredMissions, pageSize, pageIndex)"
       (click)="setMission(mission)"
       role="listitem">
         {{ mission }}
     </a>
   </mat-nav-list>
 
-  <mat-paginator [length]="100"
-                [pageSize]="10"
-                [pageSizeOptions]="[5, 10, 25, 100]">
+  <mat-paginator [length]="filteredMissions.length"
+                [pageSize]="pageSize"
+                [pageSizeOptions]="pageSizeOptions"
+                (page)="onNewPage($event)">
   </mat-paginator>
 </mat-card>
