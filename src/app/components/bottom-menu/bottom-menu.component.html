@@ -1,0 +1,15 @@
+<div
+  [@changeMenuY]="(isBottomMenuOpen$ | async) ? 'shown' : 'hidden'"
+  [@changeMenuX]="(isSideMenuOpen$ | async) ? 'full-width' : 'half-width'"
+  [ngClass]="{'hidden': isHidden}"
+  class="position">
+
+  <button class="toggle-button" mat-raised-button (click)="onToggleMenu()">
+    <mat-icon>{{ (isBottomMenuOpen$ | async) ? 'expand_more' : 'expand_less' }}</mat-icon>
+  </button>
+
+  <mat-card class="card-spacing">
+    <h1> bottom-menu works! </h1>
+  </mat-card>
+
+</div>
