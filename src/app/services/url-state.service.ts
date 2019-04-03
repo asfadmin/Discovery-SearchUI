@@ -11,6 +11,7 @@ import * as granulesStore from '@store/granules';
 import * as mapStore from '@store/map';
 import * as uiStore from '@store/ui';
 import * as filterStore from '@store/filters';
+import * as missionStore from '@store/mission';
 
 import * as models from '@models';
 
@@ -39,6 +40,7 @@ export class UrlStateService {
       ...this.mapParameters(),
       ...this.uiParameters(),
       ...this.filtersParameters(),
+      ...this.missionParameters(),
     ];
   }
 
@@ -82,6 +84,17 @@ export class UrlStateService {
     Object.entries(urlParamLoaders).forEach(
       ([paramName, load]) => params[paramName] && load(params[paramName])
     );
+  }
+
+  private missionParameters() {
+    return [{
+      name: 'mission',
+      source: this.store$.select(missionStore.getSelectedMission).pipe(
+        skip(1),
+        map(mission => ({ mission }))
+      ),
+      loader: this.loadSelectedMission
+    }];
   }
 
   private uiParameters() {
@@ -514,6 +527,10 @@ export class UrlStateService {
 
       this.store$.dispatch(action);
     }
+  }
+
+  private loadSelectedMission = (mission: string): void => {
+    this.store$.dispatch(new missionStore.SelectMission(mission));
   }
 
 

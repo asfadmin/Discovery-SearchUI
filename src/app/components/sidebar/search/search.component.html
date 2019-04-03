@@ -14,8 +14,9 @@
 <ng-container *ngIf="selectedSearchType === searchTypes.MISSION">
   <app-mission-search
     (newMissionSelected)="onNewMissionSelected($event)"
-    [missionsByPlatform]="missionsByPlatform$ | async"
-    [missionPlatforms]="missionPlatforms$ | async">
+    [selectedMission]="selectedMission$ | async"
+    [missionsByPlatform$]="missionsByPlatform$"
+    [missionPlatforms$]="missionPlatforms$">
   </app-mission-search>
 </ng-container>
 

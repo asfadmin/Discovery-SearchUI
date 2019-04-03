@@ -25,6 +25,13 @@ export function missionReducer(state = initState, action: MissionActions): Missi
       };
     }
 
+    case MissionActionType.SELECT_MISSION: {
+      return {
+        ...state,
+        selectedMission: action.payload
+      };
+    }
+
     default: {
       return state;
     }
@@ -38,4 +45,9 @@ export const getMissionState = createFeatureSelector<MissionState>('mission');
 export const getMissionsByPlatform = createSelector(
   getMissionState,
   (state: MissionState) => state.missions
+);
+
+export const getSelectedMission = createSelector(
+  getMissionState,
+  (state: MissionState) => state.selectedMission
 );

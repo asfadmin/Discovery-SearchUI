@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
 
-import { MatBadgeModule, MatMenuModule } from '@angular/material';
+import { MatBadgeModule, MatMenuModule, MatInputModule } from '@angular/material';
 
 import { MatSharedModule } from '@shared';
 import { NavBarComponent } from './nav-bar.component';
@@ -16,6 +16,7 @@ import { NavBarComponent } from './nav-bar.component';
     HttpClientModule,
     MatBadgeModule,
     MatMenuModule,
+    MatInputModule,
     MatSharedModule,
   ],
   exports: [

@@ -11,7 +11,7 @@ import * as granulesStore from '@store/granules';
 import * as mapStore from '@store/map';
 import * as uiStore from '@store/ui';
 import * as filterStore from '@store/filters';
-
+import * as missionStore from '@store/mission';
 
 import { MapService } from './map/map.service';
 import { RangeService } from './range.service';
@@ -30,15 +30,28 @@ export class SearchParamsService {
 
   public getParams(): Observable<HttpParams> {
     return combineLatest(
+      this.searchType$(),
       this.listParam$(),
-      this.filterSearchParams$()
+      this.filterSearchParams$(),
+      this.missionParam$(),
     ).pipe(
       map(
-        ([listParam, filterParams]) =>
-        Object.values(listParam)[0].length > 0 ?
-          listParam :
-          filterParams
-      ),
+        ([searchType, listParam, filterParams, missionParam]) => {
+          switch (searchType) {
+            case models.SearchType.LIST: {
+              return listParam;
+            }
+            case models.SearchType.DATASET: {
+              return filterParams;
+            }
+            case models.SearchType.MISSION: {
+              return missionParam;
+            }
+            default: {
+              return filterParams;
+            }
+          }
+        }),
       map(params => Object.entries(params)
         .filter(([param, val]) => !!val)
         .reduce(
@@ -47,6 +60,10 @@ export class SearchParamsService {
         )
       ),
     );
+  }
+
+  private searchType$() {
+    return this.store$.select(uiStore.getSearchType);
   }
 
   private filterSearchParams$() {
@@ -77,6 +94,12 @@ export class SearchParamsService {
         map(mode => mode === models.ListSearchType.GRANULE ? 'granule_list' : 'product_list')
       )),
       map(([searchList, param]) => ({ [param]: searchList.join(',') }))
+    );
+  }
+
+  private missionParam$() {
+    return this.store$.select(missionStore.getSelectedMission).pipe(
+      map(mission => ({ collectionName: mission }))
     );
   }
 
