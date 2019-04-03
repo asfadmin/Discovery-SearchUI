@@ -1,4 +1,5 @@
-<div class="position layout">
+<div class="position">
+  <div class="layout">
   <div
      *ngIf="products"
       matTooltip="Download Queue"
@@ -29,24 +30,45 @@
     matTooltip="Share Search"
     class="spacing"
     color="basic"
+    [matMenuTriggerFor]="shareMenu"
     mat-fab>
       <mat-icon>share</mat-icon>
   </button>
+  <mat-menu #shareMenu="matMenu">
+    <button mat-menu-item (click)="onCopy()"
+      matSuffix>
+      <mat-icon>file_copy</mat-icon>
+      <span>Copy Search Link</span>
+    </button>
+    <a (click)="onShareWithEmail()"
+      href="mailto:?subject=&body=:%20" target="_blank"
+      title="Send email"
+      mat-menu-item matSuffix>
+        <mat-icon>email</mat-icon>
+        <span>Share With Email</span>
+    </a>
+  </mat-menu>
 
   <button
     matTooltip="ASF Apps"
     class="spacing"
     color="basic"
-    [matMenuTriggerFor]="menu"
+    [matMenuTriggerFor]="appMenu"
     mat-fab>
       <mat-icon>apps</mat-icon>
   </button>
-  <mat-menu #menu="matMenu">
-    <a mat-menu-item href="https://www.asf.alaska.edu/" target="_blank">
+  <mat-menu #appMenu="matMenu">
+    <a mat-menu-item href="https://www.asf.alaska.edu" target="_blank">
       ASF Website
     </a>
     <a mat-menu-item href="https://baseline.asf.alaska.edu" target="_blank">
       Baseline Tool
     </a>
+    <a mat-menu-item href="https://www.asf.alaska.edu/get-data/api" target="_blank">
+     ASF API
+    </a>
   </mat-menu>
+  </div>
+
 </div>
+
