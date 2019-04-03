@@ -106,6 +106,13 @@ export class UrlStateService {
       ),
       loader: this.loadIsSidebarOpen
     }, {
+      name: 'isBottomMenuOpen',
+      source: this.store$.select(uiStore.getIsBottomMenuOpen).pipe(
+        skip(1),
+        map(isBottomMenuOpen => ({ isBottomMenuOpen }))
+      ),
+      loader: this.loadIsBottomMenuOpen
+    }, {
       name: 'selectedFilter',
       source: this.store$.select(uiStore.getSelectedFilter).pipe(
         skip(1),
@@ -277,6 +284,14 @@ export class UrlStateService {
     const action = isSidebarOpenStr !== 'false' ?
       new uiStore.OpenSidebar() :
       new uiStore.CloseSidebar();
+
+    this.store$.dispatch(action);
+  }
+
+  private loadIsBottomMenuOpen = (isBottomMenuOpenStr: string): void => {
+    const action = isBottomMenuOpenStr === 'true' ?
+      new uiStore.OpenBottomMenu() :
+      new uiStore.CloseBottomMenu() ;
 
     this.store$.dispatch(action);
   }

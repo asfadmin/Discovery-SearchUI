@@ -7,6 +7,7 @@ import { UIActionType, UIActions } from './ui.action';
 
 export interface UIState {
   isSidebarOpen: boolean;
+  isBottomMenuOpen: boolean;
   uiView: ViewType;
   selectedFilter: FilterType | undefined;
   searchType: SearchType | null;
@@ -14,6 +15,7 @@ export interface UIState {
 
 export const initState: UIState = {
   isSidebarOpen: true,
+  isBottomMenuOpen: false,
   uiView: ViewType.MAIN,
   selectedFilter: FilterType.PLATFORM,
   searchType: null,
@@ -23,7 +25,6 @@ export const initState: UIState = {
 export function uiReducer(state = initState, action: UIActions): UIState {
   switch (action.type) {
     case UIActionType.TOGGLE_SIDEBAR: {
-
       return {
           ...state,
           isSidebarOpen: !state.isSidebarOpen
@@ -41,6 +42,27 @@ export function uiReducer(state = initState, action: UIActions): UIState {
       return {
           ...state,
           isSidebarOpen: true
+      };
+    }
+
+    case UIActionType.TOGGLE_BOTTOM_MENU: {
+      return {
+          ...state,
+          isBottomMenuOpen: !state.isBottomMenuOpen
+        };
+    }
+
+    case UIActionType.CLOSE_BOTTOM_MENU: {
+      return {
+          ...state,
+          isBottomMenuOpen: false
+        };
+    }
+
+    case UIActionType.OPEN_BOTTOM_MENU: {
+      return {
+          ...state,
+          isBottomMenuOpen: true
       };
     }
 
@@ -102,4 +124,9 @@ export const getUiView = createSelector(
 export const getIsHidden = createSelector(
   getUIState,
   state => state.uiView === ViewType.MAP_ONLY
+);
+
+export const getIsBottomMenuOpen = createSelector(
+  getUIState,
+  state => state.isBottomMenuOpen
 );

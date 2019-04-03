@@ -1,0 +1,16 @@
+.position {
+  height: 500px;
+  max-height: 90%;
+  position: fixed;
+  background: white;
+  margin: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 999;
+}
+
+.toggle-button {
+  position: relative;
+  top: -36px;
+  left: 20px;
+}
