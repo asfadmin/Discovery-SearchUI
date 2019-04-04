@@ -32,6 +32,7 @@ export class MapComponent implements OnInit {
 
   public interactionMode$ = this.store$.select(mapStore.getMapInteractionMode);
   public mousePosition$ = this.mapService.mousePosition$;
+  public newSelectedGranule$ = this.mapService.newSelectedGranule$;
   public isUiHidden = false;
 
   private isMapInitialized$ = this.store$.select(mapStore.getIsMapInitialization);
@@ -61,6 +62,10 @@ export class MapComponent implements OnInit {
 
     this.store$.select(uiStore.getIsHidden)
       .subscribe(isHidden => this.isUiHidden = isHidden);
+
+    this.newSelectedGranule$.subscribe(
+      gName => this.store$.dispatch(new granulesStore.SetSelectedGranule(gName))
+    );
   }
 
   public onOpenDownloadQueue(): void {
@@ -180,18 +185,25 @@ export class MapComponent implements OnInit {
 
   private granulesToFeature(granules: models.Sentinel1Product[], projection: string) {
     return granules
-        .map(g => g.metadata.polygon)
-        .map(wkt =>
-          this.wktService.wktToFeature(wkt, projection)
-        );
+      .map(g => {
+        const wkt = g.metadata.polygon;
+        const feature = this.wktService.wktToFeature(wkt, projection);
+        feature.set('filename', g.file);
+
+        return feature;
+      });
   }
 
   private featuresToSource(features): VectorSource {
-    return new VectorLayer({
+    const layer = new VectorLayer({
       source: new VectorSource({
         features, noWrap: true, wrapX: false
       })
     });
+
+    layer.set('selectable', 'true');
+
+    return layer;
   }
 
   private setMapWith(viewType: models.MapViewType): void {

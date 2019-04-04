@@ -7,6 +7,8 @@ import { Map } from 'ol';
 import { Vector as VectorLayer } from 'ol/layer';
 import { Vector as VectorSource, Layer } from 'ol/source';
 import * as proj from 'ol/proj';
+import { click } from 'ol/events/condition';
+import Select from 'ol/interaction/Select';
 
 import { WktService } from '../wkt.service';
 import { DrawService } from './draw.service';
@@ -40,6 +42,7 @@ export class MapService {
   public mousePosition$ = new BehaviorSubject<models.LonLat>({
     lon: 0, lat: 0
   });
+  public newSelectedGranule$ = new Subject<string>();
 
   public searchPolygon$ = this.drawService.polygon$.pipe(
     map(
@@ -146,12 +149,25 @@ export class MapService {
   }
 
   private createNewMap(): Map {
+
     const newMap = new Map({
       layers: [ this.mapView.layer, this.drawService.getLayer(), this.focusLayer ],
       target: 'map',
       view: this.mapView.view,
       controls: [],
       loadTilesWhileAnimating: true
+    });
+
+    const selectClick = new Select({
+      condition: click,
+      layers: l => l.get('selectable') || false
+    });
+
+    newMap.addInteraction(selectClick);
+    selectClick.on('select', (e) => {
+      e.target.getFeatures().forEach(
+        feature => this.newSelectedGranule$.next(feature.get('filename'))
+      );
     });
 
     newMap.on('pointermove', e => {
