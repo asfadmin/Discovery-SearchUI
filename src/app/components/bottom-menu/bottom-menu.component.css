@@ -1,5 +1,5 @@
 .position {
-  height: 500px;
+  height: 450px;
   max-height: 90%;
   position: fixed;
   background: white;
@@ -12,5 +12,6 @@
 .toggle-button {
   position: relative;
   top: -36px;
-  left: 20px;
+  left: 50%;
+  transform: translateX(-50%);
 }
