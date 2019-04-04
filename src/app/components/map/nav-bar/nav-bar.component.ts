@@ -18,6 +18,8 @@ import { DatapoolAuthService } from '@services';
   styleUrls: ['./nav-bar.component.css']
 })
 export class NavBarComponent {
+  public asfWebsiteUrl = 'https://www.asf.alaska.edu';
+
   @Output() openQueue = new EventEmitter<void>();
 
   @Input() products: Sentinel1Product[];
