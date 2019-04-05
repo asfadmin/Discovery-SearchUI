@@ -36,6 +36,7 @@ export class DatasetSearchComponent {
   public maxResults$ = this.store$.select(filtersStore.getMaxSearchResults).pipe(
     map(maxResults => maxResults.toString())
   );
+  public drawMode$ = this.store$.select(mapStore.getMapDrawMode);
 
   public polygon$ = this.mapService.searchPolygon$;
 
@@ -51,6 +52,10 @@ export class DatasetSearchComponent {
     private store$: Store<AppState>,
     private dateExtremaService: DateExtremaService,
   ) { }
+
+  public onNewDrawModeType(mode: models.MapDrawModeType): void {
+    this.store$.dispatch(new mapStore.SetMapDrawMode(mode));
+  }
 
   public onPlatformRemoved(platformName: string): void {
     this.store$.dispatch(new filtersStore.RemoveSelectedPlatform(platformName));

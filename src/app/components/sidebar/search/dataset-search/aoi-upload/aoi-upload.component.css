@@ -6,3 +6,17 @@
 .aoi-form {
   display: flex;
 }
+
+.layout {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+}
+
+.form-layout {
+  margin-top: 5px;
+}
+
+.mb {
+  margin-bottom: 8px;
+}
