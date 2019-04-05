@@ -14,10 +14,7 @@ export class CompactSearchSelectorComponent {
 
   public searchTypes = models.SearchType;
 
-  public onSetSearchType(searchType: models.SearchType): void {
-    this.newSearchType.emit(
-      searchType === this.selectedSearchType ?
-        null : searchType
-    );
+  public onClearSearchType(): void {
+    this.newSearchType.emit(null);
   }
 }

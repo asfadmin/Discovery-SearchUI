@@ -5,6 +5,13 @@
   (addSelected)="onPlatformAdded($event)">
 </app-platform-selector>
 
+<app-aoi-upload
+  (openFileUpload)="onOpenFileDialog()"
+  (newDrawMode)="onNewDrawModeType($event)"
+  [drawMode]="drawMode$ | async"
+  [polygon]="polygon$ | async">
+</app-aoi-upload>
+
 <app-date-selector
   [startDate]="startDate$ | async"
   [endDate]="endDate$ | async"
@@ -12,13 +19,6 @@
   (newStart)="onNewStartDate($event)"
   (newEnd)="onNewEndDate($event)">
 </app-date-selector>
-
-<app-aoi-upload
-  (openFileUpload)="onOpenFileDialog()"
-  (newDrawMode)="onNewDrawModeType($event)"
-  [drawMode]="drawMode$ | async"
-  [polygon]="polygon$ | async">
-</app-aoi-upload>
 
 <app-path-selector
   (newPathStart)="onNewPathStart($event)"

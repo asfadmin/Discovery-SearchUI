@@ -12,6 +12,7 @@ import * as mapStore from '@store/map';
 import * as uiStore from '@store/ui';
 import * as filterStore from '@store/filters';
 import * as missionStore from '@store/mission';
+import { MakeSearch } from '@store/search/search.action';
 
 import * as models from '@models';
 
@@ -49,9 +50,9 @@ export class UrlStateService {
       skip(1),
       filter(params => this.isNotLoaded),
       tap(() => this.isNotLoaded = false)
-    )
-    .subscribe(params => {
-      this.loadStateFrom(params);
+    ).subscribe(
+      params => {
+        this.loadStateFrom(params);
     });
 
     this.urlParams.forEach(
@@ -84,6 +85,10 @@ export class UrlStateService {
     Object.entries(urlParamLoaders).forEach(
       ([paramName, load]) => params[paramName] && load(params[paramName])
     );
+
+    if ('searchType' in params) {
+      this.store$.dispatch(new MakeSearch());
+    }
   }
 
   private missionParameters() {
