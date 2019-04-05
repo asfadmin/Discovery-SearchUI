@@ -5,7 +5,7 @@
       mat-list-item
       (mouseenter)="onSetFocusedGranule(granule)"
       (mouseleave) ="onClearFocusedGranule(granule)"
-      (click)="onGranuleSelected(granule.file)"
+      (click)="onGranuleSelected(granule.file + granule.name)"
       [ngClass]="{'selected': granule.name === selected}" >
 
         <img matListAvatar
