@@ -85,10 +85,6 @@ export class UrlStateService {
     Object.entries(urlParamLoaders).forEach(
       ([paramName, load]) => params[paramName] && load(params[paramName])
     );
-
-    if ('searchType' in params) {
-      this.store$.dispatch(new MakeSearch());
-    }
   }
 
   private missionParameters() {

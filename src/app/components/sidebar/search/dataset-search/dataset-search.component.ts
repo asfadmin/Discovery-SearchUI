@@ -17,7 +17,7 @@ import * as models from '@models';
   templateUrl: './dataset-search.component.html',
   styleUrls: ['./dataset-search.component.css']
 })
-export class DatasetSearchComponent {
+export class DatasetSearchComponent implements OnInit {
 
   public platforms$ = this.store$.select(filtersStore.getPlatformsList);
   public platformProductTypes$ = this.store$.select(filtersStore.getProductTypes);
@@ -54,6 +54,12 @@ export class DatasetSearchComponent {
     private store$: Store<AppState>,
     private dateExtremaService: DateExtremaService,
   ) { }
+
+  public ngOnInit(): void {
+    this.polygon$.pipe(filter(polygon => !!polygon)).subscribe(
+      _ => this.store$.dispatch(new mapStore.SetMapInteractionMode(models.MapInteractionModeType.NONE))
+    );
+  }
 
   public onNewDrawModeType(mode: models.MapDrawModeType): void {
     this.store$.dispatch(new mapStore.SetMapDrawMode(mode));
