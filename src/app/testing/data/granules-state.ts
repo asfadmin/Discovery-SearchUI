@@ -34,6 +34,7 @@ export const granuleState: {granules: GranulesState} = {
     },
     products: {
       'S1A_EW_RAW__0SDH_20190311T152606_20190311T152714_026292_02F049_8A43.zip': {
+        id: '',
         name: 'S1A_EW_RAW__0SDH_20190311T152606_20190311T152714_026292_02F049_8A43',
         file: 'S1A_EW_RAW__0SDH_20190311T152606_20190311T152714_026292_02F049_8A43.zip',
         downloadUrl: 'https://datapool.asf.alaska.edu/RAW/SA/S1A_EW_RAW__0SDH_20190311T152606_20190311T152714_026292_02F049_8A43.zip',
@@ -55,6 +56,7 @@ export const granuleState: {granules: GranulesState} = {
         }
       },
       'S1A_EW_RAW__0SDH_20190311T152606_20190311T152714_026292_02F049_8A43.iso.xml': {
+        id: '',
         name: 'S1A_EW_RAW__0SDH_20190311T152606_20190311T152714_026292_02F049_8A43',
         file: 'S1A_EW_RAW__0SDH_20190311T152606_20190311T152714_026292_02F049_8A43.iso.xml',
         downloadUrl: 'https://datapool.asf.alaska.edu/METADATA_RAW/SA/S1A_EW_RAW__0SDH_20190311T152606_20190311T152714_026292_02F049_8A43.iso.xml',
@@ -76,6 +78,7 @@ export const granuleState: {granules: GranulesState} = {
         }
       },
       'S1A_EW_GRDM_1SDH_20190311T152606_20190311T152710_026292_02F049_D1EB.zip': {
+        id: '',
         name: 'S1A_EW_GRDM_1SDH_20190311T152606_20190311T152710_026292_02F049_D1EB',
         file: 'S1A_EW_GRDM_1SDH_20190311T152606_20190311T152710_026292_02F049_D1EB.zip',
         downloadUrl: 'https://datapool.asf.alaska.edu/GRD_MD/SA/S1A_EW_GRDM_1SDH_20190311T152606_20190311T152710_026292_02F049_D1EB.zip',
@@ -97,6 +100,7 @@ export const granuleState: {granules: GranulesState} = {
         }
       },
       'S1A_EW_GRDM_1SDH_20190311T152606_20190311T152710_026292_02F049_D1EB.iso.xml': {
+        id: '',
         name: 'S1A_EW_GRDM_1SDH_20190311T152606_20190311T152710_026292_02F049_D1EB',
         file: 'S1A_EW_GRDM_1SDH_20190311T152606_20190311T152710_026292_02F049_D1EB.iso.xml',
         downloadUrl: 'https://datapool.asf.alaska.edu/METADATA_GRD_MD/SA/S1A_EW_GRDM_1SDH_20190311T152606_20190311T152710_026292_02F049_D1EB.iso.xml',
@@ -118,6 +122,7 @@ export const granuleState: {granules: GranulesState} = {
         }
       },
       'S1A_EW_RAW__0SDH_20190311T134721_20190311T134830_026291_02F03F_3485.zip': {
+        id: '',
         name: 'S1A_EW_RAW__0SDH_20190311T134721_20190311T134830_026291_02F03F_3485',
         file: 'S1A_EW_RAW__0SDH_20190311T134721_20190311T134830_026291_02F03F_3485.zip',
         downloadUrl: 'https://datapool.asf.alaska.edu/RAW/SA/S1A_EW_RAW__0SDH_20190311T134721_20190311T134830_026291_02F03F_3485.zip',
@@ -139,6 +144,7 @@ export const granuleState: {granules: GranulesState} = {
         }
       },
       'S1A_EW_RAW__0SDH_20190311T134721_20190311T134830_026291_02F03F_3485.iso.xml': {
+        id: '',
         name: 'S1A_EW_RAW__0SDH_20190311T134721_20190311T134830_026291_02F03F_3485',
         file: 'S1A_EW_RAW__0SDH_20190311T134721_20190311T134830_026291_02F03F_3485.iso.xml',
         downloadUrl: 'https://datapool.asf.alaska.edu/METADATA_RAW/SA/S1A_EW_RAW__0SDH_20190311T134721_20190311T134830_026291_02F03F_3485.iso.xml',
@@ -160,6 +166,7 @@ export const granuleState: {granules: GranulesState} = {
         }
       },
       'S1A_EW_GRDM_1SDH_20190311T134721_20190311T134825_026291_02F03F_C187.zip': {
+        id: '',
         name: 'S1A_EW_GRDM_1SDH_20190311T134721_20190311T134825_026291_02F03F_C187',
         file: 'S1A_EW_GRDM_1SDH_20190311T134721_20190311T134825_026291_02F03F_C187.zip',
         downloadUrl: 'https://datapool.asf.alaska.edu/GRD_MD/SA/S1A_EW_GRDM_1SDH_20190311T134721_20190311T134825_026291_02F03F_C187.zip',
@@ -181,6 +188,7 @@ export const granuleState: {granules: GranulesState} = {
         }
       },
       'S1A_EW_GRDM_1SDH_20190311T134721_20190311T134825_026291_02F03F_C187.iso.xml': {
+        id: '',
         name: 'S1A_EW_GRDM_1SDH_20190311T134721_20190311T134825_026291_02F03F_C187',
         file: 'S1A_EW_GRDM_1SDH_20190311T134721_20190311T134825_026291_02F03F_C187.iso.xml',
         downloadUrl: 'https://datapool.asf.alaska.edu/METADATA_GRD_MD/SA/S1A_EW_GRDM_1SDH_20190311T134721_20190311T134825_026291_02F03F_C187.iso.xml',
@@ -202,6 +210,7 @@ export const granuleState: {granules: GranulesState} = {
         }
       },
       'S1A_EW_RAW__0SDH_20190311T120855_20190311T121003_026290_02F034_00A1.zip': {
+        id: '',
         name: 'S1A_EW_RAW__0SDH_20190311T120855_20190311T121003_026290_02F034_00A1',
         file: 'S1A_EW_RAW__0SDH_20190311T120855_20190311T121003_026290_02F034_00A1.zip',
         downloadUrl: 'https://datapool.asf.alaska.edu/RAW/SA/S1A_EW_RAW__0SDH_20190311T120855_20190311T121003_026290_02F034_00A1.zip',

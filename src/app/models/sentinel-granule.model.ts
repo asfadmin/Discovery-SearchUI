@@ -1,6 +1,7 @@
 export interface Sentinel1Product {
   name: string;
   file: string;
+  id: string;
   downloadUrl: string;
   bytes: number;
   browse: string;

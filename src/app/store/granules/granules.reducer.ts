@@ -35,7 +35,7 @@ export function granulesReducer(state = initState, action: GranulesActions): Gra
     case GranulesActionType.SET_GRANULES: {
       const products = action.payload
         .reduce((total, product) => {
-          total[product.file + product.name] = product;
+          total[product.id] = product;
 
           return total;
         }, {});
@@ -43,7 +43,7 @@ export function granulesReducer(state = initState, action: GranulesActions): Gra
       const productGroups: {[id: string]: string[]} = action.payload.reduce((total, product) => {
         const granule = total[product.groupId] || [];
 
-        total[product.groupId] = [...granule, product.file + product.name];
+        total[product.groupId] = [...granule, product.id];
         return total;
       }, {});
 
@@ -86,7 +86,7 @@ export function granulesReducer(state = initState, action: GranulesActions): Gra
     case GranulesActionType.SET_FOCUSED_GRANULE: {
       return {
         ...state,
-        focused: action.payload.file + action.payload.name,
+        focused: action.payload.id,
       };
     }
 

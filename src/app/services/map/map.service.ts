@@ -7,7 +7,7 @@ import { Map } from 'ol';
 import { Vector as VectorLayer } from 'ol/layer';
 import { Vector as VectorSource, Layer } from 'ol/source';
 import * as proj from 'ol/proj';
-import { click } from 'ol/events/condition';
+import { click, pointerMove } from 'ol/events/condition';
 import Select from 'ol/interaction/Select';
 
 import { WktService } from '../wkt.service';
@@ -163,7 +163,15 @@ export class MapService {
       layers: l => l.get('selectable') || false
     });
 
+    const selectHover = new Select({
+      condition: pointerMove,
+      multi: true,
+      style: polygonStyle.omitted,
+      layers: l => l.get('selectable') || false
+    });
+
     newMap.addInteraction(selectClick);
+    newMap.addInteraction(selectHover);
     selectClick.on('select', (e) => {
       e.target.getFeatures().forEach(
         feature => this.newSelectedGranule$.next(feature.get('filename'))

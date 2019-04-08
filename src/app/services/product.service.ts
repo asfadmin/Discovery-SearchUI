@@ -12,6 +12,7 @@ export class ProductService {
       (g: any): models.Sentinel1Product => ({
         name: g.granuleName,
         file: g.fileName,
+        id: g.productID,
         downloadUrl: g.downloadUrl,
         bytes: g.sizeMB * 1000000,
         platform: g.platform,
