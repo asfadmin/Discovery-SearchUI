@@ -36,7 +36,9 @@ export class DatasetSearchComponent {
   public maxResults$ = this.store$.select(filtersStore.getMaxSearchResults).pipe(
     map(maxResults => maxResults.toString())
   );
+
   public drawMode$ = this.store$.select(mapStore.getMapDrawMode);
+  public interactionMode$ = this.store$.select(mapStore.getMapInteractionMode);
 
   public polygon$ = this.mapService.searchPolygon$;
 
@@ -55,6 +57,10 @@ export class DatasetSearchComponent {
 
   public onNewDrawModeType(mode: models.MapDrawModeType): void {
     this.store$.dispatch(new mapStore.SetMapDrawMode(mode));
+  }
+
+  public onNewInteractionMode(mode: models.MapInteractionModeType): void {
+    this.store$.dispatch(new mapStore.SetMapInteractionMode(mode));
   }
 
   public onPlatformRemoved(platformName: string): void {

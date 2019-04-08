@@ -2,11 +2,17 @@
   <h4>Area of Interest</h4>
 
   <div class="layout">
-    <div class="mb">
+    <div class="horizontal-layout mb">
       <app-draw-selector
+         style="margin-right: 5px;"
         (newDrawMode)="onNewDrawMode($event)"
         [drawMode]="drawMode">
       </app-draw-selector>
+
+      <app-interaction-selector
+        (newInteraction)="onNewInteractionMode($event)"
+        [interaction]="interactionMode">
+      ></app-interaction-selector>
     </div>
 
     <div class="form-layout">

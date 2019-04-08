@@ -9,11 +9,14 @@ import { MatSharedModule } from '@shared';
 
 import { AoiUploadComponent } from './aoi-upload.component';
 import { DrawSelectorComponent } from './draw-selector/draw-selector.component';
+import { InteractionSelectorComponent } from './interaction-selector';
+
 
 @NgModule({
   declarations: [
     AoiUploadComponent,
-    DrawSelectorComponent
+    DrawSelectorComponent,
+    InteractionSelectorComponent
   ],
   imports: [
     CommonModule,

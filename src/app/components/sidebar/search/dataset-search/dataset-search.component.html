@@ -8,7 +8,9 @@
 <app-aoi-upload
   (openFileUpload)="onOpenFileDialog()"
   (newDrawMode)="onNewDrawModeType($event)"
+  (newInteractionMode)="onNewInteractionMode($event)"
   [drawMode]="drawMode$ | async"
+  [interactionMode]="interactionMode$ | async"
   [polygon]="polygon$ | async">
 </app-aoi-upload>
 

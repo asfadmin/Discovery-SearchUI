@@ -20,3 +20,9 @@
 .mb {
   margin-bottom: 8px;
 }
+
+.horizontal-layout {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+}
