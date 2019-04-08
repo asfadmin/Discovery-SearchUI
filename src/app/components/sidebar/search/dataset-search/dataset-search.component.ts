@@ -17,7 +17,7 @@ import * as models from '@models';
   templateUrl: './dataset-search.component.html',
   styleUrls: ['./dataset-search.component.css']
 })
-export class DatasetSearchComponent {
+export class DatasetSearchComponent implements OnInit {
 
   public platforms$ = this.store$.select(filtersStore.getPlatformsList);
   public platformProductTypes$ = this.store$.select(filtersStore.getProductTypes);
@@ -37,6 +37,9 @@ export class DatasetSearchComponent {
     map(maxResults => maxResults.toString())
   );
 
+  public drawMode$ = this.store$.select(mapStore.getMapDrawMode);
+  public interactionMode$ = this.store$.select(mapStore.getMapInteractionMode);
+
   public polygon$ = this.mapService.searchPolygon$;
 
   public dateRangeExtrema$ = this.dateExtremaService.getExtrema$(
@@ -51,6 +54,17 @@ export class DatasetSearchComponent {
     private store$: Store<AppState>,
     private dateExtremaService: DateExtremaService,
   ) { }
+
+  public ngOnInit(): void {
+  }
+
+  public onNewDrawModeType(mode: models.MapDrawModeType): void {
+    this.store$.dispatch(new mapStore.SetMapDrawMode(mode));
+  }
+
+  public onNewInteractionMode(mode: models.MapInteractionModeType): void {
+    this.store$.dispatch(new mapStore.SetMapInteractionMode(mode));
+  }
 
   public onPlatformRemoved(platformName: string): void {
     this.store$.dispatch(new filtersStore.RemoveSelectedPlatform(platformName));

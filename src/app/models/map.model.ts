@@ -15,6 +15,7 @@ export enum MapInteractionModeType {
   DRAW = 'Draw',
   EDIT = 'Edit',
   UPLOAD = 'Upload',
+  NONE = 'None',
 }
 
 export enum DrawPolygonStyle {

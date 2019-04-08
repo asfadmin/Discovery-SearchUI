@@ -8,6 +8,7 @@ export const queueState: {queue: QueueState} = {
     products: {
       [testProduct.file]: testProduct,
       'S1A_IW_RAW__0SDV_20190306T164334_20190306T164407_026220_02ED9E_1176.zip': {
+        id: '',
         name: 'S1A_IW_RAW__0SDV_20190306T164334_20190306T164407_026220_02ED9E_1176',
         file: 'S1A_IW_RAW__0SDV_20190306T164334_20190306T164407_026220_02ED9E_1176.zip',
         downloadUrl: 'https://datapool.asf.alaska.edu/RAW/SA/S1A_IW_RAW__0SDV_20190306T164334_20190306T164407_026220_02ED9E_1176.zip',
@@ -29,6 +30,7 @@ export const queueState: {queue: QueueState} = {
         }
       },
       'S1A_IW_RAW__0SDV_20190306T164309_20190306T164342_026220_02ED9E_2523.zip': {
+        id: '',
         name: 'S1A_IW_RAW__0SDV_20190306T164309_20190306T164342_026220_02ED9E_2523',
         file: 'S1A_IW_RAW__0SDV_20190306T164309_20190306T164342_026220_02ED9E_2523.zip',
         downloadUrl: 'https://datapool.asf.alaska.edu/RAW/SA/S1A_IW_RAW__0SDV_20190306T164309_20190306T164342_026220_02ED9E_2523.zip',
@@ -50,6 +52,7 @@ export const queueState: {queue: QueueState} = {
         }
       },
       'S1A_IW_RAW__0SDV_20190306T164219_20190306T164252_026220_02ED9E_89A0.zip': {
+        id: '',
         name: 'S1A_IW_RAW__0SDV_20190306T164219_20190306T164252_026220_02ED9E_89A0',
         file: 'S1A_IW_RAW__0SDV_20190306T164219_20190306T164252_026220_02ED9E_89A0.zip',
         downloadUrl: 'https://datapool.asf.alaska.edu/RAW/SA/S1A_IW_RAW__0SDV_20190306T164219_20190306T164252_026220_02ED9E_89A0.zip',

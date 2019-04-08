@@ -9,6 +9,7 @@ import { map, withLatestFrom, switchMap, catchError } from 'rxjs/operators';
 import { AppState } from '../app.reducer';
 import * as granulesStore from '@store/granules';
 import * as filtersStore from '@store/filters';
+import * as mapStore from '@store/map';
 
 import * as services from '@services';
 
@@ -17,6 +18,8 @@ import {
   SearchResponse, SearchError, CancelSearch, SearchCanceled
 } from './search.action';
 import { getIsCanceled } from './search.reducer';
+
+import { MapInteractionModeType } from '@models';
 
 @Injectable()
 export class SearchEffects {
@@ -27,6 +30,13 @@ export class SearchEffects {
     private asfApiService: services.AsfApiService,
     private productService: services.ProductService,
   ) {}
+
+  @Effect()
+  private clearMapInteractionModeOnSearch: Observable<Action> = this.actions$.pipe(
+    ofType(SearchActionType.MAKE_SEARCH),
+    map(action => new mapStore.SetMapInteractionMode(MapInteractionModeType.NONE))
+  );
+
 
   @Effect()
   private makeSearches: Observable<Action> = this.actions$.pipe(

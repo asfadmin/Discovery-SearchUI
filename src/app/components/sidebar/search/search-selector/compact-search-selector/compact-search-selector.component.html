@@ -1,19 +1,8 @@
 <mat-card class="card-spacing">
   <div class="horizontal-btn-group">
-    <button (click)="onSetSearchType(searchTypes.DATASET)"
-      [ngClass]="{'active-btn': selectedSearchType === searchTypes.DATASET}"
+    <button (click)="onClearSearchType()"
       class="horizontal-btn" mat-raised-button>
-        Data set
-    </button>
-    <button (click)="onSetSearchType(searchTypes.LIST)"
-      [ngClass]="{'active-btn': selectedSearchType === searchTypes.LIST}"
-      class="horizontal-btn" mat-raised-button>
-        List
-    </button>
-    <button (click)="onSetSearchType(searchTypes.MISSION)"
-      [ngClass]="{'active-btn': selectedSearchType === searchTypes.MISSION}"
-      class="horizontal-btn" mat-raised-button>
-        Mission
+      <mat-icon>keyboard_backspace</mat-icon> Back
     </button>
   </div>
 </mat-card>

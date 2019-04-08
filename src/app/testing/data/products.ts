@@ -1,6 +1,7 @@
 import * as models from '@models';
 
 export const testProduct: models.Sentinel1Product = {
+  id: 'some id',
   name: 'SomeGranule',
   file: 'SomeGranule.zip',
   downloadUrl: 'www.download.edu',

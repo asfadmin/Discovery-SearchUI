@@ -93,7 +93,7 @@ export class MapComponent implements OnInit {
     if (successful) {
       this.onNewInteractionMode(models.MapInteractionModeType.EDIT);
     } else {
-      this.onNewInteractionMode(models.MapInteractionModeType.DRAW);
+      this.onNewInteractionMode(models.MapInteractionModeType.NONE);
     }
   }
 
@@ -188,7 +188,7 @@ export class MapComponent implements OnInit {
       .map(g => {
         const wkt = g.metadata.polygon;
         const feature = this.wktService.wktToFeature(wkt, projection);
-        feature.set('filename', g.file);
+        feature.set('filename', g.id);
 
         return feature;
       });

@@ -24,11 +24,11 @@ export function queueReducer(state = initState, action: QueueActions): QueueStat
 
       const products = {
         ...state.products,
-        [newProduct.file]:  newProduct
+        [newProduct.id]:  newProduct
       };
 
       const ids = Array.from(
-        new Set([...state.ids, newProduct.file])
+        new Set([...state.ids, newProduct.id])
       );
 
       return {
@@ -43,13 +43,13 @@ export function queueReducer(state = initState, action: QueueActions): QueueStat
       const products = { ...state.products };
 
       newProducts.forEach(
-        product => products[product.file] = product
+        product => products[product.id] = product
       );
 
       const ids = Array.from(
         new Set([
           ...state.ids,
-          ...newProducts.map(prod => prod.file)
+          ...newProducts.map(prod => prod.id)
         ])
       );
 
@@ -64,7 +64,7 @@ export function queueReducer(state = initState, action: QueueActions): QueueStat
 
       const prods = { ...state.products };
       const products = Object.keys(prods)
-        .filter(product => product !== toRemove.file)
+        .filter(product => product !== toRemove.id)
         .reduce(
           (total, product) => {
           total[product] = prods[product];
@@ -73,7 +73,7 @@ export function queueReducer(state = initState, action: QueueActions): QueueStat
         }, {});
 
       const ids = [ ...state.ids ]
-        .filter(id => id !== toRemove.file);
+        .filter(id => id !== toRemove.id);
 
       return {
         ...state,
@@ -83,7 +83,7 @@ export function queueReducer(state = initState, action: QueueActions): QueueStat
 
     case QueueActionType.REMOVE_ITEMS: {
       const toRemove = new Set(action.payload
-        .map(product => product.file)
+        .map(product => product.id)
       );
 
 
