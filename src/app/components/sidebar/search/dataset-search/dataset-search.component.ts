@@ -56,9 +56,6 @@ export class DatasetSearchComponent implements OnInit {
   ) { }
 
   public ngOnInit(): void {
-    this.polygon$.pipe(filter(polygon => !!polygon)).subscribe(
-      _ => this.store$.dispatch(new mapStore.SetMapInteractionMode(models.MapInteractionModeType.NONE))
-    );
   }
 
   public onNewDrawModeType(mode: models.MapDrawModeType): void {

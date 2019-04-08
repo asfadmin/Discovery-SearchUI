@@ -243,14 +243,6 @@ export class UrlStateService {
       ),
       loader: this.loadMapView
     }, {
-      name: 'drawMode',
-      source: this.store$.select(mapStore.getMapDrawMode).pipe(
-        skip(1),
-        map(drawMode => ({ drawMode })
-        )
-      ),
-      loader: this.loadMapDrawMode
-    }, {
       name: 'center',
       source: this.mapService.center$.pipe(
         skip(1),

@@ -93,7 +93,7 @@ export class MapComponent implements OnInit {
     if (successful) {
       this.onNewInteractionMode(models.MapInteractionModeType.EDIT);
     } else {
-      this.onNewInteractionMode(models.MapInteractionModeType.DRAW);
+      this.onNewInteractionMode(models.MapInteractionModeType.NONE);
     }
   }
 
