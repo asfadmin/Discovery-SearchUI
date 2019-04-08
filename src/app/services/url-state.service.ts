@@ -11,6 +11,8 @@ import * as granulesStore from '@store/granules';
 import * as mapStore from '@store/map';
 import * as uiStore from '@store/ui';
 import * as filterStore from '@store/filters';
+import * as missionStore from '@store/mission';
+import { MakeSearch } from '@store/search/search.action';
 
 import * as models from '@models';
 
@@ -39,6 +41,7 @@ export class UrlStateService {
       ...this.mapParameters(),
       ...this.uiParameters(),
       ...this.filtersParameters(),
+      ...this.missionParameters(),
     ];
   }
 
@@ -47,9 +50,9 @@ export class UrlStateService {
       skip(1),
       filter(params => this.isNotLoaded),
       tap(() => this.isNotLoaded = false)
-    )
-    .subscribe(params => {
-      this.loadStateFrom(params);
+    ).subscribe(
+      params => {
+        this.loadStateFrom(params);
     });
 
     this.urlParams.forEach(
@@ -84,6 +87,17 @@ export class UrlStateService {
     );
   }
 
+  private missionParameters() {
+    return [{
+      name: 'mission',
+      source: this.store$.select(missionStore.getSelectedMission).pipe(
+        skip(1),
+        map(mission => ({ mission }))
+      ),
+      loader: this.loadSelectedMission
+    }];
+  }
+
   private uiParameters() {
     return [{
       name: 'isSidebarOpen',
@@ -92,6 +106,13 @@ export class UrlStateService {
         map(isSidebarOpen => ({ isSidebarOpen }))
       ),
       loader: this.loadIsSidebarOpen
+    }, {
+      name: 'isBottomMenuOpen',
+      source: this.store$.select(uiStore.getIsBottomMenuOpen).pipe(
+        skip(1),
+        map(isBottomMenuOpen => ({ isBottomMenuOpen }))
+      ),
+      loader: this.loadIsBottomMenuOpen
     }, {
       name: 'selectedFilter',
       source: this.store$.select(uiStore.getSelectedFilter).pipe(
@@ -222,14 +243,6 @@ export class UrlStateService {
       ),
       loader: this.loadMapView
     }, {
-      name: 'drawMode',
-      source: this.store$.select(mapStore.getMapDrawMode).pipe(
-        skip(1),
-        map(drawMode => ({ drawMode })
-        )
-      ),
-      loader: this.loadMapDrawMode
-    }, {
       name: 'center',
       source: this.mapService.center$.pipe(
         skip(1),
@@ -264,6 +277,14 @@ export class UrlStateService {
     const action = isSidebarOpenStr !== 'false' ?
       new uiStore.OpenSidebar() :
       new uiStore.CloseSidebar();
+
+    this.store$.dispatch(action);
+  }
+
+  private loadIsBottomMenuOpen = (isBottomMenuOpenStr: string): void => {
+    const action = isBottomMenuOpenStr === 'true' ?
+      new uiStore.OpenBottomMenu() :
+      new uiStore.CloseBottomMenu() ;
 
     this.store$.dispatch(action);
   }
@@ -514,6 +535,10 @@ export class UrlStateService {
 
       this.store$.dispatch(action);
     }
+  }
+
+  private loadSelectedMission = (mission: string): void => {
+    this.store$.dispatch(new missionStore.SelectMission(mission));
   }
 
 

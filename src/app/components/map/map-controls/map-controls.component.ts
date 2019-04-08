@@ -17,11 +17,6 @@ import * as models from '@models';
 export class MapControlsComponent {
   public view$ = this.store$.select(mapStore.getMapView);
   public drawMode$ = this.store$.select(mapStore.getMapDrawMode);
-  public interactionMode$ = this.store$.select(mapStore.getMapInteractionMode);
-
-  public isDrawMenuDisabled$ = this.interactionMode$.pipe(
-    map(mode => mode !== models.MapInteractionModeType.DRAW)
-  );
 
   constructor(
     private store$: Store<AppState>,
@@ -29,13 +24,5 @@ export class MapControlsComponent {
 
   public onNewProjection(view: models.MapViewType): void {
     this.store$.dispatch(new mapStore.SetMapView(view));
-  }
-
-  public onNewDrawMode(mode: models.MapDrawModeType): void {
-    this.store$.dispatch(new mapStore.SetMapDrawMode(mode));
-  }
-
-  public onNewInteractionMode(mode: models.MapInteractionModeType): void {
-    this.store$.dispatch(new mapStore.SetMapInteractionMode(mode));
   }
 }

@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 
 import { Observable } from 'rxjs';
@@ -12,7 +12,7 @@ export interface StateGroup {
 export const _filter = (opt: string[], value: string): string[] => {
   const filterValue = value.toLowerCase();
 
-  return opt.filter(item => item.toLowerCase().indexOf(filterValue) === 0);
+  return opt.filter(item => item.toLowerCase().includes(filterValue));
 };
 
 
@@ -22,13 +22,24 @@ export const _filter = (opt: string[], value: string): string[] => {
   styleUrls: ['./mission-search.component.css']
 })
 export class MissionSearchComponent implements OnInit {
-  @Input() missionsByPlatform: {[platform: string]: string[]} = {};
-  @Input() missionPlatforms: string[] = [];
+  @ViewChild('paginator') paginator;
+
+  @Input() missionsByPlatform$: Observable<{[platform: string]: string[]}>;
+  @Input() missionPlatforms$: Observable<string[]>;
+  @Input() selectedMission: string | null;
 
   @Output() newMissionSelected = new EventEmitter<string>();
 
+  public missionsByPlatform: {[platform: string]: string[]};
+  public missionPlatforms: string[];
+
   public filteredMissions: string[];
-  public platformFilter: string | null;
+  public platformFilter: string | null = null;
+  public currentFilter = '';
+
+  public pageSizeOptions = [5, 10, 25];
+  public pageSize = this.pageSizeOptions[1];
+  public pageIndex = 0;
 
   stateForm: FormGroup = this.fb.group({
     missionFilter: '',
@@ -37,23 +48,57 @@ export class MissionSearchComponent implements OnInit {
   constructor(private fb: FormBuilder) {}
 
   ngOnInit() {
+    this.missionsByPlatform$.subscribe(
+      missions => {
+        this.missionsByPlatform = missions;
+        this.filteredMissions = this._filterGroup(this.currentFilter);
+      }
+    );
+
+    this.missionPlatforms$.subscribe(
+      platforms => this.missionPlatforms = platforms
+    );
+
     this.stateForm.get('missionFilter').valueChanges
       .pipe(
-        startWith(''),
+        startWith(this.currentFilter),
+        tap(filterValue => this.currentFilter = filterValue),
         map(filterValue => this._filterGroup(filterValue))
       ).subscribe(
         filtered => this.filteredMissions = filtered
       );
   }
 
+  public selectPlatformFilter(platform: string): void {
+    this.platformFilter = platform;
+    this.filteredMissions = this._filterGroup(this.currentFilter);
+  }
+
   private _filterGroup(filterValue: string): string[] {
-    return _filter(
+    const missionsUnfiltered = this.platformFilter ?
+      this.missionsByPlatform[this.platformFilter] :
       Object.values(this.missionsByPlatform).reduce(
       (allMissions, missions) => [...allMissions, ...missions], []
-    ), filterValue).slice(0, 50);
+    );
+
+    this.paginator.firstPage();
+
+    return filterValue === '' ?
+      missionsUnfiltered :
+      _filter(missionsUnfiltered, filterValue);
   }
 
   public setMission(mission: string): void {
-    this.stateForm.get('missionFilter').setValue(mission);
+    this.newMissionSelected.emit(mission);
+  }
+
+  public currentPageOf(missions, pageSize, pageIndex): string[] {
+    const offset = pageIndex * pageSize;
+    return missions.slice(offset, offset + pageSize);
+  }
+
+  public onNewPage(page): void {
+    this.pageIndex = page.pageIndex;
+    this.pageSize = page.pageSize;
   }
 }

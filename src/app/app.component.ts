@@ -4,7 +4,7 @@ import { MatBottomSheet } from '@angular/material';
 
 import { Store } from '@ngrx/store';
 
-import { filter, map, switchMap, tap, catchError } from 'rxjs/operators';
+import { skip, filter, map, switchMap, tap, catchError } from 'rxjs/operators';
 
 import { AppState } from '@store';
 import * as granulesStore from '@store/granules';
@@ -12,6 +12,7 @@ import * as filterStore from '@store/filters';
 import * as searchStore from '@store/search';
 import * as uiStore from '@store/ui';
 import * as missionStore from '@store/mission';
+import * as mapStore from '@store/map';
 
 import * as services from '@services';
 import * as models from './models';
@@ -37,6 +38,19 @@ export class AppComponent implements OnInit {
   public ngOnInit(): void {
     this.polygonValidationService.validate();
     this.store$.dispatch(new missionStore.LoadMissions());
+
+    this.store$.select(uiStore.getSearchType).pipe(
+      skip(1),
+      map(searchType => {
+        if (searchType === models.SearchType.DATASET) {
+          return models.MapInteractionModeType.DRAW;
+        } else {
+          return models.MapInteractionModeType.NONE;
+        }
+      })
+    ).subscribe(
+      mode => this.store$.dispatch(new mapStore.SetMapInteractionMode(mode))
+    );
   }
 
   public onLoadUrlState(): void {
@@ -50,6 +64,7 @@ export class AppComponent implements OnInit {
   public onClearSearch(): void {
     this.store$.dispatch(new granulesStore.ClearGranules());
     this.store$.dispatch(new filterStore.ClearFilters());
+    this.store$.dispatch(new missionStore.SelectMission(null));
     this.mapService.clearDrawLayer();
   }
 

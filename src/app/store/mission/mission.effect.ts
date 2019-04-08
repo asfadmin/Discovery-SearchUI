@@ -10,14 +10,14 @@ import { map, withLatestFrom, startWith, switchMap, tap, filter } from 'rxjs/ope
 import { AppState } from '../app.reducer';
 import { MissionActionType, SetMissions } from './mission.action';
 
-import * as services from '@services';
+import { AsfApiService } from '@services/asf-api.service';
 import * as models from '@models';
 
 @Injectable()
 export class MissionEffects {
   constructor(
     private actions$: Actions,
-    private asfApiService: services.AsfApiService,
+    private asfApiService: AsfApiService,
   ) {}
 
   @Effect()
