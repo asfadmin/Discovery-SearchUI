@@ -188,7 +188,7 @@ export class MapComponent implements OnInit {
       .map(g => {
         const wkt = g.metadata.polygon;
         const feature = this.wktService.wktToFeature(wkt, projection);
-        feature.set('filename', g.file + g.name);
+        feature.set('filename', g.id);
 
         return feature;
       });
