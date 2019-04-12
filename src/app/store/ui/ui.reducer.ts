@@ -15,7 +15,7 @@ export interface UIState {
 
 export const initState: UIState = {
   isSidebarOpen: true,
-  isBottomMenuOpen: false,
+  isBottomMenuOpen: true,
   uiView: ViewType.MAIN,
   selectedFilter: FilterType.PLATFORM,
   searchType: null,

@@ -4,7 +4,7 @@ import { Actions, Effect, ofType } from '@ngrx/effects';
 import { Action, Store } from '@ngrx/store';
 
 import { Observable, of } from 'rxjs';
-import { map, withLatestFrom, switchMap, catchError } from 'rxjs/operators';
+import { map, withLatestFrom, switchMap, catchError, tap } from 'rxjs/operators';
 
 import { AppState } from '../app.reducer';
 import * as granulesStore from '@store/granules';
@@ -41,7 +41,6 @@ export class SearchEffects {
   @Effect()
   private makeSearches: Observable<Action> = this.actions$.pipe(
     ofType(SearchActionType.MAKE_SEARCH),
-
     withLatestFrom(this.searchParams$.getParams()),
     map(([_, params]) => params),
     switchMap(
