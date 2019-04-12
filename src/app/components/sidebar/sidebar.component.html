@@ -45,12 +45,6 @@
           ></app-search>
       </mat-tab>
 
-      <ng-container *ngIf="granules$ | async as granules">
-        <mat-tab *ngIf="granules.length > 0" label="Results">
-          <app-results></app-results>
-        </mat-tab>
-      </ng-container>
-
     </mat-tab-group>
   </div>
 
