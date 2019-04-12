@@ -11,6 +11,7 @@ export interface FiltersState {
 
   pathRange: models.Range<number | null>;
   frameRange: models.Range<number | null>;
+  season: models.Range<number | null>;
   shouldOmitSearchPolygon: boolean;
 
   listSearchMode: models.ListSearchType;
@@ -40,9 +41,13 @@ export const initState: FiltersState = {
       },
       {}
     ),
-    selected: new Set<string>(['Sentinel-1A', 'Sentinel-1B'])
+    selected: new Set<string>(['Sentinel-1'])
   },
   dateRange: {
+    start: null,
+    end: null
+  },
+  season: {
     start: null,
     end: null
   },
@@ -132,6 +137,26 @@ export function filtersReducer(state = initState, action: FiltersActions): Filte
         ...state,
         dateRange: {
           ...state.dateRange,
+          end: action.payload
+        }
+      };
+    }
+
+    case FiltersActionType.SET_SEASON_START: {
+      return {
+        ...state,
+        season: {
+          ...state.season,
+          start: action.payload
+        }
+      };
+    }
+
+    case FiltersActionType.SET_SEASON_END: {
+      return {
+        ...state,
+        season: {
+          ...state.season,
           end: action.payload
         }
       };
@@ -286,6 +311,21 @@ export const getStartDate = createSelector(
 export const getEndDate = createSelector(
   getDateRange,
   (state: DateRangeState) => state.end
+);
+
+export const getSeason = createSelector(
+  getFiltersState,
+  (state: FiltersState) => state.season
+);
+
+export const getSeasonStart = createSelector(
+  getSeason,
+  (state: models.Range<number | null>) => state.start
+);
+
+export const getSeasonEnd = createSelector(
+  getSeason,
+  (state: models.Range<number | null>) => state.end
 );
 
 export const getPlatformsList = createSelector(

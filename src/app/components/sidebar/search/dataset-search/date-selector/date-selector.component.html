@@ -1,19 +1,60 @@
 <mat-card class="card-spacing">
-    <h4>Acquisition Date</h4>
+  <h4>Acquisition Date</h4>
 
-  <mat-form-field>
-    <input matInput [(ngModel)]="startDate" [min]="extrema.start.min" [max]="extrema.start.max" [matDatepicker]="start" placeholder="Start Date"
-      (dateInput)="onStartDateChange($event)"
-      (dateChanged)="onStartDateChange($event)">
-    <mat-datepicker-toggle matSuffix [for]="start"></mat-datepicker-toggle>
-    <mat-datepicker #start></mat-datepicker>
-  </mat-form-field>
+  <div>
+    <mat-form-field>
+      <input
+        matInput [(ngModel)]="startDate"
+        [min]="extrema.start.min"
+        [max]="extrema.start.max"
+        [matDatepicker]="start"
+        placeholder="Start Date"
+        (dateInput)="onStartDateChange($event)"
+        (dateChanged)="onStartDateChange($event)">
+      <mat-datepicker-toggle matSuffix [for]="start"></mat-datepicker-toggle>
+      <mat-datepicker #start></mat-datepicker>
+    </mat-form-field>
 
-  <mat-form-field>
-    <input matInput [(ngModel)]="endDate" [min]="extrema.end.min" [max]="extrema.end.max" [matDatepicker]="end" placeholder="End Date"
-    (dateInput)="onEndDateChange($event)"
-    (dateChanged)="onEndDateChange($event)">
-    <mat-datepicker-toggle matSuffix [for]="end"></mat-datepicker-toggle>
-    <mat-datepicker #end></mat-datepicker>
-  </mat-form-field>
+    <mat-form-field>
+      <input
+        matInput [(ngModel)]="endDate"
+        [min]="extrema.end.min"
+        [max]="extrema.end.max"
+        [matDatepicker]="end"
+        placeholder="End Date"
+        (dateInput)="onEndDateChange($event)"
+        (dateChanged)="onEndDateChange($event)">
+      <mat-datepicker-toggle matSuffix [for]="end"></mat-datepicker-toggle>
+      <mat-datepicker #end></mat-datepicker>
+    </mat-form-field>
+  </div>
+
+  <div>
+    <h4>Season</h4>
+    <b>start</b>
+    <mat-slider
+      (change)="onSeasonStartChange($event.value)"
+      [value]="seasonStart"
+      min="1"
+      max="365"
+      step="1"
+      thumbLabel="true"
+      showTicks="true"
+      [displayWith]="dayOfYearFormat"
+      ></mat-slider>
+    <br />
+
+    <b>end</b>
+    <mat-slider
+      (change)="onSeasonEndChange($event.value)"
+      [value]="seasonEnd"
+      min="1"
+      max="365"
+      step="1"
+      thumbLabel="true"
+      showTicks="true"
+      [displayWith]="dayOfYearFormat"
+      ></mat-slider>
+  </div>
+
 </mat-card>

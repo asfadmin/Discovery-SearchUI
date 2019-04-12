@@ -71,6 +71,7 @@ export class SearchParamsService {
         this.searchPolygon$(),
         this.selectedPlatforms$(),
         this.dateRange$(),
+        this.season$(),
         this.pathRange$(),
         this.frameRange$(),
         this.productType$(),
@@ -132,6 +133,16 @@ export class SearchParamsService {
           .map(date => date.toISOString());
       }),
       map(([start, end]) => ({ start, end }))
+    );
+  }
+
+  private season$() {
+    return this.store$.select(filterStore.getSeason).pipe(
+      filter(({start, end}) => start !== null && end !== null),
+      map(range => {
+        return [range.start || 1, range.end || 365];
+      }),
+      map(([start, end]) => ({ season: `${start},${end}`}))
     );
   }
 
