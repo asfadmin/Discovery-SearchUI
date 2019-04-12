@@ -138,11 +138,10 @@ export class SearchParamsService {
 
   private season$() {
     return this.store$.select(filterStore.getSeason).pipe(
-      filter(({start, end}) => start !== null && end !== null),
       map(range => {
-        return [range.start || 1, range.end || 365];
+        return [range.start, range.end];
       }),
-      map(([start, end]) => ({ season: `${start},${end}`}))
+      map(([start, end]) => ({ season: start && end ? `${start},${end}` : null}))
     );
   }
 
