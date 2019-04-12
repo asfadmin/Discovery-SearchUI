@@ -17,9 +17,13 @@
 <app-date-selector
   [startDate]="startDate$ | async"
   [endDate]="endDate$ | async"
+  [seasonStart]="seasonStart$ | async"
+  [seasonEnd]="seasonEnd$ | async"
   [extrema]="dateRangeExtrema$ | async"
   (newStart)="onNewStartDate($event)"
-  (newEnd)="onNewEndDate($event)">
+  (newEnd)="onNewEndDate($event)"
+  (newSeasonStart)="onNewSeasonStart($event)"
+  (newSeasonEnd)="onNewSeasonEnd($event)">
 </app-date-selector>
 
 <app-path-selector

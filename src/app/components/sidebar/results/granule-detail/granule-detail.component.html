@@ -21,7 +21,6 @@
 
     <mat-list-item *ngFor="let product of products">
         <h4 mat-line fxLayout="row" fxLayoutAlign="space-between">
-
           <span *ngIf="product.file.length > 29">
             <b>{{ product.file | truncate : 25 }}{{ product.file | truncate : -4 : '' }}</b>
           </span>

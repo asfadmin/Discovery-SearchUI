@@ -5,6 +5,7 @@ import { FormsModule } from '@angular/forms';
 import {
   MatDatepickerModule, MatFormFieldModule,
   MatNativeDateModule, MatInputModule,
+  MatSliderModule,
 } from '@angular/material';
 
 import { MatSharedModule } from '@shared';
@@ -19,6 +20,7 @@ import { DateSelectorComponent } from './date-selector.component';
     MatFormFieldModule,
     MatNativeDateModule,
     MatInputModule,
+    MatSliderModule,
 
     MatSharedModule,
   ],

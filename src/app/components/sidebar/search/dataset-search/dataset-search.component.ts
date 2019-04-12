@@ -26,6 +26,8 @@ export class DatasetSearchComponent implements OnInit {
 
   public startDate$ = this.store$.select(filtersStore.getStartDate);
   public endDate$ = this.store$.select(filtersStore.getEndDate);
+  public seasonStart$ = this.store$.select(filtersStore.getSeasonStart);
+  public seasonEnd$ = this.store$.select(filtersStore.getSeasonEnd);
   public pathRange$ = this.store$.select(filtersStore.getPathRange);
   public frameRange$ = this.store$.select(filtersStore.getFrameRange);
   public shouldOmitSearchPolygon$ = this.store$.select(filtersStore.getShouldOmitSearchPolygon);
@@ -80,6 +82,14 @@ export class DatasetSearchComponent implements OnInit {
 
   public onNewEndDate(end: Date): void {
     this.store$.dispatch(new filtersStore.SetEndDate(end));
+  }
+
+  public onNewSeasonStart(start: number | null): void {
+    this.store$.dispatch(new filtersStore.SetSeasonStart(start));
+  }
+
+  public onNewSeasonEnd(end: number | null): void {
+    this.store$.dispatch(new filtersStore.SetSeasonEnd(end));
   }
 
   public onNewPathStart(path: number): void {

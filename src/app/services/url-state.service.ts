@@ -163,6 +163,20 @@ export class UrlStateService {
       ),
       loader: this.loadEndDate
     }, {
+      name: 'seasonStart',
+      source: this.store$.select(filterStore.getSeasonStart).pipe(
+        skip(1),
+        map(seasonStart  => ({ seasonStart }))
+      ),
+      loader: this.loadSeasonStart
+    }, {
+      name: 'seasonEnd',
+      source: this.store$.select(filterStore.getSeasonEnd).pipe(
+        skip(1),
+        map(seasonEnd => ({ seasonEnd }))
+      ),
+      loader: this.loadSeasonEnd
+    }, {
       name: 'path',
       source: this.store$.select(filterStore.getPathRange).pipe(
         skip(1),
@@ -376,6 +390,14 @@ export class UrlStateService {
     }
 
     this.store$.dispatch(new filterStore.SetEndDate(endDate));
+  }
+
+  private loadSeasonStart = (start: string): void => {
+    this.store$.dispatch(new filterStore.SetSeasonStart(+start));
+  }
+
+  private loadSeasonEnd = (end: string): void => {
+    this.store$.dispatch(new filterStore.SetSeasonEnd(+end));
   }
 
   private loadPathRange = (rangeStr: string): void => {
