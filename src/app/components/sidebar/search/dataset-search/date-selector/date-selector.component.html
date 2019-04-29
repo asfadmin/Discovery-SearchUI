@@ -2,31 +2,33 @@
   <h4>Acquisition Date</h4>
 
   <div>
-    <mat-form-field>
+
+  <table class="w90" cellspacing="0"><tr>
+    <td><mat-form-field class="w90">
       <input
         matInput [(ngModel)]="startDate"
         [min]="extrema.start.min"
         [max]="extrema.start.max"
         [matDatepicker]="start"
-        placeholder="Start Date"
+        placeholder="Acquisition Start"
         (dateInput)="onStartDateChange($event)"
         (dateChanged)="onStartDateChange($event)">
       <mat-datepicker-toggle matSuffix [for]="start"></mat-datepicker-toggle>
       <mat-datepicker #start></mat-datepicker>
-    </mat-form-field>
-
-    <mat-form-field>
+    </mat-form-field></td>
+    <td><mat-form-field class="w90">
       <input
         matInput [(ngModel)]="endDate"
         [min]="extrema.end.min"
         [max]="extrema.end.max"
         [matDatepicker]="end"
-        placeholder="End Date"
+        placeholder="Acquisition End"
         (dateInput)="onEndDateChange($event)"
         (dateChanged)="onEndDateChange($event)">
       <mat-datepicker-toggle matSuffix [for]="end"></mat-datepicker-toggle>
       <mat-datepicker #end></mat-datepicker>
-    </mat-form-field>
+    </mat-form-field></td>
+  </tr></table>
   </div>
 
   <div>

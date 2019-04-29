@@ -1,11 +1,16 @@
 <mat-card class="card-spacing">
-  <mat-selection-list>
-    <app-platform
-      *ngFor="let platform of platforms"
-      (click)="onClick(platform)"
-      class="list-group-item list-group-item-action"
-      [platform]="platform"
-      [isSelected]="selected.has(platform.name)">
-    </app-platform>
-  </mat-selection-list>
+  <mat-form-field>
+    <mat-label>Platform</mat-label>
+    <mat-select>
+      <mat-option *ngFor="let platform of platforms" [value]="platform.name">
+        <app-platform
+          (click)="onClick(platform)"
+          class="list-group-item list-group-item-action"
+          [platform]="platform"
+          [isSelected]="selected.has(platform.name)">
+        </app-platform>
+      </mat-option>
+    </mat-select>
+    <mat-hint align="start"><strong>Select one platform</strong> </mat-hint>
+  </mat-form-field>
 </mat-card>
