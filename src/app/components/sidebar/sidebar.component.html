@@ -34,21 +34,13 @@
   </div>
 
   <div class="filters-scoll">
-    <mat-tab-group
+    <app-search
       *ngIf="selectedSearchType !== null"
-      [selectedIndex]="selectedTab"
-      (selectedIndexChange)="onTabChange($event)">
-
-      <mat-tab label="Search">
-        <app-search
-          (newSearchType)="onSetSearchType($event)"
-          ></app-search>
-      </mat-tab>
-
-    </mat-tab-group>
+      (newSearchType)="onSetSearchType($event)"
+      ></app-search>
   </div>
 
-  <div *ngIf="selectedSearchType !== null && selectedTab === 0"
+  <div *ngIf="selectedSearchType !== null"
     class="bottom-list-elements">
       <app-search-bar
         (newSearch)="onNewSearch()"
