@@ -27,9 +27,7 @@ export class SearchComponent implements OnInit {
     map(missions => Object.keys(missions))
   );
 
-  constructor(
-    private store$: Store<AppState>,
-  ) { }
+  constructor(private store$: Store<AppState>) {}
 
   ngOnInit() {
     this.searchType$.subscribe(

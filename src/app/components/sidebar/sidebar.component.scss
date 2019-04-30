@@ -14,6 +14,17 @@
   z-index: 999;
 }
 
+.dataset-filters-card {
+  position: fixed;
+  top: 90px;
+  left: calc(100% + 10px);
+  width: 900px;
+  max-height: 90%;
+  max-height: calc(90vw - 10px);
+  max-width: calc(100vw - 20px);
+  overflow-y: auto;
+}
+
 .top-list-elements {
   padding: 0;
   position: sticky;
