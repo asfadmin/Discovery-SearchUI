@@ -1,4 +1,4 @@
-import { Component, OnInit, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 
 import { Store } from '@ngrx/store';
 import { map } from 'rxjs/operators';
@@ -15,11 +15,10 @@ import * as models from '@models';
   styleUrls: ['./search.component.css']
 })
 export class SearchComponent implements OnInit {
+  @Input() selectedSearchType: models.SearchType;
   @Output() newSearchType = new EventEmitter<models.SearchType>();
 
   public searchTypes = models.SearchType;
-  public searchType$ = this.store$.select(uiStore.getSearchType);
-  public selectedSearchType: models.SearchType;
 
   public missionsByPlatform$ = this.store$.select(missionStore.getMissionsByPlatform);
   public selectedMission$ = this.store$.select(missionStore.getSelectedMission);
@@ -27,14 +26,9 @@ export class SearchComponent implements OnInit {
     map(missions => Object.keys(missions))
   );
 
-  constructor(
-    private store$: Store<AppState>,
-  ) { }
+  constructor(private store$: Store<AppState>) {}
 
   ngOnInit() {
-    this.searchType$.subscribe(
-      searchType => this.selectedSearchType = searchType
-    );
   }
 
   public onSetSearchType(searchType: models.SearchType): void {

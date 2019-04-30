@@ -7,6 +7,10 @@ export enum UIActionType {
   CLOSE_SIDEBAR = '[UI] Close Sidebar',
   OPEN_SIDEBAR = '[UI] Open Sidebar ',
 
+  TOGGLE_FILTERS_MENU = '[UI] Toggle Filters Menu',
+  CLOSE_FILTERS_MENU = '[UI] Close Filters Menu',
+  OPEN_FILTERS_MENU = '[UI] Open Filters Menu ',
+
   TOGGLE_BOTTOM_MENU = '[UI] Toggle Bottom Menu',
   CLOSE_BOTTOM_MENU = '[UI] Close Bottom Menu',
   OPEN_BOTTOM_MENU = '[UI] Open Bottom Menu ',
@@ -26,6 +30,18 @@ export class CloseSidebar implements Action {
 
 export class OpenSidebar implements Action {
   public readonly type = UIActionType.OPEN_SIDEBAR;
+}
+
+export class ToggleFiltersMenu implements Action {
+  public readonly type = UIActionType.TOGGLE_FILTERS_MENU;
+}
+
+export class CloseFiltersMenu implements Action {
+  public readonly type = UIActionType.CLOSE_FILTERS_MENU;
+}
+
+export class OpenFiltersMenu implements Action {
+  public readonly type = UIActionType.OPEN_FILTERS_MENU;
 }
 
 export class ToggleBottomMenu implements Action {
@@ -62,6 +78,9 @@ export type UIActions =
   | ToggleSidebar
   | CloseSidebar
   | OpenSidebar
+  | ToggleFiltersMenu
+  | CloseFiltersMenu
+  | OpenFiltersMenu
   | ToggleBottomMenu
   | CloseBottomMenu
   | OpenBottomMenu

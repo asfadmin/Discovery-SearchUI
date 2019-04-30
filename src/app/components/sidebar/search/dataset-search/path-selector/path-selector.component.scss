@@ -1,5 +1,9 @@
 .number-input--size {
-  max-width: 40%;
+  width: 40%;
+}
+
+mat-form-field {
+  width: 120px;
 }
 
 .geo-toggle {

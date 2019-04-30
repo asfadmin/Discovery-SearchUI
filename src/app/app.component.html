@@ -2,13 +2,13 @@
   <app-map (loadUrlState)="onLoadUrlState()">
   </app-map>
 
+  <app-bottom-menu>
+  </app-bottom-menu>
+
   <app-sidebar
      (newSearch)="onNewSearch()"
      (clearSearch)="onClearSearch()"
     ></app-sidebar>
-
-  <app-bottom-menu>
-  </app-bottom-menu>
 
   <app-login
     (closed)="onLoginClosed()"

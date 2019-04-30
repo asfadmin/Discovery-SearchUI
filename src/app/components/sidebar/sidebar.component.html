@@ -7,10 +7,29 @@
   [isOpen]="isSidebarOpen$ | async">
 </app-toggle-button>
 
-<app-ribbon
-  (newAppView)="onNewAppView($event)"
-  [appView]="uiView$ | async">
-</app-ribbon>
+<div
+  *ngIf="focusedSearchType !== null"
+  class="dataset-filters-card">
+  <mat-card>
+    <mat-card-header>
+      <mat-card-title><h3>{{ focusedSearchType }}</h3></mat-card-title>
+    </mat-card-header>
+
+    <mat-card-content>
+      <app-search
+        [selectedSearchType]="focusedSearchType"
+        (newSearchType)="onSetSearchType($event)"></app-search>
+    </mat-card-content>
+  </mat-card>
+
+  <div class="bottom-list-elements">
+      <app-search-bar
+        (newSearch)="onNewSearch()"
+        (clearSearches)="onClearSearch()"
+        [isLoading]="loading$ | async">
+      </app-search-bar>
+  </div>
+</div>
 
 <div class="filter-list">
 
@@ -20,33 +39,15 @@
       (click)="onAppReset()">
     </app-logo>
 
-
-  <ng-container *ngIf="selectedSearchType === null">
     <app-detailed-search-selector
       (newSearchType)="onSetSearchType($event)"
-      [selectedSearchType]="searchType$ | async">
+      [selectedSearchType]="focusedSearchType">
     </app-detailed-search-selector>
-  </ng-container>
 
     <mat-card *ngIf="searchError$ | async as error" class="card-spacing">
       <b>Error:</b> {{error}}
     </mat-card>
   </div>
 
-  <div class="filters-scoll">
-    <app-search
-      *ngIf="selectedSearchType !== null"
-      (newSearchType)="onSetSearchType($event)"
-      ></app-search>
-  </div>
-
-  <div *ngIf="selectedSearchType !== null"
-    class="bottom-list-elements">
-      <app-search-bar
-        (newSearch)="onNewSearch()"
-        (clearSearches)="onClearSearch()"
-        [isLoading]="loading$ | async">
-      </app-search-bar>
-  </div>
 </div>
 </div>
