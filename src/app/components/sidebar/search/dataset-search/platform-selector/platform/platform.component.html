@@ -1,22 +1,6 @@
-<mat-list-option [selected]="isSelected">
-
   <span matLine class="platform__name">
-    {{ platform.name }}
-
-    <a
-      [href]="platform.infoUrl"
-      target="_blank"
-      (click)="onInfoClicked($event)"
-      class="platform__info" >
-      <fa-icon
-        [icon]="detailedPlatformInfoIcon"
-        matTooltip="Click for coverage maps and platform information">
-      </fa-icon>
-
-    </a>
+    <b>{{ platform.name }} </b>
   </span>
   <span matLine>
     <span class="platform__date">{{ prettyDateRange(platform.date) }}</span>
   </span>
-
-</mat-list-option>

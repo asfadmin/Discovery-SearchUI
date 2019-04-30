@@ -1,37 +1,39 @@
-<mat-card class="card-spacing">
-  <h4>Acquisition Date</h4>
-
-  <div>
-    <mat-form-field>
+<div style="margin: 20px 0">
+  <div style="display: flex; justify-content: space-between">
+    <mat-form-field style="width: 48%">
       <input
         matInput [(ngModel)]="startDate"
         [min]="extrema.start.min"
         [max]="extrema.start.max"
         [matDatepicker]="start"
-        placeholder="Start Date"
+        placeholder="Acquisition Start"
         (dateInput)="onStartDateChange($event)"
         (dateChanged)="onStartDateChange($event)">
       <mat-datepicker-toggle matSuffix [for]="start"></mat-datepicker-toggle>
       <mat-datepicker #start></mat-datepicker>
+      <mat-hint align="start">Search products <b>after</b> this date</mat-hint>
     </mat-form-field>
 
-    <mat-form-field>
+    <mat-form-field style="width: 48%">
       <input
         matInput [(ngModel)]="endDate"
         [min]="extrema.end.min"
         [max]="extrema.end.max"
         [matDatepicker]="end"
-        placeholder="End Date"
+        placeholder="Acquisition End"
         (dateInput)="onEndDateChange($event)"
         (dateChanged)="onEndDateChange($event)">
       <mat-datepicker-toggle matSuffix [for]="end"></mat-datepicker-toggle>
       <mat-datepicker #end></mat-datepicker>
+      <mat-hint align="start">Search products <b>before</b> this date</mat-hint>
     </mat-form-field>
   </div>
 
+<mat-slide-toggle (change)="onToggleSeasonalOptions()" style="margin: 15px 0">Seasonal Search</mat-slide-toggle>
+
+<div *ngIf="isSeasonalSearch">
   <div>
-    <h4>Season</h4>
-    <b>start</b>
+    <b>Season Start Date </b>
     <mat-slider
       (change)="onSeasonStartChange($event.value)"
       [value]="seasonStart"
@@ -42,9 +44,10 @@
       showTicks="true"
       [displayWith]="dayOfYearFormat"
       ></mat-slider>
-    <br />
+  </div>
 
-    <b>end</b>
+  <div>
+    <b>Season End Date </b>
     <mat-slider
       (change)="onSeasonEndChange($event.value)"
       [value]="seasonEnd"
@@ -56,5 +59,5 @@
       [displayWith]="dayOfYearFormat"
       ></mat-slider>
   </div>
-
-</mat-card>
+</div>
+</div>

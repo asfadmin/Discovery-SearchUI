@@ -46,19 +46,12 @@ export class SidebarComponent implements OnInit {
 
   public isHidden = false;
 
-  public granules$ = this.store$.select(granulesStore.getGranules).pipe(
-    tap(granules => {
-      if (granules.length > 0) {
-        this.selectedTab = 1;
-      }
-    })
-  );
+  public granules$ = this.store$.select(granulesStore.getGranules);
 
   public loading$ = this.store$.select(searchStore.getIsLoading);
   public searchError$ = this.store$.select(searchStore.getSearchError);
 
   public filterType = models.FilterType;
-  public selectedTab = 0;
 
   public searchTypes = models.SearchType;
   public searchType$ = this.store$.select(uiStore.getSearchType);
@@ -98,10 +91,6 @@ export class SidebarComponent implements OnInit {
     dialogRef.afterClosed().subscribe(
       _ => this.store$.dispatch(closeAction)
     );
-  }
-
-  public onTabChange(tabIndex: number): void {
-    this.selectedTab = tabIndex;
   }
 
   public onSetSearchType(searchType: models.SearchType): void {
