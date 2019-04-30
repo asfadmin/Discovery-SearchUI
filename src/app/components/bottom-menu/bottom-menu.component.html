@@ -1,4 +1,3 @@
-
 <div
   [@changeMenuY]="(isBottomMenuOpen$ | async) ? 'shown' : 'hidden'"
   [@changeMenuX]="(isSideMenuOpen$ | async) ? 'full-width' : 'half-width'"
@@ -29,20 +28,68 @@
       </mat-selection-list>
     </mat-card>
 
-    <mat-card class="card-spacing bottom-menu--column">
-      <ng-container *ngIf="selectedGranule$ | async as granule">
+    <mat-card
+      *ngIf="selectedGranule$ | async as granule"
+      class="card-spacing bottom-menu--column">
         <mat-card-header>
           <mat-card-title [title]="granule.name">{{ granule.name | truncate : 21 }}</mat-card-title>
           <mat-card-subtitle>{{ granule.platform }}</mat-card-subtitle>
         </mat-card-header>
 
-        <img mat-card-image
-          [src]="granule.browse"
-          (click)="onOpenImage(granule);"
-          style="cursor: pointer"
-          onerror="this.src='assets/error.png'"
-          alt="Sentinel1 granule browse image">
-            </ng-container>
+      <mat-card-content>
+        <div class="w100" fxFlex fxLayout="row" fxLayoutAlign="space-between">
+        <div>
+          <ul>
+            <li> <b>Aquisition Date:</b> {{ granule.metadata.date | shortDate }}</li>
+            <li> <b>Beam Mode:</b> {{ granule.metadata.beamMode }}</li>
+            <li> <b>Path: </b> {{ granule.metadata.path }}</li>
+            <li> <b>Frame:</b> {{ granule.metadata.frame }}</li>
+            <li> <b>Flight Direction:</b> {{ granule.metadata.flightDirection }}</li>
+            <li> <b>Polarization: </b> {{ granule.metadata.polarization }}</li>
+            <li> <b>Absolute Orbit: </b> {{ granule.metadata.absoluteOrbit }}</li>
+            <li> <b>Frequency: </b> {{ granule.metadata.frequency }}</li>
+            <li> <a href="http://www.esa.int/ESA"> Data courtesy of ESA</a></li>
+          </ul>
+        </div>
+        <div fxFlexAlign="center" style="width: 40%;">
+          <img
+            class="fit-to-container"
+            [src]="granule.browse"
+            (click)="onOpenImage(granule);"
+            style="cursor: pointer; "
+            onerror="this.src='assets/error.png'"
+            alt="Sentinel1 granule browse image">
+        </div>
+        </div>
+      </mat-card-content>
+
+      <mat-card-actions>
+        <a mat-raised-button
+          matTooltip="Accessing this data requires you to log in. Some datasets also require a proposal, or agreement with a EULA which is presented after log in."
+          color="primary"
+          target="_blank"
+          [href]="granule.downloadUrl">
+          Download
+        </a>
+        <a mat-raised-button color="primary"
+          target="_blank"
+          href="https://baseline.asf.alaska.edu/#/baseline?granule={{ granule.name }}">
+          Baseline
+        </a>
+        <a mat-raised-button color="primary"
+          target="_blank"
+          href="https://www.asf.alaska.edu/about/how-to-cite-data/">
+          Citation
+        </a>
+      </mat-card-actions>
+    </mat-card>
+
+    <mat-card
+      *ngIf="!(selectedGranule$ | async)"
+      class="card-spacing bottom-menu--column">
+        <div fxFlex fxLayoutAlign="center" gdAlignColumns="center">
+          <span class="faint-text">No Granule Selected</span>
+        </div>
     </mat-card>
   </div>
 
