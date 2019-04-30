@@ -79,6 +79,8 @@ export class SidebarComponent implements OnInit {
     ).subscribe(
       _ => this.onOpenSpreadsheet()
     );
+
+    this.searchType$.subscribe(searchType => this.focusedSearchType = searchType);
   }
 
   public onOpenSpreadsheet(): void {
