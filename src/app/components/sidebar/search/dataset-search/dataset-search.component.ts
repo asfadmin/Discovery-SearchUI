@@ -21,7 +21,11 @@ export class DatasetSearchComponent implements OnInit {
 
   public platforms$ = this.store$.select(filtersStore.getPlatformsList);
   public platformProductTypes$ = this.store$.select(filtersStore.getProductTypes);
-  public selectedPlatformNames$ = this.store$.select(filtersStore.getSelectedPlatformNames);
+  public selectedPlatformName$ = this.store$.select(filtersStore.getSelectedPlatformNames).pipe(
+    map(platform => platform.size === 1 ?
+      platform.values().next().value : null
+    )
+  );
   public selectedPlatforms$ = this.store$.select(filtersStore.getSelectedPlatforms);
 
   public startDate$ = this.store$.select(filtersStore.getStartDate);
