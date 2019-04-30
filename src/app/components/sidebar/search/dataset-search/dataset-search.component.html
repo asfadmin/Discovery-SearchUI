@@ -1,9 +1,12 @@
-<mat-accordion>
-  <mat-expansion-panel>
+<mat-accordion multi>
+  <mat-expansion-panel expanded>
     <mat-expansion-panel-header>
       <mat-panel-title>
-        Basic Filters
+        <b>Basic Filters</b>
       </mat-panel-title>
+      <mat-panel-description>
+        Platform, date, and area of interest
+      </mat-panel-description>
     </mat-expansion-panel-header>
 
     <app-platform-selector
@@ -39,8 +42,12 @@
   <mat-expansion-panel >
     <mat-expansion-panel-header>
       <mat-panel-title>
-        Path and Frame Filters
+        <b>Path and Frame Filters</b>
       </mat-panel-title>
+
+      <mat-panel-description>
+        Path, frame
+      </mat-panel-description>
     </mat-expansion-panel-header>
 
     <app-path-selector
@@ -59,8 +66,12 @@
   <mat-expansion-panel >
     <mat-expansion-panel-header>
       <mat-panel-title>
-       Additional Filters
+        <b>Additional Filters</b>
       </mat-panel-title>
+
+      <mat-panel-description>
+        Product type, beam mode, polarization, flight direction
+      </mat-panel-description>
     </mat-expansion-panel-header>
 
     <app-other-selector
@@ -74,13 +85,5 @@
       [beamModes]="beamModes$ | async"
       [polarizations]="polarizations$ | async">
     </app-other-selector>
-
   </mat-expansion-panel>
-
 </mat-accordion>
-
-<app-max-results-selector
-  [maxResults]="maxResults$ | async"
-  (newMaxResults)="onNewMaxResults($event)">
-</app-max-results-selector>
-

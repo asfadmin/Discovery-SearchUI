@@ -21,6 +21,12 @@ export class DateSelectorComponent {
   @Output() newSeasonStart = new EventEmitter<number>();
   @Output() newSeasonEnd = new EventEmitter<number>();
 
+  public isSeasonalSearch = false;
+
+  public onToggleSeasonalOptions(): void {
+    this.isSeasonalSearch = !this.isSeasonalSearch;
+  }
+
   public onStartDateChange(e: MatDatepickerInputEvent<Date>) {
     this.newStart.emit(e.value);
   }
