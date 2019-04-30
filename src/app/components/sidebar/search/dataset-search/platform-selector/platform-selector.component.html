@@ -1,6 +1,6 @@
 <mat-form-field class="w100">
   <mat-label>Platform</mat-label>
-  <mat-select (selectionChange)="onSelectionChange($event)">
+  <mat-select>
     <mat-option *ngFor="let platform of platforms" [value]="platform.name">
       <app-platform
         class="list-group-item list-group-item-action"
