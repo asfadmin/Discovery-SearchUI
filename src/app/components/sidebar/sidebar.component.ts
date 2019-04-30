@@ -80,12 +80,7 @@ export class SidebarComponent implements OnInit {
       _ => this.onOpenSpreadsheet()
     );
 
-    this.granules$.subscribe(
-      _ => {
-        this.store$.dispatch(new uiStore.CloseSidebar());
-        this.focusedSearchType = null;
-      }
-    );
+    this.searchType$.subscribe(searchType => this.focusedSearchType = searchType);
   }
 
   public onOpenSpreadsheet(): void {

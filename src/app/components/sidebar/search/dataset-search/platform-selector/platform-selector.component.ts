@@ -10,16 +10,12 @@ import { Platform } from '@models';
 })
 export class PlatformSelectorComponent {
   @Input() platforms: Platform[] = [];
-  @Input() selected = new Set<string>();
+  @Input() selected: string | null;
 
   @Output() removeSelected = new EventEmitter<string>();
   @Output() addSelected = new EventEmitter<string>();
 
-  public onClick(platform) {
-    const { name } = platform;
-
-    this.selected.has(name) ?
-      this.removeSelected.emit(name) :
-      this.addSelected.emit(name);
+  public onSelectionChange(platform) {
+    this.addSelected.emit(platform);
   }
 }
