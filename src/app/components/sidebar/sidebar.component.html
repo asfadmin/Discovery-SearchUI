@@ -8,15 +8,17 @@
 </app-toggle-button>
 
 <div
-  *ngIf="selectedSearchType !== null"
+  *ngIf="focusedSearchType !== null"
   class="dataset-filters-card">
   <mat-card>
     <mat-card-header>
-      <mat-card-title><h3>{{ selectedSearchType }}</h3></mat-card-title>
+      <mat-card-title><h3>{{ focusedSearchType }}</h3></mat-card-title>
     </mat-card-header>
 
     <mat-card-content>
-      <app-search (newSearchType)="onSetSearchType($event)"></app-search>
+      <app-search
+        [selectedSearchType]="focusedSearchType"
+        (newSearchType)="onSetSearchType($event)"></app-search>
     </mat-card-content>
   </mat-card>
 
@@ -39,7 +41,7 @@
 
     <app-detailed-search-selector
       (newSearchType)="onSetSearchType($event)"
-      [selectedSearchType]="searchType$ | async">
+      [selectedSearchType]="focusedSearchType">
     </app-detailed-search-selector>
 
     <mat-card *ngIf="searchError$ | async as error" class="card-spacing">

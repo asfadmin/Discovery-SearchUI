@@ -56,6 +56,7 @@ export class SidebarComponent implements OnInit {
   public searchTypes = models.SearchType;
   public searchType$ = this.store$.select(uiStore.getSearchType);
   public selectedSearchType: models.SearchType;
+  public focusedSearchType = null;
 
   constructor(
     public dialog: MatDialog,
@@ -78,6 +79,13 @@ export class SidebarComponent implements OnInit {
     ).subscribe(
       _ => this.onOpenSpreadsheet()
     );
+
+    this.granules$.subscribe(
+      _ => {
+        this.store$.dispatch(new uiStore.CloseSidebar());
+        this.focusedSearchType = null;
+      }
+    );
   }
 
   public onOpenSpreadsheet(): void {
@@ -94,8 +102,7 @@ export class SidebarComponent implements OnInit {
   }
 
   public onSetSearchType(searchType: models.SearchType): void {
-    this.clearSearch.emit();
-    this.store$.dispatch(new uiStore.SetSearchType(searchType));
+    this.focusedSearchType = searchType;
   }
 
   public onAppReset() {
@@ -108,6 +115,8 @@ export class SidebarComponent implements OnInit {
   }
 
   public onNewSearch(): void {
+    this.store$.dispatch(new uiStore.SetSearchType(this.focusedSearchType));
+
     this.newSearch.emit();
   }
 
