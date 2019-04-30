@@ -24,10 +24,6 @@
   transform: translateX(-50%);
 }
 
-.faint-text {
-  color: rgba(0, 0, 0, 0.6);
-}
-
 .fit-to-container {
   max-width: 100%;
   max-height: 100%;

@@ -1,23 +1,23 @@
 <mat-card class="card-spacing">
   <h2>How are you searching?</h2>
 
-  <mat-list>
-   <mat-list-item>
-     <button (click)="onSetSearchType(searchTypes.DATASET)" class="block-btn" mat-raised-button>
-       <span>By <b>data set</b></span>
-     </button>
+  <mat-action-list>
+   <mat-list-item (click)="onSetSearchType(searchTypes.DATASET)"
+     [class.active-btn]="selectedSearchType === searchTypes.DATASET">
+      <h4 mat-line>Dataset</h4>
+      <p class="faint-text" mat-line>Search by dataset, time, geography, and more.</p>
    </mat-list-item>
-   <mat-list-item>
-     <button (click)="onSetSearchType(searchTypes.LIST)" class="block-btn" mat-raised-button>
-       <span>With a <b>list</b></span>
-     </button>
+   <mat-list-item (click)="onSetSearchType(searchTypes.LIST)"
+     [class.active-btn]="selectedSearchType === searchTypes.LIST">
+      <h4 mat-line>List</h4>
+      <p class="faint-text" mat-line>Search by a list of granuels or prodcut names.</p>
    </mat-list-item>
-   <mat-list-item>
-      <button (click)="onSetSearchType(searchTypes.MISSION)" class="block-btn" mat-raised-button>
-        <span>By <b>mission</b></span>
-      </button>
+   <mat-list-item (click)="onSetSearchType(searchTypes.MISSION)"
+     [class.active-btn]="selectedSearchType === searchTypes.MISSION">
+      <h4 mat-line>Mission</h4>
+      <p class="faint-text" mat-line>Search for data from a specific mission.</p>
    </mat-list-item>
-  </mat-list>
+  </mat-action-list>
 
   <mat-divider style="margin: 20px 0" [inset]="true"></mat-divider>
 
