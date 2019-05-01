@@ -116,7 +116,11 @@ export class SidebarComponent implements OnInit {
   }
 
   public onSetSearchType(searchType: models.SearchType): void {
-    this.store$.dispatch(new uiStore.SetSearchType(searchType));
+    if (this.isFiltersMenuOpen && searchType === this.selectedSearchType) {
+      this.store$.dispatch(new uiStore.CloseFiltersMenu());
+    } else {
+      this.store$.dispatch(new uiStore.SetSearchType(searchType));
+    }
   }
 
   public onAppReset() {

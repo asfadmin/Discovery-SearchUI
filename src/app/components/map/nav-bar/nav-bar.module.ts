@@ -7,6 +7,8 @@ import { MatBadgeModule, MatMenuModule, MatInputModule } from '@angular/material
 import { MatSharedModule } from '@shared';
 import { NavBarComponent } from './nav-bar.component';
 
+import { PlatformSelectorModule } from '@components/sidebar/search/dataset-search/platform-selector';
+
 @NgModule({
   declarations: [
     NavBarComponent
@@ -18,6 +20,7 @@ import { NavBarComponent } from './nav-bar.component';
     MatMenuModule,
     MatInputModule,
     MatSharedModule,
+    PlatformSelectorModule
   ],
   exports: [
     NavBarComponent

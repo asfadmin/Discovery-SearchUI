@@ -35,6 +35,10 @@ export class MapComponent implements OnInit {
   public newSelectedGranule$ = this.mapService.newSelectedGranule$;
   public isUiHidden = false;
 
+  public isFiltersMenuOpen$ = this.store$.select(uiStore.getIsFiltersMenuOpen);
+  public isSidebarOpen$ = this.store$.select(uiStore.getIsSidebarOpen);
+  public areProductsLoaded$ = this.store$.select(granulesStore.getAreProductsLoaded).pipe(tap(console.log));
+
   private isMapInitialized$ = this.store$.select(mapStore.getIsMapInitialization);
   private granules$ = this.store$.select(granulesStore.getGranules);
   private focusedGranule$ = this.store$.select(granulesStore.getFocusedGranule);

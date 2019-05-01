@@ -30,7 +30,6 @@ export function uiReducer(state = initState, action: UIActions): UIState {
       return {
           ...state,
           isSidebarOpen: !state.isSidebarOpen,
-          isFiltersMenuOpen: true
         };
     }
 

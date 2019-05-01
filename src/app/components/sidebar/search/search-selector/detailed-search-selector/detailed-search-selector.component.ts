@@ -15,9 +15,6 @@ export class DetailedSearchSelectorComponent {
   public searchTypes = models.SearchType;
 
   public onSetSearchType(searchType: models.SearchType): void {
-    this.newSearchType.emit(
-      searchType === this.selectedSearchType ?
-        null : searchType
-    );
+    this.newSearchType.emit(searchType);
   }
 }

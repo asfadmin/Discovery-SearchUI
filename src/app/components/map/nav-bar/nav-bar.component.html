@@ -1,9 +1,44 @@
-<div class="position">
+<div
+  [@changeMenuX]="isSideMenuOpen ? 'full-width' : 'half-width'"
+  class="position">
+
+  <div style="margin-left: 45px">
+    <div class="breadcrumb-list" *ngIf="true">
+      <div class="breadcrumb ">
+        <button mat-flat-button>Dataset</button>
+
+        <mat-card class="dataset-filter--position">
+          <app-platform-selector
+            [platforms]="platforms$ | async"
+            [selected]="selectedPlatformName$ | async"
+            (removeSelected)="onPlatformRemoved($event)"
+            (addSelected)="onPlatformAdded($event)">
+          </app-platform-selector>
+        </mat-card>
+      </div>
+
+      <div class="breadcrumb">
+        <button mat-flat-button>Date</button>
+      </div>
+      <div class="breadcrumb">
+        <button mat-flat-button>Area of Interest</button>
+      </div>
+      <div class="breadcrumb">
+        <button mat-flat-button>Path/Frame</button>
+      </div>
+      <div class="breadcrumb">
+        <button mat-flat-button>Additional Filters</button>
+      </div>
+      <div class="breadcrumb">
+        <button style="margin-left: 20px" mat-flat-button color="primary">Search</button>
+      </div>
+    </div>
+  </div>
+
   <div class="layout">
-  <div
-     *ngIf="products"
-      matTooltip="Download Queue"
-    >
+
+
+  <div *ngIf="products" matTooltip="Download Queue">
     <button
       style="background: white"
       class="spacing"
