@@ -10,7 +10,6 @@ $uaf-neutrals-3: #d7d2cb;
 
 $uaf-accent-4: #65665c;
 
-
 $dark-primary-text: rgba(black, 0.87);
 $dark-secondary-text: rgba(black, 0.54);
 $dark-disabled-text: rgba(black, 0.38);
@@ -25,7 +24,7 @@ $light-focused: rgba(white, 0.12);
 $mat-asf-primary: (
   50: #fbfcf0,
   100: #f6f7eb,
-  200: #F1F2E6,
+  200: #f1f2e6,
   300: #e4e5d8,
   400: #c1c2b7,
   500: #a3a499,
@@ -33,10 +32,6 @@ $mat-asf-primary: (
   700: #65665c,
   800: #46473d,
   900: #24251d,
-  A100: #8c9eff,
-  A200: #536dfe,
-  A400: #3d5afe,
-  A700: #304ffe,
   contrast: (
     50: $dark-primary-text,
     100: $dark-primary-text,
@@ -66,10 +61,6 @@ $mat-asf-secondary: (
   700: #3192c8,
   800: #2d81b4  ,
   900: #236192,
-  A100: #8c9eff,
-  A200: #536dfe,
-  A400: #3d5afe,
-  A700: #304ffe,
   contrast: (
     50: $dark-primary-text,
     100: $dark-primary-text,
