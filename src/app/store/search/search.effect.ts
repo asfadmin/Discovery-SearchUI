@@ -10,6 +10,7 @@ import { AppState } from '../app.reducer';
 import * as granulesStore from '@store/granules';
 import * as filtersStore from '@store/filters';
 import * as mapStore from '@store/map';
+import * as uiStore from '@store/ui';
 
 import * as services from '@services';
 
@@ -65,5 +66,17 @@ export class SearchEffects {
     ofType<SearchResponse>(SearchActionType.SEARCH_RESPONSE),
     map(action => this.productService.fromResponse(action.payload)),
     map(granule => new granulesStore.SetGranules(granule)),
+  );
+
+  @Effect()
+  private hideSidebarOnSearchResponse: Observable<Action> = this.actions$.pipe(
+    ofType<SearchResponse>(SearchActionType.SEARCH_RESPONSE),
+    map(_ => new uiStore.CloseSidebar()),
+  );
+
+  @Effect()
+  private clearSearchType: Observable<Action> = this.actions$.pipe(
+    ofType<SearchResponse>(SearchActionType.SEARCH_RESPONSE),
+    map(_ => new uiStore.SetSearchType(null)),
   );
 }
