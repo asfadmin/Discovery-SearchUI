@@ -9,6 +9,7 @@ import { Component, Input, Output, EventEmitter } from '@angular/core';
 export class SearchBarComponent {
   @Input() isLoading: boolean;
   @Input() maxResults: number;
+  @Input() currentSearchAmount: number;
 
   @Output() newSearch = new EventEmitter<void>();
   @Output() clearSearches = new EventEmitter<void>();

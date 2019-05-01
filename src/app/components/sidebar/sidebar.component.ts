@@ -7,8 +7,8 @@ import {
 } from '@angular/animations';
 import { MatDialog } from '@angular/material';
 
-import { Observable } from 'rxjs';
-import { map, tap, filter } from 'rxjs/operators';
+import { Observable, of } from 'rxjs';
+import { map, tap, filter, switchMap, catchError } from 'rxjs/operators';
 
 import { Store } from '@ngrx/store';
 
@@ -19,6 +19,7 @@ import * as granulesStore from '@store/granules';
 import * as searchStore from '@store/search';
 import * as filtersStore from '@store/filters';
 
+import * as services from '@services';
 import * as models from '@models';
 
 import { SpreadsheetComponent } from './results/spreadsheet';
@@ -44,6 +45,7 @@ export class SidebarComponent implements OnInit {
 
   public isSidebarOpen$ = this.store$.select(uiStore.getIsSidebarOpen);
   public uiView$ = this.store$.select(uiStore.getUiView);
+  public currentSearchAmount = 0;
 
   public isHidden = false;
 
@@ -63,11 +65,21 @@ export class SidebarComponent implements OnInit {
   constructor(
     public dialog: MatDialog,
     private dateExtremaService: DateExtremaService,
+    private searchParams$: services.SearchParamsService,
+    private asfApiService: services.AsfApiService,
     private router: Router,
     private store$: Store<AppState>,
   ) {}
 
   ngOnInit(): void {
+    this.searchParams$.getParams().pipe(
+      map(params => params.append('output', 'COUNT')),
+      switchMap(params => this.asfApiService.query<any[]>(params).pipe(
+          catchError(_ => of(-1))
+        )
+      )
+    ).subscribe(searchAmount => this.currentSearchAmount = +<number>searchAmount);
+
     this.searchType$.subscribe(
       searchType => this.selectedSearchType = searchType
     );

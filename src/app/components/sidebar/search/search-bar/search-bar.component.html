@@ -7,7 +7,7 @@
 
     <span style="margin-right: 25px" class="faint-text">
       <span style="cursor: pointer" [matMenuTriggerFor]="menu">{{ maxResults }} <mat-icon>arrow_drop_down</mat-icon></span>
-       of 6830
+      of {{ currentSearchAmount !== -1 ? currentSearchAmount : 'error' }}
     </span>
 
     <mat-menu #menu="matMenu">
