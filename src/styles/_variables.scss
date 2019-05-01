@@ -52,7 +52,7 @@ $mat-asf-primary: (
   contrast: $contrast,
 );
 
-$mat-asf-secondary: (
+$mat-asf-blue: (
   50: #e3f6fc,
   100: #b8e8f8,
   200: #8cdaf4,
@@ -61,7 +61,35 @@ $mat-asf-secondary: (
   500: #3fb3ea,
   600: #39a5dc,
   700: #3192c8,
-  800: #2d81b4  ,
+  800: #2d81b4,
   900: #236192,
+  contrast: $contrast,
+);
+
+$mat-asf-red: (
+  50: #fbeaef,
+  100: #f6cbd5,
+  200: #e297a0,
+  300: #d56f7c,
+  400: #df4d5f,
+  500: #e43a49,
+  600: #d53147,
+  700: #c32940,
+  800: #b62339,
+  900: #a6192e,
+  contrast: $contrast,
+);
+
+$mat-asf-yellow: (
+  50: #fff9e0,
+  100: #ffedb0,
+  200: #ffe27c,
+  300: #ffd843,
+  400: #ffcd00,
+  500: #ffc400,
+  600: #ffb800,
+  700: #ffa200,
+  800: #ff9000,
+  900: #ff6e00,
   contrast: $contrast,
 );
