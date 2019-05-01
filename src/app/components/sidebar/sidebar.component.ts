@@ -17,6 +17,7 @@ import { AppState } from '@store';
 import * as uiStore from '@store/ui';
 import * as granulesStore from '@store/granules';
 import * as searchStore from '@store/search';
+import * as filtersStore from '@store/filters';
 
 import * as models from '@models';
 
@@ -50,6 +51,7 @@ export class SidebarComponent implements OnInit {
 
   public loading$ = this.store$.select(searchStore.getIsLoading);
   public searchError$ = this.store$.select(searchStore.getSearchError);
+  public maxResults$ = this.store$.select(filtersStore.getMaxSearchResults);
 
   public filterType = models.FilterType;
 
@@ -121,6 +123,10 @@ export class SidebarComponent implements OnInit {
 
   public onNewAppView(uiView: models.ViewType): void {
     this.store$.dispatch(new uiStore.SetUiView(uiView));
+  }
+
+  public onNewMaxSearchResults(maxResults: number): void {
+    this.store$.dispatch(new filtersStore.SetMaxResults(maxResults));
   }
 }
 
