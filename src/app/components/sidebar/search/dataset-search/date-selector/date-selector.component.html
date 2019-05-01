@@ -33,7 +33,7 @@
 
 <div *ngIf="isSeasonalSearch">
   <div>
-    <b>Season Start Date </b>
+    <b>Start Day </b>
     <mat-slider
       (change)="onSeasonStartChange($event.value)"
       [value]="seasonStart"
@@ -47,7 +47,7 @@
   </div>
 
   <div>
-    <b>Season End Date </b>
+    <b>End Day </b>
     <mat-slider
       (change)="onSeasonEndChange($event.value)"
       [value]="seasonEnd"

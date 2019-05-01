@@ -73,8 +73,7 @@ export const initState: FiltersState = {
 export function filtersReducer(state = initState, action: FiltersActions): FiltersState {
   switch (action.type) {
     case FiltersActionType.ADD_SELECTED_PLATFORM: {
-      const selected = new Set<string>(state.platforms.selected);
-      selected.add(action.payload);
+      const selected = new Set<string>([action.payload]);
 
       return {
         ...state,
@@ -86,8 +85,7 @@ export function filtersReducer(state = initState, action: FiltersActions): Filte
     }
 
     case FiltersActionType.REMOVE_SELECTED_PLATFORM: {
-      const selected = new Set<string>(state.platforms.selected);
-      selected.delete(action.payload);
+      const selected = new Set<string>([]);
 
       return {
         ...state,

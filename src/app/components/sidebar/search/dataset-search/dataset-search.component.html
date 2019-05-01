@@ -11,7 +11,7 @@
 
     <app-platform-selector
       [platforms]="platforms$ | async"
-      [selected]="selectedPlatformNames$ | async"
+      [selected]="selectedPlatformName$ | async"
       (removeSelected)="onPlatformRemoved($event)"
       (addSelected)="onPlatformAdded($event)">
     </app-platform-selector>
@@ -39,7 +39,7 @@
 
   </mat-expansion-panel>
 
-  <mat-expansion-panel expanded>
+  <mat-expansion-panel>
     <mat-expansion-panel-header>
       <mat-panel-title>
         <b>Path and Frame Filters</b>

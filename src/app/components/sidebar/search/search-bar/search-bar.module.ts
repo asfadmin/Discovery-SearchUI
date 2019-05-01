@@ -3,6 +3,8 @@ import { CommonModule } from '@angular/common';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { MatSharedModule } from '@shared';
+import { MatMenuModule } from '@angular/material';
+
 import { SearchBarComponent } from './search-bar.component';
 
 
@@ -10,7 +12,7 @@ import { SearchBarComponent } from './search-bar.component';
   imports: [
     CommonModule,
     BrowserAnimationsModule,
-
+    MatMenuModule,
     MatSharedModule,
   ],
   declarations: [ SearchBarComponent ],

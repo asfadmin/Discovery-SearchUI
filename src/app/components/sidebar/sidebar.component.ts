@@ -7,8 +7,8 @@ import {
 } from '@angular/animations';
 import { MatDialog } from '@angular/material';
 
-import { Observable } from 'rxjs';
-import { map, tap, filter } from 'rxjs/operators';
+import { Observable, of } from 'rxjs';
+import { map, tap, filter, switchMap, catchError } from 'rxjs/operators';
 
 import { Store } from '@ngrx/store';
 
@@ -17,7 +17,9 @@ import { AppState } from '@store';
 import * as uiStore from '@store/ui';
 import * as granulesStore from '@store/granules';
 import * as searchStore from '@store/search';
+import * as filtersStore from '@store/filters';
 
+import * as services from '@services';
 import * as models from '@models';
 
 import { SpreadsheetComponent } from './results/spreadsheet';
@@ -43,6 +45,7 @@ export class SidebarComponent implements OnInit {
 
   public isSidebarOpen$ = this.store$.select(uiStore.getIsSidebarOpen);
   public uiView$ = this.store$.select(uiStore.getUiView);
+  public currentSearchAmount = 0;
 
   public isHidden = false;
 
@@ -50,6 +53,7 @@ export class SidebarComponent implements OnInit {
 
   public loading$ = this.store$.select(searchStore.getIsLoading);
   public searchError$ = this.store$.select(searchStore.getSearchError);
+  public maxResults$ = this.store$.select(filtersStore.getMaxSearchResults);
 
   public filterType = models.FilterType;
 
@@ -61,11 +65,21 @@ export class SidebarComponent implements OnInit {
   constructor(
     public dialog: MatDialog,
     private dateExtremaService: DateExtremaService,
+    private searchParams$: services.SearchParamsService,
+    private asfApiService: services.AsfApiService,
     private router: Router,
     private store$: Store<AppState>,
   ) {}
 
   ngOnInit(): void {
+    this.searchParams$.getParams().pipe(
+      map(params => params.append('output', 'COUNT')),
+      switchMap(params => this.asfApiService.query<any[]>(params).pipe(
+          catchError(_ => of(-1))
+        )
+      )
+    ).subscribe(searchAmount => this.currentSearchAmount = +<number>searchAmount);
+
     this.searchType$.subscribe(
       searchType => this.selectedSearchType = searchType
     );
@@ -80,12 +94,7 @@ export class SidebarComponent implements OnInit {
       _ => this.onOpenSpreadsheet()
     );
 
-    this.granules$.subscribe(
-      _ => {
-        this.store$.dispatch(new uiStore.CloseSidebar());
-        this.focusedSearchType = null;
-      }
-    );
+    this.searchType$.subscribe(searchType => this.focusedSearchType = searchType);
   }
 
   public onOpenSpreadsheet(): void {
@@ -126,6 +135,10 @@ export class SidebarComponent implements OnInit {
 
   public onNewAppView(uiView: models.ViewType): void {
     this.store$.dispatch(new uiStore.SetUiView(uiView));
+  }
+
+  public onNewMaxSearchResults(maxResults: number): void {
+    this.store$.dispatch(new filtersStore.SetMaxResults(maxResults));
   }
 }
 
