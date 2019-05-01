@@ -6,19 +6,14 @@
   <div class="search-bar-card">
 
     <span style="margin-right: 25px" class="faint-text">
-      <span style="cursor: pointer" [matMenuTriggerFor]="menu">{{ maxResults }} <mat-icon>arrow_drop_down</mat-icon></span>
-      of {{ currentSearchAmount !== -1 ? currentSearchAmount : 'error' }}
+      <span style="cursor: pointer" [matMenuTriggerFor]="menu">{{ formatNumber(maxResults) }} <mat-icon>arrow_drop_down</mat-icon></span>
+      of {{ currentSearchAmount !== -1 ? formatNumber(currentSearchAmount) : 'error' }}
     </span>
 
     <mat-menu #menu="matMenu">
-      <button (click)="onNewMaxResults(100)" mat-menu-item>
-        <span>100</span>
-      </button>
-      <button (click)="onNewMaxResults(1000)" mat-menu-item>
-        <span>1000</span>
-      </button>
-      <button (click)="onNewMaxResults(10000)" mat-menu-item>
-        <span>10000</span>
+      <button *ngFor="let amount of possibleMaxResults"
+        (click)="onNewMaxResults(amount)" mat-menu-item>
+        <span>{{ formatNumber(amount) }}</span>
       </button>
     </mat-menu>
 
