@@ -12,6 +12,8 @@
             "element",
             "app",
             "kebab-case"
-        ]
+        ],
+      "ignoreAtRules": ["include"],
+      "scss/at-rule-no-unknown": true
     }
 }
