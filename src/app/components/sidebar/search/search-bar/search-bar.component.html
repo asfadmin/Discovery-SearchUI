@@ -1,9 +1,30 @@
 <mat-card class="card-spacing search-bar-card">
-  <button (click)="newSearch.emit()" mat-raised-button color="primary" class="mr-2">
-    <span *ngIf="isLoading">Loading...</span>
-    <span *ngIf="!isLoading">Search</span>
-  </button>
   <button (click)="clearSearches.emit()" mat-raised-button color="warn">
     Clear
   </button>
+
+  <div class="search-bar-card">
+
+    <span style="margin-right: 25px" class="faint-text">
+      <span style="cursor: pointer" [matMenuTriggerFor]="menu">{{ maxResults }} <mat-icon>arrow_drop_down</mat-icon></span>
+      of {{ currentSearchAmount !== -1 ? currentSearchAmount : 'error' }}
+    </span>
+
+    <mat-menu #menu="matMenu">
+      <button (click)="onNewMaxResults(100)" mat-menu-item>
+        <span>100</span>
+      </button>
+      <button (click)="onNewMaxResults(1000)" mat-menu-item>
+        <span>1000</span>
+      </button>
+      <button (click)="onNewMaxResults(10000)" mat-menu-item>
+        <span>10000</span>
+      </button>
+    </mat-menu>
+
+    <button (click)="newSearch.emit()" mat-raised-button color="primary" class="mr-2">
+      <span *ngIf="isLoading">Loading...</span>
+      <span *ngIf="!isLoading">Search</span>
+    </button>
+  </div>
 </mat-card>

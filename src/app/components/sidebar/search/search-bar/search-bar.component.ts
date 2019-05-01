@@ -7,8 +7,15 @@ import { Component, Input, Output, EventEmitter } from '@angular/core';
     styleUrls: ['./search-bar.component.scss']
 })
 export class SearchBarComponent {
-    @Input() isLoading: boolean;
+  @Input() isLoading: boolean;
+  @Input() maxResults: number;
+  @Input() currentSearchAmount: number;
 
-    @Output() newSearch = new EventEmitter<void>();
-    @Output() clearSearches = new EventEmitter<void>();
+  @Output() newSearch = new EventEmitter<void>();
+  @Output() clearSearches = new EventEmitter<void>();
+  @Output() newMaxResults = new EventEmitter<number>();
+
+  public onNewMaxResults(maxResults: number): void {
+    this.newMaxResults.emit(maxResults);
+  }
 }

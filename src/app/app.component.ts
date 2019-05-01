@@ -4,6 +4,7 @@ import { MatBottomSheet } from '@angular/material';
 
 import { Store } from '@ngrx/store';
 
+import { of } from 'rxjs';
 import { skip, filter, map, switchMap, tap, catchError } from 'rxjs/operators';
 
 import { AppState } from '@store';
