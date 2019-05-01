@@ -4,10 +4,11 @@
 
   <div style="margin-left: 45px">
     <div class="breadcrumb-list" *ngIf="true">
-      <div class="breadcrumb ">
-        <button mat-flat-button>Dataset</button>
+      <div class="breadcrumb">
+        <button (click)="onNewSelectedFilter(filterTypes.DATASET)" mat-flat-button>Dataset</button>
 
-        <mat-card class="dataset-filter--position">
+        <mat-card *ngIf="selectedFilter === filterTypes.DATASET"
+          class="dataset-filter--position">
           <app-platform-selector
             [platforms]="platforms$ | async"
             [selected]="selectedPlatformName$ | async"
@@ -18,7 +19,22 @@
       </div>
 
       <div class="breadcrumb">
-        <button mat-flat-button>Date</button>
+        <button (click)="onNewSelectedFilter(filterTypes.DATE)" mat-flat-button>Date</button>
+
+        <mat-card *ngIf="selectedFilter === filterTypes.DATE"
+          class="date-filter--position">
+            <app-date-selector
+              [startDate]="startDate$ | async"
+              [endDate]="endDate$ | async"
+              [seasonStart]="seasonStart$ | async"
+              [seasonEnd]="seasonEnd$ | async"
+              [extrema]="dateRangeExtrema$ | async"
+              (newStart)="onNewStartDate($event)"
+              (newEnd)="onNewEndDate($event)"
+              (newSeasonStart)="onNewSeasonStart($event)"
+              (newSeasonEnd)="onNewSeasonEnd($event)">
+            </app-date-selector>
+        </mat-card>
       </div>
       <div class="breadcrumb">
         <button mat-flat-button>Area of Interest</button>

@@ -16,8 +16,17 @@ import * as queueStore from '@store/queue';
 import * as filtersStore from '@store/filters';
 
 import { Sentinel1Product, ViewType } from '@models';
-import { DatapoolAuthService } from '@services';
+import { DatapoolAuthService, DateExtremaService } from '@services';
 import { environment } from '@environments/environment';
+
+enum BreadcrumbFilterType {
+  DATASET = 'Dataset',
+  DATE = 'Date',
+  AOI = 'Area of Interest',
+  PATH_FRAME = 'Path/Frame',
+  ADDITIONAL = 'Additional Filters',
+  NONE = 'None'
+}
 
 @Component({
   selector: 'app-nav-bar',
@@ -47,8 +56,12 @@ export class NavBarComponent {
   constructor(
     private store$: Store<AppState>,
     public datapoolAuthService: DatapoolAuthService,
+    private dateExtremaService: DateExtremaService,
     public clipboard: ClipboardService,
   ) {}
+
+  public filterTypes = BreadcrumbFilterType;
+  public selectedFilter = BreadcrumbFilterType.NONE;
 
   // Platform Selector
   public platforms$ = this.store$.select(filtersStore.getPlatformsList);
@@ -58,12 +71,49 @@ export class NavBarComponent {
     )
   );
 
+  // Date Selector
+  public startDate$ = this.store$.select(filtersStore.getStartDate);
+  public endDate$ = this.store$.select(filtersStore.getEndDate);
+  public seasonStart$ = this.store$.select(filtersStore.getSeasonStart);
+  public seasonEnd$ = this.store$.select(filtersStore.getSeasonEnd);
+  public selectedPlatforms$ = this.store$.select(filtersStore.getSelectedPlatforms);
+
+  public dateRangeExtrema$ = this.dateExtremaService.getExtrema$(
+    this.platforms$,
+    this.selectedPlatforms$,
+    this.startDate$,
+    this.endDate$,
+  );
+
+  public onNewSelectedFilter(filterType: BreadcrumbFilterType): void {
+    this.selectedFilter = this.selectedFilter === filterType ?
+      BreadcrumbFilterType.NONE : filterType;
+  }
+
+  // Platform Selector
   public onPlatformRemoved(platformName: string): void {
     this.store$.dispatch(new filtersStore.RemoveSelectedPlatform(platformName));
   }
 
   public onPlatformAdded(platformName: string): void {
     this.store$.dispatch(new filtersStore.AddSelectedPlatform(platformName));
+  }
+
+  // Date Selector
+  public onNewStartDate(start: Date): void {
+    this.store$.dispatch(new filtersStore.SetStartDate(start));
+  }
+
+  public onNewEndDate(end: Date): void {
+    this.store$.dispatch(new filtersStore.SetEndDate(end));
+  }
+
+  public onNewSeasonStart(start: number | null): void {
+    this.store$.dispatch(new filtersStore.SetSeasonStart(start));
+  }
+
+  public onNewSeasonEnd(end: number | null): void {
+    this.store$.dispatch(new filtersStore.SetSeasonEnd(end));
   }
 
   public onOpenDownloadQueue(): void {

@@ -8,6 +8,7 @@ import { MatSharedModule } from '@shared';
 import { NavBarComponent } from './nav-bar.component';
 
 import { PlatformSelectorModule } from '@components/sidebar/search/dataset-search/platform-selector';
+import { DateSelectorModule } from '@components/sidebar/search/dataset-search/date-selector';
 
 @NgModule({
   declarations: [
@@ -20,7 +21,9 @@ import { PlatformSelectorModule } from '@components/sidebar/search/dataset-searc
     MatMenuModule,
     MatInputModule,
     MatSharedModule,
-    PlatformSelectorModule
+
+    PlatformSelectorModule,
+    DateSelectorModule
   ],
   exports: [
     NavBarComponent
