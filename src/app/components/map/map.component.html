@@ -4,6 +4,7 @@
 
 <app-nav-bar
   (openQueue)="onOpenDownloadQueue()"
+  (doSearch)="onDoSearch()"
   [showFilters]="!(isFiltersMenuOpen$ | async) && (areProductsLoaded$ | async)"
   [isSideMenuOpen]="isSidebarOpen$ | async"
   [ngClass]="{'hidden': isUiHidden}"

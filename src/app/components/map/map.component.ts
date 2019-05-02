@@ -29,6 +29,7 @@ import { QueueComponent } from './queue';
 })
 export class MapComponent implements OnInit {
   @Output() loadUrlState = new EventEmitter<void>();
+  @Output() doSearch = new EventEmitter<void>();
 
   public interactionMode$ = this.store$.select(mapStore.getMapInteractionMode);
   public mousePosition$ = this.mapService.mousePosition$;
@@ -70,6 +71,10 @@ export class MapComponent implements OnInit {
     this.newSelectedGranule$.subscribe(
       gName => this.store$.dispatch(new granulesStore.SetSelectedGranule(gName))
     );
+  }
+
+  public onDoSearch(): void {
+    this.doSearch.emit();
   }
 
   public onOpenDownloadQueue(): void {
