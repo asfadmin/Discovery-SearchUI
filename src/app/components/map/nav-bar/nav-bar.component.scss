@@ -1,0 +1,42 @@
+.position {
+  position: fixed;
+  right: 2px;
+  top: 42px;
+  width: 100%;
+  z-index: 999;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.breadcrumb-filter {
+  max-width: 370px;
+  min-width: 300px;
+  height: auto;
+  position: fixed;
+  top: 100px;
+}
+
+.layout {
+  display: flex;
+  justify-content: flex-end;
+}
+
+$break-small: 500px;
+
+.breadcrumb-list {
+  display: flex;
+  flex-direction: row;
+
+  @media screen and (max-width: $break-small) {
+    display: none;
+  }
+}
+
+.breadcrumb {
+  margin-right: 5px;
+}
+
+.spacing {
+  margin: 4px;
+}

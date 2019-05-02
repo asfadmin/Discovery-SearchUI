@@ -29,11 +29,16 @@ import { QueueComponent } from './queue';
 })
 export class MapComponent implements OnInit {
   @Output() loadUrlState = new EventEmitter<void>();
+  @Output() doSearch = new EventEmitter<void>();
 
   public interactionMode$ = this.store$.select(mapStore.getMapInteractionMode);
   public mousePosition$ = this.mapService.mousePosition$;
   public newSelectedGranule$ = this.mapService.newSelectedGranule$;
   public isUiHidden = false;
+
+  public isFiltersMenuOpen$ = this.store$.select(uiStore.getIsFiltersMenuOpen);
+  public isSidebarOpen$ = this.store$.select(uiStore.getIsSidebarOpen);
+  public areProductsLoaded$ = this.store$.select(granulesStore.getAreProductsLoaded).pipe(tap(console.log));
 
   private isMapInitialized$ = this.store$.select(mapStore.getIsMapInitialization);
   private granules$ = this.store$.select(granulesStore.getGranules);
@@ -66,6 +71,10 @@ export class MapComponent implements OnInit {
     this.newSelectedGranule$.subscribe(
       gName => this.store$.dispatch(new granulesStore.SetSelectedGranule(gName))
     );
+  }
+
+  public onDoSearch(): void {
+    this.doSearch.emit();
   }
 
   public onOpenDownloadQueue(): void {
