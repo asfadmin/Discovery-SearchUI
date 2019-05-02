@@ -44,7 +44,11 @@ export class SidebarComponent implements OnInit {
   @Output() clearSearch = new EventEmitter<void>();
 
   public isSidebarOpen$ = this.store$.select(uiStore.getIsSidebarOpen);
+  public isFiltersMenuOpen$ = this.store$.select(uiStore.getIsFiltersMenuOpen);
+  public isFiltersMenuOpen: boolean;
+
   public uiView$ = this.store$.select(uiStore.getUiView);
+
   public currentSearchAmount = 0;
 
   public isHidden = false;
@@ -60,7 +64,6 @@ export class SidebarComponent implements OnInit {
   public searchTypes = models.SearchType;
   public searchType$ = this.store$.select(uiStore.getSearchType);
   public selectedSearchType: models.SearchType;
-  public focusedSearchType = null;
 
   constructor(
     public dialog: MatDialog,
@@ -94,7 +97,9 @@ export class SidebarComponent implements OnInit {
       _ => this.onOpenSpreadsheet()
     );
 
-    this.searchType$.subscribe(searchType => this.focusedSearchType = searchType);
+    this.isFiltersMenuOpen$.subscribe(
+      isOpen => this.isFiltersMenuOpen = isOpen
+    );
   }
 
   public onOpenSpreadsheet(): void {
@@ -111,7 +116,11 @@ export class SidebarComponent implements OnInit {
   }
 
   public onSetSearchType(searchType: models.SearchType): void {
-    this.focusedSearchType = searchType;
+    if (this.isFiltersMenuOpen && searchType === this.selectedSearchType) {
+      this.store$.dispatch(new uiStore.CloseFiltersMenu());
+    } else {
+      this.store$.dispatch(new uiStore.SetSearchType(searchType));
+    }
   }
 
   public onAppReset() {
@@ -124,7 +133,6 @@ export class SidebarComponent implements OnInit {
   }
 
   public onNewSearch(): void {
-    this.store$.dispatch(new uiStore.SetSearchType(this.focusedSearchType));
 
     this.newSearch.emit();
   }

@@ -7,6 +7,12 @@ import { MatBadgeModule, MatMenuModule, MatInputModule } from '@angular/material
 import { MatSharedModule } from '@shared';
 import { NavBarComponent } from './nav-bar.component';
 
+import { PlatformSelectorModule } from '@components/sidebar/search/dataset-search/platform-selector';
+import { DateSelectorModule } from '@components/sidebar/search/dataset-search/date-selector';
+import { AoiUploadModule  } from '@components/sidebar/search/dataset-search/aoi-upload';
+import { PathSelectorModule } from '@components/sidebar/search/dataset-search/path-selector';
+import { OtherSelectorModule } from '@components/sidebar/search/dataset-search/other-selector';
+
 @NgModule({
   declarations: [
     NavBarComponent
@@ -18,6 +24,12 @@ import { NavBarComponent } from './nav-bar.component';
     MatMenuModule,
     MatInputModule,
     MatSharedModule,
+
+    PlatformSelectorModule,
+    DateSelectorModule,
+    AoiUploadModule,
+    PathSelectorModule,
+    OtherSelectorModule,
   ],
   exports: [
     NavBarComponent

@@ -29,7 +29,7 @@ export function uiReducer(state = initState, action: UIActions): UIState {
     case UIActionType.TOGGLE_SIDEBAR: {
       return {
           ...state,
-          isSidebarOpen: !state.isSidebarOpen
+          isSidebarOpen: !state.isSidebarOpen,
         };
     }
 
@@ -99,6 +99,7 @@ export function uiReducer(state = initState, action: UIActions): UIState {
     case UIActionType.SET_SEARCH_TYPE: {
       return {
           ...state,
+          isFiltersMenuOpen: true,
           searchType: action.payload
         };
     }

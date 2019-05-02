@@ -5,7 +5,6 @@ import { CommonModule } from '@angular/common';
 import { MatSelectModule, MatExpansionModule } from '@angular/material';
 import { MatSharedModule } from '@shared';
 
-
 import { PathSelectorModule } from './path-selector';
 import { PlatformSelectorModule } from './platform-selector';
 import { DateSelectorModule } from './date-selector';

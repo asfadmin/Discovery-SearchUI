@@ -9,3 +9,87 @@ $uaf-neutrals-2: #c7c9c7;
 $uaf-neutrals-3: #d7d2cb;
 
 $uaf-accent-4: #65665c;
+
+$dark-primary-text: rgba(black, 0.87);
+$dark-secondary-text: rgba(black, 0.54);
+$dark-disabled-text: rgba(black, 0.38);
+$dark-dividers: rgba(black, 0.12);
+$dark-focused: rgba(black, 0.12);
+$light-primary-text: white;
+$light-secondary-text: rgba(white, 0.7);
+$light-disabled-text: rgba(white, 0.5);
+$light-dividers: rgba(white, 0.12);
+$light-focused: rgba(white, 0.12);
+
+$contrast: (
+  50: $dark-primary-text,
+  100: $dark-primary-text,
+  200: $dark-primary-text,
+  300: $light-primary-text,
+  400: $light-primary-text,
+  500: $light-primary-text,
+  600: $light-primary-text,
+  700: $light-primary-text,
+  800: $light-primary-text,
+  900: $light-primary-text,
+  A100: $dark-primary-text,
+  A200: $light-primary-text,
+  A400: $light-primary-text,
+  A700: $light-primary-text,
+);
+
+$mat-asf-primary: (
+  50: #fbfcf0,
+  100: #f6f7eb,
+  200: #f1f2e6,
+  300: #e4e5d8,
+  400: #c1c2b7,
+  500: #a3a499,
+  600: #797a70,
+  700: #65665c,
+  800: #46473d,
+  900: #24251d,
+  contrast: $contrast,
+);
+
+$mat-asf-blue: (
+  50: #e3f6fc,
+  100: #b8e8f8,
+  200: #8cdaf4,
+  300: #66cbef,
+  400: #4ebfec,
+  500: #3fb3ea,
+  600: #39a5dc,
+  700: #3192c8,
+  800: #2d81b4,
+  900: #236192,
+  contrast: $contrast,
+);
+
+$mat-asf-red: (
+  50: #fbeaef,
+  100: #f6cbd5,
+  200: #e297a0,
+  300: #d56f7c,
+  400: #df4d5f,
+  500: #e43a49,
+  600: #d53147,
+  700: #c32940,
+  800: #b62339,
+  900: #a6192e,
+  contrast: $contrast,
+);
+
+$mat-asf-yellow: (
+  50: #fff9e0,
+  100: #ffedb0,
+  200: #ffe27c,
+  300: #ffd843,
+  400: #ffcd00,
+  500: #ffc400,
+  600: #ffb800,
+  700: #ffa200,
+  800: #ff9000,
+  900: #ff6e00,
+  contrast: $contrast,
+);

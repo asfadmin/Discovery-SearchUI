@@ -75,8 +75,14 @@ export class SearchEffects {
   );
 
   @Effect()
-  private clearSearchType: Observable<Action> = this.actions$.pipe(
+  private hideFilterMenuOnSearchResponse: Observable<Action> = this.actions$.pipe(
     ofType<SearchResponse>(SearchActionType.SEARCH_RESPONSE),
-    map(_ => new uiStore.SetSearchType(null)),
+    map(_ => new uiStore.CloseFiltersMenu()),
+  );
+
+  @Effect()
+  private openBottomMenuOnSearchResponse: Observable<Action> = this.actions$.pipe(
+    ofType<SearchResponse>(SearchActionType.SEARCH_RESPONSE),
+    map(_ => new uiStore.OpenBottomMenu()),
   );
 }
