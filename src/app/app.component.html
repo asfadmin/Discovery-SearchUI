@@ -1,5 +1,7 @@
 <div>
-  <app-map (loadUrlState)="onLoadUrlState()">
+  <app-map
+    (doSearch)="onNewSearch()"
+    (loadUrlState)="onLoadUrlState()">
   </app-map>
 
   <app-bottom-menu>

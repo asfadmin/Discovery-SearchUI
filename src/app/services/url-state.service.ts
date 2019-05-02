@@ -100,20 +100,6 @@ export class UrlStateService {
 
   private uiParameters() {
     return [{
-      name: 'isSidebarOpen',
-      source: this.store$.select(uiStore.getIsSidebarOpen).pipe(
-        skip(1),
-        map(isSidebarOpen => ({ isSidebarOpen }))
-      ),
-      loader: this.loadIsSidebarOpen
-    }, {
-      name: 'isBottomMenuOpen',
-      source: this.store$.select(uiStore.getIsBottomMenuOpen).pipe(
-        skip(1),
-        map(isBottomMenuOpen => ({ isBottomMenuOpen }))
-      ),
-      loader: this.loadIsBottomMenuOpen
-    }, {
       name: 'selectedFilter',
       source: this.store$.select(uiStore.getSelectedFilter).pipe(
         skip(1),
