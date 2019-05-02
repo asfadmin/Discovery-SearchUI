@@ -3,7 +3,7 @@
   class="position">
 
   <div style="margin-left: 45px">
-    <div class="breadcrumb-list" *ngIf="showFilters">
+    <div class="breadcrumb-list" *ngIf="showFilters && (searchType$ | async) === searchTypes.DATASET">
       <div class="breadcrumb">
         <button (click)="onNewSelectedFilter(filterTypes.DATASET)" mat-raised-button>Dataset</button>
 
