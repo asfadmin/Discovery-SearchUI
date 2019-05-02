@@ -103,10 +103,13 @@
       style="background: white"
       class="spacing"
       (click)="onOpenDownloadQueue()"
-      [disabled]="products.length <= 0"  color="basic"
+      [disabled]="products.length <= 0" color="basic"
       mat-fab>
         <mat-icon
-          [matBadge]="products.length" matBadgePosition="below" matBadgeOverlap="false">
+          [matBadge]="products.length"
+          matBadgePosition="below"
+          matBadgeColor="{{ products.length > 0 ? 'accent' : 'primary' }}"
+          matBadgeOverlap="false">
             cloud_download
         </mat-icon>
     </button>
