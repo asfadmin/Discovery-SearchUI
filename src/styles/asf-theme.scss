@@ -31,6 +31,7 @@ $asf-accent: mat-color($asf-app-accent);
 $asf-warn: mat-color($asf-app-warn);
 
 $custom-typography: mat-typography-config($font-family: 'Roboto, sans-serif;');
+
 @include mat-core($custom-typography);
 
 @mixin md-icon-size($size: 24px) {
