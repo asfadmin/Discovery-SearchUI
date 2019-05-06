@@ -5,8 +5,8 @@
 
   <div class="search-bar-card">
 
-    <span style="margin-right: 25px" class="faint-text">
-      <span style="cursor: pointer" [matMenuTriggerFor]="menu">{{ formatNumber(maxResults) }} <mat-icon>arrow_drop_down</mat-icon></span>
+    <span style="margin-right: 25px;" class="faint-text">
+      <span style="cursor: pointer;" [matMenuTriggerFor]="menu">{{ formatNumber(maxResults) }} <mat-icon>arrow_drop_down</mat-icon></span>
       of {{ currentSearchAmount !== -1 ? formatNumber(currentSearchAmount) : 'error' }}
     </span>
 
