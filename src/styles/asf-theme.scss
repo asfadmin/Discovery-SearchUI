@@ -32,3 +32,9 @@ $asf-warn: mat-color($asf-app-warn);
 
 $custom-typography: mat-typography-config($font-family: 'Roboto, sans-serif;');
 @include mat-core($custom-typography);
+
+@mixin md-icon-size($size: 24px) {
+  font-size: $size;
+  height: $size;
+  width: $size;
+}
