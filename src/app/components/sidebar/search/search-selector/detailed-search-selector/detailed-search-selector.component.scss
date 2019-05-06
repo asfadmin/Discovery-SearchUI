@@ -35,7 +35,7 @@
 
   .mat-list-item {
     h3 {
-      font-size: 24px;
+      font-size: 22px;
     }
 
     p {
@@ -58,4 +58,12 @@
     margin: 0;
     border-top-color: rgba(0, 0, 0, 0.15);
   }
+}
+
+.img-nasa-logo {
+  max-width: 40%;
+  height: auto;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
 }
