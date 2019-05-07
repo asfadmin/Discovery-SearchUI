@@ -99,36 +99,6 @@ export class BreadcrumbListComponent {
   }
 
 
-  // Date Selector
-  public onNewStartDate(start: Date): void {
-    this.store$.dispatch(new filtersStore.SetStartDate(start));
-  }
-
-  public onNewEndDate(end: Date): void {
-    this.store$.dispatch(new filtersStore.SetEndDate(end));
-  }
-
-  public onNewSeasonStart(start: number | null): void {
-    this.store$.dispatch(new filtersStore.SetSeasonStart(start));
-  }
-
-  public onNewSeasonEnd(end: number | null): void {
-    this.store$.dispatch(new filtersStore.SetSeasonEnd(end));
-  }
-
-  // AOI Selector
-  public onNewDrawModeType(mode: models.MapDrawModeType): void {
-    this.store$.dispatch(new mapStore.SetMapDrawMode(mode));
-  }
-
-  public onNewInteractionMode(mode: models.MapInteractionModeType): void {
-    this.store$.dispatch(new mapStore.SetMapInteractionMode(mode));
-  }
-
-  public onOpenFileDialog(): void {
-    const action = new mapStore.SetMapInteractionMode(models.MapInteractionModeType.UPLOAD);
-    this.store$.dispatch(action);
-  }
 
   // Path/Frame Selector
   public onNewPathStart(path: number): void {
