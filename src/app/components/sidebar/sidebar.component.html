@@ -1,7 +1,7 @@
 
 <div [@changeMenuState]="(isSidebarOpen$ | async) ? 'shown' : 'hidden'"
   [ngClass]="{'hidden': isHidden}"
-  class="position">
+  class="sidebar-position">
 
 <app-toggle-button
   (click)="onToggleHide()"
