@@ -1,20 +1,13 @@
-import { Component, OnInit, EventEmitter, Output } from '@angular/core';
-
-import { interval, Subject, Subscription } from 'rxjs';
-import { map, takeUntil, tap, delay, take } from 'rxjs/operators';
+import { Component, EventEmitter, Output } from '@angular/core';
 
 import { Store } from '@ngrx/store';
 
 import { AppState } from '@store';
-import * as filtersStore from '@store/filters';
-import * as queueStore from '@store/queue';
-import * as mapStore from '@store/map';
 import * as searchStore from '@store/search';
 import * as uiStore from '@store/ui';
 import * as granulesStore from '@store/granules';
 
-import * as models from '@models';
-import * as services from '@services';
+import { SearchType } from '@models';
 
 enum BreadcrumbFilterType {
   DATASET = 'Dataset',
@@ -43,7 +36,7 @@ export class BreadcrumbListComponent {
 
   public loading$ = this.store$.select(searchStore.getIsLoading);
   public searchType$ = this.store$.select(uiStore.getSearchType);
-  public searchTypes = models.SearchType;
+  public searchTypes = SearchType;
 
   public onDoSearch(): void {
     this.doSearch.emit();
