@@ -3,100 +3,10 @@
   class="position">
 
   <div style="margin-left: 45px">
-    <div class="breadcrumb-list" *ngIf="showFilters && (searchType$ | async) === searchTypes.DATASET">
-      <div class="breadcrumb">
-        <button (click)="onNewSelectedFilter(filterTypes.DATASET)" mat-raised-button>Dataset</button>
-
-        <mat-card *ngIf="selectedFilter === filterTypes.DATASET"
-          class="breadcrumb-filter">
-          <app-platform-selector
-            [platforms]="platforms$ | async"
-            [selected]="selectedPlatformName$ | async"
-            (removeSelected)="onPlatformRemoved($event)"
-            (addSelected)="onPlatformAdded($event)">
-          </app-platform-selector>
-        </mat-card>
-      </div>
-
-      <div class="breadcrumb">
-        <button (click)="onNewSelectedFilter(filterTypes.DATE)" mat-raised-button>Date</button>
-
-        <mat-card *ngIf="selectedFilter === filterTypes.DATE"
-          class="breadcrumb-filter">
-            <app-date-selector
-              [startDate]="startDate$ | async"
-              [endDate]="endDate$ | async"
-              [seasonStart]="seasonStart$ | async"
-              [seasonEnd]="seasonEnd$ | async"
-              [extrema]="dateRangeExtrema$ | async"
-              (newStart)="onNewStartDate($event)"
-              (newEnd)="onNewEndDate($event)"
-              (newSeasonStart)="onNewSeasonStart($event)"
-              (newSeasonEnd)="onNewSeasonEnd($event)">
-            </app-date-selector>
-        </mat-card>
-      </div>
-      <div class="breadcrumb">
-        <button (click)="onNewSelectedFilter(filterTypes.AOI)" mat-raised-button>Area of Interest</button>
-
-        <mat-card *ngIf="selectedFilter === filterTypes.AOI"
-          class="breadcrumb-filter">
-            <app-aoi-upload
-              (openFileUpload)="onOpenFileDialog()"
-              (newDrawMode)="onNewDrawModeType($event)"
-              (newInteractionMode)="onNewInteractionMode($event)"
-              [drawMode]="drawMode$ | async"
-              [interactionMode]="interactionMode$ | async"
-              [polygon]="polygon$ | async">
-            </app-aoi-upload>
-        </mat-card>
-      </div>
-      <div class="breadcrumb">
-        <button (click)="onNewSelectedFilter(filterTypes.PATH_FRAME)" mat-raised-button>Path/Frame</button>
-
-        <mat-card *ngIf="selectedFilter === filterTypes.PATH_FRAME"
-          class="breadcrumb-filter">
-          <app-path-selector
-            (newPathStart)="onNewPathStart($event)"
-            (newPathEnd)="onNewPathEnd($event)"
-            (newFrameStart)="onNewFrameStart($event)"
-            (newFrameEnd)="onNewFrameEnd($event)"
-            (newOmitSearchPolygon)="onNewOmitGeoRegion($event)"
-            [pathRange]="pathRange$ | async"
-            [shouldOmitSearchPolygon]="shouldOmitSearchPolygon$ | async"
-            [frameRange]="frameRange$ | async"
-            [selected]="selectedPlatforms$ | async">
-          </app-path-selector>
-        </mat-card>
-      </div>
-      <div class="breadcrumb">
-        <button (click)="onNewSelectedFilter(filterTypes.ADDITIONAL)" mat-raised-button>Additional Filters</button>
-
-        <mat-card *ngIf="selectedFilter === filterTypes.ADDITIONAL"
-          class="breadcrumb-filter">
-          <app-other-selector
-            (newFlightDirections)="onNewFlightDirections($event)"
-            (newProductTypes)="onNewProductTypes($event)"
-            (newBeamModes)="onNewBeamModes($event)"
-            (newPolarizations)="onNewPolarizations($event)"
-            [productTypes]="platformProductTypes$ | async"
-            [selected]="selectedPlatforms$ | async"
-            [flightDirections]="flightDirections$ | async"
-            [beamModes]="beamModes$ | async"
-            [polarizations]="polarizations$ | async">
-          </app-other-selector>
-        </mat-card>
-      </div>
-      <div class="breadcrumb">
-        <button (click)="onDoSearch()" style="margin-left: 20px" mat-raised-button color="primary">
-          {{ (loading$ | async) ? 'Loading...' : 'Search' }}
-        </button>
-      </div>
-    </div>
+    <app-breadcrumb-list></app-breadcrumb-list>
   </div>
 
   <div class="layout">
-
 
   <div *ngIf="products" matTooltip="Download Queue">
     <button
