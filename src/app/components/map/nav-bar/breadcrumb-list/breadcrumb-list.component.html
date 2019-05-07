@@ -37,17 +37,7 @@
 
     <mat-card *ngIf="selectedFilter === filterTypes.ADDITIONAL"
       class="breadcrumb-filter">
-      <app-other-selector
-        (newFlightDirections)="onNewFlightDirections($event)"
-        (newProductTypes)="onNewProductTypes($event)"
-        (newBeamModes)="onNewBeamModes($event)"
-        (newPolarizations)="onNewPolarizations($event)"
-        [productTypes]="platformProductTypes$ | async"
-        [selected]="selectedPlatforms$ | async"
-        [flightDirections]="flightDirections$ | async"
-        [beamModes]="beamModes$ | async"
-        [polarizations]="polarizations$ | async">
-      </app-other-selector>
+      <app-other-selector></app-other-selector>
     </mat-card>
   </div>
   <div class="breadcrumb">

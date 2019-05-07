@@ -6,8 +6,8 @@ import { map, takeUntil, tap, delay, take } from 'rxjs/operators';
 import { Store } from '@ngrx/store';
 
 import { AppState } from '@store';
-import * as queueStore from '@store/queue';
 import * as filtersStore from '@store/filters';
+import * as queueStore from '@store/queue';
 import * as mapStore from '@store/map';
 import * as searchStore from '@store/search';
 import * as uiStore from '@store/ui';
@@ -24,7 +24,6 @@ enum BreadcrumbFilterType {
   ADDITIONAL = 'Additional Filters',
   NONE = 'None'
 }
-
 
 @Component({
   selector: 'app-breadcrumb-list',
@@ -97,28 +96,4 @@ export class BreadcrumbListComponent {
   public onDoSearch(): void {
     this.doSearch.emit();
   }
-
-  // Path/Frame Selector
-  // Additional Filters
-  public onNewFlightDirections(directions: models.FlightDirection[]): void {
-    this.store$.dispatch(new filtersStore.SetFlightDirections(directions));
-  }
-
-  public onNewBeamModes(platformBeamModes: models.PlatformBeamModes): void {
-    this.store$.dispatch(new filtersStore.SetPlatformBeamModes(platformBeamModes));
-  }
-
-  public onNewPolarizations(platformPolarizations: models.PlatformPolarizations): void {
-    this.store$.dispatch(new filtersStore.SetPlatformPolarizations(platformPolarizations));
-  }
-
-  public onNewMaxResults(maxResults): void {
-    this.store$.dispatch(new filtersStore.SetMaxResults(maxResults));
-  }
-
-  public onNewProductTypes(productTypes: models.PlatformProductTypes): void {
-    this.store$.dispatch(new filtersStore.SetPlatformProductTypes(productTypes));
-  }
-
-
 }

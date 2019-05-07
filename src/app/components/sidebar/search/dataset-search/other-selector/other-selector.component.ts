@@ -1,4 +1,9 @@
-import { Component, Input, EventEmitter, Output } from '@angular/core';
+import { Component, OnInit, Input, EventEmitter, Output } from '@angular/core';
+
+import { Store } from '@ngrx/store';
+
+import { AppState } from '@store';
+import * as filtersStore from '@store/filters';
 
 import * as models from '@models';
 
@@ -7,33 +12,48 @@ import * as models from '@models';
   templateUrl: './other-selector.component.html',
   styleUrls: ['./other-selector.component.scss']
 })
-export class OtherSelectorComponent {
-  @Input() selected: models.Platform[];
-  @Input() productTypes: models.PlatformProductTypes;
-  @Input() flightDirections: models.FlightDirection[];
-  @Input() beamModes: models.PlatformBeamModes;
-  @Input() polarizations: models.PlatformPolarizations;
+export class OtherSelectorComponent implements OnInit {
+  selected: models.Platform[];
+  productTypes: models.PlatformProductTypes;
+  flightDirections: models.FlightDirection[];
+  beamModes: models.PlatformBeamModes;
+  polarizations: models.PlatformPolarizations;
 
-  @Output() newProductTypes = new EventEmitter<models.PlatformProductTypes>();
-  @Output() newFlightDirections = new EventEmitter<models.FlightDirection[]>();
-  @Output() newBeamModes = new EventEmitter<models.PlatformBeamModes>();
-  @Output() newPolarizations = new EventEmitter<models.PlatformPolarizations>();
+  public platformProductTypes$ = this.store$.select(filtersStore.getProductTypes);
+  public flightDirections$ = this.store$.select(filtersStore.getFlightDirections);
+  public beamModes$ = this.store$.select(filtersStore.getBeamModes);
+  public polarizations$ = this.store$.select(filtersStore.getPolarizations);
+  public selectedPlatforms$ = this.store$.select(filtersStore.getSelectedPlatforms);
 
   public flightDirectionTypes = models.flightDirections;
 
-  public onNewPlatformBeamModes(platform: models.Platform, beamModes: string[]): void {
-    this.newBeamModes.emit({ [platform.name]: beamModes });
+  constructor(private store$: Store<AppState>) { }
+
+  ngOnInit() {
+    this.selectedPlatforms$.subscribe(platforms => this.selected = platforms);
+    this.beamModes$.subscribe(modes => this.beamModes = modes);
+    this.flightDirections$.subscribe(directions => this.flightDirections = directions);
+    this.platformProductTypes$.subscribe(types => this.productTypes = types);
+    this.polarizations$.subscribe(pols => this.polarizations = pols);
   }
 
-  public onNewProductTypes(platform: models.Platform, productTypes: models.ProductType[]): void {
-      this.newProductTypes.emit({ [platform.name]: productTypes });
+  public onNewPlatformBeamModes(platform: models.Platform, beamModes: string[]): void {
+    this.store$.dispatch(new filtersStore.SetPlatformBeamModes({ [platform.name]: beamModes }));
   }
 
   public onNewFlightDirectionsSelected(directions: models.FlightDirection[]): void {
-    this.newFlightDirections.emit(directions);
+    this.store$.dispatch(new filtersStore.SetFlightDirections(directions));
   }
 
   public onNewPlatformPolarizations(platform: models.Platform, polarizations: string[]): void {
-    this.newPolarizations.emit({ [platform.name]: polarizations });
+    this.store$.dispatch(new filtersStore.SetPlatformPolarizations({ [platform.name]: polarizations }));
+  }
+
+  public onNewProductTypes(platform: models.Platform, productTypes: models.ProductType[]): void {
+    this.store$.dispatch(new filtersStore.SetPlatformProductTypes({ [platform.name]: productTypes }));
+  }
+
+  public onNewMaxResults(maxResults): void {
+    this.store$.dispatch(new filtersStore.SetMaxResults(maxResults));
   }
 }

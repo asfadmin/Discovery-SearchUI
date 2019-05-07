@@ -41,16 +41,7 @@
       </mat-panel-description>
     </mat-expansion-panel-header>
 
-    <app-other-selector
-      (newFlightDirections)="onNewFlightDirections($event)"
-      (newProductTypes)="onNewProductTypes($event)"
-      (newBeamModes)="onNewBeamModes($event)"
-      (newPolarizations)="onNewPolarizations($event)"
-      [productTypes]="platformProductTypes$ | async"
-      [selected]="selectedPlatforms$ | async"
-      [flightDirections]="flightDirections$ | async"
-      [beamModes]="beamModes$ | async"
-      [polarizations]="polarizations$ | async">
-    </app-other-selector>
+    <app-other-selector></app-other-selector>
+
   </mat-expansion-panel>
 </mat-accordion>
