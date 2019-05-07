@@ -21,12 +21,6 @@
   [ngClass]="{'hidden': isUiHidden}"
   ></app-map-controls>
 
-<div [ngClass]="{'no-ui-position': isUiHidden, 'default-position': !isUiHidden}">
-  <a href="https://earthdata.nasa.gov/" target="_blank">
-    <img width="88" height="75" src="assets/meatball.png">
-  </a>
-</div>
-
 <div class="view-reset-button-position" [ngClass]="{'hidden': !isUiHidden}">
   <button (click)="onShowUi()" mat-raised-button>
     <mat-icon>settings_backup_restore</mat-icon>
