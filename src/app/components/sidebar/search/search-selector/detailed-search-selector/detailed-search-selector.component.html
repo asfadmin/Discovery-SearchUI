@@ -15,7 +15,7 @@
     <mat-list-item (click)="onSetSearchType(searchTypes.LIST)"
      [class.active-btn]="selectedSearchType === searchTypes.LIST">
       <h3 matLine>List</h3>
-      <p matLine>Search by a list of granuels or prodcut names.</p>
+      <p matLine>Search by a list of granules or product names.</p>
       <button mat-icon-button>
         <mat-icon>chevron_right</mat-icon>
       </button>
@@ -30,8 +30,7 @@
       </button>
     </mat-list-item>
     <mat-divider [inset]="true"></mat-divider>
-    <mat-list-item (click)="onSetSearchType(searchTypes.MISSION)"
-     [class.active-btn]="selectedSearchType === searchTypes.MISSION">
+    <mat-list-item>
       <h3 matLine>Thematic Datasets</h3>
       <p matLine>Search specialized datasets for specific uses.</p>
       <button mat-icon-button>
@@ -39,8 +38,7 @@
       </button>
     </mat-list-item>
     <mat-divider [inset]="true"></mat-divider>
-    <mat-list-item (click)="onSetSearchType(searchTypes.MISSION)"
-     [class.active-btn]="selectedSearchType === searchTypes.MISSION">
+    <mat-list-item>
       <h3 matLine>Saved Searches</h3>
       <p matLine>Search using prior searches.</p>
       <button mat-icon-button>
@@ -48,8 +46,7 @@
       </button>
     </mat-list-item>
     <mat-divider [inset]="true"></mat-divider>
-    <mat-list-item (click)="onSetSearchType(searchTypes.MISSION)"
-     [class.active-btn]="selectedSearchType === searchTypes.MISSION">
+    <mat-list-item>
       <h3 matLine>Preferences and Help</h3>
       <p matLine>Preferences, search help, citing data.</p>
       <button mat-icon-button>
@@ -59,7 +56,9 @@
   </mat-list>
   <mat-divider [inset]="true"></mat-divider>
   <mat-card class="mat-elevation-z0">
-    <img class="img-nasa-logo" src="/assets/meatball.png">
+    <a href="https://earthdata.nasa.gov/" target="_blank">
+      <img class="img-nasa-logo" src="/assets/meatball.png">
+    </a>
   </mat-card>
 <!--  <div style="margin-top: 7px; padding: 0 16px">-->
 <!--  <mat-accordion>-->

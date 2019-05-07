@@ -1,5 +1,5 @@
 <h2>Download Queue</h2>
-<button mat-raised-button color="warn" (click)="onClearQueue()">Clear Queue</button>
+<button mat-raised-button (click)="onClearQueue()">Clear Queue</button>
 
 <mat-list role="list">
   <ng-container *ngIf="products$ | async as products">
