@@ -1,0 +1,69 @@
+@import "asf-theme";
+
+.block-btn {
+  width: 100%;
+  vertical-align: middle;
+}
+
+.horizontal-btn-group {
+  display: flex;
+  justify-content: space-around;
+}
+
+.horizontal-btn {
+  width: 100%;
+  margin: 0 4px;
+}
+
+.active-btn {
+  background-color: rgba(0, 0, 0, 0.07);
+}
+
+.mat-card {
+  background: transparent;
+
+  .mat-list {
+    padding-top: 0;
+  }
+
+  .mat-icon {
+    @include md-icon-size(30px);
+
+    padding-top: 10px;
+    padding-left: 20px;
+  }
+
+  .mat-list-item {
+    h3 {
+      font-size: 22px;
+    }
+
+    p {
+      font-size: 20px !important;
+      color: rgba(0, 0, 0, 0.6);
+    }
+
+    .mat-icon-button {
+      color: rgba(0, 0, 0, 0.6);
+    }
+  }
+
+  h2 {
+    color: $asf-primary;
+    margin-bottom: 5px;
+    text-shadow: 0 2px 2px rgba(0, 0, 0, 0.15);
+  }
+
+  .mat-divider {
+    margin: 0;
+    border-top-color: rgba(0, 0, 0, 0.15);
+  }
+}
+
+.img-nasa-logo {
+  max-width: 40%;
+  height: auto;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
