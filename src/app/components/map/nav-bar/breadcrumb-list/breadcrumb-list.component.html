@@ -4,12 +4,7 @@
 
     <mat-card *ngIf="selectedFilter === filterTypes.DATASET"
       class="breadcrumb-filter">
-      <app-platform-selector
-        [platforms]="platforms$ | async"
-        [selected]="selectedPlatformName$ | async"
-        (removeSelected)="onPlatformRemoved($event)"
-        (addSelected)="onPlatformAdded($event)">
-      </app-platform-selector>
+      <app-platform-selector></app-platform-selector>
     </mat-card>
   </div>
 

@@ -3,7 +3,9 @@
   class="position">
 
   <div style="margin-left: 45px">
-    <app-breadcrumb-list></app-breadcrumb-list>
+    <app-breadcrumb-list
+      (doSearch)="onDoSearch()">
+    </app-breadcrumb-list>
   </div>
 
   <div class="layout">

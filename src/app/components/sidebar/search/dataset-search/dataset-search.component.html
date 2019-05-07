@@ -9,12 +9,7 @@
       </mat-panel-description>
     </mat-expansion-panel-header>
 
-    <app-platform-selector
-      [platforms]="platforms$ | async"
-      [selected]="selectedPlatformName$ | async"
-      (removeSelected)="onPlatformRemoved($event)"
-      (addSelected)="onPlatformAdded($event)">
-    </app-platform-selector>
+    <app-platform-selector></app-platform-selector>
 
     <app-date-selector
       [startDate]="startDate$ | async"

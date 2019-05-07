@@ -46,6 +46,10 @@ export class NavBarComponent {
     this.openQueue.emit();
   }
 
+  public onDoSearch(): void {
+    this.doSearch.emit();
+  }
+
   public onAccountButtonClicked() {
     if (!this.datapoolAuthService.isLoggedIn) {
       this.datapoolAuthService.login();

@@ -98,14 +98,6 @@ export class BreadcrumbListComponent {
     this.doSearch.emit();
   }
 
-  // Platform Selector
-  public onPlatformRemoved(platformName: string): void {
-    this.store$.dispatch(new filtersStore.RemoveSelectedPlatform(platformName));
-  }
-
-  public onPlatformAdded(platformName: string): void {
-    this.store$.dispatch(new filtersStore.AddSelectedPlatform(platformName));
-  }
 
   // Date Selector
   public onNewStartDate(start: Date): void {
