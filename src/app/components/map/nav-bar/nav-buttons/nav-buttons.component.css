@@ -1,0 +1,8 @@
+.layout {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.spacing {
+  margin: 4px;
+}
