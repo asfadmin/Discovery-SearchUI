@@ -36,7 +36,7 @@
     <b>Start Day </b>
     <mat-slider
       (change)="onSeasonStartChange($event.value)"
-      [value]="seasonStart"
+      [value]="seasonStart$ | async"
       min="1"
       max="365"
       step="1"
@@ -50,7 +50,7 @@
     <b>End Day </b>
     <mat-slider
       (change)="onSeasonEndChange($event.value)"
-      [value]="seasonEnd"
+      [value]="seasonEnd$ | async"
       min="1"
       max="365"
       step="1"
