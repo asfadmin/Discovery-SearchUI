@@ -98,33 +98,7 @@ export class BreadcrumbListComponent {
     this.doSearch.emit();
   }
 
-
-
   // Path/Frame Selector
-  public onNewPathStart(path: number): void {
-    this.store$.dispatch(new filtersStore.SetPathStart(path));
-  }
-
-  public onNewPathEnd(path: number): void {
-    this.store$.dispatch(new filtersStore.SetPathEnd(path));
-  }
-
-  public onNewFrameStart(frame: number): void {
-    this.store$.dispatch(new filtersStore.SetFrameStart(frame));
-  }
-
-  public onNewFrameEnd(frame: number): void {
-    this.store$.dispatch(new filtersStore.SetFrameEnd(frame));
-  }
-
-  public onNewOmitGeoRegion(shouldOmitGeoRegion: boolean): void {
-    const action = shouldOmitGeoRegion ?
-      new filtersStore.OmitSearchPolygon() :
-      new filtersStore.UseSearchPolygon();
-
-    this.store$.dispatch(action);
-  }
-
   // Additional Filters
   public onNewFlightDirections(directions: models.FlightDirection[]): void {
     this.store$.dispatch(new filtersStore.SetFlightDirections(directions));

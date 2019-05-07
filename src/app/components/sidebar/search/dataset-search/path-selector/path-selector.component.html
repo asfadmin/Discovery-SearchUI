@@ -28,7 +28,7 @@
 
   <mat-slide-toggle
     (change)="onNewOmitPolygon($event)"
-    [checked]="shouldOmitSearchPolygon">
+    [checked]="shouldOmitSearchPolygon$ | async">
     Omit Geographic Region from search
   </mat-slide-toggle>
 </div>

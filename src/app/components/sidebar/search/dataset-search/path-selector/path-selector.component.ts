@@ -1,4 +1,9 @@
-import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+
+import { Store } from '@ngrx/store';
+
+import { AppState } from '@store';
+import * as filtersStore from '@store/filters';
 
 import { Platform, Range } from '@models';
 
@@ -7,35 +12,43 @@ import { Platform, Range } from '@models';
   templateUrl: './path-selector.component.html',
   styleUrls: ['./path-selector.component.scss']
 })
-export class PathSelectorComponent {
-  @Input() selected: Platform[];
-  @Input() pathRange: Range<number | null>;
-  @Input() frameRange: Range<number | null>;
-  @Input() shouldOmitSearchPolygon: boolean;
+export class PathSelectorComponent implements OnInit {
 
-  @Output() newPathStart = new EventEmitter<number>();
-  @Output() newPathEnd = new EventEmitter<number>();
-  @Output() newFrameStart = new EventEmitter<number>();
-  @Output() newFrameEnd = new EventEmitter<number>();
-  @Output() newOmitSearchPolygon = new EventEmitter<boolean>();
+  public pathRange$ = this.store$.select(filtersStore.getPathRange);
+  public frameRange$ = this.store$.select(filtersStore.getFrameRange);
+  public pathRange: Range<number | null>;
+  public frameRange: Range<number | null>;
+
+  public shouldOmitSearchPolygon$ = this.store$.select(filtersStore.getShouldOmitSearchPolygon);
+
+  constructor(private store$: Store<AppState>) { }
+
+  ngOnInit() {
+    this.pathRange$.subscribe(range => this.pathRange = range);
+    this.frameRange$.subscribe(range => this.frameRange = range);
+  }
 
   public onPathStartChanged(path: string): void {
-    this.newPathStart.emit(+path);
+    this.store$.dispatch(new filtersStore.SetPathStart(+path));
   }
 
   public onPathEndChanged(path: string): void {
-    this.newPathEnd.emit(+path);
+    this.store$.dispatch(new filtersStore.SetPathEnd(+path));
   }
 
   public onFrameStartChanged(frame: string): void {
-    this.newFrameStart.emit(+frame);
+    this.store$.dispatch(new filtersStore.SetFrameStart(+frame));
   }
 
   public onFrameEndChanged(frame: string): void {
-    this.newFrameEnd.emit(+frame);
+    this.store$.dispatch(new filtersStore.SetFrameEnd(+frame));
   }
 
   public onNewOmitPolygon(e): void {
-    this.newOmitSearchPolygon.emit(e.checked);
+    const action = e.checked ?
+      new filtersStore.OmitSearchPolygon() :
+      new filtersStore.UseSearchPolygon();
+
+    this.store$.dispatch(action);
   }
 }
