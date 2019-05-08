@@ -47,9 +47,6 @@ export const platforms: Platform[] = [{
     apiValue: 'GRD_MD',
     displayName: 'L1 Detected Mid-Res Dual-Pol (GRD-MD)'
   }, {
-    apiValue: 'GRD_FD',
-    displayName: 'L1 Detected Full-Res Dual-Pol (GRD-FD)'
-  }, {
     apiValue: 'OCN',
     displayName: 'L2 Ocean (OCN)'
   }, {
@@ -73,9 +70,6 @@ export const platforms: Platform[] = [{
   }, {
     apiValue: 'METADATA_GRD_FD',
     displayName: 'XML Metadata (GRD-FD)'
-  }, {
-    apiValue: 'THUMBNAIL',
-    displayName: 'Thumbnail Image'
   }, {
     apiValue: 'METADATA_GRD_HD',
     displayName: 'XML Metadata (GRD-HD)'

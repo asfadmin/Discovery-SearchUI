@@ -1,0 +1,23 @@
+.breadcrumb-filter {
+  max-width: 370px;
+  min-width: 300px;
+  height: auto;
+  position: fixed;
+  top: 100px;
+}
+
+$break-small: 500px;
+
+.breadcrumb-list {
+  display: flex;
+  flex-direction: row;
+
+  @media screen and (max-width: $break-small) {
+    display: none;
+  }
+}
+
+.breadcrumb {
+  margin-right: 5px;
+}
+

@@ -1,0 +1,29 @@
+import { NgModule } from '@angular/core';
+import { CommonModule } from '@angular/common';
+
+import { MatSharedModule } from '@shared';
+
+import { PlatformSelectorModule } from '@components/sidebar/search/dataset-search/platform-selector';
+import { DateSelectorModule } from '@components/sidebar/search/dataset-search/date-selector';
+import { AoiUploadModule  } from '@components/sidebar/search/dataset-search/aoi-upload';
+import { PathSelectorModule } from '@components/sidebar/search/dataset-search/path-selector';
+import { OtherSelectorModule } from '@components/sidebar/search/dataset-search/other-selector';
+
+import { BreadcrumbListComponent } from './breadcrumb-list.component';
+
+@NgModule({
+  declarations: [BreadcrumbListComponent],
+  imports: [
+    CommonModule,
+
+    MatSharedModule,
+
+    PlatformSelectorModule,
+    DateSelectorModule,
+    AoiUploadModule,
+    PathSelectorModule,
+    OtherSelectorModule,
+  ],
+  exports: [BreadcrumbListComponent]
+})
+export class BreadcrumbListModule { }

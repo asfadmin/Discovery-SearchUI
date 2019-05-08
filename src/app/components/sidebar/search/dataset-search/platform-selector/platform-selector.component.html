@@ -3,7 +3,7 @@
   <mat-select
     [(ngModel)]="selected"
     (selectionChange)="onSelectionChange($event.value)">
-    <mat-option *ngFor="let platform of platforms" [value]="platform.name">
+    <mat-option *ngFor="let platform of (platforms$ | async)" [value]="platform.name">
       <app-platform
         class="list-group-item list-group-item-action"
         [platform]="platform">

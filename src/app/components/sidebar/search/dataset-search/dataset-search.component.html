@@ -9,33 +9,9 @@
       </mat-panel-description>
     </mat-expansion-panel-header>
 
-    <app-platform-selector
-      [platforms]="platforms$ | async"
-      [selected]="selectedPlatformName$ | async"
-      (removeSelected)="onPlatformRemoved($event)"
-      (addSelected)="onPlatformAdded($event)">
-    </app-platform-selector>
-
-    <app-date-selector
-      [startDate]="startDate$ | async"
-      [endDate]="endDate$ | async"
-      [seasonStart]="seasonStart$ | async"
-      [seasonEnd]="seasonEnd$ | async"
-      [extrema]="dateRangeExtrema$ | async"
-      (newStart)="onNewStartDate($event)"
-      (newEnd)="onNewEndDate($event)"
-      (newSeasonStart)="onNewSeasonStart($event)"
-      (newSeasonEnd)="onNewSeasonEnd($event)">
-    </app-date-selector>
-
-    <app-aoi-upload
-      (openFileUpload)="onOpenFileDialog()"
-      (newDrawMode)="onNewDrawModeType($event)"
-      (newInteractionMode)="onNewInteractionMode($event)"
-      [drawMode]="drawMode$ | async"
-      [interactionMode]="interactionMode$ | async"
-      [polygon]="polygon$ | async">
-    </app-aoi-upload>
+    <app-platform-selector></app-platform-selector>
+    <app-date-selector></app-date-selector>
+    <app-aoi-upload></app-aoi-upload>
 
   </mat-expansion-panel>
 
@@ -50,17 +26,8 @@
       </mat-panel-description>
     </mat-expansion-panel-header>
 
-    <app-path-selector
-      (newPathStart)="onNewPathStart($event)"
-      (newPathEnd)="onNewPathEnd($event)"
-      (newFrameStart)="onNewFrameStart($event)"
-      (newFrameEnd)="onNewFrameEnd($event)"
-      (newOmitSearchPolygon)="onNewOmitGeoRegion($event)"
-      [pathRange]="pathRange$ | async"
-      [shouldOmitSearchPolygon]="shouldOmitSearchPolygon$ | async"
-      [frameRange]="frameRange$ | async"
-      [selected]="selectedPlatforms$ | async">
-    </app-path-selector>
+    <app-path-selector></app-path-selector>
+
   </mat-expansion-panel>
 
   <mat-expansion-panel >
@@ -74,16 +41,7 @@
       </mat-panel-description>
     </mat-expansion-panel-header>
 
-    <app-other-selector
-      (newFlightDirections)="onNewFlightDirections($event)"
-      (newProductTypes)="onNewProductTypes($event)"
-      (newBeamModes)="onNewBeamModes($event)"
-      (newPolarizations)="onNewPolarizations($event)"
-      [productTypes]="platformProductTypes$ | async"
-      [selected]="selectedPlatforms$ | async"
-      [flightDirections]="flightDirections$ | async"
-      [beamModes]="beamModes$ | async"
-      [polarizations]="polarizations$ | async">
-    </app-other-selector>
+    <app-other-selector></app-other-selector>
+
   </mat-expansion-panel>
 </mat-accordion>
