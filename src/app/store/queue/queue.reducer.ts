@@ -22,14 +22,9 @@ export function queueReducer(state = initState, action: QueueActions): QueueStat
     case QueueActionType.ADD_ITEM: {
       const newProduct = action.payload;
 
-      const products = {
-        ...state.products,
-        [newProduct.id]:  newProduct
-      };
+      const products = add_product(newProduct, { ...state.products });
 
-      const ids = Array.from(
-        new Set([...state.ids, newProduct.id])
-      );
+      const ids = Object.keys(products);
 
       return {
         ...state,
@@ -46,38 +41,43 @@ export function queueReducer(state = initState, action: QueueActions): QueueStat
         product => products[product.id] = product
       );
 
-      const ids = Array.from(
-        new Set([
-          ...state.ids,
-          ...newProducts.map(prod => prod.id)
-        ])
-      );
+      const ids = Object.keys(products);
 
       return {
         ...state,
-        products, ids
+        products,
+        ids
+      };
+    }
+
+    case QueueActionType.TOGGLE_PRODUCT: {
+      const product = action.payload;
+      const oldProducts = { ...state.products };
+
+      const products = (!oldProducts[action.payload.id]) ?
+        add_product(product, oldProducts) :
+        remove_product(product, oldProducts);
+
+      const ids = Object.keys(products);
+
+      return {
+        ...state,
+        products,
+        ids
       };
     }
 
     case QueueActionType.REMOVE_ITEM: {
       const toRemove = action.payload;
 
-      const prods = { ...state.products };
-      const products = Object.keys(prods)
-        .filter(product => product !== toRemove.id)
-        .reduce(
-          (total, product) => {
-          total[product] = prods[product];
+      const products = remove_product(toRemove, {...state.products});
 
-          return total;
-        }, {});
-
-      const ids = [ ...state.ids ]
-        .filter(id => id !== toRemove.id);
+      const ids = Object.keys(products);
 
       return {
         ...state,
-        products, ids
+        products,
+        ids
       };
     }
 
@@ -116,6 +116,21 @@ export function queueReducer(state = initState, action: QueueActions): QueueStat
   }
 }
 
+const add_product = (product, products) => ({
+        ...products,
+        [product.id]: product
+      });
+
+const remove_product = (toRemove, prods) => Object.keys(prods)
+        .filter(productId => productId !== toRemove.id)
+        .reduce(
+          (total, productId) => {
+          total[productId] = prods[productId];
+
+          return total;
+        }, {});
+
+
 export const getQueueState = createFeatureSelector<QueueState>('queue');
 
 export const getQueuedProducts = createSelector(
@@ -124,4 +139,9 @@ export const getQueuedProducts = createSelector(
     (total, id) => [...total, state.products[id]]
     , []
   )
+);
+
+export const getQueuedProductIds = createSelector(
+  getQueueState,
+  (state: QueueState) => state.ids
 );

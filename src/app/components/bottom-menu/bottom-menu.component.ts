@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 
+import { map } from 'rxjs/operators';
 import { Store } from '@ngrx/store';
 
 import { AppState } from '@store';
@@ -45,6 +46,7 @@ export class BottomMenuComponent implements OnInit {
 
   public selectedGranule$ = this.store$.select(granulesStore.getSelectedGranule);
   public selectedProducts$ = this.store$.select(granulesStore.getSelectedGranuleProducts);
+  public queuedProductIds: Set<string>;
 
   public granules$ = this.store$.select(granulesStore.getGranules);
 
@@ -55,6 +57,12 @@ export class BottomMenuComponent implements OnInit {
   ngOnInit() {
     this.store$.select(uiStore.getIsHidden).subscribe(
       isHidden => this.isHidden = isHidden
+    );
+
+    this.store$.select(queueStore.getQueuedProductIds).pipe(
+      map(names => new Set(names))
+    ).subscribe(
+      ids => this.queuedProductIds = new Set(ids)
     );
   }
 
@@ -76,5 +84,9 @@ export class BottomMenuComponent implements OnInit {
 
   public onQueueGranuleProducts(name: string): void {
     this.store$.dispatch(new queueStore.QueueGranule(name));
+  }
+
+  public onToggleQueueProduct(product: models.Sentinel1Product): void {
+    this.store$.dispatch(new queueStore.ToggleProduct(product));
   }
 }
