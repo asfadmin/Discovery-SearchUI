@@ -17,7 +17,10 @@
     <mat-card class="card-spacing bottom-menu--column">
       <mat-selection-list *ngIf="selectedProducts$ | async as products">
         <h3 mat-subheader>Granule Products</h3>
-        <mat-list-option *ngFor="let product of products">
+
+        <mat-list-option *ngFor="let product of products"
+          (click)="onToggleQueueProduct(product)"
+          [selected]="queuedProductIds.has(product.id)">
           <span *ngIf="product.file.length > 29">
             <b>{{ product.file | truncate : 25 }}{{ product.file | truncate : -4 : '' }}</b>
           </span>
