@@ -1,5 +1,5 @@
 export const mapOptions = {
-  wrapX: false,
+  wrapX: true,
 };
 
 export enum MapViewType {
