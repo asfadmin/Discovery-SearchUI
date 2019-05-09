@@ -1,3 +1,9 @@
+export const mapOptions = {
+  noWrap: false,
+  wrapX: true,
+};
+
+
 export enum MapViewType {
   ARCTIC = 'arctic',
   EQUITORIAL = 'equitorial',
