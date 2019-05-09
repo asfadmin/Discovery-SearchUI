@@ -1,11 +1,14 @@
-<mat-card class="card-spacing">
-  <mat-selection-list>
-    <app-platform
-      *ngFor="let platform of platforms"
-      (click)="onClick(platform)"
-      class="list-group-item list-group-item-action"
-      [platform]="platform"
-      [isSelected]="selected.has(platform.name)">
-    </app-platform>
-  </mat-selection-list>
-</mat-card>
+<mat-form-field class="w100">
+  <mat-label>Dataset</mat-label>
+  <mat-select
+    [(ngModel)]="selected"
+    (selectionChange)="onSelectionChange($event.value)">
+    <mat-option *ngFor="let platform of (platforms$ | async)" [value]="platform.name">
+      <app-platform
+        class="list-group-item list-group-item-action"
+        [platform]="platform">
+      </app-platform>
+    </mat-option>
+  </mat-select>
+  <mat-hint align="start"><strong>Select a dataset</strong> </mat-hint>
+</mat-form-field>

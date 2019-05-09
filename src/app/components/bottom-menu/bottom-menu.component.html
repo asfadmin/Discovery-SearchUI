@@ -1,15 +1,102 @@
 <div
   [@changeMenuY]="(isBottomMenuOpen$ | async) ? 'shown' : 'hidden'"
   [@changeMenuX]="(isSideMenuOpen$ | async) ? 'full-width' : 'half-width'"
-  [ngClass]="{'hidden': isHidden}"
+  [ngClass]="{'hidden': isHidden || (granules$ | async).length === 0}"
   class="position">
+  <div class="bottom-menu--background  bottom-menu--layout">
+    <app-granules-list
+      class="scrollable-card bottom-menu--column"
+      (newFocusedGranule)="onNewFocusedGranule($event)"
+      (clearFocusedGranule)="onClearFocusedGranule()"
+      (newSelected)="onNewGranuleSelected($event)"
+      (queueGranule)="onQueueGranuleProducts($event)"
+      [granules]="granules$ | async"
+      [selected]="(selectedGranule$ | async)?.name">
+    </app-granules-list>
+
+    <mat-card class="card-spacing bottom-menu--column">
+      <mat-selection-list *ngIf="selectedProducts$ | async as products">
+        <h3 mat-subheader>Granule Products</h3>
+
+        <mat-list-option *ngFor="let product of products"
+          (click)="onToggleQueueProduct(product)"
+          [selected]="queuedProductIds.has(product.id)">
+          <span *ngIf="product.file.length > 29">
+            <b>{{ product.file | truncate : 25 }}{{ product.file | truncate : -4 : '' }}</b>
+          </span>
+          <span *ngIf="product.file.length <= 29">
+            <b>{{ product.file }}</b>
+          </span>
+        </mat-list-option>
+      </mat-selection-list>
+    </mat-card>
+
+    <mat-card
+      *ngIf="selectedGranule$ | async as granule"
+      class="card-spacing bottom-menu--column">
+        <mat-card-header>
+          <mat-card-title [title]="granule.name">{{ granule.name | truncate : 21 }}</mat-card-title>
+          <mat-card-subtitle>{{ granule.platform }}</mat-card-subtitle>
+        </mat-card-header>
+
+      <mat-card-content>
+        <div class="w100" fxFlex fxLayout="row" fxLayoutAlign="space-between">
+        <div>
+          <ul>
+            <li> <b>Aquisition Date:</b> {{ granule.metadata.date | shortDate }}</li>
+            <li> <b>Beam Mode:</b> {{ granule.metadata.beamMode }}</li>
+            <li> <b>Path: </b> {{ granule.metadata.path }}</li>
+            <li> <b>Frame:</b> {{ granule.metadata.frame }}</li>
+            <li> <b>Flight Direction:</b> {{ granule.metadata.flightDirection }}</li>
+            <li> <b>Polarization: </b> {{ granule.metadata.polarization }}</li>
+            <li> <b>Absolute Orbit: </b> {{ granule.metadata.absoluteOrbit }}</li>
+            <li> <b>Frequency: </b> {{ granule.metadata.frequency }}</li>
+            <li> <a href="http://www.esa.int/ESA"> Data courtesy of ESA</a></li>
+          </ul>
+        </div>
+        <div fxFlexAlign="center" style="width: 40%;">
+          <img
+            class="fit-to-container"
+            [src]="granule.browse"
+            (click)="onOpenImage(granule);"
+            style="cursor: pointer; "
+            onerror="this.src='assets/error.png'"
+            alt="Sentinel1 granule browse image">
+        </div>
+        </div>
+      </mat-card-content>
+
+      <mat-card-actions>
+        <a mat-raised-button
+          matTooltip="Accessing this data requires you to log in. Some datasets also require a proposal, or agreement with a EULA which is presented after log in."
+          color="primary"
+          target="_blank"
+          [href]="granule.downloadUrl">
+          Download
+        </a>
+        <a mat-raised-button color="primary"
+          target="_blank"
+          href="https://baseline.asf.alaska.edu/#/baseline?granule={{ granule.name }}">
+          Baseline
+        </a>
+        <a mat-raised-button color="primary"
+          target="_blank"
+          href="https://www.asf.alaska.edu/about/how-to-cite-data/">
+          Citation
+        </a>
+      </mat-card-actions>
+    </mat-card>
+
+    <mat-card
+      *ngIf="!(selectedGranule$ | async)"
+      class="card-spacing bottom-menu--column">
+        <div fxFlex fxLayoutAlign="center" gdAlignColumns="center">
+          <span class="faint-text">No Granule Selected</span>
+        </div>
+    </mat-card>
+  </div>
 
   <button class="toggle-button" mat-raised-button (click)="onToggleMenu()">
     <mat-icon>{{ (isBottomMenuOpen$ | async) ? 'expand_more' : 'expand_less' }}</mat-icon>
   </button>
-
-  <mat-card class="card-spacing">
-    <h1> bottom-menu works! </h1>
-  </mat-card>
-
 </div>

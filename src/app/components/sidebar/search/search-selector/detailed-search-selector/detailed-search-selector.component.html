@@ -1,50 +1,64 @@
-<mat-card class="card-spacing">
-  <h2>How are you searching?</h2>
+<mat-card class="card-spacing mat-elevation-z0">
+  <h2>SAR Product Searches</h2>
+  <mat-divider></mat-divider>
 
   <mat-list>
-   <mat-list-item>
-     <button (click)="onSetSearchType(searchTypes.DATASET)" class="block-btn" mat-raised-button>
-       <span>By <b>data set</b></span>
-     </button>
-   </mat-list-item>
-   <mat-list-item>
-     <button (click)="onSetSearchType(searchTypes.LIST)" class="block-btn" mat-raised-button>
-       <span>With a <b>list</b></span>
-     </button>
-   </mat-list-item>
-   <mat-list-item>
-      <button (click)="onSetSearchType(searchTypes.MISSION)" class="block-btn" mat-raised-button>
-        <span>By <b>mission</b></span>
+    <mat-list-item (click)="onSetSearchType(searchTypes.DATASET)"
+     [class.active-btn]="selectedSearchType === searchTypes.DATASET">
+        <h3 matLine>Dataset</h3>
+        <p matLine>Search by dataset, time, geography, and more.</p>
+        <button mat-icon-button>
+          <mat-icon>chevron_right</mat-icon>
+        </button>
+    </mat-list-item>
+    <mat-divider [inset]="true"></mat-divider>
+    <mat-list-item (click)="onSetSearchType(searchTypes.LIST)"
+     [class.active-btn]="selectedSearchType === searchTypes.LIST">
+      <h3 matLine>List</h3>
+      <p matLine>Search by a list of granules or product names.</p>
+      <button mat-icon-button>
+        <mat-icon>chevron_right</mat-icon>
       </button>
-   </mat-list-item>
+    </mat-list-item>
+    <mat-divider [inset]="true"></mat-divider>
+    <mat-list-item (click)="onSetSearchType(searchTypes.MISSION)"
+     [class.active-btn]="selectedSearchType === searchTypes.MISSION">
+      <h3 matLine>Mission</h3>
+      <p matLine>Search for data from a specific mission.</p>
+      <button mat-icon-button>
+        <mat-icon>chevron_right</mat-icon>
+      </button>
+    </mat-list-item>
+    <mat-divider [inset]="true"></mat-divider>
+    <mat-list-item>
+      <h3 matLine>Thematic Datasets</h3>
+      <p matLine>Search specialized datasets for specific uses.</p>
+      <button mat-icon-button>
+        <mat-icon>chevron_right</mat-icon>
+      </button>
+    </mat-list-item>
+    <mat-divider [inset]="true"></mat-divider>
+    <mat-list-item>
+      <h3 matLine>Saved Searches</h3>
+      <p matLine>Search using prior searches.</p>
+      <button mat-icon-button>
+        <mat-icon>chevron_right</mat-icon>
+      </button>
+    </mat-list-item>
+    <mat-divider [inset]="true"></mat-divider>
+    <mat-list-item>
+      <h3 matLine>Preferences and Help</h3>
+      <p matLine>Preferences, search help, citing data.</p>
+      <button mat-icon-button>
+        <mat-icon>chevron_right</mat-icon>
+      </button>
+    </mat-list-item>
   </mat-list>
-
-  <mat-divider style="margin: 20px 0" [inset]="true"></mat-divider>
-
-  <div style="margin-top: 7px; padding: 0 16px">
-  <mat-accordion>
-    <mat-expansion-panel>
-      <mat-expansion-panel-header>
-        <mat-panel-title>
-          What are these search types?
-        </mat-panel-title>
-        <mat-panel-description>
-        </mat-panel-description>
-      </mat-expansion-panel-header>
-        <h3>Data Set Search (most common)</h3>
-        <p>
-          Search for products from a dataset using a area of interest and filter based
-          on date, dataset, product type and other metadata parameters.
-        </p>
-        <h3>List Search</h3>
-        <p>
-          Search using a list of granule names or a list of product names.
-        </p>
-        <h3>Mission Search</h3>
-        <p>
-          Search based on a mission, need a better description for this!
-        </p>
-    </mat-expansion-panel>
-  </mat-accordion>
-  </div>
+  <mat-divider [inset]="true"></mat-divider>
+  <mat-card class="mat-elevation-z0">
+    <div id="support_by">Support provided by...</div>
+    <a href="https://earthdata.nasa.gov/" target="_blank">
+      <img class="img-nasa-logo" src="/assets/meatball.png">
+    </a>
+  </mat-card>
 </mat-card>

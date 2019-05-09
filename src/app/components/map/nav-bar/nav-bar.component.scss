@@ -1,0 +1,15 @@
+.position {
+  position: fixed;
+  right: 2px;
+  top: 42px;
+  width: 100%;
+  z-index: 999;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.layout {
+  display: flex;
+  justify-content: flex-end;
+}

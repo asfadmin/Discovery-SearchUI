@@ -147,6 +147,11 @@ export const getSelectedGranuleProducts = createSelector(
   }
 );
 
+export const getAreProductsLoaded = createSelector(
+  getGranules,
+  state => state.length > 0
+);
+
 export const getGranuleProducts = createSelector(
   getGranulesState,
   (state: GranulesState) => {

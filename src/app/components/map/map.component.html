@@ -4,6 +4,8 @@
 
 <app-nav-bar
   (openQueue)="onOpenDownloadQueue()"
+  (doSearch)="onDoSearch()"
+  [isSideMenuOpen]="isSidebarOpen$ | async"
   [ngClass]="{'hidden': isUiHidden}"
   [products]="queuedProducts$ | async"
   ></app-nav-bar>
@@ -17,12 +19,6 @@
 <app-map-controls
   [ngClass]="{'hidden': isUiHidden}"
   ></app-map-controls>
-
-<div [ngClass]="{'no-ui-position': isUiHidden, 'default-position': !isUiHidden}">
-  <a href="https://earthdata.nasa.gov/" target="_blank">
-    <img width="88" height="75" src="assets/meatball.png">
-  </a>
-</div>
 
 <div class="view-reset-button-position" [ngClass]="{'hidden': !isUiHidden}">
   <button (click)="onShowUi()" mat-raised-button>

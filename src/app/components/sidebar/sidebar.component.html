@@ -1,16 +1,39 @@
+
 <div [@changeMenuState]="(isSidebarOpen$ | async) ? 'shown' : 'hidden'"
   [ngClass]="{'hidden': isHidden}"
-  class="position">
+  class="sidebar-position">
 
 <app-toggle-button
   (click)="onToggleHide()"
   [isOpen]="isSidebarOpen$ | async">
 </app-toggle-button>
 
-<app-ribbon
-  (newAppView)="onNewAppView($event)"
-  [appView]="uiView$ | async">
-</app-ribbon>
+<div
+  *ngIf="selectedSearchType !== null && isFiltersMenuOpen"
+  class="dataset-filters-card">
+  <mat-card>
+    <mat-card-header>
+      <mat-card-title><h3>{{ selectedSearchType }}</h3></mat-card-title>
+    </mat-card-header>
+
+    <mat-card-content>
+      <app-search
+        [selectedSearchType]="selectedSearchType"
+        (newSearchType)="onSetSearchType($event)"></app-search>
+    </mat-card-content>
+  </mat-card>
+
+  <div class="bottom-list-elements">
+      <app-search-bar
+        (newSearch)="onNewSearch()"
+        (clearSearches)="onClearSearch()"
+        (newMaxResults)="onNewMaxSearchResults($event)"
+        [maxResults]="maxResults$ | async"
+        [currentSearchAmount]="currentSearchAmount"
+        [isLoading]="loading$ | async">
+      </app-search-bar>
+  </div>
+</div>
 
 <div class="filter-list">
 
@@ -20,47 +43,15 @@
       (click)="onAppReset()">
     </app-logo>
 
-
-  <ng-container *ngIf="selectedSearchType === null">
     <app-detailed-search-selector
       (newSearchType)="onSetSearchType($event)"
-      [selectedSearchType]="searchType$ | async">
+      [selectedSearchType]="selectedSearchType">
     </app-detailed-search-selector>
-  </ng-container>
 
     <mat-card *ngIf="searchError$ | async as error" class="card-spacing">
       <b>Error:</b> {{error}}
     </mat-card>
   </div>
 
-  <div class="filters-scoll">
-    <mat-tab-group
-      *ngIf="selectedSearchType !== null"
-      [selectedIndex]="selectedTab"
-      (selectedIndexChange)="onTabChange($event)">
-
-      <mat-tab label="Search">
-        <app-search
-          (newSearchType)="onSetSearchType($event)"
-          ></app-search>
-      </mat-tab>
-
-      <ng-container *ngIf="granules$ | async as granules">
-        <mat-tab *ngIf="granules.length > 0" label="Results">
-          <app-results></app-results>
-        </mat-tab>
-      </ng-container>
-
-    </mat-tab-group>
-  </div>
-
-  <div *ngIf="selectedSearchType !== null && selectedTab === 0"
-    class="bottom-list-elements">
-      <app-search-bar
-        (newSearch)="onNewSearch()"
-        (clearSearches)="onClearSearch()"
-        [isLoading]="loading$ | async">
-      </app-search-bar>
-  </div>
 </div>
 </div>

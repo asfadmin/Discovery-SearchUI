@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 
-import { MatSelectModule } from '@angular/material';
+import { MatSelectModule, MatExpansionModule } from '@angular/material';
 import { MatSharedModule } from '@shared';
 
 import { PathSelectorModule } from './path-selector';
@@ -24,6 +24,7 @@ import { DatasetSearchComponent } from './dataset-search.component';
     FormsModule,
 
     MatSelectModule,
+    MatExpansionModule,
     MatSharedModule,
 
     PlatformSelectorModule,

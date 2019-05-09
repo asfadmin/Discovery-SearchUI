@@ -1,53 +1,47 @@
-<app-platform-selector
-  [platforms]="platforms$ | async"
-  [selected]="selectedPlatformNames$ | async"
-  (removeSelected)="onPlatformRemoved($event)"
-  (addSelected)="onPlatformAdded($event)">
-</app-platform-selector>
+<mat-accordion multi>
+  <mat-expansion-panel expanded>
+    <mat-expansion-panel-header>
+      <mat-panel-title>
+        <b>Basic Filters</b>
+      </mat-panel-title>
+      <mat-panel-description>
+        Platform, date, and area of interest
+      </mat-panel-description>
+    </mat-expansion-panel-header>
 
-<app-aoi-upload
-  (openFileUpload)="onOpenFileDialog()"
-  (newDrawMode)="onNewDrawModeType($event)"
-  (newInteractionMode)="onNewInteractionMode($event)"
-  [drawMode]="drawMode$ | async"
-  [interactionMode]="interactionMode$ | async"
-  [polygon]="polygon$ | async">
-</app-aoi-upload>
+    <app-platform-selector></app-platform-selector>
+    <app-date-selector></app-date-selector>
+    <app-aoi-upload></app-aoi-upload>
 
-<app-date-selector
-  [startDate]="startDate$ | async"
-  [endDate]="endDate$ | async"
-  [extrema]="dateRangeExtrema$ | async"
-  (newStart)="onNewStartDate($event)"
-  (newEnd)="onNewEndDate($event)">
-</app-date-selector>
+  </mat-expansion-panel>
 
-<app-path-selector
-  (newPathStart)="onNewPathStart($event)"
-  (newPathEnd)="onNewPathEnd($event)"
-  (newFrameStart)="onNewFrameStart($event)"
-  (newFrameEnd)="onNewFrameEnd($event)"
-  (newOmitSearchPolygon)="onNewOmitGeoRegion($event)"
-  [pathRange]="pathRange$ | async"
-  [shouldOmitSearchPolygon]="shouldOmitSearchPolygon$ | async"
-  [frameRange]="frameRange$ | async"
-  [selected]="selectedPlatforms$ | async">
-</app-path-selector>
+  <mat-expansion-panel>
+    <mat-expansion-panel-header>
+      <mat-panel-title>
+        <b>Path and Frame Filters</b>
+      </mat-panel-title>
 
-<app-other-selector
-  (newFlightDirections)="onNewFlightDirections($event)"
-  (newProductTypes)="onNewProductTypes($event)"
-  (newBeamModes)="onNewBeamModes($event)"
-  (newPolarizations)="onNewPolarizations($event)"
-  [productTypes]="platformProductTypes$ | async"
-  [selected]="selectedPlatforms$ | async"
-  [flightDirections]="flightDirections$ | async"
-  [beamModes]="beamModes$ | async"
-  [polarizations]="polarizations$ | async">
-</app-other-selector>
+      <mat-panel-description>
+        Path, frame
+      </mat-panel-description>
+    </mat-expansion-panel-header>
 
-<app-max-results-selector
-  [maxResults]="maxResults$ | async"
-  (newMaxResults)="onNewMaxResults($event)">
-</app-max-results-selector>
+    <app-path-selector></app-path-selector>
 
+  </mat-expansion-panel>
+
+  <mat-expansion-panel >
+    <mat-expansion-panel-header>
+      <mat-panel-title>
+        <b>Additional Filters</b>
+      </mat-panel-title>
+
+      <mat-panel-description>
+        Product type, beam mode, polarization, flight direction
+      </mat-panel-description>
+    </mat-expansion-panel-header>
+
+    <app-other-selector></app-other-selector>
+
+  </mat-expansion-panel>
+</mat-accordion>

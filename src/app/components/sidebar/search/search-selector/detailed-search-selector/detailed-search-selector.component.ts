@@ -5,7 +5,7 @@ import * as models from '@models';
 @Component({
   selector: 'app-detailed-search-selector',
   templateUrl: './detailed-search-selector.component.html',
-  styleUrls: ['./detailed-search-selector.component.css']
+  styleUrls: ['./detailed-search-selector.component.scss']
 })
 export class DetailedSearchSelectorComponent {
   @Input() selectedSearchType: models.SearchType;
@@ -15,9 +15,6 @@ export class DetailedSearchSelectorComponent {
   public searchTypes = models.SearchType;
 
   public onSetSearchType(searchType: models.SearchType): void {
-    this.newSearchType.emit(
-      searchType === this.selectedSearchType ?
-        null : searchType
-    );
+    this.newSearchType.emit(searchType);
   }
 }

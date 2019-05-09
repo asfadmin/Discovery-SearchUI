@@ -5,7 +5,9 @@ import { FormsModule } from '@angular/forms';
 import {
   MatDatepickerModule, MatFormFieldModule,
   MatNativeDateModule, MatInputModule,
+  MatSliderModule, MatSlideToggleModule
 } from '@angular/material';
+import { FlexLayoutModule } from '@angular/flex-layout';
 
 import { MatSharedModule } from '@shared';
 import { DateSelectorComponent } from './date-selector.component';
@@ -15,10 +17,13 @@ import { DateSelectorComponent } from './date-selector.component';
   imports: [
     CommonModule,
     FormsModule,
+    FlexLayoutModule,
     MatDatepickerModule,
+    MatSlideToggleModule,
     MatFormFieldModule,
     MatNativeDateModule,
     MatInputModule,
+    MatSliderModule,
 
     MatSharedModule,
   ],

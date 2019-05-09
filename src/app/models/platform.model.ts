@@ -37,7 +37,7 @@ export interface PlatformPolarizations {
 }
 
 export const platforms: Platform[] = [{
-  name: 'Sentinel-1A',
+  name: 'Sentinel-1',
   date: { start: new Date(2014, 3, 25) },
   infoUrl: 'https://www.asf.alaska.edu/sentinel/',
   productTypes: [{
@@ -46,9 +46,6 @@ export const platforms: Platform[] = [{
   }, {
     apiValue: 'GRD_MD',
     displayName: 'L1 Detected Mid-Res Dual-Pol (GRD-MD)'
-  }, {
-    apiValue: 'GRD_FD',
-    displayName: 'L1 Detected Full-Res Dual-Pol (GRD-FD)'
   }, {
     apiValue: 'OCN',
     displayName: 'L2 Ocean (OCN)'
@@ -73,9 +70,6 @@ export const platforms: Platform[] = [{
   }, {
     apiValue: 'METADATA_GRD_FD',
     displayName: 'XML Metadata (GRD-FD)'
-  }, {
-    apiValue: 'THUMBNAIL',
-    displayName: 'Thumbnail Image'
   }, {
     apiValue: 'METADATA_GRD_HD',
     displayName: 'XML Metadata (GRD-HD)'
@@ -105,70 +99,7 @@ export const platforms: Platform[] = [{
     'VV',
     'VV+VH',
   ]
-}, {
-  name: 'Sentinel-1B',
-  date: { start: new Date(2016, 3, 3) },
-  infoUrl: 'https://www.asf.alaska.edu/sentinel/',
-  productTypes: [{
-    apiValue: 'METADATA_GRD_HS',
-    displayName: 'XML Metadata (GRD-HS)'
-  }, {
-    apiValue: 'METADATA_GRD_MD',
-    displayName: 'XML Metadata (GRD-MD)'
-  }, {
-    apiValue: 'THUMBNAIL',
-    displayName: 'Thumbnail Image'
-  }, {
-    apiValue: 'METADATA_RAW',
-    displayName: 'XML Metadata (RAW)'
-  }, {
-    apiValue: 'BROWSE',
-    displayName: 'Browse Image'
-  }, {
-    apiValue: 'METADATA_OCN',
-    displayName: 'XML Metadata (OCN)'
-  }, {
-    apiValue: 'GRD_MS',
-    displayName: 'L1 Detected Mid-Res Single-Pol (GRD-MS)'
-  }, {
-    apiValue: 'GRD_HD',
-    displayName: 'L1 Detected High-Res Dual-Pol (GRD-HD)'
-  }, {
-    apiValue: 'GRD_MD',
-    displayName: 'L1 Detected Mid-Res Dual-Pol (GRD-MD)'
-  }, {
-    apiValue: 'RAW',
-    displayName: 'L0 Raw Data (RAW)'
-  }, {
-    apiValue: 'OCN',
-    displayName: 'L2 Ocean (OCN)'
-  }, {
-    apiValue: 'METADATA_GRD_MS',
-    displayName: 'XML Metadata (GRD-MS)'
-  }, {
-    apiValue: 'METADATA_SLC',
-    displayName: 'XML Metadata (SLC)'
-  }, {
-    apiValue: 'SLC',
-    displayName: 'L1 Single Look Complex (SLC)'
-  }, {
-    apiValue: 'METADATA_GRD_HD',
-    displayName: 'XML Metadata (GRD-HD)'
-  }, {
-    apiValue: 'GRD_HS',
-    displayName: 'L1 Detected High-Res Single-Pol (GRD-HS)'
-  }],
-  beamModes: [
-    'EW', 'IW', 'S1', 'S2', 'S3', 'S4', 'S5', 'S6', 'WV'
-  ],
-  polarizations: [
-    'HH',
-    'HH+HV',
-    'VV',
-    'VV+VH',
-  ]
-}, {
-  name: 'SMAP',
+}, { name: 'SMAP',
   date: { start: new Date(2015, 0, 15) },
   infoUrl: 'https://www.asf.alaska.edu/smap/',
   productTypes: [{
@@ -347,9 +278,9 @@ export const platforms: Platform[] = [{
     'HH'
   ]
 }, {
-  name: 'ERS-2',
+  name: 'ERS',
   date: {
-    start: new Date(1995, 0, 1),
+    start: new Date(1991, 0, 1),
     end: new Date(2011, 0, 1)
   },
   infoUrl: 'https://www.asf.alaska.edu/sar-data/ers-2/',
@@ -394,32 +325,7 @@ export const platforms: Platform[] = [{
   polarizations: [
     'HH'
   ]
-}, {
-  name: 'ERS-1',
-  date: {
-    start: new Date(1991, 0, 1),
-    end: new Date(1997, 0, 1)
-  },
-  infoUrl: 'https://www.asf.alaska.edu/sar-data/ers-1/',
-  productTypes: [{
-    apiValue: 'BROWSE',
-    displayName: 'Browse Image'
-  }, {
-    apiValue: 'L0',
-    displayName: 'Level Zero'
-  }, {
-    apiValue: 'L1',
-    displayName: 'Level One Image'
-  }, {
-    apiValue: 'THUMBNAIL',
-    displayName: 'Thumbnail Image'
-  }],
-  beamModes: [ 'STD' ],
-  polarizations: [
-    'VV'
-  ]
-}, {
-  name: 'AIRSAR',
+}, { name: 'AIRSAR',
   date: {
     start: new Date(1990, 0, 1),
     end: new Date(2004, 0, 1)

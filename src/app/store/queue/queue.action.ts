@@ -9,6 +9,7 @@ export enum QueueActionType {
   REMOVE_ITEMS = '[Queue] Removes Item',
   CLEARN_QUEUE = '[Queue] Clear Queue',
 
+  TOGGLE_PRODUCT = '[Queue] Toggle Product',
   QUEUE_GRANULE = '[Granules] Queue Granule',
 
   MAKE_DOWNLOAD_SCRIPT  = '[Queue] Make Bulk Download From Queue',
@@ -17,6 +18,12 @@ export enum QueueActionType {
 
 export class AddItem implements Action {
   public readonly type = QueueActionType.ADD_ITEM;
+
+  constructor(public payload: Sentinel1Product) {}
+}
+
+export class ToggleProduct implements Action {
+  public readonly type = QueueActionType.TOGGLE_PRODUCT;
 
   constructor(public payload: Sentinel1Product) {}
 }
@@ -62,6 +69,7 @@ export class QueueGranule implements Action {
 export type QueueActions =
   | AddItem
   | AddItems
+  | ToggleProduct
   | QueueGranule
   | RemoveItem
   | RemoveItems

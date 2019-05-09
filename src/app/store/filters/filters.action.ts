@@ -11,6 +11,9 @@ export enum FiltersActionType {
   SET_END_DATE = '[Filters-Date] Set End Date',
   CLEAR_DATE_RANGE = '[Filters-Date] Clear Date Range',
 
+  SET_SEASON_START = '[Filters-Date] Set Season Start',
+  SET_SEASON_END = '[Filters-Date] Set Season End',
+
   SET_PATH_START = '[Filters-Path] Set Path Start',
   SET_PATH_END = '[Filters-Path] Set Path End',
   SET_FRAME_START = '[FIlters-Frame] Set Frame Start',
@@ -64,6 +67,18 @@ export class SetEndDate implements Action {
   public readonly type = FiltersActionType.SET_END_DATE;
 
   constructor(public payload: Date) {}
+}
+
+export class SetSeasonStart implements Action {
+  public readonly type = FiltersActionType.SET_SEASON_START;
+
+  constructor(public payload: number | null) {}
+}
+
+export class SetSeasonEnd implements Action {
+  public readonly type = FiltersActionType.SET_SEASON_END;
+
+  constructor(public payload: number | null) {}
 }
 
 export class ClearDateRange implements Action {
@@ -166,6 +181,8 @@ export type FiltersActions =
   | SetSelectedPlatforms
   | SetStartDate
   | SetEndDate
+  | SetSeasonStart
+  | SetSeasonEnd
   | ClearDateRange
   | OmitSearchPolygon
   | UseSearchPolygon

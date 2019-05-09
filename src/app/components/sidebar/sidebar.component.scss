@@ -1,8 +1,9 @@
+
 .hidden {
   display: none;
 }
 
-.position {
+.sidebar-position {
   width: 450px;
   max-width: calc(100% - 28px);
   height: calc(100vh - 32px);
@@ -12,6 +13,27 @@
   margin: 0;
   top: 32px;
   z-index: 999;
+}
+
+$break-small: 500px;
+$break-large: 1200px;
+
+.dataset-filters-card {
+  position: fixed;
+  top: 90px;
+  left: calc(100% + 10px);
+  width: 900px;
+  max-height: calc(80% - 10px);
+  max-width: calc(100vw - 20px);
+  overflow-y: auto;
+
+  @media screen and (max-width: $break-small) {
+    max-height: calc(78% - 10px);
+  }
+
+  @media screen and (min-width: $break-large) {
+    max-height: calc(80% - 10px);
+  }
 }
 
 .top-list-elements {
@@ -32,10 +54,9 @@
 
 .filter-list {
   height: 100%;
-  overflow-y: auto;
+  //overflow-y: scroll;
   margin: 0;
   padding: 0;
-  background: rgba(238, 238, 238, 0.7);
 }
 
 .filter-scroll {

@@ -1,5 +1,5 @@
 <h2>Download Queue</h2>
-<button mat-raised-button color="warn" (click)="onClearQueue()">Clear Queue</button>
+<button mat-raised-button (click)="onClearQueue()">Clear Queue</button>
 
 <mat-list role="list">
   <ng-container *ngIf="products$ | async as products">
@@ -7,7 +7,14 @@
       *ngFor="let product of products"
       role="listitem">
         <h4 mat-line fxLayout="row" fxLayoutAlign="space-between">
-          <div>{{ product.file | truncate : 10 }}{{ product.file | truncate : -4 : '' }}</div>
+          <div>
+            <span *ngIf="product.id.length > 29">
+              <b>{{ product.id | truncate : 21 }}{{ product.id | truncate : -4 : '' }}</b>
+            </span>
+            <span *ngIf="product.id.length <= 29">
+              <b>{{ product.id }}</b>
+            </span>
+          </div>
 
           <a matTooltip="Download" target="_blank" [href]="product.downloadUrl">
             <mat-icon style="cursor: pointer">

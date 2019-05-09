@@ -7,6 +7,9 @@ import { MatBadgeModule, MatMenuModule, MatInputModule } from '@angular/material
 import { MatSharedModule } from '@shared';
 import { NavBarComponent } from './nav-bar.component';
 
+import { BreadcrumbListModule } from './breadcrumb-list';
+import { NavButtonsModule } from './nav-buttons';
+
 @NgModule({
   declarations: [
     NavBarComponent
@@ -18,6 +21,9 @@ import { NavBarComponent } from './nav-bar.component';
     MatMenuModule,
     MatInputModule,
     MatSharedModule,
+
+    BreadcrumbListModule ,
+    NavButtonsModule,
   ],
   exports: [
     NavBarComponent

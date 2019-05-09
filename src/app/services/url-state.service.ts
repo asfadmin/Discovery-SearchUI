@@ -100,20 +100,6 @@ export class UrlStateService {
 
   private uiParameters() {
     return [{
-      name: 'isSidebarOpen',
-      source: this.store$.select(uiStore.getIsSidebarOpen).pipe(
-        skip(1),
-        map(isSidebarOpen => ({ isSidebarOpen }))
-      ),
-      loader: this.loadIsSidebarOpen
-    }, {
-      name: 'isBottomMenuOpen',
-      source: this.store$.select(uiStore.getIsBottomMenuOpen).pipe(
-        skip(1),
-        map(isBottomMenuOpen => ({ isBottomMenuOpen }))
-      ),
-      loader: this.loadIsBottomMenuOpen
-    }, {
       name: 'selectedFilter',
       source: this.store$.select(uiStore.getSelectedFilter).pipe(
         skip(1),
@@ -162,6 +148,20 @@ export class UrlStateService {
         map(end => ({ end }))
       ),
       loader: this.loadEndDate
+    }, {
+      name: 'seasonStart',
+      source: this.store$.select(filterStore.getSeasonStart).pipe(
+        skip(1),
+        map(seasonStart  => ({ seasonStart }))
+      ),
+      loader: this.loadSeasonStart
+    }, {
+      name: 'seasonEnd',
+      source: this.store$.select(filterStore.getSeasonEnd).pipe(
+        skip(1),
+        map(seasonEnd => ({ seasonEnd }))
+      ),
+      loader: this.loadSeasonEnd
     }, {
       name: 'path',
       source: this.store$.select(filterStore.getPathRange).pipe(
@@ -376,6 +376,14 @@ export class UrlStateService {
     }
 
     this.store$.dispatch(new filterStore.SetEndDate(endDate));
+  }
+
+  private loadSeasonStart = (start: string): void => {
+    this.store$.dispatch(new filterStore.SetSeasonStart(+start));
+  }
+
+  private loadSeasonEnd = (end: string): void => {
+    this.store$.dispatch(new filterStore.SetSeasonEnd(+end));
   }
 
   private loadPathRange = (rangeStr: string): void => {

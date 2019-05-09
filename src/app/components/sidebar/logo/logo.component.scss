@@ -1,6 +1,39 @@
-@import "variables";
+@import "asf-theme";
 
 .example-header-image {
   background-image: url('/assets/meatball.jpg');
   background-size: cover;
+}
+
+.logo-card {
+  background-color: $asf-primary;
+  color: white;
+  border-radius: 0;
+  margin-bottom: 10px;
+  padding-left: 30px;
+
+  .header {
+    font-size: 38px;
+    line-height: 38px;
+    font-weight: 400;
+    letter-spacing: 0.02em;
+    color: $asf-warn;
+  }
+
+  .subhead {
+    font-size: 18px;
+    line-height: 18px;
+    font-weight: 400;
+    letter-spacing: 0.1em;
+    color: lightgray;
+    margin-bottom: 10px;
+  }
+
+  p {
+    margin-top: -10px;
+    font-size: 12px;
+    color: lightgray;
+    font-style: italic;
+    letter-spacing: 0.02em;
+  }
 }
