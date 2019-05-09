@@ -15,6 +15,6 @@
   (clearFocusedGranule)="onClearFocusedGranule()"
   (newSelected)="onNewGranuleSelected($event)"
   (queueGranule)="onQueueGranuleProducts($event)"
-  [granules]="granules$ | async"
+  [granules$]="granules"
   [selected]="(selectedGranule$ | async)?.name">
 </app-granules-list>
