@@ -34,6 +34,7 @@ export class AppComponent implements OnInit {
     private mapService: services.MapService,
     private urlStateService: services.UrlStateService,
     private polygonValidationService: services.PolygonValidationService,
+    private asfSearchApi: services.AsfApiService,
   ) {}
 
   public ngOnInit(): void {
@@ -43,15 +44,25 @@ export class AppComponent implements OnInit {
     this.store$.select(uiStore.getSearchType).pipe(
       skip(1),
       map(searchType => {
-        if (searchType === models.SearchType.DATASET) {
-          return models.MapInteractionModeType.DRAW;
-        } else {
-          return models.MapInteractionModeType.NONE;
-        }
+        return searchType === models.SearchType.DATASET ?
+          models.MapInteractionModeType.DRAW :
+          models.MapInteractionModeType.NONE;
       })
     ).subscribe(
       mode => this.store$.dispatch(new mapStore.SetMapInteractionMode(mode))
     );
+
+    this.asfSearchApi.health().pipe(
+      map(health => {
+        const { ASFSearchAPI, CMRSearchAPI } = health;
+
+        if (!CMRSearchAPI.health.echo['ok?']) {
+          this.store$.dispatch(new searchStore.SearchError('CMR is experiencing errors, try searching later.'));
+        } else if (!ASFSearchAPI['ok?']) {
+          this.store$.dispatch(new searchStore.SearchError('ASF API is experiencing errors, try searching later.'));
+        }
+      }),
+    ).subscribe(_ => _);
   }
 
   public onLoadUrlState(): void {
