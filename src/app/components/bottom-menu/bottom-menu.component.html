@@ -21,10 +21,10 @@
         <mat-list-option *ngFor="let product of products"
           (click)="onToggleQueueProduct(product)"
           [selected]="queuedProductIds.has(product.id)">
-          <span *ngIf="product.file.length > 29">
-            <b>{{ product.file | truncate : 25 }}{{ product.file | truncate : -4 : '' }}</b>
+          <span *ngIf="product.file.length > 49">
+            <b>{{ product.file | truncate : 45 }}{{ product.file | truncate : -4 : '' }}</b>
           </span>
-          <span *ngIf="product.file.length <= 29">
+          <span *ngIf="product.file.length <= 49">
             <b>{{ product.file }}</b>
           </span>
         </mat-list-option>
