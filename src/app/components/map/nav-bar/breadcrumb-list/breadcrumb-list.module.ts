@@ -8,6 +8,7 @@ import { DateSelectorModule } from '@components/sidebar/search/dataset-search/da
 import { AoiUploadModule  } from '@components/sidebar/search/dataset-search/aoi-upload';
 import { PathSelectorModule } from '@components/sidebar/search/dataset-search/path-selector';
 import { OtherSelectorModule } from '@components/sidebar/search/dataset-search/other-selector';
+import { MaxResultsSelectorModule } from '@components/shared/max-results-selector';
 
 import { BreadcrumbListComponent } from './breadcrumb-list.component';
 
@@ -22,6 +23,7 @@ import { BreadcrumbListComponent } from './breadcrumb-list.component';
     DateSelectorModule,
     AoiUploadModule,
     PathSelectorModule,
+    MaxResultsSelectorModule,
     OtherSelectorModule,
   ],
   exports: [BreadcrumbListComponent]

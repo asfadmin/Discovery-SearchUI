@@ -50,6 +50,7 @@
       <app-other-selector></app-other-selector>
     </mat-card>
   </div>
+
   <div class="breadcrumb">
     <button (click)="onDoSearch()" style="margin-left: 20px" mat-raised-button color="primary">
       {{ (loading$ | async) ? 'Loading...' : 'Search' }}

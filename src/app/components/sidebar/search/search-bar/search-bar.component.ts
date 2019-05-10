@@ -15,13 +15,7 @@ export class SearchBarComponent {
   @Output() clearSearches = new EventEmitter<void>();
   @Output() newMaxResults = new EventEmitter<number>();
 
-  public possibleMaxResults = [100, 1000, 10000];
-
   public onNewMaxResults(maxResults: number): void {
     this.newMaxResults.emit(maxResults);
-  }
-
-  formatNumber(num: number): string {
-    return num.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,');
   }
 }

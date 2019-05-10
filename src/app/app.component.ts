@@ -33,6 +33,7 @@ export class AppComponent implements OnInit {
     private store$: Store<AppState>,
     private mapService: services.MapService,
     private urlStateService: services.UrlStateService,
+    private searchParams$: services.SearchParamsService,
     private polygonValidationService: services.PolygonValidationService,
     private asfSearchApi: services.AsfApiService,
   ) {}
@@ -51,6 +52,16 @@ export class AppComponent implements OnInit {
     ).subscribe(
       mode => this.store$.dispatch(new mapStore.SetMapInteractionMode(mode))
     );
+
+    this.searchParams$.getParams().pipe(
+      map(params => params.append('output', 'COUNT')),
+      switchMap(params => this.asfSearchApi.query<any[]>(params).pipe(
+          catchError(_ => of(-1))
+        )
+      )
+    ).subscribe(searchAmount => {
+      this.store$.dispatch(new searchStore.SetSearchAmount(+<number>searchAmount));
+    });
 
     this.asfSearchApi.health().pipe(
       map(health => {
