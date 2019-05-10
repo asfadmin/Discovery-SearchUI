@@ -1,5 +1,5 @@
 export enum SearchType {
-  DATASET = 'Dataset Search',
+  DATASET = 'Geographic Search',
   LIST = 'List Search',
   MISSION = 'Mission Search',
 }
