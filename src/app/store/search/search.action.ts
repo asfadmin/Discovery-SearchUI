@@ -8,6 +8,8 @@ export enum SearchActionType {
   SEARCH_ERROR = '[Search] Search Error',
   CANCEL_SEARCH = '[Search] Cancel Search',
   SEARCH_CANCELED = '[Search] Search Canceled',
+
+  SET_SEARCH_AMOUNT = '[Search] Set Search Results Amount',
 }
 
 export class MakeSearch implements Action {
@@ -20,6 +22,12 @@ export class CancelSearch implements Action {
 
 export class SearchCanceled implements Action {
   public readonly type = SearchActionType.SEARCH_CANCELED;
+}
+
+export class SetSearchAmount implements Action {
+  public readonly type = SearchActionType.SET_SEARCH_AMOUNT;
+
+  constructor(public payload: number) {}
 }
 
 export class SearchResponse implements Action {
@@ -36,6 +44,7 @@ export class SearchError implements Action {
 
 export type SearchActions =
   | MakeSearch
+  | SetSearchAmount
   | CancelSearch
   | SearchError
   | SearchResponse;

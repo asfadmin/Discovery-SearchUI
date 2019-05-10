@@ -29,7 +29,7 @@ export class DrawService {
 
   constructor() {
     this.source = new VectorSource({
-      noWrap: true, wrapX: false
+      wrapX: models.mapOptions.wrapX
     });
 
     this.layer = new VectorLayer({

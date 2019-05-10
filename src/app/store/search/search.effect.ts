@@ -50,7 +50,9 @@ export class SearchEffects {
         map(([response, isCanceled]) =>
           !isCanceled ?  new SearchResponse(response) : new SearchCanceled()
         ),
-        catchError(error => of(new SearchError(`${error.message}`))),
+        catchError(
+          error => of(new SearchError(`Error loading search results`))
+        )
       )
     ),
   );

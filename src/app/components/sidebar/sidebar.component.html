@@ -1,4 +1,3 @@
-
 <div [@changeMenuState]="(isSidebarOpen$ | async) ? 'shown' : 'hidden'"
   [ngClass]="{'hidden': isHidden}"
   class="sidebar-position">
@@ -29,7 +28,7 @@
         (clearSearches)="onClearSearch()"
         (newMaxResults)="onNewMaxSearchResults($event)"
         [maxResults]="maxResults$ | async"
-        [currentSearchAmount]="currentSearchAmount"
+        [currentSearchAmount]="currentSearchAmount$ | async"
         [isLoading]="loading$ | async">
       </app-search-bar>
   </div>

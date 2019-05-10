@@ -28,7 +28,7 @@ export class MapService {
   private polygonLayer: Layer;
 
   private focusSource = new VectorSource({
-    noWrap: true, wrapX: false
+    wrapX: models.mapOptions.wrapX
   });
 
   private focusLayer = new VectorLayer({

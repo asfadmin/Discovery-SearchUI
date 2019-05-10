@@ -15,6 +15,7 @@ enum BreadcrumbFilterType {
   AOI = 'Area of Interest',
   PATH_FRAME = 'Path/Frame',
   ADDITIONAL = 'Additional Filters',
+  MAX_RESULTS = 'Max Results',
   NONE = 'None'
 }
 
@@ -24,7 +25,7 @@ enum BreadcrumbFilterType {
   styleUrls: ['./breadcrumb-list.component.scss']
 })
 export class BreadcrumbListComponent {
-  @Output()  doSearch = new EventEmitter<void>();
+  @Output() doSearch = new EventEmitter<void>();
 
   constructor(private store$: Store<AppState>) { }
 
@@ -33,6 +34,7 @@ export class BreadcrumbListComponent {
 
   public areProductsLoaded$ = this.store$.select(granulesStore.getAreProductsLoaded);
   public isFiltersMenuOpen$ = this.store$.select(uiStore.getIsFiltersMenuOpen);
+  public searchAmount$ = this.store$.select(searchStore.getSearchAmount);
 
   public loading$ = this.store$.select(searchStore.getIsLoading);
   public searchType$ = this.store$.select(uiStore.getSearchType);

@@ -15,6 +15,10 @@ export class AsfApiService {
 
   constructor(private http: HttpClient) {}
 
+  public health(): Observable<any> {
+    return this.http.get(`${this.testUrl}/health`);
+  }
+
   public query<T>(stateParams: HttpParams): Observable<T> {
     const params = Object.entries(this.baseParams())
     .filter(

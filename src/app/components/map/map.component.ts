@@ -206,7 +206,7 @@ export class MapComponent implements OnInit {
   private featuresToSource(features): VectorSource {
     const layer = new VectorLayer({
       source: new VectorSource({
-        features, noWrap: true, wrapX: false
+        features, wrapX: true,
       })
     });
 
