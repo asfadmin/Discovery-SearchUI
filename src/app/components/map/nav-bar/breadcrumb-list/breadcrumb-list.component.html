@@ -55,6 +55,14 @@
   </div>
 
   <div class="breadcrumb">
+    <button (click)="onToggleFiltersMenu()"
+      [class.selected]="selectedFilter === filterTypes.FILTERS_MENU"
+       mat-raised-button>
+        <mat-icon>more_horiz</mat-icon>
+    </button>
+  </div>
+
+  <div class="breadcrumb">
     <button (click)="onDoSearch()" style="margin-left: 20px" mat-raised-button color="primary">
       {{ (loading$ | async) ? 'Loading...' : 'Search' }}
     </button>

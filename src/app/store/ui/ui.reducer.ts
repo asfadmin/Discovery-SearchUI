@@ -50,7 +50,7 @@ export function uiReducer(state = initState, action: UIActions): UIState {
     case UIActionType.TOGGLE_FILTERS_MENU: {
       return {
           ...state,
-          isFiltersMenuOpen: !state.isSidebarOpen
+          isFiltersMenuOpen: !state.isFiltersMenuOpen,
         };
     }
 
@@ -99,7 +99,8 @@ export function uiReducer(state = initState, action: UIActions): UIState {
     case UIActionType.SET_SEARCH_TYPE: {
       return {
           ...state,
-          searchType: action.payload
+          searchType: action.payload,
+          isSidebarOpen: false
         };
     }
 

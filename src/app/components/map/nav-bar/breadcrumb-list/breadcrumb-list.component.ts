@@ -16,6 +16,7 @@ enum BreadcrumbFilterType {
   AOI = 'Area of Interest',
   PATH_FRAME = 'Path/Frame',
   ADDITIONAL = 'Additional Filters',
+  FILTERS_MENU = '...',
   NONE = 'None'
 }
 
@@ -47,6 +48,10 @@ export class BreadcrumbListComponent {
   public onNewSelectedFilter(filterType: BreadcrumbFilterType): void {
     this.selectedFilter = this.selectedFilter === filterType ?
       BreadcrumbFilterType.NONE : filterType;
+  }
+
+  public onToggleFiltersMenu(): void {
+    this.store$.dispatch(new uiStore.ToggleFiltersMenu());
   }
 
   public onSetSearchType(searchType: SearchType): void {
