@@ -6,13 +6,22 @@
   top: 100px;
 }
 
-$break-small: 500px;
+$break-small: 700px;
+$break-medium: 1100px;
 
 .breadcrumb-list {
   display: flex;
   flex-direction: row;
+}
 
+.hide-mobile {
   @media screen and (max-width: $break-small) {
+    display: none;
+  }
+}
+
+.hide-medium {
+  @media screen and (max-width: $break-medium) {
     display: none;
   }
 }

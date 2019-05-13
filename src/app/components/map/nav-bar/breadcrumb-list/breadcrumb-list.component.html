@@ -1,5 +1,5 @@
 <div class="breadcrumb-list">
-  <div class="breadcrumb">
+  <div class="breadcrumb hide-mobile">
     <button (click)="onNewSelectedFilter(filterTypes.SEARCH_TYPE)"
        [class.selected]="selectedFilter === filterTypes.SEARCH_TYPE"
        mat-stroked-button>{{ searchType$ | async }}</button>
@@ -14,7 +14,7 @@
   </div>
 
   <ng-container *ngIf="(searchType$ | async) === searchTypes.DATASET">
-    <div class="breadcrumb">
+    <div class="breadcrumb hide-mobile hide-medium">
       <button (click)="onNewSelectedFilter(filterTypes.DATE)"
         [class.selected]="selectedFilter === filterTypes.DATE"
         mat-stroked-button>Date</button>
@@ -24,7 +24,7 @@
           <app-date-selector></app-date-selector>
       </mat-card>
     </div>
-    <div class="breadcrumb">
+    <div class="breadcrumb hide-mobile hide-medium">
       <button (click)="onNewSelectedFilter(filterTypes.AOI)"
         [class.selected]="selectedFilter === filterTypes.AOI"
         mat-stroked-button>Area of Interest</button>
@@ -34,7 +34,7 @@
           <app-aoi-upload></app-aoi-upload>
       </mat-card>
     </div>
-    <div class="breadcrumb">
+    <div class="breadcrumb hide-mobile hide-medium">
       <button (click)="onNewSelectedFilter(filterTypes.PATH_FRAME)"
         [class.selected]="selectedFilter === filterTypes.PATH_FRAME"
         mat-stroked-button>Path/Frame</button>
@@ -44,7 +44,7 @@
         <app-path-selector></app-path-selector>
       </mat-card>
     </div>
-    <div class="breadcrumb">
+    <div class="breadcrumb hide-mobile hide-medium">
       <button (click)="onNewSelectedFilter(filterTypes.ADDITIONAL)"
         [class.selected]="selectedFilter === filterTypes.ADDITIONAL"
         mat-stroked-button>Additional Filters</button>
@@ -66,13 +66,13 @@
     </button>
   </div>
 
-  <div class="breadcrumb" matTooltip="clear">
+  <div class="breadcrumb hide-mobile" matTooltip="clear">
     <button (click)="onClearSearch()" style="margin-left: 20px" mat-flat-button color="warn">
       <mat-icon>replay</mat-icon>
     </button>
   </div>
 
-  <div class="breadcrumb">
+  <div class="breadcrumb hide-mobile">
     <button (click)="onDoSearch()" mat-flat-button color="accent">
       {{ (loading$ | async) ? 'Loading...' : 'Search' }}
     </button>
