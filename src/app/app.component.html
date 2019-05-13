@@ -1,11 +1,11 @@
 <div>
+  <app-bottom-menu>
+  </app-bottom-menu>
+
   <app-map
     (doSearch)="onNewSearch()"
     (loadUrlState)="onLoadUrlState()">
   </app-map>
-
-  <app-bottom-menu>
-  </app-bottom-menu>
 
   <app-sidebar
      (newSearch)="onNewSearch()"
