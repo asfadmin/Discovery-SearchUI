@@ -2,7 +2,7 @@
   <div class="breadcrumb">
     <button (click)="onNewSelectedFilter(filterTypes.SEARCH_TYPE)"
        [class.selected]="selectedFilter === filterTypes.SEARCH_TYPE"
-       mat-raised-button>{{ searchType$ | async }}</button>
+       mat-stroked-button>{{ searchType$ | async }}</button>
 
     <mat-card *ngIf="selectedFilter === filterTypes.SEARCH_TYPE"
       class="breadcrumb-filter">
@@ -17,7 +17,7 @@
     <div class="breadcrumb">
       <button (click)="onNewSelectedFilter(filterTypes.DATE)"
         [class.selected]="selectedFilter === filterTypes.DATE"
-        mat-raised-button>Date</button>
+        mat-stroked-button>Date</button>
 
       <mat-card *ngIf="selectedFilter === filterTypes.DATE"
         class="breadcrumb-filter">
@@ -27,7 +27,7 @@
     <div class="breadcrumb">
       <button (click)="onNewSelectedFilter(filterTypes.AOI)"
         [class.selected]="selectedFilter === filterTypes.AOI"
-        mat-raised-button>Area of Interest</button>
+        mat-stroked-button>Area of Interest</button>
 
       <mat-card *ngIf="selectedFilter === filterTypes.AOI"
         class="breadcrumb-filter">
@@ -37,7 +37,7 @@
     <div class="breadcrumb">
       <button (click)="onNewSelectedFilter(filterTypes.PATH_FRAME)"
         [class.selected]="selectedFilter === filterTypes.PATH_FRAME"
-        mat-raised-button>Path/Frame</button>
+        mat-stroked-button>Path/Frame</button>
 
       <mat-card *ngIf="selectedFilter === filterTypes.PATH_FRAME"
         class="breadcrumb-filter">
@@ -47,7 +47,7 @@
     <div class="breadcrumb">
       <button (click)="onNewSelectedFilter(filterTypes.ADDITIONAL)"
         [class.selected]="selectedFilter === filterTypes.ADDITIONAL"
-        mat-raised-button>Additional Filters</button>
+        mat-stroked-button>Additional Filters</button>
 
       <mat-card *ngIf="selectedFilter === filterTypes.ADDITIONAL"
         class="breadcrumb-filter">
@@ -59,7 +59,7 @@
   <div class="breadcrumb">
     <button (click)="onToggleFiltersMenu()"
       [class.selected]="selectedFilter === filterTypes.FILTERS_MENU"
-       mat-raised-button>
+       mat-stroked-button>
         <mat-icon *ngIf="(searchType$ | async) === searchTypes.DATASET">more_horiz</mat-icon>
         <span *ngIf="(searchType$ | async) === searchTypes.MISSION">Mission</span>
         <span *ngIf="(searchType$ | async) === searchTypes.LIST">List</span>
@@ -67,13 +67,13 @@
   </div>
 
   <div class="breadcrumb" matTooltip="clear">
-    <button (click)="onClearSearch()" style="margin-left: 20px" mat-raised-button color="warn">
+    <button (click)="onClearSearch()" style="margin-left: 20px" mat-flat-button color="warn">
       <mat-icon>replay</mat-icon>
     </button>
   </div>
 
   <div class="breadcrumb">
-    <button (click)="onDoSearch()" mat-raised-button color="accent">
+    <button (click)="onDoSearch()" mat-flat-button color="accent">
       {{ (loading$ | async) ? 'Loading...' : 'Search' }}
     </button>
   </div>
