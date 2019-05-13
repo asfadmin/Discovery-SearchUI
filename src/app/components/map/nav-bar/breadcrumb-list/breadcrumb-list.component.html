@@ -1,12 +1,15 @@
-<div class="breadcrumb-list" *ngIf="!(isFiltersMenuOpen$ | async) && (areProductsLoaded$ | async) && (searchType$ | async) === searchTypes.DATASET">
+<div class="breadcrumb-list">
   <div class="breadcrumb">
-    <button (click)="onNewSelectedFilter(filterTypes.DATASET)"
-      [class.selected]="selectedFilter === filterTypes.DATASET"
-      mat-raised-button>Dataset</button>
+    <button (click)="onNewSelectedFilter(filterTypes.SEARCH_TYPE)"
+      [class.selected]="selectedFilter === filterTypes.SEARCH_TYPE"
+      mat-raised-button>Search Type</button>
 
-    <mat-card *ngIf="selectedFilter === filterTypes.DATASET"
+    <mat-card *ngIf="selectedFilter === filterTypes.SEARCH_TYPE"
       class="breadcrumb-filter">
-      <app-platform-selector></app-platform-selector>
+      <app-detailed-search-selector
+        (newSearchType)="onSetSearchType($event)"
+        [selectedSearchType]="searchType$ | async">
+        ></app-detailed-search-selector>
     </mat-card>
   </div>
 

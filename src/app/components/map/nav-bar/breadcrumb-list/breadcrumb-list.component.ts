@@ -10,12 +10,12 @@ import * as granulesStore from '@store/granules';
 import { SearchType } from '@models';
 
 enum BreadcrumbFilterType {
+  SEARCH_TYPE = 'Search Type',
   DATASET = 'Dataset',
   DATE = 'Date',
   AOI = 'Area of Interest',
   PATH_FRAME = 'Path/Frame',
   ADDITIONAL = 'Additional Filters',
-  MAX_RESULTS = 'Max Results',
   NONE = 'None'
 }
 
@@ -47,5 +47,9 @@ export class BreadcrumbListComponent {
   public onNewSelectedFilter(filterType: BreadcrumbFilterType): void {
     this.selectedFilter = this.selectedFilter === filterType ?
       BreadcrumbFilterType.NONE : filterType;
+  }
+
+  public onSetSearchType(searchType: SearchType): void {
+    this.store$.dispatch(new uiStore.SetSearchType(searchType));
   }
 }

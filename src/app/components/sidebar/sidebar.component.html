@@ -47,6 +47,13 @@
       [selectedSearchType]="selectedSearchType">
     </app-detailed-search-selector>
 
+    <mat-card class="mat-elevation-z0">
+      <div id="support_by">Support provided by...</div>
+      <a href="https://earthdata.nasa.gov/" target="_blank">
+        <img class="img-nasa-logo" src="/assets/meatball.png">
+      </a>
+    </mat-card>
+
     <mat-card *ngIf="searchError$ | async as error" class="card-spacing">
       <b>Error:</b> {{error}}
     </mat-card>
