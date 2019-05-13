@@ -1,7 +1,7 @@
 <div class="breadcrumb-list">
   <div class="breadcrumb">
     <button (click)="onNewSelectedFilter(filterTypes.SEARCH_TYPE)"
-       color="{{ (searchType$ | async) ? 'primary' : 'basic' }}"
+       [class.selected]="selectedFilter === filterTypes.SEARCH_TYPE"
        mat-raised-button>{{ searchType$ | async }}</button>
 
     <mat-card *ngIf="selectedFilter === filterTypes.SEARCH_TYPE"
@@ -60,7 +60,9 @@
     <button (click)="onToggleFiltersMenu()"
       [class.selected]="selectedFilter === filterTypes.FILTERS_MENU"
        mat-raised-button>
-        <mat-icon>more_horiz</mat-icon>
+        <mat-icon *ngIf="(searchType$ | async) === searchTypes.DATASET">more_horiz</mat-icon>
+        <span *ngIf="(searchType$ | async) === searchTypes.MISSION">Mission</span>
+        <span *ngIf="(searchType$ | async) === searchTypes.LIST">List</span>
     </button>
   </div>
 
