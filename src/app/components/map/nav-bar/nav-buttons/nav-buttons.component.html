@@ -5,7 +5,7 @@
       class="spacing"
       (click)="onOpenDownloadQueue()"
       [disabled]="products.length <= 0" color="basic"
-      mat-raised-button>
+      mat-icon-button>
         <mat-icon
           [matBadge]="products.length"
           matBadgePosition="below"
@@ -21,7 +21,7 @@
     matTooltip="Login"
     class="spacing"
     color="basic"
-    mat-raised-button>
+    mat-icon-button>
     <mat-icon>{{ datapoolAuthService.isLoggedIn ? 'check_circle' : 'account_circle' }}</mat-icon>
   </button>
 
@@ -30,7 +30,7 @@
     class="spacing"
     color="basic"
     [matMenuTriggerFor]="shareMenu"
-    mat-raised-button>
+    mat-icon-button>
       <mat-icon>share</mat-icon>
   </button>
 
@@ -54,7 +54,7 @@
     class="spacing"
     color="basic"
     [matMenuTriggerFor]="appMenu"
-    mat-raised-button>
+    mat-icon-button>
       <mat-icon>apps</mat-icon>
   </button>
   <mat-menu #appMenu="matMenu">
