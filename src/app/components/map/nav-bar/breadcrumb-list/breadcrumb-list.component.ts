@@ -44,6 +44,11 @@ export class BreadcrumbListComponent {
 
   public onDoSearch(): void {
     this.doSearch.emit();
+    this.selectedFilter = BreadcrumbFilterType.NONE;
+  }
+
+  public onClearSearch(): void {
+    this.clearSearch.emit();
   }
 
   public onNewSelectedFilter(filterType: BreadcrumbFilterType): void {
