@@ -10,12 +10,13 @@ import * as granulesStore from '@store/granules';
 import { SearchType } from '@models';
 
 enum BreadcrumbFilterType {
+  SEARCH_TYPE = 'Search Type',
   DATASET = 'Dataset',
   DATE = 'Date',
   AOI = 'Area of Interest',
   PATH_FRAME = 'Path/Frame',
   ADDITIONAL = 'Additional Filters',
-  MAX_RESULTS = 'Max Results',
+  FILTERS_MENU = '...',
   NONE = 'None'
 }
 
@@ -26,6 +27,7 @@ enum BreadcrumbFilterType {
 })
 export class BreadcrumbListComponent {
   @Output() doSearch = new EventEmitter<void>();
+  @Output() clearSearch = new EventEmitter<void>();
 
   constructor(private store$: Store<AppState>) { }
 
@@ -42,10 +44,28 @@ export class BreadcrumbListComponent {
 
   public onDoSearch(): void {
     this.doSearch.emit();
+    this.selectedFilter = BreadcrumbFilterType.NONE;
+  }
+
+  public onClearSearch(): void {
+    this.clearSearch.emit();
   }
 
   public onNewSelectedFilter(filterType: BreadcrumbFilterType): void {
     this.selectedFilter = this.selectedFilter === filterType ?
       BreadcrumbFilterType.NONE : filterType;
+
+    this.store$.dispatch(new uiStore.CloseFiltersMenu());
+  }
+
+  public onToggleFiltersMenu(): void {
+    this.store$.dispatch(new uiStore.ToggleFiltersMenu());
+    this.selectedFilter = BreadcrumbFilterType.NONE;
+  }
+
+  public onSetSearchType(searchType: SearchType): void {
+    this.store$.dispatch(new uiStore.SetSearchType(searchType));
+    this.store$.dispatch(new uiStore.CloseFiltersMenu());
+    this.selectedFilter = BreadcrumbFilterType.NONE;
   }
 }

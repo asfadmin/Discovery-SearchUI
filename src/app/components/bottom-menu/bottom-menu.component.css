@@ -1,12 +1,13 @@
 .position {
   height: 450px;
   max-height: 90%;
-  position: fixed;
+  width: 100vw;
   background: white;
   margin: 0;
   padding: 0;
   right: 0;
   bottom: 0;
+  position: fixed;
   z-index: 999;
 }
 

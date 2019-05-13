@@ -15,12 +15,12 @@ export interface UIState {
 }
 
 export const initState: UIState = {
-  isSidebarOpen: true,
+  isSidebarOpen: false,
   isFiltersMenuOpen: false,
   isBottomMenuOpen: true,
   uiView: ViewType.MAIN,
   selectedFilter: FilterType.PLATFORM,
-  searchType: null,
+  searchType: SearchType.DATASET,
 };
 
 
@@ -50,7 +50,7 @@ export function uiReducer(state = initState, action: UIActions): UIState {
     case UIActionType.TOGGLE_FILTERS_MENU: {
       return {
           ...state,
-          isFiltersMenuOpen: !state.isSidebarOpen
+          isFiltersMenuOpen: !state.isFiltersMenuOpen,
         };
     }
 
@@ -99,8 +99,8 @@ export function uiReducer(state = initState, action: UIActions): UIState {
     case UIActionType.SET_SEARCH_TYPE: {
       return {
           ...state,
-          isFiltersMenuOpen: true,
-          searchType: action.payload
+          searchType: action.payload,
+          isSidebarOpen: false
         };
     }
 
