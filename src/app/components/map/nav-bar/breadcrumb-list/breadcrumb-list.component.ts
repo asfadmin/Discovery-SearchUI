@@ -49,13 +49,18 @@ export class BreadcrumbListComponent {
   public onNewSelectedFilter(filterType: BreadcrumbFilterType): void {
     this.selectedFilter = this.selectedFilter === filterType ?
       BreadcrumbFilterType.NONE : filterType;
+
+    this.store$.dispatch(new uiStore.CloseFiltersMenu());
   }
 
   public onToggleFiltersMenu(): void {
     this.store$.dispatch(new uiStore.ToggleFiltersMenu());
+    this.selectedFilter = BreadcrumbFilterType.NONE;
   }
 
   public onSetSearchType(searchType: SearchType): void {
     this.store$.dispatch(new uiStore.SetSearchType(searchType));
+    this.store$.dispatch(new uiStore.CloseFiltersMenu());
+    this.selectedFilter = BreadcrumbFilterType.NONE;
   }
 }

@@ -1,8 +1,8 @@
 <div class="breadcrumb-list">
   <div class="breadcrumb">
     <button (click)="onNewSelectedFilter(filterTypes.SEARCH_TYPE)"
-      [class.selected]="selectedFilter === filterTypes.SEARCH_TYPE"
-      mat-raised-button>Search Type</button>
+       color="{{ (searchType$ | async) ? 'primary' : 'basic' }}"
+       mat-raised-button>{{ searchType$ | async }}</button>
 
     <mat-card *ngIf="selectedFilter === filterTypes.SEARCH_TYPE"
       class="breadcrumb-filter">
@@ -13,46 +13,48 @@
     </mat-card>
   </div>
 
-  <div class="breadcrumb">
-    <button (click)="onNewSelectedFilter(filterTypes.DATE)"
-      [class.selected]="selectedFilter === filterTypes.DATE"
-      mat-raised-button>Date</button>
+  <ng-container *ngIf="(searchType$ | async) === searchTypes.DATASET">
+    <div class="breadcrumb">
+      <button (click)="onNewSelectedFilter(filterTypes.DATE)"
+        [class.selected]="selectedFilter === filterTypes.DATE"
+        mat-raised-button>Date</button>
 
-    <mat-card *ngIf="selectedFilter === filterTypes.DATE"
-      class="breadcrumb-filter">
-        <app-date-selector></app-date-selector>
-    </mat-card>
-  </div>
-  <div class="breadcrumb">
-    <button (click)="onNewSelectedFilter(filterTypes.AOI)"
-      [class.selected]="selectedFilter === filterTypes.AOI"
-      mat-raised-button>Area of Interest</button>
+      <mat-card *ngIf="selectedFilter === filterTypes.DATE"
+        class="breadcrumb-filter">
+          <app-date-selector></app-date-selector>
+      </mat-card>
+    </div>
+    <div class="breadcrumb">
+      <button (click)="onNewSelectedFilter(filterTypes.AOI)"
+        [class.selected]="selectedFilter === filterTypes.AOI"
+        mat-raised-button>Area of Interest</button>
 
-    <mat-card *ngIf="selectedFilter === filterTypes.AOI"
-      class="breadcrumb-filter">
-        <app-aoi-upload></app-aoi-upload>
-    </mat-card>
-  </div>
-  <div class="breadcrumb">
-    <button (click)="onNewSelectedFilter(filterTypes.PATH_FRAME)"
-      [class.selected]="selectedFilter === filterTypes.PATH_FRAME"
-      mat-raised-button>Path/Frame</button>
+      <mat-card *ngIf="selectedFilter === filterTypes.AOI"
+        class="breadcrumb-filter">
+          <app-aoi-upload></app-aoi-upload>
+      </mat-card>
+    </div>
+    <div class="breadcrumb">
+      <button (click)="onNewSelectedFilter(filterTypes.PATH_FRAME)"
+        [class.selected]="selectedFilter === filterTypes.PATH_FRAME"
+        mat-raised-button>Path/Frame</button>
 
-    <mat-card *ngIf="selectedFilter === filterTypes.PATH_FRAME"
-      class="breadcrumb-filter">
-      <app-path-selector></app-path-selector>
-    </mat-card>
-  </div>
-  <div class="breadcrumb">
-    <button (click)="onNewSelectedFilter(filterTypes.ADDITIONAL)"
-      [class.selected]="selectedFilter === filterTypes.ADDITIONAL"
-      mat-raised-button>Additional Filters</button>
+      <mat-card *ngIf="selectedFilter === filterTypes.PATH_FRAME"
+        class="breadcrumb-filter">
+        <app-path-selector></app-path-selector>
+      </mat-card>
+    </div>
+    <div class="breadcrumb">
+      <button (click)="onNewSelectedFilter(filterTypes.ADDITIONAL)"
+        [class.selected]="selectedFilter === filterTypes.ADDITIONAL"
+        mat-raised-button>Additional Filters</button>
 
-    <mat-card *ngIf="selectedFilter === filterTypes.ADDITIONAL"
-      class="breadcrumb-filter">
-      <app-other-selector></app-other-selector>
-    </mat-card>
-  </div>
+      <mat-card *ngIf="selectedFilter === filterTypes.ADDITIONAL"
+        class="breadcrumb-filter">
+        <app-other-selector></app-other-selector>
+      </mat-card>
+    </div>
+  </ng-container>
 
   <div class="breadcrumb">
     <button (click)="onToggleFiltersMenu()"
