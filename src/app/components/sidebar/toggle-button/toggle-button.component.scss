@@ -1,11 +1,14 @@
 @import "variables";
+@import "asf-theme";
 
 .menu-toggle-button {
+  background-color: $asf-primary;
+  color: white;
   box-shadow: none;
   position: fixed;
-  top: 18px;
+  top: 0;
   left: 100%;
-  padding: 15px 1px 11px 1px;
+  padding: 15px 1px 14px 1px;
   cursor: pointer;
   border-bottom-left-radius: 0;
   border-top-left-radius: 0;
