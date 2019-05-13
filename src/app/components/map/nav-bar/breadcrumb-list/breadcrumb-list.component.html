@@ -62,8 +62,14 @@
     </button>
   </div>
 
+  <div class="breadcrumb" matTooltip="clear">
+    <button (click)="onDoSearch()" style="margin-left: 20px" mat-raised-button color="warn">
+      <mat-icon>replay</mat-icon>
+    </button>
+  </div>
+
   <div class="breadcrumb">
-    <button (click)="onDoSearch()" style="margin-left: 20px" mat-raised-button color="primary">
+    <button (click)="onDoSearch()" mat-raised-button color="accent">
       {{ (loading$ | async) ? 'Loading...' : 'Search' }}
     </button>
   </div>

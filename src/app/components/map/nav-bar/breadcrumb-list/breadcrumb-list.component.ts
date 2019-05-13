@@ -27,6 +27,7 @@ enum BreadcrumbFilterType {
 })
 export class BreadcrumbListComponent {
   @Output() doSearch = new EventEmitter<void>();
+  @Output() clearSearch = new EventEmitter<void>();
 
   constructor(private store$: Store<AppState>) { }
 
