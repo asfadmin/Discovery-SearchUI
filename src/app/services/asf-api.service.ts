@@ -44,7 +44,7 @@ export class AsfApiService {
     const params = new HttpParams()
       .append('platform', platform);
 
-    const url = `${this.testUrl}/services/utils/mission_list?platform=${platform}`;
+    const url = `${this.testUrl}/services/utils/mission_list`;
 
     return this.http.get<{result: string[]}>(url, { params });
   }
