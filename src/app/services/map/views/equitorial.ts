@@ -4,6 +4,7 @@ import { Tile as TileLayer } from 'ol/layer';
 import * as proj from 'ol/proj';
 
 import { MapView, Projection } from './map-view';
+import * as models from '@models';
 
 export function equatorial(): MapView {
   const projection = new Projection('EPSG:3857');
@@ -14,8 +15,7 @@ export function equatorial(): MapView {
 
   const source = new XYZ({
     url,
-    wrapX: false,
-    noWrap: true,
+    wrapX: models.mapOptions.wrapX
   });
 
   const layer = new TileLayer({ source });
@@ -26,7 +26,7 @@ export function equatorial(): MapView {
     zoom: 3,
     minZoom: 3,
     maxZoom: 13,
-    extent: proj.transformExtent([-180, -90, 180, 90], 'EPSG:4326', projection.epsg)
+    extent: proj.transformExtent([-190, -90, 190, 90], 'EPSG:4326', projection.epsg)
   });
 
   return new MapView(

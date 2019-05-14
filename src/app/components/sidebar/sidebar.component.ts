@@ -49,7 +49,7 @@ export class SidebarComponent implements OnInit {
 
   public uiView$ = this.store$.select(uiStore.getUiView);
 
-  public currentSearchAmount = 0;
+  public currentSearchAmount$ = this.store$.select(searchStore.getSearchAmount);
 
   public isHidden = false;
 
@@ -68,21 +68,12 @@ export class SidebarComponent implements OnInit {
   constructor(
     public dialog: MatDialog,
     private dateExtremaService: DateExtremaService,
-    private searchParams$: services.SearchParamsService,
     private asfApiService: services.AsfApiService,
     private router: Router,
     private store$: Store<AppState>,
   ) {}
 
   ngOnInit(): void {
-    this.searchParams$.getParams().pipe(
-      map(params => params.append('output', 'COUNT')),
-      switchMap(params => this.asfApiService.query<any[]>(params).pipe(
-          catchError(_ => of(-1))
-        )
-      )
-    ).subscribe(searchAmount => this.currentSearchAmount = +<number>searchAmount);
-
     this.searchType$.subscribe(
       searchType => this.selectedSearchType = searchType
     );
@@ -116,11 +107,7 @@ export class SidebarComponent implements OnInit {
   }
 
   public onSetSearchType(searchType: models.SearchType): void {
-    if (this.isFiltersMenuOpen && searchType === this.selectedSearchType) {
-      this.store$.dispatch(new uiStore.CloseFiltersMenu());
-    } else {
-      this.store$.dispatch(new uiStore.SetSearchType(searchType));
-    }
+    this.store$.dispatch(new uiStore.SetSearchType(searchType));
   }
 
   public onAppReset() {

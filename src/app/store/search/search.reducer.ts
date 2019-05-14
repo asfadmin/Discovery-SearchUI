@@ -7,12 +7,14 @@ export interface SearchState {
   isLoading: boolean;
   error: null | string;
   isCanceled: boolean;
+  searchResultsAmount: number;
 }
 
 export const initState: SearchState = {
   isLoading: false,
   error: null,
   isCanceled: false,
+  searchResultsAmount: 0,
 };
 
 export function searchReducer(state = initState, action: SearchActions): SearchState {
@@ -31,6 +33,13 @@ export function searchReducer(state = initState, action: SearchActions): SearchS
         ...state,
         isLoading: false,
         isCanceled: true,
+      };
+    }
+
+    case SearchActionType.SET_SEARCH_AMOUNT: {
+      return {
+        ...state,
+        searchResultsAmount: action.payload
       };
     }
 
@@ -66,6 +75,11 @@ export const getIsLoading = createSelector(
 export const getSearchError = createSelector(
   getSearchState,
   (state: SearchState) => state.error
+);
+
+export const getSearchAmount = createSelector(
+  getSearchState,
+  (state: SearchState) => state.searchResultsAmount
 );
 
 export const getIsCanceled = createSelector(

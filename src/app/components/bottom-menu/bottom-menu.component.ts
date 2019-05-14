@@ -28,16 +28,6 @@ import {
       })),
       transition('shown <=> hidden', animate('200ms ease-out'))
     ]),
-
-    trigger('changeMenuX', [
-      state('full-width', style({
-        width: 'calc(100vw - 450px)'
-      })),
-      state('half-width',   style({
-        width: '100vw'
-      })),
-      transition('shown <=> hidden', animate('200ms ease-out'))
-    ])
   ],
 })
 export class BottomMenuComponent implements OnInit {
@@ -88,5 +78,9 @@ export class BottomMenuComponent implements OnInit {
 
   public onToggleQueueProduct(product: models.Sentinel1Product): void {
     this.store$.dispatch(new queueStore.ToggleProduct(product));
+  }
+
+  public onOpenImage(granule): void {
+    window.open(granule.browse);
   }
 }

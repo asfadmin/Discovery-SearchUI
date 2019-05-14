@@ -30,6 +30,7 @@ import { QueueComponent } from './queue';
 export class MapComponent implements OnInit {
   @Output() loadUrlState = new EventEmitter<void>();
   @Output() doSearch = new EventEmitter<void>();
+  @Output() clearSearch = new EventEmitter<void>();
 
   public interactionMode$ = this.store$.select(mapStore.getMapInteractionMode);
   public mousePosition$ = this.mapService.mousePosition$;
@@ -75,6 +76,10 @@ export class MapComponent implements OnInit {
 
   public onDoSearch(): void {
     this.doSearch.emit();
+  }
+
+  public onClearSearch(): void {
+    this.clearSearch.emit();
   }
 
   public onOpenDownloadQueue(): void {
@@ -206,7 +211,7 @@ export class MapComponent implements OnInit {
   private featuresToSource(features): VectorSource {
     const layer = new VectorLayer({
       source: new VectorSource({
-        features, noWrap: true, wrapX: false
+        features, wrapX: true,
       })
     });
 

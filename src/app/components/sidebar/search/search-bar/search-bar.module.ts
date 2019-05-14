@@ -6,6 +6,7 @@ import { MatSharedModule } from '@shared';
 import { MatMenuModule } from '@angular/material';
 
 import { SearchBarComponent } from './search-bar.component';
+import { MaxResultsSelectorModule } from '@components/shared/max-results-selector';
 
 
 @NgModule({
@@ -14,6 +15,7 @@ import { SearchBarComponent } from './search-bar.component';
     BrowserAnimationsModule,
     MatMenuModule,
     MatSharedModule,
+    MaxResultsSelectorModule
   ],
   declarations: [ SearchBarComponent ],
   exports: [ SearchBarComponent ]

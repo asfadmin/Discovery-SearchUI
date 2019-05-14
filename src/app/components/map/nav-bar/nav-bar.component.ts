@@ -11,22 +11,12 @@ import * as models from '@models';
   selector: 'app-nav-bar',
   templateUrl: './nav-bar.component.html',
   styleUrls: ['./nav-bar.component.scss'],
-  animations: [
-    trigger('changeMenuX', [
-      state('full-width', style({
-        width: 'calc(100vw - 450px)'
-      })),
-      state('half-width',   style({
-        width: '100vw'
-      })),
-      transition('shown <=> hidden', animate('200ms ease-out'))
-    ])
-  ],
 })
 export class NavBarComponent {
 
   @Output() openQueue = new EventEmitter<void>();
   @Output() doSearch = new EventEmitter<void>();
+  @Output() clearSearch = new EventEmitter<void>();
 
   @Input() products: models.Sentinel1Product[];
   @Input() isSideMenuOpen: boolean;
@@ -37,5 +27,9 @@ export class NavBarComponent {
 
   public onDoSearch(): void {
     this.doSearch.emit();
+  }
+
+  public onClearSearch(): void {
+    this.clearSearch.emit();
   }
 }

@@ -1,9 +1,13 @@
 import {
-  Component, OnInit, Input,
+  Component, OnInit, Input, ViewChild,
   ViewEncapsulation, Output, EventEmitter
 } from '@angular/core';
 
+import { Observable } from 'rxjs';
+import { tap } from 'rxjs/operators';
+
 import { faFileDownload, faPlus } from '@fortawesome/free-solid-svg-icons';
+import { MatPaginator } from '@angular/material';
 
 import { Sentinel1Product } from '@models';
 
@@ -13,8 +17,8 @@ import { Sentinel1Product } from '@models';
   styleUrls: ['./granules-list.component.scss'],
   encapsulation: ViewEncapsulation.None
 })
-export class GranulesListComponent  {
-  @Input() granules: Sentinel1Product[];
+export class GranulesListComponent implements OnInit {
+  @Input() granules$: Observable<Sentinel1Product[]>;
   @Input() selected: string;
 
   @Output() newSelected = new EventEmitter<string>();
@@ -22,12 +26,23 @@ export class GranulesListComponent  {
   @Output() newFocusedGranule = new EventEmitter<Sentinel1Product>();
   @Output() clearFocusedGranule = new EventEmitter<void>();
 
+  @ViewChild(MatPaginator) paginator: MatPaginator;
+
+  public granules: Sentinel1Product[];
   public pageSizeOptions = [5, 10];
   public pageSize = this.pageSizeOptions[1];
   public pageIndex = 0;
 
   public downloadIcon = faFileDownload;
   public queueIcon = faPlus;
+
+  ngOnInit() {
+    this.granules$.pipe(
+      tap(_ => this.paginator.firstPage())
+    ).subscribe(
+      granules => this.granules = granules
+    );
+  }
 
   public onGranuleSelected(name: string): void {
     this.newSelected.emit(name);
