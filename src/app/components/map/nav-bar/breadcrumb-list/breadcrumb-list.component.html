@@ -1,7 +1,7 @@
 <div class="breadcrumb-list">
   <div class="breadcrumb hide-mobile">
     <button (click)="onNewSelectedFilter(filterTypes.SEARCH_TYPE)"
-       [class.selected]="selectedFilter === filterTypes.SEARCH_TYPE"
+       color="{{ !(searchType$ | async) ? 'basic' : accent }}"
        mat-stroked-button>{{ searchType$ | async }}</button>
 
     <mat-card *ngIf="selectedFilter === filterTypes.SEARCH_TYPE"
@@ -16,18 +16,23 @@
   <ng-container *ngIf="(searchType$ | async) === searchTypes.DATASET">
     <div class="breadcrumb hide-mobile hide-medium">
       <button (click)="onNewSelectedFilter(filterTypes.DATE)"
-        [class.selected]="selectedFilter === filterTypes.DATE"
-        mat-stroked-button>Date</button>
+        color="{{ !(isAnyDateValues$ | async) ? 'basic' :  accent }}"
+        mat-stroked-button>
+          {{ (isAnyDateValues$ | async) ? (dateRangePreview$ | async): 'Date' }}
+      </button>
 
       <mat-card *ngIf="selectedFilter === filterTypes.DATE"
         class="breadcrumb-filter">
           <app-date-selector></app-date-selector>
       </mat-card>
     </div>
+
     <div class="breadcrumb hide-mobile hide-medium">
       <button (click)="onNewSelectedFilter(filterTypes.AOI)"
-        [class.selected]="selectedFilter === filterTypes.AOI"
-        mat-stroked-button>Area of Interest</button>
+        color="{{ !(isAnyAOIValue$ | async) ? 'basic' :  accent }}"
+        mat-stroked-button>
+          {{ (isAnyAOIValue$ | async) ? (aoiPreview$ | async) : 'Area of Interest' }}
+      </button>
 
       <mat-card *ngIf="selectedFilter === filterTypes.AOI"
         class="breadcrumb-filter">
@@ -44,6 +49,7 @@
         <app-path-selector></app-path-selector>
       </mat-card>
     </div>
+
     <div class="breadcrumb hide-mobile hide-medium">
       <button (click)="onNewSelectedFilter(filterTypes.ADDITIONAL)"
         [class.selected]="selectedFilter === filterTypes.ADDITIONAL"

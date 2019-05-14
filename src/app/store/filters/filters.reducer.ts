@@ -389,3 +389,8 @@ export const getMaxSearchResults = createSelector(
   getFiltersState,
   (state: FiltersState) => state.maxResults
 );
+
+export const getIsAnyDateValues = createSelector(
+  getFiltersState,
+  ({ dateRange }) => !!dateRange.start || !!dateRange.end
+);

@@ -1,14 +1,18 @@
 import { Component, EventEmitter, Output } from '@angular/core';
 
+import { tap, map, filter, withLatestFrom } from 'rxjs/operators';
 import { Store } from '@ngrx/store';
 
 import { AppState } from '@store';
 import * as searchStore from '@store/search';
+import * as mapStore from '@store/map';
 import * as uiStore from '@store/ui';
 import * as granulesStore from '@store/granules';
 import * as filtersStore from '@store/filters';
 
 import { SearchType } from '@models';
+import { MapService } from '@services';
+
 
 enum BreadcrumbFilterType {
   SEARCH_TYPE = 'Search Type',
@@ -30,7 +34,12 @@ export class BreadcrumbListComponent {
   @Output() doSearch = new EventEmitter<void>();
   @Output() clearSearch = new EventEmitter<void>();
 
-  constructor(private store$: Store<AppState>) { }
+  public accent = 'primary';
+
+  constructor(
+    private store$: Store<AppState>,
+    private mapService: MapService,
+  ) { }
 
   public filterTypes = BreadcrumbFilterType;
   public selectedFilter = BreadcrumbFilterType.NONE;
@@ -45,6 +54,35 @@ export class BreadcrumbListComponent {
 
   public maxResults$ = this.store$.select(filtersStore.getMaxSearchResults);
   public currentSearchAmount$ = this.store$.select(searchStore.getSearchAmount);
+
+  public isAnyDateValues$ = this.store$.select(filtersStore.getIsAnyDateValues);
+  public dateRangePreview$ = this.store$.select(filtersStore.getDateRange).pipe(
+    map(({ start, end }) => {
+      const format = date => {
+        const [month, day, year] = [
+          date.getUTCMonth() + 1,
+          date.getUTCDate(),
+          date.getUTCFullYear(),
+        ];
+
+        return `${month}-${day}-${year}`;
+      };
+
+      return [start, end]
+        .filter(v => !!v)
+        .map(format)
+        .join(' to ');
+    })
+  );
+
+  public isAnyAOIValue$ = this.mapService.searchPolygon$.pipe(
+    map(polygon => !!polygon)
+  );
+
+  public aoiPreview$ = this.mapService.searchPolygon$.pipe(
+    withLatestFrom(this.store$.select(mapStore.getMapDrawMode)),
+    map(([_, searchType]) => searchType.replace('LineString', 'Line'))
+  );
 
   public onDoSearch(): void {
     this.doSearch.emit();
