@@ -65,7 +65,6 @@ export class BreadcrumbListComponent {
 
   public onSetSearchType(searchType: SearchType): void {
     this.store$.dispatch(new uiStore.SetSearchType(searchType));
-    this.store$.dispatch(new uiStore.CloseFiltersMenu());
     this.selectedFilter = BreadcrumbFilterType.NONE;
   }
 }

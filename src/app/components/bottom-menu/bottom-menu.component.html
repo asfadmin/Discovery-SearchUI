@@ -13,7 +13,7 @@
       [selected]="(selectedGranule$ | async)?.name">
     </app-granules-list>
 
-    <mat-card class="card-spacing bottom-menu--column">
+    <mat-card class="card-spacing scrollable-card bottom-menu--column">
       <mat-selection-list *ngIf="selectedProducts$ | async as products">
         <h3 mat-subheader>Granule Products</h3>
 
@@ -94,8 +94,4 @@
         </div>
     </mat-card>
   </div>
-
-  <button class="toggle-button" mat-raised-button (click)="onToggleMenu()">
-    <mat-icon>{{ (isBottomMenuOpen$ | async) ? 'expand_more' : 'expand_less'}}</mat-icon>
-  </button>
 </div>
