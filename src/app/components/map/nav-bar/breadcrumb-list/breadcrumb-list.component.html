@@ -31,7 +31,7 @@
       <button (click)="onNewSelectedFilter(filterTypes.AOI)"
         color="{{ !(isAnyAOIValue$ | async) ? 'basic' :  accent }}"
         mat-stroked-button>
-          {{ (isAnyAOIValue$ | async) ? (aoiPreview$ | async) : 'Area of Interest' }}
+          Area of Interest
       </button>
 
       <mat-card *ngIf="selectedFilter === filterTypes.AOI"

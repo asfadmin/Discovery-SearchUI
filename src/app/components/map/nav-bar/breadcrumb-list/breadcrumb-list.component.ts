@@ -79,11 +79,6 @@ export class BreadcrumbListComponent {
     map(polygon => !!polygon)
   );
 
-  public aoiPreview$ = this.mapService.searchPolygon$.pipe(
-    withLatestFrom(this.store$.select(mapStore.getMapDrawMode)),
-    map(([_, searchType]) => searchType.replace('LineString', 'Line'))
-  );
-
   public onDoSearch(): void {
     this.doSearch.emit();
     this.selectedFilter = BreadcrumbFilterType.NONE;
