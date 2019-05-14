@@ -41,8 +41,10 @@
     </div>
     <div class="breadcrumb hide-mobile hide-medium">
       <button (click)="onNewSelectedFilter(filterTypes.PATH_FRAME)"
-        [class.selected]="selectedFilter === filterTypes.PATH_FRAME"
-        mat-stroked-button>Path/Frame</button>
+        color="{{ !(isAnyPathFrameValue$ | async) ? 'basic' :  accent }}"
+        mat-stroked-button>
+          {{ (isAnyPathFrameValue$ | async) ? (pathFramePreview$ | async) : 'Path/Frame' }}
+        </button>
 
       <mat-card *ngIf="selectedFilter === filterTypes.PATH_FRAME"
         class="breadcrumb-filter">

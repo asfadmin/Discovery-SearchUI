@@ -355,6 +355,11 @@ export const getFrameRange = createSelector(
   (state: FiltersState) => state.frameRange
 );
 
+export const getPathFrameRanges = createSelector(
+  getFiltersState,
+  ({ frameRange, pathRange }) => ({ frameRange, pathRange })
+);
+
 export const getShouldOmitSearchPolygon = createSelector(
   getFiltersState,
   (state: FiltersState) => state.shouldOmitSearchPolygon
@@ -393,4 +398,10 @@ export const getMaxSearchResults = createSelector(
 export const getIsAnyDateValues = createSelector(
   getFiltersState,
   ({ dateRange }) => !!dateRange.start || !!dateRange.end
+);
+
+export const getIsAnyPathFrameValue = createSelector(
+  getFiltersState,
+  ({ pathRange, frameRange }) =>
+    !!(pathRange.start || pathRange.end || frameRange.start || frameRange.end)
 );
