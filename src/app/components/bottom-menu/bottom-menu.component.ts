@@ -79,4 +79,8 @@ export class BottomMenuComponent implements OnInit {
   public onToggleQueueProduct(product: models.Sentinel1Product): void {
     this.store$.dispatch(new queueStore.ToggleProduct(product));
   }
+
+  public onOpenImage(granule): void {
+    window.open(granule.browse);
+  }
 }
