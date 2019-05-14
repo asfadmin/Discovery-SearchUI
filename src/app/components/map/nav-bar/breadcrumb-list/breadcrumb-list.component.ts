@@ -6,6 +6,7 @@ import { AppState } from '@store';
 import * as searchStore from '@store/search';
 import * as uiStore from '@store/ui';
 import * as granulesStore from '@store/granules';
+import * as filtersStore from '@store/filters';
 
 import { SearchType } from '@models';
 
@@ -42,6 +43,9 @@ export class BreadcrumbListComponent {
   public searchType$ = this.store$.select(uiStore.getSearchType);
   public searchTypes = SearchType;
 
+  public maxResults$ = this.store$.select(filtersStore.getMaxSearchResults);
+  public currentSearchAmount$ = this.store$.select(searchStore.getSearchAmount);
+
   public onDoSearch(): void {
     this.doSearch.emit();
     this.selectedFilter = BreadcrumbFilterType.NONE;
@@ -66,5 +70,9 @@ export class BreadcrumbListComponent {
   public onSetSearchType(searchType: SearchType): void {
     this.store$.dispatch(new uiStore.SetSearchType(searchType));
     this.selectedFilter = BreadcrumbFilterType.NONE;
+  }
+
+  public onNewMaxResults(maxResults: number): void {
+    this.store$.dispatch(new filtersStore.SetMaxResults(maxResults));
   }
 }

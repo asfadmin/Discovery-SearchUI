@@ -66,8 +66,16 @@
     </button>
   </div>
 
+  <div class="breadcrumb hide-mobile" style="margin-left: 20px">
+    <app-max-results-selector
+      [maxResults]="maxResults$ | async"
+      [currentSearchAmount]="currentSearchAmount$ | async"
+      (newMaxResults)="onNewMaxResults($event)"
+      ></app-max-results-selector>
+  </div>
+
   <div class="breadcrumb hide-mobile" matTooltip="clear">
-    <button (click)="onClearSearch()" style="margin-left: 20px" mat-flat-button color="warn">
+    <button (click)="onClearSearch()" mat-flat-button color="warn">
       <mat-icon>replay</mat-icon>
     </button>
   </div>
