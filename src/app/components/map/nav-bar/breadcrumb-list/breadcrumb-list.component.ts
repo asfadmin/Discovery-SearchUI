@@ -55,6 +55,12 @@ export class BreadcrumbListComponent {
   public maxResults$ = this.store$.select(filtersStore.getMaxSearchResults);
   public currentSearchAmount$ = this.store$.select(searchStore.getSearchAmount);
 
+  public selectedPlatformName$ = this.store$.select(filtersStore.getSelectedPlatformNames).pipe(
+    map(platform => platform.size === 1 ?
+      platform.values().next().value : null
+    )
+  );
+
   public isAnyDateValues$ = this.store$.select(filtersStore.getIsAnyDateValues);
   public dateRangePreview$ = this.store$.select(filtersStore.getDateRange).pipe(
     map(({ start, end }) => {
@@ -93,6 +99,11 @@ export class BreadcrumbListComponent {
 
       return `${pathRangeStr}/${frameRangeStr}`;
     })
+  );
+
+  public isAnyAdditionalFilters$ = this.store$.select(filtersStore.getIsAnyAdditionalFilters);
+  public additionalFiltersPreview$ = this.store$.select(filtersStore.getNumberOfAdditionalFilters).pipe(
+    map(amt => `Additional Filters - ${amt}`)
   );
 
   public onDoSearch(): void {

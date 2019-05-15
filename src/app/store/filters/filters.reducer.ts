@@ -80,6 +80,12 @@ export function filtersReducer(state = initState, action: FiltersActions): Filte
         platforms: {
           ...state.platforms,
           selected
+        },
+        productTypes: {
+        },
+        beamModes: {
+        },
+        polarizations: {
         }
       };
     }
@@ -94,16 +100,10 @@ export function filtersReducer(state = initState, action: FiltersActions): Filte
           selected
         },
         productTypes: {
-          ...state.productTypes,
-          [action.payload]: []
         },
         beamModes: {
-          ...state.beamModes,
-          [action.payload]: []
         },
         polarizations: {
-          ...state.polarizations,
-          [action.payload]: []
         }
       };
     }
@@ -116,6 +116,12 @@ export function filtersReducer(state = initState, action: FiltersActions): Filte
         platforms: {
           ...state.platforms,
           selected
+        },
+        productTypes: {
+        },
+        beamModes: {
+        },
+        polarizations: {
         }
       };
     }
@@ -404,4 +410,37 @@ export const getIsAnyPathFrameValue = createSelector(
   getFiltersState,
   ({ pathRange, frameRange }) =>
     !!(pathRange.start || pathRange.end || frameRange.start || frameRange.end)
+);
+
+export const getIsAnyAdditionalFilters = createSelector(
+  getFiltersState,
+  ({ productTypes, beamModes, polarizations, flightDirections, platforms }) => {
+
+    const platform = platforms.selected.values().next().value;
+
+    const isAnyFlightDirection = Array.from(flightDirections).length > 0;
+
+    const isAdditionalListFilters = [productTypes, beamModes, polarizations]
+      .map(vals => vals[platform] || [])
+      .map(vals => vals.length > 0)
+      .some(c => !!c);
+
+    return isAnyFlightDirection || isAdditionalListFilters ;
+  }
+);
+
+export const getNumberOfAdditionalFilters = createSelector(
+  getFiltersState,
+  ({ productTypes, beamModes, polarizations, flightDirections, platforms }) => {
+    const platform = platforms.selected.values().next().value;
+
+    const flightDirAmount = Array.from(flightDirections).length;
+
+    const listFiltersAmts = [productTypes, beamModes, polarizations]
+      .map(vals => vals[platform] || [])
+      .map(vals => vals.length)
+      .reduce((x, y) => x + y);
+
+    return listFiltersAmts + flightDirAmount;
+  }
 );
