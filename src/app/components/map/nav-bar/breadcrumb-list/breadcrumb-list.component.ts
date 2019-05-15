@@ -85,27 +85,6 @@ export class BreadcrumbListComponent {
     map(polygon => !!polygon)
   );
 
-  public isAnyPathFrameValue$ = this.store$.select(filtersStore.getIsAnyPathFrameValue);
-  public pathFramePreview$ = this.store$.select(filtersStore.getPathFrameRanges).pipe(
-    map(({frameRange, pathRange}) => {
-
-      const frameRangeStr = frameRange.start || frameRange.end ?
-        `(${frameRange.start || ''}, ${frameRange.end || ''})` :
-        'Frame';
-
-      const pathRangeStr = pathRange.start || pathRange.end ?
-        `(${pathRange.start || ''}, ${pathRange.end || ''})` :
-        'Path';
-
-      return `${pathRangeStr}/${frameRangeStr}`;
-    })
-  );
-
-  public isAnyAdditionalFilters$ = this.store$.select(filtersStore.getIsAnyAdditionalFilters);
-  public additionalFiltersPreview$ = this.store$.select(filtersStore.getNumberOfAdditionalFilters).pipe(
-    map(amt => `Additional Filters - ${amt}`)
-  );
-
   public onDoSearch(): void {
     this.doSearch.emit();
     this.selectedFilter = BreadcrumbFilterType.NONE;
