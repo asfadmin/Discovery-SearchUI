@@ -13,17 +13,19 @@
     </mat-card>
   </div>
 
+
+
   <ng-container *ngIf="(searchType$ | async) === searchTypes.DATASET">
     <div class="breadcrumb hide-mobile hide-medium">
-      <button (click)="onNewSelectedFilter(filterTypes.DATE)"
-        color="{{ !(isAnyDateValues$ | async) ? 'basic' :  accent }}"
+      <button (click)="onNewSelectedFilter(filterTypes.DATASET)"
+        color="{{ accent }}"
         mat-stroked-button>
-          {{ (isAnyDateValues$ | async) ? (dateRangePreview$ | async): 'Date' }}
+        {{ selectedPlatformName$ | async }}
       </button>
 
-      <mat-card *ngIf="selectedFilter === filterTypes.DATE"
+      <mat-card *ngIf="selectedFilter === filterTypes.DATASET"
         class="breadcrumb-filter">
-          <app-date-selector></app-date-selector>
+          <app-platform-selector></app-platform-selector>
       </mat-card>
     </div>
 
@@ -39,6 +41,20 @@
           <app-aoi-upload></app-aoi-upload>
       </mat-card>
     </div>
+
+    <div class="breadcrumb hide-mobile hide-medium">
+      <button (click)="onNewSelectedFilter(filterTypes.DATE)"
+        color="{{ !(isAnyDateValues$ | async) ? 'basic' :  accent }}"
+        mat-stroked-button>
+          {{ (isAnyDateValues$ | async) ? (dateRangePreview$ | async): 'Date' }}
+      </button>
+
+      <mat-card *ngIf="selectedFilter === filterTypes.DATE"
+        class="breadcrumb-filter">
+          <app-date-selector></app-date-selector>
+      </mat-card>
+    </div>
+
     <div class="breadcrumb hide-mobile hide-medium">
       <button (click)="onNewSelectedFilter(filterTypes.PATH_FRAME)"
         color="{{ !(isAnyPathFrameValue$ | async) ? 'basic' :  accent }}"
