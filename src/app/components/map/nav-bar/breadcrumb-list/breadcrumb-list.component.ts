@@ -1,13 +1,18 @@
 import { Component, EventEmitter, Output } from '@angular/core';
 
+import { tap, map, filter, withLatestFrom } from 'rxjs/operators';
 import { Store } from '@ngrx/store';
 
 import { AppState } from '@store';
 import * as searchStore from '@store/search';
+import * as mapStore from '@store/map';
 import * as uiStore from '@store/ui';
 import * as granulesStore from '@store/granules';
+import * as filtersStore from '@store/filters';
 
 import { SearchType } from '@models';
+import { MapService } from '@services';
+
 
 enum BreadcrumbFilterType {
   SEARCH_TYPE = 'Search Type',
@@ -29,7 +34,12 @@ export class BreadcrumbListComponent {
   @Output() doSearch = new EventEmitter<void>();
   @Output() clearSearch = new EventEmitter<void>();
 
-  constructor(private store$: Store<AppState>) { }
+  public accent = 'primary';
+
+  constructor(
+    private store$: Store<AppState>,
+    private mapService: MapService,
+  ) { }
 
   public filterTypes = BreadcrumbFilterType;
   public selectedFilter = BreadcrumbFilterType.NONE;
@@ -41,6 +51,60 @@ export class BreadcrumbListComponent {
   public loading$ = this.store$.select(searchStore.getIsLoading);
   public searchType$ = this.store$.select(uiStore.getSearchType);
   public searchTypes = SearchType;
+
+  public maxResults$ = this.store$.select(filtersStore.getMaxSearchResults);
+  public currentSearchAmount$ = this.store$.select(searchStore.getSearchAmount);
+
+  public selectedPlatformName$ = this.store$.select(filtersStore.getSelectedPlatformNames).pipe(
+    map(platform => platform.size === 1 ?
+      platform.values().next().value : null
+    )
+  );
+
+  public isAnyDateValues$ = this.store$.select(filtersStore.getIsAnyDateValues);
+  public dateRangePreview$ = this.store$.select(filtersStore.getDateRange).pipe(
+    map(({ start, end }) => {
+      const format = date => {
+        const [month, day, year] = [
+          date.getUTCMonth() + 1,
+          date.getUTCDate(),
+          date.getUTCFullYear(),
+        ];
+
+        return `${month}-${day}-${year}`;
+      };
+
+      return [start, end]
+        .filter(v => !!v)
+        .map(format)
+        .join(' to ');
+    })
+  );
+
+  public isAnyAOIValue$ = this.mapService.searchPolygon$.pipe(
+    map(polygon => !!polygon)
+  );
+
+  public isAnyPathFrameValue$ = this.store$.select(filtersStore.getIsAnyPathFrameValue);
+  public pathFramePreview$ = this.store$.select(filtersStore.getPathFrameRanges).pipe(
+    map(({frameRange, pathRange}) => {
+
+      const frameRangeStr = frameRange.start || frameRange.end ?
+        `(${frameRange.start || ''}, ${frameRange.end || ''})` :
+        'Frame';
+
+      const pathRangeStr = pathRange.start || pathRange.end ?
+        `(${pathRange.start || ''}, ${pathRange.end || ''})` :
+        'Path';
+
+      return `${pathRangeStr}/${frameRangeStr}`;
+    })
+  );
+
+  public isAnyAdditionalFilters$ = this.store$.select(filtersStore.getIsAnyAdditionalFilters);
+  public additionalFiltersPreview$ = this.store$.select(filtersStore.getNumberOfAdditionalFilters).pipe(
+    map(amt => `Additional Filters - ${amt}`)
+  );
 
   public onDoSearch(): void {
     this.doSearch.emit();
@@ -66,5 +130,9 @@ export class BreadcrumbListComponent {
   public onSetSearchType(searchType: SearchType): void {
     this.store$.dispatch(new uiStore.SetSearchType(searchType));
     this.selectedFilter = BreadcrumbFilterType.NONE;
+  }
+
+  public onNewMaxResults(maxResults: number): void {
+    this.store$.dispatch(new filtersStore.SetMaxResults(maxResults));
   }
 }
