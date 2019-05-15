@@ -8,8 +8,6 @@ import * as missionStore from '@store/mission';
 
 import * as models from '@models';
 
-const icon: boolean = false;
-
 @Component({
   selector: 'app-search',
   templateUrl: './search.component.html',
