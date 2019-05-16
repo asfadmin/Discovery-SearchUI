@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, HostListener } from '@angular/core';
 
 @Component({
   selector: 'app-dataset-search',
@@ -6,4 +6,10 @@ import { Component } from '@angular/core';
   styleUrls: ['./dataset-search.component.scss']
 })
 export class DatasetSearchComponent {
+  public screenWidth = window.innerWidth;
+
+  @HostListener('window:resize', ['$event'])
+  onResize(event) {
+    this.screenWidth = event.target.innerWidth;
+  }
 }
