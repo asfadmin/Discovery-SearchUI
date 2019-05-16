@@ -29,6 +29,7 @@
         (newMaxResults)="onNewMaxSearchResults($event)"
         [maxResults]="maxResults$ | async"
         [currentSearchAmount]="currentSearchAmount$ | async"
+        [canSearch]="canSearch$ | async"
         [isLoading]="loading$ | async">
       </app-search-bar>
   </div>

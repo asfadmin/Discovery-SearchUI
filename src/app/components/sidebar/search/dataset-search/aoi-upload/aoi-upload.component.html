@@ -14,6 +14,7 @@
     <app-draw-selector
        style="margin-right: 5px;"
       (newDrawMode)="onNewDrawMode($event)"
+      [isDisabled]="(interactionMode$ | async) !== interactionTypes.DRAW"
       [drawMode]="drawMode$ | async">
     </app-draw-selector>
 

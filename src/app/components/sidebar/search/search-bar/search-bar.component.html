@@ -10,9 +10,12 @@
       (newMaxResults)="onNewMaxResults($event)"
     ></app-max-results-selector>
 
-    <button (click)="newSearch.emit()" mat-raised-button color="primary" class="mr-2">
-      <span *ngIf="isLoading">Loading...</span>
-      <span *ngIf="!isLoading">Search</span>
-    </button>
+      <div matTooltip="{{ canSearch ? 'Search': 'No Results Found' }}">
+      <button (click)="newSearch.emit()" [disabled]="!canSearch"
+        mat-raised-button color="primary" class="mr-2">
+        <span *ngIf="isLoading">Loading...</span>
+        <span *ngIf="!isLoading">Search</span>
+      </button>
+    </div>
   </div>
 </mat-card>

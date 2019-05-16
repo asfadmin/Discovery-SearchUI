@@ -7,6 +7,7 @@ import { Observable, of } from 'rxjs';
 import { map, withLatestFrom, switchMap, catchError, tap } from 'rxjs/operators';
 
 import { AppState } from '../app.reducer';
+import { SetSearchAmount, EnableSearch, DisableSearch } from './search.action';
 import * as granulesStore from '@store/granules';
 import * as filtersStore from '@store/filters';
 import * as mapStore from '@store/map';
@@ -36,6 +37,14 @@ export class SearchEffects {
   private clearMapInteractionModeOnSearch: Observable<Action> = this.actions$.pipe(
     ofType(SearchActionType.MAKE_SEARCH),
     map(action => new mapStore.SetMapInteractionMode(MapInteractionModeType.NONE))
+  );
+
+  @Effect()
+  private setCanSearch: Observable<Action> = this.actions$.pipe(
+    ofType<SetSearchAmount>(SearchActionType.SET_SEARCH_AMOUNT),
+    map(action =>
+      (action.payload > 0) ? new EnableSearch() : new DisableSearch()
+    )
   );
 
 

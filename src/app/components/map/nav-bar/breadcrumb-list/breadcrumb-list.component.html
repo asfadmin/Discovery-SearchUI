@@ -13,8 +13,6 @@
     </mat-card>
   </div>
 
-
-
   <ng-container *ngIf="(searchType$ | async) === searchTypes.DATASET">
     <div (click)="clearSelectedBreadcrumb()"
       class="breadcrumb hide-mobile hide-medium">
@@ -73,8 +71,11 @@
     </button>
   </div>
 
-  <div class="breadcrumb hide-mobile">
-    <button (click)="onDoSearch()" mat-flat-button color="accent">
+  <div class="breadcrumb hide-mobile"
+    matTooltip="{{ !(canSearch$ | async) ? 'No Results Found' : 'Search' }}">
+    <button (click)="onDoSearch()"
+      [disabled]="!(canSearch$ | async)"
+      mat-flat-button color="accent">
       {{ (loading$ | async) ? 'Loading...' : 'Search' }}
     </button>
   </div>
