@@ -106,6 +106,11 @@ export class BreadcrumbListComponent {
     this.clearSearch.emit();
   }
 
+  public onClearDateRange(): void {
+    this.store$.dispatch(new filtersStore.ClearDateRange());
+    this.store$.dispatch(new filtersStore.ClearSeason());
+  }
+
   public onNewSelectedFilter(filterType: BreadcrumbFilterType): void {
     this.selectedFilter = this.selectedFilter === filterType ?
       BreadcrumbFilterType.NONE : filterType;

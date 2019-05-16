@@ -173,6 +173,13 @@ export function filtersReducer(state = initState, action: FiltersActions): Filte
       };
     }
 
+    case FiltersActionType.CLEAR_SEASON: {
+      return {
+        ...state,
+        season: initState.season
+      };
+    }
+
     case FiltersActionType.SET_PATH_START: {
       return {
         ...state,

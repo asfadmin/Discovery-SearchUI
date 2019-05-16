@@ -13,6 +13,7 @@ export enum FiltersActionType {
 
   SET_SEASON_START = '[Filters-Date] Set Season Start',
   SET_SEASON_END = '[Filters-Date] Set Season End',
+  CLEAR_SEASON = '[Filters-Date] Clear Season',
 
   SET_PATH_START = '[Filters-Path] Set Path Start',
   SET_PATH_END = '[Filters-Path] Set Path End',
@@ -79,6 +80,10 @@ export class SetSeasonEnd implements Action {
   public readonly type = FiltersActionType.SET_SEASON_END;
 
   constructor(public payload: number | null) {}
+}
+
+export class ClearSeason implements Action {
+  public readonly type = FiltersActionType.CLEAR_SEASON;
 }
 
 export class ClearDateRange implements Action {
@@ -183,6 +188,7 @@ export type FiltersActions =
   | SetEndDate
   | SetSeasonStart
   | SetSeasonEnd
+  | ClearSeason
   | ClearDateRange
   | OmitSearchPolygon
   | UseSearchPolygon
