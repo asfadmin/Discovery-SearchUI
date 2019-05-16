@@ -96,11 +96,13 @@ export class BreadcrumbListComponent {
   );
 
   public onDoSearch(): void {
-    this.doSearch.emit();
     this.selectedFilter = BreadcrumbFilterType.NONE;
+    this.doSearch.emit();
   }
 
   public onClearSearch(): void {
+    this.selectedFilter = BreadcrumbFilterType.NONE;
+    this.store$.dispatch(new uiStore.CloseFiltersMenu());
     this.clearSearch.emit();
   }
 
