@@ -1,15 +1,29 @@
 <div class="layout">
+  <div style="margin-bottom: 20px;">
+    <div class="faint-text" style="display: flex; align-items: center;">
+      <mat-icon style="margin-right: 10px">help</mat-icon>
+      <div *ngIf="(interactionMode$ | async) === interactionTypes.DRAW; else modifyHelp">
+        <span>Draw your area of interest on the map</span>
+      </div>
+      <ng-template #modifyHelp>
+        Modify your current area of interest
+      </ng-template>
+    </div>
+  </div>
   <div class="horizontal-layout mb">
+    <app-interaction-selector
+      style="margin-right: 5px;"
+      (newInteraction)="onNewInteractionMode($event)"
+      (clearPolygon)="onClearPolygon()"
+      [interaction]="interactionMode$ | async">
+    ></app-interaction-selector>
+
     <app-draw-selector
-       style="margin-right: 5px;"
       (newDrawMode)="onNewDrawMode($event)"
+      [isDisabled]="(interactionMode$ | async) !== interactionTypes.DRAW"
       [drawMode]="drawMode$ | async">
     </app-draw-selector>
 
-    <app-interaction-selector
-      (newInteraction)="onNewInteractionMode($event)"
-      [interaction]="interactionMode$ | async">
-    ></app-interaction-selector>
   </div>
 
   <div class="form-layout">

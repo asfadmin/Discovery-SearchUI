@@ -173,6 +173,13 @@ export function filtersReducer(state = initState, action: FiltersActions): Filte
       };
     }
 
+    case FiltersActionType.CLEAR_SEASON: {
+      return {
+        ...state,
+        season: initState.season
+      };
+    }
+
     case FiltersActionType.SET_PATH_START: {
       return {
         ...state,
@@ -403,7 +410,7 @@ export const getMaxSearchResults = createSelector(
 
 export const getIsAnyDateValues = createSelector(
   getFiltersState,
-  ({ dateRange }) => !!dateRange.start || !!dateRange.end
+  ({ dateRange, season }) => !!(dateRange.start || dateRange.end || season.start || season.end)
 );
 
 export const getIsAnyPathFrameValue = createSelector(

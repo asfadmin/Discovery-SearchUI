@@ -1,6 +1,6 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { MatDatepickerInputEvent } from '@angular/material/datepicker';
-import { Observable } from 'rxjs';
+import { Observable, combineLatest } from 'rxjs';
 
 import { Store } from '@ngrx/store';
 
@@ -48,10 +48,15 @@ export class DateSelectorComponent implements OnInit {
 
     this.startDate$.subscribe(start => this.startDate = start);
     this.endDate$.subscribe(end => this.endDate = end);
+
+    combineLatest(this.seasonStart$, this.seasonEnd$).subscribe(
+      ([start, end]) => this.isSeasonalSearch = !!(start || end)
+    );
   }
 
   public onToggleSeasonalOptions(): void {
     this.isSeasonalSearch = !this.isSeasonalSearch;
+    this.store$.dispatch(new filtersStore.ClearSeason());
   }
 
   public onStartDateChange(e: MatDatepickerInputEvent<Date>) {

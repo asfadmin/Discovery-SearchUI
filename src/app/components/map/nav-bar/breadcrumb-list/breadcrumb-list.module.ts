@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 import { MatSharedModule } from '@shared';
+import { MatMenuModule } from '@angular/material';
 
 import { PlatformSelectorModule } from '@components/sidebar/search/dataset-search/platform-selector';
 import { DateSelectorModule } from '@components/sidebar/search/dataset-search/date-selector';
@@ -17,7 +18,7 @@ import { BreadcrumbListComponent } from './breadcrumb-list.component';
   declarations: [BreadcrumbListComponent],
   imports: [
     CommonModule,
-
+    MatMenuModule,
     MatSharedModule,
 
     DetailedSearchSelectorModule,

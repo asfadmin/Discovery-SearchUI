@@ -48,6 +48,7 @@ export class SidebarComponent implements OnInit {
   public isFiltersMenuOpen: boolean;
 
   public uiView$ = this.store$.select(uiStore.getUiView);
+  public canSearch$ = this.store$.select(searchStore.getCanSearch);
 
   public currentSearchAmount$ = this.store$.select(searchStore.getSearchAmount);
 

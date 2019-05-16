@@ -1,5 +1,6 @@
 import { Component, EventEmitter, Output } from '@angular/core';
 
+import { combineLatest } from 'rxjs';
 import { tap, map, filter, withLatestFrom } from 'rxjs/operators';
 import { Store } from '@ngrx/store';
 
@@ -36,6 +37,8 @@ export class BreadcrumbListComponent {
 
   public accent = 'primary';
 
+  public canSearch$ = this.store$.select(searchStore.getCanSearch);
+
   constructor(
     private store$: Store<AppState>,
     private mapService: MapService,
@@ -62,9 +65,16 @@ export class BreadcrumbListComponent {
   );
 
   public isAnyDateValues$ = this.store$.select(filtersStore.getIsAnyDateValues);
-  public dateRangePreview$ = this.store$.select(filtersStore.getDateRange).pipe(
-    map(({ start, end }) => {
+  public dateRangePreview$ = combineLatest(
+    this.store$.select(filtersStore.getDateRange),
+    this.store$.select(filtersStore.getSeason)
+  ).pipe(
+    map(([dateRange, season]) => {
       const format = date => {
+        if (!date) {
+          return date;
+        }
+
         const [month, day, year] = [
           date.getUTCMonth() + 1,
           date.getUTCDate(),
@@ -74,10 +84,20 @@ export class BreadcrumbListComponent {
         return `${month}-${day}-${year}`;
       };
 
-      return [start, end]
-        .filter(v => !!v)
-        .map(format)
-        .join(' to ');
+      const [startStr, endStr] = [dateRange.start, dateRange.end]
+        .map(format);
+
+      const seasonStr = (season.start || season.end) ? 'seasonal' : '';
+
+      if (startStr && endStr) {
+        return `${startStr} to ${endStr} · ${seasonStr}`;
+      } else if (startStr) {
+        return `after ${startStr} · ${seasonStr}`;
+      } else if (endStr) {
+        return `before ${endStr} · ${seasonStr}`;
+      } else {
+        return seasonStr;
+      }
     })
   );
 
@@ -85,34 +105,24 @@ export class BreadcrumbListComponent {
     map(polygon => !!polygon)
   );
 
-  public isAnyPathFrameValue$ = this.store$.select(filtersStore.getIsAnyPathFrameValue);
-  public pathFramePreview$ = this.store$.select(filtersStore.getPathFrameRanges).pipe(
-    map(({frameRange, pathRange}) => {
-
-      const frameRangeStr = frameRange.start || frameRange.end ?
-        `(${frameRange.start || ''}, ${frameRange.end || ''})` :
-        'Frame';
-
-      const pathRangeStr = pathRange.start || pathRange.end ?
-        `(${pathRange.start || ''}, ${pathRange.end || ''})` :
-        'Path';
-
-      return `${pathRangeStr}/${frameRangeStr}`;
-    })
-  );
-
-  public isAnyAdditionalFilters$ = this.store$.select(filtersStore.getIsAnyAdditionalFilters);
-  public additionalFiltersPreview$ = this.store$.select(filtersStore.getNumberOfAdditionalFilters).pipe(
-    map(amt => `Additional Filters - ${amt}`)
-  );
-
   public onDoSearch(): void {
+    this.clearSelectedBreadcrumb();
     this.doSearch.emit();
-    this.selectedFilter = BreadcrumbFilterType.NONE;
   }
 
   public onClearSearch(): void {
+    this.clearSelectedBreadcrumb();
     this.clearSearch.emit();
+  }
+
+  public clearSelectedBreadcrumb(): void {
+    this.store$.dispatch(new uiStore.CloseFiltersMenu());
+    this.selectedFilter = BreadcrumbFilterType.NONE;
+  }
+
+  public onClearDateRange(): void {
+    this.store$.dispatch(new filtersStore.ClearDateRange());
+    this.store$.dispatch(new filtersStore.ClearSeason());
   }
 
   public onNewSelectedFilter(filterType: BreadcrumbFilterType): void {
@@ -129,7 +139,7 @@ export class BreadcrumbListComponent {
 
   public onSetSearchType(searchType: SearchType): void {
     this.store$.dispatch(new uiStore.SetSearchType(searchType));
-    this.selectedFilter = BreadcrumbFilterType.NONE;
+    this.clearSelectedBreadcrumb();
   }
 
   public onNewMaxResults(maxResults: number): void {

@@ -4,7 +4,7 @@ import { FormsModule } from '@angular/forms';
 
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
-import { MatListModule, MatSelectModule } from '@angular/material';
+import { MatListModule, MatSelectModule, MatMenuModule } from '@angular/material';
 import { MatSharedModule } from '@shared';
 import { PlatformSelectorComponent } from './platform-selector.component';
 import { PlatformComponent } from './platform/platform.component';
@@ -15,9 +15,10 @@ import { PlatformComponent } from './platform/platform.component';
     CommonModule,
     FormsModule,
     FontAwesomeModule,
+    MatMenuModule,
     MatSelectModule,
-    MatSharedModule,
     MatListModule,
+    MatSharedModule,
   ],
   declarations: [
     PlatformSelectorComponent,

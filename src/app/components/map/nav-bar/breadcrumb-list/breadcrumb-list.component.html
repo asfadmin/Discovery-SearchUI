@@ -13,20 +13,10 @@
     </mat-card>
   </div>
 
-
-
   <ng-container *ngIf="(searchType$ | async) === searchTypes.DATASET">
-    <div class="breadcrumb hide-mobile hide-medium">
-      <button (click)="onNewSelectedFilter(filterTypes.DATASET)"
-        color="{{ accent }}"
-        mat-stroked-button>
-        {{ selectedPlatformName$ | async }}
-      </button>
-
-      <mat-card *ngIf="selectedFilter === filterTypes.DATASET"
-        class="breadcrumb-filter">
-          <app-platform-selector></app-platform-selector>
-      </mat-card>
+    <div (click)="clearSelectedBreadcrumb()"
+      class="breadcrumb hide-mobile hide-medium">
+        <app-platform-selector></app-platform-selector>
     </div>
 
     <div class="breadcrumb hide-mobile hide-medium">
@@ -52,32 +42,7 @@
       <mat-card *ngIf="selectedFilter === filterTypes.DATE"
         class="breadcrumb-filter">
           <app-date-selector></app-date-selector>
-      </mat-card>
-    </div>
-
-    <div class="breadcrumb hide-mobile hide-medium">
-      <button (click)="onNewSelectedFilter(filterTypes.PATH_FRAME)"
-        color="{{ !(isAnyPathFrameValue$ | async) ? 'basic' :  accent }}"
-        mat-stroked-button>
-          {{ (isAnyPathFrameValue$ | async) ? (pathFramePreview$ | async) : 'Path/Frame' }}
-        </button>
-
-      <mat-card *ngIf="selectedFilter === filterTypes.PATH_FRAME"
-        class="breadcrumb-filter">
-        <app-path-selector></app-path-selector>
-      </mat-card>
-    </div>
-
-    <div class="breadcrumb hide-mobile hide-medium">
-      <button (click)="onNewSelectedFilter(filterTypes.ADDITIONAL)"
-        color="{{ !(isAnyAdditionalFilters$ | async) ? 'basic' :  accent }}"
-        mat-stroked-button>
-           {{ (isAnyAdditionalFilters$ | async) ? (additionalFiltersPreview$ | async ) : 'Additional Filters' }}
-      </button>
-
-      <mat-card *ngIf="selectedFilter === filterTypes.ADDITIONAL"
-        class="breadcrumb-filter">
-        <app-other-selector></app-other-selector>
+          <button (click)="onClearDateRange()" mat-flat-button>Clear</button>
       </mat-card>
     </div>
   </ng-container>
@@ -86,7 +51,7 @@
     <button (click)="onToggleFiltersMenu()"
       [class.selected]="selectedFilter === filterTypes.FILTERS_MENU"
        mat-stroked-button>
-        <mat-icon *ngIf="(searchType$ | async) === searchTypes.DATASET">more_horiz</mat-icon>
+        <span *ngIf="(searchType$ | async) === searchTypes.DATASET">Additional Filters</span>
         <span *ngIf="(searchType$ | async) === searchTypes.MISSION">Mission</span>
         <span *ngIf="(searchType$ | async) === searchTypes.LIST">List</span>
     </button>
@@ -106,8 +71,11 @@
     </button>
   </div>
 
-  <div class="breadcrumb hide-mobile">
-    <button (click)="onDoSearch()" mat-flat-button color="accent">
+  <div class="breadcrumb hide-mobile"
+    matTooltip="{{ !(canSearch$ | async) ? 'No Results Found' : 'Search' }}">
+    <button (click)="onDoSearch()"
+      [disabled]="!(canSearch$ | async)"
+      mat-flat-button color="accent">
       {{ (loading$ | async) ? 'Loading...' : 'Search' }}
     </button>
   </div>

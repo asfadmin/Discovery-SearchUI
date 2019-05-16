@@ -14,12 +14,12 @@ import { MapService } from '@services';
   styleUrls: ['./aoi-upload.component.css']
 })
 export class AoiUploadComponent implements OnInit {
-
   public drawMode$ = this.store$.select(mapStore.getMapDrawMode);
   public interactionMode$ = this.store$.select(mapStore.getMapInteractionMode);
 
   public polygon$ = this.mapService.searchPolygon$;
   public polygon: string;
+  public interactionTypes = MapInteractionModeType;
 
   constructor(
     private mapService: MapService,
@@ -38,6 +38,10 @@ export class AoiUploadComponent implements OnInit {
 
   public onNewDrawMode(mode: MapDrawModeType): void {
     this.store$.dispatch(new mapStore.SetMapDrawMode(mode));
+  }
+
+  public onClearPolygon(): void {
+    this.mapService.clearDrawLayer();
   }
 
   public onNewInteractionMode(mode: MapInteractionModeType): void {
