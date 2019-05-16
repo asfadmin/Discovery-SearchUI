@@ -65,6 +65,10 @@ export class BreadcrumbListComponent {
   public dateRangePreview$ = this.store$.select(filtersStore.getDateRange).pipe(
     map(({ start, end }) => {
       const format = date => {
+        if (!date) {
+          return date;
+        }
+
         const [month, day, year] = [
           date.getUTCMonth() + 1,
           date.getUTCDate(),
@@ -74,36 +78,21 @@ export class BreadcrumbListComponent {
         return `${month}-${day}-${year}`;
       };
 
-      return [start, end]
-        .filter(v => !!v)
-        .map(format)
-        .join(' to ');
+      const [startStr, endStr] = [start, end]
+        .map(format);
+
+      if (startStr && endStr) {
+        return `${startStr} to ${endStr}`;
+      } else if (startStr) {
+        return `after ${startStr}`;
+      } else if (endStr) {
+        return `before ${endStr}`;
+      }
     })
   );
 
   public isAnyAOIValue$ = this.mapService.searchPolygon$.pipe(
     map(polygon => !!polygon)
-  );
-
-  public isAnyPathFrameValue$ = this.store$.select(filtersStore.getIsAnyPathFrameValue);
-  public pathFramePreview$ = this.store$.select(filtersStore.getPathFrameRanges).pipe(
-    map(({frameRange, pathRange}) => {
-
-      const frameRangeStr = frameRange.start || frameRange.end ?
-        `(${frameRange.start || ''}, ${frameRange.end || ''})` :
-        'Frame';
-
-      const pathRangeStr = pathRange.start || pathRange.end ?
-        `(${pathRange.start || ''}, ${pathRange.end || ''})` :
-        'Path';
-
-      return `${pathRangeStr}/${frameRangeStr}`;
-    })
-  );
-
-  public isAnyAdditionalFilters$ = this.store$.select(filtersStore.getIsAnyAdditionalFilters);
-  public additionalFiltersPreview$ = this.store$.select(filtersStore.getNumberOfAdditionalFilters).pipe(
-    map(amt => `Additional Filters - ${amt}`)
   );
 
   public onDoSearch(): void {

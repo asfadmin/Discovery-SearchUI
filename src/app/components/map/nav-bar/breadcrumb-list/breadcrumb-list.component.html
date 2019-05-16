@@ -20,7 +20,7 @@
       <button (click)="onNewSelectedFilter(filterTypes.DATASET)"
         color="{{ accent }}"
         mat-stroked-button>
-        {{ selectedPlatformName$ | async }}
+        Dataset - {{ selectedPlatformName$ | async }}
       </button>
 
       <mat-card *ngIf="selectedFilter === filterTypes.DATASET"
@@ -54,39 +54,13 @@
           <app-date-selector></app-date-selector>
       </mat-card>
     </div>
-
-    <div class="breadcrumb hide-mobile hide-medium">
-      <button (click)="onNewSelectedFilter(filterTypes.PATH_FRAME)"
-        color="{{ !(isAnyPathFrameValue$ | async) ? 'basic' :  accent }}"
-        mat-stroked-button>
-          {{ (isAnyPathFrameValue$ | async) ? (pathFramePreview$ | async) : 'Path/Frame' }}
-        </button>
-
-      <mat-card *ngIf="selectedFilter === filterTypes.PATH_FRAME"
-        class="breadcrumb-filter">
-        <app-path-selector></app-path-selector>
-      </mat-card>
-    </div>
-
-    <div class="breadcrumb hide-mobile hide-medium">
-      <button (click)="onNewSelectedFilter(filterTypes.ADDITIONAL)"
-        color="{{ !(isAnyAdditionalFilters$ | async) ? 'basic' :  accent }}"
-        mat-stroked-button>
-           {{ (isAnyAdditionalFilters$ | async) ? (additionalFiltersPreview$ | async ) : 'Additional Filters' }}
-      </button>
-
-      <mat-card *ngIf="selectedFilter === filterTypes.ADDITIONAL"
-        class="breadcrumb-filter">
-        <app-other-selector></app-other-selector>
-      </mat-card>
-    </div>
   </ng-container>
 
   <div class="breadcrumb">
     <button (click)="onToggleFiltersMenu()"
       [class.selected]="selectedFilter === filterTypes.FILTERS_MENU"
        mat-stroked-button>
-        <mat-icon *ngIf="(searchType$ | async) === searchTypes.DATASET">more_horiz</mat-icon>
+        <span *ngIf="(searchType$ | async) === searchTypes.DATASET">Additional Filters</span>
         <span *ngIf="(searchType$ | async) === searchTypes.MISSION">Mission</span>
         <span *ngIf="(searchType$ | async) === searchTypes.LIST">List</span>
     </button>
