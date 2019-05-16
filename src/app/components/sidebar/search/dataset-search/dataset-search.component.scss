@@ -4,22 +4,36 @@
 $config: mat-typography-config();
 $primary-light: lighten($asf-primary, 40%);
 
+.mat-header-base {
+  background-color: $primary-light !important;
+  color: white;
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+  border-left-width: 1px;
+  border-right-width: 1px;
+  border-top-width: 1px;
+  border-bottom-width: 0;
+  border-color: $primary-light;
+  border-style: solid;
+}
+
 .mat-expansion-panel-header,
 .mat-expansion-panel-header.mat-expanded {
-  background-color: $primary-light !important;
+  @extend .mat-header-base;
 
   &:hover,
   &:visited,
   &:link,
   &:active,
-  &:focus {
-    background-color: $primary-light;
+  &:focus,
+  &[aria-disabled="true"] {
+    @extend .mat-header-base;
   }
 }
 
 .mat-expansion-panel-header-title {
   color: white;
-  font-size: mat-font-size($config, title);
+  font-size: mat-font-size($config, subheading-2);
 }
 
 .mat-expansion-panel-header-description {
