@@ -16,17 +16,9 @@
 
 
   <ng-container *ngIf="(searchType$ | async) === searchTypes.DATASET">
-    <div class="breadcrumb hide-mobile hide-medium">
-      <button (click)="onNewSelectedFilter(filterTypes.DATASET)"
-        color="{{ accent }}"
-        mat-stroked-button>
-        Dataset - {{ selectedPlatformName$ | async }}
-      </button>
-
-      <mat-card *ngIf="selectedFilter === filterTypes.DATASET"
-        class="breadcrumb-filter">
-          <app-platform-selector></app-platform-selector>
-      </mat-card>
+    <div (click)="clearSelectedBreadcrumb()"
+      class="breadcrumb hide-mobile hide-medium">
+        <app-platform-selector></app-platform-selector>
     </div>
 
     <div class="breadcrumb hide-mobile hide-medium">
@@ -52,6 +44,7 @@
       <mat-card *ngIf="selectedFilter === filterTypes.DATE"
         class="breadcrumb-filter">
           <app-date-selector></app-date-selector>
+          <button (click)="onClearDateRange()" mat-flat-button>Clear</button>
       </mat-card>
     </div>
   </ng-container>

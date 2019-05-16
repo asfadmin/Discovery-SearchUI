@@ -1,14 +1,19 @@
-<mat-form-field class="w100">
-  <mat-label>Dataset</mat-label>
-  <mat-select
-    [(ngModel)]="selected"
-    (selectionChange)="onSelectionChange($event.value)">
-    <mat-option *ngFor="let platform of (platforms$ | async)" [value]="platform.name">
-      <app-platform
-        class="list-group-item list-group-item-action"
-        [platform]="platform">
-      </app-platform>
-    </mat-option>
-  </mat-select>
-  <mat-hint align="start"><strong>Select a dataset</strong> </mat-hint>
-</mat-form-field>
+<button
+  color="primary"
+  mat-stroked-button [matMenuTriggerFor]="menu">
+    Dataset - {{ selectedPlatformName$ | async }}
+</button>
+
+<mat-menu #menu="matMenu">
+  <button mat-menu-item
+    *ngFor="let platform of (platforms$ | async)"
+    (click)="onSelectionChange(platform.name)"
+    [class.selected]="platform.name === (selectedPlatformName$ | async)"
+    [value]="platform.name">
+    <app-platform
+      class="list-group-item list-group-item-action"
+      [platform]="platform">
+    </app-platform>
+  </button>
+</mat-menu>
+

@@ -96,12 +96,23 @@ export class BreadcrumbListComponent {
   );
 
   public onDoSearch(): void {
+    this.clearSelectedBreadcrumb();
     this.doSearch.emit();
-    this.selectedFilter = BreadcrumbFilterType.NONE;
   }
 
   public onClearSearch(): void {
+    this.clearSelectedBreadcrumb();
+    this.store$.dispatch(new uiStore.CloseFiltersMenu());
     this.clearSearch.emit();
+  }
+
+  public clearSelectedBreadcrumb(): void {
+    this.selectedFilter = BreadcrumbFilterType.NONE;
+  }
+
+  public onClearDateRange(): void {
+    this.store$.dispatch(new filtersStore.ClearDateRange());
+    this.store$.dispatch(new filtersStore.ClearSeason());
   }
 
   public onNewSelectedFilter(filterType: BreadcrumbFilterType): void {
@@ -113,12 +124,12 @@ export class BreadcrumbListComponent {
 
   public onToggleFiltersMenu(): void {
     this.store$.dispatch(new uiStore.ToggleFiltersMenu());
-    this.selectedFilter = BreadcrumbFilterType.NONE;
+    this.clearSelectedBreadcrumb();
   }
 
   public onSetSearchType(searchType: SearchType): void {
     this.store$.dispatch(new uiStore.SetSearchType(searchType));
-    this.selectedFilter = BreadcrumbFilterType.NONE;
+    this.clearSelectedBreadcrumb();
   }
 
   public onNewMaxResults(maxResults: number): void {
