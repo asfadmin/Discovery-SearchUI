@@ -20,7 +20,7 @@
       <button (click)="onNewSelectedFilter(filterTypes.DATASET)"
         color="{{ accent }}"
         mat-stroked-button>
-        {{ selectedPlatformName$ | async }}
+        Dataset - {{ selectedPlatformName$ | async }}
       </button>
 
       <mat-card *ngIf="selectedFilter === filterTypes.DATASET"

@@ -65,6 +65,10 @@ export class BreadcrumbListComponent {
   public dateRangePreview$ = this.store$.select(filtersStore.getDateRange).pipe(
     map(({ start, end }) => {
       const format = date => {
+        if (!date) {
+          return date;
+        }
+
         const [month, day, year] = [
           date.getUTCMonth() + 1,
           date.getUTCDate(),
@@ -74,10 +78,16 @@ export class BreadcrumbListComponent {
         return `${month}-${day}-${year}`;
       };
 
-      return [start, end]
-        .filter(v => !!v)
-        .map(format)
-        .join(' to ');
+      const [startStr, endStr] = [start, end]
+        .map(format);
+
+      if (startStr && endStr) {
+        return `${startStr} to ${endStr}`;
+      } else if (startStr) {
+        return `after ${startStr}`;
+      } else if (endStr) {
+        return `before ${endStr}`;
+      }
     })
   );
 
