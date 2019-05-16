@@ -5,5 +5,10 @@ import { Component } from '@angular/core';
   templateUrl: './dataset-search.component.html',
   styleUrls: ['./dataset-search.component.scss']
 })
+
 export class DatasetSearchComponent {
+  defaultPanelOpenState = true;
+  panelIsDisabled = true;
+  customCollapsedHeight = '30px';
+  customExpandedHeight = '30px';
 }

@@ -38,3 +38,11 @@ ul {
   list-style: none;
   padding-left: 0;
 }
+
+.mat-slide-toggle.mat-checked .mat-slide-toggle-thumb {
+  background-color: $asf-warn;
+}
+
+.mat-slide-toggle.mat-checked .mat-slide-toggle-content {
+  background-color: $asf-warn;
+}
