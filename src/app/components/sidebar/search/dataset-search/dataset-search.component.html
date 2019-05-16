@@ -1,21 +1,21 @@
 <mat-accordion multi>
-  <div *ngIf="screenWidth <= 1250">
-    <mat-expansion-panel expanded #panel_1>
-      <mat-expansion-panel-header>
-        <mat-panel-title>
-          <b>Basic Filters</b>
-        </mat-panel-title>
-        <mat-panel-description>
-          Platform, date, and area of interest
-        </mat-panel-description>
-      </mat-expansion-panel-header>
-      <div style="margin-top:15px">
-        <app-platform-selector></app-platform-selector>
-        <app-date-selector></app-date-selector>
-        <app-aoi-upload></app-aoi-upload>
-      </div>
-    </mat-expansion-panel>
-  </div>
+
+<!--  <mat-expansion-panel expanded #panel_1>-->
+<!--    <mat-expansion-panel-header>-->
+<!--      <mat-panel-title>-->
+<!--        <mat-icon>{{panel_1 .expanded ? 'keyboard_arrow_up' : 'keyboard_arrow_down' }}</mat-icon>-->
+<!--        Basic Filters-->
+<!--      </mat-panel-title>-->
+<!--      <mat-panel-description>-->
+<!--        Platform, date, and area of interest-->
+<!--      </mat-panel-description>-->
+<!--    </mat-expansion-panel-header>-->
+
+<!--    <app-platform-selector></app-platform-selector>-->
+<!--    <app-date-selector></app-date-selector>-->
+<!--    <app-aoi-upload></app-aoi-upload>-->
+<!--  </mat-expansion-panel>-->
+
   <mat-expansion-panel expanded>
     <mat-expansion-panel-header>
       <mat-panel-title>
