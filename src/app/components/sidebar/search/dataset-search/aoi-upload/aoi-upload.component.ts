@@ -14,7 +14,6 @@ import { MapService } from '@services';
   styleUrls: ['./aoi-upload.component.css']
 })
 export class AoiUploadComponent implements OnInit {
-
   public drawMode$ = this.store$.select(mapStore.getMapDrawMode);
   public interactionMode$ = this.store$.select(mapStore.getMapInteractionMode);
 
