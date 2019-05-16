@@ -89,12 +89,19 @@ export class BreadcrumbListComponent {
 
       const seasonStr = (season.start || season.end) ? 'seasonal' : '';
 
+      let dateStr = '';
       if (startStr && endStr) {
-        return `${startStr} to ${endStr} · ${seasonStr}`;
+        dateStr = `${startStr} to ${endStr}`;
       } else if (startStr) {
-        return `after ${startStr} · ${seasonStr}`;
+        dateStr = `after ${startStr}`;
       } else if (endStr) {
-        return `before ${endStr} · ${seasonStr}`;
+        dateStr = `before ${endStr}`;
+      }
+
+      if (dateStr && seasonStr) {
+        return `${dateStr} · ${seasonStr}`;
+      } else if (dateStr) {
+        return dateStr;
       } else {
         return seasonStr;
       }
