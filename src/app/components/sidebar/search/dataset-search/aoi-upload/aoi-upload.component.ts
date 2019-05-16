@@ -40,6 +40,10 @@ export class AoiUploadComponent implements OnInit {
     this.store$.dispatch(new mapStore.SetMapDrawMode(mode));
   }
 
+  public onClearPolygon(): void {
+    this.mapService.clearDrawLayer();
+  }
+
   public onNewInteractionMode(mode: MapInteractionModeType): void {
     this.store$.dispatch(new mapStore.SetMapInteractionMode(mode));
   }

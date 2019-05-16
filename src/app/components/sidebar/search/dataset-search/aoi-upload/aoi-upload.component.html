@@ -8,6 +8,7 @@
 
     <app-interaction-selector
       (newInteraction)="onNewInteractionMode($event)"
+       (clearPolygon)="onClearPolygon()"
       [interaction]="interactionMode$ | async">
     ></app-interaction-selector>
   </div>
