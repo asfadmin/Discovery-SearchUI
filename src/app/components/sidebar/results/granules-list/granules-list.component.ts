@@ -30,7 +30,7 @@ export class GranulesListComponent implements OnInit {
 
   public granules: Sentinel1Product[];
   public pageSizeOptions = [5, 10];
-  public pageSize = this.pageSizeOptions[1];
+  public pageSize = this.pageSizeOptions[0];
   public pageIndex = 0;
 
   public downloadIcon = faFileDownload;

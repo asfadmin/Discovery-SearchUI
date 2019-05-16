@@ -105,6 +105,17 @@ export class BreadcrumbListComponent {
     map(polygon => !!polygon)
   );
 
+  public isAnyAdditionalFilters$ = combineLatest(
+    this.store$.select(filtersStore.getIsAnyPathFrameValue),
+    this.store$.select(filtersStore.getIsAnyAdditionalFilters)
+  ).pipe(
+    map(additional => additional.some(v => !!v))
+  );
+
+  public additionalFiltersPreview$ = this.store$.select(filtersStore.getNumberOfAdditionalFilters).pipe(
+    map(amt => amt > 0 ? ` · ${amt}` : '')
+  );
+
   public onDoSearch(): void {
     this.clearSelectedBreadcrumb();
     this.doSearch.emit();

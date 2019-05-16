@@ -49,9 +49,15 @@
 
   <div class="breadcrumb">
     <button (click)="onToggleFiltersMenu()"
-      [class.selected]="selectedFilter === filterTypes.FILTERS_MENU"
+      *ngIf="(searchType$ | async) === searchTypes.DATASET"
+       color="{{ !(isAnyAdditionalFilters$ | async) ? 'basic' : accent }}"
        mat-stroked-button>
-        <span *ngIf="(searchType$ | async) === searchTypes.DATASET">Additional Filters</span>
+        Additional Filters {{ additionalFiltersPreview$ | async }}
+    </button>
+
+    <button (click)="onToggleFiltersMenu()"
+      *ngIf="(searchType$ | async) !== searchTypes.DATASET"
+       mat-stroked-button>
         <span *ngIf="(searchType$ | async) === searchTypes.MISSION">Mission</span>
         <span *ngIf="(searchType$ | async) === searchTypes.LIST">List</span>
     </button>
