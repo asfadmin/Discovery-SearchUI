@@ -17,16 +17,7 @@
 
   <ng-container *ngIf="(searchType$ | async) === searchTypes.DATASET">
     <div class="breadcrumb hide-mobile hide-medium">
-      <button (click)="onNewSelectedFilter(filterTypes.DATASET)"
-        color="{{ accent }}"
-        mat-stroked-button>
-        Dataset - {{ selectedPlatformName$ | async }}
-      </button>
-
-      <mat-card *ngIf="selectedFilter === filterTypes.DATASET"
-        class="breadcrumb-filter">
-          <app-platform-selector></app-platform-selector>
-      </mat-card>
+        <app-platform-selector></app-platform-selector>
     </div>
 
     <div class="breadcrumb hide-mobile hide-medium">
