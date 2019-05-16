@@ -36,6 +36,8 @@ export class BreadcrumbListComponent {
 
   public accent = 'primary';
 
+  public canSearch$ = this.store$.select(searchStore.getCanSearch);
+
   constructor(
     private store$: Store<AppState>,
     private mapService: MapService,
