@@ -14,7 +14,6 @@
     <app-interaction-selector
       style="margin-right: 5px;"
       (newInteraction)="onNewInteractionMode($event)"
-      (clearPolygon)="onClearPolygon()"
       [interaction]="interactionMode$ | async">
     ></app-interaction-selector>
 
@@ -39,8 +38,11 @@
       </mat-icon>
     </mat-form-field>
 
-    <button (click)="onFileUpload()" mat-raised-button color="primary" matTooltip="Import Area of Intreset">
-      Import Search Area
+    <button (click)="onClearPolygon()" mat-flat-button matTooltip="Import Area of Intreset">
+      Clear
+    </button>
+    <button (click)="onFileUpload()" mat-flat-button color="primary" matTooltip="Import Area of Intreset">
+      Import
     </button>
   </div>
 </div>

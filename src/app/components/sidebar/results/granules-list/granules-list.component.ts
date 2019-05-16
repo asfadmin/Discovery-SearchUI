@@ -44,6 +44,15 @@ export class GranulesListComponent implements OnInit {
     );
   }
 
+  public onListKeydown(key): void {
+    switch ( key ) {
+      case 'ArrowDown': return console.log('next product');
+      case 'ArrowUp': return console.log('previous product');
+      case 'ArrowRight': return console.log('next page');
+      case 'ArrowLeft': return console.log('previous page');
+    }
+  }
+
   public onGranuleSelected(name: string): void {
     this.newSelected.emit(name);
   }

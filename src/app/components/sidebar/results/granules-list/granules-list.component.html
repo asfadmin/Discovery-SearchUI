@@ -1,4 +1,6 @@
-<mat-card class="card-spacing">
+<mat-card class="card-spacing"
+  (keydown)="onListKeydown($event.key)"
+  >
   <mat-action-list>
     <button
       *ngFor="let granule of currentPageOf(granules, pageSize, pageIndex)"

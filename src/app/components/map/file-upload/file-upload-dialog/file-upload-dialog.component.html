@@ -8,7 +8,7 @@
   class="container"
   fxLayout="column"
   fxLayoutAlign="space-evenly stretch">
-  <h1 mat-dialog-title>Upload Geospatial Files</h1>
+  <h1 mat-dialog-title>Import Geospatial Files</h1>
 
   <div>
     Accepted formats are <b>shapefiles</b> (.shp), <b>geojson</b> (.geojson), <b>kml</b> (.kml)
@@ -21,7 +21,7 @@
       [disabled]="uploading"
       color="primary"
       class="add-files-btn" >
-        Add Files
+        Select Files
     </button>
   </div>
 
@@ -78,7 +78,7 @@
     <button mat-raised-button color="primary"
       (click)="onUpload()"
       [disabled]="!canBeClosed">
-      Upload
+      Import
     </button>
 
   </mat-dialog-actions>
