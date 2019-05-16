@@ -16,32 +16,22 @@
 <!--    <app-aoi-upload></app-aoi-upload>-->
 <!--  </mat-expansion-panel>-->
 
-  <mat-expansion-panel expanded>
-    <mat-expansion-panel-header>
+  <mat-expansion-panel [expanded]="defaultPanelOpenState" [disabled]="panelIsDisabled">
+    <mat-expansion-panel-header [collapsedHeight]="customCollapsedHeight" [expandedHeight]="customExpandedHeight">
       <mat-panel-title>
-        <b>Path and Frame Filters</b>
+        Path and Frame Filters
       </mat-panel-title>
-
-      <mat-panel-description>
-        Path, frame
-      </mat-panel-description>
     </mat-expansion-panel-header>
-
     <app-path-selector></app-path-selector>
   </mat-expansion-panel>
 
-  <mat-expansion-panel expanded>
-    <mat-expansion-panel-header>
+  <mat-expansion-panel [expanded]="defaultPanelOpenState" [disabled]="panelIsDisabled">
+    <mat-expansion-panel-header [collapsedHeight]="customCollapsedHeight" [expandedHeight]="customExpandedHeight">
       <mat-panel-title>
-        <b>Additional Filters</b>
+        Additional Filters
       </mat-panel-title>
-
-      <mat-panel-description>
-        Product type, beam mode, polarization, flight direction
-      </mat-panel-description>
     </mat-expansion-panel-header>
-
     <app-other-selector></app-other-selector>
-
   </mat-expansion-panel>
+
 </mat-accordion>

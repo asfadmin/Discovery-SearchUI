@@ -3,23 +3,38 @@
 // Create a config with the default typography levels.
 $config: mat-typography-config();
 $primary-light: lighten($asf-primary, 40%);
+$primary-dark: darken($asf-primary, 15%);
+
+.mat-header-base {
+  background-color: $primary-light !important;
+  color: $primary-dark;
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+  border-left-width: 0;
+  border-right-width: 0;
+  border-top-width: 0;
+  border-bottom-width: 0.5px;
+  border-color: $asf-primary;
+  border-style: solid;
+}
 
 .mat-expansion-panel-header,
 .mat-expansion-panel-header.mat-expanded {
-  background-color: $primary-light !important;
+  @extend .mat-header-base;
 
   &:hover,
   &:visited,
   &:link,
   &:active,
-  &:focus {
-    background-color: $primary-light;
+  &:focus,
+  &[aria-disabled="true"] {
+    @extend .mat-header-base;
   }
 }
 
 .mat-expansion-panel-header-title {
   color: white;
-  font-size: mat-font-size($config, title);
+  font-size: mat-font-size($config, subheading-2);
 }
 
 .mat-expansion-panel-header-description {
