@@ -42,7 +42,7 @@
       <mat-card *ngIf="selectedFilter === filterTypes.DATE"
         class="breadcrumb-filter">
           <app-date-selector></app-date-selector>
-          <button (click)="onClearDateRange()" mat-flat-button>Clear</button>
+          <button (click)="onClearDateRange()" matTooltip="Clear date and season" mat-flat-button>Clear</button>
       </mat-card>
     </div>
   </ng-container>
