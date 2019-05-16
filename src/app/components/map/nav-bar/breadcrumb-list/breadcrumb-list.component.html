@@ -16,7 +16,8 @@
 
 
   <ng-container *ngIf="(searchType$ | async) === searchTypes.DATASET">
-    <div class="breadcrumb hide-mobile hide-medium">
+    <div (click)="clearSelectedBreadcrumb()"
+      class="breadcrumb hide-mobile hide-medium">
         <app-platform-selector></app-platform-selector>
     </div>
 
