@@ -1,21 +1,22 @@
 <mat-accordion multi>
+
+<!--  <mat-expansion-panel expanded #panel_1>-->
+<!--    <mat-expansion-panel-header>-->
+<!--      <mat-panel-title>-->
+<!--        <mat-icon>{{panel_1 .expanded ? 'keyboard_arrow_up' : 'keyboard_arrow_down' }}</mat-icon>-->
+<!--        Basic Filters-->
+<!--      </mat-panel-title>-->
+<!--      <mat-panel-description>-->
+<!--        Platform, date, and area of interest-->
+<!--      </mat-panel-description>-->
+<!--    </mat-expansion-panel-header>-->
+
+<!--    <app-platform-selector></app-platform-selector>-->
+<!--    <app-date-selector></app-date-selector>-->
+<!--    <app-aoi-upload></app-aoi-upload>-->
+<!--  </mat-expansion-panel>-->
+
   <mat-expansion-panel expanded>
-    <mat-expansion-panel-header>
-      <mat-panel-title>
-        <b>Basic Filters</b>
-      </mat-panel-title>
-      <mat-panel-description>
-        Platform, date, and area of interest
-      </mat-panel-description>
-    </mat-expansion-panel-header>
-
-    <app-platform-selector></app-platform-selector>
-    <app-date-selector></app-date-selector>
-    <app-aoi-upload></app-aoi-upload>
-
-  </mat-expansion-panel>
-
-  <mat-expansion-panel>
     <mat-expansion-panel-header>
       <mat-panel-title>
         <b>Path and Frame Filters</b>
@@ -27,10 +28,9 @@
     </mat-expansion-panel-header>
 
     <app-path-selector></app-path-selector>
-
   </mat-expansion-panel>
 
-  <mat-expansion-panel >
+  <mat-expansion-panel expanded>
     <mat-expansion-panel-header>
       <mat-panel-title>
         <b>Additional Filters</b>

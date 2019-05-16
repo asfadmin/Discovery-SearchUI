@@ -1,0 +1,34 @@
+@import "asf-theme";
+
+// Create a config with the default typography levels.
+$config: mat-typography-config();
+$primary-light: lighten($asf-primary, 40%);
+
+.mat-expansion-panel-header,
+.mat-expansion-panel-header.mat-expanded {
+  background-color: $primary-light !important;
+
+  &:hover,
+  &:visited,
+  &:link,
+  &:active,
+  &:focus {
+    background-color: $primary-light;
+  }
+}
+
+.mat-expansion-panel-header-title {
+  color: white;
+  font-size: mat-font-size($config, title);
+}
+
+.mat-expansion-panel-header-description {
+  color: white;
+}
+
+.mat-icon {
+  @include md-icon-size(30px);
+
+  margin-right: 10px;
+  color: black;
+}
