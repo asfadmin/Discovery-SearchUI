@@ -1,5 +1,6 @@
 import { Component, EventEmitter, Output } from '@angular/core';
 
+import { combineLatest } from 'rxjs';
 import { tap, map, filter, withLatestFrom } from 'rxjs/operators';
 import { Store } from '@ngrx/store';
 
@@ -64,8 +65,11 @@ export class BreadcrumbListComponent {
   );
 
   public isAnyDateValues$ = this.store$.select(filtersStore.getIsAnyDateValues);
-  public dateRangePreview$ = this.store$.select(filtersStore.getDateRange).pipe(
-    map(({ start, end }) => {
+  public dateRangePreview$ = combineLatest(
+    this.store$.select(filtersStore.getDateRange),
+    this.store$.select(filtersStore.getSeason)
+  ).pipe(
+    map(([dateRange, season]) => {
       const format = date => {
         if (!date) {
           return date;
@@ -80,15 +84,19 @@ export class BreadcrumbListComponent {
         return `${month}-${day}-${year}`;
       };
 
-      const [startStr, endStr] = [start, end]
+      const [startStr, endStr] = [dateRange.start, dateRange.end]
         .map(format);
 
+      const seasonStr = (season.start || season.end) ? 'seasonal' : '';
+
       if (startStr && endStr) {
-        return `${startStr} to ${endStr}`;
+        return `${startStr} to ${endStr} · ${seasonStr}`;
       } else if (startStr) {
-        return `after ${startStr}`;
+        return `after ${startStr} · ${seasonStr}`;
       } else if (endStr) {
-        return `before ${endStr}`;
+        return `before ${endStr} · ${seasonStr}`;
+      } else {
+        return seasonStr;
       }
     })
   );
