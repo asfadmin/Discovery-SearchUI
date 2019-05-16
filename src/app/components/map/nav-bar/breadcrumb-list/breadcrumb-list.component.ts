@@ -102,11 +102,11 @@ export class BreadcrumbListComponent {
 
   public onClearSearch(): void {
     this.clearSelectedBreadcrumb();
-    this.store$.dispatch(new uiStore.CloseFiltersMenu());
     this.clearSearch.emit();
   }
 
   public clearSelectedBreadcrumb(): void {
+    this.store$.dispatch(new uiStore.CloseFiltersMenu());
     this.selectedFilter = BreadcrumbFilterType.NONE;
   }
 
@@ -124,7 +124,7 @@ export class BreadcrumbListComponent {
 
   public onToggleFiltersMenu(): void {
     this.store$.dispatch(new uiStore.ToggleFiltersMenu());
-    this.clearSelectedBreadcrumb();
+    this.selectedFilter = BreadcrumbFilterType.NONE;
   }
 
   public onSetSearchType(searchType: SearchType): void {
