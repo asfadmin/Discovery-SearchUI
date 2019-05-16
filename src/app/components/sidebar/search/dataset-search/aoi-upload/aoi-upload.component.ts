@@ -20,6 +20,7 @@ export class AoiUploadComponent implements OnInit {
 
   public polygon$ = this.mapService.searchPolygon$;
   public polygon: string;
+  public interactionTypes = MapInteractionModeType;
 
   constructor(
     private mapService: MapService,
