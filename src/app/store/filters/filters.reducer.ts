@@ -221,7 +221,15 @@ export function filtersReducer(state = initState, action: FiltersActions): Filte
     }
 
     case FiltersActionType.CLEAR_FILTERS: {
-      return initState;
+      const selected = new Set<string>(state.platforms.selected);
+
+      return {
+        ...initState,
+        platforms: {
+          ...initState.platforms,
+          selected
+        }
+      };
     }
 
     case FiltersActionType.USE_SEARCH_POLYGON: {
