@@ -21,11 +21,6 @@ export class InteractionSelectorComponent {
 
   public onEditSelected =
     () => this.newInteraction.emit(MapInteractionModeType.EDIT)
-
-  public onClearPolygon = () => {
-    this.clearPolygon.emit();
-    this.newInteraction.emit(MapInteractionModeType.DRAW);
-  }
 }
 
 

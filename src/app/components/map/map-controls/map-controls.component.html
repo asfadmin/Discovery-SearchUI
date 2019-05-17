@@ -1,10 +1,7 @@
 <div class="position layout">
   <app-view-selector
-    class="spacing"
     (newProjection)="onNewProjection($event)"
-    [view]="view$ | async">
+    [view]="view$ | async"
+    class="spacing">
   </app-view-selector>
 </div>
-
-
-

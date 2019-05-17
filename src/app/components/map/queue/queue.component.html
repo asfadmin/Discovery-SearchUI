@@ -1,5 +1,6 @@
 <h2>Download Queue</h2>
-<button mat-raised-button (click)="onClearQueue()">Clear Queue</button>
+
+<button (click)="onClearQueue()" mat-raised-button>Clear Queue</button>
 
 <mat-list role="list">
   <ng-container *ngIf="products$ | async as products">
@@ -16,45 +17,43 @@
             </span>
           </div>
 
-          <a matTooltip="Download" target="_blank" [href]="product.downloadUrl">
-            <mat-icon style="cursor: pointer">
-                cloud_download
-            </mat-icon>
+          <a [href]="product.downloadUrl" matTooltip="Download" target="_blank">
+            <mat-icon style="cursor: pointer">cloud_download</mat-icon>
           </a>
           <mat-icon (click)="onRemoveProduct(product)" style="cursor: pointer">
-              close
+            close
           </mat-icon>
         </h4>
     </mat-list-item>
   </ng-container>
 </mat-list>
 
-<button mat-raised-button color="primary"
-  class="metadata-dl-btn"
-  (click)="onMakeDownloadScript()">
+<button (click)="onMakeDownloadScript()"
+  mat-raised-button color="primary"
+  class="metadata-dl-btn">
     Download Python Script (.py)
 </button>
 
-<button mat-raised-button color="primary"
-  class="metadata-dl-btn"
-  (click)="onCsvDownload()">
-  Metadata (csv)
+<button (click)="onCsvDownload()"
+  mat-raised-button color="primary"
+  class="metadata-dl-btn">
+    Metadata (csv)
 </button>
 
-<button mat-raised-button color="primary"
-  class="metadata-dl-btn"
-  (click)="onKmlDownload()">
-  Metadata (kml)
+<button (click)="onKmlDownload()"
+  mat-raised-button color="primary"
+  class="metadata-dl-btn">
+    Metadata (kml)
 </button>
 
-<button mat-raised-button color="primary"
-  class="metadata-dl-btn"
-  (click)="onGeojsonDownload()">
-  Metadata (geojson)
+<button (click)="onGeojsonDownload()"
+  mat-raised-button color="primary"
+  class="metadata-dl-btn">
+    Metadata (geojson)
 </button>
 
-<button mat-raised-button color="primary"
-  class="metadata-dl-btn"
-  (click)="onMetalinkDownload()">
+<button (click)="onMetalinkDownload()"
+  mat-raised-button color="primary"
+  class="metadata-dl-btn">
   Metadata (metalink)
 </button>

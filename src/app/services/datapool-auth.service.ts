@@ -32,7 +32,6 @@ export class DatapoolAuthService {
       `&redirect_uri=${this.vertexAuthUrl}/services/urs4_token_request` +
       `&state=${appRedirect}`;
 
-    console.log(url);
     const loginWindow = window.open(
       url,
       'Vertex: URS Earth Data Authorization',

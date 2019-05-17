@@ -30,7 +30,7 @@ export class GranulesListComponent implements OnInit {
 
   public granules: Sentinel1Product[];
   public pageSizeOptions = [5, 10];
-  public pageSize = this.pageSizeOptions[1];
+  public pageSize = this.pageSizeOptions[0];
   public pageIndex = 0;
 
   public downloadIcon = faFileDownload;
@@ -42,6 +42,15 @@ export class GranulesListComponent implements OnInit {
     ).subscribe(
       granules => this.granules = granules
     );
+  }
+
+  public onListKeydown(key): void {
+    switch ( key ) {
+      case 'ArrowDown': return console.log('next product');
+      case 'ArrowUp': return console.log('previous product');
+      case 'ArrowRight': return console.log('next page');
+      case 'ArrowLeft': return console.log('previous page');
+    }
   }
 
   public onGranuleSelected(name: string): void {

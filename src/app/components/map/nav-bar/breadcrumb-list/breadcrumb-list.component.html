@@ -42,16 +42,22 @@
       <mat-card *ngIf="selectedFilter === filterTypes.DATE"
         class="breadcrumb-filter">
           <app-date-selector></app-date-selector>
-          <button (click)="onClearDateRange()" mat-flat-button>Clear</button>
+          <button (click)="onClearDateRange()" matTooltip="Clear date and season" mat-flat-button>Clear</button>
       </mat-card>
     </div>
   </ng-container>
 
   <div class="breadcrumb">
     <button (click)="onToggleFiltersMenu()"
-      [class.selected]="selectedFilter === filterTypes.FILTERS_MENU"
+      *ngIf="(searchType$ | async) === searchTypes.DATASET"
+       color="{{ !(isAnyAdditionalFilters$ | async) ? 'basic' : accent }}"
        mat-stroked-button>
-        <span *ngIf="(searchType$ | async) === searchTypes.DATASET">Additional Filters</span>
+        Additional Filters {{ additionalFiltersPreview$ | async }}
+    </button>
+
+    <button (click)="onToggleFiltersMenu()"
+      *ngIf="(searchType$ | async) !== searchTypes.DATASET"
+       mat-stroked-button>
         <span *ngIf="(searchType$ | async) === searchTypes.MISSION">Mission</span>
         <span *ngIf="(searchType$ | async) === searchTypes.LIST">List</span>
     </button>

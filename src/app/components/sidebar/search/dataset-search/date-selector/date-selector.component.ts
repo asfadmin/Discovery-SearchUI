@@ -55,7 +55,6 @@ export class DateSelectorComponent implements OnInit {
   }
 
   public onToggleSeasonalOptions(): void {
-    this.isSeasonalSearch = !this.isSeasonalSearch;
     this.store$.dispatch(new filtersStore.ClearSeason());
   }
 

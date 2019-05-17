@@ -1,10 +1,5 @@
 import { Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
 
-import {
-  trigger, state, style,
-  animate, transition
-} from '@angular/animations';
-
 import * as models from '@models';
 
 @Component({
@@ -19,7 +14,6 @@ export class NavBarComponent {
   @Output() clearSearch = new EventEmitter<void>();
 
   @Input() products: models.Sentinel1Product[];
-  @Input() isSideMenuOpen: boolean;
 
   public onOpenDownloadQueue(): void {
     this.openQueue.emit();

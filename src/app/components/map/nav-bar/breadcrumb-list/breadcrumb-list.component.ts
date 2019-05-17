@@ -6,7 +6,6 @@ import { Store } from '@ngrx/store';
 
 import { AppState } from '@store';
 import * as searchStore from '@store/search';
-import * as mapStore from '@store/map';
 import * as uiStore from '@store/ui';
 import * as granulesStore from '@store/granules';
 import * as filtersStore from '@store/filters';
@@ -36,7 +35,6 @@ export class BreadcrumbListComponent {
   @Output() clearSearch = new EventEmitter<void>();
 
   public accent = 'primary';
-
   public canSearch$ = this.store$.select(searchStore.getCanSearch);
 
   constructor(
@@ -58,51 +56,24 @@ export class BreadcrumbListComponent {
   public maxResults$ = this.store$.select(filtersStore.getMaxSearchResults);
   public currentSearchAmount$ = this.store$.select(searchStore.getSearchAmount);
 
-  public selectedPlatformName$ = this.store$.select(filtersStore.getSelectedPlatformNames).pipe(
-    map(platform => platform.size === 1 ?
-      platform.values().next().value : null
-    )
-  );
+  public selectedPlatformName$ = this.store$.select(filtersStore.getSelectedPlatformName);
 
   public isAnyDateValues$ = this.store$.select(filtersStore.getIsAnyDateValues);
-  public dateRangePreview$ = combineLatest(
-    this.store$.select(filtersStore.getDateRange),
-    this.store$.select(filtersStore.getSeason)
-  ).pipe(
-    map(([dateRange, season]) => {
-      const format = date => {
-        if (!date) {
-          return date;
-        }
-
-        const [month, day, year] = [
-          date.getUTCMonth() + 1,
-          date.getUTCDate(),
-          date.getUTCFullYear(),
-        ];
-
-        return `${month}-${day}-${year}`;
-      };
-
-      const [startStr, endStr] = [dateRange.start, dateRange.end]
-        .map(format);
-
-      const seasonStr = (season.start || season.end) ? 'seasonal' : '';
-
-      if (startStr && endStr) {
-        return `${startStr} to ${endStr} · ${seasonStr}`;
-      } else if (startStr) {
-        return `after ${startStr} · ${seasonStr}`;
-      } else if (endStr) {
-        return `before ${endStr} · ${seasonStr}`;
-      } else {
-        return seasonStr;
-      }
-    })
-  );
+  public dateRangePreview$ = this.store$.select(filtersStore.getDatePreviewStr);
 
   public isAnyAOIValue$ = this.mapService.searchPolygon$.pipe(
     map(polygon => !!polygon)
+  );
+
+  public isAnyAdditionalFilters$ = combineLatest(
+    this.store$.select(filtersStore.getIsAnyPathFrameValue),
+    this.store$.select(filtersStore.getIsAnyAdditionalFilters)
+  ).pipe(
+    map(additional => additional.some(v => !!v))
+  );
+
+  public additionalFiltersPreview$ = this.store$.select(filtersStore.getNumberOfAdditionalFilters).pipe(
+    map(amt => amt > 0 ? ` · ${amt}` : '')
   );
 
   public onDoSearch(): void {

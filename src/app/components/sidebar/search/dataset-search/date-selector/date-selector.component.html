@@ -29,7 +29,7 @@
     </mat-form-field>
   </div>
 
-<mat-slide-toggle (change)="onToggleSeasonalOptions()" style="margin: 15px 0">Seasonal Search</mat-slide-toggle>
+<mat-slide-toggle (change)="onToggleSeasonalOptions()" [(ngModel)]="isSeasonalSearch" style="margin: 15px 0">Seasonal Search</mat-slide-toggle>
 
 <div *ngIf="isSeasonalSearch">
   <div>

@@ -1,15 +1,14 @@
 <div class="layout">
   <div *ngIf="products" matTooltip="Download Queue">
     <button
-      style="margin-right: 18px;"
-      class="spacing"
       (click)="onOpenDownloadQueue()"
       [disabled]="products.length <= 0" color="basic"
+      style="margin-right: 18px;" class="spacing"
       mat-icon-button>
         <mat-icon
           [matBadge]="products.length"
-          matBadgePosition="below"
           matBadgeColor="{{ products.length > 0 ? 'accent' : 'primary' }}"
+          matBadgePosition="below"
           matBadgeOverlap="false">
             cloud_download
         </mat-icon>
@@ -18,31 +17,28 @@
 
   <button
     (click)="onAccountButtonClicked()"
-    matTooltip="Login"
-    class="spacing"
-    color="basic"
-    mat-icon-button>
+    class="spacing" color="basic"
+    matTooltip="Login" mat-icon-button>
     <mat-icon>{{ datapoolAuthService.isLoggedIn ? 'check_circle' : 'account_circle' }}</mat-icon>
   </button>
 
   <button
-    matTooltip="Share Search"
-    class="spacing"
-    color="basic"
     [matMenuTriggerFor]="shareMenu"
-    mat-icon-button>
+    matTooltip="Share Search"
+    class="spacing" color="basic" mat-icon-button>
       <mat-icon>share</mat-icon>
   </button>
 
   <mat-menu #shareMenu="matMenu">
-    <button mat-menu-item (click)="onCopy()"
-      matSuffix>
-      <mat-icon>file_copy</mat-icon>
-      <span>Copy Search Link</span>
+    <button (click)="onCopy()"
+      mat-menu-item matSuffix>
+        <mat-icon>file_copy</mat-icon>
+        <span>Copy Search Link</span>
     </button>
+
     <a (click)="onShareWithEmail()"
-      href="mailto:?subject=&body=:%20" target="_blank"
-      title="Send email"
+      href="mailto:?subject=&body=:%20"
+      target="_blank" title="Send email"
       mat-menu-item matSuffix>
         <mat-icon>email</mat-icon>
         <span>Share With Email</span>
@@ -50,24 +46,29 @@
   </mat-menu>
 
   <button
-    matTooltip="ASF Apps"
-    class="spacing"
-    color="basic"
     [matMenuTriggerFor]="appMenu"
-    mat-icon-button>
+    matTooltip="ASF Apps"
+    class="spacing" color="basic" mat-icon-button>
       <mat-icon>apps</mat-icon>
   </button>
   <mat-menu #appMenu="matMenu">
+
     <a mat-menu-item [href]="asfWebsiteUrl" target="_blank">
       ASF Website
     </a>
+
     <a mat-menu-item href="https://baseline.asf.alaska.edu" target="_blank">
       Baseline Tool
     </a>
+
     <a mat-menu-item href="{{ asfWebsiteUrl }}/get-data/api" target="_blank">
      ASF API
     </a>
-    <button mat-menu-item [matMenuTriggerFor]="thematicDatasets">Thematic Datasets</button>
+
+    <button [matMenuTriggerFor]="thematicDatasets"
+      mat-menu-item >
+        Thematic Datasets
+    </button>
   </mat-menu>
 
   <mat-menu #thematicDatasets="matMenu">

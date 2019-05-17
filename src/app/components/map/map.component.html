@@ -1,15 +1,14 @@
-<div id="map" class="map"
-  (dragover)="onFileHovered($event)"
-  ></div>
+<div (dragover)="onFileHovered($event)"
+  id="map" class="map">
+</div>
 
 <app-nav-bar
   (openQueue)="onOpenDownloadQueue()"
   (doSearch)="onDoSearch()"
   (clearSearch)="onClearSearch()"
-  [isSideMenuOpen]="isSidebarOpen$ | async"
-  [ngClass]="{'hidden': isUiHidden}"
   [products]="queuedProducts$ | async"
-  ></app-nav-bar>
+  [ngClass]="{'hidden': isUiHidden}">
+</app-nav-bar>
 
 <app-file-upload
   (dialogClose)="onFileUploadDialogClosed($event)"
@@ -27,6 +26,5 @@
   </button>
 </div>
 
-<app-attributions
-  [mousePos]="mousePosition$ | async">
+<app-attributions [mousePos]="mousePosition$ | async">
 </app-attributions>

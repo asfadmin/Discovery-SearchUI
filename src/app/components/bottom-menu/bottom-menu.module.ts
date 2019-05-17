@@ -6,7 +6,7 @@ import { FlexLayoutModule } from '@angular/flex-layout';
 
 import { PipesModule } from '@pipes';
 import { MatSharedModule } from '@shared';
-import { GranulesListModule } from '@components/sidebar/results/granules-list';
+import { GranulesListModule } from './granules-list';
 import { BottomMenuComponent } from './bottom-menu.component';
 
 @NgModule({
