@@ -1,10 +1,16 @@
 import {
   Component, OnInit, Input, ViewChild,
-  ViewEncapsulation, Output, EventEmitter
+  ViewEncapsulation, Output, EventEmitter,
+  HostListener
 } from '@angular/core';
 
-import { Observable } from 'rxjs';
-import { tap } from 'rxjs/operators';
+import { Observable, fromEvent } from 'rxjs';
+import { tap, distinctUntilChanged, withLatestFrom, filter, map } from 'rxjs/operators';
+
+import { Store } from '@ngrx/store';
+import { AppState } from '@store';
+import * as searchStore from '@store/search';
+import * as granulesStore from '@store/granules';
 
 import { faFileDownload, faPlus } from '@fortawesome/free-solid-svg-icons';
 import { MatPaginator } from '@angular/material';
@@ -36,21 +42,53 @@ export class GranulesListComponent implements OnInit {
   public downloadIcon = faFileDownload;
   public queueIcon = faPlus;
 
+  constructor(private store$: Store<AppState>) {}
+
   ngOnInit() {
-    this.granules$.pipe(
-      tap(_ => this.paginator.firstPage())
+    this.store$.select(granulesStore.getSelectedGranule).pipe(
+      withLatestFrom(this.granules$),
+      filter(([selected, _]) => !!selected),
+      map(([selected, granules]) =>
+        Math.ceil((granules.indexOf(selected) + 1) / this.pageSize) - 1
+      ),
+      map(selectedIdx => this.paginator.pageIndex - selectedIdx),
+      filter(distance => distance < 100000)
     ).subscribe(
+      distance => {
+        const direction = distance > 0 ? 'next' : 'prev';
+
+        for (let i = 0; i < Math.abs(distance); ++i) {
+          if (direction === 'next') {
+            this.paginator.previousPage();
+          } else {
+            this.paginator.nextPage();
+          }
+        }
+      }
+    );
+
+    this.granules$.subscribe(
       granules => this.granules = granules
     );
-  }
 
-  public onListKeydown(key): void {
-    switch ( key ) {
-      case 'ArrowDown': return console.log('next product');
-      case 'ArrowUp': return console.log('previous product');
-      case 'ArrowRight': return console.log('next page');
-      case 'ArrowLeft': return console.log('previous page');
-    }
+    this.store$.select(searchStore.getIsLoading).subscribe(
+      _ => this.paginator.firstPage()
+    );
+
+    fromEvent(document, 'keydown').subscribe((e: KeyboardEvent) => {
+      const { key } = e;
+
+      switch ( key ) {
+        case 'ArrowDown': return console.log('next product');
+        case 'ArrowUp': return console.log('previous product');
+        case 'ArrowRight': {
+          return this.paginator.nextPage();
+        }
+        case 'ArrowLeft': {
+          return this.paginator.previousPage();
+        }
+      }
+    });
   }
 
   public onGranuleSelected(name: string): void {
