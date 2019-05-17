@@ -1,10 +1,15 @@
 import {
   Component, OnInit, Input, ViewChild,
-  ViewEncapsulation, Output, EventEmitter
+  ViewEncapsulation, Output, EventEmitter,
+  HostListener
 } from '@angular/core';
 
-import { Observable } from 'rxjs';
-import { tap } from 'rxjs/operators';
+import { Observable, fromEvent } from 'rxjs';
+import { tap, distinctUntilChanged } from 'rxjs/operators';
+
+import { Store } from '@ngrx/store';
+import { AppState } from '@store';
+import * as searchStore from '@store/search';
 
 import { faFileDownload, faPlus } from '@fortawesome/free-solid-svg-icons';
 import { MatPaginator } from '@angular/material';
@@ -36,21 +41,31 @@ export class GranulesListComponent implements OnInit {
   public downloadIcon = faFileDownload;
   public queueIcon = faPlus;
 
+  constructor(private store$: Store<AppState>) {}
+
   ngOnInit() {
-    this.granules$.pipe(
-      tap(_ => this.paginator.firstPage())
-    ).subscribe(
+    this.granules$.subscribe(
       granules => this.granules = granules
     );
-  }
 
-  public onListKeydown(key): void {
-    switch ( key ) {
-      case 'ArrowDown': return console.log('next product');
-      case 'ArrowUp': return console.log('previous product');
-      case 'ArrowRight': return console.log('next page');
-      case 'ArrowLeft': return console.log('previous page');
-    }
+    this.store$.select(searchStore.getIsLoading).subscribe(
+      _ => this.paginator.firstPage()
+    );
+
+    fromEvent(document, 'keydown').subscribe((e: KeyboardEvent) => {
+      const { key } = e;
+
+      switch ( key ) {
+        case 'ArrowDown': return console.log('next product');
+        case 'ArrowUp': return console.log('previous product');
+        case 'ArrowRight': {
+          return this.paginator.nextPage();
+        }
+        case 'ArrowLeft': {
+          return this.paginator.previousPage();
+        }
+      }
+    });
   }
 
   public onGranuleSelected(name: string): void {
@@ -77,6 +92,7 @@ export class GranulesListComponent implements OnInit {
   }
 
   public onNewPage(page): void {
+    console.log('new page', page);
     this.pageIndex = page.pageIndex;
     this.pageSize = page.pageSize;
   }
