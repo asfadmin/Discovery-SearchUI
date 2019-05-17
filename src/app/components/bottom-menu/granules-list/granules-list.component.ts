@@ -5,11 +5,12 @@ import {
 } from '@angular/core';
 
 import { Observable, fromEvent } from 'rxjs';
-import { tap, distinctUntilChanged } from 'rxjs/operators';
+import { tap, distinctUntilChanged, withLatestFrom, filter, map } from 'rxjs/operators';
 
 import { Store } from '@ngrx/store';
 import { AppState } from '@store';
 import * as searchStore from '@store/search';
+import * as granulesStore from '@store/granules';
 
 import { faFileDownload, faPlus } from '@fortawesome/free-solid-svg-icons';
 import { MatPaginator } from '@angular/material';
@@ -44,6 +45,24 @@ export class GranulesListComponent implements OnInit {
   constructor(private store$: Store<AppState>) {}
 
   ngOnInit() {
+    this.store$.select(granulesStore.getSelectedGranule).pipe(
+      withLatestFrom(this.granules$),
+      filter(([selected, _]) => !!selected),
+      map(([selected, granules]) =>
+        Math.ceil((granules.indexOf(selected) + 1) / this.pageSize) - 1
+      ),
+    ).subscribe(
+      selectedPageIdx => {
+        while (this.paginator.pageIndex !== selectedPageIdx) {
+          if (this.paginator.pageIndex > selectedPageIdx) {
+            this.paginator.previousPage();
+          } else {
+            this.paginator.nextPage();
+          }
+        }
+      }
+    );
+
     this.granules$.subscribe(
       granules => this.granules = granules
     );
