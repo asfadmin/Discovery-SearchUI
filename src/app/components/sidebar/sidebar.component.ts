@@ -22,7 +22,7 @@ import * as filtersStore from '@store/filters';
 import * as services from '@services';
 import * as models from '@models';
 
-import { SpreadsheetComponent } from './results/spreadsheet';
+import { SpreadsheetComponent } from '@components/shared/spreadsheet';
 
 @Component({
   selector: 'app-sidebar',
