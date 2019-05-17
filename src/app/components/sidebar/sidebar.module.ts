@@ -11,7 +11,6 @@ import { SearchBarModule } from './search/search-bar';
 
 import { DetailedSearchSelectorModule } from './search/search-selector';
 import { SearchModule } from './search';
-import { RibbonModule } from './ribbon';
 
 import { LogoComponent } from './logo/logo.component';
 
@@ -25,7 +24,6 @@ import { LogoComponent } from './logo/logo.component';
 
     SearchBarModule,
     ToggleButtonModule,
-    RibbonModule,
 
     SearchModule,
     DetailedSearchSelectorModule,
