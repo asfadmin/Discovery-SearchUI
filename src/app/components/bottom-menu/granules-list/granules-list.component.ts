@@ -51,10 +51,14 @@ export class GranulesListComponent implements OnInit {
       map(([selected, granules]) =>
         Math.ceil((granules.indexOf(selected) + 1) / this.pageSize) - 1
       ),
+      map(selectedIdx => this.paginator.pageIndex - selectedIdx),
+      filter(distance => distance < 100000)
     ).subscribe(
-      selectedPageIdx => {
-        while (this.paginator.pageIndex !== selectedPageIdx) {
-          if (this.paginator.pageIndex > selectedPageIdx) {
+      distance => {
+        const direction = distance > 0 ? 'next' : 'prev';
+
+        for (let i = 0; i < Math.abs(distance); ++i) {
+          if (direction === 'next') {
             this.paginator.previousPage();
           } else {
             this.paginator.nextPage();
@@ -111,7 +115,6 @@ export class GranulesListComponent implements OnInit {
   }
 
   public onNewPage(page): void {
-    console.log('new page', page);
     this.pageIndex = page.pageIndex;
     this.pageSize = page.pageSize;
   }
