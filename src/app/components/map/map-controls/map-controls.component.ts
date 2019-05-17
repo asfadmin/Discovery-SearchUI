@@ -18,9 +18,7 @@ export class MapControlsComponent {
   public view$ = this.store$.select(mapStore.getMapView);
   public drawMode$ = this.store$.select(mapStore.getMapDrawMode);
 
-  constructor(
-    private store$: Store<AppState>,
-  ) { }
+  constructor(private store$: Store<AppState>) { }
 
   public onNewProjection(view: models.MapViewType): void {
     this.store$.dispatch(new mapStore.SetMapView(view));

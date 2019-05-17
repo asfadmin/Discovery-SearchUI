@@ -7,7 +7,10 @@ import { MatDialog } from '@angular/material';
 import { Store } from '@ngrx/store';
 
 import { Observable, combineLatest } from 'rxjs';
-import { map, filter, switchMap, tap, withLatestFrom, distinctUntilChanged } from 'rxjs/operators';
+import {
+  map, filter, switchMap, tap,
+  withLatestFrom, distinctUntilChanged
+} from 'rxjs/operators';
 
 import { Vector as VectorLayer} from 'ol/layer';
 import { Vector as VectorSource } from 'ol/source';
@@ -36,10 +39,6 @@ export class MapComponent implements OnInit {
   public mousePosition$ = this.mapService.mousePosition$;
   public newSelectedGranule$ = this.mapService.newSelectedGranule$;
   public isUiHidden = false;
-
-  public isFiltersMenuOpen$ = this.store$.select(uiStore.getIsFiltersMenuOpen);
-  public isSidebarOpen$ = this.store$.select(uiStore.getIsSidebarOpen);
-  public areProductsLoaded$ = this.store$.select(granulesStore.getAreProductsLoaded).pipe(tap(console.log));
 
   private isMapInitialized$ = this.store$.select(mapStore.getIsMapInitialization);
   private granules$ = this.store$.select(granulesStore.getGranules);
@@ -104,18 +103,18 @@ export class MapComponent implements OnInit {
   }
 
   public onFileUploadDialogClosed(successful: boolean): void {
-    if (successful) {
-      this.onNewInteractionMode(models.MapInteractionModeType.EDIT);
-    } else {
-      this.onNewInteractionMode(models.MapInteractionModeType.NONE);
-    }
+    const newMode = successful ?
+      models.MapInteractionModeType.EDIT :
+      models.MapInteractionModeType.NONE;
+
+    this.onNewInteractionMode(newMode);
   }
 
   private updateMapOnViewChange(): void {
     const viewBeforInitialization = this.view$.pipe(
-        withLatestFrom(this.isMapInitialized$),
-        filter(([view, isInit]) => !isInit),
-        map(([view, isInit]) => view)
+      withLatestFrom(this.isMapInitialized$),
+      filter(([view, isInit]) => !isInit),
+      map(([view, isInit]) => view)
     );
 
     viewBeforInitialization.subscribe(
@@ -190,9 +189,7 @@ export class MapComponent implements OnInit {
   private granulePolygonsLayer(projection: string): Observable<VectorSource> {
     return this.granules$.pipe(
       distinctUntilChanged(),
-      map(
-        granules => this.granulesToFeature(granules, projection)
-      ),
+      map(granules => this.granulesToFeature(granules, projection)),
       map(features => this.featuresToSource(features))
     );
   }

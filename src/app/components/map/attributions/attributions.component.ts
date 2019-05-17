@@ -7,11 +7,6 @@ import { LonLat } from '@models';
   templateUrl: './attributions.component.html',
   styleUrls: ['./attributions.component.css'],
 })
-export class AttributionsComponent implements OnInit {
+export class AttributionsComponent {
   @Input() mousePos: LonLat;
-
-  constructor() { }
-
-  ngOnInit() {
-  }
 }

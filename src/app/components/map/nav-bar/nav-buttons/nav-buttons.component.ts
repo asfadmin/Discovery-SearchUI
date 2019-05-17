@@ -10,10 +10,9 @@ import { Sentinel1Product } from '@models';
   templateUrl: './nav-buttons.component.html',
   styleUrls: ['./nav-buttons.component.css']
 })
-export class NavButtonsComponent implements OnInit {
+export class NavButtonsComponent {
   public asfWebsiteUrl = 'https://www.asf.alaska.edu';
 
-  @Input() isSideMenuOpen: boolean;
   @Input() products: Sentinel1Product[];
 
   @Output() openQueue = new EventEmitter<void>();
@@ -22,9 +21,6 @@ export class NavButtonsComponent implements OnInit {
     public datapoolAuthService: DatapoolAuthService,
     public clipboard: ClipboardService,
   ) {}
-
-  ngOnInit() {
-  }
 
   public onOpenDownloadQueue(): void {
     this.openQueue.emit();
@@ -36,7 +32,6 @@ export class NavButtonsComponent implements OnInit {
     } else {
       this.datapoolAuthService.profileInfo()
         .subscribe(console.log);
-      console.log('user is logged in...');
     }
   }
 

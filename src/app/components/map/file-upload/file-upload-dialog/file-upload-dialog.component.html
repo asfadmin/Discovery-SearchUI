@@ -1,85 +1,75 @@
-<input
-  (change)="onFilesAdded()"
-  type="file" style="display: none"
-  multiple #file/>
+<input (change)="onFilesAdded()"
+  style="display: none"
+  type="file" multiple #file/>
 
 <div
   (drop)="onFileDrop($event)"
-  class="container"
-  fxLayout="column"
-  fxLayoutAlign="space-evenly stretch">
-  <h1 mat-dialog-title>Import Geospatial Files</h1>
+  fxLayout="column" fxLayoutAlign="space-evenly stretch"
+  class="container">
+    <h1 mat-dialog-title>Import Geospatial Files</h1>
 
-  <div>
-    Accepted formats are <b>shapefiles</b> (.shp), <b>geojson</b> (.geojson), <b>kml</b> (.kml)
-    or a <b>zip archive</b> (.zip) of a shapefile.
-  </div>
+    <div>
+      Accepted formats are <b>shapefiles</b> (.shp), <b>geojson</b> (.geojson), <b>kml</b> (.kml)
+      or a <b>zip archive</b> (.zip) of a shapefile.
+    </div>
 
-  <div style="margin: 10px 0">
-    <button mat-raised-button
-      (click)="addFiles()"
-      [disabled]="uploading"
-      color="primary"
-      class="add-files-btn" >
-        Select Files
-    </button>
-  </div>
+    <div style="margin: 10px 0">
+      <button
+        (click)="addFiles()"
+        [disabled]="uploading"
+        color="primary" class="add-files-btn"  mat-raised-button>
+          Select Files
+      </button>
+    </div>
 
-  <mat-dialog-content fxFlex>
-    <div fxFlex fxLayout="column">
-      <mat-list style="margin-top: 10px">
-        <mat-list-item *ngFor="let file of files">
-          <h4 mat-line>{{file.name}}</h4>
+    <mat-dialog-content fxFlex>
+      <div fxFlex fxLayout="column">
+        <mat-list style="margin-top: 10px">
+          <mat-list-item *ngFor="let file of files">
+            <h4 mat-line>{{file.name}}</h4>
 
-          <button
-            mat-icon-button
-            *ngIf="!request"
-            (click)="onRemoveFile(file)">
-              <mat-icon>close</mat-icon>
-          </button>
+            <button *ngIf="!request"
+              (click)="onRemoveFile(file)"
+              mat-icon-button>
+                <mat-icon>close</mat-icon>
+            </button>
 
-          <mat-progress-bar
-            *ngIf="request"
-            mode="determinate"
-            value="100">
-          </mat-progress-bar>
+            <mat-progress-bar *ngIf="request"
+              mode="determinate" value="100">
+            </mat-progress-bar>
+          </mat-list-item>
+        </mat-list>
 
-        </mat-list-item>
-      </mat-list>
-
-      <div class="drop-text-box" [ngClass]="{ 'is-file-error': isFileError }" fxFlex fxLayoutAlign="center" gdAlignColumns="center">
-        <div *ngIf="canBeClosed">
-           Drag geospatial files here.
-        </div>
-
-        <div *ngIf="!canBeClosed">
-          <div style="margin-bottom: 30px">
-           Loading area of interest from provided files...
+        <div [ngClass]="{ 'is-file-error': isFileError }"
+          class="drop-text-box"
+          fxFlex fxLayoutAlign="center" gdAlignColumns="center">
+          <div *ngIf="canBeClosed">
+             Drag geospatial files here.
           </div>
-          <div>
-            <mat-progress-spinner
-              style="margin: 0 auto;"
-              color="primary"
-              mode="indeterminate">
-            </mat-progress-spinner>
+
+          <div *ngIf="!canBeClosed">
+            <div style="margin-bottom: 30px">
+              Loading area of interest from provided files...
+            </div>
+            <div>
+              <mat-progress-spinner style="margin: 0 auto;" color="primary" mode="indeterminate">
+              </mat-progress-spinner>
+            </div>
           </div>
         </div>
       </div>
-    </div>
-  </mat-dialog-content>
+    </mat-dialog-content>
 
-  <mat-dialog-actions class="actions">
+    <mat-dialog-actions class="actions">
+      <button *ngIf="showCancelButton"
+        mat-button mat-dialog-close>
+          Cancel
+      </button>
 
-    <button mat-button mat-dialog-close
-      *ngIf="showCancelButton">
-        Cancel
-    </button>
-
-    <button mat-raised-button color="primary"
-      (click)="onUpload()"
-      [disabled]="!canBeClosed">
-      Import
-    </button>
-
-  </mat-dialog-actions>
+      <button mat-raised-button color="primary"
+        (click)="onUpload()"
+        [disabled]="!canBeClosed">
+        Import
+      </button>
+    </mat-dialog-actions>
 </div>
