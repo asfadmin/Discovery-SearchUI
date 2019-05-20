@@ -30,8 +30,8 @@ export class SpreadsheetComponent implements OnInit {
   public isColumnDisplayed: boolean[] = this.allColumns.map(_ => true);
   public displayedColumns = this.allColumns;
 
-  public dataSource: MatTableDataSource<models.Sentinel1Product>;
-  public selection = new SelectionModel<models.Sentinel1Product>(true, []);
+  public dataSource: MatTableDataSource<models.CMRProduct>;
+  public selection = new SelectionModel<models.CMRProduct>(true, []);
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
@@ -47,7 +47,7 @@ export class SpreadsheetComponent implements OnInit {
       map(this.keepCurrentFilter),
       map(this.addCustomProductDataAccessors)
     ).subscribe(
-      (dataSource: MatTableDataSource<models.Sentinel1Product>) => {
+      (dataSource: MatTableDataSource<models.CMRProduct>) => {
         this.dataSource = dataSource;
         this.dataSource.paginator = this.paginator;
         this.dataSource.sort = this.sort;

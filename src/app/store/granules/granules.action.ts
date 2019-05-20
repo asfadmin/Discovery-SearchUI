@@ -1,6 +1,6 @@
 import { Action } from '@ngrx/store';
 
-import { Sentinel1Product } from '@models';
+import { CMRProduct } from '@models';
 
 export enum GranulesActionType {
   SET_GRANULES = '[Granuels] Set Granules',
@@ -17,7 +17,7 @@ export enum GranulesActionType {
 export class SetGranules implements Action {
   public readonly type = GranulesActionType.SET_GRANULES;
 
-  constructor(public payload: Sentinel1Product[]) {}
+  constructor(public payload: CMRProduct[]) {}
 }
 
 export class ClearGranules implements Action {
@@ -39,7 +39,7 @@ export class SetSearchList implements Action {
 export class SetFocusedGranule implements Action {
   public readonly type = GranulesActionType.SET_FOCUSED_GRANULE;
 
-  constructor(public payload: Sentinel1Product) {}
+  constructor(public payload: CMRProduct) {}
 }
 
 export class ClearFocusedGranule implements Action {

@@ -60,7 +60,7 @@ export class BottomMenuComponent implements OnInit {
     this.store$.dispatch(new uiStore.ToggleBottomMenu());
   }
 
-  public onNewFocusedGranule(granule: models.Sentinel1Product): void {
+  public onNewFocusedGranule(granule: models.CMRProduct): void {
     this.store$.dispatch(new granulesStore.SetFocusedGranule(granule));
   }
 
@@ -76,7 +76,7 @@ export class BottomMenuComponent implements OnInit {
     this.store$.dispatch(new queueStore.QueueGranule(name));
   }
 
-  public onToggleQueueProduct(product: models.Sentinel1Product): void {
+  public onToggleQueueProduct(product: models.CMRProduct): void {
     this.store$.dispatch(new queueStore.ToggleProduct(product));
   }
 

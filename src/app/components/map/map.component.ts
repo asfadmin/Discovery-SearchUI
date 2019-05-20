@@ -169,7 +169,7 @@ export class MapComponent implements OnInit {
     );
   }
 
-  private granulesToFeature(granules: models.Sentinel1Product[], projection: string) {
+  private granulesToFeature(granules: models.CMRProduct[], projection: string) {
     return granules
       .map(g => {
         const wkt = g.metadata.polygon;

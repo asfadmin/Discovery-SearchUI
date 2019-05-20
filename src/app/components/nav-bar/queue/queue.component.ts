@@ -5,7 +5,7 @@ import { Store } from '@ngrx/store';
 import { AppState } from '@store';
 import * as queueStore from '@store/queue';
 
-import { Sentinel1Product, AsfApiOutputFormat } from '@models';
+import { CMRProduct, AsfApiOutputFormat } from '@models';
 
 
 @Component({
@@ -18,7 +18,7 @@ export class QueueComponent {
 
   constructor(private store$: Store<AppState>) {}
 
-  public onRemoveProduct(product: Sentinel1Product): void {
+  public onRemoveProduct(product: CMRProduct): void {
     this.store$.dispatch(new queueStore.RemoveItem(product));
   }
 

@@ -15,7 +15,7 @@ export class NavBarComponent {
   @Output() doSearch = new EventEmitter<void>();
   @Output() clearSearch = new EventEmitter<void>();
 
-  @Input() products: models.Sentinel1Product[];
+  @Input() products: models.CMRProduct[];
 
   constructor(private dialog: MatDialog) {}
 

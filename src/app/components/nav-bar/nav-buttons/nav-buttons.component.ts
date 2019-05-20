@@ -3,7 +3,7 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { ClipboardService } from 'ngx-clipboard';
 
 import { DatapoolAuthService } from '@services';
-import { Sentinel1Product } from '@models';
+import { CMRProduct } from '@models';
 
 @Component({
   selector: 'app-nav-buttons',
@@ -13,7 +13,7 @@ import { Sentinel1Product } from '@models';
 export class NavButtonsComponent {
   public asfWebsiteUrl = 'https://www.asf.alaska.edu';
 
-  @Input() products: Sentinel1Product[];
+  @Input() products: CMRProduct[];
 
   @Output() openQueue = new EventEmitter<void>();
 
