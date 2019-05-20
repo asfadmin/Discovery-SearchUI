@@ -7,6 +7,7 @@ import { MatBadgeModule, MatMenuModule, MatInputModule, MatToolbarModule } from 
 import { MatSharedModule } from '@shared';
 import { NavBarComponent } from './nav-bar.component';
 
+import { QueueModule, QueueComponent } from './queue';
 import { BreadcrumbListModule } from './breadcrumb-list';
 import { NavButtonsModule } from './nav-buttons';
 
@@ -22,9 +23,13 @@ import { NavButtonsModule } from './nav-buttons';
     MatMenuModule,
     MatInputModule,
     MatSharedModule,
+    QueueModule,
 
     BreadcrumbListModule ,
     NavButtonsModule,
+  ],
+  entryComponents: [
+    QueueComponent
   ],
   exports: [
     NavBarComponent

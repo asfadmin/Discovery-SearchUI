@@ -1,4 +1,6 @@
 import { Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
+import { MatDialog } from '@angular/material';
+import { QueueComponent } from '@components/nav-bar/queue';
 
 import * as models from '@models';
 
@@ -15,8 +17,12 @@ export class NavBarComponent {
 
   @Input() products: models.Sentinel1Product[];
 
+  constructor(private dialog: MatDialog) {}
+
   public onOpenDownloadQueue(): void {
-    this.openQueue.emit();
+    this.dialog.open(QueueComponent, {
+      width: '550px', height: '700px', minHeight: '50%'
+    });
   }
 
   public onDoSearch(): void {

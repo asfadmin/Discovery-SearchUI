@@ -2,7 +2,6 @@ import {
   Component, OnInit, Input, Output,
   EventEmitter
 } from '@angular/core';
-import { MatDialog } from '@angular/material';
 
 import { Store } from '@ngrx/store';
 
@@ -23,7 +22,6 @@ import * as queueStore from '@store/queue';
 
 import * as models from '@models';
 import { MapService, WktService } from '@services';
-import { QueueComponent } from './queue';
 
 @Component({
   selector: 'app-map',
@@ -38,7 +36,6 @@ export class MapComponent implements OnInit {
   public interactionMode$ = this.store$.select(mapStore.getMapInteractionMode);
   public mousePosition$ = this.mapService.mousePosition$;
   public newSelectedGranule$ = this.mapService.newSelectedGranule$;
-  public isUiHidden = false;
 
   private isMapInitialized$ = this.store$.select(mapStore.getIsMapInitialization);
   private granules$ = this.store$.select(granulesStore.getGranules);
@@ -46,15 +43,10 @@ export class MapComponent implements OnInit {
   private view$ = this.store$.select(mapStore.getMapView);
   private drawMode$ = this.store$.select(mapStore.getMapDrawMode);
 
-  public queuedProducts$ = this.store$.select(queueStore.getQueuedProducts).pipe(
-    map(q => q || [])
-  );
-
   constructor(
     private store$: Store<AppState>,
     private mapService: MapService,
     private wktService: WktService,
-    private dialog: MatDialog,
   ) {}
 
   ngOnInit(): void {
@@ -65,26 +57,9 @@ export class MapComponent implements OnInit {
     this.interactionMode$
       .subscribe(mode => this.mapService.setInteractionMode(mode));
 
-    this.store$.select(uiStore.getIsHidden)
-      .subscribe(isHidden => this.isUiHidden = isHidden);
-
     this.newSelectedGranule$.subscribe(
       gName => this.store$.dispatch(new granulesStore.SetSelectedGranule(gName))
     );
-  }
-
-  public onDoSearch(): void {
-    this.doSearch.emit();
-  }
-
-  public onClearSearch(): void {
-    this.clearSearch.emit();
-  }
-
-  public onOpenDownloadQueue(): void {
-    this.dialog.open(QueueComponent, {
-      width: '550px', height: '700px', minHeight: '50%'
-    });
   }
 
   public onFileHovered(e): void {

@@ -11,6 +11,7 @@ import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 
 import * as store from './store';
 
+import { NavBarModule } from '@components/nav-bar';
 import { SidebarModule } from '@components/sidebar';
 import { MapModule } from '@components/map';
 import { LoginModule } from '@components/login';
@@ -44,6 +45,7 @@ export const routes = [
     MapModule,
     LoginModule,
     BottomMenuModule,
+    NavBarModule,
   ],
   providers: [
     services.AsfApiService,
