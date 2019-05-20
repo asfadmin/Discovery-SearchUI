@@ -6,10 +6,10 @@
 
     <mat-card *ngIf="selectedFilter === filterTypes.SEARCH_TYPE"
       class="breadcrumb-filter">
-      <app-detailed-search-selector
+      <app-search-selector
         (newSearchType)="onSetSearchType($event)"
         [selectedSearchType]="searchType$ | async">
-        ></app-detailed-search-selector>
+        ></app-search-selector>
     </mat-card>
   </div>
 
