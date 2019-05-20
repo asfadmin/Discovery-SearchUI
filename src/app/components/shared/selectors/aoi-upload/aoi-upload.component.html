@@ -1,48 +1,10 @@
-<div class="layout">
-  <div style="margin-bottom: 20px;">
-    <div class="faint-text" style="display: flex; align-items: center;">
-      <mat-icon style="margin-right: 10px">help</mat-icon>
-      <div *ngIf="(interactionMode$ | async) === interactionTypes.DRAW; else modifyHelp">
-        <span>Draw your area of interest on the map</span>
-      </div>
-      <ng-template #modifyHelp>
-        Modify your current area of interest
-      </ng-template>
-    </div>
-  </div>
-  <div class="horizontal-layout mb">
-    <app-interaction-selector
-      style="margin-right: 5px;"
-      (newInteraction)="onNewInteractionMode($event)"
-      [interaction]="interactionMode$ | async">
-    ></app-interaction-selector>
+<mat-form-field style="margin-right: 10px; width: 90%;">
+  <input matInput placeholder="Current Area of Intreset" [value]="polygon$ | async">
 
-    <app-draw-selector
-      (newDrawMode)="onNewDrawMode($event)"
-      [isDisabled]="(interactionMode$ | async) !== interactionTypes.DRAW"
-      [drawMode]="drawMode$ | async">
-    </app-draw-selector>
-
-  </div>
-
-  <div class="form-layout">
-    <mat-form-field style="margin-right: 10px; width: 90%;">
-      <textarea matInput placeholder="Current Area of Intreset" [value]="polygon$ | async">
-      </textarea>
-
-      <mat-icon
-        *ngIf="!!(polygon$ | async)" (click)="onCopy()"
-        matTooltip="Copy to clipboard"
-        style="cursor: pointer; margin-left:10px" matSuffix>
-          file_copy
-      </mat-icon>
-    </mat-form-field>
-
-    <button (click)="onClearPolygon()" mat-flat-button matTooltip="Import Area of Intreset">
-      Clear
-    </button>
-    <button (click)="onFileUpload()" mat-flat-button color="primary" matTooltip="Import Area of Intreset">
-      Import
-    </button>
-  </div>
-</div>
+  <mat-icon
+    *ngIf="!!(polygon$ | async)" (click)="onCopy()"
+    matTooltip="Copy to clipboard"
+    style="cursor: pointer; margin-left:10px" matSuffix>
+      file_copy
+  </mat-icon>
+</mat-form-field>
