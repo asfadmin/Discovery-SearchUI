@@ -1,6 +1,9 @@
 <div *ngIf="granule">
   <mat-card-header>
-    <mat-card-title [title]="granule.name">{{ granule.name | truncate : 34 }}</mat-card-title>
+    <mat-card-title>
+      <span [title]="granule.name">{{ granule.name | truncate : 34 }}</span>
+      <app-copy-to-clipboard style="margin: 0 5px; " [value]="granule.name"></app-copy-to-clipboard>
+    </mat-card-title>
     <mat-card-subtitle>{{ granule.platform }}</mat-card-subtitle>
   </mat-card-header>
 

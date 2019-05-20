@@ -1,9 +1,7 @@
 <mat-card class="card-spacing">
 
   <mat-action-list>
-    <ng-container
-      *ngFor="let granule of currentPageOf(granules, pageSize, pageIndex)"
-      >
+    <ng-container *ngFor="let granule of currentPageOf(granules, pageSize, pageIndex)">
       <button
         (mouseenter)="onSetFocusedGranule(granule)"
         (mouseleave) ="onClearFocusedGranule(granule)"
