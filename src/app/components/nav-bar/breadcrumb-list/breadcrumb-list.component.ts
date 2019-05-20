@@ -37,11 +37,6 @@ export class BreadcrumbListComponent {
   public accent = 'primary';
   public canSearch$ = this.store$.select(searchStore.getCanSearch);
 
-  constructor(
-    private store$: Store<AppState>,
-    private mapService: MapService,
-  ) { }
-
   public filterTypes = BreadcrumbFilterType;
   public selectedFilter = BreadcrumbFilterType.NONE;
 
@@ -75,6 +70,11 @@ export class BreadcrumbListComponent {
   public additionalFiltersPreview$ = this.store$.select(filtersStore.getNumberOfAdditionalFilters).pipe(
     map(amt => amt > 0 ? ` · ${amt}` : '')
   );
+
+  constructor(
+    private store$: Store<AppState>,
+    private mapService: MapService,
+  ) {}
 
   public onDoSearch(): void {
     this.clearSelectedBreadcrumb();

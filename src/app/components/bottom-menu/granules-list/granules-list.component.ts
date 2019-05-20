@@ -54,17 +54,7 @@ export class GranulesListComponent implements OnInit {
       map(selectedIdx => this.paginator.pageIndex - selectedIdx),
       filter(distance => distance < 100000)
     ).subscribe(
-      distance => {
-        const direction = distance > 0 ? 'next' : 'prev';
-
-        for (let i = 0; i < Math.abs(distance); ++i) {
-          if (direction === 'next') {
-            this.paginator.previousPage();
-          } else {
-            this.paginator.nextPage();
-          }
-        }
-      }
+      distance => this.pageTo(distance)
     );
 
     this.granules$.subscribe(
@@ -79,16 +69,68 @@ export class GranulesListComponent implements OnInit {
       const { key } = e;
 
       switch ( key ) {
-        case 'ArrowDown': return console.log('next product');
-        case 'ArrowUp': return console.log('previous product');
+        case 'ArrowDown': {
+          this.selectNextProduct();
+          break;
+        }
+        case 'ArrowUp': {
+          this.selectPreviousProduct();
+          break;
+        }
         case 'ArrowRight': {
-          return this.paginator.nextPage();
+          this.paginator.nextPage();
+          break;
         }
         case 'ArrowLeft': {
-          return this.paginator.previousPage();
+          this.paginator.previousPage();
+          break;
         }
       }
     });
+  }
+
+  private selectNextProduct(): void {
+    if (!this.selected) {
+      return;
+    }
+
+    const currentSelected = this.granules
+      .filter(g => g.name === this.selected)
+      .pop();
+
+    const nextIdx = Math.min(
+      this.granules.indexOf(currentSelected) + 1,
+      this.granules.length - 1
+    );
+
+    const nextGranule = this.granules[nextIdx];
+
+    this.store$.dispatch(new granulesStore.SetSelectedGranule(nextGranule.id));
+  }
+
+  private selectPreviousProduct(): void {
+    if (!this.selected) {
+      return;
+    }
+
+    const currentSelected = this.granules
+      .filter(g => g.name === this.selected)
+      .pop();
+
+    const previousIdx = Math.max(this.granules.indexOf(currentSelected) - 1, 0);
+    const previousGranule = this.granules[previousIdx];
+
+    this.store$.dispatch(new granulesStore.SetSelectedGranule(previousGranule.id));
+  }
+
+  private pageTo(distance: number): void {
+    const direction = distance > 0 ? 'next' : 'prev';
+
+    for (let i = 0; i < Math.abs(distance); ++i) {
+      direction === 'next' ?
+        this.paginator.previousPage() :
+        this.paginator.nextPage();
+    }
   }
 
   public onGranuleSelected(name: string): void {
