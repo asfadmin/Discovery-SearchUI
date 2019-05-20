@@ -1,28 +1,24 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { GranuleDetailComponent } from './granule-detail.component';
 
 import { TruncateModule } from '@yellowspot/ng-truncate';
 import { FlexLayoutModule } from '@angular/flex-layout';
 
 import { PipesModule } from '@pipes';
 import { MatSharedModule } from '@shared';
-import { GranulesListModule } from './granules-list';
-import { BottomMenuComponent } from './bottom-menu.component';
-import { ProductsModule } from './products';
-import { GranuleDetailModule } from './granule-detail';
+import { CopyToClipboardModule } from '@components/shared/copy-to-clipboard';
 
 @NgModule({
-  declarations: [BottomMenuComponent],
+  declarations: [GranuleDetailComponent],
   imports: [
     CommonModule,
     FlexLayoutModule,
     TruncateModule,
     MatSharedModule,
     PipesModule,
-    GranulesListModule,
-    ProductsModule,
-    GranuleDetailModule
+    CopyToClipboardModule,
   ],
-  exports: [BottomMenuComponent],
+  exports: [GranuleDetailComponent],
 })
-export class BottomMenuModule { }
+export class GranuleDetailModule { }

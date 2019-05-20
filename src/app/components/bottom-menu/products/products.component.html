@@ -1,0 +1,14 @@
+<mat-selection-list *ngIf="products">
+  <h3 mat-subheader>Granule Products</h3>
+
+  <mat-list-option *ngFor="let product of products"
+    (click)="onToggleQueueProduct(product)"
+    [selected]="queuedProductIds.has(product.id)">
+    <span *ngIf="product.file.length > 49">
+      <b>{{ product.file | truncate : 45 }}{{ product.file | truncate : -4 : '' }}</b>
+    </span>
+    <span *ngIf="product.file.length <= 49">
+      <b>{{ product.file }}</b>
+    </span>
+  </mat-list-option>
+</mat-selection-list>

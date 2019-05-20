@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 import { MatSharedModule } from '@shared';
-import { MatMenuModule } from '@angular/material';
+import { MatMenuModule, MatDatepickerModule, MatInputModule, MatSelectModule } from '@angular/material';
 
 import { PlatformSelectorModule } from '@components/shared/selectors/platform-selector';
 import { DateSelectorModule } from '@components/shared/selectors/date-selector';
@@ -17,7 +17,9 @@ import { InfoBarModule} from '@components/sidebar/info-bar/info-bar.module';
   declarations: [BreadcrumbListComponent],
   imports: [
     CommonModule,
+    MatSelectModule,
     MatMenuModule,
+    MatDatepickerModule,
     MatSharedModule,
 
     SearchSelectorModule,
