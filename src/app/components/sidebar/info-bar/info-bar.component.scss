@@ -1,3 +1,5 @@
+@import "asf-theme";
+
 .bounds {
   background-color: black;
   display: block;
@@ -9,18 +11,18 @@
 }
 
 .sec1 {
-  background: red;
-  color: white;
+  background: lightgray;
+  color: black;
   text-transform: uppercase;
 }
 
 .sec2 {
-  background: yellow;
-  color: blue;
+  background: gray;
+  color: $asf-warn;
 }
 
 .sec3 {
-  background: blue;
+  background: darkgray;
   color: white;
   text-transform: uppercase;
 }
@@ -29,5 +31,4 @@
 .sec2,
 .sec3 {
   text-align: center;
-  height: 30px;
 }
