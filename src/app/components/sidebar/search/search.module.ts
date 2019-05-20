@@ -5,7 +5,6 @@ import { MatSharedModule } from '@shared';
 
 import { ListSearchModule, ListSearchComponent } from './list-search';
 import { DatasetSearchModule, DatasetSearchComponent } from './dataset-search';
-import { CompactSearchSelectorModule } from './search-selector';
 import { SearchComponent } from './search.component';
 import { MissionSearchModule } from './mission-search';
 
@@ -17,7 +16,6 @@ import { MissionSearchModule } from './mission-search';
     ListSearchModule,
     DatasetSearchModule,
     MissionSearchModule,
-    CompactSearchSelectorModule,
   ],
   exports: [
     SearchComponent

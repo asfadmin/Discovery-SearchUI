@@ -7,9 +7,8 @@ import { MatSharedModule } from '@shared';
 
 import { SidebarComponent } from './sidebar.component';
 import { ToggleButtonModule } from './toggle-button';
-import { SearchBarModule } from './search/search-bar';
 
-import { DetailedSearchSelectorModule } from './search/search-selector';
+import { SearchSelectorModule } from '@components/shared/selectors/search-selector';
 import { SearchModule } from './search';
 
 import { LogoComponent } from './logo/logo.component';
@@ -22,11 +21,10 @@ import { LogoComponent } from './logo/logo.component';
     MatTabsModule,
     MatSharedModule,
 
-    SearchBarModule,
     ToggleButtonModule,
 
     SearchModule,
-    DetailedSearchSelectorModule,
+    SearchSelectorModule,
   ],
   declarations: [
     SidebarComponent,

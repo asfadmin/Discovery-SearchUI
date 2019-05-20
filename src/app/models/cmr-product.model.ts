@@ -1,4 +1,4 @@
-export interface Sentinel1Product {
+export interface CMRProduct {
   name: string;
   file: string;
   id: string;
@@ -7,14 +7,14 @@ export interface Sentinel1Product {
   browse: string;
   platform: string;
   groupId: string;
-  metadata: Sentinel1Metadata;
+  metadata: CMRProductMetadata;
 }
 
-export interface Sentinel1Metadata {
+export interface CMRProductMetadata {
   date: Date;
   polygon: string;
 
-  productType: Sentinel1ProductType;
+  productType: CMRProductType;
   beamMode: Sentinel1BeamMode;
   polarization: Sentinel1Polarization;
   flightDirection: FlightDirection;
@@ -30,7 +30,7 @@ export enum FlightDirection {
   DESCENDING = 'DESCENDING',
 }
 
-export type Sentinel1ProductType =
+export type CMRProductType =
   'GRD' | 'SLC' | 'OCN' | 'RAW' |
   'METADATA_SLC' | 'METADATA_RAW' |
   'METADATA_GRD_MD' | 'GRD_MD'

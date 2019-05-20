@@ -15,7 +15,7 @@ import * as granulesStore from '@store/granules';
 import { faFileDownload, faPlus } from '@fortawesome/free-solid-svg-icons';
 import { MatPaginator } from '@angular/material';
 
-import { Sentinel1Product } from '@models';
+import { CMRProduct } from '@models';
 
 @Component({
   selector: 'app-granules-list',
@@ -24,17 +24,17 @@ import { Sentinel1Product } from '@models';
   encapsulation: ViewEncapsulation.None
 })
 export class GranulesListComponent implements OnInit {
-  @Input() granules$: Observable<Sentinel1Product[]>;
+  @Input() granules$: Observable<CMRProduct[]>;
   @Input() selected: string;
 
   @Output() newSelected = new EventEmitter<string>();
   @Output() queueGranule = new EventEmitter<string>();
-  @Output() newFocusedGranule = new EventEmitter<Sentinel1Product>();
+  @Output() newFocusedGranule = new EventEmitter<CMRProduct>();
   @Output() clearFocusedGranule = new EventEmitter<void>();
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
-  public granules: Sentinel1Product[];
+  public granules: CMRProduct[];
   public pageSizeOptions = [5, 10];
   public pageSize = this.pageSizeOptions[0];
   public pageIndex = 0;
@@ -101,7 +101,7 @@ export class GranulesListComponent implements OnInit {
     e.stopPropagation();
   }
 
-  public onSetFocusedGranule(granule: Sentinel1Product): void {
+  public onSetFocusedGranule(granule: CMRProduct): void {
     this.newFocusedGranule.emit(granule);
   }
 
@@ -109,7 +109,7 @@ export class GranulesListComponent implements OnInit {
     this.clearFocusedGranule.emit();
   }
 
-  public currentPageOf(granules, pageSize, pageIndex): Sentinel1Product[] {
+  public currentPageOf(granules, pageSize, pageIndex): CMRProduct[] {
     const offset = pageIndex * pageSize;
     return granules.slice(offset, offset + pageSize);
   }

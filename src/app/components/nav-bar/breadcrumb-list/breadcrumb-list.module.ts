@@ -4,14 +4,12 @@ import { CommonModule } from '@angular/common';
 import { MatSharedModule } from '@shared';
 import { MatMenuModule } from '@angular/material';
 
-import { PlatformSelectorModule } from '@components/sidebar/search/dataset-search/platform-selector';
-import { DateSelectorModule } from '@components/sidebar/search/dataset-search/date-selector';
-import { AoiUploadModule  } from '@components/sidebar/search/dataset-search/aoi-upload';
-import { PathSelectorModule } from '@components/sidebar/search/dataset-search/path-selector';
-import { OtherSelectorModule } from '@components/sidebar/search/dataset-search/other-selector';
+import { PlatformSelectorModule } from '@components/shared/selectors/platform-selector';
+import { DateSelectorModule } from '@components/shared/selectors/date-selector';
+import { AoiUploadModule } from '@components/shared/selectors/aoi-upload';
 import { MaxResultsSelectorModule } from '@components/shared/max-results-selector';
 
-import { DetailedSearchSelectorModule } from '@components/sidebar/search/search-selector';
+import { SearchSelectorModule } from '@components/shared/selectors/search-selector';
 import { BreadcrumbListComponent } from './breadcrumb-list.component';
 import { InfoBarModule} from '@components/sidebar/info-bar/info-bar.module';
 
@@ -22,13 +20,11 @@ import { InfoBarModule} from '@components/sidebar/info-bar/info-bar.module';
     MatMenuModule,
     MatSharedModule,
 
-    DetailedSearchSelectorModule,
+    SearchSelectorModule,
     PlatformSelectorModule,
     DateSelectorModule,
     AoiUploadModule,
-    PathSelectorModule,
     MaxResultsSelectorModule,
-    OtherSelectorModule,
     InfoBarModule,
   ],
   exports: [BreadcrumbListComponent]

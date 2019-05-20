@@ -9,7 +9,7 @@ export class ProductService {
   public fromResponse = (resp: any) => (
     (resp.results || [])
     .map(
-      (g: any): models.Sentinel1Product => ({
+      (g: any): models.CMRProduct => ({
         name: g.granuleName,
         file: g.fileName,
         id: g.productID,
@@ -24,11 +24,11 @@ export class ProductService {
   )
 
   private getMetadataFrom =
-    (g: any): models.Sentinel1Metadata => ({
+    (g: any): models.CMRProductMetadata => ({
       date:  this.fromCMRDate(g.startTime),
       polygon: g.wkt,
 
-      productType: <models.Sentinel1ProductType>g.productType,
+      productType: <models.CMRProductType>g.productType,
       beamMode: <models.Sentinel1BeamMode>g.beamMode,
       polarization: <models.Sentinel1Polarization>g.polarization,
       flightDirection: <models.FlightDirection>g.flightDirection,

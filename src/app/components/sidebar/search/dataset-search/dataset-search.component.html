@@ -6,7 +6,10 @@
         Path and Frame Filters
       </mat-panel-title>
     </mat-expansion-panel-header>
-    <app-path-selector></app-path-selector>
+
+    <div style="margin-top: 15px;">
+      <app-path-selector></app-path-selector>
+    </div>
   </mat-expansion-panel>
 
   <mat-expansion-panel [expanded]="defaultPanelOpenState" [disabled]="panelIsDisabled">
@@ -15,7 +18,9 @@
         Additional Filters
       </mat-panel-title>
     </mat-expansion-panel-header>
-    <app-other-selector></app-other-selector>
+    <div style="margin-top: 15px;">
+      <app-other-selector></app-other-selector>
+    </div>
   </mat-expansion-panel>
 
 </mat-accordion>

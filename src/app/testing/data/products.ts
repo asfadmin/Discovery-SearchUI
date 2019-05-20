@@ -1,6 +1,6 @@
 import * as models from '@models';
 
-export const testProduct: models.Sentinel1Product = {
+export const testProduct: models.CMRProduct = {
   id: 'some id',
   name: 'SomeGranule',
   file: 'SomeGranule.zip',

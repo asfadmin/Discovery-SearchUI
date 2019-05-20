@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { BrowserModule } from '@angular/platform-browser';
 import { HttpClientModule } from '@angular/common/http';
 import { MatSnackBarModule, MatBottomSheetModule } from '@angular/material';
@@ -11,6 +12,7 @@ import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 
 import * as store from './store';
 
+import { NavBarModule } from '@components/nav-bar';
 import { SidebarModule } from '@components/sidebar';
 import { MapModule } from '@components/map';
 import { LoginModule } from '@components/login';
@@ -31,6 +33,7 @@ export const routes = [
   ],
   imports: [
     BrowserModule,
+    BrowserAnimationsModule,
     HttpClientModule,
     MatSnackBarModule,
     MatBottomSheetModule,
@@ -44,6 +47,7 @@ export const routes = [
     MapModule,
     LoginModule,
     BottomMenuModule,
+    NavBarModule,
   ],
   providers: [
     services.AsfApiService,

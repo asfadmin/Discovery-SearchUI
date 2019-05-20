@@ -2,10 +2,10 @@ import { createFeatureSelector, createSelector } from '@ngrx/store';
 
 import { GranulesActionType, GranulesActions } from './granules.action';
 
-import { Sentinel1Product } from '@models';
+import { CMRProduct } from '@models';
 
 
-interface GranuleEntities { [id: string]: Sentinel1Product; }
+interface GranuleEntities { [id: string]: CMRProduct; }
 
 export interface GranulesState {
   ids: string[];

@@ -14,6 +14,7 @@ import * as searchStore from '@store/search';
 import * as uiStore from '@store/ui';
 import * as missionStore from '@store/mission';
 import * as mapStore from '@store/map';
+import * as queueStore from '@store/queue';
 
 import * as services from '@services';
 import * as models from './models';
@@ -26,6 +27,10 @@ import * as models from './models';
 export class AppComponent implements OnInit {
   public shouldOmitSearchPolygon$ = this.store$.select(filterStore.getShouldOmitSearchPolygon);
   public uiView$ = this.store$.select(uiStore.getUiView);
+
+  public queuedProducts$ = this.store$.select(queueStore.getQueuedProducts).pipe(
+    map(q => q || [])
+  );
 
   public interactionTypes = models.MapInteractionModeType;
   public searchType: models.SearchType;

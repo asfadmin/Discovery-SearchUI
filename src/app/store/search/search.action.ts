@@ -1,6 +1,6 @@
 import { Action } from '@ngrx/store';
 
-import { Sentinel1Product } from '@models';
+import { CMRProduct } from '@models';
 
 export enum SearchActionType {
   MAKE_SEARCH = '[Search] Make A Search',
@@ -44,7 +44,7 @@ export class SetSearchAmount implements Action {
 export class SearchResponse implements Action {
   public readonly type = SearchActionType.SEARCH_RESPONSE;
 
-  constructor(public payload: Sentinel1Product[]) {}
+  constructor(public payload: CMRProduct[]) {}
 }
 
 export class SearchError implements Action {

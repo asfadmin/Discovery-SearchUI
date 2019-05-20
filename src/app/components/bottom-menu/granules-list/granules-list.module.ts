@@ -10,14 +10,14 @@ import { MatSharedModule } from '@shared';
 import { PipesModule } from '@pipes';
 
 import { GranulesListComponent } from './granules-list.component';
-import { Sentinel1ProductComponent } from './sentinel1-product/sentinel1-product.component';
+import { CMRProductComponent } from './sentinel1-product/sentinel1-product.component';
 import { ProductNameComponent } from './sentinel1-product/product-name/product-name.component';
 
 
 @NgModule({
   declarations: [
     GranulesListComponent,
-    Sentinel1ProductComponent,
+    CMRProductComponent,
     ProductNameComponent,
   ],
   imports: [

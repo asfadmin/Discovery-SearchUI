@@ -2,25 +2,15 @@
   id="map" class="map">
 </div>
 
-<app-nav-bar
-  (openQueue)="onOpenDownloadQueue()"
-  (doSearch)="onDoSearch()"
-  (clearSearch)="onClearSearch()"
-  [products]="queuedProducts$ | async"
-  [ngClass]="{'hidden': isUiHidden}">
-</app-nav-bar>
-
 <app-file-upload
   (dialogClose)="onFileUploadDialogClosed($event)"
   (newSearchPolygon)="onNewSearchPolygon($event)"
   [interaction$]="interactionMode$">
 </app-file-upload>
 
-<app-map-controls
-  [ngClass]="{'hidden': isUiHidden}"
-  ></app-map-controls>
+<app-map-controls></app-map-controls>
 
-<div class="view-reset-button-position" [ngClass]="{'hidden': !isUiHidden}">
+<div class="view-reset-button-position">
   <button (click)="onShowUi()" mat-raised-button>
     <mat-icon>settings_backup_restore</mat-icon>
   </button>
