@@ -1,0 +1,34 @@
+.bounds {
+  background-color: black;
+  height: 31px;
+  display: block;
+  margin-top: 5px;
+}
+
+.content {
+  min-width: 300px;
+}
+
+.sec1 {
+  background: red;
+  color: white;
+  text-transform: uppercase;
+}
+
+.sec2 {
+  background: yellow;
+  color: blue;
+}
+
+.sec3 {
+  background: blue;
+  color: white;
+  text-transform: uppercase;
+}
+
+.sec1,
+.sec2,
+.sec3 {
+  text-align: center;
+  height: 30px;
+}

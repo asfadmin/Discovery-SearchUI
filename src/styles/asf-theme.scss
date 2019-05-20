@@ -39,3 +39,10 @@ $custom-typography: mat-typography-config($font-family: 'Roboto, sans-serif;');
   height: $size;
   width: $size;
 }
+
+button,
+.mat-expansion-panel,
+.mat-panel,
+.mat-card {
+  border-radius: 0 !important;
+}
