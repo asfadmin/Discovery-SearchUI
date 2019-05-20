@@ -1,5 +1,4 @@
 <div [@changeMenuState]="(isSidebarOpen$ | async) ? 'shown' : 'hidden'"
-  [ngClass]="{'hidden': isHidden}"
   class="sidebar-position">
 
 <app-toggle-button
@@ -11,8 +10,8 @@
   *ngIf="selectedSearchType !== null && isFiltersMenuOpen"
   class="dataset-filters-card">
   <mat-card>
-    <mat-card-header>
-      <mat-card-title><h3>Additional Filters</h3></mat-card-title>
+    <mat-card-header *ngIf="selectedSearchType !== searchTypes.DATASET">
+      <mat-card-title><h3>{{ selectedSearchType }}</h3></mat-card-title>
     </mat-card-header>
 
     <mat-card-content>
@@ -21,18 +20,6 @@
         (newSearchType)="onSetSearchType($event)"></app-search>
     </mat-card-content>
   </mat-card>
-
-  <div class="bottom-list-elements">
-      <app-search-bar
-        (newSearch)="onNewSearch()"
-        (clearSearches)="onClearSearch()"
-        (newMaxResults)="onNewMaxSearchResults($event)"
-        [maxResults]="maxResults$ | async"
-        [currentSearchAmount]="currentSearchAmount$ | async"
-        [canSearch]="canSearch$ | async"
-        [isLoading]="loading$ | async">
-      </app-search-bar>
-  </div>
 </div>
 
 <div class="filter-list">
