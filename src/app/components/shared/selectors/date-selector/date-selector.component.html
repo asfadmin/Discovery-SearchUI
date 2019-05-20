@@ -1,4 +1,3 @@
-<div style="margin: 20px 0">
   <div style="display: flex; justify-content: space-between">
     <mat-form-field style="width: 48%">
       <input
@@ -28,36 +27,3 @@
       <mat-hint align="start">Search products <b>before</b> this date</mat-hint>
     </mat-form-field>
   </div>
-
-<mat-slide-toggle (change)="onToggleSeasonalOptions()" [(ngModel)]="isSeasonalSearch" style="margin: 15px 0">Seasonal Search</mat-slide-toggle>
-
-<div *ngIf="isSeasonalSearch">
-  <div>
-    <b>Start Day </b>
-    <mat-slider
-      (change)="onSeasonStartChange($event.value)"
-      [value]="seasonStart$ | async"
-      min="1"
-      max="365"
-      step="1"
-      thumbLabel="true"
-      showTicks="true"
-      [displayWith]="dayOfYearFormat"
-      ></mat-slider>
-  </div>
-
-  <div>
-    <b>End Day </b>
-    <mat-slider
-      (change)="onSeasonEndChange($event.value)"
-      [value]="seasonEnd$ | async"
-      min="1"
-      max="365"
-      step="1"
-      thumbLabel="true"
-      showTicks="true"
-      [displayWith]="dayOfYearFormat"
-      ></mat-slider>
-  </div>
-</div>
-</div>
