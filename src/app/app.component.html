@@ -5,8 +5,7 @@
   <app-nav-bar
     (doSearch)="onNewSearch()"
     (clearSearch)="onClearSearch()"
-    [products]="queuedProducts$ | async"
-    [class.hidden]="isUiHidden">
+    [products]="queuedProducts$ | async">
   </app-nav-bar>
 
   <app-map
