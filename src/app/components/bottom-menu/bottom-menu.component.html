@@ -1,7 +1,8 @@
 <div
   [@changeMenuY]="(isBottomMenuOpen$ | async) ? 'shown' : 'hidden'"
-  [ngClass]="{'hidden': isHidden || (granules$ | async).length === 0}"
+  [class.hidden]="isHidden || (granules$ | async).length === 0"
   class="position">
+
   <div class="bottom-menu--background  bottom-menu--layout">
     <app-granules-list
       class="scrollable-card bottom-menu--column"
@@ -14,20 +15,11 @@
     </app-granules-list>
 
     <mat-card class="card-spacing scrollable-card bottom-menu--column">
-      <mat-selection-list *ngIf="selectedProducts$ | async as products">
-        <h3 mat-subheader>Granule Products</h3>
-
-        <mat-list-option *ngFor="let product of products"
-          (click)="onToggleQueueProduct(product)"
-          [selected]="queuedProductIds.has(product.id)">
-          <span *ngIf="product.file.length > 49">
-            <b>{{ product.file | truncate : 45 }}{{ product.file | truncate : -4 : '' }}</b>
-          </span>
-          <span *ngIf="product.file.length <= 49">
-            <b>{{ product.file }}</b>
-          </span>
-        </mat-list-option>
-      </mat-selection-list>
+      <app-products
+        [products]="selectedProducts$ | async"
+        [queuedProductIds]="queuedProductIds"
+        (toggleQueueProduct)="onToggleQueueProduct($event)"
+        ></app-products>
     </mat-card>
 
     <mat-card
