@@ -5,11 +5,8 @@
 
   {{ name | truncate : 34 }}
 
-  <fa-icon
-    (click)="onCopyIconClicked($event)"
-    class="copy-icon"
-    [matTooltip]="copyTooltipMessage"
-    matTooltipPosition="left"
-    [icon]="copyIcon">
-  </fa-icon>
+  <app-copy-to-clipboard
+    style="margin: 0 5px"
+    [value]="name">
+  </app-copy-to-clipboard>
 </div>
