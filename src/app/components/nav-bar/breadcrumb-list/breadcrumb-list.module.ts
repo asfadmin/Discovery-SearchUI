@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 
 import { MatSharedModule } from '@shared';
 import { MatMenuModule, MatDatepickerModule, MatInputModule, MatSelectModule } from '@angular/material';
@@ -17,6 +18,8 @@ import { InfoBarModule} from '@components/sidebar/info-bar/info-bar.module';
   declarations: [BreadcrumbListComponent],
   imports: [
     CommonModule,
+    FormsModule,
+
     MatSelectModule,
     MatMenuModule,
     MatDatepickerModule,

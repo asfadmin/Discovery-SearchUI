@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Output } from '@angular/core';
+import { Component, OnInit, EventEmitter, Output } from '@angular/core';
 
 import { combineLatest } from 'rxjs';
 import { tap, map, filter, withLatestFrom } from 'rxjs/operators';
@@ -30,7 +30,7 @@ enum BreadcrumbFilterType {
   templateUrl: './breadcrumb-list.component.html',
   styleUrls: ['./breadcrumb-list.component.scss']
 })
-export class BreadcrumbListComponent {
+export class BreadcrumbListComponent implements OnInit {
   @Output() doSearch = new EventEmitter<void>();
   @Output() clearSearch = new EventEmitter<void>();
 
@@ -45,7 +45,11 @@ export class BreadcrumbListComponent {
   public searchAmount$ = this.store$.select(searchStore.getSearchAmount);
 
   public loading$ = this.store$.select(searchStore.getIsLoading);
-  public searchType$ = this.store$.select(uiStore.getSearchType);
+  public searchTypeSub = this.store$.select(uiStore.getSearchType).subscribe(
+    searchType => this.searchType = searchType
+  );
+
+  public searchType: SearchType = SearchType.DATASET;
   public searchTypes = SearchType;
 
   public maxResults$ = this.store$.select(filtersStore.getMaxSearchResults);
@@ -74,7 +78,10 @@ export class BreadcrumbListComponent {
   constructor(
     private store$: Store<AppState>,
     private mapService: MapService,
-  ) {}
+  ) { }
+
+  ngOnInit() {
+  }
 
   public onDoSearch(): void {
     this.clearSelectedBreadcrumb();
