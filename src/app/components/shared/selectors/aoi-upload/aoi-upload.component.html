@@ -1,10 +1,33 @@
-<mat-form-field style="margin-right: 10px; width: 90%;">
-  <input matInput placeholder="Current Area of Intreset" [value]="polygon$ | async">
+<div class="layout">
+  <div class="horizontal-layout mb">
+    <app-draw-selector
+       style="margin-right: 5px;"
+      (newDrawMode)="onNewDrawMode($event)"
+      [drawMode]="drawMode$ | async">
+    </app-draw-selector>
 
-  <mat-icon
-    *ngIf="!!(polygon$ | async)" (click)="onCopy()"
-    matTooltip="Copy to clipboard"
-    style="cursor: pointer; margin-left:10px" matSuffix>
-      file_copy
-  </mat-icon>
-</mat-form-field>
+    <app-interaction-selector
+      (newInteraction)="onNewInteractionMode($event)"
+      [interaction]="interactionMode$ | async">
+    ></app-interaction-selector>
+  </div>
+
+  <div class="form-layout">
+    <mat-form-field style="margin-right: 10px; width: 90%;">
+      <textarea matInput placeholder="Current Area of Intreset" [value]="polygon$ | async">
+      </textarea>
+
+      <mat-icon
+        *ngIf="!!(polygon$ | async)" (click)="onCopy()"
+        matTooltip="Copy to clipboard"
+        style="cursor: pointer; margin-left:10px" matSuffix>
+          file_copy
+      </mat-icon>
+    </mat-form-field>
+
+    <button (click)="onFileUpload()" mat-raised-button color="primary" matTooltip="Import Area of Intreset">
+      Import Search Area
+    </button>
+  </div>
+</div>
+

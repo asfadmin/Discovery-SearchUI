@@ -19,7 +19,7 @@ import { InfoBarModule} from '@components/sidebar/info-bar/info-bar.module';
   imports: [
     CommonModule,
     FormsModule,
-
+    MatInputModule,
     MatSelectModule,
     MatMenuModule,
     MatDatepickerModule,

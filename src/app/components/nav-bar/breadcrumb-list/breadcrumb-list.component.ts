@@ -11,7 +11,7 @@ import * as granulesStore from '@store/granules';
 import * as filtersStore from '@store/filters';
 
 import { SearchType } from '@models';
-import { MapService } from '@services';
+import { MapService, WktService } from '@services';
 
 
 enum BreadcrumbFilterType {
@@ -71,6 +71,8 @@ export class BreadcrumbListComponent implements OnInit {
     map(additional => additional.some(v => !!v))
   );
 
+  public polygon$ = this.mapService.searchPolygon$;
+
   public additionalFiltersPreview$ = this.store$.select(filtersStore.getNumberOfAdditionalFilters).pipe(
     map(amt => amt > 0 ? ` · ${amt}` : '')
   );
@@ -78,6 +80,7 @@ export class BreadcrumbListComponent implements OnInit {
   constructor(
     private store$: Store<AppState>,
     private mapService: MapService,
+    private wktService: WktService,
   ) { }
 
   ngOnInit() {
@@ -96,6 +99,17 @@ export class BreadcrumbListComponent implements OnInit {
   public clearSelectedBreadcrumb(): void {
     this.store$.dispatch(new uiStore.CloseFiltersMenu());
     this.selectedFilter = BreadcrumbFilterType.NONE;
+  }
+
+  public onInputSearchPolygon(polygon: string): void {
+    const features = this.wktService.wktToFeature(
+      polygon,
+      this.mapService.epsg()
+    );
+
+    this.mapService.setDrawFeature(features);
+
+    return features;
   }
 
   public onClearDateRange(): void {
