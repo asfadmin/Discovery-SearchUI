@@ -47,3 +47,35 @@ export const invalid = new Style({
     })
   })
 });
+
+export const hidden = new Style({
+  fill: new Fill({
+    color: 'rgba(255, 255, 255, 0.0)'
+  }),
+  stroke: new Stroke({
+    color: 'rgba(255, 255, 255, 0.0)',
+    width: 4
+  }),
+  image: new CircleStyle({
+    radius: 7,
+    fill: new Fill({
+      color: 'rgba(255, 255, 255, 0.0)'
+    })
+  })
+});
+
+export const hover = new Style({
+  fill: new Fill({
+    color: 'rgba(255, 255, 255, 0.4)'
+  }),
+  stroke: new Stroke({
+    color: 'rgba(255, 255, 255, 0.4)',
+    width: 4
+  }),
+  image: new CircleStyle({
+    radius: 7,
+    fill: new Fill({
+      color: 'rgba(255, 255, 255, 0.4)'
+    })
+  })
+});

@@ -161,27 +161,13 @@ export class MapService {
 
     const selectClick = new Select({
       condition: click,
-      style: new Style({
-        fill: new Fill({
-          color: 'rgba(255, 255, 255, 0.0)'
-        }),
-        stroke: new Stroke({
-          color: 'rgba(255, 255, 255, 0.0)',
-          width: 4
-        }),
-        image: new CircleStyle({
-          radius: 7,
-          fill: new Fill({
-            color: 'rgba(255, 255, 255, 0.0)'
-          })
-        })
-      }),
+      style: polygonStyle.hidden,
       layers: l => l.get('selectable') || false
     });
 
     const selectHover = new Select({
       condition: pointerMove,
-      style: polygonStyle.omitted,
+      style: polygonStyle.hover,
       layers: l => l.get('selectable') || false
     });
 
