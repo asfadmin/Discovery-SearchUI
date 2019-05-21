@@ -39,7 +39,7 @@ export class MapComponent implements OnInit {
 
   private isMapInitialized$ = this.store$.select(mapStore.getIsMapInitialization);
   private granules$ = this.store$.select(granulesStore.getGranules);
-  private focusedGranule$ = this.store$.select(granulesStore.getFocusedGranule);
+  private focusedGranule$ = this.store$.select(granulesStore.getSelectedGranule);
   private view$ = this.store$.select(mapStore.getMapView);
   private drawMode$ = this.store$.select(mapStore.getMapDrawMode);
 
