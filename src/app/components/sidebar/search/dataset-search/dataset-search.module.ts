@@ -7,6 +7,7 @@ import { MatSharedModule } from '@shared';
 
 import { PathSelectorModule } from '@components/shared/selectors/path-selector';
 import { OtherSelectorModule } from '@components/shared/selectors/other-selector';
+import { SeasonSelectorModule } from '@components/shared/selectors/season-selector';
 
 import { DatasetSearchComponent } from './dataset-search.component';
 
@@ -17,12 +18,14 @@ import { DatasetSearchComponent } from './dataset-search.component';
   imports: [
     CommonModule,
     FormsModule,
-    PathSelectorModule,
-    OtherSelectorModule,
 
     MatSelectModule,
     MatExpansionModule,
     MatSharedModule,
+
+    PathSelectorModule,
+    OtherSelectorModule,
+    SeasonSelectorModule,
   ],
   exports: [
     DatasetSearchComponent,

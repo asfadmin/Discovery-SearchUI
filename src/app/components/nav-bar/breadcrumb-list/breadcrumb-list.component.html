@@ -2,22 +2,41 @@
   <div class="breadcrumb hide-mobile">
     <mat-form-field>
       <mat-label>Search Type</mat-label>
-      <mat-select>
-        <mat-option value="Geographic">Geographic</mat-option>
-        <mat-option value="List">List</mat-option>
-        <mat-option value="Mission">Mission</mat-option>
+      <mat-select
+        [(ngModel)]="searchType"
+        (selectionChange)="onSetSearchType($event.value)">
+        <mat-option [value]="searchTypes.DATASET">Geographic</mat-option>
+        <mat-option [value]="searchTypes.LIST">List</mat-option>
+        <mat-option [value]="searchTypes.MISSION">Mission</mat-option>
       </mat-select>
     </mat-form-field>
   </div>
 
-  <ng-container *ngIf="(searchType$ | async) === searchTypes.DATASET">
+  <ng-container *ngIf="searchType === searchTypes.DATASET">
     <div (click)="clearSelectedBreadcrumb()"
       class="breadcrumb hide-mobile hide-medium">
         <app-platform-selector></app-platform-selector>
     </div>
 
     <div class="breadcrumb hide-mobile hide-medium">
-        <app-aoi-upload></app-aoi-upload>
+      <mat-form-field style="margin-right: 10px; width: 90%;">
+        <input
+        (change)="onInputSearchPolygon($event.target.value)"
+        [value]="polygon$ | async"
+        matInput placeholder="Current Area of Intreset" />
+
+        <mat-icon
+          (click)="onNewSelectedFilter(filterTypes.AOI)"
+          matTooltip="More options"
+          style="cursor: pointer; margin-left:10px" matSuffix>
+            arrow_drop_down
+        </mat-icon>
+      </mat-form-field>
+
+      <mat-card *ngIf="selectedFilter === filterTypes.AOI"
+        class="breadcrumb-filter">
+          <app-aoi-upload></app-aoi-upload>
+      </mat-card>
     </div>
 
     <div class="breadcrumb hide-mobile hide-medium">
@@ -27,7 +46,7 @@
 
   <div class="breadcrumb">
     <button (click)="onToggleFiltersMenu()"
-      *ngIf="(searchType$ | async) === searchTypes.DATASET"
+      *ngIf="searchType === searchTypes.DATASET"
        color="{{ !(isAnyAdditionalFilters$ | async) ? 'basic' : accent }}"
        mat-stroked-button>
         <mat-icon>more_horiz</mat-icon>
@@ -35,10 +54,10 @@
     </button>
 
     <button (click)="onToggleFiltersMenu()"
-      *ngIf="(searchType$ | async) !== searchTypes.DATASET"
+      *ngIf="searchType !== searchTypes.DATASET"
        mat-stroked-button>
-        <span *ngIf="(searchType$ | async) === searchTypes.MISSION">Mission</span>
-        <span *ngIf="(searchType$ | async) === searchTypes.LIST">List</span>
+        <span *ngIf="searchType === searchTypes.MISSION">Mission</span>
+        <span *ngIf="searchType === searchTypes.LIST">List</span>
     </button>
   </div>
 
