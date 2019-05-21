@@ -27,7 +27,11 @@ export class NavButtonsComponent {
   }
 
   public onAccountButtonClicked() {
-    this.datapoolAuthService.login();
+    if (!this.datapoolAuthService.isLoggedIn) {
+      this.datapoolAuthService.login();
+    } else {
+      this.datapoolAuthService.logout();
+    }
   }
 
   public onCopy(): void {
