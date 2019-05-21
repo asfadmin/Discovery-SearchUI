@@ -58,6 +58,11 @@ export class DatapoolAuthService {
     );
   }
 
+  public logout(): void {
+    this.http.get(`${this.authUrl}/loginservice/logout`, {
+      withCredentials: true
+    }).subscribe(resp => console.log(resp));
+  }
 
   private listCookies(): string {
     const theCookies = document.cookie.split(';');
