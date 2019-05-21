@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 
 import { ViewType } from '@models';
 
@@ -13,9 +13,9 @@ import { map, takeUntil, tap, delay, take } from 'rxjs/operators';
 export class DatapoolAuthService {
 
   // FIXME: When the dev/test/prod sites have asf links this can be enabled
-  private vertexAuthUrl = false /* environment.production */ ?
-    'https://vertex.daac.asf.alaska.edu' :
-    'https://vertex-dev.asf.alaska.edu';
+  private authUrl = false /* environment.production */ ?
+    'https://auth-dev-0.asf.alaska.edu' :
+    'https://auth-dev-0.asf.alaska.edu';
 
   public isLoggedIn = false;
   private loginProcess: Subscription;
@@ -25,12 +25,9 @@ export class DatapoolAuthService {
   public login() {
     const localUrl = window.location.origin;
 
-    const appRedirect = `${localUrl}?uiView=${ViewType.LOGIN}`;
+    const appRedirect = encodeURIComponent(`${localUrl}?uiView=${ViewType.LOGIN}`);
 
-    const url = 'https://urs.earthdata.nasa.gov/oauth/authorize' +
-      '?client_id=BO_n7nTIlMljdvU6kRRB3g&response_type=code' +
-      `&redirect_uri=${this.vertexAuthUrl}/services/urs4_token_request` +
-      `&state=${appRedirect}`;
+    const url = `${this.authUrl}/loginservice/in/${appRedirect}`;
 
     const loginWindow = window.open(
       url,
@@ -52,6 +49,7 @@ export class DatapoolAuthService {
         if (loginWindow.location.host === window.location.host) {
           loginWindow.close();
           this.isLoggedIn = true;
+          console.log(this.listCookies());
           loginDone.next();
         }
       } catch (e) {
@@ -60,9 +58,15 @@ export class DatapoolAuthService {
     );
   }
 
-  public profileInfo() {
-    return this.http.get(`${this.vertexAuthUrl}/services/profile_info`, {
-      withCredentials: true
-    });
+
+  private listCookies(): string {
+    const theCookies = document.cookie.split(';');
+    let aString = '';
+
+    for (let i = 1 ; i <= theCookies.length; i++) {
+        aString += i + ', value: ' + theCookies[i - 1] + '\n';
+    }
+
+    return aString;
   }
 }
