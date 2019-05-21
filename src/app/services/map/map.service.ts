@@ -6,6 +6,7 @@ import { map, tap } from 'rxjs/operators';
 import { Map } from 'ol';
 import { Vector as VectorLayer } from 'ol/layer';
 import { Vector as VectorSource, Layer } from 'ol/source';
+import {Circle as CircleStyle, Fill, Stroke, Style} from 'ol/style.js';
 import * as proj from 'ol/proj';
 import { click, pointerMove } from 'ol/events/condition';
 import Select from 'ol/interaction/Select';
@@ -160,12 +161,26 @@ export class MapService {
 
     const selectClick = new Select({
       condition: click,
+      style: new Style({
+        fill: new Fill({
+          color: 'rgba(255, 255, 255, 0.0)'
+        }),
+        stroke: new Stroke({
+          color: 'rgba(255, 255, 255, 0.0)',
+          width: 4
+        }),
+        image: new CircleStyle({
+          radius: 7,
+          fill: new Fill({
+            color: 'rgba(255, 255, 255, 0.0)'
+          })
+        })
+      }),
       layers: l => l.get('selectable') || false
     });
 
     const selectHover = new Select({
       condition: pointerMove,
-      multi: true,
       style: polygonStyle.omitted,
       layers: l => l.get('selectable') || false
     });
