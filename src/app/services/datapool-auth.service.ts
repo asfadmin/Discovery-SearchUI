@@ -26,17 +26,7 @@ export class DatapoolAuthService {
   private loginProcess: Subscription;
 
   constructor(private http: HttpClient) {
-    const cookies = this.listCookies()
-      .map(s => s.trim().split('='))
-      .map(([name, val]) => ({[name]: val}))
-      .reduce((allCookies, cookie) => ({ ...allCookies, ...cookie }));
-
-    this.user = {
-      id: cookies['urs-user-id'],
-      accessToken: cookies['urs-access-token']
-    };
-
-    this.isLoggedIn = !!(this.user.id && this.user.accessToken);
+    this.checkLogin();
   }
 
   public login() {
@@ -66,7 +56,7 @@ export class DatapoolAuthService {
         if (loginWindow.location.host === window.location.host) {
           loginWindow.close();
           this.isLoggedIn = true;
-          console.log(this.listCookies());
+          console.log(this.loadCookies());
           loginDone.next();
         }
       } catch (e) {
@@ -76,14 +66,31 @@ export class DatapoolAuthService {
   }
 
   public logout(): void {
-    this.http.get(`${this.authUrl}/loginservice/logout`, {
-      withCredentials: true
-    }).subscribe(resp => console.log(resp));
+    window.open(
+      `${this.authUrl}/logout`,
+      'Vertex: URS Earth Data Authorization',
+      'scrollbars=yes, width=600, height= 600'
+    );
+
+    setTimeout(() => this.checkLogin(), 2000);
   }
 
-  private listCookies(): string[] {
-    const theCookies = document.cookie.split(';');
+  private checkLogin() {
+    const cookies = this.loadCookies();
+    this.user = {
+      id: cookies['urs-user-id'],
+      accessToken: cookies['urs-access-token']
+    };
 
-    return theCookies;
+    this.isLoggedIn = !!(this.user.id && this.user.accessToken);
+  }
+
+  private loadCookies() {
+    return document.cookie.split(';')
+      .map(s => s.trim().split('='))
+      .map(([name, val]) => ({[name]: val}))
+      .reduce(
+        (allCookies, cookie) => ({ ...allCookies, ...cookie })
+      );
   }
 }
