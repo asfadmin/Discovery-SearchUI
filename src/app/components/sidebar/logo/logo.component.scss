@@ -4,16 +4,12 @@
   background-color: $asf-primary;
   color: white;
   border-radius: 0;
-  margin-bottom: 10px;
-  padding-left: 30px;
 }
 
 .bounds {
   display: block;
-  position: fixed;
-  width: 400px;
-  height: 130px;
-  z-index: 9999;
+  width: 450px;
+  margin-right: 20px;
 }
 
 .content {
@@ -21,6 +17,7 @@
 }
 
 .sec1 {
+  margin-right: 20px;
 }
 
 .sec2 {

@@ -12,6 +12,7 @@ import { MaxResultsSelectorModule } from '@components/shared/max-results-selecto
 import { SearchSelectorModule } from '@components/shared/selectors/search-selector';
 import { BreadcrumbListComponent } from './breadcrumb-list.component';
 import { InfoBarModule} from '@components/sidebar/info-bar/info-bar.module';
+import { LogoModule } from '@components/sidebar/logo/logo.module';
 
 @NgModule({
   declarations: [BreadcrumbListComponent],
@@ -28,6 +29,7 @@ import { InfoBarModule} from '@components/sidebar/info-bar/info-bar.module';
     AoiUploadModule,
     MaxResultsSelectorModule,
     InfoBarModule,
+    LogoModule,
   ],
   exports: [BreadcrumbListComponent]
 })

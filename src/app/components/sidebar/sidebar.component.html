@@ -1,12 +1,5 @@
-<app-logo></app-logo>
-
 <div [@changeMenuState]="(isSidebarOpen$ | async) ? 'shown' : 'hidden'"
   class="sidebar-position">
-
-<app-toggle-button
-  (click)="onToggleHide()"
-  [isOpen]="isSidebarOpen$ | async">
-</app-toggle-button>
 
 <div
   *ngIf="selectedSearchType !== null && isFiltersMenuOpen"
