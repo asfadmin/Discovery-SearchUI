@@ -1,0 +1,16 @@
+.position {
+  position: fixed;
+  top: 0;
+  padding: 0 !important;
+  margin: 0;
+  width: 100vw;
+  z-index: 999;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.layout {
+  display: flex;
+  justify-content: flex-end;
+}

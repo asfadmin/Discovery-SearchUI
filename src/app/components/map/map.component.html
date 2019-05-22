@@ -1,15 +1,6 @@
-<div id="map" class="map"
-  (dragover)="onFileHovered($event)"
-  ></div>
-
-<app-nav-bar
-  (openQueue)="onOpenDownloadQueue()"
-  (doSearch)="onDoSearch()"
-  (clearSearch)="onClearSearch()"
-  [isSideMenuOpen]="isSidebarOpen$ | async"
-  [ngClass]="{'hidden': isUiHidden}"
-  [products]="queuedProducts$ | async"
-  ></app-nav-bar>
+<div (dragover)="onFileHovered($event)"
+  id="map" class="map">
+</div>
 
 <app-file-upload
   (dialogClose)="onFileUploadDialogClosed($event)"
@@ -17,16 +8,13 @@
   [interaction$]="interactionMode$">
 </app-file-upload>
 
-<app-map-controls
-  [ngClass]="{'hidden': isUiHidden}"
-  ></app-map-controls>
+<app-map-controls></app-map-controls>
 
-<div class="view-reset-button-position" [ngClass]="{'hidden': !isUiHidden}">
+<div class="view-reset-button-position">
   <button (click)="onShowUi()" mat-raised-button>
     <mat-icon>settings_backup_restore</mat-icon>
   </button>
 </div>
 
-<app-attributions
-  [mousePos]="mousePosition$ | async">
+<app-attributions [mousePos]="mousePosition$ | async">
 </app-attributions>

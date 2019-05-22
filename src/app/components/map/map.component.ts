@@ -2,12 +2,14 @@ import {
   Component, OnInit, Input, Output,
   EventEmitter
 } from '@angular/core';
-import { MatDialog } from '@angular/material';
 
 import { Store } from '@ngrx/store';
 
 import { Observable, combineLatest } from 'rxjs';
-import { map, filter, switchMap, tap, withLatestFrom, distinctUntilChanged } from 'rxjs/operators';
+import {
+  map, filter, switchMap, tap,
+  withLatestFrom, distinctUntilChanged
+} from 'rxjs/operators';
 
 import { Vector as VectorLayer} from 'ol/layer';
 import { Vector as VectorSource } from 'ol/source';
@@ -20,7 +22,6 @@ import * as queueStore from '@store/queue';
 
 import * as models from '@models';
 import { MapService, WktService } from '@services';
-import { QueueComponent } from './queue';
 
 @Component({
   selector: 'app-map',
@@ -35,27 +36,18 @@ export class MapComponent implements OnInit {
   public interactionMode$ = this.store$.select(mapStore.getMapInteractionMode);
   public mousePosition$ = this.mapService.mousePosition$;
   public newSelectedGranule$ = this.mapService.newSelectedGranule$;
-  public isUiHidden = false;
-
-  public isFiltersMenuOpen$ = this.store$.select(uiStore.getIsFiltersMenuOpen);
-  public isSidebarOpen$ = this.store$.select(uiStore.getIsSidebarOpen);
-  public areProductsLoaded$ = this.store$.select(granulesStore.getAreProductsLoaded).pipe(tap(console.log));
 
   private isMapInitialized$ = this.store$.select(mapStore.getIsMapInitialization);
   private granules$ = this.store$.select(granulesStore.getGranules);
+  private selectedGranule$ = this.store$.select(granulesStore.getSelectedGranule);
   private focusedGranule$ = this.store$.select(granulesStore.getFocusedGranule);
   private view$ = this.store$.select(mapStore.getMapView);
   private drawMode$ = this.store$.select(mapStore.getMapDrawMode);
-
-  public queuedProducts$ = this.store$.select(queueStore.getQueuedProducts).pipe(
-    map(q => q || [])
-  );
 
   constructor(
     private store$: Store<AppState>,
     private mapService: MapService,
     private wktService: WktService,
-    private dialog: MatDialog,
   ) {}
 
   ngOnInit(): void {
@@ -66,26 +58,9 @@ export class MapComponent implements OnInit {
     this.interactionMode$
       .subscribe(mode => this.mapService.setInteractionMode(mode));
 
-    this.store$.select(uiStore.getIsHidden)
-      .subscribe(isHidden => this.isUiHidden = isHidden);
-
     this.newSelectedGranule$.subscribe(
       gName => this.store$.dispatch(new granulesStore.SetSelectedGranule(gName))
     );
-  }
-
-  public onDoSearch(): void {
-    this.doSearch.emit();
-  }
-
-  public onClearSearch(): void {
-    this.clearSearch.emit();
-  }
-
-  public onOpenDownloadQueue(): void {
-    this.dialog.open(QueueComponent, {
-      width: '550px', height: '700px', minHeight: '50%'
-    });
   }
 
   public onFileHovered(e): void {
@@ -104,18 +79,18 @@ export class MapComponent implements OnInit {
   }
 
   public onFileUploadDialogClosed(successful: boolean): void {
-    if (successful) {
-      this.onNewInteractionMode(models.MapInteractionModeType.EDIT);
-    } else {
-      this.onNewInteractionMode(models.MapInteractionModeType.NONE);
-    }
+    const newMode = successful ?
+      models.MapInteractionModeType.EDIT :
+      models.MapInteractionModeType.NONE;
+
+    this.onNewInteractionMode(newMode);
   }
 
   private updateMapOnViewChange(): void {
     const viewBeforInitialization = this.view$.pipe(
-        withLatestFrom(this.isMapInitialized$),
-        filter(([view, isInit]) => !isInit),
-        map(([view, isInit]) => view)
+      withLatestFrom(this.isMapInitialized$),
+      filter(([view, isInit]) => !isInit),
+      map(([view, isInit]) => view)
     );
 
     viewBeforInitialization.subscribe(
@@ -125,6 +100,20 @@ export class MapComponent implements OnInit {
         this.store$.dispatch(new mapStore.MapInitialzed());
       }
     );
+
+    this.granuleToLayer$('SELECTED').subscribe(
+      feature => this.mapService.setSelectedFeature(feature)
+    );
+
+    this.granuleToLayer$('FOCUSED').subscribe(
+      feature => this.mapService.setFocusedFeature(feature)
+    );
+  }
+
+  private granuleToLayer$(layerType: string) {
+    const granule$ = layerType === 'FOCUSED' ?
+      this.focusedGranule$ :
+      this.selectedGranule$;
 
     const granulesLayerAfterInitialization = this.isMapInitialized$.pipe(
       filter(isMapInitiliazed => isMapInitiliazed),
@@ -140,13 +129,16 @@ export class MapComponent implements OnInit {
       layer => this.mapService.setLayer(layer)
     );
 
-    const focuseGranuleAfterInitialization = this.isMapInitialized$.pipe(
+    const selectedGranuleAfterInitialization = this.isMapInitialized$.pipe(
       filter(isMapInitiliazed => isMapInitiliazed),
-      switchMap(_ => this.focusedGranule$),
+      switchMap(_ => granule$),
     );
 
-    focuseGranuleAfterInitialization.pipe(
-      tap(granule => !!granule || this.mapService.clearFocusedGranule()),
+    return selectedGranuleAfterInitialization.pipe(
+      tap(granule => !!granule || (layerType === 'FOCUSED') ?
+        this.mapService.clearFocusedGranule() :
+        this.mapService.clearSelectedGranule()
+      ),
       filter(g => g !== null),
       map(
         granule => this.wktService.wktToFeature(
@@ -154,8 +146,6 @@ export class MapComponent implements OnInit {
           this.mapService.epsg()
         )
       ),
-    ).subscribe(
-      feature => this.mapService.setFocusedFeature(feature)
     );
   }
 
@@ -190,14 +180,12 @@ export class MapComponent implements OnInit {
   private granulePolygonsLayer(projection: string): Observable<VectorSource> {
     return this.granules$.pipe(
       distinctUntilChanged(),
-      map(
-        granules => this.granulesToFeature(granules, projection)
-      ),
+      map(granules => this.granulesToFeature(granules, projection)),
       map(features => this.featuresToSource(features))
     );
   }
 
-  private granulesToFeature(granules: models.Sentinel1Product[], projection: string) {
+  private granulesToFeature(granules: models.CMRProduct[], projection: string) {
     return granules
       .map(g => {
         const wkt = g.metadata.polygon;

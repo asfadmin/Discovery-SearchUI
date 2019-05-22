@@ -1,5 +1,27 @@
 @import "asf-theme";
 
+%card-base {
+  background-color: $asf-primary;
+  color: white;
+  border-radius: 0;
+}
+
+.bounds {
+  display: block;
+  width: 450px;
+  margin-right: 20px;
+}
+
+.content {
+  @extend %card-base;
+
+  box-shadow: none;
+}
+
+.sec1 {
+  margin-right: 20px;
+}
+
 .example-header-image {
   background-image: url('/assets/meatball.jpg');
   background-size: cover;
@@ -7,10 +29,6 @@
 
 .logo-card {
   background-color: $asf-primary;
-  color: white;
-  border-radius: 0;
-  margin-bottom: 10px;
-  padding-left: 30px;
 
   .header {
     font-size: 38px;

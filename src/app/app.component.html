@@ -2,6 +2,12 @@
   <app-bottom-menu>
   </app-bottom-menu>
 
+  <app-nav-bar
+    (doSearch)="onNewSearch()"
+    (clearSearch)="onClearSearch()"
+    [products]="queuedProducts$ | async">
+  </app-nav-bar>
+
   <app-map
     (doSearch)="onNewSearch()"
     (clearSearch)="onClearSearch()"

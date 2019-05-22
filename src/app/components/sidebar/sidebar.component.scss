@@ -1,3 +1,4 @@
+@import "asf-theme";
 
 .hidden {
   display: none;
@@ -11,7 +12,7 @@
   background: white;
   right: 100%;
   margin: 0;
-  top: 32px;
+  top: 114px;
   z-index: 999;
 }
 
@@ -20,8 +21,8 @@ $break-large: 1200px;
 
 .dataset-filters-card {
   position: fixed;
-  top: 80px;
-  left: calc(100% + 15px);
+  top: 100px;
+  left: calc(100% + 27px);
   width: 900px;
   max-height: calc(80% - 10px);
   max-width: calc(100vw - 20px);
@@ -82,4 +83,8 @@ $break-large: 1200px;
   margin-left: auto;
   margin-right: auto;
   margin-top: 8px;
+}
+
+h3 {
+  color: $asf-primary;
 }

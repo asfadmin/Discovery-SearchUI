@@ -1,10 +1,10 @@
 import { createFeatureSelector, createSelector } from '@ngrx/store';
 
 import { QueueActionType, QueueActions } from './queue.action';
-import { Sentinel1Product } from '@models';
+import { CMRProduct } from '@models';
 
 export interface ProductMap {
-  [id: string]: Sentinel1Product;
+  [id: string]: CMRProduct;
 }
 
 export interface QueueState {

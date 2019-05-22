@@ -1,0 +1,36 @@
+.breadcrumb-filter {
+  max-width: 370px;
+  min-width: 300px;
+  height: auto;
+  position: fixed;
+  top: 100px;
+}
+
+$break-small: 700px;
+$break-medium: 1250px;
+
+.breadcrumb-list {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.hide-mobile {
+  @media screen and (max-width: $break-small) {
+    display: none;
+  }
+}
+
+.hide-medium {
+  @media screen and (max-width: $break-medium) {
+    display: none;
+  }
+}
+
+.breadcrumb {
+  margin-right: 5px;
+}
+
+.selected {
+  background-color: #ccc;
+}

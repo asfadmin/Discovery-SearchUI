@@ -3,7 +3,7 @@ import { HttpClient, HttpParams, HttpHeaders } from '@angular/common/http';
 
 import { Observable } from 'rxjs';
 
-import { Sentinel1Product } from '@models';
+import { CMRProduct } from '@models';
 
 @Injectable({
   providedIn: 'root'
@@ -14,7 +14,7 @@ export class BulkDownloadService {
 
   constructor(private http: HttpClient) {}
 
-  public downloadScript$(products: Sentinel1Product[]): Observable<any> {
+  public downloadScript$(products: CMRProduct[]): Observable<any> {
     const productsStr = products
       .map(product => product.file)
       .join(',');

@@ -22,7 +22,7 @@ import * as filtersStore from '@store/filters';
 import * as services from '@services';
 import * as models from '@models';
 
-import { SpreadsheetComponent } from './results/spreadsheet';
+import { SpreadsheetComponent } from '@components/shared/spreadsheet';
 
 @Component({
   selector: 'app-sidebar',
@@ -48,6 +48,7 @@ export class SidebarComponent implements OnInit {
   public isFiltersMenuOpen: boolean;
 
   public uiView$ = this.store$.select(uiStore.getUiView);
+  public canSearch$ = this.store$.select(searchStore.getCanSearch);
 
   public currentSearchAmount$ = this.store$.select(searchStore.getSearchAmount);
 

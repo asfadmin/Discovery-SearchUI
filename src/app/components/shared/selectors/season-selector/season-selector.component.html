@@ -1,0 +1,30 @@
+<mat-slide-toggle
+  (change)="onToggleSeasonalOptions()"
+  [(ngModel)]="isSeasonalSearch"
+  style="margin: 15px 0">
+    Seasonal Search
+</mat-slide-toggle>
+
+<div *ngIf="isSeasonalSearch">
+  <div>
+    <b>Start Day </b>
+    <mat-slider
+      (change)="onSeasonStartChange($event.value)"
+      [value]="seasonStart$ | async"
+      [displayWith]="dayOfYearFormat"
+      min="1" max="365" step="1"
+      thumbLabel="true" showTicks="true"
+      ></mat-slider>
+  </div>
+
+  <div>
+    <b>End Day </b>
+    <mat-slider
+      (change)="onSeasonEndChange($event.value)"
+      [value]="seasonEnd$ | async"
+      [displayWith]="dayOfYearFormat"
+      min="1" max="365" step="1"
+      thumbLabel="true" showTicks="true"
+      ></mat-slider>
+  </div>
+</div>

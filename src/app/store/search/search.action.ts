@@ -1,6 +1,6 @@
 import { Action } from '@ngrx/store';
 
-import { Sentinel1Product } from '@models';
+import { CMRProduct } from '@models';
 
 export enum SearchActionType {
   MAKE_SEARCH = '[Search] Make A Search',
@@ -8,6 +8,9 @@ export enum SearchActionType {
   SEARCH_ERROR = '[Search] Search Error',
   CANCEL_SEARCH = '[Search] Cancel Search',
   SEARCH_CANCELED = '[Search] Search Canceled',
+
+  ENABLE_SEARCH = '[Search] Enable Search',
+  DISABLE_SEARCH = '[Search] Disable Search',
 
   SET_SEARCH_AMOUNT = '[Search] Set Search Results Amount',
 }
@@ -24,6 +27,14 @@ export class SearchCanceled implements Action {
   public readonly type = SearchActionType.SEARCH_CANCELED;
 }
 
+export class EnableSearch implements Action {
+  public readonly type = SearchActionType.ENABLE_SEARCH;
+}
+
+export class DisableSearch implements Action {
+  public readonly type = SearchActionType.DISABLE_SEARCH;
+}
+
 export class SetSearchAmount implements Action {
   public readonly type = SearchActionType.SET_SEARCH_AMOUNT;
 
@@ -33,7 +44,7 @@ export class SetSearchAmount implements Action {
 export class SearchResponse implements Action {
   public readonly type = SearchActionType.SEARCH_RESPONSE;
 
-  constructor(public payload: Sentinel1Product[]) {}
+  constructor(public payload: CMRProduct[]) {}
 }
 
 export class SearchError implements Action {
@@ -46,5 +57,7 @@ export type SearchActions =
   | MakeSearch
   | SetSearchAmount
   | CancelSearch
+  | EnableSearch
+  | DisableSearch
   | SearchError
   | SearchResponse;

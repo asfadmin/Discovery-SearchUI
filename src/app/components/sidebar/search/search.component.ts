@@ -4,7 +4,6 @@ import { Store } from '@ngrx/store';
 import { map } from 'rxjs/operators';
 
 import { AppState } from '@store';
-import * as uiStore from '@store/ui';
 import * as missionStore from '@store/mission';
 
 import * as models from '@models';
@@ -39,3 +38,5 @@ export class SearchComponent implements OnInit {
     this.store$.dispatch(new missionStore.SelectMission(selectedMission));
   }
 }
+
+

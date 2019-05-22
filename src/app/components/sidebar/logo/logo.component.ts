@@ -1,5 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 
+import * as uiStore from '@store/ui';
+import { Store } from '@ngrx/store';
+import { AppState } from '@store/app.reducer';
+
 @Component({
   selector: 'app-logo',
   templateUrl: './logo.component.html',
@@ -7,9 +11,17 @@ import { Component, OnInit } from '@angular/core';
 })
 export class LogoComponent implements OnInit {
 
-  constructor() { }
+  public isSidebarOpen$ = this.store$.select(uiStore.getIsSidebarOpen);
 
-  ngOnInit() {
+  constructor(
+    private store$: Store<AppState>,
+  ) {}
+
+  ngOnInit(): void {
+  }
+
+  public onToggleHide(): void {
+    this.store$.dispatch(new uiStore.ToggleSidebar());
   }
 
 }

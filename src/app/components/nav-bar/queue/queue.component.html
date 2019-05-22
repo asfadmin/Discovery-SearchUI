@@ -1,0 +1,59 @@
+<h2>Download Queue</h2>
+
+<button (click)="onClearQueue()" mat-raised-button>Clear Queue</button>
+
+<mat-list role="list">
+  <ng-container *ngIf="products$ | async as products">
+    <mat-list-item
+      *ngFor="let product of products"
+      role="listitem">
+        <h4 mat-line fxLayout="row" fxLayoutAlign="space-between">
+          <div>
+            <span *ngIf="product.id.length > 29">
+              <b>{{ product.id | truncate : 21 }}{{ product.id | truncate : -4 : '' }}</b>
+            </span>
+            <span *ngIf="product.id.length <= 29">
+              <b>{{ product.id }}</b>
+            </span>
+          </div>
+
+          <a [href]="product.downloadUrl" matTooltip="Download" target="_blank">
+            <mat-icon style="cursor: pointer">cloud_download</mat-icon>
+          </a>
+          <mat-icon (click)="onRemoveProduct(product)" style="cursor: pointer">
+            close
+          </mat-icon>
+        </h4>
+    </mat-list-item>
+  </ng-container>
+</mat-list>
+
+<button (click)="onMakeDownloadScript()"
+  mat-raised-button color="primary"
+  class="metadata-dl-btn">
+    Download Python Script (.py)
+</button>
+
+<button (click)="onCsvDownload()"
+  mat-raised-button color="primary"
+  class="metadata-dl-btn">
+    Metadata (csv)
+</button>
+
+<button (click)="onKmlDownload()"
+  mat-raised-button color="primary"
+  class="metadata-dl-btn">
+    Metadata (kml)
+</button>
+
+<button (click)="onGeojsonDownload()"
+  mat-raised-button color="primary"
+  class="metadata-dl-btn">
+    Metadata (geojson)
+</button>
+
+<button (click)="onMetalinkDownload()"
+  mat-raised-button color="primary"
+  class="metadata-dl-btn">
+  Metadata (metalink)
+</button>

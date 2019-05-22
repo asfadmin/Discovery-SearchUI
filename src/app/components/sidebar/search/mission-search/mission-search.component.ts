@@ -38,7 +38,7 @@ export class MissionSearchComponent implements OnInit {
   public currentFilter = '';
 
   public pageSizeOptions = [5, 10, 25];
-  public pageSize = this.pageSizeOptions[1];
+  public pageSize = this.pageSizeOptions[0];
   public pageIndex = 0;
 
   stateForm: FormGroup = this.fb.group({

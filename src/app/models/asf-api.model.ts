@@ -35,14 +35,15 @@ export interface PolygonRepair {
 
 export enum PolygonRepairTypes {
   ROUND = 'ROUND',
-    TRIM = 'TRIM',
-    CLOSE = 'CLOSE',
-    REVERSE = 'REVERSE',
+  TRIM = 'TRIM',
+  CLOSE = 'CLOSE',
+  REVERSE = 'REVERSE',
+  WRAP = 'WRAP',
 }
 
 export enum PolygonErrorTypes {
   SYNTAX = 'SYNTAX',
-    TYPE = 'TYPE',
-    SELF_INTERSECTION = 'SELF_INTERSECTIOn',
-    UNKNOWN = 'UNKNOWN',
+  TYPE = 'TYPE',
+  SELF_INTERSECTION = 'SELF_INTERSECTIOn',
+  UNKNOWN = 'UNKNOWN',
 }

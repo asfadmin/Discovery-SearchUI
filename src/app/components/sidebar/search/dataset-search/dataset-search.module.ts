@@ -5,11 +5,9 @@ import { CommonModule } from '@angular/common';
 import { MatSelectModule, MatExpansionModule } from '@angular/material';
 import { MatSharedModule } from '@shared';
 
-import { PathSelectorModule } from './path-selector';
-import { PlatformSelectorModule } from './platform-selector';
-import { DateSelectorModule } from './date-selector';
-import { OtherSelectorModule } from './other-selector';
-import { AoiUploadModule } from './aoi-upload';
+import { PathSelectorModule } from '@components/shared/selectors/path-selector';
+import { OtherSelectorModule } from '@components/shared/selectors/other-selector';
+import { SeasonSelectorModule } from '@components/shared/selectors/season-selector';
 
 import { DatasetSearchComponent } from './dataset-search.component';
 
@@ -25,11 +23,9 @@ import { DatasetSearchComponent } from './dataset-search.component';
     MatExpansionModule,
     MatSharedModule,
 
-    PlatformSelectorModule,
-    DateSelectorModule,
     PathSelectorModule,
     OtherSelectorModule,
-    AoiUploadModule,
+    SeasonSelectorModule,
   ],
   exports: [
     DatasetSearchComponent,

@@ -14,6 +14,7 @@ import * as searchStore from '@store/search';
 import * as uiStore from '@store/ui';
 import * as missionStore from '@store/mission';
 import * as mapStore from '@store/map';
+import * as queueStore from '@store/queue';
 
 import * as services from '@services';
 import * as models from './models';
@@ -27,7 +28,12 @@ export class AppComponent implements OnInit {
   public shouldOmitSearchPolygon$ = this.store$.select(filterStore.getShouldOmitSearchPolygon);
   public uiView$ = this.store$.select(uiStore.getUiView);
 
+  public queuedProducts$ = this.store$.select(queueStore.getQueuedProducts).pipe(
+    map(q => q || [])
+  );
+
   public interactionTypes = models.MapInteractionModeType;
+  public searchType: models.SearchType;
 
   constructor(
     private store$: Store<AppState>,
@@ -41,6 +47,10 @@ export class AppComponent implements OnInit {
   public ngOnInit(): void {
     this.polygonValidationService.validate();
     this.store$.dispatch(new missionStore.LoadMissions());
+
+    this.store$.select(uiStore.getSearchType).subscribe(
+      searchType => this.searchType = searchType
+    );
 
     this.store$.select(uiStore.getSearchType).pipe(
       skip(1),
@@ -89,6 +99,12 @@ export class AppComponent implements OnInit {
     this.store$.dispatch(new filterStore.ClearFilters());
     this.store$.dispatch(new missionStore.SelectMission(null));
     this.mapService.clearDrawLayer();
+
+    if (this.searchType === models.SearchType.DATASET) {
+      this.store$.dispatch(
+        new mapStore.SetMapInteractionMode(models.MapInteractionModeType.DRAW)
+      );
+    }
   }
 
   public onLoginClosed(): void {

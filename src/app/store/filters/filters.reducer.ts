@@ -173,6 +173,13 @@ export function filtersReducer(state = initState, action: FiltersActions): Filte
       };
     }
 
+    case FiltersActionType.CLEAR_SEASON: {
+      return {
+        ...state,
+        season: initState.season
+      };
+    }
+
     case FiltersActionType.SET_PATH_START: {
       return {
         ...state,
@@ -214,7 +221,15 @@ export function filtersReducer(state = initState, action: FiltersActions): Filte
     }
 
     case FiltersActionType.CLEAR_FILTERS: {
-      return initState;
+      const selected = new Set<string>(state.platforms.selected);
+
+      return {
+        ...initState,
+        platforms: {
+          ...initState.platforms,
+          selected
+        }
+      };
     }
 
     case FiltersActionType.USE_SEARCH_POLYGON: {
@@ -343,6 +358,11 @@ export const getSelectedPlatformNames = createSelector(
   (state: PlatformsState) => state.selected
 );
 
+export const getSelectedPlatformName = createSelector(
+  getPlatforms,
+  ({ selected }) => selected.size === 1 ? selected.values().next().value : null
+);
+
 export const getSelectedPlatforms = createSelector(
   getPlatforms,
   (state: PlatformsState) => Array.from(state.selected).reduce(
@@ -403,7 +423,7 @@ export const getMaxSearchResults = createSelector(
 
 export const getIsAnyDateValues = createSelector(
   getFiltersState,
-  ({ dateRange }) => !!dateRange.start || !!dateRange.end
+  ({ dateRange, season }) => !!(dateRange.start || dateRange.end || season.start || season.end)
 );
 
 export const getIsAnyPathFrameValue = createSelector(
@@ -444,3 +464,45 @@ export const getNumberOfAdditionalFilters = createSelector(
     return listFiltersAmts + flightDirAmount;
   }
 );
+
+export const getDatePreviewStr = createSelector(
+  getFiltersState,
+  ({ dateRange, season }) => {
+      const format = date => {
+        if (!date) {
+          return date;
+        }
+
+        const [month, day, year] = [
+          date.getUTCMonth() + 1,
+          date.getUTCDate(),
+          date.getUTCFullYear(),
+        ];
+
+        return `${month}-${day}-${year}`;
+      };
+
+      const [startStr, endStr] = [dateRange.start, dateRange.end]
+        .map(format);
+
+      const seasonStr = (season.start || season.end) ? 'seasonal' : '';
+
+      let dateStr = '';
+      if (startStr && endStr) {
+        dateStr = `${startStr} to ${endStr}`;
+      } else if (startStr) {
+        dateStr = `after ${startStr}`;
+      } else if (endStr) {
+        dateStr = `before ${endStr}`;
+      }
+
+      if (dateStr && seasonStr) {
+        return `${dateStr} · ${seasonStr}`;
+      } else if (dateStr) {
+        return dateStr;
+      } else {
+        return seasonStr;
+      }
+    }
+);
+

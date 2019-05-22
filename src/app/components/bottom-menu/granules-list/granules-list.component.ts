@@ -1,0 +1,163 @@
+import {
+  Component, OnInit, Input, ViewChild,
+  ViewEncapsulation, Output, EventEmitter,
+  HostListener
+} from '@angular/core';
+
+import { Observable, fromEvent } from 'rxjs';
+import { tap, distinctUntilChanged, withLatestFrom, filter, map } from 'rxjs/operators';
+
+import { Store } from '@ngrx/store';
+import { AppState } from '@store';
+import * as searchStore from '@store/search';
+import * as granulesStore from '@store/granules';
+
+import { faFileDownload, faPlus } from '@fortawesome/free-solid-svg-icons';
+import { MatPaginator } from '@angular/material';
+
+import { CMRProduct } from '@models';
+
+@Component({
+  selector: 'app-granules-list',
+  templateUrl: './granules-list.component.html',
+  styleUrls: ['./granules-list.component.scss'],
+  encapsulation: ViewEncapsulation.None
+})
+export class GranulesListComponent implements OnInit {
+  @Input() granules$: Observable<CMRProduct[]>;
+  @Input() selected: string;
+
+  @Output() newSelected = new EventEmitter<string>();
+  @Output() queueGranule = new EventEmitter<string>();
+  @Output() newFocusedGranule = new EventEmitter<CMRProduct>();
+  @Output() clearFocusedGranule = new EventEmitter<void>();
+
+  @ViewChild(MatPaginator) paginator: MatPaginator;
+
+  public granules: CMRProduct[];
+  public pageSizeOptions = [5, 10];
+  public pageSize = this.pageSizeOptions[0];
+  public pageIndex = 0;
+
+  public downloadIcon = faFileDownload;
+  public queueIcon = faPlus;
+
+  constructor(private store$: Store<AppState>) {}
+
+  ngOnInit() {
+    this.store$.select(granulesStore.getSelectedGranule).pipe(
+      withLatestFrom(this.granules$),
+      filter(([selected, _]) => !!selected),
+      map(([selected, granules]) =>
+        Math.ceil((granules.indexOf(selected) + 1) / this.pageSize) - 1
+      ),
+      map(selectedIdx => this.paginator.pageIndex - selectedIdx),
+      filter(distance => distance < 100000)
+    ).subscribe(
+      distance => this.pageTo(distance)
+    );
+
+    this.granules$.subscribe(
+      granules => this.granules = granules
+    );
+
+    this.store$.select(searchStore.getIsLoading).subscribe(
+      _ => this.paginator.firstPage()
+    );
+
+    fromEvent(document, 'keydown').subscribe((e: KeyboardEvent) => {
+      const { key } = e;
+
+      switch ( key ) {
+        case 'ArrowDown': {
+          this.selectNextProduct();
+          break;
+        }
+        case 'ArrowUp': {
+          this.selectPreviousProduct();
+          break;
+        }
+        case 'ArrowRight': {
+          this.paginator.nextPage();
+          break;
+        }
+        case 'ArrowLeft': {
+          this.paginator.previousPage();
+          break;
+        }
+      }
+    });
+  }
+
+  private selectNextProduct(): void {
+    if (!this.selected) {
+      return;
+    }
+
+    const currentSelected = this.granules
+      .filter(g => g.name === this.selected)
+      .pop();
+
+    const nextIdx = Math.min(
+      this.granules.indexOf(currentSelected) + 1,
+      this.granules.length - 1
+    );
+
+    const nextGranule = this.granules[nextIdx];
+
+    this.store$.dispatch(new granulesStore.SetSelectedGranule(nextGranule.id));
+  }
+
+  private selectPreviousProduct(): void {
+    if (!this.selected) {
+      return;
+    }
+
+    const currentSelected = this.granules
+      .filter(g => g.name === this.selected)
+      .pop();
+
+    const previousIdx = Math.max(this.granules.indexOf(currentSelected) - 1, 0);
+    const previousGranule = this.granules[previousIdx];
+
+    this.store$.dispatch(new granulesStore.SetSelectedGranule(previousGranule.id));
+  }
+
+  private pageTo(distance: number): void {
+    const direction = distance > 0 ? 'next' : 'prev';
+
+    for (let i = 0; i < Math.abs(distance); ++i) {
+      direction === 'next' ?
+        this.paginator.previousPage() :
+        this.paginator.nextPage();
+    }
+  }
+
+  public onGranuleSelected(name: string): void {
+    this.newSelected.emit(name);
+  }
+
+  public onQueueGranule(e: Event, groupId: string): void {
+    this.queueGranule.emit(groupId);
+
+    e.stopPropagation();
+  }
+
+  public onSetFocusedGranule(granule: CMRProduct): void {
+    this.newFocusedGranule.emit(granule);
+  }
+
+  public onClearFocusedGranule(): void {
+    this.clearFocusedGranule.emit();
+  }
+
+  public currentPageOf(granules, pageSize, pageIndex): CMRProduct[] {
+    const offset = pageIndex * pageSize;
+    return granules.slice(offset, offset + pageSize);
+  }
+
+  public onNewPage(page): void {
+    this.pageIndex = page.pageIndex;
+    this.pageSize = page.pageSize;
+  }
+}

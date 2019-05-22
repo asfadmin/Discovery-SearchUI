@@ -1,0 +1,115 @@
+<div class="inner-card">
+  <button (click)="onCloseDialog()" class="close-button" mat-icon-button>
+    <mat-icon>close</mat-icon>
+  </button>
+
+  <div>
+    <mat-form-field style="width: 500px; margin: 10px">
+      <input matInput [(ngModel)]="filterStr" (keyup)="applyFilter($event.target.value)" placeholder="Filter">
+    </mat-form-field>
+    <button mat-raised-button (click)="onColumnsReset()" matTooltip="Reset Columns" style="margin: 10px" >
+      <mat-icon style="font-size: 15px; margin-top: 10px" >restore</mat-icon>
+    </button>
+    <div>
+    </div>
+  </div>
+
+  <div class="mat-elevation-z8">
+    <table mat-table [dataSource]="dataSource" matSort>
+
+      <ng-container matColumnDef="select">
+        <th mat-header-cell *matHeaderCellDef>
+          <mat-checkbox (change)="$event ? masterToggle() : null"
+                    [checked]="selection.hasValue() && isAllSelected()"
+                    [indeterminate]="selection.hasValue() && !isAllSelected()">
+          </mat-checkbox>
+        </th>
+        <td mat-cell *matCellDef="let row">
+          <mat-checkbox (click)="$event.stopPropagation()"
+                    (change)="$event ? selection.toggle(row) : null"
+                    [checked]="selection.isSelected(row)">
+          </mat-checkbox>
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="name">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>
+          Name
+          <app-hide-icon (hide)="onRemoveColumn('name')"></app-hide-icon>
+        </th>
+        <td mat-cell *matCellDef="let product">
+          {{product.name | truncate : 10 : "....."}}{{product.name | truncate : -4 : ""}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="date">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>
+          Acquisition Date
+          <app-hide-icon (hide)="onRemoveColumn('date')"></app-hide-icon>
+        </th>
+        <td mat-cell *matCellDef="let product"> {{product.metadata.date | shortDate}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="productType">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>
+          Product Type
+          <app-hide-icon (hide)="onRemoveColumn('productType')"></app-hide-icon>
+        </th>
+        <td mat-cell *matCellDef="let product"> {{product.metadata.productType}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="beamMode">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>
+          Beam Mode
+          <app-hide-icon (hide)="onRemoveColumn('beamMode')"></app-hide-icon>
+        </th>
+        <td mat-cell *matCellDef="let product"> {{product.metadata.beamMode}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="polarization">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>
+          Polarization
+          <app-hide-icon (hide)="onRemoveColumn('polarization')"></app-hide-icon>
+        </th>
+        <td mat-cell *matCellDef="let product"> {{product.metadata.polarization}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="path">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>
+          Path
+          <app-hide-icon (hide)="onRemoveColumn('path')"></app-hide-icon>
+        </th>
+        <td mat-cell *matCellDef="let product"> {{product.metadata.path}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="frame">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>
+          Frame
+          <app-hide-icon (hide)="onRemoveColumn('frame')"></app-hide-icon>
+        </th>
+        <td mat-cell *matCellDef="let product"> {{product.metadata.frame}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="absoluteOrbit">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>
+          Absolute Orbit
+          <app-hide-icon (hide)="onRemoveColumn('absoluteOrbit')"></app-hide-icon>
+        </th>
+        <td mat-cell *matCellDef="let product"> {{product.metadata.absoluteOrbit}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="bytes">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>
+          Size
+          <app-hide-icon (hide)="onRemoveColumn('bytes')"></app-hide-icon>
+        </th>
+        <td mat-cell *matCellDef="let product"> {{product.bytes | readableSizeFromBytes }} </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr (mouseenter)="onRowHover(row)" mat-row *matRowDef="let row; columns: displayedColumns;">
+      </tr>
+    </table>
+
+    <mat-paginator [pageSizeOptions]="[10, 25, 100]"></mat-paginator>
+  </div>
+</div>

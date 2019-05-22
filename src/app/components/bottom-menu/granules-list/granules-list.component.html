@@ -1,0 +1,43 @@
+<mat-card class="card-spacing">
+
+  <mat-action-list>
+    <ng-container *ngFor="let granule of currentPageOf(granules, pageSize, pageIndex)">
+      <button
+        (mouseenter)="onSetFocusedGranule(granule)"
+        (mouseleave) ="onClearFocusedGranule(granule)"
+        (click)="onGranuleSelected(granule.id)"
+        [class.selected]="granule.name === selected"
+        mat-list-item>
+
+          <img [src]="granule.browse"
+            onerror="this.src='assets/error.png'"
+            class="size" matListAvatar>
+
+          <app-product-name [name]="granule.name" matLine></app-product-name>
+
+          <div matLine>
+            <span matTooltip="Path" matTooltipPosition="after">{{ granule.metadata.path }}</span>,
+            <span matTooltip="Frame" matTooltipPosition="after">{{ granule.metadata.frame }}</span>,
+            <span matTooltip="Polarization" matTooltipPosition="after">{{ granule.metadata.polarization }}</span>,
+            <span matTooltip="Flight Direction" matTooltipPosition="after">
+              {{ granule.metadata.flightDirection === 'ASCENDING' ? 'ASC' : 'DES' }}
+            </span>,
+            <span matTooltip="Absolute Orbit" matTooltipPosition="after">{{ granule.metadata.absoluteOrbit }}</span>
+          </div>
+
+          <fa-icon (click)="onQueueGranule($event, granule.groupId)"
+            [icon]="queueIcon"
+            matTooltip="Queue this granules products"
+            class="ml-2">
+          </fa-icon>
+      </button>
+    </ng-container>
+  </mat-action-list>
+
+  <mat-paginator
+    [length]="granules.length"
+    [pageSize]="pageSize"
+    [pageSizeOptions]="pageSizeOptions"
+    (page)="onNewPage($event)">
+  </mat-paginator>
+</mat-card>

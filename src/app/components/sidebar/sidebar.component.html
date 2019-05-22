@@ -1,17 +1,11 @@
 <div [@changeMenuState]="(isSidebarOpen$ | async) ? 'shown' : 'hidden'"
-  [ngClass]="{'hidden': isHidden}"
   class="sidebar-position">
-
-<app-toggle-button
-  (click)="onToggleHide()"
-  [isOpen]="isSidebarOpen$ | async">
-</app-toggle-button>
 
 <div
   *ngIf="selectedSearchType !== null && isFiltersMenuOpen"
   class="dataset-filters-card">
   <mat-card>
-    <mat-card-header>
+    <mat-card-header *ngIf="selectedSearchType !== searchTypes.DATASET">
       <mat-card-title><h3>{{ selectedSearchType }}</h3></mat-card-title>
     </mat-card-header>
 
@@ -21,31 +15,21 @@
         (newSearchType)="onSetSearchType($event)"></app-search>
     </mat-card-content>
   </mat-card>
-
-  <div class="bottom-list-elements">
-      <app-search-bar
-        (newSearch)="onNewSearch()"
-        (clearSearches)="onClearSearch()"
-        (newMaxResults)="onNewMaxSearchResults($event)"
-        [maxResults]="maxResults$ | async"
-        [currentSearchAmount]="currentSearchAmount$ | async"
-        [isLoading]="loading$ | async">
-      </app-search-bar>
-  </div>
 </div>
 
-<div class="filter-list">
+<!--  <app-logo-->
+<!--    class="clickable"-->
+<!--    (click)="onAppReset()">-->
+<!--  </app-logo>-->
+
+  <div class="filter-list">
 
   <div class="top-list-elements">
-    <app-logo
-       class="clickable"
-      (click)="onAppReset()">
-    </app-logo>
 
-    <app-detailed-search-selector
+    <app-search-selector
       (newSearchType)="onSetSearchType($event)"
       [selectedSearchType]="selectedSearchType">
-    </app-detailed-search-selector>
+    </app-search-selector>
 
     <mat-card class="mat-elevation-z0">
       <div id="support_by">Support provided by...</div>

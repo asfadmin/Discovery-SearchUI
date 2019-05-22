@@ -1,0 +1,9 @@
+li {
+  margin-bottom: 4px;
+}
+
+.fit-to-container {
+  max-height: 250px;
+  max-width: 100%;
+  object-fit: contain;
+}

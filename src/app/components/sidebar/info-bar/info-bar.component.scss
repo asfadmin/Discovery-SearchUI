@@ -1,0 +1,33 @@
+@import "asf-theme";
+
+.bounds {
+  background-color: black;
+  display: block;
+  margin-top: 5px;
+}
+
+.content {
+  min-width: 300px;
+}
+
+.sec1 {
+  background: lightgray;
+  color: black;
+}
+
+.sec2 {
+  background: gray;
+  color: $asf-warn;
+}
+
+.sec3 {
+  background: darkgray;
+  color: white;
+  text-transform: uppercase;
+}
+
+.sec1,
+.sec2,
+.sec3 {
+  text-align: center;
+}

@@ -7,14 +7,12 @@ import { MatSharedModule } from '@shared';
 
 import { SidebarComponent } from './sidebar.component';
 import { ToggleButtonModule } from './toggle-button';
-import { SearchBarModule } from './search/search-bar';
 
-import { DetailedSearchSelectorModule } from './search/search-selector';
+import { SearchSelectorModule } from '@components/shared/selectors/search-selector';
 import { SearchModule } from './search';
-import { ResultsModule } from './results';
-import { RibbonModule } from './ribbon';
 
-import { LogoComponent } from './logo/logo.component';
+import { FlexLayoutModule } from '@angular/flex-layout';
+import { LogoModule } from './logo/logo.module';
 
 @NgModule({
   imports: [
@@ -24,17 +22,16 @@ import { LogoComponent } from './logo/logo.component';
     MatTabsModule,
     MatSharedModule,
 
-    SearchBarModule,
+    FlexLayoutModule,
+
     ToggleButtonModule,
-    ResultsModule,
-    RibbonModule,
+    LogoModule,
 
     SearchModule,
-    DetailedSearchSelectorModule,
+    SearchSelectorModule,
   ],
   declarations: [
     SidebarComponent,
-    LogoComponent,
   ],
   exports: [
     SidebarComponent
