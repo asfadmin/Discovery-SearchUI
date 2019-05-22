@@ -23,7 +23,7 @@
         <input
         (change)="onInputSearchPolygon($event.target.value)"
         [value]="polygon$ | async"
-        matInput placeholder="Current Area of Intreset" />
+        matInput placeholder="Current Area of Interest" />
 
         <mat-icon
           (click)="onNewSelectedFilter(filterTypes.AOI)"
@@ -80,7 +80,7 @@
     <button (click)="onDoSearch()"
       [disabled]="!(canSearch$ | async)"
       mat-flat-button color="accent">
-      {{ (loading$ | async) ? 'Loading...' : 'Search' }}
+      {{ (loading$ | async) ? 'Loading...' : (!(canSearch$ | async) ? 'No Results' : 'Search') }}
     </button>
   </div>
 </div>
