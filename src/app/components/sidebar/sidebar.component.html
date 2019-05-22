@@ -1,3 +1,5 @@
+<app-logo></app-logo>
+
 <div [@changeMenuState]="(isSidebarOpen$ | async) ? 'shown' : 'hidden'"
   class="sidebar-position">
 
@@ -22,13 +24,14 @@
   </mat-card>
 </div>
 
-<div class="filter-list">
+<!--  <app-logo-->
+<!--    class="clickable"-->
+<!--    (click)="onAppReset()">-->
+<!--  </app-logo>-->
+
+  <div class="filter-list">
 
   <div class="top-list-elements">
-    <app-logo
-       class="clickable"
-      (click)="onAppReset()">
-    </app-logo>
 
     <app-search-selector
       (newSearchType)="onSetSearchType($event)"

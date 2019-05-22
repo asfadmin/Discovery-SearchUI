@@ -11,7 +11,8 @@ import { ToggleButtonModule } from './toggle-button';
 import { SearchSelectorModule } from '@components/shared/selectors/search-selector';
 import { SearchModule } from './search';
 
-import { LogoComponent } from './logo/logo.component';
+import { FlexLayoutModule } from '@angular/flex-layout';
+import { LogoModule } from './logo/logo.module';
 
 @NgModule({
   imports: [
@@ -21,14 +22,16 @@ import { LogoComponent } from './logo/logo.component';
     MatTabsModule,
     MatSharedModule,
 
+    FlexLayoutModule,
+
     ToggleButtonModule,
+    LogoModule,
 
     SearchModule,
     SearchSelectorModule,
   ],
   declarations: [
     SidebarComponent,
-    LogoComponent,
   ],
   exports: [
     SidebarComponent
