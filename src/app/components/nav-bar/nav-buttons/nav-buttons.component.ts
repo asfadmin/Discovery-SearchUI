@@ -30,8 +30,7 @@ export class NavButtonsComponent {
     if (!this.datapoolAuthService.isLoggedIn) {
       this.datapoolAuthService.login();
     } else {
-      this.datapoolAuthService.profileInfo()
-        .subscribe(console.log);
+      this.datapoolAuthService.logout();
     }
   }
 

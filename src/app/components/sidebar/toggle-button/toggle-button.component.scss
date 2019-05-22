@@ -7,11 +7,6 @@ $icon-size: 42px;
   background-color: $asf-primary;
   color: white;
   box-shadow: none !important;
-  //position: fixed;
-  //top: 0;
-  //left: 100%;
-  //padding: 15px 1px 50px 1px;
-  //margin-right: 20px;
   cursor: pointer;
   border: none;
   text-align: center;
@@ -26,6 +21,6 @@ $icon-size: 42px;
 }
 
 .toggle-text {
-  line-height: 0px;
+  line-height: 0;
   width: 100%;
 }

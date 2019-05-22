@@ -49,10 +49,12 @@ export class PolygonValidationService {
 
           const { report, type }  = resp.repairs.pop();
 
-          this.snackBar.open(
-            report, type,
-            { duration: 4000, }
-          );
+          if (type !== models.PolygonRepairTypes.WRAP) {
+            this.snackBar.open(
+              report, type,
+              { duration: 4000, }
+            );
+          }
 
           const features = this.wktService.wktToFeature(
             resp.wkt,

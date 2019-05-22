@@ -6,7 +6,7 @@ import { Store } from '@ngrx/store';
 import { AppState } from '@store';
 import * as mapStore from '@store/map';
 import { MapDrawModeType, MapInteractionModeType } from '@models';
-import { MapService } from '@services';
+import { MapService, WktService } from '@services';
 
 @Component({
   selector: 'app-aoi-upload',
@@ -23,6 +23,7 @@ export class AoiUploadComponent implements OnInit {
 
   constructor(
     private mapService: MapService,
+    private wktService: WktService,
     private store$: Store<AppState>,
     private clipboard: ClipboardService
   ) {}
@@ -34,6 +35,17 @@ export class AoiUploadComponent implements OnInit {
   public onFileUpload(): void {
     const action = new mapStore.SetMapInteractionMode(MapInteractionModeType.UPLOAD);
     this.store$.dispatch(action);
+  }
+
+  public onNewPolygon(polygon: string): void {
+    const features = this.wktService.wktToFeature(
+      polygon,
+      this.mapService.epsg()
+    );
+
+    this.mapService.setDrawFeature(features);
+
+    return features;
   }
 
   public onNewDrawMode(mode: MapDrawModeType): void {

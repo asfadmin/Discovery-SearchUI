@@ -38,6 +38,7 @@ export enum PolygonRepairTypes {
   TRIM = 'TRIM',
   CLOSE = 'CLOSE',
   REVERSE = 'REVERSE',
+  WRAP = 'WRAP',
 }
 
 export enum PolygonErrorTypes {

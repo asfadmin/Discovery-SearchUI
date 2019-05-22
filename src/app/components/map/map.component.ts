@@ -39,6 +39,7 @@ export class MapComponent implements OnInit {
 
   private isMapInitialized$ = this.store$.select(mapStore.getIsMapInitialization);
   private granules$ = this.store$.select(granulesStore.getGranules);
+  private selectedGranule$ = this.store$.select(granulesStore.getSelectedGranule);
   private focusedGranule$ = this.store$.select(granulesStore.getFocusedGranule);
   private view$ = this.store$.select(mapStore.getMapView);
   private drawMode$ = this.store$.select(mapStore.getMapDrawMode);
@@ -100,6 +101,20 @@ export class MapComponent implements OnInit {
       }
     );
 
+    this.granuleToLayer$('SELECTED').subscribe(
+      feature => this.mapService.setSelectedFeature(feature)
+    );
+
+    this.granuleToLayer$('FOCUSED').subscribe(
+      feature => this.mapService.setFocusedFeature(feature)
+    );
+  }
+
+  private granuleToLayer$(layerType: string) {
+    const granule$ = layerType === 'FOCUSED' ?
+      this.focusedGranule$ :
+      this.selectedGranule$;
+
     const granulesLayerAfterInitialization = this.isMapInitialized$.pipe(
       filter(isMapInitiliazed => isMapInitiliazed),
       switchMap(_ => this.view$),
@@ -114,13 +129,16 @@ export class MapComponent implements OnInit {
       layer => this.mapService.setLayer(layer)
     );
 
-    const focuseGranuleAfterInitialization = this.isMapInitialized$.pipe(
+    const selectedGranuleAfterInitialization = this.isMapInitialized$.pipe(
       filter(isMapInitiliazed => isMapInitiliazed),
-      switchMap(_ => this.focusedGranule$),
+      switchMap(_ => granule$),
     );
 
-    focuseGranuleAfterInitialization.pipe(
-      tap(granule => !!granule || this.mapService.clearFocusedGranule()),
+    return selectedGranuleAfterInitialization.pipe(
+      tap(granule => !!granule || (layerType === 'FOCUSED') ?
+        this.mapService.clearFocusedGranule() :
+        this.mapService.clearSelectedGranule()
+      ),
       filter(g => g !== null),
       map(
         granule => this.wktService.wktToFeature(
@@ -128,8 +146,6 @@ export class MapComponent implements OnInit {
           this.mapService.epsg()
         )
       ),
-    ).subscribe(
-      feature => this.mapService.setFocusedFeature(feature)
     );
   }
 

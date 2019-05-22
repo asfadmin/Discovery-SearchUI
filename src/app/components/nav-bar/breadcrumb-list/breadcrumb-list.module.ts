@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 
 import { MatSharedModule } from '@shared';
 import { MatMenuModule, MatDatepickerModule, MatInputModule, MatSelectModule } from '@angular/material';
@@ -18,6 +19,8 @@ import { LogoModule } from '@components/sidebar/logo/logo.module';
   declarations: [BreadcrumbListComponent],
   imports: [
     CommonModule,
+    FormsModule,
+    MatInputModule,
     MatSelectModule,
     MatMenuModule,
     MatDatepickerModule,
