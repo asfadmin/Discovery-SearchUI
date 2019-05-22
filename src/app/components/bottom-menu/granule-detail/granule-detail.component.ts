@@ -1,5 +1,8 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 
+import { MatDialog } from '@angular/material';
+import { ImageDialogComponent } from './image-dialog';
+
 import * as models from '@models';
 
 @Component({
@@ -10,7 +13,13 @@ import * as models from '@models';
 export class GranuleDetailComponent {
   @Input() granule: models.CMRProduct;
 
+  constructor(public dialog: MatDialog) {}
+
   public onOpenImage(granule): void {
-    window.open(granule.browse);
+    this.dialog.open(ImageDialogComponent, {
+      height: '95%',
+      width: 'auto',
+      panelClass: 'transparent'
+    });
   }
 }
