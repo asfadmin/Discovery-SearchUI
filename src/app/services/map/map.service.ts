@@ -28,13 +28,22 @@ export class MapService {
   private map: Map;
   private polygonLayer: Layer;
 
+  private selectedSource = new VectorSource({
+    wrapX: models.mapOptions.wrapX
+  });
+
+  private selectedLayer = new VectorLayer({
+    source: this.selectedSource,
+    style: polygonStyle.invalid
+  });
+
   private focusSource = new VectorSource({
     wrapX: models.mapOptions.wrapX
   });
 
   private focusLayer = new VectorLayer({
     source: this.focusSource,
-    style: polygonStyle.invalid
+    style: polygonStyle.hover
   });
 
   public zoom$ = new Subject<number>();
@@ -89,6 +98,8 @@ export class MapService {
 
   public clearDrawLayer(): void {
     this.drawService.clear();
+    this.clearFocusedGranule();
+    this.clearSelectedGranule();
   }
 
   public setCenter(centerPos: models.LonLat): void {
@@ -116,6 +127,15 @@ export class MapService {
     }[viewType];
 
     this.setMap(view);
+  }
+
+  public clearSelectedGranule(): void {
+    this.selectedSource.clear();
+  }
+
+  public setSelectedFeature(feature): void {
+    this.selectedSource.clear();
+    this.selectedSource.addFeature(feature);
   }
 
   public clearFocusedGranule(): void {
@@ -152,7 +172,7 @@ export class MapService {
   private createNewMap(): Map {
 
     const newMap = new Map({
-      layers: [ this.mapView.layer, this.drawService.getLayer(), this.focusLayer ],
+      layers: [ this.mapView.layer, this.drawService.getLayer(), this.focusLayer, this.selectedLayer ],
       target: 'map',
       view: this.mapView.view,
       controls: [],
@@ -186,6 +206,7 @@ export class MapService {
 
     this.drawService.getLayer().setZIndex(100);
     this.focusLayer.setZIndex(99);
+    this.selectedLayer.setZIndex(98);
 
     newMap.on('moveend', e => {
       const currentMap = e.map;
