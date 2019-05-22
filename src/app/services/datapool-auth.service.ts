@@ -18,9 +18,26 @@ export class DatapoolAuthService {
     'https://auth-dev-0.asf.alaska.edu';
 
   public isLoggedIn = false;
+  public user = {
+    id: null,
+    accessToken: null
+  };
+
   private loginProcess: Subscription;
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) {
+    const cookies = this.listCookies()
+      .map(s => s.trim().split('='))
+      .map(([name, val]) => ({[name]: val}))
+      .reduce((allCookies, cookie) => ({ ...allCookies, ...cookie }));
+
+    this.user = {
+      id: cookies['urs-user-id'],
+      accessToken: cookies['urs-access-token']
+    };
+
+    this.isLoggedIn = !!(this.user.id && this.user.accessToken);
+  }
 
   public login() {
     const localUrl = window.location.origin;
@@ -64,14 +81,9 @@ export class DatapoolAuthService {
     }).subscribe(resp => console.log(resp));
   }
 
-  private listCookies(): string {
+  private listCookies(): string[] {
     const theCookies = document.cookie.split(';');
-    let aString = '';
 
-    for (let i = 1 ; i <= theCookies.length; i++) {
-        aString += i + ', value: ' + theCookies[i - 1] + '\n';
-    }
-
-    return aString;
+    return theCookies;
   }
 }
