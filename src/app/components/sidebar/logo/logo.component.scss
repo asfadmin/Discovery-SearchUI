@@ -14,6 +14,8 @@
 
 .content {
   @extend %card-base;
+
+  box-shadow: none;
 }
 
 .sec1 {
