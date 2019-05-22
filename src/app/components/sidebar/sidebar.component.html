@@ -1,11 +1,6 @@
 <div [@changeMenuState]="(isSidebarOpen$ | async) ? 'shown' : 'hidden'"
   class="sidebar-position">
 
-<app-toggle-button
-  (click)="onToggleHide()"
-  [isOpen]="isSidebarOpen$ | async">
-</app-toggle-button>
-
 <div
   *ngIf="selectedSearchType !== null && isFiltersMenuOpen"
   class="dataset-filters-card">
@@ -22,13 +17,14 @@
   </mat-card>
 </div>
 
-<div class="filter-list">
+<!--  <app-logo-->
+<!--    class="clickable"-->
+<!--    (click)="onAppReset()">-->
+<!--  </app-logo>-->
+
+  <div class="filter-list">
 
   <div class="top-list-elements">
-    <app-logo
-       class="clickable"
-      (click)="onAppReset()">
-    </app-logo>
 
     <app-search-selector
       (newSearchType)="onSetSearchType($event)"
