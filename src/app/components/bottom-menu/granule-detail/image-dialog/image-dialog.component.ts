@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 
+import { MatDialogRef } from '@angular/material';
 import { Store } from '@ngrx/store';
 
 import { AppState } from '@store';
@@ -19,7 +20,10 @@ export class ImageDialogComponent implements OnInit {
   public granules$ = this.store$.select(granulesStore.getGranules);
   public granules:  models.CMRProduct[];
 
-  constructor(private store$: Store<AppState>) { }
+  constructor(
+    private store$: Store<AppState>,
+    public dialogRef: MatDialogRef<ImageDialogComponent>
+  ) { }
 
   ngOnInit() {
     this.granule$.subscribe(g => this.granule = g);
@@ -30,7 +34,11 @@ export class ImageDialogComponent implements OnInit {
     window.open(granule.browse || 'assets/error.png');
   }
 
-  private selectNextProduct(): void {
+  public closeDialog() {
+    this.dialogRef.close();
+  }
+
+  public selectNextProduct(): void {
     if (!this.granule) {
       return;
     }
@@ -49,7 +57,7 @@ export class ImageDialogComponent implements OnInit {
     this.store$.dispatch(new granulesStore.SetSelectedGranule(nextGranule.id));
   }
 
-  private selectPreviousProduct(): void {
+  public selectPreviousProduct(): void {
     if (!this.granule) {
       return;
     }

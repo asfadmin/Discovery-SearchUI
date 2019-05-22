@@ -1,4 +1,9 @@
-<div style="display: flex; flex-direction: column; justify-content: space-between; height: 100%;">
+<div style="display: flex; flex-direction: column; justify-content: space-between; height: 90%;">
+  <div style="display: flex; justify-content: flex-end; margin-bottom: 5px">
+    <button mat-icon-button>
+      <mat-icon (click)="closeDialog()">close</mat-icon>
+    </button>
+  </div>
   <img
     class="fit-to-container"
     [src]="granule.browse"
