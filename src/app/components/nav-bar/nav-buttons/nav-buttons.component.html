@@ -16,10 +16,18 @@
   </div>
 
   <button
+    *ngIf="!datapoolAuthService.isLoggedIn"
     (click)="onAccountButtonClicked()"
     class="spacing" color="basic"
     matTooltip="Login" mat-icon-button>
-    <mat-icon>{{ datapoolAuthService.isLoggedIn ? 'check_circle' : 'account_circle' }}</mat-icon>
+      <mat-icon>account_circle</mat-icon>
+  </button>
+
+  <button
+    *ngIf="datapoolAuthService.isLoggedIn"
+    class="spacing" color="basic"
+    matTooltip="Profile" mat-icon-button>
+      <mat-icon>check_mark</mat-icon>
   </button>
 
   <button
