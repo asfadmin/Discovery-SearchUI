@@ -1,15 +1,16 @@
-<div style="display: flex; flex-direction: column; justify-content: space-between; height: 90%;">
+<div style="display: flex; flex-direction: column; justify-content: space-between; height: 100%;">
   <div style="display: flex; justify-content: flex-end; margin-bottom: 5px">
     <button mat-icon-button>
       <mat-icon (click)="closeDialog()">close</mat-icon>
     </button>
   </div>
-  <img
-    class="fit-to-container"
-    [src]="granule.browse"
-    style="cursor: pointer; margin-bottom: 10px;"
-    onerror="this.src='assets/error.png'"
-    alt="Sentinel1 granule browse image">
+  <div>
+    <img
+      [src]="granule.browse"
+      style="cursor: pointer; height: 75%; margin-bottom: 10px;"
+      onerror="this.src='assets/error.png'"
+      alt="Sentinel1 granule browse image">
+  </div>
   <div style="display: flex; justify-content: center;">
     <button (click)="selectPreviousProduct()" mat-button>Previous</button>
     <button (click)="selectNextProduct()" mat-button>Next</button>
