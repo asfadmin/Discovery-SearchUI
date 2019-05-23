@@ -34,7 +34,7 @@
           (click)="onNewSelectedFilter(filterTypes.AOI)"
           matTooltip="More options"
           style="cursor: pointer; margin-left:10px" matSuffix>
-            arrow_drop_down
+          {{ selectedFilter === filterTypes.AOI ? 'arrow_drop_up' : 'arrow_drop_down' }}
         </mat-icon>
       </mat-form-field>
 
@@ -55,7 +55,6 @@
        color="{{ !(isAnyAdditionalFilters$ | async) ? 'basic' : accent }}"
        mat-stroked-button>
         <mat-icon>more_horiz</mat-icon>
-
     </button>
 
     <button (click)="onToggleFiltersMenu()"
