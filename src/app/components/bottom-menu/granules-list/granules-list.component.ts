@@ -11,11 +11,13 @@ import { Store } from '@ngrx/store';
 import { AppState } from '@store';
 import * as searchStore from '@store/search';
 import * as granulesStore from '@store/granules';
+import * as mapStore from '@store/map';
+import * as uiStore from '@store/ui';
 
 import { faFileDownload, faPlus } from '@fortawesome/free-solid-svg-icons';
 import { MatPaginator } from '@angular/material';
 
-import { CMRProduct } from '@models';
+import { CMRProduct, SearchType, MapInteractionModeType } from '@models';
 
 @Component({
   selector: 'app-granules-list',
@@ -41,6 +43,7 @@ export class GranulesListComponent implements OnInit {
 
   public downloadIcon = faFileDownload;
   public queueIcon = faPlus;
+  public searchType: SearchType;
 
   constructor(private store$: Store<AppState>) {}
 
@@ -87,6 +90,10 @@ export class GranulesListComponent implements OnInit {
         }
       }
     });
+
+    this.store$.select(uiStore.getSearchType).subscribe(
+      searchType => this.searchType = searchType
+    );
   }
 
   private selectNextProduct(): void {
@@ -163,5 +170,11 @@ export class GranulesListComponent implements OnInit {
 
   public clearResults(): void {
     this.store$.dispatch(new granulesStore.ClearGranules());
+
+    if (this.searchType === SearchType.DATASET) {
+      this.store$.dispatch(
+        new mapStore.SetMapInteractionMode(MapInteractionModeType.DRAW)
+      );
+    }
   }
 }
