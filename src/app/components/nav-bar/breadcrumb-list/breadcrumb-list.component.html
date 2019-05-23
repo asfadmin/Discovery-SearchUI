@@ -28,13 +28,13 @@
         <input
         (change)="onInputSearchPolygon($event.target.value)"
         [value]="polygon$ | async"
-        matInput placeholder="Current Area of Intreset" />
+        matInput placeholder="Current Area of Interest" />
 
         <mat-icon
           (click)="onNewSelectedFilter(filterTypes.AOI)"
           matTooltip="More options"
           style="cursor: pointer; margin-left:10px" matSuffix>
-            arrow_drop_down
+          {{ selectedFilter === filterTypes.AOI ? 'arrow_drop_up' : 'arrow_drop_down' }}
         </mat-icon>
       </mat-form-field>
 
@@ -55,7 +55,6 @@
        color="{{ !(isAnyAdditionalFilters$ | async) ? 'basic' : accent }}"
        mat-stroked-button>
         <mat-icon>more_horiz</mat-icon>
-
     </button>
 
     <button (click)="onToggleFiltersMenu()"
@@ -85,7 +84,7 @@
     <button (click)="onDoSearch()"
       [disabled]="!(canSearch$ | async)"
       mat-flat-button color="accent">
-      {{ (loading$ | async) ? 'Loading...' : 'Search' }}
+      {{ (loading$ | async) ? 'Loading...' : (!(canSearch$ | async) ? 'No Results' : 'Search') }}
     </button>
   </div>
 </div>

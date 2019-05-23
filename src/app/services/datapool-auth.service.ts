@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpParams } from '@angular/common/http';
+import { HttpClient, HttpParams, HttpHeaders } from '@angular/common/http';
 
 import { ViewType } from '@models';
 
-import { interval, Subject, Subscription } from 'rxjs';
-import { map, takeUntil, tap, delay, take } from 'rxjs/operators';
+import { interval, Subject, Subscription, Observable } from 'rxjs';
+import { map, takeUntil, tap, delay, take, filter, switchMap } from 'rxjs/operators';
 
 
 @Injectable({
@@ -17,10 +17,19 @@ export class DatapoolAuthService {
     'https://auth-dev-0.asf.alaska.edu' :
     'https://auth-dev-0.asf.alaska.edu';
 
+  private earthdataUrl = 'https://urs.earthdata.nasa.gov';
+
   public isLoggedIn = false;
+  public user = {
+    id: null,
+    accessToken: null
+  };
+
   private loginProcess: Subscription;
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) {
+    this.checkLogin();
+  }
 
   public login() {
     const localUrl = window.location.origin;
@@ -44,34 +53,57 @@ export class DatapoolAuthService {
     this.loginProcess = interval(500).pipe(
       take(50),
       takeUntil(loginDone),
-    ).subscribe(_ => {
-      try {
-        if (loginWindow.location.host === window.location.host) {
-          loginWindow.close();
-          this.isLoggedIn = true;
-          console.log(this.listCookies());
-          loginDone.next();
+      tap(_ => {
+        try {
+          if (loginWindow.location.host === window.location.host) {
+            loginWindow.close();
+            this.checkLogin();
+            console.log(this.loadCookies());
+            loginDone.next();
+          }
+        } catch (e) {
         }
-      } catch (e) {
-      }
-    }
-    );
+      }),
+      filter(_ => !this.isLoggedIn),
+      switchMap(_ => this.loadUserData())
+    ).subscribe(console.log);
   }
 
   public logout(): void {
-    this.http.get(`${this.authUrl}/loginservice/logout`, {
-      withCredentials: true
-    }).subscribe(resp => console.log(resp));
+    this.http.get(
+      `${this.authUrl}/loginservice/logout`, {
+        responseType: 'text',
+        withCredentials: true
+      }).subscribe(resp => {
+        console.log(resp);
+        this.checkLogin();
+      });
   }
 
-  private listCookies(): string {
-    const theCookies = document.cookie.split(';');
-    let aString = '';
+  private loadUserData(): Observable<any> {
+    const profileUrl = `${this.earthdataUrl}/api/users/${this.user.id}`;
+    const headers = new HttpHeaders()
+      .append('Authorization', `Bearer ${this.user.accessToken}`);
 
-    for (let i = 1 ; i <= theCookies.length; i++) {
-        aString += i + ', value: ' + theCookies[i - 1] + '\n';
-    }
+    return this.http.get(profileUrl, { headers });
+  }
 
-    return aString;
+  private checkLogin() {
+    const cookies = this.loadCookies();
+    this.user = {
+      id: cookies['urs-user-id'],
+      accessToken: cookies['urs-access-token']
+    };
+
+    this.isLoggedIn = !!(this.user.id && this.user.accessToken);
+  }
+
+  private loadCookies() {
+    return document.cookie.split(';')
+      .map(s => s.trim().split('='))
+      .map(([name, val]) => ({[name]: val}))
+      .reduce(
+        (allCookies, cookie) => ({ ...allCookies, ...cookie })
+      );
   }
 }
