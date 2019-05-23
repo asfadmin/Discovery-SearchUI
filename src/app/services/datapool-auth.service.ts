@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpParams } from '@angular/common/http';
+import { HttpClient, HttpParams, HttpHeaders } from '@angular/common/http';
 
 import { ViewType } from '@models';
 
-import { interval, Subject, Subscription } from 'rxjs';
-import { map, takeUntil, tap, delay, take } from 'rxjs/operators';
+import { interval, Subject, Subscription, Observable } from 'rxjs';
+import { map, takeUntil, tap, delay, take, filter, switchMap } from 'rxjs/operators';
 
 
 @Injectable({
@@ -16,6 +16,8 @@ export class DatapoolAuthService {
   private authUrl = false /* environment.production */ ?
     'https://auth-dev-0.asf.alaska.edu' :
     'https://auth-dev-0.asf.alaska.edu';
+
+  private earthdataUrl = 'https://urs.earthdata.nasa.gov';
 
   public isLoggedIn = false;
   public user = {
@@ -51,18 +53,20 @@ export class DatapoolAuthService {
     this.loginProcess = interval(500).pipe(
       take(50),
       takeUntil(loginDone),
-    ).subscribe(_ => {
-      try {
-        if (loginWindow.location.host === window.location.host) {
-          loginWindow.close();
-          this.checkLogin();
-          console.log(this.loadCookies());
-          loginDone.next();
+      tap(_ => {
+        try {
+          if (loginWindow.location.host === window.location.host) {
+            loginWindow.close();
+            this.checkLogin();
+            console.log(this.loadCookies());
+            loginDone.next();
+          }
+        } catch (e) {
         }
-      } catch (e) {
-      }
-    }
-    );
+      }),
+      filter(_ => !this.isLoggedIn),
+      switchMap(_ => this.loadUserData())
+    ).subscribe(console.log);
   }
 
   public logout(): void {
@@ -76,6 +80,14 @@ export class DatapoolAuthService {
       });
   }
 
+  private loadUserData(): Observable<any> {
+    const profileUrl = `${this.earthdataUrl}/api/users/${this.user.id}`;
+    const headers = new HttpHeaders()
+      .append('Authorization', `Bearer ${this.user.accessToken}`);
+
+    return this.http.get(profileUrl, { headers });
+  }
+
   private checkLogin() {
     const cookies = this.loadCookies();
     this.user = {
@@ -84,6 +96,12 @@ export class DatapoolAuthService {
     };
 
     this.isLoggedIn = !!(this.user.id && this.user.accessToken);
+    console.log('isLoggedIn', this.isLoggedIn);
+
+    if (this.isLoggedIn) {
+      this.loadUserData()
+        .subscribe(console.log);
+    }
   }
 
   private loadCookies() {
