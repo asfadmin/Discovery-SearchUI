@@ -160,4 +160,8 @@ export class GranulesListComponent implements OnInit {
     this.pageIndex = page.pageIndex;
     this.pageSize = page.pageSize;
   }
+
+  public clearResults(): void {
+    this.store$.dispatch(new granulesStore.ClearGranules());
+  }
 }

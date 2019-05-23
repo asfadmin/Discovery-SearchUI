@@ -33,11 +33,15 @@
       </button>
     </ng-container>
   </mat-action-list>
-
-  <mat-paginator
-    [length]="granules.length"
-    [pageSize]="pageSize"
-    [pageSizeOptions]="pageSizeOptions"
-    (page)="onNewPage($event)">
-  </mat-paginator>
+  <div style="display: flex; justify-content: space-between; align-items: center;">
+    <div>
+      <button (click)="clearResults()" mat-button>Clear Results</button>
+    </div>
+    <mat-paginator
+      [length]="granules.length"
+      [pageSize]="pageSize"
+      [pageSizeOptions]="pageSizeOptions"
+      (page)="onNewPage($event)">
+    </mat-paginator>
+  </div>
 </mat-card>
