@@ -96,12 +96,6 @@ export class DatapoolAuthService {
     };
 
     this.isLoggedIn = !!(this.user.id && this.user.accessToken);
-    console.log('isLoggedIn', this.isLoggedIn);
-
-    if (this.isLoggedIn) {
-      this.loadUserData()
-        .subscribe(console.log);
-    }
   }
 
   private loadCookies() {
