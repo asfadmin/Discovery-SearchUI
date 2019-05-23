@@ -55,7 +55,7 @@ export class DatapoolAuthService {
       try {
         if (loginWindow.location.host === window.location.host) {
           loginWindow.close();
-          this.isLoggedIn = true;
+          this.checkLogin();
           console.log(this.loadCookies());
           loginDone.next();
         }
@@ -66,13 +66,14 @@ export class DatapoolAuthService {
   }
 
   public logout(): void {
-    window.open(
-      `${this.authUrl}/logout`,
-      'Vertex: URS Earth Data Authorization',
-      'scrollbars=yes, width=600, height= 600'
-    );
-
-    setTimeout(() => this.checkLogin(), 2000);
+    this.http.get(
+      `${this.authUrl}/loginservice/logout`, {
+        responseType: 'text',
+        withCredentials: true
+      }).subscribe(resp => {
+        console.log(resp);
+        this.checkLogin();
+      });
   }
 
   private checkLogin() {

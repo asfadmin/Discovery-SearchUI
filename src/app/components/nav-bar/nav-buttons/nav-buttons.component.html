@@ -25,6 +25,7 @@
 
   <button
     *ngIf="datapoolAuthService.isLoggedIn"
+    (click)="onLogout()"
     class="spacing" color="basic"
     matTooltip="Profile" mat-icon-button>
       <mat-icon>check_mark</mat-icon>
