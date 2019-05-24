@@ -3,6 +3,7 @@ import * as models from '@models';
 export const testProduct: models.CMRProduct = {
   id: 'some id',
   productTypeDisplay: 'Some product',
+  thumbnail: 'some url',
   name: 'SomeGranule',
   file: 'SomeGranule.zip',
   downloadUrl: 'www.download.edu',
