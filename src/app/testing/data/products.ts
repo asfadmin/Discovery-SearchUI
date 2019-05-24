@@ -2,6 +2,7 @@ import * as models from '@models';
 
 export const testProduct: models.CMRProduct = {
   id: 'some id',
+  productTypeDisplay: 'Some product',
   name: 'SomeGranule',
   file: 'SomeGranule.zip',
   downloadUrl: 'www.download.edu',

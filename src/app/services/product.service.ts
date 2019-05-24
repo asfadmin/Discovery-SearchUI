@@ -11,12 +11,14 @@ export class ProductService {
     .map(
       (g: any): models.CMRProduct => ({
         name: g.granuleName,
+        productTypeDisplay: g.productTypeDisplay || g.granuleName,
         file: g.fileName,
         id: g.productID,
         downloadUrl: g.downloadUrl,
         bytes: g.sizeMB * 1000000,
         platform: g.platform,
         browse: g.browse || 'assets/error.png',
+        thumbnail: g.thumbnail || g.browse || 'assets/error.png',
         groupId: g.groupID,
         metadata: this.getMetadataFrom(g)
       })
