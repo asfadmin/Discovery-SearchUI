@@ -18,7 +18,7 @@ export class ProductService {
         bytes: g.sizeMB * 1000000,
         platform: g.platform,
         browse: g.browse || 'assets/error.png',
-        thumbnail: g.thumbnail || g.browse || 'assets/error.png',
+        thumbnail: g.thumb || g.browse || 'assets/error.png',
         groupId: g.groupID,
         metadata: this.getMetadataFrom(g)
       })
