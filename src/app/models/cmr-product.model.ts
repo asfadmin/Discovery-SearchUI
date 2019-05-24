@@ -1,10 +1,12 @@
 export interface CMRProduct {
   name: string;
+  productTypeDisplay: string;
   file: string;
   id: string;
   downloadUrl: string;
   bytes: number;
   browse: string;
+  thumbnail: string;
   platform: string;
   groupId: string;
   metadata: CMRProductMetadata;

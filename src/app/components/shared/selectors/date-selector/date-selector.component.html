@@ -5,7 +5,7 @@
         [min]="extrema.start.min"
         [max]="extrema.start.max"
         [matDatepicker]="start"
-        placeholder="Acquisition Start"
+        placeholder="Start Date"
         (dateInput)="onStartDateChange($event)"
         (dateChanged)="onStartDateChange($event)">
       <mat-datepicker-toggle matSuffix [for]="start"></mat-datepicker-toggle>
@@ -19,7 +19,7 @@
         [min]="extrema.end.min"
         [max]="extrema.end.max"
         [matDatepicker]="end"
-        placeholder="Acquisition End"
+        placeholder="End Date"
         (dateInput)="onEndDateChange($event)"
         (dateChanged)="onEndDateChange($event)">
       <mat-datepicker-toggle matSuffix [for]="end"></mat-datepicker-toggle>
