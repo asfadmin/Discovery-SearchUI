@@ -25,11 +25,20 @@
 
   <button
     *ngIf="datapoolAuthService.isLoggedIn"
-    (click)="onLogout()"
+    [matMenuTriggerFor]="profileMenu"
     class="spacing" color="basic"
-    matTooltip="Profile" mat-icon-button>
-      <mat-icon>check_mark</mat-icon>
+    matTooltip="Profile" mat-button>
+      <mat-icon>account_circle</mat-icon>
+      <span style="margin-left: 8px;"> {{ datapoolAuthService.user.id }}</span>
   </button>
+
+  <mat-menu #profileMenu="matMenu">
+    <button
+    (click)="onLogout()"
+      mat-menu-item matSuffix>
+        <span>Logout</span>
+    </button>
+  </mat-menu>
 
   <button
     [matMenuTriggerFor]="shareMenu"
