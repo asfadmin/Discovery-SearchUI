@@ -26,7 +26,7 @@
         <li> <a href="http://www.esa.int/ESA" target="_blank"> Data courtesy of ESA</a></li>
       </ul>
 
-      <p *ngIf="!isLoggedIn" class="faint-text">
+      <p *ngIf="!authService.isLoggedIn" class="faint-text">
         Accessing this data requires you to log in.
         Some datasets also require a proposal, or agreement with a
         EULA which is presented after log in.
