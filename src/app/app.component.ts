@@ -96,7 +96,6 @@ export class AppComponent implements OnInit {
   }
 
   public onClearSearch(): void {
-    console.log('clearing filters...');
     this.store$.dispatch(new granulesStore.ClearGranules());
     this.store$.dispatch(new filterStore.ClearFilters());
     this.store$.dispatch(new missionStore.SelectMission(null));
