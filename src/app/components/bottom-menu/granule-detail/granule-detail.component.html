@@ -2,7 +2,11 @@
   <mat-card-header>
     <mat-card-title>
       <span [title]="granule.name">{{ granule.name | truncate : 34 }}</span>
-      <app-copy-to-clipboard style="margin: 0 5px; " [value]="granule.name"></app-copy-to-clipboard>
+      <app-copy-to-clipboard style="margin: 0 10px; " [value]="granule.name"></app-copy-to-clipboard>
+      <button (click)="onZoomToGranule()" mat-icon-button>
+        <mat-icon>settings_overscan</mat-icon>
+      </button>
+
     </mat-card-title>
     <mat-card-subtitle>{{ granule.platform }}</mat-card-subtitle>
   </mat-card-header>

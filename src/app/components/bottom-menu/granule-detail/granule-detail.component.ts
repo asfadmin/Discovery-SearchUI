@@ -13,16 +13,21 @@ import { DatapoolAuthService } from '@services';
 })
 export class GranuleDetailComponent {
   @Input() granule: models.CMRProduct;
+  @Output() zoomToGranule = new EventEmitter<models.CMRProduct>();
 
   constructor(public dialog: MatDialog, private authService: DatapoolAuthService) {}
 
   public isLoggedIn = this.authService.isLoggedIn;
 
-  public onOpenImage(granule): void {
+  public onOpenImage(granule: models.CMRProduct): void {
     this.dialog.open(ImageDialogComponent, {
       height: '95%',
-      width: 'auto',
+      width: '90%',
       panelClass: 'transparent'
     });
+  }
+
+  public onZoomToGranule(): void {
+    this.zoomToGranule.emit(this.granule);
   }
 }
