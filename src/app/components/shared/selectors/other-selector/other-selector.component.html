@@ -1,8 +1,9 @@
 <div *ngFor="let platform of selected">
-  <mat-form-field *ngIf="platform.productTypes.length > 0">
+  <mat-form-field>
     <mat-select
       [(ngModel)]="productTypes[platform.name]"
       (selectionChange)="onNewProductTypes(platform, $event.value)"
+      [disabled]="platform.productTypes.length < 2"
       placeholder="Product Type" multiple>
         <mat-option
           *ngFor="let type of platform.productTypes"
@@ -11,32 +12,55 @@
             {{type.displayName}}
         </mat-option>
     </mat-select>
-    <mat-hint align="start"> {{ productTypes[platform.name]?.length || 0 }} product types selected</mat-hint>
+    <mat-hint *ngIf="platform.productTypes.length >= 2" align="start">
+      {{ productTypes[platform.name]?.length || 0 }}/{{ platform.productTypes.length }}
+      product types selected
+    </mat-hint>
+
+    <mat-hint *ngIf="platform.productTypes.length < 2" align="start">
+      No product types to select
+    </mat-hint>
   </mat-form-field>
 
-  <mat-form-field *ngIf="platform.beamModes.length > 0">
+  <mat-form-field>
     <mat-select
       (selectionChange)="onNewPlatformBeamModes(platform, $event.value)"
       [(ngModel)]="beamModes[platform.name]"
+      [disabled]="platform.beamModes.length < 2"
       placeholder="Beam Mode"
       multiple>
         <mat-option *ngFor="let mode of platform.beamModes" [value]="mode">
           {{mode}}
         </mat-option>
     </mat-select>
-    <mat-hint align="start"> {{ beamModes[platform.name]?.length || 0 }} beam modes selected</mat-hint>
+    <mat-hint *ngIf="platform.beamModes.length >= 2"  align="start">
+      {{ beamModes[platform.name]?.length || 0 }}/{{ platform.beamModes.length }}
+      beam modes selected
+    </mat-hint>
+
+    <mat-hint *ngIf="platform.beamModes.length < 2" align="start">
+      No beam modes to select
+    </mat-hint>
   </mat-form-field>
 
-  <mat-form-field *ngIf="platform.polarizations.length > 0">
+  <mat-form-field>
     <mat-select
       (selectionChange)="onNewPlatformPolarizations(platform, $event.value)"
       [(ngModel)]="polarizations[platform.name]"
+      [disabled]="platform.polarizations.length < 2"
       placeholder="Polarization" multiple>
       <mat-option *ngFor="let pol of platform.polarizations" [value]="pol">
         {{pol}}
       </mat-option>
     </mat-select>
-    <mat-hint align="start"> {{ polarizations[platform.name]?.length || 0 }} polarizations selected</mat-hint>
+    <mat-hint *ngIf="platform.polarizations.length >= 2"  align="start">
+      {{ polarizations[platform.name]?.length || 0 }}/{{ platform.polarizations.length }}
+      polarizations selected
+    </mat-hint>
+    <mat-hint *ngIf="platform.polarizations.length < 2" align="start">
+      No polarizations to select
+    </mat-hint>
+
   </mat-form-field>
 
   <mat-form-field>
