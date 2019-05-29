@@ -4,6 +4,7 @@ import { MatDialog } from '@angular/material';
 import { ImageDialogComponent } from './image-dialog';
 
 import * as models from '@models';
+import { DatapoolAuthService } from '@services';
 
 @Component({
   selector: 'app-granule-detail',
@@ -13,7 +14,9 @@ import * as models from '@models';
 export class GranuleDetailComponent {
   @Input() granule: models.CMRProduct;
 
-  constructor(public dialog: MatDialog) {}
+  constructor(public dialog: MatDialog, private authService: DatapoolAuthService) {}
+
+  public isLoggedIn = this.authService.isLoggedIn;
 
   public onOpenImage(granule): void {
     this.dialog.open(ImageDialogComponent, {
