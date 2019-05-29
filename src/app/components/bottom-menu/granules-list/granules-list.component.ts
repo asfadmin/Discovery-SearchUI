@@ -54,10 +54,8 @@ export class GranulesListComponent implements OnInit {
       map(([selected, granules]) =>
         Math.ceil((granules.indexOf(selected) + 1) / this.pageSize) - 1
       ),
-      map(selectedIdx => this.paginator.pageIndex - selectedIdx),
-      filter(distance => distance < 100000)
     ).subscribe(
-      distance => this.pageTo(distance)
+      page => this.pageTo(page)
     );
 
     this.granules$.subscribe(
@@ -130,14 +128,9 @@ export class GranulesListComponent implements OnInit {
     this.store$.dispatch(new granulesStore.SetSelectedGranule(previousGranule.id));
   }
 
-  private pageTo(distance: number): void {
-    const direction = distance > 0 ? 'next' : 'prev';
-
-    for (let i = 0; i < Math.abs(distance); ++i) {
-      direction === 'next' ?
-        this.paginator.previousPage() :
-        this.paginator.nextPage();
-    }
+  private pageTo(page: number): void {
+    this.paginator.pageIndex = page;
+    this.pageIndex = page;
   }
 
   public onGranuleSelected(name: string): void {
