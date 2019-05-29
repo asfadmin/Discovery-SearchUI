@@ -2,7 +2,14 @@
   [@changeMenuY]="(isBottomMenuOpen$ | async) ? 'shown' : 'hidden'"
   [class.hidden]="isHidden || (granules$ | async).length === 0"
   class="position">
-
+  <div class="toggle-button-position">
+    <button (click)="onToggleMenu()"
+      mat-raised-button>
+      <mat-icon>
+        {{ (isBottomMenuOpen$ | async) ? 'keyboard_arrow_down' : 'keyboard_arrow_up' }}
+      </mat-icon>
+    </button>
+  </div>
   <div class="bottom-menu--background  bottom-menu--layout">
     <app-granules-list
       class="scrollable-card bottom-menu--column"

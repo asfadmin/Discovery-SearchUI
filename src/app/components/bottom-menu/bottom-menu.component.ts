@@ -24,7 +24,7 @@ import {
       state('shown', style({ transform: 'translateY(0%)'
       })),
       state('hidden',   style({
-        transform: 'translateY(100%)'
+        transform: 'translateY(100%) translateY(-36px)'
       })),
       transition('shown <=> hidden', animate('200ms ease-out'))
     ]),
