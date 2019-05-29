@@ -4,6 +4,7 @@
       (doSearch)="onDoSearch()"
       (clearSearch)="onClearSearch()">
     </app-breadcrumb-list>
+    <mat-progress-bar *ngIf="isLoading" style="width: 200%" mode="indeterminate"></mat-progress-bar>
   </div>
 
   <div class="layout">
