@@ -1,8 +1,7 @@
 .position {
-  height: 465px;
+  height: 465px + 36px;
   max-height: 90%;
   width: 100vw;
-  background: white;
   margin: 0;
   padding: 0;
   right: 0;
@@ -19,11 +18,10 @@
   padding: 0;
 }
 
-.toggle-button {
-  position: absolute;
-  top: -36px;
-  left: 50%;
-  transform: translateX(-50%);
+.toggle-button-position {
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .bottom-menu--layout {
@@ -35,6 +33,7 @@
 
 .bottom-menu--background {
   background: rgba(238, 238, 238, 0.7);
+  background: white;
 }
 
 .bottom-menu--column {
