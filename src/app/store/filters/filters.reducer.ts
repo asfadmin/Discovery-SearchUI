@@ -99,12 +99,9 @@ export function filtersReducer(state = initState, action: FiltersActions): Filte
           ...state.platforms,
           selected
         },
-        productTypes: {
-        },
-        beamModes: {
-        },
-        polarizations: {
-        }
+        productTypes: {},
+        beamModes: {},
+        polarizations: {}
       };
     }
 
@@ -117,12 +114,9 @@ export function filtersReducer(state = initState, action: FiltersActions): Filte
           ...state.platforms,
           selected
         },
-        productTypes: {
-        },
-        beamModes: {
-        },
-        polarizations: {
-        }
+        productTypes: {},
+        beamModes: {},
+        polarizations: {}
       };
     }
 
@@ -221,14 +215,31 @@ export function filtersReducer(state = initState, action: FiltersActions): Filte
     }
 
     case FiltersActionType.CLEAR_FILTERS: {
-      const selected = new Set<string>(state.platforms.selected);
-
       return {
-        ...initState,
-        platforms: {
-          ...initState.platforms,
-          selected
-        }
+        ...state,
+        dateRange: {
+          start: null,
+          end: null
+        },
+        season: {
+          start: null,
+          end: null
+        },
+        pathRange: {
+          start: null,
+          end: null
+        },
+        frameRange: {
+          start: null,
+          end: null
+        },
+        shouldOmitSearchPolygon: false,
+        listSearchMode: models.ListSearchType.GRANULE,
+
+        productTypes: {},
+        beamModes: {},
+        polarizations: {},
+        flightDirections: new Set<models.FlightDirection>([]),
       };
     }
 
