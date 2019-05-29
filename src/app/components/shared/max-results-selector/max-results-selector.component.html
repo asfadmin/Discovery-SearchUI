@@ -6,11 +6,12 @@
   </span>
 
     of {{ currentSearchAmount !== -1 ? formatNumber(currentSearchAmount) : '0' }}
+    products
 </span>
 
 <mat-menu #menu="matMenu">
   <button *ngFor="let amount of possibleMaxResults"
     (click)="onNewMaxResults(amount)" mat-menu-item>
-      <span>{{ formatNumber(amount) }}</span>
+      <span>{{ formatNumber(amount) }} results</span>
   </button>
 </mat-menu>

@@ -28,4 +28,9 @@ export class UIEffects {
     map(_ => new mapStore.SetMapInteractionMode(models.MapInteractionModeType.DRAW))
   );
 
+  @Effect() openFiltersMenuOnSearchTypeChange: Observable<Action> = this.actions$.pipe(
+    ofType<uiActions.SetSearchType>(uiActions.UIActionType.SET_SEARCH_TYPE),
+    filter(action => action.payload !== models.SearchType.DATASET),
+    map(_ => new uiActions.OpenFiltersMenu())
+  );
 }

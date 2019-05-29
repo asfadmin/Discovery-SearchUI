@@ -1,4 +1,4 @@
-<mat-card class="card-spacing">
+<mat-card class="card-spacing" style="display: flex; flex-direction: column; justify-content: space-between; height: 425px">
 
   <mat-action-list>
     <ng-container *ngFor="let granule of currentPageOf(granules, pageSize, pageIndex)">
@@ -9,7 +9,7 @@
         [class.selected]="granule.name === selected"
         mat-list-item>
 
-          <img [src]="granule.browse"
+          <img [src]="granule.thumbnail"
             onerror="this.src='assets/error.png'"
             class="size" matListAvatar>
 
@@ -41,6 +41,8 @@
       [length]="granules.length"
       [pageSize]="pageSize"
       [pageSizeOptions]="pageSizeOptions"
+      [hidePageSize]="true"
+      [showFirstLastButtons]="true"
       (page)="onNewPage($event)">
     </mat-paginator>
   </div>

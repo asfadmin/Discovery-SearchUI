@@ -12,11 +12,7 @@ import { map, takeUntil, tap, delay, take, filter, switchMap } from 'rxjs/operat
 })
 export class DatapoolAuthService {
 
-  // FIXME: When the dev/test/prod sites have asf links this can be enabled
-  private authUrl = false /* environment.production */ ?
-    'https://auth-dev-0.asf.alaska.edu' :
-    'https://auth-dev-0.asf.alaska.edu';
-
+  private authUrl = 'https://auth-test-jnk.asf.alaska.edu';
   private earthdataUrl = 'https://urs.earthdata.nasa.gov';
 
   public isLoggedIn = false;
@@ -58,15 +54,13 @@ export class DatapoolAuthService {
           if (loginWindow.location.host === window.location.host) {
             loginWindow.close();
             this.checkLogin();
-            console.log(this.loadCookies());
             loginDone.next();
           }
         } catch (e) {
         }
       }),
       filter(_ => !this.isLoggedIn),
-      switchMap(_ => this.loadUserData())
-    ).subscribe(console.log);
+    ).subscribe(_ => _);
   }
 
   public logout(): void {
@@ -75,7 +69,6 @@ export class DatapoolAuthService {
         responseType: 'text',
         withCredentials: true
       }).subscribe(resp => {
-        console.log(resp);
         this.checkLogin();
       });
   }
