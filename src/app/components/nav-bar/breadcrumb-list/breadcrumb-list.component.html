@@ -1,6 +1,6 @@
-  <div fxLayout="row" fxFlexFill>
+  <div fxLayout="row" fxFlexFill fxLayoutAlign="center center">
 
-    <div class="breadcrumb" >
+    <div class="breadcrumb">
       <app-logo></app-logo>
     </div>
 
@@ -23,7 +23,6 @@
         <app-platform-selector></app-platform-selector>
       </div>
 
-<<<<<<< HEAD
       <div class="breadcrumb">
         <mat-form-field style="margin-right: 10px; width: 90%;">
           <input
@@ -35,25 +34,9 @@
             (click)="onNewSelectedFilter(filterTypes.AOI)"
             matTooltip="More options"
             style="cursor: pointer; margin-left:10px" matSuffix>
-            arrow_drop_down
+            {{ selectedFilter === filterTypes.AOI ? 'arrow_drop_up' : 'arrow_drop_down' }}
           </mat-icon>
         </mat-form-field>
-=======
-    <div class="breadcrumb hide-mobile hide-medium">
-      <mat-form-field style="margin-right: 10px; width: 90%;">
-        <input
-        (change)="onInputSearchPolygon($event.target.value)"
-        [value]="polygon$ | async"
-        matInput placeholder="Current Area of Interest" />
-
-        <mat-icon
-          (click)="onNewSelectedFilter(filterTypes.AOI)"
-          matTooltip="More options"
-          style="cursor: pointer; margin-left:10px" matSuffix>
-          {{ selectedFilter === filterTypes.AOI ? 'arrow_drop_up' : 'arrow_drop_down' }}
-        </mat-icon>
-      </mat-form-field>
->>>>>>> 7d150ecdec9d731f30cde32734506b8d2dbd1de0
 
         <mat-card *ngIf="selectedFilter === filterTypes.AOI"
                   class="breadcrumb-filter">
@@ -72,12 +55,7 @@
               color="{{ !(isAnyAdditionalFilters$ | async) ? 'basic' : accent }}"
               mat-stroked-button>
         <mat-icon>more_horiz</mat-icon>
-<<<<<<< HEAD
-
       </button>
-=======
-    </button>
->>>>>>> 7d150ecdec9d731f30cde32734506b8d2dbd1de0
 
       <button (click)="onToggleFiltersMenu()"
               *ngIf="searchType !== searchTypes.DATASET"
@@ -101,17 +79,6 @@
       </button>
     </div>
 
-    <div class="breadcrumb hide-mobile"
-         matTooltip="{{ !(canSearch$ | async) ? 'No Results Found' : 'Search' }}">
-      <button (click)="onDoSearch()"
-              [disabled]="!(canSearch$ | async)"
-              mat-flat-button color="accent">
-        {{ (loading$ | async) ? 'Loading...' : 'Search' }}
-      </button>
-    </div>
-
-<<<<<<< HEAD
-=======
   <div class="breadcrumb hide-mobile"
     matTooltip="{{ !(canSearch$ | async) ? 'No Results Found' : 'Search' }}">
     <button (click)="onDoSearch()"
@@ -119,6 +86,5 @@
       mat-flat-button color="accent">
       {{ (loading$ | async) ? 'Loading...' : (!(canSearch$ | async) ? 'No Results' : 'Search') }}
     </button>
->>>>>>> 7d150ecdec9d731f30cde32734506b8d2dbd1de0
   </div>
-  <!--<app-info-bar></app-info-bar>-->
+</div>
