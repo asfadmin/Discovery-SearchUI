@@ -5,8 +5,10 @@
   *ngIf="selectedSearchType !== null && isFiltersMenuOpen"
   class="dataset-filters-card">
   <mat-card>
-    <mat-card-header *ngIf="selectedSearchType !== searchTypes.DATASET">
-      <mat-card-title><h3>{{ selectedSearchType }}</h3></mat-card-title>
+    <mat-card-header>
+      <mat-card-title>
+        <mat-icon (click)="closePanel()" class="clickable">close</mat-icon>
+      </mat-card-title>
     </mat-card-header>
 
     <mat-card-content>
@@ -17,12 +19,7 @@
   </mat-card>
 </div>
 
-<!--  <app-logo-->
-<!--    class="clickable"-->
-<!--    (click)="onAppReset()">-->
-<!--  </app-logo>-->
-
-  <div class="filter-list">
+<div class="filter-list">
 
   <div class="top-list-elements">
 

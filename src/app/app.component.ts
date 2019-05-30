@@ -27,6 +27,7 @@ import * as models from './models';
 export class AppComponent implements OnInit {
   public shouldOmitSearchPolygon$ = this.store$.select(filterStore.getShouldOmitSearchPolygon);
   public uiView$ = this.store$.select(uiStore.getUiView);
+  public isLoading$ = this.store$.select(searchStore.getIsLoading);
 
   public queuedProducts$ = this.store$.select(queueStore.getQueuedProducts).pipe(
     map(q => q || [])

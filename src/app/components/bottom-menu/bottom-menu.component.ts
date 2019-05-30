@@ -1,4 +1,9 @@
 import { Component, OnInit } from '@angular/core';
+import {
+  trigger, state, style,
+  animate, transition
+} from '@angular/animations';
+
 
 import { map } from 'rxjs/operators';
 import { Store } from '@ngrx/store';
@@ -9,11 +14,7 @@ import * as granulesStore from '@store/granules';
 import * as queueStore from '@store/queue';
 
 import * as models from '@models';
-
-import {
-  trigger, state, style,
-  animate, transition
-} from '@angular/animations';
+import * as services from '@services';
 
 @Component({
   selector: 'app-bottom-menu',
@@ -24,7 +25,7 @@ import {
       state('shown', style({ transform: 'translateY(0%)'
       })),
       state('hidden',   style({
-        transform: 'translateY(100%)'
+        transform: 'translateY(100%) translateY(-36px)'
       })),
       transition('shown <=> hidden', animate('200ms ease-out'))
     ]),
@@ -42,7 +43,11 @@ export class BottomMenuComponent implements OnInit {
 
   public isHidden = false;
 
-  constructor(private store$: Store<AppState>) { }
+  constructor(
+    private store$: Store<AppState>,
+    private wktService: services.WktService,
+    private mapService: services.MapService,
+  ) { }
 
   ngOnInit() {
     this.store$.select(uiStore.getIsHidden).subscribe(
@@ -78,5 +83,14 @@ export class BottomMenuComponent implements OnInit {
 
   public onToggleQueueProduct(product: models.CMRProduct): void {
     this.store$.dispatch(new queueStore.ToggleProduct(product));
+  }
+
+  public onZoomTo(granule: models.CMRProduct): void {
+    const features = this.wktService.wktToFeature(
+      granule.metadata.polygon,
+      this.mapService.epsg()
+    );
+
+    this.mapService.zoomTo(features);
   }
 }

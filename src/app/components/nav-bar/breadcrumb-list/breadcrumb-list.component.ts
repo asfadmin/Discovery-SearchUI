@@ -130,8 +130,8 @@ export class BreadcrumbListComponent implements OnInit {
   }
 
   public onSetSearchType(searchType: SearchType): void {
-    this.store$.dispatch(new uiStore.SetSearchType(searchType));
     this.clearSelectedBreadcrumb();
+    this.store$.dispatch(new uiStore.SetSearchType(searchType));
   }
 
   public onNewMaxResults(maxResults: number): void {

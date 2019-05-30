@@ -16,6 +16,7 @@ export class NavBarComponent {
   @Output() clearSearch = new EventEmitter<void>();
 
   @Input() products: models.CMRProduct[];
+  @Input() isLoading: boolean;
 
   constructor(private dialog: MatDialog) {}
 

@@ -107,6 +107,10 @@ export class SidebarComponent implements OnInit {
     );
   }
 
+  public closePanel(): void {
+    this.store$.dispatch(new uiStore.CloseFiltersMenu());
+  }
+
   public onSetSearchType(searchType: models.SearchType): void {
     this.store$.dispatch(new uiStore.SetSearchType(searchType));
   }

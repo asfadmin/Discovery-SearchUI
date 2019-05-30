@@ -1,10 +1,13 @@
 .position {
   position: fixed;
   top: 0;
-  padding: 0 !important;
-  margin: 0;
   width: 100vw;
   z-index: 999;
+  padding: 0 !important;
+  margin: 0;
+}
+
+.nav-item-position {
   display: flex;
   justify-content: space-between;
   align-items: center;

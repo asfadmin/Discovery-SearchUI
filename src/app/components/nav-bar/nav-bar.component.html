@@ -6,11 +6,13 @@
     </app-breadcrumb-list>
   </div>
 
-  <div class="layout">
-    <app-nav-buttons
-      (openQueue)="onOpenDownloadQueue()"
-      [products]="products">
-    </app-nav-buttons>
+    <div class="layout">
+      <app-nav-buttons
+        (openQueue)="onOpenDownloadQueue()"
+        [products]="products">
+      </app-nav-buttons>
+    </div>
   </div>
+  <mat-progress-bar *ngIf="isLoading" style="width: 100vw" mode="indeterminate"></mat-progress-bar>
 </mat-card>
 

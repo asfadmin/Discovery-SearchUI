@@ -16,11 +16,29 @@
   </div>
 
   <button
+    *ngIf="!datapoolAuthService.isLoggedIn"
     (click)="onAccountButtonClicked()"
     class="spacing" color="basic"
     matTooltip="Login" mat-icon-button>
-    <mat-icon>{{ datapoolAuthService.isLoggedIn ? 'check_circle' : 'account_circle' }}</mat-icon>
+      <mat-icon>account_circle</mat-icon>
   </button>
+
+  <button
+    *ngIf="datapoolAuthService.isLoggedIn"
+    [matMenuTriggerFor]="profileMenu"
+    class="spacing" color="basic"
+    matTooltip="Profile" mat-button>
+      <mat-icon>account_circle</mat-icon>
+      <span style="margin-left: 8px;"> {{ datapoolAuthService.user.id }}</span>
+  </button>
+
+  <mat-menu #profileMenu="matMenu">
+    <button
+    (click)="onLogout()"
+      mat-menu-item matSuffix>
+        <span>Logout</span>
+    </button>
+  </mat-menu>
 
   <button
     [matMenuTriggerFor]="shareMenu"

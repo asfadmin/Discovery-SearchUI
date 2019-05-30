@@ -15,6 +15,10 @@ export class PlatformComponent {
 
   public detailedPlatformInfoIcon = faInfoCircle;
 
+  public onOpenHelp() {
+    window.open(this.platform.infoUrl);
+  }
+
   public prettyDateRange(dateRange: DateRange): string {
     const { start, end } = dateRange;
 

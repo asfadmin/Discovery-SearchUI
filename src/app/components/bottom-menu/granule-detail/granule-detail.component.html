@@ -2,14 +2,18 @@
   <mat-card-header>
     <mat-card-title>
       <span [title]="granule.name">{{ granule.name | truncate : 34 }}</span>
-      <app-copy-to-clipboard style="margin: 0 5px; " [value]="granule.name"></app-copy-to-clipboard>
+      <app-copy-to-clipboard style="margin: 0 10px; " [value]="granule.name"></app-copy-to-clipboard>
+      <button (click)="onZoomToGranule()" mat-icon-button>
+        <mat-icon>settings_overscan</mat-icon>
+      </button>
+
     </mat-card-title>
     <mat-card-subtitle>{{ granule.platform }}</mat-card-subtitle>
   </mat-card-header>
 
   <mat-card-content>
     <div class="w100" fxFlex fxLayout="row" fxLayoutAlign="space-between">
-    <div>
+    <div style="width: 50%">
       <ul>
         <li> <b>Aquisition Date:</b> {{ granule.metadata.date | shortDate }} </li>
         <li> <b>Beam Mode:</b> {{ granule.metadata.beamMode }}</li>
@@ -19,8 +23,15 @@
         <li> <b>Polarization: </b> {{ granule.metadata.polarization }}</li>
         <li> <b>Absolute Orbit: </b> {{ granule.metadata.absoluteOrbit }}</li>
         <li> <b>Frequency: </b> {{ granule.metadata.frequency }}</li>
-        <li> <a href="http://www.esa.int/ESA"> Data courtesy of ESA</a></li>
+        <li> <a href="http://www.esa.int/ESA" target="_blank"> Data courtesy of ESA</a></li>
       </ul>
+
+      <p *ngIf="!authService.isLoggedIn" class="faint-text">
+        Accessing this data requires you to log in.
+        Some datasets also require a proposal, or agreement with a
+        EULA which is presented after log in.
+      </p>
+
     </div>
     <div fxFlexAlign="center" style="width: 40%;">
       <img
@@ -35,17 +46,10 @@
   </mat-card-content>
 
   <mat-card-actions>
-    <a mat-raised-button
-      matTooltip="Accessing this data requires you to log in. Some datasets also require a proposal, or agreement with a EULA which is presented after log in."
-      color="primary"
-      target="_blank"
-      [href]="granule.downloadUrl">
-      Download
-    </a>
     <a mat-raised-button color="primary"
       target="_blank"
       href="https://baseline.asf.alaska.edu/#/baseline?granule={{ granule.name }}">
-      Baseline
+      Baseline Tool
     </a>
     <a mat-raised-button color="primary"
       target="_blank"

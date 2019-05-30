@@ -11,11 +11,13 @@ import { Store } from '@ngrx/store';
 import { AppState } from '@store';
 import * as searchStore from '@store/search';
 import * as granulesStore from '@store/granules';
+import * as mapStore from '@store/map';
+import * as uiStore from '@store/ui';
 
 import { faFileDownload, faPlus } from '@fortawesome/free-solid-svg-icons';
 import { MatPaginator } from '@angular/material';
 
-import { CMRProduct } from '@models';
+import { CMRProduct, SearchType, MapInteractionModeType } from '@models';
 
 @Component({
   selector: 'app-granules-list',
@@ -41,6 +43,7 @@ export class GranulesListComponent implements OnInit {
 
   public downloadIcon = faFileDownload;
   public queueIcon = faPlus;
+  public searchType: SearchType;
 
   constructor(private store$: Store<AppState>) {}
 
@@ -51,10 +54,8 @@ export class GranulesListComponent implements OnInit {
       map(([selected, granules]) =>
         Math.ceil((granules.indexOf(selected) + 1) / this.pageSize) - 1
       ),
-      map(selectedIdx => this.paginator.pageIndex - selectedIdx),
-      filter(distance => distance < 100000)
     ).subscribe(
-      distance => this.pageTo(distance)
+      page => this.pageTo(page)
     );
 
     this.granules$.subscribe(
@@ -87,6 +88,10 @@ export class GranulesListComponent implements OnInit {
         }
       }
     });
+
+    this.store$.select(uiStore.getSearchType).subscribe(
+      searchType => this.searchType = searchType
+    );
   }
 
   private selectNextProduct(): void {
@@ -123,14 +128,9 @@ export class GranulesListComponent implements OnInit {
     this.store$.dispatch(new granulesStore.SetSelectedGranule(previousGranule.id));
   }
 
-  private pageTo(distance: number): void {
-    const direction = distance > 0 ? 'next' : 'prev';
-
-    for (let i = 0; i < Math.abs(distance); ++i) {
-      direction === 'next' ?
-        this.paginator.previousPage() :
-        this.paginator.nextPage();
-    }
+  private pageTo(page: number): void {
+    this.paginator.pageIndex = page;
+    this.pageIndex = page;
   }
 
   public onGranuleSelected(name: string): void {
@@ -159,5 +159,15 @@ export class GranulesListComponent implements OnInit {
   public onNewPage(page): void {
     this.pageIndex = page.pageIndex;
     this.pageSize = page.pageSize;
+  }
+
+  public clearResults(): void {
+    this.store$.dispatch(new granulesStore.ClearGranules());
+
+    if (this.searchType === SearchType.DATASET) {
+      this.store$.dispatch(
+        new mapStore.SetMapInteractionMode(MapInteractionModeType.DRAW)
+      );
+    }
   }
 }
