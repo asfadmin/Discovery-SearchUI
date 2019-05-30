@@ -16,6 +16,7 @@ import * as uiStore from '@store/ui';
 
 import { faFileDownload, faPlus } from '@fortawesome/free-solid-svg-icons';
 import { MatPaginator } from '@angular/material';
+import { CdkVirtualScrollViewport } from '@angular/cdk/scrolling';
 
 import { CMRProduct, SearchType, MapInteractionModeType } from '@models';
 
@@ -34,7 +35,7 @@ export class GranulesListComponent implements OnInit {
   @Output() newFocusedGranule = new EventEmitter<CMRProduct>();
   @Output() clearFocusedGranule = new EventEmitter<void>();
 
-  @ViewChild(MatPaginator) paginator: MatPaginator;
+  @ViewChild(CdkVirtualScrollViewport) scroll: CdkVirtualScrollViewport;
 
   public granules: CMRProduct[];
   public pageSizeOptions = [5, 10];
@@ -51,11 +52,9 @@ export class GranulesListComponent implements OnInit {
     this.store$.select(granulesStore.getSelectedGranule).pipe(
       withLatestFrom(this.granules$),
       filter(([selected, _]) => !!selected),
-      map(([selected, granules]) =>
-        Math.ceil((granules.indexOf(selected) + 1) / this.pageSize) - 1
-      ),
+      map(([selected, granules]) => granules.indexOf(selected)),
     ).subscribe(
-      page => this.pageTo(page)
+      idx => this.scrollTo(idx)
     );
 
     this.granules$.subscribe(
@@ -63,7 +62,7 @@ export class GranulesListComponent implements OnInit {
     );
 
     this.store$.select(searchStore.getIsLoading).subscribe(
-      _ => this.paginator.firstPage()
+      _ => this.scroll.scrollToOffset(0)
     );
 
     fromEvent(document, 'keydown').subscribe((e: KeyboardEvent) => {
@@ -79,11 +78,11 @@ export class GranulesListComponent implements OnInit {
           break;
         }
         case 'ArrowRight': {
-          this.paginator.nextPage();
+          this.selectNextProduct();
           break;
         }
         case 'ArrowLeft': {
-          this.paginator.previousPage();
+          this.selectPreviousProduct();
           break;
         }
       }
@@ -128,9 +127,8 @@ export class GranulesListComponent implements OnInit {
     this.store$.dispatch(new granulesStore.SetSelectedGranule(previousGranule.id));
   }
 
-  private pageTo(page: number): void {
-    this.paginator.pageIndex = page;
-    this.pageIndex = page;
+  private scrollTo(idx: number): void {
+    this.scroll.scrollToIndex(idx);
   }
 
   public onGranuleSelected(name: string): void {

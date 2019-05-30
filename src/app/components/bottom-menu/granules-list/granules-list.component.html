@@ -1,7 +1,9 @@
-<mat-card class="card-spacing" style="display: flex; flex-direction: column; justify-content: space-between; height: 425px">
-
+<mat-card class="card-spacing">
+  <cdk-virtual-scroll-viewport style="height: 420px; "
+    minBufferPx="500" maxBufferPx="600"
+    itemSize="72">
   <mat-action-list>
-    <ng-container *ngFor="let granule of currentPageOf(granules, pageSize, pageIndex)">
+    <div *cdkVirtualFor="let granule of granules" style="height: 72px">
       <button
         (mouseenter)="onSetFocusedGranule(granule)"
         (mouseleave) ="onClearFocusedGranule(granule)"
@@ -31,19 +33,7 @@
             class="ml-2">
           </fa-icon>
       </button>
-    </ng-container>
-  </mat-action-list>
-  <div style="display: flex; justify-content: space-between; align-items: center;">
-    <div>
-      <button (click)="clearResults()" mat-button>Clear Results</button>
     </div>
-    <mat-paginator
-      [length]="granules.length"
-      [pageSize]="pageSize"
-      [pageSizeOptions]="pageSizeOptions"
-      [hidePageSize]="true"
-      [showFirstLastButtons]="true"
-      (page)="onNewPage($event)">
-    </mat-paginator>
-  </div>
+  </mat-action-list>
+  </cdk-virtual-scroll-viewport>
 </mat-card>
