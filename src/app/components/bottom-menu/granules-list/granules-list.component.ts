@@ -45,6 +45,7 @@ export class GranulesListComponent implements OnInit {
   public downloadIcon = faFileDownload;
   public queueIcon = faPlus;
   public searchType: SearchType;
+  public selectedFromList = false;
 
   constructor(private store$: Store<AppState>) {}
 
@@ -54,7 +55,13 @@ export class GranulesListComponent implements OnInit {
       filter(([selected, _]) => !!selected),
       map(([selected, granules]) => granules.indexOf(selected)),
     ).subscribe(
-      idx => this.scrollTo(idx)
+      idx => {
+        if (!this.selectedFromList) {
+          this.scrollTo(idx);
+        }
+
+        this.selectedFromList = false;
+      }
     );
 
     this.granules$.subscribe(
@@ -132,6 +139,7 @@ export class GranulesListComponent implements OnInit {
   }
 
   public onGranuleSelected(name: string): void {
+    this.selectedFromList = true;
     this.newSelected.emit(name);
   }
 
