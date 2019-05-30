@@ -149,16 +149,6 @@ export class GranulesListComponent implements OnInit {
     this.clearFocusedGranule.emit();
   }
 
-  public currentPageOf(granules, pageSize, pageIndex): CMRProduct[] {
-    const offset = pageIndex * pageSize;
-    return granules.slice(offset, offset + pageSize);
-  }
-
-  public onNewPage(page): void {
-    this.pageIndex = page.pageIndex;
-    this.pageSize = page.pageSize;
-  }
-
   public clearResults(): void {
     this.store$.dispatch(new granulesStore.ClearGranules());
 
