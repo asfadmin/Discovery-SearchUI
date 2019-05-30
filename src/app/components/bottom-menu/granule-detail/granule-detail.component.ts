@@ -15,9 +15,7 @@ export class GranuleDetailComponent {
   @Input() granule: models.CMRProduct;
   @Output() zoomToGranule = new EventEmitter<models.CMRProduct>();
 
-  constructor(public dialog: MatDialog, private authService: DatapoolAuthService) {}
-
-  public isLoggedIn = this.authService.isLoggedIn;
+  constructor(public dialog: MatDialog, public authService: DatapoolAuthService) {}
 
   public onOpenImage(granule: models.CMRProduct): void {
     this.dialog.open(ImageDialogComponent, {

@@ -18,7 +18,7 @@
 
       <div mat-line>{{product.bytes | readableSizeFromBytes }}</div>
 
-      <a mat-icon-button matTooltip="Download product">
+      <a mat-icon-button [href]="product.downloadUrl" target="_blank" matTooltip="Download product">
         <mat-icon>cloud_download</mat-icon>
       </a>
 

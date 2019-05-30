@@ -1,17 +1,19 @@
-<mat-card class="position">
-  <div>
-    <app-breadcrumb-list
-      (doSearch)="onDoSearch()"
-      (clearSearch)="onClearSearch()">
-    </app-breadcrumb-list>
-    <mat-progress-bar *ngIf="isLoading" style="width: 100vw" mode="indeterminate"></mat-progress-bar>
-  </div>
+<mat-card class="bounds">
+  <div class="nav-item-position">
+    <div>
+      <app-breadcrumb-list
+        (doSearch)="onDoSearch()"
+        (clearSearch)="onClearSearch()">
+      </app-breadcrumb-list>
+    </div>
 
-  <div class="layout">
-    <app-nav-buttons
-      (openQueue)="onOpenDownloadQueue()"
-      [products]="products">
-    </app-nav-buttons>
+    <div>
+      <app-nav-buttons
+        (openQueue)="onOpenDownloadQueue()"
+        [products]="products">
+      </app-nav-buttons>
+    </div>
   </div>
+  <mat-progress-bar *ngIf="isLoading" style="width: 100vw" mode="indeterminate"></mat-progress-bar>
 </mat-card>
 

@@ -1,10 +1,4 @@
-.position {
-  position: fixed;
-  top: 0;
-  padding: 0 !important;
-  margin: 0;
-  width: 100vw;
-  z-index: 999;
+.nav-item-position {
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -13,4 +7,10 @@
 .layout {
   display: flex;
   justify-content: flex-end;
+}
+
+.bounds {
+  display: block;
+  padding: 0 !important;
+  margin: 0 20px 0 0;
 }
