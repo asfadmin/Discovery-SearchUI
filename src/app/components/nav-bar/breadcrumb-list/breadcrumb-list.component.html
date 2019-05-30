@@ -1,83 +1,83 @@
-<div class="breadcrumb-list">
+  <div fxLayout="row" fxFlexFill fxLayoutAlign="center center">
 
-  <div class="breadcrumb">
-    <app-logo></app-logo>
-  </div>
-
-  <div class="breadcrumb hide-mobile">
-    <mat-form-field>
-      <mat-label>Search Type</mat-label>
-      <mat-select
-        [(ngModel)]="searchType"
-        (selectionChange)="onSetSearchType($event.value)">
-        <mat-option [value]="searchTypes.DATASET">Geographic</mat-option>
-        <mat-option [value]="searchTypes.LIST">List</mat-option>
-        <mat-option [value]="searchTypes.MISSION">Mission</mat-option>
-      </mat-select>
-    </mat-form-field>
-  </div>
-
-  <ng-container *ngIf="searchType === searchTypes.DATASET">
-    <div (click)="clearSelectedBreadcrumb()"
-      class="breadcrumb hide-mobile hide-medium">
-        <app-platform-selector></app-platform-selector>
+    <div class="breadcrumb">
+      <app-logo></app-logo>
     </div>
 
-    <div class="breadcrumb hide-mobile hide-medium">
-      <mat-form-field style="margin-right: 10px; width: 90%;">
-        <input
-        (change)="onInputSearchPolygon($event.target.value)"
-        [value]="polygon$ | async"
-        matInput placeholder="Current Area of Interest" />
-
-        <mat-icon
-          (click)="onNewSelectedFilter(filterTypes.AOI)"
-          matTooltip="More options"
-          style="cursor: pointer; margin-left:10px" matSuffix>
-          {{ selectedFilter === filterTypes.AOI ? 'arrow_drop_up' : 'arrow_drop_down' }}
-        </mat-icon>
+    <div class="breadcrumb">
+      <mat-form-field>
+        <mat-label>Search Type</mat-label>
+        <mat-select
+          [(ngModel)]="searchType"
+          (selectionChange)="onSetSearchType($event.value)">
+          <mat-option [value]="searchTypes.DATASET">Geographic</mat-option>
+          <mat-option [value]="searchTypes.LIST">List</mat-option>
+          <mat-option [value]="searchTypes.MISSION">Mission</mat-option>
+        </mat-select>
       </mat-form-field>
+    </div>
 
-      <mat-card *ngIf="selectedFilter === filterTypes.AOI"
-        class="breadcrumb-filter">
+    <ng-container *ngIf="searchType === searchTypes.DATASET">
+      <div (click)="clearSelectedBreadcrumb()"
+           class="breadcrumb">
+        <app-platform-selector></app-platform-selector>
+      </div>
+
+      <div class="breadcrumb">
+        <mat-form-field style="margin-right: 10px; width: 90%;">
+          <input
+            (change)="onInputSearchPolygon($event.target.value)"
+            [value]="polygon$ | async"
+            matInput placeholder="Current Area of Intreset" />
+
+          <mat-icon
+            (click)="onNewSelectedFilter(filterTypes.AOI)"
+            matTooltip="More options"
+            style="cursor: pointer; margin-left:10px" matSuffix>
+            {{ selectedFilter === filterTypes.AOI ? 'arrow_drop_up' : 'arrow_drop_down' }}
+          </mat-icon>
+        </mat-form-field>
+
+        <mat-card *ngIf="selectedFilter === filterTypes.AOI"
+                  class="breadcrumb-filter">
           <app-aoi-upload></app-aoi-upload>
-      </mat-card>
-    </div>
+        </mat-card>
+      </div>
 
-    <div class="breadcrumb hide-mobile hide-medium">
-      <app-date-selector></app-date-selector>
-    </div>
-  </ng-container>
+      <div class="breadcrumb hide-mobile hide-medium">
+        <app-date-selector></app-date-selector>
+      </div>
+    </ng-container>
 
-  <div class="breadcrumb">
-    <button (click)="onToggleFiltersMenu()"
-      *ngIf="searchType === searchTypes.DATASET"
-       color="{{ !(isAnyAdditionalFilters$ | async) ? 'basic' : accent }}"
-       mat-stroked-button>
+    <div class="breadcrumb">
+      <button (click)="onToggleFiltersMenu()"
+              *ngIf="searchType === searchTypes.DATASET"
+              color="{{ !(isAnyAdditionalFilters$ | async) ? 'basic' : accent }}"
+              mat-stroked-button>
         <mat-icon>more_horiz</mat-icon>
-    </button>
+      </button>
 
-    <button (click)="onToggleFiltersMenu()"
-      *ngIf="searchType !== searchTypes.DATASET"
-       mat-stroked-button>
+      <button (click)="onToggleFiltersMenu()"
+              *ngIf="searchType !== searchTypes.DATASET"
+              mat-stroked-button>
         <span *ngIf="searchType === searchTypes.MISSION">Mission</span>
         <span *ngIf="searchType === searchTypes.LIST">List</span>
-    </button>
-  </div>
+      </button>
+    </div>
 
-  <div class="breadcrumb hide-mobile" style="margin-left: 20px;">
-    <app-max-results-selector
-      [maxResults]="maxResults$ | async"
-      [currentSearchAmount]="currentSearchAmount$ | async"
-      (newMaxResults)="onNewMaxResults($event)"
+    <div class="breadcrumb hide-mobile" style="margin-left: 20px;">
+      <app-max-results-selector
+        [maxResults]="maxResults$ | async"
+        [currentSearchAmount]="currentSearchAmount$ | async"
+        (newMaxResults)="onNewMaxResults($event)"
       ></app-max-results-selector>
-  </div>
+    </div>
 
-  <div class="breadcrumb hide-mobile" matTooltip="clear">
-    <button (click)="onClearSearch()" mat-flat-button color="warn">
-      <mat-icon>replay</mat-icon>
-    </button>
-  </div>
+    <div class="breadcrumb hide-mobile" matTooltip="clear">
+      <button (click)="onClearSearch()" mat-flat-button color="warn">
+        <mat-icon>replay</mat-icon>
+      </button>
+    </div>
 
   <div class="breadcrumb hide-mobile"
     matTooltip="{{ !(canSearch$ | async) ? 'No Results Found' : 'Search' }}">
@@ -88,4 +88,3 @@
     </button>
   </div>
 </div>
-<!--<app-info-bar></app-info-bar>-->

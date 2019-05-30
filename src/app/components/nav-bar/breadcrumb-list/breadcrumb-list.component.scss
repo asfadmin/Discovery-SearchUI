@@ -1,3 +1,5 @@
+@import "~flex-layout-sass/mixin";
+
 .breadcrumb-filter {
   max-width: 370px;
   min-width: 300px;
@@ -15,6 +17,10 @@ $break-medium: 1250px;
   align-items: center;
 }
 
+.breadcrumb {
+  @include fx-flex(auto);
+}
+
 .hide-mobile {
   @media screen and (max-width: $break-small) {
     display: none;
@@ -25,10 +31,6 @@ $break-medium: 1250px;
   @media screen and (max-width: $break-medium) {
     display: none;
   }
-}
-
-.breadcrumb {
-  margin-right: 5px;
 }
 
 .selected {
