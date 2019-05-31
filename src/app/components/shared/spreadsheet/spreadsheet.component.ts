@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { MatDialogRef } from '@angular/material';
+import { MatDialogRef } from '@angular/material/dialog';
 
 import { Store } from '@ngrx/store';
 
@@ -7,7 +7,9 @@ import { of, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 import { SelectionModel } from '@angular/cdk/collections';
-import { MatPaginator, MatSort, MatTableDataSource } from '@angular/material';
+import { MatPaginator } from '@angular/material/paginator';
+import { MatSort } from '@angular/material/sort';
+import { MatTableDataSource } from '@angular/material/table';
 
 import { AppState } from '@store';
 import * as granuleStore from '@store/granules';
@@ -33,8 +35,8 @@ export class SpreadsheetComponent implements OnInit {
   public dataSource: MatTableDataSource<models.CMRProduct>;
   public selection = new SelectionModel<models.CMRProduct>(true, []);
 
-  @ViewChild(MatPaginator) paginator: MatPaginator;
-  @ViewChild(MatSort) sort: MatSort;
+  @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
+  @ViewChild(MatSort, { static: true }) sort: MatSort;
 
   constructor(
     private dialogRef: MatDialogRef<SpreadsheetComponent>,

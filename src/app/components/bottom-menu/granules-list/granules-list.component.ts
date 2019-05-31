@@ -15,7 +15,7 @@ import * as mapStore from '@store/map';
 import * as uiStore from '@store/ui';
 
 import { faFileDownload, faPlus } from '@fortawesome/free-solid-svg-icons';
-import { MatPaginator } from '@angular/material';
+import { MatPaginator } from '@angular/material/paginator';
 import { CdkVirtualScrollViewport } from '@angular/cdk/scrolling';
 
 import { CMRProduct, SearchType, MapInteractionModeType } from '@models';
@@ -35,7 +35,7 @@ export class GranulesListComponent implements OnInit {
   @Output() newFocusedGranule = new EventEmitter<CMRProduct>();
   @Output() clearFocusedGranule = new EventEmitter<void>();
 
-  @ViewChild(CdkVirtualScrollViewport) scroll: CdkVirtualScrollViewport;
+  @ViewChild(CdkVirtualScrollViewport, { static: true }) scroll: CdkVirtualScrollViewport;
 
   public granules: CMRProduct[];
   public pageSizeOptions = [5, 10];
