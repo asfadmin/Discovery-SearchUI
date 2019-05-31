@@ -1,10 +1,14 @@
-  <div fxLayout="row" fxFlexFill fxLayoutAlign="center center">
+  <div class="breadcrumb-list"
+       fxLayout="row"
+       fxLayout.md="column"
+       fxLayout="wrap"
+  >
 
     <div class="breadcrumb">
       <app-logo></app-logo>
     </div>
 
-    <div class="breadcrumb">
+    <div class="breadcrumb max-width" >
       <mat-form-field>
         <mat-label>Search Type</mat-label>
         <mat-select
@@ -18,13 +22,9 @@
     </div>
 
     <ng-container *ngIf="searchType === searchTypes.DATASET">
-      <div (click)="clearSelectedBreadcrumb()"
-           class="breadcrumb">
-        <app-platform-selector></app-platform-selector>
-      </div>
 
-      <div class="breadcrumb">
-        <mat-form-field style="margin-right: 10px; width: 90%;">
+      <div class="breadcrumb max-width">
+        <mat-form-field>
           <input
             (change)="onInputSearchPolygon($event.target.value)"
             [value]="polygon$ | async"
