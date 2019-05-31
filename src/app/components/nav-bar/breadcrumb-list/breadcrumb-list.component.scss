@@ -12,25 +12,33 @@ $break-small: 700px;
 $break-medium: 1250px;
 
 .breadcrumb-list {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
+  //@include fx-layout(row wrap, center center, 0px);
+  //display: flex;
+  //flex-direction: row;
+  //align-items: center;
 }
 
 .breadcrumb {
   @include fx-flex(auto);
+
+  margin-right: 10px;
+  width: 90%;
+}
+
+.max-width {
+  //max-width: 180px !important;
 }
 
 .hide-mobile {
-  @media screen and (max-width: $break-small) {
-    display: none;
-  }
+  //@media screen and (max-width: $break-small) {
+  //  display: none;
+  //}
 }
 
 .hide-medium {
-  @media screen and (max-width: $break-medium) {
-    display: none;
-  }
+  //@media screen and (max-width: $break-medium) {
+  //  display: none;
+  //}
 }
 
 .selected {
