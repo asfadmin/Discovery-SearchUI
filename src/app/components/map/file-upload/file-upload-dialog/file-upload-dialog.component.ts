@@ -1,10 +1,10 @@
 import { Component, ViewChild, OnInit } from '@angular/core';
-import { MatSnackBar } from '@angular/material';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 import { Subject, of } from 'rxjs';
 import { delay, tap, catchError } from 'rxjs/operators';
 
-import { MatDialogRef } from '@angular/material';
+import { MatDialogRef } from '@angular/material/dialog';
 import { Subscription } from 'rxjs';
 
 import { AsfApiService } from '@services';

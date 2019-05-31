@@ -6,7 +6,7 @@ import { ScrollDispatchModule } from '@angular/cdk/scrolling';
 import { TruncateModule } from '@yellowspot/ng-truncate';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
-import { MatPaginatorIntl } from '@angular/material';
+import { MatPaginatorIntl } from '@angular/material/paginator';
 import { MatSharedModule } from '@shared';
 import { PipesModule } from '@pipes';
 
