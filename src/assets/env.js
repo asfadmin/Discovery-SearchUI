@@ -1,6 +1,9 @@
 (function() {
   window._env = {
-    apiUrl: 'https://api-test.asf.alaska.edu',
-    devMode: true
+    api: {
+      prod: 'https://api.daac.asf.alaska.edu',
+      test: 'https://api-test.asf.alaska.edu',
+    },
+    devMode: true,
   }
 })()

@@ -53,10 +53,10 @@ export class NavButtonsComponent {
   }
 
   public onTestSelected(): void {
-    this.asfApiService.setApiUrl(this.asfApiService.testUrl);
+    this.asfApiService.setApiUrl(this.asfApiService.apiUrls.test);
   }
 
   public onProdSelected(): void {
-    this.asfApiService.setApiUrl(this.asfApiService.prodUrl);
+    this.asfApiService.setApiUrl(this.asfApiService.apiUrls.prod);
   }
 }

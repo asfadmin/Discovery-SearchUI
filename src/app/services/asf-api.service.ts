@@ -9,10 +9,8 @@ import { PolygonValidateResponse, MissionPlatform } from '@models';
   providedIn: 'root'
 })
 export class AsfApiService {
-  public prodUrl = 'https://api.daac.asf.alaska.edu';
-  public testUrl = 'https://api-test.asf.alaska.edu';
-  public localUrl = 'http://127.0.0.1:5000';
-  public apiUrl = window['_env'].apiUrl;
+  public apiUrls = window['_env'].api;
+  public apiUrl = window['_env'].api.prod;
 
   constructor(private http: HttpClient) {}
 
