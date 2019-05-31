@@ -2,7 +2,7 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 
 import { ClipboardService } from 'ngx-clipboard';
 
-import { DatapoolAuthService } from '@services';
+import { DatapoolAuthService, AsfApiService } from '@services';
 import { CMRProduct } from '@models';
 
 @Component({
@@ -19,6 +19,7 @@ export class NavButtonsComponent {
 
   constructor(
     public datapoolAuthService: DatapoolAuthService,
+    public asfApiService: AsfApiService,
     public clipboard: ClipboardService,
   ) {}
 
@@ -45,5 +46,17 @@ export class NavButtonsComponent {
       `mailto:?subject=${subject}` +
       `&body=${encodeURIComponent(document.URL)}`
     );
+  }
+
+  public isDevMode(): boolean {
+    return !!window['_env'].devMode;
+  }
+
+  public onTestSelected(): void {
+    this.asfApiService.setApiUrl(this.asfApiService.testUrl);
+  }
+
+  public onProdSelected(): void {
+    this.asfApiService.setApiUrl(this.asfApiService.prodUrl);
   }
 }
