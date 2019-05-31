@@ -35,7 +35,7 @@ export class GranulesListComponent implements OnInit {
   @Output() newFocusedGranule = new EventEmitter<CMRProduct>();
   @Output() clearFocusedGranule = new EventEmitter<void>();
 
-  @ViewChild(CdkVirtualScrollViewport) scroll: CdkVirtualScrollViewport;
+  @ViewChild(CdkVirtualScrollViewport, { static: true }) scroll: CdkVirtualScrollViewport;
 
   public granules: CMRProduct[];
   public pageSizeOptions = [5, 10];

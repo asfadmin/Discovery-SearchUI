@@ -15,7 +15,7 @@ import { AsfApiService } from '@services';
   styleUrls: ['./file-upload-dialog.component.css']
 })
 export class FileUploadDialogComponent implements OnInit {
-  @ViewChild('file') file;
+  @ViewChild('file', { static: true }) file;
 
   public dropEvent: any;
   public files: Set<File> = new Set();
