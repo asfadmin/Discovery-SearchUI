@@ -9,14 +9,17 @@ import { PolygonValidateResponse, MissionPlatform } from '@models';
   providedIn: 'root'
 })
 export class AsfApiService {
-  public readonly apiUrl = 'https://api.daac.asf.alaska.edu';
-  public readonly testUrl = 'https://api-test.asf.alaska.edu';
-  public readonly localUrl = 'http://127.0.0.1:5000';
+  public apiUrls = window['_env'].api;
+  public apiUrl = window['_env'].api.prod;
 
   constructor(private http: HttpClient) {}
 
+  public setApiUrl(url: string): void {
+    this.apiUrl = url;
+  }
+
   public health(): Observable<any> {
-    return this.http.get(`${this.testUrl}/health`);
+    return this.http.get(`${this.apiUrl}/health`);
   }
 
   public query<T>(stateParams: HttpParams): Observable<T> {
@@ -35,7 +38,7 @@ export class AsfApiService {
     const queryParamsStr = params.toString()
       .replace('+', '%2B');
 
-    return this.http.get<T>(`${this.testUrl}/services/search/param?${queryParamsStr}`, {
+    return this.http.get<T>(`${this.apiUrl}/services/search/param?${queryParamsStr}`, {
       responseType
     });
   }
@@ -44,7 +47,7 @@ export class AsfApiService {
     const params = new HttpParams()
       .append('platform', platform);
 
-    const url = `${this.testUrl}/services/utils/mission_list`;
+    const url = `${this.apiUrl}/services/utils/mission_list`;
 
     return this.http.get<{result: string[]}>(url, { params });
   }
@@ -55,14 +58,14 @@ export class AsfApiService {
       formData.append('files', file, file.name);
     });
 
-    return this.http.post(`${this.testUrl}/services/utils/files_to_wkt`, formData);
+    return this.http.post(`${this.apiUrl}/services/utils/files_to_wkt`, formData);
   }
 
   public validate(wkt: string): Observable<any> {
     const params = new HttpParams()
       .append('wkt', wkt);
 
-    const url = `${this.testUrl}/services/utils/wkt`;
+    const url = `${this.apiUrl}/services/utils/wkt`;
 
     const paramsStr = params.toString();
 
