@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatPaginatorModule } from '@angular/material/paginator';
+import { ScrollDispatchModule } from '@angular/cdk/scrolling';
 
 import { TruncateModule } from '@yellowspot/ng-truncate';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
@@ -41,6 +42,7 @@ export class CustomMatPaginatorIntl extends MatPaginatorIntl {
   ],
   imports: [
     CommonModule,
+    ScrollDispatchModule,
     MatPaginatorModule,
     TruncateModule,
     FontAwesomeModule,
