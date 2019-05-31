@@ -14,35 +14,40 @@
 
   <mat-card-content>
     <div class="w100" fxFlex fxLayout="row" fxLayoutAlign="space-between">
-    <div style="width: 50%">
-      <ul>
-        <li> <b>Aquisition Date:</b> {{ granule.metadata.date | shortDate }} </li>
-        <li> <b>Beam Mode:</b> {{ granule.metadata.beamMode }}</li>
-        <li> <b>Path: </b> {{ granule.metadata.path }}</li>
-        <li> <b>Frame:</b> {{ granule.metadata.frame }}</li>
-        <li> <b>Flight Direction:</b> {{ granule.metadata.flightDirection }}</li>
-        <li> <b>Polarization: </b> {{ granule.metadata.polarization }}</li>
-        <li> <b>Absolute Orbit: </b> {{ granule.metadata.absoluteOrbit }}</li>
-        <li> <b>Frequency: </b> {{ granule.metadata.frequency }}</li>
-        <li> <a href="http://www.esa.int/ESA" target="_blank"> Data courtesy of ESA</a></li>
-      </ul>
+      <div style="width: 50%">
+        <ul>
+          <li> <b>Aquisition Date:</b> {{ granule.metadata.date | shortDate }} </li>
+          <li> <b>Beam Mode:</b> {{ granule.metadata.beamMode }}</li>
+          <li> <b>Path: </b> {{ granule.metadata.path }}</li>
+          <li> <b>Frame:</b> {{ granule.metadata.frame }}</li>
+          <li> <b>Flight Direction:</b> {{ granule.metadata.flightDirection }}</li>
+          <li> <b>Polarization: </b> {{ granule.metadata.polarization }}</li>
+          <li> <b>Absolute Orbit: </b> {{ granule.metadata.absoluteOrbit }}</li>
+          <li> <b>Frequency: </b> {{ granule.metadata.frequency }}</li>
+          <li> <a href="http://www.esa.int/ESA" target="_blank"> Data courtesy of ESA</a></li>
+        </ul>
 
-      <p *ngIf="!authService.isLoggedIn" class="faint-text">
-        Accessing this data requires you to log in.
-        Some datasets also require a proposal, or agreement with a
-        EULA which is presented after log in.
-      </p>
+        <p *ngIf="!authService.isLoggedIn" class="faint-text">
+          Accessing this data requires you to log in.
+          Some datasets also require a proposal, or agreement with a
+          EULA which is presented after log in.
+        </p>
 
-    </div>
-    <div fxFlexAlign="center" style="width: 40%;">
-      <img
-        class="fit-to-container"
-        [src]="granule.browse"
-        (click)="onOpenImage(granule);"
-        style="cursor: pointer; "
-        onerror="this.src='assets/error.png'"
-        alt="Sentinel1 granule browse image">
-    </div>
+      </div>
+      <div class="clickable" fxFlexAlign="center" style="width: 40%;">
+        <div (click)="onOpenImage(granule);"
+          class="img-container">
+            <img
+              class="browse-img fit-to-container"
+              [src]="granule.browse"
+              style="cursor: pointer; "
+              onerror="this.src='assets/error.png'"
+              alt="Sentinel1 granule browse image">
+            <div class="img-overlay">
+              <mat-icon class="overlay-icon">fullscreen</mat-icon>
+            </div>
+        </div>
+      </div>
     </div>
   </mat-card-content>
 
