@@ -1,0 +1,36 @@
+<mat-list-item
+  (mouseenter)="isHovered = true"
+  (mouseleave)="isHovered = false">
+
+  <div class="clickable" mat-line>
+    <b>
+      <span *ngIf="product.productTypeDisplay.length > 40">
+        {{ product.productTypeDisplay | truncate : 36 }}{{ product.productTypeDisplay | truncate : -4 : '' }}
+      </span>
+      <span *ngIf="product.productTypeDisplay.length <= 40">
+        {{ product.productTypeDisplay }}
+      </span>
+    </b>
+
+    <a *ngIf="isHovered" style="margin-left: 5px;">
+      <app-copy-to-clipboard
+        [value]="product.name"
+        prompt="Copy product id">
+      </app-copy-to-clipboard>
+    </a>
+  </div>
+
+    <div mat-line>{{product.bytes | readableSizeFromBytes }}</div>
+
+
+    <a mat-icon-button [href]="product.downloadUrl" target="_blank" matTooltip="Download product">
+      <mat-icon>cloud_download</mat-icon>
+    </a>
+
+    <button (click)="onToggleQueueProduct(product)"
+       matTooltip="{{ !isQueued ? 'Add product to queue' : 'Remove product from queue' }}"
+       mat-icon-button>
+        <mat-icon *ngIf="!isQueued">add_shopping_cart</mat-icon>
+        <mat-icon *ngIf="isQueued">shopping_cart</mat-icon>
+    </button>
+</mat-list-item>
