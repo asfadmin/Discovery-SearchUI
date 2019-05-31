@@ -1,13 +1,15 @@
   <div class="breadcrumb-list"
        fxLayout="row"
        fxLayout.md="column"
-       fxLayout="wrap"
+       fxFlexFill
   >
 
-    <div class="breadcrumb">
+    <!-- LOGO & HAMBURGER MENU -->
+    <div class="logo">
       <app-logo></app-logo>
     </div>
 
+    <!-- SEARCH TYPE -->
     <div class="breadcrumb max-width" >
       <mat-form-field>
         <mat-label>Search Type</mat-label>
@@ -21,49 +23,54 @@
       </mat-form-field>
     </div>
 
+    <!-- GEOGRAPHIC SEARCH FILTERS -->
     <ng-container *ngIf="searchType === searchTypes.DATASET">
 
+      <!-- AOI FILTER -->
       <div class="breadcrumb max-width">
         <mat-form-field>
           <input
             (change)="onInputSearchPolygon($event.target.value)"
             [value]="polygon$ | async"
-            matInput placeholder="Current Area of Intreset" />
+            matInput placeholder="Current Area of Intreset">
 
           <mat-icon
             (click)="onNewSelectedFilter(filterTypes.AOI)"
             matTooltip="More options"
-            style="cursor: pointer; margin-left:10px" matSuffix>
+            style="cursor: pointer; margin-left: 10px;" matSuffix>
             {{ selectedFilter === filterTypes.AOI ? 'arrow_drop_up' : 'arrow_drop_down' }}
           </mat-icon>
         </mat-form-field>
-
         <mat-card *ngIf="selectedFilter === filterTypes.AOI"
                   class="breadcrumb-filter">
           <app-aoi-upload></app-aoi-upload>
         </mat-card>
       </div>
 
+      <!-- DATES START/END FILTER -->
       <div class="breadcrumb hide-mobile hide-medium">
         <app-date-selector></app-date-selector>
       </div>
     </ng-container>
 
-    <div class="breadcrumb">
+    <!-- ADDITIONAL FILTERS -->
+    <div class="breadcrumb additional_filters">
       <button (click)="onToggleFiltersMenu()"
               *ngIf="searchType === searchTypes.DATASET"
               color="{{ !(isAnyAdditionalFilters$ | async) ? 'basic' : accent }}"
-              mat-stroked-button>
+              mat-button>
+        Additional Filters
+        <br>
         <mat-icon>more_horiz</mat-icon>
       </button>
-
-      <button (click)="onToggleFiltersMenu()"
-              *ngIf="searchType !== searchTypes.DATASET"
-              mat-stroked-button>
-        <span *ngIf="searchType === searchTypes.MISSION">Mission</span>
-        <span *ngIf="searchType === searchTypes.LIST">List</span>
-      </button>
+<!--      <button (click)="onToggleFiltersMenu()"-->
+<!--              *ngIf="searchType !== searchTypes.DATASET"-->
+<!--              mat-stroked-button>-->
+<!--        <span *ngIf="searchType === searchTypes.MISSION">Mission</span>-->
+<!--        <span *ngIf="searchType === searchTypes.LIST">List</span>-->
+<!--      </button>-->
     </div>
+
 
     <div class="breadcrumb hide-mobile" style="margin-left: 20px;">
       <app-max-results-selector

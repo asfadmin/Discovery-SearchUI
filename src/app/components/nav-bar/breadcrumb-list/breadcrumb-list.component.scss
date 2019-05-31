@@ -1,3 +1,4 @@
+@import "asf-theme";
 @import "~flex-layout-sass/mixin";
 
 .breadcrumb-filter {
@@ -20,10 +21,31 @@ $break-medium: 1250px;
 }
 
 .breadcrumb {
+  @extend .mat-form-field;
+
   @include fx-flex(auto);
 
+  padding-top: 15px;
   margin-right: 10px;
   width: 90%;
+  padding-right: 10px;
+  border-right-width: 2px;
+  border-right-color: $asf-accent;
+  border-right-style: solid;
+}
+
+.logo {
+  padding-right: 10px;
+}
+
+.additional_filters {
+  color: $asf-primary;
+
+  .mat-icon {
+    @include md-icon-size(48px);
+
+    line-height: 12px;
+  }
 }
 
 .max-width {
