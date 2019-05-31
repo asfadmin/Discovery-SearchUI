@@ -19,9 +19,11 @@ export class GranuleDetailComponent {
 
   public onOpenImage(granule: models.CMRProduct): void {
     this.dialog.open(ImageDialogComponent, {
-      height: '95%',
-      width: '90%',
-      panelClass: 'transparent'
+      height: '1200px',
+      width: '1200px',
+      maxWidth: '90%',
+      maxHeight: '90%',
+      panelClass: 'image-dialog'
     });
   }
 
