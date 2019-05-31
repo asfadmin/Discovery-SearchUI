@@ -5,7 +5,7 @@ import {
   trigger, state, style,
   animate, transition
 } from '@angular/animations';
-import { MatDialog } from '@angular/material';
+import { MatDialog } from '@angular/material/dialog';
 
 import { Observable, of } from 'rxjs';
 import { map, tap, filter, switchMap, catchError } from 'rxjs/operators';

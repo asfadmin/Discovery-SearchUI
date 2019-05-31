@@ -16,7 +16,7 @@ export class CopyToClipboardComponent {
   @Input() prompt = 'Copy to clipboard';
   @Input() notification = 'Copied';
 
-  @ViewChild('copyTooltip') copyTooltip: ElementRef;
+  @ViewChild('copyTooltip', { static: true }) copyTooltip: ElementRef;
 
   public copyIcon = faCopy;
 
