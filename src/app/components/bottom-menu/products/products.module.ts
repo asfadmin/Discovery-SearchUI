@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 
 import { TruncateModule } from '@yellowspot/ng-truncate';
 import { MatSharedModule } from '@shared';
+import { CopyToClipboardModule } from '@components/shared/copy-to-clipboard';
 import { ProductsComponent } from './products.component';
 import { PipesModule } from '@pipes';
 
@@ -13,6 +14,7 @@ import { PipesModule } from '@pipes';
     MatSharedModule,
     TruncateModule,
     PipesModule,
+    CopyToClipboardModule,
   ],
   exports: [
     ProductsComponent

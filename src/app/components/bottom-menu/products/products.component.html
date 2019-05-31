@@ -1,11 +1,9 @@
 <mat-list *ngIf="products">
   <h3 mat-subheader>Granule Products</h3>
 
-  <mat-list-item *ngFor="let product of products"
-    >
-    <div
-      (click)="onToggleQueueProduct(product)"
-      class="clickable" mat-line>
+  <mat-list-item *ngFor="let product of products">
+
+    <div class="clickable" mat-line>
       <b>
         <span *ngIf="product.productTypeDisplay.length > 40">
           {{ product.productTypeDisplay | truncate : 36 }}{{ product.productTypeDisplay | truncate : -4 : '' }}
@@ -14,9 +12,17 @@
           {{ product.productTypeDisplay }}
         </span>
       </b>
+
     </div>
 
       <div mat-line>{{product.bytes | readableSizeFromBytes }}</div>
+
+      <a mat-button>
+        <app-copy-to-clipboard
+          [value]="product.name"
+          prompt="Copy product id">
+        </app-copy-to-clipboard>
+      </a>
 
       <a mat-icon-button [href]="product.downloadUrl" target="_blank" matTooltip="Download product">
         <mat-icon>cloud_download</mat-icon>
