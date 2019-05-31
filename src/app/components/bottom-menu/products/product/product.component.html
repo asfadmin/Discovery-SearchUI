@@ -27,7 +27,7 @@
       <mat-icon>cloud_download</mat-icon>
     </a>
 
-    <button (click)="onToggleQueueProduct(product)"
+    <button (click)="onToggleQueueProduct()"
        matTooltip="{{ !isQueued ? 'Add product to queue' : 'Remove product from queue' }}"
        mat-icon-button>
         <mat-icon *ngIf="!isQueued">add_shopping_cart</mat-icon>
