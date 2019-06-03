@@ -40,6 +40,10 @@ export class GranuleDetailComponent {
     });
   }
 
+  public isGeoSearch(): boolean {
+    return this.searchType === models.SearchType.DATASET;
+  }
+
   public onZoomToGranule(): void {
     const features = this.wktService.wktToFeature(
       this.granule.metadata.polygon,
@@ -55,7 +59,15 @@ export class GranuleDetailComponent {
     );
   }
 
-  public isGeoSearch(): boolean {
-    return this.searchType === models.SearchType.DATASET;
+  public setStartDate(): void {
+    this.store$.dispatch(
+      new filtersStore.SetStartDate(this.granule.metadata.date)
+    );
+  }
+
+  public setEndDate(): void {
+    this.store$.dispatch(
+      new filtersStore.SetEndDate(this.granule.metadata.date)
+    );
   }
 }

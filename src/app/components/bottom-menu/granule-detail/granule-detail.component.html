@@ -17,23 +17,40 @@
     <div class="w100" fxFlex fxLayout="row" fxLayoutAlign="space-between">
       <div style="width: 50%">
         <ul class="granule-metadata">
-          <li> <b>Aquisition Date:</b> {{ granule.metadata.date | shortDate }} </li>
+          <li>
+            <span class="v-mid"><b>Aquisition Date:</b> {{ granule.metadata.date | shortDate }}</span>
+            <mat-icon *ngIf="isGeoSearch()"
+              [matMenuTriggerFor]="addGranuleDateMenu"
+              matTooltip="Add date to search"
+              class="v-mid clickable">
+                add
+            </mat-icon>
 
-          <li *ngIf="isGeoSearch()" (click)="onSetBeamMode()"
-            matTooltip="Add {{ granule.metadata.beamMode }} to search" class="clickable">
-              <span class="v-mid"><b>Beam Mode:</b> {{ granule.metadata.beamMode }}</span>
-              <mat-icon class="v-mid">add</mat-icon>
+            <mat-menu #addGranuleDateMenu="matMenu">
+              <button (click)="setStartDate()" mat-menu-item>Start Date</button>
+              <button (click)="setEndDate()" mat-menu-item>End Date</button>
+            </mat-menu>
           </li>
 
-          <li *ngIf="!isGeoSearch()" class="clickable">
+          <li>
               <span class="v-mid"><b>Beam Mode:</b> {{ granule.metadata.beamMode }}</span>
+              <mat-icon *ngIf="isGeoSearch()"
+                (click)="onSetBeamMode()"
+                matTooltip="Add {{ granule.metadata.beamMode }} to search"
+                class="v-mid clickable">
+                  add
+              </mat-icon>
           </li>
-
 
           <li> <b>Path: </b> {{ granule.metadata.path }}</li>
           <li> <b>Frame:</b> {{ granule.metadata.frame }}</li>
-          <li> <b>Flight Direction:</b> {{ granule.metadata.flightDirection }}</li>
-          <li> <b>Polarization: </b> {{ granule.metadata.polarization }}</li>
+          <li *ngIf="!!granule.metadata.flightDirection">
+            <b>Flight Direction:</b> {{ granule.metadata.flightDirection }}
+          </li>
+
+          <li *ngIf="!!granule.metadata.polarization">
+            <b>Polarization: </b> {{ granule.metadata.polarization }}
+          </li>
           <li> <b>Absolute Orbit: </b> {{ granule.metadata.absoluteOrbit }}</li>
           <li> <b>Frequency: </b> {{ granule.metadata.frequency }}</li>
           <li> <a href="http://www.esa.int/ESA" target="_blank"> Data courtesy of ESA</a></li>
