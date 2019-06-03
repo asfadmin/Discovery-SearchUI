@@ -34,7 +34,6 @@ export class ProductService {
       beamMode: g.beamMode,
       polarization: g.polarization,
       flightDirection: <models.FlightDirection>g.flightDirection,
-      frequency: g.frequency || 'NA',
 
       path: +g.path,
       frame:  +g.frame,

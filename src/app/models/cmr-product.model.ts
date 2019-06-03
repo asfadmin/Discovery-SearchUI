@@ -20,7 +20,6 @@ export interface CMRProductMetadata {
   beamMode: string;
   polarization: string;
   flightDirection: FlightDirection;
-  frequency: string;
 
   path: number;
   frame: number;
