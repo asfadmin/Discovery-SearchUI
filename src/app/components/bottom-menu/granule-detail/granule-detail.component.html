@@ -20,7 +20,7 @@
           <li> <b>Aquisition Date:</b> {{ granule.metadata.date | shortDate }} </li>
 
           <li (click)="onSetBeamMode()"
-            matTooltip="Add to search" class="clickable">
+            matTooltip="Add {{ granule.metadata.beamMode }} to search" class="clickable">
               <span class="v-mid"><b>Beam Mode:</b> {{ granule.metadata.beamMode }}</span>
               <mat-icon class="v-mid">add</mat-icon>
           </li>

@@ -76,14 +76,6 @@ export class GranulesListComponent implements OnInit {
       const { key } = e;
 
       switch ( key ) {
-        case 'ArrowDown': {
-          this.selectNextProduct();
-          break;
-        }
-        case 'ArrowUp': {
-          this.selectPreviousProduct();
-          break;
-        }
         case 'ArrowRight': {
           this.selectNextProduct();
           break;
