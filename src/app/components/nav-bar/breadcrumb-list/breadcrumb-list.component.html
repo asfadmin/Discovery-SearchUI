@@ -23,9 +23,16 @@
       </mat-form-field>
     </div>
 
+
+
     <!-- GEOGRAPHIC SEARCH FILTERS -->
     <ng-container *ngIf="searchType === searchTypes.DATASET">
 
+      <div (click)="clearSelectedBreadcrumb()"
+           class="breadcrumb hide-mobile hide-medium">
+        <app-platform-selector></app-platform-selector>
+      </div>
+      
       <!-- AOI FILTER -->
       <div class="breadcrumb max-width">
         <mat-form-field>
@@ -63,12 +70,12 @@
         <br>
         <mat-icon>more_horiz</mat-icon>
       </button>
-<!--      <button (click)="onToggleFiltersMenu()"-->
-<!--              *ngIf="searchType !== searchTypes.DATASET"-->
-<!--              mat-stroked-button>-->
-<!--        <span *ngIf="searchType === searchTypes.MISSION">Mission</span>-->
-<!--        <span *ngIf="searchType === searchTypes.LIST">List</span>-->
-<!--      </button>-->
+      <button (click)="onToggleFiltersMenu()"
+              *ngIf="searchType !== searchTypes.DATASET"
+              mat-stroked-button>
+        <span *ngIf="searchType === searchTypes.MISSION">Mission</span>
+        <span *ngIf="searchType === searchTypes.LIST">List</span>
+      </button>
     </div>
 
 
