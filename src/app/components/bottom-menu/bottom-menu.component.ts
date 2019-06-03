@@ -12,6 +12,7 @@ import { AppState } from '@store';
 import * as uiStore from '@store/ui';
 import * as granulesStore from '@store/granules';
 import * as queueStore from '@store/queue';
+import * as filtersStore from '@store/filters';
 
 import * as models from '@models';
 import * as services from '@services';
@@ -36,6 +37,9 @@ export class BottomMenuComponent implements OnInit {
   public isSideMenuOpen$ = this.store$.select(uiStore.getIsSidebarOpen);
   public searchType$ = this.store$.select(uiStore.getSearchType);
 
+  public selectedPlatform$ = this.store$.select(filtersStore.getSelectedPlatforms).pipe(
+    map(platforms => Array.from(platforms || []).pop())
+  );
   public selectedGranule$ = this.store$.select(granulesStore.getSelectedGranule);
   public selectedProducts$ = this.store$.select(granulesStore.getSelectedGranuleProducts);
   public queuedProductIds: Set<string>;

@@ -18,6 +18,7 @@ import { ImageDialogComponent } from './image-dialog';
 })
 export class GranuleDetailComponent {
   @Input() granule: models.CMRProduct;
+  @Input() platform: models.Platform;
   @Input() searchType: models.SearchType;
 
   public searchTypes = models.SearchType;
