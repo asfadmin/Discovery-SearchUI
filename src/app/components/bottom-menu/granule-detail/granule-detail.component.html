@@ -3,6 +3,7 @@
     <mat-card-title>
       <span [title]="granule.name">{{ granule.name | truncate : 34 }}</span>
       <app-copy-to-clipboard style="margin: 0 10px; " [value]="granule.name"></app-copy-to-clipboard>
+
       <button (click)="onZoomToGranule()"
         matTooltip="Zoom to granule" mat-icon-button>
         <mat-icon>settings_overscan</mat-icon>
