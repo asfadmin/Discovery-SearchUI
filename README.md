@@ -1,4 +1,4 @@
-# SearchUi
+# SearchUI
 
 Angular rewrite of ASF's Vertex search web app
 
