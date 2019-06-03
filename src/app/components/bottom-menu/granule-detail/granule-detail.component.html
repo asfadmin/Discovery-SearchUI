@@ -19,11 +19,16 @@
         <ul class="granule-metadata">
           <li> <b>Aquisition Date:</b> {{ granule.metadata.date | shortDate }} </li>
 
-          <li (click)="onSetBeamMode()"
+          <li *ngIf="isGeoSearch()" (click)="onSetBeamMode()"
             matTooltip="Add {{ granule.metadata.beamMode }} to search" class="clickable">
               <span class="v-mid"><b>Beam Mode:</b> {{ granule.metadata.beamMode }}</span>
               <mat-icon class="v-mid">add</mat-icon>
           </li>
+
+          <li *ngIf="!isGeoSearch()" class="clickable">
+              <span class="v-mid"><b>Beam Mode:</b> {{ granule.metadata.beamMode }}</span>
+          </li>
+
 
           <li> <b>Path: </b> {{ granule.metadata.path }}</li>
           <li> <b>Frame:</b> {{ granule.metadata.frame }}</li>

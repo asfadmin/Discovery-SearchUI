@@ -18,6 +18,9 @@ import { ImageDialogComponent } from './image-dialog';
 })
 export class GranuleDetailComponent {
   @Input() granule: models.CMRProduct;
+  @Input() searchType: models.SearchType;
+
+  public searchTypes = models.SearchType;
 
   constructor(
     public dialog: MatDialog,
@@ -50,5 +53,9 @@ export class GranuleDetailComponent {
     this.store$.dispatch(
       new filtersStore.AddBeamMode(this.granule.metadata.beamMode)
     );
+  }
+
+  public isGeoSearch(): boolean {
+    return this.searchType === models.SearchType.DATASET;
   }
 }

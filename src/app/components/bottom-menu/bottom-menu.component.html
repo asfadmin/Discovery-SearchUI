@@ -31,7 +31,8 @@
 
     <mat-card class="card-spacing bottom-menu--column">
       <app-granule-detail
-        [granule]="selectedGranule$ | async">
+        [granule]="selectedGranule$ | async"
+        [searchType]="searchType$ | async">
       </app-granule-detail>
     </mat-card>
   </div>

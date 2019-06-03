@@ -34,6 +34,7 @@ import * as services from '@services';
 export class BottomMenuComponent implements OnInit {
   public isBottomMenuOpen$ = this.store$.select(uiStore.getIsBottomMenuOpen);
   public isSideMenuOpen$ = this.store$.select(uiStore.getIsSidebarOpen);
+  public searchType$ = this.store$.select(uiStore.getSearchType);
 
   public selectedGranule$ = this.store$.select(granulesStore.getSelectedGranule);
   public selectedProducts$ = this.store$.select(granulesStore.getSelectedGranuleProducts);
