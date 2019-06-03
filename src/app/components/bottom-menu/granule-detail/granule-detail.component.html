@@ -10,14 +10,17 @@
       </button>
 
     </mat-card-title>
-    <mat-card-subtitle>{{ granule.platform }}</mat-card-subtitle>
+    <mat-card-subtitle>
+      <span matTooltip="Dataset">{{ granule.platform }}</span> •
+      <span matTooltip="Frequency">{{ platform.frequency }}</span>
+    </mat-card-subtitle>
   </mat-card-header>
 
   <mat-card-content>
     <div class="w100" fxFlex fxLayout="row" fxLayoutAlign="space-between">
       <div style="width: 50%">
         <ul class="granule-metadata">
-          <li>
+          <li *ngIf="hasValue(granule.metadata.date)">
             <span class="v-mid"><b>Aquisition Date:</b> {{ granule.metadata.date | shortDate }}</span>
             <mat-icon *ngIf="isGeoSearch()"
               [matMenuTriggerFor]="addGranuleDateMenu"
@@ -32,7 +35,7 @@
             </mat-menu>
           </li>
 
-          <li>
+          <li *ngIf="hasValue(granule.metadata.beamMode)">
               <span class="v-mid"><b>Beam Mode:</b> {{ granule.metadata.beamMode }}</span>
               <mat-icon *ngIf="isGeoSearch()"
                 (click)="onSetBeamMode()"
@@ -42,17 +45,22 @@
               </mat-icon>
           </li>
 
-          <li> <b>Path: </b> {{ granule.metadata.path }}</li>
-          <li> <b>Frame:</b> {{ granule.metadata.frame }}</li>
-          <li *ngIf="!!granule.metadata.flightDirection">
+          <li *ngIf="hasValue(granule.metadata.path) && !shouldHideWith(['SMAP'])">
+            <b>Path: </b> {{ granule.metadata.path }}
+          </li>
+          <li *ngIf="hasValue(granule.metadata.frame) && !shouldHideWith(['SMAP'])">
+            <b>Frame:</b> {{ granule.metadata.frame }}
+          </li>
+          <li *ngIf="hasValue(granule.metadata.flightDirection)">
             <b>Flight Direction:</b> {{ granule.metadata.flightDirection }}
           </li>
 
-          <li *ngIf="!!granule.metadata.polarization">
+          <li *ngIf="hasValue(granule.metadata.polarization)">
             <b>Polarization: </b> {{ granule.metadata.polarization }}
           </li>
-          <li> <b>Absolute Orbit: </b> {{ granule.metadata.absoluteOrbit }}</li>
-          <li> <b>Frequency: </b> {{ platform.frequency }}</li>
+          <li *ngIf="hasValue(granule.metadata.absoluteOrbit)">
+            <b>Absolute Orbit: </b> {{ granule.metadata.absoluteOrbit }}
+          </li>
           <li> <a href="http://www.esa.int/ESA" target="_blank"> Data courtesy of ESA</a></li>
         </ul>
 

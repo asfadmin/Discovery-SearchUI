@@ -45,6 +45,14 @@ export class GranuleDetailComponent {
     return this.searchType === models.SearchType.DATASET;
   }
 
+  public hasValue(v: any): boolean {
+    return v !== null && v !== undefined;
+  }
+
+  public shouldHideWith(platformNames: string[]): boolean {
+    return platformNames.includes(this.platform.name);
+  }
+
   public onZoomToGranule(): void {
     const features = this.wktService.wktToFeature(
       this.granule.metadata.polygon,
