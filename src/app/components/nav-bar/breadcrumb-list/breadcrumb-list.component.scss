@@ -38,18 +38,20 @@ $break-medium: 1250px;
   padding-right: 10px;
 }
 
-.additional_filters {
+.additional-filters {
   color: $asf-primary;
+  width: 150px;
 
   .mat-icon {
     @include md-icon-size(64px);
 
-    line-height: 12px;
+    line-height: 25px;
   }
 }
 
-.max-width {
-  //max-width: 180px !important;
+.additional-filters-button {
+  margin-left: 0;
+  line-height: 18px;
 }
 
 .hide-mobile {
