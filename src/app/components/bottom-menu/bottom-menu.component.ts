@@ -86,11 +86,5 @@ export class BottomMenuComponent implements OnInit {
   }
 
   public onZoomTo(granule: models.CMRProduct): void {
-    const features = this.wktService.wktToFeature(
-      granule.metadata.polygon,
-      this.mapService.epsg()
-    );
-
-    this.mapService.zoomTo(features);
   }
 }

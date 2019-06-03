@@ -16,9 +16,15 @@
   <mat-card-content>
     <div class="w100" fxFlex fxLayout="row" fxLayoutAlign="space-between">
       <div style="width: 50%">
-        <ul>
+        <ul class="granule-metadata">
           <li> <b>Aquisition Date:</b> {{ granule.metadata.date | shortDate }} </li>
-          <li> <b>Beam Mode:</b> {{ granule.metadata.beamMode }}</li>
+
+          <li (click)="onSetBeamMode()"
+            matTooltip="Add to search" class="clickable">
+              <span class="v-mid"><b>Beam Mode:</b> {{ granule.metadata.beamMode }}</span>
+              <mat-icon class="v-mid">add</mat-icon>
+          </li>
+
           <li> <b>Path: </b> {{ granule.metadata.path }}</li>
           <li> <b>Frame:</b> {{ granule.metadata.frame }}</li>
           <li> <b>Flight Direction:</b> {{ granule.metadata.flightDirection }}</li>

@@ -2,6 +2,22 @@ li {
   margin-bottom: 4px;
 }
 
+.hide {
+  visibility: hidden;
+}
+
+.v-mid {
+  vertical-align: middle;
+}
+
+.show-on-hover:hover > .hide {
+  visibility: visible;
+}
+
+.granule-metadata {
+  font-size: 18px;
+}
+
 .fit-to-container {
   max-height: 250px;
   max-width: 100%;

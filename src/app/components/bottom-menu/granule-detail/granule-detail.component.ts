@@ -1,10 +1,15 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 
 import { MatDialog } from '@angular/material/dialog';
-import { ImageDialogComponent } from './image-dialog';
+
+import { Store } from '@ngrx/store';
+
+import { AppState } from '@store';
+import * as filtersStore from '@store/filters';
 
 import * as models from '@models';
-import { DatapoolAuthService } from '@services';
+import { DatapoolAuthService, MapService, WktService } from '@services';
+import { ImageDialogComponent } from './image-dialog';
 
 @Component({
   selector: 'app-granule-detail',
@@ -13,9 +18,14 @@ import { DatapoolAuthService } from '@services';
 })
 export class GranuleDetailComponent {
   @Input() granule: models.CMRProduct;
-  @Output() zoomToGranule = new EventEmitter<models.CMRProduct>();
 
-  constructor(public dialog: MatDialog, public authService: DatapoolAuthService) {}
+  constructor(
+    public dialog: MatDialog,
+    public authService: DatapoolAuthService,
+    private store$: Store<AppState>,
+    private mapService: MapService,
+    private wktService: WktService,
+  ) {}
 
   public onOpenImage(granule: models.CMRProduct): void {
     this.dialog.open(ImageDialogComponent, {
@@ -28,6 +38,17 @@ export class GranuleDetailComponent {
   }
 
   public onZoomToGranule(): void {
-    this.zoomToGranule.emit(this.granule);
+    const features = this.wktService.wktToFeature(
+      this.granule.metadata.polygon,
+      this.mapService.epsg()
+    );
+
+    this.mapService.zoomTo(features);
+  }
+
+  public onSetBeamMode(): void {
+    this.store$.dispatch(
+      new filtersStore.AddBeamMode(this.granule.metadata.beamMode)
+    );
   }
 }

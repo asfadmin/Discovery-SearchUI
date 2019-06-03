@@ -272,6 +272,26 @@ export function filtersReducer(state = initState, action: FiltersActions): Filte
       };
     }
 
+    case FiltersActionType.ADD_BEAM_MODE: {
+      const platform = Array.from(state.platforms.selected).pop();
+
+      const selectedBeamModes = [
+        ...(state.beamModes[platform] || [])
+      ];
+
+      const newModes = Array.from(
+        new Set([...selectedBeamModes, action.payload])
+      );
+
+      return {
+        ...state,
+        beamModes: {
+          ...state.beamModes,
+          ...{ [platform]: newModes }
+        }
+      };
+    }
+
     case FiltersActionType.SET_PLATFORM_BEAM_MODES: {
       return {
         ...state,
