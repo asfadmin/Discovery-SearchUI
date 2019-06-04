@@ -5,23 +5,23 @@ describe('PolygonValidationService', () => {
   let service;
 
   const snackBar: any = {
-    // mock properties here 
-  }
+    // mock properties here
+  };
 
   const mapService: any = {
-    // mock properties here 
-  }
+    // mock properties here
+  };
 
   const asfApiService: any = {
-    // mock properties here 
-  }
+    // mock properties here
+  };
 
   const wktService: any = {
-    // mock properties here 
-  }
+    // mock properties here
+  };
 
   beforeEach(() => {
-    service = new PolygonValidationService(snackBar,mapService,asfApiService,wktService);
+    service = new PolygonValidationService(snackBar, mapService, asfApiService, wktService);
   });
 
   it('should run #validate()', async () => {

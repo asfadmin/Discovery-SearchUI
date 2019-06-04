@@ -5,19 +5,19 @@ describe('SearchParamsService', () => {
   let service;
 
   const store$: any = {
-    // mock properties here 
-  }
+    // mock properties here
+  };
 
   const mapService: any = {
-    // mock properties here 
-  }
+    // mock properties here
+  };
 
   const rangeService: any = {
-    // mock properties here 
-  }
+    // mock properties here
+  };
 
   beforeEach(() => {
-    service = new SearchParamsService(store$,mapService,rangeService);
+    service = new SearchParamsService(store$, mapService, rangeService);
   });
 
   it('should run #getParams()', async () => {

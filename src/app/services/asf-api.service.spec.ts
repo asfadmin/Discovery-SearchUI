@@ -5,8 +5,8 @@ describe('AsfApiService', () => {
   let service;
 
   const http: any = {
-    // mock properties here 
-  }
+    // mock properties here
+  };
 
   beforeEach(() => {
     service = new AsfApiService(http);
