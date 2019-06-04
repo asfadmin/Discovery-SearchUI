@@ -79,4 +79,47 @@ export class GranuleDetailComponent {
       new filtersStore.SetEndDate(this.granule.metadata.date)
     );
   }
+
+  public setPathStart(): void {
+    this.store$.dispatch(
+      new filtersStore.SetPathStart(this.granule.metadata.path)
+    );
+  }
+
+  public setPathEnd(): void {
+    this.store$.dispatch(
+      new filtersStore.SetPathEnd(this.granule.metadata.path)
+    );
+  }
+
+  public setFrameStart(): void {
+    this.store$.dispatch(
+      new filtersStore.SetFrameStart(this.granule.metadata.frame)
+    );
+  }
+
+  public setFrameEnd(): void {
+    this.store$.dispatch(
+      new filtersStore.SetFrameEnd(this.granule.metadata.frame)
+    );
+  }
+
+  public setFlightDirection(): void {
+    const dir = this.granule.metadata.flightDirection
+      .toLowerCase();
+
+    const capitalized = this.capitalizeFirstLetter(dir);
+
+    this.store$.dispatch(
+      new filtersStore.SetFlightDirections([<models.FlightDirection>capitalized])
+    );
+  }
+
+  public addPolarization(): void {
+    this.store$.dispatch(new filtersStore.AddPolarization(this.granule.metadata.polarization));
+  }
+
+  private capitalizeFirstLetter(str) {
+      return str.charAt(0).toUpperCase() + str.slice(1);
+  }
 }

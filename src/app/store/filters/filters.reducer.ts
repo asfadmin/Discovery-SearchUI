@@ -306,6 +306,26 @@ export function filtersReducer(state = initState, action: FiltersActions): Filte
       };
     }
 
+    case FiltersActionType.ADD_POLARIZATION: {
+      const platform = Array.from(state.platforms.selected).pop();
+
+      const selectedPols = [
+        ...(state.polarizations[platform] || [])
+      ];
+
+      const newPols = Array.from(
+        new Set([...selectedPols, action.payload])
+      );
+
+      return {
+        ...state,
+        polarizations: {
+          ...state.polarizations,
+          ...{ [platform]: newPols }
+        }
+      };
+    }
+
     case FiltersActionType.SET_PLATFORM_POLARIZATIONS: {
       return {
         ...state,
@@ -317,6 +337,13 @@ export function filtersReducer(state = initState, action: FiltersActions): Filte
       return {
         ...state,
         polarizations: { ...action.payload }
+      };
+    }
+
+    case FiltersActionType.ADD_FLIGHT_DIRECTION: {
+      return {
+        ...state,
+        flightDirections: new Set([action.payload, ...state.flightDirections])
       };
     }
 
@@ -333,7 +360,6 @@ export function filtersReducer(state = initState, action: FiltersActions): Filte
         maxResults: action.payload,
       };
     }
-
 
     default: {
       return state;

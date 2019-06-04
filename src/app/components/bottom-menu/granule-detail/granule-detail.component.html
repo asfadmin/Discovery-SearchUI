@@ -24,41 +24,88 @@
             <span class="v-mid"><b>Aquisition Date:</b> {{ granule.metadata.date | shortDate }}</span>
             <mat-icon *ngIf="isGeoSearch()"
               [matMenuTriggerFor]="addGranuleDateMenu"
-              matTooltip="Add date to search"
               class="v-mid clickable">
                 add
             </mat-icon>
 
             <mat-menu #addGranuleDateMenu="matMenu">
-              <button (click)="setStartDate()" mat-menu-item>Start Date</button>
-              <button (click)="setEndDate()" mat-menu-item>End Date</button>
+              <button (click)="setStartDate()" mat-menu-item>Set as start date</button>
+              <button (click)="setEndDate()" mat-menu-item>Set as end date</button>
             </mat-menu>
           </li>
 
           <li *ngIf="hasValue(granule.metadata.beamMode)">
-              <span class="v-mid"><b>Beam Mode:</b> {{ granule.metadata.beamMode }}</span>
-              <mat-icon *ngIf="isGeoSearch()"
-                (click)="onSetBeamMode()"
-                matTooltip="Add {{ granule.metadata.beamMode }} to search"
-                class="v-mid clickable">
-                  add
-              </mat-icon>
+            <span class="v-mid"><b>Beam Mode:</b> {{ granule.metadata.beamMode }}</span>
+            <mat-icon *ngIf="isGeoSearch()"
+              [matMenuTriggerFor]="addBeamModeMenu"
+              class="v-mid clickable">
+                add
+            </mat-icon>
+
+            <mat-menu #addBeamModeMenu="matMenu">
+              <button (click)="onSetBeamMode()" mat-menu-item>Add beam mode to search</button>
+            </mat-menu>
           </li>
 
-          <li *ngIf="hasValue(granule.metadata.path) && !shouldHideWith(['SMAP'])">
-            <b>Path: </b> {{ granule.metadata.path }}
+          <li *ngIf="hasValue(granule.metadata.path) && !shouldHideWith(['SMAP', 'UAVSAR', 'AIRSAR'])">
+
+            <span class="v-mid"><b>Path:</b> {{ granule.metadata.path }}</span>
+            <mat-icon *ngIf="isGeoSearch()"
+              [matMenuTriggerFor]="addPathMenu"
+              class="v-mid clickable">
+                add
+            </mat-icon>
+
+            <mat-menu #addPathMenu="matMenu">
+              <button (click)="setPathStart()" mat-menu-item>Set as path start</button>
+              <button (click)="setPathEnd()" mat-menu-item>Set as path end</button>
+              <button (click)="setPathStart(); setPathEnd();" mat-menu-item>Set as both</button>
+            </mat-menu>
           </li>
-          <li *ngIf="hasValue(granule.metadata.frame) && !shouldHideWith(['SMAP'])">
-            <b>Frame:</b> {{ granule.metadata.frame }}
+          <li *ngIf="hasValue(granule.metadata.frame) && !shouldHideWith(['SMAP', 'UAVSAR', 'AIRSAR'])">
+            <span class="v-mid"> <b>Frame:</b> {{ granule.metadata.frame }} </span>
+
+            <mat-icon *ngIf="isGeoSearch()"
+              [matMenuTriggerFor]="addFrameMenu"
+              class="v-mid clickable">
+                add
+            </mat-icon>
+
+            <mat-menu #addFrameMenu="matMenu">
+              <button (click)="setFrameStart()" mat-menu-item>Set as frame start</button>
+              <button (click)="setFrameEnd()" mat-menu-item>Set as frame end</button>
+              <button (click)="setFrameStart(); setFrameEnd();" mat-menu-item>Set as both</button>
+            </mat-menu>
           </li>
           <li *ngIf="hasValue(granule.metadata.flightDirection)">
-            <b>Flight Direction:</b> {{ granule.metadata.flightDirection }}
+
+            <span class="v-mid"> <b>Flight Direction:</b> {{ granule.metadata.flightDirection }} </span>
+            <mat-icon *ngIf="isGeoSearch()"
+              [matMenuTriggerFor]="addFlightDirectionMenu"
+              class="v-mid clickable">
+                add
+            </mat-icon>
+
+            <mat-menu #addFlightDirectionMenu="matMenu">
+              <button (click)="setFlightDirection()" mat-menu-item>Set flight direction</button>
+            </mat-menu>
           </li>
 
           <li *ngIf="hasValue(granule.metadata.polarization)">
-            <b>Polarization: </b> {{ granule.metadata.polarization }}
+            <span class="v-mid"> <b>Polarization: </b> {{ granule.metadata.polarization }} </span>
+
+            <mat-icon *ngIf="isGeoSearch()"
+              [matMenuTriggerFor]="addPolMenu"
+              class="v-mid clickable">
+                add
+            </mat-icon>
+
+            <mat-menu #addPolMenu="matMenu">
+              <button (click)="addPolarization()" mat-menu-item>Add polarization to search</button>
+            </mat-menu>
           </li>
-          <li *ngIf="hasValue(granule.metadata.absoluteOrbit)">
+
+          <li *ngIf="hasValue(granule.metadata.absoluteOrbit) && !shouldHideWith(['UAVSAR', 'AIRSAR'])">
             <b>Absolute Orbit: </b> {{ granule.metadata.absoluteOrbit }}
           </li>
           <li> <a href="http://www.esa.int/ESA" target="_blank"> Data courtesy of ESA</a></li>
