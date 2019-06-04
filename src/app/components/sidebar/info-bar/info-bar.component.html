@@ -14,7 +14,13 @@
     </div>
 
     <div fxFlex="55" class="sec3" fxFlex.xs="15">
-      third-section
+      <div>
+        <app-max-results-selector
+          [maxResults]="maxResults$ | async"
+          [currentSearchAmount]="currentSearchAmount$ | async"
+          (newMaxResults)="onNewMaxResults($event)"
+        ></app-max-results-selector>
+      </div>
     </div>
 
   </div>
