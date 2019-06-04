@@ -40,7 +40,7 @@ export class BottomMenuComponent implements OnInit {
 
   public searchPlatform$ = this.store$.select(searchStore.getIsLoading).pipe(
     withLatestFrom(this.store$.select(filtersStore.getSelectedPlatforms)),
-    filter(([isLoading, _]) => isLoading),
+    filter(([isLoading, _]) => !isLoading),
     map(([_, platforms]) => platforms),
     map(platforms => Array.from(platforms || []).pop())
   );
