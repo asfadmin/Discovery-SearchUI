@@ -1,3 +1,4 @@
+@import "asf-theme";
 @import "~flex-layout-sass/mixin";
 
 .breadcrumb-filter {
@@ -6,31 +7,63 @@
   height: auto;
   position: fixed;
   top: 100px;
+  z-index: 1;
 }
 
 $break-small: 700px;
 $break-medium: 1250px;
 
 .breadcrumb-list {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
+  //@include fx-layout(row wrap, center center, 0px);
+  //display: flex;
+  //flex-direction: row;
+  //align-items: center;
 }
 
 .breadcrumb {
+  @extend .mat-form-field;
+
   @include fx-flex(auto);
+
+  padding-top: 15px;
+  margin-right: 10px;
+  width: 90%;
+  padding-right: 10px;
+  border-right-width: 2px;
+  border-right-color: $asf-accent;
+  border-right-style: solid;
+}
+
+.logo {
+  padding-right: 10px;
+}
+
+.additional-filters {
+  color: $asf-primary;
+  width: 150px;
+
+  .mat-icon {
+    @include md-icon-size(64px);
+
+    line-height: 25px;
+  }
+}
+
+.additional-filters-button {
+  margin-left: 0;
+  line-height: 18px;
 }
 
 .hide-mobile {
-  @media screen and (max-width: $break-small) {
-    display: none;
-  }
+  //@media screen and (max-width: $break-small) {
+  //  display: none;
+  //}
 }
 
 .hide-medium {
-  @media screen and (max-width: $break-medium) {
-    display: none;
-  }
+  //@media screen and (max-width: $break-medium) {
+  //  display: none;
+  //}
 }
 
 .selected {

@@ -22,7 +22,7 @@ export const _filter = (opt: string[], value: string): string[] => {
   styleUrls: ['./mission-search.component.css']
 })
 export class MissionSearchComponent implements OnInit {
-  @ViewChild('paginator') paginator;
+  @ViewChild('paginator', { static: true }) paginator;
 
   @Input() missionsByPlatform$: Observable<{[platform: string]: string[]}>;
   @Input() missionPlatforms$: Observable<string[]>;

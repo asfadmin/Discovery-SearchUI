@@ -1,6 +1,6 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 
-import { MatDialog } from '@angular/material';
+import { MatDialog } from '@angular/material/dialog';
 import { ImageDialogComponent } from './image-dialog';
 
 import * as models from '@models';
@@ -19,9 +19,11 @@ export class GranuleDetailComponent {
 
   public onOpenImage(granule: models.CMRProduct): void {
     this.dialog.open(ImageDialogComponent, {
-      height: '95%',
-      width: '90%',
-      panelClass: 'transparent'
+      height: '1200px',
+      width: '1200px',
+      maxWidth: '90%',
+      maxHeight: '90%',
+      panelClass: 'image-dialog'
     });
   }
 

@@ -87,6 +87,14 @@
       mat-menu-item >
         Thematic Datasets
     </button>
+
+    <button
+      *ngIf="isDevMode()"
+      [matMenuTriggerFor]="apiMaturity"
+      mat-menu-item>
+        Select API Maturity
+    </button>
+
   </mat-menu>
 
   <mat-menu #thematicDatasets="matMenu">
@@ -96,5 +104,17 @@
     <a mat-menu-item href="{{ asfWebsiteUrl }}/other-data/ramp" target="_blank">RAMP</a>
     <a mat-menu-item href="{{ asfWebsiteUrl }}/other-data/sea-ice" target="_blank">Sea Ice MEaSUREs</a>
     <a mat-menu-item href="{{ asfWebsiteUrl }}/wetlands" target="_blank">Wetlands MEaSUREs</a>
+  </mat-menu>
+
+  <mat-menu #apiMaturity="matMenu">
+    <button (click)="onTestSelected()"
+      mat-menu-item matSuffix>
+        <span>Test</span>
+    </button>
+
+    <button (click)="onProdSelected()"
+      mat-menu-item matSuffix>
+        <span>Production</span>
+    </button>
   </mat-menu>
 </div>

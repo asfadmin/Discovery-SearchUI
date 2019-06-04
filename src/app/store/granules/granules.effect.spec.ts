@@ -6,14 +6,14 @@ xdescribe('GranulesEffects', () => {
 
   const actions$: any = {
     // mock properties here
-  }
+  };
 
   const store$: any = {
     // mock properties here
-  }
+  };
 
   beforeEach(() => {
-    service = new GranulesEffects(actions$,store$);
+    service = new GranulesEffects(actions$, store$);
   });
 
 });
