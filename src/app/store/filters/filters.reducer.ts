@@ -343,7 +343,7 @@ export function filtersReducer(state = initState, action: FiltersActions): Filte
     case FiltersActionType.ADD_FLIGHT_DIRECTION: {
       return {
         ...state,
-        flightDirections: new Set([action.payload, ...state.flightDirections])
+        flightDirections: new Set([action.payload, ...Array.from(state.flightDirections)])
       };
     }
 
