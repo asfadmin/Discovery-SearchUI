@@ -77,13 +77,13 @@
       </button>
     </div>
 
-    <div class="breadcrumb">
-      <app-max-results-selector
-        [maxResults]="maxResults$ | async"
-        [currentSearchAmount]="currentSearchAmount$ | async"
-        (newMaxResults)="onNewMaxResults($event)"
-      ></app-max-results-selector>
-    </div>
+<!--    <div class="breadcrumb">-->
+<!--      <app-max-results-selector-->
+<!--        [maxResults]="maxResults$ | async"-->
+<!--        [currentSearchAmount]="currentSearchAmount$ | async"-->
+<!--        (newMaxResults)="onNewMaxResults($event)"-->
+<!--      ></app-max-results-selector>-->
+<!--    </div>-->
 
     <div class="breadcrumb hide-mobile" matTooltip="clear">
       <button (click)="onClearSearch()" mat-flat-button color="warn">
@@ -101,3 +101,32 @@
   </div>
 </div>
 <!--<app-info-bar></app-info-bar>-->
+<div class="bounds">
+
+  <div class="content"
+       fxLayout="row"
+       fxLayout.xs="column"
+       fxFlexFill >
+
+    <div fxFlex="15" class="sec1" fxFlex.xs="55">
+      first-section
+    </div>
+
+    <div fxFlex="30" class="sec2" >
+      second-section
+    </div>
+
+    <div fxFlex="55" class="sec3" fxFlex.xs="15">
+      <div>
+        <app-max-results-selector
+          [maxResults]="maxResults$ | async"
+          [currentSearchAmount]="currentSearchAmount$ | async"
+          (newMaxResults)="onNewMaxResults($event)"
+        ></app-max-results-selector>
+      </div>
+    </div>
+
+  </div>
+
+</div>
+

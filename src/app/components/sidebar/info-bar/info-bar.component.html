@@ -1,4 +1,4 @@
-<div class="bounds">
+<div class="info-bounds">
 
   <div class="content"
        fxLayout="row"
@@ -15,11 +15,6 @@
 
     <div fxFlex="55" class="sec3" fxFlex.xs="15">
       <div>
-        <app-max-results-selector
-          [maxResults]="maxResults$ | async"
-          [currentSearchAmount]="currentSearchAmount$ | async"
-          (newMaxResults)="onNewMaxResults($event)"
-        ></app-max-results-selector>
       </div>
     </div>
 
