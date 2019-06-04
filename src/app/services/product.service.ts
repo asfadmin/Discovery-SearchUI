@@ -30,11 +30,10 @@ export class ProductService {
       date:  this.fromCMRDate(g.startTime),
       polygon: g.wkt,
 
-      productType: <models.CMRProductType>g.productType,
-      beamMode: <models.Sentinel1BeamMode>g.beamMode,
-      polarization: <models.Sentinel1Polarization>g.polarization,
+      productType: g.productType,
+      beamMode: g.beamMode,
+      polarization: g.polarization,
       flightDirection: <models.FlightDirection>g.flightDirection,
-      frequency: g.frequency || 'NA',
 
       path: +g.path,
       frame:  +g.frame,
