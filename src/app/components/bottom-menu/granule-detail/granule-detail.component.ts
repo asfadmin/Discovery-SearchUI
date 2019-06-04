@@ -49,6 +49,10 @@ export class GranuleDetailComponent {
     return v !== null && v !== undefined;
   }
 
+  public isSentinelGranule(): boolean {
+    return this.platform.name === 'Sentinel-1';
+  }
+
   public shouldHideWith(platformNames: string[]): boolean {
     return platformNames.includes(this.platform.name);
   }

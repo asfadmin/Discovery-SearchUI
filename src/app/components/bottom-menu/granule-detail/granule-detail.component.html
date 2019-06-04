@@ -110,7 +110,10 @@
           <li *ngIf="hasValue(granule.metadata.absoluteOrbit) && !shouldHideWith(['UAVSAR', 'AIRSAR'])">
             <b>Absolute Orbit: </b> {{ granule.metadata.absoluteOrbit }}
           </li>
-          <li> <a href="http://www.esa.int/ESA" target="_blank"> Data courtesy of ESA</a></li>
+
+          <li *ngIf="isSentinelGranule()">
+            <a href="http://www.esa.int/ESA" target="_blank"> Data courtesy of ESA</a>
+          </li>
         </ul>
 
         <p *ngIf="!authService.isLoggedIn" class="faint-text">
