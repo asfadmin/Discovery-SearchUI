@@ -10,7 +10,8 @@ import { PolygonValidateResponse, MissionPlatform } from '@models';
 })
 export class AsfApiService {
   public apiUrls = window['_env'].api;
-  public apiUrl = window['_env'].api.prod;
+  public apiUrl = !window['_env'].devMode ?
+    this.apiUrls.prod : this.apiUrls.test;
 
   constructor(private http: HttpClient) {}
 
