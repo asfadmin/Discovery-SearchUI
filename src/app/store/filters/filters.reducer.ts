@@ -121,21 +121,22 @@ export function filtersReducer(state = initState, action: FiltersActions): Filte
     }
 
     case FiltersActionType.SET_START_DATE: {
+      const start = new Date(action.payload.setHours(0, 0, 0, 0));
       return {
         ...state,
         dateRange: {
-          ...state.dateRange,
-          start: action.payload
+          ...state.dateRange, start
         }
       };
     }
 
     case FiltersActionType.SET_END_DATE: {
+      const end = new Date(action.payload.setHours(23, 59, 59, 999));
+
       return {
         ...state,
         dateRange: {
-          ...state.dateRange,
-          end: action.payload
+          ...state.dateRange, end
         }
       };
     }
