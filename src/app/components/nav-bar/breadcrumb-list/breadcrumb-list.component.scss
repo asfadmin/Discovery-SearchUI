@@ -54,6 +54,18 @@ $break-medium: 1250px;
   padding-right: 10px;
 }
 
+.info-bar {
+  border-top-color: $asf-primary;
+  border-top-style: solid;
+  border-top-width: 1px;
+  background-color: $asf-primary-light;
+  color: $asf-primary-dark;
+}
+
+.first-info {
+  padding-left: 10px;
+}
+
 .additional-filters {
   color: $asf-primary;
   width: 150px;
@@ -90,16 +102,6 @@ $break-medium: 1250px;
   display: block;
 }
 
-.content {
-  //min-width: 300px;
-  background-color: $asf-primary-light;
-  color: $asf-primary-dark;
-}
-
 .justify-right {
   justify-content: flex-end;
-}
-
-.first-info {
-  padding-left: 10px;
 }
