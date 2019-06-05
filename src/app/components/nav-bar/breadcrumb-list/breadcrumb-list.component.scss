@@ -27,11 +27,27 @@ $break-medium: 1250px;
 
   padding-top: 15px;
   margin-right: 10px;
-  width: 90%;
   padding-right: 10px;
   border-right-width: 2px;
   border-right-color: $asf-accent;
   border-right-style: solid;
+  height: 86px;
+}
+
+.breadcrumb-no-divider {
+  @extend .breadcrumb;
+
+  border-right: none;
+}
+
+.extra-padding-top {
+  padding-top: 25px;
+}
+
+.first-breadcrumb {
+  @extend .breadcrumb;
+
+  padding-left: 10px;
 }
 
 .logo {
@@ -71,33 +87,19 @@ $break-medium: 1250px;
 }
 
 .bounds {
-  background-color: black;
   display: block;
-  margin-top: 5px;
 }
 
 .content {
-  min-width: 300px;
+  //min-width: 300px;
+  background-color: $asf-primary-light;
+  color: $asf-primary-dark;
 }
 
-.sec1 {
-  background: lightgray;
-  color: black;
+.justify-right {
+  justify-content: flex-end;
 }
 
-.sec2 {
-  background: gray;
-  color: $asf-warn;
-}
-
-.sec3 {
-  background: darkgray;
-  color: white;
-  text-transform: uppercase;
-}
-
-.sec1,
-.sec2,
-.sec3 {
-  text-align: center;
+.first-info {
+  padding-left: 10px;
 }

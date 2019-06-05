@@ -29,6 +29,8 @@ $asf-app-theme: mat-light-theme($asf-app-primary, $asf-app-accent, $asf-app-warn
 $asf-primary: mat-color($asf-app-primary);
 $asf-accent: mat-color($asf-app-accent);
 $asf-warn: mat-color($asf-app-warn);
+$asf-primary-light: lighten($asf-primary, 40%);
+$asf-primary-dark: darken($asf-primary, 15%);
 
 $custom-typography: mat-typography-config($font-family: 'Roboto, sans-serif;');
 
