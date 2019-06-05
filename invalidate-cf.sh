@@ -1,4 +1,3 @@
-#!/bin/bash
 MATURITY=$1
 
 aws cloudfront create-invalidation \
