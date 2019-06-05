@@ -107,11 +107,32 @@
             </mat-menu>
           </li>
 
-          <li *ngIf="hasValue(granule.metadata.absoluteOrbit) && !shouldHideWith(['UAVSAR', 'AIRSAR'])">
+          <li *ngIf="onlyShowWith(['ALOS PALSAR'])"
+            style="margin-top: 5px;">
+            <b>Off Nadir Angle: </b> {{ granule.metadata.offNadirAngle }}
+          </li>
+
+          <li *ngIf="onlyShowWith(['ALOS PALSAR'])"
+            style="margin-top: 5px;">
+            <b>Faraday Rotation: </b> {{ granule.metadata.faradayRotation }}
+          </li>
+
+          <li *ngIf="onlyShowWith(['AIRSAR', 'UAVSAR'])"
+            style="margin-top: 5px;">
+            <b>Mission Name: </b> {{ granule.metadata.missionName }}
+          </li>
+
+          <li *ngIf="onlyShowWith(['AIRSAR'])"
+            style="margin-top: 5px;">
+            <b>Flight Line</b> {{ granule.metadata.flightLine }}
+          </li>
+
+          <li *ngIf="hasValue(granule.metadata.absoluteOrbit) && !shouldHideWith(['UAVSAR', 'AIRSAR'])"
+            style="margin-top: 5px;">
             <b>Absolute Orbit: </b> {{ granule.metadata.absoluteOrbit }}
           </li>
 
-          <li *ngIf="isSentinelGranule()">
+          <li *ngIf="isSentinelGranule()" style="margin-top: 5px;">
             <a href="http://www.esa.int/ESA" target="_blank"> Data courtesy of ESA</a>
           </li>
         </ul>

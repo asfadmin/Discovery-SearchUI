@@ -57,6 +57,10 @@ export class GranuleDetailComponent {
     return platformNames.includes(this.platform.name);
   }
 
+  public onlyShowWith(platformNames: string[]): boolean {
+    return platformNames.includes(this.platform.name);
+  }
+
   public onZoomToGranule(): void {
     const features = this.wktService.wktToFeature(
       this.granule.metadata.polygon,
