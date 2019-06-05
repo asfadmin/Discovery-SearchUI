@@ -19,4 +19,4 @@ phases:
       - aws s3 sync . "s3://${S3_BUCKET}"
       - cd ../..
       - chmod +x ./invalidate-cf.sh
-      - sh "bash ./invalidate-cf.sh ${CDN_ID}"
+      - . ./invalidate-cf.sh ${CDN_ID}
