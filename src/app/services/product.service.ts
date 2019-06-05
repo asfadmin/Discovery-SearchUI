@@ -37,7 +37,13 @@ export class ProductService {
 
       path: +g.path,
       frame:  +g.frame,
-      absoluteOrbit: +g.orbit
+      absoluteOrbit: +g.orbit,
+
+      faradayRotation: +g.faradayRotation,
+      offNadirAngle: +g.offNadirAngle,
+
+      missionName: g.missionName,
+      flightLine: g.flightLine,
     })
 
   private fromCMRDate =
