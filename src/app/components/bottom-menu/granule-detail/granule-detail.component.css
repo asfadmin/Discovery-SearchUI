@@ -1,13 +1,17 @@
 li {
-  margin-bottom: 4px;
+  margin-bottom: 1px;
 }
 
 .v-mid {
   vertical-align: middle;
 }
 
+.detail-card {
+  height: 475px;
+}
+
 .granule-metadata {
-  font-size: 16px;
+  font-size: 14px;
 }
 
 .fit-to-container {

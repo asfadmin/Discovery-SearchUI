@@ -8,7 +8,6 @@
   bottom: 0;
   position: fixed;
   z-index: 999;
-  overflow-x: auto;
 }
 
 .scrollable-card {
@@ -39,5 +38,5 @@
 .bottom-menu--column {
   width: 33%;
   min-width: 300px;
-  max-height: 465px;
+  max-height: 510px;
 }
