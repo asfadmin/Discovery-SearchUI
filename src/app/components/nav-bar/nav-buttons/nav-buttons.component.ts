@@ -13,7 +13,7 @@ import { CMRProduct } from '@models';
 export class NavButtonsComponent {
   public asfWebsiteUrl = 'https://www.asf.alaska.edu';
 
-  @Input() products: CMRProduct[];
+  @Input() queuedProducts: CMRProduct[];
 
   @Output() openQueue = new EventEmitter<void>();
 

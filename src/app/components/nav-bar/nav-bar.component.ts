@@ -10,7 +10,6 @@ import * as models from '@models';
   styleUrls: ['./nav-bar.component.scss'],
 })
 export class NavBarComponent {
-
   @Output() openQueue = new EventEmitter<void>();
   @Output() doSearch = new EventEmitter<void>();
   @Output() clearSearch = new EventEmitter<void>();

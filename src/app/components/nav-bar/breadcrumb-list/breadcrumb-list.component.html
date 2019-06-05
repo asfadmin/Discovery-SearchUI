@@ -120,7 +120,7 @@
     <div fxFlex="200px">
       <app-nav-buttons
         (openQueue)="onOpenDownloadQueue()"
-        [products]="products">
+        [queuedProducts]="queuedProducts$ | async">
       </app-nav-buttons>
     </div>
   </div>

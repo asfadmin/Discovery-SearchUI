@@ -9,6 +9,7 @@ import * as searchStore from '@store/search';
 import * as uiStore from '@store/ui';
 import * as granulesStore from '@store/granules';
 import * as filtersStore from '@store/filters';
+import * as queueStore from '@store/queue';
 
 import { SearchType } from '@models';
 import { MapService, WktService } from '@services';
@@ -35,12 +36,10 @@ enum BreadcrumbFilterType {
   styleUrls: ['./breadcrumb-list.component.scss']
 })
 export class BreadcrumbListComponent implements OnInit {
-
   @Output() openQueue = new EventEmitter<void>();
   @Output() doSearch = new EventEmitter<void>();
   @Output() clearSearch = new EventEmitter<void>();
 
-  @Input() products: models.CMRProduct[];
   @Input() isLoading: boolean;
 
   public accent = 'primary';
@@ -52,6 +51,7 @@ export class BreadcrumbListComponent implements OnInit {
   public areProductsLoaded$ = this.store$.select(granulesStore.getAreProductsLoaded);
   public isFiltersMenuOpen$ = this.store$.select(uiStore.getIsFiltersMenuOpen);
   public searchAmount$ = this.store$.select(searchStore.getSearchAmount);
+  public queuedProducts$ = this.store$.select(queueStore.getQueuedProducts);
 
   public loading$ = this.store$.select(searchStore.getIsLoading);
   public searchTypeSub = this.store$.select(uiStore.getSearchType).subscribe(

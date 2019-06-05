@@ -4,7 +4,7 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable, Subject } from 'rxjs';
 
 import { PolygonValidateResponse, MissionPlatform } from '@models';
-import * as services from '@services';
+import { EnvironmentService } from './environment.service';
 
 @Injectable({
   providedIn: 'root'
@@ -12,7 +12,7 @@ import * as services from '@services';
 export class AsfApiService {
 
   constructor(
-    private env: services.EnvironmentService,
+    private env: EnvironmentService,
     private http: HttpClient
   ) {}
 
@@ -25,7 +25,6 @@ export class AsfApiService {
   }
 
   public setApiUrl(url: string): void {
-    this.apiUrl = url;
   }
 
   public health(): Observable<any> {
