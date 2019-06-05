@@ -10,7 +10,8 @@ import { EnvironmentService } from './environment.service';
   providedIn: 'root'
 })
 export class AsfApiService {
-  private maturity = 'prod';
+  private maturity = this.env.value.devMode ?
+    'prod' : 'test';
 
   constructor(
     private env: EnvironmentService,
