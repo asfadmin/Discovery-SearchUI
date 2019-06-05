@@ -4,15 +4,25 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable, Subject } from 'rxjs';
 
 import { PolygonValidateResponse, MissionPlatform } from '@models';
+import * as services from '@services';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AsfApiService {
-  public apiUrls = window['_env'].api;
-  public apiUrl = window['_env'].api.prod;
 
-  constructor(private http: HttpClient) {}
+  constructor(
+    private env: services.EnvironmentService,
+    private http: HttpClient
+  ) {}
+
+  public get apiUrls() {
+    return this.env.value.api;
+  }
+
+  public get apiUrl() {
+    return this.env.value.api.prod;
+  }
 
   public setApiUrl(url: string): void {
     this.apiUrl = url;
