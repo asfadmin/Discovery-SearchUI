@@ -10,6 +10,7 @@ import { EnvironmentService } from './environment.service';
   providedIn: 'root'
 })
 export class AsfApiService {
+  private maturity = 'prod';
 
   constructor(
     private env: EnvironmentService,
@@ -21,10 +22,11 @@ export class AsfApiService {
   }
 
   public get apiUrl() {
-    return this.env.value.api.prod;
+    return this.env.value.api[this.maturity];
   }
 
-  public setApiUrl(url: string): void {
+  public setApiMaturity(maturity: string): void {
+    this.maturity = maturity;
   }
 
   public health(): Observable<any> {
