@@ -18,4 +18,5 @@ phases:
       - cd dist/${APPLICATION}
       - aws s3 sync . "s3://${S3_BUCKET}"
       - cd ../..
-      - sudo ./invalidate-cf.sh ${CDN_ID}
+      - chmod +x ./invalidate-cf.sh
+      - sh "bash ./invalidate-cf.sh ${CDN_ID}"
