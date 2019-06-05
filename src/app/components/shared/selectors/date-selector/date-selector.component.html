@@ -1,12 +1,12 @@
   <div style="display: flex; justify-content: space-between" class="date-selector">
     <mat-form-field style="width: 48%">
-      <input
-        matInput [(ngModel)]="startDate"
+      <input matInput
+        [(ngModel)]="startDate"
         [min]="extrema.start.min"
         [max]="extrema.start.max"
         [matDatepicker]="start"
-        placeholder="Start Date"
-        (dateChanged)="onStartDateChange($event)">
+        (dateChanged)="onStartDateChange($event)"
+        placeholder="Start Date">
       <mat-datepicker-toggle matSuffix [for]="start"></mat-datepicker-toggle>
       <mat-datepicker #start></mat-datepicker>
     </mat-form-field>
