@@ -1,128 +1,131 @@
 <div class="breadcrumb-list"
-     fxLayout="column"
-     fxHide.lt-lg
-     fxFlex="349px">
-  <!-- LOGO & HAMBURGER MENU -->
-  <div class="logo">
-    <app-logo></app-logo>
-  </div>
-</div>
-
-<div class="breadcrumb-list"
-     fxLayout="column"
+     fxLayout="row"
+     fxLayout.lt-lg="column"
      fxFlexFill>
 
-  <div fxLayout="row">
-    <!-- SEARCH TYPE -->
-    <div fxFlex="120px" class="first-breadcrumb max-width-100">
-      <mat-form-field>
-        <mat-label>Search Type</mat-label>
-        <mat-select
-          [(ngModel)]="searchType"
-          (selectionChange)="onSetSearchType($event.value)">
-          <mat-option [value]="searchTypes.DATASET">Geographic</mat-option>
-          <mat-option [value]="searchTypes.LIST">List</mat-option>
-          <mat-option [value]="searchTypes.MISSION">Mission</mat-option>
-        </mat-select>
-      </mat-form-field>
+  <div fxLayout="row"
+       fxLayout.gt-lg="column">
+    <div fxFlex="auto" class="logo">
+      <app-logo></app-logo>
     </div>
-
-    <!-- GEOGRAPHIC SEARCH FILTERS -->
-    <ng-container *ngIf="searchType === searchTypes.DATASET">
-
-      <!-- AOI FILTER -->
-      <div fxFlex="115px" (click)="clearSelectedBreadcrumb()"
-           class="breadcrumb max-width-100">
-        <app-platform-selector></app-platform-selector>
-      </div>
-
-      <!-- AOI FILTER -->
-      <div fxFlex="230px" class="breadcrumb">
-        <mat-form-field>
-          <label>
-            <input
-              (change)="onInputSearchPolygon($event.target.value)"
-              [value]="polygon$ | async"
-              matInput placeholder="Area of Interest">
-          </label>
-
-          <mat-icon
-            (click)="onNewSelectedFilter(filterTypes.AOI)"
-            matTooltip="More options"
-            style="cursor: pointer; margin-left: 10px;" matSuffix>
-            {{ selectedFilter === filterTypes.AOI ? 'arrow_drop_up' : 'arrow_drop_down' }}
-          </mat-icon>
-        </mat-form-field>
-        <mat-card *ngIf="selectedFilter === filterTypes.AOI"
-                  class="breadcrumb-filter">
-          <app-aoi-upload></app-aoi-upload>
-        </mat-card>
-      </div>
-
-      <!-- DATES START/END FILTER -->
-      <div fxFlex="320px" class="breadcrumb">
-        <app-date-selector></app-date-selector>
-      </div>
-    </ng-container>
-
-    <!-- ADDITIONAL FILTERS -->
-    <div fxFlex="110px" class="breadcrumb additional-filters">
-      <button (click)="onToggleFiltersMenu()"
-              *ngIf="searchType === searchTypes.DATASET"
-              color="{{ !(isAnyAdditionalFilters$ | async) ? 'basic' : accent }}"
-              mat-button class="additional-filters-button">
-        More<br>Filters
-        <br>
-        <mat-icon>more_horiz</mat-icon>
-      </button>
-
-      <button (click)="onToggleFiltersMenu()"
-              *ngIf="searchType !== searchTypes.DATASET"
-              mat-stroked-button>
-        <span *ngIf="searchType === searchTypes.MISSION">Mission</span>
-        <span *ngIf="searchType === searchTypes.LIST">List</span>
-      </button>
-    </div>
-
-    <div fxFlex="80px" class="breadcrumb-no-divider extra-padding-top" matTooltip="clear">
-      <button (click)="onClearSearch()" mat-button>
-        CLEAR
-      </button>
-    </div>
-
-    <div fxFlex="auto" class="breadcrumb-no-divider extra-padding-top"
-         matTooltip="{{ !(canSearch$ | async) ? 'No Results Found' : 'Search' }}">
-      <button (click)="onDoSearch()"
-              [disabled]="!(canSearch$ | async)"
-              mat-flat-button color="primary">
-        {{ (loading$ | async) ? 'Loading...' : (!(canSearch$ | async) ? 'No Results' : 'SEARCH') }}
-      </button>
-    </div>
-
   </div>
 
-  <!--<app-info-bar></app-info-bar>-->
-  <div class="info-bar"
-       fxLayout="row"
-       fxFlexFill>
+  <div fxLayout="column" fxFill>
 
-    <div fxFlex="600px" fxFlex.lt-lg="auto" class="first-info">
+    <div fxLayout="row">
+
+      <!-- SEARCH TYPE -->
+      <div fxFlex="120px" class="first-breadcrumb max-width-100">
+        <mat-form-field>
+          <mat-label>Search Type</mat-label>
+          <mat-select
+            [(ngModel)]="searchType"
+            (selectionChange)="onSetSearchType($event.value)">
+            <mat-option [value]="searchTypes.DATASET">Geographic</mat-option>
+            <mat-option [value]="searchTypes.LIST">List</mat-option>
+            <mat-option [value]="searchTypes.MISSION">Mission</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+
+      <!-- GEOGRAPHIC SEARCH FILTERS -->
+      <ng-container *ngIf="searchType === searchTypes.DATASET">
+
+        <!-- AOI FILTER -->
+        <div fxFlex="115px" (click)="clearSelectedBreadcrumb()"
+             class="breadcrumb max-width-100">
+          <app-platform-selector></app-platform-selector>
+        </div>
+
+        <!-- AOI FILTER -->
+        <div fxFlex="230px" class="breadcrumb">
+          <mat-form-field>
+            <label>
+              <input
+                (change)="onInputSearchPolygon($event.target.value)"
+                [value]="polygon$ | async"
+                matInput placeholder="Area of Interest">
+            </label>
+
+            <mat-icon
+              (click)="onNewSelectedFilter(filterTypes.AOI)"
+              matTooltip="More options"
+              style="cursor: pointer; margin-left: 10px;" matSuffix>
+              {{ selectedFilter === filterTypes.AOI ? 'arrow_drop_up' : 'arrow_drop_down' }}
+            </mat-icon>
+          </mat-form-field>
+          <mat-card *ngIf="selectedFilter === filterTypes.AOI"
+                    class="breadcrumb-filter">
+            <app-aoi-upload></app-aoi-upload>
+          </mat-card>
+        </div>
+
+        <!-- DATES START/END FILTER -->
+        <div fxFlex="320px" class="breadcrumb">
+          <app-date-selector></app-date-selector>
+        </div>
+      </ng-container>
+
+      <!-- ADDITIONAL FILTERS -->
+      <div fxFlex="110px" class="breadcrumb additional-filters">
+        <button (click)="onToggleFiltersMenu()"
+                *ngIf="searchType === searchTypes.DATASET"
+                color="{{ !(isAnyAdditionalFilters$ | async) ? 'basic' : accent }}"
+                mat-button class="additional-filters-button">
+          More<br>Filters
+          <br>
+          <mat-icon>more_horiz</mat-icon>
+        </button>
+
+        <button (click)="onToggleFiltersMenu()"
+                *ngIf="searchType !== searchTypes.DATASET"
+                mat-stroked-button>
+          <span *ngIf="searchType === searchTypes.MISSION">Mission</span>
+          <span *ngIf="searchType === searchTypes.LIST">List</span>
+        </button>
+      </div>
+
+      <div fxFlex="80px" class="breadcrumb-no-divider extra-padding-top" matTooltip="clear">
+        <button (click)="onClearSearch()" mat-button>
+          CLEAR
+        </button>
+      </div>
+
+      <div fxFlex class="breadcrumb-no-divider extra-padding-top"
+           matTooltip="{{ !(canSearch$ | async) ? 'No Results Found' : 'Search' }}">
+        <button (click)="onDoSearch()"
+                [disabled]="!(canSearch$ | async)"
+                mat-flat-button color="primary">
+          {{ (loading$ | async) ? 'Loading...' : (!(canSearch$ | async) ? 'No Results' : 'SEARCH') }}
+        </button>
+      </div>
+
     </div>
-    <div fxFlex="300px">
-      <div>
-        <app-max-results-selector
-          [maxResults]="maxResults$ | async"
-          [currentSearchAmount]="currentSearchAmount$ | async"
-          (newMaxResults)="onNewMaxResults($event)"
-        ></app-max-results-selector>
+
+    <!--<app-info-bar></app-info-bar>-->
+    <div fxLayout="row"
+         fxFlexFill
+         class="info-bar">
+
+      <div fxFlex="550px" class="first-info">
+      </div>
+      <div fxFlex="300px">
+        <div>
+          <app-max-results-selector
+            [maxResults]="maxResults$ | async"
+            [currentSearchAmount]="currentSearchAmount$ | async"
+            (newMaxResults)="onNewMaxResults($event)"
+          ></app-max-results-selector>
+        </div>
+      </div>
+      <div fxFlex="300px">
+        <app-nav-buttons
+          (openQueue)="onOpenDownloadQueue()"
+          [queuedProducts]="queuedProducts$ | async">
+        </app-nav-buttons>
       </div>
     </div>
-    <div fxFlex="300px">
-      <app-nav-buttons
-        (openQueue)="onOpenDownloadQueue()"
-        [queuedProducts]="queuedProducts$ | async">
-      </app-nav-buttons>
-    </div>
+
   </div>
 
 </div>

@@ -1,11 +1,7 @@
 <div class="bounds">
-<!--  <div class="nav-item-position">-->
-    <div>
-      <app-breadcrumb-list
-        (doSearch)="onDoSearch()"
-        (clearSearch)="onClearSearch()">
-      </app-breadcrumb-list>
-    </div>
-<!--  </div>-->
+  <app-breadcrumb-list class="nav-item-position"
+    (doSearch)="onDoSearch()"
+    (clearSearch)="onClearSearch()">
+  </app-breadcrumb-list>
   <mat-progress-bar *ngIf="isLoading" style="width: 100%" mode="indeterminate"></mat-progress-bar>
 </div>
