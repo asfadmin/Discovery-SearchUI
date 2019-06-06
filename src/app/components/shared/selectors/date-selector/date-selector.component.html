@@ -7,22 +7,22 @@
         [min]="extrema.start.min"
         [max]="extrema.start.max"
         [matDatepicker]="start"
-        name="start"
-        (dateChanged)="onStartDateChange($event)"
+        name="startInput"
+        (dateChange)="onStartDateChange($event)"
         placeholder="Start Date">
       <mat-datepicker-toggle matSuffix [for]="start"></mat-datepicker-toggle>
       <mat-datepicker #start></mat-datepicker>
     </mat-form-field>
 
     <mat-form-field style="width: 48%">
-      <input
-        matInput [(ngModel)]="endDate"
+      <input matInput
+        [(ngModel)]="endDate"
         [min]="extrema.end.min"
         [max]="extrema.end.max"
         [matDatepicker]="end"
         placeholder="End Date"
-        name="end"
-        (dateChanged)="onEndDateChange($event)">
+        name="endInput"
+        (dateChange)="onEndDateChange($event)">
       <mat-datepicker-toggle matSuffix [for]="end"></mat-datepicker-toggle>
       <mat-datepicker #end></mat-datepicker>
     </mat-form-field>
