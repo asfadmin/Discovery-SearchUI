@@ -24,6 +24,16 @@ export interface CMRProductMetadata {
   path: number;
   frame: number;
   absoluteOrbit: number;
+
+  // ALOS PALSAR
+  faradayRotation: number | null;
+  offNadirAngle: number | null;
+
+  // UAVSAR
+  missionName: string | null;
+
+  // AIRSAR
+  flightLine: string | null;
 }
 
 export enum FlightDirection {

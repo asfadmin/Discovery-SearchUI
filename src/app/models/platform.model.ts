@@ -6,6 +6,10 @@ export interface Platform {
   beamModes: string[];
   polarizations: string[];
   frequency: string;
+  source: {
+    name: string;
+    url: string | null;
+  } | null;
 }
 
 export enum MissionPlatform {
@@ -38,10 +42,14 @@ export interface PlatformPolarizations {
 }
 
 export const platforms: Platform[] = [{
-  name: 'Sentinel-1',
+  name: 'SENTINEL-1',
   date: { start: new Date(2014, 3, 25) },
   infoUrl: 'https://www.asf.alaska.edu/sentinel/',
   frequency: 'C-Band',
+  source: {
+    name: 'ESA',
+    url: 'http://www.esa.int/ESA'
+  },
   productTypes: [
     {
       apiValue: 'GRD_HD',
@@ -118,6 +126,10 @@ export const platforms: Platform[] = [{
   date: { start: new Date(2015, 0, 15) },
   infoUrl: 'https://www.asf.alaska.edu/smap/',
   frequency: 'L-Band',
+  source: {
+    name: 'NASA',
+    url: 'https://www.nasa.gov/'
+  },
   productTypes: [{
     apiValue: 'L1A_Radar_RO_QA',
     displayName: 'L1A Radar Receive Only Data Quality'
@@ -159,6 +171,10 @@ export const platforms: Platform[] = [{
   date: { start: new Date(2008, 0, 1) },
   infoUrl: 'https://www.asf.alaska.edu/sar-data/uavsar/',
   frequency: 'L-Band',
+  source: {
+    name: 'NASA',
+    url: 'https://www.nasa.gov/'
+  },
   productTypes: [{
     apiValue: 'KMZ',
     displayName: 'GoogleEarth KMZ'
@@ -224,6 +240,10 @@ export const platforms: Platform[] = [{
   },
   infoUrl: 'https://www.asf.alaska.edu/sar-data/palsar/',
   frequency: 'L-Band',
+  source: {
+    name: 'JAXA/METI',
+    url: null
+  },
   productTypes: [{
     apiValue: 'KMZ',
     displayName: 'GoogleEarth KMZ'
@@ -274,6 +294,10 @@ export const platforms: Platform[] = [{
     end: new Date(2008, 0, 1)
   },
   frequency: 'C-Band',
+  source: {
+    name: 'CSA',
+    url: null
+  },
   infoUrl: 'https://www.asf.alaska.edu/sar-data/radarsat-1/',
   productTypes: [{
     apiValue: 'L0',
@@ -302,6 +326,10 @@ export const platforms: Platform[] = [{
     start: new Date(1991, 0, 1),
     end: new Date(2011, 0, 1)
   },
+  source: {
+    name: 'ESA',
+    url: 'http://www.esa.int/ESA'
+  },
   frequency: 'C-Band',
   infoUrl: 'https://www.asf.alaska.edu/sar-data/ers-2/',
   productTypes: [{
@@ -328,6 +356,10 @@ export const platforms: Platform[] = [{
     end: new Date(1998, 0, 1)
   },
   frequency: 'L-Band',
+  source: {
+    name: 'JAXA',
+    url: 'https://global.jaxa.jp/'
+  },
   infoUrl: 'https://www.asf.alaska.edu/sar-data/jers-1/',
   productTypes: [{
     apiValue: 'BROWSE',
@@ -354,6 +386,7 @@ export const platforms: Platform[] = [{
   },
   frequency: 'L-Band, P-Band, or C-Band',
   infoUrl: 'https://www.asf.alaska.edu/sar-data/airsar/',
+  source: null,
   productTypes: [{
     apiValue: 'CTIF',
     displayName: 'C-Band JPG'
@@ -393,6 +426,10 @@ export const platforms: Platform[] = [{
     end: new Date(1978, 0, 1)
   },
   frequency: 'L-Band',
+  source: {
+    name: 'NASA',
+    url: 'https://www.nasa.gov/'
+  },
   infoUrl: 'https://www.asf.alaska.edu/seasat/',
   productTypes: [{
     apiValue: 'THUMBNAIL',

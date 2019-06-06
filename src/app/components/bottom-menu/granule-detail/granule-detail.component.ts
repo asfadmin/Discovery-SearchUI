@@ -22,6 +22,7 @@ export class GranuleDetailComponent {
   @Input() searchType: models.SearchType;
 
   public searchTypes = models.SearchType;
+  public p = models.Props;
 
   constructor(
     public dialog: MatDialog,
@@ -41,6 +42,10 @@ export class GranuleDetailComponent {
     });
   }
 
+  public isRelavent(prop: models.Props): boolean {
+    return models.datasetProperties[prop].includes(this.platform.name);
+  }
+
   public isGeoSearch(): boolean {
     return this.searchType === models.SearchType.DATASET;
   }
@@ -50,10 +55,14 @@ export class GranuleDetailComponent {
   }
 
   public isSentinelGranule(): boolean {
-    return this.platform.name === 'Sentinel-1';
+    return this.platform.name === 'SENTINEL-1';
   }
 
   public shouldHideWith(platformNames: string[]): boolean {
+    return platformNames.includes(this.platform.name);
+  }
+
+  public onlyShowWith(platformNames: string[]): boolean {
     return platformNames.includes(this.platform.name);
   }
 

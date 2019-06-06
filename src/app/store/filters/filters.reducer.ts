@@ -41,7 +41,7 @@ export const initState: FiltersState = {
       },
       {}
     ),
-    selected: new Set<string>(['Sentinel-1'])
+    selected: new Set<string>(['SENTINEL-1'])
   },
   dateRange: {
     start: null,
