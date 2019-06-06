@@ -18,6 +18,7 @@
       (newSelected)="onNewGranuleSelected($event)"
       (queueGranule)="onQueueGranuleProducts($event)"
       [granules$]="granules$"
+      [platform]="searchPlatform$ | async"
       [selected]="(selectedGranule$ | async)?.name">
     </app-granules-list>
 

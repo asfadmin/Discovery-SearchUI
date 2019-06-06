@@ -18,13 +18,10 @@
           <app-product-name [name]="granule.name" matLine></app-product-name>
 
           <div matLine>
-            <span matTooltip="Path" matTooltipPosition="after">{{ granule.metadata.path }}</span>,
-            <span matTooltip="Frame" matTooltipPosition="after">{{ granule.metadata.frame }}</span>,
-            <span matTooltip="Polarization" matTooltipPosition="after">{{ granule.metadata.polarization }}</span>,
-            <span matTooltip="Flight Direction" matTooltipPosition="after">
+            <span *ngIf="isRelavent(p.DATE)" matTooltip="Date" matTooltipPosition="after">{{ granule.metadata.date | shortDate }}</span>
+            <span *ngIf="isRelavent(p.FLIGHT_DIRECTION)" matTooltip="Flight Direction" matTooltipPosition="after">,
               {{ granule.metadata.flightDirection === 'ASCENDING' ? 'ASC' : 'DES' }}
-            </span>,
-            <span matTooltip="Absolute Orbit" matTooltipPosition="after">{{ granule.metadata.absoluteOrbit }}</span>
+            </span>
           </div>
 
           <fa-icon (click)="onQueueGranule($event, granule.groupId)"

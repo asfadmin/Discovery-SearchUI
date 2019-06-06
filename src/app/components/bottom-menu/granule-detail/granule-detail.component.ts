@@ -22,6 +22,7 @@ export class GranuleDetailComponent {
   @Input() searchType: models.SearchType;
 
   public searchTypes = models.SearchType;
+  public p = models.Props;
 
   constructor(
     public dialog: MatDialog,
@@ -39,6 +40,10 @@ export class GranuleDetailComponent {
       maxHeight: '90%',
       panelClass: 'image-dialog'
     });
+  }
+
+  public isRelavent(prop: models.Props): boolean {
+    return models.datasetProperties[prop].includes(this.platform.name);
   }
 
   public isGeoSearch(): boolean {

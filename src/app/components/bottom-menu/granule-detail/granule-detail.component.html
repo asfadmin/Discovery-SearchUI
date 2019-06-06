@@ -22,7 +22,7 @@
     <div class="w100" fxFlex fxLayout="row" fxLayoutAlign="space-between">
       <div style="width: 50%">
         <ul class="granule-metadata">
-          <li *ngIf="hasValue(granule.metadata.date)">
+          <li *ngIf="isRelavent(p.DATE)">
             <span class="v-mid"><b>Aquisition Date:</b> {{ granule.metadata.date | shortDate }}</span>
             <mat-icon *ngIf="isGeoSearch()"
               [matMenuTriggerFor]="addGranuleDateMenu"
@@ -36,7 +36,7 @@
             </mat-menu>
           </li>
 
-          <li *ngIf="hasValue(granule.metadata.beamMode)">
+          <li *ngIf="isRelavent(p.BEAM_MODE)">
             <span class="v-mid"><b>Beam Mode:</b> {{ granule.metadata.beamMode }}</span>
             <mat-icon *ngIf="isGeoSearch()"
               [matMenuTriggerFor]="addBeamModeMenu"
@@ -49,7 +49,7 @@
             </mat-menu>
           </li>
 
-          <li *ngIf="hasValue(granule.metadata.path) && !shouldHideWith(['SMAP', 'UAVSAR', 'AIRSAR'])">
+          <li *ngIf="isRelavent(p.PATH)">
 
             <span class="v-mid"><b>Path:</b> {{ granule.metadata.path }}</span>
             <mat-icon *ngIf="isGeoSearch()"
@@ -64,7 +64,7 @@
               <button (click)="setPathStart(); setPathEnd();" mat-menu-item>Set as both</button>
             </mat-menu>
           </li>
-          <li *ngIf="hasValue(granule.metadata.frame) && !shouldHideWith(['SMAP', 'UAVSAR', 'AIRSAR'])">
+          <li *ngIf="isRelavent(p.FRAME)">
             <span class="v-mid"> <b>Frame:</b> {{ granule.metadata.frame }} </span>
 
             <mat-icon *ngIf="isGeoSearch()"
@@ -79,7 +79,7 @@
               <button (click)="setFrameStart(); setFrameEnd();" mat-menu-item>Set as both</button>
             </mat-menu>
           </li>
-          <li *ngIf="hasValue(granule.metadata.flightDirection)">
+          <li *ngIf="isRelavent(p.FLIGHT_DIRECTION)">
 
             <span class="v-mid"> <b>Flight Direction:</b> {{ granule.metadata.flightDirection }} </span>
             <mat-icon *ngIf="isGeoSearch()"
@@ -93,7 +93,7 @@
             </mat-menu>
           </li>
 
-          <li *ngIf="hasValue(granule.metadata.polarization)">
+          <li *ngIf="isRelavent(p.POLARIZATION)">
             <span class="v-mid"> <b>Polarization: </b> {{ granule.metadata.polarization }} </span>
 
             <mat-icon *ngIf="isGeoSearch()"
@@ -107,33 +107,34 @@
             </mat-menu>
           </li>
 
-          <li *ngIf="onlyShowWith(['ALOS PALSAR'])"
+          <li *ngIf="isRelavent(p.OFF_NADIR_ANGLE)"
             style="margin-top: 5px;">
             <b>Off Nadir Angle: </b> {{ granule.metadata.offNadirAngle }}
           </li>
 
-          <li *ngIf="onlyShowWith(['ALOS PALSAR'])"
+          <li *ngIf="isRelavent(p.FARADAY_ROTATION)"
             style="margin-top: 5px;">
             <b>Faraday Rotation: </b> {{ granule.metadata.faradayRotation }}
           </li>
 
-          <li *ngIf="onlyShowWith(['AIRSAR', 'UAVSAR'])"
+          <li *ngIf="isRelavent(p.MISSION_NAME)"
             style="margin-top: 5px;">
             <b>Mission Name: </b> {{ granule.metadata.missionName }}
           </li>
 
-          <li *ngIf="onlyShowWith(['AIRSAR'])"
+          <li *ngIf="isRelavent(p.FLIGHT_LINE)"
             style="margin-top: 5px;">
             <b>Flight Line</b> {{ granule.metadata.flightLine }}
           </li>
 
-          <li *ngIf="hasValue(granule.metadata.absoluteOrbit) && !shouldHideWith(['UAVSAR', 'AIRSAR'])"
+          <li *ngIf="isRelavent(p.ABSOLUTE_ORBIT)"
             style="margin-top: 5px;">
             <b>Absolute Orbit: </b> {{ granule.metadata.absoluteOrbit }}
           </li>
 
-          <li *ngIf="isSentinelGranule()" style="margin-top: 5px;">
-            <a href="http://www.esa.int/ESA" target="_blank"> Data courtesy of ESA</a>
+          <li *ngIf="platform.source as source" style="margin-top: 5px;">
+            <a *ngIf="source.url" [href]="source.url" target="_blank"> Data courtesy of {{ platform.source.name }}</a>
+            <span *ngIf="!source.url"> Data courtesy of {{ platform.source.name }}</span>
           </li>
         </ul>
 
