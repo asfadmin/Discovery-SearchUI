@@ -38,7 +38,7 @@ export interface PlatformPolarizations {
 }
 
 export const platforms: Platform[] = [{
-  name: 'Sentinel-1',
+  name: 'SENTINEL-1',
   date: { start: new Date(2014, 3, 25) },
   infoUrl: 'https://www.asf.alaska.edu/sentinel/',
   frequency: 'C-Band',

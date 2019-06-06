@@ -11,7 +11,7 @@
 
     </mat-card-title>
     <mat-card-subtitle>
-      <span matTooltip="Dataset">{{ granule.platform }}
+      <span matTooltip="Dataset">{{ platform.name }}
         <span *ngIf="platform.name === 'SMAP'">V{{ granule.name.slice(-1) }}</span>
       </span> •
       <span matTooltip="Frequency">{{ platform.frequency }}</span>
