@@ -129,8 +129,7 @@ export class SearchParamsService {
     return this.store$.select(filterStore.getDateRange).pipe(
       map(range => {
         return [range.start, range.end]
-          .filter(date => !!date)
-          .map(date => date.toISOString());
+          .map(date => !!date ? date.toISOString() : date);
       }),
       map(([start, end]) => ({ start, end }))
     );

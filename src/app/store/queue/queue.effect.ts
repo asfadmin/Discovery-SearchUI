@@ -41,7 +41,7 @@ export class QueueEffects {
       products => this.bulkDownloadService.downloadScript$(products)
     ),
     map(
-      blob => FileSaver.saveAs(blob, 'download-all.py')
+      blob => FileSaver.saveAs(blob, `download-all-${this.currentDate()}.py`)
     )
   );
 
@@ -71,7 +71,9 @@ export class QueueEffects {
       (search: MetadataDownload) => this.asfApiService.query<string>(search.params).pipe(
         map(resp => new Blob([resp], { type: 'text/plain'})),
         map(
-          blob => FileSaver.saveAs(blob, `results.${search.format.toLowerCase()}`)
+          blob => FileSaver.saveAs(blob,
+            `asf-datapool-results-${this.currentDate()}.${search.format.toLowerCase()}`
+          )
         )
       ),
     ),
@@ -84,4 +86,19 @@ export class QueueEffects {
     map(([action, granuleProducts]) => granuleProducts[action.payload]),
     map(products => new AddItems(products))
   );
+
+  private currentDate(): string {
+    const today = new Date();
+
+    const [ y, m, d, h, min, s] = [
+      today.getFullYear(),
+      today.getMonth() + 1,
+      today.getDate(),
+      today.getHours(),
+      today.getMinutes(),
+      today.getSeconds()
+    ];
+
+    return `${y}-${m}-${d}_${h}-${min}-${s}`;
+  }
 }

@@ -41,7 +41,7 @@ export const initState: FiltersState = {
       },
       {}
     ),
-    selected: new Set<string>(['Sentinel-1'])
+    selected: new Set<string>(['SENTINEL-1'])
   },
   dateRange: {
     start: null,
@@ -121,21 +121,22 @@ export function filtersReducer(state = initState, action: FiltersActions): Filte
     }
 
     case FiltersActionType.SET_START_DATE: {
+      const start = new Date(action.payload.setHours(0, 0, 0, 0));
       return {
         ...state,
         dateRange: {
-          ...state.dateRange,
-          start: action.payload
+          ...state.dateRange, start
         }
       };
     }
 
     case FiltersActionType.SET_END_DATE: {
+      const end = new Date(action.payload.setHours(23, 59, 59, 999));
+
       return {
         ...state,
         dateRange: {
-          ...state.dateRange,
-          end: action.payload
+          ...state.dateRange, end
         }
       };
     }
@@ -272,6 +273,26 @@ export function filtersReducer(state = initState, action: FiltersActions): Filte
       };
     }
 
+    case FiltersActionType.ADD_BEAM_MODE: {
+      const platform = Array.from(state.platforms.selected).pop();
+
+      const selectedBeamModes = [
+        ...(state.beamModes[platform] || [])
+      ];
+
+      const newModes = Array.from(
+        new Set([...selectedBeamModes, action.payload])
+      );
+
+      return {
+        ...state,
+        beamModes: {
+          ...state.beamModes,
+          ...{ [platform]: newModes }
+        }
+      };
+    }
+
     case FiltersActionType.SET_PLATFORM_BEAM_MODES: {
       return {
         ...state,
@@ -283,6 +304,26 @@ export function filtersReducer(state = initState, action: FiltersActions): Filte
       return {
         ...state,
         beamModes: { ...action.payload }
+      };
+    }
+
+    case FiltersActionType.ADD_POLARIZATION: {
+      const platform = Array.from(state.platforms.selected).pop();
+
+      const selectedPols = [
+        ...(state.polarizations[platform] || [])
+      ];
+
+      const newPols = Array.from(
+        new Set([...selectedPols, action.payload])
+      );
+
+      return {
+        ...state,
+        polarizations: {
+          ...state.polarizations,
+          ...{ [platform]: newPols }
+        }
       };
     }
 
@@ -300,6 +341,13 @@ export function filtersReducer(state = initState, action: FiltersActions): Filte
       };
     }
 
+    case FiltersActionType.ADD_FLIGHT_DIRECTION: {
+      return {
+        ...state,
+        flightDirections: new Set([action.payload, ...Array.from(state.flightDirections)])
+      };
+    }
+
     case FiltersActionType.SET_FLIGHT_DIRECTIONS: {
       return {
         ...state,
@@ -313,7 +361,6 @@ export function filtersReducer(state = initState, action: FiltersActions): Filte
         maxResults: action.payload,
       };
     }
-
 
     default: {
       return state;

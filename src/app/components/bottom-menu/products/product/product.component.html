@@ -20,8 +20,10 @@
     </a>
   </div>
 
-    <div mat-line>{{product.bytes | readableSizeFromBytes }}</div>
-
+    <div mat-line>
+      <span *ngIf="product.bytes === 0">Virtual</span>
+      <span *ngIf="product.bytes !== 0">{{product.bytes | readableSizeFromBytes }}</span>
+    </div>
 
     <a mat-icon-button [href]="product.downloadUrl" target="_blank" matTooltip="Download product">
       <mat-icon>cloud_download</mat-icon>

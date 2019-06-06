@@ -16,35 +16,27 @@ export interface CMRProductMetadata {
   date: Date;
   polygon: string;
 
-  productType: CMRProductType;
-  beamMode: Sentinel1BeamMode;
-  polarization: Sentinel1Polarization;
+  productType: string;
+  beamMode: string;
+  polarization: string;
   flightDirection: FlightDirection;
-  frequency: string;
 
   path: number;
   frame: number;
   absoluteOrbit: number;
+
+  // ALOS PALSAR
+  faradayRotation: number | null;
+  offNadirAngle: number | null;
+
+  // UAVSAR
+  missionName: string | null;
+
+  // AIRSAR
+  flightLine: string | null;
 }
 
 export enum FlightDirection {
   ASCENDING = 'ASCENDING',
   DESCENDING = 'DESCENDING',
 }
-
-export type CMRProductType =
-  'GRD' | 'SLC' | 'OCN' | 'RAW' |
-  'METADATA_SLC' | 'METADATA_RAW' |
-  'METADATA_GRD_MD' | 'GRD_MD'
-;
-
-export type Sentinel1BeamMode =
-  'IW'| 'EW'| 'WV'|
-  'S1'| 'S2'| 'S3'|
-  'S4'| 'S5'| 'S6';
-
-export type Sentinel1Polarization =
-  'HH'|
-  'VV'|
-  'HH+HV'|
-  'VV+VH';

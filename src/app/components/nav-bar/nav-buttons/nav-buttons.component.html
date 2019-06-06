@@ -1,15 +1,16 @@
 <div class="layout">
-  <div *ngIf="products" matTooltip="Download Queue">
+  <div *ngIf="queuedProducts" matTooltip="Download Queue">
     <button
       (click)="onOpenDownloadQueue()"
-      [disabled]="products.length <= 0" color="basic"
-      style="margin-right: 18px;" class="spacing"
+      [disabled]="queuedProducts.length <= 0" color="basic"
+      class="spacing"
       mat-icon-button>
         <mat-icon
-          [matBadge]="products.length"
-          matBadgeColor="{{ products.length > 0 ? 'accent' : 'primary' }}"
+          [matBadge]="queuedProducts.length"
+          matBadgeColor="{{ queuedProducts.length > 0 ? 'accent' : 'primary' }}"
           matBadgePosition="below"
-          matBadgeOverlap="false">
+          matBadgeOverlap="false"
+          matBadgeSize="small">
             cloud_download
         </mat-icon>
     </button>

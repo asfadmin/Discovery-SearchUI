@@ -19,10 +19,15 @@ export const testProduct: models.CMRProduct = {
     beamMode: 'IW',
     polarization: 'HH',
     flightDirection: models.FlightDirection.ASCENDING,
-    frequency: '7',
 
     path: 7,
     frame: 7,
     absoluteOrbit: 7,
+
+    faradayRotation: 7,
+    offNadirAngle: 7,
+
+    missionName: 'test',
+    flightLine: 'some',
   }
 };

@@ -1,4 +1,4 @@
-import { Component, OnInit, EventEmitter, Output } from '@angular/core';
+import {Component, OnInit, EventEmitter, Output, Input} from '@angular/core';
 
 import { combineLatest } from 'rxjs';
 import { tap, map, filter, withLatestFrom } from 'rxjs/operators';
@@ -9,10 +9,15 @@ import * as searchStore from '@store/search';
 import * as uiStore from '@store/ui';
 import * as granulesStore from '@store/granules';
 import * as filtersStore from '@store/filters';
+import * as queueStore from '@store/queue';
 
 import { SearchType } from '@models';
 import { MapService, WktService } from '@services';
 
+import { MatDialog } from '@angular/material/dialog';
+import { QueueComponent } from '@components/nav-bar/queue';
+
+import * as models from '@models/index';
 
 enum BreadcrumbFilterType {
   SEARCH_TYPE = 'Search Type',
@@ -31,8 +36,11 @@ enum BreadcrumbFilterType {
   styleUrls: ['./breadcrumb-list.component.scss']
 })
 export class BreadcrumbListComponent implements OnInit {
+  @Output() openQueue = new EventEmitter<void>();
   @Output() doSearch = new EventEmitter<void>();
   @Output() clearSearch = new EventEmitter<void>();
+
+  @Input() isLoading: boolean;
 
   public accent = 'primary';
   public canSearch$ = this.store$.select(searchStore.getCanSearch);
@@ -43,6 +51,7 @@ export class BreadcrumbListComponent implements OnInit {
   public areProductsLoaded$ = this.store$.select(granulesStore.getAreProductsLoaded);
   public isFiltersMenuOpen$ = this.store$.select(uiStore.getIsFiltersMenuOpen);
   public searchAmount$ = this.store$.select(searchStore.getSearchAmount);
+  public queuedProducts$ = this.store$.select(queueStore.getQueuedProducts);
 
   public loading$ = this.store$.select(searchStore.getIsLoading);
   public searchTypeSub = this.store$.select(uiStore.getSearchType).subscribe(
@@ -81,6 +90,7 @@ export class BreadcrumbListComponent implements OnInit {
     private store$: Store<AppState>,
     private mapService: MapService,
     private wktService: WktService,
+    private dialog: MatDialog,
   ) { }
 
   ngOnInit() {
@@ -94,6 +104,12 @@ export class BreadcrumbListComponent implements OnInit {
   public onClearSearch(): void {
     this.clearSelectedBreadcrumb();
     this.clearSearch.emit();
+  }
+
+  public onOpenDownloadQueue(): void {
+    this.dialog.open(QueueComponent, {
+      width: '550px', height: '700px', minHeight: '50%'
+    });
   }
 
   public clearSelectedBreadcrumb(): void {

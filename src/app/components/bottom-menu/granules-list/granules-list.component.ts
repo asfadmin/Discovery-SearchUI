@@ -18,7 +18,7 @@ import { faFileDownload, faPlus } from '@fortawesome/free-solid-svg-icons';
 import { MatPaginator } from '@angular/material/paginator';
 import { CdkVirtualScrollViewport } from '@angular/cdk/scrolling';
 
-import { CMRProduct, SearchType, MapInteractionModeType } from '@models';
+import { CMRProduct, SearchType, MapInteractionModeType, Props, datasetProperties, Platform } from '@models';
 
 @Component({
   selector: 'app-granules-list',
@@ -29,6 +29,7 @@ import { CMRProduct, SearchType, MapInteractionModeType } from '@models';
 export class GranulesListComponent implements OnInit {
   @Input() granules$: Observable<CMRProduct[]>;
   @Input() selected: string;
+  @Input() platform: Platform;
 
   @Output() newSelected = new EventEmitter<string>();
   @Output() queueGranule = new EventEmitter<string>();
@@ -46,6 +47,7 @@ export class GranulesListComponent implements OnInit {
   public queueIcon = faPlus;
   public searchType: SearchType;
   public selectedFromList = false;
+  public p = Props;
 
   constructor(private store$: Store<AppState>) {}
 
@@ -76,14 +78,6 @@ export class GranulesListComponent implements OnInit {
       const { key } = e;
 
       switch ( key ) {
-        case 'ArrowDown': {
-          this.selectNextProduct();
-          break;
-        }
-        case 'ArrowUp': {
-          this.selectPreviousProduct();
-          break;
-        }
         case 'ArrowRight': {
           this.selectNextProduct();
           break;
@@ -117,6 +111,10 @@ export class GranulesListComponent implements OnInit {
     const nextGranule = this.granules[nextIdx];
 
     this.store$.dispatch(new granulesStore.SetSelectedGranule(nextGranule.id));
+  }
+
+  public isRelavent(prop: Props): boolean {
+    return datasetProperties[prop].includes(this.platform.name);
   }
 
   private selectPreviousProduct(): void {
