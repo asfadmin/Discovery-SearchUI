@@ -89,14 +89,16 @@ export class QueueEffects {
 
   private currentDate(): string {
     const today = new Date();
-    const year = today.getFullYear();
-    const month = today.getMonth() + 1;
-    const day = today.getDate();
 
-    const hour = today.getHours();
-    const minute = today.getMinutes();
-    const second = today.getSeconds();
+    const [ y, m, d, h, min, s] = [
+      today.getFullYear(),
+      today.getMonth() + 1,
+      today.getDate(),
+      today.getHours(),
+      today.getMinutes(),
+      today.getSeconds()
+    ];
 
-    return `${year}-${month}-${day}_${hour}-${minute}-${second}`;
+    return `${y}-${m}-${d}_${h}-${min}-${s}`;
   }
 }
