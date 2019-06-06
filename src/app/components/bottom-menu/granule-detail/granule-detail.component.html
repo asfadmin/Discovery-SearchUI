@@ -132,6 +132,10 @@
             <b>Absolute Orbit: </b> {{ granule.metadata.absoluteOrbit }}
           </li>
 
+          <li *ngIf="hasValue(granule.metadata.stackSize)" style="margin-top: 5px;">
+            <b>Matching Frames: </b> {{ granule.metadata.stackSize }}
+          </li>
+
           <li *ngIf="platform.source as source" style="margin-top: 5px;">
             <a *ngIf="source.url" [href]="source.url" target="_blank"> Data courtesy of {{ platform.source.name }}</a>
             <span *ngIf="!source.url"> Data courtesy of {{ platform.source.name }}</span>

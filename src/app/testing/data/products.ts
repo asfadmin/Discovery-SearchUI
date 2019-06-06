@@ -15,6 +15,7 @@ export const testProduct: models.CMRProduct = {
     date: new Date('December 17, 1995 03:24:00'),
     polygon: 'POINT(-121.28,58.76)',
 
+    stackSize: 7,
     productType: 'GRD',
     beamMode: 'IW',
     polarization: 'HH',
