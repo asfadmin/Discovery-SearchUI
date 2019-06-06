@@ -1,10 +1,13 @@
-  <div style="display: flex; justify-content: space-between" class="date-selector">
+  <form #dateForm="ngForm"
+    (keydown.enter)="$event.preventDefault()"
+    class="date-selector">
     <mat-form-field style="width: 48%">
       <input matInput
         [(ngModel)]="startDate"
         [min]="extrema.start.min"
         [max]="extrema.start.max"
         [matDatepicker]="start"
+        name="start"
         (dateChanged)="onStartDateChange($event)"
         placeholder="Start Date">
       <mat-datepicker-toggle matSuffix [for]="start"></mat-datepicker-toggle>
@@ -18,8 +21,9 @@
         [max]="extrema.end.max"
         [matDatepicker]="end"
         placeholder="End Date"
+        name="end"
         (dateChanged)="onEndDateChange($event)">
       <mat-datepicker-toggle matSuffix [for]="end"></mat-datepicker-toggle>
       <mat-datepicker #end></mat-datepicker>
     </mat-form-field>
-  </div>
+  </form>

@@ -1,8 +1,10 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, ViewChild } from '@angular/core';
 import { MatDatepickerInputEvent } from '@angular/material/datepicker';
-import { Observable, combineLatest } from 'rxjs';
+import { NgForm } from '@angular/forms';
 
-import { Store } from '@ngrx/store';
+import { Observable, combineLatest } from 'rxjs';
+import { filter } from 'rxjs/operators';
+import { Store, ActionsSubject } from '@ngrx/store';
 
 import { AppState } from '@store';
 import * as filtersStore from '@store/filters';
@@ -16,6 +18,8 @@ import { DateExtremaService } from '@services';
   styleUrls: ['./date-selector.component.scss']
 })
 export class DateSelectorComponent implements OnInit {
+  @ViewChild('dateForm', { static: true }) public dateForm: NgForm;
+
   public extrema: DateRangeExtrema;
   public startDate: Date;
   public endDate: Date;
@@ -38,10 +42,15 @@ export class DateSelectorComponent implements OnInit {
 
   constructor(
     private store$: Store<AppState>,
+    private actions$: ActionsSubject,
     private dateExtremaService: DateExtremaService,
   ) { }
 
   ngOnInit() {
+    this.actions$.pipe(
+      filter(action => action.type === filtersStore.FiltersActionType.CLEAR_FILTERS)
+    ).subscribe(_ => this.dateForm.reset());
+
     this.dateRangeExtrema$.subscribe(
       extrema => this.extrema = extrema
     );
