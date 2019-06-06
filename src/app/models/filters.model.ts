@@ -12,16 +12,33 @@ export enum Props {
   FARADAY_ROTATION = 'Faraday Rotation',
 }
 
+export const allPlatforms = [
+  'SENTINEL-1', 'SMAP', 'UAVSAR', 'ALOS', 'RADARSAT-1', 'ERS', 'JERS-1', 'AIRSAR', 'SEASAT'
+];
+
+const allExcept = datasets =>
+  allPlatforms.filter(v => !datasets.includes(v));
+
 export const datasetProperties = {
-  [Props.DATE]:  [],
-  [Props.BEAM_MODE]: [],
-  [Props.PATH]: [],
-  [Props.FRAME]: [],
-  [Props.FLIGHT_DIRECTION]: [],
-  [Props.POLARIZATION]: [],
-  [Props.ABSOLUTE_ORBIT]: [],
-  [Props.MISSION_NAME]: [],
-  [Props.FLIGHT_LINE]: [],
-  [Props.OFF_NADIR_ANGLE]: [],
-  [Props.FARADAY_ROTATION]: [],
+  [Props.DATE]:  [...allPlatforms],
+  [Props.BEAM_MODE]: [...allPlatforms],
+  [Props.PATH]: [
+    ...allExcept(['UAVSAR', 'AIRSAR', 'SMAP'])
+  ],
+  [Props.FRAME]: [
+    ...allExcept(['UAVSAR', 'AIRSAR', 'SMAP'])
+  ],
+  [Props.FLIGHT_DIRECTION]: [
+    ...allExcept(['AIRSAR'])
+  ],
+  [Props.POLARIZATION]: [
+    ...allExcept(['AIRSAR', 'SMAP'])
+  ],
+  [Props.ABSOLUTE_ORBIT]: [
+    ...allExcept(['AIRSAR', 'UAVSAR'])
+  ],
+  [Props.MISSION_NAME]: ['UAVSAR', 'AIRSAR'],
+  [Props.FLIGHT_LINE]: ['AIRSAR'],
+  [Props.OFF_NADIR_ANGLE]: ['ALOS'],
+  [Props.FARADAY_ROTATION]: ['ALOS'],
 };
