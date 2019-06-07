@@ -6,6 +6,7 @@
     <button (click)="onToggleMenu()"
        class="toggle-button"
       mat-raised-button>
+      <span>Results </span>
       <mat-icon>
         {{ (isBottomMenuOpen$ | async) ? 'keyboard_arrow_down' : 'keyboard_arrow_up' }}
       </mat-icon>
