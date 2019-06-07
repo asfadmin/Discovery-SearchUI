@@ -26,7 +26,10 @@ export function equatorial(): MapView {
     zoom: 3,
     minZoom: 3,
     maxZoom: 13,
-    extent: proj.transformExtent([-190, -90, 190, 90], 'EPSG:4326', projection.epsg)
+    extent: proj.transformExtent(
+      [-Number.MAX_VALUE, -90, Number.MAX_VALUE, 90],
+      'EPSG:4326', projection.epsg
+    )
   });
 
   return new MapView(
