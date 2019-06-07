@@ -44,6 +44,7 @@ export class ProductService {
 
       missionName: g.missionName,
       flightLine: g.flightLine,
+      stackSize: +g.stackSize || null,
     })
 
   private fromCMRDate =

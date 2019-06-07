@@ -18,6 +18,7 @@ import { faFileDownload, faPlus } from '@fortawesome/free-solid-svg-icons';
 import { MatPaginator } from '@angular/material/paginator';
 import { CdkVirtualScrollViewport } from '@angular/cdk/scrolling';
 
+import * as services from '@services';
 import { CMRProduct, SearchType, MapInteractionModeType, Props, datasetProperties, Platform } from '@models';
 
 @Component({
@@ -49,7 +50,11 @@ export class GranulesListComponent implements OnInit {
   public selectedFromList = false;
   public p = Props;
 
-  constructor(private store$: Store<AppState>) {}
+  constructor(
+    private store$: Store<AppState>,
+    private mapService: services.MapService,
+    private wktService: services.WktService,
+  ) {}
 
   ngOnInit() {
     this.store$.select(granulesStore.getSelectedGranule).pipe(
@@ -163,5 +168,14 @@ export class GranulesListComponent implements OnInit {
         new mapStore.SetMapInteractionMode(MapInteractionModeType.DRAW)
       );
     }
+  }
+
+  public onZoomTo(granule: CMRProduct): void {
+    const features = this.wktService.wktToFeature(
+      granule.metadata.polygon,
+      this.mapService.epsg()
+    );
+
+    this.mapService.zoomTo(features);
   }
 }

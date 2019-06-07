@@ -18,17 +18,12 @@
           <app-product-name [name]="granule.name" matLine></app-product-name>
 
           <div matLine>
-            <span *ngIf="isRelavent(p.DATE)" matTooltip="Date" matTooltipPosition="after">{{ granule.metadata.date | shortDate }}</span>
-            <span *ngIf="isRelavent(p.FLIGHT_DIRECTION)" matTooltip="Flight Direction" matTooltipPosition="after">,
-              {{ granule.metadata.flightDirection === 'ASCENDING' ? 'ASC' : 'DES' }}
-            </span>
+            <span *ngIf="isRelavent(p.DATE)">Date • {{ granule.metadata.date | shortDate }}</span>
           </div>
 
-          <fa-icon (click)="onQueueGranule($event, granule.groupId)"
-            [icon]="queueIcon"
-            matTooltip="Queue this granules products"
-            class="ml-2">
-          </fa-icon>
+          <mat-icon (click)="onZoomTo(granule)" class="ml-2" matTooltip="Zoom to granule">
+            settings_overscan
+          </mat-icon>
       </button>
     </div>
   </mat-action-list>
