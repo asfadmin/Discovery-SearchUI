@@ -172,6 +172,13 @@
       href="https://www.asf.alaska.edu/about/how-to-cite-data/">
       Citation
     </a>
+
+    <button *ngIf="isRelavent(p.PATH) && isRelavent(p.FRAME)"
+      (click)="onFindSimilarGranules()"
+      matTooltip="Search based on this granules path/frame"
+      mat-raised-button color="primary">
+       More Like This
+    </button>
   </mat-card-actions>
 </div>
 

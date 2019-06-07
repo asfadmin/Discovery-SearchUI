@@ -6,6 +6,7 @@ import { Store } from '@ngrx/store';
 
 import { AppState } from '@store';
 import * as filtersStore from '@store/filters';
+import * as searchStore from '@store/search';
 
 import * as models from '@models';
 import { DatapoolAuthService, MapService, WktService } from '@services';
@@ -119,6 +120,14 @@ export class GranuleDetailComponent {
 
   public addPolarization(): void {
     this.store$.dispatch(new filtersStore.AddPolarization(this.granule.metadata.polarization));
+  }
+
+  public onFindSimilarGranules(): void {
+    this.setPathStart();
+    this.setPathEnd();
+    this.setFrameStart();
+    this.setFrameEnd();
+    this.store$.dispatch(new searchStore.MakeSearch());
   }
 
   private capitalizeFirstLetter(str) {
