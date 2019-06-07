@@ -162,10 +162,10 @@
   </mat-card-content>
 
   <mat-card-actions>
-    <a mat-raised-button color="primary"
-      target="_blank"
+    <a *ngIf="isRelavent(p.BASELINE_TOOL)"
+      mat-raised-button color="primary" target="_blank"
       href="https://baseline.asf.alaska.edu/#/baseline?granule={{ granule.name }}">
-      Baseline Tool
+        Baseline Tool
     </a>
     <a mat-raised-button color="primary"
       target="_blank"

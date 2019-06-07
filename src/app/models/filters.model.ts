@@ -11,6 +11,7 @@ export enum Props {
   OFF_NADIR_ANGLE = 'Off Nadir Angle',
   FARADAY_ROTATION = 'Faraday Rotation',
   STACK_SIZE = 'Stack Size',
+  BASELINE_TOOL = 'Baseline Tool',
 }
 
 export const allPlatforms = [
@@ -42,4 +43,5 @@ export const datasetProperties = {
   [Props.FLIGHT_LINE]: ['AIRSAR'],
   [Props.OFF_NADIR_ANGLE]: ['ALOS PALSAR'],
   [Props.FARADAY_ROTATION]: ['ALOS PALSAR'],
+  [Props.BASELINE_TOOL]: ['SENTINEL-1', 'ALOS PALSAR', 'RADARSAT-1', 'ERS' ],
 };
