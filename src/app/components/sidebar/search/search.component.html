@@ -1,5 +1,7 @@
 <ng-container *ngIf="selectedSearchType === searchTypes.DATASET">
-  <app-dataset-search></app-dataset-search>
+  <app-dataset-search
+    [platform]="platform$ | async">
+  </app-dataset-search>
 </ng-container>
 
 <ng-container *ngIf="selectedSearchType === searchTypes.LIST">
