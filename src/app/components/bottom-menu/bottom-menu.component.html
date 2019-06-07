@@ -4,6 +4,7 @@
   class="position">
   <div class="toggle-button-position">
     <button (click)="onToggleMenu()"
+       class="toggle-button"
       mat-raised-button>
       <mat-icon>
         {{ (isBottomMenuOpen$ | async) ? 'keyboard_arrow_down' : 'keyboard_arrow_up' }}
