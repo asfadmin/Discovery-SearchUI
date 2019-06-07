@@ -1,6 +1,7 @@
 <mat-accordion multi>
 
-  <mat-expansion-panel [expanded]="defaultPanelOpenState" [disabled]="panelIsDisabled">
+  <mat-expansion-panel *ngIf="isRelavent(p.PATH)"
+    [expanded]="defaultPanelOpenState" [disabled]="panelIsDisabled">
     <mat-expansion-panel-header [collapsedHeight]="customCollapsedHeight" [expandedHeight]="customExpandedHeight">
       <mat-panel-title>
         Path and Frame Filters
