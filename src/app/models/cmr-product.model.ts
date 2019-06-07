@@ -9,6 +9,7 @@ export interface CMRProduct {
   thumbnail: string;
   platform: string;
   groupId: string;
+
   metadata: CMRProductMetadata;
 }
 
@@ -25,6 +26,7 @@ export interface CMRProductMetadata {
   frame: number;
   absoluteOrbit: number;
 
+  stackSize: number;
   // ALOS PALSAR
   faradayRotation: number | null;
   offNadirAngle: number | null;

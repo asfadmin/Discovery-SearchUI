@@ -22,8 +22,6 @@ export const _filter = (opt: string[], value: string): string[] => {
   styleUrls: ['./mission-search.component.css']
 })
 export class MissionSearchComponent implements OnInit {
-  @ViewChild('paginator', { static: true }) paginator;
-
   @Input() missionsByPlatform$: Observable<{[platform: string]: string[]}>;
   @Input() missionPlatforms$: Observable<string[]>;
   @Input() selectedMission: string | null;
@@ -81,8 +79,6 @@ export class MissionSearchComponent implements OnInit {
       (allMissions, missions) => [...allMissions, ...missions], []
     );
 
-    this.paginator.firstPage();
-
     return filterValue === '' ?
       missionsUnfiltered :
       _filter(missionsUnfiltered, filterValue);
@@ -90,15 +86,5 @@ export class MissionSearchComponent implements OnInit {
 
   public setMission(mission: string): void {
     this.newMissionSelected.emit(mission);
-  }
-
-  public currentPageOf(missions, pageSize, pageIndex): string[] {
-    const offset = pageIndex * pageSize;
-    return missions.slice(offset, offset + pageSize);
-  }
-
-  public onNewPage(page): void {
-    this.pageIndex = page.pageIndex;
-    this.pageSize = page.pageSize;
   }
 }

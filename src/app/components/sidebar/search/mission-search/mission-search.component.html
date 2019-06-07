@@ -16,27 +16,21 @@
     </mat-form-field>
   </form>
 
-  <mat-nav-list role="list">
-    <ng-container *ngIf="!!selectedMission">
-      <mat-list-item  class="mat-primary">
-        <mat-icon mat-list-icon>arrow_right</mat-icon>
-        <b>{{ selectedMission }}</b>
-      </mat-list-item>
-      <mat-divider [inset]="true"></mat-divider>
-    </ng-container>
+  <ng-container *ngIf="!!selectedMission">
+    <mat-icon class="v-mid" mat-list-icon>arrow_right</mat-icon>
+    <b class="v-mid">{{ selectedMission }}</b>
+    <mat-divider style="margin-top: 15px" [inset]="true"></mat-divider>
+  </ng-container>
 
-    <a mat-list-item
-      *ngFor="let mission of currentPageOf(filteredMissions, pageSize, pageIndex)"
-      (click)="setMission(mission)"
-      role="listitem">
-        {{ mission }}
-    </a>
-  </mat-nav-list>
-
-  <mat-paginator [length]="filteredMissions.length"
-                [pageSize]="pageSize"
-                [pageSizeOptions]="pageSizeOptions"
-                (page)="onNewPage($event)"
-                #paginator>
-  </mat-paginator >
+  <cdk-virtual-scroll-viewport style="height: 475px;"
+    minBufferPx="500" maxBufferPx="600"
+    itemSize="48">
+    <mat-nav-list role="list">
+      <div *cdkVirtualFor="let mission of filteredMissions">
+        <a (click)="setMission(mission)" mat-list-item role="listitem">
+          {{ mission }}
+        </a>
+      </div>
+    </mat-nav-list>
+  </cdk-virtual-scroll-viewport>
 </mat-card>

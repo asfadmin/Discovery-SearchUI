@@ -4,11 +4,6 @@
       <span [title]="granule.name">{{ granule.name | truncate : 34 }}</span>
       <app-copy-to-clipboard style="margin: 0 10px; " [value]="granule.name"></app-copy-to-clipboard>
 
-      <button (click)="onZoomToGranule()"
-        matTooltip="Zoom to granule" mat-icon-button>
-        <mat-icon>settings_overscan</mat-icon>
-      </button>
-
     </mat-card-title>
     <mat-card-subtitle>
       <span matTooltip="Dataset">{{ platform.name }}
@@ -23,7 +18,7 @@
       <div style="width: 50%">
         <ul class="granule-metadata">
           <li *ngIf="isRelavent(p.DATE)">
-            <span class="v-mid"><b>Aquisition Date:</b> {{ granule.metadata.date | shortDate }}</span>
+            <span class="v-mid"><b>Aquisition Date </b> • {{ granule.metadata.date | shortDate }}</span>
             <mat-icon *ngIf="isGeoSearch()"
               [matMenuTriggerFor]="addGranuleDateMenu"
               class="v-mid clickable">
@@ -37,7 +32,7 @@
           </li>
 
           <li *ngIf="isRelavent(p.BEAM_MODE)">
-            <span class="v-mid"><b>Beam Mode:</b> {{ granule.metadata.beamMode }}</span>
+            <span class="v-mid"><b>Beam Mode </b> • {{ granule.metadata.beamMode }}</span>
             <mat-icon *ngIf="isGeoSearch()"
               [matMenuTriggerFor]="addBeamModeMenu"
               class="v-mid clickable">
@@ -51,7 +46,7 @@
 
           <li *ngIf="isRelavent(p.PATH)">
 
-            <span class="v-mid"><b>Path:</b> {{ granule.metadata.path }}</span>
+            <span class="v-mid"><b>Path </b> • {{ granule.metadata.path }}</span>
             <mat-icon *ngIf="isGeoSearch()"
               [matMenuTriggerFor]="addPathMenu"
               class="v-mid clickable">
@@ -65,7 +60,7 @@
             </mat-menu>
           </li>
           <li *ngIf="isRelavent(p.FRAME)">
-            <span class="v-mid"> <b>Frame:</b> {{ granule.metadata.frame }} </span>
+            <span class="v-mid"> <b>Frame </b> • {{ granule.metadata.frame }} </span>
 
             <mat-icon *ngIf="isGeoSearch()"
               [matMenuTriggerFor]="addFrameMenu"
@@ -81,7 +76,7 @@
           </li>
           <li *ngIf="isRelavent(p.FLIGHT_DIRECTION)">
 
-            <span class="v-mid"> <b>Flight Direction:</b> {{ granule.metadata.flightDirection }} </span>
+            <span class="v-mid"> <b>Flight Direction </b> • {{ granule.metadata.flightDirection }} </span>
             <mat-icon *ngIf="isGeoSearch()"
               [matMenuTriggerFor]="addFlightDirectionMenu"
               class="v-mid clickable">
@@ -94,7 +89,7 @@
           </li>
 
           <li *ngIf="isRelavent(p.POLARIZATION)">
-            <span class="v-mid"> <b>Polarization: </b> {{ granule.metadata.polarization }} </span>
+            <span class="v-mid"> <b>Polarization </b> • {{ granule.metadata.polarization }} </span>
 
             <mat-icon *ngIf="isGeoSearch()"
               [matMenuTriggerFor]="addPolMenu"
@@ -109,32 +104,36 @@
 
           <li *ngIf="isRelavent(p.OFF_NADIR_ANGLE)"
             style="margin-top: 5px;">
-            <b>Off Nadir Angle: </b> {{ granule.metadata.offNadirAngle }}
+            <b>Off Nadir Angle </b> • {{ granule.metadata.offNadirAngle }}
           </li>
 
           <li *ngIf="isRelavent(p.FARADAY_ROTATION)"
             style="margin-top: 5px;">
-            <b>Faraday Rotation: </b> {{ granule.metadata.faradayRotation }}
+            <b>Faraday Rotation </b> • {{ granule.metadata.faradayRotation }}
           </li>
 
           <li *ngIf="isRelavent(p.MISSION_NAME)"
             style="margin-top: 5px;">
-            <b>Mission Name: </b> {{ granule.metadata.missionName }}
+            <b>Mission Name </b> • {{ granule.metadata.missionName }}
           </li>
 
           <li *ngIf="isRelavent(p.FLIGHT_LINE)"
             style="margin-top: 5px;">
-            <b>Flight Line</b> {{ granule.metadata.flightLine }}
+            <b>Flight Line </b> • {{ granule.metadata.flightLine }}
           </li>
 
           <li *ngIf="isRelavent(p.ABSOLUTE_ORBIT)"
             style="margin-top: 5px;">
-            <b>Absolute Orbit: </b> {{ granule.metadata.absoluteOrbit }}
+            <b>Absolute Orbit </b> • {{ granule.metadata.absoluteOrbit }}
+          </li>
+
+          <li *ngIf="hasValue(granule.metadata.stackSize)" style="margin-top: 5px;">
+            <b>Matching Frames </b> • {{ granule.metadata.stackSize }}
           </li>
 
           <li *ngIf="platform.source as source" style="margin-top: 5px;">
             <a *ngIf="source.url" [href]="source.url" target="_blank"> Data courtesy of {{ platform.source.name }}</a>
-            <span *ngIf="!source.url"> Data courtesy of {{ platform.source.name }}</span>
+            <span *ngIf="!source.url" class="faint-text"> Data courtesy of {{ platform.source.name }}</span>
           </li>
         </ul>
 
@@ -163,16 +162,24 @@
   </mat-card-content>
 
   <mat-card-actions>
-    <a mat-raised-button color="primary"
-      target="_blank"
+    <a *ngIf="isRelavent(p.BASELINE_TOOL)"
+      mat-raised-button color="accent" target="_blank"
       href="https://baseline.asf.alaska.edu/#/baseline?granule={{ granule.name }}">
-      Baseline Tool
+        Baseline Tool
     </a>
     <a mat-raised-button color="primary"
       target="_blank"
+      color="accent"
       href="https://www.asf.alaska.edu/about/how-to-cite-data/">
       Citation
     </a>
+
+    <button *ngIf="isRelavent(p.PATH) && isRelavent(p.FRAME)"
+      (click)="onFindSimilarGranules()"
+      matTooltip="Search based on this granules path/frame"
+      mat-raised-button color="primary">
+       More Like This
+    </button>
   </mat-card-actions>
 </div>
 

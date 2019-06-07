@@ -1,44 +1,44 @@
 <div [@changeMenuState]="(isSidebarOpen$ | async) ? 'shown' : 'hidden'"
   class="sidebar-position">
 
-<div
-  *ngIf="selectedSearchType !== null && isFiltersMenuOpen"
-  class="dataset-filters-card">
-  <mat-card>
-    <mat-card-header>
-      <mat-card-title>
-        <mat-icon (click)="closePanel()" class="clickable">close</mat-icon>
-      </mat-card-title>
-    </mat-card-header>
+  <div
+    *ngIf="selectedSearchType !== null && isFiltersMenuOpen"
+    class="dataset-filters-card">
+    <mat-card>
+      <mat-card-header>
+        <mat-card-title>
+          <mat-icon (click)="closePanel()" class="clickable">close</mat-icon>
+        </mat-card-title>
+      </mat-card-header>
 
-    <mat-card-content>
-      <app-search
-        [selectedSearchType]="selectedSearchType"
-        (newSearchType)="onSetSearchType($event)"></app-search>
-    </mat-card-content>
-  </mat-card>
-</div>
-
-<div class="filter-list">
-
-  <div class="top-list-elements">
-
-    <app-search-selector
-      (newSearchType)="onSetSearchType($event)"
-      [selectedSearchType]="selectedSearchType">
-    </app-search-selector>
-
-    <mat-card class="mat-elevation-z0">
-      <div id="support_by">Support provided by...</div>
-      <a href="https://earthdata.nasa.gov/" target="_blank">
-        <img class="img-nasa-logo" src="/assets/meatball.png">
-      </a>
-    </mat-card>
-
-    <mat-card *ngIf="searchError$ | async as error" class="card-spacing">
-      <b>Error:</b> {{error}}
+      <mat-card-content>
+        <app-search
+          [selectedSearchType]="selectedSearchType"
+          (newSearchType)="onSetSearchType($event)"></app-search>
+      </mat-card-content>
     </mat-card>
   </div>
 
-</div>
+  <div  class="filter-list">
+
+    <div class="top-list-elements">
+
+      <app-search-selector
+        (newSearchType)="onSetSearchType($event)"
+        [selectedSearchType]="selectedSearchType">
+      </app-search-selector>
+
+      <div>
+        <div class="support_by">Support provided by...</div>
+        <a href="https://earthdata.nasa.gov/" target="_blank">
+          <img class="img-nasa-logo" src="/assets/meatball.png">
+        </a>
+      </div>
+
+      <mat-card *ngIf="searchError$ | async as error" class="card-spacing">
+        <b>Error:</b> {{error}}
+      </mat-card>
+    </div>
+
+  </div>
 </div>
