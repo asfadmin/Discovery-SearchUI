@@ -99,6 +99,7 @@ export class AppComponent implements OnInit {
     this.store$.dispatch(new granulesStore.ClearGranules());
     this.store$.dispatch(new filterStore.ClearFilters());
     this.store$.dispatch(new missionStore.SelectMission(null));
+    this.store$.dispatch(new uiStore.CloseBottomMenu());
     this.mapService.clearDrawLayer();
 
     if (this.searchType === models.SearchType.DATASET) {

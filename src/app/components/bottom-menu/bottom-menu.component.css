@@ -8,6 +8,7 @@
   bottom: 0;
   position: fixed;
   z-index: 999;
+  pointer-events: none;
 }
 
 .scrollable-card {
@@ -21,6 +22,11 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  pointer-events: none;
+}
+
+.toggle-button {
+  pointer-events: auto;
 }
 
 .bottom-menu--layout {
@@ -33,6 +39,7 @@
 .bottom-menu--background {
   background: rgba(238, 238, 238, 0.7);
   background: white;
+  pointer-events: auto;
 }
 
 .bottom-menu--column {
