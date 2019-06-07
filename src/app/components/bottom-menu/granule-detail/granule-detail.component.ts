@@ -28,8 +28,6 @@ export class GranuleDetailComponent {
     public dialog: MatDialog,
     public authService: DatapoolAuthService,
     private store$: Store<AppState>,
-    private mapService: MapService,
-    private wktService: WktService,
   ) {}
 
   public onOpenImage(granule: models.CMRProduct): void {
@@ -64,15 +62,6 @@ export class GranuleDetailComponent {
 
   public onlyShowWith(platformNames: string[]): boolean {
     return platformNames.includes(this.platform.name);
-  }
-
-  public onZoomToGranule(): void {
-    const features = this.wktService.wktToFeature(
-      this.granule.metadata.polygon,
-      this.mapService.epsg()
-    );
-
-    this.mapService.zoomTo(features);
   }
 
   public onSetBeamMode(): void {
