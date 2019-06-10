@@ -106,7 +106,17 @@ export class BreadcrumbListComponent implements OnInit {
       filter(action => action.type === filtersStore.FiltersActionType.CLEAR_FILTERS)
     ).subscribe(_ => this.polygonForm.reset());
 
-    this.polygon$.subscribe(p => this.polygon = p);
+    this.polygon$.pipe(
+      tap(_ => {
+        try {
+          this.polygonForm.form
+            .controls['searchPolygon']
+            .setErrors(null);
+        } catch {}
+      })
+    ).subscribe(
+      p => this.polygon = p
+    );
   }
 
   public onDoSearch(): void {
@@ -131,14 +141,24 @@ export class BreadcrumbListComponent implements OnInit {
   }
 
   public onInputSearchPolygon(polygon: string): void {
-    const features = this.wktService.wktToFeature(
-      polygon,
-      this.mapService.epsg()
-    );
+    try {
+      const features = this.wktService.wktToFeature(
+        polygon,
+        this.mapService.epsg()
+      );
 
-    this.mapService.setDrawFeature(features);
+      this.mapService.setDrawFeature(features);
+    } catch (e) {
+      this.polygonForm.form
+        .controls['searchPolygon']
+        .setErrors({'incorrect': true});
 
-    return features;
+      return;
+    }
+
+    this.polygonForm.form
+      .controls['searchPolygon']
+      .setErrors(null);
   }
 
   public onClearDateRange(): void {
