@@ -1,8 +1,9 @@
-import {Component, OnInit, EventEmitter, Output, Input} from '@angular/core';
+import { Component, OnInit, EventEmitter, Output, Input, ViewChild } from '@angular/core';
+import { NgForm } from '@angular/forms';
 
 import { combineLatest } from 'rxjs';
 import { tap, map, filter, withLatestFrom } from 'rxjs/operators';
-import { Store } from '@ngrx/store';
+import { Store, ActionsSubject } from '@ngrx/store';
 
 import { AppState } from '@store';
 import * as searchStore from '@store/search';
@@ -41,6 +42,8 @@ export class BreadcrumbListComponent implements OnInit {
   @Output() clearSearch = new EventEmitter<void>();
 
   @Input() isLoading: boolean;
+
+  @ViewChild('polygonForm', { static: false }) public polygonForm: NgForm;
 
   public accent = 'primary';
   public canSearch$ = this.store$.select(searchStore.getCanSearch);
@@ -81,6 +84,7 @@ export class BreadcrumbListComponent implements OnInit {
   );
 
   public polygon$ = this.mapService.searchPolygon$;
+  public searchPolygon = '';
 
   public additionalFiltersPreview$ = this.store$.select(filtersStore.getNumberOfAdditionalFilters).pipe(
     map(amt => amt > 0 ? ` · ${amt}` : '')
@@ -88,12 +92,16 @@ export class BreadcrumbListComponent implements OnInit {
 
   constructor(
     private store$: Store<AppState>,
+    private actions$: ActionsSubject,
     private mapService: MapService,
     private wktService: WktService,
     private dialog: MatDialog,
   ) { }
 
   ngOnInit() {
+    this.actions$.pipe(
+      filter(action => action.type === filtersStore.FiltersActionType.CLEAR_FILTERS)
+    ).subscribe(_ => this.polygonForm.reset());
   }
 
   public onDoSearch(): void {
