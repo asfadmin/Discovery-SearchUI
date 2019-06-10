@@ -1,32 +1,9 @@
-<mat-list *ngIf="products">
+<mat-list class="products-list" *ngIf="products">
   <h3 mat-subheader>Granule Products</h3>
 
-  <mat-list-item *ngFor="let product of products"
-    >
-    <div
-      (click)="onToggleQueueProduct(product)"
-      class="clickable" mat-line>
-      <b>
-        <span *ngIf="product.productTypeDisplay.length > 40">
-          {{ product.productTypeDisplay | truncate : 36 }}{{ product.productTypeDisplay | truncate : -4 : '' }}
-        </span>
-        <span *ngIf="product.productTypeDisplay.length <= 40">
-          {{ product.productTypeDisplay }}
-        </span>
-      </b>
-    </div>
-
-      <div mat-line>{{product.bytes | readableSizeFromBytes }}</div>
-
-      <a mat-icon-button [href]="product.downloadUrl" target="_blank" matTooltip="Download product">
-        <mat-icon>cloud_download</mat-icon>
-      </a>
-
-      <button (click)="onToggleQueueProduct(product)"
-         matTooltip="{{ !queuedProductIds.has(product.id) ? 'Add product to queue' : 'Remove product from queue' }}"
-         mat-icon-button>
-          <mat-icon *ngIf="!queuedProductIds.has(product.id)">add_shopping_cart</mat-icon>
-          <mat-icon *ngIf="queuedProductIds.has(product.id)">shopping_cart</mat-icon>
-      </button>
-  </mat-list-item>
+  <app-product *ngFor="let product of products"
+    (toggle)="onToggleQueueProduct(product)"
+    [product]="product"
+    [isQueued]="queuedProductIds.has(product.id)">
+  </app-product>
 </mat-list>

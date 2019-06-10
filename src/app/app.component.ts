@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpParams } from '@angular/common/http';
-import { MatBottomSheet } from '@angular/material';
+import { MatBottomSheet } from '@angular/material/bottom-sheet';
 
 import { Store } from '@ngrx/store';
 
@@ -65,7 +65,7 @@ export class AppComponent implements OnInit {
     );
 
     this.searchParams$.getParams().pipe(
-      map(params => params.append('output', 'COUNT')),
+      map(params => ({...params, ...{output: 'COUNT'}})),
       switchMap(params => this.asfSearchApi.query<any[]>(params).pipe(
           catchError(_ => of(-1))
         )
@@ -99,6 +99,7 @@ export class AppComponent implements OnInit {
     this.store$.dispatch(new granulesStore.ClearGranules());
     this.store$.dispatch(new filterStore.ClearFilters());
     this.store$.dispatch(new missionStore.SelectMission(null));
+    this.store$.dispatch(new uiStore.CloseBottomMenu());
     this.mapService.clearDrawLayer();
 
     if (this.searchType === models.SearchType.DATASET) {

@@ -1,4 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
+
+import * as models from '@models';
+import { PropertyService } from '@services';
 
 @Component({
   selector: 'app-dataset-search',
@@ -7,8 +10,14 @@ import { Component } from '@angular/core';
 })
 
 export class DatasetSearchComponent {
+  @Input() platform: models.CMRProduct;
+
   defaultPanelOpenState = true;
   panelIsDisabled = true;
   customCollapsedHeight = '30px';
   customExpandedHeight = '30px';
+
+  public p = models.Props;
+
+  constructor(public prop: PropertyService) {}
 }

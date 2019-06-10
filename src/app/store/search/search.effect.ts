@@ -92,7 +92,7 @@ export class SearchEffects {
   );
 
   @Effect()
-  private openBottomMenuOnSearchResponse: Observable<Action> = this.actions$.pipe(
+  private showBottomMenuOnSearchResponse: Observable<Action> = this.actions$.pipe(
     ofType<SearchResponse>(SearchActionType.SEARCH_RESPONSE),
     map(_ => new uiStore.OpenBottomMenu()),
   );

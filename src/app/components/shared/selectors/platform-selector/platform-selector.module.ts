@@ -4,7 +4,9 @@ import { FormsModule } from '@angular/forms';
 
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
-import { MatListModule, MatSelectModule, MatMenuModule } from '@angular/material';
+import { MatListModule } from '@angular/material/list';
+import { MatMenuModule } from '@angular/material/menu';
+import { MatSelectModule } from '@angular/material/select';
 import { MatSharedModule } from '@shared';
 import { PlatformSelectorComponent } from './platform-selector.component';
 import { PlatformComponent } from './platform/platform.component';

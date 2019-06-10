@@ -2,12 +2,10 @@
 
 // Create a config with the default typography levels.
 $config: mat-typography-config();
-$primary-light: lighten($asf-primary, 40%);
-$primary-dark: darken($asf-primary, 15%);
 
 .mat-header-base {
-  background-color: $primary-light !important;
-  color: $primary-dark;
+  background-color: $asf-primary-light !important;
+  color: $asf-primary-dark;
   border-bottom-left-radius: 0;
   border-bottom-right-radius: 0;
   border-left-width: 0;

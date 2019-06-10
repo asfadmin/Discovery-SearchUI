@@ -10,6 +10,10 @@
   color: rgba(0, 0, 0, 0.6);
 }
 
+.v-mid {
+  vertical-align: middle;
+}
+
 .active-btn {
   background-color: rgba(0, 0, 0, 0.07);
 }
@@ -51,8 +55,16 @@ ul {
   background-color: $asf-warn;
 }
 
-.transparent {
-  background-color: rgba(255, 255, 255, 1);
+.image-dialog {
   margin: 0;
   padding: 0;
+  overflow: hidden;
+}
+
+.max-width-100 {
+  max-width: 115px !important;
+
+  .mat-form-field-infix {
+    width: 100px !important;
+  }
 }

@@ -1,14 +1,14 @@
 .position {
   height: 465px + 36px;
   max-height: 90%;
-  width: 100vw;
+  width: 100%;
   margin: 0;
   padding: 0;
   right: 0;
   bottom: 0;
   position: fixed;
   z-index: 999;
-  overflow-x: auto;
+  pointer-events: none;
 }
 
 .scrollable-card {
@@ -22,6 +22,11 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  pointer-events: none;
+}
+
+.toggle-button {
+  pointer-events: auto;
 }
 
 .bottom-menu--layout {
@@ -34,10 +39,11 @@
 .bottom-menu--background {
   background: rgba(238, 238, 238, 0.7);
   background: white;
+  pointer-events: auto;
 }
 
 .bottom-menu--column {
   width: 33%;
   min-width: 300px;
-  max-height: 465px;
+  max-height: 510px;
 }

@@ -17,7 +17,7 @@
       <textarea
         (change)="onNewPolygon($event.target.value)"
         [value]="polygon$ | async"
-        matInput placeholder="Current Area of Intreset">
+        matInput placeholder="Area of Interest">
       </textarea>
 
       <mat-icon
@@ -28,9 +28,14 @@
       </mat-icon>
     </mat-form-field>
 
-    <button (click)="onFileUpload()" mat-raised-button color="primary" matTooltip="Import Area of Intreset">
-      Import Search Area
+    <button (click)="onFileUpload()" mat-flat-button color="primary">
+      Import Area of Interest
     </button>
+
+    <button (click)="onClearPolygon()" mat-flat-button matTooltip="Clear Area of Intreset">
+      Clear
+    </button>
+
   </div>
 </div>
 

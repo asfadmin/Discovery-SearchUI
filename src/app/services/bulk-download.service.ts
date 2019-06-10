@@ -16,7 +16,7 @@ export class BulkDownloadService {
 
   public downloadScript$(products: CMRProduct[]): Observable<any> {
     const productsStr = products
-      .map(product => product.file)
+      .map(product => product.downloadUrl)
       .join(',');
 
     const formData = new FormData();

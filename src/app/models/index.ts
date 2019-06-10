@@ -9,3 +9,4 @@ export * from './date-extrema.models';
 export * from './range.model';
 export * from './ui.model';
 export * from './view-types.model';
+export * from './filters.model';

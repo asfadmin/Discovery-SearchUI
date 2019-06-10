@@ -1,10 +1,9 @@
 .nav-item-position {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+  //display: block !important;
 }
 
 .layout {
+  z-index: 999;
   display: flex;
   justify-content: flex-end;
 }
@@ -12,5 +11,7 @@
 .bounds {
   display: block;
   padding: 0 !important;
-  margin: 0 20px 0 0;
+  margin: 0;
+  overflow-x: hidden;
+  overflow-y: hidden;
 }

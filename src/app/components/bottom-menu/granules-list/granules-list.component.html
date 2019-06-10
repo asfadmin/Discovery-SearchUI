@@ -1,7 +1,9 @@
-<mat-card class="card-spacing" style="display: flex; flex-direction: column; justify-content: space-between; height: 425px">
-
+<mat-card class="granule-list card-spacing">
+  <cdk-virtual-scroll-viewport style="height: 475px;"
+    minBufferPx="500" maxBufferPx="600"
+    itemSize="72">
   <mat-action-list>
-    <ng-container *ngFor="let granule of currentPageOf(granules, pageSize, pageIndex)">
+    <div *cdkVirtualFor="let granule of granules" style="height: 72px">
       <button
         (mouseenter)="onSetFocusedGranule(granule)"
         (mouseleave) ="onClearFocusedGranule(granule)"
@@ -16,34 +18,19 @@
           <app-product-name [name]="granule.name" matLine></app-product-name>
 
           <div matLine>
-            <span matTooltip="Path" matTooltipPosition="after">{{ granule.metadata.path }}</span>,
-            <span matTooltip="Frame" matTooltipPosition="after">{{ granule.metadata.frame }}</span>,
-            <span matTooltip="Polarization" matTooltipPosition="after">{{ granule.metadata.polarization }}</span>,
-            <span matTooltip="Flight Direction" matTooltipPosition="after">
-              {{ granule.metadata.flightDirection === 'ASCENDING' ? 'ASC' : 'DES' }}
-            </span>,
-            <span matTooltip="Absolute Orbit" matTooltipPosition="after">{{ granule.metadata.absoluteOrbit }}</span>
+            <span *ngIf="prop.isRelevant(p.DATE)">Date • {{ granule.metadata.date | shortDate }}</span>
           </div>
 
-          <fa-icon (click)="onQueueGranule($event, granule.groupId)"
-            [icon]="queueIcon"
-            matTooltip="Queue this granules products"
-            class="ml-2">
-          </fa-icon>
+          <mat-icon (click)="onZoomTo(granule)" class="ml-2" matTooltip="Zoom to granule">
+            settings_overscan
+          </mat-icon>
+          <mat-icon (click)="onQueueGranule($event, granule.groupId)"
+            style="margin-left: 10px;"
+            matTooltip="Queue granule products">
+            add
+          </mat-icon>
       </button>
-    </ng-container>
-  </mat-action-list>
-  <div style="display: flex; justify-content: space-between; align-items: center;">
-    <div>
-      <button (click)="clearResults()" mat-button>Clear Results</button>
     </div>
-    <mat-paginator
-      [length]="granules.length"
-      [pageSize]="pageSize"
-      [pageSizeOptions]="pageSizeOptions"
-      [hidePageSize]="true"
-      [showFirstLastButtons]="true"
-      (page)="onNewPage($event)">
-    </mat-paginator>
-  </div>
+  </mat-action-list>
+  </cdk-virtual-scroll-viewport>
 </mat-card>

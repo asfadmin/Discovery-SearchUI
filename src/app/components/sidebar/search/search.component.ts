@@ -5,6 +5,7 @@ import { map } from 'rxjs/operators';
 
 import { AppState } from '@store';
 import * as missionStore from '@store/mission';
+import * as filtersStore from '@store/filters';
 
 import * as models from '@models';
 
@@ -13,12 +14,15 @@ import * as models from '@models';
   templateUrl: './search.component.html',
   styleUrls: ['./search.component.css']
 })
-export class SearchComponent implements OnInit {
+export class SearchComponent {
   @Input() selectedSearchType: models.SearchType;
   @Output() newSearchType = new EventEmitter<models.SearchType>();
 
   public searchTypes = models.SearchType;
 
+  public platform$ = this.store$.select(filtersStore.getSelectedPlatforms).pipe(
+    map(ps => ps.slice().pop())
+  );
   public missionsByPlatform$ = this.store$.select(missionStore.getMissionsByPlatform);
   public selectedMission$ = this.store$.select(missionStore.getSelectedMission);
   public missionPlatforms$ = this.missionsByPlatform$.pipe(
@@ -26,9 +30,6 @@ export class SearchComponent implements OnInit {
   );
 
   constructor(private store$: Store<AppState>) {}
-
-  ngOnInit() {
-  }
 
   public onSetSearchType(searchType: models.SearchType): void {
     this.newSearchType.emit(searchType);

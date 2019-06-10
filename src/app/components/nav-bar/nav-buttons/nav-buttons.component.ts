@@ -2,23 +2,25 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 
 import { ClipboardService } from 'ngx-clipboard';
 
-import { DatapoolAuthService } from '@services';
+import { DatapoolAuthService, AsfApiService, EnvironmentService } from '@services';
 import { CMRProduct } from '@models';
 
 @Component({
   selector: 'app-nav-buttons',
   templateUrl: './nav-buttons.component.html',
-  styleUrls: ['./nav-buttons.component.css']
+  styleUrls: ['./nav-buttons.component.scss']
 })
 export class NavButtonsComponent {
   public asfWebsiteUrl = 'https://www.asf.alaska.edu';
 
-  @Input() products: CMRProduct[];
+  @Input() queuedProducts: CMRProduct[];
 
   @Output() openQueue = new EventEmitter<void>();
 
   constructor(
     public datapoolAuthService: DatapoolAuthService,
+    public env: EnvironmentService,
+    public asfApiService: AsfApiService,
     public clipboard: ClipboardService,
   ) {}
 
@@ -45,5 +47,17 @@ export class NavButtonsComponent {
       `mailto:?subject=${subject}` +
       `&body=${encodeURIComponent(document.URL)}`
     );
+  }
+
+  public isDevMode(): boolean {
+    return !!this.env.value.devMode;
+  }
+
+  public onTestSelected(): void {
+    this.asfApiService.setApiMaturity('test');
+  }
+
+  public onProdSelected(): void {
+    this.asfApiService.setApiMaturity('prod');
   }
 }

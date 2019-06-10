@@ -8,6 +8,7 @@ phases:
       - npm install -g @angular/cli@6.2.4
   pre_build:
     commands:
+      - cp src/assets/envs/env-${MATURITY}.js src/assets/env.js
       - npm install
   build:
     commands:
@@ -16,3 +17,6 @@ phases:
     commands:
       - cd dist/${APPLICATION}
       - aws s3 sync . "s3://${S3_BUCKET}"
+      - cd ../..
+      - chmod +x ./invalidate-cf.sh
+      - . ./invalidate-cf.sh ${CDN_ID}

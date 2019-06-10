@@ -2,7 +2,8 @@ import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 
-import { MatSelectModule, MatExpansionModule } from '@angular/material';
+import { MatExpansionModule } from '@angular/material/expansion';
+import { MatSelectModule } from '@angular/material/select';
 import { MatSharedModule } from '@shared';
 
 import { PathSelectorModule } from '@components/shared/selectors/path-selector';

@@ -15,9 +15,11 @@ import * as mapStore from '@store/map';
 import * as uiStore from '@store/ui';
 
 import { faFileDownload, faPlus } from '@fortawesome/free-solid-svg-icons';
-import { MatPaginator } from '@angular/material';
+import { MatPaginator } from '@angular/material/paginator';
+import { CdkVirtualScrollViewport } from '@angular/cdk/scrolling';
 
-import { CMRProduct, SearchType, MapInteractionModeType } from '@models';
+import * as services from '@services';
+import { CMRProduct, SearchType, MapInteractionModeType, Props, datasetProperties, Platform } from '@models';
 
 @Component({
   selector: 'app-granules-list',
@@ -28,13 +30,14 @@ import { CMRProduct, SearchType, MapInteractionModeType } from '@models';
 export class GranulesListComponent implements OnInit {
   @Input() granules$: Observable<CMRProduct[]>;
   @Input() selected: string;
+  @Input() platform: Platform;
 
   @Output() newSelected = new EventEmitter<string>();
   @Output() queueGranule = new EventEmitter<string>();
   @Output() newFocusedGranule = new EventEmitter<CMRProduct>();
   @Output() clearFocusedGranule = new EventEmitter<void>();
 
-  @ViewChild(MatPaginator) paginator: MatPaginator;
+  @ViewChild(CdkVirtualScrollViewport, { static: true }) scroll: CdkVirtualScrollViewport;
 
   public granules: CMRProduct[];
   public pageSizeOptions = [5, 10];
@@ -44,18 +47,29 @@ export class GranulesListComponent implements OnInit {
   public downloadIcon = faFileDownload;
   public queueIcon = faPlus;
   public searchType: SearchType;
+  public selectedFromList = false;
+  public p = Props;
 
-  constructor(private store$: Store<AppState>) {}
+  constructor(
+    private store$: Store<AppState>,
+    private mapService: services.MapService,
+    private wktService: services.WktService,
+    public prop: services.PropertyService,
+  ) {}
 
   ngOnInit() {
     this.store$.select(granulesStore.getSelectedGranule).pipe(
       withLatestFrom(this.granules$),
       filter(([selected, _]) => !!selected),
-      map(([selected, granules]) =>
-        Math.ceil((granules.indexOf(selected) + 1) / this.pageSize) - 1
-      ),
+      map(([selected, granules]) => granules.indexOf(selected)),
     ).subscribe(
-      page => this.pageTo(page)
+      idx => {
+        if (!this.selectedFromList) {
+          this.scrollTo(idx);
+        }
+
+        this.selectedFromList = false;
+      }
     );
 
     this.granules$.subscribe(
@@ -63,27 +77,19 @@ export class GranulesListComponent implements OnInit {
     );
 
     this.store$.select(searchStore.getIsLoading).subscribe(
-      _ => this.paginator.firstPage()
+      _ => this.scroll.scrollToOffset(0)
     );
 
     fromEvent(document, 'keydown').subscribe((e: KeyboardEvent) => {
       const { key } = e;
 
       switch ( key ) {
-        case 'ArrowDown': {
+        case 'ArrowRight': {
           this.selectNextProduct();
           break;
         }
-        case 'ArrowUp': {
-          this.selectPreviousProduct();
-          break;
-        }
-        case 'ArrowRight': {
-          this.paginator.nextPage();
-          break;
-        }
         case 'ArrowLeft': {
-          this.paginator.previousPage();
+          this.selectPreviousProduct();
           break;
         }
       }
@@ -128,12 +134,12 @@ export class GranulesListComponent implements OnInit {
     this.store$.dispatch(new granulesStore.SetSelectedGranule(previousGranule.id));
   }
 
-  private pageTo(page: number): void {
-    this.paginator.pageIndex = page;
-    this.pageIndex = page;
+  private scrollTo(idx: number): void {
+    this.scroll.scrollToIndex(idx);
   }
 
   public onGranuleSelected(name: string): void {
+    this.selectedFromList = true;
     this.newSelected.emit(name);
   }
 
@@ -151,16 +157,6 @@ export class GranulesListComponent implements OnInit {
     this.clearFocusedGranule.emit();
   }
 
-  public currentPageOf(granules, pageSize, pageIndex): CMRProduct[] {
-    const offset = pageIndex * pageSize;
-    return granules.slice(offset, offset + pageSize);
-  }
-
-  public onNewPage(page): void {
-    this.pageIndex = page.pageIndex;
-    this.pageSize = page.pageSize;
-  }
-
   public clearResults(): void {
     this.store$.dispatch(new granulesStore.ClearGranules());
 
@@ -169,5 +165,14 @@ export class GranulesListComponent implements OnInit {
         new mapStore.SetMapInteractionMode(MapInteractionModeType.DRAW)
       );
     }
+  }
+
+  public onZoomTo(granule: CMRProduct): void {
+    const features = this.wktService.wktToFeature(
+      granule.metadata.polygon,
+      this.mapService.epsg()
+    );
+
+    this.mapService.zoomTo(features);
   }
 }

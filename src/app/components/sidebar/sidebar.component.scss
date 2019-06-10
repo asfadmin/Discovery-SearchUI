@@ -1,5 +1,7 @@
 @import "asf-theme";
 
+$menu-height: 500px;
+
 .hidden {
   display: none;
 }
@@ -7,12 +9,12 @@
 .sidebar-position {
   width: 450px;
   max-width: calc(100% - 28px);
-  height: calc(100vh - 32px);
+  height: calc(#{$menu_height} - 32px);
   position: fixed;
   background: white;
   right: 100%;
   margin: 0;
-  top: 114px;
+  top: 148px;
   z-index: 999;
 }
 
@@ -54,7 +56,7 @@ $break-large: 1200px;
 }
 
 .filter-list {
-  height: 100%;
+  height: $menu-height;
   //overflow-y: scroll;
   margin: 0;
   padding: 0;
@@ -64,7 +66,7 @@ $break-large: 1200px;
   z-index: 1;
 }
 
-#support_by {
+.support_by {
   max-width: 80%;
   display: block;
   margin-left: auto;

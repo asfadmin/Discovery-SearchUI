@@ -2,7 +2,11 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
 
-import { MatBadgeModule, MatMenuModule, MatInputModule, MatToolbarModule, MatProgressBarModule} from '@angular/material';
+import { MatBadgeModule } from '@angular/material/badge';
+import { MatInputModule } from '@angular/material/input';
+import { MatMenuModule } from '@angular/material/menu';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { MatToolbarModule } from '@angular/material/toolbar';
 
 import { MatSharedModule } from '@shared';
 import { NavBarComponent } from './nav-bar.component';

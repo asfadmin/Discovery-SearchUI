@@ -1,5 +1,5 @@
 import { Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
-import { MatDialog } from '@angular/material';
+import { MatDialog } from '@angular/material/dialog';
 import { QueueComponent } from '@components/nav-bar/queue';
 
 import * as models from '@models';
@@ -10,7 +10,6 @@ import * as models from '@models';
   styleUrls: ['./nav-bar.component.scss'],
 })
 export class NavBarComponent {
-
   @Output() openQueue = new EventEmitter<void>();
   @Output() doSearch = new EventEmitter<void>();
   @Output() clearSearch = new EventEmitter<void>();

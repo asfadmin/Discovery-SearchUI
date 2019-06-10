@@ -2,7 +2,9 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
-import { MatFormFieldModule, MatInputModule, MatSlideToggleModule } from '@angular/material';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatSharedModule } from '@shared';
 
 import { PathSelectorComponent } from './path-selector.component';

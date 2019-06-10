@@ -7,11 +7,11 @@ import { Observable } from 'rxjs';
 import { map, withLatestFrom, switchMap } from 'rxjs/operators';
 
 import { AppState } from '../app.reducer';
-import { getGranuleProducts } from './granules.reducer';
 
 import * as services from '@services';
 
-import { GranulesActionType } from './granules.action';
+import { GranulesActionType, SetSelectedGranule } from './granules.action';
+import * as uiStore from '@store/ui';
 
 @Injectable()
 export class GranulesEffects {
