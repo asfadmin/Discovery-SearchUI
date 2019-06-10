@@ -63,6 +63,7 @@ export const routes = [
     services.PolygonValidationService,
     services.DateExtremaService,
     services.EnvironmentService,
+    services.PropertyService,
   ],
   bootstrap: [ AppComponent ],
 })

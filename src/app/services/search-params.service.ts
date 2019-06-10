@@ -15,6 +15,8 @@ import * as missionStore from '@store/mission';
 
 import { MapService } from './map/map.service';
 import { RangeService } from './range.service';
+import { PropertyService } from './property.service';
+
 import * as models from '@models';
 
 @Injectable({
@@ -26,6 +28,7 @@ export class SearchParamsService {
     private store$: Store<AppState>,
     private mapService: MapService,
     private rangeService: RangeService,
+    private prop: PropertyService,
   ) { }
 
   public getParams(): Observable<HttpParams> {
@@ -147,14 +150,14 @@ export class SearchParamsService {
   private pathRange$() {
     return this.store$.select(filterStore.getPathRange).pipe(
       map(range => this.rangeService.toString(range)),
-      map(pathRange => ({ relativeOrbit: pathRange }))
+      map(pathRange => ({ relativeOrbit: pathRange })),
     );
   }
 
   private frameRange$() {
     return this.store$.select(filterStore.getFrameRange).pipe(
       map(range => this.rangeService.toString(range)),
-      map(frameRange => ({ frame: frameRange }))
+      map(frameRange => ({ frame: frameRange })),
     );
   }
 

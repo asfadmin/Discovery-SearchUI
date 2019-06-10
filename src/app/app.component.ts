@@ -65,6 +65,7 @@ export class AppComponent implements OnInit {
     );
 
     this.searchParams$.getParams().pipe(
+      tap(console.log),
       map(params => params.append('output', 'COUNT')),
       switchMap(params => this.asfSearchApi.query<any[]>(params).pipe(
           catchError(_ => of(-1))

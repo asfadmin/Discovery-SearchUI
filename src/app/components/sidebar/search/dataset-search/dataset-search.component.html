@@ -1,6 +1,6 @@
 <mat-accordion multi>
 
-  <mat-expansion-panel *ngIf="isRelavent(p.PATH) && isRelavent(p.FRAME)"
+  <mat-expansion-panel *ngIf="prop.isRelavent(p.PATH) && prop.isRelavent(p.FRAME)"
     [expanded]="defaultPanelOpenState" [disabled]="panelIsDisabled">
     <mat-expansion-panel-header [collapsedHeight]="customCollapsedHeight" [expandedHeight]="customExpandedHeight">
       <mat-panel-title>
