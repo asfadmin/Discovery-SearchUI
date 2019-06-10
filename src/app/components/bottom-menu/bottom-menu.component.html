@@ -5,7 +5,7 @@
   <div class="toggle-button-position">
     <button (click)="onToggleMenu()"
        class="toggle-button"
-      mat-raised-button>
+      mat-flat-button>
       <span>Results </span>
       <mat-icon>
         {{ (isBottomMenuOpen$ | async) ? 'keyboard_arrow_down' : 'keyboard_arrow_up' }}
@@ -13,18 +13,21 @@
     </button>
   </div>
   <div class="bottom-menu--background  bottom-menu--layout">
-    <app-granules-list
-      class="bottom-menu--column"
-      (newFocusedGranule)="onNewFocusedGranule($event)"
-      (clearFocusedGranule)="onClearFocusedGranule()"
-      (newSelected)="onNewGranuleSelected($event)"
-      (queueGranule)="onQueueGranuleProducts($event)"
-      [granules$]="granules$"
-      [platform]="searchPlatform$ | async"
-      [selected]="(selectedGranule$ | async)?.name">
-    </app-granules-list>
+    <mat-card class="card-spacing scrollable-card bottom-menu--column">
+      <mat-card-subtitle>Granule List</mat-card-subtitle>
+      <app-granules-list
+        (newFocusedGranule)="onNewFocusedGranule($event)"
+        (clearFocusedGranule)="onClearFocusedGranule()"
+        (newSelected)="onNewGranuleSelected($event)"
+        (queueGranule)="onQueueGranuleProducts($event)"
+        [granules$]="granules$"
+        [platform]="searchPlatform$ | async"
+        [selected]="(selectedGranule$ | async)?.name">
+      </app-granules-list>
+    </mat-card>
 
     <mat-card class="card-spacing scrollable-card bottom-menu--column">
+      <mat-card-subtitle>Granule Products</mat-card-subtitle>
       <app-products
         [products]="selectedProducts$ | async"
         [queuedProductIds]="queuedProductIds"
@@ -33,6 +36,7 @@
     </mat-card>
 
     <mat-card class="card-spacing bottom-menu--column">
+      <mat-card-subtitle>Granule Detail</mat-card-subtitle>
       <app-granule-detail
         [granule]="selectedGranule$ | async"
         [searchType]="searchType$ | async"

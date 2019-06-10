@@ -21,7 +21,7 @@ import * as services from '@services';
 @Component({
   selector: 'app-bottom-menu',
   templateUrl: './bottom-menu.component.html',
-  styleUrls: ['./bottom-menu.component.css'],
+  styleUrls: ['./bottom-menu.component.scss'],
   animations: [
     trigger('changeMenuY', [
       state('shown', style({ transform: 'translateY(0%)'
