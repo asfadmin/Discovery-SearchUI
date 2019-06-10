@@ -54,6 +54,7 @@ export class GranulesListComponent implements OnInit {
     private store$: Store<AppState>,
     private mapService: services.MapService,
     private wktService: services.WktService,
+    public prop: services.PropertyService,
   ) {}
 
   ngOnInit() {
@@ -116,10 +117,6 @@ export class GranulesListComponent implements OnInit {
     const nextGranule = this.granules[nextIdx];
 
     this.store$.dispatch(new granulesStore.SetSelectedGranule(nextGranule.id));
-  }
-
-  public isRelavent(prop: Props): boolean {
-    return datasetProperties[prop].includes(this.platform.name);
   }
 
   private selectPreviousProduct(): void {
