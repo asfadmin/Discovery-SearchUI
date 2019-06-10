@@ -31,7 +31,7 @@ export class SearchParamsService {
     private prop: PropertyService,
   ) { }
 
-  public getParams(): Observable<HttpParams> {
+  public getParams(): Observable<{[id: string]: string | null}> {
     return combineLatest(
       this.searchType$(),
       this.listParam$(),
@@ -55,13 +55,6 @@ export class SearchParamsService {
             }
           }
         }),
-      map(params => Object.entries(params)
-        .filter(([param, val]) => !!val)
-        .reduce(
-          (queryParams, [param, val]) => queryParams.set(param, <string>val),
-          new HttpParams()
-        )
-      ),
     );
   }
 

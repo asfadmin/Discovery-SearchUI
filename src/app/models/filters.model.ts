@@ -14,6 +14,11 @@ export enum Props {
   BASELINE_TOOL = 'Baseline Tool',
 }
 
+export const apiParamNames = {
+  [Props.PATH]: 'relativeOrbit',
+  [Props.FRAME]: 'frame',
+};
+
 export const allPlatforms = [
   'SENTINEL-1', 'SMAP', 'UAVSAR', 'ALOS PALSAR', 'RADARSAT-1', 'ERS', 'JERS-1', 'AIRSAR', 'SEASAT'
 ];

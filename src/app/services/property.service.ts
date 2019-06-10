@@ -20,7 +20,6 @@ export class PropertyService {
   ) {
     this.store$.select(filtersStore.getSelectedPlatforms).pipe(
       map(ps => [...ps].pop()),
-      tap(console.log),
     ).subscribe(
       p => this.platform = p
     );
