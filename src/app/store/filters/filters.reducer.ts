@@ -73,7 +73,7 @@ export const initState: FiltersState = {
 export function filtersReducer(state = initState, action: FiltersActions): FiltersState {
   switch (action.type) {
     case FiltersActionType.ADD_SELECTED_PLATFORM: {
-      const selected = new Set<string>([action.payload]);
+      const selected = new Set<string>([action.payload.toUpperCase()]);
 
       return {
         ...state,
@@ -106,7 +106,9 @@ export function filtersReducer(state = initState, action: FiltersActions): Filte
     }
 
     case FiltersActionType.SET_SELECTED_PLATFORMS: {
-      const selected = new Set(action.payload);
+      const selected = new Set(
+        action.payload.map(dataset => dataset.toUpperCase())
+      );
 
       return {
         ...state,

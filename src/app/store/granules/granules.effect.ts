@@ -7,11 +7,11 @@ import { Observable } from 'rxjs';
 import { map, withLatestFrom, switchMap } from 'rxjs/operators';
 
 import { AppState } from '../app.reducer';
-import { getGranuleProducts } from './granules.reducer';
 
 import * as services from '@services';
 
-import { GranulesActionType } from './granules.action';
+import { GranulesActionType, SetSelectedGranule } from './granules.action';
+import * as uiStore from '@store/ui';
 
 @Injectable()
 export class GranulesEffects {
@@ -19,4 +19,10 @@ export class GranulesEffects {
     private actions$: Actions,
     private store$: Store<AppState>,
   ) {}
+
+  @Effect()
+  private openBottomMenuOnSearchResponse: Observable<Action> = this.actions$.pipe(
+    ofType<SetSelectedGranule>(GranulesActionType.SET_SELECTED),
+    map(_ => new uiStore.OpenBottomMenu()),
+  );
 }

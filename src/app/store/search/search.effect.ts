@@ -90,10 +90,4 @@ export class SearchEffects {
     ofType<SearchResponse>(SearchActionType.SEARCH_RESPONSE),
     map(_ => new uiStore.CloseFiltersMenu()),
   );
-
-  @Effect()
-  private openBottomMenuOnSearchResponse: Observable<Action> = this.actions$.pipe(
-    ofType<SearchResponse>(SearchActionType.SEARCH_RESPONSE),
-    map(_ => new uiStore.OpenBottomMenu()),
-  );
 }
