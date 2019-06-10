@@ -13,21 +13,6 @@
   </div>
 
   <div class="form-layout">
-    <mat-form-field style="margin-right: 10px; width: 90%;">
-      <textarea
-        (change)="onNewPolygon($event.target.value)"
-        [value]="polygon$ | async"
-        matInput placeholder="Area of Interest">
-      </textarea>
-
-      <mat-icon
-        *ngIf="!!(polygon$ | async)" (click)="onCopy()"
-        matTooltip="Copy to clipboard"
-        style="cursor: pointer; margin-left:10px" matSuffix>
-          file_copy
-      </mat-icon>
-    </mat-form-field>
-
     <button (click)="onFileUpload()" mat-flat-button color="primary">
       Import Area of Interest
     </button>
@@ -35,7 +20,6 @@
     <button (click)="onClearPolygon()" mat-flat-button matTooltip="Clear Area of Intreset">
       Clear
     </button>
-
   </div>
 </div>
 
