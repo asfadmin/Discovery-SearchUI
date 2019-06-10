@@ -11,3 +11,4 @@ export { RangeService } from './range.service';
 export { PolygonValidationService } from './polygon-validation.service';
 export { DatapoolAuthService } from './datapool-auth.service';
 export { EnvironmentService } from './environment.service';
+export { PropertyService } from './property.service';

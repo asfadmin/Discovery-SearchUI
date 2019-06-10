@@ -3,8 +3,9 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 
 import { Observable, Subject } from 'rxjs';
 
-import { PolygonValidateResponse, MissionPlatform } from '@models';
+import { PolygonValidateResponse, MissionPlatform, Props, apiParamNames } from '@models';
 import { EnvironmentService } from './environment.service';
+import { PropertyService } from './property.service';
 
 @Injectable({
   providedIn: 'root'
@@ -16,6 +17,7 @@ export class AsfApiService {
 
   constructor(
     private env: EnvironmentService,
+    private prop: PropertyService,
     private http: HttpClient
   ) {}
 
@@ -35,7 +37,11 @@ export class AsfApiService {
     return this.http.get(`${this.apiUrl}/health`);
   }
 
-  public query<T>(stateParams: HttpParams): Observable<T> {
+  public query<T>(stateParamsObj: {[paramName: string]: string | null}): Observable<T> {
+    const relevant = this.onlyRelevantParams(stateParamsObj);
+
+    const stateParams = this.toHttpParams(relevant);
+
     const params = Object.entries(this.baseParams())
     .filter(
       ([key, val]) => !stateParams.get(key)
@@ -54,6 +60,32 @@ export class AsfApiService {
     return this.http.get<T>(`${this.apiUrl}/services/search/param?${queryParamsStr}`, {
       responseType
     });
+  }
+
+  private toHttpParams(paramsObj): HttpParams {
+    return Object.entries(paramsObj)
+    .filter(([param, val]) => !!val)
+    .reduce(
+      (queryParams, [param, val]) => queryParams.set(param, <string>val),
+      new HttpParams()
+    );
+  }
+
+  private onlyRelevantParams(paramsObj): {[id: string]: string | null} {
+  const irrelevant = Object.entries(apiParamNames)
+      .filter(
+        ([property, apiName]) => !this.prop.isRelevant(<Props>property)
+      )
+      .map(([_, apiName]) => apiName);
+
+  const filteredParams = Object.keys(paramsObj)
+    .filter(key => !irrelevant.includes(key))
+    .reduce((filtered, key) => {
+      filtered[key] = paramsObj[key];
+      return filtered;
+    }, {});
+
+    return filteredParams;
   }
 
   public missionSearch(platform: MissionPlatform): Observable<{result: string[]}> {
