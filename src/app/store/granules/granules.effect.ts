@@ -19,10 +19,4 @@ export class GranulesEffects {
     private actions$: Actions,
     private store$: Store<AppState>,
   ) {}
-
-  @Effect()
-  private openBottomMenuOnSearchResponse: Observable<Action> = this.actions$.pipe(
-    ofType<SetSelectedGranule>(GranulesActionType.SET_SELECTED),
-    map(_ => new uiStore.OpenBottomMenu()),
-  );
 }
