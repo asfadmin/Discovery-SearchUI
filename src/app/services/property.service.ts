@@ -25,7 +25,7 @@ export class PropertyService {
     );
   }
 
-  public isRelavent(prop: models.Props): boolean {
+  public isRelevant(prop: models.Props): boolean {
     return models.datasetProperties[prop].includes(this.platform.name);
   }
 }

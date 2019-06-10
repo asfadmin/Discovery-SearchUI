@@ -74,7 +74,7 @@ export class AsfApiService {
   private onlyRelevantParams(paramsObj): {[id: string]: string | null} {
   const irelevant = Object.entries(apiParamNames)
       .filter(
-        ([property, apiName]) => !this.prop.isRelavent(<Props>property)
+        ([property, apiName]) => !this.prop.isRelevant(<Props>property)
       )
       .map(([_, apiName]) => apiName);
 
