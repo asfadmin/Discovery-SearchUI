@@ -24,6 +24,11 @@
           <mat-icon (click)="onZoomTo(granule)" class="ml-2" matTooltip="Zoom to granule">
             settings_overscan
           </mat-icon>
+          <mat-icon (click)="onQueueGranule($event, granule.groupId)"
+            style="margin-left: 10px;"
+            matTooltip="Queue granule products">
+            add
+          </mat-icon>
       </button>
     </div>
   </mat-action-list>
