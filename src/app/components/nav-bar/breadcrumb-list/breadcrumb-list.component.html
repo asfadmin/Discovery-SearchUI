@@ -41,7 +41,10 @@
         <form #polygonForm="ngForm"
           (keydown.enter)="$event.preventDefault()"
           fxFlex="230px" class="breadcrumb">
-          <mat-form-field>
+          <mat-form-field
+            (mouseenter)="showCopyIcon = true"
+            (mouseleave)="showCopyIcon = false"
+            style="width: 100%; max-width: 100%;">
             <label>
               <input
                 (change)="onInputSearchPolygon($event.target.value)"
@@ -52,9 +55,15 @@
             </label>
 
             <mat-icon
+              *ngIf="!!(polygon$ | async) && showCopyIcon" (click)="onCopy()"
+              matTooltip="Copy to clipboard"
+              style="cursor: pointer; margin-left:10px" matSuffix>
+                file_copy
+            </mat-icon>
+            <mat-icon
               (click)="onNewSelectedFilter(filterTypes.AOI)"
               matTooltip="More options"
-              style="cursor: pointer; margin-left: 10px;" matSuffix>
+              style="cursor: pointer; margin-left: 3px;" matSuffix>
               {{ selectedFilter === filterTypes.AOI ? 'arrow_drop_up' : 'arrow_drop_down' }}
             </mat-icon>
           </mat-form-field>
