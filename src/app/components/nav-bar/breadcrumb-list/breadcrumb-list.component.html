@@ -85,18 +85,17 @@
         </button>
       </div>
 
-      <div fxFlex="80px" class="breadcrumb-no-divider extra-padding-top" matTooltip="clear">
+      <div fxFlex="80px" class="breadcrumb-no-divider extra-padding-top">
         <button (click)="onClearSearch()" mat-button>
           CLEAR
         </button>
       </div>
 
-      <div fxFlex class="breadcrumb-no-divider extra-padding-top"
-           matTooltip="{{ !(canSearch$ | async) ? 'No Results Found' : 'Search' }}">
+      <div fxFlex class="breadcrumb-no-divider extra-padding-top">
         <button (click)="onDoSearch()"
                 [disabled]="!(canSearch$ | async)"
                 mat-flat-button color="primary">
-          {{ (loading$ | async) ? 'Loading...' : (!(canSearch$ | async) ? 'No Results' : 'SEARCH') }}
+          {{ (loading$ | async) ? 'LOADING...' : (!(canSearch$ | async) ? 'NO RESULTS' : 'SEARCH') }}
         </button>
       </div>
 
