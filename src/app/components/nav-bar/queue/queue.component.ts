@@ -1,5 +1,6 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
 
+
 import { Store } from '@ngrx/store';
 
 import { AppState } from '@store';
@@ -7,11 +8,10 @@ import * as queueStore from '@store/queue';
 
 import { CMRProduct, AsfApiOutputFormat } from '@models';
 
-
 @Component({
   selector: 'app-queue',
   templateUrl: './queue.component.html',
-  styleUrls: ['./queue.component.css']
+  styleUrls: ['./queue.component.scss']
 })
 export class QueueComponent {
   public products$ = this.store$.select(queueStore.getQueuedProducts);
