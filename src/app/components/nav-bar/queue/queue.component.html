@@ -68,9 +68,19 @@
         Metadata (geojson)
       </button>
     </mat-menu>
-    <button (click)="onClearQueue()" mat-flat-button>
-      <mat-icon>delete</mat-icon>
-      Clear Queue
+
+    <ng-container *ngIf="products$ | async as products">
+      <button *ngIf="previousQueue === null"
+        (click)="onClearQueue(products)" mat-flat-button>
+        <mat-icon>delete</mat-icon>
+        <span>Clear Queue</span>
+      </button>
+    </ng-container>
+
+    <button *ngIf="previousQueue !== null"
+      (click)="onRestoreQueue(previousQueue)" mat-flat-button>
+      <mat-icon style="margin-right: 3px">undo</mat-icon>
+      <span>Undo</span>
     </button>
 
   </mat-card-actions>
