@@ -1,9 +1,9 @@
 <mat-card class="granule-list card-spacing">
-  <cdk-virtual-scroll-viewport style="height: 445px;"
+  <cdk-virtual-scroll-viewport class="scroll-viewport-height"
     minBufferPx="500" maxBufferPx="600"
     itemSize="72">
   <mat-action-list class="action-list">
-    <div *cdkVirtualFor="let granule of granules" style="height: 72px">
+    <div *cdkVirtualFor="let granule of granules" class="granule-item-height">
       <button
         (mouseenter)="onSetFocusedGranule(granule)"
         (mouseleave) ="onClearFocusedGranule(granule)"
@@ -15,7 +15,9 @@
             onerror="this.src='assets/error.png'"
             class="size" matListAvatar>
 
-          <app-product-name [name]="granule.name" matLine></app-product-name>
+          <div class="product-name" matLine>
+            {{ granule.name | truncate : 34 }}
+          </div>
 
           <div matLine>
             <span *ngIf="prop.isRelevant(p.DATE)">Date • {{ granule.metadata.date | shortDate }}</span>
@@ -25,7 +27,7 @@
             settings_overscan
           </mat-icon>
           <mat-icon (click)="onQueueGranule($event, granule.groupId)"
-            style="margin-left: 10px;"
+            class="icon-margin"
             matTooltip="Queue granule products">
             add
           </mat-icon>
