@@ -47,6 +47,12 @@ export class AppComponent implements OnInit {
 
   public ngOnInit(): void {
     this.polygonValidationService.validate();
+
+    this.loadProductQueue();
+    this.queuedProducts$.subscribe(
+      products => localStorage.setItem('asf-queue-state', JSON.stringify(products))
+    );
+
     this.store$.dispatch(new missionStore.LoadMissions());
 
     this.store$.select(uiStore.getSearchType).subscribe(
@@ -85,6 +91,15 @@ export class AppComponent implements OnInit {
         }
       }),
     ).subscribe(_ => _);
+  }
+
+  private loadProductQueue(): void {
+    const queueItemsStr = localStorage.getItem('asf-queue-state');
+
+    if (queueItemsStr) {
+      const queueItems = JSON.parse(queueItemsStr);
+      this.store$.dispatch(new queueStore.AddItems(queueItems));
+    }
   }
 
   public onLoadUrlState(): void {
