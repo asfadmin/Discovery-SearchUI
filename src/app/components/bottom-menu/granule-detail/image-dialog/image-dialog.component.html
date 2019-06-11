@@ -1,4 +1,4 @@
-<div class="dialog-wrapper mp0">
+<div *ngIf="granule$ | async as granule" class="dialog-wrapper mp0">
   <div class="dialog-header">
     <div>
       <h3 class="mp0">{{ granule.name }}</h3>
