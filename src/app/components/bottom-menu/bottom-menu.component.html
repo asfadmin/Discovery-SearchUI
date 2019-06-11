@@ -44,10 +44,7 @@
         Granule Detail
       </mat-card-subtitle>
       <mat-card-content class="content">
-        <app-granule-detail
-          [granule]="selectedGranule$ | async"
-          [searchType]="searchType$ | async"
-          [platform]="searchPlatform$ | async">
+        <app-granule-detail [platform]="searchPlatform$ | async">
         </app-granule-detail>
       </mat-card-content>
     </mat-card>
