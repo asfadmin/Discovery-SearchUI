@@ -14,8 +14,12 @@ import { CMRProduct, AsfApiOutputFormat } from '@models';
   styleUrls: ['./queue.component.scss']
 })
 export class QueueComponent {
-  public products$ = this.store$.select(queueStore.getQueuedProducts);
+  public products$ = this.store$.select(queueStore.getQueuedProducts).pipe(
+    tap(products => this.areAnyProducts = products.length > 0)
+  );
+
   public previousQueue: any[] | null = null;
+  public areAnyProducts = false;
 
   public numberOfProducts$ = this.products$.pipe(
     map(products => products.length)

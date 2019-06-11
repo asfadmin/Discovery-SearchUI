@@ -38,7 +38,7 @@
   </mat-card-content>
 
   <mat-card-actions>
-    <button mat-button mat-stroked-button [matMenuTriggerFor]="data" class="btn-primary">
+    <button mat-button mat-stroked-button [matMenuTriggerFor]="data" [disabled]="!areAnyProducts" class="btn-primary">
       Data Download
       <mat-icon>arrow_drop_up</mat-icon>
     </button>
@@ -51,7 +51,7 @@
       </button>
     </mat-menu>
 
-    <button mat-button mat-stroked-button [matMenuTriggerFor]="metadata" class="btn-primary">
+    <button mat-button mat-stroked-button [matMenuTriggerFor]="metadata" [disabled]="!areAnyProducts" class="btn-primary">
       Metadata Download
       <mat-icon>arrow_drop_up</mat-icon>
     </button>
