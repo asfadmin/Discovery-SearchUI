@@ -1,10 +1,14 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
+import { MatMenuModule } from '@angular/material';
+
 import { TruncateModule } from '@yellowspot/ng-truncate';
 
 import { MatSharedModule } from '@shared';
 import { PipesModule } from '@pipes';
+
+import { FlexLayoutModule } from '@angular/flex-layout';
 
 import { QueueComponent } from './queue.component';
 
@@ -14,10 +18,12 @@ import { QueueComponent } from './queue.component';
   ],
   imports: [
     CommonModule,
+    MatMenuModule,
     TruncateModule,
 
     MatSharedModule,
     PipesModule,
+    FlexLayoutModule,
   ],
   exports: [
     QueueComponent
