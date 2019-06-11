@@ -25,6 +25,8 @@ import * as models from './models';
   styleUrls  : ['./app.component.scss']
 })
 export class AppComponent implements OnInit {
+  private queueStateKey = 'asf-queue-state';
+
   public shouldOmitSearchPolygon$ = this.store$.select(filterStore.getShouldOmitSearchPolygon);
   public uiView$ = this.store$.select(uiStore.getUiView);
   public isLoading$ = this.store$.select(searchStore.getIsLoading);
@@ -50,7 +52,7 @@ export class AppComponent implements OnInit {
 
     this.loadProductQueue();
     this.queuedProducts$.subscribe(
-      products => localStorage.setItem('asf-queue-state', JSON.stringify(products))
+      products => localStorage.setItem(this.queueStateKey, JSON.stringify(products))
     );
 
     this.store$.dispatch(new missionStore.LoadMissions());
@@ -94,7 +96,7 @@ export class AppComponent implements OnInit {
   }
 
   private loadProductQueue(): void {
-    const queueItemsStr = localStorage.getItem('asf-queue-state');
+    const queueItemsStr = localStorage.getItem(this.queueStateKey);
 
     if (queueItemsStr) {
       const queueItems = JSON.parse(queueItemsStr);
