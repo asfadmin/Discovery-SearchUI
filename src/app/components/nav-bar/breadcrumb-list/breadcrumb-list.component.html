@@ -31,26 +31,38 @@
       <!-- GEOGRAPHIC SEARCH FILTERS -->
       <ng-container *ngIf="searchType === searchTypes.DATASET">
 
-        <!-- AOI FILTER -->
-        <div fxFlex="115px" (click)="clearSelectedBreadcrumb()"
+        <!-- DATASET FILTER -->
+        <div fxFlex="135px" (click)="clearSelectedBreadcrumb()"
              class="breadcrumb max-width-100">
           <app-platform-selector></app-platform-selector>
         </div>
 
         <!-- AOI FILTER -->
-        <div fxFlex="230px" class="breadcrumb">
-          <mat-form-field>
+        <form #polygonForm="ngForm"
+          fxFlex="230px" class="breadcrumb">
+          <mat-form-field
+            (mouseenter)="showCopyIcon = true"
+            (mouseleave)="showCopyIcon = false"
+            style="width: 100%; max-width: 100%;">
             <label>
               <input
                 (change)="onInputSearchPolygon($event.target.value)"
                 [value]="polygon$ | async"
+                [(ngModel)]="searchPolygon"
+                name="searchPolygon"
                 matInput placeholder="Area of Interest">
             </label>
 
             <mat-icon
+              *ngIf="!!(polygon$ | async) && showCopyIcon" (click)="onCopy()"
+              matTooltip="Copy to clipboard"
+              style="cursor: pointer; margin-left:10px; font-size: 16px" matSuffix>
+                file_copy
+            </mat-icon>
+            <mat-icon
               (click)="onNewSelectedFilter(filterTypes.AOI)"
               matTooltip="More options"
-              style="cursor: pointer; margin-left: 10px;" matSuffix>
+              style="cursor: pointer; margin-left: 3px;" matSuffix>
               {{ selectedFilter === filterTypes.AOI ? 'arrow_drop_up' : 'arrow_drop_down' }}
             </mat-icon>
           </mat-form-field>
@@ -58,7 +70,7 @@
                     class="breadcrumb-filter">
             <app-aoi-upload></app-aoi-upload>
           </mat-card>
-        </div>
+        </form>
 
         <!-- DATES START/END FILTER -->
         <div fxFlex="320px" class="breadcrumb">
@@ -85,18 +97,17 @@
         </button>
       </div>
 
-      <div fxFlex="80px" class="breadcrumb-no-divider extra-padding-top" matTooltip="clear">
+      <div fxFlex="80px" class="breadcrumb-no-divider extra-padding-top">
         <button (click)="onClearSearch()" mat-button>
           CLEAR
         </button>
       </div>
 
-      <div fxFlex class="breadcrumb-no-divider extra-padding-top"
-           matTooltip="{{ !(canSearch$ | async) ? 'No Results Found' : 'Search' }}">
+      <div fxFlex class="breadcrumb-no-divider extra-padding-top">
         <button (click)="onDoSearch()"
                 [disabled]="!(canSearch$ | async)"
                 mat-flat-button color="primary">
-          {{ (loading$ | async) ? 'Loading...' : (!(canSearch$ | async) ? 'No Results' : 'SEARCH') }}
+          {{ (loading$ | async) ? 'LOADING...' : (!(canSearch$ | async) ? 'NO RESULTS' : 'SEARCH') }}
         </button>
       </div>
 

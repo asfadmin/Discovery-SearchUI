@@ -3,7 +3,6 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { FlexLayoutModule } from '@angular/flex-layout';
 
-
 import { MatBadgeModule } from '@angular/material/badge';
 import { MatSharedModule } from '@shared';
 import { MatDatepickerModule } from '@angular/material/datepicker';
@@ -20,7 +19,7 @@ import { QueueModule, QueueComponent } from '@components/nav-bar/queue';
 import { SearchSelectorModule } from '@components/shared/selectors/search-selector';
 import { BreadcrumbListComponent } from './breadcrumb-list.component';
 import { NavButtonsModule } from '@components/nav-bar/nav-buttons';
-import { InfoBarModule} from '@components/sidebar/info-bar/info-bar.module';
+import { InfoBarModule } from '@components/sidebar/info-bar/info-bar.module';
 import { LogoModule } from '@components/sidebar/logo/logo.module';
 
 @NgModule({

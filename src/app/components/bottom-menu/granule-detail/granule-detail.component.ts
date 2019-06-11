@@ -9,7 +9,7 @@ import * as filtersStore from '@store/filters';
 import * as searchStore from '@store/search';
 
 import * as models from '@models';
-import { DatapoolAuthService, MapService, WktService } from '@services';
+import { DatapoolAuthService, MapService, WktService, PropertyService } from '@services';
 import { ImageDialogComponent } from './image-dialog';
 
 @Component({
@@ -28,6 +28,7 @@ export class GranuleDetailComponent {
   constructor(
     public dialog: MatDialog,
     public authService: DatapoolAuthService,
+    public prop: PropertyService,
     private store$: Store<AppState>,
   ) {}
 
@@ -39,10 +40,6 @@ export class GranuleDetailComponent {
       maxHeight: '90%',
       panelClass: 'image-dialog'
     });
-  }
-
-  public isRelavent(prop: models.Props): boolean {
-    return models.datasetProperties[prop].includes(this.platform.name);
   }
 
   public isGeoSearch(): boolean {

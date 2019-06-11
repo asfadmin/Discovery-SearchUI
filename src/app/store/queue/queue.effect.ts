@@ -18,7 +18,7 @@ import * as services from '@services';
 import * as models from '@models';
 
 export interface MetadataDownload {
-  params: HttpParams;
+  params: {[id: string]: string | null};
   format: models.AsfApiOutputFormat;
 }
 
@@ -56,14 +56,15 @@ export class QueueEffects {
             .join(',')
         ),
         map(
-          granuleNames => new HttpParams()
-            .set('granule_list', granuleNames)
+          granuleNames => ({
+            granule_list: granuleNames
+          })
         )
       )
     ),
     map(
       ([format, params]): MetadataDownload => ({
-        params: params.append('output', format),
+        params: { ...params, ...{output: format} },
         format
       })
     ),

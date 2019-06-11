@@ -1,6 +1,7 @@
 import { Component, Input } from '@angular/core';
 
 import * as models from '@models';
+import { PropertyService } from '@services';
 
 @Component({
   selector: 'app-dataset-search',
@@ -18,7 +19,5 @@ export class DatasetSearchComponent {
 
   public p = models.Props;
 
-  public isRelavent(prop: models.Props): boolean {
-    return models.datasetProperties[prop].includes(this.platform.name);
-  }
+  constructor(public prop: PropertyService) {}
 }

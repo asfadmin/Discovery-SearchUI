@@ -17,7 +17,7 @@
     <div class="w100" fxFlex fxLayout="row" fxLayoutAlign="space-between">
       <div style="width: 50%">
         <ul class="granule-metadata">
-          <li *ngIf="isRelavent(p.DATE)">
+          <li *ngIf="prop.isRelevant(p.DATE)">
             <span class="v-mid"><b>Aquisition Date </b> • {{ granule.metadata.date | shortDate }}</span>
             <mat-icon *ngIf="isGeoSearch()"
               [matMenuTriggerFor]="addGranuleDateMenu"
@@ -31,7 +31,7 @@
             </mat-menu>
           </li>
 
-          <li *ngIf="isRelavent(p.BEAM_MODE)">
+          <li *ngIf="prop.isRelevant(p.BEAM_MODE)">
             <span class="v-mid"><b>Beam Mode </b> • {{ granule.metadata.beamMode }}</span>
             <mat-icon *ngIf="isGeoSearch()"
               [matMenuTriggerFor]="addBeamModeMenu"
@@ -44,7 +44,7 @@
             </mat-menu>
           </li>
 
-          <li *ngIf="isRelavent(p.PATH)">
+          <li *ngIf="prop.isRelevant(p.PATH)">
 
             <span class="v-mid"><b>Path </b> • {{ granule.metadata.path }}</span>
             <mat-icon *ngIf="isGeoSearch()"
@@ -59,7 +59,7 @@
               <button (click)="setPathStart(); setPathEnd();" mat-menu-item>Set as both</button>
             </mat-menu>
           </li>
-          <li *ngIf="isRelavent(p.FRAME)">
+          <li *ngIf="prop.isRelevant(p.FRAME)">
             <span class="v-mid"> <b>Frame </b> • {{ granule.metadata.frame }} </span>
 
             <mat-icon *ngIf="isGeoSearch()"
@@ -74,7 +74,7 @@
               <button (click)="setFrameStart(); setFrameEnd();" mat-menu-item>Set as both</button>
             </mat-menu>
           </li>
-          <li *ngIf="isRelavent(p.FLIGHT_DIRECTION)">
+          <li *ngIf="prop.isRelevant(p.FLIGHT_DIRECTION)">
 
             <span class="v-mid"> <b>Flight Direction </b> • {{ granule.metadata.flightDirection }} </span>
             <mat-icon *ngIf="isGeoSearch()"
@@ -88,7 +88,7 @@
             </mat-menu>
           </li>
 
-          <li *ngIf="isRelavent(p.POLARIZATION)">
+          <li *ngIf="prop.isRelevant(p.POLARIZATION)">
             <span class="v-mid"> <b>Polarization </b> • {{ granule.metadata.polarization }} </span>
 
             <mat-icon *ngIf="isGeoSearch()"
@@ -102,27 +102,27 @@
             </mat-menu>
           </li>
 
-          <li *ngIf="isRelavent(p.OFF_NADIR_ANGLE)"
+          <li *ngIf="prop.isRelevant(p.OFF_NADIR_ANGLE)"
             style="margin-top: 5px;">
             <b>Off Nadir Angle </b> • {{ granule.metadata.offNadirAngle }}
           </li>
 
-          <li *ngIf="isRelavent(p.FARADAY_ROTATION)"
+          <li *ngIf="prop.isRelevant(p.FARADAY_ROTATION)"
             style="margin-top: 5px;">
             <b>Faraday Rotation </b> • {{ granule.metadata.faradayRotation }}
           </li>
 
-          <li *ngIf="isRelavent(p.MISSION_NAME)"
+          <li *ngIf="prop.isRelevant(p.MISSION_NAME)"
             style="margin-top: 5px;">
             <b>Mission Name </b> • {{ granule.metadata.missionName }}
           </li>
 
-          <li *ngIf="isRelavent(p.FLIGHT_LINE)"
+          <li *ngIf="prop.isRelevant(p.FLIGHT_LINE)"
             style="margin-top: 5px;">
             <b>Flight Line </b> • {{ granule.metadata.flightLine }}
           </li>
 
-          <li *ngIf="isRelavent(p.ABSOLUTE_ORBIT)"
+          <li *ngIf="prop.isRelevant(p.ABSOLUTE_ORBIT)"
             style="margin-top: 5px;">
             <b>Absolute Orbit </b> • {{ granule.metadata.absoluteOrbit }}
           </li>
@@ -162,7 +162,7 @@
   </mat-card-content>
 
   <mat-card-actions>
-    <a *ngIf="isRelavent(p.BASELINE_TOOL)"
+    <a *ngIf="prop.isRelevant(p.BASELINE_TOOL)"
       mat-raised-button color="accent" target="_blank"
       href="https://baseline.asf.alaska.edu/#/baseline?granule={{ granule.name }}">
         Baseline Tool
@@ -174,7 +174,7 @@
       Citation
     </a>
 
-    <button *ngIf="isRelavent(p.PATH) && isRelavent(p.FRAME)"
+    <button *ngIf="prop.isRelevant(p.PATH) && prop.isRelevant(p.FRAME)"
       (click)="onFindSimilarGranules()"
       matTooltip="Search based on this granules path/frame"
       mat-raised-button color="primary">
