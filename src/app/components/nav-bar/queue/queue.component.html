@@ -1,59 +1,76 @@
-<h2>Download Queue</h2>
+<mat-card>
+    <mat-card-title-group>
+      <mat-card-title>Download Queue</mat-card-title>
+      <mat-card-subtitle>
+        X items, x KB
+      </mat-card-subtitle>
+    </mat-card-title-group>
 
-<button (click)="onClearQueue()" mat-raised-button>Clear Queue</button>
+  <mat-card-content>
+    <mat-list role="list">
+      <ng-container *ngIf="products$ | async as products">
+        <mat-list-item
+          *ngFor="let product of products"
+          role="listitem">
+          <div mat-line fxLayout="row" fxLayoutAlign="space-between">
+            <div>
+              <a [href]="product.downloadUrl" matTooltip="Download" target="_blank">
+                <mat-icon style="cursor: pointer">cloud_download</mat-icon>
+              </a>
 
-<mat-list role="list">
-  <ng-container *ngIf="products$ | async as products">
-    <mat-list-item
-      *ngFor="let product of products"
-      role="listitem">
-        <h4 mat-line fxLayout="row" fxLayoutAlign="space-between">
-          <div>
-            <span *ngIf="product.id.length > 29">
+              <span *ngIf="product.id.length > 29">
               <b>{{ product.id | truncate : 21 }}{{ product.id | truncate : -4 : '' }}</b>
             </span>
-            <span *ngIf="product.id.length <= 29">
+              <span *ngIf="product.id.length <= 29">
               <b>{{ product.id }}</b>
             </span>
+              <mat-icon (click)="onRemoveProduct(product)" style="cursor: pointer">
+                close
+              </mat-icon>
+            </div>
           </div>
+        </mat-list-item>
+      </ng-container>
+    </mat-list>
+  </mat-card-content>
 
-          <a [href]="product.downloadUrl" matTooltip="Download" target="_blank">
-            <mat-icon style="cursor: pointer">cloud_download</mat-icon>
-          </a>
-          <mat-icon (click)="onRemoveProduct(product)" style="cursor: pointer">
-            close
-          </mat-icon>
-        </h4>
-    </mat-list-item>
-  </ng-container>
-</mat-list>
+  <mat-card-actions>
+    <button mat-button mat-stroked-button [matMenuTriggerFor]="data" class="btn-primary">
+      Data Download
+      <mat-icon>arrow_drop_up</mat-icon>
+    </button>
+    <mat-menu #data="matMenu" yPosition="above">
+      <button mat-menu-item (click)="onMakeDownloadScript()">
+        Download Python Script (.py)
+      </button>
+      <button mat-menu-item (click)="onMetalinkDownload()">
+        Metadata (metalink)
+      </button>
+    </mat-menu>
 
-<button (click)="onMakeDownloadScript()"
-  mat-raised-button color="primary"
-  class="metadata-dl-btn">
-    Download Python Script (.py)
-</button>
+    <button mat-button mat-stroked-button [matMenuTriggerFor]="metadata" class="btn-primary">
+      Metadata Download
+      <mat-icon>arrow_drop_up</mat-icon>
+    </button>
+    <mat-menu #metadata="matMenu" yPosition="above">
+      <button mat-menu-item (click)="onCsvDownload()">
+        Metadata (csv)
+      </button>
 
-<button (click)="onCsvDownload()"
-  mat-raised-button color="primary"
-  class="metadata-dl-btn">
-    Metadata (csv)
-</button>
+      <button mat-menu-item (click)="onKmlDownload()">
+        Metadata (kml)
+      </button>
 
-<button (click)="onKmlDownload()"
-  mat-raised-button color="primary"
-  class="metadata-dl-btn">
-    Metadata (kml)
-</button>
+      <button mat-menu-item (click)="onGeojsonDownload()">
+        Metadata (geojson)
+      </button>
+    </mat-menu>
+    <button (click)="onClearQueue()" mat-flat-button>
+      <mat-icon>delete</mat-icon>
+      Clear Queue
+    </button>
 
-<button (click)="onGeojsonDownload()"
-  mat-raised-button color="primary"
-  class="metadata-dl-btn">
-    Metadata (geojson)
-</button>
+  </mat-card-actions>
 
-<button (click)="onMetalinkDownload()"
-  mat-raised-button color="primary"
-  class="metadata-dl-btn">
-  Metadata (metalink)
-</button>
+
+</mat-card>
