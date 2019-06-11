@@ -85,11 +85,11 @@ export class GranulesListComponent implements OnInit {
 
       switch ( key ) {
         case 'ArrowRight': {
-          this.selectNextProduct();
+          this.selectNextGranule();
           break;
         }
         case 'ArrowLeft': {
-          this.selectPreviousProduct();
+          this.selectPreviousGranule();
           break;
         }
       }
@@ -100,11 +100,11 @@ export class GranulesListComponent implements OnInit {
     );
   }
 
-  private selectNextProduct(): void {
+  private selectNextGranule(): void {
     this.store$.dispatch(new granulesStore.SelectNextGranule());
   }
 
-  private selectPreviousProduct(): void {
+  private selectPreviousGranule(): void {
     this.store$.dispatch(new granulesStore.SelectPreviousGranule());
   }
 
