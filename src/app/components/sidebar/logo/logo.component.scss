@@ -28,6 +28,7 @@
 
 .logo-card {
   background-color: $asf-primary;
+  padding: 8px !important;
 
   .header {
     font-size: 38px;
@@ -52,5 +53,9 @@
     color: lightgray;
     font-style: italic;
     letter-spacing: 0.02em;
+  }
+
+  a {
+    color: $asf-warn;
   }
 }
