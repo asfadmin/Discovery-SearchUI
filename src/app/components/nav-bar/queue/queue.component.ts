@@ -1,6 +1,6 @@
-import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 
-
+import { map, tap } from 'rxjs/operators';
 import { Store } from '@ngrx/store';
 
 import { AppState } from '@store';
@@ -14,7 +14,22 @@ import { CMRProduct, AsfApiOutputFormat } from '@models';
   styleUrls: ['./queue.component.scss']
 })
 export class QueueComponent {
-  public products$ = this.store$.select(queueStore.getQueuedProducts);
+  public products$ = this.store$.select(queueStore.getQueuedProducts).pipe(
+    tap(products => this.areAnyProducts = products.length > 0)
+  );
+
+  public previousQueue: any[] | null = null;
+  public areAnyProducts = false;
+
+  public numberOfProducts$ = this.products$.pipe(
+    map(products => products.length)
+  );
+  public totalSize$ = this.products$.pipe(
+    map(products => products.reduce(
+      (total, product) => total + product.bytes,
+      0
+    ))
+  );
 
   constructor(private store$: Store<AppState>) {}
 
@@ -22,8 +37,15 @@ export class QueueComponent {
     this.store$.dispatch(new queueStore.RemoveItem(product));
   }
 
-  public onClearQueue(): void {
+  public onClearQueue(products: any[]): void {
+    this.previousQueue = products;
+
     this.store$.dispatch(new queueStore.ClearQueue());
+  }
+
+  public onRestoreQueue(previousProducts): void {
+    this.store$.dispatch(new queueStore.AddItems(previousProducts));
+    this.previousQueue = null;
   }
 
   public onMakeDownloadScript(): void {

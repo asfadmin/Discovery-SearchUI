@@ -2,7 +2,7 @@
     <mat-card-title-group>
       <mat-card-title>Download Queue</mat-card-title>
       <mat-card-subtitle>
-        X items, x KB
+        {{ numberOfProducts$ | async }} products, {{ (totalSize$ | async) | readableSizeFromBytes }}
       </mat-card-subtitle>
     </mat-card-title-group>
 
@@ -38,7 +38,7 @@
   </mat-card-content>
 
   <mat-card-actions>
-    <button mat-button mat-stroked-button [matMenuTriggerFor]="data" class="btn-primary">
+    <button mat-button mat-stroked-button [matMenuTriggerFor]="data" [disabled]="!areAnyProducts" class="btn-primary">
       Data Download
       <mat-icon>arrow_drop_up</mat-icon>
     </button>
@@ -51,7 +51,7 @@
       </button>
     </mat-menu>
 
-    <button mat-button mat-stroked-button [matMenuTriggerFor]="metadata" class="btn-primary">
+    <button mat-button mat-stroked-button [matMenuTriggerFor]="metadata" [disabled]="!areAnyProducts" class="btn-primary">
       Metadata Download
       <mat-icon>arrow_drop_up</mat-icon>
     </button>
@@ -68,9 +68,19 @@
         Metadata (geojson)
       </button>
     </mat-menu>
-    <button (click)="onClearQueue()" mat-flat-button>
-      <mat-icon>delete</mat-icon>
-      Clear Queue
+
+    <ng-container *ngIf="products$ | async as products">
+      <button *ngIf="previousQueue === null"
+        (click)="onClearQueue(products)" mat-flat-button>
+        <mat-icon>delete</mat-icon>
+        <span>Clear Queue</span>
+      </button>
+    </ng-container>
+
+    <button *ngIf="previousQueue !== null"
+      (click)="onRestoreQueue(previousQueue)" mat-flat-button>
+      <mat-icon style="margin-right: 3px">undo</mat-icon>
+      <span>Restore Queue</span>
     </button>
 
   </mat-card-actions>
