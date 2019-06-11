@@ -5,7 +5,7 @@ import * as models from '@models';
 @Component({
   selector: 'app-products',
   templateUrl: './products.component.html',
-  styleUrls: ['./products.component.css']
+  styleUrls: ['./products.component.scss']
 })
 export class ProductsComponent {
   @Input() products: models.CMRProduct[];

@@ -15,7 +15,7 @@ import { ImageDialogComponent } from './image-dialog';
 @Component({
   selector: 'app-granule-detail',
   templateUrl: './granule-detail.component.html',
-  styleUrls: ['./granule-detail.component.css']
+  styleUrls: ['./granule-detail.component.scss']
 })
 export class GranuleDetailComponent {
   @Input() granule: models.CMRProduct;

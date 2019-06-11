@@ -1,6 +1,4 @@
 <mat-list class="products-list" *ngIf="products">
-  <h3 mat-subheader>Granule Products</h3>
-
   <app-product *ngFor="let product of products"
     (toggle)="onToggleQueueProduct(product)"
     [product]="product"
