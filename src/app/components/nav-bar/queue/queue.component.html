@@ -6,25 +6,28 @@
       </mat-card-subtitle>
     </mat-card-title-group>
 
-  <mat-card-content>
+  <mat-card-content class="dl-list">
     <mat-list role="list">
       <ng-container *ngIf="products$ | async as products">
         <mat-list-item
           *ngFor="let product of products"
           role="listitem">
-          <div mat-line fxLayout="row" fxLayoutAlign="space-between">
-            <div>
+          <div mat-line fxLayout="row" fxFlexFill>
+            <div fxFlex="40px">
               <a [href]="product.downloadUrl" matTooltip="Download" target="_blank">
-                <mat-icon style="cursor: pointer">cloud_download</mat-icon>
+                <mat-icon style="cursor: pointer;">cloud_download</mat-icon>
               </a>
-
-              <span *ngIf="product.id.length > 29">
-              <b>{{ product.id | truncate : 21 }}{{ product.id | truncate : -4 : '' }}</b>
-            </span>
-              <span *ngIf="product.id.length <= 29">
-              <b>{{ product.id }}</b>
-            </span>
-              <mat-icon (click)="onRemoveProduct(product)" style="cursor: pointer">
+            </div>
+            <div fxFlex="auto">
+              <span *ngIf="product.id.length > 49">
+                <b>{{ product.id | truncate : 21 }}{{ product.id | truncate : -4 : '' }}</b>
+              </span>
+              <span *ngIf="product.id.length <= 49">
+                <b>{{ product.id }}</b>
+              </span>
+            </div>
+            <div fxFlex="40px">
+              <mat-icon (click)="onRemoveProduct(product)" style="cursor: pointer;">
                 close
               </mat-icon>
             </div>

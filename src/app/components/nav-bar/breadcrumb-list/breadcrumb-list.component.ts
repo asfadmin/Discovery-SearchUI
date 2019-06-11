@@ -131,7 +131,7 @@ export class BreadcrumbListComponent implements OnInit {
 
   public onOpenDownloadQueue(): void {
     this.dialog.open(QueueComponent, {
-      width: '550px', height: '700px', minHeight: '50%'
+      width: '75%', height: '700px', minHeight: '50%'
     });
   }
 

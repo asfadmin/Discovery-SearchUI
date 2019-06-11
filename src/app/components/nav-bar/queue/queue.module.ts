@@ -8,6 +8,8 @@ import { TruncateModule } from '@yellowspot/ng-truncate';
 import { MatSharedModule } from '@shared';
 import { PipesModule } from '@pipes';
 
+import { FlexLayoutModule } from '@angular/flex-layout';
+
 import { QueueComponent } from './queue.component';
 
 @NgModule({
@@ -21,6 +23,7 @@ import { QueueComponent } from './queue.component';
 
     MatSharedModule,
     PipesModule,
+    FlexLayoutModule,
   ],
   exports: [
     QueueComponent
