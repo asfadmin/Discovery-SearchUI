@@ -101,37 +101,11 @@ export class GranulesListComponent implements OnInit {
   }
 
   private selectNextProduct(): void {
-    if (!this.selected) {
-      return;
-    }
-
-    const currentSelected = this.granules
-      .filter(g => g.name === this.selected)
-      .pop();
-
-    const nextIdx = Math.min(
-      this.granules.indexOf(currentSelected) + 1,
-      this.granules.length - 1
-    );
-
-    const nextGranule = this.granules[nextIdx];
-
-    this.store$.dispatch(new granulesStore.SetSelectedGranule(nextGranule.id));
+    this.store$.dispatch(new granulesStore.SelectNextGranule());
   }
 
   private selectPreviousProduct(): void {
-    if (!this.selected) {
-      return;
-    }
-
-    const currentSelected = this.granules
-      .filter(g => g.name === this.selected)
-      .pop();
-
-    const previousIdx = Math.max(this.granules.indexOf(currentSelected) - 1, 0);
-    const previousGranule = this.granules[previousIdx];
-
-    this.store$.dispatch(new granulesStore.SetSelectedGranule(previousGranule.id));
+    this.store$.dispatch(new granulesStore.SelectPreviousGranule());
   }
 
   private scrollTo(idx: number): void {

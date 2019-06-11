@@ -69,10 +69,56 @@ export function granulesReducer(state = initState, action: GranulesActions): Gra
       };
     }
 
-    case GranulesActionType.SET_SELECTED: {
+    case GranulesActionType.SET_SELECTED_GRANULE: {
       return {
         ...state,
         selected: action.payload
+      };
+    }
+
+    case GranulesActionType.SELECT_NEXT_GRANULE: {
+      const granules = allGranulesFrom(state);
+      const granule = state.products[state.selected] || null;
+
+      if (!granule) {
+        return { ...state };
+      }
+
+      const currentSelected = granules
+        .filter(g => g.name === granule.name)
+        .pop();
+
+      const nextIdx = Math.min(
+        granules.indexOf(currentSelected) + 1,
+        granules.length - 1
+      );
+
+      const nextGranule = granules[nextIdx];
+
+      return {
+        ...state,
+        selected: nextGranule.id
+      };
+    }
+
+    case GranulesActionType.SELECT_PREVIOUS_GRANULE: {
+      const granules = allGranulesFrom(state);
+      const granule = state.products[state.selected] || null;
+
+      if (!granule) {
+        return { ...state };
+      }
+
+      const currentSelected = granules
+        .filter(g => g.name === granule.name)
+        .pop();
+
+      const previousIdx = Math.max(granules.indexOf(currentSelected) - 1, 0);
+      const previousGranule = granules[previousIdx];
+
+      return {
+        ...state,
+        selected: previousGranule.id
       };
     }
 
@@ -110,22 +156,23 @@ export function granulesReducer(state = initState, action: GranulesActions): Gra
 
 export const getGranulesState = createFeatureSelector<GranulesState>('granules');
 
+export const allGranulesFrom = (state: GranulesState) => {
+  return Object.values(state.granules)
+    .map(group => {
+
+      const browse = group
+        .map(name => state.products[name])
+        .filter(product => !product.browse.includes('error.png'))
+        .pop();
+
+      return browse ? browse : state.products[group[0]];
+    });
+};
+
 export const getGranules = createSelector(
   getGranulesState,
-  (state: GranulesState) => {
-    const data = Object.values(state.granules)
-      .map(group => {
-
-        const browse = group
-          .map(name => state.products[name])
-          .filter(product => !product.browse.includes('error.png'))
-          .pop();
-
-        return browse ? browse : state.products[group[0]];
-      });
-
-    return data;
-  });
+  (state: GranulesState) => allGranulesFrom(state)
+);
 
 export const getSelectedGranuleProducts = createSelector(
   getGranulesState,
