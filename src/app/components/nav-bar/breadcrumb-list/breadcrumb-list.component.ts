@@ -103,11 +103,16 @@ export class BreadcrumbListComponent implements OnInit {
 
   ngOnInit() {
     this.actions$.pipe(
-      filter(action => action.type === filtersStore.FiltersActionType.CLEAR_FILTERS)
+      filter(action => action.type === filtersStore.FiltersActionType.CLEAR_FILTERS),
+      filter(_ => !!this.polygonForm),
     ).subscribe(_ => this.polygonForm.reset());
 
     this.polygon$.pipe(
       tap(_ => {
+        if (!this.polygonForm) {
+          return;
+        }
+
         try {
           this.polygonForm.form
             .controls['searchPolygon']
