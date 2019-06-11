@@ -13,7 +13,7 @@
     </mat-card-subtitle>
   </mat-card-header>
 
-  <mat-card-content>
+  <mat-card-content class="content">
     <div class="w100" fxFlex fxLayout="row" fxLayoutAlign="space-between">
       <div style="width: 50%">
         <ul class="granule-metadata">
@@ -161,7 +161,7 @@
     </div>
   </mat-card-content>
 
-  <mat-card-actions>
+  <mat-card-actions class="action-buttons">
     <a *ngIf="prop.isRelevant(p.BASELINE_TOOL)"
       mat-raised-button color="accent" target="_blank"
       href="https://baseline.asf.alaska.edu/#/baseline?granule={{ granule.name }}">
@@ -173,7 +173,6 @@
       href="https://www.asf.alaska.edu/about/how-to-cite-data/">
       Citation
     </a>
-
     <button *ngIf="prop.isRelevant(p.PATH) && prop.isRelevant(p.FRAME)"
       (click)="onFindSimilarGranules()"
       matTooltip="Search based on this granules path/frame"

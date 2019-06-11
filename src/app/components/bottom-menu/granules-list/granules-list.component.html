@@ -1,8 +1,8 @@
 <mat-card class="granule-list card-spacing">
-  <cdk-virtual-scroll-viewport style="height: 475px;"
+  <cdk-virtual-scroll-viewport style="height: 445px;"
     minBufferPx="500" maxBufferPx="600"
     itemSize="72">
-  <mat-action-list>
+  <mat-action-list class="action-list">
     <div *cdkVirtualFor="let granule of granules" style="height: 72px">
       <button
         (mouseenter)="onSetFocusedGranule(granule)"

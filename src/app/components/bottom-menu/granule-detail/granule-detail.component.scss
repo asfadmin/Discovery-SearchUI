@@ -4,6 +4,7 @@ li {
 
 .detail-card {
   height: 475px;
+  margin-top: 4px;
 }
 
 .granule-metadata {
@@ -51,4 +52,13 @@ li {
 
 .img-container:hover .overlay-icon {
   opacity: 1;
+}
+
+.content {
+  margin: 0 16px;
+}
+
+.action-buttons {
+  padding: 0 24px;
+  margin: 0;
 }
