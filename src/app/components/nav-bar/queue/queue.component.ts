@@ -1,6 +1,6 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
 
-
+import { map } from 'rxjs/operators';
 import { Store } from '@ngrx/store';
 
 import { AppState } from '@store';
@@ -15,6 +15,16 @@ import { CMRProduct, AsfApiOutputFormat } from '@models';
 })
 export class QueueComponent {
   public products$ = this.store$.select(queueStore.getQueuedProducts);
+
+  public numberOfProducts$ = this.products$.pipe(
+    map(products => products.length)
+  );
+  public totalSize$ = this.products$.pipe(
+    map(products => products.reduce(
+      (total, product) => total + product.bytes,
+      0
+    ))
+  );
 
   constructor(private store$: Store<AppState>) {}
 

@@ -2,7 +2,7 @@
     <mat-card-title-group>
       <mat-card-title>Download Queue</mat-card-title>
       <mat-card-subtitle>
-        X items, x KB
+        {{ numberOfProducts$ | async }} products, {{ (totalSize$ | async) | readableSizeFromBytes }}
       </mat-card-subtitle>
     </mat-card-title-group>
 
