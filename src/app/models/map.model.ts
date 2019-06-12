@@ -27,3 +27,8 @@ export enum DrawPolygonStyle {
   INVALID = 'Invalid',
   OMITTED = 'Omitted'
 }
+
+export interface LonLat {
+  lon: number;
+  lat: number;
+}
