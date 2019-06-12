@@ -22,8 +22,6 @@ import * as filtersStore from '@store/filters';
 import * as services from '@services';
 import * as models from '@models';
 
-import { SpreadsheetComponent } from '@components/shared/spreadsheet';
-
 @Component({
   selector: 'app-sidebar',
   templateUrl: './sidebar.component.html',
@@ -83,27 +81,8 @@ export class SidebarComponent implements OnInit {
       isHidden => this.isHidden = isHidden
     );
 
-    this.store$.select(uiStore.getUiView).pipe(
-      filter(view => view === models.ViewType.SPREADSHEET)
-    ).subscribe(
-      _ => this.onOpenSpreadsheet()
-    );
-
     this.isFiltersMenuOpen$.subscribe(
       isOpen => this.isFiltersMenuOpen = isOpen
-    );
-  }
-
-  public onOpenSpreadsheet(): void {
-    const dialogRef = this.dialog.open(SpreadsheetComponent, {
-       maxWidth: '100vw', maxHeight: '100vh',
-       height: '100%', width: '100%'
-    });
-
-    const closeAction = new uiStore.SetUiView(models.ViewType.MAIN);
-
-    dialogRef.afterClosed().subscribe(
-      _ => this.store$.dispatch(closeAction)
     );
   }
 
