@@ -1,17 +1,17 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FlexLayoutModule } from '@angular/flex-layout';
-import { ToggleButtonModule} from '@components/sidebar/toggle-button';
+import { MatRippleModule } from '@angular/material/core';
+import { MatSharedModule } from '@shared';
 import { LogoComponent } from './logo.component';
-import { MatCardModule } from '@angular/material/card';
 
 @NgModule({
   declarations: [LogoComponent],
   imports: [
     CommonModule,
     FlexLayoutModule,
-    MatCardModule,
-    ToggleButtonModule,
+    MatRippleModule,
+    MatSharedModule,
   ],
   exports: [LogoComponent]
 })

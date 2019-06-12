@@ -6,7 +6,6 @@ import { MatTabsModule } from '@angular/material/tabs';
 import { MatSharedModule } from '@shared';
 
 import { SidebarComponent } from './sidebar.component';
-import { ToggleButtonModule } from './toggle-button';
 
 import { SearchSelectorModule } from '@components/shared/selectors/search-selector';
 import { SearchModule } from './search';
@@ -22,8 +21,6 @@ import { FlexLayoutModule } from '@angular/flex-layout';
     MatSharedModule,
 
     FlexLayoutModule,
-
-    ToggleButtonModule,
 
     SearchModule,
     SearchSelectorModule,

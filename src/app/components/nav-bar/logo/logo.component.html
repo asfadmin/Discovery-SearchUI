@@ -3,10 +3,12 @@
        fxLayout="row"
        fxFlexFill >
     <div fxFlex="20%" class="sec1" >
-      <app-toggle-button
-        (click)="onToggleHide()"
-        [isOpen]="isSidebarOpen$ | async">
-      </app-toggle-button>
+      <mat-card (click)="onToggleHide()" matRipple mat-elevation-z0 class="menu-toggle-button">
+        <mat-icon class="toggle-icon">
+          {{ (isSidebarOpen$ | async) ?  'menu' : 'menu' }}
+        </mat-icon>
+        <div class="toggle-text">menu</div>
+      </mat-card>
     </div>
 
     <div fxFlex="80%" class="sec2" >
