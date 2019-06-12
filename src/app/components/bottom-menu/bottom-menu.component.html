@@ -1,6 +1,6 @@
 <div
   [@changeMenuY]="(isBottomMenuOpen$ | async) ? 'shown' : 'hidden'"
-  [class.hidden]="isHidden || (granules$ | async).length === 0"
+  [class.hidden]="(isHidden$ | async) || (areNoGranules$  | async)"
   class="position">
   <div class="toggle-button-position">
     <button (click)="onToggleMenu()"
@@ -27,7 +27,7 @@
       </mat-card-subtitle>
       <app-products
         [products]="selectedProducts$ | async"
-        [queuedProductIds]="queuedProductIds"
+        [queuedProductIds]="queuedProductIds$ | async"
         (toggleQueueProduct)="onToggleQueueProduct($event)"
         ></app-products>
     </mat-card>
