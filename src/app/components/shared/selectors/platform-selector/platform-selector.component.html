@@ -1,4 +1,4 @@
-<mat-form-field style="width: 100%">
+<mat-form-field class="w100">
   <mat-label>Dataset</mat-label>
   <mat-select
       [(ngModel)]="selected"
@@ -6,7 +6,7 @@
       #platformSelector>
     <mat-option
       *ngFor="let platform of (platforms$ | async)"
-      [class.selected]="platform.name === (selectedPlatformName$ | async)"
+      [class.selected]="platform.name === selected"
       [value]="platform.name">
       <ng-container *ngIf="platformSelector.panelOpen">
         <app-platform
