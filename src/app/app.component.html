@@ -5,7 +5,6 @@
   <app-nav-bar
     (doSearch)="onNewSearch()"
     (clearSearch)="onClearSearch()"
-    [products]="queuedProducts$ | async"
     [isLoading]="isLoading$ | async">
   </app-nav-bar>
 
