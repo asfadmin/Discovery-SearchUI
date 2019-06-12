@@ -17,14 +17,7 @@
       <mat-card-subtitle class="header">
         Granule List
       </mat-card-subtitle>
-      <app-granules-list
-        (newFocusedGranule)="onNewFocusedGranule($event)"
-        (clearFocusedGranule)="onClearFocusedGranule()"
-        (newSelected)="onNewGranuleSelected($event)"
-        (queueGranule)="onQueueGranuleProducts($event)"
-        [granules$]="granules$"
-        [platform]="searchPlatform$ | async"
-        [selected]="(selectedGranule$ | async)?.name">
+      <app-granules-list [platform]="searchPlatform$ | async">
       </app-granules-list>
     </mat-card>
 

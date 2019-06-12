@@ -13,6 +13,7 @@ import * as searchStore from '@store/search';
 import * as granulesStore from '@store/granules';
 import * as mapStore from '@store/map';
 import * as uiStore from '@store/ui';
+import * as queueStore from '@store/queue';
 
 import { faFileDownload, faPlus } from '@fortawesome/free-solid-svg-icons';
 import { MatPaginator } from '@angular/material/paginator';
@@ -28,24 +29,14 @@ import { CMRProduct, SearchType, MapInteractionModeType, Props, datasetPropertie
   encapsulation: ViewEncapsulation.None
 })
 export class GranulesListComponent implements OnInit {
-  @Input() granules$: Observable<CMRProduct[]>;
-  @Input() selected: string;
   @Input() platform: Platform;
-
-  @Output() newSelected = new EventEmitter<string>();
-  @Output() queueGranule = new EventEmitter<string>();
-  @Output() newFocusedGranule = new EventEmitter<CMRProduct>();
-  @Output() clearFocusedGranule = new EventEmitter<void>();
 
   @ViewChild(CdkVirtualScrollViewport, { static: true }) scroll: CdkVirtualScrollViewport;
 
+  public granules$ = this.store$.select(granulesStore.getGranules);
   public granules: CMRProduct[];
-  public pageSizeOptions = [5, 10];
-  public pageSize = this.pageSizeOptions[0];
-  public pageIndex = 0;
+  public  selected: string;
 
-  public downloadIcon = faFileDownload;
-  public queueIcon = faPlus;
   public searchType: SearchType;
   public selectedFromList = false;
   public p = Props;
@@ -61,6 +52,7 @@ export class GranulesListComponent implements OnInit {
     this.store$.select(granulesStore.getSelectedGranule).pipe(
       withLatestFrom(this.granules$),
       filter(([selected, _]) => !!selected),
+      tap(([selected, _]) => this.selected = selected.name),
       map(([selected, granules]) => granules.indexOf(selected)),
     ).subscribe(
       idx => {
@@ -83,14 +75,12 @@ export class GranulesListComponent implements OnInit {
     fromEvent(document, 'keydown').subscribe((e: KeyboardEvent) => {
       const { key } = e;
 
-      switch ( key ) {
+      switch (key) {
         case 'ArrowRight': {
-          this.selectNextGranule();
-          break;
+          return this.selectNextGranule();
         }
         case 'ArrowLeft': {
-          this.selectPreviousGranule();
-          break;
+          return this.selectPreviousGranule();
         }
       }
     });
@@ -114,31 +104,21 @@ export class GranulesListComponent implements OnInit {
 
   public onGranuleSelected(name: string): void {
     this.selectedFromList = true;
-    this.newSelected.emit(name);
+    this.store$.dispatch(new granulesStore.SetSelectedGranule(name));
   }
 
   public onQueueGranule(e: Event, groupId: string): void {
-    this.queueGranule.emit(groupId);
+    this.store$.dispatch(new queueStore.QueueGranule(groupId));
 
     e.stopPropagation();
   }
 
   public onSetFocusedGranule(granule: CMRProduct): void {
-    this.newFocusedGranule.emit(granule);
+    this.store$.dispatch(new granulesStore.SetFocusedGranule(granule));
   }
 
   public onClearFocusedGranule(): void {
-    this.clearFocusedGranule.emit();
-  }
-
-  public clearResults(): void {
-    this.store$.dispatch(new granulesStore.ClearGranules());
-
-    if (this.searchType === SearchType.DATASET) {
-      this.store$.dispatch(
-        new mapStore.SetMapInteractionMode(MapInteractionModeType.DRAW)
-      );
-    }
+    this.store$.dispatch(new granulesStore.ClearFocusedGranule());
   }
 
   public onZoomTo(granule: CMRProduct): void {
