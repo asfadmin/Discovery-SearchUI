@@ -6,10 +6,10 @@
       </mat-card-subtitle>
     </mat-card-title-group>
 
-  <mat-card-content class="dl-list-global dl-list">
-    <mat-list role="list">
+  <mat-card-content class="dl-list-global dl-card-content">
+    <mat-list role="list" class="dl-list">
       <ng-container *ngIf="products$ | async as products">
-        <mat-list-item
+        <mat-list-item class="dl-list-item"
           *ngFor="let product of products"
           role="listitem">
           <div mat-line fxLayout="row" fxFlexFill>
@@ -19,10 +19,10 @@
               </a>
             </div>
             <div fxFlex="auto">
-              <span *ngIf="product.id.length > 59">
-                {{ product.id | truncate : 40 }}{{ product.id | truncate : -4 : '' }}
+              <span *ngIf="product.id.length > 79">
+                {{ product.id | truncate : 74 }}{{ product.id | truncate : -4 : '' }}
               </span>
-              <span *ngIf="product.id.length <= 59">
+              <span *ngIf="product.id.length <= 79">
                 {{ product.id }}
               </span>
             </div>
