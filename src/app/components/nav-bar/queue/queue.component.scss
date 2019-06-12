@@ -1,7 +1,7 @@
 @import "asf-theme";
 
 .dl-list {
-  height: 410px;
+  height: 310px;
   overflow-y: scroll;
 }
 
@@ -29,4 +29,22 @@
   border-top-style: solid;
   border-top-color: $asf-primary-dark;
   border-top-width: 1px;
+}
+
+.dl-clear-button {
+  text-align: left;
+
+  .mat-button {
+    font-size: 16px;
+    color: $asf-primary-dark;
+  }
+}
+
+.dl-download-buttons {
+  text-align: right;
+
+  .mat-button {
+    font-size: 16px;
+    color: $asf-primary-dark;
+  }
 }
