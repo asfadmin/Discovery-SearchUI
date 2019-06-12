@@ -57,3 +57,12 @@
     color: $asf-primary-dark;
   }
 }
+
+.dl-close-x {
+  position: absolute;
+  top: 15px;
+  right: 35px;
+  text-align: right;
+  float: right;
+  cursor: pointer;
+}
