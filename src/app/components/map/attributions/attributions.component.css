@@ -14,3 +14,15 @@
   border-width: 1px 0 0 1px;
   color: #333;
 }
+
+.lon-lat {
+  margin-right: 5px;
+}
+
+.lat-margin {
+  margin-right: 12px;
+}
+
+.text-spacing {
+  margin: 0 5px;
+}
