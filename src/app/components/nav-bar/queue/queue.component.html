@@ -1,15 +1,15 @@
-<mat-card>
-    <mat-card-title-group>
+<mat-card class="dl-card">
+    <mat-card-title-group class="dl-card-title-group">
       <mat-card-title>Download Queue</mat-card-title>
       <mat-card-subtitle>
         {{ numberOfProducts$ | async }} products, {{ (totalSize$ | async) | readableSizeFromBytes }}
       </mat-card-subtitle>
     </mat-card-title-group>
 
-  <mat-card-content class="dl-list">
-    <mat-list role="list">
+  <mat-card-content class="dl-list-global dl-card-content">
+    <mat-list role="list" class="dl-list">
       <ng-container *ngIf="products$ | async as products">
-        <mat-list-item
+        <mat-list-item class="dl-list-item"
           *ngFor="let product of products"
           role="listitem">
           <div mat-line fxLayout="row" fxFlexFill>
@@ -19,11 +19,11 @@
               </a>
             </div>
             <div fxFlex="auto">
-              <span *ngIf="product.id.length > 49">
-                <b>{{ product.id | truncate : 21 }}{{ product.id | truncate : -4 : '' }}</b>
+              <span *ngIf="product.id.length > 69">
+                {{ product.id | truncate : 64 }}{{ product.id | truncate : -4 : '' }}
               </span>
-              <span *ngIf="product.id.length <= 49">
-                <b>{{ product.id }}</b>
+              <span *ngIf="product.id.length <= 69">
+                {{ product.id }}
               </span>
             </div>
             <div fxFlex="40px">
@@ -37,53 +37,57 @@
     </mat-list>
   </mat-card-content>
 
-  <mat-card-actions>
-    <button mat-button mat-stroked-button [matMenuTriggerFor]="data" [disabled]="!areAnyProducts" class="btn-primary">
-      Data Download
-      <mat-icon>arrow_drop_up</mat-icon>
-    </button>
-    <mat-menu #data="matMenu" yPosition="above">
-      <button mat-menu-item (click)="onMakeDownloadScript()">
-        Download Python Script (.py)
-      </button>
-      <button mat-menu-item (click)="onMetalinkDownload()">
-        Metadata (metalink)
-      </button>
-    </mat-menu>
+  <div class="dl-card-actions" fxLayout="row"
+       fxFlexFill>
+    <div fxFlex="25" class="dl-clear-button">
+      <ng-container *ngIf="products$ | async as products">
+        <button *ngIf="previousQueue === null"
+                (click)="onClearQueue(products)" mat-button>
+          <mat-icon>delete</mat-icon>
+          <span>Clear Queue</span>
+        </button>
+      </ng-container>
 
-    <button mat-button mat-stroked-button [matMenuTriggerFor]="metadata" [disabled]="!areAnyProducts" class="btn-primary">
-      Metadata Download
-      <mat-icon>arrow_drop_up</mat-icon>
-    </button>
-    <mat-menu #metadata="matMenu" yPosition="above">
-      <button mat-menu-item (click)="onCsvDownload()">
-        Metadata (csv)
+      <button *ngIf="previousQueue !== null"
+              (click)="onRestoreQueue(previousQueue)" mat-button>
+        <mat-icon style="margin-right: 3px">undo</mat-icon>
+        <span>Restore Queue</span>
       </button>
-
-      <button mat-menu-item (click)="onKmlDownload()">
-        Metadata (kml)
+    </div>
+    <div fxFlex="75" class="dl-download-buttons">
+      <button mat-button [matMenuTriggerFor]="data" [disabled]="!areAnyProducts" class="btn-primary">
+        Data Download
+        <mat-icon>arrow_drop_up</mat-icon>
       </button>
+      <mat-menu #data="matMenu" yPosition="above">
+        <button mat-menu-item (click)="onMakeDownloadScript()">
+          Download Python Script (.py)
+        </button>
+        <button mat-menu-item (click)="onMetalinkDownload()">
+          Metadata (metalink)
+        </button>
+      </mat-menu>
 
-      <button mat-menu-item (click)="onGeojsonDownload()">
-        Metadata (geojson)
+      <button mat-button [matMenuTriggerFor]="metadata" [disabled]="!areAnyProducts" class="btn-primary">
+        Metadata Download
+        <mat-icon>arrow_drop_up</mat-icon>
       </button>
-    </mat-menu>
+      <mat-menu #metadata="matMenu" yPosition="above">
+        <button mat-menu-item (click)="onCsvDownload()">
+          Metadata (csv)
+        </button>
 
-    <ng-container *ngIf="products$ | async as products">
-      <button *ngIf="previousQueue === null"
-        (click)="onClearQueue(products)" mat-flat-button>
-        <mat-icon>delete</mat-icon>
-        <span>Clear Queue</span>
-      </button>
-    </ng-container>
+        <button mat-menu-item (click)="onKmlDownload()">
+          Metadata (kml)
+        </button>
 
-    <button *ngIf="previousQueue !== null"
-      (click)="onRestoreQueue(previousQueue)" mat-flat-button>
-      <mat-icon style="margin-right: 3px">undo</mat-icon>
-      <span>Restore Queue</span>
-    </button>
+        <button mat-menu-item (click)="onGeojsonDownload()">
+          Metadata (geojson)
+        </button>
+      </mat-menu>
+    </div>
 
-  </mat-card-actions>
+  </div>
 
 
 </mat-card>
