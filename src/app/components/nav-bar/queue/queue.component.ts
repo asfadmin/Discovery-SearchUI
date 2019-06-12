@@ -7,6 +7,7 @@ import { AppState } from '@store';
 import * as queueStore from '@store/queue';
 
 import { CMRProduct, AsfApiOutputFormat } from '@models';
+import { MatDialogRef } from '@angular/material';
 
 @Component({
   selector: 'app-queue',
@@ -31,7 +32,9 @@ export class QueueComponent {
     ))
   );
 
-  constructor(private store$: Store<AppState>) {}
+  constructor(private store$: Store<AppState>,
+              private dialogRef: MatDialogRef<QueueComponent>,
+) {}
 
   public onRemoveProduct(product: CMRProduct): void {
     this.store$.dispatch(new queueStore.RemoveItem(product));
@@ -70,5 +73,9 @@ export class QueueComponent {
 
   private downloadMetadata(format: AsfApiOutputFormat): void {
     this.store$.dispatch(new queueStore.DownloadMetadata(format));
+  }
+
+  onCloseDownloadQueue() {
+    this.dialogRef.close();
   }
 }
