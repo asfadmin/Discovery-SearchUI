@@ -1,15 +1,13 @@
-import { Component, OnInit, EventEmitter, Output, Input, ViewChild } from '@angular/core';
+import { Component, OnInit, EventEmitter, Output, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
 
-import { combineLatest } from 'rxjs';
-import { tap, map, filter, withLatestFrom } from 'rxjs/operators';
+import { tap, map, filter } from 'rxjs/operators';
 import { Store, ActionsSubject } from '@ngrx/store';
 import { ClipboardService } from 'ngx-clipboard';
 
 import { AppState } from '@store';
 import * as searchStore from '@store/search';
 import * as uiStore from '@store/ui';
-import * as granulesStore from '@store/granules';
 import * as filtersStore from '@store/filters';
 import * as queueStore from '@store/queue';
 
@@ -137,11 +135,6 @@ export class BreadcrumbListComponent implements OnInit {
     this.polygonForm.form
       .controls['searchPolygon']
       .setErrors(null);
-  }
-
-  public onClearDateRange(): void {
-    this.store$.dispatch(new filtersStore.ClearDateRange());
-    this.store$.dispatch(new filtersStore.ClearSeason());
   }
 
   public onNewSelectedFilter(filterType: BreadcrumbFilterType): void {
