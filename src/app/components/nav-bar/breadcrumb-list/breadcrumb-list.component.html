@@ -47,14 +47,14 @@
             <label>
               <input
                 (change)="onInputSearchPolygon($event.target.value)"
-                [value]="polygon$ | async"
+                [value]="polygon"
                 [(ngModel)]="searchPolygon"
                 name="searchPolygon"
                 matInput placeholder="Area of Interest">
             </label>
 
             <mat-icon
-              *ngIf="!!(polygon$ | async) && showCopyIcon" (click)="onCopy()"
+              *ngIf="!!polygon && showCopyIcon" (click)="onCopy()"
               matTooltip="Copy to clipboard"
               class="clickable copy-icon" matSuffix>
                 file_copy
@@ -83,7 +83,6 @@
       <div fxFlex="110px" class="breadcrumb additional-filters">
         <button (click)="onToggleFiltersMenu()"
                 *ngIf="searchType === searchTypes.DATASET"
-                color="{{ !(isAnyAdditionalFilters$ | async) ? 'basic' : 'primary' }}"
                 mat-button class="additional-filters-button">
           More<br>Filters
           <br>

@@ -38,11 +38,8 @@ enum BreadcrumbFilterType {
   styleUrls: ['./breadcrumb-list.component.scss']
 })
 export class BreadcrumbListComponent implements OnInit {
-  @Output() openQueue = new EventEmitter<void>();
   @Output() doSearch = new EventEmitter<void>();
   @Output() clearSearch = new EventEmitter<void>();
-
-  @Input() isLoading: boolean;
 
   @ViewChild('polygonForm', { static: false }) public polygonForm: NgForm;
 
@@ -51,45 +48,17 @@ export class BreadcrumbListComponent implements OnInit {
 
   public filterTypes = BreadcrumbFilterType;
   public selectedFilter = BreadcrumbFilterType.NONE;
-
-  public areProductsLoaded$ = this.store$.select(granulesStore.getAreProductsLoaded);
-  public isFiltersMenuOpen$ = this.store$.select(uiStore.getIsFiltersMenuOpen);
-  public searchAmount$ = this.store$.select(searchStore.getSearchAmount);
-  public queuedProducts$ = this.store$.select(queueStore.getQueuedProducts);
-
-  public loading$ = this.store$.select(searchStore.getIsLoading);
-  public searchTypeSub = this.store$.select(uiStore.getSearchType).subscribe(
-    searchType => this.searchType = searchType
-  );
-
   public searchType: SearchType = SearchType.DATASET;
+
   public searchTypes = SearchType;
+  public polygon: string;
+
+  public queuedProducts$ = this.store$.select(queueStore.getQueuedProducts);
+  public loading$ = this.store$.select(searchStore.getIsLoading);
 
   public maxResults$ = this.store$.select(filtersStore.getMaxSearchResults);
   public currentSearchAmount$ = this.store$.select(searchStore.getSearchAmount);
 
-  public selectedPlatformName$ = this.store$.select(filtersStore.getSelectedPlatformName);
-
-  public isAnyDateValues$ = this.store$.select(filtersStore.getIsAnyDateValues);
-  public dateRangePreview$ = this.store$.select(filtersStore.getDatePreviewStr);
-
-  public isAnyAOIValue$ = this.mapService.searchPolygon$.pipe(
-    map(polygon => !!polygon)
-  );
-
-  public isAnyAdditionalFilters$ = combineLatest(
-    this.store$.select(filtersStore.getIsAnyPathFrameValue),
-    this.store$.select(filtersStore.getIsAnyAdditionalFilters)
-  ).pipe(
-    map(additional => additional.some(v => !!v))
-  );
-
-  public polygon$ = this.mapService.searchPolygon$;
-  public polygon: string;
-
-  public additionalFiltersPreview$ = this.store$.select(filtersStore.getNumberOfAdditionalFilters).pipe(
-    map(amt => amt > 0 ? ` · ${amt}` : '')
-  );
 
   constructor(
     private store$: Store<AppState>,
@@ -101,12 +70,17 @@ export class BreadcrumbListComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+    this.store$.select(uiStore.getSearchType).subscribe(
+      searchType => this.searchType = searchType
+    );
+
     this.actions$.pipe(
       filter(action => action.type === filtersStore.FiltersActionType.CLEAR_FILTERS),
       filter(_ => !!this.polygonForm),
     ).subscribe(_ => this.polygonForm.reset());
 
-    this.polygon$.pipe(
+    const polygon$ = this.mapService.searchPolygon$;
+    polygon$.pipe(
       tap(_ => {
         if (!this.polygonForm) {
           return;
