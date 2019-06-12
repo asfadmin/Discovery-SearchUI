@@ -43,7 +43,7 @@
           <mat-form-field
             (mouseenter)="showCopyIcon = true"
             (mouseleave)="showCopyIcon = false"
-            style="width: 100%; max-width: 100%;">
+            class="full-width">
             <label>
               <input
                 (change)="onInputSearchPolygon($event.target.value)"
@@ -56,13 +56,14 @@
             <mat-icon
               *ngIf="!!(polygon$ | async) && showCopyIcon" (click)="onCopy()"
               matTooltip="Copy to clipboard"
-              style="cursor: pointer; margin-left:10px; font-size: 16px" matSuffix>
+              class="clickable copy-icon" matSuffix>
                 file_copy
             </mat-icon>
             <mat-icon
               (click)="onNewSelectedFilter(filterTypes.AOI)"
               matTooltip="More options"
-              style="cursor: pointer; margin-left: 3px;" matSuffix>
+              class="clickable additional-aoi-toggle"
+              matSuffix>
               {{ selectedFilter === filterTypes.AOI ? 'arrow_drop_up' : 'arrow_drop_down' }}
             </mat-icon>
           </mat-form-field>
@@ -82,7 +83,7 @@
       <div fxFlex="110px" class="breadcrumb additional-filters">
         <button (click)="onToggleFiltersMenu()"
                 *ngIf="searchType === searchTypes.DATASET"
-                color="{{ !(isAnyAdditionalFilters$ | async) ? 'basic' : accent }}"
+                color="{{ !(isAnyAdditionalFilters$ | async) ? 'basic' : 'primary' }}"
                 mat-button class="additional-filters-button">
           More<br>Filters
           <br>
@@ -113,7 +114,6 @@
 
     </div>
 
-    <!--<app-info-bar></app-info-bar>-->
     <div fxLayout="row wrap"
          fxFlexFill
          class="info-bar">
@@ -134,7 +134,5 @@
         </app-nav-buttons>
       </div>
     </div>
-
   </div>
-
 </div>

@@ -13,13 +13,6 @@
 $break-small: 700px;
 $break-medium: 1250px;
 
-.breadcrumb-list {
-  //@include fx-layout(row wrap, center center, 0px);
-  //display: flex;
-  //flex-direction: row;
-  //align-items: center;
-}
-
 .breadcrumb {
   @extend .mat-form-field;
 
@@ -48,10 +41,6 @@ $break-medium: 1250px;
   @extend .breadcrumb;
 
   padding-left: 10px;
-}
-
-.logo {
-  //padding-right: 10px;
 }
 
 .info-bar {
@@ -86,18 +75,6 @@ $break-medium: 1250px;
   line-height: 18px;
 }
 
-.hide-mobile {
-  //@media screen and (max-width: $break-small) {
-  //  display: none;
-  //}
-}
-
-.hide-medium {
-  //@media screen and (max-width: $break-medium) {
-  //  display: none;
-  //}
-}
-
 .selected {
   background-color: #ccc;
 }
@@ -108,4 +85,18 @@ $break-medium: 1250px;
 
 .justify-right {
   justify-content: safe flex-end;
+}
+
+.full-width {
+  width: 100%;
+  max-width: 100%;
+}
+
+.copy-icon {
+  font-size: 16px;
+  margin-left: 10px;
+}
+
+.additional-aoi-toggle {
+  margin-left: 3px;
 }

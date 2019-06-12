@@ -46,7 +46,6 @@ export class BreadcrumbListComponent implements OnInit {
 
   @ViewChild('polygonForm', { static: false }) public polygonForm: NgForm;
 
-  public accent = 'primary';
   public canSearch$ = this.store$.select(searchStore.getCanSearch);
   public showCopyIcon = false;
 
