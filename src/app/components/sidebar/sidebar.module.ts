@@ -12,7 +12,6 @@ import { SearchSelectorModule } from '@components/shared/selectors/search-select
 import { SearchModule } from './search';
 
 import { FlexLayoutModule } from '@angular/flex-layout';
-import { LogoModule } from './logo/logo.module';
 
 @NgModule({
   imports: [
@@ -25,7 +24,6 @@ import { LogoModule } from './logo/logo.module';
     FlexLayoutModule,
 
     ToggleButtonModule,
-    LogoModule,
 
     SearchModule,
     SearchSelectorModule,

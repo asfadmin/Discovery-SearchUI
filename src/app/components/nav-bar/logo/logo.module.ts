@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { ToggleButtonModule} from '@components/sidebar/toggle-button';
-import { LogoComponent } from '@components/sidebar/logo/logo.component';
+import { LogoComponent } from './logo.component';
 import { MatCardModule } from '@angular/material/card';
 
 @NgModule({
