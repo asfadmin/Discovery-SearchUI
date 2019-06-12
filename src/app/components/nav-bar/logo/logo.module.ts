@@ -1,22 +1,18 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-
+import { FlexLayoutModule } from '@angular/flex-layout';
 import { MatRippleModule } from '@angular/material/core';
-
 import { MatSharedModule } from '@shared';
-import { ToggleButtonComponent } from './toggle-button.component';
-
+import { LogoComponent } from './logo.component';
 
 @NgModule({
-  declarations: [
-    ToggleButtonComponent
-  ],
+  declarations: [LogoComponent],
   imports: [
     CommonModule,
+    FlexLayoutModule,
+    MatRippleModule,
     MatSharedModule,
   ],
-  exports: [
-    ToggleButtonComponent
-  ]
+  exports: [LogoComponent]
 })
-export class ToggleButtonModule { }
+export class LogoModule { }

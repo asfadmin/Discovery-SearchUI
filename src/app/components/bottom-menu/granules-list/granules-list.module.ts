@@ -8,17 +8,13 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { MatSharedModule } from '@shared';
 import { PipesModule } from '@pipes';
 
-import { GranulesListComponent } from './granules-list.component';
-import { CMRProductComponent } from './sentinel1-product/sentinel1-product.component';
-import { ProductNameComponent } from './sentinel1-product/product-name/product-name.component';
 import { CopyToClipboardModule } from '@components/shared/copy-to-clipboard';
+import { GranulesListComponent } from './granules-list.component';
 
 
 @NgModule({
   declarations: [
     GranulesListComponent,
-    CMRProductComponent,
-    ProductNameComponent,
   ],
   imports: [
     CommonModule,

@@ -5,7 +5,7 @@ import { Store } from '@ngrx/store';
 import { AppState } from '@store';
 import * as filtersStore from '@store/filters';
 
-import { Platform, Range } from '@models';
+import { Range } from '@models';
 
 @Component({
   selector: 'app-path-selector',
@@ -13,9 +13,6 @@ import { Platform, Range } from '@models';
   styleUrls: ['./path-selector.component.scss']
 })
 export class PathSelectorComponent implements OnInit {
-
-  public pathRange$ = this.store$.select(filtersStore.getPathRange);
-  public frameRange$ = this.store$.select(filtersStore.getFrameRange);
   public pathRange: Range<number | null>;
   public frameRange: Range<number | null>;
 
@@ -24,8 +21,12 @@ export class PathSelectorComponent implements OnInit {
   constructor(private store$: Store<AppState>) { }
 
   ngOnInit() {
-    this.pathRange$.subscribe(range => this.pathRange = range);
-    this.frameRange$.subscribe(range => this.frameRange = range);
+    this.store$.select(filtersStore.getPathRange).subscribe(
+      range => this.pathRange = range
+    );
+    this.store$.select(filtersStore.getFrameRange).subscribe(
+      range => this.frameRange = range
+    );
   }
 
   public onPathStartChanged(path: string): void {

@@ -17,19 +17,19 @@ import * as models from '@models';
   styleUrls: ['./list-search.component.css']
 })
 export class ListSearchComponent implements OnInit {
-  public listSearchMode$ = this.store$.select(filtersStore.getListSearchMode);
   public types = ListSearchType;
 
   public searchList: string;
-  private searchList$ = this.store$.select(granulesStore.getSearchList).pipe(
-      map(list => this.searchList = list.join('\n'))
-    ).subscribe(_ => _);
+  public listSearchMode$ = this.store$.select(filtersStore.getListSearchMode);
 
-  constructor(
-    private store$: Store<AppState>,
-  ) {}
+  constructor(private store$: Store<AppState>) {}
 
   ngOnInit() {
+    this.store$.select(granulesStore.getSearchList).pipe(
+      map(list => list.join('\n'))
+    ).subscribe(
+      listStr => this.searchList = listStr
+    );
   }
 
   public onGranuleModeSelected(): void {

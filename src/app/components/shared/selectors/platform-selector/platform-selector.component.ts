@@ -1,10 +1,9 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 
 import { map } from 'rxjs/operators';
 import { Store } from '@ngrx/store';
 
 import { AppState } from '@store';
-import { Platform } from '@models';
 import * as filtersStore from '@store/filters';
 
 
@@ -14,19 +13,13 @@ import * as filtersStore from '@store/filters';
   styleUrls: ['./platform-selector.component.scss']
 })
 export class PlatformSelectorComponent implements OnInit {
-  public selected: string | null = null;
-
   public platforms$ = this.store$.select(filtersStore.getPlatformsList);
-  public selectedPlatformName$ = this.store$.select(filtersStore.getSelectedPlatformNames).pipe(
-    map(platform => platform.size === 1 ?
-      platform.values().next().value : null
-    )
-  );
+  public selected: string | null = null;
 
   constructor(private store$: Store<AppState>) { }
 
   ngOnInit() {
-    this.selectedPlatformName$.subscribe(
+    this.store$.select(filtersStore.getSelectedPlatformName).subscribe(
       selected => this.selected = selected
     );
   }

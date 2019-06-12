@@ -30,7 +30,7 @@ export class DatapoolAuthService {
   public login() {
     const localUrl = window.location.origin;
 
-    const appRedirect = encodeURIComponent(`${localUrl}?uiView=${ViewType.LOGIN}`);
+    const appRedirect = encodeURIComponent(localUrl);
 
     const url = `${this.authUrl}/loginservice/in/${appRedirect}`;
 

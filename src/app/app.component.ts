@@ -125,8 +125,4 @@ export class AppComponent implements OnInit {
       );
     }
   }
-
-  public onLoginClosed(): void {
-    this.store$.dispatch(new uiStore.SetUiView(models.ViewType.MAIN));
-  }
 }

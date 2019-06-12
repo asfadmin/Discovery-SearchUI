@@ -4,27 +4,3 @@
   position: fixed;
   background-color: #1a1e27;
 }
-
-.default-position {
-  position: fixed;
-  right: 0;
-  bottom: 60px;
-  z-index: 999;
-  margin: 0;
-  padding: 0;
-}
-
-.no-ui-position {
-  position: fixed;
-  right: 0;
-  bottom: 25px;
-  z-index: 999;
-  margin: 0;
-  padding: 0;
-}
-
-.view-reset-button-position {
-  position: fixed;
-  left: 10px;
-  top: 50px;
-}

@@ -19,8 +19,7 @@ import { QueueModule, QueueComponent } from '@components/nav-bar/queue';
 import { SearchSelectorModule } from '@components/shared/selectors/search-selector';
 import { BreadcrumbListComponent } from './breadcrumb-list.component';
 import { NavButtonsModule } from '@components/nav-bar/nav-buttons';
-import { InfoBarModule } from '@components/sidebar/info-bar/info-bar.module';
-import { LogoModule } from '@components/sidebar/logo/logo.module';
+import { LogoModule } from '@components/nav-bar/logo/logo.module';
 
 @NgModule({
   declarations: [BreadcrumbListComponent],
@@ -42,7 +41,6 @@ import { LogoModule } from '@components/sidebar/logo/logo.module';
     AoiUploadModule,
     MaxResultsSelectorModule,
     NavButtonsModule,
-    InfoBarModule,
     LogoModule,
   ],
   entryComponents: [
