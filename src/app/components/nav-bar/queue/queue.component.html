@@ -19,10 +19,10 @@
               </a>
             </div>
             <div fxFlex="auto">
-              <span *ngIf="product.id.length > 79">
-                {{ product.id | truncate : 74 }}{{ product.id | truncate : -4 : '' }}
+              <span *ngIf="product.id.length > 69">
+                {{ product.id | truncate : 64 }}{{ product.id | truncate : -4 : '' }}
               </span>
-              <span *ngIf="product.id.length <= 79">
+              <span *ngIf="product.id.length <= 69">
                 {{ product.id }}
               </span>
             </div>
