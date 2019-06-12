@@ -1,10 +1,8 @@
 import {
-  Component, OnInit, Input, Output,
-  EventEmitter
+  Component, OnInit, Input, Output, EventEmitter
 } from '@angular/core';
 
 import { Store } from '@ngrx/store';
-
 import { Observable, combineLatest } from 'rxjs';
 import {
   map, filter, switchMap, tap,
@@ -15,10 +13,8 @@ import { Vector as VectorLayer} from 'ol/layer';
 import { Vector as VectorSource } from 'ol/source';
 
 import { AppState } from '@store';
-import * as uiStore from '@store/ui';
 import * as granulesStore from '@store/granules';
 import * as mapStore from '@store/map';
-import * as queueStore from '@store/queue';
 
 import * as models from '@models';
 import { MapService, WktService } from '@services';
@@ -30,19 +26,12 @@ import { MapService, WktService } from '@services';
 })
 export class MapComponent implements OnInit {
   @Output() loadUrlState = new EventEmitter<void>();
-  @Output() doSearch = new EventEmitter<void>();
-  @Output() clearSearch = new EventEmitter<void>();
 
   public interactionMode$ = this.store$.select(mapStore.getMapInteractionMode);
   public mousePosition$ = this.mapService.mousePosition$;
-  public newSelectedGranule$ = this.mapService.newSelectedGranule$;
 
   private isMapInitialized$ = this.store$.select(mapStore.getIsMapInitialization);
-  private granules$ = this.store$.select(granulesStore.getGranules);
-  private selectedGranule$ = this.store$.select(granulesStore.getSelectedGranule);
-  private focusedGranule$ = this.store$.select(granulesStore.getFocusedGranule);
   private view$ = this.store$.select(mapStore.getMapView);
-  private drawMode$ = this.store$.select(mapStore.getMapDrawMode);
 
   constructor(
     private store$: Store<AppState>,
@@ -55,11 +44,14 @@ export class MapComponent implements OnInit {
     this.redrawSearchPolygonWhenViewChanges();
     this.updateDrawMode();
 
-    this.interactionMode$
-      .subscribe(mode => this.mapService.setInteractionMode(mode));
+    this.interactionMode$.subscribe(
+      mode => this.mapService.setInteractionMode(mode)
+    );
 
-    this.newSelectedGranule$.subscribe(
-      gName => this.store$.dispatch(new granulesStore.SetSelectedGranule(gName))
+    this.mapService.newSelectedGranule$.pipe(
+      map(gName => new granulesStore.SetSelectedGranule(gName))
+    ).subscribe(
+      action => this.store$.dispatch(action)
     );
   }
 
@@ -68,7 +60,7 @@ export class MapComponent implements OnInit {
     e.preventDefault();
   }
 
-  public onNewInteractionMode(mode: models.MapInteractionModeType): void {
+  private onNewInteractionMode(mode: models.MapInteractionModeType): void {
     this.store$.dispatch(new mapStore.SetMapInteractionMode(mode));
   }
 
@@ -112,8 +104,8 @@ export class MapComponent implements OnInit {
 
   private granuleToLayer$(layerType: string) {
     const granule$ = layerType === 'FOCUSED' ?
-      this.focusedGranule$ :
-      this.selectedGranule$;
+      this.store$.select(granulesStore.getFocusedGranule) :
+      this.store$.select(granulesStore.getSelectedGranule);
 
     const granulesLayerAfterInitialization = this.isMapInitialized$.pipe(
       filter(isMapInitiliazed => isMapInitiliazed),
@@ -160,7 +152,7 @@ export class MapComponent implements OnInit {
   }
 
   private updateDrawMode(): void {
-    this.drawMode$.subscribe(
+    this.store$.select(mapStore.getMapDrawMode).subscribe(
       mode => this.mapService.setDrawMode(mode)
     );
   }
@@ -178,7 +170,7 @@ export class MapComponent implements OnInit {
 
 
   private granulePolygonsLayer(projection: string): Observable<VectorSource> {
-    return this.granules$.pipe(
+    return this.store$.select(granulesStore.getGranules).pipe(
       distinctUntilChanged(),
       map(granules => this.granulesToFeature(granules, projection)),
       map(features => this.featuresToSource(features))
@@ -210,9 +202,5 @@ export class MapComponent implements OnInit {
 
   private setMapWith(viewType: models.MapViewType): void {
     this.mapService.setMapView(viewType);
-  }
-
-  public onShowUi(): void {
-    this.store$.dispatch(new uiStore.SetUiView(models.ViewType.MAIN));
   }
 }

@@ -9,10 +9,7 @@
     [isLoading]="isLoading$ | async">
   </app-nav-bar>
 
-  <app-map
-    (doSearch)="onNewSearch()"
-    (clearSearch)="onClearSearch()"
-    (loadUrlState)="onLoadUrlState()">
+  <app-map (loadUrlState)="onLoadUrlState()">
   </app-map>
 
   <app-sidebar
