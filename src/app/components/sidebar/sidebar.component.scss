@@ -26,16 +26,16 @@ $break-large: 1200px;
   top: 15px;
   left: calc(100% + 20px);
   width: 900px;
-  max-height: calc(80% - 10px);
+  max-height: calc(80vh - 10px);
   max-width: calc(100vw - 20px);
   overflow-y: auto;
 
   @media screen and (max-width: $break-small) {
-    max-height: calc(78% - 10px);
+    max-height: calc(78vh - 10px);
   }
 
   @media screen and (min-width: $break-large) {
-    max-height: calc(80% - 10px);
+    max-height: calc(80vh - 10px);
   }
 }
 
