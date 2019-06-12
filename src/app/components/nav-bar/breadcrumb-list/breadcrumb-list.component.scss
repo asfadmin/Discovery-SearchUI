@@ -1,6 +1,8 @@
 @import "asf-theme";
 @import "~flex-layout-sass/mixin";
 
+$config: mat-typography-config();
+
 .breadcrumb-filter {
   max-width: 370px;
   min-width: 300px;
@@ -68,6 +70,10 @@ $break-medium: 1250px;
 
 .max-results {
   text-align: right;
+  font-family: mat-font-family($config);
+  font-size: 14px;
+  margin-top: -5px;
+  line-height: 29px;
 }
 
 .additional-filters {
