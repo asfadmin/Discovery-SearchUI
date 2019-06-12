@@ -90,3 +90,12 @@ $break-large: 1200px;
 h3 {
   color: $asf-primary;
 }
+
+.close-x {
+  position: absolute;
+  top: 15px;
+  right: 35px;
+  text-align: right;
+  float: right;
+  cursor: pointer;
+}
