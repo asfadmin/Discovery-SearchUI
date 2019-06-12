@@ -1,4 +1,9 @@
+@import "asf-theme";
+
+$config: mat-typography-config();
+
 .mp0 {
+  font-family: mat-font-family($config);
   margin: 0;
   padding: 0;
 }
