@@ -1,26 +1,21 @@
 import {
-  Component, OnInit, Input, ViewChild,
-  ViewEncapsulation, Output, EventEmitter,
-  HostListener
+  Component, OnInit, Input, ViewChild, ViewEncapsulation
 } from '@angular/core';
 
-import { Observable, fromEvent } from 'rxjs';
-import { tap, distinctUntilChanged, withLatestFrom, filter, map } from 'rxjs/operators';
+import { fromEvent } from 'rxjs';
+import { tap, withLatestFrom, filter, map } from 'rxjs/operators';
 
 import { Store } from '@ngrx/store';
 import { AppState } from '@store';
 import * as searchStore from '@store/search';
 import * as granulesStore from '@store/granules';
-import * as mapStore from '@store/map';
 import * as uiStore from '@store/ui';
 import * as queueStore from '@store/queue';
 
-import { faFileDownload, faPlus } from '@fortawesome/free-solid-svg-icons';
-import { MatPaginator } from '@angular/material/paginator';
 import { CdkVirtualScrollViewport } from '@angular/cdk/scrolling';
 
 import * as services from '@services';
-import { CMRProduct, SearchType, MapInteractionModeType, Props, datasetProperties, Platform } from '@models';
+import * as models from '@models';
 
 @Component({
   selector: 'app-granules-list',
@@ -29,17 +24,17 @@ import { CMRProduct, SearchType, MapInteractionModeType, Props, datasetPropertie
   encapsulation: ViewEncapsulation.None
 })
 export class GranulesListComponent implements OnInit {
-  @Input() platform: Platform;
+  @Input() platform: models.Platform;
 
   @ViewChild(CdkVirtualScrollViewport, { static: true }) scroll: CdkVirtualScrollViewport;
 
   public granules$ = this.store$.select(granulesStore.getGranules);
-  public granules: CMRProduct[];
+  public granules: models.CMRProduct[];
   public  selected: string;
 
-  public searchType: SearchType;
+  public searchType: models.SearchType;
   public selectedFromList = false;
-  public p = Props;
+  public p = models.Props;
 
   constructor(
     private store$: Store<AppState>,
@@ -113,7 +108,7 @@ export class GranulesListComponent implements OnInit {
     e.stopPropagation();
   }
 
-  public onSetFocusedGranule(granule: CMRProduct): void {
+  public onSetFocusedGranule(granule: models.CMRProduct): void {
     this.store$.dispatch(new granulesStore.SetFocusedGranule(granule));
   }
 
@@ -121,7 +116,7 @@ export class GranulesListComponent implements OnInit {
     this.store$.dispatch(new granulesStore.ClearFocusedGranule());
   }
 
-  public onZoomTo(granule: CMRProduct): void {
+  public onZoomTo(granule: models.CMRProduct): void {
     const features = this.wktService.wktToFeature(
       granule.metadata.polygon,
       this.mapService.epsg()
