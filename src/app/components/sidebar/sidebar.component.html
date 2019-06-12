@@ -2,7 +2,7 @@
   class="sidebar-position">
 
   <div
-    *ngIf="selectedSearchType !== null && isFiltersMenuOpen"
+    *ngIf="selectedSearchType !== null && (isFiltersMenuOpen$ | async)"
     class="dataset-filters-card">
     <mat-card>
       <mat-card-header>
