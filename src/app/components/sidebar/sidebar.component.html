@@ -5,11 +5,15 @@
     *ngIf="selectedSearchType !== null && (isFiltersMenuOpen$ | async)"
     class="dataset-filters-card">
     <mat-card>
-      <mat-card-header>
-        <mat-card-title>
-          <mat-icon (click)="closePanel()" class="clickable">close</mat-icon>
-        </mat-card-title>
-      </mat-card-header>
+      <div fxLayout="row" fxFlexFill>
+        <div fxFlex="grow">
+        </div>
+        <div fxFlex="nogrow">
+          <mat-icon (click)="closePanel()" class="clickable">
+            close
+          </mat-icon>
+        </div>
+      </div>
 
       <mat-card-content>
         <app-search
