@@ -68,6 +68,10 @@ export class FileUploadDialogComponent implements OnInit {
     this.file.nativeElement.click();
   }
 
+  public areNoFiles(files: Set<File>): boolean {
+    return files.size === 0;
+  }
+
   public onFilesAdded(): void {
     const files: { [key: string]: File } = this.file.nativeElement.files;
 
