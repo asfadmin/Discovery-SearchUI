@@ -15,7 +15,7 @@ $menu-height: 500px;
   right: 100%;
   margin: 0;
   top: 148px;
-  z-index: 999;
+  z-index: 1001;
 }
 
 $break-small: 500px;
@@ -32,6 +32,7 @@ $break-large: 1200px;
   overflow-y: auto;
   margin: 0 auto;
   display: table;
+  z-index: 1000;
 
   @media screen and (max-width: $break-small) {
     max-height: calc(78vh - 10px);
