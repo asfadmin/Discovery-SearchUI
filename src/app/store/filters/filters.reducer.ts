@@ -123,7 +123,10 @@ export function filtersReducer(state = initState, action: FiltersActions): Filte
     }
 
     case FiltersActionType.SET_START_DATE: {
-      const start = new Date(action.payload.setHours(0, 0, 0, 0));
+      const start = !!action.payload ?
+        new Date(action.payload.setHours(0, 0, 0, 0)) :
+        action.payload;
+
       return {
         ...state,
         dateRange: {
@@ -133,7 +136,9 @@ export function filtersReducer(state = initState, action: FiltersActions): Filte
     }
 
     case FiltersActionType.SET_END_DATE: {
-      const end = new Date(action.payload.setHours(23, 59, 59, 999));
+      const end = !!action.payload ?
+        new Date(action.payload.setHours(23, 59, 59, 999)) :
+        action.payload;
 
       return {
         ...state,

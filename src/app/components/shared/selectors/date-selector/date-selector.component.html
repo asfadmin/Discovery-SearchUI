@@ -1,7 +1,7 @@
   <form #dateForm="ngForm"
     (keydown.enter)="$event.preventDefault()"
     class="date-selector">
-    <mat-form-field style="width: 48%">
+    <mat-form-field class="date-input-field">
       <input matInput
         [(ngModel)]="startDate"
         [min]="extrema.start.min"
@@ -14,7 +14,7 @@
       <mat-datepicker #start></mat-datepicker>
     </mat-form-field>
 
-    <mat-form-field style="width: 48%">
+    <mat-form-field class="date-input-field">
       <input matInput
         [(ngModel)]="endDate"
         [min]="extrema.end.min"

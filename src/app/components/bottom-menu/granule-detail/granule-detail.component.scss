@@ -1,10 +1,11 @@
-li {
-  margin-bottom: 1px;
+.detail-card {
+  height: 435px;
+  margin-top: 4px;
+  //overflow: auto;
 }
 
-.detail-card {
-  height: 475px;
-  margin-top: 4px;
+.clipboard-icon {
+  margin: 0 10px;
 }
 
 .granule-metadata {
@@ -55,10 +56,24 @@ li {
 }
 
 .content {
-  margin: 0 16px;
+  margin: 0 16px 25px 16px;
+  height: 300px;
+  overflow: auto;
 }
 
 .action-buttons {
   padding: 0 24px;
   margin: 0;
+}
+
+.detail-item-margin {
+  margin-top: 5px;
+}
+
+.w40 {
+  width: 40%;
+}
+
+.w50 {
+  width: 50%;
 }

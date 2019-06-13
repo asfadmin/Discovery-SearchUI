@@ -1,6 +1,5 @@
 import { Component, OnInit, Output, Input, EventEmitter } from '@angular/core';
 
-import { ClipboardService } from 'ngx-clipboard';
 import { Store } from '@ngrx/store';
 
 import { AppState } from '@store';
@@ -17,35 +16,23 @@ export class AoiUploadComponent implements OnInit {
   public drawMode$ = this.store$.select(mapStore.getMapDrawMode);
   public interactionMode$ = this.store$.select(mapStore.getMapInteractionMode);
 
-  public polygon$ = this.mapService.searchPolygon$;
   public polygon: string;
   public interactionTypes = MapInteractionModeType;
 
   constructor(
-    private mapService: MapService,
-    private wktService: WktService,
     private store$: Store<AppState>,
-    private clipboard: ClipboardService
+    private mapService: MapService,
   ) {}
 
   ngOnInit() {
-    this.polygon$.subscribe(polygon => this.polygon = polygon);
+    this.mapService.searchPolygon$.subscribe(
+      polygon => this.polygon = polygon
+    );
   }
 
   public onFileUpload(): void {
     const action = new mapStore.SetMapInteractionMode(MapInteractionModeType.UPLOAD);
     this.store$.dispatch(action);
-  }
-
-  public onNewPolygon(polygon: string): void {
-    const features = this.wktService.wktToFeature(
-      polygon,
-      this.mapService.epsg()
-    );
-
-    this.mapService.setDrawFeature(features);
-
-    return features;
   }
 
   public onNewDrawMode(mode: MapDrawModeType): void {
@@ -59,9 +46,5 @@ export class AoiUploadComponent implements OnInit {
 
   public onNewInteractionMode(mode: MapInteractionModeType): void {
     this.store$.dispatch(new mapStore.SetMapInteractionMode(mode));
-  }
-
-  public onCopy(): void {
-    this.clipboard.copyFromContent(this.polygon);
   }
 }

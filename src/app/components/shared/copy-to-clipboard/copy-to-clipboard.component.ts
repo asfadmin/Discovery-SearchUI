@@ -19,12 +19,11 @@ export class CopyToClipboardComponent {
   @ViewChild('copyTooltip', { static: true }) copyTooltip: ElementRef;
 
   public copyIcon = faCopy;
-
   public copyTooltipMessage = this.prompt;
 
   constructor(private clipboardService: ClipboardService) { }
 
-  onCopyIconClicked(e: Event): void {
+  public onCopyIconClicked(e: Event): void {
     this.clipboardService.copyFromContent(this.value);
 
     of(this.prompt).pipe(

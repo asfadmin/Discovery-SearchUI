@@ -1,8 +1,8 @@
-<div style="display: flex; flex-direction: column; justify-content: space-between; height: 98%; width: 100%; margin: 0; padding: 0; ">
-  <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 5px; height: 10%">
+<div *ngIf="granule$ | async as granule" class="dialog-wrapper mp0">
+  <div class="dialog-header">
     <div>
-    <h3 style="margin: 0; padding: 0">{{ granule.name }}</h3>
-    <span class="faint-text">{{ granule.metadata.date | shortDate }}</span>
+      <h3 class="mp0">{{ granule.name }}</h3>
+      <span class="faint-text">{{ granule.metadata.date | shortDate }}</span>
     </div>
     <div>
       <button mat-icon-button>
@@ -10,15 +10,14 @@
       </button>
     </div>
   </div>
-  <div style="width: 75%; height: 75%; margin: auto">
+  <div class="granule-browse-wrapper">
     <img
-      style="width: auto; height: auto; margin: auto"
-      class="fit-to-container"
+      class="granule-browse fit-to-container"
       [src]="granule.browse"
       onerror="this.src='assets/error.png'"
       alt="Sentinel1 granule browse image">
   </div>
-  <div style="display: flex; justify-content: center; height: 5%">
+  <div class="nav-buttons">
     <button (click)="selectPreviousProduct()" mat-button>Previous</button>
     <button (click)="selectNextProduct()" mat-button>Next</button>
   </div>

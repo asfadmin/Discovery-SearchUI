@@ -54,3 +54,19 @@
     transform: translate3d(4px, 0, 0);
   }
 }
+
+.upload-button-spacing {
+  margin: 10px 0;
+}
+
+.file-list {
+  margin-top: 10px;
+}
+
+.loading-text {
+  margin-bottom: 30px;
+}
+
+.loading-spinner {
+  margin: 0 auto;
+}

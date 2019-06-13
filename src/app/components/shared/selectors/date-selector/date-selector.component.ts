@@ -2,14 +2,13 @@ import { Component, OnInit, Input, Output, EventEmitter, ViewChild } from '@angu
 import { MatDatepickerInputEvent } from '@angular/material/datepicker';
 import { NgForm } from '@angular/forms';
 
-import { Observable, combineLatest } from 'rxjs';
 import { filter } from 'rxjs/operators';
 import { Store, ActionsSubject } from '@ngrx/store';
 
 import { AppState } from '@store';
 import * as filtersStore from '@store/filters';
 
-import { Platform, DateRangeExtrema } from '@models';
+import { DateRangeExtrema } from '@models';
 import { DateExtremaService } from '@services';
 
 @Component({
@@ -21,24 +20,11 @@ export class DateSelectorComponent implements OnInit {
   @ViewChild('dateForm', { static: true }) public dateForm: NgForm;
 
   public extrema: DateRangeExtrema;
-  public startDate: Date;
-  public endDate: Date;
 
-  public isSeasonalSearch = false;
-
-  public platforms$ = this.store$.select(filtersStore.getPlatformsList);
   public startDate$ = this.store$.select(filtersStore.getStartDate);
   public endDate$ = this.store$.select(filtersStore.getEndDate);
-  public seasonStart$ = this.store$.select(filtersStore.getSeasonStart);
-  public seasonEnd$ = this.store$.select(filtersStore.getSeasonEnd);
-  public selectedPlatforms$ = this.store$.select(filtersStore.getSelectedPlatforms);
-
-  public dateRangeExtrema$ = this.dateExtremaService.getExtrema$(
-    this.platforms$,
-    this.selectedPlatforms$,
-    this.startDate$,
-    this.endDate$,
-  );
+  public startDate: Date;
+  public endDate: Date;
 
   constructor(
     private store$: Store<AppState>,
@@ -51,7 +37,12 @@ export class DateSelectorComponent implements OnInit {
       filter(action => action.type === filtersStore.FiltersActionType.CLEAR_FILTERS)
     ).subscribe(_ => this.dateForm.reset());
 
-    this.dateRangeExtrema$.subscribe(
+    this.dateExtremaService.getExtrema$(
+      this.store$.select(filtersStore.getPlatformsList),
+      this.store$.select(filtersStore.getSelectedPlatforms),
+      this.startDate$,
+      this.endDate$,
+    ).subscribe(
       extrema => this.extrema = extrema
     );
 

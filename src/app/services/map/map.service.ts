@@ -123,7 +123,8 @@ export class MapService {
     const view = {
       [models.MapViewType.ANTARCTIC]: views.antarctic(),
       [models.MapViewType.ARCTIC]: views.arctic(),
-      [models.MapViewType.EQUITORIAL]: views.equatorial()
+      [models.MapViewType.EQUITORIAL]: views.equatorial(),
+      [models.MapViewType.EQUITORIAL_STREET]: views.equatorialStreet()
     }[viewType];
 
     this.setMap(view);

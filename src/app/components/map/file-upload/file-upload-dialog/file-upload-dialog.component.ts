@@ -1,7 +1,7 @@
 import { Component, ViewChild, OnInit } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
-import { Subject, of } from 'rxjs';
+import { Subject } from 'rxjs';
 import { delay, tap, catchError } from 'rxjs/operators';
 
 import { MatDialogRef } from '@angular/material/dialog';
@@ -17,7 +17,6 @@ import { AsfApiService } from '@services';
 export class FileUploadDialogComponent implements OnInit {
   @ViewChild('file', { static: true }) file;
 
-  public dropEvent: any;
   public files: Set<File> = new Set();
   public request: Subscription;
   public canBeClosed = true;
@@ -67,6 +66,10 @@ export class FileUploadDialogComponent implements OnInit {
 
   public addFiles(): void {
     this.file.nativeElement.click();
+  }
+
+  public areNoFiles(files: Set<File>): boolean {
+    return files.size === 0;
   }
 
   public onFilesAdded(): void {

@@ -1,4 +1,5 @@
 @import "asf-theme";
+@import "variables";
 
 %card-base {
   background-color: $asf-primary;
@@ -58,4 +59,28 @@
   a {
     color: $asf-warn;
   }
+}
+
+$icon-size: 42px;
+
+.menu-toggle-button {
+  background-color: $asf-primary;
+  color: white;
+  box-shadow: none !important;
+  cursor: pointer;
+  border: none;
+  text-align: center;
+  vertical-align: center;
+  border-right-color: transparent;
+  border-right-style: solid;
+  border-right-width: 1px;
+}
+
+.toggle-icon {
+  @include md-icon-size($icon-size);
+}
+
+.toggle-text {
+  line-height: 0;
+  width: 100%;
 }
