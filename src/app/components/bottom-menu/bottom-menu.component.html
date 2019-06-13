@@ -28,7 +28,20 @@
           {{ numberOfGranules }} Granule{{ numberOfGranules === 1 ? '' : 's' }}
         </div>
 
-        <div></div>
+        <div *ngIf="allProducts$ | async as products">
+          <mat-icon
+             class="queue-all-button clickable noselect"
+             matTooltip="Add all results to queue"
+            [matMenuTriggerFor]="addAllProducts">
+              shopping_cart
+          </mat-icon>
+
+          <mat-menu #addAllProducts="matMenu">
+            <button (click)="queueAllProducts(products)" mat-menu-item>
+              Add {{ products.length }} product{{ products.length === 1 ? '' : 's'}} to queue
+            </button>
+          </mat-menu>
+        </div>
       </mat-card-subtitle>
       <app-granules-list [platform]="searchPlatform$ | async">
       </app-granules-list>

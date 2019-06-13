@@ -214,6 +214,11 @@ export const getAreProductsLoaded = createSelector(
   state => state.length > 0
 );
 
+export const getAllProducts = createSelector(
+  getGranulesState,
+  state => Object.values(state.products)
+);
+
 export const getGranuleProducts = createSelector(
   getGranulesState,
   (state: GranulesState) => {
