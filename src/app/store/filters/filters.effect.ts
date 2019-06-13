@@ -19,10 +19,11 @@ export class FiltersEffects {
   constructor(
     private store$: Store<AppState>,
     private mapService: MapService,
-    private actions$: Actions) {}
+    private actions$: Actions,
+  ) {}
 
   @Effect() updateDateRangeOnDatasetRemoved$: Observable<Action> = this.actions$.pipe(
-    ofType<filtersAction.RemoveSelectedDataset>(filtersAction.FiltersActionType.REMOVE_SELECTED_DATASET),
+    ofType<filtersAction.SetSelectedDataset>(filtersAction.FiltersActionType.SET_SELECTED_DATASET),
     map(action => new filtersAction.ClearDateRange())
   );
 

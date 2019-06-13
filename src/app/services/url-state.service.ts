@@ -126,14 +126,11 @@ export class UrlStateService {
   private filtersParameters() {
     return [{
       name: 'datasets',
-      source: this.store$.select(filterStore.getSelectedDatasetNames).pipe(
+      source: this.store$.select(filterStore.getSelectedDatasetName).pipe(
         skip(1),
-        filter(datasets => datasets.size > 0),
-        map(selected => ({
-          datasets: Array.from(selected).join(','),
-        }))
+        map(selected => ({ dataset: selected }))
       ),
-      loader: this.loadSelectedDatasets
+      loader: this.loadSelectedDataset
     }, {
       name: 'start',
       source: this.store$.select(filterStore.getStartDate).pipe(
@@ -339,12 +336,12 @@ export class UrlStateService {
     }
   }
 
-  private loadSelectedDatasets = (datasets: string): void => {
-    const selectedDatasets = datasets
-      .split(',')
-      .filter(name => models.datasetNames.includes(name));
+  private loadSelectedDataset = (dataset: string): void => {
+    if (!models.datasetNames.includes(dataset)) {
+      return;
+    }
 
-    const action = new filterStore.SetSelectedDatasets(selectedDatasets);
+    const action = new filterStore.SetSelectedDataset(dataset);
 
     this.store$.dispatch(action);
   }

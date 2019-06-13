@@ -14,7 +14,7 @@ import * as models from '@models';
   styleUrls: ['./other-selector.component.scss']
 })
 export class OtherSelectorComponent implements OnInit {
-  selected: models.Dataset[];
+  dataset: models.Dataset;
   productTypes: models.DatasetProductTypes;
   flightDirections: models.FlightDirection[];
   beamModes: models.DatasetBeamModes;
@@ -24,14 +24,14 @@ export class OtherSelectorComponent implements OnInit {
   public flightDirections$ = this.store$.select(filtersStore.getFlightDirections);
   public beamModes$ = this.store$.select(filtersStore.getBeamModes);
   public polarizations$ = this.store$.select(filtersStore.getPolarizations);
-  public selectedDatasets$ = this.store$.select(filtersStore.getSelectedDatasets);
+  public selectedDataset$ = this.store$.select(filtersStore.getSelectedDataset);
 
   public flightDirectionTypes = models.flightDirections;
 
   constructor(private store$: Store<AppState>) { }
 
   ngOnInit() {
-    this.selectedDatasets$.subscribe(datasets => this.selected = datasets);
+    this.selectedDataset$.subscribe(dataset => this.dataset = dataset);
     this.beamModes$.subscribe(modes => this.beamModes = modes);
     this.flightDirections$.subscribe(directions => this.flightDirections = directions);
     this.datasetProductTypes$.subscribe(types => this.productTypes = types);

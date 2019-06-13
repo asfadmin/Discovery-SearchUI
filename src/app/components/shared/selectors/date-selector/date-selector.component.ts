@@ -39,7 +39,7 @@ export class DateSelectorComponent implements OnInit {
 
     this.dateExtremaService.getExtrema$(
       this.store$.select(filtersStore.getDatasetsList),
-      this.store$.select(filtersStore.getSelectedDatasets),
+      this.store$.select(filtersStore.getSelectedDataset),
       this.startDate$,
       this.endDate$,
     ).subscribe(

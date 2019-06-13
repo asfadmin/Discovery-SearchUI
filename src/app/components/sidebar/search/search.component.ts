@@ -20,9 +20,7 @@ export class SearchComponent {
 
   public searchTypes = models.SearchType;
 
-  public dataset$ = this.store$.select(filtersStore.getSelectedDatasets).pipe(
-    map(ps => ps.slice().pop())
-  );
+  public dataset$ = this.store$.select(filtersStore.getSelectedDataset);
   public missionsByDataset$ = this.store$.select(missionStore.getMissionsByDataset);
   public selectedMission$ = this.store$.select(missionStore.getSelectedMission);
   public missionDatasets$ = this.missionsByDataset$.pipe(

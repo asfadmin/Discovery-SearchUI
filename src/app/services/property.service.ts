@@ -15,12 +15,8 @@ import * as models from '@models';
 export class PropertyService {
   private dataset: models.Dataset;
 
-  constructor(
-    private store$: Store<AppState>,
-  ) {
-    this.store$.select(filtersStore.getSelectedDatasets).pipe(
-      map(ps => [...ps].pop()),
-    ).subscribe(
+  constructor(private store$: Store<AppState>) {
+    this.store$.select(filtersStore.getSelectedDataset).subscribe(
       p => this.dataset = p
     );
   }

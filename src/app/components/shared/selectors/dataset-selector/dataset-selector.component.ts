@@ -25,6 +25,6 @@ export class DatasetSelectorComponent implements OnInit {
   }
 
   public onSelectionChange(dataset: string): void {
-    this.store$.dispatch(new filtersStore.AddSelectedDataset(dataset));
+    this.store$.dispatch(new filtersStore.SetSelectedDataset(dataset));
   }
 }

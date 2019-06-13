@@ -65,7 +65,7 @@ export class SearchParamsService {
   private filterSearchParams$() {
     return combineLatest(
         this.searchPolygon$(),
-        this.selectedDatasets$(),
+        this.selectedDataset$(),
         this.dateRange$(),
         this.season$(),
         this.pathRange$(),
@@ -110,14 +110,10 @@ export class SearchParamsService {
     );
   }
 
-  private selectedDatasets$() {
-    return this.store$.select(filterStore.getSelectedDatasets).pipe(
-      map(datasets => datasets
-        .map(dataset => dataset.name)
-        .join(',')
-        .replace('ALOS PALSAR', 'ALOS')
-      ),
-      map(datasets => ({ platform: datasets }))
+  private selectedDataset$() {
+    return this.store$.select(filterStore.getSelectedDataset).pipe(
+      map(dataset => dataset.name.replace('ALOS PALSAR', 'ALOS')),
+      map(dataset => ({ platform: dataset }))
     );
   }
 
