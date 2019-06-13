@@ -34,13 +34,11 @@ export class GranulesListComponent implements OnInit {
 
   public searchType: models.SearchType;
   public selectedFromList = false;
-  public p = models.Props;
 
   constructor(
     private store$: Store<AppState>,
     private mapService: services.MapService,
     private wktService: services.WktService,
-    public prop: services.PropertyService,
   ) {}
 
   ngOnInit() {
