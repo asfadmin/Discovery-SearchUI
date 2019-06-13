@@ -21,14 +21,17 @@ $menu-height: 500px;
 $break-small: 500px;
 $break-large: 1200px;
 
+.dataset-filters-div {
+  width: 100%;
+}
+
 .dataset-filters-card {
-  position: fixed;
+  position: relative;
   top: 15px;
-  left: calc(100% + 20px);
-  width: 900px;
-  max-height: calc(80vh - 10px);
-  max-width: calc(100vw - 20px);
+  width: 60%;
   overflow-y: auto;
+  margin: 0 auto;
+  display: table;
 
   @media screen and (max-width: $break-small) {
     max-height: calc(78vh - 10px);

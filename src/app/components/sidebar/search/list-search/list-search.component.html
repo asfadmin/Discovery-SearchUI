@@ -1,50 +1,59 @@
-<mat-card class="card-spacing" *ngIf="listSearchMode$ | async as mode">
-  <div *ngIf="mode === types.GRANULE">
-    Enter a list of granule names.
-    <br>
-    For example:
-    <ul>
-      <li> ALPSRP253527180 </li>
-      <li> E2_15295_STD_F469 </li>
-    </ul>
-  </div>
+<mat-card class="ls-card" *ngIf="listSearchMode$ | async as mode">
+  <mat-card-title-group class="ls-card-title-group">
+    <mat-card-title>
+      <span *ngIf="mode === types.GRANULE">Granule</span>
+      <span *ngIf="mode === types.PRODUCT">Product</span>
+      List Search
+    </mat-card-title>
+    <mat-card-subtitle>
+      <mat-button-toggle-group [value]="mode" class="ls-mat-button-toggle-group">
+        <mat-button-toggle
+          (click)="onGranuleModeSelected()"
+          [value]="types.GRANULE"
+          matTooltip="Granule List Search">
+          Granule
+        </mat-button-toggle>
 
-  <div *ngIf="mode === types.PRODUCT">
-    Enter a list of product ids.
-    <br>
-    For example:
-    <ul>
-      <li> ALPSRP253527180-KMZ </li>
-      <li> E2_15295_STD_F469-L1 </li>
-    </ul>
-  </div>
+        <mat-button-toggle
+          (click)="onProductModeSelected()"
+          [value]="types.PRODUCT"
+          matTooltip="Product List Search">
+          Product
+        </mat-button-toggle>
+      </mat-button-toggle-group>
+    </mat-card-subtitle>
+  </mat-card-title-group>
 
-  <h4>List Search Type</h4>
+  <mat-card-content class="ls-mat-card-content">
+    <div class="ls-instruction">
+        <h4>
+          <span *ngIf="mode === types.GRANULE">Enter a list of granule names.</span>
+          <span *ngIf="mode === types.PRODUCT">Enter a list of product ids.</span>
+        </h4>
+    </div>
+    <p>For example:</p>
+    <div class="ls-example">
+      <div *ngIf="mode === types.GRANULE">
+        <ul>
+          <li> ALPSRP253527180 </li>
+          <li> E2_15295_STD_F469 </li>
+        </ul>
+      </div>
+      <div *ngIf="mode === types.PRODUCT">
+        <ul>
+          <li> ALPSRP253527180-KMZ </li>
+          <li> E2_15295_STD_F469-L1 </li>
+        </ul>
+      </div>
+    </div>
+    <mat-form-field class="ls-card-content-list">
+      <textarea matInput
+                (input)="onTextInputChange($event.target.value)"
+                [(ngModel)]="searchList"
+                style="height: 150px;"
+                placeholder="{{ mode === types.GRANULE ? 'Granule' : 'Product' }} List">
+      </textarea>
+    </mat-form-field>
+  </mat-card-content>
 
-  <mat-button-toggle-group [value]="mode" style="margin-bottom: 10px" name="fontStyle" aria-label="Font Style">
-    <mat-button-toggle
-      (click)="onGranuleModeSelected()"
-      [value]="types.GRANULE"
-      matTooltip="Granule List Search">
-        Granule
-    </mat-button-toggle>
-
-    <mat-button-toggle
-      (click)="onProductModeSelected()"
-      [value]="types.PRODUCT"
-      matTooltip="Product List Search">
-        Product
-    </mat-button-toggle>
-  </mat-button-toggle-group>
-
-  <h4>List Input</h4>
-
-  <mat-form-field style="width: 90%;">
-    <textarea matInput
-      (input)="onTextInputChange($event.target.value)"
-      [(ngModel)]="searchList"
-      style="height: 200px;"
-      placeholder="{{ mode === types.GRANULE ? 'Granule' : 'Product' }} List">
-    </textarea>
-  </mat-form-field>
 </mat-card>
