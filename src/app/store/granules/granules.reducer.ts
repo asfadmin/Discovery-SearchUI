@@ -81,7 +81,12 @@ export function granulesReducer(state = initState, action: GranulesActions): Gra
       const granule = state.products[state.selected] || null;
 
       if (!granule) {
-        return { ...state };
+        const firstGranule = granules[0];
+
+        return {
+          ...state,
+          selected: firstGranule.id
+        };
       }
 
       const currentSelected = granules
@@ -106,7 +111,12 @@ export function granulesReducer(state = initState, action: GranulesActions): Gra
       const granule = state.products[state.selected] || null;
 
       if (!granule) {
-        return { ...state };
+        const lastGranule = granules[granules.length - 1];
+
+        return {
+          ...state,
+          selected: lastGranule.id
+        };
       }
 
       const currentSelected = granules
@@ -172,6 +182,11 @@ export const allGranulesFrom = (state: GranulesState) => {
 export const getGranules = createSelector(
   getGranulesState,
   (state: GranulesState) => allGranulesFrom(state)
+);
+
+export const getNumberOfGranules = createSelector(
+  getGranules,
+  (granules: CMRProduct[]) => granules.length
 );
 
 export const getSelectedGranuleProducts = createSelector(
