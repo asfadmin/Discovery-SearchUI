@@ -22,7 +22,7 @@ export class FiltersEffects {
     private actions$: Actions) {}
 
   @Effect() updateDateRangeOnDatasetRemoved$: Observable<Action> = this.actions$.pipe(
-    ofType<filtersAction.RemoveSelectedDataset>(filtersAction.FiltersActionType.REMOVE_SELECTED_PLATFORM),
+    ofType<filtersAction.RemoveSelectedDataset>(filtersAction.FiltersActionType.REMOVE_SELECTED_DATASET),
     map(action => new filtersAction.ClearDateRange())
   );
 

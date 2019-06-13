@@ -19,7 +19,7 @@ export const initState: UIState = {
   isFiltersMenuOpen: false,
   isBottomMenuOpen: false,
   uiView: ViewType.MAIN,
-  selectedFilter: FilterType.PLATFORM,
+  selectedFilter: FilterType.DATASET,
   searchType: SearchType.DATASET,
 };
 
