@@ -117,7 +117,7 @@ export class SearchParamsService {
         .join(',')
         .replace('ALOS PALSAR', 'ALOS')
       ),
-      map(datasets => ({ dataset: datasets }))
+      map(datasets => ({ platform: datasets }))
     );
   }
 
