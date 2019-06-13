@@ -1,8 +1,8 @@
 // tslint:disable
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { Injectable, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
-import { isPlatformBrowser } from '@angular/common';
-import { By } from '@angular/platform-browser';
+import { isDatasetBrowser } from '@angular/common';
+import { By } from '@angular/dataset-browser';
 // import { Observable } from 'rxjs/Observable';
 // import 'rxjs/add/observable/of';
 // import 'rxjs/add/observable/throw';
@@ -31,20 +31,20 @@ describe('OtherSelectorComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should run #onNewPlatformBeamModes()', async () => {
-    // component.onNewPlatformBeamModes(platform, beamModes);
+  it('should run #onNewDatasetBeamModes()', async () => {
+    // component.onNewDatasetBeamModes(dataset, beamModes);
   });
 
   it('should run #onNewProductTypes()', async () => {
-    // component.onNewProductTypes(platform, productTypes);
+    // component.onNewProductTypes(dataset, productTypes);
   });
 
   it('should run #onNewFlightDirectionsSelected()', async () => {
     // component.onNewFlightDirectionsSelected(directions);
   });
 
-  it('should run #onNewPlatformPolarizations()', async () => {
-    // component.onNewPlatformPolarizations(platform, polarizations);
+  it('should run #onNewDatasetPolarizations()', async () => {
+    // component.onNewDatasetPolarizations(dataset, polarizations);
   });
 
 });

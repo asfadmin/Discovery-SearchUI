@@ -1,11 +1,11 @@
 <mat-card class="card-spacing">
   <div style="margin-bottom: 10px;">
-    <mat-button-toggle-group [value]="platformFilter" name="fontStyle" aria-label="Font Style">
+    <mat-button-toggle-group [value]="datasetFilter" name="fontStyle" aria-label="Font Style">
       <mat-button-toggle
-        *ngFor="let platform of missionPlatforms"
-        (click)="selectPlatformFilter(platform)"
-        [value]="platform">
-          {{ platform.toLowerCase().includes('beta') ?  'Beta Products' : platform }}
+        *ngFor="let dataset of missionDatasets"
+        (click)="selectDatasetFilter(dataset)"
+        [value]="dataset">
+          {{ dataset.toLowerCase().includes('beta') ?  'Beta Products' : dataset }}
       </mat-button-toggle>
     </mat-button-toggle-group>
   </div>

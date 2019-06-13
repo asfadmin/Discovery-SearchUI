@@ -1,8 +1,8 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { Injectable, CUSTOM_ELEMENTS_SCHEMA, Component, Directive  } from '@angular/core';
-import { isPlatformBrowser } from '@angular/common';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { By } from '@angular/platform-browser';
+import { isDatasetBrowser } from '@angular/common';
+import { BrowserAnimationsModule } from '@angular/dataset-browser/animations';
+import { By } from '@angular/dataset-browser';
 
 import { cold, getTestScheduler } from 'jasmine-marbles';
 import { MatDialog } from '@angular/material/dialog';

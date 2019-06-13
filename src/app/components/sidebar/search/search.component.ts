@@ -20,12 +20,12 @@ export class SearchComponent {
 
   public searchTypes = models.SearchType;
 
-  public platform$ = this.store$.select(filtersStore.getSelectedPlatforms).pipe(
+  public dataset$ = this.store$.select(filtersStore.getSelectedDatasets).pipe(
     map(ps => ps.slice().pop())
   );
-  public missionsByPlatform$ = this.store$.select(missionStore.getMissionsByPlatform);
+  public missionsByDataset$ = this.store$.select(missionStore.getMissionsByDataset);
   public selectedMission$ = this.store$.select(missionStore.getSelectedMission);
-  public missionPlatforms$ = this.missionsByPlatform$.pipe(
+  public missionDatasets$ = this.missionsByDataset$.pipe(
     map(missions => Object.keys(missions))
   );
 

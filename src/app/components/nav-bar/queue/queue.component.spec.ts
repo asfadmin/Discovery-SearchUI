@@ -1,5 +1,5 @@
 import { async, fakeAsync, TestBed, inject, tick } from '@angular/core/testing';
-import { BrowserModule } from '@angular/platform-browser';
+import { BrowserModule } from '@angular/dataset-browser';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 
 import { Store, StoreModule } from '@ngrx/store';

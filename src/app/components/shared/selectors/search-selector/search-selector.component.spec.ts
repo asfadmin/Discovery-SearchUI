@@ -1,5 +1,5 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { BrowserAnimationsModule } from '@angular/dataset-browser/animations';
 
 import { DetailedSearchSelectorComponent } from './detailed-search-selector.component';
 import { DetailedSearchSelectorModule } from './detailed-search-selector.module';

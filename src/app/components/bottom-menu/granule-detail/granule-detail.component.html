@@ -6,10 +6,10 @@
 
     </mat-card-title>
     <mat-card-subtitle>
-      <span matTooltip="Dataset">{{ platform.name }}
-        <span *ngIf="platform.name === 'SMAP'">V{{ granule.name.slice(-1) }}</span>
+      <span matTooltip="Dataset">{{ dataset.name }}
+        <span *ngIf="dataset.name === 'SMAP'">V{{ granule.name.slice(-1) }}</span>
       </span> •
-      <span matTooltip="Frequency">{{ platform.frequency }}</span>
+      <span matTooltip="Frequency">{{ dataset.frequency }}</span>
     </mat-card-subtitle>
   </mat-card-header>
 
@@ -131,9 +131,9 @@
             <b>Matching Frames </b> • {{ granule.metadata.stackSize }}
           </li>
 
-          <li *ngIf="platform.source as source" class="detail-item-margin">
-            <a *ngIf="source.url" [href]="source.url" target="_blank"> Data courtesy of {{ platform.source.name }}</a>
-            <span *ngIf="!source.url" class="faint-text"> Data courtesy of {{ platform.source.name }}</span>
+          <li *ngIf="dataset.source as source" class="detail-item-margin">
+            <a *ngIf="source.url" [href]="source.url" target="_blank"> Data courtesy of {{ dataset.source.name }}</a>
+            <span *ngIf="!source.url" class="faint-text"> Data courtesy of {{ dataset.source.name }}</span>
           </li>
         </ul>
 

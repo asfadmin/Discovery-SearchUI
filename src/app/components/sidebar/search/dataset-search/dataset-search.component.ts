@@ -10,7 +10,7 @@ import { PropertyService } from '@services';
 })
 
 export class DatasetSearchComponent {
-  @Input() platform: models.CMRProduct;
+  @Input() dataset: models.CMRProduct;
 
   defaultPanelOpenState = true;
   panelIsDisabled = true;

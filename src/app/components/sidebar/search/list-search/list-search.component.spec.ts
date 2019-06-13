@@ -1,8 +1,8 @@
 import { async, ComponentFixture, fakeAsync, TestBed, inject, tick } from '@angular/core/testing';
 import { Injectable, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { isPlatformBrowser } from '@angular/common';
-import { By } from '@angular/platform-browser';
+import { isDatasetBrowser } from '@angular/common';
+import { By } from '@angular/dataset-browser';
 
 import { Store, StoreModule } from '@ngrx/store';
 import * as appStore from '@store';

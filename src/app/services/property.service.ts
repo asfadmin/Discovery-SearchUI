@@ -13,19 +13,19 @@ import * as models from '@models';
   providedIn: 'root'
 })
 export class PropertyService {
-  private platform: models.Platform;
+  private dataset: models.Dataset;
 
   constructor(
     private store$: Store<AppState>,
   ) {
-    this.store$.select(filtersStore.getSelectedPlatforms).pipe(
+    this.store$.select(filtersStore.getSelectedDatasets).pipe(
       map(ps => [...ps].pop()),
     ).subscribe(
-      p => this.platform = p
+      p => this.dataset = p
     );
   }
 
   public isRelevant(prop: models.Props): boolean {
-    return models.datasetProperties[prop].includes(this.platform.name);
+    return models.datasetProperties[prop].includes(this.dataset.name);
   }
 }

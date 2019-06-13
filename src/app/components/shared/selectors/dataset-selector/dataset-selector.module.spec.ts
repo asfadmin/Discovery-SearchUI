@@ -1,5 +1,5 @@
 import { async } from '@angular/core/testing';
-import {PlatformSelectorModule} from './platform-selector.module';
+import {DatasetSelectorModule} from './dataset-selector.module';
 import {Directive} from '@angular/core';
 
 describe('My Test', () => {
