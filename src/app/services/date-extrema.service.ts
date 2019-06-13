@@ -12,31 +12,31 @@ export class DateExtremaService {
 
   public getExtrema$(
     datasets$,
-    selectedDatasets$,
+    selectedDataset$,
     startDate$,
     endDate$,
   ) {
 
     const startMin$ = this.startMin$(
       datasets$,
-      selectedDatasets$
+      selectedDataset$
     );
 
     const startMax$ = this.startMax$(
       datasets$,
-      selectedDatasets$,
+      selectedDataset$,
       endDate$
     );
 
     const endMin$ = this.endMin$(
       datasets$,
-      selectedDatasets$,
+      selectedDataset$,
       startDate$
     );
 
     const endMax$ = this.endMax$(
       datasets$,
-      selectedDatasets$,
+      selectedDataset$,
     );
 
     return combineLatest(startMin$, startMax$, endMin$, endMax$).pipe(
@@ -57,33 +57,27 @@ export class DateExtremaService {
 
   private startMin$(
     datasets$: Observable<Dataset[]>,
-    selectedDatasets$: Observable<Dataset[]>
+    selectedDataset$: Observable<Dataset>
   ): Observable<Date> {
     return combineLatest(
       datasets$,
-      selectedDatasets$
+      selectedDataset$
     ).pipe(
       map(([datasets, selected]) => {
-        const dates = selected.length > 0 ?
-          selected :
-          datasets;
-
-        return dates
-          .map(dataset => dataset.date.start)
-          .reduce(this.oldest);
+        return selected.date.start;
       })
     );
   }
 
   private startMax$(
     datasets$: Observable<Dataset[]>,
-    selectedDatasets$: Observable<Dataset[]>,
+    selectedDataset$: Observable<Dataset>,
     endDate$: Observable<Date>
   ): Observable<Date> {
 
     return combineLatest(
       datasets$,
-      selectedDatasets$,
+      selectedDataset$,
       endDate$
     ).pipe(
       map(([datasets, selected, userEnd]) => {
@@ -91,15 +85,7 @@ export class DateExtremaService {
           return userEnd;
         }
 
-        const dates = selected.length > 0 ?
-          selected :
-          datasets;
-
-        const max = dates
-          .map(dataset => dataset.date.end || new Date(Date.now()))
-          .reduce(this.youngest);
-
-        return max;
+        return selected.date.end || new Date(Date.now());
       })
     );
 
@@ -107,13 +93,13 @@ export class DateExtremaService {
 
   private endMin$(
     datasets$: Observable<Dataset[]>,
-    selectedDatasets$: Observable<Dataset[]> ,
+    selectedDataset$: Observable<Dataset> ,
     startDate$: Observable<Date>
   ): Observable<Date> {
 
     return combineLatest(
       datasets$,
-      selectedDatasets$,
+      selectedDataset$,
       startDate$
     ).pipe(
       map(([datasets, selected, userStart]) => {
@@ -121,38 +107,22 @@ export class DateExtremaService {
           return userStart;
         }
 
-        const dates = selected.length > 0 ?
-          selected :
-          datasets;
-
-        const min = dates
-          .map(dataset => dataset.date.start)
-          .reduce(this.oldest);
-
-        return min;
+        return selected.date.start;
       })
     );
   }
 
   private endMax$(
     datasets$: Observable<Dataset[]>,
-    selectedDatasets$: Observable<Dataset[]>
+    selectedDataset$: Observable<Dataset>
   ): Observable<Date> {
 
     return combineLatest(
       datasets$,
-      selectedDatasets$
+      selectedDataset$
     ).pipe(
       map(([datasets, selected]) => {
-        const dates = selected.length > 0 ?
-          selected :
-          datasets;
-
-        const max = dates
-          .map(dataset => dataset.date.end || new Date(Date.now()))
-          .reduce(this.youngest);
-
-        return max;
+        return selected.date.end || new Date(Date.now());
       })
     );
   }

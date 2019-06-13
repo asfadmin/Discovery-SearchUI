@@ -393,7 +393,7 @@ export const getSelectedDatasetName = createSelector(
 
 export const getSelectedDataset = createSelector(
   getDatasetsState ,
-  (state: DatasetsState) => state.entities[name]
+  (state: DatasetsState) => state.entities[state.selected]
 );
 
 export const getPathRange = createSelector(
