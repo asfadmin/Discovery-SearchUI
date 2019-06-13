@@ -18,7 +18,13 @@
       alt="Sentinel1 granule browse image">
   </div>
   <div class="nav-buttons">
-    <button (click)="selectPreviousProduct()" mat-button>Previous</button>
-    <button (click)="selectNextProduct()" mat-button>Next</button>
+    <button (click)="selectPreviousProduct()" mat-button>
+      <mat-icon>arrow_left</mat-icon>
+      <span>Previous</span>
+    </button>
+    <button (click)="selectNextProduct()" mat-button>
+      <span>Next</span>
+      <mat-icon>arrow_right</mat-icon>
+    </button>
   </div>
 </div>
