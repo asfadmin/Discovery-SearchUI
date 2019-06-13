@@ -1,3 +1,9 @@
 @import "asf-theme";
 
 $config: mat-typography-config();
+
+.list-search-card {
+  background-color: red;
+  padding: 0;
+  margin: 16px;
+}
