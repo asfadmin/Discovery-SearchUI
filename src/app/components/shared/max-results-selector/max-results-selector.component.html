@@ -1,7 +1,7 @@
 <span class="faint-text">
   <span [matMenuTriggerFor]="menu"
     class="clickable">
-      {{ formatNumber(maxResults) }} <mat-icon>arrow_drop_down</mat-icon>
+      {{ formatNumber(maxResults - 1) }} <mat-icon>arrow_drop_down</mat-icon>
   </span>
     of {{ currentSearchAmount !== -1 ? formatNumber(currentSearchAmount) : '0' }}
     products
@@ -9,7 +9,7 @@
 
 <mat-menu #menu="matMenu">
   <button *ngFor="let amount of possibleMaxResults"
-    (click)="onNewMaxResults(amount)" mat-menu-item>
+    (click)="onNewMaxResults(amount + 1)" mat-menu-item>
       <span>{{ formatNumber(amount) }} products</span>
   </button>
 </mat-menu>

@@ -77,6 +77,13 @@ export class GranulesListComponent implements OnInit {
         case 'ArrowLeft': {
           return this.selectPreviousGranule();
         }
+
+        case 'ArrowDown': {
+          return this.selectNextGranule();
+        }
+        case 'ArrowUp': {
+          return this.selectPreviousGranule();
+        }
       }
     });
 
