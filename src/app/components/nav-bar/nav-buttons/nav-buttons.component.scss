@@ -8,10 +8,7 @@
 
 .spacing {
   margin-right: 4px;
-
-  .mat-button {
-    line-height: inherit;
-  }
+  line-height: inherit !important;
 }
 
 .mat-icon {
