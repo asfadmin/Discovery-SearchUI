@@ -63,7 +63,7 @@
 
     <button mat-raised-button color="primary"
       (click)="onUpload()"
-      [disabled]="!canBeClosed">
+      [disabled]="areNoFiles(files)">
       Import
     </button>
   </mat-dialog-actions>
