@@ -2,21 +2,21 @@ import { Component, Input, Output, EventEmitter } from '@angular/core';
 
 import { faInfoCircle } from '@fortawesome/free-solid-svg-icons';
 
-import { Platform, DateRange } from '@models';
+import { Dataset, DateRange } from '@models';
 
 @Component({
-  selector: 'app-platform',
-  templateUrl: './platform.component.html',
-  styleUrls: ['./platform.component.scss']
+  selector: 'app-dataset',
+  templateUrl: './dataset.component.html',
+  styleUrls: ['./dataset.component.scss']
 })
-export class PlatformComponent {
-  @Input() platform: Platform;
+export class DatasetComponent {
+  @Input() dataset: Dataset;
   @Input() isSelected: boolean;
 
-  public detailedPlatformInfoIcon = faInfoCircle;
+  public detailedDatasetInfoIcon = faInfoCircle;
 
   public onOpenHelp() {
-    window.open(this.platform.infoUrl);
+    window.open(this.dataset.infoUrl);
   }
 
   public prettyDateRange(dateRange: DateRange): string {

@@ -9,23 +9,23 @@ describe('DateExtremaService', () => {
   });
 
   it('should run #getExtrema$()', async () => {
-    // const result = getExtrema$(platforms$, selectedPlatforms$, startDate$, endDate$);
+    // const result = getExtrema$(datasets$, selectedDatasets$, startDate$, endDate$);
   });
 
   it('should run #startMin$()', async () => {
-    // const result = startMin$(platforms$, selectedPlatforms$);
+    // const result = startMin$(datasets$, selectedDatasets$);
   });
 
   it('should run #startMax$()', async () => {
-    // const result = startMax$(platforms$, selectedPlatforms$, endDate$);
+    // const result = startMax$(datasets$, selectedDatasets$, endDate$);
   });
 
   it('should run #endMin$()', async () => {
-    // const result = endMin$(platforms$, selectedPlatforms$, startDate$);
+    // const result = endMin$(datasets$, selectedDatasets$, startDate$);
   });
 
   it('should run #endMax$()', async () => {
-    // const result = endMax$(platforms$, selectedPlatforms$);
+    // const result = endMax$(datasets$, selectedDatasets$);
   });
 
 });

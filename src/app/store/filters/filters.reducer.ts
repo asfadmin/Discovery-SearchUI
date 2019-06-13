@@ -5,7 +5,7 @@ import * as models from '@models';
 
 
 export interface FiltersState {
-  platforms: PlatformsState;
+  datasets: DatasetsState;
 
   dateRange: DateRangeState;
 
@@ -16,9 +16,9 @@ export interface FiltersState {
 
   listSearchMode: models.ListSearchType;
 
-  productTypes: models.PlatformProductTypes;
-  beamModes: models.PlatformBeamModes;
-  polarizations: models.PlatformPolarizations;
+  productTypes: models.DatasetProductTypes;
+  beamModes: models.DatasetBeamModes;
+  polarizations: models.DatasetPolarizations;
   flightDirections: Set<models.FlightDirection>;
 
   maxResults: number;
@@ -26,18 +26,18 @@ export interface FiltersState {
 
 export type DateRangeState = models.Range<null | Date>;
 
-export interface PlatformsState {
-  entities: {[id: string]: models.Platform };
+export interface DatasetsState {
+  entities: {[id: string]: models.Dataset };
   selected: Set<string>;
 }
 
 export const initState: FiltersState = {
-  platforms: {
-    entities: models.platforms.reduce(
-      (platformsObj, platform) => {
-        platformsObj[platform.name] = platform;
+  datasets: {
+    entities: models.datasets.reduce(
+      (datasetsObj, dataset) => {
+        datasetsObj[dataset.name] = dataset;
 
-        return platformsObj;
+        return datasetsObj;
       },
       {}
     ),
@@ -66,7 +66,7 @@ export const initState: FiltersState = {
   beamModes: {},
   polarizations: {},
   flightDirections: new Set<models.FlightDirection>([]),
-  maxResults: 100,
+  maxResults: 101,
 };
 
 
@@ -77,8 +77,8 @@ export function filtersReducer(state = initState, action: FiltersActions): Filte
 
       return {
         ...state,
-        platforms: {
-          ...state.platforms,
+        datasets: {
+          ...state.datasets,
           selected
         },
         productTypes: {
@@ -95,8 +95,8 @@ export function filtersReducer(state = initState, action: FiltersActions): Filte
 
       return {
         ...state,
-        platforms: {
-          ...state.platforms,
+        datasets: {
+          ...state.datasets,
           selected
         },
         productTypes: {},
@@ -112,8 +112,8 @@ export function filtersReducer(state = initState, action: FiltersActions): Filte
 
       return {
         ...state,
-        platforms: {
-          ...state.platforms,
+        datasets: {
+          ...state.datasets,
           selected
         },
         productTypes: {},
@@ -281,10 +281,10 @@ export function filtersReducer(state = initState, action: FiltersActions): Filte
     }
 
     case FiltersActionType.ADD_BEAM_MODE: {
-      const platform = Array.from(state.platforms.selected).pop();
+      const dataset = Array.from(state.datasets.selected).pop();
 
       const selectedBeamModes = [
-        ...(state.beamModes[platform] || [])
+        ...(state.beamModes[dataset] || [])
       ];
 
       const newModes = Array.from(
@@ -295,7 +295,7 @@ export function filtersReducer(state = initState, action: FiltersActions): Filte
         ...state,
         beamModes: {
           ...state.beamModes,
-          ...{ [platform]: newModes }
+          ...{ [dataset]: newModes }
         }
       };
     }
@@ -315,10 +315,10 @@ export function filtersReducer(state = initState, action: FiltersActions): Filte
     }
 
     case FiltersActionType.ADD_POLARIZATION: {
-      const platform = Array.from(state.platforms.selected).pop();
+      const dataset = Array.from(state.datasets.selected).pop();
 
       const selectedPols = [
-        ...(state.polarizations[platform] || [])
+        ...(state.polarizations[dataset] || [])
       ];
 
       const newPols = Array.from(
@@ -329,7 +329,7 @@ export function filtersReducer(state = initState, action: FiltersActions): Filte
         ...state,
         polarizations: {
           ...state.polarizations,
-          ...{ [platform]: newPols }
+          ...{ [dataset]: newPols }
         }
       };
     }
@@ -377,9 +377,9 @@ export function filtersReducer(state = initState, action: FiltersActions): Filte
 
 export const getFiltersState = createFeatureSelector<FiltersState>('filters');
 
-export const getPlatforms = createSelector(
+export const getDatasets = createSelector(
   getFiltersState,
-  (state: FiltersState) => state.platforms
+  (state: FiltersState) => state.datasets
 );
 
 export const getDateRange = createSelector(
@@ -412,26 +412,26 @@ export const getSeasonEnd = createSelector(
   (state: models.Range<number | null>) => state.end
 );
 
-export const getPlatformsList = createSelector(
-  getPlatforms,
-  (state: PlatformsState) => Object.values(state.entities)
+export const getDatasetsList = createSelector(
+  getDatasets,
+  (state: DatasetsState) => Object.values(state.entities)
 );
 
 
-export const getSelectedPlatformNames = createSelector(
-  getPlatforms,
-  (state: PlatformsState) => state.selected
+export const getSelectedDatasetNames = createSelector(
+  getDatasets,
+  (state: DatasetsState) => state.selected
 );
 
-export const getSelectedPlatformName = createSelector(
-  getPlatforms,
+export const getSelectedDatasetName = createSelector(
+  getDatasets,
   ({ selected }) => selected.size === 1 ? selected.values().next().value : null
 );
 
-export const getSelectedPlatforms = createSelector(
-  getPlatforms,
-  (state: PlatformsState) => Array.from(state.selected).reduce(
-    (selected: models.Platform[], name: string) => [...selected, state.entities[name]],
+export const getSelectedDatasets = createSelector(
+  getDatasets,
+  (state: DatasetsState) => Array.from(state.selected).reduce(
+    (selected: models.Dataset[], name: string) => [...selected, state.entities[name]],
     []
   )
 );
@@ -499,14 +499,14 @@ export const getIsAnyPathFrameValue = createSelector(
 
 export const getIsAnyAdditionalFilters = createSelector(
   getFiltersState,
-  ({ productTypes, beamModes, polarizations, flightDirections, platforms }) => {
+  ({ productTypes, beamModes, polarizations, flightDirections, datasets }) => {
 
-    const platform = platforms.selected.values().next().value;
+    const dataset = datasets.selected.values().next().value;
 
     const isAnyFlightDirection = Array.from(flightDirections).length > 0;
 
     const isAdditionalListFilters = [productTypes, beamModes, polarizations]
-      .map(vals => vals[platform] || [])
+      .map(vals => vals[dataset] || [])
       .map(vals => vals.length > 0)
       .some(c => !!c);
 
@@ -516,13 +516,13 @@ export const getIsAnyAdditionalFilters = createSelector(
 
 export const getNumberOfAdditionalFilters = createSelector(
   getFiltersState,
-  ({ productTypes, beamModes, polarizations, flightDirections, platforms }) => {
-    const platform = platforms.selected.values().next().value;
+  ({ productTypes, beamModes, polarizations, flightDirections, datasets }) => {
+    const dataset = datasets.selected.values().next().value;
 
     const flightDirAmount = Array.from(flightDirections).length;
 
     const listFiltersAmts = [productTypes, beamModes, polarizations]
-      .map(vals => vals[platform] || [])
+      .map(vals => vals[dataset] || [])
       .map(vals => vals.length)
       .reduce((x, y) => x + y);
 

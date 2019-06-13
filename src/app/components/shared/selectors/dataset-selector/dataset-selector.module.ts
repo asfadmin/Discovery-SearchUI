@@ -8,8 +8,8 @@ import { MatListModule } from '@angular/material/list';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatSelectModule } from '@angular/material/select';
 import { MatSharedModule } from '@shared';
-import { PlatformSelectorComponent } from './platform-selector.component';
-import { PlatformComponent } from './platform/platform.component';
+import { DatasetSelectorComponent } from './dataset-selector.component';
+import { DatasetComponent } from './dataset/dataset.component';
 
 
 @NgModule({
@@ -23,9 +23,9 @@ import { PlatformComponent } from './platform/platform.component';
     MatSharedModule,
   ],
   declarations: [
-    PlatformSelectorComponent,
-    PlatformComponent
+    DatasetSelectorComponent,
+    DatasetComponent
   ],
-  exports: [ PlatformSelectorComponent, PlatformComponent ]
+  exports: [ DatasetSelectorComponent, DatasetComponent ]
 })
-export class PlatformSelectorModule { }
+export class DatasetSelectorModule { }

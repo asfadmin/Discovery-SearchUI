@@ -1,25 +1,25 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { Injectable, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
-import { isPlatformBrowser } from '@angular/common';
+import { isDatasetBrowser } from '@angular/common';
 import { By } from '@angular/platform-browser';
 
 import {Component, Directive} from '@angular/core';
-import {PlatformSelectorComponent} from './platform-selector.component';
+import {DatasetSelectorComponent} from './dataset-selector.component';
 
-describe('PlatformSelectorComponent', () => {
+describe('DatasetSelectorComponent', () => {
   let fixture;
   let component;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
       declarations: [
-        PlatformSelectorComponent
+        DatasetSelectorComponent
       ],
       providers: [
       ],
       schemas: [ CUSTOM_ELEMENTS_SCHEMA ]
     }).compileComponents();
-    fixture = TestBed.createComponent(PlatformSelectorComponent);
+    fixture = TestBed.createComponent(DatasetSelectorComponent);
     component = fixture.debugElement.componentInstance;
   });
 
@@ -28,7 +28,7 @@ describe('PlatformSelectorComponent', () => {
   });
 
   it('should run #onClick()', async () => {
-    // const result = component.onClick(platform);
+    // const result = component.onClick(dataset);
   });
 
 });

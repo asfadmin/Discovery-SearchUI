@@ -21,8 +21,8 @@ export class FiltersEffects {
     private mapService: MapService,
     private actions$: Actions) {}
 
-  @Effect() updateDateRangeOnPlatformRemoved$: Observable<Action> = this.actions$.pipe(
-    ofType<filtersAction.RemoveSelectedPlatform>(filtersAction.FiltersActionType.REMOVE_SELECTED_PLATFORM),
+  @Effect() updateDateRangeOnDatasetRemoved$: Observable<Action> = this.actions$.pipe(
+    ofType<filtersAction.RemoveSelectedDataset>(filtersAction.FiltersActionType.REMOVE_SELECTED_PLATFORM),
     map(action => new filtersAction.ClearDateRange())
   );
 

@@ -5,7 +5,7 @@ import { %%Name%%ActionType, %%Name%%Actions } from './%name%.action';
 /* State */
 
 export interface %%Name%%State {
-  entities: {[id: string]: Platform };
+  entities: {[id: string]: Dataset };
   selected: Set<string>;
 }
 
