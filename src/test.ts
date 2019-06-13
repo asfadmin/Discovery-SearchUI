@@ -5,7 +5,7 @@ import { getTestBed } from '@angular/core/testing';
 import {
   BrowserDynamicTestingModule,
   datasetBrowserDynamicTesting
-} from '@angular/dataset-browser-dynamic/testing';
+} from '@angular/platform-browser-dynamic/testing';
 
 declare const require: any;
 

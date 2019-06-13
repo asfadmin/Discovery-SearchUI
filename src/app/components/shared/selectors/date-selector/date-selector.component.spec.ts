@@ -4,7 +4,7 @@ import { Injectable, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { MatDatepickerModule, MatNativeDateModule } from '@angular/material'
 import { isDatasetBrowser } from '@angular/common';
-import { By } from '@angular/dataset-browser';
+import { By } from '@angular/platform-browser';
 
 import {Component, Directive} from '@angular/core';
 import {DateSelectorComponent} from './date-selector.component';
