@@ -14,7 +14,7 @@ import * as models from '@models';
 @Component({
   selector: 'app-list-search',
   templateUrl: './list-search.component.html',
-  styleUrls: ['./list-search.component.css']
+  styleUrls: ['./list-search.component.scss']
 })
 export class ListSearchComponent implements OnInit {
   public types = ListSearchType;
