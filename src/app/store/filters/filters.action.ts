@@ -3,9 +3,9 @@ import { Action } from '@ngrx/store';
 import * as models from '@models';
 
 export enum FiltersActionType {
-  ADD_SELECTED_PLATFORM = '[Filters-Platform] Add Platform Filter',
-  REMOVE_SELECTED_PLATFORM = '[Filters-Platform] Remove Platform Filter',
-  SET_SELECTED_PLATFORMS = '[Filters-Platform] Set Selected Platforms',
+  ADD_SELECTED_PLATFORM = '[Filters-Dataset] Add Dataset Filter',
+  REMOVE_SELECTED_PLATFORM = '[Filters-Dataset] Remove Dataset Filter',
+  SET_SELECTED_PLATFORMS = '[Filters-Dataset] Set Selected Datasets',
 
   SET_START_DATE = '[Filters-Date] Set Start Date',
   SET_END_DATE = '[Filters-Date] Set End Date',
@@ -24,11 +24,11 @@ export enum FiltersActionType {
   SET_ALL_PRODUCT_TYPES = '[Filters-Prodcut-Type] Set All Product Types',
 
   ADD_BEAM_MODE = '[Filters-Beam-Mode] Add Beam Mode',
-  SET_PLATFORM_BEAM_MODES = '[Filters-Beam-Mode] Set Platform Beam Modes',
+  SET_PLATFORM_BEAM_MODES = '[Filters-Beam-Mode] Set Dataset Beam Modes',
   SET_ALL_BEAM_MODES= '[Filters-Beam-Mode] Set All Beam Modes',
 
   ADD_POLARIZATION = '[Filters-Beam-Mode] Add Polarization',
-  SET_PLATFORM_POLARIZATIONS = '[Filters-Polarization] Set Platform Polarizations',
+  SET_PLATFORM_POLARIZATIONS = '[Filters-Polarization] Set Dataset Polarizations',
   SET_ALL_POLARIZATIONS = '[Filters-Polarization] Set All Polarizations',
 
   ADD_FLIGHT_DIRECTION = '[Filters-Flight-Dir] Add Flight Direction',
@@ -43,19 +43,19 @@ export enum FiltersActionType {
   SET_MAX_RESULTS = '[Filters] Set Max Results',
 }
 
-export class AddSelectedPlatform implements Action {
+export class AddSelectedDataset implements Action {
   public readonly type = FiltersActionType.ADD_SELECTED_PLATFORM;
 
   constructor(public payload: string) {}
 }
 
-export class RemoveSelectedPlatform implements Action {
+export class RemoveSelectedDataset implements Action {
   public readonly type = FiltersActionType.REMOVE_SELECTED_PLATFORM;
 
   constructor(public payload: string) {}
 }
 
-export class SetSelectedPlatforms implements Action {
+export class SetSelectedDatasets implements Action {
   public readonly type = FiltersActionType.SET_SELECTED_PLATFORMS;
 
   constructor(public payload: string[]) {}
@@ -125,16 +125,16 @@ export class SetFrameEnd implements Action {
   constructor(public payload: number) {}
 }
 
-export class SetPlatformProductTypes implements Action {
+export class SetDatasetProductTypes implements Action {
   public readonly type = FiltersActionType.SET_PLATFORM_PRODUCT_TYPES;
 
-  constructor(public payload: models.PlatformProductTypes) {}
+  constructor(public payload: models.DatasetProductTypes) {}
 }
 
 export class SetAllProductTypes implements Action {
   public readonly type = FiltersActionType.SET_ALL_PRODUCT_TYPES;
 
-  constructor(public payload: models.PlatformProductTypes) {}
+  constructor(public payload: models.DatasetProductTypes) {}
 }
 
 export class SetListSearchType implements Action {
@@ -165,16 +165,16 @@ export class AddBeamMode implements Action {
   constructor(public payload: string) {}
 }
 
-export class SetPlatformBeamModes implements Action {
+export class SetDatasetBeamModes implements Action {
   public readonly type = FiltersActionType.SET_PLATFORM_BEAM_MODES;
 
-  constructor(public payload: models.PlatformBeamModes) {}
+  constructor(public payload: models.DatasetBeamModes) {}
 }
 
 export class SetAllBeamModes implements Action {
   public readonly type = FiltersActionType.SET_ALL_BEAM_MODES;
 
-  constructor(public payload: models.PlatformBeamModes) {}
+  constructor(public payload: models.DatasetBeamModes) {}
 }
 
 export class AddPolarization implements Action {
@@ -183,16 +183,16 @@ export class AddPolarization implements Action {
   constructor(public payload: string) {}
 }
 
-export class SetPlatformPolarizations implements Action {
+export class SetDatasetPolarizations implements Action {
   public readonly type = FiltersActionType.SET_PLATFORM_POLARIZATIONS;
 
-  constructor(public payload: models.PlatformPolarizations) {}
+  constructor(public payload: models.DatasetPolarizations) {}
 }
 
 export class SetAllPolarizations implements Action {
   public readonly type = FiltersActionType.SET_ALL_POLARIZATIONS;
 
-  constructor(public payload: models.PlatformPolarizations) {}
+  constructor(public payload: models.DatasetPolarizations) {}
 }
 
 export class SetMaxResults implements Action {
@@ -202,9 +202,9 @@ export class SetMaxResults implements Action {
 }
 
 export type FiltersActions =
-  | AddSelectedPlatform
-  | RemoveSelectedPlatform
-  | SetSelectedPlatforms
+  | AddSelectedDataset
+  | RemoveSelectedDataset
+  | SetSelectedDatasets
   | SetStartDate
   | SetEndDate
   | SetSeasonStart
@@ -217,16 +217,16 @@ export type FiltersActions =
   | SetPathEnd
   | SetFrameStart
   | SetFrameEnd
-  | SetPlatformProductTypes
+  | SetDatasetProductTypes
   | SetAllProductTypes
   | SetListSearchType
   | SetFlightDirections
   | AddFlightDirection
   | AddBeamMode
-  | SetPlatformBeamModes
+  | SetDatasetBeamModes
   | SetAllBeamModes
   | AddPolarization
-  | SetPlatformPolarizations
+  | SetDatasetPolarizations
   | SetAllPolarizations
   | ClearFilters
   | SetMaxResults;

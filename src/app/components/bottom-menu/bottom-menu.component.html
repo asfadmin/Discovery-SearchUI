@@ -43,7 +43,7 @@
           </mat-menu>
         </div>
       </mat-card-subtitle>
-      <app-granules-list [platform]="searchPlatform$ | async">
+      <app-granules-list [dataset]="searchDataset$ | async">
       </app-granules-list>
     </mat-card>
 
@@ -66,7 +66,7 @@
         Granule Detail
       </mat-card-subtitle>
       <mat-card-content class="content">
-        <app-granule-detail [platform]="searchPlatform$ | async">
+        <app-granule-detail [dataset]="searchDataset$ | async">
         </app-granule-detail>
       </mat-card-content>
     </mat-card>

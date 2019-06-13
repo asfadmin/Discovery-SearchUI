@@ -24,7 +24,7 @@ import * as models from '@models';
   encapsulation: ViewEncapsulation.None
 })
 export class GranulesListComponent implements OnInit {
-  @Input() platform: models.Platform;
+  @Input() dataset: models.Dataset;
 
   @ViewChild(CdkVirtualScrollViewport, { static: true }) scroll: CdkVirtualScrollViewport;
 

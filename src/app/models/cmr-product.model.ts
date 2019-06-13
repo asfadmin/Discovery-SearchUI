@@ -7,7 +7,7 @@ export interface CMRProduct {
   bytes: number;
   browse: string;
   thumbnail: string;
-  platform: string;
+  dataset: string;
   groupId: string;
 
   metadata: CMRProductMetadata;

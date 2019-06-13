@@ -125,15 +125,15 @@ export class UrlStateService {
 
   private filtersParameters() {
     return [{
-      name: 'platforms',
-      source: this.store$.select(filterStore.getSelectedPlatformNames).pipe(
+      name: 'datasets',
+      source: this.store$.select(filterStore.getSelectedDatasetNames).pipe(
         skip(1),
-        filter(platforms => platforms.size > 0),
+        filter(datasets => datasets.size > 0),
         map(selected => ({
-          platforms: Array.from(selected).join(','),
+          datasets: Array.from(selected).join(','),
         }))
       ),
-      loader: this.loadSelectedPlatforms
+      loader: this.loadSelectedDatasets
     }, {
       name: 'start',
       source: this.store$.select(filterStore.getStartDate).pipe(
@@ -339,12 +339,12 @@ export class UrlStateService {
     }
   }
 
-  private loadSelectedPlatforms = (platforms: string): void => {
-    const selectedPlatforms = platforms
+  private loadSelectedDatasets = (datasets: string): void => {
+    const selectedDatasets = datasets
       .split(',')
-      .filter(name => models.platformNames.includes(name));
+      .filter(name => models.datasetNames.includes(name));
 
-    const action = new filterStore.SetSelectedPlatforms(selectedPlatforms);
+    const action = new filterStore.SetSelectedDatasets(selectedDatasets);
 
     this.store$.dispatch(action);
   }
@@ -418,111 +418,111 @@ export class UrlStateService {
     }
   }
 
-  private parseValuesByPlatform(str: string) {
+  private parseValuesByDataset(str: string) {
     return str
       .split('$$')
       .filter(s => !!s)
-      .map(platformTypes => platformTypes.split(','))
+      .map(datasetTypes => datasetTypes.split(','))
       .map(
-        ([platform, ...beamModes]) => ({ platform, beamModes })
+        ([dataset, ...beamModes]) => ({ dataset, beamModes })
       ).reduce(
-        (total, { platform, beamModes }) => {
-          total[platform] = beamModes;
+        (total, { dataset, beamModes }) => {
+          total[dataset] = beamModes;
 
           return total;
         }, {});
   }
 
   private loadBeamModes = (modesStr: string): void => {
-    const possiblePlatforms = this.parseValuesByPlatform(modesStr);
+    const possibleDatasets = this.parseValuesByDataset(modesStr);
 
-    const validPlatforms = {};
+    const validDatasets = {};
 
-    for (const platformName of Object.keys(possiblePlatforms)) {
-      const platform = models.platforms
-        .filter(plat => platformName === plat.name)
+    for (const datasetName of Object.keys(possibleDatasets)) {
+      const dataset = models.datasets
+        .filter(plat => datasetName === plat.name)
         .pop();
 
-      if (!platform) {
+      if (!dataset) {
         continue;
       }
 
-      const possibleBeamModes = possiblePlatforms[platform.name];
-      const platformBeamModes = new Set(platform.beamModes);
+      const possibleBeamModes = possibleDatasets[dataset.name];
+      const datasetBeamModes = new Set(dataset.beamModes);
 
       const validBeamModesFromUrl = new Set(
         [...possibleBeamModes]
-        .filter(mode => platformBeamModes.has(mode))
+        .filter(mode => datasetBeamModes.has(mode))
       );
 
-      validPlatforms[platform.name] = Array.from(validBeamModesFromUrl);
+      validDatasets[dataset.name] = Array.from(validBeamModesFromUrl);
     }
 
-    this.store$.dispatch(new filterStore.SetAllBeamModes(validPlatforms));
+    this.store$.dispatch(new filterStore.SetAllBeamModes(validDatasets));
   }
 
   private loadProductTypes = (typesStr: string): void => {
-    const possiblePlatforms = this.parseValuesByPlatform(typesStr);
+    const possibleDatasets = this.parseValuesByDataset(typesStr);
 
-    const validPlatforms = {};
+    const validDatasets = {};
 
-    for (const platformName of Object.keys(possiblePlatforms)) {
-      const platform = models.platforms
-        .filter(plat => platformName === plat.name)
+    for (const datasetName of Object.keys(possibleDatasets)) {
+      const dataset = models.datasets
+        .filter(plat => datasetName === plat.name)
         .pop();
 
-      if (!platform) {
+      if (!dataset) {
         continue;
       }
 
-      const possibleTypes = possiblePlatforms[platform.name];
-      const platformTypes = new Set(platform.productTypes
+      const possibleTypes = possibleDatasets[dataset.name];
+      const datasetTypes = new Set(dataset.productTypes
         .map(t => t.apiValue)
       );
 
       const validTypeNamesFromUrl = new Set(
         [...possibleTypes]
-        .filter(type => platformTypes.has(type))
+        .filter(type => datasetTypes.has(type))
       );
 
-      const validTypesFromUrl = [...platform.productTypes]
+      const validTypesFromUrl = [...dataset.productTypes]
         .filter(
           type => validTypeNamesFromUrl.has(type.apiValue)
         );
 
-      validPlatforms[platform.name] = validTypesFromUrl;
+      validDatasets[dataset.name] = validTypesFromUrl;
     }
 
-    this.store$.dispatch(new filterStore.SetAllProductTypes(validPlatforms));
+    this.store$.dispatch(new filterStore.SetAllProductTypes(validDatasets));
   }
 
 
   private loadPolarizations = (polarizationsStr: string): void => {
-    const possiblePlatforms = this.parseValuesByPlatform(polarizationsStr);
+    const possibleDatasets = this.parseValuesByDataset(polarizationsStr);
 
-    const validPlatforms = {};
+    const validDatasets = {};
 
-    for (const platformName of Object.keys(possiblePlatforms)) {
-      const platform = models.platforms
-        .filter(plat => platformName === plat.name)
+    for (const datasetName of Object.keys(possibleDatasets)) {
+      const dataset = models.datasets
+        .filter(plat => datasetName === plat.name)
         .pop();
 
-      if (!platform) {
+      if (!dataset) {
         continue;
       }
 
-      const possiblePolarizations = possiblePlatforms[platform.name];
-      const platformPolarizations = new Set(platform.polarizations);
+      const possiblePolarizations = possibleDatasets[dataset.name];
+      const datasetPolarizations = new Set(dataset.polarizations);
 
       const validPolarizationsFromUrl = new Set(
         [...possiblePolarizations]
-        .filter(mode => platformPolarizations.has(mode))
+        .filter(mode => datasetPolarizations.has(mode))
       );
 
-      validPlatforms[platform.name] = Array.from(validPolarizationsFromUrl);
+      validDatasets[dataset.name] = Array.from(validPolarizationsFromUrl);
     }
 
-    this.store$.dispatch(new filterStore.SetAllPolarizations(validPlatforms));
+    this.store$.dispatch(new filterStore.SetAllPolarizations(validDatasets));
   }
 
 

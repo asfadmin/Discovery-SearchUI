@@ -24,21 +24,21 @@ export class MissionEffects {
   private loadMissions: Observable<SetMissions> = this.actions$.pipe(
     ofType(MissionActionType.LOAD_MISSIONS),
     switchMap(action => combineLatest(
-      this.asfApiService.missionSearch(models.MissionPlatform.S1_BETA).pipe(
-        map(resp => ({[models.MissionPlatform.S1_BETA]: resp.result}))
+      this.asfApiService.missionSearch(models.MissionDataset.S1_BETA).pipe(
+        map(resp => ({[models.MissionDataset.S1_BETA]: resp.result}))
       ),
-      this.asfApiService.missionSearch(models.MissionPlatform.AIRSAR).pipe(
-        map(resp => ({[models.MissionPlatform.AIRSAR]: resp.result}))
+      this.asfApiService.missionSearch(models.MissionDataset.AIRSAR).pipe(
+        map(resp => ({[models.MissionDataset.AIRSAR]: resp.result}))
       ),
-      this.asfApiService.missionSearch(models.MissionPlatform.UAVSAR).pipe(
-        map(resp => ({[models.MissionPlatform.UAVSAR]: resp.result}))
+      this.asfApiService.missionSearch(models.MissionDataset.UAVSAR).pipe(
+        map(resp => ({[models.MissionDataset.UAVSAR]: resp.result}))
       )
     ).pipe(
       map(missions => missions.reduce(
         (allMissions, mission) => ({ ...allMissions, ...mission }),
         {}
       )),
-      map(missionsByPlatform => new SetMissions(missionsByPlatform))
+      map(missionsByDataset => new SetMissions(missionsByDataset))
     )
     )
   );

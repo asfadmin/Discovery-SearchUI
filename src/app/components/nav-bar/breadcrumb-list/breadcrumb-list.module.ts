@@ -10,7 +10,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatSelectModule } from '@angular/material/select';
 
-import { PlatformSelectorModule } from '@components/shared/selectors/platform-selector';
+import { DatasetSelectorModule } from '@components/shared/selectors/dataset-selector';
 import { DateSelectorModule } from '@components/shared/selectors/date-selector';
 import { AoiUploadModule } from '@components/shared/selectors/aoi-upload';
 import { MaxResultsSelectorModule } from '@components/shared/max-results-selector';
@@ -36,7 +36,7 @@ import { LogoModule } from '@components/nav-bar/logo/logo.module';
     QueueModule,
 
     SearchSelectorModule,
-    PlatformSelectorModule,
+    DatasetSelectorModule,
     DateSelectorModule,
     AoiUploadModule,
     MaxResultsSelectorModule,

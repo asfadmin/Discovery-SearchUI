@@ -38,8 +38,8 @@ export class DateSelectorComponent implements OnInit {
     ).subscribe(_ => this.dateForm.reset());
 
     this.dateExtremaService.getExtrema$(
-      this.store$.select(filtersStore.getPlatformsList),
-      this.store$.select(filtersStore.getSelectedPlatforms),
+      this.store$.select(filtersStore.getDatasetsList),
+      this.store$.select(filtersStore.getSelectedDatasets),
       this.startDate$,
       this.endDate$,
     ).subscribe(

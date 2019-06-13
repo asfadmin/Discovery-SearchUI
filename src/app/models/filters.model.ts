@@ -19,16 +19,16 @@ export const apiParamNames = {
   [Props.FRAME]: 'frame',
 };
 
-export const allPlatforms = [
+export const allDatasets = [
   'SENTINEL-1', 'SMAP', 'UAVSAR', 'ALOS PALSAR', 'RADARSAT-1', 'ERS', 'JERS-1', 'AIRSAR', 'SEASAT'
 ];
 
 const allExcept = datasets =>
-  allPlatforms.filter(v => !datasets.includes(v));
+  allDatasets.filter(v => !datasets.includes(v));
 
 export const datasetProperties = {
-  [Props.DATE]:  [...allPlatforms],
-  [Props.BEAM_MODE]: [...allPlatforms],
+  [Props.DATE]:  [...allDatasets],
+  [Props.BEAM_MODE]: [...allDatasets],
   [Props.PATH]: [
     ...allExcept(['UAVSAR', 'AIRSAR', 'SMAP'])
   ],

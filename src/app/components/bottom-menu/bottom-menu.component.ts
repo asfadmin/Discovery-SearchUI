@@ -31,11 +31,11 @@ import * as models from '@models';
 export class BottomMenuComponent {
   public isBottomMenuOpen$ = this.store$.select(uiStore.getIsBottomMenuOpen);
 
-  public searchPlatform$ = this.store$.select(searchStore.getIsLoading).pipe(
-    withLatestFrom(this.store$.select(filtersStore.getSelectedPlatforms)),
+  public searchDataset$ = this.store$.select(searchStore.getIsLoading).pipe(
+    withLatestFrom(this.store$.select(filtersStore.getSelectedDatasets)),
     filter(([isLoading, _]) => !isLoading),
-    map(([_, platforms]) => platforms),
-    map(platforms => Array.from(platforms || []).pop())
+    map(([_, datasets]) => datasets),
+    map(datasets => Array.from(datasets || []).pop())
   );
 
   public allProducts$ = this.store$.select(granulesStore.getAllProducts);
