@@ -329,8 +329,6 @@ export class UrlStateService {
   }
 
   private loadSelectedDataset = (dataset: string): void => {
-    console.log(models.datasetNames.includes(dataset));
-
     if (!models.datasetNames.includes(dataset)) {
       return;
     }
@@ -408,67 +406,34 @@ export class UrlStateService {
     }
   }
 
-  private loadBeamModes = (modesStr: string): void => {
-    const [datasetName, possibleModesStr] = modesStr.split('$$');
-    const possibleTypes = (possibleModesStr || '').split(',');
-
-    const dataset = models.datasets
-        .filter(d => datasetName === d.name)
-        .pop();
-
-    if (!dataset) {
-      return;
-    }
-
-    const datasetModes = new Set(dataset.beamModes);
-
-    const validModesFromUrl = new Set(
-      [...possibleTypes]
-        .filter(type => datasetModes.has(type))
+  private loadProductTypes = (typesStr: string): void => {
+    const productTypes = this.loadProperties(
+      typesStr,
+      'productTypes',
+      v => v.apiValue
     );
 
-    const validTypesFromUrl = [...dataset.beamModes]
-      .filter(
-        type => validModesFromUrl.has(type)
-      );
-
-    const action = new filterStore.SetBeamModes(validTypesFromUrl);
+    const action = new filterStore.SetProductTypes(productTypes);
     this.store$.dispatch(action);
   }
 
-  private loadProductTypes = (typesStr: string): void => {
-    const [datasetName, possibleTypesStr] = typesStr.split('$$');
-    const possibleTypes = (possibleTypesStr || '').split(',');
+  private loadBeamModes = (modesStr: string): void => {
+    const beamModes = this.loadProperties(modesStr, 'beamModes');
 
-    const dataset = models.datasets
-        .filter(d => datasetName === d.name)
-        .pop();
-
-    if (!dataset) {
-      return;
-    }
-
-    const datasetTypes = new Set(
-      dataset.productTypes.map(t => t.apiValue)
-    );
-
-    const validTypeNamesFromUrl = new Set(
-      [...possibleTypes]
-        .filter(type => datasetTypes.has(type))
-    );
-
-    const validTypesFromUrl = [...dataset.productTypes]
-      .filter(
-        type => validTypeNamesFromUrl.has(type.apiValue)
-      );
-
-    const action = new filterStore.SetProductTypes(validTypesFromUrl);
+    const action = new filterStore.SetBeamModes(beamModes);
     this.store$.dispatch(action);
   }
 
   private loadPolarizations = (polarizationsStr: string): void => {
-    const [datasetName, possibleModesStr] = polarizationsStr.split('$$');
-    const possibleTypes = (possibleModesStr || '').split(',');
+    const polarizations = this.loadProperties(polarizationsStr, 'polarizations');
+
+    const action = new filterStore.SetPolarizations(polarizations);
+    this.store$.dispatch(action);
+  }
+
+  private loadProperties(loadStr: string, datasetPropertyKey: string, keyFunc = v => v): any[] {
+    const [datasetName, possibleValuesStr] = loadStr.split('$$');
+    const possibleTypes = (possibleValuesStr || '').split(',');
 
     const dataset = models.datasets
         .filter(d => datasetName === d.name)
@@ -478,20 +443,14 @@ export class UrlStateService {
       return;
     }
 
-    const datasetModes = new Set(dataset.polarizations);
+    const datasetValues = dataset[datasetPropertyKey];
 
-    const validModesFromUrl = new Set(
-      [...possibleTypes]
-        .filter(type => datasetModes.has(type))
-    );
-
-    const validTypesFromUrl = [...dataset.polarizations]
-      .filter(
-        type => validModesFromUrl.has(type)
+    const validValuesFromUrl =
+      datasetValues.filter(
+        value => possibleTypes.includes(keyFunc(value))
       );
 
-    const action = new filterStore.SetPolarizations(validTypesFromUrl);
-    this.store$.dispatch(action);
+    return Array.from(validValuesFromUrl);
   }
 
   private loadFlightDirections = (dirsStr: string): void => {
