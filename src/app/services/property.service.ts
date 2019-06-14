@@ -15,17 +15,15 @@ import * as models from '@models';
 export class PropertyService {
   private dataset: models.Dataset;
 
-  constructor(
-    private store$: Store<AppState>,
-  ) {
-    this.store$.select(filtersStore.getSelectedDatasets).pipe(
-      map(ps => [...ps].pop()),
-    ).subscribe(
+  constructor(private store$: Store<AppState>) {
+    this.store$.select(filtersStore.getSelectedDataset).subscribe(
       p => this.dataset = p
     );
   }
 
-  public isRelevant(prop: models.Props): boolean {
-    return models.datasetProperties[prop].includes(this.dataset.name);
+  public isRelevant(prop: models.Props, dataset?: models.Dataset): boolean {
+    const currentDataset = dataset || this.dataset;
+
+    return models.datasetProperties[prop].includes(currentDataset.name);
   }
 }

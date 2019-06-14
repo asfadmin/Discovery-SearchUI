@@ -1,5 +1,5 @@
 export enum FilterType {
-  PLATFORM = 'Dataset',
+  DATASET = 'Dataset',
   DATE = 'Date',
   PATH = 'Path',
   OTHER = 'Other',

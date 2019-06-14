@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { trigger, state, style, animate, transition } from '@angular/animations';
 
-import { map, withLatestFrom, filter } from 'rxjs/operators';
+import { map, withLatestFrom, filter, tap } from 'rxjs/operators';
 import { Store } from '@ngrx/store';
 
 import { AppState } from '@store';
@@ -32,10 +32,9 @@ export class BottomMenuComponent {
   public isBottomMenuOpen$ = this.store$.select(uiStore.getIsBottomMenuOpen);
 
   public searchDataset$ = this.store$.select(searchStore.getIsLoading).pipe(
-    withLatestFrom(this.store$.select(filtersStore.getSelectedDatasets)),
+    withLatestFrom(this.store$.select(filtersStore.getSelectedDataset)),
     filter(([isLoading, _]) => !isLoading),
-    map(([_, datasets]) => datasets),
-    map(datasets => Array.from(datasets || []).pop())
+    map(([_, dataset]) => dataset),
   );
 
   public allProducts$ = this.store$.select(granulesStore.getAllProducts);

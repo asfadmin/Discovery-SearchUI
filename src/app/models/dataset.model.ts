@@ -29,17 +29,9 @@ export interface ProductType {
   apiValue: string;
 }
 
-export interface DatasetProductTypes {
-  [datasetName: string]: ProductType[];
-}
-
-export interface DatasetBeamModes {
-  [datasetName: string]: string[];
-}
-
-export interface DatasetPolarizations {
-  [datasetName: string]: string[];
-}
+export type DatasetProductTypes = ProductType[];
+export type DatasetBeamModes = string[];
+export type DatasetPolarizations = string[];
 
 export const datasets: Dataset[] = [{
   name: 'SENTINEL-1',

@@ -1,8 +1,8 @@
-<div *ngFor="let dataset of selected">
+<div>
   <mat-form-field>
     <mat-select
-      [(ngModel)]="productTypes[dataset.name]"
-      (selectionChange)="onNewProductTypes(dataset, $event.value)"
+      [(ngModel)]="productTypes"
+      (selectionChange)="onNewProductTypes($event.value)"
       [disabled]="dataset.productTypes.length < 2"
       placeholder="Product Type" multiple>
         <mat-option
@@ -13,7 +13,7 @@
         </mat-option>
     </mat-select>
     <mat-hint *ngIf="dataset.productTypes.length >= 2" align="start">
-      {{ productTypes[dataset.name]?.length || 0 }}/{{ dataset.productTypes.length }}
+      {{ productTypes?.length || 0 }}/{{ dataset.productTypes.length }}
       product types selected
     </mat-hint>
 
@@ -24,8 +24,8 @@
 
   <mat-form-field>
     <mat-select
-      (selectionChange)="onNewDatasetBeamModes(dataset, $event.value)"
-      [(ngModel)]="beamModes[dataset.name]"
+      (selectionChange)="onNewDatasetBeamModes($event.value)"
+      [(ngModel)]="beamModes"
       [disabled]="dataset.beamModes.length < 2"
       placeholder="Beam Mode"
       multiple>
@@ -34,7 +34,7 @@
         </mat-option>
     </mat-select>
     <mat-hint *ngIf="dataset.beamModes.length >= 2"  align="start">
-      {{ beamModes[dataset.name]?.length || 0 }}/{{ dataset.beamModes.length }}
+      {{ beamModes?.length || 0 }}/{{ dataset.beamModes.length }}
       beam modes selected
     </mat-hint>
 
@@ -45,8 +45,8 @@
 
   <mat-form-field>
     <mat-select
-      (selectionChange)="onNewDatasetPolarizations(dataset, $event.value)"
-      [(ngModel)]="polarizations[dataset.name]"
+      (selectionChange)="onNewDatasetPolarizations($event.value)"
+      [(ngModel)]="polarizations"
       [disabled]="dataset.polarizations.length < 2"
       placeholder="Polarization" multiple>
       <mat-option *ngFor="let pol of dataset.polarizations" [value]="pol">
@@ -54,7 +54,7 @@
       </mat-option>
     </mat-select>
     <mat-hint *ngIf="dataset.polarizations.length >= 2"  align="start">
-      {{ polarizations[dataset.name]?.length || 0 }}/{{ dataset.polarizations.length }}
+      {{ polarizations?.length || 0 }}/{{ dataset.polarizations.length }}
       polarizations selected
     </mat-hint>
     <mat-hint *ngIf="dataset.polarizations.length < 2" align="start">
