@@ -11,32 +11,42 @@ import { Dataset, DateRangeExtrema, DateExtrema } from '@models';
 export class DateExtremaService {
 
   public getExtrema$(
-    datasets$,
-    selectedDataset$,
-    startDate$,
-    endDate$,
+    selectedDataset$: Observable<Dataset>,
+    startDate$: Observable<Date | null>,
+    endDate$: Observable<Date | null>,
   ) {
 
-    const startMin$ = this.startMin$(
-      datasets$,
-      selectedDataset$
+    const startMin$ = selectedDataset$.pipe(
+        map(selected => selected.date.start)
     );
 
-    const startMax$ = this.startMax$(
-      datasets$,
-      selectedDataset$,
-      endDate$
+    const startMax$ = combineLatest(
+      selectedDataset$, endDate$
+    ).pipe(
+      map(([selected, userEnd]) => {
+        if (!!userEnd) {
+          return userEnd;
+        }
+
+        return selected.date.end || new Date(Date.now());
+      })
     );
 
-    const endMin$ = this.endMin$(
-      datasets$,
+    const endMin$ = combineLatest(
       selectedDataset$,
       startDate$
+    ).pipe(
+      map(([selected, userStart]) => {
+        if (!!userStart) {
+          return userStart;
+        }
+
+        return selected.date.start;
+      })
     );
 
-    const endMax$ = this.endMax$(
-      datasets$,
-      selectedDataset$,
+    const endMax$ = selectedDataset$.pipe(
+      map(selected => selected.date.end || new Date(Date.now()))
     );
 
     return combineLatest(startMin$, startMax$, endMin$, endMax$).pipe(
@@ -50,83 +60,9 @@ export class DateExtremaService {
             min: endMin,
             max: endMax
           }
-        })
+        }
       )
+    )
     );
   }
-
-  private startMin$(
-    datasets$: Observable<Dataset[]>,
-    selectedDataset$: Observable<Dataset>
-  ): Observable<Date> {
-    return combineLatest(
-      datasets$,
-      selectedDataset$
-    ).pipe(
-      map(([datasets, selected]) => {
-        return selected.date.start;
-      })
-    );
-  }
-
-  private startMax$(
-    datasets$: Observable<Dataset[]>,
-    selectedDataset$: Observable<Dataset>,
-    endDate$: Observable<Date>
-  ): Observable<Date> {
-
-    return combineLatest(
-      datasets$,
-      selectedDataset$,
-      endDate$
-    ).pipe(
-      map(([datasets, selected, userEnd]) => {
-        if (!!userEnd) {
-          return userEnd;
-        }
-
-        return selected.date.end || new Date(Date.now());
-      })
-    );
-
-  }
-
-  private endMin$(
-    datasets$: Observable<Dataset[]>,
-    selectedDataset$: Observable<Dataset> ,
-    startDate$: Observable<Date>
-  ): Observable<Date> {
-
-    return combineLatest(
-      datasets$,
-      selectedDataset$,
-      startDate$
-    ).pipe(
-      map(([datasets, selected, userStart]) => {
-        if (!!userStart) {
-          return userStart;
-        }
-
-        return selected.date.start;
-      })
-    );
-  }
-
-  private endMax$(
-    datasets$: Observable<Dataset[]>,
-    selectedDataset$: Observable<Dataset>
-  ): Observable<Date> {
-
-    return combineLatest(
-      datasets$,
-      selectedDataset$
-    ).pipe(
-      map(([datasets, selected]) => {
-        return selected.date.end || new Date(Date.now());
-      })
-    );
-  }
-
-  private oldest = (d1: Date, d2: Date): Date => d1 < d2 ? d1 : d2;
-  private youngest = (d1: Date, d2: Date): Date => d1 > d2 ? d1 : d2;
 }
