@@ -38,20 +38,20 @@ export class OtherSelectorComponent implements OnInit {
     this.polarizations$.subscribe(pols => this.polarizations = pols);
   }
 
-  public onNewDatasetBeamModes(dataset: models.Dataset, beamModes: string[]): void {
-    this.store$.dispatch(new filtersStore.SetDatasetBeamModes({ [dataset.name]: beamModes }));
+  public onNewDatasetBeamModes(beamModes: string[]): void {
+    this.store$.dispatch(new filtersStore.SetBeamModes(beamModes));
   }
 
   public onNewFlightDirectionsSelected(directions: models.FlightDirection[]): void {
     this.store$.dispatch(new filtersStore.SetFlightDirections(directions));
   }
 
-  public onNewDatasetPolarizations(dataset: models.Dataset, polarizations: string[]): void {
-    this.store$.dispatch(new filtersStore.SetDatasetPolarizations({ [dataset.name]: polarizations }));
+  public onNewDatasetPolarizations(polarizations: string[]): void {
+    this.store$.dispatch(new filtersStore.SetPolarizations(polarizations));
   }
 
-  public onNewProductTypes(dataset: models.Dataset, productTypes: models.ProductType[]): void {
-    this.store$.dispatch(new filtersStore.SetDatasetProductTypes({ [dataset.name]: productTypes }));
+  public onNewProductTypes(productTypes: models.ProductType[]): void {
+    this.store$.dispatch(new filtersStore.SetProductTypes(productTypes));
   }
 
   public onNewMaxResults(maxResults): void {

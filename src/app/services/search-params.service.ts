@@ -152,12 +152,7 @@ export class SearchParamsService {
 
   private productType$() {
     return this.store$.select(filterStore.getProductTypes).pipe(
-      map(types => Object.values(types)
-        .reduce((allTypes, datasetProductTypes) => [
-          ...allTypes, ...datasetProductTypes
-        ], [])
-        .map(productType => productType.apiValue)
-      ),
+      map(types => types.map(type => type.apiValue)),
       map(
         types => Array.from(new Set(types))
           .join(',')
@@ -168,11 +163,6 @@ export class SearchParamsService {
 
   private beamModes$() {
     return this.store$.select(filterStore.getBeamModes).pipe(
-      map(beamModes => Object.values(beamModes)
-        .reduce((allModes, datasetBeamModes) => [
-          ...allModes, ...datasetBeamModes
-        ], [])
-      ),
       map(
         types => Array.from(new Set(types))
           .join(',')
@@ -183,11 +173,6 @@ export class SearchParamsService {
 
   private polarizations$() {
     return this.store$.select(filterStore.getPolarizations).pipe(
-      map(polarizations => Object.values(polarizations)
-        .reduce((allPolarizations, datasetPolarizations) => [
-          ...allPolarizations, ...datasetPolarizations
-        ], [])
-      ),
       map(
         polarizations => Array.from(new Set(polarizations))
           .join(',')

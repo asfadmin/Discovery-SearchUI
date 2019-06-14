@@ -62,9 +62,9 @@ export const initState: FiltersState = {
   shouldOmitSearchPolygon: false,
   listSearchMode: models.ListSearchType.GRANULE,
 
-  productTypes: {},
-  beamModes: {},
-  polarizations: {},
+  productTypes: [],
+  beamModes: [],
+  polarizations: [],
   flightDirections: new Set<models.FlightDirection>([]),
   maxResults: 101,
 };
@@ -81,12 +81,9 @@ export function filtersReducer(state = initState, action: FiltersActions): Filte
           ...state.datasets,
           selected
         },
-        productTypes: {
-        },
-        beamModes: {
-        },
-        polarizations: {
-        }
+        productTypes: [],
+        beamModes: [],
+        polarizations: []
       };
     }
 
@@ -212,9 +209,9 @@ export function filtersReducer(state = initState, action: FiltersActions): Filte
         shouldOmitSearchPolygon: false,
         listSearchMode: models.ListSearchType.GRANULE,
 
-        productTypes: {},
-        beamModes: {},
-        polarizations: {},
+        productTypes: [],
+        beamModes: [],
+        polarizations: [],
         flightDirections: new Set<models.FlightDirection>([]),
       };
     }
@@ -234,85 +231,42 @@ export function filtersReducer(state = initState, action: FiltersActions): Filte
       };
     }
 
-    case FiltersActionType.SET_DATASET_PRODUCT_TYPES: {
+    case FiltersActionType.SET_PRODUCT_TYPES: {
       return {
         ...state,
-        productTypes: { ...state.productTypes, ...action.payload }
-      };
-    }
-
-    case FiltersActionType.SET_ALL_PRODUCT_TYPES: {
-      return {
-        ...state,
-        productTypes: action.payload
+        productTypes: [ ...action.payload ]
       };
     }
 
     case FiltersActionType.ADD_BEAM_MODE: {
-      const dataset = state.datasets.selected;
-
-      const selectedBeamModes = [
-        ...(state.beamModes[dataset] || [])
-      ];
-
-      const newModes = Array.from(
-        new Set([...selectedBeamModes, action.payload])
-      );
-
       return {
         ...state,
-        beamModes: {
-          ...state.beamModes,
-          ...{ [dataset]: newModes }
-        }
+        beamModes: [ ...state.beamModes, action.payload ]
       };
     }
 
-    case FiltersActionType.SET_DATASET_BEAM_MODES: {
+    case FiltersActionType.SET_BEAM_MODES: {
       return {
         ...state,
-        beamModes: { ...state.beamModes, ...action.payload }
-      };
-    }
-
-    case FiltersActionType.SET_ALL_BEAM_MODES: {
-      return {
-        ...state,
-        beamModes: { ...action.payload }
+        beamModes: [ ...action.payload ]
       };
     }
 
     case FiltersActionType.ADD_POLARIZATION: {
-      const dataset = state.datasets.selected;
-
-      const selectedPols = [
-        ...(state.polarizations[dataset] || [])
-      ];
-
       const newPols = Array.from(
-        new Set([...selectedPols, action.payload])
+        new Set([...state.polarizations, action.payload])
       );
 
       return {
         ...state,
-        polarizations: {
-          ...state.polarizations,
-          ...{ [dataset]: newPols }
-        }
+        polarizations: [ ...newPols ]
       };
     }
 
-    case FiltersActionType.SET_DATASET_POLARIZATIONS: {
+    case FiltersActionType.SET_POLARIZATIONS: {
       return {
         ...state,
-        polarizations: { ...state.polarizations, ...action.payload }
-      };
-    }
-
-    case FiltersActionType.SET_ALL_POLARIZATIONS: {
-      return {
-        ...state,
-        polarizations: { ...action.payload }
+        polarizations: [ ...action.payload ]
       };
     }
 
@@ -445,89 +399,3 @@ export const getMaxSearchResults = createSelector(
   getFiltersState,
   (state: FiltersState) => state.maxResults
 );
-
-export const getIsAnyDateValues = createSelector(
-  getFiltersState,
-  ({ dateRange, season }) => !!(dateRange.start || dateRange.end || season.start || season.end)
-);
-
-export const getIsAnyPathFrameValue = createSelector(
-  getFiltersState,
-  ({ pathRange, frameRange }) =>
-    !!(pathRange.start || pathRange.end || frameRange.start || frameRange.end)
-);
-
-export const getIsAnyAdditionalFilters = createSelector(
-  getFiltersState,
-  ({ productTypes, beamModes, polarizations, flightDirections, datasets }) => {
-
-    const dataset = datasets.selected;
-
-    const isAnyFlightDirection = Array.from(flightDirections).length > 0;
-
-    const isAdditionalListFilters = [productTypes, beamModes, polarizations]
-      .map(vals => vals[dataset] || [])
-      .map(vals => vals.length > 0)
-      .some(c => !!c);
-
-    return isAnyFlightDirection || isAdditionalListFilters ;
-  }
-);
-
-export const getNumberOfAdditionalFilters = createSelector(
-  getFiltersState,
-  ({ productTypes, beamModes, polarizations, flightDirections, datasets }) => {
-    const dataset = datasets.selected;
-
-    const flightDirAmount = Array.from(flightDirections).length;
-
-    const listFiltersAmts = [productTypes, beamModes, polarizations]
-      .map(vals => vals[dataset] || [])
-      .map(vals => vals.length)
-      .reduce((x, y) => x + y);
-
-    return listFiltersAmts + flightDirAmount;
-  }
-);
-
-export const getDatePreviewStr = createSelector(
-  getFiltersState,
-  ({ dateRange, season }) => {
-      const format = date => {
-        if (!date) {
-          return date;
-        }
-
-        const [month, day, year] = [
-          date.getUTCMonth() + 1,
-          date.getUTCDate(),
-          date.getUTCFullYear(),
-        ];
-
-        return `${month}-${day}-${year}`;
-      };
-
-      const [startStr, endStr] = [dateRange.start, dateRange.end]
-        .map(format);
-
-      const seasonStr = (season.start || season.end) ? 'seasonal' : '';
-
-      let dateStr = '';
-      if (startStr && endStr) {
-        dateStr = `${startStr} to ${endStr}`;
-      } else if (startStr) {
-        dateStr = `after ${startStr}`;
-      } else if (endStr) {
-        dateStr = `before ${endStr}`;
-      }
-
-      if (dateStr && seasonStr) {
-        return `${dateStr} · ${seasonStr}`;
-      } else if (dateStr) {
-        return dateStr;
-      } else {
-        return seasonStr;
-      }
-    }
-);
-
