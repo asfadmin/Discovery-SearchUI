@@ -31,13 +31,15 @@ import * as models from '@models';
 export class BottomMenuComponent {
   public isBottomMenuOpen$ = this.store$.select(uiStore.getIsBottomMenuOpen);
 
-  public searchPlatform$ = this.store$.select(searchStore.getIsLoading).pipe(
-    withLatestFrom(this.store$.select(filtersStore.getSelectedPlatforms)),
+  public searchDataset$ = this.store$.select(searchStore.getIsLoading).pipe(
+    withLatestFrom(this.store$.select(filtersStore.getSelectedDatasets)),
     filter(([isLoading, _]) => !isLoading),
-    map(([_, platforms]) => platforms),
-    map(platforms => Array.from(platforms || []).pop())
+    map(([_, datasets]) => datasets),
+    map(datasets => Array.from(datasets || []).pop())
   );
 
+  public allProducts$ = this.store$.select(granulesStore.getAllProducts);
+  public numberOfGranules$ = this.store$.select(granulesStore.getNumberOfGranules);
   public selectedProducts$ = this.store$.select(granulesStore.getSelectedGranuleProducts);
   public queuedProductIds$ = this.store$.select(queueStore.getQueuedProductIds).pipe(
     map(names => new Set(names))
@@ -57,5 +59,17 @@ export class BottomMenuComponent {
 
   public onToggleQueueProduct(product: models.CMRProduct): void {
     this.store$.dispatch(new queueStore.ToggleProduct(product));
+  }
+
+  private selectNextGranule(): void {
+    this.store$.dispatch(new granulesStore.SelectNextGranule());
+  }
+
+  private selectPreviousGranule(): void {
+    this.store$.dispatch(new granulesStore.SelectPreviousGranule());
+  }
+
+  private queueAllProducts(products: models.CMRProduct[]): void {
+    this.store$.dispatch(new queueStore.AddItems(products));
   }
 }

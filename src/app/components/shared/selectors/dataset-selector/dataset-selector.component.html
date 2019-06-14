@@ -1,0 +1,22 @@
+<mat-form-field class="w100">
+  <mat-label>Dataset</mat-label>
+  <mat-select
+      [(ngModel)]="selected"
+      (selectionChange)="onSelectionChange($event.value)"
+      #datasetSelector>
+    <mat-option
+      *ngFor="let dataset of (datasets$ | async)"
+      [class.selected]="dataset.name === selected"
+      [value]="dataset.name">
+      <ng-container *ngIf="datasetSelector.panelOpen">
+        <app-dataset
+          class="list-group-item list-group-item-action"
+          [dataset]="dataset">
+        </app-dataset>
+      </ng-container>
+      <ng-container *ngIf="!datasetSelector.panelOpen">
+        {{ dataset.name }}
+      </ng-container>
+    </mat-option>
+  </mat-select>
+</mat-form-field>

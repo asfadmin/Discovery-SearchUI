@@ -1,6 +1,6 @@
 export * from './cmr-product.model';
 export * from './map.model';
-export * from './platform.model';
+export * from './dataset.model';
 export * from './filter-types.model';
 export * from './url-parameter.model';
 export * from './asf-api.model';

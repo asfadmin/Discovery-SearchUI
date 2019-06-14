@@ -3,7 +3,7 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 
 import { Observable, Subject } from 'rxjs';
 
-import { PolygonValidateResponse, MissionPlatform, Props, apiParamNames } from '@models';
+import { PolygonValidateResponse, MissionDataset, Props, apiParamNames } from '@models';
 import { EnvironmentService } from './environment.service';
 import { PropertyService } from './property.service';
 
@@ -88,9 +88,9 @@ export class AsfApiService {
     return filteredParams;
   }
 
-  public missionSearch(platform: MissionPlatform): Observable<{result: string[]}> {
+  public missionSearch(dataset: MissionDataset): Observable<{result: string[]}> {
     const params = new HttpParams()
-      .append('platform', platform);
+      .append('dataset', dataset);
 
     const url = `${this.apiUrl}/services/utils/mission_list`;
 

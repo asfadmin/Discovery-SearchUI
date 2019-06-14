@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { Observable, combineLatest } from 'rxjs';
 import { map, tap } from 'rxjs/operators';
 
-import { Platform, DateRangeExtrema, DateExtrema } from '@models';
+import { Dataset, DateRangeExtrema, DateExtrema } from '@models';
 
 @Injectable({
   providedIn: 'root'
@@ -11,32 +11,32 @@ import { Platform, DateRangeExtrema, DateExtrema } from '@models';
 export class DateExtremaService {
 
   public getExtrema$(
-    platforms$,
-    selectedPlatforms$,
+    datasets$,
+    selectedDatasets$,
     startDate$,
     endDate$,
   ) {
 
     const startMin$ = this.startMin$(
-      platforms$,
-      selectedPlatforms$
+      datasets$,
+      selectedDatasets$
     );
 
     const startMax$ = this.startMax$(
-      platforms$,
-      selectedPlatforms$,
+      datasets$,
+      selectedDatasets$,
       endDate$
     );
 
     const endMin$ = this.endMin$(
-      platforms$,
-      selectedPlatforms$,
+      datasets$,
+      selectedDatasets$,
       startDate$
     );
 
     const endMax$ = this.endMax$(
-      platforms$,
-      selectedPlatforms$,
+      datasets$,
+      selectedDatasets$,
     );
 
     return combineLatest(startMin$, startMax$, endMin$, endMax$).pipe(
@@ -56,47 +56,47 @@ export class DateExtremaService {
   }
 
   private startMin$(
-    platforms$: Observable<Platform[]>,
-    selectedPlatforms$: Observable<Platform[]>
+    datasets$: Observable<Dataset[]>,
+    selectedDatasets$: Observable<Dataset[]>
   ): Observable<Date> {
     return combineLatest(
-      platforms$,
-      selectedPlatforms$
+      datasets$,
+      selectedDatasets$
     ).pipe(
-      map(([platforms, selected]) => {
+      map(([datasets, selected]) => {
         const dates = selected.length > 0 ?
           selected :
-          platforms;
+          datasets;
 
         return dates
-          .map(platform => platform.date.start)
+          .map(dataset => dataset.date.start)
           .reduce(this.oldest);
       })
     );
   }
 
   private startMax$(
-    platforms$: Observable<Platform[]>,
-    selectedPlatforms$: Observable<Platform[]>,
+    datasets$: Observable<Dataset[]>,
+    selectedDatasets$: Observable<Dataset[]>,
     endDate$: Observable<Date>
   ): Observable<Date> {
 
     return combineLatest(
-      platforms$,
-      selectedPlatforms$,
+      datasets$,
+      selectedDatasets$,
       endDate$
     ).pipe(
-      map(([platforms, selected, userEnd]) => {
+      map(([datasets, selected, userEnd]) => {
         if (!!userEnd) {
           return userEnd;
         }
 
         const dates = selected.length > 0 ?
           selected :
-          platforms;
+          datasets;
 
         const max = dates
-          .map(platform => platform.date.end || new Date(Date.now()))
+          .map(dataset => dataset.date.end || new Date(Date.now()))
           .reduce(this.youngest);
 
         return max;
@@ -106,27 +106,27 @@ export class DateExtremaService {
   }
 
   private endMin$(
-    platforms$: Observable<Platform[]>,
-    selectedPlatforms$: Observable<Platform[]> ,
+    datasets$: Observable<Dataset[]>,
+    selectedDatasets$: Observable<Dataset[]> ,
     startDate$: Observable<Date>
   ): Observable<Date> {
 
     return combineLatest(
-      platforms$,
-      selectedPlatforms$,
+      datasets$,
+      selectedDatasets$,
       startDate$
     ).pipe(
-      map(([platforms, selected, userStart]) => {
+      map(([datasets, selected, userStart]) => {
         if (!!userStart) {
           return userStart;
         }
 
         const dates = selected.length > 0 ?
           selected :
-          platforms;
+          datasets;
 
         const min = dates
-          .map(platform => platform.date.start)
+          .map(dataset => dataset.date.start)
           .reduce(this.oldest);
 
         return min;
@@ -135,21 +135,21 @@ export class DateExtremaService {
   }
 
   private endMax$(
-    platforms$: Observable<Platform[]>,
-    selectedPlatforms$: Observable<Platform[]>
+    datasets$: Observable<Dataset[]>,
+    selectedDatasets$: Observable<Dataset[]>
   ): Observable<Date> {
 
     return combineLatest(
-      platforms$,
-      selectedPlatforms$
+      datasets$,
+      selectedDatasets$
     ).pipe(
-      map(([platforms, selected]) => {
+      map(([datasets, selected]) => {
         const dates = selected.length > 0 ?
           selected :
-          platforms;
+          datasets;
 
         const max = dates
-          .map(platform => platform.date.end || new Date(Date.now()))
+          .map(dataset => dataset.date.end || new Date(Date.now()))
           .reduce(this.youngest);
 
         return max;

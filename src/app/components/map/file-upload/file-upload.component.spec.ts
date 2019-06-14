@@ -1,6 +1,6 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { Injectable, CUSTOM_ELEMENTS_SCHEMA, Component, Directive  } from '@angular/core';
-import { isPlatformBrowser } from '@angular/common';
+import { isDatasetBrowser } from '@angular/common';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { By } from '@angular/platform-browser';
 

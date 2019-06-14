@@ -36,8 +36,8 @@ describe('SearchParamsService', () => {
     // const result = searchPolygon$();
   });
 
-  it('should run #selectedPlatforms$()', async () => {
-    // const result = selectedPlatforms$();
+  it('should run #selectedDatasets$()', async () => {
+    // const result = selectedDatasets$();
   });
 
   it('should run #dateRange$()', async () => {

@@ -24,7 +24,7 @@ import * as models from '@models';
   encapsulation: ViewEncapsulation.None
 })
 export class GranulesListComponent implements OnInit {
-  @Input() platform: models.Platform;
+  @Input() dataset: models.Dataset;
 
   @ViewChild(CdkVirtualScrollViewport, { static: true }) scroll: CdkVirtualScrollViewport;
 
@@ -75,6 +75,13 @@ export class GranulesListComponent implements OnInit {
           return this.selectNextGranule();
         }
         case 'ArrowLeft': {
+          return this.selectPreviousGranule();
+        }
+
+        case 'ArrowDown': {
+          return this.selectNextGranule();
+        }
+        case 'ArrowUp': {
           return this.selectPreviousGranule();
         }
       }

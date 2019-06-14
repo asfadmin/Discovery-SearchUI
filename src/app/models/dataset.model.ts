@@ -1,4 +1,4 @@
-export interface Platform {
+export interface Dataset {
   name: string;
   date: DateRange;
   infoUrl: string;
@@ -12,7 +12,7 @@ export interface Platform {
   } | null;
 }
 
-export enum MissionPlatform {
+export enum MissionDataset {
   UAVSAR = 'UAVSAR',
   AIRSAR = 'AIRSAR',
   S1_BETA = 'Sentinel-1 Interferogram (BETA)',
@@ -29,19 +29,19 @@ export interface ProductType {
   apiValue: string;
 }
 
-export interface PlatformProductTypes {
-  [platformName: string]: ProductType[];
+export interface DatasetProductTypes {
+  [datasetName: string]: ProductType[];
 }
 
-export interface PlatformBeamModes {
-  [platformName: string]: string[];
+export interface DatasetBeamModes {
+  [datasetName: string]: string[];
 }
 
-export interface PlatformPolarizations {
-  [platformName: string]: string[];
+export interface DatasetPolarizations {
+  [datasetName: string]: string[];
 }
 
-export const platforms: Platform[] = [{
+export const datasets: Dataset[] = [{
   name: 'SENTINEL-1',
   date: { start: new Date(2014, 3, 25) },
   infoUrl: 'https://www.asf.alaska.edu/sentinel/',
@@ -450,7 +450,7 @@ export const platforms: Platform[] = [{
   ]
 }];
 
-export const platformNames = platforms.map(platform => platform.name);
+export const datasetNames = datasets.map(dataset => dataset.name);
 
 export const flightDirections = [
   'Ascending',

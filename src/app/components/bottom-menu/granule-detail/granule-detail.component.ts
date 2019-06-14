@@ -19,7 +19,7 @@ import { ImageDialogComponent } from './image-dialog';
   styleUrls: ['./granule-detail.component.scss']
 })
 export class GranuleDetailComponent implements OnInit {
-  @Input() platform: models.Platform;
+  @Input() dataset: models.Dataset;
 
   public searchType: models.SearchType;
   public granule: models.CMRProduct;

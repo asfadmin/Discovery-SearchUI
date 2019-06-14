@@ -65,7 +65,7 @@ export class SearchParamsService {
   private filterSearchParams$() {
     return combineLatest(
         this.searchPolygon$(),
-        this.selectedPlatforms$(),
+        this.selectedDatasets$(),
         this.dateRange$(),
         this.season$(),
         this.pathRange$(),
@@ -110,14 +110,14 @@ export class SearchParamsService {
     );
   }
 
-  private selectedPlatforms$() {
-    return this.store$.select(filterStore.getSelectedPlatforms).pipe(
-      map(platforms => platforms
-        .map(platform => platform.name)
+  private selectedDatasets$() {
+    return this.store$.select(filterStore.getSelectedDatasets).pipe(
+      map(datasets => datasets
+        .map(dataset => dataset.name)
         .join(',')
         .replace('ALOS PALSAR', 'ALOS')
       ),
-      map(platforms => ({ platform: platforms }))
+      map(datasets => ({ platform: datasets }))
     );
   }
 
@@ -157,8 +157,8 @@ export class SearchParamsService {
   private productType$() {
     return this.store$.select(filterStore.getProductTypes).pipe(
       map(types => Object.values(types)
-        .reduce((allTypes, platformProductTypes) => [
-          ...allTypes, ...platformProductTypes
+        .reduce((allTypes, datasetProductTypes) => [
+          ...allTypes, ...datasetProductTypes
         ], [])
         .map(productType => productType.apiValue)
       ),
@@ -173,8 +173,8 @@ export class SearchParamsService {
   private beamModes$() {
     return this.store$.select(filterStore.getBeamModes).pipe(
       map(beamModes => Object.values(beamModes)
-        .reduce((allModes, platformBeamModes) => [
-          ...allModes, ...platformBeamModes
+        .reduce((allModes, datasetBeamModes) => [
+          ...allModes, ...datasetBeamModes
         ], [])
       ),
       map(
@@ -188,8 +188,8 @@ export class SearchParamsService {
   private polarizations$() {
     return this.store$.select(filterStore.getPolarizations).pipe(
       map(polarizations => Object.values(polarizations)
-        .reduce((allPolarizations, platformPolarizations) => [
-          ...allPolarizations, ...platformPolarizations
+        .reduce((allPolarizations, datasetPolarizations) => [
+          ...allPolarizations, ...datasetPolarizations
         ], [])
       ),
       map(
