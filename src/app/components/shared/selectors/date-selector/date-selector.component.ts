@@ -34,7 +34,7 @@ export class DateSelectorComponent implements OnInit {
 
   ngOnInit() {
     this.actions$.pipe(
-      filter(action => action.type === filtersStore.FiltersActionType.CLEAR_FILTERS)
+      filter(action => action.type === filtersStore.FiltersActionType.CLEAR_DATASET_FILTERS)
     ).subscribe(_ => this.dateForm.reset());
 
     this.dateExtremaService.getExtrema$(

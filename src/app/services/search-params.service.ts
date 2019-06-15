@@ -86,7 +86,7 @@ export class SearchParamsService {
   }
 
   private listParam$() {
-    return this.store$.select(granulesStore.getSearchList).pipe(
+    return this.store$.select(filterStore.getSearchList).pipe(
       withLatestFrom(this.store$.select(filterStore.getListSearchMode).pipe(
         map(mode => mode === models.ListSearchType.GRANULE ? 'granule_list' : 'product_list')
       )),

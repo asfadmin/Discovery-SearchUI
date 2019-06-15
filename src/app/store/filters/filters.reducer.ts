@@ -15,6 +15,7 @@ export interface FiltersState {
   shouldOmitSearchPolygon: boolean;
 
   listSearchMode: models.ListSearchType;
+  searchList: string[];
 
   productTypes: models.DatasetProductTypes;
   beamModes: models.DatasetBeamModes;
@@ -61,6 +62,7 @@ export const initState: FiltersState = {
   },
   shouldOmitSearchPolygon: false,
   listSearchMode: models.ListSearchType.GRANULE,
+  searchList: [],
 
   productTypes: [],
   beamModes: [],
@@ -187,7 +189,7 @@ export function filtersReducer(state = initState, action: FiltersActions): Filte
       };
     }
 
-    case FiltersActionType.CLEAR_FILTERS: {
+    case FiltersActionType.CLEAR_DATASET_FILTERS: {
       return {
         ...state,
         dateRange: {
@@ -207,12 +209,24 @@ export function filtersReducer(state = initState, action: FiltersActions): Filte
           end: null
         },
         shouldOmitSearchPolygon: false,
-        listSearchMode: models.ListSearchType.GRANULE,
 
         productTypes: [],
         beamModes: [],
         polarizations: [],
         flightDirections: new Set<models.FlightDirection>([]),
+      };
+    }
+
+    case FiltersActionType.CLEAR_LIST_FILTERS: {
+      return {
+        ...state,
+        listSearchMode: models.ListSearchType.GRANULE,
+      };
+    }
+
+    case FiltersActionType.CLEAR_MISSION_FILTERS: {
+      return {
+        ...state,
       };
     }
 
@@ -288,6 +302,13 @@ export function filtersReducer(state = initState, action: FiltersActions): Filte
       return {
         ...state,
         maxResults: action.payload,
+      };
+    }
+
+    case FiltersActionType.SET_SEARCH_LIST: {
+      return {
+        ...state,
+        searchList: action.payload
       };
     }
 
@@ -398,4 +419,10 @@ export const getFlightDirections = createSelector(
 export const getMaxSearchResults = createSelector(
   getFiltersState,
   (state: FiltersState) => state.maxResults
+);
+
+
+export const getSearchList = createSelector(
+  getFiltersState,
+  (state: FiltersState) => state.searchList
 );

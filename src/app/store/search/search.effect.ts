@@ -68,7 +68,12 @@ export class SearchEffects {
 
   @Effect()
   private cancelSearchWhenFiltersCleared: Observable<Action> = this.actions$.pipe(
-    ofType(filtersStore.FiltersActionType.CLEAR_FILTERS),
+    ofType(
+      filtersStore.FiltersActionType.CLEAR_DATASET_FILTERS,
+      filtersStore.FiltersActionType.CLEAR_LIST_FILTERS,
+      filtersStore.FiltersActionType.CLEAR_MISSION_FILTERS,
+    ),
+    withLatestFrom(uiStore.getSearchType),
     map(_ => new CancelSearch())
   );
 

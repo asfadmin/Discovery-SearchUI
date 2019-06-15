@@ -32,9 +32,13 @@ export enum FiltersActionType {
   OMIT_SEARCH_POLYGON = '[Filters-Search] Omit Search Polygon',
   USE_SEARCH_POLYGON = '[Filters-Search] Use Search Polygon',
 
-  CLEAR_FILTERS = '[Filters-Clear] Clear Filters',
+  CLEAR_DATASET_FILTERS = '[Filters-Clear] Clear Dataset Filters',
+  CLEAR_LIST_FILTERS = '[Filters-Clear] Clear List Filters',
+  CLEAR_MISSION_FILTERS = '[Filters-Clear] Clear Mission Filters',
 
   SET_LIST_SEARCH_TYPE = '[Filters-List] Set List Search Type',
+  SET_SEARCH_LIST = '[Filters-List] Set Search List',
+
   SET_MAX_RESULTS = '[Filters] Set Max Results',
 }
 
@@ -120,8 +124,16 @@ export class SetListSearchType implements Action {
   constructor(public payload: models.ListSearchType) {}
 }
 
-export class ClearFilters implements Action {
-  public readonly type = FiltersActionType.CLEAR_FILTERS;
+export class ClearDatasetFilters implements Action {
+  public readonly type = FiltersActionType.CLEAR_DATASET_FILTERS;
+}
+
+export class ClearListFilters implements Action {
+  public readonly type = FiltersActionType.CLEAR_LIST_FILTERS;
+}
+
+export class ClearMissionFilters implements Action {
+  public readonly type = FiltersActionType.CLEAR_MISSION_FILTERS;
 }
 
 export class AddFlightDirection implements Action {
@@ -160,6 +172,12 @@ export class SetPolarizations implements Action {
   constructor(public payload: models.DatasetPolarizations) {}
 }
 
+export class SetSearchList implements Action {
+  public readonly type = FiltersActionType.SET_SEARCH_LIST;
+
+  constructor(public payload: string[]) {}
+}
+
 export class SetMaxResults implements Action {
   public readonly type = FiltersActionType.SET_MAX_RESULTS;
 
@@ -182,11 +200,14 @@ export type FiltersActions =
   | SetFrameEnd
   | SetProductTypes
   | SetListSearchType
+  | SetSearchList
   | SetFlightDirections
   | AddFlightDirection
   | AddBeamMode
   | SetBeamModes
   | AddPolarization
   | SetPolarizations
-  | ClearFilters
+  | ClearDatasetFilters
+  | ClearListFilters
+  | ClearMissionFilters
   | SetMaxResults;
