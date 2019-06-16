@@ -11,7 +11,7 @@ import { ClipboardService } from 'ngx-clipboard';
   templateUrl: './copy-to-clipboard.component.html',
   styleUrls: ['./copy-to-clipboard.component.css']
 })
-export class CopyToClipboardComponent {
+export class CopyToClipboardComponent implements OnInit {
   @Input() value: string;
   @Input() prompt = 'Copy to clipboard';
   @Input() notification = 'Copied';
@@ -19,9 +19,13 @@ export class CopyToClipboardComponent {
   @ViewChild('copyTooltip', { static: true }) copyTooltip: ElementRef;
 
   public copyIcon = faCopy;
-  public copyTooltipMessage = this.prompt;
+  public copyTooltipMessage: string;
 
   constructor(private clipboardService: ClipboardService) { }
+
+  ngOnInit() {
+    this.copyTooltipMessage = this.prompt;
+  }
 
   public onCopyIconClicked(e: Event): void {
     this.clipboardService.copyFromContent(this.value);
