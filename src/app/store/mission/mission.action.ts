@@ -7,6 +7,7 @@ export enum MissionActionType {
   SET_MISSIONS = '[Mission] Set Missions',
 
   SELECT_MISSION = '[Mission] Select Mission',
+  CLEAR_SELECTED_MISSION = '[Mission] Clear Selected Mission',
 }
 
 export class LoadMissions implements Action {
@@ -25,7 +26,12 @@ export class SelectMission implements Action {
   constructor(public payload: string) {}
 }
 
+export class ClearSelectedMission implements Action {
+  public readonly type = MissionActionType.CLEAR_SELECTED_MISSION;
+}
+
 export type MissionActions =
   | LoadMissions
   | SetMissions
-  | SelectMission;
+  | SelectMission
+  | ClearSelectedMission;

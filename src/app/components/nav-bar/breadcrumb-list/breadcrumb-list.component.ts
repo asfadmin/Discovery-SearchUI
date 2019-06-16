@@ -100,7 +100,6 @@ export class BreadcrumbListComponent implements OnInit {
   }
 
   public onClearSearch(): void {
-    this.clearSelectedBreadcrumb();
     this.clearSearch.emit();
   }
 

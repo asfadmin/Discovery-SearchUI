@@ -120,23 +120,18 @@ export function uiReducer(state = initState, action: UIActions): UIState {
 
 export const getUIState = createFeatureSelector<UIState>('ui');
 
-export const getFiltersMenuState = createSelector(
-  getUIState,
-  (state: UIState) => state
-);
-
 export const getSelectedFilter = createSelector(
-  getFiltersMenuState,
+  getUIState,
   state => state.selectedFilter
 );
 
 export const getSearchType = createSelector(
-  getFiltersMenuState,
+  getUIState,
   state => state.searchType
 );
 
 export const getIsSidebarOpen = createSelector(
-  getFiltersMenuState,
+  getUIState,
   state => state.isSidebarOpen
 );
 

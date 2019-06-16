@@ -127,6 +127,10 @@ export class AppComponent implements OnInit {
       actions.forEach(
         action => this.store$.dispatch(action)
       );
+    } else if (this.searchType === models.SearchType.LIST) {
+      this.store$.dispatch(new filterStore.ClearListFilters());
+    } else if (this.searchType === models.SearchType.MISSION) {
+      this.store$.dispatch(new missionStore.ClearSelectedMission());
     }
   }
 }

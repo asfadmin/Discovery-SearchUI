@@ -220,13 +220,7 @@ export function filtersReducer(state = initState, action: FiltersActions): Filte
     case FiltersActionType.CLEAR_LIST_FILTERS: {
       return {
         ...state,
-        listSearchMode: models.ListSearchType.GRANULE,
-      };
-    }
-
-    case FiltersActionType.CLEAR_MISSION_FILTERS: {
-      return {
-        ...state,
+        searchList: []
       };
     }
 

@@ -34,7 +34,6 @@ export enum FiltersActionType {
 
   CLEAR_DATASET_FILTERS = '[Filters-Clear] Clear Dataset Filters',
   CLEAR_LIST_FILTERS = '[Filters-Clear] Clear List Filters',
-  CLEAR_MISSION_FILTERS = '[Filters-Clear] Clear Mission Filters',
 
   SET_LIST_SEARCH_TYPE = '[Filters-List] Set List Search Type',
   SET_SEARCH_LIST = '[Filters-List] Set Search List',
@@ -132,10 +131,6 @@ export class ClearListFilters implements Action {
   public readonly type = FiltersActionType.CLEAR_LIST_FILTERS;
 }
 
-export class ClearMissionFilters implements Action {
-  public readonly type = FiltersActionType.CLEAR_MISSION_FILTERS;
-}
-
 export class AddFlightDirection implements Action {
   public readonly type = FiltersActionType.ADD_FLIGHT_DIRECTION;
 
@@ -209,5 +204,4 @@ export type FiltersActions =
   | SetPolarizations
   | ClearDatasetFilters
   | ClearListFilters
-  | ClearMissionFilters
   | SetMaxResults;

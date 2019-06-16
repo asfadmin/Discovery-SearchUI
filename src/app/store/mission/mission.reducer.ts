@@ -32,6 +32,13 @@ export function missionReducer(state = initState, action: MissionActions): Missi
       };
     }
 
+    case MissionActionType.CLEAR_SELECTED_MISSION: {
+      return {
+        ...state,
+        selectedMission: null
+      };
+    }
+
     default: {
       return state;
     }
