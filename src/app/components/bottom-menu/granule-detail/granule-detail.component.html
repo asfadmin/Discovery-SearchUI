@@ -16,6 +16,26 @@
     </mat-card-subtitle>
   </mat-card-header>
 
+  <mat-card-actions class="action-buttons">
+    <a *ngIf="prop.isRelevant(p.BASELINE_TOOL, dataset)"
+       mat-raised-button color="accent" target="_blank"
+       href="https://baseline.asf.alaska.edu/#/baseline?granule={{ granule.name }}">
+      Baseline Tool
+    </a>
+    <a mat-raised-button color="primary"
+       target="_blank"
+       color="accent"
+       href="https://www.asf.alaska.edu/about/how-to-cite-data/">
+      Citation
+    </a>
+    <button *ngIf="prop.isRelevant(p.PATH, dataset) && prop.isRelevant(p.FRAME, dataset)"
+            (click)="findSimilarGranules()"
+            matTooltip="Search based on this granules path/frame"
+            mat-raised-button color="primary">
+      More Like This
+    </button>
+  </mat-card-actions>
+
   <mat-card-content class="content">
     <div class="w100" fxFlex fxLayout="row" fxLayoutAlign="space-between">
       <div class="w50">
@@ -163,25 +183,7 @@
     </div>
   </mat-card-content>
 
-  <mat-card-actions class="action-buttons">
-    <a *ngIf="prop.isRelevant(p.BASELINE_TOOL, dataset)"
-      mat-raised-button color="accent" target="_blank"
-      href="https://baseline.asf.alaska.edu/#/baseline?granule={{ granule.name }}">
-        Baseline Tool
-    </a>
-    <a mat-raised-button color="primary"
-      target="_blank"
-      color="accent"
-      href="https://www.asf.alaska.edu/about/how-to-cite-data/">
-      Citation
-    </a>
-    <button *ngIf="prop.isRelevant(p.PATH, dataset) && prop.isRelevant(p.FRAME, dataset)"
-      (click)="findSimilarGranules()"
-      matTooltip="Search based on this granules path/frame"
-      mat-raised-button color="primary">
-       More Like This
-    </button>
-  </mat-card-actions>
+
 </div>
 
 <div *ngIf="!granule">
