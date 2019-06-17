@@ -1,18 +1,37 @@
-<div>
-  <app-bottom-menu>
-  </app-bottom-menu>
+<mat-sidenav-container class="example-container" (backdropClick)="close()">
+  <mat-sidenav class="app-sidenav" #sidenav (keydown.escape)="close()" disableClose>
+    <app-search-selector
+      (newSearchType)="onSetSearchType($event)"
+      [selectedSearchType]="searchType">
+    </app-search-selector>
 
-  <app-nav-bar
-    (doSearch)="onNewSearch()"
-    (clearSearch)="onClearSearch()"
-    [isLoading]="isLoading$ | async">
-  </app-nav-bar>
+    <div>
+      <div class="support_by">Support provided by...</div>
+      <a href="https://earthdata.nasa.gov/" target="_blank">
+        <img class="img-nasa-logo" src="/assets/meatball.png">
+      </a>
+    </div>
+  </mat-sidenav>
 
-  <app-map (loadUrlState)="onLoadUrlState()">
-  </app-map>
+  <mat-sidenav-content>
+    <div>
+      <app-bottom-menu>
+      </app-bottom-menu>
 
-  <app-sidebar
-     (newSearch)="onNewSearch()"
-     (clearSearch)="onClearSearch()"
-    ></app-sidebar>
-</div>
+      <app-nav-bar
+        (doSearch)="onNewSearch()"
+        (clearSearch)="onClearSearch()"
+        [isLoading]="isLoading$ | async">
+      </app-nav-bar>
+
+      <app-map (loadUrlState)="onLoadUrlState()">
+      </app-map>
+
+      <app-sidebar
+         (newSearch)="onNewSearch()"
+         (clearSearch)="onClearSearch()"
+        ></app-sidebar>
+    </div>
+  </mat-sidenav-content>
+</mat-sidenav-container>
+

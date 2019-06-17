@@ -4,6 +4,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { BrowserModule } from '@angular/platform-browser';
 import { HttpClientModule } from '@angular/common/http';
 import { MatBottomSheetModule } from '@angular/material/bottom-sheet';
+import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { environment } from '@environments/environment';
 
@@ -20,6 +21,7 @@ import { BottomMenuModule } from '@components/bottom-menu';
 
 import * as services from '@services';
 
+import { SearchSelectorModule } from '@components/shared/selectors/search-selector';
 import { AppComponent } from './app.component';
 
 export const routes = [
@@ -37,12 +39,14 @@ export const routes = [
     HttpClientModule,
     MatSnackBarModule,
     MatBottomSheetModule,
+    MatSidenavModule,
 
     RouterModule.forRoot(routes, { useHash: true }),
     StoreModule.forRoot(store.reducers, { metaReducers: store.metaReducers }),
     EffectsModule.forRoot(store.appEffects),
     !environment.production ? StoreDevtoolsModule.instrument() : [],
 
+    SearchSelectorModule,
     SidebarModule,
     MapModule,
     BottomMenuModule,
