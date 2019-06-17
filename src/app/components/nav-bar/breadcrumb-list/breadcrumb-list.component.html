@@ -89,12 +89,18 @@
           <mat-icon>more_horiz</mat-icon>
         </button>
 
-        <button (click)="onToggleFiltersMenu()"
-                *ngIf="searchType !== searchTypes.DATASET"
-                mat-stroked-button>
-          <span *ngIf="searchType === searchTypes.MISSION">Mission</span>
-          <span *ngIf="searchType === searchTypes.LIST">List</span>
-        </button>
+        <div *ngIf="searchType !== searchTypes.DATASET" class="search-dialog-crumb">
+          <button (click)="onToggleFiltersMenu()"
+                  *ngIf="searchType !== searchTypes.DATASET"
+                  mat-flat-button
+                  class="search-dialog-button">
+            <span *ngIf="searchType === searchTypes.MISSION">Select Mission</span>
+            <span *ngIf="searchType === searchTypes.LIST">
+              <mat-icon>edit</mat-icon>
+              Edit List
+            </span>
+          </button>
+        </div>
       </div>
 
       <div fxFlex="80px" class="breadcrumb-no-divider extra-padding-top">
