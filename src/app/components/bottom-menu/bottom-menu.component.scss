@@ -13,6 +13,23 @@
   pointer-events: none;
 }
 
+.bottom-menu-wrapper {
+  height: 40%;
+  max-height: 90%;
+  width: 100%;
+  margin: 0;
+  padding: 0 0 20px 0;
+  right: 0;
+  bottom: 0;
+  position: fixed;
+  z-index: 999;
+}
+
+.bottom-menu-granule-detail-content {
+  height: 100%;
+  overflow-y: auto;
+}
+
 .scrollable-card {
   height: 100%;
   overflow-y: auto;
@@ -55,7 +72,7 @@
 .bottom-menu--column {
   width: 34%;
   min-width: 300px;
-  max-height: 510px;
+  //max-height: 510px;
   padding: 0;
   margin: 0;
   overflow: visible;
