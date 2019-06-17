@@ -15,15 +15,15 @@ import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import * as store from './store';
 
 import { NavBarModule } from '@components/nav-bar';
-import { AdditionalFiltersModule } from '@components/additional-filters';
+import { SidebarModule } from '@components/sidebar';
 import { MapModule } from '@components/map';
 import { BottomMenuModule } from '@components/bottom-menu';
 import { MatSharedModule } from '@shared';
 import { LogoModule } from '@components/nav-bar/logo/logo.module';
+import { AdditionalFiltersModule } from '@components/additional-filters';
 
 import * as services from '@services';
 
-import { SearchSelectorModule } from '@components/shared/selectors/search-selector';
 import { AppComponent } from './app.component';
 
 export const routes = [
@@ -49,8 +49,7 @@ export const routes = [
     EffectsModule.forRoot(store.appEffects),
     !environment.production ? StoreDevtoolsModule.instrument() : [],
 
-    LogoModule,
-    SearchSelectorModule,
+    SidebarModule,
     AdditionalFiltersModule,
     MapModule,
     BottomMenuModule,

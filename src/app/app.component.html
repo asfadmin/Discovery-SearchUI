@@ -1,19 +1,6 @@
 <mat-sidenav-container class="example-container" (backdropClick)="onCloseSidebar()">
   <mat-sidenav class="app-sidenav" #sidenav (keydown.escape)="onCloseSidebar()" disableClose>
-
-    <app-logo style="width: 100%"></app-logo>
-
-    <app-search-selector
-      (newSearchType)="onSetSearchType($event)"
-      [selectedSearchType]="searchType">
-    </app-search-selector>
-
-    <div>
-      <div class="support_by">Support provided by...</div>
-      <a href="https://earthdata.nasa.gov/" target="_blank">
-        <img class="img-nasa-logo" src="/assets/meatball.png">
-      </a>
-    </div>
+    <app-sidebar></app-sidebar>
   </mat-sidenav>
 
   <mat-sidenav-content>

@@ -1,0 +1,15 @@
+<div>
+  <app-logo></app-logo>
+
+  <app-search-selector
+    (newSearchType)="onSetSearchType($event)"
+    [selectedSearchType]="searchType">
+  </app-search-selector>
+
+  <div>
+    <div class="support_by">Support provided by...</div>
+    <a href="https://earthdata.nasa.gov/" target="_blank">
+      <img class="img-nasa-logo" src="/assets/meatball.png">
+    </a>
+  </div>
+</div>
