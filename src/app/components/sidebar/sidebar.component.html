@@ -3,7 +3,7 @@
 
   <app-search-selector
     (newSearchType)="onSetSearchType($event)"
-    [selectedSearchType]="searchType">
+    [selectedSearchType]="searchType$ | async">
   </app-search-selector>
 
   <div>

@@ -148,10 +148,6 @@ export class AppComponent implements OnInit {
     }
   }
 
-  public onSetSearchType(searchType: models.SearchType): void {
-    this.store$.dispatch(new uiStore.SetSearchType(searchType));
-  }
-
   public onCloseSidebar(): void {
     this.store$.dispatch(new uiStore.CloseSidebar());
   }
