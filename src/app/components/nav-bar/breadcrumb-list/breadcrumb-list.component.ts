@@ -55,6 +55,7 @@ export class BreadcrumbListComponent implements OnInit {
   public loading$ = this.store$.select(searchStore.getIsLoading);
 
   public maxResults$ = this.store$.select(filtersStore.getMaxSearchResults);
+  public isMaxResultsLoading$ = this.store$.select(searchStore.getIsMaxResultsLoading);
   public currentSearchAmount$ = this.store$.select(searchStore.getSearchAmount);
 
   constructor(

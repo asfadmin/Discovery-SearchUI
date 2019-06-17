@@ -5,7 +5,7 @@ import { MatBottomSheet } from '@angular/material/bottom-sheet';
 import { Store } from '@ngrx/store';
 
 import { of } from 'rxjs';
-import { skip, filter, map, mergeMap, tap, catchError } from 'rxjs/operators';
+import { skip, filter, map, switchMap, mergeMap, tap, catchError, debounceTime } from 'rxjs/operators';
 
 import { AppState } from '@store';
 import * as granulesStore from '@store/granules';
@@ -37,6 +37,7 @@ export class AppComponent implements OnInit {
 
   public interactionTypes = models.MapInteractionModeType;
   public searchType: models.SearchType;
+  private maxResultsAmountLoading = false;
 
   constructor(
     private store$: Store<AppState>,
@@ -74,10 +75,14 @@ export class AppComponent implements OnInit {
 
     this.searchParams$.getParams().pipe(
       map(params => ({...params, ...{output: 'COUNT'}})),
-      mergeMap(params => this.asfSearchApi.query<any[]>(params).pipe(
+      debounceTime(500),
+      tap(_ =>
+        this.store$.dispatch(new searchStore.SearchAmountLoading())
+      ),
+      switchMap(params => this.asfSearchApi.query<any[]>(params).pipe(
           catchError(_ => of(-1))
         )
-      )
+      ),
     ).subscribe(searchAmount => {
       this.store$.dispatch(new searchStore.SetSearchAmount(+<number>searchAmount));
     });
