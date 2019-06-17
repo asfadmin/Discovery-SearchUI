@@ -1,7 +1,7 @@
 <div
   [@changeMenuY]="(isBottomMenuOpen$ | async) ? 'shown' : 'hidden'"
   [class.hidden]="(isHidden$ | async) || (areNoGranules$  | async)"
-  class="position">
+  class="bottom-menu-wrapper">
   <div class="toggle-button-position">
     <button (click)="onToggleMenu()"
        class="toggle-button"
@@ -51,7 +51,7 @@
       <mat-card-subtitle class="header">
         Granule Detail
       </mat-card-subtitle>
-      <mat-card-content class="content">
+      <mat-card-content class="content bottom-menu-granule-detail-content">
         <app-granule-detail [dataset]="searchDataset$ | async">
         </app-granule-detail>
       </mat-card-content>

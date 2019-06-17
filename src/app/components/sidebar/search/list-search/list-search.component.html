@@ -31,29 +31,28 @@
           <span *ngIf="mode === types.PRODUCT">Enter a list of product ids.</span>
         </h4>
     </div>
-    <p>For example:</p>
-    <div class="ls-example">
-      <div *ngIf="mode === types.GRANULE">
-        <ul>
-          <li> ALPSRP253527180 </li>
-          <li> E2_15295_STD_F469 </li>
-        </ul>
-      </div>
-      <div *ngIf="mode === types.PRODUCT">
-        <ul>
-          <li> ALPSRP253527180-KMZ </li>
-          <li> E2_15295_STD_F469-L1 </li>
-        </ul>
-      </div>
-    </div>
     <mat-form-field class="ls-card-content-list">
       <textarea matInput
                 (input)="onTextInputChange($event.target.value)"
                 [(ngModel)]="searchList"
                 style="height: 150px;"
-                placeholder="{{ mode === types.GRANULE ? 'Granule' : 'Product' }} List">
+                placeholder="List of {{ mode === types.GRANULE ? 'granule names' : 'product ids.' }}">
       </textarea>
     </mat-form-field>
   </mat-card-content>
+  <div class="ls-example">
+    <div>Example:
+      <span *ngIf="mode === types.GRANULE">
+        S1B_IW_GRDH_1SDV_20161124T032008_20161124T032033_003095_005430_9906;
+        S1-GUNW-D-R-087-tops-20190301_20190223-161540-20645N_18637N-PP-7a85-v2_0_1;
+        ALPSRP111041130
+      </span>
+      <span *ngIf="mode === types.PRODUCT">
+        S1B_IW_GRDH_1SDV_20161124T032008_20161124T032033_003095_005430_9906-GRD_HD;
+        S1-GUNW-D-R-087-tops-20190301_20190223-161540-20645N_18637N-PP-7a85-v2_0_1-unwrappedPhase;
+        ALPSRP111041130-RTC_HI_RES
+      </span>
+    </div>
+  </div>
 
 </mat-card>
