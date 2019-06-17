@@ -1,0 +1,20 @@
+<div *ngIf="selectedSearchType !== null && (isFiltersMenuOpen$ | async)"
+  class="dataset-filters-div">
+  <mat-card class="dataset-filters-card">
+    <div fxLayout="row" fxFlexFill>
+      <div fxFlex="grow">
+      </div>
+      <div fxFlex="nogrow">
+        <mat-icon (click)="closePanel()" class="clickable">
+          close
+        </mat-icon>
+      </div>
+    </div>
+
+    <mat-card-content>
+      <app-search
+        [selectedSearchType]="selectedSearchType"
+        (newSearchType)="onSetSearchType($event)"></app-search>
+    </mat-card-content>
+  </mat-card>
+</div>
