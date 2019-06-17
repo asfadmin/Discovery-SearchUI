@@ -10,6 +10,7 @@ import { AppState } from '../app.reducer';
 import * as uiActions from './ui.action';
 import * as uiReducer from './ui.reducer';
 import * as mapStore from '../map';
+import * as granulesStore from '../granules';
 
 import { MapService } from '../../services/map/map.service';
 import * as models from '@models';
@@ -32,5 +33,10 @@ export class UIEffects {
     ofType<uiActions.SetSearchType>(uiActions.UIActionType.SET_SEARCH_TYPE),
     filter(action => action.payload !== models.SearchType.DATASET),
     map(_ => new uiActions.OpenFiltersMenu())
+  );
+
+  @Effect() clearResultsWhenSearchTypeChanges: Observable<Action> = this.actions$.pipe(
+    ofType<uiActions.SetSearchType>(uiActions.UIActionType.SET_SEARCH_TYPE),
+    map(_ => new granulesStore.ClearGranules())
   );
 }

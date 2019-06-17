@@ -254,7 +254,7 @@ export class UrlStateService {
       loader: this.loadSearchPolygon
     }, {
       name: 'searchList',
-      source: this.store$.select(granulesStore.getSearchList).pipe(
+      source: this.store$.select(filterStore.getSearchList).pipe(
         skip(1),
         map(list => ({ searchList: list.join(',') }))
       ),
@@ -395,7 +395,7 @@ export class UrlStateService {
   private loadSearchList = (listStr: string): void => {
     const list = listStr.split(',');
 
-    this.store$.dispatch(new granulesStore.SetSearchList(list));
+    this.store$.dispatch(new filterStore.SetSearchList(list));
   }
 
   private loadListSearchType = (mode: string): void => {

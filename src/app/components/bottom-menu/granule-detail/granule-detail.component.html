@@ -2,7 +2,10 @@
   <mat-card-header>
     <mat-card-title>
       <span [title]="granule.name">{{ granule.name | truncate : 34 }}</span>
-      <app-copy-to-clipboard class="clipboard-icon" [value]="granule.name"></app-copy-to-clipboard>
+      <app-copy-to-clipboard
+        [value]="granule.name"
+        prompt="Copy granule name"
+        class="clipboard-icon"></app-copy-to-clipboard>
 
     </mat-card-title>
     <mat-card-subtitle>
