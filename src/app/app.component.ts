@@ -5,7 +5,7 @@ import { MatBottomSheet } from '@angular/material/bottom-sheet';
 import { Store } from '@ngrx/store';
 
 import { of } from 'rxjs';
-import { skip, filter, map, switchMap, tap, catchError } from 'rxjs/operators';
+import { skip, filter, map, mergeMap, tap, catchError } from 'rxjs/operators';
 
 import { AppState } from '@store';
 import * as granulesStore from '@store/granules';
@@ -74,7 +74,7 @@ export class AppComponent implements OnInit {
 
     this.searchParams$.getParams().pipe(
       map(params => ({...params, ...{output: 'COUNT'}})),
-      switchMap(params => this.asfSearchApi.query<any[]>(params).pipe(
+      mergeMap(params => this.asfSearchApi.query<any[]>(params).pipe(
           catchError(_ => of(-1))
         )
       )
