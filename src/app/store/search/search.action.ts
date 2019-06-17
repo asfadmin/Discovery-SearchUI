@@ -13,6 +13,7 @@ export enum SearchActionType {
   DISABLE_SEARCH = '[Search] Disable Search',
 
   SET_SEARCH_AMOUNT = '[Search] Set Search Results Amount',
+  SEARCH_AMOUNT_LOADING = '[Search] Search Amount Is Loading'
 }
 
 export class MakeSearch implements Action {
@@ -33,6 +34,10 @@ export class EnableSearch implements Action {
 
 export class DisableSearch implements Action {
   public readonly type = SearchActionType.DISABLE_SEARCH;
+}
+
+export class SearchAmountLoading implements Action {
+  public readonly type = SearchActionType.SEARCH_AMOUNT_LOADING;
 }
 
 export class SetSearchAmount implements Action {
@@ -59,5 +64,6 @@ export type SearchActions =
   | CancelSearch
   | EnableSearch
   | DisableSearch
+  | SearchAmountLoading
   | SearchError
   | SearchResponse;

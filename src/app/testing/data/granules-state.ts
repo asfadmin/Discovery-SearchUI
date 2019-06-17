@@ -12,6 +12,5 @@ export const granuleState: {granules: GranulesState} = {
     },
     selected: null,
     focused: null,
-    searchList: []
   }
 };

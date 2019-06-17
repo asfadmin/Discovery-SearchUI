@@ -12,8 +12,6 @@ export enum GranulesActionType {
   SET_SELECTED_GRANULE = '[Granules] Set Selected Granule',
   SELECT_NEXT_GRANULE = '[Granules] Select Next Granule',
   SELECT_PREVIOUS_GRANULE = '[Granules] Select Previous Granule',
-
-  SET_SEARCH_LIST = '[Granules] Set Search List',
 }
 
 export class SetGranules implements Action {
@@ -41,12 +39,6 @@ export class SelectPreviousGranule implements Action {
 }
 
 
-export class SetSearchList implements Action {
-  public readonly type = GranulesActionType.SET_SEARCH_LIST;
-
-  constructor(public payload: string[]) {}
-}
-
 export class SetFocusedGranule implements Action {
   public readonly type = GranulesActionType.SET_FOCUSED_GRANULE;
 
@@ -63,6 +55,5 @@ export type GranulesActions =
   | SetSelectedGranule
   | SelectNextGranule
   | SelectPreviousGranule
-  | SetSearchList
   | SetFocusedGranule
   | ClearFocusedGranule;

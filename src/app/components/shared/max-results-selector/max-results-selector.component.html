@@ -3,7 +3,15 @@
     class="clickable">
       {{ formatNumber(maxResults - 1) }} <mat-icon>arrow_drop_down</mat-icon>
   </span>
-    of {{ currentSearchAmount !== -1 ? formatNumber(currentSearchAmount) : '0' }}
+    of
+
+    <span *ngIf="!isMaxResultsLoading">
+      {{ currentSearchAmount !== -1 ? formatNumber(currentSearchAmount) : '0' }}
+    </span>
+    <span *ngIf="isMaxResultsLoading"
+      style="margin: 0 4px">
+      <fa-icon icon="spinner" [pulse]="true"></fa-icon>
+    </span>
     products
 </span>
 

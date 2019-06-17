@@ -14,8 +14,6 @@ export interface GranulesState {
 
   selected: string | null;
   focused: string | null;
-
-  searchList: string[];
 }
 
 export const initState: GranulesState = {
@@ -25,8 +23,6 @@ export const initState: GranulesState = {
 
   selected: null,
   focused: null,
-
-  searchList: [],
 };
 
 
@@ -132,13 +128,6 @@ export function granulesReducer(state = initState, action: GranulesActions): Gra
       };
     }
 
-    case GranulesActionType.SET_SEARCH_LIST: {
-      return {
-        ...state,
-        searchList: action.payload
-      };
-    }
-
     case GranulesActionType.SET_FOCUSED_GRANULE: {
       return {
         ...state,
@@ -240,11 +229,6 @@ export const getGranuleProducts = createSelector(
 export const getSelectedGranule = createSelector(
   getGranulesState,
   (state: GranulesState) => state.products[state.selected] || null
-);
-
-export const getSearchList = createSelector(
-  getGranulesState,
-  (state: GranulesState) => state.searchList
 );
 
 export const getFocusedGranule = createSelector(

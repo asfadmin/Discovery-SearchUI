@@ -15,6 +15,7 @@ export interface FiltersState {
   shouldOmitSearchPolygon: boolean;
 
   listSearchMode: models.ListSearchType;
+  searchList: string[];
 
   productTypes: models.DatasetProductTypes;
   beamModes: models.DatasetBeamModes;
@@ -28,7 +29,7 @@ export type DateRangeState = models.Range<null | Date>;
 
 export interface DatasetsState {
   entities: {[id: string]: models.Dataset };
-  selected: Set<string>;
+  selected: string;
 }
 
 export const initState: FiltersState = {
@@ -41,7 +42,7 @@ export const initState: FiltersState = {
       },
       {}
     ),
-    selected: new Set<string>(['SENTINEL-1'])
+    selected: 'SENTINEL-1'
   },
   dateRange: {
     start: null,
@@ -61,10 +62,11 @@ export const initState: FiltersState = {
   },
   shouldOmitSearchPolygon: false,
   listSearchMode: models.ListSearchType.GRANULE,
+  searchList: [],
 
-  productTypes: {},
-  beamModes: {},
-  polarizations: {},
+  productTypes: [],
+  beamModes: [],
+  polarizations: [],
   flightDirections: new Set<models.FlightDirection>([]),
   maxResults: 101,
 };
@@ -72,8 +74,8 @@ export const initState: FiltersState = {
 
 export function filtersReducer(state = initState, action: FiltersActions): FiltersState {
   switch (action.type) {
-    case FiltersActionType.ADD_SELECTED_PLATFORM: {
-      const selected = new Set<string>([action.payload.toUpperCase()]);
+    case FiltersActionType.SET_SELECTED_DATASET: {
+      const selected = action.payload.toUpperCase();
 
       return {
         ...state,
@@ -81,44 +83,9 @@ export function filtersReducer(state = initState, action: FiltersActions): Filte
           ...state.datasets,
           selected
         },
-        productTypes: {
-        },
-        beamModes: {
-        },
-        polarizations: {
-        }
-      };
-    }
-
-    case FiltersActionType.REMOVE_SELECTED_PLATFORM: {
-      const selected = new Set<string>([]);
-
-      return {
-        ...state,
-        datasets: {
-          ...state.datasets,
-          selected
-        },
-        productTypes: {},
-        beamModes: {},
-        polarizations: {}
-      };
-    }
-
-    case FiltersActionType.SET_SELECTED_PLATFORMS: {
-      const selected = new Set(
-        action.payload.map(dataset => dataset.toUpperCase())
-      );
-
-      return {
-        ...state,
-        datasets: {
-          ...state.datasets,
-          selected
-        },
-        productTypes: {},
-        beamModes: {},
-        polarizations: {}
+        productTypes: [],
+        beamModes: [],
+        polarizations: []
       };
     }
 
@@ -222,7 +189,7 @@ export function filtersReducer(state = initState, action: FiltersActions): Filte
       };
     }
 
-    case FiltersActionType.CLEAR_FILTERS: {
+    case FiltersActionType.CLEAR_DATASET_FILTERS: {
       return {
         ...state,
         dateRange: {
@@ -242,12 +209,18 @@ export function filtersReducer(state = initState, action: FiltersActions): Filte
           end: null
         },
         shouldOmitSearchPolygon: false,
-        listSearchMode: models.ListSearchType.GRANULE,
 
-        productTypes: {},
-        beamModes: {},
-        polarizations: {},
+        productTypes: [],
+        beamModes: [],
+        polarizations: [],
         flightDirections: new Set<models.FlightDirection>([]),
+      };
+    }
+
+    case FiltersActionType.CLEAR_LIST_FILTERS: {
+      return {
+        ...state,
+        searchList: []
       };
     }
 
@@ -266,85 +239,42 @@ export function filtersReducer(state = initState, action: FiltersActions): Filte
       };
     }
 
-    case FiltersActionType.SET_PLATFORM_PRODUCT_TYPES: {
+    case FiltersActionType.SET_PRODUCT_TYPES: {
       return {
         ...state,
-        productTypes: { ...state.productTypes, ...action.payload }
-      };
-    }
-
-    case FiltersActionType.SET_ALL_PRODUCT_TYPES: {
-      return {
-        ...state,
-        productTypes: action.payload
+        productTypes: [ ...action.payload ]
       };
     }
 
     case FiltersActionType.ADD_BEAM_MODE: {
-      const dataset = Array.from(state.datasets.selected).pop();
-
-      const selectedBeamModes = [
-        ...(state.beamModes[dataset] || [])
-      ];
-
-      const newModes = Array.from(
-        new Set([...selectedBeamModes, action.payload])
-      );
-
       return {
         ...state,
-        beamModes: {
-          ...state.beamModes,
-          ...{ [dataset]: newModes }
-        }
+        beamModes: [ ...state.beamModes, action.payload ]
       };
     }
 
-    case FiltersActionType.SET_PLATFORM_BEAM_MODES: {
+    case FiltersActionType.SET_BEAM_MODES: {
       return {
         ...state,
-        beamModes: { ...state.beamModes, ...action.payload }
-      };
-    }
-
-    case FiltersActionType.SET_ALL_BEAM_MODES: {
-      return {
-        ...state,
-        beamModes: { ...action.payload }
+        beamModes: [ ...action.payload ]
       };
     }
 
     case FiltersActionType.ADD_POLARIZATION: {
-      const dataset = Array.from(state.datasets.selected).pop();
-
-      const selectedPols = [
-        ...(state.polarizations[dataset] || [])
-      ];
-
       const newPols = Array.from(
-        new Set([...selectedPols, action.payload])
+        new Set([...state.polarizations, action.payload])
       );
 
       return {
         ...state,
-        polarizations: {
-          ...state.polarizations,
-          ...{ [dataset]: newPols }
-        }
+        polarizations: [ ...newPols ]
       };
     }
 
-    case FiltersActionType.SET_PLATFORM_POLARIZATIONS: {
+    case FiltersActionType.SET_POLARIZATIONS: {
       return {
         ...state,
-        polarizations: { ...state.polarizations, ...action.payload }
-      };
-    }
-
-    case FiltersActionType.SET_ALL_POLARIZATIONS: {
-      return {
-        ...state,
-        polarizations: { ...action.payload }
+        polarizations: [ ...action.payload ]
       };
     }
 
@@ -369,6 +299,13 @@ export function filtersReducer(state = initState, action: FiltersActions): Filte
       };
     }
 
+    case FiltersActionType.SET_SEARCH_LIST: {
+      return {
+        ...state,
+        searchList: action.payload
+      };
+    }
+
     default: {
       return state;
     }
@@ -377,7 +314,7 @@ export function filtersReducer(state = initState, action: FiltersActions): Filte
 
 export const getFiltersState = createFeatureSelector<FiltersState>('filters');
 
-export const getDatasets = createSelector(
+export const getDatasetsState = createSelector(
   getFiltersState,
   (state: FiltersState) => state.datasets
 );
@@ -413,27 +350,19 @@ export const getSeasonEnd = createSelector(
 );
 
 export const getDatasetsList = createSelector(
-  getDatasets,
+  getDatasetsState ,
   (state: DatasetsState) => Object.values(state.entities)
 );
 
 
-export const getSelectedDatasetNames = createSelector(
-  getDatasets,
-  (state: DatasetsState) => state.selected
-);
-
 export const getSelectedDatasetName = createSelector(
-  getDatasets,
-  ({ selected }) => selected.size === 1 ? selected.values().next().value : null
+  getDatasetsState ,
+  ({ selected }) => selected
 );
 
-export const getSelectedDatasets = createSelector(
-  getDatasets,
-  (state: DatasetsState) => Array.from(state.selected).reduce(
-    (selected: models.Dataset[], name: string) => [...selected, state.entities[name]],
-    []
-  )
+export const getSelectedDataset = createSelector(
+  getDatasetsState ,
+  (state: DatasetsState) => state.entities[state.selected]
 );
 
 export const getPathRange = createSelector(
@@ -486,88 +415,8 @@ export const getMaxSearchResults = createSelector(
   (state: FiltersState) => state.maxResults
 );
 
-export const getIsAnyDateValues = createSelector(
+
+export const getSearchList = createSelector(
   getFiltersState,
-  ({ dateRange, season }) => !!(dateRange.start || dateRange.end || season.start || season.end)
+  (state: FiltersState) => state.searchList
 );
-
-export const getIsAnyPathFrameValue = createSelector(
-  getFiltersState,
-  ({ pathRange, frameRange }) =>
-    !!(pathRange.start || pathRange.end || frameRange.start || frameRange.end)
-);
-
-export const getIsAnyAdditionalFilters = createSelector(
-  getFiltersState,
-  ({ productTypes, beamModes, polarizations, flightDirections, datasets }) => {
-
-    const dataset = datasets.selected.values().next().value;
-
-    const isAnyFlightDirection = Array.from(flightDirections).length > 0;
-
-    const isAdditionalListFilters = [productTypes, beamModes, polarizations]
-      .map(vals => vals[dataset] || [])
-      .map(vals => vals.length > 0)
-      .some(c => !!c);
-
-    return isAnyFlightDirection || isAdditionalListFilters ;
-  }
-);
-
-export const getNumberOfAdditionalFilters = createSelector(
-  getFiltersState,
-  ({ productTypes, beamModes, polarizations, flightDirections, datasets }) => {
-    const dataset = datasets.selected.values().next().value;
-
-    const flightDirAmount = Array.from(flightDirections).length;
-
-    const listFiltersAmts = [productTypes, beamModes, polarizations]
-      .map(vals => vals[dataset] || [])
-      .map(vals => vals.length)
-      .reduce((x, y) => x + y);
-
-    return listFiltersAmts + flightDirAmount;
-  }
-);
-
-export const getDatePreviewStr = createSelector(
-  getFiltersState,
-  ({ dateRange, season }) => {
-      const format = date => {
-        if (!date) {
-          return date;
-        }
-
-        const [month, day, year] = [
-          date.getUTCMonth() + 1,
-          date.getUTCDate(),
-          date.getUTCFullYear(),
-        ];
-
-        return `${month}-${day}-${year}`;
-      };
-
-      const [startStr, endStr] = [dateRange.start, dateRange.end]
-        .map(format);
-
-      const seasonStr = (season.start || season.end) ? 'seasonal' : '';
-
-      let dateStr = '';
-      if (startStr && endStr) {
-        dateStr = `${startStr} to ${endStr}`;
-      } else if (startStr) {
-        dateStr = `after ${startStr}`;
-      } else if (endStr) {
-        dateStr = `before ${endStr}`;
-      }
-
-      if (dateStr && seasonStr) {
-        return `${dateStr} · ${seasonStr}`;
-      } else if (dateStr) {
-        return dateStr;
-      } else {
-        return seasonStr;
-      }
-    }
-);
-
