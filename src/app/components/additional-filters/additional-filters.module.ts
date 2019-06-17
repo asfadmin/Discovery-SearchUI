@@ -5,7 +5,7 @@ import { RouterModule } from '@angular/router';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatSharedModule } from '@shared';
 
-import { SidebarComponent } from './sidebar.component';
+import { AdditionalFiltersComponent } from './additional-filters.component';
 
 import { SearchSelectorModule } from '@components/shared/selectors/search-selector';
 import { SearchModule } from './search';
@@ -26,10 +26,10 @@ import { FlexLayoutModule } from '@angular/flex-layout';
     SearchSelectorModule,
   ],
   declarations: [
-    SidebarComponent,
+    AdditionalFiltersComponent,
   ],
   exports: [
-    SidebarComponent
+    AdditionalFiltersComponent
   ]
 })
-export class SidebarModule { }
+export class AdditionalFiltersModule { }

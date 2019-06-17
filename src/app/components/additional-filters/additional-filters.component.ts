@@ -13,9 +13,9 @@ import * as searchStore from '@store/search';
 import * as models from '@models';
 
 @Component({
-  selector: 'app-sidebar',
-  templateUrl: './sidebar.component.html',
-  styleUrls: ['./sidebar.component.scss'],
+  selector: 'app-additional-filters',
+  templateUrl: './additional-filters.component.html',
+  styleUrls: ['./additional-filters.component.scss'],
   animations: [
     trigger('changeMenuState', [
       state('shown', style({ transform: 'translateX(100%)'
@@ -27,7 +27,7 @@ import * as models from '@models';
     ])
   ],
 })
-export class SidebarComponent implements OnInit {
+export class AdditionalFiltersComponent implements OnInit {
   @Output() newSearch = new EventEmitter<void>();
   @Output() clearSearch = new EventEmitter<void>();
 

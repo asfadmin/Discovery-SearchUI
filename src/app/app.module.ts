@@ -15,9 +15,11 @@ import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import * as store from './store';
 
 import { NavBarModule } from '@components/nav-bar';
-import { SidebarModule } from '@components/sidebar';
+import { AdditionalFiltersModule } from '@components/additional-filters';
 import { MapModule } from '@components/map';
 import { BottomMenuModule } from '@components/bottom-menu';
+import { MatSharedModule } from '@shared';
+import { LogoModule } from '@components/nav-bar/logo/logo.module';
 
 import * as services from '@services';
 
@@ -40,14 +42,16 @@ export const routes = [
     MatSnackBarModule,
     MatBottomSheetModule,
     MatSidenavModule,
+    MatSharedModule,
 
     RouterModule.forRoot(routes, { useHash: true }),
     StoreModule.forRoot(store.reducers, { metaReducers: store.metaReducers }),
     EffectsModule.forRoot(store.appEffects),
     !environment.production ? StoreDevtoolsModule.instrument() : [],
 
+    LogoModule,
     SearchSelectorModule,
-    SidebarModule,
+    AdditionalFiltersModule,
     MapModule,
     BottomMenuModule,
     NavBarModule,

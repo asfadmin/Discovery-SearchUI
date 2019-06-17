@@ -109,10 +109,6 @@ export class AppComponent implements OnInit {
     ).subscribe(_ => _);
   }
 
-  public close() {
-    this.sidenav.close();
-  }
-
   private loadProductQueue(): void {
     const queueItemsStr = localStorage.getItem(this.queueStateKey);
 
@@ -154,5 +150,9 @@ export class AppComponent implements OnInit {
 
   public onSetSearchType(searchType: models.SearchType): void {
     this.store$.dispatch(new uiStore.SetSearchType(searchType));
+  }
+
+  public onCloseSidebar(): void {
+    this.store$.dispatch(new uiStore.CloseSidebar());
   }
 }
