@@ -34,12 +34,11 @@ export class DateSelectorComponent implements OnInit {
 
   ngOnInit() {
     this.actions$.pipe(
-      filter(action => action.type === filtersStore.FiltersActionType.CLEAR_FILTERS)
+      filter(action => action.type === filtersStore.FiltersActionType.CLEAR_DATASET_FILTERS)
     ).subscribe(_ => this.dateForm.reset());
 
     this.dateExtremaService.getExtrema$(
-      this.store$.select(filtersStore.getDatasetsList),
-      this.store$.select(filtersStore.getSelectedDatasets),
+      this.store$.select(filtersStore.getSelectedDataset),
       this.startDate$,
       this.endDate$,
     ).subscribe(

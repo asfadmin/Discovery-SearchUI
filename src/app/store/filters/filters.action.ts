@@ -3,9 +3,7 @@ import { Action } from '@ngrx/store';
 import * as models from '@models';
 
 export enum FiltersActionType {
-  ADD_SELECTED_PLATFORM = '[Filters-Dataset] Add Dataset Filter',
-  REMOVE_SELECTED_PLATFORM = '[Filters-Dataset] Remove Dataset Filter',
-  SET_SELECTED_PLATFORMS = '[Filters-Dataset] Set Selected Datasets',
+  SET_SELECTED_DATASET = '[Filters-Dataset] Set Selected Dataset',
 
   SET_START_DATE = '[Filters-Date] Set Start Date',
   SET_END_DATE = '[Filters-Date] Set End Date',
@@ -20,16 +18,13 @@ export enum FiltersActionType {
   SET_FRAME_START = '[FIlters-Frame] Set Frame Start',
   SET_FRAME_END = '[Filters-Frame] Set Frame End',
 
-  SET_PLATFORM_PRODUCT_TYPES = '[Filters-Prodcut-Type] Set PLATFORM Product Types',
-  SET_ALL_PRODUCT_TYPES = '[Filters-Prodcut-Type] Set All Product Types',
+  SET_PRODUCT_TYPES = '[Filters-Prodcut-Type] Set DATASET Product Types',
 
   ADD_BEAM_MODE = '[Filters-Beam-Mode] Add Beam Mode',
-  SET_PLATFORM_BEAM_MODES = '[Filters-Beam-Mode] Set Dataset Beam Modes',
-  SET_ALL_BEAM_MODES= '[Filters-Beam-Mode] Set All Beam Modes',
+  SET_BEAM_MODES = '[Filters-Beam-Mode] Set Dataset Beam Modes',
 
   ADD_POLARIZATION = '[Filters-Beam-Mode] Add Polarization',
-  SET_PLATFORM_POLARIZATIONS = '[Filters-Polarization] Set Dataset Polarizations',
-  SET_ALL_POLARIZATIONS = '[Filters-Polarization] Set All Polarizations',
+  SET_POLARIZATIONS = '[Filters-Polarization] Set Dataset Polarizations',
 
   ADD_FLIGHT_DIRECTION = '[Filters-Flight-Dir] Add Flight Direction',
   SET_FLIGHT_DIRECTIONS = '[Filters-Flight-Dir] Set Flight Directions',
@@ -37,28 +32,19 @@ export enum FiltersActionType {
   OMIT_SEARCH_POLYGON = '[Filters-Search] Omit Search Polygon',
   USE_SEARCH_POLYGON = '[Filters-Search] Use Search Polygon',
 
-  CLEAR_FILTERS = '[Filters-Clear] Clear Filters',
+  CLEAR_DATASET_FILTERS = '[Filters-Clear] Clear Dataset Filters',
+  CLEAR_LIST_FILTERS = '[Filters-Clear] Clear List Filters',
 
   SET_LIST_SEARCH_TYPE = '[Filters-List] Set List Search Type',
+  SET_SEARCH_LIST = '[Filters-List] Set Search List',
+
   SET_MAX_RESULTS = '[Filters] Set Max Results',
 }
 
-export class AddSelectedDataset implements Action {
-  public readonly type = FiltersActionType.ADD_SELECTED_PLATFORM;
+export class SetSelectedDataset implements Action {
+  public readonly type = FiltersActionType.SET_SELECTED_DATASET;
 
   constructor(public payload: string) {}
-}
-
-export class RemoveSelectedDataset implements Action {
-  public readonly type = FiltersActionType.REMOVE_SELECTED_PLATFORM;
-
-  constructor(public payload: string) {}
-}
-
-export class SetSelectedDatasets implements Action {
-  public readonly type = FiltersActionType.SET_SELECTED_PLATFORMS;
-
-  constructor(public payload: string[]) {}
 }
 
 export class SetStartDate implements Action {
@@ -125,14 +111,8 @@ export class SetFrameEnd implements Action {
   constructor(public payload: number) {}
 }
 
-export class SetDatasetProductTypes implements Action {
-  public readonly type = FiltersActionType.SET_PLATFORM_PRODUCT_TYPES;
-
-  constructor(public payload: models.DatasetProductTypes) {}
-}
-
-export class SetAllProductTypes implements Action {
-  public readonly type = FiltersActionType.SET_ALL_PRODUCT_TYPES;
+export class SetProductTypes implements Action {
+  public readonly type = FiltersActionType.SET_PRODUCT_TYPES;
 
   constructor(public payload: models.DatasetProductTypes) {}
 }
@@ -143,8 +123,12 @@ export class SetListSearchType implements Action {
   constructor(public payload: models.ListSearchType) {}
 }
 
-export class ClearFilters implements Action {
-  public readonly type = FiltersActionType.CLEAR_FILTERS;
+export class ClearDatasetFilters implements Action {
+  public readonly type = FiltersActionType.CLEAR_DATASET_FILTERS;
+}
+
+export class ClearListFilters implements Action {
+  public readonly type = FiltersActionType.CLEAR_LIST_FILTERS;
 }
 
 export class AddFlightDirection implements Action {
@@ -165,14 +149,8 @@ export class AddBeamMode implements Action {
   constructor(public payload: string) {}
 }
 
-export class SetDatasetBeamModes implements Action {
-  public readonly type = FiltersActionType.SET_PLATFORM_BEAM_MODES;
-
-  constructor(public payload: models.DatasetBeamModes) {}
-}
-
-export class SetAllBeamModes implements Action {
-  public readonly type = FiltersActionType.SET_ALL_BEAM_MODES;
+export class SetBeamModes implements Action {
+  public readonly type = FiltersActionType.SET_BEAM_MODES;
 
   constructor(public payload: models.DatasetBeamModes) {}
 }
@@ -183,16 +161,16 @@ export class AddPolarization implements Action {
   constructor(public payload: string) {}
 }
 
-export class SetDatasetPolarizations implements Action {
-  public readonly type = FiltersActionType.SET_PLATFORM_POLARIZATIONS;
+export class SetPolarizations implements Action {
+  public readonly type = FiltersActionType.SET_POLARIZATIONS;
 
   constructor(public payload: models.DatasetPolarizations) {}
 }
 
-export class SetAllPolarizations implements Action {
-  public readonly type = FiltersActionType.SET_ALL_POLARIZATIONS;
+export class SetSearchList implements Action {
+  public readonly type = FiltersActionType.SET_SEARCH_LIST;
 
-  constructor(public payload: models.DatasetPolarizations) {}
+  constructor(public payload: string[]) {}
 }
 
 export class SetMaxResults implements Action {
@@ -202,9 +180,7 @@ export class SetMaxResults implements Action {
 }
 
 export type FiltersActions =
-  | AddSelectedDataset
-  | RemoveSelectedDataset
-  | SetSelectedDatasets
+  | SetSelectedDataset
   | SetStartDate
   | SetEndDate
   | SetSeasonStart
@@ -217,16 +193,15 @@ export type FiltersActions =
   | SetPathEnd
   | SetFrameStart
   | SetFrameEnd
-  | SetDatasetProductTypes
-  | SetAllProductTypes
+  | SetProductTypes
   | SetListSearchType
+  | SetSearchList
   | SetFlightDirections
   | AddFlightDirection
   | AddBeamMode
-  | SetDatasetBeamModes
-  | SetAllBeamModes
+  | SetBeamModes
   | AddPolarization
-  | SetDatasetPolarizations
-  | SetAllPolarizations
-  | ClearFilters
+  | SetPolarizations
+  | ClearDatasetFilters
+  | ClearListFilters
   | SetMaxResults;

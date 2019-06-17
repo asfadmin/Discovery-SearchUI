@@ -16,11 +16,16 @@
             class="size" matListAvatar>
 
           <div class="product-name" matLine>
-            {{ granule.name | truncate : 34 }}
+            {{ granule.name | truncate : 30 }}
+            <app-copy-to-clipboard
+               *ngIf="granule.name === hoveredGranuleName"
+               prompt="Copy granule name"
+               [value]="granule.name"
+              ></app-copy-to-clipboard>
           </div>
 
           <div matLine>
-            <span *ngIf="prop.isRelevant(p.DATE)">Date • {{ granule.metadata.date | shortDate }}</span>
+            <span>Date • {{ granule.metadata.date | shortDate }}</span>
           </div>
 
           <mat-icon (click)="onZoomTo(granule)" class="ml-2" matTooltip="Zoom to granule">

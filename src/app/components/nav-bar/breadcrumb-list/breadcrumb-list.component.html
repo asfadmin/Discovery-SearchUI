@@ -128,6 +128,7 @@
       <div fxFlex="300px" class="max-results">
           <app-max-results-selector
             [maxResults]="maxResults$ | async"
+            [isMaxResultsLoading]="isMaxResultsLoading$ | async"
             [currentSearchAmount]="currentSearchAmount$ | async"
             (newMaxResults)="onNewMaxResults($event)"
           ></app-max-results-selector>

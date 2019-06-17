@@ -55,8 +55,8 @@ export class BreadcrumbListComponent implements OnInit {
   public loading$ = this.store$.select(searchStore.getIsLoading);
 
   public maxResults$ = this.store$.select(filtersStore.getMaxSearchResults);
+  public isMaxResultsLoading$ = this.store$.select(searchStore.getIsMaxResultsLoading);
   public currentSearchAmount$ = this.store$.select(searchStore.getSearchAmount);
-
 
   constructor(
     private store$: Store<AppState>,
@@ -73,7 +73,7 @@ export class BreadcrumbListComponent implements OnInit {
     );
 
     this.actions$.pipe(
-      filter(action => action.type === filtersStore.FiltersActionType.CLEAR_FILTERS),
+      filter(action => action.type === filtersStore.FiltersActionType.CLEAR_DATASET_FILTERS),
       filter(_ => !!this.polygonForm),
     ).subscribe(_ => this.polygonForm.reset());
 
@@ -101,7 +101,6 @@ export class BreadcrumbListComponent implements OnInit {
   }
 
   public onClearSearch(): void {
-    this.clearSelectedBreadcrumb();
     this.clearSearch.emit();
   }
 

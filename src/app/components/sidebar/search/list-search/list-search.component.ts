@@ -25,7 +25,7 @@ export class ListSearchComponent implements OnInit {
   constructor(private store$: Store<AppState>) {}
 
   ngOnInit() {
-    this.store$.select(granulesStore.getSearchList).pipe(
+    this.store$.select(filtersStore.getSearchList).pipe(
       map(list => list.join('\n'))
     ).subscribe(
       listStr => this.searchList = listStr
@@ -47,7 +47,7 @@ export class ListSearchComponent implements OnInit {
 
     const unique = Array.from(new Set(granules));
 
-    this.store$.dispatch(new granulesStore.SetSearchList(unique));
+    this.store$.dispatch(new filtersStore.SetSearchList(unique));
   }
 
   public onNewListSearchMode(mode: models.ListSearchType): void {

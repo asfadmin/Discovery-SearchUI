@@ -34,13 +34,12 @@ export class GranulesListComponent implements OnInit {
 
   public searchType: models.SearchType;
   public selectedFromList = false;
-  public p = models.Props;
+  public hoveredGranuleName: string | null = null;
 
   constructor(
     private store$: Store<AppState>,
     private mapService: services.MapService,
     private wktService: services.WktService,
-    public prop: services.PropertyService,
   ) {}
 
   ngOnInit() {
@@ -111,15 +110,15 @@ export class GranulesListComponent implements OnInit {
 
   public onQueueGranule(e: Event, groupId: string): void {
     this.store$.dispatch(new queueStore.QueueGranule(groupId));
-
-    e.stopPropagation();
   }
 
   public onSetFocusedGranule(granule: models.CMRProduct): void {
+    this.hoveredGranuleName = granule.name;
     this.store$.dispatch(new granulesStore.SetFocusedGranule(granule));
   }
 
   public onClearFocusedGranule(): void {
+    this.hoveredGranuleName = null;
     this.store$.dispatch(new granulesStore.ClearFocusedGranule());
   }
 
