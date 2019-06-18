@@ -10,7 +10,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatSelectModule } from '@angular/material/select';
 
-import { PlatformSelectorModule } from '@components/shared/selectors/platform-selector';
+import { DatasetSelectorModule } from '@components/shared/selectors/dataset-selector';
 import { DateSelectorModule } from '@components/shared/selectors/date-selector';
 import { AoiUploadModule } from '@components/shared/selectors/aoi-upload';
 import { MaxResultsSelectorModule } from '@components/shared/max-results-selector';
@@ -19,8 +19,7 @@ import { QueueModule, QueueComponent } from '@components/nav-bar/queue';
 import { SearchSelectorModule } from '@components/shared/selectors/search-selector';
 import { BreadcrumbListComponent } from './breadcrumb-list.component';
 import { NavButtonsModule } from '@components/nav-bar/nav-buttons';
-import { InfoBarModule } from '@components/sidebar/info-bar/info-bar.module';
-import { LogoModule } from '@components/sidebar/logo/logo.module';
+import { LogoModule } from '@components/nav-bar/logo/logo.module';
 
 @NgModule({
   declarations: [BreadcrumbListComponent],
@@ -37,12 +36,11 @@ import { LogoModule } from '@components/sidebar/logo/logo.module';
     QueueModule,
 
     SearchSelectorModule,
-    PlatformSelectorModule,
+    DatasetSelectorModule,
     DateSelectorModule,
     AoiUploadModule,
     MaxResultsSelectorModule,
     NavButtonsModule,
-    InfoBarModule,
     LogoModule,
   ],
   entryComponents: [

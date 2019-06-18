@@ -12,7 +12,7 @@ import * as models from '@models';
 @Component({
   selector: 'app-search',
   templateUrl: './search.component.html',
-  styleUrls: ['./search.component.css']
+  styleUrls: ['./search.component.scss']
 })
 export class SearchComponent {
   @Input() selectedSearchType: models.SearchType;
@@ -20,12 +20,10 @@ export class SearchComponent {
 
   public searchTypes = models.SearchType;
 
-  public platform$ = this.store$.select(filtersStore.getSelectedPlatforms).pipe(
-    map(ps => ps.slice().pop())
-  );
-  public missionsByPlatform$ = this.store$.select(missionStore.getMissionsByPlatform);
+  public dataset$ = this.store$.select(filtersStore.getSelectedDataset);
+  public missionsByDataset$ = this.store$.select(missionStore.getMissionsByDataset);
   public selectedMission$ = this.store$.select(missionStore.getSelectedMission);
-  public missionPlatforms$ = this.missionsByPlatform$.pipe(
+  public missionDatasets$ = this.missionsByDataset$.pipe(
     map(missions => Object.keys(missions))
   );
 

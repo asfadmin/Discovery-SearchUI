@@ -1,0 +1,86 @@
+@import "asf-theme";
+@import "variables";
+
+%card-base {
+  background-color: $asf-primary;
+  color: white;
+  border-radius: 0;
+}
+
+.bounds {
+  display: block;
+  width: 350px;
+}
+
+.content {
+  @extend %card-base;
+
+  box-shadow: none;
+}
+
+.sec1 {
+  margin-right: 20px;
+}
+
+.example-header-image {
+  background-image: url('/assets/meatball.jpg');
+  background-size: cover;
+}
+
+.logo-card {
+  background-color: $asf-primary;
+  padding: 8px !important;
+
+  .header {
+    font-size: 38px;
+    line-height: 39px;
+    font-weight: 400;
+    letter-spacing: 0.02em;
+    color: $asf-warn;
+  }
+
+  .subhead {
+    font-size: 18px;
+    line-height: 18px;
+    font-weight: 400;
+    letter-spacing: 0.1em;
+    color: lightgray;
+    margin-bottom: 10px;
+  }
+
+  p {
+    margin-top: -10px;
+    font-size: 12px;
+    color: lightgray;
+    font-style: italic;
+    letter-spacing: 0.02em;
+  }
+
+  a {
+    color: $asf-warn;
+  }
+}
+
+$icon-size: 42px;
+
+.menu-toggle-button {
+  background-color: $asf-primary;
+  color: white;
+  box-shadow: none !important;
+  cursor: pointer;
+  border: none;
+  text-align: center;
+  vertical-align: center;
+  border-right-color: transparent;
+  border-right-style: solid;
+  border-right-width: 1px;
+}
+
+.toggle-icon {
+  @include md-icon-size($icon-size);
+}
+
+.toggle-text {
+  line-height: 0;
+  width: 100%;
+}

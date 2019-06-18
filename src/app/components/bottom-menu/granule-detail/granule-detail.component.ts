@@ -1,15 +1,16 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
-
+import { Component, OnInit, Input } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 
 import { Store } from '@ngrx/store';
 
 import { AppState } from '@store';
+import * as granulesStore from '@store/granules';
 import * as filtersStore from '@store/filters';
 import * as searchStore from '@store/search';
+import * as uiStore from '@store/ui';
 
 import * as models from '@models';
-import { DatapoolAuthService, MapService, WktService, PropertyService } from '@services';
+import { DatapoolAuthService, PropertyService } from '@services';
 import { ImageDialogComponent } from './image-dialog';
 
 @Component({
@@ -17,27 +18,35 @@ import { ImageDialogComponent } from './image-dialog';
   templateUrl: './granule-detail.component.html',
   styleUrls: ['./granule-detail.component.scss']
 })
-export class GranuleDetailComponent {
-  @Input() granule: models.CMRProduct;
-  @Input() platform: models.Platform;
-  @Input() searchType: models.SearchType;
+export class GranuleDetailComponent implements OnInit {
+  @Input() dataset: models.Dataset;
 
-  public searchTypes = models.SearchType;
+  public searchType: models.SearchType;
+  public granule: models.CMRProduct;
+
   public p = models.Props;
 
   constructor(
+    private store$: Store<AppState>,
     public dialog: MatDialog,
     public authService: DatapoolAuthService,
     public prop: PropertyService,
-    private store$: Store<AppState>,
   ) {}
+
+  ngOnInit() {
+    this.store$.select(granulesStore.getSelectedGranule).subscribe(
+      granule => this.granule = granule
+    );
+
+   this.store$.select(uiStore.getSearchType).subscribe(
+     searchType => this.searchType = searchType
+   );
+  }
 
   public onOpenImage(granule: models.CMRProduct): void {
     this.dialog.open(ImageDialogComponent, {
-      height: '1200px',
-      width: '1200px',
-      maxWidth: '90%',
-      maxHeight: '90%',
+      width: '1200px', height: '1200px',
+      maxWidth: '90%', maxHeight: '90%',
       panelClass: 'image-dialog'
     });
   }
@@ -50,58 +59,39 @@ export class GranuleDetailComponent {
     return v !== null && v !== undefined;
   }
 
-  public isSentinelGranule(): boolean {
-    return this.platform.name === 'SENTINEL-1';
-  }
-
-  public shouldHideWith(platformNames: string[]): boolean {
-    return platformNames.includes(this.platform.name);
-  }
-
-  public onlyShowWith(platformNames: string[]): boolean {
-    return platformNames.includes(this.platform.name);
-  }
-
-  public onSetBeamMode(): void {
-    this.store$.dispatch(
-      new filtersStore.AddBeamMode(this.granule.metadata.beamMode)
-    );
+  public setBeamMode(): void {
+    const action = new filtersStore.AddBeamMode(this.granule.metadata.beamMode);
+    this.store$.dispatch(action);
   }
 
   public setStartDate(): void {
-    this.store$.dispatch(
-      new filtersStore.SetStartDate(this.granule.metadata.date)
-    );
+    const action = new filtersStore.SetStartDate(this.granule.metadata.date);
+    this.store$.dispatch(action);
   }
 
   public setEndDate(): void {
-    this.store$.dispatch(
-      new filtersStore.SetEndDate(this.granule.metadata.date)
-    );
+    const action = new filtersStore.SetEndDate(this.granule.metadata.date);
+    this.store$.dispatch(action);
   }
 
   public setPathStart(): void {
-    this.store$.dispatch(
-      new filtersStore.SetPathStart(this.granule.metadata.path)
-    );
+    const action = new filtersStore.SetPathStart(this.granule.metadata.path);
+    this.store$.dispatch(action);
   }
 
   public setPathEnd(): void {
-    this.store$.dispatch(
-      new filtersStore.SetPathEnd(this.granule.metadata.path)
-    );
+    const action = new filtersStore.SetPathEnd(this.granule.metadata.path);
+    this.store$.dispatch(action);
   }
 
   public setFrameStart(): void {
-    this.store$.dispatch(
-      new filtersStore.SetFrameStart(this.granule.metadata.frame)
-    );
+    const action = new filtersStore.SetFrameStart(this.granule.metadata.frame);
+    this.store$.dispatch(action);
   }
 
   public setFrameEnd(): void {
-    this.store$.dispatch(
-      new filtersStore.SetFrameEnd(this.granule.metadata.frame)
-    );
+    const action = new filtersStore.SetFrameEnd(this.granule.metadata.frame);
+    this.store$.dispatch(action);
   }
 
   public setFlightDirection(): void {
@@ -110,16 +100,16 @@ export class GranuleDetailComponent {
 
     const capitalized = this.capitalizeFirstLetter(dir);
 
-    this.store$.dispatch(
-      new filtersStore.SetFlightDirections([<models.FlightDirection>capitalized])
-    );
+    const action = new filtersStore.SetFlightDirections([<models.FlightDirection>capitalized]);
+    this.store$.dispatch(action);
   }
 
   public addPolarization(): void {
-    this.store$.dispatch(new filtersStore.AddPolarization(this.granule.metadata.polarization));
+    const action = new filtersStore.AddPolarization(this.granule.metadata.polarization);
+    this.store$.dispatch(action);
   }
 
-  public onFindSimilarGranules(): void {
+  public findSimilarGranules(): void {
     this.setPathStart();
     this.setPathEnd();
     this.setFrameStart();

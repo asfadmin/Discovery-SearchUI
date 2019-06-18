@@ -4,7 +4,7 @@ import { Router, ActivatedRoute, Params } from '@angular/router';
 import { Store } from '@ngrx/store';
 
 import { combineLatest } from 'rxjs';
-import { filter, map, switchMap, skip, tap } from 'rxjs/operators';
+import { filter, map, switchMap, skip, tap, withLatestFrom } from 'rxjs/operators';
 
 import { AppState } from '@store';
 import * as granulesStore from '@store/granules';
@@ -125,15 +125,12 @@ export class UrlStateService {
 
   private filtersParameters() {
     return [{
-      name: 'platforms',
-      source: this.store$.select(filterStore.getSelectedPlatformNames).pipe(
+      name: 'dataset',
+      source: this.store$.select(filterStore.getSelectedDatasetName).pipe(
         skip(1),
-        filter(platforms => platforms.size > 0),
-        map(selected => ({
-          platforms: Array.from(selected).join(','),
-        }))
+        map(selected => ({ dataset: selected }))
       ),
-      loader: this.loadSelectedPlatforms
+      loader: this.loadSelectedDataset
     }, {
       name: 'start',
       source: this.store$.select(filterStore.getStartDate).pipe(
@@ -189,7 +186,9 @@ export class UrlStateService {
       name: 'productTypes',
       source: this.store$.select(filterStore.getProductTypes).pipe(
         skip(1),
-        map(types => this.objToString(types, key => key.apiValue)),
+        map(types => types.map(key => key.apiValue).join(',')),
+        withLatestFrom(this.store$.select(filterStore.getSelectedDatasetName)),
+        map(([types, dataset]) => `${dataset}$$${types}`),
         map(param => ({ productTypes: param }))
       ),
       loader: this.loadProductTypes
@@ -197,7 +196,9 @@ export class UrlStateService {
       name: 'beamModes',
       source: this.store$.select(filterStore.getBeamModes).pipe(
         skip(1),
-        map(modes => this.objToString(modes)),
+        map(modes => modes.join(',')),
+        withLatestFrom(this.store$.select(filterStore.getSelectedDatasetName)),
+        map(([modes, dataset]) => `${dataset}$$${modes}`),
         map(param => ({ beamModes: param }))
       ),
       loader: this.loadBeamModes
@@ -205,7 +206,9 @@ export class UrlStateService {
       name: 'polarizations',
       source: this.store$.select(filterStore.getPolarizations).pipe(
         skip(1),
-        map(pols =>  this.objToString(pols)),
+        map(pols => pols.join(',')),
+        withLatestFrom(this.store$.select(filterStore.getSelectedDatasetName)),
+        map(([pols, dataset]) => `${dataset}$$${pols}`),
         map(param => ({ polarizations: param }))
       ),
       loader: this.loadPolarizations
@@ -218,20 +221,6 @@ export class UrlStateService {
       ),
       loader: this.loadFlightDirections
     }];
-  }
-
-  private objToString(obj: any, key = v => v): string {
-    let param = '';
-
-    for (const [name, values] of Object.entries(obj)) {
-      const valuesStr = (<any[]>values)
-        .map(key)
-        .join(',');
-
-      param += `$$${name},${valuesStr}`;
-    }
-
-    return param;
   }
 
   private mapParameters() {
@@ -265,7 +254,7 @@ export class UrlStateService {
       loader: this.loadSearchPolygon
     }, {
       name: 'searchList',
-      source: this.store$.select(granulesStore.getSearchList).pipe(
+      source: this.store$.select(filterStore.getSearchList).pipe(
         skip(1),
         map(list => ({ searchList: list.join(',') }))
       ),
@@ -339,13 +328,12 @@ export class UrlStateService {
     }
   }
 
-  private loadSelectedPlatforms = (platforms: string): void => {
-    const selectedPlatforms = platforms
-      .split(',')
-      .filter(name => models.platformNames.includes(name));
+  private loadSelectedDataset = (dataset: string): void => {
+    if (!models.datasetNames.includes(dataset)) {
+      return;
+    }
 
-    const action = new filterStore.SetSelectedPlatforms(selectedPlatforms);
-
+    const action = new filterStore.SetSelectedDataset(dataset);
     this.store$.dispatch(action);
   }
 
@@ -407,7 +395,7 @@ export class UrlStateService {
   private loadSearchList = (listStr: string): void => {
     const list = listStr.split(',');
 
-    this.store$.dispatch(new granulesStore.SetSearchList(list));
+    this.store$.dispatch(new filterStore.SetSearchList(list));
   }
 
   private loadListSearchType = (mode: string): void => {
@@ -418,113 +406,52 @@ export class UrlStateService {
     }
   }
 
-  private parseValuesByPlatform(str: string) {
-    return str
-      .split('$$')
-      .filter(s => !!s)
-      .map(platformTypes => platformTypes.split(','))
-      .map(
-        ([platform, ...beamModes]) => ({ platform, beamModes })
-      ).reduce(
-        (total, { platform, beamModes }) => {
-          total[platform] = beamModes;
+  private loadProductTypes = (typesStr: string): void => {
+    const productTypes = this.loadProperties(
+      typesStr,
+      'productTypes',
+      v => v.apiValue
+    );
 
-          return total;
-        }, {});
+    const action = new filterStore.SetProductTypes(productTypes);
+    this.store$.dispatch(action);
   }
 
   private loadBeamModes = (modesStr: string): void => {
-    const possiblePlatforms = this.parseValuesByPlatform(modesStr);
+    const beamModes = this.loadProperties(modesStr, 'beamModes');
 
-    const validPlatforms = {};
-
-    for (const platformName of Object.keys(possiblePlatforms)) {
-      const platform = models.platforms
-        .filter(plat => platformName === plat.name)
-        .pop();
-
-      if (!platform) {
-        continue;
-      }
-
-      const possibleBeamModes = possiblePlatforms[platform.name];
-      const platformBeamModes = new Set(platform.beamModes);
-
-      const validBeamModesFromUrl = new Set(
-        [...possibleBeamModes]
-        .filter(mode => platformBeamModes.has(mode))
-      );
-
-      validPlatforms[platform.name] = Array.from(validBeamModesFromUrl);
-    }
-
-    this.store$.dispatch(new filterStore.SetAllBeamModes(validPlatforms));
+    const action = new filterStore.SetBeamModes(beamModes);
+    this.store$.dispatch(action);
   }
-
-  private loadProductTypes = (typesStr: string): void => {
-    const possiblePlatforms = this.parseValuesByPlatform(typesStr);
-
-    const validPlatforms = {};
-
-    for (const platformName of Object.keys(possiblePlatforms)) {
-      const platform = models.platforms
-        .filter(plat => platformName === plat.name)
-        .pop();
-
-      if (!platform) {
-        continue;
-      }
-
-      const possibleTypes = possiblePlatforms[platform.name];
-      const platformTypes = new Set(platform.productTypes
-        .map(t => t.apiValue)
-      );
-
-      const validTypeNamesFromUrl = new Set(
-        [...possibleTypes]
-        .filter(type => platformTypes.has(type))
-      );
-
-      const validTypesFromUrl = [...platform.productTypes]
-        .filter(
-          type => validTypeNamesFromUrl.has(type.apiValue)
-        );
-
-      validPlatforms[platform.name] = validTypesFromUrl;
-    }
-
-    this.store$.dispatch(new filterStore.SetAllProductTypes(validPlatforms));
-  }
-
 
   private loadPolarizations = (polarizationsStr: string): void => {
-    const possiblePlatforms = this.parseValuesByPlatform(polarizationsStr);
+    const polarizations = this.loadProperties(polarizationsStr, 'polarizations');
 
-    const validPlatforms = {};
-
-    for (const platformName of Object.keys(possiblePlatforms)) {
-      const platform = models.platforms
-        .filter(plat => platformName === plat.name)
-        .pop();
-
-      if (!platform) {
-        continue;
-      }
-
-      const possiblePolarizations = possiblePlatforms[platform.name];
-      const platformPolarizations = new Set(platform.polarizations);
-
-      const validPolarizationsFromUrl = new Set(
-        [...possiblePolarizations]
-        .filter(mode => platformPolarizations.has(mode))
-      );
-
-      validPlatforms[platform.name] = Array.from(validPolarizationsFromUrl);
-    }
-
-    this.store$.dispatch(new filterStore.SetAllPolarizations(validPlatforms));
+    const action = new filterStore.SetPolarizations(polarizations);
+    this.store$.dispatch(action);
   }
 
+  private loadProperties(loadStr: string, datasetPropertyKey: string, keyFunc = v => v): any[] {
+    const [datasetName, possibleValuesStr] = loadStr.split('$$');
+    const possibleTypes = (possibleValuesStr || '').split(',');
+
+    const dataset = models.datasets
+        .filter(d => datasetName === d.name)
+        .pop();
+
+    if (!dataset) {
+      return;
+    }
+
+    const datasetValues = dataset[datasetPropertyKey];
+
+    const validValuesFromUrl =
+      datasetValues.filter(
+        value => possibleTypes.includes(keyFunc(value))
+      );
+
+    return Array.from(validValuesFromUrl);
+  }
 
   private loadFlightDirections = (dirsStr: string): void => {
     const directions: models.FlightDirection[] = dirsStr
@@ -548,7 +475,6 @@ export class UrlStateService {
   private loadSelectedMission = (mission: string): void => {
     this.store$.dispatch(new missionStore.SelectMission(mission));
   }
-
 
   private isNumber = n => !isNaN(n) && isFinite(n);
   private isValidDate = (d: Date): boolean => d instanceof Date && !isNaN(d.valueOf());

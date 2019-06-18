@@ -5,7 +5,7 @@ import { MatBottomSheet } from '@angular/material/bottom-sheet';
 import { Store } from '@ngrx/store';
 
 import { of } from 'rxjs';
-import { skip, filter, map, switchMap, tap, catchError } from 'rxjs/operators';
+import { skip, filter, map, switchMap, mergeMap, tap, catchError, debounceTime } from 'rxjs/operators';
 
 import { AppState } from '@store';
 import * as granulesStore from '@store/granules';
@@ -37,6 +37,7 @@ export class AppComponent implements OnInit {
 
   public interactionTypes = models.MapInteractionModeType;
   public searchType: models.SearchType;
+  private maxResultsAmountLoading = false;
 
   constructor(
     private store$: Store<AppState>,
@@ -74,10 +75,14 @@ export class AppComponent implements OnInit {
 
     this.searchParams$.getParams().pipe(
       map(params => ({...params, ...{output: 'COUNT'}})),
+      debounceTime(500),
+      tap(_ =>
+        this.store$.dispatch(new searchStore.SearchAmountLoading())
+      ),
       switchMap(params => this.asfSearchApi.query<any[]>(params).pipe(
           catchError(_ => of(-1))
         )
-      )
+      ),
     ).subscribe(searchAmount => {
       this.store$.dispatch(new searchStore.SetSearchAmount(+<number>searchAmount));
     });
@@ -114,19 +119,23 @@ export class AppComponent implements OnInit {
 
   public onClearSearch(): void {
     this.store$.dispatch(new granulesStore.ClearGranules());
-    this.store$.dispatch(new filterStore.ClearFilters());
-    this.store$.dispatch(new missionStore.SelectMission(null));
     this.store$.dispatch(new uiStore.CloseBottomMenu());
     this.mapService.clearDrawLayer();
 
-    if (this.searchType === models.SearchType.DATASET) {
-      this.store$.dispatch(
-        new mapStore.SetMapInteractionMode(models.MapInteractionModeType.DRAW)
-      );
-    }
-  }
 
-  public onLoginClosed(): void {
-    this.store$.dispatch(new uiStore.SetUiView(models.ViewType.MAIN));
+    if (this.searchType === models.SearchType.DATASET) {
+      const actions = [
+        new filterStore.ClearDatasetFilters(),
+        new mapStore.SetMapInteractionMode(models.MapInteractionModeType.DRAW)
+      ];
+
+      actions.forEach(
+        action => this.store$.dispatch(action)
+      );
+    } else if (this.searchType === models.SearchType.LIST) {
+      this.store$.dispatch(new filterStore.ClearListFilters());
+    } else if (this.searchType === models.SearchType.MISSION) {
+      this.store$.dispatch(new missionStore.ClearSelectedMission());
+    }
   }
 }

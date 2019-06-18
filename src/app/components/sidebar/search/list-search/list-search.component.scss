@@ -1,0 +1,40 @@
+@import "asf-theme";
+
+$config: mat-typography-config();
+
+.ls-card {
+  font-family: mat-font-family($config);
+  margin: 0;
+  padding: 0;
+}
+
+.ls-card-title-group {
+  background-color: $asf-primary-light;
+  color: $asf-primary-dark;
+  padding: 10px 10px 0 10px;
+  margin-bottom: 10px;
+  border-bottom-style: solid;
+  border-bottom-color: $asf-primary-dark;
+  border-bottom-width: 1px;
+}
+
+.ls-mat-button-toggle-group {
+  //top: -3px;
+}
+
+.ls-mat-card-content {
+  margin: 16px;
+}
+
+.ls-card-content-list {
+  width: 100%;
+}
+
+.ls-example {
+  margin-top: -32px;
+  margin-bottom: 28px;
+  padding-left: 24px;
+  padding-bottom: 32px;
+  font-style: italic;
+  color: lighten($asf-primary, 10%);
+}

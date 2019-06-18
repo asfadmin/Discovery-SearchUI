@@ -9,7 +9,7 @@ export const testProduct: models.CMRProduct = {
   downloadUrl: 'www.download.edu',
   bytes: 7,
   browse: 'browse.png',
-  platform: 'Sentinel-1A',
+  dataset: 'Sentinel-1A',
   groupId: '7',
   metadata: {
     date: new Date('December 17, 1995 03:24:00'),

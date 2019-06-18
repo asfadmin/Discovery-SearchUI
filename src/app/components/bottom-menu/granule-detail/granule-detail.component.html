@@ -2,22 +2,45 @@
   <mat-card-header>
     <mat-card-title>
       <span [title]="granule.name">{{ granule.name | truncate : 34 }}</span>
-      <app-copy-to-clipboard style="margin: 0 10px; " [value]="granule.name"></app-copy-to-clipboard>
+      <app-copy-to-clipboard
+        [value]="granule.name"
+        prompt="Copy granule name"
+        class="clipboard-icon"></app-copy-to-clipboard>
 
     </mat-card-title>
     <mat-card-subtitle>
-      <span matTooltip="Dataset">{{ platform.name }}
-        <span *ngIf="platform.name === 'SMAP'">V{{ granule.name.slice(-1) }}</span>
-      </span> •
-      <span matTooltip="Frequency">{{ platform.frequency }}</span>
+      <a [href]="dataset.infoUrl" target="_blank" matTooltip="Dataset" class="faint-text">{{ dataset.name }}
+        <span *ngIf="dataset.name === 'SMAP'">V{{ granule.name.slice(-1) }}</span>
+      </a> •
+      <span matTooltip="Frequency">{{ dataset.frequency }}</span>
     </mat-card-subtitle>
   </mat-card-header>
 
+  <mat-card-actions class="action-buttons">
+    <a *ngIf="prop.isRelevant(p.BASELINE_TOOL, dataset)"
+       mat-raised-button color="accent" target="_blank"
+       href="https://baseline.asf.alaska.edu/#/baseline?granule={{ granule.name }}">
+      Baseline Tool
+    </a>
+    <a mat-raised-button color="primary"
+       target="_blank"
+       color="accent"
+       href="https://www.asf.alaska.edu/about/how-to-cite-data/">
+      Citation
+    </a>
+    <button *ngIf="prop.isRelevant(p.PATH, dataset) && prop.isRelevant(p.FRAME, dataset)"
+            (click)="findSimilarGranules()"
+            matTooltip="Search based on this granules path/frame"
+            mat-raised-button color="primary">
+      More Like This
+    </button>
+  </mat-card-actions>
+
   <mat-card-content class="content">
     <div class="w100" fxFlex fxLayout="row" fxLayoutAlign="space-between">
-      <div style="width: 50%">
+      <div class="w50">
         <ul class="granule-metadata">
-          <li *ngIf="prop.isRelevant(p.DATE)">
+          <li *ngIf="prop.isRelevant(p.DATE, dataset)">
             <span class="v-mid"><b>Aquisition Date </b> • {{ granule.metadata.date | shortDate }}</span>
             <mat-icon *ngIf="isGeoSearch()"
               [matMenuTriggerFor]="addGranuleDateMenu"
@@ -31,7 +54,7 @@
             </mat-menu>
           </li>
 
-          <li *ngIf="prop.isRelevant(p.BEAM_MODE)">
+          <li *ngIf="prop.isRelevant(p.BEAM_MODE, dataset)">
             <span class="v-mid"><b>Beam Mode </b> • {{ granule.metadata.beamMode }}</span>
             <mat-icon *ngIf="isGeoSearch()"
               [matMenuTriggerFor]="addBeamModeMenu"
@@ -40,12 +63,11 @@
             </mat-icon>
 
             <mat-menu #addBeamModeMenu="matMenu">
-              <button (click)="onSetBeamMode()" mat-menu-item>Add beam mode to search</button>
+              <button (click)="setBeamMode()" mat-menu-item>Add beam mode to search</button>
             </mat-menu>
           </li>
 
-          <li *ngIf="prop.isRelevant(p.PATH)">
-
+          <li *ngIf="prop.isRelevant(p.PATH, dataset)">
             <span class="v-mid"><b>Path </b> • {{ granule.metadata.path }}</span>
             <mat-icon *ngIf="isGeoSearch()"
               [matMenuTriggerFor]="addPathMenu"
@@ -59,7 +81,8 @@
               <button (click)="setPathStart(); setPathEnd();" mat-menu-item>Set as both</button>
             </mat-menu>
           </li>
-          <li *ngIf="prop.isRelevant(p.FRAME)">
+
+          <li *ngIf="prop.isRelevant(p.FRAME, dataset)">
             <span class="v-mid"> <b>Frame </b> • {{ granule.metadata.frame }} </span>
 
             <mat-icon *ngIf="isGeoSearch()"
@@ -74,8 +97,8 @@
               <button (click)="setFrameStart(); setFrameEnd();" mat-menu-item>Set as both</button>
             </mat-menu>
           </li>
-          <li *ngIf="prop.isRelevant(p.FLIGHT_DIRECTION)">
 
+          <li *ngIf="prop.isRelevant(p.FLIGHT_DIRECTION, dataset)">
             <span class="v-mid"> <b>Flight Direction </b> • {{ granule.metadata.flightDirection }} </span>
             <mat-icon *ngIf="isGeoSearch()"
               [matMenuTriggerFor]="addFlightDirectionMenu"
@@ -88,7 +111,7 @@
             </mat-menu>
           </li>
 
-          <li *ngIf="prop.isRelevant(p.POLARIZATION)">
+          <li *ngIf="prop.isRelevant(p.POLARIZATION, dataset)">
             <span class="v-mid"> <b>Polarization </b> • {{ granule.metadata.polarization }} </span>
 
             <mat-icon *ngIf="isGeoSearch()"
@@ -102,38 +125,38 @@
             </mat-menu>
           </li>
 
-          <li *ngIf="prop.isRelevant(p.OFF_NADIR_ANGLE)"
-            style="margin-top: 5px;">
+          <li *ngIf="prop.isRelevant(p.OFF_NADIR_ANGLE, dataset)"
+            class="detail-item-margin">
             <b>Off Nadir Angle </b> • {{ granule.metadata.offNadirAngle }}
           </li>
 
-          <li *ngIf="prop.isRelevant(p.FARADAY_ROTATION)"
-            style="margin-top: 5px;">
+          <li *ngIf="prop.isRelevant(p.FARADAY_ROTATION, dataset)"
+            class="detail-item-margin">
             <b>Faraday Rotation </b> • {{ granule.metadata.faradayRotation }}
           </li>
 
-          <li *ngIf="prop.isRelevant(p.MISSION_NAME)"
-            style="margin-top: 5px;">
+          <li *ngIf="prop.isRelevant(p.MISSION_NAME, dataset)"
+            class="detail-item-margin">
             <b>Mission Name </b> • {{ granule.metadata.missionName }}
           </li>
 
-          <li *ngIf="prop.isRelevant(p.FLIGHT_LINE)"
-            style="margin-top: 5px;">
+          <li *ngIf="prop.isRelevant(p.FLIGHT_LINE, dataset)"
+            class="detail-item-margin">
             <b>Flight Line </b> • {{ granule.metadata.flightLine }}
           </li>
 
-          <li *ngIf="prop.isRelevant(p.ABSOLUTE_ORBIT)"
-            style="margin-top: 5px;">
+          <li *ngIf="prop.isRelevant(p.ABSOLUTE_ORBIT, dataset)"
+            class="detail-item-margin">
             <b>Absolute Orbit </b> • {{ granule.metadata.absoluteOrbit }}
           </li>
 
-          <li *ngIf="hasValue(granule.metadata.stackSize)" style="margin-top: 5px;">
+          <li *ngIf="hasValue(granule.metadata.stackSize)" class="detail-item-margin">
             <b>Matching Frames </b> • {{ granule.metadata.stackSize }}
           </li>
 
-          <li *ngIf="platform.source as source" style="margin-top: 5px;">
-            <a *ngIf="source.url" [href]="source.url" target="_blank"> Data courtesy of {{ platform.source.name }}</a>
-            <span *ngIf="!source.url" class="faint-text"> Data courtesy of {{ platform.source.name }}</span>
+          <li *ngIf="dataset.source as source" class="detail-item-margin">
+            <a *ngIf="source.url" [href]="source.url" target="_blank"> Data courtesy of {{ dataset.source.name }}</a>
+            <span *ngIf="!source.url" class="faint-text"> Data courtesy of {{ dataset.source.name }}</span>
           </li>
         </ul>
 
@@ -142,15 +165,14 @@
           Some datasets also require a proposal, or agreement with a
           EULA which is presented after log in.
         </p>
-
       </div>
-      <div class="clickable" fxFlexAlign="center" style="width: 40%;">
+
+      <div class="clickable w40" fxFlexAlign="center">
         <div (click)="onOpenImage(granule);"
           class="img-container">
             <img
-              class="browse-img fit-to-container"
+              class="browse-img fit-to-container clickable"
               [src]="granule.browse"
-              style="cursor: pointer; "
               onerror="this.src='assets/error.png'"
               alt="Sentinel1 granule browse image">
             <div class="img-overlay fit-to-container">
@@ -161,28 +183,10 @@
     </div>
   </mat-card-content>
 
-  <mat-card-actions class="action-buttons">
-    <a *ngIf="prop.isRelevant(p.BASELINE_TOOL)"
-      mat-raised-button color="accent" target="_blank"
-      href="https://baseline.asf.alaska.edu/#/baseline?granule={{ granule.name }}">
-        Baseline Tool
-    </a>
-    <a mat-raised-button color="primary"
-      target="_blank"
-      color="accent"
-      href="https://www.asf.alaska.edu/about/how-to-cite-data/">
-      Citation
-    </a>
-    <button *ngIf="prop.isRelevant(p.PATH) && prop.isRelevant(p.FRAME)"
-      (click)="onFindSimilarGranules()"
-      matTooltip="Search based on this granules path/frame"
-      mat-raised-button color="primary">
-       More Like This
-    </button>
-  </mat-card-actions>
+
 </div>
 
-<div *ngIf="!granule" style="height: 100%;">
+<div *ngIf="!granule">
   <div fxFlex fxLayoutAlign="center" gdAlignColumns="center">
     <span class="faint-text">No Granule Selected</span>
   </div>

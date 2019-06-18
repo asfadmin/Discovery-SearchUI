@@ -16,7 +16,6 @@ import * as store from './store';
 import { NavBarModule } from '@components/nav-bar';
 import { SidebarModule } from '@components/sidebar';
 import { MapModule } from '@components/map';
-import { LoginModule } from '@components/login';
 import { BottomMenuModule } from '@components/bottom-menu';
 
 import * as services from '@services';
@@ -46,7 +45,6 @@ export const routes = [
 
     SidebarModule,
     MapModule,
-    LoginModule,
     BottomMenuModule,
     NavBarModule,
   ],

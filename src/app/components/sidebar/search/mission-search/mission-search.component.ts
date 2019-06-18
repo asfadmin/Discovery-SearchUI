@@ -22,17 +22,17 @@ export const _filter = (opt: string[], value: string): string[] => {
   styleUrls: ['./mission-search.component.css']
 })
 export class MissionSearchComponent implements OnInit {
-  @Input() missionsByPlatform$: Observable<{[platform: string]: string[]}>;
-  @Input() missionPlatforms$: Observable<string[]>;
+  @Input() missionsByDataset$: Observable<{[dataset: string]: string[]}>;
+  @Input() missionDatasets$: Observable<string[]>;
   @Input() selectedMission: string | null;
 
   @Output() newMissionSelected = new EventEmitter<string>();
 
-  public missionsByPlatform: {[platform: string]: string[]};
-  public missionPlatforms: string[];
+  public missionsByDataset: {[dataset: string]: string[]};
+  public missionDatasets: string[];
 
   public filteredMissions: string[];
-  public platformFilter: string | null = null;
+  public datasetFilter: string | null = null;
   public currentFilter = '';
 
   public pageSizeOptions = [5, 10, 25];
@@ -46,15 +46,15 @@ export class MissionSearchComponent implements OnInit {
   constructor(private fb: FormBuilder) {}
 
   ngOnInit() {
-    this.missionsByPlatform$.subscribe(
+    this.missionsByDataset$.subscribe(
       missions => {
-        this.missionsByPlatform = missions;
+        this.missionsByDataset = missions;
         this.filteredMissions = this._filterGroup(this.currentFilter);
       }
     );
 
-    this.missionPlatforms$.subscribe(
-      platforms => this.missionPlatforms = platforms
+    this.missionDatasets$.subscribe(
+      datasets => this.missionDatasets = datasets
     );
 
     this.stateForm.get('missionFilter').valueChanges
@@ -67,15 +67,15 @@ export class MissionSearchComponent implements OnInit {
       );
   }
 
-  public selectPlatformFilter(platform: string): void {
-    this.platformFilter = platform;
+  public selectDatasetFilter(dataset: string): void {
+    this.datasetFilter = dataset;
     this.filteredMissions = this._filterGroup(this.currentFilter);
   }
 
   private _filterGroup(filterValue: string): string[] {
-    const missionsUnfiltered = this.platformFilter ?
-      this.missionsByPlatform[this.platformFilter] :
-      Object.values(this.missionsByPlatform).reduce(
+    const missionsUnfiltered = this.datasetFilter ?
+      this.missionsByDataset[this.datasetFilter] :
+      Object.values(this.missionsByDataset).reduce(
       (allMissions, missions) => [...allMissions, ...missions], []
     );
 

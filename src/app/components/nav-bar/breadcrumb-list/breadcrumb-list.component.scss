@@ -15,13 +15,6 @@ $config: mat-typography-config();
 $break-small: 700px;
 $break-medium: 1250px;
 
-.breadcrumb-list {
-  //@include fx-layout(row wrap, center center, 0px);
-  //display: flex;
-  //flex-direction: row;
-  //align-items: center;
-}
-
 .breadcrumb {
   @extend .mat-form-field;
 
@@ -52,10 +45,6 @@ $break-medium: 1250px;
   padding-left: 10px;
 }
 
-.logo {
-  //padding-right: 10px;
-}
-
 .info-bar {
   border-top-color: $asf-primary;
   border-top-style: solid;
@@ -73,7 +62,7 @@ $break-medium: 1250px;
   font-family: mat-font-family($config);
   font-size: 14px;
   margin-top: -5px;
-  line-height: 29px;
+  line-height: 28px;
 }
 
 .additional-filters {
@@ -81,27 +70,13 @@ $break-medium: 1250px;
   width: 150px;
 
   .mat-icon {
-    @include md-icon-size(64px);
-
-    line-height: 25px;
+    @include md-icon-size(18px);
   }
 }
 
 .additional-filters-button {
   margin-left: 0;
   line-height: 18px;
-}
-
-.hide-mobile {
-  //@media screen and (max-width: $break-small) {
-  //  display: none;
-  //}
-}
-
-.hide-medium {
-  //@media screen and (max-width: $break-medium) {
-  //  display: none;
-  //}
 }
 
 .selected {
@@ -114,4 +89,22 @@ $break-medium: 1250px;
 
 .justify-right {
   justify-content: safe flex-end;
+}
+
+.full-width {
+  width: 100%;
+  max-width: 100%;
+}
+
+.copy-icon {
+  font-size: 16px;
+  margin-left: 10px;
+}
+
+.additional-aoi-toggle {
+  margin-left: 3px;
+}
+
+.search-dialog-button {
+  margin-top: 10px;
 }

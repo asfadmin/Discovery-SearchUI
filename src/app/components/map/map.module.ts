@@ -16,7 +16,6 @@ import { AttributionsComponent } from './attributions/attributions.component';
     CommonModule,
 
     MatDialogModule,
-
     MatSharedModule,
 
     MapControlsModule,
@@ -26,8 +25,6 @@ import { AttributionsComponent } from './attributions/attributions.component';
     MapComponent,
     AttributionsComponent
   ],
-  exports: [
-    MapComponent
-  ]
+  exports: [ MapComponent ]
 })
 export class MapModule { }

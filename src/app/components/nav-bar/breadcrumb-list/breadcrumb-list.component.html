@@ -34,7 +34,7 @@
         <!-- DATASET FILTER -->
         <div fxFlex="135px" (click)="clearSelectedBreadcrumb()"
              class="breadcrumb max-width-100">
-          <app-platform-selector></app-platform-selector>
+          <app-dataset-selector></app-dataset-selector>
         </div>
 
         <!-- AOI FILTER -->
@@ -43,26 +43,27 @@
           <mat-form-field
             (mouseenter)="showCopyIcon = true"
             (mouseleave)="showCopyIcon = false"
-            style="width: 100%; max-width: 100%;">
+            class="full-width">
             <label>
               <input
                 (change)="onInputSearchPolygon($event.target.value)"
-                [value]="polygon$ | async"
+                [value]="polygon"
                 [(ngModel)]="searchPolygon"
                 name="searchPolygon"
                 matInput placeholder="Area of Interest">
             </label>
 
             <mat-icon
-              *ngIf="!!(polygon$ | async) && showCopyIcon" (click)="onCopy()"
+              *ngIf="!!polygon && showCopyIcon" (click)="onCopy()"
               matTooltip="Copy to clipboard"
-              style="cursor: pointer; margin-left:10px; font-size: 16px" matSuffix>
+              class="clickable copy-icon" matSuffix>
                 file_copy
             </mat-icon>
             <mat-icon
               (click)="onNewSelectedFilter(filterTypes.AOI)"
               matTooltip="More options"
-              style="cursor: pointer; margin-left: 3px;" matSuffix>
+              class="clickable additional-aoi-toggle"
+              matSuffix>
               {{ selectedFilter === filterTypes.AOI ? 'arrow_drop_up' : 'arrow_drop_down' }}
             </mat-icon>
           </mat-form-field>
@@ -82,19 +83,24 @@
       <div fxFlex="110px" class="breadcrumb additional-filters">
         <button (click)="onToggleFiltersMenu()"
                 *ngIf="searchType === searchTypes.DATASET"
-                color="{{ !(isAnyAdditionalFilters$ | async) ? 'basic' : accent }}"
                 mat-button class="additional-filters-button">
           More<br>Filters
           <br>
           <mat-icon>more_horiz</mat-icon>
         </button>
 
-        <button (click)="onToggleFiltersMenu()"
-                *ngIf="searchType !== searchTypes.DATASET"
-                mat-stroked-button>
-          <span *ngIf="searchType === searchTypes.MISSION">Mission</span>
-          <span *ngIf="searchType === searchTypes.LIST">List</span>
-        </button>
+        <div *ngIf="searchType !== searchTypes.DATASET" class="search-dialog-crumb">
+          <button (click)="onToggleFiltersMenu()"
+                  *ngIf="searchType !== searchTypes.DATASET"
+                  mat-flat-button
+                  class="search-dialog-button">
+            <span *ngIf="searchType === searchTypes.MISSION">Select Mission</span>
+            <span *ngIf="searchType === searchTypes.LIST">
+              <mat-icon>edit</mat-icon>
+              Edit List
+            </span>
+          </button>
+        </div>
       </div>
 
       <div fxFlex="80px" class="breadcrumb-no-divider extra-padding-top">
@@ -113,7 +119,6 @@
 
     </div>
 
-    <!--<app-info-bar></app-info-bar>-->
     <div fxLayout="row wrap"
          fxFlexFill
          class="info-bar">
@@ -123,6 +128,7 @@
       <div fxFlex="300px" class="max-results">
           <app-max-results-selector
             [maxResults]="maxResults$ | async"
+            [isMaxResultsLoading]="isMaxResultsLoading$ | async"
             [currentSearchAmount]="currentSearchAmount$ | async"
             (newMaxResults)="onNewMaxResults($event)"
           ></app-max-results-selector>
@@ -134,7 +140,5 @@
         </app-nav-buttons>
       </div>
     </div>
-
   </div>
-
 </div>

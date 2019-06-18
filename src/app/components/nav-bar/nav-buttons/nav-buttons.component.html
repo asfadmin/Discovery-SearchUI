@@ -3,8 +3,7 @@
     <button
       (click)="onOpenDownloadQueue()"
       [disabled]="queuedProducts.length <= 0" color="basic"
-      class="spacing"
-      mat-icon-button>
+      class="spacing" mat-icon-button>
         <mat-icon
           [matBadge]="queuedProducts.length"
           matBadgeColor="{{ queuedProducts.length > 0 ? 'accent' : 'primary' }}"
@@ -31,12 +30,11 @@
     class="spacing" color="basic"
     matTooltip="Profile" mat-button>
       <mat-icon>account_circle</mat-icon>
-      <span style="margin-left: 8px;"> {{ datapoolAuthService.user.id }}</span>
+      <span> {{ datapoolAuthService.user.id }}</span>
   </button>
 
   <mat-menu #profileMenu="matMenu">
-    <button
-    (click)="onLogout()"
+    <button (click)="onLogout()"
       mat-menu-item matSuffix>
         <span>Logout</span>
     </button>
@@ -90,8 +88,7 @@
         Thematic Datasets
     </button>
 
-    <button
-      *ngIf="isDevMode()"
+    <button *ngIf="isDevMode()"
       [matMenuTriggerFor]="apiMaturity"
       mat-menu-item>
         Select API Maturity

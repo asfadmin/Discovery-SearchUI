@@ -16,7 +16,7 @@ export class ProductService {
         id: g.productID,
         downloadUrl: g.downloadUrl,
         bytes: g.sizeMB * 1000000,
-        platform: g.platform,
+        dataset: g.dataset,
         browse: g.browse || 'assets/error.png',
         thumbnail: g.thumb || g.browse || 'assets/error.png',
         groupId: g.groupID,

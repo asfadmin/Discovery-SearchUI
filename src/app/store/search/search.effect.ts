@@ -12,6 +12,7 @@ import * as granulesStore from '@store/granules';
 import * as filtersStore from '@store/filters';
 import * as mapStore from '@store/map';
 import * as uiStore from '@store/ui';
+import * as missionStore from '@store/mission';
 
 import * as services from '@services';
 
@@ -68,7 +69,11 @@ export class SearchEffects {
 
   @Effect()
   private cancelSearchWhenFiltersCleared: Observable<Action> = this.actions$.pipe(
-    ofType(filtersStore.FiltersActionType.CLEAR_FILTERS),
+    ofType(
+      filtersStore.FiltersActionType.CLEAR_DATASET_FILTERS,
+      filtersStore.FiltersActionType.CLEAR_LIST_FILTERS,
+      missionStore.MissionActionType.CLEAR_SELECTED_MISSION,
+    ),
     map(_ => new CancelSearch())
   );
 

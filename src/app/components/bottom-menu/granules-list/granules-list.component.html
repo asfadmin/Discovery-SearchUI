@@ -1,36 +1,43 @@
 <mat-card class="granule-list card-spacing">
-  <cdk-virtual-scroll-viewport style="height: 445px;"
+  <cdk-virtual-scroll-viewport class="scroll-viewport-height"
     minBufferPx="500" maxBufferPx="600"
     itemSize="72">
-  <mat-action-list class="action-list">
-    <div *cdkVirtualFor="let granule of granules" style="height: 72px">
-      <button
-        (mouseenter)="onSetFocusedGranule(granule)"
-        (mouseleave) ="onClearFocusedGranule(granule)"
-        (click)="onGranuleSelected(granule.id)"
-        [class.selected]="granule.name === selected"
-        mat-list-item>
+    <mat-action-list class="action-list">
+      <div *cdkVirtualFor="let granule of granules" class="granule-item-height">
+        <button
+          (mouseenter)="onSetFocusedGranule(granule)"
+          (mouseleave) ="onClearFocusedGranule(granule)"
+          (click)="onGranuleSelected(granule.id)"
+          [class.selected]="granule.name === selected"
+          mat-list-item>
 
           <img [src]="granule.thumbnail"
             onerror="this.src='assets/error.png'"
             class="size" matListAvatar>
 
-          <app-product-name [name]="granule.name" matLine></app-product-name>
+          <div class="product-name" matLine>
+            {{ granule.name | truncate : 30 }}
+            <app-copy-to-clipboard
+               *ngIf="granule.name === hoveredGranuleName"
+               prompt="Copy granule name"
+               [value]="granule.name"
+              ></app-copy-to-clipboard>
+          </div>
 
           <div matLine>
-            <span *ngIf="prop.isRelevant(p.DATE)">Date • {{ granule.metadata.date | shortDate }}</span>
+            <span>Date • {{ granule.metadata.date | shortDate }}</span>
           </div>
 
           <mat-icon (click)="onZoomTo(granule)" class="ml-2" matTooltip="Zoom to granule">
             settings_overscan
           </mat-icon>
           <mat-icon (click)="onQueueGranule($event, granule.groupId)"
-            style="margin-left: 10px;"
+            class="icon-margin"
             matTooltip="Queue granule products">
-            add
+            add_shopping_cart
           </mat-icon>
-      </button>
-    </div>
-  </mat-action-list>
+        </button>
+      </div>
+    </mat-action-list>
   </cdk-virtual-scroll-viewport>
 </mat-card>

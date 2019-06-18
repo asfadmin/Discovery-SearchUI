@@ -1,12 +1,13 @@
 import { Action } from '@ngrx/store';
 
-import { MissionPlatform } from '@models';
+import { MissionDataset } from '@models';
 
 export enum MissionActionType {
   LOAD_MISSIONS = '[Mission] Load Missions',
   SET_MISSIONS = '[Mission] Set Missions',
 
   SELECT_MISSION = '[Mission] Select Mission',
+  CLEAR_SELECTED_MISSION = '[Mission] Clear Selected Mission',
 }
 
 export class LoadMissions implements Action {
@@ -16,7 +17,7 @@ export class LoadMissions implements Action {
 export class SetMissions implements Action {
   public readonly type = MissionActionType.SET_MISSIONS;
 
-  constructor(public payload: {[platform: string]: string}) {}
+  constructor(public payload: {[dataset: string]: string}) {}
 }
 
 export class SelectMission implements Action {
@@ -25,7 +26,12 @@ export class SelectMission implements Action {
   constructor(public payload: string) {}
 }
 
+export class ClearSelectedMission implements Action {
+  public readonly type = MissionActionType.CLEAR_SELECTED_MISSION;
+}
+
 export type MissionActions =
   | LoadMissions
   | SetMissions
-  | SelectMission;
+  | SelectMission
+  | ClearSelectedMission;

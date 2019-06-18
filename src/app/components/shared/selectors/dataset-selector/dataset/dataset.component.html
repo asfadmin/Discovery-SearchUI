@@ -1,0 +1,7 @@
+<span matLine class="dataset__name">
+  <b>{{ dataset.name }} </b> -
+</span>
+<span matLine>
+  <span class="dataset__date">{{ prettyDateRange(dataset.date) }}</span>
+  <mat-icon (click)="onOpenHelp()" class="clickable" style="margin-left: 15px;">help</mat-icon>
+</span>

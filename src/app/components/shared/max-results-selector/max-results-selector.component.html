@@ -1,16 +1,23 @@
 <span class="faint-text">
   <span [matMenuTriggerFor]="menu"
-    style="cursor: pointer;">
-      {{ formatNumber(maxResults) }} <mat-icon>arrow_drop_down</mat-icon>
+    class="clickable">
+      {{ formatNumber(maxResults - 1) }} <mat-icon>arrow_drop_down</mat-icon>
   </span>
+    of
 
-    of {{ currentSearchAmount !== -1 ? formatNumber(currentSearchAmount) : '0' }}
+    <span *ngIf="!isMaxResultsLoading">
+      {{ currentSearchAmount !== -1 ? formatNumber(currentSearchAmount) : '0' }}
+    </span>
+    <span *ngIf="isMaxResultsLoading"
+      style="margin: 0 4px">
+      <fa-icon icon="spinner" [pulse]="true"></fa-icon>
+    </span>
     products
 </span>
 
 <mat-menu #menu="matMenu">
   <button *ngFor="let amount of possibleMaxResults"
-    (click)="onNewMaxResults(amount)" mat-menu-item>
-      <span>{{ formatNumber(amount) }} results</span>
+    (click)="onNewMaxResults(amount + 1)" mat-menu-item>
+      <span>{{ formatNumber(amount) }} products</span>
   </button>
 </mat-menu>

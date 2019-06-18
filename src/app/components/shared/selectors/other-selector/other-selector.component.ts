@@ -14,44 +14,44 @@ import * as models from '@models';
   styleUrls: ['./other-selector.component.scss']
 })
 export class OtherSelectorComponent implements OnInit {
-  selected: models.Platform[];
-  productTypes: models.PlatformProductTypes;
+  dataset: models.Dataset;
+  productTypes: models.DatasetProductTypes;
   flightDirections: models.FlightDirection[];
-  beamModes: models.PlatformBeamModes;
-  polarizations: models.PlatformPolarizations;
+  beamModes: models.DatasetBeamModes;
+  polarizations: models.DatasetPolarizations;
 
-  public platformProductTypes$ = this.store$.select(filtersStore.getProductTypes);
+  public datasetProductTypes$ = this.store$.select(filtersStore.getProductTypes);
   public flightDirections$ = this.store$.select(filtersStore.getFlightDirections);
   public beamModes$ = this.store$.select(filtersStore.getBeamModes);
   public polarizations$ = this.store$.select(filtersStore.getPolarizations);
-  public selectedPlatforms$ = this.store$.select(filtersStore.getSelectedPlatforms);
+  public selectedDataset$ = this.store$.select(filtersStore.getSelectedDataset);
 
   public flightDirectionTypes = models.flightDirections;
 
   constructor(private store$: Store<AppState>) { }
 
   ngOnInit() {
-    this.selectedPlatforms$.subscribe(platforms => this.selected = platforms);
+    this.selectedDataset$.subscribe(dataset => this.dataset = dataset);
     this.beamModes$.subscribe(modes => this.beamModes = modes);
     this.flightDirections$.subscribe(directions => this.flightDirections = directions);
-    this.platformProductTypes$.subscribe(types => this.productTypes = types);
+    this.datasetProductTypes$.subscribe(types => this.productTypes = types);
     this.polarizations$.subscribe(pols => this.polarizations = pols);
   }
 
-  public onNewPlatformBeamModes(platform: models.Platform, beamModes: string[]): void {
-    this.store$.dispatch(new filtersStore.SetPlatformBeamModes({ [platform.name]: beamModes }));
+  public onNewDatasetBeamModes(beamModes: string[]): void {
+    this.store$.dispatch(new filtersStore.SetBeamModes(beamModes));
   }
 
   public onNewFlightDirectionsSelected(directions: models.FlightDirection[]): void {
     this.store$.dispatch(new filtersStore.SetFlightDirections(directions));
   }
 
-  public onNewPlatformPolarizations(platform: models.Platform, polarizations: string[]): void {
-    this.store$.dispatch(new filtersStore.SetPlatformPolarizations({ [platform.name]: polarizations }));
+  public onNewDatasetPolarizations(polarizations: string[]): void {
+    this.store$.dispatch(new filtersStore.SetPolarizations(polarizations));
   }
 
-  public onNewProductTypes(platform: models.Platform, productTypes: models.ProductType[]): void {
-    this.store$.dispatch(new filtersStore.SetPlatformProductTypes({ [platform.name]: productTypes }));
+  public onNewProductTypes(productTypes: models.ProductType[]): void {
+    this.store$.dispatch(new filtersStore.SetProductTypes(productTypes));
   }
 
   public onNewMaxResults(maxResults): void {

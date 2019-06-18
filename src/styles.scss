@@ -82,3 +82,42 @@ ul {
   padding: 0;
   overflow: hidden;
 }
+
+.ls-card .mat-header-base {
+  background-color: $asf-primary-light !important;
+  color: $asf-primary-dark;
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+  border-left-width: 0;
+  border-right-width: 0;
+  border-top-width: 0;
+  border-bottom-width: 0.5px;
+  border-color: $asf-primary;
+  border-style: solid;
+}
+
+.ls-card .mat-button-toggle {
+  font-size: 14px;
+
+  .mat-button-toggle-label-content,
+  .mat-button-toggle-appearance-standard .mat-button-toggle-label-content {
+    line-height: 24px;
+  }
+}
+
+.ls-card-content-list .mat-form-field-infix {
+  border-color: $asf-primary-light;
+  width: 100%;
+  border-style: solid;
+  border-width: 1px;
+}
+
+.noselect {
+  -webkit-touch-callout: none; /* iOS Safari */
+    -webkit-user-select: none; /* Safari */
+     -khtml-user-select: none; /* Konqueror HTML */
+       -moz-user-select: none; /* Firefox */
+        -ms-user-select: none; /* Internet Explorer/Edge */
+            user-select: none; /* Non-prefixed version, currently
+                                  supported by Chrome and Opera */
+}

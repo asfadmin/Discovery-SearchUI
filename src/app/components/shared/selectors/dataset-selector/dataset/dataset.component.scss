@@ -1,0 +1,19 @@
+.dataset__date {
+  font-size: 11px;
+}
+
+.dataset__name {
+  letter-spacing: 1px;
+  font: verdana, sans-serif;
+  font-size: 16px;
+}
+
+.dataset__info {
+  transition: all 0.5s;
+  animation-timing-function: ease-in;
+  margin-left: 5px;
+}
+
+.dataset__info:hover {
+  color: black;
+}

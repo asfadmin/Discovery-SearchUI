@@ -1,7 +1,7 @@
 <div
   [@changeMenuY]="(isBottomMenuOpen$ | async) ? 'shown' : 'hidden'"
-  [class.hidden]="isHidden || (granules$ | async).length === 0"
-  class="position">
+  [class.hidden]="(isHidden$ | async) || (areNoGranules$  | async)"
+  class="bottom-menu-wrapper">
   <div class="toggle-button-position">
     <button (click)="onToggleMenu()"
        class="toggle-button"
@@ -14,42 +14,61 @@
   </div>
   <div class="bottom-menu--background  bottom-menu--layout">
     <mat-card class="card-spacing scrollable-card bottom-menu--column">
-      <mat-card-subtitle class="header">
-        Granule List
-      </mat-card-subtitle>
-      <app-granules-list
-        (newFocusedGranule)="onNewFocusedGranule($event)"
-        (clearFocusedGranule)="onClearFocusedGranule()"
-        (newSelected)="onNewGranuleSelected($event)"
-        (queueGranule)="onQueueGranuleProducts($event)"
-        [granules$]="granules$"
-        [platform]="searchPlatform$ | async"
-        [selected]="(selectedGranule$ | async)?.name">
-      </app-granules-list>
-    </mat-card>
+      <mat-card-subtitle style="display: flex; justify-content: space-between" *ngIf="numberOfGranules$ | async as numberOfGranules" class="header">
+        <div>
+            <mat-icon (click)="selectPreviousGranule()" class="clickable noselect">
+                arrow_drop_up
+            </mat-icon>
+            <mat-icon (click)="selectNextGranule()" class="clickable noselect">
+                arrow_drop_down
+            </mat-icon>
+        </div>
 
-    <mat-card class="card-spacing scrollable-card bottom-menu--column">
-      <mat-card-subtitle class="header">
-        Granule Products
+        <div>
+          {{ numberOfGranules }} Granule{{ numberOfGranules === 1 ? '' : 's' }}
+        </div>
+
+        <div *ngIf="allProducts$ | async as products">
+          <mat-icon
+             class="queue-all-button clickable noselect"
+             matTooltip="Add all results to queue"
+            [matMenuTriggerFor]="addAllProducts">
+              shopping_cart
+          </mat-icon>
+
+          <mat-menu #addAllProducts="matMenu">
+            <button (click)="queueAllProducts(products)" mat-menu-item>
+              Add {{ products.length }} product{{ products.length === 1 ? '' : 's'}} to queue
+            </button>
+          </mat-menu>
+        </div>
       </mat-card-subtitle>
-      <app-products
-        [products]="selectedProducts$ | async"
-        [queuedProductIds]="queuedProductIds"
-        (toggleQueueProduct)="onToggleQueueProduct($event)"
-        ></app-products>
+      <app-granules-list [dataset]="searchDataset$ | async">
+      </app-granules-list>
     </mat-card>
 
     <mat-card class="card-spacing bottom-menu--column">
       <mat-card-subtitle class="header">
         Granule Detail
       </mat-card-subtitle>
-      <mat-card-content class="content">
-        <app-granule-detail
-          [granule]="selectedGranule$ | async"
-          [searchType]="searchType$ | async"
-          [platform]="searchPlatform$ | async">
+      <mat-card-content class="content bottom-menu-granule-detail-content">
+        <app-granule-detail [dataset]="searchDataset$ | async">
         </app-granule-detail>
       </mat-card-content>
+    </mat-card>
+
+    <mat-card class="card-spacing scrollable-card bottom-menu--column">
+      <mat-card-subtitle class="header">
+        <span *ngIf="selectedProducts$ | async as products; else defaultProductsHeader">
+          {{ products.length || '' }} Granule Product{{ (products || []).length === 1 ? '' : 's'}}
+        </span>
+        <ng-template #defaultProductsHeader>Granule Products</ng-template>
+      </mat-card-subtitle>
+      <app-products
+        [products]="selectedProducts$ | async"
+        [queuedProductIds]="queuedProductIds$ | async"
+        (toggleQueueProduct)="onToggleQueueProduct($event)"
+        ></app-products>
     </mat-card>
   </div>
 </div>

@@ -13,19 +13,17 @@ import * as models from '@models';
   providedIn: 'root'
 })
 export class PropertyService {
-  private platform: models.Platform;
+  private dataset: models.Dataset;
 
-  constructor(
-    private store$: Store<AppState>,
-  ) {
-    this.store$.select(filtersStore.getSelectedPlatforms).pipe(
-      map(ps => [...ps].pop()),
-    ).subscribe(
-      p => this.platform = p
+  constructor(private store$: Store<AppState>) {
+    this.store$.select(filtersStore.getSelectedDataset).subscribe(
+      p => this.dataset = p
     );
   }
 
-  public isRelevant(prop: models.Props): boolean {
-    return models.datasetProperties[prop].includes(this.platform.name);
+  public isRelevant(prop: models.Props, dataset?: models.Dataset): boolean {
+    const currentDataset = dataset || this.dataset;
+
+    return models.datasetProperties[prop].includes(currentDataset.name);
   }
 }

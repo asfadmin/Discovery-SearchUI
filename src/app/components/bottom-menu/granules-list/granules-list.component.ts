@@ -1,25 +1,21 @@
 import {
-  Component, OnInit, Input, ViewChild,
-  ViewEncapsulation, Output, EventEmitter,
-  HostListener
+  Component, OnInit, Input, ViewChild, ViewEncapsulation
 } from '@angular/core';
 
-import { Observable, fromEvent } from 'rxjs';
-import { tap, distinctUntilChanged, withLatestFrom, filter, map } from 'rxjs/operators';
+import { fromEvent } from 'rxjs';
+import { tap, withLatestFrom, filter, map } from 'rxjs/operators';
 
 import { Store } from '@ngrx/store';
 import { AppState } from '@store';
 import * as searchStore from '@store/search';
 import * as granulesStore from '@store/granules';
-import * as mapStore from '@store/map';
 import * as uiStore from '@store/ui';
+import * as queueStore from '@store/queue';
 
-import { faFileDownload, faPlus } from '@fortawesome/free-solid-svg-icons';
-import { MatPaginator } from '@angular/material/paginator';
 import { CdkVirtualScrollViewport } from '@angular/cdk/scrolling';
 
 import * as services from '@services';
-import { CMRProduct, SearchType, MapInteractionModeType, Props, datasetProperties, Platform } from '@models';
+import * as models from '@models';
 
 @Component({
   selector: 'app-granules-list',
@@ -28,39 +24,29 @@ import { CMRProduct, SearchType, MapInteractionModeType, Props, datasetPropertie
   encapsulation: ViewEncapsulation.None
 })
 export class GranulesListComponent implements OnInit {
-  @Input() granules$: Observable<CMRProduct[]>;
-  @Input() selected: string;
-  @Input() platform: Platform;
-
-  @Output() newSelected = new EventEmitter<string>();
-  @Output() queueGranule = new EventEmitter<string>();
-  @Output() newFocusedGranule = new EventEmitter<CMRProduct>();
-  @Output() clearFocusedGranule = new EventEmitter<void>();
+  @Input() dataset: models.Dataset;
 
   @ViewChild(CdkVirtualScrollViewport, { static: true }) scroll: CdkVirtualScrollViewport;
 
-  public granules: CMRProduct[];
-  public pageSizeOptions = [5, 10];
-  public pageSize = this.pageSizeOptions[0];
-  public pageIndex = 0;
+  public granules$ = this.store$.select(granulesStore.getGranules);
+  public granules: models.CMRProduct[];
+  public  selected: string;
 
-  public downloadIcon = faFileDownload;
-  public queueIcon = faPlus;
-  public searchType: SearchType;
+  public searchType: models.SearchType;
   public selectedFromList = false;
-  public p = Props;
+  public hoveredGranuleName: string | null = null;
 
   constructor(
     private store$: Store<AppState>,
     private mapService: services.MapService,
     private wktService: services.WktService,
-    public prop: services.PropertyService,
   ) {}
 
   ngOnInit() {
     this.store$.select(granulesStore.getSelectedGranule).pipe(
       withLatestFrom(this.granules$),
       filter(([selected, _]) => !!selected),
+      tap(([selected, _]) => this.selected = selected.name),
       map(([selected, granules]) => granules.indexOf(selected)),
     ).subscribe(
       idx => {
@@ -83,14 +69,19 @@ export class GranulesListComponent implements OnInit {
     fromEvent(document, 'keydown').subscribe((e: KeyboardEvent) => {
       const { key } = e;
 
-      switch ( key ) {
+      switch (key) {
         case 'ArrowRight': {
-          this.selectNextProduct();
-          break;
+          return this.selectNextGranule();
         }
         case 'ArrowLeft': {
-          this.selectPreviousProduct();
-          break;
+          return this.selectPreviousGranule();
+        }
+
+        case 'ArrowDown': {
+          return this.selectNextGranule();
+        }
+        case 'ArrowUp': {
+          return this.selectPreviousGranule();
         }
       }
     });
@@ -100,38 +91,12 @@ export class GranulesListComponent implements OnInit {
     );
   }
 
-  private selectNextProduct(): void {
-    if (!this.selected) {
-      return;
-    }
-
-    const currentSelected = this.granules
-      .filter(g => g.name === this.selected)
-      .pop();
-
-    const nextIdx = Math.min(
-      this.granules.indexOf(currentSelected) + 1,
-      this.granules.length - 1
-    );
-
-    const nextGranule = this.granules[nextIdx];
-
-    this.store$.dispatch(new granulesStore.SetSelectedGranule(nextGranule.id));
+  private selectNextGranule(): void {
+    this.store$.dispatch(new granulesStore.SelectNextGranule());
   }
 
-  private selectPreviousProduct(): void {
-    if (!this.selected) {
-      return;
-    }
-
-    const currentSelected = this.granules
-      .filter(g => g.name === this.selected)
-      .pop();
-
-    const previousIdx = Math.max(this.granules.indexOf(currentSelected) - 1, 0);
-    const previousGranule = this.granules[previousIdx];
-
-    this.store$.dispatch(new granulesStore.SetSelectedGranule(previousGranule.id));
+  private selectPreviousGranule(): void {
+    this.store$.dispatch(new granulesStore.SelectPreviousGranule());
   }
 
   private scrollTo(idx: number): void {
@@ -140,34 +105,24 @@ export class GranulesListComponent implements OnInit {
 
   public onGranuleSelected(name: string): void {
     this.selectedFromList = true;
-    this.newSelected.emit(name);
+    this.store$.dispatch(new granulesStore.SetSelectedGranule(name));
   }
 
   public onQueueGranule(e: Event, groupId: string): void {
-    this.queueGranule.emit(groupId);
-
-    e.stopPropagation();
+    this.store$.dispatch(new queueStore.QueueGranule(groupId));
   }
 
-  public onSetFocusedGranule(granule: CMRProduct): void {
-    this.newFocusedGranule.emit(granule);
+  public onSetFocusedGranule(granule: models.CMRProduct): void {
+    this.hoveredGranuleName = granule.name;
+    this.store$.dispatch(new granulesStore.SetFocusedGranule(granule));
   }
 
   public onClearFocusedGranule(): void {
-    this.clearFocusedGranule.emit();
+    this.hoveredGranuleName = null;
+    this.store$.dispatch(new granulesStore.ClearFocusedGranule());
   }
 
-  public clearResults(): void {
-    this.store$.dispatch(new granulesStore.ClearGranules());
-
-    if (this.searchType === SearchType.DATASET) {
-      this.store$.dispatch(
-        new mapStore.SetMapInteractionMode(MapInteractionModeType.DRAW)
-      );
-    }
-  }
-
-  public onZoomTo(granule: CMRProduct): void {
+  public onZoomTo(granule: models.CMRProduct): void {
     const features = this.wktService.wktToFeature(
       granule.metadata.polygon,
       this.mapService.epsg()

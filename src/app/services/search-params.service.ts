@@ -65,7 +65,7 @@ export class SearchParamsService {
   private filterSearchParams$() {
     return combineLatest(
         this.searchPolygon$(),
-        this.selectedPlatforms$(),
+        this.selectedDataset$(),
         this.dateRange$(),
         this.season$(),
         this.pathRange$(),
@@ -86,7 +86,7 @@ export class SearchParamsService {
   }
 
   private listParam$() {
-    return this.store$.select(granulesStore.getSearchList).pipe(
+    return this.store$.select(filterStore.getSearchList).pipe(
       withLatestFrom(this.store$.select(filterStore.getListSearchMode).pipe(
         map(mode => mode === models.ListSearchType.GRANULE ? 'granule_list' : 'product_list')
       )),
@@ -110,14 +110,10 @@ export class SearchParamsService {
     );
   }
 
-  private selectedPlatforms$() {
-    return this.store$.select(filterStore.getSelectedPlatforms).pipe(
-      map(platforms => platforms
-        .map(platform => platform.name)
-        .join(',')
-        .replace('ALOS PALSAR', 'ALOS')
-      ),
-      map(platforms => ({ platform: platforms }))
+  private selectedDataset$() {
+    return this.store$.select(filterStore.getSelectedDataset).pipe(
+      map(dataset => dataset.name.replace('ALOS PALSAR', 'ALOS')),
+      map(dataset => ({ platform: dataset }))
     );
   }
 
@@ -156,12 +152,7 @@ export class SearchParamsService {
 
   private productType$() {
     return this.store$.select(filterStore.getProductTypes).pipe(
-      map(types => Object.values(types)
-        .reduce((allTypes, platformProductTypes) => [
-          ...allTypes, ...platformProductTypes
-        ], [])
-        .map(productType => productType.apiValue)
-      ),
+      map(types => types.map(type => type.apiValue)),
       map(
         types => Array.from(new Set(types))
           .join(',')
@@ -172,11 +163,6 @@ export class SearchParamsService {
 
   private beamModes$() {
     return this.store$.select(filterStore.getBeamModes).pipe(
-      map(beamModes => Object.values(beamModes)
-        .reduce((allModes, platformBeamModes) => [
-          ...allModes, ...platformBeamModes
-        ], [])
-      ),
       map(
         types => Array.from(new Set(types))
           .join(',')
@@ -187,11 +173,6 @@ export class SearchParamsService {
 
   private polarizations$() {
     return this.store$.select(filterStore.getPolarizations).pipe(
-      map(polarizations => Object.values(polarizations)
-        .reduce((allPolarizations, platformPolarizations) => [
-          ...allPolarizations, ...platformPolarizations
-        ], [])
-      ),
       map(
         polarizations => Array.from(new Set(polarizations))
           .join(',')

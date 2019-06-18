@@ -14,22 +14,22 @@ import * as models from '@models';
 @Component({
   selector: 'app-list-search',
   templateUrl: './list-search.component.html',
-  styleUrls: ['./list-search.component.css']
+  styleUrls: ['./list-search.component.scss']
 })
 export class ListSearchComponent implements OnInit {
-  public listSearchMode$ = this.store$.select(filtersStore.getListSearchMode);
   public types = ListSearchType;
 
   public searchList: string;
-  private searchList$ = this.store$.select(granulesStore.getSearchList).pipe(
-      map(list => this.searchList = list.join('\n'))
-    ).subscribe(_ => _);
+  public listSearchMode$ = this.store$.select(filtersStore.getListSearchMode);
 
-  constructor(
-    private store$: Store<AppState>,
-  ) {}
+  constructor(private store$: Store<AppState>) {}
 
   ngOnInit() {
+    this.store$.select(filtersStore.getSearchList).pipe(
+      map(list => list.join('\n'))
+    ).subscribe(
+      listStr => this.searchList = listStr
+    );
   }
 
   public onGranuleModeSelected(): void {
@@ -47,7 +47,7 @@ export class ListSearchComponent implements OnInit {
 
     const unique = Array.from(new Set(granules));
 
-    this.store$.dispatch(new granulesStore.SetSearchList(unique));
+    this.store$.dispatch(new filtersStore.SetSearchList(unique));
   }
 
   public onNewListSearchMode(mode: models.ListSearchType): void {

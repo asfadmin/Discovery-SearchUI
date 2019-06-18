@@ -4,6 +4,14 @@
   margin: 0;
 }
 
+.scroll-viewport-height {
+  height: 100%;
+}
+
+.granule-item-height {
+  height: 72px;
+}
+
 .action-list {
   padding-top: 0 !important;
 }
@@ -24,4 +32,12 @@
 
 .selected {
   background-color: rgba(0, 0, 0, 0.07);
+}
+
+.product-name {
+  font-weight: bold !important;
+}
+
+.icon-margin {
+  margin-left: 10px;
 }

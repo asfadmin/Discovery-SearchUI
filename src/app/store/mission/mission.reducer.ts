@@ -5,7 +5,7 @@ import { MissionActionType, MissionActions } from './mission.action';
 /* State */
 
 export interface MissionState {
-  missions: {[platform: string]: string};
+  missions: {[dataset: string]: string};
   selectedMission: null | string;
 }
 
@@ -32,6 +32,13 @@ export function missionReducer(state = initState, action: MissionActions): Missi
       };
     }
 
+    case MissionActionType.CLEAR_SELECTED_MISSION: {
+      return {
+        ...state,
+        selectedMission: null
+      };
+    }
+
     default: {
       return state;
     }
@@ -42,7 +49,7 @@ export function missionReducer(state = initState, action: MissionActions): Missi
 
 export const getMissionState = createFeatureSelector<MissionState>('mission');
 
-export const getMissionsByPlatform = createSelector(
+export const getMissionsByDataset = createSelector(
   getMissionState,
   (state: MissionState) => state.missions
 );

@@ -8,6 +8,7 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 export class MaxResultsSelectorComponent {
   @Input() maxResults: number;
   @Input() currentSearchAmount: number;
+  @Input() isMaxResultsLoading: boolean;
 
   @Output() newMaxResults = new EventEmitter<number>();
 
