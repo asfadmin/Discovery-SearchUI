@@ -41,9 +41,11 @@
         <form #polygonForm="ngForm"
           (mouseenter)="isHoveringAOISelector = true"
           (mouseleave)="isHoveringAOISelector = false"
+          (keydown.enter)="$event.preventDefault()"
           fxFlex="230px" class="breadcrumb">
 
           <mat-form-field
+            [class.invalid-input-animation]="isAOIError"
             class="full-width">
             <label>
               <input
@@ -65,11 +67,11 @@
               matTooltip="More options"
               class="clickable additional-aoi-toggle"
               matSuffix>
-              {{ isHoveringAOISelector ? 'arrow_drop_up' : 'arrow_drop_down' }}
+              {{ selectedFilter === filterTypes.AOI ? 'arrow_drop_up' : 'arrow_drop_down' }}
             </mat-icon>
           </mat-form-field>
 
-          <mat-card *ngIf="isHoveringAOISelector"
+          <mat-card *ngIf="selectedFilter === filterTypes.AOI"
                     class="breadcrumb-filter">
             <app-aoi-upload></app-aoi-upload>
           </mat-card>
