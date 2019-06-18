@@ -1,35 +1,19 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterModule } from '@angular/router';
 
-import { MatTabsModule } from '@angular/material/tabs';
-import { MatSharedModule } from '@shared';
+import { LogoModule } from '@components/nav-bar/logo/logo.module';
+import { AdditionalFiltersModule } from '@components/additional-filters';
+import { SearchSelectorModule } from '@components/shared/selectors/search-selector';
 
 import { SidebarComponent } from './sidebar.component';
 
-import { SearchSelectorModule } from '@components/shared/selectors/search-selector';
-import { SearchModule } from './search';
-
-import { FlexLayoutModule } from '@angular/flex-layout';
-
 @NgModule({
+  declarations: [ SidebarComponent ],
   imports: [
     CommonModule,
-    RouterModule,
-
-    MatTabsModule,
-    MatSharedModule,
-
-    FlexLayoutModule,
-
-    SearchModule,
+    LogoModule,
     SearchSelectorModule,
   ],
-  declarations: [
-    SidebarComponent,
-  ],
-  exports: [
-    SidebarComponent
-  ]
+  exports: [ SidebarComponent ]
 })
 export class SidebarModule { }
