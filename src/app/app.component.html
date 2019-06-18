@@ -1,9 +1,9 @@
-<mat-sidenav-container class="example-container" (backdropClick)="onCloseSidebar()">
+<mat-sidenav-container class="container" (backdropClick)="onCloseSidebar()">
   <mat-sidenav class="app-sidenav" #sidenav (keydown.escape)="onCloseSidebar()" disableClose>
     <app-sidebar></app-sidebar>
   </mat-sidenav>
 
-  <mat-sidenav-content>
+  <mat-sidenav-content class="app-content">
     <div>
       <app-bottom-menu>
       </app-bottom-menu>

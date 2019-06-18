@@ -84,7 +84,6 @@ export class AppComponent implements OnInit {
 
     this.searchParams$.getParams().pipe(
       map(params => ({...params, ...{output: 'COUNT'}})),
-      debounceTime(500),
       tap(_ =>
         this.store$.dispatch(new searchStore.SearchAmountLoading())
       ),
