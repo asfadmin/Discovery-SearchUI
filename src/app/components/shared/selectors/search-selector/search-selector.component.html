@@ -1,4 +1,4 @@
-<mat-card class="card-spacing mat-elevation-z0">
+<mat-card class="sizing card-spacing mat-elevation-z0">
   <h2>SAR Product Searches</h2>
   <mat-divider></mat-divider>
 
@@ -7,27 +7,21 @@
      [class.active-btn]="selectedSearchType === searchTypes.DATASET">
         <h3 matLine>Geographic</h3>
         <p matLine>Search by dataset, time, geography, and more.</p>
-        <button mat-icon-button>
-          <mat-icon>chevron_right</mat-icon>
-        </button>
+        <mat-icon>chevron_right</mat-icon>
     </mat-list-item>
     <mat-divider [inset]="true"></mat-divider>
     <mat-list-item class="clickable" (click)="onSetSearchType(searchTypes.LIST)"
      [class.active-btn]="selectedSearchType === searchTypes.LIST">
       <h3 matLine>List</h3>
       <p matLine>Search by a list of granules or product names.</p>
-      <button mat-icon-button>
-        <mat-icon>chevron_right</mat-icon>
-      </button>
+      <mat-icon>chevron_right</mat-icon>
     </mat-list-item>
     <mat-divider [inset]="true"></mat-divider>
     <mat-list-item class="clickable" (click)="onSetSearchType(searchTypes.MISSION)"
      [class.active-btn]="selectedSearchType === searchTypes.MISSION">
       <h3 matLine>Mission</h3>
       <p matLine>Search for data from a specific mission.</p>
-      <button mat-icon-button>
-        <mat-icon>chevron_right</mat-icon>
-      </button>
+      <mat-icon>chevron_right</mat-icon>
     </mat-list-item>
     <mat-divider [inset]="true"></mat-divider>
   </mat-list>

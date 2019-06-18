@@ -1,18 +1,27 @@
-<div>
-  <app-bottom-menu>
-  </app-bottom-menu>
+<mat-sidenav-container class="example-container" (backdropClick)="onCloseSidebar()">
+  <mat-sidenav class="app-sidenav" #sidenav (keydown.escape)="onCloseSidebar()" disableClose>
+    <app-sidebar></app-sidebar>
+  </mat-sidenav>
 
-  <app-nav-bar
-    (doSearch)="onNewSearch()"
-    (clearSearch)="onClearSearch()"
-    [isLoading]="isLoading$ | async">
-  </app-nav-bar>
+  <mat-sidenav-content>
+    <div>
+      <app-bottom-menu>
+      </app-bottom-menu>
 
-  <app-map (loadUrlState)="onLoadUrlState()">
-  </app-map>
+      <app-nav-bar
+        (doSearch)="onNewSearch()"
+        (clearSearch)="onClearSearch()"
+        [isLoading]="isLoading$ | async">
+      </app-nav-bar>
 
-  <app-sidebar
-     (newSearch)="onNewSearch()"
-     (clearSearch)="onClearSearch()"
-    ></app-sidebar>
-</div>
+      <app-map (loadUrlState)="onLoadUrlState()">
+      </app-map>
+
+      <app-additional-filters
+         (newSearch)="onNewSearch()"
+         (clearSearch)="onClearSearch()"
+        ></app-additional-filters>
+    </div>
+  </mat-sidenav-content>
+</mat-sidenav-container>
+

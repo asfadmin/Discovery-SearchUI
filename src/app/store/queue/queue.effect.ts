@@ -10,7 +10,7 @@ import { Observable, combineLatest } from 'rxjs';
 import { map, withLatestFrom, startWith, switchMap, tap, filter } from 'rxjs/operators';
 
 import { AppState } from '../app.reducer';
-import { QueueActionType, DownloadMetadata, QueueGranule, AddItems } from './queue.action';
+import { QueueActionType, DownloadMetadata, QueueGranule, AddItems, RemoveItems, RemoveGranuleFromQueue } from './queue.action';
 import { getQueuedProducts } from './queue.reducer';
 import * as granulesStore from '@store/granules';
 
@@ -86,6 +86,14 @@ export class QueueEffects {
     withLatestFrom(this.store$.select(granulesStore.getGranuleProducts)),
     map(([action, granuleProducts]) => granuleProducts[action.payload]),
     map(products => new AddItems(products))
+  );
+
+  @Effect()
+  private removeGranule: Observable<Action> = this.actions$.pipe(
+    ofType<RemoveGranuleFromQueue>(QueueActionType.REMOVE_GRANULE_FROM_QUEUE),
+    withLatestFrom(this.store$.select(granulesStore.getGranuleProducts)),
+    map(([action, granuleProducts]) => granuleProducts[action.payload]),
+    map(products => new RemoveItems(products))
   );
 
   private currentDate(): string {

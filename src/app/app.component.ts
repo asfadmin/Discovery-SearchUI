@@ -1,6 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { HttpParams } from '@angular/common/http';
 import { MatBottomSheet } from '@angular/material/bottom-sheet';
+import { MatSidenav } from '@angular/material/sidenav';
 
 import { Store } from '@ngrx/store';
 
@@ -25,6 +26,8 @@ import * as models from './models';
   styleUrls  : ['./app.component.scss']
 })
 export class AppComponent implements OnInit {
+  @ViewChild('sidenav', {static: true}) sidenav: MatSidenav;
+
   private queueStateKey = 'asf-queue-state';
 
   public shouldOmitSearchPolygon$ = this.store$.select(filterStore.getShouldOmitSearchPolygon);
@@ -71,6 +74,12 @@ export class AppComponent implements OnInit {
       })
     ).subscribe(
       mode => this.store$.dispatch(new mapStore.SetMapInteractionMode(mode))
+    );
+
+    this.store$.select(uiStore.getIsSidebarOpen).subscribe(
+      isSidebarOpen => isSidebarOpen ?
+        this.sidenav.open() :
+        this.sidenav.close()
     );
 
     this.searchParams$.getParams().pipe(
@@ -137,5 +146,9 @@ export class AppComponent implements OnInit {
     } else if (this.searchType === models.SearchType.MISSION) {
       this.store$.dispatch(new missionStore.ClearSelectedMission());
     }
+  }
+
+  public onCloseSidebar(): void {
+    this.store$.dispatch(new uiStore.CloseSidebar());
   }
 }

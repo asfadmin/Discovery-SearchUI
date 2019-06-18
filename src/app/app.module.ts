@@ -4,6 +4,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { BrowserModule } from '@angular/platform-browser';
 import { HttpClientModule } from '@angular/common/http';
 import { MatBottomSheetModule } from '@angular/material/bottom-sheet';
+import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { environment } from '@environments/environment';
 
@@ -17,6 +18,9 @@ import { NavBarModule } from '@components/nav-bar';
 import { SidebarModule } from '@components/sidebar';
 import { MapModule } from '@components/map';
 import { BottomMenuModule } from '@components/bottom-menu';
+import { MatSharedModule } from '@shared';
+import { LogoModule } from '@components/nav-bar/logo/logo.module';
+import { AdditionalFiltersModule } from '@components/additional-filters';
 
 import * as services from '@services';
 
@@ -37,6 +41,8 @@ export const routes = [
     HttpClientModule,
     MatSnackBarModule,
     MatBottomSheetModule,
+    MatSidenavModule,
+    MatSharedModule,
 
     RouterModule.forRoot(routes, { useHash: true }),
     StoreModule.forRoot(store.reducers, { metaReducers: store.metaReducers }),
@@ -44,6 +50,7 @@ export const routes = [
     !environment.production ? StoreDevtoolsModule.instrument() : [],
 
     SidebarModule,
+    AdditionalFiltersModule,
     MapModule,
     BottomMenuModule,
     NavBarModule,

@@ -111,7 +111,7 @@
 
       <div fxFlex class="breadcrumb-no-divider extra-padding-top">
         <button (click)="onDoSearch()"
-                [disabled]="!(canSearch$ | async)"
+                [disabled]="!(canSearch$ | async) && !(isMaxResultsLoading$ | async) "
                 mat-flat-button color="primary">
           {{ (loading$ | async) ? 'LOADING...' : (!(canSearch$ | async) ? 'NO RESULTS' : 'SEARCH') }}
         </button>
