@@ -51,8 +51,7 @@
                 [value]="polygon"
                 [(ngModel)]="searchPolygon"
                 name="searchPolygon"
-                class="aoi-input"
-                matInput readonly placeholder="Area of Interest">
+                matInput placeholder="Area of Interest">
             </label>
 
             <mat-icon
@@ -66,7 +65,7 @@
               matTooltip="More options"
               class="clickable additional-aoi-toggle"
               matSuffix>
-              {{ selectedFilter === filterTypes.AOI ? 'arrow_drop_up' : 'arrow_drop_down' }}
+              {{ isHoveringAOISelector ? 'arrow_drop_up' : 'arrow_drop_down' }}
             </mat-icon>
           </mat-form-field>
 
