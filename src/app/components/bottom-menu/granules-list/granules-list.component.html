@@ -38,7 +38,9 @@
           </mat-icon>
           <mat-icon (click)="onToggleGranule($event, granule.groupId)"
             class="icon-margin"
-            matTooltip="Queue granule products">
+            matTooltip="{{
+              allQueued[granule.groupId] ? 'Remove granule products from queue': 'Add granule products to queue'
+            }}">
             {{ allQueued[granule.groupId] ? 'shopping_cart' : 'add_shopping_cart' }}
           </mat-icon>
         </button>
