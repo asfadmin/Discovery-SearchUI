@@ -39,10 +39,11 @@
 
         <!-- AOI FILTER -->
         <form #polygonForm="ngForm"
+          (mouseenter)="isHoveringAOISelector = true"
+          (mouseleave)="isHoveringAOISelector = false"
           fxFlex="230px" class="breadcrumb">
+
           <mat-form-field
-            (mouseenter)="showCopyIcon = true"
-            (mouseleave)="showCopyIcon = false"
             class="full-width">
             <label>
               <input
@@ -54,7 +55,7 @@
             </label>
 
             <mat-icon
-              *ngIf="!!polygon && showCopyIcon" (click)="onCopy()"
+              *ngIf="!!polygon && isHoveringAOISelector" (click)="onCopy()"
               matTooltip="Copy to clipboard"
               class="clickable copy-icon" matSuffix>
                 file_copy
@@ -64,10 +65,11 @@
               matTooltip="More options"
               class="clickable additional-aoi-toggle"
               matSuffix>
-              {{ selectedFilter === filterTypes.AOI ? 'arrow_drop_up' : 'arrow_drop_down' }}
+              {{ isHoveringAOISelector ? 'arrow_drop_up' : 'arrow_drop_down' }}
             </mat-icon>
           </mat-form-field>
-          <mat-card *ngIf="selectedFilter === filterTypes.AOI"
+
+          <mat-card *ngIf="isHoveringAOISelector"
                     class="breadcrumb-filter">
             <app-aoi-upload></app-aoi-upload>
           </mat-card>

@@ -42,7 +42,7 @@ export class BreadcrumbListComponent implements OnInit {
   @ViewChild('polygonForm', { static: false }) public polygonForm: NgForm;
 
   public canSearch$ = this.store$.select(searchStore.getCanSearch);
-  public showCopyIcon = false;
+  public isHoveringAOISelector = false;
 
   public filterTypes = BreadcrumbFilterType;
   public selectedFilter = BreadcrumbFilterType.NONE;
