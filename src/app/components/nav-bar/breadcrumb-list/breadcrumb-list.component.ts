@@ -76,11 +76,6 @@ export class BreadcrumbListComponent implements OnInit {
       searchType => this.searchType = searchType
     );
 
-    this.actions$.pipe(
-      filter(action => action.type === filtersStore.FiltersActionType.CLEAR_DATASET_FILTERS),
-      filter(_ => !!this.polygonForm),
-    ).subscribe(_ => this.polygonForm.reset());
-
     const polygon$ = this.mapService.searchPolygon$;
     polygon$.subscribe(
       p => this.polygon = p
