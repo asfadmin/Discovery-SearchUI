@@ -2,10 +2,14 @@ export const mapOptions = {
   wrapX: true,
 };
 
+export enum MapLayerTypes {
+  STREET = 'Street',
+  SATELLITE = 'Satellite',
+}
+
 export enum MapViewType {
   ARCTIC = 'arctic',
   EQUITORIAL = 'equitorial',
-  EQUITORIAL_STREET = 'equitorial-street',
   ANTARCTIC = 'antarctic',
 }
 

@@ -1,4 +1,24 @@
 <div class="position layout">
+  <mat-button-toggle-group
+    *ngIf="(view$ | async) === viewTypes.EQUITORIAL"
+    [value]="layerType"
+    style="margin-bottom: 5px;" name="layerType">
+
+    <mat-button-toggle
+      (click)="onNewLayerType(layerTypes.SATELLITE)"
+      matTooltip="Satellite View"
+      [value]="layerTypes.SATELLITE">
+      <mat-icon>terrain</mat-icon>
+    </mat-button-toggle>
+
+    <mat-button-toggle
+      (click)="onNewLayerType(layerTypes.STREET)"
+      [value]="layerTypes.STREET"
+      matTooltip="Street View" >
+      <mat-icon>directions_car</mat-icon>
+    </mat-button-toggle>
+  </mat-button-toggle-group>
+
   <app-view-selector
     (newProjection)="onNewProjection($event)"
     [view]="view$ | async"
