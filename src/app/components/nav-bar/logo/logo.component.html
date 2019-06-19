@@ -1,8 +1,10 @@
-<div class="bounds">
-  <mat-card class="content logo-card mat-elevation-z10"
-       fxLayout="row"
-       fxFlexFill >
-    <div (click)="onToggleHide()" fxFlex="20%" class="sec1" >
+<div class="bounds"
+     fxLayout="row">
+<!--<div class="bounds">-->
+  <mat-card class="content logo-card mat-elevation-z10" fxFlex>
+    <div (click)="onToggleHide()"
+         fxFlex="70px"
+         class="sec1" >
       <mat-card matRipple mat-elevation-z0 class="menu-toggle-button">
         <mat-icon class="toggle-icon">
           {{ (isSidebarOpen$ | async) ?  'menu' : 'menu' }}
@@ -11,11 +13,12 @@
       </mat-card>
     </div>
 
-    <div fxFlex="80%" class="sec2" >
+    <div fxFlex="250px">
         <div class="header">Vertex BETA</div>
         <div class="subhead">The SAR Search GUI</div>
         <p>Made by the Alaska Satellite Facility</p>
         <p><a href="mailto:vertex-beta@asf.alaska.edu?Subject=Vertex%20Beta%20Feedback" target="_top">Feedback: vertex-beta@asf.alaska.edu</a></p>
     </div>
+    <div fxFlex="0px" fxFlex.lt-lg="auto"></div>
   </mat-card>
 </div>

@@ -128,10 +128,11 @@ export class AppComponent implements OnInit {
   public onClearSearch(): void {
     this.store$.dispatch(new granulesStore.ClearGranules());
     this.store$.dispatch(new uiStore.CloseBottomMenu());
-    this.mapService.clearDrawLayer();
 
 
     if (this.searchType === models.SearchType.DATASET) {
+      this.mapService.clearDrawLayer();
+
       const actions = [
         new filterStore.ClearDatasetFilters(),
         new mapStore.SetMapInteractionMode(models.MapInteractionModeType.DRAW)
