@@ -69,7 +69,6 @@ export class MissionSearchComponent implements OnInit {
 
   public selectDatasetFilter(dataset: string): void {
     this.datasetFilter = dataset;
-    console.log(dataset);
     this.filteredMissions = this._filterGroup(this.currentFilter);
   }
 
