@@ -21,9 +21,6 @@ export class ViewSelectorComponent {
   public onEquitorialSelected =
     () => this.newProjection.emit(MapViewType.EQUITORIAL)
 
-  public onEquitorialStreetSelected =
-    () => this.newProjection.emit(MapViewType.EQUITORIAL_STREET)
-
   public onAntarcticSelected =
     () => this.newProjection.emit(MapViewType.ANTARCTIC)
 }

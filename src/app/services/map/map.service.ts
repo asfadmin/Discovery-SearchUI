@@ -117,14 +117,15 @@ export class MapService {
     });
   }
 
-  public setMapView(viewType: models.MapViewType): void {
+  public setMapView(viewType: models.MapViewType, layerType: models.MapLayerTypes): void {
     this.viewType = viewType;
 
     const view = {
       [models.MapViewType.ANTARCTIC]: views.antarctic(),
       [models.MapViewType.ARCTIC]: views.arctic(),
-      [models.MapViewType.EQUITORIAL]: views.equatorial(),
-      [models.MapViewType.EQUITORIAL_STREET]: views.equatorialStreet()
+      [models.MapViewType.EQUITORIAL]: layerType === models.MapLayerTypes.SATELLITE ?
+        views.equatorial() :
+        views.equatorialStreet(),
     }[viewType];
 
     this.setMap(view);

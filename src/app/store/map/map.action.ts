@@ -3,11 +3,22 @@ import { Action } from '@ngrx/store';
 import * as models from '@models';
 
 export enum MapActionType {
+  SET_STREET_VIEW = '[Map] Set Street view',
+  SET_SATELLITE_VIEW = '[Map] Set Satellite view',
+
   SET_MAP_VIEW = '[Map] Set Map View',
   SET_MAP_DRAW_MODE = '[Map] Set Map Draw Mode',
   SET_MAP_INTERACTION_MODE = '[Map] Set Map Interaction Mode',
 
   MAP_INITIALIZED = '[Map] Map Initialized',
+}
+
+export class SetStreetView implements Action {
+  public readonly type = MapActionType.SET_STREET_VIEW;
+}
+
+export class SetSatelliteView implements Action {
+  public readonly type = MapActionType.SET_SATELLITE_VIEW;
 }
 
 export class SetMapView implements Action {
@@ -34,6 +45,8 @@ export class MapInitialzed implements Action {
 
 export type MapActions =
   | SetMapView
+  | SetStreetView
+  | SetSatelliteView
   | SetMapDrawMode
   | SetMapInteractionMode
   | MapInitialzed;
