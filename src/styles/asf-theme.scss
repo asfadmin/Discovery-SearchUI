@@ -32,7 +32,10 @@ $asf-warn: mat-color($asf-app-warn);
 $asf-primary-light: lighten($asf-primary, 40%);
 $asf-primary-dark: darken($asf-primary, 15%);
 
-$custom-typography: mat-typography-config($font-family: 'Roboto, sans-serif;');
+$custom-typography: mat-typography-config($font-family: 'Roboto, sans-serif',
+                    $headline: mat-typography-level(32px, 48px, 700),
+                    $body-1: mat-typography-level(14px,21px, 500),
+);
 
 @include mat-core($custom-typography);
 
@@ -47,4 +50,5 @@ button,
 .mat-panel,
 .mat-card {
   border-radius: 0 !important;
+  font-size: 14px;
 }
