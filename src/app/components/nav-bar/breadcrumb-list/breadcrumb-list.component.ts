@@ -1,7 +1,8 @@
 import { Component, OnInit, EventEmitter, Output, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
 
-import { tap, map, filter } from 'rxjs/operators';
+import { Subject } from 'rxjs';
+import { tap, map, filter, delay } from 'rxjs/operators';
 import { Store, ActionsSubject } from '@ngrx/store';
 import { ClipboardService } from 'ngx-clipboard';
 
@@ -41,7 +42,10 @@ export class BreadcrumbListComponent implements OnInit {
 
   @ViewChild('polygonForm', { static: false }) public polygonForm: NgForm;
 
+  public aoiErrors$ = new Subject<void>();
+
   public canSearch$ = this.store$.select(searchStore.getCanSearch);
+  public isAOIError = false;
   public isHoveringAOISelector = false;
 
   public filterTypes = BreadcrumbFilterType;
@@ -78,21 +82,26 @@ export class BreadcrumbListComponent implements OnInit {
     ).subscribe(_ => this.polygonForm.reset());
 
     const polygon$ = this.mapService.searchPolygon$;
-    polygon$.pipe(
-      tap(_ => {
-        if (!this.polygonForm) {
-          return;
-        }
-
-        try {
-          this.polygonForm.form
-            .controls['searchPolygon']
-            .setErrors(null);
-        } catch {}
-      })
-    ).subscribe(
+    polygon$.subscribe(
       p => this.polygon = p
     );
+
+    this.aoiErrors$.pipe(
+      tap(_ => {
+        this.isAOIError = true;
+        this.mapService.clearDrawLayer();
+        this.polygonForm.reset();
+        this.polygonForm.form
+          .controls['searchPolygon']
+          .setErrors({'incorrect': true});
+      }),
+      delay(820),
+    ).subscribe(_ => {
+      this.isAOIError = false;
+      this.polygonForm.form
+        .controls['searchPolygon']
+        .setErrors(null);
+    });
   }
 
   public onDoSearch(): void {
@@ -124,16 +133,8 @@ export class BreadcrumbListComponent implements OnInit {
 
       this.mapService.setDrawFeature(features);
     } catch (e) {
-      this.polygonForm.form
-        .controls['searchPolygon']
-        .setErrors({'incorrect': true});
-
-      return;
+      this.aoiErrors$.next();
     }
-
-    this.polygonForm.form
-      .controls['searchPolygon']
-      .setErrors(null);
   }
 
   public onNewSelectedFilter(filterType: BreadcrumbFilterType): void {
