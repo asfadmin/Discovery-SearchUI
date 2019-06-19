@@ -42,16 +42,14 @@
   </mat-card-content>
   <div class="ls-example">
     <div>Example:
-      <span *ngIf="mode === types.GRANULE">
-        S1B_IW_GRDH_1SDV_20161124T032008_20161124T032033_003095_005430_9906,
-        S1-GUNW-D-R-087-tops-20190301_20190223-161540-20645N_18637N-PP-7a85-v2_0_1,
-        ALPSRP111041130
+      <span>
+        {{listExamples[mode]}}
       </span>
-      <span *ngIf="mode === types.PRODUCT">
-        S1B_IW_GRDH_1SDV_20161124T032008_20161124T032033_003095_005430_9906-GRD_HD,
-        S1-GUNW-D-R-087-tops-20190301_20190223-161540-20645N_18637N-PP-7a85-v2_0_1-unwrappedPhase,
-        ALPSRP111041130-RTC_HI_RES
-      </span>
+      <app-copy-to-clipboard
+        [value]="listExamples[mode]"
+        prompt="Copy {{ mode }} Name"
+        class="clipboard-icon">
+      </app-copy-to-clipboard>
     </div>
   </div>
 
