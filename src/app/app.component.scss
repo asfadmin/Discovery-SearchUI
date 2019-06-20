@@ -1,12 +1,17 @@
-.example-container {
+.container {
   position: absolute;
-  top: 0;
+  top: 32px;
   bottom: 0;
   left: 0;
   right: 0;
 }
 
+.app-content {
+}
+
 .app-sidenav {
+  position: fixed;
   width: 350px;
   max-width: 90vw;
+  height: 100vh;
 }

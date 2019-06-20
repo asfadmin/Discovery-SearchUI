@@ -7,6 +7,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 
 import { MatSharedModule } from '@shared';
+import { CopyToClipboardModule } from '@components/shared/copy-to-clipboard';
 
 import { ListSearchComponent } from './list-search.component';
 
@@ -17,6 +18,7 @@ import { ListSearchComponent } from './list-search.component';
   imports: [
     CommonModule,
     FormsModule,
+    CopyToClipboardModule,
     MatFormFieldModule,
     MatInputModule,
     MatButtonToggleModule,

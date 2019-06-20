@@ -90,7 +90,7 @@ export class AsfApiService {
 
   public missionSearch(dataset: MissionDataset): Observable<{result: string[]}> {
     const params = new HttpParams()
-      .append('dataset', dataset);
+      .append('platform', dataset);
 
     const url = `${this.apiUrl}/services/utils/mission_list`;
 

@@ -110,3 +110,13 @@ $break-medium: 1250px;
   vertical-align: middle;
   margin-left: 10px;
 }
+.aoi-input {
+  cursor: default;
+}
+
+.invalid-input-animation {
+  animation: shake 0.82s;
+  transform: translate3d(0, 0, 0);
+  backface-visibility: hidden;
+  perspective: 1000px;
+}

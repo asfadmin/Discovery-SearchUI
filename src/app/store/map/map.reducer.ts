@@ -9,6 +9,7 @@ export interface MapState {
   view: models.MapViewType;
   drawMode: models.MapDrawModeType;
   interactionMode: models.MapInteractionModeType;
+  layerType: models.MapLayerTypes;
   isMapInitialized: boolean;
 }
 
@@ -16,6 +17,7 @@ export const initState: MapState = {
   view: models.MapViewType.EQUITORIAL,
   drawMode: models.MapDrawModeType.BOX,
   interactionMode: models.MapInteractionModeType.DRAW,
+  layerType: models.MapLayerTypes.SATELLITE,
   isMapInitialized: false,
 };
 
@@ -26,6 +28,20 @@ export function mapReducer(state = initState, action: MapActions): MapState {
       return {
         ...state,
         view: action.payload
+      };
+    }
+
+    case MapActionType.SET_STREET_VIEW: {
+      return {
+        ...state,
+        layerType: models.MapLayerTypes.STREET,
+      };
+    }
+
+    case MapActionType.SET_SATELLITE_VIEW: {
+      return {
+        ...state,
+        layerType: models.MapLayerTypes.SATELLITE,
       };
     }
 
@@ -62,6 +78,11 @@ export const getMapState = createFeatureSelector<MapState>('map');
 export const getMapView = createSelector(
   getMapState,
   (state: MapState) => state.view
+);
+
+export const getMapLayerType = createSelector(
+  getMapState,
+  (state: MapState) => state.layerType
 );
 
 export const getMapDrawMode = createSelector(

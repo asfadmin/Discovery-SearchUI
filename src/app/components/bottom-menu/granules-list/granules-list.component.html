@@ -20,7 +20,6 @@
           <div class="product-name" matLine>
             <span> {{ granule.name | truncate : 30 }} </span>
 
-            <span> {{ numberOfQueue[granule.groupId] }} </span>
 
             <app-copy-to-clipboard
                *ngIf="granule.name === hoveredGranuleName"
@@ -33,7 +32,7 @@
             <span>Date • {{ granule.metadata.date | shortDate }}</span>
           </div>
 
-          <mat-icon (click)="onZoomTo(granule)" class="ml-2" matTooltip="Zoom to granule">
+          <mat-icon (click)="onZoomTo(granule)"class="ml-2" matTooltip="Zoom to granule">
             settings_overscan
           </mat-icon>
           <mat-icon (click)="onToggleGranule($event, granule.groupId)"
@@ -43,6 +42,8 @@
             }}">
             {{ allQueued[granule.groupId] ? 'shopping_cart' : 'add_shopping_cart' }}
           </mat-icon>
+
+          <span style="margin-left: 10px"> {{ numberOfQueue[granule.groupId] }} </span>
         </button>
       </div>
     </mat-action-list>
