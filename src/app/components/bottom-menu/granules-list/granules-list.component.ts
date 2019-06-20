@@ -24,8 +24,6 @@ import * as models from '@models';
   encapsulation: ViewEncapsulation.None
 })
 export class GranulesListComponent implements OnInit {
-  @Input() dataset: models.Dataset;
-
   @ViewChild(CdkVirtualScrollViewport, { static: true }) scroll: CdkVirtualScrollViewport;
 
   public granules$ = this.store$.select(granulesStore.getGranules);

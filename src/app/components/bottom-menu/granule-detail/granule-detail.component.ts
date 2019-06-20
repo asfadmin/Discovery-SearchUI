@@ -1,6 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 
+import { map, withLatestFrom, filter, tap } from 'rxjs/operators';
 import { Store } from '@ngrx/store';
 
 import { AppState } from '@store';
@@ -19,8 +20,7 @@ import { ImageDialogComponent } from './image-dialog';
   styleUrls: ['./granule-detail.component.scss']
 })
 export class GranuleDetailComponent implements OnInit {
-  @Input() dataset: models.Dataset;
-
+  public dataset: models.Dataset;
   public searchType: models.SearchType;
   public granule: models.CMRProduct;
 
@@ -34,9 +34,28 @@ export class GranuleDetailComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.store$.select(granulesStore.getSelectedGranule).subscribe(
+    const granule$ = this.store$.select(granulesStore.getSelectedGranule);
+
+    granule$.subscribe(
       granule => this.granule = granule
     );
+
+    granule$.pipe(
+      filter(g => !!g),
+      map(granule => models.datasets
+        .filter(dataset => {
+          const [datasetName, granuleDataset] = [
+            dataset.name.toLowerCase(),
+            granule.dataset.toLocaleLowerCase()
+          ];
+
+          return (
+            datasetName.includes(granuleDataset) ||
+            granuleDataset.includes(datasetName)
+          );
+        })[0] || models.datasets[0],
+      ),
+    ).subscribe(dataset => this.dataset = dataset);
 
    this.store$.select(uiStore.getSearchType).subscribe(
      searchType => this.searchType = searchType
