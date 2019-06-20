@@ -35,7 +35,7 @@ $asf-primary-dark: darken($asf-primary, 15%);
 $custom-typography: mat-typography-config(
   $font-family: 'Roboto, sans-serif',
   $headline: mat-typography-level(32px, 48px, 700),
-  $body-1: mat-typography-level(14px, 21px, 500)
+  $body-1: mat-typography-level(16px, 24px, 500)
 );
 
 @include mat-core($custom-typography);

@@ -8,7 +8,7 @@
 }
 
 .bounds {
-  display: block;
+  height: 99px;
   //width: 350px;
 }
 
@@ -19,7 +19,8 @@
 }
 
 .sec1 {
-  margin-right: 20px;
+  margin-right: 9px;
+  margin-top: -15px !important;
 }
 
 .example-header-image {
@@ -29,19 +30,19 @@
 
 .logo-card {
   background-color: $asf-primary;
-  padding: 8px !important;
+  padding: 14px 8px 8px 8px !important;
 
   .header {
-    font-size: 38px;
-    line-height: 39px;
+    font-size: 30px;
+    line-height: 33px;
     font-weight: 400;
     letter-spacing: 0.02em;
     color: $asf-warn;
   }
 
   .subhead {
-    font-size: 18px;
-    line-height: 18px;
+    font-size: 14px;
+    line-height: 15px;
     font-weight: 400;
     letter-spacing: 0.1em;
     color: lightgray;
@@ -61,7 +62,7 @@
   }
 }
 
-$icon-size: 42px;
+$icon-size: 36px;
 
 .menu-toggle-button {
   background-color: $asf-primary;
