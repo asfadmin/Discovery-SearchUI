@@ -12,11 +12,11 @@
 
   <div fxLayout="column" fxFill>
 
-    <div fxLayout="row wrap">
+    <div fxLayout="row" fxLayout.lt-lg="column" class="breadcrumb-row">
 
       <!-- SEARCH TYPE -->
-      <div fxFlex="120px" class="first-breadcrumb max-width-100">
-        <mat-form-field>
+      <div fxFlex="nogrow" fxFlex.lt-lg="auto" class="breadcrumb">
+        <mat-form-field fxFlex.lt-lg="auto">
           <mat-label>Search Type</mat-label>
           <mat-select
             [(ngModel)]="searchType"
@@ -32,17 +32,17 @@
       <ng-container *ngIf="searchType === searchTypes.DATASET">
 
         <!-- DATASET FILTER -->
-        <div fxFlex="135px" (click)="clearSelectedBreadcrumb()"
-             class="breadcrumb max-width-100">
+        <div fxFlex="nogrow" fxFlex.lt-lg="100" (click)="clearSelectedBreadcrumb()"
+             class="breadcrumb">
           <app-dataset-selector></app-dataset-selector>
         </div>
 
         <!-- AOI FILTER -->
         <form #polygonForm="ngForm"
+          fxFlex="nogrow" class="breadcrumb"
           (mouseenter)="isHoveringAOISelector = true"
           (mouseleave)="isHoveringAOISelector = false"
-          (keydown.enter)="$event.preventDefault()"
-          fxFlex="230px" class="breadcrumb">
+          (keydown.enter)="$event.preventDefault()">
 
           <mat-form-field
             [class.invalid-input-animation]="isAOIError"
@@ -78,22 +78,21 @@
         </form>
 
         <!-- DATES START/END FILTER -->
-        <div fxFlex="320px" class="breadcrumb">
+        <div fxFlex="nogrow" class="breadcrumb">
           <app-date-selector></app-date-selector>
         </div>
-      </ng-container>
-
-      <!-- ADDITIONAL FILTERS -->
-      <div fxFlex="110px" class="breadcrumb additional-filters">
         <button (click)="onToggleFiltersMenu()"
-                *ngIf="searchType === searchTypes.DATASET"
                 mat-button class="additional-filters-button">
           More<br>Filters
           <br>
           <mat-icon>more_horiz</mat-icon>
         </button>
 
-        <div *ngIf="searchType !== searchTypes.DATASET" class="search-dialog-crumb">
+      </ng-container>
+
+      <!-- ADDITIONAL FILTERS -->
+      <div fxFlex="nogrow" class="breadcrumb additional-filters">
+        <div *ngIf="searchType !== searchTypes.DATASET">
           <button (click)="onToggleFiltersMenu()"
                   *ngIf="searchType !== searchTypes.DATASET"
                   mat-flat-button
@@ -107,20 +106,19 @@
         </div>
       </div>
 
-      <div fxFlex="80px" class="breadcrumb-no-divider extra-padding-top">
-        <button (click)="onClearSearch()" mat-button>
-          CLEAR
-        </button>
-      </div>
-
-      <div fxFlex class="breadcrumb-no-divider extra-padding-top">
+      <div fxFlex class="breadcrumb extra-padding-top">
         <button (click)="onDoSearch()"
                 [disabled]="!(canSearch$ | async) && !(isMaxResultsLoading$ | async) "
                 mat-flat-button color="primary">
           {{ (loading$ | async) ? 'LOADING...' : (!(canSearch$ | async) ? 'NO RESULTS' : 'SEARCH') }}
         </button>
+        <mat-icon
+          (click)="onClearSearch()"
+          matTooltip="Clear search filters"
+          class="clear-search-icon">
+          clear
+        </mat-icon>
       </div>
-
     </div>
 
     <div fxLayout="row wrap"
