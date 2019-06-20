@@ -1,0 +1,48 @@
+@import "asf-theme";
+
+$menu-height: 500px;
+
+.hidden {
+  display: none;
+}
+
+$break-small: 500px;
+$break-large: 1200px;
+
+.dataset-filters-div {
+  width: 100%;
+}
+
+.dataset-filters-card {
+  position: relative;
+  top: 15px;
+  width: 60%;
+  overflow-y: auto;
+  margin: 0 auto;
+  display: table;
+  z-index: 1000;
+
+  @media screen and (max-width: $break-small) {
+    max-height: calc(78vh - 10px);
+  }
+
+  @media screen and (min-width: $break-large) {
+    max-height: calc(80vh - 10px);
+  }
+}
+
+.bottom-list-elements {
+  padding: 1px 0;
+  position: sticky;
+  bottom: 0;
+  z-index: 2;
+  background: white;
+}
+
+.filter-scroll {
+  z-index: 1;
+}
+
+h3 {
+  color: $asf-primary;
+}

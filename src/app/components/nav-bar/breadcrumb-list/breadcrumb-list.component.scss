@@ -27,6 +27,11 @@ $break-medium: 1250px;
   border-right-color: $asf-accent;
   border-right-style: solid;
   height: 86px;
+  //border-bottom-color: red;
+  //border-bottom-style: solid;
+  //border-bottom-width: 1px;
+  font-size: 14px;
+  line-height: 15px;
 }
 
 .breadcrumb-no-divider {
@@ -107,4 +112,15 @@ $break-medium: 1250px;
 
 .search-dialog-button {
   margin-top: 10px;
+}
+
+.aoi-input {
+  cursor: default;
+}
+
+.invalid-input-animation {
+  animation: shake 0.82s;
+  transform: translate3d(0, 0, 0);
+  backface-visibility: hidden;
+  perspective: 1000px;
 }

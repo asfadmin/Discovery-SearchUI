@@ -1,8 +1,9 @@
-<mat-card class="granule-list card-spacing">
+<mat-card  class="granule-list card-spacing">
   <cdk-virtual-scroll-viewport class="scroll-viewport-height"
     minBufferPx="500" maxBufferPx="600"
     itemSize="72">
     <mat-action-list class="action-list">
+
       <div *cdkVirtualFor="let granule of granules" class="granule-item-height">
         <button
           (mouseenter)="onSetFocusedGranule(granule)"
@@ -13,10 +14,13 @@
 
           <img [src]="granule.thumbnail"
             onerror="this.src='assets/error.png'"
+            matBadgeOverlap="false"
             class="size" matListAvatar>
 
           <div class="product-name" matLine>
-            {{ granule.name | truncate : 30 }}
+            <span> {{ granule.name | truncate : 30 }} </span>
+
+
             <app-copy-to-clipboard
                *ngIf="granule.name === hoveredGranuleName"
                prompt="Copy granule name"
@@ -28,14 +32,18 @@
             <span>Date • {{ granule.metadata.date | shortDate }}</span>
           </div>
 
-          <mat-icon (click)="onZoomTo(granule)" class="ml-2" matTooltip="Zoom to granule">
+          <mat-icon (click)="onZoomTo(granule)"class="ml-2" matTooltip="Zoom to granule">
             settings_overscan
           </mat-icon>
-          <mat-icon (click)="onQueueGranule($event, granule.groupId)"
+          <mat-icon (click)="onToggleGranule($event, granule.groupId)"
             class="icon-margin"
-            matTooltip="Queue granule products">
-            add_shopping_cart
+            matTooltip="{{
+              allQueued[granule.groupId] ? 'Remove granule products from queue': 'Add granule products to queue'
+            }}">
+            {{ allQueued[granule.groupId] ? 'shopping_cart' : 'add_shopping_cart' }}
           </mat-icon>
+
+          <span style="margin-left: 10px"> {{ numberOfQueue[granule.groupId] }} </span>
         </button>
       </div>
     </mat-action-list>

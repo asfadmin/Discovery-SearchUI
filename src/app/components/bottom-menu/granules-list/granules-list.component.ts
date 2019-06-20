@@ -2,7 +2,7 @@ import {
   Component, OnInit, Input, ViewChild, ViewEncapsulation
 } from '@angular/core';
 
-import { fromEvent } from 'rxjs';
+import { fromEvent, combineLatest } from 'rxjs';
 import { tap, withLatestFrom, filter, map } from 'rxjs/operators';
 
 import { Store } from '@ngrx/store';
@@ -29,6 +29,8 @@ export class GranulesListComponent implements OnInit {
   @ViewChild(CdkVirtualScrollViewport, { static: true }) scroll: CdkVirtualScrollViewport;
 
   public granules$ = this.store$.select(granulesStore.getGranules);
+  public numberOfQueue: {[granule: string]: [number, number]};
+  public allQueued: {[granule: string]: boolean};
   public granules: models.CMRProduct[];
   public  selected: string;
 
@@ -89,6 +91,52 @@ export class GranulesListComponent implements OnInit {
     this.store$.select(uiStore.getSearchType).subscribe(
       searchType => this.searchType = searchType
     );
+
+    const queueGranules$ = combineLatest(
+      this.store$.select(queueStore.getQueuedProducts),
+      this.store$.select(granulesStore.getGranuleProducts),
+    ).pipe(
+      map(([queueProducts, searchGranules]) => {
+
+        const queuedProductGroups: {[id: string]: string[]} = queueProducts.reduce((total, product) => {
+          const granule = total[product.groupId] || [];
+
+          total[product.groupId] = [...granule, product.id];
+          return total;
+        }, {});
+
+        const numberOfQueuedProducts = {};
+
+        Object.entries(searchGranules).map(([granuleName, products]) => {
+          numberOfQueuedProducts[granuleName] = [
+            (queuedProductGroups[granuleName] || []).length,
+            (<any[]>products).length
+          ];
+        });
+
+        return numberOfQueuedProducts;
+      }
+    ));
+
+    queueGranules$.pipe(
+      map(
+        granules => Object.entries(granules)
+          .reduce((total, [granule, amt]) => {
+            total[granule] = `${amt[0]}/${amt[1]}`;
+
+            return total;
+          }, {})
+    )).subscribe(numberOfQueue => this.numberOfQueue = numberOfQueue);
+
+    queueGranules$.pipe(
+      map(
+        granules => Object.entries(granules)
+          .reduce((total, [granule, amt]) => {
+            total[granule] = amt[0] === amt[1];
+
+            return total;
+          }, {})
+    )).subscribe(allQueued => this.allQueued = allQueued);
   }
 
   private selectNextGranule(): void {
@@ -108,8 +156,12 @@ export class GranulesListComponent implements OnInit {
     this.store$.dispatch(new granulesStore.SetSelectedGranule(name));
   }
 
-  public onQueueGranule(e: Event, groupId: string): void {
-    this.store$.dispatch(new queueStore.QueueGranule(groupId));
+  public onToggleGranule(e: Event, groupId: string): void {
+    if (!this.allQueued[groupId]) {
+      this.store$.dispatch(new queueStore.QueueGranule(groupId));
+    } else {
+      this.store$.dispatch(new queueStore.RemoveGranuleFromQueue(groupId));
+    }
   }
 
   public onSetFocusedGranule(granule: models.CMRProduct): void {

@@ -31,7 +31,10 @@ export class MapComponent implements OnInit {
   public mousePosition$ = this.mapService.mousePosition$;
 
   private isMapInitialized$ = this.store$.select(mapStore.getIsMapInitialization);
-  private view$ = this.store$.select(mapStore.getMapView);
+  private viewType$ = combineLatest(
+    this.store$.select(mapStore.getMapView),
+    this.store$.select(mapStore.getMapLayerType),
+  );
 
   constructor(
     private store$: Store<AppState>,
@@ -79,15 +82,13 @@ export class MapComponent implements OnInit {
   }
 
   private updateMapOnViewChange(): void {
-    const viewBeforInitialization = this.view$.pipe(
+    const viewBeforInitialization = this.viewType$.pipe(
       withLatestFrom(this.isMapInitialized$),
       filter(([view, isInit]) => !isInit),
       map(([view, isInit]) => view)
-    );
-
-    viewBeforInitialization.subscribe(
-      view => {
-        this.setMapWith(view);
+    ).subscribe(
+      ([view, layerType]) => {
+        this.setMapWith(<models.MapViewType>view, <models.MapLayerTypes>layerType);
         this.loadUrlState.emit();
         this.store$.dispatch(new mapStore.MapInitialzed());
       }
@@ -109,11 +110,13 @@ export class MapComponent implements OnInit {
 
     const granulesLayerAfterInitialization = this.isMapInitialized$.pipe(
       filter(isMapInitiliazed => isMapInitiliazed),
-      switchMap(_ => this.view$),
+      switchMap(_ => this.viewType$),
     );
 
     granulesLayerAfterInitialization.pipe(
-      tap(view => this.setMapWith(view)),
+      tap(([view, mapLayerType]) =>
+        this.setMapWith(<models.MapViewType>view, <models.MapLayerTypes>mapLayerType)
+      ),
       switchMap(_ =>
         this.granulePolygonsLayer(this.mapService.epsg())
       )
@@ -142,7 +145,7 @@ export class MapComponent implements OnInit {
   }
 
   private redrawSearchPolygonWhenViewChanges(): void {
-    this.view$.pipe(
+    this.viewType$.pipe(
       withLatestFrom(this.mapService.searchPolygon$),
       map(([_, polygon]) => polygon),
       filter(polygon => !!polygon),
@@ -200,7 +203,7 @@ export class MapComponent implements OnInit {
     return layer;
   }
 
-  private setMapWith(viewType: models.MapViewType): void {
-    this.mapService.setMapView(viewType);
+  private setMapWith(viewType: models.MapViewType, layerType: models.MapLayerTypes): void {
+    this.mapService.setMapView(viewType, layerType);
   }
 }
