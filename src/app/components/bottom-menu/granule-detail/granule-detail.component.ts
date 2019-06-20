@@ -43,10 +43,17 @@ export class GranuleDetailComponent implements OnInit {
     granule$.pipe(
       filter(g => !!g),
       map(granule => models.datasets
-        .filter(dataset =>
-          dataset.name.toLowerCase().includes(granule.dataset.toLocaleLowerCase()) ||
-          granule.dataset.toLocaleLowerCase().includes(dataset.name.toLowerCase())
-        )[0] || models.datasets[0],
+        .filter(dataset => {
+          const [datasetName, granuleDataset] = [
+            dataset.name.toLowerCase(),
+            granule.dataset.toLocaleLowerCase()
+          ];
+
+          return (
+            datasetName.includes(granuleDataset) ||
+            granuleDataset.includes(datasetName)
+          );
+        })[0] || models.datasets[0],
       ),
     ).subscribe(dataset => this.dataset = dataset);
 
