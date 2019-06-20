@@ -83,6 +83,10 @@ export function granulesReducer(state = initState, action: GranulesActions): Gra
           ...state,
           selected: firstGranule.id
         };
+      } else if (!granules[0]) {
+        return {
+          ...state
+        };
       }
 
       const currentSelected = granules
@@ -113,7 +117,12 @@ export function granulesReducer(state = initState, action: GranulesActions): Gra
           ...state,
           selected: lastGranule.id
         };
+      } else if (!granules[0]) {
+        return {
+          ...state
+        };
       }
+
 
       const currentSelected = granules
         .filter(g => g.name === granule.name)
