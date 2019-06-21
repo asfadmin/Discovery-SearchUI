@@ -28,7 +28,7 @@
        href="https://www.asf.alaska.edu/about/how-to-cite-data/">
       Citation
     </a>
-    <button *ngIf="prop.isRelevant(p.PATH, dataset) && prop.isRelevant(p.FRAME, dataset)"
+    <button *ngIf="isGeoSearch() && prop.isRelevant(p.PATH, dataset) && prop.isRelevant(p.FRAME, dataset)"
             (click)="findSimilarGranules()"
             matTooltip="Search based on this granules path/frame"
             mat-raised-button color="primary">
