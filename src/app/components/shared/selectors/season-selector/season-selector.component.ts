@@ -15,15 +15,21 @@ import * as filtersStore from '@store/filters';
 export class SeasonSelectorComponent implements OnInit {
   public isSeasonalSearch = false;
 
-  public seasonStart$ = this.store$.select(filtersStore.getSeasonStart);
-  public seasonEnd$ = this.store$.select(filtersStore.getSeasonEnd);
+  public start: number;
+  public end: number;
 
   constructor(private store$: Store<AppState>) { }
 
   ngOnInit() {
-    combineLatest(this.seasonStart$, this.seasonEnd$).subscribe(
+    const seasonStart$ = this.store$.select(filtersStore.getSeasonStart);
+    const seasonEnd$ = this.store$.select(filtersStore.getSeasonEnd);
+
+    combineLatest(seasonStart$, seasonEnd$).subscribe(
       ([start, end]) => this.isSeasonalSearch = !!(start || end)
     );
+
+    seasonStart$.subscribe(start => this.start = start);
+    seasonEnd$.subscribe(end => this.end = end);
   }
 
   public onToggleSeasonalOptions(): void {
@@ -38,7 +44,7 @@ export class SeasonSelectorComponent implements OnInit {
     this.store$.dispatch(new filtersStore.SetSeasonEnd(dayOfYear));
   }
 
-  public dayOfYearFormat(dayOfYear: number | null): string {
+  public dayOfYearFormat(dayOfYear: number | null, month = 'numeric'): string {
     const date = new Date();
     date.setFullYear(2019);
 
@@ -50,7 +56,7 @@ export class SeasonSelectorComponent implements OnInit {
     date.setTime(timeOfFirst + dayNumMilli);
 
     return  date.toLocaleDateString('en-US', {
-      month: 'numeric', day: 'numeric'
+      month, day: 'numeric'
     });
   }
 

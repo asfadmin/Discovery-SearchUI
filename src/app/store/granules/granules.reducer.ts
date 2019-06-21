@@ -76,7 +76,13 @@ export function granulesReducer(state = initState, action: GranulesActions): Gra
       const granules = allGranulesFrom(state);
       const granule = state.products[state.selected] || null;
 
-      if (!granule && granules[0]) {
+      if (!granules[0]) {
+        return {
+          ...state
+        };
+      }
+
+      if (!granule) {
         const firstGranule = granules[0];
 
         return {
@@ -106,7 +112,13 @@ export function granulesReducer(state = initState, action: GranulesActions): Gra
       const granules = allGranulesFrom(state);
       const granule = state.products[state.selected] || null;
 
-      if (!granule && granules[granules.length - 1]) {
+      if (!granules[0]) {
+        return {
+          ...state
+        };
+      }
+
+      if (!granule) {
         const lastGranule = granules[granules.length - 1];
 
         return {
