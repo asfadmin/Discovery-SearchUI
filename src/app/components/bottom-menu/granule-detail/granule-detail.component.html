@@ -25,7 +25,7 @@
     <a mat-raised-button color="primary"
        target="_blank"
        color="accent"
-       href="https://www.asf.alaska.edu/about/how-to-cite-data/">
+       [href]="dataset.citationUrl">
       Citation
     </a>
     <button *ngIf="isGeoSearch() && prop.isRelevant(p.PATH, dataset) && prop.isRelevant(p.FRAME, dataset)"
