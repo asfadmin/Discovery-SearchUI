@@ -42,24 +42,44 @@ export class GranuleDetailComponent implements OnInit {
 
     granule$.pipe(
       filter(g => !!g),
-      map(granule => models.datasets
-        .filter(dataset => {
-          const [datasetName, granuleDataset] = [
-            dataset.name.toLowerCase(),
-            granule.dataset.toLocaleLowerCase()
-          ];
-
-          return (
-            datasetName.includes(granuleDataset) ||
-            granuleDataset.includes(datasetName)
-          );
-        })[0] || models.datasets[0],
-      ),
+      map(granule => this.datasetFor(granule)),
     ).subscribe(dataset => this.dataset = dataset);
 
    this.store$.select(uiStore.getSearchType).subscribe(
      searchType => this.searchType = searchType
    );
+  }
+
+  private datasetFor(granule: models.CMRProduct): models.Dataset {
+    const exact = (datasetName, granuleDataset) => (
+      datasetName === granuleDataset
+    );
+
+    const partial = (datasetName, granuleDataset) => (
+      datasetName.includes(granuleDataset) ||
+      granuleDataset.includes(datasetName)
+    );
+
+    return (
+      this.getDatasetMatching(granule, exact) ||
+      this.getDatasetMatching(granule, partial) ||
+      models.datasets[0]
+    );
+  }
+
+  private getDatasetMatching(
+    granule: models.CMRProduct,
+    comparitor: (datasetName: string, granuleDataset: string) => boolean
+  ): models.Dataset {
+    return  models.datasets
+      .filter(dataset => {
+        const [datasetName, granuleDataset] = [
+          dataset.name.toLowerCase(),
+          granule.dataset.toLocaleLowerCase()
+        ];
+
+        return comparitor(datasetName, granuleDataset);
+      })[0];
   }
 
   public onOpenImage(granule: models.CMRProduct): void {
