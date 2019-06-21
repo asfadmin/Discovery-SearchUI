@@ -69,7 +69,7 @@ export class GranuleDetailComponent implements OnInit {
 
   private getDatasetMatching(
     granule: models.CMRProduct,
-    comparitor: (datasetName: string, granuleDataset: string) => boolean
+    comparator: (datasetName: string, granuleDataset: string) => boolean
   ): models.Dataset {
     return  models.datasets
       .filter(dataset => {
@@ -78,7 +78,7 @@ export class GranuleDetailComponent implements OnInit {
           granule.dataset.toLocaleLowerCase()
         ];
 
-        return comparitor(datasetName, granuleDataset);
+        return comparator(datasetName, granuleDataset);
       })[0];
   }
 
