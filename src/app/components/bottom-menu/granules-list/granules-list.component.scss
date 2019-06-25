@@ -1,29 +1,24 @@
 .granule-list {
-  height: 100%;
+  height: calc(100% - 72px);
   padding: 0;
   margin: 0;
+  overflow-y: hidden;
 }
 
 .scroll-viewport-height {
-  height: 100%;
+  height: calc(100% - 0px);
+  //top: 0;
+  //bottom: 0;
+  //position: absolute;
+  width: 100%;
 }
 
 .granule-item-height {
-  height: 72px;
+  //height: 72px;
 }
 
 .action-list {
   padding-top: 0 !important;
-}
-
-.product--container {
-  display: flex;
-  flex-direction: row;
-  justify-content: flex-start;
-
-  &:hover {
-    background-color: grey;
-  }
 }
 
 .product--thumbnail {
