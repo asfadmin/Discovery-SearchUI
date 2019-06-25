@@ -72,15 +72,16 @@ export class MapService {
   }
 
   public zoomIn(): void {
-    this.mapView.view.animate({
-      zoom: this.mapView.view.getZoom() + 0.5,
-      duration: 150
-    });
+    this.zoom(0.5);
   }
 
   public zoomOut(): void {
+    this.zoom(-0.5);
+  }
+
+  private zoom(amount: number): void {
     this.mapView.view.animate({
-      zoom: this.mapView.view.getZoom() - 0.5,
+      zoom: this.mapView.view.getZoom() + amount,
       duration: 150
     });
   }
