@@ -6,14 +6,14 @@ import { ViewType } from '@models';
 import { interval, Subject, Subscription, Observable } from 'rxjs';
 import { map, takeUntil, tap, delay, take, filter, switchMap } from 'rxjs/operators';
 
+import { EnvironmentService } from './environment.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class DatapoolAuthService {
-
-  private authUrl = 'https://auth-test-jnk.asf.alaska.edu';
-  private earthdataUrl = 'https://urs.earthdata.nasa.gov';
+  private authUrl = this.env.value.auth.api;
+  private earthdataUrl = this.env.value.auth.urs;
 
   public isLoggedIn = false;
   public user = {
@@ -23,7 +23,10 @@ export class DatapoolAuthService {
 
   private loginProcess: Subscription;
 
-  constructor(private http: HttpClient) {
+  constructor(
+    private env: EnvironmentService,
+    private http: HttpClient
+  ) {
     this.checkLogin();
   }
 

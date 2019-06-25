@@ -1,6 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 
+import { map, withLatestFrom, filter, tap } from 'rxjs/operators';
 import { Store } from '@ngrx/store';
 
 import { AppState } from '@store';
@@ -19,8 +20,7 @@ import { ImageDialogComponent } from './image-dialog';
   styleUrls: ['./granule-detail.component.scss']
 })
 export class GranuleDetailComponent implements OnInit {
-  @Input() dataset: models.Dataset;
-
+  public dataset: models.Dataset;
   public searchType: models.SearchType;
   public granule: models.CMRProduct;
 
@@ -34,13 +34,52 @@ export class GranuleDetailComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.store$.select(granulesStore.getSelectedGranule).subscribe(
+    const granule$ = this.store$.select(granulesStore.getSelectedGranule);
+
+    granule$.subscribe(
       granule => this.granule = granule
     );
+
+    granule$.pipe(
+      filter(g => !!g),
+      map(granule => this.datasetFor(granule)),
+    ).subscribe(dataset => this.dataset = dataset);
 
    this.store$.select(uiStore.getSearchType).subscribe(
      searchType => this.searchType = searchType
    );
+  }
+
+  private datasetFor(granule: models.CMRProduct): models.Dataset {
+    const exact = (datasetName, granuleDataset) => (
+      datasetName === granuleDataset
+    );
+
+    const partial = (datasetName, granuleDataset) => (
+      datasetName.includes(granuleDataset) ||
+      granuleDataset.includes(datasetName)
+    );
+
+    return (
+      this.getDatasetMatching(granule, exact) ||
+      this.getDatasetMatching(granule, partial) ||
+      models.datasets[0]
+    );
+  }
+
+  private getDatasetMatching(
+    granule: models.CMRProduct,
+    comparator: (datasetName: string, granuleDataset: string) => boolean
+  ): models.Dataset {
+    return  models.datasets
+      .filter(dataset => {
+        const [datasetName, granuleDataset] = [
+          dataset.name.toLowerCase(),
+          granule.dataset.toLocaleLowerCase()
+        ];
+
+        return comparator(datasetName, granuleDataset);
+      })[0];
   }
 
   public onOpenImage(granule: models.CMRProduct): void {

@@ -2,6 +2,7 @@ export interface Dataset {
   name: string;
   date: DateRange;
   infoUrl: string;
+  citationUrl: string;
   productTypes: ProductType[];
   beamModes: string[];
   polarizations: string[];
@@ -37,6 +38,7 @@ export const datasets: Dataset[] = [{
   name: 'SENTINEL-1',
   date: { start: new Date(2014, 3, 25) },
   infoUrl: 'https://www.asf.alaska.edu/sentinel/',
+  citationUrl: 'https://www.asf.alaska.edu/sentinel/how-to-cite/',
   frequency: 'C-Band',
   source: {
     name: 'ESA',
@@ -122,6 +124,7 @@ export const datasets: Dataset[] = [{
     name: 'NASA',
     url: 'https://www.nasa.gov/'
   },
+  citationUrl: 'https://www.asf.alaska.edu/smap/how-to-cite/',
   productTypes: [{
     apiValue: 'L1A_Radar_RO_QA',
     displayName: 'L1A Radar Receive Only Data Quality'
@@ -162,6 +165,7 @@ export const datasets: Dataset[] = [{
   name: 'UAVSAR',
   date: { start: new Date(2008, 0, 1) },
   infoUrl: 'https://www.asf.alaska.edu/sar-data/uavsar/',
+  citationUrl: 'https://www.asf.alaska.edu/sar-data/uavsar/how-to-cite/',
   frequency: 'L-Band',
   source: {
     name: 'NASA',
@@ -231,6 +235,7 @@ export const datasets: Dataset[] = [{
     end: new Date(2011, 0, 1)
   },
   infoUrl: 'https://www.asf.alaska.edu/sar-data/palsar/',
+  citationUrl: 'https://www.asf.alaska.edu/sar-data/palsar/how-to-cite/',
   frequency: 'L-Band',
   source: {
     name: 'JAXA/METI',
@@ -291,6 +296,7 @@ export const datasets: Dataset[] = [{
     url: null
   },
   infoUrl: 'https://www.asf.alaska.edu/sar-data/radarsat-1/',
+  citationUrl: 'https://www.asf.alaska.edu/sar-data/radarsat-1/how-to-cite/',
   productTypes: [{
     apiValue: 'L0',
     displayName: 'Level Zero'
@@ -324,6 +330,7 @@ export const datasets: Dataset[] = [{
   },
   frequency: 'C-Band',
   infoUrl: 'https://www.asf.alaska.edu/sar-data/ers-2/',
+  citationUrl: 'https://www.asf.alaska.edu/sar-data/ers-2/how-to-cite/',
   productTypes: [{
     apiValue: 'THUMBNAIL',
     displayName: 'Thumbnail Image'
@@ -353,6 +360,7 @@ export const datasets: Dataset[] = [{
     url: 'https://global.jaxa.jp/'
   },
   infoUrl: 'https://www.asf.alaska.edu/sar-data/jers-1/',
+  citationUrl: 'https://www.asf.alaska.edu/sar-data/jers-1/how-to-cite/',
   productTypes: [{
     apiValue: 'BROWSE',
     displayName: 'Browse Image'
@@ -378,6 +386,7 @@ export const datasets: Dataset[] = [{
   },
   frequency: 'L-Band, P-Band, or C-Band',
   infoUrl: 'https://www.asf.alaska.edu/sar-data/airsar/',
+  citationUrl: 'https://www.asf.alaska.edu/sar-data/airsar/how-to-cite/',
   source: null,
   productTypes: [{
     apiValue: 'CTIF',
@@ -423,6 +432,7 @@ export const datasets: Dataset[] = [{
     url: 'https://www.nasa.gov/'
   },
   infoUrl: 'https://www.asf.alaska.edu/seasat/',
+  citationUrl: 'https://www.asf.alaska.edu/seasat/how-to-cite/',
   productTypes: [{
     apiValue: 'THUMBNAIL',
     displayName: 'Thumbnail Image'

@@ -25,7 +25,7 @@ export class CopyToClipboardComponent {
   public onCopyIconClicked(e: Event): void {
     this.clipboardService.copyFromContent(this.value);
 
-    of(this.prompt).pipe(
+    of((' ' + this.prompt).slice(1)).pipe(
       tap(() => this.prompt = this.notification),
       delay(2200)
     ).subscribe(
