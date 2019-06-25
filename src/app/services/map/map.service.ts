@@ -71,6 +71,20 @@ export class MapService {
     return this.mapView.projection.epsg;
   }
 
+  public zoomIn(): void {
+    this.mapView.view.animate({
+      zoom: this.mapView.view.getZoom() + 0.5,
+      duration: 150
+    });
+  }
+
+  public zoomOut(): void {
+    this.mapView.view.animate({
+      zoom: this.mapView.view.getZoom() - 0.5,
+      duration: 150
+    });
+  }
+
   public setLayer(layer: Layer): void {
     if (!!this.polygonLayer) {
       this.map.removeLayer(this.polygonLayer);
