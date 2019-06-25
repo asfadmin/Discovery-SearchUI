@@ -1,16 +1,11 @@
 <div class="position layout">
-  <mat-button-toggle-group
-    style="margin-bottom: 5px;" name="layerType">
+  <mat-button-toggle-group style="margin-bottom: 5px;" name="layerType">
 
-    <mat-button-toggle
-      (click)="zoomIn()"
-      matTooltip="Zoom In">
+    <mat-button-toggle (click)="zoomIn()" matTooltip="Zoom In">
       <mat-icon>add</mat-icon>
     </mat-button-toggle>
 
-    <mat-button-toggle
-      (click)="zoomOut()"
-      matTooltip="Zoom out">
+    <mat-button-toggle (click)="zoomOut()" matTooltip="Zoom out">
       <mat-icon>remove</mat-icon>
     </mat-button-toggle>
   </mat-button-toggle-group>
