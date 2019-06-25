@@ -126,6 +126,7 @@ export class MapComponent implements OnInit {
 
     const selectedGranuleAfterInitialization = this.isMapInitialized$.pipe(
       filter(isMapInitiliazed => isMapInitiliazed),
+      switchMap(_ => this.viewType$),
       switchMap(_ => granule$),
     );
 
