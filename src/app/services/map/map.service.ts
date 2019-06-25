@@ -164,7 +164,16 @@ export class MapService {
     this.focusSource.addFeature(feature);
   }
 
-  public zoomTo(feature): void {
+  public zoomToGranule(granule: models.CMRProduct): void {
+    const features = this.wktService.wktToFeature(
+      granule.metadata.polygon,
+      this.epsg()
+    );
+
+    this.zoomToFeature(features);
+  }
+
+  public zoomToFeature(feature): void {
     const extent = feature
       .getGeometry()
       .getExtent();

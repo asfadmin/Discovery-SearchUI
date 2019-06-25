@@ -70,7 +70,7 @@ export class MapComponent implements OnInit {
   public onNewSearchPolygon(polygon: string): void {
     const features = this.loadSearchPolygon(polygon);
 
-    this.mapService.zoomTo(features);
+    this.mapService.zoomToFeature(features);
   }
 
   public onFileUploadDialogClosed(successful: boolean): void {

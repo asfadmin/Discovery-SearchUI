@@ -38,8 +38,7 @@ export class GranulesListComponent implements OnInit {
 
   constructor(
     private store$: Store<AppState>,
-    private mapService: services.MapService,
-    private wktService: services.WktService,
+    private mapService: services.MapService
   ) {}
 
   ngOnInit() {
@@ -173,11 +172,6 @@ export class GranulesListComponent implements OnInit {
   }
 
   public onZoomTo(granule: models.CMRProduct): void {
-    const features = this.wktService.wktToFeature(
-      granule.metadata.polygon,
-      this.mapService.epsg()
-    );
-
-    this.mapService.zoomTo(features);
+    this.mapService.zoomToGranule(granule);
   }
 }
