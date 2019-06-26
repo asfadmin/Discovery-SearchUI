@@ -19,6 +19,7 @@ import * as models from '@models';
 import { MapService } from './map/map.service';
 import { WktService } from './wkt.service';
 import { RangeService } from './range.service';
+import { PropertyService } from './property.service';
 
 
 @Injectable({
@@ -28,6 +29,7 @@ export class UrlStateService {
   private urlParams: models.UrlParameter[];
   private params = {};
   private isNotLoaded = true;
+  private shouldDoSearch = false;
 
   constructor(
     private store$: Store<AppState>,
@@ -36,6 +38,7 @@ export class UrlStateService {
     private wktService: WktService,
     private rangeService: RangeService,
     private router: Router,
+    private prop: PropertyService,
   ) {
     this.urlParams = [
       ...this.mapParameters(),
@@ -43,6 +46,8 @@ export class UrlStateService {
       ...this.filtersParameters(),
       ...this.missionParameters(),
     ];
+
+    this.updateShouldSearch();
   }
 
   public load(): void {
@@ -85,6 +90,10 @@ export class UrlStateService {
     Object.entries(urlParamLoaders).forEach(
       ([paramName, load]) => params[paramName] && load(params[paramName])
     );
+
+    if (this.shouldDoSearch) {
+      this.store$.dispatch(new MakeSearch());
+    }
   }
 
   private missionParameters() {
@@ -474,6 +483,46 @@ export class UrlStateService {
 
   private loadSelectedMission = (mission: string): void => {
     this.store$.dispatch(new missionStore.SelectMission(mission));
+  }
+
+  private updateShouldSearch(): void {
+    const searchType$ = this.store$.select(uiStore.getSearchType);
+
+    const anyListParamsSet$  = this.store$.select(filterStore.getSearchList).pipe(
+      map(list => list.length > 0)
+    );
+
+    const anyMissionParamsSet$ = this.store$.select(missionStore.getSelectedMission).pipe(
+      map(mission => !!mission)
+    );
+
+    const anyDatasetParamsSet$ = combineLatest(
+      this.store$.select(filterStore.getSelectedDataset),
+      this.mapService.searchPolygon$,
+      this.store$.select(filterStore.getFiltersState)
+    ).pipe(
+      map(([dataset, polygon, filters]) =>
+        polygon ||
+        filters.dateRange.start || filters.dateRange.end ||
+        filters.season.start || filters.season.end ||
+        filters.productTypes.length > 0 ||
+        this.prop.isRelevant(models.Props.PATH) && !!(filters.pathRange.start || filters.pathRange.end) ||
+        this.prop.isRelevant(models.Props.FRAME) && !!(filters.frameRange.start || filters.frameRange.end) ||
+        this.prop.isRelevant(models.Props.BEAM_MODE) && (filters.beamModes.length > 0) ||
+        this.prop.isRelevant(models.Props.POLARIZATION) && (filters.polarizations.length > 0)  ||
+        this.prop.isRelevant(models.Props.FLIGHT_DIRECTION) && (filters.flightDirections.size > 0)
+      ),
+    );
+
+    const shouldSearchDataset = searchType$.pipe(
+      switchMap(searchType => ({
+          [models.SearchType.DATASET]: anyDatasetParamsSet$,
+          [models.SearchType.LIST]: anyListParamsSet$,
+          [models.SearchType.MISSION]: anyMissionParamsSet$
+        })[searchType]
+      ),
+      map(shouldSearch => !!shouldSearch)
+    ).subscribe(shouldSearch => this.shouldDoSearch = shouldSearch);
   }
 
   private isNumber = n => !isNaN(n) && isFinite(n);
