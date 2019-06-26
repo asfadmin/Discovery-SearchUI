@@ -6,6 +6,7 @@ import { Store } from '@ngrx/store';
 import { AppState } from '@store';
 import * as filtersStore from '@store/filters';
 
+import { PropertyService } from '@services';
 import * as models from '@models';
 
 @Component({
@@ -27,8 +28,12 @@ export class OtherSelectorComponent implements OnInit {
   public selectedDataset$ = this.store$.select(filtersStore.getSelectedDataset);
 
   public flightDirectionTypes = models.flightDirections;
+  public p = models.Props;
 
-  constructor(private store$: Store<AppState>) { }
+  constructor(
+    private store$: Store<AppState>,
+    public prop: PropertyService,
+  ) { }
 
   ngOnInit() {
     this.selectedDataset$.subscribe(dataset => this.dataset = dataset);
