@@ -126,6 +126,7 @@ export class AppComponent implements OnInit {
   }
 
   public onClearSearch(): void {
+    console.log('clearing search...');
     this.store$.dispatch(new granulesStore.ClearGranules());
     this.store$.dispatch(new uiStore.CloseBottomMenu());
 

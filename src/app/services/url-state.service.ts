@@ -116,6 +116,13 @@ export class UrlStateService {
       ),
       loader: this.loadSelectedFilter
     }, {
+      name: 'resultsLoaded',
+      source: this.store$.select(granulesStore.getAreResultsLoaded).pipe(
+        skip(1),
+        map(resultsLoaded => ({ resultsLoaded }))
+      ),
+      loader: this.loadAreResultsLoaded
+    }, {
       name: 'searchType',
       source: this.store$.select(uiStore.getSearchType).pipe(
         skip(1),
@@ -485,44 +492,14 @@ export class UrlStateService {
     this.store$.dispatch(new missionStore.SelectMission(mission));
   }
 
+  private loadAreResultsLoaded = (areLoaded: string): void => {
+    this.store$.dispatch(new granulesStore.SetResultsLoaded(areLoaded === 'true'));
+  }
+
   private updateShouldSearch(): void {
-    const searchType$ = this.store$.select(uiStore.getSearchType);
-
-    const anyListParamsSet$  = this.store$.select(filterStore.getSearchList).pipe(
-      map(list => list.length > 0)
-    );
-
-    const anyMissionParamsSet$ = this.store$.select(missionStore.getSelectedMission).pipe(
-      map(mission => !!mission)
-    );
-
-    const anyDatasetParamsSet$ = combineLatest(
-      this.store$.select(filterStore.getSelectedDataset),
-      this.mapService.searchPolygon$,
-      this.store$.select(filterStore.getFiltersState)
-    ).pipe(
-      map(([dataset, polygon, filters]) =>
-        polygon ||
-        filters.dateRange.start || filters.dateRange.end ||
-        filters.season.start || filters.season.end ||
-        filters.productTypes.length > 0 ||
-        this.prop.isRelevant(models.Props.PATH) && !!(filters.pathRange.start || filters.pathRange.end) ||
-        this.prop.isRelevant(models.Props.FRAME) && !!(filters.frameRange.start || filters.frameRange.end) ||
-        this.prop.isRelevant(models.Props.BEAM_MODE) && (filters.beamModes.length > 0) ||
-        this.prop.isRelevant(models.Props.POLARIZATION) && (filters.polarizations.length > 0)  ||
-        this.prop.isRelevant(models.Props.FLIGHT_DIRECTION) && (filters.flightDirections.size > 0)
-      ),
-    );
-
-    const shouldSearchDataset = searchType$.pipe(
-      switchMap(searchType => ({
-          [models.SearchType.DATASET]: anyDatasetParamsSet$,
-          [models.SearchType.LIST]: anyListParamsSet$,
-          [models.SearchType.MISSION]: anyMissionParamsSet$
-        })[searchType]
-      ),
-      map(shouldSearch => !!shouldSearch)
-    ).subscribe(shouldSearch => this.shouldDoSearch = shouldSearch);
+    this.store$.select(granulesStore.getAreResultsLoaded).pipe(
+      filter(wereResultsLoaded => wereResultsLoaded),
+    ).subscribe(shouldSearch => this.shouldDoSearch = true);
   }
 
   private isNumber = n => !isNaN(n) && isFinite(n);
