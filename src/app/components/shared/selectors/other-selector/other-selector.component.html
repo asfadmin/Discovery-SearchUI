@@ -3,7 +3,7 @@
     <mat-select
       [(ngModel)]="productTypes"
       (selectionChange)="onNewProductTypes($event.value)"
-      [disabled]="dataset.productTypes.length < 2"
+      [disabled]="dataset.productTypes.length < 1"
       placeholder="Product Type" multiple>
         <mat-option
           *ngFor="let type of dataset.productTypes"
@@ -12,12 +12,12 @@
             {{type.displayName}}
         </mat-option>
     </mat-select>
-    <mat-hint *ngIf="dataset.productTypes.length >= 2" align="start">
+    <mat-hint *ngIf="dataset.productTypes.length >= 1" align="start">
       {{ productTypes?.length || 0 }}/{{ dataset.productTypes.length }}
       product types selected
     </mat-hint>
 
-    <mat-hint *ngIf="dataset.productTypes.length < 2" align="start">
+    <mat-hint *ngIf="dataset.productTypes.length < 1" align="start">
       No product types to select
     </mat-hint>
   </mat-form-field>
@@ -26,19 +26,18 @@
     <mat-select
       (selectionChange)="onNewDatasetBeamModes($event.value)"
       [(ngModel)]="beamModes"
-      [disabled]="dataset.beamModes.length < 2"
-      placeholder="Beam Mode"
-      multiple>
+      [disabled]="!prop.isRelevant(p.BEAM_MODE)"
+      placeholder="Beam Mode" multiple>
         <mat-option *ngFor="let mode of dataset.beamModes" [value]="mode">
           {{mode}}
         </mat-option>
     </mat-select>
-    <mat-hint *ngIf="dataset.beamModes.length >= 2"  align="start">
+    <mat-hint *ngIf="prop.isRelevant(p.BEAM_MODE)"  align="start">
       {{ beamModes?.length || 0 }}/{{ dataset.beamModes.length }}
       beam modes selected
     </mat-hint>
 
-    <mat-hint *ngIf="dataset.beamModes.length < 2" align="start">
+    <mat-hint *ngIf="!prop.isRelevant(p.BEAM_MODE)" align="start">
       No beam modes to select
     </mat-hint>
   </mat-form-field>
@@ -47,17 +46,17 @@
     <mat-select
       (selectionChange)="onNewDatasetPolarizations($event.value)"
       [(ngModel)]="polarizations"
-      [disabled]="dataset.polarizations.length < 2"
+      [disabled]="!prop.isRelevant(p.POLARIZATION)"
       placeholder="Polarization" multiple>
       <mat-option *ngFor="let pol of dataset.polarizations" [value]="pol">
         {{pol}}
       </mat-option>
     </mat-select>
-    <mat-hint *ngIf="dataset.polarizations.length >= 2"  align="start">
+    <mat-hint *ngIf="prop.isRelevant(p.POLARIZATION)"  align="start">
       {{ polarizations?.length || 0 }}/{{ dataset.polarizations.length }}
       polarizations selected
     </mat-hint>
-    <mat-hint *ngIf="dataset.polarizations.length < 2" align="start">
+    <mat-hint *ngIf="!prop.isRelevant(p.POLARIZATION)" align="start">
       No polarizations to select
     </mat-hint>
 
@@ -67,11 +66,19 @@
     <mat-select
       (selectionChange)="onNewFlightDirectionsSelected($event.value)"
       [(ngModel)]="flightDirections"
-      placeholder="Direction"
-      multiple>
+      [disabled]="!prop.isRelevant(p.FLIGHT_DIRECTION)"
+      placeholder="Direction" multiple>
       <mat-option *ngFor="let direction of flightDirectionTypes" [value]="direction">
         {{direction}}
       </mat-option>
     </mat-select>
+
+    <mat-hint *ngIf="prop.isRelevant(p.FLIGHT_DIRECTION)" align="start">
+      {{ flightDirections?.length || 0 }}/2
+      flight directions selected
+    </mat-hint>
+    <mat-hint *ngIf="!prop.isRelevant(p.FLIGHT_DIRECTION)" align="start">
+      No flight directions to select
+    </mat-hint>
   </mat-form-field>
 </div>

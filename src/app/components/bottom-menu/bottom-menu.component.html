@@ -12,42 +12,38 @@
       </mat-icon>
     </button>
   </div>
-  <div class="bottom-menu--background  bottom-menu--layout">
-    <mat-card class="card-spacing scrollable-card bottom-menu--column">
-      <mat-card-subtitle style="display: flex; justify-content: space-between" *ngIf="numberOfGranules$ | async as numberOfGranules" class="header">
-        <div>
-            <mat-icon (click)="selectPreviousGranule()" class="clickable noselect">
-                arrow_drop_up
-            </mat-icon>
-            <mat-icon (click)="selectNextGranule()" class="clickable noselect">
-                arrow_drop_down
-            </mat-icon>
-        </div>
-
+  <div class="bottom-menu--background  bottom-menu--layout"
+       fxLayout="row"
+       fxLayout.lt-lg="column">
+    <mat-card class="card-spacing bottom-menu--column granule-column"
+        fxFlex="33" fxFlexFill>
+      <mat-card-subtitle *ngIf="numberOfGranules$ | async as numberOfGranules" class="header">
         <div>
           {{ numberOfGranules }} Granule{{ numberOfGranules === 1 ? '' : 's' }}
-        </div>
+          <div *ngIf="allProducts$ | async as products">
+            <mat-icon
+               class="queue-all-icon clickable noselect"
+               matTooltip="Add all results to queue"
+              [matMenuTriggerFor]="addAllProducts">
+                add_shopping_cart
+            </mat-icon>
 
-        <div *ngIf="allProducts$ | async as products">
-          <mat-icon
-             class="queue-all-button clickable noselect"
-             matTooltip="Add all results to queue"
-            [matMenuTriggerFor]="addAllProducts">
-              add_shopping_cart
-          </mat-icon>
-
-          <mat-menu #addAllProducts="matMenu">
-            <button (click)="queueAllProducts(products)" mat-menu-item>
-              Add {{ products.length }} product{{ products.length === 1 ? '' : 's'}} to queue
-            </button>
-          </mat-menu>
+            <mat-menu #addAllProducts="matMenu">
+              <button (click)="queueAllProducts(products)" mat-menu-item>
+                Add {{ products.length }} product{{ products.length === 1 ? '' : 's'}} to queue
+              </button>
+            </mat-menu>
+          </div>
         </div>
       </mat-card-subtitle>
-      <app-granules-list>
-      </app-granules-list>
+      <div class="app-granule-list">
+        <app-granules-list>
+        </app-granules-list>
+      </div>
     </mat-card>
 
-    <mat-card class="card-spacing bottom-menu--column">
+    <mat-card class="card-spacing bottom-menu--column"
+              fxFlex="34" fxFlexFill>
       <mat-card-subtitle class="header">
         Granule Detail
       </mat-card-subtitle>
@@ -57,7 +53,8 @@
       </mat-card-content>
     </mat-card>
 
-    <mat-card class="card-spacing scrollable-card bottom-menu--column">
+    <mat-card class="card-spacing bottom-menu--column"
+              fxFlex="33" fxFlexFill>
       <mat-card-subtitle class="header">
         <span *ngIf="selectedProducts$ | async as products; else defaultProductsHeader">
           {{ products.length || '' }} Granule Product{{ (products || []).length === 1 ? '' : 's'}}

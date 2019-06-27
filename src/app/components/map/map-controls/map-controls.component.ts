@@ -7,6 +7,7 @@ import { AppState } from '@store';
 import * as mapStore from '@store/map';
 
 import * as models from '@models';
+import * as services from '@services';
 
 @Component({
   selector: 'app-map-controls',
@@ -21,7 +22,10 @@ export class MapControlsComponent implements OnInit {
   public layerType: models.MapLayerTypes;
   public viewTypes = models.MapViewType;
 
-  constructor(private store$: Store<AppState>) { }
+  constructor(
+    private store$: Store<AppState>,
+    private mapService: services.MapService,
+  ) { }
 
   ngOnInit() {
     this.store$.select(mapStore.getMapLayerType).subscribe(
@@ -39,5 +43,13 @@ export class MapControlsComponent implements OnInit {
       new mapStore.SetSatelliteView();
 
     this.store$.dispatch(action);
+  }
+
+  public zoomIn(): void {
+    this.mapService.zoomIn();
+  }
+
+  public zoomOut(): void {
+    this.mapService.zoomOut();
   }
 }

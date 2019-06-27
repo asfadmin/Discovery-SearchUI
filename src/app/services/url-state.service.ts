@@ -19,6 +19,7 @@ import * as models from '@models';
 import { MapService } from './map/map.service';
 import { WktService } from './wkt.service';
 import { RangeService } from './range.service';
+import { PropertyService } from './property.service';
 
 
 @Injectable({
@@ -28,6 +29,7 @@ export class UrlStateService {
   private urlParams: models.UrlParameter[];
   private params = {};
   private isNotLoaded = true;
+  private shouldDoSearch = false;
 
   constructor(
     private store$: Store<AppState>,
@@ -36,6 +38,7 @@ export class UrlStateService {
     private wktService: WktService,
     private rangeService: RangeService,
     private router: Router,
+    private prop: PropertyService,
   ) {
     this.urlParams = [
       ...this.mapParameters(),
@@ -43,6 +46,8 @@ export class UrlStateService {
       ...this.filtersParameters(),
       ...this.missionParameters(),
     ];
+
+    this.updateShouldSearch();
   }
 
   public load(): void {
@@ -85,6 +90,10 @@ export class UrlStateService {
     Object.entries(urlParamLoaders).forEach(
       ([paramName, load]) => params[paramName] && load(params[paramName])
     );
+
+    if (this.shouldDoSearch) {
+      this.store$.dispatch(new MakeSearch());
+    }
   }
 
   private missionParameters() {
@@ -106,6 +115,13 @@ export class UrlStateService {
         map(selectedFilter => ({ selectedFilter }))
       ),
       loader: this.loadSelectedFilter
+    }, {
+      name: 'resultsLoaded',
+      source: this.store$.select(granulesStore.getAreResultsLoaded).pipe(
+        skip(1),
+        map(resultsLoaded => ({ resultsLoaded }))
+      ),
+      loader: this.loadAreResultsLoaded
     }, {
       name: 'searchType',
       source: this.store$.select(uiStore.getSearchType).pipe(
@@ -474,6 +490,16 @@ export class UrlStateService {
 
   private loadSelectedMission = (mission: string): void => {
     this.store$.dispatch(new missionStore.SelectMission(mission));
+  }
+
+  private loadAreResultsLoaded = (areLoaded: string): void => {
+    this.store$.dispatch(new granulesStore.SetResultsLoaded(areLoaded === 'true'));
+  }
+
+  private updateShouldSearch(): void {
+    this.store$.select(granulesStore.getAreResultsLoaded).pipe(
+      filter(wereResultsLoaded => wereResultsLoaded),
+    ).subscribe(shouldSearch => this.shouldDoSearch = true);
   }
 
   private isNumber = n => !isNaN(n) && isFinite(n);

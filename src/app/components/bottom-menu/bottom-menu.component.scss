@@ -15,10 +15,9 @@
 
 .bottom-menu-wrapper {
   height: 40%;
-  max-height: 90%;
   width: 100%;
   margin: 0;
-  padding: 0 0 20px 0;
+  padding: 0;
   right: 0;
   bottom: 0;
   position: fixed;
@@ -71,12 +70,12 @@
 }
 
 .bottom-menu--column {
-  width: 34%;
   min-width: 300px;
   //max-height: 510px;
   padding: 0;
   margin: 0;
-  overflow: visible;
+  //overflow: hidden;
+  //min-height: 400px;
 }
 
 .header {
@@ -91,6 +90,17 @@
   color: $asf-primary-dark;
 }
 
-.queue-all-button {
-  margin-right: 5px;
+.queue-all-icon {
+  position: absolute;
+  top: 0;
+  margin-left: 51px;
+  margin-top: 5px;
+}
+
+.granule-column {
+  //overflow-y: hidden;
+}
+
+.app-granule-list {
+  height: 100%;
 }

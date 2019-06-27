@@ -415,7 +415,6 @@ export const getMaxSearchResults = createSelector(
   (state: FiltersState) => state.maxResults
 );
 
-
 export const getSearchList = createSelector(
   getFiltersState,
   (state: FiltersState) => state.searchList
