@@ -1,25 +1,24 @@
 <div fxFlex fxLayout="column">
-  <mat-form-field>
+  <mat-form-field *ngIf="prop.isRelevant(p.PATH)">
     <input matInput
       (input)="onPathStartChanged($event.target.value)"
       [(ngModel)]="pathRange.start"
       type="number" name="pathStart" placeholder="Path Start">
   </mat-form-field>
-  <mat-form-field class="range-form-input">
+  <mat-form-field *ngIf="prop.isRelevant(p.PATH)" class="range-form-input">
     <input matInput
       (input)="onPathEndChanged($event.target.value)"
       [(ngModel)]="pathRange.end"
       type="number" name="pathEnd" placeholder="Path End">
   </mat-form-field>
 
-  <mat-form-field>
+  <mat-form-field *ngIf="prop.isRelevant(p.FRAME)">
     <input matInput
       (input)="onFrameStartChanged($event.target.value)"
       [(ngModel)]="frameRange.start"
       type="number" name="frameStart" placeholder="Frame Start">
-
   </mat-form-field>
-  <mat-form-field class="range-form-input">
+  <mat-form-field *ngIf="prop.isRelevant(p.FRAME)" class="range-form-input">
     <input matInput
       (input)="onFrameEndChanged($event.target.value)"
       [(ngModel)]="frameRange.end"
