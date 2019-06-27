@@ -8,6 +8,7 @@ export enum GranulesActionType {
 
   SET_FOCUSED_GRANULE = '[Granules] Set Focused Granule',
   CLEAR_FOCUSED_GRANULE = '[Granules] Clear Focused Granule',
+  SET_RESULTS_LOADED = '[Granules] Set Results Loaded',
 
   SET_SELECTED_GRANULE = '[Granules] Set Selected Granule',
   SELECT_NEXT_GRANULE = '[Granules] Select Next Granule',
@@ -28,6 +29,12 @@ export class SetSelectedGranule implements Action {
   public readonly type = GranulesActionType.SET_SELECTED_GRANULE;
 
   constructor(public payload: string) {}
+}
+
+export class SetResultsLoaded implements Action {
+  public readonly type = GranulesActionType.SET_RESULTS_LOADED;
+
+  constructor(public payload: boolean) {}
 }
 
 export class SelectNextGranule implements Action {
@@ -56,4 +63,5 @@ export type GranulesActions =
   | SelectNextGranule
   | SelectPreviousGranule
   | SetFocusedGranule
-  | ClearFocusedGranule;
+  | ClearFocusedGranule
+  | SetResultsLoaded;
