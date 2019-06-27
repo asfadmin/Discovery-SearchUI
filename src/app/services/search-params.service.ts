@@ -77,7 +77,6 @@ export class SearchParamsService {
         this.maxResults$(),
       ).pipe(
         map((params: any[]) => params
-          .filter(param => !!Object.values(param)[0])
           .reduce(
             (total, param) =>  ({...total, ...param}),
             {})
@@ -123,7 +122,7 @@ export class SearchParamsService {
         return [range.start, range.end]
           .map(date => !!date ? date.toISOString() : date);
       }),
-      map(([start, end]) => ({ start, end }))
+      map(([start, end]) => ({ start, end })),
     );
   }
 
