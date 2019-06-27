@@ -50,7 +50,6 @@ export class DateSelectorComponent implements OnInit {
   }
 
   public onStartDateChange(e: MatDatepickerInputEvent<Date>) {
-    console.log(e.value);
     this.store$.dispatch(new filtersStore.SetStartDate(e.value));
   }
 
