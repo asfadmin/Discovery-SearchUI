@@ -1,5 +1,20 @@
+import { Props } from '../filters.model';
+
 export const alos = {
   name: 'ALOS PALSAR',
+  properties: new Set<Props>([
+    Props.DATE,
+    Props.BEAM_MODE,
+    Props.PATH,
+    Props.FRAME,
+    Props.FLIGHT_DIRECTION,
+    Props.POLARIZATION,
+    Props.ABSOLUTE_ORBIT,
+    Props.OFF_NADIR_ANGLE,
+    Props.FARADAY_ROTATION,
+    Props.STACK_SIZE,
+    Props.BASELINE_TOOL,
+  ]),
   apiValue: { platform: 'ALOS' },
   date: {
     start: new Date(2006, 0, 1),

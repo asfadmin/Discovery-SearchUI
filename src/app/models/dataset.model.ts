@@ -1,4 +1,5 @@
 import * as fromDatasets from './datasets';
+import { Props } from './filters.model';
 
 export interface Dataset {
   name: string;
@@ -14,6 +15,7 @@ export interface Dataset {
     name: string;
     url: string | null;
   } | null;
+  properties: Set<Props>;
 }
 
 export enum MissionDataset {

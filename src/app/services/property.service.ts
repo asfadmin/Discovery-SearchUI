@@ -24,6 +24,6 @@ export class PropertyService {
   public isRelevant(prop: models.Props, dataset?: models.Dataset): boolean {
     const currentDataset = dataset || this.dataset;
 
-    return models.datasetProperties[prop].includes(currentDataset.name);
+    return currentDataset.properties.has(prop);
   }
 }

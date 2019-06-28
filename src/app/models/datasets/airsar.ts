@@ -1,5 +1,13 @@
+import { Props } from '../filters.model';
+
 export const airsar = {
   name: 'AIRSAR',
+  properties: new Set<Props>([
+    Props.DATE,
+    Props.BEAM_MODE,
+    Props.MISSION_NAME,
+    Props.FARADAY_ROTATION,
+  ]),
   apiValue: { platform: 'AIRSAR' },
   date: {
     start: new Date(1990, 0, 1),
