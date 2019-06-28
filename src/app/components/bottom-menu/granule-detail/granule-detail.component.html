@@ -136,7 +136,17 @@
 
           <li *ngIf="prop.isRelevant(p.MISSION_NAME, dataset)"
             class="detail-item-margin">
-            <b>Mission Name </b> • {{ granule.metadata.missionName }}
+            <span class="v-mid"> <b>Mission Name </b> • {{ granule.metadata.missionName }} </span>
+
+            <mat-icon *ngIf="isGeoSearch()"
+              [matMenuTriggerFor]="addMissionMenu"
+              class="v-mid clickable">
+                add
+            </mat-icon>
+
+            <mat-menu #addMissionMenu="matMenu">
+              <button (click)="addMission()" mat-menu-item>Add polarization to search</button>
+            </mat-menu>
           </li>
 
           <li *ngIf="prop.isRelevant(p.FLIGHT_LINE, dataset)"
