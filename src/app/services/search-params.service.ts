@@ -111,8 +111,7 @@ export class SearchParamsService {
 
   private selectedDataset$() {
     return this.store$.select(filterStore.getSelectedDataset).pipe(
-      map(dataset => dataset.name.replace('ALOS PALSAR', 'ALOS')),
-      map(dataset => ({ platform: dataset }))
+      map(dataset => ({...dataset.apiValue})),
     );
   }
 

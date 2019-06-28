@@ -5,7 +5,8 @@ import { Store } from '@ngrx/store';
 import { AppState } from '@store';
 import * as filtersStore from '@store/filters';
 
-import { Range } from '@models';
+import { Range, Props } from '@models';
+import { PropertyService } from '@services';
 
 @Component({
   selector: 'app-path-selector',
@@ -16,9 +17,13 @@ export class PathSelectorComponent implements OnInit {
   public pathRange: Range<number | null>;
   public frameRange: Range<number | null>;
 
+  public p = Props;
   public shouldOmitSearchPolygon$ = this.store$.select(filtersStore.getShouldOmitSearchPolygon);
 
-  constructor(private store$: Store<AppState>) { }
+  constructor(
+    public prop: PropertyService,
+    private store$: Store<AppState>
+  ) { }
 
   ngOnInit() {
     this.store$.select(filtersStore.getPathRange).subscribe(

@@ -240,6 +240,7 @@ export function filtersReducer(state = initState, action: FiltersActions): Filte
     }
 
     case FiltersActionType.SET_PRODUCT_TYPES: {
+      console.log(action.payload);
       return {
         ...state,
         productTypes: [ ...action.payload ]
