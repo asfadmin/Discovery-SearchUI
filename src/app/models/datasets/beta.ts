@@ -6,6 +6,7 @@ export const beta = {
     Props.DATE,
     Props.BEAM_MODE,
     Props.PATH,
+    Props.FLIGHT_DIRECTION,
     Props.MISSION_NAME,
   ]),
   apiValue: { asfplatform: 'SENTINEL-1 INTERFEROGRAM (BETA)' },
