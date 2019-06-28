@@ -6,7 +6,6 @@ import { MatSharedModule } from '@shared';
 import { ListSearchModule, ListSearchComponent } from './list-search';
 import { DatasetSearchModule, DatasetSearchComponent } from './dataset-search';
 import { SearchComponent } from './search.component';
-import { MissionSearchModule } from './mission-search';
 
 @NgModule({
   declarations: [SearchComponent],
@@ -15,7 +14,6 @@ import { MissionSearchModule } from './mission-search';
     MatSharedModule,
     ListSearchModule,
     DatasetSearchModule,
-    MissionSearchModule,
   ],
   exports: [
     SearchComponent

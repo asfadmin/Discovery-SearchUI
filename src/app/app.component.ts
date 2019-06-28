@@ -135,7 +135,8 @@ export class AppComponent implements OnInit {
 
       const actions = [
         new filterStore.ClearDatasetFilters(),
-        new mapStore.SetMapInteractionMode(models.MapInteractionModeType.DRAW)
+        new mapStore.SetMapInteractionMode(models.MapInteractionModeType.DRAW),
+        new missionStore.ClearSelectedMission()
       ];
 
       actions.forEach(
@@ -143,8 +144,6 @@ export class AppComponent implements OnInit {
       );
     } else if (this.searchType === models.SearchType.LIST) {
       this.store$.dispatch(new filterStore.ClearListFilters());
-    } else if (this.searchType === models.SearchType.MISSION) {
-      this.store$.dispatch(new missionStore.ClearSelectedMission());
     }
   }
 
