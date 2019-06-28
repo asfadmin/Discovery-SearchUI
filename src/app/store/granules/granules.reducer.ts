@@ -59,7 +59,7 @@ export function granulesReducer(state = initState, action: GranulesActions): Gra
         ...state,
 
         ids: Object.keys(products),
-        selected: null,
+        selected: products[state.selected] ? products[state.selected].id : null,
         focused: null,
 
         areResultsLoaded: true,

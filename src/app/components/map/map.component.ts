@@ -52,7 +52,7 @@ export class MapComponent implements OnInit {
     );
 
     this.mapService.newSelectedGranule$.pipe(
-      map(gName => new granulesStore.SetSelectedGranule(gName))
+      map(granuleId => new granulesStore.SetSelectedGranule(granuleId))
     ).subscribe(
       action => this.store$.dispatch(action)
     );
