@@ -1,31 +1,30 @@
-  <form #dateForm="ngForm"
-    (keydown.enter)="$event.preventDefault()"
-    class="date-selector">
-    <mat-form-field
-      class="date-input-field">
-      <input matInput
-        [(ngModel)]="startDate"
-        (dateChange)="onStartDateChange($event)"
-        [min]="extrema.start.min"
-        [max]="extrema.start.max"
-        [matDatepicker]="start"
-        class="clickable"
-        name="startInput"
-        placeholder="Start Date">
-      <mat-datepicker-toggle matSuffix [for]="start"></mat-datepicker-toggle>
-      <mat-datepicker startView="multi-year" #start></mat-datepicker>
-    </mat-form-field>
+<form #dateForm="ngForm"
+  (keydown.enter)="$event.preventDefault()"
+  class="date-selector">
+  <mat-form-field class="date-input-field">
+    <input matInput
+      [(ngModel)]="startDate"
+      (dateChange)="onStartDateChange($event)"
+      [min]="extrema.start.min"
+      [max]="extrema.start.max"
+      [matDatepicker]="start"
+      class="clickable"
+      name="startInput"
+      placeholder="Start Date">
+    <mat-datepicker-toggle matSuffix [for]="start"></mat-datepicker-toggle>
+    <mat-datepicker startView="multi-year" #start></mat-datepicker>
+  </mat-form-field>
 
-    <mat-form-field class="date-input-field">
-      <input matInput
-        [(ngModel)]="endDate"
-        (dateChange)="onEndDateChange($event)"
-        [min]="extrema.end.min"
-        [max]="extrema.end.max"
-        [matDatepicker]="end"
-        placeholder="End Date"
-        name="endInput" >
-      <mat-datepicker-toggle matSuffix [for]="end"></mat-datepicker-toggle>
-      <mat-datepicker startView="multi-year" #end></mat-datepicker>
-    </mat-form-field>
-  </form>
+  <mat-form-field class="date-input-field">
+    <input matInput
+      [(ngModel)]="endDate"
+      (dateChange)="onEndDateChange($event)"
+      [min]="extrema.end.min"
+      [max]="extrema.end.max"
+      [matDatepicker]="end"
+      placeholder="End Date"
+      name="endInput" >
+    <mat-datepicker-toggle matSuffix [for]="end"></mat-datepicker-toggle>
+    <mat-datepicker startView="multi-year" #end></mat-datepicker>
+  </mat-form-field>
+</form>
