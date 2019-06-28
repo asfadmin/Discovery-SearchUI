@@ -130,6 +130,13 @@ export class UrlStateService {
       ),
       loader: this.loadSearchType
     }, {
+      name: 'granule',
+      source: this.store$.select(granulesStore.getSelectedGranule).pipe(
+        skip(1),
+        map(granule => ({ granule: !!granule ? granule.id : null }))
+      ),
+      loader: this.loadSelectedGranule
+    }, {
       name: 'uiView',
       source: this.store$.select(uiStore.getUiView).pipe(
         skip(1),
@@ -494,6 +501,10 @@ export class UrlStateService {
 
   private loadAreResultsLoaded = (areLoaded: string): void => {
     this.store$.dispatch(new granulesStore.SetResultsLoaded(areLoaded === 'true'));
+  }
+
+  private loadSelectedGranule = (granuleId: string): void => {
+    this.store$.dispatch(new granulesStore.SetSelectedGranule(granuleId));
   }
 
   private updateShouldSearch(): void {
