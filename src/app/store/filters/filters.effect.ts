@@ -9,6 +9,7 @@ import { map, withLatestFrom, tap } from 'rxjs/operators';
 import { AppState } from '../app.reducer';
 import * as filtersAction from './filters.action';
 import * as filtersReducer from './filters.reducer';
+import { ClearSelectedMission } from '../mission/mission.action';
 
 import { MapService } from '../../services/map/map.service';
 import * as models from '@models';
@@ -25,6 +26,11 @@ export class FiltersEffects {
   @Effect() updateDateRangeOnDatasetRemoved$: Observable<Action> = this.actions$.pipe(
     ofType<filtersAction.SetSelectedDataset>(filtersAction.FiltersActionType.SET_SELECTED_DATASET),
     map(action => new filtersAction.ClearDateRange())
+  );
+
+  @Effect() clearMissionWhenDatasetChanges: Observable<Action> = this.actions$.pipe(
+    ofType<filtersAction.SetSelectedDataset>(filtersAction.FiltersActionType.SET_SELECTED_DATASET),
+    map(action => new ClearSelectedMission())
   );
 
   @Effect({ dispatch: false }) setPolygonStyleWhenOmittingSearchPolygon$: Observable<void> = this.actions$.pipe(

@@ -35,4 +35,21 @@
     </div>
   </mat-expansion-panel>
 
+  <mat-expansion-panel *ngIf="prop.isRelevant(p.MISSION_NAME)"
+    [expanded]="defaultPanelOpenState" [disabled]="panelIsDisabled">
+    <mat-expansion-panel-header [collapsedHeight]="customCollapsedHeight" [expandedHeight]="customExpandedHeight">
+      <mat-panel-title>
+        Mission Selector
+      </mat-panel-title>
+    </mat-expansion-panel-header>
+
+    <app-mission-search
+      (newMissionSelected)="onNewMissionSelected($event)"
+      [dataset$]="dataset$"
+      [selectedMission]="selectedMission$ | async"
+      [missionsByDataset$]="missionsByDataset$"
+      [missionDatasets$]="missionDatasets$">
+    </app-mission-search>
+  </mat-expansion-panel>
+
 </mat-accordion>
