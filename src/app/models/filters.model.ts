@@ -18,35 +18,3 @@ export const apiParamNames = {
   [Props.PATH]: 'relativeOrbit',
   [Props.FRAME]: 'frame',
 };
-
-export const allDatasets = [
-  'SENTINEL-1', 'SMAP', 'UAVSAR', 'ALOS PALSAR', 'RADARSAT-1', 'ERS', 'JERS-1', 'AIRSAR', 'SEASAT'
-];
-
-const allExcept = datasets =>
-  allDatasets.filter(v => !datasets.includes(v));
-
-export const datasetProperties = {
-  [Props.DATE]:  [...allDatasets],
-  [Props.BEAM_MODE]: [...allDatasets],
-  [Props.PATH]: [
-    ...allExcept(['UAVSAR', 'AIRSAR', 'SMAP'])
-  ],
-  [Props.FRAME]: [
-    ...allExcept(['UAVSAR', 'AIRSAR', 'SMAP'])
-  ],
-  [Props.FLIGHT_DIRECTION]: [
-    ...allExcept(['AIRSAR'])
-  ],
-  [Props.POLARIZATION]: [
-    ...allExcept(['AIRSAR', 'SMAP'])
-  ],
-  [Props.ABSOLUTE_ORBIT]: [
-    ...allExcept(['AIRSAR', 'UAVSAR'])
-  ],
-  [Props.MISSION_NAME]: ['UAVSAR', 'AIRSAR'],
-  [Props.FLIGHT_LINE]: ['AIRSAR'],
-  [Props.OFF_NADIR_ANGLE]: ['ALOS PALSAR'],
-  [Props.FARADAY_ROTATION]: ['ALOS PALSAR'],
-  [Props.BASELINE_TOOL]: ['SENTINEL-1', 'ALOS PALSAR', 'RADARSAT-1', 'ERS' ],
-};

@@ -6,13 +6,3 @@
 <ng-container *ngIf="selectedSearchType === searchTypes.LIST">
   <app-list-search></app-list-search>
 </ng-container>
-
-<ng-container *ngIf="selectedSearchType === searchTypes.MISSION">
-  <app-mission-search
-    (newMissionSelected)="onNewMissionSelected($event)"
-    [selectedMission]="selectedMission$ | async"
-    [missionsByDataset$]="missionsByDataset$"
-    [missionDatasets$]="missionDatasets$">
-  </app-mission-search>
-</ng-container>
-

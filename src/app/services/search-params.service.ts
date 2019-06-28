@@ -36,19 +36,15 @@ export class SearchParamsService {
       this.searchType$(),
       this.listParam$(),
       this.filterSearchParams$(),
-      this.missionParam$(),
     ).pipe(
       map(
-        ([searchType, listParam, filterParams, missionParam]) => {
+        ([searchType, listParam, filterParams]) => {
           switch (searchType) {
             case models.SearchType.LIST: {
               return listParam;
             }
             case models.SearchType.DATASET: {
               return filterParams;
-            }
-            case models.SearchType.MISSION: {
-              return missionParam;
             }
             default: {
               return filterParams;
@@ -75,6 +71,7 @@ export class SearchParamsService {
         this.beamModes$(),
         this.polarizations$(),
         this.maxResults$(),
+        this.missionParam$(),
       ).pipe(
         map((params: any[]) => params
           .reduce(
@@ -111,8 +108,7 @@ export class SearchParamsService {
 
   private selectedDataset$() {
     return this.store$.select(filterStore.getSelectedDataset).pipe(
-      map(dataset => dataset.name.replace('ALOS PALSAR', 'ALOS')),
-      map(dataset => ({ platform: dataset }))
+      map(dataset => ({...dataset.apiValue})),
     );
   }
 
