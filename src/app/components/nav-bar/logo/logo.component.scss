@@ -85,3 +85,20 @@ $icon-size: 36px;
   line-height: 0;
   width: 100%;
 }
+
+.banner-area {
+  overflow: hidden;
+  position: relative;
+}
+
+.banner-image {
+  width: 100%;
+  height: auto;
+  position: absolute;
+  top: 0;
+  bottom: calc(100% - 120px);
+  left: 0;
+  right: 0;
+  margin: auto;
+  mix-blend-mode: multiply;
+}
