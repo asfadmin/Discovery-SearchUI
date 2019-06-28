@@ -9,6 +9,7 @@ import { MatSharedModule } from '@shared';
 import { PathSelectorModule } from '@components/shared/selectors/path-selector';
 import { OtherSelectorModule } from '@components/shared/selectors/other-selector';
 import { SeasonSelectorModule } from '@components/shared/selectors/season-selector';
+import { MissionSearchModule } from '../mission-search';
 
 import { DatasetSearchComponent } from './dataset-search.component';
 
@@ -24,6 +25,7 @@ import { DatasetSearchComponent } from './dataset-search.component';
     MatExpansionModule,
     MatSharedModule,
 
+    MissionSearchModule,
     PathSelectorModule,
     OtherSelectorModule,
     SeasonSelectorModule,

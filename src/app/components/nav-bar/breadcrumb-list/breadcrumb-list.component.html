@@ -23,7 +23,6 @@
             (selectionChange)="onSetSearchType($event.value)">
             <mat-option [value]="searchTypes.DATASET">Geographic</mat-option>
             <mat-option [value]="searchTypes.LIST">List</mat-option>
-            <mat-option [value]="searchTypes.MISSION">Mission</mat-option>
           </mat-select>
         </mat-form-field>
       </div>
@@ -125,7 +124,6 @@
               <button (click)="onToggleFiltersMenu()"
                       mat-flat-button
                       class="search-dialog-button">
-                <span *ngIf="searchType === searchTypes.MISSION">Select Mission</span>
                 <span *ngIf="searchType === searchTypes.LIST">
                   <mat-icon>edit</mat-icon>
                   Edit List
@@ -153,7 +151,6 @@
           </button>
         </div>
       </ng-container>
-
     </div>
 
     <div fxLayout="row wrap"

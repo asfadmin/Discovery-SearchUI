@@ -4,6 +4,8 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 import { Observable } from 'rxjs';
 import { startWith, map, filter, tap } from 'rxjs/operators';
 
+import * as models from '@models';
+
 export interface StateGroup {
   letter: string;
   names: string[];
@@ -25,6 +27,7 @@ export class MissionSearchComponent implements OnInit {
   @Input() missionsByDataset$: Observable<{[dataset: string]: string[]}>;
   @Input() missionDatasets$: Observable<string[]>;
   @Input() selectedMission: string | null;
+  @Input() dataset$: Observable<models.Dataset>;
 
   @Output() newMissionSelected = new EventEmitter<string>();
 
@@ -56,6 +59,10 @@ export class MissionSearchComponent implements OnInit {
     this.missionDatasets$.subscribe(
       datasets => this.missionDatasets = datasets
     );
+
+    this.dataset$.pipe(
+      map(dataset => dataset.name.toLowerCase().includes('beta') ? models.MissionDataset.S1_BETA : dataset.name)
+    ).subscribe(name => this.datasetFilter = name);
 
     this.stateForm.get('missionFilter').valueChanges
       .pipe(

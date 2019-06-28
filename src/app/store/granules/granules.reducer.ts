@@ -10,6 +10,7 @@ interface GranuleEntities { [id: string]: CMRProduct; }
 export interface GranulesState {
   ids: string[];
   products: GranuleEntities;
+  areResultsLoaded: boolean;
   granules: {[id: string]: string[]};
 
   selected: string | null;
@@ -20,6 +21,7 @@ export const initState: GranulesState = {
   ids: [],
   granules: {},
   products: {},
+  areResultsLoaded: false,
 
   selected: null,
   focused: null,
@@ -57,9 +59,10 @@ export function granulesReducer(state = initState, action: GranulesActions): Gra
         ...state,
 
         ids: Object.keys(products),
-        selected: null,
+        selected: products[state.selected] ? products[state.selected].id : null,
         focused: null,
 
+        areResultsLoaded: true,
         products,
         granules
       };
@@ -147,6 +150,13 @@ export function granulesReducer(state = initState, action: GranulesActions): Gra
       };
     }
 
+    case GranulesActionType.SET_RESULTS_LOADED: {
+      return {
+        ...state,
+        areResultsLoaded: action.payload,
+      };
+    }
+
     case GranulesActionType.CLEAR_FOCUSED_GRANULE: {
       return {
         ...state,
@@ -183,6 +193,11 @@ export const allGranulesFrom = (state: GranulesState) => {
 export const getGranules = createSelector(
   getGranulesState,
   (state: GranulesState) => allGranulesFrom(state)
+);
+
+export const getAreResultsLoaded = createSelector(
+  getGranulesState,
+  (state: GranulesState) => state.areResultsLoaded
 );
 
 export const getNumberOfGranules = createSelector(
