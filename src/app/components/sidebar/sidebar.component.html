@@ -7,6 +7,16 @@
   </app-search-selector>
 
   <div>
+    <ul>
+      <li *ngFor="let search of history$ | async"
+        (click)="onSetSearch(search)"
+        >
+        {{ search.type }} - {{ search.results }}
+      </li>
+    </ul>
+  </div>
+
+  <div>
     <div class="support_by">Support provided by...</div>
     <a href="https://earthdata.nasa.gov/" target="_blank">
       <img class="img-nasa-logo" src="/assets/meatball.png">
