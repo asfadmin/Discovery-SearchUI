@@ -73,6 +73,7 @@ $break-medium: 1250px;
 .additional-filters-button {
   margin-left: 0;
   line-height: 18px;
+  color: $asf-primary;
 }
 
 .selected {
@@ -106,8 +107,11 @@ $break-medium: 1250px;
 }
 
 .clear-search-icon {
+  @include md-icon-size(22px);
+
+  color: $asf-primary-dark;
   vertical-align: middle;
-  margin-left: 10px;
+  //margin-left: 10px;
 }
 
 .aoi-input {
