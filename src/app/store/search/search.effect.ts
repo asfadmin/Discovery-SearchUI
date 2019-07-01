@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { Actions, Effect, ofType } from '@ngrx/effects';
 import { Action, Store } from '@ngrx/store';
 
-import { Observable, of } from 'rxjs';
+import { Observable, of, combineLatest } from 'rxjs';
 import { map, withLatestFrom, switchMap, catchError, tap } from 'rxjs/operators';
 
 import { AppState } from '../app.reducer';
@@ -18,7 +18,8 @@ import * as services from '@services';
 
 import {
   SearchActionType,
-  SearchResponse, SearchError, CancelSearch, SearchCanceled
+  SearchResponse, SearchError, CancelSearch, SearchCanceled,
+  MakeSearch
 } from './search.action';
 import { getIsCanceled } from './search.reducer';
 
@@ -32,7 +33,24 @@ export class SearchEffects {
     private searchParams$: services.SearchParamsService,
     private asfApiService: services.AsfApiService,
     private productService: services.ProductService,
+    private mapService: services.MapService,
   ) {}
+
+  @Effect({dispatch: false})
+  private updateHistoryOnSearch: Observable<void> = this.actions$.pipe(
+      ofType<MakeSearch>(SearchActionType.MAKE_SEARCH),
+      map(action => {
+        const list$ = this.store$.select(filtersStore.getSearchList);
+
+        const filters$ = combineLatest(
+          this.mapService.searchPolygon$,
+          this.store$.select(filtersStore.getFiltersState),
+          this.store$.select(missionStore.getSelectedMission),
+        );
+
+        const searchType$ = this.store$.select(uiStore.getSearchType);
+      })
+  );
 
   @Effect()
   private clearMapInteractionModeOnSearch: Observable<Action> = this.actions$.pipe(

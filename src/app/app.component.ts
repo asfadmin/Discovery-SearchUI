@@ -49,10 +49,12 @@ export class AppComponent implements OnInit {
     private searchParams$: services.SearchParamsService,
     private polygonValidationService: services.PolygonValidationService,
     private asfSearchApi: services.AsfApiService,
+    private historyService: services.HistoryService,
   ) {}
 
   public ngOnInit(): void {
     this.polygonValidationService.validate();
+    this.historyService.updateHistoryOnSearch();
 
     this.loadProductQueue();
     this.queuedProducts$.subscribe(
