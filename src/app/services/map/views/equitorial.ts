@@ -57,8 +57,8 @@ export function equatorialStreet(): MapView {
   const view = new View({
     center: [-10852977.98, 4818505.78],
     projection: projection.epsg,
-    zoom: 4,
-    minZoom: 4,
+    zoom: 3,
+    minZoom: 3,
     maxZoom: 13,
     extent: proj.transformExtent(
       [-Number.MAX_VALUE, -90, Number.MAX_VALUE, 90],

@@ -257,7 +257,9 @@ export class MapService {
   }
 
   private updatedMap(): Map {
-    this.map.setView(this.mapView.view);
+    if (this.map.getView().getProjection().getCode() !== this.mapView.projection.epsg) {
+      this.map.setView(this.mapView.view);
+    }
 
     this.mapView.layer.setOpacity(1);
     const mapLayers = this.map.getLayers();
