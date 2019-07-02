@@ -12,7 +12,7 @@
       name="startInput"
       placeholder="Start Date">
     <mat-datepicker-toggle matSuffix [for]="start"></mat-datepicker-toggle>
-    <mat-datepicker startView="multi-year" #start></mat-datepicker>
+    <mat-datepicker [startView]="!!startDate ? 'month' : 'multi-year'" #start></mat-datepicker>
   </mat-form-field>
 
   <mat-form-field class="date-input-field">
@@ -25,6 +25,6 @@
       placeholder="End Date"
       name="endInput" >
     <mat-datepicker-toggle matSuffix [for]="end"></mat-datepicker-toggle>
-    <mat-datepicker startView="multi-year" #end></mat-datepicker>
+    <mat-datepicker [startView]="!!endDate ? 'month' : 'multi-year'" #end></mat-datepicker>
   </mat-form-field>
 </form>
