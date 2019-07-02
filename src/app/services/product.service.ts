@@ -48,5 +48,9 @@ export class ProductService {
     })
 
   private fromCMRDate =
-    (dateString: string): Date => new Date(dateString)
+    (dateString: string): Date => {
+      const date = new Date(dateString);
+      const userTimezoneOffset = date.getTimezoneOffset() * 60000;
+      return new Date(date.getTime() - userTimezoneOffset);
+    }
 }
