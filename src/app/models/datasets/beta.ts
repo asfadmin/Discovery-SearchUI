@@ -1,17 +1,18 @@
 import { Props } from '../filters.model';
 
 export const beta = {
-  name: 'S1 BETA',
+  name: 'S1 INSAR (BETA)',
   properties: [
     Props.DATE,
     Props.BEAM_MODE,
     Props.PATH,
     Props.FLIGHT_DIRECTION,
+    Props.POLARIZATION,
     Props.MISSION_NAME,
   ],
   apiValue: { asfplatform: 'SENTINEL-1 INTERFEROGRAM (BETA)' },
   date: { start: new Date(2014, 3, 25) },
-  infoUrl: 'https://www.asf.alaska.edu/sentinel/',
+  infoUrl: 'https://www.asf.alaska.edu/sar_datasets/sentinel-1-interferograms-beta/',
   citationUrl: 'https://www.asf.alaska.edu/sentinel/how-to-cite/',
   frequency: 'C-Band',
   source: {
@@ -40,6 +41,6 @@ export const beta = {
       displayName: 'Unwrapped Phase, GeoTIFF'
     },
   ],
-  beamModes: [ ],
-  polarizations: [ ]
+  beamModes: ['slc'],
+  polarizations: ['VV']
 };

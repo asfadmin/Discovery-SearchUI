@@ -53,7 +53,7 @@ export class GranuleDetailComponent implements OnInit {
 
   private datasetFor(granule: models.CMRProduct): models.Dataset {
     const exact = (datasetName, granuleDataset) => (
-      datasetName.replace('s1 beta', 'sentinel-1 interferogram (beta)') === granuleDataset
+      datasetName.replace('s1 insar (beta)', 'sentinel-1 interferogram (beta)') === granuleDataset
     );
 
     const partial = (datasetName, granuleDataset) => (

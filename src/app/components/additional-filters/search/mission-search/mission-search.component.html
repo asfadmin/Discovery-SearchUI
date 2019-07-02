@@ -8,8 +8,8 @@
   <div class="selected" style="padding-top: 12px;">
     <div style="display: flex; justify-content: space-between;">
       <div>
-        <mat-icon class="v-mid" mat-list-icon>arrow_right</mat-icon>
-        <b class="v-mid">{{ selectedMission }}</b>
+        <span style="margin-left: 20px;" class="v-mid">
+          <b>Selected</b> <span> • </span> {{ selectedMission }} </span>
       </div>
       <div>
         <mat-icon (click)="setMission(null)"
