@@ -6,7 +6,7 @@
     [selectedSearchType]="searchType$ | async">
   </app-search-selector>
 
-  <div>
+  <div *ngIf="false">
     <h2>Search History</h2>
     <button (click)="clearHistory()" mat-button>Clear History</button>
     <mat-action-list>
