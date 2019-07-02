@@ -7,9 +7,26 @@
   </app-search-selector>
 
   <div>
+    <h2>Search History</h2>
+    <button (click)="clearHistory()" mat-button>Clear History</button>
+    <mat-action-list>
+      <button *ngFor="let search of history$ | async"
+        (click)="onSetSearch(search)" mat-list-item>
+        <span *ngIf="search.type === searchType.LIST">
+          {{ search.type }} - {{ search.params.list.length }} items
+        </span>
+
+        <span *ngIf="search.type === searchType.DATASET">
+          {{ search.type }} - {{ search.params.filterState.datasets.selected }}
+        </span>
+      </button>
+    </mat-action-list>
+  </div>
+
+  <div>
     <div class="support_by">Support provided by...</div>
     <a href="https://earthdata.nasa.gov/" target="_blank">
-      <img class="img-nasa-logo" src="/assets/meatball.png">
+      <img class="img-nasa-logo" src="/assets/NASA_logo.svg">
     </a>
   </div>
 </div>

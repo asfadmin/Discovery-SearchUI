@@ -69,6 +69,7 @@ export const routes = [
     services.DateExtremaService,
     services.EnvironmentService,
     services.PropertyService,
+    services.HistoryService,
   ],
   bootstrap: [ AppComponent ],
 })

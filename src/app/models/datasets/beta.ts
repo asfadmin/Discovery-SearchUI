@@ -2,13 +2,13 @@ import { Props } from '../filters.model';
 
 export const beta = {
   name: 'S1 BETA',
-  properties: new Set<Props>([
+  properties: [
     Props.DATE,
     Props.BEAM_MODE,
     Props.PATH,
     Props.FLIGHT_DIRECTION,
     Props.MISSION_NAME,
-  ]),
+  ],
   apiValue: { asfplatform: 'SENTINEL-1 INTERFEROGRAM (BETA)' },
   date: { start: new Date(2014, 3, 25) },
   infoUrl: 'https://www.asf.alaska.edu/sentinel/',

@@ -2,7 +2,7 @@ import { Props } from '../filters.model';
 
 export const alos = {
   name: 'ALOS PALSAR',
-  properties: new Set<Props>([
+  properties: [
     Props.DATE,
     Props.BEAM_MODE,
     Props.PATH,
@@ -14,7 +14,7 @@ export const alos = {
     Props.FARADAY_ROTATION,
     Props.STACK_SIZE,
     Props.BASELINE_TOOL,
-  ]),
+  ],
   apiValue: { platform: 'ALOS' },
   date: {
     start: new Date(2006, 0, 1),
