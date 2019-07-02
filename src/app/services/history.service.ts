@@ -48,4 +48,8 @@ export class HistoryService {
 
     this.searchHistory$.next(newHistory);
   }
+
+  public clear(): void {
+    this.searchHistory$.next([]);
+  }
 }

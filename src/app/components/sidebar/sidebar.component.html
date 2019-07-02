@@ -8,6 +8,7 @@
 
   <div>
     <h2>Search History</h2>
+    <button (click)="clearHistory()" mat-button>Clear History</button>
     <mat-action-list>
       <button *ngFor="let search of history$ | async"
         (click)="onSetSearch(search)" mat-list-item>

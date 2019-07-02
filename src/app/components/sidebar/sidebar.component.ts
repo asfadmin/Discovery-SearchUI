@@ -32,6 +32,10 @@ export class SidebarComponent {
     this.store$.dispatch(new uiStore.SetSearchType(searchType));
   }
 
+  public clearHistory(): void {
+    this.historyService.clear();
+  }
+
   public onSetSearch(search: Search): void {
     if (search.type === models.SearchType.LIST) {
       this.setSearchList(<ListSearch>search.params);
