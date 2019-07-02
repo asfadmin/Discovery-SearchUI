@@ -15,7 +15,7 @@ export interface Dataset {
     name: string;
     url: string | null;
   } | null;
-  properties: Set<Props>;
+  properties: Props[];
 }
 
 export enum MissionDataset {

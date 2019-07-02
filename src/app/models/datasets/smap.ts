@@ -2,12 +2,12 @@ import { Props } from '../filters.model';
 
 export const smap = {
   name: 'SMAP',
-  properties: new Set<Props>([
+  properties: [
     Props.DATE,
     Props.BEAM_MODE,
     Props.FLIGHT_DIRECTION,
     Props.ABSOLUTE_ORBIT,
-  ]),
+  ],
   apiValue: { platform: 'SMAP' },
   date: { start: new Date(2015, 0, 15) },
   infoUrl: 'https://www.asf.alaska.edu/smap/',

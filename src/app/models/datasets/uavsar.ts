@@ -2,12 +2,12 @@ import { Props } from '../filters.model';
 
 export const uavsar = {
   name: 'UAVSAR',
-  properties: new Set<Props>([
+  properties: [
     Props.DATE,
     Props.BEAM_MODE,
     Props.POLARIZATION,
     Props.MISSION_NAME,
-  ]),
+  ],
   apiValue: { platform: 'UAVSAR' },
   date: { start: new Date(2008, 0, 1) },
   infoUrl: 'https://www.asf.alaska.edu/sar-data/uavsar/',

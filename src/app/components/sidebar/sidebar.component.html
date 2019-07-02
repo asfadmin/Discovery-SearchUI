@@ -11,7 +11,13 @@
     <mat-action-list>
       <button *ngFor="let search of history$ | async"
         (click)="onSetSearch(search)" mat-list-item>
-        {{ search.type }} - {{ search.results }} products
+        <span *ngIf="search.type === searchType.LIST">
+          {{ search.type }} - {{ search.params.list.length }} items
+        </span>
+
+        <span *ngIf="search.type === searchType.DATASET">
+          {{ search.type }} - {{ search.params.filterState.datasets.selected }}
+        </span>
       </button>
     </mat-action-list>
   </div>

@@ -4,7 +4,9 @@ import { Store } from '@ngrx/store';
 import { AppState } from '@store';
 import * as uiStore from '@store/ui';
 import * as filtersStore from '@store/filters';
-import { HistoryService, Search, ListSearch, GeoSearch } from '@services';
+import * as missionStore from '@store/mission';
+
+import { HistoryService, Search, ListSearch, GeoSearch, MapService, WktService } from '@services';
 
 import * as models from '@models';
 
@@ -17,9 +19,13 @@ export class SidebarComponent {
   public searchType$ = this.store$.select(uiStore.getSearchType);
   public history$ = this.historyService.searchHistory$;
 
+  public searchType = models.SearchType;
+
   constructor(
     private store$: Store<AppState>,
-    private historyService: HistoryService
+    private historyService: HistoryService,
+    private mapService: MapService,
+    private wkt: WktService,
   ) { }
 
   public onSetSearchType(searchType: models.SearchType): void {
@@ -41,6 +47,17 @@ export class SidebarComponent {
   }
 
   private setGeoSearch(search: GeoSearch): void {
+    this.store$.dispatch(new filtersStore.SetState(search.filterState));
+    this.store$.dispatch(new missionStore.SelectMission(search.mission));
+    this.store$.dispatch(new uiStore.SetSearchType(models.SearchType.DATASET));
 
+    if (search.polygon) {
+      const features = this.wkt.wktToFeature(
+        search.polygon,
+        this.mapService.epsg()
+      );
+
+      this.mapService.setDrawFeature(features);
+    }
   }
 }
