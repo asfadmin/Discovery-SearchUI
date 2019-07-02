@@ -10,6 +10,14 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatSliderModule } from '@angular/material/slider';
 import { FlexLayoutModule } from '@angular/flex-layout';
 
+import {
+  MAT_MOMENT_DATE_FORMATS,
+  MomentDateAdapter,
+  MAT_MOMENT_DATE_ADAPTER_OPTIONS,
+  MatMomentDateModule
+} from '@angular/material-moment-adapter';
+import {DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE} from '@angular/material/core';
+
 import { MatSharedModule } from '@shared';
 import { DateSelectorComponent } from './date-selector.component';
 
@@ -20,13 +28,16 @@ import { DateSelectorComponent } from './date-selector.component';
     FormsModule,
     FlexLayoutModule,
     MatDatepickerModule,
+    MatMomentDateModule,
     MatSlideToggleModule,
     MatFormFieldModule,
-    MatNativeDateModule,
     MatInputModule,
     MatSliderModule,
 
     MatSharedModule,
+  ],
+  providers: [
+    { provide: MAT_MOMENT_DATE_ADAPTER_OPTIONS, useValue: { useUtc: true } }
   ],
   exports: [ DateSelectorComponent ],
 })

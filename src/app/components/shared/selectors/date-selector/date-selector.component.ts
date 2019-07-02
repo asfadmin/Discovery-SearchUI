@@ -1,6 +1,7 @@
 import { Component, OnInit, Input, Output, EventEmitter, ViewChild } from '@angular/core';
 import { MatDatepickerInputEvent } from '@angular/material/datepicker';
 import { NgForm } from '@angular/forms';
+import * as moment from 'moment';
 
 import { filter } from 'rxjs/operators';
 import { Store, ActionsSubject } from '@ngrx/store';
@@ -49,11 +50,13 @@ export class DateSelectorComponent implements OnInit {
     this.endDate$.subscribe(end => this.endDate = end);
   }
 
-  public onStartDateChange(e: MatDatepickerInputEvent<Date>) {
-    this.store$.dispatch(new filtersStore.SetStartDate(e.value));
+  public onStartDateChange(e: MatDatepickerInputEvent<moment.Moment>) {
+    const date = e.value.toDate();
+    this.store$.dispatch(new filtersStore.SetStartDate(date));
   }
 
-  public onEndDateChange(e: MatDatepickerInputEvent<Date>) {
-    this.store$.dispatch(new filtersStore.SetEndDate(e.value));
+  public onEndDateChange(e: MatDatepickerInputEvent<moment.Moment>) {
+    const date = e.value.toDate();
+    this.store$.dispatch(new filtersStore.SetEndDate(date));
   }
 }
