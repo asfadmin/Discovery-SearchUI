@@ -1,6 +1,7 @@
 import { Props } from '../filters.model';
 
 export const ers = {
+  id: 'ERS',
   name: 'ERS',
   properties: [
     Props.DATE,

@@ -36,7 +36,7 @@ export const initState: FiltersState = {
   datasets: {
     entities: models.datasets.reduce(
       (datasetsObj, dataset) => {
-        datasetsObj[dataset.name] = dataset;
+        datasetsObj[dataset.id] = dataset;
 
         return datasetsObj;
       },
@@ -362,7 +362,7 @@ export const getDatasetsList = createSelector(
 );
 
 
-export const getSelectedDatasetName = createSelector(
+export const getSelectedDatasetId = createSelector(
   getDatasetsState ,
   ({ selected }) => selected
 );

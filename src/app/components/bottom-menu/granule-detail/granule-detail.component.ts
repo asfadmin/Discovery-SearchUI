@@ -52,13 +52,13 @@ export class GranuleDetailComponent implements OnInit {
   }
 
   private datasetFor(granule: models.CMRProduct): models.Dataset {
-    const exact = (datasetName, granuleDataset) => (
-      datasetName.replace('s1 insar (beta)', 'sentinel-1 interferogram (beta)') === granuleDataset
+    const exact = (datasetID, granuleDataset) => (
+      datasetID === granuleDataset
     );
 
-    const partial = (datasetName, granuleDataset) => (
-      datasetName.includes(granuleDataset) ||
-      granuleDataset.includes(datasetName)
+    const partial = (datasetID, granuleDataset) => (
+      datasetID.includes(granuleDataset) ||
+      granuleDataset.includes(datasetID)
     );
 
     return (
@@ -75,7 +75,7 @@ export class GranuleDetailComponent implements OnInit {
     return  models.datasets
       .filter(dataset => {
         const [datasetName, granuleDataset] = [
-          dataset.name.toLowerCase(),
+          dataset.id.toLowerCase(),
           granule.dataset.toLocaleLowerCase()
         ];
 

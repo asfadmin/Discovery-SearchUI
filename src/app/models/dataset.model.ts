@@ -2,6 +2,7 @@ import * as fromDatasets from './datasets';
 import { Props } from './filters.model';
 
 export interface Dataset {
+  id: string;
   name: string;
   apiValue: {[paramName: string]: string};
   date: DateRange;
@@ -51,8 +52,6 @@ export const datasets: Dataset[] = [
   fromDatasets.airsar,
   fromDatasets.seasat,
 ];
-
-export const datasetNames = datasets.map(dataset => dataset.name);
 
 export const flightDirections = [
   'Ascending',
