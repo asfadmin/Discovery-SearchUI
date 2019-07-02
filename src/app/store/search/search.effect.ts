@@ -115,8 +115,11 @@ export class SearchEffects {
   private searchState$() {
     const params$ = this.store$.select(uiStore.getSearchType).pipe(
       switchMap(searchType => {
-        const list$ = this.store$.select(filtersStore.getSearchList).pipe(
-          map(list => ({ list }))
+        const list$ = combineLatest(
+          this.store$.select(filtersStore.getSearchList),
+          this.store$.select(filtersStore.getListSearchMode),
+        ).pipe(
+          map(([list, type]) => ({ list, type }))
         );
 
         const filters$ = combineLatest(

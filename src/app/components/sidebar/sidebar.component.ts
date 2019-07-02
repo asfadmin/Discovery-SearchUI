@@ -3,7 +3,8 @@ import { Component, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { AppState } from '@store';
 import * as uiStore from '@store/ui';
-import { HistoryService, Search } from '@services';
+import * as filtersStore from '@store/filters';
+import { HistoryService, Search, ListSearch, GeoSearch } from '@services';
 
 import * as models from '@models';
 
@@ -26,6 +27,20 @@ export class SidebarComponent {
   }
 
   public onSetSearch(search: Search): void {
-    console.log(search);
+    if (search.type === models.SearchType.LIST) {
+      this.setSearchList(<ListSearch>search.params);
+    } else if (search.type === models.SearchType.DATASET) {
+      this.setGeoSearch(<GeoSearch>search.params);
+    }
+  }
+
+  private setSearchList(search: ListSearch): void {
+    this.store$.dispatch(new uiStore.SetSearchType(models.SearchType.LIST));
+    this.store$.dispatch(new filtersStore.SetListSearchType(search.type));
+    this.store$.dispatch(new filtersStore.SetSearchList(search.list));
+  }
+
+  private setGeoSearch(search: GeoSearch): void {
+
   }
 }

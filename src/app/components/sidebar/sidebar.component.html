@@ -7,13 +7,13 @@
   </app-search-selector>
 
   <div>
-    <ul>
-      <li *ngFor="let search of history$ | async"
-        (click)="onSetSearch(search)"
-        >
-        {{ search.type }} - {{ search.results }}
-      </li>
-    </ul>
+    <h2>Search History</h2>
+    <mat-action-list>
+      <button *ngFor="let search of history$ | async"
+        (click)="onSetSearch(search)" mat-list-item>
+        {{ search.type }} - {{ search.results }} products
+      </button>
+    </mat-action-list>
   </div>
 
   <div>
