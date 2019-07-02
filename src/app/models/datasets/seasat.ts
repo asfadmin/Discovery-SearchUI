@@ -1,6 +1,7 @@
 import { Props } from '../filters.model';
 
 export const seasat = {
+  id: 'SEASAT',
   name: 'SEASAT',
   properties: [
     Props.DATE,

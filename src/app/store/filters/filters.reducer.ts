@@ -36,7 +36,7 @@ export const initState: FiltersState = {
   datasets: {
     entities: models.datasets.reduce(
       (datasetsObj, dataset) => {
-        datasetsObj[dataset.name] = dataset;
+        datasetsObj[dataset.id] = dataset;
 
         return datasetsObj;
       },
@@ -97,9 +97,7 @@ export function filtersReducer(state = initState, action: FiltersActions): Filte
     }
 
     case FiltersActionType.SET_START_DATE: {
-      const start = !!action.payload ?
-        new Date(action.payload.setHours(0, 0, 0, 0)) :
-        action.payload;
+      const start = action.payload;
 
       return {
         ...state,
@@ -110,9 +108,7 @@ export function filtersReducer(state = initState, action: FiltersActions): Filte
     }
 
     case FiltersActionType.SET_END_DATE: {
-      const end = !!action.payload ?
-        new Date(action.payload.setHours(23, 59, 59, 999)) :
-        action.payload;
+      const end = action.payload;
 
       return {
         ...state,
@@ -362,7 +358,7 @@ export const getDatasetsList = createSelector(
 );
 
 
-export const getSelectedDatasetName = createSelector(
+export const getSelectedDatasetId = createSelector(
   getDatasetsState ,
   ({ selected }) => selected
 );

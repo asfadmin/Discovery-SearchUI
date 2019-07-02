@@ -1,6 +1,7 @@
 import { Props } from '../filters.model';
 
 export const uavsar = {
+  id: 'UAVSAR',
   name: 'UAVSAR',
   properties: [
     Props.DATE,

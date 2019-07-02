@@ -1,6 +1,7 @@
 import { Props } from '../filters.model';
 
 export const smap = {
+  id: 'SMAP',
   name: 'SMAP',
   properties: [
     Props.DATE,

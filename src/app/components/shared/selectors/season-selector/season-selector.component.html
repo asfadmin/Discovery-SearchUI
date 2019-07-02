@@ -7,6 +7,9 @@
 
 <div *ngIf="isSeasonalSearch">
   <div>
+    <app-date-selector></app-date-selector>
+  </div>
+  <div>
     <b>Start Day </b> <span *ngIf="start"> • {{ dayOfYearFormat(start, 'short') }}</span>
     <div class="season-selector">
       <mat-slider
