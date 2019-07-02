@@ -74,6 +74,13 @@ export const initState: FiltersState = {
 
 export function filtersReducer(state = initState, action: FiltersActions): FiltersState {
   switch (action.type) {
+    case FiltersActionType.SET_STATE: {
+      return {
+        ...state,
+        ...action.payload
+      };
+    }
+
     case FiltersActionType.SET_SELECTED_DATASET: {
       const selected = action.payload.toUpperCase();
 

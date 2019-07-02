@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { MatSharedModule } from '@shared';
 
 import { LogoModule } from '@components/nav-bar/logo/logo.module';
 import { AdditionalFiltersModule } from '@components/additional-filters';
@@ -11,6 +12,7 @@ import { SidebarComponent } from './sidebar.component';
   declarations: [ SidebarComponent ],
   imports: [
     CommonModule,
+    MatSharedModule,
     LogoModule,
     SearchSelectorModule,
   ],

@@ -4,6 +4,7 @@ import * as models from '@models';
 
 export enum FiltersActionType {
   SET_SELECTED_DATASET = '[Filters-Dataset] Set Selected Dataset',
+  SET_STATE = '[Filters-Date] Set State',
 
   SET_START_DATE = '[Filters-Date] Set Start Date',
   SET_END_DATE = '[Filters-Date] Set End Date',
@@ -39,6 +40,12 @@ export enum FiltersActionType {
   SET_SEARCH_LIST = '[Filters-List] Set Search List',
 
   SET_MAX_RESULTS = '[Filters] Set Max Results',
+}
+
+export class SetState implements Action {
+  public readonly type = FiltersActionType.SET_STATE;
+
+  constructor(public payload: any) {}
 }
 
 export class SetSelectedDataset implements Action {
@@ -180,6 +187,7 @@ export class SetMaxResults implements Action {
 }
 
 export type FiltersActions =
+  | SetState
   | SetSelectedDataset
   | SetStartDate
   | SetEndDate
