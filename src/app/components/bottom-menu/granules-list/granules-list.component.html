@@ -1,6 +1,6 @@
 <mat-card  class="granule-list card-spacing">
   <cdk-virtual-scroll-viewport class="scroll-viewport-height"
-    minBufferPx="200" maxBufferPx="1200"
+    minBufferPx="800" maxBufferPx="1200"
     itemSize="72">
     <mat-action-list class="action-list">
 
@@ -18,8 +18,7 @@
             class="size" matListAvatar>
 
           <div class="product-name" matLine>
-            <span> {{ granule.name | truncate : 30 }} </span>
-
+            <span> {{ granule.name | truncate : 32 }} </span>
 
             <app-copy-to-clipboard
                *ngIf="granule.name === hoveredGranuleName"
