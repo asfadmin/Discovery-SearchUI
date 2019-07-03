@@ -439,6 +439,10 @@ export class UrlStateService {
       v => v.apiValue
     );
 
+    if (!productTypes) {
+      return;
+    }
+
     const action = new filterStore.SetProductTypes(productTypes);
     this.store$.dispatch(action);
   }
@@ -446,12 +450,20 @@ export class UrlStateService {
   private loadBeamModes = (modesStr: string): void => {
     const beamModes = this.loadProperties(modesStr, 'beamModes');
 
+    if (!beamModes) {
+      return;
+    }
+
     const action = new filterStore.SetBeamModes(beamModes);
     this.store$.dispatch(action);
   }
 
   private loadPolarizations = (polarizationsStr: string): void => {
     const polarizations = this.loadProperties(polarizationsStr, 'polarizations');
+
+    if (!polarizations) {
+      return;
+    }
 
     const action = new filterStore.SetPolarizations(polarizations);
     this.store$.dispatch(action);
