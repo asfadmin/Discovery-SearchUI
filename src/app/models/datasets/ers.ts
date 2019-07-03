@@ -1,8 +1,9 @@
 import { Props } from '../filters.model';
 
 export const ers = {
+  id: 'ERS',
   name: 'ERS',
-  properties: new Set<Props>([
+  properties: [
     Props.DATE,
     Props.BEAM_MODE,
     Props.PATH,
@@ -11,7 +12,7 @@ export const ers = {
     Props.POLARIZATION,
     Props.ABSOLUTE_ORBIT,
     Props.BASELINE_TOOL,
-  ]),
+  ],
   apiValue: { platform: 'ERS' },
   date: {
     start: new Date(1991, 0, 1),

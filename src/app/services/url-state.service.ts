@@ -149,7 +149,7 @@ export class UrlStateService {
   private filtersParameters() {
     return [{
       name: 'dataset',
-      source: this.store$.select(filterStore.getSelectedDatasetName).pipe(
+      source: this.store$.select(filterStore.getSelectedDatasetId).pipe(
         skip(1),
         map(selected => ({ dataset: selected }))
       ),
@@ -210,7 +210,7 @@ export class UrlStateService {
       source: this.store$.select(filterStore.getProductTypes).pipe(
         skip(1),
         map(types => types.map(key => key.apiValue).join(',')),
-        withLatestFrom(this.store$.select(filterStore.getSelectedDatasetName)),
+        withLatestFrom(this.store$.select(filterStore.getSelectedDatasetId)),
         map(([types, dataset]) => `${dataset}$$${types}`),
         map(param => ({ productTypes: param }))
       ),
@@ -220,7 +220,7 @@ export class UrlStateService {
       source: this.store$.select(filterStore.getBeamModes).pipe(
         skip(1),
         map(modes => modes.join(',')),
-        withLatestFrom(this.store$.select(filterStore.getSelectedDatasetName)),
+        withLatestFrom(this.store$.select(filterStore.getSelectedDatasetId)),
         map(([modes, dataset]) => `${dataset}$$${modes}`),
         map(param => ({ beamModes: param }))
       ),
@@ -230,7 +230,7 @@ export class UrlStateService {
       source: this.store$.select(filterStore.getPolarizations).pipe(
         skip(1),
         map(pols => pols.join(',')),
-        withLatestFrom(this.store$.select(filterStore.getSelectedDatasetName)),
+        withLatestFrom(this.store$.select(filterStore.getSelectedDatasetId)),
         map(([pols, dataset]) => `${dataset}$$${pols}`),
         map(param => ({ polarizations: param }))
       ),
@@ -351,12 +351,15 @@ export class UrlStateService {
     }
   }
 
-  private loadSelectedDataset = (dataset: string): void => {
-    if (!models.datasetNames.includes(dataset)) {
+  private loadSelectedDataset = (datasetStr: string): void => {
+
+    const datasetIds = models.datasets.map(dataset => dataset.id);
+
+    if (!datasetIds.includes(datasetStr)) {
       return;
     }
 
-    const action = new filterStore.SetSelectedDataset(dataset);
+    const action = new filterStore.SetSelectedDataset(datasetStr);
     this.store$.dispatch(action);
   }
 
@@ -436,6 +439,10 @@ export class UrlStateService {
       v => v.apiValue
     );
 
+    if (!productTypes) {
+      return;
+    }
+
     const action = new filterStore.SetProductTypes(productTypes);
     this.store$.dispatch(action);
   }
@@ -443,12 +450,20 @@ export class UrlStateService {
   private loadBeamModes = (modesStr: string): void => {
     const beamModes = this.loadProperties(modesStr, 'beamModes');
 
+    if (!beamModes) {
+      return;
+    }
+
     const action = new filterStore.SetBeamModes(beamModes);
     this.store$.dispatch(action);
   }
 
   private loadPolarizations = (polarizationsStr: string): void => {
     const polarizations = this.loadProperties(polarizationsStr, 'polarizations');
+
+    if (!polarizations) {
+      return;
+    }
 
     const action = new filterStore.SetPolarizations(polarizations);
     this.store$.dispatch(action);
@@ -459,7 +474,7 @@ export class UrlStateService {
     const possibleTypes = (possibleValuesStr || '').split(',');
 
     const dataset = models.datasets
-        .filter(d => datasetName === d.name)
+        .filter(d => datasetName === d.id)
         .pop();
 
     if (!dataset) {

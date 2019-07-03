@@ -59,8 +59,9 @@
               </label>
 
               <mat-icon
-                *ngIf="!!polygon && isHoveringAOISelector" (click)="onCopy()"
+                *ngIf="!!polygon" (click)="onCopy()"
                 matTooltip="Copy to clipboard"
+                [class.ghost-item]="!isHoveringAOISelector"
                 class="clickable copy-icon" matSuffix>
                 file_copy
               </mat-icon>
@@ -115,7 +116,7 @@
             </button>
           </div>
         </div>
-        
+
       </ng-container>
 
       <!-- ADDITIONAL FILTERS FOR NON-DATASET SEARCH -->

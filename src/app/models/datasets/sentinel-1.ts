@@ -1,8 +1,9 @@
 import { Props } from '../filters.model';
 
 export const sentinel_1 = {
-  name: 'SENTINEL-1',
-  properties: new Set<Props>([
+  id: 'SENTINEL-1',
+  name: 'Sentinel-1',
+  properties: [
     Props.DATE,
     Props.BEAM_MODE,
     Props.PATH,
@@ -11,7 +12,7 @@ export const sentinel_1 = {
     Props.POLARIZATION,
     Props.ABSOLUTE_ORBIT,
     Props.BASELINE_TOOL,
-  ]),
+  ],
   apiValue: { platform: 'SENTINEL-1' },
   date: { start: new Date(2014, 3, 25) },
   infoUrl: 'https://www.asf.alaska.edu/sentinel/',

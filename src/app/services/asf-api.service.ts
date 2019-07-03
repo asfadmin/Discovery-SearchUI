@@ -12,8 +12,7 @@ import { PropertyService } from './property.service';
 })
 export class AsfApiService {
 
-  private maturity = !this.env.value.devMode ?
-    'prod' : 'test';
+  private maturity = 'prod';
 
   constructor(
     private env: EnvironmentService,
@@ -57,9 +56,16 @@ export class AsfApiService {
     const queryParamsStr = params.toString()
       .replace('+', '%2B');
 
-    return this.http.get<T>(`${this.apiUrl}/services/search/param?${queryParamsStr}`, {
-      responseType
-    });
+    const endpoint = `${this.apiUrl}/services/search/param`;
+    const formData = this.toFormData(params);
+
+    return !this.isUrlToLong(endpoint, queryParamsStr) ?
+      this.http.get<T>(
+        `${endpoint}?${queryParamsStr}`, { responseType }
+      ) :
+      this.http.post<T>(
+        endpoint, formData, { responseType }
+      );
   }
 
   private toHttpParams(paramsObj): HttpParams {
@@ -69,6 +75,16 @@ export class AsfApiService {
       (queryParams, [param, val]) => queryParams.set(param, <string>val),
       new HttpParams()
     );
+  }
+
+  private toFormData(params: HttpParams): FormData {
+    const formData = new FormData();
+
+    params.keys().forEach(
+      key => formData.append(key, params.get(key))
+    );
+
+    return formData;
   }
 
   private onlyRelevantParams(paramsObj): {[id: string]: string | null} {

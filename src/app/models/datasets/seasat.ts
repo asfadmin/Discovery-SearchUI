@@ -1,8 +1,9 @@
 import { Props } from '../filters.model';
 
 export const seasat = {
+  id: 'SEASAT',
   name: 'SEASAT',
-  properties: new Set<Props>([
+  properties: [
     Props.DATE,
     Props.BEAM_MODE,
     Props.PATH,
@@ -10,7 +11,7 @@ export const seasat = {
     Props.FLIGHT_DIRECTION,
     Props.POLARIZATION,
     Props.ABSOLUTE_ORBIT,
-  ]),
+  ],
   apiValue: { platform: 'SEASAT' },
   date: {
     start: new Date(1978, 0, 1),
