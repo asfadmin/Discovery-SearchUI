@@ -1,4 +1,4 @@
-import { BREAKPOINT}  from '@angular/flex-layout';
+import { BREAKPOINT } from '@angular/flex-layout';
 
 const SCREEN_BREAKPOINTS_DEFAULT = [
   { alias: 'xs', suffix: 'Xs',
