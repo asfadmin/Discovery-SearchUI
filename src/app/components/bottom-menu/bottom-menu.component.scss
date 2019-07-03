@@ -1,15 +1,6 @@
 @import "asf-theme";
 
 .position {
-  //height: 465px + 36px;
-  //max-height: 90%;
-  //width: 100%;
-  //margin: 0;
-  //padding: 0 0 20px 0;
-  //right: 0;
-  //bottom: 0;
-  //position: fixed;
-  //z-index: 999;
   pointer-events: none;
 }
 
@@ -71,11 +62,8 @@
 
 .bottom-menu--column {
   min-width: 300px;
-  //max-height: 510px;
   padding: 0;
   margin: 0;
-  //overflow: hidden;
-  //min-height: 400px;
 }
 
 .header {
@@ -91,14 +79,6 @@
 }
 
 .queue-all-icon {
-  position: absolute;
-  top: 0;
-  margin-left: 51px;
-  margin-top: 5px;
-}
-
-.granule-column {
-  //overflow-y: hidden;
 }
 
 .app-granule-list {
