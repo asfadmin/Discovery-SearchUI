@@ -33,6 +33,7 @@ export class BottomMenuComponent {
 
   public allProducts$ = this.store$.select(granulesStore.getAllProducts);
   public numberOfGranules$ = this.store$.select(granulesStore.getNumberOfGranules);
+  public numberOfProducts$ = this.store$.select(granulesStore.getNumberOfProducts);
   public selectedProducts$ = this.store$.select(granulesStore.getSelectedGranuleProducts);
   public queuedProductIds$ = this.store$.select(queueStore.getQueuedProductIds).pipe(
     map(names => new Set(names))

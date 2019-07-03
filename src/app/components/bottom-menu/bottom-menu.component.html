@@ -15,14 +15,17 @@
   <div class="bottom-menu--background  bottom-menu--layout"
        fxLayout="row"
        fxLayout.lt-lg="column">
-    <mat-card class="card-spacing bottom-menu--column granule-column"
+    <mat-card class="card-spacing bottom-menu--column"
         fxFlex="33" fxFlexFill>
       <mat-card-subtitle *ngIf="numberOfGranules$ | async as numberOfGranules" class="header">
-        <div>
-          {{ numberOfGranules }} Granule{{ numberOfGranules === 1 ? '' : 's' }}
+        <div style="display: flex; justify-content: center">
+          <div style="margin-right: 10px;">
+            {{ numberOfProducts$ | async }} Product{{ (numberOfProducts$ | async) === 1 ? '' : 's' }} /
+            {{ numberOfGranules }} Granule{{ numberOfGranules === 1 ? '' : 's' }}
+          </div>
           <div *ngIf="allProducts$ | async as products">
             <mat-icon
-               class="queue-all-icon clickable noselect"
+               class="clickable noselect"
                matTooltip="Add all results to queue"
               [matMenuTriggerFor]="addAllProducts">
                 add_shopping_cart
