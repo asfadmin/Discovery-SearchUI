@@ -19,7 +19,7 @@ export class DatasetSelectorComponent implements OnInit {
   constructor(private store$: Store<AppState>) { }
 
   ngOnInit() {
-    this.store$.select(filtersStore.getSelectedDatasetName).subscribe(
+    this.store$.select(filtersStore.getSelectedDatasetId).subscribe(
       selected => this.selected = selected
     );
   }

@@ -71,6 +71,21 @@ export class MapService {
     return this.mapView.projection.epsg;
   }
 
+  public zoomIn(): void {
+    this.zoom(0.5);
+  }
+
+  public zoomOut(): void {
+    this.zoom(-0.5);
+  }
+
+  private zoom(amount: number): void {
+    this.map.getView().animate({
+      zoom: this.map.getView().getZoom() + amount,
+      duration: 150
+    });
+  }
+
   public setLayer(layer: Layer): void {
     if (!!this.polygonLayer) {
       this.map.removeLayer(this.polygonLayer);
@@ -149,7 +164,16 @@ export class MapService {
     this.focusSource.addFeature(feature);
   }
 
-  public zoomTo(feature): void {
+  public zoomToGranule(granule: models.CMRProduct): void {
+    const features = this.wktService.wktToFeature(
+      granule.metadata.polygon,
+      this.epsg()
+    );
+
+    this.zoomToFeature(features);
+  }
+
+  public zoomToFeature(feature): void {
     const extent = feature
       .getGeometry()
       .getExtent();
@@ -233,7 +257,9 @@ export class MapService {
   }
 
   private updatedMap(): Map {
-    this.map.setView(this.mapView.view);
+    if (this.map.getView().getProjection().getCode() !== this.mapView.projection.epsg) {
+      this.map.setView(this.mapView.view);
+    }
 
     this.mapView.layer.setOpacity(1);
     const mapLayers = this.map.getLayers();

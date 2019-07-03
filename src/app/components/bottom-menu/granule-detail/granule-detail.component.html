@@ -22,13 +22,12 @@
        href="https://baseline.asf.alaska.edu/#/baseline?granule={{ granule.name }}">
       Baseline Tool
     </a>
-    <a mat-raised-button color="primary"
-       target="_blank"
-       color="accent"
-       href="https://www.asf.alaska.edu/about/how-to-cite-data/">
+    <a mat-raised-button
+       target="_blank" color="accent"
+       [href]="dataset.citationUrl">
       Citation
     </a>
-    <button *ngIf="prop.isRelevant(p.PATH, dataset) && prop.isRelevant(p.FRAME, dataset)"
+    <button *ngIf="isGeoSearch() && prop.isRelevant(p.PATH, dataset) && prop.isRelevant(p.FRAME, dataset)"
             (click)="findSimilarGranules()"
             matTooltip="Search based on this granules path/frame"
             mat-raised-button color="primary">
@@ -137,7 +136,17 @@
 
           <li *ngIf="prop.isRelevant(p.MISSION_NAME, dataset)"
             class="detail-item-margin">
-            <b>Mission Name </b> • {{ granule.metadata.missionName }}
+            <span class="v-mid"> <b>Mission Name </b> • {{ granule.metadata.missionName }} </span>
+
+            <mat-icon *ngIf="isGeoSearch()"
+              [matMenuTriggerFor]="addMissionMenu"
+              class="v-mid clickable">
+                add
+            </mat-icon>
+
+            <mat-menu #addMissionMenu="matMenu">
+              <button (click)="addMission()" mat-menu-item>Set mission name</button>
+            </mat-menu>
           </li>
 
           <li *ngIf="prop.isRelevant(p.FLIGHT_LINE, dataset)"

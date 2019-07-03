@@ -41,17 +41,20 @@
     </mat-form-field>
   </mat-card-content>
   <div class="ls-example">
-    <div>Example:
+    <div>
       <span>
-        {{listExamples[mode]}}
+        Example: {{listExamples[mode]}}
       </span>
-      <app-copy-to-clipboard
-        [value]="listExamples[mode]"
-        [prompt]="mode === types.GRANULE ? 'Copy granule names' : 'Copy product ids'"
-        style="margin: 0 3px"
-        class="clipboard-icon">
-      </app-copy-to-clipboard>
+      <div>
+        <app-copy-to-clipboard
+          [value]="listExamples[mode]"
+          [prompt]="mode === types.GRANULE ? 'Copy granule names' : 'Copy product ids'"
+          style="margin: 0 3px"
+          class="clipboard-icon">
+        </app-copy-to-clipboard>
+      </div>
     </div>
+
   </div>
 
 </mat-card>

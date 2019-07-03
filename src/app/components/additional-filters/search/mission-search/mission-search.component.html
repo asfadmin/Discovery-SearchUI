@@ -1,36 +1,34 @@
-<mat-card class="card-spacing">
-  <div style="margin-bottom: 10px;">
-    <mat-button-toggle-group [value]="datasetFilter" name="fontStyle" aria-label="Font Style">
-      <mat-button-toggle
-        *ngFor="let dataset of missionDatasets"
-        (click)="selectDatasetFilter(dataset)"
-        [value]="dataset">
-          {{ dataset.toLowerCase().includes('beta') ?  'Beta Products' : dataset }}
-      </mat-button-toggle>
-    </mat-button-toggle-group>
-  </div>
+<form [formGroup]="stateForm">
+  <mat-form-field>
+    <input type="text" matInput placeholder="Filter Missions" formControlName="missionFilter">
+  </mat-form-field>
+</form>
 
-  <form [formGroup]="stateForm">
-    <mat-form-field>
-      <input type="text" matInput placeholder="Filter Mission" formControlName="missionFilter">
-    </mat-form-field>
-  </form>
-
-  <ng-container *ngIf="!!selectedMission">
-    <mat-icon class="v-mid" mat-list-icon>arrow_right</mat-icon>
-    <b class="v-mid">{{ selectedMission }}</b>
-    <mat-divider style="margin-top: 15px" [inset]="true"></mat-divider>
-  </ng-container>
-
-  <cdk-virtual-scroll-viewport style="height: 475px;"
-    minBufferPx="500" maxBufferPx="600"
-    itemSize="48">
-    <mat-nav-list role="list">
-      <div *cdkVirtualFor="let mission of filteredMissions">
-        <a (click)="setMission(mission)" mat-list-item role="listitem">
-          {{ mission }}
-        </a>
+<ng-container *ngIf="!!selectedMission">
+  <div class="selected" style="padding-top: 12px;">
+    <div style="display: flex; justify-content: space-between;">
+      <div>
+        <span style="margin-left: 20px;" class="v-mid">
+          <b>Selected</b> <span> • </span> {{ selectedMission }} </span>
       </div>
-    </mat-nav-list>
-  </cdk-virtual-scroll-viewport>
-</mat-card>
+      <div>
+        <mat-icon (click)="setMission(null)"
+          style="margin-right: 10px;" class="clickable v-mid" mat-list-icon
+          matTooltip="Clear selected mission">clear</mat-icon>
+      </div>
+    </div>
+    <mat-divider style="margin-top: 12px" [inset]="true"></mat-divider>
+  </div>
+</ng-container>
+
+<cdk-virtual-scroll-viewport style="height: 250px;"
+  minBufferPx="500" maxBufferPx="600"
+  itemSize="48">
+  <mat-nav-list role="list">
+    <div *cdkVirtualFor="let mission of filteredMissions">
+      <a (click)="setMission(mission)" mat-list-item  role="listitem">
+        {{ mission }}
+      </a>
+    </div>
+  </mat-nav-list>
+</cdk-virtual-scroll-viewport>

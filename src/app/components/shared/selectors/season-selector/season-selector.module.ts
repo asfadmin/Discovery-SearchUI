@@ -11,6 +11,7 @@ import { MatSliderModule } from '@angular/material/slider';
 import { MatSharedModule } from '@shared';
 
 import { SeasonSelectorComponent } from './season-selector.component';
+import { DateSelectorModule } from '@components/shared/selectors/date-selector';
 
 @NgModule({
   declarations: [SeasonSelectorComponent],
@@ -21,6 +22,8 @@ import { SeasonSelectorComponent } from './season-selector.component';
     MatSharedModule,
     MatSlideToggleModule,
     MatSliderModule,
+
+    DateSelectorModule,
   ],
   exports: [SeasonSelectorComponent]
 })

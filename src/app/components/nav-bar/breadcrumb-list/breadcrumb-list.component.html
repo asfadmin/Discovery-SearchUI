@@ -12,115 +12,145 @@
 
   <div fxLayout="column" fxFill>
 
-    <div fxLayout="row wrap">
+    <div fxLayout="row" fxLayout.lt-md="column" class="breadcrumb-row">
 
       <!-- SEARCH TYPE -->
-      <div fxFlex="120px" class="first-breadcrumb max-width-100">
-        <mat-form-field>
+      <div fxFlex="nogrow" fxFlex.lt-lg="nogrow" class="breadcrumb">
+        <mat-form-field fxFlex.lt-lg="auto">
           <mat-label>Search Type</mat-label>
           <mat-select
             [(ngModel)]="searchType"
             (selectionChange)="onSetSearchType($event.value)">
             <mat-option [value]="searchTypes.DATASET">Geographic</mat-option>
             <mat-option [value]="searchTypes.LIST">List</mat-option>
-            <mat-option [value]="searchTypes.MISSION">Mission</mat-option>
           </mat-select>
         </mat-form-field>
       </div>
 
-      <!-- GEOGRAPHIC SEARCH FILTERS -->
+      <!-- DATASET/GEOGRAPHIC SEARCH FILTERS -->
       <ng-container *ngIf="searchType === searchTypes.DATASET">
 
-        <!-- DATASET FILTER -->
-        <div fxFlex="135px" (click)="clearSelectedBreadcrumb()"
-             class="breadcrumb max-width-100">
-          <app-dataset-selector></app-dataset-selector>
-        </div>
+        <div fxLayout="row">
+          <!-- DATASET FILTER -->
+          <div fxFlex="nogrow" fxFlex.lt-lg="50"
+               (click)="clearSelectedBreadcrumb()"
+               class="breadcrumb">
+            <app-dataset-selector></app-dataset-selector>
+          </div>
 
-        <!-- AOI FILTER -->
-        <form #polygonForm="ngForm"
-          (mouseenter)="isHoveringAOISelector = true"
-          (mouseleave)="isHoveringAOISelector = false"
-          (keydown.enter)="$event.preventDefault()"
-          fxFlex="230px" class="breadcrumb">
+          <!-- AOI FILTER -->
+          <form fxFlex="nogrow" fxFlex.lt-lg="50"
+                #polygonForm="ngForm"
+                class="breadcrumb"
+                (mouseenter)="isHoveringAOISelector = true"
+                (mouseleave)="isHoveringAOISelector = false"
+                (keydown.enter)="$event.preventDefault()">
 
-          <mat-form-field
-            [class.invalid-input-animation]="isAOIError"
-            class="full-width">
-            <label>
-              <input
-                (change)="onInputSearchPolygon($event.target.value)"
-                [value]="polygon"
-                [(ngModel)]="polygon"
-                name="searchPolygon"
-                matInput placeholder="Area of Interest">
-            </label>
+            <mat-form-field
+              [class.invalid-input-animation]="isAOIError"
+              class="full-width">
+              <label>
+                <input
+                  (change)="onInputSearchPolygon($event.target.value)"
+                  [value]="polygon"
+                  [(ngModel)]="polygon"
+                  name="searchPolygon"
+                  matInput placeholder="Area of Interest">
+              </label>
 
-            <mat-icon
-              *ngIf="!!polygon && isHoveringAOISelector" (click)="onCopy()"
-              matTooltip="Copy to clipboard"
-              class="clickable copy-icon" matSuffix>
+              <mat-icon
+                *ngIf="!!polygon && isHoveringAOISelector" (click)="onCopy()"
+                matTooltip="Copy to clipboard"
+                class="clickable copy-icon" matSuffix>
                 file_copy
-            </mat-icon>
-            <mat-icon
-              (click)="onNewSelectedFilter(filterTypes.AOI)"
-              matTooltip="More options"
-              class="clickable additional-aoi-toggle"
-              matSuffix>
-              {{ selectedFilter === filterTypes.AOI ? 'arrow_drop_up' : 'arrow_drop_down' }}
-            </mat-icon>
-          </mat-form-field>
+              </mat-icon>
+              <mat-icon
+                (click)="onNewSelectedFilter(filterTypes.AOI)"
+                matTooltip="More options"
+                class="clickable additional-aoi-toggle"
+                matSuffix>
+                {{ selectedFilter === filterTypes.AOI ? 'arrow_drop_up' : 'arrow_drop_down' }}
+              </mat-icon>
+            </mat-form-field>
 
-          <mat-card *ngIf="selectedFilter === filterTypes.AOI"
-                    class="breadcrumb-filter">
-            <app-aoi-upload></app-aoi-upload>
-          </mat-card>
-        </form>
-
-        <!-- DATES START/END FILTER -->
-        <div fxFlex="320px" class="breadcrumb">
-          <app-date-selector></app-date-selector>
+            <mat-card *ngIf="selectedFilter === filterTypes.AOI"
+                      class="breadcrumb-filter">
+              <app-aoi-upload></app-aoi-upload>
+            </mat-card>
+          </form>
         </div>
+
+        <!-- DATES START/END AND MORE ... FILTER -->
+        <div fxLayout="row">
+          <div fxFlex="300px" fxFlex.lt-lg="50"
+               class="breadcrumb">
+            <app-date-selector></app-date-selector>
+          </div>
+          <div fxFlex="nogrow" class="breadcrumb">
+            <button (click)="onToggleFiltersMenu()"
+                    mat-button class="additional-filters-button">
+              More<br>Filters
+              <br>
+              <mat-icon>more_horiz</mat-icon>
+            </button>
+          </div>
+          <div fxFlex class="breadcrumb extra-padding-top">
+            <button (click)="onDoSearch()"
+                    [disabled]="!(canSearch$ | async) && !(isMaxResultsLoading$ | async) "
+                    mat-flat-button color="primary">
+              {{
+              (loading$ | async) ?
+                'LOADING...' :
+                (!(canSearch$ | async) && !(isMaxResultsLoading$ | async) ?
+                  'NO RESULTS' : 'SEARCH')
+              }}
+            </button>
+            <button (click)="onClearSearch()" mat-flat-button>
+              <!--          <mat-icon-->
+              <!--            matTooltip="Clear search filters"-->
+              <!--            class="clear-search-icon">-->
+              <!--            clear-->
+              <!--          </mat-icon>-->
+              Clear
+            </button>
+          </div>
+        </div>
+
       </ng-container>
 
-      <!-- ADDITIONAL FILTERS -->
-      <div fxFlex="110px" class="breadcrumb additional-filters">
-        <button (click)="onToggleFiltersMenu()"
-                *ngIf="searchType === searchTypes.DATASET"
-                mat-button class="additional-filters-button">
-          More<br>Filters
-          <br>
-          <mat-icon>more_horiz</mat-icon>
-        </button>
-
-        <div *ngIf="searchType !== searchTypes.DATASET" class="search-dialog-crumb">
-          <button (click)="onToggleFiltersMenu()"
-                  *ngIf="searchType !== searchTypes.DATASET"
-                  mat-flat-button
-                  class="search-dialog-button">
-            <span *ngIf="searchType === searchTypes.MISSION">Select Mission</span>
-            <span *ngIf="searchType === searchTypes.LIST">
-              <mat-icon>edit</mat-icon>
-              Edit List
-            </span>
+      <!-- ADDITIONAL FILTERS FOR NON-DATASET SEARCH -->
+      <ng-container *ngIf="searchType !== searchTypes.DATASET">
+        <div fxFlex="nogrow" class="breadcrumb additional-filters">
+              <button (click)="onToggleFiltersMenu()"
+                      mat-flat-button
+                      class="search-dialog-button">
+                <span *ngIf="searchType === searchTypes.LIST">
+                  <mat-icon>edit</mat-icon>
+                  Edit List
+                  </span>
+              </button>
+        </div>
+        <div fxFlex class="breadcrumb extra-padding-top">
+          <button (click)="onDoSearch()"
+                  [disabled]="!(canSearch$ | async) && !(isMaxResultsLoading$ | async) "
+                  mat-flat-button color="primary">
+            {{
+            (loading$ | async) ?
+              'LOADING...' :
+              (!(canSearch$ | async) && !(isMaxResultsLoading$ | async) ?
+                'NO RESULTS' : 'SEARCH')
+            }}
+          </button>
+          <button (click)="onClearSearch()" mat-flat-button>
+            <!--          <mat-icon-->
+            <!--            matTooltip="Clear search filters"-->
+            <!--            class="clear-search-icon">-->
+            <!--            clear-->
+            <!--          </mat-icon>-->
+            Clear
           </button>
         </div>
-      </div>
-
-      <div fxFlex="80px" class="breadcrumb-no-divider extra-padding-top">
-        <button (click)="onClearSearch()" mat-button>
-          CLEAR
-        </button>
-      </div>
-
-      <div fxFlex class="breadcrumb-no-divider extra-padding-top">
-        <button (click)="onDoSearch()"
-                [disabled]="!(canSearch$ | async) && !(isMaxResultsLoading$ | async) "
-                mat-flat-button color="primary">
-          {{ (loading$ | async) ? 'LOADING...' : (!(canSearch$ | async) ? 'NO RESULTS' : 'SEARCH') }}
-        </button>
-      </div>
-
+      </ng-container>
     </div>
 
     <div fxLayout="row wrap"

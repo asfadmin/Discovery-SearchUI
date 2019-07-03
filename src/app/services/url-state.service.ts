@@ -19,6 +19,7 @@ import * as models from '@models';
 import { MapService } from './map/map.service';
 import { WktService } from './wkt.service';
 import { RangeService } from './range.service';
+import { PropertyService } from './property.service';
 
 
 @Injectable({
@@ -28,6 +29,7 @@ export class UrlStateService {
   private urlParams: models.UrlParameter[];
   private params = {};
   private isNotLoaded = true;
+  private shouldDoSearch = false;
 
   constructor(
     private store$: Store<AppState>,
@@ -36,6 +38,7 @@ export class UrlStateService {
     private wktService: WktService,
     private rangeService: RangeService,
     private router: Router,
+    private prop: PropertyService,
   ) {
     this.urlParams = [
       ...this.mapParameters(),
@@ -43,6 +46,8 @@ export class UrlStateService {
       ...this.filtersParameters(),
       ...this.missionParameters(),
     ];
+
+    this.updateShouldSearch();
   }
 
   public load(): void {
@@ -85,6 +90,10 @@ export class UrlStateService {
     Object.entries(urlParamLoaders).forEach(
       ([paramName, load]) => params[paramName] && load(params[paramName])
     );
+
+    if (this.shouldDoSearch) {
+      this.store$.dispatch(new MakeSearch());
+    }
   }
 
   private missionParameters() {
@@ -107,12 +116,26 @@ export class UrlStateService {
       ),
       loader: this.loadSelectedFilter
     }, {
+      name: 'resultsLoaded',
+      source: this.store$.select(granulesStore.getAreResultsLoaded).pipe(
+        skip(1),
+        map(resultsLoaded => ({ resultsLoaded }))
+      ),
+      loader: this.loadAreResultsLoaded
+    }, {
       name: 'searchType',
       source: this.store$.select(uiStore.getSearchType).pipe(
         skip(1),
         map(searchType => ({ searchType }))
       ),
       loader: this.loadSearchType
+    }, {
+      name: 'granule',
+      source: this.store$.select(granulesStore.getSelectedGranule).pipe(
+        skip(1),
+        map(granule => ({ granule: !!granule ? granule.id : null }))
+      ),
+      loader: this.loadSelectedGranule
     }, {
       name: 'uiView',
       source: this.store$.select(uiStore.getUiView).pipe(
@@ -126,7 +149,7 @@ export class UrlStateService {
   private filtersParameters() {
     return [{
       name: 'dataset',
-      source: this.store$.select(filterStore.getSelectedDatasetName).pipe(
+      source: this.store$.select(filterStore.getSelectedDatasetId).pipe(
         skip(1),
         map(selected => ({ dataset: selected }))
       ),
@@ -187,7 +210,7 @@ export class UrlStateService {
       source: this.store$.select(filterStore.getProductTypes).pipe(
         skip(1),
         map(types => types.map(key => key.apiValue).join(',')),
-        withLatestFrom(this.store$.select(filterStore.getSelectedDatasetName)),
+        withLatestFrom(this.store$.select(filterStore.getSelectedDatasetId)),
         map(([types, dataset]) => `${dataset}$$${types}`),
         map(param => ({ productTypes: param }))
       ),
@@ -197,7 +220,7 @@ export class UrlStateService {
       source: this.store$.select(filterStore.getBeamModes).pipe(
         skip(1),
         map(modes => modes.join(',')),
-        withLatestFrom(this.store$.select(filterStore.getSelectedDatasetName)),
+        withLatestFrom(this.store$.select(filterStore.getSelectedDatasetId)),
         map(([modes, dataset]) => `${dataset}$$${modes}`),
         map(param => ({ beamModes: param }))
       ),
@@ -207,7 +230,7 @@ export class UrlStateService {
       source: this.store$.select(filterStore.getPolarizations).pipe(
         skip(1),
         map(pols => pols.join(',')),
-        withLatestFrom(this.store$.select(filterStore.getSelectedDatasetName)),
+        withLatestFrom(this.store$.select(filterStore.getSelectedDatasetId)),
         map(([pols, dataset]) => `${dataset}$$${pols}`),
         map(param => ({ polarizations: param }))
       ),
@@ -328,12 +351,15 @@ export class UrlStateService {
     }
   }
 
-  private loadSelectedDataset = (dataset: string): void => {
-    if (!models.datasetNames.includes(dataset)) {
+  private loadSelectedDataset = (datasetStr: string): void => {
+
+    const datasetIds = models.datasets.map(dataset => dataset.id);
+
+    if (!datasetIds.includes(datasetStr)) {
       return;
     }
 
-    const action = new filterStore.SetSelectedDataset(dataset);
+    const action = new filterStore.SetSelectedDataset(datasetStr);
     this.store$.dispatch(action);
   }
 
@@ -436,7 +462,7 @@ export class UrlStateService {
     const possibleTypes = (possibleValuesStr || '').split(',');
 
     const dataset = models.datasets
-        .filter(d => datasetName === d.name)
+        .filter(d => datasetName === d.id)
         .pop();
 
     if (!dataset) {
@@ -474,6 +500,20 @@ export class UrlStateService {
 
   private loadSelectedMission = (mission: string): void => {
     this.store$.dispatch(new missionStore.SelectMission(mission));
+  }
+
+  private loadAreResultsLoaded = (areLoaded: string): void => {
+    this.store$.dispatch(new granulesStore.SetResultsLoaded(areLoaded === 'true'));
+  }
+
+  private loadSelectedGranule = (granuleId: string): void => {
+    this.store$.dispatch(new granulesStore.SetSelectedGranule(granuleId));
+  }
+
+  private updateShouldSearch(): void {
+    this.store$.select(granulesStore.getAreResultsLoaded).pipe(
+      filter(wereResultsLoaded => wereResultsLoaded),
+    ).subscribe(shouldSearch => this.shouldDoSearch = true);
   }
 
   private isNumber = n => !isNaN(n) && isFinite(n);

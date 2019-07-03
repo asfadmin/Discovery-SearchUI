@@ -52,7 +52,7 @@ export class MapComponent implements OnInit {
     );
 
     this.mapService.newSelectedGranule$.pipe(
-      map(gName => new granulesStore.SetSelectedGranule(gName))
+      map(granuleId => new granulesStore.SetSelectedGranule(granuleId))
     ).subscribe(
       action => this.store$.dispatch(action)
     );
@@ -70,7 +70,7 @@ export class MapComponent implements OnInit {
   public onNewSearchPolygon(polygon: string): void {
     const features = this.loadSearchPolygon(polygon);
 
-    this.mapService.zoomTo(features);
+    this.mapService.zoomToFeature(features);
   }
 
   public onFileUploadDialogClosed(successful: boolean): void {
@@ -126,6 +126,7 @@ export class MapComponent implements OnInit {
 
     const selectedGranuleAfterInitialization = this.isMapInitialized$.pipe(
       filter(isMapInitiliazed => isMapInitiliazed),
+      switchMap(_ => this.viewType$),
       switchMap(_ => granule$),
     );
 

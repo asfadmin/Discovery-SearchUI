@@ -12,8 +12,7 @@ import { PropertyService } from './property.service';
 })
 export class AsfApiService {
 
-  private maturity = !this.env.value.devMode ?
-    'prod' : 'test';
+  private maturity = 'prod';
 
   constructor(
     private env: EnvironmentService,

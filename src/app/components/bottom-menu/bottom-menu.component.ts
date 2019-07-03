@@ -31,12 +31,6 @@ import * as models from '@models';
 export class BottomMenuComponent {
   public isBottomMenuOpen$ = this.store$.select(uiStore.getIsBottomMenuOpen);
 
-  public searchDataset$ = this.store$.select(searchStore.getIsLoading).pipe(
-    withLatestFrom(this.store$.select(filtersStore.getSelectedDataset)),
-    filter(([isLoading, _]) => !isLoading),
-    map(([_, dataset]) => dataset),
-  );
-
   public allProducts$ = this.store$.select(granulesStore.getAllProducts);
   public numberOfGranules$ = this.store$.select(granulesStore.getNumberOfGranules);
   public selectedProducts$ = this.store$.select(granulesStore.getSelectedGranuleProducts);

@@ -7,24 +7,31 @@
 
 <div *ngIf="isSeasonalSearch">
   <div>
-    <b>Start Day </b>
-    <mat-slider
-      (change)="onSeasonStartChange($event.value)"
-      [value]="seasonStart$ | async"
-      [displayWith]="dayOfYearFormat"
-      min="1" max="365" step="1"
-      thumbLabel="true" showTicks="true"
-      ></mat-slider>
+    <app-date-selector></app-date-selector>
+  </div>
+  <div>
+    <b>Start Day </b> <span *ngIf="start"> • {{ dayOfYearFormat(start, 'short') }}</span>
+    <div class="season-selector">
+      <mat-slider
+        (change)="onSeasonStartChange($event.value)"
+        [value]="start"
+        [displayWith]="dayOfYearFormat"
+        min="1" max="365" step="1"
+        thumbLabel="true" showTicks="true"
+        ></mat-slider>
+    </div>
   </div>
 
   <div>
-    <b>End Day </b>
-    <mat-slider
-      (change)="onSeasonEndChange($event.value)"
-      [value]="seasonEnd$ | async"
-      [displayWith]="dayOfYearFormat"
-      min="1" max="365" step="1"
-      thumbLabel="true" showTicks="true"
-      ></mat-slider>
+    <b>End Day </b> <span *ngIf="end"> • {{ dayOfYearFormat(end, 'short') }}</span>
+    <div class="season-selector">
+      <mat-slider
+        (change)="onSeasonEndChange($event.value)"
+        [value]="end"
+        [displayWith]="dayOfYearFormat"
+        min="1" max="365" step="1"
+        thumbLabel="true" showTicks="true"
+        ></mat-slider>
+    </div>
   </div>
 </div>

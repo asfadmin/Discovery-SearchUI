@@ -5,6 +5,10 @@ export interface Environment {
       prod: string;
       test: string;
     };
+    auth: {
+      api: string;
+      urs: string;
+    };
     devMode: boolean;
 }
 
