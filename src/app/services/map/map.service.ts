@@ -80,8 +80,8 @@ export class MapService {
   }
 
   private zoom(amount: number): void {
-    this.mapView.view.animate({
-      zoom: this.mapView.view.getZoom() + amount,
+    this.map.getView().animate({
+      zoom: this.map.getView().getZoom() + amount,
       duration: 150
     });
   }
