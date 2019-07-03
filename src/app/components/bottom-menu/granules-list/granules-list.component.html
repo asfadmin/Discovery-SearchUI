@@ -18,10 +18,14 @@
             class="size" matListAvatar>
 
           <div class="product-name" matLine>
-            <span> {{ granule.name | truncate : 32 }} </span>
+            <span>
+              <span> {{ granule.name | truncate : 32 }}</span>
+              <span *ngIf="(datasetId$ | async) === 'SENTINEL-1'">{{ granule.name.substr(granule.name.length - 4) }}</span>
+            </span>
 
             <app-copy-to-clipboard
                *ngIf="granule.name === hoveredGranuleName"
+               style="margin-left: 5px"
                prompt="Copy granule name"
                [value]="granule.name"
               ></app-copy-to-clipboard>
