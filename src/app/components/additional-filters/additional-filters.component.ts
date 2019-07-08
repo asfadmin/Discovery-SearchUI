@@ -17,13 +17,14 @@ import * as models from '@models';
   templateUrl: './additional-filters.component.html',
   styleUrls: ['./additional-filters.component.scss'],
   animations: [
-    trigger('changeMenuState', [
-      state('shown', style({ transform: 'translateX(100%)'
+    trigger('showFilters', [
+      state('shown', style({
+        opacity: 1,
       })),
-      state('hidden',   style({
-        transform: 'translateX(0%)'
+      state('hidden', style({
+        opacity: 0,
       })),
-      transition('shown <=> hidden', animate('200ms ease-out'))
+      transition('shown <=> hidden', animate('110ms'))
     ])
   ],
 })
