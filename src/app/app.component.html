@@ -9,7 +9,6 @@
       </app-bottom-menu>
 
       <app-nav-bar
-        (doSearch)="onNewSearch()"
         (clearSearch)="onClearSearch()"
         [isLoading]="isLoading$ | async">
       </app-nav-bar>
@@ -18,7 +17,6 @@
       </app-map>
 
       <app-additional-filters
-         (newSearch)="onNewSearch()"
          (clearSearch)="onClearSearch()"
         ></app-additional-filters>
     </div>

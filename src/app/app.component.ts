@@ -121,10 +121,6 @@ export class AppComponent implements OnInit {
     this.urlStateService.load();
   }
 
-  public onNewSearch(): void {
-    this.store$.dispatch(new searchStore.MakeSearch());
-  }
-
   public onClearSearch(): void {
     this.store$.dispatch(new granulesStore.ClearGranules());
     this.store$.dispatch(new uiStore.CloseBottomMenu());

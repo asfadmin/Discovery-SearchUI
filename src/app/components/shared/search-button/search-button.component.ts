@@ -26,6 +26,6 @@ export class SearchButtonComponent implements OnInit {
   }
 
   public onDoSearch(): void {
-    this.doSearch.emit();
+    this.store$.dispatch(new searchStore.MakeSearch());
   }
 }

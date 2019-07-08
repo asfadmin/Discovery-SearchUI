@@ -96,9 +96,7 @@
             </button>
           </div>
           <div fxFlex class="breadcrumb extra-padding-top">
-            <app-search-button
-              (doSearch)="onDoSearch()"
-              ></app-search-button>
+            <app-search-button></app-search-button>
             <button (click)="onClearSearch()" mat-flat-button>
               Clear
             </button>
@@ -120,22 +118,8 @@
               </button>
         </div>
         <div fxFlex class="breadcrumb extra-padding-top">
-          <button (click)="onDoSearch()"
-                  [disabled]="!(canSearch$ | async) && !(isMaxResultsLoading$ | async) "
-                  mat-flat-button color="primary">
-            {{
-            (loading$ | async) ?
-              'LOADING...' :
-              (!(canSearch$ | async) && !(isMaxResultsLoading$ | async) ?
-                'NO RESULTS' : 'SEARCH')
-            }}
-          </button>
+          <app-search-button></app-search-button>
           <button (click)="onClearSearch()" mat-flat-button>
-            <!--          <mat-icon-->
-            <!--            matTooltip="Clear search filters"-->
-            <!--            class="clear-search-icon">-->
-            <!--            clear-->
-            <!--          </mat-icon>-->
             Clear
           </button>
         </div>

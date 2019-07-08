@@ -4,6 +4,7 @@ import { NgForm } from '@angular/forms';
 import { Subject } from 'rxjs';
 import { tap, map, filter, delay } from 'rxjs/operators';
 import { Store, ActionsSubject } from '@ngrx/store';
+import { ofType } from '@ngrx/effects';
 import { ClipboardService } from 'ngx-clipboard';
 
 import { AppState } from '@store';
@@ -37,7 +38,6 @@ enum BreadcrumbFilterType {
   styleUrls: ['./breadcrumb-list.component.scss']
 })
 export class BreadcrumbListComponent implements OnInit {
-  @Output() doSearch = new EventEmitter<void>();
   @Output() clearSearch = new EventEmitter<void>();
 
   @ViewChild('polygonForm', { static: false }) public polygonForm: NgForm;
@@ -76,6 +76,12 @@ export class BreadcrumbListComponent implements OnInit {
       searchType => this.searchType = searchType
     );
 
+    this.actions$.pipe(
+      ofType<searchStore.MakeSearch>(searchStore.SearchActionType.MAKE_SEARCH),
+    ).subscribe(
+      _ => this.onSearch()
+    );
+
     const polygon$ = this.mapService.searchPolygon$;
     polygon$.subscribe(
       p => this.polygon = p
@@ -99,9 +105,8 @@ export class BreadcrumbListComponent implements OnInit {
     });
   }
 
-  public onDoSearch(): void {
+  public onSearch(): void {
     this.clearSelectedBreadcrumb();
-    this.doSearch.emit();
   }
 
   public onClearSearch(): void {
