@@ -107,6 +107,10 @@ export class BreadcrumbListComponent implements OnInit {
     this.clearSelectedBreadcrumb();
   }
 
+  public onClearSearch(): void {
+    this.store$.dispatch(new searchStore.ClearSearch());
+  }
+
   public onOpenDownloadQueue(): void {
     this.dialog.open(QueueComponent, {
       id: 'dlQueueDialog'

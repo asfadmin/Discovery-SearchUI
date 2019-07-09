@@ -129,12 +129,7 @@
       <div fxFlex.gt-md="550px" class="first-info">
       </div>
       <div fxFlex="300px" class="max-results">
-          <app-max-results-selector
-            [maxResults]="maxResults$ | async"
-            [isMaxResultsLoading]="isMaxResultsLoading$ | async"
-            [currentSearchAmount]="currentSearchAmount$ | async"
-            (newMaxResults)="onNewMaxResults($event)"
-          ></app-max-results-selector>
+          <app-max-results-selector></app-max-results-selector>
       </div>
       <div fxFlex="300px">
         <app-nav-buttons
