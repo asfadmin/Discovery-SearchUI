@@ -96,24 +96,8 @@
             </button>
           </div>
           <div fxFlex class="breadcrumb extra-padding-top">
-            <button (click)="onDoSearch()"
-                    [disabled]="!(canSearch$ | async) && !(isMaxResultsLoading$ | async) "
-                    mat-flat-button color="primary">
-              {{
-              (loading$ | async) ?
-                'LOADING...' :
-                (!(canSearch$ | async) && !(isMaxResultsLoading$ | async) ?
-                  'NO RESULTS' : 'SEARCH')
-              }}
-            </button>
-            <button (click)="onClearSearch()" mat-flat-button>
-              <!--          <mat-icon-->
-              <!--            matTooltip="Clear search filters"-->
-              <!--            class="clear-search-icon">-->
-              <!--            clear-->
-              <!--          </mat-icon>-->
-              Clear
-            </button>
+            <app-search-button></app-search-button>
+            <app-clear-button></app-clear-button>
           </div>
         </div>
 
@@ -132,24 +116,8 @@
               </button>
         </div>
         <div fxFlex class="breadcrumb extra-padding-top">
-          <button (click)="onDoSearch()"
-                  [disabled]="!(canSearch$ | async) && !(isMaxResultsLoading$ | async) "
-                  mat-flat-button color="primary">
-            {{
-            (loading$ | async) ?
-              'LOADING...' :
-              (!(canSearch$ | async) && !(isMaxResultsLoading$ | async) ?
-                'NO RESULTS' : 'SEARCH')
-            }}
-          </button>
-          <button (click)="onClearSearch()" mat-flat-button>
-            <!--          <mat-icon-->
-            <!--            matTooltip="Clear search filters"-->
-            <!--            class="clear-search-icon">-->
-            <!--            clear-->
-            <!--          </mat-icon>-->
-            Clear
-          </button>
+          <app-search-button></app-search-button>
+          <app-clear-button></app-clear-button>
         </div>
       </ng-container>
     </div>
@@ -161,12 +129,7 @@
       <div fxFlex.gt-md="550px" class="first-info">
       </div>
       <div fxFlex="300px" class="max-results">
-          <app-max-results-selector
-            [maxResults]="maxResults$ | async"
-            [isMaxResultsLoading]="isMaxResultsLoading$ | async"
-            [currentSearchAmount]="currentSearchAmount$ | async"
-            (newMaxResults)="onNewMaxResults($event)"
-          ></app-max-results-selector>
+          <app-max-results-selector></app-max-results-selector>
       </div>
       <div fxFlex="300px">
         <app-nav-buttons
