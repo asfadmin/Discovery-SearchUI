@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { Router, ActivatedRoute, Params } from '@angular/router';
 
 import { Store } from '@ngrx/store';
+import * as moment from 'moment';
 
 import { combineLatest } from 'rxjs';
 import { filter, map, switchMap, skip, tap, withLatestFrom } from 'rxjs/operators';
@@ -158,14 +159,14 @@ export class UrlStateService {
       name: 'start',
       source: this.store$.select(filterStore.getStartDate).pipe(
         skip(1),
-        map(start => ({ start }))
+        map(start => ({ start: moment.utc( start ).format() }))
       ),
       loader: this.loadStartDate
     }, {
       name: 'end',
       source: this.store$.select(filterStore.getEndDate).pipe(
         skip(1),
-        map(end => ({ end }))
+        map(end => ({ end: moment.utc( end ).format() }))
       ),
       loader: this.loadEndDate
     }, {

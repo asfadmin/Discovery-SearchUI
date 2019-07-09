@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpParams } from '@angular/common/http';
 
 import { Store, Action } from '@ngrx/store';
+import * as moment from 'moment';
 
 import { Observable, combineLatest } from 'rxjs';
 import { map, withLatestFrom, startWith, switchMap, tap, filter } from 'rxjs/operators';
@@ -116,7 +117,7 @@ export class SearchParamsService {
     return this.store$.select(filterStore.getDateRange).pipe(
       map(range => {
         return [range.start, range.end]
-          .map(date => !!date ? date.toISOString() : date);
+          .map(date => !!date ? moment.utc( date ).format() : date);
       }),
       map(([start, end]) => ({ start, end })),
     );
