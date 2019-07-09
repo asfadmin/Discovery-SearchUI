@@ -38,8 +38,6 @@ enum BreadcrumbFilterType {
   styleUrls: ['./breadcrumb-list.component.scss']
 })
 export class BreadcrumbListComponent implements OnInit {
-  @Output() clearSearch = new EventEmitter<void>();
-
   @ViewChild('polygonForm', { static: false }) public polygonForm: NgForm;
 
   public aoiErrors$ = new Subject<void>();
@@ -107,10 +105,6 @@ export class BreadcrumbListComponent implements OnInit {
 
   public onSearch(): void {
     this.clearSelectedBreadcrumb();
-  }
-
-  public onClearSearch(): void {
-    this.clearSearch.emit();
   }
 
   public onOpenDownloadQueue(): void {

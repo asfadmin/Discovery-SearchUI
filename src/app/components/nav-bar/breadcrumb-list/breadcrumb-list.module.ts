@@ -15,6 +15,7 @@ import { DateSelectorModule } from '@components/shared/selectors/date-selector';
 import { AoiUploadModule } from '@components/shared/selectors/aoi-upload';
 import { MaxResultsSelectorModule } from '@components/shared/max-results-selector';
 import { SearchButtonModule } from '@components/shared/search-button';
+import { ClearButtonModule } from '@components/shared/clear-button';
 
 import { QueueModule, QueueComponent } from '@components/nav-bar/queue';
 import { SearchSelectorModule } from '@components/shared/selectors/search-selector';
@@ -42,6 +43,7 @@ import { LogoModule } from '@components/nav-bar/logo/logo.module';
     AoiUploadModule,
     MaxResultsSelectorModule,
     SearchButtonModule,
+    ClearButtonModule,
     NavButtonsModule,
     LogoModule,
   ],

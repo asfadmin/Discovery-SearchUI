@@ -3,8 +3,8 @@ import { HttpParams } from '@angular/common/http';
 import { MatBottomSheet } from '@angular/material/bottom-sheet';
 import { MatSidenav } from '@angular/material/sidenav';
 
-import { Store } from '@ngrx/store';
-
+import { Store, ActionsSubject } from '@ngrx/store';
+import { ofType } from '@ngrx/effects';
 import { of } from 'rxjs';
 import { skip, filter, map, switchMap, mergeMap, tap, catchError, debounceTime } from 'rxjs/operators';
 
@@ -44,6 +44,7 @@ export class AppComponent implements OnInit {
 
   constructor(
     private store$: Store<AppState>,
+    private actions$: ActionsSubject,
     private mapService: services.MapService,
     private urlStateService: services.UrlStateService,
     private searchParams$: services.SearchParamsService,
@@ -53,19 +54,21 @@ export class AppComponent implements OnInit {
 
   public ngOnInit(): void {
     this.polygonValidationService.validate();
-
     this.loadProductQueue();
+    this.store$.dispatch(new missionStore.LoadMissions());
+
+    this.actions$.pipe(
+      ofType<searchStore.ClearSearch>(searchStore.SearchActionType.CLEAR_SEARCH),
+    ).subscribe(
+      _ => this.onClearSearch()
+    );
+
     this.queuedProducts$.subscribe(
       products => localStorage.setItem(this.queueStateKey, JSON.stringify(products))
     );
 
-    this.store$.dispatch(new missionStore.LoadMissions());
-
-    this.store$.select(uiStore.getSearchType).subscribe(
-      searchType => this.searchType = searchType
-    );
-
     this.store$.select(uiStore.getSearchType).pipe(
+      tap(searchType => this.searchType = searchType),
       skip(1),
       map(searchType => {
         return searchType === models.SearchType.DATASET ?
@@ -82,30 +85,8 @@ export class AppComponent implements OnInit {
         this.sidenav.close()
     );
 
-    this.searchParams$.getParams().pipe(
-      map(params => ({...params, ...{output: 'COUNT'}})),
-      tap(_ =>
-        this.store$.dispatch(new searchStore.SearchAmountLoading())
-      ),
-      switchMap(params => this.asfSearchApi.query<any[]>(params).pipe(
-          catchError(_ => of(-1))
-        )
-      ),
-    ).subscribe(searchAmount => {
-      this.store$.dispatch(new searchStore.SetSearchAmount(+<number>searchAmount));
-    });
-
-    this.asfSearchApi.health().pipe(
-      map(health => {
-        const { ASFSearchAPI, CMRSearchAPI } = health;
-
-        if (!CMRSearchAPI.health.echo['ok?']) {
-          this.store$.dispatch(new searchStore.SearchError('CMR is experiencing errors, try searching later.'));
-        } else if (!ASFSearchAPI['ok?']) {
-          this.store$.dispatch(new searchStore.SearchError('ASF API is experiencing errors, try searching later.'));
-        }
-      }),
-    ).subscribe(_ => _);
+    this.updateMaxSearchResults();
+    this.healthCheck();
   }
 
   private loadProductQueue(): void {
@@ -124,7 +105,6 @@ export class AppComponent implements OnInit {
   public onClearSearch(): void {
     this.store$.dispatch(new granulesStore.ClearGranules());
     this.store$.dispatch(new uiStore.CloseBottomMenu());
-
 
     if (this.searchType === models.SearchType.DATASET) {
       this.mapService.clearDrawLayer();
@@ -145,5 +125,34 @@ export class AppComponent implements OnInit {
 
   public onCloseSidebar(): void {
     this.store$.dispatch(new uiStore.CloseSidebar());
+  }
+
+  private updateMaxSearchResults(): void {
+    this.searchParams$.getParams().pipe(
+      map(params => ({...params, ...{output: 'COUNT'}})),
+      tap(_ =>
+        this.store$.dispatch(new searchStore.SearchAmountLoading())
+      ),
+      switchMap(params => this.asfSearchApi.query<any[]>(params).pipe(
+          catchError(_ => of(-1))
+        )
+      ),
+    ).subscribe(searchAmount => {
+      this.store$.dispatch(new searchStore.SetSearchAmount(+<number>searchAmount));
+    });
+  }
+
+  private healthCheck(): void {
+    this.asfSearchApi.health().pipe(
+      map(health => {
+        const { ASFSearchAPI, CMRSearchAPI } = health;
+
+        if (!CMRSearchAPI.health.echo['ok?']) {
+          this.store$.dispatch(new searchStore.SearchError('CMR is experiencing errors, try searching later.'));
+        } else if (!ASFSearchAPI['ok?']) {
+          this.store$.dispatch(new searchStore.SearchError('ASF API is experiencing errors, try searching later.'));
+        }
+      }),
+    ).subscribe(_ => _);
   }
 }

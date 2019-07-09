@@ -29,8 +29,6 @@ import * as models from '@models';
   ],
 })
 export class AdditionalFiltersComponent implements OnInit {
-  @Output() clearSearch = new EventEmitter<void>();
-
   public isSidebarOpen$ = this.store$.select(uiStore.getIsSidebarOpen);
   public isFiltersMenuOpen$ = this.store$.select(uiStore.getIsFiltersMenuOpen);
 

@@ -8,17 +8,13 @@
       <app-bottom-menu>
       </app-bottom-menu>
 
-      <app-nav-bar
-        (clearSearch)="onClearSearch()"
-        [isLoading]="isLoading$ | async">
+      <app-nav-bar [isLoading]="isLoading$ | async">
       </app-nav-bar>
 
       <app-map (loadUrlState)="onLoadUrlState()">
       </app-map>
 
-      <app-additional-filters
-         (clearSearch)="onClearSearch()"
-        ></app-additional-filters>
+      <app-additional-filters></app-additional-filters>
     </div>
   </mat-sidenav-content>
 </mat-sidenav-container>
