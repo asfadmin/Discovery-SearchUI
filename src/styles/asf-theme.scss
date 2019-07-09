@@ -15,10 +15,11 @@ $asf-app-primary: mat-palette($mat-asf-primary, 700, 400, 900);
 $asf-app-accent:  mat-palette($mat-grey, 300, 100, 400);
 
 // The warn palette is optional (defaults to red).
+//$asf-app-warn:    mat-palette($mat-asf-yellow, 200, 100, 500);
 $asf-app-warn:    mat-palette($mat-asf-yellow, 200, 100, 500);
 
 // Create the theme object (a Sass map containing all of the palettes).
-$asf-app-theme: mat-light-theme($asf-app-primary, $asf-app-accent, $asf-app-warn);
+$asf-app-theme: mat-light-theme($asf-app-primary, $asf-app-accent);
 
 // Include theme styles for core and each component used in your app.
 // Alternatively, you can import and @include the theme mixins for each component
