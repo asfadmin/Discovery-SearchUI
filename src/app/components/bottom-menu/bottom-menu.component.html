@@ -20,8 +20,8 @@
       <mat-card-subtitle *ngIf="numberOfGranules$ | async as numberOfGranules" class="header">
         <div style="display: flex; justify-content: center">
           <div style="margin-right: 10px;">
-            {{ numberOfProducts$ | async }} Product{{ (numberOfProducts$ | async) === 1 ? '' : 's' }} /
-            {{ numberOfGranules }} Granule{{ numberOfGranules === 1 ? '' : 's' }}
+            {{ numberOfGranules }} Granule{{ numberOfGranules === 1 ? '' : 's' }} /
+            {{ numberOfProducts$ | async }} Product{{ (numberOfProducts$ | async) === 1 ? '' : 's' }}
           </div>
           <div *ngIf="allProducts$ | async as products">
             <mat-icon
