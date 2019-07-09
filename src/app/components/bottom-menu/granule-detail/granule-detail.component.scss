@@ -1,7 +1,8 @@
 .detail-card {
-  height: 435px;
-  margin-top: 4px;
-  //overflow: auto;
+  height: calc(100% - 72px);
+  padding: 0;
+  margin: 0;
+  overflow: auto;
 }
 
 .clipboard-icon {
