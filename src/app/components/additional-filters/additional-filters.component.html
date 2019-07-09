@@ -1,5 +1,5 @@
-<div *ngIf="selectedSearchType !== null"
-  [@showFilters]="(isFiltersMenuOpen$ | async) ? 'shown' : 'hidden'"
+<div *ngIf="selectedSearchType !== null && (isFiltersMenuOpen$ | async)"
+  [@showFilters]
   class="dataset-filters-div">
   <mat-card class="dataset-filters-card">
     <div fxLayout="row" fxFlexFill>
