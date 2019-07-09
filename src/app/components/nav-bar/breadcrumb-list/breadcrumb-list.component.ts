@@ -10,7 +10,6 @@ import { ClipboardService } from 'ngx-clipboard';
 import { AppState } from '@store';
 import * as searchStore from '@store/search';
 import * as uiStore from '@store/ui';
-import * as filtersStore from '@store/filters';
 import * as queueStore from '@store/queue';
 
 import { SearchType } from '@models';
@@ -41,8 +40,6 @@ export class BreadcrumbListComponent implements OnInit {
   @ViewChild('polygonForm', { static: false }) public polygonForm: NgForm;
 
   public aoiErrors$ = new Subject<void>();
-
-  public canSearch$ = this.store$.select(searchStore.getCanSearch);
   public isAOIError = false;
   public isHoveringAOISelector = false;
 
@@ -54,11 +51,6 @@ export class BreadcrumbListComponent implements OnInit {
   public polygon: string;
 
   public queuedProducts$ = this.store$.select(queueStore.getQueuedProducts);
-  public loading$ = this.store$.select(searchStore.getIsLoading);
-
-  public maxResults$ = this.store$.select(filtersStore.getMaxSearchResults);
-  public isMaxResultsLoading$ = this.store$.select(searchStore.getIsMaxResultsLoading);
-  public currentSearchAmount$ = this.store$.select(searchStore.getSearchAmount);
 
   constructor(
     private store$: Store<AppState>,
@@ -150,10 +142,6 @@ export class BreadcrumbListComponent implements OnInit {
   public onSetSearchType(searchType: SearchType): void {
     this.clearSelectedBreadcrumb();
     this.store$.dispatch(new uiStore.SetSearchType(searchType));
-  }
-
-  public onNewMaxResults(maxResults: number): void {
-    this.store$.dispatch(new filtersStore.SetMaxResults(maxResults));
   }
 
   public onCopy(): void {
