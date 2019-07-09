@@ -9,6 +9,8 @@ export enum SearchActionType {
   CANCEL_SEARCH = '[Search] Cancel Search',
   SEARCH_CANCELED = '[Search] Search Canceled',
 
+  CLEAR_SEARCH = '[Search] Clear Search',
+
   ENABLE_SEARCH = '[Search] Enable Search',
   DISABLE_SEARCH = '[Search] Disable Search',
 
@@ -22,6 +24,10 @@ export class MakeSearch implements Action {
 
 export class CancelSearch implements Action {
   public readonly type = SearchActionType.CANCEL_SEARCH;
+}
+
+export class ClearSearch implements Action {
+  public readonly type = SearchActionType.CLEAR_SEARCH;
 }
 
 export class SearchCanceled implements Action {
@@ -62,6 +68,7 @@ export type SearchActions =
   | MakeSearch
   | SetSearchAmount
   | CancelSearch
+  | ClearSearch
   | EnableSearch
   | DisableSearch
   | SearchAmountLoading

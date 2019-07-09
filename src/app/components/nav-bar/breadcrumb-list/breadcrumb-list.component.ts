@@ -4,12 +4,12 @@ import { NgForm } from '@angular/forms';
 import { Subject } from 'rxjs';
 import { tap, map, filter, delay } from 'rxjs/operators';
 import { Store, ActionsSubject } from '@ngrx/store';
+import { ofType } from '@ngrx/effects';
 import { ClipboardService } from 'ngx-clipboard';
 
 import { AppState } from '@store';
 import * as searchStore from '@store/search';
 import * as uiStore from '@store/ui';
-import * as filtersStore from '@store/filters';
 import * as queueStore from '@store/queue';
 
 import { SearchType } from '@models';
@@ -37,14 +37,9 @@ enum BreadcrumbFilterType {
   styleUrls: ['./breadcrumb-list.component.scss']
 })
 export class BreadcrumbListComponent implements OnInit {
-  @Output() doSearch = new EventEmitter<void>();
-  @Output() clearSearch = new EventEmitter<void>();
-
   @ViewChild('polygonForm', { static: false }) public polygonForm: NgForm;
 
   public aoiErrors$ = new Subject<void>();
-
-  public canSearch$ = this.store$.select(searchStore.getCanSearch);
   public isAOIError = false;
   public isHoveringAOISelector = false;
 
@@ -56,11 +51,6 @@ export class BreadcrumbListComponent implements OnInit {
   public polygon: string;
 
   public queuedProducts$ = this.store$.select(queueStore.getQueuedProducts);
-  public loading$ = this.store$.select(searchStore.getIsLoading);
-
-  public maxResults$ = this.store$.select(filtersStore.getMaxSearchResults);
-  public isMaxResultsLoading$ = this.store$.select(searchStore.getIsMaxResultsLoading);
-  public currentSearchAmount$ = this.store$.select(searchStore.getSearchAmount);
 
   constructor(
     private store$: Store<AppState>,
@@ -74,6 +64,12 @@ export class BreadcrumbListComponent implements OnInit {
   ngOnInit() {
     this.store$.select(uiStore.getSearchType).subscribe(
       searchType => this.searchType = searchType
+    );
+
+    this.actions$.pipe(
+      ofType<searchStore.MakeSearch>(searchStore.SearchActionType.MAKE_SEARCH),
+    ).subscribe(
+      _ => this.onSearch()
     );
 
     const polygon$ = this.mapService.searchPolygon$;
@@ -99,13 +95,12 @@ export class BreadcrumbListComponent implements OnInit {
     });
   }
 
-  public onDoSearch(): void {
+  public onSearch(): void {
     this.clearSelectedBreadcrumb();
-    this.doSearch.emit();
   }
 
   public onClearSearch(): void {
-    this.clearSearch.emit();
+    this.store$.dispatch(new searchStore.ClearSearch());
   }
 
   public onOpenDownloadQueue(): void {
@@ -147,10 +142,6 @@ export class BreadcrumbListComponent implements OnInit {
   public onSetSearchType(searchType: SearchType): void {
     this.clearSelectedBreadcrumb();
     this.store$.dispatch(new uiStore.SetSearchType(searchType));
-  }
-
-  public onNewMaxResults(maxResults: number): void {
-    this.store$.dispatch(new filtersStore.SetMaxResults(maxResults));
   }
 
   public onCopy(): void {

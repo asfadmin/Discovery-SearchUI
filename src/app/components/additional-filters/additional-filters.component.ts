@@ -17,20 +17,15 @@ import * as models from '@models';
   templateUrl: './additional-filters.component.html',
   styleUrls: ['./additional-filters.component.scss'],
   animations: [
-    trigger('changeMenuState', [
-      state('shown', style({ transform: 'translateX(100%)'
+    trigger('showFilters', [
+      state('void', style({
+        opacity: 0,
       })),
-      state('hidden',   style({
-        transform: 'translateX(0%)'
-      })),
-      transition('shown <=> hidden', animate('200ms ease-out'))
+      transition('void <=> *', animate('100ms'))
     ])
   ],
 })
 export class AdditionalFiltersComponent implements OnInit {
-  @Output() newSearch = new EventEmitter<void>();
-  @Output() clearSearch = new EventEmitter<void>();
-
   public isSidebarOpen$ = this.store$.select(uiStore.getIsSidebarOpen);
   public isFiltersMenuOpen$ = this.store$.select(uiStore.getIsFiltersMenuOpen);
 
