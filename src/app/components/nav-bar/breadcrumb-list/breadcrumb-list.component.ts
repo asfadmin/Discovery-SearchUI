@@ -115,6 +115,24 @@ export class BreadcrumbListComponent implements OnInit {
   }
 
   public onInputSearchPolygon(polygon: string): void {
+    if (this.isLegacyFormat(polygon)) {
+      this.loadLegacyFormat(polygon);
+    } else {
+      this.loadWKT(polygon);
+    }
+  }
+
+  private isLegacyFormat(polygon: string): boolean {
+    const decimalNumber = new RegExp(/^[-]?(?=.?\d)\d*(\.\d{0,9})?$/);
+
+    return true;
+  }
+
+  private loadLegacyFormat(polygon: string): void {
+    console.log('loading legacy area format');
+  }
+
+  private loadWKT(polygon: string): void {
     try {
       const features = this.wktService.wktToFeature(
         polygon,
