@@ -51,12 +51,15 @@ export class DateSelectorComponent implements OnInit {
   }
 
   public onStartDateChange(e: MatDatepickerInputEvent<moment.Moment>) {
-    const date = this.toJSDate(e.value);
+    const momentDate = e.value.set({h: 0});
+    const date = this.toJSDate(momentDate);
+
     this.store$.dispatch(new filtersStore.SetStartDate(date));
   }
 
   public onEndDateChange(e: MatDatepickerInputEvent<moment.Moment>) {
-    const date = this.toJSDate(e.value);
+    const momentDate = e.value.set({h: 23});
+    const date = this.toJSDate(momentDate);
     this.store$.dispatch(new filtersStore.SetEndDate(date));
   }
 
