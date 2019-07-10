@@ -6,14 +6,14 @@ import { Injectable } from '@angular/core';
 export class LegacyAreaFormatService {
   constructor() { }
 
-  public isLegacyFormat(polygon: string): boolean {
-    const numbers = this.parseNumberList(polygon);
+  public isValid(numberList: string): boolean {
+    const numbers = this.parseNumberList(numberList);
 
     return numbers.length === 10 || numbers.length === 8;
   }
 
-  public legacyFormatToWkt(polygon: string): string {
-    const numbers = this.parseNumberList(polygon);
+  public toWkt(numberList: string): string {
+    const numbers = this.parseNumberList(numberList);
 
     const pairs = this.pairPoints(numbers);
 

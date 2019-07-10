@@ -101,8 +101,8 @@ export class BreadcrumbListComponent implements OnInit {
   }
 
   public onInputSearchPolygon(polygon: string): void {
-    if (this.legacyAreaFormat.isLegacyFormat(polygon)) {
-      polygon = this.legacyAreaFormat.legacyFormatToWkt(polygon);
+    if (this.legacyAreaFormat.isValid(polygon)) {
+      polygon = this.legacyAreaFormat.toWkt(polygon);
     }
 
     this.loadWKT(polygon);
