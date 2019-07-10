@@ -13,7 +13,7 @@ import * as uiStore from '@store/ui';
 import * as queueStore from '@store/queue';
 
 import { SearchType } from '@models';
-import { MapService, WktService } from '@services';
+import { MapService, WktService, LegacyAreaFormatService } from '@services';
 
 import { MatDialog } from '@angular/material/dialog';
 import { QueueComponent } from '@components/nav-bar/queue';
@@ -55,6 +55,7 @@ export class BreadcrumbListComponent implements OnInit {
   constructor(
     private store$: Store<AppState>,
     private actions$: ActionsSubject,
+    private legacyAreaFormat: LegacyAreaFormatService,
     private mapService: MapService,
     private wktService: WktService,
     private dialog: MatDialog,
@@ -77,22 +78,7 @@ export class BreadcrumbListComponent implements OnInit {
       p => this.polygon = p
     );
 
-    this.aoiErrors$.pipe(
-      tap(_ => {
-        this.isAOIError = true;
-        this.mapService.clearDrawLayer();
-        this.polygonForm.reset();
-        this.polygonForm.form
-          .controls['searchPolygon']
-          .setErrors({'incorrect': true});
-      }),
-      delay(820),
-    ).subscribe(_ => {
-      this.isAOIError = false;
-      this.polygonForm.form
-        .controls['searchPolygon']
-        .setErrors(null);
-    });
+    this.handleAOIErrors();
   }
 
   public onSearch(): void {
@@ -115,6 +101,14 @@ export class BreadcrumbListComponent implements OnInit {
   }
 
   public onInputSearchPolygon(polygon: string): void {
+    if (this.legacyAreaFormat.isValid(polygon)) {
+      polygon = this.legacyAreaFormat.toWkt(polygon);
+    }
+
+    this.loadWKT(polygon);
+  }
+
+  private loadWKT(polygon: string): void {
     try {
       const features = this.wktService.wktToFeature(
         polygon,
@@ -146,5 +140,24 @@ export class BreadcrumbListComponent implements OnInit {
 
   public onCopy(): void {
     this.clipboard.copyFromContent(this.polygon);
+  }
+
+  private handleAOIErrors(): void {
+    this.aoiErrors$.pipe(
+      tap(_ => {
+        this.isAOIError = true;
+        this.mapService.clearDrawLayer();
+        this.polygonForm.reset();
+        this.polygonForm.form
+          .controls['searchPolygon']
+          .setErrors({'incorrect': true});
+      }),
+      delay(820),
+    ).subscribe(_ => {
+      this.isAOIError = false;
+      this.polygonForm.form
+        .controls['searchPolygon']
+        .setErrors(null);
+    });
   }
 }

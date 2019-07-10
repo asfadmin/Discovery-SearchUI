@@ -13,3 +13,4 @@ export { DatapoolAuthService } from './datapool-auth.service';
 export { EnvironmentService } from './environment.service';
 export { PropertyService } from './property.service';
 export { HistoryService, Search, GeoSearch, ListSearch } from './history.service';
+export { LegacyAreaFormatService } from './legacy-area-format.service';
