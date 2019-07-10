@@ -72,6 +72,7 @@ export const routes = [
     services.PropertyService,
     CustomBreakPointsProvider,
     services.HistoryService,
+    services.LegacyAreaFormatService,
   ],
   bootstrap: [ AppComponent ],
 })
