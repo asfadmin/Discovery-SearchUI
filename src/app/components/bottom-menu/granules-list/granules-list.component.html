@@ -21,6 +21,8 @@
             <span>
               <span> {{ granule.name | truncate : 32 }}</span>
               <span *ngIf="(datasetId$ | async) === 'SENTINEL-1'">{{ granule.name.substr(granule.name.length - 4) }}</span>
+              <span *ngIf="(datasetId$ | async) === 'SENTINEL-1 INTERFEROGRAM (BETA)'"
+                >{{ granule.name.substr(granule.name.length - 11) }}</span>
             </span>
 
             <app-copy-to-clipboard
