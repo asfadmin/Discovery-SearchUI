@@ -2,7 +2,10 @@
   <mat-card-header>
     <mat-card-title>
       <span [title]="granule.name">{{ granule.name | truncate : 32 }}</span>
-      <span *ngIf="dataset.id === 'SENTINEL-1'">{{ granule.name.substr(granule.name.length - 4) }}</span>
+      <span *ngIf="dataset.id === 'SENTINEL-1'"
+        >{{ granule.name.substr(granule.name.length - 4) }}</span>
+      <span *ngIf="dataset.id === 'SENTINEL-1 INTERFEROGRAM (BETA)'"
+        >{{ granule.name.substr(granule.name.length - 11) }}</span>
 
       <app-copy-to-clipboard
         [value]="granule.name"
