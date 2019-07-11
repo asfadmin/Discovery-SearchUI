@@ -20,8 +20,8 @@
           <div class="product-name" matLine>
             <span>
               <span> {{ granule.name | truncate : 32 }}</span>
-              <span *ngIf="(datasetId$ | async) === 'SENTINEL-1'">{{ granule.name.substr(granule.name.length - 4) }}</span>
-              <span *ngIf="(datasetId$ | async) === 'SENTINEL-1 INTERFEROGRAM (BETA)'"
+              <span *ngIf="granule.dataset === 'Sentinel-1B' || granule.dataset === 'Sentinel-1A'">{{ granule.name.substr(granule.name.length - 4) }}</span>
+              <span *ngIf="granule.dataset === 'Sentinel-1 Interferogram (BETA)'"
                 >{{ granule.name.substr(granule.name.length - 11) }}</span>
             </span>
 
@@ -29,8 +29,8 @@
                *ngIf="granule.name === hoveredGranuleName"
                style="margin-left: 5px"
                prompt="Copy granule name"
-               [value]="granule.name"
-              ></app-copy-to-clipboard>
+               [value]="granule.name">
+            </app-copy-to-clipboard>
           </div>
 
           <div matLine>
