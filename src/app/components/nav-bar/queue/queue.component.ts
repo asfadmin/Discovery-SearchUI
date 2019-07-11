@@ -1,5 +1,7 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 
+import { faCopy } from '@fortawesome/free-solid-svg-icons';
+import { ClipboardService } from 'ngx-clipboard';
 import { map, tap } from 'rxjs/operators';
 import { Store } from '@ngrx/store';
 
@@ -19,6 +21,8 @@ export class QueueComponent {
     tap(products => this.areAnyProducts = products.length > 0)
   );
 
+  public copyIcon = faCopy;
+
   public previousQueue: any[] | null = null;
   public areAnyProducts = false;
 
@@ -32,9 +36,11 @@ export class QueueComponent {
     ))
   );
 
-  constructor(private store$: Store<AppState>,
-              private dialogRef: MatDialogRef<QueueComponent>,
-) {}
+  constructor(
+    private store$: Store<AppState>,
+    private clipboardService: ClipboardService,
+    private dialogRef: MatDialogRef<QueueComponent>,
+  ) {}
 
   public onRemoveProduct(product: CMRProduct): void {
     this.store$.dispatch(new queueStore.RemoveItem(product));
@@ -69,6 +75,14 @@ export class QueueComponent {
 
   public onMetalinkDownload(): void {
     this.downloadMetadata(AsfApiOutputFormat.METALINK);
+  }
+
+  public onCopyQueue(products: CMRProduct[]): void {
+    const productListStr = products
+      .map(product => product.id)
+      .join(',');
+
+    this.clipboardService.copyFromContent(productListStr);
   }
 
   private downloadMetadata(format: AsfApiOutputFormat): void {

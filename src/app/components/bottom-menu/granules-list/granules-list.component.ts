@@ -29,7 +29,6 @@ export class GranulesListComponent implements OnInit {
   @ViewChild(CdkVirtualScrollViewport, { static: true }) scroll: CdkVirtualScrollViewport;
 
   public granules$ = this.store$.select(granulesStore.getGranules);
-  public datasetId$ = this.store$.select(filtersStore.getSelectedDatasetId);
 
   public numberOfQueue: {[granule: string]: [number, number]};
   public allQueued: {[granule: string]: boolean};
