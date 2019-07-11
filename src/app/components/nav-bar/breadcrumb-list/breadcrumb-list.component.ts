@@ -91,7 +91,7 @@ export class BreadcrumbListComponent implements OnInit {
 
   public onOpenDownloadQueue(): void {
     this.dialog.open(QueueComponent, {
-      id: 'dlQueueDialog'
+      id: 'dlQueueDialog',
     });
   }
 
