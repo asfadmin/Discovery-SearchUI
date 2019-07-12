@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { ScrollDispatchModule } from '@angular/cdk/scrolling';
 
 import { MatMenuModule } from '@angular/material';
 import { FlexLayoutModule } from '@angular/flex-layout';
@@ -22,6 +23,7 @@ import { QueueComponent } from './queue.component';
   imports: [
     CommonModule,
     MatMenuModule,
+    ScrollDispatchModule,
     TruncateModule,
     ClipboardModule,
     FontAwesomeModule,

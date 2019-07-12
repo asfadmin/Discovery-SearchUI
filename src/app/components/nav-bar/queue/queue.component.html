@@ -10,48 +10,52 @@
       </mat-card-subtitle>
     </mat-card-title-group>
 
-  <mat-card-content class="dl-card-content">
-    <mat-list role="list" class="dl-list">
-      <ng-container *ngIf="products$ | async as products">
-        <mat-list-item class="dl-list-item"
-          *ngFor="let product of products"
-          role="listitem">
+  <cdk-virtual-scroll-viewport class="dl-card-content"
+    minBufferPx="800" maxBufferPx="1200"
+    itemSize="72">
+    <mat-card-content>
+      <mat-list role="list" class="dl-list">
+        <ng-container *ngIf="products$ | async as products">
+          <mat-list-item class="dl-list-item"
+            *cdkVirtualFor="let product of products"
+            role="listitem">
 
-            <div matLine>
-              <b>
-                <span> {{ product.name | truncate : 48 }}</span>
-                <span *ngIf="product.dataset === 'Sentinel-1B' || product.dataset === 'Sentinel-1A'"
-                  >{{ product.name.substr(product.name.length - 4) }}</span>
-                <span *ngIf="product.dataset === 'Sentinel-1 Interferogram (BETA)'"
-                  >{{ product.name.substr(product.name.length - 11) }}</span>
-              </b> •
+              <div matLine>
+                <b>
+                  <span> {{ product.name | truncate : 48 }}</span>
+                  <span *ngIf="product.dataset === 'Sentinel-1B' || product.dataset === 'Sentinel-1A'"
+                    >{{ product.name.substr(product.name.length - 4) }}</span>
+                  <span *ngIf="product.dataset === 'Sentinel-1 Interferogram (BETA)'"
+                    >{{ product.name.substr(product.name.length - 11) }}</span>
+                </b> •
 
-              <span>
-                <span *ngIf="product.bytes === 0">Virtual</span>
-                <span *ngIf="product.bytes !== 0">{{product.bytes | readableSizeFromBytes }}</span>
-              </span>
-            </div>
-            <div style="margin-top: 3px" matLine>
-              {{ product.productTypeDisplay }}
-            </div>
+                <span>
+                  <span *ngIf="product.bytes === 0">Virtual</span>
+                  <span *ngIf="product.bytes !== 0">{{product.bytes | readableSizeFromBytes }}</span>
+                </span>
+              </div>
+              <div style="margin-top: 3px" matLine>
+                {{ product.productTypeDisplay }}
+              </div>
 
-            <app-copy-to-clipboard
-               style="margin-right: 15px"
-               prompt="Copy product ID"
-               [value]="product.id">
-            </app-copy-to-clipboard>
+              <app-copy-to-clipboard
+                 style="margin-right: 15px"
+                 prompt="Copy product ID"
+                 [value]="product.id">
+              </app-copy-to-clipboard>
 
-            <a mat-icon-button matTooltip="Download" [href]="product.downloadUrl" target="_blank" style="text-decoration: none">
-              <mat-icon>cloud_download</mat-icon>
-            </a>
+              <a mat-icon-button matTooltip="Download" [href]="product.downloadUrl" target="_blank" style="text-decoration: none">
+                <mat-icon>cloud_download</mat-icon>
+              </a>
 
-            <button (click)="onRemoveProduct(product)" matTooltip="Remove product" mat-icon-button>
-              <mat-icon>close</mat-icon>
-            </button>
-        </mat-list-item>
-      </ng-container>
-    </mat-list>
-  </mat-card-content>
+              <button (click)="onRemoveProduct(product)" matTooltip="Remove product" mat-icon-button>
+                <mat-icon>close</mat-icon>
+              </button>
+          </mat-list-item>
+        </ng-container>
+      </mat-list>
+    </mat-card-content>
+  </cdk-virtual-scroll-viewport>
 
   <div class="dl-card-actions" fxLayout="row" fxFlexFill>
     <ng-container *ngIf="products$ | async as products">
