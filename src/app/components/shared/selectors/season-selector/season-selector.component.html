@@ -10,7 +10,7 @@
     <app-date-selector></app-date-selector>
   </div>
   <div>
-    <b>Start Day </b> <span *ngIf="start"> • {{ dayOfYearFormat(start, 'short') }}</span>
+    <b>Season Start Day </b> <span *ngIf="start"> • {{ dayOfYearFormat(start, 'short') }}</span>
     <div class="season-selector">
       <mat-slider
         (change)="onSeasonStartChange($event.value)"
@@ -23,7 +23,7 @@
   </div>
 
   <div>
-    <b>End Day </b> <span *ngIf="end"> • {{ dayOfYearFormat(end, 'short') }}</span>
+    <b>Season End Day </b> <span *ngIf="end"> • {{ dayOfYearFormat(end, 'short') }}</span>
     <div class="season-selector">
       <mat-slider
         (change)="onSeasonEndChange($event.value)"
