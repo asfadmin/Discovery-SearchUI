@@ -1,0 +1,23 @@
+@import "asf-theme";
+
+.position {
+  position: relative;
+  top: 20px;
+  float: right;
+  right: 20px;
+  z-index: 998;
+}
+
+.layout {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
+
+.control-icon {
+  @include md-icon-size(22px);
+}
+
+.button-group {
+  margin-bottom: 5px;
+}
