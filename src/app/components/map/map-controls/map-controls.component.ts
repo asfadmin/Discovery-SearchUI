@@ -12,7 +12,7 @@ import * as services from '@services';
 @Component({
   selector: 'app-map-controls',
   templateUrl: './map-controls.component.html',
-  styleUrls: ['./map-controls.component.css']
+  styleUrls: ['./map-controls.component.scss']
 })
 export class MapControlsComponent implements OnInit {
   public view$ = this.store$.select(mapStore.getMapView);
