@@ -15,7 +15,7 @@
     <a *ngIf="isHovered" class="icon-margin">
       <app-copy-to-clipboard
         [value]="product.id"
-        prompt="Copy product ID">
+        prompt="Copy file ID">
       </app-copy-to-clipboard>
     </a>
   </div>
@@ -25,12 +25,12 @@
       <span *ngIf="product.bytes !== 0">{{product.bytes | readableSizeFromBytes }}</span>
     </div>
 
-    <a mat-icon-button [href]="product.downloadUrl" target="_blank" matTooltip="Download product">
+    <a mat-icon-button [href]="product.downloadUrl" target="_blank" matTooltip="Download file">
       <mat-icon>cloud_download</mat-icon>
     </a>
 
     <button (click)="onToggleQueueProduct()"
-       matTooltip="{{ !isQueued ? 'Add product to queue' : 'Remove product from queue' }}"
+       matTooltip="{{ !isQueued ? 'Add file to queue' : 'Remove file from queue' }}"
        mat-icon-button>
         <mat-icon *ngIf="!isQueued">add_shopping_cart</mat-icon>
         <mat-icon *ngIf="isQueued">shopping_cart</mat-icon>

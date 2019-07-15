@@ -1,5 +1,5 @@
 <mat-card class="sizing card-spacing mat-elevation-z0">
-  <h2>SAR Product Searches</h2>
+  <h2>SAR File Searches</h2>
   <mat-divider></mat-divider>
 
   <mat-list>
@@ -13,7 +13,7 @@
     <mat-list-item class="clickable" (click)="onSetSearchType(searchTypes.LIST)"
      [class.active-btn]="selectedSearchType === searchTypes.LIST">
       <h3 matLine>List</h3>
-      <p matLine>Search by a list of granules or product names.</p>
+      <p matLine>Search by a list of scene or file names.</p>
       <mat-icon>chevron_right</mat-icon>
     </mat-list-item>
     <mat-divider [inset]="true"></mat-divider>
