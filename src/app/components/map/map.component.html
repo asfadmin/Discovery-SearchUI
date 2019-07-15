@@ -4,10 +4,19 @@
 
 <div class="map-header">
   <div class="header-controls">
-    <mat-card>
-      This is a banner!
+    <mat-card *ngFor="let banner of (banners$ | async)" class="card-spacing">
+
+      <div style="display: flex; justify-content: space-between; align-items: center">
+        <div [innerHTML]="banner.text"></div>
+
+        <button (click)="removeBanner(banner)" mat-icon-button>
+          <mat-icon >clear</mat-icon>
+        </button>
+      </div>
+
     </mat-card>
-    <div class="map-buttons">
+
+    <div class="map-buttons card-spacing">
       <div>
         <a
           href="mailto:vertex-beta@asf.alaska.edu?Subject=Vertex%20Beta%20Feedback"

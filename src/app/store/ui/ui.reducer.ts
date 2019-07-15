@@ -120,6 +120,16 @@ export function uiReducer(state = initState, action: UIActions): UIState {
       };
     }
 
+    case UIActionType.REMOVE_BANNER: {
+      const banners = [ ...state.banners ]
+        .filter(banner => banner !== action.payload);
+
+      return {
+        ...state,
+        banners
+      };
+    }
+
     default: {
       return state;
     }

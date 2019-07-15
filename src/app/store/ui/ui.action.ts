@@ -21,6 +21,7 @@ export enum UIActionType {
 
   LOAD_BANNERS = '[Banner] Load Banners',
   SET_BANNERS = '[Banner] Set Banners',
+  REMOVE_BANNER = '[Banner] Remove Banner',
 }
 
 export class ToggleSidebar implements Action {
@@ -77,6 +78,12 @@ export class SetUiView implements Action {
   constructor(public payload: ViewType) {}
 }
 
+export class RemoveBanner implements Action {
+  public readonly type = UIActionType.REMOVE_BANNER;
+
+  constructor(public payload: Banner) {}
+}
+
 export class SetBanners implements Action {
   public readonly type = UIActionType.SET_BANNERS;
 
@@ -101,5 +108,6 @@ export type UIActions =
   | SetSearchType
   | SetUiView
   | LoadBanners
+  | RemoveBanner
   | SetBanners;
 

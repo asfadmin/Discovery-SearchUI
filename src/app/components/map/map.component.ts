@@ -15,6 +15,7 @@ import { Vector as VectorSource } from 'ol/source';
 import { AppState } from '@store';
 import * as granulesStore from '@store/granules';
 import * as mapStore from '@store/map';
+import * as uiStore from '@store/ui';
 
 import * as models from '@models';
 import { MapService, WktService } from '@services';
@@ -29,6 +30,7 @@ export class MapComponent implements OnInit {
 
   public interactionMode$ = this.store$.select(mapStore.getMapInteractionMode);
   public mousePosition$ = this.mapService.mousePosition$;
+  public banners$ = this.store$.select(uiStore.getBanners);
 
   private isMapInitialized$ = this.store$.select(mapStore.getIsMapInitialization);
   private viewType$ = combineLatest(
@@ -79,6 +81,10 @@ export class MapComponent implements OnInit {
       models.MapInteractionModeType.NONE;
 
     this.onNewInteractionMode(newMode);
+  }
+
+  public removeBanner(banner: models.Banner): void {
+    this.store$.dispatch(new uiStore.RemoveBanner(banner));
   }
 
   private updateMapOnViewChange(): void {
@@ -207,4 +213,5 @@ export class MapComponent implements OnInit {
   private setMapWith(viewType: models.MapViewType, layerType: models.MapLayerTypes): void {
     this.mapService.setMapView(viewType, layerType);
   }
+
 }
