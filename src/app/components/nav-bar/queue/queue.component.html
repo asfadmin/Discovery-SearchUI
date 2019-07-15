@@ -6,7 +6,7 @@
         <mat-icon>close</mat-icon>
       </div>
       <mat-card-subtitle>
-        {{ numberOfProducts$ | async }} products, {{ (totalSize$ | async) | readableSizeFromBytes }}
+        {{ numberOfProducts$ | async }} Files, {{ (totalSize$ | async) | readableSizeFromBytes }}
       </mat-card-subtitle>
     </mat-card-title-group>
 
@@ -40,7 +40,7 @@
 
               <app-copy-to-clipboard
                  style="margin-right: 15px"
-                 prompt="Copy product ID"
+                 prompt="Copy File ID"
                  [value]="product.id">
               </app-copy-to-clipboard>
 
@@ -48,7 +48,7 @@
                 <mat-icon>cloud_download</mat-icon>
               </a>
 
-              <button (click)="onRemoveProduct(product)" matTooltip="Remove product" mat-icon-button>
+              <button (click)="onRemoveProduct(product)" matTooltip="Remove file" mat-icon-button>
                 <mat-icon>close</mat-icon>
               </button>
           </mat-list-item>
@@ -74,7 +74,7 @@
       </div>
       <div fxFlex="75" class="dl-download-buttons">
         <button (click)="onCopyQueue(products)" mat-button [disabled]="!areAnyProducts" class="btn-primary">
-          Copy Product IDs
+          Copy File IDs
           <fa-icon style="margin-left: 5px" [icon]="copyIcon"></fa-icon>
         </button>
 
