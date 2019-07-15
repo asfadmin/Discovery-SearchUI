@@ -5,9 +5,18 @@
   background-color: #1a1e27;
 }
 
-.feedback-button {
+.map-header {
   position: relative;
-  top: 20px;
-  float: left;
-  left: 20px;
+  width: 100vw;
+}
+
+.header-controls {
+  display: flex;
+  flex-direction: column;
+}
+
+.map-buttons {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
 }

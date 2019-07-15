@@ -2,13 +2,24 @@
   id="map" class="map">
 </div>
 
-<a
-  href="mailto:vertex-beta@asf.alaska.edu?Subject=Vertex%20Beta%20Feedback"
-  class="feedback-button" mat-raised-button>
-  Give us feedback!
-</a>
+<div class="map-header">
+  <div class="header-controls">
+    <mat-card>
+      This is a banner!
+    </mat-card>
+    <div class="map-buttons">
+      <div>
+        <a
+          href="mailto:vertex-beta@asf.alaska.edu?Subject=Vertex%20Beta%20Feedback"
+          mat-raised-button>
+          Give us feedback!
+        </a>
+      </div>
 
-<app-map-controls></app-map-controls>
+      <app-map-controls></app-map-controls>
+    </div>
+  </div>
+</div>
 
 <app-file-upload
   (dialogClose)="onFileUploadDialogClosed($event)"
