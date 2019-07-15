@@ -53,6 +53,15 @@ export class AppComponent implements OnInit {
   ) {}
 
   public ngOnInit(): void {
+    this.store$.dispatch(new uiStore.SetBanners([{
+      text: 'This is a test bannder!' ,
+      type: 'message',
+      target: [
+        'vertex'
+      ]
+    }]
+    ));
+
     this.polygonValidationService.validate();
     this.loadProductQueue();
     this.store$.dispatch(new missionStore.LoadMissions());

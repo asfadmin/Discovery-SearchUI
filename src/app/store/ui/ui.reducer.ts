@@ -1,6 +1,6 @@
 import { createFeatureSelector, createSelector } from '@ngrx/store';
 
-import { FilterType, SearchType, ViewType } from '@models';
+import { FilterType, SearchType, ViewType, Banner } from '@models';
 
 import { UIActionType, UIActions } from './ui.action';
 
@@ -12,6 +12,7 @@ export interface UIState {
   uiView: ViewType;
   selectedFilter: FilterType | undefined;
   searchType: SearchType | null;
+  banners: Banner[];
 }
 
 export const initState: UIState = {
@@ -21,6 +22,7 @@ export const initState: UIState = {
   uiView: ViewType.MAIN,
   selectedFilter: FilterType.DATASET,
   searchType: SearchType.DATASET,
+  banners: [],
 };
 
 
@@ -111,6 +113,13 @@ export function uiReducer(state = initState, action: UIActions): UIState {
         };
     }
 
+    case UIActionType.SET_BANNERS: {
+      return {
+        ...state,
+        banners: action.payload
+      };
+    }
+
     default: {
       return state;
     }
@@ -153,4 +162,9 @@ export const getIsHidden = createSelector(
 export const getIsBottomMenuOpen = createSelector(
   getUIState,
   state => state.isBottomMenuOpen
+);
+
+export const getBanners = createSelector(
+  getUIState,
+  state => state.banners
 );
