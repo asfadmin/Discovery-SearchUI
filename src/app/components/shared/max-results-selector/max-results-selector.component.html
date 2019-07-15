@@ -1,7 +1,9 @@
-<span class="faint-text">
-  <span [matMenuTriggerFor]="menu"
-    class="clickable">
-      {{ formatNumber(maxResults - 1) }} <mat-icon>arrow_drop_down</mat-icon>
+<div
+  [matMenuTriggerFor]="menu"
+  style="padding: 2px" class="faint-text clickable">
+  <span>
+      {{ formatNumber(maxResults - 1) }} <mat-icon
+        class="faint-text clickable">arrow_drop_down</mat-icon>
   </span>
     of
 
@@ -13,7 +15,7 @@
       <fa-icon icon="spinner" [pulse]="true"></fa-icon>
     </span>
     products
-</span>
+</div>
 
 <mat-menu #menu="matMenu">
   <button *ngFor="let amount of possibleMaxResults"

@@ -9,6 +9,7 @@ import { Store } from '@ngrx/store';
 import { AppState } from '@store';
 import * as searchStore from '@store/search';
 import * as granulesStore from '@store/granules';
+import * as filtersStore from '@store/filters';
 import * as uiStore from '@store/ui';
 import * as queueStore from '@store/queue';
 
@@ -16,6 +17,7 @@ import { CdkVirtualScrollViewport } from '@angular/cdk/scrolling';
 
 import * as services from '@services';
 import * as models from '@models';
+
 
 @Component({
   selector: 'app-granules-list',
@@ -27,6 +29,7 @@ export class GranulesListComponent implements OnInit {
   @ViewChild(CdkVirtualScrollViewport, { static: true }) scroll: CdkVirtualScrollViewport;
 
   public granules$ = this.store$.select(granulesStore.getGranules);
+
   public numberOfQueue: {[granule: string]: [number, number]};
   public allQueued: {[granule: string]: boolean};
   public granules: models.CMRProduct[];

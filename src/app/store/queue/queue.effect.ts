@@ -52,12 +52,12 @@ export class QueueEffects {
     withLatestFrom(this.store$.select(getQueuedProducts).pipe(
         map(
           products => products
-            .map(product => product.name)
+            .map(product => product.id)
             .join(',')
         ),
         map(
-          granuleNames => ({
-            granule_list: granuleNames
+          productIds => ({
+            product_list: productIds
           })
         )
       )

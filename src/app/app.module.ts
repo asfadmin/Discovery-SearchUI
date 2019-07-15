@@ -20,6 +20,7 @@ import { MapModule } from '@components/map';
 import { BottomMenuModule } from '@components/bottom-menu';
 import { MatSharedModule } from '@shared';
 import { LogoModule } from '@components/nav-bar/logo/logo.module';
+import { CustomBreakPointsProvider } from '@services/custom-breakpoints.ts';
 import { AdditionalFiltersModule } from '@components/additional-filters';
 
 import * as services from '@services';
@@ -69,7 +70,9 @@ export const routes = [
     services.DateExtremaService,
     services.EnvironmentService,
     services.PropertyService,
+    CustomBreakPointsProvider,
     services.HistoryService,
+    services.LegacyAreaFormatService,
   ],
   bootstrap: [ AppComponent ],
 })

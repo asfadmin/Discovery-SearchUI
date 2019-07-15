@@ -15,12 +15,6 @@ $config: mat-typography-config();
 $break-small: 700px;
 $break-medium: 1250px;
 
-.breadcrumb-row {
-  //border-top-color: red;
-  //border-top-style: solid;
-  //border-top-width: 1px;
-}
-
 .breadcrumb {
   @extend .mat-form-field;
 
@@ -29,9 +23,6 @@ $break-medium: 1250px;
   padding-top: 15px;
   margin-left: 5px;
   margin-right: 5px;
-  //border-right-width: 2px;
-  //border-right-color: $asf-accent;
-  //border-right-style: solid;
   height: 70px;
   font-size: $asf-font-size;
   line-height: $asf-line-height;
@@ -63,7 +54,6 @@ $break-medium: 1250px;
 
 .additional-filters {
   color: $asf-primary;
-  //width: 150px;
 
   .mat-icon {
     @include md-icon-size(18px);
@@ -72,8 +62,9 @@ $break-medium: 1250px;
 
 .additional-filters-button {
   margin-left: 0;
-  line-height: 18px;
+  line-height: 12px;
   color: $asf-primary;
+  margin-top: 18px;
 }
 
 .selected {
@@ -91,6 +82,10 @@ $break-medium: 1250px;
 .full-width {
   width: 100%;
   max-width: 100%;
+}
+
+.ghost-item {
+  visibility: hidden;
 }
 
 .copy-icon {
@@ -111,7 +106,6 @@ $break-medium: 1250px;
 
   color: $asf-primary-dark;
   vertical-align: middle;
-  //margin-left: 10px;
 }
 
 .aoi-input {

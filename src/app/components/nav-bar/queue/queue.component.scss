@@ -1,17 +1,8 @@
 @import "asf-theme";
 
 .dl-card-content {
-  height: 310px;
+  height: 450px;
   overflow-y: scroll;
-}
-
-.dl-list {
-  //font-size: 14px;
-}
-
-.dl-list-item {
-  font-size: 15px !important;
-  font-weight: 400 !important;
 }
 
 .dl-card {
@@ -66,5 +57,3 @@
   float: right;
   cursor: pointer;
 }
-
-

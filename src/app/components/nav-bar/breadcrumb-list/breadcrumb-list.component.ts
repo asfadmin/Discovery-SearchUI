@@ -4,16 +4,16 @@ import { NgForm } from '@angular/forms';
 import { Subject } from 'rxjs';
 import { tap, map, filter, delay } from 'rxjs/operators';
 import { Store, ActionsSubject } from '@ngrx/store';
+import { ofType } from '@ngrx/effects';
 import { ClipboardService } from 'ngx-clipboard';
 
 import { AppState } from '@store';
 import * as searchStore from '@store/search';
 import * as uiStore from '@store/ui';
-import * as filtersStore from '@store/filters';
 import * as queueStore from '@store/queue';
 
 import { SearchType } from '@models';
-import { MapService, WktService } from '@services';
+import { MapService, WktService, LegacyAreaFormatService } from '@services';
 
 import { MatDialog } from '@angular/material/dialog';
 import { QueueComponent } from '@components/nav-bar/queue';
@@ -37,14 +37,9 @@ enum BreadcrumbFilterType {
   styleUrls: ['./breadcrumb-list.component.scss']
 })
 export class BreadcrumbListComponent implements OnInit {
-  @Output() doSearch = new EventEmitter<void>();
-  @Output() clearSearch = new EventEmitter<void>();
-
   @ViewChild('polygonForm', { static: false }) public polygonForm: NgForm;
 
   public aoiErrors$ = new Subject<void>();
-
-  public canSearch$ = this.store$.select(searchStore.getCanSearch);
   public isAOIError = false;
   public isHoveringAOISelector = false;
 
@@ -56,15 +51,11 @@ export class BreadcrumbListComponent implements OnInit {
   public polygon: string;
 
   public queuedProducts$ = this.store$.select(queueStore.getQueuedProducts);
-  public loading$ = this.store$.select(searchStore.getIsLoading);
-
-  public maxResults$ = this.store$.select(filtersStore.getMaxSearchResults);
-  public isMaxResultsLoading$ = this.store$.select(searchStore.getIsMaxResultsLoading);
-  public currentSearchAmount$ = this.store$.select(searchStore.getSearchAmount);
 
   constructor(
     private store$: Store<AppState>,
     private actions$: ActionsSubject,
+    private legacyAreaFormat: LegacyAreaFormatService,
     private mapService: MapService,
     private wktService: WktService,
     private dialog: MatDialog,
@@ -76,41 +67,31 @@ export class BreadcrumbListComponent implements OnInit {
       searchType => this.searchType = searchType
     );
 
+    this.actions$.pipe(
+      ofType<searchStore.MakeSearch>(searchStore.SearchActionType.MAKE_SEARCH),
+    ).subscribe(
+      _ => this.onSearch()
+    );
+
     const polygon$ = this.mapService.searchPolygon$;
     polygon$.subscribe(
       p => this.polygon = p
     );
 
-    this.aoiErrors$.pipe(
-      tap(_ => {
-        this.isAOIError = true;
-        this.mapService.clearDrawLayer();
-        this.polygonForm.reset();
-        this.polygonForm.form
-          .controls['searchPolygon']
-          .setErrors({'incorrect': true});
-      }),
-      delay(820),
-    ).subscribe(_ => {
-      this.isAOIError = false;
-      this.polygonForm.form
-        .controls['searchPolygon']
-        .setErrors(null);
-    });
+    this.handleAOIErrors();
   }
 
-  public onDoSearch(): void {
+  public onSearch(): void {
     this.clearSelectedBreadcrumb();
-    this.doSearch.emit();
   }
 
   public onClearSearch(): void {
-    this.clearSearch.emit();
+    this.store$.dispatch(new searchStore.ClearSearch());
   }
 
   public onOpenDownloadQueue(): void {
     this.dialog.open(QueueComponent, {
-      id: 'dlQueueDialog'
+      id: 'dlQueueDialog',
     });
   }
 
@@ -120,6 +101,14 @@ export class BreadcrumbListComponent implements OnInit {
   }
 
   public onInputSearchPolygon(polygon: string): void {
+    if (this.legacyAreaFormat.isValid(polygon)) {
+      polygon = this.legacyAreaFormat.toWkt(polygon);
+    }
+
+    this.loadWKT(polygon);
+  }
+
+  private loadWKT(polygon: string): void {
     try {
       const features = this.wktService.wktToFeature(
         polygon,
@@ -149,11 +138,26 @@ export class BreadcrumbListComponent implements OnInit {
     this.store$.dispatch(new uiStore.SetSearchType(searchType));
   }
 
-  public onNewMaxResults(maxResults: number): void {
-    this.store$.dispatch(new filtersStore.SetMaxResults(maxResults));
-  }
-
   public onCopy(): void {
     this.clipboard.copyFromContent(this.polygon);
+  }
+
+  private handleAOIErrors(): void {
+    this.aoiErrors$.pipe(
+      tap(_ => {
+        this.isAOIError = true;
+        this.mapService.clearDrawLayer();
+        this.polygonForm.reset();
+        this.polygonForm.form
+          .controls['searchPolygon']
+          .setErrors({'incorrect': true});
+      }),
+      delay(820),
+    ).subscribe(_ => {
+      this.isAOIError = false;
+      this.polygonForm.form
+        .controls['searchPolygon']
+        .setErrors(null);
+    });
   }
 }
