@@ -4,7 +4,7 @@
       [(ngModel)]="productTypes"
       (selectionChange)="onNewProductTypes($event.value)"
       [disabled]="dataset.productTypes.length < 1"
-      placeholder="Product Type" multiple>
+      placeholder="File Type" multiple>
         <mat-option
           *ngFor="let type of dataset.productTypes"
           [value]="type"
@@ -14,11 +14,11 @@
     </mat-select>
     <mat-hint *ngIf="dataset.productTypes.length >= 1" align="start">
       {{ productTypes?.length || 0 }}/{{ dataset.productTypes.length }}
-      product types selected
+      file types selected
     </mat-hint>
 
     <mat-hint *ngIf="dataset.productTypes.length < 1" align="start">
-      No product types to select
+      No file types to select
     </mat-hint>
   </mat-form-field>
 
