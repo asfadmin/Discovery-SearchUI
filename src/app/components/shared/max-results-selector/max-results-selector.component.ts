@@ -15,7 +15,7 @@ export class MaxResultsSelectorComponent implements OnInit {
   public isMaxResultsLoading: boolean;
   public currentSearchAmount: number;
 
-  public possibleMaxResults = [100, 1000, 10000];
+  public possibleMaxResults = [250, 1000, 10000];
 
   constructor(
    private store$: Store<AppState>,

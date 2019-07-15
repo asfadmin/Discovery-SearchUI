@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { Actions, Effect, ofType } from '@ngrx/effects';
 import { Action, Store } from '@ngrx/store';
 
-import { Observable, of, combineLatest } from 'rxjs';
+import { Observable, of, combineLatest, forkJoin } from 'rxjs';
 import { map, withLatestFrom, switchMap, catchError, tap } from 'rxjs/operators';
 
 import { AppState } from '../app.reducer';
@@ -63,12 +63,18 @@ export class SearchEffects {
   private makeSearches: Observable<Action> = this.actions$.pipe(
     ofType(SearchActionType.MAKE_SEARCH),
     withLatestFrom(this.searchParams$.getParams()),
-    map(([_, params]) => params),
+    map(([_, params]) => [params, {...params, output: 'COUNT'}]),
+    tap(console.log),
     switchMap(
-      params => this.asfApiService.query<any[]>(params).pipe(
+      ([params, countParams]) => forkJoin(
+        this.asfApiService.query<any[]>(params),
+        this.asfApiService.query<string>(countParams),
+      ).pipe(
         withLatestFrom(this.store$.select(getIsCanceled)),
-        map(([response, isCanceled]) =>
-          !isCanceled ?  new SearchResponse(response) : new SearchCanceled()
+        map(([[response, totalCount], isCanceled]) =>
+          !isCanceled ?
+            new SearchResponse({ files: response, totalCount: +totalCount }) :
+            new SearchCanceled()
         ),
         catchError(
           error => of(new SearchError(`Error loading search results`))
@@ -90,7 +96,7 @@ export class SearchEffects {
   @Effect()
   private searchResponse: Observable<Action> = this.actions$.pipe(
     ofType<SearchResponse>(SearchActionType.SEARCH_RESPONSE),
-    map(action => this.productService.fromResponse(action.payload)),
+    map(action => this.productService.fromResponse(action.payload.files)),
     map(granule => new granulesStore.SetGranules(granule)),
   );
 
