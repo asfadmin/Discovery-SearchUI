@@ -8,8 +8,7 @@
 }
 
 .bounds {
-  height: 99px;
-  //width: 350px;
+  height: 103px;
 }
 
 .content {
@@ -20,19 +19,19 @@
 
 .sec1 {
   margin-right: 9px;
-  margin-top: -15px !important;
 }
 
 .logo-card {
   background-color: $asf-primary;
-  padding: 14px 8px 8px 8px !important;
+  padding: 0 8px 0 0 !important;
 
   .header {
-    font-size: 30px;
+    font-size: 20px;
     line-height: 33px;
     font-weight: 400;
     letter-spacing: 0.02em;
-    color: $asf-warn;
+    color: white;
+    margin-top: -10px;
   }
 
   .subhead {
@@ -61,7 +60,7 @@ $icon-size: 36px;
 
 .menu-toggle-button {
   background-color: $asf-primary;
-  color: white;
+  color: lightgray;
   box-shadow: none !important;
   cursor: pointer;
   border: none;
@@ -97,4 +96,12 @@ $icon-size: 36px;
   right: 0;
   margin: auto;
   mix-blend-mode: multiply;
+}
+
+.asf-logo {
+  width: 113px;
+}
+
+.branding-block {
+  padding-top: 0;
 }
