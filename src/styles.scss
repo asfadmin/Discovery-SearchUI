@@ -97,6 +97,8 @@ ul {
 }
 
 .control-mat-button-toggle {
+  pointer-events: auto;
+
   .mat-button-toggle-label-content,
   .mat-button-toggle-appearance-standard .mat-button-toggle-label-content {
     line-height: 28px !important;

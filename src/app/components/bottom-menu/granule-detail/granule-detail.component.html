@@ -9,7 +9,7 @@
 
       <app-copy-to-clipboard
         [value]="granule.name"
-        prompt="Copy granule name"
+        prompt="Copy scene name"
         class="clipboard-icon"></app-copy-to-clipboard>
 
     </mat-card-title>
@@ -34,7 +34,7 @@
     </a>
     <button *ngIf="isGeoSearch() && prop.isRelevant(p.PATH, dataset) && prop.isRelevant(p.FRAME, dataset)"
             (click)="findSimilarGranules()"
-            matTooltip="Search based on this granules path/frame"
+            matTooltip="Search based on this scenes path/frame"
             mat-raised-button color="primary">
       More Like This
     </button>
@@ -202,6 +202,6 @@
 
 <div *ngIf="!granule">
   <div fxFlex fxLayoutAlign="center" gdAlignColumns="center">
-    <span class="faint-text">No Granule Selected</span>
+    <span class="faint-text">No Scene Selected</span>
   </div>
 </div>
