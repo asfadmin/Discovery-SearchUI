@@ -37,13 +37,13 @@
             <span>Date • {{ granule.metadata.date | shortDate }}</span>
           </div>
 
-          <mat-icon (click)="onZoomTo(granule)"class="ml-2" matTooltip="Zoom to granule">
+          <mat-icon (click)="onZoomTo(granule)"class="ml-2" matTooltip="Zoom to scene">
             settings_overscan
           </mat-icon>
           <mat-icon (click)="onToggleGranule($event, granule.groupId)"
             class="icon-margin"
             matTooltip="{{
-              allQueued[granule.groupId] ? 'Remove granule files from queue': 'Add granule files to queue'
+              allQueued[granule.groupId] ? 'Remove scene files from queue': 'Add scene files to queue'
             }}">
             {{ allQueued[granule.groupId] ? 'shopping_cart' : 'add_shopping_cart' }}
           </mat-icon>

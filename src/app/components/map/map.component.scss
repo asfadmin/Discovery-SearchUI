@@ -10,6 +10,15 @@
   float: right;
   top: 5px;
   width: 100vw;
+  pointer-events: none;
+}
+
+.banner {
+  pointer-events: auto;
+}
+
+.map-buttons {
+  pointer-events: auto;
 }
 
 .additional-filters {
