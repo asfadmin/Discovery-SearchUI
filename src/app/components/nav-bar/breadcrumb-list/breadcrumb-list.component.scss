@@ -10,6 +10,8 @@ $config: mat-typography-config();
   position: fixed;
   top: 100px;
   z-index: 1;
+  margin: 0;
+  padding: 3px 16px 16px 16px;
 }
 
 $break-small: 700px;
