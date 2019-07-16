@@ -3,22 +3,28 @@
 </div>
 
 <div class="map-header">
-  <div class="header-controls">
-    <mat-card *ngFor="let banner of (banners$ | async)"
-      [@bannerTransition]
-      class="banner card-spacing">
+  <div class="header-controls"
+        fxLayout="row"
+        fxFlexFill>
 
-      <div style="display: flex; justify-content: space-between; align-items: center">
-        <div [innerHTML]="banner.text"></div>
+    <div fxFlex="auto">
+      <mat-card *ngFor="let banner of (banners$ | async)"
+        [@bannerTransition]
+        class="banner-card"
+        fxFlex="auto">
 
-        <button (click)="removeBanner(banner)" mat-icon-button>
-          <mat-icon >clear</mat-icon>
-        </button>
-      </div>
+        <div class="banner-text">
+          <div [innerHTML]="banner.text"></div>
+          <button (click)="removeBanner(banner)" mat-icon-button>
+            <mat-icon >clear</mat-icon>
+          </button>
+        </div>
 
-    </mat-card>
+      </mat-card>
+    </div>
 
-    <div class="card-spacing">
+    <div class="map-buttons card-spacing"
+        fxFlex="175px">
       <app-map-controls></app-map-controls>
     </div>
   </div>
