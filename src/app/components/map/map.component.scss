@@ -1,3 +1,5 @@
+@import "asf-theme";
+
 .map {
   height: 100%;
   width: 100%;
@@ -13,15 +15,34 @@
   pointer-events: none;
 }
 
-.banner {
+.additional-filters {
+  position: relative;
+  top: 15px;
+}
+
+.header-controls {
+  margin-left: 20px;
+}
+
+.banner-card {
   pointer-events: auto;
+  max-height: 212px;
+  height: fit-content;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  background-color: white;
+  border-color: $asf-primary-dark;
+  border-width: 2px;
+  border-style: solid;
+  color: $uaf-primary-blue;
+}
+
+.mat-icon-button {
+  color: black;
 }
 
 .map-buttons {
   pointer-events: auto;
-}
-
-.additional-filters {
-  position: relative;
-  top: 15px;
+  margin-left: 0;
+  margin-right: 40px;
 }
