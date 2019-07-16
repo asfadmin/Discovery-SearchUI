@@ -6,15 +6,15 @@
   <div class="header-controls"
         fxLayout="row"
         fxFlexFill>
+
     <div fxFlex="auto">
       <mat-card *ngFor="let banner of (banners$ | async)"
         [@bannerTransition]
-        class="card-spacing banner-card"
+        class="banner-card"
         fxFlex="auto">
 
-        <div style="display: flex; justify-content: space-between; align-items: center">
+        <div class="banner-text">
           <div [innerHTML]="banner.text"></div>
-
           <button (click)="removeBanner(banner)" mat-icon-button>
             <mat-icon >clear</mat-icon>
           </button>
