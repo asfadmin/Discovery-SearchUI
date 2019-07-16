@@ -6,7 +6,7 @@
   <div class="header-controls">
     <mat-card *ngFor="let banner of (banners$ | async)"
       [@bannerTransition]
-      class="card-spacing">
+      class="banner card-spacing">
 
       <div style="display: flex; justify-content: space-between; align-items: center">
         <div [innerHTML]="banner.text"></div>
@@ -18,7 +18,7 @@
 
     </mat-card>
 
-    <div class="map-buttons card-spacing">
+    <div class="card-spacing">
       <app-map-controls></app-map-controls>
     </div>
   </div>
