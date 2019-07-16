@@ -55,7 +55,7 @@ export class SetSearchAmount implements Action {
 export class SearchResponse implements Action {
   public readonly type = SearchActionType.SEARCH_RESPONSE;
 
-  constructor(public payload: CMRProduct[]) {}
+  constructor(public payload: {files: CMRProduct[], totalCount: number}) {}
 }
 
 export class SearchError implements Action {

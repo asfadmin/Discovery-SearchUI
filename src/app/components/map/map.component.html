@@ -8,13 +8,14 @@
   Give us feedback!
 </a>
 
+<app-map-controls></app-map-controls>
+
 <app-file-upload
   (dialogClose)="onFileUploadDialogClosed($event)"
   (newSearchPolygon)="onNewSearchPolygon($event)"
   [interaction$]="interactionMode$">
 </app-file-upload>
 
-<app-map-controls></app-map-controls>
 
 <app-attributions [mousePos]="mousePosition$ | async">
 </app-attributions>

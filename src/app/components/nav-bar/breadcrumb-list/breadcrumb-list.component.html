@@ -76,7 +76,8 @@
 
             <mat-card *ngIf="selectedFilter === filterTypes.AOI"
                       class="breadcrumb-filter">
-              <app-aoi-upload></app-aoi-upload>
+              <app-aoi-upload
+                (close)="clearSelectedBreadcrumb()"></app-aoi-upload>
             </mat-card>
           </form>
         </div>

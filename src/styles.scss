@@ -96,6 +96,13 @@ ul {
   border-style: solid;
 }
 
+.control-mat-button-toggle {
+  .mat-button-toggle-label-content,
+  .mat-button-toggle-appearance-standard .mat-button-toggle-label-content {
+    line-height: 28px !important;
+  }
+}
+
 .ls-card .mat-button-toggle {
   font-size: $asf-font-size;
 

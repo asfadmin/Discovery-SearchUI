@@ -1,38 +1,43 @@
 <div class="position layout">
-  <mat-button-toggle-group style="margin-bottom: 5px;" name="layerType">
+    <app-view-selector
+      (newProjection)="onNewProjection($event)"
+      [view]="view$ | async"
+      class="button-group">
+    </app-view-selector>
 
-    <mat-button-toggle (click)="zoomIn()" matTooltip="Zoom In">
-      <mat-icon>add</mat-icon>
+  <mat-button-toggle-group class="button-group" name="layerType">
+    <mat-button-toggle class="control-mat-button-toggle"
+      (click)="zoomIn()"
+      matTooltip="Zoom In">
+      <mat-icon class="control-icon">add</mat-icon>
     </mat-button-toggle>
 
-    <mat-button-toggle (click)="zoomOut()" matTooltip="Zoom out">
-      <mat-icon>remove</mat-icon>
+    <mat-button-toggle class="control-mat-button-toggle"
+      (click)="zoomOut()"
+      matTooltip="Zoom out">
+      <mat-icon class="control-icon">remove</mat-icon>
     </mat-button-toggle>
   </mat-button-toggle-group>
 
-  <mat-button-toggle-group
+  <mat-button-toggle-group class="button-group"
     *ngIf="(view$ | async) === viewTypes.EQUITORIAL"
     [value]="layerType"
     style="margin-bottom: 5px;" name="layerType">
 
-    <mat-button-toggle
+    <mat-button-toggle class="control-mat-button-toggle"
       (click)="onNewLayerType(layerTypes.SATELLITE)"
       matTooltip="Satellite View"
       [value]="layerTypes.SATELLITE">
-      <mat-icon>terrain</mat-icon>
+      <mat-icon class="control-icon">terrain</mat-icon>
     </mat-button-toggle>
 
-    <mat-button-toggle
+    <mat-button-toggle class="control-mat-button-toggle"
       (click)="onNewLayerType(layerTypes.STREET)"
       [value]="layerTypes.STREET"
       matTooltip="Street View" >
-      <mat-icon>directions_car</mat-icon>
+      <mat-icon class="control-icon">directions_car</mat-icon>
     </mat-button-toggle>
   </mat-button-toggle-group>
 
-  <app-view-selector
-    (newProjection)="onNewProjection($event)"
-    [view]="view$ | async"
-    class="spacing">
-  </app-view-selector>
+  <img src="/assets/NASA_logo.svg" class="meatball">
 </div>

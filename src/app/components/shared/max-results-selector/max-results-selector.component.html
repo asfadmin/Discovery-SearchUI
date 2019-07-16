@@ -14,12 +14,12 @@
       style="margin: 0 4px">
       <fa-icon icon="spinner" [pulse]="true"></fa-icon>
     </span>
-    products
+    Files
 </div>
 
 <mat-menu #menu="matMenu">
   <button *ngFor="let amount of possibleMaxResults"
     (click)="onNewMaxResults(amount + 1)" mat-menu-item>
-      <span>{{ formatNumber(amount) }} products</span>
+      <span>{{ formatNumber(amount) }} Files</span>
   </button>
 </mat-menu>

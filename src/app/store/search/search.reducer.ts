@@ -10,6 +10,7 @@ export interface SearchState {
   searchResultsAmount: number;
   isResultsAmountLoading: boolean;
   canSearch: boolean;
+  totalResults: null | number;
 }
 
 export const initState: SearchState = {
@@ -19,6 +20,7 @@ export const initState: SearchState = {
   searchResultsAmount: 0,
   isResultsAmountLoading: false,
   canSearch: false,
+  totalResults: null
 };
 
 export function searchReducer(state = initState, action: SearchActions): SearchState {
@@ -65,6 +67,7 @@ export function searchReducer(state = initState, action: SearchActions): SearchS
     case SearchActionType.SEARCH_RESPONSE: {
       return {
         ...state,
+        totalResults: action.payload.totalCount,
         isLoading: false,
         isCanceled: false,
       };
@@ -73,6 +76,7 @@ export function searchReducer(state = initState, action: SearchActions): SearchS
     case SearchActionType.SEARCH_ERROR: {
       return {
         ...state,
+        totalResults: null,
         error: action.payload,
         isLoading: false,
       };
@@ -96,6 +100,11 @@ export const getSearchState = createFeatureSelector<SearchState>('search');
 export const getIsLoading = createSelector(
   getSearchState,
   (state: SearchState) => state.isLoading
+);
+
+export const getTotalResultCount = createSelector(
+  getSearchState,
+  (state: SearchState) => state.totalResults
 );
 
 export const getSearchError = createSelector(
