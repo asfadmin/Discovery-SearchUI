@@ -18,8 +18,8 @@ export const alos = {
   ],
   apiValue: { platform: 'ALOS' },
   date: {
-    start: new Date(2006, 0, 1),
-    end: new Date(2011, 0, 1)
+    start: new Date('2006/05/16 03:36:51 UTC'),
+    end: new Date('2011/04/21 20:23:36 UTC')
   },
   infoUrl: 'https://www.asf.alaska.edu/sar-data/palsar/',
   citationUrl: 'https://www.asf.alaska.edu/sar-data/palsar/how-to-cite/',

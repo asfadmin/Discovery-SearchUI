@@ -21,7 +21,6 @@ import { BottomMenuModule } from '@components/bottom-menu';
 import { MatSharedModule } from '@shared';
 import { LogoModule } from '@components/nav-bar/logo/logo.module';
 import { CustomBreakPointsProvider } from '@services/custom-breakpoints.ts';
-import { AdditionalFiltersModule } from '@components/additional-filters';
 
 import * as services from '@services';
 
@@ -51,7 +50,6 @@ export const routes = [
     !environment.production ? StoreDevtoolsModule.instrument() : [],
 
     SidebarModule,
-    AdditionalFiltersModule,
     MapModule,
     BottomMenuModule,
     NavBarModule,
@@ -73,6 +71,7 @@ export const routes = [
     CustomBreakPointsProvider,
     services.HistoryService,
     services.LegacyAreaFormatService,
+    services.BannerApiService,
   ],
   bootstrap: [ AppComponent ],
 })

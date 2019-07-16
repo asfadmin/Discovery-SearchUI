@@ -1,6 +1,6 @@
 import { Action } from '@ngrx/store';
 
-import { FilterType, SearchType, ViewType } from '@models';
+import { FilterType, SearchType, ViewType, Banner } from '@models';
 
 export enum UIActionType {
   TOGGLE_SIDEBAR = '[UI] Toggle Sidebar',
@@ -17,7 +17,11 @@ export enum UIActionType {
 
   SET_SELECTED_FILTER = '[UI] Set Selected Filter',
   SET_SEARCH_TYPE = '[UI] Set Search Type',
-  SET_UI_VIEW = '[UI] Set UI View'
+  SET_UI_VIEW = '[UI] Set UI View',
+
+  LOAD_BANNERS = '[Banner] Load Banners',
+  SET_BANNERS = '[Banner] Set Banners',
+  REMOVE_BANNER = '[Banner] Remove Banner',
 }
 
 export class ToggleSidebar implements Action {
@@ -74,6 +78,22 @@ export class SetUiView implements Action {
   constructor(public payload: ViewType) {}
 }
 
+export class RemoveBanner implements Action {
+  public readonly type = UIActionType.REMOVE_BANNER;
+
+  constructor(public payload: Banner) {}
+}
+
+export class SetBanners implements Action {
+  public readonly type = UIActionType.SET_BANNERS;
+
+  constructor(public payload: Banner[]) {}
+}
+
+export class LoadBanners implements Action {
+  public readonly type = UIActionType.LOAD_BANNERS;
+}
+
 export type UIActions =
   | ToggleSidebar
   | CloseSidebar
@@ -86,5 +106,8 @@ export type UIActions =
   | OpenBottomMenu
   | SetSelectedFilter
   | SetSearchType
-  | SetUiView;
+  | SetUiView
+  | LoadBanners
+  | RemoveBanner
+  | SetBanners;
 

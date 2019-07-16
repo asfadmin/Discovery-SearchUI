@@ -5,9 +5,14 @@
   background-color: #1a1e27;
 }
 
-.feedback-button {
+.map-header {
   position: relative;
-  top: 20px;
-  float: left;
-  left: 20px;
+  float: right;
+  top: 5px;
+  width: 100vw;
+}
+
+.additional-filters {
+  position: relative;
+  top: 15px;
 }

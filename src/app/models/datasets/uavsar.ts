@@ -10,7 +10,7 @@ export const uavsar = {
     Props.MISSION_NAME,
   ],
   apiValue: { platform: 'UAVSAR' },
-  date: { start: new Date(2008, 0, 1) },
+  date: { start: new Date('2008/04/28 21:10:16 UTC') },
   infoUrl: 'https://www.asf.alaska.edu/sar-data/uavsar/',
   citationUrl: 'https://www.asf.alaska.edu/sar-data/uavsar/how-to-cite/',
   frequency: 'L-Band',

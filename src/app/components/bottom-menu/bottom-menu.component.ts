@@ -69,7 +69,7 @@ export class BottomMenuComponent {
   }
 
   public formatNumber(num: number): string {
-    return num
+    return (num || 0)
       .toString()
       .replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,');
   }

@@ -15,8 +15,8 @@ export const radarsat_1 = {
   ],
   apiValue: { platform: 'RADARSAT-1' },
   date: {
-    start: new Date(1995, 0, 1),
-    end: new Date(2008, 0, 1)
+    start: new Date('1996/02/01 03:19:17 UTC'),
+    end: new Date('2008/05/02 22:05:26 UTC')
   },
   frequency: 'C-Band',
   source: {
