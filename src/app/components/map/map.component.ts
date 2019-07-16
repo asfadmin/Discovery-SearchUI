@@ -1,6 +1,9 @@
 import {
   Component, OnInit, Input, Output, EventEmitter
 } from '@angular/core';
+import {
+  trigger, state, style, animate, transition
+} from '@angular/animations';
 
 import { Store } from '@ngrx/store';
 import { Observable, combineLatest } from 'rxjs';
@@ -15,6 +18,7 @@ import { Vector as VectorSource } from 'ol/source';
 import { AppState } from '@store';
 import * as granulesStore from '@store/granules';
 import * as mapStore from '@store/map';
+import * as uiStore from '@store/ui';
 
 import * as models from '@models';
 import { MapService, WktService } from '@services';
@@ -22,13 +26,25 @@ import { MapService, WktService } from '@services';
 @Component({
   selector: 'app-map',
   templateUrl: './map.component.html',
-  styleUrls: ['./map.component.scss']
+  styleUrls: ['./map.component.scss'],
+  animations: [
+    trigger('bannerTransition', [
+      transition(':enter', [
+        style({transform: 'translateY(-100%)'}),
+        animate('200ms ease-in', style({transform: 'translateX(0%)'}))
+      ]),
+      transition(':leave', [
+        animate('200ms ease-out', style({transform: 'translateX(-100%)'}))
+      ])
+    ])
+  ],
 })
 export class MapComponent implements OnInit {
   @Output() loadUrlState = new EventEmitter<void>();
 
   public interactionMode$ = this.store$.select(mapStore.getMapInteractionMode);
   public mousePosition$ = this.mapService.mousePosition$;
+  public banners$ = this.store$.select(uiStore.getBanners);
 
   private isMapInitialized$ = this.store$.select(mapStore.getIsMapInitialization);
   private viewType$ = combineLatest(
@@ -75,10 +91,14 @@ export class MapComponent implements OnInit {
 
   public onFileUploadDialogClosed(successful: boolean): void {
     const newMode = successful ?
-      models.MapInteractionModeType.EDIT :
-      models.MapInteractionModeType.NONE;
+    models.MapInteractionModeType.EDIT :
+    models.MapInteractionModeType.NONE;
 
     this.onNewInteractionMode(newMode);
+  }
+
+  public removeBanner(banner: models.Banner): void {
+    this.store$.dispatch(new uiStore.RemoveBanner(banner));
   }
 
   private updateMapOnViewChange(): void {
@@ -207,4 +227,5 @@ export class MapComponent implements OnInit {
   private setMapWith(viewType: models.MapViewType, layerType: models.MapLayerTypes): void {
     this.mapService.setMapView(viewType, layerType);
   }
+
 }
