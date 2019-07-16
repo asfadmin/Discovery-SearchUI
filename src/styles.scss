@@ -26,6 +26,10 @@
   width: 100vw;
 }
 
+.invisible {
+  visibility: hidden;
+}
+
 .w100 {
   width: 100%;
 }
@@ -97,6 +101,8 @@ ul {
 }
 
 .control-mat-button-toggle {
+  pointer-events: auto;
+
   .mat-button-toggle-label-content,
   .mat-button-toggle-appearance-standard .mat-button-toggle-label-content {
     line-height: 28px !important;
@@ -150,4 +156,11 @@ ul {
   60% {
     transform: translate3d(4px, 0, 0);
   }
+}
+
+.invalid-input-animation {
+  animation: shake 0.82s;
+  transform: translate3d(0, 0, 0);
+  backface-visibility: hidden;
+  perspective: 1000px;
 }

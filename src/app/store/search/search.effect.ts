@@ -64,7 +64,6 @@ export class SearchEffects {
     ofType(SearchActionType.MAKE_SEARCH),
     withLatestFrom(this.searchParams$.getParams()),
     map(([_, params]) => [params, {...params, output: 'COUNT'}]),
-    tap(console.log),
     switchMap(
       ([params, countParams]) => forkJoin(
         this.asfApiService.query<any[]>(params),

@@ -12,6 +12,11 @@
   float: right;
   top: 5px;
   width: 100vw;
+  pointer-events: none;
+}
+
+.map-buttons {
+  pointer-events: auto;
 }
 
 .additional-filters {
@@ -24,6 +29,7 @@
 }
 
 .banner-card {
+  pointer-events: auto;
   max-height: 212px;
   height: fit-content;
   padding-top: 5px;
