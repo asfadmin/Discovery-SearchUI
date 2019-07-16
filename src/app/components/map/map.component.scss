@@ -15,10 +15,6 @@
   pointer-events: none;
 }
 
-.map-buttons {
-  pointer-events: auto;
-}
-
 .additional-filters {
   position: relative;
   top: 15px;
@@ -46,6 +42,7 @@
 }
 
 .map-buttons {
+  pointer-events: auto;
   margin-left: 0;
   margin-right: 40px;
 }
