@@ -106,14 +106,14 @@
       <!-- ADDITIONAL FILTERS FOR NON-DATASET SEARCH -->
       <ng-container *ngIf="searchType !== searchTypes.DATASET">
         <div fxFlex="nogrow" class="breadcrumb additional-filters">
-              <button (click)="onToggleFiltersMenu()"
-                      mat-flat-button
-                      class="search-dialog-button">
-                <span *ngIf="searchType === searchTypes.LIST">
-                  <mat-icon>edit</mat-icon>
-                  Edit List
-                  </span>
-              </button>
+          <button (click)="onToggleFiltersMenu()"
+                  mat-flat-button
+                  class="search-dialog-button">
+            <span *ngIf="searchType === searchTypes.LIST">
+              <mat-icon>edit</mat-icon>
+              Edit List
+            </span>
+          </button>
         </div>
         <div fxFlex class="breadcrumb extra-padding-top">
           <app-search-button></app-search-button>
