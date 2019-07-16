@@ -9,7 +9,6 @@
 
 .map-header {
   position: relative;
-  float: right;
   top: 5px;
   width: 100vw;
   pointer-events: none;
@@ -21,7 +20,7 @@
 }
 
 .header-controls {
-  margin-left: 20px;
+  //margin-left: 20px;
 }
 
 .banner-card {
@@ -35,6 +34,13 @@
   border-width: 2px;
   border-style: solid;
   color: $uaf-primary-blue;
+  margin-left: 20px;
+}
+
+.banner-text {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
 .mat-icon-button {
@@ -44,5 +50,5 @@
 .map-buttons {
   pointer-events: auto;
   margin-left: 0;
-  margin-right: 40px;
+  margin-right: 20px;
 }
