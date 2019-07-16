@@ -13,7 +13,19 @@ export class BannerApiService {
 
   public load(): Observable<BannerApiResponse> {
     return of({
-      banners: [],
+      banners: [{
+        text: 'This is a test <b>bannder</b>!' ,
+        type: 'message',
+        target: [
+          'vertex'
+        ]
+      }, {
+        text: 'MAKE THIS LOOK NICE...' ,
+        type: 'alert',
+        target: [
+          'vertex'
+        ]
+      }],
       systime: ''
     });
   }

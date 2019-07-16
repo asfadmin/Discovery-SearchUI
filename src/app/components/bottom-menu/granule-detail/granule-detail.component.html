@@ -141,7 +141,7 @@
 
           <li *ngIf="prop.isRelevant(p.MISSION_NAME, dataset)"
             class="detail-item-margin">
-            <span class="v-mid"> <b>Mission Name </b> • {{ granule.metadata.missionName }} </span>
+            <span class="v-mid"> <b>Campaign Name </b> • {{ granule.metadata.missionName }} </span>
 
             <mat-icon *ngIf="isGeoSearch()"
               [matMenuTriggerFor]="addMissionMenu"
@@ -150,7 +150,7 @@
             </mat-icon>
 
             <mat-menu #addMissionMenu="matMenu">
-              <button (click)="addMission()" mat-menu-item>Set mission name</button>
+              <button (click)="addMission()" mat-menu-item>Set campaign name</button>
             </mat-menu>
           </li>
 

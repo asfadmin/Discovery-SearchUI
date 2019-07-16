@@ -4,7 +4,9 @@
 
 <div class="map-header">
   <div class="header-controls">
-    <mat-card *ngFor="let banner of (banners$ | async)" class="card-spacing">
+    <mat-card *ngFor="let banner of (banners$ | async)"
+      [@bannerTransition]
+      class="card-spacing">
 
       <div style="display: flex; justify-content: space-between; align-items: center">
         <div [innerHTML]="banner.text"></div>
@@ -17,25 +19,18 @@
     </mat-card>
 
     <div class="map-buttons card-spacing">
-      <div>
-        <a
-          href="mailto:vertex-beta@asf.alaska.edu?Subject=Vertex%20Beta%20Feedback"
-          mat-raised-button>
-          Give us feedback!
-        </a>
-      </div>
-
       <app-map-controls></app-map-controls>
     </div>
   </div>
 </div>
+
+<app-additional-filters></app-additional-filters>
 
 <app-file-upload
   (dialogClose)="onFileUploadDialogClosed($event)"
   (newSearchPolygon)="onNewSearchPolygon($event)"
   [interaction$]="interactionMode$">
 </app-file-upload>
-
 
 <app-attributions [mousePos]="mousePosition$ | async">
 </app-attributions>

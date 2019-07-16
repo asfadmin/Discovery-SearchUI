@@ -10,6 +10,7 @@ import { MapComponent } from './map.component';
 import { MapControlsModule } from './map-controls';
 import { FileUploadModule } from './file-upload';
 import { AttributionsComponent } from './attributions/attributions.component';
+import { AdditionalFiltersModule } from '@components/additional-filters';
 
 @NgModule({
   imports: [
@@ -20,6 +21,7 @@ import { AttributionsComponent } from './attributions/attributions.component';
 
     MapControlsModule,
     FileUploadModule,
+    AdditionalFiltersModule,
   ],
   declarations: [
     MapComponent,

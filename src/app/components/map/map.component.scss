@@ -7,16 +7,12 @@
 
 .map-header {
   position: relative;
+  float: right;
+  top: 5px;
   width: 100vw;
 }
 
-.header-controls {
-  display: flex;
-  flex-direction: column;
-}
-
-.map-buttons {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
+.additional-filters {
+  position: relative;
+  top: 15px;
 }
