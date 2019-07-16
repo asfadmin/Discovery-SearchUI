@@ -51,7 +51,6 @@ export function searchReducer(state = initState, action: SearchActions): SearchS
     case SearchActionType.CANCEL_SEARCH: {
       return {
         ...state,
-        totalResults: null,
         isLoading: false,
         isCanceled: true,
       };
