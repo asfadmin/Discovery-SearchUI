@@ -4,7 +4,7 @@
   style="padding: 2px" class="faint-text clickable">
   <span [class.invisible]="(searchType$ | async) !== searchTypes.DATASET">
     <span>
-        {{ formatNumber(maxResults - 1) }} <mat-icon
+        {{ formatNumber(maxResults) }} <mat-icon
           class="faint-text clickable">arrow_drop_down</mat-icon>
     </span>
       of
@@ -26,7 +26,7 @@
   style="padding: 2px" class="faint-text">
   <span [class.invisible]="(searchType$ | async) !== searchTypes.DATASET">
     <span>
-        {{ formatNumber(maxResults - 1) }} <mat-icon
+        {{ formatNumber(maxResults) }} <mat-icon
           class="faint-text clickable">arrow_drop_down</mat-icon>
     </span>
       of
@@ -45,7 +45,7 @@
 
 <mat-menu #menu="matMenu">
   <button *ngFor="let amount of possibleMaxResults"
-    (click)="onNewMaxResults(amount + 1)" mat-menu-item>
+    (click)="onNewMaxResults(amount)" mat-menu-item>
       <span>{{ formatNumber(amount) }} Files</span>
   </button>
 </mat-menu>
