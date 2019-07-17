@@ -48,6 +48,10 @@ export const sentinel_1 = {
       displayName: 'L2 Ocean (OCN)'
     },
     {
+      apiValue: 'RAW',
+      displayName: 'L0 Raw Data (RAW)'
+    },
+    {
       apiValue: 'METADATA_GRD_MS',
       displayName: 'XML Metadata (GRD-MS)'
     },
