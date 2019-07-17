@@ -26,12 +26,6 @@ export const ers = {
   infoUrl: 'https://www.asf.alaska.edu/sar-data/ers-2/',
   citationUrl: 'https://www.asf.alaska.edu/sar-data/ers-2/how-to-cite/',
   productTypes: [{
-    apiValue: 'THUMBNAIL',
-    displayName: 'Thumbnail Image'
-  }, {
-    apiValue: 'BROWSE',
-    displayName: 'Browse Image'
-  }, {
     apiValue: 'L0',
     displayName: 'Level Zero'
   }, {

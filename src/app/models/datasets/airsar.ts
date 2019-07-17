@@ -25,9 +25,6 @@ export const airsar = {
     apiValue: 'JPG',
     displayName: 'JPG'
   }, {
-    apiValue: 'ATI',
-    displayName: 'Along-Track Interferometry'
-  }, {
     apiValue: 'PTIF',
     displayName: 'P-Band JPG'
   }, {

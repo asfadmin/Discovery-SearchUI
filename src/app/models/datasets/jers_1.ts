@@ -25,14 +25,8 @@ export const jers_1 = {
   infoUrl: 'https://www.asf.alaska.edu/sar-data/jers-1/',
   citationUrl: 'https://www.asf.alaska.edu/sar-data/jers-1/how-to-cite/',
   productTypes: [{
-    apiValue: 'BROWSE',
-    displayName: 'Browse Image'
-  }, {
     apiValue: 'L0',
     displayName: 'Level Zero'
-  }, {
-    apiValue: 'THUMBNAIL',
-    displayName: 'Thumbnail Image'
   }, {
     apiValue: 'L1',
     displayName: 'Level One Image'

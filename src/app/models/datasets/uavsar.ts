@@ -28,9 +28,6 @@ export const uavsar = {
     apiValue: 'INTERFEROMETRY_GRD',
     displayName: 'Ground Projected Interferogram'
   }, {
-    apiValue: 'HD5',
-    displayName: 'HDF5'
-  }, {
     apiValue: 'SLOPE',
     displayName: 'Slope'
   }, {
@@ -39,12 +36,6 @@ export const uavsar = {
   }, {
     apiValue: 'INTERFEROMETRY',
     displayName: 'Interferogram'
-  }, {
-    apiValue: 'THUMBNAIL',
-    displayName: 'Thumbnail Image'
-  }, {
-    apiValue: 'BROWSE',
-    displayName: 'Browse Image'
   }, {
     apiValue: 'AMPLITUDE',
     displayName: 'Amplitude'
