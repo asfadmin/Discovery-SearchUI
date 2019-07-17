@@ -25,7 +25,9 @@ export class DateExtremaService {
     ).pipe(
       map(([selected, userEnd]) => {
         if (!!userEnd) {
-          return userEnd;
+          return (userEnd > selected.date.start) ?
+            selected.date.start :
+            userEnd;
         }
 
         return selected.date.end || new Date(Date.now());
@@ -38,7 +40,9 @@ export class DateExtremaService {
     ).pipe(
       map(([selected, userStart]) => {
         if (!!userStart) {
-          return userStart;
+          return (userStart < selected.date.start) ?
+            selected.date.start :
+            userStart;
         }
 
         return selected.date.start;
