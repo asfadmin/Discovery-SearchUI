@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
+import { of } from 'rxjs';
 import { filter, map, switchMap, tap, catchError } from 'rxjs/operators';
 
 import { MapService } from './map/map.service';
@@ -24,9 +25,11 @@ export class PolygonValidationService {
 
   public validate(): void {
     this.mapService.searchPolygon$.pipe(
-      filter(p => !!p || this.polygons.has(p)),
-      switchMap(polygon => this.asfApiService.validate(polygon)),
-      tap(resp => this.polygons.add(resp.wkt.unwrapped)),
+      filter(p => !!p || !this.polygons.has(p)),
+      switchMap(polygon => this.asfApiService.validate(polygon).pipe(
+        catchError(resp => of(null))
+      )),
+      filter(resp => !!resp),
       map(resp => {
         if (resp.error) {
           const { report, type } = resp.error;
@@ -39,6 +42,7 @@ export class PolygonValidationService {
 
           return;
         } else {
+          this.polygons.add(resp.wkt.unwrapped);
           this.mapService.setDrawStyle(models.DrawPolygonStyle.VALID);
 
           const repairs = resp.repairs
