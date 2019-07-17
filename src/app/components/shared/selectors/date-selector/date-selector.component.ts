@@ -79,7 +79,7 @@ export class DateSelectorComponent implements OnInit {
       date = null;
       this.endDateErrors$.next();
     } else {
-      const momentDate = e.value.set({h: 0});
+      const momentDate = e.value.set({h: 23});
       date = this.toJSDate(momentDate);
     }
 
