@@ -13,6 +13,8 @@ import * as models from '@models';
   providedIn: 'root'
 })
 export class PolygonValidationService {
+  private polygons: Set<string> = new Set([]);
+
   constructor(
     private snackBar: MatSnackBar,
     private mapService: MapService,
@@ -22,8 +24,9 @@ export class PolygonValidationService {
 
   public validate(): void {
     this.mapService.searchPolygon$.pipe(
-      filter(p => !!p),
+      filter(p => !!p || this.polygons.has(p)),
       switchMap(polygon => this.asfApiService.validate(polygon)),
+      tap(resp => this.polygons.add(resp.wkt.unwrapped)),
       map(resp => {
         if (resp.error) {
           const { report, type } = resp.error;
@@ -44,7 +47,7 @@ export class PolygonValidationService {
             );
 
           if (repairs.length === 0) {
-            return resp.wkt;
+            return resp.wkt.unwrapped;
           }
 
           const { report, type }  = resp.repairs.pop();
@@ -57,7 +60,7 @@ export class PolygonValidationService {
           }
 
           const features = this.wktService.wktToFeature(
-            resp.wkt,
+            resp.wkt.unwrapped,
             this.mapService.epsg()
           );
 
