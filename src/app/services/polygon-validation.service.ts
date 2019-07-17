@@ -25,7 +25,7 @@ export class PolygonValidationService {
 
   public validate(): void {
     this.mapService.searchPolygon$.pipe(
-      filter(p => !!p || !this.polygons.has(p)),
+      filter(p => !!p || this.polygons.has(p)),
       switchMap(polygon => this.asfApiService.validate(polygon).pipe(
         catchError(resp => of(null))
       )),
