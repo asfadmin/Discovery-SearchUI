@@ -20,7 +20,7 @@ export class MaxResultsSelectorComponent implements OnInit {
   public searchType$ = this.store$.select(uiStore.getSearchType);
   public searchTypes = models.SearchType;
 
-  public possibleMaxResults = [250, 1000, 10000];
+  public possibleMaxResults = [250, 1000, 5000];
 
   constructor(
    private store$: Store<AppState>,
