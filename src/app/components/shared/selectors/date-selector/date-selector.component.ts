@@ -33,6 +33,16 @@ export class DateSelectorComponent implements OnInit {
   public startDate: Date;
   public endDate: Date;
 
+  private get startControl() {
+    return this.dateForm.form
+      .controls['startInput'];
+  }
+
+  private get endControl() {
+    return this.dateForm.form
+      .controls['endInput'];
+  }
+
   constructor(
     private store$: Store<AppState>,
     private actions$: ActionsSubject,
@@ -54,14 +64,18 @@ export class DateSelectorComponent implements OnInit {
       extrema => this.extrema = extrema
     );
 
-    this.startDate$.subscribe(start => this.startDate = start);
-    this.endDate$.subscribe(end => this.endDate = end);
+    this.startDate$.subscribe(
+      start => this.startDate = start
+    );
+    this.endDate$.subscribe(
+      end => this.endDate = end
+    );
   }
 
   public onStartDateChange(e: MatDatepickerInputEvent<moment.Moment>): void {
     let date: null | Date;
 
-    if (!e.value || !e.value.isValid()) {
+    if (!this.startControl.valid) {
       date = null;
       this.startDateErrors$.next();
     } else {
@@ -75,7 +89,7 @@ export class DateSelectorComponent implements OnInit {
   public onEndDateChange(e: MatDatepickerInputEvent<moment.Moment>): void {
     let date: null | Date;
 
-    if (!e.value || !e.value.isValid()) {
+    if (!this.endControl.valid) {
       date = null;
       this.endDateErrors$.next();
     } else {
@@ -92,37 +106,29 @@ export class DateSelectorComponent implements OnInit {
 
   private handleDateErrors(): void {
     this.startDateErrors$.pipe(
+      tap(_ => console.log('start error')),
       tap(_ => {
         this.isStartError = true;
-        const startControl = this.dateForm.form
-          .controls['startInput'];
-
-        startControl.reset();
-        startControl.setErrors({'incorrect': true});
+        this.startControl.reset();
+        this.startControl.setErrors({'incorrect': true});
       }),
       delay(820),
     ).subscribe(_ => {
       this.isStartError = false;
-      this.dateForm.form
-        .controls['startInput']
-        .setErrors(null);
+      this.startControl.setErrors(null);
     });
 
     this.endDateErrors$.pipe(
+      tap(_ => console.log('end error')),
       tap(_ => {
         this.isEndError = true;
-        const endControl = this.dateForm.form
-          .controls['endInput'];
-
-        endControl.reset();
-        endControl.setErrors({'incorrect': true});
+        this.endControl.reset();
+        this.endControl.setErrors({'incorrect': true});
       }),
       delay(820),
     ).subscribe(_ => {
       this.isEndError = false;
-      this.dateForm.form
-        .controls['endInput']
-        .setErrors(null);
+      this.endControl.setErrors(null);
     });
   }
 }
