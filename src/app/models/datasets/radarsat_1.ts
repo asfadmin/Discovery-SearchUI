@@ -29,14 +29,8 @@ export const radarsat_1 = {
     apiValue: 'L0',
     displayName: 'Level Zero'
   }, {
-    apiValue: 'THUMBNAIL',
-    displayName: 'Thumbnail Image'
-  }, {
     apiValue: 'L1',
     displayName: 'Level One Image'
-  }, {
-    apiValue: 'BROWSE',
-    displayName: 'Browse Image'
   }],
   beamModes: [
     'EH3', 'EH4', 'EH6', 'EL1', 'FN1', 'FN2', 'FN3', 'FN4',
