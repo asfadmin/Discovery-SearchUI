@@ -25,18 +25,12 @@ export const seasat = {
   infoUrl: 'https://www.asf.alaska.edu/seasat/',
   citationUrl: 'https://www.asf.alaska.edu/seasat/how-to-cite/',
   productTypes: [{
-    apiValue: 'THUMBNAIL',
-    displayName: 'Thumbnail Image'
-  }, {
     apiValue: 'GEOTIFF',
     displayName: 'Level One GeoTIFF product'
   }, {
     apiValue: 'L1',
     displayName: 'Level One HDF5 Image'
-  }, {
-    apiValue: 'BROWSE',
-    displayName: 'Browse Image'
-  }],
+  } ],
   beamModes: [ 'STD' ],
   polarizations: [
     'HH'
