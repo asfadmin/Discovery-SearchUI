@@ -27,14 +27,15 @@
   pointer-events: auto;
   max-height: 212px;
   height: fit-content;
-  padding-top: 5px;
-  padding-bottom: 5px;
+  padding-top: 9px;
+  padding-bottom: 9px;
   background-color: white;
   border-color: $asf-primary-dark;
   border-width: 2px;
   border-style: solid;
-  color: $uaf-primary-blue;
+  color: darken($asf-accent, 40%);
   margin-left: 20px;
+  line-height: 1.4;
 }
 
 .banner-text {
