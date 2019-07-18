@@ -42,7 +42,7 @@ export class PolygonValidationService {
 
           return;
         } else {
-          this.polygons.add(resp.wkt.unwrapped);
+          this.polygons.add(resp.wkt.wrapped);
           this.mapService.setDrawStyle(models.DrawPolygonStyle.VALID);
 
           const repairs = resp.repairs
@@ -51,7 +51,7 @@ export class PolygonValidationService {
             );
 
           if (repairs.length === 0) {
-            return resp.wkt.unwrapped;
+            return resp.wkt.wrapped;
           }
 
           const { report, type }  = resp.repairs.pop();
@@ -64,7 +64,7 @@ export class PolygonValidationService {
           }
 
           const features = this.wktService.wktToFeature(
-            resp.wkt.unwrapped,
+            resp.wkt.wrapped,
             this.mapService.epsg()
           );
 
