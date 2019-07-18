@@ -13,11 +13,11 @@
 <body>
 <script>
 
-var url = window.location;
+let url = window.location;
 url = url.toString();
-if (url.indexOf('local.asf.alaska.edu:4200') > -1) {
-    url = url.replace(/local.asf.alaska.edu:4200/, "vertex-beta.asf.alaska.edu");
-    console.log(url);
+
+if (url.indexOf('vertex.daac.asf.alaska.edu') > -1) {
+    url = url.replace(/vertex.daac.asf.alaska.edu/, 'search.asf.alaska.edu');
     window.location = url;
 }
 
