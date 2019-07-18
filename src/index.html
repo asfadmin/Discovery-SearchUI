@@ -11,6 +11,17 @@
   <script src="./assets/env.js" type="text/javascript"></script>
 </head>
 <body>
+<script>
+
+var url = window.location;
+url = url.toString();
+if (url.indexOf('local.asf.alaska.edu:4200') > -1) {
+    url = url.replace(/local.asf.alaska.edu:4200/, "vertex-beta.asf.alaska.edu");
+    console.log(url);
+    window.location = url;
+}
+
+</script>
   <style>
   body {
     padding: 0;
