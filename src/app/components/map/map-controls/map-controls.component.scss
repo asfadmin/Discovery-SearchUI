@@ -1,10 +1,6 @@
 @import "asf-theme";
 
 .position {
-  position: relative;
-  top: 20px;
-  float: right;
-  right: 20px;
   z-index: 998;
 }
 
@@ -20,6 +16,7 @@
 
 .button-group {
   margin-bottom: 5px;
+  pointer-events: auto;
 }
 
 .meatball {

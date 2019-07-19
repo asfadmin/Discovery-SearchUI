@@ -10,7 +10,7 @@ export const smap = {
     Props.ABSOLUTE_ORBIT,
   ],
   apiValue: { platform: 'SMAP' },
-  date: { start: new Date(2015, 0, 15) },
+  date: { start: new Date('2015/04/13 17:57:07 UTC') },
   infoUrl: 'https://www.asf.alaska.edu/smap/',
   frequency: 'L-Band',
   source: {

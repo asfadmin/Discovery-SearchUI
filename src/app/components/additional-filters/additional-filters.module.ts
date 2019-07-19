@@ -5,6 +5,10 @@ import { RouterModule } from '@angular/router';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatSharedModule } from '@shared';
 
+import { SearchButtonModule } from '@components/shared/search-button';
+import { ClearButtonModule } from '@components/shared/clear-button';
+import { MaxResultsSelectorModule } from '@components/shared/max-results-selector';
+
 import { AdditionalFiltersComponent } from './additional-filters.component';
 
 import { SearchSelectorModule } from '@components/shared/selectors/search-selector';
@@ -19,6 +23,10 @@ import { FlexLayoutModule } from '@angular/flex-layout';
 
     MatTabsModule,
     MatSharedModule,
+
+    SearchButtonModule,
+    ClearButtonModule,
+    MaxResultsSelectorModule,
 
     FlexLayoutModule,
 

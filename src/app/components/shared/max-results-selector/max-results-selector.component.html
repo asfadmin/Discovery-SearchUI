@@ -1,11 +1,14 @@
 <div
   [matMenuTriggerFor]="menu"
+  *ngIf="(searchType$ | async) === searchTypes.DATASET"
   style="padding: 2px" class="faint-text clickable">
-  <span>
-      {{ formatNumber(maxResults - 1) }} <mat-icon
-        class="faint-text clickable">arrow_drop_down</mat-icon>
-  </span>
-    of
+  <span [class.invisible]="(searchType$ | async) !== searchTypes.DATASET">
+    <span>
+        {{ formatNumber(maxResults) }} <mat-icon
+          class="faint-text clickable">arrow_drop_down</mat-icon>
+    </span>
+      of
+    </span>
 
     <span *ngIf="!isMaxResultsLoading">
       {{ currentSearchAmount !== -1 ? formatNumber(currentSearchAmount) : '0' }}
@@ -14,12 +17,35 @@
       style="margin: 0 4px">
       <fa-icon icon="spinner" [pulse]="true"></fa-icon>
     </span>
-    products
+    Files
+
+</div>
+
+<div
+  *ngIf="(searchType$ | async) !== searchTypes.DATASET"
+  style="padding: 2px" class="faint-text">
+  <span [class.invisible]="(searchType$ | async) !== searchTypes.DATASET">
+    <span>
+        {{ formatNumber(maxResults) }} <mat-icon
+          class="faint-text clickable">arrow_drop_down</mat-icon>
+    </span>
+      of
+    </span>
+
+    <span *ngIf="!isMaxResultsLoading">
+      {{ currentSearchAmount !== -1 ? formatNumber(currentSearchAmount) : '0' }}
+    </span>
+    <span *ngIf="isMaxResultsLoading"
+      style="margin: 0 4px">
+      <fa-icon icon="spinner" [pulse]="true"></fa-icon>
+    </span>
+    Files
+
 </div>
 
 <mat-menu #menu="matMenu">
   <button *ngFor="let amount of possibleMaxResults"
-    (click)="onNewMaxResults(amount + 1)" mat-menu-item>
-      <span>{{ formatNumber(amount) }} products</span>
+    (click)="onNewMaxResults(amount)" mat-menu-item>
+      <span>{{ formatNumber(amount) }} Files</span>
   </button>
 </mat-menu>

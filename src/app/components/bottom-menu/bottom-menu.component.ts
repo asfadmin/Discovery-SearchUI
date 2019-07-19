@@ -29,6 +29,7 @@ import * as models from '@models';
   ],
 })
 export class BottomMenuComponent {
+  public totalResultCount$ = this.store$.select(searchStore.getTotalResultCount);
   public isBottomMenuOpen$ = this.store$.select(uiStore.getIsBottomMenuOpen);
 
   public allProducts$ = this.store$.select(granulesStore.getAllProducts);
@@ -65,5 +66,11 @@ export class BottomMenuComponent {
 
   private queueAllProducts(products: models.CMRProduct[]): void {
     this.store$.dispatch(new queueStore.AddItems(products));
+  }
+
+  public formatNumber(num: number): string {
+    return (num || 0)
+      .toString()
+      .replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,');
   }
 }

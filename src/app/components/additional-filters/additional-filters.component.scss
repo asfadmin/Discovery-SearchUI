@@ -10,15 +10,18 @@ $break-small: 500px;
 $break-large: 1200px;
 
 .dataset-filters-div {
-  width: 100%;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  width: 80%;
+  max-width: 900px;
+  margin: auto;
 }
 
 .dataset-filters-card {
-  position: relative;
-  top: 15px;
-  width: 60%;
-  overflow-y: auto;
-  margin: 0 auto;
+  width: 100%;
   display: table;
   z-index: 1000;
 

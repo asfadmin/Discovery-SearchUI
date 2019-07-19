@@ -4,6 +4,9 @@ import { Store } from '@ngrx/store';
 import { AppState } from '@store';
 import * as searchStore from '@store/search';
 import * as filtersStore from '@store/filters';
+import * as uiStore from '@store/ui';
+
+import * as models from '@models';
 
 @Component({
   selector: 'app-max-results-selector',
@@ -14,8 +17,10 @@ export class MaxResultsSelectorComponent implements OnInit {
   public maxResults: number;
   public isMaxResultsLoading: boolean;
   public currentSearchAmount: number;
+  public searchType$ = this.store$.select(uiStore.getSearchType);
+  public searchTypes = models.SearchType;
 
-  public possibleMaxResults = [100, 1000, 10000];
+  public possibleMaxResults = [250, 1000, 5000];
 
   constructor(
    private store$: Store<AppState>,

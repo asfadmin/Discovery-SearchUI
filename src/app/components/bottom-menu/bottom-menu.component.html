@@ -14,14 +14,14 @@
   </div>
   <div class="bottom-menu--background  bottom-menu--layout"
        fxLayout="row"
-       fxLayout.lt-lg="column">
+       fxLayout.lt-sm="column">
     <mat-card class="card-spacing bottom-menu--column"
         fxFlex="33" fxFlexFill>
       <mat-card-subtitle *ngIf="numberOfGranules$ | async as numberOfGranules" class="header">
         <div style="display: flex; justify-content: center">
           <div style="margin-right: 10px;">
-            {{ numberOfGranules }} Granule{{ numberOfGranules === 1 ? '' : 's' }} /
-            {{ numberOfProducts$ | async }} Product{{ (numberOfProducts$ | async) === 1 ? '' : 's' }}
+            {{ numberOfGranules }} Scene{{ numberOfGranules === 1 ? '' : 's' }}
+            ({{ numberOfProducts$ | async }} of {{ formatNumber(totalResultCount$ | async) }} File{{ (numberOfProducts$ | async) === 1 ? '' : 's' }})
           </div>
           <div *ngIf="allProducts$ | async as products">
             <mat-icon
@@ -33,7 +33,7 @@
 
             <mat-menu #addAllProducts="matMenu">
               <button (click)="queueAllProducts(products)" mat-menu-item>
-                Add {{ products.length }} product{{ products.length === 1 ? '' : 's'}} to queue
+                Add {{ products.length }} file{{ products.length === 1 ? '' : 's'}} to queue
               </button>
             </mat-menu>
           </div>
@@ -48,7 +48,7 @@
     <mat-card class="card-spacing bottom-menu--column"
               fxFlex="34" fxFlexFill>
       <mat-card-subtitle class="header">
-        Granule Detail
+        Scene Detail
       </mat-card-subtitle>
       <app-granule-detail>
       </app-granule-detail>
@@ -58,9 +58,9 @@
               fxFlex="33" fxFlexFill>
       <mat-card-subtitle class="header">
         <span *ngIf="selectedProducts$ | async as products; else defaultProductsHeader">
-          {{ products.length || '' }} Granule Product{{ (products || []).length === 1 ? '' : 's'}}
+          {{ products.length || '' }} File{{ (products || []).length === 1 ? '' : 's'}}
         </span>
-        <ng-template #defaultProductsHeader>Granule Products</ng-template>
+        <ng-template #defaultProductsHeader>Files</ng-template>
       </mat-card-subtitle>
       <app-products
         [products]="selectedProducts$ | async"

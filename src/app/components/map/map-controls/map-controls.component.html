@@ -1,9 +1,9 @@
 <div class="position layout">
-    <app-view-selector
-      (newProjection)="onNewProjection($event)"
-      [view]="view$ | async"
-      class="button-group">
-    </app-view-selector>
+  <app-view-selector
+    (newProjection)="onNewProjection($event)"
+    [view]="view$ | async"
+    class="button-group">
+  </app-view-selector>
 
   <mat-button-toggle-group class="button-group" name="layerType">
     <mat-button-toggle class="control-mat-button-toggle"

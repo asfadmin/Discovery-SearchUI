@@ -135,6 +135,7 @@ export class BreadcrumbListComponent implements OnInit {
 
   public onSetSearchType(searchType: SearchType): void {
     this.clearSelectedBreadcrumb();
+    this.store$.dispatch(new searchStore.ClearSearch());
     this.store$.dispatch(new uiStore.SetSearchType(searchType));
   }
 

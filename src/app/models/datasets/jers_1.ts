@@ -14,8 +14,8 @@ export const jers_1 = {
   ],
   apiValue: { platform: 'JERS-1' },
   date: {
-    start: new Date(1992, 0, 1),
-    end: new Date(1998, 0, 1)
+    start: new Date('1992/05/20 18:16:38 UTC'),
+    end: new Date('1998/10/10 00:57:08 UTC')
   },
   frequency: 'L-Band',
   source: {
@@ -25,14 +25,8 @@ export const jers_1 = {
   infoUrl: 'https://www.asf.alaska.edu/sar-data/jers-1/',
   citationUrl: 'https://www.asf.alaska.edu/sar-data/jers-1/how-to-cite/',
   productTypes: [{
-    apiValue: 'BROWSE',
-    displayName: 'Browse Image'
-  }, {
     apiValue: 'L0',
     displayName: 'Level Zero'
-  }, {
-    apiValue: 'THUMBNAIL',
-    displayName: 'Thumbnail Image'
   }, {
     apiValue: 'L1',
     displayName: 'Level One Image'

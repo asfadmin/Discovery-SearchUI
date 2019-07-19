@@ -1,8 +1,8 @@
 <mat-card class="ls-card" *ngIf="listSearchMode$ | async as mode">
   <mat-card-title-group class="ls-card-title-group">
     <mat-card-title>
-      <span *ngIf="mode === types.GRANULE">Granule</span>
-      <span *ngIf="mode === types.PRODUCT">Product</span>
+      <span *ngIf="mode === types.GRANULE">Scene</span>
+      <span *ngIf="mode === types.PRODUCT">File</span>
       List Search
     </mat-card-title>
     <mat-card-subtitle>
@@ -10,15 +10,15 @@
         <mat-button-toggle
           (click)="onGranuleModeSelected()"
           [value]="types.GRANULE"
-          matTooltip="Granule List Search">
-          Granule
+          matTooltip="Scene List Search">
+          Scene
         </mat-button-toggle>
 
         <mat-button-toggle
           (click)="onProductModeSelected()"
           [value]="types.PRODUCT"
-          matTooltip="Product List Search">
-          Product
+          matTooltip="File List Search">
+          File
         </mat-button-toggle>
       </mat-button-toggle-group>
     </mat-card-subtitle>
@@ -27,8 +27,8 @@
   <mat-card-content class="ls-mat-card-content">
     <div class="ls-instruction">
         <h4>
-          <span *ngIf="mode === types.GRANULE">Enter a list of granule names.</span>
-          <span *ngIf="mode === types.PRODUCT">Enter a list of product ids.</span>
+          <span *ngIf="mode === types.GRANULE">Enter a list of scene names.</span>
+          <span *ngIf="mode === types.PRODUCT">Enter a list of file ids.</span>
         </h4>
     </div>
     <mat-form-field class="ls-card-content-list">
@@ -36,7 +36,7 @@
                 (input)="onTextInputChange($event.target.value)"
                 [(ngModel)]="searchList"
                 style="height: 150px;"
-                placeholder="List of {{ mode === types.GRANULE ? 'granule names' : 'product ids.' }}">
+                placeholder="List of {{ mode === types.GRANULE ? 'Scene names' : 'File IDs.' }}">
       </textarea>
     </mat-form-field>
   </mat-card-content>
@@ -48,7 +48,7 @@
       <div>
         <app-copy-to-clipboard
           [value]="listExamples[mode]"
-          [prompt]="mode === types.GRANULE ? 'Copy granule names' : 'Copy product ids'"
+          [prompt]="mode === types.GRANULE ? 'Copy Scene names' : 'Copy File IDs'"
           style="margin: 0 3px"
           class="clipboard-icon">
         </app-copy-to-clipboard>
