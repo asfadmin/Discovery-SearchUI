@@ -13,12 +13,11 @@
 <body>
 <script>
 
-let url = window.location;
-url = url.toString();
+const url = window.location.hostname;
 
-if (url.indexOf('vertex.daac.asf.alaska.edu') > -1) {
-    url = url.replace(/vertex.daac.asf.alaska.edu/, 'search.asf.alaska.edu');
-    window.location = url;
+if (url.indexOf('vertex-beta.asf.alaska.edu') > -1 || url.indexOf('vertex.daac.asf.alaska.edu') > -1) {
+  const redirect = `https://search.asf.alaska.edu${window.location.pathname}${window.location.hash}`;
+  window.location = redirect;
 }
 
 </script>
