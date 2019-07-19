@@ -11,6 +11,16 @@
   <script src="./assets/env.js" type="text/javascript"></script>
 </head>
 <body>
+<script>
+
+const url = window.location.hostname.toLowerCase();
+
+if (url === 'vertex-beta.asf.alaska.edu' || url === 'vertex.daac.asf.alaska.edu') {
+  const redirect = `https://search.asf.alaska.edu${window.location.pathname}${window.location.hash}`;
+  window.location = redirect;
+}
+
+</script>
   <style>
   body {
     padding: 0;
