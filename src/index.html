@@ -15,7 +15,7 @@
 
 const url = window.location.hostname;
 
-if (url.indexOf('vertex-beta.asf.alaska.edu') > -1 || url.indexOf('vertex.daac.asf.alaska.edu') > -1) {
+if (url === 'vertex-beta.asf.alaska.edu'|| url === 'vertex.daac.asf.alaska.edu' {
   const redirect = `https://search.asf.alaska.edu${window.location.pathname}${window.location.hash}`;
   window.location = redirect;
 }
