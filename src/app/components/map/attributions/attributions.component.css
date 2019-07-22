@@ -13,6 +13,7 @@
   border-color: #ccc;
   border-width: 1px 0 0 1px;
   color: #333;
+  max-width: calc(50vw - 100px);
 }
 
 .lon-lat {
