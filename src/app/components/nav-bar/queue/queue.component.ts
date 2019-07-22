@@ -8,6 +8,7 @@ import { Store } from '@ngrx/store';
 import { AppState } from '@store';
 import * as queueStore from '@store/queue';
 
+import { ScreenSizeService } from '@services';
 import { CMRProduct, AsfApiOutputFormat } from '@models';
 import { MatDialogRef } from '@angular/material';
 
@@ -16,10 +17,12 @@ import { MatDialogRef } from '@angular/material';
   templateUrl: './queue.component.html',
   styleUrls: ['./queue.component.scss']
 })
-export class QueueComponent {
+export class QueueComponent implements OnInit {
   public products$ = this.store$.select(queueStore.getQueuedProducts).pipe(
     tap(products => this.areAnyProducts = products.length > 0)
   );
+
+  private productNameLen: number;
 
   public copyIcon = faCopy;
 
@@ -40,7 +43,14 @@ export class QueueComponent {
     private store$: Store<AppState>,
     private clipboardService: ClipboardService,
     private dialogRef: MatDialogRef<QueueComponent>,
+    private screenSize: ScreenSizeService,
   ) {}
+
+  ngOnInit() {
+    this.screenSize.size$.pipe(
+      map(size => size.width > 1000 ? 48 : 16)
+    ).subscribe(len => this.productNameLen = len);
+  }
 
   public onRemoveProduct(product: CMRProduct): void {
     this.store$.dispatch(new queueStore.RemoveItem(product));
