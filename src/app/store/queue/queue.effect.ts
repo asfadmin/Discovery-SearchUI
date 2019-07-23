@@ -98,6 +98,6 @@ export class QueueEffects {
   );
 
   private currentDate(): string {
-    return moment().format('YYYY-MM-DD');
+    return moment().format('YYYY-MM-DD_hh-mm-ss');
   }
 }
