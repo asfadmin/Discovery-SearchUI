@@ -8,11 +8,11 @@ import { MapDrawModeType, MapInteractionModeType } from '@models';
 import { MapService, WktService } from '@services';
 
 @Component({
-  selector: 'app-aoi-upload',
-  templateUrl: './aoi-upload.component.html',
-  styleUrls: ['./aoi-upload.component.css'],
+  selector: 'app-aoi-options',
+  templateUrl: './aoi-options.component.html',
+  styleUrls: ['./aoi-options.component.css'],
 })
-export class AoiUploadComponent implements OnInit {
+export class AoiOptionsComponent implements OnInit {
   @Output() close = new EventEmitter<void>();
 
   public drawMode$ = this.store$.select(mapStore.getMapDrawMode);
