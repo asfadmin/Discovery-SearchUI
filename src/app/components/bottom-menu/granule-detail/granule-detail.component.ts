@@ -1,7 +1,8 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 
-import { map, withLatestFrom, filter, tap } from 'rxjs/operators';
+import { fromEvent } from 'rxjs';
+import { map, withLatestFrom, filter, tap, debounceTime } from 'rxjs/operators';
 import { Store } from '@ngrx/store';
 
 import { AppState } from '@store';
@@ -12,7 +13,7 @@ import * as missionStore from '@store/mission';
 import * as uiStore from '@store/ui';
 
 import * as models from '@models';
-import { DatapoolAuthService, PropertyService } from '@services';
+import { DatapoolAuthService, PropertyService, ScreenSizeService } from '@services';
 import { ImageDialogComponent } from './image-dialog';
 
 @Component({
@@ -24,11 +25,13 @@ export class GranuleDetailComponent implements OnInit {
   public dataset: models.Dataset;
   public searchType: models.SearchType;
   public granule: models.CMRProduct;
+  public granuleLen: number;
 
   public p = models.Props;
 
   constructor(
     private store$: Store<AppState>,
+    private screenSize: ScreenSizeService,
     public dialog: MatDialog,
     public authService: DatapoolAuthService,
     public prop: PropertyService,
@@ -36,6 +39,10 @@ export class GranuleDetailComponent implements OnInit {
 
   ngOnInit() {
     const granule$ = this.store$.select(granulesStore.getSelectedGranule);
+
+    this.screenSize.size$.pipe(
+      map(size => size.width > 1750 ? 32 : 16),
+    ).subscribe(len => this.granuleLen = len);
 
     granule$.subscribe(
       granule => this.granule = granule
