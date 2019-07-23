@@ -72,6 +72,7 @@ export const routes = [
     services.HistoryService,
     services.LegacyAreaFormatService,
     services.BannerApiService,
+    services.ScreenSizeService,
   ],
   bootstrap: [ AppComponent ],
 })
