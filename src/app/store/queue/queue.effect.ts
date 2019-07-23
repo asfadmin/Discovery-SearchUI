@@ -5,6 +5,7 @@ import { Actions, Effect, ofType } from '@ngrx/effects';
 import { Store, Action } from '@ngrx/store';
 
 import * as FileSaver from 'file-saver';
+import * as moment from 'moment';
 
 import { Observable, combineLatest } from 'rxjs';
 import { map, withLatestFrom, startWith, switchMap, tap, filter } from 'rxjs/operators';
@@ -97,17 +98,6 @@ export class QueueEffects {
   );
 
   private currentDate(): string {
-    const today = new Date();
-
-    const [ y, m, d, h, min, s] = [
-      today.getFullYear(),
-      today.getMonth() + 1,
-      today.getDate(),
-      today.getHours(),
-      today.getMinutes(),
-      today.getSeconds()
-    ];
-
-    return `${y}-${m}-${d}_${h}-${min}-${s}`;
+    return moment().format('YYYY-MM-DD');
   }
 }
