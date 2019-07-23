@@ -106,7 +106,6 @@ export class DateSelectorComponent implements OnInit {
 
   private handleDateErrors(): void {
     this.startDateErrors$.pipe(
-      tap(_ => console.log('start error')),
       tap(_ => {
         this.isStartError = true;
         this.startControl.reset();
@@ -119,7 +118,6 @@ export class DateSelectorComponent implements OnInit {
     });
 
     this.endDateErrors$.pipe(
-      tap(_ => console.log('end error')),
       tap(_ => {
         this.isEndError = true;
         this.endControl.reset();

@@ -1,27 +1,27 @@
-<div fxFlex fxLayout="column">
+<form fxFlex fxLayout="column" #pathForm="ngForm">
   <mat-form-field *ngIf="prop.isRelevant(p.PATH)">
     <input matInput
-      (input)="onPathStartChanged($event.target.value)"
-      [(ngModel)]="pathRange.start"
+      (change)="onPathStartChanged($event.target.value)"
+      [(ngModel)]="pathStart"
       type="number" name="pathStart" placeholder="Path Start">
   </mat-form-field>
   <mat-form-field *ngIf="prop.isRelevant(p.PATH)" class="range-form-input">
     <input matInput
       (input)="onPathEndChanged($event.target.value)"
-      [(ngModel)]="pathRange.end"
+      [(ngModel)]="pathEnd"
       type="number" name="pathEnd" placeholder="Path End">
   </mat-form-field>
 
   <mat-form-field *ngIf="prop.isRelevant(p.FRAME)">
     <input matInput
       (input)="onFrameStartChanged($event.target.value)"
-      [(ngModel)]="frameRange.start"
+      [(ngModel)]="frameStart"
       type="number" name="frameStart" placeholder="Frame Start">
   </mat-form-field>
   <mat-form-field *ngIf="prop.isRelevant(p.FRAME)" class="range-form-input">
     <input matInput
       (input)="onFrameEndChanged($event.target.value)"
-      [(ngModel)]="frameRange.end"
+      [(ngModel)]="frameEnd"
       type="number" name="frameEnd" placeholder="Frame End">
   </mat-form-field>
 
@@ -30,4 +30,4 @@
     [checked]="shouldOmitSearchPolygon$ | async">
     Omit Geographic Region from search
   </mat-slide-toggle>
-</div>
+</form>
