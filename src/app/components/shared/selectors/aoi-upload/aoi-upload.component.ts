@@ -1,7 +1,4 @@
 import { Component, OnInit, Output, Input, EventEmitter } from '@angular/core';
-import {
-  trigger, state, style, animate, transition
-} from '@angular/animations';
 
 import { Store } from '@ngrx/store';
 
@@ -14,14 +11,6 @@ import { MapService, WktService } from '@services';
   selector: 'app-aoi-upload',
   templateUrl: './aoi-upload.component.html',
   styleUrls: ['./aoi-upload.component.css'],
-  animations: [
-    trigger('fadeTransition', [
-      state('void', style({
-        opacity: 0,
-      })),
-      transition('void <=> *', animate('130ms ease-in'))
-    ])
-  ],
 })
 export class AoiUploadComponent implements OnInit {
   @Output() close = new EventEmitter<void>();
