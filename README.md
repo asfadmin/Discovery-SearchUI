@@ -2,13 +2,13 @@
 
 [![CodeFactor](https://www.codefactor.io/repository/github/asfadmin/searchui/badge/devel)](https://www.codefactor.io/repository/github/asfadmin/searchui/overview/devel)
 
-Angular rewrite of ASF's Vertex search web app
+ ASF's Angular search web application
 
 ## Deployments
 
-- **Devel:** https://vertex-beta-dev.asf.alaska.edu/
-- **Test:** https://vertex-beta-test.asf.alaska.edu/
-- **Beta:** https://vertex-beta.asf.alaska.edu/
+- **Devel:** https://search-dev.asf.alaska.edu/
+- **Test:** https://search-test.asf.alaska.edu/
+- **Prod:** https://search.asf.alaska.edu/
 
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 6.2.4.
