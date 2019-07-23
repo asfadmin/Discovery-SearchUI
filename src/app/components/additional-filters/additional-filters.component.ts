@@ -18,10 +18,13 @@ import * as models from '@models';
   styleUrls: ['./additional-filters.component.scss'],
   animations: [
     trigger('showFilters', [
-      state('void', style({
-        opacity: 0,
-      })),
-      transition('void <=> *', animate('100ms'))
+      transition(':enter', [
+        style({transform: 'translateY(-100%)'}),
+        animate('200ms ease-in', style({transform: 'translateY(0%)'}))
+      ]),
+      transition(':leave', [
+        animate('300ms ease-out', style({transform: 'translateY(-100%)'}))
+      ])
     ])
   ],
 })
