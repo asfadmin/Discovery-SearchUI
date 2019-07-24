@@ -1,26 +1,30 @@
 <form fxFlex fxLayout="column" #pathForm="ngForm">
-  <mat-form-field *ngIf="prop.isRelevant(p.PATH)">
+  <mat-form-field *ngIf="prop.isRelevant(p.PATH)"
+    [class.invalid-input-animation]="typeHasError(inputTypes.PATH_START)">
     <input matInput
       (change)="onPathStartChanged($event.target.value)"
       [(ngModel)]="pathStart"
       type="number" name="pathStart" placeholder="Path Start">
   </mat-form-field>
-  <mat-form-field *ngIf="prop.isRelevant(p.PATH)" class="range-form-input">
+  <mat-form-field *ngIf="prop.isRelevant(p.PATH)" class="range-form-input"
+    [class.invalid-input-animation]="typeHasError(inputTypes.PATH_END)">
     <input matInput
-      (input)="onPathEndChanged($event.target.value)"
+      (change)="onPathEndChanged($event.target.value)"
       [(ngModel)]="pathEnd"
       type="number" name="pathEnd" placeholder="Path End">
   </mat-form-field>
 
-  <mat-form-field *ngIf="prop.isRelevant(p.FRAME)">
+  <mat-form-field *ngIf="prop.isRelevant(p.FRAME)"
+    [class.invalid-input-animation]="typeHasError(inputTypes.FRAME_START)">
     <input matInput
-      (input)="onFrameStartChanged($event.target.value)"
+      (change)="onFrameStartChanged($event.target.value)"
       [(ngModel)]="frameStart"
       type="number" name="frameStart" placeholder="Frame Start">
   </mat-form-field>
-  <mat-form-field *ngIf="prop.isRelevant(p.FRAME)" class="range-form-input">
+  <mat-form-field *ngIf="prop.isRelevant(p.FRAME)" class="range-form-input"
+    [class.invalid-input-animation]="typeHasError(inputTypes.FRAME_END)">
     <input matInput
-      (input)="onFrameEndChanged($event.target.value)"
+      (change)="onFrameEndChanged($event.target.value)"
       [(ngModel)]="frameEnd"
       type="number" name="frameEnd" placeholder="Frame End">
   </mat-form-field>
