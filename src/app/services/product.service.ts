@@ -28,7 +28,7 @@ export class ProductService {
   private getMetadataFrom =
     (g: any): models.CMRProductMetadata => ({
       date:  this.fromCMRDate(g.startTime),
-      polygon: g.wkt,
+      polygon: g.wkt_unwrapped,
 
       productType: g.productType,
       beamMode: g.beamMode,

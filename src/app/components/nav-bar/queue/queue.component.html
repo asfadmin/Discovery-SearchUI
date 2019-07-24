@@ -22,7 +22,7 @@
 
               <div matLine>
                 <b>
-                  <span> {{ product.name | truncate : 48 }}</span>
+                  <span> {{ product.name | truncate : productNameLen }}</span>
                   <span *ngIf="product.dataset === 'Sentinel-1B' || product.dataset === 'Sentinel-1A'"
                     >{{ product.name.substr(product.name.length - 4) }}</span>
                   <span *ngIf="product.dataset === 'Sentinel-1 Interferogram (BETA)'"
