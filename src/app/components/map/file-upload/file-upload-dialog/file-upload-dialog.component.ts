@@ -124,7 +124,7 @@ export class FileUploadDialogComponent implements OnInit {
   }
 
   private isValidFileType(fileName: string): boolean {
-    const validFileTypes = ['zip', 'shp', 'geojson', 'kml'];
+    const validFileTypes = ['zip', 'shp', 'geojson'];
 
     const fileExtension = this.getFileType(fileName);
 
