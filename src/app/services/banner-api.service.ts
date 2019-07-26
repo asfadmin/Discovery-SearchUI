@@ -13,13 +13,20 @@ export class BannerApiService {
 
   public load(): Observable<BannerApiResponse> {
     return of({
-      banners: [{
-        text: "Looking for the old Vertex design? It will remain available <a href=\"https://vertex-retired.daac.asf.alaska.edu\">here</a> until August 19, 2019",
-        type: 'message',
-        target: [
-          'sar-search'
-        ]
-      }],
+      banners: [
+        {
+          text: '<p>Looking for the old Vertex design?' +
+            'It will remain available ' +
+            '<a href="https://vertex-retired.daac.asf.alaska.edu">here</a> until August 19, 2019' +
+            '</p><p>' +
+            'Data availability will be intermittent due to system maintenance on August 4, 2019, ' +
+            'starting at 16:00 (UTC) and ending 18:00 (UTC). We apologize for the inconvenience.</p>',
+          type: 'message',
+          target: [
+            'sar-search'
+          ]
+        }
+      ],
       systime: ''
     });
   }
