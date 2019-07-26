@@ -17,8 +17,10 @@ export class BannerApiService {
         {
           text:
             '<p>' +
-            'Data availability will be intermittent due to system maintenance on August 4, 2019, ' +
-            'starting at 16:00 (UTC) and ending 18:00 (UTC). We apologize for the inconvenience.' +
+            'ASF is currently experiencing technical issues that are preventing users who have ' +
+            'not recently downloaded data from obtaining data from the datapool.' +
+	    'ASF is working to resolve this issue and will have download services restored as ' +
+	    'soon as possible.' +
             '</p><p>' +
             'Looking for the old Vertex design?' +
             'It will remain available ' +
