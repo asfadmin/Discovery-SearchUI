@@ -25,7 +25,7 @@ export class BannerApiService {
           target: [
             'sar-search'
           ]
-        }      
+        }
 ],
       systime: ''
     });
