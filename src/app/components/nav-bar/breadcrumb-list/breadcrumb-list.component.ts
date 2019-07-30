@@ -1,5 +1,8 @@
 import { Component, OnInit, EventEmitter, Output, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
+import {
+  trigger, state, style, animate, transition
+} from '@angular/animations';
 
 import { Subject } from 'rxjs';
 import { tap, map, filter, delay } from 'rxjs/operators';
@@ -34,7 +37,19 @@ enum BreadcrumbFilterType {
 @Component({
   selector: 'app-breadcrumb-list',
   templateUrl: './breadcrumb-list.component.html',
-  styleUrls: ['./breadcrumb-list.component.scss']
+  styleUrls: ['./breadcrumb-list.component.scss'],
+  animations: [
+    trigger('fadeTransition', [
+      transition(':enter', [
+        style({opacity: 0}),
+        animate('100ms ease-in', style({opacity: 1}))
+      ]),
+      transition(':leave', [
+        style({opacity: 1}),
+        animate('100ms ease-out', style({opacity: 0}))
+      ])
+    ])
+  ],
 })
 export class BreadcrumbListComponent implements OnInit {
   @ViewChild('polygonForm', { static: false }) public polygonForm: NgForm;
