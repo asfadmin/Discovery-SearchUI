@@ -46,6 +46,9 @@ export class MapComponent implements OnInit {
   public mousePosition$ = this.mapService.mousePosition$;
   public banners$ = this.store$.select(uiStore.getBanners);
 
+  public tooltipX = '0px';
+  public tooltipY = '0px';
+
   private isMapInitialized$ = this.store$.select(mapStore.getIsMapInitialization);
   private viewType$ = combineLatest(
     this.store$.select(mapStore.getMapView),
@@ -99,6 +102,11 @@ export class MapComponent implements OnInit {
 
   public removeBanner(banner: models.Banner): void {
     this.store$.dispatch(new uiStore.RemoveBanner(banner));
+  }
+
+  public onMouseMove(e): void {
+    this.tooltipY = `${e.clientY + 20}px`;
+    this.tooltipX = `${e.clientX + 20}px`;
   }
 
   private updateMapOnViewChange(): void {
@@ -227,5 +235,4 @@ export class MapComponent implements OnInit {
   private setMapWith(viewType: models.MapViewType, layerType: models.MapLayerTypes): void {
     this.mapService.setMapView(viewType, layerType);
   }
-
 }

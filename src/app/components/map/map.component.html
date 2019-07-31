@@ -1,5 +1,13 @@
 <div (dragover)="onFileHovered($event)"
+  (mousemove)="onMouseMove($event)"
   id="map" class="map">
+</div>
+
+<div style="display: block; position: fixed; overflow: hidden"
+   [style.top]="tooltipY"
+   [style.left]="tooltipX"
+     >
+  This is a tooltip!
 </div>
 
 <div class="map-header">
