@@ -11,6 +11,7 @@ export class RangeService {
   public toString<T>(range: Range<T>): string {
     const [start, end] = [ range.start || '', range.end || '' ];
 
-    return `${start}-${end}`;
+    return !(start && end) ?
+      '' : `${start}-${end}`;
   }
 }
