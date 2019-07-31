@@ -14,6 +14,7 @@ import {
 
 import { Vector as VectorLayer} from 'ol/layer';
 import { Vector as VectorSource } from 'ol/source';
+import tippy from 'tippy.js';
 
 import { AppState } from '@store';
 import * as granulesStore from '@store/granules';
@@ -62,6 +63,13 @@ export class MapComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    tippy('#map', {
+      content: 'This is a big map!',
+      followCursor: true,
+      distance: 10,
+      hideOnClick: false,
+      placement: 'top-end'
+    });
     this.updateMapOnViewChange();
     this.redrawSearchPolygonWhenViewChanges();
     this.updateDrawMode();
@@ -105,8 +113,8 @@ export class MapComponent implements OnInit {
   }
 
   public onMouseMove(e): void {
-    this.tooltipY = `${e.clientY + 20}px`;
-    this.tooltipX = `${e.clientX + 20}px`;
+    this.tooltipY = `${e.clientY + 10}px`;
+    this.tooltipX = `${e.clientX + 10}px`;
   }
 
   private updateMapOnViewChange(): void {
