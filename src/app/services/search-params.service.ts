@@ -134,14 +134,14 @@ export class SearchParamsService {
 
   private pathRange$() {
     return this.store$.select(filterStore.getPathRange).pipe(
-      map(range => this.rangeService.toString(range)),
+      map(range => this.rangeService.toCMRString(range)),
       map(pathRange => ({ relativeOrbit: pathRange })),
     );
   }
 
   private frameRange$() {
     return this.store$.select(filterStore.getFrameRange).pipe(
-      map(range => this.rangeService.toString(range)),
+      map(range => this.rangeService.toCMRString(range)),
       map(frameRange => ({ frame: frameRange })),
     );
   }
