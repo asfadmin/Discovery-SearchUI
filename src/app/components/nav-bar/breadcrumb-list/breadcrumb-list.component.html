@@ -75,9 +75,10 @@
             </mat-form-field>
 
             <mat-card *ngIf="selectedFilter === filterTypes.AOI"
+                     [@fadeTransition]
                       class="breadcrumb-filter">
-              <app-aoi-upload
-                (close)="clearSelectedBreadcrumb()"></app-aoi-upload>
+              <app-aoi-options
+                (close)="clearSelectedBreadcrumb()"></app-aoi-options>
             </mat-card>
           </form>
         </div>

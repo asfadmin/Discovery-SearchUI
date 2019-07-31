@@ -7,14 +7,14 @@ import { MatButtonToggleModule } from '@angular/material/button-toggle';
 
 import { MatSharedModule } from '@shared';
 
-import { AoiUploadComponent } from './aoi-upload.component';
+import { AoiOptionsComponent } from './aoi-options.component';
 import { DrawSelectorComponent } from './draw-selector/draw-selector.component';
 import { InteractionSelectorComponent } from './interaction-selector';
 
 
 @NgModule({
   declarations: [
-    AoiUploadComponent,
+    AoiOptionsComponent,
     DrawSelectorComponent,
     InteractionSelectorComponent
   ],
@@ -26,7 +26,7 @@ import { InteractionSelectorComponent } from './interaction-selector';
     MatSharedModule,
   ],
   exports: [
-    AoiUploadComponent
+    AoiOptionsComponent
   ]
 })
-export class AoiUploadModule { }
+export class AoiOptionsModule { }
