@@ -8,7 +8,7 @@ import {
 import { Store } from '@ngrx/store';
 import { Observable, combineLatest } from 'rxjs';
 import {
-  map, filter, switchMap, tap,
+  map, filter, switchMap, tap, skip,
   withLatestFrom, distinctUntilChanged
 } from 'rxjs/operators';
 
@@ -43,12 +43,12 @@ import { MapService, WktService } from '@services';
 export class MapComponent implements OnInit {
   @Output() loadUrlState = new EventEmitter<void>();
 
+  public drawMode$ = this.store$.select(mapStore.getMapDrawMode);
   public interactionMode$ = this.store$.select(mapStore.getMapInteractionMode);
   public mousePosition$ = this.mapService.mousePosition$;
   public banners$ = this.store$.select(uiStore.getBanners);
 
-  public tooltipX = '0px';
-  public tooltipY = '0px';
+  public tooltip;
 
   private isMapInitialized$ = this.store$.select(mapStore.getIsMapInitialization);
   private viewType$ = combineLatest(
@@ -63,19 +63,48 @@ export class MapComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    tippy('#map', {
-      content: 'This is a big map!',
+    this.tooltip = (<any[]>tippy('#map', {
+      content: 'Click to start drawing',
       followCursor: true,
-      distance: 10,
+      offset: '15, 0',
       hideOnClick: false,
-      placement: 'top-end'
-    });
+      placement: 'bottom-end'
+    })).pop();
+
     this.updateMapOnViewChange();
     this.redrawSearchPolygonWhenViewChanges();
     this.updateDrawMode();
 
     this.interactionMode$.subscribe(
       mode => this.mapService.setInteractionMode(mode)
+    );
+
+    combineLatest(
+      this.mapService.isDrawing$,
+      this.drawMode$
+    ).pipe(
+      map(([isDrawing, drawMode]) => {
+        if (drawMode === models.MapDrawModeType.POINT) {
+          return 'Click point';
+        }
+
+        if (!isDrawing) {
+          return 'Click to start drawing';
+        }
+
+        if (drawMode === models.MapDrawModeType.BOX) {
+          return 'Click to stop drawing';
+        } else if (drawMode === models.MapDrawModeType.LINESTRING || drawMode === models.MapDrawModeType.POLYGON) {
+          return 'Double click to stop drawing';
+        }
+      })
+    ).subscribe(tip => this.tooltip.setContent(tip));
+
+    this.interactionMode$.pipe(
+      map(mode => mode === models.MapInteractionModeType.DRAW),
+    ).subscribe(isDrawMode => isDrawMode ?
+      this.tooltip.enable() :
+      this.tooltip.disable()
     );
 
     this.mapService.newSelectedGranule$.pipe(

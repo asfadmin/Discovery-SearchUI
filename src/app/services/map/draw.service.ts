@@ -26,6 +26,7 @@ export class DrawService {
   private defaultStyle = polygonStyle.valid;
 
   public polygon$ = new BehaviorSubject<string | null>(null);
+  public isDrawing$ = new BehaviorSubject<boolean>(false);
 
   constructor() {
     this.source = new VectorSource({
@@ -99,6 +100,7 @@ export class DrawService {
 
   private create(drawMode: models.MapDrawModeType): Draw {
     let draw: Draw;
+    this.isDrawing$.next(false);
 
     if (drawMode === models.MapDrawModeType.BOX) {
       draw = new Draw({
@@ -113,8 +115,14 @@ export class DrawService {
       });
     }
 
-    draw.on('drawstart', e => this.clear());
-    draw.on('drawend', e => this.polygon$.next(e.feature));
+    draw.on('drawstart', e => {
+      this.isDrawing$.next(true);
+      this.clear();
+    });
+    draw.on('drawend', e => {
+      this.isDrawing$.next(false);
+      this.polygon$.next(e.feature);
+    });
 
     this.snap = new Snap({source: this.source});
     this.modify = this.createModify();
