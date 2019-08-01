@@ -17,7 +17,7 @@ export class BannerApiService {
         {
           text:
             '<p>' +
-            'Data availability will be intermittent due to system maintenance on August 3, 2019, ' +
+            'Data will be unavailable due to system maintenance on August 3, 2019, ' +
             'starting at 03:00 (AKST) and ending 17:00 (AKST). We apologize for the inconvenience.' +
             '</p><p>' +
             'Looking for the old Vertex design?' +
