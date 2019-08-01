@@ -38,6 +38,7 @@ export class AoiOptionsComponent implements OnInit {
   }
 
   public onNewDrawMode(mode: MapDrawModeType): void {
+    this.store$.dispatch(new mapStore.SetMapInteractionMode(MapInteractionModeType.DRAW));
     this.store$.dispatch(new mapStore.SetMapDrawMode(mode));
   }
 
