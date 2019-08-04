@@ -17,9 +17,6 @@ export class BannerApiService {
         {
           text:
             '<p>' +
-            'Data will be unavailable due to system maintenance on August 3, 2019, ' +
-            'starting at 03:00 (AKST) and ending 17:00 (AKST). We apologize for the inconvenience.' +
-            '</p><p>' +
             'Looking for the old Vertex design?' +
             ' It will remain available ' +
             '<a href="https://vertex-retired.daac.asf.alaska.edu">here</a> until August 19, 2019' +
