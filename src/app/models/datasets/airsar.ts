@@ -22,14 +22,14 @@ export const airsar = {
     apiValue: 'CTIF',
     displayName: 'C-Band JPG'
   }, {
-    apiValue: 'JPG',
-    displayName: 'JPG'
-  }, {
     apiValue: 'PTIF',
     displayName: 'P-Band JPG'
   }, {
     apiValue: 'LTIF',
     displayName: 'L-Band JPG'
+  }, {
+    apiValue: 'JPG',
+    displayName: 'JPG'
   }, {
     apiValue: 'LSTOKES',
     displayName: 'L-Band Compressed Stokes Matrix'
