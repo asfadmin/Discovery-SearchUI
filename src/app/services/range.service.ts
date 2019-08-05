@@ -9,13 +9,21 @@ export class RangeService {
   constructor() { }
 
   public toString<T>(range: Range<T>): string {
-    const filteredRange = Object.values(range)
-      .filter(v => !!v);
+    const [start, end] = [ range.start || '', range.end || '' ];
 
-    const unique = Array.from(new Set(filteredRange));
+    return !(start && end) ?
+      '' : `${start}-${end}`;
+  }
 
-    return unique.length === 2 ?
-      unique.join('-') :
-      unique.pop() || null;
+  public toCMRString<T>(range: Range<T>): string {
+    const [start, end] = [ range.start || '', range.end || '' ];
+
+    if (!(start && end)) {
+      return '';
+    } else if (start === end) {
+      return `${start}`;
+    } else {
+      return `${start}-${end}`;
+    }
   }
 }

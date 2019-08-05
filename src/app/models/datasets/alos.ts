@@ -47,7 +47,9 @@ export const alos = {
     apiValue: 'KMZ',
     displayName: 'GoogleEarth KMZ'
   }],
-  beamModes: [],
+  beamModes: [
+    'FBS', 'FBD', 'PLR', 'WB1', 'WB2'
+  ],
   polarizations: [
     'HH',
     'HH 3scan',
