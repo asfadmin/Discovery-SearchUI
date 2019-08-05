@@ -141,11 +141,6 @@ export class MapComponent implements OnInit {
     this.store$.dispatch(new uiStore.RemoveBanner(banner));
   }
 
-  public onMouseMove(e): void {
-    this.tooltipY = `${e.clientY + 10}px`;
-    this.tooltipX = `${e.clientX + 10}px`;
-  }
-
   private updateMapOnViewChange(): void {
     const viewBeforInitialization = this.viewType$.pipe(
       withLatestFrom(this.isMapInitialized$),
