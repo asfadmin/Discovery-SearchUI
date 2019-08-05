@@ -19,47 +19,47 @@ export const uavsar = {
     url: 'https://www.nasa.gov/'
   },
   productTypes: [{
+    apiValue: 'AMPLITUDE',
+    displayName: 'Amplitude'
+  }, {
+    apiValue: 'STOKES',
+    displayName: 'Compressed Stokes Matrix'
+  }, {
+    apiValue: 'AMPLITUDE_GRD',
+    displayName: 'Ground Projected Amplitude'
+  }, {
+    apiValue: 'PROJECTED',
+    displayName: 'Ground Projected Complex'
+  }, {
+    apiValue: 'PROJECTED_ML5X5',
+    displayName: 'Ground Projected Complex, 5X5 Resampled'
+  }, {
+    apiValue: 'INTERFEROMETRY_GRD',
+    displayName: 'Ground Projected Interferogram'
+  }, {
+    apiValue: 'INTERFEROMETRY',
+    displayName: 'Interferogram'
+  }, {
+    apiValue: 'COMPLEX',
+    displayName: 'Multi-look Complex'
+  }, {
     apiValue: 'KMZ',
     displayName: 'GoogleEarth KMZ'
   }, {
     apiValue: 'INC',
     displayName: 'Incidence angle'
   }, {
-    apiValue: 'INTERFEROMETRY_GRD',
-    displayName: 'Ground Projected Interferogram'
-  }, {
     apiValue: 'SLOPE',
     displayName: 'Slope'
-  }, {
-    apiValue: 'AMPLITUDE_GRD',
-    displayName: 'Ground Projected Amplitude'
-  }, {
-    apiValue: 'INTERFEROMETRY',
-    displayName: 'Interferogram'
-  }, {
-    apiValue: 'AMPLITUDE',
-    displayName: 'Amplitude'
-  }, {
-    apiValue: 'PROJECTED_ML5X5',
-    displayName: 'Ground Projected Complex, 5X5 Resampled'
-  }, {
-    apiValue: 'METADATA',
-    displayName: 'Annotation file / Metadata'
   }, {
     apiValue: 'DEM_TIFF',
     displayName: 'GEOTIFF Height File'
   }, {
-    apiValue: 'STOKES',
-    displayName: 'Compressed Stokes Matrix'
-  }, {
-    apiValue: 'PROJECTED',
-    displayName: 'Ground Projected Complex'
-  }, {
     apiValue: 'PAULI',
     displayName: 'Pauli Decomposition'
   }, {
-    apiValue: 'COMPLEX',
-    displayName: 'Multi-look Complex'
+    apiValue: 'METADATA',
+    displayName: 'Annotation file / Metadata'
   }],
   beamModes: [ 'POL', 'RPI' ],
   polarizations: [
