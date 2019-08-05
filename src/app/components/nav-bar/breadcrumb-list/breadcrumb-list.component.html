@@ -97,12 +97,11 @@
               <mat-icon>more_horiz</mat-icon>
             </button>
           </div>
-          <div fxFlex class="breadcrumb extra-padding-top">
+          <div fxFlex="noshrink" class="breadcrumb extra-padding-top">
             <app-search-button></app-search-button>
             <app-clear-button></app-clear-button>
           </div>
         </div>
-
       </ng-container>
 
       <!-- ADDITIONAL FILTERS FOR NON-DATASET SEARCH -->
@@ -122,6 +121,14 @@
           <app-clear-button></app-clear-button>
         </div>
       </ng-container>
+
+      <div fxFlex fxFlexAlign="center">
+        <app-nav-buttons
+          (openQueue)="onOpenDownloadQueue()"
+          [queuedProducts]="queuedProducts$ | async">
+        </app-nav-buttons>
+      </div>
+
     </div>
 
     <div fxLayout="row wrap"
@@ -129,15 +136,22 @@
          class="info-bar">
 
       <div fxFlex.gt-md="550px" class="first-info">
+          Path: {{pathRange.start}} - {{pathRange.end}}
+          Frame: {{frameRange.start}} - {{frameRange.end}}
+          Season: {{season.start}} - {{season.end}}
+          Omit Geo: {{true == shouldOmitSearchPolygon ? 'Yes' : 'No' }}
+          List Search: {{listSearchMode.toString()}}
+          List: {{searchList}}
+          Product Types:
+          <span *ngFor="let productType of productTypes; let i = index">
+              {{productType.apiValue}},
+          </span>
+          BeamMode: {{beamModes}}
+          Polarizations: {{polarizations}}
+          Flight Direction: {{flightDirections}}
       </div>
       <div class="max-results">
         <app-max-results-selector></app-max-results-selector>
-      </div>
-      <div fxFlex="300px">
-        <app-nav-buttons
-          (openQueue)="onOpenDownloadQueue()"
-          [queuedProducts]="queuedProducts$ | async">
-        </app-nav-buttons>
       </div>
     </div>
   </div>
