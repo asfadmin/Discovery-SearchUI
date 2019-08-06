@@ -11,14 +11,14 @@ export class RangeService {
   public toString<T>(range: Range<T>): string {
     const [start, end] = [ range.start || '', range.end || '' ];
 
-    return !(start && end) ?
+    return !(start || end) ?
       '' : `${start}-${end}`;
   }
 
   public toCMRString<T>(range: Range<T>): string {
     const [start, end] = [ range.start || '', range.end || '' ];
 
-    if (!(start && end)) {
+    if (!start && !end) {
       return '';
     } else if (start === end) {
       return `${start}`;
