@@ -6,6 +6,7 @@ import {
 
 import { Subject } from 'rxjs';
 import { tap, map, filter, delay } from 'rxjs/operators';
+import { Observable, combineLatest } from 'rxjs';
 import { Store, ActionsSubject } from '@ngrx/store';
 import { ofType } from '@ngrx/effects';
 import { ClipboardService } from 'ngx-clipboard';
@@ -15,13 +16,13 @@ import * as searchStore from '@store/search';
 import * as uiStore from '@store/ui';
 import * as queueStore from '@store/queue';
 
-import { SearchType } from '@models';
 import { MapService, WktService, LegacyAreaFormatService } from '@services';
 
 import { MatDialog } from '@angular/material/dialog';
 import { QueueComponent } from '@components/nav-bar/queue';
 
 import * as models from '@models/index';
+import * as filtersStore from '@store/filters';
 
 enum BreadcrumbFilterType {
   SEARCH_TYPE = 'Search Type',
@@ -60,10 +61,20 @@ export class BreadcrumbListComponent implements OnInit {
 
   public filterTypes = BreadcrumbFilterType;
   public selectedFilter = BreadcrumbFilterType.NONE;
-  public searchType: SearchType = SearchType.DATASET;
+  public searchType: models.SearchType = models.SearchType.DATASET;
 
-  public searchTypes = SearchType;
+  public searchTypes = models.SearchType;
   public polygon: string;
+  public pathRange: models.Range<number | null>;
+  public frameRange: models.Range<number | null>;
+  public season: models.Range<number | null>;
+  public shouldOmitSearchPolygon: boolean;
+  public listSearchMode: models.ListSearchType;
+  public searchList: string[];
+  public productTypes: models.ProductType[];
+  public beamModes: models.DatasetBeamModes;
+  public polarizations: models.DatasetPolarizations;
+  public flightDirections: models.FlightDirection[];
 
   public queuedProducts$ = this.store$.select(queueStore.getQueuedProducts);
 
@@ -80,6 +91,36 @@ export class BreadcrumbListComponent implements OnInit {
   ngOnInit() {
     this.store$.select(uiStore.getSearchType).subscribe(
       searchType => this.searchType = searchType
+    );
+    this.store$.select(filtersStore.getPathRange).subscribe(
+      range => this.pathRange = range
+    );
+    this.store$.select(filtersStore.getFrameRange).subscribe(
+      range => this.frameRange = range
+    );
+    this.store$.select(filtersStore.getSeason).subscribe(
+      range => this.season = range
+    );
+    this.store$.select(filtersStore.getShouldOmitSearchPolygon).subscribe(
+      boolean  => this.shouldOmitSearchPolygon = boolean
+    );
+    this.store$.select(filtersStore.getListSearchMode).subscribe(
+      boolean  => this.listSearchMode = boolean
+    );
+    this.store$.select(filtersStore.getSearchList).subscribe(
+      string  => this.searchList = string
+    );
+    this.store$.select(filtersStore.getProductTypes).subscribe(
+      any  => this.productTypes = any
+    );
+    this.store$.select(filtersStore.getPolarizations).subscribe(
+      any  => this.polarizations = any
+    );
+    this.store$.select(filtersStore.getBeamModes).subscribe(
+      any  => this.beamModes = any
+    );
+    this.store$.select(filtersStore.getFlightDirections).subscribe(
+      any  => this.flightDirections = any
     );
 
     this.actions$.pipe(
@@ -123,6 +164,17 @@ export class BreadcrumbListComponent implements OnInit {
     this.loadWKT(polygon);
   }
 
+  private productType$() {
+    return this.store$.select(filtersStore.getProductTypes).pipe(
+      map(types => types.map(type => type.apiValue)),
+      map(
+        types => Array.from(new Set(types))
+          .join(',')
+      ),
+      map(types => ({ processinglevel: types }))
+    );
+  }
+
   private loadWKT(polygon: string): void {
     try {
       const features = this.wktService.wktToFeature(
@@ -148,7 +200,7 @@ export class BreadcrumbListComponent implements OnInit {
     this.selectedFilter = BreadcrumbFilterType.NONE;
   }
 
-  public onSetSearchType(searchType: SearchType): void {
+  public onSetSearchType(searchType: models.SearchType): void {
     this.clearSelectedBreadcrumb();
     this.store$.dispatch(new searchStore.ClearSearch());
     this.store$.dispatch(new uiStore.SetSearchType(searchType));
