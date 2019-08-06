@@ -1,9 +1,9 @@
 @import "asf-theme";
 
 .layout {
-  display: flex;
-  justify-content: flex-end;
-  align-items: center;
+  //display: flex;
+  //justify-content: flex-end;
+  //align-items: center;
 }
 
 .spacing {
@@ -12,13 +12,13 @@
 }
 
 .mat-icon {
-  @include md-icon-size(18px);
+  @include md-icon-size(28px);
 
   margin-right: 10px;
   color: $asf-primary-dark;
 }
 
 .mat-icon-button {
-  height: 20px;
-  line-height: 20px;
+  height: 30px;
+  line-height: 30px;
 }
