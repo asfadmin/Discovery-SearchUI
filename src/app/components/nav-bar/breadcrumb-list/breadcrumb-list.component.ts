@@ -116,6 +116,9 @@ export class BreadcrumbListComponent implements OnInit {
     this.store$.select(filtersStore.getPolarizations).subscribe(
       any  => this.polarizations = any
     );
+    this.store$.select(filtersStore.getBeamModes).subscribe(
+      any  => this.beamModes = any
+    );
     this.store$.select(filtersStore.getFlightDirections).subscribe(
       any  => this.flightDirections = any
     );

@@ -97,9 +97,13 @@
               <mat-icon>more_horiz</mat-icon>
             </button>
           </div>
-          <div fxFlex="noshrink" class="breadcrumb extra-padding-top">
+          <div fxFlex="noshrink" class="breadcrumb search-controls">
             <app-search-button></app-search-button>
             <app-clear-button></app-clear-button>
+            <div class="max-results">
+              <app-max-results-selector></app-max-results-selector>
+            </div>
+
           </div>
         </div>
       </ng-container>
@@ -116,7 +120,7 @@
             </span>
           </button>
         </div>
-        <div fxFlex class="breadcrumb extra-padding-top">
+        <div fxFlex class="breadcrumb search-controls">
           <app-search-button></app-search-button>
           <app-clear-button></app-clear-button>
         </div>
@@ -135,23 +139,36 @@
          fxFlexFill
          class="info-bar">
 
-      <div fxFlex.gt-md="550px" class="first-info">
+      <div fxFlex class="first-info">
+        <span *ngIf="pathRange.start || pathRange.end">
           Path: {{pathRange.start}} - {{pathRange.end}}
+        </span>
+        <span *ngIf="frameRange.start || frameRange.end">
           Frame: {{frameRange.start}} - {{frameRange.end}}
+        </span>
+        <span *ngIf="season.start || season.end">
           Season: {{season.start}} - {{season.end}}
+        </span>
+        <span *ngIf="shouldOmitSearchPolygon">
           Omit Geo: {{true == shouldOmitSearchPolygon ? 'Yes' : 'No' }}
-          List Search: {{listSearchMode.toString()}}
-          List: {{searchList}}
-          Product Types:
+        </span>
+<!--          List Search: {{listSearchMode.toString()}}-->
+<!--          List: {{searchList}}-->
+        <span *ngIf="productTypes.length">
+          File Types:
           <span *ngFor="let productType of productTypes; let i = index">
               {{productType.apiValue}},
           </span>
-          BeamMode: {{beamModes}}
+        </span>
+        <span *ngIf="beamModes.length">
+          Beam Modes: {{beamModes}}
+        </span>
+        <span *ngIf="polarizations.length">
           Polarizations: {{polarizations}}
-          Flight Direction: {{flightDirections}}
-      </div>
-      <div class="max-results">
-        <app-max-results-selector></app-max-results-selector>
+        </span>
+        <span *ngIf="flightDirections.length">
+          Flight Dir: {{flightDirections}}
+        </span>
       </div>
     </div>
   </div>
