@@ -2,31 +2,31 @@
   <mat-form-field *ngIf="prop.isRelevant(p.PATH)"
     [class.invalid-input-animation]="typeHasError(inputTypes.PATH_START)">
     <input matInput
-      (change)="onPathStartChanged($event.target.value)"
+      (input)="onValueChanged($event.target.value, inputTypes.PATH_START)"
       [(ngModel)]="pathStart"
-      type="number" name="pathStart" placeholder="Path Start">
+      name="pathStart" placeholder="Path Start">
   </mat-form-field>
   <mat-form-field *ngIf="prop.isRelevant(p.PATH)" class="range-form-input"
     [class.invalid-input-animation]="typeHasError(inputTypes.PATH_END)">
     <input matInput
-      (change)="onPathEndChanged($event.target.value)"
+      (input)="onValueChanged($event.target.value, inputTypes.PATH_END)"
       [(ngModel)]="pathEnd"
-      type="number" name="pathEnd" placeholder="Path End">
+      name="pathEnd" placeholder="Path End">
   </mat-form-field>
 
   <mat-form-field *ngIf="prop.isRelevant(p.FRAME)"
     [class.invalid-input-animation]="typeHasError(inputTypes.FRAME_START)">
     <input matInput
-      (change)="onFrameStartChanged($event.target.value)"
+      (input)="onValueChanged($event.target.value, inputTypes.FRAME_START)"
       [(ngModel)]="frameStart"
-      type="number" name="frameStart" placeholder="Frame Start">
+      name="frameStart" placeholder="Frame Start">
   </mat-form-field>
   <mat-form-field *ngIf="prop.isRelevant(p.FRAME)" class="range-form-input"
     [class.invalid-input-animation]="typeHasError(inputTypes.FRAME_END)">
     <input matInput
-      (change)="onFrameEndChanged($event.target.value)"
+      (input)="onValueChanged($event.target.value, inputTypes.FRAME_END)"
       [(ngModel)]="frameEnd"
-      type="number" name="frameEnd" placeholder="Frame End">
+      name="frameEnd" placeholder="Frame End">
   </mat-form-field>
 
   <mat-slide-toggle
