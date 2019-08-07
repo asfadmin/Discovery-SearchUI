@@ -16,7 +16,7 @@
 
       <!-- SEARCH TYPE -->
       <div fxFlex="nogrow" fxFlex.lt-lg="nogrow" class="breadcrumb">
-        <mat-form-field fxFlex.lt-lg="auto">
+        <mat-form-field fxFlex="120px">
           <mat-label>Search Type</mat-label>
           <mat-select
             [(ngModel)]="searchType"
@@ -32,14 +32,14 @@
 
         <div fxLayout="row">
           <!-- DATASET FILTER -->
-          <div fxFlex="nogrow" fxFlex.lt-lg="50"
+          <div fxFlex="130px" fxFlex.lt-lg="50"
                (click)="clearSelectedBreadcrumb()"
                class="breadcrumb">
             <app-dataset-selector></app-dataset-selector>
           </div>
 
           <!-- AOI FILTER -->
-          <form fxFlex="nogrow" fxFlex.lt-lg="50"
+          <form fxFlex="160px" fxFlex.lt-lg="50"
                 #polygonForm="ngForm"
                 class="breadcrumb"
                 (mouseenter)="isHoveringAOISelector = true"
@@ -126,7 +126,7 @@
         </div>
       </ng-container>
 
-      <div fxFlex fxFlexAlign="center">
+      <div class="icon-cluster">
         <app-nav-buttons
           (openQueue)="onOpenDownloadQueue()"
           [queuedProducts]="queuedProducts$ | async">
