@@ -87,13 +87,13 @@ $icon-size: 36px;
 }
 
 .banner-image {
-  width: 100%;
+  width: calc(100% - 175px);
   height: auto;
   position: absolute;
   top: 0;
   bottom: calc(100% - 120px);
   left: 0;
-  right: 0;
+  //right: 0;
   margin: auto;
   mix-blend-mode: multiply;
 }
