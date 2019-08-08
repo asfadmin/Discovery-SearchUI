@@ -197,7 +197,6 @@ export class MapService {
   }
 
   private createNewMap(): Map {
-
     const newMap = new Map({
       layers: [ this.mapView.layer, this.drawService.getLayer(), this.focusLayer, this.selectedLayer ],
       target: 'map',
