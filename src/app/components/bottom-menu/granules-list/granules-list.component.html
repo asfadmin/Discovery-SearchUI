@@ -17,7 +17,7 @@
             matBadgeOverlap="false"
             class="size" matListAvatar>
 
-          <div class="product-name" matLine>
+          <div [title]="granule.name" class="product-name" matLine>
             <span>
               <span> {{ granule.name | truncate : granuleNameLen }}</span>
               <span *ngIf="granule.dataset === 'Sentinel-1B' || granule.dataset === 'Sentinel-1A'">{{ granule.name.substr(granule.name.length - 4) }}</span>
