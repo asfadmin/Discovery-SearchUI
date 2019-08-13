@@ -29,25 +29,27 @@ export const alos = {
     url: null
   },
   productTypes: [{
-    apiValue: 'L1.5',
-    displayName: 'Level 1.5 Image'
+    apiValue: 'L1.0',
+    displayName: 'Level 1.0'
   }, {
     apiValue: 'L1.1',
     displayName: 'Level 1.1 Complex'
   }, {
-    apiValue: 'L1.0',
-    displayName: 'Level 1.0'
-  }, {
-    apiValue: 'RTC_HI_RES',
-    displayName: 'Hi-Res Terrain Corrected'
+    apiValue: 'L1.5',
+    displayName: 'Level 1.5 Image'
   }, {
     apiValue: 'RTC_LOW_RES',
     displayName: 'Low-Res Terrain Corrected'
   }, {
+    apiValue: 'RTC_HI_RES',
+    displayName: 'Hi-Res Terrain Corrected'
+  }, {
     apiValue: 'KMZ',
     displayName: 'GoogleEarth KMZ'
   }],
-  beamModes: [],
+  beamModes: [
+    'DSN', 'FBS', 'FBD', 'PLR', 'WB1', 'WB2'
+  ],
   polarizations: [
     'HH',
     'HH 3scan',

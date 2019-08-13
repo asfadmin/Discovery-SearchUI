@@ -30,8 +30,8 @@ $break-medium: 1250px;
   line-height: $asf-line-height;
 }
 
-.extra-padding-top {
-  padding-top: 25px;
+.search-controls {
+  padding-top: 5px;
 }
 
 .info-bar {
@@ -40,10 +40,14 @@ $break-medium: 1250px;
   border-top-width: 1px;
   background-color: $asf-primary-light;
   color: $asf-primary-dark;
+  line-height: 30px;
+  font-family: mat-font-family($custom-typography);
+  font-size: 14px;
 }
 
 .first-info {
   padding-left: 10px;
+  height: 32px;
 }
 
 .max-results {

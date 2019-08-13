@@ -54,6 +54,7 @@ export class MapService {
   });
   public newSelectedGranule$ = new Subject<string>();
 
+  public isDrawing$ = this.drawService.isDrawing$;
   public searchPolygon$ = this.drawService.polygon$.pipe(
     map(
       feature => feature !== null ?
