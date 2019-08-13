@@ -34,7 +34,7 @@
           </div>
 
           <div matLine>
-            <span>Date • {{ granule.metadata.date | shortDate }}</span>
+            <span>{{ granule.metadata.date | shortDate }}</span>
           </div>
 
           <mat-icon (click)="onZoomTo(granule)"class="ml-2" matTooltip="Zoom to scene">
