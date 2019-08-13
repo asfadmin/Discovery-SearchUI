@@ -11,6 +11,7 @@ import * as queueStore from '@store/queue';
 import * as filtersStore from '@store/filters';
 import * as searchStore from '@store/search';
 
+import { MapService } from '@services';
 import * as models from '@models';
 
 @Component({
@@ -46,7 +47,10 @@ export class BottomMenuComponent {
 
   public isHidden$ = this.store$.select(uiStore.getIsHidden);
 
-  constructor(private store$: Store<AppState>) { }
+  constructor(
+    private store$: Store<AppState>,
+    private mapService: MapService,
+  ) { }
 
   public onToggleMenu(): void {
     this.store$.dispatch(new uiStore.ToggleBottomMenu());
@@ -54,6 +58,10 @@ export class BottomMenuComponent {
 
   public onToggleQueueProduct(product: models.CMRProduct): void {
     this.store$.dispatch(new queueStore.ToggleProduct(product));
+  }
+
+  public onZoomToResults(): void {
+    this.mapService.zoomToResults();
   }
 
   private selectNextGranule(): void {

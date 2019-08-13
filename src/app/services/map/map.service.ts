@@ -165,13 +165,21 @@ export class MapService {
     this.focusSource.addFeature(feature);
   }
 
+  public zoomToResults(): void {
+    const extent = this.polygonLayer
+      .getSource()
+      .getExtent();
+
+    this.zoomToExtent(extent);
+  }
+
   public zoomToGranule(granule: models.CMRProduct): void {
-    const features = this.wktService.wktToFeature(
+    const feature = this.wktService.wktToFeature(
       granule.metadata.polygon,
       this.epsg()
     );
 
-    this.zoomToFeature(features);
+    this.zoomToFeature(feature);
   }
 
   public zoomToFeature(feature): void {
@@ -179,6 +187,10 @@ export class MapService {
       .getGeometry()
       .getExtent();
 
+    this.zoomToExtent(extent);
+  }
+
+  private zoomToExtent(extent): void {
     this.map
       .getView()
       .fit(extent, {
