@@ -8,7 +8,7 @@ export class LegacyAreaFormatService {
 
   public isValid(numberList: string): boolean {
     const numbers = this.parseNumberList(numberList);
-    console.log(numberList, numbers);
+
     return numbers.length % 2 === 0;
   }
 
