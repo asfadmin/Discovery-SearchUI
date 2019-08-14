@@ -8,7 +8,6 @@ export class LegacyAreaFormatService {
 
   public isValid(numberList: string): boolean {
     const numbers = this.parseNumberList(numberList);
-
     return numbers.length % 2 === 0;
   }
 
@@ -42,8 +41,10 @@ export class LegacyAreaFormatService {
       return result;
     }, []);
 
-    return (pairs[-1] !== pairs[pairs.length - 1]) ?
-      [...pairs, pairs[0]] :
-      pairs;
+    if (pairs[0] === pairs[pairs.length - 1]) {
+      pairs.pop();
+    }
+
+    return pairs;
   }
 }
