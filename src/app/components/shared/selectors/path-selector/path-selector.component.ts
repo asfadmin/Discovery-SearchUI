@@ -3,7 +3,7 @@ import { NgForm } from '@angular/forms';
 
 import { Subject } from 'rxjs';
 import { tap, map, delay } from 'rxjs/operators';
-import { Store } from '@ngrx/store';
+import { Store, Action } from '@ngrx/store';
 
 import { AppState } from '@store';
 import * as filtersStore from '@store/filters';
@@ -80,40 +80,40 @@ export class PathSelectorComponent implements OnInit {
     );
   }
 
-  public onPathStartChanged(path: string): void {
-    if (!this.isValidNumber(path)) {
-      this.inputErrors$.next(PathFormInputType.PATH_START);
-      this.store$.dispatch(new filtersStore.SetPathStart(null));
-    } else {
-      this.store$.dispatch(new filtersStore.SetPathStart(+path));
-    }
+  public numberOnly(event): boolean {
+    const charCode = (event.which) ?
+      event.which :
+      event.keyCode;
+
+    return (charCode > 31 && (charCode < 48 || charCode > 57));
   }
 
-  public onPathEndChanged(path: string): void {
-    if (!this.isValidNumber(path)) {
-      this.inputErrors$.next(PathFormInputType.PATH_END);
-      this.store$.dispatch(new filtersStore.SetPathEnd(null));
+  public onValueChanged(inputValue: string, inputType: PathFormInputType): void {
+    let val: number | null;
+
+    if (!this.isValidNumber(inputValue)) {
+      if (inputValue !== '') {
+        this.inputErrors$.next(inputType);
+      }
+
+      val = null;
     } else {
-      this.store$.dispatch(new filtersStore.SetPathEnd(+path));
+      val = +inputValue;
     }
+
+    const action = this.getActionFor(inputType, val);
+    this.store$.dispatch(action);
   }
 
-  public onFrameStartChanged(frame: string): void {
-    if (!this.isValidNumber(frame)) {
-      this.inputErrors$.next(PathFormInputType.FRAME_START);
-      this.store$.dispatch(new filtersStore.SetFrameStart(null));
-    } else {
-      this.store$.dispatch(new filtersStore.SetFrameStart(+frame));
-    }
-  }
+  private getActionFor(inputType: PathFormInputType, val: number | null): Action {
+    const ActionType = {
+      [PathFormInputType.PATH_START]: filtersStore.SetPathStart,
+      [PathFormInputType.PATH_END]: filtersStore.SetPathEnd,
+      [PathFormInputType.FRAME_START]: filtersStore.SetFrameStart,
+      [PathFormInputType.FRAME_END]: filtersStore.SetFrameEnd,
+    }[inputType];
 
-  public onFrameEndChanged(frame: string): void {
-    if (!this.isValidNumber(frame)) {
-      this.inputErrors$.next(PathFormInputType.FRAME_END);
-      this.store$.dispatch(new filtersStore.SetFrameEnd(null));
-    } else {
-      this.store$.dispatch(new filtersStore.SetFrameEnd(+frame));
-    }
+    return new ActionType(val);
   }
 
   private isValidNumber(val: string): boolean {
