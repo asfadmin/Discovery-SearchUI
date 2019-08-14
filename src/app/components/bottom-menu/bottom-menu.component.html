@@ -25,6 +25,14 @@
           </div>
           <div *ngIf="allProducts$ | async as products">
             <mat-icon
+               (click)="onZoomToResults()"
+               class="clickable noselect"
+               style="margin-right: 10px"
+               matTooltip="Zoom to results">
+              settings_overscan
+            </mat-icon>
+
+            <mat-icon
                class="clickable noselect"
                matTooltip="Add all results to queue"
               [matMenuTriggerFor]="addAllProducts">

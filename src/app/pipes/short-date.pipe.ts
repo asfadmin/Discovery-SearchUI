@@ -1,17 +1,16 @@
 import { Pipe, PipeTransform } from '@angular/core';
 
+import * as moment from 'moment';
+
+
 @Pipe({
   name: 'shortDate'
 })
 export class ShortDatePipe implements PipeTransform {
 
   transform(date: Date): string {
-    const [month, day, year] = [
-      date.getUTCMonth() + 1,
-      date.getUTCDate(),
-      date.getUTCFullYear(),
-    ];
+    const dateUtc = moment.utc(date);
 
-    return `${month}-${day}-${year}`;
+    return dateUtc.format('MMM. D, YYYY');
   }
 }

@@ -156,6 +156,13 @@ export class UrlStateService {
       ),
       loader: this.loadSelectedDataset
     }, {
+      name: 'maxResults',
+      source: this.store$.select(filterStore.getMaxSearchResults).pipe(
+        skip(1),
+        map(maxResults => ({ maxResults }))
+      ),
+      loader: this.loadMaxResults
+    }, {
       name: 'start',
       source: this.store$.select(filterStore.getStartDate).pipe(
         skip(1),
@@ -523,6 +530,15 @@ export class UrlStateService {
     this.store$.dispatch(new granulesStore.SetSelectedGranule(granuleId));
   }
 
+  private loadMaxResults = (maxResults: string): void => {
+    const results: number = +maxResults;
+
+    if (this.isNumber(results)) {
+      const clampedResults = this.clamp(results, 1, 5000);
+      this.store$.dispatch(new filterStore.SetMaxResults(clampedResults));
+    }
+  }
+
   private updateShouldSearch(): void {
     this.store$.select(granulesStore.getAreResultsLoaded).pipe(
       filter(wereResultsLoaded => wereResultsLoaded),
@@ -531,4 +547,7 @@ export class UrlStateService {
 
   private isNumber = n => !isNaN(n) && isFinite(n);
   private isValidDate = (d: Date): boolean => d instanceof Date && !isNaN(d.valueOf());
+  private clamp = (value: number, min: number, max: number) =>
+    Math.min(Math.max(value, min), max)
+
 }
