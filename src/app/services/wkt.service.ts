@@ -23,7 +23,8 @@ export class WktService {
 
     return this.format.writeGeometry(geometry, {
       dataProjection: this.granuleProjection,
-      featureProjection: epsg
+      featureProjection: epsg,
+      decimals: 6
     });
   }
 }
