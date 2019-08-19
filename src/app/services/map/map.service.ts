@@ -46,6 +46,7 @@ export class MapService {
     style: polygonStyle.hover
   });
 
+  public isShowingResults$ = new BehaviorSubject<boolean>(true);
   public zoom$ = new Subject<number>();
   public center$ = new Subject<models.LonLat>();
   public epsg$ = new Subject<string>();
@@ -88,12 +89,24 @@ export class MapService {
   }
 
   public setLayer(layer: Layer): void {
+    this.isShowingResults$.next(true);
+
     if (!!this.polygonLayer) {
       this.map.removeLayer(this.polygonLayer);
     }
 
     this.polygonLayer = layer;
     this.map.addLayer(this.polygonLayer);
+  }
+
+  public showResults(): void {
+    this.map.addLayer(this.polygonLayer);
+    this.isShowingResults$.next(true);
+  }
+
+  public hideResults(): void {
+    this.map.removeLayer(this.polygonLayer);
+    this.isShowingResults$.next(false);
   }
 
   public setDrawStyle(style: models.DrawPolygonStyle): void {

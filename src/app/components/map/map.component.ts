@@ -23,6 +23,7 @@ import * as uiStore from '@store/ui';
 
 import * as models from '@models';
 import { MapService, WktService } from '@services';
+import * as polygonStyle from '@services/map/polygon.style';
 
 @Component({
   selector: 'app-map',
@@ -255,8 +256,9 @@ export class MapComponent implements OnInit {
   private featuresToSource(features): VectorSource {
     const layer = new VectorLayer({
       source: new VectorSource({
-        features, wrapX: true,
-      })
+        features, wrapX: true
+      }),
+      style: polygonStyle.scene
     });
 
     layer.set('selectable', 'true');
