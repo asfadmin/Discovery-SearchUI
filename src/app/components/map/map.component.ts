@@ -168,29 +168,29 @@ export class MapComponent implements OnInit {
       this.store$.select(granulesStore.getFocusedGranule) :
       this.store$.select(granulesStore.getSelectedGranule);
 
-    const granulesLayerAfterInitialization = this.isMapInitialized$.pipe(
+    const granulesLayerAfterInitialization$ = this.isMapInitialized$.pipe(
       filter(isMapInitiliazed => isMapInitiliazed),
       switchMap(_ => this.viewType$),
     );
 
-    granulesLayerAfterInitialization.pipe(
+    granulesLayerAfterInitialization$.pipe(
       tap(([view, mapLayerType]) =>
         this.setMapWith(<models.MapViewType>view, <models.MapLayerTypes>mapLayerType)
       ),
       switchMap(_ =>
-        this.granulePolygonsLayer(this.mapService.epsg())
+        this.granulePolygonsLayer$(this.mapService.epsg())
       )
     ).subscribe(
       layer => this.mapService.setLayer(layer)
     );
 
-    const selectedGranuleAfterInitialization = this.isMapInitialized$.pipe(
+    const selectedGranuleAfterInitialization$ = this.isMapInitialized$.pipe(
       filter(isMapInitiliazed => isMapInitiliazed),
       switchMap(_ => this.viewType$),
       switchMap(_ => granule$),
     );
 
-    return selectedGranuleAfterInitialization.pipe(
+    return selectedGranuleAfterInitialization$.pipe(
       tap(granule => !!granule || (layerType === 'FOCUSED') ?
         this.mapService.clearFocusedGranule() :
         this.mapService.clearSelectedGranule()
@@ -233,7 +233,7 @@ export class MapComponent implements OnInit {
   }
 
 
-  private granulePolygonsLayer(projection: string): Observable<VectorSource> {
+  private granulePolygonsLayer$(projection: string): Observable<VectorSource> {
     return this.store$.select(granulesStore.getGranules).pipe(
       distinctUntilChanged(),
       map(granules => this.granulesToFeature(granules, projection)),

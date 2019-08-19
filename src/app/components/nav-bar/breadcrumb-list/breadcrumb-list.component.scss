@@ -51,7 +51,7 @@ $break-medium: 1250px;
 }
 
 .max-results {
-  text-align: right;
+  text-align: left;
   font-family: mat-font-family($config);
   font-size: 14px;
   margin-top: -5px;
@@ -116,4 +116,10 @@ $break-medium: 1250px;
 
 .aoi-input {
   cursor: default;
+}
+
+.icon-cluster {
+  position: absolute;
+  top: 20px;
+  right: 15px;
 }

@@ -8,8 +8,7 @@ export class LegacyAreaFormatService {
 
   public isValid(numberList: string): boolean {
     const numbers = this.parseNumberList(numberList);
-
-    return numbers.length === 10 || numbers.length === 8;
+    return numbers.length % 2 === 0;
   }
 
   public toWkt(numberList: string): string {
@@ -27,6 +26,7 @@ export class LegacyAreaFormatService {
 
   private parseNumberList(polygon: string): number[] {
     return polygon
+      .replace(/\s/g, '')
       .split(',')
       .map(num => +num)
       .filter(num => !isNaN(num));
@@ -41,8 +41,10 @@ export class LegacyAreaFormatService {
       return result;
     }, []);
 
-    return (pairs.length === 4) ?
-      [...pairs, pairs[0]] :
-      pairs;
+    if (pairs[0] === pairs[pairs.length - 1]) {
+      pairs.pop();
+    }
+
+    return pairs;
   }
 }
