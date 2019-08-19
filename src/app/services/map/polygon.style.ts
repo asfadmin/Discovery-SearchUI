@@ -16,6 +16,24 @@ export const valid = new Style({
   })
 });
 
+const fill = new Fill({
+  color: 'rgba(255,255,255,0.3)'
+});
+const stroke = new Stroke({
+  color: '#3399CC',
+  width: 1.25
+});
+
+export const scene = new Style({
+    image: new CircleStyle({
+      fill,
+      stroke,
+      radius: 5
+    }),
+    fill,
+    stroke
+  });
+
 export const omitted = new Style({
   fill: new Fill({
     color: 'rgba(255, 255, 255, 0.2)'
