@@ -1,5 +1,5 @@
 import {
-  Component, OnInit, Input, Output, EventEmitter
+  Component, OnInit, Input, Output, EventEmitter, ViewChild, ElementRef
 } from '@angular/core';
 import {
   trigger, state, style, animate, transition
@@ -14,6 +14,7 @@ import {
 
 import { Vector as VectorLayer} from 'ol/layer';
 import { Vector as VectorSource } from 'ol/source';
+import Overlay from 'ol/Overlay';
 import tippy from 'tippy.js';
 
 import { AppState } from '@store';
@@ -43,6 +44,8 @@ import * as polygonStyle from '@services/map/polygon.style';
 })
 export class MapComponent implements OnInit {
   @Output() loadUrlState = new EventEmitter<void>();
+  @ViewChild('overlay', { static: true }) overlayRef: ElementRef;
+  @ViewChild('map', { static: true }) mapRef: ElementRef;
 
   public drawMode$ = this.store$.select(mapStore.getMapDrawMode);
   public interactionMode$ = this.store$.select(mapStore.getMapInteractionMode);
@@ -50,6 +53,7 @@ export class MapComponent implements OnInit {
   public banners$ = this.store$.select(uiStore.getBanners);
 
   public tooltip;
+  public overlay: Overlay;
 
   private isMapInitialized$ = this.store$.select(mapStore.getIsMapInitialization);
   private viewType$ = combineLatest(
@@ -71,6 +75,10 @@ export class MapComponent implements OnInit {
       hideOnClick: false,
       placement: 'bottom-end'
     })).pop();
+
+    this.overlay = new Overlay({
+      element: this.overlayRef.nativeElement,
+    });
 
     this.updateMapOnViewChange();
     this.redrawSearchPolygonWhenViewChanges();
@@ -140,6 +148,18 @@ export class MapComponent implements OnInit {
 
   public removeBanner(banner: models.Banner): void {
     this.store$.dispatch(new uiStore.RemoveBanner(banner));
+  }
+
+  public enterDrawPopup(): void {
+    console.log('enter', this.tooltip);
+    this.tooltip.hide();
+    this.tooltip.disable();
+  }
+
+  public leaveDrawPopup(): void {
+    console.log('leaving', this.tooltip);
+    this.tooltip.enable();
+    this.tooltip.show();
   }
 
   private updateMapOnViewChange(): void {
@@ -233,7 +253,6 @@ export class MapComponent implements OnInit {
     return features;
   }
 
-
   private granulePolygonsLayer$(projection: string): Observable<VectorSource> {
     return this.store$.select(granulesStore.getGranules).pipe(
       distinctUntilChanged(),
@@ -266,7 +285,13 @@ export class MapComponent implements OnInit {
     return layer;
   }
 
+
   private setMapWith(viewType: models.MapViewType, layerType: models.MapLayerTypes): void {
-    this.mapService.setMapView(viewType, layerType);
+    this.mapService.setMapView(viewType, layerType, this.overlay);
+
+    this.mapService.setOverlayUpdate(evt => {
+      const coordinate = evt.coordinate;
+      this.overlay.setPosition(coordinate);
+    });
   }
 }

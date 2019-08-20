@@ -7,6 +7,7 @@ import { Vector as VectorSource, Layer } from 'ol/source';
 import { Vector as VectorLayer } from 'ol/layer';
 import { Draw, Modify, Snap } from 'ol/interaction.js';
 import { createBox } from 'ol/interaction/Draw.js';
+import { getTopRight } from 'ol/extent';
 
 import * as polygonStyle from './polygon.style';
 import * as models from '@models';
@@ -120,6 +121,12 @@ export class DrawService {
       this.clear();
     });
     draw.on('drawend', e => {
+      const extent = e.feature
+        .getGeometry()
+        .getExtent();
+
+      console.log(getTopRight(extent));
+
       this.isDrawing$.next(false);
       this.polygon$.next(e.feature);
     });

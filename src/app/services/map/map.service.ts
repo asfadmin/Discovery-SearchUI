@@ -99,6 +99,10 @@ export class MapService {
     this.map.addLayer(this.polygonLayer);
   }
 
+  public setOverlayUpdate(updateCallback): void {
+    this.map.on('singleclick', updateCallback);
+  }
+
   public showResults(): void {
     this.map.addLayer(this.polygonLayer);
     this.isShowingResults$.next(true);
@@ -146,7 +150,7 @@ export class MapService {
     });
   }
 
-  public setMapView(viewType: models.MapViewType, layerType: models.MapLayerTypes): void {
+  public setMapView(viewType: models.MapViewType, layerType: models.MapLayerTypes, overlay): void {
     this.viewType = viewType;
 
     const view = {
@@ -157,7 +161,7 @@ export class MapService {
         views.equatorialStreet(),
     }[viewType];
 
-    this.setMap(view);
+    this.setMap(view, overlay);
   }
 
   public clearSelectedGranule(): void {
@@ -213,20 +217,21 @@ export class MapService {
       });
   }
 
-  private setMap(mapView: views.MapView): void {
+  private setMap(mapView: views.MapView, overlay): void {
     this.mapView = mapView;
 
     this.map = (!this.map) ?
-      this.createNewMap() :
+      this.createNewMap(overlay) :
       this.updatedMap();
   }
 
-  private createNewMap(): Map {
+  private createNewMap(overlay): Map {
     const newMap = new Map({
       layers: [ this.mapView.layer, this.drawService.getLayer(), this.focusLayer, this.selectedLayer ],
       target: 'map',
       view: this.mapView.view,
       controls: [],
+      overlays: [overlay],
       loadTilesWhileAnimating: true
     });
 
