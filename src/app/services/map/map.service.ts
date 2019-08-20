@@ -100,7 +100,7 @@ export class MapService {
   }
 
   public setOverlayUpdate(updateCallback): void {
-    this.map.on('singleclick', updateCallback);
+    this.drawService.setDrawEndCallback(updateCallback);
   }
 
   public showResults(): void {

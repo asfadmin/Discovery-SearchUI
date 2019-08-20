@@ -45,7 +45,7 @@
   (mouseenter)="enterDrawPopup()"
   (mouseleave)="leaveDrawPopup()"
   id="popup" class="ol-popup" #overlay>
-  <button mat-icon-button>
+  <button mat-icon-button (click)="onSetEditMode()">
     <mat-icon>edit</mat-icon>
   </button>
 </div>

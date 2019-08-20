@@ -25,6 +25,7 @@ export class DrawService {
   private snap: Snap;
 
   private defaultStyle = polygonStyle.valid;
+  private drawEndCallback;
 
   public polygon$ = new BehaviorSubject<string | null>(null);
   public isDrawing$ = new BehaviorSubject<boolean>(false);
@@ -99,6 +100,10 @@ export class DrawService {
     this.polygon$.next(null);
   }
 
+  public setDrawEndCallback(callback): void {
+    this.drawEndCallback = callback;
+  }
+
   private create(drawMode: models.MapDrawModeType): Draw {
     let draw: Draw;
     this.isDrawing$.next(false);
@@ -121,11 +126,11 @@ export class DrawService {
       this.clear();
     });
     draw.on('drawend', e => {
+      this.drawEndCallback(e.feature);
+
       const extent = e.feature
         .getGeometry()
         .getExtent();
-
-      console.log(getTopRight(extent));
 
       this.isDrawing$.next(false);
       this.polygon$.next(e.feature);
@@ -142,6 +147,9 @@ export class DrawService {
 
     modify.on('modifyend', e => {
       const feature = e.features.getArray()[0];
+
+      this.drawEndCallback(feature);
+
       this.setDrawStyle(models.DrawPolygonStyle.VALID);
       this.polygon$.next(feature);
     });

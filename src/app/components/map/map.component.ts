@@ -15,6 +15,8 @@ import {
 import { Vector as VectorLayer} from 'ol/layer';
 import { Vector as VectorSource } from 'ol/source';
 import Overlay from 'ol/Overlay';
+import { getTopRight } from 'ol/extent';
+
 import tippy from 'tippy.js';
 
 import { AppState } from '@store';
@@ -151,15 +153,19 @@ export class MapComponent implements OnInit {
   }
 
   public enterDrawPopup(): void {
-    console.log('enter', this.tooltip);
     this.tooltip.hide();
     this.tooltip.disable();
   }
 
   public leaveDrawPopup(): void {
-    console.log('leaving', this.tooltip);
     this.tooltip.enable();
     this.tooltip.show();
+  }
+
+  public onSetEditMode(): void {
+    this.store$.dispatch(
+      new mapStore.SetMapInteractionMode(models.MapInteractionModeType.EDIT)
+    );
   }
 
   private updateMapOnViewChange(): void {
@@ -289,9 +295,12 @@ export class MapComponent implements OnInit {
   private setMapWith(viewType: models.MapViewType, layerType: models.MapLayerTypes): void {
     this.mapService.setMapView(viewType, layerType, this.overlay);
 
-    this.mapService.setOverlayUpdate(evt => {
-      const coordinate = evt.coordinate;
-      this.overlay.setPosition(coordinate);
+    this.mapService.setOverlayUpdate(feature => {
+      const extent = feature
+        .getGeometry()
+        .getExtent();
+
+      this.overlay.setPosition(getTopRight(extent));
     });
   }
 }
