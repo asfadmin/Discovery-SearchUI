@@ -20,12 +20,13 @@ import { MapModule } from '@components/map';
 import { BottomMenuModule } from '@components/bottom-menu';
 import { MatSharedModule } from '@shared';
 import { LogoModule } from '@components/nav-bar/logo/logo.module';
+
 import { CustomBreakPointsProvider } from '@services/custom-breakpoints.ts';
-import { AdditionalFiltersModule } from '@components/additional-filters';
 
 import * as services from '@services';
 
 import { AppComponent } from './app.component';
+import { FlexLayoutModule } from '@angular/flex-layout';
 
 export const routes = [
   { path: '**', name: 'AppComponent', component: AppComponent },
@@ -44,14 +45,14 @@ export const routes = [
     MatBottomSheetModule,
     MatSidenavModule,
     MatSharedModule,
-
+    FlexLayoutModule.withConfig({ disableDefaultBps: true },
+      CustomBreakPointsProvider.useValue),
     RouterModule.forRoot(routes, { useHash: true }),
     StoreModule.forRoot(store.reducers, { metaReducers: store.metaReducers }),
     EffectsModule.forRoot(store.appEffects),
     !environment.production ? StoreDevtoolsModule.instrument() : [],
 
     SidebarModule,
-    AdditionalFiltersModule,
     MapModule,
     BottomMenuModule,
     NavBarModule,
@@ -72,6 +73,9 @@ export const routes = [
     services.PropertyService,
     CustomBreakPointsProvider,
     services.HistoryService,
+    services.LegacyAreaFormatService,
+    services.BannerApiService,
+    services.ScreenSizeService,
   ],
   bootstrap: [ AppComponent ],
 })

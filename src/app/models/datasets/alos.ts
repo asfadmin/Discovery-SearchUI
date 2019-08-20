@@ -18,8 +18,8 @@ export const alos = {
   ],
   apiValue: { platform: 'ALOS' },
   date: {
-    start: new Date(2006, 0, 1),
-    end: new Date(2011, 0, 1)
+    start: new Date('2006/05/16 03:36:51 UTC'),
+    end: new Date('2011/04/21 20:23:36 UTC')
   },
   infoUrl: 'https://www.asf.alaska.edu/sar-data/palsar/',
   citationUrl: 'https://www.asf.alaska.edu/sar-data/palsar/how-to-cite/',
@@ -29,37 +29,27 @@ export const alos = {
     url: null
   },
   productTypes: [{
-    apiValue: 'KMZ',
-    displayName: 'GoogleEarth KMZ'
+    apiValue: 'L1.0',
+    displayName: 'Level 1.0'
   }, {
-    apiValue: 'RTC_HI_RES',
-    displayName: 'Hi-Res Terrain Corrected'
-  }, {
-    apiValue: 'METADATA',
-    displayName: 'XML and Log Data'
-  }, {
-    apiValue: 'BROWSE',
-    displayName: 'Browse Image'
+    apiValue: 'L1.1',
+    displayName: 'Level 1.1 Complex'
   }, {
     apiValue: 'L1.5',
     displayName: 'Level 1.5 Image'
   }, {
-    apiValue: 'L1.0',
-    displayName: 'Level 1.0'
-  }, {
     apiValue: 'RTC_LOW_RES',
     displayName: 'Low-Res Terrain Corrected'
   }, {
-    apiValue: 'THUMBNAIL',
-    displayName: 'Thumbnail Image'
+    apiValue: 'RTC_HI_RES',
+    displayName: 'Hi-Res Terrain Corrected'
   }, {
-    apiValue: 'INTERFEROMETRY',
-    displayName: '(BETA) HDF5 InSAR Product'
-  }, {
-    apiValue: 'L1.1',
-    displayName: 'Level 1.1 Complex'
+    apiValue: 'KMZ',
+    displayName: 'GoogleEarth KMZ'
   }],
-  beamModes: [],
+  beamModes: [
+    'DSN', 'FBS', 'FBD', 'PLR', 'WB1', 'WB2'
+  ],
   polarizations: [
     'HH',
     'HH 3scan',

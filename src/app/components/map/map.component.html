@@ -2,19 +2,41 @@
   id="map" class="map">
 </div>
 
-<a
-  href="mailto:vertex-beta@asf.alaska.edu?Subject=Vertex%20Beta%20Feedback"
-  class="feedback-button" mat-raised-button>
-  Give us feedback!
-</a>
+<div class="map-header">
+  <div class="header-controls"
+        fxLayout="row"
+        fxFlexFill>
+
+    <div fxFlex="auto">
+      <mat-card *ngFor="let banner of (banners$ | async)"
+        [@bannerTransition]
+        class="banner-card"
+        fxFlex="auto">
+
+        <div class="banner-text">
+          <div [innerHTML]="banner.text"></div>
+          <button (click)="removeBanner(banner)" mat-icon-button>
+            <mat-icon >clear</mat-icon>
+          </button>
+        </div>
+
+      </mat-card>
+    </div>
+
+    <div class="map-buttons card-spacing"
+        fxFlex="175px">
+      <app-map-controls></app-map-controls>
+    </div>
+  </div>
+</div>
+
+<app-additional-filters></app-additional-filters>
 
 <app-file-upload
   (dialogClose)="onFileUploadDialogClosed($event)"
   (newSearchPolygon)="onNewSearchPolygon($event)"
   [interaction$]="interactionMode$">
 </app-file-upload>
-
-<app-map-controls></app-map-controls>
 
 <app-attributions [mousePos]="mousePosition$ | async">
 </app-attributions>

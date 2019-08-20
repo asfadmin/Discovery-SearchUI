@@ -1,7 +1,10 @@
 <form #dateForm="ngForm"
   (keydown.enter)="$event.preventDefault()"
   class="date-selector">
-  <mat-form-field class="date-input-field">
+  <mat-form-field
+    [class.invalid-input-animation]="isStartError"
+    class="date-input-field">
+
     <input matInput
       [(ngModel)]="startDate"
       (dateChange)="onStartDateChange($event)"
@@ -15,7 +18,8 @@
     <mat-datepicker [startView]="!!startDate ? 'month' : 'multi-year'" #start></mat-datepicker>
   </mat-form-field>
 
-  <mat-form-field class="date-input-field">
+  <mat-form-field class="date-input-field"
+    [class.invalid-input-animation]="isEndError">
     <input matInput
       [(ngModel)]="endDate"
       (dateChange)="onEndDateChange($event)"
@@ -23,7 +27,7 @@
       [max]="extrema.end.max"
       [matDatepicker]="end"
       placeholder="End Date"
-      name="endInput" >
+      name="endInput">
     <mat-datepicker-toggle matSuffix [for]="end"></mat-datepicker-toggle>
     <mat-datepicker [startView]="!!endDate ? 'month' : 'multi-year'" #end></mat-datepicker>
   </mat-form-field>

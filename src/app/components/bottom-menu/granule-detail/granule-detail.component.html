@@ -1,12 +1,15 @@
 <div class="detail-card" *ngIf="granule">
   <mat-card-header>
     <mat-card-title>
-      <span [title]="granule.name">{{ granule.name | truncate : 32 }}</span>
-      <span *ngIf="dataset.id === 'SENTINEL-1'">{{ granule.name.substr(granule.name.length - 4) }}</span>
+      <span [title]="granule.name">{{ granule.name | truncate : granuleLen }}</span>
+      <span *ngIf="dataset.id === 'SENTINEL-1'"
+        >{{ granule.name.substr(granule.name.length - 4) }}</span>
+      <span *ngIf="dataset.id === 'SENTINEL-1 INTERFEROGRAM (BETA)'"
+        >{{ granule.name.substr(granule.name.length - 11) }}</span>
 
       <app-copy-to-clipboard
         [value]="granule.name"
-        prompt="Copy granule name"
+        prompt="Copy scene name"
         class="clipboard-icon"></app-copy-to-clipboard>
 
     </mat-card-title>
@@ -31,7 +34,7 @@
     </a>
     <button *ngIf="isGeoSearch() && prop.isRelevant(p.PATH, dataset) && prop.isRelevant(p.FRAME, dataset)"
             (click)="findSimilarGranules()"
-            matTooltip="Search based on this granules path/frame"
+            matTooltip="Search based on this scenes path/frame"
             mat-raised-button color="primary">
       More Like This
     </button>
@@ -138,7 +141,7 @@
 
           <li *ngIf="prop.isRelevant(p.MISSION_NAME, dataset)"
             class="detail-item-margin">
-            <span class="v-mid"> <b>Mission Name </b> • {{ granule.metadata.missionName }} </span>
+            <span class="v-mid"> <b>Campaign Name </b> • {{ granule.metadata.missionName }} </span>
 
             <mat-icon *ngIf="isGeoSearch()"
               [matMenuTriggerFor]="addMissionMenu"
@@ -147,7 +150,7 @@
             </mat-icon>
 
             <mat-menu #addMissionMenu="matMenu">
-              <button (click)="addMission()" mat-menu-item>Set mission name</button>
+              <button (click)="addMission()" mat-menu-item>Set campaign name</button>
             </mat-menu>
           </li>
 
@@ -199,6 +202,6 @@
 
 <div *ngIf="!granule">
   <div fxFlex fxLayoutAlign="center" gdAlignColumns="center">
-    <span class="faint-text">No Granule Selected</span>
+    <span class="faint-text">No Scene Selected</span>
   </div>
 </div>

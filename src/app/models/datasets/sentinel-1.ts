@@ -14,7 +14,7 @@ export const sentinel_1 = {
     Props.BASELINE_TOOL,
   ],
   apiValue: { platform: 'SENTINEL-1' },
-  date: { start: new Date(2014, 3, 25) },
+  date: { start: new Date('2014/06/15 03:44:43 UTC') },
   infoUrl: 'https://www.asf.alaska.edu/sentinel/',
   citationUrl: 'https://www.asf.alaska.edu/sentinel/how-to-cite/',
   frequency: 'C-Band',
@@ -46,6 +46,10 @@ export const sentinel_1 = {
     {
       apiValue: 'OCN',
       displayName: 'L2 Ocean (OCN)'
+    },
+    {
+      apiValue: 'RAW',
+      displayName: 'L0 Raw Data (RAW)'
     },
     {
       apiValue: 'METADATA_GRD_MS',

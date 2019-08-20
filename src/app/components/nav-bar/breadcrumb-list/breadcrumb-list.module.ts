@@ -12,7 +12,7 @@ import { MatSelectModule } from '@angular/material/select';
 
 import { DatasetSelectorModule } from '@components/shared/selectors/dataset-selector';
 import { DateSelectorModule } from '@components/shared/selectors/date-selector';
-import { AoiUploadModule } from '@components/shared/selectors/aoi-upload';
+import { AoiOptionsModule } from '@components/shared/aoi-options';
 import { MaxResultsSelectorModule } from '@components/shared/max-results-selector';
 import { SearchButtonModule } from '@components/shared/search-button';
 import { ClearButtonModule } from '@components/shared/clear-button';
@@ -22,6 +22,8 @@ import { SearchSelectorModule } from '@components/shared/selectors/search-select
 import { BreadcrumbListComponent } from './breadcrumb-list.component';
 import { NavButtonsModule } from '@components/nav-bar/nav-buttons';
 import { LogoModule } from '@components/nav-bar/logo/logo.module';
+
+import { CustomBreakPointsProvider } from '@services/custom-breakpoints.ts';
 
 @NgModule({
   declarations: [BreadcrumbListComponent],
@@ -40,7 +42,7 @@ import { LogoModule } from '@components/nav-bar/logo/logo.module';
     SearchSelectorModule,
     DatasetSelectorModule,
     DateSelectorModule,
-    AoiUploadModule,
+    AoiOptionsModule,
     MaxResultsSelectorModule,
     SearchButtonModule,
     ClearButtonModule,

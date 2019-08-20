@@ -14,8 +14,8 @@ export const seasat = {
   ],
   apiValue: { platform: 'SEASAT' },
   date: {
-    start: new Date(1978, 0, 1),
-    end: new Date(1978, 0, 1)
+    start: new Date('1978/07/04 12:06:00 UTC'),
+    end: new Date('1978/10/10 01:29:10 UTC')
   },
   frequency: 'L-Band',
   source: {
@@ -25,18 +25,12 @@ export const seasat = {
   infoUrl: 'https://www.asf.alaska.edu/seasat/',
   citationUrl: 'https://www.asf.alaska.edu/seasat/how-to-cite/',
   productTypes: [{
-    apiValue: 'THUMBNAIL',
-    displayName: 'Thumbnail Image'
-  }, {
     apiValue: 'GEOTIFF',
     displayName: 'Level One GeoTIFF product'
   }, {
     apiValue: 'L1',
     displayName: 'Level One HDF5 Image'
-  }, {
-    apiValue: 'BROWSE',
-    displayName: 'Browse Image'
-  }],
+  } ],
   beamModes: [ 'STD' ],
   polarizations: [
     'HH'

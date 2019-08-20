@@ -3,7 +3,8 @@ import { MatDatepickerInputEvent } from '@angular/material/datepicker';
 import { NgForm } from '@angular/forms';
 import * as moment from 'moment';
 
-import { filter } from 'rxjs/operators';
+import { Subject } from 'rxjs';
+import { filter, tap, delay } from 'rxjs/operators';
 import { Store, ActionsSubject } from '@ngrx/store';
 
 import { AppState } from '@store';
@@ -20,12 +21,27 @@ import { DateExtremaService } from '@services';
 export class DateSelectorComponent implements OnInit {
   @ViewChild('dateForm', { static: true }) public dateForm: NgForm;
 
+  public startDateErrors$ = new Subject<void>();
+  public isStartError = false;
+  public endDateErrors$ = new Subject<void>();
+  public isEndError = false;
+
   public extrema: DateRangeExtrema;
 
   public startDate$ = this.store$.select(filtersStore.getStartDate);
   public endDate$ = this.store$.select(filtersStore.getEndDate);
   public startDate: Date;
   public endDate: Date;
+
+  private get startControl() {
+    return this.dateForm.form
+      .controls['startInput'];
+  }
+
+  private get endControl() {
+    return this.dateForm.form
+      .controls['endInput'];
+  }
 
   constructor(
     private store$: Store<AppState>,
@@ -34,6 +50,8 @@ export class DateSelectorComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+    this.handleDateErrors();
+
     this.actions$.pipe(
       filter(action => action.type === filtersStore.FiltersActionType.CLEAR_DATASET_FILTERS)
     ).subscribe(_ => this.dateForm.reset());
@@ -46,24 +64,69 @@ export class DateSelectorComponent implements OnInit {
       extrema => this.extrema = extrema
     );
 
-    this.startDate$.subscribe(start => this.startDate = start);
-    this.endDate$.subscribe(end => this.endDate = end);
+    this.startDate$.subscribe(
+      start => this.startDate = start
+    );
+    this.endDate$.subscribe(
+      end => this.endDate = end
+    );
   }
 
-  public onStartDateChange(e: MatDatepickerInputEvent<moment.Moment>) {
-    const momentDate = e.value.set({h: 0});
-    const date = this.toJSDate(momentDate);
+  public onStartDateChange(e: MatDatepickerInputEvent<moment.Moment>): void {
+    let date: null | Date;
+
+    if (!this.startControl.valid) {
+      date = null;
+      this.startDateErrors$.next();
+    } else {
+      const momentDate = e.value.set({h: 0});
+      date = this.toJSDate(momentDate);
+    }
 
     this.store$.dispatch(new filtersStore.SetStartDate(date));
   }
 
-  public onEndDateChange(e: MatDatepickerInputEvent<moment.Moment>) {
-    const momentDate = e.value.set({h: 23});
-    const date = this.toJSDate(momentDate);
+  public onEndDateChange(e: MatDatepickerInputEvent<moment.Moment>): void {
+    let date: null | Date;
+
+    if (!this.endControl.valid) {
+      date = null;
+      this.endDateErrors$.next();
+    } else {
+      const momentDate = e.value.set({h: 23, m: 59});
+      date = this.toJSDate(momentDate);
+    }
+
     this.store$.dispatch(new filtersStore.SetEndDate(date));
   }
 
   private toJSDate(date: moment.Moment) {
     return date.toDate();
+  }
+
+  private handleDateErrors(): void {
+    this.startDateErrors$.pipe(
+      tap(_ => {
+        this.isStartError = true;
+        this.startControl.reset();
+        this.startControl.setErrors({'incorrect': true});
+      }),
+      delay(820),
+    ).subscribe(_ => {
+      this.isStartError = false;
+      this.startControl.setErrors(null);
+    });
+
+    this.endDateErrors$.pipe(
+      tap(_ => {
+        this.isEndError = true;
+        this.endControl.reset();
+        this.endControl.setErrors({'incorrect': true});
+      }),
+      delay(820),
+    ).subscribe(_ => {
+      this.isEndError = false;
+      this.endControl.setErrors(null);
+    });
   }
 }

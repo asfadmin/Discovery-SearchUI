@@ -1,0 +1,26 @@
+@import "asf-theme";
+
+.position {
+  z-index: 998;
+}
+
+.layout {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
+
+.control-icon {
+  @include md-icon-size(22px);
+}
+
+.button-group {
+  margin-bottom: 5px;
+  pointer-events: auto;
+}
+
+.meatball {
+  position: fixed;
+  pointer-events: none;
+  bottom: 40px;
+}

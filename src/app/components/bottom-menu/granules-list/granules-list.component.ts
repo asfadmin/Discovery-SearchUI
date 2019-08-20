@@ -3,7 +3,7 @@ import {
 } from '@angular/core';
 
 import { fromEvent, combineLatest } from 'rxjs';
-import { tap, withLatestFrom, filter, map } from 'rxjs/operators';
+import { tap, withLatestFrom, filter, map, debounceTime } from 'rxjs/operators';
 
 import { Store } from '@ngrx/store';
 import { AppState } from '@store';
@@ -29,12 +29,12 @@ export class GranulesListComponent implements OnInit {
   @ViewChild(CdkVirtualScrollViewport, { static: true }) scroll: CdkVirtualScrollViewport;
 
   public granules$ = this.store$.select(granulesStore.getGranules);
-  public datasetId$ = this.store$.select(filtersStore.getSelectedDatasetId);
+  public granuleNameLen: number;
 
   public numberOfQueue: {[granule: string]: [number, number]};
   public allQueued: {[granule: string]: boolean};
   public granules: models.CMRProduct[];
-  public  selected: string;
+  public selected: string;
 
   public searchType: models.SearchType;
   public selectedFromList = false;
@@ -42,10 +42,15 @@ export class GranulesListComponent implements OnInit {
 
   constructor(
     private store$: Store<AppState>,
-    private mapService: services.MapService
+    private mapService: services.MapService,
+    private screenSize: services.ScreenSizeService,
   ) {}
 
   ngOnInit() {
+    this.screenSize.size$.pipe(
+      map(size => size.width > 1775 ? 32 : 16),
+    ).subscribe(len => this.granuleNameLen = len);
+
     this.store$.select(granulesStore.getSelectedGranule).pipe(
       withLatestFrom(this.granules$),
       filter(([selected, _]) => !!selected),

@@ -1,5 +1,5 @@
 <div class="layout">
-  <div *ngIf="queuedProducts" matTooltip="Download Queue">
+  <span *ngIf="queuedProducts" matTooltip="Download Queue">
     <button
       (click)="onOpenDownloadQueue()"
       [disabled]="queuedProducts.length <= 0" color="basic"
@@ -12,9 +12,8 @@
           matBadgeSize="small">
             shopping_cart
         </mat-icon>
-
     </button>
-  </div>
+  </span>
 
   <button
     *ngIf="!datapoolAuthService.isLoggedIn"
@@ -101,7 +100,7 @@
     <a mat-menu-item href="{{ asfWebsiteUrl }}/other-data/glacier-speed" target="_blank">Glacier Speed</a>
     <a mat-menu-item href="{{ asfWebsiteUrl }}/other-data/polar-year-07-08" target="_blank">Polar Year</a>
     <a mat-menu-item href="{{ asfWebsiteUrl }}/other-data/ramp" target="_blank">RAMP</a>
-    <a mat-menu-item href="{{ asfWebsiteUrl }}/other-data/sea-ice" target="_blank">Sea Ice MEaSUREs</a>
+    <a mat-menu-item href="{{ asfWebsiteUrl }}/sea-ice" target="_blank">Sea Ice MEaSUREs</a>
     <a mat-menu-item href="{{ asfWebsiteUrl }}/wetlands" target="_blank">Wetlands MEaSUREs</a>
   </mat-menu>
 

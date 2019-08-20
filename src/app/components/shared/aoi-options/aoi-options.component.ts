@@ -8,11 +8,13 @@ import { MapDrawModeType, MapInteractionModeType } from '@models';
 import { MapService, WktService } from '@services';
 
 @Component({
-  selector: 'app-aoi-upload',
-  templateUrl: './aoi-upload.component.html',
-  styleUrls: ['./aoi-upload.component.css']
+  selector: 'app-aoi-options',
+  templateUrl: './aoi-options.component.html',
+  styleUrls: ['./aoi-options.component.css'],
 })
-export class AoiUploadComponent implements OnInit {
+export class AoiOptionsComponent implements OnInit {
+  @Output() close = new EventEmitter<void>();
+
   public drawMode$ = this.store$.select(mapStore.getMapDrawMode);
   public interactionMode$ = this.store$.select(mapStore.getMapInteractionMode);
 
@@ -36,6 +38,7 @@ export class AoiUploadComponent implements OnInit {
   }
 
   public onNewDrawMode(mode: MapDrawModeType): void {
+    this.store$.dispatch(new mapStore.SetMapInteractionMode(MapInteractionModeType.DRAW));
     this.store$.dispatch(new mapStore.SetMapDrawMode(mode));
   }
 
@@ -46,5 +49,9 @@ export class AoiUploadComponent implements OnInit {
 
   public onNewInteractionMode(mode: MapInteractionModeType): void {
     this.store$.dispatch(new mapStore.SetMapInteractionMode(mode));
+  }
+
+  public onClose(): void {
+    this.close.emit();
   }
 }

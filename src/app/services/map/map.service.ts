@@ -54,6 +54,7 @@ export class MapService {
   });
   public newSelectedGranule$ = new Subject<string>();
 
+  public isDrawing$ = this.drawService.isDrawing$;
   public searchPolygon$ = this.drawService.polygon$.pipe(
     map(
       feature => feature !== null ?
@@ -164,13 +165,21 @@ export class MapService {
     this.focusSource.addFeature(feature);
   }
 
+  public zoomToResults(): void {
+    const extent = this.polygonLayer
+      .getSource()
+      .getExtent();
+
+    this.zoomToExtent(extent);
+  }
+
   public zoomToGranule(granule: models.CMRProduct): void {
-    const features = this.wktService.wktToFeature(
+    const feature = this.wktService.wktToFeature(
       granule.metadata.polygon,
       this.epsg()
     );
 
-    this.zoomToFeature(features);
+    this.zoomToFeature(feature);
   }
 
   public zoomToFeature(feature): void {
@@ -178,6 +187,10 @@ export class MapService {
       .getGeometry()
       .getExtent();
 
+    this.zoomToExtent(extent);
+  }
+
+  private zoomToExtent(extent): void {
     this.map
       .getView()
       .fit(extent, {
@@ -196,7 +209,6 @@ export class MapService {
   }
 
   private createNewMap(): Map {
-
     const newMap = new Map({
       layers: [ this.mapView.layer, this.drawService.getLayer(), this.focusLayer, this.selectedLayer ],
       target: 'map',

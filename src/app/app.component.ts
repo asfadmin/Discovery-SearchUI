@@ -53,6 +53,8 @@ export class AppComponent implements OnInit {
   ) {}
 
   public ngOnInit(): void {
+    this.store$.dispatch(new uiStore.LoadBanners());
+
     this.polygonValidationService.validate();
     this.loadProductQueue();
     this.store$.dispatch(new missionStore.LoadMissions());

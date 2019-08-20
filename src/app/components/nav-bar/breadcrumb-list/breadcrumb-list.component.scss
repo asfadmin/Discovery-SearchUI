@@ -10,6 +10,8 @@ $config: mat-typography-config();
   position: fixed;
   top: 100px;
   z-index: 1;
+  margin: 0;
+  padding: 3px 16px 16px 16px;
 }
 
 $break-small: 700px;
@@ -28,8 +30,8 @@ $break-medium: 1250px;
   line-height: $asf-line-height;
 }
 
-.extra-padding-top {
-  padding-top: 25px;
+.search-controls {
+  padding-top: 5px;
 }
 
 .info-bar {
@@ -38,14 +40,18 @@ $break-medium: 1250px;
   border-top-width: 1px;
   background-color: $asf-primary-light;
   color: $asf-primary-dark;
+  line-height: 30px;
+  font-family: mat-font-family($custom-typography);
+  font-size: 14px;
 }
 
 .first-info {
   padding-left: 10px;
+  height: 32px;
 }
 
 .max-results {
-  text-align: right;
+  text-align: left;
   font-family: mat-font-family($config);
   font-size: 14px;
   margin-top: -5px;
@@ -112,9 +118,8 @@ $break-medium: 1250px;
   cursor: default;
 }
 
-.invalid-input-animation {
-  animation: shake 0.82s;
-  transform: translate3d(0, 0, 0);
-  backface-visibility: hidden;
-  perspective: 1000px;
+.icon-cluster {
+  position: absolute;
+  top: 20px;
+  right: 15px;
 }

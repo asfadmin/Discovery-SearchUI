@@ -15,8 +15,8 @@ export const ers = {
   ],
   apiValue: { platform: 'ERS' },
   date: {
-    start: new Date(1991, 0, 1),
-    end: new Date(2011, 0, 1)
+    start: new Date('1991/08/08 03:18:11 UTC'),
+    end: new Date('2011/07/03 00:23:48 UTC')
   },
   source: {
     name: 'ESA',
@@ -26,12 +26,6 @@ export const ers = {
   infoUrl: 'https://www.asf.alaska.edu/sar-data/ers-2/',
   citationUrl: 'https://www.asf.alaska.edu/sar-data/ers-2/how-to-cite/',
   productTypes: [{
-    apiValue: 'THUMBNAIL',
-    displayName: 'Thumbnail Image'
-  }, {
-    apiValue: 'BROWSE',
-    displayName: 'Browse Image'
-  }, {
     apiValue: 'L0',
     displayName: 'Level Zero'
   }, {

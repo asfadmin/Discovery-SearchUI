@@ -1,3 +1,5 @@
+@import "asf-theme";
+
 .map {
   height: 100%;
   width: 100%;
@@ -5,9 +7,49 @@
   background-color: #1a1e27;
 }
 
-.feedback-button {
+.map-header {
   position: relative;
-  top: 20px;
-  float: right;
-  right: 30px;
+  top: 5px;
+  width: 100vw;
+  pointer-events: none;
+}
+
+.additional-filters {
+  position: relative;
+  top: 15px;
+}
+
+.header-controls {
+  //margin-left: 20px;
+}
+
+.banner-card {
+  pointer-events: auto;
+  max-height: 212px;
+  height: fit-content;
+  padding-top: 9px;
+  padding-bottom: 9px;
+  background-color: white;
+  border-color: $asf-primary-dark;
+  border-width: 2px;
+  border-style: solid;
+  color: darken($asf-accent, 40%);
+  margin-left: 20px;
+  line-height: 1.4;
+}
+
+.banner-text {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.mat-icon-button {
+  color: black;
+}
+
+.map-buttons {
+  pointer-events: none;
+  margin-left: 0;
+  margin-right: 20px;
 }

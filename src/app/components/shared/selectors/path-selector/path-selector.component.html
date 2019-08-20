@@ -1,28 +1,32 @@
-<div fxFlex fxLayout="column">
-  <mat-form-field *ngIf="prop.isRelevant(p.PATH)">
+<form fxFlex fxLayout="column" #pathForm="ngForm">
+  <mat-form-field *ngIf="prop.isRelevant(p.PATH)"
+    [class.invalid-input-animation]="typeHasError(inputTypes.PATH_START)">
     <input matInput
-      (input)="onPathStartChanged($event.target.value)"
-      [(ngModel)]="pathRange.start"
-      type="number" name="pathStart" placeholder="Path Start">
+      (input)="onValueChanged($event.target.value, inputTypes.PATH_START)"
+      [(ngModel)]="pathStart"
+      name="pathStart" placeholder="Path Start">
   </mat-form-field>
-  <mat-form-field *ngIf="prop.isRelevant(p.PATH)" class="range-form-input">
+  <mat-form-field *ngIf="prop.isRelevant(p.PATH)" class="range-form-input"
+    [class.invalid-input-animation]="typeHasError(inputTypes.PATH_END)">
     <input matInput
-      (input)="onPathEndChanged($event.target.value)"
-      [(ngModel)]="pathRange.end"
-      type="number" name="pathEnd" placeholder="Path End">
+      (input)="onValueChanged($event.target.value, inputTypes.PATH_END)"
+      [(ngModel)]="pathEnd"
+      name="pathEnd" placeholder="Path End">
   </mat-form-field>
 
-  <mat-form-field *ngIf="prop.isRelevant(p.FRAME)">
+  <mat-form-field *ngIf="prop.isRelevant(p.FRAME)"
+    [class.invalid-input-animation]="typeHasError(inputTypes.FRAME_START)">
     <input matInput
-      (input)="onFrameStartChanged($event.target.value)"
-      [(ngModel)]="frameRange.start"
-      type="number" name="frameStart" placeholder="Frame Start">
+      (input)="onValueChanged($event.target.value, inputTypes.FRAME_START)"
+      [(ngModel)]="frameStart"
+      name="frameStart" placeholder="Frame Start">
   </mat-form-field>
-  <mat-form-field *ngIf="prop.isRelevant(p.FRAME)" class="range-form-input">
+  <mat-form-field *ngIf="prop.isRelevant(p.FRAME)" class="range-form-input"
+    [class.invalid-input-animation]="typeHasError(inputTypes.FRAME_END)">
     <input matInput
-      (input)="onFrameEndChanged($event.target.value)"
-      [(ngModel)]="frameRange.end"
-      type="number" name="frameEnd" placeholder="Frame End">
+      (input)="onValueChanged($event.target.value, inputTypes.FRAME_END)"
+      [(ngModel)]="frameEnd"
+      name="frameEnd" placeholder="Frame End">
   </mat-form-field>
 
   <mat-slide-toggle
@@ -30,4 +34,4 @@
     [checked]="shouldOmitSearchPolygon$ | async">
     Omit Geographic Region from search
   </mat-slide-toggle>
-</div>
+</form>

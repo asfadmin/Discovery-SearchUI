@@ -39,7 +39,7 @@ export class DatapoolAuthService {
 
     const loginWindow = window.open(
       url,
-      'Vertex: URS Earth Data Authorization',
+      'SAR Search: URS Earth Data Authorization',
       'scrollbars=yes, width=600, height= 600'
     );
 

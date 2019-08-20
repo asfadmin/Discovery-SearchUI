@@ -11,8 +11,8 @@ export const airsar = {
   ],
   apiValue: { platform: 'AIRSAR' },
   date: {
-    start: new Date(1990, 0, 1),
-    end: new Date(2004, 0, 1)
+    start: new Date('1990/03/02 00:00:00 UTC'),
+    end: new Date('2004/12/03 23:59:59 UTC')
   },
   frequency: 'L-Band, P-Band, or C-Band',
   infoUrl: 'https://www.asf.alaska.edu/sar-data/airsar/',
@@ -22,17 +22,14 @@ export const airsar = {
     apiValue: 'CTIF',
     displayName: 'C-Band JPG'
   }, {
-    apiValue: 'JPG',
-    displayName: 'JPG'
-  }, {
-    apiValue: 'ATI',
-    displayName: 'Along-Track Interferometry'
-  }, {
     apiValue: 'PTIF',
     displayName: 'P-Band JPG'
   }, {
     apiValue: 'LTIF',
     displayName: 'L-Band JPG'
+  }, {
+    apiValue: 'JPG',
+    displayName: 'JPG'
   }, {
     apiValue: 'LSTOKES',
     displayName: 'L-Band Compressed Stokes Matrix'

@@ -16,7 +16,7 @@
 
       <!-- SEARCH TYPE -->
       <div fxFlex="nogrow" fxFlex.lt-lg="nogrow" class="breadcrumb">
-        <mat-form-field fxFlex.lt-lg="auto">
+        <mat-form-field fxFlex="120px">
           <mat-label>Search Type</mat-label>
           <mat-select
             [(ngModel)]="searchType"
@@ -32,14 +32,14 @@
 
         <div fxLayout="row">
           <!-- DATASET FILTER -->
-          <div fxFlex="nogrow" fxFlex.lt-lg="50"
+          <div fxFlex="130px" fxFlex.lt-lg="50"
                (click)="clearSelectedBreadcrumb()"
                class="breadcrumb">
             <app-dataset-selector></app-dataset-selector>
           </div>
 
           <!-- AOI FILTER -->
-          <form fxFlex="nogrow" fxFlex.lt-lg="50"
+          <form fxFlex="160px" fxFlex.lt-lg="50"
                 #polygonForm="ngForm"
                 class="breadcrumb"
                 (mouseenter)="isHoveringAOISelector = true"
@@ -55,7 +55,7 @@
                   [value]="polygon"
                   [(ngModel)]="polygon"
                   name="searchPolygon"
-                  matInput placeholder="Area of Interest">
+                  matInput placeholder="Area of Interest • WKT">
               </label>
 
               <mat-icon
@@ -75,8 +75,10 @@
             </mat-form-field>
 
             <mat-card *ngIf="selectedFilter === filterTypes.AOI"
+                     [@fadeTransition]
                       class="breadcrumb-filter">
-              <app-aoi-upload></app-aoi-upload>
+              <app-aoi-options
+                (close)="clearSelectedBreadcrumb()"></app-aoi-options>
             </mat-card>
           </form>
         </div>
@@ -95,47 +97,78 @@
               <mat-icon>more_horiz</mat-icon>
             </button>
           </div>
-          <div fxFlex class="breadcrumb extra-padding-top">
+          <div fxFlex="noshrink" class="breadcrumb search-controls">
             <app-search-button></app-search-button>
             <app-clear-button></app-clear-button>
+            <div class="max-results">
+              <app-max-results-selector></app-max-results-selector>
+            </div>
+
           </div>
         </div>
-
       </ng-container>
 
       <!-- ADDITIONAL FILTERS FOR NON-DATASET SEARCH -->
       <ng-container *ngIf="searchType !== searchTypes.DATASET">
         <div fxFlex="nogrow" class="breadcrumb additional-filters">
-              <button (click)="onToggleFiltersMenu()"
-                      mat-flat-button
-                      class="search-dialog-button">
-                <span *ngIf="searchType === searchTypes.LIST">
-                  <mat-icon>edit</mat-icon>
-                  Edit List
-                  </span>
-              </button>
+          <button (click)="onToggleFiltersMenu()"
+                  mat-flat-button
+                  class="search-dialog-button">
+            <span *ngIf="searchType === searchTypes.LIST">
+              <mat-icon>edit</mat-icon>
+              Edit List
+            </span>
+          </button>
         </div>
-        <div fxFlex class="breadcrumb extra-padding-top">
+        <div fxFlex class="breadcrumb search-controls">
           <app-search-button></app-search-button>
           <app-clear-button></app-clear-button>
         </div>
       </ng-container>
+
+      <div class="icon-cluster">
+        <app-nav-buttons
+          (openQueue)="onOpenDownloadQueue()"
+          [queuedProducts]="queuedProducts$ | async">
+        </app-nav-buttons>
+      </div>
+
     </div>
 
     <div fxLayout="row wrap"
          fxFlexFill
          class="info-bar">
 
-      <div fxFlex.gt-md="550px" class="first-info">
-      </div>
-      <div fxFlex="300px" class="max-results">
-          <app-max-results-selector></app-max-results-selector>
-      </div>
-      <div fxFlex="300px">
-        <app-nav-buttons
-          (openQueue)="onOpenDownloadQueue()"
-          [queuedProducts]="queuedProducts$ | async">
-        </app-nav-buttons>
+      <div fxFlex class="first-info">
+        <span *ngIf="pathRange.start || pathRange.end">
+          Path: {{pathRange.start}} - {{pathRange.end}}
+        </span>
+        <span *ngIf="frameRange.start || frameRange.end">
+          Frame: {{frameRange.start}} - {{frameRange.end}}
+        </span>
+        <span *ngIf="season.start || season.end">
+          Season: {{season.start}} - {{season.end}}
+        </span>
+        <span *ngIf="shouldOmitSearchPolygon">
+          Omit Geo: {{true == shouldOmitSearchPolygon ? 'Yes' : 'No' }}
+        </span>
+<!--          List Search: {{listSearchMode.toString()}}-->
+<!--          List: {{searchList}}-->
+        <span *ngIf="productTypes.length">
+          File Types:
+          <span *ngFor="let productType of productTypes; let i = index">
+              {{productType.apiValue}},
+          </span>
+        </span>
+        <span *ngIf="beamModes.length">
+          Beam Modes: {{beamModes}}
+        </span>
+        <span *ngIf="polarizations.length">
+          Polarizations: {{polarizations}}
+        </span>
+        <span *ngIf="flightDirections.length">
+          Flight Dir: {{flightDirections}}
+        </span>
       </div>
     </div>
   </div>

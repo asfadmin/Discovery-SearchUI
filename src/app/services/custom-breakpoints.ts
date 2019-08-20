@@ -42,7 +42,7 @@ const SCREEN_BREAKPOINTS_DEFAULT = [
     overlapping: false },
 ];
 
-const SCREEN_BREAKPOINTS = [
+export const SCREEN_BREAKPOINTS = [
   { alias: 'xs', suffix: 'Xs',
     mediaQuery:	'screen and (max-width: 599px)',
     overlapping: false },
@@ -87,5 +87,5 @@ const SCREEN_BREAKPOINTS = [
 export const CustomBreakPointsProvider = {
   provide: BREAKPOINT,
   useValue: SCREEN_BREAKPOINTS,
-  multi: true
+  multi: true,
 };

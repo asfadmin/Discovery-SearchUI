@@ -17,5 +17,10 @@
         [selectedSearchType]="selectedSearchType"
         (newSearchType)="onSetSearchType($event)"></app-search>
     </mat-card-content>
+    <div fxLayout="row" fxLayoutAlign="end">
+      <app-max-results-selector></app-max-results-selector>
+      <app-clear-button></app-clear-button>
+      <app-search-button></app-search-button>
+    </div>
   </mat-card>
 </div>

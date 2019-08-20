@@ -1,7 +1,7 @@
 (function() {
   window._env = {
     api: {
-      prod: 'https://api-beta.asf.alaska.edu',
+      prod: 'https://api-prod-private.asf.alaska.edu',
       test: 'https://api-test.asf.alaska.edu',
     },
     auth: {

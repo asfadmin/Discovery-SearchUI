@@ -1,20 +1,25 @@
 import {
   Component, OnInit, Input, Output, EventEmitter
 } from '@angular/core';
+import {
+  trigger, state, style, animate, transition
+} from '@angular/animations';
 
 import { Store } from '@ngrx/store';
 import { Observable, combineLatest } from 'rxjs';
 import {
-  map, filter, switchMap, tap,
+  map, filter, switchMap, tap, skip,
   withLatestFrom, distinctUntilChanged
 } from 'rxjs/operators';
 
 import { Vector as VectorLayer} from 'ol/layer';
 import { Vector as VectorSource } from 'ol/source';
+import tippy from 'tippy.js';
 
 import { AppState } from '@store';
 import * as granulesStore from '@store/granules';
 import * as mapStore from '@store/map';
+import * as uiStore from '@store/ui';
 
 import * as models from '@models';
 import { MapService, WktService } from '@services';
@@ -22,13 +27,28 @@ import { MapService, WktService } from '@services';
 @Component({
   selector: 'app-map',
   templateUrl: './map.component.html',
-  styleUrls: ['./map.component.scss']
+  styleUrls: ['./map.component.scss'],
+  animations: [
+    trigger('bannerTransition', [
+      transition(':enter', [
+        style({transform: 'translateY(-100%)'}),
+        animate('200ms ease-in', style({transform: 'translateX(0%)'}))
+      ]),
+      transition(':leave', [
+        animate('200ms ease-out', style({transform: 'translateX(-100%)'}))
+      ])
+    ])
+  ],
 })
 export class MapComponent implements OnInit {
   @Output() loadUrlState = new EventEmitter<void>();
 
+  public drawMode$ = this.store$.select(mapStore.getMapDrawMode);
   public interactionMode$ = this.store$.select(mapStore.getMapInteractionMode);
   public mousePosition$ = this.mapService.mousePosition$;
+  public banners$ = this.store$.select(uiStore.getBanners);
+
+  public tooltip;
 
   private isMapInitialized$ = this.store$.select(mapStore.getIsMapInitialization);
   private viewType$ = combineLatest(
@@ -43,12 +63,48 @@ export class MapComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    this.tooltip = (<any[]>tippy('#map', {
+      content: 'Click to start drawing',
+      followCursor: true,
+      offset: '15, 0',
+      hideOnClick: false,
+      placement: 'bottom-end'
+    })).pop();
+
     this.updateMapOnViewChange();
     this.redrawSearchPolygonWhenViewChanges();
     this.updateDrawMode();
 
     this.interactionMode$.subscribe(
       mode => this.mapService.setInteractionMode(mode)
+    );
+
+    combineLatest(
+      this.mapService.isDrawing$,
+      this.drawMode$
+    ).pipe(
+      map(([isDrawing, drawMode]) => {
+        if (drawMode === models.MapDrawModeType.POINT) {
+          return 'Click point';
+        }
+
+        if (!isDrawing) {
+          return 'Click to start drawing';
+        }
+
+        if (drawMode === models.MapDrawModeType.BOX) {
+          return 'Click to stop drawing';
+        } else if (drawMode === models.MapDrawModeType.LINESTRING || drawMode === models.MapDrawModeType.POLYGON) {
+          return 'Double click to stop drawing';
+        }
+      })
+    ).subscribe(tip => this.tooltip.setContent(tip));
+
+    this.interactionMode$.pipe(
+      map(mode => mode === models.MapInteractionModeType.DRAW),
+    ).subscribe(isDrawMode => isDrawMode ?
+      this.tooltip.enable() :
+      this.tooltip.disable()
     );
 
     this.mapService.newSelectedGranule$.pipe(
@@ -75,10 +131,14 @@ export class MapComponent implements OnInit {
 
   public onFileUploadDialogClosed(successful: boolean): void {
     const newMode = successful ?
-      models.MapInteractionModeType.EDIT :
-      models.MapInteractionModeType.NONE;
+    models.MapInteractionModeType.EDIT :
+    models.MapInteractionModeType.NONE;
 
     this.onNewInteractionMode(newMode);
+  }
+
+  public removeBanner(banner: models.Banner): void {
+    this.store$.dispatch(new uiStore.RemoveBanner(banner));
   }
 
   private updateMapOnViewChange(): void {
@@ -108,29 +168,29 @@ export class MapComponent implements OnInit {
       this.store$.select(granulesStore.getFocusedGranule) :
       this.store$.select(granulesStore.getSelectedGranule);
 
-    const granulesLayerAfterInitialization = this.isMapInitialized$.pipe(
+    const granulesLayerAfterInitialization$ = this.isMapInitialized$.pipe(
       filter(isMapInitiliazed => isMapInitiliazed),
       switchMap(_ => this.viewType$),
     );
 
-    granulesLayerAfterInitialization.pipe(
+    granulesLayerAfterInitialization$.pipe(
       tap(([view, mapLayerType]) =>
         this.setMapWith(<models.MapViewType>view, <models.MapLayerTypes>mapLayerType)
       ),
       switchMap(_ =>
-        this.granulePolygonsLayer(this.mapService.epsg())
+        this.granulePolygonsLayer$(this.mapService.epsg())
       )
     ).subscribe(
       layer => this.mapService.setLayer(layer)
     );
 
-    const selectedGranuleAfterInitialization = this.isMapInitialized$.pipe(
+    const selectedGranuleAfterInitialization$ = this.isMapInitialized$.pipe(
       filter(isMapInitiliazed => isMapInitiliazed),
       switchMap(_ => this.viewType$),
       switchMap(_ => granule$),
     );
 
-    return selectedGranuleAfterInitialization.pipe(
+    return selectedGranuleAfterInitialization$.pipe(
       tap(granule => !!granule || (layerType === 'FOCUSED') ?
         this.mapService.clearFocusedGranule() :
         this.mapService.clearSelectedGranule()
@@ -173,7 +233,7 @@ export class MapComponent implements OnInit {
   }
 
 
-  private granulePolygonsLayer(projection: string): Observable<VectorSource> {
+  private granulePolygonsLayer$(projection: string): Observable<VectorSource> {
     return this.store$.select(granulesStore.getGranules).pipe(
       distinctUntilChanged(),
       map(granules => this.granulesToFeature(granules, projection)),
