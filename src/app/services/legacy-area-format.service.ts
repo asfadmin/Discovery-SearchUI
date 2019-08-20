@@ -8,7 +8,8 @@ export class LegacyAreaFormatService {
 
   public isValid(numberList: string): boolean {
     const numbers = this.parseNumberList(numberList);
-    return numbers.length % 2 === 0;
+
+    return numbers.length >= 6 && numbers.length % 2 === 0;
   }
 
   public toWkt(numberList: string): string {
