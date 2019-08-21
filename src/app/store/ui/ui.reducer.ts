@@ -113,10 +113,14 @@ export function uiReducer(state = initState, action: UIActions): UIState {
         };
     }
 
-    case UIActionType.SET_BANNERS: {
+    case UIActionType.ADD_BANNERS: {
+      const banners = [
+        ...state.banners, ...action.payload
+      ];
+
       return {
         ...state,
-        banners: action.payload
+        banners
       };
     }
 
