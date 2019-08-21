@@ -60,6 +60,6 @@ export class UIEffects {
         systime: ''
       }))
     )),
-    map(resp => new uiActions.SetBanners(resp.banners))
+    map(resp => new uiActions.AddBanners(resp.banners))
   );
 }

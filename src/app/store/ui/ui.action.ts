@@ -20,7 +20,7 @@ export enum UIActionType {
   SET_UI_VIEW = '[UI] Set UI View',
 
   LOAD_BANNERS = '[Banner] Load Banners',
-  SET_BANNERS = '[Banner] Set Banners',
+  ADD_BANNERS = '[Banner] Set Banners',
   REMOVE_BANNER = '[Banner] Remove Banner',
 }
 
@@ -84,8 +84,8 @@ export class RemoveBanner implements Action {
   constructor(public payload: Banner) {}
 }
 
-export class SetBanners implements Action {
-  public readonly type = UIActionType.SET_BANNERS;
+export class AddBanners implements Action {
+  public readonly type = UIActionType.ADD_BANNERS;
 
   constructor(public payload: Banner[]) {}
 }
@@ -109,5 +109,5 @@ export type UIActions =
   | SetUiView
   | LoadBanners
   | RemoveBanner
-  | SetBanners;
+  | AddBanners;
 
