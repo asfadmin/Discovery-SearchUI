@@ -45,7 +45,8 @@
   (mouseenter)="enterDrawPopup()"
   (mouseleave)="leaveDrawPopup()"
   id="popup" class="ol-popup" #overlay>
-  <button mat-icon-button (click)="onSetEditMode()">
-    <mat-icon>edit</mat-icon>
-  </button>
+    <app-interaction-selector
+      (newInteraction)="onNewInteractionMode($event)"
+      [interaction]="interactionMode$ | async">
+    ></app-interaction-selector>
 </div>

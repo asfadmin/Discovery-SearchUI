@@ -291,7 +291,6 @@ export class MapComponent implements OnInit {
     return layer;
   }
 
-
   private setMapWith(viewType: models.MapViewType, layerType: models.MapLayerTypes): void {
     this.mapService.setMapView(viewType, layerType, this.overlay);
 
