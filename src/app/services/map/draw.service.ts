@@ -87,6 +87,7 @@ export class DrawService {
   }
 
   public setFeature(feature, epsg): void {
+    this.drawEndCallback(feature);
     this.source.clear();
     this.source.addFeature(feature);
     this.layer.setStyle(this.defaultStyle);
