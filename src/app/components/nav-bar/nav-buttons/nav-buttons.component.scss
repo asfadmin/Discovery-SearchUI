@@ -7,7 +7,7 @@
 }
 
 .spacing {
-  margin-right: 4px;
+  margin-left: 12px;
   line-height: inherit !important;
 }
 
@@ -21,4 +21,13 @@
 .mat-icon-button {
   height: 30px;
   line-height: 30px;
+}
+
+.menu-hr {
+  color: $asf-primary-dark;
+  background-color: $asf-primary-dark;
+  background-image: none;
+  border: none;
+  height: 1px;
+  opacity: 1;
 }

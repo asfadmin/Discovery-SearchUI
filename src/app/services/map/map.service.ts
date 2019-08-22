@@ -46,6 +46,7 @@ export class MapService {
     style: polygonStyle.hover
   });
 
+  public isShowingResults$ = new BehaviorSubject<boolean>(true);
   public zoom$ = new Subject<number>();
   public center$ = new Subject<models.LonLat>();
   public epsg$ = new Subject<string>();
@@ -88,12 +89,28 @@ export class MapService {
   }
 
   public setLayer(layer: Layer): void {
+    this.isShowingResults$.next(true);
+
     if (!!this.polygonLayer) {
       this.map.removeLayer(this.polygonLayer);
     }
 
     this.polygonLayer = layer;
     this.map.addLayer(this.polygonLayer);
+  }
+
+  public setOverlayUpdate(updateCallback): void {
+    this.drawService.setDrawEndCallback(updateCallback);
+  }
+
+  public showResults(): void {
+    this.map.addLayer(this.polygonLayer);
+    this.isShowingResults$.next(true);
+  }
+
+  public hideResults(): void {
+    this.map.removeLayer(this.polygonLayer);
+    this.isShowingResults$.next(false);
   }
 
   public setDrawStyle(style: models.DrawPolygonStyle): void {
@@ -133,7 +150,7 @@ export class MapService {
     });
   }
 
-  public setMapView(viewType: models.MapViewType, layerType: models.MapLayerTypes): void {
+  public setMapView(viewType: models.MapViewType, layerType: models.MapLayerTypes, overlay): void {
     this.viewType = viewType;
 
     const view = {
@@ -144,7 +161,7 @@ export class MapService {
         views.equatorialStreet(),
     }[viewType];
 
-    this.setMap(view);
+    this.setMap(view, overlay);
   }
 
   public clearSelectedGranule(): void {
@@ -200,20 +217,21 @@ export class MapService {
       });
   }
 
-  private setMap(mapView: views.MapView): void {
+  private setMap(mapView: views.MapView, overlay): void {
     this.mapView = mapView;
 
     this.map = (!this.map) ?
-      this.createNewMap() :
+      this.createNewMap(overlay) :
       this.updatedMap();
   }
 
-  private createNewMap(): Map {
+  private createNewMap(overlay): Map {
     const newMap = new Map({
       layers: [ this.mapView.layer, this.drawService.getLayer(), this.focusLayer, this.selectedLayer ],
       target: 'map',
       view: this.mapView.view,
       controls: [],
+      overlays: [overlay],
       loadTilesWhileAnimating: true
     });
 
