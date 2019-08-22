@@ -26,7 +26,8 @@ import { InteractionSelectorComponent } from './interaction-selector';
     MatSharedModule,
   ],
   exports: [
-    AoiOptionsComponent
+    AoiOptionsComponent,
+    InteractionSelectorComponent
   ]
 })
 export class AoiOptionsModule { }

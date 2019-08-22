@@ -7,6 +7,7 @@ import { Vector as VectorSource, Layer } from 'ol/source';
 import { Vector as VectorLayer } from 'ol/layer';
 import { Draw, Modify, Snap } from 'ol/interaction.js';
 import { createBox } from 'ol/interaction/Draw.js';
+import { getTopRight } from 'ol/extent';
 
 import * as polygonStyle from './polygon.style';
 import * as models from '@models';
@@ -24,6 +25,7 @@ export class DrawService {
   private snap: Snap;
 
   private defaultStyle = polygonStyle.valid;
+  private drawEndCallback;
 
   public polygon$ = new BehaviorSubject<string | null>(null);
   public isDrawing$ = new BehaviorSubject<boolean>(false);
@@ -85,6 +87,7 @@ export class DrawService {
   }
 
   public setFeature(feature, epsg): void {
+    this.drawEndCallback(feature);
     this.source.clear();
     this.source.addFeature(feature);
     this.layer.setStyle(this.defaultStyle);
@@ -96,6 +99,10 @@ export class DrawService {
     this.source.clear();
     this.setValidStyle();
     this.polygon$.next(null);
+  }
+
+  public setDrawEndCallback(callback): void {
+    this.drawEndCallback = callback;
   }
 
   private create(drawMode: models.MapDrawModeType): Draw {
@@ -120,6 +127,12 @@ export class DrawService {
       this.clear();
     });
     draw.on('drawend', e => {
+      this.drawEndCallback(e.feature);
+
+      const extent = e.feature
+        .getGeometry()
+        .getExtent();
+
       this.isDrawing$.next(false);
       this.polygon$.next(e.feature);
     });
@@ -135,6 +148,9 @@ export class DrawService {
 
     modify.on('modifyend', e => {
       const feature = e.features.getArray()[0];
+
+      this.drawEndCallback(feature);
+
       this.setDrawStyle(models.DrawPolygonStyle.VALID);
       this.polygon$.next(feature);
     });

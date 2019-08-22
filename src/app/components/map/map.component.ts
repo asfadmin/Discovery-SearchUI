@@ -1,5 +1,5 @@
 import {
-  Component, OnInit, Input, Output, EventEmitter
+  Component, OnInit, Input, Output, EventEmitter, ViewChild, ElementRef
 } from '@angular/core';
 import {
   trigger, state, style, animate, transition
@@ -14,6 +14,9 @@ import {
 
 import { Vector as VectorLayer} from 'ol/layer';
 import { Vector as VectorSource } from 'ol/source';
+import Overlay from 'ol/Overlay';
+import { getTopRight } from 'ol/extent';
+
 import tippy from 'tippy.js';
 
 import { AppState } from '@store';
@@ -43,6 +46,8 @@ import * as polygonStyle from '@services/map/polygon.style';
 })
 export class MapComponent implements OnInit {
   @Output() loadUrlState = new EventEmitter<void>();
+  @ViewChild('overlay', { static: true }) overlayRef: ElementRef;
+  @ViewChild('map', { static: true }) mapRef: ElementRef;
 
   public drawMode$ = this.store$.select(mapStore.getMapDrawMode);
   public interactionMode$ = this.store$.select(mapStore.getMapInteractionMode);
@@ -50,6 +55,9 @@ export class MapComponent implements OnInit {
   public banners$ = this.store$.select(uiStore.getBanners);
 
   public tooltip;
+  public overlay: Overlay;
+  public currentOverlayPosition;
+  public shouldShowOverlay: boolean;
 
   private isMapInitialized$ = this.store$.select(mapStore.getIsMapInitialization);
   private viewType$ = combineLatest(
@@ -64,6 +72,26 @@ export class MapComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    combineLatest(
+      this.store$.select(uiStore.getIsBottomMenuOpen),
+      this.mapService.searchPolygon$
+    ).pipe(
+      filter(_ => !!this.overlay),
+      map(([isBottomMenuOpen, polygon]) => !isBottomMenuOpen && !!polygon),
+    ).subscribe(
+      shouldShowOverlay => shouldShowOverlay ?
+        this.showOverlay() :
+        this.hideOverlay()
+    );
+
+    this.store$.select(uiStore.getIsBottomMenuOpen).subscribe(
+      isOpen => {
+        const mode = isOpen ?
+          models.MapInteractionModeType.NONE :
+          models.MapInteractionModeType.DRAW;
+        this.store$.dispatch(new mapStore.SetMapInteractionMode(mode));
+    });
+
     this.tooltip = (<any[]>tippy('#map', {
       content: 'Click to start drawing',
       followCursor: true,
@@ -71,6 +99,10 @@ export class MapComponent implements OnInit {
       hideOnClick: false,
       placement: 'bottom-end'
     })).pop();
+
+    this.overlay = new Overlay({
+      element: this.overlayRef.nativeElement,
+    });
 
     this.updateMapOnViewChange();
     this.redrawSearchPolygonWhenViewChanges();
@@ -82,31 +114,41 @@ export class MapComponent implements OnInit {
 
     combineLatest(
       this.mapService.isDrawing$,
-      this.drawMode$
+      this.drawMode$,
+      this.interactionMode$
     ).pipe(
-      map(([isDrawing, drawMode]) => {
-        if (drawMode === models.MapDrawModeType.POINT) {
-          return 'Click point';
-        }
+      map(([isDrawing, drawMode, interactionMode]) => {
+        if (interactionMode === models.MapInteractionModeType.DRAW) {
+          if (drawMode === models.MapDrawModeType.POINT) {
+            return 'Click point';
+          }
 
-        if (!isDrawing) {
-          return 'Click to start drawing';
-        }
+          if (!isDrawing) {
+            return 'Click to start drawing';
+          }
 
-        if (drawMode === models.MapDrawModeType.BOX) {
-          return 'Click to stop drawing';
-        } else if (drawMode === models.MapDrawModeType.LINESTRING || drawMode === models.MapDrawModeType.POLYGON) {
-          return 'Double click to stop drawing';
+          if (drawMode === models.MapDrawModeType.BOX) {
+            return 'Click to stop drawing';
+          } else if (drawMode === models.MapDrawModeType.LINESTRING || drawMode === models.MapDrawModeType.POLYGON) {
+            return 'Double click to stop drawing';
+          }
+        } else if (interactionMode === models.MapInteractionModeType.EDIT) {
+          return 'Click and drag on area of interest';
         }
       })
     ).subscribe(tip => this.tooltip.setContent(tip));
 
     this.interactionMode$.pipe(
       map(mode => mode === models.MapInteractionModeType.DRAW),
-    ).subscribe(isDrawMode => isDrawMode ?
-      this.tooltip.enable() :
-      this.tooltip.disable()
-    );
+    ).subscribe(isDrawMode => {
+      if (isDrawMode) {
+        this.tooltip.enable();
+        this.tooltip.show();
+      } else {
+        this.tooltip.hide();
+        this.tooltip.disable();
+      }
+    });
 
     this.mapService.newSelectedGranule$.pipe(
       map(granuleId => new granulesStore.SetSelectedGranule(granuleId))
@@ -120,7 +162,7 @@ export class MapComponent implements OnInit {
     e.preventDefault();
   }
 
-  private onNewInteractionMode(mode: models.MapInteractionModeType): void {
+  public onNewInteractionMode(mode: models.MapInteractionModeType): void {
     this.store$.dispatch(new mapStore.SetMapInteractionMode(mode));
   }
 
@@ -140,6 +182,20 @@ export class MapComponent implements OnInit {
 
   public removeBanner(banner: models.Banner): void {
     this.store$.dispatch(new uiStore.RemoveBanner(banner));
+  }
+
+  public enterDrawPopup(): void {
+    this.tooltip.hide();
+  }
+
+  public leaveDrawPopup(): void {
+    this.tooltip.show();
+  }
+
+  public onSetEditMode(): void {
+    this.store$.dispatch(
+      new mapStore.SetMapInteractionMode(models.MapInteractionModeType.EDIT)
+    );
   }
 
   private updateMapOnViewChange(): void {
@@ -233,7 +289,6 @@ export class MapComponent implements OnInit {
     return features;
   }
 
-
   private granulePolygonsLayer$(projection: string): Observable<VectorSource> {
     return this.store$.select(granulesStore.getGranules).pipe(
       distinctUntilChanged(),
@@ -267,6 +322,23 @@ export class MapComponent implements OnInit {
   }
 
   private setMapWith(viewType: models.MapViewType, layerType: models.MapLayerTypes): void {
-    this.mapService.setMapView(viewType, layerType);
+    this.mapService.setMapView(viewType, layerType, this.overlay);
+
+    this.mapService.setOverlayUpdate(feature => {
+      const extent = feature
+        .getGeometry()
+        .getExtent();
+
+      this.currentOverlayPosition = getTopRight(extent);
+      this.overlay.setPosition(this.currentOverlayPosition);
+    });
+  }
+
+  public showOverlay(): void {
+    this.overlay.setPosition(this.currentOverlayPosition);
+  }
+
+  public hideOverlay(): void {
+    this.overlay.setPosition(undefined);
   }
 }
