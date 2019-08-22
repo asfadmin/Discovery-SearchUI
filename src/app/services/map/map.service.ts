@@ -103,6 +103,14 @@ export class MapService {
     this.drawService.setDrawEndCallback(updateCallback);
   }
 
+  public hideOverlay(): void {
+    this.drawService.hideOverlay();
+  }
+
+  public showOverlay(): void {
+    this.drawService.showOverlay();
+  }
+
   public showResults(): void {
     this.map.addLayer(this.polygonLayer);
     this.isShowingResults$.next(true);

@@ -13,6 +13,7 @@
   bottom: 0;
   position: fixed;
   z-index: 999;
+  pointer-events: none;
 }
 
 .bottom-menu-granule-detail-content {
