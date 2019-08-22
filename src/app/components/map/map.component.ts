@@ -162,7 +162,7 @@ export class MapComponent implements OnInit {
     e.preventDefault();
   }
 
-  private onNewInteractionMode(mode: models.MapInteractionModeType): void {
+  public onNewInteractionMode(mode: models.MapInteractionModeType): void {
     this.store$.dispatch(new mapStore.SetMapInteractionMode(mode));
   }
 
