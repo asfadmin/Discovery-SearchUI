@@ -45,7 +45,7 @@
       <div class="w50">
         <ul class="granule-metadata">
           <li *ngIf="prop.isRelevant(p.DATE, dataset)">
-            <span class="v-mid"><b>Aquisition Date </b> • {{ granule.metadata.date | shortDate }}</span>
+            <span class="v-mid"><b>Start Time</b> • {{ granule.metadata.date | shortDate }}</span>
             <mat-icon *ngIf="isGeoSearch()"
               [matMenuTriggerFor]="addGranuleDateMenu"
               class="v-mid clickable">
