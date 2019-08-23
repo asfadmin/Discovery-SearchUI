@@ -8,9 +8,10 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatSharedModule } from '@shared';
 
 import { PathSelectorComponent } from './path-selector.component';
+import { AoiClearComponent } from './aoi-clear/aoi-clear.component';
 
 @NgModule({
-  declarations: [PathSelectorComponent],
+  declarations: [PathSelectorComponent, AoiClearComponent],
   imports: [
     CommonModule,
     FormsModule,
