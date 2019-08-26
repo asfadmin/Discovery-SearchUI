@@ -7,6 +7,7 @@ import { MatSharedModule } from '@shared';
 
 import { MapControlsComponent } from './map-controls.component';
 import { ViewSelectorComponent } from './view-selector';
+import { AoiOptionsModule } from '@components/shared/aoi-options';
 
 @NgModule({
   imports: [
@@ -14,6 +15,7 @@ import { ViewSelectorComponent } from './view-selector';
     MatButtonToggleModule,
     MatMenuModule,
     MatSharedModule,
+    AoiOptionsModule,
   ],
   declarations: [
     MapControlsComponent,

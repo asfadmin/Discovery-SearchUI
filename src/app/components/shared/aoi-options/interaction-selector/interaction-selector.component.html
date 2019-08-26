@@ -4,6 +4,7 @@
   <mat-button-toggle
     (click)="onDrawSelected()"
     [value]="types.DRAW"
+    class="control-mat-button-toggle"
     matTooltip="Draw new area of interest">
     <mat-icon class="interaction-icon">add</mat-icon>
   </mat-button-toggle>
@@ -11,8 +12,18 @@
   <mat-button-toggle
     (click)="onEditSelected()"
     [value]="types.EDIT"
+    class="control-mat-button-toggle"
     matTooltip="Edit current area of interest">
     <mat-icon class="interaction-icon">edit</mat-icon>
   </mat-button-toggle>
+</mat-button-toggle-group>
 
+<mat-button-toggle-group [value]="interaction">
+  <mat-button-toggle
+    (click)="onClearSelected($event)"
+    class="control-mat-button-toggle"
+    matTooltip="Clear current area of interest"
+    #clearButton>
+    <mat-icon class="interaction-icon">delete</mat-icon>
+  </mat-button-toggle>
 </mat-button-toggle-group>

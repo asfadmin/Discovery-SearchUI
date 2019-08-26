@@ -1,4 +1,5 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, ViewChild } from '@angular/core';
+import { MatButtonToggle } from '@angular/material';
 import { Observable } from 'rxjs';
 
 import { MapInteractionModeType } from '@models';
@@ -9,6 +10,7 @@ import { MapInteractionModeType } from '@models';
   styleUrls: ['./interaction-selector.component.scss']
 })
 export class InteractionSelectorComponent {
+  @ViewChild('clearButton' , { static: false }) clearButton: MatButtonToggle;
   @Input() interaction: MapInteractionModeType;
 
   @Output() newInteraction = new EventEmitter<MapInteractionModeType>();
@@ -21,6 +23,12 @@ export class InteractionSelectorComponent {
 
   public onEditSelected =
     () => this.newInteraction.emit(MapInteractionModeType.EDIT)
+
+  public onClearSelected =
+    () => {
+      this.clearPolygon.emit();
+      this.clearButton.checked = false;
+    }
 }
 
 

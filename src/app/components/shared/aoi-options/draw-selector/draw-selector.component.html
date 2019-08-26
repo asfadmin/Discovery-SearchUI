@@ -4,6 +4,7 @@
     (click)="onPointSelected()"
     [value]="types.POINT"
     [disabled]="isDisabled"
+    class="control-mat-button-toggle"
     matTooltip="Point draw">
     <mat-icon class="draw-icon">place</mat-icon>
   </mat-button-toggle>
@@ -12,6 +13,7 @@
     (click)="onLineStringSelected()"
     [value]="types.LINESTRING"
     [disabled]="isDisabled"
+    class="control-mat-button-toggle"
     matTooltip="Line draw">
     <mat-icon class="draw-icon">timeline</mat-icon>
   </mat-button-toggle>
@@ -20,6 +22,7 @@
     (click)="onPolygonSelected()"
     [value]="types.POLYGON"
     [disabled]="isDisabled"
+    class="control-mat-button-toggle"
     matTooltip="Polygon draw">
     <mat-icon class="draw-icon">format_shapes</mat-icon>
   </mat-button-toggle>
@@ -28,7 +31,8 @@
     (click)="onBoxSelected()"
     [value]="types.BOX"
     [disabled]="isDisabled"
+    class="control-mat-button-toggle"
     matTooltip="Box Draw">
-    Box
+    <span style="font-size: 15px;">Box</span>
   </mat-button-toggle>
 </mat-button-toggle-group>

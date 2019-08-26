@@ -16,6 +16,7 @@ import * as services from '@services';
 })
 export class MapControlsComponent implements OnInit {
   public view$ = this.store$.select(mapStore.getMapView);
+  public interactionMode$ = this.store$.select(mapStore.getMapInteractionMode);
   public drawMode$ = this.store$.select(mapStore.getMapDrawMode);
 
   public layerTypes = models.MapLayerTypes;
@@ -43,6 +44,20 @@ export class MapControlsComponent implements OnInit {
       new mapStore.SetSatelliteView();
 
     this.store$.dispatch(action);
+  }
+
+  public onNewInteractionMode(mode: models.MapInteractionModeType): void {
+    this.store$.dispatch(new mapStore.SetMapInteractionMode(mode));
+  }
+
+  public onNewDrawMode(mode: models.MapDrawModeType): void {
+    this.store$.dispatch(new mapStore.SetMapInteractionMode(models.MapInteractionModeType.DRAW));
+    this.store$.dispatch(new mapStore.SetMapDrawMode(mode));
+  }
+
+  public onClearAOI(): void {
+    this.mapService.clearDrawLayer();
+    this.store$.dispatch(new mapStore.SetMapInteractionMode(models.MapInteractionModeType.DRAW));
   }
 
   public zoomIn(): void {
