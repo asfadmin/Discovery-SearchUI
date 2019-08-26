@@ -149,12 +149,31 @@ export class AppComponent implements OnInit {
       map(health => {
         const { ASFSearchAPI, CMRSearchAPI } = health;
 
-        if (!CMRSearchAPI.health.echo['ok?']) {
-          this.store$.dispatch(new searchStore.SearchError('CMR is experiencing errors, try searching later.'));
+        if ('error' in CMRSearchAPI) {
+          const error = {
+            text: CMRSearchAPI.error.display || 'CMR is experiencing errors, try searching later.',
+            type: 'error',
+            target: ['vertex']
+          };
+
+          this.store$.dispatch(new uiStore.AddBanners([error]));
         } else if (!ASFSearchAPI['ok?']) {
           this.store$.dispatch(new searchStore.SearchError('ASF API is experiencing errors, try searching later.'));
         }
       }),
+      catchError(
+        _ => {
+          const error = {
+            text: 'ASF is experiencing errors loading data, please try searching later.',
+            type: 'error',
+            target: ['vertex']
+          };
+
+          this.store$.dispatch(new uiStore.AddBanners([error]));
+
+          return of(null);
+        }
+      )
     ).subscribe(_ => _);
   }
 }
