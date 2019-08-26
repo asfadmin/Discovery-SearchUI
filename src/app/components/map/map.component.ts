@@ -92,6 +92,16 @@ export class MapComponent implements OnInit {
         this.store$.dispatch(new mapStore.SetMapInteractionMode(mode));
     });
 
+    this.interactionMode$.subscribe(
+      mode => {
+        if (mode === models.MapInteractionModeType.NONE) {
+          this.mapService.enableInteractions();
+        } else {
+          this.mapService.disableInteractions();
+        }
+      }
+    );
+
     this.tooltip = (<any[]>tippy('#map', {
       content: 'Click to start drawing',
       followCursor: true,

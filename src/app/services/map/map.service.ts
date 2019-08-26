@@ -28,6 +28,18 @@ export class MapService {
   private map: Map;
   private polygonLayer: Layer;
 
+  private selectClick = new Select({
+    condition: click,
+    style: polygonStyle.hidden,
+    layers: l => l.get('selectable') || false
+  });
+
+  private selectHover = new Select({
+    condition: pointerMove,
+    style: polygonStyle.hover,
+    layers: l => l.get('selectable') || false
+  });
+
   private selectedSource = new VectorSource({
     wrapX: models.mapOptions.wrapX
   });
@@ -79,6 +91,16 @@ export class MapService {
 
   public zoomOut(): void {
     this.zoom(-0.5);
+  }
+
+  public enableInteractions(): void {
+    this.selectHover.setActive(true);
+    this.selectClick.setActive(true);
+  }
+
+  public disableInteractions(): void {
+    this.selectHover.setActive(false);
+    this.selectClick.setActive(false);
   }
 
   private zoom(amount: number): void {
@@ -166,6 +188,7 @@ export class MapService {
 
   public clearSelectedGranule(): void {
     this.selectedSource.clear();
+    this.selectClick.getOverlay().getSource().clear();
   }
 
   public setSelectedFeature(feature): void {
@@ -175,6 +198,7 @@ export class MapService {
 
   public clearFocusedGranule(): void {
     this.focusSource.clear();
+    this.selectHover.getOverlay().getSource().clear();
   }
 
   public setFocusedFeature(feature): void {
@@ -235,21 +259,9 @@ export class MapService {
       loadTilesWhileAnimating: true
     });
 
-    const selectClick = new Select({
-      condition: click,
-      style: polygonStyle.hidden,
-      layers: l => l.get('selectable') || false
-    });
-
-    const selectHover = new Select({
-      condition: pointerMove,
-      style: polygonStyle.hover,
-      layers: l => l.get('selectable') || false
-    });
-
-    newMap.addInteraction(selectClick);
-    newMap.addInteraction(selectHover);
-    selectClick.on('select', (e) => {
+    newMap.addInteraction(this.selectClick);
+    newMap.addInteraction(this.selectHover);
+    this.selectClick.on('select', e => {
       e.target.getFeatures().forEach(
         feature => this.newSelectedGranule$.next(feature.get('filename'))
       );
