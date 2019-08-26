@@ -3,7 +3,7 @@
     <button
       (click)="onOpenDownloadQueue()"
       [disabled]="queuedProducts.length <= 0"
-      class="spacing" mat-icon-button>
+      class="spacing cart" mat-icon-button>
         <mat-icon
           [matBadge]="queuedProducts.length"
           matBadgeColor="{{ queuedProducts.length > 0 ? 'accent' : 'primary' }}"
@@ -12,24 +12,26 @@
           matBadgeSize="small">
             shopping_cart
         </mat-icon>
+    <div class="text-under text-downloads faint-text">Downloads</div>
     </button>
   </span>
 
   <button
     *ngIf="!datapoolAuthService.isLoggedIn"
     (click)="onAccountButtonClicked()"
-    class="spacing" color="basic"
-    matTooltip="Login" mat-icon-button>
+    class="spacing profile" color="basic"
+    matTooltip="Login" mat-button>
       <mat-icon>account_circle</mat-icon>
+    <div class="text-under faint-text">Sign in</div>
   </button>
 
   <button
     *ngIf="datapoolAuthService.isLoggedIn"
     [matMenuTriggerFor]="profileMenu"
-    class="spacing" color="basic"
+    class="spacing profile" color="basic"
     matTooltip="Profile" mat-button>
       <mat-icon>account_circle</mat-icon>
-      <span> {{ datapoolAuthService.user.id }}</span>
+      <div class="text-under faint-text"> {{ datapoolAuthService.user.id }}</div>
   </button>
 
   <mat-menu #profileMenu="matMenu">
