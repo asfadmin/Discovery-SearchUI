@@ -2,7 +2,7 @@
   <span *ngIf="queuedProducts" matTooltip="Download Queue">
     <button
       (click)="onOpenDownloadQueue()"
-      [disabled]="queuedProducts.length <= 0" color="basic"
+      [disabled]="queuedProducts.length <= 0"
       class="spacing" mat-icon-button>
         <mat-icon
           [matBadge]="queuedProducts.length"
@@ -84,7 +84,6 @@
       Share With Email
     </a>
 
-    <hr class="menu-hr">
     <hr class="menu-hr">
 
     <a mat-menu-item [href]="asfWebsiteUrl" target="_blank">

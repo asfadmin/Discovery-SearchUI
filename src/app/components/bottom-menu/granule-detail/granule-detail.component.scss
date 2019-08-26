@@ -3,6 +3,11 @@
   padding: 0;
   margin: 0;
   overflow: auto;
+  max-width: 100%;
+}
+
+.detail-card-header {
+  word-break: break-all;
 }
 
 .clipboard-icon {
@@ -75,4 +80,8 @@
 
 .w50 {
   width: 50%;
+}
+
+.browse-container {
+  margin-top: 25px;
 }

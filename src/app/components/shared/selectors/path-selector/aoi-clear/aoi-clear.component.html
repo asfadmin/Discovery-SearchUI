@@ -1,0 +1,8 @@
+<button *ngIf="!!polygon && anyPathFrameValues" (click)="onClearSearchArea()" mat-button>Clear Search Area</button>
+<button
+  *ngIf="!!savedPolygon"
+  (click)="undoPolygonClear()" mat-button>
+    <mat-icon style="margin-right: 3px">undo</mat-icon>
+    <span>Restore Area</span>
+</button>
+
