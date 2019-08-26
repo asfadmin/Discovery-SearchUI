@@ -1,11 +1,7 @@
 <div class="detail-card" *ngIf="granule">
   <mat-card-header>
-    <mat-card-title>
-      <span [title]="granule.name">{{ granule.name | truncate : granuleLen }}</span>
-      <span *ngIf="dataset.id === 'SENTINEL-1'"
-        >{{ granule.name.substr(granule.name.length - 4) }}</span>
-      <span *ngIf="dataset.id === 'SENTINEL-1 INTERFEROGRAM (BETA)'"
-        >{{ granule.name.substr(granule.name.length - 11) }}</span>
+    <mat-card-title class="detail-card-header">
+      <span>{{ granule.name }}</span>
 
       <app-copy-to-clipboard
         [value]="granule.name"
@@ -181,7 +177,7 @@
         </p>
       </div>
 
-      <div class="clickable w40" fxFlexAlign="center">
+      <div class="browse-container clickable w40">
         <div (click)="onOpenImage(granule);"
           class="img-container">
             <img
