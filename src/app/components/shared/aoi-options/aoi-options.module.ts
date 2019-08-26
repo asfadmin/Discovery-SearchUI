@@ -27,6 +27,7 @@ import { InteractionSelectorComponent } from './interaction-selector';
   ],
   exports: [
     AoiOptionsComponent,
+    DrawSelectorComponent,
     InteractionSelectorComponent
   ]
 })

@@ -45,5 +45,11 @@
     [interaction]="interactionMode$ | async">
   ></app-interaction-selector>
 
+  <app-draw-selector
+    class="button-group"
+    (newDrawMode)="onNewDrawMode($event)"
+    [drawMode]="drawMode$ | async">
+  </app-draw-selector>
+
   <img src="/assets/NASA_logo.svg" class="meatball">
 </div>
