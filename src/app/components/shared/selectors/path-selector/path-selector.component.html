@@ -29,9 +29,5 @@
       name="frameEnd" placeholder="Frame End">
   </mat-form-field>
 
-  <mat-slide-toggle
-    (change)="onNewOmitPolygon($event)"
-    [checked]="shouldOmitSearchPolygon$ | async">
-    Omit Geographic Region from search
-  </mat-slide-toggle>
+  <app-aoi-clear></app-aoi-clear>
 </form>
