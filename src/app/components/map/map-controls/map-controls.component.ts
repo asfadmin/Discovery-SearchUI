@@ -17,6 +17,7 @@ import * as services from '@services';
 export class MapControlsComponent implements OnInit {
   public view$ = this.store$.select(mapStore.getMapView);
   public drawMode$ = this.store$.select(mapStore.getMapDrawMode);
+  public interactionMode$ = this.store$.select(mapStore.getMapInteractionMode);
 
   public layerTypes = models.MapLayerTypes;
   public layerType: models.MapLayerTypes;
@@ -43,6 +44,10 @@ export class MapControlsComponent implements OnInit {
       new mapStore.SetSatelliteView();
 
     this.store$.dispatch(action);
+  }
+
+  public onNewInteractionMode(mode: models.MapInteractionModeType): void {
+    this.store$.dispatch(new mapStore.SetMapInteractionMode(mode));
   }
 
   public zoomIn(): void {

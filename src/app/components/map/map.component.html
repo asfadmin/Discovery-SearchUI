@@ -45,8 +45,4 @@
   (mouseenter)="enterDrawPopup()"
   (mouseleave)="leaveDrawPopup()"
   id="popup" class="ol-popup" #overlay>
-    <app-interaction-selector
-      (newInteraction)="onNewInteractionMode($event)"
-      [interaction]="interactionMode$ | async">
-    ></app-interaction-selector>
 </div>

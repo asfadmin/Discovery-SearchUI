@@ -39,5 +39,11 @@
     </mat-button-toggle>
   </mat-button-toggle-group>
 
+  <app-interaction-selector
+    class="button-group"
+    (newInteraction)="onNewInteractionMode($event)"
+    [interaction]="interactionMode$ | async">
+  ></app-interaction-selector>
+
   <img src="/assets/NASA_logo.svg" class="meatball">
 </div>
