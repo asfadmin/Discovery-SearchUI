@@ -92,6 +92,16 @@ export class MapComponent implements OnInit {
         this.store$.dispatch(new mapStore.SetMapInteractionMode(mode));
     });
 
+    this.interactionMode$.subscribe(
+      mode => {
+        if (mode === models.MapInteractionModeType.NONE) {
+          this.mapService.enableInteractions();
+        } else {
+          this.mapService.disableInteractions();
+        }
+      }
+    );
+
     this.tooltip = (<any[]>tippy('#map', {
       content: 'Click to start drawing',
       followCursor: true,
@@ -143,7 +153,6 @@ export class MapComponent implements OnInit {
     ).subscribe(isDrawMode => {
       if (isDrawMode) {
         this.tooltip.enable();
-        this.tooltip.show();
       } else {
         this.tooltip.hide();
         this.tooltip.disable();
@@ -325,12 +334,6 @@ export class MapComponent implements OnInit {
     this.mapService.setMapView(viewType, layerType, this.overlay);
 
     this.mapService.setOverlayUpdate(feature => {
-      const extent = feature
-        .getGeometry()
-        .getExtent();
-
-      this.currentOverlayPosition = getTopRight(extent);
-      this.overlay.setPosition(this.currentOverlayPosition);
     });
   }
 
