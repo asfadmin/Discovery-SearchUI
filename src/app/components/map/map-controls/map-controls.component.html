@@ -42,6 +42,7 @@
   <app-interaction-selector
     class="button-group"
     (newInteraction)="onNewInteractionMode($event)"
+    (clearPolygon)="onClearAOI()"
     [interaction]="interactionMode$ | async">
   ></app-interaction-selector>
 

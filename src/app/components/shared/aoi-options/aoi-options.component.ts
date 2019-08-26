@@ -38,8 +38,8 @@ export class AoiOptionsComponent implements OnInit {
   }
 
   public onClearPolygon(): void {
-    this.mapService.clearDrawLayer();
     this.onNewInteractionMode(MapInteractionModeType.DRAW);
+    this.mapService.clearDrawLayer();
   }
 
   public onNewInteractionMode(mode: MapInteractionModeType): void {

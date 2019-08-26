@@ -55,6 +55,11 @@ export class MapControlsComponent implements OnInit {
     this.store$.dispatch(new mapStore.SetMapDrawMode(mode));
   }
 
+  public onClearAOI(): void {
+    this.mapService.clearDrawLayer();
+    this.store$.dispatch(new mapStore.SetMapInteractionMode(models.MapInteractionModeType.DRAW));
+  }
+
   public zoomIn(): void {
     this.mapService.zoomIn();
   }
