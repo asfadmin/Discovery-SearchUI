@@ -21,6 +21,7 @@ export interface FiltersState {
   beamModes: models.DatasetBeamModes;
   polarizations: models.DatasetPolarizations;
   flightDirections: Set<models.FlightDirection>;
+  subtypes: models.DatasetSubtypes;
 
   maxResults: number;
 }
@@ -67,6 +68,7 @@ export const initState: FiltersState = {
   productTypes: [],
   beamModes: [],
   polarizations: [],
+  subtypes: [],
   flightDirections: new Set<models.FlightDirection>([]),
   maxResults: 250,
 };
@@ -92,7 +94,8 @@ export function filtersReducer(state = initState, action: FiltersActions): Filte
         },
         productTypes: [],
         beamModes: [],
-        polarizations: []
+        polarizations: [],
+        subtypes: [],
       };
     }
 
@@ -216,6 +219,7 @@ export function filtersReducer(state = initState, action: FiltersActions): Filte
         productTypes: [],
         beamModes: [],
         polarizations: [],
+        subtypes: [],
         flightDirections: new Set<models.FlightDirection>([]),
       };
     }
@@ -278,6 +282,24 @@ export function filtersReducer(state = initState, action: FiltersActions): Filte
       return {
         ...state,
         polarizations: [ ...action.payload ]
+      };
+    }
+
+    case FiltersActionType.ADD_SUBTYPE: {
+      const newPols = Array.from(
+        new Set([...state.subtypes, action.payload])
+      );
+
+      return {
+        ...state,
+        subtypes: [ ...newPols ]
+      };
+    }
+
+    case FiltersActionType.SET_SUBTYPES: {
+      return {
+        ...state,
+        subtypes: [ ...action.payload ]
       };
     }
 
@@ -406,6 +428,11 @@ export const getBeamModes = createSelector(
 export const getPolarizations = createSelector(
   getFiltersState,
   (state: FiltersState) => state.polarizations
+);
+
+export const getSubtypes = createSelector(
+  getFiltersState,
+  (state: FiltersState) => state.subtypes
 );
 
 export const getFlightDirections = createSelector(

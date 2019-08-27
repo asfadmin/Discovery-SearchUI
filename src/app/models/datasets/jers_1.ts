@@ -34,5 +34,6 @@ export const jers_1 = {
   beamModes: [ 'STD' ],
   polarizations: [
     'HH'
-  ]
+  ],
+  subtypes: [],
 };

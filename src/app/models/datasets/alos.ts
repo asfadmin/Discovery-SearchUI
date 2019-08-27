@@ -60,5 +60,6 @@ export const alos = {
     'VV',
     'VV+VH',
     'quadrature',
-  ]
+  ],
+  subtypes: [],
 };

@@ -65,5 +65,6 @@ export const uavsar = {
   polarizations: [
     'Full',
     'HH'
-  ]
+  ],
+  subtypes: [],
 };

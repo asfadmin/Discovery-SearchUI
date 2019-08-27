@@ -34,5 +34,6 @@ export const seasat = {
   beamModes: [ 'STD' ],
   polarizations: [
     'HH'
-  ]
+  ],
+  subtypes: [],
 };
