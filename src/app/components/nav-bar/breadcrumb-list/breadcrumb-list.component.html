@@ -152,8 +152,6 @@
         <span *ngIf="shouldOmitSearchPolygon">
           Omit Geo: {{true == shouldOmitSearchPolygon ? 'Yes' : 'No' }}
         </span>
-<!--          List Search: {{listSearchMode.toString()}}-->
-<!--          List: {{searchList}}-->
         <span *ngIf="productTypes.length">
           File Types:
           <span *ngFor="let productType of productTypes; let i = index">
@@ -168,6 +166,9 @@
         </span>
         <span *ngIf="flightDirections.length">
           Flight Dir: {{flightDirections}}
+        </span>
+        <span *ngIf="subtypes">
+          Dataset: {{ subtypes }}
         </span>
       </div>
     </div>
