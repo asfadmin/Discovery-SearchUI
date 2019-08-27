@@ -490,8 +490,6 @@ export class UrlStateService {
   private loadSubtypes = (subtypesStr: string): void => {
     const subtypes = this.loadProperties(subtypesStr, 'subtypes', v => v.apiValue);
 
-    console.log('types', subtypesStr, subtypes);
-
     if (!subtypes) {
       return;
     }

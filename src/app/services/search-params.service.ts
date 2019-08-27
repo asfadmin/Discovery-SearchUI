@@ -119,8 +119,7 @@ export class SearchParamsService {
               .join(',')
           } :
           { ...dataset.apiValue };
-      }),
-      tap(console.log)
+      })
     );
   }
 
