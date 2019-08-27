@@ -43,5 +43,6 @@ export const beta = {
     },
   ],
   beamModes: ['slc'],
-  polarizations: ['VV']
+  polarizations: ['VV'],
+  subtypes: [],
 };

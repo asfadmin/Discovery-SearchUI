@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
 import { MatSelectModule } from '@angular/material/select';
+import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatSharedModule } from '@shared';
 
 import { OtherSelectorComponent } from './other-selector.component';
@@ -13,6 +14,7 @@ import { OtherSelectorComponent } from './other-selector.component';
     CommonModule,
     FormsModule,
     MatSelectModule,
+    MatButtonToggleModule,
     MatSharedModule,
   ],
   exports: [ OtherSelectorComponent ],

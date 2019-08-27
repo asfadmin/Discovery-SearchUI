@@ -20,12 +20,14 @@ export class OtherSelectorComponent implements OnInit {
   flightDirections: models.FlightDirection[];
   beamModes: models.DatasetBeamModes;
   polarizations: models.DatasetPolarizations;
+  subtypes: models.DatasetSubtypes;
 
   public datasetProductTypes$ = this.store$.select(filtersStore.getProductTypes);
   public flightDirections$ = this.store$.select(filtersStore.getFlightDirections);
   public beamModes$ = this.store$.select(filtersStore.getBeamModes);
   public polarizations$ = this.store$.select(filtersStore.getPolarizations);
   public selectedDataset$ = this.store$.select(filtersStore.getSelectedDataset);
+  public subtypes$ = this.store$.select(filtersStore.getSubtypes);
 
   public flightDirectionTypes = models.flightDirections;
   public p = models.Props;
@@ -41,6 +43,7 @@ export class OtherSelectorComponent implements OnInit {
     this.flightDirections$.subscribe(directions => this.flightDirections = directions);
     this.datasetProductTypes$.subscribe(types => this.productTypes = types);
     this.polarizations$.subscribe(pols => this.polarizations = pols);
+    this.subtypes$.subscribe(subtypes => this.subtypes = subtypes);
   }
 
   public onNewDatasetBeamModes(beamModes: string[]): void {
@@ -61,5 +64,9 @@ export class OtherSelectorComponent implements OnInit {
 
   public onNewMaxResults(maxResults): void {
     this.store$.dispatch(new filtersStore.SetMaxResults(maxResults));
+  }
+
+  public onNewSubtypeSelected(subtypes): void {
+    this.store$.dispatch(new filtersStore.SetSubtypes(subtypes));
   }
 }

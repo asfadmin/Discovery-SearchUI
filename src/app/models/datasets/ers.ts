@@ -12,6 +12,7 @@ export const ers = {
     Props.POLARIZATION,
     Props.ABSOLUTE_ORBIT,
     Props.BASELINE_TOOL,
+    Props.SUBTYPE,
   ],
   apiValue: { platform: 'ERS' },
   date: {
@@ -35,5 +36,12 @@ export const ers = {
   beamModes: [ 'STD' ],
   polarizations: [
     'VV'
-  ]
+  ],
+  subtypes: [{
+    displayName: 'ERS-1',
+    apiValue: 'E1',
+  }, {
+    displayName: 'ERS-2',
+    apiValue: 'E2',
+  }],
 };

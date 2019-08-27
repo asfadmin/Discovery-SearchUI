@@ -39,5 +39,6 @@ export const radarsat_1 = {
   ],
   polarizations: [
     'HH'
-  ]
+  ],
+  subtypes: [],
 };
