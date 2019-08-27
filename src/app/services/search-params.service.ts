@@ -72,7 +72,7 @@ export class SearchParamsService {
         this.beamModes$(),
         this.polarizations$(),
         this.maxResults$(),
-        this.missionParam$(),
+        this.missionParam$()
       ).pipe(
         map((params: any[]) => params
           .reduce(
@@ -108,8 +108,18 @@ export class SearchParamsService {
   }
 
   private selectedDataset$() {
-    return this.store$.select(filterStore.getSelectedDataset).pipe(
-      map(dataset => ({...dataset.apiValue})),
+    return combineLatest(
+      this.store$.select(filterStore.getSelectedDataset),
+      this.store$.select(filterStore.getSubtypes)
+    ).pipe(
+      map(([dataset, subtypes]) => {
+        return subtypes.length > 0 ?
+          { platform: subtypes
+              .map(subtype => subtype.apiValue)
+              .join(',')
+          } :
+          { ...dataset.apiValue };
+      })
     );
   }
 

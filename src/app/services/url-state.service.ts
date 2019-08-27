@@ -156,6 +156,16 @@ export class UrlStateService {
       ),
       loader: this.loadSelectedDataset
     }, {
+      name: 'subtypes',
+      source: this.store$.select(filterStore.getSubtypes).pipe(
+        skip(1),
+        map(types => types.map(subtype => subtype.apiValue).join(',')),
+        withLatestFrom(this.store$.select(filterStore.getSelectedDatasetId)),
+        map(([types, dataset]) => `${dataset}$$${types}`),
+        map(param => ({ subtypes: param }))
+      ),
+      loader: this.loadSubtypes
+    }, {
       name: 'maxResults',
       source: this.store$.select(filterStore.getMaxSearchResults).pipe(
         skip(1),
@@ -474,6 +484,17 @@ export class UrlStateService {
     }
 
     const action = new filterStore.SetPolarizations(polarizations);
+    this.store$.dispatch(action);
+  }
+
+  private loadSubtypes = (subtypesStr: string): void => {
+    const subtypes = this.loadProperties(subtypesStr, 'subtypes', v => v.apiValue);
+
+    if (!subtypes) {
+      return;
+    }
+
+    const action = new filterStore.SetSubtypes(subtypes);
     this.store$.dispatch(action);
   }
 

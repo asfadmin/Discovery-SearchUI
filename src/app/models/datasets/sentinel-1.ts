@@ -12,6 +12,7 @@ export const sentinel_1 = {
     Props.POLARIZATION,
     Props.ABSOLUTE_ORBIT,
     Props.BASELINE_TOOL,
+    Props.SUBTYPE,
   ],
   apiValue: { platform: 'SENTINEL-1' },
   date: { start: new Date('2014/06/15 03:44:43 UTC') },
@@ -96,5 +97,12 @@ export const sentinel_1 = {
     'Dual HV',
     'Dual VH',
     'Dual VV',
-  ]
+  ],
+  subtypes: [{
+    displayName: 'Sentinel-1A',
+    apiValue: 'SA',
+  }, {
+    displayName: 'Sentinel-1B',
+    apiValue: 'SB',
+  }],
 };

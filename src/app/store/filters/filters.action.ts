@@ -30,6 +30,9 @@ export enum FiltersActionType {
   ADD_FLIGHT_DIRECTION = '[Filters-Flight-Dir] Add Flight Direction',
   SET_FLIGHT_DIRECTIONS = '[Filters-Flight-Dir] Set Flight Directions',
 
+  ADD_SUBTYPE = '[Filters-Subtype] Add Dataset Subtype',
+  SET_SUBTYPES = '[Filters-Subtype] Set Subtypes',
+
   OMIT_SEARCH_POLYGON = '[Filters-Search] Omit Search Polygon',
   USE_SEARCH_POLYGON = '[Filters-Search] Use Search Polygon',
 
@@ -174,6 +177,18 @@ export class SetPolarizations implements Action {
   constructor(public payload: models.DatasetPolarizations) {}
 }
 
+export class AddSubtype implements Action {
+  public readonly type = FiltersActionType.ADD_SUBTYPE;
+
+  constructor(public payload: models.DatasetSubtype) {}
+}
+
+export class SetSubtypes implements Action {
+  public readonly type = FiltersActionType.SET_SUBTYPES;
+
+  constructor(public payload: models.DatasetSubtypes) {}
+}
+
 export class SetSearchList implements Action {
   public readonly type = FiltersActionType.SET_SEARCH_LIST;
 
@@ -208,6 +223,8 @@ export type FiltersActions =
   | AddFlightDirection
   | AddBeamMode
   | SetBeamModes
+  | AddSubtype
+  | SetSubtypes
   | AddPolarization
   | SetPolarizations
   | ClearDatasetFilters

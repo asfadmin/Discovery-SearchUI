@@ -53,5 +53,6 @@ export const smap = {
     displayName: 'L1C S0 HiRes Metadata'
   }, ],
   beamModes: [ 'STD' ],
-  polarizations: []
+  polarizations: [],
+  subtypes: [],
 };
