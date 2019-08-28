@@ -9,9 +9,7 @@ import * as models from '@models';
 export function equatorial(): MapView {
   const projection = new Projection('EPSG:3857');
 
-  const token = 'pk.eyJ1IjoiZ2xzaG9ydCIsImEiOiJjandjYXA2aWIwN3hyM3luem9qOTk0aWNoIn0.ZaWtqY0yjcp86Nsfzw47Cg';
-  const styleUrl = 'williamh890/cjo0daohlaa972smsrpr0ow4d';
-  const url = `https://api.mapbox.com/styles/v1/${styleUrl}/tiles/{z}/{x}/{y}?access_token=${token}`;
+  const url = `https://api.maptiler.com/maps/hybrid/{z}/{x}/{y}.jpg?key=bFwkahiCrAA0526OlsHS`;
 
   const source = new XYZ({
     url,
@@ -43,9 +41,7 @@ export function equatorial(): MapView {
 export function equatorialStreet(): MapView {
   const projection = new Projection('EPSG:3857');
 
-  const token = 'pk.eyJ1IjoiZ2xzaG9ydCIsImEiOiJjandjYXA2aWIwN3hyM3luem9qOTk0aWNoIn0.ZaWtqY0yjcp86Nsfzw47Cg';
-  const styleUrl = 'williamh890/cjwtwkv9m02ua1crzhhcybaq7';
-  const url = `https://api.mapbox.com/styles/v1/${styleUrl}/tiles/{z}/{x}/{y}?access_token=${token}`;
+  const url = 'https://api.maptiler.com/maps/streets/{z}/{x}/{y}.png?key=bFwkahiCrAA0526OlsHS';
 
   const source = new XYZ({
     url,
