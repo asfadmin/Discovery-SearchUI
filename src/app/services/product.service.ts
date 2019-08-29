@@ -1,3 +1,4 @@
+import * as moment from 'moment';
 import { Injectable } from '@angular/core';
 
 import * as models from '@models';
@@ -48,7 +49,7 @@ export class ProductService {
     })
 
   private fromCMRDate =
-    (dateString: string): Date => {
-      return new Date(dateString);
+    (dateString: string): moment.Moment => {
+      return moment.utc(dateString);
     }
 }

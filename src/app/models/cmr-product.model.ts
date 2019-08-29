@@ -1,3 +1,5 @@
+import * as moment from 'moment';
+
 export interface CMRProduct {
   name: string;
   productTypeDisplay: string;
@@ -14,7 +16,7 @@ export interface CMRProduct {
 }
 
 export interface CMRProductMetadata {
-  date: Date;
+  date: moment.Moment;
   polygon: string;
 
   productType: string;

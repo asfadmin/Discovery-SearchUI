@@ -1,3 +1,4 @@
+import * as moment from 'moment';
 import * as models from '@models';
 
 export const testProduct: models.CMRProduct = {
@@ -12,7 +13,7 @@ export const testProduct: models.CMRProduct = {
   dataset: 'Sentinel-1A',
   groupId: '7',
   metadata: {
-    date: new Date('December 17, 1995 03:24:00'),
+    date: moment.utc('December 17, 1995 03:24:00'),
     polygon: 'POINT(-121.28,58.76)',
 
     stackSize: 7,
