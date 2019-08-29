@@ -18,12 +18,8 @@ export class RangeService {
   public toCMRString<T>(range: Range<T>): string {
     const [start, end] = [ range.start || '', range.end || '' ];
 
-    if (!start && !end) {
-      return '';
-    } else if (start === end) {
-      return `${start}`;
-    } else {
-      return `${start}-${end}`;
-    }
+    return start ?
+      ((!end || start === end) ? `${start}` : `${start}-${end}`) :
+      (end ? `${end}` : '');
   }
 }
