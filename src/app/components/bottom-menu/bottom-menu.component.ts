@@ -46,7 +46,6 @@ export class BottomMenuComponent {
   );
 
   public isHidden$ = this.store$.select(uiStore.getIsHidden);
-  public isShowingResults$ = this.mapService.isShowingResults$;
 
   constructor(
     private store$: Store<AppState>,
@@ -63,14 +62,6 @@ export class BottomMenuComponent {
 
   public onZoomToResults(): void {
     this.mapService.zoomToResults();
-  }
-
-  public showResults(): void {
-    this.mapService.showResults();
-  }
-
-  public hideResults(): void {
-    this.mapService.hideResults();
   }
 
   private selectNextGranule(): void {
