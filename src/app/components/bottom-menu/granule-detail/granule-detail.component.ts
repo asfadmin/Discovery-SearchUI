@@ -112,12 +112,12 @@ export class GranuleDetailComponent implements OnInit {
   }
 
   public setStartDate(): void {
-    const action = new filtersStore.SetStartDate(this.granule.metadata.date);
+    const action = new filtersStore.SetStartDate(this.granule.metadata.date.toDate());
     this.store$.dispatch(action);
   }
 
   public setEndDate(): void {
-    const action = new filtersStore.SetEndDate(this.granule.metadata.date);
+    const action = new filtersStore.SetEndDate(this.granule.metadata.date.toDate());
     this.store$.dispatch(action);
   }
 
