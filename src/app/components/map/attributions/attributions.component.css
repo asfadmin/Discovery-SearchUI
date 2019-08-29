@@ -1,6 +1,15 @@
-.position {
+.position-right {
   position: fixed;
   right: 0;
+  bottom: 0;
+  z-index: 998;
+  margin: 0;
+  padding: 2px 5px;
+}
+
+.position-left {
+  position: fixed;
+  left: 0;
   bottom: 0;
   z-index: 998;
   margin: 0;
