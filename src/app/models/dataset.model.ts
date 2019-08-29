@@ -11,6 +11,7 @@ export interface Dataset {
   productTypes: ProductType[];
   beamModes: string[];
   polarizations: string[];
+  subtypes: DatasetSubtype[];
   frequency: string;
   source: {
     name: string;
@@ -25,7 +26,6 @@ export enum MissionDataset {
   S1_BETA = 'Sentinel-1 Interferogram (BETA)',
 }
 
-
 export interface DateRange {
   start: Date;
   end?: Date;
@@ -36,9 +36,15 @@ export interface ProductType {
   apiValue: string;
 }
 
+export interface DatasetSubtype {
+  displayName: string;
+  apiValue: string;
+}
+
 export type DatasetProductTypes = ProductType[];
 export type DatasetBeamModes = string[];
 export type DatasetPolarizations = string[];
+export type DatasetSubtypes = DatasetSubtype[];
 
 export const datasets: Dataset[] = [
   fromDatasets.sentinel_1,

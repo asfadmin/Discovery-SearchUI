@@ -27,7 +27,7 @@ import { AdditionalFiltersModule } from '@components/additional-filters';
   ],
   declarations: [
     MapComponent,
-    AttributionsComponent
+    AttributionsComponent,
   ],
   exports: [ MapComponent ]
 })

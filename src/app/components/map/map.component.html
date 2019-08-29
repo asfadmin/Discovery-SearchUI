@@ -1,5 +1,5 @@
 <div (dragover)="onFileHovered($event)"
-  id="map" class="map">
+  id="map" class="map" #map>
 </div>
 
 <div class="map-header">
@@ -40,3 +40,9 @@
 
 <app-attributions [mousePos]="mousePosition$ | async">
 </app-attributions>
+
+<div
+  (mouseenter)="enterDrawPopup()"
+  (mouseleave)="leaveDrawPopup()"
+  id="popup" class="ol-popup" #overlay>
+</div>

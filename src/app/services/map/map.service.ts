@@ -28,6 +28,18 @@ export class MapService {
   private map: Map;
   private polygonLayer: Layer;
 
+  private selectClick = new Select({
+    condition: click,
+    style: polygonStyle.hidden,
+    layers: l => l.get('selectable') || false
+  });
+
+  private selectHover = new Select({
+    condition: pointerMove,
+    style: polygonStyle.hover,
+    layers: l => l.get('selectable') || false
+  });
+
   private selectedSource = new VectorSource({
     wrapX: models.mapOptions.wrapX
   });
@@ -80,6 +92,16 @@ export class MapService {
     this.zoom(-0.5);
   }
 
+  public enableInteractions(): void {
+    this.selectHover.setActive(true);
+    this.selectClick.setActive(true);
+  }
+
+  public disableInteractions(): void {
+    this.selectHover.setActive(false);
+    this.selectClick.setActive(false);
+  }
+
   private zoom(amount: number): void {
     this.map.getView().animate({
       zoom: this.map.getView().getZoom() + amount,
@@ -94,6 +116,10 @@ export class MapService {
 
     this.polygonLayer = layer;
     this.map.addLayer(this.polygonLayer);
+  }
+
+  public setOverlayUpdate(updateCallback): void {
+    this.drawService.setDrawEndCallback(updateCallback);
   }
 
   public setDrawStyle(style: models.DrawPolygonStyle): void {
@@ -133,7 +159,7 @@ export class MapService {
     });
   }
 
-  public setMapView(viewType: models.MapViewType, layerType: models.MapLayerTypes): void {
+  public setMapView(viewType: models.MapViewType, layerType: models.MapLayerTypes, overlay): void {
     this.viewType = viewType;
 
     const view = {
@@ -144,11 +170,12 @@ export class MapService {
         views.equatorialStreet(),
     }[viewType];
 
-    this.setMap(view);
+    this.setMap(view, overlay);
   }
 
   public clearSelectedGranule(): void {
     this.selectedSource.clear();
+    this.selectClick.getOverlay().getSource().clear();
   }
 
   public setSelectedFeature(feature): void {
@@ -158,6 +185,7 @@ export class MapService {
 
   public clearFocusedGranule(): void {
     this.focusSource.clear();
+    this.selectHover.getOverlay().getSource().clear();
   }
 
   public setFocusedFeature(feature): void {
@@ -200,38 +228,27 @@ export class MapService {
       });
   }
 
-  private setMap(mapView: views.MapView): void {
+  private setMap(mapView: views.MapView, overlay): void {
     this.mapView = mapView;
 
     this.map = (!this.map) ?
-      this.createNewMap() :
+      this.createNewMap(overlay) :
       this.updatedMap();
   }
 
-  private createNewMap(): Map {
+  private createNewMap(overlay): Map {
     const newMap = new Map({
       layers: [ this.mapView.layer, this.drawService.getLayer(), this.focusLayer, this.selectedLayer ],
       target: 'map',
       view: this.mapView.view,
       controls: [],
+      overlays: [overlay],
       loadTilesWhileAnimating: true
     });
 
-    const selectClick = new Select({
-      condition: click,
-      style: polygonStyle.hidden,
-      layers: l => l.get('selectable') || false
-    });
-
-    const selectHover = new Select({
-      condition: pointerMove,
-      style: polygonStyle.hover,
-      layers: l => l.get('selectable') || false
-    });
-
-    newMap.addInteraction(selectClick);
-    newMap.addInteraction(selectHover);
-    selectClick.on('select', (e) => {
+    newMap.addInteraction(this.selectClick);
+    newMap.addInteraction(this.selectHover);
+    this.selectClick.on('select', e => {
       e.target.getFeatures().forEach(
         feature => this.newSelectedGranule$.next(feature.get('filename'))
       );

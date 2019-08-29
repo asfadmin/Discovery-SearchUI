@@ -53,3 +53,11 @@
   margin-left: 0;
   margin-right: 20px;
 }
+
+.ol-popup {
+  position: absolute;
+  -webkit-filter: drop-shadow(0 1px 4px rgba(0, 0, 0, 0.2));
+  filter: drop-shadow(0 1px 4px rgba(0, 0, 0, 0.2));
+  bottom: 12px;
+  left: -50px;
+}

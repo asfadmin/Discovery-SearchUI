@@ -5,7 +5,7 @@ import { MapDrawModeType, MapInteractionModeType } from '@models';
 @Component({
   selector: 'app-draw-selector',
   templateUrl: './draw-selector.component.html',
-  styleUrls: ['./draw-selector.component.css']
+  styleUrls: ['./draw-selector.component.scss']
 })
 export class DrawSelectorComponent {
   @Input() drawMode: MapDrawModeType;

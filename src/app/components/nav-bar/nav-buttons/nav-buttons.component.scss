@@ -7,18 +7,47 @@
 }
 
 .spacing {
-  margin-right: 4px;
+  margin-left: 12px;
   line-height: inherit !important;
+  vertical-align: middle;
+}
+
+.profile {
+  top: -6px;
+}
+
+.cart {
+  top: -9px;
+}
+
+.text-under {
+  margin-left: -9px;
+  font-weight: 400;
+}
+
+.text-downloads {
+  margin-top: -5px;
 }
 
 .mat-icon {
-  @include md-icon-size(28px);
+  @include md-icon-size(34px);
 
   margin-right: 10px;
   color: $asf-primary-dark;
+  height: 32px;
 }
 
 .mat-icon-button {
-  height: 30px;
-  line-height: 30px;
+  height: 36px;
+  line-height: 36px;
+  min-width: 64px;
+}
+
+.menu-hr {
+  color: $asf-primary-dark;
+  background-color: $asf-primary-dark;
+  background-image: none;
+  border: none;
+  height: 1px;
+  opacity: 1;
 }

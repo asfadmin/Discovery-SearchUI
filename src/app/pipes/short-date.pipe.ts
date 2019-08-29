@@ -11,6 +11,6 @@ export class ShortDatePipe implements PipeTransform {
   transform(date: Date): string {
     const dateUtc = moment.utc(date);
 
-    return dateUtc.format('MMM. D, YYYY');
+    return dateUtc.format('MMMM DD YYYY HH:mm:ss');
   }
 }

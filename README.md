@@ -2,6 +2,8 @@
 
 [![CodeFactor](https://www.codefactor.io/repository/github/asfadmin/searchui/badge/devel)](https://www.codefactor.io/repository/github/asfadmin/searchui/overview/devel)
 
+<img src="https://api.ghostinspector.com/v1/suites/5d408f00f1eea0544564fb2a/status-badge" title="Search UI Suite Status">
+
  ASF's Angular search web application
 
 ## Deployments

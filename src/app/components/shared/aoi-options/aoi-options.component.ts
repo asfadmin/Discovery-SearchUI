@@ -37,14 +37,9 @@ export class AoiOptionsComponent implements OnInit {
     this.store$.dispatch(action);
   }
 
-  public onNewDrawMode(mode: MapDrawModeType): void {
-    this.store$.dispatch(new mapStore.SetMapInteractionMode(MapInteractionModeType.DRAW));
-    this.store$.dispatch(new mapStore.SetMapDrawMode(mode));
-  }
-
   public onClearPolygon(): void {
-    this.mapService.clearDrawLayer();
     this.onNewInteractionMode(MapInteractionModeType.DRAW);
+    this.mapService.clearDrawLayer();
   }
 
   public onNewInteractionMode(mode: MapInteractionModeType): void {

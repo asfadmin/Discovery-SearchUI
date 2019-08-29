@@ -75,6 +75,7 @@ export class BreadcrumbListComponent implements OnInit {
   public beamModes: models.DatasetBeamModes;
   public polarizations: models.DatasetPolarizations;
   public flightDirections: models.FlightDirection[];
+  public subtypes: string;
 
   public queuedProducts$ = this.store$.select(queueStore.getQueuedProducts);
 
@@ -121,6 +122,11 @@ export class BreadcrumbListComponent implements OnInit {
     );
     this.store$.select(filtersStore.getFlightDirections).subscribe(
       any  => this.flightDirections = any
+    );
+    this.store$.select(filtersStore.getSubtypes).subscribe(
+      subtypes => this.subtypes = subtypes
+      .map(subtype => subtype.apiValue)
+      .join(',')
     );
 
     this.actions$.pipe(

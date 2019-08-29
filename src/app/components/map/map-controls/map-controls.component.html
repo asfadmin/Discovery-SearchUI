@@ -39,5 +39,18 @@
     </mat-button-toggle>
   </mat-button-toggle-group>
 
+  <app-interaction-selector
+    class="button-group"
+    (newInteraction)="onNewInteractionMode($event)"
+    (clearPolygon)="onClearAOI()"
+    [interaction]="interactionMode$ | async">
+  ></app-interaction-selector>
+
+  <app-draw-selector
+    class="button-group"
+    (newDrawMode)="onNewDrawMode($event)"
+    [drawMode]="drawMode$ | async">
+  </app-draw-selector>
+
   <img src="/assets/NASA_logo.svg" class="meatball">
 </div>

@@ -46,5 +46,6 @@ export const airsar = {
   beamModes: [ '3FP', 'ATI', 'XTI' ],
   polarizations: [
     'Full'
-  ]
+  ],
+  subtypes: [],
 };

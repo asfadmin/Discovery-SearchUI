@@ -5,6 +5,7 @@ import { AppState } from '@store';
 import * as searchStore from '@store/search';
 import * as filtersStore from '@store/filters';
 import * as uiStore from '@store/ui';
+import * as granulesStore from '@store/granules';
 
 import * as models from '@models';
 
@@ -19,6 +20,7 @@ export class MaxResultsSelectorComponent implements OnInit {
   public currentSearchAmount: number;
   public searchType$ = this.store$.select(uiStore.getSearchType);
   public searchTypes = models.SearchType;
+  public areResultsLoaded = false;
 
   public possibleMaxResults = [250, 1000, 5000];
 
@@ -27,6 +29,10 @@ export class MaxResultsSelectorComponent implements OnInit {
   ) {}
 
   ngOnInit() {
+    this.store$.select(granulesStore.getAreResultsLoaded).subscribe(
+      areLoaded => this.areResultsLoaded = areLoaded
+    );
+
     this.store$.select(filtersStore.getMaxSearchResults).subscribe(
       maxResults => this.maxResults = maxResults
     );
@@ -42,6 +48,10 @@ export class MaxResultsSelectorComponent implements OnInit {
 
   public onNewMaxResults(maxResults: number): void {
     this.store$.dispatch(new filtersStore.SetMaxResults(maxResults));
+
+    if (this.areResultsLoaded) {
+      this.store$.dispatch(new searchStore.MakeSearch());
+    }
   }
 
   public formatNumber(num: number): string {
