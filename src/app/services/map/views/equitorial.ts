@@ -13,7 +13,8 @@ export function equatorial(): MapView {
 
   const source = new XYZ({
     url,
-    wrapX: models.mapOptions.wrapX
+    wrapX: models.mapOptions.wrapX,
+    tileSize: [512, 512]
   });
 
   const layer = new TileLayer({ source });
@@ -45,7 +46,8 @@ export function equatorialStreet(): MapView {
 
   const source = new XYZ({
     url,
-    wrapX: models.mapOptions.wrapX
+    wrapX: models.mapOptions.wrapX,
+    tileSize: [512, 512]
   });
 
   const layer = new TileLayer({ source });
