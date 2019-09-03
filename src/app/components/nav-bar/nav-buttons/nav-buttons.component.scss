@@ -7,40 +7,33 @@
 }
 
 .spacing {
-  margin-left: 12px;
+  margin-left: 0;
   line-height: inherit !important;
   vertical-align: middle;
 }
 
-.profile {
+.nav-icon-buttons {
   top: -6px;
 }
 
-.cart {
-  top: -9px;
-}
 
 .text-under {
-  margin-left: -9px;
+  margin-left: 0;
   font-weight: 400;
-}
-
-.text-downloads {
-  margin-top: -5px;
 }
 
 .mat-icon {
   @include md-icon-size(34px);
 
-  margin-right: 10px;
+  margin-right: 0;
   color: $asf-primary-dark;
-  height: 32px;
+  //height: 32px;
 }
 
 .mat-icon-button {
   height: 36px;
   line-height: 36px;
-  min-width: 64px;
+  min-width: 60px;
 }
 
 .menu-hr {
