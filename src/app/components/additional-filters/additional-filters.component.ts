@@ -19,7 +19,7 @@ import * as models from '@models';
   animations: [
     trigger('isOpen', [
       state('true', style({transform: 'translateY(0%)'})),
-      state('false', style({transform: 'translateY(-100%)'})
+      state('false', style({transform: 'translateY(-10000%)'})
       ),
       transition('true => false', animate('300ms ease-out')),
       transition('false => true', animate('300ms ease-in'))
