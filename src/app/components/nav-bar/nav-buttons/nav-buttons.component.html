@@ -1,9 +1,11 @@
 <div class="layout">
-  <span *ngIf="queuedProducts" matTooltip="Download Queue">
+  <span *ngIf="queuedProducts">
     <button
       (click)="onOpenDownloadQueue()"
       [disabled]="queuedProducts.length <= 0"
-      class="spacing cart" mat-icon-button>
+      class="spacing nav-icon-buttons"
+      color="basic"
+      matTooltip="Download Queue" mat-button>
         <mat-icon
           [matBadge]="queuedProducts.length"
           matBadgeColor="{{ queuedProducts.length > 0 ? 'accent' : 'primary' }}"
@@ -12,14 +14,14 @@
           matBadgeSize="small">
             shopping_cart
         </mat-icon>
-    <div class="text-under text-downloads faint-text">Downloads</div>
+    <div class="text-under text-under faint-text">Downloads</div>
     </button>
   </span>
 
   <button
     *ngIf="!datapoolAuthService.isLoggedIn"
     (click)="onAccountButtonClicked()"
-    class="spacing profile" color="basic"
+    class="spacing nav-icon-buttons" color="basic"
     matTooltip="Login" mat-button>
       <mat-icon>account_circle</mat-icon>
     <div class="text-under faint-text">Sign in</div>
