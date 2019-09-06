@@ -151,20 +151,20 @@ export class AppComponent implements OnInit {
 
         if ('error' in CMRSearchAPI) {
           const error = {
-            text: CMRSearchAPI.error.display || 'CMR is experiencing errors, try searching later.',
+            text: CMRSearchAPI.error.display || 'ASF is experiencing errors loading data.  Please try again later.',
             type: 'error',
             target: ['vertex']
           };
 
           this.store$.dispatch(new uiStore.AddBanners([error]));
         } else if (!ASFSearchAPI['ok?']) {
-          this.store$.dispatch(new searchStore.SearchError('ASF API is experiencing errors, try searching later.'));
+          this.store$.dispatch(new searchStore.SearchError('ASF is experiencing errors loading data.  Please try again later.'));
         }
       }),
       catchError(
         _ => {
           const error = {
-            text: 'ASF is experiencing errors loading data, please try searching later.',
+            text: 'ASF is experiencing errors loading data.  Please try again later.',
             type: 'error',
             target: ['vertex']
           };

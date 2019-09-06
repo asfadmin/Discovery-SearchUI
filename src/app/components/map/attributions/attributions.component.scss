@@ -1,3 +1,7 @@
+@import "asf-theme";
+
+$config: mat-typography-config();
+
 .position-right {
   position: fixed;
   right: 0;
@@ -17,12 +21,15 @@
 }
 
 .attribute-box {
-  background-color: rgba(255, 255, 255, 0.85);
+  background-color: $asf-primary-light;
   border-style: solid;
-  border-color: #ccc;
+  border-color: $asf-primary-light;
   border-width: 1px 0 0 1px;
   color: #333;
   max-width: calc(50vw - 100px);
+  font-family: mat-font-family($config);
+  font-weight: 400;
+  font-size: 13px;
 }
 
 .lon-lat {

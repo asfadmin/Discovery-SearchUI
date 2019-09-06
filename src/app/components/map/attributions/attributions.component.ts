@@ -5,7 +5,7 @@ import { LonLat } from '@models';
 @Component({
   selector: 'app-attributions',
   templateUrl: './attributions.component.html',
-  styleUrls: ['./attributions.component.css'],
+  styleUrls: ['./attributions.component.scss'],
 })
 export class AttributionsComponent {
   @Input() mousePos: LonLat;

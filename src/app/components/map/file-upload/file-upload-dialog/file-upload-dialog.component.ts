@@ -96,7 +96,7 @@ export class FileUploadDialogComponent implements OnInit {
           this.snackBar.open(report, type, { duration: 5000 });
           this.dialogRef.close();
         } else {
-          this.dialogRef.close(resp.wkt);
+          this.dialogRef.close(resp.wkt.unwrapped);
         }
       },
       err => {
