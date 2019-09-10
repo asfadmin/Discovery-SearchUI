@@ -1,0 +1,27 @@
+<div
+  fxLayout="column" fxLayoutAlign="space-evenly stretch"
+  class="h100">
+
+  <h1 mat-dialog-title>Download More Search Results</h1>
+
+  <div>
+    Use an api query to download more results manually.
+  </div>
+
+  <form>
+    <mat-form-field>
+      <mat-label>Amount</mat-label>
+      <input matInput>
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>Format</mat-label>
+      <mat-select>
+        <mat-option *ngFor="let format of formats" [value]="format.value">
+          {{format.viewValue}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+  </form>
+
+</div>
