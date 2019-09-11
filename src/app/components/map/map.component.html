@@ -7,7 +7,7 @@
         fxLayout="row"
         fxFlexFill>
 
-    <div fxFlex="auto">
+    <div fxLayout="row">
       <mat-card *ngFor="let banner of (banners$ | async)"
         [@bannerTransition]
         class="banner-card"
@@ -23,10 +23,16 @@
       </mat-card>
     </div>
 
-    <div class="map-buttons card-spacing"
-        fxFlex="175px">
-      <app-map-controls></app-map-controls>
+    <div fxLayout="row">
+      <div fxFill></div>
+      <div fxFlex="nogrow">
+        <app-map-controls></app-map-controls>
+      </div>
+      <div fxFlex="100"></div>
     </div>
+
+    <img src="/assets/NASA_logo.svg" class="meatball">
+
   </div>
 </div>
 

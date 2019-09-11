@@ -16,12 +16,11 @@
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 6.2.4.
 
 ## Intialize after downloading
-After you first download the repo, setup your instance by doing `npm install` from the project root directory.
+After you first download the repo, setup your instance by doing `npm install` from the project root directory. If you don't have npm installed go [here](https://www.npmjs.com/get-npm) for installation instructions. 
 
 ## Development server
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
-You can optionally supply a port number, for example `ng serve --port 4444`
+The app is run locally using the Angular CLI. Installation instructions can be found [here](https://angular.io/cli). After angular is installed, run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files. You can optionally supply a port number, for example `ng serve --port 4444`
 
 ## Code scaffolding
 
@@ -42,3 +41,5 @@ Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protrac
 ## Further help
 
 To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
+
+More information about the app can be found in the [wiki](https://github.com/asfadmin/SearchUI/wiki)
