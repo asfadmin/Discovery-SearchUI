@@ -32,7 +32,7 @@ export class SearchParamsService {
     private prop: PropertyService,
   ) { }
 
-  public getParams(): Observable<{[id: string]: string | null}> {
+  public getParams(): Observable<any> {
     return combineLatest(
       this.searchType$(),
       this.listParam$(),
