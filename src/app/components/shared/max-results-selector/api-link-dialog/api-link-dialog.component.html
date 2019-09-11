@@ -11,12 +11,14 @@
   <form>
     <mat-form-field>
       <mat-label>Amount</mat-label>
-      <input matInput>
+      <input type="number" name="amount"
+      (change)="onAmountChange($event.target.value)"
+      matInput>
     </mat-form-field>
 
     <mat-form-field>
       <mat-label>Format</mat-label>
-      <mat-select>
+      <mat-select (selectionChange)="onFormatChange($event.target)" name="format">
         <mat-option *ngFor="let format of formats" [value]="format.value">
           {{format.viewValue}}
         </mat-option>

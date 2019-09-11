@@ -37,18 +37,7 @@ export class AsfApiService {
   }
 
   public query<T>(stateParamsObj: {[paramName: string]: string | null}): Observable<T> {
-    const relevant = this.onlyRelevantParams(stateParamsObj);
-
-    const stateParams = this.toHttpParams(relevant);
-
-    const params = Object.entries(this.baseParams())
-    .filter(
-      ([key, val]) => !stateParams.get(key)
-    )
-    .reduce(
-      (queryParams, [key, val]) => queryParams.append(key, `${val}`)
-      , stateParams
-    );
+    const params = this.queryParamsFrom(stateParamsObj);
 
     const responseType: any = params.get('output') === 'jsonlite' ?
       'json' : 'text';
@@ -66,6 +55,23 @@ export class AsfApiService {
       this.http.post<T>(
         endpoint, formData, { responseType }
       );
+  }
+
+  public queryParamsFrom(stateParamsObj) {
+    const relevant = this.onlyRelevantParams(stateParamsObj);
+
+    const stateParams = this.toHttpParams(relevant);
+
+    const params = Object.entries(this.baseParams())
+    .filter(
+      ([key, val]) => !stateParams.get(key)
+    )
+    .reduce(
+      (queryParams, [key, val]) => queryParams.append(key, `${val}`)
+      , stateParams
+    );
+
+    return params;
   }
 
   private toHttpParams(paramsObj): HttpParams {
