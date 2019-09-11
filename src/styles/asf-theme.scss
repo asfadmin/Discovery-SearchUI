@@ -41,9 +41,9 @@ $custom-typography: mat-typography-config(
 @include mat-core($custom-typography);
 
 @mixin md-icon-size($size: 24px) {
-  font-size: $size;
-  height: $size;
-  width: $size;
+  font-size: $size !important;
+  height: $size !important;
+  width: $size !important;
 }
 
 button,
