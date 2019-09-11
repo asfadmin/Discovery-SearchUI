@@ -77,11 +77,11 @@ export class ApiLinkDialogComponent implements OnInit {
     ).subscribe(apiLink => this.apiLink = apiLink);
   }
 
-  private onAmountChange(amount: string): void {
+  public onAmountChange(amount: string): void {
     this.amount$.next(+amount);
   }
 
-  private onFormatChange(format: string): void {
+  public onFormatChange(format: string): void {
     this.format$.next(format);
   }
 }
