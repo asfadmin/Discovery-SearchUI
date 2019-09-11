@@ -8,7 +8,7 @@
     Use an api query to download more results manually.
   </div>
 
-  <form>
+  <form onsubmit="return false">
     <mat-form-field>
       <mat-label>Amount</mat-label>
       <input type="number" name="amount"
@@ -18,12 +18,11 @@
 
     <mat-form-field>
       <mat-label>Format</mat-label>
-      <mat-select (selectionChange)="onFormatChange($event.target)" name="format">
+      <mat-select (selectionChange)="onFormatChange($event.value)" name="format">
         <mat-option *ngFor="let format of formats" [value]="format.value">
           {{format.viewValue}}
         </mat-option>
       </mat-select>
     </mat-form-field>
   </form>
-
 </div>

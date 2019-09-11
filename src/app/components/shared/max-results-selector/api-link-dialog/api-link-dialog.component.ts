@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 
-import { Subject, combineLatest } from 'rxjs';
-import { map, withLatestFrom } from 'rxjs/operators';
+import { BehaviorSubject, combineLatest } from 'rxjs';
+import { map, withLatestFrom, filter } from 'rxjs/operators';
 
 import * as services from '@services';
 
@@ -11,8 +11,8 @@ import * as services from '@services';
   styleUrls: ['./api-link-dialog.component.css']
 })
 export class ApiLinkDialogComponent implements OnInit {
-  public amount$ = new Subject<number>();
-  public format$ = new Subject<string>();
+  public amount$ = new BehaviorSubject<number>(5000);
+  public format$ = new BehaviorSubject<string>('CSV');
 
   public formats = [
     {
@@ -50,27 +50,23 @@ export class ApiLinkDialogComponent implements OnInit {
     combineLatest(
       this.amount$, this.format$
     ).pipe(
+      filter(([amount, format]) => !!amount && !!format),
       withLatestFrom(this.searchParams.getParams()),
-    //.pipe(
-      //map(params => {
-        //let newParams = params;
-        //if (this.selectedFormat !== null) {
-          //newParams = [params, {...params, output: this.selectedFormat}];
-        //}
-        //if (this.amount !== null) {
-          //newParams = [params, {...params, maxResults: this.amount}];
-        //}
-
-        //return newParams;
-      //}),
+      map(([[format, amount], params]) => {
+        return {
+          ...params,
+          output: format,
+          maxResults: amount
+        };
+      }),
     ).subscribe(console.log);
   }
 
   private onAmountChange(amount: string): void {
-    console.log(amount, typeof amount);
+    this.amount$.next(+amount);
   }
 
-  private onFormatChange(format): void {
-    console.log(format, typeof format);
+  private onFormatChange(format: string): void {
+    this.format$.next(format);
   }
 }
