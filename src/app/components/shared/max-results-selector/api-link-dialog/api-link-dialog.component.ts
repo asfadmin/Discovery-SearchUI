@@ -14,6 +14,11 @@ export class ApiLinkDialogComponent implements OnInit {
   public amount$ = new BehaviorSubject<number>(5000);
   public format$ = new BehaviorSubject<string>('CSV');
 
+  public format: string;
+  public amount: number;
+
+  public apiLink: string;
+
   public formats = [
     {
       value: 'CSV',
@@ -47,6 +52,15 @@ export class ApiLinkDialogComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+
+    this.amount$.subscribe(
+      amount => this.amount = amount
+    );
+
+    this.format$.subscribe(
+      format => this.format = format
+    );
+
     combineLatest(
       this.amount$, this.format$
     ).pipe(
@@ -55,11 +69,12 @@ export class ApiLinkDialogComponent implements OnInit {
       map(([[format, amount], params]) => {
         return {
           ...params,
-          output: format,
-          maxResults: amount
+          output: amount,
+          maxResults: format
         };
       }),
-    ).subscribe(console.log);
+      map(params => this.asfApiService.queryUrlFrom(params))
+    ).subscribe(apiLink => this.apiLink = apiLink);
   }
 
   private onAmountChange(amount: string): void {

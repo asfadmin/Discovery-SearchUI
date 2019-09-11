@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 
 import { MatMenuModule } from '@angular/material/menu';
 import { MatInputModule } from '@angular/material/input';
@@ -18,6 +19,7 @@ import { ApiLinkDialogComponent } from './api-link-dialog/api-link-dialog.compon
   declarations: [MaxResultsSelectorComponent, ApiLinkDialogComponent],
   imports: [
     CommonModule,
+    FormsModule,
     FontAwesomeModule,
     MatMenuModule,
     MatInputModule,

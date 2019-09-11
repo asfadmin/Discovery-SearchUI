@@ -39,14 +39,14 @@ export class AsfApiService {
   public query<T>(stateParamsObj: {[paramName: string]: string | null}): Observable<T> {
     const params = this.queryParamsFrom(stateParamsObj);
 
-    const responseType: any = params.get('output') === 'jsonlite' ?
-      'json' : 'text';
-
     const queryParamsStr = params.toString()
       .replace('+', '%2B');
 
-    const endpoint = `${this.apiUrl}/services/search/param`;
+    const endpoint = this.searchEndpoint();
     const formData = this.toFormData(params);
+
+    const responseType: any = params.get('output') === 'jsonlite' ?
+      'json' : 'text';
 
     return !this.isUrlToLong(endpoint, queryParamsStr) ?
       this.http.get<T>(
@@ -57,7 +57,21 @@ export class AsfApiService {
       );
   }
 
-  public queryParamsFrom(stateParamsObj) {
+  public queryUrlFrom(stateParamsObj) {
+    const params = this.queryParamsFrom(stateParamsObj);
+
+    const endpoint = this.searchEndpoint();
+    const queryParamsStr = params.toString()
+      .replace('+', '%2B');
+
+    return `${endpoint}?${queryParamsStr}`;
+  }
+
+  private searchEndpoint(): string {
+    return `${this.apiUrl}/services/search/param`;
+  }
+
+  private queryParamsFrom(stateParamsObj) {
     const relevant = this.onlyRelevantParams(stateParamsObj);
 
     const stateParams = this.toHttpParams(relevant);
