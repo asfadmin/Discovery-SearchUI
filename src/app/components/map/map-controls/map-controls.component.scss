@@ -2,25 +2,34 @@
 
 .position {
   z-index: 998;
+  margin-right: -49px;
+  margin-top: -35px;
 }
 
-.layout {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-end;
+.icon-bar {
+  background-color: $asf-primary-light;
+  padding: 3px;
 }
 
 .control-icon {
-  @include md-icon-size(22px);
+  @include md-icon-size($asf-ribbon-icon-size);
 }
 
 .button-group {
-  margin-bottom: 5px;
+  margin: 5px;
   pointer-events: auto;
 }
 
-.meatball {
-  position: fixed;
-  pointer-events: none;
-  bottom: 40px;
+.zoom-group {
+  width: 128px;
+}
+
+.move-handle {
+  //position: absolute;
+  margin-top: 9px;
+  right: 10px;
+  color: $asf-primary;
+  cursor: move;
+  width: 24px;
+  height: 24px;
 }
