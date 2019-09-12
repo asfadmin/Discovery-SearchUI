@@ -24,17 +24,6 @@ import { QueueComponent } from '@components/nav-bar/queue';
 import * as models from '@models/index';
 import * as filtersStore from '@store/filters';
 
-enum BreadcrumbFilterType {
-  SEARCH_TYPE = 'Search Type',
-  DATASET = 'Dataset',
-  DATE = 'Date',
-  AOI = 'Area of Interest',
-  PATH_FRAME = 'Path/Frame',
-  ADDITIONAL = 'Additional Filters',
-  FILTERS_MENU = '...',
-  NONE = 'None'
-}
-
 @Component({
   selector: 'app-nav-bar',
   templateUrl: './nav-bar.component.html',
@@ -61,9 +50,7 @@ export class NavBarComponent implements OnInit {
   public aoiErrors$ = new Subject<void>();
   public isAOIError = false;
   public isHoveringAOISelector = false;
-
-  public filterTypes = BreadcrumbFilterType;
-  public selectedFilter = BreadcrumbFilterType.NONE;
+  public isAOIOptionsOpen = false;
 
   public searchType: models.SearchType = models.SearchType.DATASET;
   public searchTypes = models.SearchType;
@@ -119,7 +106,7 @@ export class NavBarComponent implements OnInit {
 
   public clearSelectedBreadcrumb(): void {
     this.store$.dispatch(new uiStore.CloseFiltersMenu());
-    this.selectedFilter = BreadcrumbFilterType.NONE;
+    this.closeAOIOptions();
   }
 
   public onInputSearchPolygon(polygon: string): void {
@@ -154,16 +141,19 @@ export class NavBarComponent implements OnInit {
     }
   }
 
-  public onNewSelectedFilter(filterType: BreadcrumbFilterType): void {
-    this.selectedFilter = this.selectedFilter === filterType ?
-      BreadcrumbFilterType.NONE : filterType;
+  public toggleAOIOptions(): void {
+    this.isAOIOptionsOpen = !this.isAOIOptionsOpen;
 
     this.store$.dispatch(new uiStore.CloseFiltersMenu());
   }
 
   public onToggleFiltersMenu(): void {
     this.store$.dispatch(new uiStore.ToggleFiltersMenu());
-    this.selectedFilter = BreadcrumbFilterType.NONE;
+    this.closeAOIOptions();
+  }
+
+  public closeAOIOptions(): void {
+    this.isAOIOptionsOpen = false;
   }
 
   public onCopy(): void {

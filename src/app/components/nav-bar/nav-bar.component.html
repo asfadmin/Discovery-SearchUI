@@ -80,15 +80,15 @@
                       file_copy
                     </mat-icon>
                     <mat-icon
-                      (click)="onNewSelectedFilter(filterTypes.AOI)"
+                      (click)="toggleAOIOptions()"
                       matTooltip="More options"
                       class="clickable additional-aoi-toggle"
                       matSuffix>
-                      {{ selectedFilter === filterTypes.AOI ? 'arrow_drop_up' : 'arrow_drop_down' }}
+                      {{ isAOIOptionsOpen ? 'arrow_drop_up' : 'arrow_drop_down' }}
                     </mat-icon>
                   </mat-form-field>
 
-                  <mat-card *ngIf="selectedFilter === filterTypes.AOI"
+                  <mat-card *ngIf="isAOIOptionsOpen"
                            [@fadeTransition]
                             class="breadcrumb-filter">
                     <app-aoi-options
