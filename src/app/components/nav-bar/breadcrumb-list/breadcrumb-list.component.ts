@@ -65,17 +65,6 @@ export class BreadcrumbListComponent implements OnInit {
 
   public searchTypes = models.SearchType;
   public polygon: string;
-  public pathRange: models.Range<number | null>;
-  public frameRange: models.Range<number | null>;
-  public season: models.Range<number | null>;
-  public shouldOmitSearchPolygon: boolean;
-  public listSearchMode: models.ListSearchType;
-  public searchList: string[];
-  public productTypes: models.ProductType[];
-  public beamModes: models.DatasetBeamModes;
-  public polarizations: models.DatasetPolarizations;
-  public flightDirections: models.FlightDirection[];
-  public subtypes: string;
 
   public queuedProducts$ = this.store$.select(queueStore.getQueuedProducts);
 
@@ -92,41 +81,6 @@ export class BreadcrumbListComponent implements OnInit {
   ngOnInit() {
     this.store$.select(uiStore.getSearchType).subscribe(
       searchType => this.searchType = searchType
-    );
-    this.store$.select(filtersStore.getPathRange).subscribe(
-      range => this.pathRange = range
-    );
-    this.store$.select(filtersStore.getFrameRange).subscribe(
-      range => this.frameRange = range
-    );
-    this.store$.select(filtersStore.getSeason).subscribe(
-      range => this.season = range
-    );
-    this.store$.select(filtersStore.getShouldOmitSearchPolygon).subscribe(
-      boolean  => this.shouldOmitSearchPolygon = boolean
-    );
-    this.store$.select(filtersStore.getListSearchMode).subscribe(
-      boolean  => this.listSearchMode = boolean
-    );
-    this.store$.select(filtersStore.getSearchList).subscribe(
-      string  => this.searchList = string
-    );
-    this.store$.select(filtersStore.getProductTypes).subscribe(
-      any  => this.productTypes = any
-    );
-    this.store$.select(filtersStore.getPolarizations).subscribe(
-      any  => this.polarizations = any
-    );
-    this.store$.select(filtersStore.getBeamModes).subscribe(
-      any  => this.beamModes = any
-    );
-    this.store$.select(filtersStore.getFlightDirections).subscribe(
-      any  => this.flightDirections = any
-    );
-    this.store$.select(filtersStore.getSubtypes).subscribe(
-      subtypes => this.subtypes = subtypes
-      .map(subtype => subtype.apiValue)
-      .join(',')
     );
 
     this.actions$.pipe(

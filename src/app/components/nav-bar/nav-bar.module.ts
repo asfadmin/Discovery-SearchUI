@@ -17,7 +17,7 @@ import { NavButtonsModule } from './nav-buttons';
 
 @NgModule({
   declarations: [
-    NavBarComponent
+    NavBarComponent,
   ],
   imports: [
     CommonModule,

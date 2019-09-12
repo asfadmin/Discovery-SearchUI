@@ -38,22 +38,6 @@ $break-medium: 1250px;
   padding-top: 5px;
 }
 
-.info-bar {
-  border-top-color: $asf-primary;
-  border-top-style: solid;
-  border-top-width: 1px;
-  background-color: $asf-primary-light;
-  color: $asf-primary-dark;
-  line-height: 30px;
-  font-family: mat-font-family($custom-typography);
-  font-size: 14px;
-}
-
-.first-info {
-  padding-left: 10px;
-  height: 32px;
-}
-
 .max-results {
   text-align: left;
   font-family: mat-font-family($config);

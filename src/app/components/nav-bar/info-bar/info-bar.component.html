@@ -1,0 +1,39 @@
+<div fxLayout="row wrap"
+     fxFlexFill
+     class="info-bar">
+
+  <div fxFlex class="first-info">
+
+    <span *ngIf="pathRange.start || pathRange.end">
+      Path: {{pathRange.start}} - {{pathRange.end}}
+    </span>
+    <span *ngIf="frameRange.start || frameRange.end">
+      Frame: {{frameRange.start}} - {{frameRange.end}}
+    </span>
+    <span *ngIf="season.start || season.end">
+      Season: {{season.start}} - {{season.end}}
+    </span>
+    <span *ngIf="shouldOmitSearchPolygon">
+      Omit Geo: {{true == shouldOmitSearchPolygon ? 'Yes' : 'No' }}
+    </span>
+    <span *ngIf="productTypes.length">
+      File Types:
+      <span *ngFor="let productType of productTypes; let i = index">
+          {{productType.apiValue}},
+      </span>
+    </span>
+    <span *ngIf="beamModes.length">
+      Beam Modes: {{beamModes}}
+    </span>
+    <span *ngIf="polarizations.length">
+      Polarizations: {{polarizations}}
+    </span>
+    <span *ngIf="flightDirections.length">
+      Flight Dir: {{flightDirections}}
+    </span>
+    <span *ngIf="subtypes">
+      Dataset: {{ subtypes }}
+    </span>
+
+  </div>
+</div>
