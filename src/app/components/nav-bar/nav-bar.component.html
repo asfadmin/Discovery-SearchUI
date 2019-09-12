@@ -75,7 +75,6 @@
                     (close)="clearSelectedBreadcrumb()"></app-aoi-options>
                 </mat-card>
               </form>
-
           </div>
 
           <div fxLayout.lt-md="row">
@@ -86,6 +85,7 @@
                      class="breadcrumb">
                   <app-date-selector></app-date-selector>
                 </div>
+
                 <div fxFlex="nogrow" class="breadcrumb">
                   <button (click)="onToggleFiltersMenu()"
                           mat-button class="additional-filters-button">
@@ -94,6 +94,7 @@
                     <mat-icon>more_horiz</mat-icon>
                   </button>
                 </div>
+
                 <div fxFlex="noshrink" class="breadcrumb search-controls">
                   <app-search-button></app-search-button>
                   <app-clear-button></app-clear-button>
