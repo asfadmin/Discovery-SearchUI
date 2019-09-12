@@ -20,7 +20,7 @@ export class InfoBarComponent implements OnInit {
   public shouldOmitSearchPolygon: boolean;
   public listSearchMode: models.ListSearchType;
   public searchList: string[];
-  public productTypes: models.ProductType[];
+  public productTypes: string;
   public beamModes: models.DatasetBeamModes;
   public polarizations: models.DatasetPolarizations;
   public flightDirections: models.FlightDirection[];
@@ -33,39 +33,41 @@ export class InfoBarComponent implements OnInit {
 
   ngOnInit() {
     this.store$.select(filtersStore.getPathRange).subscribe(
-      range => this.pathRange = range
+      pathRange => this.pathRange = pathRange
     );
     this.store$.select(filtersStore.getFrameRange).subscribe(
-      range => this.frameRange = range
+      frameRange => this.frameRange = frameRange
     );
     this.store$.select(filtersStore.getSeason).subscribe(
-      range => this.season = range
+      season => this.season = season
     );
     this.store$.select(filtersStore.getShouldOmitSearchPolygon).subscribe(
-      boolean  => this.shouldOmitSearchPolygon = boolean
+      shouldOmit  => this.shouldOmitSearchPolygon = shouldOmit
     );
     this.store$.select(filtersStore.getListSearchMode).subscribe(
-      boolean  => this.listSearchMode = boolean
+      listSearchMode  => this.listSearchMode = listSearchMode
     );
     this.store$.select(filtersStore.getSearchList).subscribe(
-      string  => this.searchList = string
+      searchList  => this.searchList = searchList
     );
     this.store$.select(filtersStore.getProductTypes).subscribe(
-      any  => this.productTypes = any
+      productTypes => this.productTypes = productTypes
+        .map(subtype => subtype.apiValue)
+        .join(',')
     );
     this.store$.select(filtersStore.getPolarizations).subscribe(
-      any  => this.polarizations = any
+      pols  => this.polarizations = pols
     );
     this.store$.select(filtersStore.getBeamModes).subscribe(
-      any  => this.beamModes = any
+      beamModes => this.beamModes = beamModes
     );
     this.store$.select(filtersStore.getFlightDirections).subscribe(
-      any  => this.flightDirections = any
+      flightDirs  => this.flightDirections = flightDirs
     );
     this.store$.select(filtersStore.getSubtypes).subscribe(
       subtypes => this.subtypes = subtypes
-      .map(subtype => subtype.apiValue)
-      .join(',')
+        .map(subtype => subtype.apiValue)
+        .join(',')
     );
   }
 
