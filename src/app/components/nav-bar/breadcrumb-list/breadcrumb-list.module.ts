@@ -24,10 +24,9 @@ import { NavButtonsModule } from '@components/nav-bar/nav-buttons';
 import { LogoModule } from '@components/nav-bar/logo/logo.module';
 
 import { CustomBreakPointsProvider } from '@services/custom-breakpoints.ts';
-import { BreadcrumbsComponent } from './breadcrumbs/breadcrumbs.component';
 
 @NgModule({
-  declarations: [BreadcrumbListComponent, BreadcrumbsComponent],
+  declarations: [BreadcrumbListComponent],
   imports: [
     CommonModule,
     FormsModule,

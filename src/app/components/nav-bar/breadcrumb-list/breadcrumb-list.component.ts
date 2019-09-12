@@ -8,6 +8,7 @@ import { Subject } from 'rxjs';
 import { tap, map, filter, delay } from 'rxjs/operators';
 import { Observable, combineLatest } from 'rxjs';
 import { Store, ActionsSubject } from '@ngrx/store';
+import { ofType } from '@ngrx/effects';
 import { ClipboardService } from 'ngx-clipboard';
 
 import { AppState } from '@store';
@@ -23,6 +24,16 @@ import { QueueComponent } from '@components/nav-bar/queue';
 import * as models from '@models/index';
 import * as filtersStore from '@store/filters';
 
+enum BreadcrumbFilterType {
+  SEARCH_TYPE = 'Search Type',
+  DATASET = 'Dataset',
+  DATE = 'Date',
+  AOI = 'Area of Interest',
+  PATH_FRAME = 'Path/Frame',
+  ADDITIONAL = 'Additional Filters',
+  FILTERS_MENU = '...',
+  NONE = 'None'
+}
 
 @Component({
   selector: 'app-breadcrumb-list',
@@ -48,6 +59,11 @@ export class BreadcrumbListComponent implements OnInit {
   public isAOIError = false;
   public isHoveringAOISelector = false;
 
+  public filterTypes = BreadcrumbFilterType;
+  public selectedFilter = BreadcrumbFilterType.NONE;
+  public searchType: models.SearchType = models.SearchType.DATASET;
+
+  public searchTypes = models.SearchType;
   public polygon: string;
   public pathRange: models.Range<number | null>;
   public frameRange: models.Range<number | null>;
@@ -65,6 +81,7 @@ export class BreadcrumbListComponent implements OnInit {
 
   constructor(
     private store$: Store<AppState>,
+    private actions$: ActionsSubject,
     private legacyAreaFormat: LegacyAreaFormatService,
     private mapService: MapService,
     private wktService: WktService,
@@ -73,6 +90,9 @@ export class BreadcrumbListComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+    this.store$.select(uiStore.getSearchType).subscribe(
+      searchType => this.searchType = searchType
+    );
     this.store$.select(filtersStore.getPathRange).subscribe(
       range => this.pathRange = range
     );
@@ -109,12 +129,22 @@ export class BreadcrumbListComponent implements OnInit {
       .join(',')
     );
 
+    this.actions$.pipe(
+      ofType<searchStore.MakeSearch>(searchStore.SearchActionType.MAKE_SEARCH),
+    ).subscribe(
+      _ => this.onSearch()
+    );
+
     const polygon$ = this.mapService.searchPolygon$;
     polygon$.subscribe(
       p => this.polygon = p
     );
 
     this.handleAOIErrors();
+  }
+
+  public onSearch(): void {
+    this.clearSelectedBreadcrumb();
   }
 
   public onClearSearch(): void {
@@ -125,6 +155,11 @@ export class BreadcrumbListComponent implements OnInit {
     this.dialog.open(QueueComponent, {
       id: 'dlQueueDialog',
     });
+  }
+
+  public clearSelectedBreadcrumb(): void {
+    this.store$.dispatch(new uiStore.CloseFiltersMenu());
+    this.selectedFilter = BreadcrumbFilterType.NONE;
   }
 
   public onInputSearchPolygon(polygon: string): void {
@@ -157,6 +192,24 @@ export class BreadcrumbListComponent implements OnInit {
     } catch (e) {
       this.aoiErrors$.next();
     }
+  }
+
+  public onNewSelectedFilter(filterType: BreadcrumbFilterType): void {
+    this.selectedFilter = this.selectedFilter === filterType ?
+      BreadcrumbFilterType.NONE : filterType;
+
+    this.store$.dispatch(new uiStore.CloseFiltersMenu());
+  }
+
+  public onToggleFiltersMenu(): void {
+    this.store$.dispatch(new uiStore.ToggleFiltersMenu());
+    this.selectedFilter = BreadcrumbFilterType.NONE;
+  }
+
+  public onSetSearchType(searchType: models.SearchType): void {
+    this.clearSelectedBreadcrumb();
+    this.store$.dispatch(new searchStore.ClearSearch());
+    this.store$.dispatch(new uiStore.SetSearchType(searchType));
   }
 
   public onCopy(): void {
