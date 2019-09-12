@@ -7,7 +7,8 @@ import {
 import { Subject } from 'rxjs';
 import { tap, delay } from 'rxjs/operators';
 
-import { Store } from '@ngrx/store';
+import { Store, ActionsSubject } from '@ngrx/store';
+import { ofType } from '@ngrx/effects';
 import { ClipboardService } from 'ngx-clipboard';
 
 import { AppState } from '@store';
@@ -53,6 +54,7 @@ export class DatasetNavComponent implements OnInit {
 
   constructor(
     private store$: Store<AppState>,
+    private actions$: ActionsSubject,
     private legacyAreaFormat: services.LegacyAreaFormatService,
     private mapService: services.MapService,
     private wktService: services.WktService,
@@ -60,24 +62,27 @@ export class DatasetNavComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.store$.select(uiStore.getSearchType).pipe(
+    this.actions$.pipe(
+      ofType<searchStore.MakeSearch>(searchStore.SearchActionType.MAKE_SEARCH),
     ).subscribe(
-      () => this.clearSelectedBreadcrumb()
+      _ => this.closeMenus()
     );
 
-    const polygon$ = this.mapService.searchPolygon$;
-    polygon$.subscribe(
+    this.store$.select(uiStore.getSearchType).subscribe(
+      () => this.closeMenus()
+    );
+
+    this.mapService.searchPolygon$.subscribe(
       p => this.polygon = p
     );
 
     this.handleAOIErrors();
   }
 
-  public clearSelectedBreadcrumb(): void {
+  public closeMenus(): void {
     this.store$.dispatch(new uiStore.CloseFiltersMenu());
     this.closeAOIOptions();
   }
-
 
   public toggleAOIOptions(): void {
     this.isAOIOptionsOpen = !this.isAOIOptionsOpen;
