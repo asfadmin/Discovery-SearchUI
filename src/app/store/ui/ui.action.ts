@@ -3,6 +3,9 @@ import { Action } from '@ngrx/store';
 import { FilterType, SearchType, ViewType, Banner } from '@models';
 
 export enum UIActionType {
+  TOGGLE_AOI_OPTIONS = '[UI] Toggle AOI Options',
+  CLOSE_AOI_OPTIONS = '[UI] Close AOI Options',
+
   TOGGLE_FILTERS_MENU = '[UI] Toggle Filters Menu',
   CLOSE_FILTERS_MENU = '[UI] Close Filters Menu',
   OPEN_FILTERS_MENU = '[UI] Open Filters Menu ',
@@ -18,6 +21,14 @@ export enum UIActionType {
   LOAD_BANNERS = '[Banner] Load Banners',
   ADD_BANNERS = '[Banner] Set Banners',
   REMOVE_BANNER = '[Banner] Remove Banner',
+}
+
+export class ToggleAOIOptions implements Action {
+  public readonly type = UIActionType.TOGGLE_AOI_OPTIONS;
+}
+
+export class CloseAOIOptions implements Action {
+  public readonly type = UIActionType.CLOSE_AOI_OPTIONS;
 }
 
 export class ToggleFiltersMenu implements Action {
@@ -79,6 +90,8 @@ export class LoadBanners implements Action {
 }
 
 export type UIActions =
+  | ToggleAOIOptions
+  | CloseAOIOptions
   | ToggleFiltersMenu
   | CloseFiltersMenu
   | OpenFiltersMenu

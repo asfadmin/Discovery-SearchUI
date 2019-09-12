@@ -8,6 +8,7 @@ import { UIActionType, UIActions } from './ui.action';
 export interface UIState {
   isFiltersMenuOpen: boolean;
   isBottomMenuOpen: boolean;
+  isAOIOptionsOpen: boolean;
   uiView: ViewType;
   selectedFilter: FilterType | undefined;
   searchType: SearchType | null;
@@ -17,6 +18,7 @@ export interface UIState {
 export const initState: UIState = {
   isFiltersMenuOpen: false,
   isBottomMenuOpen: false,
+  isAOIOptionsOpen: false,
   uiView: ViewType.MAIN,
   selectedFilter: FilterType.DATASET,
   searchType: SearchType.DATASET,
@@ -26,6 +28,20 @@ export const initState: UIState = {
 
 export function uiReducer(state = initState, action: UIActions): UIState {
   switch (action.type) {
+    case UIActionType.TOGGLE_AOI_OPTIONS: {
+      return {
+          ...state,
+          isAOIOptionsOpen: !state.isAOIOptionsOpen,
+        };
+    }
+
+    case UIActionType.CLOSE_AOI_OPTIONS: {
+      return {
+          ...state,
+          isAOIOptionsOpen: false
+        };
+    }
+
     case UIActionType.TOGGLE_FILTERS_MENU: {
       return {
           ...state,
@@ -127,6 +143,11 @@ export const getSelectedFilter = createSelector(
 export const getSearchType = createSelector(
   getUIState,
   state => state.searchType
+);
+
+export const getIsAOIOptionsOpen = createSelector(
+  getUIState,
+  (state: UIState) => state.isAOIOptionsOpen
 );
 
 export const getIsFiltersMenuOpen = createSelector(

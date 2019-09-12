@@ -35,6 +35,7 @@ import { CustomBreakPointsProvider } from '@services/custom-breakpoints.ts';
 import { SearchTypeSelectorComponent } from './search-type-selector/search-type-selector.component';
 import { DatasetNavComponent } from './dataset-nav/dataset-nav.component';
 import { ListNavComponent } from './list-nav/list-nav.component';
+import { AoiFilterComponent } from './dataset-nav/aoi-filter/aoi-filter.component';
 
 @NgModule({
   declarations: [
@@ -42,7 +43,8 @@ import { ListNavComponent } from './list-nav/list-nav.component';
     InfoBarComponent,
     SearchTypeSelectorComponent,
     DatasetNavComponent,
-    ListNavComponent
+    ListNavComponent,
+    AoiFilterComponent
   ],
   imports: [
     CommonModule,
