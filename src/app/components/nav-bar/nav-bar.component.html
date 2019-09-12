@@ -19,17 +19,8 @@
           <div fxLayout="row">
 
             <!-- SEARCH TYPE -->
-            <div fxFlex="nogrow" class="breadcrumb">
-              <mat-form-field fxFlex="120px">
-                <mat-label>Search Type</mat-label>
-                <mat-select
-                  [(ngModel)]="searchType"
-                  (selectionChange)="onSetSearchType($event.value)">
-                  <mat-option [value]="searchTypes.DATASET">Geographic</mat-option>
-                  <mat-option [value]="searchTypes.LIST">List</mat-option>
-                </mat-select>
-              </mat-form-field>
-            </div>
+            <app-search-type-selector class="breadcrumb">
+            </app-search-type-selector>
 
             <!-- ADDITIONAL FILTERS FOR NON-DATASET SEARCH -->
             <ng-container *ngIf="searchType !== searchTypes.DATASET">

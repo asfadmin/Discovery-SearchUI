@@ -64,9 +64,10 @@ export class NavBarComponent implements OnInit {
 
   public filterTypes = BreadcrumbFilterType;
   public selectedFilter = BreadcrumbFilterType.NONE;
-  public searchType: models.SearchType = models.SearchType.DATASET;
 
+  public searchType: models.SearchType = models.SearchType.DATASET;
   public searchTypes = models.SearchType;
+
   public polygon: string;
 
   public queuedProducts$ = this.store$.select(queueStore.getQueuedProducts);
@@ -82,7 +83,9 @@ export class NavBarComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.store$.select(uiStore.getSearchType).subscribe(
+    this.store$.select(uiStore.getSearchType).pipe(
+      tap(() => this.clearSelectedBreadcrumb())
+    ).subscribe(
       searchType => this.searchType = searchType
     );
 
@@ -161,12 +164,6 @@ export class NavBarComponent implements OnInit {
   public onToggleFiltersMenu(): void {
     this.store$.dispatch(new uiStore.ToggleFiltersMenu());
     this.selectedFilter = BreadcrumbFilterType.NONE;
-  }
-
-  public onSetSearchType(searchType: models.SearchType): void {
-    this.clearSelectedBreadcrumb();
-    this.store$.dispatch(new searchStore.ClearSearch());
-    this.store$.dispatch(new uiStore.SetSearchType(searchType));
   }
 
   public onCopy(): void {

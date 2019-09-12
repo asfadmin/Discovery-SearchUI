@@ -32,11 +32,13 @@ import { SearchSelectorModule } from '@components/shared/selectors/search-select
 import { LogoModule } from '@components/nav-bar/logo/logo.module';
 
 import { CustomBreakPointsProvider } from '@services/custom-breakpoints.ts';
+import { SearchTypeSelectorComponent } from './search-type-selector/search-type-selector.component';
 
 @NgModule({
   declarations: [
     NavBarComponent,
-    InfoBarComponent
+    InfoBarComponent,
+    SearchTypeSelectorComponent
   ],
   imports: [
     CommonModule,
