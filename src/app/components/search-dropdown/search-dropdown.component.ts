@@ -13,9 +13,9 @@ import * as searchStore from '@store/search';
 import * as models from '@models';
 
 @Component({
-  selector: 'app-additional-filters',
-  templateUrl: './additional-filters.component.html',
-  styleUrls: ['./additional-filters.component.scss'],
+  selector: 'app-search-dropdown',
+  templateUrl: './search-dropdown.component.html',
+  styleUrls: ['./search-dropdown.component.scss'],
   animations: [
     trigger('isOpen', [
       state('true', style({transform: 'translateY(0%)'})),
@@ -26,7 +26,7 @@ import * as models from '@models';
     ])
   ],
 })
-export class AdditionalFiltersComponent implements OnInit {
+export class SearchDropdownComponent implements OnInit {
   public isFiltersMenuOpen$ = this.store$.select(uiStore.getIsFiltersMenuOpen);
 
   public searchError$ = this.store$.select(searchStore.getSearchError);
