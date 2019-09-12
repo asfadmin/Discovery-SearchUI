@@ -27,7 +27,6 @@ import * as models from '@models';
   ],
 })
 export class AdditionalFiltersComponent implements OnInit {
-  public isSidebarOpen$ = this.store$.select(uiStore.getIsSidebarOpen);
   public isFiltersMenuOpen$ = this.store$.select(uiStore.getIsFiltersMenuOpen);
 
   public searchError$ = this.store$.select(searchStore.getSearchError);

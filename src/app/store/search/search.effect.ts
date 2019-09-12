@@ -100,12 +100,6 @@ export class SearchEffects {
   );
 
   @Effect()
-  private hideSidebarOnSearchResponse: Observable<Action> = this.actions$.pipe(
-    ofType<SearchResponse>(SearchActionType.SEARCH_RESPONSE),
-    map(_ => new uiStore.CloseSidebar()),
-  );
-
-  @Effect()
   private hideFilterMenuOnSearchResponse: Observable<Action> = this.actions$.pipe(
     ofType<SearchResponse>(SearchActionType.SEARCH_RESPONSE),
     map(_ => new uiStore.CloseFiltersMenu()),

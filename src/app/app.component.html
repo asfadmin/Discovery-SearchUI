@@ -1,20 +1,10 @@
-<mat-sidenav-container class="container" (backdropClick)="onCloseSidebar()">
-  <mat-sidenav class="app-sidenav" #sidenav (keydown.escape)="onCloseSidebar()" disableClose>
-    <app-sidebar></app-sidebar>
-  </mat-sidenav>
+<div class="container">
+  <app-bottom-menu>
+  </app-bottom-menu>
 
-  <mat-sidenav-content class="app-content">
-    <div>
-      <app-bottom-menu>
-      </app-bottom-menu>
+  <app-nav-bar [isLoading]="isLoading$ | async">
+  </app-nav-bar>
 
-      <app-nav-bar [isLoading]="isLoading$ | async">
-      </app-nav-bar>
-
-      <app-map (loadUrlState)="onLoadUrlState()">
-      </app-map>
-
-    </div>
-  </mat-sidenav-content>
-</mat-sidenav-container>
-
+  <app-map (loadUrlState)="onLoadUrlState()">
+  </app-map>
+</div>

@@ -3,10 +3,6 @@ import { Action } from '@ngrx/store';
 import { FilterType, SearchType, ViewType, Banner } from '@models';
 
 export enum UIActionType {
-  TOGGLE_SIDEBAR = '[UI] Toggle Sidebar',
-  CLOSE_SIDEBAR = '[UI] Close Sidebar',
-  OPEN_SIDEBAR = '[UI] Open Sidebar ',
-
   TOGGLE_FILTERS_MENU = '[UI] Toggle Filters Menu',
   CLOSE_FILTERS_MENU = '[UI] Close Filters Menu',
   OPEN_FILTERS_MENU = '[UI] Open Filters Menu ',
@@ -22,18 +18,6 @@ export enum UIActionType {
   LOAD_BANNERS = '[Banner] Load Banners',
   ADD_BANNERS = '[Banner] Set Banners',
   REMOVE_BANNER = '[Banner] Remove Banner',
-}
-
-export class ToggleSidebar implements Action {
-  public readonly type = UIActionType.TOGGLE_SIDEBAR;
-}
-
-export class CloseSidebar implements Action {
-  public readonly type = UIActionType.CLOSE_SIDEBAR;
-}
-
-export class OpenSidebar implements Action {
-  public readonly type = UIActionType.OPEN_SIDEBAR;
 }
 
 export class ToggleFiltersMenu implements Action {
@@ -95,9 +79,6 @@ export class LoadBanners implements Action {
 }
 
 export type UIActions =
-  | ToggleSidebar
-  | CloseSidebar
-  | OpenSidebar
   | ToggleFiltersMenu
   | CloseFiltersMenu
   | OpenFiltersMenu

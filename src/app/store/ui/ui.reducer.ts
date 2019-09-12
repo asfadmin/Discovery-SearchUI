@@ -6,7 +6,6 @@ import { UIActionType, UIActions } from './ui.action';
 
 
 export interface UIState {
-  isSidebarOpen: boolean;
   isFiltersMenuOpen: boolean;
   isBottomMenuOpen: boolean;
   uiView: ViewType;
@@ -16,7 +15,6 @@ export interface UIState {
 }
 
 export const initState: UIState = {
-  isSidebarOpen: false,
   isFiltersMenuOpen: false,
   isBottomMenuOpen: false,
   uiView: ViewType.MAIN,
@@ -28,27 +26,6 @@ export const initState: UIState = {
 
 export function uiReducer(state = initState, action: UIActions): UIState {
   switch (action.type) {
-    case UIActionType.TOGGLE_SIDEBAR: {
-      return {
-          ...state,
-          isSidebarOpen: !state.isSidebarOpen,
-        };
-    }
-
-    case UIActionType.CLOSE_SIDEBAR: {
-      return {
-          ...state,
-          isSidebarOpen: false
-        };
-    }
-
-    case UIActionType.OPEN_SIDEBAR: {
-      return {
-          ...state,
-          isSidebarOpen: true
-      };
-    }
-
     case UIActionType.TOGGLE_FILTERS_MENU: {
       return {
           ...state,
@@ -102,7 +79,6 @@ export function uiReducer(state = initState, action: UIActions): UIState {
       return {
           ...state,
           searchType: action.payload,
-          isSidebarOpen: false
         };
     }
 
@@ -151,11 +127,6 @@ export const getSelectedFilter = createSelector(
 export const getSearchType = createSelector(
   getUIState,
   state => state.searchType
-);
-
-export const getIsSidebarOpen = createSelector(
-  getUIState,
-  state => state.isSidebarOpen
 );
 
 export const getIsFiltersMenuOpen = createSelector(

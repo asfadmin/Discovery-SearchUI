@@ -10,14 +10,8 @@ import { AppState } from '@store/app.reducer';
   styleUrls: ['./logo.component.scss']
 })
 export class LogoComponent implements OnInit {
-  public isSidebarOpen$ = this.store$.select(uiStore.getIsSidebarOpen);
-
   constructor(private store$: Store<AppState>) {}
 
   ngOnInit(): void {
-  }
-
-  public onToggleHide(): void {
-    this.store$.dispatch(new uiStore.ToggleSidebar());
   }
 }
