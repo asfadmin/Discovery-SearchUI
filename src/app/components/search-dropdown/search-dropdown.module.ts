@@ -11,8 +11,10 @@ import { MaxResultsSelectorModule } from '@components/shared/max-results-selecto
 
 import { SearchDropdownComponent } from './search-dropdown.component';
 
+import { ListSearchModule, ListSearchComponent } from './list-search';
+import { DatasetSearchModule, DatasetSearchComponent } from './dataset-search';
+
 import { SearchSelectorModule } from '@components/shared/selectors/search-selector';
-import { SearchModule } from './search';
 
 import { FlexLayoutModule } from '@angular/flex-layout';
 
@@ -24,13 +26,14 @@ import { FlexLayoutModule } from '@angular/flex-layout';
     MatTabsModule,
     MatSharedModule,
 
+    ListSearchModule,
+    DatasetSearchModule,
     SearchButtonModule,
     ClearButtonModule,
     MaxResultsSelectorModule,
 
     FlexLayoutModule,
 
-    SearchModule,
     SearchSelectorModule,
   ],
   declarations: [
