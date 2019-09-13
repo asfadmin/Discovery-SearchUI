@@ -10,12 +10,12 @@ import { MatSharedModule } from '@shared';
 import { PipesModule } from '@pipes';
 
 import { CopyToClipboardModule } from '@components/shared/copy-to-clipboard';
-import { GranulesListComponent } from './granules-list.component';
+import { ScenesListComponent } from './scenes-list.component';
 
 
 @NgModule({
   declarations: [
-    GranulesListComponent,
+    ScenesListComponent,
   ],
   imports: [
     CommonModule,
@@ -28,7 +28,7 @@ import { GranulesListComponent } from './granules-list.component';
     PipesModule,
   ],
   exports: [
-    GranulesListComponent
+    ScenesListComponent
   ]
 })
-export class GranulesListModule { }
+export class ScenesListModule { }

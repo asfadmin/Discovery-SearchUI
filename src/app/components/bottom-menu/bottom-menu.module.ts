@@ -7,7 +7,7 @@ import { MatMenuModule } from '@angular/material';
 
 import { PipesModule } from '@pipes';
 import { MatSharedModule } from '@shared';
-import { GranulesListModule } from './granules-list';
+import { ScenesListModule } from './scenes-list';
 import { BottomMenuComponent } from './bottom-menu.component';
 import { ProductsModule } from './products';
 import { GranuleDetailModule } from './granule-detail';
@@ -21,7 +21,7 @@ import { GranuleDetailModule } from './granule-detail';
     MatMenuModule,
     MatSharedModule,
     PipesModule,
-    GranulesListModule,
+    ScenesListModule,
     ProductsModule,
     GranuleDetailModule
   ],
