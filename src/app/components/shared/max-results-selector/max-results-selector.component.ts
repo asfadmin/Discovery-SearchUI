@@ -1,6 +1,8 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 
 import { Store } from '@ngrx/store';
+
 import { AppState } from '@store';
 import * as searchStore from '@store/search';
 import * as filtersStore from '@store/filters';
@@ -8,6 +10,7 @@ import * as uiStore from '@store/ui';
 import * as granulesStore from '@store/granules';
 
 import * as models from '@models';
+import { ApiLinkDialogComponent } from './api-link-dialog/api-link-dialog.component';
 
 @Component({
   selector: 'app-max-results-selector',
@@ -25,7 +28,8 @@ export class MaxResultsSelectorComponent implements OnInit {
   public possibleMaxResults = [250, 1000, 5000];
 
   constructor(
-   private store$: Store<AppState>,
+    private store$: Store<AppState>,
+    private dialog: MatDialog,
   ) {}
 
   ngOnInit() {
@@ -53,6 +57,13 @@ export class MaxResultsSelectorComponent implements OnInit {
       this.store$.dispatch(new searchStore.MakeSearch());
     }
   }
+
+  public onMoreResults(): void {
+    const dialogRef = this.dialog.open(ApiLinkDialogComponent , {
+      width: '550px', height: '700px', minHeight: '50%'
+    });
+  }
+
 
   public formatNumber(num: number): string {
     return num
