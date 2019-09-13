@@ -20,12 +20,12 @@ import * as models from '@models';
 
 
 @Component({
-  selector: 'app-granules-list',
-  templateUrl: './granules-list.component.html',
-  styleUrls: ['./granules-list.component.scss'],
+  selector: 'app-scenes-list',
+  templateUrl: './scenes-list.component.html',
+  styleUrls: ['./scenes-list.component.scss'],
   encapsulation: ViewEncapsulation.None
 })
-export class GranulesListComponent implements OnInit {
+export class ScenesListComponent implements OnInit {
   @ViewChild(CdkVirtualScrollViewport, { static: true }) scroll: CdkVirtualScrollViewport;
 
   public granules$ = this.store$.select(granulesStore.getGranules);
