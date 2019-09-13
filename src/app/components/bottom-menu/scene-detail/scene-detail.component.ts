@@ -17,11 +17,11 @@ import { DatapoolAuthService, PropertyService, ScreenSizeService } from '@servic
 import { ImageDialogComponent } from './image-dialog';
 
 @Component({
-  selector: 'app-granule-detail',
-  templateUrl: './granule-detail.component.html',
-  styleUrls: ['./granule-detail.component.scss']
+  selector: 'app-scene-detail',
+  templateUrl: './scene-detail.component.html',
+  styleUrls: ['./scene-detail.component.scss']
 })
-export class GranuleDetailComponent implements OnInit {
+export class SceneDetailComponent implements OnInit {
   public dataset: models.Dataset;
   public searchType: models.SearchType;
   public granule: models.CMRProduct;

@@ -9,11 +9,11 @@ import { PipesModule } from '@pipes';
 import { MatSharedModule } from '@shared';
 import { CopyToClipboardModule } from '@components/shared/copy-to-clipboard';
 import { ImageDialogModule } from './image-dialog';
-import { GranuleDetailComponent } from './granule-detail.component';
+import { SceneDetailComponent } from './scene-detail.component';
 
 
 @NgModule({
-  declarations: [GranuleDetailComponent],
+  declarations: [SceneDetailComponent],
   imports: [
     CommonModule,
     MatMenuModule,
@@ -24,6 +24,6 @@ import { GranuleDetailComponent } from './granule-detail.component';
     CopyToClipboardModule,
     ImageDialogModule,
   ],
-  exports: [GranuleDetailComponent],
+  exports: [SceneDetailComponent],
 })
-export class GranuleDetailModule { }
+export class SceneDetailModule { }

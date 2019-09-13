@@ -10,7 +10,7 @@ import { MatSharedModule } from '@shared';
 import { GranulesListModule } from './granules-list';
 import { BottomMenuComponent } from './bottom-menu.component';
 import { ProductsModule } from './products';
-import { GranuleDetailModule } from './granule-detail';
+import { SceneDetailModule } from './scene-detail';
 
 @NgModule({
   declarations: [BottomMenuComponent],
@@ -23,7 +23,7 @@ import { GranuleDetailModule } from './granule-detail';
     PipesModule,
     GranulesListModule,
     ProductsModule,
-    GranuleDetailModule
+    SceneDetailModule
   ],
   exports: [BottomMenuComponent],
 })
