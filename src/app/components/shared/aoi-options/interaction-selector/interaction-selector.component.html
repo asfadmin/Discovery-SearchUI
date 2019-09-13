@@ -16,9 +16,7 @@
     matTooltip="Edit current area of interest">
     <mat-icon class="interaction-icon">edit</mat-icon>
   </mat-button-toggle>
-</mat-button-toggle-group>
 
-<mat-button-toggle-group [value]="interaction">
   <mat-button-toggle
     (click)="onClearSelected()"
     class="control-mat-button-toggle"
@@ -26,4 +24,5 @@
     #clearButton>
     <mat-icon class="interaction-icon">delete</mat-icon>
   </mat-button-toggle>
+
 </mat-button-toggle-group>
