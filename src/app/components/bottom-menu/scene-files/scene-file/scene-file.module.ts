@@ -6,11 +6,11 @@ import { CopyToClipboardModule } from '@components/shared/copy-to-clipboard';
 import { TruncateModule } from '@yellowspot/ng-truncate';
 import { PipesModule } from '@pipes';
 
-import { ProductComponent } from './product.component';
+import { SceneFileComponent } from './scene-file.component';
 
 
 @NgModule({
-  declarations: [ProductComponent],
+  declarations: [SceneFileComponent],
   imports: [
     CommonModule,
     MatSharedModule,
@@ -19,7 +19,7 @@ import { ProductComponent } from './product.component';
     PipesModule,
   ],
   exports: [
-    ProductComponent
+    SceneFileComponent
   ]
 })
-export class ProductModule { }
+export class SceneFileModule { }

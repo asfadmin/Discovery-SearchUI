@@ -70,11 +70,11 @@
         </span>
         <ng-template #defaultProductsHeader>Files</ng-template>
       </mat-card-subtitle>
-      <app-products
+      <app-scene-files
         [products]="selectedProducts$ | async"
         [queuedProductIds]="queuedProductIds$ | async"
         (toggleQueueProduct)="onToggleQueueProduct($event)"
-        ></app-products>
+        ></app-scene-files>
     </mat-card>
   </div>
 </div>

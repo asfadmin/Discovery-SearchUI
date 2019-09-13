@@ -3,11 +3,11 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import * as models from '@models';
 
 @Component({
-  selector: 'app-product',
-  templateUrl: './product.component.html',
-  styleUrls: ['./product.component.css']
+  selector: 'app-scene-file',
+  templateUrl: './scene-file.component.html',
+  styleUrls: ['./scene-file.component.css']
 })
-export class ProductComponent {
+export class SceneFileComponent {
   @Input() product: models.CMRProduct;
   @Input() isQueued: boolean;
 

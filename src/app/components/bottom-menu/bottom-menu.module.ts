@@ -9,7 +9,7 @@ import { PipesModule } from '@pipes';
 import { MatSharedModule } from '@shared';
 import { ScenesListModule } from './scenes-list';
 import { BottomMenuComponent } from './bottom-menu.component';
-import { ProductsModule } from './products';
+import { SceneFilesModule } from './scene-files';
 import { SceneDetailModule } from './scene-detail';
 
 @NgModule({
@@ -22,7 +22,7 @@ import { SceneDetailModule } from './scene-detail';
     MatSharedModule,
     PipesModule,
     ScenesListModule,
-    ProductsModule,
+    SceneFilesModule,
     SceneDetailModule
   ],
   exports: [BottomMenuComponent],

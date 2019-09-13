@@ -3,11 +3,11 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import * as models from '@models';
 
 @Component({
-  selector: 'app-products',
-  templateUrl: './products.component.html',
-  styleUrls: ['./products.component.scss']
+  selector: 'app-scene-files',
+  templateUrl: './scene-files.component.html',
+  styleUrls: ['./scene-files.component.scss']
 })
-export class ProductsComponent {
+export class SceneFilesComponent {
   @Input() products: models.CMRProduct[];
   @Input() queuedProductIds: string[];
 

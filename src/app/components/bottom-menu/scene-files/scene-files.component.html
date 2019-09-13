@@ -1,7 +1,7 @@
 <mat-list class="products-list" *ngIf="products">
-  <app-product *ngFor="let product of products"
+  <app-scene-file *ngFor="let product of products"
     (toggle)="onToggleQueueProduct(product)"
     [product]="product"
     [isQueued]="queuedProductIds.has(product.id)">
-  </app-product>
+  </app-scene-file>
 </mat-list>
