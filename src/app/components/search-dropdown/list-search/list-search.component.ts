@@ -28,7 +28,7 @@ export class ListSearchComponent implements OnInit {
       'S1-GUNW-D-R-087-tops-20190301_20190223-161540-20645N_18637N-PP-7a85-v2_0_1-unwrappedPhase',
       'ALPSRP111041130-RTC_HI_RES'
     ].join(', '),
-    [this.types.GRANULE]: [
+    [this.types.SCENE]: [
       'S1B_IW_GRDH_1SDV_20161124T032008_20161124T032033_003095_005430_9906',
       'S1-GUNW-D-R-087-tops-20190301_20190223-161540-20645N_18637N-PP-7a85-v2_0_1',
       'ALPSRP111041130'
@@ -46,7 +46,7 @@ export class ListSearchComponent implements OnInit {
   }
 
   public onSceneModeSelected(): void {
-    this.onNewListSearchMode(ListSearchType.GRANULE);
+    this.onNewListSearchMode(ListSearchType.SCENE);
   }
 
   public onProductModeSelected(): void {

@@ -7,6 +7,6 @@ export enum FilterType {
 }
 
 export enum ListSearchType {
-  GRANULE = 'Scene',
+  SCENE = 'Granule',
   PRODUCT = 'Product',
 }

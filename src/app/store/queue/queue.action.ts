@@ -10,8 +10,8 @@ export enum QueueActionType {
   CLEARN_QUEUE = '[Queue] Clear Queue',
 
   TOGGLE_PRODUCT = '[Queue] Toggle Product',
-  QUEUE_GRANULE = '[Scenes] Queue Scene',
-  REMOVE_GRANULE_FROM_QUEUE = '[Queue] Remove Scene From Queue',
+  QUEUE_SCENE = '[Scenes] Queue Scene',
+  REMOVE_SCENE_FROM_QUEUE = '[Queue] Remove Scene From Queue',
 
   MAKE_DOWNLOAD_SCRIPT  = '[Queue] Make Bulk Download From Queue',
   DOWNLOAD_METADATA = '[Queue] Download Metadata',
@@ -62,13 +62,13 @@ export class DownloadMetadata implements Action {
 }
 
 export class QueueScene implements Action {
-  public readonly type = QueueActionType.QUEUE_GRANULE;
+  public readonly type = QueueActionType.QUEUE_SCENE;
 
   constructor(public payload: string) {}
 }
 
 export class RemoveSceneFromQueue implements Action {
-  public readonly type = QueueActionType.REMOVE_GRANULE_FROM_QUEUE;
+  public readonly type = QueueActionType.REMOVE_SCENE_FROM_QUEUE;
 
   constructor(public payload: string) {}
 }

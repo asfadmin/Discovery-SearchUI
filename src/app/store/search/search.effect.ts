@@ -33,7 +33,6 @@ export class SearchEffects {
     private asfApiService: services.AsfApiService,
     private productService: services.ProductService,
     private mapService: services.MapService,
-    private historyService: services.HistoryService,
   ) {}
 
   @Effect()

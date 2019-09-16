@@ -1,7 +1,7 @@
 <mat-card class="ls-card" *ngIf="listSearchMode$ | async as mode">
   <mat-card-title-group class="ls-card-title-group">
     <mat-card-title>
-      <span *ngIf="mode === types.GRANULE">Scene</span>
+      <span *ngIf="mode === types.SCENE">Scene</span>
       <span *ngIf="mode === types.PRODUCT">File</span>
       List Search
     </mat-card-title>
@@ -9,7 +9,7 @@
       <mat-button-toggle-group [value]="mode" class="ls-mat-button-toggle-group">
         <mat-button-toggle
           (click)="onSceneModeSelected()"
-          [value]="types.GRANULE"
+          [value]="types.SCENE"
           matTooltip="Scene List Search">
           Scene
         </mat-button-toggle>
@@ -27,7 +27,7 @@
   <mat-card-content class="ls-mat-card-content">
     <div class="ls-instruction">
         <h4>
-          <span *ngIf="mode === types.GRANULE">Enter a list of scene names.</span>
+          <span *ngIf="mode === types.SCENE">Enter a list of scene names.</span>
           <span *ngIf="mode === types.PRODUCT">Enter a list of file ids.</span>
         </h4>
     </div>
@@ -36,7 +36,7 @@
                 (input)="onTextInputChange($event.target.value)"
                 [(ngModel)]="searchList"
                 style="height: 150px;"
-                placeholder="List of {{ mode === types.GRANULE ? 'Scene names' : 'File IDs.' }}">
+                placeholder="List of {{ mode === types.SCENE ? 'Scene names' : 'File IDs.' }}">
       </textarea>
     </mat-form-field>
   </mat-card-content>
@@ -48,7 +48,7 @@
       <div>
         <app-copy-to-clipboard
           [value]="listExamples[mode]"
-          [prompt]="mode === types.GRANULE ? 'Copy Scene names' : 'Copy File IDs'"
+          [prompt]="mode === types.SCENE ? 'Copy Scene names' : 'Copy File IDs'"
           style="margin: 0 3px"
           class="clipboard-icon">
         </app-copy-to-clipboard>

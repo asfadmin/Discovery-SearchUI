@@ -67,7 +67,7 @@ export const initState: FiltersState = {
     end: null
   },
   shouldOmitSearchPolygon: false,
-  listSearchMode: models.ListSearchType.GRANULE,
+  listSearchMode: models.ListSearchType.SCENE,
   searchList: [],
 
   productTypes: [],

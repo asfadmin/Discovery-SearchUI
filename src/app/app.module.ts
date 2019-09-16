@@ -68,7 +68,6 @@ export const routes = [
     services.EnvironmentService,
     services.PropertyService,
     CustomBreakPointsProvider,
-    services.HistoryService,
     services.LegacyAreaFormatService,
     services.BannerApiService,
     services.ScreenSizeService,

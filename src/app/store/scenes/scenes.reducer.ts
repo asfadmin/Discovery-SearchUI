@@ -30,7 +30,7 @@ export const initState: ScenesState = {
 
 export function scenesReducer(state = initState, action: ScenesActions): ScenesState {
   switch (action.type) {
-    case ScenesActionType.SET_GRANULES: {
+    case ScenesActionType.SET_SCENES: {
       const products = action.payload
         .reduce((total, product) => {
           total[product.id] = product;
@@ -68,14 +68,14 @@ export function scenesReducer(state = initState, action: ScenesActions): ScenesS
       };
     }
 
-    case ScenesActionType.SET_SELECTED_GRANULE: {
+    case ScenesActionType.SET_SELECTED_SCENE: {
       return {
         ...state,
         selected: action.payload
       };
     }
 
-    case ScenesActionType.SELECT_NEXT_GRANULE: {
+    case ScenesActionType.SELECT_NEXT_SCENE: {
       const scenes = allScenesFrom(state);
       const scene = state.products[state.selected] || null;
 
@@ -111,7 +111,7 @@ export function scenesReducer(state = initState, action: ScenesActions): ScenesS
       };
     }
 
-    case ScenesActionType.SELECT_PREVIOUS_GRANULE: {
+    case ScenesActionType.SELECT_PREVIOUS_SCENE: {
       const scenes = allScenesFrom(state);
       const scene = state.products[state.selected] || null;
 
@@ -143,7 +143,7 @@ export function scenesReducer(state = initState, action: ScenesActions): ScenesS
       };
     }
 
-    case ScenesActionType.SET_FOCUSED_GRANULE: {
+    case ScenesActionType.SET_FOCUSED_SCENE: {
       return {
         ...state,
         focused: action.payload.id,
@@ -157,7 +157,7 @@ export function scenesReducer(state = initState, action: ScenesActions): ScenesS
       };
     }
 
-    case ScenesActionType.CLEAR_FOCUSED_GRANULE: {
+    case ScenesActionType.CLEAR_FOCUSED_SCENE: {
       return {
         ...state,
         focused: null,

@@ -51,7 +51,7 @@ describe('ListSearchComponent', () => {
 
     expect(dispatchSpy).toHaveBeenCalledTimes(1);
     expect(dispatchSpy).toHaveBeenCalledWith(
-      new filtersStore.SetListSearchType(models.ListSearchType.GRANULE)
+      new filtersStore.SetListSearchType(models.ListSearchType.SCENE)
     );
   });
 
