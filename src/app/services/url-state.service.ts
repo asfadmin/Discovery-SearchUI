@@ -302,14 +302,6 @@ export class UrlStateService {
     }];
   }
 
-  private loadIsResultsMenuOpen = (isResultsMenuOpenStr: string): void => {
-    const action = isResultsMenuOpenStr === 'true' ?
-      new uiStore.OpenResultsMenu() :
-      new uiStore.CloseResultsMenu() ;
-
-    this.store$.dispatch(action);
-  }
-
   private loadSelectedFilter = (selected: string): void => {
     if (Object.values(models.FilterType).includes(selected)) {
 
