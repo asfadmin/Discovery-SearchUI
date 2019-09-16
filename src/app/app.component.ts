@@ -4,7 +4,7 @@ import { MatBottomSheet } from '@angular/material/bottom-sheet';
 
 import { Store, ActionsSubject } from '@ngrx/store';
 import { ofType } from '@ngrx/effects';
-import { of } from 'rxjs';
+import { of, combineLatest } from 'rxjs';
 import { skip, filter, map, switchMap, mergeMap, tap, catchError, debounceTime } from 'rxjs/operators';
 
 import { AppState } from '@store';
@@ -12,7 +12,6 @@ import * as granulesStore from '@store/granules';
 import * as filterStore from '@store/filters';
 import * as searchStore from '@store/search';
 import * as uiStore from '@store/ui';
-import * as missionStore from '@store/mission';
 import * as mapStore from '@store/map';
 import * as queueStore from '@store/queue';
 
@@ -54,7 +53,7 @@ export class AppComponent implements OnInit {
 
     this.polygonValidationService.validate();
     this.loadProductQueue();
-    this.store$.dispatch(new missionStore.LoadMissions());
+    this.loadMissions();
 
     this.actions$.pipe(
       ofType<searchStore.ClearSearch>(searchStore.SearchActionType.CLEAR_SEARCH),
@@ -105,7 +104,6 @@ export class AppComponent implements OnInit {
       const actions = [
         new filterStore.ClearDatasetFilters(),
         new mapStore.SetMapInteractionMode(models.MapInteractionModeType.DRAW),
-        new missionStore.ClearSelectedMission()
       ];
 
       actions.forEach(
@@ -129,6 +127,29 @@ export class AppComponent implements OnInit {
     ).subscribe(searchAmount => {
       this.store$.dispatch(new searchStore.SetSearchAmount(+<number>searchAmount));
     });
+  }
+
+  private loadMissions(): void {
+    combineLatest(
+      this.asfSearchApi.missionSearch(models.MissionDataset.S1_BETA).pipe(
+        map(resp => ({[models.MissionDataset.S1_BETA]: resp.result}))
+      ),
+      this.asfSearchApi.missionSearch(models.MissionDataset.AIRSAR).pipe(
+        map(resp => ({[models.MissionDataset.AIRSAR]: resp.result}))
+      ),
+      this.asfSearchApi.missionSearch(models.MissionDataset.UAVSAR).pipe(
+        map(resp => ({[models.MissionDataset.UAVSAR]: resp.result}))
+      )
+    ).pipe(
+      map(missions => missions.reduce(
+        (allMissions, mission) => ({ ...allMissions, ...mission }),
+        {}
+      )),
+    ).subscribe(
+      missionsByDataset => this.store$.dispatch(
+        new filterStore.SetMissions(missionsByDataset)
+      )
+    );
   }
 
   private healthCheck(): void {

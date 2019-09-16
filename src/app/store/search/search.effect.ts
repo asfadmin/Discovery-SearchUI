@@ -12,7 +12,6 @@ import * as granulesStore from '@store/granules';
 import * as filtersStore from '@store/filters';
 import * as mapStore from '@store/map';
 import * as uiStore from '@store/ui';
-import * as missionStore from '@store/mission';
 
 import * as services from '@services';
 
@@ -37,13 +36,6 @@ export class SearchEffects {
     private historyService: services.HistoryService,
   ) {}
 
-  @Effect({dispatch: false})
-  private updateHistoryOnSearch: Observable<void> = this.actions$.pipe(
-    ofType<MakeSearch>(SearchActionType.MAKE_SEARCH),
-    withLatestFrom(this.searchState$()),
-    map(([action, search]) => this.historyService.add(search))
-  );
-
   @Effect()
   private clearMapInteractionModeOnSearch: Observable<Action> = this.actions$.pipe(
     ofType(SearchActionType.MAKE_SEARCH),
@@ -57,7 +49,6 @@ export class SearchEffects {
       (action.payload > 0) ? new EnableSearch() : new DisableSearch()
     )
   );
-
 
   @Effect()
   private makeSearches: Observable<Action> = this.actions$.pipe(
@@ -87,7 +78,7 @@ export class SearchEffects {
     ofType(
       filtersStore.FiltersActionType.CLEAR_DATASET_FILTERS,
       filtersStore.FiltersActionType.CLEAR_LIST_FILTERS,
-      missionStore.MissionActionType.CLEAR_SELECTED_MISSION,
+      filtersStore.FiltersActionType.CLEAR_SELECTED_MISSION,
     ),
     map(_ => new CancelSearch())
   );
@@ -110,42 +101,4 @@ export class SearchEffects {
     ofType<SearchResponse>(SearchActionType.SEARCH_RESPONSE),
     map(_ => new uiStore.OpenBottomMenu()),
   );
-
-  private searchState$() {
-    const params$ = this.store$.select(uiStore.getSearchType).pipe(
-      switchMap(searchType => {
-        const list$ = combineLatest(
-          this.store$.select(filtersStore.getSearchList),
-          this.store$.select(filtersStore.getListSearchMode),
-        ).pipe(
-          map(([list, type]) => ({ list, type }))
-        );
-
-        const filters$ = combineLatest(
-          this.mapService.searchPolygon$,
-          this.store$.select(filtersStore.getFiltersState),
-          this.store$.select(missionStore.getSelectedMission),
-        ).pipe(
-          map(([polygon, filterState, mission]) => (
-            { polygon, filterState, mission }
-          ))
-        );
-
-        return {
-          [models.SearchType.LIST]: list$,
-          [models.SearchType.DATASET]: filters$
-        }[searchType];
-      }
-    ));
-
-    const amount$ = this.store$.select(getSearchAmount);
-
-    return combineLatest(
-      this.store$.select(uiStore.getSearchType),
-      params$,
-      amount$
-    ).pipe(
-      map(([type, params, results]) => ({ type, params, results })
-    ));
-  }
 }

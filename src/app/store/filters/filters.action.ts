@@ -42,6 +42,12 @@ export enum FiltersActionType {
   SET_LIST_SEARCH_TYPE = '[Filters-List] Set List Search Type',
   SET_SEARCH_LIST = '[Filters-List] Set Search List',
 
+  LOAD_MISSIONS = '[Filters-Mission] Load Missions',
+  SET_MISSIONS = '[Filters-Mission] Set Missions',
+
+  SELECT_MISSION = '[Filters-Mission] Select Mission',
+  CLEAR_SELECTED_MISSION = '[Filters-Mission] Clear Selected Mission',
+
   SET_MAX_RESULTS = '[Filters] Set Max Results',
 }
 
@@ -195,6 +201,26 @@ export class SetSearchList implements Action {
   constructor(public payload: string[]) {}
 }
 
+export class LoadMissions implements Action {
+  public readonly type = FiltersActionType.LOAD_MISSIONS;
+}
+
+export class SetMissions implements Action {
+  public readonly type = FiltersActionType.SET_MISSIONS;
+
+  constructor(public payload: {[dataset: string]: string}) {}
+}
+
+export class SelectMission implements Action {
+  public readonly type = FiltersActionType.SELECT_MISSION;
+
+  constructor(public payload: string) {}
+}
+
+export class ClearSelectedMission implements Action {
+  public readonly type = FiltersActionType.CLEAR_SELECTED_MISSION;
+}
+
 export class SetMaxResults implements Action {
   public readonly type = FiltersActionType.SET_MAX_RESULTS;
 
@@ -229,4 +255,8 @@ export type FiltersActions =
   | SetPolarizations
   | ClearDatasetFilters
   | ClearListFilters
+  | LoadMissions
+  | SetMissions
+  | SelectMission
+  | ClearSelectedMission
   | SetMaxResults;

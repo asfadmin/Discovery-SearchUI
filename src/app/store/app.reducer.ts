@@ -10,7 +10,6 @@ import { FiltersState, filtersReducer } from './filters';
 import { UIState, uiReducer } from './ui';
 import { SearchState, searchReducer } from './search';
 import { QueueState, queueReducer } from './queue';
-import { MissionState, missionReducer } from './mission';
 
 
 export interface AppState {
@@ -20,7 +19,6 @@ export interface AppState {
   ui: UIState;
   search: SearchState;
   queue: QueueState;
-  mission: MissionState;
 }
 
 export const reducers: ActionReducerMap<AppState> = {
@@ -30,7 +28,6 @@ export const reducers: ActionReducerMap<AppState> = {
   ui: uiReducer,
   search: searchReducer,
   queue: queueReducer,
-  mission: missionReducer,
 };
 
 export const metaReducers: MetaReducer<AppState>[] =

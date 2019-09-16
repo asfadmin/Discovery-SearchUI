@@ -4,7 +4,6 @@ import { Store } from '@ngrx/store';
 import { map } from 'rxjs/operators';
 
 import { AppState } from '@store';
-import * as missionStore from '@store/mission';
 import * as filtersStore from '@store/filters';
 
 import * as models from '@models';
@@ -25,8 +24,8 @@ export class DatasetSearchComponent {
   customExpandedHeight = '30px';
 
   public p = models.Props;
-  public missionsByDataset$ = this.store$.select(missionStore.getMissionsByDataset);
-  public selectedMission$ = this.store$.select(missionStore.getSelectedMission);
+  public missionsByDataset$ = this.store$.select(filtersStore.getMissionsByDataset);
+  public selectedMission$ = this.store$.select(filtersStore.getSelectedMission);
   public missionDatasets$ = this.missionsByDataset$.pipe(
     map(missions => Object.keys(missions))
   );
@@ -38,6 +37,6 @@ export class DatasetSearchComponent {
   ) {}
 
   public onNewMissionSelected(selectedMission: string): void {
-    this.store$.dispatch(new missionStore.SelectMission(selectedMission));
+    this.store$.dispatch(new filtersStore.SelectMission(selectedMission));
   }
 }

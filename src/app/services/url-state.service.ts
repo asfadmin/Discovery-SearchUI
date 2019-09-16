@@ -12,7 +12,6 @@ import * as granulesStore from '@store/granules';
 import * as mapStore from '@store/map';
 import * as uiStore from '@store/ui';
 import * as filterStore from '@store/filters';
-import * as missionStore from '@store/mission';
 import { MakeSearch } from '@store/search/search.action';
 
 import * as models from '@models';
@@ -100,7 +99,7 @@ export class UrlStateService {
   private missionParameters() {
     return [{
       name: 'mission',
-      source: this.store$.select(missionStore.getSelectedMission).pipe(
+      source: this.store$.select(filterStore.getSelectedMission).pipe(
         skip(1),
         map(mission => ({ mission }))
       ),
@@ -532,7 +531,7 @@ export class UrlStateService {
   }
 
   private loadSelectedMission = (mission: string): void => {
-    this.store$.dispatch(new missionStore.SelectMission(mission));
+    this.store$.dispatch(new filterStore.SelectMission(mission));
   }
 
   private loadAreResultsLoaded = (areLoaded: string): void => {

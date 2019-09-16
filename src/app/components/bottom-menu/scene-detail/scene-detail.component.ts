@@ -9,7 +9,6 @@ import { AppState } from '@store';
 import * as granulesStore from '@store/granules';
 import * as filtersStore from '@store/filters';
 import * as searchStore from '@store/search';
-import * as missionStore from '@store/mission';
 import * as uiStore from '@store/ui';
 
 import * as models from '@models';
@@ -157,7 +156,7 @@ export class SceneDetailComponent implements OnInit {
   }
 
   public addMission(): void {
-    const action = new missionStore.SelectMission(this.granule.metadata.missionName);
+    const action = new filtersStore.SelectMission(this.granule.metadata.missionName);
     this.store$.dispatch(action);
   }
 

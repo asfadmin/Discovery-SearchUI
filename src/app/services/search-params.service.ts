@@ -12,7 +12,6 @@ import * as granulesStore from '@store/granules';
 import * as mapStore from '@store/map';
 import * as uiStore from '@store/ui';
 import * as filterStore from '@store/filters';
-import * as missionStore from '@store/mission';
 
 import { MapService } from './map/map.service';
 import { RangeService } from './range.service';
@@ -92,7 +91,7 @@ export class SearchParamsService {
   }
 
   private missionParam$() {
-    return this.store$.select(missionStore.getSelectedMission).pipe(
+    return this.store$.select(filterStore.getSelectedMission).pipe(
       map(mission => ({ collectionName: mission }))
     );
   }
