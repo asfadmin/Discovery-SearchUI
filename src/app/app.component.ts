@@ -8,7 +8,7 @@ import { of, combineLatest } from 'rxjs';
 import { skip, filter, map, switchMap, mergeMap, tap, catchError, debounceTime } from 'rxjs/operators';
 
 import { AppState } from '@store';
-import * as granulesStore from '@store/granules';
+import * as scenesStore from '@store/scenes';
 import * as filterStore from '@store/filters';
 import * as searchStore from '@store/search';
 import * as uiStore from '@store/ui';
@@ -95,7 +95,7 @@ export class AppComponent implements OnInit {
   }
 
   public onClearSearch(): void {
-    this.store$.dispatch(new granulesStore.ClearGranules());
+    this.store$.dispatch(new scenesStore.ClearScenes());
     this.store$.dispatch(new uiStore.CloseBottomMenu());
 
     if (this.searchType === models.SearchType.DATASET) {

@@ -20,7 +20,7 @@ import { getTopRight } from 'ol/extent';
 import tippy from 'tippy.js';
 
 import { AppState } from '@store';
-import * as granulesStore from '@store/granules';
+import * as scenesStore from '@store/scenes';
 import * as mapStore from '@store/map';
 import * as uiStore from '@store/ui';
 
@@ -159,8 +159,8 @@ export class MapComponent implements OnInit {
       }
     });
 
-    this.mapService.newSelectedGranule$.pipe(
-      map(granuleId => new granulesStore.SetSelectedGranule(granuleId))
+    this.mapService.newSelectedScene$.pipe(
+      map(sceneId => new scenesStore.SetSelectedScene(sceneId))
     ).subscribe(
       action => this.store$.dispatch(action)
     );
@@ -220,51 +220,51 @@ export class MapComponent implements OnInit {
       }
     );
 
-    this.granuleToLayer$('SELECTED').subscribe(
+    this.sceneToLayer$('SELECTED').subscribe(
       feature => this.mapService.setSelectedFeature(feature)
     );
 
-    this.granuleToLayer$('FOCUSED').subscribe(
+    this.sceneToLayer$('FOCUSED').subscribe(
       feature => this.mapService.setFocusedFeature(feature)
     );
   }
 
-  private granuleToLayer$(layerType: string) {
-    const granule$ = layerType === 'FOCUSED' ?
-      this.store$.select(granulesStore.getFocusedGranule) :
-      this.store$.select(granulesStore.getSelectedGranule);
+  private sceneToLayer$(layerType: string) {
+    const scene$ = layerType === 'FOCUSED' ?
+      this.store$.select(scenesStore.getFocusedScene) :
+      this.store$.select(scenesStore.getSelectedScene);
 
-    const granulesLayerAfterInitialization$ = this.isMapInitialized$.pipe(
+    const scenesLayerAfterInitialization$ = this.isMapInitialized$.pipe(
       filter(isMapInitiliazed => isMapInitiliazed),
       switchMap(_ => this.viewType$),
     );
 
-    granulesLayerAfterInitialization$.pipe(
+    scenesLayerAfterInitialization$.pipe(
       tap(([view, mapLayerType]) =>
         this.setMapWith(<models.MapViewType>view, <models.MapLayerTypes>mapLayerType)
       ),
       switchMap(_ =>
-        this.granulePolygonsLayer$(this.mapService.epsg())
+        this.scenePolygonsLayer$(this.mapService.epsg())
       )
     ).subscribe(
       layer => this.mapService.setLayer(layer)
     );
 
-    const selectedGranuleAfterInitialization$ = this.isMapInitialized$.pipe(
+    const selectedSceneAfterInitialization$ = this.isMapInitialized$.pipe(
       filter(isMapInitiliazed => isMapInitiliazed),
       switchMap(_ => this.viewType$),
-      switchMap(_ => granule$),
+      switchMap(_ => scene$),
     );
 
-    return selectedGranuleAfterInitialization$.pipe(
-      tap(granule => !!granule || (layerType === 'FOCUSED') ?
-        this.mapService.clearFocusedGranule() :
-        this.mapService.clearSelectedGranule()
+    return selectedSceneAfterInitialization$.pipe(
+      tap(scene => !!scene || (layerType === 'FOCUSED') ?
+        this.mapService.clearFocusedScene() :
+        this.mapService.clearSelectedScene()
       ),
       filter(g => g !== null),
       map(
-        granule => this.wktService.wktToFeature(
-          granule.metadata.polygon,
+        scene => this.wktService.wktToFeature(
+          scene.metadata.polygon,
           this.mapService.epsg()
         )
       ),
@@ -298,16 +298,16 @@ export class MapComponent implements OnInit {
     return features;
   }
 
-  private granulePolygonsLayer$(projection: string): Observable<VectorSource> {
-    return this.store$.select(granulesStore.getGranules).pipe(
+  private scenePolygonsLayer$(projection: string): Observable<VectorSource> {
+    return this.store$.select(scenesStore.getScenes).pipe(
       distinctUntilChanged(),
-      map(granules => this.granulesToFeature(granules, projection)),
+      map(scenes => this.scenesToFeature(scenes, projection)),
       map(features => this.featuresToSource(features))
     );
   }
 
-  private granulesToFeature(granules: models.CMRProduct[], projection: string) {
-    return granules
+  private scenesToFeature(scenes: models.CMRProduct[], projection: string) {
+    return scenes
       .map(g => {
         const wkt = g.metadata.polygon;
         const feature = this.wktService.wktToFeature(wkt, projection);

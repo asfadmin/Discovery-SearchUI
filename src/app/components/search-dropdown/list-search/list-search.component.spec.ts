@@ -14,7 +14,7 @@ import * as models from '@models';
 
 import { TestStore } from '@testing/services';
 import * as filtersStore from '@store/filters';
-import * as granulesStore from '@store/granules';
+import * as scenesStore from '@store/scenes';
 
 describe('ListSearchComponent', () => {
   let fixture;
@@ -46,8 +46,8 @@ describe('ListSearchComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should run #onGranuleModeSelected()', async () => {
-    component.onGranuleModeSelected();
+  it('should run #onSceneModeSelected()', async () => {
+    component.onSceneModeSelected();
 
     expect(dispatchSpy).toHaveBeenCalledTimes(1);
     expect(dispatchSpy).toHaveBeenCalledWith(
@@ -70,7 +70,7 @@ describe('ListSearchComponent', () => {
 
     expect(dispatchSpy).toHaveBeenCalledTimes(1);
     expect(dispatchSpy).toHaveBeenCalledWith(
-      new granulesStore.SetSearchList(['g1', 'g2', 'g3', 'g4', 'g5'])
+      new scenesStore.SetSearchList(['g1', 'g2', 'g3', 'g4', 'g5'])
     );
   });
 
@@ -80,7 +80,7 @@ describe('ListSearchComponent', () => {
 
     expect(dispatchSpy).toHaveBeenCalledTimes(1);
     expect(dispatchSpy).toHaveBeenCalledWith(
-      new granulesStore.SetSearchList(['g1', 'g2'])
+      new scenesStore.SetSearchList(['g1', 'g2'])
     );
   });
 });

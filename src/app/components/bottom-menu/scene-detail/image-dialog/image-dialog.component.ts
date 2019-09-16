@@ -4,7 +4,7 @@ import { MatDialogRef } from '@angular/material/dialog';
 import { Store } from '@ngrx/store';
 
 import { AppState } from '@store';
-import * as granulesStore from '@store/granules';
+import * as scenesStore from '@store/scenes';
 
 import * as models from '@models';
 
@@ -14,15 +14,15 @@ import * as models from '@models';
   styleUrls: ['./image-dialog.component.scss']
 })
 export class ImageDialogComponent {
-  public granule$ = this.store$.select(granulesStore.getSelectedGranule);
+  public scene$ = this.store$.select(scenesStore.getSelectedScene);
 
   constructor(
     private store$: Store<AppState>,
     public dialogRef: MatDialogRef<ImageDialogComponent>
   ) { }
 
-  public onOpenImage(granule: models.CMRProduct) {
-    window.open(granule.browse || 'assets/error.png');
+  public onOpenImage(scene: models.CMRProduct) {
+    window.open(scene.browse || 'assets/error.png');
   }
 
   public closeDialog() {
@@ -30,10 +30,10 @@ export class ImageDialogComponent {
   }
 
   public selectNextProduct(): void {
-    this.store$.dispatch(new granulesStore.SelectNextGranule());
+    this.store$.dispatch(new scenesStore.SelectNextScene());
   }
 
   public selectPreviousProduct(): void {
-    this.store$.dispatch(new granulesStore.SelectPreviousGranule());
+    this.store$.dispatch(new scenesStore.SelectPreviousScene());
   }
 }

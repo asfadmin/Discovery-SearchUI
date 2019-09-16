@@ -1,6 +1,6 @@
 <div
   [@changeMenuY]="(isBottomMenuOpen$ | async) ? 'shown' : 'hidden'"
-  [class.hidden]="(isHidden$ | async) || (areNoGranules$  | async)"
+  [class.hidden]="(isHidden$ | async) || (areNoScenes$  | async)"
   class="bottom-menu-wrapper">
   <div class="toggle-button-position">
     <button (click)="onToggleMenu()"
@@ -17,10 +17,10 @@
        fxLayout.lt-sm="column">
     <mat-card class="card-spacing bottom-menu--column"
         fxFlex="33" fxFlexFill>
-      <mat-card-subtitle *ngIf="numberOfGranules$ | async as numberOfGranules" class="header">
+      <mat-card-subtitle *ngIf="numberOfScenes$ | async as numberOfScenes" class="header">
         <div style="display: flex; justify-content: center">
           <div style="margin-right: 10px;">
-            {{ numberOfGranules }} Scene{{ numberOfGranules === 1 ? '' : 's' }}
+            {{ numberOfScenes }} Scene{{ numberOfScenes === 1 ? '' : 's' }}
             ({{ numberOfProducts$ | async }} of {{ formatNumber(totalResultCount$ | async) }} File{{ (numberOfProducts$ | async) === 1 ? '' : 's' }})
           </div>
           <div *ngIf="allProducts$ | async as products">
@@ -47,7 +47,7 @@
           </div>
         </div>
       </mat-card-subtitle>
-      <div class="app-granule-list">
+      <div class="app-scene-list">
         <app-scenes-list>
         </app-scenes-list>
       </div>

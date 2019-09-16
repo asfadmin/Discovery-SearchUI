@@ -8,7 +8,7 @@ import { combineLatest } from 'rxjs';
 import { filter, map, switchMap, skip, tap, withLatestFrom } from 'rxjs/operators';
 
 import { AppState } from '@store';
-import * as granulesStore from '@store/granules';
+import * as scenesStore from '@store/scenes';
 import * as mapStore from '@store/map';
 import * as uiStore from '@store/ui';
 import * as filterStore from '@store/filters';
@@ -117,7 +117,7 @@ export class UrlStateService {
       loader: this.loadSelectedFilter
     }, {
       name: 'resultsLoaded',
-      source: this.store$.select(granulesStore.getAreResultsLoaded).pipe(
+      source: this.store$.select(scenesStore.getAreResultsLoaded).pipe(
         skip(1),
         map(resultsLoaded => ({ resultsLoaded }))
       ),
@@ -130,12 +130,12 @@ export class UrlStateService {
       ),
       loader: this.loadSearchType
     }, {
-      name: 'granule',
-      source: this.store$.select(granulesStore.getSelectedGranule).pipe(
+      name: 'scene',
+      source: this.store$.select(scenesStore.getSelectedScene).pipe(
         skip(1),
-        map(granule => ({ granule: !!granule ? granule.id : null }))
+        map(scene => ({ scene: !!scene ? scene.id : null }))
       ),
-      loader: this.loadSelectedGranule
+      loader: this.loadSelectedScene
     }, {
       name: 'uiView',
       source: this.store$.select(uiStore.getUiView).pipe(
@@ -535,11 +535,11 @@ export class UrlStateService {
   }
 
   private loadAreResultsLoaded = (areLoaded: string): void => {
-    this.store$.dispatch(new granulesStore.SetResultsLoaded(areLoaded === 'true'));
+    this.store$.dispatch(new scenesStore.SetResultsLoaded(areLoaded === 'true'));
   }
 
-  private loadSelectedGranule = (granuleId: string): void => {
-    this.store$.dispatch(new granulesStore.SetSelectedGranule(granuleId));
+  private loadSelectedScene = (sceneId: string): void => {
+    this.store$.dispatch(new scenesStore.SetSelectedScene(sceneId));
   }
 
   private loadMaxResults = (maxResults: string): void => {
@@ -552,7 +552,7 @@ export class UrlStateService {
   }
 
   private updateShouldSearch(): void {
-    this.store$.select(granulesStore.getAreResultsLoaded).pipe(
+    this.store$.select(scenesStore.getAreResultsLoaded).pipe(
       filter(wereResultsLoaded => wereResultsLoaded),
     ).subscribe(shouldSearch => this.shouldDoSearch = true);
   }

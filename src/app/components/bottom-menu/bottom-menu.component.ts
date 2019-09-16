@@ -6,7 +6,7 @@ import { Store } from '@ngrx/store';
 
 import { AppState } from '@store';
 import * as uiStore from '@store/ui';
-import * as granulesStore from '@store/granules';
+import * as scenesStore from '@store/scenes';
 import * as queueStore from '@store/queue';
 import * as filtersStore from '@store/filters';
 import * as searchStore from '@store/search';
@@ -33,16 +33,16 @@ export class BottomMenuComponent {
   public totalResultCount$ = this.store$.select(searchStore.getTotalResultCount);
   public isBottomMenuOpen$ = this.store$.select(uiStore.getIsBottomMenuOpen);
 
-  public allProducts$ = this.store$.select(granulesStore.getAllProducts);
-  public numberOfGranules$ = this.store$.select(granulesStore.getNumberOfGranules);
-  public numberOfProducts$ = this.store$.select(granulesStore.getNumberOfProducts);
-  public selectedProducts$ = this.store$.select(granulesStore.getSelectedGranuleProducts);
+  public allProducts$ = this.store$.select(scenesStore.getAllProducts);
+  public numberOfScenes$ = this.store$.select(scenesStore.getNumberOfScenes);
+  public numberOfProducts$ = this.store$.select(scenesStore.getNumberOfProducts);
+  public selectedProducts$ = this.store$.select(scenesStore.getSelectedSceneProducts);
   public queuedProductIds$ = this.store$.select(queueStore.getQueuedProductIds).pipe(
     map(names => new Set(names))
   );
 
-  public areNoGranules$ = this.store$.select(granulesStore.getGranules).pipe(
-    map(granules => granules.length === 0)
+  public areNoScenes$ = this.store$.select(scenesStore.getScenes).pipe(
+    map(scenes => scenes.length === 0)
   );
 
   public isHidden$ = this.store$.select(uiStore.getIsHidden);
@@ -64,12 +64,12 @@ export class BottomMenuComponent {
     this.mapService.zoomToResults();
   }
 
-  private selectNextGranule(): void {
-    this.store$.dispatch(new granulesStore.SelectNextGranule());
+  private selectNextScene(): void {
+    this.store$.dispatch(new scenesStore.SelectNextScene());
   }
 
-  private selectPreviousGranule(): void {
-    this.store$.dispatch(new granulesStore.SelectPreviousGranule());
+  private selectPreviousScene(): void {
+    this.store$.dispatch(new scenesStore.SelectPreviousScene());
   }
 
   private queueAllProducts(products: models.CMRProduct[]): void {

@@ -10,11 +10,11 @@ import { AppState } from '../app.reducer';
 
 import * as services from '@services';
 
-import { GranulesActionType, SetSelectedGranule } from './granules.action';
+import { ScenesActionType, SetSelectedScene } from './scenes.action';
 import * as uiStore from '@store/ui';
 
 @Injectable()
-export class GranulesEffects {
+export class ScenesEffects {
   constructor(
     private actions$: Actions,
     private store$: Store<AppState>,

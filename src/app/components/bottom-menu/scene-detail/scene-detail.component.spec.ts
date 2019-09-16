@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { GranuleDetailComponent } from './granule-detail.component';
+import { SceneDetailComponent } from './scene-detail.component';
 
-describe('GranuleDetailComponent', () => {
-  let component: GranuleDetailComponent;
-  let fixture: ComponentFixture<GranuleDetailComponent>;
+describe('SceneDetailComponent', () => {
+  let component: SceneDetailComponent;
+  let fixture: ComponentFixture<SceneDetailComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ GranuleDetailComponent ]
+      declarations: [ SceneDetailComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(GranuleDetailComponent);
+    fixture = TestBed.createComponent(SceneDetailComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

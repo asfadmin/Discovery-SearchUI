@@ -8,7 +8,7 @@ import { tap, withLatestFrom, filter, map, debounceTime } from 'rxjs/operators';
 import { Store } from '@ngrx/store';
 import { AppState } from '@store';
 import * as searchStore from '@store/search';
-import * as granulesStore from '@store/granules';
+import * as scenesStore from '@store/scenes';
 import * as filtersStore from '@store/filters';
 import * as uiStore from '@store/ui';
 import * as queueStore from '@store/queue';
@@ -28,17 +28,17 @@ import * as models from '@models';
 export class ScenesListComponent implements OnInit {
   @ViewChild(CdkVirtualScrollViewport, { static: true }) scroll: CdkVirtualScrollViewport;
 
-  public granules$ = this.store$.select(granulesStore.getGranules);
-  public granuleNameLen: number;
+  public scenes$ = this.store$.select(scenesStore.getScenes);
+  public sceneNameLen: number;
 
-  public numberOfQueue: {[granule: string]: [number, number]};
-  public allQueued: {[granule: string]: boolean};
-  public granules: models.CMRProduct[];
+  public numberOfQueue: {[scene: string]: [number, number]};
+  public allQueued: {[scene: string]: boolean};
+  public scenes: models.CMRProduct[];
   public selected: string;
 
   public searchType: models.SearchType;
   public selectedFromList = false;
-  public hoveredGranuleName: string | null = null;
+  public hoveredSceneName: string | null = null;
 
   constructor(
     private store$: Store<AppState>,
@@ -49,13 +49,13 @@ export class ScenesListComponent implements OnInit {
   ngOnInit() {
     this.screenSize.size$.pipe(
       map(size => size.width > 1775 ? 32 : 16),
-    ).subscribe(len => this.granuleNameLen = len);
+    ).subscribe(len => this.sceneNameLen = len);
 
-    this.store$.select(granulesStore.getSelectedGranule).pipe(
-      withLatestFrom(this.granules$),
+    this.store$.select(scenesStore.getSelectedScene).pipe(
+      withLatestFrom(this.scenes$),
       filter(([selected, _]) => !!selected),
       tap(([selected, _]) => this.selected = selected.name),
-      map(([selected, granules]) => granules.indexOf(selected)),
+      map(([selected, scenes]) => scenes.indexOf(selected)),
     ).subscribe(
       idx => {
         if (!this.selectedFromList) {
@@ -66,8 +66,8 @@ export class ScenesListComponent implements OnInit {
       }
     );
 
-    this.granules$.subscribe(
-      granules => this.granules = granules
+    this.scenes$.subscribe(
+      scenes => this.scenes = scenes
     );
 
     this.store$.select(searchStore.getIsLoading).subscribe(
@@ -79,17 +79,17 @@ export class ScenesListComponent implements OnInit {
 
       switch (key) {
         case 'ArrowRight': {
-          return this.selectNextGranule();
+          return this.selectNextScene();
         }
         case 'ArrowLeft': {
-          return this.selectPreviousGranule();
+          return this.selectPreviousScene();
         }
 
         case 'ArrowDown': {
-          return this.selectNextGranule();
+          return this.selectNextScene();
         }
         case 'ArrowUp': {
-          return this.selectPreviousGranule();
+          return this.selectPreviousScene();
         }
       }
     });
@@ -98,24 +98,24 @@ export class ScenesListComponent implements OnInit {
       searchType => this.searchType = searchType
     );
 
-    const queueGranules$ = combineLatest(
+    const queueScenes$ = combineLatest(
       this.store$.select(queueStore.getQueuedProducts),
-      this.store$.select(granulesStore.getGranuleProducts),
+      this.store$.select(scenesStore.getSceneProducts),
     ).pipe(
-      map(([queueProducts, searchGranules]) => {
+      map(([queueProducts, searchScenes]) => {
 
         const queuedProductGroups: {[id: string]: string[]} = queueProducts.reduce((total, product) => {
-          const granule = total[product.groupId] || [];
+          const scene = total[product.groupId] || [];
 
-          total[product.groupId] = [...granule, product.id];
+          total[product.groupId] = [...scene, product.id];
           return total;
         }, {});
 
         const numberOfQueuedProducts = {};
 
-        Object.entries(searchGranules).map(([granuleName, products]) => {
-          numberOfQueuedProducts[granuleName] = [
-            (queuedProductGroups[granuleName] || []).length,
+        Object.entries(searchScenes).map(([sceneName, products]) => {
+          numberOfQueuedProducts[sceneName] = [
+            (queuedProductGroups[sceneName] || []).length,
             (<any[]>products).length
           ];
         });
@@ -124,63 +124,63 @@ export class ScenesListComponent implements OnInit {
       }
     ));
 
-    queueGranules$.pipe(
+    queueScenes$.pipe(
       map(
-        granules => Object.entries(granules)
-          .reduce((total, [granule, amt]) => {
-            total[granule] = `${amt[0]}/${amt[1]}`;
+        scenes => Object.entries(scenes)
+          .reduce((total, [scene, amt]) => {
+            total[scene] = `${amt[0]}/${amt[1]}`;
 
             return total;
           }, {})
     )).subscribe(numberOfQueue => this.numberOfQueue = numberOfQueue);
 
-    queueGranules$.pipe(
+    queueScenes$.pipe(
       map(
-        granules => Object.entries(granules)
-          .reduce((total, [granule, amt]) => {
-            total[granule] = amt[0] === amt[1];
+        scenes => Object.entries(scenes)
+          .reduce((total, [scene, amt]) => {
+            total[scene] = amt[0] === amt[1];
 
             return total;
           }, {})
     )).subscribe(allQueued => this.allQueued = allQueued);
   }
 
-  private selectNextGranule(): void {
-    this.store$.dispatch(new granulesStore.SelectNextGranule());
+  private selectNextScene(): void {
+    this.store$.dispatch(new scenesStore.SelectNextScene());
   }
 
-  private selectPreviousGranule(): void {
-    this.store$.dispatch(new granulesStore.SelectPreviousGranule());
+  private selectPreviousScene(): void {
+    this.store$.dispatch(new scenesStore.SelectPreviousScene());
   }
 
   private scrollTo(idx: number): void {
     this.scroll.scrollToIndex(idx);
   }
 
-  public onGranuleSelected(name: string): void {
+  public onSceneSelected(name: string): void {
     this.selectedFromList = true;
-    this.store$.dispatch(new granulesStore.SetSelectedGranule(name));
+    this.store$.dispatch(new scenesStore.SetSelectedScene(name));
   }
 
-  public onToggleGranule(e: Event, groupId: string): void {
+  public onToggleScene(e: Event, groupId: string): void {
     if (!this.allQueued[groupId]) {
-      this.store$.dispatch(new queueStore.QueueGranule(groupId));
+      this.store$.dispatch(new queueStore.QueueScene(groupId));
     } else {
-      this.store$.dispatch(new queueStore.RemoveGranuleFromQueue(groupId));
+      this.store$.dispatch(new queueStore.RemoveSceneFromQueue(groupId));
     }
   }
 
-  public onSetFocusedGranule(granule: models.CMRProduct): void {
-    this.hoveredGranuleName = granule.name;
-    this.store$.dispatch(new granulesStore.SetFocusedGranule(granule));
+  public onSetFocusedScene(scene: models.CMRProduct): void {
+    this.hoveredSceneName = scene.name;
+    this.store$.dispatch(new scenesStore.SetFocusedScene(scene));
   }
 
-  public onClearFocusedGranule(): void {
-    this.hoveredGranuleName = null;
-    this.store$.dispatch(new granulesStore.ClearFocusedGranule());
+  public onClearFocusedScene(): void {
+    this.hoveredSceneName = null;
+    this.store$.dispatch(new scenesStore.ClearFocusedScene());
   }
 
-  public onZoomTo(granule: models.CMRProduct): void {
-    this.mapService.zoomToGranule(granule);
+  public onZoomTo(scene: models.CMRProduct): void {
+    this.mapService.zoomToScene(scene);
   }
 }

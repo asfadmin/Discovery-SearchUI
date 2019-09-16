@@ -4,7 +4,7 @@ import { ActionReducerMap, MetaReducer } from '@ngrx/store';
 import { storeFreeze } from 'ngrx-store-freeze';
 
 import { environment } from '@environments/environment';
-import { GranulesState, granulesReducer } from './granules';
+import { ScenesState, scenesReducer } from './scenes';
 import { MapState, mapReducer } from './map';
 import { FiltersState, filtersReducer } from './filters';
 import { UIState, uiReducer } from './ui';
@@ -13,7 +13,7 @@ import { QueueState, queueReducer } from './queue';
 
 
 export interface AppState {
-  granules: GranulesState;
+  scenes: ScenesState;
   map: MapState;
   filters: FiltersState;
   ui: UIState;
@@ -22,7 +22,7 @@ export interface AppState {
 }
 
 export const reducers: ActionReducerMap<AppState> = {
-  granules: granulesReducer,
+  scenes: scenesReducer,
   map: mapReducer,
   filters: filtersReducer,
   ui: uiReducer,

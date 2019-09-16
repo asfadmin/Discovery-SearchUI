@@ -6,7 +6,7 @@ import { map, withLatestFrom, filter, tap, debounceTime } from 'rxjs/operators';
 import { Store } from '@ngrx/store';
 
 import { AppState } from '@store';
-import * as granulesStore from '@store/granules';
+import * as scenesStore from '@store/scenes';
 import * as filtersStore from '@store/filters';
 import * as searchStore from '@store/search';
 import * as uiStore from '@store/ui';
@@ -23,8 +23,8 @@ import { ImageDialogComponent } from './image-dialog';
 export class SceneDetailComponent implements OnInit {
   public dataset: models.Dataset;
   public searchType: models.SearchType;
-  public granule: models.CMRProduct;
-  public granuleLen: number;
+  public scene: models.CMRProduct;
+  public sceneLen: number;
 
   public p = models.Props;
 
@@ -37,19 +37,19 @@ export class SceneDetailComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    const granule$ = this.store$.select(granulesStore.getSelectedGranule);
+    const scene$ = this.store$.select(scenesStore.getSelectedScene);
 
     this.screenSize.size$.pipe(
       map(size => size.width > 1750 ? 32 : 16),
-    ).subscribe(len => this.granuleLen = len);
+    ).subscribe(len => this.sceneLen = len);
 
-    granule$.subscribe(
-      granule => this.granule = granule
+    scene$.subscribe(
+      scene => this.scene = scene
     );
 
-    granule$.pipe(
+    scene$.pipe(
       filter(g => !!g),
-      map(granule => this.datasetFor(granule)),
+      map(scene => this.datasetFor(scene)),
     ).subscribe(dataset => this.dataset = dataset);
 
    this.store$.select(uiStore.getSearchType).subscribe(
@@ -57,39 +57,39 @@ export class SceneDetailComponent implements OnInit {
    );
   }
 
-  private datasetFor(granule: models.CMRProduct): models.Dataset {
-    const exact = (datasetID, granuleDataset) => (
-      datasetID === granuleDataset
+  private datasetFor(scene: models.CMRProduct): models.Dataset {
+    const exact = (datasetID, sceneDataset) => (
+      datasetID === sceneDataset
     );
 
-    const partial = (datasetID, granuleDataset) => (
-      datasetID.includes(granuleDataset) ||
-      granuleDataset.includes(datasetID)
+    const partial = (datasetID, sceneDataset) => (
+      datasetID.includes(sceneDataset) ||
+      sceneDataset.includes(datasetID)
     );
 
     return (
-      this.getDatasetMatching(granule, exact) ||
-      this.getDatasetMatching(granule, partial) ||
+      this.getDatasetMatching(scene, exact) ||
+      this.getDatasetMatching(scene, partial) ||
       models.datasets[0]
     );
   }
 
   private getDatasetMatching(
-    granule: models.CMRProduct,
-    comparator: (datasetName: string, granuleDataset: string) => boolean
+    scene: models.CMRProduct,
+    comparator: (datasetName: string, sceneDataset: string) => boolean
   ): models.Dataset {
     return  models.datasets
       .filter(dataset => {
-        const [datasetName, granuleDataset] = [
+        const [datasetName, sceneDataset] = [
           dataset.id.toLowerCase(),
-          granule.dataset.toLocaleLowerCase()
+          scene.dataset.toLocaleLowerCase()
         ];
 
-        return comparator(datasetName, granuleDataset);
+        return comparator(datasetName, sceneDataset);
       })[0];
   }
 
-  public onOpenImage(granule: models.CMRProduct): void {
+  public onOpenImage(scene: models.CMRProduct): void {
     this.dialog.open(ImageDialogComponent, {
       width: '1200px', height: '1200px',
       maxWidth: '90%', maxHeight: '90%',
@@ -106,42 +106,42 @@ export class SceneDetailComponent implements OnInit {
   }
 
   public setBeamMode(): void {
-    const action = new filtersStore.AddBeamMode(this.granule.metadata.beamMode);
+    const action = new filtersStore.AddBeamMode(this.scene.metadata.beamMode);
     this.store$.dispatch(action);
   }
 
   public setStartDate(): void {
-    const action = new filtersStore.SetStartDate(this.granule.metadata.date.toDate());
+    const action = new filtersStore.SetStartDate(this.scene.metadata.date.toDate());
     this.store$.dispatch(action);
   }
 
   public setEndDate(): void {
-    const action = new filtersStore.SetEndDate(this.granule.metadata.date.toDate());
+    const action = new filtersStore.SetEndDate(this.scene.metadata.date.toDate());
     this.store$.dispatch(action);
   }
 
   public setPathStart(): void {
-    const action = new filtersStore.SetPathStart(this.granule.metadata.path);
+    const action = new filtersStore.SetPathStart(this.scene.metadata.path);
     this.store$.dispatch(action);
   }
 
   public setPathEnd(): void {
-    const action = new filtersStore.SetPathEnd(this.granule.metadata.path);
+    const action = new filtersStore.SetPathEnd(this.scene.metadata.path);
     this.store$.dispatch(action);
   }
 
   public setFrameStart(): void {
-    const action = new filtersStore.SetFrameStart(this.granule.metadata.frame);
+    const action = new filtersStore.SetFrameStart(this.scene.metadata.frame);
     this.store$.dispatch(action);
   }
 
   public setFrameEnd(): void {
-    const action = new filtersStore.SetFrameEnd(this.granule.metadata.frame);
+    const action = new filtersStore.SetFrameEnd(this.scene.metadata.frame);
     this.store$.dispatch(action);
   }
 
   public setFlightDirection(): void {
-    const dir = this.granule.metadata.flightDirection
+    const dir = this.scene.metadata.flightDirection
       .toLowerCase();
 
     const capitalized = this.capitalizeFirstLetter(dir);
@@ -151,16 +151,16 @@ export class SceneDetailComponent implements OnInit {
   }
 
   public addPolarization(): void {
-    const action = new filtersStore.AddPolarization(this.granule.metadata.polarization);
+    const action = new filtersStore.AddPolarization(this.scene.metadata.polarization);
     this.store$.dispatch(action);
   }
 
   public addMission(): void {
-    const action = new filtersStore.SelectMission(this.granule.metadata.missionName);
+    const action = new filtersStore.SelectMission(this.scene.metadata.missionName);
     this.store$.dispatch(action);
   }
 
-  public findSimilarGranules(): void {
+  public findSimilarScenes(): void {
     this.setPathStart();
     this.setPathEnd();
     this.setFrameStart();

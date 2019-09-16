@@ -1,7 +1,7 @@
 import { async } from '@angular/core/testing';
-import {GranulesEffects} from './granules.effect';
+import {ScenesEffects} from './scenes.effect';
 
-xdescribe('GranulesEffects', () => {
+xdescribe('ScenesEffects', () => {
   let service;
 
   const actions$: any = {
@@ -13,7 +13,7 @@ xdescribe('GranulesEffects', () => {
   };
 
   beforeEach(() => {
-    service = new GranulesEffects(actions$, store$);
+    service = new ScenesEffects(actions$, store$);
   });
 
 });

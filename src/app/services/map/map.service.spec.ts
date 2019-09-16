@@ -58,8 +58,8 @@ describe('MapService', () => {
     // setMapView(viewType);
   });
 
-  it('should run #clearFocusedGranule()', async () => {
-    // clearFocusedGranule();
+  it('should run #clearFocusedScene()', async () => {
+    // clearFocusedScene();
   });
 
   it('should run #setFocusedFeature()', async () => {

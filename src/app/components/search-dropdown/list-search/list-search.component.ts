@@ -7,7 +7,7 @@ import { Store } from '@ngrx/store';
 
 import { AppState } from '@store';
 import * as filtersStore from '@store/filters';
-import * as granulesStore from '@store/granules';
+import * as scenesStore from '@store/scenes';
 
 import * as models from '@models';
 
@@ -45,7 +45,7 @@ export class ListSearchComponent implements OnInit {
     );
   }
 
-  public onGranuleModeSelected(): void {
+  public onSceneModeSelected(): void {
     this.onNewListSearchMode(ListSearchType.GRANULE);
   }
 
@@ -54,11 +54,11 @@ export class ListSearchComponent implements OnInit {
   }
 
   public onTextInputChange(text: string): void {
-    const granules = text
+    const scenes = text
       .split(/[\s\n,\t]+/)
       .filter(v => v);
 
-    const unique = Array.from(new Set(granules));
+    const unique = Array.from(new Set(scenes));
 
     this.store$.dispatch(new filtersStore.SetSearchList(unique));
   }

@@ -11,9 +11,9 @@ import { Observable, combineLatest } from 'rxjs';
 import { map, withLatestFrom, startWith, switchMap, tap, filter } from 'rxjs/operators';
 
 import { AppState } from '../app.reducer';
-import { QueueActionType, DownloadMetadata, QueueGranule, AddItems, RemoveItems, RemoveGranuleFromQueue } from './queue.action';
+import { QueueActionType, DownloadMetadata, QueueScene, AddItems, RemoveItems, RemoveSceneFromQueue } from './queue.action';
 import { getQueuedProducts } from './queue.reducer';
-import * as granulesStore from '@store/granules';
+import * as scenesStore from '@store/scenes';
 
 import * as services from '@services';
 import * as models from '@models';
@@ -82,18 +82,18 @@ export class QueueEffects {
   );
 
   @Effect()
-  private queueGranule: Observable<Action> = this.actions$.pipe(
-    ofType<QueueGranule>(QueueActionType.QUEUE_GRANULE),
-    withLatestFrom(this.store$.select(granulesStore.getGranuleProducts)),
-    map(([action, granuleProducts]) => granuleProducts[action.payload]),
+  private queueScene: Observable<Action> = this.actions$.pipe(
+    ofType<QueueScene>(QueueActionType.QUEUE_GRANULE),
+    withLatestFrom(this.store$.select(scenesStore.getSceneProducts)),
+    map(([action, sceneProducts]) => sceneProducts[action.payload]),
     map(products => new AddItems(products))
   );
 
   @Effect()
-  private removeGranule: Observable<Action> = this.actions$.pipe(
-    ofType<RemoveGranuleFromQueue>(QueueActionType.REMOVE_GRANULE_FROM_QUEUE),
-    withLatestFrom(this.store$.select(granulesStore.getGranuleProducts)),
-    map(([action, granuleProducts]) => granuleProducts[action.payload]),
+  private removeScene: Observable<Action> = this.actions$.pipe(
+    ofType<RemoveSceneFromQueue>(QueueActionType.REMOVE_GRANULE_FROM_QUEUE),
+    withLatestFrom(this.store$.select(scenesStore.getSceneProducts)),
+    map(([action, sceneProducts]) => sceneProducts[action.payload]),
     map(products => new RemoveItems(products))
   );
 

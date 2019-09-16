@@ -8,7 +8,7 @@ import { map, withLatestFrom, switchMap, catchError, tap } from 'rxjs/operators'
 
 import { AppState } from '../app.reducer';
 import { SetSearchAmount, EnableSearch, DisableSearch } from './search.action';
-import * as granulesStore from '@store/granules';
+import * as scenesStore from '@store/scenes';
 import * as filtersStore from '@store/filters';
 import * as mapStore from '@store/map';
 import * as uiStore from '@store/ui';
@@ -87,7 +87,7 @@ export class SearchEffects {
   private searchResponse: Observable<Action> = this.actions$.pipe(
     ofType<SearchResponse>(SearchActionType.SEARCH_RESPONSE),
     map(action => this.productService.fromResponse(action.payload.files)),
-    map(granule => new granulesStore.SetGranules(granule)),
+    map(scene => new scenesStore.SetScenes(scene)),
   );
 
   @Effect()

@@ -1,17 +1,17 @@
-<div class="detail-card" *ngIf="granule">
+<div class="detail-card" *ngIf="scene">
   <mat-card-header>
     <mat-card-title class="detail-card-header">
-      <span>{{ granule.name }}</span>
+      <span>{{ scene.name }}</span>
 
       <app-copy-to-clipboard
-        [value]="granule.name"
+        [value]="scene.name"
         prompt="Copy scene name"
         class="clipboard-icon"></app-copy-to-clipboard>
 
     </mat-card-title>
     <mat-card-subtitle>
       <a [href]="dataset.infoUrl" target="_blank" matTooltip="Dataset" class="faint-text">{{ dataset.name }}
-        <span *ngIf="dataset.name === 'SMAP'">V{{ granule.name.slice(-1) }}</span>
+        <span *ngIf="dataset.name === 'SMAP'">V{{ scene.name.slice(-1) }}</span>
       </a> •
       <span matTooltip="Frequency">{{ dataset.frequency }}</span>
     </mat-card-subtitle>
@@ -20,7 +20,7 @@
   <mat-card-actions class="action-buttons">
     <a *ngIf="prop.isRelevant(p.BASELINE_TOOL, dataset)"
        mat-raised-button color="accent" target="_blank"
-       href="https://baseline.asf.alaska.edu/#/baseline?granule={{ granule.name }}">
+       href="https://baseline.asf.alaska.edu/#/baseline?scene={{ scene.name }}">
       Baseline Tool
     </a>
     <a mat-raised-button
@@ -29,7 +29,7 @@
       Citation
     </a>
     <button *ngIf="isGeoSearch() && prop.isRelevant(p.PATH, dataset) && prop.isRelevant(p.FRAME, dataset)"
-            (click)="findSimilarGranules()"
+            (click)="findSimilarScenes()"
             matTooltip="Search based on this scenes path/frame"
             mat-raised-button color="primary">
       More Like This
@@ -39,23 +39,23 @@
   <mat-card-content class="content">
     <div class="w100" fxFlex fxLayout="row" fxLayoutAlign="space-between">
       <div class="w50">
-        <ul class="granule-metadata">
+        <ul class="scene-metadata">
           <li *ngIf="prop.isRelevant(p.DATE, dataset)">
-            <span class="v-mid"><b>Start Time</b> • {{ granule.metadata.date | shortDate }}</span>
+            <span class="v-mid"><b>Start Time</b> • {{ scene.metadata.date | shortDate }}</span>
             <mat-icon *ngIf="isGeoSearch()"
-              [matMenuTriggerFor]="addGranuleDateMenu"
+              [matMenuTriggerFor]="addSceneDateMenu"
               class="v-mid clickable">
                 add
             </mat-icon>
 
-            <mat-menu #addGranuleDateMenu="matMenu">
+            <mat-menu #addSceneDateMenu="matMenu">
               <button (click)="setStartDate()" mat-menu-item>Set as start date</button>
               <button (click)="setEndDate()" mat-menu-item>Set as end date</button>
             </mat-menu>
           </li>
 
           <li *ngIf="prop.isRelevant(p.BEAM_MODE, dataset)">
-            <span class="v-mid"><b>Beam Mode </b> • {{ granule.metadata.beamMode }}</span>
+            <span class="v-mid"><b>Beam Mode </b> • {{ scene.metadata.beamMode }}</span>
             <mat-icon *ngIf="isGeoSearch()"
               [matMenuTriggerFor]="addBeamModeMenu"
               class="v-mid clickable">
@@ -68,7 +68,7 @@
           </li>
 
           <li *ngIf="prop.isRelevant(p.PATH, dataset)">
-            <span class="v-mid"><b>Path </b> • {{ granule.metadata.path }}</span>
+            <span class="v-mid"><b>Path </b> • {{ scene.metadata.path }}</span>
             <mat-icon *ngIf="isGeoSearch()"
               [matMenuTriggerFor]="addPathMenu"
               class="v-mid clickable">
@@ -83,7 +83,7 @@
           </li>
 
           <li *ngIf="prop.isRelevant(p.FRAME, dataset)">
-            <span class="v-mid"> <b>Frame </b> • {{ granule.metadata.frame }} </span>
+            <span class="v-mid"> <b>Frame </b> • {{ scene.metadata.frame }} </span>
 
             <mat-icon *ngIf="isGeoSearch()"
               [matMenuTriggerFor]="addFrameMenu"
@@ -99,7 +99,7 @@
           </li>
 
           <li *ngIf="prop.isRelevant(p.FLIGHT_DIRECTION, dataset)">
-            <span class="v-mid"> <b>Flight Direction </b> • {{ granule.metadata.flightDirection }} </span>
+            <span class="v-mid"> <b>Flight Direction </b> • {{ scene.metadata.flightDirection }} </span>
             <mat-icon *ngIf="isGeoSearch()"
               [matMenuTriggerFor]="addFlightDirectionMenu"
               class="v-mid clickable">
@@ -112,7 +112,7 @@
           </li>
 
           <li *ngIf="prop.isRelevant(p.POLARIZATION, dataset)">
-            <span class="v-mid"> <b>Polarization </b> • {{ granule.metadata.polarization }} </span>
+            <span class="v-mid"> <b>Polarization </b> • {{ scene.metadata.polarization }} </span>
 
             <mat-icon *ngIf="isGeoSearch()"
               [matMenuTriggerFor]="addPolMenu"
@@ -127,17 +127,17 @@
 
           <li *ngIf="prop.isRelevant(p.OFF_NADIR_ANGLE, dataset)"
             class="detail-item-margin">
-            <b>Off Nadir Angle </b> • {{ granule.metadata.offNadirAngle }}
+            <b>Off Nadir Angle </b> • {{ scene.metadata.offNadirAngle }}
           </li>
 
           <li *ngIf="prop.isRelevant(p.FARADAY_ROTATION, dataset)"
             class="detail-item-margin">
-            <b>Faraday Rotation </b> • {{ granule.metadata.faradayRotation }}
+            <b>Faraday Rotation </b> • {{ scene.metadata.faradayRotation }}
           </li>
 
           <li *ngIf="prop.isRelevant(p.MISSION_NAME, dataset)"
             class="detail-item-margin">
-            <span class="v-mid"> <b>Campaign Name </b> • {{ granule.metadata.missionName }} </span>
+            <span class="v-mid"> <b>Campaign Name </b> • {{ scene.metadata.missionName }} </span>
 
             <mat-icon *ngIf="isGeoSearch()"
               [matMenuTriggerFor]="addMissionMenu"
@@ -152,16 +152,16 @@
 
           <li *ngIf="prop.isRelevant(p.FLIGHT_LINE, dataset)"
             class="detail-item-margin">
-            <b>Flight Line </b> • {{ granule.metadata.flightLine }}
+            <b>Flight Line </b> • {{ scene.metadata.flightLine }}
           </li>
 
           <li *ngIf="prop.isRelevant(p.ABSOLUTE_ORBIT, dataset)"
             class="detail-item-margin">
-            <b>Absolute Orbit </b> • {{ granule.metadata.absoluteOrbit }}
+            <b>Absolute Orbit </b> • {{ scene.metadata.absoluteOrbit }}
           </li>
 
-          <li *ngIf="hasValue(granule.metadata.stackSize)" class="detail-item-margin">
-            <b>Matching Frames </b> • {{ granule.metadata.stackSize }}
+          <li *ngIf="hasValue(scene.metadata.stackSize)" class="detail-item-margin">
+            <b>Matching Frames </b> • {{ scene.metadata.stackSize }}
           </li>
 
           <li *ngIf="dataset.source as source" class="detail-item-margin">
@@ -178,13 +178,13 @@
       </div>
 
       <div class="browse-container clickable w40">
-        <div (click)="onOpenImage(granule);"
+        <div (click)="onOpenImage(scene);"
           class="img-container">
             <img
               class="browse-img fit-to-container clickable"
-              [src]="granule.browse"
+              [src]="scene.browse"
               onerror="this.src='assets/error.png'"
-              alt="Sentinel1 granule browse image">
+              alt="Sentinel1 scene browse image">
             <div class="img-overlay fit-to-container">
               <mat-icon class="overlay-icon">fullscreen</mat-icon>
             </div>
@@ -196,7 +196,7 @@
 
 </div>
 
-<div *ngIf="!granule">
+<div *ngIf="!scene">
   <div fxFlex fxLayoutAlign="center" gdAlignColumns="center">
     <span class="faint-text">No Scene Selected</span>
   </div>
