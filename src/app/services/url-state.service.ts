@@ -130,10 +130,10 @@ export class UrlStateService {
       ),
       loader: this.loadSearchType
     }, {
-      name: 'scene',
+      name: 'granule',
       source: this.store$.select(scenesStore.getSelectedScene).pipe(
         skip(1),
-        map(scene => ({ scene: !!scene ? scene.id : null }))
+        map(scene => ({ granule: !!scene ? scene.id : null }))
       ),
       loader: this.loadSelectedScene
     }, {
