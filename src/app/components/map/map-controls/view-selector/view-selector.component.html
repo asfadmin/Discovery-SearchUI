@@ -1,9 +1,11 @@
 <mat-button-toggle-group [value]="view" flex
-  name="viewSelect" aria-label="Font Style">
+  name="viewSelect" aria-label="Font Style"
+  class="view-button-group">
 
   <mat-button-toggle
     (click)="onArcticSelected()"
     [value]="types.ARCTIC"
+    class="control-mat-button-toggle"
     matTooltip="Arctic map view">
       <div class="view-btn arctic"></div>
   </mat-button-toggle>
@@ -11,6 +13,7 @@
   <mat-button-toggle
     (click)="onEquitorialSelected()"
     [value]="types.EQUITORIAL"
+    class="control-mat-button-toggle"
     matTooltip="Equitorial map views">
       <div class="view-btn equatorial"></div>
   </mat-button-toggle>
@@ -18,6 +21,7 @@
   <mat-button-toggle
     (click)="onAntarcticSelected()"
     [value]="types.ANTARCTIC"
+    class="control-mat-button-toggle"
     matTooltip="Antarctic map view">
       <div class="view-btn antarctic"></div>
   </mat-button-toggle>
