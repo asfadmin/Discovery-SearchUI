@@ -10,7 +10,7 @@ import { AppState } from '../app.reducer';
 import * as uiActions from './ui.action';
 import * as uiReducer from './ui.reducer';
 import * as mapStore from '../map';
-import * as granulesStore from '../granules';
+import * as scenesStore from '../scenes';
 
 import { MapService } from '../../services/map/map.service';
 import { BannerApiService } from '../../services/banner-api.service';
@@ -42,7 +42,7 @@ export class UIEffects {
   @Effect()
   clearResultsWhenSearchTypeChanges: Observable<Action> = this.actions$.pipe(
     ofType<uiActions.SetSearchType>(uiActions.UIActionType.SET_SEARCH_TYPE),
-    map(_ => new granulesStore.ClearGranules())
+    map(_ => new scenesStore.ClearScenes())
   );
 
   @Effect()

@@ -10,7 +10,7 @@ import { MapComponent } from './map.component';
 import { MapControlsModule } from './map-controls';
 import { FileUploadModule } from './file-upload';
 import { AttributionsComponent } from './attributions/attributions.component';
-import { AdditionalFiltersModule } from '@components/additional-filters';
+import { SearchDropdownModule } from '@components/search-dropdown';
 
 
 @NgModule({
@@ -23,7 +23,7 @@ import { AdditionalFiltersModule } from '@components/additional-filters';
 
     MapControlsModule,
     FileUploadModule,
-    AdditionalFiltersModule,
+    SearchDropdownModule,
   ],
   declarations: [
     MapComponent,

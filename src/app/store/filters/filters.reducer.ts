@@ -23,10 +23,15 @@ export interface FiltersState {
   flightDirections: Set<models.FlightDirection>;
   subtypes: models.DatasetSubtypes;
 
+  missions: {[dataset: string]: string};
+  selectedMission: null | string;
+
   maxResults: number;
 }
 
+
 export type DateRangeState = models.Range<null | Date>;
+
 
 export interface DatasetsState {
   entities: {[id: string]: models.Dataset };
@@ -62,7 +67,7 @@ export const initState: FiltersState = {
     end: null
   },
   shouldOmitSearchPolygon: false,
-  listSearchMode: models.ListSearchType.GRANULE,
+  listSearchMode: models.ListSearchType.SCENE,
   searchList: [],
 
   productTypes: [],
@@ -70,6 +75,10 @@ export const initState: FiltersState = {
   polarizations: [],
   subtypes: [],
   flightDirections: new Set<models.FlightDirection>([]),
+
+  missions: {},
+  selectedMission:  null,
+
   maxResults: 250,
 };
 
@@ -221,6 +230,7 @@ export function filtersReducer(state = initState, action: FiltersActions): Filte
         polarizations: [],
         subtypes: [],
         flightDirections: new Set<models.FlightDirection>([]),
+        selectedMission: null,
       };
     }
 
@@ -314,6 +324,28 @@ export function filtersReducer(state = initState, action: FiltersActions): Filte
       return {
         ...state,
         flightDirections: new Set(action.payload)
+      };
+    }
+
+    case FiltersActionType.SET_MISSIONS: {
+      console.log(action.payload);
+      return {
+        ...state,
+        missions: action.payload
+      };
+    }
+
+    case FiltersActionType.SELECT_MISSION: {
+      return {
+        ...state,
+        selectedMission: action.payload
+      };
+    }
+
+    case FiltersActionType.CLEAR_SELECTED_MISSION: {
+      return {
+        ...state,
+        selectedMission: null
       };
     }
 
@@ -438,6 +470,16 @@ export const getSubtypes = createSelector(
 export const getFlightDirections = createSelector(
   getFiltersState,
   (state: FiltersState) => Array.from(state.flightDirections)
+);
+
+export const getMissionsByDataset = createSelector(
+  getFiltersState,
+  (state: FiltersState) => state.missions
+);
+
+export const getSelectedMission = createSelector(
+  getFiltersState,
+  (state: FiltersState) => state.selectedMission
 );
 
 export const getMaxSearchResults = createSelector(

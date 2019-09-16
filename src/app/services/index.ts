@@ -12,7 +12,6 @@ export { PolygonValidationService } from './polygon-validation.service';
 export { DatapoolAuthService } from './datapool-auth.service';
 export { EnvironmentService } from './environment.service';
 export { PropertyService } from './property.service';
-export { HistoryService, Search, GeoSearch, ListSearch } from './history.service';
 export { LegacyAreaFormatService } from './legacy-area-format.service';
 export { BannerApiService } from './banner-api.service';
 export { ScreenSizeService } from './screen-size.service';

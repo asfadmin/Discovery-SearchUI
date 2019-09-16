@@ -3,9 +3,8 @@ import { Action } from '@ngrx/store';
 import { FilterType, SearchType, ViewType, Banner } from '@models';
 
 export enum UIActionType {
-  TOGGLE_SIDEBAR = '[UI] Toggle Sidebar',
-  CLOSE_SIDEBAR = '[UI] Close Sidebar',
-  OPEN_SIDEBAR = '[UI] Open Sidebar ',
+  TOGGLE_AOI_OPTIONS = '[UI] Toggle AOI Options',
+  CLOSE_AOI_OPTIONS = '[UI] Close AOI Options',
 
   TOGGLE_FILTERS_MENU = '[UI] Toggle Filters Menu',
   CLOSE_FILTERS_MENU = '[UI] Close Filters Menu',
@@ -24,16 +23,12 @@ export enum UIActionType {
   REMOVE_BANNER = '[Banner] Remove Banner',
 }
 
-export class ToggleSidebar implements Action {
-  public readonly type = UIActionType.TOGGLE_SIDEBAR;
+export class ToggleAOIOptions implements Action {
+  public readonly type = UIActionType.TOGGLE_AOI_OPTIONS;
 }
 
-export class CloseSidebar implements Action {
-  public readonly type = UIActionType.CLOSE_SIDEBAR;
-}
-
-export class OpenSidebar implements Action {
-  public readonly type = UIActionType.OPEN_SIDEBAR;
+export class CloseAOIOptions implements Action {
+  public readonly type = UIActionType.CLOSE_AOI_OPTIONS;
 }
 
 export class ToggleFiltersMenu implements Action {
@@ -48,15 +43,15 @@ export class OpenFiltersMenu implements Action {
   public readonly type = UIActionType.OPEN_FILTERS_MENU;
 }
 
-export class ToggleBottomMenu implements Action {
+export class ToggleResultsMenu implements Action {
   public readonly type = UIActionType.TOGGLE_BOTTOM_MENU;
 }
 
-export class CloseBottomMenu implements Action {
+export class CloseResultsMenu implements Action {
   public readonly type = UIActionType.CLOSE_BOTTOM_MENU;
 }
 
-export class OpenBottomMenu implements Action {
+export class OpenResultsMenu implements Action {
   public readonly type = UIActionType.OPEN_BOTTOM_MENU;
 }
 
@@ -95,15 +90,14 @@ export class LoadBanners implements Action {
 }
 
 export type UIActions =
-  | ToggleSidebar
-  | CloseSidebar
-  | OpenSidebar
+  | ToggleAOIOptions
+  | CloseAOIOptions
   | ToggleFiltersMenu
   | CloseFiltersMenu
   | OpenFiltersMenu
-  | ToggleBottomMenu
-  | CloseBottomMenu
-  | OpenBottomMenu
+  | ToggleResultsMenu
+  | CloseResultsMenu
+  | OpenResultsMenu
   | SetSelectedFilter
   | SetSearchType
   | SetUiView

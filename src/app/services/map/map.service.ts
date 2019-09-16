@@ -64,7 +64,7 @@ export class MapService {
   public mousePosition$ = new BehaviorSubject<models.LonLat>({
     lon: 0, lat: 0
   });
-  public newSelectedGranule$ = new Subject<string>();
+  public newSelectedScene$ = new Subject<string>();
 
   public isDrawing$ = this.drawService.isDrawing$;
   public searchPolygon$ = this.drawService.polygon$.pipe(
@@ -140,8 +140,8 @@ export class MapService {
 
   public clearDrawLayer(): void {
     this.drawService.clear();
-    this.clearFocusedGranule();
-    this.clearSelectedGranule();
+    this.clearFocusedScene();
+    this.clearSelectedScene();
   }
 
   public setCenter(centerPos: models.LonLat): void {
@@ -173,7 +173,7 @@ export class MapService {
     this.setMap(view, overlay);
   }
 
-  public clearSelectedGranule(): void {
+  public clearSelectedScene(): void {
     this.selectedSource.clear();
     this.selectClick.getOverlay().getSource().clear();
   }
@@ -183,7 +183,7 @@ export class MapService {
     this.selectedSource.addFeature(feature);
   }
 
-  public clearFocusedGranule(): void {
+  public clearFocusedScene(): void {
     this.focusSource.clear();
     this.selectHover.getOverlay().getSource().clear();
   }
@@ -201,9 +201,9 @@ export class MapService {
     this.zoomToExtent(extent);
   }
 
-  public zoomToGranule(granule: models.CMRProduct): void {
+  public zoomToScene(scene: models.CMRProduct): void {
     const feature = this.wktService.wktToFeature(
-      granule.metadata.polygon,
+      scene.metadata.polygon,
       this.epsg()
     );
 
@@ -250,7 +250,7 @@ export class MapService {
     newMap.addInteraction(this.selectHover);
     this.selectClick.on('select', e => {
       e.target.getFeatures().forEach(
-        feature => this.newSelectedGranule$.next(feature.get('filename'))
+        feature => this.newSelectedScene$.next(feature.get('filename'))
       );
     });
 

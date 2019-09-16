@@ -7,7 +7,7 @@ import { AppState } from '@store';
 import * as searchStore from '@store/search';
 import * as filtersStore from '@store/filters';
 import * as uiStore from '@store/ui';
-import * as granulesStore from '@store/granules';
+import * as scenesStore from '@store/scenes';
 
 import * as models from '@models';
 import { ApiLinkDialogComponent } from './api-link-dialog/api-link-dialog.component';
@@ -33,7 +33,7 @@ export class MaxResultsSelectorComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.store$.select(granulesStore.getAreResultsLoaded).subscribe(
+    this.store$.select(scenesStore.getAreResultsLoaded).subscribe(
       areLoaded => this.areResultsLoaded = areLoaded
     );
 
