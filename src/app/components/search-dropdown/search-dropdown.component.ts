@@ -33,6 +33,7 @@ export class SearchDropdownComponent implements OnInit {
 
   public filterType = models.FilterType;
   public selectedSearchType: models.SearchType;
+  public searchTypes = models.SearchType;
 
   constructor(private store$: Store<AppState>) {}
 
