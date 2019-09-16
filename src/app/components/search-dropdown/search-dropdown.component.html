@@ -13,10 +13,16 @@
     </div>
 
     <mat-card-content>
-      <app-search
-        [selectedSearchType]="selectedSearchType"
-        (newSearchType)="onSetSearchType($event)"></app-search>
+      <ng-container *ngIf="selectedSearchType === searchTypes.DATASET">
+        <app-dataset-search [dataset]="dataset$ | async">
+        </app-dataset-search>
+      </ng-container>
+
+      <ng-container *ngIf="selectedSearchType === searchTypes.LIST">
+        <app-list-search></app-list-search>
+      </ng-container>
     </mat-card-content>
+
     <div fxLayout="row" fxLayoutAlign="end">
       <app-max-results-selector></app-max-results-selector>
       <app-clear-button></app-clear-button>

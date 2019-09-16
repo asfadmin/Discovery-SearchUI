@@ -9,10 +9,12 @@ import { SearchButtonModule } from '@components/shared/search-button';
 import { ClearButtonModule } from '@components/shared/clear-button';
 import { MaxResultsSelectorModule } from '@components/shared/max-results-selector';
 
-import { AdditionalFiltersComponent } from './additional-filters.component';
+import { SearchDropdownComponent } from './search-dropdown.component';
+
+import { ListSearchModule, ListSearchComponent } from './list-search';
+import { DatasetSearchModule, DatasetSearchComponent } from './dataset-search';
 
 import { SearchSelectorModule } from '@components/shared/selectors/search-selector';
-import { SearchModule } from './search';
 
 import { FlexLayoutModule } from '@angular/flex-layout';
 
@@ -24,20 +26,21 @@ import { FlexLayoutModule } from '@angular/flex-layout';
     MatTabsModule,
     MatSharedModule,
 
+    ListSearchModule,
+    DatasetSearchModule,
     SearchButtonModule,
     ClearButtonModule,
     MaxResultsSelectorModule,
 
     FlexLayoutModule,
 
-    SearchModule,
     SearchSelectorModule,
   ],
   declarations: [
-    AdditionalFiltersComponent,
+    SearchDropdownComponent,
   ],
   exports: [
-    AdditionalFiltersComponent
+    SearchDropdownComponent
   ]
 })
-export class AdditionalFiltersModule { }
+export class SearchDropdownModule { }
