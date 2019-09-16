@@ -1,4 +1,8 @@
-import { Component, OnInit, Output, Input, EventEmitter } from '@angular/core';
+import { Component, OnInit, Output, Input, EventEmitter, ViewChild } from '@angular/core';
+import { NgForm } from '@angular/forms';
+
+import { Subject } from 'rxjs';
+import { tap, delay } from 'rxjs/operators';
 
 import { Store } from '@ngrx/store';
 
@@ -13,6 +17,8 @@ import { MapService, WktService } from '@services';
   styleUrls: ['./aoi-options.component.css'],
 })
 export class AoiOptionsComponent implements OnInit {
+  @ViewChild('polygonInputForm', { static: false }) public polygonForm: NgForm;
+
   @Output() close = new EventEmitter<void>();
 
   public drawMode$ = this.store$.select(mapStore.getMapDrawMode);
@@ -20,6 +26,9 @@ export class AoiOptionsComponent implements OnInit {
 
   public polygon: string;
   public interactionTypes = MapInteractionModeType;
+
+  public aoiErrors$ = new Subject<void>();
+  public isAOIError = false;
 
   constructor(
     private store$: Store<AppState>,
@@ -30,6 +39,14 @@ export class AoiOptionsComponent implements OnInit {
     this.mapService.searchPolygon$.subscribe(
       polygon => this.polygon = polygon
     );
+  }
+
+  public onInputSearchPolygon(polygon: string): void {
+    const didLoad = this.mapService.loadPolygonFrom(polygon);
+
+    if (!didLoad) {
+      this.aoiErrors$.next();
+    }
   }
 
   public onFileUpload(): void {
@@ -48,5 +65,24 @@ export class AoiOptionsComponent implements OnInit {
 
   public onClose(): void {
     this.close.emit();
+  }
+
+  private handleAOIErrors(): void {
+    this.aoiErrors$.pipe(
+      tap(_ => {
+        this.isAOIError = true;
+        this.mapService.clearDrawLayer();
+        this.polygonForm.reset();
+        this.polygonForm.form
+          .controls['searchPolygonLarge']
+          .setErrors({'incorrect': true});
+      }),
+      delay(820),
+    ).subscribe(_ => {
+      this.isAOIError = false;
+      this.polygonForm.form
+        .controls['searchPolygonLarge']
+        .setErrors(null);
+    });
   }
 }

@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 
 import { MatInputModule } from '@angular/material/input';
 import { MatMenuModule } from '@angular/material/menu';
@@ -21,6 +22,7 @@ import { InteractionSelectorComponent } from './interaction-selector';
   imports: [
     CommonModule,
     MatButtonToggleModule,
+    FormsModule,
     MatInputModule,
     MatMenuModule,
     MatSharedModule,
