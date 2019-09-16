@@ -15,9 +15,9 @@ import { MapService } from '@services';
 import * as models from '@models';
 
 @Component({
-  selector: 'app-bottom-menu',
-  templateUrl: './bottom-menu.component.html',
-  styleUrls: ['./bottom-menu.component.scss'],
+  selector: 'app-results-menu',
+  templateUrl: './results-menu.component.html',
+  styleUrls: ['./results-menu.component.scss'],
   animations: [
     trigger('changeMenuY', [
       state('shown', style({ transform: 'translateY(0%)'
@@ -29,9 +29,9 @@ import * as models from '@models';
     ]),
   ],
 })
-export class BottomMenuComponent {
+export class ResultsMenuComponent {
   public totalResultCount$ = this.store$.select(searchStore.getTotalResultCount);
-  public isBottomMenuOpen$ = this.store$.select(uiStore.getIsBottomMenuOpen);
+  public isResultsMenuOpen$ = this.store$.select(uiStore.getIsResultsMenuOpen);
 
   public allProducts$ = this.store$.select(scenesStore.getAllProducts);
   public numberOfScenes$ = this.store$.select(scenesStore.getNumberOfScenes);
@@ -53,7 +53,7 @@ export class BottomMenuComponent {
   ) { }
 
   public onToggleMenu(): void {
-    this.store$.dispatch(new uiStore.ToggleBottomMenu());
+    this.store$.dispatch(new uiStore.ToggleResultsMenu());
   }
 
   public onToggleQueueProduct(product: models.CMRProduct): void {

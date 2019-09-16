@@ -302,10 +302,10 @@ export class UrlStateService {
     }];
   }
 
-  private loadIsBottomMenuOpen = (isBottomMenuOpenStr: string): void => {
-    const action = isBottomMenuOpenStr === 'true' ?
-      new uiStore.OpenBottomMenu() :
-      new uiStore.CloseBottomMenu() ;
+  private loadIsResultsMenuOpen = (isResultsMenuOpenStr: string): void => {
+    const action = isResultsMenuOpenStr === 'true' ?
+      new uiStore.OpenResultsMenu() :
+      new uiStore.CloseResultsMenu() ;
 
     this.store$.dispatch(action);
   }

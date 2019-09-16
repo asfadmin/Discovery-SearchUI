@@ -15,7 +15,7 @@ import * as store from './store';
 
 import { NavBarModule } from '@components/nav-bar';
 import { MapModule } from '@components/map';
-import { BottomMenuModule } from '@components/bottom-menu';
+import { ResultsMenuModule } from '@components/results-menu';
 import { MatSharedModule } from '@shared';
 import { LogoModule } from '@components/nav-bar/logo/logo.module';
 
@@ -50,7 +50,7 @@ export const routes = [
     !environment.production ? StoreDevtoolsModule.instrument() : [],
 
     MapModule,
-    BottomMenuModule,
+    ResultsMenuModule,
     NavBarModule,
   ],
   providers: [

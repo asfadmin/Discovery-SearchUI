@@ -8,12 +8,12 @@ import { MatMenuModule } from '@angular/material';
 import { PipesModule } from '@pipes';
 import { MatSharedModule } from '@shared';
 import { ScenesListModule } from './scenes-list';
-import { BottomMenuComponent } from './bottom-menu.component';
+import { ResultsMenuComponent } from './results-menu.component';
 import { SceneFilesModule } from './scene-files';
 import { SceneDetailModule } from './scene-detail';
 
 @NgModule({
-  declarations: [BottomMenuComponent],
+  declarations: [ResultsMenuComponent],
   imports: [
     CommonModule,
     FlexLayoutModule,
@@ -25,6 +25,6 @@ import { SceneDetailModule } from './scene-detail';
     SceneFilesModule,
     SceneDetailModule
   ],
-  exports: [BottomMenuComponent],
+  exports: [ResultsMenuComponent],
 })
-export class BottomMenuModule { }
+export class ResultsMenuModule { }

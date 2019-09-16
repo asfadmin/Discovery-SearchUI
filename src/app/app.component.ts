@@ -96,7 +96,7 @@ export class AppComponent implements OnInit {
 
   public onClearSearch(): void {
     this.store$.dispatch(new scenesStore.ClearScenes());
-    this.store$.dispatch(new uiStore.CloseBottomMenu());
+    this.store$.dispatch(new uiStore.CloseResultsMenu());
 
     if (this.searchType === models.SearchType.DATASET) {
       this.mapService.clearDrawLayer();

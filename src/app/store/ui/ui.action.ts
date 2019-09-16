@@ -43,15 +43,15 @@ export class OpenFiltersMenu implements Action {
   public readonly type = UIActionType.OPEN_FILTERS_MENU;
 }
 
-export class ToggleBottomMenu implements Action {
+export class ToggleResultsMenu implements Action {
   public readonly type = UIActionType.TOGGLE_BOTTOM_MENU;
 }
 
-export class CloseBottomMenu implements Action {
+export class CloseResultsMenu implements Action {
   public readonly type = UIActionType.CLOSE_BOTTOM_MENU;
 }
 
-export class OpenBottomMenu implements Action {
+export class OpenResultsMenu implements Action {
   public readonly type = UIActionType.OPEN_BOTTOM_MENU;
 }
 
@@ -95,9 +95,9 @@ export type UIActions =
   | ToggleFiltersMenu
   | CloseFiltersMenu
   | OpenFiltersMenu
-  | ToggleBottomMenu
-  | CloseBottomMenu
-  | OpenBottomMenu
+  | ToggleResultsMenu
+  | CloseResultsMenu
+  | OpenResultsMenu
   | SetSelectedFilter
   | SetSearchType
   | SetUiView

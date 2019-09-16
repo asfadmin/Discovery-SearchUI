@@ -1,21 +1,21 @@
 <div
-  [@changeMenuY]="(isBottomMenuOpen$ | async) ? 'shown' : 'hidden'"
+  [@changeMenuY]="(isResultsMenuOpen$ | async) ? 'shown' : 'hidden'"
   [class.hidden]="(isHidden$ | async) || (areNoScenes$  | async)"
-  class="bottom-menu-wrapper">
+  class="results-menu-wrapper">
   <div class="toggle-button-position">
     <button (click)="onToggleMenu()"
        class="toggle-button"
       mat-flat-button>
       <span>Results</span>
       <mat-icon>
-        {{ (isBottomMenuOpen$ | async) ? 'keyboard_arrow_down' : 'keyboard_arrow_up' }}
+        {{ (isResultsMenuOpen$ | async) ? 'keyboard_arrow_down' : 'keyboard_arrow_up' }}
       </mat-icon>
     </button>
   </div>
-  <div class="bottom-menu--background  bottom-menu--layout"
+  <div class="results-menu--background  results-menu--layout"
        fxLayout="row"
        fxLayout.lt-sm="column">
-    <mat-card class="card-spacing bottom-menu--column"
+    <mat-card class="card-spacing results-menu--column"
         fxFlex="33" fxFlexFill>
       <mat-card-subtitle *ngIf="numberOfScenes$ | async as numberOfScenes" class="header">
         <div style="display: flex; justify-content: center">
@@ -53,7 +53,7 @@
       </div>
     </mat-card>
 
-    <mat-card class="card-spacing bottom-menu--column"
+    <mat-card class="card-spacing results-menu--column"
               fxFlex="34" fxFlexFill>
       <mat-card-subtitle class="header">
         Scene Detail
@@ -62,7 +62,7 @@
       </app-scene-detail>
     </mat-card>
 
-    <mat-card class="card-spacing bottom-menu--column"
+    <mat-card class="card-spacing results-menu--column"
               fxFlex="33" fxFlexFill>
       <mat-card-subtitle class="header">
         <span *ngIf="selectedProducts$ | async as products; else defaultProductsHeader">

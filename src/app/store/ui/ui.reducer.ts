@@ -7,7 +7,7 @@ import { UIActionType, UIActions } from './ui.action';
 
 export interface UIState {
   isFiltersMenuOpen: boolean;
-  isBottomMenuOpen: boolean;
+  isResultsMenuOpen: boolean;
   isAOIOptionsOpen: boolean;
   uiView: ViewType;
   selectedFilter: FilterType | undefined;
@@ -17,7 +17,7 @@ export interface UIState {
 
 export const initState: UIState = {
   isFiltersMenuOpen: false,
-  isBottomMenuOpen: false,
+  isResultsMenuOpen: false,
   isAOIOptionsOpen: false,
   uiView: ViewType.MAIN,
   selectedFilter: FilterType.DATASET,
@@ -66,21 +66,21 @@ export function uiReducer(state = initState, action: UIActions): UIState {
     case UIActionType.TOGGLE_BOTTOM_MENU: {
       return {
           ...state,
-          isBottomMenuOpen: !state.isBottomMenuOpen
+          isResultsMenuOpen: !state.isResultsMenuOpen
         };
     }
 
     case UIActionType.CLOSE_BOTTOM_MENU: {
       return {
           ...state,
-          isBottomMenuOpen: false
+          isResultsMenuOpen: false
         };
     }
 
     case UIActionType.OPEN_BOTTOM_MENU: {
       return {
           ...state,
-          isBottomMenuOpen: true
+          isResultsMenuOpen: true
       };
     }
 
@@ -165,9 +165,9 @@ export const getIsHidden = createSelector(
   state => state.uiView === ViewType.MAP_ONLY
 );
 
-export const getIsBottomMenuOpen = createSelector(
+export const getIsResultsMenuOpen = createSelector(
   getUIState,
-  state => state.isBottomMenuOpen
+  state => state.isResultsMenuOpen
 );
 
 export const getBanners = createSelector(

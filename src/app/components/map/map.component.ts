@@ -73,18 +73,18 @@ export class MapComponent implements OnInit {
 
   ngOnInit(): void {
     combineLatest(
-      this.store$.select(uiStore.getIsBottomMenuOpen),
+      this.store$.select(uiStore.getIsResultsMenuOpen),
       this.mapService.searchPolygon$
     ).pipe(
       filter(_ => !!this.overlay),
-      map(([isBottomMenuOpen, polygon]) => !isBottomMenuOpen && !!polygon),
+      map(([isResultsMenuOpen, polygon]) => !isResultsMenuOpen && !!polygon),
     ).subscribe(
       shouldShowOverlay => shouldShowOverlay ?
         this.showOverlay() :
         this.hideOverlay()
     );
 
-    this.store$.select(uiStore.getIsBottomMenuOpen).subscribe(
+    this.store$.select(uiStore.getIsResultsMenuOpen).subscribe(
       isOpen => {
         const mode = isOpen ?
           models.MapInteractionModeType.NONE :

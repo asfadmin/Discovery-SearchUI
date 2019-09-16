@@ -97,8 +97,8 @@ export class SearchEffects {
   );
 
   @Effect()
-  private showBottomMenuOnSearchResponse: Observable<Action> = this.actions$.pipe(
+  private showResultsMenuOnSearchResponse: Observable<Action> = this.actions$.pipe(
     ofType<SearchResponse>(SearchActionType.SEARCH_RESPONSE),
-    map(_ => new uiStore.OpenBottomMenu()),
+    map(_ => new uiStore.OpenResultsMenu()),
   );
 }
