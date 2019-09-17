@@ -8,11 +8,10 @@ import { Observable, combineLatest } from 'rxjs';
 import { map, withLatestFrom, startWith, switchMap, tap, filter } from 'rxjs/operators';
 
 import { AppState } from '@store';
-import * as granulesStore from '@store/granules';
+import * as scenesStore from '@store/scenes';
 import * as mapStore from '@store/map';
 import * as uiStore from '@store/ui';
 import * as filterStore from '@store/filters';
-import * as missionStore from '@store/mission';
 
 import { MapService } from './map/map.service';
 import { RangeService } from './range.service';
@@ -32,7 +31,7 @@ export class SearchParamsService {
     private prop: PropertyService,
   ) { }
 
-  public getParams(): Observable<{[id: string]: string | null}> {
+  public getParams(): Observable<any> {
     return combineLatest(
       this.searchType$(),
       this.listParam$(),
@@ -85,14 +84,14 @@ export class SearchParamsService {
   private listParam$() {
     return this.store$.select(filterStore.getSearchList).pipe(
       withLatestFrom(this.store$.select(filterStore.getListSearchMode).pipe(
-        map(mode => mode === models.ListSearchType.GRANULE ? 'granule_list' : 'product_list')
+        map(mode => mode === models.ListSearchType.SCENE ? 'granule_list' : 'product_list')
       )),
       map(([searchList, param]) => ({ [param]: searchList.join(',') }))
     );
   }
 
   private missionParam$() {
-    return this.store$.select(missionStore.getSelectedMission).pipe(
+    return this.store$.select(filterStore.getSelectedMission).pipe(
       map(mission => ({ collectionName: mission }))
     );
   }

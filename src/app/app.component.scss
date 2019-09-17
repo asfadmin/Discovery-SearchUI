@@ -4,14 +4,7 @@
   bottom: 0;
   left: 0;
   right: 0;
-}
-
-.app-content {
-}
-
-.app-sidenav {
-  position: fixed;
-  width: 350px;
-  max-width: 90vw;
-  height: 100vh;
+  z-index: 1;
+  box-sizing: border-box;
+  overflow: hidden;
 }
