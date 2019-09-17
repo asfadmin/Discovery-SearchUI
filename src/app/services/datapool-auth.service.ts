@@ -91,19 +91,8 @@ export class DatapoolAuthService {
       id: cookies['urs-user-id'],
       accessToken: cookies['urs-access-token']
     };
-    console.log(this.user);
 
     this.isLoggedIn = !!(this.user.id && this.user.accessToken);
-
-    if (this.isLoggedIn) {
-      const authHeader = `Authorization: Bearer ${this.user.accessToken}`;
-      const userProfileUrl = `https://urs.earthdata.nasa.gov/api/users/${this.user.id}`;
-
-      const headers = new HttpHeaders(authHeader);
-      this.http.get(userProfileUrl, { headers }).subscribe(
-        console.log
-      );
-    }
   }
 
   private loadCookies() {
