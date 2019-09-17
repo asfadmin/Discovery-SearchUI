@@ -39,6 +39,8 @@ export class AoiOptionsComponent implements OnInit {
     this.mapService.searchPolygon$.subscribe(
       polygon => this.polygon = polygon
     );
+
+    this.handleAOIErrors();
   }
 
   public onInputSearchPolygon(polygon: string): void {
