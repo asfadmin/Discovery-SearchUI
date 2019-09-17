@@ -59,34 +59,37 @@ export class GranuleDetailComponent implements OnInit {
   }
 
   private datasetFor(granule: models.CMRProduct): models.Dataset {
-    const exact = (datasetID, granuleDataset) => (
-      datasetID === granuleDataset
+    const exact = (dataset, granuleDataset) => (
+      dataset.id.toLowerCase() === granuleDataset
     );
 
-    const partial = (datasetID, granuleDataset) => (
-      datasetID.includes(granuleDataset) ||
-      granuleDataset.includes(datasetID)
+    const partial = (dataset, granuleDataset) => (
+      dataset.id.toLowerCase().includes(granuleDataset) ||
+      granuleDataset.includes(dataset.id.toLowerCase())
+    );
+
+    const subtype = (dataset, granuleDataset) => (
+      dataset.subtypes.length ?
+        dataset.subtypes.filter(st => st.apiValue.toLowerCase() === granuleDataset) : null
     );
 
     return (
       this.getDatasetMatching(granule, exact) ||
       this.getDatasetMatching(granule, partial) ||
+      this.getDatasetMatching(granule, subtype) ||
       models.datasets[0]
     );
   }
 
   private getDatasetMatching(
     granule: models.CMRProduct,
-    comparator: (datasetName: string, granuleDataset: string) => boolean
+    comparator: (dataset: models.Dataset, granuleDataset: string) => boolean
   ): models.Dataset {
     return  models.datasets
       .filter(dataset => {
-        const [datasetName, granuleDataset] = [
-          dataset.id.toLowerCase(),
-          granule.dataset.toLocaleLowerCase()
-        ];
+        const granuleDataset = granule.dataset.toLocaleLowerCase();
 
-        return comparator(datasetName, granuleDataset);
+        return comparator(dataset, granuleDataset);
       })[0];
   }
 
