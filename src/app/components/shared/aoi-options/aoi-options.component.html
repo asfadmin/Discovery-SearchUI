@@ -2,11 +2,30 @@
   <div class="header-layout mb">
     <div><b>Options</b></div>
 
+
+
     <div>
       <button (click)="onClose()" matTooltip="Hide options" mat-icon-button>
         <mat-icon>clear</mat-icon>
       </button>
     </div>
+  </div>
+
+  <div>
+    <form #polygonInputForm="ngForm" (keydown.enter)="$event.preventDefault()">
+      <mat-form-field [class.invalid-input-animation]="isAOIError" style="width: 100%; height: 100px">
+        <mat-label> Area of Interest • WKT </mat-label>
+        <textarea
+          (change)="onInputSearchPolygon($event.target.value)"
+          [value]="polygon"
+          [(ngModel)]="polygon"
+          name="searchPolygonLarge"
+          cdkTextareaAutosize cdkAutosizeMinRows="3"
+          cdkAutosizeMaxRows="8"
+          matInput>
+        </textarea>
+      </mat-form-field>
+    </form>
   </div>
 
   <div class="form-layout">

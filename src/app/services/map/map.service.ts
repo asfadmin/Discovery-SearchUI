@@ -13,6 +13,7 @@ import Select from 'ol/interaction/Select';
 
 import { WktService } from '../wkt.service';
 import { DrawService } from './draw.service';
+import { LegacyAreaFormatService } from '../legacy-area-format.service';
 import * as models from '@models';
 
 import * as polygonStyle from './polygon.style';
@@ -77,6 +78,7 @@ export class MapService {
 
   constructor(
     private wktService: WktService,
+    private legacyAreaFormat: LegacyAreaFormatService,
     private drawService: DrawService,
   ) {}
 
@@ -108,6 +110,32 @@ export class MapService {
       duration: 150
     });
   }
+
+  public loadPolygonFrom(polygon: string): boolean {
+    if (this.legacyAreaFormat.isValid(polygon)) {
+      polygon = this.legacyAreaFormat.toWkt(polygon);
+    }
+
+    return this.loadWKT(polygon);
+  }
+
+  private loadWKT(polygon: string): boolean {
+    let didLoad = true;
+
+    try {
+      const features = this.wktService.wktToFeature(
+        polygon,
+        this.epsg()
+      );
+
+      this.setDrawFeature(features);
+    } catch (e) {
+      didLoad = false;
+    }
+
+    return didLoad;
+  }
+
 
   public setLayer(layer: Layer): void {
     if (!!this.polygonLayer) {

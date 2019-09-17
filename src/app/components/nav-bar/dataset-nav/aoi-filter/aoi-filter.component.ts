@@ -43,9 +43,7 @@ export class AoiFilterComponent implements OnInit {
 
   constructor(
     private store$: Store<AppState>,
-    private legacyAreaFormat: services.LegacyAreaFormatService,
     private mapService: services.MapService,
-    private wktService: services.WktService,
     private clipboard: ClipboardService,
   ) { }
 
@@ -71,22 +69,9 @@ export class AoiFilterComponent implements OnInit {
   }
 
   public onInputSearchPolygon(polygon: string): void {
-    if (this.legacyAreaFormat.isValid(polygon)) {
-      polygon = this.legacyAreaFormat.toWkt(polygon);
-    }
+    const didLoad = this.mapService.loadPolygonFrom(polygon);
 
-    this.loadWKT(polygon);
-  }
-
-  private loadWKT(polygon: string): void {
-    try {
-      const features = this.wktService.wktToFeature(
-        polygon,
-        this.mapService.epsg()
-      );
-
-      this.mapService.setDrawFeature(features);
-    } catch (e) {
+    if (!didLoad) {
       this.aoiErrors$.next();
     }
   }

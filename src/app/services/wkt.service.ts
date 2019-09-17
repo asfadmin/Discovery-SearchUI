@@ -24,7 +24,7 @@ export class WktService {
     return this.format.writeGeometry(geometry, {
       dataProjection: this.sceneProjection,
       featureProjection: epsg,
-      decimals: 6
+      decimals: 4
     });
   }
 }
