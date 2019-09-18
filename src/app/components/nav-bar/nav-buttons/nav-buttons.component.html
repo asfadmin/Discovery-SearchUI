@@ -30,7 +30,7 @@
   <button
     *ngIf="datapoolAuthService.isLoggedIn"
     [matMenuTriggerFor]="profileMenu"
-    class="spacing profile" color="basic"
+    class="spacing nav-icon-buttons" color="basic"
     matTooltip="Profile" mat-button>
       <mat-icon>account_circle</mat-icon>
       <div class="text-under faint-text"> {{ datapoolAuthService.user.id }}</div>

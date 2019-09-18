@@ -25,7 +25,7 @@ $config: mat-typography-config();
   border-style: solid;
   border-color: $asf-primary-light;
   border-width: 1px 0 0 1px;
-  color: #333;
+  color: $asf-primary;
   max-width: calc(50vw - 100px);
   font-family: mat-font-family($config);
   font-weight: 400;
@@ -42,4 +42,9 @@ $config: mat-typography-config();
 
 .text-spacing {
   margin: 0 5px;
+}
+
+a {
+  color: $asf-primary;
+  text-decoration: none;
 }
