@@ -73,9 +73,10 @@ export class DateSelectorComponent implements OnInit {
   }
 
   public onStartDateChange(e: MatDatepickerInputEvent<moment.Moment>): void {
+
     let date: null | Date;
 
-    if (!this.startControl.valid) {
+    if (!this.startControl.valid || !e.value) {
       date = null;
       this.startDateErrors$.next();
     } else {
@@ -89,7 +90,7 @@ export class DateSelectorComponent implements OnInit {
   public onEndDateChange(e: MatDatepickerInputEvent<moment.Moment>): void {
     let date: null | Date;
 
-    if (!this.endControl.valid) {
+    if (!this.endControl.valid || !e.value) {
       date = null;
       this.endDateErrors$.next();
     } else {

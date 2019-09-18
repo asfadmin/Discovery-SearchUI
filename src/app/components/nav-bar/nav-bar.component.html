@@ -1,5 +1,30 @@
 <div class="bounds">
-  <app-breadcrumb-list class="nav-item-position">
-  </app-breadcrumb-list>
+  <div class="nav-item-position">
+    <div class="breadcrumb-list"
+         fxLayout="row"
+         fxLayout.lt-lg="column"
+         fxFlexFill>
+
+      <div fxLayout="row"
+           fxLayout.gt-lg="column">
+        <div fxFlex="auto" class="logo">
+          <app-logo></app-logo>
+        </div>
+      </div>
+
+      <div fxLayout="column" fxFill>
+
+        <app-dataset-nav *ngIf="searchType === searchTypes.DATASET"
+          (openQueue)="onOpenDownloadQueue()">
+        </app-dataset-nav>
+
+        <app-list-nav *ngIf="searchType === searchTypes.LIST"
+          (openQueue)="onOpenDownloadQueue()">
+        </app-list-nav>
+
+        <app-info-bar></app-info-bar>
+      </div>
+    </div>
+  </div>
   <mat-progress-bar *ngIf="isLoading" style="width: 100%" mode="indeterminate"></mat-progress-bar>
 </div>

@@ -13,6 +13,7 @@ import Select from 'ol/interaction/Select';
 
 import { WktService } from '../wkt.service';
 import { DrawService } from './draw.service';
+import { LegacyAreaFormatService } from '../legacy-area-format.service';
 import * as models from '@models';
 
 import * as polygonStyle from './polygon.style';
@@ -64,7 +65,7 @@ export class MapService {
   public mousePosition$ = new BehaviorSubject<models.LonLat>({
     lon: 0, lat: 0
   });
-  public newSelectedGranule$ = new Subject<string>();
+  public newSelectedScene$ = new Subject<string>();
 
   public isDrawing$ = this.drawService.isDrawing$;
   public searchPolygon$ = this.drawService.polygon$.pipe(
@@ -77,6 +78,7 @@ export class MapService {
 
   constructor(
     private wktService: WktService,
+    private legacyAreaFormat: LegacyAreaFormatService,
     private drawService: DrawService,
   ) {}
 
@@ -109,6 +111,32 @@ export class MapService {
     });
   }
 
+  public loadPolygonFrom(polygon: string): boolean {
+    if (this.legacyAreaFormat.isValid(polygon)) {
+      polygon = this.legacyAreaFormat.toWkt(polygon);
+    }
+
+    return this.loadWKT(polygon);
+  }
+
+  private loadWKT(polygon: string): boolean {
+    let didLoad = true;
+
+    try {
+      const features = this.wktService.wktToFeature(
+        polygon,
+        this.epsg()
+      );
+
+      this.setDrawFeature(features);
+    } catch (e) {
+      didLoad = false;
+    }
+
+    return didLoad;
+  }
+
+
   public setLayer(layer: Layer): void {
     if (!!this.polygonLayer) {
       this.map.removeLayer(this.polygonLayer);
@@ -140,8 +168,8 @@ export class MapService {
 
   public clearDrawLayer(): void {
     this.drawService.clear();
-    this.clearFocusedGranule();
-    this.clearSelectedGranule();
+    this.clearFocusedScene();
+    this.clearSelectedScene();
   }
 
   public setCenter(centerPos: models.LonLat): void {
@@ -173,7 +201,7 @@ export class MapService {
     this.setMap(view, overlay);
   }
 
-  public clearSelectedGranule(): void {
+  public clearSelectedScene(): void {
     this.selectedSource.clear();
     this.selectClick.getOverlay().getSource().clear();
   }
@@ -183,7 +211,7 @@ export class MapService {
     this.selectedSource.addFeature(feature);
   }
 
-  public clearFocusedGranule(): void {
+  public clearFocusedScene(): void {
     this.focusSource.clear();
     this.selectHover.getOverlay().getSource().clear();
   }
@@ -201,9 +229,9 @@ export class MapService {
     this.zoomToExtent(extent);
   }
 
-  public zoomToGranule(granule: models.CMRProduct): void {
+  public zoomToScene(scene: models.CMRProduct): void {
     const feature = this.wktService.wktToFeature(
-      granule.metadata.polygon,
+      scene.metadata.polygon,
       this.epsg()
     );
 
@@ -223,7 +251,7 @@ export class MapService {
       .getView()
       .fit(extent, {
         size: this.map.getSize(),
-        padding: [200, 500, 700, 500],
+        padding: [0, 0, 500, 0],
         duration: 750,
       });
   }
@@ -250,7 +278,7 @@ export class MapService {
     newMap.addInteraction(this.selectHover);
     this.selectClick.on('select', e => {
       e.target.getFeatures().forEach(
-        feature => this.newSelectedGranule$.next(feature.get('filename'))
+        feature => this.newSelectedScene$.next(feature.get('filename'))
       );
     });
 

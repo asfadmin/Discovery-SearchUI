@@ -1,0 +1,30 @@
+@import "asf-theme";
+
+$config: mat-typography-config();
+
+.h100 {
+  height: 100%;
+}
+
+.custom-font {
+  font-family: mat-font-family($custom-typography);
+}
+
+.dialog-header {
+  font-weight: bold;
+  font-size: 30px;
+  margin-bottom: 13px;
+}
+
+.close-x {
+  position: absolute;
+  top: 15px;
+  right: 35px;
+  text-align: right;
+  cursor: pointer;
+}
+
+.dialog {
+  margin: 0;
+  padding: 0;
+}

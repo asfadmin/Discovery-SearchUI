@@ -1,26 +1,68 @@
 @import "asf-theme";
 
+$config: mat-typography-config();
+
+$info-background: $asf-primary-light;
+$info-color: $asf-primary;
+
 .position {
   z-index: 998;
+  margin-left: 5px;
+  top: 20px;
+  width: 100%;
 }
 
-.layout {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-end;
+.icon-bar {
+  background-color: $info-background;
+  padding: 0;
+}
+
+.ribbon-info-top {
+  background-color: $info-background;
+  color: $info-color;
+}
+
+label {
+  font-family: mat-font-family($config);
+  font-size: 11px;
+}
+
+.lat-lon {
+  font-family: mat-font-family($config);
+  font-size: 12px;
+  background-color: $info-background;
+  color: $info-color;
+  margin-top: -3px;
 }
 
 .control-icon {
-  @include md-icon-size(22px);
+  @include md-icon-size($asf-ribbon-icon-size);
 }
 
 .button-group {
-  margin-bottom: 5px;
+  margin: 0 3px 3px 1px;
   pointer-events: auto;
 }
 
-.meatball {
-  position: fixed;
-  pointer-events: none;
-  bottom: 40px;
+.zoom-group {
+  //width: 128px;
+}
+
+.button-group-label {
+  text-align: center;
+  color: $info-color;
+}
+
+.move-handle {
+  margin-top: 16px;
+  margin-left: 7px;
+  margin-right: 7px;
+  color: $info-color;
+  cursor: move;
+  width: 24px;
+  height: 24px;
+}
+
+.slim-line {
+  height: 0;
 }

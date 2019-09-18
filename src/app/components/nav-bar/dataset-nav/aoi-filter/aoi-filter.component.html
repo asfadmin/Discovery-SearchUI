@@ -1,0 +1,40 @@
+<form
+      #polygonForm="ngForm"
+      (mouseenter)="isHoveringAOISelector = true"
+      (mouseleave)="isHoveringAOISelector = false"
+      (keydown.enter)="$event.preventDefault()">
+
+  <mat-form-field
+    [class.invalid-input-animation]="isAOIError"
+    class="full-width">
+    <mat-label> Area of Interest • WKT </mat-label>
+      <input
+        (change)="onInputSearchPolygon($event.target.value)"
+        [value]="polygon"
+        [(ngModel)]="polygon"
+        name="searchPolygon"
+        matInput>
+
+    <mat-icon
+      *ngIf="!!polygon" (click)="onCopy()"
+      matTooltip="Copy to clipboard"
+      [class.ghost-item]="!isHoveringAOISelector"
+      class="clickable copy-icon" matSuffix>
+      file_copy
+    </mat-icon>
+
+    <mat-icon
+      (click)="toggleAOIOptions()"
+      matTooltip="More options"
+      class="clickable additional-aoi-toggle"
+      matSuffix>
+      {{ isAOIOptionsOpen ? 'arrow_drop_up' : 'arrow_drop_down' }}
+    </mat-icon>
+  </mat-form-field>
+
+  <mat-card *ngIf="isAOIOptionsOpen"
+           [@fadeTransition]
+            class="breadcrumb-filter">
+    <app-aoi-options (close)="closeAOIOptions()"></app-aoi-options>
+  </mat-card>
+</form>

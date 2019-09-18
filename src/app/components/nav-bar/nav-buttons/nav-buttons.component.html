@@ -30,7 +30,7 @@
   <button
     *ngIf="datapoolAuthService.isLoggedIn"
     [matMenuTriggerFor]="profileMenu"
-    class="spacing profile" color="basic"
+    class="spacing nav-icon-buttons" color="basic"
     matTooltip="Profile" mat-button>
       <mat-icon>account_circle</mat-icon>
       <div class="text-under faint-text"> {{ datapoolAuthService.user.id }}</div>
@@ -42,29 +42,6 @@
         <span>Logout</span>
     </button>
   </mat-menu>
-
-<!--  <button-->
-<!--    [matMenuTriggerFor]="shareMenu"-->
-<!--    matTooltip="Share Search"-->
-<!--    class="spacing" color="basic" mat-icon-button>-->
-<!--      <mat-icon>share</mat-icon>-->
-<!--  </button>-->
-
-<!--  <mat-menu #shareMenu="matMenu">-->
-<!--    <button (click)="onCopy()"-->
-<!--      mat-menu-item matSuffix>-->
-<!--        <mat-icon>file_copy</mat-icon>-->
-<!--        <span>Copy Search Link</span>-->
-<!--    </button>-->
-
-<!--    <a (click)="onShareWithEmail()"-->
-<!--      href="mailto:?subject=&body=:%20"-->
-<!--      target="_blank" title="Send email"-->
-<!--      mat-menu-item matSuffix>-->
-<!--        <mat-icon>email</mat-icon>-->
-<!--        <span>Share With Email</span>-->
-<!--    </a>-->
-<!--  </mat-menu>-->
 
   <button
     [matMenuTriggerFor]="appMenu"
@@ -108,8 +85,8 @@
     <hr class="menu-hr">
 
     <button [matMenuTriggerFor]="thematicDatasets"
-      mat-menu-item >
-        Thematic Datasets
+            mat-menu-item>
+            Thematic Datasets
     </button>
 
     <button *ngIf="isDevMode()"
