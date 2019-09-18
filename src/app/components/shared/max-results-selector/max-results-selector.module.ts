@@ -6,6 +6,8 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { MatSharedModule } from '@shared';
+import { MatDialogModule } from '@angular/material/dialog';
+
 
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { library } from '@fortawesome/fontawesome-svg-core';
@@ -25,6 +27,7 @@ import { ClipboardModule } from 'ngx-clipboard';
     MatInputModule,
     MatSelectModule,
     MatSharedModule,
+    MatDialogModule,
     ClipboardModule
   ],
   exports: [ MaxResultsSelectorComponent ],

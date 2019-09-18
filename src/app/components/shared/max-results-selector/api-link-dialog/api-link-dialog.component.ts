@@ -10,7 +10,7 @@ import * as services from '@services';
 @Component({
   selector: 'app-api-link-dialog',
   templateUrl: './api-link-dialog.component.html',
-  styleUrls: ['./api-link-dialog.component.css']
+  styleUrls: ['./api-link-dialog.component.scss']
 })
 export class ApiLinkDialogComponent implements OnInit {
   public amount$ = new BehaviorSubject<number>(5000);
