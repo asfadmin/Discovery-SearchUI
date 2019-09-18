@@ -9,4 +9,5 @@ import { LonLat } from '@models';
 })
 export class AttributionsComponent {
   @Input() mousePos: LonLat;
+  anio: number = new Date().getFullYear();
 }
