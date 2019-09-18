@@ -1,6 +1,6 @@
 <div class="custom-font">
   <mat-dialog-content>
-    <div style="display: flex; flex-direction: row; justify-content: space-between;">
+    <div style="display: flex; flex-direction: row; justify-content: space-between; margin-bottom: 15px;">
       <div class="dialog-header" mat-dialog-title>Download Search Results</div>
       <div>
         <mat-icon (click)="onCloseDownloadQueue()" class="clickable">
@@ -9,12 +9,12 @@
       </div>
     </div>
 
-    <div style="margin-bottom: 5px;">
+    <div style="margin-bottom: 10px;">
       Use an ASF API query to download more results manually.
     </div>
 
     <form #apiLinkForm="ngForm" onsubmit="return false">
-      <mat-form-field style="margin-right: 10px">
+      <mat-form-field style="margin-right: 15px">
         <mat-label>Amount</mat-label>
         <input type="number" name="amount"
         [(ngModel)]="amount"
@@ -51,7 +51,7 @@
     </form>
   </mat-dialog-content>
 
-  <mat-dialog-actions>
+  <mat-dialog-actions style="margin-top: 15px;">
     <a href="https://www.asf.alaska.edu/get-data/api/" target="_blank" mat-flat-button>API Docs</a>
     <a [href]="apiLink" target="_blank" color="primary" mat-flat-button>
       Download Results

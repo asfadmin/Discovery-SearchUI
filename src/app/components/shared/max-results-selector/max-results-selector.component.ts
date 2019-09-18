@@ -59,11 +59,8 @@ export class MaxResultsSelectorComponent implements OnInit {
   }
 
   public onMoreResults(): void {
-    const dialogRef = this.dialog.open(ApiLinkDialogComponent , {
-      width: '550px', height: '450px', maxHeight: '90%'
-    });
+    const dialogRef = this.dialog.open(ApiLinkDialogComponent);
   }
-
 
   public formatNumber(num: number): string {
     return num
