@@ -60,7 +60,7 @@ export class MaxResultsSelectorComponent implements OnInit {
 
   public onMoreResults(): void {
     const dialogRef = this.dialog.open(ApiLinkDialogComponent , {
-      width: '550px', height: '700px', minHeight: '50%'
+      width: '550px', height: '350px', maxHeight: '90%'
     });
   }
 

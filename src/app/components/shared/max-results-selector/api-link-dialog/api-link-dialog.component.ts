@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { ClipboardService } from 'ngx-clipboard';
 
 import { BehaviorSubject, combineLatest } from 'rxjs';
 import { map, withLatestFrom, filter } from 'rxjs/operators';
@@ -48,11 +49,11 @@ export class ApiLinkDialogComponent implements OnInit {
 
   constructor(
     private asfApiService: services.AsfApiService,
-    private searchParams: services.SearchParamsService
+    private searchParams: services.SearchParamsService,
+    private clipboard: ClipboardService
   ) { }
 
   ngOnInit() {
-
     this.amount$.subscribe(
       amount => this.amount = amount
     );
@@ -83,5 +84,9 @@ export class ApiLinkDialogComponent implements OnInit {
 
   public onFormatChange(format: string): void {
     this.format$.next(format);
+  }
+
+  public onCopyLink(): void {
+    this.clipboard.copyFromContent(this.apiLink);
   }
 }
