@@ -251,7 +251,7 @@ export class MapService {
       .getView()
       .fit(extent, {
         size: this.map.getSize(),
-        padding: [200, 500, 700, 500],
+        padding: [0, 0, 500, 0],
         duration: 750,
       });
   }
