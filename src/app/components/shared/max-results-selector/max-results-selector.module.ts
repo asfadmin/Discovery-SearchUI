@@ -11,9 +11,9 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { faSpinner } from '@fortawesome/free-solid-svg-icons';
 
-
 import { MaxResultsSelectorComponent } from './max-results-selector.component';
 import { ApiLinkDialogComponent } from './api-link-dialog/api-link-dialog.component';
+import { ClipboardModule } from 'ngx-clipboard';
 
 @NgModule({
   declarations: [MaxResultsSelectorComponent, ApiLinkDialogComponent],
@@ -24,7 +24,8 @@ import { ApiLinkDialogComponent } from './api-link-dialog/api-link-dialog.compon
     MatMenuModule,
     MatInputModule,
     MatSelectModule,
-    MatSharedModule
+    MatSharedModule,
+    ClipboardModule
   ],
   exports: [ MaxResultsSelectorComponent ],
   entryComponents: [ ApiLinkDialogComponent ]
