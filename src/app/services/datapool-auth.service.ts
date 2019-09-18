@@ -86,6 +86,7 @@ export class DatapoolAuthService {
 
   private checkLogin() {
     const cookies = this.loadCookies();
+
     this.user = {
       id: cookies['urs-user-id'],
       accessToken: cookies['urs-access-token']

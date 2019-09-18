@@ -1,7 +1,117 @@
+@import "asf-theme";
+@import "~flex-layout-sass/mixin";
+
 .bounds {
   display: block;
   padding: 0 !important;
   margin: 0;
   overflow-x: hidden;
   overflow-y: hidden;
+}
+
+$config: mat-typography-config();
+
+.breadcrumb-list {
+  background-color: white;
+}
+
+.breadcrumb-filter {
+  max-width: 370px;
+  min-width: 300px;
+  height: auto;
+  position: fixed;
+  top: 100px;
+  z-index: 1;
+  margin: 0;
+  padding: 3px 16px 16px 16px;
+}
+
+$break-small: 700px;
+$break-medium: 1250px;
+
+.breadcrumb {
+  @extend .mat-form-field;
+
+  @include fx-flex(auto);
+
+  padding-top: 15px;
+  margin-left: 5px;
+  margin-right: 5px;
+  height: 70px;
+  font-size: $asf-font-size;
+  line-height: $asf-line-height;
+}
+
+.search-controls {
+  padding-top: 5px;
+}
+
+.max-results {
+  text-align: left;
+  font-family: mat-font-family($config);
+  font-size: 14px;
+  margin-top: -5px;
+  line-height: 28px;
+}
+
+.additional-filters {
+  color: $asf-primary;
+
+  .mat-icon {
+    @include md-icon-size(18px);
+  }
+}
+
+.additional-filters-button {
+  margin-left: 0;
+  line-height: 12px;
+  color: $asf-primary;
+  margin-top: 18px;
+}
+
+.selected {
+  background-color: #ccc;
+}
+
+.justify-right {
+  justify-content: safe flex-end;
+}
+
+.full-width {
+  width: 100%;
+  max-width: 100%;
+}
+
+.ghost-item {
+  visibility: hidden;
+}
+
+.copy-icon {
+  font-size: 16px;
+  margin-left: 10px;
+}
+
+.additional-aoi-toggle {
+  margin-left: 3px;
+}
+
+.search-dialog-button {
+  margin-top: 10px;
+}
+
+.clear-search-icon {
+  @include md-icon-size(22px);
+
+  color: $asf-primary-dark;
+  vertical-align: middle;
+}
+
+.aoi-input {
+  cursor: default;
+}
+
+.icon-cluster {
+  position: absolute;
+  top: 20px;
+  right: 10px;
 }

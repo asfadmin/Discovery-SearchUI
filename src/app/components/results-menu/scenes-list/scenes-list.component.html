@@ -1,0 +1,56 @@
+<mat-card  class="scene-list card-spacing">
+  <cdk-virtual-scroll-viewport class="scroll-viewport-height"
+    minBufferPx="800" maxBufferPx="1200"
+    itemSize="72">
+    <mat-action-list class="action-list">
+
+      <div *cdkVirtualFor="let scene of scenes" class="scene-item-height">
+        <button
+          (mouseenter)="onSetFocusedScene(scene)"
+          (mouseleave) ="onClearFocusedScene(scene)"
+          (click)="onSceneSelected(scene.id)"
+          [class.selected]="scene.name === selected"
+          mat-list-item>
+
+          <img [src]="scene.thumbnail"
+            onerror="this.src='assets/error.png'"
+            matBadgeOverlap="false"
+            class="size" matListAvatar>
+
+          <div [title]="scene.name" class="product-name" matLine>
+            <span>
+              <span> {{ scene.name | truncate : sceneNameLen }}</span>
+              <span *ngIf="scene.dataset === 'Sentinel-1B' || scene.dataset === 'Sentinel-1A'">{{ scene.name.substr(scene.name.length - 4) }}</span>
+              <span *ngIf="scene.dataset === 'Sentinel-1 Interferogram (BETA)'"
+                >{{ scene.name.substr(scene.name.length - 11) }}</span>
+            </span>
+
+            <app-copy-to-clipboard
+               *ngIf="scene.name === hoveredSceneName"
+               style="margin-left: 5px"
+               prompt="Copy scene name"
+               [value]="scene.name">
+            </app-copy-to-clipboard>
+          </div>
+
+          <div matLine>
+            <span>{{ scene.metadata.date | shortDate }}</span>
+          </div>
+
+          <mat-icon (click)="onZoomTo(scene)"class="ml-2" matTooltip="Zoom to scene">
+            settings_overscan
+          </mat-icon>
+          <mat-icon (click)="onToggleScene($event, scene.groupId)"
+            class="icon-margin"
+            matTooltip="{{
+              allQueued[scene.groupId] ? 'Remove scene files from queue': 'Add scene files to queue'
+            }}">
+            {{ allQueued[scene.groupId] ? 'shopping_cart' : 'add_shopping_cart' }}
+          </mat-icon>
+
+          <span style="margin-left: 10px"> {{ numberOfQueue[scene.groupId] }} </span>
+        </button>
+      </div>
+    </mat-action-list>
+  </cdk-virtual-scroll-viewport>
+</mat-card>

@@ -6,9 +6,9 @@ import { UIActionType, UIActions } from './ui.action';
 
 
 export interface UIState {
-  isSidebarOpen: boolean;
   isFiltersMenuOpen: boolean;
-  isBottomMenuOpen: boolean;
+  isResultsMenuOpen: boolean;
+  isAOIOptionsOpen: boolean;
   uiView: ViewType;
   selectedFilter: FilterType | undefined;
   searchType: SearchType | null;
@@ -16,9 +16,9 @@ export interface UIState {
 }
 
 export const initState: UIState = {
-  isSidebarOpen: false,
   isFiltersMenuOpen: false,
-  isBottomMenuOpen: false,
+  isResultsMenuOpen: false,
+  isAOIOptionsOpen: false,
   uiView: ViewType.MAIN,
   selectedFilter: FilterType.DATASET,
   searchType: SearchType.DATASET,
@@ -28,25 +28,18 @@ export const initState: UIState = {
 
 export function uiReducer(state = initState, action: UIActions): UIState {
   switch (action.type) {
-    case UIActionType.TOGGLE_SIDEBAR: {
+    case UIActionType.TOGGLE_AOI_OPTIONS: {
       return {
           ...state,
-          isSidebarOpen: !state.isSidebarOpen,
+          isAOIOptionsOpen: !state.isAOIOptionsOpen,
         };
     }
 
-    case UIActionType.CLOSE_SIDEBAR: {
+    case UIActionType.CLOSE_AOI_OPTIONS: {
       return {
           ...state,
-          isSidebarOpen: false
+          isAOIOptionsOpen: false
         };
-    }
-
-    case UIActionType.OPEN_SIDEBAR: {
-      return {
-          ...state,
-          isSidebarOpen: true
-      };
     }
 
     case UIActionType.TOGGLE_FILTERS_MENU: {
@@ -73,21 +66,21 @@ export function uiReducer(state = initState, action: UIActions): UIState {
     case UIActionType.TOGGLE_BOTTOM_MENU: {
       return {
           ...state,
-          isBottomMenuOpen: !state.isBottomMenuOpen
+          isResultsMenuOpen: !state.isResultsMenuOpen
         };
     }
 
     case UIActionType.CLOSE_BOTTOM_MENU: {
       return {
           ...state,
-          isBottomMenuOpen: false
+          isResultsMenuOpen: false
         };
     }
 
     case UIActionType.OPEN_BOTTOM_MENU: {
       return {
           ...state,
-          isBottomMenuOpen: true
+          isResultsMenuOpen: true
       };
     }
 
@@ -102,7 +95,6 @@ export function uiReducer(state = initState, action: UIActions): UIState {
       return {
           ...state,
           searchType: action.payload,
-          isSidebarOpen: false
         };
     }
 
@@ -153,9 +145,9 @@ export const getSearchType = createSelector(
   state => state.searchType
 );
 
-export const getIsSidebarOpen = createSelector(
+export const getIsAOIOptionsOpen = createSelector(
   getUIState,
-  state => state.isSidebarOpen
+  (state: UIState) => state.isAOIOptionsOpen
 );
 
 export const getIsFiltersMenuOpen = createSelector(
@@ -173,9 +165,9 @@ export const getIsHidden = createSelector(
   state => state.uiView === ViewType.MAP_ONLY
 );
 
-export const getIsBottomMenuOpen = createSelector(
+export const getIsResultsMenuOpen = createSelector(
   getUIState,
-  state => state.isBottomMenuOpen
+  state => state.isResultsMenuOpen
 );
 
 export const getBanners = createSelector(

@@ -1,0 +1,39 @@
+.scene-list {
+  height: calc(100% - 72px);
+  padding: 0;
+  margin: 0;
+  overflow-y: hidden;
+}
+
+.mat-list-avatar {
+  border-radius: 6px !important;
+}
+
+.scroll-viewport-height {
+  height: 100%;
+  width: 100%;
+}
+
+.action-list {
+  padding-top: 0 !important;
+}
+
+.product--thumbnail {
+  width: 30%;
+}
+
+.selected {
+  background-color: rgba(0, 0, 0, 0.07);
+}
+
+.product-name {
+  font-weight: bold !important;
+}
+
+.icon-margin {
+  margin-left: 10px;
+}
+
+.selected .ml-2 {
+  color: red;
+}

@@ -1,25 +1,37 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 
 import { MatMenuModule } from '@angular/material/menu';
+import { MatInputModule } from '@angular/material/input';
+import { MatSelectModule } from '@angular/material/select';
 import { MatSharedModule } from '@shared';
+import { MatDialogModule } from '@angular/material/dialog';
+
 
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { faSpinner } from '@fortawesome/free-solid-svg-icons';
 
-
 import { MaxResultsSelectorComponent } from './max-results-selector.component';
+import { ApiLinkDialogComponent } from './api-link-dialog/api-link-dialog.component';
+import { ClipboardModule } from 'ngx-clipboard';
 
 @NgModule({
-  declarations: [MaxResultsSelectorComponent],
+  declarations: [MaxResultsSelectorComponent, ApiLinkDialogComponent],
   imports: [
     CommonModule,
+    FormsModule,
     FontAwesomeModule,
     MatMenuModule,
-    MatSharedModule
+    MatInputModule,
+    MatSelectModule,
+    MatSharedModule,
+    MatDialogModule,
+    ClipboardModule
   ],
-  exports: [MaxResultsSelectorComponent]
+  exports: [ MaxResultsSelectorComponent ],
+  entryComponents: [ ApiLinkDialogComponent ]
 })
 export class MaxResultsSelectorModule {
   constructor() {

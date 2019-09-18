@@ -1,5 +1,10 @@
 @import "asf-theme";
 
 .draw-icon {
-  @include md-icon-size(22px);
+  @include md-icon-size($asf-ribbon-icon-size);
+}
+
+.draw-text {
+  font-size: 14px;
+  line-height: 10px;
 }

@@ -3,6 +3,10 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { Observable } from 'rxjs';
 import { filter } from 'rxjs/operators';
 
+import { Store } from '@ngrx/store';
+import { AppState } from '@store';
+import * as uiStore from '@store/ui';
+
 import { MatDialog } from '@angular/material/dialog';
 
 import { MapInteractionModeType } from '@models';
@@ -19,7 +23,10 @@ export class FileUploadComponent implements OnInit {
   @Output() dialogClose = new EventEmitter<boolean>();
   @Output() newSearchPolygon = new EventEmitter<string>();
 
-  constructor(public dialog: MatDialog) {}
+  constructor(
+    private store$: Store<AppState>,
+    public dialog: MatDialog
+  ) {}
 
   public ngOnInit(): void {
     this.interaction$.pipe(
@@ -38,6 +45,7 @@ export class FileUploadComponent implements OnInit {
 
         if (wkt) {
           this.newSearchPolygon.emit(wkt);
+          this.store$.dispatch(new uiStore.CloseAOIOptions());
           wasSuccessful = true;
         } else {
           wasSuccessful = false;

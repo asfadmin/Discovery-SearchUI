@@ -1,0 +1,11 @@
+<div fxFlex="nogrow">
+  <mat-form-field fxFlex="120px">
+    <mat-label>Search Type</mat-label>
+    <mat-select
+      [(ngModel)]="searchType"
+      (selectionChange)="onSetSearchType($event.value)">
+      <mat-option [value]="searchTypes.DATASET">Geographic</mat-option>
+      <mat-option [value]="searchTypes.LIST">List</mat-option>
+    </mat-select>
+  </mat-form-field>
+</div>
