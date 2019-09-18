@@ -3,6 +3,7 @@ import { ClipboardService } from 'ngx-clipboard';
 
 import { BehaviorSubject, combineLatest } from 'rxjs';
 import { map, withLatestFrom, filter } from 'rxjs/operators';
+import { MatDialogRef } from '@angular/material';
 
 import * as services from '@services';
 
@@ -50,7 +51,8 @@ export class ApiLinkDialogComponent implements OnInit {
   constructor(
     private asfApiService: services.AsfApiService,
     private searchParams: services.SearchParamsService,
-    private clipboard: ClipboardService
+    private clipboard: ClipboardService,
+    private dialogRef: MatDialogRef<ApiLinkDialogComponent>,
   ) { }
 
   ngOnInit() {
@@ -88,5 +90,9 @@ export class ApiLinkDialogComponent implements OnInit {
 
   public onCopyLink(): void {
     this.clipboard.copyFromContent(this.apiLink);
+  }
+
+  public onCloseDownloadQueue(): void {
+    this.dialogRef.close();
   }
 }

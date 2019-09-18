@@ -1,8 +1,10 @@
 <div fxLayout="column" fxLayoutAlign="space-evenly stretch">
-  <div>
-    <h1 mat-dialog-title>Download Search Results</h1>
-    <div class="close-x" (click)="onCloseDownloadQueue()">
-      <mat-icon>close</mat-icon>
+  <div style="display: flex; flex-direction: row; justify-content: space-between;">
+    <div style="font-weight: bold;" mat-dialog-title>Download Search Results</div>
+    <div>
+        <mat-icon (click)="onCloseDownloadQueue()" class="clickable">
+          close
+        </mat-icon>
     </div>
   </div>
 
