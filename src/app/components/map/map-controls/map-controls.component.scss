@@ -27,6 +27,14 @@ label {
   font-size: 11px;
 }
 
+.lat-lon {
+  font-family: mat-font-family($config);
+  font-size: 12px;
+  background-color: $info-background;
+  color: $info-color;
+  margin-top: -3px;
+}
+
 .control-icon {
   @include md-icon-size($asf-ribbon-icon-size);
 }
@@ -53,4 +61,8 @@ label {
   cursor: move;
   width: 24px;
   height: 24px;
+}
+
+.slim-line {
+  height: 0;
 }
