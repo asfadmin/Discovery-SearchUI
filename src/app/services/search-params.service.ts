@@ -188,6 +188,7 @@ export class SearchParamsService {
 
   private flightDirections$() {
     return this.store$.select(filterStore.getFlightDirections).pipe(
+      map(dirs => dirs.length > 1 ? [] : dirs),
       map(dirs => dirs.join(',')),
       map(directions => ({ flightDirection: directions }))
     );
