@@ -89,7 +89,7 @@ export class SceneDetailComponent implements OnInit {
       })[0];
   }
 
-  public onOpenImage(scene: models.CMRProduct): void {
+  public onOpenImage(): void {
     this.dialog.open(ImageDialogComponent, {
       width: '1200px', height: '1200px',
       maxWidth: '90%', maxHeight: '90%',
