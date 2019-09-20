@@ -1,30 +1,26 @@
-<div *ngIf="scene$ | async as scene" class="dialog-wrapper mp0">
+<div class="browse-dialog">
   <div class="dialog-header">
-    <div>
-      <h3 class="mp0">{{ scene.name }}</h3>
-      <span class="faint-text">{{ scene.metadata.date | shortDate }}</span>
-    </div>
-    <div>
-      <button (click)="closeDialog()" mat-icon-button>
-        <mat-icon>close</mat-icon>
-      </button>
+    <div *ngIf="scene$ | async as scene" class="dialog-header--layout">
+      <div>
+        <h3 class="mp0">{{ scene.name }}</h3>
+        <span class="faint-text">{{ scene.metadata.date | shortDate }}</span>
+      </div>
+      <div>
+        <button (click)="closeDialog()" mat-icon-button>
+          <mat-icon>close</mat-icon>
+        </button>
+      </div>
     </div>
   </div>
-  <div class="scene-browse-wrapper">
-    <img
-      class="scene-browse fit-to-container"
-      [src]="scene.browse"
-      onerror="this.src='assets/error.png'"
-      alt="Sentinel1 scene browse image">
+
+  <div class="main-window">
+    <div id="browse-map" class="browse-map--size">
+    </div>
   </div>
-  <div class="nav-buttons">
-    <button (click)="selectPreviousProduct()" mat-button>
-      <mat-icon>arrow_left</mat-icon>
-      <span>Previous</span>
-    </button>
-    <button (click)="selectNextProduct()" mat-button>
-      <span>Next</span>
-      <mat-icon>arrow_right</mat-icon>
-    </button>
+
+  <div class="browse-list"> </div>
+
+  <div class="scene-detail">
+    <app-scene-metadata></app-scene-metadata>
   </div>
 </div>

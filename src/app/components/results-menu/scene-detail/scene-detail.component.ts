@@ -15,10 +15,13 @@ import * as models from '@models';
 import { DatapoolAuthService, PropertyService, ScreenSizeService } from '@services';
 import { ImageDialogComponent } from './image-dialog';
 
+import { DatasetForProductService } from '@services';
+
 @Component({
   selector: 'app-scene-detail',
   templateUrl: './scene-detail.component.html',
-  styleUrls: ['./scene-detail.component.scss']
+  styleUrls: ['./scene-detail.component.scss'],
+  providers: [ DatasetForProductService ]
 })
 export class SceneDetailComponent implements OnInit {
   public dataset: models.Dataset;
@@ -34,6 +37,7 @@ export class SceneDetailComponent implements OnInit {
     public dialog: MatDialog,
     public authService: DatapoolAuthService,
     public prop: PropertyService,
+    private datasetForProduct: DatasetForProductService
   ) {}
 
   ngOnInit() {
@@ -49,7 +53,7 @@ export class SceneDetailComponent implements OnInit {
 
     scene$.pipe(
       filter(g => !!g),
-      map(scene => this.datasetFor(scene)),
+      map(scene => this.datasetForProduct.match(scene)),
     ).subscribe(dataset => this.dataset = dataset);
 
    this.store$.select(uiStore.getSearchType).subscribe(
@@ -57,42 +61,9 @@ export class SceneDetailComponent implements OnInit {
    );
   }
 
-  private datasetFor(scene: models.CMRProduct): models.Dataset {
-    const exact = (datasetID, sceneDataset) => (
-      datasetID === sceneDataset
-    );
-
-    const partial = (datasetID, sceneDataset) => (
-      datasetID.includes(sceneDataset) ||
-      sceneDataset.includes(datasetID)
-    );
-
-    return (
-      this.getDatasetMatching(scene, exact) ||
-      this.getDatasetMatching(scene, partial) ||
-      models.datasets[0]
-    );
-  }
-
-  private getDatasetMatching(
-    scene: models.CMRProduct,
-    comparator: (datasetName: string, sceneDataset: string) => boolean
-  ): models.Dataset {
-    return  models.datasets
-      .filter(dataset => {
-        const [datasetName, sceneDataset] = [
-          dataset.id.toLowerCase(),
-          scene.dataset.toLocaleLowerCase()
-        ];
-
-        return comparator(datasetName, sceneDataset);
-      })[0];
-  }
-
-  public onOpenImage(scene: models.CMRProduct): void {
+  public onOpenImage(): void {
     this.dialog.open(ImageDialogComponent, {
-      width: '1200px', height: '1200px',
-      maxWidth: '90%', maxHeight: '90%',
+      width: '98vw', height: '96vh',
       panelClass: 'image-dialog'
     });
   }

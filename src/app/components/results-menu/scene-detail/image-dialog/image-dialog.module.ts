@@ -5,6 +5,7 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { MatSharedModule } from '@shared/mat-shared.module';
 
 import { PipesModule } from '@pipes';
+import { SceneMetadataModule } from '@components/shared/scene-metadata';
 import { ImageDialogComponent } from './image-dialog.component';
 
 @NgModule({
@@ -14,6 +15,7 @@ import { ImageDialogComponent } from './image-dialog.component';
     MatSharedModule,
     MatDialogModule,
     PipesModule,
+    SceneMetadataModule,
   ],
   exports: [ImageDialogComponent],
   entryComponents: [ImageDialogComponent],
