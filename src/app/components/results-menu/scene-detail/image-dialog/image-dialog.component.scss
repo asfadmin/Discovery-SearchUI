@@ -10,14 +10,17 @@ $config: mat-typography-config();
 
 // Grid created at https://cssgrid-generator.netlify.com/
 .browse-dialog {
+  max-height: 100%;
+  max-width: 100%;
   display: grid;
   grid-template-columns: 5fr 1fr;
-  grid-template-rows: 60px 8fr 3fr;
+  grid-template-rows: 1fr 8fr 3fr;
   grid-column-gap: 0;
   grid-row-gap: 0;
 
   .dialog-header {
     grid-area: 1 / 1 / 2 / 6;
+    min-height: 60px;
   }
 
   .main-window {
@@ -26,13 +29,24 @@ $config: mat-typography-config();
 
   .browse-list {
     grid-area: 3 / 1 / 4 / 2;
+    min-height: 150px;
   }
 
   .scene-detail {
     grid-area: 2 / 2 / 4 / 3;
+    min-width: 160px;
   }
 }
 
+.dialog-header--layout {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+
 .browse-map--size {
+  width: auto;
+  height: auto;
   background-color: #B3B3B3;
 }

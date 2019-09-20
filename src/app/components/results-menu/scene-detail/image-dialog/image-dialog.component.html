@@ -1,9 +1,9 @@
 <div class="browse-dialog">
   <div class="dialog-header">
-    <div *ngIf="scene$ | async as scene">
+    <div *ngIf="scene$ | async as scene" class="dialog-header--layout">
       <div>
-        <h3>{{ scene.name }}</h3>
-        <span>{{ scene.metadata.date | shortDate }}</span>
+        <h3 class="mp0">{{ scene.name }}</h3>
+        <span class="faint-text">{{ scene.metadata.date | shortDate }}</span>
       </div>
       <div>
         <button (click)="closeDialog()" mat-icon-button>

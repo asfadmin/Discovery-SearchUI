@@ -91,8 +91,7 @@ export class SceneDetailComponent implements OnInit {
 
   public onOpenImage(): void {
     this.dialog.open(ImageDialogComponent, {
-      width: '1200px', height: '1200px',
-      maxWidth: '90%', maxHeight: '90%',
+      width: '98vw', height: '96vh',
       panelClass: 'image-dialog'
     });
   }
