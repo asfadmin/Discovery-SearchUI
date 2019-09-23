@@ -1,7 +1,7 @@
 import { Component, OnInit, AfterViewInit } from '@angular/core';
 import { MatDialogRef } from '@angular/material/dialog';
 
-import { tap } from 'rxjs/operators';
+import { filter } from 'rxjs/operators';
 import { Store } from '@ngrx/store';
 
 import { AppState } from '@store';
@@ -29,8 +29,23 @@ export class ImageDialogComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit() {
-    this.scene$.subscribe(
-      scene => this.browseMap.setBrowse(scene.browse)
+    this.scene$.pipe(
+      filter(scene => !!scene)
+    ).subscribe(
+      scene => {
+        const img = new Image();
+        const browseService = this.browseMap;
+
+        img.addEventListener('load', function() {
+          const [width, height] = [
+            this.naturalWidth, this.naturalHeight
+          ];
+          browseService.setBrowse(scene.browse, {
+            width, height
+          });
+        });
+        img.src = scene.browse;
+      }
     );
   }
 

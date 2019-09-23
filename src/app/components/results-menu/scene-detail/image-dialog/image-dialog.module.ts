@@ -7,9 +7,10 @@ import { MatSharedModule } from '@shared/mat-shared.module';
 import { PipesModule } from '@pipes';
 import { SceneMetadataModule } from '@components/shared/scene-metadata';
 import { ImageDialogComponent } from './image-dialog.component';
+import { BrowseListComponent } from './browse-list/browse-list.component';
 
 @NgModule({
-  declarations: [ImageDialogComponent],
+  declarations: [ImageDialogComponent, BrowseListComponent],
   imports: [
     CommonModule,
     MatSharedModule,

@@ -3,16 +3,17 @@
 $config: mat-typography-config();
 
 .mp0 {
-  font-family: mat-font-family($config);
   margin: 0;
   padding: 0;
 }
 
 // Grid created at https://cssgrid-generator.netlify.com/
 .browse-dialog {
+  font-family: mat-font-family($config);
   max-height: 100%;
   max-width: 100%;
   display: grid;
+  align-content: stretch;
   grid-template-columns: 5fr 1fr;
   grid-template-rows: 1fr 8fr 3fr;
   grid-column-gap: 0;
@@ -35,6 +36,8 @@ $config: mat-typography-config();
   .scene-detail {
     grid-area: 2 / 2 / 4 / 3;
     min-width: 160px;
+    padding: 5px;
+    padding-left: 10px;
   }
 }
 
