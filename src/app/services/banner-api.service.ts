@@ -13,7 +13,18 @@ export class BannerApiService {
 
   public load(): Observable<BannerApiResponse> {
     return of({
-      banners: [],
+      banners: [{
+        text: `
+          Data will be unavailable due to system maintenance on September 24, 2019,
+          starting at 3:00 am (AKST) and ending at 12:00 pm (AKST). There is no expected
+          impact on Sentinel-1 data access. We apologize for the inconvenience this
+          disruption of service may cause to our customers. Please feel free to contact
+          us at <a href="mailto:uso@asf.alaska.edu">uso@asf.alaska.edu</a> if you have any
+          questions.
+        `,
+        type: 'Alert',
+        target: []
+      }],
       systime: ''
     });
   }
