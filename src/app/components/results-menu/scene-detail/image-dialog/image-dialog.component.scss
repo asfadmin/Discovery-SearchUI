@@ -15,7 +15,7 @@ $config: mat-typography-config();
   display: grid;
   align-content: stretch;
   grid-template-columns: 4fr 1fr;
-  grid-template-rows: 1fr auto 2fr;
+  grid-template-rows: 1fr 4fr 1fr;
   grid-column-gap: 0;
   grid-row-gap: 0;
 
@@ -30,7 +30,7 @@ $config: mat-typography-config();
 
   .browse-list {
     grid-area: 3 / 1 / 4 / 2;
-    min-height: 270px;
+    min-height: 230px;
     overflow: auto;
   }
 
