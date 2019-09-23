@@ -30,7 +30,8 @@ $config: mat-typography-config();
 
   .browse-list {
     grid-area: 3 / 1 / 4 / 2;
-    min-height: 150px;
+    min-height: 270px;
+    overflow: auto;
   }
 
   .scene-detail {

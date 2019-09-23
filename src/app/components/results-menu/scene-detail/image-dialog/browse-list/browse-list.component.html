@@ -1,3 +1,15 @@
-<p>
-  browse-list works!
-</p>
+<div class="browse-list">
+  <div *ngFor="let scene of scenes" (click)="onNewSceneSelected(scene)"
+    [class.selected]="scene.name === selectedName"
+    class="clickable" style="padding: 0 15px 0 15px">
+
+    <div class="browse-image--container">
+      <img [src]="scene.browse"
+       onerror="this.src='assets/error.png'"
+       class="browse-image no-drag">
+
+      <div class="browse-image--date">{{ scene.metadata.date | shortDate }}</div>
+    </div>
+
+  </div>
+</div>

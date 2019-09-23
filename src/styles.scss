@@ -165,3 +165,17 @@ ul {
 .material-icons.md-36 { font-size: 36px; }
 .material-icons.md-48 { font-size: 48px; }
 .material-icons.md-asf-ribbon-icon { font-size: $asf-ribbon-icon-size; }
+
+.no-drag {
+  /* https://stackoverflow.com/questions/12906789/preventing-an-image-from-being-draggable-or-selectable-without-using-js */
+  user-drag: none;
+  user-select: none;
+  -moz-user-select: none;
+  -webkit-user-drag: none;
+  -webkit-user-select: none;
+  -ms-user-select: none;
+}
+
+.selected {
+  background-color: rgba(0, 0, 0, 0.07);
+}

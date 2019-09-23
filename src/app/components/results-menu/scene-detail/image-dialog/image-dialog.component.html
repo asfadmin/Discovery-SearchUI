@@ -3,7 +3,7 @@
     <div *ngIf="scene$ | async as scene" class="dialog-header--layout">
       <div>
         <h3 class="mp0">{{ scene.name }}</h3>
-        <span class="faint-text">{{ scene.metadata.date | shortDate }}</span>
+        <span class="faint-text">{{ scene.metadata.date | fullDate }}</span>
       </div>
       <div>
         <button (click)="closeDialog()" mat-icon-button>
