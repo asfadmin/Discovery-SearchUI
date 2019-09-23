@@ -19,7 +19,7 @@ export class BannerApiService {
           starting at 3:00 am (AKST) and ending at 12:00 pm (AKST). There is no expected
           impact on Sentinel-1 data access. We apologize for the inconvenience this
           disruption of service may cause to our customers. Please feel free to contact
-          us at <a href="mailto:uso@asf.alaska.edu">uso@asf.alaska.edu</a> if you have any
+          us at <a href="mailto:uso@asf.alaska.edu" target="_blank">uso@asf.alaska.edu</a> if you have any
           questions.
         `,
         type: 'Alert',
