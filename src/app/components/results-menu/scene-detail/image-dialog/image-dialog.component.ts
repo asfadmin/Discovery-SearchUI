@@ -57,13 +57,14 @@ export class ImageDialogComponent implements OnInit, AfterViewInit {
             width, height
           });
         });
+
         img.src = scene.browse;
       }
     );
   }
 
   public onOpenImage(scene: models.CMRProduct) {
-    window.open(scene.browse || 'assets/error.png');
+    window.open(scene.browse || '/assets/error.png');
   }
 
   public closeDialog() {
