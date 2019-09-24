@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 import { MatDialogModule } from '@angular/material/dialog';
+import { MatMenuModule } from '@angular/material/menu';
 import { MatSharedModule } from '@shared/mat-shared.module';
 
 import { PipesModule } from '@pipes';
@@ -15,6 +16,7 @@ import { BrowseListComponent } from './browse-list/browse-list.component';
     CommonModule,
     MatSharedModule,
     MatDialogModule,
+    MatMenuModule,
     PipesModule,
     SceneMetadataModule,
   ],

@@ -3,7 +3,11 @@
     <div *ngIf="scene$ | async as scene" class="dialog-header--layout">
       <div>
         <h3 class="mp0">{{ scene.name }}</h3>
-        <span class="faint-text">{{ scene.metadata.date | fullDate }}</span>
+        <span class="faint-text">
+          <a *ngIf="dataset" [href]="dataset.infoUrl" target="_blank" matTooltip="Dataset" class="faint-text">
+            {{ dataset.name }}
+          </a> • {{ scene.metadata.date | fullDate }}
+        </span>
       </div>
       <div>
         <button (click)="closeDialog()" mat-icon-button>
@@ -19,10 +23,31 @@
   </div>
 
   <div class="browse-list">
-    <app-browse-list></app-browse-list>
+    <app-browse-list style="width: 100%; height: 100%;"></app-browse-list>
   </div>
 
   <div class="scene-detail">
     <app-scene-metadata></app-scene-metadata>
+    <div class="btn-group">
+      <button class="block-btn" color="accent"
+        [matMenuTriggerFor]="downloadMenu"
+        mat-flat-button>Download</button>
+
+      <mat-menu #downloadMenu="matMenu">
+        <button *ngFor="let product of products" mat-menu-item>
+          {{ product.productTypeDisplay }}
+        </button>
+      </mat-menu>
+
+      <button class="block-btn" color="accent"
+        [matMenuTriggerFor]="queueMenu"
+        mat-flat-button>Queue</button>
+
+      <mat-menu #queueMenu="matMenu">
+        <button *ngFor="let product of products" mat-menu-item>
+          {{ product.productTypeDisplay }}
+        </button>
+      </mat-menu>
+    </div>
   </div>
 </div>
