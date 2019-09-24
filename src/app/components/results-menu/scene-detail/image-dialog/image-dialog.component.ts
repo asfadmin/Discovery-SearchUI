@@ -1,14 +1,14 @@
 import { Component, OnInit, AfterViewInit } from '@angular/core';
 import { MatDialogRef } from '@angular/material/dialog';
 
-import { filter } from 'rxjs/operators';
+import { filter, map, tap } from 'rxjs/operators';
 import { Store } from '@ngrx/store';
 
 import { AppState } from '@store';
 import * as scenesStore from '@store/scenes';
 
 import * as models from '@models';
-import { BrowseMapService } from '@services';
+import { BrowseMapService, DatasetForProductService } from '@services';
 
 @Component({
   selector: 'app-image-dialog',
@@ -18,14 +18,27 @@ import { BrowseMapService } from '@services';
 })
 export class ImageDialogComponent implements OnInit, AfterViewInit {
   public scene$ = this.store$.select(scenesStore.getSelectedScene);
+  public scene: models.CMRProduct;
+  public products: models.CMRProduct[];
+  public dataset: models.Dataset;
 
   constructor(
     private store$: Store<AppState>,
     public dialogRef: MatDialogRef<ImageDialogComponent>,
     private browseMap: BrowseMapService,
+    private datasetForProduct: DatasetForProductService
   ) { }
 
   ngOnInit() {
+    this.store$.select(scenesStore.getSelectedSceneProducts).subscribe(
+      products => this.products = products
+    );
+
+    this.scene$.pipe(
+      filter(g => !!g),
+      tap(g => this.scene = g),
+      map(scene => this.datasetForProduct.match(scene)),
+    ).subscribe(dataset => this.dataset = dataset);
   }
 
   ngAfterViewInit() {
@@ -44,13 +57,14 @@ export class ImageDialogComponent implements OnInit, AfterViewInit {
             width, height
           });
         });
+
         img.src = scene.browse;
       }
     );
   }
 
   public onOpenImage(scene: models.CMRProduct) {
-    window.open(scene.browse || 'assets/error.png');
+    window.open(scene.browse || '/assets/error.png');
   }
 
   public closeDialog() {
