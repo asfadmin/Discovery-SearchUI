@@ -29,11 +29,11 @@ export class ScenesListComponent implements OnInit {
   @ViewChild(CdkVirtualScrollViewport, { static: true }) scroll: CdkVirtualScrollViewport;
 
   public scenes$ = this.store$.select(scenesStore.getScenes);
+  public scenes: models.CMRProduct[];
   public sceneNameLen: number;
 
   public numberOfQueue: {[scene: string]: [number, number]};
   public allQueued: {[scene: string]: boolean};
-  public scenes: models.CMRProduct[];
   public selected: string;
 
   public searchType: models.SearchType;
@@ -157,9 +157,9 @@ export class ScenesListComponent implements OnInit {
     this.scroll.scrollToIndex(idx);
   }
 
-  public onSceneSelected(name: string): void {
+  public onSceneSelected(id: string): void {
     this.selectedFromList = true;
-    this.store$.dispatch(new scenesStore.SetSelectedScene(name));
+    this.store$.dispatch(new scenesStore.SetSelectedScene(id));
   }
 
   public onToggleScene(e: Event, groupId: string): void {

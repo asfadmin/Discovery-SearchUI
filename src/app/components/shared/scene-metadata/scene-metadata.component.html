@@ -1,6 +1,6 @@
 <ul class="scene-metadata">
   <li *ngIf="prop.isRelevant(p.DATE, dataset)">
-    <span class="v-mid"><b>Start Time</b> • {{ scene.metadata.date | shortDate }}</span>
+    <span class="v-mid"><b>Start Time</b> • {{ scene.metadata.date | fullDate }}</span>
     <mat-icon *ngIf="isGeoSearch()"
       [matMenuTriggerFor]="addSceneDateMenu"
       class="v-mid clickable">
