@@ -46,7 +46,7 @@ export class ImageDialogComponent implements OnInit, AfterViewInit {
       filter(scene => !!scene)
     ).subscribe(
       scene => {
-        const img = new Image();
+        let img = new Image();
         const browseService = this.browseMap;
 
         img.addEventListener('load', function() {
@@ -59,6 +59,7 @@ export class ImageDialogComponent implements OnInit, AfterViewInit {
         });
 
         img.src = scene.browse;
+        img = null;
       }
     );
   }

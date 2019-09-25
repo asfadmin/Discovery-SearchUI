@@ -25,8 +25,9 @@
   <app-browse-list class="browse-list"></app-browse-list>
 
   <div class="scene-detail">
+    <h3> Scene Detail</h3>
     <app-scene-metadata></app-scene-metadata>
-
+    <h3> {{ products.length }} Files </h3>
     <mat-action-list>
       <button  *ngFor="let product of products"
         [matMenuTriggerFor]="action_menu" mat-list-item>
