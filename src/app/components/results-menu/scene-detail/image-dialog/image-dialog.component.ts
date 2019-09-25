@@ -8,7 +8,6 @@ import { AppState } from '@store';
 import * as scenesStore from '@store/scenes';
 import * as queueStore from '@store/queue';
 
-
 import * as models from '@models';
 import { BrowseMapService, DatasetForProductService } from '@services';
 
@@ -24,6 +23,7 @@ export class ImageDialogComponent implements OnInit, AfterViewInit {
   public scene: models.CMRProduct;
   public products: models.CMRProduct[];
   public dataset: models.Dataset;
+  public isImageLoading = false;
 
   private image;
 
@@ -56,14 +56,17 @@ export class ImageDialogComponent implements OnInit, AfterViewInit {
       debounceTime(250)
     ).subscribe(
       scene => {
+        this.isImageLoading = true;
         this.image = new Image();
         const browseService = this.browseMap;
         const currentScene = this.scene;
+        const self = this;
 
         this.image.addEventListener('load', function() {
           if (currentScene !== scene) {
             return;
           }
+          self.isImageLoading = false;
 
           const [width, height] = [
             this.naturalWidth, this.naturalHeight

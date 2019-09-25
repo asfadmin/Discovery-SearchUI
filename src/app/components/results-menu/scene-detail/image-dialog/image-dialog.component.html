@@ -20,6 +20,10 @@
   <div class="main-window">
     <div id="browse-map" class="browse-map--size">
     </div>
+
+    <div *ngIf="isImageLoading" color="accent" class="browse-map--overlay">
+      <mat-spinner></mat-spinner>
+    </div>
   </div>
 
   <app-browse-list class="browse-list"></app-browse-list>
