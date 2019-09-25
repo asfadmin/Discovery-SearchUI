@@ -44,7 +44,18 @@
             </span>
           </a>
 
-          <button mat-menu-item>Queue</button>
+          <button (click)="onToggleQueueProduct(product)"
+             matTooltip="{{ !queuedProductIds.has(product.id) ? 'Add file to queue' : 'Remove file from queue' }}"
+             mat-menu-item>
+            <span *ngIf="!queuedProductIds.has(product.id)">
+              Add
+              <mat-icon >add_shopping_cart</mat-icon>
+            </span>
+            <span *ngIf="queuedProductIds.has(product.id)">
+              Remove
+              <mat-icon >shopping_cart</mat-icon>
+            </span>
+          </button>
         </mat-menu>
       </button>
 

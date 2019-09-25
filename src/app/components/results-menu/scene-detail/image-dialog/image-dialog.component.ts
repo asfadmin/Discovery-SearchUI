@@ -6,6 +6,8 @@ import { Store } from '@ngrx/store';
 
 import { AppState } from '@store';
 import * as scenesStore from '@store/scenes';
+import * as queueStore from '@store/queue';
+
 
 import * as models from '@models';
 import { BrowseMapService, DatasetForProductService } from '@services';
@@ -18,6 +20,7 @@ import { BrowseMapService, DatasetForProductService } from '@services';
 })
 export class ImageDialogComponent implements OnInit, AfterViewInit {
   public scene$ = this.store$.select(scenesStore.getSelectedScene);
+  public queuedProductIds: Set<string>;
   public scene: models.CMRProduct;
   public products: models.CMRProduct[];
   public dataset: models.Dataset;
@@ -33,6 +36,10 @@ export class ImageDialogComponent implements OnInit, AfterViewInit {
     this.store$.select(scenesStore.getSelectedSceneProducts).subscribe(
       products => this.products = products
     );
+
+    this.store$.select(queueStore.getQueuedProductIds).pipe(
+      map(names => new Set(names))
+    ).subscribe(queuedProducts => this.queuedProductIds = queuedProducts);
 
     this.scene$.pipe(
       filter(g => !!g),
@@ -78,5 +85,9 @@ export class ImageDialogComponent implements OnInit, AfterViewInit {
 
   public selectPreviousProduct(): void {
     this.store$.dispatch(new scenesStore.SelectPreviousScene());
+  }
+
+  public onToggleQueueProduct(product: models.CMRProduct): void {
+    this.store$.dispatch(new queueStore.ToggleProduct(product));
   }
 }
