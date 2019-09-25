@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 
 import { Store } from '@ngrx/store';
 import { AppState } from '@store';
@@ -9,7 +9,8 @@ import * as models from '@models';
 @Component({
   selector: 'app-browse-list',
   templateUrl: './browse-list.component.html',
-  styleUrls: ['./browse-list.component.scss']
+  styleUrls: ['./browse-list.component.scss'],
+  encapsulation: ViewEncapsulation.None,
 })
 export class BrowseListComponent implements OnInit {
   public scenes: models.CMRProduct[];
