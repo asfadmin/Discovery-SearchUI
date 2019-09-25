@@ -1,5 +1,6 @@
 import {
-  Component, OnInit, Input, ViewChild, ViewEncapsulation
+  Component, OnInit, Input, ViewChild, ViewEncapsulation,
+  AfterViewInit
 } from '@angular/core';
 
 import { fromEvent, combineLatest } from 'rxjs';
@@ -25,7 +26,7 @@ import * as models from '@models';
   styleUrls: ['./scenes-list.component.scss'],
   encapsulation: ViewEncapsulation.None
 })
-export class ScenesListComponent implements OnInit {
+export class ScenesListComponent implements OnInit, AfterViewInit {
   @ViewChild(CdkVirtualScrollViewport, { static: true }) scroll: CdkVirtualScrollViewport;
 
   public scenes$ = this.store$.select(scenesStore.getScenes);
@@ -51,27 +52,8 @@ export class ScenesListComponent implements OnInit {
       map(size => size.width > 1775 ? 32 : 16),
     ).subscribe(len => this.sceneNameLen = len);
 
-    this.store$.select(scenesStore.getSelectedScene).pipe(
-      withLatestFrom(this.scenes$),
-      filter(([selected, _]) => !!selected),
-      tap(([selected, _]) => this.selected = selected.name),
-      map(([selected, scenes]) => scenes.indexOf(selected)),
-    ).subscribe(
-      idx => {
-        if (!this.selectedFromList) {
-          this.scrollTo(idx);
-        }
-
-        this.selectedFromList = false;
-      }
-    );
-
     this.scenes$.subscribe(
       scenes => this.scenes = scenes
-    );
-
-    this.store$.select(searchStore.getIsLoading).subscribe(
-      _ => this.scroll.scrollToOffset(0)
     );
 
     fromEvent(document, 'keydown').subscribe((e: KeyboardEvent) => {
@@ -143,6 +125,27 @@ export class ScenesListComponent implements OnInit {
             return total;
           }, {})
     )).subscribe(allQueued => this.allQueued = allQueued);
+  }
+
+  ngAfterViewInit() {
+    this.store$.select(scenesStore.getSelectedScene).pipe(
+      withLatestFrom(this.scenes$),
+      filter(([selected, _]) => !!selected),
+      tap(([selected, _]) => this.selected = selected.name),
+      map(([selected, scenes]) => scenes.indexOf(selected)),
+    ).subscribe(
+      idx => {
+        if (!this.selectedFromList) {
+          this.scrollTo(idx);
+        }
+
+        this.selectedFromList = false;
+      }
+    );
+
+    this.store$.select(searchStore.getIsLoading).subscribe(
+      _ => this.scroll.scrollToOffset(0)
+    );
   }
 
   private selectNextScene(): void {
