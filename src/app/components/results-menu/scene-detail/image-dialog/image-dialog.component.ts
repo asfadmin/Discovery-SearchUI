@@ -25,6 +25,8 @@ export class ImageDialogComponent implements OnInit, AfterViewInit {
   public products: models.CMRProduct[];
   public dataset: models.Dataset;
 
+  private image;
+
   constructor(
     private store$: Store<AppState>,
     public dialogRef: MatDialogRef<ImageDialogComponent>,
@@ -54,19 +56,25 @@ export class ImageDialogComponent implements OnInit, AfterViewInit {
       debounceTime(250)
     ).subscribe(
       scene => {
-        const img = new Image();
+        this.image = new Image();
         const browseService = this.browseMap;
+        const currentScene = this.scene;
 
-        img.addEventListener('load', function() {
+        this.image.addEventListener('load', function() {
+          if (currentScene !== scene) {
+            return;
+          }
+
           const [width, height] = [
             this.naturalWidth, this.naturalHeight
           ];
+
           browseService.setBrowse(scene.browse, {
             width, height
           });
         });
 
-        img.src = scene.browse;
+        this.image.src = scene.browse;
       }
     );
   }
