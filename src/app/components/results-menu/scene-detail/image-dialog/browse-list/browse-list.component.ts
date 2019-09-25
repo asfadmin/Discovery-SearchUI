@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewEncapsulation, ViewChild } from '@angular/core';
+import { Component, OnInit, AfterViewInit, ViewEncapsulation, ViewChild } from '@angular/core';
 import { CdkVirtualScrollViewport } from '@angular/cdk/scrolling';
 
 import { map, filter, withLatestFrom, tap } from 'rxjs/operators';
@@ -15,12 +15,12 @@ import * as models from '@models';
   styleUrls: ['./browse-list.component.scss'],
   encapsulation: ViewEncapsulation.None,
 })
-export class BrowseListComponent implements OnInit {
-  @ViewChild(CdkVirtualScrollViewport, { static: false }) scroll: CdkVirtualScrollViewport;
+export class BrowseListComponent implements OnInit, AfterViewInit  {
+  @ViewChild(CdkVirtualScrollViewport, { static: true }) scroll: CdkVirtualScrollViewport;
 
   public scenes: models.CMRProduct[];
   public selectedName: string;
-  private selectedFromList = true;
+  private selectedFromList = false;
 
   constructor(
     private store$: Store<AppState>,
@@ -31,6 +31,12 @@ export class BrowseListComponent implements OnInit {
       scenes => this.scenes = scenes
     );
 
+    this.store$.select(scenesStore.getSelectedScene).subscribe(
+      scene => this.selectedName = scene ? scene.name : null
+    );
+  }
+
+  ngAfterViewInit() {
     this.store$.select(scenesStore.getSelectedScene).pipe(
       withLatestFrom(this.store$.select(scenesStore.getScenes)),
       filter(([selected, _]) => !!selected),
@@ -44,10 +50,6 @@ export class BrowseListComponent implements OnInit {
 
         this.selectedFromList = false;
       }
-    );
-
-    this.store$.select(scenesStore.getSelectedScene).subscribe(
-      scene => this.selectedName = scene ? scene.name : null
     );
   }
 
