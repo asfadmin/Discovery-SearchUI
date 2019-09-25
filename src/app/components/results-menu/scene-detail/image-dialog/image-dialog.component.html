@@ -28,7 +28,7 @@
     <h3> Scene Detail</h3>
     <app-scene-metadata></app-scene-metadata>
     <h3> {{ products.length }} Files </h3>
-    <mat-action-list>
+    <mat-action-list style="overflow: auto">
       <button  *ngFor="let product of products"
         [matMenuTriggerFor]="action_menu" mat-list-item>
         {{ product.productTypeDisplay }}

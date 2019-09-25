@@ -1,7 +1,7 @@
 import { Component, OnInit, AfterViewInit } from '@angular/core';
 import { MatDialogRef } from '@angular/material/dialog';
 
-import { filter, map, tap } from 'rxjs/operators';
+import { filter, map, tap, debounceTime } from 'rxjs/operators';
 import { Store } from '@ngrx/store';
 
 import { AppState } from '@store';
@@ -50,10 +50,11 @@ export class ImageDialogComponent implements OnInit, AfterViewInit {
 
   ngAfterViewInit() {
     this.scene$.pipe(
-      filter(scene => !!scene)
+      filter(scene => !!scene),
+      debounceTime(250)
     ).subscribe(
       scene => {
-        let img = new Image();
+        const img = new Image();
         const browseService = this.browseMap;
 
         img.addEventListener('load', function() {
@@ -66,7 +67,6 @@ export class ImageDialogComponent implements OnInit, AfterViewInit {
         });
 
         img.src = scene.browse;
-        img = null;
       }
     );
   }
