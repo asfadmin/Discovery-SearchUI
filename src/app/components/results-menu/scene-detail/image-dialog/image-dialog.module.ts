@@ -4,6 +4,8 @@ import { ScrollingModule } from '@angular/cdk/scrolling';
 
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatMenuModule } from '@angular/material/menu';
+import { MatListModule } from '@angular/material/list';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSharedModule } from '@shared/mat-shared.module';
 
 import { PipesModule } from '@pipes';
@@ -16,7 +18,9 @@ import { BrowseListComponent } from './browse-list/browse-list.component';
   imports: [
     CommonModule,
     ScrollingModule,
+    MatProgressSpinnerModule,
     MatSharedModule,
+    MatListModule,
     MatDialogModule,
     MatMenuModule,
     PipesModule,

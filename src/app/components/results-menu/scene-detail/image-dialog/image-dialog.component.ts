@@ -1,11 +1,12 @@
 import { Component, OnInit, AfterViewInit } from '@angular/core';
 import { MatDialogRef } from '@angular/material/dialog';
 
-import { filter, map, tap } from 'rxjs/operators';
+import { filter, map, tap, debounceTime } from 'rxjs/operators';
 import { Store } from '@ngrx/store';
 
 import { AppState } from '@store';
 import * as scenesStore from '@store/scenes';
+import * as queueStore from '@store/queue';
 
 import * as models from '@models';
 import { BrowseMapService, DatasetForProductService } from '@services';
@@ -18,9 +19,13 @@ import { BrowseMapService, DatasetForProductService } from '@services';
 })
 export class ImageDialogComponent implements OnInit, AfterViewInit {
   public scene$ = this.store$.select(scenesStore.getSelectedScene);
+  public queuedProductIds: Set<string>;
   public scene: models.CMRProduct;
   public products: models.CMRProduct[];
   public dataset: models.Dataset;
+  public isImageLoading = false;
+
+  private image;
 
   constructor(
     private store$: Store<AppState>,
@@ -34,6 +39,10 @@ export class ImageDialogComponent implements OnInit, AfterViewInit {
       products => this.products = products
     );
 
+    this.store$.select(queueStore.getQueuedProductIds).pipe(
+      map(names => new Set(names))
+    ).subscribe(queuedProducts => this.queuedProductIds = queuedProducts);
+
     this.scene$.pipe(
       filter(g => !!g),
       tap(g => this.scene = g),
@@ -43,22 +52,32 @@ export class ImageDialogComponent implements OnInit, AfterViewInit {
 
   ngAfterViewInit() {
     this.scene$.pipe(
-      filter(scene => !!scene)
+      filter(scene => !!scene),
+      debounceTime(250)
     ).subscribe(
       scene => {
-        const img = new Image();
+        this.isImageLoading = true;
+        this.image = new Image();
         const browseService = this.browseMap;
+        const currentScene = this.scene;
+        const self = this;
 
-        img.addEventListener('load', function() {
+        this.image.addEventListener('load', function() {
+          if (currentScene !== scene) {
+            return;
+          }
+          self.isImageLoading = false;
+
           const [width, height] = [
             this.naturalWidth, this.naturalHeight
           ];
+
           browseService.setBrowse(scene.browse, {
             width, height
           });
         });
 
-        img.src = scene.browse;
+        this.image.src = scene.browse;
       }
     );
   }
@@ -77,5 +96,9 @@ export class ImageDialogComponent implements OnInit, AfterViewInit {
 
   public selectPreviousProduct(): void {
     this.store$.dispatch(new scenesStore.SelectPreviousScene());
+  }
+
+  public onToggleQueueProduct(product: models.CMRProduct): void {
+    this.store$.dispatch(new queueStore.ToggleProduct(product));
   }
 }
