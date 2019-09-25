@@ -37,7 +37,7 @@ export class ScenesListComponent implements OnInit {
   public selected: string;
 
   public searchType: models.SearchType;
-  public selectedFromList = false;
+  public selectedFromList = true;
   public hoveredSceneName: string | null = null;
 
   constructor(
