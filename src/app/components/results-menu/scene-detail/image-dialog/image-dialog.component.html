@@ -26,26 +26,27 @@
 
   <div class="scene-detail">
     <app-scene-metadata></app-scene-metadata>
-    <div class="btn-group">
-      <button class="block-btn" color="accent"
-        [matMenuTriggerFor]="downloadMenu"
-        mat-flat-button>Download</button>
 
-      <mat-menu #downloadMenu="matMenu">
-        <button *ngFor="let product of products" mat-menu-item>
-          {{ product.productTypeDisplay }}
-        </button>
-      </mat-menu>
+    <mat-action-list>
+      <button  *ngFor="let product of products"
+        [matMenuTriggerFor]="action_menu" mat-list-item>
+        {{ product.productTypeDisplay }}
+        <mat-menu #action_menu="matMenu" xPosition="before">
 
-      <button class="block-btn" color="accent"
-        [matMenuTriggerFor]="queueMenu"
-        mat-flat-button>Queue</button>
+          <a mat-menu-item [href]="product.downloadUrl" target="_blank" matTooltip="Download file">
+            <span style="margin-right: 10px; margin-left: 10px;">
+              <span *ngIf="product.bytes === 0">Virtual</span>
+              <span *ngIf="product.bytes !== 0">{{product.bytes | readableSizeFromBytes }}</span>
+            </span>
+            <span>
+              <mat-icon>cloud_download</mat-icon>
+            </span>
+          </a>
 
-      <mat-menu #queueMenu="matMenu">
-        <button *ngFor="let product of products" mat-menu-item>
-          {{ product.productTypeDisplay }}
-        </button>
-      </mat-menu>
-    </div>
+          <button mat-menu-item>Queue</button>
+        </mat-menu>
+      </button>
+
+    </mat-action-list>
   </div>
 </div>

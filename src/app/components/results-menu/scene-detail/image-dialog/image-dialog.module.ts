@@ -4,6 +4,7 @@ import { ScrollingModule } from '@angular/cdk/scrolling';
 
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatMenuModule } from '@angular/material/menu';
+import { MatListModule } from '@angular/material/list';
 import { MatSharedModule } from '@shared/mat-shared.module';
 
 import { PipesModule } from '@pipes';
@@ -17,6 +18,7 @@ import { BrowseListComponent } from './browse-list/browse-list.component';
     CommonModule,
     ScrollingModule,
     MatSharedModule,
+    MatListModule,
     MatDialogModule,
     MatMenuModule,
     PipesModule,
