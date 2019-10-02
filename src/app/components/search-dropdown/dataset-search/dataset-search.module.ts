@@ -12,6 +12,7 @@ import { SeasonSelectorModule } from '@components/shared/selectors/season-select
 import { MissionSearchModule } from '../mission-search';
 
 import { DatasetSearchComponent } from './dataset-search.component';
+import { DateSelectorModule } from '@components/shared/selectors/date-selector';
 
 @NgModule({
   declarations: [
@@ -29,6 +30,7 @@ import { DatasetSearchComponent } from './dataset-search.component';
     PathSelectorModule,
     OtherSelectorModule,
     SeasonSelectorModule,
+    DateSelectorModule,
   ],
   exports: [
     DatasetSearchComponent,

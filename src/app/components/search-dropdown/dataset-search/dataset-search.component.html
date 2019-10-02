@@ -2,11 +2,28 @@
   <mat-expansion-panel [expanded]="defaultPanelOpenState" [disabled]="panelIsDisabled">
     <mat-expansion-panel-header [collapsedHeight]="customCollapsedHeight" [expandedHeight]="customExpandedHeight">
       <mat-panel-title>
-        Seasonal Filter
+        Search Filters
       </mat-panel-title>
     </mat-expansion-panel-header>
 
-    <app-season-selector></app-season-selector>
+    <div style="margin-top: 15px;">
+      Dataset, AOI here...
+    </div>
+  </mat-expansion-panel>
+
+  <mat-expansion-panel [expanded]="defaultPanelOpenState" [disabled]="panelIsDisabled">
+    <mat-expansion-panel-header [collapsedHeight]="customCollapsedHeight" [expandedHeight]="customExpandedHeight">
+      <mat-panel-title>
+        Date Filters
+      </mat-panel-title>
+    </mat-expansion-panel-header>
+
+    <div style="margin-top: 15px;">
+      <app-date-selector></app-date-selector>
+    </div>
+    <div>
+      <app-season-selector></app-season-selector>
+    </div>
   </mat-expansion-panel>
 
   <mat-expansion-panel [expanded]="defaultPanelOpenState" [disabled]="panelIsDisabled">
