@@ -1,8 +1,20 @@
 <div class="browse-dialog">
-  <div class="dialog-header">
+  <div fxLayout="row" class="dialog-header">
     <div *ngIf="scene$ | async as scene" class="dialog-header--layout">
-      <div>
-        <h3 class="mp0">{{ scene.name }}</h3>
+      <div fxFlex="35px" fxLayoutAlign="start"
+            class="browse-drag-handle"
+            cdkDrag
+            cdkDragRootElement=".cdk-overlay-pane"
+            cdkDragHandle>
+        <svg width="24px" fill="currentColor" viewBox="0 0 24 24">
+          <path d="M10 9h4V6h3l-5-5-5 5h3v3zm-1 1H6V7l-5 5 5 5v-3h3v-4zm14 2l-5-5v3h-3v4h3v3l5-5zm-9 3h-4v3H7l5 5 5-5h-3v-3z"></path>
+          <path d="M0 0h24v24H0z" fill="none"></path>
+        </svg>
+      </div>
+      <div fxFlex="">
+        <h3 class="mp0">
+          {{ scene.name }}
+        </h3>
         <span class="faint-text">
           <a *ngIf="dataset" [href]="dataset.infoUrl" target="_blank" matTooltip="Dataset" class="faint-text">
             {{ dataset.name }}
@@ -11,7 +23,7 @@
       </div>
       <div>
         <button (click)="closeDialog()" mat-icon-button>
-          <mat-icon>close</mat-icon>
+          <mat-icon class="close-button">close</mat-icon>
         </button>
       </div>
     </div>
@@ -31,7 +43,7 @@
   <div class="scene-detail">
     <h3> Scene Detail</h3>
     <app-scene-metadata></app-scene-metadata>
-    <h3> {{ products.length }} Files </h3>
+    <h4> {{ products.length }} Files </h4>
     <mat-action-list style="overflow: auto">
       <button  *ngFor="let product of products"
         [matMenuTriggerFor]="action_menu" mat-list-item>

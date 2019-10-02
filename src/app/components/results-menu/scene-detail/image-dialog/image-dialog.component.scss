@@ -12,6 +12,7 @@ $config: mat-typography-config();
   font-family: mat-font-family($config);
   max-height: 100%;
   max-width: 100%;
+  position: relative;
   display: grid;
   align-content: stretch;
   justify-content: stretch;
@@ -35,6 +36,9 @@ $config: mat-typography-config();
     min-height: 230px;
     width: 100%;
     overflow: auto;
+    border-top-color: $asf-primary-dark;
+    border-top-style: solid;
+    border-top-width: 1px;
   }
 
   .scene-detail {
@@ -42,14 +46,22 @@ $config: mat-typography-config();
     min-width: 200px;
     padding: 5px;
     padding-left: 10px;
+    border-left-color: $asf-primary-dark;
+    border-left-style: solid;
+    border-left-width: 1px;
   }
 }
 
 .dialog-header--layout {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+  //display: flex;
+  //justify-content: space-between;
+  //align-items: center;
   width: 100%;
+  color: $asf-primary-dark;
+  //background-color: $asf-primary-light;
+  border-bottom-color: $asf-primary-dark;
+  border-bottom-style: solid;
+  border-bottom-width: 1px;
 }
 
 .browse-map--size {
@@ -76,4 +88,18 @@ $config: mat-typography-config();
 
 .btn-group button {
   margin-bottom: 10px;
+}
+
+.browse-drag-handle {
+  //position: absolute;
+  //top: 10px;
+  //left: 10px;
+  color: $asf-primary;
+  cursor: move;
+  height: 24px;
+}
+
+.close-button {
+  vertical-align: top !important;
+  color: $asf-primary;
 }
