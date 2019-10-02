@@ -17,11 +17,11 @@ export const valid = new Style({
 });
 
 const fill = new Fill({
-  color: 'rgba(255,255,255,0.3)'
+  color: 'rgba(255,255,255,0.0)'
 });
 const stroke = new Stroke({
   color: '#3399CC',
-  width: 1.25
+  width: 2.5
 });
 
 export const scene = new Style({
@@ -30,8 +30,8 @@ export const scene = new Style({
       stroke,
       radius: 5
     }),
-    fill,
-    stroke
+    stroke,
+    fill
   });
 
 export const omitted = new Style({
@@ -84,10 +84,10 @@ export const hidden = new Style({
 
 export const hover = new Style({
   fill: new Fill({
-    color: 'rgba(255, 255, 255, 0.4)'
+    color: 'rgba(255, 255, 255, 0.2)'
   }),
   stroke: new Stroke({
-    color: 'rgba(255, 255, 255, 0.4)',
+    color: 'rgba(255, 255, 255, 0.2)',
     width: 4
   }),
   image: new CircleStyle({
