@@ -83,7 +83,7 @@ export class ImageDialogComponent implements OnInit, AfterViewInit {
   }
 
   public onOpenImage(scene: models.CMRProduct) {
-    window.open(scene.browse || '/assets/error.png');
+    window.open(scene.browse || '/assets/no-browse.png');
   }
 
   public closeDialog() {
