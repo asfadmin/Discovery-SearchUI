@@ -183,7 +183,7 @@ export const allScenesFrom = (state: ScenesState) => {
 
       const browse = group
         .map(name => state.products[name])
-        .filter(product => !product.browse.includes('error.png'))
+        .filter(product => !product.browse.includes('no-browse.png'))
         .pop();
 
       return browse ? browse : state.products[group[0]];
