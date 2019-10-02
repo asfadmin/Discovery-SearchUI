@@ -7,7 +7,10 @@
     </mat-expansion-panel-header>
 
     <div style="margin-top: 15px;">
-      Dataset, AOI here...
+      <app-dataset-selector>
+      </app-dataset-selector>
+
+      <app-aoi-options [showHeader]="false"></app-aoi-options>
     </div>
   </mat-expansion-panel>
 

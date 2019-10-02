@@ -13,6 +13,8 @@ import { MissionSearchModule } from '../mission-search';
 
 import { DatasetSearchComponent } from './dataset-search.component';
 import { DateSelectorModule } from '@components/shared/selectors/date-selector';
+import { DatasetSelectorModule } from '@components/shared/selectors/dataset-selector';
+import { AoiOptionsModule } from '@components/shared/aoi-options';
 
 @NgModule({
   declarations: [
@@ -31,6 +33,8 @@ import { DateSelectorModule } from '@components/shared/selectors/date-selector';
     OtherSelectorModule,
     SeasonSelectorModule,
     DateSelectorModule,
+    DatasetSelectorModule,
+    AoiOptionsModule
   ],
   exports: [
     DatasetSearchComponent,
