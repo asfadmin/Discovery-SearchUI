@@ -1,13 +1,8 @@
 @import "asf-theme";
 
-$menu-height: 500px;
-
 .hidden {
   display: none;
 }
-
-$break-small: 500px;
-$break-large: 1200px;
 
 .dataset-filters-div {
   position: absolute;
@@ -15,31 +10,38 @@ $break-large: 1200px;
   bottom: 0;
   left: 0;
   right: 0;
-  width: 80%;
-  max-width: 900px;
-  margin: auto;
+  margin: 0 auto;
+  width: 900px;
+  max-width: 100vw;
+  height: 600px;
+  max-height: 100vh;
 }
 
 .dataset-filters-card {
-  width: 100%;
-  display: table;
   z-index: 1000;
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
 
-  @media screen and (max-width: $break-small) {
-    max-height: calc(78vh - 10px);
+  .header {
+    flex-shrink: 0;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
   }
 
-  @media screen and (min-width: $break-large) {
-    max-height: calc(80vh - 10px);
+  .filters-list {
+    flex-grow: 1;
+    overflow: auto;
+    min-height: 2em;
   }
-}
 
-.bottom-list-elements {
-  padding: 1px 0;
-  position: sticky;
-  bottom: 0;
-  z-index: 2;
-  background: white;
+  .footer {
+    flex-shrink: 0;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+  }
 }
 
 .filter-scroll {

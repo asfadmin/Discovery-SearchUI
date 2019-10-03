@@ -14,7 +14,7 @@
     </div>
   </mat-expansion-panel>
 
-  <mat-expansion-panel [expanded]="defaultPanelOpenState" [disabled]="panelIsDisabled">
+  <mat-expansion-panel [expanded]="defaultPanelOpenState" [disabled]="panelIsDisabled" class="raised-section">
     <mat-expansion-panel-header [collapsedHeight]="customCollapsedHeight" [expandedHeight]="customExpandedHeight">
       <mat-panel-title>
         Date Filters
@@ -29,7 +29,7 @@
     </div>
   </mat-expansion-panel>
 
-  <mat-expansion-panel [expanded]="defaultPanelOpenState" [disabled]="panelIsDisabled">
+  <mat-expansion-panel [expanded]="defaultPanelOpenState" [disabled]="panelIsDisabled" class="raised-section">
     <mat-expansion-panel-header [collapsedHeight]="customCollapsedHeight" [expandedHeight]="customExpandedHeight">
       <mat-panel-title>
         Additional Filters
@@ -42,7 +42,7 @@
   </mat-expansion-panel>
 
   <mat-expansion-panel *ngIf="prop.isRelevant(p.PATH) || prop.isRelevant(p.FRAME)"
-    [expanded]="defaultPanelOpenState" [disabled]="panelIsDisabled">
+    [expanded]="defaultPanelOpenState" [disabled]="panelIsDisabled" class="raised-section">
     <mat-expansion-panel-header [collapsedHeight]="customCollapsedHeight" [expandedHeight]="customExpandedHeight">
       <mat-panel-title>
         Path and Frame Filters
@@ -55,7 +55,7 @@
   </mat-expansion-panel>
 
   <mat-expansion-panel *ngIf="prop.isRelevant(p.MISSION_NAME)"
-    [expanded]="defaultPanelOpenState" [disabled]="panelIsDisabled">
+    [expanded]="defaultPanelOpenState" [disabled]="panelIsDisabled" class="raised-section">
     <mat-expansion-panel-header [collapsedHeight]="customCollapsedHeight" [expandedHeight]="customExpandedHeight">
       <mat-panel-title>
         Campaign Selector
