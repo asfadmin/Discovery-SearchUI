@@ -40,41 +40,43 @@
 
   <app-browse-list class="browse-list"></app-browse-list>
 
-  <div class="scene-detail">
-    <h3> Scene Detail</h3>
-    <app-scene-metadata></app-scene-metadata>
-    <h4> {{ products.length }} Files </h4>
-    <mat-action-list style="overflow: auto">
-      <button  *ngFor="let product of products"
-        [matMenuTriggerFor]="action_menu" mat-list-item>
-        {{ product.productTypeDisplay }}
-        <mat-menu #action_menu="matMenu" xPosition="before">
+  <div class="scene-detail-wrapper">
+    <div class="scene-detail">
+      <h3> Scene Detail</h3>
+      <app-scene-metadata></app-scene-metadata>
+      <h4> {{ products.length }} Files </h4>
+      <mat-action-list style="overflow: auto">
+        <button  *ngFor="let product of products"
+                 [matMenuTriggerFor]="action_menu" mat-list-item>
+          {{ product.productTypeDisplay }}
+          <mat-menu #action_menu="matMenu" xPosition="before">
 
-          <a mat-menu-item [href]="product.downloadUrl" target="_blank" matTooltip="Download file">
+            <a mat-menu-item [href]="product.downloadUrl" target="_blank" matTooltip="Download file">
             <span style="margin-right: 10px; margin-left: 10px;">
               <span *ngIf="product.bytes === 0">Virtual</span>
               <span *ngIf="product.bytes !== 0">{{product.bytes | readableSizeFromBytes }}</span>
             </span>
-            <span>
+              <span>
               <mat-icon>cloud_download</mat-icon>
             </span>
-          </a>
+            </a>
 
-          <button (click)="onToggleQueueProduct(product)"
-             matTooltip="{{ !queuedProductIds.has(product.id) ? 'Add file to queue' : 'Remove file from queue' }}"
-             mat-menu-item>
+            <button (click)="onToggleQueueProduct(product)"
+                    matTooltip="{{ !queuedProductIds.has(product.id) ? 'Add file to queue' : 'Remove file from queue' }}"
+                    mat-menu-item>
             <span *ngIf="!queuedProductIds.has(product.id)">
               Add
               <mat-icon >add_shopping_cart</mat-icon>
             </span>
-            <span *ngIf="queuedProductIds.has(product.id)">
+              <span *ngIf="queuedProductIds.has(product.id)">
               Remove
               <mat-icon >shopping_cart</mat-icon>
             </span>
-          </button>
-        </mat-menu>
-      </button>
+            </button>
+          </mat-menu>
+        </button>
 
-    </mat-action-list>
+      </mat-action-list>
+    </div>
   </div>
 </div>
