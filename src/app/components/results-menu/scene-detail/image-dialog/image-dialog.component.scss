@@ -20,9 +20,10 @@ $config: mat-typography-config();
   grid-template-rows: 60px minmax(0, 1fr) 230px;
   grid-column-gap: 0;
   grid-row-gap: 0;
+  background-color: $asf-primary-light;
 
   .dialog-header {
-    grid-area: 1 / 1 / 2 / 6;
+    grid-area: 1 / 1 / 2 / 3;
     min-height: 60px;
   }
 
@@ -32,24 +33,29 @@ $config: mat-typography-config();
   }
 
   .browse-list {
-    grid-area: 3 / 1 / 4 / 2;
+    grid-area: 3 / 1 / 4 / 3;
     min-height: 230px;
     width: 100%;
-    overflow: auto;
     border-top-color: $asf-primary-dark;
     border-top-style: solid;
     border-top-width: 1px;
+    background-color: $asf-primary-light;
   }
 
-  .scene-detail {
-    grid-area: 2 / 2 / 4 / 3;
+  .scene-detail-wrapper {
+    grid-area: 2 / 2 / 3 / 3;
     min-width: 200px;
-    padding: 5px;
-    padding-left: 10px;
     border-left-color: $asf-primary-dark;
     border-left-style: solid;
     border-left-width: 1px;
+    //overflow-x: hidden;
+    background-color: $asf-primary-light;
+
+    .scene-detail {
+      margin-left: 10px;
+    }
   }
+
 }
 
 .dialog-header--layout {
@@ -67,7 +73,7 @@ $config: mat-typography-config();
 .browse-map--size {
   max-width: 100%;
   max-height: 100%;
-  background-color: #b3b3b3;
+  background-color: $asf-primary-light;
 }
 
 .browse-map--overlay {
