@@ -37,9 +37,6 @@ export class ResultsMenuComponent {
   public numberOfScenes$ = this.store$.select(scenesStore.getNumberOfScenes);
   public numberOfProducts$ = this.store$.select(scenesStore.getNumberOfProducts);
   public selectedProducts$ = this.store$.select(scenesStore.getSelectedSceneProducts);
-  public queuedProductIds$ = this.store$.select(queueStore.getQueuedProductIds).pipe(
-    map(names => new Set(names))
-  );
 
   public areNoScenes$ = this.store$.select(scenesStore.getScenes).pipe(
     map(scenes => scenes.length === 0)
@@ -54,10 +51,6 @@ export class ResultsMenuComponent {
 
   public onToggleMenu(): void {
     this.store$.dispatch(new uiStore.ToggleResultsMenu());
-  }
-
-  public onToggleQueueProduct(product: models.CMRProduct): void {
-    this.store$.dispatch(new queueStore.ToggleProduct(product));
   }
 
   public onZoomToResults(): void {

@@ -18,8 +18,8 @@ export class ProductService {
         downloadUrl: g.downloadUrl,
         bytes: g.sizeMB * 1000000,
         dataset: g.dataset,
-        browse: g.browse || 'assets/error.png',
-        thumbnail: g.thumb || g.browse || 'assets/error.png',
+        browse: g.browse || '/assets/no-browse.png',
+        thumbnail: g.thumb || g.browse || '/assets/no-thumb.png',
         groupId: g.groupID,
         metadata: this.getMetadataFrom(g)
       })

@@ -1,0 +1,4 @@
+.mypy_cache/
+client_secret.json
+output.txt
+query.json

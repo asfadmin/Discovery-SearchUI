@@ -1,0 +1,130 @@
+<ul class="scene-metadata">
+  <li *ngIf="prop.isRelevant(p.DATE, dataset)">
+    <span class="v-mid"><b>Start Time</b> • {{ scene.metadata.date | fullDate }}</span>
+    <mat-icon *ngIf="isGeoSearch()"
+      [matMenuTriggerFor]="addSceneDateMenu"
+      class="v-mid clickable">
+        add
+    </mat-icon>
+
+    <mat-menu #addSceneDateMenu="matMenu">
+      <button (click)="setStartDate()" mat-menu-item>Set as start date</button>
+      <button (click)="setEndDate()" mat-menu-item>Set as end date</button>
+    </mat-menu>
+  </li>
+
+  <li *ngIf="prop.isRelevant(p.BEAM_MODE, dataset)">
+    <span class="v-mid"><b>Beam Mode </b> • {{ scene.metadata.beamMode }}</span>
+    <mat-icon *ngIf="isGeoSearch()"
+      [matMenuTriggerFor]="addBeamModeMenu"
+      class="v-mid clickable">
+        add
+    </mat-icon>
+
+    <mat-menu #addBeamModeMenu="matMenu">
+      <button (click)="setBeamMode()" mat-menu-item>Add beam mode to search</button>
+    </mat-menu>
+  </li>
+
+  <li *ngIf="prop.isRelevant(p.PATH, dataset)">
+    <span class="v-mid"><b>Path </b> • {{ scene.metadata.path }}</span>
+    <mat-icon *ngIf="isGeoSearch()"
+      [matMenuTriggerFor]="addPathMenu"
+      class="v-mid clickable">
+        add
+    </mat-icon>
+
+    <mat-menu #addPathMenu="matMenu">
+      <button (click)="setPathStart()" mat-menu-item>Set as path start</button>
+      <button (click)="setPathEnd()" mat-menu-item>Set as path end</button>
+      <button (click)="setPathStart(); setPathEnd();" mat-menu-item>Set as both</button>
+    </mat-menu>
+  </li>
+
+  <li *ngIf="prop.isRelevant(p.FRAME, dataset)">
+    <span class="v-mid"> <b>Frame </b> • {{ scene.metadata.frame }} </span>
+
+    <mat-icon *ngIf="isGeoSearch()"
+      [matMenuTriggerFor]="addFrameMenu"
+      class="v-mid clickable">
+        add
+    </mat-icon>
+
+    <mat-menu #addFrameMenu="matMenu">
+      <button (click)="setFrameStart()" mat-menu-item>Set as frame start</button>
+      <button (click)="setFrameEnd()" mat-menu-item>Set as frame end</button>
+      <button (click)="setFrameStart(); setFrameEnd();" mat-menu-item>Set as both</button>
+    </mat-menu>
+  </li>
+
+  <li *ngIf="prop.isRelevant(p.FLIGHT_DIRECTION, dataset)">
+    <span class="v-mid"> <b>Flight Direction </b> • {{ scene.metadata.flightDirection }} </span>
+    <mat-icon *ngIf="isGeoSearch()"
+      [matMenuTriggerFor]="addFlightDirectionMenu"
+      class="v-mid clickable">
+        add
+    </mat-icon>
+
+    <mat-menu #addFlightDirectionMenu="matMenu">
+      <button (click)="setFlightDirection()" mat-menu-item>Set flight direction</button>
+    </mat-menu>
+  </li>
+
+  <li *ngIf="prop.isRelevant(p.POLARIZATION, dataset)">
+    <span class="v-mid"> <b>Polarization </b> • {{ scene.metadata.polarization }} </span>
+
+    <mat-icon *ngIf="isGeoSearch()"
+      [matMenuTriggerFor]="addPolMenu"
+      class="v-mid clickable">
+        add
+    </mat-icon>
+
+    <mat-menu #addPolMenu="matMenu">
+      <button (click)="addPolarization()" mat-menu-item>Add polarization to search</button>
+    </mat-menu>
+  </li>
+
+  <li *ngIf="prop.isRelevant(p.OFF_NADIR_ANGLE, dataset)"
+    class="detail-item-margin">
+    <b>Off Nadir Angle </b> • {{ scene.metadata.offNadirAngle }}
+  </li>
+
+  <li *ngIf="prop.isRelevant(p.FARADAY_ROTATION, dataset)"
+    class="detail-item-margin">
+    <b>Faraday Rotation </b> • {{ scene.metadata.faradayRotation }}
+  </li>
+
+  <li *ngIf="prop.isRelevant(p.MISSION_NAME, dataset)"
+    class="detail-item-margin">
+    <span class="v-mid"> <b>Campaign Name </b> • {{ scene.metadata.missionName }} </span>
+
+    <mat-icon *ngIf="isGeoSearch()"
+      [matMenuTriggerFor]="addMissionMenu"
+      class="v-mid clickable">
+        add
+    </mat-icon>
+
+    <mat-menu #addMissionMenu="matMenu">
+      <button (click)="addMission()" mat-menu-item>Set campaign name</button>
+    </mat-menu>
+  </li>
+
+  <li *ngIf="prop.isRelevant(p.FLIGHT_LINE, dataset)"
+    class="detail-item-margin">
+    <b>Flight Line </b> • {{ scene.metadata.flightLine }}
+  </li>
+
+  <li *ngIf="prop.isRelevant(p.ABSOLUTE_ORBIT, dataset)"
+    class="detail-item-margin">
+    <b>Absolute Orbit </b> • {{ scene.metadata.absoluteOrbit }}
+  </li>
+
+  <li *ngIf="hasValue(scene.metadata.stackSize)" class="detail-item-margin">
+    <b>Matching Frames </b> • {{ scene.metadata.stackSize }}
+  </li>
+
+  <li *ngIf="dataset.source as source" class="detail-item-margin">
+    <a *ngIf="source.url" [href]="source.url" target="_blank"> Data courtesy of {{ dataset.source.name }}</a>
+    <span *ngIf="!source.url" class="faint-text"> Data courtesy of {{ dataset.source.name }}</span>
+  </li>
+</ul>
