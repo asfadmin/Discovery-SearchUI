@@ -1,8 +1,9 @@
 <div *ngIf="selectedSearchType !== null"
   [@isOpen]="isFiltersMenuOpen$ | async"
   class="dataset-filters-div">
-  <mat-card class="dataset-filters-card">
+  <div class="dataset-filters-card">
     <div class="header">
+      <div>Filters</div>
       <div fxFlex="nogrow">
         <mat-icon (click)="closePanel()" class="clickable">
           close
@@ -26,5 +27,5 @@
       <app-clear-button></app-clear-button>
       <app-search-button></app-search-button>
     </div>
-  </mat-card>
+  </div>
 </div>
