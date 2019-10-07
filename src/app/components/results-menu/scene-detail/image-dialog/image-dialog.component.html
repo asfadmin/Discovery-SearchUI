@@ -1,8 +1,20 @@
 <div class="browse-dialog">
-  <div class="dialog-header">
+  <div fxLayout="row" class="dialog-header">
     <div *ngIf="scene$ | async as scene" class="dialog-header--layout">
-      <div>
-        <h3 class="mp0">{{ scene.name }}</h3>
+      <div fxFlex="35px" fxLayoutAlign="start"
+            class="browse-drag-handle"
+            cdkDrag
+            cdkDragRootElement=".cdk-overlay-pane"
+            cdkDragHandle>
+        <svg width="24px" fill="currentColor" viewBox="0 0 24 24">
+          <path d="M10 9h4V6h3l-5-5-5 5h3v3zm-1 1H6V7l-5 5 5 5v-3h3v-4zm14 2l-5-5v3h-3v4h3v3l5-5zm-9 3h-4v3H7l5 5 5-5h-3v-3z"></path>
+          <path d="M0 0h24v24H0z" fill="none"></path>
+        </svg>
+      </div>
+      <div fxFlex="">
+        <h3 class="mp0">
+          {{ scene.name }}
+        </h3>
         <span class="faint-text">
           <a *ngIf="dataset" [href]="dataset.infoUrl" target="_blank" matTooltip="Dataset" class="faint-text">
             {{ dataset.name }}
@@ -11,7 +23,7 @@
       </div>
       <div>
         <button (click)="closeDialog()" mat-icon-button>
-          <mat-icon>close</mat-icon>
+          <mat-icon class="close-button">close</mat-icon>
         </button>
       </div>
     </div>
@@ -28,41 +40,43 @@
 
   <app-browse-list class="browse-list"></app-browse-list>
 
-  <div class="scene-detail">
-    <h3> Scene Detail</h3>
-    <app-scene-metadata></app-scene-metadata>
-    <h3> {{ products.length }} Files </h3>
-    <mat-action-list style="overflow: auto">
-      <button  *ngFor="let product of products"
-        [matMenuTriggerFor]="action_menu" mat-list-item>
-        {{ product.productTypeDisplay }}
-        <mat-menu #action_menu="matMenu" xPosition="before">
+  <div class="scene-detail-wrapper">
+    <div class="scene-detail">
+      <h3> Scene Detail</h3>
+      <app-scene-metadata></app-scene-metadata>
+      <h4> {{ products.length }} Files </h4>
+      <mat-action-list style="overflow: auto">
+        <button  *ngFor="let product of products"
+                 [matMenuTriggerFor]="action_menu" mat-list-item>
+          {{ product.productTypeDisplay }}
+          <mat-menu #action_menu="matMenu" xPosition="before">
 
-          <a mat-menu-item [href]="product.downloadUrl" target="_blank" matTooltip="Download file">
+            <a mat-menu-item [href]="product.downloadUrl" target="_blank" matTooltip="Download file">
             <span style="margin-right: 10px; margin-left: 10px;">
               <span *ngIf="product.bytes === 0">Virtual</span>
               <span *ngIf="product.bytes !== 0">{{product.bytes | readableSizeFromBytes }}</span>
             </span>
-            <span>
+              <span>
               <mat-icon>cloud_download</mat-icon>
             </span>
-          </a>
+            </a>
 
-          <button (click)="onToggleQueueProduct(product)"
-             matTooltip="{{ !queuedProductIds.has(product.id) ? 'Add file to queue' : 'Remove file from queue' }}"
-             mat-menu-item>
+            <button (click)="onToggleQueueProduct(product)"
+                    matTooltip="{{ !queuedProductIds.has(product.id) ? 'Add file to queue' : 'Remove file from queue' }}"
+                    mat-menu-item>
             <span *ngIf="!queuedProductIds.has(product.id)">
               Add
               <mat-icon >add_shopping_cart</mat-icon>
             </span>
-            <span *ngIf="queuedProductIds.has(product.id)">
+              <span *ngIf="queuedProductIds.has(product.id)">
               Remove
               <mat-icon >shopping_cart</mat-icon>
             </span>
-          </button>
-        </mat-menu>
-      </button>
+            </button>
+          </mat-menu>
+        </button>
 
-    </mat-action-list>
+      </mat-action-list>
+    </div>
   </div>
 </div>
