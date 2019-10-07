@@ -1,5 +1,8 @@
 <mat-accordion multi>
-  <mat-expansion-panel [expanded]="defaultPanelOpenState" [disabled]="panelIsDisabled" class="raised-section">
+  <mat-expansion-panel [expanded]="defaultPanelOpenState" [disabled]="panelIsDisabled"
+    (click)="selectPanel(panels.DATE)"
+    [class.raised-section]="isSelected(panels.DATE)"
+    >
     <mat-expansion-panel-header [collapsedHeight]="customCollapsedHeight" [expandedHeight]="customExpandedHeight">
       <mat-panel-title>
         Date Filters
@@ -14,7 +17,10 @@
     </div>
   </mat-expansion-panel>
 
-  <mat-expansion-panel [expanded]="defaultPanelOpenState" [disabled]="panelIsDisabled" class="raised-section">
+  <mat-expansion-panel [expanded]="defaultPanelOpenState" [disabled]="panelIsDisabled"
+    (click)="selectPanel(panels.ADDITIONAL)"
+    [class.raised-section]="isSelected(panels.ADDITIONAL)"
+    >
     <mat-expansion-panel-header [collapsedHeight]="customCollapsedHeight" [expandedHeight]="customExpandedHeight">
       <mat-panel-title>
         Additional Filters
@@ -27,7 +33,10 @@
   </mat-expansion-panel>
 
   <mat-expansion-panel *ngIf="prop.isRelevant(p.PATH) || prop.isRelevant(p.FRAME)"
-    [expanded]="defaultPanelOpenState" [disabled]="panelIsDisabled" class="raised-section">
+    [expanded]="defaultPanelOpenState" [disabled]="panelIsDisabled"
+    (click)="selectPanel(panels.PATH)"
+    [class.raised-section]="isSelected(panels.PATH)"
+    >
     <mat-expansion-panel-header [collapsedHeight]="customCollapsedHeight" [expandedHeight]="customExpandedHeight">
       <mat-panel-title>
         Path and Frame Filters
@@ -40,7 +49,10 @@
   </mat-expansion-panel>
 
   <mat-expansion-panel *ngIf="prop.isRelevant(p.MISSION_NAME)"
-    [expanded]="defaultPanelOpenState" [disabled]="panelIsDisabled" class="raised-section">
+    [expanded]="defaultPanelOpenState" [disabled]="panelIsDisabled" class="raised-section"
+    (click)="selectPanel(panels.CAMPAIGN)"
+    [class.raised-section]="isSelected(panels.CAMPAIGN)"
+    >
     <mat-expansion-panel-header [collapsedHeight]="customCollapsedHeight" [expandedHeight]="customExpandedHeight">
       <mat-panel-title>
         Campaign Selector
