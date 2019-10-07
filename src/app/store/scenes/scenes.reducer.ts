@@ -55,11 +55,13 @@ export function scenesReducer(state = initState, action: ScenesActions): ScenesS
         scenes[groupId] = Array.from(new Set(productNames)) ;
       }
 
+      const selected = products[state.selected] ? products[state.selected].id : null;
+
       return {
         ...state,
 
         ids: Object.keys(products),
-        selected: products[state.selected] ? products[state.selected].id : null,
+        selected,
         focused: null,
 
         areResultsLoaded: true,
