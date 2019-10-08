@@ -1,0 +1,12 @@
+@import "asf-theme";
+
+.scene-metadata {
+  font-size: 12px;
+  margin-top: 5px;
+
+  .mat-icon {
+    @include md-icon-size(18px);
+
+    margin-left: 4px;
+  }
+}

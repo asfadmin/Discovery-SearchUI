@@ -2,13 +2,14 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 import { ReadableSizeFromBytesPipe } from './readable-size-from-bytes.pipe';
-import { ShortDatePipe, FullDatePipe } from './short-date.pipe';
+import { ShortDatePipe, ShortDateTimePipe, FullDatePipe } from './short-date.pipe';
 
 
 @NgModule({
   declarations: [
     ReadableSizeFromBytesPipe,
     ShortDatePipe,
+    ShortDateTimePipe,
     FullDatePipe
   ],
   imports: [
@@ -17,6 +18,7 @@ import { ShortDatePipe, FullDatePipe } from './short-date.pipe';
   exports: [
     ReadableSizeFromBytesPipe,
     ShortDatePipe,
+    ShortDateTimePipe,
     FullDatePipe
   ]
 })

@@ -1,10 +1,10 @@
 <ul class="scene-metadata">
   <li *ngIf="prop.isRelevant(p.DATE, dataset)">
-    <span class="v-mid"><b>Start Time</b> • {{ scene.metadata.date | fullDate }}</span>
+    <span class="v-mid"><b>Start Time</b> • {{ scene.metadata.date | shortDateTime }}</span>
     <mat-icon *ngIf="isGeoSearch()"
       [matMenuTriggerFor]="addSceneDateMenu"
       class="v-mid clickable">
-        add
+        more
     </mat-icon>
 
     <mat-menu #addSceneDateMenu="matMenu">
@@ -18,7 +18,7 @@
     <mat-icon *ngIf="isGeoSearch()"
       [matMenuTriggerFor]="addBeamModeMenu"
       class="v-mid clickable">
-        add
+        more
     </mat-icon>
 
     <mat-menu #addBeamModeMenu="matMenu">
@@ -31,7 +31,7 @@
     <mat-icon *ngIf="isGeoSearch()"
       [matMenuTriggerFor]="addPathMenu"
       class="v-mid clickable">
-        add
+        more
     </mat-icon>
 
     <mat-menu #addPathMenu="matMenu">
@@ -47,7 +47,7 @@
     <mat-icon *ngIf="isGeoSearch()"
       [matMenuTriggerFor]="addFrameMenu"
       class="v-mid clickable">
-        add
+        more
     </mat-icon>
 
     <mat-menu #addFrameMenu="matMenu">
@@ -62,7 +62,7 @@
     <mat-icon *ngIf="isGeoSearch()"
       [matMenuTriggerFor]="addFlightDirectionMenu"
       class="v-mid clickable">
-        add
+        more
     </mat-icon>
 
     <mat-menu #addFlightDirectionMenu="matMenu">
@@ -76,7 +76,7 @@
     <mat-icon *ngIf="isGeoSearch()"
       [matMenuTriggerFor]="addPolMenu"
       class="v-mid clickable">
-        add
+        more
     </mat-icon>
 
     <mat-menu #addPolMenu="matMenu">
@@ -101,7 +101,7 @@
     <mat-icon *ngIf="isGeoSearch()"
       [matMenuTriggerFor]="addMissionMenu"
       class="v-mid clickable">
-        add
+        more
     </mat-icon>
 
     <mat-menu #addMissionMenu="matMenu">
