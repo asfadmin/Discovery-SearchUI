@@ -3,7 +3,16 @@
   class="dataset-filters-div">
   <div class="dataset-filters-card">
     <div class="header">
-      <div>Filters</div>
+      <div>
+        <ng-container *ngIf="selectedSearchType === searchTypes.DATASET">
+          Search Filters
+        </ng-container>
+
+        <ng-container *ngIf="selectedSearchType === searchTypes.LIST">
+          List Search
+        </ng-container>
+      </div>
+
       <div fxFlex="nogrow">
         <mat-icon (click)="closePanel()" class="clickable">
           close
