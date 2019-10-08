@@ -19,10 +19,14 @@ export class InteractionSelectorComponent {
   public types = MapInteractionModeType;
 
   public onDrawSelected =
-    () => this.newInteraction.emit(MapInteractionModeType.DRAW)
+    () => this.newInteraction.emit(
+      this.interaction === MapInteractionModeType.DRAW ? MapInteractionModeType.NONE : MapInteractionModeType.DRAW
+    )
 
   public onEditSelected =
-    () => this.newInteraction.emit(MapInteractionModeType.EDIT)
+    () => this.newInteraction.emit(
+      this.interaction === MapInteractionModeType.EDIT ? MapInteractionModeType.NONE : MapInteractionModeType.EDIT
+      )
 
   public onClearSelected =
     () => {

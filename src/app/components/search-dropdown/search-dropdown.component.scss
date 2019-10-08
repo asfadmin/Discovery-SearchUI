@@ -1,13 +1,8 @@
 @import "asf-theme";
 
-$menu-height: 500px;
-
 .hidden {
   display: none;
 }
-
-$break-small: 500px;
-$break-large: 1200px;
 
 .dataset-filters-div {
   position: absolute;
@@ -15,31 +10,59 @@ $break-large: 1200px;
   bottom: 0;
   left: 0;
   right: 0;
-  width: 80%;
-  max-width: 900px;
-  margin: auto;
+  margin: 0 auto;
+  width: 900px;
+  max-width: 100vw;
+  max-height: calc(100vh - 32px);
+  overflow: auto;
+  box-shadow:
+    0 8px 10px 1px rgba(0, 0, 0, 0.14),
+    0 3px 14px 2px rgba(0, 0, 0, 0.12),
+    0 5px 5px -3px rgba(0, 0, 0, 0.4);
 }
 
 .dataset-filters-card {
-  width: 100%;
-  display: table;
+  background-color: white;
   z-index: 1000;
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
 
-  @media screen and (max-width: $break-small) {
-    max-height: calc(78vh - 10px);
+  .header {
+    flex-shrink: 0;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    position: sticky;
+    top: 0;
+    background-color: $asf-primary-light;
+    border-bottom: 1px solid $asf-primary-dark;
+    font-size: 32px;
+    padding: 15px;
+    z-index: 1001;
   }
 
-  @media screen and (min-width: $break-large) {
-    max-height: calc(80vh - 10px);
+  .filters-list {
+    flex-grow: 1;
+    overflow: auto;
+    min-height: 2em;
+    padding: 10px;
   }
-}
 
-.bottom-list-elements {
-  padding: 1px 0;
-  position: sticky;
-  bottom: 0;
-  z-index: 2;
-  background: white;
+  .footer {
+    flex-shrink: 0;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+
+    position: sticky;
+    bottom: 0;
+    background-color: $asf-primary-light;
+    border-top: 1px solid $asf-primary-dark;
+    z-index: 1001;
+    padding: 15px;
+  }
 }
 
 .filter-scroll {
