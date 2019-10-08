@@ -1,29 +1,26 @@
 <mat-accordion multi>
-
-  <mat-expansion-panel *ngIf="prop.isRelevant(p.PATH) || prop.isRelevant(p.FRAME)"
-    [expanded]="defaultPanelOpenState" [disabled]="panelIsDisabled">
+  <mat-expansion-panel [expanded]="defaultPanelOpenState" [disabled]="panelIsDisabled"
+    (click)="selectPanel(panels.DATE)"
+    [class.raised-section]="isSelected(panels.DATE)"
+    >
     <mat-expansion-panel-header [collapsedHeight]="customCollapsedHeight" [expandedHeight]="customExpandedHeight">
       <mat-panel-title>
-        Path and Frame Filters
+        Date Filters
       </mat-panel-title>
     </mat-expansion-panel-header>
 
-    <div class="selector-card-spacing">
-      <app-path-selector></app-path-selector>
+    <div style="margin-top: 15px;">
+      <app-date-selector></app-date-selector>
+    </div>
+    <div>
+      <app-season-selector></app-season-selector>
     </div>
   </mat-expansion-panel>
 
-  <mat-expansion-panel [expanded]="defaultPanelOpenState" [disabled]="panelIsDisabled">
-    <mat-expansion-panel-header [collapsedHeight]="customCollapsedHeight" [expandedHeight]="customExpandedHeight">
-      <mat-panel-title>
-        Seasonal Filter
-      </mat-panel-title>
-    </mat-expansion-panel-header>
-
-    <app-season-selector></app-season-selector>
-  </mat-expansion-panel>
-
-  <mat-expansion-panel [expanded]="defaultPanelOpenState" [disabled]="panelIsDisabled">
+  <mat-expansion-panel [expanded]="defaultPanelOpenState" [disabled]="panelIsDisabled"
+    (click)="selectPanel(panels.ADDITIONAL)"
+    [class.raised-section]="isSelected(panels.ADDITIONAL)"
+    >
     <mat-expansion-panel-header [collapsedHeight]="customCollapsedHeight" [expandedHeight]="customExpandedHeight">
       <mat-panel-title>
         Additional Filters
@@ -35,8 +32,27 @@
     </div>
   </mat-expansion-panel>
 
+  <mat-expansion-panel *ngIf="prop.isRelevant(p.PATH) || prop.isRelevant(p.FRAME)"
+    [expanded]="defaultPanelOpenState" [disabled]="panelIsDisabled"
+    (click)="selectPanel(panels.PATH)"
+    [class.raised-section]="isSelected(panels.PATH)"
+    >
+    <mat-expansion-panel-header [collapsedHeight]="customCollapsedHeight" [expandedHeight]="customExpandedHeight">
+      <mat-panel-title>
+        Path and Frame Filters
+      </mat-panel-title>
+    </mat-expansion-panel-header>
+
+    <div class="selector-card-spacing">
+      <app-path-selector></app-path-selector>
+    </div>
+  </mat-expansion-panel>
+
   <mat-expansion-panel *ngIf="prop.isRelevant(p.MISSION_NAME)"
-    [expanded]="defaultPanelOpenState" [disabled]="panelIsDisabled">
+    [expanded]="defaultPanelOpenState" [disabled]="panelIsDisabled" class="raised-section"
+    (click)="selectPanel(panels.CAMPAIGN)"
+    [class.raised-section]="isSelected(panels.CAMPAIGN)"
+    >
     <mat-expansion-panel-header [collapsedHeight]="customCollapsedHeight" [expandedHeight]="customExpandedHeight">
       <mat-panel-title>
         Campaign Selector

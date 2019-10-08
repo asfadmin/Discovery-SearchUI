@@ -5,7 +5,7 @@
     (click)="onDrawSelected()"
     [value]="types.DRAW"
     class="control-mat-button-toggle"
-    matTooltip="Draw new area of interest">
+    [matTooltip]="interaction === types.DRAW ? 'Stop drawing' : 'Draw new area of interest'">
     <mat-icon class="interaction-icon">add</mat-icon>
   </mat-button-toggle>
 
@@ -13,7 +13,7 @@
     (click)="onEditSelected()"
     [value]="types.EDIT"
     class="control-mat-button-toggle"
-    matTooltip="Edit current area of interest">
+    [matTooltip]="interaction === types.EDIT ? 'Stop editing' : 'Edit current area of interest'">
     <mat-icon class="interaction-icon">edit</mat-icon>
   </mat-button-toggle>
 
