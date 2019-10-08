@@ -4,8 +4,8 @@ import { MatBottomSheet } from '@angular/material/bottom-sheet';
 
 import { Store, ActionsSubject } from '@ngrx/store';
 import { ofType } from '@ngrx/effects';
-import { of, combineLatest } from 'rxjs';
-import { skip, filter, map, switchMap, mergeMap, tap, catchError, debounceTime } from 'rxjs/operators';
+import { of, combineLatest, timer } from 'rxjs';
+import { skip, filter, map, switchMap, mergeMap, tap, catchError, debounceTime, withLatestFrom } from 'rxjs/operators';
 
 import { AppState } from '@store';
 import * as scenesStore from '@store/scenes';
@@ -36,7 +36,6 @@ export class AppComponent implements OnInit {
 
   public interactionTypes = models.MapInteractionModeType;
   public searchType: models.SearchType;
-  private maxResultsAmountLoading = false;
 
   constructor(
     private store$: Store<AppState>,
@@ -115,7 +114,7 @@ export class AppComponent implements OnInit {
   }
 
   private updateMaxSearchResults(): void {
-    this.searchParams$.getParams().pipe(
+    const checkAmount = this.searchParams$.getParams().pipe(
       map(params => ({...params, ...{output: 'COUNT'}})),
       tap(_ =>
         this.store$.dispatch(new searchStore.SearchAmountLoading())
@@ -124,8 +123,16 @@ export class AppComponent implements OnInit {
           catchError(_ => of(-1))
         )
       ),
-    ).subscribe(searchAmount => {
-      this.store$.dispatch(new searchStore.SetSearchAmount(+<number>searchAmount));
+    );
+
+    checkAmount.subscribe(searchAmount => {
+      const amount = +<number>searchAmount;
+
+      if (!amount || amount < 0) {
+        this.setErrorBanner();
+      }
+
+      this.store$.dispatch(new searchStore.SetSearchAmount(amount));
     });
   }
 
@@ -157,31 +164,34 @@ export class AppComponent implements OnInit {
       map(health => {
         const { ASFSearchAPI, CMRSearchAPI } = health;
 
-        if ('error' in CMRSearchAPI) {
-          const error = {
-            text: CMRSearchAPI.error.display || 'ASF is experiencing errors loading data.  Please try again later.',
-            type: 'error',
-            target: ['vertex']
-          };
-
-          this.store$.dispatch(new uiStore.AddBanners([error]));
-        } else if (!ASFSearchAPI['ok?']) {
-          this.store$.dispatch(new searchStore.SearchError('ASF is experiencing errors loading data.  Please try again later.'));
+        return 'error' in CMRSearchAPI || !ASFSearchAPI['ok?'];
+      }),
+      map(isError => {
+        if (!isError) {
+          return;
         }
+
+        this.setErrorBanner();
       }),
       catchError(
         _ => {
-          const error = {
-            text: 'ASF is experiencing errors loading data.  Please try again later.',
-            type: 'error',
-            target: ['vertex']
-          };
-
-          this.store$.dispatch(new uiStore.AddBanners([error]));
+          this.setErrorBanner();
 
           return of(null);
         }
       )
     ).subscribe(_ => _);
+  }
+
+  private setErrorBanner(): void {
+    this.store$.dispatch(new uiStore.AddBanners([this.errorBanner()]));
+  }
+
+  private errorBanner() {
+    return  {
+      text: 'ASF is experiencing errors loading data.  Please try again later.',
+      type: 'error',
+      target: ['vertex']
+    };
   }
 }

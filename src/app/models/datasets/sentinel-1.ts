@@ -57,10 +57,6 @@ export const sentinel_1 = {
       displayName: 'XML Metadata (GRD-MS)'
     },
     {
-      apiValue: 'METADATA_GRD_FD',
-      displayName: 'XML Metadata (GRD-FD)'
-    },
-    {
       apiValue: 'METADATA_GRD_HD',
       displayName: 'XML Metadata (GRD-HD)'
     },

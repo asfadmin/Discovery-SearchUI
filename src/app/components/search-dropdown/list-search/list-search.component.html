@@ -1,35 +1,28 @@
-<mat-card class="ls-card" *ngIf="listSearchMode$ | async as mode">
-  <mat-card-title-group class="ls-card-title-group">
-    <mat-card-title>
-      <span *ngIf="mode === types.SCENE">Scene</span>
-      <span *ngIf="mode === types.PRODUCT">File</span>
-      List Search
-    </mat-card-title>
-    <mat-card-subtitle>
-      <mat-button-toggle-group [value]="mode" class="ls-mat-button-toggle-group">
-        <mat-button-toggle
-          (click)="onSceneModeSelected()"
-          [value]="types.SCENE"
-          matTooltip="Scene List Search">
-          Scene
-        </mat-button-toggle>
-
-        <mat-button-toggle
-          (click)="onProductModeSelected()"
-          [value]="types.PRODUCT"
-          matTooltip="File List Search">
-          File
-        </mat-button-toggle>
-      </mat-button-toggle-group>
-    </mat-card-subtitle>
-  </mat-card-title-group>
-
-  <mat-card-content class="ls-mat-card-content">
-    <div class="ls-instruction">
+<div class="ls-card" *ngIf="listSearchMode$ | async as mode">
+  <div class="ls-mat-card-content">
+    <div style="display: flex; flex-direction: row; justify-content: flex-start; align-items: center; margin-bottom: 10px">
+      <div style="margin-right: 15px;">
         <h4>
-          <span *ngIf="mode === types.SCENE">Enter a list of scene names.</span>
-          <span *ngIf="mode === types.PRODUCT">Enter a list of file ids.</span>
+          <span>List Type: </span>
         </h4>
+      </div>
+      <div>
+        <mat-button-toggle-group [value]="mode" class="ls-mat-button-toggle-group">
+          <mat-button-toggle
+            (click)="onSceneModeSelected()"
+            [value]="types.SCENE"
+            matTooltip="Scene List Search">
+            Scene
+          </mat-button-toggle>
+
+          <mat-button-toggle
+            (click)="onProductModeSelected()"
+            [value]="types.PRODUCT"
+            matTooltip="File List Search">
+            File
+          </mat-button-toggle>
+        </mat-button-toggle-group>
+      </div>
     </div>
     <mat-form-field class="ls-card-content-list">
       <textarea matInput
@@ -39,7 +32,7 @@
                 placeholder="List of {{ mode === types.SCENE ? 'Scene names' : 'File IDs.' }}">
       </textarea>
     </mat-form-field>
-  </mat-card-content>
+  </div>
   <div class="ls-example">
     <div>
       <span>
@@ -54,7 +47,5 @@
         </app-copy-to-clipboard>
       </div>
     </div>
-
   </div>
-
-</mat-card>
+</div>
