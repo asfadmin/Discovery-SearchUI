@@ -120,7 +120,14 @@ export class AppComponent implements OnInit {
         this.store$.dispatch(new searchStore.SearchAmountLoading())
       ),
       switchMap(params => this.asfSearchApi.query<any[]>(params).pipe(
-          catchError(_ => of(-1))
+        catchError(resp => {
+          const { error } = resp;
+          if (error && error.includes('VALIDATION_ERROR')) {
+            return of(0);
+          }
+
+          return of(-1);
+        })
         )
       ),
     );
@@ -128,7 +135,7 @@ export class AppComponent implements OnInit {
     checkAmount.subscribe(searchAmount => {
       const amount = +<number>searchAmount;
 
-      if (!amount || amount < 0) {
+      if (amount < 0) {
         this.setErrorBanner();
       }
 
