@@ -55,7 +55,16 @@ export function scenesReducer(state = initState, action: ScenesActions): ScenesS
         scenes[groupId] = Array.from(new Set(productNames)) ;
       }
 
-      const selected = products[state.selected] ? products[state.selected].id : null;
+      let selected = products[state.selected] ? products[state.selected].id : null;
+
+      if (selected === null) {
+        const sceneList = allScenesFrom(scenes, products);
+        const firstScene = sceneList[0];
+
+        if (firstScene) {
+          selected = firstScene.id;
+        }
+      }
 
       return {
         ...state,
@@ -78,8 +87,9 @@ export function scenesReducer(state = initState, action: ScenesActions): ScenesS
     }
 
     case ScenesActionType.SELECT_NEXT_SCENE: {
-      const scenes = allScenesFrom(state);
+      const scenes = allScenesFrom(state.scenes, state.products);
       const scene = state.products[state.selected] || null;
+
 
       if (!scenes[0]) {
         return {
@@ -114,7 +124,7 @@ export function scenesReducer(state = initState, action: ScenesActions): ScenesS
     }
 
     case ScenesActionType.SELECT_PREVIOUS_SCENE: {
-      const scenes = allScenesFrom(state);
+      const scenes = allScenesFrom(state.scenes, state.products);
       const scene = state.products[state.selected] || null;
 
       if (!scenes[0]) {
@@ -179,22 +189,22 @@ export function scenesReducer(state = initState, action: ScenesActions): ScenesS
 
 export const getScenesState = createFeatureSelector<ScenesState>('scenes');
 
-export const allScenesFrom = (state: ScenesState) => {
-  return Object.values(state.scenes)
+export const allScenesFrom = (scenes: {[id: string]: string[]}, products) => {
+  return Object.values(scenes)
     .map(group => {
 
       const browse = group
-        .map(name => state.products[name])
+        .map(name => products[name])
         .filter(product => !product.browse.includes('no-browse.png'))
         .pop();
 
-      return browse ? browse : state.products[group[0]];
+      return browse ? browse : products[group[0]];
     });
 };
 
 export const getScenes = createSelector(
   getScenesState,
-  (state: ScenesState) => allScenesFrom(state)
+  (state: ScenesState) => allScenesFrom(state.scenes, state.products)
 );
 
 export const getAreResultsLoaded = createSelector(
