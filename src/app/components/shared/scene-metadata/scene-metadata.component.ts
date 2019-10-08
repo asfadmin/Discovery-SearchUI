@@ -14,7 +14,7 @@ import { DatasetForProductService, PropertyService } from '@services';
 @Component({
   selector: 'app-scene-metadata',
   templateUrl: './scene-metadata.component.html',
-  styleUrls: ['./scene-metadata.component.css']
+  styleUrls: ['./scene-metadata.component.scss']
 })
 export class SceneMetadataComponent implements OnInit {
   public dataset: models.Dataset;

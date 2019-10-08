@@ -41,14 +41,18 @@
   <app-browse-list class="browse-list"></app-browse-list>
 
   <div class="scene-detail-wrapper">
+<!--    <mat-icon>close</mat-icon>-->
     <div class="scene-detail">
-      <h3> Scene Detail</h3>
+      <div class="detail-header">Scene Detail</div>
       <app-scene-metadata></app-scene-metadata>
-      <h4> {{ products.length }} Files </h4>
-      <mat-action-list style="overflow: auto">
+
+      <hr>
+
+      <div class="detail-header">{{ products.length }} Files</div>
+      <mat-action-list dense class="file-list">
         <button  *ngFor="let product of products"
                  [matMenuTriggerFor]="action_menu" mat-list-item>
-          {{ product.productTypeDisplay }}
+          • {{ product.productTypeDisplay }}
           <mat-menu #action_menu="matMenu" xPosition="before">
 
             <a mat-menu-item [href]="product.downloadUrl" target="_blank" matTooltip="Download file">
