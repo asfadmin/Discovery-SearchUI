@@ -4,8 +4,8 @@ import { MatBottomSheet } from '@angular/material/bottom-sheet';
 
 import { Store, ActionsSubject } from '@ngrx/store';
 import { ofType } from '@ngrx/effects';
-import { of, combineLatest } from 'rxjs';
-import { skip, filter, map, switchMap, mergeMap, tap, catchError, debounceTime } from 'rxjs/operators';
+import { of, combineLatest, timer } from 'rxjs';
+import { skip, filter, map, switchMap, mergeMap, tap, catchError, debounceTime, withLatestFrom } from 'rxjs/operators';
 
 import { AppState } from '@store';
 import * as scenesStore from '@store/scenes';
@@ -36,7 +36,6 @@ export class AppComponent implements OnInit {
 
   public interactionTypes = models.MapInteractionModeType;
   public searchType: models.SearchType;
-  private maxResultsAmountLoading = false;
 
   constructor(
     private store$: Store<AppState>,
@@ -115,7 +114,10 @@ export class AppComponent implements OnInit {
   }
 
   private updateMaxSearchResults(): void {
-    this.searchParams$.getParams().pipe(
+    const checkAmount = this.searchParams$.getParams().pipe(
+      switchMap(params => timer(0, 5 * 60 * 1000)
+        .pipe(map(_ => params))
+      ),
       map(params => ({...params, ...{output: 'COUNT'}})),
       tap(_ =>
         this.store$.dispatch(new searchStore.SearchAmountLoading())
@@ -124,7 +126,8 @@ export class AppComponent implements OnInit {
           catchError(_ => of(-1))
         )
       ),
-    ).subscribe(searchAmount => {
+    );
+    checkAmount.subscribe(searchAmount => {
       this.store$.dispatch(new searchStore.SetSearchAmount(+<number>searchAmount));
     });
   }
