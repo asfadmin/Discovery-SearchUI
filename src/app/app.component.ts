@@ -127,8 +127,15 @@ export class AppComponent implements OnInit {
         )
       ),
     );
+
     checkAmount.subscribe(searchAmount => {
-      this.store$.dispatch(new searchStore.SetSearchAmount(+<number>searchAmount));
+      const amount = +<number>searchAmount;
+
+      if (!amount || amount < 0) {
+        this.setErrorBanner();
+      }
+
+      this.store$.dispatch(new searchStore.SetSearchAmount(amount));
     });
   }
 
@@ -160,31 +167,34 @@ export class AppComponent implements OnInit {
       map(health => {
         const { ASFSearchAPI, CMRSearchAPI } = health;
 
-        if ('error' in CMRSearchAPI) {
-          const error = {
-            text: CMRSearchAPI.error.display || 'ASF is experiencing errors loading data.  Please try again later.',
-            type: 'error',
-            target: ['vertex']
-          };
-
-          this.store$.dispatch(new uiStore.AddBanners([error]));
-        } else if (!ASFSearchAPI['ok?']) {
-          this.store$.dispatch(new searchStore.SearchError('ASF is experiencing errors loading data.  Please try again later.'));
+        return 'error' in CMRSearchAPI || !ASFSearchAPI['ok?'];
+      }),
+      map(isError => {
+        if (!isError) {
+          return;
         }
+
+        this.setErrorBanner();
       }),
       catchError(
         _ => {
-          const error = {
-            text: 'ASF is experiencing errors loading data.  Please try again later.',
-            type: 'error',
-            target: ['vertex']
-          };
-
-          this.store$.dispatch(new uiStore.AddBanners([error]));
+          this.setErrorBanner();
 
           return of(null);
         }
       )
     ).subscribe(_ => _);
+  }
+
+  private setErrorBanner(): void {
+    this.store$.dispatch(new uiStore.AddBanners([this.errorBanner()]));
+  }
+
+  private errorBanner() {
+    return  {
+      text: 'ASF is experiencing errors loading data.  Please try again later.',
+      type: 'error',
+      target: ['vertex']
+    };
   }
 }

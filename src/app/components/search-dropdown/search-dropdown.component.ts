@@ -8,7 +8,6 @@ import { Store } from '@ngrx/store';
 
 import { AppState } from '@store';
 import * as uiStore from '@store/ui';
-import * as searchStore from '@store/search';
 
 import * as models from '@models';
 
@@ -28,8 +27,6 @@ import * as models from '@models';
 })
 export class SearchDropdownComponent implements OnInit {
   public isFiltersMenuOpen$ = this.store$.select(uiStore.getIsFiltersMenuOpen);
-
-  public searchError$ = this.store$.select(searchStore.getSearchError);
 
   public filterType = models.FilterType;
   public selectedSearchType: models.SearchType;
