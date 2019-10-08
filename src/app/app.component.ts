@@ -115,9 +115,6 @@ export class AppComponent implements OnInit {
 
   private updateMaxSearchResults(): void {
     const checkAmount = this.searchParams$.getParams().pipe(
-      switchMap(params => timer(0, 5 * 60 * 1000)
-        .pipe(map(_ => params))
-      ),
       map(params => ({...params, ...{output: 'COUNT'}})),
       tap(_ =>
         this.store$.dispatch(new searchStore.SearchAmountLoading())
