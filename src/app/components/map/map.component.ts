@@ -84,14 +84,6 @@ export class MapComponent implements OnInit {
         this.hideOverlay()
     );
 
-    this.store$.select(uiStore.getIsResultsMenuOpen).subscribe(
-      isOpen => {
-        const mode = isOpen ?
-          models.MapInteractionModeType.NONE :
-          models.MapInteractionModeType.DRAW;
-        this.store$.dispatch(new mapStore.SetMapInteractionMode(mode));
-    });
-
     this.interactionMode$.subscribe(
       mode => {
         if (mode === models.MapInteractionModeType.NONE) {
