@@ -55,7 +55,6 @@ $config: mat-typography-config();
       margin-left: 10px;
     }
   }
-
 }
 
 .dialog-header--layout {
@@ -108,4 +107,25 @@ $config: mat-typography-config();
 .close-button {
   vertical-align: top !important;
   color: $asf-primary;
+}
+
+.file-list {
+  overflow: auto;
+
+  button {
+    height: 25px;
+  }
+
+  //button:before {
+  //  content: "• ";
+  //}
+}
+
+.detail-header {
+  font-weight: bold;
+  text-decoration: underline;
+}
+
+.mat-list-base[dense] .mat-list-item .mat-list-item-content {
+  padding: 0;
 }

@@ -76,7 +76,9 @@ export class ApiLinkDialogComponent implements OnInit {
           maxResults: format
         };
       }),
-      map(params => this.asfApiService.queryUrlFrom(params))
+      map(params => this.asfApiService.queryUrlFrom(params, {
+        apiUrl: 'https://api.daac.asf.alaska.edu'
+      }))
     ).subscribe(apiLink => this.apiLink = apiLink);
   }
 

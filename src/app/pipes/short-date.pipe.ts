@@ -28,3 +28,14 @@ export class ShortDatePipe implements PipeTransform {
   }
 }
 
+@Pipe({
+  name: 'shortDateTime'
+})
+export class ShortDateTimePipe implements PipeTransform {
+
+  transform(date: Date): string {
+    const dateUtc = moment.utc(date);
+
+    return dateUtc.format('MM/DD/YY, HH:mm:ss');
+  }
+}

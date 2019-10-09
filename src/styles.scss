@@ -181,7 +181,7 @@ ul {
 }
 
 .selected {
-  background-color: rgba(0, 0, 0, 0.07);
+  background-color: rgba(0, 0, 0, 0.07) !important;
 }
 
 .image-dialog {
@@ -203,4 +203,10 @@ ul {
   //  max-height: 100%;
   //  resize: both;
   //}
+}
+
+.file-list {
+  .mat-list-item-content {
+    padding: 0 !important;
+  }
 }

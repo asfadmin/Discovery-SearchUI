@@ -79,7 +79,7 @@
 
     <a mat-menu-item href="{{ asfWebsiteUrl }}/get-data/api" target="_blank">
       <mat-icon>web</mat-icon>
-     ASF API
+      ASF Search API
     </a>
 
     <hr class="menu-hr">
@@ -107,12 +107,12 @@
   </mat-menu>
 
   <mat-menu #apiMaturity="matMenu">
-    <button (click)="onTestSelected()"
+    <button [class.selected]="maturity === 'test'" (click)="onTestSelected()"
       mat-menu-item matSuffix>
         <span>Test</span>
     </button>
 
-    <button (click)="onProdSelected()"
+    <button [class.selected]="maturity === 'prod'" (click)="onProdSelected()"
       mat-menu-item matSuffix>
         <span>Production</span>
     </button>
