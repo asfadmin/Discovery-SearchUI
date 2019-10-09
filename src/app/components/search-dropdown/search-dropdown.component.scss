@@ -18,6 +18,12 @@
   z-index: 1000;
 }
 
+@media (min-width: 981px) {
+  .padding-for-box-shadow {
+    padding: 0 20px;
+  }
+}
+
 .dataset-filters-card {
   background-color: white;
   z-index: 1000;
