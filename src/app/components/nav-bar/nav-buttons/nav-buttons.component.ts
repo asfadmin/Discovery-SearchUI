@@ -10,8 +10,10 @@ import { CMRProduct } from '@models';
   templateUrl: './nav-buttons.component.html',
   styleUrls: ['./nav-buttons.component.scss']
 })
-export class NavButtonsComponent {
+export class NavButtonsComponent implements OnInit {
   public asfWebsiteUrl = 'https://www.asf.alaska.edu';
+  public maturity = 'prod';
+  private maturityKey = 'search-api-maturity';
 
   @Input() queuedProducts: CMRProduct[];
 
@@ -23,6 +25,13 @@ export class NavButtonsComponent {
     public asfApiService: AsfApiService,
     public clipboard: ClipboardService,
   ) {}
+
+  ngOnInit() {
+    if (this.isDevMode) {
+      const maturity = localStorage.getItem(this.maturityKey);
+      this.setMaturity(maturity || this.maturity);
+    }
+  }
 
   public onOpenDownloadQueue(): void {
     this.openQueue.emit();
@@ -54,10 +63,16 @@ export class NavButtonsComponent {
   }
 
   public onTestSelected(): void {
-    this.asfApiService.setApiMaturity('test');
+    this.setMaturity('test');
   }
 
   public onProdSelected(): void {
-    this.asfApiService.setApiMaturity('prod');
+    this.setMaturity('prod');
+  }
+
+  private setMaturity(maturity: string): void {
+    this.maturity = maturity;
+    localStorage.setItem(this.maturityKey, this.maturity);
+    this.asfApiService.setApiMaturity(this.maturity);
   }
 }
