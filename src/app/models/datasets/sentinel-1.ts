@@ -21,7 +21,7 @@ export const sentinel_1 = {
   frequency: 'C-Band',
   source: {
     name: 'ESA',
-    url: 'http://www.esa.int/ESA'
+    url: 'https://www.esa.int/ESA'
   },
   productTypes: [
     {
