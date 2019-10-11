@@ -36,7 +36,7 @@ export class ProductService {
           bytes: g.sizeMB * 1000000,
           dataset: g.dataset,
           browses,
-          thumbnail: g.thumb || g.browse || '/assets/no-thumb.png',
+          thumbnail: g.thumb || !browses[0].includes('no-browse') ? browses[0] : '/assets/no-thumb.png',
           groupId: g.groupID,
           metadata: this.getMetadataFrom(g)
         });
