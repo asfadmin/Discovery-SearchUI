@@ -24,6 +24,7 @@ export class FileUploadDialogComponent implements OnInit {
   public uploading = false;
 
   public isFileInvalidType$ = new Subject<string>();
+  public isFileIsTooLarge$  = new Subject<string>();
   public isFileError = false;
 
   constructor(
@@ -38,6 +39,19 @@ export class FileUploadDialogComponent implements OnInit {
       tap(
         fileType => this.snackBar.open(
           `Invalid File Type (.${fileType})`, 'FILE ERROR', { duration: 5000 }
+        )
+      ),
+      delay(820),
+      tap(_ => this.isFileError = false),
+    ).subscribe(
+      _ => _
+    );
+
+    this.isFileIsTooLarge$.pipe(
+      tap(_ => this.isFileError = true),
+      tap(
+        fileType => this.snackBar.open(
+          `File is too large`, 'FILE ERROR', { duration: 5000 }
         )
       ),
       delay(820),
@@ -113,6 +127,12 @@ export class FileUploadDialogComponent implements OnInit {
 
   private addFile(file): void {
     const fileName = file.name;
+    const size_limit = 10e7;
+
+    if (file.size > size_limit) {
+      this.isFileIsTooLarge$.next(fileName);
+      return;
+    }
 
     if (this.isValidFileType(fileName)) {
       this.files.add(file);
