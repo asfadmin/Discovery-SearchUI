@@ -27,6 +27,8 @@ export class ProductService {
           }
         }
 
+        const thumbnail = g.thumb || (!browses[0].includes('no-browse') ? browses[0] : '/assets/no-thumb.png');
+
         return ({
           name: g.granuleName,
           productTypeDisplay: g.productTypeDisplay || g.granuleName,
@@ -36,7 +38,7 @@ export class ProductService {
           bytes: g.sizeMB * 1000000,
           dataset: g.dataset,
           browses,
-          thumbnail: g.thumb || g.browse || '/assets/no-thumb.png',
+          thumbnail,
           groupId: g.groupID,
           metadata: this.getMetadataFrom(g)
         });
