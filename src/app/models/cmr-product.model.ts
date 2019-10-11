@@ -7,7 +7,7 @@ export interface CMRProduct {
   id: string;
   downloadUrl: string;
   bytes: number;
-  browse: string;
+  browses: string[];
   thumbnail: string;
   dataset: string;
   groupId: string;

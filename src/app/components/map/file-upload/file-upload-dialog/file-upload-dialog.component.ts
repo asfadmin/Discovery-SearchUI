@@ -9,6 +9,11 @@ import { Subscription } from 'rxjs';
 
 import { AsfApiService } from '@services';
 
+enum FileErrors {
+  TOO_LARGE = 'Too large',
+  INVALID_TYPE = 'Invalid Type'
+}
+
 @Component({
   selector: 'app-file-upload-dialog',
   templateUrl: 'file-upload-dialog.component.html',
@@ -23,7 +28,7 @@ export class FileUploadDialogComponent implements OnInit {
   public showCancelButton = true;
   public uploading = false;
 
-  public isFileInvalidType$ = new Subject<string>();
+  public fileError$ = new Subject<FileErrors>();
   public isFileError = false;
 
   constructor(
@@ -33,12 +38,16 @@ export class FileUploadDialogComponent implements OnInit {
   ) {}
 
   public ngOnInit(): void {
-    this.isFileInvalidType$.pipe(
+    this.fileError$.pipe(
       tap(_ => this.isFileError = true),
       tap(
-        fileType => this.snackBar.open(
-          `Invalid File Type (.${fileType})`, 'FILE ERROR', { duration: 5000 }
-        )
+        error => {
+          if (error === FileErrors.INVALID_TYPE) {
+            this.snackBar.open( `Invalid File Type`, 'FILE ERROR', { duration: 5000 });
+          } else if (error === FileErrors.TOO_LARGE) {
+            this.snackBar.open( `File is too large (over 10MB)`, 'FILE ERROR', { duration: 5000 });
+          }
+        }
       ),
       delay(820),
       tap(_ => this.isFileError = false),
@@ -113,13 +122,17 @@ export class FileUploadDialogComponent implements OnInit {
 
   private addFile(file): void {
     const fileName = file.name;
+    const size_limit = 10e6;
+
+    if (file.size > size_limit) {
+      this.fileError$.next(FileErrors.TOO_LARGE);
+      return;
+    }
 
     if (this.isValidFileType(fileName)) {
       this.files.add(file);
     } else {
-      this.isFileInvalidType$.next(
-        this.getFileType(fileName)
-      );
+      this.fileError$.next(FileErrors.INVALID_TYPE);
     }
   }
 
