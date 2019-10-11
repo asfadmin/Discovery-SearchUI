@@ -1,5 +1,6 @@
 import {
-  Component, OnInit, Input, ViewChild, ViewEncapsulation
+  Component, OnInit, Input, ViewChild, ViewEncapsulation,
+  AfterViewInit
 } from '@angular/core';
 
 import { fromEvent, combineLatest } from 'rxjs';
@@ -25,15 +26,15 @@ import * as models from '@models';
   styleUrls: ['./scenes-list.component.scss'],
   encapsulation: ViewEncapsulation.None
 })
-export class ScenesListComponent implements OnInit {
+export class ScenesListComponent implements OnInit, AfterViewInit {
   @ViewChild(CdkVirtualScrollViewport, { static: true }) scroll: CdkVirtualScrollViewport;
 
   public scenes$ = this.store$.select(scenesStore.getScenes);
+  public scenes: models.CMRProduct[];
   public sceneNameLen: number;
 
   public numberOfQueue: {[scene: string]: [number, number]};
   public allQueued: {[scene: string]: boolean};
-  public scenes: models.CMRProduct[];
   public selected: string;
 
   public searchType: models.SearchType;
@@ -51,27 +52,8 @@ export class ScenesListComponent implements OnInit {
       map(size => size.width > 1775 ? 32 : 16),
     ).subscribe(len => this.sceneNameLen = len);
 
-    this.store$.select(scenesStore.getSelectedScene).pipe(
-      withLatestFrom(this.scenes$),
-      filter(([selected, _]) => !!selected),
-      tap(([selected, _]) => this.selected = selected.name),
-      map(([selected, scenes]) => scenes.indexOf(selected)),
-    ).subscribe(
-      idx => {
-        if (!this.selectedFromList) {
-          this.scrollTo(idx);
-        }
-
-        this.selectedFromList = false;
-      }
-    );
-
     this.scenes$.subscribe(
       scenes => this.scenes = scenes
-    );
-
-    this.store$.select(searchStore.getIsLoading).subscribe(
-      _ => this.scroll.scrollToOffset(0)
     );
 
     fromEvent(document, 'keydown').subscribe((e: KeyboardEvent) => {
@@ -145,6 +127,27 @@ export class ScenesListComponent implements OnInit {
     )).subscribe(allQueued => this.allQueued = allQueued);
   }
 
+  ngAfterViewInit() {
+    this.store$.select(scenesStore.getSelectedScene).pipe(
+      withLatestFrom(this.scenes$),
+      filter(([selected, _]) => !!selected),
+      tap(([selected, _]) => this.selected = selected.name),
+      map(([selected, scenes]) => scenes.indexOf(selected)),
+    ).subscribe(
+      idx => {
+        if (!this.selectedFromList) {
+          this.scrollTo(idx);
+        }
+
+        this.selectedFromList = false;
+      }
+    );
+
+    this.store$.select(searchStore.getIsLoading).subscribe(
+      _ => this.scroll.scrollToOffset(0)
+    );
+  }
+
   private selectNextScene(): void {
     this.store$.dispatch(new scenesStore.SelectNextScene());
   }
@@ -157,9 +160,9 @@ export class ScenesListComponent implements OnInit {
     this.scroll.scrollToIndex(idx);
   }
 
-  public onSceneSelected(name: string): void {
+  public onSceneSelected(id: string): void {
     this.selectedFromList = true;
-    this.store$.dispatch(new scenesStore.SetSelectedScene(name));
+    this.store$.dispatch(new scenesStore.SetSelectedScene(id));
   }
 
   public onToggleScene(e: Event, groupId: string): void {

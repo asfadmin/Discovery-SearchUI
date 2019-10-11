@@ -1,14 +1,11 @@
 <mat-slide-toggle
   (change)="onToggleSeasonalOptions()"
   [(ngModel)]="isSeasonalSearch"
-  style="margin: 15px 0">
+  style="margin: 10px 0">
     Seasonal Search
 </mat-slide-toggle>
 
 <div *ngIf="isSeasonalSearch">
-  <div>
-    <app-date-selector></app-date-selector>
-  </div>
   <div>
     <b>Season Start Day </b> <span *ngIf="start"> • {{ dayOfYearFormat(start, 'short') }}</span>
     <div class="season-selector">

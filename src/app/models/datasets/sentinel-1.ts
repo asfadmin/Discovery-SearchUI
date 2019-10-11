@@ -21,7 +21,7 @@ export const sentinel_1 = {
   frequency: 'C-Band',
   source: {
     name: 'ESA',
-    url: 'http://www.esa.int/ESA'
+    url: 'https://www.esa.int/ESA'
   },
   productTypes: [
     {
@@ -55,10 +55,6 @@ export const sentinel_1 = {
     {
       apiValue: 'METADATA_GRD_MS',
       displayName: 'XML Metadata (GRD-MS)'
-    },
-    {
-      apiValue: 'METADATA_GRD_FD',
-      displayName: 'XML Metadata (GRD-FD)'
     },
     {
       apiValue: 'METADATA_GRD_HD',

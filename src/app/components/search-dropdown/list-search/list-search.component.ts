@@ -1,7 +1,8 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { ListSearchType } from '@models';
 
-import { map, tap } from 'rxjs/operators';
+import { Subject } from 'rxjs';
+import { map, tap, debounceTime } from 'rxjs/operators';
 
 import { Store } from '@ngrx/store';
 
@@ -21,6 +22,7 @@ export class ListSearchComponent implements OnInit {
 
   public searchList: string;
   public listSearchMode$ = this.store$.select(filtersStore.getListSearchMode);
+  private newListInput$ = new Subject<string | null>();
 
   public listExamples = {
     [this.types.PRODUCT]: [
@@ -43,6 +45,18 @@ export class ListSearchComponent implements OnInit {
     ).subscribe(
       listStr => this.searchList = listStr
     );
+
+    this.newListInput$.asObservable().pipe(
+      debounceTime(500)
+    ).subscribe(text => {
+      const scenes = text
+        .split(/[\s\n,\t]+/)
+        .filter(v => v);
+
+      const unique = Array.from(new Set(scenes));
+
+      this.store$.dispatch(new filtersStore.SetSearchList(unique));
+    });
   }
 
   public onSceneModeSelected(): void {
@@ -54,13 +68,7 @@ export class ListSearchComponent implements OnInit {
   }
 
   public onTextInputChange(text: string): void {
-    const scenes = text
-      .split(/[\s\n,\t]+/)
-      .filter(v => v);
-
-    const unique = Array.from(new Set(scenes));
-
-    this.store$.dispatch(new filtersStore.SetSearchList(unique));
+    this.newListInput$.next(text);
   }
 
   public onNewListSearchMode(mode: models.ListSearchType): void {

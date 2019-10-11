@@ -72,7 +72,7 @@
           <span>Restore Queue</span>
         </button>
       </div>
-      <div fxFlex="75" class="dl-download-buttons">
+      <div *ngIf="areAnyProducts" fxFlex="75" class="dl-download-buttons">
         <button (click)="onCopyQueue(products)" mat-button [disabled]="!areAnyProducts" class="btn-primary">
           Copy File IDs
           <fa-icon style="margin-left: 5px" [icon]="copyIcon"></fa-icon>
