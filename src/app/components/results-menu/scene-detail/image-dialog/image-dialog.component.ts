@@ -72,18 +72,14 @@ export class ImageDialogComponent implements OnInit, AfterViewInit {
             this.naturalWidth, this.naturalHeight
           ];
 
-          browseService.setBrowse(scene.browse, {
+          browseService.setBrowse(scene.browses[0], {
             width, height
           });
         });
 
-        this.image.src = scene.browse;
+        this.image.src = scene.browses[0];
       }
     );
-  }
-
-  public onOpenImage(scene: models.CMRProduct) {
-    window.open(scene.browse || '/assets/no-browse.png');
   }
 
   public closeDialog() {
