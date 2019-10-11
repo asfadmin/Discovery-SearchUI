@@ -10,21 +10,37 @@ export class ProductService {
   public fromResponse = (resp: any) => {
     const products = (resp.results || [])
     .map(
-      (g: any): models.CMRProduct => ({
-        name: g.granuleName,
-        productTypeDisplay: g.productTypeDisplay || g.granuleName,
-        file: g.fileName,
-        id: g.productID,
-        downloadUrl: g.downloadUrl,
-        bytes: g.sizeMB * 1000000,
-        dataset: g.dataset,
-        browses: Array.isArray(g.browse) ?
-          g.browse || ['/assets/no-browse.png'] :
-          [g.browse || '/assets/no-browse.png'],
-        thumbnail: g.thumb || g.browse || '/assets/no-thumb.png',
-        groupId: g.groupID,
-        metadata: this.getMetadataFrom(g)
-      })
+      (g: any): models.CMRProduct => {
+        let browses: string[] = [];
+
+        if (Array.isArray(g.browse)) {
+          if (g.browse.length > 0) {
+            browses = g.browse;
+          } else {
+            browses = ['/assets/no-browse.png'];
+          }
+        } else {
+          if (g.browse) {
+            browses = [g.browse];
+          } else {
+            browses = ['/assets/no-browse.png'];
+          }
+        }
+
+        return ({
+          name: g.granuleName,
+          productTypeDisplay: g.productTypeDisplay || g.granuleName,
+          file: g.fileName,
+          id: g.productID,
+          downloadUrl: g.downloadUrl,
+          bytes: g.sizeMB * 1000000,
+          dataset: g.dataset,
+          browses,
+          thumbnail: g.thumb || g.browse || '/assets/no-thumb.png',
+          groupId: g.groupID,
+          metadata: this.getMetadataFrom(g)
+        });
+      }
     );
 
     return products;
