@@ -16,7 +16,8 @@
           {{ scene.name }}
         </h3>
         <span class="faint-text">
-          <a *ngIf="dataset" [href]="dataset.infoUrl" target="_blank" matTooltip="Dataset" class="faint-text">
+          <a *ngIf="dataset" [href]="dataset.infoUrl"
+              target="_blank" matTooltip="Dataset" class="faint-text">
             {{ dataset.name }}
           </a> • {{ scene.metadata.date | fullDate }}
         </span>
@@ -40,9 +41,12 @@
 
   <app-browse-list class="browse-list"></app-browse-list>
 
-  <div class="scene-detail-wrapper">
+  <div *ngIf="!isShow" class="scene-detail-wrapper">
 <!--    <mat-icon>close</mat-icon>-->
+<!--    <mat-icon (click) = toggleDisplay()>chevron_right</mat-icon>-->
+
     <div class="scene-detail">
+
       <div class="detail-header">Scene Detail</div>
       <app-scene-metadata></app-scene-metadata>
 
@@ -79,8 +83,25 @@
             </button>
           </mat-menu>
         </button>
-
       </mat-action-list>
+
     </div>
   </div>
+
 </div>
+
+<!--<div fxLayout="row"-->
+<!--     fxLayout.xs="column"-->
+<!--     fxLayoutAlign="end end"-->
+<!--     class="bottom-row">-->
+
+<!--  <div fxFlex>-->
+<!--    <mat-checkbox color="warn">Only display scenes with a browse image</mat-checkbox>-->
+<!--  </div>-->
+<!--  <div fxFlex="nogrow">-->
+<!--    <button mat-stroked-button (click)="closeDialog()" autofocus tabindex="1">Close</button>-->
+<!--  </div>-->
+
+<!--</div>-->
+
+

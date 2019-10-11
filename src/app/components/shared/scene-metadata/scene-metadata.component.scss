@@ -1,5 +1,12 @@
 @import "asf-theme";
 
+$config: mat-typography-config();
+
+a {
+  text-decoration: none;
+  color: $uaf-primary-blue;
+}
+
 .scene-metadata {
   font-size: 12px;
   margin-top: 5px;
