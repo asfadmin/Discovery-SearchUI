@@ -7,6 +7,11 @@ $config: mat-typography-config();
   padding: 0;
 }
 
+a {
+  text-decoration: none;
+  color: $uaf-primary-blue;
+}
+
 // Grid created at https://cssgrid-generator.netlify.com/
 .browse-dialog {
   font-family: mat-font-family($config);
@@ -21,6 +26,10 @@ $config: mat-typography-config();
   grid-column-gap: 0;
   grid-row-gap: 0;
   background-color: $asf-primary-light;
+
+  :focus {
+    outline: none;
+  }
 
   .dialog-header {
     grid-area: 1 / 1 / 2 / 3;
@@ -123,9 +132,13 @@ $config: mat-typography-config();
 
 .detail-header {
   font-weight: bold;
-  text-decoration: underline;
+  margin-top: 8px;
 }
 
 .mat-list-base[dense] .mat-list-item .mat-list-item-content {
   padding: 0;
+}
+
+.bottom-row {
+  margin-top: 10px;
 }
