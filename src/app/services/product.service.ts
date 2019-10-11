@@ -7,8 +7,8 @@ import * as models from '@models';
   providedIn: 'root'
 })
 export class ProductService {
-  public fromResponse = (resp: any) => (
-    (resp.results || [])
+  public fromResponse = (resp: any) => {
+    const products = (resp.results || [])
     .map(
       (g: any): models.CMRProduct => ({
         name: g.granuleName,
@@ -18,13 +18,17 @@ export class ProductService {
         downloadUrl: g.downloadUrl,
         bytes: g.sizeMB * 1000000,
         dataset: g.dataset,
-        browse: g.browse || '/assets/no-browse.png',
+        browses: Array.isArray(g.browse) ?
+          g.browse || ['/assets/no-browse.png'] :
+          [g.browse || '/assets/no-browse.png'],
         thumbnail: g.thumb || g.browse || '/assets/no-thumb.png',
         groupId: g.groupID,
         metadata: this.getMetadataFrom(g)
       })
-    )
-  )
+    );
+
+    return products;
+  }
 
   private getMetadataFrom =
     (g: any): models.CMRProductMetadata => ({
