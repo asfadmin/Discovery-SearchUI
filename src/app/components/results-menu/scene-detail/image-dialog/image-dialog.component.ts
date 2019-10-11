@@ -24,6 +24,7 @@ export class ImageDialogComponent implements OnInit, AfterViewInit {
   public products: models.CMRProduct[];
   public dataset: models.Dataset;
   public isImageLoading = false;
+  public isShow = false;
 
   private image;
 
@@ -96,5 +97,9 @@ export class ImageDialogComponent implements OnInit, AfterViewInit {
 
   public onToggleQueueProduct(product: models.CMRProduct): void {
     this.store$.dispatch(new queueStore.ToggleProduct(product));
+  }
+
+  public toggleDisplay() {
+    this.isShow = !this.isShow;
   }
 }

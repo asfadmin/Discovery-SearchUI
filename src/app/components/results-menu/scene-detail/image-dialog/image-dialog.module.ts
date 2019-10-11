@@ -9,6 +9,7 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatListModule } from '@angular/material/list';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSharedModule } from '@shared/mat-shared.module';
+import { MatCheckboxModule } from '@angular/material/checkbox';
 
 import { PipesModule } from '@pipes';
 import { SceneMetadataModule } from '@components/shared/scene-metadata';
@@ -24,6 +25,7 @@ import { BrowseListComponent } from './browse-list/browse-list.component';
     DragDropModule,
     MatProgressSpinnerModule,
     MatSharedModule,
+    MatCheckboxModule,
     MatListModule,
     MatDialogModule,
     MatMenuModule,
