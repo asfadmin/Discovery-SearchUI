@@ -195,7 +195,7 @@ export const allScenesFrom = (scenes: {[id: string]: string[]}, products) => {
 
       const browse = group
         .map(name => products[name])
-        .filter(product => !product.browse.includes('no-browse.png'))
+        .filter(product => !product.browses[0].includes('no-browse.png'))
         .pop();
 
       return browse ? browse : products[group[0]];
