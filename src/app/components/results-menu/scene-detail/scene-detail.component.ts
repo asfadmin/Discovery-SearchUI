@@ -61,7 +61,15 @@ export class SceneDetailComponent implements OnInit {
    );
   }
 
+  public sceneHasBrowse() {
+    return !this.scene.browses[0].includes('no-browse');
+  }
+
   public onOpenImage(): void {
+    if (!this.sceneHasBrowse()) {
+      return;
+    }
+
     this.store$.dispatch(new uiStore.SetIsBrowseDialogOpen(true));
 
     const dialogRef = this.dialog.open(ImageDialogComponent, {
