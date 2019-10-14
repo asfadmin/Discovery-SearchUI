@@ -53,7 +53,7 @@
           class="img-container">
             <img
               class="browse-img fit-to-container"
-              [src]="scene.browses[0]"
+              [src]="(browses$ | async)[0]"
               onerror="this.src='assets/no-browse.png'"
               alt="Sentinel1 scene browse image">
             <div [class.hidden]="!sceneHasBrowse()" class="img-overlay fit-to-container">

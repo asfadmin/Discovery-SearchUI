@@ -24,6 +24,7 @@ import { DatasetForProductService } from '@services';
   providers: [ DatasetForProductService ]
 })
 export class SceneDetailComponent implements OnInit {
+  public browses$ = this.store$.select(scenesStore.getSelectedSceneBrowses);
   public dataset: models.Dataset;
   public searchType: models.SearchType;
   public scene: models.CMRProduct;
