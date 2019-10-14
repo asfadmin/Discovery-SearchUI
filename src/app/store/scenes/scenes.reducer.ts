@@ -238,6 +238,11 @@ export const getScenes = createSelector(
   (state: ScenesState) => allScenesFrom(state.scenes, state.products)
 );
 
+export const getScenesWithBrowse = createSelector(
+  getScenesState,
+  (state: ScenesState) => allScenesWithBrowse(state.scenes, state.products)
+);
+
 export const getAreResultsLoaded = createSelector(
   getScenesState,
   (state: ScenesState) => state.areResultsLoaded

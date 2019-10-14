@@ -18,6 +18,7 @@ import * as models from '@models';
 export class BrowseListComponent implements OnInit, AfterViewInit  {
   @ViewChild(CdkVirtualScrollViewport, { static: false }) scroll: CdkVirtualScrollViewport;
 
+  public scenes$ = this.store$.select(scenesStore.getScenesWithBrowse);
   public scenes: models.CMRProduct[];
   public selectedName: string;
   private selectedFromList = false;
@@ -27,7 +28,7 @@ export class BrowseListComponent implements OnInit, AfterViewInit  {
   ) { }
 
   ngOnInit() {
-    this.store$.select(scenesStore.getScenes).subscribe(
+    this.scenes$.subscribe(
       scenes => this.scenes = scenes
     );
 
@@ -38,7 +39,7 @@ export class BrowseListComponent implements OnInit, AfterViewInit  {
 
   ngAfterViewInit() {
     this.store$.select(scenesStore.getSelectedScene).pipe(
-      withLatestFrom(this.store$.select(scenesStore.getScenes)),
+      withLatestFrom(this.scenes$),
       filter(([selected, _]) => !!selected),
       tap(([selected, _]) => this.selectedName = selected.name),
       map(([selected, scenes]) => scenes.indexOf(selected)),
