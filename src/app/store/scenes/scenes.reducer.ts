@@ -90,69 +90,28 @@ export function scenesReducer(state = initState, action: ScenesActions): ScenesS
       const scenes = allScenesFrom(state.scenes, state.products);
       const scene = state.products[state.selected] || null;
 
-
-      if (!scenes[0]) {
-        return {
-          ...state
-        };
-      }
-
-      if (!scene) {
-        const firstScene = scenes[0];
-
-        return {
-          ...state,
-          selected: firstScene.id
-        };
-      }
-
-      const currentSelected = scenes
-        .filter(g => g.name === scene.name)
-        .pop();
-
-      const nextIdx = Math.min(
-        scenes.indexOf(currentSelected) + 1,
-        scenes.length - 1
-      );
-
-      const nextScene = scenes[nextIdx];
-
-      return {
-        ...state,
-        selected: nextScene.id
-      };
+      return selectNext(state, scenes, scene);
     }
 
     case ScenesActionType.SELECT_PREVIOUS_SCENE: {
       const scenes = allScenesFrom(state.scenes, state.products);
       const scene = state.products[state.selected] || null;
 
-      if (!scenes[0]) {
-        return {
-          ...state
-        };
-      }
+      return selectPrevious(state, scenes, scene);
+    }
 
-      if (!scene) {
-        const lastScene = scenes[scenes.length - 1];
+    case ScenesActionType.SELECT_NEXT_WITH_BROWSE: {
+      const scenes = allScenesWithBrowse(state.scenes, state.products);
+      const scene = state.products[state.selected] || null;
 
-        return {
-          ...state,
-          selected: lastScene.id
-        };
-      }
+      return selectNext(state, scenes, scene);
+    }
 
-      const currentSelected = scenes
-        .filter(g => g.name === scene.name)
-        .pop();
+    case ScenesActionType.SELECT_PREVIOUS_WITH_BROWSE: {
+      const scenes = allScenesWithBrowse(state.scenes, state.products);
+      const scene = state.products[state.selected] || null;
 
-      const previousIdx = Math.max(scenes.indexOf(currentSelected) - 1, 0);
-      const previousScene = scenes[previousIdx];
-
-      return {
-        ...state,
-        selected: previousScene.id
-      };
+      return selectPrevious(state, scenes, scene);
     }
 
     case ScenesActionType.SET_FOCUSED_SCENE: {
@@ -186,6 +145,68 @@ export function scenesReducer(state = initState, action: ScenesActions): ScenesS
   }
 }
 
+const selectNext = (state, scenes, scene) => {
+  if (!scenes[0]) {
+    return {
+      ...state
+    };
+  }
+
+  if (!scene) {
+    const firstScene = scenes[0];
+
+    return {
+      ...state,
+      selected: firstScene.id
+    };
+  }
+
+  const currentSelected = scenes
+    .filter(g => g.name === scene.name)
+    .pop();
+
+  const nextIdx = Math.min(
+    scenes.indexOf(currentSelected) + 1,
+    scenes.length - 1
+  );
+
+  const nextScene = scenes[nextIdx];
+
+  return {
+    ...state,
+    selected: nextScene.id
+  };
+};
+
+const selectPrevious = (state, scenes, scene) => {
+  if (!scenes[0]) {
+    return {
+      ...state
+    };
+  }
+
+  if (!scene) {
+    const lastScene = scenes[scenes.length - 1];
+
+    return {
+      ...state,
+      selected: lastScene.id
+    };
+  }
+
+  const currentSelected = scenes
+    .filter(g => g.name === scene.name)
+    .pop();
+
+  const previousIdx = Math.max(scenes.indexOf(currentSelected) - 1, 0);
+  const previousScene = scenes[previousIdx];
+
+  return {
+    ...state,
+    selected: previousScene.id
+  };
+};
+
 
 export const getScenesState = createFeatureSelector<ScenesState>('scenes');
 
@@ -200,6 +221,16 @@ export const allScenesFrom = (scenes: {[id: string]: string[]}, products) => {
 
       return browse ? browse : products[group[0]];
     });
+};
+
+export const allScenesWithBrowse = (scenes: {[id: string]: string[]}, products) => {
+  const withBrowses = allScenesFrom(scenes, products).filter(
+    scene => scene.browses.filter(browse => !browse.includes('no-browse')).length > 0
+  );
+
+  console.log(withBrowses);
+
+  return withBrowses;
 };
 
 export const getScenes = createSelector(
