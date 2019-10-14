@@ -62,11 +62,17 @@ export class SceneDetailComponent implements OnInit {
   }
 
   public onOpenImage(): void {
-    this.dialog.open(ImageDialogComponent, {
+    this.store$.dispatch(new uiStore.SetIsBrowseDialogOpen(true));
+
+    const dialogRef = this.dialog.open(ImageDialogComponent, {
       width: '99vw', height: 'fit-content',
       maxHeight: '96vh',
       panelClass: 'image-dialog'
     });
+
+    dialogRef.afterClosed().subscribe(
+      _ => this.store$.dispatch(new uiStore.SetIsBrowseDialogOpen(false))
+    );
   }
 
   public isGeoSearch(): boolean {

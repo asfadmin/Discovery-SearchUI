@@ -7,6 +7,7 @@ import { Store } from '@ngrx/store';
 import { AppState } from '@store';
 import * as scenesStore from '@store/scenes';
 import * as queueStore from '@store/queue';
+import * as uiStore from '@store/ui';
 
 import * as models from '@models';
 import { BrowseMapService, DatasetForProductService } from '@services';
@@ -19,6 +20,8 @@ import { BrowseMapService, DatasetForProductService } from '@services';
 })
 export class ImageDialogComponent implements OnInit, AfterViewInit {
   public scene$ = this.store$.select(scenesStore.getSelectedScene);
+
+  public onlyShowScenesWithBrowse: boolean;
   public queuedProductIds: Set<string>;
   public scene: models.CMRProduct;
   public products: models.CMRProduct[];
@@ -38,6 +41,10 @@ export class ImageDialogComponent implements OnInit, AfterViewInit {
   ngOnInit() {
     this.store$.select(scenesStore.getSelectedSceneProducts).subscribe(
       products => this.products = products
+    );
+
+    this.store$.select(uiStore.getOnlyScenesWithBrowse).subscribe(
+      onlyBrowses => this.onlyShowScenesWithBrowse = onlyBrowses
     );
 
     this.store$.select(queueStore.getQueuedProductIds).pipe(
@@ -101,5 +108,9 @@ export class ImageDialogComponent implements OnInit, AfterViewInit {
 
   public toggleDisplay() {
     this.isShow = !this.isShow;
+  }
+
+  public setOnlyShowBrowse(isChecked: boolean) {
+    this.store$.dispatch(new uiStore.SetOnlyScenesWithBrowse(isChecked));
   }
 }

@@ -1,10 +1,12 @@
 import { Injectable } from '@angular/core';
 
-import { fromEvent } from 'rxjs';
+import { fromEvent, combineLatest } from 'rxjs';
+import { withLatestFrom } from 'rxjs/operators';
 
 import { Store } from '@ngrx/store';
 import { AppState } from '@store';
 import * as scenesStore from '@store/scenes';
+import * as uiStore from '@store/ui';
 
 
 @Injectable({
@@ -17,33 +19,44 @@ export class KeyboardService {
   ) { }
 
   init() {
-    fromEvent(document, 'keydown').subscribe((e: KeyboardEvent) => {
-      const { key } = e;
+    fromEvent(document, 'keydown').pipe(
+      withLatestFrom(combineLatest(
+        this.store$.select(uiStore.getOnlyScenesWithBrowse),
+        this.store$.select(uiStore.getIsBrowseDialogOpen)
+      ))
+    ).subscribe(([e, [ onlyScenesWithBrowse, isBrowseDialogOpen ]]) => {
+      const { key } = <KeyboardEvent>e;
+      const withBrowse = isBrowseDialogOpen && onlyScenesWithBrowse;
 
       switch (key) {
         case 'ArrowRight': {
-          return this.selectNextScene();
+          return this.selectNextScene(withBrowse);
         }
         case 'ArrowLeft': {
-          return this.selectPreviousScene();
+          return this.selectPreviousScene(withBrowse);
         }
 
         case 'ArrowDown': {
-          return this.selectNextScene();
+          return this.selectNextScene(withBrowse);
         }
         case 'ArrowUp': {
-          return this.selectPreviousScene();
+          return this.selectPreviousScene(withBrowse);
         }
       }
     });
   }
 
-  private selectNextScene(): void {
-    this.store$.dispatch(new scenesStore.SelectNextScene());
+  private selectNextScene(withBrowse: boolean): void {
+    this.store$.dispatch(withBrowse ?
+      new scenesStore.SelectNextWithBrowse() :
+      new scenesStore.SelectNextScene()
+    );
   }
 
-  private selectPreviousScene(): void {
-    this.store$.dispatch(new scenesStore.SelectPreviousScene());
+  private selectPreviousScene(withBrowse: boolean): void {
+    this.store$.dispatch(withBrowse ?
+      new scenesStore.SelectPreviousWithBrowse :
+      new scenesStore.SelectPreviousScene()
+    );
   }
-
 }

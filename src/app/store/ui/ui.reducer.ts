@@ -9,6 +9,8 @@ export interface UIState {
   isFiltersMenuOpen: boolean;
   isResultsMenuOpen: boolean;
   isAOIOptionsOpen: boolean;
+  isBrowseDialogOpen: boolean;
+  onlyScenesWithBrowse: boolean;
   uiView: ViewType;
   selectedFilter: FilterType | undefined;
   searchType: SearchType | null;
@@ -19,6 +21,8 @@ export const initState: UIState = {
   isFiltersMenuOpen: false,
   isResultsMenuOpen: false,
   isAOIOptionsOpen: false,
+  isBrowseDialogOpen: false,
+  onlyScenesWithBrowse: true,
   uiView: ViewType.MAIN,
   selectedFilter: FilterType.DATASET,
   searchType: SearchType.DATASET,
@@ -105,6 +109,20 @@ export function uiReducer(state = initState, action: UIActions): UIState {
       };
     }
 
+    case UIActionType.SET_ONLY_SCENES_WITH_BROWSE: {
+      return {
+        ...state,
+        onlyScenesWithBrowse: action.payload
+      };
+    }
+
+    case UIActionType.SET_IS_BROWSE_DIALOG_OPEN: {
+      return {
+        ...state,
+        isBrowseDialogOpen: action.payload
+      };
+    }
+
     case UIActionType.ADD_BANNERS: {
       const banners = [
         ...state.banners, ...action.payload
@@ -168,6 +186,16 @@ export const getIsHidden = createSelector(
 export const getIsResultsMenuOpen = createSelector(
   getUIState,
   state => state.isResultsMenuOpen
+);
+
+export const getIsBrowseDialogOpen = createSelector(
+  getUIState,
+  state => state.isBrowseDialogOpen
+);
+
+export const getOnlyScenesWithBrowse = createSelector(
+  getUIState,
+  state => state.onlyScenesWithBrowse
 );
 
 export const getBanners = createSelector(
