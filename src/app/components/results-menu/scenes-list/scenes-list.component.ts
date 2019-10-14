@@ -56,6 +56,7 @@ export class ScenesListComponent implements OnInit, AfterViewInit {
     this.scenes$.subscribe(
       scenes => this.scenes = scenes
     );
+    this.store$.select(scenesStore.getSelectedSceneBrowses).subscribe(console.log);
 
     this.keyboardService.init();
 
@@ -65,7 +66,7 @@ export class ScenesListComponent implements OnInit, AfterViewInit {
 
     const queueScenes$ = combineLatest(
       this.store$.select(queueStore.getQueuedProducts),
-      this.store$.select(scenesStore.getSceneProducts),
+      this.store$.select(scenesStore.getAllSceneProducts),
     ).pipe(
       map(([queueProducts, searchScenes]) => {
 

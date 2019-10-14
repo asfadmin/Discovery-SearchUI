@@ -258,20 +258,58 @@ export const getSelectedSceneProducts = createSelector(
   (state: ScenesState) => {
     const selected = state.products[state.selected];
 
+    return productsForScene(selected, state);
+  }
+);
+
+export const getSceneProducts = createSelector(
+  getScenesState,
+  (state: ScenesState, props: {sceneId: string}) => {
+    const selected = state.products[props.sceneId];
+
+    return productsForScene(selected, state);
+  }
+);
+
+export const getSelectedSceneBrowses = createSelector(
+  getScenesState,
+  (state: ScenesState) => {
+    const selected = state.products[state.selected];
+
     if (!selected) {
       return;
     }
 
-    const products = state.scenes[selected.groupId] || [];
+    let browses = [];
 
-    return products
-      .map(id => state.products[id])
-      .sort(function(a, b) {
-        return a.bytes - b.bytes;
-      }).reverse()
-    ;
+    productsForScene(selected, state).forEach(
+      product => browses = [...browses, ...product.browses]
+    );
+
+    const unique = Array.from(new Set(
+      browses
+    ));
+
+    return unique.length > 1 ?
+      unique.filter(b => !b.includes('no-browse')) :
+      unique;
   }
 );
+
+const productsForScene = (selected, state) => {
+  if (!selected) {
+    return;
+  }
+
+  const products = state.scenes[selected.groupId] || [];
+
+  return products
+    .map(id => state.products[id])
+    .sort(function(a, b) {
+      return a.bytes - b.bytes;
+    }).reverse();
+};
+
 
 export const getAreProductsLoaded = createSelector(
   getScenes,
@@ -289,23 +327,24 @@ export const getNumberOfProducts = createSelector(
 );
 
 
-export const getSceneProducts = createSelector(
+export const getAllSceneProducts = createSelector(
   getScenesState,
   (state: ScenesState) => {
-    const sceneProducts = {};
+    const allSceneProducts = {};
 
     Object.entries(state.scenes).forEach(
       ([sceneId, scene]) => {
         const products = scene
           .map(name => state.products[name]);
 
-        sceneProducts[sceneId] = products;
+        allSceneProducts[sceneId] = products;
       }
     );
 
-    return sceneProducts;
+    return allSceneProducts;
   }
 );
+
 
 export const getSelectedScene = createSelector(
   getScenesState,
