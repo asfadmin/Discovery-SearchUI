@@ -10,6 +10,9 @@ export enum UIActionType {
   CLOSE_FILTERS_MENU = '[UI] Close Filters Menu',
   OPEN_FILTERS_MENU = '[UI] Open Filters Menu ',
 
+  SET_IS_BROWSE_DIALOG_OPEN = '[UI] Set Is Browse Dialog Open',
+  SET_ONLY_SCENES_WITH_BROWSE = '[UI] Set Only Scenes With Browse',
+
   TOGGLE_BOTTOM_MENU = '[UI] Toggle Bottom Menu',
   CLOSE_BOTTOM_MENU = '[UI] Close Bottom Menu',
   OPEN_BOTTOM_MENU = '[UI] Open Bottom Menu ',
@@ -67,6 +70,19 @@ export class SetSearchType implements Action {
   constructor(public payload: SearchType) {}
 }
 
+export class SetIsBrowseDialogOpen implements Action {
+  public readonly type = UIActionType.SET_IS_BROWSE_DIALOG_OPEN;
+
+  constructor(public payload: boolean) {}
+}
+
+export class SetOnlyScenesWithBrowse implements Action {
+  public readonly type = UIActionType.SET_ONLY_SCENES_WITH_BROWSE;
+
+  constructor(public payload: boolean) {}
+}
+
+
 export class SetUiView implements Action {
   public readonly type = UIActionType.SET_UI_VIEW;
 
@@ -101,6 +117,8 @@ export type UIActions =
   | SetSelectedFilter
   | SetSearchType
   | SetUiView
+  | SetOnlyScenesWithBrowse
+  | SetIsBrowseDialogOpen
   | LoadBanners
   | RemoveBanner
   | AddBanners;

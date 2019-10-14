@@ -24,6 +24,7 @@ import { DatasetForProductService } from '@services';
   providers: [ DatasetForProductService ]
 })
 export class SceneDetailComponent implements OnInit {
+  public browses$ = this.store$.select(scenesStore.getSelectedSceneBrowses);
   public dataset: models.Dataset;
   public searchType: models.SearchType;
   public scene: models.CMRProduct;
@@ -61,12 +62,26 @@ export class SceneDetailComponent implements OnInit {
    );
   }
 
+  public sceneHasBrowse() {
+    return !this.scene.browses[0].includes('no-browse');
+  }
+
   public onOpenImage(): void {
-    this.dialog.open(ImageDialogComponent, {
+    if (!this.sceneHasBrowse()) {
+      return;
+    }
+
+    this.store$.dispatch(new uiStore.SetIsBrowseDialogOpen(true));
+
+    const dialogRef = this.dialog.open(ImageDialogComponent, {
       width: '99vw', height: 'fit-content',
       maxHeight: '96vh',
       panelClass: 'image-dialog'
     });
+
+    dialogRef.afterClosed().subscribe(
+      _ => this.store$.dispatch(new uiStore.SetIsBrowseDialogOpen(false))
+    );
   }
 
   public isGeoSearch(): boolean {

@@ -45,6 +45,7 @@ export class ScenesListComponent implements OnInit, AfterViewInit {
     private store$: Store<AppState>,
     private mapService: services.MapService,
     private screenSize: services.ScreenSizeService,
+    private keyboardService: services.KeyboardService,
   ) {}
 
   ngOnInit() {
@@ -56,25 +57,7 @@ export class ScenesListComponent implements OnInit, AfterViewInit {
       scenes => this.scenes = scenes
     );
 
-    fromEvent(document, 'keydown').subscribe((e: KeyboardEvent) => {
-      const { key } = e;
-
-      switch (key) {
-        case 'ArrowRight': {
-          return this.selectNextScene();
-        }
-        case 'ArrowLeft': {
-          return this.selectPreviousScene();
-        }
-
-        case 'ArrowDown': {
-          return this.selectNextScene();
-        }
-        case 'ArrowUp': {
-          return this.selectPreviousScene();
-        }
-      }
-    });
+    this.keyboardService.init();
 
     this.store$.select(uiStore.getSearchType).subscribe(
       searchType => this.searchType = searchType
@@ -82,7 +65,7 @@ export class ScenesListComponent implements OnInit, AfterViewInit {
 
     const queueScenes$ = combineLatest(
       this.store$.select(queueStore.getQueuedProducts),
-      this.store$.select(scenesStore.getSceneProducts),
+      this.store$.select(scenesStore.getAllSceneProducts),
     ).pipe(
       map(([queueProducts, searchScenes]) => {
 
@@ -146,14 +129,6 @@ export class ScenesListComponent implements OnInit, AfterViewInit {
     this.store$.select(searchStore.getIsLoading).subscribe(
       _ => this.scroll.scrollToOffset(0)
     );
-  }
-
-  private selectNextScene(): void {
-    this.store$.dispatch(new scenesStore.SelectNextScene());
-  }
-
-  private selectPreviousScene(): void {
-    this.store$.dispatch(new scenesStore.SelectPreviousScene());
   }
 
   private scrollTo(idx: number): void {
