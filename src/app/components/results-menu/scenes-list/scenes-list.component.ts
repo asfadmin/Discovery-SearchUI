@@ -56,7 +56,6 @@ export class ScenesListComponent implements OnInit, AfterViewInit {
     this.scenes$.subscribe(
       scenes => this.scenes = scenes
     );
-    this.store$.select(scenesStore.getSelectedSceneBrowses).subscribe(console.log);
 
     this.keyboardService.init();
 
