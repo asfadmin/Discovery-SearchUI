@@ -42,6 +42,15 @@ export class SearchEffects {
   );
 
   @Effect()
+  private closeMenusWhenSearchIsMade: Observable<Action> = this.actions$.pipe(
+    ofType(SearchActionType.MAKE_SEARCH),
+    switchMap(action => [
+      new uiStore.CloseFiltersMenu(),
+      new uiStore.CloseAOIOptions()
+    ])
+  );
+
+  @Effect()
   private setCanSearch: Observable<Action> = this.actions$.pipe(
     ofType<SetSearchAmount>(SearchActionType.SET_SEARCH_AMOUNT),
     map(action =>
