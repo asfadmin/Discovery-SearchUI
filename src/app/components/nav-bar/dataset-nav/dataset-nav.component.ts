@@ -1,7 +1,8 @@
-import { Component, OnInit, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter, OnDestroy  } from '@angular/core';
 
 import { Store, ActionsSubject } from '@ngrx/store';
 import { ofType } from '@ngrx/effects';
+import { SubSink } from 'subsink';
 
 import { AppState } from '@store';
 import * as searchStore from '@store/search';
@@ -15,10 +16,11 @@ import * as models from '@models';
   templateUrl: './dataset-nav.component.html',
   styleUrls: ['./dataset-nav.component.css', '../nav-bar.component.scss'],
 })
-export class DatasetNavComponent implements OnInit {
+export class DatasetNavComponent implements OnInit, OnDestroy {
   @Output() public openQueue = new EventEmitter<void>();
 
   public queuedProducts$ = this.store$.select(queueStore.getQueuedProducts);
+  private subs = new SubSink();
 
   constructor(
     private store$: Store<AppState>,
@@ -26,12 +28,6 @@ export class DatasetNavComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.actions$.pipe(
-      ofType<searchStore.MakeSearch>(searchStore.SearchActionType.MAKE_SEARCH),
-    ).subscribe(
-      _ => this.closeMenus()
-    );
-
     this.store$.select(uiStore.getSearchType).subscribe(
       () => this.closeMenus()
     );
@@ -53,5 +49,9 @@ export class DatasetNavComponent implements OnInit {
 
   public closeAOIOptions(): void {
     this.store$.dispatch(new uiStore.CloseAOIOptions());
+  }
+
+  ngOnDestroy() {
+    this.subs.unsubscribe();
   }
 }
