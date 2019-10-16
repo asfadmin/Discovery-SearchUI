@@ -36,7 +36,7 @@ export class FileUploadComponent implements OnInit {
       filter(interaction => interaction === MapInteractionModeType.UPLOAD)
     ).subscribe(_ => this.openDialog());
 
-    this.store$.select(uiStore.getSearchType).subscribe(
+    this.store$.select(searchStore.getSearchType).subscribe(
       searchType => this.searchType = searchType
     );
   }
@@ -53,7 +53,7 @@ export class FileUploadComponent implements OnInit {
         if (wkt) {
           if (this.searchType === SearchType.LIST) {
             this.store$.dispatch(new searchStore.ClearSearch());
-            this.store$.dispatch(new uiStore.SetSearchType(SearchType.DATASET));
+            this.store$.dispatch(new searchStore.SetSearchType(SearchType.DATASET));
           }
 
           this.newSearchPolygon.emit(wkt);

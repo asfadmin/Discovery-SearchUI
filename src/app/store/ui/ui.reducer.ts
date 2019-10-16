@@ -13,7 +13,6 @@ export interface UIState {
   onlyScenesWithBrowse: boolean;
   uiView: ViewType;
   selectedFilter: FilterType | undefined;
-  searchType: SearchType | null;
   banners: Banner[];
 }
 
@@ -25,7 +24,6 @@ export const initState: UIState = {
   onlyScenesWithBrowse: true,
   uiView: ViewType.MAIN,
   selectedFilter: FilterType.DATASET,
-  searchType: SearchType.DATASET,
   banners: [],
 };
 
@@ -95,13 +93,6 @@ export function uiReducer(state = initState, action: UIActions): UIState {
       };
     }
 
-    case UIActionType.SET_SEARCH_TYPE: {
-      return {
-        ...state,
-        searchType: action.payload,
-      };
-    }
-
     case UIActionType.SET_UI_VIEW: {
       return {
         ...state,
@@ -156,11 +147,6 @@ export const getUIState = createFeatureSelector<UIState>('ui');
 export const getSelectedFilter = createSelector(
   getUIState,
   state => state.selectedFilter
-);
-
-export const getSearchType = createSelector(
-  getUIState,
-  state => state.searchType
 );
 
 export const getIsAOIOptionsOpen = createSelector(

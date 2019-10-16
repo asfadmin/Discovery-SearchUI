@@ -228,8 +228,6 @@ export const allScenesWithBrowse = (scenes: {[id: string]: string[]}, products) 
     scene => scene.browses.filter(browse => !browse.includes('no-browse')).length > 0
   );
 
-  console.log(withBrowses);
-
   return withBrowses;
 };
 

@@ -4,10 +4,10 @@ import { Actions, Effect, ofType } from '@ngrx/effects';
 import { Action, Store } from '@ngrx/store';
 
 import { Observable, of, combineLatest, forkJoin } from 'rxjs';
-import { map, withLatestFrom, switchMap, catchError, tap } from 'rxjs/operators';
+import { map, withLatestFrom, switchMap, catchError, tap, filter } from 'rxjs/operators';
 
 import { AppState } from '../app.reducer';
-import { SetSearchAmount, EnableSearch, DisableSearch } from './search.action';
+import { SetSearchAmount, EnableSearch, DisableSearch, SetSearchType } from './search.action';
 import * as scenesStore from '@store/scenes';
 import * as filtersStore from '@store/filters';
 import * as mapStore from '@store/map';
@@ -112,5 +112,24 @@ export class SearchEffects {
   private showResultsMenuOnSearchResponse: Observable<Action> = this.actions$.pipe(
     ofType<SearchResponse>(SearchActionType.SEARCH_RESPONSE),
     map(_ => new uiStore.OpenResultsMenu()),
+  );
+
+  @Effect()
+  setMapInteractionModeBasedOnSearchType: Observable<Action> = this.actions$.pipe(
+    ofType<SetSearchType>(SearchActionType.SET_SEARCH_TYPE),
+    filter(action => action.payload === models.SearchType.DATASET),
+    map(_ => new mapStore.SetMapInteractionMode(models.MapInteractionModeType.DRAW))
+  );
+
+  @Effect()
+  clearResultsWhenSearchTypeChanges: Observable<Action> = this.actions$.pipe(
+    ofType<SetSearchType>(SearchActionType.SET_SEARCH_TYPE),
+    switchMap(action => [
+      new scenesStore.ClearScenes(),
+      new uiStore.CloseAOIOptions(),
+      action.payload === models.SearchType.DATASET ?
+        new uiStore.CloseFiltersMenu() :
+        new uiStore.OpenFiltersMenu(),
+    ])
   );
 }

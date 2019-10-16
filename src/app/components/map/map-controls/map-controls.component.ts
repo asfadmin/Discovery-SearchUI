@@ -6,6 +6,7 @@ import { Store } from '@ngrx/store';
 import { AppState } from '@store';
 import * as mapStore from '@store/map';
 import * as uiStore from '@store/ui';
+import * as searchStore from '@store/search';
 
 import * as models from '@models';
 import * as services from '@services';
@@ -39,7 +40,7 @@ export class MapControlsComponent implements OnInit {
     this.store$.select(mapStore.getMapLayerType).subscribe(
       layerType => this.layerType = layerType
     );
-    this.store$.select(uiStore.getSearchType).subscribe(
+    this.store$.select(searchStore.getSearchType).subscribe(
       searchType => this.searchType = searchType
     );
     this.mapService.mousePosition$.subscribe(mp => this.mousePos = mp);

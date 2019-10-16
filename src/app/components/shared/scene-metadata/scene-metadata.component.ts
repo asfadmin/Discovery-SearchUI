@@ -5,8 +5,8 @@ import { Store } from '@ngrx/store';
 
 import { AppState } from '@store';
 import * as filtersStore from '@store/filters';
-import * as uiStore from '@store/ui';
 import * as scenesStore from '@store/scenes';
+import * as searchStore from '@store/search';
 
 import * as models from '@models';
 import { DatasetForProductService, PropertyService } from '@services';
@@ -33,7 +33,7 @@ export class SceneMetadataComponent implements OnInit {
   ngOnInit() {
     const scene$ = this.store$.select(scenesStore.getSelectedScene);
 
-    this.store$.select(uiStore.getSearchType).subscribe(
+    this.store$.select(searchStore.getSearchType).subscribe(
      searchType => this.searchType = searchType
     );
 

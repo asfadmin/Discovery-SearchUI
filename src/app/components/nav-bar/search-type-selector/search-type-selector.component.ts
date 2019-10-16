@@ -3,7 +3,6 @@ import { Component, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
 
 import { AppState } from '@store';
-import * as uiStore from '@store/ui';
 import * as searchStore from '@store/search';
 
 import * as models from '@models';
@@ -23,13 +22,13 @@ export class SearchTypeSelectorComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.store$.select(uiStore.getSearchType).subscribe(
+    this.store$.select(searchStore.getSearchType).subscribe(
       searchType => this.searchType = searchType
     );
   }
 
   public onSetSearchType(searchType: models.SearchType): void {
     this.store$.dispatch(new searchStore.ClearSearch());
-    this.store$.dispatch(new uiStore.SetSearchType(searchType));
+    this.store$.dispatch(new searchStore.SetSearchType(searchType));
   }
 }

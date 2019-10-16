@@ -64,7 +64,7 @@ export class AppComponent implements OnInit {
       products => localStorage.setItem(this.queueStateKey, JSON.stringify(products))
     );
 
-    this.store$.select(uiStore.getSearchType).pipe(
+    this.store$.select(searchStore.getSearchType).pipe(
       tap(searchType => this.searchType = searchType),
       skip(1),
       map(searchType => {

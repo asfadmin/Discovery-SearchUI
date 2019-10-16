@@ -21,7 +21,7 @@ export class MaxResultsSelectorComponent implements OnInit {
   public maxResults: number;
   public isMaxResultsLoading: boolean;
   public currentSearchAmount: number;
-  public searchType$ = this.store$.select(uiStore.getSearchType);
+  public searchType$ = this.store$.select(searchStore.getSearchType);
   public searchTypes = models.SearchType;
   public areResultsLoaded = false;
 

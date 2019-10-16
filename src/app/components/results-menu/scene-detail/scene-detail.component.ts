@@ -57,7 +57,7 @@ export class SceneDetailComponent implements OnInit {
       map(scene => this.datasetForProduct.match(scene)),
     ).subscribe(dataset => this.dataset = dataset);
 
-   this.store$.select(uiStore.getSearchType).subscribe(
+   this.store$.select(searchStore.getSearchType).subscribe(
      searchType => this.searchType = searchType
    );
   }

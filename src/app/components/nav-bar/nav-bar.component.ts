@@ -3,7 +3,7 @@ import { Component, OnInit, EventEmitter, Output, ViewChild, Input } from '@angu
 import { Store } from '@ngrx/store';
 
 import { AppState } from '@store';
-import * as uiStore from '@store/ui';
+import * as searchStore from '@store/search';
 
 import { MatDialog } from '@angular/material/dialog';
 import { QueueComponent } from '@components/nav-bar/queue';
@@ -28,7 +28,7 @@ export class NavBarComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.store$.select(uiStore.getSearchType).subscribe(
+    this.store$.select(searchStore.getSearchType).subscribe(
       searchType => this.searchType = searchType
     );
   }

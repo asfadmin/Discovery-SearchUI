@@ -11,7 +11,6 @@ import { AppState } from '@store';
 import * as searchStore from '@store/search';
 import * as scenesStore from '@store/scenes';
 import * as filtersStore from '@store/filters';
-import * as uiStore from '@store/ui';
 import * as queueStore from '@store/queue';
 
 import { CdkVirtualScrollViewport } from '@angular/cdk/scrolling';
@@ -59,7 +58,7 @@ export class ScenesListComponent implements OnInit, AfterViewInit {
 
     this.keyboardService.init();
 
-    this.store$.select(uiStore.getSearchType).subscribe(
+    this.store$.select(searchStore.getSearchType).subscribe(
       searchType => this.searchType = searchType
     );
 
