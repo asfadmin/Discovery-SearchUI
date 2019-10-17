@@ -1,6 +1,6 @@
-import { Component, OnInit, Output, EventEmitter, OnDestroy  } from '@angular/core';
+import { Component, Output, EventEmitter } from '@angular/core';
 
-import { Store, ActionsSubject } from '@ngrx/store';
+import { Store } from '@ngrx/store';
 import { ofType } from '@ngrx/effects';
 
 import { AppState } from '@store';

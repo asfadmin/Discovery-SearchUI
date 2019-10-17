@@ -11,7 +11,6 @@ import * as queueStore from '@store/queue';
 import { ScreenSizeService } from '@services';
 import { CMRProduct, AsfApiOutputFormat } from '@models';
 import { MatDialogRef } from '@angular/material';
-
 import { SubSink } from 'subsink';
 
 @Component({

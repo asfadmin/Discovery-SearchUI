@@ -1,6 +1,7 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
 import { HttpParams } from '@angular/common/http';
 import { MatBottomSheet } from '@angular/material/bottom-sheet';
+import { SubSink } from 'subsink';
 
 import { Store, ActionsSubject } from '@ngrx/store';
 import { ofType } from '@ngrx/effects';
@@ -23,7 +24,7 @@ import * as models from './models';
   templateUrl: './app.component.html',
   styleUrls  : ['./app.component.scss']
 })
-export class AppComponent implements OnInit {
+export class AppComponent implements OnInit, OnDestroy {
   private queueStateKey = 'asf-queue-state';
 
   public shouldOmitSearchPolygon$ = this.store$.select(filterStore.getShouldOmitSearchPolygon);
@@ -36,6 +37,8 @@ export class AppComponent implements OnInit {
 
   public interactionTypes = models.MapInteractionModeType;
   public searchType: models.SearchType;
+
+  private subs = new SubSink();
 
   constructor(
     private store$: Store<AppState>,
@@ -54,26 +57,32 @@ export class AppComponent implements OnInit {
     this.loadProductQueue();
     this.loadMissions();
 
-    this.actions$.pipe(
-      ofType<searchStore.ClearSearch>(searchStore.SearchActionType.CLEAR_SEARCH),
-    ).subscribe(
-      _ => this.onClearSearch()
+    this.subs.add(
+      this.actions$.pipe(
+        ofType<searchStore.ClearSearch>(searchStore.SearchActionType.CLEAR_SEARCH),
+      ).subscribe(
+        _ => this.onClearSearch()
+      )
     );
 
-    this.queuedProducts$.subscribe(
-      products => localStorage.setItem(this.queueStateKey, JSON.stringify(products))
+    this.subs.add(
+      this.queuedProducts$.subscribe(
+        products => localStorage.setItem(this.queueStateKey, JSON.stringify(products))
+      )
     );
 
-    this.store$.select(searchStore.getSearchType).pipe(
-      tap(searchType => this.searchType = searchType),
-      skip(1),
-      map(searchType => {
-        return searchType === models.SearchType.DATASET ?
-          models.MapInteractionModeType.DRAW :
-          models.MapInteractionModeType.NONE;
-      })
-    ).subscribe(
-      mode => this.store$.dispatch(new mapStore.SetMapInteractionMode(mode))
+    this.subs.add(
+      this.store$.select(searchStore.getSearchType).pipe(
+        tap(searchType => this.searchType = searchType),
+        skip(1),
+        map(searchType => {
+          return searchType === models.SearchType.DATASET ?
+            models.MapInteractionModeType.DRAW :
+            models.MapInteractionModeType.NONE;
+        })
+      ).subscribe(
+        mode => this.store$.dispatch(new mapStore.SetMapInteractionMode(mode))
+      )
     );
 
     this.updateMaxSearchResults();
@@ -132,62 +141,68 @@ export class AppComponent implements OnInit {
       ),
     );
 
-    checkAmount.subscribe(searchAmount => {
-      const amount = +<number>searchAmount;
+    this.subs.add(
+      checkAmount.subscribe(searchAmount => {
+        const amount = +<number>searchAmount;
 
-      if (amount < 0) {
-        this.setErrorBanner();
-      }
+        if (amount < 0) {
+          this.setErrorBanner();
+        }
 
-      this.store$.dispatch(new searchStore.SetSearchAmount(amount));
-    });
+        this.store$.dispatch(new searchStore.SetSearchAmount(amount));
+      })
+    );
   }
 
   private loadMissions(): void {
-    combineLatest(
-      this.asfSearchApi.missionSearch(models.MissionDataset.S1_BETA).pipe(
-        map(resp => ({[models.MissionDataset.S1_BETA]: resp.result}))
-      ),
-      this.asfSearchApi.missionSearch(models.MissionDataset.AIRSAR).pipe(
-        map(resp => ({[models.MissionDataset.AIRSAR]: resp.result}))
-      ),
-      this.asfSearchApi.missionSearch(models.MissionDataset.UAVSAR).pipe(
-        map(resp => ({[models.MissionDataset.UAVSAR]: resp.result}))
-      )
-    ).pipe(
-      map(missions => missions.reduce(
-        (allMissions, mission) => ({ ...allMissions, ...mission }),
-        {}
-      )),
-    ).subscribe(
-      missionsByDataset => this.store$.dispatch(
-        new filterStore.SetMissions(missionsByDataset)
+    this.subs.add(
+      combineLatest(
+        this.asfSearchApi.missionSearch(models.MissionDataset.S1_BETA).pipe(
+          map(resp => ({[models.MissionDataset.S1_BETA]: resp.result}))
+        ),
+        this.asfSearchApi.missionSearch(models.MissionDataset.AIRSAR).pipe(
+          map(resp => ({[models.MissionDataset.AIRSAR]: resp.result}))
+        ),
+        this.asfSearchApi.missionSearch(models.MissionDataset.UAVSAR).pipe(
+          map(resp => ({[models.MissionDataset.UAVSAR]: resp.result}))
+        )
+      ).pipe(
+        map(missions => missions.reduce(
+          (allMissions, mission) => ({ ...allMissions, ...mission }),
+          {}
+        )),
+      ).subscribe(
+        missionsByDataset => this.store$.dispatch(
+          new filterStore.SetMissions(missionsByDataset)
+        )
       )
     );
   }
 
   private healthCheck(): void {
-    this.asfSearchApi.health().pipe(
-      map(health => {
-        const { ASFSearchAPI, CMRSearchAPI } = health;
+    this.subs.add(
+      this.asfSearchApi.health().pipe(
+        map(health => {
+          const { ASFSearchAPI, CMRSearchAPI } = health;
 
-        return 'error' in CMRSearchAPI || !ASFSearchAPI['ok?'];
-      }),
-      map(isError => {
-        if (!isError) {
-          return;
-        }
+          return 'error' in CMRSearchAPI || !ASFSearchAPI['ok?'];
+        }),
+        map(isError => {
+          if (!isError) {
+            return;
+          }
 
-        this.setErrorBanner();
-      }),
-      catchError(
-        _ => {
           this.setErrorBanner();
+        }),
+        catchError(
+          _ => {
+            this.setErrorBanner();
 
-          return of(null);
-        }
-      )
-    ).subscribe(_ => _);
+            return of(null);
+          }
+        )
+      ).subscribe(_ => _)
+    );
   }
 
   private setErrorBanner(): void {
@@ -200,5 +215,9 @@ export class AppComponent implements OnInit {
       type: 'error',
       target: ['vertex']
     };
+  }
+
+  ngOnDestroy() {
+
   }
 }

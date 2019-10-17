@@ -1,7 +1,8 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, OnDestroy } from '@angular/core';
 
 import { map } from 'rxjs/operators';
 import { Store } from '@ngrx/store';
+import { SubSink } from 'subsink';
 
 import { AppState } from '@store';
 import * as mapStore from '@store/map';
@@ -18,7 +19,7 @@ import { LonLat } from '@models';
   templateUrl: './map-controls.component.html',
   styleUrls: ['./map-controls.component.scss']
 })
-export class MapControlsComponent implements OnInit {
+export class MapControlsComponent implements OnInit, OnDestroy {
   public view$ = this.store$.select(mapStore.getMapView);
   public interactionMode$ = this.store$.select(mapStore.getMapInteractionMode);
   public drawMode$ = this.store$.select(mapStore.getMapDrawMode);
@@ -29,6 +30,7 @@ export class MapControlsComponent implements OnInit {
   public layerType: models.MapLayerTypes;
   public viewTypes = models.MapViewType;
   public mousePos: LonLat;
+  private subs = new SubSink();
 
   constructor(
     private store$: Store<AppState>,
@@ -37,13 +39,21 @@ export class MapControlsComponent implements OnInit {
 
 
   ngOnInit() {
-    this.store$.select(mapStore.getMapLayerType).subscribe(
-      layerType => this.layerType = layerType
+    this.subs.add(
+      this.store$.select(mapStore.getMapLayerType).subscribe(
+        layerType => this.layerType = layerType
+      )
     );
-    this.store$.select(searchStore.getSearchType).subscribe(
-      searchType => this.searchType = searchType
+
+    this.subs.add(
+      this.store$.select(searchStore.getSearchType).subscribe(
+        searchType => this.searchType = searchType
+      )
     );
-    this.mapService.mousePosition$.subscribe(mp => this.mousePos = mp);
+
+    this.subs.add(
+      this.mapService.mousePosition$.subscribe(mp => this.mousePos = mp)
+    );
   }
 
   public onNewProjection(view: models.MapViewType): void {
@@ -78,5 +88,9 @@ export class MapControlsComponent implements OnInit {
 
   public zoomOut(): void {
     this.mapService.zoomOut();
+  }
+
+  ngOnDestroy() {
+    this.subs.unsubscribe();
   }
 }

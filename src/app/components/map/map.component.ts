@@ -1,5 +1,5 @@
 import {
-  Component, OnInit, Input, Output, EventEmitter, ViewChild, ElementRef
+  Component, OnInit, Input, Output, EventEmitter, ViewChild, ElementRef, OnDestroy
 } from '@angular/core';
 import {
   trigger, state, style, animate, transition
@@ -18,6 +18,7 @@ import Overlay from 'ol/Overlay';
 import { getTopRight } from 'ol/extent';
 
 import tippy from 'tippy.js';
+import { SubSink } from 'subsink';
 
 import { AppState } from '@store';
 import * as scenesStore from '@store/scenes';
@@ -44,7 +45,7 @@ import * as polygonStyle from '@services/map/polygon.style';
     ])
   ],
 })
-export class MapComponent implements OnInit {
+export class MapComponent implements OnInit, OnDestroy  {
   @Output() loadUrlState = new EventEmitter<void>();
   @ViewChild('overlay', { static: true }) overlayRef: ElementRef;
   @ViewChild('map', { static: true }) mapRef: ElementRef;
@@ -64,6 +65,7 @@ export class MapComponent implements OnInit {
     this.store$.select(mapStore.getMapView),
     this.store$.select(mapStore.getMapLayerType),
   );
+  private subs = new SubSink();
 
   constructor(
     private store$: Store<AppState>,
@@ -72,26 +74,30 @@ export class MapComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    combineLatest(
-      this.store$.select(uiStore.getIsResultsMenuOpen),
-      this.mapService.searchPolygon$
-    ).pipe(
-      filter(_ => !!this.overlay),
-      map(([isResultsMenuOpen, polygon]) => !isResultsMenuOpen && !!polygon),
-    ).subscribe(
-      shouldShowOverlay => shouldShowOverlay ?
-        this.showOverlay() :
-        this.hideOverlay()
+    this.subs.add(
+      combineLatest(
+        this.store$.select(uiStore.getIsResultsMenuOpen),
+        this.mapService.searchPolygon$
+      ).pipe(
+        filter(_ => !!this.overlay),
+        map(([isResultsMenuOpen, polygon]) => !isResultsMenuOpen && !!polygon),
+      ).subscribe(
+        shouldShowOverlay => shouldShowOverlay ?
+          this.showOverlay() :
+          this.hideOverlay()
+      )
     );
 
-    this.interactionMode$.subscribe(
-      mode => {
-        if (mode === models.MapInteractionModeType.NONE) {
-          this.mapService.enableInteractions();
-        } else {
-          this.mapService.disableInteractions();
+    this.subs.add(
+      this.interactionMode$.subscribe(
+        mode => {
+          if (mode === models.MapInteractionModeType.NONE) {
+            this.mapService.enableInteractions();
+          } else {
+            this.mapService.disableInteractions();
+          }
         }
-      }
+      )
     );
 
     this.tooltip = (<any[]>tippy('#map', {
@@ -110,51 +116,61 @@ export class MapComponent implements OnInit {
     this.redrawSearchPolygonWhenViewChanges();
     this.updateDrawMode();
 
-    this.interactionMode$.subscribe(
-      mode => this.mapService.setInteractionMode(mode)
+    this.subs.add(
+      this.interactionMode$.subscribe(
+        mode => this.mapService.setInteractionMode(mode)
+      )
     );
 
-    combineLatest(
-      this.mapService.isDrawing$,
-      this.drawMode$,
-      this.interactionMode$
-    ).pipe(
-      map(([isDrawing, drawMode, interactionMode]) => {
-        if (interactionMode === models.MapInteractionModeType.DRAW) {
-          if (drawMode === models.MapDrawModeType.POINT) {
-            return 'Click point';
-          }
+    this.subs.add(
+      combineLatest(
+        this.mapService.isDrawing$,
+        this.drawMode$,
+        this.interactionMode$
+      ).pipe(
+        map(([isDrawing, drawMode, interactionMode]) => {
+          if (interactionMode === models.MapInteractionModeType.DRAW) {
+            if (drawMode === models.MapDrawModeType.POINT) {
+              return 'Click point';
+            }
 
-          if (!isDrawing) {
-            return 'Click to start drawing';
-          }
+            if (!isDrawing) {
+              return 'Click to start drawing';
+            }
 
-          if (drawMode === models.MapDrawModeType.BOX) {
-            return 'Click to stop drawing';
-          } else if (drawMode === models.MapDrawModeType.LINESTRING || drawMode === models.MapDrawModeType.POLYGON) {
-            return 'Double click to stop drawing';
+            if (drawMode === models.MapDrawModeType.BOX) {
+              return 'Click to stop drawing';
+            } else if (drawMode === models.MapDrawModeType.LINESTRING || drawMode === models.MapDrawModeType.POLYGON) {
+              return 'Double click to stop drawing';
+            }
+          } else if (interactionMode === models.MapInteractionModeType.EDIT) {
+            return 'Click and drag on area of interest';
           }
-        } else if (interactionMode === models.MapInteractionModeType.EDIT) {
-          return 'Click and drag on area of interest';
+        })
+      ).subscribe(
+        tip => this.tooltip.setContent(tip)
+      )
+    );
+
+    this.subs.add(
+      this.interactionMode$.pipe(
+        map(mode => mode === models.MapInteractionModeType.DRAW),
+      ).subscribe(isDrawMode => {
+        if (isDrawMode) {
+          this.tooltip.enable();
+        } else {
+          this.tooltip.hide();
+          this.tooltip.disable();
         }
       })
-    ).subscribe(tip => this.tooltip.setContent(tip));
+    );
 
-    this.interactionMode$.pipe(
-      map(mode => mode === models.MapInteractionModeType.DRAW),
-    ).subscribe(isDrawMode => {
-      if (isDrawMode) {
-        this.tooltip.enable();
-      } else {
-        this.tooltip.hide();
-        this.tooltip.disable();
-      }
-    });
-
-    this.mapService.newSelectedScene$.pipe(
-      map(sceneId => new scenesStore.SetSelectedScene(sceneId))
-    ).subscribe(
-      action => this.store$.dispatch(action)
+    this.subs.add(
+      this.mapService.newSelectedScene$.pipe(
+        map(sceneId => new scenesStore.SetSelectedScene(sceneId))
+      ).subscribe(
+        action => this.store$.dispatch(action)
+      )
     );
   }
 
@@ -200,24 +216,30 @@ export class MapComponent implements OnInit {
   }
 
   private updateMapOnViewChange(): void {
-    const viewBeforInitialization = this.viewType$.pipe(
-      withLatestFrom(this.isMapInitialized$),
-      filter(([view, isInit]) => !isInit),
-      map(([view, isInit]) => view)
-    ).subscribe(
-      ([view, layerType]) => {
-        this.setMapWith(<models.MapViewType>view, <models.MapLayerTypes>layerType);
-        this.loadUrlState.emit();
-        this.store$.dispatch(new mapStore.MapInitialzed());
-      }
+    this.subs.add(
+      this.viewType$.pipe(
+        withLatestFrom(this.isMapInitialized$),
+        filter(([view, isInit]) => !isInit),
+        map(([view, isInit]) => view)
+      ).subscribe(
+        ([view, layerType]) => {
+          this.setMapWith(<models.MapViewType>view, <models.MapLayerTypes>layerType);
+          this.loadUrlState.emit();
+          this.store$.dispatch(new mapStore.MapInitialzed());
+        }
+      )
     );
 
-    this.sceneToLayer$('SELECTED').subscribe(
-      feature => this.mapService.setSelectedFeature(feature)
+    this.subs.add(
+      this.sceneToLayer$('SELECTED').subscribe(
+        feature => this.mapService.setSelectedFeature(feature)
+      )
     );
 
-    this.sceneToLayer$('FOCUSED').subscribe(
-      feature => this.mapService.setFocusedFeature(feature)
+    this.subs.add(
+      this.sceneToLayer$('FOCUSED').subscribe(
+        feature => this.mapService.setFocusedFeature(feature)
+      )
     );
   }
 
@@ -231,15 +253,17 @@ export class MapComponent implements OnInit {
       switchMap(_ => this.viewType$),
     );
 
-    scenesLayerAfterInitialization$.pipe(
-      tap(([view, mapLayerType]) =>
-        this.setMapWith(<models.MapViewType>view, <models.MapLayerTypes>mapLayerType)
-      ),
-      switchMap(_ =>
-        this.scenePolygonsLayer$(this.mapService.epsg())
+    this.subs.add(
+      scenesLayerAfterInitialization$.pipe(
+        tap(([view, mapLayerType]) =>
+          this.setMapWith(<models.MapViewType>view, <models.MapLayerTypes>mapLayerType)
+        ),
+        switchMap(_ =>
+          this.scenePolygonsLayer$(this.mapService.epsg())
+        )
+      ).subscribe(
+        layer => this.mapService.setLayer(layer)
       )
-    ).subscribe(
-      layer => this.mapService.setLayer(layer)
     );
 
     const selectedSceneAfterInitialization$ = this.isMapInitialized$.pipe(
@@ -264,18 +288,22 @@ export class MapComponent implements OnInit {
   }
 
   private redrawSearchPolygonWhenViewChanges(): void {
-    this.viewType$.pipe(
-      withLatestFrom(this.mapService.searchPolygon$),
-      map(([_, polygon]) => polygon),
-      filter(polygon => !!polygon),
-    ).subscribe(
-      polygon => this.loadSearchPolygon(polygon)
+    this.subs.add(
+      this.viewType$.pipe(
+        withLatestFrom(this.mapService.searchPolygon$),
+        map(([_, polygon]) => polygon),
+        filter(polygon => !!polygon),
+      ).subscribe(
+        polygon => this.loadSearchPolygon(polygon)
+      )
     );
   }
 
   private updateDrawMode(): void {
-    this.store$.select(mapStore.getMapDrawMode).subscribe(
-      mode => this.mapService.setDrawMode(mode)
+    this.subs.add(
+      this.store$.select(mapStore.getMapDrawMode).subscribe(
+        mode => this.mapService.setDrawMode(mode)
+      )
     );
   }
 
@@ -335,5 +363,9 @@ export class MapComponent implements OnInit {
 
   public hideOverlay(): void {
     this.overlay.setPosition(undefined);
+  }
+
+  ngOnDestroy() {
+    this.subs.unsubscribe();
   }
 }

@@ -26,20 +26,14 @@ import * as models from '@models';
     ])
   ],
 })
-export class SearchDropdownComponent implements OnInit {
+export class SearchDropdownComponent {
   public isFiltersMenuOpen$ = this.store$.select(uiStore.getIsFiltersMenuOpen);
 
   public filterType = models.FilterType;
-  public selectedSearchType: models.SearchType;
+  public searchType$ = this.store$.select(searchStore.getSearchType);
   public searchTypes = models.SearchType;
 
   constructor(private store$: Store<AppState>) {}
-
-  ngOnInit(): void {
-    this.store$.select(searchStore.getSearchType).subscribe(
-      searchType => this.selectedSearchType = searchType
-    );
-  }
 
   public closePanel(): void {
     this.store$.dispatch(new uiStore.CloseFiltersMenu());
