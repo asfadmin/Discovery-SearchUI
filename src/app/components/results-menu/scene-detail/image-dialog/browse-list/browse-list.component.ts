@@ -1,5 +1,6 @@
-import { Component, OnInit, AfterViewInit, ViewEncapsulation, ViewChild } from '@angular/core';
+import { Component, OnInit, AfterViewInit, ViewEncapsulation, ViewChild, OnDestroy } from '@angular/core';
 import { CdkVirtualScrollViewport } from '@angular/cdk/scrolling';
+import { SubSink } from 'subsink';
 
 import { Observable } from 'rxjs';
 import { map, filter, withLatestFrom, tap, switchMap } from 'rxjs/operators';
@@ -17,54 +18,65 @@ import * as models from '@models';
   styleUrls: ['./browse-list.component.scss'],
   encapsulation: ViewEncapsulation.None,
 })
-export class BrowseListComponent implements OnInit, AfterViewInit  {
+export class BrowseListComponent implements OnInit, AfterViewInit, OnDestroy {
   @ViewChild(CdkVirtualScrollViewport, { static: false }) scroll: CdkVirtualScrollViewport;
 
   public scenes$: Observable<models.CMRProduct[]>;
   public selectedName: string;
   private selectedFromList = false;
+  private subs = new SubSink();
 
   constructor(
     private store$: Store<AppState>,
   ) { }
 
   ngOnInit() {
-    this.store$.select(uiStore.getOnlyScenesWithBrowse).subscribe(
-      onlyBrowse => this.scenes$ = onlyBrowse ?
-        this.store$.select(scenesStore.getScenesWithBrowse) :
-        this.store$.select(scenesStore.getScenes)
+    this.subs.add(
+      this.store$.select(uiStore.getOnlyScenesWithBrowse).subscribe(
+        onlyBrowse => this.scenes$ = onlyBrowse ?
+          this.store$.select(scenesStore.getScenesWithBrowse) :
+          this.store$.select(scenesStore.getScenes)
+      )
     );
 
-    this.store$.select(scenesStore.getSelectedScene).subscribe(
-      scene => this.selectedName = scene ? scene.name : null
+    this.subs.add(
+      this.store$.select(scenesStore.getSelectedScene).subscribe(
+        scene => this.selectedName = scene ? scene.name : null
+      )
     );
   }
 
   ngAfterViewInit() {
-    this.store$.select(scenesStore.getSelectedScene).pipe(
-      withLatestFrom(this.store$.select(uiStore.getOnlyScenesWithBrowse).pipe(
-        switchMap(
-          onlyBrowse => this.scenes$ = onlyBrowse ?
-            this.store$.select(scenesStore.getScenesWithBrowse) :
-            this.store$.select(scenesStore.getScenes)
-        )
-      )),
-      filter(([selected, _]) => !!selected),
-      tap(([selected, _]) => this.selectedName = selected.name),
-      map(([selected, scenes]) => scenes.indexOf(selected)),
-    ).subscribe(
-      idx => {
-        if (!this.selectedFromList) {
-          this.scroll.scrollToIndex(idx);
-        }
+    this.subs.add(
+      this.store$.select(scenesStore.getSelectedScene).pipe(
+        withLatestFrom(this.store$.select(uiStore.getOnlyScenesWithBrowse).pipe(
+          switchMap(
+            onlyBrowse => this.scenes$ = onlyBrowse ?
+              this.store$.select(scenesStore.getScenesWithBrowse) :
+              this.store$.select(scenesStore.getScenes)
+          )
+        )),
+        filter(([selected, _]) => !!selected),
+        tap(([selected, _]) => this.selectedName = selected.name),
+        map(([selected, scenes]) => scenes.indexOf(selected)),
+      ).subscribe(
+        idx => {
+          if (!this.selectedFromList) {
+            this.scroll.scrollToIndex(idx);
+          }
 
-        this.selectedFromList = false;
-      }
+          this.selectedFromList = false;
+        }
+      )
     );
   }
 
   public onNewSceneSelected(scene: models.CMRProduct): void {
     this.selectedFromList = true;
     this.store$.dispatch(new scenesStore.SetSelectedScene(scene.id));
+  }
+
+  ngOnDestroy() {
+    this.subs.unsubscribe();
   }
 }

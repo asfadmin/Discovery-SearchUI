@@ -1,6 +1,7 @@
 import { createFeatureSelector, createSelector } from '@ngrx/store';
 
 import { SearchActionType, SearchActions } from './search.action';
+import {  SearchType } from '@models';
 
 
 export interface SearchState {
@@ -11,6 +12,7 @@ export interface SearchState {
   isResultsAmountLoading: boolean;
   canSearch: boolean;
   totalResults: null | number;
+  searchType: SearchType | null;
 }
 
 export const initState: SearchState = {
@@ -20,7 +22,8 @@ export const initState: SearchState = {
   searchResultsAmount: 0,
   isResultsAmountLoading: false,
   canSearch: false,
-  totalResults: null
+  totalResults: null,
+  searchType: SearchType.DATASET,
 };
 
 export function searchReducer(state = initState, action: SearchActions): SearchState {
@@ -89,6 +92,13 @@ export function searchReducer(state = initState, action: SearchActions): SearchS
       };
     }
 
+    case SearchActionType.SET_SEARCH_TYPE: {
+      return {
+        ...state,
+        searchType: action.payload,
+      };
+    }
+
     default: {
       return state;
     }
@@ -130,4 +140,9 @@ export const getCanSearch = createSelector(
 export const getIsMaxResultsLoading = createSelector(
   getSearchState,
   (state: SearchState) => state.isResultsAmountLoading
+);
+
+export const getSearchType = createSelector(
+  getSearchState,
+  state => state.searchType
 );

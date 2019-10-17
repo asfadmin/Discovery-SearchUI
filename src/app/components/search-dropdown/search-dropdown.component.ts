@@ -8,6 +8,7 @@ import { Store } from '@ngrx/store';
 
 import { AppState } from '@store';
 import * as uiStore from '@store/ui';
+import * as searchStore from '@store/search';
 
 import * as models from '@models';
 
@@ -25,27 +26,21 @@ import * as models from '@models';
     ])
   ],
 })
-export class SearchDropdownComponent implements OnInit {
+export class SearchDropdownComponent {
   public isFiltersMenuOpen$ = this.store$.select(uiStore.getIsFiltersMenuOpen);
 
   public filterType = models.FilterType;
-  public selectedSearchType: models.SearchType;
+  public searchType$ = this.store$.select(searchStore.getSearchType);
   public searchTypes = models.SearchType;
 
   constructor(private store$: Store<AppState>) {}
-
-  ngOnInit(): void {
-    this.store$.select(uiStore.getSearchType).subscribe(
-      searchType => this.selectedSearchType = searchType
-    );
-  }
 
   public closePanel(): void {
     this.store$.dispatch(new uiStore.CloseFiltersMenu());
   }
 
   public onSetSearchType(searchType: models.SearchType): void {
-    this.store$.dispatch(new uiStore.SetSearchType(searchType));
+    this.store$.dispatch(new searchStore.SetSearchType(searchType));
   }
 }
 

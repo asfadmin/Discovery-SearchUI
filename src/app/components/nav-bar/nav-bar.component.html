@@ -12,7 +12,7 @@
         </div>
       </div>
 
-      <div fxLayout="column" fxFill>
+      <div *ngIf="searchType$ | async as searchType" fxLayout="column" fxFill>
 
         <app-dataset-nav *ngIf="searchType === searchTypes.DATASET"
           (openQueue)="onOpenDownloadQueue()">
