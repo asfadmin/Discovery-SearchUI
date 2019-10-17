@@ -12,12 +12,6 @@ import * as queueStore from '@store/queue';
 import * as models from '@models';
 import * as services from '@services';
 
-enum Breakpoints {
-  FULL = 3,
-  MEDIUM = 2,
-  SMALL = 1,
-}
-
 @Component({
   selector: 'app-dataset-nav',
   templateUrl: './dataset-nav.component.html',
@@ -27,18 +21,8 @@ export class DatasetNavComponent {
   @Output() public openQueue = new EventEmitter<void>();
 
   public queuedProducts$ = this.store$.select(queueStore.getQueuedProducts);
-  public breakpoint$ = this.screenSize.size$.pipe(
-    map(({ width, height }) => {
-      if (width > 1440) {
-        return Breakpoints.FULL;
-      } else if (width > 1140) {
-        return Breakpoints.MEDIUM;
-      } else {
-        return Breakpoints.SMALL;
-      }
-    })
-  );
-  public breakpoints = Breakpoints;
+  public breakpoint$ = this.screenSize.breakpoint$;
+  public breakpoints = models.Breakpoints;
 
   constructor(
     private store$: Store<AppState>,

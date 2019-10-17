@@ -26,6 +26,7 @@ import { AoiOptionsModule } from '@components/shared/aoi-options';
 import { MaxResultsSelectorModule } from '@components/shared/max-results-selector';
 import { SearchButtonModule } from '@components/shared/search-button';
 import { ClearButtonModule } from '@components/shared/clear-button';
+import { PipesModule } from '@pipes';
 
 import { SearchSelectorModule } from '@components/shared/selectors/search-selector';
 import { LogoModule } from '@components/nav-bar/logo/logo.module';
@@ -60,6 +61,7 @@ import { AoiFilterComponent } from './dataset-nav/aoi-filter/aoi-filter.componen
     MatMenuModule,
     MatDatepickerModule,
     MatSharedModule,
+    PipesModule,
 
     QueueModule,
 
