@@ -1,11 +1,11 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, OnDestroy } from '@angular/core';
 import { ListSearchType } from '@models';
 
 import { Subject } from 'rxjs';
 import { map, tap, debounceTime } from 'rxjs/operators';
+import { SubSink } from 'subsink';
 
 import { Store } from '@ngrx/store';
-
 import { AppState } from '@store';
 import * as filtersStore from '@store/filters';
 import * as scenesStore from '@store/scenes';
@@ -17,12 +17,13 @@ import * as models from '@models';
   templateUrl: './list-search.component.html',
   styleUrls: ['./list-search.component.scss']
 })
-export class ListSearchComponent implements OnInit {
+export class ListSearchComponent implements OnInit, OnDestroy {
   public types = ListSearchType;
 
   public searchList: string;
   public listSearchMode$ = this.store$.select(filtersStore.getListSearchMode);
   private newListInput$ = new Subject<string | null>();
+  private subs = new SubSink();
 
   public listExamples = {
     [this.types.PRODUCT]: [
@@ -40,23 +41,28 @@ export class ListSearchComponent implements OnInit {
   constructor(private store$: Store<AppState>) {}
 
   ngOnInit() {
-    this.store$.select(filtersStore.getSearchList).pipe(
-      map(list => list.join('\n'))
-    ).subscribe(
-      listStr => this.searchList = listStr
+    this.subs.add(
+      this.store$.select(filtersStore.getSearchList).pipe(
+        map(list => list.join('\n'))
+      ).subscribe(
+        listStr => this.searchList = listStr
+      )
     );
 
-    this.newListInput$.asObservable().pipe(
-      debounceTime(500)
-    ).subscribe(text => {
-      const scenes = text
-        .split(/[\s\n,\t]+/)
-        .filter(v => v);
+    this.subs.add(
+      this.newListInput$.asObservable().pipe(
+        debounceTime(500)
+      ).subscribe(text => {
+        const scenes = text
+          .split(/[\s\n,\t]+/)
+          .filter(v => v);
 
-      const unique = Array.from(new Set(scenes));
+        const unique = Array.from(new Set(scenes));
 
-      this.store$.dispatch(new filtersStore.SetSearchList(unique));
-    });
+        this.store$.dispatch(new filtersStore.SetSearchList(unique));
+      })
+    );
+
   }
 
   public onSceneModeSelected(): void {
@@ -73,5 +79,9 @@ export class ListSearchComponent implements OnInit {
 
   public onNewListSearchMode(mode: models.ListSearchType): void {
     this.store$.dispatch(new filtersStore.SetListSearchType(mode));
+  }
+
+  ngOnDestroy() {
+    this.subs.unsubscribe();
   }
 }

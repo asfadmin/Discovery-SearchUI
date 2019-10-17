@@ -1,5 +1,6 @@
-import { Component, OnInit, AfterViewInit } from '@angular/core';
+import { Component, OnInit, AfterViewInit, OnDestroy } from '@angular/core';
 import { MatDialogRef } from '@angular/material/dialog';
+import { SubSink } from 'subsink';
 
 import { filter, map, tap, debounceTime } from 'rxjs/operators';
 import { Store } from '@ngrx/store';
@@ -18,7 +19,7 @@ import { BrowseMapService, DatasetForProductService } from '@services';
   styleUrls: ['./image-dialog.component.scss'],
   providers: [ BrowseMapService ]
 })
-export class ImageDialogComponent implements OnInit, AfterViewInit {
+export class ImageDialogComponent implements OnInit, AfterViewInit, OnDestroy {
   public scene$ = this.store$.select(scenesStore.getSelectedScene);
 
   public onlyShowScenesWithBrowse: boolean;
@@ -30,6 +31,7 @@ export class ImageDialogComponent implements OnInit, AfterViewInit {
   public isShow = false;
 
   private image;
+  private subs = new SubSink();
 
   constructor(
     private store$: Store<AppState>,
@@ -39,54 +41,64 @@ export class ImageDialogComponent implements OnInit, AfterViewInit {
   ) { }
 
   ngOnInit() {
-    this.store$.select(scenesStore.getSelectedSceneProducts).subscribe(
-      products => this.products = products
+    this.subs.add(
+      this.store$.select(scenesStore.getSelectedSceneProducts).subscribe(
+        products => this.products = products
+      )
     );
 
-    this.store$.select(uiStore.getOnlyScenesWithBrowse).subscribe(
-      onlyBrowses => this.onlyShowScenesWithBrowse = onlyBrowses
+    this.subs.add(
+      this.store$.select(uiStore.getOnlyScenesWithBrowse).subscribe(
+        onlyBrowses => this.onlyShowScenesWithBrowse = onlyBrowses
+      )
     );
 
-    this.store$.select(queueStore.getQueuedProductIds).pipe(
-      map(names => new Set(names))
-    ).subscribe(queuedProducts => this.queuedProductIds = queuedProducts);
+    this.subs.add(
+      this.store$.select(queueStore.getQueuedProductIds).pipe(
+        map(names => new Set(names))
+      ).subscribe(queuedProducts => this.queuedProductIds = queuedProducts)
+    );
 
-    this.scene$.pipe(
-      filter(g => !!g),
-      tap(g => this.scene = g),
-      map(scene => this.datasetForProduct.match(scene)),
-    ).subscribe(dataset => this.dataset = dataset);
+    this.subs.add(
+      this.scene$.pipe(
+        filter(g => !!g),
+        tap(g => this.scene = g),
+        map(scene => this.datasetForProduct.match(scene)),
+      ).subscribe(dataset => this.dataset = dataset)
+    );
   }
 
   ngAfterViewInit() {
-    this.scene$.pipe(
-      filter(scene => !!scene),
-      debounceTime(250)
-    ).subscribe(
-      scene => {
-        this.isImageLoading = true;
-        this.image = new Image();
-        const browseService = this.browseMap;
-        const currentScene = this.scene;
-        const self = this;
+    this.subs.add(
+      this.scene$.pipe(
+        filter(scene => !!scene),
+        debounceTime(250)
+      ).subscribe(
+        scene => {
+          this.isImageLoading = true;
+          this.image = new Image();
+          const browseService = this.browseMap;
+          const currentScene = this.scene;
+          const self = this;
 
-        this.image.addEventListener('load', function() {
-          if (currentScene !== scene) {
-            return;
-          }
-          self.isImageLoading = false;
+          this.image.addEventListener('load', function() {
+            if (currentScene !== scene) {
+              return;
+            }
+            self.isImageLoading = false;
 
-          const [width, height] = [
-            this.naturalWidth, this.naturalHeight
-          ];
+            const [width, height] = [
+              this.naturalWidth, this.naturalHeight
+            ];
 
-          browseService.setBrowse(scene.browses[0], {
-            width, height
+            browseService.setBrowse(scene.browses[0], {
+              width, height
+            });
           });
-        });
 
-        this.image.src = scene.browses[0];
-      }
+          this.image.src = scene.browses[0];
+        }
+      )
     );
   }
 
@@ -112,5 +124,9 @@ export class ImageDialogComponent implements OnInit, AfterViewInit {
 
   public setOnlyShowBrowse(isChecked: boolean) {
     this.store$.dispatch(new uiStore.SetOnlyScenesWithBrowse(isChecked));
+  }
+
+  ngOnDestroy() {
+    this.subs.unsubscribe();
   }
 }

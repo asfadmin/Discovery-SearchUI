@@ -1,6 +1,6 @@
-import { Component, OnInit, Output, EventEmitter } from '@angular/core';
+import { Component, Output, EventEmitter } from '@angular/core';
 
-import { Store, ActionsSubject } from '@ngrx/store';
+import { Store } from '@ngrx/store';
 import { ofType } from '@ngrx/effects';
 
 import { AppState } from '@store';
@@ -15,32 +15,14 @@ import * as models from '@models';
   templateUrl: './dataset-nav.component.html',
   styleUrls: ['./dataset-nav.component.css', '../nav-bar.component.scss'],
 })
-export class DatasetNavComponent implements OnInit {
+export class DatasetNavComponent {
   @Output() public openQueue = new EventEmitter<void>();
 
   public queuedProducts$ = this.store$.select(queueStore.getQueuedProducts);
 
   constructor(
     private store$: Store<AppState>,
-    private actions$: ActionsSubject,
   ) { }
-
-  ngOnInit() {
-    this.actions$.pipe(
-      ofType<searchStore.MakeSearch>(searchStore.SearchActionType.MAKE_SEARCH),
-    ).subscribe(
-      _ => this.closeMenus()
-    );
-
-    this.store$.select(uiStore.getSearchType).subscribe(
-      () => this.closeMenus()
-    );
-  }
-
-  public closeMenus(): void {
-    this.store$.dispatch(new uiStore.CloseFiltersMenu());
-    this.store$.dispatch(new uiStore.CloseAOIOptions());
-  }
 
   public onToggleFiltersMenu(): void {
     this.store$.dispatch(new uiStore.ToggleFiltersMenu());

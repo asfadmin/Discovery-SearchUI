@@ -1,12 +1,13 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 
-import { filter, map } from 'rxjs/operators';
+import { filter, map, tap } from 'rxjs/operators';
 import { Store } from '@ngrx/store';
+import { SubSink } from 'subsink';
 
 import { AppState } from '@store';
 import * as filtersStore from '@store/filters';
-import * as uiStore from '@store/ui';
 import * as scenesStore from '@store/scenes';
+import * as searchStore from '@store/search';
 
 import * as models from '@models';
 import { DatasetForProductService, PropertyService } from '@services';
@@ -17,12 +18,13 @@ import { DatasetForProductService, PropertyService } from '@services';
   templateUrl: './scene-metadata.component.html',
   styleUrls: ['./scene-metadata.component.scss']
 })
-export class SceneMetadataComponent implements OnInit {
+export class SceneMetadataComponent implements OnInit, OnDestroy {
   public dataset: models.Dataset;
 
   public p = models.Props;
   public scene: models.CMRProduct;
   public searchType: models.SearchType;
+  private subs = new SubSink();
 
   constructor(
     public prop: PropertyService,
@@ -33,18 +35,19 @@ export class SceneMetadataComponent implements OnInit {
   ngOnInit() {
     const scene$ = this.store$.select(scenesStore.getSelectedScene);
 
-    this.store$.select(uiStore.getSearchType).subscribe(
-     searchType => this.searchType = searchType
+    this.subs.add(
+      this.store$.select(searchStore.getSearchType).subscribe(
+       searchType => this.searchType = searchType
+      )
     );
 
-    scene$.subscribe(
-      scene => this.scene = scene
+    this.subs.add(
+      scene$.pipe(
+        tap(scene => this.scene = scene),
+        filter(g => !!g),
+        map(scene => this.datasetForProduct.match(scene)),
+      ).subscribe(dataset => this.dataset = dataset)
     );
-
-    scene$.pipe(
-      filter(g => !!g),
-      map(scene => this.datasetForProduct.match(scene)),
-    ).subscribe(dataset => this.dataset = dataset);
   }
 
   public isGeoSearch(): boolean {
@@ -112,5 +115,9 @@ export class SceneMetadataComponent implements OnInit {
 
   private capitalizeFirstLetter(str) {
       return str.charAt(0).toUpperCase() + str.slice(1);
+  }
+
+  ngOnDestroy() {
+    this.subs.unsubscribe();
   }
 }

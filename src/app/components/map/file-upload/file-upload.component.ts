@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, OnDestroy } from '@angular/core';
 
 import { Observable } from 'rxjs';
 import { filter } from 'rxjs/operators';
@@ -9,6 +9,7 @@ import * as uiStore from '@store/ui';
 import * as searchStore from '@store/search';
 
 import { MatDialog } from '@angular/material/dialog';
+import { SubSink } from 'subsink';
 
 import { MapInteractionModeType, SearchType } from '@models';
 import { FileUploadDialogComponent } from './file-upload-dialog';
@@ -18,13 +19,14 @@ import { FileUploadDialogComponent } from './file-upload-dialog';
   templateUrl: './file-upload.component.html',
   styleUrls: ['./file-upload.component.css']
 })
-export class FileUploadComponent implements OnInit {
+export class FileUploadComponent implements OnInit, OnDestroy {
   @Input() interaction$: Observable<MapInteractionModeType>;
 
   @Output() dialogClose = new EventEmitter<boolean>();
   @Output() newSearchPolygon = new EventEmitter<string>();
 
   private searchType: SearchType;
+  private subs = new SubSink();
 
   constructor(
     private store$: Store<AppState>,
@@ -32,12 +34,16 @@ export class FileUploadComponent implements OnInit {
   ) {}
 
   public ngOnInit(): void {
-    this.interaction$.pipe(
-      filter(interaction => interaction === MapInteractionModeType.UPLOAD)
-    ).subscribe(_ => this.openDialog());
+    this.subs.add(
+      this.interaction$.pipe(
+        filter(interaction => interaction === MapInteractionModeType.UPLOAD)
+      ).subscribe(_ => this.openDialog())
+    );
 
-    this.store$.select(uiStore.getSearchType).subscribe(
-      searchType => this.searchType = searchType
+    this.subs.add(
+      this.store$.select(searchStore.getSearchType).subscribe(
+        searchType => this.searchType = searchType
+      )
     );
   }
 
@@ -46,26 +52,32 @@ export class FileUploadComponent implements OnInit {
       width: '550px', height: '700px', minHeight: '50%'
     });
 
-    dialogRef.afterClosed().subscribe(
-      wkt => {
-        let wasSuccessful: boolean;
+    this.subs.add(
+      dialogRef.afterClosed().subscribe(
+        wkt => {
+          let wasSuccessful: boolean;
 
-        if (wkt) {
-          if (this.searchType === SearchType.LIST) {
-            this.store$.dispatch(new searchStore.ClearSearch());
-            this.store$.dispatch(new uiStore.SetSearchType(SearchType.DATASET));
+          if (wkt) {
+            if (this.searchType === SearchType.LIST) {
+              this.store$.dispatch(new searchStore.ClearSearch());
+              this.store$.dispatch(new searchStore.SetSearchType(SearchType.DATASET));
+            }
+
+            this.newSearchPolygon.emit(wkt);
+            this.store$.dispatch(new uiStore.CloseAOIOptions());
+            wasSuccessful = true;
+          } else {
+            wasSuccessful = false;
           }
 
-          this.newSearchPolygon.emit(wkt);
-          this.store$.dispatch(new uiStore.CloseAOIOptions());
-          wasSuccessful = true;
-        } else {
-          wasSuccessful = false;
+          this.dialogClose.emit(wasSuccessful);
         }
-
-        this.dialogClose.emit(wasSuccessful);
-      }
+      )
     );
+  }
+
+  ngOnDestroy() {
+    this.subs.unsubscribe();
   }
 }
 

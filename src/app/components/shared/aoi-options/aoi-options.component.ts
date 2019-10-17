@@ -1,4 +1,4 @@
-import { Component, OnInit, Output, Input, EventEmitter, ViewChild } from '@angular/core';
+import { Component, OnInit, Output, Input, EventEmitter, ViewChild, OnDestroy } from '@angular/core';
 import { NgForm } from '@angular/forms';
 
 import { Subject } from 'rxjs';
@@ -10,13 +10,15 @@ import { AppState } from '@store';
 import * as mapStore from '@store/map';
 import { MapDrawModeType, MapInteractionModeType } from '@models';
 import { MapService, WktService } from '@services';
+import { SubSink } from 'subsink';
+
 
 @Component({
   selector: 'app-aoi-options',
   templateUrl: './aoi-options.component.html',
   styleUrls: ['./aoi-options.component.css'],
 })
-export class AoiOptionsComponent implements OnInit {
+export class AoiOptionsComponent implements OnInit, OnDestroy {
   @ViewChild('polygonInputForm', { static: false }) public polygonForm: NgForm;
 
   @Input() showHeader = true;
@@ -30,6 +32,7 @@ export class AoiOptionsComponent implements OnInit {
 
   public aoiErrors$ = new Subject<void>();
   public isAOIError = false;
+  private subs = new SubSink();
 
   constructor(
     private store$: Store<AppState>,
@@ -37,8 +40,10 @@ export class AoiOptionsComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.mapService.searchPolygon$.subscribe(
-      polygon => this.polygon = polygon
+    this.subs.add(
+      this.mapService.searchPolygon$.subscribe(
+        polygon => this.polygon = polygon
+      )
     );
 
     this.handleAOIErrors();
@@ -71,21 +76,27 @@ export class AoiOptionsComponent implements OnInit {
   }
 
   private handleAOIErrors(): void {
-    this.aoiErrors$.pipe(
-      tap(_ => {
-        this.isAOIError = true;
-        this.mapService.clearDrawLayer();
-        this.polygonForm.reset();
+    this.subs.add(
+      this.aoiErrors$.pipe(
+        tap(_ => {
+          this.isAOIError = true;
+          this.mapService.clearDrawLayer();
+          this.polygonForm.reset();
+          this.polygonForm.form
+            .controls['searchPolygonLarge']
+            .setErrors({'incorrect': true});
+        }),
+        delay(820),
+      ).subscribe(_ => {
+        this.isAOIError = false;
         this.polygonForm.form
           .controls['searchPolygonLarge']
-          .setErrors({'incorrect': true});
-      }),
-      delay(820),
-    ).subscribe(_ => {
-      this.isAOIError = false;
-      this.polygonForm.form
-        .controls['searchPolygonLarge']
-        .setErrors(null);
-    });
+          .setErrors(null);
+      })
+    );
+  }
+
+  ngOnDestroy() {
+    this.subs.unsubscribe();
   }
 }

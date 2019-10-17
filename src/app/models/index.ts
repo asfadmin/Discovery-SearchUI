@@ -6,7 +6,7 @@ export * from './url-parameter.model';
 export * from './asf-api.model';
 export * from './date-extrema.models';
 export * from './range.model';
-export * from './ui.model';
+export * from './search-type.model';
 export * from './view-types.model';
 export * from './filters.model';
 export * from './banner.model';

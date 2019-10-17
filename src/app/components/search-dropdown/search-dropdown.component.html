@@ -1,4 +1,4 @@
-<div *ngIf="selectedSearchType !== null"
+<div *ngIf="searchType$ | async as selectedSearchType"
   [@isOpen]="isFiltersMenuOpen$ | async"
   class="dataset-filters-div padding-for-box-shadow">
   <div class="dataset-filters-card">

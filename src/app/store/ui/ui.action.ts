@@ -18,7 +18,6 @@ export enum UIActionType {
   OPEN_BOTTOM_MENU = '[UI] Open Bottom Menu ',
 
   SET_SELECTED_FILTER = '[UI] Set Selected Filter',
-  SET_SEARCH_TYPE = '[UI] Set Search Type',
   SET_UI_VIEW = '[UI] Set UI View',
 
   LOAD_BANNERS = '[Banner] Load Banners',
@@ -62,12 +61,6 @@ export class SetSelectedFilter implements Action {
   public readonly type = UIActionType.SET_SELECTED_FILTER;
 
   constructor(public payload: FilterType) {}
-}
-
-export class SetSearchType implements Action {
-  public readonly type = UIActionType.SET_SEARCH_TYPE;
-
-  constructor(public payload: SearchType) {}
 }
 
 export class SetIsBrowseDialogOpen implements Action {
@@ -115,7 +108,6 @@ export type UIActions =
   | CloseResultsMenu
   | OpenResultsMenu
   | SetSelectedFilter
-  | SetSearchType
   | SetUiView
   | SetOnlyScenesWithBrowse
   | SetIsBrowseDialogOpen
