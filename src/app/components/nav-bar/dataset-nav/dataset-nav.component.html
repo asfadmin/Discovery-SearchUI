@@ -1,4 +1,4 @@
-<div fxLayout="row" class="breadcrumb-row">
+<div *ngIf="breakpoint$ | async as breakpoint" fxLayout="row" class="breadcrumb-row">
   <div fxLayout="row">
 
     <app-search-type-selector
@@ -12,15 +12,15 @@
        class="breadcrumb">
     </app-dataset-selector>
 
-    <app-aoi-filter
-      fxFlex="160px" fxFlex.lt-md="grow"
-      class="breadcrumb">
+    <app-aoi-filter *ngIf="breakpoint > breakpoints.SMALL" class="breadcrumb">
     </app-aoi-filter>
   </div>
 
   <div fxLayout.lt-md="row">
     <div fxLayout="row">
-      <div fxFlex="300px" fxFlex.lt-lg="50"
+      <div
+         *ngIf="breakpoint === breakpoints.FULL"
+         fxFlex="300px" fxFlex.lt-lg="50"
            class="breadcrumb">
         <app-date-selector></app-date-selector>
       </div>
