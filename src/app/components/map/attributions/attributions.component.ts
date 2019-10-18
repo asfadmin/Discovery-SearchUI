@@ -8,6 +8,5 @@ import { LonLat } from '@models';
   styleUrls: ['./attributions.component.scss'],
 })
 export class AttributionsComponent {
-  @Input() mousePos: LonLat;
   anio: number = new Date().getFullYear();
 }

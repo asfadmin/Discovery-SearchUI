@@ -1,6 +1,7 @@
 export enum Breakpoints {
-  FULL = 3,
-  MEDIUM = 2,
-  SMALL = 1,
+  FULL = 4,
+  MEDIUM = 3,
+  SMALL = 2,
+  MOBILE = 1,
 }
 

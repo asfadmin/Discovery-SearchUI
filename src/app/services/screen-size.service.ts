@@ -32,8 +32,10 @@ export class ScreenSizeService {
         return models.Breakpoints.FULL;
       } else if (width > 1140) {
         return models.Breakpoints.MEDIUM;
-      } else {
+      } else if (width > 915) {
         return models.Breakpoints.SMALL;
+      } else {
+        return models.Breakpoints.MOBILE;
       }
     })
   );
