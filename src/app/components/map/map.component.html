@@ -2,7 +2,7 @@
   id="map" class="map" #map>
 </div>
 
-<div class="map-header">
+<div *ngIf="breakpoint$ | async as breakpoint" class="map-header">
   <div class="header-controls"
         fxLayout="row"
         fxFlexFill>
@@ -23,13 +23,14 @@
       </mat-card>
     </div>
 
-    <div fxLayout="row">
+    <div *ngIf="breakpoint !== breakpoints.MOBILE" fxLayout="row">
       <div fxFlex="nogrow">
         <app-map-controls></app-map-controls>
       </div>
     </div>
 
-    <img src="/assets/NASA_logo.svg" class="meatball">
+    <img *ngIf="breakpoint !== breakpoints.MOBILE"
+      src="/assets/NASA_logo.svg" class="meatball">
 
   </div>
 </div>

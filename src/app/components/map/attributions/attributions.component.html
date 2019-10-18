@@ -16,7 +16,17 @@
   </ng-container>
 
   <ng-container *ngIf="breakpoint === breakpoints.MOBILE">
-    <div class="bottom-search-bar">
+    <div *ngIf="!(isResultsMenuOpen$ | async) as isResultsMenuClosed" class="bottom-search-bar">
+      <div *ngIf="!(areNoScenes$  | async)" class="toggle-button-position">
+        <button (click)="onToggleMenu()"
+           class="toggle-button"
+          mat-flat-button>
+          <span>Results</span>
+          <mat-icon>
+            {{ (isResultsMenuOpen$ | async) ? 'keyboard_arrow_down' : 'keyboard_arrow_up' }}
+          </mat-icon>
+        </button>
+      </div>
       <div class="bar-layout">
         <app-max-results-selector></app-max-results-selector>
         <app-clear-button></app-clear-button>

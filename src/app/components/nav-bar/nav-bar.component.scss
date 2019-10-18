@@ -118,4 +118,11 @@ $config: mat-typography-config();
   height: 50px;
   display: flex;
   align-items: center;
+  justify-content: space-between;
+}
+
+.mobile-icon-cluster {
+  position: absolute;
+  top: 15px;
+  right: 5px;
 }

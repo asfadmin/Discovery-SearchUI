@@ -26,7 +26,7 @@ import * as mapStore from '@store/map';
 import * as uiStore from '@store/ui';
 
 import * as models from '@models';
-import { MapService, WktService } from '@services';
+import { MapService, WktService, ScreenSizeService } from '@services';
 import * as polygonStyle from '@services/map/polygon.style';
 
 @Component({
@@ -65,12 +65,17 @@ export class MapComponent implements OnInit, OnDestroy  {
     this.store$.select(mapStore.getMapView),
     this.store$.select(mapStore.getMapLayerType),
   );
+
+  public breakpoint$ = this.screenSize.breakpoint$;
+  public breakpoints = models.Breakpoints;
+
   private subs = new SubSink();
 
   constructor(
     private store$: Store<AppState>,
     private mapService: MapService,
     private wktService: WktService,
+    private screenSize: ScreenSizeService
   ) {}
 
   ngOnInit(): void {

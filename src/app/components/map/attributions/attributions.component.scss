@@ -53,9 +53,7 @@ a {
   width: 100vw;
   position: fixed;
   bottom: 0;
-  background-color: $asf-primary-light;
-  border-top: 1px solid $asf-primary-dark;
-  z-index: 1001;
+  z-index: 999;
 }
 
 .bar-layout {
@@ -63,5 +61,27 @@ a {
   flex-direction: row;
   justify-content: flex-end;
   flex-shrink: 0;
-  margin: 10px;
+  padding: 10px;
+
+  background-color: $asf-primary-light;
+  border-top: 1px solid $asf-primary-dark;
+}
+
+.toggle-button-position {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+}
+
+.toggle-button {
+  pointer-events: auto;
+  background-color: $asf-primary-light;
+  color: $asf-primary-dark;
+  font-size: 18px;
+  font-family: Roboto, sans-serif;
+  font-weight: 400;
+  border-bottom-style: solid;
+  border-bottom-width: 1px;
+  border-bottom-color: lighten($asf-primary-light, 10%);
 }
