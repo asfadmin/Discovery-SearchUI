@@ -1,5 +1,6 @@
 import { Component, Output, EventEmitter } from '@angular/core';
 
+import { map } from 'rxjs/operators';
 import { Store } from '@ngrx/store';
 import { ofType } from '@ngrx/effects';
 
@@ -9,6 +10,7 @@ import * as uiStore from '@store/ui';
 import * as queueStore from '@store/queue';
 
 import * as models from '@models';
+import * as services from '@services';
 
 @Component({
   selector: 'app-dataset-nav',
@@ -19,9 +21,12 @@ export class DatasetNavComponent {
   @Output() public openQueue = new EventEmitter<void>();
 
   public queuedProducts$ = this.store$.select(queueStore.getQueuedProducts);
+  public breakpoint$ = this.screenSize.breakpoint$;
+  public breakpoints = models.Breakpoints;
 
   constructor(
     private store$: Store<AppState>,
+    private screenSize: services.ScreenSizeService
   ) { }
 
   public onToggleFiltersMenu(): void {

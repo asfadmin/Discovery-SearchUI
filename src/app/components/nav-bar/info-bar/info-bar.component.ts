@@ -6,7 +6,7 @@ import { SubSink } from 'subsink';
 import { AppState } from '@store';
 import * as filtersStore from '@store/filters';
 
-
+import * as services from '@services';
 import * as models from '@models';
 
 @Component({
@@ -15,6 +15,11 @@ import * as models from '@models';
   styleUrls: ['./info-bar.component.scss']
 })
 export class InfoBarComponent implements OnInit, OnDestroy {
+  public breakpoint$ = this.screenSize.breakpoint$;
+  public breakpoints = models.Breakpoints;
+
+  public startDate: Date | null;
+  public endDate: Date | null;
   public pathRange: models.Range<number | null>;
   public frameRange: models.Range<number | null>;
   public season: models.Range<number | null>;
@@ -31,9 +36,16 @@ export class InfoBarComponent implements OnInit, OnDestroy {
 
   constructor(
     private store$: Store<AppState>,
+    private screenSize: services.ScreenSizeService
   ) { }
 
   ngOnInit() {
+    const startSub = this.store$.select(filtersStore.getStartDate).subscribe(
+      start => this.startDate = start
+    );
+    const endSub = this.store$.select(filtersStore.getEndDate).subscribe(
+      end => this.endDate = end
+    );
     const pathSub = this.store$.select(filtersStore.getPathRange).subscribe(
       pathRange => this.pathRange = pathRange
     );
@@ -73,12 +85,11 @@ export class InfoBarComponent implements OnInit, OnDestroy {
     );
 
     [
-      pathSub,
-      frameSub,
+      startSub, endSub,
+      pathSub, frameSub,
       seasonSub,
       omitSub,
-      listSearchModeSub,
-      searchListSub,
+      listSearchModeSub, searchListSub,
       productTypesSub,
       polsSub,
       beamModesSub,

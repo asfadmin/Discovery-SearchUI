@@ -1,13 +1,14 @@
-<div class="bounds" fxLayout="row">
-  <mat-card class="content logo-card mat-elevation-z10" fxFlex>
+<ng-container *ngIf="breakpoint$ | async as breakpoint">
 
-    <div fxFlex="130px" class="branding-block">
-      <img src="/assets/asf-logos/vertex/vertex-logo-blue.png" class="asf-logo">
-    </div>
+  <div *ngIf="breakpoint !== breakpoints.MOBILE" class="bounds" fxLayout="row">
+    <mat-card class="content logo-card mat-elevation-z10" fxFlex>
+      <div fxFlex="130px" class="branding-block">
+        <img src="/assets/asf-logos/vertex/vertex-logo-blue.png" class="asf-logo">
+      </div>
+    </mat-card>
+  </div>
 
-    <div fxHide fxShow.lt-lg fxFlex.lt-lg="auto" class="banner-area">
-      <img src="/assets/asf_banner_graphic.png" class="banner-image">
-    </div>
-
-  </mat-card>
-</div>
+  <div *ngIf="breakpoint === breakpoints.MOBILE">
+    <img src="/assets/ASFLogo-Blue2.png" class="asf-logo-mobile">
+  </div>
+</ng-container>

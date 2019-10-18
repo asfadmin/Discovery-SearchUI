@@ -10,3 +10,4 @@ export * from './search-type.model';
 export * from './view-types.model';
 export * from './filters.model';
 export * from './banner.model';
+export * from './breakpoints.model';

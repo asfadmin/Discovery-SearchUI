@@ -6,6 +6,10 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { MatSharedModule } from '@shared';
 import { FlexLayoutModule } from '@angular/flex-layout';
 
+import { SearchButtonModule } from '@components/shared/search-button';
+import { ClearButtonModule } from '@components/shared/clear-button';
+import { MaxResultsSelectorModule } from '@components/shared/max-results-selector';
+
 import { MapComponent } from './map.component';
 import { MapControlsModule } from './map-controls';
 import { FileUploadModule } from './file-upload';
@@ -24,6 +28,10 @@ import { SearchDropdownModule } from '@components/search-dropdown';
     MapControlsModule,
     FileUploadModule,
     SearchDropdownModule,
+
+    SearchButtonModule,
+    ClearButtonModule,
+    MaxResultsSelectorModule,
   ],
   declarations: [
     MapComponent,
