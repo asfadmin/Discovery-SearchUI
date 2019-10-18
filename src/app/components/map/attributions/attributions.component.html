@@ -15,7 +15,7 @@
     </div>
   </ng-container>
 
-  <ng-container>
+  <ng-container *ngIf="breakpoint === breakpoints.MOBILE">
     <div class="bottom-search-bar">
       <div class="bar-layout">
         <app-max-results-selector></app-max-results-selector>
