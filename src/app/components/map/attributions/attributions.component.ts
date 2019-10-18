@@ -1,6 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
 
-import { LonLat } from '@models';
+import { LonLat, Breakpoints } from '@models';
+import { ScreenSizeService } from '@services';
 
 @Component({
   selector: 'app-attributions',
@@ -9,4 +10,9 @@ import { LonLat } from '@models';
 })
 export class AttributionsComponent {
   anio: number = new Date().getFullYear();
+
+  public breakpoint$ = this.screenSize.breakpoint$;
+  public breakpoints = Breakpoints;
+
+  constructor(private screenSize: ScreenSizeService) {}
 }

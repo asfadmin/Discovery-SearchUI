@@ -48,3 +48,20 @@ a {
   color: $asf-primary;
   text-decoration: none;
 }
+
+.bottom-search-bar {
+  width: 100vw;
+  position: fixed;
+  bottom: 0;
+  background-color: $asf-primary-light;
+  border-top: 1px solid $asf-primary-dark;
+  z-index: 1001;
+}
+
+.bar-layout {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  flex-shrink: 0;
+  margin: 10px;
+}
