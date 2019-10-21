@@ -21,10 +21,15 @@ After you first download the repo, setup your instance by doing `npm install` fr
 ## Development server
 
 The app is run locally using the Angular CLI. Installation instructions can be found [here](https://angular.io/cli). After angular is installed, run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files. You can optionally supply a port number, for example `ng serve --port 4444`
+If you change your host file on your local machine then this command might be appropriate `ng serve --port 4444 --host local.asf.alaska.edu`.
+
 
 ## Code scaffolding
 
 Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+
+## Install NPM Packages
+Run `npm install --save package_name` to install a package.
 
 ## Build
 
