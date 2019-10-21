@@ -11,6 +11,12 @@ import * as filtersStore from '@store/filters';
 import * as scenesStore from '@store/scenes';
 
 import * as models from '@models';
+import * as services from '@services';
+
+enum ListPanel {
+  SEARCH = 'search',
+  LIST = 'list'
+}
 
 @Component({
   selector: 'app-list-search',
@@ -18,11 +24,21 @@ import * as models from '@models';
   styleUrls: ['./list-search.component.scss']
 })
 export class ListSearchComponent implements OnInit, OnDestroy {
+  public selectedPanel: ListPanel | null = null;
   public types = ListSearchType;
+  public panels = ListPanel;
+
+  defaultPanelOpenState = true;
+  panelIsDisabled = true;
+  customCollapsedHeight = '30px';
+  customExpandedHeight = '30px';
 
   public searchList: string;
   public listSearchMode$ = this.store$.select(filtersStore.getListSearchMode);
   private newListInput$ = new Subject<string | null>();
+  public breakpoint$ = this.screenSize.breakpoint$;
+  public breakpoints = models.Breakpoints;
+
   private subs = new SubSink();
 
   public listExamples = {
@@ -38,7 +54,10 @@ export class ListSearchComponent implements OnInit, OnDestroy {
     ].join(', ')
   };
 
-  constructor(private store$: Store<AppState>) {}
+  constructor(
+    private store$: Store<AppState>,
+    private screenSize: services.ScreenSizeService
+  ) {}
 
   ngOnInit() {
     this.subs.add(
@@ -63,6 +82,14 @@ export class ListSearchComponent implements OnInit, OnDestroy {
       })
     );
 
+  }
+
+  public isSelected(panel: ListPanel): boolean {
+    return this.selectedPanel === panel;
+  }
+
+  public selectPanel(panel: ListPanel): void {
+    this.selectedPanel = panel;
   }
 
   public onSceneModeSelected(): void {
