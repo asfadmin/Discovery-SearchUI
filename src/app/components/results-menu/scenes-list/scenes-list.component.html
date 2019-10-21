@@ -4,7 +4,7 @@
     itemSize="72">
     <mat-action-list class="action-list">
 
-      <div *cdkVirtualFor="let scene of scenes" class="scene-item-height">
+      <div *cdkVirtualFor="let scene of scenes$ | async" class="scene-item-height">
         <button
           (mouseenter)="onSetFocusedScene(scene)"
           (mouseleave) ="onClearFocusedScene(scene)"
@@ -34,7 +34,7 @@
           </div>
 
           <div matLine>
-            <span>{{ scene.metadata.date | fullDate }}</span>
+            <span matTooltip="Start Time">{{ scene.metadata.date | fullDate }}</span>
           </div>
 
           <mat-icon (click)="onZoomTo(scene)"class="ml-2" matTooltip="Zoom to scene">

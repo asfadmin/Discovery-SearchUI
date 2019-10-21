@@ -57,10 +57,13 @@ export class AsfApiService {
       );
   }
 
-  public queryUrlFrom(stateParamsObj) {
+  public queryUrlFrom(stateParamsObj, options?: {apiUrl: string}) {
     const params = this.queryParamsFrom(stateParamsObj);
 
-    const endpoint = this.searchEndpoint();
+    const endpoint = (options) ?
+      `${options.apiUrl}/services/search/param` :
+       this.searchEndpoint();
+
     const queryParamsStr = params.toString()
       .replace('+', '%2B');
 

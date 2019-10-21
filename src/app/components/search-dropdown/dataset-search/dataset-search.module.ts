@@ -10,6 +10,7 @@ import { PathSelectorModule } from '@components/shared/selectors/path-selector';
 import { OtherSelectorModule } from '@components/shared/selectors/other-selector';
 import { SeasonSelectorModule } from '@components/shared/selectors/season-selector';
 import { MissionSearchModule } from '../mission-search';
+import { SearchTypeSelectorModule } from '@components/shared/selectors/search-type-selector';
 
 import { DatasetSearchComponent } from './dataset-search.component';
 import { DateSelectorModule } from '@components/shared/selectors/date-selector';
@@ -34,7 +35,8 @@ import { AoiOptionsModule } from '@components/shared/aoi-options';
     SeasonSelectorModule,
     DateSelectorModule,
     DatasetSelectorModule,
-    AoiOptionsModule
+    AoiOptionsModule,
+    SearchTypeSelectorModule
   ],
   exports: [
     DatasetSearchComponent,

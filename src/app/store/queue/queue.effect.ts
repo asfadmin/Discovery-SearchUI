@@ -84,7 +84,7 @@ export class QueueEffects {
   @Effect()
   private queueScene: Observable<Action> = this.actions$.pipe(
     ofType<QueueScene>(QueueActionType.QUEUE_SCENE),
-    withLatestFrom(this.store$.select(scenesStore.getSceneProducts)),
+    withLatestFrom(this.store$.select(scenesStore.getAllSceneProducts)),
     map(([action, sceneProducts]) => sceneProducts[action.payload]),
     map(products => new AddItems(products))
   );
@@ -92,7 +92,7 @@ export class QueueEffects {
   @Effect()
   private removeScene: Observable<Action> = this.actions$.pipe(
     ofType<RemoveSceneFromQueue>(QueueActionType.REMOVE_SCENE_FROM_QUEUE),
-    withLatestFrom(this.store$.select(scenesStore.getSceneProducts)),
+    withLatestFrom(this.store$.select(scenesStore.getAllSceneProducts)),
     map(([action, sceneProducts]) => sceneProducts[action.payload]),
     map(products => new RemoveItems(products))
   );

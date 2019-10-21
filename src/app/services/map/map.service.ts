@@ -282,16 +282,14 @@ export class MapService {
       );
     });
 
+    this.selectHover.on('select', e => {
+      this.map.getTargetElement().style.cursor =
+        e.selected.length > 0 ? 'pointer' : '';
+    });
+
     newMap.on('pointermove', e => {
       const [ lon, lat ] = proj.toLonLat(e.coordinate, this.epsg());
       this.mousePosition$.next({ lon, lat });
-      let clickable = false;
-
-      this.map.forEachFeatureAtPixel(
-        this.map.getEventPixel(e.originalEvent), f => clickable = !!f.get('filename')
-      );
-
-      this.map.getTargetElement().style.cursor = clickable ? 'pointer' : '';
     });
 
     this.drawService.getLayer().setZIndex(100);

@@ -1,8 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 
 import { combineLatest } from 'rxjs';
-import { Store } from '@ngrx/store';
+import { tap } from 'rxjs/operators';
+import { SubSink } from 'subsink';
 
+import { Store } from '@ngrx/store';
 import { AppState } from '@store';
 import * as filtersStore from '@store/filters';
 
@@ -12,11 +14,12 @@ import * as filtersStore from '@store/filters';
   templateUrl: './season-selector.component.html',
   styleUrls: ['./season-selector.component.css']
 })
-export class SeasonSelectorComponent implements OnInit {
+export class SeasonSelectorComponent implements OnInit, OnDestroy {
   public isSeasonalSearch = false;
 
   public start: number;
   public end: number;
+  private subs = new SubSink();
 
   constructor(private store$: Store<AppState>) { }
 
@@ -24,12 +27,16 @@ export class SeasonSelectorComponent implements OnInit {
     const seasonStart$ = this.store$.select(filtersStore.getSeasonStart);
     const seasonEnd$ = this.store$.select(filtersStore.getSeasonEnd);
 
-    combineLatest(seasonStart$, seasonEnd$).subscribe(
-      ([start, end]) => this.isSeasonalSearch = !!(start || end)
+    this.subs.add(
+      combineLatest(seasonStart$, seasonEnd$).pipe(
+        tap(([start, end]) => {
+          this.start = start;
+          this.end = end;
+        })
+      ).subscribe(
+        ([start, end]) => this.isSeasonalSearch = !!(start || end)
+      )
     );
-
-    seasonStart$.subscribe(start => this.start = start);
-    seasonEnd$.subscribe(end => this.end = end);
   }
 
   public onToggleSeasonalOptions(): void {
@@ -60,4 +67,7 @@ export class SeasonSelectorComponent implements OnInit {
     });
   }
 
+  ngOnDestroy() {
+    this.subs.unsubscribe();
+  }
 }

@@ -1,6 +1,7 @@
 /* You can add global styles to this file, and also import other style files */
 
 @import "/styles/asf-theme.scss";
+@import "/styles/filter-list.scss";
 
 * {
   font-family: Roboto, sans-serif;
@@ -125,11 +126,11 @@ ul {
 
 .noselect {
   -webkit-touch-callout: none; /* iOS Safari */
-    -webkit-user-select: none; /* Safari */
-     -khtml-user-select: none; /* Konqueror HTML */
-       -moz-user-select: none; /* Firefox */
-        -ms-user-select: none; /* Internet Explorer/Edge */
-            user-select: none; /* Non-prefixed version, currently
+  -webkit-user-select: none; /* Safari */
+  -khtml-user-select: none; /* Konqueror HTML */
+  -moz-user-select: none; /* Firefox */
+  -ms-user-select: none; /* Internet Explorer/Edge */
+  user-select: none; /* Non-prefixed version, currently
                                   supported by Chrome and Opera */
 }
 
@@ -181,7 +182,7 @@ ul {
 }
 
 .selected {
-  background-color: rgba(0, 0, 0, 0.07);
+  background-color: rgba(0, 0, 0, 0.07) !important;
 }
 
 .image-dialog {
