@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { ResizeEvent } from 'angular-resizable-element';
 import { trigger, state, style, animate, transition } from '@angular/animations';
 
 import { map, withLatestFrom, filter, tap } from 'rxjs/operators';
@@ -38,6 +39,8 @@ export class ResultsMenuComponent {
   public numberOfProducts$ = this.store$.select(scenesStore.getNumberOfProducts);
   public selectedProducts$ = this.store$.select(scenesStore.getSelectedSceneProducts);
 
+  public style: object = {};
+
   public areNoScenes$ = this.store$.select(scenesStore.getScenes).pipe(
     map(scenes => scenes.length === 0)
   );
@@ -65,6 +68,28 @@ export class ResultsMenuComponent {
     this.store$.dispatch(new scenesStore.SelectPreviousScene());
   }
 
+  public validate(event: ResizeEvent): boolean {
+    const MIN_DIMENSIONS_PX: number = 50;
+    if (
+      event.rectangle.width &&
+      event.rectangle.height &&
+      (event.rectangle.width < MIN_DIMENSIONS_PX ||
+        event.rectangle.height < MIN_DIMENSIONS_PX)
+    ) {
+      return false;
+    }
+    return true;
+  }
+
+  public onResizeEnd(event: ResizeEvent): void {
+    this.style = {
+      position: 'fixed',
+      left: `${event.rectangle.left}px`,
+      top: `${event.rectangle.top}px`,
+      width: `${event.rectangle.width}px`,
+      height: `${event.rectangle.height}px`
+    };
+  }
   private queueAllProducts(products: models.CMRProduct[]): void {
     this.store$.dispatch(new queueStore.AddItems(products));
   }
