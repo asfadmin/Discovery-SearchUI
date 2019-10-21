@@ -33,6 +33,7 @@ export class NavBarComponent {
   public onOpenDownloadQueue(): void {
     this.dialog.open(QueueComponent, {
       id: 'dlQueueDialog',
+      maxWidth: '100vw'
     });
   }
 }
