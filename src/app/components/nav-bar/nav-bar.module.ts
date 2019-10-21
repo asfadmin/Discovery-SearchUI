@@ -27,12 +27,11 @@ import { MaxResultsSelectorModule } from '@components/shared/max-results-selecto
 import { SearchButtonModule } from '@components/shared/search-button';
 import { ClearButtonModule } from '@components/shared/clear-button';
 import { PipesModule } from '@pipes';
+import { SearchTypeSelectorModule } from '@components/shared/selectors/search-type-selector';
 
-import { SearchSelectorModule } from '@components/shared/selectors/search-selector';
 import { LogoModule } from '@components/nav-bar/logo/logo.module';
 
 import { CustomBreakPointsProvider } from '@services/custom-breakpoints.ts';
-import { SearchTypeSelectorComponent } from './search-type-selector/search-type-selector.component';
 import { DatasetNavComponent } from './dataset-nav/dataset-nav.component';
 import { ListNavComponent } from './list-nav/list-nav.component';
 import { AoiFilterComponent } from './dataset-nav/aoi-filter/aoi-filter.component';
@@ -41,7 +40,6 @@ import { AoiFilterComponent } from './dataset-nav/aoi-filter/aoi-filter.componen
   declarations: [
     NavBarComponent,
     InfoBarComponent,
-    SearchTypeSelectorComponent,
     DatasetNavComponent,
     ListNavComponent,
     AoiFilterComponent
@@ -65,7 +63,7 @@ import { AoiFilterComponent } from './dataset-nav/aoi-filter/aoi-filter.componen
 
     QueueModule,
 
-    SearchSelectorModule,
+    SearchTypeSelectorModule,
     DatasetSelectorModule,
     DateSelectorModule,
     AoiOptionsModule,
