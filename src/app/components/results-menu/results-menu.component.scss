@@ -150,7 +150,8 @@
 }
 
 .resize-handle-top {
-  top: -13px;
+  top: -15px;
+  border-bottom: 3px solid rgba(0, 0, 0, 0.3);
 }
 
 .resize-handle-bottom {
@@ -179,4 +180,9 @@
 
 .result-height {
   height: 100%;
+}
+
+.left-border-only {
+  box-shadow: none !important;
+  border-left: 1px solid rgba(0, 0, 0, 0.3);
 }

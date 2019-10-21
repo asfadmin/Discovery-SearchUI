@@ -1,7 +1,7 @@
 <div class="rectangle-wrapper">
 
   <div
-    class="rectangle"
+    class=""
     [ngStyle]="style"
     mwlResizable
     [validateResize]="validate"
@@ -10,15 +10,15 @@
     (resizeEnd)="onResizeEnd($event)"
   >
     <div
-      class="resize-handle-top"
-      mwlResizeHandle
-      [resizeEdges]="{ top: true }"
-    ></div>
-    <div
       [@changeMenuY]="(isResultsMenuOpen$ | async) ? 'shown' : 'hidden'"
       [class.hidden]="(isHidden$ | async) || (areNoScenes$  | async)"
       class="result-height"
     >
+      <div
+        class="resize-handle-top"
+        mwlResizeHandle
+        [resizeEdges]="{ top: true }"
+      ></div>
 <!--      <div class="toggle-button-position">-->
 <!--        <button (click)="onToggleMenu()"-->
 <!--                class="toggle-button"-->
@@ -79,7 +79,7 @@
           <app-scene-detail></app-scene-detail>
         </mat-card>
 
-        <mat-card class="card-spacing results-menu--column"
+        <mat-card class="card-spacing results-menu--column left-border-only"
                   fxFlex="33" fxFlexFill>
           <mat-card-subtitle class="header">
           <span *ngIf="selectedProducts$ | async as products; else defaultProductsHeader">

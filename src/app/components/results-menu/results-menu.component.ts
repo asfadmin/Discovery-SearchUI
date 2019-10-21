@@ -86,7 +86,7 @@ export class ResultsMenuComponent {
       position: 'fixed',
       left: `${event.rectangle.left}px`,
       top: `${event.rectangle.top}px`,
-      width: `${event.rectangle.width}px`,
+      width: `100%`,
       height: `${event.rectangle.height}px`
     };
   }
