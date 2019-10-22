@@ -54,6 +54,10 @@
   margin-right: 20px;
 }
 
+button {
+  outline: none;
+}
+
 .ol-popup {
   position: absolute;
   -webkit-filter: drop-shadow(0 1px 4px rgba(0, 0, 0, 0.2));
@@ -67,4 +71,25 @@
   pointer-events: none;
   bottom: 30px;
   right: 10px;
+}
+
+.mobile-map-controls {
+  pointer-events: auto;
+  position: fixed;
+  bottom: 62px;
+  right: 4px;
+  display: flex;
+  flex-direction: column;
+}
+
+.mobile-controls-background {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  width: 100vw;
+  height: 100vh;
+  background:rgba(0, 0, 0, 0.3);
+  z-index: 1100;
 }

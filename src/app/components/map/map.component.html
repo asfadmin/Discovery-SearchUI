@@ -23,14 +23,30 @@
       </mat-card>
     </div>
 
-    <div *ngIf="breakpoint !== breakpoints.MOBILE" fxLayout="row">
+    <div *ngIf="breakpoint > breakpoints.MOBILE" fxLayout="row">
       <div fxFlex="nogrow">
         <app-map-controls></app-map-controls>
       </div>
     </div>
 
-    <img *ngIf="breakpoint !== breakpoints.MOBILE"
+    <div *ngIf="breakpoint === breakpoints.MOBILE" class="mobile-map-controls">
+      <button style="margin: 4px;" color="white" mat-fab>
+        <mat-icon>edit</mat-icon>
+      </button>
+
+      <button style="margin: 4px;" color="white" mat-fab>
+        <mat-icon>layers</mat-icon>
+      </button>
+    </div>
+
+    <img *ngIf="breakpoint > breakpoints.MOBILE"
       src="/assets/NASA_logo.svg" class="meatball">
+
+    <ng-container *ngIf="breakpoint === breakpoints.MOBILE">
+      <div class="mobile-controls-background"></div>
+      <div class="mobile-map-controls">
+      </div>
+    </ng-container>
 
   </div>
 </div>
@@ -51,3 +67,4 @@
   (mouseleave)="leaveDrawPopup()"
   id="popup" class="ol-popup" #overlay>
 </div>
+
