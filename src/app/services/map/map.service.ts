@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 
 import { BehaviorSubject, Subject } from 'rxjs';
-import { map, tap, throttleTime } from 'rxjs/operators';
+import { map, tap, sampleTime } from 'rxjs/operators';
 
 import { Map } from 'ol';
 import { Vector as VectorLayer } from 'ol/layer';
@@ -67,7 +67,7 @@ export class MapService {
     lon: 0, lat: 0
   });
   public mousePosition$ = this.mousePositionSubject$.pipe(
-    throttleTime(100)
+    sampleTime(100)
   );
 
   public newSelectedScene$ = new Subject<string>();
