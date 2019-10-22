@@ -4,7 +4,7 @@
     itemSize="72">
     <mat-action-list class="action-list">
 
-      <div *cdkVirtualFor="let scene of scenes" class="scene-item-height">
+      <div *cdkVirtualFor="let scene of scenes$ | async" class="scene-item-height">
         <button
           (mouseenter)="onSetFocusedScene(scene)"
           (mouseleave) ="onClearFocusedScene(scene)"

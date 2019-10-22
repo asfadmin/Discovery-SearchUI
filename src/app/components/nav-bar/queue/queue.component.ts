@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, OnDestroy } from '@angular/core';
 
 import { faCopy } from '@fortawesome/free-solid-svg-icons';
 import { ClipboardService } from 'ngx-clipboard';
@@ -11,13 +11,14 @@ import * as queueStore from '@store/queue';
 import { ScreenSizeService } from '@services';
 import { CMRProduct, AsfApiOutputFormat } from '@models';
 import { MatDialogRef } from '@angular/material';
+import { SubSink } from 'subsink';
 
 @Component({
   selector: 'app-queue',
   templateUrl: './queue.component.html',
   styleUrls: ['./queue.component.scss']
 })
-export class QueueComponent implements OnInit {
+export class QueueComponent implements OnInit, OnDestroy {
   public products$ = this.store$.select(queueStore.getQueuedProducts).pipe(
     tap(products => this.areAnyProducts = products.length > 0)
   );
@@ -39,6 +40,8 @@ export class QueueComponent implements OnInit {
     ))
   );
 
+  private subs = new SubSink();
+
   constructor(
     private store$: Store<AppState>,
     private clipboardService: ClipboardService,
@@ -47,9 +50,11 @@ export class QueueComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.screenSize.size$.pipe(
+    const productNameLengthSub = this.screenSize.size$.pipe(
       map(size => size.width > 1000 ? 48 : 16)
     ).subscribe(len => this.productNameLen = len);
+
+    this.subs.add(productNameLengthSub);
   }
 
   public onRemoveProduct(product: CMRProduct): void {
@@ -101,5 +106,9 @@ export class QueueComponent implements OnInit {
 
   onCloseDownloadQueue() {
     this.dialogRef.close();
+  }
+
+  ngOnDestroy() {
+    this.subs.unsubscribe();
   }
 }

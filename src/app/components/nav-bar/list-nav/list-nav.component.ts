@@ -5,6 +5,9 @@ import { AppState } from '@store';
 import * as queueStore from '@store/queue';
 import * as uiStore from '@store/ui';
 
+import { ScreenSizeService } from '@services';
+import { Breakpoints } from '@models';
+
 @Component({
   selector: 'app-list-nav',
   templateUrl: './list-nav.component.html',
@@ -14,8 +17,13 @@ export class ListNavComponent implements OnInit {
   @Output() public openQueue = new EventEmitter<void>();
 
   public queuedProducts$ = this.store$.select(queueStore.getQueuedProducts);
+  public breakpoint$ = this.screenSize.breakpoint$;
+  public breakpoints = Breakpoints;
 
-  constructor(private store$: Store<AppState>) { }
+  constructor(
+    private store$: Store<AppState>,
+    private screenSize: ScreenSizeService
+  ) { }
 
   ngOnInit() {
   }

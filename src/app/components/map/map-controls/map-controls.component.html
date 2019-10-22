@@ -46,13 +46,12 @@
           </div>
         </div>
 
-        <div fxFlex="">
+        <div *ngIf="(view$ | async) === viewTypes.EQUITORIAL" fxFlex="">
           <div fxLayout="row" fxLayoutAlign="center" class="button-group-label">
             <label>View</label>
           </div>
           <div fxLayout="row">
             <mat-button-toggle-group class="button-group"
-                                     *ngIf="(view$ | async) === viewTypes.EQUITORIAL"
                                      [value]="layerType"
                                      name="layerType">
 

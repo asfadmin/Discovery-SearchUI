@@ -1,6 +1,6 @@
 import { Action } from '@ngrx/store';
 
-import { CMRProduct } from '@models';
+import { CMRProduct, SearchType } from '@models';
 
 export enum SearchActionType {
   MAKE_SEARCH = '[Search] Make A Search',
@@ -15,7 +15,8 @@ export enum SearchActionType {
   DISABLE_SEARCH = '[Search] Disable Search',
 
   SET_SEARCH_AMOUNT = '[Search] Set Search Results Amount',
-  SEARCH_AMOUNT_LOADING = '[Search] Search Amount Is Loading'
+  SEARCH_AMOUNT_LOADING = '[Search] Search Amount Is Loading',
+  SET_SEARCH_TYPE = '[UI] Set Search Type',
 }
 
 export class MakeSearch implements Action {
@@ -64,6 +65,13 @@ export class SearchError implements Action {
   constructor(public payload: string) {}
 }
 
+export class SetSearchType implements Action {
+  public readonly type = SearchActionType.SET_SEARCH_TYPE;
+
+  constructor(public payload: SearchType) {}
+}
+
+
 export type SearchActions =
   | MakeSearch
   | SetSearchAmount
@@ -73,4 +81,5 @@ export type SearchActions =
   | DisableSearch
   | SearchAmountLoading
   | SearchError
-  | SearchResponse;
+  | SearchResponse
+  | SetSearchType;

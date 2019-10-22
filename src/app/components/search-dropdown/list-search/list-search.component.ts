@@ -1,28 +1,45 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, OnDestroy } from '@angular/core';
 import { ListSearchType } from '@models';
 
 import { Subject } from 'rxjs';
 import { map, tap, debounceTime } from 'rxjs/operators';
+import { SubSink } from 'subsink';
 
 import { Store } from '@ngrx/store';
-
 import { AppState } from '@store';
 import * as filtersStore from '@store/filters';
 import * as scenesStore from '@store/scenes';
 
 import * as models from '@models';
+import * as services from '@services';
+
+enum ListPanel {
+  SEARCH = 'search',
+  LIST = 'list'
+}
 
 @Component({
   selector: 'app-list-search',
   templateUrl: './list-search.component.html',
   styleUrls: ['./list-search.component.scss']
 })
-export class ListSearchComponent implements OnInit {
+export class ListSearchComponent implements OnInit, OnDestroy {
+  public selectedPanel: ListPanel | null = null;
   public types = ListSearchType;
+  public panels = ListPanel;
+
+  defaultPanelOpenState = true;
+  panelIsDisabled = true;
+  customCollapsedHeight = '30px';
+  customExpandedHeight = '30px';
 
   public searchList: string;
   public listSearchMode$ = this.store$.select(filtersStore.getListSearchMode);
   private newListInput$ = new Subject<string | null>();
+  public breakpoint$ = this.screenSize.breakpoint$;
+  public breakpoints = models.Breakpoints;
+
+  private subs = new SubSink();
 
   public listExamples = {
     [this.types.PRODUCT]: [
@@ -37,26 +54,42 @@ export class ListSearchComponent implements OnInit {
     ].join(', ')
   };
 
-  constructor(private store$: Store<AppState>) {}
+  constructor(
+    private store$: Store<AppState>,
+    private screenSize: services.ScreenSizeService
+  ) {}
 
   ngOnInit() {
-    this.store$.select(filtersStore.getSearchList).pipe(
-      map(list => list.join('\n'))
-    ).subscribe(
-      listStr => this.searchList = listStr
+    this.subs.add(
+      this.store$.select(filtersStore.getSearchList).pipe(
+        map(list => list.join('\n'))
+      ).subscribe(
+        listStr => this.searchList = listStr
+      )
     );
 
-    this.newListInput$.asObservable().pipe(
-      debounceTime(500)
-    ).subscribe(text => {
-      const scenes = text
-        .split(/[\s\n,\t]+/)
-        .filter(v => v);
+    this.subs.add(
+      this.newListInput$.asObservable().pipe(
+        debounceTime(500)
+      ).subscribe(text => {
+        const scenes = text
+          .split(/[\s\n,\t]+/)
+          .filter(v => v);
 
-      const unique = Array.from(new Set(scenes));
+        const unique = Array.from(new Set(scenes));
 
-      this.store$.dispatch(new filtersStore.SetSearchList(unique));
-    });
+        this.store$.dispatch(new filtersStore.SetSearchList(unique));
+      })
+    );
+
+  }
+
+  public isSelected(panel: ListPanel): boolean {
+    return this.selectedPanel === panel;
+  }
+
+  public selectPanel(panel: ListPanel): void {
+    this.selectedPanel = panel;
   }
 
   public onSceneModeSelected(): void {
@@ -73,5 +106,9 @@ export class ListSearchComponent implements OnInit {
 
   public onNewListSearchMode(mode: models.ListSearchType): void {
     this.store$.dispatch(new filtersStore.SetListSearchType(mode));
+  }
+
+  ngOnDestroy() {
+    this.subs.unsubscribe();
   }
 }

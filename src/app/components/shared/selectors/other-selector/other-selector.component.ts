@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, EventEmitter, Output } from '@angular/core';
+import { Component, OnInit, Input, EventEmitter, Output, OnDestroy } from '@angular/core';
 
 import { tap } from 'rxjs/operators';
 import { Store } from '@ngrx/store';
@@ -7,6 +7,7 @@ import { AppState } from '@store';
 import * as filtersStore from '@store/filters';
 
 import { PropertyService } from '@services';
+import { SubSink } from 'subsink';
 import * as models from '@models';
 
 @Component({
@@ -14,7 +15,7 @@ import * as models from '@models';
   templateUrl: './other-selector.component.html',
   styleUrls: ['./other-selector.component.scss']
 })
-export class OtherSelectorComponent implements OnInit {
+export class OtherSelectorComponent implements OnInit, OnDestroy {
   dataset: models.Dataset;
   productTypes: models.DatasetProductTypes;
   flightDirections: models.FlightDirection[];
@@ -31,6 +32,7 @@ export class OtherSelectorComponent implements OnInit {
 
   public flightDirectionTypes = models.flightDirections;
   public p = models.Props;
+  private subs = new SubSink();
 
   constructor(
     private store$: Store<AppState>,
@@ -38,12 +40,24 @@ export class OtherSelectorComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.selectedDataset$.subscribe(dataset => this.dataset = dataset);
-    this.beamModes$.subscribe(modes => this.beamModes = modes);
-    this.flightDirections$.subscribe(directions => this.flightDirections = directions);
-    this.datasetProductTypes$.subscribe(types => this.productTypes = types);
-    this.polarizations$.subscribe(pols => this.polarizations = pols);
-    this.subtypes$.subscribe(subtypes => this.subtypes = subtypes);
+    this.subs.add(
+      this.selectedDataset$.subscribe(dataset => this.dataset = dataset)
+    );
+    this.subs.add(
+      this.beamModes$.subscribe(modes => this.beamModes = modes)
+    );
+    this.subs.add(
+      this.flightDirections$.subscribe(directions => this.flightDirections = directions)
+    );
+    this.subs.add(
+      this.datasetProductTypes$.subscribe(types => this.productTypes = types)
+    );
+    this.subs.add(
+      this.polarizations$.subscribe(pols => this.polarizations = pols)
+    );
+    this.subs.add(
+      this.subtypes$.subscribe(subtypes => this.subtypes = subtypes)
+    );
   }
 
   public onNewDatasetBeamModes(beamModes: string[]): void {
@@ -68,5 +82,9 @@ export class OtherSelectorComponent implements OnInit {
 
   public onNewSubtypeSelected(subtypes): void {
     this.store$.dispatch(new filtersStore.SetSubtypes(subtypes));
+  }
+
+  ngOnDestroy() {
+    this.subs.unsubscribe();
   }
 }
