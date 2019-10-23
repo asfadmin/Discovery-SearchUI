@@ -19,16 +19,7 @@
         mwlResizeHandle
         [resizeEdges]="{ top: true }"
       ></div>
-<!--      <div class="toggle-button-position">-->
-<!--        <button (click)="onToggleMenu()"-->
-<!--                class="toggle-button"-->
-<!--                mat-flat-button>-->
-<!--          <span>Results</span>-->
-<!--          <mat-icon>-->
-<!--            {{ (isResultsMenuOpen$ | async) ? 'keyboard_arrow_down' : 'keyboard_arrow_up' }}-->
-<!--          </mat-icon>-->
-<!--        </button>-->
-<!--      </div>-->
+
       <div class="results-menu--background  results-menu--layout"
            fxLayout="row"
            fxLayout.lt-sm="column">
@@ -65,10 +56,8 @@
               </div>
             </div>
           </mat-card-subtitle>
-<!--          <div class="app-scene-list">-->
             <app-scenes-list>
             </app-scenes-list>
-<!--          </div>-->
         </mat-card>
 
         <mat-card class="card-spacing results-menu--column"
@@ -92,5 +81,4 @@
       </div>
     </div>
   </div>
-
 </div>
