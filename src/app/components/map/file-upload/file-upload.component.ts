@@ -6,10 +6,11 @@ import { filter } from 'rxjs/operators';
 import { Store } from '@ngrx/store';
 import { AppState } from '@store';
 import * as uiStore from '@store/ui';
+import * as searchStore from '@store/search';
 
 import { MatDialog } from '@angular/material/dialog';
 
-import { MapInteractionModeType } from '@models';
+import { MapInteractionModeType, SearchType } from '@models';
 import { FileUploadDialogComponent } from './file-upload-dialog';
 
 @Component({
@@ -23,6 +24,8 @@ export class FileUploadComponent implements OnInit {
   @Output() dialogClose = new EventEmitter<boolean>();
   @Output() newSearchPolygon = new EventEmitter<string>();
 
+  private searchType: SearchType;
+
   constructor(
     private store$: Store<AppState>,
     public dialog: MatDialog
@@ -32,6 +35,10 @@ export class FileUploadComponent implements OnInit {
     this.interaction$.pipe(
       filter(interaction => interaction === MapInteractionModeType.UPLOAD)
     ).subscribe(_ => this.openDialog());
+
+    this.store$.select(uiStore.getSearchType).subscribe(
+      searchType => this.searchType = searchType
+    );
   }
 
   public openDialog(): void {
@@ -44,6 +51,11 @@ export class FileUploadComponent implements OnInit {
         let wasSuccessful: boolean;
 
         if (wkt) {
+          if (this.searchType === SearchType.LIST) {
+            this.store$.dispatch(new searchStore.ClearSearch());
+            this.store$.dispatch(new uiStore.SetSearchType(SearchType.DATASET));
+          }
+
           this.newSearchPolygon.emit(wkt);
           this.store$.dispatch(new uiStore.CloseAOIOptions());
           wasSuccessful = true;

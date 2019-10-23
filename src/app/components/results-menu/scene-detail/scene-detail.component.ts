@@ -15,10 +15,13 @@ import * as models from '@models';
 import { DatapoolAuthService, PropertyService, ScreenSizeService } from '@services';
 import { ImageDialogComponent } from './image-dialog';
 
+import { DatasetForProductService } from '@services';
+
 @Component({
   selector: 'app-scene-detail',
   templateUrl: './scene-detail.component.html',
-  styleUrls: ['./scene-detail.component.scss']
+  styleUrls: ['./scene-detail.component.scss'],
+  providers: [ DatasetForProductService ]
 })
 export class SceneDetailComponent implements OnInit {
   public dataset: models.Dataset;
@@ -34,6 +37,7 @@ export class SceneDetailComponent implements OnInit {
     public dialog: MatDialog,
     public authService: DatapoolAuthService,
     public prop: PropertyService,
+    private datasetForProduct: DatasetForProductService
   ) {}
 
   ngOnInit() {
@@ -49,7 +53,7 @@ export class SceneDetailComponent implements OnInit {
 
     scene$.pipe(
       filter(g => !!g),
-      map(scene => this.datasetFor(scene)),
+      map(scene => this.datasetForProduct.match(scene)),
     ).subscribe(dataset => this.dataset = dataset);
 
    this.store$.select(uiStore.getSearchType).subscribe(
@@ -92,10 +96,10 @@ export class SceneDetailComponent implements OnInit {
       })[0];
   }
 
-  public onOpenImage(scene: models.CMRProduct): void {
+  public onOpenImage(): void {
     this.dialog.open(ImageDialogComponent, {
-      width: '1200px', height: '1200px',
-      maxWidth: '90%', maxHeight: '90%',
+      width: '99vw', height: 'fit-content',
+      maxHeight: '96vh',
       panelClass: 'image-dialog'
     });
   }

@@ -19,6 +19,7 @@ import { MapService, WktService } from '@services';
 export class AoiOptionsComponent implements OnInit {
   @ViewChild('polygonInputForm', { static: false }) public polygonForm: NgForm;
 
+  @Input() showHeader = true;
   @Output() close = new EventEmitter<void>();
 
   public drawMode$ = this.store$.select(mapStore.getMapDrawMode);

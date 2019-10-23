@@ -58,8 +58,7 @@
       <mat-card-subtitle class="header">
         Scene Detail
       </mat-card-subtitle>
-      <app-scene-detail>
-      </app-scene-detail>
+      <app-scene-detail></app-scene-detail>
     </mat-card>
 
     <mat-card class="card-spacing results-menu--column"
@@ -70,11 +69,7 @@
         </span>
         <ng-template #defaultProductsHeader>Files</ng-template>
       </mat-card-subtitle>
-      <app-scene-files
-        [products]="selectedProducts$ | async"
-        [queuedProductIds]="queuedProductIds$ | async"
-        (toggleQueueProduct)="onToggleQueueProduct($event)"
-        ></app-scene-files>
+      <app-scene-files></app-scene-files>
     </mat-card>
   </div>
 </div>

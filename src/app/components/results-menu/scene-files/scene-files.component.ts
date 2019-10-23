@@ -1,5 +1,12 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 
+import { map } from 'rxjs/operators';
+
+import { Store } from '@ngrx/store';
+import { AppState } from '@store';
+import * as scenesStore from '@store/scenes';
+import * as queueStore from '@store/queue';
+
 import * as models from '@models';
 
 @Component({
@@ -7,13 +14,25 @@ import * as models from '@models';
   templateUrl: './scene-files.component.html',
   styleUrls: ['./scene-files.component.scss']
 })
-export class SceneFilesComponent {
-  @Input() products: models.CMRProduct[];
-  @Input() queuedProductIds: string[];
+export class SceneFilesComponent implements OnInit {
+  public products: models.CMRProduct[];
+  public queuedProductIds: Set<string>;
 
-  @Output() toggleQueueProduct = new EventEmitter<models.CMRProduct>();
+  constructor(
+    private store$: Store<AppState>
+  ) { }
+
+  ngOnInit() {
+    this.store$.select(scenesStore.getSelectedSceneProducts).subscribe(
+      products => this.products = products
+    );
+
+    this.store$.select(queueStore.getQueuedProductIds).pipe(
+      map(names => new Set(names))
+    ).subscribe(queuedProducts => this.queuedProductIds = queuedProducts);
+  }
 
   public onToggleQueueProduct(product: models.CMRProduct): void {
-    this.toggleQueueProduct.emit(product);
+    this.store$.dispatch(new queueStore.ToggleProduct(product));
   }
 }
