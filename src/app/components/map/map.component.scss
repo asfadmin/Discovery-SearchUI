@@ -82,6 +82,21 @@ button {
   flex-direction: column;
 }
 
+.mobile-map-controls-full {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: space-between;
+  width: 100vw;
+  height: 100vh;
+  z-index: 1101;
+}
+
 .mobile-controls-background {
   position: fixed;
   top: 0;
@@ -90,6 +105,7 @@ button {
   bottom: 0;
   width: 100vw;
   height: 100vh;
-  background:rgba(0, 0, 0, 0.3);
+  background: rgba(0, 0, 0, .15);
   z-index: 1100;
+  pointer-events: auto;
 }

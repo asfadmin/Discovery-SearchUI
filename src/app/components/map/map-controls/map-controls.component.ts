@@ -26,8 +26,6 @@ export class MapControlsComponent implements OnInit, OnDestroy {
 
   public searchType: models.SearchType;
   public searchTypes = models.SearchType;
-  public layerTypes = models.MapLayerTypes;
-  public layerType: models.MapLayerTypes;
   public viewTypes = models.MapViewType;
   public mousePos: LonLat;
   private subs = new SubSink();
@@ -39,12 +37,6 @@ export class MapControlsComponent implements OnInit, OnDestroy {
 
 
   ngOnInit() {
-    this.subs.add(
-      this.store$.select(mapStore.getMapLayerType).subscribe(
-        layerType => this.layerType = layerType
-      )
-    );
-
     this.subs.add(
       this.store$.select(searchStore.getSearchType).subscribe(
         searchType => this.searchType = searchType
@@ -58,14 +50,6 @@ export class MapControlsComponent implements OnInit, OnDestroy {
 
   public onNewProjection(view: models.MapViewType): void {
     this.store$.dispatch(new mapStore.SetMapView(view));
-  }
-
-  public onNewLayerType(layerType: models.MapLayerTypes): void {
-    const action = layerType === models.MapLayerTypes.STREET ?
-      new mapStore.SetStreetView() :
-      new mapStore.SetSatelliteView();
-
-    this.store$.dispatch(action);
   }
 
   public onNewInteractionMode(mode: models.MapInteractionModeType): void {
