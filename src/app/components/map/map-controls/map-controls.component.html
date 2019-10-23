@@ -59,11 +59,7 @@
           <label>Area of Interest</label>
         </div>
         <div fxLayout="row">
-          <app-interaction-selector
-            class="button-group"
-            (newInteraction)="onNewInteractionMode($event)"
-            (clearPolygon)="onClearAOI()"
-            [interaction]="interactionMode$ | async">
+          <app-interaction-selector>
           </app-interaction-selector>
         </div>
       </div>
@@ -74,11 +70,7 @@
             <label>Selection Shape</label>
           </div>
           <div fxLayout="row">
-            <app-draw-selector
-              class="button-group"
-              (newDrawMode)="onNewDrawMode($event)"
-              [drawMode]="drawMode$ | async">
-            </app-draw-selector>
+            <app-draw-selector></app-draw-selector>
           </div>
         </div>
       </div>

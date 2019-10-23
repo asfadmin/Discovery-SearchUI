@@ -14,6 +14,7 @@ import { LayerSelectorModule } from './map-controls/layer-selector';
 
 import { MapComponent } from './map.component';
 import { MapControlsModule } from './map-controls';
+import { AoiOptionsModule } from '@components/shared/aoi-options';
 import { FileUploadModule } from './file-upload';
 import { AttributionsComponent } from './attributions/attributions.component';
 import { SearchDropdownModule } from '@components/search-dropdown';
@@ -32,6 +33,7 @@ import { SearchDropdownModule } from '@components/search-dropdown';
     MapControlsModule,
     FileUploadModule,
     SearchDropdownModule,
+    AoiOptionsModule,
 
     SearchButtonModule,
     ClearButtonModule,
