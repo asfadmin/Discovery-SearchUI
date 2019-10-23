@@ -1,8 +1,8 @@
 import { Component, OnInit, Input, OnDestroy } from '@angular/core';
 
 import { map } from 'rxjs/operators';
-import { Store } from '@ngrx/store';
 import { SubSink } from 'subsink';
+import { Store } from '@ngrx/store';
 
 import { AppState } from '@store';
 import * as mapStore from '@store/map';
@@ -21,8 +21,6 @@ import { LonLat } from '@models';
 })
 export class MapControlsComponent implements OnInit, OnDestroy {
   public view$ = this.store$.select(mapStore.getMapView);
-  public interactionMode$ = this.store$.select(mapStore.getMapInteractionMode);
-  public drawMode$ = this.store$.select(mapStore.getMapDrawMode);
 
   public searchType: models.SearchType;
   public searchTypes = models.SearchType;
@@ -34,7 +32,6 @@ export class MapControlsComponent implements OnInit, OnDestroy {
     private store$: Store<AppState>,
     private mapService: services.MapService,
   ) { }
-
 
   ngOnInit() {
     this.subs.add(
@@ -50,20 +47,6 @@ export class MapControlsComponent implements OnInit, OnDestroy {
 
   public onNewProjection(view: models.MapViewType): void {
     this.store$.dispatch(new mapStore.SetMapView(view));
-  }
-
-  public onNewInteractionMode(mode: models.MapInteractionModeType): void {
-    this.store$.dispatch(new mapStore.SetMapInteractionMode(mode));
-  }
-
-  public onNewDrawMode(mode: models.MapDrawModeType): void {
-    this.store$.dispatch(new mapStore.SetMapInteractionMode(models.MapInteractionModeType.DRAW));
-    this.store$.dispatch(new mapStore.SetMapDrawMode(mode));
-  }
-
-  public onClearAOI(): void {
-    this.mapService.clearDrawLayer();
-    this.store$.dispatch(new mapStore.SetMapInteractionMode(models.MapInteractionModeType.DRAW));
   }
 
   public zoomIn(): void {

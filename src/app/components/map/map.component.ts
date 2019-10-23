@@ -22,6 +22,7 @@ import { SubSink } from 'subsink';
 
 import { AppState } from '@store';
 import * as scenesStore from '@store/scenes';
+import * as searchStore from '@store/search';
 import * as mapStore from '@store/map';
 import * as uiStore from '@store/ui';
 
@@ -80,6 +81,9 @@ export class MapComponent implements OnInit, OnDestroy  {
   public breakpoint$ = this.screenSize.breakpoint$;
   public breakpoints = models.Breakpoints;
 
+  public searchType: models.SearchType;
+  public searchTypes = models.SearchType;
+
   private subs = new SubSink();
 
   constructor(
@@ -90,6 +94,12 @@ export class MapComponent implements OnInit, OnDestroy  {
   ) {}
 
   ngOnInit(): void {
+    this.subs.add(
+      this.store$.select(searchStore.getSearchType).subscribe(
+        searchType => this.searchType = searchType
+      )
+    );
+
     this.subs.add(
       combineLatest(
         this.store$.select(uiStore.getIsResultsMenuOpen),
