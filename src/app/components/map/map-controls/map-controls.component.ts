@@ -21,8 +21,6 @@ import { LonLat } from '@models';
 })
 export class MapControlsComponent implements OnInit, OnDestroy {
   public view$ = this.store$.select(mapStore.getMapView);
-  public interactionMode$ = this.store$.select(mapStore.getMapInteractionMode);
-  public drawMode$ = this.store$.select(mapStore.getMapDrawMode);
 
   public searchType: models.SearchType;
   public searchTypes = models.SearchType;

@@ -5,7 +5,7 @@ import { Store } from '@ngrx/store';
 import { AppState } from '@store';
 import * as mapStore from '@store/map';
 
-import { MapDrawModeType, MapInteractionModeType } from '@models';
+import { SearchType, MapDrawModeType, MapInteractionModeType } from '@models';
 
 @Component({
   selector: 'app-draw-selector',
@@ -15,7 +15,6 @@ import { MapDrawModeType, MapInteractionModeType } from '@models';
 export class DrawSelectorComponent implements OnInit, OnDestroy {
   public drawMode: MapDrawModeType;
   public types = MapDrawModeType;
-
   private subs = new SubSink();
 
   constructor(

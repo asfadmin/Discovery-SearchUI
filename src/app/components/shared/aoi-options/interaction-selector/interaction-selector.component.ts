@@ -7,7 +7,7 @@ import { Store } from '@ngrx/store';
 import { AppState } from '@store';
 import * as mapStore from '@store/map';
 
-import { MapInteractionModeType } from '@models';
+import { SearchType, MapInteractionModeType } from '@models';
 import * as services from '@services';
 
 @Component({
@@ -19,7 +19,6 @@ export class InteractionSelectorComponent implements OnInit, OnDestroy {
   @ViewChild('clearButton' , { static: false }) clearButton: MatButtonToggle;
   public interaction: MapInteractionModeType;
   public types = MapInteractionModeType;
-
   private subs = new SubSink();
 
   constructor(
