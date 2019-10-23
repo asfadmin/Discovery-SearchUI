@@ -85,8 +85,12 @@ export class SearchEffects {
   @Effect()
   private searchResponse: Observable<Action> = this.actions$.pipe(
     ofType<SearchResponse>(SearchActionType.SEARCH_RESPONSE),
-    map(action => this.productService.fromResponse(action.payload.files)),
-    map(scene => new scenesStore.SetScenes(scene)),
+    switchMap(action => [
+      new scenesStore.SetScenes(
+        this.productService.fromResponse(action.payload.files)
+      ),
+      new SetSearchAmount(action.payload.totalCount)
+    ])
   );
 
   @Effect()

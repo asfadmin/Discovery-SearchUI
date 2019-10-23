@@ -1,10 +1,18 @@
 <div *ngIf="selectedSearchType !== null"
   [@isOpen]="isFiltersMenuOpen$ | async"
-  class="dataset-filters-div">
-  <mat-card class="dataset-filters-card">
-    <div fxLayout="row" fxFlexFill>
-      <div fxFlex="grow">
+  class="dataset-filters-div padding-for-box-shadow">
+  <div class="dataset-filters-card">
+    <div class="header">
+      <div>
+        <ng-container *ngIf="selectedSearchType === searchTypes.DATASET">
+          Search Filters
+        </ng-container>
+
+        <ng-container *ngIf="selectedSearchType === searchTypes.LIST">
+          List Search
+        </ng-container>
       </div>
+
       <div fxFlex="nogrow">
         <mat-icon (click)="closePanel()" class="clickable">
           close
@@ -12,7 +20,7 @@
       </div>
     </div>
 
-    <mat-card-content>
+    <div class="filters-list">
       <ng-container *ngIf="selectedSearchType === searchTypes.DATASET">
         <app-dataset-search [dataset]="dataset$ | async">
         </app-dataset-search>
@@ -21,12 +29,12 @@
       <ng-container *ngIf="selectedSearchType === searchTypes.LIST">
         <app-list-search></app-list-search>
       </ng-container>
-    </mat-card-content>
+    </div>
 
-    <div fxLayout="row" fxLayoutAlign="end">
+    <div class="footer">
       <app-max-results-selector></app-max-results-selector>
       <app-clear-button></app-clear-button>
       <app-search-button></app-search-button>
     </div>
-  </mat-card>
+  </div>
 </div>

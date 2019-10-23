@@ -8,6 +8,7 @@ import { FlexLayoutModule } from '@angular/flex-layout';
 import { PipesModule } from '@pipes';
 import { MatSharedModule } from '@shared';
 import { CopyToClipboardModule } from '@components/shared/copy-to-clipboard';
+import { SceneMetadataModule } from '@components/shared/scene-metadata';
 import { ImageDialogModule } from './image-dialog';
 import { SceneDetailComponent } from './scene-detail.component';
 
@@ -23,6 +24,7 @@ import { SceneDetailComponent } from './scene-detail.component';
     PipesModule,
     CopyToClipboardModule,
     ImageDialogModule,
+    SceneMetadataModule
   ],
   exports: [SceneDetailComponent],
 })

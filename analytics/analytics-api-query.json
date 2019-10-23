@@ -1,0 +1,18 @@
+{
+  "reportRequests": [
+    {
+      "viewId": "198859190",
+      "dateRanges": [
+        {
+          "startDate": "2019-08-01",
+          "endDate": "2019-09-01"
+        }
+      ],
+      "dimensions": [
+        {
+          "name": "ga:pagePath"
+        }
+      ]
+    }
+  ]
+}

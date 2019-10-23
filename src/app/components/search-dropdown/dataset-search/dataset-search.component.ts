@@ -9,15 +9,23 @@ import * as filtersStore from '@store/filters';
 import * as models from '@models';
 import { PropertyService } from '@services';
 
+enum FilterPanel {
+  DATE = 'Date',
+  ADDITIONAL = 'Additional',
+  CAMPAIGN = 'Campaign',
+  PATH = 'Path'
+}
+
 @Component({
   selector: 'app-dataset-search',
   templateUrl: './dataset-search.component.html',
   styleUrls: ['./dataset-search.component.scss']
 })
-
 export class DatasetSearchComponent {
   @Input() dataset: models.CMRProduct;
+  @Input() selectedPanel: FilterPanel | null = null;
 
+  panels = FilterPanel;
   defaultPanelOpenState = true;
   panelIsDisabled = true;
   customCollapsedHeight = '30px';
@@ -38,5 +46,13 @@ export class DatasetSearchComponent {
 
   public onNewMissionSelected(selectedMission: string): void {
     this.store$.dispatch(new filtersStore.SelectMission(selectedMission));
+  }
+
+  public isSelected(panel: FilterPanel): boolean {
+    return this.selectedPanel === panel;
+  }
+
+  public selectPanel(panel: FilterPanel): void {
+    this.selectedPanel = panel;
   }
 }

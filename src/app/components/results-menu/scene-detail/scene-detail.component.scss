@@ -1,3 +1,12 @@
+@import "asf-theme";
+
+$config: mat-typography-config();
+
+a {
+  text-decoration: none;
+  color: $uaf-primary-blue;
+}
+
 .detail-card {
   height: calc(100% - 72px);
   padding: 0;
@@ -12,10 +21,6 @@
 
 .clipboard-icon {
   margin: 0 10px;
-}
-
-.scene-metadata {
-  font-size: 14px;
 }
 
 .fit-to-container {
