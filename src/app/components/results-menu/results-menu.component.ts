@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, HostListener, OnInit } from '@angular/core';
 import { ResizeEvent } from 'angular-resizable-element';
 import { trigger, state, style, animate, transition } from '@angular/animations';
 
@@ -30,7 +30,7 @@ import * as models from '@models';
     ]),
   ],
 })
-export class ResultsMenuComponent {
+export class ResultsMenuComponent implements OnInit {
   public totalResultCount$ = this.store$.select(searchStore.getTotalResultCount);
   public isResultsMenuOpen$ = this.store$.select(uiStore.getIsResultsMenuOpen);
 
@@ -39,7 +39,9 @@ export class ResultsMenuComponent {
   public numberOfProducts$ = this.store$.select(scenesStore.getNumberOfProducts);
   public selectedProducts$ = this.store$.select(scenesStore.getSelectedSceneProducts);
 
-  public style: object = {};
+  public style: object = {}
+  public innerWidth: any;
+  public innerHeight: any;
 
   public areNoScenes$ = this.store$.select(scenesStore.getScenes).pipe(
     map(scenes => scenes.length === 0)
@@ -82,14 +84,21 @@ export class ResultsMenuComponent {
   }
 
   public onResizeEnd(event: ResizeEvent): void {
+    this.innerWidth = window.innerWidth;
+    this.innerHeight = window.innerHeight;
+    let maxHeight = this.innerHeight - 50;
+    maxHeight = event.rectangle.height > maxHeight ?
+                  maxHeight : event.rectangle.height;
     this.style = {
-      position: 'fixed',
+      position: 'static',
       left: `${event.rectangle.left}px`,
       top: `${event.rectangle.top}px`,
+      bottom: 0,
       width: `100%`,
-      height: `${event.rectangle.height}px`
+      height: `${maxHeight}px`,
     };
   }
+
   private queueAllProducts(products: models.CMRProduct[]): void {
     this.store$.dispatch(new queueStore.AddItems(products));
   }
@@ -99,4 +108,22 @@ export class ResultsMenuComponent {
       .toString()
       .replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,');
   }
+
+  @HostListener('window:resize', ['$event'])
+  onResize( event ) {
+    const resultDiv = document.getElementById('result-div');
+    const window_height = window.innerHeight;
+
+    if (resultDiv.offsetHeight < window_height) {
+      resultDiv.style.height = '100%';
+      const resultDiv_height = resultDiv.offsetHeight;
+      resultDiv.style.height = resultDiv_height + 'px';
+    } else {}
+  }
+
+  ngOnInit() {
+    this.innerWidth = window.innerWidth;
+    this.innerHeight = window.innerHeight;
+  }
+
 }
