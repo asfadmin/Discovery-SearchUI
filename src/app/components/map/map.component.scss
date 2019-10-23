@@ -91,7 +91,7 @@ button {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  align-items: space-between;
+  align-items: center;
   width: 100vw;
   height: 100vh;
   z-index: 1101;
@@ -108,4 +108,9 @@ button {
   background: rgba(0, 0, 0, .15);
   z-index: 1100;
   pointer-events: auto;
+}
+
+.mobile-control-group {
+  margin: 10px auto;
+  zoom: 150%
 }
