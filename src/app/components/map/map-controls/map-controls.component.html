@@ -16,11 +16,9 @@
           <div fxLayout="row" fxLayoutAlign="center" class="button-group-label">
             <label>Map Projection</label>
           </div>
+
           <div fxLayout="row">
-            <app-view-selector fxFlex=""
-                               (newProjection)="onNewProjection($event)"
-                               [view]="view$ | async"
-                               class="button-group">
+            <app-view-selector fxFlex="" class="button-group">
             </app-view-selector>
           </div>
         </div>
@@ -51,29 +49,11 @@
             <label>View</label>
           </div>
           <div fxLayout="row">
-            <mat-button-toggle-group class="button-group"
-                                     [value]="layerType"
-                                     name="layerType">
-
-              <mat-button-toggle class="control-mat-button-toggle"
-                                 (click)="onNewLayerType(layerTypes.SATELLITE)"
-                                 matTooltip="Satellite View"
-                                 [value]="layerTypes.SATELLITE">
-                <mat-icon class="control-icon">terrain</mat-icon>
-              </mat-button-toggle>
-
-              <mat-button-toggle class="control-mat-button-toggle"
-                                 (click)="onNewLayerType(layerTypes.STREET)"
-                                 [value]="layerTypes.STREET"
-                                 matTooltip="Street View" >
-                <mat-icon class="control-icon">directions_car</mat-icon>
-              </mat-button-toggle>
-            </mat-button-toggle-group>
+            <app-layer-selector></app-layer-selector>
           </div>
         </div>
     </div>
     <div fxLayout="row" fxFlex fxFlexAlign="end">
-
       <div *ngIf="searchType === searchTypes.DATASET" fxFlex="nogrow" fxFlexAlign="end">
         <div fxLayout="row" fxLayoutAlign="center" class="button-group-label">
           <label>Area of Interest</label>

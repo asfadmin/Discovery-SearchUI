@@ -29,6 +29,12 @@ import * as models from '@models';
 import { MapService, WktService, ScreenSizeService } from '@services';
 import * as polygonStyle from '@services/map/polygon.style';
 
+enum FullscreenControls {
+  MAP = 'Map',
+  DRAW = 'Draw',
+  NONE = 'None'
+}
+
 @Component({
   selector: 'app-map',
   templateUrl: './map.component.html',
@@ -54,11 +60,16 @@ export class MapComponent implements OnInit, OnDestroy  {
   public interactionMode$ = this.store$.select(mapStore.getMapInteractionMode);
   public mousePosition$ = this.mapService.mousePosition$;
   public banners$ = this.store$.select(uiStore.getBanners);
+  public view$ = this.store$.select(mapStore.getMapView);
+  public viewTypes = models.MapViewType;
 
   public tooltip;
   public overlay: Overlay;
   public currentOverlayPosition;
   public shouldShowOverlay: boolean;
+
+  public fullscreenControl = FullscreenControls.NONE;
+  public fc = FullscreenControls;
 
   private isMapInitialized$ = this.store$.select(mapStore.getIsMapInitialization);
   private viewType$ = combineLatest(
@@ -368,6 +379,18 @@ export class MapComponent implements OnInit, OnDestroy  {
 
   public hideOverlay(): void {
     this.overlay.setPosition(undefined);
+  }
+
+  public openDrawControl() {
+    this.fullscreenControl = FullscreenControls.DRAW;
+  }
+
+  public openMapControl() {
+    this.fullscreenControl = FullscreenControls.MAP;
+  }
+
+  public closeMobileFullscreenControls() {
+    this.fullscreenControl = FullscreenControls.NONE;
   }
 
   ngOnDestroy() {

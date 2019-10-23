@@ -19,19 +19,48 @@
             <mat-icon >clear</mat-icon>
           </button>
         </div>
-
       </mat-card>
     </div>
 
-    <div *ngIf="breakpoint !== breakpoints.MOBILE" fxLayout="row">
+    <div *ngIf="breakpoint > breakpoints.MOBILE" fxLayout="row">
       <div fxFlex="nogrow">
         <app-map-controls></app-map-controls>
       </div>
     </div>
 
-    <img *ngIf="breakpoint !== breakpoints.MOBILE"
+    <div *ngIf="breakpoint === breakpoints.MOBILE" class="mobile-map-controls">
+      <button (click)="openDrawControl()" style="margin: 4px;" color="white" mat-fab>
+        <mat-icon>edit</mat-icon>
+      </button>
+
+      <button (click)="openMapControl()" style="margin: 4px;" color="white" mat-fab>
+        <mat-icon>layers</mat-icon>
+      </button>
+    </div>
+
+    <img *ngIf="breakpoint > breakpoints.MOBILE"
       src="/assets/NASA_logo.svg" class="meatball">
 
+    <ng-container *ngIf="breakpoint === breakpoints.MOBILE">
+      <div (click)="closeMobileFullscreenControls()"
+        *ngIf="fullscreenControl !== fc.NONE"
+        class="mobile-controls-background"></div>
+
+      <div *ngIf="fullscreenControl === fc.MAP" class="mobile-map-controls-full">
+        <div style="margin: 10px auto; zoom: 135%">
+          <app-view-selector></app-view-selector>
+        </div>
+        <div *ngIf="(view$ | async) === viewTypes.EQUITORIAL" style="margin: 10px auto; zoom: 135%">
+          <app-layer-selector></app-layer-selector>
+        </div>
+      </div>
+
+      <div *ngIf="fullscreenControl === fc.DRAW" class="mobile-map-controls-full">
+        <div style="margin: 0 auto">
+
+        </div>
+      </div>
+    </ng-container>
   </div>
 </div>
 
@@ -51,3 +80,4 @@
   (mouseleave)="leaveDrawPopup()"
   id="popup" class="ol-popup" #overlay>
 </div>
+
