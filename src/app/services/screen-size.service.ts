@@ -30,9 +30,9 @@ export class ScreenSizeService {
     map(({ width, height }) => {
       if (width > 1465) {
         return models.Breakpoints.FULL;
-      } else if (width > 1140) {
+      } else if (width > 1160) {
         return models.Breakpoints.MEDIUM;
-      } else if (width > 915) {
+      } else if (width > 950) {
         return models.Breakpoints.SMALL;
       } else {
         return models.Breakpoints.MOBILE;
