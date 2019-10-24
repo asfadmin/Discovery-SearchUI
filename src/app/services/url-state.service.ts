@@ -12,7 +12,8 @@ import * as scenesStore from '@store/scenes';
 import * as mapStore from '@store/map';
 import * as uiStore from '@store/ui';
 import * as filterStore from '@store/filters';
-import { MakeSearch } from '@store/search/search.action';
+import { SetSearchType, MakeSearch } from '@store/search/search.action';
+import { getSearchType } from '@store/search/search.reducer';
 
 import * as models from '@models';
 
@@ -124,7 +125,7 @@ export class UrlStateService {
       loader: this.loadAreResultsLoaded
     }, {
       name: 'searchType',
-      source: this.store$.select(uiStore.getSearchType).pipe(
+      source: this.store$.select(getSearchType).pipe(
         skip(1),
         map(searchType => ({ searchType }))
       ),
@@ -313,7 +314,7 @@ export class UrlStateService {
   private loadSearchType = (searchType: string): void => {
     if (Object.values(models.SearchType).includes(searchType)) {
 
-      const action = new uiStore.SetSearchType(<models.SearchType>searchType);
+      const action = new SetSearchType(<models.SearchType>searchType);
       this.store$.dispatch(action);
     }
   }

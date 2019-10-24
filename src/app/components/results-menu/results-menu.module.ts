@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { ResizableModule } from 'angular-resizable-element';
 
 import { TruncateModule } from '@yellowspot/ng-truncate';
 import { FlexLayoutModule } from '@angular/flex-layout';
@@ -16,6 +17,7 @@ import { SceneDetailModule } from './scene-detail';
   declarations: [ResultsMenuComponent],
   imports: [
     CommonModule,
+    ResizableModule,
     FlexLayoutModule,
     TruncateModule,
     MatMenuModule,

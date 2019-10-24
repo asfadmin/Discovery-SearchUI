@@ -1,10 +1,11 @@
-<div class="bounds">
-  <div class="nav-item-position">
+<div
+  *ngIf="breakpoint$ | async as breakpoint"
+  class="bounds">
+  <div>
     <div class="breadcrumb-list"
+         [class.mobile-nav-bar]="breakpoint === breakpoints.MOBILE"
          fxLayout="row"
-         fxLayout.lt-lg="column"
          fxFlexFill>
-
       <div fxLayout="row"
            fxLayout.gt-lg="column">
         <div fxFlex="auto" class="logo">
@@ -12,8 +13,7 @@
         </div>
       </div>
 
-      <div fxLayout="column" fxFill>
-
+      <div *ngIf="searchType$ | async as searchType" fxLayout="column" fxFill>
         <app-dataset-nav *ngIf="searchType === searchTypes.DATASET"
           (openQueue)="onOpenDownloadQueue()">
         </app-dataset-nav>
@@ -22,7 +22,7 @@
           (openQueue)="onOpenDownloadQueue()">
         </app-list-nav>
 
-        <app-info-bar></app-info-bar>
+        <app-info-bar *ngIf="breakpoint !== breakpoints.MOBILE"></app-info-bar>
       </div>
     </div>
   </div>

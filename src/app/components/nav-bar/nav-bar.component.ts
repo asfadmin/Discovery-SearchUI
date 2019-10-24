@@ -1,14 +1,14 @@
 import { Component, OnInit, EventEmitter, Output, ViewChild, Input } from '@angular/core';
 
 import { Store } from '@ngrx/store';
-
 import { AppState } from '@store';
-import * as uiStore from '@store/ui';
+import * as searchStore from '@store/search';
 
 import { MatDialog } from '@angular/material/dialog';
 import { QueueComponent } from '@components/nav-bar/queue';
 
 import * as models from '@models/index';
+import * as services from '@services';
 
 @Component({
   selector: 'app-nav-bar',
@@ -16,26 +16,24 @@ import * as models from '@models/index';
   styleUrls: ['./nav-bar.component.scss'],
 
 })
-export class NavBarComponent implements OnInit {
+export class NavBarComponent {
   @Input() isLoading: boolean;
 
-  public searchType: models.SearchType = models.SearchType.DATASET;
+  public searchType$ = this.store$.select(searchStore.getSearchType);
   public searchTypes = models.SearchType;
+  public breakpoint$ = this.screenSize.breakpoint$;
+  public breakpoints = models.Breakpoints;
 
   constructor(
     private store$: Store<AppState>,
     private dialog: MatDialog,
+    private screenSize: services.ScreenSizeService,
   ) { }
-
-  ngOnInit() {
-    this.store$.select(uiStore.getSearchType).subscribe(
-      searchType => this.searchType = searchType
-    );
-  }
 
   public onOpenDownloadQueue(): void {
     this.dialog.open(QueueComponent, {
       id: 'dlQueueDialog',
+      maxWidth: '100vw'
     });
   }
 }

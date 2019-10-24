@@ -1,9 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ClipboardService } from 'ngx-clipboard';
 
 import { BehaviorSubject, combineLatest } from 'rxjs';
-import { map, withLatestFrom, filter } from 'rxjs/operators';
+import { map, withLatestFrom, filter, tap } from 'rxjs/operators';
 import { MatDialogRef } from '@angular/material';
+import { SubSink } from 'subsink';
 
 import * as services from '@services';
 
@@ -12,14 +13,14 @@ import * as services from '@services';
   templateUrl: './api-link-dialog.component.html',
   styleUrls: ['./api-link-dialog.component.scss']
 })
-export class ApiLinkDialogComponent implements OnInit {
+export class ApiLinkDialogComponent implements OnInit, OnDestroy {
   public amount$ = new BehaviorSubject<number>(5000);
   public format$ = new BehaviorSubject<string>('CSV');
 
   public format: string;
   public amount: number;
-
   public apiLink: string;
+  private subs = new SubSink();
 
   public formats = [
     {
@@ -56,30 +57,28 @@ export class ApiLinkDialogComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.amount$.subscribe(
-      amount => this.amount = amount
+    this.subs.add(
+      combineLatest(
+        this.amount$, this.format$
+      ).pipe(
+        tap(([amount, format]) => {
+          this.amount = amount;
+          this.format = format;
+        }),
+        filter(([amount, format]) => !!amount && !!format),
+        withLatestFrom(this.searchParams.getParams()),
+        map(([[format, amount], params]) => {
+          return {
+            ...params,
+            output: amount,
+            maxResults: format
+          };
+        }),
+        map(params => this.asfApiService.queryUrlFrom(params, {
+          apiUrl: 'https://api.daac.asf.alaska.edu'
+        }))
+      ).subscribe(apiLink => this.apiLink = apiLink)
     );
-
-    this.format$.subscribe(
-      format => this.format = format
-    );
-
-    combineLatest(
-      this.amount$, this.format$
-    ).pipe(
-      filter(([amount, format]) => !!amount && !!format),
-      withLatestFrom(this.searchParams.getParams()),
-      map(([[format, amount], params]) => {
-        return {
-          ...params,
-          output: amount,
-          maxResults: format
-        };
-      }),
-      map(params => this.asfApiService.queryUrlFrom(params, {
-        apiUrl: 'https://api.daac.asf.alaska.edu'
-      }))
-    ).subscribe(apiLink => this.apiLink = apiLink);
   }
 
   public onAmountChange(amount: string): void {
@@ -96,5 +95,9 @@ export class ApiLinkDialogComponent implements OnInit {
 
   public onCloseDownloadQueue(): void {
     this.dialogRef.close();
+  }
+
+  ngOnDestroy() {
+    this.subs.unsubscribe();
   }
 }

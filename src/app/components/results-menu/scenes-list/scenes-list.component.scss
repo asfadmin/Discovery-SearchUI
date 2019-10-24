@@ -1,8 +1,9 @@
 .scene-list {
-  height: calc(100% - 72px);
+  //height: 100%;
+  height: calc(100% - 36px);
   padding: 0;
   margin: 0;
-  overflow-y: hidden;
+  overflow-y: auto;
 }
 
 .mat-list-avatar {
@@ -21,7 +22,6 @@
 .product--thumbnail {
   width: 30%;
 }
-
 
 .product-name {
   font-weight: bold !important;
