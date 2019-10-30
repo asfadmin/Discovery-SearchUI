@@ -24,7 +24,7 @@ export const ers = {
     url: 'https://www.esa.int/ESA'
   },
   frequency: 'C-Band',
-  infoUrl: 'https://www.asf.alaska.edu/sar-data/ers-2/',
+  infoUrl: 'https://www.asf.alaska.edu/sar-data/ers-1/',
   citationUrl: 'https://www.asf.alaska.edu/how-to-cite-data/',
   productTypes: [{
     apiValue: 'L0',
