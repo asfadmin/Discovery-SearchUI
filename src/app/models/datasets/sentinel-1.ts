@@ -16,8 +16,8 @@ export const sentinel_1 = {
   ],
   apiValue: { platform: 'SENTINEL-1' },
   date: { start: new Date('2014/06/15 03:44:43 UTC') },
-  infoUrl: 'https://www.asf.alaska.edu/sentinel/',
-  citationUrl: 'https://www.asf.alaska.edu/sentinel/how-to-cite/',
+  infoUrl: 'https://www.asf.alaska.edu/sar-data-sets/sentinel-1/',
+  citationUrl: 'https://www.asf.alaska.edu/how-to-cite-data/',
   frequency: 'C-Band',
   source: {
     name: 'ESA',
