@@ -22,8 +22,8 @@ export const seasat = {
     name: 'NASA',
     url: 'https://www.nasa.gov/'
   },
-  infoUrl: 'https://www.asf.alaska.edu/seasat/',
-  citationUrl: 'https://www.asf.alaska.edu/seasat/how-to-cite/',
+  infoUrl: 'https://www.asf.alaska.edu/sar-data-sets/seasat/',
+  citationUrl: 'https://www.asf.alaska.edu/how-to-cite-data/',
   productTypes: [{
     apiValue: 'GEOTIFF',
     displayName: 'Level One GeoTIFF product'

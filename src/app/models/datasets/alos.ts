@@ -22,7 +22,7 @@ export const alos = {
     end: new Date('2011/04/21 20:23:36 UTC')
   },
   infoUrl: 'https://www.asf.alaska.edu/sar-data/palsar/',
-  citationUrl: 'https://www.asf.alaska.edu/sar-data/palsar/how-to-cite/',
+  citationUrl: 'https://www.asf.alaska.edu/how-to-cite-data/',
   frequency: 'L-Band',
   source: {
     name: 'JAXA/METI',

@@ -13,8 +13,8 @@ export const beta = {
   ],
   apiValue: { asfplatform: 'SENTINEL-1 INTERFEROGRAM (BETA)' },
   date: { start: new Date(2014, 3, 25) },
-  infoUrl: 'https://www.asf.alaska.edu/sar_datasets/sentinel-1-interferograms-beta/',
-  citationUrl: 'https://www.asf.alaska.edu/sentinel/how-to-cite/',
+  infoUrl: 'https://www.asf.alaska.edu/sar-data-sets/sentinel-1-interferograms/',
+  citationUrl: 'https://www.asf.alaska.edu/how-to-cite-data/',
   frequency: 'C-Band',
   source: {
     name: 'ESA',
