@@ -23,8 +23,8 @@ export const radarsat_1 = {
     name: 'CSA',
     url: null
   },
-  infoUrl: 'https://www.asf.alaska.edu/sar-data/radarsat-1/',
-  citationUrl: 'https://www.asf.alaska.edu/sar-data/radarsat-1/how-to-cite/',
+  infoUrl: 'https://www.asf.alaska.edu/sar-data-sets/radarsat-1-2/',
+  citationUrl: 'https://www.asf.alaska.edu/how-to-cite-data/',
   productTypes: [{
     apiValue: 'L0',
     displayName: 'Level Zero'
