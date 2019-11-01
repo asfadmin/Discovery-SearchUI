@@ -4,6 +4,7 @@ import { trigger, state, style, animate, transition } from '@angular/animations'
 
 import { map, withLatestFrom, filter, tap } from 'rxjs/operators';
 import { Store } from '@ngrx/store';
+import { ScreenSizeService } from '@services';
 
 import { AppState } from '@store';
 import * as uiStore from '@store/ui';
@@ -14,6 +15,7 @@ import * as searchStore from '@store/search';
 
 import { MapService } from '@services';
 import * as models from '@models';
+// import { Breakpoints } from '@models';
 
 @Component({
   selector: 'app-results-menu',
@@ -39,7 +41,7 @@ export class ResultsMenuComponent implements OnInit {
   public numberOfProducts$ = this.store$.select(scenesStore.getNumberOfProducts);
   public selectedProducts$ = this.store$.select(scenesStore.getSelectedSceneProducts);
 
-  public style: object = {}
+  public style: object = {};
   public innerWidth: any;
   public innerHeight: any;
 
@@ -49,9 +51,13 @@ export class ResultsMenuComponent implements OnInit {
 
   public isHidden$ = this.store$.select(uiStore.getIsHidden);
 
+  public breakpoint$ = this.screenSize.breakpoint$;
+  public breakpoints = models.Breakpoints;
+
   constructor(
     private store$: Store<AppState>,
     private mapService: MapService,
+    private screenSize: ScreenSizeService,
   ) { }
 
   public onToggleMenu(): void {
@@ -71,7 +77,7 @@ export class ResultsMenuComponent implements OnInit {
   }
 
   public validate(event: ResizeEvent): boolean {
-    const MIN_DIMENSIONS_PX: number = 50;
+    const MIN_DIMENSIONS_PX = 50;
     if (
       event.rectangle.width &&
       event.rectangle.height &&

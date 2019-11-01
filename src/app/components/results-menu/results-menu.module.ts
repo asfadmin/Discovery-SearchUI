@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { MatTabsModule } from '@angular/material';
 import { ResizableModule } from 'angular-resizable-element';
 
 import { TruncateModule } from '@yellowspot/ng-truncate';
@@ -22,6 +23,7 @@ import { SceneDetailModule } from './scene-detail';
     TruncateModule,
     MatMenuModule,
     MatSharedModule,
+    MatTabsModule,
     PipesModule,
     ScenesListModule,
     SceneFilesModule,

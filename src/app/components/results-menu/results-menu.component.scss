@@ -76,10 +76,18 @@
 }
 
 .app-scene-list {
-  height: 100%;
+  width: 33%;
+}
+
+.app-scene-list-mobile {
+  width: 100%;
 }
 
 .force-height {
+  height: auto !important;
+}
+
+.force-height-tab {
   height: auto !important;
 }
 
@@ -90,6 +98,8 @@
 .andy-resize {
   position: relative;
   display: flex;
+  border: 2px solid;
+  width: 500px;
   height: 200px;
   top: 50px;
   z-index: 999;
@@ -163,4 +173,8 @@
 
 .no-box-shadow {
   border-bottom: none !important;
+}
+
+.tab-group-mobile {
+  width: 100%;
 }
