@@ -6,15 +6,6 @@
 
 .results-menu-wrapper {
   height: 40%;
-  //overflow: hidden;
-  //width: 100%;
-  //margin: 0;
-  //padding: 0;
-  //right: 0;
-  //bottom: 0;
-  //position: fixed;
-  //z-index: 999;
-  //pointer-events: none;
 }
 
 .results-menu-scene-detail-content {
@@ -85,10 +76,18 @@
 }
 
 .app-scene-list {
-  height: 100%;
+  width: 33%;
+}
+
+.app-scene-list-mobile {
+  width: 100%;
 }
 
 .force-height {
+  height: auto !important;
+}
+
+.force-height-tab {
   height: auto !important;
 }
 
@@ -99,14 +98,10 @@
 .andy-resize {
   position: relative;
   display: flex;
-  //bottom: 0;
   border: 2px solid;
-  //padding: 20px;
   width: 500px;
   height: 200px;
   top: 50px;
-  //resize: both;
-  //overflow: auto;
   z-index: 999;
   background: #b62339 !important;
 }
@@ -115,22 +110,11 @@
   position: fixed;
   bottom: 0;
   width: 100%;
-  //min-width: 300px;
-  //height: auto;
-  //left: 0;
-  //right: 0;
-  //height: 100%;
 }
 
 .rectangle {
   position: static;
-  //top: 200px;
-  //display: flex;
-  //align-items: center;
-  //justify-content: center;
   height: 300px;
-  //max-width: 100%;
-  //max-height: 100%;
   background-color: white;
   border: solid 1px #121621;
   color: #121621;
@@ -189,4 +173,8 @@
 
 .no-box-shadow {
   border-bottom: none !important;
+}
+
+.tab-group-mobile {
+  width: 100%;
 }

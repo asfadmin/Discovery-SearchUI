@@ -40,6 +40,9 @@ export class ScenesListComponent implements OnInit, AfterViewInit, OnDestroy {
 
   private subs = new SubSink();
 
+  public breakpoint$ = this.screenSize.breakpoint$;
+  public breakpoints = models.Breakpoints;
+
   constructor(
     private store$: Store<AppState>,
     private mapService: services.MapService,
