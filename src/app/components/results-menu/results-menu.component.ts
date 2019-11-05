@@ -92,13 +92,13 @@ export class ResultsMenuComponent implements OnInit {
   public onResizeEnd(event: ResizeEvent): void {
     this.innerWidth = window.innerWidth;
     this.innerHeight = window.innerHeight;
-    let maxHeight = this.innerHeight - 50;
+    let maxHeight = this.innerHeight - 100;
     maxHeight = event.rectangle.height > maxHeight ?
                   maxHeight : event.rectangle.height;
     this.style = {
       position: 'static',
       left: `${event.rectangle.left}px`,
-      top: `${event.rectangle.top}px`,
+      // top: `${event.rectangle.top}px`,
       bottom: 0,
       width: `100%`,
       height: `${maxHeight}px`,
@@ -120,11 +120,13 @@ export class ResultsMenuComponent implements OnInit {
     const resultDiv = document.getElementById('result-div');
     const window_height = window.innerHeight;
 
-    if (resultDiv.offsetHeight < window_height) {
-      resultDiv.style.height = '100%';
-      const resultDiv_height = resultDiv.offsetHeight;
-      resultDiv.style.height = resultDiv_height + 'px';
-    } else {}
+    resultDiv.style.height = '50%';
+
+    // if (resultDiv.offsetHeight < window_height) {
+    //   resultDiv.style.height = '100%';
+    //   const resultDiv_height = resultDiv.offsetHeight;
+    //   resultDiv.style.height = resultDiv_height + 'px';
+    // } else {}
   }
 
   ngOnInit() {

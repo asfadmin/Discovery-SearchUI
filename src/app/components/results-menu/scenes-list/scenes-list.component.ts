@@ -55,7 +55,7 @@ export class ScenesListComponent implements OnInit, AfterViewInit, OnDestroy {
 
     this.subs.add(
       this.screenSize.size$.pipe(
-        map(size => size.width > 1775 ? 32 : 16),
+        map(size => size.width > 1775 ? 32 : 32),
       ).subscribe(len => this.sceneNameLen = len)
     );
 
