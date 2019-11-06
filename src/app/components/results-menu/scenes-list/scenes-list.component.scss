@@ -8,11 +8,13 @@
 
 .scene-list-desktop {
   @include scene-list-base;
+
   width: 33%;
 }
 
 .scene-list-mobile {
   @include scene-list-base;
+
   width: 100%;
 }
 
@@ -42,7 +44,6 @@
 }
 
 .action-list {
-  //position: fixed;
   height: calc(100% - 36px);
   padding-top: 0 !important;
   overflow-y: auto;

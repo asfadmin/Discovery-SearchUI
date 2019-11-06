@@ -1,71 +1,77 @@
-<div class="detail-card" *ngIf="scene">
-  <mat-card-header>
-    <mat-card-title class="detail-card-header">
-      <span>{{ scene.name }}</span>
+<div *ngIf="breakpoint$ | async as breakpoint">
+  <div *ngIf="scene" [ngClass]="(breakpoint < breakpoints.SMALL) ? 'detail-card-mobile' : 'detail-card'" >
 
-      <app-copy-to-clipboard
-        [value]="scene.name"
-        prompt="Copy scene name"
-        class="clipboard-icon"></app-copy-to-clipboard>
+    <mat-card-header>
+      <mat-card-title class="detail-card-header">
+        <span>{{ scene.name }}</span>
 
-    </mat-card-title>
-    <mat-card-subtitle>
-      <a [href]="dataset.infoUrl" target="_blank" matTooltip="Dataset" class="faint-text">{{ dataset.name }}
-        <span *ngIf="dataset.name === 'SMAP'">V{{ scene.name.slice(-1) }}</span>
-      </a> •
-      <span matTooltip="Frequency">{{ dataset.frequency }}</span>
-    </mat-card-subtitle>
-  </mat-card-header>
+        <app-copy-to-clipboard
+          [value]="scene.name"
+          prompt="Copy scene name"
+          class="clipboard-icon"></app-copy-to-clipboard>
 
-  <mat-card-actions class="action-buttons">
-    <a *ngIf="prop.isRelevant(p.BASELINE_TOOL, dataset)"
-       mat-raised-button color="accent" target="_blank"
-       href="https://baseline.asf.alaska.edu/#/baseline?granule={{ scene.name }}">
-      Baseline Tool
-    </a>
-    <a mat-raised-button
-       target="_blank"
-       [href]="dataset.citationUrl">
-      Citation
-    </a>
-    <button *ngIf="isGeoSearch() && prop.isRelevant(p.PATH, dataset) && prop.isRelevant(p.FRAME, dataset)"
-            (click)="findSimilarScenes()"
-            matTooltip="Search based on this scene's path/frame"
-            mat-raised-button color="primary">
-      More Like This
-    </button>
-  </mat-card-actions>
+      </mat-card-title>
+      <mat-card-subtitle class="subtitle">
+        <a [href]="dataset.infoUrl" target="_blank" matTooltip="Dataset" class="faint-text">{{ dataset.name }}
+          <span *ngIf="dataset.name === 'SMAP'">V{{ scene.name.slice(-1) }}</span>
+        </a> •
+        <span matTooltip="Frequency">{{ dataset.frequency }}</span>
+      </mat-card-subtitle>
+    </mat-card-header>
 
-  <mat-card-content class="content">
-    <div class="w100" fxFlex fxLayout="row" fxLayoutAlign="space-between">
-      <div class="w50">
-        <app-scene-metadata></app-scene-metadata>
+    <mat-card-content class="content">
+      <div class="w100" fxFlex fxLayout="row" fxLayoutAlign="space-between">
+        <div class="w50">
+          <app-scene-metadata></app-scene-metadata>
+        </div>
 
-        <p *ngIf="!authService.isLoggedIn" class="faint-text">
-          Accessing this data requires you to log in.
-          Some datasets also require a proposal, or agreement with a
-          EULA which is presented after log in.
-        </p>
-      </div>
-
-      <div [class.clickable]="sceneHasBrowse()" class="browse-container w40">
-        <div (click)="onOpenImage();"
-          class="img-container">
-            <img
-              class="browse-img fit-to-container"
-              [src]="(browses$ | async)[0]"
-              onerror="this.src='assets/no-browse.png'"
-              alt="Sentinel1 scene browse image">
-            <div [class.hidden]="!sceneHasBrowse()" class="img-overlay fit-to-container">
-              <mat-icon class="overlay-icon">fullscreen</mat-icon>
-            </div>
+        <div [class.clickable]="sceneHasBrowse()" class="browse-container w40">
+          <div (click)="onOpenImage();"
+            class="img-container">
+              <img
+                class="browse-img fit-to-container"
+                [src]="(browses$ | async)[0]"
+                onerror="this.src='assets/no-browse.png'"
+                alt="Sentinel1 scene browse image">
+              <div [class.hidden]="!sceneHasBrowse()" class="img-overlay fit-to-container">
+                <mat-icon class="overlay-icon">fullscreen</mat-icon>
+              </div>
+          </div>
         </div>
       </div>
+    </mat-card-content>
+
+    <div class="detail-card-info">
+      <a *ngIf="prop.isRelevant(p.BASELINE_TOOL, dataset)"
+         mat-raised-button class="mini-button" target="_blank"
+         matTooltip="Use this scene in the Baseline Tool for interferometry"
+         href="https://baseline.asf.alaska.edu/#/baseline?granule={{ scene.name }}">
+        Baseline Tool
+      </a>
+      &nbsp;&nbsp;
+      <a mat-raised-button class="mini-button"
+         target="_blank"
+         matTooltip="How to cite using this data"
+         [href]="dataset.citationUrl">
+        Citation
+      </a>
+      &nbsp;&nbsp;
+      <a *ngIf="isGeoSearch() && prop.isRelevant(p.PATH, dataset) && prop.isRelevant(p.FRAME, dataset)"
+         (click)="findSimilarScenes()"
+         matTooltip="Search based on this scene's path/frame"
+         mat-raised-button class="mini-button">
+        More Like This
+      </a>
+      <p *ngIf="!authService.isLoggedIn" class="faint-text accessing-text">
+        Accessing this data requires you to log in.
+        Some datasets also require a proposal, or agreement with a
+        EULA which is presented after log in.
+      </p>
     </div>
-  </mat-card-content>
 
-
+  </div>
 </div>
+
 
 <div *ngIf="!scene">
   <div fxFlex fxLayoutAlign="center" gdAlignColumns="center">
