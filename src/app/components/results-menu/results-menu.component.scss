@@ -173,8 +173,13 @@
 
 .no-box-shadow {
   border-bottom: none !important;
+  box-shadow: none !important;
 }
 
 .tab-group-mobile {
   width: 100%;
+}
+
+#result-div {
+  height: 50vh;
 }

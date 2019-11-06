@@ -15,7 +15,6 @@ import * as searchStore from '@store/search';
 
 import { MapService } from '@services';
 import * as models from '@models';
-// import { Breakpoints } from '@models';
 
 @Component({
   selector: 'app-results-menu',
@@ -98,7 +97,6 @@ export class ResultsMenuComponent implements OnInit {
     this.style = {
       position: 'static',
       left: `${event.rectangle.left}px`,
-      // top: `${event.rectangle.top}px`,
       bottom: 0,
       width: `100%`,
       height: `${maxHeight}px`,
@@ -120,7 +118,7 @@ export class ResultsMenuComponent implements OnInit {
     const resultDiv = document.getElementById('result-div');
     const window_height = window.innerHeight;
 
-    resultDiv.style.height = '50%';
+    resultDiv.style.height = '50vh';
 
     // if (resultDiv.offsetHeight < window_height) {
     //   resultDiv.style.height = '100%';
