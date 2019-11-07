@@ -82,15 +82,23 @@
     </mat-hint>
   </mat-form-field>
 
-  <mat-button-toggle-group
-    *ngIf="prop.isRelevant(p.SUBTYPE)"
-    (change)="onNewSubtypeSelected($event.value)"
-    [(ngModel)]="subtypes"
-    name="datasetSubtype" aria-label="Dataset Subtype" multiple>
-      <mat-button-toggle *ngFor="let subtype of dataset.subtypes"
-        [value]="subtype"
-        [matTooltip]="subtype.displayName">
+  <mat-form-field>
+    <mat-select
+      (selectionChange)="onNewSubtypeSelected($event.value)"
+      [(ngModel)]="subtypes"
+      [disabled]="!prop.isRelevant(p.SUBTYPE)"
+      placeholder="Subtype" multiple>
+      <mat-option *ngFor="let subtype of dataset.subtypes" [value]="subtype">
         {{ subtype.apiValue }}
-      </mat-button-toggle>
-  </mat-button-toggle-group>
+      </mat-option>
+    </mat-select>
+
+    <mat-hint *ngIf="prop.isRelevant(p.SUBTYPE)" align="start">
+      {{ subtypes?.length || 0 }}/{{ dataset.subtypes?.length }}
+      subtypes selected
+    </mat-hint>
+    <mat-hint *ngIf="!prop.isRelevant(p.SUBTYPE)" align="start">
+      No subtypes to select
+    </mat-hint>
+  </mat-form-field>
 </div>
