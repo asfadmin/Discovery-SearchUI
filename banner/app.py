@@ -8,6 +8,15 @@ from flask import Flask, jsonify
 app = Flask(__name__)
 
 
+@app.after_request
+def after_request(response):
+    response.headers.add('Access-Control-Allow-Origin', '*')
+    response.headers.add('Access-Control-Allow-Headers',
+                         'Content-Type,Authorization')
+    response.headers.add('Access-Control-Allow-Methods', 'GET,POST,OPTIONS')
+    return response
+
+
 @app.route('/calendar/<deployment>')
 def banners(deployment):
     calendar = calendar_url(deployment)
@@ -15,19 +24,21 @@ def banners(deployment):
 
     tz = pytz.timezone('US/Alaska')
     current = tz.localize(datetime.now())
-    banners = []
 
-    for e in c.events:
-        start, end = [
-            tz.localize(load_date_from_str(str(d))) for d in [e.begin, e.end]
-        ]
-
-        if current >= start and current <= end:
-            banners.append({
-                'name': e.name
-            })
+    banners = [
+        {'name': e.name} for e in c.events if is_current_banner(e, current, tz)
+    ]
 
     return jsonify(banners)
+
+
+def is_current_banner(event, current, tz):
+    start, end = [
+        tz.localize(load_date_from_str(str(d)))
+        for d in [event.begin, event.end]
+    ]
+
+    return current >= start and current <= end
 
 
 def load_date_from_str(date_str):
