@@ -40,6 +40,9 @@ export class ScenesListComponent implements OnInit, AfterViewInit, OnDestroy {
 
   private subs = new SubSink();
 
+  public breakpoint$ = this.screenSize.breakpoint$;
+  public breakpoints = models.Breakpoints;
+
   constructor(
     private store$: Store<AppState>,
     private mapService: services.MapService,
@@ -52,7 +55,7 @@ export class ScenesListComponent implements OnInit, AfterViewInit, OnDestroy {
 
     this.subs.add(
       this.screenSize.size$.pipe(
-        map(size => size.width > 1775 ? 32 : 16),
+        map(size => size.width > 1775 ? 32 : 32),
       ).subscribe(len => this.sceneNameLen = len)
     );
 

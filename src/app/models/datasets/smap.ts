@@ -11,13 +11,13 @@ export const smap = {
   ],
   apiValue: { platform: 'SMAP' },
   date: { start: new Date('2015/04/13 17:57:07 UTC') },
-  infoUrl: 'https://www.asf.alaska.edu/smap/',
+  infoUrl: 'https://www.asf.alaska.edu/sar-data-sets/soil-moisture-active-passive-smap-mission/',
   frequency: 'L-Band',
   source: {
     name: 'NASA',
     url: 'https://www.nasa.gov/'
   },
-  citationUrl: 'https://www.asf.alaska.edu/smap/how-to-cite/',
+  citationUrl: 'hhttps://www.asf.alaska.edu/how-to-cite-data/',
   productTypes: [{
     apiValue: 'L1A_Radar_RO_HDF5',
     displayName: 'L1A Radar Receive Only Product'

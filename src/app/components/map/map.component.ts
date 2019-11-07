@@ -22,12 +22,19 @@ import { SubSink } from 'subsink';
 
 import { AppState } from '@store';
 import * as scenesStore from '@store/scenes';
+import * as searchStore from '@store/search';
 import * as mapStore from '@store/map';
 import * as uiStore from '@store/ui';
 
 import * as models from '@models';
 import { MapService, WktService, ScreenSizeService } from '@services';
 import * as polygonStyle from '@services/map/polygon.style';
+
+enum FullscreenControls {
+  MAP = 'Map',
+  DRAW = 'Draw',
+  NONE = 'None'
+}
 
 @Component({
   selector: 'app-map',
@@ -54,11 +61,16 @@ export class MapComponent implements OnInit, OnDestroy  {
   public interactionMode$ = this.store$.select(mapStore.getMapInteractionMode);
   public mousePosition$ = this.mapService.mousePosition$;
   public banners$ = this.store$.select(uiStore.getBanners);
+  public view$ = this.store$.select(mapStore.getMapView);
+  public viewTypes = models.MapViewType;
 
   public tooltip;
   public overlay: Overlay;
   public currentOverlayPosition;
   public shouldShowOverlay: boolean;
+
+  public fullscreenControl = FullscreenControls.NONE;
+  public fc = FullscreenControls;
 
   private isMapInitialized$ = this.store$.select(mapStore.getIsMapInitialization);
   private viewType$ = combineLatest(
@@ -68,6 +80,9 @@ export class MapComponent implements OnInit, OnDestroy  {
 
   public breakpoint$ = this.screenSize.breakpoint$;
   public breakpoints = models.Breakpoints;
+
+  public searchType: models.SearchType;
+  public searchTypes = models.SearchType;
 
   private subs = new SubSink();
 
@@ -79,6 +94,12 @@ export class MapComponent implements OnInit, OnDestroy  {
   ) {}
 
   ngOnInit(): void {
+    this.subs.add(
+      this.store$.select(searchStore.getSearchType).subscribe(
+        searchType => this.searchType = searchType
+      )
+    );
+
     this.subs.add(
       combineLatest(
         this.store$.select(uiStore.getIsResultsMenuOpen),
@@ -368,6 +389,18 @@ export class MapComponent implements OnInit, OnDestroy  {
 
   public hideOverlay(): void {
     this.overlay.setPosition(undefined);
+  }
+
+  public openDrawControl() {
+    this.fullscreenControl = FullscreenControls.DRAW;
+  }
+
+  public openMapControl() {
+    this.fullscreenControl = FullscreenControls.MAP;
+  }
+
+  public closeMobileFullscreenControls() {
+    this.fullscreenControl = FullscreenControls.NONE;
   }
 
   ngOnDestroy() {

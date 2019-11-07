@@ -31,6 +31,8 @@ export class SceneDetailComponent implements OnInit, OnDestroy {
   public scene: models.CMRProduct;
   public sceneLen: number;
   public p = models.Props;
+  public breakpoint$ = this.screenSize.breakpoint$;
+  public breakpoints = models.Breakpoints;
 
   private subs = new SubSink();
 

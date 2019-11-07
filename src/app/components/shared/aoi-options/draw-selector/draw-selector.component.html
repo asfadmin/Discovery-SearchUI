@@ -1,9 +1,8 @@
 <mat-button-toggle-group
-    [value]="!isDisabled ? drawMode : undefined" aria-label="Font Style">
+    [value]="drawMode" aria-label="Font Style">
   <mat-button-toggle
     (click)="onPointSelected()"
     [value]="types.POINT"
-    [disabled]="isDisabled"
     class="control-mat-button-toggle"
     matTooltip="Point draw">
     <mat-icon class="draw-icon">place</mat-icon>
@@ -12,7 +11,6 @@
   <mat-button-toggle
     (click)="onLineStringSelected()"
     [value]="types.LINESTRING"
-    [disabled]="isDisabled"
     class="control-mat-button-toggle"
     matTooltip="Line draw">
     <mat-icon class="draw-icon">timeline</mat-icon>
@@ -21,7 +19,6 @@
   <mat-button-toggle
     (click)="onPolygonSelected()"
     [value]="types.POLYGON"
-    [disabled]="isDisabled"
     class="control-mat-button-toggle"
     matTooltip="Polygon draw">
     <span class="mdi mdi-18px mdi-vector-polygon"></span>
@@ -30,7 +27,6 @@
   <mat-button-toggle
     (click)="onBoxSelected()"
     [value]="types.BOX"
-    [disabled]="isDisabled"
     class="control-mat-button-toggle"
     matTooltip="Box Draw">
     <mat-icon class="draw-icon">format_shapes</mat-icon>

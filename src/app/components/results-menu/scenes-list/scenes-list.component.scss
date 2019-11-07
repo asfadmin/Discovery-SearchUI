@@ -1,9 +1,21 @@
-.scene-list {
-  //height: 100%;
-  height: calc(100% - 36px);
+@mixin scene-list-base {
+  position: fixed;
+  height: calc(100%);
   padding: 0;
   margin: 0;
   overflow-y: auto;
+}
+
+.scene-list-desktop {
+  @include scene-list-base;
+
+  width: 33%;
+}
+
+.scene-list-mobile {
+  @include scene-list-base;
+
+  width: 100%;
 }
 
 .mat-list-avatar {
@@ -13,10 +25,6 @@
 .scroll-viewport-height {
   height: 100%;
   width: 100%;
-}
-
-.action-list {
-  padding-top: 0 !important;
 }
 
 .product--thumbnail {
@@ -33,4 +41,10 @@
 
 .selected .ml-2 {
   color: red;
+}
+
+.action-list {
+  height: calc(100% - 36px);
+  padding-top: 0 !important;
+  overflow-y: auto;
 }
