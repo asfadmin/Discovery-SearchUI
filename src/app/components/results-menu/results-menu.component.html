@@ -1,4 +1,6 @@
-<div class="rectangle-wrapper" *ngIf="breakpoint$ | async as breakpoint">
+<div class="rectangle-wrapper" *ngIf="breakpoint$ | async as breakpoint"
+     [@changeMenuY]="(isResultsMenuOpen$ | async) ? 'shown' : 'hidden'"
+  >
 
   <div
     id = "result-div"
@@ -10,7 +12,6 @@
     (resizeEnd)="onResizeEnd($event)"
   >
     <div
-      [@changeMenuY]="(isResultsMenuOpen$ | async) ? 'shown' : 'hidden'"
       [class.hidden]="(isHidden$ | async) || (areNoScenes$  | async)"
       class="result-height"
     >

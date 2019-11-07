@@ -22,13 +22,21 @@ import * as models from '@models';
   styleUrls: ['./results-menu.component.scss'],
   animations: [
     trigger('changeMenuY', [
-      state('shown', style({ transform: 'translateY(0%)'
+      state('shown', style({ display: 'block'
       })),
       state('hidden',   style({
-        transform: 'translateY(100%) translateY(-36px)'
+        display: 'none'
       })),
       transition('shown <=> hidden', animate('200ms ease-out'))
     ]),
+    // trigger('changeMenuY', [
+    //   state('shown', style({ transform: 'translateY(0%)'
+    //   })),
+    //   state('hidden',   style({
+    //     transform: 'translateY(100%) translateY(-36px)'
+    //   })),
+    //   transition('shown <=> hidden', animate('200ms ease-out'))
+    // ]),
   ],
 })
 export class ResultsMenuComponent implements OnInit {
