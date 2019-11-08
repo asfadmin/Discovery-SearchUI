@@ -353,7 +353,8 @@ export class MapComponent implements OnInit, OnDestroy  {
   }
 
   private scenesToFeature(scenes: models.CMRProduct[], projection: string) {
-    return scenes
+    console.log(scenes.length);
+    const features = scenes
       .map(g => {
         const wkt = g.metadata.polygon;
         const feature = this.wktService.wktToFeature(wkt, projection);
@@ -361,6 +362,8 @@ export class MapComponent implements OnInit, OnDestroy  {
 
         return feature;
       });
+
+    return features;
   }
 
   private featuresToSource(features): VectorSource {

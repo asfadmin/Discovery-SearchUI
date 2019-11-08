@@ -6,8 +6,6 @@ export enum ScenesActionType {
   SET_SCENES = '[Granuels] Set Scenes',
   CLEAR = '[Granuels] Clear Scenes',
 
-  SET_FOCUSED_SCENE = '[Scenes] Set Focused Scene',
-  CLEAR_FOCUSED_SCENE = '[Scenes] Clear Focused Scene',
   SET_RESULTS_LOADED = '[Scenes] Set Results Loaded',
 
   SET_SELECTED_SCENE = '[Scenes] Set Selected Scene',
