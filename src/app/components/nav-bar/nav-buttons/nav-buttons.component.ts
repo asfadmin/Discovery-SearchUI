@@ -11,6 +11,7 @@ import { CMRProduct, Breakpoints } from '@models';
   styleUrls: ['./nav-buttons.component.scss']
 })
 export class NavButtonsComponent implements OnInit {
+  anio: number = new Date().getFullYear();
   public asfWebsiteUrl = 'https://www.asf.alaska.edu';
   public maturity = 'prod';
   private maturityKey = 'search-api-maturity';

@@ -133,6 +133,32 @@
       Select API Maturity
   </button>
 
+  <ng-container *ngIf="(breakpoint$ | async) === breakpoints.MOBILE">
+    <hr class="menu-hr">
+
+    <button
+      [matMenuTriggerFor]="copywriteMenu"
+      mat-menu-item>
+      Copywrite
+    </button>
+
+    <button
+      [matMenuTriggerFor]="asfMenu"
+      mat-menu-item>
+     ASF
+    </button>
+
+    <mat-menu #asfMenu="matMenu">
+      <a mat-menu-item href="https://www.asf.alaska.edu/contact" target="_blank">Contact</a>
+      <a mat-menu-item href="https://www.alaska.edu/nondiscrimination" target="_blank">Non-Discrimination</a>
+    </mat-menu>
+
+    <mat-menu #copywriteMenu="matMenu">
+      <a mat-menu-item href="https://www.asf.alaska.edu/" target="_blank">© {{anio}} ASF</a>
+      <a mat-menu-item href="https://www.maptiler.com/copyright/" target="_blank">© MapTiler</a>
+      <a mat-menu-item href="https://www.openstreetmap.org/copyright" target="_blank">© OpenStreetMap contributors</a>
+    </mat-menu>
+  </ng-container>
 </mat-menu>
 
 <mat-menu #thematicDatasets="matMenu">
