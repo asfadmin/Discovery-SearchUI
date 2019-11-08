@@ -1,4 +1,6 @@
-<div class="browse-dialog">
+<div class="browse-dialog"
+     *ngIf="breakpoint$ | async as breakpoint"
+    >
   <div fxLayout="row" class="dialog-header">
     <div *ngIf="scene$ | async as scene" class="dialog-header--layout">
       <div fxFlex="35px" fxLayoutAlign="start"
@@ -13,7 +15,7 @@
       </div>
       <div fxFlex="">
         <h3 class="mp0">
-          {{ scene.name }}
+          <span [ngClass]="{'mp0-ellipsis': breakpoint < breakpoints.SMALL}">{{ scene.name }}</span>
         </h3>
         <span class="faint-text">
           <a *ngIf="dataset" [href]="dataset.infoUrl"
@@ -22,7 +24,7 @@
           </a> • {{ scene.metadata.date | fullDate }}
         </span>
       </div>
-      <div>
+      <div class="close-icon">
         <button (click)="closeDialog()" mat-icon-button>
           <mat-icon class="close-button">close</mat-icon>
         </button>
@@ -30,7 +32,8 @@
     </div>
   </div>
 
-  <div class="main-window">
+
+  <div [ngClass]="(breakpoint < breakpoints.SMALL) ? 'main-window-mobile' : 'main-window'">
     <div id="browse-map" class="browse-map--size">
     </div>
 
@@ -39,9 +42,10 @@
     </div>
   </div>
 
-  <app-browse-list class="browse-list"></app-browse-list>
+  <ng-container *ngIf="breakpoint > breakpoints.MOBILE">
+    <app-browse-list class="browse-list"></app-browse-list>
 
-  <div *ngIf="!isShow" class="scene-detail-wrapper">
+    <div *ngIf="!isShow" class="scene-detail-wrapper">
 
     <div class="scene-detail">
 
@@ -85,6 +89,8 @@
 
     </div>
   </div>
+  </ng-container>
+
 
 </div>
 

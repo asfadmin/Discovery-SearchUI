@@ -11,7 +11,8 @@ import * as queueStore from '@store/queue';
 import * as uiStore from '@store/ui';
 
 import * as models from '@models';
-import { BrowseMapService, DatasetForProductService } from '@services';
+import { BrowseMapService, DatasetForProductService, ScreenSizeService } from '@services';
+import * as services from '@services/index';
 
 @Component({
   selector: 'app-image-dialog',
@@ -30,6 +31,9 @@ export class ImageDialogComponent implements OnInit, AfterViewInit, OnDestroy {
   public isImageLoading = false;
   public isShow = false;
 
+  public breakpoint$ = this.screenSize.breakpoint$;
+  public breakpoints = models.Breakpoints;
+
   private image;
   private subs = new SubSink();
 
@@ -37,7 +41,8 @@ export class ImageDialogComponent implements OnInit, AfterViewInit, OnDestroy {
     private store$: Store<AppState>,
     public dialogRef: MatDialogRef<ImageDialogComponent>,
     private browseMap: BrowseMapService,
-    private datasetForProduct: DatasetForProductService
+    private datasetForProduct: DatasetForProductService,
+    private screenSize: services.ScreenSizeService
   ) { }
 
   ngOnInit() {
