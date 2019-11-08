@@ -33,6 +33,7 @@ export class SceneDetailComponent implements OnInit, OnDestroy {
   public p = models.Props;
   public breakpoint$ = this.screenSize.breakpoint$;
   public breakpoints = models.Breakpoints;
+  public isImageLoading = false;
 
   private subs = new SubSink();
 
@@ -46,7 +47,9 @@ export class SceneDetailComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit() {
-    const scene$ = this.store$.select(scenesStore.getSelectedScene);
+    const scene$ = this.store$.select(scenesStore.getSelectedScene).pipe(
+      tap(_ => this.isImageLoading = true)
+    );
 
     this.subs.add(
       this.screenSize.size$.pipe(
