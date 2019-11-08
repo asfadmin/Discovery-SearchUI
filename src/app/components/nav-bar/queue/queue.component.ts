@@ -9,7 +9,7 @@ import { AppState } from '@store';
 import * as queueStore from '@store/queue';
 
 import { ScreenSizeService } from '@services';
-import { CMRProduct, AsfApiOutputFormat } from '@models';
+import { CMRProduct, AsfApiOutputFormat, Breakpoints } from '@models';
 import { MatDialogRef } from '@angular/material';
 import { SubSink } from 'subsink';
 
@@ -26,6 +26,8 @@ export class QueueComponent implements OnInit, OnDestroy {
   private productNameLen: number;
 
   public copyIcon = faCopy;
+  public breakpoint$ = this.screenSize.breakpoint$;
+  public breakpoints = Breakpoints;
 
   public previousQueue: any[] | null = null;
   public areAnyProducts = false;

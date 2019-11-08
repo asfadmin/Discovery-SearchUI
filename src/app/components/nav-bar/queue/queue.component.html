@@ -62,53 +62,74 @@
       <div fxFlex="25" class="dl-clear-button">
           <button *ngIf="previousQueue === null"
                   (click)="onClearQueue(products)" mat-button>
-            <mat-icon>delete</mat-icon>
-            <span>Clear Queue</span>
+            <mat-icon style="margin-right: 5px">delete</mat-icon>
+            <span>Clear</span>
           </button>
 
         <button *ngIf="previousQueue !== null"
                 (click)="onRestoreQueue(previousQueue)" mat-button>
-          <mat-icon style="margin-right: 3px">undo</mat-icon>
-          <span>Restore Queue</span>
+          <mat-icon style="margin-right: 5px">undo</mat-icon>
+          <span>Restore</span>
         </button>
       </div>
-      <div *ngIf="areAnyProducts" fxFlex="75" class="dl-download-buttons">
-        <button (click)="onCopyQueue(products)" mat-button [disabled]="!areAnyProducts" class="btn-primary">
-          Copy File IDs
-          <fa-icon style="margin-left: 5px" [icon]="copyIcon"></fa-icon>
-        </button>
-
-        <button mat-button [matMenuTriggerFor]="data" [disabled]="!areAnyProducts" class="btn-primary">
-          Data Download
-          <mat-icon>arrow_drop_up</mat-icon>
-        </button>
-        <mat-menu #data="matMenu" yPosition="above">
-          <button mat-menu-item (click)="onMakeDownloadScript()">
-            Download Python Script (.py)
-          </button>
-          <button mat-menu-item (click)="onMetalinkDownload()">
-            Metadata (metalink)
-          </button>
-        </mat-menu>
-
-        <button mat-button [matMenuTriggerFor]="metadata" [disabled]="!areAnyProducts" class="btn-primary">
-          Metadata Download
-          <mat-icon>arrow_drop_up</mat-icon>
-        </button>
-        <mat-menu #metadata="matMenu" yPosition="above">
-          <button mat-menu-item (click)="onCsvDownload()">
-            Metadata (csv)
+      <ng-container *ngIf="breakpoint$ | async as breakpoint">
+        <div *ngIf="areAnyProducts" fxFlex="75" class="dl-download-buttons">
+          <button (click)="onCopyQueue(products)" mat-button [disabled]="!areAnyProducts" class="btn-primary">
+            <span *ngIf="breakpoint > breakpoints.MOBILE">Copy File IDs</span>
+            <fa-icon style="margin-left: 5px" [icon]="copyIcon"></fa-icon>
           </button>
 
-          <button mat-menu-item (click)="onKmlDownload()">
-            Metadata (kml)
-          </button>
+          <ng-container *ngIf="breakpoint > breakpoints.MOBILE">
+            <button mat-button [matMenuTriggerFor]="dataMenu" [disabled]="!areAnyProducts" class="btn-primary">
+              Data Download
+              <mat-icon>arrow_drop_up</mat-icon>
+            </button>
+            <button mat-button [matMenuTriggerFor]="metadataMenu" [disabled]="!areAnyProducts" class="btn-primary">
+              Metadata Download
+              <mat-icon>arrow_drop_up</mat-icon>
+            </button>
+          </ng-container>
 
-          <button mat-menu-item (click)="onGeojsonDownload()">
-            Metadata (geojson)
-          </button>
-        </mat-menu>
-      </div>
+          <ng-container *ngIf="breakpoint === breakpoints.MOBILE">
+            <button mat-button [matMenuTriggerFor]="typesMenu">
+              Downloads
+              <mat-icon>arrow_drop_up</mat-icon>
+            </button>
+
+            <mat-menu #typesMenu="matMenu">
+              <button mat-menu-item [matMenuTriggerFor]="dataMenu" [disabled]="!areAnyProducts" class="btn-primary">
+                Data
+              </button>
+              <button mat-menu-item [matMenuTriggerFor]="metadataMenu" class="btn-primary">
+                Metadata
+              </button>
+            </mat-menu>
+          </ng-container>
+
+          <mat-menu #dataMenu="matMenu" yPosition="above">
+            <button mat-menu-item (click)="onMakeDownloadScript()">
+              Download Python Script (.py)
+            </button>
+            <button mat-menu-item (click)="onMetalinkDownload()">
+              Metadata (metalink)
+            </button>
+          </mat-menu>
+
+          <mat-menu #metadataMenu="matMenu" yPosition="above">
+            <button mat-menu-item (click)="onCsvDownload()">
+              Metadata (csv)
+            </button>
+
+            <button mat-menu-item (click)="onKmlDownload()">
+              Metadata (kml)
+            </button>
+
+            <button mat-menu-item (click)="onGeojsonDownload()">
+              Metadata (geojson)
+            </button>
+          </mat-menu>
+        </div>
+      </ng-container>
     </ng-container>
   </div>
 </mat-card>
