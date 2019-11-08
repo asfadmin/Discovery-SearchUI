@@ -6,6 +6,7 @@ import { SubSink } from 'subsink';
 import { Store } from '@ngrx/store';
 import { AppState } from '@store';
 import * as mapStore from '@store/map';
+import * as filterStore from '@store/filters';
 
 import { SearchType, MapInteractionModeType } from '@models';
 import * as services from '@services';
@@ -52,6 +53,11 @@ export class InteractionSelectorComponent implements OnInit, OnDestroy {
     this.clearButton.checked = false;
     this.mapService.clearDrawLayer();
     this.store$.dispatch(new mapStore.SetMapInteractionMode(MapInteractionModeType.DRAW));
+
+    this.store$.dispatch(new filterStore.SetPathStart(null));
+    this.store$.dispatch(new filterStore.SetPathEnd(null));
+    this.store$.dispatch(new filterStore.SetFrameStart(null));
+    this.store$.dispatch(new filterStore.SetFrameEnd(null));
   }
 
   ngOnDestroy() {
