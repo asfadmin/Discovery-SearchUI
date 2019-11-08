@@ -119,7 +119,7 @@ export class ScenesListComponent implements OnInit, AfterViewInit, OnDestroy {
         map(([selected, scenes]) => scenes.indexOf(selected)),
       ).subscribe(
         idx => {
-          if (!this.selectedFromList) {
+          if (this.scroll && !this.selectedFromList) {
             this.scrollTo(idx);
           }
 
@@ -129,7 +129,9 @@ export class ScenesListComponent implements OnInit, AfterViewInit, OnDestroy {
     );
 
     this.subs.add(
-      this.store$.select(searchStore.getIsLoading).subscribe(
+      this.store$.select(searchStore.getIsLoading).pipe(
+        filter(_ => !!this.scroll)
+      ).subscribe(
         _ => this.scroll.scrollToOffset(0)
       )
     );
