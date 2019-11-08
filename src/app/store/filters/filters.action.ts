@@ -16,8 +16,10 @@ export enum FiltersActionType {
 
   SET_PATH_START = '[Filters-Path] Set Path Start',
   SET_PATH_END = '[Filters-Path] Set Path End',
+  CLEAR_PATH_RANGE = '[Filter-Path] Clear Path Range',
   SET_FRAME_START = '[FIlters-Frame] Set Frame Start',
   SET_FRAME_END = '[Filters-Frame] Set Frame End',
+  CLEAR_FRAME_RANGE = '[Filter-Frame] Clear Frame Range',
 
   SET_PRODUCT_TYPES = '[Filters-Prodcut-Type] Set DATASET Product Types',
 
@@ -115,6 +117,10 @@ export class SetPathEnd implements Action {
   constructor(public payload: number) {}
 }
 
+export class ClearPathRange implements Action {
+  public readonly type = FiltersActionType.CLEAR_PATH_RANGE;
+}
+
 export class SetFrameStart implements Action {
   public readonly type = FiltersActionType.SET_FRAME_START;
 
@@ -125,6 +131,10 @@ export class SetFrameEnd implements Action {
   public readonly type = FiltersActionType.SET_FRAME_END;
 
   constructor(public payload: number) {}
+}
+
+export class ClearFrameRange implements Action {
+  public readonly type = FiltersActionType.CLEAR_FRAME_RANGE;
 }
 
 export class SetProductTypes implements Action {
@@ -240,8 +250,10 @@ export type FiltersActions =
   | UseSearchPolygon
   | SetPathStart
   | SetPathEnd
+  | ClearPathRange
   | SetFrameStart
   | SetFrameEnd
+  | ClearFrameRange
   | SetProductTypes
   | SetListSearchType
   | SetSearchList

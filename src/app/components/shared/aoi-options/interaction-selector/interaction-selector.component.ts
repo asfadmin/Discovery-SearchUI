@@ -52,12 +52,10 @@ export class InteractionSelectorComponent implements OnInit, OnDestroy {
   public onClearSelected = () => {
     this.clearButton.checked = false;
     this.mapService.clearDrawLayer();
-    this.store$.dispatch(new mapStore.SetMapInteractionMode(MapInteractionModeType.DRAW));
 
-    this.store$.dispatch(new filterStore.SetPathStart(null));
-    this.store$.dispatch(new filterStore.SetPathEnd(null));
-    this.store$.dispatch(new filterStore.SetFrameStart(null));
-    this.store$.dispatch(new filterStore.SetFrameEnd(null));
+    this.store$.dispatch(new mapStore.SetMapInteractionMode(MapInteractionModeType.DRAW));
+    this.store$.dispatch(new filterStore.ClearPathRange());
+    this.store$.dispatch(new filterStore.ClearFrameRange());
   }
 
   ngOnDestroy() {

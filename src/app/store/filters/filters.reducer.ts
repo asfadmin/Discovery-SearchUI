@@ -184,6 +184,16 @@ export function filtersReducer(state = initState, action: FiltersActions): Filte
       };
     }
 
+    case FiltersActionType.CLEAR_PATH_RANGE: {
+      return {
+        ...state,
+        pathRange: {
+          start: null,
+          end: null
+        }
+      };
+    }
+
     case FiltersActionType.SET_FRAME_START: {
       return {
         ...state,
@@ -200,6 +210,16 @@ export function filtersReducer(state = initState, action: FiltersActions): Filte
         frameRange: {
           ...state.frameRange,
           end: action.payload
+        }
+      };
+    }
+
+    case FiltersActionType.CLEAR_FRAME_RANGE: {
+      return {
+        ...state,
+        frameRange: {
+          start: null,
+          end: null
         }
       };
     }
