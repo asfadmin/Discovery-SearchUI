@@ -13,6 +13,7 @@ import * as searchStore from '@store/search';
 import * as scenesStore from '@store/scenes';
 import * as queueStore from '@store/queue';
 
+import { faCopy } from '@fortawesome/free-solid-svg-icons';
 import { CdkVirtualScrollViewport } from '@angular/cdk/scrolling';
 
 import * as services from '@services';
@@ -34,6 +35,7 @@ export class ScenesListComponent implements OnInit, AfterViewInit, OnDestroy {
   public numberOfQueue: {[scene: string]: [number, number]};
   public allQueued: {[scene: string]: boolean};
   public selected: string;
+  public copyIcon = faCopy;
 
   public selectedFromList = false;
   public hoveredSceneName: string | null = null;
@@ -119,7 +121,7 @@ export class ScenesListComponent implements OnInit, AfterViewInit, OnDestroy {
         map(([selected, scenes]) => scenes.indexOf(selected)),
       ).subscribe(
         idx => {
-          if (!this.selectedFromList) {
+          if (this.scroll && !this.selectedFromList) {
             this.scrollTo(idx);
           }
 
@@ -129,7 +131,9 @@ export class ScenesListComponent implements OnInit, AfterViewInit, OnDestroy {
     );
 
     this.subs.add(
-      this.store$.select(searchStore.getIsLoading).subscribe(
+      this.store$.select(searchStore.getIsLoading).pipe(
+        filter(_ => !!this.scroll)
+      ).subscribe(
         _ => this.scroll.scrollToOffset(0)
       )
     );
