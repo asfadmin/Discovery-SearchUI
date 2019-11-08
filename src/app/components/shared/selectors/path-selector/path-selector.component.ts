@@ -134,6 +134,11 @@ export class PathSelectorComponent implements OnInit, OnDestroy {
     this.store$.dispatch(action);
   }
 
+  public onClear(): void {
+    this.store$.dispatch(new filtersStore.ClearPathRange());
+    this.store$.dispatch(new filtersStore.ClearFrameRange());
+  }
+
   private handlePathFrameErrors(): void {
     this.subs.add(
       this.inputErrors$.pipe(
