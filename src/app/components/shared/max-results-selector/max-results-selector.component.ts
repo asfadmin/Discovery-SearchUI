@@ -52,6 +52,12 @@ export class MaxResultsSelectorComponent implements OnInit, OnDestroy {
         amount => this.currentSearchAmount = amount
       )
     );
+
+    this.subs.add(
+      this.store$.select(scenesStore.getAreResultsLoaded).subscribe(
+        areLoaded => this.areResultsLoaded = areLoaded
+      )
+    );
   }
 
   public onNewMaxResults(maxResults: number): void {
