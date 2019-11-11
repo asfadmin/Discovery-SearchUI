@@ -96,7 +96,7 @@
             class="tab-group-mobile">
             <!-- SCENE LIST -->
             <mat-tab label="Scenes">
-              <mat-card class="card-spacing results-menu--column"
+              <mat-card class="card-spacing results-menu--column force-height"
                         fxFlex="100" fxFlexFill>
                 <mat-card-subtitle *ngIf="numberOfScenes$ | async as numberOfScenes" class="header">
                   <div style="display: flex; justify-content: center;">
@@ -128,10 +128,12 @@
                     </div>
                   </div>
                 </mat-card-subtitle>
-                <div class="app-scene-list-mobile">
-                  <app-scenes-list [resize$]="resize$">
-                  </app-scenes-list>
-                </div>
+                <mat-card-content>
+                  <div class="app-scene-list">
+                    <app-scenes-list [resize$]="resize$">
+                    </app-scenes-list>
+                  </div>
+                </mat-card-content>
               </mat-card>
             </mat-tab>
 

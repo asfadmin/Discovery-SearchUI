@@ -121,6 +121,8 @@ export class ResultsMenuComponent implements OnInit {
       width: `100%`,
       height: `${maxHeight}px`,
     };
+
+    this.resize$.next();
   }
 
   public onFinalResize() {
