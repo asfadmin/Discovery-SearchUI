@@ -2,6 +2,7 @@ import { Component, HostListener, OnInit } from '@angular/core';
 import { ResizeEvent } from 'angular-resizable-element';
 import { trigger, state, style, animate, transition } from '@angular/animations';
 
+import { Subject } from 'rxjs';
 import { map, withLatestFrom, filter, tap, pairwise } from 'rxjs/operators';
 import { Store } from '@ngrx/store';
 import { ScreenSizeService } from '@services';
@@ -50,6 +51,7 @@ export class ResultsMenuComponent implements OnInit {
   );
 
   public isHidden$ = this.store$.select(uiStore.getIsHidden);
+  public resize$ = new Subject<void>();
 
   public breakpoint$ = this.screenSize.breakpoint$;
   public breakpoints = models.Breakpoints;
@@ -119,6 +121,8 @@ export class ResultsMenuComponent implements OnInit {
       width: `100%`,
       height: `${maxHeight}px`,
     };
+
+    this.resize$.next();
   }
 
   private queueAllProducts(products: models.CMRProduct[]): void {

@@ -76,11 +76,7 @@
 }
 
 .app-scene-list {
-  width: 33%;
-}
-
-.app-scene-list-mobile {
-  width: 100%;
+  height: calc(100% - 36px);
 }
 
 .force-height {

@@ -1,8 +1,7 @@
-<span  *ngIf="breakpoint$ | async as breakpoint">
-  <mat-card [ngClass]="(breakpoint < breakpoints.SMALL) ? 'scene-list-mobile' : 'scene-list-desktop'">
-    <mat-action-list class="action-list">
-
-      <div *ngFor="let scene of scenes$ | async" class="scene-item-height">
+ <ng-container *ngIf="breakpoint$ | async as breakpoint">
+  <mat-action-list style="height: 100%; margin: 0; padding: 0">
+    <cdk-virtual-scroll-viewport class="scroll-viewport-height" itemSize="72">
+      <div *cdkVirtualFor="let scene of scenes$ | async">
         <button
           (mouseenter)="onSetFocusedScene(scene)"
           (mouseleave) ="onClearFocusedScene()"
@@ -57,6 +56,6 @@
           <span style="margin-left: 10px"> {{ numberOfQueue[scene.groupId] }} </span>
         </button>
       </div>
-    </mat-action-list>
-</mat-card>
-</span>
+    </cdk-virtual-scroll-viewport>
+  </mat-action-list>
+</ng-container>

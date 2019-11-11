@@ -3,7 +3,7 @@ import {
   AfterViewInit, OnDestroy
 } from '@angular/core';
 
-import { fromEvent, combineLatest } from 'rxjs';
+import { fromEvent, combineLatest, Observable } from 'rxjs';
 import { tap, withLatestFrom, filter, map, debounceTime } from 'rxjs/operators';
 import { SubSink } from 'subsink';
 
@@ -27,7 +27,8 @@ import * as models from '@models';
   encapsulation: ViewEncapsulation.None
 })
 export class ScenesListComponent implements OnInit, AfterViewInit, OnDestroy {
-  @ViewChild(CdkVirtualScrollViewport, { static: true }) scroll: CdkVirtualScrollViewport;
+  @ViewChild(CdkVirtualScrollViewport, { static: false }) scroll: CdkVirtualScrollViewport;
+  @Input() resize$: Observable<void>;
 
   public scenes$ = this.store$.select(scenesStore.getScenes);
   public sceneNameLen: number;
@@ -113,6 +114,14 @@ export class ScenesListComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   ngAfterViewInit() {
+    this.resize$.subscribe(
+      _ => {
+        console.log(this.scroll.getViewportSize());
+        this.scroll.checkViewportSize();
+        console.log(this.scroll.getViewportSize())
+      }
+    );
+
     this.subs.add(
       this.store$.select(scenesStore.getSelectedScene).pipe(
         withLatestFrom(this.scenes$),
@@ -121,7 +130,7 @@ export class ScenesListComponent implements OnInit, AfterViewInit, OnDestroy {
         map(([selected, scenes]) => scenes.indexOf(selected)),
       ).subscribe(
         idx => {
-          if (this.scroll && !this.selectedFromList) {
+          if (!this.selectedFromList) {
             this.scrollTo(idx);
           }
 

@@ -3,7 +3,7 @@
   >
 
   <div
-    id = "result-div"
+    id="result-div"
     [ngStyle]="style"
     mwlResizable
     [validateResize]="validate"
@@ -61,7 +61,7 @@
                   </div>
                 </mat-card-subtitle>
                 <div class="app-scene-list">
-                  <app-scenes-list>
+                  <app-scenes-list [resize$]="resize$">
                   </app-scenes-list>
                 </div>
               </mat-card>
@@ -128,7 +128,7 @@
                   </div>
                 </mat-card-subtitle>
                 <div class="app-scene-list-mobile">
-                  <app-scenes-list>
+                  <app-scenes-list [resize$]="resize$">
                   </app-scenes-list>
                 </div>
               </mat-card>
