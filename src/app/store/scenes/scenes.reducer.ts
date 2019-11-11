@@ -14,7 +14,6 @@ export interface ScenesState {
   scenes: {[id: string]: string[]};
 
   selected: string | null;
-  focused: string | null;
 }
 
 export const initState: ScenesState = {
@@ -24,7 +23,6 @@ export const initState: ScenesState = {
   areResultsLoaded: false,
 
   selected: null,
-  focused: null,
 };
 
 
@@ -71,7 +69,6 @@ export function scenesReducer(state = initState, action: ScenesActions): ScenesS
 
         ids: Object.keys(products),
         selected,
-        focused: null,
 
         areResultsLoaded: true,
         products,
@@ -114,24 +111,11 @@ export function scenesReducer(state = initState, action: ScenesActions): ScenesS
       return selectPrevious(state, scenes, scene);
     }
 
-    case ScenesActionType.SET_FOCUSED_SCENE: {
-      return {
-        ...state,
-        focused: action.payload.id,
-      };
-    }
 
     case ScenesActionType.SET_RESULTS_LOADED: {
       return {
         ...state,
         areResultsLoaded: action.payload,
-      };
-    }
-
-    case ScenesActionType.CLEAR_FOCUSED_SCENE: {
-      return {
-        ...state,
-        focused: null,
       };
     }
 
@@ -347,9 +331,4 @@ export const getAllSceneProducts = createSelector(
 export const getSelectedScene = createSelector(
   getScenesState,
   (state: ScenesState) => state.products[state.selected] || null
-);
-
-export const getFocusedScene = createSelector(
-  getScenesState,
-  (state: ScenesState) => state.products[state.focused] || null
 );

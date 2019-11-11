@@ -257,22 +257,14 @@ export class MapComponent implements OnInit, OnDestroy  {
     );
 
     this.subs.add(
-      this.sceneToLayer$('SELECTED').subscribe(
+      this.sceneToLayer$().subscribe(
         feature => this.mapService.setSelectedFeature(feature)
-      )
-    );
-
-    this.subs.add(
-      this.sceneToLayer$('FOCUSED').subscribe(
-        feature => this.mapService.setFocusedFeature(feature)
       )
     );
   }
 
-  private sceneToLayer$(layerType: string) {
-    const scene$ = layerType === 'FOCUSED' ?
-      this.store$.select(scenesStore.getFocusedScene) :
-      this.store$.select(scenesStore.getSelectedScene);
+  private sceneToLayer$() {
+    const scene$ = this.store$.select(scenesStore.getSelectedScene);
 
     const scenesLayerAfterInitialization$ = this.isMapInitialized$.pipe(
       filter(isMapInitiliazed => isMapInitiliazed),
@@ -299,10 +291,7 @@ export class MapComponent implements OnInit, OnDestroy  {
     );
 
     return selectedSceneAfterInitialization$.pipe(
-      tap(scene => !!scene || (layerType === 'FOCUSED') ?
-        this.mapService.clearFocusedScene() :
-        this.mapService.clearSelectedScene()
-      ),
+      tap(scene => !!scene ? this.mapService.clearSelectedScene() : null),
       filter(g => g !== null),
       map(
         scene => this.wktService.wktToFeature(
@@ -353,7 +342,8 @@ export class MapComponent implements OnInit, OnDestroy  {
   }
 
   private scenesToFeature(scenes: models.CMRProduct[], projection: string) {
-    return scenes
+    console.log(scenes.length);
+    const features = scenes
       .map(g => {
         const wkt = g.metadata.polygon;
         const feature = this.wktService.wktToFeature(wkt, projection);
@@ -361,6 +351,8 @@ export class MapComponent implements OnInit, OnDestroy  {
 
         return feature;
       });
+
+    return features;
   }
 
   private featuresToSource(features): VectorSource {

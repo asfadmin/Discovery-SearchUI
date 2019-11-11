@@ -8,6 +8,7 @@
           (mouseleave) ="onClearFocusedScene()"
           (click)="onSceneSelected(scene.id)"
           [class.selected]="scene.name === selected"
+          [class.hovered]="scene.name === hoveredSceneName"
           mat-list-item>
 
           <img [src]="scene.thumbnail"
