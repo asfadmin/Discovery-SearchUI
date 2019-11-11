@@ -9,7 +9,8 @@
     [validateResize]="validate"
     [enableGhostResize]="true"
     [resizeSnapGrid]="{ left: 50, right: 50 }"
-    (resizeEnd)="onResizeEnd($event)"
+    (resizeEnd)="onFinalResize($event)"
+    (resizing)="onResizeEnd($event)"
   >
     <div
       [class.hidden]="(isHidden$ | async) || (areNoScenes$  | async)"
