@@ -342,7 +342,6 @@ export class MapComponent implements OnInit, OnDestroy  {
   }
 
   private scenesToFeature(scenes: models.CMRProduct[], projection: string) {
-    console.log(scenes.length);
     const features = scenes
       .map(g => {
         const wkt = g.metadata.polygon;

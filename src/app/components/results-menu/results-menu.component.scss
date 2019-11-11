@@ -124,7 +124,7 @@
 .resize-handle-top,
 .resize-handle-bottom {
   position: absolute;
-  height: 14px;
+  height: 25px;
   cursor: row-resize;
   width: 100%;
   background-image: url('/assets/div-handles/hsizegrip.png');
@@ -134,7 +134,7 @@
 }
 
 .resize-handle-top {
-  top: -15px;
+  top: -24px;
   border-bottom: 3px solid rgba(0, 0, 0, 0.3);
 }
 
