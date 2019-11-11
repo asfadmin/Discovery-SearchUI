@@ -2,7 +2,7 @@ import { Component, HostListener, OnInit } from '@angular/core';
 import { ResizeEvent } from 'angular-resizable-element';
 import { trigger, state, style, animate, transition } from '@angular/animations';
 
-import { map, withLatestFrom, filter, tap } from 'rxjs/operators';
+import { map, withLatestFrom, filter, tap, pairwise } from 'rxjs/operators';
 import { Store } from '@ngrx/store';
 import { ScreenSizeService } from '@services';
 
@@ -29,14 +29,6 @@ import * as models from '@models';
       })),
       transition('shown <=> hidden', animate('200ms ease-out'))
     ]),
-    // trigger('changeMenuY', [
-    //   state('shown', style({ transform: 'translateY(0%)'
-    //   })),
-    //   state('hidden',   style({
-    //     transform: 'translateY(100%) translateY(-36px)'
-    //   })),
-    //   transition('shown <=> hidden', animate('200ms ease-out'))
-    // ]),
   ],
 })
 export class ResultsMenuComponent implements OnInit {
@@ -51,6 +43,7 @@ export class ResultsMenuComponent implements OnInit {
   public style: object = {};
   public innerWidth: any;
   public innerHeight: any;
+  public selectedTabIdx = 0;
 
   public areNoScenes$ = this.store$.select(scenesStore.getScenes).pipe(
     map(scenes => scenes.length === 0)
@@ -66,6 +59,26 @@ export class ResultsMenuComponent implements OnInit {
     private mapService: MapService,
     private screenSize: ScreenSizeService,
   ) { }
+
+  ngOnInit() {
+    this.innerWidth = window.innerWidth;
+    this.innerHeight = window.innerHeight;
+
+    this.store$.select(scenesStore.getSelectedScene).pipe(
+      pairwise(),
+      filter(([previous, current]) => !!previous)
+    ).subscribe(
+      _ => this.selectedTabIdx = 1
+    );
+  }
+
+  @HostListener('window:resize', ['$event'])
+  onResize( event ) {
+    const resultDiv = document.getElementById('result-div');
+    const window_height = window.innerHeight;
+
+    resultDiv.style.height = '50vh';
+  }
 
   public onToggleMenu(): void {
     this.store$.dispatch(new uiStore.ToggleResultsMenu());
@@ -85,15 +98,12 @@ export class ResultsMenuComponent implements OnInit {
 
   public validate(event: ResizeEvent): boolean {
     const MIN_DIMENSIONS_PX = 50;
-    if (
-      event.rectangle.width &&
-      event.rectangle.height &&
+
+    return !(
+      event.rectangle.width && event.rectangle.height &&
       (event.rectangle.width < MIN_DIMENSIONS_PX ||
         event.rectangle.height < MIN_DIMENSIONS_PX)
-    ) {
-      return false;
-    }
-    return true;
+    );
   }
 
   public onResizeEnd(event: ResizeEvent): void {
@@ -119,25 +129,6 @@ export class ResultsMenuComponent implements OnInit {
     return (num || 0)
       .toString()
       .replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,');
-  }
-
-  @HostListener('window:resize', ['$event'])
-  onResize( event ) {
-    const resultDiv = document.getElementById('result-div');
-    const window_height = window.innerHeight;
-
-    resultDiv.style.height = '50vh';
-
-    // if (resultDiv.offsetHeight < window_height) {
-    //   resultDiv.style.height = '100%';
-    //   const resultDiv_height = resultDiv.offsetHeight;
-    //   resultDiv.style.height = resultDiv_height + 'px';
-    // } else {}
-  }
-
-  ngOnInit() {
-    this.innerWidth = window.innerWidth;
-    this.innerHeight = window.innerHeight;
   }
 
 }

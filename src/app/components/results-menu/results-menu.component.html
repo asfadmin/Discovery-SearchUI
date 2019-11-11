@@ -88,8 +88,11 @@
               </mat-card>
         </ng-template>
         <!--  MOBILE MOBILE MOBILE  -->
+
         <ng-template #tabs>
-          <mat-tab-group class="tab-group-mobile">
+          <mat-tab-group
+            [(selectedIndex)]="selectedTabIdx"
+            class="tab-group-mobile">
             <!-- SCENE LIST -->
             <mat-tab label="Scenes">
               <mat-card class="card-spacing results-menu--column"
