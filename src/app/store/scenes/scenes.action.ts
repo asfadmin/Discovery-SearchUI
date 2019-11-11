@@ -54,16 +54,6 @@ export class SelectNextWithBrowse implements Action {
   public readonly type = ScenesActionType.SELECT_NEXT_WITH_BROWSE;
 }
 
-export class SetFocusedScene implements Action {
-  public readonly type = ScenesActionType.SET_FOCUSED_SCENE;
-
-  constructor(public payload: CMRProduct) {}
-}
-
-export class ClearFocusedScene implements Action {
-  public readonly type = ScenesActionType.CLEAR_FOCUSED_SCENE;
-}
-
 export type ScenesActions =
   | SetScenes
   | ClearScenes
@@ -72,6 +62,4 @@ export type ScenesActions =
   | SelectPreviousScene
   | SelectNextWithBrowse
   | SelectPreviousWithBrowse
-  | SetFocusedScene
-  | ClearFocusedScene
   | SetResultsLoaded;
