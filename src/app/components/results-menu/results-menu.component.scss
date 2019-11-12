@@ -58,7 +58,6 @@
 }
 
 .results-menu--column {
-  min-width: 300px;
   padding: 0;
   margin: 0;
 }
@@ -174,7 +173,7 @@
 
 .tab-group-mobile {
   width: 100%;
-  height: 100%;
+  height: calc(100%);
 }
 
 #result-div {

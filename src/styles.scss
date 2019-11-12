@@ -211,3 +211,7 @@ ul {
 #result-div .mat-list-base .mat-list-option.mat-2-line {
   height: 60px;
 }
+
+.mat-tab-group.mat-tab-fill-height .mat-tab-body-wrapper {
+  flex: 1 1 100%;
+}
