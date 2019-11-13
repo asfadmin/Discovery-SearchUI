@@ -33,12 +33,7 @@ import * as models from '@models';
   ],
 })
 export class ResultsMenuComponent implements OnInit {
-  public totalResultCount$ = this.store$.select(searchStore.getTotalResultCount);
   public isResultsMenuOpen$ = this.store$.select(uiStore.getIsResultsMenuOpen);
-
-  public allProducts$ = this.store$.select(scenesStore.getAllProducts);
-  public numberOfScenes$ = this.store$.select(scenesStore.getNumberOfScenes);
-  public numberOfProducts$ = this.store$.select(scenesStore.getNumberOfProducts);
   public selectedProducts$ = this.store$.select(scenesStore.getSelectedSceneProducts);
 
   public style: object = {};
@@ -87,10 +82,6 @@ export class ResultsMenuComponent implements OnInit {
     this.store$.dispatch(new uiStore.ToggleResultsMenu());
   }
 
-  public onZoomToResults(): void {
-    this.mapService.zoomToResults();
-  }
-
   private selectNextScene(): void {
     this.store$.dispatch(new scenesStore.SelectNextScene());
   }
@@ -128,16 +119,6 @@ export class ResultsMenuComponent implements OnInit {
 
   public onFinalResize() {
     this.resize$.next();
-  }
-
-  private queueAllProducts(products: models.CMRProduct[]): void {
-    this.store$.dispatch(new queueStore.AddItems(products));
-  }
-
-  public formatNumber(num: number): string {
-    return (num || 0)
-      .toString()
-      .replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,');
   }
 
 }
