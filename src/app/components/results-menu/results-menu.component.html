@@ -14,52 +14,25 @@
   >
     <div
       [class.hidden]="(isHidden$ | async) || (areNoScenes$  | async)"
-      class="result-height"
+      class="h100"
     >
       <div
         class="resize-handle-top"
         mwlResizeHandle
         [resizeEdges]="{ top: true }"
       ></div>
-      <div class="results-menu--background  results-menu--layout"
-           fxLayout="row">
+      <div class="results-menu--background h100 mp0"
+           fxFlex fxLayout="row">
 
         <ng-container *ngIf="breakpoint < breakpoints.SMALL; then tabs else noTabs">
         </ng-container>
 
         <ng-template #noTabs>
             <!-- SCENE LIST -->
-            <mat-card class="card-spacing results-menu--column force-height"
+            <mat-card class="mp0"
                         fxFlex="33" fxFlexFill>
-                <mat-card-subtitle *ngIf="numberOfScenes$ | async as numberOfScenes" class="header">
-                  <div style="display: flex; justify-content: center;">
-                    <div style="margin-right: 10px;">
-                      {{ numberOfScenes }} Scene{{ numberOfScenes === 1 ? '' : 's' }}
-                      ({{ numberOfProducts$ | async }} of {{ formatNumber(totalResultCount$ | async) }} File{{ (numberOfProducts$ | async) === 1 ? '' : 's' }})
-                    </div>
-                    <div *ngIf="allProducts$ | async as products">
-                      <mat-icon
-                        (click)="onZoomToResults()"
-                        class="clickable noselect"
-                        style="margin-right: 10px;"
-                        matTooltip="Zoom to results">
-                        settings_overscan
-                      </mat-icon>
-
-                      <mat-icon
-                        class="clickable noselect"
-                        matTooltip="Add all results to queue"
-                        [matMenuTriggerFor]="addAllProducts">
-                        add_shopping_cart
-                      </mat-icon>
-
-                      <mat-menu #addAllProducts="matMenu">
-                        <button (click)="queueAllProducts(products)" mat-menu-item>
-                          Add {{ products.length }} file{{ products.length === 1 ? '' : 's'}} to queue
-                        </button>
-                      </mat-menu>
-                    </div>
-                  </div>
+                <mat-card-subtitle class="header">
+                  <app-scenes-list-header></app-scenes-list-header>
                 </mat-card-subtitle>
                 <div class="app-scene-list">
                   <app-scenes-list [resize$]="resize$">
@@ -68,16 +41,16 @@
               </mat-card>
 
             <!-- SCENE DETAIL -->
-            <mat-card class="card-spacing results-menu--column no-box-shadow"
+            <mat-card class="mp0 no-box-shadow"
                         fxFlex="34" fxFlexFill>
-                <mat-card-subtitle class="header">
-                  Scene Detail
-                </mat-card-subtitle>
-                <app-scene-detail></app-scene-detail>
-              </mat-card>
+              <mat-card-subtitle class="header">
+                Scene Detail
+              </mat-card-subtitle>
+              <app-scene-detail></app-scene-detail>
+            </mat-card>
 
             <!-- FILE LIST -->
-            <mat-card class="card-spacing results-menu--column left-border-only"
+            <mat-card class="mp0 left-border-only"
                         fxFlex="33" fxFlexFill>
                 <mat-card-subtitle class="header">
           <span *ngIf="selectedProducts$ | async as products; else defaultProductsHeader">
@@ -93,40 +66,13 @@
         <ng-template #tabs>
           <mat-tab-group
             [(selectedIndex)]="selectedTabIdx"
-            class="tab-group-mobile mat-tab-fill-height">
+            class="h100 w100 mat-tab-fill-height">
             <!-- SCENE LIST -->
             <mat-tab label="Scenes">
-              <mat-card class="results-menu--column"
+              <mat-card class="mp0"
                         fxFlex="100" fxFlexFill>
-                <mat-card-subtitle *ngIf="numberOfScenes$ | async as numberOfScenes" class="header">
-                  <div style="display: flex; justify-content: center;">
-                    <div style="margin-right: 10px;">
-                      {{ numberOfScenes }} Scene{{ numberOfScenes === 1 ? '' : 's' }}
-                      ({{ numberOfProducts$ | async }} of {{ formatNumber(totalResultCount$ | async) }} File{{ (numberOfProducts$ | async) === 1 ? '' : 's' }})
-                    </div>
-                    <div *ngIf="allProducts$ | async as products">
-                      <mat-icon
-                        (click)="onZoomToResults()"
-                        class="clickable noselect"
-                        style="margin-right: 10px;"
-                        matTooltip="Zoom to results">
-                        settings_overscan
-                      </mat-icon>
-
-                      <mat-icon
-                        class="clickable noselect"
-                        matTooltip="Add all results to queue"
-                        [matMenuTriggerFor]="addAllProducts">
-                        add_shopping_cart
-                      </mat-icon>
-
-                      <mat-menu #addAllProducts="matMenu">
-                        <button (click)="queueAllProducts(products)" mat-menu-item>
-                          Add {{ products.length }} file{{ products.length === 1 ? '' : 's'}} to queue
-                        </button>
-                      </mat-menu>
-                    </div>
-                  </div>
+                <mat-card-subtitle class="header">
+                  <app-scenes-list-header></app-scenes-list-header>
                 </mat-card-subtitle>
 
                 <div class="app-scene-list">
@@ -138,7 +84,7 @@
 
             <!-- SCENE DETAIL -->
             <mat-tab label="Scene Detail & Files">
-              <mat-card class="card-spacing results-menu--column no-box-shadow"
+              <mat-card class="mp0 no-box-shadow"
                         fxFlex="100" fxFlexFill>
                 <mat-card-subtitle class="header">
                   Scene Detail /

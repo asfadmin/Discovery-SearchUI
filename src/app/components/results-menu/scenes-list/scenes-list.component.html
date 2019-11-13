@@ -1,6 +1,6 @@
  <ng-container *ngIf="breakpoint$ | async as breakpoint">
-  <mat-action-list style="height: 100%; margin: 0; padding: 0">
-    <cdk-virtual-scroll-viewport class="scroll-viewport-height" itemSize="60">
+  <mat-action-list class="h100 mp0">
+    <cdk-virtual-scroll-viewport class="h100" itemSize="60">
       <div *cdkVirtualFor="let scene of scenes$ | async">
         <button
           (mouseenter)="onSetFocusedScene(scene)"
@@ -15,7 +15,7 @@
                matBadgeOverlap="false"
                class="size" matListAvatar>
 
-          <div [title]="scene.name" class="product-name" matLine>
+          <div [title]="scene.name" class="bold" matLine>
             <span>
               <span> {{ scene.name | truncate : sceneNameLen }}</span>
               <span *ngIf="scene.dataset === 'Sentinel-1B' || scene.dataset === 'Sentinel-1A'">{{ scene.name.substr(scene.name.length - 4) }}</span>

@@ -1,4 +1,4 @@
-import { Component, HostListener, OnInit } from '@angular/core';
+import { Component, HostListener, OnInit, AfterViewChecked } from '@angular/core';
 import { ResizeEvent } from 'angular-resizable-element';
 import { trigger, state, style, animate, transition } from '@angular/animations';
 
@@ -80,6 +80,7 @@ export class ResultsMenuComponent implements OnInit {
     const window_height = window.innerHeight;
 
     resultDiv.style.height = '50vh';
+    this.resize$.next();
   }
 
   public onToggleMenu(): void {

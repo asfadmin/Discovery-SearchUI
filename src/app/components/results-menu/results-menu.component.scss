@@ -1,65 +1,9 @@
 @import "asf-theme";
 
-.position {
-  pointer-events: none;
-}
-
-.results-menu-wrapper {
-  height: 40%;
-}
-
-.results-menu-scene-detail-content {
-  height: 100%;
-  overflow-y: auto;
-  overflow-x: hidden;
-}
-
-.scrollable-card {
-  height: 100%;
-  overflow-y: auto;
-  margin: 0;
-  padding: 0;
-}
-
-.toggle-button-position {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  pointer-events: none;
-}
-
-.toggle-button {
-  pointer-events: auto;
-  background-color: $asf-primary-light;
-  color: $asf-primary-dark;
-  font-size: 18px;
-  font-family: Roboto, sans-serif;
-  font-weight: 400;
-  border-bottom-style: solid;
-  border-bottom-width: 1px;
-  border-bottom-color: lighten($asf-primary-light, 10%);
-  box-shadow:
-    0 8px 10px 1px rgba(0, 0, 0, 0.14),
-    0 3px 14px 2px rgba(0, 0, 0, 0.12),
-    0 5px 10px -3px rgba(0, 0, 0, 0.4) !important;
-}
-
-.results-menu--layout {
-  display: flex;
-  height: 100%;
-  margin: 0;
-  padding: 0;
-}
-
 .results-menu--background {
   background: rgba(238, 238, 238, 0.7);
   background: white;
   pointer-events: auto;
-}
-
-.results-menu--column {
-  padding: 0;
-  margin: 0;
 }
 
 .header {
@@ -78,42 +22,14 @@
   height: calc(100% - 36px);
 }
 
-.force-height {
-  height: auto !important;
-}
-
-.force-height-tab {
-  height: auto !important;
-}
-
 .mwlResizable {
   box-sizing: border-box; // required for the enableGhostResize option to work
-}
-
-.andy-resize {
-  position: relative;
-  display: flex;
-  border: 2px solid;
-  width: 500px;
-  height: 200px;
-  top: 50px;
-  z-index: 999;
-  background: #b62339 !important;
 }
 
 .rectangle-wrapper {
   position: fixed;
   bottom: 0;
   width: 100%;
-}
-
-.rectangle {
-  position: static;
-  height: 300px;
-  background-color: white;
-  border: solid 1px #121621;
-  color: #121621;
-  margin: auto;
 }
 
 .resize-handle-top,
@@ -157,10 +73,6 @@
   right: 0;
 }
 
-.result-height {
-  height: 100%;
-}
-
 .left-border-only {
   box-shadow: none !important;
   border-left: 1px solid rgba(0, 0, 0, 0.3);
@@ -169,11 +81,6 @@
 .no-box-shadow {
   border-bottom: none !important;
   box-shadow: none !important;
-}
-
-.tab-group-mobile {
-  width: 100%;
-  height: calc(100%);
 }
 
 #result-div {
