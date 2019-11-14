@@ -3,8 +3,8 @@ import {
   AfterViewInit, OnDestroy
 } from '@angular/core';
 
-import { fromEvent, combineLatest } from 'rxjs';
-import { tap, withLatestFrom, filter, map, debounceTime } from 'rxjs/operators';
+import { fromEvent, combineLatest, Observable, timer } from 'rxjs';
+import { tap, withLatestFrom, filter, map, debounceTime, delay } from 'rxjs/operators';
 import { SubSink } from 'subsink';
 
 import { Store } from '@ngrx/store';
@@ -26,10 +26,11 @@ import * as models from '@models';
   styleUrls: ['./scenes-list.component.scss'],
   encapsulation: ViewEncapsulation.None
 })
-export class ScenesListComponent implements OnInit, AfterViewInit, OnDestroy {
+export class ScenesListComponent implements OnInit, OnDestroy {
   @ViewChild(CdkVirtualScrollViewport, { static: true }) scroll: CdkVirtualScrollViewport;
+  @Input() resize$: Observable<void>;
 
-  public scenes$ = this.store$.select(scenesStore.getScenes);
+  public scenes;
   public sceneNameLen: number;
 
   public numberOfQueue: {[scene: string]: [number, number]};
@@ -56,8 +57,43 @@ export class ScenesListComponent implements OnInit, AfterViewInit, OnDestroy {
     this.keyboardService.init();
 
     this.subs.add(
+      this.store$.select(scenesStore.getSelectedScene).pipe(
+        withLatestFrom(this.store$.select(scenesStore.getScenes)),
+        /* There is some race condition with scrolling before the list is rendered.
+         * Doesn't scroll without the delay even though the function is called.
+         * */
+        delay(20),
+        filter(([selected, _]) => !!selected),
+        tap(([selected, _]) => this.selected = selected.name),
+        map(([selected, scenes]) => scenes.indexOf(selected)),
+      ).subscribe(
+        idx => {
+          if (!this.selectedFromList) {
+            this.scrollTo(idx);
+          }
+
+          this.selectedFromList = false;
+        }
+      )
+    );
+
+    this.subs.add(
+      this.store$.select(scenesStore.getScenes).subscribe(
+        scenes => this.scenes = scenes
+      )
+    );
+
+    this.subs.add(
       this.screenSize.size$.pipe(
-        map(size => size.width > 1775 ? 32 : 32),
+        map(size => {
+          if (size.width > 1775) {
+            return 32;
+          } else if (size.width > 1350) {
+            return 20;
+          } else {
+            return 10;
+          }
+        }),
       ).subscribe(len => this.sceneNameLen = len)
     );
 
@@ -110,24 +146,9 @@ export class ScenesListComponent implements OnInit, AfterViewInit, OnDestroy {
             }, {})
       )).subscribe(allQueued => this.allQueued = allQueued)
     );
-  }
 
-  ngAfterViewInit() {
-    this.subs.add(
-      this.store$.select(scenesStore.getSelectedScene).pipe(
-        withLatestFrom(this.scenes$),
-        filter(([selected, _]) => !!selected),
-        tap(([selected, _]) => this.selected = selected.name),
-        map(([selected, scenes]) => scenes.indexOf(selected)),
-      ).subscribe(
-        idx => {
-          if (this.scroll && !this.selectedFromList) {
-            this.scrollTo(idx);
-          }
-
-          this.selectedFromList = false;
-        }
-      )
+    this.resize$.subscribe(
+      _ => this.scroll.checkViewportSize()
     );
 
     this.subs.add(
@@ -158,12 +179,10 @@ export class ScenesListComponent implements OnInit, AfterViewInit, OnDestroy {
 
   public onSetFocusedScene(scene: models.CMRProduct): void {
     this.hoveredSceneName = scene.name;
-    this.store$.dispatch(new scenesStore.SetFocusedScene(scene));
   }
 
   public onClearFocusedScene(): void {
     this.hoveredSceneName = null;
-    this.store$.dispatch(new scenesStore.ClearFocusedScene());
   }
 
   public onZoomTo(scene: models.CMRProduct): void {
