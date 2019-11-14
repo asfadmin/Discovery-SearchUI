@@ -57,7 +57,7 @@
 
           <!--  MOBILE MOBILE MOBILE  -->
           <ng-container *ngIf="breakpoint === breakpoints.MOBILE">
-            <div class="h100 w100">
+            <div class="w100">
               <div>
                 <button (click)="onSelectList()"
                   [class.selected]="view === Views.LIST" mat-button>
@@ -83,7 +83,7 @@
 
               <!-- SCENE DETAIL -->
               <div *ngIf="view === Views.DETAIL">
-                <mat-card class="mp0 no-box-shadow" fxFlex="100" fxFlexFill>
+                <mat-card class="mp0 no-box-shadow" fxFlex="100" fxFlex>
                   <mat-card-subtitle class="header">
                     Scene Detail /
                     <span *ngIf="selectedProducts$ | async as products; else defaultProductsHeader">
@@ -92,9 +92,11 @@
                     <ng-template #defaultProductsHeader>Files</ng-template>
                   </mat-card-subtitle>
 
-                  <app-scene-detail></app-scene-detail>
-                  <hr>
-                  <app-scene-files></app-scene-files>
+                  <mat-card-content class="h100 scroll-y">
+                    <app-scene-detail></app-scene-detail>
+                    <hr>
+                    <app-scene-files></app-scene-files>
+                  </mat-card-content>
                 </mat-card>
               </div>
             </div>
