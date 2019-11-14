@@ -47,6 +47,15 @@
   height: 100%;
 }
 
+.mp0 {
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+.bold {
+  font-weight: bold !important;
+}
+
 .hidden {
   display: none;
 }
@@ -210,4 +219,9 @@ ul {
 #result-div .mat-list-base .mat-list-item.mat-2-line,
 #result-div .mat-list-base .mat-list-option.mat-2-line {
   height: 60px;
+}
+
+// Set the angular material tab container to 100%
+.mat-tab-group.mat-tab-fill-height .mat-tab-body-wrapper {
+  flex: 1 1 100%;
 }

@@ -13,9 +13,10 @@ import { ScenesListModule } from './scenes-list';
 import { ResultsMenuComponent } from './results-menu.component';
 import { SceneFilesModule } from './scene-files';
 import { SceneDetailModule } from './scene-detail';
+import { ScenesListHeaderComponent } from './scenes-list-header/scenes-list-header.component';
 
 @NgModule({
-  declarations: [ResultsMenuComponent],
+  declarations: [ResultsMenuComponent, ScenesListHeaderComponent],
   imports: [
     CommonModule,
     ResizableModule,

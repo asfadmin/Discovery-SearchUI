@@ -1,7 +1,8 @@
-import { Component, HostListener, OnInit } from '@angular/core';
+import { Component, HostListener, OnInit, AfterViewChecked } from '@angular/core';
 import { ResizeEvent } from 'angular-resizable-element';
 import { trigger, state, style, animate, transition } from '@angular/animations';
 
+import { Subject } from 'rxjs';
 import { map, withLatestFrom, filter, tap, pairwise } from 'rxjs/operators';
 import { Store } from '@ngrx/store';
 import { ScreenSizeService } from '@services';
@@ -20,29 +21,12 @@ import * as models from '@models';
   selector: 'app-results-menu',
   templateUrl: './results-menu.component.html',
   styleUrls: ['./results-menu.component.scss'],
-  animations: [
-    trigger('changeMenuY', [
-      state('shown', style({ display: 'block'
-      })),
-      state('hidden',   style({
-        display: 'none'
-      })),
-      transition('shown <=> hidden', animate('200ms ease-out'))
-    ]),
-  ],
 })
 export class ResultsMenuComponent implements OnInit {
-  public totalResultCount$ = this.store$.select(searchStore.getTotalResultCount);
   public isResultsMenuOpen$ = this.store$.select(uiStore.getIsResultsMenuOpen);
-
-  public allProducts$ = this.store$.select(scenesStore.getAllProducts);
-  public numberOfScenes$ = this.store$.select(scenesStore.getNumberOfScenes);
-  public numberOfProducts$ = this.store$.select(scenesStore.getNumberOfProducts);
   public selectedProducts$ = this.store$.select(scenesStore.getSelectedSceneProducts);
 
-  public style: object = {};
-  public innerWidth: any;
-  public innerHeight: any;
+  public menuHeightPx: number;
   public selectedTabIdx = 0;
 
   public areNoScenes$ = this.store$.select(scenesStore.getScenes).pipe(
@@ -50,6 +34,7 @@ export class ResultsMenuComponent implements OnInit {
   );
 
   public isHidden$ = this.store$.select(uiStore.getIsHidden);
+  public resize$ = new Subject<void>();
 
   public breakpoint$ = this.screenSize.breakpoint$;
   public breakpoints = models.Breakpoints;
@@ -61,31 +46,27 @@ export class ResultsMenuComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.innerWidth = window.innerWidth;
-    this.innerHeight = window.innerHeight;
+    this.menuHeightPx = document.documentElement.clientHeight * .5;
+    console.log(this.menuHeightPx);
 
     this.store$.select(scenesStore.getSelectedScene).pipe(
       pairwise(),
-      filter(([previous, current]) => !!previous)
+      map(([previous, current]) => !!previous ? 1 : 0)
     ).subscribe(
-      _ => this.selectedTabIdx = 1
+      idx => this.selectedTabIdx = idx
     );
   }
 
   @HostListener('window:resize', ['$event'])
   onResize( event ) {
     const resultDiv = document.getElementById('result-div');
-    const window_height = window.innerHeight;
+    resultDiv.style.height = `${document.documentElement.clientHeight * 0.5}px`;
 
-    resultDiv.style.height = '50vh';
+    this.resize$.next();
   }
 
   public onToggleMenu(): void {
     this.store$.dispatch(new uiStore.ToggleResultsMenu());
-  }
-
-  public onZoomToResults(): void {
-    this.mapService.zoomToResults();
   }
 
   private selectNextScene(): void {
@@ -98,37 +79,24 @@ export class ResultsMenuComponent implements OnInit {
 
   public validate(event: ResizeEvent): boolean {
     const MIN_DIMENSIONS_PX = 50;
+    const { width, height } = event.rectangle;
 
     return !(
-      event.rectangle.width && event.rectangle.height &&
-      (event.rectangle.width < MIN_DIMENSIONS_PX ||
-        event.rectangle.height < MIN_DIMENSIONS_PX)
+      width && height &&
+      (width < MIN_DIMENSIONS_PX || height < MIN_DIMENSIONS_PX)
     );
   }
 
   public onResizeEnd(event: ResizeEvent): void {
-    this.innerWidth = window.innerWidth;
-    this.innerHeight = window.innerHeight;
-    let maxHeight = this.innerHeight - 100;
-    maxHeight = event.rectangle.height > maxHeight ?
-                  maxHeight : event.rectangle.height;
-    this.style = {
-      position: 'static',
-      left: `${event.rectangle.left}px`,
-      bottom: 0,
-      width: `100%`,
-      height: `${maxHeight}px`,
-    };
+    const maxHeight = window.innerHeight - 100;
+    const newHeight = event.rectangle.height;
+
+    this.menuHeightPx = Math.min(newHeight, maxHeight);
+
+    this.resize$.next();
   }
 
-  private queueAllProducts(products: models.CMRProduct[]): void {
-    this.store$.dispatch(new queueStore.AddItems(products));
+  public onFinalResize() {
+    this.resize$.next();
   }
-
-  public formatNumber(num: number): string {
-    return (num || 0)
-      .toString()
-      .replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,');
-  }
-
 }

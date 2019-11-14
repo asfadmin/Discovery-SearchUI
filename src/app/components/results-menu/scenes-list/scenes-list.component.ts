@@ -3,7 +3,7 @@ import {
   AfterViewInit, OnDestroy
 } from '@angular/core';
 
-import { fromEvent, combineLatest } from 'rxjs';
+import { fromEvent, combineLatest, Observable, timer } from 'rxjs';
 import { tap, withLatestFrom, filter, map, debounceTime } from 'rxjs/operators';
 import { SubSink } from 'subsink';
 
@@ -28,6 +28,7 @@ import * as models from '@models';
 })
 export class ScenesListComponent implements OnInit, AfterViewInit, OnDestroy {
   @ViewChild(CdkVirtualScrollViewport, { static: true }) scroll: CdkVirtualScrollViewport;
+  @Input() resize$: Observable<void>;
 
   public scenes$ = this.store$.select(scenesStore.getScenes);
   public sceneNameLen: number;
@@ -55,9 +56,21 @@ export class ScenesListComponent implements OnInit, AfterViewInit, OnDestroy {
   ngOnInit() {
     this.keyboardService.init();
 
+    timer(50).subscribe(
+      _ => this.scroll.checkViewportSize()
+    );
+
     this.subs.add(
       this.screenSize.size$.pipe(
-        map(size => size.width > 1775 ? 32 : 32),
+        map(size => {
+          if (size.width > 1775) {
+            return 32;
+          } else if (size.width > 1350) {
+            return 20;
+          } else {
+            return 10;
+          }
+        }),
       ).subscribe(len => this.sceneNameLen = len)
     );
 
@@ -113,6 +126,10 @@ export class ScenesListComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   ngAfterViewInit() {
+    this.resize$.subscribe(
+      _ => this.scroll.checkViewportSize()
+    );
+
     this.subs.add(
       this.store$.select(scenesStore.getSelectedScene).pipe(
         withLatestFrom(this.scenes$),
@@ -121,7 +138,7 @@ export class ScenesListComponent implements OnInit, AfterViewInit, OnDestroy {
         map(([selected, scenes]) => scenes.indexOf(selected)),
       ).subscribe(
         idx => {
-          if (this.scroll && !this.selectedFromList) {
+          if (!this.selectedFromList) {
             this.scrollTo(idx);
           }
 
