@@ -1,5 +1,11 @@
 @import "asf-theme";
 
+.results-menu {
+  bottom: 0;
+  left: 0;
+  position: static;
+}
+
 .results-menu--background {
   background: rgba(238, 238, 238, 0.7);
   background: white;
@@ -80,8 +86,4 @@
 .no-box-shadow {
   border-bottom: none !important;
   box-shadow: none !important;
-}
-
-#result-div {
-  height: 50vh;
 }

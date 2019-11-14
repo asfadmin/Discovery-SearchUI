@@ -3,7 +3,7 @@ import {
   AfterViewInit, OnDestroy
 } from '@angular/core';
 
-import { fromEvent, combineLatest, Observable } from 'rxjs';
+import { fromEvent, combineLatest, Observable, timer } from 'rxjs';
 import { tap, withLatestFrom, filter, map, debounceTime } from 'rxjs/operators';
 import { SubSink } from 'subsink';
 
@@ -27,7 +27,7 @@ import * as models from '@models';
   encapsulation: ViewEncapsulation.None
 })
 export class ScenesListComponent implements OnInit, AfterViewInit, OnDestroy {
-  @ViewChild(CdkVirtualScrollViewport, { static: false }) scroll: CdkVirtualScrollViewport;
+  @ViewChild(CdkVirtualScrollViewport, { static: true }) scroll: CdkVirtualScrollViewport;
   @Input() resize$: Observable<void>;
 
   public scenes$ = this.store$.select(scenesStore.getScenes);
@@ -56,9 +56,21 @@ export class ScenesListComponent implements OnInit, AfterViewInit, OnDestroy {
   ngOnInit() {
     this.keyboardService.init();
 
+    timer(50).subscribe(
+      _ => this.scroll.checkViewportSize()
+    );
+
     this.subs.add(
       this.screenSize.size$.pipe(
-        map(size => size.width > 1775 ? 32 : 32),
+        map(size => {
+          if (size.width > 1775) {
+            return 32;
+          } else if (size.width > 1350) {
+            return 20;
+          } else {
+            return 10;
+          }
+        }),
       ).subscribe(len => this.sceneNameLen = len)
     );
 
@@ -115,11 +127,7 @@ export class ScenesListComponent implements OnInit, AfterViewInit, OnDestroy {
 
   ngAfterViewInit() {
     this.resize$.subscribe(
-      _ => {
-        console.log(this.scroll.getViewportSize());
-        this.scroll.checkViewportSize();
-        console.log(this.scroll.getViewportSize())
-      }
+      _ => this.scroll.checkViewportSize()
     );
 
     this.subs.add(

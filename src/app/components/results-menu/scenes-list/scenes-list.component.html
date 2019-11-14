@@ -1,61 +1,58 @@
- <ng-container *ngIf="breakpoint$ | async as breakpoint">
-  <mat-action-list class="h100 mp0">
-    <cdk-virtual-scroll-viewport class="h100" itemSize="60">
-      <div *cdkVirtualFor="let scene of scenes$ | async">
-        <button
-          (mouseenter)="onSetFocusedScene(scene)"
-          (mouseleave) ="onClearFocusedScene()"
-          (click)="onSceneSelected(scene.id)"
-          [class.selected]="scene.name === selected"
-          [class.hovered]="scene.name === hoveredSceneName"
-          mat-list-item>
+<mat-action-list class="h100 mp0">
+  <cdk-virtual-scroll-viewport class="h100" itemSize="60">
+    <div *cdkVirtualFor="let scene of scenes$ | async">
+      <button
+        (mouseenter)="onSetFocusedScene(scene)"
+        (mouseleave) ="onClearFocusedScene()"
+        (click)="onSceneSelected(scene.id)"
+        [class.selected]="scene.name === selected"
+        [class.hovered]="scene.name === hoveredSceneName"
+        mat-list-item>
 
-          <img [src]="scene.thumbnail"
-               onerror="this.src='assets/no-thumb.png'"
-               matBadgeOverlap="false"
-               class="size" matListAvatar>
+        <img [src]="scene.thumbnail"
+             onerror="this.src='assets/no-thumb.png'"
+             matBadgeOverlap="false"
+             class="size" matListAvatar>
 
-          <div [title]="scene.name" class="bold" matLine>
-            <span>
-              <span> {{ scene.name | truncate : sceneNameLen }}</span>
-              <span *ngIf="scene.dataset === 'Sentinel-1B' || scene.dataset === 'Sentinel-1A'">{{ scene.name.substr(scene.name.length - 4) }}</span>
-              <span *ngIf="scene.dataset === 'Sentinel-1 Interferogram (BETA)'"
-              >{{ scene.name.substr(scene.name.length - 11) }}</span>
-            </span>
+        <div [title]="scene.name" class="bold" matLine>
+          <span>
+            <span> {{ scene.name | truncate : sceneNameLen }}</span>
+            <span *ngIf="scene.dataset === 'Sentinel-1B' || scene.dataset === 'Sentinel-1A'">{{ scene.name.substr(scene.name.length - 4) }}</span>
+            <span *ngIf="scene.dataset === 'Sentinel-1 Interferogram (BETA)'"
+            >{{ scene.name.substr(scene.name.length - 11) }}</span>
+          </span>
 
-            <span style="margin-left: 5px;">
-              <app-copy-to-clipboard
-                *ngIf="scene.name === hoveredSceneName; else notHovered"
-                prompt="Copy scene name"
-                [value]="scene.name">
-              </app-copy-to-clipboard>
-              <ng-template #notHovered>
-                <fa-icon style="visibility: hidden;"
-                         [icon]="copyIcon">
-                </fa-icon>
-              </ng-template>
-            </span>
+          <span style="margin-left: 5px;">
+            <app-copy-to-clipboard
+              *ngIf="scene.name === hoveredSceneName; else notHovered"
+              prompt="Copy scene name"
+              [value]="scene.name">
+            </app-copy-to-clipboard>
+            <ng-template #notHovered>
+              <fa-icon style="visibility: hidden;"
+                       [icon]="copyIcon">
+              </fa-icon>
+            </ng-template>
+          </span>
+        </div>
 
-          </div>
+        <div matLine>
+          <span matTooltip="Start Time">{{ scene.metadata.date | fullDate }}</span>
+        </div>
 
-          <div matLine>
-            <span matTooltip="Start Time">{{ scene.metadata.date | fullDate }}</span>
-          </div>
+        <mat-icon (click)="onZoomTo(scene)"class="ml-2" matTooltip="Zoom to scene">
+          settings_overscan
+        </mat-icon>
+        <mat-icon (click)="onToggleScene($event, scene.groupId)"
+                  class="icon-margin"
+                  matTooltip="{{
+            allQueued[scene.groupId] ? 'Remove scene files from queue': 'Add scene files to queue'
+          }}">
+          {{ allQueued[scene.groupId] ? 'shopping_cart' : 'add_shopping_cart' }}
+        </mat-icon>
 
-          <mat-icon (click)="onZoomTo(scene)"class="ml-2" matTooltip="Zoom to scene">
-            settings_overscan
-          </mat-icon>
-          <mat-icon (click)="onToggleScene($event, scene.groupId)"
-                    class="icon-margin"
-                    matTooltip="{{
-              allQueued[scene.groupId] ? 'Remove scene files from queue': 'Add scene files to queue'
-            }}">
-            {{ allQueued[scene.groupId] ? 'shopping_cart' : 'add_shopping_cart' }}
-          </mat-icon>
-
-          <span style="margin-left: 10px"> {{ numberOfQueue[scene.groupId] }} </span>
-        </button>
-      </div>
-    </cdk-virtual-scroll-viewport>
-  </mat-action-list>
-</ng-container>
+        <span style="margin-left: 10px"> {{ numberOfQueue[scene.groupId] }} </span>
+      </button>
+    </div>
+  </cdk-virtual-scroll-viewport>
+</mat-action-list>
