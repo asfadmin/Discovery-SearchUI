@@ -1,6 +1,6 @@
 <mat-action-list class="h100 mp0">
   <cdk-virtual-scroll-viewport class="h100" itemSize="60">
-    <div *cdkVirtualFor="let scene of scenes$ | async">
+    <div *cdkVirtualFor="let scene of scenes">
       <button
         (mouseenter)="onSetFocusedScene(scene)"
         (mouseleave) ="onClearFocusedScene()"

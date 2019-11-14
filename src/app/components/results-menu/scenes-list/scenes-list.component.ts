@@ -4,7 +4,7 @@ import {
 } from '@angular/core';
 
 import { fromEvent, combineLatest, Observable, timer } from 'rxjs';
-import { tap, withLatestFrom, filter, map, debounceTime } from 'rxjs/operators';
+import { tap, withLatestFrom, filter, map, debounceTime, delay } from 'rxjs/operators';
 import { SubSink } from 'subsink';
 
 import { Store } from '@ngrx/store';
@@ -26,11 +26,11 @@ import * as models from '@models';
   styleUrls: ['./scenes-list.component.scss'],
   encapsulation: ViewEncapsulation.None
 })
-export class ScenesListComponent implements OnInit, AfterViewInit, OnDestroy {
+export class ScenesListComponent implements OnInit, OnDestroy {
   @ViewChild(CdkVirtualScrollViewport, { static: true }) scroll: CdkVirtualScrollViewport;
   @Input() resize$: Observable<void>;
 
-  public scenes$ = this.store$.select(scenesStore.getScenes);
+  public scenes;
   public sceneNameLen: number;
 
   public numberOfQueue: {[scene: string]: [number, number]};
@@ -56,8 +56,31 @@ export class ScenesListComponent implements OnInit, AfterViewInit, OnDestroy {
   ngOnInit() {
     this.keyboardService.init();
 
-    timer(50).subscribe(
-      _ => this.scroll.checkViewportSize()
+    this.subs.add(
+      this.store$.select(scenesStore.getSelectedScene).pipe(
+        withLatestFrom(this.store$.select(scenesStore.getScenes)),
+        /* There is some race condition with scrolling before the list is rendered.
+         * Doesn't scroll without the delay even though the function is called.
+         * */
+        delay(20),
+        filter(([selected, _]) => !!selected),
+        tap(([selected, _]) => this.selected = selected.name),
+        map(([selected, scenes]) => scenes.indexOf(selected)),
+      ).subscribe(
+        idx => {
+          if (!this.selectedFromList) {
+            this.scrollTo(idx);
+          }
+
+          this.selectedFromList = false;
+        }
+      )
+    );
+
+    this.subs.add(
+      this.store$.select(scenesStore.getScenes).subscribe(
+        scenes => this.scenes = scenes
+      )
     );
 
     this.subs.add(
@@ -123,28 +146,9 @@ export class ScenesListComponent implements OnInit, AfterViewInit, OnDestroy {
             }, {})
       )).subscribe(allQueued => this.allQueued = allQueued)
     );
-  }
 
-  ngAfterViewInit() {
     this.resize$.subscribe(
       _ => this.scroll.checkViewportSize()
-    );
-
-    this.subs.add(
-      this.store$.select(scenesStore.getSelectedScene).pipe(
-        withLatestFrom(this.scenes$),
-        filter(([selected, _]) => !!selected),
-        tap(([selected, _]) => this.selected = selected.name),
-        map(([selected, scenes]) => scenes.indexOf(selected)),
-      ).subscribe(
-        idx => {
-          if (!this.selectedFromList) {
-            this.scrollTo(idx);
-          }
-
-          this.selectedFromList = false;
-        }
-      )
     );
 
     this.subs.add(

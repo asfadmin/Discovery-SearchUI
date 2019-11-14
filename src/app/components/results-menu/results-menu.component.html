@@ -57,10 +57,19 @@
 
           <!--  MOBILE MOBILE MOBILE  -->
           <ng-container *ngIf="breakpoint === breakpoints.MOBILE">
-            <mat-tab-group [(selectedIndex)]="selectedTabIdx"
-              class="h100 w100 mat-tab-fill-height">
+            <div class="h100 w100">
+              <div>
+                <button (click)="onSelectList()"
+                  [class.selected]="view === Views.LIST" mat-button>
+                    Scenes
+                </button>
+                <button (click)="onSelectDetail()"
+                  [class.selected]="view === Views.DETAIL" mat-button>
+                    Scene Detail &amp; Files
+                </button>
+              </div>
               <!-- SCENE LIST -->
-              <mat-tab label="Scenes">
+              <div *ngIf="view === Views.LIST" class="h100">
                 <mat-card class="mp0" fxFlex="100" fxFlexFill>
                   <mat-card-subtitle class="header">
                     <app-scenes-list-header></app-scenes-list-header>
@@ -70,10 +79,10 @@
                     <app-scenes-list [resize$]="resize$"></app-scenes-list>
                   </div>
                 </mat-card>
-              </mat-tab>
+              </div>
 
               <!-- SCENE DETAIL -->
-              <mat-tab label="Scene Detail & Files">
+              <div *ngIf="view === Views.DETAIL">
                 <mat-card class="mp0 no-box-shadow" fxFlex="100" fxFlexFill>
                   <mat-card-subtitle class="header">
                     Scene Detail /
@@ -87,8 +96,8 @@
                   <hr>
                   <app-scene-files></app-scene-files>
                 </mat-card>
-              </mat-tab>
-            </mat-tab-group>
+              </div>
+            </div>
           </ng-container>
         </div>
       </div>

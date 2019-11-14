@@ -17,6 +17,11 @@ import * as searchStore from '@store/search';
 import { MapService } from '@services';
 import * as models from '@models';
 
+enum MobileViews {
+  LIST = 0,
+  DETAIL = 1
+}
+
 @Component({
   selector: 'app-results-menu',
   templateUrl: './results-menu.component.html',
@@ -27,7 +32,8 @@ export class ResultsMenuComponent implements OnInit {
   public selectedProducts$ = this.store$.select(scenesStore.getSelectedSceneProducts);
 
   public menuHeightPx: number;
-  public selectedTabIdx = 0;
+  public view = MobileViews.LIST;
+  public Views = MobileViews;
 
   public areNoScenes$ = this.store$.select(scenesStore.getScenes).pipe(
     map(scenes => scenes.length === 0)
@@ -47,14 +53,6 @@ export class ResultsMenuComponent implements OnInit {
 
   ngOnInit() {
     this.menuHeightPx = document.documentElement.clientHeight * .5;
-    console.log(this.menuHeightPx);
-
-    this.store$.select(scenesStore.getSelectedScene).pipe(
-      pairwise(),
-      map(([previous, current]) => !!previous ? 1 : 0)
-    ).subscribe(
-      idx => this.selectedTabIdx = idx
-    );
   }
 
   @HostListener('window:resize', ['$event'])
@@ -65,16 +63,16 @@ export class ResultsMenuComponent implements OnInit {
     this.resize$.next();
   }
 
-  public onToggleMenu(): void {
-    this.store$.dispatch(new uiStore.ToggleResultsMenu());
+  public onTabChange(e): void {
+    this.resize$.next();
   }
 
-  private selectNextScene(): void {
-    this.store$.dispatch(new scenesStore.SelectNextScene());
+  public onSelectList(): void {
+    this.view = MobileViews.LIST;
   }
 
-  private selectPreviousScene(): void {
-    this.store$.dispatch(new scenesStore.SelectPreviousScene());
+  public onSelectDetail(): void {
+    this.view = MobileViews.DETAIL;
   }
 
   public validate(event: ResizeEvent): boolean {
