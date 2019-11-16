@@ -81,10 +81,9 @@
 </div>
 
 <mat-menu #profileMenu="matMenu">
-  <hr class="menu-hr">
   <button (click)="onLogout()"
     mat-menu-item matSuffix>
-      <span>Logout</span>
+    <b style="font-weight: bolder">{{ datapoolAuthService.user.id }}</b> <span> logout</span>
   </button>
 </mat-menu>
 
