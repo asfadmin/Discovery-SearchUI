@@ -1,9 +1,12 @@
 @import "asf-theme";
 
-.results-menu {
+.rectangle-wrapper {
+  position: fixed;
   bottom: 0;
-  left: 0;
-  position: static;
+}
+
+.mobile-menu-offset {
+  bottom: 90px;
 }
 
 .results-menu--background {
@@ -30,11 +33,6 @@
 
 .mwlResizable {
   box-sizing: border-box; // required for the enableGhostResize option to work
-}
-
-.rectangle-wrapper {
-  position: fixed;
-  bottom: 0;
 }
 
 .resize-handle-top,

@@ -215,13 +215,3 @@ ul {
   line-height: 24px !important;
   min-width: 1% !important;
 }
-
-#result-div .mat-list-base .mat-list-item.mat-2-line,
-#result-div .mat-list-base .mat-list-option.mat-2-line {
-  height: 60px;
-}
-
-// Set the angular material tab container to 100%
-.mat-tab-group.mat-tab-fill-height .mat-tab-body-wrapper {
-  flex: 1 1 100%;
-}

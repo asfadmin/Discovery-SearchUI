@@ -1,5 +1,8 @@
 <ng-container *ngIf="isResultsMenuOpen$ | async">
-  <div class="rectangle-wrapper w100" *ngIf="breakpoint$ | async as breakpoint">
+  <div *ngIf="breakpoint$ | async as breakpoint"
+    [class.mobile-menu-offset]="breakpoint === breakpoints.MOBILE"
+    class="rectangle-wrapper w100">
+
     <div
       id="result-div"
       class="w100 results-menu"
@@ -43,7 +46,7 @@
             </mat-card>
 
             <!-- FILE LIST -->
-            <mat-card class="mp0 left-border-only" fxFlex="33" fxFlexFill>
+            <mat-card class="h100 mp0 left-border-only" fxFlex="33" fxFlexFill>
               <mat-card-subtitle class="header">
                 <span *ngIf="selectedProducts$ | async as products; else defaultProductsHeader">
                   {{ products.length || '' }} File{{ (products || []).length === 1 ? '' : 's'}}
@@ -51,13 +54,15 @@
                 <ng-template #defaultProductsHeader>Files</ng-template>
               </mat-card-subtitle>
 
-              <app-scene-files></app-scene-files>
+              <div class="app-scene-list scroll-y">
+                <app-scene-files></app-scene-files>
+              </div>
             </mat-card>
           </ng-container>
 
           <!--  MOBILE MOBILE MOBILE  -->
           <ng-container *ngIf="breakpoint === breakpoints.MOBILE">
-            <div class="w100">
+            <div class="h100 w100">
               <div>
                 <button (click)="onSelectList()"
                   [class.selected]="view === Views.LIST" mat-button>
@@ -82,8 +87,8 @@
               </div>
 
               <!-- SCENE DETAIL -->
-              <div *ngIf="view === Views.DETAIL">
-                <mat-card class="mp0 no-box-shadow" fxFlex="100" fxFlex>
+              <div *ngIf="view === Views.DETAIL" class="h100">
+                <mat-card class="h100 mp0 no-box-shadow" fxFlex="100" fxFlex>
                   <mat-card-subtitle class="header">
                     Scene Detail /
                     <span *ngIf="selectedProducts$ | async as products; else defaultProductsHeader">
@@ -92,11 +97,11 @@
                     <ng-template #defaultProductsHeader>Files</ng-template>
                   </mat-card-subtitle>
 
-                  <mat-card-content class="h100 scroll-y">
+                  <div class="app-scene-list scroll-y">
                     <app-scene-detail></app-scene-detail>
                     <hr>
                     <app-scene-files></app-scene-files>
-                  </mat-card-content>
+                  </div>
                 </mat-card>
               </div>
             </div>
