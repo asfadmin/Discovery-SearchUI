@@ -68,6 +68,7 @@ export class MapComponent implements OnInit, OnDestroy  {
   public overlay: Overlay;
   public currentOverlayPosition;
   public shouldShowOverlay: boolean;
+  public isResultsMenuOpen: boolean;
 
   public fullscreenControl = FullscreenControls.NONE;
   public fc = FullscreenControls;
@@ -97,6 +98,12 @@ export class MapComponent implements OnInit, OnDestroy  {
     this.subs.add(
       this.store$.select(searchStore.getSearchType).subscribe(
         searchType => this.searchType = searchType
+      )
+    );
+
+    this.subs.add(
+      this.store$.select(uiStore.getIsResultsMenuOpen).subscribe(
+        isOpen => this.isResultsMenuOpen = isOpen
       )
     );
 
