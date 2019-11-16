@@ -21,7 +21,7 @@
           mwlResizeHandle
           [resizeEdges]="{ top: true }">
         </div>
-        <div class="results-menu--background h100 mp0"
+        <div class="results-menu--background h100 w100 mp0"
              fxFlex fxLayout="row">
 
           <ng-container *ngIf="breakpoint >= breakpoints.SMALL">
@@ -74,7 +74,7 @@
                 </button>
               </div>
               <!-- SCENE LIST -->
-              <div *ngIf="view === Views.LIST" class="h100">
+              <div *ngIf="view === Views.LIST" class="h100 w100">
                 <mat-card class="mp0" fxFlex="100" fxFlexFill>
                   <mat-card-subtitle class="header">
                     <app-scenes-list-header></app-scenes-list-header>
@@ -87,8 +87,8 @@
               </div>
 
               <!-- SCENE DETAIL -->
-              <div *ngIf="view === Views.DETAIL" class="h100">
-                <mat-card class="h100 mp0 no-box-shadow" fxFlex="100" fxFlex>
+              <div *ngIf="view === Views.DETAIL" class="h100 w100">
+                <mat-card class="h100 w100 mp0 no-box-shadow" fxFlex="100" fxFlex>
                   <mat-card-subtitle class="header">
                     Scene Detail /
                     <span *ngIf="selectedProducts$ | async as products; else defaultProductsHeader">
@@ -97,7 +97,7 @@
                     <ng-template #defaultProductsHeader>Files</ng-template>
                   </mat-card-subtitle>
 
-                  <div class="app-scene-list scroll-y">
+                  <div class="app-scene-list scroll-y scroll-x">
                     <app-scene-detail></app-scene-detail>
                     <hr>
                     <app-scene-files></app-scene-files>

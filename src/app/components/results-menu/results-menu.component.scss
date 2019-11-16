@@ -29,6 +29,7 @@
 
 .app-scene-list {
   height: calc(100% - 36px);
+  width: 100%;
 }
 
 .mwlResizable {
@@ -88,4 +89,8 @@
 
 .scroll-y {
   overflow-y: auto;
+}
+
+.scroll-x {
+  overflow-x: auto;
 }
