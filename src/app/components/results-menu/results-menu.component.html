@@ -1,5 +1,8 @@
 <ng-container *ngIf="isResultsMenuOpen$ | async">
-  <div class="rectangle-wrapper w100" *ngIf="breakpoint$ | async as breakpoint">
+  <div *ngIf="breakpoint$ | async as breakpoint"
+    [class.mobile-menu-offset]="breakpoint === breakpoints.MOBILE"
+    class="rectangle-wrapper w100">
+
     <div
       id="result-div"
       class="w100 results-menu"
@@ -43,7 +46,7 @@
             </mat-card>
 
             <!-- FILE LIST -->
-            <mat-card class="mp0 left-border-only" fxFlex="33" fxFlexFill>
+            <mat-card class="h100 mp0 left-border-only" fxFlex="33" fxFlexFill>
               <mat-card-subtitle class="header">
                 <span *ngIf="selectedProducts$ | async as products; else defaultProductsHeader">
                   {{ products.length || '' }} File{{ (products || []).length === 1 ? '' : 's'}}
@@ -51,7 +54,9 @@
                 <ng-template #defaultProductsHeader>Files</ng-template>
               </mat-card-subtitle>
 
-              <app-scene-files></app-scene-files>
+              <div class="app-scene-list scroll-y">
+                <app-scene-files></app-scene-files>
+              </div>
             </mat-card>
           </ng-container>
 
