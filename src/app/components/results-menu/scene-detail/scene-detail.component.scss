@@ -7,23 +7,13 @@ a {
   color: $uaf-primary-blue;
 }
 
-@mixin detail-card-base {
-  padding: 0;
-  margin: 0;
+.detail-card {
   max-width: 100%;
 }
 
-.detail-card {
-  @include detail-card-base;
-
+.scrollable {
   height: calc(100% - 36px);
   overflow: auto;
-}
-
-.detail-card-mobile {
-  @include detail-card-base;
-
-  height: auto;
 }
 
 .detail-card-header {
@@ -55,8 +45,6 @@ a {
 }
 
 .img-overlay {
-  width: 100%;
-  height: 100%;
   z-index: 100;
   position: absolute;
   top: 50%;

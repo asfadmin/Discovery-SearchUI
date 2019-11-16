@@ -1,9 +1,12 @@
 @import "asf-theme";
 
-.results-menu {
+.rectangle-wrapper {
+  position: fixed;
   bottom: 0;
-  left: 0;
-  position: static;
+}
+
+.mobile-menu-offset {
+  bottom: 90px;
 }
 
 .results-menu--background {
@@ -26,15 +29,11 @@
 
 .app-scene-list {
   height: calc(100% - 36px);
+  width: 100%;
 }
 
 .mwlResizable {
   box-sizing: border-box; // required for the enableGhostResize option to work
-}
-
-.rectangle-wrapper {
-  position: fixed;
-  bottom: 0;
 }
 
 .resize-handle-top,
@@ -90,4 +89,8 @@
 
 .scroll-y {
   overflow-y: auto;
+}
+
+.scroll-x {
+  overflow-x: auto;
 }
