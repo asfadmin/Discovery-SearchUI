@@ -76,7 +76,7 @@ export class ResultsMenuComponent implements OnInit {
   }
 
   public validate(event: ResizeEvent): boolean {
-    const MIN_DIMENSIONS_PX = 50;
+    const MIN_DIMENSIONS_PX = 36;
     const { width, height } = event.rectangle;
 
     return !(
