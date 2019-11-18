@@ -83,7 +83,7 @@
 <mat-menu #profileMenu="matMenu">
   <button (click)="onLogout()"
     mat-menu-item matSuffix>
-      <span>Logout</span>
+    <b>{{ datapoolAuthService.user.id }}</b> <span> logout</span>
   </button>
 </mat-menu>
 

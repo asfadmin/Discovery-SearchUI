@@ -1,6 +1,8 @@
-<div *ngIf="breakpoint$ | async as breakpoint">
-  <div *ngIf="scene" [ngClass]="(breakpoint < breakpoints.SMALL) ? 'detail-card-mobile' : 'detail-card'" >
+<div *ngIf="breakpoint$ | async as breakpoint"
+  class="detail-card scrollable"
+  [class.scrollable]="breakpoint !== breakpoints.MOBILE">
 
+  <div *ngIf="scene">
     <mat-card-header>
       <mat-card-title class="detail-card-header">
         <span>{{ scene.name }}</span>
@@ -70,7 +72,6 @@
         EULA which is presented after log in.
       </p>
     </div>
-
   </div>
 </div>
 

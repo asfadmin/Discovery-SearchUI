@@ -6,8 +6,6 @@ export enum ScenesActionType {
   SET_SCENES = '[Granuels] Set Scenes',
   CLEAR = '[Granuels] Clear Scenes',
 
-  SET_FOCUSED_SCENE = '[Scenes] Set Focused Scene',
-  CLEAR_FOCUSED_SCENE = '[Scenes] Clear Focused Scene',
   SET_RESULTS_LOADED = '[Scenes] Set Results Loaded',
 
   SET_SELECTED_SCENE = '[Scenes] Set Selected Scene',
@@ -56,16 +54,6 @@ export class SelectNextWithBrowse implements Action {
   public readonly type = ScenesActionType.SELECT_NEXT_WITH_BROWSE;
 }
 
-export class SetFocusedScene implements Action {
-  public readonly type = ScenesActionType.SET_FOCUSED_SCENE;
-
-  constructor(public payload: CMRProduct) {}
-}
-
-export class ClearFocusedScene implements Action {
-  public readonly type = ScenesActionType.CLEAR_FOCUSED_SCENE;
-}
-
 export type ScenesActions =
   | SetScenes
   | ClearScenes
@@ -74,6 +62,4 @@ export type ScenesActions =
   | SelectPreviousScene
   | SelectNextWithBrowse
   | SelectPreviousWithBrowse
-  | SetFocusedScene
-  | ClearFocusedScene
   | SetResultsLoaded;
