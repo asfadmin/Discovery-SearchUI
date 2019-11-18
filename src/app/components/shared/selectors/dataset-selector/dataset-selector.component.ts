@@ -1,5 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 
+import { Subscription } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { Store } from '@ngrx/store';
 
@@ -12,19 +13,24 @@ import * as filtersStore from '@store/filters';
   templateUrl: './dataset-selector.component.html',
   styleUrls: ['./dataset-selector.component.scss']
 })
-export class DatasetSelectorComponent implements OnInit {
+export class DatasetSelectorComponent implements OnInit, OnDestroy {
   public datasets$ = this.store$.select(filtersStore.getDatasetsList);
   public selected: string | null = null;
+  private datasetSub: Subscription;
 
   constructor(private store$: Store<AppState>) { }
 
   ngOnInit() {
-    this.store$.select(filtersStore.getSelectedDatasetId).subscribe(
+    this.datasetSub = this.store$.select(filtersStore.getSelectedDatasetId).subscribe(
       selected => this.selected = selected
     );
   }
 
   public onSelectionChange(dataset: string): void {
     this.store$.dispatch(new filtersStore.SetSelectedDataset(dataset));
+  }
+
+  ngOnDestroy() {
+    this.datasetSub.unsubscribe();
   }
 }

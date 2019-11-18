@@ -1,8 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
+
+import { map, tap } from 'rxjs/operators';
+import { SubSink } from 'subsink';
 
 import { Store } from '@ngrx/store';
-import { map, tap } from 'rxjs/operators';
-
 import { AppState } from '@store';
 import * as filtersStore from '@store/filters';
 
@@ -13,10 +14,12 @@ import { MapService, WktService } from '@services';
   templateUrl: './aoi-clear.component.html',
   styleUrls: ['./aoi-clear.component.css']
 })
-export class AoiClearComponent implements OnInit {
+export class AoiClearComponent implements OnInit, OnDestroy {
   public polygon: string;
   public savedPolygon: string | null = null;
   public anyPathFrameValues = false;
+
+  private subs = new SubSink();
 
   constructor(
     private mapService: MapService,
@@ -25,22 +28,26 @@ export class AoiClearComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.mapService.searchPolygon$.pipe(
-      tap(polygon => {
-        if (polygon) {
-          this.savedPolygon = null;
-        }
-      })
-    ).subscribe(
-      polygon => this.polygon = polygon
+    this.subs.add(
+      this.mapService.searchPolygon$.pipe(
+        tap(polygon => {
+          if (polygon) {
+            this.savedPolygon = null;
+          }
+        })
+      ).subscribe(
+        polygon => this.polygon = polygon
+      )
     );
 
-    this.store$.select(filtersStore.getPathFrameRanges).pipe(
-      map(({frameRange, pathRange}) =>
-        !!(frameRange.start || frameRange.end || pathRange.start || pathRange.end)
+    this.subs.add(
+      this.store$.select(filtersStore.getPathFrameRanges).pipe(
+        map(({frameRange, pathRange}) =>
+          !!(frameRange.start || frameRange.end || pathRange.start || pathRange.end)
+        )
+      ).subscribe(
+        anyPathFrameValues => this.anyPathFrameValues = anyPathFrameValues
       )
-    ).subscribe(
-      anyPathFrameValues => this.anyPathFrameValues = anyPathFrameValues
     );
   }
 
@@ -58,4 +65,7 @@ export class AoiClearComponent implements OnInit {
     this.mapService.setDrawFeature(features);
   }
 
+  ngOnDestroy() {
+    this.subs.unsubscribe();
+  }
 }

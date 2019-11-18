@@ -1,11 +1,13 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, OnDestroy } from '@angular/core';
 
 import { map } from 'rxjs/operators';
+import { SubSink } from 'subsink';
 import { Store } from '@ngrx/store';
 
 import { AppState } from '@store';
 import * as mapStore from '@store/map';
 import * as uiStore from '@store/ui';
+import * as searchStore from '@store/search';
 
 import * as models from '@models';
 import * as services from '@services';
@@ -17,58 +19,34 @@ import { LonLat } from '@models';
   templateUrl: './map-controls.component.html',
   styleUrls: ['./map-controls.component.scss']
 })
-export class MapControlsComponent implements OnInit {
+export class MapControlsComponent implements OnInit, OnDestroy {
   public view$ = this.store$.select(mapStore.getMapView);
-  public interactionMode$ = this.store$.select(mapStore.getMapInteractionMode);
-  public drawMode$ = this.store$.select(mapStore.getMapDrawMode);
 
   public searchType: models.SearchType;
   public searchTypes = models.SearchType;
-  public layerTypes = models.MapLayerTypes;
-  public layerType: models.MapLayerTypes;
   public viewTypes = models.MapViewType;
   public mousePos: LonLat;
+  private subs = new SubSink();
 
   constructor(
     private store$: Store<AppState>,
     private mapService: services.MapService,
   ) { }
 
-
   ngOnInit() {
-    this.store$.select(mapStore.getMapLayerType).subscribe(
-      layerType => this.layerType = layerType
+    this.subs.add(
+      this.store$.select(searchStore.getSearchType).subscribe(
+        searchType => this.searchType = searchType
+      )
     );
-    this.store$.select(uiStore.getSearchType).subscribe(
-      searchType => this.searchType = searchType
+
+    this.subs.add(
+      this.mapService.mousePosition$.subscribe(mp => this.mousePos = mp)
     );
-    this.mapService.mousePosition$.subscribe(mp => this.mousePos = mp);
   }
 
   public onNewProjection(view: models.MapViewType): void {
     this.store$.dispatch(new mapStore.SetMapView(view));
-  }
-
-  public onNewLayerType(layerType: models.MapLayerTypes): void {
-    const action = layerType === models.MapLayerTypes.STREET ?
-      new mapStore.SetStreetView() :
-      new mapStore.SetSatelliteView();
-
-    this.store$.dispatch(action);
-  }
-
-  public onNewInteractionMode(mode: models.MapInteractionModeType): void {
-    this.store$.dispatch(new mapStore.SetMapInteractionMode(mode));
-  }
-
-  public onNewDrawMode(mode: models.MapDrawModeType): void {
-    this.store$.dispatch(new mapStore.SetMapInteractionMode(models.MapInteractionModeType.DRAW));
-    this.store$.dispatch(new mapStore.SetMapDrawMode(mode));
-  }
-
-  public onClearAOI(): void {
-    this.mapService.clearDrawLayer();
-    this.store$.dispatch(new mapStore.SetMapInteractionMode(models.MapInteractionModeType.DRAW));
   }
 
   public zoomIn(): void {
@@ -77,5 +55,9 @@ export class MapControlsComponent implements OnInit {
 
   public zoomOut(): void {
     this.mapService.zoomOut();
+  }
+
+  ngOnDestroy() {
+    this.subs.unsubscribe();
   }
 }

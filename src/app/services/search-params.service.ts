@@ -10,8 +10,8 @@ import { map, withLatestFrom, startWith, switchMap, tap, filter } from 'rxjs/ope
 import { AppState } from '@store';
 import * as scenesStore from '@store/scenes';
 import * as mapStore from '@store/map';
-import * as uiStore from '@store/ui';
 import * as filterStore from '@store/filters';
+import { getSearchType } from '@store/search/search.reducer';
 
 import { MapService } from './map/map.service';
 import { RangeService } from './range.service';
@@ -55,7 +55,7 @@ export class SearchParamsService {
   }
 
   private searchType$() {
-    return this.store$.select(uiStore.getSearchType);
+    return this.store$.select(getSearchType);
   }
 
   private filterSearchParams$() {

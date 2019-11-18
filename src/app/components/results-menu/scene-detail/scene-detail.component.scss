@@ -7,16 +7,33 @@ a {
   color: $uaf-primary-blue;
 }
 
-.detail-card {
-  height: calc(100% - 72px);
+@mixin detail-card-base {
   padding: 0;
   margin: 0;
-  overflow: auto;
   max-width: 100%;
+}
+
+.detail-card {
+  @include detail-card-base;
+
+  height: calc(100% - 36px);
+  overflow: auto;
+}
+
+.detail-card-mobile {
+  @include detail-card-base;
+
+  height: auto;
 }
 
 .detail-card-header {
   word-break: break-all;
+}
+
+.detail-card-info {
+  margin-left: 16px;
+  margin-right: 16px;
+  margin-top: -16px;
 }
 
 .clipboard-icon {
@@ -67,12 +84,7 @@ a {
 }
 
 .content {
-  margin: 0 16px 25px 16px;
-}
-
-.action-buttons {
-  padding: 0 24px;
-  margin: 0;
+  margin: 0 16px 16px 16px;
 }
 
 .detail-item-margin {
@@ -88,5 +100,13 @@ a {
 }
 
 .browse-container {
-  margin-top: 25px;
+  margin-top: 0;
+}
+
+.accessing-text {
+  font-size: 12px;
+}
+
+.subtitle {
+  margin-bottom: 8px !important;
 }

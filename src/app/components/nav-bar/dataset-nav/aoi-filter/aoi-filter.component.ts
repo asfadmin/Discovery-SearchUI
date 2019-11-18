@@ -1,9 +1,8 @@
-import { Component, OnInit, ViewChild, Input } from '@angular/core';
+import { Component, OnInit, ViewChild, Input, OnDestroy } from '@angular/core';
 import { NgForm } from '@angular/forms';
-import {
-  trigger, state, style, animate, transition
-} from '@angular/animations';
+import { trigger, state, style, animate, transition } from '@angular/animations';
 import { ClipboardService } from 'ngx-clipboard';
+import { SubSink } from 'subsink';
 
 import { Store } from '@ngrx/store';
 import { AppState } from '@store';
@@ -11,6 +10,7 @@ import * as uiStore from '@store/ui';
 
 import { Subject } from 'rxjs';
 import { tap, delay } from 'rxjs/operators';
+
 import * as services from '@services';
 
 @Component({
@@ -30,7 +30,7 @@ import * as services from '@services';
     ])
   ],
 })
-export class AoiFilterComponent implements OnInit {
+export class AoiFilterComponent implements OnInit, OnDestroy {
   @ViewChild('polygonForm', { static: false }) public polygonForm: NgForm;
 
   public aoiErrors$ = new Subject<void>();
@@ -40,6 +40,7 @@ export class AoiFilterComponent implements OnInit {
   public isAOIOptionsOpen: boolean;
 
   public polygon: string;
+  private subs = new SubSink();
 
   constructor(
     private store$: Store<AppState>,
@@ -48,12 +49,16 @@ export class AoiFilterComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.store$.select(uiStore.getIsAOIOptionsOpen).subscribe(
-      isAOIOptionsOpen => this.isAOIOptionsOpen = isAOIOptionsOpen
+    this.subs.add(
+      this.store$.select(uiStore.getIsAOIOptionsOpen).subscribe(
+        isAOIOptionsOpen => this.isAOIOptionsOpen = isAOIOptionsOpen
+      )
     );
 
-    this.mapService.searchPolygon$.subscribe(
-      p => this.polygon = p
+    this.subs.add(
+      this.mapService.searchPolygon$.subscribe(
+        p => this.polygon = p
+      )
     );
 
     this.handleAOIErrors();
@@ -81,21 +86,27 @@ export class AoiFilterComponent implements OnInit {
   }
 
   private handleAOIErrors(): void {
-    this.aoiErrors$.pipe(
-      tap(_ => {
-        this.isAOIError = true;
-        this.mapService.clearDrawLayer();
-        this.polygonForm.reset();
+    this.subs.add(
+      this.aoiErrors$.pipe(
+        tap(_ => {
+          this.isAOIError = true;
+          this.mapService.clearDrawLayer();
+          this.polygonForm.reset();
+          this.polygonForm.form
+            .controls['searchPolygon']
+            .setErrors({'incorrect': true});
+        }),
+        delay(820),
+      ).subscribe(_ => {
+        this.isAOIError = false;
         this.polygonForm.form
           .controls['searchPolygon']
-          .setErrors({'incorrect': true});
-      }),
-      delay(820),
-    ).subscribe(_ => {
-      this.isAOIError = false;
-      this.polygonForm.form
-        .controls['searchPolygon']
-        .setErrors(null);
-    });
+          .setErrors(null);
+      })
+    );
+  }
+
+  ngOnDestroy() {
+    this.subs.unsubscribe();
   }
 }

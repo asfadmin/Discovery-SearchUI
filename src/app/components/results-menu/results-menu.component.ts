@@ -1,8 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, HostListener, OnInit } from '@angular/core';
+import { ResizeEvent } from 'angular-resizable-element';
 import { trigger, state, style, animate, transition } from '@angular/animations';
 
 import { map, withLatestFrom, filter, tap } from 'rxjs/operators';
 import { Store } from '@ngrx/store';
+import { ScreenSizeService } from '@services';
 
 import { AppState } from '@store';
 import * as uiStore from '@store/ui';
@@ -20,16 +22,24 @@ import * as models from '@models';
   styleUrls: ['./results-menu.component.scss'],
   animations: [
     trigger('changeMenuY', [
-      state('shown', style({ transform: 'translateY(0%)'
+      state('shown', style({ display: 'block'
       })),
       state('hidden',   style({
-        transform: 'translateY(100%) translateY(-36px)'
+        display: 'none'
       })),
       transition('shown <=> hidden', animate('200ms ease-out'))
     ]),
+    // trigger('changeMenuY', [
+    //   state('shown', style({ transform: 'translateY(0%)'
+    //   })),
+    //   state('hidden',   style({
+    //     transform: 'translateY(100%) translateY(-36px)'
+    //   })),
+    //   transition('shown <=> hidden', animate('200ms ease-out'))
+    // ]),
   ],
 })
-export class ResultsMenuComponent {
+export class ResultsMenuComponent implements OnInit {
   public totalResultCount$ = this.store$.select(searchStore.getTotalResultCount);
   public isResultsMenuOpen$ = this.store$.select(uiStore.getIsResultsMenuOpen);
 
@@ -38,15 +48,23 @@ export class ResultsMenuComponent {
   public numberOfProducts$ = this.store$.select(scenesStore.getNumberOfProducts);
   public selectedProducts$ = this.store$.select(scenesStore.getSelectedSceneProducts);
 
+  public style: object = {};
+  public innerWidth: any;
+  public innerHeight: any;
+
   public areNoScenes$ = this.store$.select(scenesStore.getScenes).pipe(
     map(scenes => scenes.length === 0)
   );
 
   public isHidden$ = this.store$.select(uiStore.getIsHidden);
 
+  public breakpoint$ = this.screenSize.breakpoint$;
+  public breakpoints = models.Breakpoints;
+
   constructor(
     private store$: Store<AppState>,
     private mapService: MapService,
+    private screenSize: ScreenSizeService,
   ) { }
 
   public onToggleMenu(): void {
@@ -65,6 +83,34 @@ export class ResultsMenuComponent {
     this.store$.dispatch(new scenesStore.SelectPreviousScene());
   }
 
+  public validate(event: ResizeEvent): boolean {
+    const MIN_DIMENSIONS_PX = 50;
+    if (
+      event.rectangle.width &&
+      event.rectangle.height &&
+      (event.rectangle.width < MIN_DIMENSIONS_PX ||
+        event.rectangle.height < MIN_DIMENSIONS_PX)
+    ) {
+      return false;
+    }
+    return true;
+  }
+
+  public onResizeEnd(event: ResizeEvent): void {
+    this.innerWidth = window.innerWidth;
+    this.innerHeight = window.innerHeight;
+    let maxHeight = this.innerHeight - 100;
+    maxHeight = event.rectangle.height > maxHeight ?
+                  maxHeight : event.rectangle.height;
+    this.style = {
+      position: 'static',
+      left: `${event.rectangle.left}px`,
+      bottom: 0,
+      width: `100%`,
+      height: `${maxHeight}px`,
+    };
+  }
+
   private queueAllProducts(products: models.CMRProduct[]): void {
     this.store$.dispatch(new queueStore.AddItems(products));
   }
@@ -74,4 +120,24 @@ export class ResultsMenuComponent {
       .toString()
       .replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,');
   }
+
+  @HostListener('window:resize', ['$event'])
+  onResize( event ) {
+    const resultDiv = document.getElementById('result-div');
+    const window_height = window.innerHeight;
+
+    resultDiv.style.height = '50vh';
+
+    // if (resultDiv.offsetHeight < window_height) {
+    //   resultDiv.style.height = '100%';
+    //   const resultDiv_height = resultDiv.offsetHeight;
+    //   resultDiv.style.height = resultDiv_height + 'px';
+    // } else {}
+  }
+
+  ngOnInit() {
+    this.innerWidth = window.innerWidth;
+    this.innerHeight = window.innerHeight;
+  }
+
 }

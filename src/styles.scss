@@ -1,6 +1,7 @@
 /* You can add global styles to this file, and also import other style files */
 
 @import "/styles/asf-theme.scss";
+@import "/styles/filter-list.scss";
 
 * {
   font-family: Roboto, sans-serif;
@@ -125,11 +126,11 @@ ul {
 
 .noselect {
   -webkit-touch-callout: none; /* iOS Safari */
-    -webkit-user-select: none; /* Safari */
-     -khtml-user-select: none; /* Konqueror HTML */
-       -moz-user-select: none; /* Firefox */
-        -ms-user-select: none; /* Internet Explorer/Edge */
-            user-select: none; /* Non-prefixed version, currently
+  -webkit-user-select: none; /* Safari */
+  -khtml-user-select: none; /* Konqueror HTML */
+  -moz-user-select: none; /* Firefox */
+  -ms-user-select: none; /* Internet Explorer/Edge */
+  user-select: none; /* Non-prefixed version, currently
                                   supported by Chrome and Opera */
 }
 
@@ -191,22 +192,22 @@ ul {
   .mat-dialog-container {
     background-color: $asf-primary-light;
   }
-
-  //.cdk-overlay-pane{
-  //  width: unset;
-  //  height: unset;
-  //  max-width: 100%;
-  //}
-  //
-  //.mat-dialog-container{
-  //  max-width: 100%;
-  //  max-height: 100%;
-  //  resize: both;
-  //}
 }
 
 .file-list {
   .mat-list-item-content {
     padding: 0 !important;
   }
+}
+
+.mini-button {
+  font-size: 12px !important;
+  padding: 0 8px !important;
+  line-height: 24px !important;
+  min-width: 1% !important;
+}
+
+#result-div .mat-list-base .mat-list-item.mat-2-line,
+#result-div .mat-list-base .mat-list-option.mat-2-line {
+  height: 60px;
 }

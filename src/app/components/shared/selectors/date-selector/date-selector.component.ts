@@ -1,12 +1,13 @@
-import { Component, OnInit, Input, Output, EventEmitter, ViewChild } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, ViewChild, OnDestroy } from '@angular/core';
 import { MatDatepickerInputEvent } from '@angular/material/datepicker';
 import { NgForm } from '@angular/forms';
 import * as moment from 'moment';
 
 import { Subject } from 'rxjs';
 import { filter, tap, delay } from 'rxjs/operators';
-import { Store, ActionsSubject } from '@ngrx/store';
+import { SubSink } from 'subsink';
 
+import { Store, ActionsSubject } from '@ngrx/store';
 import { AppState } from '@store';
 import * as filtersStore from '@store/filters';
 
@@ -18,7 +19,7 @@ import { DateExtremaService } from '@services';
   templateUrl: './date-selector.component.html',
   styleUrls: ['./date-selector.component.scss']
 })
-export class DateSelectorComponent implements OnInit {
+export class DateSelectorComponent implements OnInit, OnDestroy {
   @ViewChild('dateForm', { static: true }) public dateForm: NgForm;
 
   public startDateErrors$ = new Subject<void>();
@@ -32,6 +33,8 @@ export class DateSelectorComponent implements OnInit {
   public endDate$ = this.store$.select(filtersStore.getEndDate);
   public startDate: Date;
   public endDate: Date;
+
+  private subs = new SubSink();
 
   private get startControl() {
     return this.dateForm.form
@@ -52,23 +55,31 @@ export class DateSelectorComponent implements OnInit {
   ngOnInit() {
     this.handleDateErrors();
 
-    this.actions$.pipe(
-      filter(action => action.type === filtersStore.FiltersActionType.CLEAR_DATASET_FILTERS)
-    ).subscribe(_ => this.dateForm.reset());
-
-    this.dateExtremaService.getExtrema$(
-      this.store$.select(filtersStore.getSelectedDataset),
-      this.startDate$,
-      this.endDate$,
-    ).subscribe(
-      extrema => this.extrema = extrema
+    this.subs.add(
+      this.actions$.pipe(
+        filter(action => action.type === filtersStore.FiltersActionType.CLEAR_DATASET_FILTERS)
+      ).subscribe(_ => this.dateForm.reset())
     );
 
-    this.startDate$.subscribe(
-      start => this.startDate = start
+    this.subs.add(
+      this.dateExtremaService.getExtrema$(
+        this.store$.select(filtersStore.getSelectedDataset),
+        this.startDate$,
+        this.endDate$,
+      ).subscribe(
+        extrema => this.extrema = extrema
+      )
     );
-    this.endDate$.subscribe(
-      end => this.endDate = end
+
+    this.subs.add(
+      this.startDate$.subscribe(
+        start => this.startDate = start
+      )
+    );
+    this.subs.add(
+      this.endDate$.subscribe(
+        end => this.endDate = end
+      )
     );
   }
 
@@ -106,28 +117,36 @@ export class DateSelectorComponent implements OnInit {
   }
 
   private handleDateErrors(): void {
-    this.startDateErrors$.pipe(
-      tap(_ => {
-        this.isStartError = true;
-        this.startControl.reset();
-        this.startControl.setErrors({'incorrect': true});
-      }),
-      delay(820),
-    ).subscribe(_ => {
-      this.isStartError = false;
-      this.startControl.setErrors(null);
-    });
+    this.subs.add(
+      this.startDateErrors$.pipe(
+        tap(_ => {
+          this.isStartError = true;
+          this.startControl.reset();
+          this.startControl.setErrors({'incorrect': true});
+        }),
+        delay(820),
+      ).subscribe(_ => {
+        this.isStartError = false;
+        this.startControl.setErrors(null);
+      })
+    );
 
-    this.endDateErrors$.pipe(
-      tap(_ => {
-        this.isEndError = true;
-        this.endControl.reset();
-        this.endControl.setErrors({'incorrect': true});
-      }),
-      delay(820),
-    ).subscribe(_ => {
-      this.isEndError = false;
-      this.endControl.setErrors(null);
-    });
+    this.subs.add(
+      this.endDateErrors$.pipe(
+        tap(_ => {
+          this.isEndError = true;
+          this.endControl.reset();
+          this.endControl.setErrors({'incorrect': true});
+        }),
+        delay(820),
+      ).subscribe(_ => {
+        this.isEndError = false;
+        this.endControl.setErrors(null);
+      })
+    );
+  }
+
+  ngOnDestroy() {
+    this.subs.unsubscribe();
   }
 }

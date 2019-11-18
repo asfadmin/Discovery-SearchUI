@@ -1,8 +1,21 @@
-.scene-list {
-  height: calc(100% - 72px);
+@mixin scene-list-base {
+  position: fixed;
+  height: calc(100%);
   padding: 0;
   margin: 0;
-  overflow-y: hidden;
+  overflow-y: auto;
+}
+
+.scene-list-desktop {
+  @include scene-list-base;
+
+  width: 33%;
+}
+
+.scene-list-mobile {
+  @include scene-list-base;
+
+  width: 100%;
 }
 
 .mat-list-avatar {
@@ -14,14 +27,9 @@
   width: 100%;
 }
 
-.action-list {
-  padding-top: 0 !important;
-}
-
 .product--thumbnail {
   width: 30%;
 }
-
 
 .product-name {
   font-weight: bold !important;
@@ -33,4 +41,10 @@
 
 .selected .ml-2 {
   color: red;
+}
+
+.action-list {
+  height: calc(100% - 36px);
+  padding-top: 0 !important;
+  overflow-y: auto;
 }

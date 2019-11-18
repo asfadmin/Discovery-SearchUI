@@ -6,14 +6,6 @@
 
 .results-menu-wrapper {
   height: 40%;
-  width: 100%;
-  margin: 0;
-  padding: 0;
-  right: 0;
-  bottom: 0;
-  position: fixed;
-  z-index: 999;
-  pointer-events: none;
 }
 
 .results-menu-scene-detail-content {
@@ -84,5 +76,110 @@
 }
 
 .app-scene-list {
+  width: 33%;
+}
+
+.app-scene-list-mobile {
+  width: 100%;
+}
+
+.force-height {
+  height: auto !important;
+}
+
+.force-height-tab {
+  height: auto !important;
+}
+
+.mwlResizable {
+  box-sizing: border-box; // required for the enableGhostResize option to work
+}
+
+.andy-resize {
+  position: relative;
+  display: flex;
+  border: 2px solid;
+  width: 500px;
+  height: 200px;
+  top: 50px;
+  z-index: 999;
+  background: #b62339 !important;
+}
+
+.rectangle-wrapper {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+}
+
+.rectangle {
+  position: static;
+  height: 300px;
+  background-color: white;
+  border: solid 1px #121621;
+  color: #121621;
+  margin: auto;
+}
+
+.resize-handle-top,
+.resize-handle-bottom {
+  position: absolute;
+  height: 14px;
+  cursor: row-resize;
+  width: 100%;
+  background-image: url('/assets/div-handles/hsizegrip.png');
+  background-color: $asf-primary-light;
+  background-position: center; /* Center the image */
+  background-repeat: no-repeat; /* Do not repeat the image */
+}
+
+.resize-handle-top {
+  top: -15px;
+  border-bottom: 3px solid rgba(0, 0, 0, 0.3);
+}
+
+.resize-handle-bottom {
+  bottom: 0;
+}
+
+.resize-handle-left,
+.resize-handle-right {
+  position: absolute;
   height: 100%;
+  cursor: col-resize;
+  width: 14px;
+  background-image: url('/assets/div-handles/vsizegrip.png');
+  background-color: $asf-primary-light;
+  background-position: center; /* Center the image */
+  background-repeat: no-repeat; /* Do not repeat the image */
+}
+
+.resize-handle-left {
+  left: 0;
+}
+
+.resize-handle-right {
+  right: 0;
+}
+
+.result-height {
+  height: 100%;
+}
+
+.left-border-only {
+  box-shadow: none !important;
+  border-left: 1px solid rgba(0, 0, 0, 0.3);
+}
+
+.no-box-shadow {
+  border-bottom: none !important;
+  box-shadow: none !important;
+}
+
+.tab-group-mobile {
+  width: 100%;
+}
+
+#result-div {
+  height: 50vh;
 }
