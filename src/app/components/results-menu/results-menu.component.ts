@@ -58,8 +58,12 @@ export class ResultsMenuComponent implements OnInit {
   @HostListener('window:resize', ['$event'])
   onResize( event ) {
     const resultDiv = document.getElementById('result-div');
-    resultDiv.style.height = `${document.documentElement.clientHeight * 0.5}px`;
 
+    if (!resultDiv.style) {
+      return;
+    }
+
+    resultDiv.style.height = `${document.documentElement.clientHeight * 0.5}px`;
     this.resize$.next();
   }
 
