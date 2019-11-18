@@ -58,8 +58,12 @@ export class ResultsMenuComponent implements OnInit {
   @HostListener('window:resize', ['$event'])
   onResize( event ) {
     const resultDiv = document.getElementById('result-div');
-    resultDiv.style.height = `${document.documentElement.clientHeight * 0.5}px`;
 
+    if (!resultDiv.style) {
+      return;
+    }
+
+    resultDiv.style.height = `${document.documentElement.clientHeight * 0.5}px`;
     this.resize$.next();
   }
 
@@ -76,7 +80,7 @@ export class ResultsMenuComponent implements OnInit {
   }
 
   public validate(event: ResizeEvent): boolean {
-    const MIN_DIMENSIONS_PX = 50;
+    const MIN_DIMENSIONS_PX = 36;
     const { width, height } = event.rectangle;
 
     return !(

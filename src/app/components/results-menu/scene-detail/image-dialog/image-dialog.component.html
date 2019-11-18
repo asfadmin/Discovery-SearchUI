@@ -94,17 +94,23 @@
 
 </div>
 
-<div fxLayout="row"
-     fxLayout.xs="column"
-     fxLayoutAlign="end end"
-     class="bottom-row">
+<div *ngIf="breakpoint$ | async as breakpoint"
+  fxLayout="row"
+  fxLayoutAlign="end end"
+  class="bottom-row">
 
   <div fxFlex>
     <mat-checkbox
       (change)="setOnlyShowBrowse($event.checked)"
-      [checked]="onlyShowScenesWithBrowse" color="warn">
-        Only display scenes with a browse image
+      [checked]="onlyShowScenesWithBrowse"
+      style="margin-right: 6px;" color="warn">
     </mat-checkbox>
+    <span *ngIf="breakpoint > breakpoints.MOBILE">
+      Only display scenes with a browse image
+    </span>
+    <span *ngIf="breakpoint === breakpoints.MOBILE">
+      With browses
+    </span>
   </div>
   <div fxFlex="nogrow">
     <button mat-stroked-button (click)="closeDialog()" autofocus tabindex="1">Close</button>

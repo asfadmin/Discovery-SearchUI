@@ -15,6 +15,7 @@ $info-color: $asf-primary;
 .icon-bar {
   background-color: $info-background;
   padding: 0;
+  padding-right: 4px;
 }
 
 .ribbon-info-top {
@@ -35,6 +36,10 @@ label {
   margin-top: -3px;
 }
 
+.group-margin {
+  margin-right: 6px;
+}
+
 .control-icon {
   @include md-icon-size($asf-ribbon-icon-size);
 }
@@ -42,10 +47,6 @@ label {
 .button-group {
   margin: 0 3px 3px 1px;
   pointer-events: auto;
-}
-
-.zoom-group {
-  //width: 128px;
 }
 
 .button-group-label {
