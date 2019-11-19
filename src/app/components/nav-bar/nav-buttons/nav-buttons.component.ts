@@ -2,8 +2,8 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 
 import { ClipboardService } from 'ngx-clipboard';
 
-import { DatapoolAuthService, AsfApiService, EnvironmentService } from '@services';
-import { CMRProduct } from '@models';
+import { DatapoolAuthService, AsfApiService, EnvironmentService, ScreenSizeService } from '@services';
+import { CMRProduct, Breakpoints } from '@models';
 
 @Component({
   selector: 'app-nav-buttons',
@@ -11,9 +11,13 @@ import { CMRProduct } from '@models';
   styleUrls: ['./nav-buttons.component.scss']
 })
 export class NavButtonsComponent implements OnInit {
+  anio: number = new Date().getFullYear();
   public asfWebsiteUrl = 'https://www.asf.alaska.edu';
   public maturity = 'prod';
   private maturityKey = 'search-api-maturity';
+
+  public breakpoint$ = this.screenSize.breakpoint$;
+  public breakpoints = Breakpoints;
 
   @Input() queuedProducts: CMRProduct[];
 
@@ -24,6 +28,7 @@ export class NavButtonsComponent implements OnInit {
     public env: EnvironmentService,
     public asfApiService: AsfApiService,
     public clipboard: ClipboardService,
+    private screenSize: ScreenSizeService
   ) {}
 
   ngOnInit() {

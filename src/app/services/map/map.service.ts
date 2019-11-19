@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 
 import { BehaviorSubject, Subject } from 'rxjs';
-import { map, tap } from 'rxjs/operators';
+import { map, tap, sampleTime } from 'rxjs/operators';
 
 import { Map } from 'ol';
 import { Vector as VectorLayer } from 'ol/layer';
@@ -62,9 +62,14 @@ export class MapService {
   public zoom$ = new Subject<number>();
   public center$ = new Subject<models.LonLat>();
   public epsg$ = new Subject<string>();
-  public mousePosition$ = new BehaviorSubject<models.LonLat>({
+
+  private mousePositionSubject$ = new BehaviorSubject<models.LonLat>({
     lon: 0, lat: 0
   });
+  public mousePosition$ = this.mousePositionSubject$.pipe(
+    sampleTime(100)
+  );
+
   public newSelectedScene$ = new Subject<string>();
 
   public isDrawing$ = this.drawService.isDrawing$;
@@ -282,16 +287,14 @@ export class MapService {
       );
     });
 
+    this.selectHover.on('select', e => {
+      this.map.getTargetElement().style.cursor =
+        e.selected.length > 0 ? 'pointer' : '';
+    });
+
     newMap.on('pointermove', e => {
       const [ lon, lat ] = proj.toLonLat(e.coordinate, this.epsg());
-      this.mousePosition$.next({ lon, lat });
-      let clickable = false;
-
-      this.map.forEachFeatureAtPixel(
-        this.map.getEventPixel(e.originalEvent), f => clickable = !!f.get('filename')
-      );
-
-      this.map.getTargetElement().style.cursor = clickable ? 'pointer' : '';
+      this.mousePositionSubject$.next({ lon, lat });
     });
 
     this.drawService.getLayer().setZIndex(100);

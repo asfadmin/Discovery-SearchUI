@@ -6,10 +6,11 @@ import { DragDropModule } from '@angular/cdk/drag-drop';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatSharedModule } from '@shared';
+import { ViewSelectorModule } from './view-selector';
+import { AoiOptionsModule } from '@components/shared/aoi-options';
+import { LayerSelectorModule } from './layer-selector';
 
 import { MapControlsComponent } from './map-controls.component';
-import { ViewSelectorComponent } from './view-selector';
-import { AoiOptionsModule } from '@components/shared/aoi-options';
 
 @NgModule({
   imports: [
@@ -20,10 +21,11 @@ import { AoiOptionsModule } from '@components/shared/aoi-options';
     MatMenuModule,
     MatSharedModule,
     AoiOptionsModule,
+    ViewSelectorModule,
+    LayerSelectorModule
   ],
   declarations: [
     MapControlsComponent,
-    ViewSelectorComponent,
   ],
   exports: [
     MapControlsComponent

@@ -1,8 +1,8 @@
 <div (dragover)="onFileHovered($event)"
-  id="map" class="map" #map>
+  id="map" class="map w100 h100" #map>
 </div>
 
-<div class="map-header">
+<div *ngIf="breakpoint$ | async as breakpoint" class="map-header">
   <div class="header-controls"
         fxLayout="row"
         fxFlexFill>
@@ -19,20 +19,63 @@
             <mat-icon >clear</mat-icon>
           </button>
         </div>
-
       </mat-card>
     </div>
 
-    <div fxLayout="row">
-<!--      <div fxFill></div>-->
+    <div *ngIf="breakpoint > breakpoints.MOBILE" fxLayout="row">
       <div fxFlex="nogrow">
         <app-map-controls></app-map-controls>
       </div>
-<!--      <div fxFlex="100"></div>-->
     </div>
 
-    <img src="/assets/NASA_logo.svg" class="meatball">
+    <div *ngIf="breakpoint === breakpoints.MOBILE"
+      [class.after-load]="isResultsMenuOpen"
+      [class.before-load]="!isResultsMenuOpen"
+      class="mobile-map-controls">
+      <button (click)="openDrawControl()"
+        *ngIf="searchType === searchTypes.DATASET"
+        style="margin: 4px;" color="white" mat-fab>
+        <mat-icon>edit</mat-icon>
+      </button>
 
+      <button (click)="openMapControl()" style="margin: 4px;" color="white" mat-fab>
+        <mat-icon>layers</mat-icon>
+      </button>
+    </div>
+
+    <img *ngIf="breakpoint > breakpoints.MOBILE"
+      src="/assets/NASA_logo.svg" class="meatball">
+
+    <ng-container *ngIf="breakpoint === breakpoints.MOBILE">
+      <div (click)="closeMobileFullscreenControls()"
+        *ngIf="fullscreenControl !== fc.NONE"
+        class="mobile-controls-background"></div>
+
+      <div
+        *ngIf="fullscreenControl === fc.DRAW"
+        (click)="closeMobileFullscreenControls()"
+        class="mobile-map-controls-full">
+        <div class="mobile-control-group">
+          <app-interaction-selector></app-interaction-selector>
+        </div>
+
+        <div class="mobile-control-group">
+          <app-draw-selector></app-draw-selector>
+        </div>
+      </div>
+
+      <div *ngIf="fullscreenControl === fc.MAP"
+        (click)="closeMobileFullscreenControls()"
+        class="mobile-map-controls-full">
+          <div class="mobile-control-group">
+            <app-view-selector></app-view-selector>
+          </div>
+          <div *ngIf="(view$ | async) === viewTypes.EQUITORIAL"
+            class="mobile-control-group">
+            <app-layer-selector></app-layer-selector>
+          </div>
+      </div>
+    </ng-container>
   </div>
 </div>
 
@@ -44,7 +87,7 @@
   [interaction$]="interactionMode$">
 </app-file-upload>
 
-<app-attributions [mousePos]="mousePosition$ | async">
+<app-attributions>
 </app-attributions>
 
 <div
@@ -52,3 +95,4 @@
   (mouseleave)="leaveDrawPopup()"
   id="popup" class="ol-popup" #overlay>
 </div>
+

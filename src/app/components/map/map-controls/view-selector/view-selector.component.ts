@@ -1,5 +1,10 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, OnDestroy } from '@angular/core';
 import { Observable } from 'rxjs';
+import { SubSink } from 'subsink';
+
+import { Store } from '@ngrx/store';
+import { AppState } from '@store';
+import * as mapStore from '@store/map';
 
 import { MapViewType } from '@models';
 
@@ -8,19 +13,37 @@ import { MapViewType } from '@models';
   templateUrl: './view-selector.component.html',
   styleUrls: ['./view-selector.component.scss']
 })
-export class ViewSelectorComponent {
-  @Input() view: MapViewType;
-
-  @Output() newProjection = new EventEmitter<MapViewType>();
-
+export class ViewSelectorComponent implements OnInit, OnDestroy {
+  public view: MapViewType;
   public types = MapViewType;
+  private subs = new SubSink();
+
+  constructor(
+    private store$: Store<AppState>,
+  ) {}
+
+  ngOnInit() {
+    this.subs.add(
+      this.store$.select(mapStore.getMapView).subscribe(
+        view => this.view = view
+      )
+    );
+  }
 
   public onArcticSelected =
-    () => this.newProjection.emit(MapViewType.ARCTIC)
+    () => this.onNewProjection(MapViewType.ARCTIC)
 
   public onEquitorialSelected =
-    () => this.newProjection.emit(MapViewType.EQUITORIAL)
+    () => this.onNewProjection(MapViewType.EQUITORIAL)
 
   public onAntarcticSelected =
-    () => this.newProjection.emit(MapViewType.ANTARCTIC)
+    () => this.onNewProjection(MapViewType.ANTARCTIC)
+
+  public onNewProjection(view: MapViewType): void {
+    this.store$.dispatch(new mapStore.SetMapView(view));
+  }
+
+  ngOnDestroy() {
+    this.subs.unsubscribe();
+  }
 }

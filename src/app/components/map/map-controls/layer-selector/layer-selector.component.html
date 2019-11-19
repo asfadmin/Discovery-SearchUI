@@ -1,0 +1,16 @@
+<mat-button-toggle-group class="button-group"
+                         [value]="layerType"
+                         name="layerType">
+  <mat-button-toggle class="control-mat-button-toggle"
+                     (click)="onNewLayerType(layerTypes.SATELLITE)"
+                     matTooltip="Satellite View"
+                     [value]="layerTypes.SATELLITE">
+    <mat-icon class="control-icon">terrain</mat-icon>
+  </mat-button-toggle>
+  <mat-button-toggle class="control-mat-button-toggle"
+                     (click)="onNewLayerType(layerTypes.STREET)"
+                     [value]="layerTypes.STREET"
+                     matTooltip="Street View" >
+    <mat-icon class="control-icon">directions_car</mat-icon>
+  </mat-button-toggle>
+</mat-button-toggle-group>

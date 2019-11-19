@@ -67,10 +67,11 @@ export const routes = [
     services.DateExtremaService,
     services.EnvironmentService,
     services.PropertyService,
-    CustomBreakPointsProvider,
     services.LegacyAreaFormatService,
     services.BannerApiService,
     services.ScreenSizeService,
+    services.KeyboardService,
+    CustomBreakPointsProvider,
   ],
   bootstrap: [ AppComponent ],
 })

@@ -5,15 +5,17 @@ import { map } from 'rxjs/operators';
 
 import { AppState } from '@store';
 import * as filtersStore from '@store/filters';
+import * as uiStore from '@store/ui';
 
 import * as models from '@models';
-import { PropertyService } from '@services';
+import { PropertyService, ScreenSizeService } from '@services';
 
 enum FilterPanel {
   DATE = 'Date',
   ADDITIONAL = 'Additional',
   CAMPAIGN = 'Campaign',
-  PATH = 'Path'
+  PATH = 'Path',
+  AOI = 'Aoi'
 }
 
 @Component({
@@ -39,9 +41,13 @@ export class DatasetSearchComponent {
   );
   public dataset$ = this.store$.select(filtersStore.getSelectedDataset);
 
+  public breakpoint$ = this.screenSize.breakpoint$;
+  public breakpoints = models.Breakpoints;
+
   constructor(
     public prop: PropertyService,
-    private store$: Store<AppState>
+    private store$: Store<AppState>,
+    private screenSize: ScreenSizeService
   ) {}
 
   public onNewMissionSelected(selectedMission: string): void {

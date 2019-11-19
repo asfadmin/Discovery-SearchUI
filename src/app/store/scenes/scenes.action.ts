@@ -6,13 +6,14 @@ export enum ScenesActionType {
   SET_SCENES = '[Granuels] Set Scenes',
   CLEAR = '[Granuels] Clear Scenes',
 
-  SET_FOCUSED_SCENE = '[Scenes] Set Focused Scene',
-  CLEAR_FOCUSED_SCENE = '[Scenes] Clear Focused Scene',
   SET_RESULTS_LOADED = '[Scenes] Set Results Loaded',
 
   SET_SELECTED_SCENE = '[Scenes] Set Selected Scene',
   SELECT_NEXT_SCENE = '[Scenes] Select Next Scene',
   SELECT_PREVIOUS_SCENE = '[Scenes] Select Previous Scene',
+
+  SELECT_NEXT_WITH_BROWSE = '[Scenes] Set next with browse',
+  SELECT_PREVIOUS_WITH_BROWSE = '[Scenes] Set previous with browse'
 }
 
 export class SetScenes implements Action {
@@ -45,15 +46,12 @@ export class SelectPreviousScene implements Action {
   public readonly type = ScenesActionType.SELECT_PREVIOUS_SCENE;
 }
 
-
-export class SetFocusedScene implements Action {
-  public readonly type = ScenesActionType.SET_FOCUSED_SCENE;
-
-  constructor(public payload: CMRProduct) {}
+export class SelectPreviousWithBrowse implements Action {
+  public readonly type = ScenesActionType.SELECT_PREVIOUS_WITH_BROWSE;
 }
 
-export class ClearFocusedScene implements Action {
-  public readonly type = ScenesActionType.CLEAR_FOCUSED_SCENE;
+export class SelectNextWithBrowse implements Action {
+  public readonly type = ScenesActionType.SELECT_NEXT_WITH_BROWSE;
 }
 
 export type ScenesActions =
@@ -62,6 +60,6 @@ export type ScenesActions =
   | SetSelectedScene
   | SelectNextScene
   | SelectPreviousScene
-  | SetFocusedScene
-  | ClearFocusedScene
+  | SelectNextWithBrowse
+  | SelectPreviousWithBrowse
   | SetResultsLoaded;

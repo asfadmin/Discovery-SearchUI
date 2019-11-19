@@ -1,9 +1,6 @@
 @import "asf-theme";
 
 .layout {
-  //display: flex;
-  //justify-content: flex-end;
-  //align-items: center;
 }
 
 .spacing {
@@ -21,12 +18,11 @@
   font-weight: 400;
 }
 
-.mat-icon {
+.large-icon {
   @include md-icon-size(34px);
 
   margin-right: 0;
   color: $asf-primary-dark;
-  //height: 32px;
 }
 
 .mat-icon-button {
@@ -42,4 +38,8 @@
   border: none;
   height: 1px;
   opacity: 1;
+}
+
+.mobile-icon-spacing {
+  margin: 0 5px;
 }

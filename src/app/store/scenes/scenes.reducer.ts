@@ -14,7 +14,6 @@ export interface ScenesState {
   scenes: {[id: string]: string[]};
 
   selected: string | null;
-  focused: string | null;
 }
 
 export const initState: ScenesState = {
@@ -24,7 +23,6 @@ export const initState: ScenesState = {
   areResultsLoaded: false,
 
   selected: null,
-  focused: null,
 };
 
 
@@ -71,7 +69,6 @@ export function scenesReducer(state = initState, action: ScenesActions): ScenesS
 
         ids: Object.keys(products),
         selected,
-        focused: null,
 
         areResultsLoaded: true,
         products,
@@ -90,89 +87,35 @@ export function scenesReducer(state = initState, action: ScenesActions): ScenesS
       const scenes = allScenesFrom(state.scenes, state.products);
       const scene = state.products[state.selected] || null;
 
-
-      if (!scenes[0]) {
-        return {
-          ...state
-        };
-      }
-
-      if (!scene) {
-        const firstScene = scenes[0];
-
-        return {
-          ...state,
-          selected: firstScene.id
-        };
-      }
-
-      const currentSelected = scenes
-        .filter(g => g.name === scene.name)
-        .pop();
-
-      const nextIdx = Math.min(
-        scenes.indexOf(currentSelected) + 1,
-        scenes.length - 1
-      );
-
-      const nextScene = scenes[nextIdx];
-
-      return {
-        ...state,
-        selected: nextScene.id
-      };
+      return selectNext(state, scenes, scene);
     }
 
     case ScenesActionType.SELECT_PREVIOUS_SCENE: {
       const scenes = allScenesFrom(state.scenes, state.products);
       const scene = state.products[state.selected] || null;
 
-      if (!scenes[0]) {
-        return {
-          ...state
-        };
-      }
-
-      if (!scene) {
-        const lastScene = scenes[scenes.length - 1];
-
-        return {
-          ...state,
-          selected: lastScene.id
-        };
-      }
-
-      const currentSelected = scenes
-        .filter(g => g.name === scene.name)
-        .pop();
-
-      const previousIdx = Math.max(scenes.indexOf(currentSelected) - 1, 0);
-      const previousScene = scenes[previousIdx];
-
-      return {
-        ...state,
-        selected: previousScene.id
-      };
+      return selectPrevious(state, scenes, scene);
     }
 
-    case ScenesActionType.SET_FOCUSED_SCENE: {
-      return {
-        ...state,
-        focused: action.payload.id,
-      };
+    case ScenesActionType.SELECT_NEXT_WITH_BROWSE: {
+      const scenes = allScenesWithBrowse(state.scenes, state.products);
+      const scene = state.products[state.selected] || null;
+
+      return selectNext(state, scenes, scene);
     }
+
+    case ScenesActionType.SELECT_PREVIOUS_WITH_BROWSE: {
+      const scenes = allScenesWithBrowse(state.scenes, state.products);
+      const scene = state.products[state.selected] || null;
+
+      return selectPrevious(state, scenes, scene);
+    }
+
 
     case ScenesActionType.SET_RESULTS_LOADED: {
       return {
         ...state,
         areResultsLoaded: action.payload,
-      };
-    }
-
-    case ScenesActionType.CLEAR_FOCUSED_SCENE: {
-      return {
-        ...state,
-        focused: null,
       };
     }
 
@@ -185,6 +128,68 @@ export function scenesReducer(state = initState, action: ScenesActions): ScenesS
     }
   }
 }
+
+const selectNext = (state, scenes, scene) => {
+  if (!scenes[0]) {
+    return {
+      ...state
+    };
+  }
+
+  if (!scene) {
+    const firstScene = scenes[0];
+
+    return {
+      ...state,
+      selected: firstScene.id
+    };
+  }
+
+  const currentSelected = scenes
+    .filter(g => g.name === scene.name)
+    .pop();
+
+  const nextIdx = Math.min(
+    scenes.indexOf(currentSelected) + 1,
+    scenes.length - 1
+  );
+
+  const nextScene = scenes[nextIdx];
+
+  return {
+    ...state,
+    selected: nextScene.id
+  };
+};
+
+const selectPrevious = (state, scenes, scene) => {
+  if (!scenes[0]) {
+    return {
+      ...state
+    };
+  }
+
+  if (!scene) {
+    const lastScene = scenes[scenes.length - 1];
+
+    return {
+      ...state,
+      selected: lastScene.id
+    };
+  }
+
+  const currentSelected = scenes
+    .filter(g => g.name === scene.name)
+    .pop();
+
+  const previousIdx = Math.max(scenes.indexOf(currentSelected) - 1, 0);
+  const previousScene = scenes[previousIdx];
+
+  return {
+    ...state,
+    selected: previousScene.id
+  };
+};
 
 
 export const getScenesState = createFeatureSelector<ScenesState>('scenes');
@@ -202,9 +207,22 @@ export const allScenesFrom = (scenes: {[id: string]: string[]}, products) => {
     });
 };
 
+export const allScenesWithBrowse = (scenes: {[id: string]: string[]}, products) => {
+  const withBrowses = allScenesFrom(scenes, products).filter(
+    scene => scene.browses.filter(browse => !browse.includes('no-browse')).length > 0
+  );
+
+  return withBrowses;
+};
+
 export const getScenes = createSelector(
   getScenesState,
   (state: ScenesState) => allScenesFrom(state.scenes, state.products)
+);
+
+export const getScenesWithBrowse = createSelector(
+  getScenesState,
+  (state: ScenesState) => allScenesWithBrowse(state.scenes, state.products)
 );
 
 export const getAreResultsLoaded = createSelector(
@@ -222,20 +240,58 @@ export const getSelectedSceneProducts = createSelector(
   (state: ScenesState) => {
     const selected = state.products[state.selected];
 
+    return productsForScene(selected, state);
+  }
+);
+
+export const getSceneProducts = createSelector(
+  getScenesState,
+  (state: ScenesState, props: {sceneId: string}) => {
+    const selected = state.products[props.sceneId];
+
+    return productsForScene(selected, state);
+  }
+);
+
+export const getSelectedSceneBrowses = createSelector(
+  getScenesState,
+  (state: ScenesState) => {
+    const selected = state.products[state.selected];
+
     if (!selected) {
       return;
     }
 
-    const products = state.scenes[selected.groupId] || [];
+    let browses = [];
 
-    return products
-      .map(id => state.products[id])
-      .sort(function(a, b) {
-        return a.bytes - b.bytes;
-      }).reverse()
-    ;
+    productsForScene(selected, state).forEach(
+      product => browses = [...browses, ...product.browses]
+    );
+
+    const unique = Array.from(new Set(
+      browses
+    ));
+
+    return unique.length > 1 ?
+      unique.filter(b => !b.includes('no-browse')) :
+      unique;
   }
 );
+
+const productsForScene = (selected, state) => {
+  if (!selected) {
+    return;
+  }
+
+  const products = state.scenes[selected.groupId] || [];
+
+  return products
+    .map(id => state.products[id])
+    .sort(function(a, b) {
+      return a.bytes - b.bytes;
+    }).reverse();
+};
+
 
 export const getAreProductsLoaded = createSelector(
   getScenes,
@@ -253,30 +309,26 @@ export const getNumberOfProducts = createSelector(
 );
 
 
-export const getSceneProducts = createSelector(
+export const getAllSceneProducts = createSelector(
   getScenesState,
   (state: ScenesState) => {
-    const sceneProducts = {};
+    const allSceneProducts = {};
 
     Object.entries(state.scenes).forEach(
       ([sceneId, scene]) => {
         const products = scene
           .map(name => state.products[name]);
 
-        sceneProducts[sceneId] = products;
+        allSceneProducts[sceneId] = products;
       }
     );
 
-    return sceneProducts;
+    return allSceneProducts;
   }
 );
+
 
 export const getSelectedScene = createSelector(
   getScenesState,
   (state: ScenesState) => state.products[state.selected] || null
-);
-
-export const getFocusedScene = createSelector(
-  getScenesState,
-  (state: ScenesState) => state.products[state.focused] || null
 );
