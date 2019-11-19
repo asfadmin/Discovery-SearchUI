@@ -32,6 +32,6 @@ export class BannerApiService {
   private bannerUrl(): string {
     const deployment = this.env.value.devMode ? 'test' : 'prod';
 
-    return `https://a2dzcnwnc3.execute-api.us-east-1.amazonaws.com/prod/calendar/${deployment}`;
+    return `https://banners.asf.alaska.edu/calendar/${deployment}`;
   }
 }
