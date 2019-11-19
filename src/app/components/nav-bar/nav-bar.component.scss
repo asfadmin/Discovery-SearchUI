@@ -26,9 +26,6 @@ $config: mat-typography-config();
   padding: 3px 16px 16px 16px;
 }
 
-$break-small: 700px;
-$break-medium: 1250px;
-
 .breadcrumb {
   @extend .mat-form-field;
 
@@ -114,4 +111,18 @@ $break-medium: 1250px;
   position: absolute;
   top: 20px;
   right: 10px;
+}
+
+.mobile-nav-bar {
+  background-color: $asf-primary-light;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.mobile-icon-cluster {
+  position: absolute;
+  top: 15px;
+  right: 5px;
 }

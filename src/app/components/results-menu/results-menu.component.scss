@@ -1,74 +1,18 @@
 @import "asf-theme";
 
-.position {
-  pointer-events: none;
-}
-
-.results-menu-wrapper {
-  height: 40%;
-  width: 100%;
-  margin: 0;
-  padding: 0;
-  right: 0;
-  bottom: 0;
+.rectangle-wrapper {
   position: fixed;
-  z-index: 999;
-  pointer-events: none;
+  bottom: 0;
 }
 
-.results-menu-scene-detail-content {
-  height: 100%;
-  overflow-y: auto;
-  overflow-x: hidden;
-}
-
-.scrollable-card {
-  height: 100%;
-  overflow-y: auto;
-  margin: 0;
-  padding: 0;
-}
-
-.toggle-button-position {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  pointer-events: none;
-}
-
-.toggle-button {
-  pointer-events: auto;
-  background-color: $asf-primary-light;
-  color: $asf-primary-dark;
-  font-size: 18px;
-  font-family: Roboto, sans-serif;
-  font-weight: 400;
-  border-bottom-style: solid;
-  border-bottom-width: 1px;
-  border-bottom-color: lighten($asf-primary-light, 10%);
-  box-shadow:
-    0 8px 10px 1px rgba(0, 0, 0, 0.14),
-    0 3px 14px 2px rgba(0, 0, 0, 0.12),
-    0 5px 10px -3px rgba(0, 0, 0, 0.4) !important;
-}
-
-.results-menu--layout {
-  display: flex;
-  height: 100%;
-  margin: 0;
-  padding: 0;
+.mobile-menu-offset {
+  bottom: 90px;
 }
 
 .results-menu--background {
   background: rgba(238, 238, 238, 0.7);
   background: white;
   pointer-events: auto;
-}
-
-.results-menu--column {
-  min-width: 300px;
-  padding: 0;
-  margin: 0;
 }
 
 .header {
@@ -84,5 +28,68 @@
 }
 
 .app-scene-list {
+  height: calc(100% - 36px);
+  width: 100%;
+}
+
+.mwlResizable {
+  box-sizing: border-box; // required for the enableGhostResize option to work
+}
+
+.resize-handle-top,
+.resize-handle-bottom {
+  position: absolute;
+  height: 25px;
+  cursor: row-resize;
+  width: 100%;
+  background-image: url('/assets/div-handles/hsizegrip.png');
+  background-color: $asf-primary-light;
+  background-position: center; /* Center the image */
+  background-repeat: no-repeat; /* Do not repeat the image */
+}
+
+.resize-handle-top {
+  top: -25px;
+}
+
+.resize-handle-bottom {
+  bottom: 0;
+}
+
+.resize-handle-left,
+.resize-handle-right {
+  position: absolute;
   height: 100%;
+  cursor: col-resize;
+  width: 14px;
+  background-image: url('/assets/div-handles/vsizegrip.png');
+  background-color: $asf-primary-light;
+  background-position: center; /* Center the image */
+  background-repeat: no-repeat; /* Do not repeat the image */
+}
+
+.resize-handle-left {
+  left: 0;
+}
+
+.resize-handle-right {
+  right: 0;
+}
+
+.left-border-only {
+  box-shadow: none !important;
+  border-left: 1px solid rgba(0, 0, 0, 0.3);
+}
+
+.no-box-shadow {
+  border-bottom: none !important;
+  box-shadow: none !important;
+}
+
+.scroll-y {
+  overflow-y: auto;
+}
+
+.scroll-x {
+  overflow-x: auto;
 }

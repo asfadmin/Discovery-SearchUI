@@ -23,7 +23,7 @@ export const jers_1 = {
     url: 'https://global.jaxa.jp/'
   },
   infoUrl: 'https://www.asf.alaska.edu/sar-data/jers-1/',
-  citationUrl: 'https://www.asf.alaska.edu/sar-data/jers-1/how-to-cite/',
+  citationUrl: 'https://www.asf.alaska.edu/how-to-cite-data/',
   productTypes: [{
     apiValue: 'L0',
     displayName: 'Level Zero'

@@ -1,5 +1,5 @@
 import {
-  Component, OnInit, Input, Output, EventEmitter, ViewChild, ElementRef
+  Component, OnInit, Input, Output, EventEmitter, ViewChild, ElementRef, OnDestroy
 } from '@angular/core';
 import {
   trigger, state, style, animate, transition
@@ -18,15 +18,23 @@ import Overlay from 'ol/Overlay';
 import { getTopRight } from 'ol/extent';
 
 import tippy from 'tippy.js';
+import { SubSink } from 'subsink';
 
 import { AppState } from '@store';
 import * as scenesStore from '@store/scenes';
+import * as searchStore from '@store/search';
 import * as mapStore from '@store/map';
 import * as uiStore from '@store/ui';
 
 import * as models from '@models';
-import { MapService, WktService } from '@services';
+import { MapService, WktService, ScreenSizeService } from '@services';
 import * as polygonStyle from '@services/map/polygon.style';
+
+enum FullscreenControls {
+  MAP = 'Map',
+  DRAW = 'Draw',
+  NONE = 'None'
+}
 
 @Component({
   selector: 'app-map',
@@ -44,7 +52,7 @@ import * as polygonStyle from '@services/map/polygon.style';
     ])
   ],
 })
-export class MapComponent implements OnInit {
+export class MapComponent implements OnInit, OnDestroy  {
   @Output() loadUrlState = new EventEmitter<void>();
   @ViewChild('overlay', { static: true }) overlayRef: ElementRef;
   @ViewChild('map', { static: true }) mapRef: ElementRef;
@@ -53,11 +61,17 @@ export class MapComponent implements OnInit {
   public interactionMode$ = this.store$.select(mapStore.getMapInteractionMode);
   public mousePosition$ = this.mapService.mousePosition$;
   public banners$ = this.store$.select(uiStore.getBanners);
+  public view$ = this.store$.select(mapStore.getMapView);
+  public viewTypes = models.MapViewType;
 
   public tooltip;
   public overlay: Overlay;
   public currentOverlayPosition;
   public shouldShowOverlay: boolean;
+  public isResultsMenuOpen: boolean;
+
+  public fullscreenControl = FullscreenControls.NONE;
+  public fc = FullscreenControls;
 
   private isMapInitialized$ = this.store$.select(mapStore.getIsMapInitialization);
   private viewType$ = combineLatest(
@@ -65,33 +79,58 @@ export class MapComponent implements OnInit {
     this.store$.select(mapStore.getMapLayerType),
   );
 
+  public breakpoint$ = this.screenSize.breakpoint$;
+  public breakpoints = models.Breakpoints;
+
+  public searchType: models.SearchType;
+  public searchTypes = models.SearchType;
+
+  private subs = new SubSink();
+
   constructor(
     private store$: Store<AppState>,
     private mapService: MapService,
     private wktService: WktService,
+    private screenSize: ScreenSizeService
   ) {}
 
   ngOnInit(): void {
-    combineLatest(
-      this.store$.select(uiStore.getIsResultsMenuOpen),
-      this.mapService.searchPolygon$
-    ).pipe(
-      filter(_ => !!this.overlay),
-      map(([isResultsMenuOpen, polygon]) => !isResultsMenuOpen && !!polygon),
-    ).subscribe(
-      shouldShowOverlay => shouldShowOverlay ?
-        this.showOverlay() :
-        this.hideOverlay()
+    this.subs.add(
+      this.store$.select(searchStore.getSearchType).subscribe(
+        searchType => this.searchType = searchType
+      )
     );
 
-    this.interactionMode$.subscribe(
-      mode => {
-        if (mode === models.MapInteractionModeType.NONE) {
-          this.mapService.enableInteractions();
-        } else {
-          this.mapService.disableInteractions();
+    this.subs.add(
+      this.store$.select(uiStore.getIsResultsMenuOpen).subscribe(
+        isOpen => this.isResultsMenuOpen = isOpen
+      )
+    );
+
+    this.subs.add(
+      combineLatest(
+        this.store$.select(uiStore.getIsResultsMenuOpen),
+        this.mapService.searchPolygon$
+      ).pipe(
+        filter(_ => !!this.overlay),
+        map(([isResultsMenuOpen, polygon]) => !isResultsMenuOpen && !!polygon),
+      ).subscribe(
+        shouldShowOverlay => shouldShowOverlay ?
+          this.showOverlay() :
+          this.hideOverlay()
+      )
+    );
+
+    this.subs.add(
+      this.interactionMode$.subscribe(
+        mode => {
+          if (mode === models.MapInteractionModeType.NONE) {
+            this.mapService.enableInteractions();
+          } else {
+            this.mapService.disableInteractions();
+          }
         }
-      }
+      )
     );
 
     this.tooltip = (<any[]>tippy('#map', {
@@ -110,51 +149,61 @@ export class MapComponent implements OnInit {
     this.redrawSearchPolygonWhenViewChanges();
     this.updateDrawMode();
 
-    this.interactionMode$.subscribe(
-      mode => this.mapService.setInteractionMode(mode)
+    this.subs.add(
+      this.interactionMode$.subscribe(
+        mode => this.mapService.setInteractionMode(mode)
+      )
     );
 
-    combineLatest(
-      this.mapService.isDrawing$,
-      this.drawMode$,
-      this.interactionMode$
-    ).pipe(
-      map(([isDrawing, drawMode, interactionMode]) => {
-        if (interactionMode === models.MapInteractionModeType.DRAW) {
-          if (drawMode === models.MapDrawModeType.POINT) {
-            return 'Click point';
-          }
+    this.subs.add(
+      combineLatest(
+        this.mapService.isDrawing$,
+        this.drawMode$,
+        this.interactionMode$
+      ).pipe(
+        map(([isDrawing, drawMode, interactionMode]) => {
+          if (interactionMode === models.MapInteractionModeType.DRAW) {
+            if (drawMode === models.MapDrawModeType.POINT) {
+              return 'Click point';
+            }
 
-          if (!isDrawing) {
-            return 'Click to start drawing';
-          }
+            if (!isDrawing) {
+              return 'Click to start drawing';
+            }
 
-          if (drawMode === models.MapDrawModeType.BOX) {
-            return 'Click to stop drawing';
-          } else if (drawMode === models.MapDrawModeType.LINESTRING || drawMode === models.MapDrawModeType.POLYGON) {
-            return 'Double click to stop drawing';
+            if (drawMode === models.MapDrawModeType.BOX) {
+              return 'Click to stop drawing';
+            } else if (drawMode === models.MapDrawModeType.LINESTRING || drawMode === models.MapDrawModeType.POLYGON) {
+              return 'Double click to stop drawing';
+            }
+          } else if (interactionMode === models.MapInteractionModeType.EDIT) {
+            return 'Click and drag on area of interest';
           }
-        } else if (interactionMode === models.MapInteractionModeType.EDIT) {
-          return 'Click and drag on area of interest';
+        })
+      ).subscribe(
+        tip => this.tooltip.setContent(tip)
+      )
+    );
+
+    this.subs.add(
+      this.interactionMode$.pipe(
+        map(mode => mode === models.MapInteractionModeType.DRAW),
+      ).subscribe(isDrawMode => {
+        if (isDrawMode) {
+          this.tooltip.enable();
+        } else {
+          this.tooltip.hide();
+          this.tooltip.disable();
         }
       })
-    ).subscribe(tip => this.tooltip.setContent(tip));
+    );
 
-    this.interactionMode$.pipe(
-      map(mode => mode === models.MapInteractionModeType.DRAW),
-    ).subscribe(isDrawMode => {
-      if (isDrawMode) {
-        this.tooltip.enable();
-      } else {
-        this.tooltip.hide();
-        this.tooltip.disable();
-      }
-    });
-
-    this.mapService.newSelectedScene$.pipe(
-      map(sceneId => new scenesStore.SetSelectedScene(sceneId))
-    ).subscribe(
-      action => this.store$.dispatch(action)
+    this.subs.add(
+      this.mapService.newSelectedScene$.pipe(
+        map(sceneId => new scenesStore.SetSelectedScene(sceneId))
+      ).subscribe(
+        action => this.store$.dispatch(action)
+      )
     );
   }
 
@@ -200,46 +249,46 @@ export class MapComponent implements OnInit {
   }
 
   private updateMapOnViewChange(): void {
-    const viewBeforInitialization = this.viewType$.pipe(
-      withLatestFrom(this.isMapInitialized$),
-      filter(([view, isInit]) => !isInit),
-      map(([view, isInit]) => view)
-    ).subscribe(
-      ([view, layerType]) => {
-        this.setMapWith(<models.MapViewType>view, <models.MapLayerTypes>layerType);
-        this.loadUrlState.emit();
-        this.store$.dispatch(new mapStore.MapInitialzed());
-      }
+    this.subs.add(
+      this.viewType$.pipe(
+        withLatestFrom(this.isMapInitialized$),
+        filter(([view, isInit]) => !isInit),
+        map(([view, isInit]) => view)
+      ).subscribe(
+        ([view, layerType]) => {
+          this.setMapWith(<models.MapViewType>view, <models.MapLayerTypes>layerType);
+          this.loadUrlState.emit();
+          this.store$.dispatch(new mapStore.MapInitialzed());
+        }
+      )
     );
 
-    this.sceneToLayer$('SELECTED').subscribe(
-      feature => this.mapService.setSelectedFeature(feature)
-    );
-
-    this.sceneToLayer$('FOCUSED').subscribe(
-      feature => this.mapService.setFocusedFeature(feature)
+    this.subs.add(
+      this.sceneToLayer$().subscribe(
+        feature => this.mapService.setSelectedFeature(feature)
+      )
     );
   }
 
-  private sceneToLayer$(layerType: string) {
-    const scene$ = layerType === 'FOCUSED' ?
-      this.store$.select(scenesStore.getFocusedScene) :
-      this.store$.select(scenesStore.getSelectedScene);
+  private sceneToLayer$() {
+    const scene$ = this.store$.select(scenesStore.getSelectedScene);
 
     const scenesLayerAfterInitialization$ = this.isMapInitialized$.pipe(
       filter(isMapInitiliazed => isMapInitiliazed),
       switchMap(_ => this.viewType$),
     );
 
-    scenesLayerAfterInitialization$.pipe(
-      tap(([view, mapLayerType]) =>
-        this.setMapWith(<models.MapViewType>view, <models.MapLayerTypes>mapLayerType)
-      ),
-      switchMap(_ =>
-        this.scenePolygonsLayer$(this.mapService.epsg())
+    this.subs.add(
+      scenesLayerAfterInitialization$.pipe(
+        tap(([view, mapLayerType]) =>
+          this.setMapWith(<models.MapViewType>view, <models.MapLayerTypes>mapLayerType)
+        ),
+        switchMap(_ =>
+          this.scenePolygonsLayer$(this.mapService.epsg())
+        )
+      ).subscribe(
+        layer => this.mapService.setLayer(layer)
       )
-    ).subscribe(
-      layer => this.mapService.setLayer(layer)
     );
 
     const selectedSceneAfterInitialization$ = this.isMapInitialized$.pipe(
@@ -249,10 +298,7 @@ export class MapComponent implements OnInit {
     );
 
     return selectedSceneAfterInitialization$.pipe(
-      tap(scene => !!scene || (layerType === 'FOCUSED') ?
-        this.mapService.clearFocusedScene() :
-        this.mapService.clearSelectedScene()
-      ),
+      tap(scene => !!scene ? this.mapService.clearSelectedScene() : null),
       filter(g => g !== null),
       map(
         scene => this.wktService.wktToFeature(
@@ -264,18 +310,22 @@ export class MapComponent implements OnInit {
   }
 
   private redrawSearchPolygonWhenViewChanges(): void {
-    this.viewType$.pipe(
-      withLatestFrom(this.mapService.searchPolygon$),
-      map(([_, polygon]) => polygon),
-      filter(polygon => !!polygon),
-    ).subscribe(
-      polygon => this.loadSearchPolygon(polygon)
+    this.subs.add(
+      this.viewType$.pipe(
+        withLatestFrom(this.mapService.searchPolygon$),
+        map(([_, polygon]) => polygon),
+        filter(polygon => !!polygon),
+      ).subscribe(
+        polygon => this.loadSearchPolygon(polygon)
+      )
     );
   }
 
   private updateDrawMode(): void {
-    this.store$.select(mapStore.getMapDrawMode).subscribe(
-      mode => this.mapService.setDrawMode(mode)
+    this.subs.add(
+      this.store$.select(mapStore.getMapDrawMode).subscribe(
+        mode => this.mapService.setDrawMode(mode)
+      )
     );
   }
 
@@ -299,7 +349,7 @@ export class MapComponent implements OnInit {
   }
 
   private scenesToFeature(scenes: models.CMRProduct[], projection: string) {
-    return scenes
+    const features = scenes
       .map(g => {
         const wkt = g.metadata.polygon;
         const feature = this.wktService.wktToFeature(wkt, projection);
@@ -307,6 +357,8 @@ export class MapComponent implements OnInit {
 
         return feature;
       });
+
+    return features;
   }
 
   private featuresToSource(features): VectorSource {
@@ -335,5 +387,21 @@ export class MapComponent implements OnInit {
 
   public hideOverlay(): void {
     this.overlay.setPosition(undefined);
+  }
+
+  public openDrawControl() {
+    this.fullscreenControl = FullscreenControls.DRAW;
+  }
+
+  public openMapControl() {
+    this.fullscreenControl = FullscreenControls.MAP;
+  }
+
+  public closeMobileFullscreenControls() {
+    this.fullscreenControl = FullscreenControls.NONE;
+  }
+
+  ngOnDestroy() {
+    this.subs.unsubscribe();
   }
 }

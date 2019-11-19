@@ -3,6 +3,8 @@ import { Injectable } from '@angular/core';
 import { fromEvent, Observable } from 'rxjs';
 import { map, debounceTime, startWith } from 'rxjs/operators';
 
+import * as models from '@models';
+
 export interface ScreenSize {
   width: number;
   height: number;
@@ -22,6 +24,20 @@ export class ScreenSizeService {
        height: document.documentElement.clientHeight
      })),
      debounceTime(100),
+  );
+
+  public breakpoint$ = this.size$.pipe(
+    map(({ width, height }) => {
+      if (width > 1465) {
+        return models.Breakpoints.FULL;
+      } else if (width > 1160) {
+        return models.Breakpoints.MEDIUM;
+      } else if (width > 950) {
+        return models.Breakpoints.SMALL;
+      } else {
+        return models.Breakpoints.MOBILE;
+      }
+    })
   );
 
   constructor() { }

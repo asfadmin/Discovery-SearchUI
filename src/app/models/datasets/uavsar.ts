@@ -11,8 +11,8 @@ export const uavsar = {
   ],
   apiValue: { platform: 'UAVSAR' },
   date: { start: new Date('2008/04/28 21:10:16 UTC') },
-  infoUrl: 'https://www.asf.alaska.edu/sar-data/uavsar/',
-  citationUrl: 'https://www.asf.alaska.edu/sar-data/uavsar/how-to-cite/',
+  infoUrl: 'https://www.asf.alaska.edu/sar-data-sets/uavsar-2/',
+  citationUrl: 'https://www.asf.alaska.edu/how-to-cite-data/',
   frequency: 'L-Band',
   source: {
     name: 'NASA',

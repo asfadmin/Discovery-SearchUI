@@ -1,9 +1,10 @@
-import { Component, OnInit, Input, Output, EventEmitter, ViewChild } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, ViewChild, OnDestroy } from '@angular/core';
 import { NgForm } from '@angular/forms';
 
 import { Subject } from 'rxjs';
 import { tap, map, delay } from 'rxjs/operators';
 import { Store, Action } from '@ngrx/store';
+import { SubSink } from 'subsink';
 
 import { AppState } from '@store';
 import * as filtersStore from '@store/filters';
@@ -23,7 +24,7 @@ enum PathFormInputType {
   templateUrl: './path-selector.component.html',
   styleUrls: ['./path-selector.component.scss']
 })
-export class PathSelectorComponent implements OnInit {
+export class PathSelectorComponent implements OnInit, OnDestroy {
   @ViewChild('pathForm', { static: true }) public pathForm: NgForm;
 
   private inputErrors$ = new Subject<PathFormInputType>();
@@ -57,6 +58,7 @@ export class PathSelectorComponent implements OnInit {
 
   public p = Props;
   public shouldOmitSearchPolygon$ = this.store$.select(filtersStore.getShouldOmitSearchPolygon);
+  private subs = new SubSink();
 
   constructor(
     public prop: PropertyService,
@@ -66,17 +68,21 @@ export class PathSelectorComponent implements OnInit {
   ngOnInit() {
     this.handlePathFrameErrors();
 
-    this.store$.select(filtersStore.getPathRange).subscribe(
-      range => {
-        this.pathStart = range.start;
-        this.pathEnd = range.end;
-      }
+    this.subs.add(
+      this.store$.select(filtersStore.getPathRange).subscribe(
+        range => {
+          this.pathStart = range.start;
+          this.pathEnd = range.end;
+        }
+      )
     );
-    this.store$.select(filtersStore.getFrameRange).subscribe(
-      range => {
-        this.frameStart = range.start;
-        this.frameEnd = range.end;
-      }
+    this.subs.add(
+      this.store$.select(filtersStore.getFrameRange).subscribe(
+        range => {
+          this.frameStart = range.start;
+          this.frameEnd = range.end;
+        }
+      )
     );
   }
 
@@ -128,21 +134,28 @@ export class PathSelectorComponent implements OnInit {
     this.store$.dispatch(action);
   }
 
+  public onClear(): void {
+    this.store$.dispatch(new filtersStore.ClearPathRange());
+    this.store$.dispatch(new filtersStore.ClearFrameRange());
+  }
+
   private handlePathFrameErrors(): void {
-    this.inputErrors$.pipe(
-      tap(inputType => this.currentError = inputType),
-      map(
-        inputType => this.getInput(inputType)
-      ),
-      tap(control => {
-        control.reset();
-        control.setErrors({'incorrect': true});
-      }),
-      delay(820),
-    ).subscribe(control => {
-      this.currentError = null;
-      control.setErrors(null);
-    });
+    this.subs.add(
+      this.inputErrors$.pipe(
+        tap(inputType => this.currentError = inputType),
+        map(
+          inputType => this.getInput(inputType)
+        ),
+        tap(control => {
+          control.reset();
+          control.setErrors({'incorrect': true});
+        }),
+        delay(820),
+      ).subscribe(control => {
+        this.currentError = null;
+        control.setErrors(null);
+      })
+    );
   }
 
   private getInput(inputType: PathFormInputType) {
@@ -156,5 +169,9 @@ export class PathSelectorComponent implements OnInit {
 
   private typeHasError(inputType: PathFormInputType): boolean {
     return this.currentError === inputType;
+  }
+
+  ngOnDestroy() {
+    this.subs.unsubscribe();
   }
 }

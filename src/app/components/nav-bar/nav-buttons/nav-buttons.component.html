@@ -1,120 +1,183 @@
-<div class="layout">
-  <span *ngIf="queuedProducts">
+<div *ngIf="breakpoint$ | async as breakpoint" class="layout">
+  <ng-container *ngIf="breakpoint > breakpoints.MOBILE">
     <button
       (click)="onOpenDownloadQueue()"
       [disabled]="queuedProducts.length <= 0"
       class="spacing nav-icon-buttons"
       color="basic"
       matTooltip="Download Queue" mat-button>
-        <mat-icon
-          [matBadge]="queuedProducts.length"
-          matBadgeColor="{{ queuedProducts.length > 0 ? 'accent' : 'primary' }}"
-          matBadgePosition="above after"
-          matBadgeOverlap="true"
-          matBadgeSize="small">
-            shopping_cart
-        </mat-icon>
-    <div class="text-under text-under faint-text">Downloads</div>
-    </button>
-  </span>
 
-  <button
-    *ngIf="!datapoolAuthService.isLoggedIn"
-    (click)="onAccountButtonClicked()"
-    class="spacing nav-icon-buttons" color="basic"
-    matTooltip="Login" mat-button>
-      <mat-icon>account_circle</mat-icon>
-    <div class="text-under faint-text">Sign in</div>
-  </button>
-
-  <button
-    *ngIf="datapoolAuthService.isLoggedIn"
-    [matMenuTriggerFor]="profileMenu"
-    class="spacing nav-icon-buttons" color="basic"
-    matTooltip="Profile" mat-button>
-      <mat-icon>account_circle</mat-icon>
-      <div class="text-under faint-text"> {{ datapoolAuthService.user.id }}</div>
-  </button>
-
-  <mat-menu #profileMenu="matMenu">
-    <button (click)="onLogout()"
-      mat-menu-item matSuffix>
-        <span>Logout</span>
-    </button>
-  </mat-menu>
-
-  <button
-    [matMenuTriggerFor]="appMenu"
-    matTooltip="ASF Apps"
-    class="spacing" color="basic" mat-icon-button>
-      <mat-icon>menu</mat-icon>
-  </button>
-  <mat-menu #appMenu="matMenu">
-
-    <button (click)="onCopy()"
-            mat-menu-item matSuffix>
-      <mat-icon>link</mat-icon>
-      Copy Search Link
+      <mat-icon
+        class="large-icon"
+        [matBadge]="queuedProducts.length"
+        matBadgeColor="{{ queuedProducts.length > 0 ? 'accent' : 'primary' }}"
+        matBadgePosition="above after"
+        matBadgeOverlap="true"
+        matBadgeSize="small">
+          shopping_cart
+      </mat-icon>
+      <div class="text-under faint-text">Downloads</div>
     </button>
 
-    <a (click)="onShareWithEmail()"
-       href="mailto:?subject=&body=:%20"
-       target="_blank" title="Send email"
-       mat-menu-item matSuffix>
-      <mat-icon>email</mat-icon>
-      Share With Email
-    </a>
-
-    <hr class="menu-hr">
-
-    <a mat-menu-item [href]="asfWebsiteUrl" target="_blank">
-      <mat-icon>web</mat-icon>
-      ASF Website
-    </a>
-
-    <a mat-menu-item href="https://baseline.asf.alaska.edu" target="_blank">
-      <mat-icon>web</mat-icon>
-      Baseline Tool
-    </a>
-
-    <a mat-menu-item href="{{ asfWebsiteUrl }}/get-data/api" target="_blank">
-      <mat-icon>web</mat-icon>
-      ASF Search API
-    </a>
-
-    <hr class="menu-hr">
-
-    <button [matMenuTriggerFor]="thematicDatasets"
-            mat-menu-item>
-            Thematic Datasets
+    <button
+      *ngIf="!datapoolAuthService.isLoggedIn"
+      (click)="onAccountButtonClicked()"
+      class="spacing nav-icon-buttons" color="basic"
+      matTooltip="Login" mat-button>
+        <mat-icon class="large-icon">account_circle</mat-icon>
+      <div class="text-under faint-text">Sign in</div>
     </button>
 
-    <button *ngIf="isDevMode()"
-      [matMenuTriggerFor]="apiMaturity"
-      mat-menu-item>
-        Select API Maturity
+    <button
+      *ngIf="datapoolAuthService.isLoggedIn"
+      [matMenuTriggerFor]="profileMenu"
+      class="spacing nav-icon-buttons" color="basic"
+      matTooltip="Profile" mat-button>
+        <mat-icon class="large-icon">account_circle</mat-icon>
+        <div class="text-under faint-text"> {{ datapoolAuthService.user.id }}</div>
     </button>
 
-  </mat-menu>
-
-  <mat-menu #thematicDatasets="matMenu">
-    <a mat-menu-item href="{{ asfWebsiteUrl }}/other-data/gismo" target="_blank">GISMO</a>
-    <a mat-menu-item href="{{ asfWebsiteUrl }}/other-data/glacier-speed" target="_blank">Glacier Speed</a>
-    <a mat-menu-item href="{{ asfWebsiteUrl }}/other-data/polar-year-07-08" target="_blank">Polar Year</a>
-    <a mat-menu-item href="{{ asfWebsiteUrl }}/other-data/ramp" target="_blank">RAMP</a>
-    <a mat-menu-item href="{{ asfWebsiteUrl }}/sea-ice" target="_blank">Sea Ice MEaSUREs</a>
-    <a mat-menu-item href="{{ asfWebsiteUrl }}/wetlands" target="_blank">Wetlands MEaSUREs</a>
-  </mat-menu>
-
-  <mat-menu #apiMaturity="matMenu">
-    <button [class.selected]="maturity === 'test'" (click)="onTestSelected()"
-      mat-menu-item matSuffix>
-        <span>Test</span>
+    <button
+      [matMenuTriggerFor]="appMenu"
+      matTooltip="ASF Apps"
+      class="spacing" color="basic" mat-icon-button>
+        <mat-icon class="large-icon">menu</mat-icon>
     </button>
+  </ng-container>
 
-    <button [class.selected]="maturity === 'prod'" (click)="onProdSelected()"
-      mat-menu-item matSuffix>
-        <span>Production</span>
-    </button>
-  </mat-menu>
+  <ng-container *ngIf="breakpoint === breakpoints.MOBILE">
+    <mat-icon
+      (click)="onOpenDownloadQueue()"
+      [matBadge]="queuedProducts.length"
+                  class="mobile-icon-spacing"
+      matBadgeColor="{{ queuedProducts.length > 0 ? 'accent' : 'primary' }}"
+      matBadgePosition="above after"
+      matBadgeOverlap="true"
+      matBadgeSize="small">
+        shopping_cart
+    </mat-icon>
+
+    <mat-icon
+      *ngIf="!datapoolAuthService.isLoggedIn"
+      class="mobile-icon-spacing"
+      fontSet="material-icons-outlined"
+      (click)="onAccountButtonClicked()">
+        account_circle
+    </mat-icon>
+
+    <mat-icon
+      *ngIf="datapoolAuthService.isLoggedIn"
+      class="mobile-icon-spacing"
+      [matMenuTriggerFor]="profileMenu">
+        account_circle
+    </mat-icon>
+
+    <mat-icon
+      [matMenuTriggerFor]="appMenu"
+      class="mobile-icon-spacing">
+        menu
+    </mat-icon>
+  </ng-container>
 </div>
+
+<mat-menu #profileMenu="matMenu">
+  <button (click)="onLogout()"
+    mat-menu-item matSuffix>
+    <b>{{ datapoolAuthService.user.id }}</b> <span> logout</span>
+  </button>
+</mat-menu>
+
+<mat-menu #appMenu="matMenu">
+
+  <button (click)="onCopy()"
+          mat-menu-item matSuffix>
+    <mat-icon>link</mat-icon>
+    Copy Search Link
+  </button>
+
+  <a (click)="onShareWithEmail()"
+     href="mailto:?subject=&body=:%20"
+     target="_blank" title="Send email"
+     mat-menu-item matSuffix>
+    <mat-icon>email</mat-icon>
+    Share With Email
+  </a>
+
+  <hr class="menu-hr">
+
+  <a mat-menu-item [href]="asfWebsiteUrl" target="_blank">
+    <mat-icon>web</mat-icon>
+    ASF Website
+  </a>
+
+  <a mat-menu-item href="https://baseline.asf.alaska.edu" target="_blank">
+    <mat-icon>web</mat-icon>
+    Baseline Tool
+  </a>
+
+  <a mat-menu-item href="{{ asfWebsiteUrl }}/get-data/api" target="_blank">
+    <mat-icon>web</mat-icon>
+    ASF Search API
+  </a>
+
+  <hr class="menu-hr">
+
+  <button [matMenuTriggerFor]="thematicDatasets"
+          mat-menu-item>
+          Thematic Datasets
+  </button>
+
+  <button *ngIf="isDevMode()"
+    [matMenuTriggerFor]="apiMaturity"
+    mat-menu-item>
+      Select API Maturity
+  </button>
+
+  <ng-container *ngIf="(breakpoint$ | async) === breakpoints.MOBILE">
+    <hr class="menu-hr">
+
+    <button
+      [matMenuTriggerFor]="copyrightMenu"
+      mat-menu-item>
+      Copyright
+    </button>
+
+    <button
+      [matMenuTriggerFor]="asfMenu"
+      mat-menu-item>
+     ASF
+    </button>
+
+    <mat-menu #asfMenu="matMenu">
+      <a mat-menu-item href="https://www.asf.alaska.edu/contact" target="_blank">Contact</a>
+      <a mat-menu-item href="https://www.alaska.edu/nondiscrimination" target="_blank">Non-Discrimination</a>
+    </mat-menu>
+
+    <mat-menu #copyrightMenu="matMenu">
+      <a mat-menu-item href="https://www.asf.alaska.edu/" target="_blank">© {{anio}} ASF</a>
+      <a mat-menu-item href="https://www.maptiler.com/copyright/" target="_blank">© MapTiler</a>
+      <a mat-menu-item href="https://www.openstreetmap.org/copyright" target="_blank">© OpenStreetMap contributors</a>
+    </mat-menu>
+  </ng-container>
+</mat-menu>
+
+<mat-menu #thematicDatasets="matMenu">
+  <a mat-menu-item href="{{ asfWebsiteUrl }}/sar-data-sets/global-ice-sheet-mapping-orbiter-gismo" target="_blank">GISMO</a>
+  <a mat-menu-item href="{{ asfWebsiteUrl }}/sar-data-sets/glacier-speed" target="_blank">Glacier Speed</a>
+  <a mat-menu-item href="{{ asfWebsiteUrl }}/sar-data-sets/international-polar-year-2007-2008" target="_blank">Polar Year</a>
+  <a mat-menu-item href="{{ asfWebsiteUrl }}/sar-data-sets/radarsat-antarctic-mapping-project-ramp" target="_blank">RAMP</a>
+  <a mat-menu-item href="{{ asfWebsiteUrl }}/sar-data-sets/sea-ice-measures" target="_blank">Sea Ice MEaSUREs</a>
+  <a mat-menu-item href="{{ asfWebsiteUrl }}/sar-data-sets/wetlands-measures" target="_blank">Wetlands MEaSUREs</a>
+</mat-menu>
+
+<mat-menu #apiMaturity="matMenu">
+  <button [class.selected]="maturity === 'test'" (click)="onTestSelected()"
+    mat-menu-item matSuffix>
+      <span>Test</span>
+  </button>
+
+  <button [class.selected]="maturity === 'prod'" (click)="onProdSelected()"
+    mat-menu-item matSuffix>
+      <span>Production</span>
+  </button>
+</mat-menu>

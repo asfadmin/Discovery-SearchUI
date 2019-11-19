@@ -3,34 +3,33 @@
       fxFill
       cdkDrag>
 
-  <div fxLayout="row" fxLayout.lt-md="column" class="icon-bar">
+  <div fxLayout="row" class="icon-bar">
     <div fxLayout="row" fxFlex>
-        <div cdkDragHandle class="move-handle button-group">
-          <svg width="24px" fill="currentColor" viewBox="0 0 24 24">
-            <path d="M10 9h4V6h3l-5-5-5 5h3v3zm-1 1H6V7l-5 5 5 5v-3h3v-4zm14 2l-5-5v3h-3v4h3v3l5-5zm-9 3h-4v3H7l5 5 5-5h-3v-3z"></path>
-            <path d="M0 0h24v24H0z" fill="none"></path>
-          </svg>
+      <div cdkDragHandle class="move-handle">
+        <svg width="24px" fill="currentColor" viewBox="0 0 24 24">
+          <path d="M10 9h4V6h3l-5-5-5 5h3v3zm-1 1H6V7l-5 5 5 5v-3h3v-4zm14 2l-5-5v3h-3v4h3v3l5-5zm-9 3h-4v3H7l5 5 5-5h-3v-3z"></path>
+          <path d="M0 0h24v24H0z" fill="none"></path>
+        </svg>
+      </div>
+
+      <div fxFlex="" class="group-margin">
+        <div fxLayout="row" fxLayoutAlign="center" class="button-group-label">
+          <label>Map Projection</label>
         </div>
 
-        <div fxFlex="">
-          <div fxLayout="row" fxLayoutAlign="center" class="button-group-label">
-            <label>Map Projection</label>
-          </div>
-          <div fxLayout="row">
-            <app-view-selector fxFlex=""
-                               (newProjection)="onNewProjection($event)"
-                               [view]="view$ | async"
-                               class="button-group">
-            </app-view-selector>
-          </div>
+        <div fxLayout="row">
+          <app-view-selector fxFlex="">
+          </app-view-selector>
         </div>
+      </div>
 
-        <div fxFlex="">
-          <div fxLayout="row" fxLayoutAlign="center" class="button-group-label">
-            <label>Zoom</label>
-          </div>
-          <div fxLayout="row">
-            <mat-button-toggle-group fxFlex="" class="button-group zoom-group" name="layerType">
+      <div fxFlex="">
+        <div fxLayout="row" fxLayoutAlign="center" class="button-group-label">
+          <label>Zoom</label>
+        </div>
+        <div fxLayout="row">
+          <div>
+            <mat-button-toggle-group fxFlex="" name="layerType">
               <mat-button-toggle class="control-mat-button-toggle"
                                  (click)="zoomIn()"
                                  matTooltip="Zoom In">
@@ -45,70 +44,40 @@
             </mat-button-toggle-group>
           </div>
         </div>
+      </div>
 
-        <div fxFlex="">
-          <div fxLayout="row" fxLayoutAlign="center" class="button-group-label">
-            <label>View</label>
-          </div>
-          <div fxLayout="row">
-            <mat-button-toggle-group class="button-group"
-                                     *ngIf="(view$ | async) === viewTypes.EQUITORIAL"
-                                     [value]="layerType"
-                                     name="layerType">
-
-              <mat-button-toggle class="control-mat-button-toggle"
-                                 (click)="onNewLayerType(layerTypes.SATELLITE)"
-                                 matTooltip="Satellite View"
-                                 [value]="layerTypes.SATELLITE">
-                <mat-icon class="control-icon">terrain</mat-icon>
-              </mat-button-toggle>
-
-              <mat-button-toggle class="control-mat-button-toggle"
-                                 (click)="onNewLayerType(layerTypes.STREET)"
-                                 [value]="layerTypes.STREET"
-                                 matTooltip="Street View" >
-                <mat-icon class="control-icon">directions_car</mat-icon>
-              </mat-button-toggle>
-            </mat-button-toggle-group>
-          </div>
+      <div *ngIf="(view$ | async) === viewTypes.EQUITORIAL" fxFlex="" class="group-margin">
+        <div fxLayout="row" fxLayoutAlign="center" class="button-group-label">
+          <label>View</label>
         </div>
-    </div>
-    <div fxLayout="row" fxFlex fxFlexAlign="end">
+        <div fxLayout="row">
+          <app-layer-selector></app-layer-selector>
+        </div>
+      </div>
 
-      <div *ngIf="searchType === searchTypes.DATASET" fxFlex="nogrow" fxFlexAlign="end">
+      <div *ngIf="searchType === searchTypes.DATASET" fxFlex="" class="group-margin">
         <div fxLayout="row" fxLayoutAlign="center" class="button-group-label">
           <label>Area of Interest</label>
         </div>
         <div fxLayout="row">
-          <app-interaction-selector
-            class="button-group"
-            (newInteraction)="onNewInteractionMode($event)"
-            (clearPolygon)="onClearAOI()"
-            [interaction]="interactionMode$ | async">
+          <app-interaction-selector>
           </app-interaction-selector>
         </div>
       </div>
 
-      <div *ngIf="searchType === searchTypes.DATASET" fxFlex="" fxLayout.lt-md="row" fxFlexAlign="end">
-        <div fxFlex="nogrow" fxFlexAlign="end">
-          <div fxLayout="row" fxLayoutAlign="center" class="button-group-label">
-            <label>Selection Shape</label>
-          </div>
-          <div fxLayout="row">
-            <app-draw-selector
-              class="button-group"
-              (newDrawMode)="onNewDrawMode($event)"
-              [drawMode]="drawMode$ | async">
-            </app-draw-selector>
-          </div>
+      <div *ngIf="searchType === searchTypes.DATASET" fxFlex="" class="group-margin">
+        <div fxLayout="row" fxLayoutAlign="center" class="button-group-label">
+          <label>Selection Shape</label>
+        </div>
+        <div fxLayout="row">
+          <app-draw-selector></app-draw-selector>
         </div>
       </div>
-
     </div>
   </div>
+
   <div fxLayout="row" fxFlex class="lat-lon">
-    <div fxFlex="grow">
-    </div>
+    <div fxFlex="grow"></div>
     <div fxFlex="" fxFlexAlign="end">
       <div fxFlex="75px">
         <b>lat</b> {{ mousePos?.lat | number : '2.1-4' }}°

@@ -5,14 +5,15 @@ import { Store } from '@ngrx/store';
 import * as moment from 'moment';
 
 import { combineLatest } from 'rxjs';
-import { filter, map, switchMap, skip, tap, withLatestFrom } from 'rxjs/operators';
+import { filter, map, switchMap, skip, tap, withLatestFrom, debounceTime } from 'rxjs/operators';
 
 import { AppState } from '@store';
 import * as scenesStore from '@store/scenes';
 import * as mapStore from '@store/map';
 import * as uiStore from '@store/ui';
 import * as filterStore from '@store/filters';
-import { MakeSearch } from '@store/search/search.action';
+import { SetSearchType, MakeSearch } from '@store/search/search.action';
+import { getSearchType } from '@store/search/search.reducer';
 
 import * as models from '@models';
 
@@ -61,7 +62,10 @@ export class UrlStateService {
     });
 
     this.urlParams.forEach(
-      param => param.source.subscribe(
+      param => param.source.pipe(
+        skip(1),
+        debounceTime(300)
+      ).subscribe(
         this.updateRouteWithParams
       )
     );
@@ -100,7 +104,6 @@ export class UrlStateService {
     return [{
       name: 'mission',
       source: this.store$.select(filterStore.getSelectedMission).pipe(
-        skip(1),
         map(mission => ({ mission }))
       ),
       loader: this.loadSelectedMission
@@ -111,35 +114,30 @@ export class UrlStateService {
     return [{
       name: 'selectedFilter',
       source: this.store$.select(uiStore.getSelectedFilter).pipe(
-        skip(1),
         map(selectedFilter => ({ selectedFilter }))
       ),
       loader: this.loadSelectedFilter
     }, {
       name: 'resultsLoaded',
       source: this.store$.select(scenesStore.getAreResultsLoaded).pipe(
-        skip(1),
         map(resultsLoaded => ({ resultsLoaded }))
       ),
       loader: this.loadAreResultsLoaded
     }, {
       name: 'searchType',
-      source: this.store$.select(uiStore.getSearchType).pipe(
-        skip(1),
+      source: this.store$.select(getSearchType).pipe(
         map(searchType => ({ searchType }))
       ),
       loader: this.loadSearchType
     }, {
       name: 'granule',
       source: this.store$.select(scenesStore.getSelectedScene).pipe(
-        skip(1),
         map(scene => ({ granule: !!scene ? scene.id : null }))
       ),
       loader: this.loadSelectedScene
     }, {
       name: 'uiView',
       source: this.store$.select(uiStore.getUiView).pipe(
-        skip(1),
         map(uiView => ({ uiView }))
       ),
       loader: this.loadUiView
@@ -150,14 +148,12 @@ export class UrlStateService {
     return [{
       name: 'dataset',
       source: this.store$.select(filterStore.getSelectedDatasetId).pipe(
-        skip(1),
         map(selected => ({ dataset: selected }))
       ),
       loader: this.loadSelectedDataset
     }, {
       name: 'subtypes',
       source: this.store$.select(filterStore.getSubtypes).pipe(
-        skip(1),
         map(types => types.map(subtype => subtype.apiValue).join(',')),
         withLatestFrom(this.store$.select(filterStore.getSelectedDatasetId)),
         map(([types, dataset]) => `${dataset}$$${types}`),
@@ -167,42 +163,36 @@ export class UrlStateService {
     }, {
       name: 'maxResults',
       source: this.store$.select(filterStore.getMaxSearchResults).pipe(
-        skip(1),
         map(maxResults => ({ maxResults }))
       ),
       loader: this.loadMaxResults
     }, {
       name: 'start',
       source: this.store$.select(filterStore.getStartDate).pipe(
-        skip(1),
         map(start => ({ start: moment.utc( start ).format() }))
       ),
       loader: this.loadStartDate
     }, {
       name: 'end',
       source: this.store$.select(filterStore.getEndDate).pipe(
-        skip(1),
         map(end => ({ end: moment.utc( end ).format() }))
       ),
       loader: this.loadEndDate
     }, {
       name: 'seasonStart',
       source: this.store$.select(filterStore.getSeasonStart).pipe(
-        skip(1),
         map(seasonStart  => ({ seasonStart }))
       ),
       loader: this.loadSeasonStart
     }, {
       name: 'seasonEnd',
       source: this.store$.select(filterStore.getSeasonEnd).pipe(
-        skip(1),
         map(seasonEnd => ({ seasonEnd }))
       ),
       loader: this.loadSeasonEnd
     }, {
       name: 'path',
       source: this.store$.select(filterStore.getPathRange).pipe(
-        skip(1),
         map(range => this.rangeService.toString(range)),
         map(path => ({ path }))
       ),
@@ -210,7 +200,6 @@ export class UrlStateService {
     }, {
       name: 'frame',
       source: this.store$.select(filterStore.getFrameRange).pipe(
-        skip(1),
         map(range => this.rangeService.toString(range)),
         map(frame => ({ frame }))
       ),
@@ -218,14 +207,12 @@ export class UrlStateService {
     }, {
       name: 'listSearchType',
       source: this.store$.select(filterStore.getListSearchMode).pipe(
-        skip(1),
         map(mode => ({ listSearchType: mode }))
       ),
       loader: this.loadListSearchType
     }, {
       name: 'productTypes',
       source: this.store$.select(filterStore.getProductTypes).pipe(
-        skip(1),
         map(types => types.map(key => key.apiValue).join(',')),
         withLatestFrom(this.store$.select(filterStore.getSelectedDatasetId)),
         map(([types, dataset]) => `${dataset}$$${types}`),
@@ -235,7 +222,6 @@ export class UrlStateService {
     }, {
       name: 'beamModes',
       source: this.store$.select(filterStore.getBeamModes).pipe(
-        skip(1),
         map(modes => modes.join(',')),
         withLatestFrom(this.store$.select(filterStore.getSelectedDatasetId)),
         map(([modes, dataset]) => `${dataset}$$${modes}`),
@@ -245,7 +231,6 @@ export class UrlStateService {
     }, {
       name: 'polarizations',
       source: this.store$.select(filterStore.getPolarizations).pipe(
-        skip(1),
         map(pols => pols.join(',')),
         withLatestFrom(this.store$.select(filterStore.getSelectedDatasetId)),
         map(([pols, dataset]) => `${dataset}$$${pols}`),
@@ -255,7 +240,6 @@ export class UrlStateService {
     }, {
       name: 'flightDirs',
       source: this.store$.select(filterStore.getFlightDirections).pipe(
-        skip(1),
         map(dirs => dirs.join(',')),
         map(flightDirs => ({ flightDirs }))
       ),
@@ -267,35 +251,30 @@ export class UrlStateService {
     return [{
       name: 'view',
       source: this.store$.select(mapStore.getMapView).pipe(
-        skip(1),
         map(view => ({ view }))
       ),
       loader: this.loadMapView
     }, {
       name: 'center',
       source: this.mapService.center$.pipe(
-        skip(1),
         map(center => ({ center: `${center.lon},${center.lat}` }))
       ),
       loader: this.loadMapCenter
     }, {
       name: 'zoom',
       source: this.mapService.zoom$.pipe(
-        skip(1),
         map(zoom => ({ zoom }))
       ),
       loader: this.loadMapZoom
     }, {
       name: 'polygon',
       source: this.mapService.searchPolygon$.pipe(
-        skip(1),
         map(polygon => ({ polygon }))
       ),
       loader: this.loadSearchPolygon
     }, {
       name: 'searchList',
       source: this.store$.select(filterStore.getSearchList).pipe(
-        skip(1),
         map(list => ({ searchList: list.join(',') }))
       ),
       loader: this.loadSearchList
@@ -313,7 +292,7 @@ export class UrlStateService {
   private loadSearchType = (searchType: string): void => {
     if (Object.values(models.SearchType).includes(searchType)) {
 
-      const action = new uiStore.SetSearchType(<models.SearchType>searchType);
+      const action = new SetSearchType(<models.SearchType>searchType);
       this.store$.dispatch(action);
     }
   }

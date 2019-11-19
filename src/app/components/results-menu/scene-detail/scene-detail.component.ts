@@ -1,5 +1,6 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, OnDestroy } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
+import { SubSink } from 'subsink';
 
 import { fromEvent } from 'rxjs';
 import { map, withLatestFrom, filter, tap, debounceTime } from 'rxjs/operators';
@@ -23,13 +24,18 @@ import { DatasetForProductService } from '@services';
   styleUrls: ['./scene-detail.component.scss'],
   providers: [ DatasetForProductService ]
 })
-export class SceneDetailComponent implements OnInit {
+export class SceneDetailComponent implements OnInit, OnDestroy {
+  public browses$ = this.store$.select(scenesStore.getSelectedSceneBrowses);
   public dataset: models.Dataset;
   public searchType: models.SearchType;
   public scene: models.CMRProduct;
   public sceneLen: number;
-
   public p = models.Props;
+  public breakpoint$ = this.screenSize.breakpoint$;
+  public breakpoints = models.Breakpoints;
+  public isImageLoading = false;
+
+  private subs = new SubSink();
 
   constructor(
     private store$: Store<AppState>,
@@ -41,24 +47,33 @@ export class SceneDetailComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    const scene$ = this.store$.select(scenesStore.getSelectedScene);
-
-    this.screenSize.size$.pipe(
-      map(size => size.width > 1750 ? 32 : 16),
-    ).subscribe(len => this.sceneLen = len);
-
-    scene$.subscribe(
-      scene => this.scene = scene
+    const scene$ = this.store$.select(scenesStore.getSelectedScene).pipe(
+      tap(_ => this.isImageLoading = true)
     );
 
-    scene$.pipe(
-      filter(g => !!g),
-      map(scene => this.datasetForProduct.match(scene)),
-    ).subscribe(dataset => this.dataset = dataset);
+    this.subs.add(
+      this.screenSize.size$.pipe(
+        map(size => size.width > 1750 ? 32 : 16),
+      ).subscribe(len => this.sceneLen = len)
+    );
 
-   this.store$.select(uiStore.getSearchType).subscribe(
-     searchType => this.searchType = searchType
-   );
+    this.subs.add(
+      scene$.pipe(
+        tap(scene => this.scene = scene),
+        filter(scene => !!scene),
+        map(scene => this.datasetForProduct.match(scene)),
+      ).subscribe(dataset => this.dataset = dataset)
+    );
+
+    this.subs.add(
+      this.store$.select(searchStore.getSearchType).subscribe(
+        searchType => this.searchType = searchType
+      )
+    );
+  }
+
+  public sceneHasBrowse() {
+    return !this.scene.browses[0].includes('no-browse');
   }
 
   private datasetFor(granule: models.CMRProduct): models.Dataset {
@@ -97,11 +112,23 @@ export class SceneDetailComponent implements OnInit {
   }
 
   public onOpenImage(): void {
-    this.dialog.open(ImageDialogComponent, {
+    if (!this.sceneHasBrowse()) {
+      return;
+    }
+
+    this.store$.dispatch(new uiStore.SetIsBrowseDialogOpen(true));
+
+    const dialogRef = this.dialog.open(ImageDialogComponent, {
       width: '99vw', height: 'fit-content',
-      maxHeight: '96vh',
+      maxHeight: '96vh', maxWidth: '100%',
       panelClass: 'image-dialog'
     });
+
+    this.subs.add(
+      dialogRef.afterClosed().subscribe(
+        _ => this.store$.dispatch(new uiStore.SetIsBrowseDialogOpen(false))
+      )
+    );
   }
 
   public isGeoSearch(): boolean {
@@ -177,5 +204,9 @@ export class SceneDetailComponent implements OnInit {
 
   private capitalizeFirstLetter(str) {
       return str.charAt(0).toUpperCase() + str.slice(1);
+  }
+
+  ngOnDestroy() {
+    this.subs.unsubscribe();
   }
 }

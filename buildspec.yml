@@ -5,11 +5,12 @@ phases:
     runtime-versions:
       nodejs: 10
     commands:
+      - npm set progress=false
       - npm install -g @angular/cli@6.2.4
   pre_build:
     commands:
       - cp src/assets/envs/env-${MATURITY}.js src/assets/env.js
-      - npm install
+      - npm install --prod
   build:
     commands:
       - ng build --prod

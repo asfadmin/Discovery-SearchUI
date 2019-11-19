@@ -1,11 +1,11 @@
-import { Component, ViewChild, OnInit } from '@angular/core';
+import { Component, ViewChild, OnInit, OnDestroy } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
-import { Subject } from 'rxjs';
+import { Subject, Subscription } from 'rxjs';
 import { delay, tap, catchError } from 'rxjs/operators';
 
 import { MatDialogRef } from '@angular/material/dialog';
-import { Subscription } from 'rxjs';
+import { SubSink } from 'subsink';
 
 import { AsfApiService } from '@services';
 
@@ -19,7 +19,7 @@ enum FileErrors {
   templateUrl: 'file-upload-dialog.component.html',
   styleUrls: ['./file-upload-dialog.component.css']
 })
-export class FileUploadDialogComponent implements OnInit {
+export class FileUploadDialogComponent implements OnInit, OnDestroy {
   @ViewChild('file', { static: true }) file;
 
   public files: Set<File> = new Set();
@@ -30,6 +30,7 @@ export class FileUploadDialogComponent implements OnInit {
 
   public fileError$ = new Subject<FileErrors>();
   public isFileError = false;
+  private subs = new SubSink();
 
   constructor(
     private dialogRef: MatDialogRef<FileUploadDialogComponent>,
@@ -38,21 +39,23 @@ export class FileUploadDialogComponent implements OnInit {
   ) {}
 
   public ngOnInit(): void {
-    this.fileError$.pipe(
-      tap(_ => this.isFileError = true),
-      tap(
-        error => {
-          if (error === FileErrors.INVALID_TYPE) {
-            this.snackBar.open( `Invalid File Type`, 'FILE ERROR', { duration: 5000 });
-          } else if (error === FileErrors.TOO_LARGE) {
-            this.snackBar.open( `File is too large (over 10MB)`, 'FILE ERROR', { duration: 5000 });
+    this.subs.add(
+      this.fileError$.pipe(
+        tap(_ => this.isFileError = true),
+        tap(
+          error => {
+            if (error === FileErrors.INVALID_TYPE) {
+              this.snackBar.open( `Invalid File Type`, 'FILE ERROR', { duration: 5000 });
+            } else if (error === FileErrors.TOO_LARGE) {
+              this.snackBar.open( `File is too large (over 10MB)`, 'FILE ERROR', { duration: 5000 });
+            }
           }
-        }
-      ),
-      delay(820),
-      tap(_ => this.isFileError = false),
-    ).subscribe(
-      _ => _
+        ),
+        delay(820),
+        tap(_ => this.isFileError = false),
+      ).subscribe(
+        _ => _
+      )
     );
   }
 
@@ -98,20 +101,22 @@ export class FileUploadDialogComponent implements OnInit {
   public onUpload(): void {
     this.uploading = true;
 
-    this.request = this.asfApiService.upload(this.files).subscribe(
-      resp => {
-        if (resp.error) {
-          const { report, type } = resp.error;
-          this.snackBar.open(report, type, { duration: 5000 });
+    this.subs.add(
+      this.request = this.asfApiService.upload(this.files).subscribe(
+        resp => {
+          if (resp.error) {
+            const { report, type } = resp.error;
+            this.snackBar.open(report, type, { duration: 5000 });
+            this.dialogRef.close();
+          } else {
+            this.dialogRef.close(resp.wkt.unwrapped);
+          }
+        },
+        err => {
+          this.snackBar.open('Error loading geospatial file',  'FILE ERROR', { duration: 3000 });
           this.dialogRef.close();
-        } else {
-          this.dialogRef.close(resp.wkt.unwrapped);
         }
-      },
-      err => {
-        this.snackBar.open('Error loading geospatial file',  'FILE ERROR', { duration: 3000 });
-        this.dialogRef.close();
-      }
+      )
     );
 
     this.canBeClosed = false;
@@ -148,5 +153,9 @@ export class FileUploadDialogComponent implements OnInit {
 
   private getFileType(fileName: string): string {
     return fileName.split('.').pop().toLowerCase();
+  }
+
+  ngOnDestroy() {
+    this.subs.unsubscribe();
   }
 }
