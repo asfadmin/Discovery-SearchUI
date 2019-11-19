@@ -90,7 +90,7 @@ export class ResultsMenuComponent implements OnInit {
   }
 
   public onResizeEnd(event: ResizeEvent): void {
-    const maxHeight = window.innerHeight - 100;
+    const maxHeight = window.innerHeight - 160;
     const newHeight = event.rectangle.height;
 
     this.menuHeightPx = Math.min(newHeight, maxHeight);
