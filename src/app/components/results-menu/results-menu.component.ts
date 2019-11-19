@@ -52,7 +52,7 @@ export class ResultsMenuComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.menuHeightPx = document.documentElement.clientHeight * .5;
+    this.menuHeightPx = this.defaultMenuHeight();
   }
 
   @HostListener('window:resize', ['$event'])
@@ -63,8 +63,12 @@ export class ResultsMenuComponent implements OnInit {
       return;
     }
 
-    resultDiv.style.height = `${document.documentElement.clientHeight * 0.5}px`;
+    resultDiv.style.height = `${this.defaultMenuHeight()}px`;
     this.resize$.next();
+  }
+
+  private defaultMenuHeight(): number {
+    return document.documentElement.clientHeight * 0.40;
   }
 
   public onTabChange(e): void {
