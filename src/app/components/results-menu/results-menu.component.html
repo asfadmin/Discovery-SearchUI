@@ -1,6 +1,5 @@
 <ng-container *ngIf="isResultsMenuOpen$ | async">
-  <div *ngIf="breakpoint$ | async as breakpoint"
-    [class.mobile-menu-offset]="breakpoint === breakpoints.MOBILE"
+  <div [class.mobile-menu-offset]="(breakpoint$ | async) === 'MOBILE'"
     class="rectangle-wrapper w100">
 
     <div
@@ -24,7 +23,7 @@
         <div class="results-menu--background h100 w100 mp0"
              fxFlex fxLayout="row">
 
-          <ng-container *ngIf="breakpoint >= breakpoints.SMALL">
+          <ng-container *appBreak="'SMALL'; op 'gte'">
             <!-- SCENE LIST -->
             <mat-card class="mp0" fxFlex="33" fxFlex>
               <mat-card-subtitle class="header">
@@ -61,7 +60,7 @@
           </ng-container>
 
           <!--  MOBILE MOBILE MOBILE  -->
-          <ng-container *ngIf="breakpoint === breakpoints.MOBILE">
+          <ng-container *appBreak="'MOBILE'">
             <div class="h100 w100">
               <div>
                 <button (click)="onSelectList()"

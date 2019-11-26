@@ -43,7 +43,6 @@ export class ResultsMenuComponent implements OnInit {
   public resize$ = new Subject<void>();
 
   public breakpoint$ = this.screenSize.breakpoint$;
-  public breakpoints = models.Breakpoints;
 
   constructor(
     private store$: Store<AppState>,

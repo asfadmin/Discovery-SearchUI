@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 
 import { ReadableSizeFromBytesPipe } from './readable-size-from-bytes.pipe';
 import { ShortDatePipe, ShortDateTimePipe, FullDatePipe } from './short-date.pipe';
+import { BreakDirective } from './break.directive';
 
 
 @NgModule({
@@ -10,7 +11,8 @@ import { ShortDatePipe, ShortDateTimePipe, FullDatePipe } from './short-date.pip
     ReadableSizeFromBytesPipe,
     ShortDatePipe,
     ShortDateTimePipe,
-    FullDatePipe
+    FullDatePipe,
+    BreakDirective
   ],
   imports: [
     CommonModule
@@ -19,7 +21,8 @@ import { ShortDatePipe, ShortDateTimePipe, FullDatePipe } from './short-date.pip
     ReadableSizeFromBytesPipe,
     ShortDatePipe,
     ShortDateTimePipe,
-    FullDatePipe
+    FullDatePipe,
+    BreakDirective
   ]
 })
 export class PipesModule { }
