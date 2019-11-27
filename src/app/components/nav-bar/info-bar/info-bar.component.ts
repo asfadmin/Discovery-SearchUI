@@ -15,9 +15,6 @@ import * as models from '@models';
   styleUrls: ['./info-bar.component.scss']
 })
 export class InfoBarComponent implements OnInit, OnDestroy {
-  public breakpoint$ = this.screenSize.breakpoint$;
-  public breakpoints = models.Breakpoints;
-
   public startDate: Date | null;
   public endDate: Date | null;
   public pathRange: models.Range<number | null>;

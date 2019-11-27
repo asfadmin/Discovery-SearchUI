@@ -1,15 +1,17 @@
 <div fxLayout="row wrap"
      fxFlexFill
-     *ngIf="breakpoint$ | async as breakpoint"
      class="info-bar">
 
   <div fxFlex class="first-info">
-    <span *ngIf="(breakpoint < breakpoints.FULL) && !!startDate">
-      <b>Start:</b> {{ startDate | shortDate }}
-    </span>
-    <span *ngIf="(breakpoint < breakpoints.FULL) && !!endDate">
-      <b>End:</b> {{ endDate | shortDate }}
-    </span>
+    <ng-container *appBreak="'FULL'; op 'lt'">
+      <span *ngIf="!!startDate">
+        <b>Start:</b> {{ startDate | shortDate }}
+      </span>
+      <span *ngIf="!!endDate">
+        <b>End:</b> {{ endDate | shortDate }}
+      </span>
+    </ng-container>
+
     <span *ngIf="pathRange.start || pathRange.end">
       <b>Path:</b> {{pathRange.start}} - {{pathRange.end}}
     </span>

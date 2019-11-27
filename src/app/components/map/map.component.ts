@@ -79,9 +79,6 @@ export class MapComponent implements OnInit, OnDestroy  {
     this.store$.select(mapStore.getMapLayerType),
   );
 
-  public breakpoint$ = this.screenSize.breakpoint$;
-  public breakpoints = models.Breakpoints;
-
   public searchType: models.SearchType;
   public searchTypes = models.SearchType;
 

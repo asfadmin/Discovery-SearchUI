@@ -1,5 +1,5 @@
-<div *ngIf="breakpoint$ | async as breakpoint" fxLayout="row" class="breadcrumb-row">
-  <ng-container *ngIf="breakpoint !== breakpoints.MOBILE">
+<div fxLayout="row" class="breadcrumb-row">
+  <ng-container *appBreak="'MOBILE'; op 'ne'">
     <div fxLayout="row">
 
       <app-search-type-selector
@@ -13,14 +13,14 @@
          class="breadcrumb">
       </app-dataset-selector>
 
-      <app-aoi-filter *ngIf="breakpoint > breakpoints.SMALL" class="breadcrumb">
+      <app-aoi-filter *appBreak="'SMALL'; op 'gt'" class="breadcrumb">
       </app-aoi-filter>
     </div>
 
     <div fxLayout.lt-md="row">
       <div fxLayout="row">
         <div
-           *ngIf="breakpoint === breakpoints.FULL"
+           *appBreak="'FULL'"
            fxFlex="300px" fxFlex.lt-lg="50"
              class="breadcrumb">
           <app-date-selector></app-date-selector>
@@ -51,7 +51,7 @@
     </div>
   </ng-container>
 
-  <ng-container *ngIf="breakpoint === breakpoints.MOBILE">
+  <ng-container *appBreak="'MOBILE'">
     <div class="mobile-nav-bar">
       <button
         (click)="onToggleFiltersMenu()"

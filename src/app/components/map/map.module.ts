@@ -18,6 +18,7 @@ import { AoiOptionsModule } from '@components/shared/aoi-options';
 import { FileUploadModule } from './file-upload';
 import { AttributionsComponent } from './attributions/attributions.component';
 import { SearchDropdownModule } from '@components/search-dropdown';
+import { PipesModule } from '@pipes';
 
 
 @NgModule({
@@ -34,6 +35,7 @@ import { SearchDropdownModule } from '@components/search-dropdown';
     FileUploadModule,
     SearchDropdownModule,
     AoiOptionsModule,
+    PipesModule,
 
     SearchButtonModule,
     ClearButtonModule,

@@ -19,7 +19,7 @@ export enum Operators {
   selector: '[appBreak]'
 })
 export class BreakDirective implements OnInit {
-  private isDisplayed = false;
+  private isDisplayed = true;
   private breakpoint: Breakpoints;
   private selectedBreak = Breakpoints.FULL;
   private op = Operators.eq;

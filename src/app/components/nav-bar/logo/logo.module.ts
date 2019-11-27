@@ -5,6 +5,7 @@ import { MatRippleModule } from '@angular/material/core';
 
 import { MatSharedModule } from '@shared';
 import { LogoComponent } from './logo.component';
+import { PipesModule } from '@pipes';
 
 @NgModule({
   declarations: [LogoComponent],
@@ -13,6 +14,7 @@ import { LogoComponent } from './logo.component';
     FlexLayoutModule,
     MatRippleModule,
     MatSharedModule,
+    PipesModule
   ],
   exports: [LogoComponent]
 })

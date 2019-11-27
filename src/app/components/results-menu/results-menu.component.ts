@@ -1,6 +1,5 @@
 import { Component, HostListener, OnInit, AfterViewChecked } from '@angular/core';
 import { ResizeEvent } from 'angular-resizable-element';
-import { trigger, state, style, animate, transition } from '@angular/animations';
 
 import { Subject } from 'rxjs';
 import { map, withLatestFrom, filter, tap, pairwise } from 'rxjs/operators';
@@ -58,7 +57,7 @@ export class ResultsMenuComponent implements OnInit {
   onResize( event ) {
     const resultDiv = document.getElementById('result-div');
 
-    if (!resultDiv.style) {
+    if (!resultDiv) {
       return;
     }
 

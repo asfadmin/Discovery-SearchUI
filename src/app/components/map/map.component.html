@@ -2,7 +2,7 @@
   id="map" class="map w100 h100" #map>
 </div>
 
-<div *ngIf="breakpoint$ | async as breakpoint" class="map-header">
+<div class="map-header">
   <div class="header-controls"
         fxLayout="row"
         fxFlexFill>
@@ -22,13 +22,13 @@
       </mat-card>
     </div>
 
-    <div *ngIf="breakpoint > breakpoints.MOBILE" fxLayout="row">
+    <div *appBreak="'MOBILE'; op 'gt'" fxLayout="row">
       <div fxFlex="nogrow">
         <app-map-controls></app-map-controls>
       </div>
     </div>
 
-    <div *ngIf="breakpoint === breakpoints.MOBILE"
+    <div *appBreak="'MOBILE'"
       [class.after-load]="isResultsMenuOpen"
       [class.before-load]="!isResultsMenuOpen"
       class="mobile-map-controls">
@@ -43,10 +43,10 @@
       </button>
     </div>
 
-    <img *ngIf="breakpoint > breakpoints.MOBILE"
+    <img *appBreak="'MOBILE'; op 'gt'"
       src="/assets/NASA_logo.svg" class="meatball">
 
-    <ng-container *ngIf="breakpoint === breakpoints.MOBILE">
+    <ng-container *appBreak="'MOBILE'">
       <div (click)="closeMobileFullscreenControls()"
         *ngIf="fullscreenControl !== fc.NONE"
         class="mobile-controls-background"></div>

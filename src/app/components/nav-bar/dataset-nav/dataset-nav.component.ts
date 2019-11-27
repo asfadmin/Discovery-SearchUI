@@ -21,8 +21,6 @@ export class DatasetNavComponent {
   @Output() public openQueue = new EventEmitter<void>();
 
   public queuedProducts$ = this.store$.select(queueStore.getQueuedProducts);
-  public breakpoint$ = this.screenSize.breakpoint$;
-  public breakpoints = models.Breakpoints;
 
   constructor(
     private store$: Store<AppState>,

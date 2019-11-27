@@ -1,6 +1,5 @@
-<ng-container *ngIf="breakpoint$ | async as breakpoint">
-
-  <div *ngIf="breakpoint !== breakpoints.MOBILE" class="bounds" fxLayout="row">
+<ng-container>
+  <div *appBreak="'MOBILE'; op 'ne'" class="bounds" fxLayout="row">
     <mat-card class="content logo-card mat-elevation-z10" fxFlex>
       <div fxFlex="130px" class="branding-block">
         <img src="/assets/asf-logos/vertex/vertex-logo-blue.png" class="asf-logo">
@@ -8,7 +7,7 @@
     </mat-card>
   </div>
 
-  <div *ngIf="breakpoint === breakpoints.MOBILE">
+  <div *appBreak="'MOBILE'">
     <img src="/assets/ASFLogo-Blue2.png" class="asf-logo-mobile">
   </div>
 </ng-container>

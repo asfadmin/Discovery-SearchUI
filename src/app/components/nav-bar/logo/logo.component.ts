@@ -5,7 +5,6 @@ import { Store } from '@ngrx/store';
 import { AppState } from '@store/app.reducer';
 
 import { ScreenSizeService } from '@services';
-import { Breakpoints } from '@models';
 
 @Component({
   selector: 'app-logo',
@@ -13,9 +12,6 @@ import { Breakpoints } from '@models';
   styleUrls: ['./logo.component.scss']
 })
 export class LogoComponent implements OnInit {
-  public breakpoint$ = this.screenSize.breakpoint$;
-  public breakpoints = Breakpoints;
-
   constructor(
     private store$: Store<AppState>,
     private screenSize: ScreenSizeService

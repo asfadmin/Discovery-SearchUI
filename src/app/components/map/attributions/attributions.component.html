@@ -1,5 +1,5 @@
-<ng-container *ngIf="breakpoint$ | async as breakpoint">
-  <ng-container *ngIf="breakpoint > breakpoints.MOBILE">
+<ng-container>
+  <ng-container *appBreak="'MOBILE'; op 'gt'">
     <div class="position-left attribute-box">
       <a href="https://www.maptiler.com/copyright/" target="_blank">© MapTiler</a>
       <span class="text-spacing">|</span>
@@ -15,7 +15,7 @@
     </div>
   </ng-container>
 
-  <ng-container *ngIf="breakpoint === breakpoints.MOBILE">
+  <ng-container *appBreak="'MOBILE'">
     <div class="bottom-search-bar">
       <div class="bar-layout">
         <app-max-results-selector></app-max-results-selector>

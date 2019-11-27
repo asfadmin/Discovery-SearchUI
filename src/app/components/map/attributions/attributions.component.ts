@@ -22,8 +22,6 @@ export class AttributionsComponent {
   public areNoScenes$ = this.store$.select(scenesStore.getScenes).pipe(
     map(scenes => scenes.length === 0)
   );
-  public breakpoint$ = this.screenSize.breakpoint$;
-  public breakpoints = Breakpoints;
 
   constructor(
     private store$: Store<AppState>,
