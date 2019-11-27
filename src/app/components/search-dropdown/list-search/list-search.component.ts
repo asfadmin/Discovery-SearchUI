@@ -36,8 +36,6 @@ export class ListSearchComponent implements OnInit, OnDestroy {
   public searchList: string;
   public listSearchMode$ = this.store$.select(filtersStore.getListSearchMode);
   private newListInput$ = new Subject<string | null>();
-  public breakpoint$ = this.screenSize.breakpoint$;
-  public breakpoints = models.Breakpoints;
 
   private subs = new SubSink();
 

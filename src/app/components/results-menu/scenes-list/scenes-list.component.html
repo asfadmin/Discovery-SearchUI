@@ -36,9 +36,9 @@
           </span>
         </div>
 
-        <div *ngIf="breakpoint$ | async as breakpoint" matLine>
-          <span *ngIf="breakpoint > breakpoints.MOBILE" matTooltip="Start Time">{{ scene.metadata.date | fullDate }}</span>
-          <span *ngIf="breakpoint === breakpoints.MOBILE" matTooltip="Start Time">{{ scene.metadata.date | shortDate }}</span>
+        <div matLine>
+          <span *appBreak="'MOBILE'; op 'gt'" matTooltip="Start Time">{{ scene.metadata.date | fullDate }}</span>
+          <span *appBreak="'MOBILE'; op 'eq'" matTooltip="Start Time">{{ scene.metadata.date | shortDate }}</span>
         </div>
 
         <mat-icon (click)="onZoomTo(scene)"class="ml-2" matTooltip="Zoom to scene">

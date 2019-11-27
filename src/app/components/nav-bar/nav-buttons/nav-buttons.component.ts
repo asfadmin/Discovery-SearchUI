@@ -3,7 +3,7 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { ClipboardService } from 'ngx-clipboard';
 
 import { DatapoolAuthService, AsfApiService, EnvironmentService, ScreenSizeService } from '@services';
-import { CMRProduct, Breakpoints } from '@models';
+import { CMRProduct } from '@models';
 
 @Component({
   selector: 'app-nav-buttons',
@@ -15,9 +15,6 @@ export class NavButtonsComponent implements OnInit {
   public asfWebsiteUrl = 'https://www.asf.alaska.edu';
   public maturity = 'prod';
   private maturityKey = 'search-api-maturity';
-
-  public breakpoint$ = this.screenSize.breakpoint$;
-  public breakpoints = Breakpoints;
 
   @Input() queuedProducts: CMRProduct[];
 

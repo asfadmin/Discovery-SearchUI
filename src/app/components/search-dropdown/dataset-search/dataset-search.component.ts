@@ -41,9 +41,6 @@ export class DatasetSearchComponent {
   );
   public dataset$ = this.store$.select(filtersStore.getSelectedDataset);
 
-  public breakpoint$ = this.screenSize.breakpoint$;
-  public breakpoints = models.Breakpoints;
-
   constructor(
     public prop: PropertyService,
     private store$: Store<AppState>,

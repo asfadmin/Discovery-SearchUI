@@ -72,14 +72,14 @@
           <span>Restore</span>
         </button>
       </div>
-      <ng-container *ngIf="breakpoint$ | async as breakpoint">
+      <ng-container>
         <div *ngIf="areAnyProducts" fxFlex="75" class="dl-download-buttons">
           <button (click)="onCopyQueue(products)" mat-button [disabled]="!areAnyProducts" class="btn-primary">
-            <span *ngIf="breakpoint > breakpoints.MOBILE">Copy File IDs</span>
+            <span *appBreak="'MOBILE'; op 'gt'">Copy File IDs</span>
             <fa-icon style="margin-left: 5px" [icon]="copyIcon"></fa-icon>
           </button>
 
-          <ng-container *ngIf="breakpoint > breakpoints.MOBILE">
+          <ng-container *appBreak="'MOBILE'; op 'gt'">
             <button mat-button [matMenuTriggerFor]="dataMenu" [disabled]="!areAnyProducts" class="btn-primary">
               Data Download
               <mat-icon>arrow_drop_up</mat-icon>
@@ -90,7 +90,7 @@
             </button>
           </ng-container>
 
-          <ng-container *ngIf="breakpoint === breakpoints.MOBILE">
+          <ng-container *appBreak="'MOBILE'; op 'eq'">
             <button mat-button [matMenuTriggerFor]="typesMenu">
               Downloads
               <mat-icon>arrow_drop_up</mat-icon>

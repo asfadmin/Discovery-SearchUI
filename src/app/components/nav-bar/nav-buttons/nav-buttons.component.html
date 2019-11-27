@@ -1,5 +1,5 @@
-<div *ngIf="breakpoint$ | async as breakpoint" class="layout">
-  <ng-container *ngIf="breakpoint > breakpoints.MOBILE">
+<div class="layout">
+  <ng-container *appBreak="'MOBILE'; op 'gt'">
     <button
       (click)="onOpenDownloadQueue()"
       [disabled]="queuedProducts.length <= 0"
@@ -45,7 +45,7 @@
     </button>
   </ng-container>
 
-  <ng-container *ngIf="breakpoint === breakpoints.MOBILE">
+  <ng-container *appBreak="'MOBILE'; op 'eq'">
     <mat-icon
       (click)="onOpenDownloadQueue()"
       [matBadge]="queuedProducts.length"
@@ -133,7 +133,7 @@
       Select API Maturity
   </button>
 
-  <ng-container *ngIf="(breakpoint$ | async) === breakpoints.MOBILE">
+  <ng-container *appBreak="'MOBILE'">
     <hr class="menu-hr">
 
     <button

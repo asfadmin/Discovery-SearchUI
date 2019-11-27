@@ -1,9 +1,8 @@
 <div
-  *ngIf="breakpoint$ | async as breakpoint"
   class="bounds">
   <div>
     <div class="breadcrumb-list"
-         [class.mobile-nav-bar]="breakpoint === breakpoints.MOBILE"
+         [class.mobile-nav-bar]="(breakpoint$ | async) === breakpoints.MOBILE"
          fxLayout="row"
          fxFlexFill>
       <div fxLayout="row"
@@ -22,7 +21,7 @@
           (openQueue)="onOpenDownloadQueue()">
         </app-list-nav>
 
-        <app-info-bar *ngIf="breakpoint !== breakpoints.MOBILE"></app-info-bar>
+        <app-info-bar *appBreak="'MOBILE'; op 'ne'"></app-info-bar>
       </div>
     </div>
   </div>

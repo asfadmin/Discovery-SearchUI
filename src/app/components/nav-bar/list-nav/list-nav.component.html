@@ -1,5 +1,5 @@
-<ng-container *ngIf="breakpoint$ | async as breakpoint">
-  <div *ngIf="breakpoint > breakpoints.MOBILE"
+<ng-container>
+  <div *appBreak="'MOBILE'; op 'gt'"
     fxLayout="row" class="breadcrumb-row">
     <div fxLayout="row">
       <app-search-type-selector class="breadcrumb">
@@ -28,7 +28,7 @@
     </div>
   </div>
 
-  <div *ngIf="breakpoint === breakpoints.MOBILE">
+  <div *appBreak="'MOBILE'; op 'eq'">
     <div class="mobile-nav-bar">
       <button (click)="onToggleFiltersMenu()"
           style="margin-left: 5px;"

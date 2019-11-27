@@ -1,6 +1,4 @@
-<div class="browse-dialog"
-     *ngIf="breakpoint$ | async as breakpoint"
-    >
+<div *ngIf="breakpoint$ | async as breakpoint" class="browse-dialog">
   <div fxLayout="row" class="dialog-header">
     <div *ngIf="scene$ | async as scene" class="dialog-header--layout">
       <div fxFlex="35px" fxLayoutAlign="start"
@@ -42,7 +40,7 @@
     </div>
   </div>
 
-  <ng-container *ngIf="breakpoint > breakpoints.MOBILE">
+  <ng-container *appBreak="'MOBILE'; op 'gt'">
     <app-browse-list class="browse-list"></app-browse-list>
 
     <div *ngIf="!isShow" class="scene-detail-wrapper">
@@ -90,11 +88,9 @@
     </div>
   </div>
   </ng-container>
-
-
 </div>
 
-<div *ngIf="breakpoint$ | async as breakpoint"
+<div
   fxLayout="row"
   fxLayoutAlign="end end"
   class="bottom-row">
@@ -105,17 +101,14 @@
       [checked]="onlyShowScenesWithBrowse"
       style="margin-right: 6px;" color="warn">
     </mat-checkbox>
-    <span *ngIf="breakpoint > breakpoints.MOBILE">
+    <span *appBreak="'MOBILE'; op 'gt'">
       Only display scenes with a browse image
     </span>
-    <span *ngIf="breakpoint === breakpoints.MOBILE">
+    <span *appBreak="'MOBILE'; op 'eq'">
       With browses
     </span>
   </div>
   <div fxFlex="nogrow">
     <button mat-stroked-button (click)="closeDialog()" autofocus tabindex="1">Close</button>
   </div>
-
 </div>
-
-

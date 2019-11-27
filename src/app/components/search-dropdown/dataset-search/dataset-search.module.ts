@@ -11,6 +11,7 @@ import { OtherSelectorModule } from '@components/shared/selectors/other-selector
 import { SeasonSelectorModule } from '@components/shared/selectors/season-selector';
 import { MissionSearchModule } from '../mission-search';
 import { SearchTypeSelectorModule } from '@components/shared/selectors/search-type-selector';
+import { PipesModule } from '@pipes';
 
 import { DatasetSearchComponent } from './dataset-search.component';
 import { DateSelectorModule } from '@components/shared/selectors/date-selector';
@@ -36,7 +37,8 @@ import { AoiOptionsModule } from '@components/shared/aoi-options';
     DateSelectorModule,
     DatasetSelectorModule,
     AoiOptionsModule,
-    SearchTypeSelectorModule
+    SearchTypeSelectorModule,
+    PipesModule,
   ],
   exports: [
     DatasetSearchComponent,

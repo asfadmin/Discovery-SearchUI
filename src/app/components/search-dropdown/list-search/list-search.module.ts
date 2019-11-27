@@ -10,6 +10,7 @@ import { SearchTypeSelectorModule } from '@components/shared/selectors/search-ty
 
 import { MatSharedModule } from '@shared';
 import { CopyToClipboardModule } from '@components/shared/copy-to-clipboard';
+import { PipesModule } from '@pipes';
 
 import { ListSearchComponent } from './list-search.component';
 
@@ -27,7 +28,8 @@ import { ListSearchComponent } from './list-search.component';
     MatFormFieldModule,
     MatInputModule,
     MatButtonToggleModule,
-    MatSharedModule
+    MatSharedModule,
+    PipesModule,
   ],
   exports: [
     ListSearchComponent
