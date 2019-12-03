@@ -1,5 +1,5 @@
 import { Directive, Input, ElementRef, OnInit, TemplateRef, ViewContainerRef } from '@angular/core';
-import { tap } from 'rxjs/operators';
+import { tap, map } from 'rxjs/operators';
 
 import { ScreenSizeService } from '@services';
 import { Breakpoints } from '@models';
@@ -14,6 +14,44 @@ export enum Operators {
   ne = 'ne',
 }
 
+function breakpointNameToNum(name: string): Breakpoints {
+  switch (name) {
+    case 'FULL':
+      return Breakpoints.FULL;
+    case 'MEDIUM':
+      return Breakpoints.MEDIUM;
+    case 'SMALL':
+      return Breakpoints.SMALL;
+    case 'MOBILE':
+      return Breakpoints.MOBILE;
+  }
+}
+
+function getIsDisplayed(op, breakpoint, selectedBreak): boolean {
+  switch (op) {
+    case Operators.eq: {
+      return breakpoint === selectedBreak;
+    }
+    case Operators.ne: {
+      return breakpoint !== selectedBreak;
+    }
+    case Operators.gt: {
+      return breakpoint > selectedBreak;
+    }
+    case Operators.gte: {
+      return breakpoint >= selectedBreak;
+    }
+    case Operators.lt: {
+      return breakpoint < selectedBreak;
+    }
+    case Operators.lte: {
+      return breakpoint <= selectedBreak;
+    }
+    default: {
+      return breakpoint === selectedBreak;
+    }
+  }
+}
 
 @Directive({
   selector: '[appBreak]'
@@ -33,78 +71,30 @@ export class BreakDirective implements OnInit {
 
   ngOnInit() {
     this.screenSize.breakpoint$.pipe(
-      tap(breakpoint => this.breakpoint = breakpoint)
+      tap(breakpoint => this.breakpoint = breakpoint),
+      map(_ => getIsDisplayed(this.op, this.breakpoint, this.selectedBreak))
     ).subscribe(
-      _ => this.update()
+      shouldDisplay => this.update(shouldDisplay, this.viewContainer)
     );
   }
 
   @Input()
   set appBreak(breakpoint: string) {
-    this.selectedBreak = this.breakpointNameToNum(breakpoint);
+    this.selectedBreak = breakpointNameToNum(breakpoint);
+    const shouldDisplay = getIsDisplayed(this.op, this.breakpoint, this.selectedBreak);
 
-    this.update();
+    this.update(shouldDisplay, this.viewContainer);
   }
 
-  private breakpointNameToNum(name: string): Breakpoints {
-    switch (name) {
-      case 'FULL':
-        return Breakpoints.FULL;
-      case 'MEDIUM':
-        return Breakpoints.MEDIUM;
-      case 'SMALL':
-        return Breakpoints.SMALL;
-      case 'MOBILE':
-        return Breakpoints.MOBILE;
-    }
-  }
-
-  @Input()
-  set appBreakOp(operator: Operators) {
-    this.op = operator;
-
-    this.update();
-  }
-
-  private update(): void {
-    const shouldDisplay = this.getIsDisplayed();
-
+  private update(shouldDisplay: boolean, viewContainer): void {
     if (this.isDisplayed === shouldDisplay) {
       return;
     }
 
     this.isDisplayed = shouldDisplay;
 
-    if (this.isDisplayed) {
-      this.viewContainer.createEmbeddedView(this.templateRef);
-    } else {
-      this.viewContainer.clear();
-    }
-  }
-
-  private getIsDisplayed(): boolean {
-    switch (this.op) {
-      case Operators.eq: {
-        return this.breakpoint === this.selectedBreak;
-      }
-      case Operators.ne: {
-        return this.breakpoint !== this.selectedBreak;
-      }
-      case Operators.gt: {
-        return this.breakpoint > this.selectedBreak;
-      }
-      case Operators.gte: {
-        return this.breakpoint >= this.selectedBreak;
-      }
-      case Operators.lt: {
-        return this.breakpoint < this.selectedBreak;
-      }
-      case Operators.lte: {
-        return this.breakpoint <= this.selectedBreak;
-      }
-      default: {
-        return this.breakpoint === this.selectedBreak;
-      }
-    }
+    this.isDisplayed ?
+      viewContainer.createEmbeddedView(this.templateRef) :
+      viewContainer.clear();
   }
 }
