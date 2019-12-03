@@ -19,7 +19,13 @@
           <a *ngIf="dataset" [href]="dataset.infoUrl"
               target="_blank" matTooltip="Dataset" class="faint-text">
             {{ dataset.name }}
-          </a> • {{ scene.metadata.date | fullDate }}
+          </a> •
+          <span *ngIf="breakpoint > breakpoints.MOBILE">
+            {{ scene.metadata.date | fullDate }}
+          </span>
+          <span *ngIf="breakpoint === breakpoints.MOBILE">
+            {{ scene.metadata.date | shortDateTime }}
+          </span>
         </span>
       </div>
       <div class="close-icon">
@@ -105,7 +111,7 @@
       Only display scenes with a browse image
     </span>
     <span *appBreak="'MOBILE'; op 'eq'">
-      With browses
+      w/Browse Images
     </span>
   </div>
   <div fxFlex="nogrow">
