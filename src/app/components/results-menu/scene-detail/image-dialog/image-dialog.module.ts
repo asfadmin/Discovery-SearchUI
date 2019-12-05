@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { MatBadgeModule, MatButtonModule, MatIconModule } from '@angular/material';
 import { ScrollingModule } from '@angular/cdk/scrolling';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { DragDropModule } from '@angular/cdk/drag-drop';
@@ -23,6 +24,9 @@ import { BrowseListComponent } from './browse-list/browse-list.component';
     ScrollingModule,
     FlexLayoutModule,
     DragDropModule,
+    MatBadgeModule,
+    MatButtonModule,
+    MatIconModule,
     MatProgressSpinnerModule,
     MatSharedModule,
     MatCheckboxModule,

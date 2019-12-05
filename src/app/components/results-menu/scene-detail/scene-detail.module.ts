@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-
+import { MatBadgeModule, MatButtonModule, MatIconModule } from '@angular/material';
 import { MatMenuModule } from '@angular/material';
 import { TruncateModule } from '@yellowspot/ng-truncate';
 import { FlexLayoutModule } from '@angular/flex-layout';
@@ -17,6 +17,9 @@ import { SceneDetailComponent } from './scene-detail.component';
   declarations: [SceneDetailComponent],
   imports: [
     CommonModule,
+    MatBadgeModule,
+    MatButtonModule,
+    MatIconModule,
     MatMenuModule,
     FlexLayoutModule,
     TruncateModule,

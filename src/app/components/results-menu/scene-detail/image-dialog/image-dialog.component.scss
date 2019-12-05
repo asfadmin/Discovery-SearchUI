@@ -97,6 +97,7 @@ a {
   max-width: 100%;
   max-height: 100%;
   background-color: $asf-primary-light;
+  position: relative;
 }
 
 .browse-map--overlay {
@@ -161,4 +162,9 @@ a {
 .close-icon {
   position: absolute;
   right: 0;
+}
+
+.thumbs {
+  position: absolute;
+  top: 90px;
 }

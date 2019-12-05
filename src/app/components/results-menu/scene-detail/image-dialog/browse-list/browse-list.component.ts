@@ -23,6 +23,7 @@ export class BrowseListComponent implements OnInit, AfterViewInit, OnDestroy {
 
   public scenes$: Observable<models.CMRProduct[]>;
   public selectedName: string;
+  public browses$ = this.store$.select(scenesStore.getSelectedSceneBrowses);
   private selectedFromList = false;
   private subs = new SubSink();
 
