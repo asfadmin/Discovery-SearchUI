@@ -29,15 +29,18 @@
 
         <div [class.clickable]="sceneHasBrowse()" class="browse-container w40">
           <div (click)="onOpenImage();"
-            class="img-container">
-              <img
-                class="browse-img fit-to-container"
-                [hidden]="isImageLoading"
-                [src]="(browses$ | async)[0]"
-                (load)="isImageLoading = false"
-                onerror="this.src='assets/no-browse.png'"
-                alt="Sentinel1 scene browse image">
-              <div [class.hidden]="!sceneHasBrowse()" class="img-overlay fit-to-container">
+            class="img-container"
+               [matBadgeHidden]="(browses$ | async).length <= 1"
+               matBadge="{{ (browses$ | async).length }}"
+               matBadgePosition="above after">
+            <img
+              class="browse-img fit-to-container"
+              [hidden]="isImageLoading"
+              [src]="(browses$ | async)[0]"
+              (load)="isImageLoading = false"
+              onerror="this.src='assets/no-browse.png'"
+              alt="Sentinel1 scene browse image">
+            <div [class.hidden]="!sceneHasBrowse()" class="img-overlay fit-to-container">
                 <mat-icon class="overlay-icon">fullscreen</mat-icon>
               </div>
           </div>

@@ -38,9 +38,14 @@
     </div>
   </div>
 
-
   <div [ngClass]="(breakpoint < breakpoints.SMALL) ? 'main-window-mobile' : 'main-window'">
-    <div id="browse-map" class="browse-map--size">
+    <div class="thumbs">
+      <div *ngFor="let browse of (browses$ | async)">
+        <img mat-card-sm-image src="{{ browse }}">
+      </div>
+    </div>
+
+    <div id="browse-map" class="browse-map--size" style="position: static;">
     </div>
 
     <div *ngIf="isImageLoading" color="accent" class="browse-map--overlay">

@@ -22,7 +22,7 @@ import * as services from '@services/index';
 })
 export class ImageDialogComponent implements OnInit, AfterViewInit, OnDestroy {
   public scene$ = this.store$.select(scenesStore.getSelectedScene);
-
+  public browses$ = this.store$.select(scenesStore.getSelectedSceneBrowses);
   public onlyShowScenesWithBrowse: boolean;
   public queuedProductIds: Set<string>;
   public scene: models.CMRProduct;
