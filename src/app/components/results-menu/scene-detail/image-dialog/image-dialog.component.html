@@ -40,7 +40,9 @@
 
   <div [ngClass]="(breakpoint < breakpoints.SMALL) ? 'main-window-mobile' : 'main-window'">
     <div class="thumbs">
-      <div *ngFor="let browse of (browses$ | async)">
+      <div *ngFor="let browse of (browses$ | async)"
+           (click)="onNewBrowseSelected(scene, browse)"
+           class="clickable">
         <img mat-card-sm-image src="{{ browse }}">
       </div>
     </div>

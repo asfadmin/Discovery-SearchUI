@@ -30,6 +30,7 @@ export class ImageDialogComponent implements OnInit, AfterViewInit, OnDestroy {
   public dataset: models.Dataset;
   public isImageLoading = false;
   public isShow = false;
+  public currentBrowse = null;
 
   public breakpoint$ = this.screenSize.breakpoint$;
   public breakpoints = models.Breakpoints;
@@ -85,23 +86,23 @@ export class ImageDialogComponent implements OnInit, AfterViewInit, OnDestroy {
           const browseService = this.browseMap;
           const currentScene = this.scene;
           const self = this;
+          this.currentBrowse = scene.browses[0];
 
           this.image.addEventListener('load', function() {
             if (currentScene !== scene) {
               return;
             }
             self.isImageLoading = false;
-
             const [width, height] = [
               this.naturalWidth, this.naturalHeight
             ];
 
-            browseService.setBrowse(scene.browses[0], {
+            browseService.setBrowse(self.currentBrowse, {
               width, height
             });
           });
 
-          this.image.src = scene.browses[0];
+          this.image.src = this.currentBrowse;
         }
       )
     );
@@ -129,6 +130,11 @@ export class ImageDialogComponent implements OnInit, AfterViewInit, OnDestroy {
 
   public setOnlyShowBrowse(isChecked: boolean) {
     this.store$.dispatch(new uiStore.SetOnlyScenesWithBrowse(isChecked));
+  }
+
+  public onNewBrowseSelected(scene, browse): void {
+    this.currentBrowse = browse;
+    this.image.src = browse;
   }
 
   ngOnDestroy() {
