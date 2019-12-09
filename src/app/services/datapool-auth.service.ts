@@ -7,6 +7,7 @@ import { interval, Subject, Subscription, Observable } from 'rxjs';
 import { map, takeUntil, tap, delay, take, filter, switchMap } from 'rxjs/operators';
 
 import { EnvironmentService } from './environment.service';
+import * as jwt_decode from 'jwt-decode';
 
 @Injectable({
   providedIn: 'root'
@@ -76,20 +77,13 @@ export class DatapoolAuthService {
       });
   }
 
-  private loadUserData(): Observable<any> {
-    const profileUrl = `${this.earthdataUrl}/api/users/${this.user.id}`;
-    const headers = new HttpHeaders()
-      .append('Authorization', `Bearer ${this.user.accessToken}`);
-
-    return this.http.get(profileUrl, { headers });
-  }
-
   private checkLogin() {
     const cookies = this.loadCookies();
+    const auth_cookie = jwt_decode(cookies['asf-urs']);
 
     this.user = {
-      id: cookies['urs-user-id'],
-      accessToken: cookies['urs-access-token']
+      id: auth_cookie['urs-user-id'],
+      accessToken: auth_cookie['urs-access-token']
     };
 
     this.isLoggedIn = !!(this.user.id && this.user.accessToken);
