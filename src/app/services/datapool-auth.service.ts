@@ -79,6 +79,11 @@ export class DatapoolAuthService {
 
   private checkLogin() {
     const cookies = this.loadCookies();
+
+    if (!cookies['asf-urs']) {
+      return;
+    }
+
     const auth_cookie = jwt_decode(cookies['asf-urs']);
 
     this.user = {
