@@ -81,31 +81,36 @@ export class ImageDialogComponent implements OnInit, AfterViewInit, OnDestroy {
         debounceTime(250)
       ).subscribe(
         scene => {
-          this.isImageLoading = true;
-          this.image = new Image();
-          const browseService = this.browseMap;
-          const currentScene = this.scene;
-          const self = this;
           this.currentBrowse = scene.browses[0];
-
-          this.image.addEventListener('load', function() {
-            if (currentScene !== scene) {
-              return;
-            }
-            self.isImageLoading = false;
-            const [width, height] = [
-              this.naturalWidth, this.naturalHeight
-            ];
-
-            browseService.setBrowse(self.currentBrowse, {
-              width, height
-            });
-          });
-
-          this.image.src = this.currentBrowse;
+          this.loadBrowseImage(scene, this.currentBrowse);
         }
       )
     );
+  }
+
+  private loadBrowseImage(scene, browse): void {
+    this.isImageLoading = true;
+    this.image = new Image();
+    const browseService = this.browseMap;
+    const currentScene = this.scene;
+    const self = this;
+
+    this.image.addEventListener('load', function() {
+      if (currentScene !== scene) {
+        return;
+      }
+
+      self.isImageLoading = false;
+      const [width, height] = [
+        this.naturalWidth, this.naturalHeight
+      ];
+
+      browseService.setBrowse(browse, {
+        width, height
+      });
+    });
+
+    this.image.src = browse;
   }
 
   public closeDialog() {
@@ -133,8 +138,7 @@ export class ImageDialogComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   public onNewBrowseSelected(scene, browse): void {
-    this.currentBrowse = browse;
-    this.image.src = browse;
+    this.loadBrowseImage(scene, browse);
   }
 
   ngOnDestroy() {
