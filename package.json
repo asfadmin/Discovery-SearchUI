@@ -75,7 +75,7 @@
     "karma-jasmine": "~1.1.2",
     "karma-jasmine-html-reporter": "^1.4.2",
     "ngrx-store-freeze": "^0.2.4",
-    "nyc": "^13.3.0",
+    "nyc": "^14.1.1",
     "protractor": "^5.4.2",
     "puppeteer": "^1.20.0",
     "stylelint": "^9.10.1",
