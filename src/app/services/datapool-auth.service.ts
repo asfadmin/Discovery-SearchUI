@@ -18,8 +18,7 @@ export class DatapoolAuthService {
 
   public isLoggedIn = false;
   public user = {
-    id: null,
-    accessToken: null
+    id: null
   };
 
   private loginProcess: Subscription;
@@ -36,7 +35,10 @@ export class DatapoolAuthService {
 
     const appRedirect = encodeURIComponent(localUrl);
 
-    const url = `${this.authUrl}/loginservice/in/${appRedirect}`;
+    const ursUrl = `https://urs.earthdata.nasa.gov/oauth/authorize`;
+    const redirect = `${this.authUrl}/login&state=${appRedirect}`;
+
+    const url = `${ursUrl}?response_type=code&client_id=BO_n7nTIlMljdvU6kRRB3g&redirect_uri=${redirect};`;
 
     const loginWindow = window.open(
       url,
@@ -88,10 +90,9 @@ export class DatapoolAuthService {
 
     this.user = {
       id: auth_cookie['urs-user-id'],
-      accessToken: auth_cookie['urs-access-token']
     };
 
-    this.isLoggedIn = !!(this.user.id && this.user.accessToken);
+    this.isLoggedIn = !!this.user.id;
   }
 
   private loadCookies() {
