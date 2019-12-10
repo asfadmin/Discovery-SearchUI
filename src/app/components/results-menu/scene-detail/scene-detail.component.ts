@@ -13,7 +13,7 @@ import * as searchStore from '@store/search';
 import * as uiStore from '@store/ui';
 
 import * as models from '@models';
-import { DatapoolAuthService, PropertyService, ScreenSizeService } from '@services';
+import { AuthService, PropertyService, ScreenSizeService } from '@services';
 import { ImageDialogComponent } from './image-dialog';
 
 import { DatasetForProductService } from '@services';
@@ -41,7 +41,7 @@ export class SceneDetailComponent implements OnInit, OnDestroy {
     private store$: Store<AppState>,
     private screenSize: ScreenSizeService,
     public dialog: MatDialog,
-    public authService: DatapoolAuthService,
+    public authService: AuthService,
     public prop: PropertyService,
     private datasetForProduct: DatasetForProductService
   ) {}
