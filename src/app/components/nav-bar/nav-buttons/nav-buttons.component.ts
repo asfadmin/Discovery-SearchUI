@@ -2,7 +2,7 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 
 import { ClipboardService } from 'ngx-clipboard';
 
-import { DatapoolAuthService, AsfApiService, EnvironmentService, ScreenSizeService } from '@services';
+import { AuthService, AsfApiService, EnvironmentService, ScreenSizeService } from '@services';
 import { CMRProduct, Breakpoints } from '@models';
 
 @Component({
@@ -24,7 +24,7 @@ export class NavButtonsComponent implements OnInit {
   @Output() openQueue = new EventEmitter<void>();
 
   constructor(
-    public datapoolAuthService: DatapoolAuthService,
+    public authService: AuthService,
     public env: EnvironmentService,
     public asfApiService: AsfApiService,
     public clipboard: ClipboardService,
@@ -43,11 +43,11 @@ export class NavButtonsComponent implements OnInit {
   }
 
   public onAccountButtonClicked() {
-    this.datapoolAuthService.login();
+    this.authService.login();
   }
 
   public onLogout(): void {
-    this.datapoolAuthService.logout();
+    this.authService.logout();
   }
 
   public onCopy(): void {

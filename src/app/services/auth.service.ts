@@ -12,7 +12,7 @@ import * as jwt_decode from 'jwt-decode';
 @Injectable({
   providedIn: 'root'
 })
-export class DatapoolAuthService {
+export class AuthService {
   private authUrl = this.env.value.auth.api;
   private earthdataUrl = this.env.value.auth.urs;
 
