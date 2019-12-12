@@ -4,6 +4,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { ClipboardService } from 'ngx-clipboard';
 
 import { AuthService, AsfApiService, EnvironmentService, ScreenSizeService } from '@services';
+import { PreferencesComponent } from './preferences/preferences.component';
 import { CMRProduct, Breakpoints } from '@models';
 
 @Component({
@@ -53,7 +54,10 @@ export class NavButtonsComponent implements OnInit {
   }
 
   public onOpenPreferences(): void {
-
+    this.dialog.open(PreferencesComponent, {
+      maxWidth: '100vw',
+      maxHeight: '100vh'
+    });
   }
 
   public onCopy(): void {

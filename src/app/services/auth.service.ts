@@ -3,11 +3,14 @@ import { HttpClient, HttpParams, HttpHeaders } from '@angular/common/http';
 
 import { ViewType } from '@models';
 
-import { interval, Subject, Subscription, Observable } from 'rxjs';
+import { interval, Subject, BehaviorSubject, Subscription, Observable } from 'rxjs';
 import { map, takeUntil, tap, delay, take, filter, switchMap } from 'rxjs/operators';
 
 import { EnvironmentService } from './environment.service';
 import * as jwt_decode from 'jwt-decode';
+
+import * as models from '@models';
+
 
 @Injectable({
   providedIn: 'root'
@@ -16,10 +19,10 @@ export class AuthService {
   private authUrl = this.env.value.auth.api;
   private earthdataUrl = this.env.value.auth.urs;
 
-  public isLoggedIn = false;
-  public user = {
-    id: null
-  };
+  public user$ = new BehaviorSubject<models.UserAuth>({
+    id: null,
+    token: null
+  });
 
   private loginProcess: Subscription;
 
@@ -65,7 +68,6 @@ export class AuthService {
         } catch (e) {
         }
       }),
-      filter(_ => !this.isLoggedIn),
     ).subscribe(_ => _);
   }
 
@@ -81,18 +83,25 @@ export class AuthService {
 
   private checkLogin() {
     const cookies = this.loadCookies();
+    const token = cookies['asf-urs'];
 
-    if (!cookies['asf-urs']) {
+    if (!token) {
+      this.setUser(null, null);
       return;
     }
 
-    const auth_cookie = jwt_decode(cookies['asf-urs']);
+    const user = jwt_decode(token);
 
-    this.user = {
-      id: auth_cookie['urs-user-id'],
-    };
+    if (Date.now() > user.exp * 1000) {
+      this.setUser(null, null);
+      return;
+    }
 
-    this.isLoggedIn = !!this.user.id;
+    this.setUser(user['urs-user-id'], token);
+  }
+
+  private setUser(id: string | null, token: string | null): void {
+    this.user$.next({ id, token });
   }
 
   private loadCookies() {
