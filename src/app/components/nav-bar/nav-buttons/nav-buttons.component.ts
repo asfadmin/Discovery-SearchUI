@@ -1,5 +1,6 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 
+import { MatDialog } from '@angular/material/dialog';
 import { ClipboardService } from 'ngx-clipboard';
 
 import { AuthService, AsfApiService, EnvironmentService, ScreenSizeService } from '@services';
@@ -28,7 +29,8 @@ export class NavButtonsComponent implements OnInit {
     public env: EnvironmentService,
     public asfApiService: AsfApiService,
     public clipboard: ClipboardService,
-    private screenSize: ScreenSizeService
+    private screenSize: ScreenSizeService,
+    private dialog: MatDialog,
   ) {}
 
   ngOnInit() {
@@ -48,6 +50,10 @@ export class NavButtonsComponent implements OnInit {
 
   public onLogout(): void {
     this.authService.logout();
+  }
+
+  public onOpenPreferences(): void {
+
   }
 
   public onCopy(): void {
