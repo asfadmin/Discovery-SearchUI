@@ -29,8 +29,10 @@ a {
   align-content: stretch;
   justify-content: stretch;
   display: grid;
-  grid-template-columns: minmax(0, 1fr) 200px;
-  grid-template-rows: 60px minmax(0, 1fr) 230px;
+  grid-template-columns: minmax(0, 1fr) 12.5em;
+  grid-template-rows: 3.75em minmax(0, 1fr) 14.375em;
+  //grid-template-columns: minmax(0, 1fr) 200px;
+  //grid-template-rows: 60px minmax(0, 1fr) 230px;
   grid-column-gap: 0;
   grid-row-gap: 0;
   background-color: $asf-primary-light;
@@ -98,6 +100,7 @@ a {
   max-height: 100%;
   background-color: $asf-primary-light;
   position: relative;
+  overflow: hidden;
 }
 
 .browse-map--overlay {
