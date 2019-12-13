@@ -15,6 +15,7 @@ import * as searchStore from '@store/search';
 import * as uiStore from '@store/ui';
 import * as mapStore from '@store/map';
 import * as queueStore from '@store/queue';
+import * as userStore from '@store/user';
 
 import * as services from '@services';
 import * as models from './models';
@@ -48,6 +49,7 @@ export class AppComponent implements OnInit, OnDestroy {
     private searchParams$: services.SearchParamsService,
     private polygonValidationService: services.PolygonValidationService,
     private asfSearchApi: services.AsfApiService,
+    private authService: services.AuthService
   ) {}
 
   public ngOnInit(): void {
@@ -56,6 +58,11 @@ export class AppComponent implements OnInit, OnDestroy {
     this.polygonValidationService.validate();
     this.loadProductQueue();
     this.loadMissions();
+
+    const user = this.authService.getUser();
+    if (user.id) {
+      this.store$.dispatch(new userStore.SetUserAuth(user));
+    }
 
     this.subs.add(
       this.actions$.pipe(

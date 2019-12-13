@@ -20,7 +20,7 @@
     </button>
 
     <button
-      *ngIf="!authService.isLoggedIn"
+      *ngIf="!isLoggedIn"
       (click)="onAccountButtonClicked()"
       class="spacing nav-icon-buttons" color="basic"
       matTooltip="Login" mat-button>
@@ -29,12 +29,12 @@
     </button>
 
     <button
-      *ngIf="authService.isLoggedIn"
+      *ngIf="isLoggedIn"
       [matMenuTriggerFor]="profileMenu"
       class="spacing nav-icon-buttons" color="basic"
       matTooltip="Profile" mat-button>
         <mat-icon class="large-icon">account_circle</mat-icon>
-        <div class="text-under faint-text"> {{ authService.user.id }}</div>
+        <div class="text-under faint-text"> {{ this.userAuth.id }} </div>
     </button>
 
     <button
@@ -58,7 +58,7 @@
     </mat-icon>
 
     <mat-icon
-      *ngIf="!authService.isLoggedIn"
+      *ngIf="!isLoggedIn"
       class="mobile-icon-spacing"
       fontSet="material-icons-outlined"
       (click)="onAccountButtonClicked()">
@@ -66,7 +66,7 @@
     </mat-icon>
 
     <mat-icon
-      *ngIf="authService.isLoggedIn"
+      *ngIf="isLoggedIn"
       class="mobile-icon-spacing"
       [matMenuTriggerFor]="profileMenu">
         account_circle
@@ -87,7 +87,7 @@
   <hr class="menu-hr">
   <button (click)="onLogout()"
     mat-menu-item matSuffix>
-    <b>{{ authService.user.id }}</b> <span> logout</span>
+    <b> {{ userAuth.id }} </b> <span> logout</span>
   </button>
 </mat-menu>
 

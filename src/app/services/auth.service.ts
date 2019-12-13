@@ -19,21 +19,12 @@ export class AuthService {
   private authUrl = this.env.value.auth.api;
   private earthdataUrl = this.env.value.auth.urs;
 
-  public user$ = new BehaviorSubject<models.UserAuth>({
-    id: null,
-    token: null
-  });
-
-  private loginProcess: Subscription;
-
   constructor(
     private env: EnvironmentService,
     private http: HttpClient
-  ) {
-    this.checkLogin();
-  }
+  ) {}
 
-  public login() {
+  public login$(): Observable<models.UserAuth | null> {
     const localUrl = window.location.origin;
 
     const appRedirect = encodeURIComponent(localUrl);
@@ -49,59 +40,59 @@ export class AuthService {
       'scrollbars=yes, width=600, height= 600'
     );
 
-    const loginDone = new Subject();
+    return interval(500).pipe(
+      map(_ => {
+        let user = null;
 
-    if (this.loginProcess) {
-      this.loginProcess.unsubscribe();
-    }
-
-    this.loginProcess = interval(500).pipe(
-      take(50),
-      takeUntil(loginDone),
-      tap(_ => {
         try {
           if (loginWindow.location.host === window.location.host) {
             loginWindow.close();
-            this.checkLogin();
-            loginDone.next();
+            user = this.getUser();
           }
         } catch (e) {
         }
+
+        return user;
       }),
-    ).subscribe(_ => _);
+      filter(user => !!user),
+      take(1)
+    );
   }
 
-  public logout(): void {
-    this.http.get(
+  public logout$(): Observable<models.UserAuth>  {
+    return this.http.get(
       `${this.authUrl}/loginservice/logout`, {
         responseType: 'text',
         withCredentials: true
-      }).subscribe(resp => {
-        this.checkLogin();
-      });
+      }).pipe(
+        map(resp => this.getUser()),
+        take(1)
+      );
   }
 
-  private checkLogin() {
+  public getUser(): models.UserAuth {
     const cookies = this.loadCookies();
     const token = cookies['asf-urs'];
 
     if (!token) {
-      this.setUser(null, null);
-      return;
+      return this.makeUser(null, null);
     }
 
     const user = jwt_decode(token);
 
-    if (Date.now() > user.exp * 1000) {
-      this.setUser(null, null);
-      return;
+    if (this.isExpired(user)) {
+      return this.makeUser(null, null);
     }
 
-    this.setUser(user['urs-user-id'], token);
+    return this.makeUser(user['urs-user-id'], token);
   }
 
-  private setUser(id: string | null, token: string | null): void {
-    this.user$.next({ id, token });
+  private makeUser(id: string | null, token: string | null): models.UserAuth {
+    return { id, token };
+  }
+
+  private isExpired(userToken): boolean {
+    return Date.now() > userToken.exp * 1000;
   }
 
   private loadCookies() {

@@ -21,7 +21,10 @@ const initState: UserState = {
 export function userReducer(state = initState, action: UserActions): UserState {
   switch (action.type) {
     case UserActionType.SET_USER_AUTH: {
-      return state;
+      return {
+        ...state,
+        auth: action.payload
+      };
     }
 
     default: {

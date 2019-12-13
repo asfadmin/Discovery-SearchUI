@@ -2,10 +2,15 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 
 import { MatDialog } from '@angular/material/dialog';
 import { ClipboardService } from 'ngx-clipboard';
+import { take } from 'rxjs/operators';
 
-import { AuthService, AsfApiService, EnvironmentService, ScreenSizeService } from '@services';
+import { Store } from '@ngrx/store';
+import { AppState } from '@store';
+import * as userStore from '@store/user';
+
 import { PreferencesComponent } from './preferences/preferences.component';
-import { CMRProduct, Breakpoints } from '@models';
+import { AuthService, AsfApiService, EnvironmentService, ScreenSizeService } from '@services';
+import { CMRProduct, Breakpoints, UserAuth } from '@models';
 
 @Component({
   selector: 'app-nav-buttons',
@@ -18,6 +23,8 @@ export class NavButtonsComponent implements OnInit {
   public maturity = 'prod';
   private maturityKey = 'search-api-maturity';
 
+  public userAuth: UserAuth;
+  public isLoggedIn = false;
   public breakpoint$ = this.screenSize.breakpoint$;
   public breakpoints = Breakpoints;
 
@@ -32,6 +39,7 @@ export class NavButtonsComponent implements OnInit {
     public clipboard: ClipboardService,
     private screenSize: ScreenSizeService,
     private dialog: MatDialog,
+    private store$: Store<AppState>,
   ) {}
 
   ngOnInit() {
@@ -39,6 +47,14 @@ export class NavButtonsComponent implements OnInit {
       const maturity = localStorage.getItem(this.maturityKey);
       this.setMaturity(maturity || this.maturity);
     }
+
+    this.store$.select(userStore.getUserAuth).subscribe(
+      user => this.userAuth = user
+    );
+
+    this.store$.select(userStore.getIsUserLoggedIn).subscribe(
+      isLoggedIn => this.isLoggedIn = isLoggedIn
+    );
   }
 
   public onOpenDownloadQueue(): void {
@@ -46,11 +62,15 @@ export class NavButtonsComponent implements OnInit {
   }
 
   public onAccountButtonClicked() {
-    this.authService.login();
+    this.authService.login$().subscribe(
+      user => this.store$.dispatch(new userStore.SetUserAuth(user))
+    );
   }
 
   public onLogout(): void {
-    this.authService.logout();
+    this.authService.logout$().subscribe(
+      user => this.store$.dispatch(new userStore.SetUserAuth(user))
+    );
   }
 
   public onOpenPreferences(): void {
