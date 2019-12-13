@@ -8,6 +8,6 @@
       api: 'https://auth.asf.alaska.edu',
       urs: 'https://urs.earthdata.nasa.gov'
     },
-    devMode: false,
+    devMode: true,
   }
 })()
