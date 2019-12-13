@@ -48,6 +48,7 @@ export type DatasetSubtypes = DatasetSubtype[];
 
 export const datasets: Dataset[] = [
   fromDatasets.sentinel_1,
+  fromDatasets.sirc,
   fromDatasets.beta,
   fromDatasets.smap,
   fromDatasets.uavsar,
