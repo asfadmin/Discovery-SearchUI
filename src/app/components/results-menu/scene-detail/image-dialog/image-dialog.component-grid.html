@@ -1,7 +1,8 @@
 <div class="browse-dialog"
      *ngIf="breakpoint$ | async as breakpoint"
     >
-    <div *ngIf="scene$ | async as scene" fxLayout="row" class="dialog-header--layout">
+  <div fxLayout="row" class="dialog-header">
+    <div *ngIf="scene$ | async as scene" class="dialog-header--layout">
       <div fxFlex="35px" fxLayoutAlign="start"
             class="browse-drag-handle"
             cdkDrag
@@ -12,7 +13,7 @@
           <path d="M0 0h24v24H0z" fill="none"></path>
         </svg>
       </div>
-      <div fxFlex="auto">
+      <div fxFlex="">
         <h3 class="mp0">
           <span [ngClass]="{'mp0-ellipsis': breakpoint < breakpoints.SMALL}">{{ scene.name }}</span>
         </h3>
@@ -29,17 +30,16 @@
           </span>
         </span>
       </div>
-      <div fxFlex="35px" class="close-icon">
+      <div class="close-icon">
         <button (click)="closeDialog()" mat-icon-button>
           <mat-icon class="close-button">close</mat-icon>
         </button>
       </div>
     </div>
+  </div>
 
-  <div fxLayout="row"
-    [ngClass]="(breakpoint < breakpoints.SMALL) ? 'main-window-mobile' : 'main-window'">
-
-    <div class="thumbs" *ngIf="(browses$ | async).length > 1">
+  <div [ngClass]="(breakpoint < breakpoints.SMALL) ? 'main-window-mobile' : 'main-window'">
+    <div class="thumbs">
       <div *ngFor="let browse of (browses$ | async)"
            (click)="onNewBrowseSelected(scene, browse)"
            class="clickable">
@@ -47,95 +47,88 @@
       </div>
     </div>
 
-    <div fxFlex id="browse-map" fxFlex class="browse-map--size">
+    <div id="browse-map" class="browse-map--size" style="position: static;">
     </div>
 
     <div *ngIf="isImageLoading" color="accent" class="browse-map--overlay">
       <mat-spinner></mat-spinner>
     </div>
+  </div>
 
-    <ng-container *ngIf="breakpoint > breakpoints.MOBILE">
+  <ng-container *ngIf="breakpoint > breakpoints.MOBILE">
+    <app-browse-list class="browse-list"></app-browse-list>
 
-      <div *ngIf="!isShow" fxFlex="20" class="scene-detail-wrapper">
+    <div *ngIf="!isShow" class="scene-detail-wrapper">
 
-        <div class="scene-detail">
+    <div class="scene-detail">
 
-          <div class="detail-header">Scene Detail</div>
-          <app-scene-metadata></app-scene-metadata>
+      <div class="detail-header">Scene Detail</div>
+      <app-scene-metadata></app-scene-metadata>
 
-          <hr>
+      <hr>
 
-          <div class="detail-header">{{ products.length }} Files</div>
-          <mat-action-list dense class="file-list">
-            <button  *ngFor="let product of products"
-                     [matMenuTriggerFor]="action_menu" mat-list-item>
-              • {{ product.productTypeDisplay }}
-              <mat-menu #action_menu="matMenu" xPosition="before">
+      <div class="detail-header">{{ products.length }} Files</div>
+      <mat-action-list dense class="file-list">
+        <button  *ngFor="let product of products"
+                 [matMenuTriggerFor]="action_menu" mat-list-item>
+          • {{ product.productTypeDisplay }}
+          <mat-menu #action_menu="matMenu" xPosition="before">
 
-                <a mat-menu-item [href]="product.downloadUrl" target="_blank" matTooltip="Download file">
+            <a mat-menu-item [href]="product.downloadUrl" target="_blank" matTooltip="Download file">
             <span style="margin-right: 10px; margin-left: 10px;">
               <span *ngIf="product.bytes === 0">Virtual</span>
               <span *ngIf="product.bytes !== 0">{{product.bytes | readableSizeFromBytes }}</span>
             </span>
-                  <span>
+              <span>
               <mat-icon>cloud_download</mat-icon>
             </span>
-                </a>
+            </a>
 
-                <button (click)="onToggleQueueProduct(product)"
-                        matTooltip="{{ !queuedProductIds.has(product.id) ? 'Add file to queue' : 'Remove file from queue' }}"
-                        mat-menu-item>
+            <button (click)="onToggleQueueProduct(product)"
+                    matTooltip="{{ !queuedProductIds.has(product.id) ? 'Add file to queue' : 'Remove file from queue' }}"
+                    mat-menu-item>
             <span *ngIf="!queuedProductIds.has(product.id)">
               Add
               <mat-icon >add_shopping_cart</mat-icon>
             </span>
-                  <span *ngIf="queuedProductIds.has(product.id)">
+              <span *ngIf="queuedProductIds.has(product.id)">
               Remove
               <mat-icon >shopping_cart</mat-icon>
             </span>
-                </button>
-              </mat-menu>
             </button>
-          </mat-action-list>
+          </mat-menu>
+        </button>
+      </mat-action-list>
 
-        </div>
-      </div>
-    </ng-container>
-
-  </div>
-
-
-  <ng-container *ngIf="breakpoint > breakpoints.MOBILE">
-    <div fxLayout="row">
-      <app-browse-list fxFlex class="browse-list"></app-browse-list>
     </div>
+  </div>
   </ng-container>
 
-  <div *ngIf="breakpoint$ | async as breakpoint"
-       fxLayout="row"
-       fxLayoutAlign="end end"
-       class="bottom-row">
-
-    <div fxFlex>
-      <mat-checkbox
-        (change)="setOnlyShowBrowse($event.checked)"
-        [checked]="onlyShowScenesWithBrowse"
-        style="margin-right: 6px;" color="warn">
-      </mat-checkbox>
-      <span *ngIf="breakpoint > breakpoints.MOBILE">
-      Only display scenes with a browse image
-    </span>
-      <span *ngIf="breakpoint === breakpoints.MOBILE">
-      w/Browse Images
-    </span>
-    </div>
-    <div fxFlex="nogrow">
-      <button mat-stroked-button (click)="closeDialog()" autofocus tabindex="1">Close</button>
-    </div>
-
-  </div>
 
 </div>
 
+<div *ngIf="breakpoint$ | async as breakpoint"
+  fxLayout="row"
+  fxLayoutAlign="end end"
+  class="bottom-row">
+
+  <div fxFlex>
+    <mat-checkbox
+      (change)="setOnlyShowBrowse($event.checked)"
+      [checked]="onlyShowScenesWithBrowse"
+      style="margin-right: 6px;" color="warn">
+    </mat-checkbox>
+    <span *ngIf="breakpoint > breakpoints.MOBILE">
+      Only display scenes with a browse image
+    </span>
+    <span *ngIf="breakpoint === breakpoints.MOBILE">
+      w/Browse Images
+    </span>
+  </div>
+  <div fxFlex="nogrow">
+    <button mat-stroked-button (click)="closeDialog()" autofocus tabindex="1">Close</button>
+  </div>
+
+</div>
 
 
