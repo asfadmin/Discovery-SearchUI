@@ -200,7 +200,12 @@ ul {
 
   .mat-dialog-container {
     background-color: $asf-primary-light;
+    padding-bottom: 48px;
   }
+}
+
+.image-dialog-wide {
+  //width: 96%;
 }
 
 .file-list {
