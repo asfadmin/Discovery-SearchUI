@@ -9,7 +9,7 @@ export { BulkDownloadService } from './bulk-download.service';
 export { SearchParamsService } from './search-params.service';
 export { RangeService } from './range.service';
 export { PolygonValidationService } from './polygon-validation.service';
-export { DatapoolAuthService } from './datapool-auth.service';
+export { AuthService } from './auth.service';
 export { EnvironmentService } from './environment.service';
 export { PropertyService } from './property.service';
 export { LegacyAreaFormatService } from './legacy-area-format.service';

@@ -7,18 +7,18 @@ import { interval, Subject, Subscription, Observable } from 'rxjs';
 import { map, takeUntil, tap, delay, take, filter, switchMap } from 'rxjs/operators';
 
 import { EnvironmentService } from './environment.service';
+import * as jwt_decode from 'jwt-decode';
 
 @Injectable({
   providedIn: 'root'
 })
-export class DatapoolAuthService {
+export class AuthService {
   private authUrl = this.env.value.auth.api;
   private earthdataUrl = this.env.value.auth.urs;
 
   public isLoggedIn = false;
   public user = {
-    id: null,
-    accessToken: null
+    id: null
   };
 
   private loginProcess: Subscription;
@@ -35,7 +35,10 @@ export class DatapoolAuthService {
 
     const appRedirect = encodeURIComponent(localUrl);
 
-    const url = `${this.authUrl}/loginservice/in/${appRedirect}`;
+    const ursUrl = `https://urs.earthdata.nasa.gov/oauth/authorize`;
+    const redirect = `${this.authUrl}/login&state=${appRedirect}`;
+
+    const url = `${ursUrl}?response_type=code&client_id=BO_n7nTIlMljdvU6kRRB3g&redirect_uri=${redirect};`;
 
     const loginWindow = window.open(
       url,
@@ -76,23 +79,20 @@ export class DatapoolAuthService {
       });
   }
 
-  private loadUserData(): Observable<any> {
-    const profileUrl = `${this.earthdataUrl}/api/users/${this.user.id}`;
-    const headers = new HttpHeaders()
-      .append('Authorization', `Bearer ${this.user.accessToken}`);
-
-    return this.http.get(profileUrl, { headers });
-  }
-
   private checkLogin() {
     const cookies = this.loadCookies();
 
+    if (!cookies['asf-urs']) {
+      return;
+    }
+
+    const auth_cookie = jwt_decode(cookies['asf-urs']);
+
     this.user = {
-      id: cookies['urs-user-id'],
-      accessToken: cookies['urs-access-token']
+      id: auth_cookie['urs-user-id'],
     };
 
-    this.isLoggedIn = !!(this.user.id && this.user.accessToken);
+    this.isLoggedIn = !!this.user.id;
   }
 
   private loadCookies() {

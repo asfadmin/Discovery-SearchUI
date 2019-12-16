@@ -13,7 +13,7 @@ import * as searchStore from '@store/search';
 import * as uiStore from '@store/ui';
 
 import * as models from '@models';
-import { DatapoolAuthService, PropertyService, ScreenSizeService } from '@services';
+import { AuthService, PropertyService, ScreenSizeService } from '@services';
 import { ImageDialogComponent } from './image-dialog';
 
 import { DatasetForProductService } from '@services';
@@ -41,7 +41,7 @@ export class SceneDetailComponent implements OnInit, OnDestroy {
     private store$: Store<AppState>,
     private screenSize: ScreenSizeService,
     public dialog: MatDialog,
-    public authService: DatapoolAuthService,
+    public authService: AuthService,
     public prop: PropertyService,
     private datasetForProduct: DatasetForProductService
   ) {}
@@ -74,6 +74,41 @@ export class SceneDetailComponent implements OnInit, OnDestroy {
 
   public sceneHasBrowse() {
     return !this.scene.browses[0].includes('no-browse');
+  }
+
+  private datasetFor(granule: models.CMRProduct): models.Dataset {
+    const exact = (dataset, granuleDataset) => (
+      dataset.id.toLowerCase() === granuleDataset
+    );
+
+    const partial = (dataset, granuleDataset) => (
+      dataset.id.toLowerCase().includes(granuleDataset) ||
+      granuleDataset.includes(dataset.id.toLowerCase())
+    );
+
+    const subtype = (dataset, granuleDataset) => (
+      dataset.subtypes.length ?
+        dataset.subtypes.filter(st => st.apiValue.toLowerCase() === granuleDataset) : null
+    );
+
+    return (
+      this.getDatasetMatching(granule, exact) ||
+      this.getDatasetMatching(granule, partial) ||
+      this.getDatasetMatching(granule, subtype) ||
+      models.datasets[0]
+    );
+  }
+
+  private getDatasetMatching(
+    granule: models.CMRProduct,
+    comparator: (dataset: models.Dataset, granuleDataset: string) => boolean
+  ): models.Dataset {
+    return  models.datasets
+      .filter(dataset => {
+        const granuleDataset = granule.dataset.toLocaleLowerCase();
+
+        return comparator(dataset, granuleDataset);
+      })[0];
   }
 
   public onOpenImage(): void {
