@@ -40,9 +40,16 @@ export class AuthService {
       'scrollbars=yes, width=600, height= 600'
     );
 
+    const loginWindowClosed = new Subject();
+
     return interval(500).pipe(
+      takeUntil(loginWindowClosed),
       map(_ => {
         let user = null;
+
+        if (loginWindow.closed) {
+          loginWindowClosed.next();
+        }
 
         try {
           if (loginWindow.location.host === window.location.host) {

@@ -59,6 +59,12 @@ export class AppComponent implements OnInit, OnDestroy {
     this.loadProductQueue();
     this.loadMissions();
 
+    this.store$.select(userStore.getUserAuth).pipe(
+      filter(userAuth => !!userAuth.token)
+    ).subscribe(
+      userAuth => console.log(userAuth)
+    );
+
     const user = this.authService.getUser();
     if (user.id) {
       this.store$.dispatch(new userStore.SetUserAuth(user));
