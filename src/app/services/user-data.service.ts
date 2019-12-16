@@ -20,16 +20,16 @@ export class UserDataService {
     private http: HttpClient
   ) { }
 
-  public getAttribute$(userAuth: UserAuth, attribute: string): Observable<any> {
+  public getAttribute$<T>(userAuth: UserAuth, attribute: string): Observable<T> {
     const url =  this.makeEndpoint(this.baseUrl, userAuth.id, attribute);
     const headers = this.makeAuthHeader(userAuth.token);
 
-    return this.http.get(url, {
+    return this.http.get<T>(url, {
       headers
     });
   }
 
-  public setAttribute$(userAuth: UserAuth, attribute: string, value: any): Observable<any> {
+  public setAttribute$<T>(userAuth: UserAuth, attribute: string, value: T): Observable<any> {
     const url =  this.makeEndpoint(this.baseUrl, userAuth.id, attribute);
     const headers = this.makeAuthHeader(userAuth.token);
 
@@ -44,6 +44,6 @@ export class UserDataService {
 
   private makeAuthHeader(token: string): HttpHeaders {
     return new HttpHeaders().
-      append('Authorization', `Bearer ${token}`);
+      set('Authorization', `Bearer ${token}`);
   }
 }

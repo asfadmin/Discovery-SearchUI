@@ -49,7 +49,8 @@ export class AppComponent implements OnInit, OnDestroy {
     private searchParams$: services.SearchParamsService,
     private polygonValidationService: services.PolygonValidationService,
     private asfSearchApi: services.AsfApiService,
-    private authService: services.AuthService
+    private authService: services.AuthService,
+    private userDataService: services.UserDataService,
   ) {}
 
   public ngOnInit(): void {
@@ -60,9 +61,14 @@ export class AppComponent implements OnInit, OnDestroy {
     this.loadMissions();
 
     this.store$.select(userStore.getUserAuth).pipe(
-      filter(userAuth => !!userAuth.token)
-    ).subscribe(
-      userAuth => console.log(userAuth)
+      filter(userAuth => !!userAuth.token),
+      switchMap(userAuth =>
+        this.userDataService.getAttribute$<models.UserProfile | null>(userAuth, 'profile')
+      )
+    ).subscribe(profile =>
+      !profile || (profile['status'] === 'fail') ?
+        this.store$.dispatch(new userStore.SaveProfile()) :
+        this.store$.dispatch(new userStore.SetProfile(profile))
     );
 
     const user = this.authService.getUser();
@@ -150,7 +156,7 @@ export class AppComponent implements OnInit, OnDestroy {
 
           return of(-1);
         })
-        )
+      )
       ),
     );
 

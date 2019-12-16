@@ -18,3 +18,4 @@ export { ScreenSizeService } from './screen-size.service';
 export { BrowseMapService } from './browse-map.service';
 export { DatasetForProductService } from './dataset-for-product.service';
 export { KeyboardService } from './keyboard.service';
+export { UserDataService } from './user-data.service';
