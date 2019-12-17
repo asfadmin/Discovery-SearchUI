@@ -76,6 +76,41 @@ export class SceneDetailComponent implements OnInit, OnDestroy {
     return !this.scene.browses[0].includes('no-browse');
   }
 
+  private datasetFor(granule: models.CMRProduct): models.Dataset {
+    const exact = (dataset, granuleDataset) => (
+      dataset.id.toLowerCase() === granuleDataset
+    );
+
+    const partial = (dataset, granuleDataset) => (
+      dataset.id.toLowerCase().includes(granuleDataset) ||
+      granuleDataset.includes(dataset.id.toLowerCase())
+    );
+
+    const subtype = (dataset, granuleDataset) => (
+      dataset.subtypes.length ?
+        dataset.subtypes.filter(st => st.apiValue.toLowerCase() === granuleDataset) : null
+    );
+
+    return (
+      this.getDatasetMatching(granule, exact) ||
+      this.getDatasetMatching(granule, partial) ||
+      this.getDatasetMatching(granule, subtype) ||
+      models.datasets[0]
+    );
+  }
+
+  private getDatasetMatching(
+    granule: models.CMRProduct,
+    comparator: (dataset: models.Dataset, granuleDataset: string) => boolean
+  ): models.Dataset {
+    return  models.datasets
+      .filter(dataset => {
+        const granuleDataset = granule.dataset.toLocaleLowerCase();
+
+        return comparator(dataset, granuleDataset);
+      })[0];
+  }
+
   public onOpenImage(): void {
     if (!this.sceneHasBrowse()) {
       return;
@@ -84,8 +119,10 @@ export class SceneDetailComponent implements OnInit, OnDestroy {
     this.store$.dispatch(new uiStore.SetIsBrowseDialogOpen(true));
 
     const dialogRef = this.dialog.open(ImageDialogComponent, {
-      width: '99vw', height: 'fit-content',
-      maxHeight: '96vh', maxWidth: '100%',
+      width: '96%',
+      height: '96%',
+      // maxHeight: '96vh',
+      maxWidth: '96%%',
       panelClass: 'image-dialog'
     });
 

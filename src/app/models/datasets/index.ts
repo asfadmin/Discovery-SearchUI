@@ -8,3 +8,4 @@ export * from './sentinel-1';
 export * from './smap';
 export * from './uavsar';
 export * from './beta';
+export * from './sirc';

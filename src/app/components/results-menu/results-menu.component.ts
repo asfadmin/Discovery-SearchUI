@@ -59,7 +59,7 @@ export class ResultsMenuComponent implements OnInit {
   onResize( event ) {
     const resultDiv = document.getElementById('result-div');
 
-    if (!resultDiv && !resultDiv.style) {
+    if (!resultDiv || !resultDiv.style) {
       return;
     }
 

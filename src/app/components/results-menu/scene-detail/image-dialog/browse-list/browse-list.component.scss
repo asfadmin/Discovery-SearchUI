@@ -6,6 +6,7 @@
 .browse-list-viewport .cdk-virtual-scroll-content-wrapper {
   display: flex;
   flex-direction: row;
+  overflow-y: hidden !important;
 }
 
 .browse-list {

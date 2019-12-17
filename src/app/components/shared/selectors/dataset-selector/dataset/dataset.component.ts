@@ -25,7 +25,9 @@ export class DatasetComponent {
     const startYear = start.getFullYear();
     const endYear = (!end) ? 'Present' : end.getFullYear();
 
-    return `${startYear} to ${endYear}`;
+    return startYear === endYear ?
+      `${startYear}` :
+      `${startYear} to ${endYear}`;
   }
 
   public onInfoClicked(e: Event): void {
