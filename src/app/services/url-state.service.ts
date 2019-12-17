@@ -265,7 +265,8 @@ export class UrlStateService {
     }, {
       name: 'center',
       source: this.mapService.center$.pipe(
-        map(center => ({ center: `${center.lon},${center.lat}` }))
+        map(({ lon, lat }) => ({ lon: this.with7Decimals(lon), lat: this.with7Decimals(lat) })),
+        map(({ lon, lat }) => ({ center: `${lon},${lat}` }))
       ),
       loader: this.loadMapCenter
     }, {
@@ -555,4 +556,7 @@ export class UrlStateService {
   private clamp = (value: number, min: number, max: number) =>
     Math.min(Math.max(value, min), max)
 
+  private with6Decimals(num: number) {
+    return num.toString().match(/^-?\d+(?:\.\d{0,6})?/)[0];
+  }
 }
