@@ -29,6 +29,7 @@ import { PropertyService } from './property.service';
 export class UrlStateService {
   private urlParams: models.UrlParameter[];
   private params = {};
+  private dataset: string;
   private isNotLoaded = true;
   private shouldDoSearch = false;
 
@@ -42,6 +43,7 @@ export class UrlStateService {
     private prop: PropertyService,
   ) {
     this.urlParams = [
+      ...this.datasetParam(),
       ...this.mapParameters(),
       ...this.uiParameters(),
       ...this.filtersParameters(),
@@ -100,6 +102,20 @@ export class UrlStateService {
     }
   }
 
+  private datasetParam() {
+    return [{
+      name: 'dataset',
+      source: this.store$.select(filterStore.getSelectedDatasetId).pipe(
+        tap(selected => {
+          console.log(selected);
+          this.dataset = selected;
+        }),
+        map(selected => ({ dataset: selected }))
+      ),
+      loader: this.loadSelectedDataset
+    }];
+  }
+
   private missionParameters() {
     return [{
       name: 'mission',
@@ -146,17 +162,9 @@ export class UrlStateService {
 
   private filtersParameters() {
     return [{
-      name: 'dataset',
-      source: this.store$.select(filterStore.getSelectedDatasetId).pipe(
-        map(selected => ({ dataset: selected }))
-      ),
-      loader: this.loadSelectedDataset
-    }, {
       name: 'subtypes',
       source: this.store$.select(filterStore.getSubtypes).pipe(
         map(types => types.map(subtype => subtype.apiValue).join(',')),
-        withLatestFrom(this.store$.select(filterStore.getSelectedDatasetId)),
-        map(([types, dataset]) => `${dataset}$$${types}`),
         map(param => ({ subtypes: param }))
       ),
       loader: this.loadSubtypes
@@ -214,8 +222,6 @@ export class UrlStateService {
       name: 'productTypes',
       source: this.store$.select(filterStore.getProductTypes).pipe(
         map(types => types.map(key => key.apiValue).join(',')),
-        withLatestFrom(this.store$.select(filterStore.getSelectedDatasetId)),
-        map(([types, dataset]) => `${dataset}$$${types}`),
         map(param => ({ productTypes: param }))
       ),
       loader: this.loadProductTypes
@@ -223,8 +229,6 @@ export class UrlStateService {
       name: 'beamModes',
       source: this.store$.select(filterStore.getBeamModes).pipe(
         map(modes => modes.join(',')),
-        withLatestFrom(this.store$.select(filterStore.getSelectedDatasetId)),
-        map(([modes, dataset]) => `${dataset}$$${modes}`),
         map(param => ({ beamModes: param }))
       ),
       loader: this.loadBeamModes
@@ -232,8 +236,6 @@ export class UrlStateService {
       name: 'polarizations',
       source: this.store$.select(filterStore.getPolarizations).pipe(
         map(pols => pols.join(',')),
-        withLatestFrom(this.store$.select(filterStore.getSelectedDatasetId)),
-        map(([pols, dataset]) => `${dataset}$$${pols}`),
         map(param => ({ polarizations: param }))
       ),
       loader: this.loadPolarizations
@@ -332,7 +334,6 @@ export class UrlStateService {
   }
 
   private loadSelectedDataset = (datasetStr: string): void => {
-
     const datasetIds = models.datasets.map(dataset => dataset.id);
 
     if (!datasetIds.includes(datasetStr)) {
@@ -461,7 +462,10 @@ export class UrlStateService {
   }
 
   private loadProperties(loadStr: string, datasetPropertyKey: string, keyFunc = v => v): any[] {
-    const [datasetName, possibleValuesStr] = loadStr.split('$$');
+    const [datasetName, possibleValuesStr] = this.hasDatasetId(loadStr) ?
+      this.oldFormat(loadStr) :
+      this.shortFormat(loadStr);
+
     const possibleTypes = (possibleValuesStr || '').split(',');
 
     const dataset = models.datasets
@@ -480,6 +484,18 @@ export class UrlStateService {
       );
 
     return Array.from(validValuesFromUrl);
+  }
+
+  private hasDatasetId(loadStr: string): boolean {
+    return loadStr.split('$$').length === 2;
+  }
+
+  private oldFormat(loadStr: string) {
+    return loadStr.split('$$');
+  }
+
+  private shortFormat(loadStr: string) {
+    return [this.dataset, loadStr];
   }
 
   private loadFlightDirections = (dirsStr: string): void => {
