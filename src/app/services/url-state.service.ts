@@ -112,10 +112,7 @@ export class UrlStateService {
     return [{
       name: 'dataset',
       source: this.store$.select(filterStore.getSelectedDatasetId).pipe(
-        tap(selected => {
-          console.log(selected);
-          this.dataset = selected;
-        }),
+        tap(selected => this.dataset = selected),
         map(selected => ({ dataset: selected }))
       ),
       loader: this.loadSelectedDataset
