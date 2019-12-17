@@ -74,7 +74,13 @@ export class UrlStateService {
   }
 
   private updateRouteWithParams = (queryParams: Params): void => {
-    this.params = {...this.params, ...queryParams};
+    const params = {...this.params, ...queryParams};
+
+    const paramsWithValues = Object.keys(params)
+      .filter(key => params[key] !== '')
+      .reduce((res, key) => (res[key] = params[key], res), {} );
+
+    this.params = paramsWithValues;
 
     this.router.navigate(['.'], {
       queryParams: this.params,
