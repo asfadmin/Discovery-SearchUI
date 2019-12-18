@@ -219,13 +219,13 @@ export class UrlStateService {
     }, {
       name: 'start',
       source: this.store$.select(filterStore.getStartDate).pipe(
-        map(start => ({ start: moment.utc( start ).format() }))
+        map(start => ({ start: start === null ? '' : moment.utc( start ).format() }))
       ),
       loader: this.loadStartDate
     }, {
       name: 'end',
       source: this.store$.select(filterStore.getEndDate).pipe(
-        map(end => ({ end: moment.utc( end ).format() }))
+        map(end => ({ end: end === null ? '' : moment.utc( end ).format() }))
       ),
       loader: this.loadEndDate
     }, {
