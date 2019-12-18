@@ -2,7 +2,7 @@
      *ngIf="breakpoint$ | async as breakpoint"
     >
     <div *ngIf="scene$ | async as scene" fxLayout="row" class="dialog-header--layout">
-      <div fxFlex="35px" fxLayoutAlign="start"
+      <div *ngIf="breakpoint > breakpoints.MOBILE" fxFlex="35px" fxLayoutAlign="start"
             class="browse-drag-handle"
             cdkDrag
             cdkDragRootElement=".cdk-overlay-pane"
@@ -14,7 +14,10 @@
       </div>
       <div fxFlex="auto">
         <h3 class="mp0">
-          <span [ngClass]="{'mp0-ellipsis': breakpoint < breakpoints.SMALL}">{{ scene.name }}</span>
+          <span [ngClass]="{'mp0-ellipsis-mobile': breakpoint <= breakpoints.SMALL,
+                            'mp0-ellipsis': breakpoint > breakpoints.SMALL}">
+            {{ scene.name }}
+          </span>
         </h3>
         <span class="faint-text">
           <a *ngIf="dataset" [href]="dataset.infoUrl"

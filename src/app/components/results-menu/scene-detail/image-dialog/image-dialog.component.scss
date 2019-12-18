@@ -7,8 +7,16 @@ $config: mat-typography-config();
   padding: 0;
 }
 
+.mp0-ellipsis-mobile {
+  width: 250px;
+  display: inline-block;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
 .mp0-ellipsis {
-  width: 500px;
+  width: 800px;
   display: inline-block;
   overflow: hidden;
   white-space: nowrap;
@@ -20,51 +28,31 @@ a {
   color: $uaf-primary-blue;
 }
 
-// Grid created at https://cssgrid-generator.netlify.com/
 .browse-dialog {
   font-family: mat-font-family($config);
-  //max-height: 100%;
-  //max-width: 100%;
-  //position: relative;
-  //align-content: stretch;
-  //justify-content: stretch;
-  //display: grid;
-  //grid-template-columns: minmax(0, 1fr) 12.5em;
-  //grid-template-rows: 3.75em minmax(0, 1fr) 14.375em;
-  ////grid-template-columns: minmax(0, 1fr) 200px;
-  ////grid-template-rows: 60px minmax(0, 1fr) 230px;
-  //grid-column-gap: 0;
-  //grid-row-gap: 0;
   background-color: $asf-primary-light;
   height: 100%;
-  //overflow: hidden;
-  //text-overflow: ellipsis;
 
   :focus {
     outline: none;
   }
 
   .dialog-header {
-    //grid-area: 1 / 1 / 2 / 3;
     min-height: 60px;
   }
 
   .main-window {
-    //grid-area: 2 / 1 / 3 / 2;
     position: relative;
     height: calc(100% - 330px);
   }
 
   .main-window-mobile {
-    //grid-area: 2 / 1 / 4 / 3;
     position: relative;
-    height: 73vh;
+    height: 50vh;
   }
 
   .browse-list {
-    //grid-area: 3 / 1 / 4 / 3;
     min-height: 245px;
-    //width: 100%;
     border-top-color: $asf-primary-dark;
     border-top-style: solid;
     border-top-width: 1px;
@@ -72,7 +60,6 @@ a {
   }
 
   .scene-detail-wrapper {
-    //grid-area: 2 / 2 / 3 / 3;
     min-width: 200px;
     border-left-color: $asf-primary-dark;
     border-left-style: solid;
@@ -87,12 +74,7 @@ a {
 }
 
 .dialog-header--layout {
-  //display: flex;
-  //justify-content: space-between;
-  //align-items: center;
-  //width: 100%;
   color: $asf-primary-dark;
-  //background-color: $asf-primary-light;
   border-bottom-color: $asf-primary-dark;
   border-bottom-style: solid;
   border-bottom-width: 1px;
@@ -103,7 +85,6 @@ a {
   max-width: 100%;
   max-height: 100%;
   background-color: $asf-primary-light;
-  //position: relative;
   overflow: hidden;
 }
 
@@ -128,9 +109,6 @@ a {
 }
 
 .browse-drag-handle {
-  //position: absolute;
-  //top: 10px;
-  //left: 10px;
   color: $asf-primary;
   cursor: move;
   height: 24px;
@@ -147,10 +125,6 @@ a {
   button {
     height: 25px;
   }
-
-  //button:before {
-  //  content: "• ";
-  //}
 }
 
 .detail-header {
@@ -167,7 +141,6 @@ a {
 }
 
 .close-icon {
-  //position: absolute;
   right: 0;
 }
 
