@@ -5,6 +5,7 @@ import { MatBadgeModule } from '@angular/material/badge';
 import { MatInputModule } from '@angular/material/input';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatSharedModule } from '@shared';
+import { MatDialogModule } from '@angular/material/dialog';
 
 import { NavButtonsComponent } from './nav-buttons.component';
 import { PreferencesComponent } from './preferences/preferences.component';
@@ -16,6 +17,7 @@ import { PreferencesComponent } from './preferences/preferences.component';
     MatBadgeModule,
     MatMenuModule,
     MatInputModule,
+    MatDialogModule,
     MatSharedModule,
   ],
   exports: [ NavButtonsComponent ],

@@ -1,1 +1,33 @@
-<p>preferences work!</p>
+<mat-dialog-content>
+  <div style="display: flex; flex-direction: row; justify-content: space-between; margin-bottom: 15px;">
+    <div class="dialog-header" mat-dialog-title>Profile Preferences</div>
+    <div>
+      <mat-icon (click)="onClose()" class="clickable">
+        close
+      </mat-icon>
+    </div>
+  </div>
+
+  <div style="margin-bottom: 10px;">
+    Set your search preferences
+  </div>
+
+  <div class="display: flex;">
+    <div>
+      Dataset
+    </div>
+    <div>
+      Search Amount
+    </div>
+    <div>
+      Layer Type
+    </div>
+  </div>
+
+</mat-dialog-content>
+
+<mat-dialog-actions style="margin-top: 15px;">
+  <button color="primary" mat-flat-button>
+    Done
+  </button>
+</mat-dialog-actions>
