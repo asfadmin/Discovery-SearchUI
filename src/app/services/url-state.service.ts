@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Router, ActivatedRoute, Params } from '@angular/router';
 
-import { Store } from '@ngrx/store';
+import { Store, Action } from '@ngrx/store';
 import * as moment from 'moment';
 
 import { combineLatest } from 'rxjs';
@@ -79,6 +79,7 @@ export class UrlStateService {
 
     this.urlParamNames.forEach(
       paramName => this.urlParams[paramName].source.pipe(
+        skip(paramName === 'dataset' ? 0 : 1),
         debounceTime(300)
       ).subscribe(
         this.updateRouteWithParams
@@ -103,7 +104,7 @@ export class UrlStateService {
   private loadStateFrom(params: Params): void {
     this.params = { ...this.params, ...params };
 
-    const urlParamLoaders: { [id: string]: (string) => void } = this.urlParamNames.reduce(
+    const urlParamLoaders: { [id: string]: (string) => Action | Action[] | undefined } = this.urlParamNames.reduce(
       (loaders, paramName) => {
         const param = this.urlParams[paramName];
         loaders[param.name] = param.loader;
@@ -117,7 +118,24 @@ export class UrlStateService {
       ([paramName, load]) => {
         this.loadLocations[paramName] = models.LoadTypes.URL;
 
-        return params[paramName] && load(params[paramName]);
+        if (!params[paramName]) {
+          return;
+        }
+
+        const actions = load(params[paramName]);
+
+        if (actions === undefined) {
+          return;
+        }
+
+        if (Array.isArray(actions)) {
+          actions.forEach(
+            action => this.store$.dispatch(action)
+          );
+        } else {
+          this.store$.dispatch(actions);
+        }
+
       }
     );
 
@@ -141,7 +159,7 @@ export class UrlStateService {
     this.store$.dispatch(action);
   }
 
-  private datasetParam() {
+  private datasetParam(): models.UrlParameter[] {
     return [{
       name: 'dataset',
       source: this.store$.select(filterStore.getSelectedDatasetId).pipe(
@@ -152,7 +170,7 @@ export class UrlStateService {
     }];
   }
 
-  private missionParameters() {
+  private missionParameters(): models.UrlParameter[] {
     return [{
       name: 'mission',
       source: this.store$.select(filterStore.getSelectedMission).pipe(
@@ -162,7 +180,7 @@ export class UrlStateService {
     }];
   }
 
-  private uiParameters() {
+  private uiParameters(): models.UrlParameter[] {
     return [{
       name: 'resultsLoaded',
       source: this.store$.select(scenesStore.getAreResultsLoaded).pipe(
@@ -184,7 +202,7 @@ export class UrlStateService {
     }];
   }
 
-  private filtersParameters() {
+  private filtersParameters(): models.UrlParameter[] {
     return [{
       name: 'subtypes',
       source: this.store$.select(filterStore.getSubtypes).pipe(
@@ -273,7 +291,7 @@ export class UrlStateService {
     }];
   }
 
-  private mapParameters() {
+  private mapParameters(): models.UrlParameter[] {
     return [{
       name: 'view',
       source: this.store$.select(mapStore.getMapView).pipe(
@@ -308,39 +326,41 @@ export class UrlStateService {
     }];
   }
 
-  private loadSearchType = (searchType: string): void => {
-    if (Object.values(models.SearchType).includes(searchType)) {
-
-      const action = new SetSearchType(<models.SearchType>searchType);
-      this.store$.dispatch(action);
+  private loadSearchType = (searchType: string): Action | undefined => {
+    if (!Object.values(models.SearchType).includes(searchType)) {
+      return;
     }
+
+    return new SetSearchType(<models.SearchType>searchType);
   }
 
-  private loadMapDrawMode = (mode: string): void => {
-    if (Object.values(models.MapDrawModeType).includes(mode)) {
-      const action = new mapStore.SetMapDrawMode(<models.MapDrawModeType>mode);
-
-      this.store$.dispatch(action);
+  private loadMapDrawMode = (mode: string): Action | undefined => {
+    if (!Object.values(models.MapDrawModeType).includes(mode)) {
+      return;
     }
+
+    return new mapStore.SetMapDrawMode(<models.MapDrawModeType>mode);
   }
 
-  private loadMapView = (view: string): void => {
-    if (Object.values(models.MapViewType).includes(view)) {
-      const action = new mapStore.SetMapView(<models.MapViewType>view);
-
-      this.store$.dispatch(action);
+  private loadMapView = (view: string): Action | undefined => {
+    if (!Object.values(models.MapViewType).includes(view)) {
+      return;
     }
+
+    return new mapStore.SetMapView(<models.MapViewType>view);
   }
 
-  private loadMapZoom = (zoomStr: string): void => {
+  private loadMapZoom = (zoomStr: string): undefined => {
     const zoom = +zoomStr;
 
     if (this.isNumber(zoom)) {
       this.mapService.setZoom(zoom);
     }
+
+    return;
   }
 
-  private loadMapCenter = (centerStr: string): void => {
+  private loadMapCenter = (centerStr: string): undefined => {
     const center = centerStr.split(',').map(v => +v);
 
     if (center.length === 2 && center.every(this.isNumber)) {
@@ -348,89 +368,96 @@ export class UrlStateService {
 
       this.mapService.setCenter({ lon, lat });
     }
+
+    return;
   }
 
-  private loadSelectedDataset = (datasetStr: string): void => {
+  private loadSelectedDataset = (datasetStr: string): Action | undefined => {
     const datasetIds = models.datasets.map(dataset => dataset.id);
 
     if (!datasetIds.includes(datasetStr)) {
       return;
     }
 
-    const action = new filterStore.SetSelectedDataset(datasetStr);
-    this.store$.dispatch(action);
+    return new filterStore.SetSelectedDataset(datasetStr);
   }
 
-  private loadSearchPolygon = (polygon: string): void => {
+  private loadSearchPolygon = (polygon: string): undefined => {
     const features = this.wktService.wktToFeature(
       polygon,
       this.mapService.epsg()
     );
 
     this.mapService.setDrawFeature(features);
+
+    return;
   }
 
-  private loadStartDate = (start: string): void => {
+  private loadStartDate = (start: string): Action | undefined => {
     const startDate = new Date(start);
 
     if (!this.isValidDate(startDate)) {
       return;
     }
 
-    this.store$.dispatch(new filterStore.SetStartDate(startDate));
+    return new filterStore.SetStartDate(startDate);
   }
 
-  private loadEndDate = (end: string): void => {
+  private loadEndDate = (end: string): Action => {
     const endDate = new Date(end);
 
     if (!this.isValidDate(endDate)) {
       return;
     }
 
-    this.store$.dispatch(new filterStore.SetEndDate(endDate));
+    return new filterStore.SetEndDate(endDate);
   }
 
-  private loadSeasonStart = (start: string): void => {
-    this.store$.dispatch(new filterStore.SetSeasonStart(+start));
+  private loadSeasonStart = (start: string): Action => {
+    return new filterStore.SetSeasonStart(+start);
   }
 
-  private loadSeasonEnd = (end: string): void => {
-    this.store$.dispatch(new filterStore.SetSeasonEnd(+end));
+  private loadSeasonEnd = (end: string): Action => {
+    return new filterStore.SetSeasonEnd(+end);
   }
 
-  private loadPathRange = (rangeStr: string): void => {
+  private loadPathRange = (rangeStr: string): Action[] => {
     const range = rangeStr
       .split('-')
       .map(v => +v);
 
-    this.store$.dispatch(new filterStore.SetPathStart(range[0] || null));
-    this.store$.dispatch(new filterStore.SetPathEnd(range[1] || null));
+    return [
+      new filterStore.SetPathStart(range[0] || null),
+      new filterStore.SetPathEnd(range[1] || null)
+    ];
   }
 
-  private loadFrameRange = (rangeStr: string): void => {
+  private loadFrameRange = (rangeStr: string): Action[] => {
     const range = rangeStr
       .split('-')
       .map(v => +v);
 
-    this.store$.dispatch(new filterStore.SetFrameStart(range[0] || null));
-    this.store$.dispatch(new filterStore.SetFrameEnd(range[1] || null));
+    return [
+      new filterStore.SetFrameStart(range[0] || null),
+      new filterStore.SetFrameEnd(range[1] || null)
+    ];
   }
 
-  private loadSearchList = (listStr: string): void => {
+  private loadSearchList = (listStr: string): Action => {
     const list = listStr.split(',');
 
-    this.store$.dispatch(new filterStore.SetSearchList(list));
+    return new filterStore.SetSearchList(list);
   }
 
-  private loadListSearchType = (mode: string): void => {
-    if (Object.values(models.ListSearchType).includes(mode)) {
-      const action = new filterStore.SetListSearchType(<models.ListSearchType>mode);
-
-      this.store$.dispatch(action);
+  private loadListSearchType = (mode: string): Action | undefined => {
+    if (!Object.values(models.ListSearchType).includes(mode)) {
+      return;
     }
+
+    return new filterStore.SetListSearchType(<models.ListSearchType>mode);
   }
 
-  private loadProductTypes = (typesStr: string): void => {
+  private loadProductTypes = (typesStr: string): Action | undefined => {
     const productTypes = this.loadProperties(
       typesStr,
       'productTypes',
@@ -441,41 +468,37 @@ export class UrlStateService {
       return;
     }
 
-    const action = new filterStore.SetProductTypes(productTypes);
-    this.store$.dispatch(action);
+    return new filterStore.SetProductTypes(productTypes);
   }
 
-  private loadBeamModes = (modesStr: string): void => {
+  private loadBeamModes = (modesStr: string): Action | undefined => {
     const beamModes = this.loadProperties(modesStr, 'beamModes');
 
     if (!beamModes) {
       return;
     }
 
-    const action = new filterStore.SetBeamModes(beamModes);
-    this.store$.dispatch(action);
+    return new filterStore.SetBeamModes(beamModes);
   }
 
-  private loadPolarizations = (polarizationsStr: string): void => {
+  private loadPolarizations = (polarizationsStr: string): Action | undefined => {
     const polarizations = this.loadProperties(polarizationsStr, 'polarizations');
 
     if (!polarizations) {
       return;
     }
 
-    const action = new filterStore.SetPolarizations(polarizations);
-    this.store$.dispatch(action);
+    return new filterStore.SetPolarizations(polarizations);
   }
 
-  private loadSubtypes = (subtypesStr: string): void => {
+  private loadSubtypes = (subtypesStr: string): Action | undefined => {
     const subtypes = this.loadProperties(subtypesStr, 'subtypes', v => v.apiValue);
 
     if (!subtypes) {
       return;
     }
 
-    const action = new filterStore.SetSubtypes(subtypes);
-    this.store$.dispatch(action);
+    return new filterStore.SetSubtypes(subtypes);
   }
 
   private loadProperties(loadStr: string, datasetPropertyKey: string, keyFunc = v => v): any[] {
@@ -515,35 +538,34 @@ export class UrlStateService {
     return [this.dataset, loadStr];
   }
 
-  private loadFlightDirections = (dirsStr: string): void => {
+  private loadFlightDirections = (dirsStr: string): Action => {
     const directions: models.FlightDirection[] = dirsStr
       .split(',')
       .filter(direction => !Object.values(models.FlightDirection).includes(direction))
       .map(direction => <models.FlightDirection>direction);
 
-    const action = new filterStore.SetFlightDirections(directions);
-
-    this.store$.dispatch(action);
+    return new filterStore.SetFlightDirections(directions);
   }
 
-  private loadSelectedMission = (mission: string): void => {
-    this.store$.dispatch(new filterStore.SelectMission(mission));
+  private loadSelectedMission = (mission: string): Action => {
+    return new filterStore.SelectMission(mission);
   }
 
-  private loadAreResultsLoaded = (areLoaded: string): void => {
-    this.store$.dispatch(new scenesStore.SetResultsLoaded(areLoaded === 'true'));
+  private loadAreResultsLoaded = (areLoaded: string): Action => {
+    return new scenesStore.SetResultsLoaded(areLoaded === 'true');
   }
 
-  private loadSelectedScene = (sceneId: string): void => {
-    this.store$.dispatch(new scenesStore.SetSelectedScene(sceneId));
+  private loadSelectedScene = (sceneId: string): Action => {
+    return new scenesStore.SetSelectedScene(sceneId);
   }
 
-  private loadMaxResults = (maxResults: string): void => {
+  private loadMaxResults = (maxResults: string): Action | undefined => {
     const results: number = +maxResults;
 
     if (this.isNumber(results)) {
       const clampedResults = this.clamp(results, 1, 5000);
-      this.store$.dispatch(new filterStore.SetMaxResults(clampedResults));
+
+      return new filterStore.SetMaxResults(clampedResults);
     }
   }
 
