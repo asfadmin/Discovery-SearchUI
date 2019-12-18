@@ -79,7 +79,6 @@ export class UrlStateService {
 
     this.urlParamNames.forEach(
       paramName => this.urlParams[paramName].source.pipe(
-        skip(1),
         debounceTime(300)
       ).subscribe(
         this.updateRouteWithParams
@@ -165,12 +164,6 @@ export class UrlStateService {
 
   private uiParameters() {
     return [{
-      name: 'selectedFilter',
-      source: this.store$.select(uiStore.getSelectedFilter).pipe(
-        map(selectedFilter => ({ selectedFilter }))
-      ),
-      loader: this.loadSelectedFilter
-    }, {
       name: 'resultsLoaded',
       source: this.store$.select(scenesStore.getAreResultsLoaded).pipe(
         map(resultsLoaded => ({ resultsLoaded }))
@@ -188,12 +181,6 @@ export class UrlStateService {
         map(scene => ({ granule: !!scene ? scene.id : null }))
       ),
       loader: this.loadSelectedScene
-    }, {
-      name: 'uiView',
-      source: this.store$.select(uiStore.getUiView).pipe(
-        map(uiView => ({ uiView }))
-      ),
-      loader: this.loadUiView
     }];
   }
 
@@ -319,14 +306,6 @@ export class UrlStateService {
       ),
       loader: this.loadSearchList
     }];
-  }
-
-  private loadSelectedFilter = (selected: string): void => {
-    if (Object.values(models.FilterType).includes(selected)) {
-
-      const action = new uiStore.SetSelectedFilter(<models.FilterType>selected);
-      this.store$.dispatch(action);
-    }
   }
 
   private loadSearchType = (searchType: string): void => {
@@ -545,14 +524,6 @@ export class UrlStateService {
     const action = new filterStore.SetFlightDirections(directions);
 
     this.store$.dispatch(action);
-  }
-
-  private loadUiView = (viewType: string): void => {
-    if (Object.values(models.ViewType).includes(viewType)) {
-      const action = new uiStore.SetUiView(<models.ViewType>viewType);
-
-      this.store$.dispatch(action);
-    }
   }
 
   private loadSelectedMission = (mission: string): void => {

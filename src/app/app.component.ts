@@ -29,7 +29,6 @@ export class AppComponent implements OnInit, OnDestroy {
   private queueStateKey = 'asf-queue-state';
 
   public shouldOmitSearchPolygon$ = this.store$.select(filterStore.getShouldOmitSearchPolygon);
-  public uiView$ = this.store$.select(uiStore.getUiView);
   public isLoading$ = this.store$.select(searchStore.getIsLoading);
 
   public queuedProducts$ = this.store$.select(queueStore.getQueuedProducts).pipe(

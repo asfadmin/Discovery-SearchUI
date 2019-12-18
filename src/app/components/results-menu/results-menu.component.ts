@@ -39,7 +39,6 @@ export class ResultsMenuComponent implements OnInit {
     map(scenes => scenes.length === 0)
   );
 
-  public isHidden$ = this.store$.select(uiStore.getIsHidden);
   public resize$ = new Subject<void>();
 
   public breakpoint$ = this.screenSize.breakpoint$;
