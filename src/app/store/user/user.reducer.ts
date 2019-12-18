@@ -16,7 +16,7 @@ const initState: UserState = {
     token: null
   },
   profile: {
-    defaultDataset: 'Sentinel-1',
+    defaultDataset: 'ALOS',
     view: models.MapLayerTypes.SATELLITE,
     maxResults: 250
   }

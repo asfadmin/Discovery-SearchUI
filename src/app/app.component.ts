@@ -60,21 +60,31 @@ export class AppComponent implements OnInit, OnDestroy {
     this.loadProductQueue();
     this.loadMissions();
 
-    this.store$.select(userStore.getUserAuth).pipe(
-      filter(userAuth => !!userAuth.token),
-      switchMap(userAuth =>
-        this.userDataService.getAttribute$<models.UserProfile | null>(userAuth, 'profile')
+    this.subs.add(
+      this.store$.select(userStore.getUserAuth).pipe(
+        filter(userAuth => !!userAuth.token),
+        switchMap(userAuth =>
+          this.userDataService.getAttribute$<models.UserProfile | null>(userAuth, 'profile')
+        )
+      ).subscribe(profile =>
+        !profile || (profile['status'] === 'fail') ?
+          this.store$.dispatch(new userStore.SaveProfile()) :
+          this.store$.dispatch(new userStore.SetProfile(profile))
       )
-    ).subscribe(profile =>
-      !profile || (profile['status'] === 'fail') ?
-        this.store$.dispatch(new userStore.SaveProfile()) :
-        this.store$.dispatch(new userStore.SetProfile(profile))
+    );
+
+    this.subs.add(
+      this.store$.select(userStore.getUserProfile).subscribe(
+        (profile) => {
+          this.urlStateService.setDefaults(profile);
+        })
     );
 
     const user = this.authService.getUser();
     if (user.id) {
       this.store$.dispatch(new userStore.SetUserAuth(user));
     }
+
 
     this.subs.add(
       this.actions$.pipe(

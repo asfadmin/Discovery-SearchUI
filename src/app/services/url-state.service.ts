@@ -27,7 +27,9 @@ import { PropertyService } from './property.service';
   providedIn: 'root'
 })
 export class UrlStateService {
-  private urlParams: models.UrlParameter[];
+  private urlParamNames: string[];
+  private urlParams: {[id: string]: models.UrlParameter};
+  private loadLocations: {[paramName: string]: models.LoadTypes};
   private params = {};
   private dataset: string;
   private isNotLoaded = true;
@@ -42,13 +44,25 @@ export class UrlStateService {
     private router: Router,
     private prop: PropertyService,
   ) {
-    this.urlParams = [
+    const params = [
       ...this.datasetParam(),
       ...this.mapParameters(),
       ...this.uiParameters(),
       ...this.filtersParameters(),
       ...this.missionParameters(),
     ];
+
+    this.urlParamNames = params.map(param => param.name);
+    this.loadLocations = this.urlParamNames.reduce((locations, paramName) => {
+      locations[paramName] = models.LoadTypes.DEFAULT;
+
+      return locations;
+    }, {});
+    this.urlParams = params.reduce((res, param) => {
+      res[param.name] = param;
+
+      return res;
+    }, {});
 
     this.updateShouldSearch();
   }
@@ -63,8 +77,8 @@ export class UrlStateService {
         this.loadStateFrom(params);
     });
 
-    this.urlParams.forEach(
-      param => param.source.pipe(
+    this.urlParamNames.forEach(
+      paramName => this.urlParams[paramName].source.pipe(
         skip(1),
         debounceTime(300)
       ).subscribe(
@@ -78,7 +92,7 @@ export class UrlStateService {
 
     const paramsWithValues = Object.keys(params)
       .filter(key => params[key] !== '')
-      .reduce((res, key) => (res[key] = params[key], res), {} );
+      .reduce((res, key) => (res[key] = params[key], res), {});
 
     this.params = paramsWithValues;
 
@@ -90,8 +104,9 @@ export class UrlStateService {
   private loadStateFrom(params: Params): void {
     this.params = { ...this.params, ...params };
 
-    const urlParamLoaders: { [id: string]: (string) => void } = this.urlParams.reduce(
-      (loaders, param) => {
+    const urlParamLoaders: { [id: string]: (string) => void } = this.urlParamNames.reduce(
+      (loaders, paramName) => {
+        const param = this.urlParams[paramName];
         loaders[param.name] = param.loader;
 
         return loaders;
@@ -100,12 +115,31 @@ export class UrlStateService {
     );
 
     Object.entries(urlParamLoaders).forEach(
-      ([paramName, load]) => params[paramName] && load(params[paramName])
+      ([paramName, load]) => {
+        this.loadLocations[paramName] = models.LoadTypes.URL;
+
+        return params[paramName] && load(params[paramName]);
+      }
     );
 
     if (this.shouldDoSearch) {
       this.store$.dispatch(new MakeSearch());
     }
+  }
+
+  public setDefaults(profile: models.UserProfile): void {
+    if (this.loadLocations['dataset'] !== models.LoadTypes.URL) {
+      this.store$.dispatch(new filterStore.SetSelectedDataset(profile.defaultDataset));
+    }
+    if (this.loadLocations['maxResults'] !== models.LoadTypes.URL) {
+      this.store$.dispatch(new filterStore.SetMaxResults(profile.maxResults));
+    }
+
+    const action = profile.view === models.MapLayerTypes.STREET ?
+      new mapStore.SetStreetView() :
+      new mapStore.SetSatelliteView();
+
+    this.store$.dispatch(action);
   }
 
   private datasetParam() {
