@@ -119,7 +119,7 @@
        fxLayoutAlign="end end"
        class="bottom-row">
 
-    <div fxFlex>
+    <div *ngIf="breakpoint > breakpoints.MOBILE" fxFlex>
       <mat-checkbox
         (change)="setOnlyShowBrowse($event.checked)"
         [checked]="onlyShowScenesWithBrowse"
