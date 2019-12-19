@@ -4,8 +4,8 @@
 
 <div *ngIf="breakpoint$ | async as breakpoint" class="map-header">
   <div class="header-controls"
-        fxLayout="row"
-        fxFlexFill>
+       [class.map-control-margin]="(areResultsLoaded$ | async) && breakpoint === breakpoints.MOBILE"
+        fxLayout="row" fxFlex>
 
     <div fxLayout="row">
       <mat-card *ngFor="let banner of (banners$ | async)"
@@ -23,7 +23,7 @@
     </div>
 
     <div *ngIf="breakpoint > breakpoints.MOBILE" fxLayout="row">
-      <div fxFlex="nogrow">
+      <div style="height: 58px;">
         <app-map-controls></app-map-controls>
       </div>
     </div>
