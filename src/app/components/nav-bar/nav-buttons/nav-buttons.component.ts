@@ -8,6 +8,7 @@ import { Store } from '@ngrx/store';
 import { AppState } from '@store';
 import * as userStore from '@store/user';
 
+import { SubSink } from 'subsink';
 import { PreferencesComponent } from './preferences/preferences.component';
 import { AuthService, AsfApiService, EnvironmentService, ScreenSizeService } from '@services';
 import { CMRProduct, Breakpoints, UserAuth } from '@models';
@@ -55,8 +56,6 @@ export class NavButtonsComponent implements OnInit {
     this.store$.select(userStore.getIsUserLoggedIn).subscribe(
       isLoggedIn => this.isLoggedIn = isLoggedIn
     );
-
-    this.onOpenPreferences();
   }
 
   public onOpenDownloadQueue(): void {
@@ -76,10 +75,17 @@ export class NavButtonsComponent implements OnInit {
   }
 
   public onOpenPreferences(): void {
-    this.dialog.open(PreferencesComponent, {
+    const dialogRef = this.dialog.open(PreferencesComponent, {
       maxWidth: '100vw',
       maxHeight: '100vh'
     });
+
+    dialogRef.afterClosed().subscribe(
+      profile => {
+        this.store$.dispatch(new userStore.SetProfile(profile));
+        this.store$.dispatch(new userStore.SaveProfile());
+      }
+    );
   }
 
   public onCopy(): void {

@@ -16,8 +16,8 @@ const initState: UserState = {
     token: null
   },
   profile: {
-    defaultDataset: 'ALOS',
-    view: models.MapLayerTypes.SATELLITE,
+    defaultDataset: 'SENTINEL-1',
+    mapLayer: models.MapLayerTypes.SATELLITE,
     maxResults: 250
   }
 };

@@ -8,26 +8,66 @@
     </div>
   </div>
 
-  <div style="margin-bottom: 10px;">
+  <div style="margin-bottom: 20px;">
     Set your search preferences
   </div>
 
   <div class="display: flex;">
-    <div>
-      Dataset
-    </div>
-    <div>
-      Search Amount
-    </div>
-    <div>
-      Layer Type
-    </div>
+    <form #preferencesForm="ngForm" onsubmit="return false">
+      <mat-form-field class="w100">
+        <mat-label>Default Dataset</mat-label>
+        <mat-select
+            [(ngModel)]="defaultDataset"
+            (selectionChange)="onSelectionChange($event.value)" name="dataset"
+            #defaultDatasetSelector>
+          <mat-option
+            *ngFor="let dataset of (datasets$ | async)"
+            [class.selected]="dataset.id === defaultDataset"
+            [value]="dataset.id">
+            <ng-container *ngIf="defaultDatasetSelector.panelOpen">
+              <app-dataset
+                class="list-group-item list-group-item-action"
+                [dataset]="dataset">
+              </app-dataset>
+            </ng-container>
+            <ng-container *ngIf="!defaultDatasetSelector.panelOpen">
+              {{ dataset.name }}
+            </ng-container>
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field>
+        <mat-label>Default Max Result Amount</mat-label>
+        <mat-select
+          [(ngModel)]="defaultMaxResults"
+          (selectionChange)="onChangeMaxResultsDefault($event.value)" name="maxResult">
+          <mat-option *ngFor="let resultAmount of maxResults" [value]="resultAmount">
+            {{resultAmount}} files
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field>
+        <mat-label>Default Map Layer</mat-label>
+        <mat-select
+          [(ngModel)]="defaultMapLayer"
+          (selectionChange)="onChangeDefaultLayerType($event.value)" name="amount">
+          <mat-option [value]="mapLayerTypes.SATELLITE">
+            {{ mapLayerTypes.SATELLITE }}
+          </mat-option>
+          <mat-option [value]="mapLayerTypes.STREET ">
+            {{ mapLayerTypes.STREET  }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </form>
   </div>
 
 </mat-dialog-content>
 
 <mat-dialog-actions style="margin-top: 15px;">
-  <button color="primary" mat-flat-button>
+  <button (click)="onClose()" color="primary" mat-flat-button>
     Done
   </button>
 </mat-dialog-actions>
