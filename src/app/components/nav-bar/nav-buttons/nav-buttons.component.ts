@@ -55,8 +55,6 @@ export class NavButtonsComponent implements OnInit {
     this.store$.select(userStore.getIsUserLoggedIn).subscribe(
       isLoggedIn => this.isLoggedIn = isLoggedIn
     );
-
-    this.onOpenPreferences();
   }
 
   public onOpenDownloadQueue(): void {
