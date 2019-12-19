@@ -116,12 +116,11 @@ export class UrlStateService {
 
     Object.entries(urlParamLoaders).forEach(
       ([paramName, load]) => {
-        this.loadLocations[paramName] = models.LoadTypes.URL;
-
         if (!params[paramName]) {
           return;
         }
 
+        this.loadLocations[paramName] = models.LoadTypes.URL;
         const actions = load(params[paramName]);
 
         if (actions === undefined) {
