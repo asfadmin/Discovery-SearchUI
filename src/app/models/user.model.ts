@@ -1,3 +1,6 @@
+
+import { MapLayerTypes } from './map.model';
+
 export interface UserAuth {
   id: string | null;
   token: string | null;
@@ -5,6 +8,6 @@ export interface UserAuth {
 
 export interface UserProfile {
   defaultDataset: string;
-  view: string;
+  mapLayer: MapLayerTypes;
   maxResults: number;
 }

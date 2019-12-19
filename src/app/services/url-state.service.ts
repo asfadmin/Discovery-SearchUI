@@ -79,7 +79,7 @@ export class UrlStateService {
 
     this.urlParamNames.forEach(
       paramName => this.urlParams[paramName].source.pipe(
-        skip(paramName === 'dataset' ? 0 : 1),
+        skip(1),
         debounceTime(300)
       ).subscribe(
         this.updateRouteWithParams
@@ -116,12 +116,11 @@ export class UrlStateService {
 
     Object.entries(urlParamLoaders).forEach(
       ([paramName, load]) => {
-        this.loadLocations[paramName] = models.LoadTypes.URL;
-
         if (!params[paramName]) {
           return;
         }
 
+        this.loadLocations[paramName] = models.LoadTypes.URL;
         const actions = load(params[paramName]);
 
         if (actions === undefined) {
@@ -152,7 +151,7 @@ export class UrlStateService {
       this.store$.dispatch(new filterStore.SetMaxResults(profile.maxResults));
     }
 
-    const action = profile.view === models.MapLayerTypes.STREET ?
+    const action = profile.mapLayer === models.MapLayerTypes.STREET ?
       new mapStore.SetStreetView() :
       new mapStore.SetSatelliteView();
 

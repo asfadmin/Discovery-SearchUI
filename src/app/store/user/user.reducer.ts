@@ -17,7 +17,7 @@ const initState: UserState = {
   },
   profile: {
     defaultDataset: 'SENTINEL-1',
-    view: models.MapLayerTypes.SATELLITE,
+    mapLayer: models.MapLayerTypes.SATELLITE,
     maxResults: 250
   }
 };
