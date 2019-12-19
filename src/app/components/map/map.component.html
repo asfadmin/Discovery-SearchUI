@@ -4,6 +4,7 @@
 
 <div *ngIf="breakpoint$ | async as breakpoint" class="map-header">
   <div class="header-controls"
+       [class.map-control-margin]="(areResultsLoaded$ | async) && breakpoint === breakpoints.MOBILE"
         fxLayout="row" fxFlex>
 
     <div fxLayout="row">

@@ -62,6 +62,8 @@ export class MapComponent implements OnInit, OnDestroy  {
   public mousePosition$ = this.mapService.mousePosition$;
   public banners$ = this.store$.select(uiStore.getBanners);
   public view$ = this.store$.select(mapStore.getMapView);
+  public areResultsLoaded$ = this.store$.select(scenesStore.getAreProductsLoaded);
+
   public viewTypes = models.MapViewType;
 
   public tooltip;
