@@ -23,7 +23,6 @@ import * as models from '@models';
   providedIn: 'root'
 })
 export class SearchParamsService {
-
   constructor(
     private store$: Store<AppState>,
     private mapService: MapService,

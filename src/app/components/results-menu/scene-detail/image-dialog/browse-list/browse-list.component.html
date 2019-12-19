@@ -4,7 +4,11 @@
     [class.selected]="scene.name === selectedName"
     class="clickable" style="padding: 0 15px 0 15px">
 
-    <div class="browse-image--container">
+    <div class="browse-image--container"
+         [matBadgeHidden]="(browses$ | async).length <= 1"
+         matBadge="{{ (browses$ | async).length }}"
+         matBadgePosition="above after">
+
       <img [src]="scene.browses[0]"
        onerror="this.src='assets/no-browse.png'"
        class="browse-image no-drag">

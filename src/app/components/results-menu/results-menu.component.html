@@ -14,7 +14,7 @@
       (resizeEnd)="onFinalResize($event)"
       (resizing)="onResizeEnd($event)">
       <div
-        [class.hidden]="(isHidden$ | async) || (areNoScenes$  | async)"
+        [class.hidden]="(areNoScenes$  | async)"
         class="h100">
         <div
           class="resize-handle-top"

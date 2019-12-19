@@ -1,9 +1,16 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 
+import { MatDialog } from '@angular/material/dialog';
 import { ClipboardService } from 'ngx-clipboard';
+import { take } from 'rxjs/operators';
 
-import { DatapoolAuthService, AsfApiService, EnvironmentService, ScreenSizeService } from '@services';
-import { CMRProduct, Breakpoints } from '@models';
+import { Store } from '@ngrx/store';
+import { AppState } from '@store';
+import * as userStore from '@store/user';
+
+import { PreferencesComponent } from './preferences/preferences.component';
+import { AuthService, AsfApiService, EnvironmentService, ScreenSizeService } from '@services';
+import { CMRProduct, Breakpoints, UserAuth } from '@models';
 
 @Component({
   selector: 'app-nav-buttons',
@@ -16,6 +23,8 @@ export class NavButtonsComponent implements OnInit {
   public maturity = 'prod';
   private maturityKey = 'search-api-maturity';
 
+  public userAuth: UserAuth;
+  public isLoggedIn = false;
   public breakpoint$ = this.screenSize.breakpoint$;
   public breakpoints = Breakpoints;
 
@@ -24,11 +33,13 @@ export class NavButtonsComponent implements OnInit {
   @Output() openQueue = new EventEmitter<void>();
 
   constructor(
-    public datapoolAuthService: DatapoolAuthService,
+    public authService: AuthService,
     public env: EnvironmentService,
     public asfApiService: AsfApiService,
     public clipboard: ClipboardService,
-    private screenSize: ScreenSizeService
+    private screenSize: ScreenSizeService,
+    private dialog: MatDialog,
+    private store$: Store<AppState>,
   ) {}
 
   ngOnInit() {
@@ -36,6 +47,16 @@ export class NavButtonsComponent implements OnInit {
       const maturity = localStorage.getItem(this.maturityKey);
       this.setMaturity(maturity || this.maturity);
     }
+
+    this.store$.select(userStore.getUserAuth).subscribe(
+      user => this.userAuth = user
+    );
+
+    this.store$.select(userStore.getIsUserLoggedIn).subscribe(
+      isLoggedIn => this.isLoggedIn = isLoggedIn
+    );
+
+    this.onOpenPreferences();
   }
 
   public onOpenDownloadQueue(): void {
@@ -43,11 +64,22 @@ export class NavButtonsComponent implements OnInit {
   }
 
   public onAccountButtonClicked() {
-    this.datapoolAuthService.login();
+    this.authService.login$().subscribe(
+      user => this.store$.dispatch(new userStore.SetUserAuth(user))
+    );
   }
 
   public onLogout(): void {
-    this.datapoolAuthService.logout();
+    this.authService.logout$().subscribe(
+      user => this.store$.dispatch(new userStore.SetUserAuth(user))
+    );
+  }
+
+  public onOpenPreferences(): void {
+    this.dialog.open(PreferencesComponent, {
+      maxWidth: '100vw',
+      maxHeight: '100vh'
+    });
   }
 
   public onCopy(): void {
