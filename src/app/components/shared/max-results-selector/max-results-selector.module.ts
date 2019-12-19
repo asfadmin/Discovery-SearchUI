@@ -8,7 +8,6 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatSharedModule } from '@shared';
 import { MatDialogModule } from '@angular/material/dialog';
 
-
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { faSpinner } from '@fortawesome/free-solid-svg-icons';

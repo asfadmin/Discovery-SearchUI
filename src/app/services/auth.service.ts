@@ -3,11 +3,14 @@ import { HttpClient, HttpParams, HttpHeaders } from '@angular/common/http';
 
 import { ViewType } from '@models';
 
-import { interval, Subject, Subscription, Observable } from 'rxjs';
+import { interval, Subject, BehaviorSubject, Subscription, Observable } from 'rxjs';
 import { map, takeUntil, tap, delay, take, filter, switchMap } from 'rxjs/operators';
 
 import { EnvironmentService } from './environment.service';
 import * as jwt_decode from 'jwt-decode';
+
+import * as models from '@models';
+
 
 @Injectable({
   providedIn: 'root'
@@ -16,21 +19,12 @@ export class AuthService {
   private authUrl = this.env.value.auth.api;
   private earthdataUrl = this.env.value.auth.urs;
 
-  public isLoggedIn = false;
-  public user = {
-    id: null
-  };
-
-  private loginProcess: Subscription;
-
   constructor(
     private env: EnvironmentService,
     private http: HttpClient
-  ) {
-    this.checkLogin();
-  }
+  ) {}
 
-  public login() {
+  public login$(): Observable<models.UserAuth | null> {
     const localUrl = window.location.origin;
 
     const appRedirect = encodeURIComponent(localUrl);
@@ -46,53 +40,66 @@ export class AuthService {
       'scrollbars=yes, width=600, height= 600'
     );
 
-    const loginDone = new Subject();
+    const loginWindowClosed = new Subject();
 
-    if (this.loginProcess) {
-      this.loginProcess.unsubscribe();
-    }
+    return interval(500).pipe(
+      takeUntil(loginWindowClosed),
+      map(_ => {
+        let user = null;
 
-    this.loginProcess = interval(500).pipe(
-      take(50),
-      takeUntil(loginDone),
-      tap(_ => {
+        if (loginWindow.closed) {
+          loginWindowClosed.next();
+        }
+
         try {
           if (loginWindow.location.host === window.location.host) {
             loginWindow.close();
-            this.checkLogin();
-            loginDone.next();
+            user = this.getUser();
           }
         } catch (e) {
         }
+
+        return user;
       }),
-      filter(_ => !this.isLoggedIn),
-    ).subscribe(_ => _);
+      filter(user => !!user),
+      take(1)
+    );
   }
 
-  public logout(): void {
-    this.http.get(
+  public logout$(): Observable<models.UserAuth>  {
+    return this.http.get(
       `${this.authUrl}/loginservice/logout`, {
         responseType: 'text',
         withCredentials: true
-      }).subscribe(resp => {
-        this.checkLogin();
-      });
+      }).pipe(
+        map(resp => this.getUser()),
+        take(1)
+      );
   }
 
-  private checkLogin() {
+  public getUser(): models.UserAuth {
     const cookies = this.loadCookies();
+    const token = cookies['asf-urs'];
 
-    if (!cookies['asf-urs']) {
-      return;
+    if (!token) {
+      return this.makeUser(null, null);
     }
 
-    const auth_cookie = jwt_decode(cookies['asf-urs']);
+    const user = jwt_decode(token);
 
-    this.user = {
-      id: auth_cookie['urs-user-id'],
-    };
+    if (this.isExpired(user)) {
+      return this.makeUser(null, null);
+    }
 
-    this.isLoggedIn = !!this.user.id;
+    return this.makeUser(user['urs-user-id'], token);
+  }
+
+  private makeUser(id: string | null, token: string | null): models.UserAuth {
+    return { id, token };
+  }
+
+  private isExpired(userToken): boolean {
+    return Date.now() > userToken.exp * 1000;
   }
 
   private loadCookies() {

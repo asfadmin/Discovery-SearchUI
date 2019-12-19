@@ -9,6 +9,7 @@ import { FiltersState, filtersReducer } from './filters';
 import { UIState, uiReducer } from './ui';
 import { SearchState, searchReducer } from './search';
 import { QueueState, queueReducer } from './queue';
+import { UserState, userReducer } from './user';
 
 
 export interface AppState {
@@ -18,6 +19,7 @@ export interface AppState {
   ui: UIState;
   search: SearchState;
   queue: QueueState;
+  user: UserState;
 }
 
 export const reducers: ActionReducerMap<AppState> = {
@@ -27,9 +29,9 @@ export const reducers: ActionReducerMap<AppState> = {
   ui: uiReducer,
   search: searchReducer,
   queue: queueReducer,
+  user: userReducer
 };
 
 export const metaReducers: MetaReducer<AppState>[] =
   !environment.production ?
-  [] :
-  [];
+  [] : [];

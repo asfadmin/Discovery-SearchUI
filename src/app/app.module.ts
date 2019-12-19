@@ -72,6 +72,7 @@ export const routes = [
     services.ScreenSizeService,
     services.KeyboardService,
     CustomBreakPointsProvider,
+    services.UserDataService,
   ],
   bootstrap: [ AppComponent ],
 })
