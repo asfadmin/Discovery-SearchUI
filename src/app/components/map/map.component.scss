@@ -27,9 +27,14 @@
   border-color: $asf-primary-dark;
   border-width: 2px;
   border-style: solid;
-  color: darken($asf-accent, 40%);
-  margin-left: 20px;
+  color: darken($asf-accent, 50%);
+  margin-left: 5px;
+  margin-bottom: 5px;
   line-height: 1.4;
+}
+
+.map-control-margin {
+  margin-right: 72px;
 }
 
 .banner-text {
