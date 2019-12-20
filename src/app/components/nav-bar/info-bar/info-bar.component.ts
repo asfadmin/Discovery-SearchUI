@@ -1,6 +1,6 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 
-import { Store, ActionsSubject } from '@ngrx/store';
+import { Store } from '@ngrx/store';
 import { SubSink } from 'subsink';
 
 import { AppState } from '@store';

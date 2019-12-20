@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 
-import { Observable, Subject } from 'rxjs';
+import { Observable } from 'rxjs';
 
-import { PolygonValidateResponse, MissionDataset, Props, apiParamNames } from '@models';
+import { MissionDataset, Props, apiParamNames } from '@models';
 import { EnvironmentService } from './environment.service';
 import { PropertyService } from './property.service';
 

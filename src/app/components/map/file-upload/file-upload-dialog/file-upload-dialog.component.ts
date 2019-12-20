@@ -2,7 +2,7 @@ import { Component, ViewChild, OnInit, OnDestroy } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
 import { Subject, Subscription } from 'rxjs';
-import { delay, tap, catchError } from 'rxjs/operators';
+import { delay, tap } from 'rxjs/operators';
 
 import { MatDialogRef } from '@angular/material/dialog';
 import { SubSink } from 'subsink';

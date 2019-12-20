@@ -1,6 +1,4 @@
-import { Component, OnInit, Input, EventEmitter, Output, OnDestroy } from '@angular/core';
-
-import { tap } from 'rxjs/operators';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Store } from '@ngrx/store';
 
 import { AppState } from '@store';

@@ -1,14 +1,12 @@
-import { Component, OnInit, Input, Output, EventEmitter, ViewChild, OnDestroy } from '@angular/core';
+import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
 import { MatButtonToggle } from '@angular/material';
-import { Observable } from 'rxjs';
 import { SubSink } from 'subsink';
 
 import { Store } from '@ngrx/store';
 import { AppState } from '@store';
 import * as mapStore from '@store/map';
-import * as filterStore from '@store/filters';
 
-import { SearchType, MapInteractionModeType } from '@models';
+import { MapInteractionModeType } from '@models';
 import * as services from '@services';
 
 @Component({

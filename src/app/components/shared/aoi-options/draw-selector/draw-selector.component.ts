@@ -1,11 +1,11 @@
-import { Component, OnInit, Input, Output, EventEmitter, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { SubSink } from 'subsink';
 
 import { Store } from '@ngrx/store';
 import { AppState } from '@store';
 import * as mapStore from '@store/map';
 
-import { SearchType, MapDrawModeType, MapInteractionModeType } from '@models';
+import { MapDrawModeType, MapInteractionModeType } from '@models';
 
 @Component({
   selector: 'app-draw-selector',

@@ -1,18 +1,14 @@
-import { Component, HostListener, OnInit, AfterViewChecked } from '@angular/core';
+import { Component, HostListener, OnInit } from '@angular/core';
 import { ResizeEvent } from 'angular-resizable-element';
-import { trigger, state, style, animate, transition } from '@angular/animations';
 
 import { Subject } from 'rxjs';
-import { map, withLatestFrom, filter, tap, pairwise } from 'rxjs/operators';
+import { map } from 'rxjs/operators';
 import { Store } from '@ngrx/store';
 import { ScreenSizeService } from '@services';
 
 import { AppState } from '@store';
 import * as uiStore from '@store/ui';
 import * as scenesStore from '@store/scenes';
-import * as queueStore from '@store/queue';
-import * as filtersStore from '@store/filters';
-import * as searchStore from '@store/search';
 
 import { MapService } from '@services';
 import * as models from '@models';

@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output, EventEmitter, ViewChild, OnDestroy } from '@angular/core';
+import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
 import { NgForm } from '@angular/forms';
 
 import { Subject } from 'rxjs';
@@ -9,7 +9,7 @@ import { SubSink } from 'subsink';
 import { AppState } from '@store';
 import * as filtersStore from '@store/filters';
 
-import { Range, Props } from '@models';
+import { Props } from '@models';
 import { PropertyService } from '@services';
 
 enum PathFormInputType {

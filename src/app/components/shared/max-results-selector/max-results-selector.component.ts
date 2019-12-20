@@ -1,11 +1,10 @@
-import { Component, OnInit, Input, Output, EventEmitter, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 
 import { Store } from '@ngrx/store';
 import { AppState } from '@store';
 import * as searchStore from '@store/search';
 import * as filtersStore from '@store/filters';
-import * as uiStore from '@store/ui';
 import * as scenesStore from '@store/scenes';
 
 import * as models from '@models';

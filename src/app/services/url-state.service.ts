@@ -3,14 +3,11 @@ import { Router, ActivatedRoute, Params } from '@angular/router';
 
 import { Store, Action } from '@ngrx/store';
 import * as moment from 'moment';
-
-import { combineLatest } from 'rxjs';
-import { filter, map, switchMap, skip, tap, withLatestFrom, debounceTime } from 'rxjs/operators';
+import { filter, map, skip, tap, debounceTime } from 'rxjs/operators';
 
 import { AppState } from '@store';
 import * as scenesStore from '@store/scenes';
 import * as mapStore from '@store/map';
-import * as uiStore from '@store/ui';
 import * as filterStore from '@store/filters';
 import { SetSearchType, MakeSearch } from '@store/search/search.action';
 import { getSearchType } from '@store/search/search.reducer';

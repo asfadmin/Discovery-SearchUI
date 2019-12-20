@@ -1,13 +1,12 @@
 import { Injectable } from '@angular/core';
 
-import { Subject, BehaviorSubject } from 'rxjs';
+import { BehaviorSubject } from 'rxjs';
 
 import { Map } from 'ol';
-import { Vector as VectorSource, Layer } from 'ol/source';
+import { Vector as VectorSource } from 'ol/source';
 import { Vector as VectorLayer } from 'ol/layer';
 import { Draw, Modify, Snap } from 'ol/interaction.js';
 import { createBox } from 'ol/interaction/Draw.js';
-import { getTopRight } from 'ol/extent';
 
 import * as polygonStyle from './polygon.style';
 import * as models from '@models';

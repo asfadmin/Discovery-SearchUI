@@ -1,10 +1,8 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpParams, HttpHeaders } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 
-import { ViewType } from '@models';
-
-import { interval, Subject, BehaviorSubject, Subscription, Observable } from 'rxjs';
-import { map, takeUntil, tap, delay, take, filter, switchMap } from 'rxjs/operators';
+import { interval, Subject, Observable } from 'rxjs';
+import { map, takeUntil, take, filter } from 'rxjs/operators';
 
 import { EnvironmentService } from './environment.service';
 import * as jwt_decode from 'jwt-decode';

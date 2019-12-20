@@ -4,15 +4,13 @@ import { Action, Store } from '@ngrx/store';
 import { Actions, Effect, ofType } from '@ngrx/effects';
 
 import { Observable, of } from 'rxjs';
-import { map, withLatestFrom, tap, filter, catchError, switchMap } from 'rxjs/operators';
+import { map, catchError, switchMap } from 'rxjs/operators';
 
 import { AppState } from '../app.reducer';
 import * as uiActions from './ui.action';
-import * as uiReducer from './ui.reducer';
 
 import { MapService } from '../../services/map/map.service';
 import { BannerApiService } from '../../services/banner-api.service';
-import * as models from '@models';
 
 @Injectable()
 export class UIEffects {

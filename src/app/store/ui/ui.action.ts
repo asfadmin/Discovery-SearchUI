@@ -1,6 +1,6 @@
 import { Action } from '@ngrx/store';
 
-import { FilterType, SearchType, ViewType, Banner } from '@models';
+import { Banner } from '@models';
 
 export enum UIActionType {
   TOGGLE_AOI_OPTIONS = '[UI] Toggle AOI Options',

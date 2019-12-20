@@ -1,7 +1,5 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-
-import { MatBadgeModule } from '@angular/material/badge';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatSharedModule } from '@shared';
 import { FlexLayoutModule } from '@angular/flex-layout';

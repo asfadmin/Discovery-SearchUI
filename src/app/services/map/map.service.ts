@@ -1,12 +1,11 @@
 import { Injectable } from '@angular/core';
 
 import { BehaviorSubject, Subject } from 'rxjs';
-import { map, tap, sampleTime } from 'rxjs/operators';
+import { map, sampleTime } from 'rxjs/operators';
 
 import { Map } from 'ol';
 import { Vector as VectorLayer } from 'ol/layer';
 import { Vector as VectorSource, Layer } from 'ol/source';
-import {Circle as CircleStyle, Fill, Stroke, Style} from 'ol/style.js';
 import * as proj from 'ol/proj';
 import { click, pointerMove } from 'ol/events/condition';
 import Select from 'ol/interaction/Select';

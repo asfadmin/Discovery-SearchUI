@@ -1,4 +1,4 @@
-import { Component, OnInit, Output, EventEmitter } from '@angular/core';
+import { Component } from '@angular/core';
 
 import {
   trigger, state, style, animate, transition

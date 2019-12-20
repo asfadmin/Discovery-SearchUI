@@ -11,7 +11,7 @@ import * as queueStore from '@store/queue';
 import * as uiStore from '@store/ui';
 
 import * as models from '@models';
-import { BrowseMapService, DatasetForProductService, ScreenSizeService } from '@services';
+import { BrowseMapService, DatasetForProductService } from '@services';
 import * as services from '@services/index';
 
 @Component({

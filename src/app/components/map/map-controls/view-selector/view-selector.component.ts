@@ -1,5 +1,4 @@
-import { Component, OnInit, Input, Output, EventEmitter, OnDestroy } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { SubSink } from 'subsink';
 
 import { Store } from '@ngrx/store';
