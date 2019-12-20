@@ -6,6 +6,7 @@
 .browse-list-viewport .cdk-virtual-scroll-content-wrapper {
   display: flex;
   flex-direction: row;
+  overflow-y: hidden !important;
 }
 
 .browse-list {
@@ -36,4 +37,8 @@
 .browse-image--date {
   width: 200px;
   height: 15px;
+}
+
+.mat-badge {
+  margin-top: 15px;
 }

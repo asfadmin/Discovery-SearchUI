@@ -13,7 +13,7 @@ import * as searchStore from '@store/search';
 import * as uiStore from '@store/ui';
 
 import * as models from '@models';
-import { DatapoolAuthService, PropertyService, ScreenSizeService } from '@services';
+import { AuthService, PropertyService, ScreenSizeService } from '@services';
 import { ImageDialogComponent } from './image-dialog';
 
 import { DatasetForProductService } from '@services';
@@ -41,7 +41,7 @@ export class SceneDetailComponent implements OnInit, OnDestroy {
     private store$: Store<AppState>,
     private screenSize: ScreenSizeService,
     public dialog: MatDialog,
-    public authService: DatapoolAuthService,
+    public authService: AuthService,
     public prop: PropertyService,
     private datasetForProduct: DatasetForProductService
   ) {}
@@ -119,8 +119,10 @@ export class SceneDetailComponent implements OnInit, OnDestroy {
     this.store$.dispatch(new uiStore.SetIsBrowseDialogOpen(true));
 
     const dialogRef = this.dialog.open(ImageDialogComponent, {
-      width: '99vw', height: 'fit-content',
-      maxHeight: '96vh', maxWidth: '100%',
+      width: '96%',
+      maxWidth: '96%',
+      height: '90%',
+      maxHeight: '90%',
       panelClass: 'image-dialog'
     });
 

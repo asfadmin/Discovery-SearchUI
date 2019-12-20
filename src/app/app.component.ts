@@ -15,6 +15,7 @@ import * as searchStore from '@store/search';
 import * as uiStore from '@store/ui';
 import * as mapStore from '@store/map';
 import * as queueStore from '@store/queue';
+import * as userStore from '@store/user';
 
 import * as services from '@services';
 import * as models from './models';
@@ -28,7 +29,6 @@ export class AppComponent implements OnInit, OnDestroy {
   private queueStateKey = 'asf-queue-state';
 
   public shouldOmitSearchPolygon$ = this.store$.select(filterStore.getShouldOmitSearchPolygon);
-  public uiView$ = this.store$.select(uiStore.getUiView);
   public isLoading$ = this.store$.select(searchStore.getIsLoading);
 
   public queuedProducts$ = this.store$.select(queueStore.getQueuedProducts).pipe(
@@ -48,6 +48,8 @@ export class AppComponent implements OnInit, OnDestroy {
     private searchParams$: services.SearchParamsService,
     private polygonValidationService: services.PolygonValidationService,
     private asfSearchApi: services.AsfApiService,
+    private authService: services.AuthService,
+    private userDataService: services.UserDataService,
   ) {}
 
   public ngOnInit(): void {
@@ -56,6 +58,32 @@ export class AppComponent implements OnInit, OnDestroy {
     this.polygonValidationService.validate();
     this.loadProductQueue();
     this.loadMissions();
+
+    this.subs.add(
+      this.store$.select(userStore.getUserAuth).pipe(
+        filter(userAuth => !!userAuth.token),
+        switchMap(userAuth =>
+          this.userDataService.getAttribute$<models.UserProfile | null>(userAuth, 'profile')
+        )
+      ).subscribe(profile =>
+        !profile || (profile['status'] === 'fail') ?
+          this.store$.dispatch(new userStore.SaveProfile()) :
+          this.store$.dispatch(new userStore.SetProfile(profile))
+      )
+    );
+
+    this.subs.add(
+      this.store$.select(userStore.getUserProfile).subscribe(
+        (profile) => {
+          this.urlStateService.setDefaults(profile);
+        })
+    );
+
+    const user = this.authService.getUser();
+    if (user.id) {
+      this.store$.dispatch(new userStore.SetUserAuth(user));
+    }
+
 
     this.subs.add(
       this.actions$.pipe(
@@ -137,7 +165,7 @@ export class AppComponent implements OnInit, OnDestroy {
 
           return of(-1);
         })
-        )
+      )
       ),
     );
 

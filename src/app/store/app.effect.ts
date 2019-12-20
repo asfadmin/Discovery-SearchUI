@@ -3,6 +3,7 @@ import { SearchEffects } from './search';
 import { QueueEffects } from './queue';
 import { ScenesEffects } from './scenes';
 import { UIEffects } from './ui';
+import { UserEffects } from './user';
 
 export const appEffects = [
   FiltersEffects,
@@ -10,4 +11,5 @@ export const appEffects = [
   QueueEffects,
   ScenesEffects,
   UIEffects,
+  UserEffects,
 ];

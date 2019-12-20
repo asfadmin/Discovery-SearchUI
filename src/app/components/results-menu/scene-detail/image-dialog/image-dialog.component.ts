@@ -22,7 +22,7 @@ import * as services from '@services/index';
 })
 export class ImageDialogComponent implements OnInit, AfterViewInit, OnDestroy {
   public scene$ = this.store$.select(scenesStore.getSelectedScene);
-
+  public browses$ = this.store$.select(scenesStore.getSelectedSceneBrowses);
   public onlyShowScenesWithBrowse: boolean;
   public queuedProductIds: Set<string>;
   public scene: models.CMRProduct;
@@ -30,6 +30,7 @@ export class ImageDialogComponent implements OnInit, AfterViewInit, OnDestroy {
   public dataset: models.Dataset;
   public isImageLoading = false;
   public isShow = false;
+  public currentBrowse = null;
 
   public breakpoint$ = this.screenSize.breakpoint$;
   public breakpoints = models.Breakpoints;
@@ -80,31 +81,36 @@ export class ImageDialogComponent implements OnInit, AfterViewInit, OnDestroy {
         debounceTime(250)
       ).subscribe(
         scene => {
-          this.isImageLoading = true;
-          this.image = new Image();
-          const browseService = this.browseMap;
-          const currentScene = this.scene;
-          const self = this;
-
-          this.image.addEventListener('load', function() {
-            if (currentScene !== scene) {
-              return;
-            }
-            self.isImageLoading = false;
-
-            const [width, height] = [
-              this.naturalWidth, this.naturalHeight
-            ];
-
-            browseService.setBrowse(scene.browses[0], {
-              width, height
-            });
-          });
-
-          this.image.src = scene.browses[0];
+          this.currentBrowse = scene.browses[0];
+          this.loadBrowseImage(scene, this.currentBrowse);
         }
       )
     );
+  }
+
+  private loadBrowseImage(scene, browse): void {
+    this.isImageLoading = true;
+    this.image = new Image();
+    const browseService = this.browseMap;
+    const currentScene = this.scene;
+    const self = this;
+
+    this.image.addEventListener('load', function() {
+      if (currentScene !== scene) {
+        return;
+      }
+
+      self.isImageLoading = false;
+      const [width, height] = [
+        this.naturalWidth, this.naturalHeight
+      ];
+
+      browseService.setBrowse(browse, {
+        width, height
+      });
+    });
+
+    this.image.src = browse;
   }
 
   public closeDialog() {
@@ -129,6 +135,10 @@ export class ImageDialogComponent implements OnInit, AfterViewInit, OnDestroy {
 
   public setOnlyShowBrowse(isChecked: boolean) {
     this.store$.dispatch(new uiStore.SetOnlyScenesWithBrowse(isChecked));
+  }
+
+  public onNewBrowseSelected(scene, browse): void {
+    this.loadBrowseImage(scene, browse);
   }
 
   ngOnDestroy() {

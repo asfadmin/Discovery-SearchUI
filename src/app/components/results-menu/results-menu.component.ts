@@ -39,7 +39,6 @@ export class ResultsMenuComponent implements OnInit {
     map(scenes => scenes.length === 0)
   );
 
-  public isHidden$ = this.store$.select(uiStore.getIsHidden);
   public resize$ = new Subject<void>();
 
   public breakpoint$ = this.screenSize.breakpoint$;
@@ -59,7 +58,7 @@ export class ResultsMenuComponent implements OnInit {
   onResize( event ) {
     const resultDiv = document.getElementById('result-div');
 
-    if (!resultDiv.style) {
+    if (!resultDiv || !resultDiv.style) {
       return;
     }
 

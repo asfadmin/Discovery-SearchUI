@@ -53,11 +53,6 @@ export class BrowseMapService {
   }
 
   private update(view: View, layer: ImageLayer): void {
-    const oldView = this.map.getView();
-
-    view.setZoom(oldView.getZoom());
-    view.setCenter(oldView.getCenter());
-
     this.map.setView(view);
     const mapLayers = this.map.getLayers();
     mapLayers.setAt(0, layer);

@@ -11,8 +11,6 @@ export interface UIState {
   isAOIOptionsOpen: boolean;
   isBrowseDialogOpen: boolean;
   onlyScenesWithBrowse: boolean;
-  uiView: ViewType;
-  selectedFilter: FilterType | undefined;
   banners: Banner[];
 }
 
@@ -22,8 +20,6 @@ export const initState: UIState = {
   isAOIOptionsOpen: false,
   isBrowseDialogOpen: false,
   onlyScenesWithBrowse: true,
-  uiView: ViewType.MAIN,
-  selectedFilter: FilterType.DATASET,
   banners: [],
 };
 
@@ -86,20 +82,6 @@ export function uiReducer(state = initState, action: UIActions): UIState {
       };
     }
 
-    case UIActionType.SET_SELECTED_FILTER: {
-      return {
-        ...state,
-        selectedFilter: action.payload
-      };
-    }
-
-    case UIActionType.SET_UI_VIEW: {
-      return {
-        ...state,
-        uiView: action.payload
-      };
-    }
-
     case UIActionType.SET_ONLY_SCENES_WITH_BROWSE: {
       return {
         ...state,
@@ -144,11 +126,6 @@ export function uiReducer(state = initState, action: UIActions): UIState {
 
 export const getUIState = createFeatureSelector<UIState>('ui');
 
-export const getSelectedFilter = createSelector(
-  getUIState,
-  state => state.selectedFilter
-);
-
 export const getIsAOIOptionsOpen = createSelector(
   getUIState,
   (state: UIState) => state.isAOIOptionsOpen
@@ -157,16 +134,6 @@ export const getIsAOIOptionsOpen = createSelector(
 export const getIsFiltersMenuOpen = createSelector(
   getUIState,
   (state: UIState) => state.isFiltersMenuOpen
-);
-
-export const getUiView = createSelector(
-  getUIState,
-  state => state.uiView
-);
-
-export const getIsHidden = createSelector(
-  getUIState,
-  state => state.uiView === ViewType.MAP_ONLY
 );
 
 export const getIsResultsMenuOpen = createSelector(
