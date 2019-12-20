@@ -11,7 +11,7 @@
 
   <div>
     <form #polygonInputForm="ngForm" (keydown.enter)="$event.preventDefault()">
-      <mat-form-field [class.invalid-input-animation]="isAOIError" style="width: 100%; height: 100px">
+      <mat-form-field [class.invalid-input-animation]="isAOIError" class="w100" style="height: 100px;">
         <mat-label> Area of Interest • WKT </mat-label>
         <textarea
           (change)="onInputSearchPolygon($event.target.value)"
