@@ -134,32 +134,11 @@ export class SceneDetailComponent implements OnInit, OnDestroy {
     );
   }
 
-  public setPathStart(): void {
-    const action = new filtersStore.SetPathStart(this.scene.metadata.path);
-    this.store$.dispatch(action);
-  }
-
-  public setPathEnd(): void {
-    const action = new filtersStore.SetPathEnd(this.scene.metadata.path);
-    this.store$.dispatch(action);
-  }
-
-  public setFrameStart(): void {
-    const action = new filtersStore.SetFrameStart(this.scene.metadata.frame);
-    this.store$.dispatch(action);
-  }
-
-  public setFrameEnd(): void {
-    const action = new filtersStore.SetFrameEnd(this.scene.metadata.frame);
-    this.store$.dispatch(action);
-  }
-
   public findSimilarScenes(): void {
-    this.setPathStart();
-    this.setPathEnd();
-    this.setFrameStart();
-    this.setFrameEnd();
-    this.store$.dispatch(new searchStore.MakeSearch());
+    [
+      new filtersStore.SetFiltersSimilarTo(this.scene),
+      new searchStore.MakeSearch()
+    ].forEach(action => this.store$.dispatch(action));
   }
 
   private capitalizeFirstLetter(str) {

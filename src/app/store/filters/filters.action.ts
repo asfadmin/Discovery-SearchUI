@@ -20,6 +20,7 @@ export enum FiltersActionType {
   SET_FRAME_START = '[FIlters-Frame] Set Frame Start',
   SET_FRAME_END = '[Filters-Frame] Set Frame End',
   CLEAR_FRAME_RANGE = '[Filter-Frame] Clear Frame Range',
+  SET_FILTERS_SIMILAR_TO = '[Filters] Set Filters Similar To',
 
   SET_PRODUCT_TYPES = '[Filters-Prodcut-Type] Set DATASET Product Types',
 
@@ -135,6 +136,12 @@ export class SetFrameEnd implements Action {
 
 export class ClearFrameRange implements Action {
   public readonly type = FiltersActionType.CLEAR_FRAME_RANGE;
+}
+
+export class SetFiltersSimilarTo implements Action {
+  public readonly type = FiltersActionType.SET_FILTERS_SIMILAR_TO;
+
+  constructor(public payload: models.CMRProduct) {}
 }
 
 export class SetProductTypes implements Action {
@@ -253,6 +260,7 @@ export type FiltersActions =
   | ClearPathRange
   | SetFrameStart
   | SetFrameEnd
+  | SetFiltersSimilarTo
   | ClearFrameRange
   | SetProductTypes
   | SetListSearchType
