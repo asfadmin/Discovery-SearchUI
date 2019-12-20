@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
 import { of } from 'rxjs';
-import { filter, map, switchMap, tap, catchError } from 'rxjs/operators';
+import { filter, map, switchMap, catchError } from 'rxjs/operators';
 
 import { MapService } from './map/map.service';
 import { AsfApiService } from './asf-api.service';

@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-import { HttpParams } from '@angular/common/http';
 
 import { Actions, Effect, ofType } from '@ngrx/effects';
 import { Store, Action } from '@ngrx/store';
@@ -7,8 +6,8 @@ import { Store, Action } from '@ngrx/store';
 import * as FileSaver from 'file-saver';
 import * as moment from 'moment';
 
-import { Observable, combineLatest } from 'rxjs';
-import { map, withLatestFrom, startWith, switchMap, tap, filter } from 'rxjs/operators';
+import { Observable } from 'rxjs';
+import { map, withLatestFrom, switchMap } from 'rxjs/operators';
 
 import { AppState } from '../app.reducer';
 import { QueueActionType, DownloadMetadata, QueueScene, AddItems, RemoveItems, RemoveSceneFromQueue } from './queue.action';

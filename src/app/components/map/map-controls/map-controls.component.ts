@@ -1,12 +1,9 @@
-import { Component, OnInit, Input, OnDestroy } from '@angular/core';
-
-import { map } from 'rxjs/operators';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { SubSink } from 'subsink';
 import { Store } from '@ngrx/store';
 
 import { AppState } from '@store';
 import * as mapStore from '@store/map';
-import * as uiStore from '@store/ui';
 import * as searchStore from '@store/search';
 
 import * as models from '@models';

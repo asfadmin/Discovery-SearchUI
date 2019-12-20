@@ -17,7 +17,6 @@ import { NavBarModule } from '@components/nav-bar';
 import { MapModule } from '@components/map';
 import { ResultsMenuModule } from '@components/results-menu';
 import { MatSharedModule } from '@shared';
-import { LogoModule } from '@components/nav-bar/logo/logo.module';
 
 import { CustomBreakPointsProvider } from '@services/custom-breakpoints.ts';
 

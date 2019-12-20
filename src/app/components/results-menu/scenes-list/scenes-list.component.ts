@@ -1,10 +1,9 @@
 import {
-  Component, OnInit, Input, ViewChild, ViewEncapsulation,
-  AfterViewInit, OnDestroy
+  Component, OnInit, Input, ViewChild, ViewEncapsulation, OnDestroy
 } from '@angular/core';
 
-import { fromEvent, combineLatest, Observable, timer } from 'rxjs';
-import { tap, withLatestFrom, filter, map, debounceTime, delay } from 'rxjs/operators';
+import { combineLatest, Observable } from 'rxjs';
+import { tap, withLatestFrom, filter, map, delay } from 'rxjs/operators';
 import { SubSink } from 'subsink';
 
 import { Store } from '@ngrx/store';

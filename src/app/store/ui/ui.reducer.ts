@@ -1,6 +1,6 @@
 import { createFeatureSelector, createSelector } from '@ngrx/store';
 
-import { FilterType, SearchType, ViewType, Banner } from '@models';
+import { Banner } from '@models';
 
 import { UIActionType, UIActions } from './ui.action';
 

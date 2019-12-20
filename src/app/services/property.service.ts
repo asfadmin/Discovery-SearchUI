@@ -1,6 +1,4 @@
 import { Injectable } from '@angular/core';
-
-import { map, tap } from 'rxjs/operators';
 import { Store } from '@ngrx/store';
 
 import { AppState } from '@store';

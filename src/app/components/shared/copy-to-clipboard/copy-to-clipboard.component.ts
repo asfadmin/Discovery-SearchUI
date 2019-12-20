@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, ViewChild, ElementRef } from '@angular/core';
+import { Component, Input, ViewChild, ElementRef } from '@angular/core';
 
 import { of } from 'rxjs';
 import { tap, delay } from 'rxjs/operators';

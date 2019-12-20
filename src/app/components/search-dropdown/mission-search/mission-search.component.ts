@@ -1,8 +1,8 @@
-import { Component, OnInit, Input, Output, EventEmitter, ViewChild, OnDestroy } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, OnDestroy } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 
 import { Observable } from 'rxjs';
-import { startWith, map, filter, tap } from 'rxjs/operators';
+import { startWith, map, tap } from 'rxjs/operators';
 import { SubSink } from 'subsink';
 
 import * as models from '@models';

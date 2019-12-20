@@ -30,8 +30,6 @@ import { PipesModule } from '@pipes';
 import { SearchTypeSelectorModule } from '@components/shared/selectors/search-type-selector';
 
 import { LogoModule } from '@components/nav-bar/logo/logo.module';
-
-import { CustomBreakPointsProvider } from '@services/custom-breakpoints.ts';
 import { DatasetNavComponent } from './dataset-nav/dataset-nav.component';
 import { ListNavComponent } from './list-nav/list-nav.component';
 import { AoiFilterComponent } from './dataset-nav/aoi-filter/aoi-filter.component';

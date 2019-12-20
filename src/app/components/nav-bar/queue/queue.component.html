@@ -34,17 +34,17 @@
                   <span *ngIf="product.bytes !== 0">{{product.bytes | readableSizeFromBytes }}</span>
                 </span>
               </div>
-              <div style="margin-top: 3px" matLine>
+              <div style="margin-top: 3px;" matLine>
                 {{ product.productTypeDisplay }}
               </div>
 
               <app-copy-to-clipboard
-                 style="margin-right: 15px"
+                 style="margin-right: 15px;"
                  prompt="Copy File ID"
                  [value]="product.id">
               </app-copy-to-clipboard>
 
-              <a mat-icon-button matTooltip="Download" [href]="product.downloadUrl" target="_blank" style="text-decoration: none">
+              <a mat-icon-button matTooltip="Download" [href]="product.downloadUrl" target="_blank" style="text-decoration: none;">
                 <mat-icon>cloud_download</mat-icon>
               </a>
 
@@ -62,13 +62,13 @@
       <div fxFlex="25" class="dl-clear-button">
           <button *ngIf="previousQueue === null"
                   (click)="onClearQueue(products)" mat-button>
-            <mat-icon style="margin-right: 5px">delete</mat-icon>
+            <mat-icon style="margin-right: 5px;">delete</mat-icon>
             <span>Clear</span>
           </button>
 
         <button *ngIf="previousQueue !== null"
                 (click)="onRestoreQueue(previousQueue)" mat-button>
-          <mat-icon style="margin-right: 5px">undo</mat-icon>
+          <mat-icon style="margin-right: 5px;">undo</mat-icon>
           <span>Restore</span>
         </button>
       </div>
@@ -76,7 +76,7 @@
         <div *ngIf="areAnyProducts" fxFlex="75" class="dl-download-buttons">
           <button (click)="onCopyQueue(products)" mat-button [disabled]="!areAnyProducts" class="btn-primary">
             <span *ngIf="breakpoint > breakpoints.MOBILE">Copy File IDs</span>
-            <fa-icon style="margin-left: 5px" [icon]="copyIcon"></fa-icon>
+            <fa-icon style="margin-left: 5px;" [icon]="copyIcon"></fa-icon>
           </button>
 
           <ng-container *ngIf="breakpoint > breakpoints.MOBILE">

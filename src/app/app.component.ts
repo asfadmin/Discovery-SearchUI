@@ -1,12 +1,10 @@
-import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
-import { HttpParams } from '@angular/common/http';
-import { MatBottomSheet } from '@angular/material/bottom-sheet';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { SubSink } from 'subsink';
 
 import { Store, ActionsSubject } from '@ngrx/store';
 import { ofType } from '@ngrx/effects';
-import { of, combineLatest, timer } from 'rxjs';
-import { skip, filter, map, switchMap, mergeMap, tap, catchError, debounceTime, withLatestFrom } from 'rxjs/operators';
+import { of, combineLatest } from 'rxjs';
+import { skip, filter, map, switchMap, tap, catchError } from 'rxjs/operators';
 
 import { AppState } from '@store';
 import * as scenesStore from '@store/scenes';

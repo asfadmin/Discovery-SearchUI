@@ -8,8 +8,8 @@ import { Store } from '@ngrx/store';
 
 import { AppState } from '@store';
 import * as mapStore from '@store/map';
-import { MapDrawModeType, MapInteractionModeType } from '@models';
-import { MapService, WktService } from '@services';
+import { MapInteractionModeType } from '@models';
+import { MapService } from '@services';
 import { SubSink } from 'subsink';
 
 

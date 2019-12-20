@@ -1,14 +1,13 @@
-import { Component, OnInit, Input, Output, EventEmitter, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ListSearchType } from '@models';
 
 import { Subject } from 'rxjs';
-import { map, tap, debounceTime } from 'rxjs/operators';
+import { map, debounceTime } from 'rxjs/operators';
 import { SubSink } from 'subsink';
 
 import { Store } from '@ngrx/store';
 import { AppState } from '@store';
 import * as filtersStore from '@store/filters';
-import * as scenesStore from '@store/scenes';
 
 import * as models from '@models';
 import * as services from '@services';

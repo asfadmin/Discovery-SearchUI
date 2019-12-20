@@ -2,13 +2,10 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 
 import { MatDialog } from '@angular/material/dialog';
 import { ClipboardService } from 'ngx-clipboard';
-import { take } from 'rxjs/operators';
 
 import { Store } from '@ngrx/store';
 import { AppState } from '@store';
 import * as userStore from '@store/user';
-
-import { SubSink } from 'subsink';
 import { PreferencesComponent } from './preferences/preferences.component';
 import { AuthService, AsfApiService, EnvironmentService, ScreenSizeService } from '@services';
 import { CMRProduct, Breakpoints, UserAuth } from '@models';
