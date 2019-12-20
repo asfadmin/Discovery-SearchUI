@@ -28,6 +28,7 @@ export class SceneDetailComponent implements OnInit, OnDestroy {
   public browses$ = this.store$.select(scenesStore.getSelectedSceneBrowses);
   public dataset: models.Dataset;
   public searchType: models.SearchType;
+  public searchTypes = models.SearchType;
   public scene: models.CMRProduct;
   public sceneLen: number;
   public p = models.Props;
@@ -133,75 +134,11 @@ export class SceneDetailComponent implements OnInit, OnDestroy {
     );
   }
 
-  public isGeoSearch(): boolean {
-    return this.searchType === models.SearchType.DATASET;
-  }
-
-  public hasValue(v: any): boolean {
-    return v !== null && v !== undefined;
-  }
-
-  public setBeamMode(): void {
-    const action = new filtersStore.AddBeamMode(this.scene.metadata.beamMode);
-    this.store$.dispatch(action);
-  }
-
-  public setStartDate(): void {
-    const action = new filtersStore.SetStartDate(this.scene.metadata.date.toDate());
-    this.store$.dispatch(action);
-  }
-
-  public setEndDate(): void {
-    const action = new filtersStore.SetEndDate(this.scene.metadata.date.toDate());
-    this.store$.dispatch(action);
-  }
-
-  public setPathStart(): void {
-    const action = new filtersStore.SetPathStart(this.scene.metadata.path);
-    this.store$.dispatch(action);
-  }
-
-  public setPathEnd(): void {
-    const action = new filtersStore.SetPathEnd(this.scene.metadata.path);
-    this.store$.dispatch(action);
-  }
-
-  public setFrameStart(): void {
-    const action = new filtersStore.SetFrameStart(this.scene.metadata.frame);
-    this.store$.dispatch(action);
-  }
-
-  public setFrameEnd(): void {
-    const action = new filtersStore.SetFrameEnd(this.scene.metadata.frame);
-    this.store$.dispatch(action);
-  }
-
-  public setFlightDirection(): void {
-    const dir = this.scene.metadata.flightDirection
-      .toLowerCase();
-
-    const capitalized = this.capitalizeFirstLetter(dir);
-
-    const action = new filtersStore.SetFlightDirections([<models.FlightDirection>capitalized]);
-    this.store$.dispatch(action);
-  }
-
-  public addPolarization(): void {
-    const action = new filtersStore.AddPolarization(this.scene.metadata.polarization);
-    this.store$.dispatch(action);
-  }
-
-  public addMission(): void {
-    const action = new filtersStore.SelectMission(this.scene.metadata.missionName);
-    this.store$.dispatch(action);
-  }
-
   public findSimilarScenes(): void {
-    this.setPathStart();
-    this.setPathEnd();
-    this.setFrameStart();
-    this.setFrameEnd();
-    this.store$.dispatch(new searchStore.MakeSearch());
+    [
+      new filtersStore.SetFiltersSimilarTo(this.scene),
+      new searchStore.MakeSearch()
+    ].forEach(action => this.store$.dispatch(action));
   }
 
   private capitalizeFirstLetter(str) {

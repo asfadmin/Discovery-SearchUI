@@ -63,7 +63,7 @@
         Citation
       </a>
       &nbsp;&nbsp;
-      <a *ngIf="isGeoSearch() && prop.isRelevant(p.PATH, dataset) && prop.isRelevant(p.FRAME, dataset)"
+      <a *ngIf="searchType === searchTypes.DATASET && prop.isRelevant(p.PATH, dataset) && prop.isRelevant(p.FRAME, dataset)"
          (click)="findSimilarScenes()"
          matTooltip="Search based on this scene's path/frame"
          mat-raised-button class="mini-button">

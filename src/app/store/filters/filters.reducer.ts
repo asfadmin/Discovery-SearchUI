@@ -214,6 +214,32 @@ export function filtersReducer(state = initState, action: FiltersActions): Filte
       };
     }
 
+    case FiltersActionType.SET_FRAME_END: {
+      return {
+        ...state,
+        frameRange: {
+          ...state.frameRange,
+          end: action.payload
+        }
+      };
+    }
+
+    case FiltersActionType.SET_FILTERS_SIMILAR_TO: {
+      const metadata = action.payload.metadata;
+
+      return {
+        ...state,
+        frameRange: {
+          start: metadata.frame,
+          end: metadata.frame
+        },
+        pathRange: {
+          start: metadata.path,
+          end: metadata.path
+        }
+      };
+    }
+
     case FiltersActionType.CLEAR_FRAME_RANGE: {
       return {
         ...state,

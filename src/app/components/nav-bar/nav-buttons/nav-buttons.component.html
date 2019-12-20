@@ -1,4 +1,4 @@
-<div *ngIf="breakpoint$ | async as breakpoint" class="layout">
+<div *ngIf="breakpoint$ | async as breakpoint">
   <ng-container *ngIf="breakpoint > breakpoints.MOBILE">
     <button
       (click)="onOpenDownloadQueue()"

@@ -1,7 +1,7 @@
 <div
   [matMenuTriggerFor]="menu"
   *ngIf="(searchType$ | async) === searchTypes.DATASET"
-  style="padding: 2px" class="faint-text clickable">
+  style="padding: 2px;" class="faint-text clickable">
   <span [class.invisible]="(searchType$ | async) !== searchTypes.DATASET">
     <span>
         {{ formatNumber(maxResults) }} <mat-icon
@@ -14,7 +14,7 @@
       {{ currentSearchAmount !== -1 ? formatNumber(currentSearchAmount) : '0' }}
     </span>
     <span *ngIf="isMaxResultsLoading"
-      style="margin: 0 4px">
+      style="margin: 0 4px;">
       <fa-icon icon="spinner" [pulse]="true"></fa-icon>
     </span>
     Files
@@ -23,7 +23,7 @@
 
 <div
   *ngIf="(searchType$ | async) !== searchTypes.DATASET"
-  style="padding: 2px" class="faint-text">
+  style="padding: 2px;" class="faint-text">
   <span [class.invisible]="(searchType$ | async) !== searchTypes.DATASET">
     <span>
         {{ formatNumber(maxResults) }} <mat-icon
@@ -36,7 +36,7 @@
       {{ currentSearchAmount !== -1 ? formatNumber(currentSearchAmount) : '0' }}
     </span>
     <span *ngIf="isMaxResultsLoading"
-      style="margin: 0 4px">
+      style="margin: 0 4px;">
       <fa-icon icon="spinner" [pulse]="true"></fa-icon>
     </span>
     Files
