@@ -1,8 +1,3 @@
-.browse-list-viewport {
-  width: 100%;
-  height: 100%;
-}
-
 .browse-list-viewport .cdk-virtual-scroll-content-wrapper {
   display: flex;
   flex-direction: row;
@@ -37,8 +32,4 @@
 .browse-image--date {
   width: 200px;
   height: 15px;
-}
-
-.mat-badge {
-  margin-top: 15px;
 }
