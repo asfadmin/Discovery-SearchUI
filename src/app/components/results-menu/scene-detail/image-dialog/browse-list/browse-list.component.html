@@ -1,4 +1,4 @@
-<cdk-virtual-scroll-viewport orientation="horizontal" class="browse-list-viewport" itemSize="200">
+<cdk-virtual-scroll-viewport orientation="horizontal" class="w100 h100" itemSize="200">
   <div *cdkVirtualFor="let scene of (scenes$ | async)"
     (click)="onNewSceneSelected(scene)"
     [class.selected]="scene.name === selectedName"
