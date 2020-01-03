@@ -40,8 +40,6 @@ export class BannerApiService {
   }
 
   private bannerUrl(): string {
-    const deployment = this.env.value.devMode ? 'test' : 'prod';
-
-    return `https://banners.asf.alaska.edu/calendar/${deployment}`;
+    return this.env.value.banner[this.env.value.devMode ? 'test' : 'prod'];
   }
 }

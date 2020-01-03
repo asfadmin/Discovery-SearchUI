@@ -12,9 +12,9 @@ import { UserAuth } from '@models';
   providedIn: 'root'
 })
 export class UserDataService {
-  private baseUrl = this.env.value.devMode ?
-    `https://gg0fcoca5c.execute-api.us-east-1.amazonaws.com/test` :
-    `https://appdata.asf.alaska.edu`;
+  private baseUrl = this.env.value.user_data[
+    this.env.value.devMode ? 'test' : 'prod'
+  ];
 
   constructor(
     private snackBar: MatSnackBar,
