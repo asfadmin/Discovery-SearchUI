@@ -118,10 +118,10 @@ export class SceneDetailComponent implements OnInit, OnDestroy {
     this.store$.dispatch(new uiStore.SetIsBrowseDialogOpen(true));
 
     const dialogRef = this.dialog.open(ImageDialogComponent, {
-      width: '96%',
-      maxWidth: '96%',
-      height: '90%',
-      maxHeight: '90%',
+      width: '99%',
+      maxWidth: '99%',
+      height: '99%',
+      maxHeight: '99%',
       panelClass: 'image-dialog'
     });
 
