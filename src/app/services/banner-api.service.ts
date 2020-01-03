@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
-import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { Observable, of } from 'rxjs';
+import { map, catchError } from 'rxjs/operators';
 
 import { EnvironmentService } from './environment.service';
 import { BannerApiResponse } from '@models';
@@ -12,6 +13,7 @@ import { BannerApiResponse } from '@models';
 })
 export class BannerApiService {
   constructor(
+    private snackBar: MatSnackBar,
     private env: EnvironmentService,
     private http: HttpClient
   ) { }
@@ -25,7 +27,15 @@ export class BannerApiService {
           target: ''
         })),
         systime: ''
-      })
+      }),
+        catchError(err => {
+          this.snackBar.open('Trouble loading notifications', 'ERROR', {
+            duration: 5000
+          });
+
+          return of(null);
+        }
+      )
     ));
   }
 
