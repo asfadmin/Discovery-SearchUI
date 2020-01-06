@@ -1,8 +1,6 @@
 # SearchUI
 
-[![CodeFactor](https://www.codefactor.io/repository/github/asfadmin/searchui/badge?s=537b1a6ad21e5b50f7e9df7995251dc3f00a8c3a)](https://www.codefactor.io/repository/github/asfadmin/searchui)
-
-<img src="https://api.ghostinspector.com/v1/suites/5d408f00f1eea0544564fb2a/status-badge" title="Search UI Suite Status">
+[![CodeFactor](https://www.codefactor.io/repository/github/asfadmin/searchui/badge?s=537b1a6ad21e5b50f7e9df7995251dc3f00a8c3a)](https://www.codefactor.io/repository/github/asfadmin/searchui) <img src="https://api.ghostinspector.com/v1/suites/5d408f00f1eea0544564fb2a/status-badge" title="Search UI Suite Status">
 
  ASF's Angular search web application
 
