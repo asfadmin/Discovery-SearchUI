@@ -3,6 +3,7 @@ import { Component } from '@angular/core';
 import {
   trigger, state, style, animate, transition
 } from '@angular/animations';
+import { MatDialog } from '@angular/material/dialog';
 
 import { Store } from '@ngrx/store';
 
@@ -33,7 +34,10 @@ export class SearchDropdownComponent {
   public searchType$ = this.store$.select(searchStore.getSearchType);
   public searchTypes = models.SearchType;
 
-  constructor(private store$: Store<AppState>) {}
+  constructor(
+    private store$: Store<AppState>,
+    private dialog: MatDialog,
+  ) {}
 
   public closePanel(): void {
     this.store$.dispatch(new uiStore.CloseFiltersMenu());
@@ -41,6 +45,9 @@ export class SearchDropdownComponent {
 
   public onSetSearchType(searchType: models.SearchType): void {
     this.store$.dispatch(new searchStore.SetSearchType(searchType));
+  }
+
+  public onSaveSearch(): void {
   }
 }
 

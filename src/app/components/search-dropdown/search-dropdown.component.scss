@@ -52,6 +52,16 @@
     z-index: 1001;
   }
 
+  .header-title {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+  }
+
+  .save-search-btn {
+    margin-left: 5px;
+  }
+
   .filters-list {
     flex-grow: 1;
     overflow: auto;
