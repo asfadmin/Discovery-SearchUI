@@ -81,6 +81,10 @@
 </div>
 
 <mat-menu #profileMenu="matMenu">
+ <button (click)="onOpenPreferences()" mat-menu-item matSuffix>
+    Preferences
+  </button>
+  <hr class="menu-hr">
   <button (click)="onLogout()"
     mat-menu-item matSuffix>
     <b> {{ userAuth.id }} </b> <span> logout</span>
