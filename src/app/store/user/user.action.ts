@@ -46,7 +46,10 @@ export class AddNewSearch implements Action {
 export class UpdateSearchWithFilters implements Action {
   public readonly type = UserActionType.UPDATE_SEARCH_WITH_FILTERS;
 
-  constructor(public payload: GeographicFiltersType) {}
+  constructor(public payload: {
+    id: string,
+    filters: GeographicFiltersType
+  }) {}
 }
 
 export class UpdateSearchListFilters implements Action {

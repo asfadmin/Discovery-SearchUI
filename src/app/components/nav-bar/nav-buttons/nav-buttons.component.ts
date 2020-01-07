@@ -76,8 +76,8 @@ export class NavButtonsComponent implements OnInit {
 
   public onOpenPreferences(): void {
     const dialogRef = this.dialog.open(PreferencesComponent, {
-      maxWidth: '100vw',
-      maxHeight: '100vh'
+      maxWidth: '100%',
+      maxHeight: '100%'
     });
 
     dialogRef.afterClosed().subscribe(
@@ -90,8 +90,10 @@ export class NavButtonsComponent implements OnInit {
 
   public onOpenSavedSearches(): void {
     const dialogRef = this.dialog.open(SavedSearchesComponent, {
-      maxWidth: '100vw',
-      maxHeight: '100vh'
+      width: '80%',
+      height: '80%',
+      maxWidth: '100%',
+      maxHeight: '100%'
     });
   }
 

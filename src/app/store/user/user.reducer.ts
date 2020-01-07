@@ -58,6 +58,30 @@ export function userReducer(state = initState, action: UserActions): UserState {
       };
     }
 
+    case UserActionType.UPDATE_SEARCH_WITH_FILTERS: {
+      const searches = [ ...state.savedSearches.searches ];
+      const updateSearch = searches
+        .filter(search => search.id === action.payload.id)[0];
+
+      const searchIdx = searches.indexOf(updateSearch);
+
+      if (!updateSearch) {
+        console.log(`Search ID '${action.payload.id}' not found in saved searches`);
+        return { ...state };
+      }
+
+      updateSearch.filters = action.payload.filters;
+      searches[searchIdx] = updateSearch;
+
+      return {
+        ...state,
+        savedSearches: {
+          ...state.savedSearches,
+          searches
+        }
+      };
+    }
+
     default: {
       return state;
     }

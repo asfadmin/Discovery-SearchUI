@@ -3,9 +3,11 @@ import { Component, OnInit } from '@angular/core';
 import { Store, Action } from '@ngrx/store';
 import { AppState } from '@store';
 import * as userStore from '@store/user';
+import * as searchStore from '@store/search';
 import { MatDialogRef } from '@angular/material';
 
 import { SavedSearchService } from '@services';
+import * as models from '@models';
 
 @Component({
   selector: 'app-saved-searches',
@@ -13,8 +15,8 @@ import { SavedSearchService } from '@services';
   styleUrls: ['./saved-searches.component.scss']
 })
 export class SavedSearchesComponent implements OnInit {
-
   public searches$ = this.store$.select(userStore.getSavedSearches);
+  public searchType$ = this.store$.select(searchStore.getSearchType);
 
   constructor(
     private savedSearchService: SavedSearchService,
@@ -27,6 +29,10 @@ export class SavedSearchesComponent implements OnInit {
 
   public saveCurrentSearch(): void {
     this.savedSearchService.addCurrentSearch('New Search');
+  }
+
+  public updateSearchFilters(id: string): void {
+    this.savedSearchService.updateSearchWithCurrentFilters(id);
   }
 
   public onClose(): void {
