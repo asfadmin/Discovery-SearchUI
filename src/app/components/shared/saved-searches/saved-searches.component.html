@@ -1,1 +1,17 @@
-<p>saved-searches works!</p>
+<mat-dialog-content>
+  <div style="display: flex; flex-direction: row; justify-content: space-between; margin-bottom: 15px;">
+    <div class="dialog-header" mat-dialog-title>Saved Searches</div>
+    <div>
+      <mat-icon (click)="onClose()" class="clickable">
+        close
+      </mat-icon>
+    </div>
+  </div>
+
+  <div *ngFor="let search of (searches$ | async)">
+    {{ search.name }} - {{ search.searchType }}
+  </div>
+
+  <button (click)="saveCurrentSearch()" mat-flat-button color="primary">Save Search</button>
+</mat-dialog-content>
+

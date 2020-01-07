@@ -1,8 +1,10 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
-import { SavedSearchesComponent } from './saved-searches.component';
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatSharedModule } from '@shared';
 
+import { SavedSearchesComponent } from './saved-searches.component';
 
 
 @NgModule({
@@ -10,7 +12,9 @@ import { SavedSearchesComponent } from './saved-searches.component';
     SavedSearchesComponent
   ],
   imports: [
-    CommonModule
+    CommonModule,
+    MatDialogModule,
+    MatSharedModule,
   ],
   exports: [
     SavedSearchesComponent

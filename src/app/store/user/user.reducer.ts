@@ -82,3 +82,8 @@ export const getIsUserLoggedIn = createSelector(
   getUserState,
   (state: UserState) => !!state.auth.id
 );
+
+export const getSavedSearches = createSelector(
+  getUserState,
+  (state: UserState) => state.savedSearches.searches
+);
