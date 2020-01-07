@@ -11,7 +11,6 @@ export enum UserActionType {
   SAVE_SEARCHES = '[User] Save Searches',
   ADD_NEW_SEARCH = '[User] Add new search',
   UPDATE_SEARCH_WITH_FILTERS = '[User] Update search with current filters',
-  UPDATE_SEARCH_LIST = '[User] Update search list',
   UPDATE_SEARCH_NAME = '[User] Edit Search Name',
   DELETE_SAVED_SEARCH = '[User] Delete Saved Search',
   LOAD_SAVED_SEARCHES = '[User] Load Saved Searches',
@@ -52,12 +51,6 @@ export class UpdateSearchWithFilters implements Action {
   }) {}
 }
 
-export class UpdateSearchListFilters implements Action {
-  public readonly type = UserActionType.UPDATE_SEARCH_LIST;
-
-  constructor(public payload: ListFiltersType) {}
-}
-
 export class UpdateSearchName implements Action {
   public readonly type = UserActionType.UPDATE_SEARCH_NAME;
 
@@ -83,7 +76,6 @@ export type UserActions =
   | SetProfile
   | SaveSearches
   | AddNewSearch
-  | UpdateSearchListFilters
   | UpdateSearchName
   | UpdateSearchWithFilters
   | DeleteSavedSearch

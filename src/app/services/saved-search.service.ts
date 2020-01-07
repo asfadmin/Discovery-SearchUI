@@ -8,7 +8,7 @@ import { MapService } from './map/map.service';
 import { AppState } from '@store';
 import * as filtersStore from '@store/filters';
 import { getSearchType } from '@store/search/search.reducer';
-import { AddNewSearch, UpdateSearchWithFilters } from '@store/user/user.action';
+import { AddNewSearch, UpdateSearchWithFilters, UpdateSearchListFilters  } from '@store/user/user.action';
 
 import * as models from '@models';
 
@@ -63,13 +63,8 @@ export class SavedSearchService {
   }
 
   public updateSearchWithCurrentFilters(id: string): void {
-    if (this.searchType === models.SearchType.DATASET) {
-      this.store$.dispatch(new UpdateSearchWithFilters({
-        id,
-        filters: <models.GeographicFiltersType>this.currentSearch
-      }));
-    } else {
+    const action = new UpdateSearchWithFilters({ id, filters: <models.GeographicFiltersType>this.currentSearch });
 
-    }
+    this.store$.dispatch(action);
   }
 }
