@@ -547,7 +547,7 @@ export const getListSearch = createSelector(
 
 export const getGeographicSearch = createSelector(
   getFiltersState,
-  (state: FiltersState): models.GeographicFiltersType => ({
+  (state: FiltersState) => ({
     selectedDataset: state.datasets.selected,
     maxResults: state.maxResults,
     dateRange: state.dateRange,

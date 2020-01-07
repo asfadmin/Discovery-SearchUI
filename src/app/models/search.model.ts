@@ -25,6 +25,7 @@ export interface GeographicFiltersType {
   selectedDataset: string;
   maxResults: number;
 
+  polygon: string;
   dateRange: Range<null | Date>;
 
   pathRange: Range<number | null>;
