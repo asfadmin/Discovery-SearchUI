@@ -536,3 +536,30 @@ export const getSearchList = createSelector(
   getFiltersState,
   (state: FiltersState) => state.searchList
 );
+
+export const getListSearch = createSelector(
+  getFiltersState,
+  (state: FiltersState): models.ListFiltersType => ({
+    listType: state.listSearchMode,
+    list: state.searchList
+  })
+);
+
+export const getGeographicSearch = createSelector(
+  getFiltersState,
+  (state: FiltersState): models.GeographicFiltersType => ({
+    selectedDataset: state.datasets.selected,
+    maxResults: state.maxResults,
+    dateRange: state.dateRange,
+    pathRange: state.pathRange,
+    frameRange: state.frameRange,
+    season: state.season,
+    productTypes: state.productTypes,
+    beamModes: state.beamModes,
+    polarizations: state.polarizations,
+    flightDirections: state.flightDirections,
+    subtypes: state.subtypes,
+    selectedMission: state.selectedMission
+  })
+);
+
