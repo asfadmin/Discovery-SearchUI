@@ -1,11 +1,20 @@
 import { Action } from '@ngrx/store';
 
-import { UserAuth, UserProfile } from '@models';
+import { UserAuth, UserProfile, Search, GeographicFiltersType, ListFiltersType } from '@models';
 
 export enum UserActionType {
   SET_USER_AUTH = '[User] Set User Auth',
+
   SAVE_PROFILE = '[User] Save User Profile',
-  SET_PROFILE = '[User] Set User Profile'
+  SET_PROFILE = '[User] Set User Profile',
+
+  SAVE_SEARCHES = '[User] Save Searches',
+  ADD_NEW_SEARCH = '[User] Add new search',
+  UPDATE_SEARCH_WITH_FILTERS = '[User] Update search with current filters',
+  UPDATE_SEARCH_LIST = '[User] Update search list',
+  UPDATE_SEARCH_NAME = '[User] Edit Search Name',
+  DELETE_SAVED_SEARCH = '[User] Delete Saved Search',
+  LOAD_SAVED_SEARCHES = '[User] Load Saved Searches',
 }
 
 export class SetUserAuth implements Action {
@@ -24,7 +33,56 @@ export class SetProfile implements Action {
   constructor(public payload: UserProfile) {}
 }
 
+export class SaveSearches implements Action {
+  public readonly type = UserActionType.SAVE_SEARCHES;
+}
+
+export class AddNewSearch implements Action {
+  public readonly type = UserActionType.ADD_NEW_SEARCH;
+
+  constructor(public payload: Search) {}
+}
+
+export class UpdateSearchWithFilters implements Action {
+  public readonly type = UserActionType.UPDATE_SEARCH_WITH_FILTERS;
+
+  constructor(public payload: GeographicFiltersType) {}
+}
+
+export class UpdateSearchListFilters implements Action {
+  public readonly type = UserActionType.UPDATE_SEARCH_LIST;
+
+  constructor(public payload: ListFiltersType) {}
+}
+
+export class UpdateSearchName implements Action {
+  public readonly type = UserActionType.UPDATE_SEARCH_NAME;
+
+  constructor(public payload: {
+    id: string;
+    name: string;
+  }) {}
+}
+
+export class DeleteSavedSearch implements Action {
+  public readonly type = UserActionType.DELETE_SAVED_SEARCH;
+
+  constructor(public payload: string) {}
+}
+
+export class LoadSavedSearches implements Action {
+  public readonly type = UserActionType.LOAD_SAVED_SEARCHES;
+}
+
+
 export type UserActions =
   | SaveProfile
   | SetProfile
+  | SaveSearches
+  | AddNewSearch
+  | UpdateSearchListFilters
+  | UpdateSearchName
+  | UpdateSearchWithFilters
+  | DeleteSavedSearch
+  | LoadSavedSearches
   | SetUserAuth;

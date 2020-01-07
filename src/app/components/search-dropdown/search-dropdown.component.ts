@@ -30,7 +30,6 @@ import * as models from '@models';
 export class SearchDropdownComponent {
   public isFiltersMenuOpen$ = this.store$.select(uiStore.getIsFiltersMenuOpen);
 
-  public filterType = models.FilterType;
   public searchType$ = this.store$.select(searchStore.getSearchType);
   public searchTypes = models.SearchType;
 
