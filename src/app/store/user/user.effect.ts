@@ -10,14 +10,14 @@ import { AppState } from '../app.reducer';
 import * as userActions from './user.action';
 import * as userReducer from './user.reducer';
 
-import * as services from '@services';
+import { UserDataService } from '@services/user-data.service';
 
 @Injectable()
 export class UserEffects {
   constructor(
     private actions$: Actions,
     private store$: Store<AppState>,
-    private userDataService: services.UserDataService,
+    private userDataService: UserDataService,
   ) {}
 
   @Effect({ dispatch: false })

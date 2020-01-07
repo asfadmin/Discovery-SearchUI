@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 
+import { SavedSearchService } from '@services';
+
 @Component({
   selector: 'app-saved-searches',
   templateUrl: './saved-searches.component.html',
@@ -7,9 +9,12 @@ import { Component, OnInit } from '@angular/core';
 })
 export class SavedSearchesComponent implements OnInit {
 
-  constructor() { }
+  constructor(
+    private savedSearchService: SavedSearchService
+  ) { }
 
   ngOnInit() {
+    this.savedSearchService.addCurrentSearch('New Search');
   }
 
 }

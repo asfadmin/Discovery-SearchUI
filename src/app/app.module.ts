@@ -72,6 +72,7 @@ export const routes = [
     services.KeyboardService,
     CustomBreakPointsProvider,
     services.UserDataService,
+    services.SavedSearchService,
   ],
   bootstrap: [ AppComponent ],
 })

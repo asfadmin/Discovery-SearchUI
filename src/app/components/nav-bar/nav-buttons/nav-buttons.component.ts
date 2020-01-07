@@ -7,6 +7,7 @@ import { Store } from '@ngrx/store';
 import { AppState } from '@store';
 import * as userStore from '@store/user';
 import { PreferencesComponent } from './preferences/preferences.component';
+import { SavedSearchesComponent } from '@components/shared/saved-searches';
 import { AuthService, AsfApiService, EnvironmentService, ScreenSizeService } from '@services';
 import { CMRProduct, Breakpoints, UserAuth } from '@models';
 
@@ -83,6 +84,13 @@ export class NavButtonsComponent implements OnInit {
         this.store$.dispatch(new userStore.SaveProfile());
       }
     );
+  }
+
+  public onOpenSavedSearches(): void {
+    const dialogRef = this.dialog.open(SavedSearchesComponent, {
+      maxWidth: '100vw',
+      maxHeight: '100vh'
+    });
   }
 
   public onCopy(): void {

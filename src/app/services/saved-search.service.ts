@@ -7,8 +7,8 @@ import * as uuid from 'uuid/v1';
 import { MapService } from './map/map.service';
 import { AppState } from '@store';
 import * as filtersStore from '@store/filters';
-import * as searchStore from '@store/search';
-import * as userStore from '@store/user';
+import { getSearchType } from '@store/search/search.reducer';
+import { AddNewSearch } from '@store/user/user.action';
 
 import * as models from '@models';
 
@@ -27,7 +27,7 @@ export class SavedSearchService {
   );
 
   private currentListSearch$ = this.store$.select(filtersStore.getListSearch);
-  private searchType$ = this.store$.select(searchStore.getSearchType);
+  private searchType$ = this.store$.select(getSearchType);
 
   public currentSearch$ = this.searchType$.pipe(
     switchMap(searchType => searchType === models.SearchType.DATASET ?
@@ -59,6 +59,6 @@ export class SavedSearchService {
       searchType: this.searchType,
     };
 
-    this.store$.dispatch(new userStore.AddNewSearch(search));
+    this.store$.dispatch(new AddNewSearch(search));
   }
 }
