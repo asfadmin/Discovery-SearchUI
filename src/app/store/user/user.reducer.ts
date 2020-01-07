@@ -8,6 +8,9 @@ import * as models from '@models';
 export interface UserState {
   auth: models.UserAuth;
   profile: models.UserProfile;
+  savedSearches: {
+    searches: models.Search[];
+  };
 }
 
 const initState: UserState = {
@@ -19,6 +22,9 @@ const initState: UserState = {
     defaultDataset: 'SENTINEL-1',
     mapLayer: models.MapLayerTypes.SATELLITE,
     maxResults: 250
+  },
+  savedSearches: {
+    searches: []
   }
 };
 
@@ -37,6 +43,18 @@ export function userReducer(state = initState, action: UserActions): UserState {
       return {
         ...state,
         profile: action.payload
+      };
+    }
+
+    case UserActionType.ADD_NEW_SEARCH: {
+      const searches = [ ...state.savedSearches.searches, action.payload ];
+
+      return {
+        ...state,
+        savedSearches: {
+          ...state.savedSearches,
+          searches
+        }
       };
     }
 
