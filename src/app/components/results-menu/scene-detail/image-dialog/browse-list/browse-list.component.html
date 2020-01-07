@@ -4,8 +4,8 @@
     [class.selected]="scene.name === selectedName"
     class="clickable">
     <div class="browse-image--container"
-         [matBadgeHidden]="(browses$ | async).length <= 1"
-         matBadge="{{ (browses$ | async).length }}"
+         [matBadgeHidden]="scene.browses.length <= 1"
+         matBadge="{{ scene.browses.length }}"
          matBadgePosition="above after">
 
       <img [src]="scene.browses[0]"
