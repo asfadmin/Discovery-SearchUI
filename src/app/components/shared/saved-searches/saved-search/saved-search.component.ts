@@ -13,6 +13,7 @@ export class SavedSearchComponent {
 
   @Output() updateFilters = new EventEmitter<string>();
   @Output() updateName = new EventEmitter<{ id: string, name: string }>();
+  @Output() deleteSearch = new EventEmitter<string>();
 
   public isEditingName = false;
   public editName = '';
@@ -35,5 +36,9 @@ export class SavedSearchComponent {
     this.editName = '';
 
     this.updateName.emit({ name: newName, id: this.search.id });
+  }
+
+  public onDeleteSearch(): void {
+    this.deleteSearch.emit(this.search.id);
   }
 }

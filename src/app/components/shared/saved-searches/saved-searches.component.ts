@@ -39,4 +39,8 @@ export class SavedSearchesComponent {
   public onClose(): void {
     this.dialogRef.close();
   }
+
+  public deleteSearch(id: string): void {
+    this.savedSearchService.deleteSearch(id);
+  }
 }

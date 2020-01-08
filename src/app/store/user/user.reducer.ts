@@ -76,6 +76,19 @@ export function userReducer(state = initState, action: UserActions): UserState {
       return updateItem(state, action, updateFunc);
     }
 
+    case UserActionType.DELETE_SAVED_SEARCH: {
+      const searches = [ ...state.savedSearches.searches ]
+        .filter(search => search.id !== action.payload);
+
+      return {
+        ...state,
+        savedSearches: {
+          ...state.savedSearches,
+          searches
+        }
+      };
+    }
+
     default: {
       return state;
     }
