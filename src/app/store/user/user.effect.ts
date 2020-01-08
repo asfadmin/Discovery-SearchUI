@@ -4,7 +4,7 @@ import { Actions, Effect, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
 
 import { Observable, combineLatest } from 'rxjs';
-import { withLatestFrom, switchMap } from 'rxjs/operators';
+import { withLatestFrom, switchMap, map } from 'rxjs/operators';
 
 import { AppState } from '../app.reducer';
 import * as userActions from './user.action';
@@ -32,5 +32,11 @@ export class UserEffects {
     switchMap(
       ([_, [userAuth, profile]]) => this.userDataService.setAttribute$(userAuth, 'profile', profile)
     )
+  );
+
+  @Effect({ dispatch: false })
+  private loadSavedSearches: Observable<void> = this.actions$.pipe(
+    ofType<userActions.LoadSavedSearches>(userActions.UserActionType.LOAD_SAVED_SEARCHES),
+    map(_ => null)
   );
 }

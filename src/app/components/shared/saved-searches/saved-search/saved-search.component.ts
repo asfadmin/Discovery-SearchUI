@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, ViewChild, ElementRef } from '@angular/core';
 
 import * as models from '@models';
 
@@ -40,5 +40,10 @@ export class SavedSearchComponent {
 
   public onDeleteSearch(): void {
     this.deleteSearch.emit(this.search.id);
+  }
+
+  public onEditFocusLeave(): void {
+    this.isEditingName = false;
+    this.editName = '';
   }
 }

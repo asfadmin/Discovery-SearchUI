@@ -11,8 +11,9 @@
         <input matInput
           [(ngModel)]="editName"
           (change)="onNewName($event.target.value)"
+          (focusout)="onEditFocusLeave()"
           name="editNameInput"
-          placeholder="Search Name">
+          placeholder="Search Name" autofocus>
       </mat-form-field>
     </form>
   </div>

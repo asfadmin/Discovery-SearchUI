@@ -81,4 +81,12 @@ export class SavedSearchService {
 
     this.store$.dispatch(action);
   }
+
+  private saveSearches(): void {
+
+  }
+
+  private loadSearches(): void {
+
+  }
 }
