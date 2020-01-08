@@ -59,33 +59,50 @@ export function userReducer(state = initState, action: UserActions): UserState {
     }
 
     case UserActionType.UPDATE_SEARCH_WITH_FILTERS: {
-      const searches = [ ...state.savedSearches.searches ];
-      const updateSearch = searches
-        .filter(search => search.id === action.payload.id)[0];
-
-      const searchIdx = searches.indexOf(updateSearch);
-
-      if (!updateSearch) {
-        console.log(`Search ID '${action.payload.id}' not found in saved searches`);
-        return { ...state };
-      }
-
-      updateSearch.filters = action.payload.filters;
-      searches[searchIdx] = updateSearch;
-
-      return {
-        ...state,
-        savedSearches: {
-          ...state.savedSearches,
-          searches
-        }
+      const updateFunc = (search, actionObj) => {
+        search.filters = action.payload.filters;
+        return search;
       };
+
+      return updateItem(state, action, updateFunc);
+    }
+
+    case UserActionType.UPDATE_SEARCH_NAME: {
+      const updateFunc = (search, actionObj) => {
+        search.name = action.payload.name;
+        return search;
+      };
+
+      return updateItem(state, action, updateFunc);
     }
 
     default: {
       return state;
     }
   }
+}
+
+function updateItem(state, action, updateFunc) {
+  const searches = [ ...state.savedSearches.searches ];
+  const updateSearch = searches
+    .filter(search => search.id === action.payload.id)[0];
+
+  const searchIdx = searches.indexOf(updateSearch);
+
+  if (!updateSearch) {
+    console.log(`Search ID '${action.payload.id}' not found in saved searches`);
+    return { ...state };
+  }
+
+  searches[searchIdx] = updateFunc(updateSearch);
+
+  return {
+    ...state,
+    savedSearches: {
+      ...state.savedSearches,
+      searches
+    }
+  };
 }
 
 /* Selectors */

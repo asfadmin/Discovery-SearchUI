@@ -14,7 +14,7 @@ import * as models from '@models';
   templateUrl: './saved-searches.component.html',
   styleUrls: ['./saved-searches.component.scss']
 })
-export class SavedSearchesComponent implements OnInit {
+export class SavedSearchesComponent {
   public searches$ = this.store$.select(userStore.getSavedSearches);
   public searchType$ = this.store$.select(searchStore.getSearchType);
 
@@ -24,15 +24,16 @@ export class SavedSearchesComponent implements OnInit {
     private dialogRef: MatDialogRef<SavedSearchesComponent>,
   ) { }
 
-  ngOnInit() {
-  }
-
   public saveCurrentSearch(): void {
     this.savedSearchService.addCurrentSearch('New Search');
   }
 
   public updateSearchFilters(id: string): void {
     this.savedSearchService.updateSearchWithCurrentFilters(id);
+  }
+
+  public updateSearchName(update: {id: string, name: string}): void {
+    this.savedSearchService.updateSearchName(update.id, update.name);
   }
 
   public onClose(): void {
