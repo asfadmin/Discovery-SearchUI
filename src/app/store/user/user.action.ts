@@ -82,6 +82,7 @@ export class DeleteSavedSearch implements Action {
 export type UserActions =
   | SaveProfile
   | SetProfile
+  | SetSearches
   | SaveSearches
   | AddNewSearch
   | UpdateSearchName
