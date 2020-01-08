@@ -81,6 +81,9 @@
 </div>
 
 <mat-menu #profileMenu="matMenu">
+ <button (click)="onOpenSavedSearches()" mat-menu-item matSuffix>
+    Saved Searches
+  </button>
  <button (click)="onOpenPreferences()" mat-menu-item matSuffix>
     Preferences
   </button>

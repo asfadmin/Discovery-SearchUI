@@ -9,6 +9,7 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { MatSelectModule } from '@angular/material/select';
 import { MatSharedModule } from '@shared';
 import { DatasetSelectorModule } from '@components/shared/selectors/dataset-selector';
+import { SavedSearchesModule, SavedSearchesComponent } from '@components/shared/saved-searches';
 
 import { NavButtonsComponent } from './nav-buttons.component';
 import { PreferencesComponent } from './preferences/preferences.component';
@@ -25,8 +26,12 @@ import { PreferencesComponent } from './preferences/preferences.component';
     MatSharedModule,
     MatSelectModule,
     DatasetSelectorModule,
+    SavedSearchesModule
   ],
   exports: [ NavButtonsComponent ],
-  entryComponents: [ PreferencesComponent ]
+  entryComponents: [
+    PreferencesComponent,
+    SavedSearchesComponent
+  ]
 })
 export class NavButtonsModule { }
