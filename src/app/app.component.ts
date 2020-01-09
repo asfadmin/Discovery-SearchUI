@@ -6,6 +6,10 @@ import { ofType } from '@ngrx/effects';
 import { of, combineLatest } from 'rxjs';
 import { skip, filter, map, switchMap, tap, catchError } from 'rxjs/operators';
 
+import { NgcCookieConsentService } from 'ngx-cookieconsent';
+// import * as Subscription from 'rxjs/Subscription';
+import { Subscription } from 'rxjs-compat';
+
 import { AppState } from '@store';
 import * as scenesStore from '@store/scenes';
 import * as filterStore from '@store/filters';
@@ -38,6 +42,14 @@ export class AppComponent implements OnInit, OnDestroy {
 
   private subs = new SubSink();
 
+  // keep refs to subscriptions to be able to unsubscribe later
+  private popupOpenSubscription: Subscription;
+  private popupCloseSubscription: Subscription;
+  private initializeSubscription: Subscription;
+  private statusChangeSubscription: Subscription;
+  private revokeChoiceSubscription: Subscription;
+  private noCookieLawSubscription: Subscription;
+
   constructor(
     private store$: Store<AppState>,
     private actions$: ActionsSubject,
@@ -48,6 +60,7 @@ export class AppComponent implements OnInit, OnDestroy {
     private asfSearchApi: services.AsfApiService,
     private authService: services.AuthService,
     private userDataService: services.UserDataService,
+    private ccService: NgcCookieConsentService,
   ) {}
 
   public ngOnInit(): void {
@@ -113,6 +126,37 @@ export class AppComponent implements OnInit, OnDestroy {
 
     this.updateMaxSearchResults();
     this.healthCheck();
+
+    // subscribe to cookieconsent observables to react to main events
+    this.popupOpenSubscription = this.ccService.popupOpen$.subscribe(
+      () => {
+        // you can use this.ccService.getConfig() to do stuff...
+      });
+
+    this.popupCloseSubscription = this.ccService.popupClose$.subscribe(
+      () => {
+        // you can use this.ccService.getConfig() to do stuff...
+      });
+
+    // this.initializeSubscription = this.ccService.initialize$.subscribe(
+    //   (event: NgcInitializeEvent) => {
+    //     // you can use this.ccService.getConfig() to do stuff...
+    //   });
+    //
+    // this.statusChangeSubscription = this.ccService.statusChange$.subscribe(
+    //   (event: NgcStatusChangeEvent) => {
+    //     // you can use this.ccService.getConfig() to do stuff...
+    //   });
+
+    this.revokeChoiceSubscription = this.ccService.revokeChoice$.subscribe(
+      () => {
+        // you can use this.ccService.getConfig() to do stuff...
+      });
+
+    // this.noCookieLawSubscription = this.ccService.noCookieLaw$.subscribe(
+    //   (event: NgcNoCookieLawEvent) => {
+    //     // you can use this.ccService.getConfig() to do stuff...
+    //   });
   }
 
   private loadProductQueue(): void {
@@ -244,6 +288,12 @@ export class AppComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-
+    // unsubscribe to cookieconsent observables to prevent memory leaks
+    this.popupOpenSubscription.unsubscribe();
+    this.popupCloseSubscription.unsubscribe();
+    this.initializeSubscription.unsubscribe();
+    this.statusChangeSubscription.unsubscribe();
+    this.revokeChoiceSubscription.unsubscribe();
+    this.noCookieLawSubscription.unsubscribe();
   }
 }
