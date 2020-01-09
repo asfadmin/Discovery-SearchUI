@@ -64,7 +64,7 @@ export const routes = [
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
   ],
   imports: [
     BrowserModule,
@@ -105,6 +105,7 @@ export const routes = [
     services.KeyboardService,
     CustomBreakPointsProvider,
     services.UserDataService,
+    services.SavedSearchService,
   ],
   bootstrap: [ AppComponent ],
 })

@@ -1,7 +1,7 @@
 /* You can add global styles to this file, and also import other style files */
 
-@import "/styles/asf-theme.scss";
-@import "/styles/filter-list.scss";
+@import './styles/asf-theme';
+@import './styles/filter-list';
 
 * {
   font-family: Roboto, sans-serif;

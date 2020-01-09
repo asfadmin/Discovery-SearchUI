@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
-import { interval, Subject, Observable } from 'rxjs';
-import { map, takeUntil, take, filter } from 'rxjs/operators';
+import { interval, Subject, Observable, of } from 'rxjs';
+import { map, takeUntil, take, filter, catchError } from 'rxjs/operators';
 
 import { EnvironmentService } from './environment.service';
 import * as jwt_decode from 'jwt-decode';
@@ -19,7 +20,8 @@ export class AuthService {
 
   constructor(
     private env: EnvironmentService,
-    private http: HttpClient
+    private http: HttpClient,
+    private snackBar: MatSnackBar,
   ) {}
 
   public login$(): Observable<models.UserAuth | null> {
@@ -59,6 +61,13 @@ export class AuthService {
 
         return user;
       }),
+      catchError(resp => {
+        this.snackBar.open('Trouble logging in', 'ERROR', {
+          duration: 5000,
+        });
+        loginWindowClosed.next();
+        return of(null);
+      }),
       filter(user => !!user),
       take(1)
     );
@@ -71,6 +80,12 @@ export class AuthService {
         withCredentials: true
       }).pipe(
         map(resp => this.getUser()),
+        catchError(resp => {
+          this.snackBar.open('Trouble logging out', 'ERROR', {
+            duration: 5000,
+          });
+          return of(this.getUser());
+        }),
         take(1)
       );
   }

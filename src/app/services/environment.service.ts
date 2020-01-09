@@ -9,6 +9,14 @@ export interface Environment {
       api: string;
       urs: string;
     };
+    banner: {
+      prod: string;
+      test: string;
+    };
+    user_data: {
+      prod: string;
+      test: string;
+    };
     devMode: boolean;
 }
 

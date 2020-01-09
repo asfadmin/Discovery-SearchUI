@@ -12,3 +12,4 @@ export * from './filters.model';
 export * from './banner.model';
 export * from './breakpoints.model';
 export * from './user.model';
+export * from './search.model';

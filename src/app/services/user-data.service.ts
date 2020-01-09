@@ -1,9 +1,10 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { Observable, of } from 'rxjs';
+import { catchError } from 'rxjs/operators';
 
 import { EnvironmentService } from './environment.service';
-
 import { UserAuth } from '@models';
 
 
@@ -11,13 +12,14 @@ import { UserAuth } from '@models';
   providedIn: 'root'
 })
 export class UserDataService {
-  private baseUrl = this.env.value.devMode ?
-    `https://gg0fcoca5c.execute-api.us-east-1.amazonaws.com/test` :
-    `https://appdata.asf.alaska.edu`;
+  private baseUrl = this.env.value.user_data[
+    this.env.value.devMode ? 'test' : 'prod'
+  ];
 
   constructor(
+    private snackBar: MatSnackBar,
     private env: EnvironmentService,
-    private http: HttpClient
+    private http: HttpClient,
   ) { }
 
   public getAttribute$<T>(userAuth: UserAuth, attribute: string): Observable<T> {
@@ -26,7 +28,15 @@ export class UserDataService {
 
     return this.http.get<T>(url, {
       headers
-    });
+    }).pipe(
+      catchError(err => {
+        this.snackBar.open('Trouble loading profile information', 'ERROR', {
+          duration: 5000
+        });
+
+        return of(null);
+      })
+    );
   }
 
   public setAttribute$<T>(userAuth: UserAuth, attribute: string, value: T): Observable<any> {
@@ -35,7 +45,15 @@ export class UserDataService {
 
     return this.http.post(url, value, {
       headers
-    });
+    }).pipe(
+      catchError(err => {
+        this.snackBar.open('Trouble setting profile information', 'ERROR', {
+          duration: 5000
+        });
+
+        return of(null);
+      })
+    );
   }
 
   private makeEndpoint(baseUrl: string, userId: string, attributeName: string): string {

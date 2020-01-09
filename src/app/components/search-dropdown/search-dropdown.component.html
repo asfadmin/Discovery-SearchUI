@@ -3,7 +3,7 @@
   class="dataset-filters-div padding-for-box-shadow">
   <div class="dataset-filters-card">
     <div class="header">
-      <div>
+      <div class="header-title">
         <ng-container *ngIf="selectedSearchType === searchTypes.DATASET">
           Search Filters
         </ng-container>
@@ -11,6 +11,12 @@
         <ng-container *ngIf="selectedSearchType === searchTypes.LIST">
           List Search
         </ng-container>
+
+        <button (click)="onSaveSearch()"
+          class="save-search-btn"
+          matTooltip="Save Search Filters" mat-icon-button>
+          <mat-icon>save</mat-icon>
+        </button>
       </div>
 
       <div fxFlex="nogrow">
