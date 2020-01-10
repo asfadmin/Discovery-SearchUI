@@ -1,7 +1,7 @@
 /* You can add global styles to this file, and also import other style files */
 
-@import "/styles/asf-theme.scss";
-@import "/styles/filter-list.scss";
+@import './styles/asf-theme';
+@import './styles/filter-list';
 
 * {
   font-family: Roboto, sans-serif;
@@ -187,7 +187,10 @@ ul {
 
   .mat-dialog-container {
     background-color: $asf-primary-light;
-    padding-bottom: 48px;
+    padding-bottom: 20px;
+    padding-top: 11px;
+    padding-left: 12px;
+    padding-right: 12px;
   }
 }
 
@@ -202,4 +205,9 @@ ul {
   padding: 0 8px !important;
   line-height: 24px !important;
   min-width: 1% !important;
+}
+
+.mat-select-panel {
+  max-width: 340px !important;
+  max-height: 312px !important;
 }

@@ -25,6 +25,38 @@ import * as services from '@services';
 import { AppComponent } from './app.component';
 import { FlexLayoutModule } from '@angular/flex-layout';
 
+import {NgcCookieConsentModule, NgcCookieConsentConfig} from 'ngx-cookieconsent';
+
+// info about cookie consent module: https://tinesoft.github.io/ngx-cookieconsent/home
+const cookieConfig: NgcCookieConsentConfig = {
+    'cookie': {
+      'domain': 'search.asf.alaska.edu'
+  },
+    'position': 'bottom',
+    'theme': 'edgeless',
+    'palette': {
+    'popup': {
+      'background': '#000000',
+        'text': '#ffffff',
+        'link': '#ffffff'
+    },
+    'button': {
+      'background': '#236192',
+        'text': '#ffffff',
+        'border': 'transparent'
+    }
+  },
+    'type': 'info',
+    'content': {
+      'message': 'This website uses cookies to ensure you get the best experience on our website.',
+        'dismiss': 'Got it!',
+        'deny': 'Refuse cookies',
+        'link': 'Learn more',
+        'href': 'https://cookiesandyou.com',
+        'policy': 'Cookie Policy'
+    }
+};
+
 export const routes = [
   { path: '**', name: 'AppComponent', component: AppComponent },
 ];
@@ -32,12 +64,13 @@ export const routes = [
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
   ],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
     HttpClientModule,
+    NgcCookieConsentModule.forRoot(cookieConfig),
     MatSnackBarModule,
     MatBottomSheetModule,
     MatSharedModule,
@@ -72,6 +105,7 @@ export const routes = [
     services.KeyboardService,
     CustomBreakPointsProvider,
     services.UserDataService,
+    services.SavedSearchService,
   ],
   bootstrap: [ AppComponent ],
 })

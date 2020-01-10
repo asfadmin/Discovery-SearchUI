@@ -8,6 +8,9 @@ import * as models from '@models';
 export interface UserState {
   auth: models.UserAuth;
   profile: models.UserProfile;
+  savedSearches: {
+    searches: models.Search[];
+  };
 }
 
 const initState: UserState = {
@@ -19,6 +22,9 @@ const initState: UserState = {
     defaultDataset: 'SENTINEL-1',
     mapLayer: models.MapLayerTypes.SATELLITE,
     maxResults: 250
+  },
+  savedSearches: {
+    searches: []
   }
 };
 
@@ -40,10 +46,76 @@ export function userReducer(state = initState, action: UserActions): UserState {
       };
     }
 
+    case UserActionType.ADD_NEW_SEARCH: {
+      const searches = [ ...state.savedSearches.searches, action.payload ];
+
+      return {
+        ...state,
+        savedSearches: {
+          ...state.savedSearches,
+          searches
+        }
+      };
+    }
+
+    case UserActionType.UPDATE_SEARCH_WITH_FILTERS: {
+      const updateFunc = (search, actionObj) => {
+        search.filters = action.payload.filters;
+        return search;
+      };
+
+      return updateItem(state, action, updateFunc);
+    }
+
+    case UserActionType.UPDATE_SEARCH_NAME: {
+      const updateFunc = (search, actionObj) => {
+        search.name = action.payload.name;
+        return search;
+      };
+
+      return updateItem(state, action, updateFunc);
+    }
+
+    case UserActionType.DELETE_SAVED_SEARCH: {
+      const searches = [ ...state.savedSearches.searches ]
+        .filter(search => search.id !== action.payload);
+
+      return {
+        ...state,
+        savedSearches: {
+          ...state.savedSearches,
+          searches
+        }
+      };
+    }
+
     default: {
       return state;
     }
   }
+}
+
+function updateItem(state, action, updateFunc) {
+  const searches = [ ...state.savedSearches.searches ];
+  const updateSearch = searches
+    .filter(search => search.id === action.payload.id)[0];
+
+  const searchIdx = searches.indexOf(updateSearch);
+
+  if (!updateSearch) {
+    console.log(`Search ID '${action.payload.id}' not found in saved searches`);
+    return { ...state };
+  }
+
+  searches[searchIdx] = updateFunc(updateSearch);
+
+  return {
+    ...state,
+    savedSearches: {
+      ...state.savedSearches,
+      searches
+    }
+  };
 }
 
 /* Selectors */
@@ -63,4 +135,9 @@ export const getUserProfile = createSelector(
 export const getIsUserLoggedIn = createSelector(
   getUserState,
   (state: UserState) => !!state.auth.id
+);
+
+export const getSavedSearches = createSelector(
+  getUserState,
+  (state: UserState) => state.savedSearches.searches
 );

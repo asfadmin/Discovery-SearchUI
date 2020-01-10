@@ -1,0 +1,35 @@
+<div>
+  <div *ngIf="!isEditingName">
+    {{ search.name }}
+    <button (click)="onEditName()" mat-icon-button>
+      <mat-icon>edit</mat-icon>
+    </button>
+  </div>
+  <div *ngIf="isEditingName">
+    <form #nameEditForm="ngForm" onsubmit="return false">
+      <mat-form-field>
+        <input matInput
+          [(ngModel)]="editName"
+          (change)="onNewName($event.target.value)"
+          name="editNameInput"
+          placeholder="Search Name">
+      </mat-form-field>
+    </form>
+  </div>
+  - {{ search.searchType }}
+
+  <br>
+  {{search.filters | json}}
+
+  <button *ngIf="search.searchType === searchType"
+    (click)="onUpdateFilters(search.id)"
+    mat-flat-button color="primary">
+      Update
+  </button>
+
+  <button (click)="onDeleteSearch()"
+    mat-flat-button color="primary"
+    style="margin-left: 10px;">
+      Delete
+  </button>
+</div>
