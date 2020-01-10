@@ -46,4 +46,8 @@ export class SavedSearchesComponent implements OnInit {
   public deleteSearch(id: string): void {
     this.savedSearchService.deleteSearch(id);
   }
+
+  public onSetSearch(search: models.Search): void {
+    console.log(search);
+  }
 }

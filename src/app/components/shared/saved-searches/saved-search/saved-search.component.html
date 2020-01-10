@@ -22,8 +22,16 @@
   <br>
   {{search.filters | json}}
 
+  <button
+    (click)="onSetSearch()"
+    mat-flat-button color="primary"
+    style="margin-left: 10px;">
+      Set
+  </button>
+
   <button *ngIf="search.searchType === searchType"
     (click)="onUpdateFilters(search.id)"
+    style="margin-left: 10px;"
     mat-flat-button color="primary">
       Update
   </button>

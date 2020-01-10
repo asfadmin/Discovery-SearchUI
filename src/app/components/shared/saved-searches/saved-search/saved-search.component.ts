@@ -14,9 +14,14 @@ export class SavedSearchComponent {
   @Output() updateFilters = new EventEmitter<string>();
   @Output() updateName = new EventEmitter<{ id: string, name: string }>();
   @Output() deleteSearch = new EventEmitter<string>();
+  @Output() setSearch = new EventEmitter<models.Search>();
 
   public isEditingName = false;
   public editName = '';
+
+  public onSetSearch(): void {
+    this.setSearch.emit(this.search);
+  }
 
   public onUpdateFilters(id: string): void {
     this.updateFilters.emit(id);
