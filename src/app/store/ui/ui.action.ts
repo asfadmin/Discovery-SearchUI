@@ -10,6 +10,9 @@ export enum UIActionType {
   CLOSE_FILTERS_MENU = '[UI] Close Filters Menu',
   OPEN_FILTERS_MENU = '[UI] Open Filters Menu ',
 
+  CLOSE_SIDEBAR = '[UI] Close Sidebar',
+  OPEN_SIDEBAR = '[UI] Open Sidebar',
+
   SET_IS_BROWSE_DIALOG_OPEN = '[UI] Set Is Browse Dialog Open',
   SET_ONLY_SCENES_WITH_BROWSE = '[UI] Set Only Scenes With Browse',
 
@@ -32,6 +35,14 @@ export class CloseAOIOptions implements Action {
 
 export class ToggleFiltersMenu implements Action {
   public readonly type = UIActionType.TOGGLE_FILTERS_MENU;
+}
+
+export class CloseSidebar implements Action {
+  public readonly type = UIActionType.CLOSE_SIDEBAR;
+}
+
+export class OpenSidebar implements Action {
+  public readonly type = UIActionType.OPEN_SIDEBAR;
 }
 
 export class CloseFiltersMenu implements Action {
@@ -85,6 +96,8 @@ export class LoadBanners implements Action {
 export type UIActions =
   | ToggleAOIOptions
   | CloseAOIOptions
+  | OpenSidebar
+  | CloseSidebar
   | ToggleFiltersMenu
   | CloseFiltersMenu
   | OpenFiltersMenu

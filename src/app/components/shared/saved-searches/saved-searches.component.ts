@@ -4,7 +4,7 @@ import { Store, Action } from '@ngrx/store';
 import { AppState } from '@store';
 import * as userStore from '@store/user';
 import * as searchStore from '@store/search';
-import { MatDialogRef } from '@angular/material';
+import * as uiStore from '@store/ui';
 
 import { SavedSearchService } from '@services';
 import * as models from '@models';
@@ -21,7 +21,6 @@ export class SavedSearchesComponent implements OnInit {
   constructor(
     private savedSearchService: SavedSearchService,
     private store$: Store<AppState>,
-    private dialogRef: MatDialogRef<SavedSearchesComponent>,
   ) { }
 
   ngOnInit() {
@@ -41,7 +40,7 @@ export class SavedSearchesComponent implements OnInit {
   }
 
   public onClose(): void {
-    this.dialogRef.close();
+    this.store$.dispatch(new uiStore.CloseSidebar());
   }
 
   public deleteSearch(id: string): void {

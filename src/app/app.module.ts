@@ -6,6 +6,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { MatBottomSheetModule } from '@angular/material/bottom-sheet';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { environment } from '@environments/environment';
+import { MatSidenavModule } from '@angular/material/sidenav';
 
 import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
@@ -13,6 +14,7 @@ import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 
 import * as store from './store';
 
+import { SavedSearchesModule } from '@components/shared/saved-searches';
 import { NavBarModule } from '@components/nav-bar';
 import { MapModule } from '@components/map';
 import { ResultsMenuModule } from '@components/results-menu';
@@ -47,7 +49,8 @@ export const routes = [
     StoreModule.forRoot(store.reducers, { metaReducers: store.metaReducers }),
     EffectsModule.forRoot(store.appEffects),
     !environment.production ? StoreDevtoolsModule.instrument() : [],
-
+    MatSidenavModule,
+    SavedSearchesModule,
     MapModule,
     ResultsMenuModule,
     NavBarModule,

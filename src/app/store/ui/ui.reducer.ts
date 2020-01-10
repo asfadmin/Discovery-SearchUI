@@ -8,6 +8,7 @@ import { UIActionType, UIActions } from './ui.action';
 export interface UIState {
   isFiltersMenuOpen: boolean;
   isResultsMenuOpen: boolean;
+  isSidebarOpen: boolean;
   isAOIOptionsOpen: boolean;
   isBrowseDialogOpen: boolean;
   onlyScenesWithBrowse: boolean;
@@ -17,6 +18,7 @@ export interface UIState {
 export const initState: UIState = {
   isFiltersMenuOpen: false,
   isResultsMenuOpen: false,
+  isSidebarOpen: true,
   isAOIOptionsOpen: false,
   isBrowseDialogOpen: false,
   onlyScenesWithBrowse: true,
@@ -37,6 +39,20 @@ export function uiReducer(state = initState, action: UIActions): UIState {
       return {
         ...state,
         isAOIOptionsOpen: false
+      };
+    }
+
+    case UIActionType.OPEN_SIDEBAR: {
+      return {
+        ...state,
+        isSidebarOpen: true
+      };
+    }
+
+    case UIActionType.CLOSE_SIDEBAR: {
+      return {
+        ...state,
+        isSidebarOpen: false
       };
     }
 
@@ -155,3 +171,9 @@ export const getBanners = createSelector(
   getUIState,
   state => state.banners
 );
+
+export const getIsSidebarOpen = createSelector(
+  getUIState,
+  state => state.isSidebarOpen
+);
+
