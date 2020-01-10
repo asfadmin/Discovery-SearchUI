@@ -124,5 +124,6 @@ export class NavButtonsComponent implements OnInit {
     this.maturity = maturity;
     localStorage.setItem(this.maturityKey, this.maturity);
     this.asfApiService.setApiMaturity(this.maturity);
+    this.authService.setMaturity(this.maturity);
   }
 }
