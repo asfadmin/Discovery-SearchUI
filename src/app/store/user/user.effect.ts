@@ -4,7 +4,7 @@ import { Actions, Effect, ofType } from '@ngrx/effects';
 import { Store, Action } from '@ngrx/store';
 
 import { Observable, combineLatest } from 'rxjs';
-import { withLatestFrom, switchMap, map, tap } from 'rxjs/operators';
+import { withLatestFrom, switchMap, map, tap, filter } from 'rxjs/operators';
 
 import { AppState } from '../app.reducer';
 import * as userActions from './user.action';
@@ -60,6 +60,7 @@ export class UserEffects {
       ([_, userAuth]) =>
         this.userDataService.getAttribute$(userAuth, 'SavedSearches')
     ),
+    filter(resp => !('status' in resp && resp['status'] === 'fail')),
     map(searches => new userActions.SetSearches(<Search[]>searches))
   );
 }
