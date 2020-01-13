@@ -81,10 +81,7 @@ export class NavButtonsComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe(
-      profile => {
-        this.store$.dispatch(new userStore.SetProfile(profile));
-        this.store$.dispatch(new userStore.SaveProfile());
-      }
+      _ => this.store$.dispatch(new userStore.SaveProfile())
     );
   }
 
