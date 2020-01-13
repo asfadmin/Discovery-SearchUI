@@ -30,7 +30,7 @@ import {NgcCookieConsentModule, NgcCookieConsentConfig} from 'ngx-cookieconsent'
 // info about cookie consent module: https://tinesoft.github.io/ngx-cookieconsent/home
 const cookieConfig: NgcCookieConsentConfig = {
     'cookie': {
-      'domain': 'search.asf.alaska.edu'
+      'domain': window.location.hostname
   },
     'position': 'bottom',
     'theme': 'edgeless',
