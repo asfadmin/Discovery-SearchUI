@@ -5,6 +5,7 @@ import { UserAuth, UserProfile, Search, GeographicFiltersType, ListFiltersType }
 export enum UserActionType {
   SET_USER_AUTH = '[User] Set User Auth',
 
+  LOAD_PROFILE = '[User] Load User Profile',
   SAVE_PROFILE = '[User] Save User Profile',
   SET_PROFILE = '[User] Set User Profile',
 
@@ -22,6 +23,10 @@ export class SetUserAuth implements Action {
   public readonly type = UserActionType.SET_USER_AUTH;
 
   constructor(public payload: UserAuth) {}
+}
+
+export class LoadProfile implements Action {
+  public readonly type = UserActionType.LOAD_PROFILE;
 }
 
 export class SaveProfile implements Action {
@@ -82,6 +87,7 @@ export class DeleteSavedSearch implements Action {
 export type UserActions =
   | SaveProfile
   | SetProfile
+  | LoadProfile
   | SetSearches
   | SaveSearches
   | AddNewSearch

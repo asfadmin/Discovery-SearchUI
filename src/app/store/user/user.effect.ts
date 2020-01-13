@@ -11,7 +11,7 @@ import * as userActions from './user.action';
 import * as userReducer from './user.reducer';
 
 import { UserDataService } from '@services/user-data.service';
-import { Search } from '@models';
+import { Search, UserProfile } from '@models';
 
 @Injectable()
 export class UserEffects {
@@ -34,6 +34,18 @@ export class UserEffects {
       ([_, [userAuth, profile]]) =>
         this.userDataService.setAttribute$(userAuth, 'profile', profile)
     )
+  );
+
+  @Effect()
+  private loadLoadUserProfile: Observable<Action> = this.actions$.pipe(
+    ofType<userActions.LoadSavedSearches>(userActions.UserActionType.LOAD_PROFILE),
+    withLatestFrom( this.store$.select(userReducer.getUserAuth)),
+    switchMap(
+      ([_, userAuth]) =>
+        this.userDataService.getAttribute$(userAuth, 'profile')
+    ),
+    filter(resp => !(!!resp && 'status' in resp && resp['status'] === 'fail')),
+    map(profile => new userActions.SetProfile(<UserProfile>profile))
   );
 
   @Effect({ dispatch: false })
@@ -60,7 +72,7 @@ export class UserEffects {
       ([_, userAuth]) =>
         this.userDataService.getAttribute$(userAuth, 'SavedSearches')
     ),
-    filter(resp => !('status' in resp && resp['status'] === 'fail')),
+    filter(resp => !(!!resp && 'status' in resp && resp['status'] === 'fail')),
     map(searches => new userActions.SetSearches(<Search[]>searches))
   );
 }
