@@ -1,4 +1,5 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
+import { CookieService} from 'ngx-cookie-service';
 import { SubSink } from 'subsink';
 
 import { Store, ActionsSubject } from '@ngrx/store';
@@ -6,7 +7,7 @@ import { ofType } from '@ngrx/effects';
 import { of, combineLatest } from 'rxjs';
 import { skip, filter, map, switchMap, tap, catchError } from 'rxjs/operators';
 
-import { NgcCookieConsentService } from 'ngx-cookieconsent';
+import { NgcCookieConsentService, NgcInitializeEvent } from 'ngx-cookieconsent';
 // import * as Subscription from 'rxjs/Subscription';
 import { Subscription } from 'rxjs-compat';
 
@@ -29,6 +30,8 @@ import * as models from './models';
 })
 export class AppComponent implements OnInit, OnDestroy {
   private queueStateKey = 'asf-queue-state';
+  private cookieValue = 'ok';
+  private cookieConfig;
 
   public shouldOmitSearchPolygon$ = this.store$.select(filterStore.getShouldOmitSearchPolygon);
   public isLoading$ = this.store$.select(searchStore.getIsLoading);
@@ -60,6 +63,7 @@ export class AppComponent implements OnInit, OnDestroy {
     private asfSearchApi: services.AsfApiService,
     private authService: services.AuthService,
     private userDataService: services.UserDataService,
+    private cookieService: CookieService,
     private ccService: NgcCookieConsentService,
   ) {}
 
@@ -131,17 +135,22 @@ export class AppComponent implements OnInit, OnDestroy {
     this.popupOpenSubscription = this.ccService.popupOpen$.subscribe(
       () => {
         // you can use this.ccService.getConfig() to do stuff...
+        this.cookieConfig = this.ccService.getConfig();
+        console.log('cookie consent domain:', this.cookieConfig);
       });
 
     this.popupCloseSubscription = this.ccService.popupClose$.subscribe(
       () => {
         // you can use this.ccService.getConfig() to do stuff...
+        // this.cookieService.set('cookieService', this.cookieValue);
+        this.cookieConfig = this.ccService.getConfig();
+        console.log('cookie consent domain:', this.cookieConfig);
       });
 
-    // this.initializeSubscription = this.ccService.initialize$.subscribe(
-    //   (event: NgcInitializeEvent) => {
-    //     // you can use this.ccService.getConfig() to do stuff...
-    //   });
+    this.initializeSubscription = this.ccService.initialize$.subscribe(
+      (event: NgcInitializeEvent) => {
+        // you can use this.ccService.getConfig() to do stuff...
+      });
     //
     // this.statusChangeSubscription = this.ccService.statusChange$.subscribe(
     //   (event: NgcStatusChangeEvent) => {

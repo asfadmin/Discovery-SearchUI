@@ -6,6 +6,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { MatBottomSheetModule } from '@angular/material/bottom-sheet';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { environment } from '@environments/environment';
+import { CookieService} from 'ngx-cookie-service';
 
 import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
@@ -30,7 +31,7 @@ import {NgcCookieConsentModule, NgcCookieConsentConfig} from 'ngx-cookieconsent'
 // info about cookie consent module: https://tinesoft.github.io/ngx-cookieconsent/home
 const cookieConfig: NgcCookieConsentConfig = {
     'cookie': {
-      'domain': 'search.asf.alaska.edu'
+      'domain': window.location.origin
   },
     'position': 'bottom',
     'theme': 'edgeless',
@@ -49,7 +50,7 @@ const cookieConfig: NgcCookieConsentConfig = {
     'type': 'info',
     'content': {
       'message': 'This website uses cookies to ensure you get the best experience on our website.',
-        'dismiss': 'Got it!',
+        'dismiss': 'Dismiss',
         'deny': 'Refuse cookies',
         'link': 'Learn more',
         'href': 'https://cookiesandyou.com',
@@ -105,6 +106,7 @@ export const routes = [
     services.KeyboardService,
     CustomBreakPointsProvider,
     services.UserDataService,
+    CookieService,
   ],
   bootstrap: [ AppComponent ],
 })
