@@ -44,7 +44,7 @@ export class UserEffects {
       ([_, userAuth]) =>
         this.userDataService.getAttribute$(userAuth, 'profile')
     ),
-    filter(resp => !(!!resp && 'status' in resp && resp['status'] === 'fail')),
+    filter(resp => this.isSuccessfulResponse(resp)),
     map(profile => new userActions.SetProfile(<UserProfile>profile))
   );
 
@@ -61,7 +61,6 @@ export class UserEffects {
       ([_, [userAuth, searches]]) =>
         this.userDataService.setAttribute$(userAuth, 'SavedSearches', searches)
     ),
-    tap(searches => console.log(searches)),
   );
 
   @Effect()
@@ -72,7 +71,15 @@ export class UserEffects {
       ([_, userAuth]) =>
         this.userDataService.getAttribute$(userAuth, 'SavedSearches')
     ),
-    filter(resp => !(!!resp && 'status' in resp && resp['status'] === 'fail')),
+    filter(resp => this.isSuccessfulResponse(resp)),
     map(searches => new userActions.SetSearches(<Search[]>searches))
   );
+
+  private isSuccessfulResponse(resp): boolean {
+    return !(
+      !!resp &&
+      'status' in resp &&
+      resp['status'] === 'fail'
+    );
+  }
 }
