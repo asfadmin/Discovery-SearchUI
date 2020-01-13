@@ -5,6 +5,7 @@ import { AppState } from '@store';
 import * as userStore from '@store/user';
 import * as searchStore from '@store/search';
 import * as uiStore from '@store/ui';
+import * as filtersStore from '@store/filters';
 
 import { SavedSearchService } from '@services';
 import * as models from '@models';
@@ -48,6 +49,8 @@ export class SavedSearchesComponent implements OnInit {
   }
 
   public onSetSearch(search: models.Search): void {
-    console.log(search);
+    this.store$.dispatch(new searchStore.ClearSearch());
+    this.store$.dispatch(new searchStore.SetSearchType(search.searchType));
+    this.store$.dispatch(new filtersStore.SetSavedSearch(search));
   }
 }
