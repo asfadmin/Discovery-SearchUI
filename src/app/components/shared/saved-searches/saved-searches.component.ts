@@ -4,7 +4,8 @@ import { Store, Action } from '@ngrx/store';
 import { AppState } from '@store';
 import * as userStore from '@store/user';
 import * as searchStore from '@store/search';
-import { MatDialogRef } from '@angular/material';
+import * as uiStore from '@store/ui';
+import * as filtersStore from '@store/filters';
 
 import { SavedSearchService } from '@services';
 import * as models from '@models';
@@ -14,15 +15,18 @@ import * as models from '@models';
   templateUrl: './saved-searches.component.html',
   styleUrls: ['./saved-searches.component.scss']
 })
-export class SavedSearchesComponent {
+export class SavedSearchesComponent implements OnInit {
   public searches$ = this.store$.select(userStore.getSavedSearches);
   public searchType$ = this.store$.select(searchStore.getSearchType);
 
   constructor(
     private savedSearchService: SavedSearchService,
     private store$: Store<AppState>,
-    private dialogRef: MatDialogRef<SavedSearchesComponent>,
   ) { }
+
+  ngOnInit() {
+    this.savedSearchService.loadSearches();
+  }
 
   public saveCurrentSearch(): void {
     this.savedSearchService.addCurrentSearch('New Search');
@@ -37,10 +41,16 @@ export class SavedSearchesComponent {
   }
 
   public onClose(): void {
-    this.dialogRef.close();
+    this.store$.dispatch(new uiStore.CloseSidebar());
   }
 
   public deleteSearch(id: string): void {
     this.savedSearchService.deleteSearch(id);
+  }
+
+  public onSetSearch(search: models.Search): void {
+    this.store$.dispatch(new searchStore.ClearSearch());
+    this.store$.dispatch(new searchStore.SetSearchType(search.searchType));
+    this.store$.dispatch(new filtersStore.SetSavedSearch(search));
   }
 }

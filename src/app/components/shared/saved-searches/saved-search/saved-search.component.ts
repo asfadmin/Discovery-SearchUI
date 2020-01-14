@@ -1,4 +1,7 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, ViewChild, ElementRef } from '@angular/core';
+
+import { timer } from 'rxjs';
+import * as moment from 'moment';
 
 import * as models from '@models';
 
@@ -8,15 +11,23 @@ import * as models from '@models';
   styleUrls: ['./saved-search.component.scss']
 })
 export class SavedSearchComponent {
+  @ViewChild('nameEditInput', { static: false }) nameEditInput: ElementRef;
+
   @Input() search: models.Search;
   @Input() searchType: models.SearchType;
 
   @Output() updateFilters = new EventEmitter<string>();
   @Output() updateName = new EventEmitter<{ id: string, name: string }>();
   @Output() deleteSearch = new EventEmitter<string>();
+  @Output() setSearch = new EventEmitter<models.Search>();
 
+  public SearchType = models.SearchType;
   public isEditingName = false;
   public editName = '';
+
+  public onSetSearch(): void {
+    this.setSearch.emit(this.search);
+  }
 
   public onUpdateFilters(id: string): void {
     this.updateFilters.emit(id);
@@ -28,7 +39,11 @@ export class SavedSearchComponent {
 
   public onEditName(): void {
     this.isEditingName = true;
-    this.editName = '';
+    this.editName = this.search.name;
+
+    timer(20).subscribe(
+      _ => this.nameEditInput.nativeElement.focus()
+    );
   }
 
   public onNewName(newName: string): void {
@@ -40,5 +55,44 @@ export class SavedSearchComponent {
 
   public onDeleteSearch(): void {
     this.deleteSearch.emit(this.search.id);
+  }
+
+  public onEditFocusLeave(): void {
+    this.isEditingName = false;
+    this.editName = '';
+  }
+
+  public listPreview(listFilter: models.ListFiltersType): string {
+    const len = listFilter.list.length;
+    const plural = len === 1 ? '' : 's';
+
+    return `${len} ${listFilter.listType}${plural}`;
+  }
+
+  public formatDatesFor(filters: models.GeographicFiltersType): string {
+    const range = filters.dateRange;
+
+    const start = this.formatIfDate(range.start);
+    const end = this.formatIfDate(range.end);
+
+    if (!!start && !!end) {
+      return ` - from ${start} to ${end}`;
+    } else if (!start && !!end) {
+      return ` - before ${end}`;
+    } else if (!!start && !end) {
+      return ` - after ${start}`;
+    } else {
+      return ``;
+    }
+  }
+
+  private formatIfDate(date: Date | null): string | null {
+    if (date === null) {
+      return null;
+    }
+
+    const dateUtc = moment.utc(date);
+
+    return dateUtc.format('MM DD YYYY');
   }
 }

@@ -1,0 +1,19 @@
+@import "asf-theme";
+
+.header {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin-bottom: 15px;
+  position: -webkit-sticky; /* Safari */
+  position: sticky;
+  top: 0;
+  background-color: $asf-primary-light;
+}
+
+.footer {
+  position: -webkit-sticky; /* Safari */
+  position: sticky;
+  bottom: 0;
+  background-color: $asf-primary-light;
+}

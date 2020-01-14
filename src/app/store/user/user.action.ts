@@ -5,21 +5,28 @@ import { UserAuth, UserProfile, Search, GeographicFiltersType, ListFiltersType }
 export enum UserActionType {
   SET_USER_AUTH = '[User] Set User Auth',
 
+  LOAD_PROFILE = '[User] Load User Profile',
   SAVE_PROFILE = '[User] Save User Profile',
   SET_PROFILE = '[User] Set User Profile',
 
+  LOAD_SAVED_SEARCHES = '[User] Load Saved Searches',
   SAVE_SEARCHES = '[User] Save Searches',
+  SET_SEARCHES = '[User] Set searches',
+
   ADD_NEW_SEARCH = '[User] Add new search',
   UPDATE_SEARCH_WITH_FILTERS = '[User] Update search with current filters',
   UPDATE_SEARCH_NAME = '[User] Edit Search Name',
   DELETE_SAVED_SEARCH = '[User] Delete Saved Search',
-  LOAD_SAVED_SEARCHES = '[User] Load Saved Searches',
 }
 
 export class SetUserAuth implements Action {
   public readonly type = UserActionType.SET_USER_AUTH;
 
   constructor(public payload: UserAuth) {}
+}
+
+export class LoadProfile implements Action {
+  public readonly type = UserActionType.LOAD_PROFILE;
 }
 
 export class SaveProfile implements Action {
@@ -32,8 +39,18 @@ export class SetProfile implements Action {
   constructor(public payload: UserProfile) {}
 }
 
+export class LoadSavedSearches implements Action {
+  public readonly type = UserActionType.LOAD_SAVED_SEARCHES;
+}
+
 export class SaveSearches implements Action {
   public readonly type = UserActionType.SAVE_SEARCHES;
+}
+
+export class SetSearches implements Action {
+  public readonly type = UserActionType.SET_SEARCHES;
+
+  constructor(public payload: Search[]) {}
 }
 
 export class AddNewSearch implements Action {
@@ -66,14 +83,12 @@ export class DeleteSavedSearch implements Action {
   constructor(public payload: string) {}
 }
 
-export class LoadSavedSearches implements Action {
-  public readonly type = UserActionType.LOAD_SAVED_SEARCHES;
-}
-
 
 export type UserActions =
   | SaveProfile
   | SetProfile
+  | LoadProfile
+  | SetSearches
   | SaveSearches
   | AddNewSearch
   | UpdateSearchName

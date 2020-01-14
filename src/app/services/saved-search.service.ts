@@ -8,7 +8,10 @@ import { MapService } from './map/map.service';
 import { AppState } from '@store';
 import * as filtersStore from '@store/filters';
 import { getSearchType } from '@store/search/search.reducer';
-import { AddNewSearch, UpdateSearchWithFilters, UpdateSearchName, DeleteSavedSearch } from '@store/user/user.action';
+import {
+  AddNewSearch, UpdateSearchWithFilters, UpdateSearchName, DeleteSavedSearch,
+  SaveSearches, LoadSavedSearches
+} from '@store/user/user.action';
 
 import * as models from '@models';
 
@@ -60,6 +63,7 @@ export class SavedSearchService {
     };
 
     this.store$.dispatch(new AddNewSearch(search));
+    this.saveSearches();
   }
 
   public updateSearchWithCurrentFilters(id: string): void {
@@ -68,17 +72,30 @@ export class SavedSearchService {
     });
 
     this.store$.dispatch(action);
+    this.saveSearches();
   }
 
   public updateSearchName(id: string, name: string): void {
     const action = new UpdateSearchName({ id, name });
 
     this.store$.dispatch(action);
+    this.saveSearches();
   }
 
   public deleteSearch(id: string): void {
     const action = new DeleteSavedSearch(id);
 
+    this.store$.dispatch(action);
+    this.saveSearches();
+  }
+
+  public saveSearches(): void {
+    const action = new SaveSearches();
+    this.store$.dispatch(action);
+  }
+
+  public loadSearches(): void {
+    const action = new LoadSavedSearches();
     this.store$.dispatch(action);
   }
 }

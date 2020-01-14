@@ -31,9 +31,7 @@ export class PreferencesComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.store$.select(userStore.getUserProfile).pipe(
-      take(1)
-    ).subscribe(
+    this.store$.select(userStore.getUserProfile).subscribe(
       profile => {
         this.defaultMaxResults = profile.maxResults;
         this.defaultMapLayer = profile.mapLayer;
@@ -43,22 +41,31 @@ export class PreferencesComponent implements OnInit {
   }
 
   public onClose(): void {
-    this.dialogRef.close({
-      maxResults: this.defaultMaxResults,
-      mapLayer: this.defaultMapLayer,
-      defaultDataset: this.defaultDataset
-    });
+    this.dialogRef.close();
   }
 
   public onSelectionChange(dataset: string): void {
     this.defaultDataset = dataset;
+    this.saveProfile();
   }
 
   public onChangeMaxResultsDefault(maxResults: number): void {
     this.defaultMaxResults = maxResults;
+    this.saveProfile();
   }
 
   public onChangeDefaultLayerType(layerType: MapLayerTypes): void {
     this.defaultMapLayer = layerType;
+    this.saveProfile();
+  }
+
+  public saveProfile(): void {
+    const action = new userStore.SetProfile({
+      maxResults: this.defaultMaxResults,
+      mapLayer: this.defaultMapLayer,
+      defaultDataset: this.defaultDataset
+    });
+
+    this.store$.dispatch(action);
   }
 }

@@ -412,6 +412,39 @@ export function filtersReducer(state = initState, action: FiltersActions): Filte
       };
     }
 
+    case FiltersActionType.SET_SAVED_SEARCH: {
+      const search = action.payload;
+      if (search.searchType === models.SearchType.LIST) {
+        const filters = <models.ListFiltersType>search.filters;
+
+        return {
+          ...state,
+          listSearchMode: filters.listType,
+          searchList: filters.list
+        };
+      } else {
+        const filters = <models.GeographicFiltersType>search.filters;
+        return {
+          ...state,
+          datasets: {
+            ...state.datasets,
+            selected: state.datasets.selected,
+          },
+          maxResults: filters.maxResults,
+          dateRange: filters.dateRange,
+          pathRange: filters.pathRange,
+          frameRange: filters.frameRange,
+          season: filters.season,
+          productTypes: filters.productTypes,
+          beamModes: filters.beamModes,
+          polarizations: filters.polarizations,
+          flightDirections: filters.flightDirections,
+          subtypes: filters.subtypes,
+          selectedMission: filters.selectedMission
+        };
+      }
+    }
+
     default: {
       return state;
     }

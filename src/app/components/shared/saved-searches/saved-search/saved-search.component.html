@@ -1,28 +1,47 @@
-<div>
-  <div *ngIf="!isEditingName">
-    {{ search.name }}
-    <button (click)="onEditName()" mat-icon-button>
-      <mat-icon>edit</mat-icon>
-    </button>
-  </div>
-  <div *ngIf="isEditingName">
-    <form #nameEditForm="ngForm" onsubmit="return false">
-      <mat-form-field>
-        <input matInput
-          [(ngModel)]="editName"
-          (change)="onNewName($event.target.value)"
-          name="editNameInput"
-          placeholder="Search Name">
-      </mat-form-field>
-    </form>
-  </div>
-  - {{ search.searchType }}
+<mat-list-item>
+  <div matLine>
 
-  <br>
-  {{search.filters | json}}
+    <span *ngIf="!isEditingName"
+      (click)="onEditName()"
+      matTooltip="Edit Name"
+      class="clickable">
+      {{ search.name }} <mat-icon>edit</mat-icon>
+    </span>
+
+    <span *ngIf="isEditingName">
+      <form class="name-edit-form" #nameEditForm="ngForm" onsubmit="return false">
+        <mat-form-field>
+          <input matInput
+            [(ngModel)]="editName"
+            (change)="onNewName($event.target.value)"
+            (keyup.enter)="onEditFocusLeave()"
+            (focusout)="onEditFocusLeave()"
+            name="editNameInput"
+            placeholder="Search Name" #nameEditInput>
+        </mat-form-field>
+      </form>
+    </span> - {{ search.searchType }}
+
+  </div>
+  <div matLine>
+    <span *ngIf="search.searchType === SearchType.DATASET">
+      {{ search.filters.selectedDataset }} {{ formatDatesFor(search.filters) }}
+    </span>
+    <span *ngIf="search.searchType === SearchType.LIST">
+      {{ listPreview(search.filters) }}
+    </span>
+  </div>
+
+  <button
+    (click)="onSetSearch()"
+    mat-flat-button color="primary"
+    style="margin-left: 10px;">
+      Set
+  </button>
 
   <button *ngIf="search.searchType === searchType"
     (click)="onUpdateFilters(search.id)"
+    style="margin-left: 10px;"
     mat-flat-button color="primary">
       Update
   </button>
@@ -32,4 +51,4 @@
     style="margin-left: 10px;">
       Delete
   </button>
-</div>
+</mat-list-item>

@@ -46,6 +46,16 @@ export function userReducer(state = initState, action: UserActions): UserState {
       };
     }
 
+    case UserActionType.SET_SEARCHES: {
+      return {
+        ...state,
+        savedSearches: {
+          ...state.savedSearches,
+          searches: action.payload
+        }
+      };
+    }
+
     case UserActionType.ADD_NEW_SEARCH: {
       const searches = [ ...state.savedSearches.searches, action.payload ];
 
