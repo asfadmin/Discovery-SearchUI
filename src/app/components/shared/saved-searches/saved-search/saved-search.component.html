@@ -1,5 +1,6 @@
-<mat-list-item>
-  <div matLine>
+<div>
+  <div>
+    <mat-icon>keyboard_arrow_right</mat-icon>
 
     <span *ngIf="!isEditingName"
       (click)="onEditName()"
@@ -23,7 +24,8 @@
     </span> - {{ search.searchType }}
 
   </div>
-  <div matLine>
+
+  <div>
     <span *ngIf="search.searchType === SearchType.DATASET">
       {{ search.filters.selectedDataset }} {{ formatDatesFor(search.filters) }}
     </span>
@@ -32,23 +34,25 @@
     </span>
   </div>
 
-  <button
-    (click)="onSetSearch()"
-    mat-flat-button color="primary"
-    style="margin-left: 10px;">
-      Set
-  </button>
+  <div>
+    <button
+      (click)="onSetSearch()"
+      mat-flat-button color="primary"
+      style="margin-left: 10px;">
+        Set
+    </button>
 
-  <button *ngIf="search.searchType === searchType"
-    (click)="onUpdateFilters(search.id)"
-    style="margin-left: 10px;"
-    mat-flat-button color="primary">
-      Update
-  </button>
+    <button *ngIf="search.searchType === searchType"
+      (click)="onUpdateFilters(search.id)"
+      style="margin-left: 10px;"
+      mat-flat-button color="primary">
+        Update
+    </button>
 
-  <button (click)="onDeleteSearch()"
-    mat-flat-button color="primary"
-    style="margin-left: 10px;">
-      Delete
-  </button>
-</mat-list-item>
+    <button (click)="onDeleteSearch()"
+      mat-flat-button color="primary"
+      style="margin-left: 10px;">
+        Delete
+    </button>
+  </div>
+</div>
