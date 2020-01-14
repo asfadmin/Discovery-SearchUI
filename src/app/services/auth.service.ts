@@ -15,8 +15,7 @@ import * as models from '@models';
   providedIn: 'root'
 })
 export class AuthService {
-  private authUrl = this.env.value.auth.api;
-  private earthdataUrl = this.env.value.auth.urs;
+  private maturity = 'prod';
 
   constructor(
     private env: EnvironmentService,
@@ -24,15 +23,26 @@ export class AuthService {
     private snackBar: MatSnackBar,
   ) {}
 
+  public get authUrl() {
+    return this.env.value.auth.api[this.maturity];
+  }
+
+  public get earthdataUrl() {
+    return this.env.value.auth.urs[this.maturity];
+  }
+
+  public setMaturity(maturity: string): void {
+    this.maturity = maturity;
+  }
+
   public login$(): Observable<models.UserAuth | null> {
     const localUrl = window.location.origin;
 
     const appRedirect = encodeURIComponent(localUrl);
 
-    const ursUrl = `https://urs.earthdata.nasa.gov/oauth/authorize`;
     const redirect = `${this.authUrl}/login&state=${appRedirect}`;
 
-    const url = `${ursUrl}?response_type=code&client_id=BO_n7nTIlMljdvU6kRRB3g&redirect_uri=${redirect};`;
+    const url = `${this.earthdataUrl}/oauth/authorize?response_type=code&client_id=BO_n7nTIlMljdvU6kRRB3g&redirect_uri=${redirect};`;
 
     const loginWindow = window.open(
       url,

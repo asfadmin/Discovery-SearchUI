@@ -24,14 +24,17 @@
             ],
             "styles": [
               "./node_modules/ol/ol.css",
-              "src/styles.scss"
+              "src/styles.scss",
+              "./node_modules/cookieconsent/build/cookieconsent.min.css"
             ],
             "stylePreprocessorOptions": {
               "includePaths": [
                 "src/styles"
               ]
             },
-            "scripts": []
+            "scripts": [
+              "./node_modules/cookieconsent/build/cookieconsent.min.js"
+            ]
           },
           "configurations": {
             "production": {

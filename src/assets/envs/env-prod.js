@@ -5,8 +5,14 @@
       test: 'https://api-test.asf.alaska.edu',
     },
     auth: {
-      api: 'https://auth.asf.alaska.edu',
-      urs: 'https://urs.earthdata.nasa.gov'
+      api: {
+        test: 'https://auth-test-jnk.asf.alaska.edu',
+        prod: 'https://auth.asf.alaska.edu',
+      },
+      urs: {
+        test: 'https://uat.urs.earthdata.nasa.gov',
+        prod: 'https://urs.earthdata.nasa.gov'
+      }
     },
     banner: {
       prod: 'https://banners.asf.alaska.edu/calendar/prod',

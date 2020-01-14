@@ -7,6 +7,9 @@ import { ofType } from '@ngrx/effects';
 import { of, combineLatest } from 'rxjs';
 import { skip, filter, map, switchMap, tap, catchError } from 'rxjs/operators';
 
+import { NgcCookieConsentService } from 'ngx-cookieconsent';
+import { Subscription } from 'rxjs-compat';
+
 import { AppState } from '@store';
 import * as scenesStore from '@store/scenes';
 import * as filterStore from '@store/filters';
@@ -51,6 +54,7 @@ export class AppComponent implements OnInit, OnDestroy {
     private asfSearchApi: services.AsfApiService,
     private authService: services.AuthService,
     private userDataService: services.UserDataService,
+    private ccService: NgcCookieConsentService,
   ) {}
 
   public ngOnInit(): void {
@@ -117,6 +121,21 @@ export class AppComponent implements OnInit, OnDestroy {
 
     this.updateMaxSearchResults();
     this.healthCheck();
+
+    this.subs.add(this.ccService.popupOpen$.subscribe(
+      () => {
+        // you can use this.ccService.getConfig() to do stuff...
+      }));
+
+    this.subs.add(this.ccService.popupClose$.subscribe(
+      () => {
+        // you can use this.ccService.getConfig() to do stuff...
+      }));
+
+    this.subs.add(this.ccService.revokeChoice$.subscribe(
+      () => {
+        // you can use this.ccService.getConfig() to do stuff...
+      }));
   }
 
   private loadProductQueue(): void {
@@ -252,6 +271,6 @@ export class AppComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-
+    this.subs.unsubscribe();
   }
 }

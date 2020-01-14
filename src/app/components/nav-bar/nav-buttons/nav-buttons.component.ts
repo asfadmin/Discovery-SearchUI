@@ -54,8 +54,6 @@ export class NavButtonsComponent implements OnInit {
     this.store$.select(userStore.getIsUserLoggedIn).subscribe(
       isLoggedIn => this.isLoggedIn = isLoggedIn
     );
-
-    this.onOpenSavedSearches();
   }
 
   public onOpenDownloadQueue(): void {
@@ -118,5 +116,6 @@ export class NavButtonsComponent implements OnInit {
     this.maturity = maturity;
     localStorage.setItem(this.maturityKey, this.maturity);
     this.asfApiService.setApiMaturity(this.maturity);
+    this.authService.setMaturity(this.maturity);
   }
 }

@@ -18,7 +18,7 @@ export interface UIState {
 export const initState: UIState = {
   isFiltersMenuOpen: false,
   isResultsMenuOpen: false,
-  isSidebarOpen: true,
+  isSidebarOpen: false,
   isAOIOptionsOpen: false,
   isBrowseDialogOpen: false,
   onlyScenesWithBrowse: true,
