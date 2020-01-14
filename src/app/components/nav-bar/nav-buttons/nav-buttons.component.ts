@@ -2,14 +2,12 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 
 import { MatDialog } from '@angular/material/dialog';
 import { ClipboardService } from 'ngx-clipboard';
-import { take } from 'rxjs/operators';
 
 import { Store } from '@ngrx/store';
 import { AppState } from '@store';
 import * as userStore from '@store/user';
-
-import { SubSink } from 'subsink';
 import { PreferencesComponent } from './preferences/preferences.component';
+import { SavedSearchesComponent } from '@components/shared/saved-searches';
 import { AuthService, AsfApiService, EnvironmentService, ScreenSizeService } from '@services';
 import { CMRProduct, Breakpoints, UserAuth } from '@models';
 
@@ -76,8 +74,8 @@ export class NavButtonsComponent implements OnInit {
 
   public onOpenPreferences(): void {
     const dialogRef = this.dialog.open(PreferencesComponent, {
-      maxWidth: '100vw',
-      maxHeight: '100vh'
+      maxWidth: '100%',
+      maxHeight: '100%'
     });
 
     dialogRef.afterClosed().subscribe(
@@ -86,6 +84,15 @@ export class NavButtonsComponent implements OnInit {
         this.store$.dispatch(new userStore.SaveProfile());
       }
     );
+  }
+
+  public onOpenSavedSearches(): void {
+    const dialogRef = this.dialog.open(SavedSearchesComponent, {
+      width: '80%',
+      height: '80%',
+      maxWidth: '100%',
+      maxHeight: '100%'
+    });
   }
 
   public onCopy(): void {
@@ -117,5 +124,6 @@ export class NavButtonsComponent implements OnInit {
     this.maturity = maturity;
     localStorage.setItem(this.maturityKey, this.maturity);
     this.asfApiService.setApiMaturity(this.maturity);
+    this.authService.setMaturity(this.maturity);
   }
 }

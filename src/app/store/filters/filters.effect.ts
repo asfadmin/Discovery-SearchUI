@@ -8,7 +8,6 @@ import { map } from 'rxjs/operators';
 
 import { AppState } from '../app.reducer';
 import * as filtersAction from './filters.action';
-import * as filtersReducer from './filters.reducer';
 
 import { MapService } from '../../services/map/map.service';
 import * as models from '@models';

@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component } from '@angular/core';
 
 import { map } from 'rxjs/operators';
 
@@ -7,7 +7,7 @@ import { AppState } from '@store';
 import * as uiStore from '@store/ui';
 import * as scenesStore from '@store/scenes';
 
-import { LonLat, Breakpoints } from '@models';
+import { Breakpoints } from '@models';
 import { ScreenSizeService } from '@services';
 
 @Component({

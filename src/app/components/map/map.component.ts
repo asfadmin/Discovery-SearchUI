@@ -1,21 +1,20 @@
 import {
-  Component, OnInit, Input, Output, EventEmitter, ViewChild, ElementRef, OnDestroy
+  Component, OnInit, Output, EventEmitter, ViewChild, ElementRef, OnDestroy
 } from '@angular/core';
 import {
-  trigger, state, style, animate, transition
+  trigger, style, animate, transition
 } from '@angular/animations';
 
 import { Store } from '@ngrx/store';
 import { Observable, combineLatest } from 'rxjs';
 import {
-  map, filter, switchMap, tap, skip,
-  withLatestFrom, distinctUntilChanged
+  map, filter, switchMap, tap,
+  withLatestFrom,
 } from 'rxjs/operators';
 
 import { Vector as VectorLayer} from 'ol/layer';
 import { Vector as VectorSource } from 'ol/source';
 import Overlay from 'ol/Overlay';
-import { getTopRight } from 'ol/extent';
 
 import tippy from 'tippy.js';
 import { SubSink } from 'subsink';
@@ -344,7 +343,6 @@ export class MapComponent implements OnInit, OnDestroy  {
 
   private scenePolygonsLayer$(projection: string): Observable<VectorSource> {
     return this.store$.select(scenesStore.getScenes).pipe(
-      distinctUntilChanged(),
       map(scenes => this.scenesToFeature(scenes, projection)),
       map(features => this.featuresToSource(features))
     );

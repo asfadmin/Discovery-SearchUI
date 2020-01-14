@@ -5,7 +5,6 @@ import { map } from 'rxjs/operators';
 
 import { AppState } from '@store';
 import * as filtersStore from '@store/filters';
-import * as uiStore from '@store/ui';
 
 import * as models from '@models';
 import { PropertyService, ScreenSizeService } from '@services';

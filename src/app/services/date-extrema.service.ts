@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
 
 import { Observable, combineLatest } from 'rxjs';
-import { map, tap } from 'rxjs/operators';
+import { map } from 'rxjs/operators';
 
-import { Dataset, DateRangeExtrema, DateExtrema } from '@models';
+import { Dataset, DateRangeExtrema } from '@models';
 
 @Injectable({
   providedIn: 'root'

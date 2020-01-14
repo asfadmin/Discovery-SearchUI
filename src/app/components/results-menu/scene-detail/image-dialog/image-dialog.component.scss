@@ -2,11 +2,6 @@
 
 $config: mat-typography-config();
 
-.mp0 {
-  margin: 0;
-  padding: 0;
-}
-
 .mp0-ellipsis-mobile {
   width: 250px;
   display: inline-block;
@@ -43,7 +38,7 @@ a {
 
   .main-window {
     position: relative;
-    height: calc(100% - 330px);
+    height: calc(100% - 230px);
   }
 
   .main-window-mobile {
@@ -52,7 +47,7 @@ a {
   }
 
   .browse-list {
-    min-height: 245px;
+    min-height: 140px;
     border-top-color: $asf-primary-dark;
     border-top-style: solid;
     border-top-width: 1px;
@@ -138,6 +133,7 @@ a {
 
 .bottom-row {
   margin-top: 10px;
+  font-size: 14px;
 }
 
 .close-icon {
@@ -149,4 +145,9 @@ a {
   top: 90px;
   left: 10px;
   z-index: 9;
+}
+
+.mat-card-sm-image {
+  width: 50px;
+  height: 50px;
 }

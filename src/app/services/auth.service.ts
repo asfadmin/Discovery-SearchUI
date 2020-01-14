@@ -1,10 +1,9 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpParams, HttpHeaders } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
-import { ViewType } from '@models';
-
-import { interval, Subject, BehaviorSubject, Subscription, Observable } from 'rxjs';
-import { map, takeUntil, tap, delay, take, filter, switchMap } from 'rxjs/operators';
+import { interval, Subject, Observable, of } from 'rxjs';
+import { map, takeUntil, take, filter, catchError } from 'rxjs/operators';
 
 import { EnvironmentService } from './environment.service';
 import * as jwt_decode from 'jwt-decode';
@@ -16,23 +15,34 @@ import * as models from '@models';
   providedIn: 'root'
 })
 export class AuthService {
-  private authUrl = this.env.value.auth.api;
-  private earthdataUrl = this.env.value.auth.urs;
+  private maturity = 'prod';
 
   constructor(
     private env: EnvironmentService,
-    private http: HttpClient
+    private http: HttpClient,
+    private snackBar: MatSnackBar,
   ) {}
+
+  public get authUrl() {
+    return this.env.value.auth.api[this.maturity];
+  }
+
+  public get earthdataUrl() {
+    return this.env.value.auth.urs[this.maturity];
+  }
+
+  public setMaturity(maturity: string): void {
+    this.maturity = maturity;
+  }
 
   public login$(): Observable<models.UserAuth | null> {
     const localUrl = window.location.origin;
 
     const appRedirect = encodeURIComponent(localUrl);
 
-    const ursUrl = `https://urs.earthdata.nasa.gov/oauth/authorize`;
     const redirect = `${this.authUrl}/login&state=${appRedirect}`;
 
-    const url = `${ursUrl}?response_type=code&client_id=BO_n7nTIlMljdvU6kRRB3g&redirect_uri=${redirect};`;
+    const url = `${this.earthdataUrl}/oauth/authorize?response_type=code&client_id=BO_n7nTIlMljdvU6kRRB3g&redirect_uri=${redirect};`;
 
     const loginWindow = window.open(
       url,
@@ -61,6 +71,13 @@ export class AuthService {
 
         return user;
       }),
+      catchError(resp => {
+        this.snackBar.open('Trouble logging in', 'ERROR', {
+          duration: 5000,
+        });
+        loginWindowClosed.next();
+        return of(null);
+      }),
       filter(user => !!user),
       take(1)
     );
@@ -73,6 +90,12 @@ export class AuthService {
         withCredentials: true
       }).pipe(
         map(resp => this.getUser()),
+        catchError(resp => {
+          this.snackBar.open('Trouble logging out', 'ERROR', {
+            duration: 5000,
+          });
+          return of(this.getUser());
+        }),
         take(1)
       );
   }

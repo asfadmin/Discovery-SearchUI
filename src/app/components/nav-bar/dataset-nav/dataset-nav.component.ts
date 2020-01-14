@@ -1,11 +1,7 @@
 import { Component, Output, EventEmitter } from '@angular/core';
-
-import { map } from 'rxjs/operators';
 import { Store } from '@ngrx/store';
-import { ofType } from '@ngrx/effects';
 
 import { AppState } from '@store';
-import * as searchStore from '@store/search';
 import * as uiStore from '@store/ui';
 import * as queueStore from '@store/queue';
 

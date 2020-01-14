@@ -1,4 +1,4 @@
-import { browser, element, by} from 'protractor';
+import { browser} from 'protractor';
 import { AppPage } from './app.po';
 
 describe('Open the link', () => {

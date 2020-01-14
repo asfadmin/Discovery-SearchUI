@@ -1,14 +1,14 @@
-import { Component, OnInit, Input, Output, EventEmitter, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ListSearchType } from '@models';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 import { Subject } from 'rxjs';
-import { map, tap, debounceTime } from 'rxjs/operators';
+import { map, debounceTime, withLatestFrom } from 'rxjs/operators';
 import { SubSink } from 'subsink';
 
 import { Store } from '@ngrx/store';
 import { AppState } from '@store';
 import * as filtersStore from '@store/filters';
-import * as scenesStore from '@store/scenes';
 
 import * as models from '@models';
 import * as services from '@services';
@@ -55,8 +55,9 @@ export class ListSearchComponent implements OnInit, OnDestroy {
   };
 
   constructor(
+    private snackBar: MatSnackBar,
     private store$: Store<AppState>,
-    private screenSize: services.ScreenSizeService
+    private screenSize: services.ScreenSizeService,
   ) {}
 
   ngOnInit() {
@@ -70,18 +71,29 @@ export class ListSearchComponent implements OnInit, OnDestroy {
 
     this.subs.add(
       this.newListInput$.asObservable().pipe(
-        debounceTime(500)
-      ).subscribe(text => {
+        debounceTime(2000),
+        withLatestFrom(this.listSearchMode$)
+      ).subscribe(([text, searchMode]) => {
         const scenes = text
           .split(/[\s\n,\t]+/)
           .filter(v => v);
 
         const unique = Array.from(new Set(scenes));
 
+        if (scenes.length > unique.length) {
+          const duplicates = scenes.length - unique.length;
+          const mode = searchMode === this.types.PRODUCT ?
+            'file' : 'scene';
+          const plural = duplicates === 1 ? '' : 's';
+
+          this.snackBar.open(`Removed ${duplicates} duplicate ${mode}${plural} from search list`, 'Search', {
+            duration: 5000
+          });
+        }
+
         this.store$.dispatch(new filtersStore.SetSearchList(unique));
       })
     );
-
   }
 
   public isSelected(panel: ListPanel): boolean {

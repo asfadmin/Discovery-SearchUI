@@ -1,6 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-
-import * as uiStore from '@store/ui';
 import { Store } from '@ngrx/store';
 import { AppState } from '@store/app.reducer';
 

@@ -1,6 +1,6 @@
-import { Component, OnInit, ViewChild, Input, OnDestroy } from '@angular/core';
+import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
 import { NgForm } from '@angular/forms';
-import { trigger, state, style, animate, transition } from '@angular/animations';
+import { trigger, style, animate, transition } from '@angular/animations';
 import { ClipboardService } from 'ngx-clipboard';
 import { SubSink } from 'subsink';
 

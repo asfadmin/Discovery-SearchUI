@@ -1,15 +1,12 @@
 import { Injectable } from '@angular/core';
-import { HttpParams } from '@angular/common/http';
 
-import { Store, Action } from '@ngrx/store';
+import { Store } from '@ngrx/store';
 import * as moment from 'moment';
 
 import { Observable, combineLatest } from 'rxjs';
-import { map, withLatestFrom, startWith, switchMap, tap, filter } from 'rxjs/operators';
+import { map, withLatestFrom, startWith } from 'rxjs/operators';
 
 import { AppState } from '@store';
-import * as scenesStore from '@store/scenes';
-import * as mapStore from '@store/map';
 import * as filterStore from '@store/filters';
 import { getSearchType } from '@store/search/search.reducer';
 

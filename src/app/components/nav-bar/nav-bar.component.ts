@@ -1,4 +1,4 @@
-import { Component, OnInit, EventEmitter, Output, ViewChild, Input } from '@angular/core';
+import { Component, Input } from '@angular/core';
 
 import { Store } from '@ngrx/store';
 import { AppState } from '@store';
