@@ -11,7 +11,7 @@ import * as userActions from './user.action';
 import * as userReducer from './user.reducer';
 
 import { UserDataService } from '@services/user-data.service';
-import { Search, UserProfile } from '@models';
+import * as models from '@models';
 
 @Injectable()
 export class UserEffects {
@@ -72,7 +72,8 @@ export class UserEffects {
         this.userDataService.getAttribute$(userAuth, 'SavedSearches')
     ),
     filter(resp => this.isSuccessfulResponse(resp)),
-    map(searches => new userActions.SetSearches(<Search[]>searches))
+    map(searches => this.datesToDateObjectFor(searches)),
+    map(searches => new userActions.SetSearches(<models.Search[]>searches))
   );
 
   private isSuccessfulResponse(resp): boolean {
@@ -82,4 +83,35 @@ export class UserEffects {
       resp['status'] === 'fail'
     );
   }
+
+  private datesToDateObjectFor(searches): models.Search[] {
+    return searches.map(search => {
+      if (search.searchType === models.SearchType.LIST) {
+        return search;
+      }
+
+      const { start, end } = search.filters.dateRange;
+
+      search.filters.dateRange = {
+        start: this.loadIfDate(start),
+        end: this.loadIfDate(end)
+      };
+
+      return search;
+    });
+
+    return [];
+  }
+
+  private loadIfDate(date: string | null): Date | null {
+    if (date === null) {
+      return null;
+    }
+
+    const dateObj = new Date(date);
+
+    return this.isValidDate(dateObj) ? dateObj : null;
+  }
+
+  private isValidDate = (d: Date): boolean => d instanceof Date && !isNaN(d.valueOf());
 }

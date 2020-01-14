@@ -1,6 +1,7 @@
 import { Component, OnInit, Input, Output, EventEmitter, ViewChild, ElementRef } from '@angular/core';
 
 import { timer } from 'rxjs';
+import * as moment from 'moment';
 
 import * as models from '@models';
 
@@ -20,6 +21,7 @@ export class SavedSearchComponent {
   @Output() deleteSearch = new EventEmitter<string>();
   @Output() setSearch = new EventEmitter<models.Search>();
 
+  public SearchType = models.SearchType;
   public isEditingName = false;
   public editName = '';
 
@@ -58,5 +60,32 @@ export class SavedSearchComponent {
   public onEditFocusLeave(): void {
     this.isEditingName = false;
     this.editName = '';
+  }
+
+  public formatDatesFor(filters: models.GeographicFiltersType): string {
+    const range = filters.dateRange;
+
+    const start = this.formatIfDate(range.start);
+    const end = this.formatIfDate(range.end);
+
+    if (!!start && !!end) {
+      return ` - from ${start} to ${end}`;
+    } else if (!start && !!end) {
+      return ` - before ${end}`;
+    } else if (!!start && !end) {
+      return ` - after ${start}`;
+    } else {
+      return ``;
+    }
+  }
+
+  private formatIfDate(date: Date | null): string | null {
+    if (date === null) {
+      return null;
+    }
+
+    const dateUtc = moment.utc(date);
+
+    return dateUtc.format('MM DD YYYY');
   }
 }

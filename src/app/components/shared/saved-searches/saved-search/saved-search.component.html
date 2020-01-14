@@ -1,8 +1,13 @@
 <mat-list-item>
   <div matLine>
-    <span *ngIf="!isEditingName">
-      {{ search.name }} <mat-icon (click)="onEditName()">edit</mat-icon>
+
+    <span *ngIf="!isEditingName"
+      (click)="onEditName()"
+      matTooltip="Edit Name"
+      class="clickable">
+      {{ search.name }} <mat-icon>edit</mat-icon>
     </span>
+
     <span *ngIf="isEditingName">
       <form class="name-edit-form" #nameEditForm="ngForm" onsubmit="return false">
         <mat-form-field>
@@ -15,6 +20,15 @@
         </mat-form-field>
       </form>
     </span> - {{ search.searchType }}
+
+  </div>
+  <div matLine>
+    <span *ngIf="search.searchType === SearchType.DATASET">
+      {{ search.filters.selectedDataset }} {{ formatDatesFor(search.filters) }}
+    </span>
+    <span *ngIf="search.searchType === SearchType.LIST">
+      List
+    </span>
   </div>
 
   <button
