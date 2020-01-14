@@ -28,7 +28,7 @@
       {{ search.filters.selectedDataset }} {{ formatDatesFor(search.filters) }}
     </span>
     <span *ngIf="search.searchType === SearchType.LIST">
-      List
+      {{ listPreview(search.filters) }}
     </span>
   </div>
 

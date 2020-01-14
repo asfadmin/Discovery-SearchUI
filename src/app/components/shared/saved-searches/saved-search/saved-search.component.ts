@@ -62,6 +62,13 @@ export class SavedSearchComponent {
     this.editName = '';
   }
 
+  public listPreview(listFilter: models.ListFiltersType): string {
+    const len = listFilter.list.length;
+    const plural = len === 1 ? '' : 's';
+
+    return `${len} ${listFilter.listType}${plural}`;
+  }
+
   public formatDatesFor(filters: models.GeographicFiltersType): string {
     const range = filters.dateRange;
 
