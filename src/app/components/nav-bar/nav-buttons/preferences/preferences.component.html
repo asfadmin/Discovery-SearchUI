@@ -1,13 +1,13 @@
-<mat-dialog-content>
-  <div style="display: flex; flex-direction: row; justify-content: space-between; margin-bottom: 15px;">
-    <div class="dialog-header" mat-dialog-title>Profile Preferences</div>
-    <div>
-      <mat-icon (click)="onClose()" class="clickable">
-        close
-      </mat-icon>
-    </div>
+<div class="dialg-header">
+  <div mat-dialog-title>Profile Preferences</div>
+  <div>
+    <mat-icon (click)="onClose()" class="clickable">
+      close
+    </mat-icon>
   </div>
+</div>
 
+<mat-dialog-content>
   <div style="margin-bottom: 20px;">
     Set your search preferences
   </div>
@@ -66,8 +66,14 @@
 
 </mat-dialog-content>
 
-<mat-dialog-actions style="margin-top: 15px;">
-  <button (click)="onClose()" color="primary" mat-flat-button>
-    Done
-  </button>
+<mat-dialog-actions class="action-controls">
+  <div class="feedback-link">
+    <a href="javascript:feedback.showForm();">Leave Feedback</a>
+  </div>
+  <div class="done-button">
+    <button (click)="onClose()" color="primary" mat-flat-button>
+      Done
+    </button>
+  </div>
 </mat-dialog-actions>
+
