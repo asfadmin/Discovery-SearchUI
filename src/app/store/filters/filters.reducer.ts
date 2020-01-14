@@ -93,6 +93,10 @@ export function filtersReducer(state = initState, action: FiltersActions): Filte
     }
 
     case FiltersActionType.SET_SELECTED_DATASET: {
+      if (!action.payload) {
+        return state;
+      }
+
       const selected = action.payload.toUpperCase();
 
       return {
