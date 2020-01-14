@@ -1,5 +1,7 @@
 import { Component, OnInit, Input, Output, EventEmitter, ViewChild, ElementRef } from '@angular/core';
 
+import { timer } from 'rxjs';
+
 import * as models from '@models';
 
 @Component({
@@ -8,6 +10,8 @@ import * as models from '@models';
   styleUrls: ['./saved-search.component.scss']
 })
 export class SavedSearchComponent {
+  @ViewChild('nameEditInput', { static: false }) nameEditInput: ElementRef;
+
   @Input() search: models.Search;
   @Input() searchType: models.SearchType;
 
@@ -34,6 +38,10 @@ export class SavedSearchComponent {
   public onEditName(): void {
     this.isEditingName = true;
     this.editName = this.search.name;
+
+    timer(20).subscribe(
+      _ => this.nameEditInput.nativeElement.focus()
+    );
   }
 
   public onNewName(newName: string): void {

@@ -11,7 +11,7 @@
             (change)="onNewName($event.target.value)"
             (focusout)="onEditFocusLeave()"
             name="editNameInput"
-            placeholder="Search Name" autofocus>
+            placeholder="Search Name" #nameEditInput>
         </mat-form-field>
       </form>
     </span> - {{ search.searchType }}
