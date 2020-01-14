@@ -45,7 +45,7 @@ export class UserEffects {
         this.userDataService.getAttribute$(userAuth, 'profile')
     ),
     filter(resp => this.isSuccessfulResponse(resp)),
-    map(profile => new userActions.SetProfile(<UserProfile>profile))
+    map(profile => new userActions.SetProfile(<models.UserProfile>profile))
   );
 
   @Effect({ dispatch: false })
