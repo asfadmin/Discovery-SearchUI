@@ -14,6 +14,7 @@
           <input matInput
             [(ngModel)]="editName"
             (change)="onNewName($event.target.value)"
+            (keyup.enter)="onEditFocusLeave()"
             (focusout)="onEditFocusLeave()"
             name="editNameInput"
             placeholder="Search Name" #nameEditInput>
