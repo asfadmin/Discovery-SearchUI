@@ -1,0 +1,17 @@
+.action-controls {
+  margin-top: 15px;
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+}
+
+.feedback-link {
+  margin-right: 10px;
+  flex: 30px;
+}
+
+.done-button {
+  display: flex;
+  justify-content: flex-end;
+}

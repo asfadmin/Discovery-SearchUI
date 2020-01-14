@@ -66,8 +66,14 @@
 
 </mat-dialog-content>
 
-<mat-dialog-actions style="margin-top: 15px;">
-  <button (click)="onClose()" color="primary" mat-flat-button>
-    Done
-  </button>
+<mat-dialog-actions class="action-controls">
+  <div class="feedback-link">
+    <a href="javascript:feedback.showForm();">Leave Feedback</a>
+  </div>
+  <div class="done-button">
+    <button (click)="onClose()" color="primary" mat-flat-button>
+      Done
+    </button>
+  </div>
 </mat-dialog-actions>
+
