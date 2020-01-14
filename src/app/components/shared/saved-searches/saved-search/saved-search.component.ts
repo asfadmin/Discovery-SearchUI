@@ -33,7 +33,7 @@ export class SavedSearchComponent {
 
   public onEditName(): void {
     this.isEditingName = true;
-    this.editName = '';
+    this.editName = this.search.name;
   }
 
   public onNewName(newName: string): void {

@@ -1,5 +1,5 @@
 <mat-dialog-content>
-  <div style="display: flex; flex-direction: row; justify-content: space-between; margin-bottom: 15px;">
+  <div class="header">
     <div class="dialog-header" mat-dialog-title>Saved Searches</div>
     <div>
       <mat-icon (click)="onClose()" class="clickable">
@@ -8,7 +8,7 @@
     </div>
   </div>
 
-  <div *ngIf="searchType$ | async as searchType">
+  <mat-list *ngIf="searchType$ | async as searchType">
     <app-saved-search *ngFor="let search of (searches$ | async)"
       [search]="search"
       [searchType]="searchType"
@@ -17,8 +17,14 @@
       (deleteSearch)="deleteSearch($event)"
       (setSearch)="onSetSearch($event)">
     </app-saved-search>
-  </div>
+  </mat-list>
 
-  <button (click)="saveCurrentSearch()" mat-flat-button style="margin-top: 15px;" color="primary">Save Search</button>
+  <div class="footer">
+    <button (click)="saveCurrentSearch()"
+      mat-flat-button style="margin-top: 15px;"
+      color="primary">
+        Save Search
+    </button>
+  </div>
 </mat-dialog-content>
 
