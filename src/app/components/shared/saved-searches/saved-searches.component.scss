@@ -8,6 +8,10 @@
   width: 50%;
 }
 
+.saved-searches__title {
+  font-size: 32px;
+}
+
 .saved-searches__header,
 .saved-searches__footer {
   height: 100px;
@@ -36,4 +40,8 @@
   justify-content: space-between;
   align-items: center;
   padding: 0 15px;
+}
+
+.close-icon {
+  font-size: 32px;
 }

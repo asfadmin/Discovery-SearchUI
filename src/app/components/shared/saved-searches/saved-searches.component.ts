@@ -13,7 +13,7 @@ import * as models from '@models';
 @Component({
   selector: 'app-saved-searches',
   templateUrl: './saved-searches.component.html',
-  styleUrls: ['./saved-searches.component.scss']
+  styleUrls: ['./saved-searches.component.scss'],
 })
 export class SavedSearchesComponent implements OnInit {
   public searches$ = this.store$.select(userStore.getSavedSearches);
