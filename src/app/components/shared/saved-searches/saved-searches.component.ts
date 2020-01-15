@@ -54,6 +54,7 @@ export class SavedSearchesComponent implements OnInit {
     this.store$.dispatch(new searchStore.ClearSearch());
     this.store$.dispatch(new searchStore.SetSearchType(search.searchType));
     this.store$.dispatch(new filtersStore.SetSavedSearch(search));
+    this.store$.dispatch(new uiStore.CloseSidebar());
   }
 
   public onExpandSearch(searchId: string): void {
