@@ -1,6 +1,6 @@
-<div>
-  <div class="header">
-    <h1>Saved Searches</h1>
+<div class="saved-searches">
+  <div class="saved-searches__header">
+    <div>Saved Searches</div>
     <div>
       <mat-icon (click)="onClose()" class="clickable">
         close
@@ -8,7 +8,8 @@
     </div>
   </div>
 
-  <div *ngIf="searchType$ | async as searchType">
+  <div *ngIf="searchType$ | async as searchType"
+    class="saved-searches__content">
     <app-saved-search *ngFor="let search of (searches$ | async)"
       [search]="search"
       [searchType]="searchType"
@@ -19,7 +20,7 @@
     </app-saved-search>
   </div>
 
-  <div class="footer">
+  <div class="saved-searches__footer">
     <button (click)="saveCurrentSearch()"
       mat-flat-button style="margin-top: 15px;"
       color="primary">
