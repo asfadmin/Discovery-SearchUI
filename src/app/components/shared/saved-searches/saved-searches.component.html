@@ -13,6 +13,8 @@
     <app-saved-search *ngFor="let search of (searches$ | async)"
       [search]="search"
       [searchType]="searchType"
+      [isExpanded]="search.id === expandedSearchId"
+      (expand)="onExpandSearch($event)"
       (updateFilters)="updateSearchFilters($event)"
       (updateName)="updateSearchName($event)"
       (deleteSearch)="deleteSearch($event)"

@@ -15,11 +15,13 @@ export class SavedSearchComponent {
 
   @Input() search: models.Search;
   @Input() searchType: models.SearchType;
+  @Input() isExpanded: boolean;
 
   @Output() updateFilters = new EventEmitter<string>();
   @Output() updateName = new EventEmitter<{ id: string, name: string }>();
   @Output() deleteSearch = new EventEmitter<string>();
   @Output() setSearch = new EventEmitter<models.Search>();
+  @Output() expand = new EventEmitter<string>();
 
   public SearchType = models.SearchType;
   public isEditingName = false;
@@ -94,5 +96,9 @@ export class SavedSearchComponent {
     const dateUtc = moment.utc(date);
 
     return dateUtc.format('MM DD YYYY');
+  }
+
+  public expandSearch(): void {
+    this.expand.emit(this.search.id);
   }
 }

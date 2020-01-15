@@ -19,6 +19,8 @@ export class SavedSearchesComponent implements OnInit {
   public searches$ = this.store$.select(userStore.getSavedSearches);
   public searchType$ = this.store$.select(searchStore.getSearchType);
 
+  public expandedSearchId: string;
+
   constructor(
     private savedSearchService: SavedSearchService,
     private store$: Store<AppState>,
@@ -52,5 +54,10 @@ export class SavedSearchesComponent implements OnInit {
     this.store$.dispatch(new searchStore.ClearSearch());
     this.store$.dispatch(new searchStore.SetSearchType(search.searchType));
     this.store$.dispatch(new filtersStore.SetSavedSearch(search));
+  }
+
+  public onExpandSearch(searchId: string): void {
+    this.expandedSearchId = this.expandedSearchId === searchId ?
+       '' : searchId;
   }
 }

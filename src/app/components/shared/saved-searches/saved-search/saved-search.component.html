@@ -1,6 +1,6 @@
 <div class="saved-search">
   <div class="search-description">
-    <div class="expand-arrow">
+    <div (click)="expandSearch()" class="clickable expand-arrow">
       <mat-icon class="expand-arrow--icon">keyboard_arrow_right</mat-icon>
     </div>
     <div class="">
@@ -62,4 +62,8 @@
         Delete
     </button>
   </div>
+</div>
+
+<div *ngIf="isExpanded">
+ {{ search.filters | json }}
 </div>
