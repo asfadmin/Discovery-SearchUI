@@ -1,30 +1,32 @@
-<mat-dialog-content>
-  <div class="header">
-    <div class="dialog-header" mat-dialog-title>Saved Searches</div>
+<div class="saved-searches">
+  <div class="saved-searches__header">
+    <div class="saved-searches__title">Saved Searches</div>
     <div>
-      <mat-icon (click)="onClose()" class="clickable">
-        close
+      <mat-icon (click)="onClose()" class="close-icon clickable">
+        keyboard_arrow_left
       </mat-icon>
     </div>
   </div>
 
-  <mat-list *ngIf="searchType$ | async as searchType">
+  <div *ngIf="searchType$ | async as searchType"
+    class="saved-searches__content">
     <app-saved-search *ngFor="let search of (searches$ | async)"
       [search]="search"
       [searchType]="searchType"
+      [isExpanded]="search.id === expandedSearchId"
+      (expand)="onExpandSearch($event)"
       (updateFilters)="updateSearchFilters($event)"
       (updateName)="updateSearchName($event)"
       (deleteSearch)="deleteSearch($event)"
       (setSearch)="onSetSearch($event)">
     </app-saved-search>
-  </mat-list>
+  </div>
 
-  <div class="footer">
+  <div class="saved-searches__footer">
     <button (click)="saveCurrentSearch()"
       mat-flat-button style="margin-top: 15px;"
       color="primary">
         Save Search
     </button>
   </div>
-</mat-dialog-content>
-
+</div>

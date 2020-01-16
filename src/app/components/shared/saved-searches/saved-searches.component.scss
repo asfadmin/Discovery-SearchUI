@@ -1,19 +1,47 @@
 @import "asf-theme";
 
-.header {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  margin-bottom: 15px;
-  position: -webkit-sticky; /* Safari */
-  position: sticky;
+.saved-searches {
+  height: 100%;
+  left: 0;
+  position: fixed;
   top: 0;
+  width: 50%;
+}
+
+.saved-searches__title {
+  font-size: 32px;
+}
+
+.saved-searches__header,
+.saved-searches__footer {
+  height: 100px;
   background-color: $asf-primary-light;
 }
 
-.footer {
-  position: -webkit-sticky; /* Safari */
-  position: sticky;
+.saved-searches__content,
+.saved-searches__footer {
+  position: absolute;
+  width: 100%;
+}
+
+.saved-searches__content {
+  bottom: 100px;
+  top: 100px;
+  overflow-y: auto;
+  background-color: white;
+}
+
+.saved-searches__footer {
   bottom: 0;
-  background-color: $asf-primary-light;
+}
+
+.saved-searches__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 15px;
+}
+
+.close-icon {
+  font-size: 32px;
 }

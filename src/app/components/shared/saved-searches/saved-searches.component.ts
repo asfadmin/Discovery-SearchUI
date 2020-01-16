@@ -13,11 +13,13 @@ import * as models from '@models';
 @Component({
   selector: 'app-saved-searches',
   templateUrl: './saved-searches.component.html',
-  styleUrls: ['./saved-searches.component.scss']
+  styleUrls: ['./saved-searches.component.scss'],
 })
 export class SavedSearchesComponent implements OnInit {
   public searches$ = this.store$.select(userStore.getSavedSearches);
   public searchType$ = this.store$.select(searchStore.getSearchType);
+
+  public expandedSearchId: string;
 
   constructor(
     private savedSearchService: SavedSearchService,
@@ -52,5 +54,11 @@ export class SavedSearchesComponent implements OnInit {
     this.store$.dispatch(new searchStore.ClearSearch());
     this.store$.dispatch(new searchStore.SetSearchType(search.searchType));
     this.store$.dispatch(new filtersStore.SetSavedSearch(search));
+    this.store$.dispatch(new uiStore.CloseSidebar());
+  }
+
+  public onExpandSearch(searchId: string): void {
+    this.expandedSearchId = this.expandedSearchId === searchId ?
+       '' : searchId;
   }
 }

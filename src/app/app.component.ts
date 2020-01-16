@@ -5,7 +5,7 @@ import { MatSidenav } from '@angular/material/sidenav';
 import { Store, ActionsSubject } from '@ngrx/store';
 import { ofType } from '@ngrx/effects';
 import { of, combineLatest } from 'rxjs';
-import { skip, filter, map, switchMap, tap, catchError } from 'rxjs/operators';
+import { skip, filter, map, switchMap, tap, catchError, debounceTime } from 'rxjs/operators';
 
 import { NgcCookieConsentService } from 'ngx-cookieconsent';
 import { Subscription } from 'rxjs-compat';
@@ -177,6 +177,7 @@ export class AppComponent implements OnInit, OnDestroy {
 
   private updateMaxSearchResults(): void {
     const checkAmount = this.searchParams$.getParams().pipe(
+      debounceTime(200),
       map(params => ({...params, ...{output: 'COUNT'}})),
       tap(_ =>
         this.store$.dispatch(new searchStore.SearchAmountLoading())

@@ -10,12 +10,16 @@ import { MatSharedModule } from '@shared';
 
 import { SavedSearchesComponent } from './saved-searches.component';
 import { SavedSearchComponent } from './saved-search/saved-search.component';
+import { GeographicSearchFiltersComponent } from './saved-search/geographic-search-filters/geographic-search-filters.component';
+import { ListSearchFiltersComponent } from './saved-search/list-search-filters/list-search-filters.component';
 
 
 @NgModule({
   declarations: [
     SavedSearchesComponent,
-    SavedSearchComponent
+    SavedSearchComponent,
+    GeographicSearchFiltersComponent,
+    ListSearchFiltersComponent
   ],
   imports: [
     CommonModule,
