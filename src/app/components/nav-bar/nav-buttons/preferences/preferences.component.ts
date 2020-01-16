@@ -7,7 +7,7 @@ import * as userStore from '@store/user';
 import * as filtersStore from '@store/filters';
 
 import { MatDialogRef } from '@angular/material';
-import { MapLayerTypes } from '@models';
+import {MapLayerTypes, UserAuth} from '@models';
 
 
 @Component({
