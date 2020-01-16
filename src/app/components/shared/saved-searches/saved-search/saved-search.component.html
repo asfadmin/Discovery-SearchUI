@@ -71,11 +71,10 @@
     </app-geographic-search-filters>
   </div>
 
-  <div>
+  <div [matTooltip]="search.searchType === searchType ? 'Update Saved Search With Current Filters' : 'Current Search Wrong Type'">
     <button
       (click)="onUpdateFilters(search.id)"
       class="search-action" color="primary"
-      [matTooltip]="search.searchType === searchType ? 'Update Search With Current Filters' : 'Wrong Search Type'"
       mat-flat-button [disabled]="search.searchType !== searchType">
         Update
     </button>
