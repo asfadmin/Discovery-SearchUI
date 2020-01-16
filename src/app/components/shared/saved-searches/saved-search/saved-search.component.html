@@ -72,10 +72,11 @@
   </div>
 
   <div>
-    <button *ngIf="search.searchType === searchType"
+    <button
       (click)="onUpdateFilters(search.id)"
       class="search-action" color="primary"
-      mat-flat-button>
+      [matTooltip]="search.searchType === searchType ? 'Update Search With Current Filters' : 'Wrong Search Type'"
+      mat-flat-button [disabled]="search.searchType !== searchType">
         Update
     </button>
   </div>
