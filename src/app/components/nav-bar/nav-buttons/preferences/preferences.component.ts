@@ -25,6 +25,8 @@ export class PreferencesComponent implements OnInit {
   public maxResults = [250, 1000, 5000];
   public mapLayerTypes = MapLayerTypes;
 
+  public userAuth: UserAuth;
+
   constructor(
     private dialogRef: MatDialogRef<PreferencesComponent>,
     private store$: Store<AppState>,
@@ -38,6 +40,11 @@ export class PreferencesComponent implements OnInit {
         this.defaultDataset = profile.defaultDataset;
       }
     );
+
+    this.store$.select(userStore.getUserAuth).subscribe(
+      user => this.userAuth = user
+    );
+
   }
 
   public onClose(): void {
