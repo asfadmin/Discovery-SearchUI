@@ -438,7 +438,7 @@ export function filtersReducer(state = initState, action: FiltersActions): Filte
           productTypes: filters.productTypes,
           beamModes: filters.beamModes,
           polarizations: filters.polarizations,
-          flightDirections: filters.flightDirections,
+          flightDirections: new Set(filters.flightDirections),
           subtypes: filters.subtypes,
           selectedMission: filters.selectedMission
         };

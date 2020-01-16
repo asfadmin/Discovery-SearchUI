@@ -20,4 +20,22 @@ export class GeographicSearchFiltersComponent implements OnInit {
       .map(subtype => subtype.apiValue)
       .join(', ');
   }
+
+  public noFilters(filters: GeographicFiltersType): boolean {
+    return (
+      !filters.dateRange.start &&
+      !filters.dateRange.end &&
+      !filters.pathRange.start &&
+      !filters.pathRange.end &&
+      !filters.frameRange.start &&
+      !filters.frameRange.end &&
+      !filters.season.start &&
+      !filters.season.end &&
+      filters.productTypes.length === 0 &&
+      filters.beamModes.length === 0 &&
+      filters.polarizations.length === 0 &&
+      filters.flightDirections.length === 0 &&
+      filters.subtypes.length === 0
+    );
+  }
 }

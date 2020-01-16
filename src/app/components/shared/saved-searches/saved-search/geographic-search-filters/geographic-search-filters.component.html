@@ -1,4 +1,4 @@
-<div>
+<div *ngIf="!noFilters(filters)">
   <div *ngIf="!!filters.dateRange.start">
     <b>Start:</b> {{ filters.dateRange.start | shortDate }}
   </div>
@@ -29,4 +29,10 @@
   <div *ngIf="filters.subtypes.length">
     <b>Dataset:</b> {{ filters.subtypes }}
   </div>
+</div>
+
+<div *ngIf="noFilters(filters)">
+  <span class="faint-text">
+    (No filters)
+  </span>
 </div>

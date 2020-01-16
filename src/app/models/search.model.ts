@@ -35,7 +35,7 @@ export interface GeographicFiltersType {
   productTypes: fromDatasets.DatasetProductTypes;
   beamModes: fromDatasets.DatasetBeamModes;
   polarizations: fromDatasets.DatasetPolarizations;
-  flightDirections: Set<FlightDirection>;
+  flightDirections: FlightDirection[];
   subtypes: fromDatasets.DatasetSubtypes;
 
   selectedMission: null | string;
