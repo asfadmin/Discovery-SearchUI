@@ -1,6 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 
-import { GeographicFiltersType } from '@models';
+import { GeographicFiltersType, ProductType } from '@models';
 
 @Component({
   selector: 'app-geographic-search-filters',
@@ -15,4 +15,9 @@ export class GeographicSearchFiltersComponent implements OnInit {
   ngOnInit() {
   }
 
+  public formatProductTypesList(fileTypes: ProductType[]): string {
+    return fileTypes
+      .map(subtype => subtype.apiValue)
+      .join(', ');
+  }
 }

@@ -1,1 +1,32 @@
-<p>geographic-search-filters works!</p>
+<div>
+  <div *ngIf="!!filters.dateRange.start">
+    <b>Start:</b> {{ filters.dateRange.start | shortDate }}
+  </div>
+  <div *ngIf="!!filters.dateRange.end">
+    <b>End:</b> {{ filters.dateRange.end | shortDate }}
+  </div>
+  <div *ngIf="filters.pathRange.start || filters.pathRange.end">
+    <b>Path:</b> {{ filters.pathRange.start }} - {{ filters.pathRange.end }}
+  </div>
+  <div *ngIf="filters.frameRange.start || filters.frameRange.end">
+    <b>Frame:</b> {{filters.frameRange.start}} - {{ filters.frameRange.end }}
+  </div>
+  <div *ngIf="filters.season.start || filters.season.end">
+    <b>Season:</b> {{filters.season.start}} - {{filters.season.end}}
+  </div>
+  <div *ngIf="filters.productTypes.length">
+    <b>File Types:</b> {{ formatProductTypesList(filters.productTypes) }}
+  </div>
+  <div *ngIf="filters.beamModes.length">
+    <b>Beam Modes:</b> {{ filters.beamModes }}
+  </div>
+  <div *ngIf="filters.polarizations.length">
+    <b>Polarizations:</b> {{ filters.polarizations }}
+  </div>
+  <div *ngIf="filters.flightDirections.length">
+    <b>Flight Dir:</b> {{ filters.flightDirections }}
+  </div>
+  <div *ngIf="filters.subtypes.length">
+    <b>Dataset:</b> {{ filters.subtypes }}
+  </div>
+</div>

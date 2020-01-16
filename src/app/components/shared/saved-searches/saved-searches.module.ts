@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
-
+import { PipesModule } from '@pipes';
 import { MatListModule } from '@angular/material/list';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatInputModule } from '@angular/material/input';
@@ -28,6 +28,7 @@ import { ListSearchFiltersComponent } from './saved-search/list-search-filters/l
     MatListModule,
     MatDialogModule,
     MatSharedModule,
+    PipesModule,
   ],
   exports: [
     SavedSearchesComponent

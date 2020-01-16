@@ -44,11 +44,6 @@
   </div>
 
   <div class="search-actions">
-    <button *ngIf="search.searchType === searchType"
-      (click)="onUpdateFilters(search.id)"
-      class="search-action" mat-flat-button>
-        Update
-    </button>
 
     <button
       (click)="onSetSearch()"
@@ -65,12 +60,23 @@
   </div>
 </div>
 
-<div *ngIf="isExpanded">
-  <app-list-search-filters *ngIf="search.searchType === SearchType.LIST"
-    [filters]="search.filters">
-  </app-list-search-filters>
+<div *ngIf="isExpanded" class="detailed-view">
+  <div>
+    <app-list-search-filters *ngIf="search.searchType === SearchType.LIST"
+      [filters]="search.filters">
+    </app-list-search-filters>
 
-  <app-geographic-search-filters *ngIf="search.searchType === SearchType.DATASET"
-    [filters]="search.filters">
-  </app-geographic-search-filters>
+    <app-geographic-search-filters *ngIf="search.searchType === SearchType.DATASET"
+      [filters]="search.filters">
+    </app-geographic-search-filters>
+  </div>
+
+  <div>
+    <button *ngIf="search.searchType === searchType"
+      (click)="onUpdateFilters(search.id)"
+      class="search-action" color="primary"
+      mat-flat-button>
+        Update
+    </button>
+  </div>
 </div>
