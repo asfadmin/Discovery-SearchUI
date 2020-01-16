@@ -1,7 +1,8 @@
 <div class="saved-search">
   <div class="search-description">
     <div (click)="expandSearch()" class="clickable expand-arrow">
-      <mat-icon class="expand-arrow--icon">keyboard_arrow_right</mat-icon>
+      <mat-icon *ngIf="!isExpanded" class="expand-arrow--icon">keyboard_arrow_right</mat-icon>
+      <mat-icon *ngIf="isExpanded" class="expand-arrow--icon">keyboard_arrow_down</mat-icon>
     </div>
     <div class="">
       <div class="search-title">
