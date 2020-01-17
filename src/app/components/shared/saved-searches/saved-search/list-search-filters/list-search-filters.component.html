@@ -1,1 +1,11 @@
-<p>list-search-filters works!</p>
+<div>
+  <div *ngIf="filters.listType">
+    <b>List Type:</b> {{ filters.listType }}
+  </div>
+
+  <div *ngIf="filters.listType" class="list">
+    <div *ngFor="let item of filters.list">
+      {{ item }}
+    </div>
+  </div>
+</div>

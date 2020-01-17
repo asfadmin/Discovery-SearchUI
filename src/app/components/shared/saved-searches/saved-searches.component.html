@@ -1,10 +1,16 @@
 <div class="saved-searches">
   <div class="saved-searches__header">
     <div class="saved-searches__title">Saved Searches</div>
-    <div>
+    <div class="saved-searches__header-actions">
       <mat-icon (click)="onClose()" class="close-icon clickable">
         keyboard_arrow_left
       </mat-icon>
+
+      <button (click)="saveCurrentSearch()"
+        mat-flat-button style="margin-bottom: 25px;"
+        color="primary">
+          Save Search
+      </button>
     </div>
   </div>
 
@@ -14,6 +20,7 @@
       [search]="search"
       [searchType]="searchType"
       [isExpanded]="search.id === expandedSearchId"
+      [isNew]="search.id === newSearchId"
       (expand)="onExpandSearch($event)"
       (updateFilters)="updateSearchFilters($event)"
       (updateName)="updateSearchName($event)"
@@ -23,10 +30,5 @@
   </div>
 
   <div class="saved-searches__footer">
-    <button (click)="saveCurrentSearch()"
-      mat-flat-button style="margin-top: 15px;"
-      color="primary">
-        Save Search
-    </button>
   </div>
 </div>

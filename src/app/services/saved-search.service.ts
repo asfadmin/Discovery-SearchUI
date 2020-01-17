@@ -22,6 +22,7 @@ import * as models from '@models';
 export class SavedSearchService {
 
   private currentGeographicSearch$ = this.store$.select(filtersStore.getGeographicSearch).pipe(
+    map(filters =>  ({ ...filters, flightDirections: Array.from(filters.flightDirections) })),
     withLatestFrom(this.mapService.searchPolygon$),
     map(([filters, polygon]): models.GeographicFiltersType => ({
       ...filters,
@@ -54,16 +55,13 @@ export class SavedSearchService {
     );
   }
 
-  public addCurrentSearch(searchName: string): void {
-    const search = {
+  public makeCurrentSearch(searchName: string): models.Search {
+    return {
       name: searchName,
       id: uuid(),
       filters: this.currentSearch,
       searchType: this.searchType,
     };
-
-    this.store$.dispatch(new AddNewSearch(search));
-    this.saveSearches();
   }
 
   public updateSearchWithCurrentFilters(id: string): void {

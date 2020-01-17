@@ -10,12 +10,13 @@ import * as models from '@models';
   templateUrl: './saved-search.component.html',
   styleUrls: ['./saved-search.component.scss']
 })
-export class SavedSearchComponent {
+export class SavedSearchComponent implements OnInit {
   @ViewChild('nameEditInput', { static: false }) nameEditInput: ElementRef;
 
   @Input() search: models.Search;
   @Input() searchType: models.SearchType;
   @Input() isExpanded: boolean;
+  @Input() isNew: boolean;
 
   @Output() updateFilters = new EventEmitter<string>();
   @Output() updateName = new EventEmitter<{ id: string, name: string }>();
@@ -26,6 +27,12 @@ export class SavedSearchComponent {
   public SearchType = models.SearchType;
   public isEditingName = false;
   public editName = '';
+
+  ngOnInit() {
+    if (this.isNew) {
+      this.onEditName();
+    }
+  }
 
   public onSetSearch(): void {
     this.setSearch.emit(this.search);
@@ -41,7 +48,8 @@ export class SavedSearchComponent {
 
   public onEditName(): void {
     this.isEditingName = true;
-    this.editName = this.search.name;
+    this.editName = this.search.name === '(No title)' ?
+      '' : this.search.name;
 
     timer(20).subscribe(
       _ => this.nameEditInput.nativeElement.focus()
@@ -61,6 +69,8 @@ export class SavedSearchComponent {
 
   public onEditFocusLeave(): void {
     this.isEditingName = false;
+
+    this.updateName.emit({ name: this.editName, id: this.search.id });
     this.editName = '';
   }
 

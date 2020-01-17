@@ -1,6 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 
-import { GeographicFiltersType } from '@models';
+import { GeographicFiltersType, ProductType } from '@models';
 
 @Component({
   selector: 'app-geographic-search-filters',
@@ -15,4 +15,27 @@ export class GeographicSearchFiltersComponent implements OnInit {
   ngOnInit() {
   }
 
+  public formatProductTypesList(fileTypes: ProductType[]): string {
+    return fileTypes
+      .map(subtype => subtype.apiValue)
+      .join(', ');
+  }
+
+  public noFilters(filters: GeographicFiltersType): boolean {
+    return (
+      !filters.dateRange.start &&
+      !filters.dateRange.end &&
+      !filters.pathRange.start &&
+      !filters.pathRange.end &&
+      !filters.frameRange.start &&
+      !filters.frameRange.end &&
+      !filters.season.start &&
+      !filters.season.end &&
+      filters.productTypes.length === 0 &&
+      filters.beamModes.length === 0 &&
+      filters.polarizations.length === 0 &&
+      filters.flightDirections.length === 0 &&
+      filters.subtypes.length === 0
+    );
+  }
 }

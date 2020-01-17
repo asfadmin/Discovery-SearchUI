@@ -15,4 +15,7 @@ export class ListSearchFiltersComponent implements OnInit {
   ngOnInit() {
   }
 
+  public formatList(list: string[]): string {
+    return list.join(', ');
+  }
 }

@@ -6,6 +6,7 @@
   position: fixed;
   top: 0;
   width: 50%;
+  min-width: 775px;
 }
 
 .saved-searches__title {
@@ -14,7 +15,6 @@
 
 .saved-searches__header,
 .saved-searches__footer {
-  height: 100px;
   background-color: $asf-primary-light;
 }
 
@@ -25,23 +25,34 @@
 }
 
 .saved-searches__content {
-  bottom: 100px;
-  top: 100px;
+  bottom: 50px;
+  top: 150px;
   overflow-y: auto;
   background-color: white;
 }
 
-.saved-searches__footer {
-  bottom: 0;
-}
-
 .saved-searches__header {
+  height: 150px;
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding: 0 15px;
 }
 
+.saved-searches__header-actions {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  justify-content: space-between;
+  height: 100%;
+}
+
+.saved-searches__footer {
+  height: 50px;
+  bottom: 0;
+}
+
 .close-icon {
   font-size: 32px;
+  margin-top: 10px;
 }
