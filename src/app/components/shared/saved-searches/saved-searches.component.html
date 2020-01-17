@@ -1,6 +1,21 @@
 <div class="saved-searches">
   <div class="saved-searches__header">
-    <div class="saved-searches__title">Saved Searches</div>
+    <div>
+      <div class="saved-searches__title">Saved Searches</div>
+      <div class="saved-searches__filter-form">
+        <form onsubmit="return false">
+          <mat-form-field>
+            <input matInput
+              [(ngModel)]="searchFilter"
+              (change)="onNewFilter($event.target.value)"
+              (input)="onNewFilter($event.target.value)"
+              (keyup.enter)="unfocusFilter()"
+              name="filterSearches"
+              placeholder="Filter Searches" #filterInput>
+          </mat-form-field>
+        </form>
+      </div>
+    </div>
     <div class="saved-searches__header-actions">
       <mat-icon (click)="onClose()" class="close-icon clickable">
         keyboard_arrow_left
