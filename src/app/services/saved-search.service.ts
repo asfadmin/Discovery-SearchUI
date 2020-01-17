@@ -55,16 +55,13 @@ export class SavedSearchService {
     );
   }
 
-  public addCurrentSearch(searchName: string): void {
-    const search = {
+  public makeCurrentSearch(searchName: string): models.Search {
+    return {
       name: searchName,
       id: uuid(),
       filters: this.currentSearch,
       searchType: this.searchType,
     };
-
-    this.store$.dispatch(new AddNewSearch(search));
-    this.saveSearches();
   }
 
   public updateSearchWithCurrentFilters(id: string): void {

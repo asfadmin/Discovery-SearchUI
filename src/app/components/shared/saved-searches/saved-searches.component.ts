@@ -20,6 +20,7 @@ export class SavedSearchesComponent implements OnInit {
   public searchType$ = this.store$.select(searchStore.getSearchType);
 
   public expandedSearchId: string;
+  public newSearchId: string;
 
   constructor(
     private savedSearchService: SavedSearchService,
@@ -31,7 +32,12 @@ export class SavedSearchesComponent implements OnInit {
   }
 
   public saveCurrentSearch(): void {
-    this.savedSearchService.addCurrentSearch('New Search');
+    const search = this.savedSearchService.makeCurrentSearch('');
+
+    this.newSearchId = search.id;
+
+    this.store$.dispatch(new userStore.AddNewSearch(search));
+    this.savedSearchService.saveSearches();
   }
 
   public updateSearchFilters(id: string): void {
@@ -39,6 +45,10 @@ export class SavedSearchesComponent implements OnInit {
   }
 
   public updateSearchName(update: {id: string, name: string}): void {
+    if (update.name === '') {
+      update.name = '(No title)' ;
+    }
+
     this.savedSearchService.updateSearchName(update.id, update.name);
   }
 
