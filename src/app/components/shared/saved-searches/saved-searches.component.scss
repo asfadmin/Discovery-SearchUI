@@ -32,11 +32,14 @@
 }
 
 .saved-searches__header {
-  height: 150px;
+  height: 149px;
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding: 0 15px;
+  border-bottom-color: $asf-primary;
+  border-bottom-style: solid;
+  border-bottom-width: 1px;
 }
 
 .saved-searches__header-actions {
@@ -48,8 +51,11 @@
 }
 
 .saved-searches__footer {
-  height: 50px;
+  height: 49px;
   bottom: 0;
+  border-top-color: $asf-primary;
+  border-top-style: solid;
+  border-top-width: 1px;
 }
 
 .close-icon {
