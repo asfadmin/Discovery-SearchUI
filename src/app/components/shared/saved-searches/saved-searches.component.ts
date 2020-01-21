@@ -120,6 +120,10 @@ export class SavedSearchesComponent implements OnInit {
   public saveCurrentSearch(): void {
     const search = this.savedSearchService.makeCurrentSearch('');
 
+    if (!search) {
+      return;
+    }
+
     this.newSearchId = search.id;
 
     this.store$.dispatch(new userStore.AddNewSearch(search));

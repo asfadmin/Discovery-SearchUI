@@ -56,6 +56,18 @@ export class SavedSearchService {
   }
 
   public makeCurrentSearch(searchName: string): models.Search {
+    if (this.searchType === models.SearchType.DATASET) {
+      const filters = <models.GeographicFiltersType>this.currentSearch;
+      if (filters.polygon.length > 10000) {
+        return;
+      }
+    } else if (this.searchType === models.SearchType.LIST) {
+      const filters = <models.ListFiltersType>this.currentSearch;
+      if (filters.list.join(',').length > 10000) {
+        return;
+      }
+    }
+
     return {
       name: searchName,
       id: uuid(),
