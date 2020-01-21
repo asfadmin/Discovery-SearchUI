@@ -64,6 +64,18 @@ export class UserEffects {
   );
 
   @Effect()
+  private loadSavedSearchesOnLogin: Observable<Action> = this.actions$.pipe(
+    ofType<userActions.Login>(userActions.UserActionType.LOGIN),
+    switchMap(
+      (action) =>
+        this.userDataService.getAttribute$(action.payload, 'SavedSearches')
+    ),
+    filter(resp => this.isSuccessfulResponse(resp)),
+    map(searches => this.datesToDateObjectFor(searches)),
+    map(searches => new userActions.SetSearches(<models.Search[]>searches))
+  );
+
+  @Effect()
   private loadSavedSearches: Observable<Action> = this.actions$.pipe(
     ofType<userActions.LoadSavedSearches>(userActions.UserActionType.LOAD_SAVED_SEARCHES),
     withLatestFrom( this.store$.select(userReducer.getUserAuth)),
