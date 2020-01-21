@@ -11,6 +11,11 @@
 .feedback-link {
   margin-right: 10px;
   flex: 30px;
+
+  a {
+    text-decoration: none;
+    color: $asf-primary;
+  }
 }
 
 .done-button {
@@ -31,4 +36,8 @@
   padding-bottom: 0;
   padding-left: 24px;
   padding-right: 24px;
+}
+
+.default-map {
+  margin-left: 30px;
 }
