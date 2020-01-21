@@ -62,13 +62,13 @@ export class NavButtonsComponent implements OnInit {
 
   public onAccountButtonClicked() {
     this.authService.login$().subscribe(
-      user => this.store$.dispatch(new userStore.SetUserAuth(user))
+      user => this.store$.dispatch(new userStore.Login(user))
     );
   }
 
   public onLogout(): void {
     this.authService.logout$().subscribe(
-      user => this.store$.dispatch(new userStore.SetUserAuth(user))
+      user => this.store$.dispatch(new userStore.Logout())
     );
   }
 

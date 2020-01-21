@@ -87,7 +87,7 @@ export class AppComponent implements OnInit, OnDestroy {
 
     const user = this.authService.getUser();
     if (user.id) {
-      this.store$.dispatch(new userStore.SetUserAuth(user));
+      this.store$.dispatch(new userStore.Login(user));
     }
 
 

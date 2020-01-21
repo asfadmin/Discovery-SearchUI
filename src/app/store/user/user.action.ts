@@ -3,7 +3,8 @@ import { Action } from '@ngrx/store';
 import { UserAuth, UserProfile, Search, GeographicFiltersType, ListFiltersType } from '@models';
 
 export enum UserActionType {
-  SET_USER_AUTH = '[User] Set User Auth',
+  LOGIN = '[User] Login',
+  LOGOUT = '[User] Logout',
 
   LOAD_PROFILE = '[User] Load User Profile',
   SAVE_PROFILE = '[User] Save User Profile',
@@ -19,10 +20,14 @@ export enum UserActionType {
   DELETE_SAVED_SEARCH = '[User] Delete Saved Search',
 }
 
-export class SetUserAuth implements Action {
-  public readonly type = UserActionType.SET_USER_AUTH;
+export class Login implements Action {
+  public readonly type = UserActionType.LOGIN;
 
   constructor(public payload: UserAuth) {}
+}
+
+export class Logout implements Action {
+  public readonly type = UserActionType.LOGOUT;
 }
 
 export class LoadProfile implements Action {
@@ -95,4 +100,5 @@ export type UserActions =
   | UpdateSearchWithFilters
   | DeleteSavedSearch
   | LoadSavedSearches
-  | SetUserAuth;
+  | Logout
+  | Login;
