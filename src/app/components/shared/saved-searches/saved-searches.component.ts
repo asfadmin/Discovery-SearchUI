@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 
 import { Store, Action } from '@ngrx/store';
 import { AppState } from '@store';
@@ -16,9 +16,14 @@ import * as models from '@models';
   styleUrls: ['./saved-searches.component.scss'],
 })
 export class SavedSearchesComponent implements OnInit {
+  @ViewChild('filterInput', { static: true }) filterInput: ElementRef;
+
   public searches$ = this.store$.select(userStore.getSavedSearches);
   public searchType$ = this.store$.select(searchStore.getSearchType);
 
+  private filterTokens = [];
+  private filteredSearches = new Set<string>();
+  public searchFilter = '';
   public expandedSearchId: string;
   public newSearchId: string;
 
@@ -29,6 +34,87 @@ export class SavedSearchesComponent implements OnInit {
 
   ngOnInit() {
     this.savedSearchService.loadSearches();
+
+    this.store$.select(userStore.getSavedSearches).subscribe(
+      searches => {
+        const filtersWithValues = searches.map(
+          search => ({
+            id: search.id,
+            tokens: {
+              name: search.name,
+              searchType: search.searchType,
+              ...Object.entries(search.filters).reduce(
+                (acc, [key, val]) => this.addIfHasValue(acc, key, val), {}
+              )
+            }
+          })
+        ).map(search => {
+          return {
+            id: search.id,
+            token: Object.entries(search.tokens).map(
+              ([name, val]) => `${name} ${val}`
+            )
+              .join(' ')
+              .toLowerCase()
+          };
+        });
+
+        this.filterTokens = filtersWithValues;
+        this.updateFilter();
+      });
+
+    this.filterInput.nativeElement.blur();
+  }
+
+  private addIfHasValue(acc, key: string, val): Object {
+    if (!val) {
+      return acc;
+    }
+
+    if (val.length === 0) {
+      return acc;
+    }
+
+    if (Object.keys(val).length === 0) {
+      return acc;
+    }
+
+    if (key === 'productTypes') {
+      return {
+        ...acc,
+        'file types': val.map(t => t.displayName),
+        'filetypes': val.map(t => t.apiValue)
+      };
+    }
+
+    if (this.isRange(val)) {
+      const range = <models.Range<any>>val;
+      let nonNullVals = ``;
+
+      if (val.start !== null) {
+        nonNullVals += `start ${val.start} `;
+      }
+
+      if (val.end !== null) {
+        nonNullVals += `end ${val.end}`;
+      }
+
+      if (nonNullVals.length === 0) {
+        return acc;
+      }
+
+      return {...acc, [key]: nonNullVals};
+    }
+
+    return {...acc, [key]: val};
+  }
+
+  private isRange(val): val is models.Range<any> {
+    return (
+      typeof val === 'object' &&
+      'start' in val &&
+      'end' in val
+    );
   }
 
   public saveCurrentSearch(): void {
@@ -44,10 +130,32 @@ export class SavedSearchesComponent implements OnInit {
     this.savedSearchService.updateSearchWithCurrentFilters(id);
   }
 
+  public onNewFilter(filter: string): void {
+    this.searchFilter = filter.toLocaleLowerCase();
+    this.updateFilter();
+  }
+
+  private updateFilter(): void {
+    this.filteredSearches = new Set();
+
+    this.filterTokens.forEach(
+      search => {
+        if (search.token.includes(this.searchFilter)) {
+          this.filteredSearches.add(search.id);
+        }
+      }
+    );
+  }
+
+  public unfocusFilter(): void {
+    this.filterInput.nativeElement.blur();
+  }
+
   public updateSearchName(update: {id: string, name: string}): void {
     if (update.name === '') {
       update.name = '(No title)' ;
     }
+    this.newSearchId = '';
 
     this.savedSearchService.updateSearchName(update.id, update.name);
   }
@@ -69,6 +177,6 @@ export class SavedSearchesComponent implements OnInit {
 
   public onExpandSearch(searchId: string): void {
     this.expandedSearchId = this.expandedSearchId === searchId ?
-       '' : searchId;
+    '' : searchId;
   }
 }

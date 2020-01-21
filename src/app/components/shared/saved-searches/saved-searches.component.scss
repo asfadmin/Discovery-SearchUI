@@ -7,10 +7,16 @@
   top: 0;
   width: 50%;
   min-width: 775px;
+  max-width: 1100px;
 }
 
 .saved-searches__title {
   font-size: 32px;
+}
+
+.saved-searches__filter-form {
+  margin-top: 20px;
+  margin-left: 10px;
 }
 
 .saved-searches__header,
