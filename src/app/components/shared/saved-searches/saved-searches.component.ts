@@ -131,7 +131,7 @@ export class SavedSearchesComponent implements OnInit {
   }
 
   public onNewFilter(filter: string): void {
-    this.searchFilter = filter.toLocaleLowerCase();
+    this.searchFilter = filter;
     this.updateFilter();
   }
 
@@ -140,7 +140,7 @@ export class SavedSearchesComponent implements OnInit {
 
     this.filterTokens.forEach(
       search => {
-        if (search.token.includes(this.searchFilter)) {
+        if (search.token.includes(this.searchFilter.toLocaleLowerCase())) {
           this.filteredSearches.add(search.id);
         }
       }
