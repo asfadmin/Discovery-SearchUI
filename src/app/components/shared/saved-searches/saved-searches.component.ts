@@ -137,10 +137,11 @@ export class SavedSearchesComponent implements OnInit {
 
   private updateFilter(): void {
     this.filteredSearches = new Set();
+    const filter = this.searchFilter.toLocaleLowerCase();
 
     this.filterTokens.forEach(
       search => {
-        if (search.token.includes(this.searchFilter.toLocaleLowerCase())) {
+        if (search.token.includes(filter)) {
           this.filteredSearches.add(search.id);
         }
       }
