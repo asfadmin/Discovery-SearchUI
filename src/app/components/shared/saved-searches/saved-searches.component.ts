@@ -21,7 +21,8 @@ export class SavedSearchesComponent implements OnInit {
   public searches$ = this.store$.select(userStore.getSavedSearches);
   public searchType$ = this.store$.select(searchStore.getSearchType);
 
-  private toFilter: string[] = [];
+  private filterTokens = [];
+  private filteredSearches = new Set<string>();
   public searchFilter = '';
   public expandedSearchId: string;
   public newSearchId: string;
@@ -42,14 +43,24 @@ export class SavedSearchesComponent implements OnInit {
             tokens: {
               name: search.name,
               searchType: search.searchType,
-              filters: Object.entries(search.filters).reduce(
+              ...Object.entries(search.filters).reduce(
                 (acc, [key, val]) => this.addIfHasValue(acc, key, val), {}
               )
             }
           })
-        );
+        ).map(search => {
+          return {
+            id: search.id,
+            token: Object.entries(search.tokens).map(
+              ([name, val]) => `${name} ${val}`
+            )
+              .join(' ')
+              .toLowerCase()
+          };
+        });
 
-        console.log(filtersWithValues);
+        this.filterTokens = filtersWithValues;
+        this.updateFilter();
       });
 
     this.filterInput.nativeElement.blur();
@@ -70,17 +81,17 @@ export class SavedSearchesComponent implements OnInit {
 
     if (this.isRange(val)) {
       const range = <models.Range<any>>val;
-      const nonNullVals: any = {};
+      let nonNullVals = ``;
 
       if (val.start !== null) {
-        nonNullVals.start = val.start;
+        nonNullVals += `start ${val.start} `;
       }
 
       if (val.end !== null) {
-        nonNullVals.end = val.end;
+        nonNullVals += `end ${val.end}`;
       }
 
-      if (Object.keys(nonNullVals).length === 0) {
+      if (nonNullVals.length === 0) {
         return acc;
       }
 
@@ -112,11 +123,21 @@ export class SavedSearchesComponent implements OnInit {
   }
 
   public onNewFilter(filter: string): void {
-    this.updateFilter(filter);
+    this.searchFilter = filter.toLocaleLowerCase();
+    this.updateFilter();
   }
 
-  private updateFilter(filter: string): void {
+  private updateFilter(): void {
+    this.filteredSearches = new Set();
 
+    this.filterTokens.forEach(
+      search => {
+        if (search.token.includes(this.searchFilter)) {
+          this.filteredSearches.add(search.id);
+        }
+      }
+    );
+    console.log(Array.from(this.filteredSearches));
   }
 
   public unfocusFilter(): void {
