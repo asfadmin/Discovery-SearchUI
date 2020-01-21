@@ -79,6 +79,14 @@ export class SavedSearchesComponent implements OnInit {
       return acc;
     }
 
+    if (key === 'productTypes') {
+      return {
+        ...acc,
+        'file types': val.map(t => t.displayName),
+        'filetypes': val.map(t => t.apiValue)
+      };
+    }
+
     if (this.isRange(val)) {
       const range = <models.Range<any>>val;
       let nonNullVals = ``;
@@ -137,7 +145,6 @@ export class SavedSearchesComponent implements OnInit {
         }
       }
     );
-    console.log(Array.from(this.filteredSearches));
   }
 
   public unfocusFilter(): void {
@@ -148,6 +155,7 @@ export class SavedSearchesComponent implements OnInit {
     if (update.name === '') {
       update.name = '(No title)' ;
     }
+    this.newSearchId = '';
 
     this.savedSearchService.updateSearchName(update.id, update.name);
   }
