@@ -32,7 +32,7 @@ export class UserEffects {
     ),
     switchMap(
       ([_, [userAuth, profile]]) =>
-        this.userDataService.setAttribute$(userAuth, 'profile', profile)
+        this.userDataService.setAttribute$(userAuth, 'Profile', profile)
     )
   );
 
@@ -42,7 +42,7 @@ export class UserEffects {
     withLatestFrom( this.store$.select(userReducer.getUserAuth)),
     switchMap(
       ([_, userAuth]) =>
-        this.userDataService.getAttribute$(userAuth, 'profile')
+        this.userDataService.getAttribute$(userAuth, 'Profile')
     ),
     filter(resp => this.isSuccessfulResponse(resp)),
     map(profile => new userActions.SetProfile(<models.UserProfile>profile))
@@ -61,6 +61,45 @@ export class UserEffects {
       ([_, [userAuth, searches]]) =>
         this.userDataService.setAttribute$(userAuth, 'SavedSearches', searches)
     ),
+  );
+
+  @Effect({ dispatch: false })
+  private saveSearchHistory: Observable<void> = this.actions$.pipe(
+    ofType<userActions.SaveSearches>(userActions.UserActionType.SAVE_SEARCH_HISTORY),
+    withLatestFrom(
+      combineLatest(
+        this.store$.select(userReducer.getUserAuth),
+        this.store$.select(userReducer.getSearchHistory)
+      )
+    ),
+    switchMap(
+      ([_, [userAuth, searches]]) =>
+        this.userDataService.setAttribute$(userAuth, 'History', searches)
+    ),
+  );
+
+  @Effect()
+  private loadSearchHistory: Observable<Action> = this.actions$.pipe(
+    ofType<userActions.LoadSavedSearches>(userActions.UserActionType.LOAD_SEARCH_HISTORY),
+    withLatestFrom( this.store$.select(userReducer.getUserAuth)),
+    switchMap(
+      ([_, userAuth]) =>
+        this.userDataService.getAttribute$(userAuth, 'History')
+    ),
+    filter(resp => this.isSuccessfulResponse(resp)),
+    map(searchHistory => new userActions.SetSearchHistory(<models.Search[]>searchHistory))
+  );
+
+  @Effect()
+  private loadSearchHistoryOnLogin: Observable<Action> = this.actions$.pipe(
+    ofType<userActions.LoadSavedSearches>(userActions.UserActionType.LOGIN),
+    withLatestFrom( this.store$.select(userReducer.getUserAuth)),
+    switchMap(
+      ([_, userAuth]) =>
+        this.userDataService.getAttribute$(userAuth, 'History')
+    ),
+    filter(resp => this.isSuccessfulResponse(resp)),
+    map(searchHistory => new userActions.SetSearchHistory(<models.Search[]>searchHistory))
   );
 
   @Effect()

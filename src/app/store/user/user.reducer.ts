@@ -91,7 +91,8 @@ export function userReducer(state = initState, action: UserActions): UserState {
     }
 
     case UserActionType.ADD_SEARCH_TO_HISTORY: {
-      const searchHistory = [ action.payload, ...state.savedSearches.searchHistory ];
+      const searchHistory = [ action.payload, ...state.savedSearches.searchHistory ]
+        .slice(0, 10);
 
       return {
         ...state,

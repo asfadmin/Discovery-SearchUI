@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
 import { Store, Action } from '@ngrx/store';
+import { Actions, ofType } from '@ngrx/effects';
 import { filter, map, skip, tap, withLatestFrom, switchMap } from 'rxjs/operators';
 import * as uuid from 'uuid/v1';
 
@@ -9,9 +10,10 @@ import { MapService } from './map/map.service';
 import { AppState } from '@store';
 import * as filtersStore from '@store/filters';
 import { getSearchType } from '@store/search/search.reducer';
+import { SearchActionType } from '@store/search/search.action';
 import {
   AddNewSearch, UpdateSearchWithFilters, UpdateSearchName, DeleteSavedSearch,
-  SaveSearches, LoadSavedSearches
+  SaveSearches, LoadSavedSearches, AddSearchToHistory
 } from '@store/user/user.action';
 
 import * as models from '@models';
@@ -45,6 +47,7 @@ export class SavedSearchService {
 
   constructor(
     private store$: Store<AppState>,
+    private actions$: Actions,
     private mapService: MapService,
     private snackBar: MatSnackBar,
   ) {
@@ -62,7 +65,7 @@ export class SavedSearchService {
 
     if (this.searchType === models.SearchType.DATASET) {
       const filters = <models.GeographicFiltersType>this.currentSearch;
-      const len = filters.polygon.length;
+      const len = filters.polygon !== null ? filters.polygon.length : 0;
 
       if (len > maxLen) {
         this.notifyUserListTooLong(len, 'List');

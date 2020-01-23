@@ -17,6 +17,7 @@ export enum UserActionType {
   ADD_SEARCH_TO_HISTORY = '[User] Add Search to History',
   SET_SEARCH_HISTORY = '[User] Set Search History',
   SAVE_SEARCH_HISTORY = '[User] Save Search History',
+  LOAD_SEARCH_HISTORY = '[User] Load Search History',
 
   ADD_NEW_SEARCH = '[User] Add new search',
   UPDATE_SEARCH_WITH_FILTERS = '[User] Update search with current filters',
@@ -48,6 +49,10 @@ export class SetSearchHistory implements Action {
 
 export class SaveSearchHistory implements Action {
   public readonly type = UserActionType.SAVE_SEARCH_HISTORY;
+}
+
+export class LoadSearchHistory implements Action {
+  public readonly type = UserActionType.LOAD_SEARCH_HISTORY;
 }
 
 export class LoadProfile implements Action {
@@ -121,6 +126,7 @@ export type UserActions =
   | DeleteSavedSearch
   | LoadSavedSearches
   | SaveSearchHistory
+  | LoadSearchHistory
   | SetSearchHistory
   | AddSearchToHistory
   | Logout
