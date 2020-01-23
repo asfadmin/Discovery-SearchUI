@@ -14,6 +14,10 @@ export enum UserActionType {
   SAVE_SEARCHES = '[User] Save Searches',
   SET_SEARCHES = '[User] Set searches',
 
+  ADD_SEARCH_TO_HISTORY = '[User] Add Search to History',
+  SET_SEARCH_HISTORY = '[User] Set Search History',
+  SAVE_SEARCH_HISTORY = '[User] Save Search History',
+
   ADD_NEW_SEARCH = '[User] Add new search',
   UPDATE_SEARCH_WITH_FILTERS = '[User] Update search with current filters',
   UPDATE_SEARCH_NAME = '[User] Edit Search Name',
@@ -28,6 +32,22 @@ export class Login implements Action {
 
 export class Logout implements Action {
   public readonly type = UserActionType.LOGOUT;
+}
+
+export class AddSearchToHistory implements Action {
+  public readonly type = UserActionType.ADD_SEARCH_TO_HISTORY;
+
+  constructor(public payload: Search) {}
+}
+
+export class SetSearchHistory implements Action {
+  public readonly type = UserActionType.SET_SEARCH_HISTORY;
+
+  constructor(public payload: Search[]) {}
+}
+
+export class SaveSearchHistory implements Action {
+  public readonly type = UserActionType.SAVE_SEARCH_HISTORY;
 }
 
 export class LoadProfile implements Action {
@@ -100,5 +120,8 @@ export type UserActions =
   | UpdateSearchWithFilters
   | DeleteSavedSearch
   | LoadSavedSearches
+  | SaveSearchHistory
+  | SetSearchHistory
+  | AddSearchToHistory
   | Logout
   | Login;

@@ -57,7 +57,7 @@ export class SavedSearchService {
     );
   }
 
-  public makeCurrentSearch(searchName: string): models.Search {
+  public makeCurrentSearch(searchName: string): models.Search | null {
     const maxLen = 10000;
 
     if (this.searchType === models.SearchType.DATASET) {

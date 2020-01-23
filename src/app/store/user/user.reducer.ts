@@ -10,6 +10,7 @@ export interface UserState {
   profile: models.UserProfile;
   savedSearches: {
     searches: models.Search[];
+    searchHistory: models.Search[];
   };
 }
 
@@ -24,7 +25,8 @@ const initState: UserState = {
     maxResults: 250
   },
   savedSearches: {
-    searches: []
+    searches: [],
+    searchHistory: []
   }
 };
 
@@ -74,6 +76,28 @@ export function userReducer(state = initState, action: UserActions): UserState {
         savedSearches: {
           ...state.savedSearches,
           searches
+        }
+      };
+    }
+
+    case UserActionType.SET_SEARCH_HISTORY: {
+      return {
+        ...state,
+        savedSearches: {
+          ...state.savedSearches,
+          searchHistory: action.payload
+        }
+      };
+    }
+
+    case UserActionType.ADD_SEARCH_TO_HISTORY: {
+      const searchHistory = [ action.payload, ...state.savedSearches.searchHistory ];
+
+      return {
+        ...state,
+        savedSearches: {
+          ...state.savedSearches,
+          searchHistory
         }
       };
     }
@@ -160,4 +184,9 @@ export const getIsUserLoggedIn = createSelector(
 export const getSavedSearches = createSelector(
   getUserState,
   (state: UserState) => state.savedSearches.searches
+);
+
+export const getSearchHistory = createSelector(
+  getUserState,
+  (state: UserState) => state.savedSearches.searchHistory
 );
