@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 import { Store, Action } from '@ngrx/store';
 import { filter, map, skip, tap, withLatestFrom, switchMap } from 'rxjs/operators';
@@ -45,6 +46,7 @@ export class SavedSearchService {
   constructor(
     private store$: Store<AppState>,
     private mapService: MapService,
+    private snackBar: MatSnackBar,
   ) {
     this.currentSearch$.subscribe(
       current => this.currentSearch = current
@@ -56,14 +58,22 @@ export class SavedSearchService {
   }
 
   public makeCurrentSearch(searchName: string): models.Search {
+    const maxLen = 10000;
+
     if (this.searchType === models.SearchType.DATASET) {
       const filters = <models.GeographicFiltersType>this.currentSearch;
-      if (filters.polygon.length > 10000) {
+      const len = filters.polygon.length;
+
+      if (len > maxLen) {
+        this.notifyUserListTooLong(len, 'List');
         return;
       }
     } else if (this.searchType === models.SearchType.LIST) {
       const filters = <models.ListFiltersType>this.currentSearch;
-      if (filters.list.join(',').length > 10000) {
+      const len = filters.list.join(',').length;
+
+      if (len > maxLen) {
+        this.notifyUserListTooLong(len, 'List');
         return;
       }
     }
@@ -74,6 +84,13 @@ export class SavedSearchService {
       filters: this.currentSearch,
       searchType: this.searchType,
     };
+  }
+
+  private notifyUserListTooLong(len: number, strType: string): void {
+    this.snackBar.open(
+      `${strType} too long, must be under 10,000 charecters (${len.toLocaleString()})`, `ERROR`,
+      { duration: 4000, }
+    );
   }
 
   public updateSearchWithCurrentFilters(id: string): void {
