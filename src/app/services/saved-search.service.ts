@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 import { Store, Action } from '@ngrx/store';
+import { Actions, ofType } from '@ngrx/effects';
 import { filter, map, skip, tap, withLatestFrom, switchMap } from 'rxjs/operators';
 import * as uuid from 'uuid/v1';
 
@@ -8,9 +10,10 @@ import { MapService } from './map/map.service';
 import { AppState } from '@store';
 import * as filtersStore from '@store/filters';
 import { getSearchType } from '@store/search/search.reducer';
+import { SearchActionType } from '@store/search/search.action';
 import {
   AddNewSearch, UpdateSearchWithFilters, UpdateSearchName, DeleteSavedSearch,
-  SaveSearches, LoadSavedSearches
+  SaveSearches, LoadSavedSearches, AddSearchToHistory
 } from '@store/user/user.action';
 
 import * as models from '@models';
@@ -44,7 +47,9 @@ export class SavedSearchService {
 
   constructor(
     private store$: Store<AppState>,
+    private actions$: Actions,
     private mapService: MapService,
+    private snackBar: MatSnackBar,
   ) {
     this.currentSearch$.subscribe(
       current => this.currentSearch = current
@@ -55,13 +60,40 @@ export class SavedSearchService {
     );
   }
 
-  public makeCurrentSearch(searchName: string): models.Search {
+  public makeCurrentSearch(searchName: string): models.Search | null {
+    const maxLen = 10000;
+
+    if (this.searchType === models.SearchType.DATASET) {
+      const filters = <models.GeographicFiltersType>this.currentSearch;
+      const len = filters.polygon !== null ? filters.polygon.length : 0;
+
+      if (len > maxLen) {
+        this.notifyUserListTooLong(len, 'List');
+        return;
+      }
+    } else if (this.searchType === models.SearchType.LIST) {
+      const filters = <models.ListFiltersType>this.currentSearch;
+      const len = filters.list.join(',').length;
+
+      if (len > maxLen) {
+        this.notifyUserListTooLong(len, 'List');
+        return;
+      }
+    }
+
     return {
       name: searchName,
       id: uuid(),
       filters: this.currentSearch,
       searchType: this.searchType,
     };
+  }
+
+  private notifyUserListTooLong(len: number, strType: string): void {
+    this.snackBar.open(
+      `${strType} too long, must be under 10,000 charecters (${len.toLocaleString()})`, `ERROR`,
+      { duration: 4000, }
+    );
   }
 
   public updateSearchWithCurrentFilters(id: string): void {

@@ -428,7 +428,7 @@ export function filtersReducer(state = initState, action: FiltersActions): Filte
           ...state,
           datasets: {
             ...state.datasets,
-            selected: state.datasets.selected,
+            selected: filters.selectedDataset,
           },
           maxResults: filters.maxResults,
           dateRange: filters.dateRange,

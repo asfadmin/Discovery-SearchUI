@@ -120,6 +120,10 @@ export class SavedSearchesComponent implements OnInit {
   public saveCurrentSearch(): void {
     const search = this.savedSearchService.makeCurrentSearch('');
 
+    if (!search) {
+      return;
+    }
+
     this.newSearchId = search.id;
 
     this.store$.dispatch(new userStore.AddNewSearch(search));
@@ -131,16 +135,17 @@ export class SavedSearchesComponent implements OnInit {
   }
 
   public onNewFilter(filter: string): void {
-    this.searchFilter = filter.toLocaleLowerCase();
+    this.searchFilter = filter;
     this.updateFilter();
   }
 
   private updateFilter(): void {
     this.filteredSearches = new Set();
+    const filter = this.searchFilter.toLocaleLowerCase();
 
     this.filterTokens.forEach(
       search => {
-        if (search.token.includes(this.searchFilter)) {
+        if (search.token.includes(filter)) {
           this.filteredSearches.add(search.id);
         }
       }
