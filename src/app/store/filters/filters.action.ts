@@ -52,6 +52,7 @@ export enum FiltersActionType {
   CLEAR_SELECTED_MISSION = '[Filters-Mission] Clear Selected Mission',
 
   SET_MAX_RESULTS = '[Filters] Set Max Results',
+  SET_SAVED_SEARCH = '[Filters] Set Saved Search',
 }
 
 export class SetState implements Action {
@@ -238,6 +239,12 @@ export class ClearSelectedMission implements Action {
   public readonly type = FiltersActionType.CLEAR_SELECTED_MISSION;
 }
 
+export class SetSavedSearch implements Action {
+  public readonly type = FiltersActionType.SET_SAVED_SEARCH;
+
+  constructor(public payload: models.Search) {}
+}
+
 export class SetMaxResults implements Action {
   public readonly type = FiltersActionType.SET_MAX_RESULTS;
 
@@ -278,5 +285,6 @@ export type FiltersActions =
   | LoadMissions
   | SetMissions
   | SelectMission
+  | SetSavedSearch
   | ClearSelectedMission
   | SetMaxResults;

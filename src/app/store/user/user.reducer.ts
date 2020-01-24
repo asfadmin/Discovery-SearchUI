@@ -10,6 +10,7 @@ export interface UserState {
   profile: models.UserProfile;
   savedSearches: {
     searches: models.Search[];
+    searchHistory: models.Search[];
   };
 }
 
@@ -24,7 +25,8 @@ const initState: UserState = {
     maxResults: 250
   },
   savedSearches: {
-    searches: []
+    searches: [],
+    searchHistory: []
   }
 };
 
@@ -32,10 +34,20 @@ const initState: UserState = {
 
 export function userReducer(state = initState, action: UserActions): UserState {
   switch (action.type) {
-    case UserActionType.SET_USER_AUTH: {
+    case UserActionType.LOGIN: {
       return {
         ...state,
         auth: action.payload
+      };
+    }
+
+    case UserActionType.LOGOUT: {
+      return {
+        ...state,
+        auth: {
+          id: null,
+          token: null
+        }
       };
     }
 
@@ -46,14 +58,47 @@ export function userReducer(state = initState, action: UserActions): UserState {
       };
     }
 
+    case UserActionType.SET_SEARCHES: {
+      return {
+        ...state,
+        savedSearches: {
+          ...state.savedSearches,
+          searches: action.payload
+        }
+      };
+    }
+
     case UserActionType.ADD_NEW_SEARCH: {
-      const searches = [ ...state.savedSearches.searches, action.payload ];
+      const searches = [ action.payload, ...state.savedSearches.searches ];
 
       return {
         ...state,
         savedSearches: {
           ...state.savedSearches,
           searches
+        }
+      };
+    }
+
+    case UserActionType.SET_SEARCH_HISTORY: {
+      return {
+        ...state,
+        savedSearches: {
+          ...state.savedSearches,
+          searchHistory: action.payload
+        }
+      };
+    }
+
+    case UserActionType.ADD_SEARCH_TO_HISTORY: {
+      const searchHistory = [ action.payload, ...state.savedSearches.searchHistory ]
+        .slice(0, 10);
+
+      return {
+        ...state,
+        savedSearches: {
+          ...state.savedSearches,
+          searchHistory
         }
       };
     }
@@ -140,4 +185,9 @@ export const getIsUserLoggedIn = createSelector(
 export const getSavedSearches = createSelector(
   getUserState,
   (state: UserState) => state.savedSearches.searches
+);
+
+export const getSearchHistory = createSelector(
+  getUserState,
+  (state: UserState) => state.savedSearches.searchHistory
 );

@@ -1,35 +1,81 @@
-<div>
-  <div *ngIf="!isEditingName">
-    {{ search.name }}
-    <button (click)="onEditName()" mat-icon-button>
-      <mat-icon>edit</mat-icon>
+<div class="saved-search">
+  <div class="search-description">
+    <div (click)="expandSearch()" class="clickable expand-arrow">
+      <mat-icon *ngIf="!isExpanded" class="expand-arrow--icon">keyboard_arrow_right</mat-icon>
+      <mat-icon *ngIf="isExpanded" class="expand-arrow--icon">keyboard_arrow_down</mat-icon>
+    </div>
+    <div class="">
+      <div class="search-title">
+        <span *ngIf="!isEditingName"
+          (click)="onEditName()"
+          matTooltip="Edit Name"
+          class="search-name clickable">
+          {{ search.name }} <mat-icon class="edit-icon">edit</mat-icon>
+        </span>
+
+        <span *ngIf="isEditingName">
+          <form class="name-edit-form" #nameEditForm="ngForm" onsubmit="return false">
+            <mat-form-field>
+              <input matInput
+                [(ngModel)]="editName"
+                (change)="onNewName($event.target.value)"
+                (keyup.enter)="onEditFocusLeave()"
+                (focusout)="onEditFocusLeave()"
+                name="editNameInput"
+                placeholder="Search Name" #nameEditInput>
+            </mat-form-field>
+          </form>
+        </span>
+
+        <span>
+          {{ search.searchType }}
+        </span>
+      </div>
+
+      <div *ngIf="!isEditingName" class="search-preview">
+        <span *ngIf="search.searchType === SearchType.DATASET">
+          {{ search.filters.selectedDataset }} {{ formatDatesFor(search.filters) }}
+        </span>
+        <span *ngIf="search.searchType === SearchType.LIST">
+          {{ listPreview(search.filters) }}
+        </span>
+      </div>
+    </div>
+  </div>
+
+  <div class="search-actions">
+    <button
+      (click)="onSetSearch()"
+      class="search-action"
+      mat-flat-button>
+        Set
+    </button>
+
+    <button (click)="onDeleteSearch()"
+      class="search-action"
+      mat-flat-button>
+        Delete
     </button>
   </div>
-  <div *ngIf="isEditingName">
-    <form #nameEditForm="ngForm" onsubmit="return false">
-      <mat-form-field>
-        <input matInput
-          [(ngModel)]="editName"
-          (change)="onNewName($event.target.value)"
-          name="editNameInput"
-          placeholder="Search Name">
-      </mat-form-field>
-    </form>
+</div>
+
+<div *ngIf="isExpanded" class="detailed-view">
+  <div>
+    <app-list-search-filters *ngIf="search.searchType === SearchType.LIST"
+      [filters]="search.filters">
+    </app-list-search-filters>
+
+    <app-geographic-search-filters *ngIf="search.searchType === SearchType.DATASET"
+      [filters]="search.filters">
+    </app-geographic-search-filters>
   </div>
-  - {{ search.searchType }}
 
-  <br>
-  {{search.filters | json}}
-
-  <button *ngIf="search.searchType === searchType"
-    (click)="onUpdateFilters(search.id)"
-    mat-flat-button color="primary">
-      Update
-  </button>
-
-  <button (click)="onDeleteSearch()"
-    mat-flat-button color="primary"
-    style="margin-left: 10px;">
-      Delete
-  </button>
+  <div [matTooltip]="search.searchType === searchType ? 'Update Saved Search With Current Filters' : 'Current Search Wrong Type'">
+    <button
+      (click)="onUpdateFilters(search.id)"
+      class="search-action" color="primary"
+      mat-flat-button [disabled]="search.searchType !== searchType">
+        Update
+    </button>
+  </div>
 </div>

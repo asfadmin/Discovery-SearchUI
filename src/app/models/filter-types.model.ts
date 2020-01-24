@@ -1,4 +1,4 @@
 export enum ListSearchType {
-  SCENE = 'Granule',
+  SCENE = 'Scene',
   PRODUCT = 'Product',
 }

@@ -6,8 +6,8 @@ import { ClipboardService } from 'ngx-clipboard';
 import { Store } from '@ngrx/store';
 import { AppState } from '@store';
 import * as userStore from '@store/user';
+import * as uiStore from '@store/ui';
 import { PreferencesComponent } from './preferences/preferences.component';
-import { SavedSearchesComponent } from '@components/shared/saved-searches';
 import { AuthService, AsfApiService, EnvironmentService, ScreenSizeService } from '@services';
 import { CMRProduct, Breakpoints, UserAuth } from '@models';
 
@@ -62,13 +62,13 @@ export class NavButtonsComponent implements OnInit {
 
   public onAccountButtonClicked() {
     this.authService.login$().subscribe(
-      user => this.store$.dispatch(new userStore.SetUserAuth(user))
+      user => this.store$.dispatch(new userStore.Login(user))
     );
   }
 
   public onLogout(): void {
     this.authService.logout$().subscribe(
-      user => this.store$.dispatch(new userStore.SetUserAuth(user))
+      user => this.store$.dispatch(new userStore.Logout())
     );
   }
 
@@ -79,20 +79,12 @@ export class NavButtonsComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe(
-      profile => {
-        this.store$.dispatch(new userStore.SetProfile(profile));
-        this.store$.dispatch(new userStore.SaveProfile());
-      }
+      _ => this.store$.dispatch(new userStore.SaveProfile())
     );
   }
 
   public onOpenSavedSearches(): void {
-    const dialogRef = this.dialog.open(SavedSearchesComponent, {
-      width: '80%',
-      height: '80%',
-      maxWidth: '100%',
-      maxHeight: '100%'
-    });
+    this.store$.dispatch(new uiStore.OpenSidebar());
   }
 
   public onCopy(): void {

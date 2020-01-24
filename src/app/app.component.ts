@@ -1,10 +1,11 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
 import { SubSink } from 'subsink';
+import { MatSidenav } from '@angular/material/sidenav';
 
 import { Store, ActionsSubject } from '@ngrx/store';
 import { ofType } from '@ngrx/effects';
 import { of, combineLatest } from 'rxjs';
-import { skip, filter, map, switchMap, tap, catchError } from 'rxjs/operators';
+import { skip, filter, map, switchMap, tap, catchError, debounceTime } from 'rxjs/operators';
 
 import { NgcCookieConsentService } from 'ngx-cookieconsent';
 import { Subscription } from 'rxjs-compat';
@@ -27,6 +28,8 @@ import * as models from './models';
   styleUrls  : ['./app.component.scss']
 })
 export class AppComponent implements OnInit, OnDestroy {
+  @ViewChild('sidenav', {static: true}) sidenav: MatSidenav;
+
   private queueStateKey = 'asf-queue-state';
 
   public shouldOmitSearchPolygon$ = this.store$.select(filterStore.getShouldOmitSearchPolygon);
@@ -61,16 +64,17 @@ export class AppComponent implements OnInit, OnDestroy {
     this.loadProductQueue();
     this.loadMissions();
 
+    this.store$.select(uiStore.getIsSidebarOpen).subscribe(
+      isSidebarOpen => isSidebarOpen ?
+        this.sidenav.open() :
+        this.sidenav.close()
+    );
+
     this.subs.add(
       this.store$.select(userStore.getUserAuth).pipe(
-        filter(userAuth => !!userAuth.token),
-        switchMap(userAuth =>
-          this.userDataService.getAttribute$<models.UserProfile | null>(userAuth, 'profile')
-        )
-      ).subscribe(profile =>
-        !profile || (profile['status'] === 'fail') ?
-          this.store$.dispatch(new userStore.SaveProfile()) :
-          this.store$.dispatch(new userStore.SetProfile(profile))
+        filter(userAuth => !!userAuth.token)
+      ).subscribe(
+        userAuth => this.store$.dispatch(new userStore.LoadProfile())
       )
     );
 
@@ -83,7 +87,7 @@ export class AppComponent implements OnInit, OnDestroy {
 
     const user = this.authService.getUser();
     if (user.id) {
-      this.store$.dispatch(new userStore.SetUserAuth(user));
+      this.store$.dispatch(new userStore.Login(user));
     }
 
 
@@ -143,6 +147,10 @@ export class AppComponent implements OnInit, OnDestroy {
     }
   }
 
+  public onCloseSidebar(): void {
+    this.store$.dispatch(new uiStore.CloseSidebar());
+  }
+
   public onLoadUrlState(): void {
     this.urlStateService.load();
   }
@@ -169,6 +177,7 @@ export class AppComponent implements OnInit, OnDestroy {
 
   private updateMaxSearchResults(): void {
     const checkAmount = this.searchParams$.getParams().pipe(
+      debounceTime(200),
       map(params => ({...params, ...{output: 'COUNT'}})),
       tap(_ =>
         this.store$.dispatch(new searchStore.SearchAmountLoading())

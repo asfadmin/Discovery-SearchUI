@@ -3,23 +3,60 @@ import { Action } from '@ngrx/store';
 import { UserAuth, UserProfile, Search, GeographicFiltersType, ListFiltersType } from '@models';
 
 export enum UserActionType {
-  SET_USER_AUTH = '[User] Set User Auth',
+  LOGIN = '[User] Login',
+  LOGOUT = '[User] Logout',
 
+  LOAD_PROFILE = '[User] Load User Profile',
   SAVE_PROFILE = '[User] Save User Profile',
   SET_PROFILE = '[User] Set User Profile',
 
+  LOAD_SAVED_SEARCHES = '[User] Load Saved Searches',
   SAVE_SEARCHES = '[User] Save Searches',
+  SET_SEARCHES = '[User] Set searches',
+
+  ADD_SEARCH_TO_HISTORY = '[User] Add Search to History',
+  SET_SEARCH_HISTORY = '[User] Set Search History',
+  SAVE_SEARCH_HISTORY = '[User] Save Search History',
+  LOAD_SEARCH_HISTORY = '[User] Load Search History',
+
   ADD_NEW_SEARCH = '[User] Add new search',
   UPDATE_SEARCH_WITH_FILTERS = '[User] Update search with current filters',
   UPDATE_SEARCH_NAME = '[User] Edit Search Name',
   DELETE_SAVED_SEARCH = '[User] Delete Saved Search',
-  LOAD_SAVED_SEARCHES = '[User] Load Saved Searches',
 }
 
-export class SetUserAuth implements Action {
-  public readonly type = UserActionType.SET_USER_AUTH;
+export class Login implements Action {
+  public readonly type = UserActionType.LOGIN;
 
   constructor(public payload: UserAuth) {}
+}
+
+export class Logout implements Action {
+  public readonly type = UserActionType.LOGOUT;
+}
+
+export class AddSearchToHistory implements Action {
+  public readonly type = UserActionType.ADD_SEARCH_TO_HISTORY;
+
+  constructor(public payload: Search) {}
+}
+
+export class SetSearchHistory implements Action {
+  public readonly type = UserActionType.SET_SEARCH_HISTORY;
+
+  constructor(public payload: Search[]) {}
+}
+
+export class SaveSearchHistory implements Action {
+  public readonly type = UserActionType.SAVE_SEARCH_HISTORY;
+}
+
+export class LoadSearchHistory implements Action {
+  public readonly type = UserActionType.LOAD_SEARCH_HISTORY;
+}
+
+export class LoadProfile implements Action {
+  public readonly type = UserActionType.LOAD_PROFILE;
 }
 
 export class SaveProfile implements Action {
@@ -32,8 +69,18 @@ export class SetProfile implements Action {
   constructor(public payload: UserProfile) {}
 }
 
+export class LoadSavedSearches implements Action {
+  public readonly type = UserActionType.LOAD_SAVED_SEARCHES;
+}
+
 export class SaveSearches implements Action {
   public readonly type = UserActionType.SAVE_SEARCHES;
+}
+
+export class SetSearches implements Action {
+  public readonly type = UserActionType.SET_SEARCHES;
+
+  constructor(public payload: Search[]) {}
 }
 
 export class AddNewSearch implements Action {
@@ -66,18 +113,21 @@ export class DeleteSavedSearch implements Action {
   constructor(public payload: string) {}
 }
 
-export class LoadSavedSearches implements Action {
-  public readonly type = UserActionType.LOAD_SAVED_SEARCHES;
-}
-
 
 export type UserActions =
   | SaveProfile
   | SetProfile
+  | LoadProfile
+  | SetSearches
   | SaveSearches
   | AddNewSearch
   | UpdateSearchName
   | UpdateSearchWithFilters
   | DeleteSavedSearch
   | LoadSavedSearches
-  | SetUserAuth;
+  | SaveSearchHistory
+  | LoadSearchHistory
+  | SetSearchHistory
+  | AddSearchToHistory
+  | Logout
+  | Login;
