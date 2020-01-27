@@ -7,7 +7,7 @@ import * as searchStore from '@store/search';
 import * as uiStore from '@store/ui';
 import * as filtersStore from '@store/filters';
 
-import { SavedSearchService } from '@services';
+import { SavedSearchService, MapService, WktService } from '@services';
 import * as models from '@models';
 
 @Component({
@@ -30,6 +30,8 @@ export class SavedSearchesComponent implements OnInit {
   constructor(
     private savedSearchService: SavedSearchService,
     private store$: Store<AppState>,
+    private mapService: MapService,
+    private wktService: WktService,
   ) { }
 
   ngOnInit() {
@@ -176,6 +178,21 @@ export class SavedSearchesComponent implements OnInit {
   public onSetSearch(search: models.Search): void {
     this.store$.dispatch(new searchStore.ClearSearch());
     this.store$.dispatch(new searchStore.SetSearchType(search.searchType));
+
+    if (search.searchType === models.SearchType.DATASET) {
+      const polygon = (<models.GeographicFiltersType>search.filters).polygon;
+      if (polygon === null) {
+        this.mapService.clearDrawLayer();
+      } else {
+        const features =  this.wktService.wktToFeature(
+          polygon,
+          this.mapService.epsg()
+        );
+
+        this.mapService.setDrawFeature(features);
+      }
+    }
+
     this.store$.dispatch(new filtersStore.SetSavedSearch(search));
     this.store$.dispatch(new uiStore.CloseSidebar());
   }
