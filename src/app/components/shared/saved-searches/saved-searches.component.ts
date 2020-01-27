@@ -180,21 +180,26 @@ export class SavedSearchesComponent implements OnInit {
     this.store$.dispatch(new searchStore.SetSearchType(search.searchType));
 
     if (search.searchType === models.SearchType.DATASET) {
-      const polygon = (<models.GeographicFiltersType>search.filters).polygon;
-      if (polygon === null) {
-        this.mapService.clearDrawLayer();
-      } else {
-        const features =  this.wktService.wktToFeature(
-          polygon,
-          this.mapService.epsg()
-        );
-
-        this.mapService.setDrawFeature(features);
-      }
+      this.loadSearchPolygon(search);
     }
 
     this.store$.dispatch(new filtersStore.SetSavedSearch(search));
     this.store$.dispatch(new uiStore.CloseSidebar());
+  }
+
+  private loadSearchPolygon(search: models.Search): void {
+    const polygon = (<models.GeographicFiltersType>search.filters).polygon;
+
+    if (polygon === null) {
+      this.mapService.clearDrawLayer();
+    } else {
+      const features =  this.wktService.wktToFeature(
+        polygon,
+        this.mapService.epsg()
+      );
+
+      this.mapService.setDrawFeature(features);
+    }
   }
 
   public onExpandSearch(searchId: string): void {
