@@ -192,6 +192,7 @@ export class SavedSearchesComponent implements OnInit {
 
     this.store$.dispatch(new filtersStore.SetSavedSearch(search));
     this.store$.dispatch(new uiStore.CloseSidebar());
+    this.store$.dispatch(new searchStore.MakeSearch());
   }
 
   private loadSearchPolygon(search: models.Search): void {
