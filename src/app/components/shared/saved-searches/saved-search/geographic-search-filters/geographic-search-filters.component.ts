@@ -23,6 +23,7 @@ export class GeographicSearchFiltersComponent implements OnInit {
 
   public noFilters(filters: GeographicFiltersType): boolean {
     return (
+      !filters.polygon &&
       !filters.dateRange.start &&
       !filters.dateRange.end &&
       !filters.pathRange.start &&
@@ -38,5 +39,9 @@ export class GeographicSearchFiltersComponent implements OnInit {
       filters.flightDirections.length === 0 &&
       filters.subtypes.length === 0
     );
+  }
+
+  public showSearchAreaType(polygon: string): string {
+    return polygon.split('(')[0];
   }
 }

@@ -1,4 +1,7 @@
 <div *ngIf="!noFilters(filters)">
+  <div *ngIf="!!filters.polygon">
+    <b>Search Area:</b> {{ showSearchAreaType(filters.polygon) }}
+  </div>
   <div *ngIf="!!filters.dateRange.start">
     <b>Start:</b> {{ filters.dateRange.start | shortDate }}
   </div>
