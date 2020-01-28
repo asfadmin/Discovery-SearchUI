@@ -15,7 +15,7 @@ export class GeographicSearchFiltersComponent implements OnInit {
   ngOnInit() {
   }
 
-  public formatProductTypesList(fileTypes: ProductType[]): string {
+  public formatTypesList(fileTypes: ProductType[]): string {
     return fileTypes
       .map(subtype => subtype.apiValue)
       .join(', ');
@@ -23,6 +23,7 @@ export class GeographicSearchFiltersComponent implements OnInit {
 
   public noFilters(filters: GeographicFiltersType): boolean {
     return (
+      !filters.polygon &&
       !filters.dateRange.start &&
       !filters.dateRange.end &&
       !filters.pathRange.start &&
@@ -31,11 +32,16 @@ export class GeographicSearchFiltersComponent implements OnInit {
       !filters.frameRange.end &&
       !filters.season.start &&
       !filters.season.end &&
+      !filters.selectedMission &&
       filters.productTypes.length === 0 &&
       filters.beamModes.length === 0 &&
       filters.polarizations.length === 0 &&
       filters.flightDirections.length === 0 &&
       filters.subtypes.length === 0
     );
+  }
+
+  public showSearchAreaType(polygon: string): string {
+    return polygon.split('(')[0];
   }
 }

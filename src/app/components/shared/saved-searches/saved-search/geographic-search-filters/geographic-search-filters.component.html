@@ -1,4 +1,7 @@
 <div *ngIf="!noFilters(filters)">
+  <div *ngIf="!!filters.polygon">
+    <b>Search Area:</b> {{ showSearchAreaType(filters.polygon) }}
+  </div>
   <div *ngIf="!!filters.dateRange.start">
     <b>Start:</b> {{ filters.dateRange.start | shortDate }}
   </div>
@@ -15,7 +18,7 @@
     <b>Season:</b> {{filters.season.start}} - {{filters.season.end}}
   </div>
   <div *ngIf="filters.productTypes.length">
-    <b>File Types:</b> {{ formatProductTypesList(filters.productTypes) }}
+    <b>File Types:</b> {{ formatTypesList(filters.productTypes) }}
   </div>
   <div *ngIf="filters.beamModes.length">
     <b>Beam Modes:</b> {{ filters.beamModes }}
@@ -27,7 +30,10 @@
     <b>Flight Dir:</b> {{ filters.flightDirections }}
   </div>
   <div *ngIf="filters.subtypes.length">
-    <b>Dataset:</b> {{ filters.subtypes }}
+    <b>Dataset:</b> {{ formatTypesList(filters.subtypes) }}
+  </div>
+  <div *ngIf="filters.selectedMission">
+    <b>Campaign:</b> {{ filters.selectedMission }}
   </div>
 </div>
 

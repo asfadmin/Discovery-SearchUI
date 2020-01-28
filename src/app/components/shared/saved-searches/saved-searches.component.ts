@@ -7,7 +7,7 @@ import * as searchStore from '@store/search';
 import * as uiStore from '@store/ui';
 import * as filtersStore from '@store/filters';
 
-import { SavedSearchService } from '@services';
+import { SavedSearchService, MapService, WktService, ScreenSizeService } from '@services';
 import * as models from '@models';
 
 @Component({
@@ -21,6 +21,9 @@ export class SavedSearchesComponent implements OnInit {
   public searches$ = this.store$.select(userStore.getSavedSearches);
   public searchType$ = this.store$.select(searchStore.getSearchType);
 
+  public breakpoint: models.Breakpoints;
+  public breakpoints = models.Breakpoints;
+
   private filterTokens = [];
   private filteredSearches = new Set<string>();
   public searchFilter = '';
@@ -30,10 +33,16 @@ export class SavedSearchesComponent implements OnInit {
   constructor(
     private savedSearchService: SavedSearchService,
     private store$: Store<AppState>,
+    private screenSize: ScreenSizeService,
+    private mapService: MapService,
+    private wktService: WktService,
   ) { }
 
   ngOnInit() {
     this.savedSearchService.loadSearches();
+    this.screenSize.breakpoint$.subscribe(
+      breakpoint => this.breakpoint = breakpoint
+    );
 
     this.store$.select(userStore.getSavedSearches).subscribe(
       searches => {
@@ -63,7 +72,7 @@ export class SavedSearchesComponent implements OnInit {
         this.updateFilter();
       });
 
-    this.filterInput.nativeElement.blur();
+      this.filterInput.nativeElement.blur();
   }
 
   private addIfHasValue(acc, key: string, val): Object {
@@ -176,8 +185,29 @@ export class SavedSearchesComponent implements OnInit {
   public onSetSearch(search: models.Search): void {
     this.store$.dispatch(new searchStore.ClearSearch());
     this.store$.dispatch(new searchStore.SetSearchType(search.searchType));
+
+    if (search.searchType === models.SearchType.DATASET) {
+      this.loadSearchPolygon(search);
+    }
+
     this.store$.dispatch(new filtersStore.SetSavedSearch(search));
     this.store$.dispatch(new uiStore.CloseSidebar());
+    this.store$.dispatch(new searchStore.MakeSearch());
+  }
+
+  private loadSearchPolygon(search: models.Search): void {
+    const polygon = (<models.GeographicFiltersType>search.filters).polygon;
+
+    if (polygon === null) {
+      this.mapService.clearDrawLayer();
+    } else {
+      const features =  this.wktService.wktToFeature(
+        polygon,
+        this.mapService.epsg()
+      );
+
+      this.mapService.setDrawFeature(features);
+    }
   }
 
   public onExpandSearch(searchId: string): void {
