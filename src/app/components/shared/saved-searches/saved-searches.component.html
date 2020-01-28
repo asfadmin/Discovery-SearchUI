@@ -1,4 +1,3 @@
-<span *ngIf="breakpoint$ | async as breakpoint">
 <div [ngClass]="{'saved-searches-mobile': breakpoint <= breakpoints.SMALL,
                  'saved-searches': breakpoint > breakpoints.SMALL}">
   <div class="saved-searches__header">
@@ -78,4 +77,3 @@
     </div>
   </div>
 </div>
-</span>

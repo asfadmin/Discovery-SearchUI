@@ -21,7 +21,7 @@ export class SavedSearchesComponent implements OnInit {
   public searches$ = this.store$.select(userStore.getSavedSearches);
   public searchType$ = this.store$.select(searchStore.getSearchType);
 
-  public breakpoint$ = this.screenSize.breakpoint$;
+  public breakpoint: models.Breakpoints;
   public breakpoints = models.Breakpoints;
 
   private filterTokens = [];
@@ -40,6 +40,9 @@ export class SavedSearchesComponent implements OnInit {
 
   ngOnInit() {
     this.savedSearchService.loadSearches();
+    this.screenSize.breakpoint$.subscribe(
+      breakpoint => this.breakpoint = breakpoint
+    );
 
     this.store$.select(userStore.getSavedSearches).subscribe(
       searches => {
@@ -69,7 +72,7 @@ export class SavedSearchesComponent implements OnInit {
         this.updateFilter();
       });
 
-    this.filterInput.nativeElement.blur();
+      this.filterInput.nativeElement.blur();
   }
 
   private addIfHasValue(acc, key: string, val): Object {
