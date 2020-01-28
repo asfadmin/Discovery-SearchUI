@@ -3,6 +3,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 
 import { Store, Action } from '@ngrx/store';
 import { Actions, ofType } from '@ngrx/effects';
+import { combineLatest } from 'rxjs';
 import { filter, map, skip, tap, withLatestFrom, switchMap } from 'rxjs/operators';
 import * as uuid from 'uuid/v1';
 
@@ -24,9 +25,12 @@ import * as models from '@models';
 })
 export class SavedSearchService {
 
-  private currentGeographicSearch$ = this.store$.select(filtersStore.getGeographicSearch).pipe(
-    map(filters =>  ({ ...filters, flightDirections: Array.from(filters.flightDirections) })),
-    withLatestFrom(this.mapService.searchPolygon$),
+  private currentGeographicSearch$ = combineLatest(
+    this.store$.select(filtersStore.getGeographicSearch).pipe(
+      map(filters =>  ({ ...filters, flightDirections: Array.from(filters.flightDirections) })),
+    ),
+    this.mapService.searchPolygon$
+  ).pipe(
     map(([filters, polygon]): models.GeographicFiltersType => ({
       ...filters,
       polygon

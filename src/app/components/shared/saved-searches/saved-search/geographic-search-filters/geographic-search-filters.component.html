@@ -29,6 +29,9 @@
   <div *ngIf="filters.subtypes.length">
     <b>Dataset:</b> {{ filters.subtypes }}
   </div>
+  <div *ngIf="filters.selectedMission">
+    <b>Campaign:</b> {{ filters.selectedMission }}
+  </div>
 </div>
 
 <div *ngIf="noFilters(filters)">
