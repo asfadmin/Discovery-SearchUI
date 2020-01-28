@@ -7,7 +7,7 @@ import * as searchStore from '@store/search';
 import * as uiStore from '@store/ui';
 import * as filtersStore from '@store/filters';
 
-import { SavedSearchService, MapService, WktService } from '@services';
+import { SavedSearchService, MapService, WktService, ScreenSizeService } from '@services';
 import * as models from '@models';
 
 @Component({
@@ -21,6 +21,9 @@ export class SavedSearchesComponent implements OnInit {
   public searches$ = this.store$.select(userStore.getSavedSearches);
   public searchType$ = this.store$.select(searchStore.getSearchType);
 
+  public breakpoint$ = this.screenSize.breakpoint$;
+  public breakpoints = models.Breakpoints;
+
   private filterTokens = [];
   private filteredSearches = new Set<string>();
   public searchFilter = '';
@@ -30,6 +33,7 @@ export class SavedSearchesComponent implements OnInit {
   constructor(
     private savedSearchService: SavedSearchService,
     private store$: Store<AppState>,
+    private screenSize: ScreenSizeService,
     private mapService: MapService,
     private wktService: WktService,
   ) { }
