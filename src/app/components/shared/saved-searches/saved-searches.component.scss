@@ -31,7 +31,13 @@
 }
 
 .saved-searches__content {
-  max-height: 60vh;
+  max-height: calc(100vh - 350px);
+  overflow-y: auto;
+  background-color: white;
+}
+
+.saved-searches__content-mobile {
+  max-height: calc(100vh - 350px);
   overflow-y: auto;
   background-color: white;
 }
@@ -105,7 +111,7 @@
 
 .saved-searches__footer-mobile {
   bottom: 0;
-  position: fixed;
+  position: absolute;
 }
 
 .close-icon {
