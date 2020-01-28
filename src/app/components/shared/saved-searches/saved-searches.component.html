@@ -1,19 +1,22 @@
-<div class="saved-searches">
+<span *ngIf="breakpoint$ | async as breakpoint">
+<div [ngClass]="{'saved-searches-mobile': breakpoint <= breakpoints.SMALL,
+                 'saved-searches': breakpoint > breakpoints.SMALL}">
   <div class="saved-searches__header">
       <div class="saved-searches__header-title">
         Saved Searches
       </div>
       <div class="saved-searches__header-actions" >
           <div class="saved-searches__more-menu">
-            <mat-icon class="close-icon clickable">
-              more_vert
-            </mat-icon>
+<!--            <mat-icon class="close-icon clickable">-->
+<!--              more_vert-->
+<!--            </mat-icon>-->
           </div>
       </div>
     </div>
 
   <div class="saved-searches__subhead">
-    <div class="saved-searches__filter-form">
+    <div [ngClass]="{'saved-searches__filter-form-mobile': breakpoint <= breakpoints.SMALL,
+                     'saved-searches__filter-form': breakpoint > breakpoints.SMALL}">
       <form onsubmit="return false">
         <mat-form-field>
           <input matInput
@@ -64,7 +67,8 @@
       </div>
   </div>
 
-  <div class="saved-searches__footer">
+  <div [ngClass]="{'saved-searches__footer-mobile': breakpoint <= breakpoints.SMALL,
+                 'saved-searches__footer': breakpoint > breakpoints.SMALL}">
     <div class="saved-searches__close-button">
       <button (click)="onClose()"
               mat-raised-button
@@ -74,3 +78,4 @@
     </div>
   </div>
 </div>
+</span>
