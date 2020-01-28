@@ -15,7 +15,7 @@ export class GeographicSearchFiltersComponent implements OnInit {
   ngOnInit() {
   }
 
-  public formatProductTypesList(fileTypes: ProductType[]): string {
+  public formatTypesList(fileTypes: ProductType[]): string {
     return fileTypes
       .map(subtype => subtype.apiValue)
       .join(', ');
