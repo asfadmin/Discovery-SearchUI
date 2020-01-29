@@ -44,7 +44,7 @@
                  'saved-searches__content': breakpoint > breakpoints.SMALL}">
         <div *ngIf="(searches$ | async).length > 0; else noSavedSearchBlock">
           <div *ngFor="let search of (searches$ | async)">
-            <div *ngIf="filteredSearches.has(search.id); else noSavedSearchBlock">
+            <div *ngIf="filteredSearches.has(search.id)">
               <app-saved-search
                 [search]="search"
                 [searchType]="searchType"
