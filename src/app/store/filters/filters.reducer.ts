@@ -426,7 +426,7 @@ export function filtersReducer(state = initState, action: FiltersActions): Filte
         const filters = <models.GeographicFiltersType>search.filters;
 
         const dataset = models.datasets.filter(
-          d => d.name.toUpperCase() === filters.selectedDataset
+          d => d.id === filters.selectedDataset
         )[0];
 
         const filterSubtypes = new Set(
