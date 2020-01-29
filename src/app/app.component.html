@@ -1,5 +1,8 @@
 <mat-sidenav-container class="container tophat-offset" (backdropClick)="onCloseSidebar()">
-  <mat-sidenav class="app-sidenav" #sidenav (keydown.escape)="onCloseSidebar()" disableClose>
+  <mat-sidenav
+    [ngClass]="{'app-sidenav-mobile': breakpoint <= breakpoints.SMALL,
+                'app-sidenav': breakpoint > breakpoints.SMALL}"
+    #sidenav (keydown.escape)="onCloseSidebar()" disableClose>
     <app-saved-searches></app-saved-searches>
   </mat-sidenav>
 
