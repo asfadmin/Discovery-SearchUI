@@ -35,6 +35,9 @@ export class AppComponent implements OnInit, OnDestroy {
   public shouldOmitSearchPolygon$ = this.store$.select(filterStore.getShouldOmitSearchPolygon);
   public isLoading$ = this.store$.select(searchStore.getIsLoading);
 
+  public breakpoint: models.Breakpoints;
+  public breakpoints = models.Breakpoints;
+
   public queuedProducts$ = this.store$.select(queueStore.getQueuedProducts).pipe(
     map(q => q || [])
   );
@@ -54,11 +57,15 @@ export class AppComponent implements OnInit, OnDestroy {
     private asfSearchApi: services.AsfApiService,
     private authService: services.AuthService,
     private userDataService: services.UserDataService,
+    private screenSize: services.ScreenSizeService,
     private ccService: NgcCookieConsentService,
   ) {}
 
   public ngOnInit(): void {
     this.store$.dispatch(new uiStore.LoadBanners());
+    this.screenSize.breakpoint$.subscribe(
+      breakpoint => this.breakpoint = breakpoint
+    );
 
     this.polygonValidationService.validate();
     this.loadProductQueue();
