@@ -424,6 +424,27 @@ export function filtersReducer(state = initState, action: FiltersActions): Filte
         };
       } else {
         const filters = <models.GeographicFiltersType>search.filters;
+
+        const dataset = models.datasets.filter(
+          d => d.name.toUpperCase() === filters.selectedDataset
+        )[0];
+
+        const filterSubtypes = new Set(
+          filters.subtypes.map(t => t.apiValue)
+        );
+
+        const subtypes = dataset.subtypes.filter(
+          subtype => filterSubtypes.has(subtype.apiValue)
+        );
+
+        const filterProductTypes = new Set(
+          filters.productTypes.map(t => t.apiValue)
+        );
+
+        const productTypes = dataset.productTypes.filter(
+          productType => filterProductTypes.has(productType.apiValue)
+        );
+
         return {
           ...state,
           datasets: {
@@ -435,11 +456,11 @@ export function filtersReducer(state = initState, action: FiltersActions): Filte
           pathRange: filters.pathRange,
           frameRange: filters.frameRange,
           season: filters.season,
-          productTypes: filters.productTypes,
+          productTypes,
           beamModes: filters.beamModes,
           polarizations: filters.polarizations,
           flightDirections: new Set(filters.flightDirections),
-          subtypes: filters.subtypes,
+          subtypes,
           selectedMission: filters.selectedMission
         };
       }
