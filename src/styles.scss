@@ -181,6 +181,10 @@ ul {
   background-color: rgba(0, 0, 0, 0.07) !important;
 }
 
+.mat-dialog-container {
+  border-radius: 0 !important;
+}
+
 .image-dialog {
   margin: 0;
   padding: 0;
@@ -211,3 +215,9 @@ ul {
   max-width: 340px !important;
   max-height: 312px !important;
 }
+
+.saved-searches__filter-form-mobile
+.mat-form-field-infix {
+  width: 168px !important;
+}
+

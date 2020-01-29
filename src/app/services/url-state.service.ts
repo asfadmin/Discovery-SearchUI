@@ -446,6 +446,10 @@ export class UrlStateService {
   }
 
   private loadListSearchType = (mode: string): Action | undefined => {
+    if (mode === 'Granule') {
+      mode = models.ListSearchType.SCENE;
+    }
+
     if (!Object.values(models.ListSearchType).includes(mode)) {
       return;
     }

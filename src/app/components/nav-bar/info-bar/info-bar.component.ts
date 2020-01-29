@@ -31,6 +31,7 @@ export class InfoBarComponent implements OnInit, OnDestroy {
   public polarizations: models.DatasetPolarizations;
   public flightDirections: models.FlightDirection[];
   public subtypes: string;
+  public mission: string;
 
   private subs = new SubSink();
 
@@ -83,6 +84,9 @@ export class InfoBarComponent implements OnInit, OnDestroy {
         .map(subtype => subtype.apiValue)
         .join(',')
     );
+    const missionSub = this.store$.select(filtersStore.getSelectedMission).subscribe(
+      mission => this.mission = mission
+    ) ;
 
     [
       startSub, endSub,
@@ -95,6 +99,7 @@ export class InfoBarComponent implements OnInit, OnDestroy {
       beamModesSub,
       flightDirsSub,
       subtypeSub,
+      missionSub,
     ].forEach(sub => this.subs.add(sub));
   }
 

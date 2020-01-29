@@ -81,24 +81,32 @@
 </div>
 
 <mat-menu #profileMenu="matMenu">
+  <button (click)="onOpenSavedSearches()" mat-menu-item matSuffix>
+    Saved Searches
+  </button>
+  <button (click)="onOpenPreferences()" mat-menu-item matSuffix>
+    Preferences
+  </button>
+  <hr class="menu-hr">
   <button (click)="onLogout()"
-    mat-menu-item matSuffix>
-    <b> {{ userAuth.id }} </b> <span> logout</span>
+      mat-menu-item matSuffix>
+    Sign out
+    <!-- <em>{{ userAuth.id }}</em> -->
   </button>
 </mat-menu>
 
 <mat-menu #appMenu="matMenu">
 
   <button (click)="onCopy()"
-          mat-menu-item matSuffix>
+      mat-menu-item matSuffix>
     <mat-icon>link</mat-icon>
     Copy Search Link
   </button>
 
   <a (click)="onShareWithEmail()"
-     href="mailto:?subject=&body=:%20"
-     target="_blank" title="Send email"
-     mat-menu-item matSuffix>
+      href="mailto:?subject=&body=:%20"
+      target="_blank" title="Send email"
+                      mat-menu-item matSuffix>
     <mat-icon>email</mat-icon>
     Share With Email
   </a>
@@ -123,29 +131,29 @@
   <hr class="menu-hr">
 
   <button [matMenuTriggerFor]="thematicDatasets"
-          mat-menu-item>
-          Thematic Datasets
+      mat-menu-item>
+    Thematic Datasets
   </button>
 
   <button *ngIf="isDevMode()"
-    [matMenuTriggerFor]="apiMaturity"
-    mat-menu-item>
-      Select API Maturity
+      [matMenuTriggerFor]="apiMaturity"
+      mat-menu-item>
+    Select API Maturity
   </button>
 
   <ng-container *ngIf="(breakpoint$ | async) === breakpoints.MOBILE">
     <hr class="menu-hr">
 
     <button
-      [matMenuTriggerFor]="copyrightMenu"
-      mat-menu-item>
+        [matMenuTriggerFor]="copyrightMenu"
+        mat-menu-item>
       Copyright
     </button>
 
     <button
-      [matMenuTriggerFor]="asfMenu"
-      mat-menu-item>
-     ASF
+        [matMenuTriggerFor]="asfMenu"
+        mat-menu-item>
+      ASF
     </button>
 
     <mat-menu #asfMenu="matMenu">
@@ -172,12 +180,12 @@
 
 <mat-menu #apiMaturity="matMenu">
   <button [class.selected]="maturity === 'test'" (click)="onTestSelected()"
-    mat-menu-item matSuffix>
-      <span>Test</span>
+                                                                              mat-menu-item matSuffix>
+    <span>Test</span>
   </button>
 
   <button [class.selected]="maturity === 'prod'" (click)="onProdSelected()"
-    mat-menu-item matSuffix>
-      <span>Production</span>
+                                                                              mat-menu-item matSuffix>
+    <span>Production</span>
   </button>
 </mat-menu>

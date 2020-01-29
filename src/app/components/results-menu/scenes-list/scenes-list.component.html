@@ -41,7 +41,7 @@
           <span *ngIf="breakpoint === breakpoints.MOBILE" matTooltip="Start Time">{{ scene.metadata.date | shortDate }}</span>
         </div>
 
-        <mat-icon (click)="onZoomTo(scene)"class="ml-2" matTooltip="Zoom to scene">
+        <mat-icon (click)="onZoomTo(scene)" class="ml-2" matTooltip="Zoom to scene">
           settings_overscan
         </mat-icon>
         <mat-icon (click)="onToggleScene($event, scene.groupId)"

@@ -1,0 +1,57 @@
+.name-edit-form {
+  display: inline;
+}
+
+.saved-search {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding: 0 10px;
+  margin: 20px 0;
+}
+
+.search-description {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  padding: 5px;
+}
+
+.expand-arrow {
+  margin-right: 20px;
+  margin-top: -2px;
+}
+
+.expand-arrow--icon {
+  font-size: 38px;
+}
+
+.edit-icon {
+  font-size: 18px;
+}
+
+.search-name {
+  font-weight: bold;
+}
+
+.search-preview {
+  margin-top: 5px;
+}
+
+.search-action-group {
+  display: flex;
+  flex: initial;
+}
+
+.search-action {
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+.detailed-view {
+  margin: 0 10px 15px 60px;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+}
