@@ -16,6 +16,10 @@
   overflow: hidden;
 }
 
+.app-sidenav {
+  bottom: unset;
+}
+
 @media screen and (max-width: 800px) {
   .tophat-offset {
     top: 40px;
