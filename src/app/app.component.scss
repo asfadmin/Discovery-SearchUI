@@ -21,6 +21,13 @@
   width: min-content;
 }
 
+.app-sidenav-mobile {
+  bottom: 0;
+  left: 0;
+  right: 0;
+  width: 100%;
+}
+
 @media screen and (max-width: 800px) {
   .tophat-offset {
     top: 40px;
