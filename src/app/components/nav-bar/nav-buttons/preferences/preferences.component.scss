@@ -1,0 +1,43 @@
+@import "asf-theme";
+
+.action-controls {
+  margin-top: 15px;
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+}
+
+.feedback-link {
+  margin-right: 10px;
+  flex: 30px;
+
+  a {
+    text-decoration: none;
+    color: $asf-primary;
+  }
+}
+
+.done-button {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.dialg-header {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  background-color: $asf-primary-light;
+  margin-top: -24px;
+  margin-bottom: 15px;
+  margin-right: -24px;
+  margin-left: -24px;
+  padding-top: 14px;
+  padding-bottom: 0;
+  padding-left: 24px;
+  padding-right: 24px;
+}
+
+.default-map {
+  margin-left: 30px;
+}

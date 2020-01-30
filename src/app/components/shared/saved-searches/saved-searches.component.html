@@ -1,23 +1,80 @@
-<mat-dialog-content>
-  <div style="display: flex; flex-direction: row; justify-content: space-between; margin-bottom: 15px;">
-    <div class="dialog-header" mat-dialog-title>Saved Searches</div>
-    <div>
-      <mat-icon (click)="onClose()" class="clickable">
-        close
-      </mat-icon>
+<div [ngClass]="{'saved-searches-mobile': breakpoint <= breakpoints.SMALL,
+                 'saved-searches': breakpoint > breakpoints.SMALL}">
+  <div class="saved-searches__header">
+      <div class="saved-searches__header-title">
+        Saved Searches
+      </div>
+      <div class="saved-searches__header-actions" >
+          <div class="saved-searches__more-menu">
+<!--            <mat-icon class="close-icon clickable">-->
+<!--              more_vert-->
+<!--            </mat-icon>-->
+          </div>
+      </div>
+    </div>
+
+  <div class="saved-searches__subhead">
+    <div [ngClass]="{'saved-searches__filter-form-mobile': breakpoint <= breakpoints.SMALL,
+                     'saved-searches__filter-form': breakpoint > breakpoints.SMALL}">
+      <form onsubmit="return false">
+        <mat-form-field>
+          <input matInput
+                 [(ngModel)]="searchFilter"
+                 (change)="onNewFilter($event.target.value)"
+                 (input)="onNewFilter($event.target.value)"
+                 (keyup.enter)="unfocusFilter()"
+                 name="filterSearches"
+                 placeholder="Filter Searches" #filterInput>
+        </mat-form-field>
+      </form>
+    </div>
+
+    <div class="saved-searches__save-button">
+      <button (click)="saveCurrentSearch()"
+              mat-raised-button
+              color="accent">
+        Save Current Search
+      </button>
     </div>
   </div>
 
-  <div *ngIf="searchType$ | async as searchType">
-    <app-saved-search *ngFor="let search of (searches$ | async)"
-      [search]="search"
-      [searchType]="searchType"
-      (updateFilters)="updateSearchFilters($event)"
-      (updateName)="updateSearchName($event)"
-      (deleteSearch)="deleteSearch($event)">
-    </app-saved-search>
+  <div class="content-wrapper">
+      <div *ngIf="searchType$ | async as searchType"
+           [ngClass]="{'saved-searches__content-mobile': breakpoint <= breakpoints.SMALL,
+                 'saved-searches__content': breakpoint > breakpoints.SMALL}">
+        <div *ngIf="(searches$ | async).length > 0; else noSavedSearchBlock">
+          <div *ngFor="let search of (searches$ | async)">
+            <div *ngIf="filteredSearches.has(search.id)">
+              <app-saved-search
+                [search]="search"
+                [searchType]="searchType"
+                [isExpanded]="search.id === expandedSearchId"
+                [isNew]="search.id === newSearchId"
+                (expand)="onExpandSearch($event)"
+                (updateFilters)="updateSearchFilters($event)"
+                (updateName)="updateSearchName($event)"
+                (deleteSearch)="deleteSearch($event)"
+                (setSearch)="onSetSearch($event)">
+              </app-saved-search>
+            </div>
+          </div>
+        </div>
+        <ng-template #noSavedSearchBlock>
+          <div class="no-saved-searches">
+            <h2>You have no saved searches.</h2>
+          </div>
+        </ng-template>
+      </div>
   </div>
 
-  <button (click)="saveCurrentSearch()" mat-flat-button style="margin-top: 15px;" color="primary">Save Search</button>
-</mat-dialog-content>
-
+  <div [ngClass]="{'saved-searches__footer-mobile': breakpoint <= breakpoints.SMALL,
+                 'saved-searches__footer': breakpoint > breakpoints.SMALL}">
+    <div class="saved-searches__close-button">
+      <button (click)="onClose()"
+              mat-raised-button
+              color="primary">
+        Done
+      </button>
+    </div>
+  </div>
+</div>

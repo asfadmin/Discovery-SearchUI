@@ -16,13 +16,6 @@
   max-height: calc(100vh - 32px);
   overflow: auto;
   z-index: 1000;
-  pointer-events: none;
-}
-
-@media (min-width: 981px) {
-  .padding-for-box-shadow {
-    padding: 0 20px;
-  }
 }
 
 .dataset-filters-card {
@@ -47,7 +40,7 @@
     top: 0;
     background-color: $asf-primary-light;
     border-bottom: 1px solid $asf-primary-dark;
-    font-size: 32px;
+    font-size: 24px;
     padding: 15px;
     z-index: 1001;
   }

@@ -93,6 +93,10 @@ export function filtersReducer(state = initState, action: FiltersActions): Filte
     }
 
     case FiltersActionType.SET_SELECTED_DATASET: {
+      if (!action.payload) {
+        return state;
+      }
+
       const selected = action.payload.toUpperCase();
 
       return {
@@ -406,6 +410,60 @@ export function filtersReducer(state = initState, action: FiltersActions): Filte
         ...state,
         searchList: action.payload
       };
+    }
+
+    case FiltersActionType.SET_SAVED_SEARCH: {
+      const search = action.payload;
+      if (search.searchType === models.SearchType.LIST) {
+        const filters = <models.ListFiltersType>search.filters;
+
+        return {
+          ...state,
+          listSearchMode: filters.listType,
+          searchList: filters.list
+        };
+      } else {
+        const filters = <models.GeographicFiltersType>search.filters;
+
+        const dataset = models.datasets.filter(
+          d => d.id === filters.selectedDataset
+        )[0];
+
+        const filterSubtypes = new Set(
+          filters.subtypes.map(t => t.apiValue)
+        );
+
+        const subtypes = dataset.subtypes.filter(
+          subtype => filterSubtypes.has(subtype.apiValue)
+        );
+
+        const filterProductTypes = new Set(
+          filters.productTypes.map(t => t.apiValue)
+        );
+
+        const productTypes = dataset.productTypes.filter(
+          productType => filterProductTypes.has(productType.apiValue)
+        );
+
+        return {
+          ...state,
+          datasets: {
+            ...state.datasets,
+            selected: filters.selectedDataset,
+          },
+          maxResults: filters.maxResults,
+          dateRange: filters.dateRange,
+          pathRange: filters.pathRange,
+          frameRange: filters.frameRange,
+          season: filters.season,
+          productTypes,
+          beamModes: filters.beamModes,
+          polarizations: filters.polarizations,
+          flightDirections: new Set(filters.flightDirections),
+          subtypes,
+          selectedMission: filters.selectedMission
+        };
+      }
     }
 
     default: {
