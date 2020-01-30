@@ -10,7 +10,7 @@ import { CMRProduct } from '@models';
 })
 export class BulkDownloadService {
   private readonly url = 'https://bulk-download.asf.alaska.edu';
-  private readonly testUrl = 'https://bulk-download-test.asf.alaska.edu';
+  private readonly testUrl = 'https://bulk-download.asf.alaska.edu';
 
   constructor(private http: HttpClient) {}
 
