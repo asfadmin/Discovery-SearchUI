@@ -7,7 +7,7 @@ import * as userStore from '@store/user';
 import * as filtersStore from '@store/filters';
 
 import { MatDialogRef } from '@angular/material';
-import {MapLayerTypes, UserAuth} from '@models';
+import {MapLayerTypes, UserAuth, ProductType} from '@models';
 
 
 @Component({
@@ -21,6 +21,7 @@ export class PreferencesComponent implements OnInit {
   public defaultMaxResults: number;
   public defaultMapLayer: MapLayerTypes;
   public defaultDataset: string;
+  public defaultProductTypes: ProductType[];
 
   public maxResults = [250, 1000, 5000];
   public mapLayerTypes = MapLayerTypes;
@@ -38,6 +39,7 @@ export class PreferencesComponent implements OnInit {
         this.defaultMaxResults = profile.maxResults;
         this.defaultMapLayer = profile.mapLayer;
         this.defaultDataset = profile.defaultDataset;
+        this.defaultProductTypes = [];
       }
     );
 
@@ -66,6 +68,10 @@ export class PreferencesComponent implements OnInit {
     this.saveProfile();
   }
 
+  public onNewDefaultProductTypes(types: ProductType[]): void {
+    console.log(types);
+  }
+
   public saveProfile(): void {
     const action = new userStore.SetProfile({
       maxResults: this.defaultMaxResults,
@@ -75,4 +81,5 @@ export class PreferencesComponent implements OnInit {
 
     this.store$.dispatch(action);
   }
+
 }

@@ -1,10 +1,5 @@
 <div class="dialg-header">
   <div mat-dialog-title>Preferences</div>
-<!--  <div>-->
-<!--    <mat-icon (click)="onClose()" class="clickable">-->
-<!--      close-->
-<!--    </mat-icon>-->
-<!--  </div>-->
 </div>
 
 <mat-dialog-content>
@@ -35,6 +30,29 @@
             </ng-container>
           </mat-option>
         </mat-select>
+      </mat-form-field>
+
+      <mat-form-field>
+        <mat-select
+          [(ngModel)]="defaultProductTypes"
+          (selectionChange)="onNewDefaultProductTypes($event.value)"
+          [disabled]="dataset.productTypes.length < 1"
+          placeholder="Default File Type" multiple>
+            <mat-option
+              *ngFor="let type of dataset.productTypes"
+              [value]="type"
+              [matTooltip]="type.displayName">
+                {{type.displayName}}
+            </mat-option>
+        </mat-select>
+        <mat-hint *ngIf="dataset.productTypes.length >= 1" align="start">
+          {{ productTypes?.length || 0 }}/{{ dataset.productTypes.length }}
+          file types selected
+        </mat-hint>
+
+        <mat-hint *ngIf="dataset.productTypes.length < 1" align="start">
+          No file types to select
+        </mat-hint>
       </mat-form-field>
 
       <mat-form-field>
