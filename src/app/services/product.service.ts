@@ -15,7 +15,10 @@ export class ProductService {
 
         if (Array.isArray(g.b)) {
           if (g.b.length > 0) {
-            browses = g.b;
+            browses = g.b.map(
+              (b: any): string => {
+                return (b.replace('{gn}', g.gn));
+            });
           } else {
             browses = ['/assets/no-browse.png'];
           }
@@ -27,7 +30,7 @@ export class ProductService {
           }
         }
 
-        const thumbnail = g.t.replace('{gn}', g.gn) || (!browses[0].includes('no-browse') ? browses[0] : '/assets/no-thumb.png');
+        const thumbnail = (g.t ? g.t.replace('{gn}', g.gn) : g.t) || (!browses[0].includes('no-browse') ? browses[0].replace('{gn}', g.gn) : '/assets/no-thumb.png');
 
         return ({
           name: g.gn,
