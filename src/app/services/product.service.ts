@@ -13,33 +13,36 @@ export class ProductService {
       (g: any): models.CMRProduct => {
         let browses: string[] = [];
 
-        if (Array.isArray(g.browse)) {
-          if (g.browse.length > 0) {
-            browses = g.browse;
+        if (Array.isArray(g.b)) {
+          if (g.b.length > 0) {
+            browses = g.b.map(
+              (b: any): string => {
+                return (b.replace('{gn}', g.gn));
+            });
           } else {
             browses = ['/assets/no-browse.png'];
           }
         } else {
-          if (g.browse) {
-            browses = [g.browse];
+          if (g.b) {
+            browses = [g.b];
           } else {
             browses = ['/assets/no-browse.png'];
           }
         }
 
-        const thumbnail = g.thumb || (!browses[0].includes('no-browse') ? browses[0] : '/assets/no-thumb.png');
+        const thumbnail = (g.t ? g.t.replace('{gn}', g.gn) : g.t) || (!browses[0].includes('no-browse') ? browses[0].replace('{gn}', g.gn) : '/assets/no-thumb.png');
 
         return ({
-          name: g.granuleName,
-          productTypeDisplay: g.productTypeDisplay || g.granuleName,
-          file: g.fileName,
-          id: g.productID,
-          downloadUrl: g.downloadUrl,
-          bytes: g.sizeMB * 1000000,
-          dataset: (g.dataset === 'STS-59' || g.dataset === 'STS-68') ? 'SIR-C' : g.dataset,
+          name: g.gn,
+          productTypeDisplay: g.ptd || g.gn,
+          file: g.fn.replace('{gn}', g.gn),
+          id: g.pid.replace('{gn}', g.gn),
+          downloadUrl: g.du.replace('{gn}', g.gn),
+          bytes: g.s * 1000000,
+          dataset: (g.d === 'STS-59' || g.d === 'STS-68') ? 'SIR-C' : g.d,
           browses,
           thumbnail,
-          groupId: g.groupID,
+          groupId: g.gid.replace('{gn}', g.gn),
           metadata: this.getMetadataFrom(g)
         });
       }
@@ -50,24 +53,24 @@ export class ProductService {
 
   private getMetadataFrom =
     (g: any): models.CMRProductMetadata => ({
-      date:  this.fromCMRDate(g.startTime),
-      polygon: g.wkt_unwrapped,
+      date:  this.fromCMRDate(g.st),
+      polygon: g.wu,
 
-      productType: g.productType,
-      beamMode: g.beamMode,
-      polarization: g.polarization,
-      flightDirection: <models.FlightDirection>g.flightDirection,
+      productType: g.pt,
+      beamMode: g.bm,
+      polarization: g.po,
+      flightDirection: <models.FlightDirection>g.fd,
 
-      path: +g.path,
-      frame:  +g.frame,
-      absoluteOrbit: +g.orbit,
+      path: +g.p,
+      frame:  +g.f,
+      absoluteOrbit: +g.o,
 
-      faradayRotation: +g.faradayRotation,
-      offNadirAngle: +g.offNadirAngle,
+      faradayRotation: +g.fr,
+      offNadirAngle: +g.on,
 
-      missionName: g.missionName,
-      flightLine: g.flightLine,
-      stackSize: +g.stackSize || null,
+      missionName: g.mn,
+      flightLine: g.fl,
+      stackSize: +g.ss || null,
     })
 
   private fromCMRDate =
