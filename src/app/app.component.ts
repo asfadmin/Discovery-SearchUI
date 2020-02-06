@@ -21,6 +21,7 @@ import * as userStore from '@store/user';
 
 import * as services from '@services';
 import * as models from './models';
+import { EnvironmentService } from '@services';
 
 @Component({
   selector   : 'app-root',
@@ -59,6 +60,7 @@ export class AppComponent implements OnInit, OnDestroy {
     private userDataService: services.UserDataService,
     private screenSize: services.ScreenSizeService,
     private ccService: NgcCookieConsentService,
+    public env: EnvironmentService,
   ) {}
 
   public ngOnInit(): void {
@@ -96,7 +98,6 @@ export class AppComponent implements OnInit, OnDestroy {
     if (user.id) {
       this.store$.dispatch(new userStore.Login(user));
     }
-
 
     this.subs.add(
       this.actions$.pipe(
@@ -152,6 +153,10 @@ export class AppComponent implements OnInit, OnDestroy {
       const queueItems = JSON.parse(queueItemsStr);
       this.store$.dispatch(new queueStore.AddItems(queueItems));
     }
+  }
+
+  public isDevMode(): boolean {
+    return !!this.env.value.devMode;
   }
 
   public onCloseSidebar(): void {
