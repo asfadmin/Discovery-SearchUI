@@ -1,9 +1,11 @@
-import { Component, Output, EventEmitter } from '@angular/core';
+import {Component, Output, EventEmitter, OnInit} from '@angular/core';
 import { Store } from '@ngrx/store';
 
 import { AppState } from '@store';
 import * as uiStore from '@store/ui';
 import * as queueStore from '@store/queue';
+import * as searchStore from '@store/search';
+import * as userStore from '@store/user';
 
 import * as models from '@models';
 import * as services from '@services';
@@ -13,17 +15,24 @@ import * as services from '@services';
   templateUrl: './dataset-nav.component.html',
   styleUrls: ['./dataset-nav.component.scss', '../nav-bar.component.scss'],
 })
-export class DatasetNavComponent {
+export class DatasetNavComponent implements OnInit {
   @Output() public openQueue = new EventEmitter<void>();
 
   public queuedProducts$ = this.store$.select(queueStore.getQueuedProducts);
   public breakpoint$ = this.screenSize.breakpoint$;
   public breakpoints = models.Breakpoints;
+  public isLoggedIn = false;
 
   constructor(
     private store$: Store<AppState>,
     private screenSize: services.ScreenSizeService
   ) { }
+
+  ngOnInit() {
+    this.store$.select(userStore.getIsUserLoggedIn).subscribe(
+      isLoggedIn => this.isLoggedIn = isLoggedIn
+    );
+  }
 
   public onToggleFiltersMenu(): void {
     this.store$.dispatch(new uiStore.ToggleFiltersMenu());
@@ -32,6 +41,14 @@ export class DatasetNavComponent {
 
   public onOpenDownloadQueue(): void {
     this.openQueue.emit();
+  }
+
+  public onClearSearch(): void {
+    this.store$.dispatch(new searchStore.ClearSearch());
+  }
+
+  public onOpenSavedSearches(): void {
+    this.store$.dispatch(new uiStore.OpenSidebar());
   }
 
   public closeAOIOptions(): void {
