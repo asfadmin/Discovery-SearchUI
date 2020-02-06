@@ -10,6 +10,7 @@ import * as uiStore from '@store/ui';
 import { PreferencesComponent } from './preferences/preferences.component';
 import { AuthService, AsfApiService, EnvironmentService, ScreenSizeService } from '@services';
 import { CMRProduct, Breakpoints, UserAuth } from '@models';
+import * as searchStore from '@store/search';
 
 @Component({
   selector: 'app-nav-buttons',

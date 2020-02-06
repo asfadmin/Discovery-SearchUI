@@ -35,11 +35,11 @@
 
         <div fxFlex="noshrink" class="breadcrumb search-controls">
           <mat-menu #appMenu="matMenu">
-            <button mat-menu-item><app-clear-button></app-clear-button></button>
-            <button mat-menu-item>Save Search</button>
+            <button mat-menu-item (click)="onClearSearch()">Clear Search</button>
+            <button mat-menu-item *ngIf="isLoggedIn" (click)="onOpenSavedSearches()">Saved Searches</button>
           </mat-menu>
           <mat-button-toggle-group id="dataset-button-toggle-group">
-            <mat-button-toggle (click)="doSomethingBig()">
+            <mat-button-toggle>
               <app-search-button></app-search-button>
             </mat-button-toggle>
             <mat-button-toggle [matMenuTriggerFor]="appMenu" class="arrow-button-toggle">
