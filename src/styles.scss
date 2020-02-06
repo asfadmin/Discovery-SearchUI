@@ -216,8 +216,11 @@ ul {
   max-height: 312px !important;
 }
 
-.saved-searches__filter-form-mobile
-.mat-form-field-infix {
+.saved-searches__filter-form-mobile .mat-form-field-infix {
   width: 168px !important;
 }
 
+#dataset-button-toggle-group .mat-button-toggle-appearance-standard .mat-button-toggle-label-content {
+  line-height: 0;
+  padding: 0;
+}
