@@ -11,7 +11,7 @@ import * as services from '@services';
 @Component({
   selector: 'app-dataset-nav',
   templateUrl: './dataset-nav.component.html',
-  styleUrls: ['./dataset-nav.component.css', '../nav-bar.component.scss'],
+  styleUrls: ['./dataset-nav.component.scss', '../nav-bar.component.scss'],
 })
 export class DatasetNavComponent {
   @Output() public openQueue = new EventEmitter<void>();

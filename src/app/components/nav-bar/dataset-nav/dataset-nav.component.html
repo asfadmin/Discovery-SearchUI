@@ -34,8 +34,18 @@
         </div>
 
         <div fxFlex="noshrink" class="breadcrumb search-controls">
-          <app-search-button></app-search-button>
-          <app-clear-button></app-clear-button>
+          <mat-menu #appMenu="matMenu">
+            <button mat-menu-item><app-clear-button></app-clear-button></button>
+            <button mat-menu-item>Save Search</button>
+          </mat-menu>
+          <mat-button-toggle-group id="dataset-button-toggle-group">
+            <mat-button-toggle (click)="doSomethingBig()">
+              <app-search-button></app-search-button>
+            </mat-button-toggle>
+            <mat-button-toggle [matMenuTriggerFor]="appMenu" class="arrow-button-toggle">
+              <mat-icon>arrow_drop_down</mat-icon>
+            </mat-button-toggle>
+          </mat-button-toggle-group>
           <div class="max-results">
             <app-max-results-selector></app-max-results-selector>
           </div>
