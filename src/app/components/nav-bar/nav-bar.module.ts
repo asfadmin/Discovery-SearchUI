@@ -74,9 +74,6 @@ import { MatButtonToggleModule } from '@angular/material/button-toggle';
     NavButtonsModule,
     LogoModule,
   ],
-  entryComponents: [
-    QueueComponent
-  ],
   exports: [
     NavBarComponent
   ]

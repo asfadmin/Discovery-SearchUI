@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 
-import { Actions, Effect, ofType } from '@ngrx/effects';
+import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { Store, Action } from '@ngrx/store';
 
 import { Observable, combineLatest } from 'rxjs';
@@ -21,8 +21,7 @@ export class UserEffects {
     private userDataService: UserDataService,
   ) {}
 
-  @Effect({ dispatch: false })
-  private saveUserProfile: Observable<void> = this.actions$.pipe(
+  private saveUserProfile = createEffect(() => this.actions$.pipe(
     ofType<userActions.SaveProfile>(userActions.UserActionType.SAVE_PROFILE),
     withLatestFrom(
       combineLatest(
@@ -34,10 +33,9 @@ export class UserEffects {
       ([_, [userAuth, profile]]) =>
         this.userDataService.setAttribute$(userAuth, 'Profile', profile)
     )
-  );
+  ));
 
-  @Effect()
-  private loadLoadUserProfile: Observable<Action> = this.actions$.pipe(
+  private loadLoadUserProfile = createEffect(() => this.actions$.pipe(
     ofType<userActions.LoadSavedSearches>(userActions.UserActionType.LOAD_PROFILE),
     withLatestFrom( this.store$.select(userReducer.getUserAuth)),
     switchMap(
@@ -47,10 +45,9 @@ export class UserEffects {
     filter(resp => this.isSuccessfulResponse(resp)),
     filter(resp => this.isValidProfile(resp)),
     map(profile => new userActions.SetProfile(<models.UserProfile>profile))
-  );
+  ));
 
-  @Effect({ dispatch: false })
-  private saveSavedSearches: Observable<void> = this.actions$.pipe(
+  private saveSavedSearches = createEffect(() => this.actions$.pipe(
     ofType<userActions.SaveSearches>(userActions.UserActionType.SAVE_SEARCHES),
     withLatestFrom(
       combineLatest(
@@ -62,10 +59,9 @@ export class UserEffects {
       ([_, [userAuth, searches]]) =>
         this.userDataService.setAttribute$(userAuth, 'SavedSearches', searches)
     ),
-  );
+  ));
 
-  @Effect({ dispatch: false })
-  private saveSearchHistory: Observable<void> = this.actions$.pipe(
+  private saveSearchHistory = createEffect(() => this.actions$.pipe(
     ofType<userActions.SaveSearches>(userActions.UserActionType.SAVE_SEARCH_HISTORY),
     withLatestFrom(
       combineLatest(
@@ -77,10 +73,9 @@ export class UserEffects {
       ([_, [userAuth, searches]]) =>
         this.userDataService.setAttribute$(userAuth, 'History', searches)
     ),
-  );
+  ));
 
-  @Effect()
-  private loadSearchHistory: Observable<Action> = this.actions$.pipe(
+  private loadSearchHistory = createEffect(() => this.actions$.pipe(
     ofType<userActions.LoadSavedSearches>(userActions.UserActionType.LOAD_SEARCH_HISTORY),
     withLatestFrom( this.store$.select(userReducer.getUserAuth)),
     switchMap(
@@ -89,10 +84,9 @@ export class UserEffects {
     ),
     filter(resp => this.isSuccessfulResponse(resp)),
     map(searchHistory => new userActions.SetSearchHistory(<models.Search[]>searchHistory))
-  );
+  ));
 
-  @Effect()
-  private loadSearchHistoryOnLogin: Observable<Action> = this.actions$.pipe(
+  private loadSearchHistoryOnLogin = createEffect(() => this.actions$.pipe(
     ofType<userActions.LoadSavedSearches>(userActions.UserActionType.LOGIN),
     withLatestFrom( this.store$.select(userReducer.getUserAuth)),
     switchMap(
@@ -101,10 +95,9 @@ export class UserEffects {
     ),
     filter(resp => this.isSuccessfulResponse(resp)),
     map(searchHistory => new userActions.SetSearchHistory(<models.Search[]>searchHistory))
-  );
+  ));
 
-  @Effect()
-  private loadSavedSearchesOnLogin: Observable<Action> = this.actions$.pipe(
+  private loadSavedSearchesOnLogin = createEffect(() => this.actions$.pipe(
     ofType<userActions.Login>(userActions.UserActionType.LOGIN),
     switchMap(
       (action) =>
@@ -113,10 +106,9 @@ export class UserEffects {
     filter(resp => this.isSuccessfulResponse(resp)),
     map(searches => this.datesToDateObjectFor(searches)),
     map(searches => new userActions.SetSearches(<models.Search[]>searches))
-  );
+  ));
 
-  @Effect()
-  private loadSavedSearches: Observable<Action> = this.actions$.pipe(
+  private loadSavedSearches = createEffect(() => this.actions$.pipe(
     ofType<userActions.LoadSavedSearches>(userActions.UserActionType.LOAD_SAVED_SEARCHES),
     withLatestFrom( this.store$.select(userReducer.getUserAuth)),
     switchMap(
@@ -126,7 +118,7 @@ export class UserEffects {
     filter(resp => this.isSuccessfulResponse(resp)),
     map(searches => this.datesToDateObjectFor(searches)),
     map(searches => new userActions.SetSearches(<models.Search[]>searches))
-  );
+  ));
 
   private isSuccessfulResponse(resp): boolean {
     try {

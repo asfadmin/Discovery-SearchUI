@@ -27,10 +27,6 @@ import { CustomizeEnvComponent } from './customize-env/customize-env.component';
     MatSelectModule,
     DatasetSelectorModule,
   ],
-  exports: [ NavButtonsComponent ],
-  entryComponents: [
-    PreferencesComponent,
-    CustomizeEnvComponent,
-  ]
+  exports: [ NavButtonsComponent ]
 })
 export class NavButtonsModule { }

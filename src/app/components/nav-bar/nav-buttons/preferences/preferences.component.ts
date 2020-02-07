@@ -6,7 +6,7 @@ import { AppState } from '@store';
 import * as userStore from '@store/user';
 import * as filtersStore from '@store/filters';
 
-import { MatDialogRef } from '@angular/material';
+import { MatDialogRef } from '@angular/material/dialog';
 import {MapLayerTypes, UserAuth} from '@models';
 
 
