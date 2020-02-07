@@ -13,6 +13,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
+            "aot": true,
             "outputPath": "dist/search-ui",
             "index": "src/index.html",
             "main": "src/main.ts",
@@ -25,7 +26,10 @@
             "styles": [
               "./node_modules/ol/ol.css",
               "src/styles.scss",
-              "./node_modules/cookieconsent/build/cookieconsent.min.css"
+              "./node_modules/cookieconsent/build/cookieconsent.min.css",
+              "./node_modules/tippy.js/dist/tippy.css",
+              "./node_modules/tippy.js/dist/backdrop.css",
+              "./node_modules/tippy.js/animations/shift-away.css"
             ],
             "stylePreprocessorOptions": {
               "includePaths": [
@@ -38,6 +42,12 @@
           },
           "configurations": {
             "production": {
+              "budgets": [
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "6kb"
+                }
+              ],
               "fileReplacements": [
                 {
                   "replace": "src/environments/environment.ts",

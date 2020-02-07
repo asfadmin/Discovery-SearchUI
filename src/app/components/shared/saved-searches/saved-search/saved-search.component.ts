@@ -11,7 +11,7 @@ import * as models from '@models';
   styleUrls: ['./saved-search.component.scss']
 })
 export class SavedSearchComponent implements OnInit {
-  @ViewChild('nameEditInput', { static: false }) nameEditInput: ElementRef;
+  @ViewChild('nameEditInput') nameEditInput: ElementRef;
 
   @Input() search: models.Search;
   @Input() searchType: models.SearchType;

@@ -45,7 +45,7 @@ export class AsfApiService {
     const endpoint = this.searchEndpoint();
     const formData = this.toFormData(params);
 
-    const responseType: any = params.get('output') === 'jsonlite' ?
+    const responseType: any = params.get('output') === 'jsonlite2' ?
       'json' : 'text';
 
     return !this.isUrlToLong(endpoint, queryParamsStr) ?
@@ -173,7 +173,7 @@ export class AsfApiService {
 
   private baseParams() {
     return {
-      output: 'jsonlite'
+      output: 'jsonlite2'
     };
   }
 }

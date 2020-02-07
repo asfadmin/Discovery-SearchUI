@@ -8,8 +8,10 @@ import { AppState } from '@store';
 import * as userStore from '@store/user';
 import * as uiStore from '@store/ui';
 import { PreferencesComponent } from './preferences/preferences.component';
+import { CustomizeEnvComponent } from './customize-env/customize-env.component';
 import { AuthService, AsfApiService, EnvironmentService, ScreenSizeService } from '@services';
 import { CMRProduct, Breakpoints, UserAuth } from '@models';
+import * as searchStore from '@store/search';
 
 @Component({
   selector: 'app-nav-buttons',
@@ -80,6 +82,19 @@ export class NavButtonsComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(
       _ => this.store$.dispatch(new userStore.SaveProfile())
+    );
+  }
+
+  public onOpenCustomizeEnv(): void {
+    const dialogRef = this.dialog.open(CustomizeEnvComponent, {
+      width: '800px',
+      height: '1000px',
+      maxWidth: '100%',
+      maxHeight: '100%'
+    });
+
+    dialogRef.afterClosed().subscribe(
+      _ => null
     );
   }
 

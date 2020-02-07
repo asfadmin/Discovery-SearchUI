@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ScrollDispatchModule } from '@angular/cdk/scrolling';
+import { ScrollingModule } from '@angular/cdk/scrolling';
 
 import { TruncateModule } from '@yellowspot/ng-truncate';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
@@ -19,7 +19,7 @@ import { ScenesListComponent } from './scenes-list.component';
   ],
   imports: [
     CommonModule,
-    ScrollDispatchModule,
+    ScrollingModule,
     MatBadgeModule,
     TruncateModule,
     FontAwesomeModule,

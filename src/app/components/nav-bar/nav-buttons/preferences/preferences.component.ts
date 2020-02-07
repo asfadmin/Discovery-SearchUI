@@ -6,8 +6,8 @@ import { AppState } from '@store';
 import * as userStore from '@store/user';
 import * as filtersStore from '@store/filters';
 
-import { MatDialogRef } from '@angular/material';
-import {MapLayerTypes, UserAuth, ProductType} from '@models';
+import { MatDialogRef } from '@angular/material/dialog';
+import { MapLayerTypes, UserAuth, ProductType } from '@models';
 
 
 @Component({
@@ -81,5 +81,4 @@ export class PreferencesComponent implements OnInit {
 
     this.store$.dispatch(action);
   }
-
 }

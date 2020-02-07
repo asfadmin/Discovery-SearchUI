@@ -19,7 +19,7 @@ import { SubSink } from 'subsink';
   styleUrls: ['./aoi-options.component.css'],
 })
 export class AoiOptionsComponent implements OnInit, OnDestroy {
-  @ViewChild('polygonInputForm', { static: false }) public polygonForm: NgForm;
+  @ViewChild('polygonInputForm') public polygonForm: NgForm;
 
   @Input() showHeader = true;
   @Output() close = new EventEmitter<void>();
