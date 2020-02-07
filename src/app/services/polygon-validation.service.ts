@@ -32,7 +32,6 @@ export class PolygonValidationService {
       filter(resp => !!resp),
       map(resp => {
         const error = this.getErrorFrom(resp);
-        console.log(error);
 
         if (error) {
           this.displayDrawError(error);

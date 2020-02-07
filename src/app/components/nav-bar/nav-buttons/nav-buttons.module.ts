@@ -12,9 +12,10 @@ import { DatasetSelectorModule } from '@components/shared/selectors/dataset-sele
 
 import { NavButtonsComponent } from './nav-buttons.component';
 import { PreferencesComponent } from './preferences/preferences.component';
+import { CustomizeEnvComponent } from './customize-env/customize-env.component';
 
 @NgModule({
-  declarations: [ NavButtonsComponent, PreferencesComponent ],
+  declarations: [ NavButtonsComponent, PreferencesComponent, CustomizeEnvComponent ],
   imports: [
     CommonModule,
     FormsModule,
@@ -29,6 +30,7 @@ import { PreferencesComponent } from './preferences/preferences.component';
   exports: [ NavButtonsComponent ],
   entryComponents: [
     PreferencesComponent,
+    CustomizeEnvComponent,
   ]
 })
 export class NavButtonsModule { }
