@@ -45,6 +45,7 @@ export class UserEffects {
         this.userDataService.getAttribute$(userAuth, 'Profile')
     ),
     filter(resp => this.isSuccessfulResponse(resp)),
+    filter(resp => this.isValidProfile(resp)),
     map(profile => new userActions.SetProfile(<models.UserProfile>profile))
   );
 
@@ -128,11 +129,15 @@ export class UserEffects {
   );
 
   private isSuccessfulResponse(resp): boolean {
-    return !(
-      !!resp &&
-      'status' in resp &&
-      resp['status'] === 'fail'
-    );
+    try {
+      return !(
+        !!resp &&
+        'status' in resp &&
+        resp['status'] === 'fail'
+      );
+    } catch {
+      return false;
+    }
   }
 
   private datesToDateObjectFor(searches): models.Search[] {
@@ -165,4 +170,16 @@ export class UserEffects {
   }
 
   private isValidDate = (d: Date): boolean => d instanceof Date && !isNaN(d.valueOf());
+
+  private isValidProfile(resp) {
+    const datasetIds = models.datasets.map(dataset => dataset.id);
+
+    return (
+      datasetIds.includes(resp.selectedDataset) &&
+      Object.values(models.MapLayerTypes).includes(resp.mapLayer) &&
+      this.isNumber(resp.maxResults) && resp.maxResults <= 5000
+    );
+  }
+
+  private isNumber = n => !isNaN(n) && isFinite(n);
 }
