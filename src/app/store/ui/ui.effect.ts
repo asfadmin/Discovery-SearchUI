@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 
 import { Action, Store } from '@ngrx/store';
-import { Actions, Effect, ofType } from '@ngrx/effects';
+import { Actions, createEffect, ofType } from '@ngrx/effects';
 
 import { Observable, of } from 'rxjs';
 import { map, catchError, switchMap } from 'rxjs/operators';
@@ -22,8 +22,7 @@ export class UIEffects {
     private actions$: Actions
   ) {}
 
-  @Effect()
-  loadBanners: Observable<Action> = this.actions$.pipe(
+  loadBanners = createEffect(() => this.actions$.pipe(
     ofType<uiActions.LoadBanners>(uiActions.UIActionType.LOAD_BANNERS),
     switchMap(() => this.bannerApi.load().pipe(
       catchError(() => of({
@@ -38,5 +37,5 @@ export class UIEffects {
       }))
     )),
     map(resp => new uiActions.AddBanners(resp.banners))
-  );
+  ));
 }

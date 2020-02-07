@@ -323,7 +323,7 @@ export class UrlStateService {
   }
 
   private loadSearchType = (searchType: string): Action | undefined => {
-    if (!Object.values(models.SearchType).includes(searchType)) {
+    if (!Object.values(models.SearchType).includes(<models.SearchType>searchType)) {
       return;
     }
 
@@ -331,7 +331,7 @@ export class UrlStateService {
   }
 
   private loadMapDrawMode = (mode: string): Action | undefined => {
-    if (!Object.values(models.MapDrawModeType).includes(mode)) {
+    if (!Object.values(models.MapDrawModeType).includes(<models.MapDrawModeType>mode)) {
       return;
     }
 
@@ -339,7 +339,7 @@ export class UrlStateService {
   }
 
   private loadMapView = (view: string): Action | undefined => {
-    if (!Object.values(models.MapViewType).includes(view)) {
+    if (!Object.values(models.MapViewType).includes(<models.MapViewType>view)) {
       return;
     }
 
@@ -450,7 +450,7 @@ export class UrlStateService {
       mode = models.ListSearchType.SCENE;
     }
 
-    if (!Object.values(models.ListSearchType).includes(mode)) {
+    if (!Object.values(models.ListSearchType).includes(<models.ListSearchType>mode)) {
       return;
     }
 
@@ -541,7 +541,7 @@ export class UrlStateService {
   private loadFlightDirections = (dirsStr: string): Action => {
     const directions: models.FlightDirection[] = dirsStr
       .split(',')
-      .filter(direction => !Object.values(models.FlightDirection).includes(direction))
+      .filter(direction => !Object.values(models.FlightDirection).includes(<models.FlightDirection>direction))
       .map(direction => <models.FlightDirection>direction);
 
     return new filterStore.SetFlightDirections(directions);
