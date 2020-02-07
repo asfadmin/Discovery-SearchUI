@@ -142,7 +142,6 @@ export class MapComponent implements OnInit, OnDestroy  {
       followCursor: true,
       plugins: [followCursor]
     })).pop();
-    console.log(this.tooltip, followCursor);
 
     this.overlay = new Overlay({
       element: this.overlayRef.nativeElement,
