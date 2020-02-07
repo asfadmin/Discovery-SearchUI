@@ -33,9 +33,6 @@ import { FileUploadDialogComponent } from './file-upload-dialog';
 
     MatSharedModule,
   ],
-  entryComponents: [
-    FileUploadDialogComponent
-  ],
   exports: [
     FileUploadComponent,
   ]

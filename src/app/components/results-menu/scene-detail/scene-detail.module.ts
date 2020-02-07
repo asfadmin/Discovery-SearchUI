@@ -1,7 +1,9 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { MatBadgeModule, MatButtonModule, MatIconModule } from '@angular/material';
-import { MatMenuModule } from '@angular/material';
+import { MatBadgeModule } from '@angular/material/badge';
+import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
+import { MatMenuModule } from '@angular/material/menu';
 import { TruncateModule } from '@yellowspot/ng-truncate';
 import { FlexLayoutModule } from '@angular/flex-layout';
 

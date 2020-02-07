@@ -49,7 +49,7 @@ export class UserEffects {
   );
 
   @Effect({ dispatch: false })
-  private saveSavedSearches: Observable<void> = this.actions$.pipe(
+  private saveSavedSearches = this.actions$.pipe(
     ofType<userActions.SaveSearches>(userActions.UserActionType.SAVE_SEARCHES),
     withLatestFrom(
       combineLatest(

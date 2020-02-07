@@ -27,8 +27,5 @@ import { PreferencesComponent } from './preferences/preferences.component';
     DatasetSelectorModule,
   ],
   exports: [ NavButtonsComponent ],
-  entryComponents: [
-    PreferencesComponent,
-  ]
 })
 export class NavButtonsModule { }

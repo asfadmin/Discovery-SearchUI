@@ -10,7 +10,7 @@ import * as queueStore from '@store/queue';
 
 import { ScreenSizeService } from '@services';
 import { CMRProduct, AsfApiOutputFormat, Breakpoints } from '@models';
-import { MatDialogRef } from '@angular/material';
+import { MatDialogRef } from '@angular/material/dialog';
 import { SubSink } from 'subsink';
 
 @Component({

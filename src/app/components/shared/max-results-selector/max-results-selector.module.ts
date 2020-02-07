@@ -30,7 +30,6 @@ import { ClipboardModule } from 'ngx-clipboard';
     ClipboardModule
   ],
   exports: [ MaxResultsSelectorComponent ],
-  entryComponents: [ ApiLinkDialogComponent ]
 })
 export class MaxResultsSelectorModule {
   constructor() {
