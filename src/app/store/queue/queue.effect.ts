@@ -42,7 +42,7 @@ export class QueueEffects {
     map(
       blob => FileSaver.saveAs(blob, `download-all-${this.currentDate()}.py`)
     )
-  ));
+  ), { dispatch: false });
 
   private downloadMetadata = createEffect(() => this.actions$.pipe(
     ofType<DownloadMetadata>(QueueActionType.DOWNLOAD_METADATA),
@@ -76,7 +76,7 @@ export class QueueEffects {
         )
       ),
     ),
-  ));
+  ), { dispatch: false });
 
   private queueScene = createEffect(() => this.actions$.pipe(
     ofType<QueueScene>(QueueActionType.QUEUE_SCENE),

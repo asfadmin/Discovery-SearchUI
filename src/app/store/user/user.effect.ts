@@ -33,7 +33,7 @@ export class UserEffects {
       ([_, [userAuth, profile]]) =>
         this.userDataService.setAttribute$(userAuth, 'Profile', profile)
     )
-  ));
+  ), { dispatch: false });
 
   private loadLoadUserProfile = createEffect(() => this.actions$.pipe(
     ofType<userActions.LoadSavedSearches>(userActions.UserActionType.LOAD_PROFILE),
@@ -59,7 +59,7 @@ export class UserEffects {
       ([_, [userAuth, searches]]) =>
         this.userDataService.setAttribute$(userAuth, 'SavedSearches', searches)
     ),
-  ));
+  ), { dispatch: false });
 
   private saveSearchHistory = createEffect(() => this.actions$.pipe(
     ofType<userActions.SaveSearches>(userActions.UserActionType.SAVE_SEARCH_HISTORY),
@@ -73,7 +73,7 @@ export class UserEffects {
       ([_, [userAuth, searches]]) =>
         this.userDataService.setAttribute$(userAuth, 'History', searches)
     ),
-  ));
+  ), { dispatch: false });
 
   private loadSearchHistory = createEffect(() => this.actions$.pipe(
     ofType<userActions.LoadSavedSearches>(userActions.UserActionType.LOAD_SEARCH_HISTORY),

@@ -14,6 +14,6 @@
       banner: 'https://banners.asf.alaska.edu/calendar/test',
       user_data: 'https://gg0fcoca5c.execute-api.us-east-1.amazonaws.com/test'
     },
-    defaultEnv: 'prod'
+    defaultEnv: 'test'
   }
 })()
