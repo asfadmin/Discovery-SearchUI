@@ -19,12 +19,43 @@ export interface Environment {
   providedIn: 'root'
 })
 export class EnvironmentService {
-  get value(): Environments {
-    if (window['_env'].defaultEnv === 'test') {
+  private maturityKey = 'search-api-maturity';
+
+  public envs: Environments;
+  public maturity: string;
+  public isProd: boolean;
+
+  constructor() {
+    this.isProd = window['_env'].defaultEnv === 'prod';
+    this.envs = this.loadEnvs();
+
+    if (!this.isProd) {
+      const localMaturity = localStorage.getItem(this.maturityKey);
+
+      this.maturity = !(localMaturity === 'test' || localMaturity === 'prod') ?
+        this.envs.defaultEnv :
+        localMaturity;
+    } else {
+      this.maturity = this.envs.defaultEnv;
+    }
+  }
+
+  private loadEnvs(): Environments {
+    if (!this.isProd) {
       return this.loadWithCustom();
     } else {
       return this.loadFromEnvFile();
     }
+  }
+
+  get currentEnv(): Environment {
+    return this.envs[this.maturity];
+  }
+
+  public setMaturity(maturity: string): void {
+    this.maturity = maturity;
+    localStorage.setItem(this.maturityKey, this.maturity);
+    console.log(this.currentEnv);
   }
 
   private loadWithCustom(): Environments {

@@ -10,7 +10,7 @@ import { EnvironmentService } from '@services';
 })
 export class CustomizeEnvComponent implements OnInit {
 
-  public currentEnv = this.env.value;
+  public currentEnv = this.env.envs;
   public envStr: string;
 
   constructor(
@@ -26,8 +26,8 @@ export class CustomizeEnvComponent implements OnInit {
     try {
       const customEnv = JSON.parse(this.envStr);
 
-      if (!customEnv.devMode) {
-        this.snackBar.open(`devMode cannot be set to false on test`, 'ERROR', {
+      if (customEnv.defaultEnv !== 'test') {
+        this.snackBar.open(`defaultEnv must be set to 'test'`, 'ERROR', {
           duration: 5000
         });
         return;

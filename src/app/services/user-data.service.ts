@@ -64,8 +64,6 @@ export class UserDataService {
   }
 
   private getBaseUrlFrom(): string {
-    return this.env.value[
-      this.env.value.defaultEnv
-    ].user_data;
+    return this.env.currentEnv.user_data;
   }
 }

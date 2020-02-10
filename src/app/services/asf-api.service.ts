@@ -11,9 +11,6 @@ import { PropertyService } from './property.service';
   providedIn: 'root'
 })
 export class AsfApiService {
-
-  private maturity = 'prod';
-
   constructor(
     private env: EnvironmentService,
     private prop: PropertyService,
@@ -21,11 +18,7 @@ export class AsfApiService {
   ) {}
 
   public get apiUrl() {
-    return this.env.value[this.env.value.defaultEnv].api;
-  }
-
-  public setApiMaturity(maturity: string): void {
-    this.maturity = maturity;
+    return this.env.currentEnv.api;
   }
 
   public health(): Observable<any> {
