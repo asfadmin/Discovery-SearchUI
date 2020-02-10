@@ -21,8 +21,7 @@ import * as searchStore from '@store/search';
 export class NavButtonsComponent implements OnInit {
   anio: number = new Date().getFullYear();
   public asfWebsiteUrl = 'https://www.asf.alaska.edu';
-  public maturity = 'prod';
-  private maturityKey = 'search-api-maturity';
+  public maturity = this.env.maturity;
 
   public userAuth: UserAuth;
   public isLoggedIn = false;
@@ -44,11 +43,6 @@ export class NavButtonsComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    if (this.isDevMode) {
-      const maturity = localStorage.getItem(this.maturityKey);
-      this.setMaturity(maturity || this.maturity);
-    }
-
     this.store$.select(userStore.getUserAuth).subscribe(
       user => this.userAuth = user
     );
@@ -116,7 +110,7 @@ export class NavButtonsComponent implements OnInit {
   }
 
   public isDevMode(): boolean {
-    return !!this.env.value.devMode;
+    return !this.env.isProd;
   }
 
   public onTestSelected(): void {
@@ -129,8 +123,6 @@ export class NavButtonsComponent implements OnInit {
 
   private setMaturity(maturity: string): void {
     this.maturity = maturity;
-    localStorage.setItem(this.maturityKey, this.maturity);
-    this.asfApiService.setApiMaturity(this.maturity);
-    this.authService.setMaturity(this.maturity);
+    this.env.setMaturity(maturity);
   }
 }
