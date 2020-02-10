@@ -20,12 +20,8 @@ export class AsfApiService {
     private http: HttpClient
   ) {}
 
-  public get apiUrls() {
-    return this.env.value.api;
-  }
-
   public get apiUrl() {
-    return this.env.value.api[this.maturity];
+    return this.env.value[this.env.value.defaultEnv].api;
   }
 
   public setApiMaturity(maturity: string): void {

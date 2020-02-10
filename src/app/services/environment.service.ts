@@ -1,52 +1,47 @@
 import { Injectable } from '@angular/core';
 
-export interface Environment {
-    api: {
-      prod: string;
-      test: string;
-    };
-    auth: {
-      api: string;
-      urs: string;
-    };
-    banner: {
-      prod: string;
-      test: string;
-    };
-    user_data: {
-      prod: string;
-      test: string;
-    };
-    devMode: boolean;
+export interface Environments {
+  prod: Environment;
+  test: Environment;
+  defaultEnv: string;
 }
+
+export interface Environment {
+  api: string;
+  auth: string;
+  urs: string;
+  banner: string;
+  user_data: string;
+}
+
 
 @Injectable({
   providedIn: 'root'
 })
 export class EnvironmentService {
-  get value(): Environment {
-    if (window['_env'].devMode) {
+  get value(): Environments {
+    if (window['_env'].defaultEnv === 'test') {
       return this.loadWithCustom();
     } else {
       return this.loadFromEnvFile();
     }
   }
 
-  private loadWithCustom(): Environment {
+  private loadWithCustom(): Environments {
     try {
       const customEnvJson = localStorage.getItem('customEnv');
       const customEnv = JSON.parse(customEnvJson);
       if (!customEnv) {
-        return <Environment>window['_env'];
+        return this.loadFromEnvFile();
       }
 
-      return <Environment>customEnv;
+      return <Environments>customEnv;
     } catch {
-      return <Environment>window['_env'];
+      return this.loadFromEnvFile();
     }
   }
 
-  private loadFromEnvFile() {
-    return <Environment>window['_env'];
+  private loadFromEnvFile(): Environments {
+    return <Environments>window['_env'];
   }
 }
