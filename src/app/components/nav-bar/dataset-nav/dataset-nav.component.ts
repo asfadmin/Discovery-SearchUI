@@ -10,7 +10,10 @@ import * as userStore from '@store/user';
 import * as models from '@models';
 import * as services from '@services';
 
+import { SavedSearchesComponent } from '@components/shared/saved-searches';
+
 @Component({
+  providers: [ SavedSearchesComponent ],
   selector: 'app-dataset-nav',
   templateUrl: './dataset-nav.component.html',
   styleUrls: ['./dataset-nav.component.scss', '../nav-bar.component.scss'],
@@ -25,7 +28,8 @@ export class DatasetNavComponent implements OnInit {
 
   constructor(
     private store$: Store<AppState>,
-    private screenSize: services.ScreenSizeService
+    private screenSize: services.ScreenSizeService,
+    private sscomp: SavedSearchesComponent,
   ) { }
 
   ngOnInit() {
@@ -49,6 +53,16 @@ export class DatasetNavComponent implements OnInit {
 
   public onOpenSavedSearches(): void {
     this.store$.dispatch(new uiStore.OpenSidebar());
+  }
+
+  public saveCurrentSearch(): void {
+    Promise.resolve(this.store$.dispatch(new uiStore.OpenSidebar()))
+      .then(function (response) {
+        this.sscomp.saveCurrentSearch();
+      })
+      .then( function(response) {
+        console.log('@RESPONSE', response);
+        } );
   }
 
   public closeAOIOptions(): void {

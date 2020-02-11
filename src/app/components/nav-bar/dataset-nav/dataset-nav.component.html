@@ -36,9 +36,9 @@
         <div fxFlex="noshrink" class="breadcrumb search-controls">
           <mat-menu #appMenu="matMenu">
             <button mat-menu-item (click)="onClearSearch()">Clear Search</button>
-            <button mat-menu-item *ngIf="isLoggedIn" (click)="saveCurrentSearch()">Save Search</button>
+            <button mat-menu-item [disabled]="!isLoggedIn" (click)="saveCurrentSearch()">Save Search</button>
             <mat-divider></mat-divider>
-            <button mat-menu-item *ngIf="isLoggedIn" (click)="onOpenSavedSearches()">Saved Searches...</button>
+            <button mat-menu-item [disabled]="!isLoggedIn" (click)="onOpenSavedSearches()">Saved Searches...</button>
           </mat-menu>
           <mat-button-toggle-group id="dataset-button-toggle-group">
             <mat-button-toggle>

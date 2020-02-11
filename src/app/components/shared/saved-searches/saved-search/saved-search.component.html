@@ -6,39 +6,39 @@
     </div>
     <div class="">
       <div class="search-title">
-        <span *ngIf="!isEditingName"
-          (click)="onEditName()"
-          matTooltip="Edit Name"
-          class="search-name clickable">
-          {{ search.name }} <mat-icon class="edit-icon">edit</mat-icon>
-        </span>
+      <span *ngIf="!isEditingName"
+            (click)="onEditName()"
+            matTooltip="Edit Name"
+            class="search-name clickable">
+        {{ search.name }} <mat-icon class="edit-icon">edit</mat-icon>
+      </span>
 
         <span *ngIf="isEditingName">
-          <form class="name-edit-form" #nameEditForm="ngForm" onsubmit="return false">
-            <mat-form-field>
-              <input matInput
-                [(ngModel)]="editName"
-                (change)="onNewName($event.target.value)"
-                (keyup.enter)="onEditFocusLeave()"
-                (focusout)="onEditFocusLeave()"
-                name="editNameInput"
-                placeholder="Search Name" #nameEditInput>
-            </mat-form-field>
-          </form>
-        </span>
+        <form class="name-edit-form" #nameEditForm="ngForm" onsubmit="return false">
+          <mat-form-field>
+            <input matInput
+                   [(ngModel)]="editName"
+                   (change)="onNewName($event.target.value)"
+                   (keyup.enter)="onEditFocusLeave()"
+                   (focusout)="onEditFocusLeave()"
+                   name="editNameInput"
+                   placeholder="Search Name" #nameEditInput>
+          </mat-form-field>
+        </form>
+      </span>
 
         <span>
-          {{ search.searchType }}
-        </span>
+        {{ search.searchType }}
+      </span>
       </div>
 
       <div *ngIf="!isEditingName" class="search-preview">
-        <span *ngIf="search.searchType === SearchType.DATASET">
-          {{ search.filters.selectedDataset }} {{ formatDatesFor(search.filters) }}
-        </span>
+      <span *ngIf="search.searchType === SearchType.DATASET">
+        {{ search.filters.selectedDataset }} {{ formatDatesFor(search.filters) }}
+      </span>
         <span *ngIf="search.searchType === SearchType.LIST">
-          {{ listPreview(search.filters) }}
-        </span>
+        {{ listPreview(search.filters) }}
+      </span>
       </div>
     </div>
   </div>
@@ -52,8 +52,8 @@
     </button>
 
     <button (click)="onDeleteSearch()"
-      class="search-action"
-      mat-flat-button>
+            class="search-action"
+            mat-flat-button>
       <i class="material-icons">delete_forever</i>
     </button>
   </div>
@@ -62,11 +62,11 @@
 <div *ngIf="isExpanded" class="detailed-view">
   <div>
     <app-list-search-filters *ngIf="search.searchType === SearchType.LIST"
-      [filters]="search.filters">
+                             [filters]="search.filters">
     </app-list-search-filters>
 
     <app-geographic-search-filters *ngIf="search.searchType === SearchType.DATASET"
-      [filters]="search.filters">
+                                   [filters]="search.filters">
     </app-geographic-search-filters>
   </div>
 
@@ -75,7 +75,7 @@
       (click)="onUpdateFilters(search.id)"
       class="search-action" color="primary"
       mat-flat-button [disabled]="search.searchType !== searchType">
-        Update
+      Update
     </button>
   </div>
 </div>
