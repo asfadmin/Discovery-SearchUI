@@ -6,6 +6,7 @@ import * as uiStore from '@store/ui';
 import * as queueStore from '@store/queue';
 import * as searchStore from '@store/search';
 import * as userStore from '@store/user';
+import * as filterStore from '@store/filters';
 
 import * as models from '@models';
 import * as services from '@services';
@@ -23,6 +24,9 @@ export class DatasetNavComponent implements OnInit {
   public breakpoints = models.Breakpoints;
   public isLoggedIn = false;
 
+  public datasets: models.Dataset[];
+  public selectedDataset: string;
+
   constructor(
     private store$: Store<AppState>,
     private screenSize: services.ScreenSizeService
@@ -31,6 +35,12 @@ export class DatasetNavComponent implements OnInit {
   ngOnInit() {
     this.store$.select(userStore.getIsUserLoggedIn).subscribe(
       isLoggedIn => this.isLoggedIn = isLoggedIn
+    );
+    this.store$.select(filterStore.getDatasetsList).subscribe(
+      datasets => this.datasets = datasets
+    );
+    this.store$.select(filterStore.getSelectedDatasetId).subscribe(
+      selected => this.selectedDataset = selected
     );
   }
 
@@ -53,5 +63,9 @@ export class DatasetNavComponent implements OnInit {
 
   public closeAOIOptions(): void {
     this.store$.dispatch(new uiStore.CloseAOIOptions());
+  }
+
+  public onDatasetChange(dataset: string): void {
+    this.store$.dispatch(new filterStore.SetSelectedDataset(dataset));
   }
 }

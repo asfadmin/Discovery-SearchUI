@@ -514,6 +514,10 @@ export const getDatasetsList = createSelector(
   (state: DatasetsState) => Object.values(state.entities)
 );
 
+export const getDatasets = createSelector(
+  getDatasetsState,
+  (state: DatasetsState) => state.entities
+);
 
 export const getSelectedDatasetId = createSelector(
   getDatasetsState ,

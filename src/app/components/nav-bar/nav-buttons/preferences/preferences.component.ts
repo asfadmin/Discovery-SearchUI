@@ -39,7 +39,6 @@ export class PreferencesComponent implements OnInit {
         this.defaultMaxResults = profile.maxResults;
         this.defaultMapLayer = profile.mapLayer;
         this.defaultDataset = profile.defaultDataset;
-        this.defaultProductTypes = [];
       }
     );
 
@@ -53,7 +52,7 @@ export class PreferencesComponent implements OnInit {
     this.dialogRef.close();
   }
 
-  public onSelectionChange(dataset: string): void {
+  public onDatasetSelectionChange(dataset: string): void {
     this.defaultDataset = dataset;
     this.saveProfile();
   }
