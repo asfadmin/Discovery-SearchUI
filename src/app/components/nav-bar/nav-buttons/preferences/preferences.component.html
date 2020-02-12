@@ -33,29 +33,6 @@
       </mat-form-field>
 
       <mat-form-field>
-        <mat-select
-          [(ngModel)]="defaultProductTypes"
-          (selectionChange)="onNewDefaultProductTypes($event.value)"
-          [disabled]="dataset.productTypes.length < 1"
-          placeholder="Default File Type" multiple>
-            <mat-option
-              *ngFor="let type of dataset.productTypes"
-              [value]="type"
-              [matTooltip]="type.displayName">
-                {{type.displayName}}
-            </mat-option>
-        </mat-select>
-        <mat-hint *ngIf="dataset.productTypes.length >= 1" align="start">
-          {{ productTypes?.length || 0 }}/{{ dataset.productTypes.length }}
-          file types selected
-        </mat-hint>
-
-        <mat-hint *ngIf="dataset.productTypes.length < 1" align="start">
-          No file types to select
-        </mat-hint>
-      </mat-form-field>
-
-      <mat-form-field>
         <mat-label>Default Max Result Amount</mat-label>
         <mat-select
           [(ngModel)]="defaultMaxResults"
