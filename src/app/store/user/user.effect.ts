@@ -164,7 +164,7 @@ export class UserEffects {
   private isValidDate = (d: Date): boolean => d instanceof Date && !isNaN(d.valueOf());
 
   private isValidProfile(resp) {
-    const datasetIds = models.datasets.map(dataset => dataset.id);
+    const datasetIds = models.datasetIds;
 
     return (
       datasetIds.includes(resp.selectedDataset) &&

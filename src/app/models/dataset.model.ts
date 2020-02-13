@@ -46,7 +46,7 @@ export type DatasetBeamModes = string[];
 export type DatasetPolarizations = string[];
 export type DatasetSubtypes = DatasetSubtype[];
 
-export const datasets: Dataset[] = [
+export const datasetList: Dataset[] = [
   fromDatasets.sentinel_1,
   fromDatasets.alos,
   fromDatasets.sirc,
@@ -59,6 +59,17 @@ export const datasets: Dataset[] = [
   fromDatasets.airsar,
   fromDatasets.seasat,
 ];
+
+export const datasetIds = datasetList.map(dataset => dataset.id);
+
+export const datasets = datasetList.reduce(
+  (datasetsObj, dataset) => {
+    datasetsObj[dataset.id] = dataset;
+
+    return datasetsObj;
+  },
+  {}
+);
 
 export const flightDirections = [
   'Ascending',

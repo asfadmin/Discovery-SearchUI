@@ -7,7 +7,7 @@ import * as userStore from '@store/user';
 import * as filtersStore from '@store/filters';
 
 import { MatDialogRef } from '@angular/material/dialog';
-import {MapLayerTypes, UserAuth} from '@models';
+import { MapLayerTypes, UserAuth, datasetList } from '@models';
 
 
 @Component({
@@ -16,8 +16,7 @@ import {MapLayerTypes, UserAuth} from '@models';
   styleUrls: ['./preferences.component.scss']
 })
 export class PreferencesComponent implements OnInit {
-  public datasets$ = this.store$.select(filtersStore.getDatasetsList);
-
+  public datasets = datasetList;
   public defaultMaxResults: number;
   public defaultMapLayer: MapLayerTypes;
   public defaultDataset: string;

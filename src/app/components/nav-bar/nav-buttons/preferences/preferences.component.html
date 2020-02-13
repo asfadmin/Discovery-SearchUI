@@ -16,7 +16,7 @@
             (selectionChange)="onSelectionChange($event.value)" name="dataset"
             #defaultDatasetSelector>
           <mat-option
-            *ngFor="let dataset of (datasets$ | async)"
+            *ngFor="let dataset of datasets"
             [class.selected]="dataset.id === defaultDataset"
             [value]="dataset.id">
             <ng-container *ngIf="defaultDatasetSelector.panelOpen">
