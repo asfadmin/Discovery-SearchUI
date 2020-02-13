@@ -369,7 +369,7 @@ export class UrlStateService {
   }
 
   private loadSelectedDataset = (datasetStr: string): Action | undefined => {
-    const datasetIds = models.datasets.map(dataset => dataset.id);
+    const datasetIds = models.datasetIds;
 
     if (!datasetIds.includes(datasetStr)) {
       return;
@@ -508,7 +508,7 @@ export class UrlStateService {
 
     const possibleTypes = (possibleValuesStr || '').split(',');
 
-    const dataset = models.datasets
+    const dataset = models.datasetList
         .filter(d => datasetName === d.id)
         .pop();
 

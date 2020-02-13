@@ -5,6 +5,7 @@ import { Store } from '@ngrx/store';
 
 import { AppState } from '@store';
 import * as filtersStore from '@store/filters';
+import * as models from '@models';
 
 
 @Component({
@@ -13,7 +14,7 @@ import * as filtersStore from '@store/filters';
   styleUrls: ['./dataset-selector.component.scss']
 })
 export class DatasetSelectorComponent implements OnInit, OnDestroy {
-  public datasets$ = this.store$.select(filtersStore.getDatasetsList);
+  public datasetList = models.datasetList;
   public selected: string | null = null;
   private datasetSub: Subscription;
 
