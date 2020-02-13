@@ -7,7 +7,7 @@ import * as userStore from '@store/user';
 import * as filtersStore from '@store/filters';
 
 import { MatDialogRef } from '@angular/material/dialog';
-import { MapLayerTypes, UserAuth, datasetList } from '@models';
+import { MapLayerTypes, UserAuth, ProductType, datasetList } from '@models';
 
 
 @Component({
@@ -20,6 +20,7 @@ export class PreferencesComponent implements OnInit {
   public defaultMaxResults: number;
   public defaultMapLayer: MapLayerTypes;
   public defaultDataset: string;
+  public defaultProductTypes: ProductType[];
 
   public maxResults = [250, 1000, 5000];
   public mapLayerTypes = MapLayerTypes;
@@ -50,7 +51,7 @@ export class PreferencesComponent implements OnInit {
     this.dialogRef.close();
   }
 
-  public onSelectionChange(dataset: string): void {
+  public onDatasetSelectionChange(dataset: string): void {
     this.defaultDataset = dataset;
     this.saveProfile();
   }
@@ -63,6 +64,10 @@ export class PreferencesComponent implements OnInit {
   public onChangeDefaultLayerType(layerType: MapLayerTypes): void {
     this.defaultMapLayer = layerType;
     this.saveProfile();
+  }
+
+  public onNewDefaultProductTypes(types: ProductType[]): void {
+    console.log(types);
   }
 
   public saveProfile(): void {

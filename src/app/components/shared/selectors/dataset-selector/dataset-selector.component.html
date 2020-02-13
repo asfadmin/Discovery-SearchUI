@@ -5,7 +5,7 @@
       (selectionChange)="onSelectionChange($event.value)"
       #datasetSelector>
     <mat-option
-      *ngFor="let dataset of datasetList"
+      *ngFor="let dataset of datasets"
       [class.selected]="dataset.id === selected"
       [value]="dataset.id">
       <ng-container *ngIf="datasetSelector.panelOpen">

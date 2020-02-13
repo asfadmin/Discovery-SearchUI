@@ -8,6 +8,9 @@
       </app-search-type-selector>
 
       <app-dataset-selector
+         [(selected)]="selectedDataset"
+         (selectedChange)="onDatasetChange($event)"
+         [datasets]="datasets"
          fxFlex="130px"
          (click)="closeAOIOptions()"
          class="breadcrumb">
