@@ -5,7 +5,7 @@ import * as models from '@models';
 
 
 export interface FiltersState {
-  datasets: DatasetsState;
+  selectedDatasetId: string;
 
   dateRange: DateRangeState;
 
@@ -33,23 +33,8 @@ export interface FiltersState {
 export type DateRangeState = models.Range<null | Date>;
 
 
-export interface DatasetsState {
-  entities: {[id: string]: models.Dataset };
-  selected: string;
-}
-
 export const initState: FiltersState = {
-  datasets: {
-    entities: models.datasets.reduce(
-      (datasetsObj, dataset) => {
-        datasetsObj[dataset.id] = dataset;
-
-        return datasetsObj;
-      },
-      {}
-    ),
-    selected: 'SENTINEL-1'
-  },
+  selectedDatasetId: 'SENTINEL-1',
   dateRange: {
     start: null,
     end: null
@@ -101,10 +86,7 @@ export function filtersReducer(state = initState, action: FiltersActions): Filte
 
       return {
         ...state,
-        datasets: {
-          ...state.datasets,
-          selected
-        },
+        selectedDatasetId: selected,
         productTypes: [],
         beamModes: [],
         polarizations: [],
@@ -425,7 +407,7 @@ export function filtersReducer(state = initState, action: FiltersActions): Filte
       } else {
         const filters = <models.GeographicFiltersType>search.filters;
 
-        const dataset = models.datasets.filter(
+        const dataset = models.datasetList.filter(
           d => d.id === filters.selectedDataset
         )[0];
 
@@ -447,10 +429,7 @@ export function filtersReducer(state = initState, action: FiltersActions): Filte
 
         return {
           ...state,
-          datasets: {
-            ...state.datasets,
-            selected: filters.selectedDataset,
-          },
+          selectedDatasetId:  filters.selectedDataset,
           maxResults: filters.maxResults,
           dateRange: filters.dateRange,
           pathRange: filters.pathRange,
@@ -473,11 +452,6 @@ export function filtersReducer(state = initState, action: FiltersActions): Filte
 }
 
 export const getFiltersState = createFeatureSelector<FiltersState>('filters');
-
-export const getDatasetsState = createSelector(
-  getFiltersState,
-  (state: FiltersState) => state.datasets
-);
 
 export const getDateRange = createSelector(
   getFiltersState,
@@ -509,24 +483,14 @@ export const getSeasonEnd = createSelector(
   (state: models.Range<number | null>) => state.end
 );
 
-export const getDatasetsList = createSelector(
-  getDatasetsState ,
-  (state: DatasetsState) => Object.values(state.entities)
-);
-
-export const getDatasets = createSelector(
-  getDatasetsState,
-  (state: DatasetsState) => state.entities
-);
-
 export const getSelectedDatasetId = createSelector(
-  getDatasetsState ,
-  ({ selected }) => selected
+  getFiltersState,
+  ({ selectedDatasetId }) => selectedDatasetId
 );
 
 export const getSelectedDataset = createSelector(
-  getDatasetsState ,
-  (state: DatasetsState) => state.entities[state.selected]
+  getFiltersState,
+  (state: FiltersState) => models.datasets[state.selectedDatasetId]
 );
 
 export const getPathRange = createSelector(
@@ -610,7 +574,7 @@ export const getListSearch = createSelector(
 export const getGeographicSearch = createSelector(
   getFiltersState,
   (state: FiltersState) => ({
-    selectedDataset: state.datasets.selected,
+    selectedDataset: state.selectedDatasetId,
     maxResults: state.maxResults,
     dateRange: state.dateRange,
     pathRange: state.pathRange,

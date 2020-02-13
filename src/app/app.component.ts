@@ -155,10 +155,6 @@ export class AppComponent implements OnInit, OnDestroy {
     }
   }
 
-  public isDevMode(): boolean {
-    return !!this.env.value.devMode;
-  }
-
   public onCloseSidebar(): void {
     this.store$.dispatch(new uiStore.CloseSidebar());
   }

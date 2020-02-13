@@ -19,12 +19,12 @@ import * as services from '@services';
 export class DatasetNavComponent implements OnInit {
   @Output() public openQueue = new EventEmitter<void>();
 
+  public datasets = models.datasetList;
   public queuedProducts$ = this.store$.select(queueStore.getQueuedProducts);
   public breakpoint$ = this.screenSize.breakpoint$;
   public breakpoints = models.Breakpoints;
   public isLoggedIn = false;
 
-  public datasets: models.Dataset[];
   public selectedDataset: string;
 
   constructor(
@@ -35,9 +35,6 @@ export class DatasetNavComponent implements OnInit {
   ngOnInit() {
     this.store$.select(userStore.getIsUserLoggedIn).subscribe(
       isLoggedIn => this.isLoggedIn = isLoggedIn
-    );
-    this.store$.select(filterStore.getDatasetsList).subscribe(
-      datasets => this.datasets = datasets
     );
     this.store$.select(filterStore.getSelectedDatasetId).subscribe(
       selected => this.selectedDataset = selected

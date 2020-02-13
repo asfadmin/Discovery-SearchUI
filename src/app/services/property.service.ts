@@ -38,7 +38,7 @@ export class PropertyService {
 
     const possibleTypes = (possibleValuesStr || '').split(',');
 
-    const dataset = models.datasets
+    const dataset = models.datasetList
         .filter(d => datasetName === d.id)
         .pop();
 

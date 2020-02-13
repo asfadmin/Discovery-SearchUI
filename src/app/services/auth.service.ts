@@ -24,11 +24,11 @@ export class AuthService {
   ) {}
 
   public get authUrl() {
-    return this.env.value.auth.api[this.maturity];
+    return this.env.currentEnv.auth;
   }
 
   public get earthdataUrl() {
-    return this.env.value.auth.urs[this.maturity];
+    return this.env.currentEnv.urs;
   }
 
   public setMaturity(maturity: string): void {
