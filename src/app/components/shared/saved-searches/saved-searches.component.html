@@ -43,7 +43,7 @@
            [ngClass]="{'saved-searches__content-mobile': breakpoint <= breakpoints.SMALL,
                  'saved-searches__content': breakpoint > breakpoints.SMALL}">
         <div *ngIf="(searches$ | async).length > 0; else noSavedSearchBlock">
-          <div *ngFor="let search of (searches$ | async)">
+          <div *ngFor="let search of (searches$ | async)" class="saved-searches-row">
             <div *ngIf="filteredSearches.has(search.id)">
               <app-saved-search
                 [search]="search"

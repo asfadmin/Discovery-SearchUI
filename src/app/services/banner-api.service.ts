@@ -40,6 +40,6 @@ export class BannerApiService {
   }
 
   private bannerUrl(): string {
-    return this.env.value.banner[this.env.value.devMode ? 'test' : 'prod'];
+    return this.env.currentEnv.banner;
   }
 }

@@ -3,7 +3,7 @@ import { ClipboardService } from 'ngx-clipboard';
 
 import { BehaviorSubject, combineLatest } from 'rxjs';
 import { map, withLatestFrom, filter, tap } from 'rxjs/operators';
-import { MatDialogRef } from '@angular/material';
+import { MatDialogRef } from '@angular/material/dialog';
 import { SubSink } from 'subsink';
 
 import * as services from '@services';

@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
-import { MatButtonToggle } from '@angular/material';
+import { MatButtonToggle } from '@angular/material/button-toggle';
 import { SubSink } from 'subsink';
 
 import { Store } from '@ngrx/store';
@@ -15,7 +15,7 @@ import * as services from '@services';
   styleUrls: ['./interaction-selector.component.scss']
 })
 export class InteractionSelectorComponent implements OnInit, OnDestroy {
-  @ViewChild('clearButton' , { static: false }) clearButton: MatButtonToggle;
+  @ViewChild('clearButton') clearButton: MatButtonToggle;
   public interaction: MapInteractionModeType;
   public types = MapInteractionModeType;
   private subs = new SubSink();

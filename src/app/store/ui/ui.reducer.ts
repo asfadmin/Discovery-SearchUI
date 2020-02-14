@@ -3,12 +3,14 @@ import { createFeatureSelector, createSelector } from '@ngrx/store';
 import { Banner } from '@models';
 
 import { UIActionType, UIActions } from './ui.action';
+import {getUserState, UserState} from '@store/user';
 
 
 export interface UIState {
   isFiltersMenuOpen: boolean;
   isResultsMenuOpen: boolean;
   isSidebarOpen: boolean;
+  isSaveSearchOn: boolean;
   isAOIOptionsOpen: boolean;
   isBrowseDialogOpen: boolean;
   onlyScenesWithBrowse: boolean;
@@ -19,6 +21,7 @@ export const initState: UIState = {
   isFiltersMenuOpen: false,
   isResultsMenuOpen: false,
   isSidebarOpen: false,
+  isSaveSearchOn: false,
   isAOIOptionsOpen: false,
   isBrowseDialogOpen: false,
   onlyScenesWithBrowse: true,
@@ -53,6 +56,20 @@ export function uiReducer(state = initState, action: UIActions): UIState {
       return {
         ...state,
         isSidebarOpen: false
+      };
+    }
+
+    case UIActionType.GET_SAVE_SEARCH_ON: {
+      return {
+        ...state,
+        isSaveSearchOn: state.isSaveSearchOn
+      };
+    }
+
+    case UIActionType.SET_SAVE_SEARCH_ON: {
+      return {
+        ...state,
+        isSaveSearchOn: action.payload,
       };
     }
 
@@ -176,4 +193,10 @@ export const getIsSidebarOpen = createSelector(
   getUIState,
   state => state.isSidebarOpen
 );
+
+export const getIsSaveSearchOn = createSelector(
+  getUIState,
+  state => state.isSaveSearchOn
+);
+
 

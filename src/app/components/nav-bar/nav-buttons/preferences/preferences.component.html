@@ -1,41 +1,15 @@
 <div class="dialg-header">
-  <div mat-dialog-title>Preferences</div>
-<!--  <div>-->
-<!--    <mat-icon (click)="onClose()" class="clickable">-->
-<!--      close-->
-<!--    </mat-icon>-->
-<!--  </div>-->
+  <div mat-dialog-title>Preferences for {{ userAuth.id }}</div>
 </div>
 
 <mat-dialog-content>
-  <div style="margin-bottom: 20px;">
-    Preferences for {{ userAuth.id }}
-  </div>
-
   <div class="display: flex;">
     <form #preferencesForm="ngForm" onsubmit="return false">
-      <mat-form-field class="w100">
-        <mat-label>Default Dataset</mat-label>
-        <mat-select
-            [(ngModel)]="defaultDataset"
-            (selectionChange)="onSelectionChange($event.value)" name="dataset"
-            #defaultDatasetSelector>
-          <mat-option
-            *ngFor="let dataset of (datasets$ | async)"
-            [class.selected]="dataset.id === defaultDataset"
-            [value]="dataset.id">
-            <ng-container *ngIf="defaultDatasetSelector.panelOpen">
-              <app-dataset
-                class="list-group-item list-group-item-action"
-                [dataset]="dataset">
-              </app-dataset>
-            </ng-container>
-            <ng-container *ngIf="!defaultDatasetSelector.panelOpen">
-              {{ dataset.name }}
-            </ng-container>
-          </mat-option>
-        </mat-select>
-      </mat-form-field>
+      <app-dataset-selector
+         [(selected)]="defaultDataset"
+         (selectedChange)="onDatasetSelectionChange($event)"
+         [datasets]="datasets">
+      </app-dataset-selector>
 
       <mat-form-field>
         <mat-label>Default Max Result Amount</mat-label>
