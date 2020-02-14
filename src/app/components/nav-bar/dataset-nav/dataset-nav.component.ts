@@ -26,7 +26,6 @@ export class DatasetNavComponent implements OnInit {
   public queuedProducts$ = this.store$.select(queueStore.getQueuedProducts);
   public breakpoint$ = this.screenSize.breakpoint$;
   public breakpoints = models.Breakpoints;
-  public isLoggedIn = false;
 
   public selectedDataset: string;
 
@@ -37,9 +36,6 @@ export class DatasetNavComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.store$.select(userStore.getIsUserLoggedIn).subscribe(
-      isLoggedIn => this.isLoggedIn = isLoggedIn
-    );
     this.store$.select(filterStore.getSelectedDatasetId).subscribe(
       selected => this.selectedDataset = selected
     );
@@ -52,20 +48,6 @@ export class DatasetNavComponent implements OnInit {
 
   public onOpenDownloadQueue(): void {
     this.openQueue.emit();
-  }
-
-  public onClearSearch(): void {
-    this.store$.dispatch(new searchStore.ClearSearch());
-  }
-
-  public onOpenSavedSearches(): void {
-    this.store$.dispatch(new uiStore.SetSaveSearchOn(false));
-    this.store$.dispatch(new uiStore.OpenSidebar());
-  }
-
-  public saveCurrentSearch(): void {
-    this.store$.dispatch(new uiStore.OpenSidebar());
-    this.store$.dispatch(new uiStore.SetSaveSearchOn(true));
   }
 
   public closeAOIOptions(): void {

@@ -92,7 +92,7 @@ export class SavedSearchesComponent implements OnInit {
     );
   }
 
-  private onFocusInput(e): void {
+  public onFocusInput(e): void {
     if (this.initFocus) {
       this.unfocusFilter();
       if (this.saveSearchOn) {
