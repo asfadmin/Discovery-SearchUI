@@ -52,17 +52,13 @@ export class DatasetNavComponent implements OnInit {
   }
 
   public onOpenSavedSearches(): void {
+    this.store$.dispatch(new uiStore.SetSaveSearchOn(false));
     this.store$.dispatch(new uiStore.OpenSidebar());
   }
 
   public saveCurrentSearch(): void {
-    Promise.resolve(this.store$.dispatch(new uiStore.OpenSidebar()))
-      .then(function (response) {
-        this.sscomp.saveCurrentSearch();
-      })
-      .then( function(response) {
-        console.log('@RESPONSE', response);
-        } );
+    this.store$.dispatch(new uiStore.OpenSidebar());
+    this.store$.dispatch(new uiStore.SetSaveSearchOn(true));
   }
 
   public closeAOIOptions(): void {
