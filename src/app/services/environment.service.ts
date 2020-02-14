@@ -56,7 +56,6 @@ export class EnvironmentService {
   public setMaturity(maturity: string): void {
     this.maturity = maturity;
     localStorage.setItem(this.maturityKey, this.maturity);
-    console.log(this.currentEnv);
   }
 
   private loadWithCustom(): Environments {
