@@ -170,18 +170,18 @@ export class SavedSearchesComponent implements OnInit {
     this.savedSearchService.updateSearchWithCurrentFilters(id);
   }
 
-  public onNewFilter(filter: string): void {
-    this.searchFilter = filter;
+  public onNewFilter(filterStr: string): void {
+    this.searchFilter = filterStr;
     this.updateFilter();
   }
 
   private updateFilter(): void {
     this.filteredSearches = new Set();
-    const filter = this.searchFilter.toLocaleLowerCase();
+    const filterStr = this.searchFilter.toLocaleLowerCase();
 
     this.filterTokens.forEach(
       search => {
-        if (search.token.includes(filter)) {
+        if (search.token.includes(filterStr)) {
           this.filteredSearches.add(search.id);
         }
       }
