@@ -14,7 +14,8 @@
       </div>
 
       <div *ngIf="searchType$ | async as searchType" fxLayout="column" fxFill>
-        <app-dataset-nav *ngIf="searchType === searchTypes.DATASET">
+        <app-dataset-nav *ngIf="searchType === searchTypes.DATASET"
+          (openQueue)="onOpenDownloadQueue()">
         </app-dataset-nav>
 
         <app-list-nav *ngIf="searchType === searchTypes.LIST"

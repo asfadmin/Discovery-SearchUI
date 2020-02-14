@@ -23,6 +23,7 @@
                  (change)="onNewFilter($event.target.value)"
                  (input)="onNewFilter($event.target.value)"
                  (keyup.enter)="unfocusFilter()"
+                 (focus)="onFocusInput($event)"
                  name="filterSearches"
                  placeholder="Filter Searches" #filterInput>
         </mat-form-field>

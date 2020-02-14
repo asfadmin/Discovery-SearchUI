@@ -1,5 +1,7 @@
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 
+import { timer } from 'rxjs';
+import { filter } from 'rxjs/operators';
 import { Store, Action } from '@ngrx/store';
 import { AppState } from '@store';
 import * as userStore from '@store/user';
@@ -18,7 +20,6 @@ import {getIsSaveSearchOn, SetSaveSearchOn} from '@store/ui';
 })
 export class SavedSearchesComponent implements OnInit {
   @ViewChild('filterInput', { static: true }) filterInput: ElementRef;
-  @ViewChild('editNameInput', { static: true }) editNameInput: ElementRef;
 
   public searches$ = this.store$.select(userStore.getSavedSearches);
   public searchType$ = this.store$.select(searchStore.getSearchType);
@@ -33,6 +34,8 @@ export class SavedSearchesComponent implements OnInit {
   public searchFilter = '';
   public expandedSearchId: string;
   public newSearchId: string;
+
+  private initFocus = true;
 
   constructor(
     private savedSearchService: SavedSearchService,
@@ -51,9 +54,6 @@ export class SavedSearchesComponent implements OnInit {
     this.saveSearchOn$.subscribe(
       saveSearchOn => {
         this.saveSearchOn = saveSearchOn;
-        if (saveSearchOn) {
-          this.saveCurrentSearch();
-        }
       }
     );
 
@@ -85,9 +85,21 @@ export class SavedSearchesComponent implements OnInit {
         this.updateFilter();
       });
 
-    this.editNameInput.nativeElement.blur();
-    // this.filterInput.nativeElement.blur();
+    this.store$.select(uiStore.getIsSidebarOpen).pipe(
+      filter(isOpen => !isOpen)
+    ).subscribe(
+      isOpen => this.initFocus = true
+    );
+  }
 
+  private onFocusInput(e): void {
+    if (this.initFocus) {
+      this.unfocusFilter();
+      if (this.saveSearchOn) {
+        this.saveCurrentSearch();
+      }
+      this.initFocus = false;
+    }
   }
 
   private addIfHasValue(acc, key: string, val): Object {
@@ -158,18 +170,18 @@ export class SavedSearchesComponent implements OnInit {
     this.savedSearchService.updateSearchWithCurrentFilters(id);
   }
 
-  public onNewFilter(filter: string): void {
-    this.searchFilter = filter;
+  public onNewFilter(filterStr: string): void {
+    this.searchFilter = filterStr;
     this.updateFilter();
   }
 
   private updateFilter(): void {
     this.filteredSearches = new Set();
-    const filter = this.searchFilter.toLocaleLowerCase();
+    const filterStr = this.searchFilter.toLocaleLowerCase();
 
     this.filterTokens.forEach(
       search => {
-        if (search.token.includes(filter)) {
+        if (search.token.includes(filterStr)) {
           this.filteredSearches.add(search.id);
         }
       }
@@ -177,7 +189,7 @@ export class SavedSearchesComponent implements OnInit {
   }
 
   public unfocusFilter(): void {
-    // this.filterInput.nativeElement.blur();
+     this.filterInput.nativeElement.blur();
   }
 
   public updateSearchName(update: {id: string, name: string}): void {

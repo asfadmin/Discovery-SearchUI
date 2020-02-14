@@ -59,13 +59,6 @@ export function uiReducer(state = initState, action: UIActions): UIState {
       };
     }
 
-    case UIActionType.GET_SAVE_SEARCH_ON: {
-      return {
-        ...state,
-        isSaveSearchOn: state.isSaveSearchOn
-      };
-    }
-
     case UIActionType.SET_SAVE_SEARCH_ON: {
       return {
         ...state,
