@@ -10,6 +10,7 @@ export interface Environment {
   api: string;
   auth: string;
   urs: string;
+  urs_client_id: string;
   banner: string;
   user_data: string;
 }
