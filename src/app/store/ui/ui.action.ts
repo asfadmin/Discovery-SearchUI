@@ -13,6 +13,9 @@ export enum UIActionType {
   CLOSE_SIDEBAR = '[UI] Close Sidebar',
   OPEN_SIDEBAR = '[UI] Open Sidebar',
 
+  SET_SAVE_SEARCH_ON = '[UI] Set Save Search On',
+  GET_SAVE_SEARCH_ON = '[UI] Get Save Search On',
+
   SET_IS_BROWSE_DIALOG_OPEN = '[UI] Set Is Browse Dialog Open',
   SET_ONLY_SCENES_WITH_BROWSE = '[UI] Set Only Scenes With Browse',
 
@@ -43,6 +46,16 @@ export class CloseSidebar implements Action {
 
 export class OpenSidebar implements Action {
   public readonly type = UIActionType.OPEN_SIDEBAR;
+}
+
+export class GetSaveSearchOn implements Action {
+  public readonly type = UIActionType.GET_SAVE_SEARCH_ON;
+}
+
+export class SetSaveSearchOn implements Action {
+  public readonly type = UIActionType.SET_SAVE_SEARCH_ON;
+
+  constructor(public payload: boolean) {}
 }
 
 export class CloseFiltersMenu implements Action {
@@ -97,6 +110,8 @@ export type UIActions =
   | ToggleAOIOptions
   | CloseAOIOptions
   | OpenSidebar
+  | SetSaveSearchOn
+  | GetSaveSearchOn
   | CloseSidebar
   | ToggleFiltersMenu
   | CloseFiltersMenu

@@ -9,6 +9,7 @@ import * as filtersStore from '@store/filters';
 
 import { SavedSearchService, MapService, WktService, ScreenSizeService } from '@services';
 import * as models from '@models';
+import {getIsSaveSearchOn, SetSaveSearchOn} from '@store/ui';
 
 @Component({
   selector: 'app-saved-searches',
@@ -17,9 +18,12 @@ import * as models from '@models';
 })
 export class SavedSearchesComponent implements OnInit {
   @ViewChild('filterInput', { static: true }) filterInput: ElementRef;
+  @ViewChild('editNameInput', { static: true }) editNameInput: ElementRef;
 
   public searches$ = this.store$.select(userStore.getSavedSearches);
   public searchType$ = this.store$.select(searchStore.getSearchType);
+  public saveSearchOn$ = this.store$.select(uiStore.getIsSaveSearchOn);
+  public saveSearchOn = false;
 
   public breakpoint: models.Breakpoints;
   public breakpoints = models.Breakpoints;
@@ -42,6 +46,15 @@ export class SavedSearchesComponent implements OnInit {
     this.savedSearchService.loadSearches();
     this.screenSize.breakpoint$.subscribe(
       breakpoint => this.breakpoint = breakpoint
+    );
+
+    this.saveSearchOn$.subscribe(
+      saveSearchOn => {
+        this.saveSearchOn = saveSearchOn;
+        if (saveSearchOn) {
+          this.saveCurrentSearch();
+        }
+      }
     );
 
     this.store$.select(userStore.getSavedSearches).subscribe(
@@ -72,7 +85,9 @@ export class SavedSearchesComponent implements OnInit {
         this.updateFilter();
       });
 
-      this.filterInput.nativeElement.blur();
+    this.editNameInput.nativeElement.blur();
+    // this.filterInput.nativeElement.blur();
+
   }
 
   private addIfHasValue(acc, key: string, val): Object {
@@ -162,7 +177,7 @@ export class SavedSearchesComponent implements OnInit {
   }
 
   public unfocusFilter(): void {
-    this.filterInput.nativeElement.blur();
+    // this.filterInput.nativeElement.blur();
   }
 
   public updateSearchName(update: {id: string, name: string}): void {
