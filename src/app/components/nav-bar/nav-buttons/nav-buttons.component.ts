@@ -93,6 +93,7 @@ export class NavButtonsComponent implements OnInit {
   }
 
   public onOpenSavedSearches(): void {
+    this.store$.dispatch(new uiStore.SetSaveSearchOn(false));
     this.store$.dispatch(new uiStore.OpenSidebar());
   }
 

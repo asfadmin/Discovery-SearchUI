@@ -23,8 +23,7 @@ export class SavedSearchesComponent implements OnInit {
 
   public searches$ = this.store$.select(userStore.getSavedSearches);
   public searchType$ = this.store$.select(searchStore.getSearchType);
-  public saveSearchOn$ = this.store$.select(uiStore.getIsSaveSearchOn);
-  public saveSearchOn = false;
+  public saveSearchOn: boolean;
 
   public breakpoint: models.Breakpoints;
   public breakpoints = models.Breakpoints;
@@ -51,7 +50,7 @@ export class SavedSearchesComponent implements OnInit {
       breakpoint => this.breakpoint = breakpoint
     );
 
-    this.saveSearchOn$.subscribe(
+    this.store$.select(uiStore.getIsSaveSearchOn).subscribe(
       saveSearchOn => {
         this.saveSearchOn = saveSearchOn;
       }

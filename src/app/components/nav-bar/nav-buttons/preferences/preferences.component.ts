@@ -67,7 +67,6 @@ export class PreferencesComponent implements OnInit {
   }
 
   public onNewDefaultProductTypes(types: ProductType[]): void {
-    console.log(types);
   }
 
   public saveProfile(): void {
