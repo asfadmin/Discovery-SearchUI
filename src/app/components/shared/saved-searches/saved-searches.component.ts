@@ -96,6 +96,7 @@ export class SavedSearchesComponent implements OnInit {
       this.unfocusFilter();
       if (this.saveSearchOn) {
         this.saveCurrentSearch();
+        this.store$.dispatch(new uiStore.SetSaveSearchOn(false));
       }
       this.initFocus = false;
     }
