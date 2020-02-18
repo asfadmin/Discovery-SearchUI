@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 
 import { timer } from 'rxjs';
-import { filter } from 'rxjs/operators';
+import { filter, switchMap } from 'rxjs/operators';
 import { Store, Action } from '@ngrx/store';
 import { AppState } from '@store';
 import * as userStore from '@store/user';
@@ -21,10 +21,18 @@ import {getIsSaveSearchOn, SetSaveSearchOn} from '@store/ui';
 export class SavedSearchesComponent implements OnInit {
   @ViewChild('filterInput', { static: true }) filterInput: ElementRef;
 
-  public searches$ = this.store$.select(userStore.getSavedSearches);
   public searchType$ = this.store$.select(searchStore.getSearchType);
   public saveSearchOn: boolean;
   public savedSearchType: models.SavedSearchType;
+
+  public savedSearchType$ = this.store$.select(uiStore.getSaveSearchType);
+  public searches$ = this.savedSearchType$.pipe(
+      switchMap(savedSearchType =>
+        (savedSearchType === models.SavedSearchType.SAVED) ?
+          this.store$.select(userStore.getSavedSearches) :
+          this.store$.select(userStore.getSearchHistory)
+      )
+    );
 
   public breakpoint: models.Breakpoints;
   public breakpoints = models.Breakpoints;
@@ -55,12 +63,13 @@ export class SavedSearchesComponent implements OnInit {
       saveSearchOn => this.saveSearchOn = saveSearchOn
     );
 
-    this.store$.select(uiStore.getSaveSearchType).subscribe(
+    this.savedSearchType$.subscribe(
       savedSearchType => this.savedSearchType = savedSearchType
     );
 
-    this.store$.select(userStore.getSavedSearches).subscribe(
+    this.searches$.subscribe(
       searches => {
+        console.log(searches);
         const filtersWithValues = searches.map(
           search => ({
             id: search.id,
@@ -106,7 +115,6 @@ export class SavedSearchesComponent implements OnInit {
   }
 
   public onSavedSearchTypeChange(savedSearchType: models.SavedSearchType): void {
-    console.log(savedSearchType);
     this.store$.dispatch(new uiStore.SetSavedSearchType(savedSearchType));
   }
 
