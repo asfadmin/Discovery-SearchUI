@@ -34,9 +34,18 @@
 
   <mat-divider></mat-divider>
 
-  <span matTooltip = "Sign in to see your saved searches" [matTooltipDisabled]="isLoggedIn"
-        matTooltipPosition = "after">
-    <button mat-menu-item [disabled]="!isLoggedIn" (click)="onOpenSavedSearches()">Saved Searches...</button>
+  <span
+    [matTooltipDisabled]="isLoggedIn"
+    matTooltip="Sign in to see your saved searches"
+    matTooltipPosition="after">
+      <button mat-menu-item [disabled]="!isLoggedIn" (click)="onOpenSavedSearches()">Saved Searches...</button>
+  </span>
+
+  <span
+    [matTooltipDisabled]="isLoggedIn"
+    matTooltip="Sign in to see your search history"
+    matTooltipPosition="after">
+      <button mat-menu-item [disabled]="!isLoggedIn" (click)="onOpenSearchHistory()">Search History...</button>
   </span>
 </mat-menu>
 

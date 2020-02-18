@@ -26,13 +26,14 @@ export class SavedSearchesComponent implements OnInit {
   public savedSearchType: models.SavedSearchType;
 
   public savedSearchType$ = this.store$.select(uiStore.getSaveSearchType);
+  public SavedSearchType = models.SavedSearchType;
   public searches$ = this.savedSearchType$.pipe(
-      switchMap(savedSearchType =>
-        (savedSearchType === models.SavedSearchType.SAVED) ?
-          this.store$.select(userStore.getSavedSearches) :
-          this.store$.select(userStore.getSearchHistory)
-      )
-    );
+    switchMap(savedSearchType =>
+      (savedSearchType === models.SavedSearchType.SAVED) ?
+        this.store$.select(userStore.getSavedSearches) :
+        this.store$.select(userStore.getSearchHistory)
+    )
+  );
 
   public breakpoint: models.Breakpoints;
   public breakpoints = models.Breakpoints;

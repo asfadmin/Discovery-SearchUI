@@ -17,6 +17,7 @@ export class SavedSearchComponent implements OnInit {
   @Input() searchType: models.SearchType;
   @Input() isExpanded: boolean;
   @Input() isNew: boolean;
+  @Input() isSavedSearch: boolean;
 
   @Output() updateFilters = new EventEmitter<string>();
   @Output() updateName = new EventEmitter<{ id: string, name: string }>();
@@ -47,6 +48,10 @@ export class SavedSearchComponent implements OnInit {
   }
 
   public onEditName(): void {
+    if (!this.isSavedSearch) {
+      return;
+    }
+
     this.isEditingName = true;
     this.editName = this.search.name === '(No title)' ?
       '' : this.search.name;
@@ -95,6 +100,16 @@ export class SavedSearchComponent implements OnInit {
       return ` - after ${start}`;
     } else {
       return ``;
+    }
+  }
+
+  public formatName(searchName: string): string {
+    if (this.isSavedSearch) {
+      return searchName;
+    } else {
+      const date = this.formatIfDate(new Date(+searchName));
+
+      return `(${date})`;
     }
   }
 

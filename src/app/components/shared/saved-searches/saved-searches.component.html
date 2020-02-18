@@ -2,7 +2,8 @@
                  'saved-searches': breakpoint > breakpoints.SMALL}">
   <div class="saved-searches__header">
       <div class="saved-searches__header-title">
-        Saved Searches
+        <span *ngIf="savedSearchType === SavedSearchType.SAVED">Saved Searches</span>
+        <span *ngIf="savedSearchType === SavedSearchType.HISTORY">Search History</span>
       </div>
       <div class="saved-searches__header-actions" >
           <div class="saved-searches__more-menu">
@@ -35,7 +36,9 @@
     </div>
 
     <div class="saved-searches__save-button">
-      <button (click)="saveCurrentSearch()"
+      <button
+         *ngIf="savedSearchType === SavedSearchType.SAVED"
+         (click)="saveCurrentSearch()"
               mat-raised-button
               color="accent">
         Save Current Search
@@ -55,6 +58,7 @@
                 [searchType]="searchType"
                 [isExpanded]="search.id === expandedSearchId"
                 [isNew]="search.id === newSearchId"
+                [isSavedSearch]="savedSearchType === SavedSearchType.SAVED"
                 (expand)="onExpandSearch($event)"
                 (updateFilters)="updateSearchFilters($event)"
                 (updateName)="updateSearchName($event)"

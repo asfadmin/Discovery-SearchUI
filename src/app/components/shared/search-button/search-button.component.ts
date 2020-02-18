@@ -8,6 +8,7 @@ import * as userStore from '@store/user';
 import * as uiStore from '@store/ui';
 
 import * as services from '@services';
+import { SavedSearchType } from '@models';
 
 
 @Component({
@@ -54,7 +55,12 @@ export class SearchButtonComponent implements OnInit {
   }
 
   public onOpenSavedSearches(): void {
-    this.store$.dispatch(new uiStore.SetSaveSearchOn(false));
+    this.store$.dispatch(new uiStore.SetSavedSearchType(SavedSearchType.SAVED));
+    this.store$.dispatch(new uiStore.OpenSidebar());
+  }
+
+  public onOpenSearchHistory(): void {
+    this.store$.dispatch(new uiStore.SetSavedSearchType(SavedSearchType.HISTORY));
     this.store$.dispatch(new uiStore.OpenSidebar());
   }
 }
