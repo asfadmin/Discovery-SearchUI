@@ -69,7 +69,6 @@ export class SavedSearchesComponent implements OnInit {
 
     this.searches$.subscribe(
       searches => {
-        console.log(searches);
         const filtersWithValues = searches.map(
           search => ({
             id: search.id,
