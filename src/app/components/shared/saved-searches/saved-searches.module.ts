@@ -6,6 +6,7 @@ import { PipesModule } from '@pipes';
 import { MatListModule } from '@angular/material/list';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatInputModule } from '@angular/material/input';
+import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatSharedModule } from '@shared';
 
 import { SavedSearchesComponent } from './saved-searches.component';
@@ -27,6 +28,7 @@ import { ListSearchFiltersComponent } from './saved-search/list-search-filters/l
     MatInputModule,
     MatListModule,
     MatDialogModule,
+    MatButtonToggleModule,
     MatSharedModule,
     PipesModule,
   ],
