@@ -167,7 +167,7 @@ export class UserEffects {
     const datasetIds = models.datasetIds;
 
     return (
-      datasetIds.includes(resp.selectedDataset) &&
+      datasetIds.includes(resp.defaultDataset) &&
       Object.values(models.MapLayerTypes).includes(resp.mapLayer) &&
       this.isNumber(resp.maxResults) && resp.maxResults <= 5000
     );

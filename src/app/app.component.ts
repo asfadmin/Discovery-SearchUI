@@ -89,7 +89,7 @@ export class AppComponent implements OnInit, OnDestroy {
 
     this.subs.add(
       this.store$.select(userStore.getUserProfile).subscribe(
-        (profile) => {
+        profile => {
           this.urlStateService.setDefaults(profile);
         })
     );
