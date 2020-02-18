@@ -6,9 +6,12 @@
       </div>
       <div class="saved-searches__header-actions" >
           <div class="saved-searches__more-menu">
-            <mat-button-toggle-group name="SavedSearchType" aria-label="Saved Search Type">
-              <mat-button-toggle value="history">History</mat-button-toggle>
-              <mat-button-toggle value="saved">Saved</mat-button-toggle>
+            <mat-button-toggle-group
+              (change)="onSavedSearchTypeChange($event.value)"
+               [value]="savedSearchType"
+              name="SavedSearchType" aria-label="Saved Search Type">
+              <mat-button-toggle value="History">History</mat-button-toggle>
+              <mat-button-toggle value="Saved">Saved</mat-button-toggle>
             </mat-button-toggle-group>
           </div>
       </div>

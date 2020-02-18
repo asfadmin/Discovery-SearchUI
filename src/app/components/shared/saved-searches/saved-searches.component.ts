@@ -24,6 +24,7 @@ export class SavedSearchesComponent implements OnInit {
   public searches$ = this.store$.select(userStore.getSavedSearches);
   public searchType$ = this.store$.select(searchStore.getSearchType);
   public saveSearchOn: boolean;
+  public savedSearchType: models.SavedSearchType;
 
   public breakpoint: models.Breakpoints;
   public breakpoints = models.Breakpoints;
@@ -51,9 +52,11 @@ export class SavedSearchesComponent implements OnInit {
     );
 
     this.store$.select(uiStore.getIsSaveSearchOn).subscribe(
-      saveSearchOn => {
-        this.saveSearchOn = saveSearchOn;
-      }
+      saveSearchOn => this.saveSearchOn = saveSearchOn
+    );
+
+    this.store$.select(uiStore.getSaveSearchType).subscribe(
+      savedSearchType => this.savedSearchType = savedSearchType
     );
 
     this.store$.select(userStore.getSavedSearches).subscribe(
@@ -100,6 +103,11 @@ export class SavedSearchesComponent implements OnInit {
       }
       this.initFocus = false;
     }
+  }
+
+  public onSavedSearchTypeChange(savedSearchType: models.SavedSearchType): void {
+    console.log(savedSearchType);
+    this.store$.dispatch(new uiStore.SetSavedSearchType(savedSearchType));
   }
 
   private addIfHasValue(acc, key: string, val): Object {
