@@ -1,7 +1,7 @@
 (function() {
   window._env = {
     prod: {
-      api: 'https://api-prod-private.asf.alaska.edu',
+      api: 'https://api.daac.asf.alaska.edu',
       auth: 'https://auth.asf.alaska.edu',
       urs: 'https://urs.earthdata.nasa.gov',
       urs_client_id: 'BO_n7nTIlMljdvU6kRRB3g',
