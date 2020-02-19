@@ -2,6 +2,12 @@
   (mouseenter)="isHovered = true"
   (mouseleave)="isHovered = false">
 
+  <mat-icon
+    (click)="onLoadUnzippedPoduct()"
+    class="clickable" matListIcon>
+      keyboard_arrow_right
+  </mat-icon>
+
   <div class="clickable" mat-line>
     <b>
       <span *ngIf="product.productTypeDisplay.length > 40">

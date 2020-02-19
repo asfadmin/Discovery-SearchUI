@@ -2,7 +2,7 @@ import { createFeatureSelector, createSelector } from '@ngrx/store';
 
 import { ScenesActionType, ScenesActions } from './scenes.action';
 
-import { CMRProduct } from '@models';
+import { CMRProduct, UnzippedFolder } from '@models';
 
 
 interface SceneEntities { [id: string]: CMRProduct; }
@@ -12,13 +12,14 @@ export interface ScenesState {
   products: SceneEntities;
   areResultsLoaded: boolean;
   scenes: {[id: string]: string[]};
-
+  unzipped: {[id: string]: UnzippedFolder};
   selected: string | null;
 }
 
 export const initState: ScenesState = {
   ids: [],
   scenes: {},
+  unzipped: {},
   products: {},
   areResultsLoaded: false,
 

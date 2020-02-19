@@ -1,5 +1,6 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
 
+import { UnzipApiService } from '@services';
 import * as models from '@models';
 
 @Component({
@@ -13,9 +14,15 @@ export class SceneFileComponent {
 
   @Output() toggle = new EventEmitter<void>();
 
+  constructor(private unzipService: UnzipApiService) {}
+
   public isHovered = false;
 
   public onToggleQueueProduct(): void {
     this.toggle.emit();
+  }
+
+  public onLoadUnzippedPoduct(): void {
+    this.unzipService.unzip(this.product.downloadUrl);
   }
 }

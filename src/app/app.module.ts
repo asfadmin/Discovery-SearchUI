@@ -109,6 +109,7 @@ export const routes = [
     CustomBreakPointsProvider,
     services.UserDataService,
     services.SavedSearchService,
+    services.UnzipApiService,
   ],
   bootstrap: [ AppComponent ],
 })

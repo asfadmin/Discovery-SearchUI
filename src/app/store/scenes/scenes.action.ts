@@ -1,12 +1,14 @@
 import { Action } from '@ngrx/store';
 
-import { CMRProduct } from '@models';
+import { CMRProduct, UnzippedFolder } from '@models';
 
 export enum ScenesActionType {
   SET_SCENES = '[Granuels] Set Scenes',
   CLEAR = '[Granuels] Clear Scenes',
 
   SET_RESULTS_LOADED = '[Scenes] Set Results Loaded',
+  LOAD_UNZIPPED_PRODUCT = '[Scenes] Load unzipped product',
+  ADD_UNZIPPED_PRODUCT = '[Scenes] Add unzipped product',
 
   SET_SELECTED_SCENE = '[Scenes] Set Selected Scene',
   SELECT_NEXT_SCENE = '[Scenes] Select Next Scene',
@@ -54,9 +56,24 @@ export class SelectNextWithBrowse implements Action {
   public readonly type = ScenesActionType.SELECT_NEXT_WITH_BROWSE;
 }
 
+export class AddUnzippedProduct implements Action {
+  public readonly type = ScenesActionType.ADD_UNZIPPED_PRODUCT;
+
+  constructor(public payload: { product: CMRProduct, unzipped: UnzippedFolder }) {}
+}
+
+export class LoadUnzippedProduct implements Action {
+  public readonly type = ScenesActionType.LOAD_UNZIPPED_PRODUCT;
+
+  constructor(public payload: CMRProduct) {}
+}
+
+
 export type ScenesActions =
   | SetScenes
   | ClearScenes
+  | AddUnzippedProduct
+  | LoadUnzippedProduct
   | SetSelectedScene
   | SelectNextScene
   | SelectPreviousScene
