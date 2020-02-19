@@ -10,7 +10,7 @@ import * as uiStore from '@store/ui';
 import { PreferencesComponent } from './preferences/preferences.component';
 import { CustomizeEnvComponent } from './customize-env/customize-env.component';
 import { AuthService, AsfApiService, EnvironmentService, ScreenSizeService } from '@services';
-import { CMRProduct, Breakpoints, UserAuth } from '@models';
+import { CMRProduct, Breakpoints, UserAuth, SavedSearchType } from '@models';
 import * as searchStore from '@store/search';
 
 @Component({
@@ -94,6 +94,13 @@ export class NavButtonsComponent implements OnInit {
 
   public onOpenSavedSearches(): void {
     this.store$.dispatch(new uiStore.SetSaveSearchOn(false));
+    this.store$.dispatch(new uiStore.SetSavedSearchType(SavedSearchType.SAVED));
+    this.store$.dispatch(new uiStore.OpenSidebar());
+  }
+
+  public onOpenSearchHistory() {
+    this.store$.dispatch(new uiStore.SetSaveSearchOn(false));
+    this.store$.dispatch(new uiStore.SetSavedSearchType(SavedSearchType.HISTORY));
     this.store$.dispatch(new uiStore.OpenSidebar());
   }
 
