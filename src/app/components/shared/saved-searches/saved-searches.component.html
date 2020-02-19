@@ -8,11 +8,13 @@
       <div class="saved-searches__header-actions" >
           <div class="saved-searches__more-menu">
             <mat-button-toggle-group
-              (change)="onSavedSearchTypeChange($event.value)"
+               (change)="onSavedSearchTypeChange($event.value)"
                [value]="savedSearchType"
-              name="SavedSearchType" aria-label="Saved Search Type">
-              <mat-button-toggle value="History">History</mat-button-toggle>
-              <mat-button-toggle value="Saved">Saved</mat-button-toggle>
+               name="SavedSearchType" aria-label="Saved Search Type">
+              <mat-button-toggle
+                value="History">History</mat-button-toggle>
+              <mat-button-toggle
+                value="Saved">Saved</mat-button-toggle>
             </mat-button-toggle-group>
           </div>
       </div>
@@ -28,9 +30,8 @@
                  (change)="onNewFilter($event.target.value)"
                  (input)="onNewFilter($event.target.value)"
                  (keyup.enter)="unfocusFilter()"
-                 (focus)="onFocusInput($event)"
                  name="filterSearches"
-                 placeholder="Filter Searches" #filterInput>
+                 placeholder="Filter Searches">
         </mat-form-field>
       </form>
     </div>

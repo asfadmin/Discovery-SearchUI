@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 
 import { timer } from 'rxjs';
-import { filter, switchMap } from 'rxjs/operators';
+import { filter, switchMap, tap, delay } from 'rxjs/operators';
 import { Store, Action } from '@ngrx/store';
 import { AppState } from '@store';
 import * as userStore from '@store/user';
@@ -60,8 +60,17 @@ export class SavedSearchesComponent implements OnInit {
       breakpoint => this.breakpoint = breakpoint
     );
 
-    this.store$.select(uiStore.getIsSaveSearchOn).subscribe(
-      saveSearchOn => this.saveSearchOn = saveSearchOn
+    this.store$.select(uiStore.getIsSaveSearchOn).pipe(
+      tap(saveSearchOn =>   this.saveSearchOn = saveSearchOn),
+      delay(1000)
+    ).subscribe(
+      saveSearchOn => {
+        if (this.saveSearchOn) {
+          console.log('Saving search');
+          this.saveCurrentSearch();
+          this.store$.dispatch(new uiStore.SetSaveSearchOn(false));
+        }
+      }
     );
 
     this.savedSearchType$.subscribe(
@@ -101,17 +110,6 @@ export class SavedSearchesComponent implements OnInit {
     ).subscribe(
       isOpen => this.initFocus = true
     );
-  }
-
-  public onFocusInput(e): void {
-    if (this.initFocus) {
-      this.unfocusFilter();
-      if (this.saveSearchOn) {
-        this.saveCurrentSearch();
-        this.store$.dispatch(new uiStore.SetSaveSearchOn(false));
-      }
-      this.initFocus = false;
-    }
   }
 
   public onSavedSearchTypeChange(savedSearchType: models.SavedSearchType): void {
