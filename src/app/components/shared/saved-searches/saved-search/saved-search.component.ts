@@ -11,21 +11,18 @@ import * as models from '@models';
   styleUrls: ['./saved-search.component.scss']
 })
 export class SavedSearchComponent implements OnInit {
-  @ViewChild('nameEditInput') nameEditInput: ElementRef;
+  @ViewChild('nameEditInput', { static: false }) nameEditInput: ElementRef;
 
   @Input() search: models.Search;
   @Input() searchType: models.SearchType;
   @Input() isExpanded: boolean;
   @Input() isNew: boolean;
-  @Input() isSavedSearch: boolean;
-  @Input() lockedFocus: boolean;
 
   @Output() updateFilters = new EventEmitter<string>();
   @Output() updateName = new EventEmitter<{ id: string, name: string }>();
   @Output() deleteSearch = new EventEmitter<string>();
   @Output() setSearch = new EventEmitter<models.Search>();
   @Output() expand = new EventEmitter<string>();
-  @Output() unlockFocus = new EventEmitter<void>();
 
   public SearchType = models.SearchType;
   public isEditingName = false;
@@ -50,10 +47,6 @@ export class SavedSearchComponent implements OnInit {
   }
 
   public onEditName(): void {
-    if (!this.isSavedSearch) {
-      return;
-    }
-
     this.isEditingName = true;
     this.editName = this.search.name === '(No title)' ?
       '' : this.search.name;
@@ -75,12 +68,6 @@ export class SavedSearchComponent implements OnInit {
   }
 
   public onEditFocusLeave(): void {
-    if (this.lockedFocus) {
-      this.nameEditInput.nativeElement.focus();
-      this.unlockFocus.emit();
-      return;
-    }
-
     this.isEditingName = false;
 
     this.updateName.emit({ name: this.editName, id: this.search.id });
@@ -108,16 +95,6 @@ export class SavedSearchComponent implements OnInit {
       return ` - after ${start}`;
     } else {
       return ``;
-    }
-  }
-
-  public formatName(searchName: string): string {
-    if (this.isSavedSearch) {
-      return searchName;
-    } else {
-      const date = this.formatIfDate(new Date(+searchName));
-
-      return `(${date})`;
     }
   }
 

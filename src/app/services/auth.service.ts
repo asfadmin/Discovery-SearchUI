@@ -24,15 +24,11 @@ export class AuthService {
   ) {}
 
   public get authUrl() {
-    return this.env.currentEnv.auth;
+    return this.env.value.auth.api[this.maturity];
   }
 
   public get earthdataUrl() {
-    return this.env.currentEnv.urs;
-  }
-
-  public get ursClientId() {
-    return this.env.currentEnv.urs_client_id;
+    return this.env.value.auth.urs[this.maturity];
   }
 
   public setMaturity(maturity: string): void {
@@ -45,9 +41,8 @@ export class AuthService {
     const appRedirect = encodeURIComponent(localUrl);
 
     const redirect = `${this.authUrl}/login&state=${appRedirect}`;
-    const clientId = this.ursClientId;
 
-    const url = `${this.earthdataUrl}/oauth/authorize?response_type=code&client_id=${clientId}&redirect_uri=${redirect};`;
+    const url = `${this.earthdataUrl}/oauth/authorize?response_type=code&client_id=BO_n7nTIlMljdvU6kRRB3g&redirect_uri=${redirect};`;
 
     const loginWindow = window.open(
       url,

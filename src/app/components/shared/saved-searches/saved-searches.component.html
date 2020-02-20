@@ -1,22 +1,14 @@
-<div
-  [ngClass]="{'saved-searches-mobile': breakpoint <= breakpoints.SMALL,
-              'saved-searches': breakpoint > breakpoints.SMALL}">
+<div [ngClass]="{'saved-searches-mobile': breakpoint <= breakpoints.SMALL,
+                 'saved-searches': breakpoint > breakpoints.SMALL}">
   <div class="saved-searches__header">
       <div class="saved-searches__header-title">
-        <span *ngIf="savedSearchType === SavedSearchType.SAVED">Saved Searches</span>
-        <span *ngIf="savedSearchType === SavedSearchType.HISTORY">Search History</span>
+        Saved Searches
       </div>
       <div class="saved-searches__header-actions" >
           <div class="saved-searches__more-menu">
-            <mat-button-toggle-group
-               (change)="onSavedSearchTypeChange($event.value)"
-               [value]="savedSearchType"
-               name="SavedSearchType" aria-label="Saved Search Type">
-              <mat-button-toggle
-                value="History">History</mat-button-toggle>
-              <mat-button-toggle
-                value="Saved">Saved</mat-button-toggle>
-            </mat-button-toggle-group>
+<!--            <mat-icon class="close-icon clickable">-->
+<!--              more_vert-->
+<!--            </mat-icon>-->
           </div>
       </div>
     </div>
@@ -32,15 +24,13 @@
                  (input)="onNewFilter($event.target.value)"
                  (keyup.enter)="unfocusFilter()"
                  name="filterSearches"
-                 placeholder="Filter Searches">
+                 placeholder="Filter Searches" #filterInput>
         </mat-form-field>
       </form>
     </div>
 
     <div class="saved-searches__save-button">
-      <button
-         *ngIf="savedSearchType === SavedSearchType.SAVED"
-         (click)="saveCurrentSearch()"
+      <button (click)="saveCurrentSearch()"
               mat-raised-button
               color="accent">
         Save Current Search
@@ -53,16 +43,13 @@
            [ngClass]="{'saved-searches__content-mobile': breakpoint <= breakpoints.SMALL,
                  'saved-searches__content': breakpoint > breakpoints.SMALL}">
         <div *ngIf="(searches$ | async).length > 0; else noSavedSearchBlock">
-          <div *ngFor="let search of (searches$ | async)" class="saved-searches-row">
+          <div *ngFor="let search of (searches$ | async)">
             <div *ngIf="filteredSearches.has(search.id)">
               <app-saved-search
                 [search]="search"
                 [searchType]="searchType"
                 [isExpanded]="search.id === expandedSearchId"
                 [isNew]="search.id === newSearchId"
-                [isSavedSearch]="savedSearchType === SavedSearchType.SAVED"
-                [lockedFocus]="lockedFocus"
-                (unlockFocus)="onUnlockFocus()"
                 (expand)="onExpandSearch($event)"
                 (updateFilters)="updateSearchFilters($event)"
                 (updateName)="updateSearchName($event)"

@@ -1,11 +1,12 @@
 @import "asf-theme";
 
 .saved-searches {
+  //height: 100%;
   left: 0;
   position: static;
   top: 32px;
-  width: 35%;
-  min-width: 600px;
+  width: 30%;
+  min-width: 500px;
   max-width: 900px;
 }
 
@@ -39,10 +40,6 @@
   max-height: calc(100vh - 350px);
   overflow-y: auto;
   background-color: white;
-}
-
-.saved-searches-row:nth-child(odd) {
-  background-color: lighten($asf-primary-light, 15%) !important;
 }
 
 .saved-searches__header {
@@ -86,6 +83,7 @@
   padding-right: 15px;
 }
 
+.saved-searches__more-menu,
 .saved-searches__filter-form {
   display: flex;
 }

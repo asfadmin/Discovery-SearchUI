@@ -1,51 +1,10 @@
-<mat-button-toggle-group id="dataset-button-toggle-group">
-  <mat-button-toggle>
-    <button
-      (click)="onDoSearch()"
-      [disabled]="!(canSearch$ | async) && !(isMaxResultsLoading$ | async)"
-      mat-flat-button color="primary">
-      {{
-      (loading$ | async) ?
-        'LOADING...' :
-        (!(canSearch$ | async) && !(isMaxResultsLoading$ | async) ?
-          'NO RESULTS' : 'SEARCH')
-      }}
-    </button>
-  </mat-button-toggle>
-  <mat-button-toggle
-    [matMenuTriggerFor]="searchActionDropdown"
-    class="arrow-button-toggle">
-    <mat-icon
-      [ngStyle]="{'color':'#ddd'}">arrow_drop_down</mat-icon>
-  </mat-button-toggle>
-</mat-button-toggle-group>
-
-<mat-menu #searchActionDropdown="matMenu">
-  <button mat-menu-item (click)="onClearSearch()">
-    Clear Search
-  </button>
-
-  <span matTooltip = "Sign in to save your search" [matTooltipDisabled]="isLoggedIn"
-        matTooltipPosition = "after">
-    <button mat-menu-item [disabled]="!isLoggedIn" (click)="saveCurrentSearch()">
-      Save Search
-    </button>
-  </span>
-
-  <mat-divider></mat-divider>
-
-  <span
-    [matTooltipDisabled]="isLoggedIn"
-    matTooltip="Sign in to see your saved searches"
-    matTooltipPosition="after">
-      <button mat-menu-item [disabled]="!isLoggedIn" (click)="onOpenSavedSearches()">Saved Searches...</button>
-  </span>
-
-  <span
-    [matTooltipDisabled]="isLoggedIn"
-    matTooltip="Sign in to see your search history"
-    matTooltipPosition="after">
-      <button mat-menu-item [disabled]="!isLoggedIn" (click)="onOpenSearchHistory()">Search History...</button>
-  </span>
-</mat-menu>
-
+<button (click)="onDoSearch()"
+        [disabled]="!(canSearch$ | async) && !(isMaxResultsLoading$ | async) "
+        mat-flat-button color="primary">
+  {{
+  (loading$ | async) ?
+    'LOADING...' :
+    (!(canSearch$ | async) && !(isMaxResultsLoading$ | async) ?
+      'NO RESULTS' : 'SEARCH')
+  }}
+</button>

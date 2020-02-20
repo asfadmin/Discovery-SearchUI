@@ -1,8 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { MatBadgeModule } from '@angular/material/badge';
-import { MatButtonModule } from '@angular/material/button';
-import { MatIconModule } from '@angular/material/icon';
+import { MatBadgeModule, MatButtonModule, MatIconModule } from '@angular/material';
 import { ScrollingModule } from '@angular/cdk/scrolling';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { DragDropModule } from '@angular/cdk/drag-drop';
@@ -39,5 +37,6 @@ import { BrowseListComponent } from './browse-list/browse-list.component';
     SceneMetadataModule,
   ],
   exports: [ImageDialogComponent],
+  entryComponents: [ImageDialogComponent],
 })
 export class ImageDialogModule { }

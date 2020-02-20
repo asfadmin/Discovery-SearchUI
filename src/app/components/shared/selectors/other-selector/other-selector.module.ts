@@ -6,7 +6,6 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatSharedModule } from '@shared';
 
-import { ProductTypeSelectorModule } from '@components/shared/selectors/product-type-selector';
 import { OtherSelectorComponent } from './other-selector.component';
 
 @NgModule({
@@ -17,7 +16,6 @@ import { OtherSelectorComponent } from './other-selector.component';
     MatSelectModule,
     MatButtonToggleModule,
     MatSharedModule,
-    ProductTypeSelectorModule
   ],
   exports: [ OtherSelectorComponent ],
 })

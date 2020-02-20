@@ -21,7 +21,6 @@ import * as userStore from '@store/user';
 
 import * as services from '@services';
 import * as models from './models';
-import { EnvironmentService } from '@services';
 
 @Component({
   selector   : 'app-root',
@@ -60,7 +59,6 @@ export class AppComponent implements OnInit, OnDestroy {
     private userDataService: services.UserDataService,
     private screenSize: services.ScreenSizeService,
     private ccService: NgcCookieConsentService,
-    public env: EnvironmentService,
   ) {}
 
   public ngOnInit(): void {
@@ -89,7 +87,7 @@ export class AppComponent implements OnInit, OnDestroy {
 
     this.subs.add(
       this.store$.select(userStore.getUserProfile).subscribe(
-        profile => {
+        (profile) => {
           this.urlStateService.setDefaults(profile);
         })
     );
@@ -98,6 +96,7 @@ export class AppComponent implements OnInit, OnDestroy {
     if (user.id) {
       this.store$.dispatch(new userStore.Login(user));
     }
+
 
     this.subs.add(
       this.actions$.pipe(

@@ -1,8 +1,8 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ScrollingModule } from '@angular/cdk/scrolling';
+import { ScrollDispatchModule } from '@angular/cdk/scrolling';
 
-import { MatMenuModule } from '@angular/material/menu';
+import { MatMenuModule } from '@angular/material';
 import { FlexLayoutModule } from '@angular/flex-layout';
 
 import { ClipboardModule } from 'ngx-clipboard';
@@ -23,7 +23,7 @@ import { QueueComponent } from './queue.component';
   imports: [
     CommonModule,
     MatMenuModule,
-    ScrollingModule,
+    ScrollDispatchModule,
     TruncateModule,
     ClipboardModule,
     FontAwesomeModule,

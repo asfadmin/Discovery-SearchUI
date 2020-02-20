@@ -36,8 +36,8 @@ export function antarctic(): MapView {
   const view = new View({
     center: proj.transform([0, -90], 'EPSG:4326', projection.epsg),
     projection: proj.get(projection.epsg),
-    zoom: 1.0,
-    minZoom: 1.0,
+    zoom: 2.5,
+    minZoom: 2.5,
     maxZoom: 6,
     extent,
   });

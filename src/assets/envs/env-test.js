@@ -1,21 +1,27 @@
 (function() {
   window._env = {
-    prod: {
-      api: 'https://api.daac.asf.alaska.edu',
-      auth: 'https://auth.asf.alaska.edu',
-      urs: 'https://urs.earthdata.nasa.gov',
-      urs_client_id: 'BO_n7nTIlMljdvU6kRRB3g',
-      banner: 'https://banners.asf.alaska.edu/calendar/prod',
-      user_data: 'https://appdata.asf.alaska.edu'
+    api: {
+      prod: 'https://api.daac.asf.alaska.edu',
+      test: 'https://api-test.asf.alaska.edu',
     },
-    test: {
-      api: 'https://api-test.asf.alaska.edu',
-      auth: 'https://auth-test-jnk.asf.alaska.edu',
-      urs: 'https://uat.urs.earthdata.nasa.gov',
-      urs_client_id: 'Qkd0Z9KbhG86qedkRC7nSA',
-      banner: 'https://banners.asf.alaska.edu/calendar/test',
-      user_data: 'https://gg0fcoca5c.execute-api.us-east-1.amazonaws.com/test'
+    auth: {
+      api: {
+        test: 'https://auth-test-jnk.asf.alaska.edu',
+        prod: 'https://auth.asf.alaska.edu',
+      },
+      urs: {
+        test: 'https://uat.urs.earthdata.nasa.gov',
+        prod: 'https://urs.earthdata.nasa.gov'
+      }
     },
-    defaultEnv: 'test'
+    banner: {
+      prod: 'https://banners.asf.alaska.edu/calendar/prod',
+      test: 'https://banners.asf.alaska.edu/calendar/test',
+    },
+    user_data: {
+      prod: `https://appdata.asf.alaska.edu`,
+      test: `https://gg0fcoca5c.execute-api.us-east-1.amazonaws.com/test`
+    },
+    devMode: true,
   }
 })()

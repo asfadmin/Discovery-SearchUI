@@ -207,7 +207,7 @@ export class MapService {
 
   public clearSelectedScene(): void {
     this.selectedSource.clear();
-    this.selectClick.getFeatures().clear();
+    this.selectClick.getOverlay().getSource().clear();
   }
 
   public setSelectedFeature(feature): void {
@@ -217,7 +217,7 @@ export class MapService {
 
   public clearFocusedScene(): void {
     this.focusSource.clear();
-    this.selectHover.getFeatures().clear();
+    this.selectHover.getOverlay().getSource().clear();
   }
 
   public setFocusedFeature(feature): void {

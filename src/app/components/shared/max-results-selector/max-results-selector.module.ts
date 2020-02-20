@@ -8,8 +8,9 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatSharedModule } from '@shared';
 import { MatDialogModule } from '@angular/material/dialog';
 
-import { FontAwesomeModule, FaIconLibrary } from '@fortawesome/angular-fontawesome';
-import { faSpinner, fas } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { library } from '@fortawesome/fontawesome-svg-core';
+import { faSpinner } from '@fortawesome/free-solid-svg-icons';
 
 import { MaxResultsSelectorComponent } from './max-results-selector.component';
 import { ApiLinkDialogComponent } from './api-link-dialog/api-link-dialog.component';
@@ -29,10 +30,10 @@ import { ClipboardModule } from 'ngx-clipboard';
     ClipboardModule
   ],
   exports: [ MaxResultsSelectorComponent ],
+  entryComponents: [ ApiLinkDialogComponent ]
 })
 export class MaxResultsSelectorModule {
-  constructor(library: FaIconLibrary) {
-    library.addIconPacks(fas);
-    library.addIcons(faSpinner);
+  constructor() {
+    library.add(faSpinner);
   }
 }

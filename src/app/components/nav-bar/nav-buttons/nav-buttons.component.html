@@ -84,9 +84,6 @@
   <button (click)="onOpenSavedSearches()" mat-menu-item matSuffix>
     Saved Searches
   </button>
-  <button (click)="onOpenSearchHistory()" mat-menu-item matSuffix>
-    Search History
-  </button>
   <button (click)="onOpenPreferences()" mat-menu-item matSuffix>
     Preferences
   </button>
@@ -182,21 +179,13 @@
 </mat-menu>
 
 <mat-menu #apiMaturity="matMenu">
-  <button [class.selected]="maturity === 'test'"
-    (click)="onTestSelected()"
-    mat-menu-item matSuffix>
-      <span>Test</span>
+  <button [class.selected]="maturity === 'test'" (click)="onTestSelected()"
+                                                                              mat-menu-item matSuffix>
+    <span>Test</span>
   </button>
 
-  <button [class.selected]="maturity === 'prod'"
-    (click)="onProdSelected()"
-    mat-menu-item matSuffix>
-      <span>Production</span>
-  </button>
-
-  <button (click)="onOpenCustomizeEnv()" mat-menu-item matSuffix>
-    <span>
-      Customize Environments
-    </span>
+  <button [class.selected]="maturity === 'prod'" (click)="onProdSelected()"
+                                                                              mat-menu-item matSuffix>
+    <span>Production</span>
   </button>
 </mat-menu>

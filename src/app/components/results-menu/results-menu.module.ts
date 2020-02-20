@@ -1,11 +1,11 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { MatTabsModule } from '@angular/material/tabs';
+import { MatTabsModule } from '@angular/material';
 import { ResizableModule } from 'angular-resizable-element';
 
 import { TruncateModule } from '@yellowspot/ng-truncate';
 import { FlexLayoutModule } from '@angular/flex-layout';
-import { MatMenuModule } from '@angular/material/menu';
+import { MatMenuModule } from '@angular/material';
 
 import { PipesModule } from '@pipes';
 import { MatSharedModule } from '@shared';

@@ -202,9 +202,8 @@ export class UrlStateService {
     return [{
       name: 'subtypes',
       source: this.store$.select(filterStore.getSubtypes).pipe(
-        map(
-          types => this.prop.saveProperties(types, 'subtypes', v => v.apiValue)
-        )
+        map(types => types.map(subtype => subtype.apiValue).join(',')),
+        map(param => ({ subtypes: param }))
       ),
       loader: this.loadSubtypes
     }, {
@@ -260,25 +259,22 @@ export class UrlStateService {
     }, {
       name: 'productTypes',
       source: this.store$.select(filterStore.getProductTypes).pipe(
-        map(
-          types => this.prop.saveProperties(types, 'productTypes', v => v.apiValue)
-        ),
+        map(types => types.map(key => key.apiValue).join(',')),
+        map(param => ({ productTypes: param }))
       ),
       loader: this.loadProductTypes
     }, {
       name: 'beamModes',
       source: this.store$.select(filterStore.getBeamModes).pipe(
-        map(
-          beamModes => this.prop.saveProperties(beamModes, 'beamModes')
-        )
+        map(modes => modes.join(',')),
+        map(param => ({ beamModes: param }))
       ),
       loader: this.loadBeamModes
     }, {
       name: 'polarizations',
       source: this.store$.select(filterStore.getPolarizations).pipe(
-        map(
-          pols => this.prop.saveProperties(pols, 'polarizations')
-        )
+        map(pols => pols.join(',')),
+        map(param => ({ polarizations: param }))
       ),
       loader: this.loadPolarizations
     }, {
@@ -301,12 +297,7 @@ export class UrlStateService {
     }, {
       name: 'center',
       source: this.mapService.center$.pipe(
-        map(
-          ({ lon, lat }) => ({
-            lon: this.limitDecimals(lon),
-            lat: this.limitDecimals(lat)
-          })
-        ),
+        map(({ lon, lat }) => ({ lon: this.limitDecimals(lon), lat: this.limitDecimals(lat) })),
         map(({ lon, lat }) => ({ center: `${lon},${lat}` }))
       ),
       loader: this.loadMapCenter
@@ -332,7 +323,7 @@ export class UrlStateService {
   }
 
   private loadSearchType = (searchType: string): Action | undefined => {
-    if (!Object.values(models.SearchType).includes(<models.SearchType>searchType)) {
+    if (!Object.values(models.SearchType).includes(searchType)) {
       return;
     }
 
@@ -340,7 +331,7 @@ export class UrlStateService {
   }
 
   private loadMapDrawMode = (mode: string): Action | undefined => {
-    if (!Object.values(models.MapDrawModeType).includes(<models.MapDrawModeType>mode)) {
+    if (!Object.values(models.MapDrawModeType).includes(mode)) {
       return;
     }
 
@@ -348,7 +339,7 @@ export class UrlStateService {
   }
 
   private loadMapView = (view: string): Action | undefined => {
-    if (!Object.values(models.MapViewType).includes(<models.MapViewType>view)) {
+    if (!Object.values(models.MapViewType).includes(view)) {
       return;
     }
 
@@ -378,7 +369,7 @@ export class UrlStateService {
   }
 
   private loadSelectedDataset = (datasetStr: string): Action | undefined => {
-    const datasetIds = models.datasetIds;
+    const datasetIds = models.datasets.map(dataset => dataset.id);
 
     if (!datasetIds.includes(datasetStr)) {
       return;
@@ -459,7 +450,7 @@ export class UrlStateService {
       mode = models.ListSearchType.SCENE;
     }
 
-    if (!Object.values(models.ListSearchType).includes(<models.ListSearchType>mode)) {
+    if (!Object.values(models.ListSearchType).includes(mode)) {
       return;
     }
 
@@ -467,7 +458,7 @@ export class UrlStateService {
   }
 
   private loadProductTypes = (typesStr: string): Action | undefined => {
-    const productTypes = this.prop.loadProperties(
+    const productTypes = this.loadProperties(
       typesStr,
       'productTypes',
       v => v.apiValue
@@ -481,7 +472,7 @@ export class UrlStateService {
   }
 
   private loadBeamModes = (modesStr: string): Action | undefined => {
-    const beamModes = this.prop.loadProperties(modesStr, 'beamModes');
+    const beamModes = this.loadProperties(modesStr, 'beamModes');
 
     if (!beamModes) {
       return;
@@ -491,7 +482,7 @@ export class UrlStateService {
   }
 
   private loadPolarizations = (polarizationsStr: string): Action | undefined => {
-    const polarizations = this.prop.loadProperties(polarizationsStr, 'polarizations');
+    const polarizations = this.loadProperties(polarizationsStr, 'polarizations');
 
     if (!polarizations) {
       return;
@@ -501,7 +492,7 @@ export class UrlStateService {
   }
 
   private loadSubtypes = (subtypesStr: string): Action | undefined => {
-    const subtypes = this.prop.loadProperties(subtypesStr, 'subtypes', v => v.apiValue);
+    const subtypes = this.loadProperties(subtypesStr, 'subtypes', v => v.apiValue);
 
     if (!subtypes) {
       return;
@@ -510,10 +501,47 @@ export class UrlStateService {
     return new filterStore.SetSubtypes(subtypes);
   }
 
+  private loadProperties(loadStr: string, datasetPropertyKey: string, keyFunc = v => v): any[] {
+    const [datasetName, possibleValuesStr] = this.hasDatasetId(loadStr) ?
+      this.oldFormat(loadStr) :
+      this.shortFormat(loadStr);
+
+    const possibleTypes = (possibleValuesStr || '').split(',');
+
+    const dataset = models.datasets
+        .filter(d => datasetName === d.id)
+        .pop();
+
+    if (!dataset) {
+      return;
+    }
+
+    const datasetValues = dataset[datasetPropertyKey];
+
+    const validValuesFromUrl =
+      datasetValues.filter(
+        value => possibleTypes.includes(keyFunc(value))
+      );
+
+    return Array.from(validValuesFromUrl);
+  }
+
+  private hasDatasetId(loadStr: string): boolean {
+    return loadStr.split('$$').length === 2;
+  }
+
+  private oldFormat(loadStr: string) {
+    return loadStr.split('$$');
+  }
+
+  private shortFormat(loadStr: string) {
+    return [this.dataset, loadStr];
+  }
+
   private loadFlightDirections = (dirsStr: string): Action => {
     const directions: models.FlightDirection[] = dirsStr
       .split(',')
-      .filter(direction => !Object.values(models.FlightDirection).includes(<models.FlightDirection>direction))
+      .filter(direction => !Object.values(models.FlightDirection).includes(direction))
       .map(direction => <models.FlightDirection>direction);
 
     return new filterStore.SetFlightDirections(directions);

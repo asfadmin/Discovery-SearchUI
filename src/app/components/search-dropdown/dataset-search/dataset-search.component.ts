@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input } from '@angular/core';
 
 import { Store } from '@ngrx/store';
 import { map } from 'rxjs/operators';
@@ -22,7 +22,7 @@ enum FilterPanel {
   templateUrl: './dataset-search.component.html',
   styleUrls: ['./dataset-search.component.scss']
 })
-export class DatasetSearchComponent implements OnInit {
+export class DatasetSearchComponent {
   @Input() dataset: models.CMRProduct;
   @Input() selectedPanel: FilterPanel | null = null;
 
@@ -32,8 +32,6 @@ export class DatasetSearchComponent implements OnInit {
   customCollapsedHeight = '30px';
   customExpandedHeight = '30px';
 
-  public datasets = models.datasetList;
-  public selectedDataset: string;
   public p = models.Props;
   public missionsByDataset$ = this.store$.select(filtersStore.getMissionsByDataset);
   public selectedMission$ = this.store$.select(filtersStore.getSelectedMission);
@@ -51,18 +49,8 @@ export class DatasetSearchComponent implements OnInit {
     private screenSize: ScreenSizeService
   ) {}
 
-  ngOnInit() {
-    this.store$.select(filtersStore.getSelectedDatasetId).subscribe(
-      selected => this.selectedDataset = selected
-    );
-  }
-
   public onNewMissionSelected(selectedMission: string): void {
     this.store$.dispatch(new filtersStore.SelectMission(selectedMission));
-  }
-
-  public onDatasetChange(dataset: string): void {
-    this.store$.dispatch(new filtersStore.SetSelectedDataset(dataset));
   }
 
   public isSelected(panel: FilterPanel): boolean {

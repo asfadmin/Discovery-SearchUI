@@ -11,14 +11,25 @@ import { PropertyService } from './property.service';
   providedIn: 'root'
 })
 export class AsfApiService {
+
+  private maturity = 'prod';
+
   constructor(
     private env: EnvironmentService,
     private prop: PropertyService,
     private http: HttpClient
   ) {}
 
+  public get apiUrls() {
+    return this.env.value.api;
+  }
+
   public get apiUrl() {
-    return this.env.currentEnv.api;
+    return this.env.value.api[this.maturity];
+  }
+
+  public setApiMaturity(maturity: string): void {
+    this.maturity = maturity;
   }
 
   public health(): Observable<any> {
@@ -34,7 +45,7 @@ export class AsfApiService {
     const endpoint = this.searchEndpoint();
     const formData = this.toFormData(params);
 
-    const responseType: any = params.get('output') === 'jsonlite2' ?
+    const responseType: any = params.get('output') === 'jsonlite' ?
       'json' : 'text';
 
     return !this.isUrlToLong(endpoint, queryParamsStr) ?
@@ -162,7 +173,7 @@ export class AsfApiService {
 
   private baseParams() {
     return {
-      output: 'jsonlite2'
+      output: 'jsonlite'
     };
   }
 }

@@ -102,7 +102,7 @@ export class SceneDetailComponent implements OnInit, OnDestroy {
     granule: models.CMRProduct,
     comparator: (dataset: models.Dataset, granuleDataset: string) => boolean
   ): models.Dataset {
-    return  models.datasetList
+    return  models.datasets
       .filter(dataset => {
         const granuleDataset = granule.dataset.toLocaleLowerCase();
 

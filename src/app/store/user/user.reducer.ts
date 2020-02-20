@@ -148,6 +148,7 @@ function updateItem(state, action, updateFunc) {
   const searchIdx = searches.indexOf(updateSearch);
 
   if (!updateSearch) {
+    console.log(`Search ID '${action.payload.id}' not found in saved searches`);
     return { ...state };
   }
 

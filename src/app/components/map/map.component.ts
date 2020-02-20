@@ -16,7 +16,7 @@ import { Vector as VectorLayer} from 'ol/layer';
 import { Vector as VectorSource } from 'ol/source';
 import Overlay from 'ol/Overlay';
 
-import tippy, {followCursor} from 'tippy.js';
+import tippy from 'tippy.js';
 import { SubSink } from 'subsink';
 
 import { AppState } from '@store';
@@ -136,11 +136,10 @@ export class MapComponent implements OnInit, OnDestroy  {
 
     this.tooltip = (<any[]>tippy('#map', {
       content: 'Click to start drawing',
+      followCursor: true,
       offset: '15, 0',
       hideOnClick: false,
-      placement: 'bottom-end',
-      followCursor: true,
-      plugins: [followCursor]
+      placement: 'bottom-end'
     })).pop();
 
     this.overlay = new Overlay({

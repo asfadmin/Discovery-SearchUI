@@ -31,65 +31,47 @@ export class PolygonValidationService {
       )),
       filter(resp => !!resp),
       map(resp => {
-        const error = this.getErrorFrom(resp);
+        if (resp.error) {
+          const { report, type } = resp.error;
 
-        if (error) {
-          this.displayDrawError(error);
+          this.mapService.setDrawStyle(models.DrawPolygonStyle.INVALID);
+          this.snackBar.open(
+            report, 'INVALID POLYGON',
+            { duration: 4000, }
+          );
+
+          return;
         } else {
-          this.setValidPolygon(resp);
+          this.polygons.add(resp.wkt.wrapped);
+          this.mapService.setDrawStyle(models.DrawPolygonStyle.VALID);
+
+          const repairs = resp.repairs
+            .filter(repair =>
+              repair.type !== models.PolygonRepairTypes.ROUND
+            );
+
+          if (repairs.length === 0) {
+            return resp.wkt.wrapped;
+          }
+
+          const { report, type }  = resp.repairs.pop();
+
+          if (type !== models.PolygonRepairTypes.WRAP) {
+            this.snackBar.open(
+              report, type,
+              { duration: 4000, }
+            );
+          }
+
+          const features = this.wktService.wktToFeature(
+            resp.wkt.wrapped,
+            this.mapService.epsg()
+          );
+
+          this.mapService.setDrawFeature(features);
         }
       }),
       catchError((val, source) => source)
     ).subscribe(_ => _);
-  }
-
-  private getErrorFrom(resp) {
-    if (resp.error) {
-      return resp.error;
-    } else if (resp.errors) {
-      return resp.errors.pop();
-    } else {
-      return null;
-    }
-  }
-
-  private displayDrawError(error) {
-    const { report, type } = error;
-
-    this.mapService.setDrawStyle(models.DrawPolygonStyle.INVALID);
-    this.snackBar.open(
-      report, 'INVALID POLYGON',
-      { duration: 4000, }
-    );
-  }
-
-  private setValidPolygon(resp) {
-    this.polygons.add(resp.wkt.wrapped);
-    this.mapService.setDrawStyle(models.DrawPolygonStyle.VALID);
-
-    const repairs = resp.repairs
-      .filter(repair =>
-        repair.type !== models.PolygonRepairTypes.ROUND
-      );
-
-    if (repairs.length === 0) {
-      return resp.wkt.wrapped;
-    }
-
-    const { report, type }  = resp.repairs.pop();
-
-    if (type !== models.PolygonRepairTypes.WRAP) {
-      this.snackBar.open(
-        report, type,
-        { duration: 4000, }
-      );
-    }
-
-    const features = this.wktService.wktToFeature(
-      resp.wkt.wrapped,
-      this.mapService.epsg()
-    );
-
-    this.mapService.setDrawFeature(features);
   }
 }

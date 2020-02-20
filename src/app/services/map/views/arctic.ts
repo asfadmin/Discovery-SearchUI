@@ -20,8 +20,8 @@ export function arctic(): MapView  {
     projection: proj.get(projection.epsg),
     extent,
     center: [0, 0],
-    zoom: 1.0,
-    minZoom: 1.0,
+    zoom: 2.5,
+    minZoom: 2.5,
     maxZoom: 6,
   });
 

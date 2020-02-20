@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
-import { ScrollingModule } from '@angular/cdk/scrolling';
+import { ScrollDispatchModule } from '@angular/cdk/scrolling';
 import { MatSharedModule } from '@shared';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
@@ -24,7 +24,7 @@ import { MissionSearchComponent } from './mission-search.component';
     CommonModule,
     FormsModule,
     ReactiveFormsModule,
-    ScrollingModule,
+    ScrollDispatchModule,
 
     MatDividerModule,
     MatChipsModule,

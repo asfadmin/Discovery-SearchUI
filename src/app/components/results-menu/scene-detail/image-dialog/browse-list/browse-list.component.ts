@@ -19,7 +19,7 @@ import * as models from '@models';
   encapsulation: ViewEncapsulation.None,
 })
 export class BrowseListComponent implements OnInit, AfterViewInit, OnDestroy {
-  @ViewChild(CdkVirtualScrollViewport) scroll: CdkVirtualScrollViewport;
+  @ViewChild(CdkVirtualScrollViewport, { static: false }) scroll: CdkVirtualScrollViewport;
 
   public scenes$: Observable<models.CMRProduct[]>;
   public selectedName: string;

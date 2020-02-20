@@ -34,9 +34,6 @@ import { DatasetNavComponent } from './dataset-nav/dataset-nav.component';
 import { ListNavComponent } from './list-nav/list-nav.component';
 import { AoiFilterComponent } from './dataset-nav/aoi-filter/aoi-filter.component';
 
-import { MatButtonToggleModule } from '@angular/material/button-toggle';
-
-
 @NgModule({
   declarations: [
     NavBarComponent,
@@ -50,13 +47,14 @@ import { MatButtonToggleModule } from '@angular/material/button-toggle';
     HttpClientModule,
     FormsModule,
     FlexLayoutModule,
-    MatButtonToggleModule,
+
     MatToolbarModule,
     MatProgressBarModule,
     MatBadgeModule,
     MatMenuModule,
     MatInputModule,
     MatSelectModule,
+    MatMenuModule,
     MatDatepickerModule,
     MatSharedModule,
     PipesModule,
@@ -72,6 +70,9 @@ import { MatButtonToggleModule } from '@angular/material/button-toggle';
     ClearButtonModule,
     NavButtonsModule,
     LogoModule,
+  ],
+  entryComponents: [
+    QueueComponent
   ],
   exports: [
     NavBarComponent

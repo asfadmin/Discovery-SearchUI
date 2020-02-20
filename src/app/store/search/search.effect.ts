@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 
-import { Actions, createEffect, ofType } from '@ngrx/effects';
+import { Actions, Effect, ofType } from '@ngrx/effects';
 import { Action, Store } from '@ngrx/store';
 
 import { Observable, of, forkJoin } from 'rxjs';
@@ -35,27 +35,31 @@ export class SearchEffects {
     private mapService: services.MapService,
   ) {}
 
-  private clearMapInteractionModeOnSearch = createEffect(() => this.actions$.pipe(
+  @Effect()
+  private clearMapInteractionModeOnSearch: Observable<Action> = this.actions$.pipe(
     ofType(SearchActionType.MAKE_SEARCH),
     map(action => new mapStore.SetMapInteractionMode(models.MapInteractionModeType.NONE))
-  ));
+  );
 
-  private closeMenusWhenSearchIsMade = createEffect(() => this.actions$.pipe(
+  @Effect()
+  private closeMenusWhenSearchIsMade: Observable<Action> = this.actions$.pipe(
     ofType(SearchActionType.MAKE_SEARCH),
     switchMap(action => [
       new uiStore.CloseFiltersMenu(),
       new uiStore.CloseAOIOptions()
     ])
-  ));
+  );
 
-  private setCanSearch = createEffect(() => this.actions$.pipe(
+  @Effect()
+  private setCanSearch: Observable<Action> = this.actions$.pipe(
     ofType<SetSearchAmount>(SearchActionType.SET_SEARCH_AMOUNT),
     map(action =>
       (action.payload > 0) ? new EnableSearch() : new DisableSearch()
     )
-  ));
+  );
 
-  private makeSearches = createEffect(() => this.actions$.pipe(
+  @Effect()
+  private makeSearches: Observable<Action> = this.actions$.pipe(
     ofType(SearchActionType.MAKE_SEARCH),
     withLatestFrom(this.searchParams$.getParams()),
     map(([_, params]) => [params, {...params, output: 'COUNT'}]),
@@ -75,18 +79,20 @@ export class SearchEffects {
         )
       )
     ),
-  ));
+  );
 
-  private cancelSearchWhenFiltersCleared = createEffect(() => this.actions$.pipe(
+  @Effect()
+  private cancelSearchWhenFiltersCleared: Observable<Action> = this.actions$.pipe(
     ofType(
       filtersStore.FiltersActionType.CLEAR_DATASET_FILTERS,
       filtersStore.FiltersActionType.CLEAR_LIST_FILTERS,
       filtersStore.FiltersActionType.CLEAR_SELECTED_MISSION,
     ),
     map(_ => new CancelSearch())
-  ));
+  );
 
-  private searchResponse = createEffect(() => this.actions$.pipe(
+  @Effect()
+  private searchResponse: Observable<Action> = this.actions$.pipe(
     ofType<SearchResponse>(SearchActionType.SEARCH_RESPONSE),
     switchMap(action => [
       new scenesStore.SetScenes(
@@ -94,25 +100,29 @@ export class SearchEffects {
       ),
       new SetSearchAmount(action.payload.totalCount)
     ])
-  ));
+  );
 
-  private hideFilterMenuOnSearchResponse = createEffect(() => this.actions$.pipe(
+  @Effect()
+  private hideFilterMenuOnSearchResponse: Observable<Action> = this.actions$.pipe(
     ofType<SearchResponse>(SearchActionType.SEARCH_RESPONSE),
     map(_ => new uiStore.CloseFiltersMenu()),
-  ));
+  );
 
-  private showResultsMenuOnSearchResponse = createEffect(() => this.actions$.pipe(
+  @Effect()
+  private showResultsMenuOnSearchResponse: Observable<Action> = this.actions$.pipe(
     ofType<SearchResponse>(SearchActionType.SEARCH_RESPONSE),
     map(_ => new uiStore.OpenResultsMenu()),
-  ));
+  );
 
-  setMapInteractionModeBasedOnSearchType = createEffect(() => this.actions$.pipe(
+  @Effect()
+  setMapInteractionModeBasedOnSearchType: Observable<Action> = this.actions$.pipe(
     ofType<SetSearchType>(SearchActionType.SET_SEARCH_TYPE),
     filter(action => action.payload === models.SearchType.DATASET),
     map(_ => new mapStore.SetMapInteractionMode(models.MapInteractionModeType.DRAW))
-  ));
+  );
 
-  clearResultsWhenSearchTypeChanges = createEffect(() => this.actions$.pipe(
+  @Effect()
+  clearResultsWhenSearchTypeChanges: Observable<Action> = this.actions$.pipe(
     ofType<SetSearchType>(SearchActionType.SET_SEARCH_TYPE),
     switchMap(action => [
       new scenesStore.ClearScenes(),
@@ -121,5 +131,5 @@ export class SearchEffects {
         new uiStore.CloseFiltersMenu() :
         new uiStore.OpenFiltersMenu(),
     ])
-  ));
+  );
 }

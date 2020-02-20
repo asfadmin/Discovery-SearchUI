@@ -1,7 +1,5 @@
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 
-import { timer } from 'rxjs';
-import { filter, switchMap, tap, delay } from 'rxjs/operators';
 import { Store, Action } from '@ngrx/store';
 import { AppState } from '@store';
 import * as userStore from '@store/user';
@@ -11,7 +9,6 @@ import * as filtersStore from '@store/filters';
 
 import { SavedSearchService, MapService, WktService, ScreenSizeService } from '@services';
 import * as models from '@models';
-import {getIsSaveSearchOn, SetSaveSearchOn} from '@store/ui';
 
 @Component({
   selector: 'app-saved-searches',
@@ -21,20 +18,8 @@ import {getIsSaveSearchOn, SetSaveSearchOn} from '@store/ui';
 export class SavedSearchesComponent implements OnInit {
   @ViewChild('filterInput', { static: true }) filterInput: ElementRef;
 
+  public searches$ = this.store$.select(userStore.getSavedSearches);
   public searchType$ = this.store$.select(searchStore.getSearchType);
-  public saveSearchOn: boolean;
-  public savedSearchType: models.SavedSearchType;
-  public lockedFocus = false;
-
-  public savedSearchType$ = this.store$.select(uiStore.getSaveSearchType);
-  public SavedSearchType = models.SavedSearchType;
-  public searches$ = this.savedSearchType$.pipe(
-    switchMap(savedSearchType =>
-      (savedSearchType === models.SavedSearchType.SAVED) ?
-        this.store$.select(userStore.getSavedSearches) :
-        this.store$.select(userStore.getSearchHistory)
-    )
-  );
 
   public breakpoint: models.Breakpoints;
   public breakpoints = models.Breakpoints;
@@ -44,8 +29,6 @@ export class SavedSearchesComponent implements OnInit {
   public searchFilter = '';
   public expandedSearchId: string;
   public newSearchId: string;
-
-  private initFocus = true;
 
   constructor(
     private savedSearchService: SavedSearchService,
@@ -61,24 +44,7 @@ export class SavedSearchesComponent implements OnInit {
       breakpoint => this.breakpoint = breakpoint
     );
 
-    this.store$.select(uiStore.getIsSaveSearchOn).pipe(
-      tap(saveSearchOn => this.saveSearchOn = saveSearchOn),
-      delay(250)
-    ).subscribe(
-      saveSearchOn => {
-        if (this.saveSearchOn) {
-          this.lockedFocus = true;
-          this.saveCurrentSearch();
-          this.store$.dispatch(new uiStore.SetSaveSearchOn(false));
-        }
-      }
-    );
-
-    this.savedSearchType$.subscribe(
-      savedSearchType => this.savedSearchType = savedSearchType
-    );
-
-    this.searches$.subscribe(
+    this.store$.select(userStore.getSavedSearches).subscribe(
       searches => {
         const filtersWithValues = searches.map(
           search => ({
@@ -106,15 +72,7 @@ export class SavedSearchesComponent implements OnInit {
         this.updateFilter();
       });
 
-    this.store$.select(uiStore.getIsSidebarOpen).pipe(
-      filter(isOpen => !isOpen)
-    ).subscribe(
-      isOpen => this.initFocus = true
-    );
-  }
-
-  public onSavedSearchTypeChange(savedSearchType: models.SavedSearchType): void {
-    this.store$.dispatch(new uiStore.SetSavedSearchType(savedSearchType));
+      this.filterInput.nativeElement.blur();
   }
 
   private addIfHasValue(acc, key: string, val): Object {
@@ -185,18 +143,18 @@ export class SavedSearchesComponent implements OnInit {
     this.savedSearchService.updateSearchWithCurrentFilters(id);
   }
 
-  public onNewFilter(filterStr: string): void {
-    this.searchFilter = filterStr;
+  public onNewFilter(filter: string): void {
+    this.searchFilter = filter;
     this.updateFilter();
   }
 
   private updateFilter(): void {
     this.filteredSearches = new Set();
-    const filterStr = this.searchFilter.toLocaleLowerCase();
+    const filter = this.searchFilter.toLocaleLowerCase();
 
     this.filterTokens.forEach(
       search => {
-        if (search.token.includes(filterStr)) {
+        if (search.token.includes(filter)) {
           this.filteredSearches.add(search.id);
         }
       }
@@ -204,7 +162,7 @@ export class SavedSearchesComponent implements OnInit {
   }
 
   public unfocusFilter(): void {
-     this.filterInput.nativeElement.blur();
+    this.filterInput.nativeElement.blur();
   }
 
   public updateSearchName(update: {id: string, name: string}): void {
@@ -250,10 +208,6 @@ export class SavedSearchesComponent implements OnInit {
 
       this.mapService.setDrawFeature(features);
     }
-  }
-
-  public onUnlockFocus(): void {
-    this.lockedFocus = false;
   }
 
   public onExpandSearch(searchId: string): void {

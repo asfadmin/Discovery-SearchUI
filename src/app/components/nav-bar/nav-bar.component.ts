@@ -1,9 +1,8 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input } from '@angular/core';
 
 import { Store } from '@ngrx/store';
 import { AppState } from '@store';
 import * as searchStore from '@store/search';
-import * as filterStore from '@store/filters';
 
 import { MatDialog } from '@angular/material/dialog';
 import { QueueComponent } from '@components/nav-bar/queue';
@@ -17,7 +16,7 @@ import * as services from '@services';
   styleUrls: ['./nav-bar.component.scss'],
 
 })
-export class NavBarComponent implements OnInit {
+export class NavBarComponent {
   @Input() isLoading: boolean;
 
   public searchType$ = this.store$.select(searchStore.getSearchType);
@@ -30,9 +29,6 @@ export class NavBarComponent implements OnInit {
     private dialog: MatDialog,
     private screenSize: services.ScreenSizeService,
   ) { }
-
-  ngOnInit() {
-  }
 
   public onOpenDownloadQueue(): void {
     this.dialog.open(QueueComponent, {

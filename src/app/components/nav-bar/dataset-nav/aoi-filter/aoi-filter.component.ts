@@ -31,7 +31,7 @@ import * as services from '@services';
   ],
 })
 export class AoiFilterComponent implements OnInit, OnDestroy {
-  @ViewChild('polygonForm') public polygonForm: NgForm;
+  @ViewChild('polygonForm', { static: false }) public polygonForm: NgForm;
 
   public aoiErrors$ = new Subject<void>();
 

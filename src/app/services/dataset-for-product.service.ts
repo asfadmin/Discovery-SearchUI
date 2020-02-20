@@ -30,7 +30,7 @@ export class DatasetForProductService {
     scene: models.CMRProduct,
     comparator: (datasetName: string, sceneDataset: string) => boolean
   ): models.Dataset {
-    return  models.datasetList
+    return  models.datasets
       .filter(dataset => {
         const [datasetName, sceneDataset] = [
           dataset.id.toLowerCase(),
