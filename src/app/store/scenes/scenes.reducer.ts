@@ -120,6 +120,25 @@ export function scenesReducer(state = initState, action: ScenesActions): ScenesS
       };
     }
 
+    case ScenesActionType.ADD_UNZIPPED_PRODUCT: {
+      const unzipped = { ...state.unzipped };
+      const product = action.payload.product;
+
+      unzipped[product.id] = action.payload.unzipped;
+
+      return {
+        ...state,
+        unzipped
+      };
+    }
+
+    case ScenesActionType.CLEAR_UNZIPPED_PRODUCTS: {
+      return {
+        ...state,
+        unzipped: {}
+      };
+    }
+
     case ScenesActionType.CLEAR: {
       return initState;
     }

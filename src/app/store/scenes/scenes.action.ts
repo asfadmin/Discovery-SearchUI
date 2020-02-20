@@ -9,6 +9,7 @@ export enum ScenesActionType {
   SET_RESULTS_LOADED = '[Scenes] Set Results Loaded',
   LOAD_UNZIPPED_PRODUCT = '[Scenes] Load unzipped product',
   ADD_UNZIPPED_PRODUCT = '[Scenes] Add unzipped product',
+  CLEAR_UNZIPPED_PRODUCTS = '[Scenes] Clear unzipped products',
 
   SET_SELECTED_SCENE = '[Scenes] Set Selected Scene',
   SELECT_NEXT_SCENE = '[Scenes] Select Next Scene',
@@ -62,6 +63,10 @@ export class AddUnzippedProduct implements Action {
   constructor(public payload: { product: CMRProduct, unzipped: UnzippedFolder }) {}
 }
 
+export class ClearUnzippedProducts implements Action {
+  public readonly type = ScenesActionType.CLEAR_UNZIPPED_PRODUCTS;
+}
+
 export class LoadUnzippedProduct implements Action {
   public readonly type = ScenesActionType.LOAD_UNZIPPED_PRODUCT;
 
@@ -74,6 +79,7 @@ export type ScenesActions =
   | ClearScenes
   | AddUnzippedProduct
   | LoadUnzippedProduct
+  | ClearUnzippedProducts
   | SetSelectedScene
   | SelectNextScene
   | SelectPreviousScene
