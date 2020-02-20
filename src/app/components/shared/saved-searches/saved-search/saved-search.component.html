@@ -52,9 +52,10 @@
       <i class="material-icons">image_search</i>
     </button>
 
-    <button (click)="onDeleteSearch()"
-            class="search-action"
-            mat-flat-button>
+    <button *ngIf="isSavedSearch"
+      (click)="onDeleteSearch()"
+      class="search-action"
+      mat-flat-button>
       <i class="material-icons">delete_forever</i>
     </button>
   </div>
@@ -73,7 +74,9 @@
     </app-geographic-search-filters>
   </div>
 
-  <div [matTooltip]="search.searchType === searchType ? 'Update Saved Search With Current Filters' : 'Current Search Wrong Type'">
+  <div
+    *ngIf="isSavedSearch"
+    [matTooltip]="search.searchType === searchType ? 'Update Saved Search With Current Filters' : 'Current Search Wrong Type'">
     <button
       (click)="onUpdateFilters(search.id)"
       class="search-action" color="secondary"

@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 
 import { timer } from 'rxjs';
-import { filter, switchMap } from 'rxjs/operators';
+import { filter, switchMap, tap, delay } from 'rxjs/operators';
 import { Store, Action } from '@ngrx/store';
 import { AppState } from '@store';
 import * as userStore from '@store/user';
@@ -24,6 +24,7 @@ export class SavedSearchesComponent implements OnInit {
   public searchType$ = this.store$.select(searchStore.getSearchType);
   public saveSearchOn: boolean;
   public savedSearchType: models.SavedSearchType;
+  public lockedFocus = false;
 
   public savedSearchType$ = this.store$.select(uiStore.getSaveSearchType);
   public SavedSearchType = models.SavedSearchType;
@@ -60,8 +61,17 @@ export class SavedSearchesComponent implements OnInit {
       breakpoint => this.breakpoint = breakpoint
     );
 
-    this.store$.select(uiStore.getIsSaveSearchOn).subscribe(
-      saveSearchOn => this.saveSearchOn = saveSearchOn
+    this.store$.select(uiStore.getIsSaveSearchOn).pipe(
+      tap(saveSearchOn => this.saveSearchOn = saveSearchOn),
+      delay(250)
+    ).subscribe(
+      saveSearchOn => {
+        if (this.saveSearchOn) {
+          this.lockedFocus = true;
+          this.saveCurrentSearch();
+          this.store$.dispatch(new uiStore.SetSaveSearchOn(false));
+        }
+      }
     );
 
     this.savedSearchType$.subscribe(
@@ -101,17 +111,6 @@ export class SavedSearchesComponent implements OnInit {
     ).subscribe(
       isOpen => this.initFocus = true
     );
-  }
-
-  public onFocusInput(e): void {
-    if (this.initFocus) {
-      this.unfocusFilter();
-      if (this.saveSearchOn) {
-        this.saveCurrentSearch();
-        this.store$.dispatch(new uiStore.SetSaveSearchOn(false));
-      }
-      this.initFocus = false;
-    }
   }
 
   public onSavedSearchTypeChange(savedSearchType: models.SavedSearchType): void {
@@ -251,6 +250,10 @@ export class SavedSearchesComponent implements OnInit {
 
       this.mapService.setDrawFeature(features);
     }
+  }
+
+  public onUnlockFocus(): void {
+    this.lockedFocus = false;
   }
 
   public onExpandSearch(searchId: string): void {
