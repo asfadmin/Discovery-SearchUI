@@ -13,6 +13,7 @@ export class SceneFileComponent {
   @Input() isQueued: boolean;
 
   @Output() toggle = new EventEmitter<void>();
+  @Output() unzip = new EventEmitter<models.CMRProduct>();
 
   constructor(private unzipService: UnzipApiService) {}
 
@@ -23,6 +24,6 @@ export class SceneFileComponent {
   }
 
   public onLoadUnzippedPoduct(): void {
-    this.unzipService.unzip(this.product.downloadUrl);
+    this.unzip.emit(this.product);
   }
 }

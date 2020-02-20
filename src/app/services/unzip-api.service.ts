@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 
-import { of } from 'rxjs';
+import { of, Observable } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 
 import { CMRProduct, UnzippedFolder } from '@models';
@@ -28,12 +28,9 @@ export class UnzipApiService {
     return true;
   }
 
-  public unzip(downloadUrl: string): void {
+  public load$(downloadUrl: string): Observable<any> {
     const productUnzipUrl = downloadUrl.replace('datapool', 'unzip');
 
-    console.log(productUnzipUrl);
-    this.http.get(productUnzipUrl, { withCredentials: true }).subscribe(
-      console.log
-    );
+    return this.http.get(productUnzipUrl, { withCredentials: true });
   }
 }

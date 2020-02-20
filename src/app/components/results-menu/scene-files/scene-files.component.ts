@@ -27,4 +27,8 @@ export class SceneFilesComponent {
   public onToggleQueueProduct(product: models.CMRProduct): void {
     this.store$.dispatch(new queueStore.ToggleProduct(product));
   }
+
+  public onUnzipProduct(product: models.CMRProduct): void {
+    this.store$.dispatch(new scenesStore.LoadUnzippedProduct(product));
+  }
 }

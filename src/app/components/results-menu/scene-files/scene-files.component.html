@@ -1,6 +1,7 @@
 <mat-list class="products-list" *ngIf="products$ | async as products">
   <app-scene-file *ngFor="let product of products"
     (toggle)="onToggleQueueProduct(product)"
+    (unzip)="onUnzipProduct($event)"
     [product]="product"
     [isQueued]="(queuedProductIds$ | async).has(product.id)">
   </app-scene-file>
