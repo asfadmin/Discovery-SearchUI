@@ -13,6 +13,7 @@ export interface ScenesState {
   areResultsLoaded: boolean;
   scenes: {[id: string]: string[]};
   unzipped: {[id: string]: UnzippedFolder};
+  productUnzipLoading: string | null;
   selected: string | null;
 }
 
@@ -20,6 +21,7 @@ export const initState: ScenesState = {
   ids: [],
   scenes: {},
   unzipped: {},
+  productUnzipLoading: null,
   products: {},
   areResultsLoaded: false,
 
@@ -120,6 +122,13 @@ export function scenesReducer(state = initState, action: ScenesActions): ScenesS
       };
     }
 
+    case ScenesActionType.LOAD_UNZIPPED_PRODUCT: {
+      return {
+        ...state,
+        productUnzipLoading: action.payload.id
+      };
+    }
+
     case ScenesActionType.ADD_UNZIPPED_PRODUCT: {
       const unzipped = { ...state.unzipped };
       const product = action.payload.product;
@@ -128,14 +137,23 @@ export function scenesReducer(state = initState, action: ScenesActions): ScenesS
 
       return {
         ...state,
-        unzipped
+        unzipped,
+        productUnzipLoading: null,
+      };
+    }
+
+    case ScenesActionType.ERROR_LOADING_UNZIPPED: {
+      return {
+        ...state,
+        productUnzipLoading: null
       };
     }
 
     case ScenesActionType.CLEAR_UNZIPPED_PRODUCTS: {
       return {
         ...state,
-        unzipped: {}
+        unzipped: {},
+        productUnzipLoading: null,
       };
     }
 

@@ -9,7 +9,10 @@ import { UnzipApiService } from '@services/unzip-api.service';
 
 import { CMRProduct } from '@models';
 import { AppState } from '../app.reducer';
-import { ScenesActionType, LoadUnzippedProduct, AddUnzippedProduct } from './scenes.action';
+import {
+  ScenesActionType, LoadUnzippedProduct,
+  AddUnzippedProduct, ErrorLoadingUnzipped
+} from './scenes.action';
 
 @Injectable()
 export class ScenesEffects {
@@ -20,22 +23,28 @@ export class ScenesEffects {
     private snackBar: MatSnackBar,
   ) {}
 
-  private clearMapInteractionModeOnSearch = createEffect(() => this.actions$.pipe(
+  private loadUnzippedProductFiles = createEffect(() => this.actions$.pipe(
     ofType<LoadUnzippedProduct>(ScenesActionType.LOAD_UNZIPPED_PRODUCT),
     switchMap(action => this.unzipApi.load$(action.payload.downloadUrl).pipe(
-      catchError(err => {
-        this.showUnzipApiLoadError(action.payload);
-        return of(null);
-      }),
-      filter(resp => !!resp),
       map(resp => ({
         product: action.payload,
         unzipped: resp
       })
-      )
+      ),
+      map(
+        unzipped => new AddUnzippedProduct(unzipped)
+      ),
+      catchError(err => {
+        return of(new ErrorLoadingUnzipped(action.payload));
+      }),
     )),
-    map(unzipped => new AddUnzippedProduct(unzipped))
-  ));
+  )
+  );
+
+  private errorLoadingUnzip = createEffect(() => this.actions$.pipe(
+    ofType<ErrorLoadingUnzipped>(ScenesActionType.ERROR_LOADING_UNZIPPED),
+    map(action => this.showUnzipApiLoadError(action.payload))
+  ), { dispatch: false });
 
   private showUnzipApiLoadError(product: CMRProduct): void {
     this.snackBar.open(
