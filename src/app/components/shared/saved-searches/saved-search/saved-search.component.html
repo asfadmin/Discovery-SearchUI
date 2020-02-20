@@ -76,7 +76,7 @@
   <div [matTooltip]="search.searchType === searchType ? 'Update Saved Search With Current Filters' : 'Current Search Wrong Type'">
     <button
       (click)="onUpdateFilters(search.id)"
-      class="search-action" color="primary"
+      class="search-action" color="secondary"
       mat-flat-button [disabled]="search.searchType !== searchType">
       Update
     </button>
