@@ -224,3 +224,9 @@ ul {
   line-height: 0;
   padding: 0;
 }
+
+.help-panel-config {
+  .mat-dialog-container {
+    padding: 0;
+  }
+}
