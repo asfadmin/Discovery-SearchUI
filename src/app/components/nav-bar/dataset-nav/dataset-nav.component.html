@@ -8,6 +8,9 @@
       </app-search-type-selector>
 
       <app-dataset-selector
+         [(selected)]="selectedDataset"
+         (selectedChange)="onDatasetChange($event)"
+         [datasets]="datasets"
          fxFlex="130px"
          (click)="closeAOIOptions()"
          class="breadcrumb">
@@ -35,7 +38,6 @@
 
         <div fxFlex="noshrink" class="breadcrumb search-controls">
           <app-search-button></app-search-button>
-          <app-clear-button></app-clear-button>
           <div class="max-results">
             <app-max-results-selector></app-max-results-selector>
           </div>

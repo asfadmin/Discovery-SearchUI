@@ -6,9 +6,9 @@
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-  align-items: flex-start;
-  padding: 0 10px;
-  margin: 20px 0;
+  align-items: center;
+  padding: 7px 10px;
+  margin: 0;
 }
 
 .search-description {
@@ -47,10 +47,11 @@
 .search-action {
   margin: 0 !important;
   padding: 0 !important;
+  background-color: inherit;
 }
 
 .detailed-view {
-  margin: 0 10px 15px 60px;
+  padding: 0 10px 15px 60px;
   display: flex;
   justify-content: space-between;
   align-items: flex-end;

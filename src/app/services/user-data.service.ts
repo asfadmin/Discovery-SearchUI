@@ -4,7 +4,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { Observable, of } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 
-import { EnvironmentService } from './environment.service';
+import { EnvironmentService, Environment } from './environment.service';
 import { UserAuth } from '@models';
 
 
@@ -12,9 +12,7 @@ import { UserAuth } from '@models';
   providedIn: 'root'
 })
 export class UserDataService {
-  private baseUrl = this.env.value.user_data[
-    this.env.value.devMode ? 'test' : 'prod'
-  ];
+  private baseUrl = this.getBaseUrlFrom();
 
   constructor(
     private snackBar: MatSnackBar,
@@ -63,5 +61,9 @@ export class UserDataService {
   private makeAuthHeader(token: string): HttpHeaders {
     return new HttpHeaders().
       set('Authorization', `Bearer ${token}`);
+  }
+
+  private getBaseUrlFrom(): string {
+    return this.env.currentEnv.user_data;
   }
 }

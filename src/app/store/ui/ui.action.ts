@@ -1,6 +1,6 @@
 import { Action } from '@ngrx/store';
 
-import { Banner } from '@models';
+import { Banner, SavedSearchType } from '@models';
 
 export enum UIActionType {
   TOGGLE_AOI_OPTIONS = '[UI] Toggle AOI Options',
@@ -12,6 +12,9 @@ export enum UIActionType {
 
   CLOSE_SIDEBAR = '[UI] Close Sidebar',
   OPEN_SIDEBAR = '[UI] Open Sidebar',
+
+  SET_SAVE_SEARCH_ON = '[UI] Set Save Search On',
+  SET_SAVED_SEARCH_TYPE = '[UI] Set Saved Search Type',
 
   SET_IS_BROWSE_DIALOG_OPEN = '[UI] Set Is Browse Dialog Open',
   SET_ONLY_SCENES_WITH_BROWSE = '[UI] Set Only Scenes With Browse',
@@ -43,6 +46,18 @@ export class CloseSidebar implements Action {
 
 export class OpenSidebar implements Action {
   public readonly type = UIActionType.OPEN_SIDEBAR;
+}
+
+export class SetSaveSearchOn implements Action {
+  public readonly type = UIActionType.SET_SAVE_SEARCH_ON;
+
+  constructor(public payload: boolean) {}
+}
+
+export class SetSavedSearchType implements Action {
+  public readonly type = UIActionType.SET_SAVED_SEARCH_TYPE;
+
+  constructor(public payload: SavedSearchType) {}
 }
 
 export class CloseFiltersMenu implements Action {
@@ -97,6 +112,8 @@ export type UIActions =
   | ToggleAOIOptions
   | CloseAOIOptions
   | OpenSidebar
+  | SetSaveSearchOn
+  | SetSavedSearchType
   | CloseSidebar
   | ToggleFiltersMenu
   | CloseFiltersMenu

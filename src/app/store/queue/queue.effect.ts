@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 
-import { Actions, Effect, ofType } from '@ngrx/effects';
+import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { Store, Action } from '@ngrx/store';
 
 import * as FileSaver from 'file-saver';
@@ -32,8 +32,7 @@ export class QueueEffects {
     private bulkDownloadService: services.BulkDownloadService,
   ) {}
 
-  @Effect({ dispatch: false })
-  private makeDownloadScript: Observable<void> = this.actions$.pipe(
+  private makeDownloadScript = createEffect(() => this.actions$.pipe(
     ofType(QueueActionType.MAKE_DOWNLOAD_SCRIPT),
     withLatestFrom(this.store$.select(getQueuedProducts)),
     map(([action, products]) => products),
@@ -43,10 +42,9 @@ export class QueueEffects {
     map(
       blob => FileSaver.saveAs(blob, `download-all-${this.currentDate()}.py`)
     )
-  );
+  ), { dispatch: false });
 
-  @Effect({ dispatch: false })
-  private downloadMetadata: Observable<void> = this.actions$.pipe(
+  private downloadMetadata = createEffect(() => this.actions$.pipe(
     ofType<DownloadMetadata>(QueueActionType.DOWNLOAD_METADATA),
     map(action => action.payload),
     withLatestFrom(this.store$.select(getQueuedProducts).pipe(
@@ -78,23 +76,21 @@ export class QueueEffects {
         )
       ),
     ),
-  );
+  ), { dispatch: false });
 
-  @Effect()
-  private queueScene: Observable<Action> = this.actions$.pipe(
+  private queueScene = createEffect(() => this.actions$.pipe(
     ofType<QueueScene>(QueueActionType.QUEUE_SCENE),
     withLatestFrom(this.store$.select(scenesStore.getAllSceneProducts)),
     map(([action, sceneProducts]) => sceneProducts[action.payload]),
     map(products => new AddItems(products))
-  );
+  ));
 
-  @Effect()
-  private removeScene: Observable<Action> = this.actions$.pipe(
+  private removeScene = createEffect(() => this.actions$.pipe(
     ofType<RemoveSceneFromQueue>(QueueActionType.REMOVE_SCENE_FROM_QUEUE),
     withLatestFrom(this.store$.select(scenesStore.getAllSceneProducts)),
     map(([action, sceneProducts]) => sceneProducts[action.payload]),
     map(products => new RemoveItems(products))
-  );
+  ));
 
   private currentDate(): string {
     return moment().format('YYYY-MM-DD_hh-mm-ss');
