@@ -60,6 +60,8 @@
                 [isExpanded]="search.id === expandedSearchId"
                 [isNew]="search.id === newSearchId"
                 [isSavedSearch]="savedSearchType === SavedSearchType.SAVED"
+                [lockedFocus]="lockedFocus"
+                (unlockFocus)="onUnlockFocus()"
                 (expand)="onExpandSearch($event)"
                 (updateFilters)="updateSearchFilters($event)"
                 (updateName)="updateSearchName($event)"

@@ -24,6 +24,7 @@ export class SavedSearchesComponent implements OnInit {
   public searchType$ = this.store$.select(searchStore.getSearchType);
   public saveSearchOn: boolean;
   public savedSearchType: models.SavedSearchType;
+  public lockedFocus = false;
 
   public savedSearchType$ = this.store$.select(uiStore.getSaveSearchType);
   public SavedSearchType = models.SavedSearchType;
@@ -62,11 +63,11 @@ export class SavedSearchesComponent implements OnInit {
 
     this.store$.select(uiStore.getIsSaveSearchOn).pipe(
       tap(saveSearchOn =>   this.saveSearchOn = saveSearchOn),
-      delay(1000)
+      delay(500)
     ).subscribe(
       saveSearchOn => {
         if (this.saveSearchOn) {
-          console.log('Saving search');
+          this.lockedFocus = true;
           this.saveCurrentSearch();
           this.store$.dispatch(new uiStore.SetSaveSearchOn(false));
         }
@@ -249,6 +250,10 @@ export class SavedSearchesComponent implements OnInit {
 
       this.mapService.setDrawFeature(features);
     }
+  }
+
+  public onUnlockFocus(): void {
+    this.lockedFocus = false;
   }
 
   public onExpandSearch(searchId: string): void {
