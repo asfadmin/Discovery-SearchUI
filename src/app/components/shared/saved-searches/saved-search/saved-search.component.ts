@@ -72,7 +72,7 @@ export class SavedSearchComponent implements OnInit {
     this.deleteSearch.emit(this.search.id);
   }
 
-  public onEditFocusLeave(): void {
+  public onEditFocusLeave(e): void {
     this.isEditingName = false;
 
     this.updateName.emit({ name: this.editName, id: this.search.id });
