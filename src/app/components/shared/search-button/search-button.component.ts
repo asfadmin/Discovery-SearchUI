@@ -50,6 +50,7 @@ export class SearchButtonComponent implements OnInit {
   }
 
   public saveCurrentSearch(): void {
+    this.store$.dispatch(new uiStore.SetSavedSearchType(SavedSearchType.SAVED));
     this.store$.dispatch(new uiStore.OpenSidebar());
     this.store$.dispatch(new uiStore.SetSaveSearchOn(true));
   }
