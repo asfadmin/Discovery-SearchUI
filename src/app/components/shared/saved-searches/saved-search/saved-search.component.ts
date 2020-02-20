@@ -18,12 +18,14 @@ export class SavedSearchComponent implements OnInit {
   @Input() isExpanded: boolean;
   @Input() isNew: boolean;
   @Input() isSavedSearch: boolean;
+  @Input() lockedFocus: boolean;
 
   @Output() updateFilters = new EventEmitter<string>();
   @Output() updateName = new EventEmitter<{ id: string, name: string }>();
   @Output() deleteSearch = new EventEmitter<string>();
   @Output() setSearch = new EventEmitter<models.Search>();
   @Output() expand = new EventEmitter<string>();
+  @Output() unlockFocus = new EventEmitter<void>();
 
   public SearchType = models.SearchType;
   public isEditingName = false;
@@ -73,6 +75,12 @@ export class SavedSearchComponent implements OnInit {
   }
 
   public onEditFocusLeave(): void {
+    if (this.lockedFocus) {
+      this.nameEditInput.nativeElement.focus();
+      this.unlockFocus.emit();
+      return;
+    }
+
     this.isEditingName = false;
 
     this.updateName.emit({ name: this.editName, id: this.search.id });
