@@ -1,5 +1,6 @@
-<div [ngClass]="{'saved-searches-mobile': breakpoint <= breakpoints.SMALL,
-                 'saved-searches': breakpoint > breakpoints.SMALL}">
+<div
+  [ngClass]="{'saved-searches-mobile': breakpoint <= breakpoints.SMALL,
+              'saved-searches': breakpoint > breakpoints.SMALL}">
   <div class="saved-searches__header">
       <div class="saved-searches__header-title">
         <span *ngIf="savedSearchType === SavedSearchType.SAVED">Saved Searches</span>

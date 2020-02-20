@@ -62,8 +62,8 @@ export class SavedSearchesComponent implements OnInit {
     );
 
     this.store$.select(uiStore.getIsSaveSearchOn).pipe(
-      tap(saveSearchOn =>   this.saveSearchOn = saveSearchOn),
-      delay(500)
+      tap(saveSearchOn => this.saveSearchOn = saveSearchOn),
+      delay(250)
     ).subscribe(
       saveSearchOn => {
         if (this.saveSearchOn) {
