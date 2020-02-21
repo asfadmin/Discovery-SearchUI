@@ -1,5 +1,7 @@
 @import "asf-theme";
 
+$side-padding-only: 0 15px 0 15px;
+
 .help-dialog-wrapper {
   display: flex;
   flex-direction: column;
@@ -23,9 +25,10 @@
 }
 
 .help-content {
-  display: flex;
-  flex-direction: row;
-  padding: 15px;
+  display: block;
+  width: 100%;
+  //flex-direction: row;
+  //margin: $side-padding-only;
 }
 
 .help-action-controls {
@@ -35,8 +38,5 @@
   display: flex;
   flex-direction: row;
   justify-content: flex-end;
-  padding-left: 15px;
-  padding-right: 15px;
-  padding-top: 0;
-  padding-bottom: 0;
+  padding: $side-padding-only;
 }
