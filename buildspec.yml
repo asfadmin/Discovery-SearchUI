@@ -9,7 +9,7 @@ phases:
       - npm install -g @angular/cli@9.0.0
   pre_build:
     commands:
-      - cp src/assets/envs/env-${MATURITY}.js src/assets/env.js
+      - cp src/app/services/envs/env-${MATURITY}.ts src/app/services/env.ts
       - npm install --prod
   build:
     commands:
