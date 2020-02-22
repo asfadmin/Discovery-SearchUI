@@ -1,33 +1,41 @@
 <div class="help-dialog-wrapper">
-  <div class="help-header"> Vertex Data Search Help </div>
-  <div class="help-menu">
+
+  <header>
+    <div mat-dialog-title class="help-header"><h3>Search Help</h3></div>
+    <div class="help-menu">
       <button (click)="data.helpTopic = 'geoSearch'">Geo Search</button>
       <button (click)="data.helpTopic = 'listSearch'">List Search</button>
       <button (click)="data.helpTopic = 'searchResults'">Search Results</button>
-  </div>
-  <mat-dialog-content>
-    <div class="help-content">
-      <div [ngSwitch]="data.helpTopic">
-        <ng-template [ngSwitchCase]="'geoSearch'">
-          <app-help-geo-search></app-help-geo-search>
-        </ng-template>
-        <ng-template [ngSwitchCase]="'listSearch'">
-          <app-help-list-search></app-help-list-search>
-        </ng-template>
-        <ng-template [ngSwitchCase]="'searchResults'">
-          <app-help-search-results></app-help-search-results>
-        </ng-template>
-        <ng-template [ngSwitchDefault]>
-          <app-help-geo-search></app-help-geo-search>
-        </ng-template>
+    </div>
+  </header>
+
+  <main>
+      <div class="help-content">
+        <div [ngSwitch]="data.helpTopic">
+          <ng-template [ngSwitchCase]="'geoSearch'">
+            <app-help-geo-search></app-help-geo-search>
+          </ng-template>
+          <ng-template [ngSwitchCase]="'listSearch'">
+            <app-help-list-search></app-help-list-search>
+          </ng-template>
+          <ng-template [ngSwitchCase]="'searchResults'">
+            <app-help-search-results></app-help-search-results>
+          </ng-template>
+          <ng-template [ngSwitchDefault]>
+            <app-help-geo-search></app-help-geo-search>
+          </ng-template>
+        </div>
+      </div>
+  </main>
+
+  <footer>
+    <div class="help-action-controls">
+      <div class="done-button">
+        <button (click)="onClose()" color="primary" mat-flat-button>
+          Done
+        </button>
       </div>
     </div>
-  </mat-dialog-content>
-  <mat-dialog-actions class="help-action-controls">
-    <div class="done-button">
-      <button (click)="onClose()" color="primary" mat-flat-button>
-        Done
-      </button>
-    </div>
-  </mat-dialog-actions>
+  </footer>
+
 </div>

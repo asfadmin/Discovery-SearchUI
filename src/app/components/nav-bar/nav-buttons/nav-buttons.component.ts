@@ -87,10 +87,10 @@ export class NavButtonsComponent implements OnInit {
     // dialogConfig.autoFocus = true;
     dialogConfig.panelClass = 'help-panel-config';
     dialogConfig.data = {helpTopic: helpSelection};
-    dialogConfig.width = '800px';
-    dialogConfig.height = '1000px';
-    dialogConfig.maxWidth = '80%';
-    dialogConfig.maxHeight = '80%';
+    dialogConfig.width = '80vw';
+    dialogConfig.height = '80vh';
+    dialogConfig.maxWidth = '100%';
+    dialogConfig.maxHeight = '100%';
 
     const dialogRef = this.dialog.open(HelpComponent, dialogConfig);
   }
