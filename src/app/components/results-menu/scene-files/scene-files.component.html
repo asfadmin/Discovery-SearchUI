@@ -1,9 +1,30 @@
-<mat-list class="products-list" *ngIf="products$ | async as products">
+<mat-list *ngIf="!showUnzippedProductScreen" class="products-list">
   <app-scene-file *ngFor="let product of products"
     (toggle)="onToggleQueueProduct(product)"
     (unzip)="onUnzipProduct($event)"
     [product]="product"
     [isUnzipLoading]="unzippedLoading === product.id"
-    [isQueued]="(queuedProductIds$ | async).has(product.id)">
+    [isQueued]="(queuedProductIds$ | async).has(product.id)"
+    [isOpen]="false">
   </app-scene-file>
 </mat-list>
+
+<div *ngIf="showUnzippedProductScreen" class="products-list">
+  <div *ngIf="openUnzippedProduct$ | async as product">
+    <mat-list class="products-list">
+      <app-scene-file
+        (toggle)="onToggleQueueProduct(product)"
+        (unzip)="onUnzipProduct($event)"
+        (closeProduct)="onCloseProduct($event)"
+        [product]="product"
+        [contents]=""
+        [isUnzipLoading]="unzippedLoading === product.id"
+        [isQueued]="(queuedProductIds$ | async).has(product.id)"
+        [isOpen]="true">
+      </app-scene-file>
+    </mat-list>
+    <div>
+      {{ unzippedProducts[product.id] | json }}
+    </div>
+  </div>
+</div>

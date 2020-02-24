@@ -11,6 +11,7 @@ export enum ScenesActionType {
   ADD_UNZIPPED_PRODUCT = '[Scenes] Add unzipped product',
   CLEAR_UNZIPPED_PRODUCTS = '[Scenes] Clear unzipped products',
   ERROR_LOADING_UNZIPPED = '[Scenes] Error loading unzipped',
+  CLOSE_ZIP_CONTENTS = '[Scenes] Close Zip Contents',
 
   SET_SELECTED_SCENE = '[Scenes] Set Selected Scene',
   SELECT_NEXT_SCENE = '[Scenes] Select Next Scene',
@@ -70,6 +71,12 @@ export class ErrorLoadingUnzipped implements Action {
   constructor(public payload: CMRProduct) {}
 }
 
+export class CloseZipContents implements Action {
+  public readonly type = ScenesActionType.CLOSE_ZIP_CONTENTS;
+
+  constructor(public payload: CMRProduct) {}
+}
+
 export class AddUnzippedProduct implements Action {
   public readonly type = ScenesActionType.ADD_UNZIPPED_PRODUCT;
 
@@ -81,12 +88,12 @@ export class ClearUnzippedProducts implements Action {
 }
 
 
-
 export type ScenesActions =
   | SetScenes
   | ClearScenes
   | AddUnzippedProduct
   | LoadUnzippedProduct
+  | CloseZipContents
   | ErrorLoadingUnzipped
   | ClearUnzippedProducts
   | SetSelectedScene

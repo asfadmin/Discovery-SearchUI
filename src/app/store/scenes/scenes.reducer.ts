@@ -13,6 +13,7 @@ export interface ScenesState {
   areResultsLoaded: boolean;
   scenes: {[id: string]: string[]};
   unzipped: {[id: string]: UnzippedFolder};
+  openUnzippedProduct: string | null;
   productUnzipLoading: string | null;
   selected: string | null;
 }
@@ -22,6 +23,7 @@ export const initState: ScenesState = {
   scenes: {},
   unzipped: {},
   productUnzipLoading: null,
+  openUnzippedProduct: null,
   products: {},
   areResultsLoaded: false,
 
@@ -125,7 +127,8 @@ export function scenesReducer(state = initState, action: ScenesActions): ScenesS
     case ScenesActionType.LOAD_UNZIPPED_PRODUCT: {
       return {
         ...state,
-        productUnzipLoading: action.payload.id
+        productUnzipLoading: action.payload.id,
+        openUnzippedProduct: action.payload.id
       };
     }
 
@@ -146,6 +149,13 @@ export function scenesReducer(state = initState, action: ScenesActions): ScenesS
       return {
         ...state,
         productUnzipLoading: null
+      };
+    }
+
+    case ScenesActionType.CLOSE_ZIP_CONTENTS: {
+      return {
+        ...state,
+        openUnzippedProduct: null
       };
     }
 
@@ -373,4 +383,20 @@ export const getUnzipLoading = createSelector(
   getScenesState,
   (state: ScenesState) => state.productUnzipLoading
 );
+
+export const getUnzippedProducts = createSelector(
+  getScenesState,
+  (state: ScenesState) => state.unzipped
+);
+
+export const getOpenUnzippedProduct = createSelector(
+  getScenesState,
+  (state: ScenesState) => state.products[state.openUnzippedProduct] || null
+);
+
+export const getShowUnzippedProduct = createSelector(
+  getScenesState,
+  (state: ScenesState) => state.openUnzippedProduct && !state.productUnzipLoading
+);
+
 
