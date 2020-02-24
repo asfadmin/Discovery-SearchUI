@@ -11,6 +11,7 @@ import * as models from '@models';
 export class SceneFileComponent {
   @Input() product: models.CMRProduct;
   @Input() isQueued: boolean;
+  @Input() isUnzipLoading: boolean;
 
   @Output() toggle = new EventEmitter<void>();
   @Output() unzip = new EventEmitter<models.CMRProduct>();

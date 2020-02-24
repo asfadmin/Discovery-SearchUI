@@ -1,6 +1,8 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
+import { FontAwesomeModule, FaIconLibrary } from '@fortawesome/angular-fontawesome';
+import { faSpinner, fas } from '@fortawesome/free-solid-svg-icons';
 import { MatSharedModule } from '@shared';
 import { CopyToClipboardModule } from '@components/shared/copy-to-clipboard';
 import { TruncateModule } from '@yellowspot/ng-truncate';
@@ -13,6 +15,7 @@ import { SceneFileComponent } from './scene-file.component';
   declarations: [SceneFileComponent],
   imports: [
     CommonModule,
+    FontAwesomeModule,
     MatSharedModule,
     CopyToClipboardModule,
     TruncateModule,
@@ -22,4 +25,9 @@ import { SceneFileComponent } from './scene-file.component';
     SceneFileComponent
   ]
 })
-export class SceneFileModule { }
+export class SceneFileModule {
+  constructor(library: FaIconLibrary) {
+    library.addIconPacks(fas);
+    library.addIcons(faSpinner);
+  }
+}

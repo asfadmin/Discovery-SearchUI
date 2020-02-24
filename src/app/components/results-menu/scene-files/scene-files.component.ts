@@ -1,6 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 
-import { map } from 'rxjs/operators';
+import { map, withLatestFrom } from 'rxjs/operators';
 
 import { Store } from '@ngrx/store';
 import { AppState } from '@store';
@@ -14,15 +14,22 @@ import * as models from '@models';
   templateUrl: './scene-files.component.html',
   styleUrls: ['./scene-files.component.scss']
 })
-export class SceneFilesComponent {
+export class SceneFilesComponent implements OnInit {
   public products$ = this.store$.select(scenesStore.getSelectedSceneProducts);
   public queuedProductIds$ = this.store$.select(queueStore.getQueuedProductIds).pipe(
       map(names => new Set(names))
   );
+  public unzippedLoading: string;
 
   constructor(
     private store$: Store<AppState>
   ) { }
+
+  ngOnInit() {
+    this.store$.select(scenesStore.getUnzipLoading).subscribe(
+      unzippedLoading => this.unzippedLoading = unzippedLoading
+    );
+  }
 
   public onToggleQueueProduct(product: models.CMRProduct): void {
     this.store$.dispatch(new queueStore.ToggleProduct(product));

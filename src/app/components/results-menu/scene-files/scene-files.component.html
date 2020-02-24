@@ -3,6 +3,7 @@
     (toggle)="onToggleQueueProduct(product)"
     (unzip)="onUnzipProduct($event)"
     [product]="product"
+    [isUnzipLoading]="unzippedLoading === product.id"
     [isQueued]="(queuedProductIds$ | async).has(product.id)">
   </app-scene-file>
 </mat-list>

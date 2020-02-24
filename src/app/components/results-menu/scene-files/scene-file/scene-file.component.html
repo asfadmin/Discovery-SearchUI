@@ -3,10 +3,14 @@
   (mouseleave)="isHovered = false">
 
   <mat-icon
+    *ngIf="!isUnzipLoading"
     (click)="onLoadUnzippedPoduct()"
     class="clickable" matListIcon>
       keyboard_arrow_right
   </mat-icon>
+  <div *ngIf="isUnzipLoading" matListIcon>
+    <fa-icon icon="spinner" [pulse]="true"></fa-icon>
+  </div>
 
   <div class="clickable" mat-line>
     <b>

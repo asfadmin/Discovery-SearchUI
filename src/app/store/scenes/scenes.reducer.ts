@@ -346,7 +346,6 @@ export const getNumberOfProducts = createSelector(
   products => products.length
 );
 
-
 export const getAllSceneProducts = createSelector(
   getScenesState,
   (state: ScenesState) => {
@@ -365,8 +364,13 @@ export const getAllSceneProducts = createSelector(
   }
 );
 
-
 export const getSelectedScene = createSelector(
   getScenesState,
   (state: ScenesState) => state.products[state.selected] || null
 );
+
+export const getUnzipLoading = createSelector(
+  getScenesState,
+  (state: ScenesState) => state.productUnzipLoading
+);
+
