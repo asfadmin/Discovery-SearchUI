@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { env } from './env';
 
 export interface Environments {
   prod: Environment;
@@ -27,7 +28,7 @@ export class EnvironmentService {
   public isProd: boolean;
 
   constructor() {
-    this.isProd = window['_env'].defaultEnv === 'prod';
+    this.isProd = env.defaultEnv === 'prod';
     this.envs = this.loadEnvs();
 
     if (!this.isProd) {
@@ -73,6 +74,6 @@ export class EnvironmentService {
   }
 
   private loadFromEnvFile(): Environments {
-    return <Environments>window['_env'];
+    return <Environments>env;
   }
 }

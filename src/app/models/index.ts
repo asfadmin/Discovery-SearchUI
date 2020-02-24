@@ -13,3 +13,4 @@ export * from './banner.model';
 export * from './breakpoints.model';
 export * from './user.model';
 export * from './search.model';
+export * from './saved-search.model';

@@ -8,9 +8,10 @@
       <div class="search-title">
       <span *ngIf="!isEditingName"
             (click)="onEditName()"
-            matTooltip="Edit Name"
+            [matTooltip]="isSavedSearch ? 'Edit Name' : ''"
+            [class.clickable]="isSavedSearch"
             class="search-name clickable">
-        {{ search.name }} <mat-icon class="edit-icon">edit</mat-icon>
+        {{ formatName(search.name) }} <mat-icon *ngIf="isSavedSearch" class="edit-icon">edit</mat-icon>
       </span>
 
         <span *ngIf="isEditingName">
@@ -51,9 +52,10 @@
       <i class="material-icons">image_search</i>
     </button>
 
-    <button (click)="onDeleteSearch()"
-            class="search-action"
-            mat-flat-button>
+    <button *ngIf="isSavedSearch"
+      (click)="onDeleteSearch()"
+      class="search-action"
+      mat-flat-button>
       <i class="material-icons">delete_forever</i>
     </button>
   </div>
@@ -72,10 +74,12 @@
     </app-geographic-search-filters>
   </div>
 
-  <div [matTooltip]="search.searchType === searchType ? 'Update Saved Search With Current Filters' : 'Current Search Wrong Type'">
+  <div
+    *ngIf="isSavedSearch"
+    [matTooltip]="search.searchType === searchType ? 'Update Saved Search With Current Filters' : 'Current Search Wrong Type'">
     <button
       (click)="onUpdateFilters(search.id)"
-      class="search-action" color="primary"
+      class="search-action" color="secondary"
       mat-flat-button [disabled]="search.searchType !== searchType">
       Update
     </button>

@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 
 import { timer } from 'rxjs';
-import { filter } from 'rxjs/operators';
+import { filter, switchMap, tap, delay } from 'rxjs/operators';
 import { Store, Action } from '@ngrx/store';
 import { AppState } from '@store';
 import * as userStore from '@store/user';
@@ -21,9 +21,20 @@ import {getIsSaveSearchOn, SetSaveSearchOn} from '@store/ui';
 export class SavedSearchesComponent implements OnInit {
   @ViewChild('filterInput', { static: true }) filterInput: ElementRef;
 
-  public searches$ = this.store$.select(userStore.getSavedSearches);
   public searchType$ = this.store$.select(searchStore.getSearchType);
   public saveSearchOn: boolean;
+  public savedSearchType: models.SavedSearchType;
+  public lockedFocus = false;
+
+  public savedSearchType$ = this.store$.select(uiStore.getSaveSearchType);
+  public SavedSearchType = models.SavedSearchType;
+  public searches$ = this.savedSearchType$.pipe(
+    switchMap(savedSearchType =>
+      (savedSearchType === models.SavedSearchType.SAVED) ?
+        this.store$.select(userStore.getSavedSearches) :
+        this.store$.select(userStore.getSearchHistory)
+    )
+  );
 
   public breakpoint: models.Breakpoints;
   public breakpoints = models.Breakpoints;
@@ -50,13 +61,24 @@ export class SavedSearchesComponent implements OnInit {
       breakpoint => this.breakpoint = breakpoint
     );
 
-    this.store$.select(uiStore.getIsSaveSearchOn).subscribe(
+    this.store$.select(uiStore.getIsSaveSearchOn).pipe(
+      tap(saveSearchOn => this.saveSearchOn = saveSearchOn),
+      delay(250)
+    ).subscribe(
       saveSearchOn => {
-        this.saveSearchOn = saveSearchOn;
+        if (this.saveSearchOn) {
+          this.lockedFocus = true;
+          this.saveCurrentSearch();
+          this.store$.dispatch(new uiStore.SetSaveSearchOn(false));
+        }
       }
     );
 
-    this.store$.select(userStore.getSavedSearches).subscribe(
+    this.savedSearchType$.subscribe(
+      savedSearchType => this.savedSearchType = savedSearchType
+    );
+
+    this.searches$.subscribe(
       searches => {
         const filtersWithValues = searches.map(
           search => ({
@@ -91,14 +113,8 @@ export class SavedSearchesComponent implements OnInit {
     );
   }
 
-  public onFocusInput(e): void {
-    if (this.initFocus) {
-      this.unfocusFilter();
-      if (this.saveSearchOn) {
-        this.saveCurrentSearch();
-      }
-      this.initFocus = false;
-    }
+  public onSavedSearchTypeChange(savedSearchType: models.SavedSearchType): void {
+    this.store$.dispatch(new uiStore.SetSavedSearchType(savedSearchType));
   }
 
   private addIfHasValue(acc, key: string, val): Object {
@@ -234,6 +250,10 @@ export class SavedSearchesComponent implements OnInit {
 
       this.mapService.setDrawFeature(features);
     }
+  }
+
+  public onUnlockFocus(): void {
+    this.lockedFocus = false;
   }
 
   public onExpandSearch(searchId: string): void {
