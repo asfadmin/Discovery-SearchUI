@@ -9,6 +9,8 @@ import * as uiStore from '@store/ui';
 
 import * as services from '@services';
 import { SavedSearchType } from '@models';
+import {MatDialog, MatDialogConfig} from '@angular/material/dialog';
+import { HelpComponent } from '@components/help/help.component';
 
 
 @Component({
@@ -26,8 +28,10 @@ export class SearchButtonComponent implements OnInit {
 
   constructor(
     private store$: Store<AppState>,
-    private savedSearchService: services.SavedSearchService
-  ) { }
+    private savedSearchService: services.SavedSearchService,
+    private dialog: MatDialog,
+  ) {
+  }
 
   ngOnInit() {
     this.store$.select(userStore.getIsUserLoggedIn).subscribe(
@@ -63,5 +67,18 @@ export class SearchButtonComponent implements OnInit {
   public onOpenSearchHistory(): void {
     this.store$.dispatch(new uiStore.SetSavedSearchType(SavedSearchType.HISTORY));
     this.store$.dispatch(new uiStore.OpenSidebar());
+  }
+
+  public onOpenHelp(helpSelection: string): void {
+    const dialogConfig = new MatDialogConfig();
+
+    dialogConfig.panelClass = 'help-panel-config';
+    dialogConfig.data = {helpTopic: helpSelection};
+    dialogConfig.width = '80vw';
+    dialogConfig.height = '80vh';
+    dialogConfig.maxWidth = '100%';
+    dialogConfig.maxHeight = '100%';
+
+    const dialogRef = this.dialog.open(HelpComponent, dialogConfig);
   }
 }
