@@ -1,6 +1,6 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 
-import { MatDialog } from '@angular/material/dialog';
+import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { ClipboardService } from 'ngx-clipboard';
 
 import { Store } from '@ngrx/store';
@@ -8,6 +8,7 @@ import { AppState } from '@store';
 import * as userStore from '@store/user';
 import * as uiStore from '@store/ui';
 import { PreferencesComponent } from './preferences/preferences.component';
+import { HelpComponent} from '@components/help/help.component';
 import { CustomizeEnvComponent } from './customize-env/customize-env.component';
 import { AuthService, AsfApiService, EnvironmentService, ScreenSizeService } from '@services';
 import { CMRProduct, Breakpoints, UserAuth, SavedSearchType } from '@models';
@@ -77,6 +78,21 @@ export class NavButtonsComponent implements OnInit {
     dialogRef.afterClosed().subscribe(
       _ => this.store$.dispatch(new userStore.SaveProfile())
     );
+  }
+
+  public onOpenHelp(helpSelection: string): void {
+    const dialogConfig = new MatDialogConfig();
+
+    // dialogConfig.disableClose = true;
+    // dialogConfig.autoFocus = true;
+    dialogConfig.panelClass = 'help-panel-config';
+    dialogConfig.data = {helpTopic: helpSelection};
+    dialogConfig.width = '80vw';
+    dialogConfig.height = '80vh';
+    dialogConfig.maxWidth = '100%';
+    dialogConfig.maxHeight = '100%';
+
+    const dialogRef = this.dialog.open(HelpComponent, dialogConfig);
   }
 
   public onOpenCustomizeEnv(): void {

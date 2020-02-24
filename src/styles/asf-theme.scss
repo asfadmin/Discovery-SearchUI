@@ -13,6 +13,7 @@
 // hue. Available color palettes: https://material.io/design/color/
 $asf-app-primary: mat-palette($mat-asf-primary, 700, 400, 900);
 $asf-app-accent:  mat-palette($mat-grey, 300, 100, 400);
+$asf-app-blue:  mat-palette($mat-asf-blue, 700, 400, 900);
 
 // The warn palette is optional (defaults to red).
 $asf-app-warn:    mat-palette($mat-asf-yellow, 200, 100, 500);
@@ -29,6 +30,7 @@ $asf-app-theme: mat-light-theme($asf-app-primary, $asf-app-accent);
 $asf-primary: mat-color($asf-app-primary);
 $asf-accent: mat-color($asf-app-accent);
 $asf-warn: mat-color($asf-app-warn);
+$asf-blue: mat-color($asf-app-blue);
 $asf-primary-light: lighten($asf-primary, 40%);
 $asf-primary-dark: darken($asf-primary, 15%);
 

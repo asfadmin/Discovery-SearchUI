@@ -1,0 +1,113 @@
+@import 'asf-theme';
+
+$side-padding-px: 15px;
+$side-padding-only: 0 $side-padding-px 0 $side-padding-px;
+$header-color: $asf-blue;
+$border-color: lightgray;
+$border-style: 1px solid $border-color;
+$img-border-style: 1px solid black;
+$top-background-color: lighten(lightgrey, 10%);
+
+.help-container {
+  display: flex;
+  flex-direction: column;
+  max-width: 100%;
+  margin: 0;
+}
+
+.help-top-section {
+  background-color: $top-background-color;
+  padding: 0 $side-padding-px 25px $side-padding-px;
+  margin: 0;
+}
+
+.help-header {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    color: $asf-primary-dark;
+  }
+}
+
+.help-video {
+  display: flex;
+  height: 525px;
+  width: 100%;
+  flex-direction: row;
+  justify-content: center;
+  background-image: url('/assets/help-media/common/sar_search_background.png');
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-position: center;
+}
+
+.videoWrapper {
+  width: 560px;
+  margin: 100px auto;
+}
+
+.videoWrapper iframe {
+  //position: absolute;
+  border: $img-border-style;
+}
+
+.video-text-line {
+  border-bottom: $border-style;
+  width: 100%;
+  margin: 0;
+}
+
+.help-rows {
+  margin: $side-padding-only;
+}
+
+.help-text-row {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  color: $asf-primary;
+  border-bottom: $border-style;
+  padding-bottom: 10px;
+  padding-top: 10px;
+}
+
+.help-text-row:last-child { border: none; }
+
+.help-icon {
+  flex: 7 0 0;
+
+  .material-icons {
+    font-size: 53px;
+    width: 54px;
+    height: 53px;
+    color: $asf-primary-light;
+  }
+}
+
+.help-text-block {
+  flex: 53 0 0;
+
+  p {
+    margin-block-start: 0.3em;
+  }
+}
+
+.help-graphic {
+  flex: 40 0 0;
+
+  img {
+    border: $img-border-style;
+    max-width: 100%;
+  }
+}
+
+.help-step {
+  //color: $header-color;
+  font-weight: bold;
+  font-size: larger;
+}
