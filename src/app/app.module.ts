@@ -35,6 +35,7 @@ import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatDialogModule} from '@angular/material/dialog';
 import { HelpListSearchComponent } from './components/help/help-pages/help-list-search/help-list-search.component';
 import { HelpSearchResultsComponent } from './components/help/help-pages/help-search-results/help-search-results.component';
+import { HelpTocComponent } from './components/help/help-pages/help-toc/help-toc.component';
 
 // info about cookie consent module: https://tinesoft.github.io/ngx-cookieconsent/home
 const cookieConfig: NgcCookieConsentConfig = {
@@ -78,6 +79,7 @@ export const routes = [
     HelpGeoSearchComponent,
     HelpListSearchComponent,
     HelpSearchResultsComponent,
+    HelpTocComponent,
   ],
   imports: [
     BrowserModule,

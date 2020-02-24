@@ -3,15 +3,16 @@
   <header>
     <div mat-dialog-title class="help-header"><h3>Search Help</h3></div>
     <div class="help-menu">
-      <button (click)="data.helpTopic = 'geoSearch'">Geo Search</button>
-      <button (click)="data.helpTopic = 'listSearch'">List Search</button>
-      <button (click)="data.helpTopic = 'searchResults'">Search Results</button>
+      <button (click)="data.helpTopic = 'toc'">Help and Tutorials</button>
     </div>
   </header>
 
   <main>
       <div class="help-content">
         <div [ngSwitch]="data.helpTopic">
+          <ng-template [ngSwitchCase]="'toc'">
+            <app-help-toc></app-help-toc>
+          </ng-template>
           <ng-template [ngSwitchCase]="'geoSearch'">
             <app-help-geo-search></app-help-geo-search>
           </ng-template>
@@ -22,7 +23,7 @@
             <app-help-search-results></app-help-search-results>
           </ng-template>
           <ng-template [ngSwitchDefault]>
-            <app-help-geo-search></app-help-geo-search>
+            <app-help-toc></app-help-toc>
           </ng-template>
         </div>
       </div>
