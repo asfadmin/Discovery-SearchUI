@@ -35,6 +35,12 @@ export class SceneFileComponent {
   }
 
   public canUnzip(product: models.CMRProduct): boolean {
-    return product.downloadUrl.endsWith('.zip');
+    const dataset = product.dataset.toLowerCase();
+
+    return (
+      !dataset.includes('sentinel') &&
+      !dataset.includes('sir-c') &&
+      product.downloadUrl.endsWith('.zip')
+    );
   }
 }
