@@ -17,14 +17,15 @@
         (unzip)="onUnzipProduct($event)"
         (closeProduct)="onCloseProduct($event)"
         [product]="product"
-        [contents]=""
         [isUnzipLoading]="unzippedLoading === product.id"
         [isQueued]="(queuedProductIds$ | async).has(product.id)"
         [isOpen]="true">
       </app-scene-file>
     </mat-list>
     <div>
-      {{ unzippedProducts[product.id] | json }}
+      <app-file-contents
+        [product]="product">
+      </app-file-contents>
     </div>
   </div>
 </div>

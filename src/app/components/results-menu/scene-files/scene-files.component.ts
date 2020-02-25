@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 
+import { combineLatest } from 'rxjs';
 import { map, withLatestFrom } from 'rxjs/operators';
 
 import { Store } from '@ngrx/store';
@@ -20,7 +21,7 @@ export class SceneFilesComponent implements OnInit {
       map(names => new Set(names))
   );
   public unzippedLoading: string;
-  public unzippedProducts: {[id: string]: models.UnzippedFolder};
+
   public showUnzippedProductScreen: boolean;
   public openUnzippedProduct$ = this.store$.select(scenesStore.getOpenUnzippedProduct);
 
@@ -37,9 +38,6 @@ export class SceneFilesComponent implements OnInit {
     );
     this.store$.select(scenesStore.getUnzipLoading).subscribe(
       unzippedLoading => this.unzippedLoading = unzippedLoading
-    );
-    this.store$.select(scenesStore.getUnzippedProducts).subscribe(
-      unzippedProducts => this.unzippedProducts = unzippedProducts
     );
   }
 
