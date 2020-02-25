@@ -33,4 +33,8 @@ export class SceneFileComponent {
   public onCloseProduct(): void {
     this.closeProduct.emit(this.product);
   }
+
+  public canUnzip(product: models.CMRProduct): boolean {
+    return product.downloadUrl.endsWith('.zip');
+  }
 }
