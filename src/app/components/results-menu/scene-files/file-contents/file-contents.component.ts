@@ -2,10 +2,12 @@ import { Component, OnInit, Input } from '@angular/core';
 import { FlatTreeControl } from '@angular/cdk/tree';
 import { MatTreeFlatDataSource, MatTreeFlattener } from '@angular/material/tree';
 
+import { map } from 'rxjs/operators';
 import { Store } from '@ngrx/store';
 import { AppState } from '@store';
 import * as scenesStore from '@store/scenes';
 
+import { ScreenSizeService } from '@services';
 import { UnzippedFolder, CMRProduct } from '@models';
 
 interface ExampleFlatNode {
@@ -24,7 +26,7 @@ interface ExampleFlatNode {
 export class FileContentsComponent implements OnInit {
   @Input() product: CMRProduct;
 
-
+  sceneNameLen: number;
   treeControl = new FlatTreeControl<ExampleFlatNode>(
       node => node.level, node => node.expandable);
 
@@ -45,12 +47,29 @@ export class FileContentsComponent implements OnInit {
 
   dataSource = new MatTreeFlatDataSource(this.treeControl, this.treeFlattener);
 
-  constructor(private store$: Store<AppState>) { }
+  constructor(
+    private store$: Store<AppState>,
+    private screenSize: ScreenSizeService,
+  ) { }
 
   ngOnInit(): void {
-    this.store$.select(scenesStore.getUnzippedProducts).subscribe(
-      unzipped => this.dataSource.data = unzipped[this.product.id].contents
+    this.store$.select(scenesStore.getUnzippedProducts).pipe(
+      map(unzipped => unzipped[this.product.id])
+    ).subscribe(
+      unzipped => this.dataSource.data = unzipped
     );
+
+    this.screenSize.size$.pipe(
+      map(size => {
+        if (size.width > 1775) {
+          return 32;
+        } else if (size.width > 1350) {
+          return 20;
+        } else {
+          return 10;
+        }
+      }),
+    ).subscribe(len => this.sceneNameLen = len);
   }
 
   hasChild = (_: number, node: ExampleFlatNode) => node.expandable;

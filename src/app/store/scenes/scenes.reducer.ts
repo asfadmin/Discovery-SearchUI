@@ -12,7 +12,7 @@ export interface ScenesState {
   products: SceneEntities;
   areResultsLoaded: boolean;
   scenes: {[id: string]: string[]};
-  unzipped: {[id: string]: UnzippedFolder};
+  unzipped: {[id: string]: UnzippedFolder[]};
   openUnzippedProduct: string | null;
   productUnzipLoading: string | null;
   selected: string | null;
@@ -136,6 +136,7 @@ export function scenesReducer(state = initState, action: ScenesActions): ScenesS
       const unzipped = { ...state.unzipped };
       const product = action.payload.product;
 
+      console.log(unzipped);
       unzipped[product.id] = action.payload.unzipped;
 
       return {

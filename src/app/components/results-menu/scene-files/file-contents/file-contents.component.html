@@ -3,17 +3,28 @@
 
     <button mat-icon-button disabled></button>
 
-    {{node.name}}
-
-    <span style="padding: 0px 3px;">
-      {{ node.size }}
-    </span>
-
-    <a [href]="node.url"
-      style="padding: 0px 3px;">
-        download
-    </a>
-
+    <div style="display:flex; flex-direction: column">
+      <div style="font-weight: 600;">
+        <span> {{ node.name | truncate : sceneNameLen }}</span>
+        <span *ngIf="product.dataset === 'Sentinel-1B' || product.dataset === 'Sentinel-1A'">
+          {{ node.name.substr(node.name.length - 4) }}
+        </span>
+        <span *ngIf="product.dataset === 'Sentinel-1 Interferogram (BETA)'">
+          {{ node.name.substr(node.name.length - 11) }}
+        </span>
+      </div>
+      <div style="font-weight: 400;">
+        {{ node.size | readableSizeFromBytes }}
+      </div>
+    </div>
+    <div style="margin-left: 10px; margin-bottom: 3px; margin-top: 3px;">
+      <a mat-icon-button
+        [href]="node.url"
+        target="_blank"
+        matTooltip="Download file">
+          <mat-icon>cloud_download</mat-icon>
+      </a>
+    </div>
   </mat-tree-node>
 
   <mat-tree-node *matTreeNodeDef="let node; when: hasChild" matTreeNodePadding>

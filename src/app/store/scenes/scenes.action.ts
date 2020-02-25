@@ -80,7 +80,7 @@ export class CloseZipContents implements Action {
 export class AddUnzippedProduct implements Action {
   public readonly type = ScenesActionType.ADD_UNZIPPED_PRODUCT;
 
-  constructor(public payload: { product: CMRProduct, unzipped: UnzippedFolder }) {}
+  constructor(public payload: { product: CMRProduct, unzipped: UnzippedFolder[] }) {}
 }
 
 export class ClearUnzippedProducts implements Action {
