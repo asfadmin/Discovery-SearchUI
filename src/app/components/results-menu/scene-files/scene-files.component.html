@@ -9,7 +9,7 @@
   </app-scene-file>
 </mat-list>
 
-<div *ngIf="showUnzippedProductScreen" class="products-list">
+<div *ngIf="showUnzippedProductScreen" class="products-list zip-contents">
   <div *ngIf="openUnzippedProduct$ | async as product">
     <mat-list class="products-list">
       <app-scene-file
