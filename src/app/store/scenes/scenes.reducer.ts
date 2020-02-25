@@ -136,7 +136,6 @@ export function scenesReducer(state = initState, action: ScenesActions): ScenesS
       const unzipped = { ...state.unzipped };
       const product = action.payload.product;
 
-      console.log(unzipped);
       unzipped[product.id] = action.payload.unzipped;
 
       return {
