@@ -2,7 +2,7 @@ import { createFeatureSelector, createSelector } from '@ngrx/store';
 
 import { ScenesActionType, ScenesActions } from './scenes.action';
 
-import { CMRProduct } from '@models';
+import { CMRProduct, UnzippedFolder } from '@models';
 
 
 interface SceneEntities { [id: string]: CMRProduct; }
@@ -12,13 +12,18 @@ export interface ScenesState {
   products: SceneEntities;
   areResultsLoaded: boolean;
   scenes: {[id: string]: string[]};
-
+  unzipped: {[id: string]: UnzippedFolder[]};
+  openUnzippedProduct: string | null;
+  productUnzipLoading: string | null;
   selected: string | null;
 }
 
 export const initState: ScenesState = {
   ids: [],
   scenes: {},
+  unzipped: {},
+  productUnzipLoading: null,
+  openUnzippedProduct: null,
   products: {},
   areResultsLoaded: false,
 
@@ -119,6 +124,49 @@ export function scenesReducer(state = initState, action: ScenesActions): ScenesS
       };
     }
 
+    case ScenesActionType.LOAD_UNZIPPED_PRODUCT: {
+      return {
+        ...state,
+        productUnzipLoading: action.payload.id,
+        openUnzippedProduct: action.payload.id
+      };
+    }
+
+    case ScenesActionType.ADD_UNZIPPED_PRODUCT: {
+      const unzipped = { ...state.unzipped };
+      const product = action.payload.product;
+
+      unzipped[product.id] = action.payload.unzipped;
+
+      return {
+        ...state,
+        unzipped,
+        productUnzipLoading: null,
+      };
+    }
+
+    case ScenesActionType.ERROR_LOADING_UNZIPPED: {
+      return {
+        ...state,
+        productUnzipLoading: null
+      };
+    }
+
+    case ScenesActionType.CLOSE_ZIP_CONTENTS: {
+      return {
+        ...state,
+        openUnzippedProduct: null
+      };
+    }
+
+    case ScenesActionType.CLEAR_UNZIPPED_PRODUCTS: {
+      return {
+        ...state,
+        unzipped: {},
+        productUnzipLoading: null,
+      };
+    }
+
     case ScenesActionType.CLEAR: {
       return initState;
     }
@@ -158,7 +206,9 @@ const selectNext = (state, scenes, scene) => {
 
   return {
     ...state,
-    selected: nextScene.id
+    selected: nextScene.id,
+    openUnzippedProduct: null,
+    productUnzipLoading: null,
   };
 };
 
@@ -187,7 +237,9 @@ const selectPrevious = (state, scenes, scene) => {
 
   return {
     ...state,
-    selected: previousScene.id
+    selected: previousScene.id,
+    openUnzippedProduct: null,
+    productUnzipLoading: null,
   };
 };
 
@@ -308,7 +360,6 @@ export const getNumberOfProducts = createSelector(
   products => products.length
 );
 
-
 export const getAllSceneProducts = createSelector(
   getScenesState,
   (state: ScenesState) => {
@@ -327,8 +378,29 @@ export const getAllSceneProducts = createSelector(
   }
 );
 
-
 export const getSelectedScene = createSelector(
   getScenesState,
   (state: ScenesState) => state.products[state.selected] || null
 );
+
+export const getUnzipLoading = createSelector(
+  getScenesState,
+  (state: ScenesState) => state.productUnzipLoading
+);
+
+export const getUnzippedProducts = createSelector(
+  getScenesState,
+  (state: ScenesState) => state.unzipped
+);
+
+export const getOpenUnzippedProduct = createSelector(
+  getScenesState,
+  (state: ScenesState) => state.products[state.openUnzippedProduct] || null
+);
+
+export const getShowUnzippedProduct = createSelector(
+  getScenesState,
+  (state: ScenesState) => state.openUnzippedProduct && !state.productUnzipLoading
+);
+
+

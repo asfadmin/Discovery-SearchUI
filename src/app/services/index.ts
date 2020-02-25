@@ -20,3 +20,4 @@ export { DatasetForProductService } from './dataset-for-product.service';
 export { KeyboardService } from './keyboard.service';
 export { UserDataService } from './user-data.service';
 export { SavedSearchService } from './saved-search.service';
+export { UnzipApiService } from './unzip-api.service';

@@ -1,6 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 
-import { map } from 'rxjs/operators';
+import { combineLatest } from 'rxjs';
+import { map, withLatestFrom } from 'rxjs/operators';
 
 import { Store } from '@ngrx/store';
 import { AppState } from '@store';
@@ -14,17 +15,41 @@ import * as models from '@models';
   templateUrl: './scene-files.component.html',
   styleUrls: ['./scene-files.component.scss']
 })
-export class SceneFilesComponent {
-  public products$ = this.store$.select(scenesStore.getSelectedSceneProducts);
+export class SceneFilesComponent implements OnInit {
+  public products: models.CMRProduct;
   public queuedProductIds$ = this.store$.select(queueStore.getQueuedProductIds).pipe(
       map(names => new Set(names))
   );
+  public unzippedLoading: string;
+
+  public showUnzippedProductScreen: boolean;
+  public openUnzippedProduct$ = this.store$.select(scenesStore.getOpenUnzippedProduct);
 
   constructor(
     private store$: Store<AppState>
   ) { }
 
+  ngOnInit() {
+    this.store$.select(scenesStore.getShowUnzippedProduct).subscribe(
+      showUnzipped => this.showUnzippedProductScreen = showUnzipped
+    );
+    this.store$.select(scenesStore.getSelectedSceneProducts).subscribe(
+      products => this.products = products
+    );
+    this.store$.select(scenesStore.getUnzipLoading).subscribe(
+      unzippedLoading => this.unzippedLoading = unzippedLoading
+    );
+  }
+
   public onToggleQueueProduct(product: models.CMRProduct): void {
     this.store$.dispatch(new queueStore.ToggleProduct(product));
+  }
+
+  public onUnzipProduct(product: models.CMRProduct): void {
+    this.store$.dispatch(new scenesStore.LoadUnzippedProduct(product));
+  }
+
+  public onCloseProduct(product: models.CMRProduct): void {
+    this.store$.dispatch(new scenesStore.CloseZipContents(product));
   }
 }
