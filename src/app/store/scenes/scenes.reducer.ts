@@ -148,7 +148,8 @@ export function scenesReducer(state = initState, action: ScenesActions): ScenesS
     case ScenesActionType.ERROR_LOADING_UNZIPPED: {
       return {
         ...state,
-        productUnzipLoading: null
+        productUnzipLoading: null,
+        openUnzippedProduct: null
       };
     }
 
