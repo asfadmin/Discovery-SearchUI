@@ -207,7 +207,9 @@ const selectNext = (state, scenes, scene) => {
 
   return {
     ...state,
-    selected: nextScene.id
+    selected: nextScene.id,
+    openUnzippedProduct: null,
+    productUnzipLoading: null,
   };
 };
 
@@ -236,7 +238,9 @@ const selectPrevious = (state, scenes, scene) => {
 
   return {
     ...state,
-    selected: previousScene.id
+    selected: previousScene.id,
+    openUnzippedProduct: null,
+    productUnzipLoading: null,
   };
 };
 
