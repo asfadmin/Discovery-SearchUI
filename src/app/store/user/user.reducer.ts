@@ -17,7 +17,8 @@ export interface UserState {
 const initState: UserState = {
   auth: {
     id: null,
-    token: null
+    token: null,
+    groups: []
   },
   profile: {
     defaultDataset: 'SENTINEL-1',
@@ -46,7 +47,8 @@ export function userReducer(state = initState, action: UserActions): UserState {
         ...state,
         auth: {
           id: null,
-          token: null
+          token: null,
+          groups: []
         }
       };
     }
@@ -170,6 +172,23 @@ export const getUserAuth = createSelector(
   getUserState,
   (state: UserState) => state.auth
 );
+
+export const getHasRestrictedDataAccess = createSelector(
+  getUserState,
+  (state: UserState) => {
+    const groups = state.auth.groups;
+    const has = (
+      groups.length > 0 &&
+      groups.some(
+        group => group.name === 'HAS_ACCESS_TO_RESTRICTED_DATA'
+      )
+    );
+
+    console.log(has, groups);
+    return has;
+  }
+);
+
 
 export const getUserProfile = createSelector(
   getUserState,
