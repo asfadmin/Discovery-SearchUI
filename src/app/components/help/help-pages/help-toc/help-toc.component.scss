@@ -85,3 +85,9 @@
     color: $asf-primary;
   }
 }
+
+// delete this help-container override when the All Tutorial section is implemented
+.help-container {
+  height: 2000px;
+  background-color: lighten(lightgrey, 10%);
+}
