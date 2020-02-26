@@ -86,7 +86,9 @@ export function scenesReducer(state = initState, action: ScenesActions): ScenesS
     case ScenesActionType.SET_SELECTED_SCENE: {
       return {
         ...state,
-        selected: action.payload
+        selected: action.payload,
+        productUnzipLoading: null,
+        openUnzippedProduct: null
       };
     }
 
