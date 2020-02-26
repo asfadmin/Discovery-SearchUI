@@ -2,8 +2,11 @@
 
   <header>
     <div mat-dialog-title class="help-header"><h3>Search Help</h3></div>
-    <div class="help-menu">
-      <button (click)="data.helpTopic = 'toc'">Help and Tutorials</button>
+    <div class="help-menu" *ngIf="data.helpTopic != 'toc'">
+      <button mat-raised-button color="accent"
+              (click)="data.helpTopic = 'toc'">
+        All Help & Tutorials
+      </button>
     </div>
   </header>
 
