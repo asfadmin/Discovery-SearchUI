@@ -403,5 +403,3 @@ export const getShowUnzippedProduct = createSelector(
   getScenesState,
   (state: ScenesState) => state.openUnzippedProduct && !state.productUnzipLoading
 );
-
-
