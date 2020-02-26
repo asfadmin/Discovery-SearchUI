@@ -39,6 +39,7 @@ export class ResultsMenuComponent implements OnInit {
 
   public breakpoint$ = this.screenSize.breakpoint$;
   public breakpoints = models.Breakpoints;
+  public isUnzipOpen: boolean;
 
   constructor(
     private store$: Store<AppState>,
@@ -48,6 +49,9 @@ export class ResultsMenuComponent implements OnInit {
 
   ngOnInit() {
     this.menuHeightPx = this.defaultMenuHeight();
+    this.store$.select(scenesStore.getShowUnzippedProduct).subscribe(
+      showUnzippedProduct => this.isUnzipOpen = showUnzippedProduct
+    );
   }
 
   @HostListener('window:resize', ['$event'])

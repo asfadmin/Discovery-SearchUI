@@ -6,12 +6,14 @@
     <mat-icon
       *ngIf="!isUnzipLoading && !isOpen"
       (click)="onLoadUnzippedPoduct()"
+      matTooltip="Show contents"
       class="clickable">
         keyboard_arrow_right
     </mat-icon>
     <mat-icon
       *ngIf="isOpen"
       (click)="onCloseProduct()"
+      matTooltip="Close contents"
       class="clickable">
         keyboard_arrow_down
     </mat-icon>

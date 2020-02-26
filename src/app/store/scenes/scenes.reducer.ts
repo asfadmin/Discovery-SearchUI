@@ -124,6 +124,13 @@ export function scenesReducer(state = initState, action: ScenesActions): ScenesS
       };
     }
 
+    case ScenesActionType.OPEN_UNZIPPED_PRODUCT: {
+      return {
+        ...state,
+        openUnzippedProduct: action.payload.id
+      };
+    }
+
     case ScenesActionType.LOAD_UNZIPPED_PRODUCT: {
       return {
         ...state,
@@ -403,5 +410,3 @@ export const getShowUnzippedProduct = createSelector(
   getScenesState,
   (state: ScenesState) => state.openUnzippedProduct && !state.productUnzipLoading
 );
-
-

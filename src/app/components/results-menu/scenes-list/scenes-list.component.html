@@ -15,12 +15,10 @@
              class="size" matListAvatar>
 
         <div [title]="scene.name" class="bold" matLine>
-          <span>
-            <span> {{ scene.name | truncate : sceneNameLen }}</span>
-            <span *ngIf="scene.dataset === 'Sentinel-1B' || scene.dataset === 'Sentinel-1A'">{{ scene.name.substr(scene.name.length - 4) }}</span>
-            <span *ngIf="scene.dataset === 'Sentinel-1 Interferogram (BETA)'"
-            >{{ scene.name.substr(scene.name.length - 11) }}</span>
-          </span>
+          <app-file-name
+            [name]="scene.name"
+            [dataset]="scene.dataset">
+          </app-file-name>
 
           <span style="margin-left: 5px;">
             <app-copy-to-clipboard

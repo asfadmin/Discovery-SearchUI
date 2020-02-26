@@ -5,6 +5,7 @@ import { PipesModule } from '@pipes';
 import { TruncateModule } from '@yellowspot/ng-truncate';
 
 import { MatSharedModule } from '@shared';
+import { FileNameModule } from '@components/shared/file-name';
 import { FileContentsComponent } from './file-contents.component';
 
 
@@ -17,6 +18,7 @@ import { FileContentsComponent } from './file-contents.component';
     MatSharedModule,
     PipesModule,
     TruncateModule,
+    FileNameModule
   ],
   exports: [
     FileContentsComponent

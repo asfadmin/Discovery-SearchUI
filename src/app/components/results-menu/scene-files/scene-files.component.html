@@ -1,7 +1,7 @@
 <mat-list *ngIf="!showUnzippedProductScreen" class="products-list">
   <app-scene-file *ngFor="let product of products"
     (toggle)="onToggleQueueProduct(product)"
-    (unzip)="onUnzipProduct($event)"
+    (unzip)="onOpenUnzipProduct($event)"
     [product]="product"
     [isUnzipLoading]="unzippedLoading === product.id"
     [isQueued]="(queuedProductIds$ | async).has(product.id)"
@@ -14,7 +14,7 @@
     <mat-list class="products-list">
       <app-scene-file
         (toggle)="onToggleQueueProduct(product)"
-        (unzip)="onUnzipProduct($event)"
+        (unzip)="onOpenUnzipProduct($event)"
         (closeProduct)="onCloseProduct($event)"
         [product]="product"
         [isUnzipLoading]="unzippedLoading === product.id"
