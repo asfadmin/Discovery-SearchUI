@@ -14,6 +14,7 @@ export class SceneFileComponent {
   @Input() isUnzipLoading: boolean;
   @Input() isOpen: boolean;
   @Input() isUserLoggedIn: boolean;
+  @Input() hasAccessToRestrictedData: boolean;
 
   @Output() toggle = new EventEmitter<void>();
   @Output() unzip = new EventEmitter<models.CMRProduct>();
@@ -37,6 +38,32 @@ export class SceneFileComponent {
 
   public onCloseProduct(): void {
     this.closeProduct.emit(this.product);
+  }
+
+  public isUnzipDisabled(isLoggedIn: boolean, hasAccess: boolean): boolean {
+    return (
+      !isLoggedIn ||
+      (this.isRestrictedDataset() && !hasAccess)
+    );
+  }
+
+  private isRestrictedDataset(): boolean {
+    return (
+      this.product.dataset.includes('RADARSAT-1') ||
+      this.product.dataset.includes('JERS-1')
+    );
+  }
+
+  public unzipTooltip(isLoggedIn: boolean, hasAccess: boolean): string {
+    if (!isLoggedIn) {
+      return 'Login to view contents';
+    }
+
+    if (this.isRestrictedDataset() && !hasAccess) {
+      return 'Cannot view restricted dataset';
+    }
+
+    return 'View file contents';
   }
 
   public canUnzip(product: models.CMRProduct): boolean {
