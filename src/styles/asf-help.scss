@@ -90,7 +90,8 @@ $top-background-color: lighten(lightgrey, 10%);
 }
 
 .help-text-block {
-  flex: 53 0 0;
+  flex: 50 0 0;
+  margin-right: 10px;
 
   p {
     margin-block-start: 0.3em;
@@ -98,7 +99,7 @@ $top-background-color: lighten(lightgrey, 10%);
 }
 
 .help-graphic {
-  flex: 40 0 0;
+  flex: 43 0 0;
 
   img {
     border: $img-border-style;
