@@ -1,0 +1,61 @@
+@import "asf-theme";
+
+$side-padding-only: 0 15px 0 15px;
+
+.help-dialog-wrapper {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+main {
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+footer {
+  background-color: $asf-primary-light;
+}
+
+section {
+  height: 100%; /* takes the visible area of the "main" div */
+  overflow: auto; /* recommended */
+  border-bottom: 1px solid;
+}
+
+.help-header {
+  display: flex;
+  flex-direction: row;
+  background-color: $asf-primary-light;
+  color: $asf-primary-dark;
+  padding: $side-padding-only;
+  margin: 0;
+
+  h3 {
+    margin-block-start: 0.5em;
+    margin-block-end: 0.5em;
+  }
+}
+
+.help-menu {
+  display: flex;
+  flex-direction: row;
+  background-color: lighten(lightgrey, 10%);
+  padding-left: 15px;
+  padding-right: 15px;
+  padding-top: 5px;
+  padding-bottom: 5px;
+}
+
+.help-content {
+  // nothing yet
+}
+
+.help-action-controls {
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  padding: 10px 15px 10px 15px;
+}

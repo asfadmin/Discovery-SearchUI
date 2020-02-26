@@ -15,6 +15,10 @@
   color: rgba(0, 0, 0, 0.6);
 }
 
+.fainter-text {
+  color: rgba(0, 0, 0, 0.4);
+}
+
 .v-mid {
   vertical-align: middle;
 }
@@ -223,4 +227,11 @@ ul {
 #dataset-button-toggle-group .mat-button-toggle-appearance-standard .mat-button-toggle-label-content {
   line-height: 0;
   padding: 0;
+}
+
+.help-panel-config {
+  .mat-dialog-container {
+    padding: 0;
+    overflow: hidden;
+  }
 }

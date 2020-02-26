@@ -1,0 +1,45 @@
+<div class="help-dialog-wrapper">
+
+  <header>
+    <div mat-dialog-title class="help-header"><h3>Search Help</h3></div>
+    <div class="help-menu" *ngIf="data.helpTopic != 'toc'">
+      <button mat-raised-button color="accent"
+              (click)="data.helpTopic = 'toc'">
+        All Help & Tutorials
+      </button>
+    </div>
+  </header>
+
+  <main>
+      <div class="help-content">
+        <div [ngSwitch]="data.helpTopic">
+          <ng-template [ngSwitchCase]="'toc'">
+            <app-help-toc></app-help-toc>
+          </ng-template>
+          <ng-template [ngSwitchCase]="'geoSearch'">
+            <app-help-geo-search></app-help-geo-search>
+          </ng-template>
+          <ng-template [ngSwitchCase]="'listSearch'">
+            <app-help-list-search></app-help-list-search>
+          </ng-template>
+          <ng-template [ngSwitchCase]="'searchResults'">
+            <app-help-search-results></app-help-search-results>
+          </ng-template>
+          <ng-template [ngSwitchDefault]>
+            <app-help-toc></app-help-toc>
+          </ng-template>
+        </div>
+      </div>
+  </main>
+
+  <footer>
+    <div class="help-action-controls">
+      <div class="done-button">
+        <button (click)="onClose()" color="primary" mat-flat-button>
+          Done
+        </button>
+      </div>
+    </div>
+  </footer>
+
+</div>

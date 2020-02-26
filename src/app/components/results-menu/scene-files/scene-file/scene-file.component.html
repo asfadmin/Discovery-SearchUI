@@ -2,6 +2,31 @@
   (mouseenter)="isHovered = true"
   (mouseleave)="isHovered = false">
 
+  <ng-container matListIcon *ngIf="canUnzip(product)">
+    <mat-icon
+      *ngIf="!isUnzipLoading && !isOpen"
+      (click)="onLoadUnzippedPoduct()"
+      [matTooltip]="isUserLoggedIn ? 'View file contents' : 'Login to view contents'"
+      [class.clickable]="isUserLoggedIn"
+      [class.fainter-text]="!isUserLoggedIn"
+      [class.disabled-cursor]="!isUserLoggedIn">
+        keyboard_arrow_right
+    </mat-icon>
+    <mat-icon
+      *ngIf="isOpen"
+      (click)="onCloseProduct()"
+      matTooltip="Close contents"
+      class="clickable">
+        keyboard_arrow_down
+    </mat-icon>
+    <div *ngIf="isUnzipLoading">
+      <fa-icon icon="spinner" [pulse]="true"></fa-icon>
+    </div>
+  </ng-container>
+  <ng-container matListIcon *ngIf="!canUnzip(product)">
+    <mat-icon mat-icon-button disabled></mat-icon>
+  </ng-container>
+
   <div class="clickable" mat-line>
     <b>
       <span *ngIf="product.productTypeDisplay.length > 40">

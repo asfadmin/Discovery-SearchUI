@@ -28,6 +28,14 @@ import { AppComponent } from './app.component';
 import { FlexLayoutModule } from '@angular/flex-layout';
 
 import {NgcCookieConsentModule, NgcCookieConsentConfig} from 'ngx-cookieconsent';
+import { HelpComponent } from './components/help/help.component';
+import { HelpGeoSearchComponent } from './components/help/help-pages/help-geo-search/help-geo-search.component';
+import {MatMenuModule} from '@angular/material/menu';
+import {MatFormFieldModule} from '@angular/material/form-field';
+import {MatDialogModule} from '@angular/material/dialog';
+import { HelpListSearchComponent } from './components/help/help-pages/help-list-search/help-list-search.component';
+import { HelpSearchResultsComponent } from './components/help/help-pages/help-search-results/help-search-results.component';
+import { HelpTocComponent } from './components/help/help-pages/help-toc/help-toc.component';
 
 // info about cookie consent module: https://tinesoft.github.io/ngx-cookieconsent/home
 const cookieConfig: NgcCookieConsentConfig = {
@@ -67,6 +75,11 @@ export const routes = [
 @NgModule({
   declarations: [
     AppComponent,
+    HelpComponent,
+    HelpGeoSearchComponent,
+    HelpListSearchComponent,
+    HelpSearchResultsComponent,
+    HelpTocComponent,
   ],
   imports: [
     BrowserModule,
@@ -76,10 +89,10 @@ export const routes = [
     MatSnackBarModule,
     MatBottomSheetModule,
     MatSharedModule,
-    FlexLayoutModule.withConfig({ disableDefaultBps: true },
+    FlexLayoutModule.withConfig({disableDefaultBps: true},
       CustomBreakPointsProvider.useValue),
-    RouterModule.forRoot(routes, { useHash: true }),
-    StoreModule.forRoot(store.reducers, { metaReducers: store.metaReducers }),
+    RouterModule.forRoot(routes, {useHash: true}),
+    StoreModule.forRoot(store.reducers, {metaReducers: store.metaReducers}),
     EffectsModule.forRoot(store.appEffects),
     !environment.production ? StoreDevtoolsModule.instrument() : [],
     MatSidenavModule,
@@ -87,6 +100,9 @@ export const routes = [
     MapModule,
     ResultsMenuModule,
     NavBarModule,
+    MatMenuModule,
+    MatFormFieldModule,
+    MatDialogModule,
   ],
   providers: [
     services.AsfApiService,
@@ -109,6 +125,7 @@ export const routes = [
     CustomBreakPointsProvider,
     services.UserDataService,
     services.SavedSearchService,
+    services.UnzipApiService,
   ],
   bootstrap: [ AppComponent ],
 })
