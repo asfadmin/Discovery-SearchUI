@@ -24,6 +24,7 @@ export class SceneFilesComponent implements OnInit {
 
   public showUnzippedProductScreen: boolean;
   public openUnzippedProduct$ = this.store$.select(scenesStore.getOpenUnzippedProduct);
+  public unzippedProducts: {[id: string]: models.UnzippedFolder[]};
 
   constructor(
     private store$: Store<AppState>
@@ -32,6 +33,9 @@ export class SceneFilesComponent implements OnInit {
   ngOnInit() {
     this.store$.select(scenesStore.getShowUnzippedProduct).subscribe(
       showUnzipped => this.showUnzippedProductScreen = showUnzipped
+    );
+    this.store$.select(scenesStore.getUnzippedProducts).subscribe(
+      unzippedProducts => this.unzippedProducts = unzippedProducts
     );
     this.store$.select(scenesStore.getSelectedSceneProducts).subscribe(
       products => this.products = products
@@ -45,8 +49,12 @@ export class SceneFilesComponent implements OnInit {
     this.store$.dispatch(new queueStore.ToggleProduct(product));
   }
 
-  public onUnzipProduct(product: models.CMRProduct): void {
-    this.store$.dispatch(new scenesStore.LoadUnzippedProduct(product));
+  public onOpenUnzipProduct(product: models.CMRProduct): void {
+    if (this.unzippedProducts[product.id]) {
+      this.store$.dispatch(new scenesStore.OpenUnzippedProduct(product));
+    } else {
+      this.store$.dispatch(new scenesStore.LoadUnzippedProduct(product));
+    }
   }
 
   public onCloseProduct(product: models.CMRProduct): void {
