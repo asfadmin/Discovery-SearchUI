@@ -177,15 +177,12 @@ export const getHasRestrictedDataAccess = createSelector(
   getUserState,
   (state: UserState) => {
     const groups = state.auth.groups;
-    const has = (
+    return (
       groups.length > 0 &&
       groups.some(
         group => group.name === 'HAS_ACCESS_TO_RESTRICTED_DATA'
       )
     );
-
-    console.log(has, groups);
-    return has;
   }
 );
 
