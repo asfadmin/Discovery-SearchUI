@@ -11,7 +11,7 @@
         </app-file-name>
       </div>
       <div style="font-weight: 400;">
-        {{ node.size | readableSizeFromBytes }}
+        {{ node.size | readableSizeFromBytes }} {{ extension(node.name) }}
       </div>
     </div>
     <div style="margin-left: 10px; margin-bottom: 15px;">

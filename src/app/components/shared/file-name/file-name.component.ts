@@ -12,12 +12,11 @@ import { ScreenSizeService } from '@services';
 export class FileNameComponent implements OnInit {
   @Input() name: string;
   @Input() dataset: string;
+  @Input() isFilename: boolean;
 
   public sceneNameLen: number;
 
-  constructor(
-    private screenSize: ScreenSizeService,
-  ) { }
+  constructor(private screenSize: ScreenSizeService) { }
 
   ngOnInit(): void {
     this.screenSize.size$.pipe(
@@ -32,5 +31,4 @@ export class FileNameComponent implements OnInit {
       }),
     ).subscribe(len => this.sceneNameLen = len);
   }
-
 }

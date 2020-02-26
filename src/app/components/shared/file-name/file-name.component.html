@@ -1,5 +1,6 @@
 <span>
-  <span> {{ name | truncate : sceneNameLen }}</span>
+  <span>{{ name | truncate : sceneNameLen }}</span>
+
   <span *ngIf="dataset === 'Sentinel-1B' || dataset === 'Sentinel-1A'">
     {{ name.substr(name.length - 4) }}
   </span>

@@ -74,4 +74,11 @@ export class FileContentsComponent implements OnInit {
   }
 
   hasChild = (_: number, node: ExampleFlatNode) => node.expandable;
+
+  public extension(filename: string): string {
+    const fileExtension = filename.split('.').pop();
+
+    return !fileExtension ?
+      '' : `(${fileExtension})`;
+  }
 }
