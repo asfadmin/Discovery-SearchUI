@@ -6,8 +6,10 @@
     <mat-icon
       *ngIf="!isUnzipLoading && !isOpen"
       (click)="onLoadUnzippedPoduct()"
-      matTooltip="Show contents"
-      class="clickable">
+      [matTooltip]="isUserLoggedIn ? 'View file contents' : 'Login to view contents'"
+      [class.clickable]="isUserLoggedIn"
+      [class.fainter-text]="!isUserLoggedIn"
+      [class.disabled-cursor]="!isUserLoggedIn">
         keyboard_arrow_right
     </mat-icon>
     <mat-icon

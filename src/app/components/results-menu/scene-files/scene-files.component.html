@@ -3,6 +3,7 @@
     (toggle)="onToggleQueueProduct(product)"
     (unzip)="onOpenUnzipProduct($event)"
     [product]="product"
+    [isUserLoggedIn]="isUserLoggedIn"
     [isUnzipLoading]="unzippedLoading === product.id"
     [isQueued]="(queuedProductIds$ | async).has(product.id)"
     [isOpen]="false">
@@ -17,6 +18,7 @@
         (unzip)="onOpenUnzipProduct($event)"
         (closeProduct)="onCloseProduct($event)"
         [product]="product"
+        [isUserLoggedIn]="isUserLoggedIn"
         [isUnzipLoading]="unzippedLoading === product.id"
         [isQueued]="(queuedProductIds$ | async).has(product.id)"
         [isOpen]="true">

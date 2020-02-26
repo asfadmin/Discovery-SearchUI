@@ -7,6 +7,7 @@ import { Store } from '@ngrx/store';
 import { AppState } from '@store';
 import * as scenesStore from '@store/scenes';
 import * as queueStore from '@store/queue';
+import * as userStore from '@store/user';
 
 import * as models from '@models';
 
@@ -25,12 +26,16 @@ export class SceneFilesComponent implements OnInit {
   public showUnzippedProductScreen: boolean;
   public openUnzippedProduct$ = this.store$.select(scenesStore.getOpenUnzippedProduct);
   public unzippedProducts: {[id: string]: models.UnzippedFolder[]};
+  public isUserLoggedIn: boolean;
 
   constructor(
     private store$: Store<AppState>
   ) { }
 
   ngOnInit() {
+    this.store$.select(userStore.getIsUserLoggedIn).subscribe(
+      isLoggedIn => this.isUserLoggedIn = isLoggedIn
+    );
     this.store$.select(scenesStore.getShowUnzippedProduct).subscribe(
       showUnzipped => this.showUnzippedProductScreen = showUnzipped
     );

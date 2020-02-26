@@ -13,6 +13,7 @@ export class SceneFileComponent {
   @Input() isQueued: boolean;
   @Input() isUnzipLoading: boolean;
   @Input() isOpen: boolean;
+  @Input() isUserLoggedIn: boolean;
 
   @Output() toggle = new EventEmitter<void>();
   @Output() unzip = new EventEmitter<models.CMRProduct>();
@@ -27,6 +28,10 @@ export class SceneFileComponent {
   }
 
   public onLoadUnzippedPoduct(): void {
+    if (!this.isUserLoggedIn) {
+      return;
+    }
+
     this.unzip.emit(this.product);
   }
 
