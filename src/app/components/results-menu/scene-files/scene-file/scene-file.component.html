@@ -6,10 +6,10 @@
     <mat-icon
       *ngIf="!isUnzipLoading && !isOpen"
       (click)="onLoadUnzippedPoduct()"
-      [matTooltip]="isUserLoggedIn ? 'View file contents' : 'Login to view contents'"
-      [class.clickable]="isUserLoggedIn"
-      [class.fainter-text]="!isUserLoggedIn"
-      [class.disabled-cursor]="!isUserLoggedIn">
+      [matTooltip]="unzipTooltip(isUserLoggedIn, hasAccessToRestrictedData)"
+      [class.clickable]="!isUnzipDisabled(isUserLoggedIn, hasAccessToRestrictedData)"
+      [class.fainter-text]="isUnzipDisabled(isUserLoggedIn, hasAccessToRestrictedData)"
+      [class.disabled-cursor]="isUnzipDisabled(isUserLoggedIn, hasAccessToRestrictedData)">
         keyboard_arrow_right
     </mat-icon>
     <mat-icon

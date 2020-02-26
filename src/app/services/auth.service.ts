@@ -110,20 +110,28 @@ export class AuthService {
     const token = cookies['asf-urs'];
 
     if (!token) {
-      return this.makeUser(null, null);
+      return this.nullUser();
     }
 
     const user = jwt_decode(token);
 
     if (this.isExpired(user)) {
-      return this.makeUser(null, null);
+      return this.nullUser();
     }
 
-    return this.makeUser(user['urs-user-id'], token);
+    return this.makeUser(
+      user['urs-user-id'],
+      user['urs-groups'],
+      token
+    );
   }
 
-  private makeUser(id: string | null, token: string | null): models.UserAuth {
-    return { id, token };
+  private makeUser(id: string, groups: models.URSGroup[], token: string): models.UserAuth {
+    return { id, token, groups };
+  }
+
+  private nullUser(): models.UserAuth {
+    return { id: null, token: null, groups: [] };
   }
 
   private isExpired(userToken): boolean {

@@ -27,6 +27,7 @@ export class SceneFilesComponent implements OnInit {
   public openUnzippedProduct$ = this.store$.select(scenesStore.getOpenUnzippedProduct);
   public unzippedProducts: {[id: string]: models.UnzippedFolder[]};
   public isUserLoggedIn: boolean;
+  public hasAccessToRestrictedData: boolean;
 
   constructor(
     private store$: Store<AppState>
@@ -35,6 +36,9 @@ export class SceneFilesComponent implements OnInit {
   ngOnInit() {
     this.store$.select(userStore.getIsUserLoggedIn).subscribe(
       isLoggedIn => this.isUserLoggedIn = isLoggedIn
+    );
+    this.store$.select(userStore.getHasRestrictedDataAccess).subscribe(
+      hasAccess => this.hasAccessToRestrictedData = hasAccess
     );
     this.store$.select(scenesStore.getShowUnzippedProduct).subscribe(
       showUnzipped => this.showUnzippedProductScreen = showUnzipped

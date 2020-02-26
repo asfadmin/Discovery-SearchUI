@@ -4,6 +4,7 @@
     (unzip)="onOpenUnzipProduct($event)"
     [product]="product"
     [isUserLoggedIn]="isUserLoggedIn"
+    [hasAccessToRestrictedData]="hasAccessToRestrictedData"
     [isUnzipLoading]="unzippedLoading === product.id"
     [isQueued]="(queuedProductIds$ | async).has(product.id)"
     [isOpen]="false">
@@ -19,14 +20,14 @@
         (closeProduct)="onCloseProduct($event)"
         [product]="product"
         [isUserLoggedIn]="isUserLoggedIn"
+        [hasAccessToRestrictedData]="hasAccessToRestrictedData"
         [isUnzipLoading]="unzippedLoading === product.id"
         [isQueued]="(queuedProductIds$ | async).has(product.id)"
         [isOpen]="true">
       </app-scene-file>
     </mat-list>
     <div>
-      <app-file-contents
-        [product]="product">
+      <app-file-contents [product]="product">
       </app-file-contents>
     </div>
   </div>
