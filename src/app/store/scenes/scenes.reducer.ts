@@ -77,7 +77,9 @@ export function scenesReducer(state = initState, action: ScenesActions): ScenesS
 
         areResultsLoaded: true,
         products,
-        scenes
+        scenes,
+        productUnzipLoading: null,
+        openUnzippedProduct: null
       };
     }
 

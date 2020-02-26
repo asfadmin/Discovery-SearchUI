@@ -2,7 +2,7 @@ import { Component, OnInit, Input } from '@angular/core';
 import { FlatTreeControl } from '@angular/cdk/tree';
 import { MatTreeFlatDataSource, MatTreeFlattener } from '@angular/material/tree';
 
-import { map } from 'rxjs/operators';
+import { map, tap, filter } from 'rxjs/operators';
 import { Store } from '@ngrx/store';
 import { AppState } from '@store';
 import * as scenesStore from '@store/scenes';
@@ -54,7 +54,8 @@ export class FileContentsComponent implements OnInit {
 
   ngOnInit(): void {
     this.store$.select(scenesStore.getUnzippedProducts).pipe(
-      map(unzipped => unzipped[this.product.id])
+      map(unzipped => unzipped[this.product.id]),
+      filter(unzipped => !!unzipped),
     ).subscribe(
       unzipped => this.dataSource.data = unzipped
     );
