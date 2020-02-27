@@ -43,6 +43,7 @@ export class ProductService {
           browses,
           thumbnail,
           groupId: g.gid.replace('{gn}', g.gn),
+          isUnzippedFile: false,
           metadata: this.getMetadataFrom(g)
         });
       }

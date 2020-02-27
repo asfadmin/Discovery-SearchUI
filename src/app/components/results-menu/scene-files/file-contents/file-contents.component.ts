@@ -90,13 +90,22 @@ export class FileContentsComponent implements OnInit {
   }
 
   public productFromNode(node, product): CMRProduct {
+    const extension = this.extension(node.name);
+
+    const productTypeDisplay = `${this.product.productTypeDisplay} ${extension}`;
     return {
       ...this.product,
       bytes: node.size,
-      id: product.id + node.name,
+      id: this.makeUnzippedId(node, product),
       downloadUrl: node.url,
       name: node.name,
+      productTypeDisplay,
+      isUnzippedFile: true,
       metadata: { ...this.product.metadata }
     };
+  }
+
+  public makeUnzippedId(node, product): string {
+    return product.id + node.name;
   }
 }

@@ -39,6 +39,7 @@
               </div>
 
               <app-copy-to-clipboard
+                 *ngIf="!product.isUnzippedFile"
                  style="margin-right: 15px;"
                  prompt="Copy File ID"
                  [value]="product.id">
