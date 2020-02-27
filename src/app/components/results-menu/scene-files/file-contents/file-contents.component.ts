@@ -47,6 +47,7 @@ export class FileContentsComponent implements OnInit {
   );
 
   dataSource = new MatTreeFlatDataSource(this.treeControl, this.treeFlattener);
+  public queuedProductIds: Set<string>;
 
   constructor(
     private store$: Store<AppState>,
@@ -59,6 +60,12 @@ export class FileContentsComponent implements OnInit {
       filter(unzipped => !!unzipped),
     ).subscribe(
       unzipped => this.dataSource.data = unzipped
+    );
+
+    this.store$.select(queueStore.getQueuedProductIds).pipe(
+      map(names => new Set(names))
+    ).subscribe(
+      ids => this.queuedProductIds = ids
     );
 
     this.screenSize.size$.pipe(
@@ -107,5 +114,12 @@ export class FileContentsComponent implements OnInit {
 
   public makeUnzippedId(node, product): string {
     return product.id + node.name;
+  }
+
+  public isQueued(node: ExampleFlatNode): boolean {
+    console.log(node);
+    const nodeId = this. makeUnzippedId(node, this.product);
+
+    return this.queuedProductIds.has(nodeId);
   }
 }

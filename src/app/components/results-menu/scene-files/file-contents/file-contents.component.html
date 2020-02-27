@@ -23,9 +23,10 @@
       </a>
 
       <a (click)="onToggleQueueProduct(node)"
-         matTooltip="Add file to downloads"
+         [matTooltip]="!isQueued(node) ? 'Add file to downloads' : 'Remove file from downloads'"
          mat-icon-button>
-          <mat-icon>add_shopping_cart</mat-icon>
+          <mat-icon *ngIf="!isQueued(node)">add_shopping_cart</mat-icon>
+          <mat-icon *ngIf="isQueued(node)">shopping_cart</mat-icon>
       </a>
     </div>
   </mat-tree-node>
