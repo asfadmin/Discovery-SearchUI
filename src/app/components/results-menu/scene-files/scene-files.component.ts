@@ -84,18 +84,18 @@ export class SceneFilesComponent implements OnInit {
   }
 
   public getBeforeWithUnzip(products: models.CMRProduct[]): models.CMRProduct[] {
-    let pivotIdx = 0;
-
-    products.forEach((product, idx) => {
-      if (this.openUnzippedProduct.id === product.id) {
-        pivotIdx = idx;
-      }
-    });
+    const pivotIdx = this.getPivotIdx(products);
 
     return products.slice(0, pivotIdx + 1);
   }
 
   public getAfterUnzip(products: models.CMRProduct[]): models.CMRProduct[] {
+    const pivotIdx = this.getPivotIdx(products);
+
+    return products.slice(pivotIdx + 1, products.length);
+  }
+
+  public getPivotIdx(products): number {
     let pivotIdx = 0;
 
     products.forEach((product, idx) => {
@@ -104,6 +104,6 @@ export class SceneFilesComponent implements OnInit {
       }
     });
 
-    return products.slice(pivotIdx + 1, products.length);
+    return pivotIdx;
   }
 }
