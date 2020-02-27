@@ -6,6 +6,7 @@ import { map, tap, filter } from 'rxjs/operators';
 import { Store } from '@ngrx/store';
 import { AppState } from '@store';
 import * as scenesStore from '@store/scenes';
+import * as queueStore from '@store/queue';
 
 import { ScreenSizeService } from '@services';
 import { UnzippedFolder, CMRProduct } from '@models';
@@ -80,5 +81,22 @@ export class FileContentsComponent implements OnInit {
 
     return !fileExtension ?
       '' : `(${fileExtension})`;
+  }
+
+  public onToggleQueueProduct(node: ExampleFlatNode): void {
+    const fileProduct = this.productFromNode(node, this.product);
+
+    this.store$.dispatch(new queueStore.ToggleProduct(fileProduct));
+  }
+
+  public productFromNode(node, product): CMRProduct {
+    return {
+      ...this.product,
+      bytes: node.size,
+      id: product.id + node.name,
+      downloadUrl: node.url,
+      name: node.name,
+      metadata: { ...this.product.metadata }
+    };
   }
 }

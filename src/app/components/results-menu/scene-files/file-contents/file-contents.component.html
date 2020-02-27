@@ -21,6 +21,12 @@
         matTooltip="Download file">
           <mat-icon>cloud_download</mat-icon>
       </a>
+
+      <a (click)="onToggleQueueProduct(node)"
+         matTooltip="Add file to downloads"
+         mat-icon-button>
+          <mat-icon>add_shopping_cart</mat-icon>
+      </a>
     </div>
   </mat-tree-node>
 
