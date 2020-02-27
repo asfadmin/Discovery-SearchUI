@@ -96,6 +96,7 @@ export class QueueComponent implements OnInit, OnDestroy {
 
   public onCopyQueue(products: CMRProduct[]): void {
     const productListStr = products
+      .filter(product => !product.isUnzippedFile)
       .map(product => product.id)
       .join(',');
 

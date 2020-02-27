@@ -5,6 +5,7 @@ import { FontAwesomeModule, FaIconLibrary } from '@fortawesome/angular-fontaweso
 import { faSpinner, fas } from '@fortawesome/free-solid-svg-icons';
 import { MatSharedModule } from '@shared';
 import { CopyToClipboardModule } from '@components/shared/copy-to-clipboard';
+import { CartToggleModule } from '@components/shared/cart-toggle';
 import { TruncateModule } from '@yellowspot/ng-truncate';
 import { PipesModule } from '@pipes';
 
@@ -18,6 +19,7 @@ import { SceneFileComponent } from './scene-file.component';
     FontAwesomeModule,
     MatSharedModule,
     CopyToClipboardModule,
+    CartToggleModule,
     TruncateModule,
     PipesModule,
   ],
