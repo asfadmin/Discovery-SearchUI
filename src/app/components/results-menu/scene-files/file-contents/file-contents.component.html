@@ -22,12 +22,10 @@
           <mat-icon>cloud_download</mat-icon>
       </a>
 
-      <a (click)="onToggleQueueProduct(node)"
-         [matTooltip]="!isQueued(node) ? 'Add file to downloads' : 'Remove file from downloads'"
-         mat-icon-button>
-          <mat-icon *ngIf="!isQueued(node)">add_shopping_cart</mat-icon>
-          <mat-icon *ngIf="isQueued(node)">shopping_cart</mat-icon>
-      </a>
+      <app-cart-toggle
+        (toggle)="onToggleQueueProduct(node)"
+        [isQueued]="isQueued(node)">
+      </app-cart-toggle>
     </div>
   </mat-tree-node>
 

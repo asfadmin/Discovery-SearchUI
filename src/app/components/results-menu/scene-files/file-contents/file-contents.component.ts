@@ -117,7 +117,6 @@ export class FileContentsComponent implements OnInit {
   }
 
   public isQueued(node: ExampleFlatNode): boolean {
-    console.log(node);
     const nodeId = this. makeUnzippedId(node, this.product);
 
     return this.queuedProductIds.has(nodeId);

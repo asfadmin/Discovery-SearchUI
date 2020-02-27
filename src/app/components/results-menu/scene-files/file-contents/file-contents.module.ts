@@ -6,6 +6,8 @@ import { TruncateModule } from '@yellowspot/ng-truncate';
 
 import { MatSharedModule } from '@shared';
 import { FileNameModule } from '@components/shared/file-name';
+import { CartToggleModule } from '@components/shared/cart-toggle';
+
 import { FileContentsComponent } from './file-contents.component';
 
 
@@ -18,7 +20,8 @@ import { FileContentsComponent } from './file-contents.component';
     MatSharedModule,
     PipesModule,
     TruncateModule,
-    FileNameModule
+    FileNameModule,
+    CartToggleModule
   ],
   exports: [
     FileContentsComponent
