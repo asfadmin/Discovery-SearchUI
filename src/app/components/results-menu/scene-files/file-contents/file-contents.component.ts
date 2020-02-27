@@ -6,6 +6,7 @@ import { map, tap, filter } from 'rxjs/operators';
 import { Store } from '@ngrx/store';
 import { AppState } from '@store';
 import * as scenesStore from '@store/scenes';
+import * as queueStore from '@store/queue';
 
 import { ScreenSizeService } from '@services';
 import { UnzippedFolder, CMRProduct } from '@models';
@@ -46,6 +47,7 @@ export class FileContentsComponent implements OnInit {
   );
 
   dataSource = new MatTreeFlatDataSource(this.treeControl, this.treeFlattener);
+  public queuedProductIds: Set<string>;
 
   constructor(
     private store$: Store<AppState>,
@@ -58,6 +60,12 @@ export class FileContentsComponent implements OnInit {
       filter(unzipped => !!unzipped),
     ).subscribe(
       unzipped => this.dataSource.data = unzipped
+    );
+
+    this.store$.select(queueStore.getQueuedProductIds).pipe(
+      map(names => new Set(names))
+    ).subscribe(
+      ids => this.queuedProductIds = ids
     );
 
     this.screenSize.size$.pipe(
@@ -80,5 +88,37 @@ export class FileContentsComponent implements OnInit {
 
     return !fileExtension ?
       '' : `(${fileExtension})`;
+  }
+
+  public onToggleQueueProduct(node: ExampleFlatNode): void {
+    const fileProduct = this.productFromNode(node, this.product);
+
+    this.store$.dispatch(new queueStore.ToggleProduct(fileProduct));
+  }
+
+  public productFromNode(node, product): CMRProduct {
+    const extension = this.extension(node.name);
+
+    const productTypeDisplay = `${this.product.productTypeDisplay} ${extension}`;
+    return {
+      ...this.product,
+      bytes: node.size,
+      id: this.makeUnzippedId(node, product),
+      downloadUrl: node.url,
+      name: node.name,
+      productTypeDisplay,
+      isUnzippedFile: true,
+      metadata: { ...this.product.metadata }
+    };
+  }
+
+  public makeUnzippedId(node, product): string {
+    return product.id + node.name;
+  }
+
+  public isQueued(node: ExampleFlatNode): boolean {
+    const nodeId = this. makeUnzippedId(node, this.product);
+
+    return this.queuedProductIds.has(nodeId);
   }
 }
