@@ -19,5 +19,4 @@ export class HelpComponent implements OnInit {
   public onClose(): void {
     this.dialogRef.close();
   }
-
 }
