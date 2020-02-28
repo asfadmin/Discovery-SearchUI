@@ -136,7 +136,7 @@ export class SavedSearchesComponent implements OnInit {
 
   private notifyUserListTooLong(len: number, strType: string): void {
     this.snackBar.open(
-      `${strType} too long, must be under 10,000 charecters to save (${len.toLocaleString()})`, `ERROR`,
+      `${strType} too long, must be under 10,000 characters to save (${len.toLocaleString()})`, `ERROR`,
       { duration: 6000, }
     );
   }
