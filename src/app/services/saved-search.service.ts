@@ -103,4 +103,80 @@ export class SavedSearchService {
     const action = new LoadSavedSearches();
     this.store$.dispatch(action);
   }
+
+  public filterTokensFrom(searches: models.Search[]): any[] {
+    return searches.map(
+      search => ({
+        id: search.id,
+        tokens: {
+          name: search.name,
+          searchType: search.searchType,
+          ...Object.entries(search.filters).reduce(
+            (acc, [key, val]) => this.addIfHasValue(acc, key, val), {}
+          )
+        }
+      })
+    ).map(search => {
+      return {
+        id: search.id,
+        token: Object.entries(search.tokens).map(
+          ([name, val]) => `${name} ${val}`
+        )
+          .join(' ')
+          .toLowerCase()
+      };
+    });
+  }
+
+  private addIfHasValue(acc, key: string, val): Object {
+    if (!val) {
+      return acc;
+    }
+
+    if (val.length === 0) {
+      return acc;
+    }
+
+    if (Object.keys(val).length === 0) {
+      return acc;
+    }
+
+    if (key === 'productTypes') {
+      return {
+        ...acc,
+        'file types': val.map(t => t.displayName),
+        'filetypes': val.map(t => t.apiValue)
+      };
+    }
+
+    if (this.isRange(val)) {
+      const range = <models.Range<any>>val;
+      let nonNullVals = ``;
+
+      if (val.start !== null) {
+        nonNullVals += `start ${val.start} `;
+      }
+
+      if (val.end !== null) {
+        nonNullVals += `end ${val.end}`;
+      }
+
+      if (nonNullVals.length === 0) {
+        return acc;
+      }
+
+      return {...acc, [key]: nonNullVals};
+    }
+
+    return {...acc, [key]: val};
+  }
+
+  private isRange(val): val is models.Range<any> {
+    return (
+      typeof val === 'object' &&
+      'start' in val &&
+      'end' in val
+    );
+  }
+
 }
