@@ -1,4 +1,5 @@
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 import { timer } from 'rxjs';
 import { filter, switchMap, tap, delay } from 'rxjs/operators';
@@ -51,6 +52,7 @@ export class SavedSearchesComponent implements OnInit {
     private savedSearchService: SavedSearchService,
     private store$: Store<AppState>,
     private screenSize: ScreenSizeService,
+    private snackBar: MatSnackBar,
     private mapService: MapService,
     private wktService: WktService,
   ) { }
@@ -171,7 +173,7 @@ export class SavedSearchesComponent implements OnInit {
   public saveCurrentSearch(): void {
     const search = this.savedSearchService.makeCurrentSearch('');
 
-    if (!search) {
+    if (!this.searchCanBeSaved(search)) {
       return;
     }
 
@@ -179,6 +181,37 @@ export class SavedSearchesComponent implements OnInit {
 
     this.store$.dispatch(new userStore.AddNewSearch(search));
     this.savedSearchService.saveSearches();
+  }
+
+  private searchCanBeSaved(search: models.Search): boolean {
+    const maxLen = 10000;
+
+    if (search.searchType === models.SearchType.DATASET) {
+      const filters = <models.GeographicFiltersType>search.filters;
+      const len = filters.polygon !== null ? filters.polygon.length : 0;
+
+      if (len > maxLen) {
+        this.notifyUserListTooLong(len, 'Polygon');
+        return false;
+      }
+    } else if (search.searchType === models.SearchType.LIST) {
+      const filters = <models.ListFiltersType>search.filters;
+      const len = filters.list.join(',').length;
+
+      if (len > maxLen) {
+        this.notifyUserListTooLong(len, 'List');
+        return false;
+      }
+    }
+
+    return true;
+  }
+
+  private notifyUserListTooLong(len: number, strType: string): void {
+    this.snackBar.open(
+      `${strType} too long, must be under 10,000 charecters to save (${len.toLocaleString()})`, `ERROR`,
+      { duration: 6000, }
+    );
   }
 
   public updateSearchFilters(id: string): void {
