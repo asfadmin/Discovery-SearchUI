@@ -235,3 +235,8 @@ ul {
     overflow: hidden;
   }
 }
+
+.mat-list-base .mat-list-item.mat-2-line,
+.mat-list-base .mat-list-option.mat-2-line {
+  height: 58px !important;
+}

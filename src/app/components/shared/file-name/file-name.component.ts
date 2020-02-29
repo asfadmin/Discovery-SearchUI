@@ -7,7 +7,7 @@ import { ScreenSizeService } from '@services';
 @Component({
   selector: 'app-file-name',
   templateUrl: './file-name.component.html',
-  styleUrls: ['./file-name.component.css']
+  styleUrls: ['./file-name.component.scss']
 })
 export class FileNameComponent implements OnInit {
   @Input() name: string;
