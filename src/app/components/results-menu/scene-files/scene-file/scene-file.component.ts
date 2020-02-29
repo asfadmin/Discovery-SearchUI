@@ -6,7 +6,7 @@ import * as models from '@models';
 @Component({
   selector: 'app-scene-file',
   templateUrl: './scene-file.component.html',
-  styleUrls: ['./scene-file.component.css']
+  styleUrls: ['./scene-file.component.scss']
 })
 export class SceneFileComponent {
   @Input() product: models.CMRProduct;
