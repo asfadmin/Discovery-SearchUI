@@ -5,16 +5,11 @@
       <app-search-type-selector class="breadcrumb">
       </app-search-type-selector>
 
-     <div fxFlex="nogrow" class="breadcrumb additional-filters">
-        <button (click)="onToggleFiltersMenu()"
-                mat-flat-button
-                class="search-dialog-button">
-          <mat-icon>edit</mat-icon>
-          Edit Baseline
-        </button>
+      <div class="breadcrumb">
+        <app-master-scene-selector></app-master-scene-selector>
       </div>
 
-      <div fxFlex="nogrow" class="breadcrumb search-controls">
+      <div fxFlex="nogrow" class="breadcrumb">
         <app-search-button></app-search-button>
       </div>
 

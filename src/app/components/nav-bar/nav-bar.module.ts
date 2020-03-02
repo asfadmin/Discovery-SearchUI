@@ -36,6 +36,7 @@ import { AoiFilterComponent } from './dataset-nav/aoi-filter/aoi-filter.componen
 
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { BaselineNavComponent } from './baseline-nav/baseline-nav.component';
+import { MasterSceneSelectorModule } from '@components/shared/selectors/master-scene-selector';
 
 
 @NgModule({
@@ -73,6 +74,7 @@ import { BaselineNavComponent } from './baseline-nav/baseline-nav.component';
     SearchButtonModule,
     ClearButtonModule,
     NavButtonsModule,
+    MasterSceneSelectorModule,
     LogoModule,
   ],
   exports: [
