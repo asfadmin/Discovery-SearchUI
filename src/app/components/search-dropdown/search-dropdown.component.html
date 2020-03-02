@@ -11,6 +11,10 @@
         <ng-container *ngIf="selectedSearchType === searchTypes.LIST">
           List Search
         </ng-container>
+
+        <ng-container *ngIf="selectedSearchType === searchTypes.BASELINE">
+          Baseline Search
+        </ng-container>
       </div>
 
       <div fxFlex="nogrow">
@@ -28,6 +32,10 @@
 
       <ng-container *ngIf="selectedSearchType === searchTypes.LIST">
         <app-list-search></app-list-search>
+      </ng-container>
+
+      <ng-container *ngIf="selectedSearchType === searchTypes.BASELINE">
+        Baseline filters...
       </ng-container>
     </div>
 

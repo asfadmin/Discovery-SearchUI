@@ -22,6 +22,10 @@
           (openQueue)="onOpenDownloadQueue()">
         </app-list-nav>
 
+        <app-baseline-nav *ngIf="searchType === searchTypes.BASELINE"
+          (openQueue)="onOpenDownloadQueue()">
+        </app-baseline-nav>
+
         <app-info-bar *ngIf="breakpoint !== breakpoints.MOBILE"></app-info-bar>
       </div>
     </div>

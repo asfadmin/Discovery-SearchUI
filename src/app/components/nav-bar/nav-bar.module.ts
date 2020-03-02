@@ -35,6 +35,7 @@ import { ListNavComponent } from './list-nav/list-nav.component';
 import { AoiFilterComponent } from './dataset-nav/aoi-filter/aoi-filter.component';
 
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
+import { BaselineNavComponent } from './baseline-nav/baseline-nav.component';
 
 
 @NgModule({
@@ -43,7 +44,8 @@ import { MatButtonToggleModule } from '@angular/material/button-toggle';
     InfoBarComponent,
     DatasetNavComponent,
     ListNavComponent,
-    AoiFilterComponent
+    AoiFilterComponent,
+    BaselineNavComponent
   ],
   imports: [
     CommonModule,

@@ -1,0 +1,47 @@
+<ng-container *ngIf="breakpoint$ | async as breakpoint">
+  <div *ngIf="breakpoint > breakpoints.MOBILE"
+    fxLayout="row" class="breadcrumb-row">
+    <div fxLayout="row">
+      <app-search-type-selector class="breadcrumb">
+      </app-search-type-selector>
+
+     <div fxFlex="nogrow" class="breadcrumb additional-filters">
+        <button (click)="onToggleFiltersMenu()"
+                mat-flat-button
+                class="search-dialog-button">
+          <mat-icon>edit</mat-icon>
+          Edit Baseline
+        </button>
+      </div>
+
+      <div fxFlex="nogrow" class="breadcrumb search-controls">
+        <app-search-button></app-search-button>
+      </div>
+
+      <div class="icon-cluster">
+        <app-nav-buttons
+          (openQueue)="onOpenDownloadQueue()"
+          [queuedProducts]="queuedProducts$ | async">
+        </app-nav-buttons>
+      </div>
+    </div>
+  </div>
+
+  <div *ngIf="breakpoint === breakpoints.MOBILE">
+    <div class="mobile-nav-bar">
+      <button (click)="onToggleFiltersMenu()"
+          style="margin-left: 5px;"
+          mat-flat-button>
+        <mat-icon>edit</mat-icon>
+        Baseline
+      </button>
+
+      <div class="mobile-icon-cluster">
+        <app-nav-buttons
+          (openQueue)="onOpenDownloadQueue()"
+          [queuedProducts]="queuedProducts$ | async">
+        </app-nav-buttons>
+      </div>
+    </div>
+  </div>
+</ng-container>

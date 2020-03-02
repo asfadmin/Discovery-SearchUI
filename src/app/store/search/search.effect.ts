@@ -117,9 +117,9 @@ export class SearchEffects {
     switchMap(action => [
       new scenesStore.ClearScenes(),
       new uiStore.CloseAOIOptions(),
-      action.payload === models.SearchType.DATASET ?
-        new uiStore.CloseFiltersMenu() :
-        new uiStore.OpenFiltersMenu(),
+      action.payload === models.SearchType.LIST ?
+        new uiStore.OpenFiltersMenu() :
+        new uiStore.CloseFiltersMenu(),
     ])
   ));
 }
