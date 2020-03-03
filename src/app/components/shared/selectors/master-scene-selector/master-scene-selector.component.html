@@ -5,5 +5,6 @@
       type="text" name="masterScene"
       (input)="onMasterSceneChanged($event.target.value)"
       [(ngModel)]="masterScene" matInput>
+     <mat-icon matTooltip="What is this?" class="clickable faint-text" matSuffix>help</mat-icon>
   </mat-form-field>
 </form>
