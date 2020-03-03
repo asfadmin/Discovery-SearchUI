@@ -1,5 +1,6 @@
 import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
 import { SubSink } from 'subsink';
+import { MatDialog } from '@angular/material/dialog';
 import { MatSidenav } from '@angular/material/sidenav';
 
 import { Store, ActionsSubject } from '@ngrx/store';
@@ -8,7 +9,7 @@ import { of, combineLatest } from 'rxjs';
 import { skip, filter, map, switchMap, tap, catchError, debounceTime } from 'rxjs/operators';
 
 import { NgcCookieConsentService } from 'ngx-cookieconsent';
-import { Subscription } from 'rxjs-compat';
+import { BaselineChartComponent } from '@components/baseline-chart';
 
 import { AppState } from '@store';
 import * as scenesStore from '@store/scenes';
@@ -50,6 +51,7 @@ export class AppComponent implements OnInit, OnDestroy {
 
   constructor(
     private store$: Store<AppState>,
+    private dialog: MatDialog,
     private actions$: ActionsSubject,
     private mapService: services.MapService,
     private urlStateService: services.UrlStateService,
@@ -153,6 +155,10 @@ export class AppComponent implements OnInit, OnDestroy {
       const queueItems = JSON.parse(queueItemsStr);
       this.store$.dispatch(new queueStore.AddItems(queueItems));
     }
+  }
+
+  private openBaselineChart(): void {
+    const dialogRef = this.dialog.open(BaselineChartComponent);
   }
 
   public onCloseSidebar(): void {
