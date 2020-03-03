@@ -79,6 +79,7 @@ export class FileContentsComponent implements OnInit {
         }
       }),
     ).subscribe(len => this.sceneNameLen = len);
+
   }
 
   hasChild = (_: number, node: ExampleFlatNode) => node.expandable;

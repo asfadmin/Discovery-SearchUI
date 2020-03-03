@@ -3,6 +3,7 @@ import { Component, OnInit, Input } from '@angular/core';
 import { map } from 'rxjs/operators';
 
 import { ScreenSizeService } from '@services';
+import { Breakpoints } from '@models';
 
 @Component({
   selector: 'app-file-name',
@@ -21,12 +22,22 @@ export class FileNameComponent implements OnInit {
   ngOnInit(): void {
     this.screenSize.size$.pipe(
       map(size => {
-        if (size.width > 1775) {
-          return 32;
+        if (size.width > 1900) {
+          return 50;
+        } else if (size.width > 1750) {
+          return 45;
+        } else if (size.width > 1500) {
+          return 35;
         } else if (size.width > 1350) {
+          return 30;
+        } else if (size.width > 1200) {
+          return 25;
+        } else if (size.width > 1000) {
           return 20;
+        } else if (size.width > 948 ) {
+          return 15;
         } else {
-          return 10;
+          return 50;
         }
       }),
     ).subscribe(len => this.sceneNameLen = len);
