@@ -9,6 +9,7 @@ import { AppState } from '@store';
 import * as scenesStore from '@store/scenes';
 import * as mapStore from '@store/map';
 import * as filterStore from '@store/filters';
+import * as baselineStore from '@store/baseline';
 import { SetSearchType, MakeSearch } from '@store/search/search.action';
 import { getSearchType } from '@store/search/search.reducer';
 
@@ -47,6 +48,7 @@ export class UrlStateService {
       ...this.uiParameters(),
       ...this.filtersParameters(),
       ...this.missionParameters(),
+      ...this.baselineParameters(),
     ];
 
     this.urlParamNames = params.map(param => param.name);
@@ -163,6 +165,16 @@ export class UrlStateService {
         map(selected => ({ dataset: selected }))
       ),
       loader: this.loadSelectedDataset
+    }];
+  }
+
+  private baselineParameters(): models.UrlParameter[] {
+    return [{
+      name: 'master',
+      source: this.store$.select(baselineStore.getMasterGranule).pipe(
+        map(master => ({ master }))
+      ),
+      loader: this.loadMasterScene
     }];
   }
 
@@ -539,6 +551,10 @@ export class UrlStateService {
 
       return new filterStore.SetMaxResults(clampedResults);
     }
+  }
+
+  private loadMasterScene = (master: string): Action => {
+    return new baselineStore.SetMaster(master);
   }
 
   private updateShouldSearch(): void {

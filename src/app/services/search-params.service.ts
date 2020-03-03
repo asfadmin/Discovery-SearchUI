@@ -8,6 +8,7 @@ import { map, withLatestFrom, startWith } from 'rxjs/operators';
 
 import { AppState } from '@store';
 import * as filterStore from '@store/filters';
+import * as baselineStore from '@store/baseline';
 import { getSearchType } from '@store/search/search.reducer';
 
 import { MapService } from './map/map.service';
@@ -32,15 +33,19 @@ export class SearchParamsService {
       this.searchType$(),
       this.listParam$(),
       this.filterSearchParams$(),
+      this.baselineSearchParams$(),
     ).pipe(
       map(
-        ([searchType, listParam, filterParams]) => {
+        ([searchType, listParam, filterParams, baselineParams]) => {
           switch (searchType) {
             case models.SearchType.LIST: {
               return listParam;
             }
             case models.SearchType.DATASET: {
               return filterParams;
+            }
+            case models.SearchType.BASELINE: {
+              return baselineParams;
             }
             default: {
               return filterParams;
@@ -83,6 +88,12 @@ export class SearchParamsService {
         map(mode => mode === models.ListSearchType.SCENE ? 'granule_list' : 'product_list')
       )),
       map(([searchList, param]) => ({ [param]: searchList.join(',') }))
+    );
+  }
+
+  private baselineSearchParams$() {
+    return this.store$.select(baselineStore.getMasterGranule).pipe(
+      map(master => ({ master }))
     );
   }
 

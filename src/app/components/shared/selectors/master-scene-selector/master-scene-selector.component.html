@@ -1,6 +1,9 @@
 <form>
   <mat-form-field class="w100">
     <mat-label>Master Scene</mat-label>
-    <input matInput>
+    <input
+      type="text" name="masterScene"
+      (input)="onMasterSceneChanged($event.target.value)"
+      [(ngModel)]="masterScene" matInput>
   </mat-form-field>
 </form>
