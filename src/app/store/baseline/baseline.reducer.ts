@@ -23,6 +23,10 @@ export function baselineReducer(state = initState, action: BaselineActions): Bas
       };
     }
 
+    case BaselineActionType.CLEAR_BASELINE: {
+      return initState;
+    }
+
     default: {
       return state;
     }

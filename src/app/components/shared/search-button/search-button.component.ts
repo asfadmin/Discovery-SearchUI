@@ -6,6 +6,7 @@ import { AppState } from '@store';
 import * as searchStore from '@store/search';
 import * as userStore from '@store/user';
 import * as uiStore from '@store/ui';
+import * as baselineStore from '@store/baseline';
 
 import * as services from '@services';
 import { SavedSearchType } from '@models';
@@ -50,6 +51,7 @@ export class SearchButtonComponent implements OnInit {
   }
 
   public onClearSearch(): void {
+    this.store$.dispatch(new baselineStore.ClearBaseline());
     this.store$.dispatch(new searchStore.ClearSearch());
   }
 

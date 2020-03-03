@@ -10,6 +10,7 @@ import { AppState } from '../app.reducer';
 import { SetSearchAmount, EnableSearch, DisableSearch, SetSearchType } from './search.action';
 import * as scenesStore from '@store/scenes';
 import * as filtersStore from '@store/filters';
+import * as baselineStore from '@store/baseline';
 import * as mapStore from '@store/map';
 import * as uiStore from '@store/ui';
 
@@ -82,6 +83,7 @@ export class SearchEffects {
       filtersStore.FiltersActionType.CLEAR_DATASET_FILTERS,
       filtersStore.FiltersActionType.CLEAR_LIST_FILTERS,
       filtersStore.FiltersActionType.CLEAR_SELECTED_MISSION,
+      baselineStore.BaselineActionType.CLEAR_BASELINE,
     ),
     map(_ => new CancelSearch())
   ));

@@ -1,7 +1,8 @@
 import { Action } from '@ngrx/store';
 
 export enum BaselineActionType {
-  SET_MASTER = '[Baseline] Set Master'
+  SET_MASTER = '[Baseline] Set Master',
+  CLEAR_BASELINE = '[Baseline] Clear Baseline',
 }
 
 export class SetMaster implements Action {
@@ -10,5 +11,10 @@ export class SetMaster implements Action {
   constructor(public payload: string) {}
 }
 
+export class ClearBaseline implements Action {
+  public readonly type = BaselineActionType.CLEAR_BASELINE;
+}
+
 export type BaselineActions =
-  |  SetMaster;
+  | ClearBaseline
+  | SetMaster;
