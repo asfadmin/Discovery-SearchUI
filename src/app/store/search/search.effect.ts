@@ -15,6 +15,7 @@ import * as mapStore from '@store/map';
 import * as uiStore from '@store/ui';
 
 import * as services from '@services';
+import { data } from '@services/baselines';
 
 
 import {
@@ -62,8 +63,8 @@ export class SearchEffects {
     map(([_, params]) => [params, {...params, output: 'COUNT'}]),
     switchMap(
       ([params, countParams]) => forkJoin(
-        this.asfApiService.query<any[]>(params),
-        this.asfApiService.query<string>(countParams),
+        of(<any>data),
+        of(10),
       ).pipe(
         withLatestFrom(this.store$.select(getIsCanceled)),
         map(([[response, totalCount], isCanceled]) =>
