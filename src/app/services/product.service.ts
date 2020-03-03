@@ -72,6 +72,9 @@ export class ProductService {
       missionName: g.mn,
       flightLine: g.fl,
       stackSize: +g.ss || null,
+
+      perpendicular: +g.pp || null,
+      temporal: +g.te || null,
     })
 
   private fromCMRDate =

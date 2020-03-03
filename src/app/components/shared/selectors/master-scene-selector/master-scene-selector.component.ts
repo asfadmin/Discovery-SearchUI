@@ -22,7 +22,5 @@ export class MasterSceneSelectorComponent implements OnInit {
 
   public onMasterSceneChanged(master: string): void {
     this.store$.dispatch(new baselineStore.SetMaster(master));
-    console.log('Master');
-    console.log(master);
   }
 }
