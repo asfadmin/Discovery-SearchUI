@@ -20,6 +20,7 @@ export class BaselineChartComponent implements OnInit {
 
   private chart: Chart;
   private criticalBaseline: number;
+  private hoveredProductId;
 
   constructor(
     private store$: Store<AppState>,
@@ -166,11 +167,14 @@ export class BaselineChartComponent implements OnInit {
         animation: false,
         elements: {point: {radius: 6, hoverRadius: 9}},
         hoverMode: 'single',
+        onClick: _ => this.onSelectHoveredScene(),
         tooltips: {
           backgroundColor: 'lightgrey',
           bodyFontColor: 'black',
           callbacks: {
             label: (tooltipItem, data) => {
+              this.setHoveredItem(tooltipItem, data);
+
               const [x, y] = [
                 tooltipItem.xLabel, tooltipItem.yLabel
               ].map(Math.floor);
@@ -181,6 +185,17 @@ export class BaselineChartComponent implements OnInit {
         },
       }}
     );
+  }
+
+  private setHoveredItem(tooltip, data) {
+    const dataset = data.datasets[tooltip.datasetIndex].data;
+
+    this.hoveredProductId = dataset[tooltip.index].id;
+  }
+
+  private onSelectHoveredScene() {
+    const action = new scenesStore.SetSelectedScene(this.hoveredProductId);
+    this.store$.dispatch(action);
   }
 
   private chartStyles() {
