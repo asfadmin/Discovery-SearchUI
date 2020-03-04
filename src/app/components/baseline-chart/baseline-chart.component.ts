@@ -170,8 +170,13 @@ export class BaselineChartComponent implements OnInit {
           backgroundColor: 'lightgrey',
           bodyFontColor: 'black',
           callbacks: {
-            label: (tooltipItem, data) =>
-              ` ${tooltipItem.xLabel} days, ${tooltipItem.yLabel} meters`
+            label: (tooltipItem, data) => {
+              const [x, y] = [
+                tooltipItem.xLabel, tooltipItem.yLabel
+              ].map(Math.floor);
+
+              return ` ${x} days, ${y} meters`;
+            }
           }
         },
       }}
