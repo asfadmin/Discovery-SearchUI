@@ -32,13 +32,53 @@ export class BaselineChartComponent implements OnInit {
         }]
       },
       options: {
+        responsive: true,
+        zoom: {
+          enabled: true,
+          mode: 'xy',
+          rangeMin: { x: null, y: null },
+          rangeMax: { x: null, y: null }
+        },
+        pan: {
+          enabled: true,
+          mode: 'xy',
+          rangeMin: { x: null, y: null },
+          rangeMax: { x: null, y: null }
+        },
         scales: {
           xAxes: [{
             type: 'linear',
-            position: 'bottom'
+            position: 'bottom',
+            scaleLabel: {
+              display: true,
+              labelString: 'Temporal (days)'
+            }
+          }],
+          yAxes: [{
+            type: 'linear',
+            position: 'left',
+            scaleLabel: {
+              display: true,
+              labelString: 'Perpendicular (m)'
+            },
+            ticks: {
+              min: -10,
+              max: 10
+            }
           }]
+        },
+        legend: {
+          labels: {
+            // only show labels for the first three datasets
+            filter: (legendItem, chartData) => {
+              return (legendItem.datasetIndex < 3);
+            }
+          }
+        },
+        chartArea: {
+          backgroundColor: 'rgba(0, 0, 0, 0)'
         }
-      }
-    });
+      }}
+    );
   }
 }
