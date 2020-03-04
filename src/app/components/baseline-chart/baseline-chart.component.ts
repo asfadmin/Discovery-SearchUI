@@ -1,5 +1,11 @@
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 
+import { map, tap, filter } from 'rxjs/operators';
+
+import { Store } from '@ngrx/store';
+import { AppState } from '@store';
+import * as scenesStore from '@store/scenes';
+
 import Chart from 'chart.js';
 
 @Component({
@@ -10,25 +16,49 @@ import Chart from 'chart.js';
 export class BaselineChartComponent implements OnInit {
   @ViewChild('baselineChart', { static: true }) baselineChart: ElementRef;
 
-  constructor() { }
+  private chart: Chart;
+
+  constructor(
+    private store$: Store<AppState>,
+  ) { }
 
   ngOnInit(): void {
     this.initChart();
+
+    this.store$.select(scenesStore.getAllProducts).pipe(
+      map(
+        products => products.map(product => ({
+          x: product.metadata.temporal,
+          y: product.metadata.perpendicular,
+          id: product.id
+        }))
+      ),
+    ).subscribe(
+      points => {
+        this.chart.data.datasets.forEach((dataset) => {
+          if (dataset.label === 'Within Critical Baseline') {
+            dataset.data = points;
+          }
+        });
+
+        this.chart.update();
+      }
+    );
   }
 
   private initChart() {
-    const myChart = new Chart(this.baselineChart.nativeElement, {
+    this.chart = new Chart(this.baselineChart.nativeElement, {
       type: 'scatter',
       data: {
         datasets: [{
-          label: 'Scatter Dataset',
-          data: [
-            { x: -10, y: 0 },
-            { x: 0, y: 10 },
-            { x: 10, y: 5 },
-            { x: 10, y: 20 },
-            { x: 15, y: 10 }
-          ]
+          label: 'Within Critical Baseline',
+          data: [],
+          pointBackgroundColor: 'grey',
+          pointBorderColor: 'white',
+          borderWidth: 1,
+          radius: 5,
+          pointHoverBackgroundColor: 'grey',
+          pointHoverBorderColor: 'black'
         }]
       },
       options: {
@@ -69,7 +99,6 @@ export class BaselineChartComponent implements OnInit {
         },
         legend: {
           labels: {
-            // only show labels for the first three datasets
             filter: (legendItem, chartData) => {
               return (legendItem.datasetIndex < 3);
             }
@@ -77,7 +106,10 @@ export class BaselineChartComponent implements OnInit {
         },
         chartArea: {
           backgroundColor: 'rgba(0, 0, 0, 0)'
-        }
+        },
+        animation: false,
+        elements: {point: {radius: 6, hoverRadius: 9}},
+        hoverMode: 'single',
       }}
     );
   }
