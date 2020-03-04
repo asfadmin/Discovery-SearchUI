@@ -33,11 +33,11 @@ export class FileNameComponent implements OnInit {
         } else if (size.width > 1200) {
           return 25;
         } else if (size.width > 1000) {
-          return 20;
+          return 18;
         } else if (size.width > 948 ) {
           return 15;
         } else {
-          return 50;
+          return 25;
         }
       }),
     ).subscribe(len => this.sceneNameLen = len);
