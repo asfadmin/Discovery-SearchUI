@@ -1,150 +1,38 @@
-import { alos } from './alos.models';
-import { radarsat1 } from './radarsat-1.models';
+import { alos, sentinel1a, sentinel1b, radarsat1 } from './critical-baselines';
+
+import { CMRProduct } from './cmr-product.model';
 
 const criticalBaselines = {
-  'ALOS': alos,
-  'ERS-1': {
-    STD: {
-      VV: {
-        '-1': 1061
-      }
-    }
-  },
-  'ERS-2': {
-    STD: {
-      VV: {
-        '-1': 1061
-      }
-    }
-  },
-  'JERS-1': {
-    STD: {
-      HH: {
-        '-1': 6201
-      }
-    }
-  },
-  'RADARSAT-1': radarsat1,
-  'SENTINEL-1A': {
-    'EW': {
-      '-1': {
-        'HH': 6066,
-        'HH+HV': 5855,
-        'VV+VH': 5828
-      }
-    },
-    'IW': {
-      '-1': {
-        'HH': 15755,
-        'HH+HV': 15934,
-        'VV': 16064,
-        'VV+VH': 15882
-      }
-    },
-    'S1': {
-      '-1': {
-        'HH': 16613,
-        'HH+HV': 15925,
-        'VV': 16094,
-        'VV+VH': 15942
-      }
-    },
-    'S2': {
-      '-1': {
-        'HH': 14682,
-        'VV': 14913,
-        'VV+VH': 14626
-      }
-    },
-    'S3': {
-      '-1': {
-        'HH': 13844,
-        'HH+HV': 13684,
-        'VV': 13474,
-        'VV+VH': 13705
-      }
-    },
-    'S4': {
-      '-1': {
-        'HH+HV': 13347,
-        'VV': 13365,
-        'VV+VH': 13698
-      }
-    },
-    'S5': {
-      '-1': {
-        'HH+HV': 14453,
-        'VV': 14139,
-        'VV+VH': 14761
-      }
-    },
-    'S6': {
-      '-1': {
-        'HH+HV': 15739,
-        'VV': 15310,
-        'VV+VH': 14991
-      }
-    }
-  },
-  'SENTINEL-1B': {
-    'EW': {
-      '-1': {
-        'HH': 6066,
-        'HH+HV': 5855,
-        'VV+VH': 5828
-      }
-    },
-    'IW': {
-      '-1': {
-        'HH': 15755,
-        'HH+HV': 15934,
-        'VV': 16064,
-        'VV+VH': 15882
-      }
-    },
-    'S1': {
-      '-1': {
-        'HH': 16613,
-        'HH+HV': 15925,
-        'VV': 16094,
-        'VV+VH': 15942
-      }
-    },
-    'S2': {
-      '-1': {
-        'HH': 14682,
-        'VV': 14913,
-        'VV+VH': 14626
-      }
-    },
-    'S3': {
-      '-1': {
-        'HH': 13844,
-        'HH+HV': 13684,
-        'VV': 13474,
-        'VV+VH': 13705
-      }
-    },
-    'S4': {
-      '-1': {
-        'HH+HV': 13347,
-        'VV': 13365,
-        'VV+VH': 13698
-      }
-    },
-    'S5': {
-      '-1': {
-        'HH+HV': 14453,
-        'VV': 14139,
-        'VV+VH': 14761
-      }
-    },
-    'S6': {
-      '-1': {
-        'HH+HV': 15739,
-        'VV': 15310,
-        'VV+VH': 14991
-      }
-    }
+  'ALOS': alos, // Beam -> offNadirAngle
+  'SENTINEL-1A': sentinel1a, // Beam -> Pol
+  'SENTINEL-1B': sentinel1b, // Beam -> Pol
+  'RADARSAT-1': radarsat1, // Beam
+  'ERS-1': 1061,
+  'ERS-2': 1061,
+  'JERS-1': 6201,
+};
+
+export const criticalBaselineFor = (product: CMRProduct): number => {
+  const dataset = product.dataset;
+  const metadata = product.metadata;
+
+  if (dataset.includes('ALOS')) {
+    const beamMode = metadata.beamMode;
+    const offNadirAngle = metadata.offNadirAngle;
+
+    return criticalBaselines[dataset][beamMode][offNadirAngle];
+  } else if (dataset.includes('SENTINEL')) {
+    const beamMode = metadata.beamMode;
+    const polarization = metadata.polarization;
+
+    return criticalBaselines[dataset][beamMode][polarization];
+  } else if (dataset.includes('RADARSAT-1')) {
+    const beamMode = metadata.beamMode;
+
+    return criticalBaselines[dataset][beamMode];
+  } else if (dataset.includes('ERS') || dataset.includes('JERS')) {
+    return criticalBaselines[dataset];
+  } else {
+    return null;
   }
 };

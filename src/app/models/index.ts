@@ -15,3 +15,4 @@ export * from './user.model';
 export * from './search.model';
 export * from './saved-search.model';
 export * from './unzip.model';
+export * from './critical-baseline.model';
