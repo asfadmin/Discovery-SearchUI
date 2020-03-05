@@ -15,12 +15,12 @@ export class MasterSceneSelectorComponent implements OnInit {
   constructor(private store$: Store<AppState>) { }
 
   ngOnInit(): void {
-    this.store$.select(baselineStore.getMasterGranule).subscribe(
+    this.store$.select(baselineStore.getFilterMaster).subscribe(
       master => this.masterScene = master
     );
   }
 
   public onMasterSceneChanged(master: string): void {
-    this.store$.dispatch(new baselineStore.SetMaster(master));
+    this.store$.dispatch(new baselineStore.SetFilterMaster(master));
   }
 }

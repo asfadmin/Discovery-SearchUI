@@ -171,7 +171,7 @@ export class UrlStateService {
   private baselineParameters(): models.UrlParameter[] {
     return [{
       name: 'master',
-      source: this.store$.select(baselineStore.getMasterGranule).pipe(
+      source: this.store$.select(baselineStore.getFilterMaster).pipe(
         map(master => ({ master }))
       ),
       loader: this.loadMasterScene
@@ -554,7 +554,7 @@ export class UrlStateService {
   }
 
   private loadMasterScene = (master: string): Action => {
-    return new baselineStore.SetMaster(master);
+    return new baselineStore.SetFilterMaster(master);
   }
 
   private updateShouldSearch(): void {

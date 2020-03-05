@@ -21,3 +21,4 @@ export { KeyboardService } from './keyboard.service';
 export { UserDataService } from './user-data.service';
 export { SavedSearchService } from './saved-search.service';
 export { UnzipApiService } from './unzip-api.service';
+export { ChartService } from './chart.service';

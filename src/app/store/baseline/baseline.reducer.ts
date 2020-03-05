@@ -47,7 +47,7 @@ export function baselineReducer(state = initState, action: BaselineActions): Bas
 
 export const getBaselineState = createFeatureSelector<BaselineState>('baseline');
 
-export const getMasterGranule = createSelector(
+export const getMasterId = createSelector(
   getBaselineState,
   state => state.master
 );

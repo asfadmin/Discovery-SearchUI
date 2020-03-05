@@ -1,12 +1,15 @@
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 
-import Chart from 'chart.js';
-import { map, tap, filter } from 'rxjs/operators';
+import { combineLatest } from 'rxjs';
+import { map, tap, filter, } from 'rxjs/operators';
 
+import Chart from 'chart.js';
 import { Store } from '@ngrx/store';
 import { AppState } from '@store';
 import * as scenesStore from '@store/scenes';
+import * as baselineStore from '@store/baseline';
 
+import { ChartService } from '@services';
 import { criticalBaselineFor, CMRProduct } from '@models';
 
 export enum ChartDatasets {
@@ -32,18 +35,19 @@ export class BaselineChartComponent implements OnInit {
 
   constructor(
     private store$: Store<AppState>,
+    private chartService: ChartService,
   ) { }
 
   ngOnInit(): void {
     this.initChart();
 
-    this.store$.select(scenesStore.getAllProducts).pipe(
+    const products$ = this.store$.select(scenesStore.getAllProducts);
+
+    products$.pipe(
       tap(products => products.map(
         product => this.criticalBaseline = criticalBaselineFor(product)
       )),
-      map(
-        products => products.map(this.productToPoint)
-      ),
+      map(products => products.map(this.productToPoint)),
     ).subscribe(
       points => {
         const extrema = this.determineMinMax(points);
@@ -84,7 +88,6 @@ export class BaselineChartComponent implements OnInit {
 
   private criticalBaselineDataset(points: {x: number, y: number}[], extrema) {
     const { min, max } = extrema;
-
 
     const minDataset = [
       {x: -Number.MAX_SAFE_INTEGER, y: -this.criticalBaseline},
@@ -130,151 +133,21 @@ export class BaselineChartComponent implements OnInit {
   }
 
   private initChart() {
-    const styles = this.chartStyles();
-
-    this.chart = new Chart(this.baselineChart.nativeElement, {
-      type: 'scatter',
-      data: {
-        datasets: [{
-          label: 'Master Scene',
-          data: [],
-          ...styles.master
-        }, {
-          label: 'Selected',
-          data: [],
-          ...styles.selected
-        }, {
-          label: 'Within Critical Baseline',
-          data: [],
-          ...styles.scenes
-        }, {
-          label: 'Scenes',
-          data: [],
-          ...styles.scenes
-        }, {
-          label: 'Min Critical Baseline',
-          showLine: true,
-          type: 'line',
-          data: [],
-          ...styles.critical
-        }, {
-          label: 'Max Critical Baseline',
-          showLine: true,
-          type: 'line',
-          data: [],
-          ...styles.critical
-        }]
-      },
-      options: {
-        responsive: true,
-        zoom: {
-          enabled: true,
-          mode: 'xy',
-          rangeMin: { x: null, y: null },
-          rangeMax: { x: null, y: null }
-        },
-        pan: {
-          enabled: true,
-          mode: 'xy',
-          rangeMin: { x: null, y: null },
-          rangeMax: { x: null, y: null }
-        },
-        scales: {
-          xAxes: [{
-            type: 'linear',
-            position: 'bottom',
-            scaleLabel: {
-              display: true,
-              labelString: 'Temporal (days)'
-            }
-          }],
-          yAxes: [{
-            type: 'linear',
-            position: 'left',
-            scaleLabel: {
-              display: true,
-              labelString: 'Perpendicular (m)'
-            },
-          }]
-        },
-        legend: {
-          labels: {
-            filter: (legendItem, chartData) => {
-              return (legendItem.datasetIndex < 3);
-            }
-          }
-        },
-        chartArea: {
-          backgroundColor: 'rgba(0, 0, 0, 0)'
-        },
-        animation: false,
-        elements: {point: {radius: 6, hoverRadius: 9}},
-        onClick: _ => this.onSelectHoveredScene(),
-        tooltips: {
-          mode: 'single',
-          backgroundColor: 'lightgrey',
-          bodyFontColor: 'black',
-          callbacks: {
-            label: (tooltipItem, data) => {
-              this.setHoveredItem(tooltipItem, data);
-
-              const [x, y] = [
-                tooltipItem.xLabel, tooltipItem.yLabel
-              ].map(Math.floor);
-
-              return ` ${x} days, ${y} meters`;
-            }
-          }
-        },
-      }}
+    this.chart = this.chartService.makeChart(
+      this.baselineChart.nativeElement,
+      this.setHoveredItem,
+      this.onSelectHoveredScene
     );
   }
 
-  private setHoveredItem(tooltip, data) {
+  private setHoveredItem = (tooltip, data) => {
     const dataset = data.datasets[tooltip.datasetIndex].data;
 
     this.hoveredProductId = dataset[tooltip.index].id;
   }
 
-  private onSelectHoveredScene() {
+  private onSelectHoveredScene = () => {
     const action = new scenesStore.SetSelectedScene(this.hoveredProductId);
     this.store$.dispatch(action);
-  }
-
-  private chartStyles() {
-    return {
-      master: {
-        backgroundColor: 'black',
-        borderColor: 'white',
-        pointBackgroundColor: 'black',
-        pointBorderColor: 'rgba(0,0,0,0)',
-        pointHoverBackgroundColor: 'black',
-        pointHoverBorderColor: 'rgba(0,0,0,0)'
-      },
-      critical: {
-        pointStyle: 'dash',
-        backgroundColor: 'rgba(0,0,0,0.05)',
-        borderColor: 'white',
-        borderWidth: 1,
-        fill: 'origin',
-      },
-      selected: {
-        pointRadius: 7,
-        pointBorderWidth: 6,
-        backgroundColor: 'red',
-        pointBorderColor: 'red',
-        pointBackgroundColor: 'red',
-        pointHoverBackgroundColor: 'red',
-        pointHoverBorderColor: 'red'
-      },
-      scenes: {
-        pointBackgroundColor: 'grey',
-        pointBorderColor: 'white',
-        borderWidth: 1,
-        radius: 5,
-        pointHoverBackgroundColor: 'grey',
-        pointHoverBorderColor: 'black'
-      }
-    };
   }
 }

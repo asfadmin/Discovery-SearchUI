@@ -128,6 +128,7 @@ export const routes = [
     services.UserDataService,
     services.SavedSearchService,
     services.UnzipApiService,
+    services.ChartService,
   ],
   bootstrap: [ AppComponent ],
 })

@@ -92,7 +92,7 @@ export class SearchParamsService {
   }
 
   private baselineSearchParams$() {
-    return this.store$.select(baselineStore.getMasterGranule).pipe(
+    return this.store$.select(baselineStore.getFilterMaster).pipe(
       map(master => ({ master }))
     );
   }

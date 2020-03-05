@@ -362,6 +362,11 @@ export const getAreProductsLoaded = createSelector(
   state => state.length > 0
 );
 
+export const getProducts = createSelector(
+  getScenesState,
+  state => state.products
+);
+
 export const getAllProducts = createSelector(
   getScenesState,
   state => Object.values(state.products)
