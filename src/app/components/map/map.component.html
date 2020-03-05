@@ -7,24 +7,26 @@
        [class.map-control-margin]="(areResultsLoaded$ | async) && breakpoint === breakpoints.MOBILE"
         fxLayout="row" fxFlex>
 
-    <div fxLayout="row">
-      <mat-card *ngFor="let banner of (banners$ | async)"
-        [@bannerTransition]
-        class="banner-card"
-        fxFlex="auto">
-
-        <div class="banner-text">
-          <div [innerHTML]="banner.text"></div>
-          <button (click)="removeBanner(banner)" mat-icon-button>
-            <mat-icon >clear</mat-icon>
-          </button>
-        </div>
-      </mat-card>
+    <div *ngIf="breakpoint > breakpoints.MOBILE" fxLayout="row">
+      <div class="map-controls">
+        <app-map-controls></app-map-controls>
+      </div>
     </div>
 
-    <div *ngIf="breakpoint > breakpoints.MOBILE" fxLayout="row">
-      <div style="height: 58px;">
-        <app-map-controls></app-map-controls>
+    <div fxLayout="row" class="banner-row">
+      <div fxLayout="column">
+        <mat-card *ngFor="let banner of (banners$ | async)"
+                  [@bannerTransition]
+                  class="banner-card"
+                  fxFlex="auto">
+
+          <div class="banner-text">
+            <div [innerHTML]="banner.text" class="inner-banner-text"></div>
+            <button (click)="removeBanner(banner)" mat-icon-button bb-icon>
+              <mat-icon >clear</mat-icon>
+            </button>
+          </div>
+        </mat-card>
       </div>
     </div>
 

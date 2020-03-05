@@ -5,11 +5,12 @@
 
     <div class="expanded-row" fxLayout="row" fxFill>
 
-      <div [title]="node.name" class="file-name" fxFlex="80%">
-        - - -&nbsp;
+      <div [title]="node.name" class="file-name" fxFlex="85">
+
         <app-file-name
           [name]="node.name"
-          [dataset]="product.dataset">
+          [dataset]="product.dataset"
+          class="file-name-name">
         </app-file-name>
 
         <div class="file-size">
@@ -18,7 +19,7 @@
       </div>
 
 
-      <div class="download-cart-icons" fxFlex="20%">
+      <div class="download-cart-icons" fxFlex="81px">
         <a mat-icon-button
           [href]="node.url"
           target="_blank"
