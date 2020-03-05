@@ -8,6 +8,7 @@ import { Store } from '@ngrx/store';
 import { AppState } from '@store';
 import * as scenesStore from '@store/scenes';
 import * as baselineStore from '@store/baseline';
+import * as queueStore from '@store/queue';
 
 import { ChartService } from '@services';
 import { criticalBaselineFor, CMRProduct } from '@models';
@@ -15,10 +16,11 @@ import { criticalBaselineFor, CMRProduct } from '@models';
 export enum ChartDatasets {
   MASTER = 0,
   SELECTED = 1,
-  WITHIN_BASELINE = 2,
-  PRODUCTS = 3,
-  MIN_CRITICAL = 4,
-  MAX_CRITICAL = 5
+  DOWNLOADS = 2,
+  WITHIN_BASELINE = 3,
+  PRODUCTS = 4,
+  MIN_CRITICAL = 5,
+  MAX_CRITICAL = 6
 }
 
 @Component({
@@ -68,7 +70,23 @@ export class BaselineChartComponent implements OnInit {
     ).subscribe(
       selectedPoint => {
         this.setDataset(ChartDatasets.SELECTED, [selectedPoint]);
+        this.chart.update();
+      }
+    );
 
+    combineLatest(
+      this.store$.select(queueStore.getQueuedProductIds),
+      this.store$.select(scenesStore.getAllProducts),
+    ).pipe(
+      map(([queueIds, products]) => {
+        const ids = new Set(queueIds);
+
+        return products.filter(product => ids.has(product.id));
+      }),
+      map(products => products.map(this.productToPoint)),
+    ).subscribe(
+      points => {
+        this.setDataset(ChartDatasets.DOWNLOADS, points);
         this.chart.update();
       }
     );

@@ -16,7 +16,7 @@ export class ChartService {
       type: 'scatter',
       data: {
         datasets: [{
-          label: 'Master Scene',
+          label: 'Master',
           data: [],
           ...styles.master
         }, {
@@ -24,7 +24,11 @@ export class ChartService {
           data: [],
           ...styles.selected
         }, {
-          label: 'Within Critical Baseline',
+          label: 'Downloads',
+          data: [],
+          ...styles.downloads
+        }, {
+          label: 'Critical Baseline',
           data: [],
           ...styles.scenes
         }, {
@@ -80,7 +84,7 @@ export class ChartService {
         legend: {
           labels: {
             filter: (legendItem, chartData) => {
-              return (legendItem.datasetIndex < 3);
+              return (legendItem.datasetIndex < 4);
             }
           }
         },
@@ -119,6 +123,13 @@ export class ChartService {
         pointBorderColor: 'rgba(0,0,0,0)',
         pointHoverBackgroundColor: 'black',
         pointHoverBorderColor: 'rgba(0,0,0,0)'
+      },
+      downloads: {
+        backgroundColor: 'lightblue',
+        pointBackgroundColor: 'lightblue',
+        pointBorderColor: 'grey',
+        pointHoverBackgroundColor: 'lightblue',
+        pointHoverBorderColor: 'grey'
       },
       critical: {
         pointStyle: 'dash',
