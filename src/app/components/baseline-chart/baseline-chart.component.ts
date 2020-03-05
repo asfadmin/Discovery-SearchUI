@@ -7,7 +7,7 @@ import { Store } from '@ngrx/store';
 import { AppState } from '@store';
 import * as scenesStore from '@store/scenes';
 
-import { criticalBaselineFor } from '@models';
+import { criticalBaselineFor, CMRProduct } from '@models';
 
 
 @Component({
@@ -34,11 +34,7 @@ export class BaselineChartComponent implements OnInit {
         product => this.criticalBaseline = criticalBaselineFor(product)
       )),
       map(
-        products => products.map(product => ({
-          x: product.metadata.temporal,
-          y: product.metadata.perpendicular,
-          id: product.id
-        }))
+        products => products.map(this.productToPoint)
       ),
     ).subscribe(
       points => {
@@ -56,6 +52,29 @@ export class BaselineChartComponent implements OnInit {
 
         this.chart.update();
       });
+
+    this.store$.select(scenesStore.getSelectedScene).pipe(
+      filter(user => !!user),
+      map(this.productToPoint)
+    ).subscribe(
+      selectedPoint => {
+        this.chart.data.datasets.forEach((dataset) => {
+          if (dataset.label === 'Selected') {
+            dataset.data = [selectedPoint];
+          }
+        });
+
+        this.chart.update();
+      }
+    );
+  }
+
+  private productToPoint = (product: CMRProduct) => {
+    return ({
+      x: product.metadata.temporal,
+      y: product.metadata.perpendicular,
+      id: product.id
+    });
   }
 
   private criticalBaselineDataset(points: {x: number, y: number}[]) {
@@ -105,6 +124,14 @@ export class BaselineChartComponent implements OnInit {
       type: 'scatter',
       data: {
         datasets: [{
+          label: 'Master Scene',
+          data: [],
+          ...styles.master
+        }, {
+          label: 'Selected',
+          data: [],
+          ...styles.selected
+        }, {
           label: 'Within Critical Baseline',
           data: [],
           ...styles.secondary
@@ -157,7 +184,7 @@ export class BaselineChartComponent implements OnInit {
         legend: {
           labels: {
             filter: (legendItem, chartData) => {
-              return (legendItem.datasetIndex < 1);
+              return (legendItem.datasetIndex < 3);
             }
           }
         },
@@ -166,9 +193,9 @@ export class BaselineChartComponent implements OnInit {
         },
         animation: false,
         elements: {point: {radius: 6, hoverRadius: 9}},
-        hoverMode: 'single',
         onClick: _ => this.onSelectHoveredScene(),
         tooltips: {
+          mode: 'single',
           backgroundColor: 'lightgrey',
           bodyFontColor: 'black',
           callbacks: {
@@ -200,12 +227,29 @@ export class BaselineChartComponent implements OnInit {
 
   private chartStyles() {
     return {
+      master: {
+        backgroundColor: 'black',
+        borderColor: 'white',
+        pointBackgroundColor: 'black',
+        pointBorderColor: 'rgba(0,0,0,0)',
+        pointHoverBackgroundColor: 'black',
+        pointHoverBorderColor: 'rgba(0,0,0,0)'
+      },
       critical: {
         pointStyle: 'dash',
         backgroundColor: 'rgba(0,0,0,0.05)',
         borderColor: 'white',
         borderWidth: 1,
         fill: 'origin',
+      },
+      selected: {
+        pointRadius: 7,
+        pointBorderWidth: 6,
+        backgroundColor: 'red',
+        pointBorderColor: 'red',
+        pointBackgroundColor: 'red',
+        pointHoverBackgroundColor: 'red',
+        pointHoverBorderColor: 'red'
       },
       secondary: {
         pointBackgroundColor: 'grey',
