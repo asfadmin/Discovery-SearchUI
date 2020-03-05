@@ -46,11 +46,14 @@ export class BaselineChartComponent implements OnInit {
       ),
     ).subscribe(
       points => {
-        const { minDataset, maxDataset } = this.criticalBaselineDataset(points);
+        const extrema = this.determineMinMax(points);
+        const { minDataset, maxDataset } = this.criticalBaselineDataset(points, extrema);
 
         this.setDataset(ChartDatasets.PRODUCTS, points);
         this.setDataset(ChartDatasets.MIN_CRITICAL, minDataset);
         this.setDataset(ChartDatasets.MAX_CRITICAL, maxDataset);
+
+        this.updateScales(extrema);
 
         this.chart.update();
       });
@@ -79,19 +82,18 @@ export class BaselineChartComponent implements OnInit {
     });
   }
 
-  private criticalBaselineDataset(points: {x: number, y: number}[]) {
-    const { min, max } = this.determineMinMax(points);
+  private criticalBaselineDataset(points: {x: number, y: number}[], extrema) {
+    const { min, max } = extrema;
 
-    const buffer = (max.x - min.x) * .25;
 
     const minDataset = [
-      {x: min.x - buffer - 10, y: -this.criticalBaseline},
-      {x: max.x + buffer + 10, y: -this.criticalBaseline}
+      {x: -Number.MAX_SAFE_INTEGER, y: -this.criticalBaseline},
+      {x: Number.MAX_SAFE_INTEGER, y: -this.criticalBaseline}
     ];
 
     const maxDataset = [
-      {x: min.x - buffer - 10, y: this.criticalBaseline},
-      {x: max.x + buffer + 10, y: this.criticalBaseline}
+      {x: -Number.MAX_SAFE_INTEGER, y: this.criticalBaseline},
+      {x: Number.MAX_SAFE_INTEGER, y: this.criticalBaseline}
     ];
 
     return { minDataset, maxDataset };
@@ -117,6 +119,14 @@ export class BaselineChartComponent implements OnInit {
     });
 
     return { min, max };
+  }
+
+  private updateScales(extrema) {
+    const { min, max } = extrema;
+    const buffer = (max.x - min.x) * .25;
+
+    this.chart.options.scales.xAxes[0].ticks.min = Math.floor((min.x - buffer) / 100) * 100;
+    this.chart.options.scales.xAxes[0].ticks.max = Math.ceil((max.x - buffer) / 100) * 100;
   }
 
   private initChart() {
