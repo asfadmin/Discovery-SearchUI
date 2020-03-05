@@ -6,10 +6,12 @@ import { BaselineActionType, BaselineActions } from './baseline.action';
 
 export interface BaselineState {
   master: string | null;
+  filterMaster: string | null;
 }
 
 const initState: BaselineState = {
-  master: null
+  master: null,
+  filterMaster: null,
 };
 
 /* Reducer */
@@ -19,6 +21,14 @@ export function baselineReducer(state = initState, action: BaselineActions): Bas
     case BaselineActionType.SET_MASTER: {
       return {
         ...state,
+        master: action.payload
+      };
+    }
+
+    case BaselineActionType.SET_FILTER_MASTER: {
+      return {
+        ...state,
+        filterMaster: action.payload,
         master: action.payload
       };
     }
@@ -42,3 +52,7 @@ export const getMasterGranule = createSelector(
   state => state.master
 );
 
+export const getFilterMaster = createSelector(
+  getBaselineState,
+  state => state.filterMaster
+);
