@@ -89,7 +89,7 @@ export class ChartService {
         },
         animation: false,
         elements: {point: {radius: 6, hoverRadius: 9}},
-        onClick: _ => selectCallback,
+        onClick: selectCallback,
         tooltips: {
           mode: 'single',
           backgroundColor: 'lightgrey',
