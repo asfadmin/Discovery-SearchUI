@@ -126,7 +126,7 @@ export class BaselineChartComponent implements OnInit {
     const buffer = (max.x - min.x) * .25;
 
     this.chart.options.scales.xAxes[0].ticks.min = Math.floor((min.x - buffer) / 100) * 100;
-    this.chart.options.scales.xAxes[0].ticks.max = Math.ceil((max.x - buffer) / 100) * 100;
+    this.chart.options.scales.xAxes[0].ticks.max = Math.ceil((max.x + buffer) / 100) * 100;
   }
 
   private initChart() {
