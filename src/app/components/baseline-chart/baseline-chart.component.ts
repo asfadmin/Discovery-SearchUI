@@ -32,7 +32,7 @@ export class BaselineChartComponent implements OnInit {
   @ViewChild('baselineChart', { static: true }) baselineChart: ElementRef;
 
   private chart: Chart;
-  private selected;
+  private selected: CMRProduct;
   private criticalBaseline: number;
   private hoveredProductId;
 
@@ -66,6 +66,7 @@ export class BaselineChartComponent implements OnInit {
       });
 
     this.store$.select(scenesStore.getSelectedScene).pipe(
+      tap(selected => this.selected = selected),
       filter(selected => !!selected),
       map(this.productToPoint)
     ).subscribe(
