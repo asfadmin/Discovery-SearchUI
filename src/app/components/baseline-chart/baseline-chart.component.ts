@@ -32,6 +32,7 @@ export class BaselineChartComponent implements OnInit {
   @ViewChild('baselineChart', { static: true }) baselineChart: ElementRef;
 
   private chart: Chart;
+  private selected;
   private criticalBaseline: number;
   private hoveredProductId;
 
@@ -65,7 +66,8 @@ export class BaselineChartComponent implements OnInit {
       });
 
     this.store$.select(scenesStore.getSelectedScene).pipe(
-      filter(user => !!user),
+      tap(selected => this.selected = selected),
+      filter(selected => !!selected),
       map(this.productToPoint)
     ).subscribe(
       selectedPoint => {
@@ -90,6 +92,25 @@ export class BaselineChartComponent implements OnInit {
         this.chart.update();
       }
     );
+
+    combineLatest(
+      this.store$.select(baselineStore.getMasterName),
+      this.store$.select(scenesStore.getAllProducts),
+    ).pipe(
+      map(([masterName, products]) => products
+        .filter(product => product.name === masterName)
+        .pop()
+      ),
+      filter(product => !!product),
+      map(this.productToPoint)
+    ).subscribe(point => {
+        this.setDataset(ChartDatasets.MASTER, [point]);
+        this.chart.update();
+    });
+  }
+
+  public onSetSelectedAsMaster() {
+    this.store$.dispatch(new baselineStore.SetMaster(this.selected.name));
   }
 
   private setDataset(dataset: ChartDatasets, data) {
