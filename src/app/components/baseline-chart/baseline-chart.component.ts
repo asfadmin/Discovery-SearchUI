@@ -35,6 +35,7 @@ export class BaselineChartComponent implements OnInit {
   private selected: CMRProduct;
   private criticalBaseline: number;
   private hoveredProductId;
+  private isFirstLoad = true;
 
   constructor(
     private store$: Store<AppState>,
@@ -60,7 +61,10 @@ export class BaselineChartComponent implements OnInit {
         this.setDataset(ChartDatasets.MIN_CRITICAL, minDataset);
         this.setDataset(ChartDatasets.MAX_CRITICAL, maxDataset);
 
-        this.updateScales(extrema);
+        if (this.isFirstLoad) {
+          this.updateScales(extrema);
+          this.isFirstLoad = false;
+        }
 
         this.chart.update();
       });
