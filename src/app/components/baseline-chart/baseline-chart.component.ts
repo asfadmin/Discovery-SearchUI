@@ -66,7 +66,6 @@ export class BaselineChartComponent implements OnInit {
       });
 
     this.store$.select(scenesStore.getSelectedScene).pipe(
-      tap(selected => this.selected = selected),
       filter(selected => !!selected),
       map(this.productToPoint)
     ).subscribe(

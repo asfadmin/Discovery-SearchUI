@@ -1,0 +1,44 @@
+<div class="h100 w100">
+  <div>
+    <button (click)="onSelectList()"
+     [class.selected]="view === Views.LIST" mat-button>
+      Scenes
+    </button>
+    <button (click)="onSelectDetail()"
+     [class.selected]="view === Views.DETAIL" mat-button>
+      Scene Detail &amp; Files
+    </button>
+  </div>
+
+  <!-- SCENE LIST -->
+  <div *ngIf="view === Views.LIST" class="h100 w100">
+    <mat-card class="mp0" fxFlex="100" fxFlexFill>
+      <mat-card-subtitle class="header">
+        <app-scenes-list-header></app-scenes-list-header>
+      </mat-card-subtitle>
+
+      <div class="app-scene-list">
+        <app-scenes-list [resize$]="resize$"></app-scenes-list>
+      </div>
+    </mat-card>
+  </div>
+
+  <!-- SCENE DETAIL -->
+  <div *ngIf="view === Views.DETAIL" class="h100 w100">
+    <mat-card class="h100 w100 mp0 no-box-shadow" fxFlex="100" fxFlex>
+      <mat-card-subtitle class="header">
+        Scene Detail /
+        <span *ngIf="selectedProducts$ | async as products; else defaultProductsHeader">
+          {{ products.length || '' }} File{{ (products || []).length === 1 ? '' : 's'}}
+        </span>
+        <ng-template #defaultProductsHeader>Files</ng-template>
+      </mat-card-subtitle>
+
+      <div class="app-scene-list scroll-y scroll-x">
+        <app-scene-detail></app-scene-detail>
+        <hr>
+        <app-scene-files></app-scene-files>
+      </div>
+    </mat-card>
+  </div>
+</div>

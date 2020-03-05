@@ -13,11 +13,6 @@ import * as scenesStore from '@store/scenes';
 import { MapService } from '@services';
 import * as models from '@models';
 
-enum MobileViews {
-  LIST = 0,
-  DETAIL = 1
-}
-
 @Component({
   selector: 'app-results-menu',
   templateUrl: './results-menu.component.html',
@@ -28,8 +23,6 @@ export class ResultsMenuComponent implements OnInit {
   public selectedProducts$ = this.store$.select(scenesStore.getSelectedSceneProducts);
 
   public menuHeightPx: number;
-  public view = MobileViews.LIST;
-  public Views = MobileViews;
 
   public areNoScenes$ = this.store$.select(scenesStore.getScenes).pipe(
     map(scenes => scenes.length === 0)
@@ -72,14 +65,6 @@ export class ResultsMenuComponent implements OnInit {
 
   public onTabChange(e): void {
     this.resize$.next();
-  }
-
-  public onSelectList(): void {
-    this.view = MobileViews.LIST;
-  }
-
-  public onSelectDetail(): void {
-    this.view = MobileViews.DETAIL;
   }
 
   public validate(event: ResizeEvent): boolean {

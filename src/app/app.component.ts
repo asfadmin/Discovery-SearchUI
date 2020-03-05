@@ -146,8 +146,6 @@ export class AppComponent implements OnInit, OnDestroy {
       () => {
         // you can use this.ccService.getConfig() to do stuff...
       }));
-
-    this.openBaselineChart();
   }
 
   private loadProductQueue(): void {
