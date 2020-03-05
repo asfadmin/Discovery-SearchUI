@@ -9,6 +9,14 @@ import * as scenesStore from '@store/scenes';
 
 import { criticalBaselineFor, CMRProduct } from '@models';
 
+export enum ChartDatasets {
+  MASTER = 0,
+  SELECTED = 1,
+  WITHIN_BASELINE = 2,
+  PRODUCTS = 3,
+  MIN_CRITICAL = 4,
+  MAX_CRITICAL = 5
+}
 
 @Component({
   selector: 'app-baseline-chart',
@@ -40,15 +48,9 @@ export class BaselineChartComponent implements OnInit {
       points => {
         const { minDataset, maxDataset } = this.criticalBaselineDataset(points);
 
-        this.chart.data.datasets.forEach((dataset) => {
-          if (dataset.label === 'Within Critical Baseline') {
-            dataset.data = points;
-          } else if (dataset.label === 'Min Critical Baseline') {
-            dataset.data = minDataset;
-          } else if (dataset.label === 'Max Critical Baseline') {
-            dataset.data = maxDataset;
-          }
-        });
+        this.setDataset(ChartDatasets.PRODUCTS, points);
+        this.setDataset(ChartDatasets.MIN_CRITICAL, minDataset);
+        this.setDataset(ChartDatasets.MAX_CRITICAL, maxDataset);
 
         this.chart.update();
       });
@@ -58,15 +60,15 @@ export class BaselineChartComponent implements OnInit {
       map(this.productToPoint)
     ).subscribe(
       selectedPoint => {
-        this.chart.data.datasets.forEach((dataset) => {
-          if (dataset.label === 'Selected') {
-            dataset.data = [selectedPoint];
-          }
-        });
+        this.setDataset(ChartDatasets.SELECTED, [selectedPoint]);
 
         this.chart.update();
       }
     );
+  }
+
+  private setDataset(dataset: ChartDatasets, data) {
+    this.chart.data.datasets[dataset].data = data;
   }
 
   private productToPoint = (product: CMRProduct) => {
@@ -134,7 +136,11 @@ export class BaselineChartComponent implements OnInit {
         }, {
           label: 'Within Critical Baseline',
           data: [],
-          ...styles.secondary
+          ...styles.scenes
+        }, {
+          label: 'Scenes',
+          data: [],
+          ...styles.scenes
         }, {
           label: 'Min Critical Baseline',
           showLine: true,
@@ -251,7 +257,7 @@ export class BaselineChartComponent implements OnInit {
         pointHoverBackgroundColor: 'red',
         pointHoverBorderColor: 'red'
       },
-      secondary: {
+      scenes: {
         pointBackgroundColor: 'grey',
         pointBorderColor: 'white',
         borderWidth: 1,
