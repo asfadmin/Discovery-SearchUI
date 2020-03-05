@@ -1,0 +1,34 @@
+.expanded-row {
+  height: 32px !important;
+  align-items: flex-start;
+  justify-content: space-between;
+  padding: 0 16px 0 16px;
+  width: 100%;
+}
+
+.file-name {
+  font-weight: 400;
+  font-size: 16px;
+  padding-left: 40px;
+}
+
+.file-name-name {
+  flex-wrap: nowrap;
+  overflow: hidden;
+}
+
+.download-cart-icons {
+  justify-content: flex-end;
+  align-content: flex-end;
+  flex-shrink: 0;
+}
+
+.file-size {
+  font-weight: 400;
+  font-size: 14px;
+  font-style: italic;
+}
+
+.tree {
+  margin-top: -13px;
+}

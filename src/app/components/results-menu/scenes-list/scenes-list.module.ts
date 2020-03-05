@@ -10,6 +10,7 @@ import { MatSharedModule } from '@shared';
 import { PipesModule } from '@pipes';
 
 import { CopyToClipboardModule } from '@components/shared/copy-to-clipboard';
+import { FileNameModule } from '@components/shared/file-name';
 import { ScenesListComponent } from './scenes-list.component';
 
 
@@ -26,6 +27,7 @@ import { ScenesListComponent } from './scenes-list.component';
     CopyToClipboardModule,
     MatSharedModule,
     PipesModule,
+    FileNameModule
   ],
   exports: [
     ScenesListComponent

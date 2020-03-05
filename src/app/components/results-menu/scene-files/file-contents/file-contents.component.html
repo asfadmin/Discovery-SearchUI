@@ -1,0 +1,49 @@
+<mat-tree [dataSource]="dataSource" [treeControl]="treeControl" class="tree">
+  <mat-tree-node *matTreeNodeDef="let node" matTreeNodePadding>
+
+<!--    <button mat-icon-button disabled></button>-->
+
+    <div class="expanded-row" fxLayout="row" fxFill>
+
+      <div [title]="node.name" class="file-name" fxFlex="85">
+
+        <app-file-name
+          [name]="node.name"
+          [dataset]="product.dataset"
+          class="file-name-name">
+        </app-file-name>
+
+        <div class="file-size">
+          {{ node.size | readableSizeFromBytes }} {{ extension(node.name) }}
+        </div>
+      </div>
+
+
+      <div class="download-cart-icons" fxFlex="81px">
+        <a mat-icon-button
+          [href]="node.url"
+          target="_blank"
+          matTooltip="Download file">
+            <mat-icon>cloud_download</mat-icon>
+        </a>
+
+        <app-cart-toggle
+          (toggle)="onToggleQueueProduct(node)"
+          [isQueued]="isQueued(node)">
+        </app-cart-toggle>
+      </div>
+
+    </div>
+
+  </mat-tree-node>
+
+  <mat-tree-node *matTreeNodeDef="let node; when: hasChild" matTreeNodePadding>
+    <button mat-icon-button matTreeNodeToggle
+            [attr.aria-label]="'toggle ' + node.name">
+      <mat-icon class="mat-icon-rtl-mirror">
+        {{treeControl.isExpanded(node) ? 'expand_more' : 'chevron_right'}}
+      </mat-icon>
+    </button>
+    {{node.name}}
+  </mat-tree-node>
+</mat-tree>

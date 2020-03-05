@@ -30,7 +30,6 @@ export class ScenesListComponent implements OnInit, OnDestroy {
   @Input() resize$: Observable<void>;
 
   public scenes;
-  public sceneNameLen: number;
 
   public numberOfQueue: {[scene: string]: [number, number]};
   public allQueued: {[scene: string]: boolean};
@@ -83,17 +82,6 @@ export class ScenesListComponent implements OnInit, OnDestroy {
     );
 
     this.subs.add(
-      this.screenSize.size$.pipe(
-        map(size => {
-          if (size.width > 1775) {
-            return 32;
-          } else if (size.width > 1350) {
-            return 20;
-          } else {
-            return 10;
-          }
-        }),
-      ).subscribe(len => this.sceneNameLen = len)
     );
 
     const queueScenes$ = combineLatest(

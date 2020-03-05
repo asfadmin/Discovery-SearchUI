@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-import { MatSnackBar } from '@angular/material/snack-bar';
 
 import { Store, Action } from '@ngrx/store';
 import { Actions, ofType } from '@ngrx/effects';
@@ -53,7 +52,6 @@ export class SavedSearchService {
     private store$: Store<AppState>,
     private actions$: Actions,
     private mapService: MapService,
-    private snackBar: MatSnackBar,
   ) {
     this.currentSearch$.subscribe(
       current => this.currentSearch = current
@@ -65,39 +63,12 @@ export class SavedSearchService {
   }
 
   public makeCurrentSearch(searchName: string): models.Search | null {
-    const maxLen = 10000;
-
-    if (this.searchType === models.SearchType.DATASET) {
-      const filters = <models.GeographicFiltersType>this.currentSearch;
-      const len = filters.polygon !== null ? filters.polygon.length : 0;
-
-      if (len > maxLen) {
-        this.notifyUserListTooLong(len, 'List');
-        return;
-      }
-    } else if (this.searchType === models.SearchType.LIST) {
-      const filters = <models.ListFiltersType>this.currentSearch;
-      const len = filters.list.join(',').length;
-
-      if (len > maxLen) {
-        this.notifyUserListTooLong(len, 'List');
-        return;
-      }
-    }
-
     return {
       name: searchName,
       id: uuid(),
       filters: this.currentSearch,
       searchType: this.searchType,
     };
-  }
-
-  private notifyUserListTooLong(len: number, strType: string): void {
-    this.snackBar.open(
-      `${strType} too long, must be under 10,000 charecters (${len.toLocaleString()})`, `ERROR`,
-      { duration: 4000, }
-    );
   }
 
   public updateSearchWithCurrentFilters(id: string): void {
@@ -132,4 +103,80 @@ export class SavedSearchService {
     const action = new LoadSavedSearches();
     this.store$.dispatch(action);
   }
+
+  public filterTokensFrom(searches: models.Search[]): any[] {
+    return searches.map(
+      search => ({
+        id: search.id,
+        tokens: {
+          name: search.name,
+          searchType: search.searchType,
+          ...Object.entries(search.filters).reduce(
+            (acc, [key, val]) => this.addIfHasValue(acc, key, val), {}
+          )
+        }
+      })
+    ).map(search => {
+      return {
+        id: search.id,
+        token: Object.entries(search.tokens).map(
+          ([name, val]) => `${name} ${val}`
+        )
+          .join(' ')
+          .toLowerCase()
+      };
+    });
+  }
+
+  private addIfHasValue(acc, key: string, val): Object {
+    if (!val) {
+      return acc;
+    }
+
+    if (val.length === 0) {
+      return acc;
+    }
+
+    if (Object.keys(val).length === 0) {
+      return acc;
+    }
+
+    if (key === 'productTypes') {
+      return {
+        ...acc,
+        'file types': val.map(t => t.displayName),
+        'filetypes': val.map(t => t.apiValue)
+      };
+    }
+
+    if (this.isRange(val)) {
+      const range = <models.Range<any>>val;
+      let nonNullVals = ``;
+
+      if (val.start !== null) {
+        nonNullVals += `start ${val.start} `;
+      }
+
+      if (val.end !== null) {
+        nonNullVals += `end ${val.end}`;
+      }
+
+      if (nonNullVals.length === 0) {
+        return acc;
+      }
+
+      return {...acc, [key]: nonNullVals};
+    }
+
+    return {...acc, [key]: val};
+  }
+
+  private isRange(val): val is models.Range<any> {
+    return (
+      typeof val === 'object' &&
+      'start' in val &&
+      'end' in val
+    );
+  }
+
 }

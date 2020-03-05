@@ -1,7 +1,49 @@
-<mat-list class="products-list" *ngIf="products$ | async as products">
-  <app-scene-file *ngFor="let product of products"
-    (toggle)="onToggleQueueProduct(product)"
-    [product]="product"
-    [isQueued]="(queuedProductIds$ | async).has(product.id)">
-  </app-scene-file>
-</mat-list>
+<div *ngIf="!showUnzippedProductScreen">
+  <mat-list class="products-list">
+    <app-scene-file *ngFor="let product of products"
+      (toggle)="onToggleQueueProduct(product)"
+      (unzip)="onOpenUnzipProduct($event)"
+      [product]="product"
+      [isUserLoggedIn]="isUserLoggedIn"
+      [hasAccessToRestrictedData]="hasAccessToRestrictedData"
+      [isUnzipLoading]="unzippedLoading === product.id"
+      [isQueued]="(queuedProductIds$ | async).has(product.id)"
+      [isOpen]="false">
+    </app-scene-file>
+  </mat-list>
+</div>
+
+<div *ngIf="showUnzippedProductScreen" class="products-list zip-contents">
+    <mat-list class="products-list">
+      <app-scene-file
+        *ngFor="let product of beforeWithUnzip"
+        (toggle)="onToggleQueueProduct(product)"
+        (unzip)="onOpenUnzipProduct($event)"
+        (closeProduct)="onCloseProduct($event)"
+        [product]="product"
+        [isUserLoggedIn]="isUserLoggedIn"
+        [hasAccessToRestrictedData]="hasAccessToRestrictedData"
+        [isUnzipLoading]="unzippedLoading === product.id"
+        [isQueued]="(queuedProductIds$ | async).has(product.id)"
+        [isOpen]="product.id === openUnzippedProduct.id">
+      </app-scene-file>
+    </mat-list>
+    <div>
+      <app-file-contents [product]="openUnzippedProduct">
+      </app-file-contents>
+    </div>
+    <mat-list class="products-list">
+      <app-scene-file
+        *ngFor="let product of afterUnzip"
+        (toggle)="onToggleQueueProduct(product)"
+        (unzip)="onOpenUnzipProduct($event)"
+        (closeProduct)="onCloseProduct($event)"
+        [product]="product"
+        [isUserLoggedIn]="isUserLoggedIn"
+        [hasAccessToRestrictedData]="hasAccessToRestrictedData"
+        [isUnzipLoading]="unzippedLoading === product.id"
+        [isQueued]="(queuedProductIds$ | async).has(product.id)"
+        [isOpen]="product.id === openUnzippedProduct.id">
+      </app-scene-file>
+    </mat-list>
+</div>

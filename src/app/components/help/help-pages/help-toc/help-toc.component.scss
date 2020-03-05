@@ -1,0 +1,89 @@
+@import "asf-help";
+
+.help-video {
+  height: 300px;
+  background-size: contain;
+  margin-bottom: 18px;
+}
+
+.help-toc-title-block {
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
+.help-toc-all-title {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  color: $asf-primary;
+  //border-bottom: $border-style;
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    margin-block-start: 0;
+    margin-block-end: 0;
+  }
+}
+
+.subtitle {
+  h2,
+  h3,
+  h4 {
+    //font-weight: normal;
+  }
+}
+
+.help-toc-icon {
+  .material-icons {
+    font-size: 53px;
+    width: 54px;
+    height: 53px;
+    color: $asf-primary-light;
+  }
+}
+
+.mat-card-avatar.help-toc-icon {
+  width: 0;
+}
+
+.videoWrapper {
+  width: fit-content;
+  display: flex;
+}
+
+.mat-card {
+  padding: 16px 16px 0 16px;
+  height: 75px;
+}
+
+.mat-card-step {
+  display: flex;
+  margin: 0 3px 0 3px;
+  cursor: pointer;
+}
+
+.mat-card-title {
+  margin-bottom: 8px;
+}
+
+.mat-card-subtitle {
+  margin-bottom: 0;
+}
+
+.help-text-row {
+  justify-content: space-around;
+}
+
+.help-toc-1,
+.help-toc-2,
+.help-toc-3 {
+  flex: none;
+
+  h3 {
+    color: $asf-primary;
+  }
+}
+
+// delete this help-container override when the All Tutorial section is implemented

@@ -2,6 +2,31 @@
   (mouseenter)="isHovered = true"
   (mouseleave)="isHovered = false">
 
+  <ng-container matListIcon *ngIf="canUnzip(product)">
+    <mat-icon
+      *ngIf="!isUnzipLoading && !isOpen"
+      (click)="onLoadUnzippedPoduct()"
+      [matTooltip]="unzipTooltip(isUserLoggedIn, hasAccessToRestrictedData)"
+      [class.clickable]="!isUnzipDisabled(isUserLoggedIn, hasAccessToRestrictedData)"
+      [class.fainter-text]="isUnzipDisabled(isUserLoggedIn, hasAccessToRestrictedData)"
+      [class.disabled-cursor]="isUnzipDisabled(isUserLoggedIn, hasAccessToRestrictedData)">
+        keyboard_arrow_right
+    </mat-icon>
+    <mat-icon
+      *ngIf="isOpen"
+      (click)="onCloseProduct()"
+      matTooltip="Close contents"
+      class="clickable">
+        keyboard_arrow_down
+    </mat-icon>
+    <div *ngIf="isUnzipLoading">
+      <fa-icon icon="spinner" [pulse]="true"></fa-icon>
+    </div>
+  </ng-container>
+  <ng-container matListIcon *ngIf="!canUnzip(product)">
+    <mat-icon mat-icon-button disabled></mat-icon>
+  </ng-container>
+
   <div class="clickable" mat-line>
     <b>
       <span *ngIf="product.productTypeDisplay.length > 40">
@@ -29,10 +54,8 @@
       <mat-icon>cloud_download</mat-icon>
     </a>
 
-    <button (click)="onToggleQueueProduct()"
-       matTooltip="{{ !isQueued ? 'Add file to downloads' : 'Remove file from downloads' }}"
-       mat-icon-button>
-        <mat-icon *ngIf="!isQueued">add_shopping_cart</mat-icon>
-        <mat-icon *ngIf="isQueued">shopping_cart</mat-icon>
-    </button>
+    <app-cart-toggle
+      (toggle)="onToggleQueueProduct()"
+      [isQueued]="isQueued">
+    </app-cart-toggle>
 </mat-list-item>

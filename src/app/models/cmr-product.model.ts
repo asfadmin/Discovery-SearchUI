@@ -11,6 +11,7 @@ export interface CMRProduct {
   thumbnail: string;
   dataset: string;
   groupId: string;
+  isUnzippedFile: boolean;
 
   metadata: CMRProductMetadata;
 }
