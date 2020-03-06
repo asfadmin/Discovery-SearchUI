@@ -196,7 +196,7 @@ export class AppComponent implements OnInit, OnDestroy {
       tap(_ =>
         this.store$.dispatch(new searchStore.SearchAmountLoading())
       ),
-      switchMap(params => of(10).pipe(
+      switchMap(params => !!params.master ? of(10) : this.asfSearchApi.query<any[]>(params).pipe(
         catchError(resp => {
           const { error } = resp;
           if (!resp.ok || error && error.includes('VALIDATION_ERROR')) {
