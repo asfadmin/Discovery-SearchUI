@@ -35,6 +35,14 @@
 </ng-container>
 
 <ng-container *ngIf="searchType === SearchTypes.BASELINE">
+  <mat-card class="mp0 no-box-shadow" fxFlex="25" fxFlexFill>
+    <mat-card-subtitle class="header">
+      Scene Detail
+    </mat-card-subtitle>
+
+    <app-scene-detail></app-scene-detail>
+  </mat-card>
+
   <mat-card class="mp0 no-box-shadow" fxFlex="45" fxFlexFill>
     <app-baseline-chart></app-baseline-chart>
   </mat-card>
