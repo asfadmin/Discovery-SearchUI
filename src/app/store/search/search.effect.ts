@@ -64,7 +64,7 @@ export class SearchEffects {
     switchMap(
       ([params, countParams]) => forkJoin(
         this.asfApiService.query<any[]>(params),
-        !!countParams.master ? of(10) : this.asfApiService.query<any[]>(countParams)
+        this.asfApiService.query<any[]>(countParams)
       ).pipe(
         withLatestFrom(this.store$.select(getIsCanceled)),
         map(([[response, totalCount], isCanceled]) =>
