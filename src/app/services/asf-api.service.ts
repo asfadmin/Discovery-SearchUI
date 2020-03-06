@@ -26,6 +26,9 @@ export class AsfApiService {
   }
 
   public query<T>(stateParamsObj: {[paramName: string]: string | null}): Observable<T> {
+    if (!this.env.isProd) {
+      stateParamsObj['maturity'] = this.env.currentEnv.api_maturity;
+    }
     const params = this.queryParamsFrom(stateParamsObj);
 
     const queryParamsStr = params.toString()
