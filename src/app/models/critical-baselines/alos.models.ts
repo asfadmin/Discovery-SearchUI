@@ -60,5 +60,4 @@ export const alos = {
   FBD: fbdBaselines,
   FBS: fbsBaseline,
   PLR: quadrature,
-  WB1: {}
 };
