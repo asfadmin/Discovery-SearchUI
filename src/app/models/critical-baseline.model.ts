@@ -12,7 +12,16 @@ const criticalBaselines = {
   'JERS-1': 6201,
 };
 
-export const criticalBaselineFor = (product: CMRProduct): number => {
+export const criticalBaselineFor = (product: CMRProduct) => {
+  try {
+    return getBaseline(product);
+  } catch {
+    console.log(`Can't find critical baseline for ${product.name}`);
+    return null;
+  }
+};
+
+const getBaseline = (product: CMRProduct): number => {
   const dataset = product.dataset.toUpperCase();
   const metadata = product.metadata;
 
