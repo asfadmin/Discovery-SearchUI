@@ -8,6 +8,7 @@ import { AppState } from '@store';
 import * as scenesStore from '@store/scenes';
 import * as filtersStore from '@store/filters';
 import * as searchStore from '@store/search';
+import * as baselineStore from '@store/baseline';
 import * as uiStore from '@store/ui';
 
 import * as models from '@models';
@@ -133,8 +134,20 @@ export class SceneDetailComponent implements OnInit, OnDestroy {
   }
 
   public findSimilarScenes(): void {
+    const scene = this.scene;
+
     [
-      new filtersStore.SetFiltersSimilarTo(this.scene),
+      new searchStore.SetSearchType(models.SearchType.DATASET),
+      new filtersStore.SetFiltersSimilarTo(scene),
+      new searchStore.MakeSearch()
+    ].forEach(action => this.store$.dispatch(action));
+  }
+
+  public makeBaselineSearch(): void {
+    const sceneName = this.scene.name;
+    [
+      new searchStore.SetSearchType(models.SearchType.BASELINE),
+      new baselineStore.SetFilterMaster(sceneName),
       new searchStore.MakeSearch()
     ].forEach(action => this.store$.dispatch(action));
   }

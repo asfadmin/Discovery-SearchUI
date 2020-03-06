@@ -1,4 +1,5 @@
-import { Component, OnInit, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter, OnDestroy } from '@angular/core';
+import { SubSink } from 'subsink';
 
 import { Store } from '@ngrx/store';
 
@@ -19,13 +20,14 @@ import { HelpComponent } from '@components/help/help.component';
   templateUrl: './search-button.component.html',
   styleUrls: ['./search-button.component.scss']
 })
-export class SearchButtonComponent implements OnInit {
+export class SearchButtonComponent implements OnInit, OnDestroy {
   @Output() doSearch = new EventEmitter<void>();
 
   public canSearch$ = this.store$.select(searchStore.getCanSearch);
   public isMaxResultsLoading$ = this.store$.select(searchStore.getIsMaxResultsLoading);
   public loading$ = this.store$.select(searchStore.getIsLoading);
   public isLoggedIn = false;
+  private subs = new SubSink();
 
   constructor(
     private store$: Store<AppState>,
@@ -35,8 +37,10 @@ export class SearchButtonComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.store$.select(userStore.getIsUserLoggedIn).subscribe(
-      isLoggedIn => this.isLoggedIn = isLoggedIn
+    this.subs.add(
+      this.store$.select(userStore.getIsUserLoggedIn).subscribe(
+        isLoggedIn => this.isLoggedIn = isLoggedIn
+      )
     );
   }
 
@@ -82,5 +86,9 @@ export class SearchButtonComponent implements OnInit {
     dialogConfig.maxHeight = '100%';
 
     const dialogRef = this.dialog.open(HelpComponent, dialogConfig);
+  }
+
+  ngOnDestroy() {
+    this.subs.unsubscribe();
   }
 }

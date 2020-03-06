@@ -1,5 +1,6 @@
-import { Component, HostListener, OnInit } from '@angular/core';
+import { Component, HostListener, OnInit, OnDestroy } from '@angular/core';
 import { ResizeEvent } from 'angular-resizable-element';
+import { SubSink } from 'subsink';
 
 import { Subject } from 'rxjs';
 import { map } from 'rxjs/operators';
@@ -18,7 +19,7 @@ import * as models from '@models';
   templateUrl: './results-menu.component.html',
   styleUrls: ['./results-menu.component.scss'],
 })
-export class ResultsMenuComponent implements OnInit {
+export class ResultsMenuComponent implements OnInit, OnDestroy {
   public isResultsMenuOpen$ = this.store$.select(uiStore.getIsResultsMenuOpen);
   public selectedProducts$ = this.store$.select(scenesStore.getSelectedSceneProducts);
 
@@ -33,6 +34,7 @@ export class ResultsMenuComponent implements OnInit {
   public breakpoint$ = this.screenSize.breakpoint$;
   public breakpoints = models.Breakpoints;
   public isUnzipOpen: boolean;
+  private subs = new SubSink();
 
   constructor(
     private store$: Store<AppState>,
@@ -42,8 +44,11 @@ export class ResultsMenuComponent implements OnInit {
 
   ngOnInit() {
     this.menuHeightPx = this.defaultMenuHeight();
-    this.store$.select(scenesStore.getShowUnzippedProduct).subscribe(
-      showUnzippedProduct => this.isUnzipOpen = showUnzippedProduct
+
+    this.subs.add(
+      this.store$.select(scenesStore.getShowUnzippedProduct).subscribe(
+        showUnzippedProduct => this.isUnzipOpen = showUnzippedProduct
+      )
     );
   }
 
@@ -88,5 +93,9 @@ export class ResultsMenuComponent implements OnInit {
 
   public onFinalResize() {
     this.resize$.next();
+  }
+
+  ngOnDestroy() {
+    this.subs.unsubscribe();
   }
 }

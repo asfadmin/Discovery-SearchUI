@@ -1,4 +1,5 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, OnDestroy } from '@angular/core';
+import { SubSink } from 'subsink';
 
 import { map } from 'rxjs/operators';
 
@@ -10,17 +11,19 @@ import { Breakpoints } from '@models';
   templateUrl: './file-name.component.html',
   styleUrls: ['./file-name.component.scss']
 })
-export class FileNameComponent implements OnInit {
+export class FileNameComponent implements OnInit, OnDestroy {
   @Input() name: string;
   @Input() dataset: string;
   @Input() isFilename: boolean;
 
   public sceneNameLen: number;
+  private subs = new SubSink();
 
   constructor(private screenSize: ScreenSizeService) { }
 
   ngOnInit(): void {
-    this.screenSize.size$.pipe(
+    this.subs.add(
+      this.screenSize.size$.pipe(
       map(size => {
         if (size.width > 1900) {
           return 50;
@@ -40,6 +43,13 @@ export class FileNameComponent implements OnInit {
           return 25;
         }
       }),
-    ).subscribe(len => this.sceneNameLen = len);
+      ).subscribe(
+        len => this.sceneNameLen = len
+      )
+    );
+  }
+
+  ngOnDestroy() {
+    this.subs.unsubscribe();
   }
 }

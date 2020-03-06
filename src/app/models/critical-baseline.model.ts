@@ -12,12 +12,11 @@ const criticalBaselines = {
   'JERS-1': 6201,
 };
 
-export const criticalBaselineFor = (product: CMRProduct) => {
+export const criticalBaselineFor = (product: CMRProduct): number => {
   try {
     return getBaseline(product);
   } catch {
-    console.log(`Can't find critical baseline for ${product.name}`);
-    return null;
+    return 0;
   }
 };
 

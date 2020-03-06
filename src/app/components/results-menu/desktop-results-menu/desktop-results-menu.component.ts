@@ -1,4 +1,5 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, OnDestroy } from '@angular/core';
+import { SubSink } from 'subsink';
 
 import { Store } from '@ngrx/store';
 import { AppState } from '@store';
@@ -14,20 +15,27 @@ import { SearchType } from '@models';
   templateUrl: './desktop-results-menu.component.html',
   styleUrls: ['./desktop-results-menu.component.css', '../results-menu.component.scss']
 })
-export class DesktopResultsMenuComponent implements OnInit {
+export class DesktopResultsMenuComponent implements OnInit, OnDestroy {
   @Input() resize$: Observable<void>;
 
   public selectedProducts$ = this.store$.select(scenesStore.getSelectedSceneProducts);
   public searchType: SearchType;
   public SearchTypes = SearchType;
+  private subs = new SubSink();
 
   constructor(
     private store$: Store<AppState>,
   ) { }
 
   ngOnInit(): void {
-    this.store$.select(searchStore.getSearchType).subscribe(
-      searchType => this.searchType = searchType
+    this.subs.add(
+      this.store$.select(searchStore.getSearchType).subscribe(
+        searchType => this.searchType = searchType
+      )
     );
+  }
+
+  ngOnDestroy() {
+    this.subs.unsubscribe();
   }
 }

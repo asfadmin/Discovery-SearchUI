@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, OnDestroy } from '@angular/core';
 
 import { combineLatest } from 'rxjs';
 import { map, tap, filter, } from 'rxjs/operators';
@@ -10,6 +10,7 @@ import * as scenesStore from '@store/scenes';
 import * as baselineStore from '@store/baseline';
 import * as queueStore from '@store/queue';
 
+import { SubSink } from 'subsink';
 import { ChartService } from '@services';
 import { criticalBaselineFor, CMRProduct } from '@models';
 
@@ -28,7 +29,7 @@ export enum ChartDatasets {
   templateUrl: './baseline-chart.component.html',
   styleUrls: ['./baseline-chart.component.scss']
 })
-export class BaselineChartComponent implements OnInit {
+export class BaselineChartComponent implements OnInit, OnDestroy {
   @ViewChild('baselineChart', { static: true }) baselineChart: ElementRef;
 
   private chart: Chart;
@@ -36,6 +37,7 @@ export class BaselineChartComponent implements OnInit {
   private criticalBaseline: number;
   private hoveredProductId;
   private isFirstLoad = true;
+  private subs = new SubSink();
 
   constructor(
     private store$: Store<AppState>,
@@ -47,70 +49,78 @@ export class BaselineChartComponent implements OnInit {
 
     const products$ = this.store$.select(scenesStore.getAllProducts);
 
-    products$.pipe(
-      tap(products => products.map(
-        product => this.criticalBaseline = criticalBaselineFor(product)
-      )),
-      map(products => products.map(this.productToPoint)),
-    ).subscribe(
-      points => {
-        const extrema = this.determineMinMax(points);
-        const { minDataset, maxDataset } = this.criticalBaselineDataset(points, extrema);
+    this.subs.add(
+      products$.pipe(
+        tap(products => products.map(
+          product => this.criticalBaseline = criticalBaselineFor(product)
+        )),
+        map(products => products.map(this.productToPoint)),
+      ).subscribe(
+        points => {
+          const extrema = this.determineMinMax(points);
+          const { minDataset, maxDataset } = this.criticalBaselineDataset(points, extrema);
 
-        this.setDataset(ChartDatasets.PRODUCTS, points);
-        this.setDataset(ChartDatasets.MIN_CRITICAL, minDataset);
-        this.setDataset(ChartDatasets.MAX_CRITICAL, maxDataset);
+          this.setDataset(ChartDatasets.PRODUCTS, points);
+          this.setDataset(ChartDatasets.MIN_CRITICAL, minDataset);
+          this.setDataset(ChartDatasets.MAX_CRITICAL, maxDataset);
 
-        if (this.isFirstLoad) {
-          this.updateScales(extrema);
-          this.isFirstLoad = false;
+          if (this.isFirstLoad) {
+            this.updateScales(extrema);
+            this.isFirstLoad = false;
+          }
+
+          this.chart.update();
+        })
+    );
+
+    this.subs.add(
+      this.store$.select(scenesStore.getSelectedScene).pipe(
+        tap(selected => this.selected = selected),
+        filter(selected => !!selected),
+        map(this.productToPoint)
+      ).subscribe(
+        selectedPoint => {
+          this.setDataset(ChartDatasets.SELECTED, [selectedPoint]);
+          this.chart.update();
         }
-
-        this.chart.update();
-      });
-
-    this.store$.select(scenesStore.getSelectedScene).pipe(
-      tap(selected => this.selected = selected),
-      filter(selected => !!selected),
-      map(this.productToPoint)
-    ).subscribe(
-      selectedPoint => {
-        this.setDataset(ChartDatasets.SELECTED, [selectedPoint]);
-        this.chart.update();
-      }
+      )
     );
 
-    combineLatest(
-      this.store$.select(queueStore.getQueuedProductIds),
-      this.store$.select(scenesStore.getAllProducts),
-    ).pipe(
-      map(([queueIds, products]) => {
-        const ids = new Set(queueIds);
+    this.subs.add(
+      combineLatest(
+        this.store$.select(queueStore.getQueuedProductIds),
+        this.store$.select(scenesStore.getAllProducts),
+      ).pipe(
+        map(([queueIds, products]) => {
+          const ids = new Set(queueIds);
 
-        return products.filter(product => ids.has(product.id));
-      }),
-      map(products => products.map(this.productToPoint)),
-    ).subscribe(
-      points => {
-        this.setDataset(ChartDatasets.DOWNLOADS, points);
-        this.chart.update();
-      }
+          return products.filter(product => ids.has(product.id));
+        }),
+        map(products => products.map(this.productToPoint)),
+      ).subscribe(
+        points => {
+          this.setDataset(ChartDatasets.DOWNLOADS, points);
+          this.chart.update();
+        }
+      )
     );
 
-    combineLatest(
-      this.store$.select(baselineStore.getMasterName),
-      this.store$.select(scenesStore.getAllProducts),
-    ).pipe(
-      map(([masterName, products]) => products
-        .filter(product => product.name === masterName)
-        .pop()
-      ),
-      filter(product => !!product),
-      map(this.productToPoint)
-    ).subscribe(point => {
+    this.subs.add(
+      combineLatest(
+        this.store$.select(baselineStore.getMasterName),
+        this.store$.select(scenesStore.getAllProducts),
+      ).pipe(
+        map(([masterName, products]) => products
+          .filter(product => product.name === masterName)
+          .pop()
+        ),
+        filter(product => !!product),
+        map(this.productToPoint)
+      ).subscribe(point => {
         this.setDataset(ChartDatasets.MASTER, [point]);
         this.chart.update();
-    });
+      })
+    );
   }
 
   public onSetSelectedAsMaster() {
@@ -192,5 +202,9 @@ export class BaselineChartComponent implements OnInit {
   private onSelectHoveredScene = () => {
     const action = new scenesStore.SetSelectedScene(this.hoveredProductId);
     this.store$.dispatch(action);
+  }
+
+  ngOnDestroy() {
+    this.subs.unsubscribe();
   }
 }

@@ -49,11 +49,11 @@
     </mat-card-content>
 
     <div class="detail-card-info">
-      <a *ngIf="prop.isRelevant(p.BASELINE_TOOL, dataset)"
+      <a *ngIf="searchType !== searchTypes.BASELINE && prop.isRelevant(p.BASELINE_TOOL, dataset)"
+         (click)="makeBaselineSearch()"
          mat-raised-button class="mini-button" target="_blank"
-         matTooltip="Use this scene in the Baseline Tool for interferometry"
-         href="https://baseline.asf.alaska.edu/#/baseline?granule={{ scene.name }}">
-        Baseline Tool
+         matTooltip="Use this scene in a Baseline Search for interferometry">
+        Baseline Search
       </a>
       &nbsp;&nbsp;
       <a mat-raised-button class="mini-button"
