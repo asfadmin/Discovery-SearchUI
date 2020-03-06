@@ -63,7 +63,7 @@ export class SearchEffects {
     map(([_, params]) => [params, {...params, output: 'COUNT'}]),
     switchMap(
       ([params, countParams]) => forkJoin(
-        of(<any>data),
+        this.asfApiService.query<any[]>(params),
         of(10),
       ).pipe(
         withLatestFrom(this.store$.select(getIsCanceled)),

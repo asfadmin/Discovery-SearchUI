@@ -13,7 +13,7 @@ const criticalBaselines = {
 };
 
 export const criticalBaselineFor = (product: CMRProduct): number => {
-  const dataset = product.dataset;
+  const dataset = product.dataset.toUpperCase();
   const metadata = product.metadata;
 
   if (dataset.includes('ALOS')) {
