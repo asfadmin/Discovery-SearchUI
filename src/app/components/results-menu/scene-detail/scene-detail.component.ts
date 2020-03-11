@@ -132,6 +132,10 @@ export class SceneDetailComponent implements OnInit, OnDestroy {
     );
   }
 
+  public onSetSelectedAsMaster() {
+    this.store$.dispatch(new scenesStore.SetMaster(this.scene.name));
+  }
+
   public findSimilarScenes(): void {
     const scene = this.scene;
 

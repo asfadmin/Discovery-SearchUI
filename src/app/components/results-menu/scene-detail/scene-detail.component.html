@@ -55,6 +55,13 @@
          matTooltip="Use this scene in a Baseline Search for interferometry">
         Baseline Search
       </a>
+
+      <button
+         *ngIf="searchType === searchTypes.BASELINE"
+        (click)="onSetSelectedAsMaster()"
+        class="mini-button" color="secondary"
+        mat-raised-button>Set as Master</button>
+
       &nbsp;&nbsp;
       <a mat-raised-button class="mini-button"
          target="_blank"

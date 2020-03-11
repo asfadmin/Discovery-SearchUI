@@ -123,10 +123,6 @@ export class BaselineChartComponent implements OnInit, OnDestroy {
     );
   }
 
-  public onSetSelectedAsMaster() {
-    this.store$.dispatch(new scenesStore.SetMaster(this.selected.name));
-  }
-
   private setDataset(dataset: ChartDatasets, data) {
     this.chart.data.datasets[dataset].data = data;
   }
