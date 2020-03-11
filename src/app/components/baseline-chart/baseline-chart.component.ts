@@ -7,7 +7,6 @@ import Chart from 'chart.js';
 import { Store } from '@ngrx/store';
 import { AppState } from '@store';
 import * as scenesStore from '@store/scenes';
-import * as baselineStore from '@store/baseline';
 import * as queueStore from '@store/queue';
 
 import { SubSink } from 'subsink';
@@ -37,6 +36,7 @@ export class BaselineChartComponent implements OnInit, OnDestroy {
   private criticalBaseline: number;
   private hoveredProductId;
   private isFirstLoad = true;
+  private offsets = { temporal: 0, perpendicular: 0 };
   private subs = new SubSink();
 
   constructor(
@@ -47,20 +47,33 @@ export class BaselineChartComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.initChart();
 
-    const products$ = this.store$.select(scenesStore.getAllProducts);
+    const products$ = this.store$.select(scenesStore.getAllProducts).pipe(
+      tap(products => products.map(
+        product => this.criticalBaseline = criticalBaselineFor(product)
+      )),
+      map(products => products.map(this.productToPoint)),
+    );
 
     this.subs.add(
-      products$.pipe(
-        tap(products => products.map(
-          product => this.criticalBaseline = criticalBaselineFor(product)
-        )),
-        map(products => products.map(this.productToPoint)),
+      this.store$.select(scenesStore.getMasterOffsets).subscribe(
+        offsets => this.offsets = offsets
+      )
+    );
+
+    this.subs.add(
+      combineLatest(
+        products$,
+        this.store$.select(scenesStore.getSelectedScene).pipe(
+          tap(selected => this.selected = selected),
+        )
       ).subscribe(
-        points => {
+        ([points, selected]) => {
           const extrema = this.determineMinMax(points);
           const { minDataset, maxDataset } = this.criticalBaselineDataset(points, extrema);
+          const selectedPoint = this.productToPoint(selected);
 
           this.setDataset(ChartDatasets.PRODUCTS, points);
+          this.setDataset(ChartDatasets.SELECTED, [selectedPoint]);
           this.setDataset(ChartDatasets.MIN_CRITICAL, minDataset);
           this.setDataset(ChartDatasets.MAX_CRITICAL, maxDataset);
 
@@ -71,19 +84,6 @@ export class BaselineChartComponent implements OnInit, OnDestroy {
 
           this.chart.update();
         })
-    );
-
-    this.subs.add(
-      this.store$.select(scenesStore.getSelectedScene).pipe(
-        tap(selected => this.selected = selected),
-        filter(selected => !!selected),
-        map(this.productToPoint)
-      ).subscribe(
-        selectedPoint => {
-          this.setDataset(ChartDatasets.SELECTED, [selectedPoint]);
-          this.chart.update();
-        }
-      )
     );
 
     this.subs.add(
@@ -107,7 +107,7 @@ export class BaselineChartComponent implements OnInit, OnDestroy {
 
     this.subs.add(
       combineLatest(
-        this.store$.select(baselineStore.getMasterName),
+        this.store$.select(scenesStore.getMasterName),
         this.store$.select(scenesStore.getAllProducts),
       ).pipe(
         map(([masterName, products]) => products
@@ -124,7 +124,7 @@ export class BaselineChartComponent implements OnInit, OnDestroy {
   }
 
   public onSetSelectedAsMaster() {
-    this.store$.dispatch(new baselineStore.SetMaster(this.selected.name));
+    this.store$.dispatch(new scenesStore.SetMaster(this.selected.name));
   }
 
   private setDataset(dataset: ChartDatasets, data) {
@@ -133,8 +133,8 @@ export class BaselineChartComponent implements OnInit, OnDestroy {
 
   private productToPoint = (product: CMRProduct) => {
     return ({
-      x: product.metadata.temporal,
-      y: product.metadata.perpendicular,
+      x: product.metadata.temporal + this.offsets.temporal,
+      y: product.metadata.perpendicular + this.offsets.perpendicular,
       id: product.id
     });
   }

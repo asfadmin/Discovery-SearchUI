@@ -18,6 +18,10 @@ export enum ScenesActionType {
   SELECT_NEXT_SCENE = '[Scenes] Select Next Scene',
   SELECT_PREVIOUS_SCENE = '[Scenes] Select Previous Scene',
 
+  SET_MASTER = '[Scenes-Baseline] Set Master',
+  SET_FILTER_MASTER = '[Scenes-Baseline] Set Filter Master',
+  CLEAR_BASELINE = '[Scenes-Baseline] Clear Baseline',
+
   SELECT_NEXT_WITH_BROWSE = '[Scenes] Set next with browse',
   SELECT_PREVIOUS_WITH_BROWSE = '[Scenes] Set previous with browse'
 }
@@ -31,7 +35,6 @@ export class SetScenes implements Action {
 export class ClearScenes implements Action {
   public readonly type = ScenesActionType.CLEAR;
 }
-
 export class SetSelectedScene implements Action {
   public readonly type = ScenesActionType.SET_SELECTED_SCENE;
 
@@ -94,6 +97,22 @@ export class ClearUnzippedProducts implements Action {
   public readonly type = ScenesActionType.CLEAR_UNZIPPED_PRODUCTS;
 }
 
+export class SetMaster implements Action {
+  public readonly type = ScenesActionType.SET_MASTER;
+
+  constructor(public payload: string) {}
+}
+
+export class SetFilterMaster implements Action {
+  public readonly type = ScenesActionType.SET_FILTER_MASTER;
+
+  constructor(public payload: string) {}
+}
+
+export class ClearBaseline implements Action {
+  public readonly type = ScenesActionType.CLEAR_BASELINE;
+}
+
 
 export type ScenesActions =
   | SetScenes
@@ -109,4 +128,7 @@ export type ScenesActions =
   | SelectPreviousScene
   | SelectNextWithBrowse
   | SelectPreviousWithBrowse
-  | SetResultsLoaded;
+  | SetResultsLoaded
+  | ClearBaseline
+  | SetFilterMaster
+  | SetMaster;
