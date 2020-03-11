@@ -25,6 +25,18 @@
           <ng-template [ngSwitchCase]="'searchResults'">
             <app-help-search-results></app-help-search-results>
           </ng-template>
+          <ng-template [ngSwitchCase]="'logIn'">
+            <app-help-login></app-help-login>
+          </ng-template>
+          <ng-template [ngSwitchCase]="'mapControls'">
+            <app-help-map-controls></app-help-map-controls>
+          </ng-template>
+          <ng-template [ngSwitchCase]="'filters'">
+            <app-help-filters></app-help-filters>
+          </ng-template>
+          <ng-template [ngSwitchCase]="'savedSearches'">
+            <app-help-saved-searches></app-help-saved-searches>
+          </ng-template>
           <ng-template [ngSwitchDefault]>
             <app-help-toc></app-help-toc>
           </ng-template>

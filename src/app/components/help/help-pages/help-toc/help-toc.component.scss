@@ -84,6 +84,10 @@
   h3 {
     color: $asf-primary;
   }
+
+  li {
+    cursor: pointer;
+  }
 }
 
 // delete this help-container override when the All Tutorial section is implemented
