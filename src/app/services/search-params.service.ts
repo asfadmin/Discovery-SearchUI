@@ -8,7 +8,7 @@ import { map, withLatestFrom, startWith } from 'rxjs/operators';
 
 import { AppState } from '@store';
 import * as filterStore from '@store/filters';
-import * as baselineStore from '@store/baseline';
+import * as scenesStore from '@store/scenes';
 import { getSearchType } from '@store/search/search.reducer';
 
 import { MapService } from './map/map.service';
@@ -92,7 +92,7 @@ export class SearchParamsService {
   }
 
   private baselineSearchParams$() {
-    return this.store$.select(baselineStore.getFilterMaster).pipe(
+    return this.store$.select(scenesStore.getFilterMaster).pipe(
       map(master => ({ master }))
     );
   }

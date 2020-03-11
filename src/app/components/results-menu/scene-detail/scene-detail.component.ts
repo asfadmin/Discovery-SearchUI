@@ -8,7 +8,6 @@ import { AppState } from '@store';
 import * as scenesStore from '@store/scenes';
 import * as filtersStore from '@store/filters';
 import * as searchStore from '@store/search';
-import * as baselineStore from '@store/baseline';
 import * as uiStore from '@store/ui';
 
 import * as models from '@models';
@@ -147,7 +146,7 @@ export class SceneDetailComponent implements OnInit, OnDestroy {
     const sceneName = this.scene.name;
     [
       new searchStore.SetSearchType(models.SearchType.BASELINE),
-      new baselineStore.SetFilterMaster(sceneName),
+      new scenesStore.SetFilterMaster(sceneName),
       new searchStore.MakeSearch()
     ].forEach(action => this.store$.dispatch(action));
   }

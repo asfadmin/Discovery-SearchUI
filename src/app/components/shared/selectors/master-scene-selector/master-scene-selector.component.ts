@@ -3,7 +3,7 @@ import { SubSink } from 'subsink';
 
 import { Store } from '@ngrx/store';
 import { AppState } from '@store';
-import * as baselineStore from '@store/baseline';
+import * as scenesStore from '@store/scenes';
 
 @Component({
   selector: 'app-master-scene-selector',
@@ -18,14 +18,14 @@ export class MasterSceneSelectorComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.subs.add(
-      this.store$.select(baselineStore.getFilterMaster).subscribe(
+      this.store$.select(scenesStore.getFilterMaster).subscribe(
         master => this.masterScene = master
       )
     );
   }
 
   public onMasterSceneChanged(master: string): void {
-    this.store$.dispatch(new baselineStore.SetFilterMaster(master));
+    this.store$.dispatch(new scenesStore.SetFilterMaster(master));
   }
 
   ngOnDestroy() {

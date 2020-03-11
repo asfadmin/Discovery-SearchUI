@@ -16,6 +16,12 @@ export interface ScenesState {
   openUnzippedProduct: string | null;
   productUnzipLoading: string | null;
   selected: string | null;
+  master: string | null;
+  filterMaster: string | null;
+  masterOffsets: {
+    temporal: number;
+    perpendicular: number
+  };
 }
 
 export const initState: ScenesState = {
@@ -28,6 +34,12 @@ export const initState: ScenesState = {
   areResultsLoaded: false,
 
   selected: null,
+  master: null,
+  filterMaster: null,
+  masterOffsets: {
+    temporal: 0,
+    perpendicular: 0
+  }
 };
 
 
@@ -125,6 +137,40 @@ export function scenesReducer(state = initState, action: ScenesActions): ScenesS
       return {
         ...state,
         areResultsLoaded: action.payload,
+      };
+    }
+
+    case ScenesActionType.SET_MASTER: {
+      const newMaster = Object.values(state.products)
+        .filter(product => product.name === action.payload)[0];
+
+      return {
+        ...state,
+        master: action.payload,
+        masterOffsets: {
+          temporal: -newMaster.metadata.temporal,
+          perpendicular: -newMaster.metadata.perpendicular
+        }
+      };
+    }
+
+    case ScenesActionType.SET_FILTER_MASTER: {
+      return {
+        ...state,
+        filterMaster: action.payload,
+        master: action.payload
+      };
+    }
+
+    case ScenesActionType.CLEAR_BASELINE: {
+      return {
+        ...state,
+        filterMaster: null,
+        master: null,
+        masterOffsets: {
+          temporal: 0,
+          perpendicular: 0
+        }
       };
     }
 
@@ -418,4 +464,19 @@ export const getOpenUnzippedProduct = createSelector(
 export const getShowUnzippedProduct = createSelector(
   getScenesState,
   (state: ScenesState) => state.openUnzippedProduct && !state.productUnzipLoading
+);
+
+export const getMasterName = createSelector(
+  getScenesState,
+  state => state.master
+);
+
+export const getFilterMaster = createSelector(
+  getScenesState,
+  state => state.filterMaster
+);
+
+export const getMasterOffsets = createSelector(
+  getScenesState,
+  state => state.masterOffsets
 );
