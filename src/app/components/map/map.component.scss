@@ -10,7 +10,6 @@
   top: 5px;
   width: 100vw;
   pointer-events: none;
-  overflow: hidden;
 }
 
 .additional-filters {
@@ -18,20 +17,29 @@
   top: 15px;
 }
 
+.banner-row {
+  padding-right: 10px;
+}
+
 .banner-card {
   pointer-events: auto;
-  max-height: 212px;
-  height: fit-content;
-  padding-top: 9px;
+  padding-top: 5px;
   padding-bottom: 9px;
   background-color: white;
   border-color: $asf-primary-dark;
   border-width: 2px;
   border-style: solid;
-  color: darken($asf-accent, 50%);
-  margin-left: 5px;
+  color: $asf-primary;
+  //color: darken($asf-accent, 50%);
+  margin-left: 0;
   margin-bottom: 5px;
   line-height: 1.4;
+  padding-right: 0;
+}
+
+.map-controls {
+  padding-right: 15px;
+  height: 58px;
 }
 
 .map-control-margin {
@@ -41,11 +49,25 @@
 .banner-text {
   display: flex;
   justify-content: space-between;
-  align-items: center;
+  align-items: flex-start;
+}
+
+.inner-banner-text {
+  max-height: 67px;
+  overflow-y: auto;
+  height: fit-content;
+  width: 100%;
 }
 
 .mat-icon-button {
   color: black;
+  padding: 0;
+  min-width: 0;
+  width: 40px;
+  height: 24px;
+  flex-shrink: 1;
+  line-height: 24px;
+  border-radius: 50%;
 }
 
 .map-buttons {

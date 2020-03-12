@@ -36,6 +36,10 @@ import {MatDialogModule} from '@angular/material/dialog';
 import { HelpListSearchComponent } from './components/help/help-pages/help-list-search/help-list-search.component';
 import { HelpSearchResultsComponent } from './components/help/help-pages/help-search-results/help-search-results.component';
 import { HelpTocComponent } from './components/help/help-pages/help-toc/help-toc.component';
+import { HelpLoginComponent } from './components/help/help-pages/help-login/help-login.component';
+import { HelpMapControlsComponent } from './components/help/help-pages/help-map-controls/help-map-controls.component';
+import { HelpFiltersComponent } from './components/help/help-pages/help-filters/help-filters.component';
+import { HelpSavedSearchesComponent } from './components/help/help-pages/help-saved-searches/help-saved-searches.component';
 
 // info about cookie consent module: https://tinesoft.github.io/ngx-cookieconsent/home
 const cookieConfig: NgcCookieConsentConfig = {
@@ -80,6 +84,10 @@ export const routes = [
     HelpListSearchComponent,
     HelpSearchResultsComponent,
     HelpTocComponent,
+    HelpLoginComponent,
+    HelpMapControlsComponent,
+    HelpFiltersComponent,
+    HelpSavedSearchesComponent,
   ],
   imports: [
     BrowserModule,
