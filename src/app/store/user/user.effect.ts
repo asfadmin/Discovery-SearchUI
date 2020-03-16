@@ -138,6 +138,10 @@ export class UserEffects {
         return search;
       }
 
+      if (search.searchType === models.SearchType.BASELINE) {
+        return search;
+      }
+
       const { start, end } = search.filters.dateRange;
 
       search.filters.dateRange = {
