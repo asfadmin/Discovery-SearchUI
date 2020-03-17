@@ -52,6 +52,7 @@
     "ngx-clipboard": "^12.2.1",
     "ngx-cookieconsent": "^2.2.3",
     "node-sass": "^4.13.1",
+    "nouislider": "^14.1.1",
     "ol": "^6.1.1",
     "popper.js": "^1.16.1",
     "proj4": "^2.6.0",

@@ -10,6 +10,13 @@
       </div>
 
       <div fxFlex="nogrow" class="breadcrumb">
+        <button (click)="onToggleFiltersMenu()"
+                mat-button class="additional-filters-button">
+          Filters <br> <mat-icon>more_horiz</mat-icon>
+        </button>
+      </div>
+
+      <div fxFlex="nogrow" class="breadcrumb">
         <app-search-button></app-search-button>
       </div>
 

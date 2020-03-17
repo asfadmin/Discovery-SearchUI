@@ -1,0 +1,37 @@
+<mat-accordion multi>
+  <mat-expansion-panel [expanded]="defaultPanelOpenState" [disabled]="panelIsDisabled"
+    (click)="selectPanel(panels.DATE)"
+    [class.raised-section]="isSelected(panels.DATE)">
+    <mat-expansion-panel-header [collapsedHeight]="customCollapsedHeight" [expandedHeight]="customExpandedHeight">
+      <mat-panel-title>
+        Date Filters
+      </mat-panel-title>
+    </mat-expansion-panel-header>
+
+    <div style="margin-top: 20px;">
+      <app-date-selector></app-date-selector>
+    </div>
+    <div>
+      <app-season-selector></app-season-selector>
+    </div>
+  </mat-expansion-panel>
+
+  <mat-expansion-panel [expanded]="defaultPanelOpenState" [disabled]="panelIsDisabled"
+    (click)="selectPanel(panels.BASELINE)"
+    [class.raised-section]="isSelected(panels.BASELINE)">
+    <mat-expansion-panel-header [collapsedHeight]="customCollapsedHeight" [expandedHeight]="customExpandedHeight">
+      <mat-panel-title>
+        Baseline Filters
+      </mat-panel-title>
+    </mat-expansion-panel-header>
+
+    <div style="margin-top: 20px;">
+      Perpendicular Filter
+      <div class="slider" #perpendicularFilter></div>
+    </div>
+    <div class="slider" style="margin-top: 20px;">
+      Temporal Filter
+      <div #temporalFilter></div>
+    </div>
+  </mat-expansion-panel>
+</mat-accordion>
