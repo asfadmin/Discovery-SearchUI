@@ -6,6 +6,16 @@ export enum FiltersActionType {
   SET_SELECTED_DATASET = '[Filters-Dataset] Set Selected Dataset',
   SET_STATE = '[Filters-Date] Set State',
 
+  SET_TEMPORAL_START = '[Filters-Temporal] Set Temporal Start',
+  SET_TEMPORAL_END = '[Filters-Temporal] Set Temporal End',
+  SET_TEMPORAL_RANGE = '[Filters-Temporal] Set Temporal Range',
+  CLEAR_TEMPORAL_RANGE = '[Filters-Temporal] Clear Date Range',
+
+  SET_PERPENDICULAR_START = '[Filters-Perp] Set Perpendicular Start',
+  SET_PERPENDICULAR_END  = '[Filters-Perp] Set Perpendicular End',
+  SET_PERPENDICULAR_RANGE = '[Filters-Perp] Set Perpendicular Range',
+  CLEAR_PERPENDICULAR_RANGE = '[Filters-Perp] Clear Perpendicular Range',
+
   SET_START_DATE = '[Filters-Date] Set Start Date',
   SET_END_DATE = '[Filters-Date] Set End Date',
   CLEAR_DATE_RANGE = '[Filters-Date] Clear Date Range',
@@ -17,9 +27,11 @@ export enum FiltersActionType {
   SET_PATH_START = '[Filters-Path] Set Path Start',
   SET_PATH_END = '[Filters-Path] Set Path End',
   CLEAR_PATH_RANGE = '[Filter-Path] Clear Path Range',
+
   SET_FRAME_START = '[FIlters-Frame] Set Frame Start',
   SET_FRAME_END = '[Filters-Frame] Set Frame End',
   CLEAR_FRAME_RANGE = '[Filter-Frame] Clear Frame Range',
+
   SET_FILTERS_SIMILAR_TO = '[Filters] Set Filters Similar To',
 
   SET_PRODUCT_TYPES = '[Filters-Prodcut-Type] Set DATASET Product Types',
@@ -65,6 +77,50 @@ export class SetSelectedDataset implements Action {
   public readonly type = FiltersActionType.SET_SELECTED_DATASET;
 
   constructor(public payload: string) {}
+}
+
+export class SetPerpendicularStart implements Action {
+  public readonly type = FiltersActionType.SET_PERPENDICULAR_START;
+
+  constructor(public payload: number) {}
+}
+
+export class SetPerpendicularEnd  implements Action {
+  public readonly type = FiltersActionType.SET_PERPENDICULAR_END;
+
+  constructor(public payload: number) {}
+}
+
+export class ClearPerpendicularRange implements Action {
+  public readonly type = FiltersActionType.CLEAR_PERPENDICULAR_RANGE;
+}
+
+export class SetPerpendicularRange  implements Action {
+  public readonly type = FiltersActionType.SET_PERPENDICULAR_RANGE;
+
+  constructor(public payload: models.Range<number>) {}
+}
+
+export class SetTemporalStart implements Action {
+  public readonly type = FiltersActionType.SET_TEMPORAL_START;
+
+  constructor(public payload: number) {}
+}
+
+export class SetTemporalEnd  implements Action {
+  public readonly type = FiltersActionType.SET_TEMPORAL_END;
+
+  constructor(public payload: number) {}
+}
+
+export class SetTemporalRange  implements Action {
+  public readonly type = FiltersActionType.SET_TEMPORAL_RANGE;
+
+  constructor(public payload: models.Range<number>) {}
+}
+
+export class ClearTemporalRange implements Action {
+  public readonly type = FiltersActionType.CLEAR_TEMPORAL_RANGE;
 }
 
 export class SetStartDate implements Action {
@@ -254,6 +310,14 @@ export class SetMaxResults implements Action {
 export type FiltersActions =
   | SetState
   | SetSelectedDataset
+  | SetPerpendicularStart
+  | SetPerpendicularEnd
+  | SetPerpendicularRange
+  | ClearPerpendicularRange
+  | SetTemporalStart
+  | SetTemporalEnd
+  | SetTemporalRange
+  | ClearTemporalRange
   | SetStartDate
   | SetEndDate
   | SetSeasonStart

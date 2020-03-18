@@ -134,11 +134,7 @@ export class UserEffects {
 
   private datesToDateObjectFor(searches): models.Search[] {
     return searches.map(search => {
-      if (search.searchType === models.SearchType.LIST) {
-        return search;
-      }
-
-      if (search.searchType === models.SearchType.BASELINE) {
+      if (search.searchType === models.SearchType.LIST || !search.filters.dateRange) {
         return search;
       }
 

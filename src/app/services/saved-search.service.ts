@@ -41,8 +41,13 @@ export class SavedSearchService {
   private currentBaselineSearch$ = combineLatest(
     this.store$.select(scenesStore.getFilterMaster),
     this.store$.select(scenesStore.getMasterName),
+    this.store$.select(filtersStore.getBaselineSearch),
   ).pipe(
-    map(([filterMaster, master]) => ({ filterMaster, master }))
+    map(([filterMaster, master, baselineFilters]) => ({
+      filterMaster,
+      master,
+      ...baselineFilters
+    }))
   );
 
   private searchType$ = this.store$.select(getSearchType);
