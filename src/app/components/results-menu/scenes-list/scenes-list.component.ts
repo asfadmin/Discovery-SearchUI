@@ -17,6 +17,7 @@ import { CdkVirtualScrollViewport } from '@angular/cdk/scrolling';
 
 import * as services from '@services';
 import * as models from '@models';
+import {SearchType} from '@models';
 
 
 @Component({
@@ -43,6 +44,10 @@ export class ScenesListComponent implements OnInit, OnDestroy {
 
   public breakpoint$ = this.screenSize.breakpoint$;
   public breakpoints = models.Breakpoints;
+
+  public searchType: models.SearchType;
+  public SearchTypes = models.SearchType;
+
 
   constructor(
     private store$: Store<AppState>,
@@ -78,6 +83,12 @@ export class ScenesListComponent implements OnInit, OnDestroy {
     this.subs.add(
       this.store$.select(scenesStore.getScenes).subscribe(
         scenes => this.scenes = scenes
+      )
+    );
+
+    this.subs.add(
+      this.store$.select(searchStore.getSearchType).subscribe(
+        searchType => this.searchType = searchType
       )
     );
 

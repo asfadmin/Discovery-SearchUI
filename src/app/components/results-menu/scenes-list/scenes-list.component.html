@@ -49,8 +49,12 @@
           }}">
           {{ allQueued[scene.groupId] ? 'shopping_cart' : 'add_shopping_cart' }}
         </mat-icon>
-
-        <span style="margin-left: 10px"> {{ numberOfQueue[scene.groupId] }} </span>
+        <ng-container *ngIf="searchType === SearchTypes.BASELINE">
+          <span style="margin-left: 10px;"> DD </span>
+        </ng-container>
+        <ng-container *ngIf="searchType !== SearchTypes.BASELINE">
+          <span style="margin-left: 10px;"> {{ numberOfQueue[scene.groupId] }} </span>
+        </ng-container>
       </button>
     </div>
   </cdk-virtual-scroll-viewport>
