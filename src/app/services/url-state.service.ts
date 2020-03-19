@@ -263,6 +263,20 @@ export class UrlStateService {
       ),
       loader: this.loadFrameRange
     }, {
+      name: 'perp',
+      source: this.store$.select(filterStore.getPerpendicularRange).pipe(
+        map(range => this.rangeService.toString(range)),
+        map(perp => ({ perp }))
+      ),
+      loader: this.loadPerpendicularRange
+    }, {
+      name: 'temporal',
+      source: this.store$.select(filterStore.getTemporalRange).pipe(
+        map(range => this.rangeService.toString(range)),
+        map(temporal => ({ temporal }))
+      ),
+      loader: this.loadTemporalRange
+    }, {
       name: 'listSearchType',
       source: this.store$.select(filterStore.getListSearchMode).pipe(
         map(mode => ({ listSearchType: mode }))
@@ -457,6 +471,28 @@ export class UrlStateService {
       new filterStore.SetFrameStart(range[0] || null),
       new filterStore.SetFrameEnd(range[1] || null)
     ];
+  }
+
+  private loadPerpendicularRange = (rangeStr: string): Action => {
+    const range = rangeStr
+      .split('-')
+      .map(v => +v);
+
+    return new filterStore.SetPerpendicularRange({
+      start: range[0] || null,
+      end: range[1] || null
+    });
+  }
+
+  private loadTemporalRange = (rangeStr: string): Action => {
+    const range = rangeStr
+      .split('-')
+      .map(v => +v);
+
+    return new filterStore.SetTemporalRange({
+      start: range[0] || null,
+      end: range[1] || null
+    });
   }
 
   private loadSearchList = (listStr: string): Action => {

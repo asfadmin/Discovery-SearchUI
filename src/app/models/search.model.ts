@@ -25,6 +25,12 @@ export interface ListFiltersType {
 export interface BaselineFiltersType {
   filterMaster: string | null;
   master: string | null;
+
+  dateRange: Range<null | Date>;
+  season: Range<number | null>;
+
+  temporalRange: Range<number | null>;
+  perpendicularRange: Range<number | null>;
 }
 
 export interface GeographicFiltersType {
