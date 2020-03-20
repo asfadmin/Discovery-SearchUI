@@ -79,9 +79,11 @@ export class BaselineSearchComponent implements OnInit {
     );
 
     this.store$.select(filtersStore.getTemporalRange).pipe(
-      take(1)
+      take(1),
+      filter(range => range.start !== null && range.end !== null)
     ).subscribe(
       temp => {
+        console.log(temp);
         this.setRangeOnSlider(this.tempSlider, temp);
       }
     );
@@ -100,7 +102,8 @@ export class BaselineSearchComponent implements OnInit {
     );
 
     this.store$.select(filtersStore.getPerpendicularRange).pipe(
-      take(1)
+      take(1),
+      filter(range => range.start !== null && range.end !== null)
     ).subscribe(
       perp => this.setRangeOnSlider(this.perpSlider, perp)
     );
