@@ -70,10 +70,13 @@ export class BaselineChartComponent implements OnInit, OnDestroy {
         ([points, selected]) => {
           const extrema = this.determineMinMax(points);
           const { minDataset, maxDataset } = this.criticalBaselineDataset(points, extrema);
-          const selectedPoint = this.productToPoint(selected);
+
+          if (selected) {
+            const selectedPoint = this.productToPoint(selected);
+            this.setDataset(ChartDatasets.SELECTED, [selectedPoint]);
+          }
 
           this.setDataset(ChartDatasets.PRODUCTS, points);
-          this.setDataset(ChartDatasets.SELECTED, [selectedPoint]);
           this.setDataset(ChartDatasets.MIN_CRITICAL, minDataset);
           this.setDataset(ChartDatasets.MAX_CRITICAL, maxDataset);
 

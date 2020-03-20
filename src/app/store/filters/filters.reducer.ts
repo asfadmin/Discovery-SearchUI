@@ -42,12 +42,12 @@ export const initState: FiltersState = {
     end: null
   },
   perpendicularRange: {
-    start: 0,
-    end: 0
+    start: null,
+    end: null
   },
   temporalRange: {
-    start: 0,
-    end: 0
+    start: null,
+    end: null
   },
   season: {
     start: null,

@@ -15,7 +15,7 @@ import { BaselineSearchComponent } from './baseline-search.component';
     MatExpansionModule,
     MatSharedModule,
     SeasonSelectorModule,
-    DateSelectorModule
+    DateSelectorModule,
   ],
   exports: [
     BaselineSearchComponent

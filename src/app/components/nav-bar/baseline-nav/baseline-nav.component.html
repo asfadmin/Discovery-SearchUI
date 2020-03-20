@@ -9,8 +9,11 @@
         <app-master-scene-selector></app-master-scene-selector>
       </div>
 
-      <div fxFlex="nogrow" class="breadcrumb">
+      <div
+        [matTooltip]="!areResultsLoaded ? 'Load results to apply filters' : ''"
+        fxFlex="nogrow" class="breadcrumb">
         <button (click)="onToggleFiltersMenu()"
+                [disabled]="!areResultsLoaded"
                 mat-button class="additional-filters-button">
           Filters <br> <mat-icon>more_horiz</mat-icon>
         </button>
