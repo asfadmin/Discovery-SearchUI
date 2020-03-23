@@ -9,6 +9,7 @@ import * as searchStore from '@store/search';
 
 import { MapService } from '@services';
 import * as models from '@models';
+import {SubSink} from 'subsink';
 
 @Component({
   selector: 'app-scenes-list-header',
@@ -21,12 +22,23 @@ export class ScenesListHeaderComponent implements OnInit {
   public numberOfProducts$ = this.store$.select(scenesStore.getNumberOfProducts);
   public allProducts$ = this.store$.select(scenesStore.getAllProducts);
 
+  public searchType: models.SearchType;
+  public SearchTypes = models.SearchType;
+
+  private subs = new SubSink();
+
+
   constructor(
     private store$: Store<AppState>,
     private mapService: MapService,
   ) { }
 
   ngOnInit() {
+    this.subs.add(
+      this.store$.select(searchStore.getSearchType).subscribe(
+        searchType => this.searchType = searchType
+      )
+    );
   }
 
   public onZoomToResults(): void {

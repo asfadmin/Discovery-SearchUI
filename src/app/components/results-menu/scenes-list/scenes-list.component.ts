@@ -92,9 +92,6 @@ export class ScenesListComponent implements OnInit, OnDestroy {
       )
     );
 
-    this.subs.add(
-    );
-
     const queueScenes$ = combineLatest(
       this.store$.select(queueStore.getQueuedProducts),
       this.store$.select(scenesStore.getAllSceneProducts),

@@ -32,6 +32,14 @@
               </fa-icon>
             </ng-template>
           </span>
+
+          <ng-container *ngIf="searchType === SearchTypes.BASELINE">
+            <span class="baseline-metrics">
+              <span style="margin-left: 10px;"> 400.0m </span>
+              <span style="margin-left: 10px;"> 200d </span>
+            </span>
+          </ng-container>
+
         </div>
 
         <div *ngIf="breakpoint$ | async as breakpoint" matLine>
@@ -39,22 +47,21 @@
           <span *ngIf="breakpoint === breakpoints.MOBILE" matTooltip="Start Time">{{ scene.metadata.date | shortDate }}</span>
         </div>
 
-        <mat-icon (click)="onZoomTo(scene)" class="ml-2" matTooltip="Zoom to scene">
-          settings_overscan
-        </mat-icon>
-        <mat-icon (click)="onToggleScene($event, scene.groupId)"
-                  class="icon-margin"
-                  matTooltip="{{
-            allQueued[scene.groupId] ? 'Remove scene files from downloads': 'Add scene files to downloads'
-          }}">
-          {{ allQueued[scene.groupId] ? 'shopping_cart' : 'add_shopping_cart' }}
-        </mat-icon>
-        <ng-container *ngIf="searchType === SearchTypes.BASELINE">
-          <span style="margin-left: 10px;"> DD </span>
-        </ng-container>
         <ng-container *ngIf="searchType !== SearchTypes.BASELINE">
+          <mat-icon (click)="onZoomTo(scene)" class="ml-2" matTooltip="Zoom to scene">
+            settings_overscan
+          </mat-icon>
+          <mat-icon (click)="onToggleScene($event, scene.groupId)"
+                    class="icon-margin"
+                    matTooltip="{{
+              allQueued[scene.groupId] ? 'Remove scene files from downloads': 'Add scene files to downloads'
+            }}">
+            {{ allQueued[scene.groupId] ? 'shopping_cart' : 'add_shopping_cart' }}
+          </mat-icon>
           <span style="margin-left: 10px;"> {{ numberOfQueue[scene.groupId] }} </span>
         </ng-container>
+
+
       </button>
     </div>
   </cdk-virtual-scroll-viewport>

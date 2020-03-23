@@ -1,32 +1,46 @@
-<ng-container *ngIf="numberOfScenes$ | async as numberOfScenes">
+<ng-container *ngIf="numberOfScenes$ | async as numberOfScenes" >
 
-  <div style="display: flex; justify-content: center;">
-    <div style="margin-right: 10px;">
-      {{ numberOfScenes }} Scene{{ numberOfScenes === 1 ? '' : 's' }}
-      ({{ numberOfProducts$ | async }} of {{ formatNumber(totalResultCount$ | async) }} File{{ (numberOfProducts$ | async) === 1 ? '' : 's' }})
+  <div [className]="searchType === SearchTypes.BASELINE ? 'files-header-baseline' : 'files-header'">
+    <div class="header-row-center">
+      <div style="margin-right: 10px;">
+        {{ numberOfScenes }} Scene{{ numberOfScenes === 1 ? '' : 's' }}
+        ({{ numberOfProducts$ | async }} of {{ formatNumber(totalResultCount$ | async) }} File{{ (numberOfProducts$ | async) === 1 ? '' : 's' }})
+      </div>
+      <div *ngIf="allProducts$ | async as products">
+        <mat-icon
+          (click)="onZoomToResults()"
+          class="clickable noselect"
+          style="margin-right: 10px;"
+          matTooltip="Zoom to results">
+          settings_overscan
+        </mat-icon>
+
+        <mat-icon
+          class="clickable noselect"
+          matTooltip="Add all results to downloads"
+          [matMenuTriggerFor]="addAllProducts">
+          add_shopping_cart
+        </mat-icon>
+
+        <mat-menu #addAllProducts="matMenu">
+          <button (click)="queueAllProducts(products)" mat-menu-item>
+            Add {{ products.length }} file{{ products.length === 1 ? '' : 's'}} to downloads
+          </button>
+        </mat-menu>
+      </div>
     </div>
-    <div *ngIf="allProducts$ | async as products">
-      <mat-icon
-        (click)="onZoomToResults()"
-        class="clickable noselect"
-        style="margin-right: 10px;"
-        matTooltip="Zoom to results">
-        settings_overscan
-      </mat-icon>
 
-      <mat-icon
-        class="clickable noselect"
-        matTooltip="Add all results to downloads"
-        [matMenuTriggerFor]="addAllProducts">
-        add_shopping_cart
-      </mat-icon>
+    <ng-container *ngIf="searchType === SearchTypes.BASELINE">
+      <div class="header-row-right">
+        <div fxFlex="60px" class="header-column">
+          meters
+        </div>
+        <div fxFlex="60px" class="header-column">
+          days
+        </div>
+      </div>
+    </ng-container>
 
-      <mat-menu #addAllProducts="matMenu">
-        <button (click)="queueAllProducts(products)" mat-menu-item>
-          Add {{ products.length }} file{{ products.length === 1 ? '' : 's'}} to downloads
-        </button>
-      </mat-menu>
-    </div>
   </div>
 
 </ng-container>
