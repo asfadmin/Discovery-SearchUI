@@ -7,11 +7,13 @@ import Chart from 'chart.js';
 import { Store } from '@ngrx/store';
 import { AppState } from '@store';
 import * as scenesStore from '@store/scenes';
+import * as filtersStore from '@store/filters';
+import * as searchStore from '@store/search';
 import * as queueStore from '@store/queue';
 
 import { SubSink } from 'subsink';
 import { ChartService } from '@services';
-import { criticalBaselineFor, CMRProduct } from '@models';
+import { criticalBaselineFor, CMRProduct, SearchType, Range } from '@models';
 
 export enum ChartDatasets {
   MASTER = 0,
@@ -47,7 +49,23 @@ export class BaselineChartComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.initChart();
 
-    const products$ = this.store$.select(scenesStore.getAllProducts).pipe(
+    const products$ = combineLatest(
+      this.store$.select(scenesStore.getAllProducts),
+      this.store$.select(filtersStore.getTemporalRange),
+      this.store$.select(filtersStore.getPerpendicularRange),
+      this.store$.select(searchStore.getSearchType)
+    ).pipe(
+      map(([scenes, tempRange, perpRange, searchType]) => {
+        if (searchType === SearchType.BASELINE) {
+          return scenes.filter(scene =>
+            this.valInRange(scene.metadata.temporal, tempRange) &&
+            this.valInRange(scene.metadata.perpendicular, perpRange)
+          );
+        } else {
+          return scenes;
+        }
+      }),
+
       tap(products => products.map(
         product => this.criticalBaseline = criticalBaselineFor(product)
       )),
@@ -125,6 +143,11 @@ export class BaselineChartComponent implements OnInit, OnDestroy {
       })
     );
   }
+
+  private valInRange(val: number | null, range: Range<number>): boolean {
+    return val > range.start && val < range.end;
+  }
+
 
   private setDataset(dataset: ChartDatasets, data) {
     this.chart.data.datasets[dataset].data = data;

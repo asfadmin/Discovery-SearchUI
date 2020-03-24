@@ -11,6 +11,7 @@ import { AppState } from '@store';
 import * as searchStore from '@store/search';
 import * as scenesStore from '@store/scenes';
 import * as queueStore from '@store/queue';
+import * as filtersStore from '@store/filters';
 
 import { faCopy } from '@fortawesome/free-solid-svg-icons';
 import { CdkVirtualScrollViewport } from '@angular/cdk/scrolling';
@@ -76,12 +77,25 @@ export class ScenesListComponent implements OnInit, OnDestroy {
     );
 
     this.subs.add(
-      this.store$.select(scenesStore.getScenes).subscribe(
+      combineLatest(
+        this.store$.select(scenesStore.getScenes),
+        this.store$.select(filtersStore.getTemporalRange),
+        this.store$.select(filtersStore.getPerpendicularRange),
+        this.store$.select(searchStore.getSearchType)
+      ).pipe(
+        map(([scenes, tempRange, perpRange, searchType]) => {
+          if (searchType === models.SearchType.BASELINE) {
+            return scenes.filter(scene =>
+              this.valInRange(scene.metadata.temporal, tempRange) &&
+              this.valInRange(scene.metadata.perpendicular, perpRange)
+            );
+          } else {
+            return scenes;
+          }
+        }),
+      ).subscribe(
         scenes => this.scenes = scenes
       )
-    );
-
-    this.subs.add(
     );
 
     const queueScenes$ = combineLatest(
@@ -149,6 +163,10 @@ export class ScenesListComponent implements OnInit, OnDestroy {
 
   private scrollTo(idx: number): void {
     this.scroll.scrollToIndex(idx);
+  }
+
+  private valInRange(val: number | null, range: models.Range<number>): boolean {
+    return val > range.start && val < range.end;
   }
 
   public onSceneSelected(id: string): void {

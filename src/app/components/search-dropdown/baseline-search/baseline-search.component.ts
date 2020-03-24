@@ -2,7 +2,7 @@ import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import noUiSlider from 'nouislider';
 
 import { Subject, Observable } from 'rxjs';
-import { debounceTime, distinctUntilChanged, take, tap, filter } from 'rxjs/operators';
+import { debounceTime, distinctUntilChanged, take, tap, filter, map } from 'rxjs/operators';
 import { AppState } from '@store';
 import { Store } from '@ngrx/store';
 import * as filtersStore from '@store/filters';
@@ -54,50 +54,58 @@ export class BaselineSearchComponent implements OnInit {
 
   ngOnInit(): void {
     const [perpSlider, perpValues$] = this.makeSlider$(this.perpendicularFilter);
-
     this.perpSlider = perpSlider;
+
     this.subs.add(
       perpValues$.subscribe(
         ([start, end]) => {
-          this.store$.dispatch(new filtersStore.SetPerpendicularRange({
-            start, end
-          }));
+          const action = new filtersStore.SetPerpendicularRange({ start, end });
+          this.store$.dispatch(action);
         }
       )
     );
 
     const [tempSlider, tempValues$] = this.makeSlider$(this.temporalFilter);
-
     this.tempSlider = tempSlider;
+
     this.subs.add(
       tempValues$.subscribe(
-        ([start, end]) =>
-          this.store$.dispatch(new filtersStore.SetTemporalRange({
-            start, end
-          }))
+        ([start, end]) => {
+          const action = new filtersStore.SetTemporalRange({ start, end });
+          this.store$.dispatch(action);
+        }
       )
     );
 
     this.store$.select(filtersStore.getTemporalRange).pipe(
       take(1),
-      filter(range => range.start !== null && range.end !== null)
+      filter(range => range.start !== null && range.end !== null),
     ).subscribe(
       temp => {
-        console.log(temp);
         this.setRangeOnSlider(this.tempSlider, temp);
       }
     );
 
     this.subs.add(
-      this.store$.select(filtersStore.getTemporalRange).subscribe(
-        temp => this.tempRange = temp
+      this.store$.select(scenesStore.getTemporalExtrema).pipe(
+        filter(range => range.min !== null && range.max !== null)
+      ).subscribe(
+        range => {
+          this.tempSlider.updateOptions({ range });
+
+          this.tempSlider.set([
+            this.tempRange.start === null ? range.min : null,
+            this.tempRange.end === null ? range.max : null
+          ]);
+        }
       )
     );
+
     this.subs.add(
-      this.store$.select(scenesStore.getTemporalExtrema).pipe(
-        filter(extrema => extrema.min !== null && extrema.max !== null)
-      ).subscribe(
-        range => this.tempSlider.updateOptions({ range })
+      this.store$.select(filtersStore.getTemporalRange).subscribe(
+        temp => {
+          this.tempRange = temp;
+        }
       )
     );
 
@@ -105,7 +113,24 @@ export class BaselineSearchComponent implements OnInit {
       take(1),
       filter(range => range.start !== null && range.end !== null)
     ).subscribe(
-      perp => this.setRangeOnSlider(this.perpSlider, perp)
+      perp => {
+        this.setRangeOnSlider(this.perpSlider, perp);
+      }
+    );
+
+    this.subs.add(
+      this.store$.select(scenesStore.getPerpendicularExtrema).pipe(
+        filter(range => range.min !== null && range.max !== null)
+      ).subscribe(
+        range => {
+          this.perpSlider.updateOptions({ range });
+
+          this.perpSlider.set([
+            this.perpRange.start === null ? range.min : null,
+            this.perpRange.end === null ? range.max : null
+          ]);
+        }
+      )
     );
 
     this.subs.add(
@@ -113,20 +138,12 @@ export class BaselineSearchComponent implements OnInit {
         perp => this.perpRange = perp
       )
     );
-
-    this.subs.add(
-      this.store$.select(scenesStore.getPerpendicularExtrema).pipe(
-        filter(extrema => extrema.min !== null && extrema.max !== null)
-      ).subscribe(
-        range => this.perpSlider.updateOptions({ range })
-      )
-    );
   }
 
   private makeSlider$(filterRef: ElementRef) {
     const values$ = new Subject<number[]>();
     const slider = noUiSlider.create(filterRef.nativeElement, {
-      start: [0, 100],
+      start: [null, null],
       behaviour: 'drag',
       connect: true,
       range: {
@@ -149,13 +166,13 @@ export class BaselineSearchComponent implements OnInit {
   }
 
   private setRangeOnSlider(slider, range): void {
-    console.log(range);
     slider.updateOptions({
       range: {
         min: range.start,
         max: range.end
       }
     });
+
     slider.set([range.start, range.end]);
   }
 

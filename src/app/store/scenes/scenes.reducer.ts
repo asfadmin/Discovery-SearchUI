@@ -496,7 +496,7 @@ export const getTemporalExtrema = createSelector(
 
     return {
       min: Math.min(...temporal),
-      max: Math.max(...temporal)
+      max: Math.max(...temporal) + 1
     };
   }
 );
@@ -516,7 +516,7 @@ export const getPerpendicularExtrema = createSelector(
 
     return {
       min: Math.min(...perp),
-      max: Math.max(...perp)
+      max: Math.max(...perp) + 1
     };
   }
 );

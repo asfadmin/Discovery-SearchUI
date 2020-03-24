@@ -7,10 +7,11 @@ import { AppState } from '@store';
 import * as searchStore from '@store/search';
 import * as userStore from '@store/user';
 import * as uiStore from '@store/ui';
+import * as filtersStore from '@store/filters';
 import * as scenesStore from '@store/scenes';
 
 import * as services from '@services';
-import { SavedSearchType } from '@models';
+import { SavedSearchType, SearchType } from '@models';
 import {MatDialog, MatDialogConfig} from '@angular/material/dialog';
 import { HelpComponent } from '@components/help/help.component';
 
@@ -23,6 +24,7 @@ import { HelpComponent } from '@components/help/help.component';
 export class SearchButtonComponent implements OnInit, OnDestroy {
   @Output() doSearch = new EventEmitter<void>();
 
+  public searchType: SearchType;
   public canSearch$ = this.store$.select(searchStore.getCanSearch);
   public isMaxResultsLoading$ = this.store$.select(searchStore.getIsMaxResultsLoading);
   public loading$ = this.store$.select(searchStore.getIsLoading);
@@ -42,10 +44,20 @@ export class SearchButtonComponent implements OnInit, OnDestroy {
         isLoggedIn => this.isLoggedIn = isLoggedIn
       )
     );
+
+    this.subs.add(
+      this.store$.select(searchStore.getSearchType).subscribe(
+        searchType => this.searchType = searchType
+      )
+    );
   }
 
   public onDoSearch(): void {
+    this.store$.dispatch(new filtersStore.ClearPerpendicularRange());
+    this.store$.dispatch(new filtersStore.ClearTemporalRange());
+
     this.store$.dispatch(new searchStore.MakeSearch());
+
     const search = this.savedSearchService.makeCurrentSearch(`${Date.now()}`);
 
     if (search) {

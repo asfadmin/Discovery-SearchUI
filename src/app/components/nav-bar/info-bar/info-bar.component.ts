@@ -32,6 +32,8 @@ export class InfoBarComponent implements OnInit, OnDestroy {
   public flightDirections: models.FlightDirection[];
   public subtypes: string;
   public mission: string;
+  public perpRange: models.Range<number | null>;
+  public tempRange: models.Range<number | null>;
 
   private subs = new SubSink();
 
@@ -86,7 +88,13 @@ export class InfoBarComponent implements OnInit, OnDestroy {
     );
     const missionSub = this.store$.select(filtersStore.getSelectedMission).subscribe(
       mission => this.mission = mission
-    ) ;
+    );
+    const perpSub = this.store$.select(filtersStore.getPerpendicularRange).subscribe(
+      range => this.perpRange = range
+    );
+    const tempSub = this.store$.select(filtersStore.getTemporalRange).subscribe(
+      range => this.tempRange = range
+    );
 
     [
       startSub, endSub,
@@ -100,6 +108,7 @@ export class InfoBarComponent implements OnInit, OnDestroy {
       flightDirsSub,
       subtypeSub,
       missionSub,
+      tempSub, perpSub
     ].forEach(sub => this.subs.add(sub));
   }
 
