@@ -711,7 +711,6 @@ export const getBaselineSearch = createSelector(
   getFiltersState,
   (state: FiltersState) => ({
     dateRange: state.dateRange,
-    season: state.season,
     temporalRange: state.temporalRange,
     perpendicularRange: state.perpendicularRange
   })
