@@ -16,6 +16,7 @@
   max-height: calc(100vh - 32px);
   overflow: auto;
   z-index: 1000;
+  pointer-events: none;
 }
 
 .dataset-filters-card {

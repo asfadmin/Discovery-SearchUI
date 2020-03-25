@@ -42,12 +42,12 @@ export const initState: FiltersState = {
     end: null
   },
   perpendicularRange: {
-    start: 0,
-    end: 0
+    start: null,
+    end: null
   },
   temporalRange: {
-    start: 0,
-    end: 0
+    start: null,
+    end: null
   },
   season: {
     start: null,
@@ -197,7 +197,7 @@ export function filtersReducer(state = initState, action: FiltersActions): Filte
     case FiltersActionType.CLEAR_TEMPORAL_RANGE: {
       return {
         ...state,
-        perpendicularRange: {
+        temporalRange: {
           start: null,
           end: null
         }
@@ -711,7 +711,6 @@ export const getBaselineSearch = createSelector(
   getFiltersState,
   (state: FiltersState) => ({
     dateRange: state.dateRange,
-    season: state.season,
     temporalRange: state.temporalRange,
     perpendicularRange: state.perpendicularRange
   })

@@ -26,7 +26,7 @@ import * as mapStore from '@store/map';
 import * as uiStore from '@store/ui';
 
 import * as models from '@models';
-import { MapService, WktService, ScreenSizeService } from '@services';
+import { MapService, WktService, ScreenSizeService, ScenesService } from '@services';
 import * as polygonStyle from '@services/map/polygon.style';
 
 enum FullscreenControls {
@@ -92,7 +92,8 @@ export class MapComponent implements OnInit, OnDestroy  {
     private store$: Store<AppState>,
     private mapService: MapService,
     private wktService: WktService,
-    private screenSize: ScreenSizeService
+    private screenSize: ScreenSizeService,
+    private scenesService: ScenesService,
   ) {}
 
   ngOnInit(): void {
@@ -343,7 +344,7 @@ export class MapComponent implements OnInit, OnDestroy  {
   }
 
   private scenePolygonsLayer$(projection: string): Observable<VectorSource> {
-    return this.store$.select(scenesStore.getScenes).pipe(
+    return this.scenesService.scenes$().pipe(
       map(scenes => this.scenesToFeature(scenes, projection)),
       map(features => this.featuresToSource(features))
     );

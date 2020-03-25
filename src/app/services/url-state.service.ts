@@ -265,14 +265,14 @@ export class UrlStateService {
     }, {
       name: 'perp',
       source: this.store$.select(filterStore.getPerpendicularRange).pipe(
-        map(range => this.rangeService.toString(range)),
+        map(range => this.rangeService.toStringWithNegatives(range)),
         map(perp => ({ perp }))
       ),
       loader: this.loadPerpendicularRange
     }, {
       name: 'temporal',
       source: this.store$.select(filterStore.getTemporalRange).pipe(
-        map(range => this.rangeService.toString(range)),
+        map(range => this.rangeService.toStringWithNegatives(range)),
         map(temporal => ({ temporal }))
       ),
       loader: this.loadTemporalRange
@@ -475,7 +475,7 @@ export class UrlStateService {
 
   private loadPerpendicularRange = (rangeStr: string): Action => {
     const range = rangeStr
-      .split('-')
+      .split('to')
       .map(v => +v);
 
     return new filterStore.SetPerpendicularRange({
@@ -486,7 +486,7 @@ export class UrlStateService {
 
   private loadTemporalRange = (rangeStr: string): Action => {
     const range = rangeStr
-      .split('-')
+      .split('to')
       .map(v => +v);
 
     return new filterStore.SetTemporalRange({

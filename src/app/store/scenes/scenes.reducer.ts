@@ -480,3 +480,37 @@ export const getMasterOffsets = createSelector(
   getScenesState,
   state => state.masterOffsets
 );
+
+export const getTemporalExtrema = createSelector(
+  getScenesState,
+  state => extrema(
+    state.products,
+    product => product.metadata.temporal
+  )
+);
+
+export const getPerpendicularExtrema = createSelector(
+  getScenesState,
+  state => extrema(
+    state.products,
+    product => product.metadata.perpendicular
+  )
+);
+
+const extrema = (prods, keyFunc) => {
+  const products = Object.values(prods);
+  const nullRange = {min: null, max: null};
+
+  if (products.length === 0) {
+    return nullRange;
+  }
+
+  const vals: number[] = products.map(keyFunc);
+
+  const range = {
+    min: Math.min(...vals),
+    max: Math.max(...vals)
+  };
+
+  return (range.min === range.max) ? nullRange : range;
+};

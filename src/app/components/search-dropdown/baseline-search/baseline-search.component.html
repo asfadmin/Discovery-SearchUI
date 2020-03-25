@@ -1,4 +1,21 @@
 <mat-accordion multi>
+  <mat-expansion-panel
+    *ngIf="(breakpoint$ | async) === breakpoints.MOBILE"
+    [expanded]="defaultPanelOpenState" [disabled]="panelIsDisabled"
+    (click)="selectPanel(panels.MASTER)"
+    [class.raised-section]="isSelected(panels.MASTER)">
+
+    <mat-expansion-panel-header [collapsedHeight]="customCollapsedHeight" [expandedHeight]="customExpandedHeight">
+      <mat-panel-title>
+        Master Scene
+      </mat-panel-title>
+    </mat-expansion-panel-header>
+
+    <div class="w100" style="display: flex; margin-top: 25px;">
+      <app-master-scene-selector class="w100"></app-master-scene-selector>
+    </div>
+  </mat-expansion-panel>
+
   <mat-expansion-panel [expanded]="defaultPanelOpenState" [disabled]="panelIsDisabled"
     (click)="selectPanel(panels.DATE)"
     [class.raised-section]="isSelected(panels.DATE)">
@@ -26,11 +43,11 @@
     </mat-expansion-panel-header>
 
     <div style="margin-top: 20px;">
-      Perpendicular Filter: {{ perpRange.start }} - {{ perpRange.end }}
+      Perpendicular Filter: {{ perpRange.start }} to {{ perpRange.end }}
       <div class="slider" #perpendicularFilter></div>
     </div>
     <div style="margin-top: 20px;">
-      Temporal Filter: {{ tempRange.start }} - {{ tempRange.end }}
+      Temporal Filter: {{ tempRange.start }} to {{ tempRange.end }}
       <div class="slider" #temporalFilter></div>
     </div>
   </mat-expansion-panel>

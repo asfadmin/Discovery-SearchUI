@@ -40,5 +40,11 @@
     <span *ngIf="mission">
       <b>Campaign:</b> {{ mission }}
     </span>
+    <span *ngIf="tempRange.start || tempRange.end">
+      <b>Temporal:</b> {{tempRange.start}} to {{tempRange.end}}
+    </span>
+    <span *ngIf="perpRange.start || perpRange.end">
+      <b>Perpendicular:</b> {{perpRange.start}} to {{perpRange.end}}
+    </span>
   </div>
 </div>

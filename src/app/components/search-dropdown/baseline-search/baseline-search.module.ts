@@ -6,6 +6,7 @@ import { MatSharedModule } from '@shared';
 import { SeasonSelectorModule } from '@components/shared/selectors/season-selector';
 import { DateSelectorModule } from '@components/shared/selectors/date-selector';
 import { BaselineSearchComponent } from './baseline-search.component';
+import { MasterSceneSelectorModule } from '@components/shared/selectors/master-scene-selector';
 
 
 @NgModule({
@@ -15,7 +16,8 @@ import { BaselineSearchComponent } from './baseline-search.component';
     MatExpansionModule,
     MatSharedModule,
     SeasonSelectorModule,
-    DateSelectorModule
+    DateSelectorModule,
+    MasterSceneSelectorModule,
   ],
   exports: [
     BaselineSearchComponent

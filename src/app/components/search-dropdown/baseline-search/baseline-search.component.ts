@@ -2,16 +2,18 @@ import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import noUiSlider from 'nouislider';
 
 import { Subject, Observable } from 'rxjs';
-import { debounceTime, distinctUntilChanged, take, tap } from 'rxjs/operators';
+import { debounceTime, distinctUntilChanged, take, tap, filter, map } from 'rxjs/operators';
 import { AppState } from '@store';
 import { Store } from '@ngrx/store';
 import * as filtersStore from '@store/filters';
+import * as scenesStore from '@store/scenes';
 import { SubSink } from 'subsink';
 
 import * as models from '@models';
 import { PropertyService, ScreenSizeService } from '@services';
 
 enum FilterPanel {
+  MASTER = 'Master',
   DATE = 'Date',
   BASELINE = 'Baseline'
 }
@@ -53,42 +55,83 @@ export class BaselineSearchComponent implements OnInit {
 
   ngOnInit(): void {
     const [perpSlider, perpValues$] = this.makeSlider$(this.perpendicularFilter);
-
     this.perpSlider = perpSlider;
-    perpValues$.subscribe(
-      ([start, end]) => {
-        this.store$.dispatch(new filtersStore.SetPerpendicularRange({
-          start, end
-        }));
-      }
+
+    this.subs.add(
+      perpValues$.subscribe(
+        ([start, end]) => {
+          const action = new filtersStore.SetPerpendicularRange({ start, end });
+          this.store$.dispatch(action);
+        }
+      )
     );
 
     const [tempSlider, tempValues$] = this.makeSlider$(this.temporalFilter);
-
     this.tempSlider = tempSlider;
-    tempValues$.subscribe(
-      ([start, end]) =>
-        this.store$.dispatch(new filtersStore.SetTemporalRange({
-          start, end
-        }))
+
+    this.subs.add(
+      tempValues$.subscribe(
+        ([start, end]) => {
+          const action = new filtersStore.SetTemporalRange({ start, end });
+          this.store$.dispatch(action);
+        }
+      )
     );
 
     this.store$.select(filtersStore.getTemporalRange).pipe(
-      take(1)
+      take(1),
+      filter(range => range.start !== null && range.end !== null),
     ).subscribe(
-      temp => this.tempSlider.set([temp.start, temp.end])
+      temp => {
+        this.setRangeOnSlider(this.tempSlider, temp);
+      }
+    );
+
+    this.subs.add(
+      this.store$.select(scenesStore.getTemporalExtrema).pipe(
+        filter(range => range.min !== null && range.max !== null)
+      ).subscribe(
+        range => {
+          this.tempSlider.updateOptions({ range });
+
+          this.tempSlider.set([
+            this.tempRange.start === null ? range.min : null,
+            this.tempRange.end === null ? range.max : null
+          ]);
+        }
+      )
     );
 
     this.subs.add(
       this.store$.select(filtersStore.getTemporalRange).subscribe(
-        temp => this.tempRange = temp
+        temp => {
+          this.tempRange = temp;
+        }
       )
     );
 
     this.store$.select(filtersStore.getPerpendicularRange).pipe(
-      take(1)
+      take(1),
+      filter(range => range.start !== null && range.end !== null)
     ).subscribe(
-      perp => this.perpSlider.set([perp.start, perp.end])
+      perp => {
+        this.setRangeOnSlider(this.perpSlider, perp);
+      }
+    );
+
+    this.subs.add(
+      this.store$.select(scenesStore.getPerpendicularExtrema).pipe(
+        filter(range => range.min !== null && range.max !== null)
+      ).subscribe(
+        range => {
+          this.perpSlider.updateOptions({ range });
+
+          this.perpSlider.set([
+            this.perpRange.start === null ? range.min : null,
+            this.perpRange.end === null ? range.max : null
+          ]);
+        }
+      )
     );
 
     this.subs.add(
@@ -98,10 +141,10 @@ export class BaselineSearchComponent implements OnInit {
     );
   }
 
-  private makeSlider$(filter: ElementRef) {
+  private makeSlider$(filterRef: ElementRef) {
     const values$ = new Subject<number[]>();
-    const slider = noUiSlider.create(filter.nativeElement, {
-      start: [20, 80],
+    const slider = noUiSlider.create(filterRef.nativeElement, {
+      start: [null, null],
       behaviour: 'drag',
       connect: true,
       range: {
@@ -121,6 +164,17 @@ export class BaselineSearchComponent implements OnInit {
         distinctUntilChanged()
       )
     ];
+  }
+
+  private setRangeOnSlider(slider, range): void {
+    slider.updateOptions({
+      range: {
+        min: range.start,
+        max: range.end
+      }
+    });
+
+    slider.set([range.start, range.end]);
   }
 
   public isSelected(panel: FilterPanel): boolean {

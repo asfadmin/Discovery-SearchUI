@@ -3,10 +3,12 @@ import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { AppState } from '@store';
 import * as queueStore from '@store/queue';
+import * as scenesStore from '@store/scenes';
 import * as uiStore from '@store/ui';
 
 import { ScreenSizeService } from '@services';
 import { Breakpoints } from '@models';
+import { SubSink } from 'subsink';
 
 
 @Component({
@@ -20,6 +22,9 @@ export class BaselineNavComponent implements OnInit {
   public queuedProducts$ = this.store$.select(queueStore.getQueuedProducts);
   public breakpoint$ = this.screenSize.breakpoint$;
   public breakpoints = Breakpoints;
+  public areResultsLoaded: boolean;
+
+  private subs = new SubSink();
 
   constructor(
     private store$: Store<AppState>,
@@ -27,6 +32,11 @@ export class BaselineNavComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    this.subs.add(
+      this.store$.select(scenesStore.getAreResultsLoaded).subscribe(
+        areLoaded => this.areResultsLoaded = areLoaded
+      )
+    );
   }
 
   public onToggleFiltersMenu(): void {

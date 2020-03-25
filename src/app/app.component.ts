@@ -186,6 +186,10 @@ export class AppComponent implements OnInit, OnDestroy {
       );
     } else if (this.searchType === models.SearchType.LIST) {
       this.store$.dispatch(new filterStore.ClearListFilters());
+    } else if (this.searchType === models.SearchType.BASELINE) {
+      this.store$.dispatch(new scenesStore.ClearBaseline());
+      this.store$.dispatch(new filterStore.ClearPerpendicularRange());
+      this.store$.dispatch(new filterStore.ClearTemporalRange());
     }
   }
 

@@ -11,6 +11,7 @@ import { AppState } from '@store';
 import * as searchStore from '@store/search';
 import * as scenesStore from '@store/scenes';
 import * as queueStore from '@store/queue';
+import * as filtersStore from '@store/filters';
 
 import { faCopy } from '@fortawesome/free-solid-svg-icons';
 import { CdkVirtualScrollViewport } from '@angular/cdk/scrolling';
@@ -54,6 +55,7 @@ export class ScenesListComponent implements OnInit, OnDestroy {
     private mapService: services.MapService,
     private screenSize: services.ScreenSizeService,
     private keyboardService: services.KeyboardService,
+    private scenesService: services.ScenesService,
   ) {}
 
   ngOnInit() {
@@ -81,7 +83,7 @@ export class ScenesListComponent implements OnInit, OnDestroy {
     );
 
     this.subs.add(
-      this.store$.select(scenesStore.getScenes).subscribe(
+      this.scenesService.scenes$().subscribe(
         scenes => this.scenes = scenes
       )
     );

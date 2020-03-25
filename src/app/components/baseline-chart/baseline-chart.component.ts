@@ -7,11 +7,13 @@ import Chart from 'chart.js';
 import { Store } from '@ngrx/store';
 import { AppState } from '@store';
 import * as scenesStore from '@store/scenes';
+import * as filtersStore from '@store/filters';
+import * as searchStore from '@store/search';
 import * as queueStore from '@store/queue';
 
 import { SubSink } from 'subsink';
-import { ChartService } from '@services';
-import { criticalBaselineFor, CMRProduct } from '@models';
+import { ChartService, ScenesService } from '@services';
+import { criticalBaselineFor, CMRProduct, SearchType, Range } from '@models';
 
 export enum ChartDatasets {
   MASTER = 0,
@@ -42,12 +44,13 @@ export class BaselineChartComponent implements OnInit, OnDestroy {
   constructor(
     private store$: Store<AppState>,
     private chartService: ChartService,
+    private scenesService: ScenesService,
   ) { }
 
   ngOnInit(): void {
     this.initChart();
 
-    const products$ = this.store$.select(scenesStore.getAllProducts).pipe(
+    const products$ = this.scenesService.products$().pipe(
       tap(products => products.map(
         product => this.criticalBaseline = criticalBaselineFor(product)
       )),
@@ -70,10 +73,13 @@ export class BaselineChartComponent implements OnInit, OnDestroy {
         ([points, selected]) => {
           const extrema = this.determineMinMax(points);
           const { minDataset, maxDataset } = this.criticalBaselineDataset(points, extrema);
-          const selectedPoint = this.productToPoint(selected);
+
+          if (selected) {
+            const selectedPoint = this.productToPoint(selected);
+            this.setDataset(ChartDatasets.SELECTED, [selectedPoint]);
+          }
 
           this.setDataset(ChartDatasets.PRODUCTS, points);
-          this.setDataset(ChartDatasets.SELECTED, [selectedPoint]);
           this.setDataset(ChartDatasets.MIN_CRITICAL, minDataset);
           this.setDataset(ChartDatasets.MAX_CRITICAL, maxDataset);
 
