@@ -13,6 +13,7 @@ import * as models from '@models';
 import { PropertyService, ScreenSizeService } from '@services';
 
 enum FilterPanel {
+  MASTER = 'Master',
   DATE = 'Date',
   BASELINE = 'Baseline'
 }
