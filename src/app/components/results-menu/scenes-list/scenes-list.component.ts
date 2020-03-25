@@ -50,6 +50,7 @@ export class ScenesListComponent implements OnInit, OnDestroy {
     private mapService: services.MapService,
     private screenSize: services.ScreenSizeService,
     private keyboardService: services.KeyboardService,
+    private scenesService: services.ScenesService,
   ) {}
 
   ngOnInit() {
@@ -77,23 +78,7 @@ export class ScenesListComponent implements OnInit, OnDestroy {
     );
 
     this.subs.add(
-      combineLatest(
-        this.store$.select(scenesStore.getScenes),
-        this.store$.select(filtersStore.getTemporalRange),
-        this.store$.select(filtersStore.getPerpendicularRange),
-        this.store$.select(searchStore.getSearchType)
-      ).pipe(
-        map(([scenes, tempRange, perpRange, searchType]) => {
-          if (searchType === models.SearchType.BASELINE) {
-            return scenes.filter(scene =>
-              this.valInRange(scene.metadata.temporal, tempRange) &&
-              this.valInRange(scene.metadata.perpendicular, perpRange)
-            );
-          } else {
-            return scenes;
-          }
-        }),
-      ).subscribe(
+      this.scenesService.scenes$().subscribe(
         scenes => this.scenes = scenes
       )
     );
@@ -163,10 +148,6 @@ export class ScenesListComponent implements OnInit, OnDestroy {
 
   private scrollTo(idx: number): void {
     this.scroll.scrollToIndex(idx);
-  }
-
-  private valInRange(val: number | null, range: models.Range<number>): boolean {
-    return val > range.start && val < range.end;
   }
 
   public onSceneSelected(id: string): void {

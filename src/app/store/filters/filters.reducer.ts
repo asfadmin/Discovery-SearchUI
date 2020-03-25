@@ -197,7 +197,7 @@ export function filtersReducer(state = initState, action: FiltersActions): Filte
     case FiltersActionType.CLEAR_TEMPORAL_RANGE: {
       return {
         ...state,
-        perpendicularRange: {
+        temporalRange: {
           start: null,
           end: null
         }
