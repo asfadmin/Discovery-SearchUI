@@ -53,9 +53,7 @@ export class SearchButtonComponent implements OnInit, OnDestroy {
   }
 
   public onDoSearch(): void {
-    this.store$.dispatch(new filtersStore.ClearPerpendicularRange());
-    this.store$.dispatch(new filtersStore.ClearTemporalRange());
-
+    this.clearBaselineRanges();
     this.store$.dispatch(new searchStore.MakeSearch());
 
     const search = this.savedSearchService.makeCurrentSearch(`${Date.now()}`);
@@ -67,8 +65,12 @@ export class SearchButtonComponent implements OnInit, OnDestroy {
   }
 
   public onClearSearch(): void {
-    this.store$.dispatch(new scenesStore.ClearBaseline());
     this.store$.dispatch(new searchStore.ClearSearch());
+  }
+
+  private clearBaselineRanges() {
+    this.store$.dispatch(new filtersStore.ClearPerpendicularRange());
+    this.store$.dispatch(new filtersStore.ClearTemporalRange());
   }
 
   public saveCurrentSearch(): void {
