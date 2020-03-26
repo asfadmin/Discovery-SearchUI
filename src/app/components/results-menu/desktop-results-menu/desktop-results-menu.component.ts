@@ -1,13 +1,15 @@
 import { Component, OnInit, Input, OnDestroy } from '@angular/core';
 import { SubSink } from 'subsink';
 
+import { Observable } from 'rxjs';
+
 import { Store } from '@ngrx/store';
 import { AppState } from '@store';
 import * as scenesStore from '@store/scenes';
 import * as searchStore from '@store/search';
 
-import { Observable } from 'rxjs';
 import { SearchType } from '@models';
+import { ScenesService } from '@services';
 
 
 @Component({

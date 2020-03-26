@@ -571,6 +571,7 @@ export class UrlStateService {
   }
 
   private loadAreResultsLoaded = (areLoaded: string): Action => {
+    console.log('Loading results: ', areLoaded);
     return new scenesStore.SetResultsLoaded(areLoaded === 'true');
   }
 
