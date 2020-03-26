@@ -2,9 +2,12 @@
 
   <div [className]="searchType === SearchTypes.BASELINE ? 'files-header-baseline' : 'files-header'">
     <div class="header-row-center">
-      <div style="margin-right: 10px;">
+      <div *ngIf="searchType !== SearchTypes.BASELINE" style="margin-right: 10px;">
         {{ numberOfScenes }} Scene{{ numberOfScenes === 1 ? '' : 's' }}
         ({{ numberOfProducts$ | async }} of {{ formatNumber(totalResultCount$ | async) }} File{{ (numberOfProducts$ | async) === 1 ? '' : 's' }})
+      </div>
+      <div *ngIf="searchType === SearchTypes.BASELINE" style="margin-right: 10px;">
+        {{ numBaselineScenes$ | async }} Scene{{ (numBaselineScenes$ | async) === 1 ? '' : 's' }}
       </div>
       <div *ngIf="allProducts$ | async as products">
         <mat-icon

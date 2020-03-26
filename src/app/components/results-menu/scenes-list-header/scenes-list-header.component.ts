@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 
+import { map } from 'rxjs/operators';
 import { Store } from '@ngrx/store';
 
 import { AppState } from '@store';
@@ -7,9 +8,9 @@ import * as scenesStore from '@store/scenes';
 import * as queueStore from '@store/queue';
 import * as searchStore from '@store/search';
 
-import { MapService } from '@services';
+import { MapService, ScenesService } from '@services';
 import * as models from '@models';
-import {SubSink} from 'subsink';
+import { SubSink } from 'subsink';
 
 @Component({
   selector: 'app-scenes-list-header',
@@ -21,16 +22,19 @@ export class ScenesListHeaderComponent implements OnInit {
   public numberOfScenes$ = this.store$.select(scenesStore.getNumberOfScenes);
   public numberOfProducts$ = this.store$.select(scenesStore.getNumberOfProducts);
   public allProducts$ = this.store$.select(scenesStore.getAllProducts);
+  public numBaselineScenes$ = this.scenesService.scenes$().pipe(
+    map(scenes => scenes.length),
+  );
 
   public searchType: models.SearchType;
   public SearchTypes = models.SearchType;
 
   private subs = new SubSink();
 
-
   constructor(
     private store$: Store<AppState>,
     private mapService: MapService,
+    private scenesService: ScenesService,
   ) { }
 
   ngOnInit() {
