@@ -68,14 +68,9 @@
           <div class="baseline-metrics">
             <div class="div-flex-column" *ngIf="breakpoint$ | async as breakpoint">
               <div class="div-flex">
-                <span style="margin-left: 10px;"> 400.0m </span>
-                <span style="margin-left: 10px;"> 200d </span>
+                <span style="margin-left: 10px;"> {{ scene.metadata.perpendicular + offsets.perpendicular }}m </span>
+                <span style="margin-left: 10px;"> {{ scene.metadata.temporal + offsets.temporal }}d </span>
               </div>
-<!--              <ng-container *ngIf="breakpoint > breakpoints.SMALL">-->
-<!--                <div class="div-flex">-->
-<!--                  &nbsp;-->
-<!--                </div>-->
-<!--              </ng-container>-->
             </div>
           </div>
         </ng-container>

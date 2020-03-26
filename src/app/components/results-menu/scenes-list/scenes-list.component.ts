@@ -38,6 +38,7 @@ export class ScenesListComponent implements OnInit, OnDestroy {
   public selected: string;
   public copyIcon = faCopy;
 
+  public offsets = {temporal: 0, perpendicular: 0};
   public selectedFromList = false;
   public hoveredSceneName: string | null = null;
 
@@ -60,6 +61,12 @@ export class ScenesListComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.keyboardService.init();
+
+    this.subs.add(
+      this.store$.select(scenesStore.getMasterOffsets).subscribe(
+        offsets => this.offsets = offsets
+      )
+    );
 
     this.subs.add(
       this.store$.select(scenesStore.getSelectedScene).pipe(
