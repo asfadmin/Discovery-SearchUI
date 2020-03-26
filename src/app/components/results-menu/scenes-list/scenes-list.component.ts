@@ -18,7 +18,6 @@ import { CdkVirtualScrollViewport } from '@angular/cdk/scrolling';
 
 import * as services from '@services';
 import * as models from '@models';
-import {SearchType} from '@models';
 
 
 @Component({
