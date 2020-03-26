@@ -595,7 +595,6 @@ export class UrlStateService {
 
   private updateShouldSearch(): void {
     this.store$.select(scenesStore.getAreResultsLoaded).pipe(
-      tap(console.log),
       filter(wereResultsLoaded => wereResultsLoaded),
     ).subscribe(shouldSearch => this.shouldDoSearch = true);
   }
