@@ -10,15 +10,17 @@
   color: red;
 }
 
-//.baseline-metrics {
-//  flex: 0 1 auto;
-//  float: right;
-//  font-weight: normal;
-//}
 
-.baseline-metrics,
 .scene-controls {
   flex: 0 1 auto;
+  float: right;
+  font-weight: normal;
+  align-self: center;
+  //margin-top: 8px;
+}
+
+.baseline-metrics {
+  flex: 0 1 30%;
   float: right;
   font-weight: normal;
   align-self: center;
@@ -40,9 +42,25 @@
   flex: 1 1 auto;
 }
 
+.metric-flex-field {
+  flex: 1 0 60px;
+  float: right;
+  text-align: right;
+}
+
+.metric-field {
+  float: right;
+  text-align: right;
+}
+
 .div-flex-column {
   display: flex;
   flex-direction: column;
+}
+
+.div-flex-row {
+  display: flex;
+  flex-direction: row;
 }
 
 .list-thumbnail {

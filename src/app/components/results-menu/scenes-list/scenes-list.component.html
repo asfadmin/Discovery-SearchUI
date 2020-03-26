@@ -65,11 +65,13 @@
         </ng-container>
 
         <ng-container *ngIf="searchType === SearchTypes.BASELINE">
-          <div class="baseline-metrics">
-            <div class="div-flex-column" *ngIf="breakpoint$ | async as breakpoint">
-              <div class="div-flex">
-                <span style="margin-left: 10px;"> {{ scene.metadata.perpendicular + offsets.perpendicular }}m </span>
-                <span style="margin-left: 10px;"> {{ scene.metadata.temporal + offsets.temporal }}d </span>
+          <div class="baseline-metrics" *ngIf="breakpoint$ | async as breakpoint">
+            <div [className]="breakpoint > breakpoints.MOBILE ? 'div-flex-row' : 'div-flex-column'" >
+              <div [className]="breakpoint > breakpoints.MOBILE ? 'metric-flex-field' : 'metric-field'">
+                {{ scene.metadata.perpendicular + offsets.perpendicular }}m
+              </div>
+              <div [className]="breakpoint > breakpoints.MOBILE ? 'metric-flex-field' : 'metric-field'">
+                {{ scene.metadata.temporal + offsets.temporal }}d
               </div>
             </div>
           </div>

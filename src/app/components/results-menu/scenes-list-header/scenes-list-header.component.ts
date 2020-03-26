@@ -8,7 +8,7 @@ import * as scenesStore from '@store/scenes';
 import * as queueStore from '@store/queue';
 import * as searchStore from '@store/search';
 
-import { MapService, ScenesService } from '@services';
+import { MapService, ScenesService, ScreenSizeService } from '@services';
 import * as models from '@models';
 import { SubSink } from 'subsink';
 
@@ -28,6 +28,10 @@ export class ScenesListHeaderComponent implements OnInit {
 
   public searchType: models.SearchType;
   public SearchTypes = models.SearchType;
+  public breakpoint$ = this.screenSize.breakpoint$;
+  public breakpoints = models.Breakpoints;
+
+
 
   private subs = new SubSink();
 
@@ -35,6 +39,8 @@ export class ScenesListHeaderComponent implements OnInit {
     private store$: Store<AppState>,
     private mapService: MapService,
     private scenesService: ScenesService,
+    private screenSize: ScreenSizeService,
+
   ) { }
 
   ngOnInit() {
