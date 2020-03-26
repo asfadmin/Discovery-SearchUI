@@ -571,6 +571,7 @@ export class UrlStateService {
   }
 
   private loadAreResultsLoaded = (areLoaded: string): Action => {
+    console.log('Loading results: ', areLoaded);
     return new scenesStore.SetResultsLoaded(areLoaded === 'true');
   }
 
@@ -594,6 +595,7 @@ export class UrlStateService {
 
   private updateShouldSearch(): void {
     this.store$.select(scenesStore.getAreResultsLoaded).pipe(
+      tap(console.log),
       filter(wereResultsLoaded => wereResultsLoaded),
     ).subscribe(shouldSearch => this.shouldDoSearch = true);
   }
