@@ -21,16 +21,6 @@ export class FiltersEffects {
     private mapService: MapService,
   ) {}
 
-  @Effect() updateDateRangeOnDatasetRemoved$: Observable<Action> = this.actions$.pipe(
-    ofType<filtersAction.SetSelectedDataset>(filtersAction.FiltersActionType.SET_SELECTED_DATASET),
-    map(action => new filtersAction.ClearDateRange())
-  );
-
-  @Effect() clearMissionWhenDatasetChanges: Observable<Action> = this.actions$.pipe(
-    ofType<filtersAction.SetSelectedDataset>(filtersAction.FiltersActionType.SET_SELECTED_DATASET),
-    map(action => new filtersAction.ClearSelectedMission())
-  );
-
   @Effect({ dispatch: false }) setPolygonStyleWhenOmittingSearchPolygon$: Observable<void> = this.actions$.pipe(
     ofType<filtersAction.OmitSearchPolygon>(filtersAction.FiltersActionType.OMIT_SEARCH_POLYGON),
     map(

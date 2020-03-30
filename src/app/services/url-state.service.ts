@@ -109,6 +109,7 @@ export class UrlStateService {
       {}
     );
 
+    console.log('Before ', this.shouldDoSearch);
     Object.entries(urlParamLoaders).forEach(
       ([paramName, load]) => {
         if (!params[paramName]) {
@@ -131,7 +132,9 @@ export class UrlStateService {
       }
     );
 
+    console.log('After ', this.shouldDoSearch);
     if (this.shouldDoSearch) {
+      console.log('making search: ');
       this.store$.dispatch(new MakeSearch());
     }
   }

@@ -101,6 +101,11 @@ export function filtersReducer(state = initState, action: FiltersActions): Filte
         beamModes: [],
         polarizations: [],
         subtypes: [],
+        selectedMission: null,
+        dateRange: {
+          start: null,
+          end: null
+        },
       };
     }
 
