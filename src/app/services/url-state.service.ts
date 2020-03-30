@@ -109,7 +109,6 @@ export class UrlStateService {
       {}
     );
 
-    console.log('Before ', this.shouldDoSearch);
     Object.entries(urlParamLoaders).forEach(
       ([paramName, load]) => {
         if (!params[paramName]) {
@@ -128,13 +127,10 @@ export class UrlStateService {
         } else {
           this.store$.dispatch(actions);
         }
-
       }
     );
 
-    console.log('After ', this.shouldDoSearch);
     if (this.shouldDoSearch) {
-      console.log('making search: ');
       this.store$.dispatch(new MakeSearch());
     }
   }
@@ -477,8 +473,8 @@ export class UrlStateService {
       .map(v => +v);
 
     return new filterStore.SetPerpendicularRange({
-      start: range[0] || null,
-      end: range[1] || null
+      start: range[0],
+      end: range[1]
     });
   }
 
@@ -486,10 +482,11 @@ export class UrlStateService {
     const range = rangeStr
       .split('to')
       .map(v => +v);
+    console.log(range);
 
     return new filterStore.SetTemporalRange({
-      start: range[0] || null,
-      end: range[1] || null
+      start: range[0],
+      end: range[1]
     });
   }
 
