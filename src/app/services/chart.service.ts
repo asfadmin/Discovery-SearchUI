@@ -51,6 +51,8 @@ export class ChartService {
       },
       options: {
         responsive: true,
+        aspectRatio: 1,
+        maintainAspectRatio: false,
         zoom: {
           enabled: true,
           mode: 'xy',
@@ -125,10 +127,10 @@ export class ChartService {
         pointHoverBorderColor: 'rgba(0,0,0,0)'
       },
       downloads: {
-        backgroundColor: 'lightblue',
-        pointBackgroundColor: 'lightblue',
+        backgroundColor: '#236192',
+        pointBackgroundColor: '#236192',
         pointBorderColor: 'grey',
-        pointHoverBackgroundColor: 'lightblue',
+        pointHoverBackgroundColor: '#236192',
         pointHoverBorderColor: 'grey'
       },
       critical: {
