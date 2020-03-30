@@ -73,13 +73,30 @@ export class ResultsMenuComponent implements OnInit, OnDestroy {
   }
 
   public validate(event: ResizeEvent): boolean {
-    const MIN_DIMENSIONS_PX = 36;
+    const MIN_DIMENSIONS_PX = 33;
     const { width, height } = event.rectangle;
 
     return !(
       width && height &&
       (width < MIN_DIMENSIONS_PX || height < MIN_DIMENSIONS_PX)
     );
+  }
+
+  public maxResultWindow(): void {
+    console.log('maxResultWindow() reached');
+    this.maximizeResult();
+  }
+
+  public minResultWindow(): void {
+    console.log('minResultWindow() reached');
+    this.menuHeightPx = 33;
+    this.resize$.next();
+  }
+
+  public maximizeResult(): void {
+    const maxHeight = window.innerHeight - 160;
+    this.menuHeightPx = maxHeight;
+    this.resize$.next();
   }
 
   public onResizeEnd(event: ResizeEvent): void {
