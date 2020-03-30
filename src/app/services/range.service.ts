@@ -16,7 +16,10 @@ export class RangeService {
   }
 
   public toStringWithNegatives<T>(range: Range<T>): string {
-    const [start, end] = [ range.start || '', range.end || '' ];
+    const [start, end] = [
+      range.start === null ? '' : range.start,
+      range.end === null ? '' : range.end,
+    ];
 
     return !(start || end) ?
       '' : `${start}to${end}`;

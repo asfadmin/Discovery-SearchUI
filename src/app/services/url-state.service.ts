@@ -3,7 +3,7 @@ import { Router, ActivatedRoute, Params } from '@angular/router';
 
 import { Store, Action } from '@ngrx/store';
 import * as moment from 'moment';
-import { filter, map, skip, tap, debounceTime } from 'rxjs/operators';
+import { filter, map, skip, tap, debounceTime, take } from 'rxjs/operators';
 
 import { AppState } from '@store';
 import * as scenesStore from '@store/scenes';
@@ -29,7 +29,6 @@ export class UrlStateService {
   private loadLocations: {[paramName: string]: models.LoadTypes};
   private params = {};
   private dataset: string;
-  private isNotLoaded = true;
   private shouldDoSearch = false;
 
   constructor(
@@ -68,12 +67,10 @@ export class UrlStateService {
   public load(): void {
     this.activatedRoute.queryParams.pipe(
       skip(1),
-      filter(params => this.isNotLoaded),
-      tap(() => this.isNotLoaded = false)
+      take(1),
     ).subscribe(
-      params => {
-        this.loadStateFrom(params);
-    });
+      params => this.loadStateFrom(params)
+    );
 
     this.urlParamNames.forEach(
       paramName => this.urlParams[paramName].source.pipe(
@@ -126,9 +123,7 @@ export class UrlStateService {
         }
 
         if (Array.isArray(actions)) {
-          actions.forEach(
-            action => this.store$.dispatch(action)
-          );
+          actions.forEach(action => this.store$.dispatch(action));
         } else {
           this.store$.dispatch(actions);
         }
@@ -571,7 +566,6 @@ export class UrlStateService {
   }
 
   private loadAreResultsLoaded = (areLoaded: string): Action => {
-    console.log('Loading results: ', areLoaded);
     return new scenesStore.SetResultsLoaded(areLoaded === 'true');
   }
 
