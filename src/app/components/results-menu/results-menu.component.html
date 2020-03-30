@@ -2,7 +2,6 @@
   <div *ngIf="breakpoint$ | async as breakpoint"
     [class.mobile-menu-offset]="breakpoint === breakpoints.MOBILE"
     class="rectangle-wrapper w100">
-
     <div
       id="result-div"
       class="w100 results-menu"
@@ -13,6 +12,11 @@
       [resizeSnapGrid]="{ left: 50, right: 50 }"
       (resizeEnd)="onFinalResize($event)"
       (resizing)="onResizeEnd($event)">
+      <div class="min-max-controls">
+        <div (click)="maxResultWindow()" class="resize-max material-icons">keyboard_arrow_up</div>
+        <div class="filler"></div>
+        <div (click)="minResultWindow()" class="resize-min material-icons">keyboard_arrow_down</div>
+      </div>
       <div
         [class.hidden]="(areNoScenes$  | async)"
         class="h100">
