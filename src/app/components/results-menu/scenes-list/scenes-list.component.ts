@@ -69,14 +69,22 @@ export class ScenesListComponent implements OnInit, OnDestroy {
 
     this.subs.add(
       this.store$.select(scenesStore.getSelectedScene).pipe(
-        withLatestFrom(this.store$.select(scenesStore.getScenes)),
+        withLatestFrom(this.scenesService.scenesSorted$()),
         /* There is some race condition with scrolling before the list is rendered.
          * Doesn't scroll without the delay even though the function is called.
          * */
         delay(20),
         filter(([selected, _]) => !!selected),
         tap(([selected, _]) => this.selected = selected.name),
-        map(([selected, scenes]) => scenes.indexOf(selected)),
+        map(([selected, scenes]) => {
+          let sceneIdx = -1;
+          scenes.forEach((scene, idx) => {
+            if (scene.id === selected.id) {
+              sceneIdx = idx;
+            }
+          });
+          return sceneIdx;
+        })
       ).subscribe(
         idx => {
           if (!this.selectedFromList) {
