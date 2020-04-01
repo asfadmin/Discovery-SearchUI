@@ -47,7 +47,7 @@ export class SceneFilesComponent implements OnInit, OnDestroy {
           this.products = products;
           this.openUnzippedProduct = unzipped;
 
-          if (unzipped) {
+          if (unzipped && products) {
             this.beforeWithUnzip = this.getBeforeWithUnzip(products);
             this.afterUnzip = this.getAfterUnzip(products);
           }
