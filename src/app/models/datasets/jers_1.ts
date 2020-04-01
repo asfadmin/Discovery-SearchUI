@@ -11,6 +11,7 @@ export const jers_1 = {
     Props.FLIGHT_DIRECTION,
     Props.POLARIZATION,
     Props.ABSOLUTE_ORBIT,
+    Props.BASELINE_TOOL,
   ],
   apiValue: { platform: 'JERS-1' },
   date: {
