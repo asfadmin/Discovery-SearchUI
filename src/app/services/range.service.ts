@@ -15,6 +15,16 @@ export class RangeService {
       '' : `${start}-${end}`;
   }
 
+  public toStringWithNegatives<T>(range: Range<T>): string {
+    const [start, end] = [
+      range.start === null ? '' : range.start,
+      range.end === null ? '' : range.end,
+    ];
+
+    return !(start || end) ?
+      '' : `${start}to${end}`;
+  }
+
   public toCMRString<T>(range: Range<T>): string {
     const [start, end] = [ range.start || '', range.end || '' ];
 

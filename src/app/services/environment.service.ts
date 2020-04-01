@@ -11,6 +11,7 @@ export interface Environment {
   api: string;
   auth: string;
   urs: string;
+  api_maturity?: string;
   urs_client_id: string;
   unzip: string;
   datapool: string;

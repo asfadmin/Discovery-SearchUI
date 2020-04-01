@@ -11,6 +11,7 @@ import { AppState } from '@store';
 import * as searchStore from '@store/search';
 import * as scenesStore from '@store/scenes';
 import * as queueStore from '@store/queue';
+import * as filtersStore from '@store/filters';
 
 import { faCopy } from '@fortawesome/free-solid-svg-icons';
 import { CdkVirtualScrollViewport } from '@angular/cdk/scrolling';
@@ -36,6 +37,7 @@ export class ScenesListComponent implements OnInit, OnDestroy {
   public selected: string;
   public copyIcon = faCopy;
 
+  public offsets = {temporal: 0, perpendicular: 0};
   public selectedFromList = false;
   public hoveredSceneName: string | null = null;
 
@@ -44,15 +46,26 @@ export class ScenesListComponent implements OnInit, OnDestroy {
   public breakpoint$ = this.screenSize.breakpoint$;
   public breakpoints = models.Breakpoints;
 
+  public searchType: models.SearchType;
+  public SearchTypes = models.SearchType;
+
+
   constructor(
     private store$: Store<AppState>,
     private mapService: services.MapService,
     private screenSize: services.ScreenSizeService,
     private keyboardService: services.KeyboardService,
+    private scenesService: services.ScenesService,
   ) {}
 
   ngOnInit() {
     this.keyboardService.init();
+
+    this.subs.add(
+      this.store$.select(scenesStore.getMasterOffsets).subscribe(
+        offsets => this.offsets = offsets
+      )
+    );
 
     this.subs.add(
       this.store$.select(scenesStore.getSelectedScene).pipe(
@@ -76,12 +89,15 @@ export class ScenesListComponent implements OnInit, OnDestroy {
     );
 
     this.subs.add(
-      this.store$.select(scenesStore.getScenes).subscribe(
+      this.scenesService.scenesSorted$().subscribe(
         scenes => this.scenes = scenes
       )
     );
 
     this.subs.add(
+      this.store$.select(searchStore.getSearchType).subscribe(
+        searchType => this.searchType = searchType
+      )
     );
 
     const queueScenes$ = combineLatest(

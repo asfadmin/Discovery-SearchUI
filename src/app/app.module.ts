@@ -18,6 +18,7 @@ import { SavedSearchesModule } from '@components/shared/saved-searches';
 import { NavBarModule } from '@components/nav-bar';
 import { MapModule } from '@components/map';
 import { ResultsMenuModule } from '@components/results-menu';
+import { BaselineChartModule } from '@components/baseline-chart';
 import { MatSharedModule } from '@shared';
 
 import { CustomBreakPointsProvider } from '@services/custom-breakpoints.ts';
@@ -111,6 +112,7 @@ export const routes = [
     MatMenuModule,
     MatFormFieldModule,
     MatDialogModule,
+    BaselineChartModule,
   ],
   providers: [
     services.AsfApiService,
@@ -134,6 +136,8 @@ export const routes = [
     services.UserDataService,
     services.SavedSearchService,
     services.UnzipApiService,
+    services.ChartService,
+    services.ScenesService,
   ],
   bootstrap: [ AppComponent ],
 })

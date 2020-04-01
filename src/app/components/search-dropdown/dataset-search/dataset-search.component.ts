@@ -1,4 +1,5 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, OnDestroy  } from '@angular/core';
+import { SubSink } from 'subsink';
 
 import { Store } from '@ngrx/store';
 import { map } from 'rxjs/operators';
@@ -22,7 +23,7 @@ enum FilterPanel {
   templateUrl: './dataset-search.component.html',
   styleUrls: ['./dataset-search.component.scss']
 })
-export class DatasetSearchComponent implements OnInit {
+export class DatasetSearchComponent implements OnInit, OnDestroy {
   @Input() dataset: models.CMRProduct;
   @Input() selectedPanel: FilterPanel | null = null;
 
@@ -45,6 +46,8 @@ export class DatasetSearchComponent implements OnInit {
   public breakpoint$ = this.screenSize.breakpoint$;
   public breakpoints = models.Breakpoints;
 
+  private subs = new SubSink();
+
   constructor(
     public prop: PropertyService,
     private store$: Store<AppState>,
@@ -52,8 +55,10 @@ export class DatasetSearchComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.store$.select(filtersStore.getSelectedDatasetId).subscribe(
-      selected => this.selectedDataset = selected
+    this.subs.add(
+      this.store$.select(filtersStore.getSelectedDatasetId).subscribe(
+        selected => this.selectedDataset = selected
+      )
     );
   }
 
@@ -71,5 +76,9 @@ export class DatasetSearchComponent implements OnInit {
 
   public selectPanel(panel: FilterPanel): void {
     this.selectedPanel = panel;
+  }
+
+  ngOnDestroy() {
+    this.subs.unsubscribe();
   }
 }

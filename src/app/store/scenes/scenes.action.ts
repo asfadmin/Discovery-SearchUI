@@ -1,6 +1,6 @@
 import { Action } from '@ngrx/store';
 
-import { CMRProduct, UnzippedFolder } from '@models';
+import { CMRProduct, UnzippedFolder, ColumnSortDirection } from '@models';
 
 export enum ScenesActionType {
   SET_SCENES = '[Granuels] Set Scenes',
@@ -18,8 +18,15 @@ export enum ScenesActionType {
   SELECT_NEXT_SCENE = '[Scenes] Select Next Scene',
   SELECT_PREVIOUS_SCENE = '[Scenes] Select Previous Scene',
 
+  SET_MASTER = '[Scenes-Baseline] Set Master',
+  SET_FILTER_MASTER = '[Scenes-Baseline] Set Filter Master',
+  CLEAR_BASELINE = '[Scenes-Baseline] Clear Baseline',
+
   SELECT_NEXT_WITH_BROWSE = '[Scenes] Set next with browse',
-  SELECT_PREVIOUS_WITH_BROWSE = '[Scenes] Set previous with browse'
+  SELECT_PREVIOUS_WITH_BROWSE = '[Scenes] Set previous with browse',
+
+  SET_PERPENDICULAR_SORT_DIRECTION = '[Scenes] Set Perpendicular Sort Direction',
+  SET_TEMPORAL_SORT_DIRECTION = '[Scenes] Set Temporal Sort Direction',
 }
 
 export class SetScenes implements Action {
@@ -31,7 +38,6 @@ export class SetScenes implements Action {
 export class ClearScenes implements Action {
   public readonly type = ScenesActionType.CLEAR;
 }
-
 export class SetSelectedScene implements Action {
   public readonly type = ScenesActionType.SET_SELECTED_SCENE;
 
@@ -94,6 +100,34 @@ export class ClearUnzippedProducts implements Action {
   public readonly type = ScenesActionType.CLEAR_UNZIPPED_PRODUCTS;
 }
 
+export class SetMaster implements Action {
+  public readonly type = ScenesActionType.SET_MASTER;
+
+  constructor(public payload: string) {}
+}
+
+export class SetFilterMaster implements Action {
+  public readonly type = ScenesActionType.SET_FILTER_MASTER;
+
+  constructor(public payload: string) {}
+}
+
+export class ClearBaseline implements Action {
+  public readonly type = ScenesActionType.CLEAR_BASELINE;
+}
+
+export class SetPerpendicularSortDirection implements Action {
+  public readonly type = ScenesActionType.SET_PERPENDICULAR_SORT_DIRECTION;
+
+  constructor(public payload: ColumnSortDirection) {}
+}
+
+export class SetTemporalSortDirection implements Action {
+  public readonly type = ScenesActionType.SET_TEMPORAL_SORT_DIRECTION;
+
+  constructor(public payload: ColumnSortDirection) {}
+}
+
 
 export type ScenesActions =
   | SetScenes
@@ -109,4 +143,9 @@ export type ScenesActions =
   | SelectPreviousScene
   | SelectNextWithBrowse
   | SelectPreviousWithBrowse
-  | SetResultsLoaded;
+  | SetResultsLoaded
+  | ClearBaseline
+  | SetFilterMaster
+  | SetMaster
+  | SetTemporalSortDirection
+  | SetPerpendicularSortDirection;

@@ -39,9 +39,19 @@ export interface CMRProductMetadata {
 
   // AIRSAR
   flightLine: string | null;
+
+  // Baseline
+  perpendicular: number | null;
+  temporal: number | null;
 }
 
 export enum FlightDirection {
   ASCENDING = 'ASCENDING',
   DESCENDING = 'DESCENDING',
+}
+
+export enum ColumnSortDirection {
+  INCREASING = 'INCREASING',
+  DECREASING = 'DECREASING',
+  NONE = 'NONE',
 }

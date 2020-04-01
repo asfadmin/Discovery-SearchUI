@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 
 import { Store } from '@ngrx/store';
 import { SubSink } from 'subsink';
@@ -13,7 +13,7 @@ import * as models from '@models';
   templateUrl: './layer-selector.component.html',
   styleUrls: ['./layer-selector.component.scss']
 })
-export class LayerSelectorComponent implements OnInit {
+export class LayerSelectorComponent implements OnInit, OnDestroy {
   public layerTypes = models.MapLayerTypes;
   public layerType: models.MapLayerTypes;
 
@@ -37,5 +37,9 @@ export class LayerSelectorComponent implements OnInit {
       new mapStore.SetSatelliteView();
 
     this.store$.dispatch(action);
+  }
+
+  ngOnDestroy() {
+    this.subs.unsubscribe();
   }
 }

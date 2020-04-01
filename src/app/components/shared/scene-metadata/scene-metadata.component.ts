@@ -24,6 +24,8 @@ export class SceneMetadataComponent implements OnInit, OnDestroy {
   public p = models.Props;
   public scene: models.CMRProduct;
   public searchType: models.SearchType;
+  private offsets = { temporal: 0, perpendicular: 0 };
+
   private subs = new SubSink();
 
   constructor(
@@ -34,6 +36,11 @@ export class SceneMetadataComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     const scene$ = this.store$.select(scenesStore.getSelectedScene);
+    this.subs.add(
+      this.store$.select(scenesStore.getMasterOffsets).subscribe(
+        offsets => this.offsets = offsets
+      )
+    );
 
     this.subs.add(
       this.store$.select(searchStore.getSearchType).subscribe(
@@ -52,6 +59,10 @@ export class SceneMetadataComponent implements OnInit, OnDestroy {
 
   public isGeoSearch(): boolean {
     return this.searchType === models.SearchType.DATASET;
+  }
+
+  public isBaselineSearch(): boolean {
+    return this.searchType === models.SearchType.BASELINE;
   }
 
   public hasValue(v: any): boolean {
@@ -110,6 +121,38 @@ export class SceneMetadataComponent implements OnInit, OnDestroy {
 
   public addMission(): void {
     const action = new filtersStore.SelectMission(this.scene.metadata.missionName);
+    this.store$.dispatch(action);
+  }
+
+  public setTemporalStart(): void {
+    const action = new filtersStore.SetTemporalStart(
+      this.scene.metadata.temporal + this.offsets.temporal
+    );
+
+    this.store$.dispatch(action);
+  }
+
+  public setTemporalEnd(): void {
+    const action = new filtersStore.SetTemporalEnd(
+      this.scene.metadata.temporal + this.offsets.temporal
+    );
+
+    this.store$.dispatch(action);
+  }
+
+  public setPerpendicularStart(): void {
+    const action = new filtersStore.SetPerpendicularStart(
+      this.scene.metadata.perpendicular + this.offsets.perpendicular
+    );
+
+    this.store$.dispatch(action);
+  }
+
+  public setPerpendicularEnd(): void {
+    const action = new filtersStore.SetPerpendicularEnd(
+      this.scene.metadata.perpendicular + this.offsets.perpendicular
+    );
+
     this.store$.dispatch(action);
   }
 

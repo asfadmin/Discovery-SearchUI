@@ -1,5 +1,6 @@
-import { Component, HostListener, OnInit } from '@angular/core';
+import { Component, HostListener, OnInit, OnDestroy } from '@angular/core';
 import { ResizeEvent } from 'angular-resizable-element';
+import { SubSink } from 'subsink';
 
 import { Subject } from 'rxjs';
 import { map } from 'rxjs/operators';
@@ -13,23 +14,16 @@ import * as scenesStore from '@store/scenes';
 import { MapService } from '@services';
 import * as models from '@models';
 
-enum MobileViews {
-  LIST = 0,
-  DETAIL = 1
-}
-
 @Component({
   selector: 'app-results-menu',
   templateUrl: './results-menu.component.html',
   styleUrls: ['./results-menu.component.scss'],
 })
-export class ResultsMenuComponent implements OnInit {
+export class ResultsMenuComponent implements OnInit, OnDestroy {
   public isResultsMenuOpen$ = this.store$.select(uiStore.getIsResultsMenuOpen);
   public selectedProducts$ = this.store$.select(scenesStore.getSelectedSceneProducts);
 
   public menuHeightPx: number;
-  public view = MobileViews.LIST;
-  public Views = MobileViews;
 
   public areNoScenes$ = this.store$.select(scenesStore.getScenes).pipe(
     map(scenes => scenes.length === 0)
@@ -40,6 +34,7 @@ export class ResultsMenuComponent implements OnInit {
   public breakpoint$ = this.screenSize.breakpoint$;
   public breakpoints = models.Breakpoints;
   public isUnzipOpen: boolean;
+  private subs = new SubSink();
 
   constructor(
     private store$: Store<AppState>,
@@ -49,8 +44,11 @@ export class ResultsMenuComponent implements OnInit {
 
   ngOnInit() {
     this.menuHeightPx = this.defaultMenuHeight();
-    this.store$.select(scenesStore.getShowUnzippedProduct).subscribe(
-      showUnzippedProduct => this.isUnzipOpen = showUnzippedProduct
+
+    this.subs.add(
+      this.store$.select(scenesStore.getShowUnzippedProduct).subscribe(
+        showUnzippedProduct => this.isUnzipOpen = showUnzippedProduct
+      )
     );
   }
 
@@ -74,22 +72,31 @@ export class ResultsMenuComponent implements OnInit {
     this.resize$.next();
   }
 
-  public onSelectList(): void {
-    this.view = MobileViews.LIST;
-  }
-
-  public onSelectDetail(): void {
-    this.view = MobileViews.DETAIL;
-  }
-
   public validate(event: ResizeEvent): boolean {
-    const MIN_DIMENSIONS_PX = 36;
+    const MIN_DIMENSIONS_PX = 33;
     const { width, height } = event.rectangle;
 
     return !(
       width && height &&
       (width < MIN_DIMENSIONS_PX || height < MIN_DIMENSIONS_PX)
     );
+  }
+
+  public maxResultWindow(): void {
+    console.log('maxResultWindow() reached');
+    this.maximizeResult();
+  }
+
+  public minResultWindow(): void {
+    console.log('minResultWindow() reached');
+    this.menuHeightPx = 33;
+    this.resize$.next();
+  }
+
+  public maximizeResult(): void {
+    const maxHeight = window.innerHeight - 160;
+    this.menuHeightPx = maxHeight;
+    this.resize$.next();
   }
 
   public onResizeEnd(event: ResizeEvent): void {
@@ -103,5 +110,9 @@ export class ResultsMenuComponent implements OnInit {
 
   public onFinalResize() {
     this.resize$.next();
+  }
+
+  ngOnDestroy() {
+    this.subs.unsubscribe();
   }
 }

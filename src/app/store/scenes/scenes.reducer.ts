@@ -2,7 +2,7 @@ import { createFeatureSelector, createSelector } from '@ngrx/store';
 
 import { ScenesActionType, ScenesActions } from './scenes.action';
 
-import { CMRProduct, UnzippedFolder } from '@models';
+import { CMRProduct, UnzippedFolder, ColumnSortDirection } from '@models';
 
 
 interface SceneEntities { [id: string]: CMRProduct; }
@@ -16,6 +16,14 @@ export interface ScenesState {
   openUnzippedProduct: string | null;
   productUnzipLoading: string | null;
   selected: string | null;
+  master: string | null;
+  filterMaster: string | null;
+  masterOffsets: {
+    temporal: number;
+    perpendicular: number
+  };
+  perpendicularSort: ColumnSortDirection;
+  temporalSort: ColumnSortDirection;
 }
 
 export const initState: ScenesState = {
@@ -28,6 +36,14 @@ export const initState: ScenesState = {
   areResultsLoaded: false,
 
   selected: null,
+  master: null,
+  filterMaster: null,
+  masterOffsets: {
+    temporal: 0,
+    perpendicular: 0
+  },
+  perpendicularSort: ColumnSortDirection.NONE,
+  temporalSort: ColumnSortDirection.NONE,
 };
 
 
@@ -128,6 +144,40 @@ export function scenesReducer(state = initState, action: ScenesActions): ScenesS
       };
     }
 
+    case ScenesActionType.SET_MASTER: {
+      const newMaster = Object.values(state.products)
+        .filter(product => product.name === action.payload)[0];
+
+      return {
+        ...state,
+        master: action.payload,
+        masterOffsets: {
+          temporal: -newMaster.metadata.temporal,
+          perpendicular: -newMaster.metadata.perpendicular
+        }
+      };
+    }
+
+    case ScenesActionType.SET_FILTER_MASTER: {
+      return {
+        ...state,
+        filterMaster: action.payload,
+        master: action.payload
+      };
+    }
+
+    case ScenesActionType.CLEAR_BASELINE: {
+      return {
+        ...state,
+        filterMaster: null,
+        master: null,
+        masterOffsets: {
+          temporal: 0,
+          perpendicular: 0
+        }
+      };
+    }
+
     case ScenesActionType.OPEN_UNZIPPED_PRODUCT: {
       return {
         ...state,
@@ -153,6 +203,20 @@ export function scenesReducer(state = initState, action: ScenesActions): ScenesS
         ...state,
         unzipped,
         productUnzipLoading: null,
+      };
+    }
+
+    case ScenesActionType.SET_PERPENDICULAR_SORT_DIRECTION: {
+      return {
+        ...state,
+        perpendicularSort: action.payload
+      };
+    }
+
+    case ScenesActionType.SET_TEMPORAL_SORT_DIRECTION: {
+      return {
+        ...state,
+        temporalSort: action.payload
       };
     }
 
@@ -362,6 +426,11 @@ export const getAreProductsLoaded = createSelector(
   state => state.length > 0
 );
 
+export const getProducts = createSelector(
+  getScenesState,
+  state => state.products
+);
+
 export const getAllProducts = createSelector(
   getScenesState,
   state => Object.values(state.products)
@@ -413,4 +482,63 @@ export const getOpenUnzippedProduct = createSelector(
 export const getShowUnzippedProduct = createSelector(
   getScenesState,
   (state: ScenesState) => state.openUnzippedProduct && !state.productUnzipLoading
+);
+
+export const getMasterName = createSelector(
+  getScenesState,
+  state => state.master
+);
+
+export const getFilterMaster = createSelector(
+  getScenesState,
+  state => state.filterMaster
+);
+
+export const getMasterOffsets = createSelector(
+  getScenesState,
+  state => state.masterOffsets
+);
+
+export const getTemporalExtrema = createSelector(
+  getScenesState,
+  state => extrema(
+    state.products,
+    product => product.metadata.temporal
+  )
+);
+
+export const getPerpendicularExtrema = createSelector(
+  getScenesState,
+  state => extrema(
+    state.products,
+    product => product.metadata.perpendicular
+  )
+);
+
+const extrema = (prods, keyFunc) => {
+  const products = Object.values(prods);
+  const nullRange = {min: null, max: null};
+
+  if (products.length === 0) {
+    return nullRange;
+  }
+
+  const vals: number[] = products.map(keyFunc);
+
+  const range = {
+    min: Math.min(...vals),
+    max: Math.max(...vals)
+  };
+
+  return (range.min === range.max) ? nullRange : range;
+};
+
+export const getPerpendicularSortDirection = createSelector(
+  getScenesState,
+  state => state.perpendicularSort
+);
+
+export const getTemporalSortDirection = createSelector(
+  getScenesState,
+  state => state.temporalSort
 );

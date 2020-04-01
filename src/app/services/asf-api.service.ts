@@ -26,12 +26,17 @@ export class AsfApiService {
   }
 
   public query<T>(stateParamsObj: {[paramName: string]: string | null}): Observable<T> {
+    if (!this.env.isProd) {
+      stateParamsObj['maturity'] = this.env.currentEnv.api_maturity;
+    }
     const params = this.queryParamsFrom(stateParamsObj);
 
     const queryParamsStr = params.toString()
       .replace('+', '%2B');
 
-    const endpoint = this.searchEndpoint();
+    const endpoint = params.get('master') ?
+      this.baselineEndpoint() : this.searchEndpoint();
+
     const formData = this.toFormData(params);
 
     const responseType: any = params.get('output') === 'jsonlite2' ?
@@ -61,6 +66,10 @@ export class AsfApiService {
 
   private searchEndpoint(): string {
     return `${this.apiUrl}/services/search/param`;
+  }
+
+  private baselineEndpoint(): string {
+    return `${this.apiUrl}/services/search/baseline`;
   }
 
   private queryParamsFrom(stateParamsObj) {

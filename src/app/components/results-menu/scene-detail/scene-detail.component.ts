@@ -132,9 +132,26 @@ export class SceneDetailComponent implements OnInit, OnDestroy {
     );
   }
 
+  public onSetSelectedAsMaster() {
+    this.store$.dispatch(new scenesStore.SetMaster(this.scene.name));
+  }
+
   public findSimilarScenes(): void {
+    const scene = this.scene;
+
     [
-      new filtersStore.SetFiltersSimilarTo(this.scene),
+      new searchStore.SetSearchType(models.SearchType.DATASET),
+      new filtersStore.SetFiltersSimilarTo(scene),
+      new searchStore.MakeSearch()
+    ].forEach(action => this.store$.dispatch(action));
+  }
+
+  public makeBaselineSearch(): void {
+    const sceneName = this.scene.name;
+    [
+      new searchStore.ClearSearch(),
+      new searchStore.SetSearchType(models.SearchType.BASELINE),
+      new scenesStore.SetFilterMaster(sceneName),
       new searchStore.MakeSearch()
     ].forEach(action => this.store$.dispatch(action));
   }

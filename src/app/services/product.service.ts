@@ -72,8 +72,12 @@ export class ProductService {
       missionName: g.mn,
       flightLine: g.fl,
       stackSize: +g.ss || null,
+
+      perpendicular: this.isNumber(+g.pb) ? +g.pb : null,
+      temporal: this.isNumber(+g.tb) ? +g.tb : null,
     })
 
+  private isNumber = n => !isNaN(n) && isFinite(n);
   private fromCMRDate =
     (dateString: string): moment.Moment => {
       return moment.utc(dateString);

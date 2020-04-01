@@ -52,11 +52,11 @@ export class QueueComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit() {
-    const productNameLengthSub = this.screenSize.size$.pipe(
-      map(size => size.width > 1000 ? 48 : 16)
-    ).subscribe(len => this.productNameLen = len);
-
-    this.subs.add(productNameLengthSub);
+    this.subs.add(
+      this.screenSize.size$.pipe(
+        map(size => size.width > 1000 ? 48 : 16)
+      ).subscribe(len => this.productNameLen = len)
+    );
   }
 
   public onRemoveProduct(product: CMRProduct): void {

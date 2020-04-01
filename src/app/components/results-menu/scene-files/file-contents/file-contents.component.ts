@@ -1,6 +1,7 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, OnDestroy } from '@angular/core';
 import { FlatTreeControl } from '@angular/cdk/tree';
 import { MatTreeFlatDataSource, MatTreeFlattener } from '@angular/material/tree';
+import { SubSink } from 'subsink';
 
 import { map, tap, filter } from 'rxjs/operators';
 import { Store } from '@ngrx/store';
@@ -24,12 +25,13 @@ interface ExampleFlatNode {
   templateUrl: './file-contents.component.html',
   styleUrls: ['./file-contents.component.scss']
 })
-export class FileContentsComponent implements OnInit {
+export class FileContentsComponent implements OnInit, OnDestroy {
   @Input() product: CMRProduct;
 
   sceneNameLen: number;
   treeControl = new FlatTreeControl<ExampleFlatNode>(
-      node => node.level, node => node.expandable);
+    node => node.level, node => node.expandable
+  );
 
   treeFlattener = new MatTreeFlattener(
     (node: UnzippedFolder, level: number) => {
@@ -48,6 +50,7 @@ export class FileContentsComponent implements OnInit {
 
   dataSource = new MatTreeFlatDataSource(this.treeControl, this.treeFlattener);
   public queuedProductIds: Set<string>;
+  private subs = new SubSink();
 
   constructor(
     private store$: Store<AppState>,
@@ -55,30 +58,36 @@ export class FileContentsComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.store$.select(scenesStore.getUnzippedProducts).pipe(
-      map(unzipped => unzipped[this.product.id]),
-      filter(unzipped => !!unzipped),
-    ).subscribe(
-      unzipped => this.dataSource.data = unzipped
+    this.subs.add(
+      this.store$.select(scenesStore.getUnzippedProducts).pipe(
+        map(unzipped => unzipped[this.product.id]),
+        filter(unzipped => !!unzipped),
+      ).subscribe(
+        unzipped => this.dataSource.data = unzipped
+      )
     );
 
-    this.store$.select(queueStore.getQueuedProductIds).pipe(
-      map(names => new Set(names))
-    ).subscribe(
-      ids => this.queuedProductIds = ids
+    this.subs.add(
+      this.store$.select(queueStore.getQueuedProductIds).pipe(
+        map(names => new Set(names))
+      ).subscribe(
+        ids => this.queuedProductIds = ids
+      )
     );
 
-    this.screenSize.size$.pipe(
-      map(size => {
-        if (size.width > 1775) {
-          return 32;
-        } else if (size.width > 1350) {
-          return 20;
-        } else {
-          return 10;
-        }
-      }),
-    ).subscribe(len => this.sceneNameLen = len);
+    this.subs.add(
+      this.screenSize.size$.pipe(
+        map(size => {
+          if (size.width > 1775) {
+            return 32;
+          } else if (size.width > 1350) {
+            return 20;
+          } else {
+            return 10;
+          }
+        }),
+      ).subscribe(len => this.sceneNameLen = len)
+    );
 
   }
 
@@ -121,5 +130,9 @@ export class FileContentsComponent implements OnInit {
     const nodeId = this. makeUnzippedId(node, this.product);
 
     return this.queuedProductIds.has(nodeId);
+  }
+
+  ngOnDestroy() {
+    this.subs.unsubscribe();
   }
 }

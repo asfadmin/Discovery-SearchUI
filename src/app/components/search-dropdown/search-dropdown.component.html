@@ -11,6 +11,10 @@
         <ng-container *ngIf="selectedSearchType === searchTypes.LIST">
           List Search
         </ng-container>
+
+        <ng-container *ngIf="selectedSearchType === searchTypes.BASELINE">
+          Baseline Search
+        </ng-container>
       </div>
 
       <div fxFlex="nogrow">
@@ -29,10 +33,17 @@
       <ng-container *ngIf="selectedSearchType === searchTypes.LIST">
         <app-list-search></app-list-search>
       </ng-container>
+
+      <ng-container *ngIf="selectedSearchType === searchTypes.BASELINE">
+        <app-baseline-search></app-baseline-search>
+      </ng-container>
     </div>
 
     <div class="footer">
-      <app-max-results-selector style="margin-right: 10px;"></app-max-results-selector>
+      <app-max-results-selector
+        *ngIf="(searchType$ | async) !== searchTypes.BASELINE"
+        style="margin-right: 10px;">
+      </app-max-results-selector>
       <app-search-button></app-search-button>
     </div>
   </div>

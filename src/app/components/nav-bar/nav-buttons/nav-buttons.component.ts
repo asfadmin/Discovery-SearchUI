@@ -1,4 +1,5 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, OnDestroy } from '@angular/core';
+import { SubSink } from 'subsink';
 
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { ClipboardService } from 'ngx-clipboard';
@@ -7,11 +8,14 @@ import { Store } from '@ngrx/store';
 import { AppState } from '@store';
 import * as userStore from '@store/user';
 import * as uiStore from '@store/ui';
+
 import { PreferencesComponent } from './preferences/preferences.component';
-import { HelpComponent} from '@components/help/help.component';
+import { HelpComponent } from '@components/help/help.component';
 import { CustomizeEnvComponent } from './customize-env/customize-env.component';
+
 import { AuthService, AsfApiService, EnvironmentService, ScreenSizeService } from '@services';
 import { CMRProduct, Breakpoints, UserAuth, SavedSearchType } from '@models';
+
 import * as searchStore from '@store/search';
 
 @Component({
@@ -19,7 +23,7 @@ import * as searchStore from '@store/search';
   templateUrl: './nav-buttons.component.html',
   styleUrls: ['./nav-buttons.component.scss']
 })
-export class NavButtonsComponent implements OnInit {
+export class NavButtonsComponent implements OnInit, OnDestroy {
   anio: number = new Date().getFullYear();
   public asfWebsiteUrl = 'https://www.asf.alaska.edu';
   public maturity = this.env.maturity;
@@ -28,6 +32,7 @@ export class NavButtonsComponent implements OnInit {
   public isLoggedIn = false;
   public breakpoint$ = this.screenSize.breakpoint$;
   public breakpoints = Breakpoints;
+  private subs = new SubSink();
 
   @Input() queuedProducts: CMRProduct[];
 
@@ -44,12 +49,16 @@ export class NavButtonsComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.store$.select(userStore.getUserAuth).subscribe(
-      user => this.userAuth = user
+    this.subs.add(
+      this.store$.select(userStore.getUserAuth).subscribe(
+        user => this.userAuth = user
+      )
     );
 
-    this.store$.select(userStore.getIsUserLoggedIn).subscribe(
-      isLoggedIn => this.isLoggedIn = isLoggedIn
+    this.subs.add(
+      this.store$.select(userStore.getIsUserLoggedIn).subscribe(
+        isLoggedIn => this.isLoggedIn = isLoggedIn
+      )
     );
   }
 
@@ -58,14 +67,18 @@ export class NavButtonsComponent implements OnInit {
   }
 
   public onAccountButtonClicked() {
-    this.authService.login$().subscribe(
-      user => this.store$.dispatch(new userStore.Login(user))
+    this.subs.add(
+      this.authService.login$().subscribe(
+        user => this.store$.dispatch(new userStore.Login(user))
+      )
     );
   }
 
   public onLogout(): void {
-    this.authService.logout$().subscribe(
-      user => this.store$.dispatch(new userStore.Logout())
+    this.subs.add(
+      this.authService.logout$().subscribe(
+        user => this.store$.dispatch(new userStore.Logout())
+      )
     );
   }
 
@@ -75,16 +88,16 @@ export class NavButtonsComponent implements OnInit {
       maxHeight: '100%'
     });
 
-    dialogRef.afterClosed().subscribe(
-      _ => this.store$.dispatch(new userStore.SaveProfile())
+    this.subs.add(
+      dialogRef.afterClosed().subscribe(
+        _ => this.store$.dispatch(new userStore.SaveProfile())
+      )
     );
   }
 
   public onOpenHelp(helpSelection: string): void {
     const dialogConfig = new MatDialogConfig();
 
-    // dialogConfig.disableClose = true;
-    // dialogConfig.autoFocus = true;
     dialogConfig.panelClass = 'help-panel-config';
     dialogConfig.data = {helpTopic: helpSelection};
     dialogConfig.width = '80vw';
@@ -102,10 +115,6 @@ export class NavButtonsComponent implements OnInit {
       maxWidth: '100%',
       maxHeight: '100%'
     });
-
-    dialogRef.afterClosed().subscribe(
-      _ => null
-    );
   }
 
   public onOpenSavedSearches(): void {
@@ -148,5 +157,9 @@ export class NavButtonsComponent implements OnInit {
   private setMaturity(maturity: string): void {
     this.maturity = maturity;
     this.env.setMaturity(maturity);
+  }
+
+  ngOnDestroy() {
+    this.subs.unsubscribe();
   }
 }

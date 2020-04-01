@@ -2,7 +2,6 @@
   <div *ngIf="breakpoint$ | async as breakpoint"
     [class.mobile-menu-offset]="breakpoint === breakpoints.MOBILE"
     class="rectangle-wrapper w100">
-
     <div
       id="result-div"
       class="w100 results-menu"
@@ -13,6 +12,11 @@
       [resizeSnapGrid]="{ left: 50, right: 50 }"
       (resizeEnd)="onFinalResize($event)"
       (resizing)="onResizeEnd($event)">
+      <div class="min-max-controls">
+        <div (click)="maxResultWindow()" class="resize-max material-icons">keyboard_arrow_up</div>
+        <div class="filler"></div>
+        <div (click)="minResultWindow()" class="resize-min material-icons">keyboard_arrow_down</div>
+      </div>
       <div
         [class.hidden]="(areNoScenes$  | async)"
         class="h100">
@@ -25,86 +29,15 @@
              fxFlex fxLayout="row">
 
           <ng-container *ngIf="breakpoint >= breakpoints.SMALL">
-            <!-- SCENE LIST -->
-            <mat-card class="mp0" fxFlex="33" fxFlex>
-              <mat-card-subtitle class="header">
-                <app-scenes-list-header></app-scenes-list-header>
-              </mat-card-subtitle>
-
-              <div class="app-scene-list">
-                <app-scenes-list [resize$]="resize$"></app-scenes-list>
-              </div>
-            </mat-card>
-
-            <!-- SCENE DETAIL -->
-            <mat-card class="mp0 no-box-shadow" fxFlex="34" fxFlexFill>
-              <mat-card-subtitle class="header">
-                Scene Detail
-              </mat-card-subtitle>
-
-              <app-scene-detail></app-scene-detail>
-            </mat-card>
-
-            <!-- FILE LIST -->
-            <mat-card class="h100 mp0 left-border-only" fxFlex="33" fxFlexFill>
-              <mat-card-subtitle class="header">
-                <span *ngIf="selectedProducts$ | async as products; else defaultProductsHeader">
-                  {{ products.length || '' }} File{{ (products || []).length === 1 ? '' : 's'}}
-                </span>
-                <ng-template #defaultProductsHeader>Files</ng-template>
-              </mat-card-subtitle>
-
-              <div class="app-scene-list scroll-y">
-                <app-scene-files></app-scene-files>
-              </div>
-            </mat-card>
+            <app-desktop-results-menu class="w100 h100"
+              [resize$]="resize$">
+            </app-desktop-results-menu>
           </ng-container>
 
-          <!--  MOBILE MOBILE MOBILE  -->
           <ng-container *ngIf="breakpoint === breakpoints.MOBILE">
-            <div class="h100 w100">
-              <div>
-                <button (click)="onSelectList()"
-                  [class.selected]="view === Views.LIST" mat-button>
-                    Scenes
-                </button>
-                <button (click)="onSelectDetail()"
-                  [class.selected]="view === Views.DETAIL" mat-button>
-                    Scene Detail &amp; Files
-                </button>
-              </div>
-              <!-- SCENE LIST -->
-              <div *ngIf="view === Views.LIST" class="h100 w100">
-                <mat-card class="mp0" fxFlex="100" fxFlexFill>
-                  <mat-card-subtitle class="header">
-                    <app-scenes-list-header></app-scenes-list-header>
-                  </mat-card-subtitle>
-
-                  <div class="app-scene-list">
-                    <app-scenes-list [resize$]="resize$"></app-scenes-list>
-                  </div>
-                </mat-card>
-              </div>
-
-              <!-- SCENE DETAIL -->
-              <div *ngIf="view === Views.DETAIL" class="h100 w100">
-                <mat-card class="h100 w100 mp0 no-box-shadow" fxFlex="100" fxFlex>
-                  <mat-card-subtitle class="header">
-                    Scene Detail /
-                    <span *ngIf="selectedProducts$ | async as products; else defaultProductsHeader">
-                      {{ products.length || '' }} File{{ (products || []).length === 1 ? '' : 's'}}
-                    </span>
-                    <ng-template #defaultProductsHeader>Files</ng-template>
-                  </mat-card-subtitle>
-
-                  <div class="app-scene-list scroll-y scroll-x">
-                    <app-scene-detail></app-scene-detail>
-                    <hr>
-                    <app-scene-files></app-scene-files>
-                  </div>
-                </mat-card>
-              </div>
-            </div>
+            <app-mobile-results-menu class="w100 h100"
+              [resize$]="resize$">
+            </app-mobile-results-menu>
           </ng-container>
         </div>
       </div>

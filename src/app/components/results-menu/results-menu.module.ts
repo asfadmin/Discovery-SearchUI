@@ -14,9 +14,17 @@ import { ResultsMenuComponent } from './results-menu.component';
 import { SceneFilesModule } from './scene-files';
 import { SceneDetailModule } from './scene-detail';
 import { ScenesListHeaderComponent } from './scenes-list-header/scenes-list-header.component';
+import { MobileResultsMenuComponent } from './mobile-results-menu/mobile-results-menu.component';
+import { DesktopResultsMenuComponent } from './desktop-results-menu/desktop-results-menu.component';
+import { BaselineChartModule } from '@components/baseline-chart/baseline-chart.module';
 
 @NgModule({
-  declarations: [ResultsMenuComponent, ScenesListHeaderComponent],
+  declarations: [
+    ResultsMenuComponent,
+    ScenesListHeaderComponent,
+    MobileResultsMenuComponent,
+    DesktopResultsMenuComponent
+  ],
   imports: [
     CommonModule,
     ResizableModule,
@@ -28,7 +36,8 @@ import { ScenesListHeaderComponent } from './scenes-list-header/scenes-list-head
     PipesModule,
     ScenesListModule,
     SceneFilesModule,
-    SceneDetailModule
+    SceneDetailModule,
+    BaselineChartModule,
   ],
   exports: [ResultsMenuComponent],
 })

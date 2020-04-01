@@ -1,0 +1,34 @@
+.files-header {
+  //
+}
+
+.files-header-baseline {
+  margin-top: -22px;
+  padding: 0;
+}
+
+.header-row-center {
+  display: flex;
+  justify-content: center;
+  height: 22px;
+}
+
+.header-row-right {
+  display: flex;
+  justify-content: flex-end;
+  height: 18px;
+  margin-top: 6px;
+  font-size: small;
+}
+
+.header-column {
+  margin-right: 20px;
+}
+
+.sort-icon {
+  font-size: 14px;
+  padding: 0;
+  margin: 0;
+  width: 12px;
+  height: 12px;
+}

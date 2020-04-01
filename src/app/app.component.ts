@@ -1,5 +1,6 @@
 import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
 import { SubSink } from 'subsink';
+import { MatDialog } from '@angular/material/dialog';
 import { MatSidenav } from '@angular/material/sidenav';
 
 import { Store, ActionsSubject } from '@ngrx/store';
@@ -8,7 +9,7 @@ import { of, combineLatest } from 'rxjs';
 import { skip, filter, map, switchMap, tap, catchError, debounceTime } from 'rxjs/operators';
 
 import { NgcCookieConsentService } from 'ngx-cookieconsent';
-import { Subscription } from 'rxjs-compat';
+import { BaselineChartComponent } from '@components/baseline-chart';
 
 import { AppState } from '@store';
 import * as scenesStore from '@store/scenes';
@@ -50,6 +51,7 @@ export class AppComponent implements OnInit, OnDestroy {
 
   constructor(
     private store$: Store<AppState>,
+    private dialog: MatDialog,
     private actions$: ActionsSubject,
     private mapService: services.MapService,
     private urlStateService: services.UrlStateService,
@@ -155,6 +157,10 @@ export class AppComponent implements OnInit, OnDestroy {
     }
   }
 
+  private openBaselineChart(): void {
+    const dialogRef = this.dialog.open(BaselineChartComponent);
+  }
+
   public onCloseSidebar(): void {
     this.store$.dispatch(new uiStore.CloseSidebar());
   }
@@ -180,6 +186,10 @@ export class AppComponent implements OnInit, OnDestroy {
       );
     } else if (this.searchType === models.SearchType.LIST) {
       this.store$.dispatch(new filterStore.ClearListFilters());
+    } else if (this.searchType === models.SearchType.BASELINE) {
+      this.store$.dispatch(new scenesStore.ClearBaseline());
+      this.store$.dispatch(new filterStore.ClearPerpendicularRange());
+      this.store$.dispatch(new filterStore.ClearTemporalRange());
     }
   }
 
