@@ -1,22 +1,21 @@
 import { Injectable } from '@angular/core';
 
 import { Observable, combineLatest } from 'rxjs';
-import { map, tap, filter, } from 'rxjs/operators';
+import { map, tap, filter } from 'rxjs/operators';
 import * as moment from 'moment';
 
 import { Store } from '@ngrx/store';
 import { AppState } from '@store/app.reducer';
-import { getAllProducts, getScenes } from '@store/scenes/scenes.reducer';
+import { getAllProducts, getScenes, getTemporalSortDirection, getPerpendicularSortDirection } from '@store/scenes/scenes.reducer';
 import { getTemporalRange, getPerpendicularRange, getDateRange } from '@store/filters/filters.reducer';
 import { getSearchType } from '@store/search/search.reducer';
 
-import { criticalBaselineFor, CMRProduct, SearchType, Range } from '@models';
+import { criticalBaselineFor, CMRProduct, SearchType, Range, ColumnSortDirection } from '@models';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ScenesService {
-
   constructor(
     private store$: Store<AppState>,
   ) { }
@@ -30,6 +29,41 @@ export class ScenesService {
   public scenes$(): Observable<CMRProduct[]> {
     return this.filterBaselineValues$(
       this.store$.select(getScenes)
+    );
+  }
+
+  public scenesSorted$(): Observable<CMRProduct[]> {
+    return this.sortScenes$(
+      this.scenes$()
+    );
+  }
+
+  public sortScenes$(scenes$: Observable<CMRProduct[]>) {
+    return combineLatest(
+      scenes$,
+      this.store$.select(getTemporalSortDirection),
+      this.store$.select(getPerpendicularSortDirection)
+    ).pipe(
+      map(
+        ([scenes, tempSort, perpSort]) => {
+          if (tempSort === ColumnSortDirection.NONE && perpSort === ColumnSortDirection.NONE) {
+            return scenes;
+          }
+
+          let sortFunc;
+          if (tempSort !== ColumnSortDirection.NONE) {
+            sortFunc = (tempSort === ColumnSortDirection.INCREASING) ?
+                (a, b) => a.metadata.temporal - b.metadata.temporal :
+                (a, b) => b.metadata.temporal - a.metadata.temporal;
+          } else {
+            sortFunc = (perpSort === ColumnSortDirection.INCREASING) ?
+                (a, b) => a.metadata.perpendicular - b.metadata.perpendicular :
+                (a, b) => b.metadata.perpendicular - a.metadata.perpendicular;
+          }
+
+          return scenes.sort(sortFunc);
+        }
+      )
     );
   }
 

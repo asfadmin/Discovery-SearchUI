@@ -89,7 +89,7 @@ export class ScenesListComponent implements OnInit, OnDestroy {
     );
 
     this.subs.add(
-      this.scenesService.scenes$().subscribe(
+      this.scenesService.scenesSorted$().subscribe(
         scenes => this.scenes = scenes
       )
     );

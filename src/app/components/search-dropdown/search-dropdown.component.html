@@ -40,7 +40,10 @@
     </div>
 
     <div class="footer">
-      <app-max-results-selector style="margin-right: 10px;"></app-max-results-selector>
+      <app-max-results-selector
+        *ngIf="(searchType$ | async) !== searchTypes.BASELINE"
+        style="margin-right: 10px;">
+      </app-max-results-selector>
       <app-search-button></app-search-button>
     </div>
   </div>

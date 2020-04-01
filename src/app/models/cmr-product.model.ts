@@ -49,3 +49,9 @@ export enum FlightDirection {
   ASCENDING = 'ASCENDING',
   DESCENDING = 'DESCENDING',
 }
+
+export enum ColumnSortDirection {
+  INCREASING = 'INCREASING',
+  DECREASING = 'DECREASING',
+  NONE = 'NONE',
+}

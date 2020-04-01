@@ -2,7 +2,7 @@ import { createFeatureSelector, createSelector } from '@ngrx/store';
 
 import { ScenesActionType, ScenesActions } from './scenes.action';
 
-import { CMRProduct, UnzippedFolder } from '@models';
+import { CMRProduct, UnzippedFolder, ColumnSortDirection } from '@models';
 
 
 interface SceneEntities { [id: string]: CMRProduct; }
@@ -22,6 +22,8 @@ export interface ScenesState {
     temporal: number;
     perpendicular: number
   };
+  perpendicularSort: ColumnSortDirection;
+  temporalSort: ColumnSortDirection;
 }
 
 export const initState: ScenesState = {
@@ -39,7 +41,9 @@ export const initState: ScenesState = {
   masterOffsets: {
     temporal: 0,
     perpendicular: 0
-  }
+  },
+  perpendicularSort: ColumnSortDirection.NONE,
+  temporalSort: ColumnSortDirection.NONE,
 };
 
 
@@ -199,6 +203,20 @@ export function scenesReducer(state = initState, action: ScenesActions): ScenesS
         ...state,
         unzipped,
         productUnzipLoading: null,
+      };
+    }
+
+    case ScenesActionType.SET_PERPENDICULAR_SORT_DIRECTION: {
+      return {
+        ...state,
+        perpendicularSort: action.payload
+      };
+    }
+
+    case ScenesActionType.SET_TEMPORAL_SORT_DIRECTION: {
+      return {
+        ...state,
+        temporalSort: action.payload
       };
     }
 
@@ -514,3 +532,13 @@ const extrema = (prods, keyFunc) => {
 
   return (range.min === range.max) ? nullRange : range;
 };
+
+export const getPerpendicularSortDirection = createSelector(
+  getScenesState,
+  state => state.perpendicularSort
+);
+
+export const getTemporalSortDirection = createSelector(
+  getScenesState,
+  state => state.temporalSort
+);

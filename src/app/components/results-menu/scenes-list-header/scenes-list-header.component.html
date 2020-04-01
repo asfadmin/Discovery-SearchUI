@@ -35,11 +35,23 @@
 
       <ng-container *ngIf="searchType === SearchTypes.BASELINE">
         <div class="header-row-right" *ngIf="breakpoint > breakpoints.MOBILE">
-          <div fxFlex="60px" class="header-column">
-            meters
+          <div (click)="onTogglePerpendicularSort()" class="header-column noselect clickable">
+              meters
+              <mat-icon *ngIf="perpendicularSort === SortDirection.NONE"
+                class="invisible sort-icon">keyboard_arrow_up</mat-icon>
+              <mat-icon *ngIf="perpendicularSort === SortDirection.INCREASING"
+                class="sort-icon">keyboard_arrow_up</mat-icon>
+              <mat-icon *ngIf="perpendicularSort === SortDirection.DECREASING"
+                class="sort-icon">keyboard_arrow_down</mat-icon>
           </div>
-          <div fxFlex="60px" class="header-column">
-            days
+          <div (click)="onToggleTemporalSort()" class="header-column clickable noselect">
+              days
+              <mat-icon *ngIf="temporalSort === SortDirection.NONE"
+                class="invisible sort-icon">keyboard_arrow_up</mat-icon>
+              <mat-icon *ngIf="temporalSort === SortDirection.INCREASING"
+                class="sort-icon">keyboard_arrow_up</mat-icon>
+              <mat-icon *ngIf="temporalSort === SortDirection.DECREASING"
+                class="sort-icon">keyboard_arrow_down</mat-icon>
           </div>
         </div>
       </ng-container>

@@ -4,7 +4,7 @@
 
 .files-header-baseline {
   margin-top: -22px;
-  padding: 0 21px 0 32px;
+  padding: 0;
 }
 
 .header-row-center {
@@ -22,7 +22,13 @@
 }
 
 .header-column {
-  float: right;
-  text-align: end;
-  width: 60px;
+  margin-right: 20px;
+}
+
+.sort-icon {
+  font-size: 14px;
+  padding: 0;
+  margin: 0;
+  width: 12px;
+  height: 12px;
 }
