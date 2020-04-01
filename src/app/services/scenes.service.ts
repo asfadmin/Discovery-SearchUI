@@ -38,7 +38,7 @@ export class ScenesService {
     );
   }
 
-  public sortScenes$(scenes$: Observable<CMRProduct[]>) {
+  private sortScenes$(scenes$: Observable<CMRProduct[]>) {
     return combineLatest(
       scenes$,
       this.store$.select(getTemporalSortDirection),
@@ -67,7 +67,7 @@ export class ScenesService {
     );
   }
 
-  public filterBaselineValues$(products: Observable<CMRProduct[]>) {
+  private filterBaselineValues$(products: Observable<CMRProduct[]>) {
     return combineLatest(
       products,
       this.store$.select(getTemporalRange),

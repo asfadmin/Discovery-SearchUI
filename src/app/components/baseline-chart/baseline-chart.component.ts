@@ -50,7 +50,7 @@ export class BaselineChartComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.initChart();
 
-    const products$ = this.scenesService.products$().pipe(
+    const products$ = this.scenesService.scenes$().pipe(
       tap(products => products.map(
         product => this.criticalBaseline = criticalBaselineFor(product)
       )),
