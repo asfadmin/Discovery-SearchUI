@@ -1,3 +1,7 @@
+.list-viewport {
+  overflow: scroll;
+}
+
 .mat-list-avatar {
   border-radius: 6px !important;
 }
@@ -15,7 +19,6 @@
   float: right;
   font-weight: normal;
   align-self: center;
-  //margin-top: 8px;
 }
 
 .baseline-metrics {
@@ -23,7 +26,6 @@
   float: right;
   font-weight: normal;
   align-self: center;
-  //margin-top: 8px;
 }
 
 .button-flex-row {

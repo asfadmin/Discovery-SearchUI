@@ -1,5 +1,5 @@
 <mat-action-list class="h100 mp0">
-  <cdk-virtual-scroll-viewport class="h100" itemSize="60">
+  <cdk-virtual-scroll-viewport class="list-viewport h100" itemSize="60">
     <div *cdkVirtualFor="let scene of scenes">
       <button class="button-flex-row" mat-list-item
            (mouseenter)="onSetFocusedScene(scene)"
