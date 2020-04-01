@@ -14,5 +14,4 @@ export class BaselineSearchFiltersComponent implements OnInit {
 
   ngOnInit(): void {
   }
-
 }

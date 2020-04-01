@@ -497,6 +497,15 @@ export function filtersReducer(state = initState, action: FiltersActions): Filte
           listSearchMode: filters.listType,
           searchList: filters.list
         };
+      } else if (search.searchType === models.SearchType.BASELINE) {
+        const filters = <models.BaselineFiltersType>search.filters;
+
+        return {
+          ...state,
+          dateRange: filters.dateRange,
+          temporalRange: filters.temporalRange,
+          perpendicularRange: filters.perpendicularRange,
+        };
       } else {
         const filters = <models.GeographicFiltersType>search.filters;
 

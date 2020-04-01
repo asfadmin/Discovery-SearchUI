@@ -8,6 +8,7 @@ import { Store, Action } from '@ngrx/store';
 import { AppState } from '@store';
 import * as userStore from '@store/user';
 import * as searchStore from '@store/search';
+import * as scenesStore from '@store/scenes';
 import * as uiStore from '@store/ui';
 import * as filtersStore from '@store/filters';
 
@@ -204,6 +205,10 @@ export class SavedSearchesComponent implements OnInit, OnDestroy {
 
     if (search.searchType === models.SearchType.DATASET) {
       this.loadSearchPolygon(search);
+    }
+    if (search.searchType === models.SearchType.BASELINE) {
+      const filters = <models.BaselineFiltersType>search.filters;
+      this.store$.dispatch(new scenesStore.SetFilterMaster(filters.filterMaster));
     }
 
     this.store$.dispatch(new filtersStore.SetSavedSearch(search));

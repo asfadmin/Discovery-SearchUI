@@ -482,7 +482,6 @@ export class UrlStateService {
     const range = rangeStr
       .split('to')
       .map(v => +v);
-    console.log(range);
 
     return new filterStore.SetTemporalRange({
       start: range[0],
