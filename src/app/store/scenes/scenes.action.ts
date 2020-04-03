@@ -1,6 +1,6 @@
 import { Action } from '@ngrx/store';
 
-import { CMRProduct, UnzippedFolder, ColumnSortDirection } from '@models';
+import { CMRProduct, UnzippedFolder, ColumnSortDirection, SearchType } from '@models';
 
 export enum ScenesActionType {
   SET_SCENES = '[Granuels] Set Scenes',
@@ -32,7 +32,7 @@ export enum ScenesActionType {
 export class SetScenes implements Action {
   public readonly type = ScenesActionType.SET_SCENES;
 
-  constructor(public payload: CMRProduct[]) {}
+  constructor(public payload: {products: CMRProduct[], searchType: SearchType} ) {}
 }
 
 export class ClearScenes implements Action {

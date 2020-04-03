@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { Action, Store } from '@ngrx/store';
 
-import { Observable, of, forkJoin } from 'rxjs';
+import { Observable, of, forkJoin, combineLatest } from 'rxjs';
 import { map, withLatestFrom, switchMap, catchError, filter } from 'rxjs/operators';
 
 import { AppState } from '../app.reducer';
@@ -16,12 +16,11 @@ import * as uiStore from '@store/ui';
 import * as services from '@services';
 import { data } from '@services/baselines';
 
-
 import {
   SearchActionType,
   SearchResponse, SearchError, CancelSearch, SearchCanceled
 } from './search.action';
-import { getIsCanceled } from './search.reducer';
+import { getIsCanceled, getSearchType } from './search.reducer';
 
 import * as models from '@models';
 
@@ -65,10 +64,16 @@ export class SearchEffects {
         this.asfApiService.query<any[]>(params),
         this.asfApiService.query<any[]>(countParams)
       ).pipe(
-        withLatestFrom(this.store$.select(getIsCanceled)),
-        map(([[response, totalCount], isCanceled]) =>
+        withLatestFrom(combineLatest(
+          this.store$.select(getSearchType),
+          this.store$.select(getIsCanceled)
+        )
+          ),
+        map(([[response, totalCount], [searchType, isCanceled]]) =>
           !isCanceled ?
-            new SearchResponse({ files: response, totalCount: +totalCount }) :
+            new SearchResponse({
+              files: response, totalCount: +totalCount, searchType
+            }) :
             new SearchCanceled()
         ),
         catchError(
@@ -93,9 +98,10 @@ export class SearchEffects {
   private searchResponse = createEffect(() => this.actions$.pipe(
     ofType<SearchResponse>(SearchActionType.SEARCH_RESPONSE),
     switchMap(action => [
-      new scenesStore.SetScenes(
-        this.productService.fromResponse(action.payload.files)
-      ),
+      new scenesStore.SetScenes({
+        products: this.productService.fromResponse(action.payload.files),
+        searchType: action.payload.searchType
+      }),
       new SetSearchAmount(action.payload.totalCount)
     ])
   ));

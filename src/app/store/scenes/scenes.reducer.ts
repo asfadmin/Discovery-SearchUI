@@ -2,8 +2,7 @@ import { createFeatureSelector, createSelector } from '@ngrx/store';
 
 import { ScenesActionType, ScenesActions } from './scenes.action';
 
-import { CMRProduct, UnzippedFolder, ColumnSortDirection } from '@models';
-
+import { CMRProduct, UnzippedFolder, ColumnSortDirection, SearchType } from '@models';
 
 interface SceneEntities { [id: string]: CMRProduct; }
 
@@ -50,14 +49,14 @@ export const initState: ScenesState = {
 export function scenesReducer(state = initState, action: ScenesActions): ScenesState {
   switch (action.type) {
     case ScenesActionType.SET_SCENES: {
-      const products = action.payload
+      const products = action.payload.products
         .reduce((total, product) => {
           total[product.id] = product;
 
           return total;
         }, {});
 
-      const productGroups: {[id: string]: string[]} = action.payload.reduce((total, product) => {
+      const productGroups: {[id: string]: string[]} = action.payload.products.reduce((total, product) => {
         const scene = total[product.groupId] || [];
 
         total[product.groupId] = [...scene, product.id];
@@ -75,6 +74,14 @@ export function scenesReducer(state = initState, action: ScenesActions): ScenesS
       }
 
       let selected = products[state.selected] ? products[state.selected].id : null;
+
+      if (action.payload.searchType === SearchType.BASELINE) {
+        Object.values(products).forEach((product: CMRProduct) => {
+          if (product.metadata.temporal === 0 && product.metadata.perpendicular === 0) {
+            selected = product.id;
+          }
+        });
+      }
 
       if (selected === null) {
         const sceneList = allScenesFrom(scenes, products);
