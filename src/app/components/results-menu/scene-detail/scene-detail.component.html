@@ -49,10 +49,10 @@
     </mat-card-content>
 
     <div class="detail-card-info">
-      <a *ngIf="prop.isRelevant(p.BASELINE_TOOL, dataset)"
+      <a *ngIf="hasBaseline"
          mat-raised-button class="mini-button" target="_blank"
          matTooltip="Use this scene in the Baseline Tool for interferometry"
-         href="https://baseline.asf.alaska.edu/#/baseline?granule={{ scene.name }}">
+         href="https://baseline.asf.alaska.edu/#/baseline?granule={{ baselineSceneName(selectedProducts) }}">
         Baseline Tool
       </a>
       &nbsp;&nbsp;
