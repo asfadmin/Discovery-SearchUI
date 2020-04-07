@@ -33,6 +33,8 @@ export class SceneDetailComponent implements OnInit, OnDestroy {
   public breakpoint$ = this.screenSize.breakpoint$;
   public breakpoints = models.Breakpoints;
   public isImageLoading = false;
+  public selectedProducts: models.CMRProduct[];
+  public hasBaseline: boolean;
 
   private subs = new SubSink();
 
@@ -61,7 +63,14 @@ export class SceneDetailComponent implements OnInit, OnDestroy {
         tap(scene => this.scene = scene),
         filter(scene => !!scene),
         map(scene => this.datasetForProduct.match(scene)),
-      ).subscribe(dataset => this.dataset = dataset)
+        tap(dataset => this.dataset = dataset),
+      ).subscribe(_ => this.updateHasBaseline())
+    );
+
+    this.subs.add(
+      this.store$.select(scenesStore.getSelectedSceneProducts).pipe(
+        tap(products => this.selectedProducts = products),
+      ).subscribe(_ => this.updateHasBaseline())
     );
 
     this.subs.add(
@@ -69,6 +78,27 @@ export class SceneDetailComponent implements OnInit, OnDestroy {
         searchType => this.searchType = searchType
       )
     );
+  }
+
+  public updateHasBaseline(): void {
+    this.hasBaseline = (
+      this.prop.isRelevant(this.p.BASELINE_TOOL, this.dataset) &&
+      this.hasBaselineProductType()
+    );
+  }
+
+  public baselineSceneName(): string {
+    if (!this.scene) {
+      return '';
+    }
+
+    if (this.dataset.id === models.sentinel_1.id) {
+      return this.selectedProducts.filter(
+          product => product.metadata.productType === 'SLC'
+      )[0].name;
+    } else {
+      return this.scene.name;
+    }
   }
 
   public sceneHasBrowse() {
@@ -108,6 +138,17 @@ export class SceneDetailComponent implements OnInit, OnDestroy {
 
         return comparator(dataset, granuleDataset);
       })[0];
+  }
+
+  public hasBaselineProductType(): boolean {
+    if (!this.selectedProducts || this.dataset.id !== models.sentinel_1.id) {
+      return true;
+    } else {
+      return this.selectedProducts
+        .map(product => product.metadata.productType)
+        .filter(productType => productType === 'SLC')
+        .length > 0;
+    }
   }
 
   public onOpenImage(): void {
