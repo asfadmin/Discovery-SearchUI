@@ -10,42 +10,24 @@
 </mat-card>
 
 <!-- SCENE DETAIL -->
-<ng-container *ngIf="searchType !== SearchTypes.BASELINE">
-  <mat-card class="mp0 no-box-shadow" fxFlex="34" fxFlexFill>
-    <mat-card-subtitle class="header">
-      Scene Detail
-    </mat-card-subtitle>
+<mat-card class="mp0 no-box-shadow" fxFlex="34" fxFlexFill>
+  <mat-card-subtitle class="header">
+    Scene Detail
+  </mat-card-subtitle>
 
-    <app-scene-detail></app-scene-detail>
-  </mat-card>
+  <app-scene-detail></app-scene-detail>
+</mat-card>
 
-  <!-- FILE LIST -->
-  <mat-card class="h100 mp0 left-border-only" fxFlex="33" fxFlexFill>
-    <mat-card-subtitle class="header">
-      <span *ngIf="selectedProducts$ | async as products; else defaultProductsHeader">
-        {{ products.length || '' }} File{{ (products || []).length === 1 ? '' : 's'}}
-      </span>
-      <ng-template #defaultProductsHeader>Files</ng-template>
-    </mat-card-subtitle>
+<!-- FILE LIST -->
+<mat-card class="h100 mp0 left-border-only" fxFlex="33" fxFlexFill>
+  <mat-card-subtitle class="header">
+    <span *ngIf="selectedProducts$ | async as products; else defaultProductsHeader">
+      {{ products.length || '' }} File{{ (products || []).length === 1 ? '' : 's'}}
+    </span>
+    <ng-template #defaultProductsHeader>Files</ng-template>
+  </mat-card-subtitle>
 
-    <div class="app-scene-list scroll-y">
-      <app-scene-files></app-scene-files>
-    </div>
-  </mat-card>
-</ng-container>
-
-<ng-container *ngIf="searchType === SearchTypes.BASELINE">
-  <mat-card class="mp0 no-box-shadow" fxFlex="25" fxFlexFill>
-    <mat-card-subtitle class="header">
-      Scene Detail
-    </mat-card-subtitle>
-
-    <app-scene-detail></app-scene-detail>
-  </mat-card>
-
-  <mat-card class="mp0 no-box-shadow" fxFlex="45" fxFlexFill>
-    <mat-card-subtitle class="header">
-    </mat-card-subtitle>
-    <app-baseline-chart></app-baseline-chart>
-  </mat-card>
-</ng-container>
+  <div class="app-scene-list scroll-y">
+    <app-scene-files></app-scene-files>
+  </div>
+</mat-card>

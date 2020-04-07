@@ -10,6 +10,7 @@ import { ScreenSizeService } from '@services';
 import { AppState } from '@store';
 import * as uiStore from '@store/ui';
 import * as scenesStore from '@store/scenes';
+import * as searchStore from '@store/search';
 
 import { MapService } from '@services';
 import * as models from '@models';
@@ -34,6 +35,9 @@ export class ResultsMenuComponent implements OnInit, OnDestroy {
   public breakpoint$ = this.screenSize.breakpoint$;
   public breakpoints = models.Breakpoints;
   public isUnzipOpen: boolean;
+  public searchType: models.SearchType;
+  public SearchTypes= models.SearchType;
+
   private subs = new SubSink();
 
   constructor(
@@ -48,6 +52,12 @@ export class ResultsMenuComponent implements OnInit, OnDestroy {
     this.subs.add(
       this.store$.select(scenesStore.getShowUnzippedProduct).subscribe(
         showUnzippedProduct => this.isUnzipOpen = showUnzippedProduct
+      )
+    );
+
+    this.subs.add(
+      this.store$.select(searchStore.getSearchType).subscribe(
+        searchType => this.searchType = searchType
       )
     );
   }

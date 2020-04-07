@@ -65,18 +65,24 @@
         </ng-container>
 
         <ng-container *ngIf="searchType === SearchTypes.BASELINE">
-          <div class="baseline-metrics" *ngIf="breakpoint$ | async as breakpoint">
-            <div [className]="breakpoint > breakpoints.MOBILE ? 'div-flex-row' : 'div-flex-column'" >
-              <div [className]="breakpoint > breakpoints.MOBILE ? 'metric-flex-field' : 'metric-field'">
-                {{ scene.metadata.perpendicular + offsets.perpendicular }}m
+          <div style="display: flex;" *ngIf="breakpoint$ | async as breakpoint">
+            <div style="display: flex; justify-content: space-evenly; width: 135px;">
+              <div>
+                {{ withOffset(scene.metadata.perpendicular, offsets.perpendicular) }}m
               </div>
-              <div [className]="breakpoint > breakpoints.MOBILE ? 'metric-flex-field' : 'metric-field'">
-                {{ scene.metadata.temporal + offsets.temporal }}d
+              <div>
+                {{ withOffset(scene.metadata.temporal, offsets.temporal) }}d
               </div>
             </div>
+            <mat-icon (click)="onToggleScene($event, scene.groupId)"
+                    class="icon-margin"
+                    matTooltip="{{
+                      allQueued[scene.groupId] ? 'Remove scene files from downloads': 'Add scene files to downloads'
+                    }}">
+              {{ allQueued[scene.groupId] ? 'shopping_cart' : 'add_shopping_cart' }}
+            </mat-icon>
           </div>
         </ng-container>
-
       </button>
     </div>
   </cdk-virtual-scroll-viewport>
