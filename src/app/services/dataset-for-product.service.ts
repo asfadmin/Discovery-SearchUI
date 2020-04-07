@@ -11,7 +11,7 @@ export class DatasetForProductService {
 
   public match(scene: models.CMRProduct): models.Dataset {
     if (scene.dataset === 'ALOS') {
-      const alosId = scene.metadata.instrument === 'AVNIR-2' ?
+      return scene.metadata.instrument === 'AVNIR-2' ?
         models.avnir : models.alos;
     }
 
