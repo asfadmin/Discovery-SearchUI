@@ -3,7 +3,7 @@
      *ngIf="breakpoint$ | async as breakpoint"
      class="info-bar">
 
-  <div fxFlex class="first-info">
+  <div class="first-info">
     <span *ngIf="(breakpoint < breakpoints.FULL) && !!startDate">
       <b>Start:</b> {{ startDate | shortDate }}
     </span>
@@ -45,6 +45,12 @@
     </span>
     <span *ngIf="perpRange.start || perpRange.end">
       <b>Perpendicular:</b> {{perpRange.start}} to {{perpRange.end}}
+    </span>
+  </div>
+  <div fxFlex class="last-info">
+    <span class="new-stuff"
+          (click)="onOpenNewStuff('newStuff')">
+      What's New
     </span>
   </div>
 </div>

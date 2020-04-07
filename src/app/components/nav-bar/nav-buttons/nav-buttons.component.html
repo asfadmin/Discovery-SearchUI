@@ -119,6 +119,11 @@
     Help & Tutorials
   </button>
 
+  <button mat-menu-item matSuffix (click)="onOpenHelp('newStuff')">
+    <mat-icon>new_releases</mat-icon>
+    What's New
+  </button>
+
   <hr class="menu-hr">
 
   <a mat-menu-item [href]="asfWebsiteUrl" target="_blank">
