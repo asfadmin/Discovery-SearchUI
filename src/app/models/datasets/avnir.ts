@@ -2,7 +2,7 @@ import { Props } from '../filters.model';
 
 export const avnir = {
   id: 'AVNIR',
-  name: 'AVNIR (BETA)',
+  name: 'ALOS AVNIR-2',
   properties: [
     Props.DATE,
     Props.BEAM_MODE,
@@ -16,7 +16,7 @@ export const avnir = {
     Props.STACK_SIZE,
     Props.BASELINE_TOOL,
   ],
-  apiValue: { platform: 'ALOS' },
+  apiValue: { platform: 'ALOS', instrument: 'AVNIR-2' },
   date: {
     start: new Date('2006/05/16 03:36:51 UTC'),
     end: new Date('2011/04/21 20:23:36 UTC')

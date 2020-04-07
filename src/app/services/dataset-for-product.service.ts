@@ -10,6 +10,11 @@ export class DatasetForProductService {
   constructor() { }
 
   public match(scene: models.CMRProduct): models.Dataset {
+    if (scene.dataset === 'ALOS') {
+      const alosId = scene.metadata.instrument === 'AVNIR-2' ?
+        models.avnir : models.alos;
+    }
+
     const exact = (datasetID, sceneDataset) => (
       datasetID === sceneDataset
     );
