@@ -41,6 +41,7 @@ import { HelpLoginComponent } from './components/help/help-pages/help-login/help
 import { HelpMapControlsComponent } from './components/help/help-pages/help-map-controls/help-map-controls.component';
 import { HelpFiltersComponent } from './components/help/help-pages/help-filters/help-filters.component';
 import { HelpSavedSearchesComponent } from './components/help/help-pages/help-saved-searches/help-saved-searches.component';
+import { HelpNewStuffComponent } from '@components/help/help-pages/help-new-stuff/help-new-stuff.component';
 
 // info about cookie consent module: https://tinesoft.github.io/ngx-cookieconsent/home
 const cookieConfig: NgcCookieConsentConfig = {
@@ -89,6 +90,7 @@ export const routes = [
     HelpMapControlsComponent,
     HelpFiltersComponent,
     HelpSavedSearchesComponent,
+    HelpNewStuffComponent,
   ],
   imports: [
     BrowserModule,

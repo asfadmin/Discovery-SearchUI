@@ -5,6 +5,7 @@ $config: mat-typography-config();
 .info-bar--size {
   width: 100%;
   height: 100%;
+  justify-content: space-between;
 }
 
 div span {
@@ -12,8 +13,15 @@ div span {
 }
 
 .first-info {
+  flex: 0 1 75%;
   padding-left: 10px;
   height: 32px;
+}
+
+.last-info {
+  flex: 1 1 25%;
+  text-align: right;
+  margin-right: 25px;
 }
 
 .info-bar {
@@ -25,4 +33,10 @@ div span {
   line-height: 30px;
   font-family: mat-font-family($custom-typography);
   font-size: 14px;
+  padding-right: 150px;
+}
+
+.new-stuff {
+  cursor: pointer;
+  color: $asf-blue;
 }
