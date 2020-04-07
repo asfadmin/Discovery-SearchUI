@@ -200,6 +200,10 @@ export class ScenesListComponent implements OnInit, OnDestroy {
     this.mapService.zoomToScene(scene);
   }
 
+  public withOffset(val: number, offset: number): number {
+    return Math.trunc(val + offset);
+  }
+
   ngOnDestroy() {
     this.subs.unsubscribe();
   }

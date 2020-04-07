@@ -26,15 +26,15 @@ export class FileNameComponent implements OnInit, OnDestroy {
       this.screenSize.size$.pipe(
       map(size => {
         if (size.width > 1900) {
-          return 50;
-        } else if (size.width > 1750) {
-          return 45;
-        } else if (size.width > 1500) {
           return 35;
-        } else if (size.width > 1350) {
+        } else if (size.width > 1750) {
           return 30;
-        } else if (size.width > 1200) {
+        } else if (size.width > 1500) {
           return 25;
+        } else if (size.width > 1350) {
+          return 20;
+        } else if (size.width > 1200) {
+          return 20;
         } else if (size.width > 1000) {
           return 18;
         } else if (size.width > 948 ) {
