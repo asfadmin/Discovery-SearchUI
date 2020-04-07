@@ -49,7 +49,7 @@
     </mat-card-content>
 
     <div class="detail-card-info">
-      <a *ngIf="searchType !== searchTypes.BASELINE && prop.isRelevant(p.BASELINE_TOOL, dataset)"
+      <a *ngIf="searchType !== searchTypes.BASELINE && hasBaseline"
          (click)="makeBaselineSearch()"
          mat-raised-button class="mini-button" target="_blank"
          matTooltip="Use this scene in a Baseline Search for interferometry">

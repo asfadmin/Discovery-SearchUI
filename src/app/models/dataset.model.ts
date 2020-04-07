@@ -46,6 +46,19 @@ export type DatasetBeamModes = string[];
 export type DatasetPolarizations = string[];
 export type DatasetSubtypes = DatasetSubtype[];
 
+export const sentinel_1 = fromDatasets.sentinel_1;
+export const alos = fromDatasets.alos;
+export const avnir = fromDatasets.avnir;
+export const sirc = fromDatasets.sirc;
+export const beta = fromDatasets.beta;
+export const smap = fromDatasets.smap;
+export const uavsar = fromDatasets.uavsar;
+export const radarsat_1 = fromDatasets.radarsat_1;
+export const ers = fromDatasets.ers;
+export const jers_1 = fromDatasets.jers_1;
+export const airsar = fromDatasets.airsar;
+export const seasat = fromDatasets.seasat;
+
 export const datasetList: Dataset[] = [
   fromDatasets.sentinel_1,
   fromDatasets.alos,
