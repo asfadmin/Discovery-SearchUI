@@ -7,6 +7,7 @@ import { SeasonSelectorModule } from '@components/shared/selectors/season-select
 import { DateSelectorModule } from '@components/shared/selectors/date-selector';
 import { BaselineSearchComponent } from './baseline-search.component';
 import { MasterSceneSelectorModule } from '@components/shared/selectors/master-scene-selector';
+import { SearchTypeSelectorModule } from '@components/shared/selectors/search-type-selector';
 
 
 @NgModule({
@@ -18,6 +19,7 @@ import { MasterSceneSelectorModule } from '@components/shared/selectors/master-s
     SeasonSelectorModule,
     DateSelectorModule,
     MasterSceneSelectorModule,
+    SearchTypeSelectorModule,
   ],
   exports: [
     BaselineSearchComponent
