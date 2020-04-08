@@ -89,3 +89,7 @@ export const flightDirections = [
   'Ascending',
   'Descending'
 ];
+
+export const justDescending = [
+  'Descending'
+];

@@ -9,57 +9,28 @@ export const avnir = {
     Props.PATH,
     Props.FRAME,
     Props.FLIGHT_DIRECTION,
-    Props.POLARIZATION,
     Props.ABSOLUTE_ORBIT,
-    Props.OFF_NADIR_ANGLE,
-    Props.FARADAY_ROTATION,
-    Props.STACK_SIZE,
-    Props.BASELINE_TOOL,
+    Props.POINTING_ANGLE,
   ],
   apiValue: { platform: 'ALOS', instrument: 'AVNIR-2' },
   date: {
     start: new Date('2006/05/16 03:36:51 UTC'),
     end: new Date('2011/04/21 20:23:36 UTC')
   },
-  infoUrl: 'https://www.asf.alaska.edu/sar-data-sets/alos-palsar/',
+  infoUrl: 'https://www.eorc.jaxa.jp/ALOS/en/alos-ori/index.html',
   citationUrl: 'https://www.asf.alaska.edu/how-to-cite-data/',
-  frequency: 'L-Band',
+  frequency: 'Visible and Near Infrared',
   source: {
-    name: 'JAXA/METI',
-    url: null
+    name: 'JAXA',
+    url: 'https://global.jaxa.jp/'
   },
-  productTypes: [{
-    apiValue: 'L1.0',
-    displayName: 'Level 1.0'
-  }, {
-    apiValue: 'L1.1',
-    displayName: 'Level 1.1 Complex'
-  }, {
-    apiValue: 'L1.5',
-    displayName: 'Level 1.5 Image'
-  }, {
-    apiValue: 'RTC_LOW_RES',
-    displayName: 'Low-Res Terrain Corrected'
-  }, {
-    apiValue: 'RTC_HI_RES',
-    displayName: 'Hi-Res Terrain Corrected'
-  }, {
-    apiValue: 'KMZ',
-    displayName: 'GoogleEarth KMZ'
-  }],
-  beamModes: [
-    'DSN', 'FBS', 'FBD', 'PLR', 'WB1', 'WB2'
+  productTypes: [
+    {
+      apiValue: 'L2',
+      displayName: 'Ortho Rectified Image'
+    },
   ],
-  polarizations: [
-    'HH',
-    'HH 3scan',
-    'HH 4scan',
-    'HH 5scan',
-    'HH+HV',
-    'UNKNOWN',
-    'VV',
-    'VV+VH',
-    'quadrature',
-  ],
+  beamModes: ['OBS'],
+  polarizations: [],
   subtypes: [],
 };

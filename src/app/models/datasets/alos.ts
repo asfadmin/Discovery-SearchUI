@@ -26,7 +26,7 @@ export const alos = {
   frequency: 'L-Band',
   source: {
     name: 'JAXA/METI',
-    url: null
+    url: 'https://global.jaxa.jp/'
   },
   productTypes: [{
     apiValue: 'L1.0',
