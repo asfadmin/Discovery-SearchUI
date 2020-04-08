@@ -83,8 +83,16 @@ export class SceneDetailComponent implements OnInit, OnDestroy {
   public updateHasBaseline(): void {
     this.hasBaseline = (
       this.prop.isRelevant(this.p.BASELINE_TOOL, this.dataset) &&
+      !!this.selectedProducts &&
+      this.sceneCanInSAR() &&
       this.hasBaselineProductType()
     );
+  }
+
+  public sceneCanInSAR(): boolean {
+    return this.dataset.id === models.sentinel_1.id ? true : this.selectedProducts
+      .map(product => product.metadata.canInSAR)
+      .some(canInSAR => !!canInSAR);
   }
 
   public baselineSceneName(): string {
