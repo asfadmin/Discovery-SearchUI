@@ -2,7 +2,7 @@ import { Component, OnInit, ViewChild, ElementRef, OnDestroy } from '@angular/co
 import noUiSlider from 'nouislider';
 
 import { Subject, Observable } from 'rxjs';
-import { debounceTime, distinctUntilChanged, take, tap, filter, map } from 'rxjs/operators';
+import { delay, debounceTime, distinctUntilChanged, take, tap, filter, map } from 'rxjs/operators';
 import { AppState } from '@store';
 import { Store } from '@ngrx/store';
 import * as filtersStore from '@store/filters';
@@ -73,7 +73,8 @@ export class BaselineSlidersComponent implements OnInit, OnDestroy {
 
     this.subs.add(
       this.store$.select(scenesStore.getTemporalExtrema).pipe(
-        filter(range => range.min !== null && range.max !== null)
+        filter(range => range.min !== null && range.max !== null),
+        delay(20)
       ).subscribe(
         range => {
           this.tempSlider.updateOptions({ range });
@@ -105,7 +106,8 @@ export class BaselineSlidersComponent implements OnInit, OnDestroy {
 
     this.subs.add(
       this.store$.select(scenesStore.getPerpendicularExtrema).pipe(
-        filter(range => range.min !== null && range.max !== null)
+        filter(range => range.min !== null && range.max !== null),
+        delay(20)
       ).subscribe(
         range => {
           this.perpSlider.updateOptions({ range });
