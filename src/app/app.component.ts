@@ -190,6 +190,9 @@ export class AppComponent implements OnInit, OnDestroy {
       this.store$.dispatch(new scenesStore.ClearBaseline());
       this.store$.dispatch(new filterStore.ClearPerpendicularRange());
       this.store$.dispatch(new filterStore.ClearTemporalRange());
+      if (this.breakpoint !== models.Breakpoints.MOBILE) {
+        this.store$.dispatch(new uiStore.CloseFiltersMenu());
+      }
     }
   }
 
