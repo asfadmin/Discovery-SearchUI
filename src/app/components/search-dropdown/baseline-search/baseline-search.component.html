@@ -57,13 +57,6 @@
       </mat-panel-title>
     </mat-expansion-panel-header>
 
-    <div style="margin-top: 20px;">
-      Perpendicular Filter: {{ perpRange.start }} to {{ perpRange.end }}
-      <div class="slider" #perpendicularFilter></div>
-    </div>
-    <div style="margin-top: 20px;">
-      Temporal Filter: {{ tempRange.start }} to {{ tempRange.end }}
-      <div class="slider" #temporalFilter></div>
-    </div>
+    <app-baseline-sliders></app-baseline-sliders>
   </mat-expansion-panel>
 </mat-accordion>

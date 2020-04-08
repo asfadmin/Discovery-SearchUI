@@ -8,6 +8,7 @@ import { DateSelectorModule } from '@components/shared/selectors/date-selector';
 import { BaselineSearchComponent } from './baseline-search.component';
 import { MasterSceneSelectorModule } from '@components/shared/selectors/master-scene-selector';
 import { SearchTypeSelectorModule } from '@components/shared/selectors/search-type-selector';
+import { BaselineSlidersModule } from './baseline-sliders';
 
 
 @NgModule({
@@ -20,6 +21,7 @@ import { SearchTypeSelectorModule } from '@components/shared/selectors/search-ty
     DateSelectorModule,
     MasterSceneSelectorModule,
     SearchTypeSelectorModule,
+    BaselineSlidersModule,
   ],
   exports: [
     BaselineSearchComponent
