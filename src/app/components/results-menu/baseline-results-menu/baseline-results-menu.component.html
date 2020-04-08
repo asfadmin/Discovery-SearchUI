@@ -59,7 +59,9 @@
 </ng-container>
 
 <mat-card class="mp0 no-box-shadow" [fxFlex]="breakpoint <= breakpoints.MEDIUM ? 55 : 45" fxFlexFill>
-  <mat-card-subtitle class="header medium-header">
+  <mat-card-subtitle
+    [class.medium-header]="breakpoint <= breakpoints.MEDIUM"
+    class="header">
   </mat-card-subtitle>
   <app-baseline-chart></app-baseline-chart>
 </mat-card>
