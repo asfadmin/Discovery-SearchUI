@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 
 import {
   trigger, state, style, animate, transition
@@ -11,6 +11,8 @@ import { AppState } from '@store';
 import * as uiStore from '@store/ui';
 import * as searchStore from '@store/search';
 
+import { ScreenSizeService } from '@services';
+import { SubSink } from 'subsink';
 import * as models from '@models';
 
 @Component({
@@ -27,16 +29,30 @@ import * as models from '@models';
     ])
   ],
 })
-export class SearchDropdownComponent {
+export class SearchDropdownComponent implements OnInit, OnDestroy {
   public isFiltersMenuOpen$ = this.store$.select(uiStore.getIsFiltersMenuOpen);
 
   public searchType$ = this.store$.select(searchStore.getSearchType);
   public searchTypes = models.SearchType;
 
+  public breakpoint: models.Breakpoints;
+  public breakpoints = models.Breakpoints;
+
+  public subs = new SubSink();
+
   constructor(
     private store$: Store<AppState>,
+    private screenSize: ScreenSizeService,
     private dialog: MatDialog,
   ) {}
+
+  ngOnInit() {
+    this.subs.add(
+      this.screenSize.breakpoint$.subscribe(
+        breakpoint => this.breakpoint = breakpoint
+      )
+    );
+  }
 
   public closePanel(): void {
     this.store$.dispatch(new uiStore.CloseFiltersMenu());
@@ -46,7 +62,8 @@ export class SearchDropdownComponent {
     this.store$.dispatch(new searchStore.SetSearchType(searchType));
   }
 
-  public onSaveSearch(): void {
+  ngOnDestroy() {
+    this.subs.unsubscribe();
   }
 }
 
