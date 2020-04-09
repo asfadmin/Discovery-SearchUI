@@ -1,3 +1,6 @@
-  <div class="doc-container">
+<div *ngIf="breakpoint$ | async as breakpoint">
+  <div  [ngClass]="{'doc-container-mobile': breakpoint <= breakpoints.SMALL,
+                    'doc-container-desktop': breakpoint > breakpoints.SMALL}">
     <iframe src="https://docs.google.com/document/d/e/2PACX-1vSqQxPT8nhDQfbCLS8gBZ9SqSEeJy8BdSCiYVlBOXwsFwJ6_ct7pjtOqbXHo0Q3wzinzvO8bGWtHj0H/pub?embedded=true"></iframe>
   </div>
+</div>
