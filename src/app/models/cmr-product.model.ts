@@ -33,15 +33,16 @@ export interface CMRProductMetadata {
   // ALOS PALSAR
   faradayRotation: number | null;
   offNadirAngle: number | null;
+
   // AVNIR-2
   instrument: string | null;
+  pointingAngle: string | null;
 
   // UAVSAR
   missionName: string | null;
 
   // AIRSAR
   flightLine: string | null;
-
 
   // Baseline
   perpendicular: number | null;
