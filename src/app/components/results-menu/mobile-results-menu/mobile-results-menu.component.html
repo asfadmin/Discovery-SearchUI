@@ -47,7 +47,7 @@
       </mat-card-subtitle>
 
       <div class="app-scene-list scroll-y scroll-x">
-        <app-scene-detail></app-scene-detail>
+        <app-scene-detail [isScrollable]="false"></app-scene-detail>
         <ng-container *ngIf="searchType !== SearchTypes.BASELINE">
           <hr>
           <app-scene-files></app-scene-files>

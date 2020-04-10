@@ -36,7 +36,7 @@ export class ResultsMenuComponent implements OnInit, OnDestroy {
   public breakpoints = models.Breakpoints;
   public isUnzipOpen: boolean;
   public searchType: models.SearchType;
-  public SearchTypes= models.SearchType;
+  public SearchTypes = models.SearchType;
 
   private subs = new SubSink();
 
