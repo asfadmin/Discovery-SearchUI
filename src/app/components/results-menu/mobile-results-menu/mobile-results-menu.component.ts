@@ -5,6 +5,7 @@ import { Store } from '@ngrx/store';
 import { AppState } from '@store';
 import * as scenesStore from '@store/scenes';
 import * as searchStore from '@store/search';
+import * as uiStore from '@store/ui';
 import { SubSink } from 'subsink';
 
 import { SearchType } from '@models';
@@ -14,7 +15,6 @@ enum MobileViews {
   DETAIL = 1,
   CHART = 2,
 }
-
 
 @Component({
   selector: 'app-mobile-results-menu',
@@ -44,6 +44,10 @@ export class MobileResultsMenuComponent implements OnInit, OnDestroy {
         searchType => this.searchType = searchType
       )
     );
+  }
+
+  public onToggleFiltersMenu(): void {
+    this.store$.dispatch(new uiStore.ToggleFiltersMenu());
   }
 
   public onSelectList(): void {

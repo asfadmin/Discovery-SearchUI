@@ -1,9 +1,9 @@
 <div *ngIf="searchType$ | async as selectedSearchType"
   [@isOpen]="isFiltersMenuOpen$ | async"
-  [class.no-pointer]="breakpoint === breakpoints.FULL"
+  [class.no-pointer]="breakpoint !== breakpoints.MOBILE"
   class="dataset-filters-div padding-for-box-shadow">
   <div
-    [class.pointer]="breakpoint === breakpoints.FULL"
+    [class.pointer]="breakpoint !== breakpoints.MOBILE"
     class="dataset-filters-card">
     <div class="header">
       <div class="header-title">
@@ -43,11 +43,16 @@
     </div>
 
     <div class="footer">
-      <app-max-results-selector
-        *ngIf="(searchType$ | async) !== searchTypes.BASELINE"
-        style="margin-right: 10px;">
-      </app-max-results-selector>
-      <app-search-button></app-search-button>
+      <ng-container *ngIf="
+        breakpoint === breakpoints.MOBILE ||
+        (breakpoint !== breakpoints.MOBILE && selectedSearchType !== searchTypes.BASELINE)
+      ">
+        <app-max-results-selector
+          *ngIf="selectedSearchType !== searchTypes.BASELINE"
+          style="margin-right: 10px;">
+        </app-max-results-selector>
+        <app-search-button></app-search-button>
+      </ng-container>
     </div>
   </div>
 </div>

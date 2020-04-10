@@ -59,6 +59,9 @@
   <div *ngIf="view === Views.CHART" class="h100 w100">
     <mat-card class="h100 w100 mp0 no-box-shadow" fxFlex="100" fxFlex>
       <mat-card-subtitle class="header">
+        <button (click)="onToggleFiltersMenu()" mat-button>
+          Filters <mat-icon>more_horiz</mat-icon>
+        </button>
       </mat-card-subtitle>
       <app-baseline-chart></app-baseline-chart>
     </mat-card>

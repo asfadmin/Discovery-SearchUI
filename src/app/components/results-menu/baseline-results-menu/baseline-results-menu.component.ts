@@ -4,7 +4,7 @@ import { Observable } from 'rxjs';
 
 import { Store } from '@ngrx/store';
 import { AppState } from '@store';
-import * as scenesStore from '@store/scenes';
+import * as uiStore from '@store/ui';
 
 import { Breakpoints } from '@models';
 import { ScreenSizeService } from '@services';
@@ -31,7 +31,10 @@ export class BaselineResultsMenuComponent implements OnInit, OnDestroy {
   public breakpoints = Breakpoints;
   private subs = new SubSink();
 
-  constructor(private screenSize: ScreenSizeService) { }
+  constructor(
+    private store$: Store<AppState>,
+    private screenSize: ScreenSizeService
+  ) { }
 
   ngOnInit(): void {
     this.subs.add(
@@ -39,6 +42,10 @@ export class BaselineResultsMenuComponent implements OnInit, OnDestroy {
         point => this.breakpoint = point
       )
     );
+  }
+
+  public onToggleFiltersMenu(): void {
+    this.store$.dispatch(new uiStore.ToggleFiltersMenu());
   }
 
   public onSelectList(): void {
