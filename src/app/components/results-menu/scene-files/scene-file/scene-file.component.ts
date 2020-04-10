@@ -69,10 +69,7 @@ export class SceneFileComponent {
     const dataset = product.dataset.toLowerCase();
 
     return (
-      (
-        !dataset.includes('sentinel') ||
-        dataset === 'sentinel-1 interferogram (beta)'
-      ) &&
+      !dataset.includes('sentinel') &&
       product.downloadUrl.endsWith('.zip')
     );
   }
