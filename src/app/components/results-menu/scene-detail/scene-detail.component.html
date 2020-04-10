@@ -1,6 +1,6 @@
 <div *ngIf="breakpoint$ | async as breakpoint"
   class="detail-card scrollable"
-  [class.scrollable]="breakpoint !== breakpoints.MOBILE">
+  [class.scrollable]="isScrollable">
 
   <div *ngIf="scene">
     <mat-card-header>
