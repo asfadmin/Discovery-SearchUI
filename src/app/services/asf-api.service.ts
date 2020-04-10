@@ -25,13 +25,15 @@ export class AsfApiService {
     return this.http.get(`${this.apiUrl}/health`);
   }
 
-  public query<T>(stateParamsObj: {[paramName: string]: string | null}): Observable<T> {
+  public query<T>(stateParamsObj: {[paramName: string]: string | number | null}): Observable<T> {
+    const useProdApi = stateParamsObj['maxResults'] >= 5000;
+
     const params = this.queryParamsFrom(stateParamsObj);
 
     const queryParamsStr = params.toString()
       .replace('+', '%2B');
 
-    const endpoint = this.searchEndpoint();
+    const endpoint = this.searchEndpoint({ useProdApi });
     const formData = this.toFormData(params);
 
     const responseType: any = params.get('output') === 'jsonlite2' ?
@@ -59,8 +61,12 @@ export class AsfApiService {
     return `${endpoint}?${queryParamsStr}`;
   }
 
-  private searchEndpoint(): string {
-    return `${this.apiUrl}/services/search/param`;
+  private searchEndpoint(options?: { useProdApi: boolean }): string {
+    const prodUrl = 'https://api.daac.asf.alaska.edu';
+
+    const url = options && options.useProdApi ? prodUrl : this.apiUrl;
+
+    return `${url}/services/search/param`;
   }
 
   private queryParamsFrom(stateParamsObj) {
