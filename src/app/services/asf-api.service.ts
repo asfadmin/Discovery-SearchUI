@@ -25,12 +25,12 @@ export class AsfApiService {
     return this.http.get(`${this.apiUrl}/health`);
   }
 
-  public query<T>(stateParamsObj: {[paramName: string]: string | null}): Observable<T> {
+  public query<T>(stateParamsObj: {[paramName: string]: string | number | null}): Observable<T> {
     if (!this.env.isProd) {
       stateParamsObj['maturity'] = this.env.currentEnv.api_maturity;
     }
     const useProdApi = stateParamsObj['maxResults'] >= 5000;
-    
+
     const params = this.queryParamsFrom(stateParamsObj);
 
     const queryParamsStr = params.toString()
