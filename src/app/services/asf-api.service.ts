@@ -26,10 +26,10 @@ export class AsfApiService {
   }
 
   public query<T>(stateParamsObj: {[paramName: string]: string | number | null}): Observable<T> {
-    if (!this.env.isProd) {
+    const useProdApi = stateParamsObj['maxResults'] >= 5000;
+    if (!this.env.isProd && !useProdApi) {
       stateParamsObj['maturity'] = this.env.currentEnv.api_maturity;
     }
-    const useProdApi = stateParamsObj['maxResults'] >= 5000;
 
     const params = this.queryParamsFrom(stateParamsObj);
 
