@@ -29,13 +29,15 @@ export class AsfApiService {
     if (!this.env.isProd) {
       stateParamsObj['maturity'] = this.env.currentEnv.api_maturity;
     }
+    const useProdApi = stateParamsObj['maxResults'] >= 5000;
+    
     const params = this.queryParamsFrom(stateParamsObj);
 
     const queryParamsStr = params.toString()
       .replace('+', '%2B');
 
     const endpoint = params.get('master') ?
-      this.baselineEndpoint() : this.searchEndpoint();
+      this.baselineEndpoint() : this.searchEndpoint({ useProdApi });
 
     const formData = this.toFormData(params);
 
@@ -64,8 +66,12 @@ export class AsfApiService {
     return `${endpoint}?${queryParamsStr}`;
   }
 
-  private searchEndpoint(): string {
-    return `${this.apiUrl}/services/search/param`;
+  private searchEndpoint(options?: { useProdApi: boolean }): string {
+    const prodUrl = 'https://api.daac.asf.alaska.edu';
+
+    const url = options && options.useProdApi ? prodUrl : this.apiUrl;
+
+    return `${url}/services/search/param`;
   }
 
   private baselineEndpoint(): string {
