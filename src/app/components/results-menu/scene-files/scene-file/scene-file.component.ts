@@ -1,6 +1,5 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
 
-import { UnzipApiService } from '@services';
 import * as models from '@models';
 
 @Component({
@@ -22,7 +21,7 @@ export class SceneFileComponent {
 
   public isHovered = false;
 
-  constructor(private unzipService: UnzipApiService) {}
+  constructor() {}
 
   public onToggleQueueProduct(): void {
     this.toggle.emit();
@@ -71,7 +70,6 @@ export class SceneFileComponent {
 
     return (
       !dataset.includes('sentinel') &&
-      !dataset.includes('sir-c') &&
       product.downloadUrl.endsWith('.zip')
     );
   }
