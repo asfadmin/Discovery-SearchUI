@@ -1,10 +1,8 @@
 import { Component, OnInit, ViewChild, ElementRef, OnDestroy } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { SubSink } from 'subsink';
-
-import { timer } from 'rxjs';
 import { filter, switchMap, tap, delay } from 'rxjs/operators';
-import { Store, Action } from '@ngrx/store';
+import { Store } from '@ngrx/store';
 import { AppState } from '@store';
 import * as userStore from '@store/user';
 import * as searchStore from '@store/search';
@@ -14,7 +12,6 @@ import * as filtersStore from '@store/filters';
 
 import { SavedSearchService, MapService, WktService, ScreenSizeService } from '@services';
 import * as models from '@models';
-import {getIsSaveSearchOn, SetSaveSearchOn} from '@store/ui';
 
 @Component({
   selector: 'app-saved-searches',

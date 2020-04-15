@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
 
-import { Action, Store } from '@ngrx/store';
+import { Store } from '@ngrx/store';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 
-import { Observable, of } from 'rxjs';
+import { of } from 'rxjs';
 import { map, catchError, switchMap } from 'rxjs/operators';
 
 import { AppState } from '../app.reducer';

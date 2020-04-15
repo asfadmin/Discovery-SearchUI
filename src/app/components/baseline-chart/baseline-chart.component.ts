@@ -7,13 +7,11 @@ import Chart from 'chart.js';
 import { Store } from '@ngrx/store';
 import { AppState } from '@store';
 import * as scenesStore from '@store/scenes';
-import * as filtersStore from '@store/filters';
-import * as searchStore from '@store/search';
 import * as queueStore from '@store/queue';
 
 import { SubSink } from 'subsink';
 import { ChartService, ScenesService } from '@services';
-import { criticalBaselineFor, CMRProduct, SearchType, Range } from '@models';
+import { criticalBaselineFor, CMRProduct } from '@models';
 
 export enum ChartDatasets {
   MASTER = 0,

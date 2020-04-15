@@ -5,8 +5,6 @@ import { SubSink } from 'subsink';
 import { AppState } from '@store';
 import * as uiStore from '@store/ui';
 import * as queueStore from '@store/queue';
-import * as searchStore from '@store/search';
-import * as userStore from '@store/user';
 import * as filterStore from '@store/filters';
 
 import * as models from '@models';

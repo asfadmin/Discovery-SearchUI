@@ -16,8 +16,6 @@ import { CustomizeEnvComponent } from './customize-env/customize-env.component';
 import { AuthService, AsfApiService, EnvironmentService, ScreenSizeService } from '@services';
 import { CMRProduct, Breakpoints, UserAuth, SavedSearchType } from '@models';
 
-import * as searchStore from '@store/search';
-
 @Component({
   selector: 'app-nav-buttons',
   templateUrl: './nav-buttons.component.html',

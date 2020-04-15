@@ -8,7 +8,6 @@ import * as searchStore from '@store/search';
 import * as userStore from '@store/user';
 import * as uiStore from '@store/ui';
 import * as filtersStore from '@store/filters';
-import * as scenesStore from '@store/scenes';
 
 import * as services from '@services';
 import { SavedSearchType, SearchType } from '@models';

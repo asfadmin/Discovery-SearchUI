@@ -1,6 +1,6 @@
 import { Action } from '@ngrx/store';
 
-import { UserAuth, UserProfile, Search, GeographicFiltersType, ListFiltersType } from '@models';
+import { UserAuth, UserProfile, Search, GeographicFiltersType } from '@models';
 
 export enum UserActionType {
   LOGIN = '[User] Login',

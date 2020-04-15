@@ -3,7 +3,6 @@ import { createFeatureSelector, createSelector } from '@ngrx/store';
 import { Banner, SavedSearchType } from '@models';
 
 import { UIActionType, UIActions } from './ui.action';
-import {getUserState, UserState} from '@store/user';
 
 
 export interface UIState {

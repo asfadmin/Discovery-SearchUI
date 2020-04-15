@@ -13,7 +13,7 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatSharedModule } from '@shared';
 import { NavBarComponent } from './nav-bar.component';
 
-import { QueueModule, QueueComponent } from './queue';
+import { QueueModule } from './queue';
 import { NavButtonsModule } from './nav-buttons';
 import { InfoBarComponent } from './info-bar/info-bar.component';
 

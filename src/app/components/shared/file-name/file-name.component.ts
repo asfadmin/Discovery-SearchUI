@@ -4,7 +4,6 @@ import { SubSink } from 'subsink';
 import { map } from 'rxjs/operators';
 
 import { ScreenSizeService } from '@services';
-import { Breakpoints } from '@models';
 
 @Component({
   selector: 'app-file-name',

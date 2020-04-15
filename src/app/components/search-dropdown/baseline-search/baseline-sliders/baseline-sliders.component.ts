@@ -2,7 +2,7 @@ import { Component, OnInit, ViewChild, ElementRef, OnDestroy } from '@angular/co
 import noUiSlider from 'nouislider';
 
 import { Subject, Observable } from 'rxjs';
-import { delay, debounceTime, distinctUntilChanged, take, tap, filter, map } from 'rxjs/operators';
+import { delay, debounceTime, distinctUntilChanged, take, filter, map } from 'rxjs/operators';
 import { AppState } from '@store';
 import { Store } from '@ngrx/store';
 import * as filtersStore from '@store/filters';
@@ -10,7 +10,6 @@ import * as scenesStore from '@store/scenes';
 import { SubSink } from 'subsink';
 
 import * as models from '@models';
-import { PropertyService, ScreenSizeService } from '@services';
 
 
 @Component({

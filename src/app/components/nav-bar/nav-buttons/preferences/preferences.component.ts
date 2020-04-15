@@ -1,10 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-
-import { take } from 'rxjs/operators';
 import { Store } from '@ngrx/store';
 import { AppState } from '@store';
 import * as userStore from '@store/user';
-import * as filtersStore from '@store/filters';
 
 import { MatDialogRef } from '@angular/material/dialog';
 import { MapLayerTypes, UserAuth, ProductType, datasetList } from '@models';

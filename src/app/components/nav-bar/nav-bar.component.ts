@@ -3,7 +3,6 @@ import { Component, Input, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { AppState } from '@store';
 import * as searchStore from '@store/search';
-import * as filterStore from '@store/filters';
 
 import { MatDialog } from '@angular/material/dialog';
 import { QueueComponent } from '@components/nav-bar/queue';
