@@ -31,9 +31,9 @@ import { FlexLayoutModule } from '@angular/flex-layout';
 import {NgcCookieConsentModule, NgcCookieConsentConfig} from 'ngx-cookieconsent';
 import { HelpComponent } from './components/help/help.component';
 import { HelpGeoSearchComponent } from './components/help/help-pages/help-geo-search/help-geo-search.component';
-import {MatMenuModule} from '@angular/material/menu';
-import {MatFormFieldModule} from '@angular/material/form-field';
-import {MatDialogModule} from '@angular/material/dialog';
+import { MatMenuModule } from '@angular/material/menu';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatDialogModule } from '@angular/material/dialog';
 import { HelpListSearchComponent } from './components/help/help-pages/help-list-search/help-list-search.component';
 import { HelpSearchResultsComponent } from './components/help/help-pages/help-search-results/help-search-results.component';
 import { HelpTocComponent } from './components/help/help-pages/help-toc/help-toc.component';
@@ -140,6 +140,7 @@ export const routes = [
     services.UnzipApiService,
     services.ChartService,
     services.ScenesService,
+    services.SearchService
   ],
   bootstrap: [ AppComponent ],
 })

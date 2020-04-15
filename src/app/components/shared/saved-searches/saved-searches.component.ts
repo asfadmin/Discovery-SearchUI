@@ -10,7 +10,7 @@ import * as scenesStore from '@store/scenes';
 import * as uiStore from '@store/ui';
 import * as filtersStore from '@store/filters';
 
-import { SavedSearchService, MapService, WktService, ScreenSizeService } from '@services';
+import { SavedSearchService, ScreenSizeService, SearchService } from '@services';
 import * as models from '@models';
 
 @Component({
@@ -53,8 +53,7 @@ export class SavedSearchesComponent implements OnInit, OnDestroy {
     private store$: Store<AppState>,
     private screenSize: ScreenSizeService,
     private snackBar: MatSnackBar,
-    private mapService: MapService,
-    private wktService: WktService,
+    private searchService: SearchService,
   ) { }
 
   ngOnInit() {
@@ -197,36 +196,9 @@ export class SavedSearchesComponent implements OnInit, OnDestroy {
   }
 
   public onSetSearch(search: models.Search): void {
-    this.store$.dispatch(new searchStore.ClearSearch());
-    this.store$.dispatch(new searchStore.SetSearchType(search.searchType));
-
-    if (search.searchType === models.SearchType.DATASET) {
-      this.loadSearchPolygon(search);
-    }
-    if (search.searchType === models.SearchType.BASELINE) {
-      const filters = <models.BaselineFiltersType>search.filters;
-      this.store$.dispatch(new scenesStore.SetFilterMaster(filters.filterMaster));
-    }
-
-    this.store$.dispatch(new filtersStore.SetSavedSearch(search));
-    this.store$.dispatch(new uiStore.CloseSidebar());
-    this.store$.dispatch(new searchStore.MakeSearch());
+    this.searchService.load(search);
   }
 
-  private loadSearchPolygon(search: models.Search): void {
-    const polygon = (<models.GeographicFiltersType>search.filters).polygon;
-
-    if (polygon === null) {
-      this.mapService.clearDrawLayer();
-    } else {
-      const features =  this.wktService.wktToFeature(
-        polygon,
-        this.mapService.epsg()
-      );
-
-      this.mapService.setDrawFeature(features);
-    }
-  }
 
   public onUnlockFocus(): void {
     this.lockedFocus = false;
