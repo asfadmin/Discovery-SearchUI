@@ -13,6 +13,7 @@ import { SearchDropdownComponent } from './search-dropdown.component';
 
 import { ListSearchModule } from './list-search';
 import { DatasetSearchModule } from './dataset-search';
+import { BaselineSearchModule } from './baseline-search';
 
 import { SearchSelectorModule } from '@components/shared/selectors/search-selector';
 
@@ -28,6 +29,7 @@ import { FlexLayoutModule } from '@angular/flex-layout';
 
     ListSearchModule,
     DatasetSearchModule,
+    BaselineSearchModule ,
     SearchButtonModule,
     ClearButtonModule,
     MaxResultsSelectorModule,

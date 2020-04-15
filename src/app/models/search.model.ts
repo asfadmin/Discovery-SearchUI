@@ -14,11 +14,22 @@ export interface Search {
 
 export type FilterType =
   ListFiltersType |
-  GeographicFiltersType;
+  GeographicFiltersType |
+  BaselineFiltersType;
 
 export interface ListFiltersType {
   listType: ListSearchType;
   list: string[];
+}
+
+export interface BaselineFiltersType {
+  filterMaster: string | null;
+  master: string | null;
+
+  dateRange: Range<null | Date>;
+
+  temporalRange: Range<number | null>;
+  perpendicularRange: Range<number | null>;
 }
 
 export interface GeographicFiltersType {

@@ -1,5 +1,3 @@
-
-
 import { ActionReducerMap, MetaReducer } from '@ngrx/store';
 
 import { environment } from '@environments/environment';
@@ -29,7 +27,7 @@ export const reducers: ActionReducerMap<AppState> = {
   ui: uiReducer,
   search: searchReducer,
   queue: queueReducer,
-  user: userReducer
+  user: userReducer,
 };
 
 export const metaReducers: MetaReducer<AppState>[] =

@@ -1,0 +1,71 @@
+<!-- SCENE LIST -->
+<ng-container *ngIf="breakpoint > breakpoints.MEDIUM">
+  <mat-card class="mp0" fxFlex="33" fxFlex>
+    <mat-card-subtitle class="header">
+      <app-scenes-list-header></app-scenes-list-header>
+    </mat-card-subtitle>
+
+    <div class="app-scene-list">
+      <app-scenes-list [resize$]="resize$"></app-scenes-list>
+    </div>
+  </mat-card>
+
+  <mat-card class="mp0 no-box-shadow" fxFlex="25" fxFlexFill>
+    <mat-card-subtitle class="header">
+      Scene Detail
+    </mat-card-subtitle>
+
+    <app-scene-detail></app-scene-detail>
+  </mat-card>
+</ng-container>
+
+<ng-container *ngIf="breakpoint <= breakpoints.MEDIUM">
+  <mat-card *ngIf="view === Views.LIST"  class="mp0" fxFlex="45" fxFlex>
+    <mat-card-subtitle class="header medium-header">
+      <div>
+        <button (click)="onSelectList()"
+         [class.selected]="view === Views.LIST" mat-button>
+          Scenes
+        </button>
+        <button (click)="onSelectDetail()"
+         [class.selected]="view === Views.DETAIL" mat-button>
+          Scene Detail
+        </button>
+      </div>
+    </mat-card-subtitle>
+
+    <div class="app-scene-list">
+      <app-scenes-list [resize$]="resize$"></app-scenes-list>
+    </div>
+  </mat-card>
+
+
+  <mat-card *ngIf="view === Views.DETAIL" class="mp0 no-box-shadow" fxFlex="45" fxFlexFill>
+    <mat-card-subtitle class="header medium-header">
+      <div>
+        <button (click)="onSelectList()"
+         [class.selected]="view === Views.LIST" mat-button>
+          Scenes
+        </button>
+        <button (click)="onSelectDetail()"
+         [class.selected]="view === Views.DETAIL" mat-button>
+          Scene Detail
+        </button>
+      </div>
+    </mat-card-subtitle>
+
+    <app-scene-detail></app-scene-detail>
+  </mat-card>
+</ng-container>
+
+<mat-card class="mp0 no-box-shadow" [fxFlex]="breakpoint <= breakpoints.MEDIUM ? 55 : 45" fxFlexFill>
+  <mat-card-subtitle
+    [class.medium-header]="breakpoint <= breakpoints.MEDIUM"
+    class="header">
+    <button (click)="onToggleFiltersMenu()"
+            mat-button>
+      Filters <mat-icon>more_horiz</mat-icon>
+    </button>
+  </mat-card-subtitle>
+  <app-baseline-chart></app-baseline-chart>
+</mat-card>

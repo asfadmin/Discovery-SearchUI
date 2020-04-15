@@ -182,7 +182,7 @@ ul {
 }
 
 .selected {
-  background-color: rgba(0, 0, 0, 0.07) !important;
+  background-color: rgba(0, 0, 0, 0.09) !important;
 }
 
 .mat-dialog-container {
@@ -239,4 +239,8 @@ ul {
 .mat-list-base .mat-list-item.mat-2-line,
 .mat-list-base .mat-list-option.mat-2-line {
   height: 58px !important;
+}
+
+.slider .noUi-connect {
+  background: $asf-blue;
 }

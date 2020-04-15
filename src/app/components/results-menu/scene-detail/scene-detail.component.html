@@ -1,6 +1,6 @@
 <div *ngIf="breakpoint$ | async as breakpoint"
   class="detail-card scrollable"
-  [class.scrollable]="breakpoint !== breakpoints.MOBILE">
+  [class.scrollable]="isScrollable">
 
   <div *ngIf="scene">
     <mat-card-header>
@@ -49,12 +49,19 @@
     </mat-card-content>
 
     <div class="detail-card-info">
-      <a *ngIf="hasBaseline"
+      <a *ngIf="searchType !== searchTypes.BASELINE && hasBaseline"
+         (click)="makeBaselineSearch()"
          mat-raised-button class="mini-button" target="_blank"
-         matTooltip="Use this scene in the Baseline Tool for interferometry"
-         href="https://baseline.asf.alaska.edu/#/baseline?granule={{ baselineSceneName(selectedProducts) }}">
+         matTooltip="Use this scene in the Baseline Tool for interferometry">
         Baseline Tool
       </a>
+
+      <button
+         *ngIf="searchType === searchTypes.BASELINE"
+        (click)="onSetSelectedAsMaster()"
+        class="mini-button" color="secondary"
+        mat-raised-button>Set as Master</button>
+
       &nbsp;&nbsp;
       <a mat-raised-button class="mini-button"
          target="_blank"

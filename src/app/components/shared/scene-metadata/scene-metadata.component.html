@@ -1,4 +1,12 @@
 <ul class="scene-metadata">
+  <li *ngIf="scene.metadata.perpendicular !== null">
+    <span class="v-mid"><b>Perpendicular </b> • {{ scene.metadata.perpendicular + offsets.perpendicular }}</span>
+  </li>
+
+  <li *ngIf="scene.metadata.temporal !== null">
+    <span class="v-mid"><b>Temporal </b> • {{ scene.metadata.temporal + offsets.temporal }}</span>
+  </li>
+
   <li *ngIf="prop.isRelevant(p.DATE, dataset)">
     <span class="v-mid"><b>Start Time</b> • {{ scene.metadata.date | shortDateTime }}</span>
     <mat-icon *ngIf="isGeoSearch()"
