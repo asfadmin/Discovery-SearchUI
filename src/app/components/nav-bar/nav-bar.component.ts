@@ -34,11 +34,6 @@ export class NavBarComponent implements OnInit {
   }
 
   public onOpenDownloadQueue(): void {
-    this.dialog.open(QueueComponent, {
-      id: 'dlQueueDialog',
-      maxWidth: '100vw',
-      maxHeight: '100vh'
-    });
   }
 }
 

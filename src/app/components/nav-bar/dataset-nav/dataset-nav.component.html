@@ -1,7 +1,7 @@
 <div *ngIf="breakpoint$ | async as breakpoint" fxLayout="row" class="breadcrumb-row">
   <ng-container *ngIf="breakpoint !== breakpoints.MOBILE">
-    <div fxLayout="row">
 
+    <div fxLayout="row">
       <app-search-type-selector
         (click)="closeAOIOptions()"
         class="breadcrumb">

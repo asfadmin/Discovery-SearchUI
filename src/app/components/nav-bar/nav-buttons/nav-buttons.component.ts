@@ -2,6 +2,7 @@ import { Component, OnInit, Input, Output, EventEmitter, OnDestroy } from '@angu
 import { SubSink } from 'subsink';
 
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
+import { QueueComponent } from '@components/nav-bar/queue';
 import { ClipboardService } from 'ngx-clipboard';
 
 import { Store } from '@ngrx/store';
@@ -61,7 +62,11 @@ export class NavButtonsComponent implements OnInit, OnDestroy {
   }
 
   public onOpenDownloadQueue(): void {
-    this.openQueue.emit();
+    this.dialog.open(QueueComponent, {
+      id: 'dlQueueDialog',
+      maxWidth: '100vw',
+      maxHeight: '100vh'
+    });
   }
 
   public onAccountButtonClicked() {
