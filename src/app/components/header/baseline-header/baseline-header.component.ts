@@ -12,11 +12,11 @@ import { SubSink } from 'subsink';
 
 
 @Component({
-  selector: 'app-baseline-nav',
-  templateUrl: './baseline-nav.component.html',
-  styleUrls: ['./baseline-nav.component.css',  '../header.component.scss']
+  selector: 'app-baseline-header',
+  templateUrl: './baseline-header.component.html',
+  styleUrls: ['./baseline-header.component.css',  '../header.component.scss']
 })
-export class BaselineNavComponent implements OnInit {
+export class BaselineHeaderComponent implements OnInit {
   @Output() public openQueue = new EventEmitter<void>();
 
   public queuedProducts$ = this.store$.select(queueStore.getQueuedProducts);

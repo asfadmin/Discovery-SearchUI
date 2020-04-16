@@ -35,7 +35,7 @@ import { ListNavComponent } from './list-nav/list-nav.component';
 import { AoiFilterComponent } from './dataset-nav/aoi-filter/aoi-filter.component';
 
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
-import { BaselineNavComponent } from './baseline-nav/baseline-nav.component';
+import { BaselineHeaderComponent } from './baseline-header/baseline-header.component';
 import { MasterSceneSelectorModule } from '@components/shared/selectors/master-scene-selector';
 
 
@@ -46,7 +46,7 @@ import { MasterSceneSelectorModule } from '@components/shared/selectors/master-s
     DatasetNavComponent,
     ListNavComponent,
     AoiFilterComponent,
-    BaselineNavComponent
+    BaselineHeaderComponent
   ],
   imports: [
     CommonModule,
