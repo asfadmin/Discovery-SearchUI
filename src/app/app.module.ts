@@ -15,7 +15,7 @@ import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import * as store from './store';
 
 import { SavedSearchesModule } from '@components/shared/saved-searches';
-import { NavBarModule } from '@components/nav-bar';
+import { HeaderModule } from '@components/header';
 import { MapModule } from '@components/map';
 import { ResultsMenuModule } from '@components/results-menu';
 import { BaselineChartModule } from '@components/baseline-chart';
@@ -110,7 +110,7 @@ export const routes = [
     SavedSearchesModule,
     MapModule,
     ResultsMenuModule,
-    NavBarModule,
+    HeaderModule,
     MatMenuModule,
     MatFormFieldModule,
     MatDialogModule,

@@ -11,7 +11,7 @@ import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatToolbarModule } from '@angular/material/toolbar';
 
 import { MatSharedModule } from '@shared';
-import { NavBarComponent } from './nav-bar.component';
+import { HeaderComponent } from './header.component';
 
 import { QueueModule, QueueComponent } from './queue';
 import { NavButtonsModule } from './nav-buttons';
@@ -29,7 +29,7 @@ import { ClearButtonModule } from '@components/shared/clear-button';
 import { PipesModule } from '@pipes';
 import { SearchTypeSelectorModule } from '@components/shared/selectors/search-type-selector';
 
-import { LogoModule } from '@components/nav-bar/logo/logo.module';
+import { LogoModule } from '@components/header/logo/logo.module';
 import { DatasetNavComponent } from './dataset-nav/dataset-nav.component';
 import { ListNavComponent } from './list-nav/list-nav.component';
 import { AoiFilterComponent } from './dataset-nav/aoi-filter/aoi-filter.component';
@@ -41,7 +41,7 @@ import { MasterSceneSelectorModule } from '@components/shared/selectors/master-s
 
 @NgModule({
   declarations: [
-    NavBarComponent,
+    HeaderComponent,
     InfoBarComponent,
     DatasetNavComponent,
     ListNavComponent,
@@ -78,7 +78,7 @@ import { MasterSceneSelectorModule } from '@components/shared/selectors/master-s
     LogoModule,
   ],
   exports: [
-    NavBarComponent
+    HeaderComponent
   ]
 })
-export class NavBarModule { }
+export class HeaderModule { }

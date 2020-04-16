@@ -8,8 +8,8 @@
 
   <mat-sidenav-content>
     <div class="">
-      <app-nav-bar [isLoading]="isLoading$ | async">
-      </app-nav-bar>
+      <app-header [isLoading]="isLoading$ | async">
+      </app-header>
 
       <app-map (loadUrlState)="onLoadUrlState()">
       </app-map>

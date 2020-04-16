@@ -6,18 +6,18 @@ import * as searchStore from '@store/search';
 import * as filterStore from '@store/filters';
 
 import { MatDialog } from '@angular/material/dialog';
-import { QueueComponent } from '@components/nav-bar/queue';
+import { QueueComponent } from '@components/header/queue';
 
 import * as models from '@models/index';
 import * as services from '@services';
 
 @Component({
-  selector: 'app-nav-bar',
-  templateUrl: './nav-bar.component.html',
-  styleUrls: ['./nav-bar.component.scss'],
+  selector: 'app-header',
+  templateUrl: './header.component.html',
+  styleUrls: ['./header.component.scss'],
 
 })
-export class NavBarComponent implements OnInit {
+export class HeaderComponent implements OnInit {
   @Input() isLoading: boolean;
 
   public searchType$ = this.store$.select(searchStore.getSearchType);
