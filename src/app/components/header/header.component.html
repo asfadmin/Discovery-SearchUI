@@ -14,16 +14,13 @@
       </div>
 
       <div *ngIf="searchType$ | async as searchType" fxLayout="column" fxFill>
-        <app-dataset-nav *ngIf="searchType === searchTypes.DATASET"
-          (openQueue)="onOpenDownloadQueue()">
-        </app-dataset-nav>
+        <app-dataset-header *ngIf="searchType === searchTypes.DATASET">
+        </app-dataset-header>
 
-        <app-list-nav *ngIf="searchType === searchTypes.LIST"
-          (openQueue)="onOpenDownloadQueue()">
+        <app-list-nav *ngIf="searchType === searchTypes.LIST">
         </app-list-nav>
 
-        <app-baseline-header *ngIf="searchType === searchTypes.BASELINE"
-          (openQueue)="onOpenDownloadQueue()">
+        <app-baseline-header *ngIf="searchType === searchTypes.BASELINE">
         </app-baseline-header>
 
         <app-info-bar *ngIf="breakpoint !== breakpoints.MOBILE"></app-info-bar>

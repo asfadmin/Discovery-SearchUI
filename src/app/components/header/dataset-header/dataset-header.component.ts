@@ -12,13 +12,11 @@ import * as services from '@services';
 
 
 @Component({
-  selector: 'app-dataset-nav',
-  templateUrl: './dataset-nav.component.html',
-  styleUrls: ['./dataset-nav.component.scss', '../header.component.scss'],
+  selector: 'app-dataset-header',
+  templateUrl: './dataset-header.component.html',
+  styleUrls: ['./dataset-header.component.scss', '../header.component.scss'],
 })
-export class DatasetNavComponent implements OnInit, OnDestroy {
-  @Output() public openQueue = new EventEmitter<void>();
-
+export class DatasetHeaderComponent implements OnInit, OnDestroy {
   public datasets = models.datasetList;
   public queuedProducts$ = this.store$.select(queueStore.getQueuedProducts);
   public breakpoint$ = this.screenSize.breakpoint$;
@@ -43,10 +41,6 @@ export class DatasetNavComponent implements OnInit, OnDestroy {
   public onToggleFiltersMenu(): void {
     this.store$.dispatch(new uiStore.ToggleFiltersMenu());
     this.store$.dispatch(new uiStore.CloseAOIOptions());
-  }
-
-  public onOpenDownloadQueue(): void {
-    this.openQueue.emit();
   }
 
   public closeAOIOptions(): void {
