@@ -3,14 +3,23 @@
 }
 
 .files-header-baseline {
-  margin-top: -22px;
   padding: 0;
+  flex-direction: row;
+  display: flex;
+  justify-content: space-between;
 }
 
 .header-row-center {
   display: flex;
   justify-content: center;
   height: 22px;
+}
+
+.header-row-left {
+  display: flex;
+  justify-content: flex-start;
+  height: 22px;
+  margin-left: 69px;
 }
 
 .header-row-right {
@@ -22,7 +31,11 @@
 }
 
 .header-column {
-  margin-right: 20px;
+  margin-right: 17px;
+}
+
+.header-cart {
+  width: 10px;
 }
 
 .sort-icon {
