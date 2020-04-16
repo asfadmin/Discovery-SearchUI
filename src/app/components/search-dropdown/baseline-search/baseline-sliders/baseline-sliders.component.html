@@ -1,8 +1,11 @@
-<div style="margin-top: 20px;">
-  Perpendicular Filter: {{ perpRange.start }} to {{ perpRange.end }}
+<div class="baseline-slider perpendicular-slider">
+  <span class="baseline-label">Perpendicular Criteria: </span>
+    {{ perpRange.start }} to {{ perpRange.end }}
   <div class="slider" #perpendicularFilter></div>
 </div>
-<div style="margin-top: 20px;">
-  Temporal Filter: {{ tempRange.start }} to {{ tempRange.end }}
+
+<div class="baseline-slider temporal-slider">
+  <span class="baseline-label">Temporal Criteria: </span>
+  {{ tempRange.start }} to {{ tempRange.end }}
   <div class="slider" #temporalFilter></div>
 </div>

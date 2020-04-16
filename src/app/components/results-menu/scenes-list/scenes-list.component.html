@@ -67,20 +67,22 @@
         <ng-container *ngIf="searchType === SearchTypes.BASELINE">
           <div style="display: flex;" *ngIf="breakpoint$ | async as breakpoint">
             <div style="display: flex; justify-content: space-evenly; width: 135px;">
-              <div>
+              <div class="metric-flex-field">
                 {{ withOffset(scene.metadata.perpendicular, offsets.perpendicular) }}m
               </div>
-              <div>
+              <div class="metric-flex-field">
                 {{ withOffset(scene.metadata.temporal, offsets.temporal) }}d
               </div>
-            </div>
-            <mat-icon (click)="onToggleScene($event, scene.groupId)"
-                    class="icon-margin"
-                    matTooltip="{{
+              <div class="cart-flex-field">
+                <mat-icon (click)="onToggleScene($event, scene.groupId)"
+                          class="icon-margin"
+                          matTooltip="{{
                       allQueued[scene.groupId] ? 'Remove scene files from downloads': 'Add scene files to downloads'
                     }}">
-              {{ allQueued[scene.groupId] ? 'shopping_cart' : 'add_shopping_cart' }}
-            </mat-icon>
+                  {{ allQueued[scene.groupId] ? 'shopping_cart' : 'add_shopping_cart' }}
+                </mat-icon>
+              </div>
+            </div>
           </div>
         </ng-container>
       </button>
