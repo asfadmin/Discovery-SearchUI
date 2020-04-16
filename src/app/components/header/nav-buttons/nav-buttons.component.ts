@@ -7,6 +7,7 @@ import { ClipboardService } from 'ngx-clipboard';
 
 import { Store } from '@ngrx/store';
 import { AppState } from '@store';
+import * as queueStore from '@store/queue';
 import * as userStore from '@store/user';
 import * as uiStore from '@store/ui';
 
@@ -33,9 +34,7 @@ export class NavButtonsComponent implements OnInit, OnDestroy {
   public breakpoints = Breakpoints;
   private subs = new SubSink();
 
-  @Input() queuedProducts: CMRProduct[];
-
-  @Output() openQueue = new EventEmitter<void>();
+  public queuedProducts: CMRProduct[];
 
   constructor(
     public authService: AuthService,
@@ -51,6 +50,12 @@ export class NavButtonsComponent implements OnInit, OnDestroy {
     this.subs.add(
       this.store$.select(userStore.getUserAuth).subscribe(
         user => this.userAuth = user
+      )
+    );
+
+    this.subs.add(
+      this.store$.select(queueStore.getQueuedProducts).subscribe(
+        products => this.queuedProducts = products
       )
     );
 

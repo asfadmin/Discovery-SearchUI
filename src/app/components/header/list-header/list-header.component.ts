@@ -9,13 +9,11 @@ import { ScreenSizeService } from '@services';
 import { Breakpoints } from '@models';
 
 @Component({
-  selector: 'app-list-nav',
-  templateUrl: './list-nav.component.html',
-  styleUrls: ['./list-nav.component.css', '../header.component.scss']
+  selector: 'app-list-header',
+  templateUrl: './list-header.component.html',
+  styleUrls: ['./list-header.component.css', '../header.component.scss']
 })
-export class ListNavComponent implements OnInit {
-  @Output() public openQueue = new EventEmitter<void>();
-
+export class ListHeaderComponent implements OnInit {
   public queuedProducts$ = this.store$.select(queueStore.getQueuedProducts);
   public breakpoint$ = this.screenSize.breakpoint$;
   public breakpoints = Breakpoints;
@@ -30,9 +28,5 @@ export class ListNavComponent implements OnInit {
 
   public onToggleFiltersMenu(): void {
     this.store$.dispatch(new uiStore.ToggleFiltersMenu());
-  }
-
-  public onOpenDownloadQueue(): void {
-    this.openQueue.emit();
   }
 }

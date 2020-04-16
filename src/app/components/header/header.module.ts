@@ -31,7 +31,7 @@ import { SearchTypeSelectorModule } from '@components/shared/selectors/search-ty
 
 import { LogoModule } from '@components/header/logo/logo.module';
 import { DatasetHeaderComponent } from './dataset-header/dataset-header.component';
-import { ListNavComponent } from './list-nav/list-nav.component';
+import { ListHeaderComponent } from './list-header/list-header.component';
 import { AoiFilterComponent } from './dataset-header/aoi-filter/aoi-filter.component';
 
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
@@ -44,7 +44,7 @@ import { MasterSceneSelectorModule } from '@components/shared/selectors/master-s
     HeaderComponent,
     InfoBarComponent,
     DatasetHeaderComponent,
-    ListNavComponent,
+    ListHeaderComponent,
     AoiFilterComponent,
     BaselineHeaderComponent
   ],
