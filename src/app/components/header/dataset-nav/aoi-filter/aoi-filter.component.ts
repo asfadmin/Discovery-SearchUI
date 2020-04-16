@@ -16,7 +16,7 @@ import * as services from '@services';
 @Component({
   selector: 'app-aoi-filter',
   templateUrl: './aoi-filter.component.html',
-  styleUrls: ['./aoi-filter.component.css', '../../nav-bar.component.scss'],
+  styleUrls: ['./aoi-filter.component.css', '../../header.component.scss'],
   animations: [
     trigger('fadeTransition', [
       transition(':enter', [

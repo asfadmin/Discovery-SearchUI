@@ -2,7 +2,7 @@ import { Component, OnInit, Input, Output, EventEmitter, OnDestroy } from '@angu
 import { SubSink } from 'subsink';
 
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
-import { QueueComponent } from '@components/nav-bar/queue';
+import { QueueComponent } from '@components/header/queue';
 import { ClipboardService } from 'ngx-clipboard';
 
 import { Store } from '@ngrx/store';
