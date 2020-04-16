@@ -32,15 +32,15 @@ export class FileNameComponent implements OnInit, OnDestroy {
         } else if (size.width > 1500) {
           return 25;
         } else if (size.width > 1350) {
-          return 20;
-        } else if (size.width > 1200) {
-          return 20;
-        } else if (size.width > 1000) {
           return 18;
-        } else if (size.width > 948 ) {
-          return 15;
+        } else if (size.width > 1240) {
+          return 16;
+        } else if (size.width > 1160) {
+          return 16;
+        } else if (size.width > 949 ) {
+          return 20;
         } else {
-          return 25;
+          return 18;
         }
       }),
       ).subscribe(
