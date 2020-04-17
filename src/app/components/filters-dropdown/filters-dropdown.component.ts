@@ -16,9 +16,9 @@ import { SubSink } from 'subsink';
 import * as models from '@models';
 
 @Component({
-  selector: 'app-search-dropdown',
-  templateUrl: './search-dropdown.component.html',
-  styleUrls: ['./search-dropdown.component.scss'],
+  selector: 'app-filters-dropdown',
+  templateUrl: './filters-dropdown.component.html',
+  styleUrls: ['./filters-dropdown.component.scss'],
   animations: [
     trigger('isOpen', [
       state('true', style({transform: 'translateY(0%)'})),
@@ -29,7 +29,7 @@ import * as models from '@models';
     ])
   ],
 })
-export class SearchDropdownComponent implements OnInit, OnDestroy {
+export class FiltersDropdownComponent implements OnInit, OnDestroy {
   public isFiltersMenuOpen$ = this.store$.select(uiStore.getIsFiltersMenuOpen);
 
   public searchType$ = this.store$.select(searchStore.getSearchType);

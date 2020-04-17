@@ -29,16 +29,16 @@
 
     <div class="filters-list">
       <ng-container *ngIf="selectedSearchType === searchTypes.DATASET">
-        <app-dataset-search [dataset]="dataset$ | async">
-        </app-dataset-search>
+        <app-dataset-filters [dataset]="dataset$ | async">
+        </app-dataset-filters>
       </ng-container>
 
       <ng-container *ngIf="selectedSearchType === searchTypes.LIST">
-        <app-list-search></app-list-search>
+        <app-list-filters></app-list-filters>
       </ng-container>
 
       <ng-container *ngIf="selectedSearchType === searchTypes.BASELINE">
-        <app-baseline-search></app-baseline-search>
+        <app-baseline-filters></app-baseline-filters>
       </ng-container>
     </div>
 

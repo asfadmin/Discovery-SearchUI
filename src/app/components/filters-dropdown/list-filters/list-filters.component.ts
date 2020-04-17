@@ -19,11 +19,11 @@ enum ListPanel {
 }
 
 @Component({
-  selector: 'app-list-search',
-  templateUrl: './list-search.component.html',
-  styleUrls: ['./list-search.component.scss']
+  selector: 'app-list-filters',
+  templateUrl: './list-filters.component.html',
+  styleUrls: ['./list-filters.component.scss']
 })
-export class ListSearchComponent implements OnInit, OnDestroy {
+export class ListFiltersComponent implements OnInit, OnDestroy {
   public selectedPanel: ListPanel | null = null;
   public types = ListSearchType;
   public panels = ListPanel;

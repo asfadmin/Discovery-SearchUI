@@ -11,11 +11,11 @@ import { SearchTypeSelectorModule } from '@components/shared/selectors/search-ty
 import { MatSharedModule } from '@shared';
 import { CopyToClipboardModule } from '@components/shared/copy-to-clipboard';
 
-import { ListSearchComponent } from './list-search.component';
+import { ListFiltersComponent } from './list-filters.component';
 
 @NgModule({
   declarations: [
-    ListSearchComponent
+    ListFiltersComponent
   ],
   imports: [
     CommonModule,
@@ -30,7 +30,7 @@ import { ListSearchComponent } from './list-search.component';
     MatSharedModule
   ],
   exports: [
-    ListSearchComponent
+    ListFiltersComponent
   ]
 })
-export class ListSearchModule { }
+export class ListFiltersModule { }

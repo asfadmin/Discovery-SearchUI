@@ -14,7 +14,6 @@ import { Breakpoints } from '@models';
   styleUrls: ['./list-header.component.css', '../header.component.scss']
 })
 export class ListHeaderComponent implements OnInit {
-  public queuedProducts$ = this.store$.select(queueStore.getQueuedProducts);
   public breakpoint$ = this.screenSize.breakpoint$;
   public breakpoints = Breakpoints;
 

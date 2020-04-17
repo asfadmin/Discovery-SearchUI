@@ -9,17 +9,17 @@ import { MatSharedModule } from '@shared';
 import { PathSelectorModule } from '@components/shared/selectors/path-selector';
 import { OtherSelectorModule } from '@components/shared/selectors/other-selector';
 import { SeasonSelectorModule } from '@components/shared/selectors/season-selector';
-import { MissionSearchModule } from '../mission-search';
+import { MissionSearchModule } from '../mission-filter';
 import { SearchTypeSelectorModule } from '@components/shared/selectors/search-type-selector';
 
-import { DatasetSearchComponent } from './dataset-search.component';
+import { DatasetFiltersComponent } from './dataset-filters.component';
 import { DateSelectorModule } from '@components/shared/selectors/date-selector';
 import { DatasetSelectorModule } from '@components/shared/selectors/dataset-selector';
 import { AoiOptionsModule } from '@components/shared/aoi-options';
 
 @NgModule({
   declarations: [
-    DatasetSearchComponent,
+    DatasetFiltersComponent,
   ],
   imports: [
     CommonModule,
@@ -39,7 +39,7 @@ import { AoiOptionsModule } from '@components/shared/aoi-options';
     SearchTypeSelectorModule
   ],
   exports: [
-    DatasetSearchComponent,
+    DatasetFiltersComponent,
   ],
 })
-export class DatasetSearchModule { }
+export class DatasetFiltersModule { }

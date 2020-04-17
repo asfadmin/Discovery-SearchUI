@@ -15,11 +15,11 @@ enum FilterPanel {
 }
 
 @Component({
-  selector: 'app-baseline-search',
-  templateUrl: './baseline-search.component.html',
-  styleUrls: ['./baseline-search.component.scss']
+  selector: 'app-baseline-filters',
+  templateUrl: './baseline-filters.component.html',
+  styleUrls: ['./baseline-filters.component.scss']
 })
-export class BaselineSearchComponent implements OnInit, OnDestroy {
+export class BaselineFiltersComponent implements OnInit, OnDestroy {
   public breakpoint$ = this.screenSize.breakpoint$;
   public breakpoints = models.Breakpoints;
   public areResultsLoaded: boolean;

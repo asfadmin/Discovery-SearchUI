@@ -19,11 +19,11 @@ enum FilterPanel {
 }
 
 @Component({
-  selector: 'app-dataset-search',
-  templateUrl: './dataset-search.component.html',
-  styleUrls: ['./dataset-search.component.scss']
+  selector: 'app-dataset-filters',
+  templateUrl: './dataset-filters.component.html',
+  styleUrls: ['./dataset-filters.component.scss']
 })
-export class DatasetSearchComponent implements OnInit, OnDestroy {
+export class DatasetFiltersComponent implements OnInit, OnDestroy {
   @Input() dataset: models.CMRProduct;
   @Input() selectedPanel: FilterPanel | null = null;
 

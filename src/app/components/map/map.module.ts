@@ -15,7 +15,7 @@ import { MapControlsModule } from './map-controls';
 import { AoiOptionsModule } from '@components/shared/aoi-options';
 import { FileUploadModule } from './file-upload';
 import { AttributionsComponent } from './attributions/attributions.component';
-import { SearchDropdownModule } from '@components/search-dropdown';
+import { FiltersDropdownModule } from '@components/filters-dropdown';
 
 
 @NgModule({
@@ -30,7 +30,7 @@ import { SearchDropdownModule } from '@components/search-dropdown';
     LayerSelectorModule,
     MapControlsModule,
     FileUploadModule,
-    SearchDropdownModule,
+    FiltersDropdownModule,
     AoiOptionsModule,
 
     SearchButtonModule,
