@@ -80,7 +80,7 @@ export class MapComponent implements OnInit, OnDestroy  {
     this.store$.select(mapStore.getMapLayerType),
   );
 
-  public breakpoint$ = this.screenSize.breakpoint$;
+  public breakpoint: models.Breakpoints;
   public breakpoints = models.Breakpoints;
 
   public searchType: models.SearchType;
@@ -97,6 +97,12 @@ export class MapComponent implements OnInit, OnDestroy  {
   ) {}
 
   ngOnInit(): void {
+    this.subs.add(
+      this.screenSize.breakpoint$.subscribe(
+        breakpoint => this.breakpoint = breakpoint
+      )
+    );
+
     this.subs.add(
       this.store$.select(searchStore.getSearchType).subscribe(
         searchType => this.searchType = searchType

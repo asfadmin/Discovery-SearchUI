@@ -2,7 +2,7 @@
   id="map" class="map w100 h100" #map>
 </div>
 
-<div *ngIf="breakpoint$ | async as breakpoint" class="map-header">
+<div class="map-header">
   <div class="header-controls"
        [class.map-control-margin]="(areResultsLoaded$ | async) && breakpoint === breakpoints.MOBILE"
         fxLayout="row" fxFlex>
@@ -45,14 +45,10 @@
       </button>
     </div>
 
-    <img *ngIf="breakpoint > breakpoints.MOBILE"
-      src="/assets/NASA_logo.svg" class="meatball">
-
     <ng-container *ngIf="breakpoint === breakpoints.MOBILE">
       <div (click)="closeMobileFullscreenControls()"
         *ngIf="fullscreenControl !== fc.NONE"
         class="mobile-controls-background"></div>
-
       <div
         *ngIf="fullscreenControl === fc.DRAW"
         (click)="closeMobileFullscreenControls()"
@@ -81,6 +77,9 @@
   </div>
 </div>
 
+<img *ngIf="breakpoint > breakpoints.MOBILE"
+  src="/assets/NASA_logo.svg" class="meatball">
+
 <app-filters-dropdown></app-filters-dropdown>
 
 <app-file-upload
@@ -89,7 +88,7 @@
   [interaction$]="interactionMode$">
 </app-file-upload>
 
-<app-attributions>
+<app-attributions [breakpoint]="breakpoint">
 </app-attributions>
 
 <div
@@ -97,4 +96,3 @@
   (mouseleave)="leaveDrawPopup()"
   id="popup" class="ol-popup" #overlay>
 </div>
-

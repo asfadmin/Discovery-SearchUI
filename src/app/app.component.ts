@@ -66,8 +66,10 @@ export class AppComponent implements OnInit, OnDestroy {
 
   public ngOnInit(): void {
     this.store$.dispatch(new uiStore.LoadBanners());
-    this.screenSize.breakpoint$.subscribe(
-      breakpoint => this.breakpoint = breakpoint
+    this.subs.add(
+      this.screenSize.breakpoint$.subscribe(
+        breakpoint => this.breakpoint = breakpoint
+      )
     );
 
     this.polygonValidationService.validate();
