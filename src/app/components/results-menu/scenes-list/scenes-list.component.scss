@@ -21,6 +21,11 @@
   align-self: center;
 }
 
+.mobile-size .scene-controls {
+  font-size: 12px;
+  line-height: 28px;
+}
+
 .baseline-metrics {
   flex: 0 1 30%;
   float: right;
@@ -41,6 +46,10 @@
 
 .div-flex {
   flex: 1 1 auto;
+}
+
+.mobile-size .div-flex {
+  font-size: 14px;
 }
 
 .metric-flex-field {
@@ -82,4 +91,12 @@
 
 .number-queued {
   margin-left: 10px;
+}
+
+.mobile-size .material-icons {
+  font-size: 14px;
+}
+
+.mobile-size .mat-list-base .mat-list-item {
+  font-size: 14px;
 }

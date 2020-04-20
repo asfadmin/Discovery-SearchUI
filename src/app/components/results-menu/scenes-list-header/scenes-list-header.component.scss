@@ -1,5 +1,7 @@
-.files-header {
-  //
+.files-header .mobile-size {
+  font-size: 12px !important;
+  font-weight: bold;
+  padding-top: 5px;
 }
 
 .files-header-baseline {
@@ -20,6 +22,10 @@
   justify-content: flex-start;
   height: 22px;
   margin-left: 69px;
+}
+
+.header-row-left .mobile-size {
+  font-size: 12px !important;
 }
 
 .header-row-right {

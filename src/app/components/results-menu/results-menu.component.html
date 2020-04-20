@@ -5,6 +5,7 @@
     <div
       id="result-div"
       class="w100 results-menu"
+      [ngClass]="{'mobile-size': breakpoint === breakpoints.MOBILE}"
       [style.height.px]="menuHeightPx"
       mwlResizable
       [validateResize]="validate"
@@ -41,7 +42,7 @@
           </ng-container>
 
           <ng-container *ngIf="breakpoint === breakpoints.MOBILE">
-            <app-mobile-results-menu class="w100 h100"
+            <app-mobile-results-menu class="w100 h100 mobile-size"
               [resize$]="resize$">
             </app-mobile-results-menu>
           </ng-container>
