@@ -35,13 +35,24 @@
 }
 
 .header-cart {
-  width: 10px;
+  width: 22px;
 }
 
 .sort-icon {
-  font-size: 14px;
+  font-size: 18px;
   padding: 0;
   margin: 0;
   width: 12px;
   height: 12px;
+  vertical-align: middle;
+  position: relative;
+  top: -7px;
+  left: -5px;
+  opacity: 70%;
+}
+
+.sort-active {
+  font-weight: bold;
+  opacity: 100%;
+  top: -5px;
 }
