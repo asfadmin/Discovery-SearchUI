@@ -17,10 +17,8 @@
       </div>
 
       <div class="icon-cluster">
-        <app-nav-buttons
-          (openQueue)="onOpenDownloadQueue()"
-          [queuedProducts]="queuedProducts$ | async">
-        </app-nav-buttons>
+        <app-header-buttons>
+        </app-header-buttons>
       </div>
     </div>
   </div>
@@ -35,10 +33,8 @@
       </button>
 
       <div class="mobile-icon-cluster">
-        <app-nav-buttons
-          (openQueue)="onOpenDownloadQueue()"
-          [queuedProducts]="queuedProducts$ | async">
-        </app-nav-buttons>
+        <app-header-buttons>
+        </app-header-buttons>
       </div>
     </div>
   </div>

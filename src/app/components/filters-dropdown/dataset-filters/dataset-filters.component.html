@@ -101,13 +101,13 @@
       </mat-panel-title>
     </mat-expansion-panel-header>
 
-    <app-mission-filter
+    <app-mission-selector
       (newMissionSelected)="onNewMissionSelected($event)"
       [dataset$]="dataset$"
       [selectedMission]="selectedMission$ | async"
       [missionsByDataset$]="missionsByDataset$"
       [missionDatasets$]="missionDatasets$">
-    </app-mission-filter>
+    </app-mission-selector>
   </mat-expansion-panel>
 
 </mat-accordion>
