@@ -9,7 +9,7 @@ import { MatSharedModule } from '@shared';
 import { PathSelectorModule } from '@components/shared/selectors/path-selector';
 import { OtherSelectorModule } from '@components/shared/selectors/other-selector';
 import { SeasonSelectorModule } from '@components/shared/selectors/season-selector';
-import { MissionSearchModule } from '../mission-filter';
+import { MissionSelectorModule } from '@components/shared/selectors/mission-selector';
 import { SearchTypeSelectorModule } from '@components/shared/selectors/search-type-selector';
 
 import { DatasetFiltersComponent } from './dataset-filters.component';
@@ -29,7 +29,7 @@ import { AoiOptionsModule } from '@components/shared/aoi-options';
     MatExpansionModule,
     MatSharedModule,
 
-    MissionSearchModule,
+    MissionSelectorModule,
     PathSelectorModule,
     OtherSelectorModule,
     SeasonSelectorModule,

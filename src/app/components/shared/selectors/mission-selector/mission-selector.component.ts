@@ -20,11 +20,11 @@ export const _filter = (opt: string[], value: string): string[] => {
 
 
 @Component({
-  selector: 'app-mission-search',
-  templateUrl: './mission-search.component.html',
-  styleUrls: ['./mission-search.component.css']
+  selector: 'app-mission-selector',
+  templateUrl: './mission-selector.component.html',
+  styleUrls: ['./mission-selector.component.css']
 })
-export class MissionSearchComponent implements OnInit, OnDestroy {
+export class MissionSelectorComponent implements OnInit, OnDestroy {
   @Input() missionsByDataset$: Observable<{[dataset: string]: string[]}>;
   @Input() missionDatasets$: Observable<string[]>;
   @Input() selectedMission: string | null;

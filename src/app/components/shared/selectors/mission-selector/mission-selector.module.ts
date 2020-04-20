@@ -14,11 +14,11 @@ import { MatInputModule } from '@angular/material/input';
 import { MatListModule } from '@angular/material/list';
 import { MatPaginatorModule } from '@angular/material/paginator';
 
-import { MissionSearchComponent } from './mission-search.component';
+import { MissionSelectorComponent } from './mission-selector.component';
 
 @NgModule({
   declarations: [
-    MissionSearchComponent
+    MissionSelectorComponent
   ],
   imports: [
     CommonModule,
@@ -39,7 +39,7 @@ import { MissionSearchComponent } from './mission-search.component';
     MatSharedModule,
   ],
   exports: [
-    MissionSearchComponent
+    MissionSelectorComponent
   ]
 })
-export class MissionSearchModule { }
+export class MissionSelectorModule { }
