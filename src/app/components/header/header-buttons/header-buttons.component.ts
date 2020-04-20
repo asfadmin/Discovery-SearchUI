@@ -19,11 +19,11 @@ import { AuthService, AsfApiService, EnvironmentService, ScreenSizeService } fro
 import { CMRProduct, Breakpoints, UserAuth, SavedSearchType } from '@models';
 
 @Component({
-  selector: 'app-nav-buttons',
-  templateUrl: './nav-buttons.component.html',
-  styleUrls: ['./nav-buttons.component.scss']
+  selector: 'app-header-buttons',
+  templateUrl: './header-buttons.component.html',
+  styleUrls: ['./header-buttons.component.scss']
 })
-export class NavButtonsComponent implements OnInit, OnDestroy {
+export class HeaderButtonsComponent implements OnInit, OnDestroy {
   anio: number = new Date().getFullYear();
   public asfWebsiteUrl = 'https://www.asf.alaska.edu';
   public maturity = this.env.maturity;

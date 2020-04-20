@@ -14,7 +14,7 @@ import { MatSharedModule } from '@shared';
 import { HeaderComponent } from './header.component';
 
 import { QueueModule } from './queue';
-import { NavButtonsModule } from './nav-buttons';
+import { HeaderButtonsModule } from './header-buttons';
 import { InfoBarComponent } from './info-bar/info-bar.component';
 
 import { MatDatepickerModule } from '@angular/material/datepicker';
@@ -73,7 +73,7 @@ import { MasterSceneSelectorModule } from '@components/shared/selectors/master-s
     MaxResultsSelectorModule,
     SearchButtonModule,
     ClearButtonModule,
-    NavButtonsModule,
+    HeaderButtonsModule,
     MasterSceneSelectorModule,
     LogoModule,
   ],
