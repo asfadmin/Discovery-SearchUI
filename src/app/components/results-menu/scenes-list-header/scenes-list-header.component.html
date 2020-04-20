@@ -38,20 +38,20 @@
           <div (click)="onTogglePerpendicularSort()" class="header-column noselect clickable">
               meters
               <mat-icon *ngIf="perpendicularSort === SortDirection.NONE"
-                class="invisible sort-icon">keyboard_arrow_up</mat-icon>
+                class="sort-icon">unfold_more</mat-icon>
               <mat-icon *ngIf="perpendicularSort === SortDirection.INCREASING"
-                class="sort-icon">keyboard_arrow_up</mat-icon>
+                class="sort-icon sort-active">keyboard_arrow_up</mat-icon>
               <mat-icon *ngIf="perpendicularSort === SortDirection.DECREASING"
-                class="sort-icon">keyboard_arrow_down</mat-icon>
+                class="sort-icon sort-active">keyboard_arrow_down</mat-icon>
           </div>
           <div (click)="onToggleTemporalSort()" class="header-column clickable noselect">
               days
               <mat-icon *ngIf="temporalSort === SortDirection.NONE"
-                class="invisible sort-icon">keyboard_arrow_up</mat-icon>
+                class="sort-icon">unfold_more</mat-icon>
               <mat-icon *ngIf="temporalSort === SortDirection.INCREASING"
-                class="sort-icon">keyboard_arrow_up</mat-icon>
+                class="sort-icon sort-active">keyboard_arrow_up</mat-icon>
               <mat-icon *ngIf="temporalSort === SortDirection.DECREASING"
-                class="sort-icon">keyboard_arrow_down</mat-icon>
+                class="sort-icon sort-active">keyboard_arrow_down</mat-icon>
           </div>
           <div class="header-column header-cart">
             <!-- shopping cart header -->
