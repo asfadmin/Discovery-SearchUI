@@ -19,7 +19,7 @@ enum MobileViews {
 @Component({
   selector: 'app-mobile-results-menu',
   templateUrl: './mobile-results-menu.component.html',
-  styleUrls: ['./mobile-results-menu.component.css', '../results-menu.component.scss']
+  styleUrls: ['./mobile-results-menu.component.scss', '../results-menu.component.scss']
 })
 export class MobileResultsMenuComponent implements OnInit, OnDestroy {
   @Input() resize$: Observable<void>;

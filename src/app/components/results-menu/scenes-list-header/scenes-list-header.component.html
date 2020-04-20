@@ -1,7 +1,7 @@
 <ng-container *ngIf="numberOfScenes$ | async as numberOfScenes">
   <ng-container *ngIf="breakpoint$ | async as breakpoint">
     <div [className]="searchType === SearchTypes.BASELINE && breakpoint > breakpoints.MOBILE ? 'files-header-baseline' : 'files-header'">
-      <div class="header-row-left">
+      <div class="header-row-left" [ngClass]="{'mobile-size': breakpoint <= breakpoints.SMALL}">
         <div *ngIf="searchType !== SearchTypes.BASELINE" style="margin-right: 10px;">
           {{ numberOfScenes }} Scene{{ numberOfScenes === 1 ? '' : 's' }}
           ({{ numberOfProducts$ | async }} of {{ formatNumber(totalResultCount$ | async) }} File{{ (numberOfProducts$ | async) === 1 ? '' : 's' }})
