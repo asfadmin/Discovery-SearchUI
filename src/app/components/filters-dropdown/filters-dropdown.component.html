@@ -1,10 +1,7 @@
 <div *ngIf="searchType$ | async as selectedSearchType"
   [@isOpen]="isFiltersMenuOpen$ | async"
-  [class.no-pointer]="breakpoint !== breakpoints.MOBILE"
   class="dataset-filters-div padding-for-box-shadow">
-  <div
-    [class.pointer]="breakpoint !== breakpoints.MOBILE"
-    class="dataset-filters-card">
+  <div class="dataset-filters-card">
     <div class="header">
       <div class="header-title">
         <ng-container *ngIf="selectedSearchType === searchTypes.DATASET">
