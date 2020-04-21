@@ -4,7 +4,7 @@ import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
 
 import { of, forkJoin, combineLatest } from 'rxjs';
-import { map, withLatestFrom, switchMap, catchError, filter } from 'rxjs/operators';
+import { map, withLatestFrom, switchMap, catchError, filter, tap } from 'rxjs/operators';
 
 import { AppState } from '../app.reducer';
 import { SetSearchAmount, EnableSearch, DisableSearch, SetSearchType } from './search.action';
