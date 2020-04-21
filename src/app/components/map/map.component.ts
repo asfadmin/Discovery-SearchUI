@@ -19,6 +19,7 @@ import { SubSink } from 'subsink';
 import { AppState } from '@store';
 import * as scenesStore from '@store/scenes';
 import * as searchStore from '@store/search';
+import * as filtersStore from '@store/filters';
 import * as mapStore from '@store/map';
 import * as uiStore from '@store/ui';
 
@@ -45,7 +46,32 @@ export class MapComponent implements OnInit, OnDestroy  {
   public drawMode$ = this.store$.select(mapStore.getMapDrawMode);
   public interactionMode$ = this.store$.select(mapStore.getMapInteractionMode);
   public mousePosition$ = this.mapService.mousePosition$;
+
   public banners$ = this.store$.select(uiStore.getBanners);
+  public bannersWithBaseline$ = combineLatest(
+    this.store$.select(uiStore.getBanners),
+    this.store$.select(searchStore.getSearchType),
+    this.store$.select(scenesStore.getFilterMaster)
+  ).pipe(
+    map(([banners, searchType, master]) => {
+      if (this.searchType === models.SearchType.BASELINE) {
+        const baselineLink = !!master ?
+          `https://baseline.asf.alaska.edu/#baseline?granule=${master}` :
+          `https://baseline.asf.alaska.edu`;
+
+        const baselineBanner = {
+          'name': 'Baseline Banner',
+          'text': `View in the old <a target="_blank" href="${baselineLink}">Baseline Tool</a>`
+        };
+
+        return [baselineBanner, ...banners];
+      } else {
+        return banners;
+      }
+    })
+  );
+  public showBaselineBanner = true;
+
   public view$ = this.store$.select(mapStore.getMapView);
   public areResultsLoaded$ = this.store$.select(scenesStore.getAreProductsLoaded);
 
@@ -226,7 +252,11 @@ export class MapComponent implements OnInit, OnDestroy  {
   }
 
   public removeBanner(banner: models.Banner): void {
-    this.store$.dispatch(new uiStore.RemoveBanner(banner));
+    if (banner.name === 'Baseline Banner') {
+      this.showBaselineBanner = false;
+    } else {
+      this.store$.dispatch(new uiStore.RemoveBanner(banner));
+    }
   }
 
   public enterDrawPopup(): void {

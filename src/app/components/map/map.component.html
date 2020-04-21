@@ -16,7 +16,7 @@
     <div fxLayout="row" class="banner-row">
       <div fxLayout="column">
         <app-banners
-          [banners]="banners$ | async"
+          [banners]="(showBaselineBanner ? bannersWithBaseline$ : banners$) | async"
           (removeBanner)="removeBanner($event)">
         </app-banners>
       </div>
