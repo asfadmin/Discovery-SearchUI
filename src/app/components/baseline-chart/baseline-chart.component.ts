@@ -70,7 +70,7 @@ export class BaselineChartComponent implements OnInit, OnDestroy {
       ).subscribe(
         ([points, selected]) => {
           const extrema = this.determineMinMax(points);
-          const { minDataset, maxDataset } = this.criticalBaselineDataset(points, extrema);
+          const { minDataset, maxDataset } = this.criticalBaselineDataset(extrema);
 
           if (selected) {
             const selectedPoint = this.productToPoint(selected);
@@ -139,17 +139,18 @@ export class BaselineChartComponent implements OnInit, OnDestroy {
     });
   }
 
-  private criticalBaselineDataset(points: {x: number, y: number}[], extrema) {
+  private criticalBaselineDataset(extrema) {
     const { min, max } = extrema;
+    const buffer = (max.x - min.x) * .25;
 
     const minDataset = [
-      {x: -Number.MAX_SAFE_INTEGER, y: -this.criticalBaseline},
-      {x: Number.MAX_SAFE_INTEGER, y: -this.criticalBaseline}
+      {x: min.x - buffer - 10, y: -this.criticalBaseline},
+      {x: max.x + buffer + 10, y: -this.criticalBaseline}
     ];
 
     const maxDataset = [
-      {x: -Number.MAX_SAFE_INTEGER, y: this.criticalBaseline},
-      {x: Number.MAX_SAFE_INTEGER, y: this.criticalBaseline}
+      {x: min.x - buffer - 10, y: this.criticalBaseline},
+      {x: max.x + buffer + 10, y: this.criticalBaseline}
     ];
 
     return { minDataset, maxDataset };
