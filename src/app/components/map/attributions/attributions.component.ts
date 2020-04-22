@@ -15,8 +15,9 @@ import { Breakpoints } from '@models';
   styleUrls: ['./attributions.component.scss'],
 })
 export class AttributionsComponent {
+  @Input() breakpoint: Breakpoints;
+
   anio: number = new Date().getFullYear();
-  @Input() breakpoint: Breakpoints
 
   public isResultsMenuOpen$ = this.store$.select(uiStore.getIsResultsMenuOpen);
   public areNoScenes$ = this.store$.select(scenesStore.getScenes).pipe(
