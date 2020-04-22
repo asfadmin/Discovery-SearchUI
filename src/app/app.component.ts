@@ -22,7 +22,6 @@ import * as userStore from '@store/user';
 
 import * as services from '@services';
 import * as models from './models';
-import { EnvironmentService } from '@services';
 
 @Component({
   selector   : 'app-root',
@@ -61,14 +60,16 @@ export class AppComponent implements OnInit, OnDestroy {
     private authService: services.AuthService,
     private userDataService: services.UserDataService,
     private screenSize: services.ScreenSizeService,
+    private searchService: services.SearchService,
     private ccService: NgcCookieConsentService,
-    public env: EnvironmentService,
   ) {}
 
   public ngOnInit(): void {
     this.store$.dispatch(new uiStore.LoadBanners());
-    this.screenSize.breakpoint$.subscribe(
-      breakpoint => this.breakpoint = breakpoint
+    this.subs.add(
+      this.screenSize.breakpoint$.subscribe(
+        breakpoint => this.breakpoint = breakpoint
+      )
     );
 
     this.polygonValidationService.validate();
@@ -132,20 +133,9 @@ export class AppComponent implements OnInit, OnDestroy {
     this.updateMaxSearchResults();
     this.healthCheck();
 
-    this.subs.add(this.ccService.popupOpen$.subscribe(
-      () => {
-        // you can use this.ccService.getConfig() to do stuff...
-      }));
-
-    this.subs.add(this.ccService.popupClose$.subscribe(
-      () => {
-        // you can use this.ccService.getConfig() to do stuff...
-      }));
-
-    this.subs.add(this.ccService.revokeChoice$.subscribe(
-      () => {
-        // you can use this.ccService.getConfig() to do stuff...
-      }));
+    this.subs.add(this.ccService.popupOpen$.subscribe(_ => _));
+    this.subs.add(this.ccService.popupClose$.subscribe(_ => _));
+    this.subs.add(this.ccService.revokeChoice$.subscribe(_ => _));
   }
 
   private loadProductQueue(): void {
@@ -173,27 +163,7 @@ export class AppComponent implements OnInit, OnDestroy {
     this.store$.dispatch(new scenesStore.ClearScenes());
     this.store$.dispatch(new uiStore.CloseResultsMenu());
 
-    if (this.searchType === models.SearchType.DATASET) {
-      this.mapService.clearDrawLayer();
-
-      const actions = [
-        new filterStore.ClearDatasetFilters(),
-        new mapStore.SetMapInteractionMode(models.MapInteractionModeType.DRAW),
-      ];
-
-      actions.forEach(
-        action => this.store$.dispatch(action)
-      );
-    } else if (this.searchType === models.SearchType.LIST) {
-      this.store$.dispatch(new filterStore.ClearListFilters());
-    } else if (this.searchType === models.SearchType.BASELINE) {
-      this.store$.dispatch(new scenesStore.ClearBaseline());
-      this.store$.dispatch(new filterStore.ClearPerpendicularRange());
-      this.store$.dispatch(new filterStore.ClearTemporalRange());
-      if (this.breakpoint !== models.Breakpoints.MOBILE) {
-        this.store$.dispatch(new uiStore.CloseFiltersMenu());
-      }
-    }
+    this.searchService.clear(this.searchType, this.breakpoint);
   }
 
   private updateMaxSearchResults(): void {
@@ -231,22 +201,7 @@ export class AppComponent implements OnInit, OnDestroy {
 
   private loadMissions(): void {
     this.subs.add(
-      combineLatest(
-        this.asfSearchApi.missionSearch(models.MissionDataset.S1_BETA).pipe(
-          map(resp => ({[models.MissionDataset.S1_BETA]: resp.result}))
-        ),
-        this.asfSearchApi.missionSearch(models.MissionDataset.AIRSAR).pipe(
-          map(resp => ({[models.MissionDataset.AIRSAR]: resp.result}))
-        ),
-        this.asfSearchApi.missionSearch(models.MissionDataset.UAVSAR).pipe(
-          map(resp => ({[models.MissionDataset.UAVSAR]: resp.result}))
-        )
-      ).pipe(
-        map(missions => missions.reduce(
-          (allMissions, mission) => ({ ...allMissions, ...mission }),
-          {}
-        )),
-      ).subscribe(
+      this.asfSearchApi.loadMissions$().subscribe(
         missionsByDataset => this.store$.dispatch(
           new filterStore.SetMissions(missionsByDataset)
         )
@@ -263,11 +218,9 @@ export class AppComponent implements OnInit, OnDestroy {
           return 'error' in CMRSearchAPI || !ASFSearchAPI['ok?'];
         }),
         map(isError => {
-          if (!isError) {
-            return;
+          if (isError) {
+            this.setErrorBanner();
           }
-
-          this.setErrorBanner();
         }),
         catchError(
           _ => {
@@ -284,11 +237,10 @@ export class AppComponent implements OnInit, OnDestroy {
     this.store$.dispatch(new uiStore.AddBanners([this.errorBanner()]));
   }
 
-  private errorBanner() {
+  private errorBanner(): models.Banner {
     return  {
       text: 'ASF is experiencing errors loading data.  Please try again later.',
-      type: 'error',
-      target: ['vertex']
+      name: 'error',
     };
   }
 

@@ -5,6 +5,5 @@ export interface BannerApiResponse {
 
 export interface Banner {
   text: string;
-  type: string;
-  target: string[];
+  name: string;
 }

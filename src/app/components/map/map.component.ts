@@ -1,9 +1,6 @@
 import {
   Component, OnInit, Output, EventEmitter, ViewChild, ElementRef, OnDestroy
 } from '@angular/core';
-import {
-  trigger, style, animate, transition
-} from '@angular/animations';
 
 import { Store } from '@ngrx/store';
 import { Observable, combineLatest } from 'rxjs';
@@ -22,6 +19,7 @@ import { SubSink } from 'subsink';
 import { AppState } from '@store';
 import * as scenesStore from '@store/scenes';
 import * as searchStore from '@store/search';
+import * as filtersStore from '@store/filters';
 import * as mapStore from '@store/map';
 import * as uiStore from '@store/ui';
 
@@ -39,17 +37,6 @@ enum FullscreenControls {
   selector: 'app-map',
   templateUrl: './map.component.html',
   styleUrls: ['./map.component.scss'],
-  animations: [
-    trigger('bannerTransition', [
-      transition(':enter', [
-        style({transform: 'translateY(-100%)'}),
-        animate('200ms ease-in', style({transform: 'translateX(0%)'}))
-      ]),
-      transition(':leave', [
-        animate('200ms ease-out', style({transform: 'translateX(-100%)'}))
-      ])
-    ])
-  ],
 })
 export class MapComponent implements OnInit, OnDestroy  {
   @Output() loadUrlState = new EventEmitter<void>();
@@ -59,7 +46,32 @@ export class MapComponent implements OnInit, OnDestroy  {
   public drawMode$ = this.store$.select(mapStore.getMapDrawMode);
   public interactionMode$ = this.store$.select(mapStore.getMapInteractionMode);
   public mousePosition$ = this.mapService.mousePosition$;
+
   public banners$ = this.store$.select(uiStore.getBanners);
+  public bannersWithBaseline$ = combineLatest(
+    this.store$.select(uiStore.getBanners),
+    this.store$.select(searchStore.getSearchType),
+    this.store$.select(scenesStore.getFilterMaster)
+  ).pipe(
+    map(([banners, searchType, master]) => {
+      if (this.searchType === models.SearchType.BASELINE) {
+        const baselineLink = !!master ?
+          `https://baseline.asf.alaska.edu/#baseline?granule=${master}` :
+          `https://baseline.asf.alaska.edu`;
+
+        const baselineBanner = {
+          'name': 'Baseline Banner',
+          'text': `View in the old <a target="_blank" href="${baselineLink}">Baseline Tool</a>`
+        };
+
+        return [baselineBanner, ...banners];
+      } else {
+        return banners;
+      }
+    })
+  );
+  public showBaselineBanner = true;
+
   public view$ = this.store$.select(mapStore.getMapView);
   public areResultsLoaded$ = this.store$.select(scenesStore.getAreProductsLoaded);
 
@@ -80,7 +92,7 @@ export class MapComponent implements OnInit, OnDestroy  {
     this.store$.select(mapStore.getMapLayerType),
   );
 
-  public breakpoint$ = this.screenSize.breakpoint$;
+  public breakpoint: models.Breakpoints;
   public breakpoints = models.Breakpoints;
 
   public searchType: models.SearchType;
@@ -97,6 +109,12 @@ export class MapComponent implements OnInit, OnDestroy  {
   ) {}
 
   ngOnInit(): void {
+    this.subs.add(
+      this.screenSize.breakpoint$.subscribe(
+        breakpoint => this.breakpoint = breakpoint
+      )
+    );
+
     this.subs.add(
       this.store$.select(searchStore.getSearchType).subscribe(
         searchType => this.searchType = searchType
@@ -234,7 +252,11 @@ export class MapComponent implements OnInit, OnDestroy  {
   }
 
   public removeBanner(banner: models.Banner): void {
-    this.store$.dispatch(new uiStore.RemoveBanner(banner));
+    if (banner.name === 'Baseline Banner') {
+      this.showBaselineBanner = false;
+    } else {
+      this.store$.dispatch(new uiStore.RemoveBanner(banner));
+    }
   }
 
   public enterDrawPopup(): void {

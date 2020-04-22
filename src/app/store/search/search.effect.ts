@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
 
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { Action, Store } from '@ngrx/store';
+import { Store } from '@ngrx/store';
 
-import { Observable, of, forkJoin, combineLatest } from 'rxjs';
-import { map, withLatestFrom, switchMap, catchError, filter } from 'rxjs/operators';
+import { of, forkJoin, combineLatest } from 'rxjs';
+import { map, withLatestFrom, switchMap, catchError, filter, tap } from 'rxjs/operators';
 
 import { AppState } from '../app.reducer';
 import { SetSearchAmount, EnableSearch, DisableSearch, SetSearchType } from './search.action';
@@ -14,7 +14,6 @@ import * as mapStore from '@store/map';
 import * as uiStore from '@store/ui';
 
 import * as services from '@services';
-import { data } from '@services/baselines';
 
 import {
   SearchActionType,

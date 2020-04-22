@@ -1,0 +1,55 @@
+<div *ngIf="searchType$ | async as selectedSearchType"
+  [@isOpen]="isFiltersMenuOpen$ | async"
+  class="dataset-filters-div padding-for-box-shadow">
+  <div class="dataset-filters-card">
+    <div class="header">
+      <div class="header-title">
+        <ng-container *ngIf="selectedSearchType === searchTypes.DATASET">
+          Search Filters
+        </ng-container>
+
+        <ng-container *ngIf="selectedSearchType === searchTypes.LIST">
+          List Search
+        </ng-container>
+
+        <ng-container *ngIf="selectedSearchType === searchTypes.BASELINE">
+          Baseline Search
+        </ng-container>
+      </div>
+
+      <div fxFlex="nogrow">
+        <mat-icon (click)="closePanel()" class="clickable">
+          close
+        </mat-icon>
+      </div>
+    </div>
+
+    <div class="filters-list">
+      <ng-container *ngIf="selectedSearchType === searchTypes.DATASET">
+        <app-dataset-filters [dataset]="dataset$ | async">
+        </app-dataset-filters>
+      </ng-container>
+
+      <ng-container *ngIf="selectedSearchType === searchTypes.LIST">
+        <app-list-filters></app-list-filters>
+      </ng-container>
+
+      <ng-container *ngIf="selectedSearchType === searchTypes.BASELINE">
+        <app-baseline-filters></app-baseline-filters>
+      </ng-container>
+    </div>
+
+    <div class="footer">
+      <ng-container *ngIf="
+        breakpoint === breakpoints.MOBILE ||
+        (breakpoint !== breakpoints.MOBILE && selectedSearchType !== searchTypes.BASELINE)
+      ">
+        <app-max-results-selector
+          *ngIf="selectedSearchType !== searchTypes.BASELINE"
+          style="margin-right: 10px;">
+        </app-max-results-selector>
+        <app-search-button></app-search-button>
+      </ng-container>
+    </div>
+  </div>
+</div>

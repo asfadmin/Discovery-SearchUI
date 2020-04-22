@@ -3,49 +3,35 @@ import { RouterModule } from '@angular/router';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { BrowserModule } from '@angular/platform-browser';
 import { HttpClientModule } from '@angular/common/http';
+import { FlexLayoutModule } from '@angular/flex-layout';
+
 import { MatBottomSheetModule } from '@angular/material/bottom-sheet';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
-import { environment } from '@environments/environment';
 import { MatSidenavModule } from '@angular/material/sidenav';
+import { MatMenuModule } from '@angular/material/menu';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatDialogModule } from '@angular/material/dialog';
 
+import { environment } from '@environments/environment';
 import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 
 import * as store from './store';
 
+import { MatSharedModule } from '@shared';
 import { SavedSearchesModule } from '@components/shared/saved-searches';
-import { NavBarModule } from '@components/nav-bar';
+import { HeaderModule } from '@components/header';
 import { MapModule } from '@components/map';
 import { ResultsMenuModule } from '@components/results-menu';
 import { BaselineChartModule } from '@components/baseline-chart';
-import { MatSharedModule } from '@shared';
+import { HelpModule } from './components/help';
+import { AppComponent } from './app.component';
 
 import { CustomBreakPointsProvider } from '@services/custom-breakpoints.ts';
-
 import * as services from '@services';
 
-import { AppComponent } from './app.component';
-import { FlexLayoutModule } from '@angular/flex-layout';
-
-import {NgcCookieConsentModule, NgcCookieConsentConfig} from 'ngx-cookieconsent';
-import { HelpComponent } from './components/help/help.component';
-import { HelpGeoSearchComponent } from './components/help/help-pages/help-geo-search/help-geo-search.component';
-import {MatMenuModule} from '@angular/material/menu';
-import {MatFormFieldModule} from '@angular/material/form-field';
-import {MatDialogModule} from '@angular/material/dialog';
-import { HelpListSearchComponent } from './components/help/help-pages/help-list-search/help-list-search.component';
-import { HelpSearchResultsComponent } from './components/help/help-pages/help-search-results/help-search-results.component';
-import { HelpTocComponent } from './components/help/help-pages/help-toc/help-toc.component';
-import { HelpLoginComponent } from './components/help/help-pages/help-login/help-login.component';
-import { HelpMapControlsComponent } from './components/help/help-pages/help-map-controls/help-map-controls.component';
-import { HelpFiltersComponent } from './components/help/help-pages/help-filters/help-filters.component';
-import { HelpSavedSearchesComponent } from './components/help/help-pages/help-saved-searches/help-saved-searches.component';
-import { HelpNewStuffComponent } from '@components/help/help-pages/help-new-stuff/help-new-stuff.component';
-import { HelpMoreLikeThisComponent } from '@components/help/help-pages/help-more-like-this/help-more-like-this.component';
-import { HelpUnzippingComponent } from '@components/help/help-pages/help-unzipping/help-unzipping.component';
-import { HelpDownloadQueueComponent } from './components/help/help-pages/help-download-queue/help-download-queue.component';
-import { HelpExportOptionsComponent } from './components/help/help-pages/help-export-options/help-export-options.component';
+import { NgcCookieConsentModule, NgcCookieConsentConfig } from 'ngx-cookieconsent';
 
 // info about cookie consent module: https://tinesoft.github.io/ngx-cookieconsent/home
 const cookieConfig: NgcCookieConsentConfig = {
@@ -85,20 +71,6 @@ export const routes = [
 @NgModule({
   declarations: [
     AppComponent,
-    HelpComponent,
-    HelpGeoSearchComponent,
-    HelpListSearchComponent,
-    HelpSearchResultsComponent,
-    HelpTocComponent,
-    HelpLoginComponent,
-    HelpMapControlsComponent,
-    HelpFiltersComponent,
-    HelpSavedSearchesComponent,
-    HelpNewStuffComponent,
-    HelpMoreLikeThisComponent,
-    HelpUnzippingComponent,
-    HelpDownloadQueueComponent,
-    HelpExportOptionsComponent,
   ],
   imports: [
     BrowserModule,
@@ -109,7 +81,7 @@ export const routes = [
     MatBottomSheetModule,
     MatSharedModule,
     FlexLayoutModule.withConfig({disableDefaultBps: true},
-      CustomBreakPointsProvider.useValue),
+    CustomBreakPointsProvider.useValue),
     RouterModule.forRoot(routes, {useHash: true}),
     StoreModule.forRoot(store.reducers, {metaReducers: store.metaReducers}),
     EffectsModule.forRoot(store.appEffects),
@@ -118,11 +90,12 @@ export const routes = [
     SavedSearchesModule,
     MapModule,
     ResultsMenuModule,
-    NavBarModule,
+    HeaderModule,
     MatMenuModule,
     MatFormFieldModule,
     MatDialogModule,
     BaselineChartModule,
+    HelpModule,
   ],
   providers: [
     services.AsfApiService,
@@ -148,6 +121,7 @@ export const routes = [
     services.UnzipApiService,
     services.ChartService,
     services.ScenesService,
+    services.SearchService
   ],
   bootstrap: [ AppComponent ],
 })
