@@ -28,10 +28,7 @@ export class UIEffects {
       catchError(() => of({
         banners: [{
           text: 'Error loading notifications' ,
-          type: 'error',
-          target: [
-            'vertex'
-          ]
+          name: 'error',
         }],
         systime: ''
       }))

@@ -237,11 +237,10 @@ export class AppComponent implements OnInit, OnDestroy {
     this.store$.dispatch(new uiStore.AddBanners([this.errorBanner()]));
   }
 
-  private errorBanner() {
+  private errorBanner(): models.Banner {
     return  {
       text: 'ASF is experiencing errors loading data.  Please try again later.',
-      type: 'error',
-      target: ['vertex']
+      name: 'error',
     };
   }
 
