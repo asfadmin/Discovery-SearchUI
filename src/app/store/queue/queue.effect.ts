@@ -1,12 +1,10 @@
 import { Injectable } from '@angular/core';
 
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { Store, Action } from '@ngrx/store';
+import { Store } from '@ngrx/store';
 
 import * as FileSaver from 'file-saver';
 import * as moment from 'moment';
-
-import { Observable } from 'rxjs';
 import { map, withLatestFrom, switchMap } from 'rxjs/operators';
 
 import { AppState } from '../app.reducer';

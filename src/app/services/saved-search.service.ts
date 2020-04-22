@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
 
-import { Store, Action } from '@ngrx/store';
-import { Actions, ofType } from '@ngrx/effects';
+import { Store } from '@ngrx/store';
+import { Actions } from '@ngrx/effects';
 import { combineLatest } from 'rxjs';
-import { filter, map, skip, tap, withLatestFrom, switchMap } from 'rxjs/operators';
+import { map, switchMap } from 'rxjs/operators';
 import * as uuid from 'uuid/v1';
 
 import { MapService } from './map/map.service';
@@ -11,10 +11,8 @@ import { AppState } from '@store';
 import * as filtersStore from '@store/filters';
 import * as scenesStore from '@store/scenes';
 import { getSearchType } from '@store/search/search.reducer';
-import { SearchActionType } from '@store/search/search.action';
-import {
-  AddNewSearch, UpdateSearchWithFilters, UpdateSearchName, DeleteSavedSearch,
-  SaveSearches, LoadSavedSearches, AddSearchToHistory
+import { UpdateSearchWithFilters, UpdateSearchName, DeleteSavedSearch,
+  SaveSearches, LoadSavedSearches
 } from '@store/user/user.action';
 
 import * as models from '@models';

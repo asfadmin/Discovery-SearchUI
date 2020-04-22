@@ -1,0 +1,31 @@
+<div
+  *ngIf="breakpoint$ | async as breakpoint"
+  class="bounds">
+  <div>
+    <div class="breadcrumb-list"
+         [class.mobile-nav-bar]="breakpoint === breakpoints.MOBILE"
+         fxLayout="row"
+         fxFlexFill>
+      <div fxLayout="row"
+           fxLayout.gt-lg="column">
+        <div fxFlex="auto" class="logo">
+          <app-logo></app-logo>
+        </div>
+      </div>
+
+      <div *ngIf="searchType$ | async as searchType" fxLayout="column" fxFill>
+        <app-dataset-header *ngIf="searchType === searchTypes.DATASET">
+        </app-dataset-header>
+
+        <app-list-header *ngIf="searchType === searchTypes.LIST">
+        </app-list-header>
+
+        <app-baseline-header *ngIf="searchType === searchTypes.BASELINE">
+        </app-baseline-header>
+
+        <app-info-bar *ngIf="breakpoint !== breakpoints.MOBILE"></app-info-bar>
+      </div>
+    </div>
+  </div>
+  <mat-progress-bar *ngIf="isLoading" style="width: 100%;" mode="indeterminate"></mat-progress-bar>
+</div>

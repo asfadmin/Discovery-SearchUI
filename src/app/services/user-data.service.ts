@@ -4,7 +4,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { Observable, of } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 
-import { EnvironmentService, Environment } from './environment.service';
+import { EnvironmentService } from './environment.service';
 import { UserAuth } from '@models';
 
 

@@ -1,10 +1,9 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 
-import { of, Observable } from 'rxjs';
-import { catchError, map } from 'rxjs/operators';
+import { Observable } from 'rxjs';
 
-import { CMRProduct, UnzippedFolder } from '@models';
+import { CMRProduct } from '@models';
 import { EnvironmentService } from './environment.service';
 
 @Injectable({

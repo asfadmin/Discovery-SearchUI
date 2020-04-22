@@ -9,6 +9,7 @@ a {
 
 .detail-card {
   max-width: 100%;
+  border-left: lightgrey 1px solid;
 }
 
 .scrollable {
@@ -98,4 +99,8 @@ a {
 
 .subtitle {
   margin-bottom: 8px !important;
+}
+
+.mat-card-header .mat-card-title {
+  font-size: 16px;
 }

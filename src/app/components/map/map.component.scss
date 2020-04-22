@@ -21,22 +21,6 @@
   padding-right: 10px;
 }
 
-.banner-card {
-  pointer-events: auto;
-  padding-top: 5px;
-  padding-bottom: 9px;
-  background-color: white;
-  border-color: $asf-primary-dark;
-  border-width: 2px;
-  border-style: solid;
-  color: $asf-primary;
-  //color: darken($asf-accent, 50%);
-  margin-left: 0;
-  margin-bottom: 5px;
-  line-height: 1.4;
-  padding-right: 0;
-}
-
 .map-controls {
   padding-right: 15px;
   height: 58px;
@@ -44,19 +28,6 @@
 
 .map-control-margin {
   margin-right: 72px;
-}
-
-.banner-text {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-}
-
-.inner-banner-text {
-  max-height: 67px;
-  overflow-y: auto;
-  height: fit-content;
-  width: 100%;
 }
 
 .mat-icon-button {

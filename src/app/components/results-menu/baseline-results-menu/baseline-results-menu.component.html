@@ -62,10 +62,9 @@
   <mat-card-subtitle
     [class.medium-header]="breakpoint <= breakpoints.MEDIUM"
     class="header">
-    <button (click)="onToggleFiltersMenu()"
-            mat-button>
-      Filters <mat-icon>more_horiz</mat-icon>
-    </button>
+    <div class="baseline-criteria-label" (click)="onToggleFiltersMenu()">
+      Baseline Criteria <div class="more-icon"><mat-icon>more_horiz</mat-icon></div>
+    </div>
   </mat-card-subtitle>
   <app-baseline-chart></app-baseline-chart>
 </mat-card>
