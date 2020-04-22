@@ -78,13 +78,24 @@
           </ul>
         </div>
         <div class="help-toc-2">
-<!--          <h3>Using Search Results</h3>-->
-<!--          <ul>-->
-<!--            <li>Scenes, Metadata, Files - (2:08)</li>-->
+          <h3>Using Search Results</h3>
+          <ul>
+            <li (click)="data.helpTopic = 'unzipping'">
+              Unzipping
+            </li>
+            <li (click)="data.helpTopic = 'downloadQueue'">
+              Downloading Data
+            </li>
+            <li (click)="data.helpTopic = 'exportOptions'">
+              Exporting Data
+            </li>
+            <li (click)="data.helpTopic = 'moreLikeThis'">
+              More Like This
+            </li>
 <!--            <li>Viewing Scenes, Browsing Images - (4:47)</li>-->
 <!--            <li>Downloading Data - (3:07)</li>-->
 <!--            <li>Using Data - (2:57)</li>-->
-<!--          </ul>-->
+          </ul>
         </div>
         <div class="help-toc-3">
 <!--          <h3>Advanced Features</h3>-->

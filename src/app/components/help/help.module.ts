@@ -14,6 +14,10 @@ import { HelpMapControlsComponent } from './help-pages/help-map-controls/help-ma
 import { HelpFiltersComponent } from './help-pages/help-filters/help-filters.component';
 import { HelpSavedSearchesComponent } from './help-pages/help-saved-searches/help-saved-searches.component';
 import { HelpNewStuffComponent } from './help-pages/help-new-stuff/help-new-stuff.component';
+import { HelpMoreLikeThisComponent } from '@components/help/help-pages/help-more-like-this/help-more-like-this.component';
+import { HelpUnzippingComponent } from '@components/help/help-pages/help-unzipping/help-unzipping.component';
+import { HelpDownloadQueueComponent } from './help-pages/help-download-queue/help-download-queue.component';
+import { HelpExportOptionsComponent } from './help-pages/help-export-options/help-export-options.component';
 
 
 @NgModule({
@@ -28,6 +32,10 @@ import { HelpNewStuffComponent } from './help-pages/help-new-stuff/help-new-stuf
     HelpFiltersComponent,
     HelpSavedSearchesComponent,
     HelpNewStuffComponent,
+    HelpMoreLikeThisComponent,
+    HelpUnzippingComponent,
+    HelpDownloadQueueComponent,
+    HelpExportOptionsComponent,
   ],
   imports: [
     CommonModule,
