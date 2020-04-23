@@ -61,7 +61,7 @@ export class MapComponent implements OnInit, OnDestroy  {
 
         const baselineBanner = {
           'name': 'Baseline Banner',
-          'text': `View in the old <a target="_blank" href="${baselineLink}">Baseline Tool</a>`
+          'text': `This tool is now part of Vertex. <a target="_blank" href="${baselineLink}">The previous baseline tool</a> will remain available until May 13, 2020.`
         };
 
         return [baselineBanner, ...banners];
