@@ -17,7 +17,7 @@ export const smap = {
     name: 'NASA',
     url: 'https://www.nasa.gov/'
   },
-  citationUrl: 'hhttps://www.asf.alaska.edu/how-to-cite-data/',
+  citationUrl: 'https://asf.alaska.edu/data-sets/sar-data-sets/smap/smap-how-to-cite/',
   productTypes: [{
     apiValue: 'L1A_Radar_RO_HDF5',
     displayName: 'L1A Radar Receive Only Product'

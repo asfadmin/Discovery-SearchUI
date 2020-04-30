@@ -16,7 +16,7 @@ export const airsar = {
   },
   frequency: 'L-Band, P-Band, or C-Band',
   infoUrl: 'https://www.asf.alaska.edu/sar-data/airsar/',
-  citationUrl: 'https://www.asf.alaska.edu/how-to-cite-data/',
+  citationUrl: 'https://asf.alaska.edu/data-sets/sar-data-sets/airsar/#airsar_cite',
   source: null,
   productTypes: [{
     apiValue: 'CTIF',
