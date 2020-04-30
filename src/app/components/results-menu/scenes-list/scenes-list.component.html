@@ -8,8 +8,7 @@
                 (click)="onSceneSelected(scene.id)"
                 [class.selected]="scene.name === selected"
                 [class.hovered]="scene.name === hoveredSceneName"
-                [ngClass]="{'mobile-size': breakpoint <= breakpoints.SMALL}"
-        >
+                [ngClass]="{'mobile-size': breakpoint <= breakpoints.SMALL}">
 
           <div class="image-flex">
             <img class="list-thumbnail"
