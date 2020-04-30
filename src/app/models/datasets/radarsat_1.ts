@@ -24,7 +24,7 @@ export const radarsat_1 = {
     url: null
   },
   infoUrl: 'https://www.asf.alaska.edu/sar-data-sets/radarsat-1-2/',
-  citationUrl: 'https://www.asf.alaska.edu/how-to-cite-data/',
+  citationUrl: 'https://asf.alaska.edu/data-sets/sar-data-sets/jers-1/#jers1_cite',
   productTypes: [{
     apiValue: 'L0',
     displayName: 'Level Zero'
