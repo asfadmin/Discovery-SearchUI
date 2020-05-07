@@ -11,6 +11,7 @@ export const jers_1 = {
     Props.FLIGHT_DIRECTION,
     Props.POLARIZATION,
     Props.ABSOLUTE_ORBIT,
+    Props.BASELINE_TOOL,
   ],
   apiValue: { platform: 'JERS-1' },
   date: {
@@ -23,7 +24,7 @@ export const jers_1 = {
     url: 'https://global.jaxa.jp/'
   },
   infoUrl: 'https://www.asf.alaska.edu/sar-data/jers-1/',
-  citationUrl: 'https://www.asf.alaska.edu/how-to-cite-data/',
+  citationUrl: 'https://asf.alaska.edu/data-sets/sar-data-sets/jers-1/#jers1_cite',
   productTypes: [{
     apiValue: 'L0',
     displayName: 'Level Zero'

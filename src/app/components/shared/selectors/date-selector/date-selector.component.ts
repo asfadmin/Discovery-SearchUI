@@ -3,15 +3,17 @@ import { MatDatepickerInputEvent } from '@angular/material/datepicker';
 import { NgForm } from '@angular/forms';
 import * as moment from 'moment';
 
-import { Subject } from 'rxjs';
+import { Subject, combineLatest } from 'rxjs';
 import { filter, tap, delay } from 'rxjs/operators';
 import { SubSink } from 'subsink';
 
 import { Store, ActionsSubject } from '@ngrx/store';
 import { AppState } from '@store';
+import * as scenesStore from '@store/scenes';
 import * as filtersStore from '@store/filters';
+import * as searchStore from '@store/search';
 
-import { DateRangeExtrema } from '@models';
+import { DateRangeExtrema, SearchType } from '@models';
 import { DateExtremaService } from '@services';
 
 @Component({
@@ -23,8 +25,8 @@ export class DateSelectorComponent implements OnInit, OnDestroy {
   @ViewChild('dateForm', { static: true }) public dateForm: NgForm;
 
   public startDateErrors$ = new Subject<void>();
-  public isStartError = false;
   public endDateErrors$ = new Subject<void>();
+  public isStartError = false;
   public isEndError = false;
 
   public extrema: DateRangeExtrema;
@@ -61,14 +63,26 @@ export class DateSelectorComponent implements OnInit, OnDestroy {
       ).subscribe(_ => this.dateForm.reset())
     );
 
-    this.subs.add(
-      this.dateExtremaService.getExtrema$(
+    const dateExtrema$ = this.dateExtremaService.getExtrema$(
         this.store$.select(filtersStore.getSelectedDataset),
         this.startDate$,
         this.endDate$,
-      ).subscribe(
-        extrema => this.extrema = extrema
-      )
+      );
+    const baselineDateExtrema$ = this.dateExtremaService.getBaselineExtrema$(
+        this.store$.select(scenesStore.getScenes),
+        this.startDate$,
+        this.endDate$,
+    );
+
+    this.subs.add(
+      combineLatest(
+        this.store$.select(searchStore.getSearchType)   ,
+        dateExtrema$,
+        baselineDateExtrema$
+      ).subscribe(([searchType, extrema, baselineExtrema]) => {
+        this.extrema = searchType === SearchType.DATASET ?
+          extrema : baselineExtrema;
+      })
     );
 
     this.subs.add(

@@ -1,4 +1,7 @@
-import { Component, OnInit, Input, Output, EventEmitter, ViewChild, ElementRef } from '@angular/core';
+import {
+  Component, OnInit, Input, Output, EventEmitter,
+  ViewChild, ElementRef, ChangeDetectionStrategy
+} from '@angular/core';
 
 import { timer } from 'rxjs';
 import * as moment from 'moment';
@@ -8,7 +11,8 @@ import * as models from '@models';
 @Component({
   selector: 'app-saved-search',
   templateUrl: './saved-search.component.html',
-  styleUrls: ['./saved-search.component.scss']
+  styleUrls: ['./saved-search.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class SavedSearchComponent implements OnInit {
   @ViewChild('nameEditInput') nameEditInput: ElementRef;

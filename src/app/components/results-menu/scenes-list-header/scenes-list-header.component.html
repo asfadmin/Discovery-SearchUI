@@ -1,32 +1,65 @@
 <ng-container *ngIf="numberOfScenes$ | async as numberOfScenes">
+  <ng-container *ngIf="breakpoint$ | async as breakpoint">
+    <div [className]="searchType === SearchTypes.BASELINE && breakpoint > breakpoints.MOBILE ? 'files-header-baseline' : 'files-header'">
+      <div class="header-row-left" [ngClass]="{'mobile-size': breakpoint <= breakpoints.SMALL}">
+        <div *ngIf="searchType !== SearchTypes.BASELINE" style="margin-right: 10px;">
+          {{ numberOfScenes }} Scene{{ numberOfScenes === 1 ? '' : 's' }}
+          ({{ numberOfProducts$ | async }} of {{ formatNumber(totalResultCount$ | async) }} File{{ (numberOfProducts$ | async) === 1 ? '' : 's' }})
+        </div>
+        <div *ngIf="searchType === SearchTypes.BASELINE" style="margin-right: 10px;">
+          {{ numBaselineScenes$ | async }} Scene{{ (numBaselineScenes$ | async) === 1 ? '' : 's' }}
+        </div>
+        <div *ngIf="allProducts$ | async as products">
+          <mat-icon
+            (click)="onZoomToResults()"
+            class="clickable noselect"
+            style="margin-right: 10px;"
+            matTooltip="Zoom to results">
+            settings_overscan
+          </mat-icon>
 
-  <div style="display: flex; justify-content: center;">
-    <div style="margin-right: 10px;">
-      {{ numberOfScenes }} Scene{{ numberOfScenes === 1 ? '' : 's' }}
-      ({{ numberOfProducts$ | async }} of {{ formatNumber(totalResultCount$ | async) }} File{{ (numberOfProducts$ | async) === 1 ? '' : 's' }})
+          <mat-icon
+            class="clickable noselect"
+            matTooltip="Add all results to downloads"
+            [matMenuTriggerFor]="addAllProducts">
+            add_shopping_cart
+          </mat-icon>
+
+          <mat-menu #addAllProducts="matMenu">
+            <button (click)="queueAllProducts(products)" mat-menu-item>
+              Add {{ products.length }} file{{ products.length === 1 ? '' : 's'}} to downloads
+            </button>
+          </mat-menu>
+        </div>
+      </div>
+
+      <ng-container *ngIf="searchType === SearchTypes.BASELINE">
+        <div class="header-row-right" *ngIf="breakpoint > breakpoints.MOBILE">
+          <div (click)="onTogglePerpendicularSort()" class="header-column noselect clickable">
+              meters
+              <mat-icon *ngIf="perpendicularSort === SortDirection.NONE"
+                class="sort-icon">unfold_more</mat-icon>
+              <mat-icon *ngIf="perpendicularSort === SortDirection.INCREASING"
+                class="sort-icon sort-active">keyboard_arrow_up</mat-icon>
+              <mat-icon *ngIf="perpendicularSort === SortDirection.DECREASING"
+                class="sort-icon sort-active">keyboard_arrow_down</mat-icon>
+          </div>
+          <div (click)="onToggleTemporalSort()" class="header-column clickable noselect">
+              days
+              <mat-icon *ngIf="temporalSort === SortDirection.NONE"
+                class="sort-icon">unfold_more</mat-icon>
+              <mat-icon *ngIf="temporalSort === SortDirection.INCREASING"
+                class="sort-icon sort-active">keyboard_arrow_up</mat-icon>
+              <mat-icon *ngIf="temporalSort === SortDirection.DECREASING"
+                class="sort-icon sort-active">keyboard_arrow_down</mat-icon>
+          </div>
+          <div class="header-column header-cart">
+            <!-- shopping cart header -->
+          </div>
+        </div>
+      </ng-container>
+
     </div>
-    <div *ngIf="allProducts$ | async as products">
-      <mat-icon
-        (click)="onZoomToResults()"
-        class="clickable noselect"
-        style="margin-right: 10px;"
-        matTooltip="Zoom to results">
-        settings_overscan
-      </mat-icon>
-
-      <mat-icon
-        class="clickable noselect"
-        matTooltip="Add all results to downloads"
-        [matMenuTriggerFor]="addAllProducts">
-        add_shopping_cart
-      </mat-icon>
-
-      <mat-menu #addAllProducts="matMenu">
-        <button (click)="queueAllProducts(products)" mat-menu-item>
-          Add {{ products.length }} file{{ products.length === 1 ? '' : 's'}} to downloads
-        </button>
-      </mat-menu>
-    </div>
-  </div>
+  </ng-container>
 
 </ng-container>

@@ -25,7 +25,7 @@ export const ers = {
   },
   frequency: 'C-Band',
   infoUrl: 'https://www.asf.alaska.edu/sar-data/ers-1/',
-  citationUrl: 'https://www.asf.alaska.edu/how-to-cite-data/',
+  citationUrl: 'https://asf.alaska.edu/information/how-to-cite-data/',
   productTypes: [{
     apiValue: 'L0',
     displayName: 'Level Zero'

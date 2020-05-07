@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, Input } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { SubSink } from 'subsink';
 import { map, filter, tap } from 'rxjs/operators';
@@ -23,6 +23,8 @@ import { DatasetForProductService } from '@services';
   providers: [ DatasetForProductService ]
 })
 export class SceneDetailComponent implements OnInit, OnDestroy {
+  @Input() isScrollable = true;
+
   public browses$ = this.store$.select(scenesStore.getSelectedSceneBrowses);
   public dataset: models.Dataset;
   public searchType: models.SearchType;
@@ -83,8 +85,16 @@ export class SceneDetailComponent implements OnInit, OnDestroy {
   public updateHasBaseline(): void {
     this.hasBaseline = (
       this.prop.isRelevant(this.p.BASELINE_TOOL, this.dataset) &&
+      !!this.selectedProducts &&
+      this.sceneCanInSAR() &&
       this.hasBaselineProductType()
     );
+  }
+
+  public sceneCanInSAR(): boolean {
+    return this.dataset.id === models.sentinel_1.id ? true : this.selectedProducts
+      .map(product => product.metadata.canInSAR)
+      .some(canInSAR => !!canInSAR);
   }
 
   public baselineSceneName(): string {
@@ -173,9 +183,26 @@ export class SceneDetailComponent implements OnInit, OnDestroy {
     );
   }
 
+  public onSetSelectedAsMaster() {
+    this.store$.dispatch(new scenesStore.SetMaster(this.scene.name));
+  }
+
   public findSimilarScenes(): void {
+    const scene = this.scene;
+
     [
-      new filtersStore.SetFiltersSimilarTo(this.scene),
+      new searchStore.SetSearchType(models.SearchType.DATASET),
+      new filtersStore.SetFiltersSimilarTo(scene),
+      new searchStore.MakeSearch()
+    ].forEach(action => this.store$.dispatch(action));
+  }
+
+  public makeBaselineSearch(): void {
+    const sceneName = this.baselineSceneName();
+    [
+      new searchStore.ClearSearch(),
+      new searchStore.SetSearchType(models.SearchType.BASELINE),
+      new scenesStore.SetFilterMaster(sceneName),
       new searchStore.MakeSearch()
     ].forEach(action => this.store$.dispatch(action));
   }

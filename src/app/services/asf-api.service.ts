@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 
-import { Observable } from 'rxjs';
+import { Observable, combineLatest } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 import { MissionDataset, Props, apiParamNames } from '@models';
 import { EnvironmentService } from './environment.service';
@@ -27,13 +28,18 @@ export class AsfApiService {
 
   public query<T>(stateParamsObj: {[paramName: string]: string | number | null}): Observable<T> {
     const useProdApi = stateParamsObj['maxResults'] >= 5000;
+    if (!this.env.isProd && !useProdApi) {
+      stateParamsObj['maturity'] = this.env.currentEnv.api_maturity;
+    }
 
     const params = this.queryParamsFrom(stateParamsObj);
 
     const queryParamsStr = params.toString()
       .replace('+', '%2B');
 
-    const endpoint = this.searchEndpoint({ useProdApi });
+    const endpoint = params.get('master') ?
+      this.baselineEndpoint() : this.searchEndpoint({ useProdApi });
+
     const formData = this.toFormData(params);
 
     const responseType: any = params.get('output') === 'jsonlite2' ?
@@ -67,6 +73,10 @@ export class AsfApiService {
     const url = options && options.useProdApi ? prodUrl : this.apiUrl;
 
     return `${url}/services/search/param`;
+  }
+
+  private baselineEndpoint(): string {
+    return `${this.apiUrl}/services/search/baseline`;
   }
 
   private queryParamsFrom(stateParamsObj) {
@@ -120,6 +130,26 @@ export class AsfApiService {
     }, {});
 
     return filteredParams;
+  }
+
+  public loadMissions$() {
+    return combineLatest(
+        this.missionSearch(MissionDataset.S1_BETA).pipe(
+          map(resp => ({[MissionDataset.S1_BETA]: resp.result}))
+        ),
+        this.missionSearch(MissionDataset.AIRSAR).pipe(
+          map(resp => ({[MissionDataset.AIRSAR]: resp.result}))
+        ),
+        this.missionSearch(MissionDataset.UAVSAR).pipe(
+          map(resp => ({[MissionDataset.UAVSAR]: resp.result}))
+        )
+      ).pipe(
+        map(missions => missions.reduce(
+          (allMissions, mission) => ({ ...allMissions, ...mission }),
+          {}
+        )
+      )
+    );
   }
 
   public missionSearch(dataset: MissionDataset): Observable<{result: string[]}> {

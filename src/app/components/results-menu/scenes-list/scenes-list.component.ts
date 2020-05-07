@@ -36,6 +36,7 @@ export class ScenesListComponent implements OnInit, OnDestroy {
   public selected: string;
   public copyIcon = faCopy;
 
+  public offsets = {temporal: 0, perpendicular: 0};
   public selectedFromList = false;
   public hoveredSceneName: string | null = null;
 
@@ -44,26 +45,45 @@ export class ScenesListComponent implements OnInit, OnDestroy {
   public breakpoint$ = this.screenSize.breakpoint$;
   public breakpoints = models.Breakpoints;
 
+  public searchType: models.SearchType;
+  public SearchTypes = models.SearchType;
+
+
   constructor(
     private store$: Store<AppState>,
     private mapService: services.MapService,
     private screenSize: services.ScreenSizeService,
     private keyboardService: services.KeyboardService,
+    private scenesService: services.ScenesService,
   ) {}
 
   ngOnInit() {
     this.keyboardService.init();
 
     this.subs.add(
+      this.store$.select(scenesStore.getMasterOffsets).subscribe(
+        offsets => this.offsets = offsets
+      )
+    );
+
+    this.subs.add(
       this.store$.select(scenesStore.getSelectedScene).pipe(
-        withLatestFrom(this.store$.select(scenesStore.getScenes)),
+        withLatestFrom(this.scenesService.scenesSorted$()),
         /* There is some race condition with scrolling before the list is rendered.
          * Doesn't scroll without the delay even though the function is called.
          * */
         delay(20),
         filter(([selected, _]) => !!selected),
         tap(([selected, _]) => this.selected = selected.name),
-        map(([selected, scenes]) => scenes.indexOf(selected)),
+        map(([selected, scenes]) => {
+          let sceneIdx = -1;
+          scenes.forEach((scene, idx) => {
+            if (scene.id === selected.id) {
+              sceneIdx = idx;
+            }
+          });
+          return sceneIdx;
+        })
       ).subscribe(
         idx => {
           if (!this.selectedFromList) {
@@ -76,12 +96,15 @@ export class ScenesListComponent implements OnInit, OnDestroy {
     );
 
     this.subs.add(
-      this.store$.select(scenesStore.getScenes).subscribe(
+      this.scenesService.scenesSorted$().subscribe(
         scenes => this.scenes = scenes
       )
     );
 
     this.subs.add(
+      this.store$.select(searchStore.getSearchType).subscribe(
+        searchType => this.searchType = searchType
+      )
     );
 
     const queueScenes$ = combineLatest(
@@ -174,6 +197,10 @@ export class ScenesListComponent implements OnInit, OnDestroy {
 
   public onZoomTo(scene: models.CMRProduct): void {
     this.mapService.zoomToScene(scene);
+  }
+
+  public withOffset(val: number, offset: number): number {
+    return Math.trunc(val + offset);
   }
 
   ngOnDestroy() {

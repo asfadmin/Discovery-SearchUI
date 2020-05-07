@@ -1,0 +1,64 @@
+.files-header .mobile-size {
+  font-size: 12px !important;
+  font-weight: bold;
+  padding-top: 5px;
+}
+
+.files-header-baseline {
+  padding: 0;
+  flex-direction: row;
+  display: flex;
+  justify-content: space-between;
+}
+
+.header-row-center {
+  display: flex;
+  justify-content: center;
+  height: 22px;
+}
+
+.header-row-left {
+  display: flex;
+  justify-content: flex-start;
+  height: 22px;
+  margin-left: 69px;
+}
+
+.header-row-left .mobile-size {
+  font-size: 12px !important;
+}
+
+.header-row-right {
+  display: flex;
+  justify-content: flex-end;
+  height: 18px;
+  margin-top: 6px;
+  font-size: small;
+}
+
+.header-column {
+  margin-right: 17px;
+}
+
+.header-cart {
+  width: 22px;
+}
+
+.sort-icon {
+  font-size: 18px;
+  padding: 0;
+  margin: 0;
+  width: 12px;
+  height: 12px;
+  vertical-align: middle;
+  position: relative;
+  top: -7px;
+  left: -5px;
+  opacity: 70%;
+}
+
+.sort-active {
+  font-weight: bold;
+  opacity: 100%;
+  top: -5px;
+}

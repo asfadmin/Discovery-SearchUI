@@ -1,4 +1,6 @@
-<mat-button-toggle-group id="dataset-button-toggle-group">
+<mat-button-toggle-group
+  [class.invalid-input-animation]="isSearchError"
+  id="dataset-button-toggle-group">
   <mat-button-toggle>
     <button
       (click)="onDoSearch()"
@@ -55,6 +57,4 @@
     matTooltipPosition="after">
       <button mat-menu-item (click)="onOpenHelp('toc')">Help & Tutorials</button>
   </span>
-
 </mat-menu>
-

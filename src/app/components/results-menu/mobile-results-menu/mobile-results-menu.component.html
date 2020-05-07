@@ -1,0 +1,69 @@
+<div class="h100 w100">
+  <div>
+    <button (click)="onSelectList()"
+     [class.selected]="view === Views.LIST" mat-button>
+      Scenes
+    </button>
+    <button (click)="onSelectDetail()"
+     [class.selected]="view === Views.DETAIL" mat-button>
+      Scene Detail
+      <ng-container *ngIf="searchType !== SearchTypes.BASELINE">
+        &amp; Files
+      </ng-container>
+
+    </button>
+    <button *ngIf="searchType === SearchTypes.BASELINE"
+     (click)="onSelectChart()"
+     [class.selected]="view === Views.CHART" mat-button>
+      Chart
+    </button>
+  </div>
+
+  <!-- SCENE LIST -->
+  <div *ngIf="view === Views.LIST" class="h100 w100">
+    <mat-card class="mp0" fxFlex="100" fxFlexFill>
+      <mat-card-subtitle class="header">
+        <app-scenes-list-header></app-scenes-list-header>
+      </mat-card-subtitle>
+
+      <div class="app-scene-list">
+        <app-scenes-list [resize$]="resize$"></app-scenes-list>
+      </div>
+    </mat-card>
+  </div>
+
+  <!-- SCENE DETAIL -->
+  <div *ngIf="view === Views.DETAIL" class="h100 w100">
+    <mat-card class="h100 w100 mp0 no-box-shadow" fxFlex="100" fxFlex>
+      <mat-card-subtitle class="header mobile">
+        Scene Detail
+        <ng-container *ngIf="searchType !== SearchTypes.BASELINE">
+          /
+          <span *ngIf="selectedProducts$ | async as products; else defaultProductsHeader">
+            {{ products.length || '' }} File{{ (products || []).length === 1 ? '' : 's'}}
+          </span>
+          <ng-template #defaultProductsHeader>Files</ng-template>
+        </ng-container>
+      </mat-card-subtitle>
+
+      <div class="app-scene-list scroll-y scroll-x">
+        <app-scene-detail [isScrollable]="false"></app-scene-detail>
+        <ng-container *ngIf="searchType !== SearchTypes.BASELINE">
+          <hr>
+          <app-scene-files></app-scene-files>
+        </ng-container>
+      </div>
+    </mat-card>
+  </div>
+
+  <div *ngIf="view === Views.CHART" class="h100 w100">
+    <mat-card class="h100 w100 mp0 no-box-shadow" fxFlex="100" fxFlex>
+      <mat-card-subtitle class="header">
+        <button (click)="onToggleFiltersMenu()" mat-button>
+          Baseline Criteria <mat-icon>more_horiz</mat-icon>
+        </button>
+      </mat-card-subtitle>
+      <app-baseline-chart></app-baseline-chart>
+    </mat-card>
+  </div>
+</div>

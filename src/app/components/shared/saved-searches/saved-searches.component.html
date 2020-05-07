@@ -1,6 +1,5 @@
-<div
-  [ngClass]="{'saved-searches-mobile': breakpoint <= breakpoints.SMALL,
-              'saved-searches': breakpoint > breakpoints.SMALL}">
+<div [ngClass]="{'saved-searches-mobile': breakpoint <= breakpoints.SMALL,
+               'saved-searches': breakpoint > breakpoints.SMALL}">
   <div class="saved-searches__header">
       <div class="saved-searches__header-title">
         <span *ngIf="savedSearchType === SavedSearchType.SAVED">Saved Searches</span>
@@ -51,7 +50,7 @@
   <div class="content-wrapper">
       <div *ngIf="searchType$ | async as searchType"
            [ngClass]="{'saved-searches__content-mobile': breakpoint <= breakpoints.SMALL,
-                 'saved-searches__content': breakpoint > breakpoints.SMALL}">
+                       'saved-searches__content': breakpoint > breakpoints.SMALL}">
         <div *ngIf="(searches$ | async).length > 0; else noSavedSearchBlock">
           <div *ngFor="let search of (searches$ | async)" class="saved-searches-row">
             <div *ngIf="filteredSearches.has(search.id)">

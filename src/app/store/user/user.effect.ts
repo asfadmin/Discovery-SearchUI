@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
 
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { Store, Action } from '@ngrx/store';
+import { Store } from '@ngrx/store';
 
-import { Observable, combineLatest } from 'rxjs';
-import { withLatestFrom, switchMap, map, tap, filter } from 'rxjs/operators';
+import { combineLatest } from 'rxjs';
+import { withLatestFrom, switchMap, map, filter } from 'rxjs/operators';
 
 import { AppState } from '../app.reducer';
 import * as userActions from './user.action';
@@ -134,7 +134,7 @@ export class UserEffects {
 
   private datesToDateObjectFor(searches): models.Search[] {
     return searches.map(search => {
-      if (search.searchType === models.SearchType.LIST) {
+      if (search.searchType === models.SearchType.LIST || !search.filters.dateRange) {
         return search;
       }
 

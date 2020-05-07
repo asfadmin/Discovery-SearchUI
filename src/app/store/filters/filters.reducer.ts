@@ -8,6 +8,8 @@ export interface FiltersState {
   selectedDatasetId: string;
 
   dateRange: DateRangeState;
+  perpendicularRange: models.Range<number | null>;
+  temporalRange: models.Range<number | null>;
 
   pathRange: models.Range<number | null>;
   frameRange: models.Range<number | null>;
@@ -36,6 +38,14 @@ export type DateRangeState = models.Range<null | Date>;
 export const initState: FiltersState = {
   selectedDatasetId: 'SENTINEL-1',
   dateRange: {
+    start: null,
+    end: null
+  },
+  perpendicularRange: {
+    start: null,
+    end: null
+  },
+  temporalRange: {
     start: null,
     end: null
   },
@@ -91,6 +101,11 @@ export function filtersReducer(state = initState, action: FiltersActions): Filte
         beamModes: [],
         polarizations: [],
         subtypes: [],
+        selectedMission: null,
+        dateRange: {
+          start: null,
+          end: null
+        },
       };
     }
 
@@ -112,6 +127,84 @@ export function filtersReducer(state = initState, action: FiltersActions): Filte
         ...state,
         dateRange: {
           ...state.dateRange, end
+        }
+      };
+    }
+
+    case FiltersActionType.SET_TEMPORAL_START: {
+      const end = action.payload;
+
+      return {
+        ...state,
+        temporalRange: {
+          ...state.temporalRange, end
+        }
+      };
+    }
+
+    case FiltersActionType.SET_TEMPORAL_END: {
+      const start = action.payload;
+
+      return {
+        ...state,
+        temporalRange: {
+          ...state.temporalRange, start
+        }
+      };
+    }
+
+    case FiltersActionType.SET_TEMPORAL_RANGE: {
+      return {
+        ...state,
+        temporalRange: action.payload
+      };
+    }
+
+    case FiltersActionType.CLEAR_PERPENDICULAR_RANGE: {
+      return {
+        ...state,
+        perpendicularRange: {
+          start: null,
+          end: null
+        }
+      };
+    }
+
+    case FiltersActionType.SET_PERPENDICULAR_START: {
+      const end = action.payload;
+
+      return {
+        ...state,
+        perpendicularRange: {
+          ...state.perpendicularRange, end
+        }
+      };
+    }
+
+    case FiltersActionType.SET_PERPENDICULAR_END: {
+      const start = action.payload;
+
+      return {
+        ...state,
+        perpendicularRange: {
+          ...state.perpendicularRange, start
+        }
+      };
+    }
+
+    case FiltersActionType.SET_PERPENDICULAR_RANGE: {
+      return {
+        ...state,
+        perpendicularRange: action.payload
+      };
+    }
+
+    case FiltersActionType.CLEAR_TEMPORAL_RANGE: {
+      return {
+        ...state,
+        temporalRange: {
+          start: null,
+          end: null
         }
       };
     }
@@ -404,6 +497,15 @@ export function filtersReducer(state = initState, action: FiltersActions): Filte
           listSearchMode: filters.listType,
           searchList: filters.list
         };
+      } else if (search.searchType === models.SearchType.BASELINE) {
+        const filters = <models.BaselineFiltersType>search.filters;
+
+        return {
+          ...state,
+          dateRange: filters.dateRange,
+          temporalRange: filters.temporalRange,
+          perpendicularRange: filters.perpendicularRange,
+        };
       } else {
         const filters = <models.GeographicFiltersType>search.filters;
 
@@ -466,6 +568,36 @@ export const getStartDate = createSelector(
 export const getEndDate = createSelector(
   getDateRange,
   (state: DateRangeState) => state.end
+);
+
+export const getTemporalRange = createSelector(
+  getFiltersState,
+  (state: FiltersState) => state.temporalRange
+);
+
+export const getTemporalStart = createSelector(
+  getTemporalRange,
+  (state: models.Range<number | null>) => state.start
+);
+
+export const getTemporalEnd = createSelector(
+  getTemporalRange,
+  (state: models.Range<number | null>) => state.end
+);
+
+export const getPerpendicularRange = createSelector(
+  getFiltersState,
+  (state: FiltersState) => state.perpendicularRange
+);
+
+export const getPerpendicularStart = createSelector(
+  getPerpendicularRange,
+  (state: models.Range<number | null>) => state.start
+);
+
+export const getPerpendicularEnd = createSelector(
+  getPerpendicularRange,
+  (state: models.Range<number | null>) => state.end
 );
 
 export const getSeason = createSelector(
@@ -589,3 +721,11 @@ export const getGeographicSearch = createSelector(
   })
 );
 
+export const getBaselineSearch = createSelector(
+  getFiltersState,
+  (state: FiltersState) => ({
+    dateRange: state.dateRange,
+    temporalRange: state.temporalRange,
+    perpendicularRange: state.perpendicularRange
+  })
+);

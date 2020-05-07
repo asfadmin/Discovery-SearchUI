@@ -3,7 +3,7 @@ import { Router, ActivatedRoute, Params } from '@angular/router';
 
 import { Store, Action } from '@ngrx/store';
 import * as moment from 'moment';
-import { filter, map, skip, tap, debounceTime } from 'rxjs/operators';
+import { filter, map, skip, tap, debounceTime, take } from 'rxjs/operators';
 
 import { AppState } from '@store';
 import * as scenesStore from '@store/scenes';
@@ -29,7 +29,6 @@ export class UrlStateService {
   private loadLocations: {[paramName: string]: models.LoadTypes};
   private params = {};
   private dataset: string;
-  private isNotLoaded = true;
   private shouldDoSearch = false;
 
   constructor(
@@ -47,6 +46,7 @@ export class UrlStateService {
       ...this.uiParameters(),
       ...this.filtersParameters(),
       ...this.missionParameters(),
+      ...this.baselineParameters(),
     ];
 
     this.urlParamNames = params.map(param => param.name);
@@ -67,12 +67,10 @@ export class UrlStateService {
   public load(): void {
     this.activatedRoute.queryParams.pipe(
       skip(1),
-      filter(params => this.isNotLoaded),
-      tap(() => this.isNotLoaded = false)
+      take(1),
     ).subscribe(
-      params => {
-        this.loadStateFrom(params);
-    });
+      params => this.loadStateFrom(params)
+    );
 
     this.urlParamNames.forEach(
       paramName => this.urlParams[paramName].source.pipe(
@@ -125,13 +123,10 @@ export class UrlStateService {
         }
 
         if (Array.isArray(actions)) {
-          actions.forEach(
-            action => this.store$.dispatch(action)
-          );
+          actions.forEach(action => this.store$.dispatch(action));
         } else {
           this.store$.dispatch(actions);
         }
-
       }
     );
 
@@ -163,6 +158,16 @@ export class UrlStateService {
         map(selected => ({ dataset: selected }))
       ),
       loader: this.loadSelectedDataset
+    }];
+  }
+
+  private baselineParameters(): models.UrlParameter[] {
+    return [{
+      name: 'master',
+      source: this.store$.select(scenesStore.getFilterMaster).pipe(
+        map(master => ({ master }))
+      ),
+      loader: this.loadMasterScene
     }];
   }
 
@@ -251,6 +256,20 @@ export class UrlStateService {
         map(frame => ({ frame }))
       ),
       loader: this.loadFrameRange
+    }, {
+      name: 'perp',
+      source: this.store$.select(filterStore.getPerpendicularRange).pipe(
+        map(range => this.rangeService.toStringWithNegatives(range)),
+        map(perp => ({ perp }))
+      ),
+      loader: this.loadPerpendicularRange
+    }, {
+      name: 'temporal',
+      source: this.store$.select(filterStore.getTemporalRange).pipe(
+        map(range => this.rangeService.toStringWithNegatives(range)),
+        map(temporal => ({ temporal }))
+      ),
+      loader: this.loadTemporalRange
     }, {
       name: 'listSearchType',
       source: this.store$.select(filterStore.getListSearchMode).pipe(
@@ -448,6 +467,28 @@ export class UrlStateService {
     ];
   }
 
+  private loadPerpendicularRange = (rangeStr: string): Action => {
+    const range = rangeStr
+      .split('to')
+      .map(v => +v);
+
+    return new filterStore.SetPerpendicularRange({
+      start: range[0],
+      end: range[1]
+    });
+  }
+
+  private loadTemporalRange = (rangeStr: string): Action => {
+    const range = rangeStr
+      .split('to')
+      .map(v => +v);
+
+    return new filterStore.SetTemporalRange({
+      start: range[0],
+      end: range[1]
+    });
+  }
+
   private loadSearchList = (listStr: string): Action => {
     const list = listStr.split(',');
 
@@ -539,6 +580,10 @@ export class UrlStateService {
 
       return new filterStore.SetMaxResults(clampedResults);
     }
+  }
+
+  private loadMasterScene = (master: string): Action => {
+    return new scenesStore.SetFilterMaster(master);
   }
 
   private updateShouldSearch(): void {

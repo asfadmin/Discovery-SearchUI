@@ -1,19 +1,18 @@
 import { Injectable } from '@angular/core';
 
-import { Store, Action } from '@ngrx/store';
-import { Actions, ofType } from '@ngrx/effects';
+import { Store } from '@ngrx/store';
+import { Actions } from '@ngrx/effects';
 import { combineLatest } from 'rxjs';
-import { filter, map, skip, tap, withLatestFrom, switchMap } from 'rxjs/operators';
+import { map, switchMap } from 'rxjs/operators';
 import * as uuid from 'uuid/v1';
 
 import { MapService } from './map/map.service';
 import { AppState } from '@store';
 import * as filtersStore from '@store/filters';
+import * as scenesStore from '@store/scenes';
 import { getSearchType } from '@store/search/search.reducer';
-import { SearchActionType } from '@store/search/search.action';
-import {
-  AddNewSearch, UpdateSearchWithFilters, UpdateSearchName, DeleteSavedSearch,
-  SaveSearches, LoadSavedSearches, AddSearchToHistory
+import { UpdateSearchWithFilters, UpdateSearchName, DeleteSavedSearch,
+  SaveSearches, LoadSavedSearches
 } from '@store/user/user.action';
 
 import * as models from '@models';
@@ -37,12 +36,26 @@ export class SavedSearchService {
   );
 
   private currentListSearch$ = this.store$.select(filtersStore.getListSearch);
+  private currentBaselineSearch$ = combineLatest(
+    this.store$.select(scenesStore.getFilterMaster),
+    this.store$.select(scenesStore.getMasterName),
+    this.store$.select(filtersStore.getBaselineSearch),
+  ).pipe(
+    map(([filterMaster, master, baselineFilters]) => ({
+      filterMaster,
+      master,
+      ...baselineFilters
+    }))
+  );
+
   private searchType$ = this.store$.select(getSearchType);
 
   public currentSearch$ = this.searchType$.pipe(
-    switchMap(searchType => searchType === models.SearchType.DATASET ?
-      this.currentGeographicSearch$ :
-      this.currentListSearch$
+    switchMap(searchType => ({
+      [models.SearchType.DATASET]: this.currentGeographicSearch$,
+      [models.SearchType.LIST]: this.currentListSearch$,
+      [models.SearchType.BASELINE]: this.currentBaselineSearch$,
+    })[searchType]
     )
   );
   private currentSearch: models.FilterType;

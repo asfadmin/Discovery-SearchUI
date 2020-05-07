@@ -1,25 +1,24 @@
-import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, OnDestroy } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
-
-import { timer } from 'rxjs';
+import { SubSink } from 'subsink';
 import { filter, switchMap, tap, delay } from 'rxjs/operators';
-import { Store, Action } from '@ngrx/store';
+import { Store } from '@ngrx/store';
 import { AppState } from '@store';
 import * as userStore from '@store/user';
 import * as searchStore from '@store/search';
+import * as scenesStore from '@store/scenes';
 import * as uiStore from '@store/ui';
 import * as filtersStore from '@store/filters';
 
-import { SavedSearchService, MapService, WktService, ScreenSizeService } from '@services';
+import { SavedSearchService, ScreenSizeService, SearchService } from '@services';
 import * as models from '@models';
-import {getIsSaveSearchOn, SetSaveSearchOn} from '@store/ui';
 
 @Component({
   selector: 'app-saved-searches',
   templateUrl: './saved-searches.component.html',
   styleUrls: ['./saved-searches.component.scss'],
 })
-export class SavedSearchesComponent implements OnInit {
+export class SavedSearchesComponent implements OnInit, OnDestroy {
   @ViewChild('filterInput', { static: true }) filterInput: ElementRef;
 
   public searchType$ = this.store$.select(searchStore.getSearchType);
@@ -47,49 +46,61 @@ export class SavedSearchesComponent implements OnInit {
   public newSearchId: string;
 
   private initFocus = true;
+  private subs = new SubSink();
 
   constructor(
     private savedSearchService: SavedSearchService,
     private store$: Store<AppState>,
     private screenSize: ScreenSizeService,
     private snackBar: MatSnackBar,
-    private mapService: MapService,
-    private wktService: WktService,
+    private searchService: SearchService,
   ) { }
 
   ngOnInit() {
     this.savedSearchService.loadSearches();
-    this.screenSize.breakpoint$.subscribe(
-      breakpoint => this.breakpoint = breakpoint
+
+    this.subs.add(
+      this.screenSize.breakpoint$.subscribe(
+        breakpoint => this.breakpoint = breakpoint
+      )
     );
 
-    this.store$.select(uiStore.getIsSaveSearchOn).pipe(
-      tap(saveSearchOn => this.saveSearchOn = saveSearchOn),
-      delay(250)
-    ).subscribe(
-      saveSearchOn => {
-        if (this.saveSearchOn) {
-          this.lockedFocus = true;
-          this.saveCurrentSearch();
-          this.store$.dispatch(new uiStore.SetSaveSearchOn(false));
+    this.subs.add(
+      this.store$.select(uiStore.getIsSaveSearchOn).pipe(
+        tap(saveSearchOn => this.saveSearchOn = saveSearchOn),
+        delay(250)
+      ).subscribe(
+        saveSearchOn => {
+          if (this.saveSearchOn) {
+            this.lockedFocus = true;
+            this.saveCurrentSearch();
+            this.store$.dispatch(new uiStore.SetSaveSearchOn(false));
+          }
         }
-      }
+      )
     );
 
-    this.savedSearchType$.subscribe(
-      savedSearchType => this.savedSearchType = savedSearchType
+    this.subs.add(
+      this.savedSearchType$.subscribe(
+        savedSearchType => this.savedSearchType = savedSearchType
+      )
     );
 
-    this.searches$.subscribe(
-      searches => {
-        this.filterTokens = this.savedSearchService.filterTokensFrom(searches);
-        this.updateFilter();
-      });
+    this.subs.add(
+      this.searches$.subscribe(
+        searches => {
+          this.filterTokens = this.savedSearchService.filterTokensFrom(searches);
+          this.updateFilter();
+        }
+      )
+    );
 
-    this.store$.select(uiStore.getIsSidebarOpen).pipe(
-      filter(isOpen => !isOpen)
-    ).subscribe(
-      isOpen => this.initFocus = true
+    this.subs.add(
+      this.store$.select(uiStore.getIsSidebarOpen).pipe(
+        filter(isOpen => !isOpen)
+      ).subscribe(
+        isOpen => this.initFocus = true
+      )
     );
   }
 
@@ -164,7 +175,7 @@ export class SavedSearchesComponent implements OnInit {
   }
 
   public unfocusFilter(): void {
-     this.filterInput.nativeElement.blur();
+    this.filterInput.nativeElement.blur();
   }
 
   public updateSearchName(update: {id: string, name: string}): void {
@@ -185,32 +196,9 @@ export class SavedSearchesComponent implements OnInit {
   }
 
   public onSetSearch(search: models.Search): void {
-    this.store$.dispatch(new searchStore.ClearSearch());
-    this.store$.dispatch(new searchStore.SetSearchType(search.searchType));
-
-    if (search.searchType === models.SearchType.DATASET) {
-      this.loadSearchPolygon(search);
-    }
-
-    this.store$.dispatch(new filtersStore.SetSavedSearch(search));
-    this.store$.dispatch(new uiStore.CloseSidebar());
-    this.store$.dispatch(new searchStore.MakeSearch());
+    this.searchService.load(search);
   }
 
-  private loadSearchPolygon(search: models.Search): void {
-    const polygon = (<models.GeographicFiltersType>search.filters).polygon;
-
-    if (polygon === null) {
-      this.mapService.clearDrawLayer();
-    } else {
-      const features =  this.wktService.wktToFeature(
-        polygon,
-        this.mapService.epsg()
-      );
-
-      this.mapService.setDrawFeature(features);
-    }
-  }
 
   public onUnlockFocus(): void {
     this.lockedFocus = false;
@@ -219,5 +207,9 @@ export class SavedSearchesComponent implements OnInit {
   public onExpandSearch(searchId: string): void {
     this.expandedSearchId = this.expandedSearchId === searchId ?
     '' : searchId;
+  }
+
+  ngOnDestroy() {
+    this.subs.unsubscribe();
   }
 }

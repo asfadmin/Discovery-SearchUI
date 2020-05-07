@@ -1,7 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { SubSink } from 'subsink';
 
 import { combineLatest } from 'rxjs';
-import { map, withLatestFrom, debounceTime } from 'rxjs/operators';
+import { map } from 'rxjs/operators';
 
 import { Store } from '@ngrx/store';
 import { AppState } from '@store';
@@ -16,7 +17,7 @@ import * as models from '@models';
   templateUrl: './scene-files.component.html',
   styleUrls: ['./scene-files.component.scss']
 })
-export class SceneFilesComponent implements OnInit {
+export class SceneFilesComponent implements OnInit, OnDestroy {
   public products: models.CMRProduct[];
   public queuedProductIds$ = this.store$.select(queueStore.getQueuedProductIds).pipe(
       map(names => new Set(names))
@@ -30,40 +31,54 @@ export class SceneFilesComponent implements OnInit {
   public unzippedProducts: {[id: string]: models.UnzippedFolder[]};
   public isUserLoggedIn: boolean;
   public hasAccessToRestrictedData: boolean;
+  private subs = new SubSink();
 
   constructor(
     private store$: Store<AppState>
   ) { }
 
   ngOnInit() {
-    combineLatest(
-      this.store$.select(scenesStore.getSelectedSceneProducts),
-      this.store$.select(scenesStore.getOpenUnzippedProduct)
-    ).subscribe(
-      ([products, unzipped]) => {
-        this.products = products;
-        this.openUnzippedProduct = unzipped;
+    this.subs.add(
+      combineLatest(
+        this.store$.select(scenesStore.getSelectedSceneProducts),
+        this.store$.select(scenesStore.getOpenUnzippedProduct)
+      ).subscribe(
+        ([products, unzipped]) => {
+          this.products = products;
+          this.openUnzippedProduct = unzipped;
 
-        if (unzipped) {
-          this.beforeWithUnzip = this.getBeforeWithUnzip(products);
-          this.afterUnzip = this.getAfterUnzip(products);
+          if (unzipped && products) {
+            this.beforeWithUnzip = this.getBeforeWithUnzip(products);
+            this.afterUnzip = this.getAfterUnzip(products);
+          }
         }
-      }
+      )
     );
-    this.store$.select(userStore.getIsUserLoggedIn).subscribe(
-      isLoggedIn => this.isUserLoggedIn = isLoggedIn
+
+    this.subs.add(
+      this.store$.select(userStore.getIsUserLoggedIn).subscribe(
+        isLoggedIn => this.isUserLoggedIn = isLoggedIn
+      )
     );
-    this.store$.select(userStore.getHasRestrictedDataAccess).subscribe(
-      hasAccess => this.hasAccessToRestrictedData = hasAccess
+    this.subs.add(
+      this.store$.select(userStore.getHasRestrictedDataAccess).subscribe(
+        hasAccess => this.hasAccessToRestrictedData = hasAccess
+      )
     );
-    this.store$.select(scenesStore.getShowUnzippedProduct).subscribe(
-      showUnzipped => this.showUnzippedProductScreen = showUnzipped
+    this.subs.add(
+      this.store$.select(scenesStore.getShowUnzippedProduct).subscribe(
+        showUnzipped => this.showUnzippedProductScreen = showUnzipped
+      )
     );
-    this.store$.select(scenesStore.getUnzippedProducts).subscribe(
-      unzippedProducts => this.unzippedProducts = unzippedProducts
+    this.subs.add(
+      this.store$.select(scenesStore.getUnzippedProducts).subscribe(
+        unzippedProducts => this.unzippedProducts = unzippedProducts
+      )
     );
-    this.store$.select(scenesStore.getUnzipLoading).subscribe(
-      unzippedLoading => this.unzippedLoading = unzippedLoading
+    this.subs.add(
+      this.store$.select(scenesStore.getUnzipLoading).subscribe(
+        unzippedLoading => this.unzippedLoading = unzippedLoading
+      )
     );
   }
 
@@ -105,5 +120,9 @@ export class SceneFilesComponent implements OnInit {
     });
 
     return pivotIdx;
+  }
+
+  ngOnDestroy() {
+    this.subs.unsubscribe();
   }
 }

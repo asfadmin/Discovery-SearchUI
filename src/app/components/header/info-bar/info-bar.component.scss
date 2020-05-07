@@ -1,0 +1,43 @@
+@import "asf-theme";
+
+$config: mat-typography-config();
+
+.info-bar--size {
+  width: 100%;
+  height: 100%;
+  justify-content: space-between;
+}
+
+div span {
+  margin-right: 2px;
+}
+
+.first-info {
+  flex: 0 1 75%;
+  padding-left: 10px;
+  height: 32px;
+}
+
+.last-info {
+  flex: 1 1 25%;
+  text-align: right;
+  margin-right: 25px;
+}
+
+.info-bar {
+  border-top-color: $asf-primary;
+  border-top-style: solid;
+  border-top-width: 1px;
+  background-color: $asf-primary-light;
+  color: $asf-primary-dark;
+  line-height: 30px;
+  font-family: mat-font-family($custom-typography);
+  font-size: 14px;
+  padding-right: 150px;
+}
+
+.new-stuff {
+  cursor: pointer;
+  color: $uaf-primary-blue;
+  font-weight: bold;
+}

@@ -37,6 +37,21 @@
           <ng-template [ngSwitchCase]="'savedSearches'">
             <app-help-saved-searches></app-help-saved-searches>
           </ng-template>
+          <ng-template [ngSwitchCase]="'newStuff'">
+            <app-help-new-stuff></app-help-new-stuff>
+          </ng-template>
+          <ng-template [ngSwitchCase]="'unzipping'">
+            <app-help-unzipping></app-help-unzipping>
+          </ng-template>
+          <ng-template [ngSwitchCase]="'downloadQueue'">
+            <app-help-download-queue></app-help-download-queue>
+          </ng-template>
+          <ng-template [ngSwitchCase]="'exportOptions'">
+            <app-help-export-options></app-help-export-options>
+          </ng-template>
+          <ng-template [ngSwitchCase]="'moreLikeThis'">
+            <app-help-more-like-this></app-help-more-like-this>
+          </ng-template>
           <ng-template [ngSwitchDefault]>
             <app-help-toc></app-help-toc>
           </ng-template>
