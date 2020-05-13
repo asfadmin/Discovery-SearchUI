@@ -106,12 +106,12 @@ export class FileUploadDialogComponent implements OnInit, OnDestroy {
         catchError(err => of({ errors: [{ report: 'Error loading files', type: 'ERROR' }]}))
       ).subscribe(
         resp => {
-          if (resp.errors && resp.errors.length > 0) {
+          if (resp.wkt) {
+            this.dialogRef.close(resp.wkt.unwrapped);
+          } else if (resp.errors && resp.errors.length > 0) {
             const { report, type } = resp.errors[0];
             this.snackBar.open(report, type, { duration: 5000 });
             this.dialogRef.close();
-          } else {
-            this.dialogRef.close(resp.wkt.unwrapped);
           }
         },
         err => {
