@@ -1,8 +1,8 @@
 import { Component, ViewChild, OnInit, OnDestroy } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
-import { Subject, Subscription } from 'rxjs';
-import { delay, tap } from 'rxjs/operators';
+import { Subject, Subscription, of } from 'rxjs';
+import { delay, tap, catchError } from 'rxjs/operators';
 
 import { MatDialogRef } from '@angular/material/dialog';
 import { SubSink } from 'subsink';
@@ -102,10 +102,12 @@ export class FileUploadDialogComponent implements OnInit, OnDestroy {
     this.uploading = true;
 
     this.subs.add(
-      this.request = this.asfApiService.upload(this.files).subscribe(
+      this.request = this.asfApiService.upload(this.files).pipe(
+        catchError(err => of({ errors: [{ report: 'Error loading files', type: 'ERROR' }]}))
+      ).subscribe(
         resp => {
-          if (resp.error) {
-            const { report, type } = resp.error;
+          if (resp.errors && resp.errors.length > 0) {
+            const { report, type } = resp.errors[0];
             this.snackBar.open(report, type, { duration: 5000 });
             this.dialogRef.close();
           } else {
