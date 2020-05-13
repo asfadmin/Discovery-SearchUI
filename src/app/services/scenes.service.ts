@@ -38,6 +38,35 @@ export class ScenesService {
     );
   }
 
+  public pairs$(): Observable<CMRProduct[]> {
+    return this.store$.select(getScenes).pipe(
+      map(
+        scenes => this.temporalSort(scenes, ColumnSortDirection.INCREASING)
+      ),
+      map(scenes => this.makePairs(scenes, 48))
+    );
+  }
+
+  private makePairs(scenes: CMRProduct[], threshold: number) {
+    const pairs = [];
+
+    scenes.forEach((root, index) => {
+      for (let i = index + 1; i < scenes.length; ++i) {
+        const scene = scenes[i];
+        const diff = scene.metadata.temporal - root.metadata.temporal;
+
+        if (diff > threshold) {
+          return;
+        }
+
+        pairs.push([root, scene]);
+      }
+    });
+    console.log(pairs.length);
+
+    return pairs;
+  }
+
   private sortScenes$(scenes$: Observable<CMRProduct[]>) {
     return combineLatest(
       scenes$,
@@ -50,21 +79,30 @@ export class ScenesService {
             return scenes;
           }
 
-          let sortFunc;
           if (tempSort !== ColumnSortDirection.NONE) {
-            sortFunc = (tempSort === ColumnSortDirection.INCREASING) ?
-                (a, b) => a.metadata.temporal - b.metadata.temporal :
-                (a, b) => b.metadata.temporal - a.metadata.temporal;
+            return this.temporalSort(scenes, tempSort);
           } else {
-            sortFunc = (perpSort === ColumnSortDirection.INCREASING) ?
-                (a, b) => a.metadata.perpendicular - b.metadata.perpendicular :
-                (a, b) => b.metadata.perpendicular - a.metadata.perpendicular;
+            return this.perpendicularSort(scenes, perpSort);
           }
-
-          return scenes.sort(sortFunc);
         }
       )
     );
+  }
+
+  private temporalSort(scenes, direction: ColumnSortDirection) {
+    const sortFunc = (direction === ColumnSortDirection.INCREASING) ?
+        (a, b) => a.metadata.temporal - b.metadata.temporal :
+        (a, b) => b.metadata.temporal - a.metadata.temporal;
+
+    return scenes.sort(sortFunc);
+  }
+
+  private perpendicularSort(scenes, direction: ColumnSortDirection) {
+    const sortFunc = (direction === ColumnSortDirection.INCREASING) ?
+        (a, b) => a.metadata.perpendicular - b.metadata.perpendicular :
+        (a, b) => b.metadata.perpendicular - a.metadata.perpendicular;
+
+    return scenes.sort(sortFunc);
   }
 
   private filterBaselineValues$(products: Observable<CMRProduct[]>) {

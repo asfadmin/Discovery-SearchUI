@@ -55,6 +55,7 @@ export class SavedSearchService {
       [models.SearchType.DATASET]: this.currentGeographicSearch$,
       [models.SearchType.LIST]: this.currentListSearch$,
       [models.SearchType.BASELINE]: this.currentBaselineSearch$,
+      [models.SearchType.SBAS]: this.currentBaselineSearch$, // TODO: SBAS Search Here
     })[searchType]
     )
   );
