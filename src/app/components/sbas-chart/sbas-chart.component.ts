@@ -79,17 +79,17 @@ export class SBASChartComponent implements OnInit, OnDestroy {
 
   private dummyData()  {
     return [{
-      "data": [
-        {"x":-2041,"y":47,"id":"S1A_IW_SLC__1SSV_20141006T155628_20141006T155645_002711_003089_4288-SLC"},
-        {"x":-2017,"y":-69,"id":"S1A_IW_SLC__1SSV_20141030T155627_20141030T155645_003061_003805_1F1F-SLC"}
+      'data': [
+        {'x': -2041, 'y': 47, 'id': 'S1A_IW_SLC__1SSV_20141006T155628_20141006T155645_002711_003089_4288-SLC'},
+        {'x': -2017, 'y': -69, 'id': 'S1A_IW_SLC__1SSV_20141030T155627_20141030T155645_003061_003805_1F1F-SLC'}
       ],
-      "type":"line",
+      'type': 'line',
     }, {
-      "data":[
-        {"x":-2041,"y":47,"id":"S1A_IW_SLC__1SSV_20141006T155628_20141006T155645_002711_003089_4288-SLC"},
-        {"x":-1993,"y":135,"id":"S1A_IW_SLC__1SSV_20141123T155627_20141123T155645_003411_003FAB_4687-SLC"}
+      'data': [
+        {'x': -2041, 'y': 47, 'id': 'S1A_IW_SLC__1SSV_20141006T155628_20141006T155645_002711_003089_4288-SLC'},
+        {'x': -1993, 'y': 135, 'id': 'S1A_IW_SLC__1SSV_20141123T155627_20141123T155645_003411_003FAB_4687-SLC'}
       ],
-      "type":"line",
+      'type': 'line',
     }].map(dataset => {
       return { ...dataset,
         fill: false,
