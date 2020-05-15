@@ -31,7 +31,7 @@
 
           <ng-container *ngIf="breakpoint >= breakpoints.SMALL">
             <app-desktop-results-menu class="w100 h100"
-              *ngIf="searchType !== SearchTypes.BASELINE"
+              *ngIf="searchType !== SearchTypes.BASELINE && searchType !== SearchTypes.SBAS"
               [resize$]="resize$">
             </app-desktop-results-menu>
 
@@ -39,6 +39,11 @@
               *ngIf="searchType === SearchTypes.BASELINE"
               [resize$]="resize$">
             </app-baseline-results-menu>
+
+            <app-sbas-results-menu class="w100 h100"
+              *ngIf="searchType === SearchTypes.SBAS"
+              [resize$]="resize$">
+            </app-sbas-results-menu>
           </ng-container>
 
           <ng-container *ngIf="breakpoint === breakpoints.MOBILE">

@@ -1,0 +1,21 @@
+<!-- SCENE LIST -->
+<ng-container *ngIf="breakpoint > breakpoints.MEDIUM">
+  <mat-card class="mp0" fxFlex="38" fxFlex>
+    <mat-card-subtitle class="header">
+      <app-scenes-list-header></app-scenes-list-header>
+    </mat-card-subtitle>
+
+    <div class="app-scene-list">
+      <app-scenes-list [resize$]="resize$"></app-scenes-list>
+    </div>
+  </mat-card>
+</ng-container>
+
+<mat-card class="mp0 no-box-shadow" fxFlex="55" fxFlexFill>
+  <mat-card-subtitle
+    [class.medium-header]="breakpoint <= breakpoints.MEDIUM"
+    class="header">
+  </mat-card-subtitle>
+
+  <app-sbas-chart></app-sbas-chart>
+</mat-card>
