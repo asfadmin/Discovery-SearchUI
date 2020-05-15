@@ -30,6 +30,7 @@ export class ScenesListComponent implements OnInit, OnDestroy {
   @Input() resize$: Observable<void>;
 
   public scenes;
+  public pairs;
 
   public numberOfQueue: {[scene: string]: [number, number]};
   public allQueued: {[scene: string]: boolean};
@@ -47,7 +48,6 @@ export class ScenesListComponent implements OnInit, OnDestroy {
 
   public searchType: models.SearchType;
   public SearchTypes = models.SearchType;
-
 
   constructor(
     private store$: Store<AppState>,
@@ -98,6 +98,12 @@ export class ScenesListComponent implements OnInit, OnDestroy {
     this.subs.add(
       this.scenesService.scenesSorted$().subscribe(
         scenes => this.scenes = scenes
+      )
+    );
+
+    this.subs.add(
+      this.scenesService.pairs$().subscribe(
+        pairs => this.pairs = pairs
       )
     );
 

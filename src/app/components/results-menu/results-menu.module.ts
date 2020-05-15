@@ -18,6 +18,8 @@ import { MobileResultsMenuComponent } from './mobile-results-menu/mobile-results
 import { DesktopResultsMenuComponent } from './desktop-results-menu/desktop-results-menu.component';
 import { BaselineResultsMenuComponent } from './baseline-results-menu/baseline-results-menu.component';
 import { BaselineChartModule } from '@components/baseline-chart/baseline-chart.module';
+import { SBASResultsMenuComponent } from './sbas-results-menu/sbas-results-menu.component';
+import { SBASChartModule } from '@components/sbas-chart/sbas-chart.module';
 
 @NgModule({
   declarations: [
@@ -25,7 +27,8 @@ import { BaselineChartModule } from '@components/baseline-chart/baseline-chart.m
     ScenesListHeaderComponent,
     MobileResultsMenuComponent,
     DesktopResultsMenuComponent,
-    BaselineResultsMenuComponent
+    BaselineResultsMenuComponent,
+    SBASResultsMenuComponent
   ],
   imports: [
     CommonModule,
@@ -40,6 +43,7 @@ import { BaselineChartModule } from '@components/baseline-chart/baseline-chart.m
     SceneFilesModule,
     SceneDetailModule,
     BaselineChartModule,
+    SBASChartModule,
   ],
   exports: [ResultsMenuComponent],
 })
