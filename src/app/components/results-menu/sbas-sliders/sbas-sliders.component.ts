@@ -19,6 +19,18 @@ import { SubSink } from 'subsink';
 export class SbasSlidersComponent implements OnInit {
   @ViewChild('tempFilter', { static: true }) temporalFilter: ElementRef;
 
+  public temporalAutoTicks = false;
+  public temporalDisabled = false;
+  public temporalInvert = false;
+  public temporalMax = 60;
+  public temporalMin = 0;
+  public temporalShowTicks = true;
+  public temporalStep = 1;
+  public temporalThumbLabel = true;
+  public temporalValue = 48;
+  public temporalVertical = false;
+  public temporalTickInterval = 7;
+
   public tempSlider;
   public temporal: number;
   private temporalValue$: Observable<number>;
@@ -36,7 +48,7 @@ export class SbasSlidersComponent implements OnInit {
     this.subs.add(
       tempValues$.subscribe(
         ([start]) => {
-          console.log(start);
+          console.log('start:', start);
           const action = new filtersStore.SetTemporalRange({ start, end: null });
           this.store$.dispatch(action);
         }
@@ -50,6 +62,21 @@ export class SbasSlidersComponent implements OnInit {
         }
       )
     );
+  }
+
+  public getTemporalSliderTickInterval(): number | 'auto' {
+    if (this.temporalShowTicks) {
+      return this.temporalAutoTicks ? 'auto' : this.temporalTickInterval;
+    }
+
+    return 0;
+  }
+
+  public sliderOnChange(value: number) {
+    if (this.temporalValue !== value) {
+      this.temporalValue = value;
+      console.log('changed: ', this.temporalValue);
+    }
   }
 
   private makeSlider$(filterRef: ElementRef) {

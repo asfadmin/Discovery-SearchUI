@@ -2,4 +2,19 @@
   <span class="sbas-label">Temporal Criteria: </span>
     {{ temporal }}
   <div class="slider" #tempFilter></div>
+  <mat-slider
+    #temporalSlider
+    class="sbas-mat-slider"
+    [disabled]="temporalDisabled"
+    [invert]="temporalInvert"
+    [max]="temporalMax"
+    [min]="temporalMin"
+    [step]="temporalStep"
+    [thumbLabel]="temporalThumbLabel"
+    [tickInterval]="getTemporalSliderTickInterval()"
+    [(ngModel)]="temporal"
+    [vertical]="temporalVertical"
+    (slideend)="sliderOnChange(temporalSlider.value)"
+    (pointerup)="sliderOnChange(temporalSlider.value)">
+  </mat-slider>
 </div>

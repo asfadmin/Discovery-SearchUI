@@ -21,6 +21,8 @@ import { BaselineChartModule } from '@components/baseline-chart/baseline-chart.m
 import { SBASResultsMenuComponent } from './sbas-results-menu/sbas-results-menu.component';
 import { SBASChartModule } from '@components/sbas-chart/sbas-chart.module';
 import { SbasSlidersComponent } from './sbas-sliders/sbas-sliders.component';
+import {MatSliderModule} from '@angular/material/slider';
+import {FormsModule} from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -46,6 +48,8 @@ import { SbasSlidersComponent } from './sbas-sliders/sbas-sliders.component';
     SceneDetailModule,
     BaselineChartModule,
     SBASChartModule,
+    MatSliderModule,
+    FormsModule,
   ],
   exports: [ResultsMenuComponent],
 })
