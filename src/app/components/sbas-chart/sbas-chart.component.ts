@@ -51,6 +51,9 @@ export class SBASChartComponent implements OnInit, OnDestroy {
         pairs$.subscribe(pairs => {
           const pairLines = pairs.map(pair => this.pairToLine(pair));
 
+          if (this.chart) {
+            this.chart.destroy();
+          }
           this.chart = this.chartService.makeChart(
             this.baselineChart.nativeElement,
             (_, __) => {},
