@@ -20,6 +20,7 @@ import { BaselineResultsMenuComponent } from './baseline-results-menu/baseline-r
 import { BaselineChartModule } from '@components/baseline-chart/baseline-chart.module';
 import { SBASResultsMenuComponent } from './sbas-results-menu/sbas-results-menu.component';
 import { SBASChartModule } from '@components/sbas-chart/sbas-chart.module';
+import { SbasSlidersComponent } from './sbas-sliders/sbas-sliders.component';
 
 @NgModule({
   declarations: [
@@ -28,7 +29,8 @@ import { SBASChartModule } from '@components/sbas-chart/sbas-chart.module';
     MobileResultsMenuComponent,
     DesktopResultsMenuComponent,
     BaselineResultsMenuComponent,
-    SBASResultsMenuComponent
+    SBASResultsMenuComponent,
+    SbasSlidersComponent
   ],
   imports: [
     CommonModule,

@@ -39,11 +39,17 @@ export class ScenesService {
   }
 
   public pairs$(): Observable<CMRProduct[]> {
-    return this.store$.select(getScenes).pipe(
-      map(
-        scenes => this.temporalSort(scenes, ColumnSortDirection.INCREASING)
+    return combineLatest(
+      this.store$.select(getScenes).pipe(
+        map(
+          scenes => this.temporalSort(scenes, ColumnSortDirection.INCREASING)
+        ),
       ),
-      map(scenes => this.makePairs(scenes, 48))
+      this.store$.select(getTemporalRange).pipe(
+        map(range => range.start)
+      )
+    ).pipe(
+      map(([scenes, temporal]) => this.makePairs(scenes, temporal))
     );
   }
 
