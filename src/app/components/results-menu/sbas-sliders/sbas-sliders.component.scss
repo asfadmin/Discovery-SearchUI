@@ -1,9 +1,10 @@
 .sbas-slider {
   line-height: 42px;
   font-weight: normal;
-  margin-left: 16px;
-  margin-right: 16px;
-  margin-bottom: 15px;
+  margin-left: 0;
+  margin-right: 0;
+  margin-bottom: 0;
+  padding: 0 20px 60px 20px;
 }
 
 .sbas-label {
@@ -11,5 +12,5 @@
 }
 
 .sbas-mat-slider {
-  width: 100%;
+  width: 80%;
 }

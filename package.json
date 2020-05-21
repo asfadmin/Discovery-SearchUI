@@ -33,6 +33,7 @@
     "@ngrx/effects": "^8.6.0",
     "@ngrx/store": "^8.6.0",
     "@ngrx/store-devtools": "^8.6.0",
+    "@types/wnumb": "^1.2.0",
     "@yellowspot/ng-truncate": "^1.5.1",
     "ajv": "^6.11.0",
     "angular-resizable-element": "^3.3.0",

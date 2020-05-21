@@ -9,7 +9,7 @@ import { Store } from '@ngrx/store';
 import * as filtersStore from '@store/filters';
 
 import { SubSink } from 'subsink';
-
+// import wNumb from 'wnumb';
 
 @Component({
   selector: 'app-sbas-sliders',
@@ -17,7 +17,7 @@ import { SubSink } from 'subsink';
   styleUrls: ['./sbas-sliders.component.scss']
 })
 export class SbasSlidersComponent implements OnInit {
-  @ViewChild('tempFilter', { static: true }) temporalFilter: ElementRef;
+  @ViewChild('temporalFilter', { static: true }) temporalFilter: ElementRef;
 
   public temporalAutoTicks = false;
   public temporalDisabled = false;
@@ -42,7 +42,7 @@ export class SbasSlidersComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    const [tempSlider, tempValues$] = this.makeSlider$(this.temporalFilter);
+    const [tempSlider, tempValues$] = this.makeTemporalSlider$(this.temporalFilter);
     this.tempSlider = tempSlider;
 
     this.subs.add(
@@ -72,21 +72,26 @@ export class SbasSlidersComponent implements OnInit {
     return 0;
   }
 
-  public sliderOnChange(value: number) {
-    if (this.temporalValue !== value) {
-      this.temporalValue = value;
-      console.log('changed: ', this.temporalValue);
-    }
-  }
-
-  private makeSlider$(filterRef: ElementRef) {
+  private makeTemporalSlider$(filterRef: ElementRef) {
     const values$ = new Subject<number[]>();
+    // @ts-ignore
     const slider = noUiSlider.create(filterRef.nativeElement, {
       start: [48],
       behaviour: 'drag',
+      step: 1,
       range: {
         'min': 0,
         'max': 60
+      },
+      pips: {
+        mode: 'positions',
+        values: [0, 25, 50, 75, 100],
+        density: 4,
+        stepped: true,
+        format: wNumb({
+          decimals: 0,
+          suffix: ' days'
+        })
       }
     });
 
