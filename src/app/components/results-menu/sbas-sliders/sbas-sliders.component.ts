@@ -10,6 +10,7 @@ import * as filtersStore from '@store/filters';
 
 import { SubSink } from 'subsink';
 // import wNumb from 'wnumb';
+declare var wNumb: any;
 
 @Component({
   selector: 'app-sbas-sliders',
