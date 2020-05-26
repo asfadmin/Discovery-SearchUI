@@ -1,5 +1,5 @@
 .sbas-slider {
-  line-height: 42px;
+  line-height: 27px;
   font-weight: normal;
   margin-left: 0;
   margin-right: 0;
@@ -13,4 +13,12 @@
 
 .sbas-mat-slider {
   width: 80%;
+}
+
+.noUi-horizontal {
+  height: 10px;
+}
+
+.noUi-horizontal .noUi-handle {
+  height: 21px;
 }
