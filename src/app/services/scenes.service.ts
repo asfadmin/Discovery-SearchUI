@@ -46,7 +46,7 @@ export class ScenesService {
         ),
       ),
       this.store$.select(getTemporalRange).pipe(
-        map(range => range.start)
+        map(range => range.start || 48)
       )
     ).pipe(
       map(([scenes, temporal]) => this.makePairs(scenes, temporal))

@@ -9,7 +9,7 @@ import { Store } from '@ngrx/store';
 import * as filtersStore from '@store/filters';
 
 import { SubSink } from 'subsink';
-// import wNumb from 'wnumb';
+import wNumb from 'wnumb';
 
 @Component({
   selector: 'app-sbas-sliders',

@@ -3,7 +3,7 @@ import { Component, OnInit, ViewChild, ElementRef, OnDestroy } from '@angular/co
 import { combineLatest } from 'rxjs';
 import { map, tap, filter, } from 'rxjs/operators';
 
-import Chart from 'chart.js';
+import * as d3 from 'd3';
 import { Store } from '@ngrx/store';
 import { AppState } from '@store';
 import * as scenesStore from '@store/scenes';
@@ -29,9 +29,14 @@ export enum ChartDatasets {
   styleUrls: ['./sbas-chart.component.scss']
 })
 export class SBASChartComponent implements OnInit, OnDestroy {
-  @ViewChild('sbasChart', { static: true }) baselineChart: ElementRef;
 
-  private chart: Chart;
+  private x;
+  private xAxis;
+  private y;
+  private yAxis;
+  private chart;
+  private scatter;
+  private pairs;
   private selected: CMRProduct;
   private criticalBaseline: number;
   private hoveredProductId;
@@ -45,161 +50,109 @@ export class SBASChartComponent implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit(): void {
-    const pairs$ = this.scenesService.pairs$();
+    const scenes$ = this.scenesService.scenes$();
 
     this.subs.add(
-        pairs$.subscribe(pairs => {
-          const pairLines = pairs.map(pair => this.pairToLine(pair));
-
-          if (this.chart) {
-            this.chart.destroy();
-          }
-          this.chart = this.chartService.makeChart(
-            this.baselineChart.nativeElement,
-            (_, __) => {},
-            (_, __) => {},
-            pairLines
-          );
+        scenes$.subscribe(scenes => {
+          console.log(scenes);
+          this.makeSbasChart(scenes);
         })
     );
   }
 
-  private setDataset(dataset: ChartDatasets, data) {
-    this.chart.data.datasets[dataset].data = data;
-  }
+  private makeSbasChart(scenes: CMRProduct[]) {
+    const margin = {top: 9, right: 30, bottom: 30, left: 60},
+        width = 460 - margin.left - margin.right,
+        height = 650 - margin.top - margin.bottom;
 
-  private pairToLine(pair) {
-    const points = pair.map(product => this.productToPoint(product));
+    this.chart = d3.select('#sbasChart')
+      .append('svg')
+        .attr('width', width + margin.left + margin.right)
+        .attr('height', height + margin.top + margin.bottom)
+      .append('g')
+        .attr('transform',
+              `translate(${margin.left},${margin.top})`);
 
-    const line = {
-      data: points,
-      type: 'line',
-      ...this.lineStyle()
-    };
+      const xExtent = d3.extent(
+        scenes.map(s => s.metadata.temporal)
+      );
 
-    return line;
-  }
+      // Add X axis
+      this.x = d3.scaleLinear()
+        .domain(xExtent)
+        .range([ 0, width ]);
 
-  private dummyData()  {
-    return [{
-      'data': [
-        {'x': -2041, 'y': 47, 'id': 'S1A_IW_SLC__1SSV_20141006T155628_20141006T155645_002711_003089_4288-SLC'},
-        {'x': -2017, 'y': -69, 'id': 'S1A_IW_SLC__1SSV_20141030T155627_20141030T155645_003061_003805_1F1F-SLC'}
-      ],
-      'type': 'line',
-    }, {
-      'data': [
-        {'x': -2041, 'y': 47, 'id': 'S1A_IW_SLC__1SSV_20141006T155628_20141006T155645_002711_003089_4288-SLC'},
-        {'x': -1993, 'y': 135, 'id': 'S1A_IW_SLC__1SSV_20141123T155627_20141123T155645_003411_003FAB_4687-SLC'}
-      ],
-      'type': 'line',
-    }].map(dataset => {
-      return { ...dataset,
-        fill: false,
-        borderColor: 'grey',
-        backgroundColor: 'grey',
-        borderWidth: 2,
-        pointBackgroundColor: 'black',
-        pointBorderColor: 'white',
-        radius: 5,
-        pointHoverBackgroundColor: 'grey',
-        pointHoverBorderColor: 'black',
-      };
-    });
-  }
+      this.xAxis = this.chart.append('g')
+        .attr('transform', `translate(0,${height})`)
+        .call(d3.axisBottom(this.x));
 
-  private lineStyle() {
-    return {
-      fill: false,
-      borderColor: 'black',
-      backgroundColor: 'black',
-      borderWidth: 2,
-      pointBackgroundColor: 'grey',
-      pointBorderColor: 'white',
-      radius: 5,
-      pointHoverBackgroundColor: 'grey',
-      pointHoverBorderColor: 'black',
-    };
-  }
-
-  private productToPoint = (product: CMRProduct) => {
-    return ({
-      x: product.metadata.temporal,
-      y: product.metadata.perpendicular,
-      id: product.id
-    });
-  }
-
-  private criticalBaselineDataset(extrema) {
-    const { min, max } = extrema;
-    const buffer = (max.x - min.x) * .25;
-
-    const minDataset = [
-      {x: min.x - buffer - 10, y: -this.criticalBaseline},
-      {x: max.x + buffer + 10, y: -this.criticalBaseline}
-    ];
-
-    const maxDataset = [
-      {x: min.x - buffer - 10, y: this.criticalBaseline},
-      {x: max.x + buffer + 10, y: this.criticalBaseline}
-    ];
-
-    return { minDataset, maxDataset };
-  }
-
-  private determineMinMax(points: {x: number, y: number}[]) {
-    const min = { x: 0, y: 0 };
-    const max = { x: 0, y: 0 };
-
-    points.map(point => {
-      if (point.x < min.x) {
-        min.x = point.x;
-      }
-      if (point.y < min.y) {
-        min.y = point.y;
-      }
-      if (point.x > max.x) {
-        max.x = point.x;
-      }
-      if (point.y > max.y) {
-        max.y = point.y;
-      }
-    });
-
-    return { min, max };
-  }
-
-  private updateScales(extrema) {
-    const { min, max } = extrema;
-    const xBuffer = (max.x - min.x) * .25;
-    const yBuffer = (max.y - min.y) * .25;
-
-    this.chart.options.scales.xAxes[0].ticks.min = Math.floor((min.x - xBuffer) / 100) * 100;
-    this.chart.options.scales.xAxes[0].ticks.max = Math.ceil((max.x + xBuffer) / 100) * 100;
-
-    this.chart.options.scales.yAxes[0].ticks.min = Math.floor((min.y - yBuffer) / 100) * 100;
-    this.chart.options.scales.yAxes[0].ticks.max = Math.ceil((max.y + yBuffer) / 100) * 100;
-  }
-
-  private initChart() {
-    this.chart = this.chartService.makeChart(
-      this.baselineChart.nativeElement,
-      this.setHoveredItem,
-      this.onSelectHoveredScene
+    const yExtent = d3.extent(
+      scenes.map(s => s.metadata.perpendicular)
     );
+
+      // Add Y axis
+      this.y = d3.scaleLinear()
+        .domain(yExtent)
+        .range([ height, 0]);
+      this.yAxis = this.chart.append('g')
+        .call(d3.axisLeft(this.y));
+
+      // Add a clipPath: everything out of this area won't be drawn.
+      const clip = this.chart.append('defs').append('SVG:clipPath')
+          .attr('id', 'clip')
+          .append('SVG:rect')
+          .attr('width', width )
+          .attr('height', height )
+          .attr('x', 0)
+          .attr('y', 0);
+
+      // Create the scatter variable: where both the circles and the brush take place
+      this.scatter = this.chart.append('g')
+        .attr('clip-path', 'url(#clip)');
+
+      // Add circles
+      this.scatter
+        .selectAll('circle')
+        .data(scenes)
+        .enter()
+        .append('circle')
+          .attr('cx', (d: CMRProduct) => this.x(d.metadata.temporal) )
+          .attr('cy', (d: CMRProduct) => this.y(d.metadata.perpendicular) )
+          .attr('r', 8)
+          .style('fill', '#61a3a9')
+          .style('opacity', 0.5);
+
+      const updateChart = () => {
+        // recover the new scale
+        const newX = d3.event.transform.rescaleX(this.x);
+        const newY = d3.event.transform.rescaleY(this.y);
+
+        // update axes with these new boundaries
+        this.xAxis.call(d3.axisBottom(newX));
+        this.yAxis.call(d3.axisLeft(newY));
+
+        // update circle position
+        this.scatter
+          .selectAll('circle')
+            .attr('cx', (d: CMRProduct) => newX(d.metadata.temporal) )
+            .attr('cy', (d: CMRProduct) => newY(d.metadata.perpendicular) );
+      };
+
+      const zoom = d3.zoom()
+          .scaleExtent([.5, 20])  // This control how much you can unzoom (x0.5) and zoom (x20)
+          .extent([[0, 0], [width, height]])
+          .on('zoom', updateChart);
+
+      this.chart.append('rect')
+          .attr('width', width)
+          .attr('height', height)
+          .style('fill', 'none')
+          .style('pointer-events', 'all')
+          .attr('transform', `translate(${margin.left},${margin.top})`)
+          .call(zoom);
   }
 
-  private setHoveredItem = (tooltip, data) => {
-    const dataset = data.datasets[tooltip.datasetIndex].data;
-
-    this.hoveredProductId = dataset[tooltip.index].id;
-  }
-
-  private onSelectHoveredScene = () => {
-    const action = new scenesStore.SetSelectedScene(this.hoveredProductId);
-    this.store$.dispatch(action);
-  }
-
+  // A function that updates the chart when the user zoom and thus new boundaries are available
   ngOnDestroy() {
     this.subs.unsubscribe();
   }
