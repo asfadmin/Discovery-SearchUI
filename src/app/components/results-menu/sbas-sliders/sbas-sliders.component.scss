@@ -1,24 +1,24 @@
-.sbas-slider {
+.sbas-slider-wrapper {
   line-height: 27px;
   font-weight: normal;
   margin-left: 0;
   margin-right: 0;
   margin-bottom: 0;
-  padding: 0 20px 60px 20px;
+  padding: 0 0 60px 20px;
+  flex-direction: column;
+  height: 100%;
 }
 
 .sbas-label {
   color: grey;
 }
 
-.sbas-mat-slider {
-  width: 80%;
+.sbas-slider-result {
+  flex: none;
+  margin-bottom: 25px;
 }
 
-.noUi-horizontal {
-  height: 10px;
-}
-
-.noUi-horizontal .noUi-handle {
-  height: 21px;
+.sbas-slider {
+  flex: none;
+  height: 70%;
 }

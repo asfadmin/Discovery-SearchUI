@@ -29,7 +29,7 @@ export class SbasSlidersComponent implements OnInit {
   public temporalStep = 1;
   public temporalThumbLabel = true;
   public temporalValue = 48;
-  public temporalVertical = false;
+  public temporalVertical = true;
   public temporalTickInterval = 7;
 
   public tempSlider;
@@ -77,8 +77,11 @@ export class SbasSlidersComponent implements OnInit {
     const values$ = new Subject<number[]>();
     // @ts-ignore
     const slider = noUiSlider.create(filterRef.nativeElement, {
+      orientation: 'vertical',
+      direction: 'rtl',
       start: [48],
-      behaviour: 'drag',
+      behaviour: 'tap-drag',
+      tooltips: false,
       step: 1,
       range: {
         'min': 0,
@@ -86,7 +89,7 @@ export class SbasSlidersComponent implements OnInit {
       },
       pips: {
         mode: 'positions',
-        values: [0, 25, 50, 75, 100],
+        values: [0, 20, 40, 60, 80, 100],
         density: 4,
         stepped: true,
         format: wNumb({
