@@ -21,20 +21,11 @@ export class SbasSlidersComponent implements OnInit {
   @ViewChild('temporalFilter', { static: true }) temporalFilter: ElementRef;
 
   public temporalAutoTicks = false;
-  public temporalDisabled = false;
-  public temporalInvert = false;
-  public temporalMax = 60;
-  public temporalMin = 0;
   public temporalShowTicks = true;
-  public temporalStep = 1;
-  public temporalThumbLabel = true;
-  public temporalValue = 48;
-  public temporalVertical = true;
   public temporalTickInterval = 7;
 
   public tempSlider;
   public temporal: number;
-  private temporalValue$: Observable<number>;
 
   private subs = new SubSink();
 

@@ -1,13 +1,19 @@
-.sbas-chart-container {
+.sbas-chart-row {
   display: flex;
   flex-direction: row;
-  height: 100%;
+  height: 80%;
 }
 
-.sbas-perpendicular-slider {
+.sbas-filter-row {
+  display: flex;
+  flex-direction: row;
+
+}
+
+.sbas-column-1 {
   flex: 20;
 }
 
-.sbas-chart {
+.sbas-column-2 {
   flex: 80;
 }
