@@ -1,4 +1,16 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
+
+import noUiSlider from 'nouislider';
+import { Subject, Observable } from 'rxjs';
+import { delay, debounceTime, distinctUntilChanged, take, filter, map } from 'rxjs/operators';
+
+import { AppState } from '@store';
+import { Store } from '@ngrx/store';
+import * as filtersStore from '@store/filters';
+
+import { SubSink } from 'subsink';
+// import wNumb from 'wnumb';
+declare var wNumb: any;
 
 @Component({
   selector: 'app-sbas-sliders-two',
@@ -6,10 +18,88 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./sbas-sliders-two.component.scss']
 })
 export class SbasSlidersTwoComponent implements OnInit {
+  @ViewChild('temporalFilter2', { static: true }) temporalFilter: ElementRef;
 
-  constructor() { }
+  public temporalAutoTicks = false;
+  public temporalShowTicks = true;
+  public temporalTickInterval = 7;
+
+  public tempSlider;
+  public temporal: number;
+
+  private subs = new SubSink();
+
+  constructor(
+    private store$: Store<AppState>,
+  ) { }
 
   ngOnInit(): void {
+    const [tempSlider, tempValues$] = this.makeTemporalSlider$(this.temporalFilter);
+    this.tempSlider = tempSlider;
+
+    this.subs.add(
+      tempValues$.subscribe(
+        ([start]) => {
+          console.log('start:', start);
+          const action = new filtersStore.SetTemporalRange({ start, end: null });
+          this.store$.dispatch(action);
+        }
+      )
+    );
+
+    this.subs.add(
+      this.store$.select(filtersStore.getTemporalRange).subscribe(
+        temp => {
+          this.temporal = temp.start;
+        }
+      )
+    );
   }
 
+  public getTemporalSliderTickInterval(): number | 'auto' {
+    if (this.temporalShowTicks) {
+      return this.temporalAutoTicks ? 'auto' : this.temporalTickInterval;
+    }
+
+    return 0;
+  }
+
+  private makeTemporalSlider$(filterRef: ElementRef) {
+    const values$ = new Subject<number[]>();
+    // @ts-ignore
+    const slider = noUiSlider.create(filterRef.nativeElement, {
+      orientation: 'horizontal',
+      direction: 'ltr',
+      start: [48],
+      behaviour: 'tap-drag',
+      tooltips: false,
+      step: 1,
+      range: {
+        'min': 0,
+        'max': 60
+      },
+      pips: {
+        mode: 'positions',
+        values: [0, 20, 40, 60, 80, 100],
+        density: 4,
+        stepped: true,
+        format: wNumb({
+          decimals: 0,
+          suffix: ' days'
+        })
+      }
+    });
+
+    slider.on('update', (values, handle) => {
+      values$.next(values.map(v => +v));
+    });
+
+    return [
+      slider,
+      values$.asObservable().pipe(
+        debounceTime(500),
+        distinctUntilChanged()
+      )
+    ];
+  }
 }

@@ -85,7 +85,7 @@ export class SbasSlidersComponent implements OnInit {
         stepped: true,
         format: wNumb({
           decimals: 0,
-          suffix: ' days'
+          suffix: ' meters'
         })
       }
     });

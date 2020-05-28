@@ -1,12 +1,13 @@
 .sbas-chart-row {
   display: flex;
   flex-direction: row;
-  height: 80%;
+  height: calc(100% - 137px);
 }
 
 .sbas-filter-row {
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
+  width: 100%;
 }
 
 .sbas-column-1 {
