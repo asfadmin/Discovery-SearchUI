@@ -16,13 +16,18 @@
     [class.medium-header]="breakpoint <= breakpoints.MEDIUM"
     class="header">
   </mat-card-subtitle>
-  <div class="sbas-chart-container">
-    <div class="sbas-perpendicular-slider">
+
+  <div class="sbas-chart-row">
+    <div class="sbas-column-1">
       <app-sbas-sliders></app-sbas-sliders>
     </div>
-    <div class="sbas-chart">
+    <div class="sbas-column-2">
       <app-sbas-chart></app-sbas-chart>
     </div>
-
   </div>
+
+  <div class="sbas-filter-row">
+      <app-sbas-sliders-two></app-sbas-sliders-two>
+  </div>
+
 </mat-card>
