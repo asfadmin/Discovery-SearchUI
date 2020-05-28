@@ -1,12 +1,10 @@
-.sbas-chart-row {
+.sbas-slider-two-wrapper {
   display: flex;
   flex-direction: row;
-  height: 80%;
 }
 
-.sbas-filter-row {
-  display: flex;
-  flex-direction: row;
+.sbas-label {
+  color: grey;
 }
 
 .sbas-column-1 {
@@ -16,5 +14,8 @@
 }
 
 .sbas-column-2 {
-  flex: 1 1 auto;
+  flex-basis: auto;
+  flex-shrink: 1;
+  flex-grow: 1;
+  width: 4000px;
 }
