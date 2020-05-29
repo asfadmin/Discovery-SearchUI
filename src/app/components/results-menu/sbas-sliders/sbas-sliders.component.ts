@@ -9,7 +9,6 @@ import { Store } from '@ngrx/store';
 import * as filtersStore from '@store/filters';
 
 import { SubSink } from 'subsink';
-// import wNumb from 'wnumb';
 declare var wNumb: any;
 
 @Component({
