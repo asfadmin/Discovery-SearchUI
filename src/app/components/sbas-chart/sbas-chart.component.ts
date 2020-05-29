@@ -30,6 +30,7 @@ export enum ChartDatasets {
 })
 export class SBASChartComponent implements OnInit, OnDestroy {
 
+  private scenes: CMRProduct[];
   private x;
   private xAxis;
   private y;
@@ -54,16 +55,22 @@ export class SBASChartComponent implements OnInit, OnDestroy {
 
     this.subs.add(
         scenes$.subscribe(scenes => {
-          console.log(scenes);
-          this.makeSbasChart(scenes);
+          this.scenes = scenes;
+
+          console.log(scenes.length);
+          if (this.chart) {
+            d3.selectAll('#sbasChart > svg').remove();
+          }
+
+          this.makeSbasChart();
         })
     );
   }
 
-  private makeSbasChart(scenes: CMRProduct[]) {
+  private makeSbasChart() {
     const margin = {top: 9, right: 30, bottom: 30, left: 60},
-        width = 460 - margin.left - margin.right,
-        height = 650 - margin.top - margin.bottom;
+        width = 760 - margin.left - margin.right,
+        height = 450 - margin.top - margin.bottom;
 
     this.chart = d3.select('#sbasChart')
       .append('svg')
@@ -74,7 +81,7 @@ export class SBASChartComponent implements OnInit, OnDestroy {
               `translate(${margin.left},${margin.top})`);
 
       const xExtent = d3.extent(
-        scenes.map(s => s.metadata.temporal)
+        this.scenes.map(s => s.metadata.temporal)
       );
 
       // Add X axis
@@ -87,7 +94,7 @@ export class SBASChartComponent implements OnInit, OnDestroy {
         .call(d3.axisBottom(this.x));
 
     const yExtent = d3.extent(
-      scenes.map(s => s.metadata.perpendicular)
+      this.scenes.map(s => s.metadata.perpendicular)
     );
 
       // Add Y axis
@@ -113,7 +120,7 @@ export class SBASChartComponent implements OnInit, OnDestroy {
       // Add circles
       this.scatter
         .selectAll('circle')
-        .data(scenes)
+        .data(this.scenes)
         .enter()
         .append('circle')
           .attr('cx', (d: CMRProduct) => this.x(d.metadata.temporal) )
@@ -148,7 +155,6 @@ export class SBASChartComponent implements OnInit, OnDestroy {
           .attr('height', height)
           .style('fill', 'none')
           .style('pointer-events', 'all')
-          .attr('transform', `translate(${margin.left},${margin.top})`)
           .call(zoom);
   }
 
