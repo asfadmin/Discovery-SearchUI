@@ -17,7 +17,17 @@
     class="header">
   </mat-card-subtitle>
 
-  <app-sbas-sliders></app-sbas-sliders>
-  <hr>
-  <app-sbas-chart></app-sbas-chart>
+  <div class="sbas-chart-row">
+    <div class="sbas-column-1">
+      <app-sbas-sliders></app-sbas-sliders>
+    </div>
+    <div class="sbas-column-2">
+      <app-sbas-chart></app-sbas-chart>
+    </div>
+  </div>
+
+  <div class="sbas-filter-row">
+      <app-sbas-sliders-two></app-sbas-sliders-two>
+  </div>
+
 </mat-card>

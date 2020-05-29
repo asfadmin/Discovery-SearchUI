@@ -9,16 +9,16 @@ import { Store } from '@ngrx/store';
 import * as filtersStore from '@store/filters';
 
 import { SubSink } from 'subsink';
-import wNumb from 'wnumb';
+// import wNumb from 'wnumb';
 declare var wNumb: any;
 
 @Component({
-  selector: 'app-sbas-sliders',
-  templateUrl: './sbas-sliders.component.html',
-  styleUrls: ['./sbas-sliders.component.scss']
+  selector: 'app-sbas-sliders-two',
+  templateUrl: './sbas-sliders-two.component.html',
+  styleUrls: ['./sbas-sliders-two.component.scss']
 })
-export class SbasSlidersComponent implements OnInit {
-  @ViewChild('temporalFilter', { static: true }) temporalFilter: ElementRef;
+export class SbasSlidersTwoComponent implements OnInit {
+  @ViewChild('temporalFilter2', { static: true }) temporalFilter: ElementRef;
 
   public temporalAutoTicks = false;
   public temporalShowTicks = true;
@@ -68,8 +68,8 @@ export class SbasSlidersComponent implements OnInit {
     const values$ = new Subject<number[]>();
     // @ts-ignore
     const slider = noUiSlider.create(filterRef.nativeElement, {
-      orientation: 'vertical',
-      direction: 'rtl',
+      orientation: 'horizontal',
+      direction: 'ltr',
       start: [48],
       behaviour: 'tap-drag',
       tooltips: false,
@@ -85,7 +85,7 @@ export class SbasSlidersComponent implements OnInit {
         stepped: true,
         format: wNumb({
           decimals: 0,
-          suffix: ' meters'
+          suffix: ' days'
         })
       }
     });

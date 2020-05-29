@@ -23,6 +23,7 @@ import { SBASChartModule } from '@components/sbas-chart/sbas-chart.module';
 import { SbasSlidersComponent } from './sbas-sliders/sbas-sliders.component';
 import {MatSliderModule} from '@angular/material/slider';
 import {FormsModule} from '@angular/forms';
+import { SbasSlidersTwoComponent } from './sbas-sliders-two/sbas-sliders-two.component';
 
 @NgModule({
   declarations: [
@@ -32,7 +33,8 @@ import {FormsModule} from '@angular/forms';
     DesktopResultsMenuComponent,
     BaselineResultsMenuComponent,
     SBASResultsMenuComponent,
-    SbasSlidersComponent
+    SbasSlidersComponent,
+    SbasSlidersTwoComponent
   ],
   imports: [
     CommonModule,

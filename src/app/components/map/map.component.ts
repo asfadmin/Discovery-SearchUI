@@ -48,29 +48,6 @@ export class MapComponent implements OnInit, OnDestroy  {
   public mousePosition$ = this.mapService.mousePosition$;
 
   public banners$ = this.store$.select(uiStore.getBanners);
-  public bannersWithBaseline$ = combineLatest(
-    this.store$.select(uiStore.getBanners),
-    this.store$.select(searchStore.getSearchType),
-    this.store$.select(scenesStore.getFilterMaster)
-  ).pipe(
-    map(([banners, searchType, master]) => {
-      if (this.searchType === models.SearchType.BASELINE) {
-        const baselineLink = !!master ?
-          `https://baseline.asf.alaska.edu/#baseline?granule=${master}` :
-          `https://baseline.asf.alaska.edu`;
-
-        const baselineBanner = {
-          'name': 'Baseline Banner',
-          'text': `This tool is now part of Vertex. <a target="_blank" href="${baselineLink}">The previous baseline tool</a> will remain available until May 22, 2020.`
-        };
-
-        return [baselineBanner, ...banners];
-      } else {
-        return banners;
-      }
-    })
-  );
-  public showBaselineBanner = true;
 
   public view$ = this.store$.select(mapStore.getMapView);
   public areResultsLoaded$ = this.store$.select(scenesStore.getAreProductsLoaded);
@@ -252,11 +229,7 @@ export class MapComponent implements OnInit, OnDestroy  {
   }
 
   public removeBanner(banner: models.Banner): void {
-    if (banner.name === 'Baseline Banner') {
-      this.showBaselineBanner = false;
-    } else {
-      this.store$.dispatch(new uiStore.RemoveBanner(banner));
-    }
+   this.store$.dispatch(new uiStore.RemoveBanner(banner));
   }
 
   public enterDrawPopup(): void {
