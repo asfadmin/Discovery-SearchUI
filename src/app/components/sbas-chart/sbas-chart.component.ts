@@ -52,12 +52,13 @@ export class SBASChartComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     const scenes$ = this.scenesService.scenes$();
+    const pairs$ = this.scenesService.pairs$();
 
     this.subs.add(
-        scenes$.subscribe(scenes => {
+        combineLatest(scenes$, pairs$).subscribe(([scenes, pairs]) => {
           this.scenes = scenes;
+          this.pairs = pairs;
 
-          console.log(scenes.length);
           if (this.chart) {
             d3.selectAll('#sbasChart > svg').remove();
           }
@@ -129,6 +130,24 @@ export class SBASChartComponent implements OnInit, OnDestroy {
           .style('fill', '#61a3a9')
           .style('opacity', 0.5);
 
+      const line = d3.line()
+          .x((product: any) => <any>this.x(product.metadata.temporal))
+          .y((product: any) => this.y(product.metadata.perpendicular));
+
+      const lines = this.scatter.append('g')
+          .attr('fill', 'none')
+          .attr('stroke', 'steelblue')
+          .attr('stroke-width', 1.5)
+          .attr('stroke-linejoin', 'round')
+          .attr('stroke-linecap', 'round')
+        .selectAll('path');
+
+      lines
+        .data(this.pairs)
+        .join('path')
+          .style('mix-blend-mode', 'multiply')
+          .attr('d', pair => line(pair));
+
       const updateChart = () => {
         // recover the new scale
         const newX = d3.event.transform.rescaleX(this.x);
@@ -143,6 +162,13 @@ export class SBASChartComponent implements OnInit, OnDestroy {
           .selectAll('circle')
             .attr('cx', (d: CMRProduct) => newX(d.metadata.temporal) )
             .attr('cy', (d: CMRProduct) => newY(d.metadata.perpendicular) );
+
+        const newLine = d3.line()
+            .x((product: any) => newX(product.metadata.temporal))
+            .y((product: any) => newY(product.metadata.perpendicular));
+
+        this.scatter.selectAll('path')
+          .attr('d', pair => newLine(pair));
       };
 
       const zoom = d3.zoom()
