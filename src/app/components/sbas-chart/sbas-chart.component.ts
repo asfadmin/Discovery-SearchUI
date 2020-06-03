@@ -30,6 +30,8 @@ export enum ChartDatasets {
 })
 export class SBASChartComponent implements OnInit, OnDestroy {
 
+
+  private selectedPairIds = [null, null];
   private scenes: CMRProduct[];
   private x;
   private xAxis;
@@ -136,8 +138,6 @@ export class SBASChartComponent implements OnInit, OnDestroy {
 
       const lines = this.scatter.append('g')
           .attr('fill', 'none')
-          .attr('stroke', 'steelblue')
-          .attr('stroke-width', 1.5)
           .attr('stroke-linejoin', 'round')
           .attr('stroke-linecap', 'round')
         .selectAll('path');
@@ -146,6 +146,11 @@ export class SBASChartComponent implements OnInit, OnDestroy {
         .data(this.pairs)
         .join('path')
           .style('mix-blend-mode', 'multiply')
+          .attr('stroke', 'steelblue')
+          .attr('stroke-width', 3)
+          .attr('cursor', 'pointer')
+          .on('mouseover', d => this.setSelected(d))
+          .on('mouseleave', d => this.clearSelected(d))
           .attr('d', pair => line(pair));
 
       const updateChart = () => {
@@ -170,7 +175,7 @@ export class SBASChartComponent implements OnInit, OnDestroy {
         this.scatter.selectAll('path')
           .attr('d', pair => newLine(pair));
       };
-
+      /*
       const zoom = d3.zoom()
           .scaleExtent([.5, 20])  // This control how much you can unzoom (x0.5) and zoom (x20)
           .extent([[0, 0], [width, height]])
@@ -180,8 +185,37 @@ export class SBASChartComponent implements OnInit, OnDestroy {
           .attr('width', width)
           .attr('height', height)
           .style('fill', 'none')
-          .style('pointer-events', 'all')
+          .style('pointer-events', 'auto')
           .call(zoom);
+      */
+  }
+
+  private setSelected(pair) {
+    this.selectedPairIds = this.pairIds(pair);
+    const lines = this.scatter.selectAll('path');
+
+    lines
+      .attr('stroke', d => this.areEqIds(this.selectedPairIds, this.pairIds(d)) ? 'red' : 'steelblue')
+      .attr('stroke-width', d => {
+        return this.areEqIds(this.selectedPairIds, this.pairIds(d)) ? 6 : 3;
+      });
+  }
+
+  private clearSelected(pair) {
+    this.selectedPairIds = [null, null];
+
+    const lines = this.scatter.selectAll('path');
+    lines
+      .attr('stroke', 'steelblue')
+      .attr('stroke-width', 3);
+  }
+
+  private pairIds(pair) {
+    return pair.map(product => product.id);
+  }
+
+  private areEqIds(p1, p2): boolean {
+    return p1[0] === p2[0] && p1[1] === p2[1];
   }
 
   // A function that updates the chart when the user zoom and thus new boundaries are available
