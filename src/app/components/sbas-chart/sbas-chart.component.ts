@@ -31,7 +31,8 @@ export enum ChartDatasets {
 export class SBASChartComponent implements OnInit, OnDestroy {
 
 
-  private selectedPairIds = [null, null];
+  private hoveredPair = [null, null];
+  private selectedPair = [null, null];
   private scenes: CMRProduct[];
   private x;
   private xAxis;
@@ -40,6 +41,7 @@ export class SBASChartComponent implements OnInit, OnDestroy {
   private chart;
   private scatter;
   private pairs;
+
   private selected: CMRProduct;
   private criticalBaseline: number;
   private hoveredProductId;
@@ -142,6 +144,7 @@ export class SBASChartComponent implements OnInit, OnDestroy {
           .attr('stroke-linecap', 'round')
         .selectAll('path');
 
+      const self = this;
       lines
         .data(this.pairs)
         .join('path')
@@ -149,9 +152,13 @@ export class SBASChartComponent implements OnInit, OnDestroy {
           .attr('stroke', 'steelblue')
           .attr('stroke-width', 3)
           .attr('cursor', 'pointer')
-          .on('mouseover', d => this.setSelected(d))
-          .on('mouseleave', d => this.clearSelected(d))
-          .attr('d', pair => line(pair));
+          .attr('d', pair => line(pair))
+          .on('mouseover', d => this.setHovered(d))
+          .on('mouseleave', d => this.clearHovered(d))
+          .on('click', function(d) {
+            const l: any = d3.select(this);
+            l.attr('stroke', 'orange');
+          });
 
       const updateChart = () => {
         // recover the new scale
@@ -175,6 +182,7 @@ export class SBASChartComponent implements OnInit, OnDestroy {
         this.scatter.selectAll('path')
           .attr('d', pair => newLine(pair));
       };
+
       /*
       const zoom = d3.zoom()
           .scaleExtent([.5, 20])  // This control how much you can unzoom (x0.5) and zoom (x20)
@@ -190,22 +198,17 @@ export class SBASChartComponent implements OnInit, OnDestroy {
       */
   }
 
-  private setSelected(pair) {
-    this.selectedPairIds = this.pairIds(pair);
-    const lines = this.scatter.selectAll('path');
-
-    lines
-      .attr('stroke', d => this.areEqIds(this.selectedPairIds, this.pairIds(d)) ? 'red' : 'steelblue')
-      .attr('stroke-width', d => {
-        return this.areEqIds(this.selectedPairIds, this.pairIds(d)) ? 6 : 3;
-      });
+  private setHovered(pair, selectedLine) {
+    this.hoveredPair = pair;
+    selectedLine
+      .attr('stroke', 'red')
+      .attr('stroke-width', 5);
   }
 
-  private clearSelected(pair) {
-    this.selectedPairIds = [null, null];
+  private clearHovered(pair, selectedLine) {
+    this.hoveredPair = [null, null];
 
-    const lines = this.scatter.selectAll('path');
-    lines
+    selectedLine
       .attr('stroke', 'steelblue')
       .attr('stroke-width', 3);
   }
@@ -215,7 +218,11 @@ export class SBASChartComponent implements OnInit, OnDestroy {
   }
 
   private areEqIds(p1, p2): boolean {
-    return p1[0] === p2[0] && p1[1] === p2[1];
+    return (
+      p1[0] !== null && p2 !== null &&
+      p1[0].id === p2[0].id &&
+      p1[1].id === p2[1].id
+    );
   }
 
   // A function that updates the chart when the user zoom and thus new boundaries are available
