@@ -97,6 +97,11 @@
     <b>Off Nadir Angle </b> • {{ scene.metadata.offNadirAngle }}
   </li>
 
+  <li *ngIf="prop.isRelevant(p.POINTING_ANGLE, dataset)"
+    class="detail-item-margin">
+    <b>Pointing Angle </b> • {{ scene.metadata.pointingAngle }}
+  </li>
+
   <li *ngIf="prop.isRelevant(p.FARADAY_ROTATION, dataset)"
     class="detail-item-margin">
     <b>Faraday Rotation </b> • {{ scene.metadata.faradayRotation }}
