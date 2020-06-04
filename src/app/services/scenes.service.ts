@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 
 import { Observable, combineLatest } from 'rxjs';
-import { map, tap, filter } from 'rxjs/operators';
+import { map } from 'rxjs/operators';
 import * as moment from 'moment';
 
 import { Store } from '@ngrx/store';
@@ -10,7 +10,7 @@ import { getAllProducts, getScenes, getTemporalSortDirection, getPerpendicularSo
 import { getTemporalRange, getPerpendicularRange, getDateRange } from '@store/filters/filters.reducer';
 import { getSearchType } from '@store/search/search.reducer';
 
-import { criticalBaselineFor, CMRProduct, SearchType, Range, ColumnSortDirection } from '@models';
+import { CMRProduct, SearchType, Range, ColumnSortDirection } from '@models';
 
 @Injectable({
   providedIn: 'root'

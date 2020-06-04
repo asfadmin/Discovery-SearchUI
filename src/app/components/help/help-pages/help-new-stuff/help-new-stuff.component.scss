@@ -1,0 +1,24 @@
+@import "asf-help";
+
+.doc-container-desktop {
+  position: relative;
+  height: 0;
+  overflow: hidden;
+  padding-bottom: 100%;
+}
+
+.doc-container-mobile {
+  position: relative;
+  height: 0;
+  overflow: hidden;
+  padding-bottom: 170%;
+}
+
+.doc-container-desktop iframe,
+.doc-container-mobile iframe {
+  position: absolute;
+  top: -40px;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}

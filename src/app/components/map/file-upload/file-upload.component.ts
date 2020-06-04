@@ -58,7 +58,7 @@ export class FileUploadComponent implements OnInit, OnDestroy {
           let wasSuccessful: boolean;
 
           if (wkt) {
-            if (this.searchType === SearchType.LIST) {
+            if (this.searchType !== SearchType.BASELINE) {
               this.store$.dispatch(new searchStore.ClearSearch());
               this.store$.dispatch(new searchStore.SetSearchType(SearchType.DATASET));
             }

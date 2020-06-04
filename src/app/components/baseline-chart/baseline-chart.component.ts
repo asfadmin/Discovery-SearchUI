@@ -7,13 +7,11 @@ import Chart from 'chart.js';
 import { Store } from '@ngrx/store';
 import { AppState } from '@store';
 import * as scenesStore from '@store/scenes';
-import * as filtersStore from '@store/filters';
-import * as searchStore from '@store/search';
 import * as queueStore from '@store/queue';
 
 import { SubSink } from 'subsink';
 import { ChartService, ScenesService } from '@services';
-import { criticalBaselineFor, CMRProduct, SearchType, Range } from '@models';
+import { criticalBaselineFor, CMRProduct } from '@models';
 
 export enum ChartDatasets {
   MASTER = 0,
@@ -72,7 +70,7 @@ export class BaselineChartComponent implements OnInit, OnDestroy {
       ).subscribe(
         ([points, selected]) => {
           const extrema = this.determineMinMax(points);
-          const { minDataset, maxDataset } = this.criticalBaselineDataset(points, extrema);
+          const { minDataset, maxDataset } = this.criticalBaselineDataset(extrema);
 
           if (selected) {
             const selectedPoint = this.productToPoint(selected);
@@ -141,17 +139,18 @@ export class BaselineChartComponent implements OnInit, OnDestroy {
     });
   }
 
-  private criticalBaselineDataset(points: {x: number, y: number}[], extrema) {
+  private criticalBaselineDataset(extrema) {
     const { min, max } = extrema;
+    const buffer = (max.x - min.x) * .25;
 
     const minDataset = [
-      {x: -Number.MAX_SAFE_INTEGER, y: -this.criticalBaseline},
-      {x: Number.MAX_SAFE_INTEGER, y: -this.criticalBaseline}
+      {x: min.x - buffer - 10, y: -this.criticalBaseline},
+      {x: max.x + buffer + 10, y: -this.criticalBaseline}
     ];
 
     const maxDataset = [
-      {x: -Number.MAX_SAFE_INTEGER, y: this.criticalBaseline},
-      {x: Number.MAX_SAFE_INTEGER, y: this.criticalBaseline}
+      {x: min.x - buffer - 10, y: this.criticalBaseline},
+      {x: max.x + buffer + 10, y: this.criticalBaseline}
     ];
 
     return { minDataset, maxDataset };
@@ -181,10 +180,14 @@ export class BaselineChartComponent implements OnInit, OnDestroy {
 
   private updateScales(extrema) {
     const { min, max } = extrema;
-    const buffer = (max.x - min.x) * .25;
+    const xBuffer = (max.x - min.x) * .25;
+    const yBuffer = (max.y - min.y) * .25;
 
-    this.chart.options.scales.xAxes[0].ticks.min = Math.floor((min.x - buffer) / 100) * 100;
-    this.chart.options.scales.xAxes[0].ticks.max = Math.ceil((max.x + buffer) / 100) * 100;
+    this.chart.options.scales.xAxes[0].ticks.min = Math.floor((min.x - xBuffer) / 100) * 100;
+    this.chart.options.scales.xAxes[0].ticks.max = Math.ceil((max.x + xBuffer) / 100) * 100;
+
+    this.chart.options.scales.yAxes[0].ticks.min = Math.floor((min.y - yBuffer) / 100) * 100;
+    this.chart.options.scales.yAxes[0].ticks.max = Math.ceil((max.y + yBuffer) / 100) * 100;
   }
 
   private initChart() {

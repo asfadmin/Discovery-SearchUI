@@ -16,6 +16,7 @@ import { SceneDetailModule } from './scene-detail';
 import { ScenesListHeaderComponent } from './scenes-list-header/scenes-list-header.component';
 import { MobileResultsMenuComponent } from './mobile-results-menu/mobile-results-menu.component';
 import { DesktopResultsMenuComponent } from './desktop-results-menu/desktop-results-menu.component';
+import { BaselineResultsMenuComponent } from './baseline-results-menu/baseline-results-menu.component';
 import { BaselineChartModule } from '@components/baseline-chart/baseline-chart.module';
 
 @NgModule({
@@ -23,7 +24,8 @@ import { BaselineChartModule } from '@components/baseline-chart/baseline-chart.m
     ResultsMenuComponent,
     ScenesListHeaderComponent,
     MobileResultsMenuComponent,
-    DesktopResultsMenuComponent
+    DesktopResultsMenuComponent,
+    BaselineResultsMenuComponent
   ],
   imports: [
     CommonModule,

@@ -47,6 +47,7 @@ export interface CMRProductMetadata {
   // Baseline
   perpendicular: number | null;
   temporal: number | null;
+  canInSAR: boolean;
 }
 
 export enum FlightDirection {

@@ -1,6 +1,6 @@
 <div *ngIf="breakpoint$ | async as breakpoint"
   class="detail-card scrollable"
-  [class.scrollable]="breakpoint !== breakpoints.MOBILE">
+  [class.scrollable]="isScrollable">
 
   <div *ngIf="scene">
     <mat-card-header>
@@ -52,8 +52,8 @@
       <a *ngIf="searchType !== searchTypes.BASELINE && hasBaseline"
          (click)="makeBaselineSearch()"
          mat-raised-button class="mini-button" target="_blank"
-         matTooltip="Use this scene in a Baseline Search for interferometry">
-        Baseline Search
+         matTooltip="Use this scene in the Baseline Tool for interferometry">
+        Baseline Tool
       </a>
 
       <button

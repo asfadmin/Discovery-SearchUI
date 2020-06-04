@@ -1,32 +1,33 @@
 <mat-action-list class="h100 mp0">
   <cdk-virtual-scroll-viewport class="list-viewport h100" itemSize="60">
-    <div *cdkVirtualFor="let scene of scenes">
-      <button class="button-flex-row" mat-list-item
-           (mouseenter)="onSetFocusedScene(scene)"
-           (mouseleave) ="onClearFocusedScene()"
-           (click)="onSceneSelected(scene.id)"
-           [class.selected]="scene.name === selected"
-           [class.hovered]="scene.name === hoveredSceneName"
-      >
+    <div *ngIf="breakpoint$ | async as breakpoint">
+      <div *cdkVirtualFor="let scene of scenes">
+        <button class="button-flex-row" mat-list-item
+                (mouseenter)="onSetFocusedScene(scene)"
+                (mouseleave) ="onClearFocusedScene()"
+                (click)="onSceneSelected(scene.id)"
+                [class.selected]="scene.name === selected"
+                [class.hovered]="scene.name === hoveredSceneName"
+                [ngClass]="{'mobile-size': breakpoint <= breakpoints.SMALL}">
 
-        <div class="image-flex">
-          <img class="list-thumbnail"
-               [src]="scene.thumbnail"
-               onerror="this.src='assets/no-thumb.png'"
-               matBadgeOverlap="false"
-               matListAvatar>
-        </div>
+          <div class="image-flex">
+            <img class="list-thumbnail"
+                 [src]="scene.thumbnail"
+                 onerror="this.src='assets/no-thumb.png'"
+                 matBadgeOverlap="false"
+                 matListAvatar>
+          </div>
 
-        <div class="div-flex">
-          <div class="div-flex-column">
-            <div class="div-flex"
-                 [title]="scene.name" class="bold" matLine>
-              <app-file-name
-                [name]="scene.name"
-                [dataset]="scene.dataset">
-              </app-file-name>
+          <div class="div-flex">
+            <div class="div-flex-column">
+              <div class="div-flex"
+                   [title]="scene.name" class="bold" matLine>
+                <app-file-name
+                  [name]="scene.name"
+                  [dataset]="scene.dataset">
+                </app-file-name>
 
-              <span style="margin-left: 5px;">
+                <span style="margin-left: 5px;">
               <app-copy-to-clipboard
                 *ngIf="scene.name === hoveredSceneName; else notHovered"
                 prompt="Copy scene name"
@@ -38,46 +39,55 @@
                 </fa-icon>
               </ng-template>
             </span>
+              </div>
+            </div>
+            <div class="div-flex date-time" matLine>
+              <span *ngIf="breakpoint > breakpoints.MOBILE && searchType !== SearchTypes.BASELINE" matTooltip="Start Time">{{ scene.metadata.date | fullDate }}</span>
+              <span *ngIf="breakpoint === breakpoints.MOBILE || searchType === SearchTypes.BASELINE" matTooltip="Start Time">{{ scene.metadata.date | shortDate }}</span>
             </div>
           </div>
-          <div class="div-flex date-time" *ngIf="breakpoint$ | async as breakpoint" matLine>
-            <span *ngIf="breakpoint > breakpoints.MOBILE && searchType !== SearchTypes.BASELINE" matTooltip="Start Time">{{ scene.metadata.date | fullDate }}</span>
-            <span *ngIf="breakpoint === breakpoints.MOBILE || searchType === SearchTypes.BASELINE" matTooltip="Start Time">{{ scene.metadata.date | shortDate }}</span>
-          </div>
-        </div>
 
-        <ng-container *ngIf="searchType !== SearchTypes.BASELINE">
-          <div class="scene-controls">
-            <mat-icon (click)="onZoomTo(scene)" class="ml-2" matTooltip="Zoom to scene">
-              settings_overscan
-            </mat-icon>
-            <mat-icon (click)="onToggleScene($event, scene.groupId)"
-                      class="icon-margin"
-                      matTooltip="{{
+            <ng-container *ngIf="searchType !== SearchTypes.BASELINE">
+              <div class="scene-controls" [ngClass]="{'mobile-size': breakpoint <= breakpoints.SMALL}">
+                <mat-icon (click)="onZoomTo(scene)" class="ml-2" matTooltip="Zoom to scene">
+                  settings_overscan
+                </mat-icon>
+                <mat-icon (click)="onToggleScene($event, scene.groupId)"
+                          class="icon-margin"
+                          matTooltip="{{
                         allQueued[scene.groupId] ? 'Remove scene files from downloads': 'Add scene files to downloads'
                       }}">
-              {{ allQueued[scene.groupId] ? 'shopping_cart' : 'add_shopping_cart' }}
-            </mat-icon>
-          </div>
-          <div class="scene-controls">
-            <span class="number-queued"> {{ numberOfQueue[scene.groupId] }} </span>
-          </div>
-        </ng-container>
-
-        <ng-container *ngIf="searchType === SearchTypes.BASELINE">
-          <div class="baseline-metrics" *ngIf="breakpoint$ | async as breakpoint">
-            <div [className]="breakpoint > breakpoints.MOBILE ? 'div-flex-row' : 'div-flex-column'" >
-              <div [className]="breakpoint > breakpoints.MOBILE ? 'metric-flex-field' : 'metric-field'">
-                {{ scene.metadata.perpendicular + offsets.perpendicular }}m
+                  {{ allQueued[scene.groupId] ? 'shopping_cart' : 'add_shopping_cart' }}
+                </mat-icon>
               </div>
-              <div [className]="breakpoint > breakpoints.MOBILE ? 'metric-flex-field' : 'metric-field'">
-                {{ scene.metadata.temporal + offsets.temporal }}d
+              <div class="scene-controls" [ngClass]="{'mobile-size': breakpoint <= breakpoints.SMALL}">
+                <span class="number-queued"> {{ numberOfQueue[scene.groupId] }} </span>
               </div>
-            </div>
-          </div>
-        </ng-container>
+            </ng-container>
 
-      </button>
+            <ng-container *ngIf="searchType === SearchTypes.BASELINE">
+              <div style="display: flex;" [ngClass]="{'mobile-size': breakpoint <= breakpoints.SMALL}">
+                <div style="display: flex; justify-content: space-evenly; width: 135px;">
+                  <div class="metric-flex-field">
+                    {{ withOffset(scene.metadata.perpendicular, offsets.perpendicular) }}m
+                  </div>
+                  <div class="metric-flex-field">
+                    {{ withOffset(scene.metadata.temporal, offsets.temporal) }}d
+                  </div>
+                  <div class="cart-flex-field">
+                    <mat-icon (click)="onToggleScene($event, scene.groupId)"
+                              class="icon-margin"
+                              matTooltip="{{
+                      allQueued[scene.groupId] ? 'Remove scene files from downloads': 'Add scene files to downloads'
+                    }}">
+                      {{ allQueued[scene.groupId] ? 'shopping_cart' : 'add_shopping_cart' }}
+                    </mat-icon>
+                  </div>
+                </div>
+              </div>
+            </ng-container>
+        </button>
+      </div>
     </div>
   </cdk-virtual-scroll-viewport>
 </mat-action-list>

@@ -5,6 +5,7 @@
     <div
       id="result-div"
       class="w100 results-menu"
+      [ngClass]="{'mobile-size': breakpoint === breakpoints.MOBILE}"
       [style.height.px]="menuHeightPx"
       mwlResizable
       [validateResize]="validate"
@@ -18,7 +19,7 @@
         <div (click)="minResultWindow()" class="resize-min material-icons">keyboard_arrow_down</div>
       </div>
       <div
-        [class.hidden]="(areNoScenes$  | async)"
+        [class.hidden]="(areNoScenes$ | async)"
         class="h100">
         <div
           class="resize-handle-top"
@@ -30,12 +31,18 @@
 
           <ng-container *ngIf="breakpoint >= breakpoints.SMALL">
             <app-desktop-results-menu class="w100 h100"
+              *ngIf="searchType !== SearchTypes.BASELINE"
               [resize$]="resize$">
             </app-desktop-results-menu>
+
+            <app-baseline-results-menu class="w100 h100"
+              *ngIf="searchType === SearchTypes.BASELINE"
+              [resize$]="resize$">
+            </app-baseline-results-menu>
           </ng-container>
 
           <ng-container *ngIf="breakpoint === breakpoints.MOBILE">
-            <app-mobile-results-menu class="w100 h100"
+            <app-mobile-results-menu class="w100 h100 mobile-size"
               [resize$]="resize$">
             </app-mobile-results-menu>
           </ng-container>

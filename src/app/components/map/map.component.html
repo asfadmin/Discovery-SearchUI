@@ -2,7 +2,7 @@
   id="map" class="map w100 h100" #map>
 </div>
 
-<div *ngIf="breakpoint$ | async as breakpoint" class="map-header">
+<div class="map-header">
   <div class="header-controls"
        [class.map-control-margin]="(areResultsLoaded$ | async) && breakpoint === breakpoints.MOBILE"
         fxLayout="row" fxFlex>
@@ -15,18 +15,10 @@
 
     <div fxLayout="row" class="banner-row">
       <div fxLayout="column">
-        <mat-card *ngFor="let banner of (banners$ | async)"
-                  [@bannerTransition]
-                  class="banner-card"
-                  fxFlex="auto">
-
-          <div class="banner-text">
-            <div [innerHTML]="banner.text" class="inner-banner-text"></div>
-            <button (click)="removeBanner(banner)" mat-icon-button bb-icon>
-              <mat-icon >clear</mat-icon>
-            </button>
-          </div>
-        </mat-card>
+        <app-banners
+          [banners]="banners$ | async"
+          (removeBanner)="removeBanner($event)">
+        </app-banners>
       </div>
     </div>
 
@@ -45,14 +37,10 @@
       </button>
     </div>
 
-    <img *ngIf="breakpoint > breakpoints.MOBILE"
-      src="/assets/NASA_logo.svg" class="meatball">
-
     <ng-container *ngIf="breakpoint === breakpoints.MOBILE">
       <div (click)="closeMobileFullscreenControls()"
         *ngIf="fullscreenControl !== fc.NONE"
         class="mobile-controls-background"></div>
-
       <div
         *ngIf="fullscreenControl === fc.DRAW"
         (click)="closeMobileFullscreenControls()"
@@ -81,7 +69,10 @@
   </div>
 </div>
 
-<app-search-dropdown></app-search-dropdown>
+<img *ngIf="breakpoint > breakpoints.MOBILE"
+  src="/assets/NASA_logo.svg" class="meatball">
+
+<app-filters-dropdown></app-filters-dropdown>
 
 <app-file-upload
   (dialogClose)="onFileUploadDialogClosed($event)"
@@ -89,7 +80,7 @@
   [interaction$]="interactionMode$">
 </app-file-upload>
 
-<app-attributions>
+<app-attributions [breakpoint]="breakpoint">
 </app-attributions>
 
 <div
@@ -97,4 +88,3 @@
   (mouseleave)="leaveDrawPopup()"
   id="popup" class="ol-popup" #overlay>
 </div>
-

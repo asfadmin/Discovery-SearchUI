@@ -11,7 +11,6 @@ import { AppState } from '@store';
 import * as searchStore from '@store/search';
 import * as scenesStore from '@store/scenes';
 import * as queueStore from '@store/queue';
-import * as filtersStore from '@store/filters';
 
 import { faCopy } from '@fortawesome/free-solid-svg-icons';
 import { CdkVirtualScrollViewport } from '@angular/cdk/scrolling';
@@ -198,6 +197,10 @@ export class ScenesListComponent implements OnInit, OnDestroy {
 
   public onZoomTo(scene: models.CMRProduct): void {
     this.mapService.zoomToScene(scene);
+  }
+
+  public withOffset(val: number, offset: number): number {
+    return Math.trunc(val + offset);
   }
 
   ngOnDestroy() {

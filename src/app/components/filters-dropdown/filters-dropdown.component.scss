@@ -1,0 +1,92 @@
+@import "asf-theme";
+
+.hidden {
+  display: none;
+}
+
+.dataset-filters-div {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  margin: 0 auto;
+  width: 900px;
+  max-width: 100vw;
+  max-height: calc(100vh - 32px);
+  overflow: auto;
+  z-index: 1000;
+}
+
+.no-pointer {
+  pointer-events: none;
+}
+
+.pointer {
+  pointer-events: auto;
+}
+
+.dataset-filters-card {
+  background-color: white;
+  z-index: 1000;
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  box-shadow:
+    0 8px 10px 1px rgba(0, 0, 0, 0.14),
+    0 3px 14px 2px rgba(0, 0, 0, 0.12),
+    0 5px 5px -3px rgba(0, 0, 0, 0.4);
+
+  .header {
+    flex-shrink: 0;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    position: sticky;
+    top: 0;
+    background-color: $asf-primary-light;
+    border-bottom: 1px solid $asf-primary-dark;
+    font-size: 24px;
+    padding: 15px;
+    z-index: 1001;
+  }
+
+  .header-title {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+  }
+
+  .save-search-btn {
+    margin-left: 5px;
+  }
+
+  .filters-list {
+    flex-grow: 1;
+    overflow: auto;
+    min-height: 2em;
+    padding: 10px;
+  }
+
+  .footer {
+    flex-shrink: 0;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    position: sticky;
+    bottom: 0;
+    background-color: $asf-primary-light;
+    border-top: 1px solid $asf-primary-dark;
+    z-index: 1001;
+    padding: 10px;
+  }
+}
+
+.filter-scroll {
+  z-index: 1;
+}
+
+h3 {
+  color: $asf-primary;
+}

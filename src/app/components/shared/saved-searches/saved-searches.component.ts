@@ -1,10 +1,8 @@
 import { Component, OnInit, ViewChild, ElementRef, OnDestroy } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { SubSink } from 'subsink';
-
-import { timer } from 'rxjs';
 import { filter, switchMap, tap, delay } from 'rxjs/operators';
-import { Store, Action } from '@ngrx/store';
+import { Store } from '@ngrx/store';
 import { AppState } from '@store';
 import * as userStore from '@store/user';
 import * as searchStore from '@store/search';
@@ -12,9 +10,8 @@ import * as scenesStore from '@store/scenes';
 import * as uiStore from '@store/ui';
 import * as filtersStore from '@store/filters';
 
-import { SavedSearchService, MapService, WktService, ScreenSizeService } from '@services';
+import { SavedSearchService, ScreenSizeService, SearchService } from '@services';
 import * as models from '@models';
-import {getIsSaveSearchOn, SetSaveSearchOn} from '@store/ui';
 
 @Component({
   selector: 'app-saved-searches',
@@ -56,8 +53,7 @@ export class SavedSearchesComponent implements OnInit, OnDestroy {
     private store$: Store<AppState>,
     private screenSize: ScreenSizeService,
     private snackBar: MatSnackBar,
-    private mapService: MapService,
-    private wktService: WktService,
+    private searchService: SearchService,
   ) { }
 
   ngOnInit() {
@@ -200,36 +196,9 @@ export class SavedSearchesComponent implements OnInit, OnDestroy {
   }
 
   public onSetSearch(search: models.Search): void {
-    this.store$.dispatch(new searchStore.ClearSearch());
-    this.store$.dispatch(new searchStore.SetSearchType(search.searchType));
-
-    if (search.searchType === models.SearchType.DATASET) {
-      this.loadSearchPolygon(search);
-    }
-    if (search.searchType === models.SearchType.BASELINE) {
-      const filters = <models.BaselineFiltersType>search.filters;
-      this.store$.dispatch(new scenesStore.SetFilterMaster(filters.filterMaster));
-    }
-
-    this.store$.dispatch(new filtersStore.SetSavedSearch(search));
-    this.store$.dispatch(new uiStore.CloseSidebar());
-    this.store$.dispatch(new searchStore.MakeSearch());
+    this.searchService.load(search);
   }
 
-  private loadSearchPolygon(search: models.Search): void {
-    const polygon = (<models.GeographicFiltersType>search.filters).polygon;
-
-    if (polygon === null) {
-      this.mapService.clearDrawLayer();
-    } else {
-      const features =  this.wktService.wktToFeature(
-        polygon,
-        this.mapService.epsg()
-      );
-
-      this.mapService.setDrawFeature(features);
-    }
-  }
 
   public onUnlockFocus(): void {
     this.lockedFocus = false;

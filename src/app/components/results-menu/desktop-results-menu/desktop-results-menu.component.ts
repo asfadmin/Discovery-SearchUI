@@ -1,15 +1,13 @@
 import { Component, OnInit, Input, OnDestroy } from '@angular/core';
-import { SubSink } from 'subsink';
 
 import { Observable } from 'rxjs';
 
 import { Store } from '@ngrx/store';
 import { AppState } from '@store';
 import * as scenesStore from '@store/scenes';
-import * as searchStore from '@store/search';
-
-import { SearchType } from '@models';
-import { ScenesService } from '@services';
+import { ScreenSizeService } from '@services';
+import { SubSink } from 'subsink';
+import * as models from '@models';
 
 
 @Component({
@@ -21,18 +19,20 @@ export class DesktopResultsMenuComponent implements OnInit, OnDestroy {
   @Input() resize$: Observable<void>;
 
   public selectedProducts$ = this.store$.select(scenesStore.getSelectedSceneProducts);
-  public searchType: SearchType;
-  public SearchTypes = SearchType;
+  public breakpoint: models.Breakpoints;
+  public breakpoints = models.Breakpoints;
+
   private subs = new SubSink();
 
   constructor(
     private store$: Store<AppState>,
+    private screenSize: ScreenSizeService,
   ) { }
 
-  ngOnInit(): void {
+  ngOnInit() {
     this.subs.add(
-      this.store$.select(searchStore.getSearchType).subscribe(
-        searchType => this.searchType = searchType
+      this.screenSize.breakpoint$.subscribe(
+        breakpoint => this.breakpoint = breakpoint
       )
     );
   }

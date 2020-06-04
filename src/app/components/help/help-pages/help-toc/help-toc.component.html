@@ -43,7 +43,6 @@
             <mat-card-subtitle>Review search Results</mat-card-subtitle>
           </mat-card-header>
         </mat-card>
-
       </div>
     </div>
   </div>
@@ -79,13 +78,18 @@
           </ul>
         </div>
         <div class="help-toc-2">
-<!--          <h3>Using Search Results</h3>-->
-<!--          <ul>-->
-<!--            <li>Scenes, Metadata, Files - (2:08)</li>-->
-<!--            <li>Viewing Scenes, Browsing Images - (4:47)</li>-->
-<!--            <li>Downloading Data - (3:07)</li>-->
-<!--            <li>Using Data - (2:57)</li>-->
-<!--          </ul>-->
+          <h3>Using Search Results</h3>
+          <ul>
+            <li (click)="data.helpTopic = 'downloadQueue'">
+              Downloading Data - (2:27)
+            </li>
+            <li (click)="data.helpTopic = 'unzipping'">
+              Using Zipped Product Files - (1:17)
+            </li>
+            <li (click)="data.helpTopic = 'moreLikeThis'">
+              Using The "More Like This" Feature - (2:15)
+            </li>
+          </ul>
         </div>
         <div class="help-toc-3">
 <!--          <h3>Advanced Features</h3>-->

@@ -4,7 +4,6 @@ import { SubSink } from 'subsink';
 import { map } from 'rxjs/operators';
 
 import { ScreenSizeService } from '@services';
-import { Breakpoints } from '@models';
 
 @Component({
   selector: 'app-file-name',
@@ -26,21 +25,21 @@ export class FileNameComponent implements OnInit, OnDestroy {
       this.screenSize.size$.pipe(
       map(size => {
         if (size.width > 1900) {
-          return 50;
-        } else if (size.width > 1750) {
-          return 45;
-        } else if (size.width > 1500) {
           return 35;
-        } else if (size.width > 1350) {
+        } else if (size.width > 1750) {
           return 30;
-        } else if (size.width > 1200) {
+        } else if (size.width > 1500) {
           return 25;
-        } else if (size.width > 1000) {
+        } else if (size.width > 1350) {
           return 18;
-        } else if (size.width > 948 ) {
-          return 15;
+        } else if (size.width > 1240) {
+          return 16;
+        } else if (size.width > 1160) {
+          return 16;
+        } else if (size.width > 949 ) {
+          return 20;
         } else {
-          return 25;
+          return 18;
         }
       }),
       ).subscribe(
