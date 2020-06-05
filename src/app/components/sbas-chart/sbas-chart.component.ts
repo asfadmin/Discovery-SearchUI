@@ -32,6 +32,7 @@ export class SBASChartComponent implements OnInit, OnDestroy {
 
 
   private hoveredPair = [null, null];
+  private hoveredLine;
   private selectedPair = [null, null];
   private scenes: CMRProduct[];
   private x;
@@ -123,7 +124,7 @@ export class SBASChartComponent implements OnInit, OnDestroy {
         .attr('clip-path', 'url(#clip)');
 
       // Add circles
-      this.scatter
+      this.scatter.append('g')
         .selectAll('circle')
         .data(this.scenes)
         .enter()
@@ -153,12 +154,13 @@ export class SBASChartComponent implements OnInit, OnDestroy {
           .attr('stroke-width', 3)
           .attr('cursor', 'pointer')
           .attr('d', pair => line(pair))
-          .on('mouseover', d => this.setHovered(d))
-          .on('mouseleave', d => this.clearHovered(d))
-          .on('click', function(d) {
-            const l: any = d3.select(this);
-            l.attr('stroke', 'orange');
-          });
+          .on('mouseover', function(d) {
+            self.setHovered(d, d3.select(this));
+          })
+          .on('mouseleave', function(d) {
+            self.clearHovered();
+          })
+          .on('click', p => this.setSelected(p, line));
 
       const updateChart = () => {
         // recover the new scale
@@ -198,19 +200,46 @@ export class SBASChartComponent implements OnInit, OnDestroy {
       */
   }
 
-  private setHovered(pair, selectedLine) {
+  private setHovered(pair, newHovered) {
     this.hoveredPair = pair;
-    selectedLine
+
+    if (this.hoveredLine) {
+      this.hoveredLine
+        .style('mix-blend-mode', 'multiply')
+        .attr('stroke', 'steelblue')
+        .attr('stroke-width', 3);
+    }
+
+    newHovered
+      .style('mix-blend-mode', 'normal')
+      .attr('class', 'hovered-line')
       .attr('stroke', 'red')
       .attr('stroke-width', 5);
+
+    this.hoveredLine = newHovered;
   }
 
-  private clearHovered(pair, selectedLine) {
-    this.hoveredPair = [null, null];
+  private clearHovered() {
+    this.hoveredPair = null;
 
-    selectedLine
+    this.hoveredLine
+      .style('mix-blend-mode', 'multiply')
       .attr('stroke', 'steelblue')
       .attr('stroke-width', 3);
+  }
+
+  private setSelected(pair, line) {
+    this.selectedPair = pair;
+
+    this.scatter.select('.selected-line').remove();
+
+    this.scatter.append('path')
+      .attr('class', 'selected-line')
+      .attr('stroke', 'orange')
+      .attr('stroke-width', 3)
+      .attr('cursor', 'pointer')
+      .attr('d', _ => line(pair));
+
   }
 
   private pairIds(pair) {
