@@ -34,6 +34,10 @@ export interface CMRProductMetadata {
   faradayRotation: number | null;
   offNadirAngle: number | null;
 
+  // AVNIR-2
+  instrument: string | null;
+  pointingAngle: string | null;
+
   // UAVSAR
   missionName: string | null;
 
@@ -48,6 +52,10 @@ export interface CMRProductMetadata {
 
 export enum FlightDirection {
   ASCENDING = 'ASCENDING',
+  DESCENDING = 'DESCENDING',
+}
+
+export enum JustDescending {
   DESCENDING = 'DESCENDING',
 }
 

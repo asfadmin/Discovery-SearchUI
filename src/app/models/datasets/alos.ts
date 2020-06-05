@@ -16,7 +16,7 @@ export const alos = {
     Props.STACK_SIZE,
     Props.BASELINE_TOOL,
   ],
-  apiValue: { platform: 'ALOS' },
+  apiValue: { platform: 'ALOS', instrument: 'PALSAR' },
   date: {
     start: new Date('2006/05/16 03:36:51 UTC'),
     end: new Date('2011/04/21 20:23:36 UTC')
@@ -26,7 +26,7 @@ export const alos = {
   frequency: 'L-Band',
   source: {
     name: 'JAXA/METI',
-    url: null
+    url: 'https://global.jaxa.jp/'
   },
   productTypes: [{
     apiValue: 'L1.0',
