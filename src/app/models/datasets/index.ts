@@ -9,3 +9,4 @@ export * from './smap';
 export * from './uavsar';
 export * from './beta';
 export * from './sirc';
+export * from './avnir';

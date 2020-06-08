@@ -1,6 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Store } from '@ngrx/store';
 
+import { tap } from 'rxjs/operators';
 import { AppState } from '@store';
 import * as filtersStore from '@store/filters';
 
@@ -39,7 +40,12 @@ export class OtherSelectorComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.subs.add(
-      this.selectedDataset$.subscribe(dataset => this.dataset = dataset)
+      this.selectedDataset$.pipe(
+        tap(
+          dataset => this.flightDirectionTypes = dataset.id === models.avnir.id ?
+            models.justDescending : models.flightDirections
+        )
+      ).subscribe(dataset => this.dataset = dataset)
     );
     this.subs.add(
       this.beamModes$.subscribe(modes => this.beamModes = modes)

@@ -58,7 +58,7 @@
     </mat-select>
 
     <mat-hint *ngIf="prop.isRelevant(p.FLIGHT_DIRECTION)" align="start">
-      {{ flightDirections?.length || 0 }}/2
+      {{ flightDirections?.length || 0 }}/{{ flightDirectionTypes.length }}
       flight directions selected
     </mat-hint>
     <mat-hint *ngIf="!prop.isRelevant(p.FLIGHT_DIRECTION)" align="start">

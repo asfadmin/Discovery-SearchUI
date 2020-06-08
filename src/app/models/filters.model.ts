@@ -12,7 +12,8 @@ export enum Props {
   FARADAY_ROTATION = 'Faraday Rotation',
   STACK_SIZE = 'Stack Size',
   BASELINE_TOOL = 'Baseline Tool',
-  SUBTYPE = 'Subtype'
+  SUBTYPE = 'Subtype',
+  POINTING_ANGLE = 'Pointing Angle',
 }
 
 export const apiParamNames = {
