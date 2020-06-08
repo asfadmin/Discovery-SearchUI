@@ -123,6 +123,7 @@ export class SBASChartComponent implements OnInit, OnDestroy {
     this.scatter.append('rect')
         .attr('width', width)
         .attr('height', height)
+        .attr('cursor', 'pointer')
         .style('fill', 'transparent')
         .style('pointer-events', 'all')
         .call(zoom);
@@ -169,12 +170,12 @@ export class SBASChartComponent implements OnInit, OnDestroy {
 
     // Add a clipPath: everything out of this area won't be drawn.
     const clip = this.chart.append('defs').append('SVG:clipPath')
-        .attr('id', 'clip')
-        .append('SVG:rect')
-        .attr('width', width )
-        .attr('height', height )
-        .attr('x', 0)
-        .attr('y', 0);
+      .attr('id', 'clip')
+      .append('SVG:rect')
+      .attr('width', width )
+      .attr('height', height )
+      .attr('x', 0)
+      .attr('y', 0);
   }
 
   private updateChart() {
@@ -216,7 +217,7 @@ export class SBASChartComponent implements OnInit, OnDestroy {
 
     newHovered
       .style('mix-blend-mode', 'normal')
-      .attr('stroke', 'red')
+      .attr('stroke', 'orange')
       .attr('stroke-width', 5);
 
     this.hoveredLine = newHovered;
@@ -238,7 +239,7 @@ export class SBASChartComponent implements OnInit, OnDestroy {
 
     this.scatter.append('path')
       .attr('class', 'selected-line')
-      .attr('stroke', 'orange')
+      .attr('stroke', 'red')
       .attr('stroke-width', 3)
       .attr('cursor', 'pointer')
       .attr('d', _ => this.line(pair));
