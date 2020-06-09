@@ -2,18 +2,26 @@
   <ng-container *ngIf="breakpoint$ | async as breakpoint">
     <div [className]="searchType === SearchTypes.BASELINE && breakpoint > breakpoints.MOBILE ? 'files-header-baseline' : 'files-header'">
       <div class="header-row-left" [ngClass]="{'mobile-size': breakpoint <= breakpoints.SMALL}">
-        <div *ngIf="searchType !== SearchTypes.BASELINE" style="margin-right: 10px;">
+
+        <div *ngIf="searchType === SearchTypes.DATASET || searchType === SearchTypes.LIST" class="mr-10">
           {{ numberOfScenes }} Scene{{ numberOfScenes === 1 ? '' : 's' }}
-          ({{ numberOfProducts$ | async }} of {{ formatNumber(totalResultCount$ | async) }} File{{ (numberOfProducts$ | async) === 1 ? '' : 's' }})
+          ({{ numberOfProducts$ | async }} of
+          {{ formatNumber(totalResultCount$ | async) }}
+          File{{ (numberOfProducts$ | async) === 1 ? '' : 's' }})
         </div>
-        <div *ngIf="searchType === SearchTypes.BASELINE" style="margin-right: 10px;">
+
+        <div *ngIf="searchType === SearchTypes.SBAS" class="mr-10">
+          {{ numPairs$ | async }} Pair{{ (numPairs$ | async) === 1 ? '' : 's' }}
+        </div>
+
+        <div *ngIf="searchType === SearchTypes.BASELINE" class="mr-10">
           {{ numBaselineScenes$ | async }} Scene{{ (numBaselineScenes$ | async) === 1 ? '' : 's' }}
         </div>
+
         <div *ngIf="allProducts$ | async as products">
           <mat-icon
             (click)="onZoomToResults()"
-            class="clickable noselect"
-            style="margin-right: 10px;"
+            class="clickable noselect mr-10"
             matTooltip="Zoom to results">
             settings_overscan
           </mat-icon>
