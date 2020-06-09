@@ -69,6 +69,9 @@ export class ProductService {
       faradayRotation: +g.fr,
       offNadirAngle: +g.on,
 
+      instrument: g.i,
+      pointingAngle: g.pa,
+
       missionName: g.mn,
       flightLine: g.fl,
       stackSize: +g.ss || null,

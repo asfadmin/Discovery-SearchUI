@@ -47,7 +47,8 @@ export type DatasetPolarizations = string[];
 export type DatasetSubtypes = DatasetSubtype[];
 
 export const sentinel_1 = fromDatasets.sentinel_1;
-export const alos =  fromDatasets.alos;
+export const alos = fromDatasets.alos;
+export const avnir = fromDatasets.avnir;
 export const sirc = fromDatasets.sirc;
 export const beta = fromDatasets.beta;
 export const smap = fromDatasets.smap;
@@ -61,6 +62,7 @@ export const seasat = fromDatasets.seasat;
 export const datasetList: Dataset[] = [
   fromDatasets.sentinel_1,
   fromDatasets.alos,
+  fromDatasets.avnir,
   fromDatasets.sirc,
   fromDatasets.beta,
   fromDatasets.smap,
@@ -85,5 +87,9 @@ export const datasets = datasetList.reduce(
 
 export const flightDirections = [
   'Ascending',
+  'Descending'
+];
+
+export const justDescending = [
   'Descending'
 ];
