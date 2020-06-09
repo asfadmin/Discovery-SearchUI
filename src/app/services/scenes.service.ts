@@ -68,7 +68,6 @@ export class ScenesService {
         pairs.push([root, scene]);
       }
     });
-    console.log(pairs.length);
 
     return pairs;
   }

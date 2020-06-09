@@ -164,7 +164,7 @@ export class SBASChartComponent implements OnInit, OnDestroy {
       .append('circle')
         .attr('cx', (d: CMRProduct) => this.x(d.metadata.temporal) )
         .attr('cy', (d: CMRProduct) => this.y(d.metadata.perpendicular) )
-        .attr('r', 8)
+        .attr('r', 6)
         .style('fill', '#61a3a9')
         .style('opacity', 0.8);
 
@@ -240,7 +240,7 @@ export class SBASChartComponent implements OnInit, OnDestroy {
     this.scatter.append('path')
       .attr('class', 'selected-line')
       .attr('stroke', 'red')
-      .attr('stroke-width', 3)
+      .attr('stroke-width', 5)
       .attr('cursor', 'pointer')
       .attr('d', _ => this.line(pair));
 
