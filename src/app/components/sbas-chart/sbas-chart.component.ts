@@ -94,7 +94,7 @@ export class SBASChartComponent implements OnInit, OnDestroy {
       // Add X axis
       this.x = d3.scaleLinear()
         .domain(xExtent)
-        .range([ 0, width ]);
+        .range([ 0, width  * 3 ]);
 
       this.xAxis = this.chart.append('g')
         .attr('transform', `translate(0,${height})`)
