@@ -116,7 +116,7 @@ export class SBASChartComponent implements OnInit, OnDestroy {
       .attr('clip-path', 'url(#clip)');
 
     const zoom = d3.zoom()
-        .scaleExtent([.5, 20])  // This control how much you can unzoom (x0.5) and zoom (x20)
+        .scaleExtent([.5, 30])  // This control how much you can unzoom (x0.5) and zoom (x20)
         .extent([[0, 0], [width, height]])
         .on('zoom', _ => this.updateChart());
 
@@ -127,18 +127,6 @@ export class SBASChartComponent implements OnInit, OnDestroy {
         .style('fill', 'transparent')
         .style('pointer-events', 'all')
         .call(zoom);
-
-    // Add circles
-    this.scatter.append('g')
-      .selectAll('circle')
-      .data(this.scenes)
-      .enter()
-      .append('circle')
-        .attr('cx', (d: CMRProduct) => this.x(d.metadata.temporal) )
-        .attr('cy', (d: CMRProduct) => this.y(d.metadata.perpendicular) )
-        .attr('r', 8)
-        .style('fill', '#61a3a9')
-        .style('opacity', 0.5);
 
     this.line = d3.line()
         .x((product: any) => this.x(product.metadata.temporal))
@@ -167,6 +155,18 @@ export class SBASChartComponent implements OnInit, OnDestroy {
           self.clearHovered();
         })
         .on('click', p => this.setSelected(p));
+
+    // Add circles
+    this.scatter.append('g')
+      .selectAll('circle')
+      .data(this.scenes)
+      .enter()
+      .append('circle')
+        .attr('cx', (d: CMRProduct) => this.x(d.metadata.temporal) )
+        .attr('cy', (d: CMRProduct) => this.y(d.metadata.perpendicular) )
+        .attr('r', 8)
+        .style('fill', '#61a3a9')
+        .style('opacity', 0.8);
 
     // Add a clipPath: everything out of this area won't be drawn.
     const clip = this.chart.append('defs').append('SVG:clipPath')
