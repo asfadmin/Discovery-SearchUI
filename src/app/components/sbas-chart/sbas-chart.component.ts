@@ -96,7 +96,7 @@ export class SBASChartComponent implements OnInit, OnDestroy {
       // Add X axis
       this.x = d3.scaleLinear()
         .domain(xExtent)
-        .range([ 0, this.widthValue ]);
+        .range([ 0, this.widthValue  * 3 ]);
 
       this.xAxis = this.chart.append('g')
         .attr('transform', `translate(0,${this.heightValue})`)
@@ -118,7 +118,7 @@ export class SBASChartComponent implements OnInit, OnDestroy {
       .attr('clip-path', 'url(#clip)');
 
     const zoom = d3.zoom()
-        .scaleExtent([.5, 20])  // This control how much you can unzoom (x0.5) and zoom (x20)
+        .scaleExtent([.5, 30])  // This control how much you can unzoom (x0.5) and zoom (x20)
         .extent([[0, 0], [this.widthValue, this.heightValue]])
         .on('zoom', _ => this.updateChart());
 
@@ -129,18 +129,6 @@ export class SBASChartComponent implements OnInit, OnDestroy {
         .style('fill', 'transparent')
         .style('pointer-events', 'all')
         .call(zoom);
-
-    // Add circles
-    this.scatter.append('g')
-      .selectAll('circle')
-      .data(this.scenes)
-      .enter()
-      .append('circle')
-        .attr('cx', (d: CMRProduct) => this.x(d.metadata.temporal) )
-        .attr('cy', (d: CMRProduct) => this.y(d.metadata.perpendicular) )
-        .attr('r', 8)
-        .style('fill', '#61a3a9')
-        .style('opacity', 0.5);
 
     this.line = d3.line()
         .x((product: any) => this.x(product.metadata.temporal))
@@ -169,6 +157,18 @@ export class SBASChartComponent implements OnInit, OnDestroy {
           self.clearHovered();
         })
         .on('click', p => this.setSelected(p));
+
+    // Add circles
+    this.scatter.append('g')
+      .selectAll('circle')
+      .data(this.scenes)
+      .enter()
+      .append('circle')
+        .attr('cx', (d: CMRProduct) => this.x(d.metadata.temporal) )
+        .attr('cy', (d: CMRProduct) => this.y(d.metadata.perpendicular) )
+        .attr('r', 6)
+        .style('fill', '#61a3a9')
+        .style('opacity', 0.8);
 
     // Add a clipPath: everything out of this area won't be drawn.
     const clip = this.chart.append('defs').append('SVG:clipPath')
@@ -242,7 +242,7 @@ export class SBASChartComponent implements OnInit, OnDestroy {
     this.scatter.append('path')
       .attr('class', 'selected-line')
       .attr('stroke', 'red')
-      .attr('stroke-width', 3)
+      .attr('stroke-width', 5)
       .attr('cursor', 'pointer')
       .attr('d', _ => this.line(pair));
 
