@@ -44,6 +44,10 @@ export class SBASChartComponent implements OnInit, OnDestroy {
   private line;
   private pairs;
 
+  private margin = { top: 9, right: 30, bottom: 30, left: 60 };
+  private widthValue = 800 - this.margin.left - this.margin.right;
+  private heightValue = 300 - this.margin.top - this.margin.bottom;
+
   private selected: CMRProduct;
   private criticalBaseline: number;
   private hoveredProductId;
@@ -75,9 +79,6 @@ export class SBASChartComponent implements OnInit, OnDestroy {
   }
 
   private makeSbasChart() {
-    const margin = {top: 9, right: 30, bottom: 30, left: 60},
-        widthValue = 800 - margin.left - margin.right,
-        heightValue = 400 - margin.top - margin.bottom;
 
     this.chart = d3.select('#sbasChart')
       .append('svg')
@@ -86,7 +87,7 @@ export class SBASChartComponent implements OnInit, OnDestroy {
         .attr('viewBox', '0 0 800 600')
       .append('g')
         .attr('transform',
-              `translate(${margin.left},${margin.top})`);
+              `translate(${this.margin.left},${this.margin.top})`);
 
       const xExtent = d3.extent(
         this.scenes.map(s => s.metadata.temporal)
@@ -95,10 +96,10 @@ export class SBASChartComponent implements OnInit, OnDestroy {
       // Add X axis
       this.x = d3.scaleLinear()
         .domain(xExtent)
-        .range([ 0, widthValue ]);
+        .range([ 0, this.widthValue ]);
 
       this.xAxis = this.chart.append('g')
-        .attr('transform', `translate(0,${heightValue})`)
+        .attr('transform', `translate(0,${this.heightValue})`)
         .call(d3.axisBottom(this.x));
 
     const yExtent = d3.extent(
@@ -108,7 +109,7 @@ export class SBASChartComponent implements OnInit, OnDestroy {
     // Add Y axis
     this.y = d3.scaleLinear()
       .domain(yExtent)
-      .range([ heightValue, 0]);
+      .range([ this.heightValue, 0]);
     this.yAxis = this.chart.append('g')
       .call(d3.axisLeft(this.y));
 
@@ -118,12 +119,12 @@ export class SBASChartComponent implements OnInit, OnDestroy {
 
     const zoom = d3.zoom()
         .scaleExtent([.5, 20])  // This control how much you can unzoom (x0.5) and zoom (x20)
-        .extent([[0, 0], [widthValue, heightValue]])
+        .extent([[0, 0], [this.widthValue, this.heightValue]])
         .on('zoom', _ => this.updateChart());
 
     this.scatter.append('rect')
-        .attr('width', widthValue)
-        .attr('height', heightValue)
+        .attr('width', this.widthValue)
+        .attr('height', this.heightValue)
         .attr('cursor', 'pointer')
         .style('fill', 'transparent')
         .style('pointer-events', 'all')
@@ -173,8 +174,8 @@ export class SBASChartComponent implements OnInit, OnDestroy {
     const clip = this.chart.append('defs').append('SVG:clipPath')
       .attr('id', 'clip')
       .append('SVG:rect')
-      .attr('width', widthValue )
-      .attr('height', heightValue )
+      .attr('width', this.widthValue )
+      .attr('height', this.heightValue )
       .attr('x', 0)
       .attr('y', 0);
   }
@@ -263,4 +264,18 @@ export class SBASChartComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     this.subs.unsubscribe();
   }
+
+// A function that finishes to draw the chart for a specific device size.
+  private drawChart() {
+
+    // get the current width of the div where the chart appear, and attribute it to Svg
+    const currentWidth = parseInt(d3.select('#div_basicResize').style('width'), 10);
+    this.chart.attr('width', currentWidth);
+
+    // Update the X scale and Axis (here the 20 is just to have a bit of margin)
+    this.x.range([ 20, currentWidth - 20 ]);
+    this.xAxis.call(d3.axisBottom( this.x ));
+
+  }
+
 }
