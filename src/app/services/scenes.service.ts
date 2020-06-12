@@ -6,11 +6,16 @@ import * as moment from 'moment';
 
 import { Store } from '@ngrx/store';
 import { AppState } from '@store/app.reducer';
-import { getAllProducts, getScenes, getTemporalSortDirection, getPerpendicularSortDirection } from '@store/scenes/scenes.reducer';
-import { getTemporalRange, getPerpendicularRange, getDateRange } from '@store/filters/filters.reducer';
+import {
+  getAllProducts, getScenes, getTemporalSortDirection,
+  getPerpendicularSortDirection, getCustomPairs
+} from '@store/scenes/scenes.reducer';
+import {
+  getTemporalRange, getPerpendicularRange, getDateRange
+} from '@store/filters/filters.reducer';
 import { getSearchType } from '@store/search/search.reducer';
 
-import { CMRProduct, SearchType, Range, ColumnSortDirection } from '@models';
+import { CMRProduct, CMRProductPair, SearchType, Range, ColumnSortDirection } from '@models';
 
 @Injectable({
   providedIn: 'root'
@@ -38,30 +43,37 @@ export class ScenesService {
     );
   }
 
-  public pairs$(): Observable<CMRProduct[]> {
+  public pairs$(): Observable<CMRProductPair[]> {
     return combineLatest(
       this.store$.select(getScenes).pipe(
         map(
           scenes => this.temporalSort(scenes, ColumnSortDirection.INCREASING)
         ),
       ),
+      this.store$.select(getCustomPairs),
       this.store$.select(getTemporalRange).pipe(
-        map(range => range.start || 48)
-      )
+        map(range => range.start || 24)
+      ),
+      this.store$.select(getPerpendicularRange).pipe(
+        map(range => range.start || 100)
+      ),
     ).pipe(
-      map(([scenes, temporal]) => this.makePairs(scenes, temporal))
+      map(([scenes, customPairs, temporal, perp]) =>
+        [ ...this.makePairs(scenes, temporal, perp), ...customPairs ]
+      )
     );
   }
 
-  private makePairs(scenes: CMRProduct[], threshold: number) {
+  private makePairs(scenes: CMRProduct[], tempThreshold: number, perpThreshold): CMRProductPair[] {
     const pairs = [];
 
     scenes.forEach((root, index) => {
       for (let i = index + 1; i < scenes.length; ++i) {
         const scene = scenes[i];
-        const diff = scene.metadata.temporal - root.metadata.temporal;
+        const tempDiff = scene.metadata.temporal - root.metadata.temporal;
+        const perpDiff = Math.abs(scene.metadata.perpendicular - root.metadata.perpendicular);
 
-        if (diff > threshold) {
+        if (tempDiff > tempThreshold || perpDiff > perpThreshold) {
           return;
         }
 

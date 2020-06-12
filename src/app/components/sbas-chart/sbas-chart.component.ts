@@ -29,20 +29,20 @@ export enum ChartDatasets {
   styleUrls: ['./sbas-chart.component.scss']
 })
 export class SBASChartComponent implements OnInit, OnDestroy {
-
-
   private hoveredPair = [null, null];
   private hoveredLine;
   private selectedPair = [null, null];
   private scenes: CMRProduct[];
   private x;
-  private xAxis;
   private y;
+  private xAxis;
   private yAxis;
   private chart;
   private scatter;
   private line;
   private pairs;
+
+  private queuedProduct;
 
   private margin = { top: 9, right: 30, bottom: 30, left: 60 };
   private widthValue = 800 - this.margin.left - this.margin.right;
@@ -118,27 +118,28 @@ export class SBASChartComponent implements OnInit, OnDestroy {
       .attr('clip-path', 'url(#clip)');
 
     const zoom = d3.zoom()
-        .scaleExtent([.5, 30])  // This control how much you can unzoom (x0.5) and zoom (x20)
-        .extent([[0, 0], [this.widthValue, this.heightValue]])
-        .on('zoom', _ => this.updateChart());
+      .scaleExtent([.5, 30])  // This control how much you can unzoom (x0.5) and zoom (x20)
+      .extent([[0, 0], [this.widthValue, this.heightValue]])
+      .on('zoom', _ => this.updateChart());
 
     this.scatter.append('rect')
-        .attr('width', this.widthValue)
-        .attr('height', this.heightValue)
-        .attr('cursor', 'pointer')
-        .style('fill', 'transparent')
-        .style('pointer-events', 'all')
-        .call(zoom);
+      .attr('width', this.widthValue)
+      .attr('height', this.heightValue)
+      .attr('cursor', 'pointer')
+      .style('fill', 'transparent')
+      .style('pointer-events', 'all')
+      .on('mousemove', _ => this.chartMouseMove())
+      .call(zoom);
 
     this.line = d3.line()
-        .x((product: any) => this.x(product.metadata.temporal))
-        .y((product: any) => this.y(product.metadata.perpendicular));
+      .x((product: any) => this.x(product.metadata.temporal))
+      .y((product: any) => this.y(product.metadata.perpendicular));
 
     const lines = this.scatter.append('g')
-        .attr('fill', 'none')
-        .attr('stroke-linejoin', 'round')
-        .attr('stroke-linecap', 'round')
-      .selectAll('path');
+      .attr('fill', 'none')
+      .attr('stroke-linejoin', 'round')
+      .attr('stroke-linecap', 'round')
+    .selectAll('path');
 
     const self = this;
     lines
@@ -166,16 +167,18 @@ export class SBASChartComponent implements OnInit, OnDestroy {
       .append('circle')
         .attr('cx', (d: CMRProduct) => this.x(d.metadata.temporal) )
         .attr('cy', (d: CMRProduct) => this.y(d.metadata.perpendicular) )
-        .attr('r', 6)
-        .style('fill', '#61a3a9')
-        .style('opacity', 0.8);
+        .attr('r', 7)
+        .on('click', p => this.toggleDrawing(p))
+        .attr('cursor', 'pointer')
+        .style('fill', 'light grey')
+        .style('opacity', 0.7);
 
     // Add a clipPath: everything out of this area won't be drawn.
     const clip = this.chart.append('defs').append('SVG:clipPath')
       .attr('id', 'clip')
       .append('SVG:rect')
-      .attr('width', this.widthValue )
-      .attr('height', this.heightValue )
+      .attr('width', this.widthValue)
+      .attr('height', this.heightValue)
       .attr('x', 0)
       .attr('y', 0);
   }
@@ -245,7 +248,35 @@ export class SBASChartComponent implements OnInit, OnDestroy {
       .attr('stroke-width', 5)
       .attr('cursor', 'pointer')
       .attr('d', _ => this.line(pair));
+  }
 
+  private chartMouseMove() {
+    // `translate(${this.margin.left},${this.margin.top})`
+    /*
+      console.log(
+        Math.trunc(this.x.invert(d3.event.offsetX - this.margin.left)),
+        Math.trunc(this.y.invert(d3.event.offsetY - this.margin.top))
+      );
+    */
+  }
+
+  private toggleDrawing(product) {
+    if (!!this.queuedProduct) {
+      this.addPair(product);
+    } else {
+      this.queuedProduct = product;
+    }
+  }
+
+  private addPair(product: CMRProduct) {
+    if (this.queuedProduct.id === product.id) {
+      return;
+    }
+
+    this.store$.dispatch(
+      new scenesStore.AddCustomPair([ this.queuedProduct, product ])
+    );
+    this.queuedProduct = null;
   }
 
   private pairIds(pair) {

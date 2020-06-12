@@ -39,15 +39,14 @@ export class SbasSlidersComponent implements OnInit {
     this.subs.add(
       tempValues$.subscribe(
         ([start]) => {
-          console.log('start:', start);
-          const action = new filtersStore.SetTemporalRange({ start, end: null });
+          const action = new filtersStore.SetPerpendicularRange({ start, end: null });
           this.store$.dispatch(action);
         }
       )
     );
 
     this.subs.add(
-      this.store$.select(filtersStore.getTemporalRange).subscribe(
+      this.store$.select(filtersStore.getPerpendicularRange).subscribe(
         temp => {
           this.temporal = temp.start;
         }
@@ -75,11 +74,11 @@ export class SbasSlidersComponent implements OnInit {
       step: 1,
       range: {
         'min': 0,
-        'max': 60
+        'max': 300
       },
       pips: {
         mode: 'positions',
-        values: [0, 20, 40, 60, 80, 100],
+        values: [0, 50, 100, 150, 200, 250],
         density: 4,
         stepped: true,
         format: wNumb({

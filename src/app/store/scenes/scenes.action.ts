@@ -1,6 +1,6 @@
 import { Action } from '@ngrx/store';
 
-import { CMRProduct, UnzippedFolder, ColumnSortDirection, SearchType } from '@models';
+import { CMRProduct, UnzippedFolder, ColumnSortDirection, SearchType, CMRProductPair } from '@models';
 
 export enum ScenesActionType {
   SET_SCENES = '[Granuels] Set Scenes',
@@ -27,6 +27,9 @@ export enum ScenesActionType {
 
   SET_PERPENDICULAR_SORT_DIRECTION = '[Scenes] Set Perpendicular Sort Direction',
   SET_TEMPORAL_SORT_DIRECTION = '[Scenes] Set Temporal Sort Direction',
+
+  ADD_CUSTOM_PAIR = '[Scenes] Add Custom Pair',
+  CLEAR_CUSTOM_PAIRS = '[Scenes] Clear Custom Pairs',
 }
 
 export class SetScenes implements Action {
@@ -128,6 +131,16 @@ export class SetTemporalSortDirection implements Action {
   constructor(public payload: ColumnSortDirection) {}
 }
 
+export class AddCustomPair implements Action {
+  public readonly type = ScenesActionType.ADD_CUSTOM_PAIR;
+
+  constructor(public payload: CMRProductPair) {}
+}
+
+export class ClearCustomPairs implements Action {
+  public readonly type = ScenesActionType.CLEAR_CUSTOM_PAIRS;
+}
+
 
 export type ScenesActions =
   | SetScenes
@@ -148,4 +161,6 @@ export type ScenesActions =
   | SetFilterMaster
   | SetMaster
   | SetTemporalSortDirection
-  | SetPerpendicularSortDirection;
+  | SetPerpendicularSortDirection
+  | AddCustomPair
+  | ClearCustomPairs;

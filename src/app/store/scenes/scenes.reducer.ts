@@ -2,13 +2,14 @@ import { createFeatureSelector, createSelector } from '@ngrx/store';
 
 import { ScenesActionType, ScenesActions } from './scenes.action';
 
-import { CMRProduct, UnzippedFolder, ColumnSortDirection, SearchType } from '@models';
+import { CMRProduct, UnzippedFolder, ColumnSortDirection, SearchType, CMRProductPair } from '@models';
 
 interface SceneEntities { [id: string]: CMRProduct; }
 
 export interface ScenesState {
   ids: string[];
   products: SceneEntities;
+  customPairs: CMRProductPair[];
   areResultsLoaded: boolean;
   scenes: {[id: string]: string[]};
   unzipped: {[id: string]: UnzippedFolder[]};
@@ -28,6 +29,7 @@ export interface ScenesState {
 export const initState: ScenesState = {
   ids: [],
   scenes: {},
+  customPairs: [],
   unzipped: {},
   productUnzipLoading: null,
   openUnzippedProduct: null,
@@ -247,6 +249,20 @@ export function scenesReducer(state = initState, action: ScenesActions): ScenesS
         ...state,
         unzipped: {},
         productUnzipLoading: null,
+      };
+    }
+
+    case ScenesActionType.ADD_CUSTOM_PAIR: {
+      return {
+        ...state,
+        customPairs: [...state.customPairs, action.payload]
+      };
+    }
+
+    case ScenesActionType.CLEAR_CUSTOM_PAIRS: {
+      return {
+        ...state,
+        customPairs: []
       };
     }
 
@@ -548,4 +564,9 @@ export const getPerpendicularSortDirection = createSelector(
 export const getTemporalSortDirection = createSelector(
   getScenesState,
   state => state.temporalSort
+);
+
+export const getCustomPairs = createSelector(
+  getScenesState,
+  state => state.customPairs
 );

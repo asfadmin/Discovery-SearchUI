@@ -207,6 +207,16 @@ export class SceneDetailComponent implements OnInit, OnDestroy {
     ].forEach(action => this.store$.dispatch(action));
   }
 
+  public makeSBASSearch(): void {
+    const sceneName = this.baselineSceneName();
+    [
+      new searchStore.ClearSearch(),
+      new searchStore.SetSearchType(models.SearchType.SBAS),
+      new scenesStore.SetFilterMaster(sceneName),
+      new searchStore.MakeSearch()
+    ].forEach(action => this.store$.dispatch(action));
+  }
+
   private capitalizeFirstLetter(str) {
       return str.charAt(0).toUpperCase() + str.slice(1);
   }

@@ -56,6 +56,15 @@
         Baseline Tool
       </a>
 
+      &nbsp;&nbsp;
+
+      <a *ngIf="searchType !== searchTypes.BASELINE && hasBaseline"
+         (click)="makeSBASSearch()"
+         mat-raised-button class="mini-button" target="_blank"
+         matTooltip="Use this scene in the SBAS Tool to make product pairs for interferometry">
+        SBAS Tool
+      </a>
+
       <button
          *ngIf="searchType === searchTypes.BASELINE"
         (click)="onSetSelectedAsMaster()"
