@@ -44,9 +44,9 @@ export class SBASChartComponent implements OnInit, OnDestroy {
 
   private queuedProduct;
 
-  private margin = { top: 9, right: 30, bottom: 30, left: 60 };
-  private widthValue = 800 - this.margin.left - this.margin.right;
-  private heightValue = 300 - this.margin.top - this.margin.bottom;
+  private margin;
+  private widthValue;
+  private heightValue;
 
   private selected: CMRProduct;
   private criticalBaseline: number;
@@ -76,15 +76,30 @@ export class SBASChartComponent implements OnInit, OnDestroy {
           this.makeSbasChart();
         })
     );
+
+    // Add an event listener that run the function when dimension change
+    window.addEventListener('resize', this.makeSbasChart );
+
   }
 
   private makeSbasChart() {
 
+    // this.margin = { top: 9, right: 30, bottom: 30, left: 60 };
+    this.margin = { top: 0, right: 0, bottom: 200, left: 20 };
+    this.widthValue = 800 - this.margin.left - this.margin.right;
+    this.heightValue = 300 - this.margin.top - this.margin.bottom;
+
+    this.widthValue = parseInt(d3.select('#sbasChart').style('width'), 10);
+    const elem = document.getElementById('sbas-chart-column');
+    this.heightValue = elem.offsetHeight;
+    console.log('widthValue:', this.widthValue);
+    console.log('heightValue:', this.heightValue);
+
     this.chart = d3.select('#sbasChart')
       .append('svg')
-        // .attr('width', widthValue + margin.left + margin.right)
-        // .attr('height', heightValue + margin.top + margin.bottom)
-        .attr('viewBox', '0 0 800 600')
+        .attr('width', this.widthValue + this.margin.left + this.margin.right)
+        .attr('height', this.heightValue + this.margin.top + this.margin.bottom)
+        // .attr('viewBox', '0 0 ' + this.widthValue + ' ' + this.heightValue)
       .append('g')
         .attr('transform',
               `translate(${this.margin.left},${this.margin.top})`);
@@ -99,7 +114,7 @@ export class SBASChartComponent implements OnInit, OnDestroy {
         .range([ 0, this.widthValue  * 3 ]);
 
       this.xAxis = this.chart.append('g')
-        .attr('transform', `translate(0,${this.heightValue})`)
+        .attr('transform', `translate(0,${this.widthValue})`)
         .call(d3.axisBottom(this.x));
 
     const yExtent = d3.extent(
@@ -182,6 +197,23 @@ export class SBASChartComponent implements OnInit, OnDestroy {
       .attr('x', 0)
       .attr('y', 0);
   }
+
+  // A function that finishes to draw the chart for a specific device size.
+  private drawChart() {
+
+    // get the current width of the div where the chart appear, and attribute it to Svg
+    this.widthValue = parseInt(d3.select('#sbasChart').style('width'), 10);
+    const elem = document.getElementById('sbasChart');
+    this.heightValue = elem.offsetHeight;
+    console.log('widthValue:', this.widthValue);
+    console.log('heightValue:', this.heightValue);
+
+    // Update the X scale and Axis (here the 20 is just to have a bit of margin)
+    this.x.range([ 20, this.widthValue - 20 ]);
+    this.xAxis.call(d3.axisBottom( this.x ));
+
+  }
+
 
   private updateChart() {
     // recover the new scale
@@ -294,19 +326,6 @@ export class SBASChartComponent implements OnInit, OnDestroy {
   // A function that updates the chart when the user zoom and thus new boundaries are available
   ngOnDestroy() {
     this.subs.unsubscribe();
-  }
-
-// A function that finishes to draw the chart for a specific device size.
-  private drawChart() {
-
-    // get the current width of the div where the chart appear, and attribute it to Svg
-    const currentWidth = parseInt(d3.select('#div_basicResize').style('width'), 10);
-    this.chart.attr('width', currentWidth);
-
-    // Update the X scale and Axis (here the 20 is just to have a bit of margin)
-    this.x.range([ 20, currentWidth - 20 ]);
-    this.xAxis.call(d3.axisBottom( this.x ));
-
   }
 
 }
