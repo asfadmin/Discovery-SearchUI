@@ -47,6 +47,7 @@ export class SBASChartComponent implements OnInit, OnDestroy {
   private margin;
   private widthValue;
   private heightValue;
+  private sbasChartHeightValue;
 
   private selected: CMRProduct;
   private criticalBaseline: number;
@@ -93,8 +94,11 @@ export class SBASChartComponent implements OnInit, OnDestroy {
     this.widthValue = parseInt(d3.select('#sbasChart').style('width'), 10);
     const elem = document.getElementById('sbas-chart-column');
     this.heightValue = elem.offsetHeight;
+    const sbasChart = document.getElementById('sbasChart');
+    this.sbasChartHeightValue = sbasChart.offsetHeight;
     console.log('widthValue:', this.widthValue);
     console.log('heightValue:', this.heightValue);
+    console.log('sbasChartHeightValue:', this.sbasChartHeightValue);
 
     this.chart = d3.select('#sbasChart')
       .append('svg')
@@ -115,7 +119,7 @@ export class SBASChartComponent implements OnInit, OnDestroy {
         .range([ 0, this.widthValue  * 3 ]);
 
       this.xAxis = this.chart.append('g')
-        .attr('transform', `translate(0,${this.heightValue})`)
+        .attr('transform', `translate(0,${this.sbasChartHeightValue})`)
         .call(d3.axisBottom(this.x));
 
     const yExtent = d3.extent(
