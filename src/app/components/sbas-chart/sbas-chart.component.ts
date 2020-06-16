@@ -105,11 +105,12 @@ export class SBASChartComponent implements OnInit, OnDestroy {
               `translate(${this.margin.left},${this.margin.top})`);
 
       const xExtent = d3.extent(
-        this.scenes.map(s => s.metadata.temporal)
+        this.scenes.map(s => s.metadata.date.valueOf())
       );
+      console.log(xExtent);
 
       // Add X axis
-      this.x = d3.scaleLinear()
+      this.x = d3.scaleUtc()
         .domain(xExtent)
         .range([ 0, this.widthValue  * 3 ]);
 
@@ -147,7 +148,7 @@ export class SBASChartComponent implements OnInit, OnDestroy {
       .call(zoom);
 
     this.line = d3.line()
-      .x((product: any) => this.x(product.metadata.temporal))
+      .x((product: any) => this.x(product.metadata.date.valueOf()))
       .y((product: any) => this.y(product.metadata.perpendicular));
 
     const lines = this.scatter.append('g')
@@ -180,7 +181,7 @@ export class SBASChartComponent implements OnInit, OnDestroy {
       .data(this.scenes)
       .enter()
       .append('circle')
-        .attr('cx', (d: CMRProduct) => this.x(d.metadata.temporal) )
+        .attr('cx', (d: CMRProduct) => this.x(d.metadata.date.valueOf()) )
         .attr('cy', (d: CMRProduct) => this.y(d.metadata.perpendicular) )
         .attr('r', 7)
         .on('click', p => this.toggleDrawing(p))
@@ -205,8 +206,6 @@ export class SBASChartComponent implements OnInit, OnDestroy {
     this.widthValue = parseInt(d3.select('#sbasChart').style('width'), 10);
     const elem = document.getElementById('sbasChart');
     this.heightValue = elem.offsetHeight;
-    console.log('widthValue:', this.widthValue);
-    console.log('heightValue:', this.heightValue);
 
     // Update the X scale and Axis (here the 20 is just to have a bit of margin)
     this.x.range([ 20, this.widthValue - 20 ]);
@@ -227,11 +226,11 @@ export class SBASChartComponent implements OnInit, OnDestroy {
     // update circle position
     this.scatter
       .selectAll('circle')
-        .attr('cx', (d: CMRProduct) => newX(d.metadata.temporal) )
+        .attr('cx', (d: CMRProduct) => newX(d.metadata.date.valueOf()) )
         .attr('cy', (d: CMRProduct) => newY(d.metadata.perpendicular) );
 
     this.line = d3.line()
-        .x((product: any) => newX(product.metadata.temporal))
+        .x((product: any) => newX(product.metadata.date.valueOf()))
         .y((product: any) => newY(product.metadata.perpendicular));
 
     this.scatter.selectAll('.base-line')
