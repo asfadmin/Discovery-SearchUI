@@ -10,6 +10,7 @@ export interface ScenesState {
   ids: string[];
   products: SceneEntities;
   customPairs: CMRProductPair[];
+  selectedPair: string[] | null;
   areResultsLoaded: boolean;
   scenes: {[id: string]: string[]};
   unzipped: {[id: string]: UnzippedFolder[]};
@@ -30,6 +31,7 @@ export const initState: ScenesState = {
   ids: [],
   scenes: {},
   customPairs: [],
+  selectedPair: null,
   unzipped: {},
   productUnzipLoading: null,
   openUnzippedProduct: null,
@@ -129,6 +131,15 @@ export function scenesReducer(state = initState, action: ScenesActions): ScenesS
       const scene = state.products[state.selected] || null;
 
       return selectPrevious(state, scenes, scene);
+    }
+
+    case ScenesActionType.SET_SELECTED_PAIR: {
+      return {
+        ...state,
+        selectedPair: action.payload,
+        productUnzipLoading: null,
+        openUnzippedProduct: null
+      };
     }
 
     case ScenesActionType.SELECT_NEXT_WITH_BROWSE: {
@@ -569,4 +580,24 @@ export const getTemporalSortDirection = createSelector(
 export const getCustomPairs = createSelector(
   getScenesState,
   state => state.customPairs
+);
+
+export const getSelectedPairIds = createSelector(
+  getScenesState,
+  state => state.selectedPair
+);
+
+export const getSelectedPair = createSelector(
+  getScenesState,
+  state => {
+    const selected = state.selectedPair;
+    if (selected === null) {
+      return selected;
+    } else {
+      return [
+        state.products[selected[0]],
+        state.products[selected[1]]
+      ];
+    }
+  }
 );
