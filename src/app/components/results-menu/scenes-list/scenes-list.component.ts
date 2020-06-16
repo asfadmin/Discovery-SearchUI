@@ -229,6 +229,14 @@ export class ScenesListComponent implements OnInit, OnDestroy {
     return Math.trunc(val + offset);
   }
 
+  public pairPerpBaseline(pair: models.CMRProductPair) {
+    return Math.abs(pair[0].metadata.perpendicular - pair[1].metadata.perpendicular);
+  }
+
+  public pairTempBaseline(pair: models.CMRProductPair) {
+    return Math.abs(pair[0].metadata.temporal - pair[1].metadata.temporal);
+  }
+
   ngOnDestroy() {
     this.subs.unsubscribe();
   }
