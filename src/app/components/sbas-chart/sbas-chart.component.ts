@@ -71,7 +71,8 @@ export class SBASChartComponent implements OnInit, OnDestroy {
           this.pairs = pairs;
 
           if (this.chart) {
-            d3.selectAll('#sbasChart > svg').remove();
+            // d3.selectAll('#sbasChart > svg').remove();
+            d3.select('#sbasChart').remove();
           }
 
           this.makeSbasChart();
@@ -83,11 +84,15 @@ export class SBASChartComponent implements OnInit, OnDestroy {
 
   }
 
-  private makeSbasChart() {
+  public makeSbasChart() {
 
-    // if (this.chart) {
-    //   d3.selectAll('#sbasChart > svg').remove();
-    // }
+    console.log('this.chart1:', this.chart);
+    console.log('this.scenes1:', this.scenes);
+    if (this.chart) {
+      d3.select('#sbasChart').remove();
+    }
+    console.log('this.chart2:', this.chart);
+    console.log('this.scenes2:', this.scenes);
 
     // this.margin = { top: 9, right: 30, bottom: 30, left: 60 };
     this.margin = { top: 0, right: 0, bottom: 200, left: 20 };
@@ -109,18 +114,21 @@ export class SBASChartComponent implements OnInit, OnDestroy {
         .attr('transform',
               `translate(${this.margin.left},${this.margin.top})`);
 
-      const xExtent = d3.extent(
-        this.scenes.map(s => s.metadata.temporal)
-      );
+    const xExtent = d3.extent(
+      this.scenes.map(s => s.metadata.temporal)
+    );
 
-      // Add X axis
-      this.x = d3.scaleLinear()
-        .domain(xExtent)
-        .range([ 0, this.widthValue  * 3 ]);
+    console.log('this.chart3:', this.chart);
+    console.log('this.scenes3:', this.scenes);
 
-      this.xAxis = this.chart.append('g')
-        .attr('transform', `translate(0,${this.sbasChartHeightValue})`)
-        .call(d3.axisBottom(this.x));
+    // Add X axis
+    this.x = d3.scaleLinear()
+      .domain(xExtent)
+      .range([ 0, this.widthValue  * 3 ]);
+
+    this.xAxis = this.chart.append('g')
+      .attr('transform', `translate(0,${this.sbasChartHeightValue})`)
+      .call(d3.axisBottom(this.x));
 
     const yExtent = d3.extent(
       this.scenes.map(s => s.metadata.perpendicular)
