@@ -1,5 +1,5 @@
 .chart-wrapper {
-  height: calc(100% - 200px);
+  height: calc(100% - 1px);
   width: calc(100% - 30px);
   //height: 100%;
   //border-left: lightgrey 1px solid;
@@ -11,5 +11,6 @@
 }
 
 #sbasChart {
-  color: white;
+  //color: white;
+  height: 100%;
 }

@@ -47,6 +47,7 @@ export class SBASChartComponent implements OnInit, OnDestroy {
   private margin;
   private widthValue;
   private heightValue;
+  private sbasChartHeightValue;
 
   private selected: CMRProduct;
   private criticalBaseline: number;
@@ -89,21 +90,25 @@ export class SBASChartComponent implements OnInit, OnDestroy {
 
   private makeSbasChart() {
 
+    // if (this.chart) {
+    //   d3.selectAll('#sbasChart > svg').remove();
+    // }
+
     // this.margin = { top: 9, right: 30, bottom: 30, left: 60 };
     this.margin = { top: 0, right: 0, bottom: 200, left: 20 };
-    this.widthValue = 800 - this.margin.left - this.margin.right;
-    this.heightValue = 300 - this.margin.top - this.margin.bottom;
-
     this.widthValue = parseInt(d3.select('#sbasChart').style('width'), 10);
     const elem = document.getElementById('sbas-chart-column');
     this.heightValue = elem.offsetHeight;
+    const sbasChart = document.getElementById('sbasChart');
+    this.sbasChartHeightValue = sbasChart.offsetHeight;
     console.log('widthValue:', this.widthValue);
     console.log('heightValue:', this.heightValue);
+    console.log('sbasChartHeightValue:', this.sbasChartHeightValue);
 
     this.chart = d3.select('#sbasChart')
       .append('svg')
-        .attr('width', this.widthValue + this.margin.left + this.margin.right)
-        .attr('height', this.heightValue + this.margin.top + this.margin.bottom)
+        .attr('width', this.widthValue)
+        .attr('height', this.heightValue)
         // .attr('viewBox', '0 0 ' + this.widthValue + ' ' + this.heightValue)
       .append('g')
         .attr('transform',
@@ -119,7 +124,7 @@ export class SBASChartComponent implements OnInit, OnDestroy {
         .range([ 0, this.widthValue  * 3 ]);
 
       this.xAxis = this.chart.append('g')
-        .attr('transform', `translate(0,${this.widthValue})`)
+        .attr('transform', `translate(0,${this.sbasChartHeightValue})`)
         .call(d3.axisBottom(this.x));
 
     const yExtent = d3.extent(
