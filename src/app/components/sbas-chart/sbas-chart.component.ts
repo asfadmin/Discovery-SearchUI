@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild, ElementRef, OnDestroy } from '@angular/core';
 
 import { combineLatest } from 'rxjs';
-import { map, tap, filter, } from 'rxjs/operators';
+import { map, tap, filter } from 'rxjs/operators';
 
 import * as d3 from 'd3';
 import { Store } from '@ngrx/store';
@@ -63,6 +63,11 @@ export class SBASChartComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     const scenes$ = this.scenesService.scenes$();
     const pairs$ = this.scenesService.pairs$();
+    this.store$.select(scenesStore.getSelectedPair).pipe(
+      filter(selected => !!selected)
+    ).subscribe(
+      selected => this.setSelected(selected)
+    );
 
     this.subs.add(
         combineLatest(scenes$, pairs$).subscribe(([scenes, pairs]) => {
@@ -172,7 +177,12 @@ export class SBASChartComponent implements OnInit, OnDestroy {
         .on('mouseleave', function(d) {
           self.clearHovered();
         })
-        .on('click', p => this.setSelected(p));
+      .on('click', pair => {
+        this.store$.dispatch(
+          new scenesStore.SetSelectedPair(pair.map(product => product.id))
+        );
+        this.setSelected(pair);
+      });
 
     // Add circles
     this.scatter.append('g')
