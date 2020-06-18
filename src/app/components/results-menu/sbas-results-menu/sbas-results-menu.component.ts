@@ -1,12 +1,14 @@
 import { Component, OnInit, Input, OnDestroy } from '@angular/core';
 
 import { Observable } from 'rxjs';
+import { tap } from 'rxjs/operators';
 
 import { Store } from '@ngrx/store';
 import { AppState } from '@store';
 import * as uiStore from '@store/ui';
+import * as scenesStore from '@store/scenes';
 
-import { Breakpoints } from '@models';
+import { Breakpoints, CMRProductPair } from '@models';
 import { ScreenSizeService } from '@services';
 
 import { SubSink } from 'subsink';
@@ -23,6 +25,7 @@ enum CardViews {
 })
 export class SBASResultsMenuComponent implements OnInit, OnDestroy {
   @Input() resize$: Observable<void>;
+  public pair: CMRProductPair;
 
   public view = CardViews.LIST;
   public Views = CardViews;
@@ -40,6 +43,14 @@ export class SBASResultsMenuComponent implements OnInit, OnDestroy {
     this.subs.add(
       this.screenSize.breakpoint$.subscribe(
         point => this.breakpoint = point
+      )
+    );
+
+    this.subs.add(
+      this.store$.select(scenesStore.getSelectedPair).pipe(
+        tap(console.log)
+      ).subscribe(
+        (selected: CMRProductPair) => this.pair = selected
       )
     );
   }
