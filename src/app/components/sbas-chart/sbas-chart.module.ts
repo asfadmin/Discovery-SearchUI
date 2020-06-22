@@ -3,6 +3,8 @@ import { CommonModule } from '@angular/common';
 
 import { MatSharedModule } from '@shared';
 
+import { AngularResizedEventModule } from 'angular-resize-event';
+
 import { SBASChartComponent } from './sbas-chart.component';
 
 
@@ -11,7 +13,8 @@ import { SBASChartComponent } from './sbas-chart.component';
   declarations: [SBASChartComponent],
   imports: [
     CommonModule,
-    MatSharedModule
+    MatSharedModule,
+    AngularResizedEventModule
   ],
   exports: [
     SBASChartComponent,

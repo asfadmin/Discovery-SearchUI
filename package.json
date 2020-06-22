@@ -38,6 +38,7 @@
     "@yellowspot/ng-truncate": "^1.5.1",
     "ajv": "^6.11.0",
     "angular-resizable-element": "^3.3.0",
+    "angular-resize-event": "^1.2.2",
     "braces": "^3.0.2",
     "chart.js": "^2.9.3",
     "chartjs-plugin-zoom": "^0.7.5",
