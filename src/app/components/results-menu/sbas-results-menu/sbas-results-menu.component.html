@@ -1,12 +1,39 @@
 <!-- SCENE LIST -->
 <ng-container *ngIf="breakpoint > breakpoints.MEDIUM">
   <mat-card class="mp0" fxFlex="38" fxFlex>
-    <mat-card-subtitle class="header">
+    <mat-card-subtitle style="display: flex; flex-direction: row; justify-content:center; align-items: flex-start;" class="header">
+      <div style="display: flex; flex-direction: row; justify-content:center;">
+        <div
+          (click)="onSelectList()"
+          [class.selected]="view === Views.LIST"
+          class="clickable select-button"
+          style="margin-right: 30px;">
+            Pairs
+        </div>
+        <div
+          (click)="onSelectDetail()"
+          [class.selected]="view === Views.DETAIL"
+          class="clickable select-button">
+            Pair Detail
+        </div>
+      </div>
+
       <app-scenes-list-header></app-scenes-list-header>
     </mat-card-subtitle>
 
-    <div class="app-scene-list">
+    <div *ngIf="view === Views.LIST" class="app-scene-list">
       <app-scenes-list [resize$]="resize$"></app-scenes-list>
+    </div>
+
+    <div *ngIf="view === Views.DETAIL" style="max-width: 100%;" class="scrollable">
+      <div *ngIf="pair">
+        <div *ngFor="let product of pair">
+          {{ product.name }}
+          <br>
+          More Pair Details Here...
+          <hr>
+        </div>
+      </div>
     </div>
   </mat-card>
 </ng-container>

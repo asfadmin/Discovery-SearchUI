@@ -18,6 +18,10 @@ export enum ScenesActionType {
   SELECT_NEXT_SCENE = '[Scenes] Select Next Scene',
   SELECT_PREVIOUS_SCENE = '[Scenes] Select Previous Scene',
 
+  SET_SELECTED_PAIR = '[Scenes] Set Selected Pair',
+  SELECT_NEXT_PAIR = '[Scenes] Select Next Pair',
+  SELECT_PREVIOUS_PAIR = '[Scenes] Select Previous Pair',
+
   SET_MASTER = '[Scenes-Baseline] Set Master',
   SET_FILTER_MASTER = '[Scenes-Baseline] Set Filter Master',
   CLEAR_BASELINE = '[Scenes-Baseline] Clear Baseline',
@@ -41,16 +45,17 @@ export class SetScenes implements Action {
 export class ClearScenes implements Action {
   public readonly type = ScenesActionType.CLEAR;
 }
-export class SetSelectedScene implements Action {
-  public readonly type = ScenesActionType.SET_SELECTED_SCENE;
-
-  constructor(public payload: string) {}
-}
 
 export class SetResultsLoaded implements Action {
   public readonly type = ScenesActionType.SET_RESULTS_LOADED;
 
   constructor(public payload: boolean) {}
+}
+
+export class SetSelectedScene implements Action {
+  public readonly type = ScenesActionType.SET_SELECTED_SCENE;
+
+  constructor(public payload: string) {}
 }
 
 export class SelectNextScene implements Action {
@@ -59,6 +64,20 @@ export class SelectNextScene implements Action {
 
 export class SelectPreviousScene implements Action {
   public readonly type = ScenesActionType.SELECT_PREVIOUS_SCENE;
+}
+
+export class SetSelectedPair implements Action {
+  public readonly type = ScenesActionType.SET_SELECTED_PAIR;
+
+  constructor(public payload: string[]) {}
+}
+
+export class SelectNextPair implements Action {
+  public readonly type = ScenesActionType.SELECT_NEXT_PAIR;
+}
+
+export class SelectPreviousPair implements Action {
+  public readonly type = ScenesActionType.SELECT_PREVIOUS_PAIR;
 }
 
 export class SelectPreviousWithBrowse implements Action {
@@ -154,6 +173,9 @@ export type ScenesActions =
   | SetSelectedScene
   | SelectNextScene
   | SelectPreviousScene
+  | SetSelectedPair
+  | SelectNextPair
+  | SelectPreviousPair
   | SelectNextWithBrowse
   | SelectPreviousWithBrowse
   | SetResultsLoaded

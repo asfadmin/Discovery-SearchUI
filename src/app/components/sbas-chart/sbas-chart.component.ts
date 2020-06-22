@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild, ElementRef, OnDestroy } from '@angular/core';
 
 import { combineLatest } from 'rxjs';
-import { map, tap, filter, } from 'rxjs/operators';
+import { map, tap, filter } from 'rxjs/operators';
 
 import * as d3 from 'd3';
 import { Store } from '@ngrx/store';
@@ -68,7 +68,12 @@ export class SBASChartComponent implements OnInit, OnDestroy {
     const scenes$ = this.scenesService.scenes$();
     const pairs$ = this.scenesService.pairs$();
 
-    console.log('scenes$:', scenes$ );
+    this.store$.select(scenesStore.getSelectedPair).pipe(
+      filter(selected => !!selected),
+      tap(console.log)
+    ).subscribe(
+      selected => this.selectedPair = selected
+    );
 
     this.subs.add(
         combineLatest(scenes$, pairs$).subscribe(([scenes, pairs]) => {
@@ -106,6 +111,7 @@ export class SBASChartComponent implements OnInit, OnDestroy {
     this.sbasChartHeightValue = sbasChart.offsetHeight;
     this.widthValue = sbasChart.offsetWidth;
     // this.widthValue = parseInt(d3.select('#sbasChart').style('width'), 10);
+
     console.log('widthValue:', this.widthValue);
     console.log('heightValue:', this.heightValue);
     console.log('sbasChartHeightValue:', this.sbasChartHeightValue);
@@ -161,7 +167,6 @@ export class SBASChartComponent implements OnInit, OnDestroy {
       .attr('cursor', 'pointer')
       .style('fill', 'transparent')
       .style('pointer-events', 'all')
-      .on('mousemove', _ => this.chartMouseMove())
       .call(zoom);
 
     this.line = d3.line()
@@ -190,7 +195,12 @@ export class SBASChartComponent implements OnInit, OnDestroy {
         .on('mouseleave', function(d) {
           self.clearHovered();
         })
-        .on('click', p => this.setSelected(p));
+      .on('click', pair => {
+        this.store$.dispatch(
+          new scenesStore.SetSelectedPair(pair.map(product => product.id))
+        );
+        this.setSelected(pair);
+      });
 
     // Add circles
     this.scatter.append('g')
@@ -205,6 +215,10 @@ export class SBASChartComponent implements OnInit, OnDestroy {
         .attr('cursor', 'pointer')
         .style('fill', 'light grey')
         .style('opacity', 0.7);
+
+    if (this.selectedPair[0] !== null && this.selectedPair[1] !== null) {
+      this.setSelected(this.selectedPair);
+    }
 
     // Add a clipPath: everything out of this area won't be drawn.
     const clip = this.chart.append('defs').append('SVG:clipPath')
@@ -223,13 +237,10 @@ export class SBASChartComponent implements OnInit, OnDestroy {
     this.widthValue = parseInt(d3.select('#sbasChart').style('width'), 10);
     const elem = document.getElementById('sbasChart');
     this.heightValue = elem.offsetHeight;
-    console.log('widthValue:', this.widthValue);
-    console.log('heightValue:', this.heightValue);
 
     // Update the X scale and Axis (here the 20 is just to have a bit of margin)
     this.x.range([ 20, this.widthValue - 20 ]);
     this.xAxis.call(d3.axisBottom( this.x ));
-
   }
 
 
@@ -298,16 +309,6 @@ export class SBASChartComponent implements OnInit, OnDestroy {
       .attr('stroke-width', 5)
       .attr('cursor', 'pointer')
       .attr('d', _ => this.line(pair));
-  }
-
-  private chartMouseMove() {
-    // `translate(${this.margin.left},${this.margin.top})`
-    /*
-      console.log(
-        Math.trunc(this.x.invert(d3.event.offsetX - this.margin.left)),
-        Math.trunc(this.y.invert(d3.event.offsetY - this.margin.top))
-      );
-    */
   }
 
   private toggleDrawing(product) {

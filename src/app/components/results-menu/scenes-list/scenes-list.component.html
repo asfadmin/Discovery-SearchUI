@@ -3,8 +3,15 @@
     <div *ngIf="breakpoint$ | async as breakpoint">
       <ng-container *ngIf="searchType === SearchTypes.SBAS">
         <div *cdkVirtualFor="let pair of pairs">
-          <button class="button-flex-row" mat-list-item>
-            {{ pair[0].metadata.date | shortDate }} to {{ pair[1].metadata.date | shortDate }}
+          <button class="button-flex-row" mat-list-item
+            (click)="onPairSelected(pair)"
+            (mouseenter)="onSetFocusedPair(pair)"
+            (mouseleave) ="onClearFocusedPair()"
+            [class.selected]="selectedPair ? pair[0].id + pair[1].id === selectedPair[0] + selectedPair[1] : false"
+            [class.hovered]="pair[0].name + pair[1].name === hoveredPairNames">
+            <b>{{ pair[0].metadata.date | shortDate }} to {{ pair[1].metadata.date | shortDate }}</b>
+            <div style="margin-left: 10px;">{{ pairPerpBaseline(pair)}}m</div>
+            <div style="margin-left: 10px;">{{ pairTempBaseline(pair)}}d</div>
           </button>
         </div>
       </ng-container>
