@@ -9,7 +9,6 @@ import { AppState } from '@store';
 import * as scenesStore from '@store/scenes';
 import * as queueStore from '@store/queue';
 
-// Import the resized event model
 import { ResizedEvent } from 'angular-resize-event';
 
 import { SubSink } from 'subsink';
@@ -70,7 +69,6 @@ export class SBASChartComponent implements OnInit, OnDestroy {
 
     this.store$.select(scenesStore.getSelectedPair).pipe(
       filter(selected => !!selected),
-      tap(console.log)
     ).subscribe(
       selected => this.selectedPair = selected
     );
@@ -94,27 +92,18 @@ export class SBASChartComponent implements OnInit, OnDestroy {
 
   public makeSbasChart() {
 
-    console.log('this.chart1:', this.chart);
-    console.log('this.scenes1:', this.scenes);
     if (this.chart) {
       d3.selectAll('#sbasChart > svg').remove();
       // d3.select('#sbasChart').remove();
     }
-    console.log('this.chart2:', this.chart);
-    console.log('this.scenes2:', this.scenes);
 
     // this.margin = { top: 9, right: 30, bottom: 30, left: 60 };
-    this.margin = { top: 0, right: 0, bottom: 200, left: 20 };
+    this.margin = { top: 10, right: 0, bottom: 200, left: 20 };
     const elem = document.getElementById('sbas-chart-column');
     this.heightValue = elem.offsetHeight;
     const sbasChart = document.getElementById('sbasChart');
-    this.sbasChartHeightValue = sbasChart.offsetHeight;
+    this.sbasChartHeightValue = sbasChart.offsetHeight - (20 + this.margin.top) ;
     this.widthValue = sbasChart.offsetWidth;
-    // this.widthValue = parseInt(d3.select('#sbasChart').style('width'), 10);
-
-    console.log('widthValue:', this.widthValue);
-    console.log('heightValue:', this.heightValue);
-    console.log('sbasChartHeightValue:', this.sbasChartHeightValue);
 
     this.chart = d3.select('#sbasChart')
       .append('svg')
@@ -128,9 +117,6 @@ export class SBASChartComponent implements OnInit, OnDestroy {
     const xExtent = d3.extent(
       this.scenes.map(s => s.metadata.temporal)
     );
-
-    console.log('this.chart3:', this.chart);
-    console.log('this.scenes3:', this.scenes);
 
     // Add X axis
     this.x = d3.scaleLinear()
@@ -148,7 +134,7 @@ export class SBASChartComponent implements OnInit, OnDestroy {
     // Add Y axis
     this.y = d3.scaleLinear()
       .domain(yExtent)
-      .range([ this.heightValue, 0]);
+      .range([this.heightValue - (20 + this.margin.top), 0]);
     this.yAxis = this.chart.append('g')
       .call(d3.axisLeft(this.y));
 
