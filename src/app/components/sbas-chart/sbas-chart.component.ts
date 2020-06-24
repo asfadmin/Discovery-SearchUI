@@ -114,14 +114,14 @@ export class SBASChartComponent implements OnInit, OnDestroy {
         .attr('transform',
               `translate(${this.margin.left},${this.margin.top})`);
 
-    const xExtent = d3.extent(
-      this.scenes.map(s => s.metadata.temporal)
-    );
+      const xExtent = d3.extent(
+        this.scenes.map(s => s.metadata.date.valueOf())
+      );
 
-    // Add X axis
-    this.x = d3.scaleLinear()
-      .domain(xExtent)
-      .range([ 0, this.widthValue  * 3 ]);
+      // Add X axis
+      this.x = d3.scaleUtc()
+        .domain(xExtent)
+        .range([ 0, this.widthValue  * 3 ]);
 
     this.xAxis = this.chart.append('g')
       .attr('transform', `translate(0,${this.sbasChartHeightValue})`)
@@ -156,7 +156,7 @@ export class SBASChartComponent implements OnInit, OnDestroy {
       .call(zoom);
 
     this.line = d3.line()
-      .x((product: any) => this.x(product.metadata.temporal))
+      .x((product: any) => this.x(product.metadata.date.valueOf()))
       .y((product: any) => this.y(product.metadata.perpendicular));
 
     const lines = this.scatter.append('g')
@@ -194,7 +194,7 @@ export class SBASChartComponent implements OnInit, OnDestroy {
       .data(this.scenes)
       .enter()
       .append('circle')
-        .attr('cx', (d: CMRProduct) => this.x(d.metadata.temporal) )
+        .attr('cx', (d: CMRProduct) => this.x(d.metadata.date.valueOf()) )
         .attr('cy', (d: CMRProduct) => this.y(d.metadata.perpendicular) )
         .attr('r', 7)
         .on('click', p => this.toggleDrawing(p))
@@ -242,11 +242,11 @@ export class SBASChartComponent implements OnInit, OnDestroy {
     // update circle position
     this.scatter
       .selectAll('circle')
-        .attr('cx', (d: CMRProduct) => newX(d.metadata.temporal) )
+        .attr('cx', (d: CMRProduct) => newX(d.metadata.date.valueOf()) )
         .attr('cy', (d: CMRProduct) => newY(d.metadata.perpendicular) );
 
     this.line = d3.line()
-        .x((product: any) => newX(product.metadata.temporal))
+        .x((product: any) => newX(product.metadata.date.valueOf()))
         .y((product: any) => newY(product.metadata.perpendicular));
 
     this.scatter.selectAll('.base-line')
