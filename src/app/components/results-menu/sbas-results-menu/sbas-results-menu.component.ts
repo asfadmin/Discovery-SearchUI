@@ -47,9 +47,7 @@ export class SBASResultsMenuComponent implements OnInit, OnDestroy {
     );
 
     this.subs.add(
-      this.store$.select(scenesStore.getSelectedPair).pipe(
-        tap(console.log)
-      ).subscribe(
+      this.store$.select(scenesStore.getSelectedPair).subscribe(
         (selected: CMRProductPair) => this.pair = selected
       )
     );

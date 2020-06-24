@@ -60,7 +60,6 @@ export class MobileResultsMenuComponent implements OnInit, OnDestroy {
 
   public onSelectChart(): void {
     this.view = MobileViews.CHART;
-    console.log(this.view);
   }
 
   ngOnDestroy() {
