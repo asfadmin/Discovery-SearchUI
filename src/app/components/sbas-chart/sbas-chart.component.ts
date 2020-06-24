@@ -39,6 +39,7 @@ export class SBASChartComponent implements OnInit, OnDestroy {
   private y;
   private xAxis;
   private yAxis;
+  private currentTransform;
   private chart;
   private scatter;
   private line;
@@ -77,13 +78,10 @@ export class SBASChartComponent implements OnInit, OnDestroy {
         combineLatest(scenes$, pairs$).subscribe(([scenes, pairs]) => {
           this.scenes = scenes;
           this.pairs = pairs;
+
           this.makeSbasChart();
         })
     );
-
-    // Add an event listener that run the function when dimension change
-    // window.addEventListener('resize', _ => this.makeSbasChart() );
-
   }
 
   public onResized(event: ResizedEvent) {
@@ -94,11 +92,10 @@ export class SBASChartComponent implements OnInit, OnDestroy {
 
     if (this.chart) {
       d3.selectAll('#sbasChart > svg').remove();
-      // d3.select('#sbasChart').remove();
     }
 
-    // this.margin = { top: 9, right: 30, bottom: 30, left: 60 };
     this.margin = { top: 10, right: 0, bottom: 200, left: 20 };
+
     const elem = document.getElementById('sbas-chart-column');
     this.heightValue = elem.offsetHeight;
     const sbasChart = document.getElementById('sbasChart');
@@ -109,19 +106,17 @@ export class SBASChartComponent implements OnInit, OnDestroy {
       .append('svg')
         .attr('width', this.widthValue)
         .attr('height', this.heightValue)
-        // .attr('viewBox', '0 0 ' + this.widthValue + ' ' + this.heightValue)
       .append('g')
         .attr('transform',
               `translate(${this.margin.left},${this.margin.top})`);
 
-      const xExtent = d3.extent(
-        this.scenes.map(s => s.metadata.date.valueOf())
-      );
+    const xExtent = d3.extent(
+      this.scenes.map(s => s.metadata.date.valueOf())
+    );
 
-      // Add X axis
-      this.x = d3.scaleUtc()
-        .domain(xExtent)
-        .range([ 0, this.widthValue  * 3 ]);
+    this.x = d3.scaleUtc()
+      .domain(xExtent)
+      .range([ 0, this.widthValue  * 3 ]);
 
     this.xAxis = this.chart.append('g')
       .attr('transform', `translate(0,${this.sbasChartHeightValue})`)
@@ -131,29 +126,38 @@ export class SBASChartComponent implements OnInit, OnDestroy {
       this.scenes.map(s => s.metadata.perpendicular)
     );
 
-    // Add Y axis
     this.y = d3.scaleLinear()
       .domain(yExtent)
       .range([this.heightValue - (20 + this.margin.top), 0]);
     this.yAxis = this.chart.append('g')
       .call(d3.axisLeft(this.y));
 
-    // Create the scatter variable: where both the circles and the brush take place
     this.scatter = this.chart.append('g')
       .attr('clip-path', 'url(#clip)');
 
     const zoom = d3.zoom()
-      .scaleExtent([.5, 30])  // This control how much you can unzoom (x0.5) and zoom (x20)
+      .scaleExtent([.5, 30])
       .extent([[0, 0], [this.widthValue, this.heightValue]])
-      .on('zoom', _ => this.updateChart());
+      .on('zoom', _ => {
+        this.currentTransform = d3.event.transform;
 
-    this.scatter.append('rect')
+        this.updateChart();
+      });
+
+
+    const zoomBox = this.scatter.append('rect')
       .attr('width', this.widthValue)
-      .attr('height', this.heightValue)
+      .attr('height', this.heightValue - (20 + this.margin.top))
       .attr('cursor', 'pointer')
       .style('fill', 'transparent')
-      .style('pointer-events', 'all')
-      .call(zoom);
+      .style('pointer-events', 'all');
+
+    if (this.currentTransform) {
+      zoomBox.call(zoom.transform, this.currentTransform);
+    }
+
+    zoomBox.call(zoom);
+
 
     this.line = d3.line()
       .x((product: any) => this.x(product.metadata.date.valueOf()))
@@ -188,7 +192,6 @@ export class SBASChartComponent implements OnInit, OnDestroy {
         this.setSelected(pair);
       });
 
-    // Add circles
     this.scatter.append('g')
       .selectAll('circle')
       .data(this.scenes)
@@ -211,29 +214,20 @@ export class SBASChartComponent implements OnInit, OnDestroy {
       .attr('id', 'clip')
       .append('SVG:rect')
       .attr('width', this.widthValue)
-      .attr('height', this.heightValue)
+      .attr('height', this.heightValue - (20 + this.margin.top))
       .attr('x', 0)
       .attr('y', 0);
+
+    if (this.currentTransform) {
+      this.updateChart();
+    }
   }
-
-  // A function that finishes to draw the chart for a specific device size.
-  private drawChart() {
-
-    // get the current width of the div where the chart appear, and attribute it to Svg
-    this.widthValue = parseInt(d3.select('#sbasChart').style('width'), 10);
-    const elem = document.getElementById('sbasChart');
-    this.heightValue = elem.offsetHeight;
-
-    // Update the X scale and Axis (here the 20 is just to have a bit of margin)
-    this.x.range([ 20, this.widthValue - 20 ]);
-    this.xAxis.call(d3.axisBottom( this.x ));
-  }
-
 
   private updateChart() {
+
     // recover the new scale
-    const newX = d3.event.transform.rescaleX(this.x);
-    const newY = d3.event.transform.rescaleY(this.y);
+    const newX = this.currentTransform.rescaleX(this.x);
+    const newY = this.currentTransform.rescaleY(this.y);
 
     // update axes with these new boundaries
     this.xAxis.call(d3.axisBottom(newX));
