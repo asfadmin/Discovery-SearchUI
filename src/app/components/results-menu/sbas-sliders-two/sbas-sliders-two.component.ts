@@ -40,7 +40,6 @@ export class SbasSlidersTwoComponent implements OnInit {
     this.subs.add(
       tempValues$.subscribe(
         ([start]) => {
-          console.log('start:', start);
           const action = new filtersStore.SetTemporalRange({ start, end: null });
           this.store$.dispatch(action);
         }
