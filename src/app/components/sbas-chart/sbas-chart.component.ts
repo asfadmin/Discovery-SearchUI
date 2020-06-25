@@ -8,6 +8,7 @@ import { Store } from '@ngrx/store';
 import { AppState } from '@store';
 import * as scenesStore from '@store/scenes';
 import * as queueStore from '@store/queue';
+import * as uiStore from '@store/ui';
 
 import { ResizedEvent } from 'angular-resize-event';
 
@@ -35,6 +36,7 @@ export class SBASChartComponent implements OnInit, OnDestroy {
   private hoveredLine;
   private selectedPair = [null, null];
   private scenes: CMRProduct[];
+  private isAddingCustomPair: boolean;
   private x;
   private y;
   private xAxis;
@@ -72,6 +74,14 @@ export class SBASChartComponent implements OnInit, OnDestroy {
       filter(selected => !!selected),
     ).subscribe(
       selected => this.selectedPair = selected
+    );
+
+    this.subs.add(
+      this.store$.select(uiStore.getIsAddingCustomPoint).pipe(
+        tap(_ => this.queuedProduct = null),
+      ).subscribe(
+        isAddingCustomPair => this.isAddingCustomPair = isAddingCustomPair
+      )
     );
 
     this.subs.add(
@@ -144,7 +154,6 @@ export class SBASChartComponent implements OnInit, OnDestroy {
         this.updateChart();
       });
 
-
     const zoomBox = this.scatter.append('rect')
       .attr('width', this.widthValue)
       .attr('height', this.heightValue - (20 + this.margin.top))
@@ -157,7 +166,6 @@ export class SBASChartComponent implements OnInit, OnDestroy {
     }
 
     zoomBox.call(zoom);
-
 
     this.line = d3.line()
       .x((product: any) => this.x(product.metadata.date.valueOf()))
@@ -224,16 +232,12 @@ export class SBASChartComponent implements OnInit, OnDestroy {
   }
 
   private updateChart() {
-
-    // recover the new scale
     const newX = this.currentTransform.rescaleX(this.x);
     const newY = this.currentTransform.rescaleY(this.y);
 
-    // update axes with these new boundaries
     this.xAxis.call(d3.axisBottom(newX));
     this.yAxis.call(d3.axisLeft(newY));
 
-    // update circle position
     this.scatter
       .selectAll('circle')
         .attr('cx', (d: CMRProduct) => newX(d.metadata.date.valueOf()) )
@@ -292,8 +296,13 @@ export class SBASChartComponent implements OnInit, OnDestroy {
   }
 
   private toggleDrawing(product) {
+    if (!this.isAddingCustomPair) {
+      return;
+    }
+
     if (!!this.queuedProduct) {
       this.addPair(product);
+      this.store$.dispatch(new uiStore.StopAddingCustomPoint());
     } else {
       this.queuedProduct = product;
     }
@@ -322,9 +331,7 @@ export class SBASChartComponent implements OnInit, OnDestroy {
     );
   }
 
-  // A function that updates the chart when the user zoom and thus new boundaries are available
   ngOnDestroy() {
     this.subs.unsubscribe();
   }
-
 }

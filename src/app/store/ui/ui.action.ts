@@ -16,6 +16,9 @@ export enum UIActionType {
   SET_SAVE_SEARCH_ON = '[UI] Set Save Search On',
   SET_SAVED_SEARCH_TYPE = '[UI] Set Saved Search Type',
 
+  START_ADDING_CUSTOM_POINT = '[UI] Start Adding Custom Point',
+  STOP_ADDING_CUSTOM_POINT = '[UI] Stop Adding Custom Point',
+
   SET_IS_BROWSE_DIALOG_OPEN = '[UI] Set Is Browse Dialog Open',
   SET_ONLY_SCENES_WITH_BROWSE = '[UI] Set Only Scenes With Browse',
 
@@ -46,6 +49,14 @@ export class CloseSidebar implements Action {
 
 export class OpenSidebar implements Action {
   public readonly type = UIActionType.OPEN_SIDEBAR;
+}
+
+export class StartAddingCustomPoint implements Action {
+  public readonly type = UIActionType.START_ADDING_CUSTOM_POINT;
+}
+
+export class StopAddingCustomPoint implements Action {
+  public readonly type = UIActionType.STOP_ADDING_CUSTOM_POINT;
 }
 
 export class SetSaveSearchOn implements Action {
@@ -113,6 +124,8 @@ export type UIActions =
   | CloseAOIOptions
   | OpenSidebar
   | SetSaveSearchOn
+  | StartAddingCustomPoint
+  | StopAddingCustomPoint
   | SetSavedSearchType
   | CloseSidebar
   | ToggleFiltersMenu
