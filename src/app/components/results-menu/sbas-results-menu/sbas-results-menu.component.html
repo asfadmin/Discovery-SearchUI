@@ -1,6 +1,7 @@
 <!-- SCENE LIST -->
 <ng-container *ngIf="breakpoint > breakpoints.MEDIUM">
-  <mat-card class="mp0" fxFlex="38" fxFlex>
+  <mat-card #listCard class="mp0 sbas-list-card" fxFlex="38" fxFlex
+            [style.max-width]="listCardMaxWidth">
     <mat-card-subtitle style="display: flex; flex-direction: row; justify-content:center; align-items: flex-start;" class="header">
       <div style="display: flex; flex-direction: row; justify-content:center;">
         <div
@@ -38,23 +39,29 @@
   </mat-card>
 </ng-container>
 
-<mat-card class="mp0 no-box-shadow" fxFlex="55" fxFlexFill>
-  <mat-card-subtitle
-    [class.medium-header]="breakpoint <= breakpoints.MEDIUM"
-    class="header">
-  </mat-card-subtitle>
+  <mat-card #chartCard
+            class="mp0 no-box-shadow sbas-chart-card chart-resize-handle-left" fxFlex="55" fxFlexFill
+            [style.max-width]="chartCardMaxWidth"
+            mwlResizable
+            [enableGhostResize]="true"
+            [resizeEdges]="{ left: true }"
+            (resizeEnd)="onResizeEnd($event)">
+    <mat-card-subtitle
+      [class.medium-header]="breakpoint <= breakpoints.MEDIUM"
+      class="header">
+    </mat-card-subtitle>
 
-  <div class="sbas-chart-row">
-    <div class="sbas-column-1">
-      <app-sbas-sliders></app-sbas-sliders>
+    <div class="sbas-chart-row">
+      <div class="sbas-column-1">
+        <app-sbas-sliders></app-sbas-sliders>
+      </div>
+      <div id="sbas-chart-column" class="sbas-column-2">
+        <app-sbas-chart></app-sbas-chart>
+      </div>
     </div>
-    <div id="sbas-chart-column" class="sbas-column-2">
-      <app-sbas-chart></app-sbas-chart>
-    </div>
-  </div>
 
-  <div class="sbas-filter-row">
+    <div class="sbas-filter-row">
       <app-sbas-sliders-two></app-sbas-sliders-two>
-  </div>
+    </div>
 
-</mat-card>
+  </mat-card>
