@@ -39,8 +39,9 @@
   </mat-card>
 </ng-container>
 
+
   <mat-card #chartCard
-            class="mp0 no-box-shadow sbas-chart-card chart-resize-handle-left" fxFlex="55" fxFlexFill
+            class="mp0 no-box-shadow sbas-chart-card" fxFlex="55" fxFlexFill
             [style.max-width]="chartCardMaxWidth"
             mwlResizable
             [enableGhostResize]="true"
@@ -60,6 +61,12 @@
           matTooltip="Stop adding custom pair"
           class="clickable">remove</mat-icon>
     </mat-card-subtitle>
+
+    <div
+      class="resize-handle-left"
+      mwlResizeHandle
+      [resizeEdges]="{ left: true }">
+    </div>
 
     <div class="sbas-chart-row">
       <div class="sbas-column-1">
