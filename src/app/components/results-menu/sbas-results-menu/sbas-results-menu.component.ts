@@ -31,6 +31,7 @@ export class SBASResultsMenuComponent implements OnInit, OnDestroy {
 
   @Input() resize$: Observable<void>;
   public pair: CMRProductPair;
+  public isAddingCustomPoint: boolean;
 
   public view = CardViews.LIST;
   public Views = CardViews;
@@ -55,6 +56,12 @@ export class SBASResultsMenuComponent implements OnInit, OnDestroy {
     );
 
     this.subs.add(
+      this.store$.select(uiStore.getIsAddingCustomPoint).subscribe(
+        isAddingCustomPoint => this.isAddingCustomPoint = isAddingCustomPoint
+      )
+    );
+
+    this.subs.add(
       this.store$.select(scenesStore.getSelectedPair).subscribe(
         (selected: CMRProductPair) => this.pair = selected
       )
@@ -62,9 +69,6 @@ export class SBASResultsMenuComponent implements OnInit, OnDestroy {
   }
 
   public onResizeEnd(event: ResizeEvent): void {
-    console.log('Element was resized', event);
-    console.log('listCard fxFlex:', this.listCardView.nativeElement);
-    console.log('chartCard fxFlex:', this.chartCardView.nativeElement);
     const windowWidth = window.innerWidth
       || document.documentElement.clientWidth
       || document.body.clientWidth;
@@ -74,22 +78,14 @@ export class SBASResultsMenuComponent implements OnInit, OnDestroy {
 
     this.listCardMaxWidth = newListMaxWidth.toString() + '%';
     this.chartCardMaxWidth = newChartMaxWidth.toString() + '%';
-    console.log('windowWidth:', windowWidth);
-    console.log('newChartWidth:', newChartWidth);
-    console.log('newChartMaxWidth:', newChartMaxWidth);
-    console.log('newListMaxWidth:', newListMaxWidth);
-    console.log('event.rectangle.width:', event.rectangle.width);
-    console.log('event.edges.left:', Number(event.edges.left));
-    console.log('listCardMaxWidth:', this.listCardMaxWidth);
-    console.log('chartCardMaxWidth:', this.chartCardMaxWidth);
+  }
 
-    // event.id.style = {
-    //   position: 'fixed',
-    //   left: `${event.rectangle.left}px`,
-    //   top: `${event.rectangle.top}px`,
-    //   width: `${event.rectangle.width}px`,
-    //   height: `${event.rectangle.height}px`
-    // };
+  public startAddingCustomPoint(): void {
+    this.store$.dispatch(new uiStore.StartAddingCustomPoint());
+  }
+
+  public stopAddingCustomPoint(): void {
+    this.store$.dispatch(new uiStore.StopAddingCustomPoint());
   }
 
   public onToggleFiltersMenu(): void {

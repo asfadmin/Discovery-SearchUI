@@ -49,6 +49,16 @@
     <mat-card-subtitle
       [class.medium-header]="breakpoint <= breakpoints.MEDIUM"
       class="header">
+        <mat-icon
+          *ngIf="!isAddingCustomPoint"
+          (click)="startAddingCustomPoint()"
+          matTooltip="Add custom pair"
+          class="clickable">add</mat-icon>
+        <mat-icon
+          *ngIf="isAddingCustomPoint"
+          (click)="stopAddingCustomPoint()"
+          matTooltip="Stop adding custom pair"
+          class="clickable">remove</mat-icon>
     </mat-card-subtitle>
 
     <div class="sbas-chart-row">
@@ -63,5 +73,4 @@
     <div class="sbas-filter-row">
       <app-sbas-sliders-two></app-sbas-sliders-two>
     </div>
-
   </mat-card>
