@@ -48,6 +48,9 @@ export class SBASChartComponent implements OnInit, OnDestroy {
   private pairs;
 
   private queuedProduct;
+  private queuedCircle;
+  private hoveredProduct;
+  private hoveredCircle;
 
   private margin;
   private widthValue;
@@ -207,8 +210,20 @@ export class SBASChartComponent implements OnInit, OnDestroy {
       .append('circle')
         .attr('cx', (d: CMRProduct) => this.x(d.metadata.date.valueOf()) )
         .attr('cy', (d: CMRProduct) => this.y(d.metadata.perpendicular) )
+        .on('click', function(p) {
+          self.toggleDrawing(p, d3.select(this));
+        })
+        .on('mouseover', function(p) {
+          if (self.isAddingCustomPair) {
+            self.setHoveredProduct(p, d3.select(this));
+          }
+        })
+        .on('mouseleave', function(p) {
+          if (self.isAddingCustomPair) {
+            self.clearHoveredProduct();
+          }
+        })
         .attr('r', 7)
-        .on('click', p => this.toggleDrawing(p))
         .attr('cursor', 'pointer')
         .style('fill', 'light grey')
         .style('opacity', 0.7);
@@ -255,6 +270,27 @@ export class SBASChartComponent implements OnInit, OnDestroy {
     }
   }
 
+  private setHoveredProduct(product, newHovered): void {
+    this.hoveredProduct = product;
+
+    if (this.hoveredCircle) {
+      this.hoveredCircle
+        .attr('fill', 'black');
+    }
+
+    newHovered
+      .attr('fill', 'orange');
+
+    this.hoveredCircle = newHovered;
+  }
+
+  private clearHoveredProduct(): void {
+    this.hoveredProduct = null;
+
+    this.hoveredCircle
+      .attr('fill', 'black');
+  }
+
   private setHovered(pair, newHovered) {
     this.hoveredPair = pair;
 
@@ -295,16 +331,32 @@ export class SBASChartComponent implements OnInit, OnDestroy {
       .attr('d', _ => this.line(pair));
   }
 
-  private toggleDrawing(product) {
+  private toggleDrawing(product, queuedCircle) {
     if (!this.isAddingCustomPair) {
       return;
     }
 
     if (!!this.queuedProduct) {
+      if (this.queuedProduct.id === product.id) {
+        return;
+      }
+
       this.addPair(product);
       this.store$.dispatch(new uiStore.StopAddingCustomPoint());
+      this.queuedCircle
+        .attr('r', 7)
+        .attr('cursor', 'pointer')
+        .style('fill', 'light grey')
+        .style('opacity', 0.8);
     } else {
       this.queuedProduct = product;
+      this.queuedCircle = queuedCircle;
+
+      this.queuedCircle
+        .attr('r', 9)
+        .attr('cursor', 'pointer')
+        .style('fill', 'red')
+        .style('opacity', 0.8);
     }
   }
 
