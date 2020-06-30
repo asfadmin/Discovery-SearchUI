@@ -26,7 +26,7 @@ export class ScenesListHeaderComponent implements OnInit {
     map(scenes => scenes.length),
   );
   public numPairs$ = this.scenesService.pairs$().pipe(
-    map(pairs => pairs.length)
+    map(pairs => pairs.pairs.length + pairs.custom.length)
   );
 
   public temporalSort: models.ColumnSortDirection;

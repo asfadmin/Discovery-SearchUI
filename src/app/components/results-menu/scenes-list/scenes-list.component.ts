@@ -111,7 +111,7 @@ export class ScenesListComponent implements OnInit, OnDestroy {
 
     this.subs.add(
       this.scenesService.pairs$().subscribe(
-        pairs => this.pairs = pairs
+        pairs => this.pairs = [...pairs.pairs, ...pairs.custom]
       )
     );
 

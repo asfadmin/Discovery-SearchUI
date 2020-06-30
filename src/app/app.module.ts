@@ -32,7 +32,6 @@ import { CustomBreakPointsProvider } from '@services/custom-breakpoints.ts';
 import * as services from '@services';
 
 import { NgcCookieConsentModule, NgcCookieConsentConfig } from 'ngx-cookieconsent';
-import { SbasSlidersTwoComponent } from './sbas-sliders-two/sbas-sliders-two.component';
 
 // info about cookie consent module: https://tinesoft.github.io/ngx-cookieconsent/home
 const cookieConfig: NgcCookieConsentConfig = {
@@ -72,7 +71,6 @@ export const routes = [
 @NgModule({
   declarations: [
     AppComponent,
-    SbasSlidersTwoComponent,
   ],
   imports: [
     BrowserModule,

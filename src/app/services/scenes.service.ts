@@ -43,7 +43,7 @@ export class ScenesService {
     );
   }
 
-  public pairs$(): Observable<CMRProductPair[]> {
+  public pairs$(): Observable<{custom: CMRProductPair[], pairs: CMRProductPair[]}> {
     return combineLatest(
       this.store$.select(getScenes).pipe(
         map(
@@ -58,8 +58,10 @@ export class ScenesService {
         map(range => range.start || 100)
       ),
     ).pipe(
-      map(([scenes, customPairs, temporal, perp]) =>
-        [ ...this.makePairs(scenes, temporal, perp), ...customPairs ]
+      map(([scenes, customPairs, temporal, perp]) => ({
+        pairs: [...this.makePairs(scenes, temporal, perp)],
+        custom: [ ...customPairs ]
+      })
       )
     );
   }

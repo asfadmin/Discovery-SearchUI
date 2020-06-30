@@ -46,6 +46,7 @@ export class SBASChartComponent implements OnInit, OnDestroy {
   private scatter;
   private line;
   private pairs;
+  private customPairs;
 
   private queuedProduct;
   private queuedCircle;
@@ -90,7 +91,8 @@ export class SBASChartComponent implements OnInit, OnDestroy {
     this.subs.add(
         combineLatest(scenes$, pairs$).subscribe(([scenes, pairs]) => {
           this.scenes = scenes;
-          this.pairs = pairs;
+          this.pairs = pairs.pairs;
+          this.customPairs = pairs.custom;
 
           this.makeSbasChart();
         })
@@ -185,6 +187,28 @@ export class SBASChartComponent implements OnInit, OnDestroy {
       .data(this.pairs)
       .join('path')
         .style('mix-blend-mode', 'multiply')
+        .attr('class', 'base-line')
+        .attr('stroke', 'steelblue')
+        .attr('stroke-width', 3)
+        .attr('cursor', 'pointer')
+        .attr('d', pair => this.line(pair))
+        .on('mouseover', function(d) {
+          self.setHovered(d, d3.select(this));
+        })
+        .on('mouseleave', function(d) {
+          self.clearHovered();
+        })
+      .on('click', pair => {
+        this.store$.dispatch(
+          new scenesStore.SetSelectedPair(pair.map(product => product.id))
+        );
+        this.setSelected(pair);
+      });
+
+    lines
+      .data(this.customPairs)
+      .join('path')
+        .style('stroke-dasharray', ' 5,5')
         .attr('class', 'base-line')
         .attr('stroke', 'steelblue')
         .attr('stroke-width', 3)
