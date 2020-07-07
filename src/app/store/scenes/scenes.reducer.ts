@@ -271,14 +271,18 @@ export function scenesReducer(state = initState, action: ScenesActions): ScenesS
     }
 
     case ScenesActionType.REMOVE_CUSTOM_PAIR: {
-      const pairs = [ ...state.customPairs ].filter(pair =>
-        pair[0].id === action.payload[0].id &&
-        pair[1].id === action.payload[1].id
-      );
+      const toRemove = new Set(action.payload.map(product => product.id));
+
+      const pairs = [ ...state.customPairs ].filter(pair => {
+        const ids = new Set(pair.map(product => product.id));
+
+        return !eqSet(toRemove, ids);
+      });
 
       return {
         ...state,
-        customPairs: pairs
+        customPairs: pairs,
+        selectedPair: null ,
       };
     }
 
@@ -613,3 +617,36 @@ export const getSelectedPair = createSelector(
     }
   }
 );
+
+export const getIsSelectedPairCustom = createSelector(
+  getScenesState,
+  state => {
+    const selectedPair = state.selectedPair;
+    if (!selectedPair || !selectedPair[0]) {
+      return false;
+    }
+
+    const selectedPairIds = new Set(selectedPair);
+
+    return state.customPairs.some(pair => {
+      const ids = new Set(pair.map(product => product.id));
+
+      return eqSet(ids, selectedPairIds);
+    });
+  }
+);
+
+function eqSet(aSet, bSet): boolean {
+  if (aSet.size !== bSet.size) {
+    return false;
+  }
+
+  for (const a of aSet) {
+    if (!bSet.has(a)) {
+      return false;
+    }
+  }
+
+  return true;
+}
+

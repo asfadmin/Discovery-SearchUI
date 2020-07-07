@@ -41,6 +41,7 @@ export class SBASResultsMenuComponent implements OnInit, OnDestroy {
 
   public breakpoint: Breakpoints;
   public breakpoints = Breakpoints;
+  public isSelectedPairCustom: boolean;
   private subs = new SubSink();
 
   constructor(
@@ -52,6 +53,12 @@ export class SBASResultsMenuComponent implements OnInit, OnDestroy {
     this.subs.add(
       this.screenSize.breakpoint$.subscribe(
         point => this.breakpoint = point
+      )
+    );
+
+    this.subs.add(
+      this.store$.select(scenesStore.getIsSelectedPairCustom).subscribe(
+        (isPairCustom: boolean) => this.isSelectedPairCustom = isPairCustom
       )
     );
 
@@ -86,6 +93,10 @@ export class SBASResultsMenuComponent implements OnInit, OnDestroy {
 
   public stopAddingCustomPoint(): void {
     this.store$.dispatch(new uiStore.StopAddingCustomPoint());
+  }
+
+  public deleteSelectedPair(): void {
+    this.store$.dispatch(new scenesStore.RemoveCustomPair(this.pair));
   }
 
   public onToggleFiltersMenu(): void {

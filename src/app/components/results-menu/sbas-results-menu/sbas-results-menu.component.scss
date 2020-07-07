@@ -51,3 +51,9 @@
 .mwlResizable {
   box-sizing: border-box; // required for the enableGhostResize option to work
 }
+
+.sbas-header {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}

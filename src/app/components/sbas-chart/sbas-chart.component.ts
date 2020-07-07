@@ -47,6 +47,7 @@ export class SBASChartComponent implements OnInit, OnDestroy {
   private line;
   private pairs;
   private customPairs;
+  private isSelectedPairCustom = false;
 
   private queuedProduct;
   private queuedCircle;
@@ -75,7 +76,6 @@ export class SBASChartComponent implements OnInit, OnDestroy {
     const pairs$ = this.scenesService.pairs$();
 
     this.store$.select(scenesStore.getSelectedPair).pipe(
-      filter(selected => !!selected),
     ).subscribe(
       selected => this.selectedPair = selected
     );
@@ -104,7 +104,6 @@ export class SBASChartComponent implements OnInit, OnDestroy {
   }
 
   public makeSbasChart() {
-
     if (this.chart) {
       d3.selectAll('#sbasChart > svg').remove();
     }
@@ -252,8 +251,10 @@ export class SBASChartComponent implements OnInit, OnDestroy {
         .style('fill', 'light grey')
         .style('opacity', 0.7);
 
-    if (this.selectedPair[0] !== null && this.selectedPair[1] !== null) {
+    if (this.selectedPair !== null && this.selectedPair[0] !== null && this.selectedPair[1] !== null) {
       this.setSelected(this.selectedPair);
+    } else {
+      this.scatter.select('.selected-line').remove();
     }
 
     // Add a clipPath: everything out of this area won't be drawn.
@@ -289,7 +290,7 @@ export class SBASChartComponent implements OnInit, OnDestroy {
     this.scatter.selectAll('.base-line')
       .attr('d', pair => this.line(pair));
 
-    if (this.selectedPair[0] !== null && this.selectedPair[1] !== null) {
+    if (this.selectedPair !== null && this.selectedPair[0] !== null && this.selectedPair[1] !== null) {
       this.setSelected(this.selectedPair);
     }
   }

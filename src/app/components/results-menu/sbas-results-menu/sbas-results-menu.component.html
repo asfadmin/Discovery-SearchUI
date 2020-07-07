@@ -49,7 +49,7 @@
             (resizeEnd)="onResizeEnd($event)">
     <mat-card-subtitle
       [class.medium-header]="breakpoint <= breakpoints.MEDIUM"
-      class="header">
+      class="header sbas-header">
         <div *ngIf="!isAddingCustomPoint">
           <b (click)="startAddingCustomPoint()"
             class="clickable">
@@ -61,6 +61,13 @@
            class="clickable">
             Stop Adding
           </b> - Click 2 different points to select
+        </div>
+        <div *ngIf="isSelectedPairCustom">
+          <b (click)="deleteSelectedPair()"
+            style="margin-left: 20px"
+            class="clickable">
+           Delete Selected
+          </b>
         </div>
     </mat-card-subtitle>
 
