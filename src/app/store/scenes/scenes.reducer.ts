@@ -270,6 +270,18 @@ export function scenesReducer(state = initState, action: ScenesActions): ScenesS
       };
     }
 
+    case ScenesActionType.REMOVE_CUSTOM_PAIR: {
+      const pairs = [ ...state.customPairs ].filter(pair =>
+        pair[0].id === action.payload[0].id &&
+        pair[1].id === action.payload[1].id
+      );
+
+      return {
+        ...state,
+        customPairs: pairs
+      };
+    }
+
     case ScenesActionType.CLEAR_CUSTOM_PAIRS: {
       return {
         ...state,

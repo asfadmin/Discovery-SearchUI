@@ -33,6 +33,7 @@ export enum ScenesActionType {
   SET_TEMPORAL_SORT_DIRECTION = '[Scenes] Set Temporal Sort Direction',
 
   ADD_CUSTOM_PAIR = '[Scenes] Add Custom Pair',
+  REMOVE_CUSTOM_PAIR = '[Scenes] Remove Custom Pair',
   CLEAR_CUSTOM_PAIRS = '[Scenes] Clear Custom Pairs',
 }
 
@@ -156,6 +157,12 @@ export class AddCustomPair implements Action {
   constructor(public payload: CMRProductPair) {}
 }
 
+export class RemoveCustomPair implements Action {
+  public readonly type = ScenesActionType.REMOVE_CUSTOM_PAIR;
+
+  constructor(public payload: CMRProductPair) {}
+}
+
 export class ClearCustomPairs implements Action {
   public readonly type = ScenesActionType.CLEAR_CUSTOM_PAIRS;
 }
@@ -185,4 +192,5 @@ export type ScenesActions =
   | SetTemporalSortDirection
   | SetPerpendicularSortDirection
   | AddCustomPair
+  | RemoveCustomPair
   | ClearCustomPairs;
