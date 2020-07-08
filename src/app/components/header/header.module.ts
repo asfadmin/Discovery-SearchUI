@@ -14,6 +14,7 @@ import { MatSharedModule } from '@shared';
 import { HeaderComponent } from './header.component';
 
 import { QueueModule } from './queue';
+import { Hyp3JobsDialogModule } from './hyp3-jobs-dialog';
 import { HeaderButtonsModule } from './header-buttons';
 import { InfoBarComponent } from './info-bar/info-bar.component';
 
@@ -65,6 +66,7 @@ import { MasterSceneSelectorModule } from '@components/shared/selectors/master-s
     PipesModule,
 
     QueueModule,
+    Hyp3JobsDialogModule,
 
     SearchTypeSelectorModule,
     DatasetSelectorModule,

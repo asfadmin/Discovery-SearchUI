@@ -132,7 +132,7 @@ export class SceneFilesComponent implements OnInit, OnDestroy {
         const [job] = jobs;
 
         if ( job.status_code === 'PENDING' ) {
-          this.snackbar.open('Job submitted', job.job_type);
+          this.snackbar.open('Job successfully submitted', job.job_type, { duration: 3000 });
         }
       }
     );
