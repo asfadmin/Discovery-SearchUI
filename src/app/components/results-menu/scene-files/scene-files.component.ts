@@ -11,6 +11,7 @@ import * as queueStore from '@store/queue';
 import * as userStore from '@store/user';
 
 import * as models from '@models';
+import * as services from '@services';
 
 @Component({
   selector: 'app-scene-files',
@@ -34,7 +35,8 @@ export class SceneFilesComponent implements OnInit, OnDestroy {
   private subs = new SubSink();
 
   constructor(
-    private store$: Store<AppState>
+    private store$: Store<AppState>,
+    private hyp3: services.Hyp3Service
   ) { }
 
   ngOnInit() {
@@ -120,6 +122,14 @@ export class SceneFilesComponent implements OnInit, OnDestroy {
     });
 
     return pivotIdx;
+  }
+
+  public onSubmitHyp3Job(product: models.CMRProduct) {
+    this.hyp3.submitJob(product.name).subscribe(
+      resp => {
+        console.log(resp);
+      }
+    );
   }
 
   ngOnDestroy() {
