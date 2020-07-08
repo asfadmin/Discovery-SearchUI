@@ -1,4 +1,5 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { SubSink } from 'subsink';
 
 import { combineLatest } from 'rxjs';
@@ -36,7 +37,8 @@ export class SceneFilesComponent implements OnInit, OnDestroy {
 
   constructor(
     private store$: Store<AppState>,
-    private hyp3: services.Hyp3Service
+    private hyp3: services.Hyp3Service,
+    private snackbar: MatSnackBar,
   ) { }
 
   ngOnInit() {
@@ -126,8 +128,12 @@ export class SceneFilesComponent implements OnInit, OnDestroy {
 
   public onSubmitHyp3Job(product: models.CMRProduct) {
     this.hyp3.submitJob(product.name).subscribe(
-      resp => {
-        console.log(resp);
+      ({ jobs }) => {
+        const [job] = jobs;
+
+        if ( job.status_code === 'PENDING' ) {
+          this.snackbar.open('Job submitted', job.job_type);
+        }
       }
     );
   }
