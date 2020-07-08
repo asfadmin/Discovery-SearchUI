@@ -127,9 +127,9 @@ export class SceneFilesComponent implements OnInit, OnDestroy {
   }
 
   public onSubmitHyp3Job(product: models.CMRProduct) {
-    this.hyp3.submitJob(product.name).subscribe(
-      ({ jobs }) => {
-        const [job] = jobs;
+    this.hyp3.submitJob$(product.name).subscribe(
+      (jobs: any) => {
+        const [job] = jobs.jobs;
 
         if ( job.status_code === 'PENDING' ) {
           this.snackbar.open('Job successfully submitted', job.job_type, { duration: 3000 });

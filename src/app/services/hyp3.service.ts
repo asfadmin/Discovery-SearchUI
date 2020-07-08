@@ -15,12 +15,12 @@ export class Hyp3Service {
     private http: HttpClient
   ) { }
 
-  public getJobs() {
+  public getJobs$() {
     const getJobsUrl = `${this.url}/jobs`;
     return this.http.get(getJobsUrl, { withCredentials: true });
   }
 
-  public submitJob(granuleId: string, description?: string) {
+  public submitJob$(granuleId: string, description?: string) {
     const submitJobUrl = `${this.url}/jobs`;
 
     const body = {
