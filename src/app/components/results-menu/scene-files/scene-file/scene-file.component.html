@@ -45,7 +45,7 @@
     </a>
   </div>
     <button
-      *ngIf="product.metadata.beamMode === 'IW' && product.metadata.productType === 'SLC'"
+      *ngIf="isUserLoggedIn && product.metadata.beamMode === 'IW' && product.metadata.productType === 'SLC'"
       (click)="onProcessHyp3Job()"
       mat-icon-button>
       <mat-icon>build</mat-icon>
