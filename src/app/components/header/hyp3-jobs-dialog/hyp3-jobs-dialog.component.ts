@@ -19,7 +19,7 @@ export class Hyp3JobsDialogComponent implements OnInit {
   ngOnInit(): void {
     this.hyp3.getJobs$().subscribe((resp: any) => {
       this.jobs = resp.jobs
-        .filter(job => job.status_code !== 'SUCCESS')
+        .filter(job => job.status_code === 'SUCCEEDED')
         .map(job => job.files[0]);
     });
   }
