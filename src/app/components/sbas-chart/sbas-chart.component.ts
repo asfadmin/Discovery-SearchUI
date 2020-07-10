@@ -134,7 +134,11 @@ export class SBASChartComponent implements OnInit, OnDestroy {
 
     this.xAxis = this.chart.append('g')
       .attr('transform', `translate(0,${this.sbasChartHeightValue})`)
-      .call(d3.axisBottom(this.x));
+      .attr('class', 'y axis-grid')
+      .call(
+        d3.axisBottom(this.x)
+          .tickSize(-(this.heightValue - (20 + this.margin.top)))
+      );
 
     const yExtent = d3.extent(
       this.scenes.map(s => s.metadata.perpendicular)
@@ -143,14 +147,19 @@ export class SBASChartComponent implements OnInit, OnDestroy {
     this.y = d3.scaleLinear()
       .domain(yExtent)
       .range([this.heightValue - (20 + this.margin.top), 0]);
+
     this.yAxis = this.chart.append('g')
-      .call(d3.axisLeft(this.y));
+      .attr('class', 'x axis-grid')
+      .call(
+        d3.axisLeft(this.y)
+          .tickSize(-this.widthValue)
+      );
 
     this.scatter = this.chart.append('g')
       .attr('clip-path', 'url(#clip)');
 
     const zoom = d3.zoom()
-      .scaleExtent([.5, 30])
+      .scaleExtent([.2, 10])
       .extent([[0, 0], [this.widthValue, this.heightValue]])
       .on('zoom', _ => {
         this.currentTransform = d3.event.transform;
@@ -275,8 +284,14 @@ export class SBASChartComponent implements OnInit, OnDestroy {
     const newX = this.currentTransform.rescaleX(this.x);
     const newY = this.currentTransform.rescaleY(this.y);
 
-    this.xAxis.call(d3.axisBottom(newX));
-    this.yAxis.call(d3.axisLeft(newY));
+    this.xAxis.call(
+      d3.axisBottom(newX)
+        .tickSize(-(this.heightValue - (20 + this.margin.top)))
+    );
+    this.yAxis.call(
+      d3.axisLeft(newY)
+          .tickSize(-this.widthValue)
+    );
 
     this.scatter
       .selectAll('circle')
