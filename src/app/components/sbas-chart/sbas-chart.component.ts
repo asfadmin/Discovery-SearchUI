@@ -108,7 +108,7 @@ export class SBASChartComponent implements OnInit, OnDestroy {
       d3.selectAll('#sbasChart > svg').remove();
     }
 
-    this.margin = { top: 10, right: 0, bottom: 200, left: 20 };
+    this.margin = { top: 10, right: 0, bottom: 200, left: 40 };
 
     const elem = document.getElementById('sbas-chart-column');
     this.heightValue = elem.offsetHeight;
@@ -124,6 +124,21 @@ export class SBASChartComponent implements OnInit, OnDestroy {
         .attr('transform',
               `translate(${this.margin.left},${this.margin.top})`);
 
+    this.chart.append('text')
+      .attr('class', 'x label')
+      .attr('text-anchor', 'end')
+      .attr('x', this.widthValue)
+      .attr('y', this.heightValue - 6)
+      .text('Date');
+
+    this.chart.append('text')
+      .attr('class', 'y label')
+      .attr('text-anchor', 'end')
+      .attr('y', -38)
+      .attr('dy', '.75em')
+      .attr('transform', 'rotate(-90)')
+      .text('Perpendicualr Baseline');
+
     const xExtent = d3.extent(
       this.scenes.map(s => s.metadata.date.valueOf())
     );
@@ -133,7 +148,7 @@ export class SBASChartComponent implements OnInit, OnDestroy {
       .range([ 0, this.widthValue  * 3 ]);
 
     this.xAxis = this.chart.append('g')
-      .attr('transform', `translate(0,${this.sbasChartHeightValue})`)
+      .attr('transform', `translate(0, ${this.sbasChartHeightValue})`)
       .attr('class', 'y axis-grid')
       .call(
         d3.axisBottom(this.x)
