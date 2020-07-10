@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { MatDialogRef } from '@angular/material/dialog';
 
 import { Hyp3Service } from '@services';
 
@@ -10,15 +11,20 @@ import { Hyp3Service } from '@services';
 export class Hyp3JobsDialogComponent implements OnInit {
   public jobs = [];
 
-  constructor(private hyp3: Hyp3Service) { }
+  constructor(
+    private dialogRef: MatDialogRef<Hyp3JobsDialogComponent>,
+    private hyp3: Hyp3Service
+  ) { }
 
   ngOnInit(): void {
     this.hyp3.getJobs$().subscribe((resp: any) => {
-      this.jobs = resp.jobs.map(job => job.files[0]);
+      this.jobs = resp.jobs
+        .filter(job => job.status_code !== 'SUCCESS')
+        .map(job => job.files[0]);
     });
   }
 
   public onCloseDialog() {
-
+    this.dialogRef.close();
   }
 }
