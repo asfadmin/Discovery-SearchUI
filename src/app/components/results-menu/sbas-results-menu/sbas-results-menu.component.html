@@ -1,6 +1,6 @@
 <!-- SCENE LIST -->
 <ng-container *ngIf="breakpoint > breakpoints.MEDIUM">
-  <mat-card #listCard class="mp0 sbas-list-card" fxFlex="38" fxFlex
+  <mat-card #listCard class="mp0 sbas-list-card" fxFlex="20" fxFlex
             [style.max-width]="listCardMaxWidth">
     <mat-card-subtitle style="display: flex; flex-direction: row; justify-content:center; align-items: flex-start;" class="header">
       <div style="display: flex; flex-direction: row; justify-content:center;">
@@ -11,12 +11,12 @@
           style="margin-right: 30px;">
             Pairs
         </div>
-        <div
-          (click)="onSelectDetail()"
-          [class.selected]="view === Views.DETAIL"
-          class="clickable select-button">
-            Pair Detail
-        </div>
+<!--        <div-->
+<!--          (click)="onSelectDetail()"-->
+<!--          [class.selected]="view === Views.DETAIL"-->
+<!--          class="clickable select-button">-->
+<!--            Pair Detail-->
+<!--        </div>-->
       </div>
 
       <app-scenes-list-header></app-scenes-list-header>
@@ -37,8 +37,22 @@
       </div>
     </div>
   </mat-card>
-</ng-container>
 
+  <mat-card class="mp0 sbas-list-card" fxFlex="25" fxFlex>
+    <mat-card-subtitle style="display: flex; flex-direction: row; justify-content:center; align-items: flex-start;" class="header">
+    </mat-card-subtitle>
+    <div class="scrollable">
+      <div *ngIf="pair">
+        <div *ngFor="let product of pair">
+          {{ product.name }}
+          <br>
+          More Pair Details Here...
+          <hr>
+        </div>
+      </div>
+    </div>
+  </mat-card>
+</ng-container>
 
   <mat-card #chartCard
             class="mp0 no-box-shadow sbas-chart-card" fxFlex="55" fxFlexFill
@@ -64,7 +78,7 @@
         </div>
         <div *ngIf="isSelectedPairCustom">
           <b (click)="deleteSelectedPair()"
-            style="margin-left: 20px"
+            style="margin-left: 20px;"
             class="clickable">
            Delete Selected
           </b>
