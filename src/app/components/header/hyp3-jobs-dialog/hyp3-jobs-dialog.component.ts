@@ -8,10 +8,17 @@ import { Hyp3Service } from '@services';
   styleUrls: ['./hyp3-jobs-dialog.component.scss']
 })
 export class Hyp3JobsDialogComponent implements OnInit {
-  public jobs$ = this.hyp3.getJobs$();
+  public jobs = [];
 
   constructor(private hyp3: Hyp3Service) { }
 
   ngOnInit(): void {
+    this.hyp3.getJobs$().subscribe((resp: any) => {
+      this.jobs = resp.jobs.map(job => job.files[0]);
+    });
+  }
+
+  public onCloseDialog() {
+
   }
 }

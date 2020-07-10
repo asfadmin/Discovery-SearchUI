@@ -1,5 +1,32 @@
-<h2>Hyp3 Jobs Dialog</h2>
+<mat-card>
+  <mat-card-title-group class="card-title-group">
+    <mat-card-title>Hyp3 Jobs Dialog</mat-card-title>
 
-<div>
-  User Jobs - {{ jobs$ | async | json }}
-</div>
+    <div class="close-x" (click)="onCloseDialog()">
+      <mat-icon>close</mat-icon>
+    </div>
+
+    <mat-card-subtitle>
+    </mat-card-subtitle>
+  </mat-card-title-group>
+
+  <mat-card-content>
+    <mat-list role="list">
+      <mat-list-item *ngFor="let job of jobs">
+        <div matLine>
+          {{ job.filename }}
+
+        </div>
+
+        <div matLine>
+          <span *ngIf="job.bytes === 0">Virtual</span>
+          <span *ngIf="job.bytes !== 0">{{job.size | readableSizeFromBytes }}</span>
+        </div>
+
+        <a mat-icon-button matTooltip="Download" [href]="job.url" target="_blank" style="text-decoration: none;">
+          <mat-icon>cloud_download</mat-icon>
+        </a>
+      </mat-list-item>
+    </mat-list>
+  </mat-card-content>
+</mat-card>
