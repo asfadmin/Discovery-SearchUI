@@ -28,7 +28,7 @@ export class ScenesListHeaderComponent implements OnInit {
   public numPairs$ = this.scenesService.pairs$().pipe(
     map(pairs => pairs.pairs.length + pairs.custom.length)
   );
-  public sbasProducts: CMRProduct[];;
+  public sbasProducts: models.CMRProduct[];
 
   public temporalSort: models.ColumnSortDirection;
   public perpendicularSort: models.ColumnSortDirection;
