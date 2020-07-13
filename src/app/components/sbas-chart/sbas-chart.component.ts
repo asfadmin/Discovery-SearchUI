@@ -64,6 +64,7 @@ export class SBASChartComponent implements OnInit, OnDestroy {
   private hoveredProductId;
   private isFirstLoad = true;
   private subs = new SubSink();
+  private marginBottom = 50;
 
   constructor(
     private store$: Store<AppState>,
@@ -108,12 +109,12 @@ export class SBASChartComponent implements OnInit, OnDestroy {
       d3.selectAll('#sbasChart > svg').remove();
     }
 
-    this.margin = { top: 10, right: 0, bottom: 200, left: 20 };
+    this.margin = { top: 10, right: 0, bottom: 25, left: 40 };
 
     const elem = document.getElementById('sbas-chart-column');
     this.heightValue = elem.offsetHeight;
     const sbasChart = document.getElementById('sbasChart');
-    this.sbasChartHeightValue = sbasChart.offsetHeight - (20 + this.margin.top) ;
+    this.sbasChartHeightValue = sbasChart.offsetHeight - (this.margin.bottom + this.margin.top) ;
     this.widthValue = sbasChart.offsetWidth;
 
     this.chart = d3.select('#sbasChart')
@@ -124,6 +125,22 @@ export class SBASChartComponent implements OnInit, OnDestroy {
         .attr('transform',
               `translate(${this.margin.left},${this.margin.top})`);
 
+    this.chart.append('text')
+      .attr('class', 'x label')
+      .attr('text-anchor', 'end')
+      .attr('x', (this.widthValue / 2) - 15)
+      .attr('y', this.heightValue - (this.margin.top))
+      .text('Date');
+
+    this.chart.append('text')
+      .attr('class', 'y label')
+      .attr('text-anchor', 'end')
+      .attr('y', -40)
+      .attr('x', -((this.heightValue - (this.margin.top)) / 2) + 80)
+      .attr('dy', '.75em')
+      .attr('transform', 'rotate(-90)')
+      .text('Perpendicualr Baseline');
+
     const xExtent = d3.extent(
       this.scenes.map(s => s.metadata.date.valueOf())
     );
@@ -133,11 +150,11 @@ export class SBASChartComponent implements OnInit, OnDestroy {
       .range([ 0, this.widthValue  * 3 ]);
 
     this.xAxis = this.chart.append('g')
-      .attr('transform', `translate(0,${this.sbasChartHeightValue})`)
+      .attr('transform', `translate(0, ${this.sbasChartHeightValue})`)
       .attr('class', 'y axis-grid')
       .call(
         d3.axisBottom(this.x)
-          .tickSize(-(this.heightValue - (20 + this.margin.top)))
+          .tickSize(-(this.heightValue - (this.margin.bottom + this.margin.top)))
       );
 
     const yExtent = d3.extent(
@@ -146,7 +163,7 @@ export class SBASChartComponent implements OnInit, OnDestroy {
 
     this.y = d3.scaleLinear()
       .domain(yExtent)
-      .range([this.heightValue - (20 + this.margin.top), 0]);
+      .range([this.heightValue - (this.margin.bottom + this.margin.top), 0]);
 
     this.yAxis = this.chart.append('g')
       .attr('class', 'x axis-grid')
@@ -169,7 +186,7 @@ export class SBASChartComponent implements OnInit, OnDestroy {
 
     const zoomBox = this.scatter.append('rect')
       .attr('width', this.widthValue)
-      .attr('height', this.heightValue - (20 + this.margin.top))
+      .attr('height', this.heightValue - (this.margin.bottom + this.margin.top))
       .attr('cursor', 'pointer')
       .style('fill', 'transparent')
       .style('pointer-events', 'all');
@@ -271,7 +288,7 @@ export class SBASChartComponent implements OnInit, OnDestroy {
       .attr('id', 'clip')
       .append('SVG:rect')
       .attr('width', this.widthValue)
-      .attr('height', this.heightValue - (20 + this.margin.top))
+      .attr('height', this.heightValue - (this.margin.bottom + this.margin.top))
       .attr('x', 0)
       .attr('y', 0);
 
@@ -286,7 +303,7 @@ export class SBASChartComponent implements OnInit, OnDestroy {
 
     this.xAxis.call(
       d3.axisBottom(newX)
-        .tickSize(-(this.heightValue - (20 + this.margin.top)))
+        .tickSize(-(this.heightValue - (this.margin.bottom + this.margin.top)))
     );
     this.yAxis.call(
       d3.axisLeft(newY)
