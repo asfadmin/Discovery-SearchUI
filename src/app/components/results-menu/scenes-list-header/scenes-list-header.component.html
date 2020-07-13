@@ -34,8 +34,12 @@
           </mat-icon>
 
           <mat-menu #addAllProducts="matMenu">
-            <button (click)="queueAllProducts(products)" mat-menu-item>
+            <button *ngIf="searchType !== SearchTypes.SBAS" (click)="queueAllProducts(products)" mat-menu-item>
               Add {{ products.length }} file{{ products.length === 1 ? '' : 's'}} to downloads
+            </button>
+
+            <button *ngIf="searchType === SearchTypes.SBAS" (click)="queueSBASPairs(sbasProducts)" mat-menu-item>
+              Add {{ sbasProducts.length }} file{{ sbasProducts.length === 1 ? '' : 's'}} from pairs to downloads
             </button>
           </mat-menu>
         </div>

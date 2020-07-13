@@ -37,6 +37,21 @@ export class ScenesService {
     );
   }
 
+  public productsFromPairs$(): Observable<CMRProduct[]> {
+    return this.pairs$().pipe(
+      map(({ custom, pairs }) => {
+        const prods = Array.from([...custom, ...pairs].reduce((products, pair) => {
+          products.add(pair[0]);
+          products.add(pair[1]);
+
+          return products;
+        }, new Set<CMRProduct>()));
+
+        return prods;
+      })
+    );
+  }
+
   public scenesSorted$(): Observable<CMRProduct[]> {
     return this.sortScenes$(
       this.scenes$()
