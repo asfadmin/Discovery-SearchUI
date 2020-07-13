@@ -28,6 +28,7 @@ export class ScenesListHeaderComponent implements OnInit {
   public numPairs$ = this.scenesService.pairs$().pipe(
     map(pairs => pairs.pairs.length + pairs.custom.length)
   );
+  public sbasProducts: CMRProduct[];;
 
   public temporalSort: models.ColumnSortDirection;
   public perpendicularSort: models.ColumnSortDirection;
@@ -49,6 +50,12 @@ export class ScenesListHeaderComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+    this.subs.add(
+       this.scenesService.productsFromPairs$().subscribe(
+         products => this.sbasProducts = products
+       )
+    );
+
     this.subs.add(
       this.store$.select(searchStore.getSearchType).subscribe(
         searchType => this.searchType = searchType
@@ -103,6 +110,10 @@ export class ScenesListHeaderComponent implements OnInit {
   }
 
   public queueAllProducts(products: models.CMRProduct[]): void {
+    this.store$.dispatch(new queueStore.AddItems(products));
+  }
+
+  public queueSBASProducts(products: models.CMRProduct[]): void {
     this.store$.dispatch(new queueStore.AddItems(products));
   }
 
