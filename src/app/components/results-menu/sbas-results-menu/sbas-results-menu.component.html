@@ -1,5 +1,5 @@
 <!-- SCENE LIST -->
-<ng-container *ngIf="breakpoint > breakpoints.MEDIUM">
+<ng-container *ngIf="breakpoint > breakpoints.MOBILE">
   <mat-card #listCard class="mp0 sbas-list-card" fxFlex="20" fxFlex
             [style.max-width]="listCardMaxWidth">
     <mat-card-subtitle style="display: flex; flex-direction: row; justify-content:center; align-items: flex-start;" class="header">
@@ -29,7 +29,7 @@
     <div *ngIf="view === Views.DETAIL" style="max-width: 100%;" class="scrollable">
       <div *ngIf="pair">
         <div *ngFor="let product of pair">
-          {{ product.name }}
+          <span class="product-name">{{ product.name }}</span>
           <br>
           More Pair Details Here...
           <hr>
@@ -44,7 +44,7 @@
     <div class="scrollable">
       <div *ngIf="pair">
         <div *ngFor="let product of pair">
-          {{ product.name }}
+          <span class="product-name">{{ product.name }}</span>
           <br>
           More Pair Details Here...
           <hr>
