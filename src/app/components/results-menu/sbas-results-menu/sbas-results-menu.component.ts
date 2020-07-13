@@ -79,7 +79,7 @@ export class SBASResultsMenuComponent implements OnInit, OnDestroy {
     const windowWidth = window.innerWidth
       || document.documentElement.clientWidth
       || document.body.clientWidth;
-    const newChartWidth = event.rectangle.width;
+    const newChartWidth = event.rectangle.width > windowWidth ? windowWidth : event.rectangle.width;
     const newChartMaxWidth = Math.round((newChartWidth / windowWidth) * 100);
     const newListMaxWidth = 100 - newChartMaxWidth;
 

@@ -1,9 +1,9 @@
 <!-- SCENE LIST -->
 <ng-container *ngIf="breakpoint > breakpoints.MOBILE">
   <mat-card #listCard class="mp0 sbas-list-card" fxFlex="20" fxFlex
-            [style.max-width]="listCardMaxWidth">
-    <mat-card-subtitle style="display: flex; flex-direction: row; justify-content:center; align-items: flex-start;" class="header">
-      <div style="display: flex; flex-direction: row; justify-content:center;">
+            [style.width]="listCardMaxWidth">
+    <mat-card-subtitle style="display: flex; flex-direction: row; justify-content: center; align-items: flex-start;" class="header">
+      <div style="display: flex; flex-direction: row; justify-content: center;">
         <div
           (click)="onSelectList()"
           [class.selected]="view === Views.LIST"
@@ -38,15 +38,15 @@
     </div>
   </mat-card>
 
-  <mat-card class="mp0 sbas-list-card" fxFlex="25" fxFlex>
-    <mat-card-subtitle style="display: flex; flex-direction: row; justify-content:center; align-items: flex-start;" class="header">
+  <mat-card class="mp0 sbas-list-card" fxFlex="20" fxFlex [style.width]="listCardMaxWidth">
+    <mat-card-subtitle style="display: flex; flex-direction: row; justify-content: center; align-items: flex-start;" class="header">
     </mat-card-subtitle>
     <div class="scrollable">
       <div *ngIf="pair">
         <div *ngFor="let product of pair">
           <span class="product-name">{{ product.name }}</span>
           <br>
-          More Pair Details Here...
+          More Pair Details Here Too...
           <hr>
         </div>
       </div>
@@ -55,7 +55,7 @@
 </ng-container>
 
   <mat-card #chartCard
-            class="mp0 no-box-shadow sbas-chart-card" fxFlex="55" fxFlexFill
+            class="mp0 no-box-shadow sbas-chart-card" fxFlex="60" fxFlexFill
             [style.max-width]="chartCardMaxWidth"
             mwlResizable
             [enableGhostResize]="true"
