@@ -8,7 +8,7 @@ import * as scenesStore from '@store/scenes';
 import * as queueStore from '@store/queue';
 import * as searchStore from '@store/search';
 
-import { MapService, ScenesService, ScreenSizeService } from '@services';
+import { MapService, ScenesService, ScreenSizeService, DatasetForProductService } from '@services';
 import * as models from '@models';
 import { SubSink } from 'subsink';
 
@@ -46,6 +46,7 @@ export class ScenesListHeaderComponent implements OnInit {
     private mapService: MapService,
     private scenesService: ScenesService,
     private screenSize: ScreenSizeService,
+    private datasetForProduct: DatasetForProductService
 
   ) { }
 

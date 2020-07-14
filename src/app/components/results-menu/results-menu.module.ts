@@ -11,6 +11,7 @@ import { PipesModule } from '@pipes';
 import { MatSharedModule } from '@shared';
 import { ScenesListModule } from './scenes-list';
 import { ResultsMenuComponent } from './results-menu.component';
+import { SceneMetadataModule } from '@components/shared/scene-metadata';
 import { SceneFilesModule } from './scene-files';
 import { SceneDetailModule } from './scene-detail';
 import { ScenesListHeaderComponent } from './scenes-list-header/scenes-list-header.component';
@@ -21,8 +22,8 @@ import { BaselineChartModule } from '@components/baseline-chart/baseline-chart.m
 import { SBASResultsMenuComponent } from './sbas-results-menu/sbas-results-menu.component';
 import { SBASChartModule } from '@components/sbas-chart/sbas-chart.module';
 import { SbasSlidersComponent } from './sbas-sliders/sbas-sliders.component';
-import {MatSliderModule} from '@angular/material/slider';
-import {FormsModule} from '@angular/forms';
+import { MatSliderModule } from '@angular/material/slider';
+import { FormsModule } from '@angular/forms';
 import { SbasSlidersTwoComponent } from './sbas-sliders-two/sbas-sliders-two.component';
 
 @NgModule({
@@ -52,6 +53,7 @@ import { SbasSlidersTwoComponent } from './sbas-sliders-two/sbas-sliders-two.com
     SBASChartModule,
     MatSliderModule,
     FormsModule,
+    SceneMetadataModule,
   ],
   exports: [ResultsMenuComponent],
 })

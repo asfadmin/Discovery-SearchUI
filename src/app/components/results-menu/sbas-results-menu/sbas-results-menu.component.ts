@@ -8,9 +8,10 @@ import { Store } from '@ngrx/store';
 import { AppState } from '@store';
 import * as uiStore from '@store/ui';
 import * as scenesStore from '@store/scenes';
+import * as searchStore from '@store/search';
 
-import { Breakpoints, CMRProductPair } from '@models';
-import { ScreenSizeService } from '@services';
+import { Breakpoints, CMRProductPair, SearchType } from '@models';
+import { ScreenSizeService, DatasetForProductService } from '@services';
 
 import { SubSink } from 'subsink';
 
@@ -32,6 +33,7 @@ export class SBASResultsMenuComponent implements OnInit, OnDestroy {
   @Input() resize$: Observable<void>;
   public pair: CMRProductPair;
   public isAddingCustomPoint: boolean;
+  public searchType: SearchType;
 
   public view = CardViews.LIST;
   public Views = CardViews;
@@ -46,13 +48,20 @@ export class SBASResultsMenuComponent implements OnInit, OnDestroy {
 
   constructor(
     private store$: Store<AppState>,
-    private screenSize: ScreenSizeService
+    private screenSize: ScreenSizeService,
+    public datasetForProduct: DatasetForProductService
   ) { }
 
   ngOnInit(): void {
     this.subs.add(
       this.screenSize.breakpoint$.subscribe(
         point => this.breakpoint = point
+      )
+    );
+
+    this.subs.add(
+      this.store$.select(searchStore.getSearchType).subscribe(
+        searchType => this.searchType = searchType
       )
     );
 
