@@ -44,9 +44,16 @@
     <div style="overflow: auto; height: 100%;" class="scrollable">
       <div *ngIf="pair" style="margin: 5px; padding-bottom: 36px;">
         <div *ngFor="let product of pair">
-          <span class="product-name">{{ product.name }}</span>
+          <div style="margin-bottom: 4px;">
+            <b class="product-name">{{ product.name }}</b>
+          </div>
 
-          <br>
+          <div *ngIf="datasetForProduct.match(product) as dataset" style="margin-bottom: 12px">
+            <a [href]="dataset.infoUrl" target="_blank" matTooltip="Dataset" class="faint-text">
+              {{ dataset.name }}
+            </a> •
+            <span matTooltip="Frequency">{{ dataset.frequency }}</span>
+          </div>
 
           <app-scene-metadata
              [scene]="product"
@@ -54,6 +61,11 @@
              [searchType]="searchType">
           </app-scene-metadata>
           <hr>
+        </div>
+      </div>
+      <div *ngIf="!pair" style="margin: 5px; padding-bottom: 36px;">
+        <div class="faint-text w100 h100" style="text-align: center; padding-top: 10px;">
+          No Pair Selected
         </div>
       </div>
     </div>

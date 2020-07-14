@@ -14,8 +14,8 @@
 
       </mat-card-title>
       <mat-card-subtitle class="subtitle">
-        <a [href]="dataset.infoUrl" target="_blank" matTooltip="Dataset" class="faint-text">{{ dataset.name }}
-          <span *ngIf="dataset.name === 'SMAP'">V{{ scene.name.slice(-1) }}</span>
+        <a [href]="dataset.infoUrl" target="_blank" matTooltip="Dataset" class="faint-text">
+          {{ dataset.name }} <span *ngIf="dataset.name === 'SMAP'">V{{ scene.name.slice(-1) }}</span>
         </a> •
         <span matTooltip="Frequency">{{ dataset.frequency }}</span>
       </mat-card-subtitle>
