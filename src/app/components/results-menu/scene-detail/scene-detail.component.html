@@ -24,7 +24,12 @@
     <mat-card-content class="content">
       <div class="w100" fxFlex fxLayout="row" fxLayoutAlign="space-between">
         <div class="w50">
-          <app-scene-metadata></app-scene-metadata>
+          <app-scene-metadata
+             [scene]="scene"
+             [dataset]="dataset"
+             [searchType]="searchType"
+             [offsets]="masterOffsets$ | async">
+          </app-scene-metadata>
         </div>
 
         <div [class.clickable]="sceneHasBrowse()" class="browse-container w40">

@@ -1,4 +1,4 @@
-<ul class="scene-metadata">
+<ul *ngIf="scene !== null" class="scene-metadata">
   <li *ngIf="scene.metadata.perpendicular !== null">
     <span class="v-mid"><b>Perpendicular </b> • {{ scene.metadata.perpendicular + offsets.perpendicular }}</span>
   </li>

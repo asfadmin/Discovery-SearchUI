@@ -54,7 +54,12 @@
         <div class="scene-detail">
 
           <div class="detail-header">Scene Detail</div>
-          <app-scene-metadata></app-scene-metadata>
+          <app-scene-metadata
+            [scene]="scene$ | async"
+            [dataset]="dataset"
+            [searchType]="searchType$|  async"
+            [offsets]="masterOffsets$ | async">
+          </app-scene-metadata>
 
           <hr>
 
