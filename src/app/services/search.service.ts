@@ -44,6 +44,10 @@ export class SearchService {
       if (breakpoint !== models.Breakpoints.MOBILE) {
         this.store$.dispatch(new uiStore.CloseFiltersMenu());
       }
+    } else if (searchType === models.SearchType.SBAS) {
+      this.store$.dispatch(new scenesStore.ClearBaseline());
+      this.store$.dispatch(new filterStore.ClearPerpendicularRange());
+      this.store$.dispatch(new filterStore.ClearTemporalRange());
     }
   }
 

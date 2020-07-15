@@ -71,7 +71,10 @@ export class SearchButtonComponent implements OnInit, OnDestroy {
   }
 
   public onDoSearch(): void {
-    this.clearBaselineRanges();
+    if (this.searchType === SearchType.BASELINE) {
+      this.clearBaselineRanges();
+    }
+
     this.store$.dispatch(new searchStore.MakeSearch());
 
     const search = this.savedSearchService.makeCurrentSearch(`${Date.now()}`);
