@@ -1,5 +1,13 @@
 <div *ngIf="breakpoint$ | async as breakpoint">
   <ng-container *ngIf="breakpoint > breakpoints.MOBILE">
+
+    <button (click)="onOpenHyp3Dialog()"
+            class="spacing nav-icon-buttons" color="basic"
+            matTooltip="HyP3" mat-button>
+      <img src="/assets/asf-logos/HyP3-no-text.png"  height="35">
+      <div class="text-under faint-text">Hybrid Pluggable Processing Pipeline</div>
+    </button>
+
     <button
       (click)="onOpenDownloadQueue()"
       [disabled]="queuedProducts.length <= 0"
