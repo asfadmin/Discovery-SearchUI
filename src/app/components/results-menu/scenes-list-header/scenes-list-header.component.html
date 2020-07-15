@@ -12,6 +12,7 @@
 
         <div *ngIf="searchType === SearchTypes.SBAS" class="mr-10">
           {{ numPairs$ | async }} Pair{{ (numPairs$ | async) === 1 ? '' : 's' }}
+          ({{ sbasProducts.length }} Scene{{ sbasProducts.length === 1 ? '' : 's' }})
         </div>
 
         <div *ngIf="searchType === SearchTypes.BASELINE" class="mr-10">
@@ -39,7 +40,7 @@
             </button>
 
             <button *ngIf="searchType === SearchTypes.SBAS" (click)="queueSBASPairs(sbasProducts)" mat-menu-item>
-              Add {{ sbasProducts.length }} file{{ sbasProducts.length === 1 ? '' : 's'}} from pairs to downloads
+              Add {{ sbasProducts.length }} file{{ sbasProducts.length === 1 ? '' : 's'}} to downloads
             </button>
           </mat-menu>
         </div>
