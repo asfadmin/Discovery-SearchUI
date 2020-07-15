@@ -9,7 +9,6 @@ import { Store } from '@ngrx/store';
 import * as filtersStore from '@store/filters';
 
 import { SubSink } from 'subsink';
-// import wNumb from 'wnumb';
 declare var wNumb: any;
 
 @Component({
@@ -26,6 +25,7 @@ export class SbasSlidersTwoComponent implements OnInit {
 
   public tempSlider;
   public temporal: number;
+  public perpendicular: number;
 
   private subs = new SubSink();
 
@@ -50,6 +50,14 @@ export class SbasSlidersTwoComponent implements OnInit {
       this.store$.select(filtersStore.getTemporalRange).subscribe(
         temp => {
           this.temporal = temp.start;
+        }
+      )
+    );
+
+    this.subs.add(
+      this.store$.select(filtersStore.getPerpendicularRange).subscribe(
+        perp => {
+          this.perpendicular = perp.start;
         }
       )
     );
