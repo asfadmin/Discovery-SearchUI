@@ -39,7 +39,7 @@
               Add {{ products.length }} file{{ products.length === 1 ? '' : 's'}} to downloads
             </button>
 
-            <button *ngIf="searchType === SearchTypes.SBAS" (click)="queueSBASPairs(sbasProducts)" mat-menu-item>
+            <button *ngIf="searchType === SearchTypes.SBAS" (click)="queueSBASProducts(sbasProducts)" mat-menu-item>
               Add {{ sbasProducts.length }} file{{ sbasProducts.length === 1 ? '' : 's'}} to downloads
             </button>
           </mat-menu>
