@@ -67,10 +67,10 @@ export class ScenesService {
       ),
       this.store$.select(getCustomPairs),
       this.store$.select(getTemporalRange).pipe(
-        map(range => range.start || 24)
+        map(range => range.start)
       ),
       this.store$.select(getPerpendicularRange).pipe(
-        map(range => range.start || 100)
+        map(range => range.start)
       ),
     ).pipe(
       map(([scenes, customPairs, temporal, perp]) => ({

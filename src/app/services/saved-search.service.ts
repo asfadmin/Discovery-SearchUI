@@ -48,6 +48,16 @@ export class SavedSearchService {
     }))
   );
 
+  private currentSbasSearch$ = combineLatest(
+    this.store$.select(scenesStore.getFilterMaster),
+    this.store$.select(filtersStore.getSbasSearch),
+  ).pipe(
+    map(([master, baselineFilters]) => ({
+      master,
+      ...baselineFilters
+    }))
+  );
+
   private searchType$ = this.store$.select(getSearchType);
 
   public currentSearch$ = this.searchType$.pipe(
@@ -55,7 +65,7 @@ export class SavedSearchService {
       [models.SearchType.DATASET]: this.currentGeographicSearch$,
       [models.SearchType.LIST]: this.currentListSearch$,
       [models.SearchType.BASELINE]: this.currentBaselineSearch$,
-      [models.SearchType.SBAS]: this.currentBaselineSearch$, // TODO: SBAS Search Here
+      [models.SearchType.SBAS]: this.currentSbasSearch$,
     })[searchType]
     )
   );

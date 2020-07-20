@@ -26,6 +26,7 @@ export class SbasSlidersComponent implements OnInit {
   public tempSlider;
   public temporal: number;
 
+  private firstLoad = true;
   private subs = new SubSink();
 
   constructor(
@@ -49,6 +50,11 @@ export class SbasSlidersComponent implements OnInit {
       this.store$.select(filtersStore.getPerpendicularRange).subscribe(
         temp => {
           this.temporal = temp.start;
+
+          if (this.firstLoad) {
+            this.tempSlider.set([this.temporal]);
+            this.firstLoad = false;
+          }
         }
       )
     );
@@ -68,7 +74,7 @@ export class SbasSlidersComponent implements OnInit {
     const slider = noUiSlider.create(filterRef.nativeElement, {
       orientation: 'vertical',
       direction: 'rtl',
-      start: [48],
+      start: [300],
       behaviour: 'tap-drag',
       tooltips: false,
       step: 1,

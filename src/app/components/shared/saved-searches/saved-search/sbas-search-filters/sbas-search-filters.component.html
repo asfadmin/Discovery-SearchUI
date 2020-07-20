@@ -1,0 +1,9 @@
+<div>
+  <b>Primary: </b> {{ filters.master }}
+  <div *ngIf="filters.temporal !== null">
+    <b>Temporal: </b> {{ filters.temporal }}
+  </div>
+  <div *ngIf="filters.perpendicular !== null">
+    <b>Perpendicular: </b> {{ filters.perpendicular }}
+  </div>
+</div>

@@ -109,7 +109,7 @@ export class SBASChartComponent implements OnInit, OnDestroy {
       d3.selectAll('#sbasChart > svg').remove();
     }
 
-    this.margin = { top: 10, right: 0, bottom: 25, left: 40 };
+    this.margin = { top: 10, right: 0, bottom: 25, left: 50 };
 
     const elem = document.getElementById('sbas-chart-column');
     this.heightValue = elem.offsetHeight;
@@ -135,11 +135,11 @@ export class SBASChartComponent implements OnInit, OnDestroy {
     this.chart.append('text')
       .attr('class', 'y label')
       .attr('text-anchor', 'end')
-      .attr('y', -40)
+      .attr('y', -this.margin.left)
       .attr('x', -((this.heightValue - (this.margin.top)) / 2) + 80)
       .attr('dy', '.75em')
       .attr('transform', 'rotate(-90)')
-      .text('Perpendicualr Baseline');
+      .text('Perpendicular Baseline');
 
     const xExtent = d3.extent(
       this.scenes.map(s => s.metadata.date.valueOf())
