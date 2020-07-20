@@ -25,6 +25,7 @@ import { SbasSlidersComponent } from './sbas-sliders/sbas-sliders.component';
 import { MatSliderModule } from '@angular/material/slider';
 import { FormsModule } from '@angular/forms';
 import { SbasSlidersTwoComponent } from './sbas-sliders-two/sbas-sliders-two.component';
+import {MatButtonToggleModule} from '@angular/material/button-toggle';
 
 @NgModule({
   declarations: [
@@ -37,24 +38,25 @@ import { SbasSlidersTwoComponent } from './sbas-sliders-two/sbas-sliders-two.com
     SbasSlidersComponent,
     SbasSlidersTwoComponent
   ],
-  imports: [
-    CommonModule,
-    ResizableModule,
-    FlexLayoutModule,
-    TruncateModule,
-    MatMenuModule,
-    MatSharedModule,
-    MatTabsModule,
-    PipesModule,
-    ScenesListModule,
-    SceneFilesModule,
-    SceneDetailModule,
-    BaselineChartModule,
-    SBASChartModule,
-    MatSliderModule,
-    FormsModule,
-    SceneMetadataModule,
-  ],
+    imports: [
+        CommonModule,
+        ResizableModule,
+        FlexLayoutModule,
+        TruncateModule,
+        MatMenuModule,
+        MatSharedModule,
+        MatTabsModule,
+        PipesModule,
+        ScenesListModule,
+        SceneFilesModule,
+        SceneDetailModule,
+        BaselineChartModule,
+        SBASChartModule,
+        MatSliderModule,
+        FormsModule,
+        SceneMetadataModule,
+        MatButtonToggleModule,
+    ],
   exports: [ResultsMenuComponent],
 })
 export class ResultsMenuModule { }

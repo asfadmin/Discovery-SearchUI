@@ -48,7 +48,7 @@
             <b class="product-name">{{ product.name }}</b>
           </div>
 
-          <div *ngIf="datasetForProduct.match(product) as dataset" style="margin-bottom: 12px">
+          <div *ngIf="datasetForProduct.match(product) as dataset" style="margin-bottom: 12px;">
             <a [href]="dataset.infoUrl" target="_blank" matTooltip="Dataset" class="faint-text">
               {{ dataset.name }}
             </a> •
@@ -83,7 +83,22 @@
   <mat-card-subtitle
     [class.medium-header]="breakpoint <= breakpoints.MEDIUM"
     class="header sbas-header">
-      <div *ngIf="!isAddingCustomPoint">
+
+    <mat-button-toggle-group fxFlex="" name="layerType">
+      <mat-button-toggle class="control-mat-button-toggle"
+                         (click)="zoomIn()"
+                         matTooltip="Zoom In">
+        <mat-icon class="control-icon">add</mat-icon>
+      </mat-button-toggle>
+
+      <mat-button-toggle class="control-mat-button-toggle"
+                         (click)="zoomOut()"
+                         matTooltip="Zoom out">
+        <mat-icon class="control-icon">remove</mat-icon>
+      </mat-button-toggle>
+    </mat-button-toggle-group>
+
+    <div *ngIf="!isAddingCustomPoint">
         <b (click)="startAddingCustomPoint()"
           class="clickable">
             Add Pair
@@ -114,7 +129,9 @@
     <div class="sbas-column-1">
       <app-sbas-sliders></app-sbas-sliders>
     </div>
+
     <div id="sbas-chart-column" class="sbas-column-2">
+
       <app-sbas-chart></app-sbas-chart>
     </div>
   </div>

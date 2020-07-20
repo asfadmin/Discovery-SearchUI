@@ -1,4 +1,5 @@
 import {Component, OnInit, Input, OnDestroy, ViewChild, ElementRef} from '@angular/core';
+import { MatButtonToggleModule } from '@angular/material/button-toggle';
 
 import { Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
