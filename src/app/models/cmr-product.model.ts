@@ -20,6 +20,7 @@ export interface CMRProduct {
 
 export interface CMRProductMetadata {
   date: moment.Moment;
+  stopDate: moment.Moment;
   polygon: string;
 
   productType: string;
