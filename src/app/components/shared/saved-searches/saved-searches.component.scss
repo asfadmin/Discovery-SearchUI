@@ -4,7 +4,6 @@
   left: 0;
   position: static;
   top: 32px;
-  width: 35%;
   min-width: 600px;
   max-width: 900px;
 }
@@ -39,6 +38,7 @@
   max-height: calc(100vh - 350px);
   overflow-y: auto;
   background-color: white;
+  width: 100%;
 }
 
 .saved-searches-row:nth-child(odd) {

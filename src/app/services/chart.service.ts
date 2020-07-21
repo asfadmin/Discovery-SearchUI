@@ -91,7 +91,7 @@ export class ChartService {
 
   private baselineDatasets(styles) {
     return [{
-      label: 'Primary',
+      label: 'Reference',
       data: [],
       ...styles.master
     }, {
