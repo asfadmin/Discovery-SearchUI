@@ -15,7 +15,8 @@ export interface Search {
 export type FilterType =
   ListFiltersType |
   GeographicFiltersType |
-  BaselineFiltersType;
+  BaselineFiltersType |
+  SbasFiltersType;
 
 export interface ListFiltersType {
   listType: ListSearchType;
@@ -30,6 +31,13 @@ export interface BaselineFiltersType {
 
   temporalRange: Range<number | null>;
   perpendicularRange: Range<number | null>;
+}
+
+export interface SbasFiltersType {
+  master: string | null;
+
+  temporal: number;
+  perpendicular: number;
 }
 
 export interface GeographicFiltersType {

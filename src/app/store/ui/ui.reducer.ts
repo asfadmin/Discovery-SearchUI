@@ -13,6 +13,7 @@ export interface UIState {
   isAOIOptionsOpen: boolean;
   isBrowseDialogOpen: boolean;
   onlyScenesWithBrowse: boolean;
+  isAddingCustomPoint: boolean;
   savedSearchType: SavedSearchType;
   banners: Banner[];
 }
@@ -25,6 +26,7 @@ export const initState: UIState = {
   isAOIOptionsOpen: false,
   isBrowseDialogOpen: false,
   onlyScenesWithBrowse: true,
+  isAddingCustomPoint: false,
   savedSearchType: SavedSearchType.SAVED,
   banners: [],
 };
@@ -57,6 +59,20 @@ export function uiReducer(state = initState, action: UIActions): UIState {
       return {
         ...state,
         isSidebarOpen: false
+      };
+    }
+
+    case UIActionType.START_ADDING_CUSTOM_POINT: {
+      return {
+        ...state,
+        isAddingCustomPoint: true
+      };
+    }
+
+    case UIActionType.STOP_ADDING_CUSTOM_POINT: {
+      return {
+        ...state,
+        isAddingCustomPoint: false
       };
     }
 
@@ -203,4 +219,9 @@ export const getIsSaveSearchOn = createSelector(
 export const getSaveSearchType = createSelector(
   getUIState,
   state => state.savedSearchType
+);
+
+export const getIsAddingCustomPoint = createSelector(
+  getUIState,
+  state => state.isAddingCustomPoint
 );

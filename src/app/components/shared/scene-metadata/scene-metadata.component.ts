@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, Input, Output, EventEmitter } from '@angular/core';
 
 import { filter, map, tap } from 'rxjs/operators';
 import { Store } from '@ngrx/store';
@@ -19,42 +19,21 @@ import { DatasetForProductService, PropertyService } from '@services';
   styleUrls: ['./scene-metadata.component.scss']
 })
 export class SceneMetadataComponent implements OnInit, OnDestroy {
-  public dataset: models.Dataset;
+  @Input() scene: models.CMRProduct;
+  @Input() dataset: models.Dataset;
+  @Input() searchType: models.SearchType;
+  @Input() offsets = { temporal: 0, perpendicular: 0 };
 
   public p = models.Props;
-  public scene: models.CMRProduct;
-  public searchType: models.SearchType;
-  private offsets = { temporal: 0, perpendicular: 0 };
 
   private subs = new SubSink();
 
   constructor(
     public prop: PropertyService,
     private store$: Store<AppState>,
-    private datasetForProduct: DatasetForProductService
   ) { }
 
   ngOnInit() {
-    const scene$ = this.store$.select(scenesStore.getSelectedScene);
-    this.subs.add(
-      this.store$.select(scenesStore.getMasterOffsets).subscribe(
-        offsets => this.offsets = offsets
-      )
-    );
-
-    this.subs.add(
-      this.store$.select(searchStore.getSearchType).subscribe(
-       searchType => this.searchType = searchType
-      )
-    );
-
-    this.subs.add(
-      scene$.pipe(
-        tap(scene => this.scene = scene),
-        filter(g => !!g),
-        map(scene => this.datasetForProduct.match(scene)),
-      ).subscribe(dataset => this.dataset = dataset)
-    );
   }
 
   public isGeoSearch(): boolean {

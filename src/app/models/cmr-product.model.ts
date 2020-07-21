@@ -1,5 +1,7 @@
 import * as moment from 'moment';
 
+export type CMRProductPair = CMRProduct[];
+
 export interface CMRProduct {
   name: string;
   productTypeDisplay: string;

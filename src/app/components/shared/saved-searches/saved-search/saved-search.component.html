@@ -77,6 +77,11 @@
       *ngIf="search.searchType === SearchType.BASELINE"
       [filters]="search.filters">
     </app-baseline-search-filters>
+
+    <app-sbas-search-filters
+      *ngIf="search.searchType === SearchType.SBAS"
+      [filters]="search.filters">
+    </app-sbas-search-filters>
   </div>
 
   <div

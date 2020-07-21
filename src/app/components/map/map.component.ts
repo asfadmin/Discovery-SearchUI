@@ -261,16 +261,40 @@ export class MapComponent implements OnInit, OnDestroy  {
       )
     );
 
+    const selectedScene$ = this.store$.select(scenesStore.getSelectedScene);
+
     this.subs.add(
-      this.sceneToLayer$().subscribe(
+      this.selectedToLayer$(selectedScene$).pipe(
+        map(
+          (scene: models.CMRProduct) => this.wktService.wktToFeature(
+            scene.metadata.polygon,
+            this.mapService.epsg()
+          )
+        ),
+      ).subscribe(
         feature => this.mapService.setSelectedFeature(feature)
+      )
+    );
+
+    const selectedPair$ = this.store$.select(scenesStore.getSelectedPair);
+
+    this.subs.add(
+      this.selectedToLayer$(selectedPair$).pipe(
+        map(
+          (pair: models.CMRProductPair) => pair.map(
+            scene => this.wktService.wktToFeature(
+              scene.metadata.polygon,
+              this.mapService.epsg()
+            )
+          )
+        ),
+      ).subscribe(
+        features => this.mapService.setSelectedPair(features)
       )
     );
   }
 
-  private sceneToLayer$() {
-    const scene$ = this.store$.select(scenesStore.getSelectedScene);
-
+  private selectedToLayer$(selected$) {
     const scenesLayerAfterInitialization$ = this.isMapInitialized$.pipe(
       filter(isMapInitiliazed => isMapInitiliazed),
       switchMap(_ => this.viewType$),
@@ -289,23 +313,19 @@ export class MapComponent implements OnInit, OnDestroy  {
       )
     );
 
-    const selectedSceneAfterInitialization$ = this.isMapInitialized$.pipe(
+    const selectedAfterInitialization$ = this.isMapInitialized$.pipe(
       filter(isMapInitiliazed => isMapInitiliazed),
       switchMap(_ => this.viewType$),
-      switchMap(_ => scene$),
+      switchMap(_ => selected$),
     );
 
-    return selectedSceneAfterInitialization$.pipe(
+    return selectedAfterInitialization$.pipe(
       tap(scene => !!scene ? this.mapService.clearSelectedScene() : null),
       filter(g => g !== null),
-      map(
-        scene => this.wktService.wktToFeature(
-          scene.metadata.polygon,
-          this.mapService.epsg()
-        )
-      ),
     );
   }
+  /*
+   * */
 
   private redrawSearchPolygonWhenViewChanges(): void {
     this.subs.add(

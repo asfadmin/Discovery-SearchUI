@@ -244,3 +244,53 @@ ul {
 .slider .noUi-connect {
   background: $asf-blue;
 }
+
+// for the sbas chart
+
+.noUi-handle {
+  background-color: $asf-primary-light;
+  border-color: $asf-primary-dark;
+}
+
+.sbas-column-1 {
+  div.noUi-handle.noUi-handle-lower {
+    width: 16px;
+    right: -5px;
+  }
+
+  .noUi-vertical .noUi-handle::after,
+  .noUi-vertical .noUi-handle::before {
+    width: 8px;
+    left: 3px;
+    background-color: $asf-primary-dark;
+  }
+
+  .noUi-value-vertical {
+    font-size: 13px;
+  }
+}
+
+.sbas-column-2.noUi-horizontal {
+  height: 8px;
+
+  .noUi-handle {
+    height: 16px;
+    top: -5px;
+  }
+
+  .noUi-handle::after,
+  .noUi-handle::before {
+    height: 8px;
+    top: 3px;
+    background-color: $asf-primary-dark;
+  }
+
+  .noUi-value-horizontal {
+    font-size: 13px;
+    top: 17px;
+  }
+}
+
+.tick > line {
+  opacity: 0.2;
+}

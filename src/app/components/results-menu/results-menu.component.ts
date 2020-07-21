@@ -93,12 +93,10 @@ export class ResultsMenuComponent implements OnInit, OnDestroy {
   }
 
   public maxResultWindow(): void {
-    console.log('maxResultWindow() reached');
     this.maximizeResult();
   }
 
   public minResultWindow(): void {
-    console.log('minResultWindow() reached');
     this.menuHeightPx = 33;
     this.resize$.next();
   }

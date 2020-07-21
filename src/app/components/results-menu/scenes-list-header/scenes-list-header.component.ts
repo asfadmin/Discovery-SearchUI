@@ -8,7 +8,7 @@ import * as scenesStore from '@store/scenes';
 import * as queueStore from '@store/queue';
 import * as searchStore from '@store/search';
 
-import { MapService, ScenesService, ScreenSizeService } from '@services';
+import { MapService, ScenesService, ScreenSizeService, DatasetForProductService } from '@services';
 import * as models from '@models';
 import { SubSink } from 'subsink';
 
@@ -25,6 +25,10 @@ export class ScenesListHeaderComponent implements OnInit {
   public numBaselineScenes$ = this.scenesService.scenes$().pipe(
     map(scenes => scenes.length),
   );
+  public numPairs$ = this.scenesService.pairs$().pipe(
+    map(pairs => pairs.pairs.length + pairs.custom.length)
+  );
+  public sbasProducts: models.CMRProduct[];
 
   public temporalSort: models.ColumnSortDirection;
   public perpendicularSort: models.ColumnSortDirection;
@@ -42,10 +46,17 @@ export class ScenesListHeaderComponent implements OnInit {
     private mapService: MapService,
     private scenesService: ScenesService,
     private screenSize: ScreenSizeService,
+    private datasetForProduct: DatasetForProductService
 
   ) { }
 
   ngOnInit() {
+    this.subs.add(
+       this.scenesService.productsFromPairs$().subscribe(
+         products => this.sbasProducts = products
+       )
+    );
+
     this.subs.add(
       this.store$.select(searchStore.getSearchType).subscribe(
         searchType => this.searchType = searchType
@@ -100,6 +111,10 @@ export class ScenesListHeaderComponent implements OnInit {
   }
 
   public queueAllProducts(products: models.CMRProduct[]): void {
+    this.store$.dispatch(new queueStore.AddItems(products));
+  }
+
+  public queueSBASProducts(products: models.CMRProduct[]): void {
     this.store$.dispatch(new queueStore.AddItems(products));
   }
 

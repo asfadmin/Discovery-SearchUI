@@ -38,6 +38,8 @@ export class SceneDetailComponent implements OnInit, OnDestroy {
   public selectedProducts: models.CMRProduct[];
   public hasBaseline: boolean;
 
+  public masterOffsets$ = this.store$.select(scenesStore.getMasterOffsets);
+
   private subs = new SubSink();
 
   constructor(
@@ -50,14 +52,15 @@ export class SceneDetailComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit() {
-    const scene$ = this.store$.select(scenesStore.getSelectedScene).pipe(
-      tap(_ => this.isImageLoading = true)
-    );
 
     this.subs.add(
       this.screenSize.size$.pipe(
         map(size => size.width > 1750 ? 32 : 16),
       ).subscribe(len => this.sceneLen = len)
+    );
+
+    const scene$ = this.store$.select(scenesStore.getSelectedScene).pipe(
+      tap(_ => this.isImageLoading = true)
     );
 
     this.subs.add(
@@ -202,6 +205,16 @@ export class SceneDetailComponent implements OnInit, OnDestroy {
     [
       new searchStore.ClearSearch(),
       new searchStore.SetSearchType(models.SearchType.BASELINE),
+      new scenesStore.SetFilterMaster(sceneName),
+      new searchStore.MakeSearch()
+    ].forEach(action => this.store$.dispatch(action));
+  }
+
+  public makeSBASSearch(): void {
+    const sceneName = this.baselineSceneName();
+    [
+      new searchStore.ClearSearch(),
+      new searchStore.SetSearchType(models.SearchType.SBAS),
       new scenesStore.SetFilterMaster(sceneName),
       new searchStore.MakeSearch()
     ].forEach(action => this.store$.dispatch(action));

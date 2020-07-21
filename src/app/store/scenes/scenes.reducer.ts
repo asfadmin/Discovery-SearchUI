@@ -2,13 +2,15 @@ import { createFeatureSelector, createSelector } from '@ngrx/store';
 
 import { ScenesActionType, ScenesActions } from './scenes.action';
 
-import { CMRProduct, UnzippedFolder, ColumnSortDirection, SearchType } from '@models';
+import { CMRProduct, UnzippedFolder, ColumnSortDirection, SearchType, CMRProductPair } from '@models';
 
 interface SceneEntities { [id: string]: CMRProduct; }
 
 export interface ScenesState {
   ids: string[];
   products: SceneEntities;
+  customPairs: CMRProductPair[];
+  selectedPair: string[] | null;
   areResultsLoaded: boolean;
   scenes: {[id: string]: string[]};
   unzipped: {[id: string]: UnzippedFolder[]};
@@ -28,6 +30,8 @@ export interface ScenesState {
 export const initState: ScenesState = {
   ids: [],
   scenes: {},
+  customPairs: [],
+  selectedPair: null,
   unzipped: {},
   productUnzipLoading: null,
   openUnzippedProduct: null,
@@ -127,6 +131,15 @@ export function scenesReducer(state = initState, action: ScenesActions): ScenesS
       const scene = state.products[state.selected] || null;
 
       return selectPrevious(state, scenes, scene);
+    }
+
+    case ScenesActionType.SET_SELECTED_PAIR: {
+      return {
+        ...state,
+        selectedPair: action.payload,
+        productUnzipLoading: null,
+        openUnzippedProduct: null
+      };
     }
 
     case ScenesActionType.SELECT_NEXT_WITH_BROWSE: {
@@ -247,6 +260,36 @@ export function scenesReducer(state = initState, action: ScenesActions): ScenesS
         ...state,
         unzipped: {},
         productUnzipLoading: null,
+      };
+    }
+
+    case ScenesActionType.ADD_CUSTOM_PAIR: {
+      return {
+        ...state,
+        customPairs: [...state.customPairs, action.payload]
+      };
+    }
+
+    case ScenesActionType.REMOVE_CUSTOM_PAIR: {
+      const toRemove = new Set(action.payload.map(product => product.id));
+
+      const pairs = [ ...state.customPairs ].filter(pair => {
+        const ids = new Set(pair.map(product => product.id));
+
+        return !eqSet(toRemove, ids);
+      });
+
+      return {
+        ...state,
+        customPairs: pairs,
+        selectedPair: null ,
+      };
+    }
+
+    case ScenesActionType.CLEAR_CUSTOM_PAIRS: {
+      return {
+        ...state,
+        customPairs: []
       };
     }
 
@@ -549,3 +592,61 @@ export const getTemporalSortDirection = createSelector(
   getScenesState,
   state => state.temporalSort
 );
+
+export const getCustomPairs = createSelector(
+  getScenesState,
+  state => state.customPairs
+);
+
+export const getSelectedPairIds = createSelector(
+  getScenesState,
+  state => state.selectedPair
+);
+
+export const getSelectedPair = createSelector(
+  getScenesState,
+  state => {
+    const selected = state.selectedPair;
+    if (selected === null) {
+      return selected;
+    } else {
+      return [
+        state.products[selected[0]],
+        state.products[selected[1]]
+      ];
+    }
+  }
+);
+
+export const getIsSelectedPairCustom = createSelector(
+  getScenesState,
+  state => {
+    const selectedPair = state.selectedPair;
+    if (!selectedPair || !selectedPair[0]) {
+      return false;
+    }
+
+    const selectedPairIds = new Set(selectedPair);
+
+    return state.customPairs.some(pair => {
+      const ids = new Set(pair.map(product => product.id));
+
+      return eqSet(ids, selectedPairIds);
+    });
+  }
+);
+
+function eqSet(aSet, bSet): boolean {
+  if (aSet.size !== bSet.size) {
+    return false;
+  }
+
+  for (const a of aSet) {
+    if (!bSet.has(a)) {
+      return false;
+    }
+  }
+
+  return true;
+}
+
