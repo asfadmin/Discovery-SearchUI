@@ -21,6 +21,20 @@
     </mat-menu>
   </li>
 
+  <li *ngIf="prop.isRelevant(p.DATE, dataset)">
+    <span class="v-mid"><b>Stop Time</b> • {{ scene.metadata.stopDate | shortDateTime }}</span>
+    <mat-icon *ngIf="isGeoSearch()"
+      [matMenuTriggerFor]="addSceneStopDateMenu"
+      class="v-mid clickable">
+        more
+    </mat-icon>
+
+    <mat-menu #addSceneStopDateMenu="matMenu">
+      <button (click)="setStartDate()" mat-menu-item>Set as start date</button>
+      <button (click)="setEndDate()" mat-menu-item>Set as end date</button>
+    </mat-menu>
+  </li>
+
   <li *ngIf="prop.isRelevant(p.BEAM_MODE, dataset)">
     <span class="v-mid"><b>Beam Mode </b> • {{ scene.metadata.beamMode }}</span>
     <mat-icon *ngIf="isGeoSearch()"
