@@ -53,13 +53,13 @@ export class SceneMetadataComponent implements OnInit, OnDestroy {
     this.store$.dispatch(action);
   }
 
-  public setStartDate(): void {
-    const action = new filtersStore.SetStartDate(this.scene.metadata.date.toDate());
+  public setStartDate(date): void {
+    const action = new filtersStore.SetStartDate(date.toDate());
     this.store$.dispatch(action);
   }
 
-  public setEndDate(): void {
-    const action = new filtersStore.SetEndDate(this.scene.metadata.date.toDate());
+  public setEndDate(date): void {
+    const action = new filtersStore.SetEndDate(date.toDate());
     this.store$.dispatch(action);
   }
 

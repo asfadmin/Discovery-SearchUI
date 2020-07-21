@@ -16,8 +16,8 @@
     </mat-icon>
 
     <mat-menu #addSceneDateMenu="matMenu">
-      <button (click)="setStartDate()" mat-menu-item>Set as start date</button>
-      <button (click)="setEndDate()" mat-menu-item>Set as end date</button>
+      <button (click)="setStartDate(scene.metadata.date)" mat-menu-item>Set as start date</button>
+      <button (click)="setEndDate(scene.metadata.date)" mat-menu-item>Set as end date</button>
     </mat-menu>
   </li>
 
@@ -30,8 +30,8 @@
     </mat-icon>
 
     <mat-menu #addSceneStopDateMenu="matMenu">
-      <button (click)="setStartDate()" mat-menu-item>Set as start date</button>
-      <button (click)="setEndDate()" mat-menu-item>Set as end date</button>
+      <button (click)="setStartDate(scene.metadata.stopDate)" mat-menu-item>Set as start date</button>
+      <button (click)="setEndDate(scene.metadata.stopDate)" mat-menu-item>Set as end date</button>
     </mat-menu>
   </li>
 
