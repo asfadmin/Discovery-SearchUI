@@ -1,6 +1,4 @@
 import {Component, OnInit, Input, OnDestroy, ViewChild, ElementRef} from '@angular/core';
-import { MatButtonToggleModule } from '@angular/material/button-toggle';
-
 import { Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
 import { ResizeEvent } from 'angular-resizable-element';
@@ -120,6 +118,17 @@ export class SBASResultsMenuComponent implements OnInit, OnDestroy {
   public onSelectDetail(): void {
     this.view = CardViews.DETAIL;
   }
+
+  public zoomIn(): void {
+    console.log('zoomIn to SBAS chart');
+    // this.mapService.zoomIn();
+  }
+
+  public zoomOut(): void {
+    console.log('zoomOut to SBAS chart');
+    // this.mapService.zoomOut();
+  }
+
 
   ngOnDestroy() {
     this.subs.unsubscribe();

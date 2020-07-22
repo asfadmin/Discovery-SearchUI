@@ -1,5 +1,10 @@
 @import "asf-theme";
 
+$config: mat-typography-config();
+
+$info-background: $asf-primary-light;
+$info-color: $asf-primary;
+
 .sbas-chart-row {
   display: flex;
   flex-direction: row;
@@ -60,4 +65,38 @@
   display: flex;
   flex-direction: row;
   justify-content: center;
+}
+
+.control-icon {
+  margin-top: -4px;
+  @include md-icon-size($asf-ribbon-icon-size);
+}
+
+.sbas-ribbon-group {
+  justify-content: center;
+  max-width: fit-content;
+}
+
+.sbas-button-group {
+  max-width: fit-content;
+}
+
+.sbas-button-group-filler {
+  width: 10px;
+  max-width: 10px;
+}
+
+.button-group {
+  margin: 0 3px 3px 1px;
+  pointer-events: auto;
+}
+
+.button-group-label {
+  text-align: center;
+  color: $info-color;
+}
+
+label {
+  font-family: mat-font-family($config);
+  font-size: 11px;
 }
