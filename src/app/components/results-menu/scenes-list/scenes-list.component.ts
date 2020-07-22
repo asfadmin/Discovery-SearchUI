@@ -30,15 +30,18 @@ export class ScenesListComponent implements OnInit, OnDestroy {
   @Input() resize$: Observable<void>;
 
   public scenes;
+  public pairs;
 
   public numberOfQueue: {[scene: string]: [number, number]};
   public allQueued: {[scene: string]: boolean};
   public selected: string;
+  public selectedPair: string[];
   public copyIcon = faCopy;
 
   public offsets = {temporal: 0, perpendicular: 0};
   public selectedFromList = false;
   public hoveredSceneName: string | null = null;
+  public hoveredPairNames: string | null = null;
 
   private subs = new SubSink();
 
@@ -47,7 +50,6 @@ export class ScenesListComponent implements OnInit, OnDestroy {
 
   public searchType: models.SearchType;
   public SearchTypes = models.SearchType;
-
 
   constructor(
     private store$: Store<AppState>,
@@ -63,6 +65,12 @@ export class ScenesListComponent implements OnInit, OnDestroy {
     this.subs.add(
       this.store$.select(scenesStore.getMasterOffsets).subscribe(
         offsets => this.offsets = offsets
+      )
+    );
+
+    this.subs.add(
+      this.store$.select(scenesStore.getSelectedPairIds).subscribe(
+        pair => this.selectedPair = pair
       )
     );
 
@@ -98,6 +106,12 @@ export class ScenesListComponent implements OnInit, OnDestroy {
     this.subs.add(
       this.scenesService.scenesSorted$().subscribe(
         scenes => this.scenes = scenes
+      )
+    );
+
+    this.subs.add(
+      this.scenesService.pairs$().subscribe(
+        pairs => this.pairs = [...pairs.pairs, ...pairs.custom]
       )
     );
 
@@ -174,6 +188,11 @@ export class ScenesListComponent implements OnInit, OnDestroy {
     this.scroll.scrollToIndex(idx);
   }
 
+  public onPairSelected(pair): void {
+    const action = new scenesStore.SetSelectedPair(pair.map(p => p.id));
+    this.store$.dispatch(action);
+  }
+
   public onSceneSelected(id: string): void {
     this.selectedFromList = true;
     this.store$.dispatch(new scenesStore.SetSelectedScene(id));
@@ -195,12 +214,27 @@ export class ScenesListComponent implements OnInit, OnDestroy {
     this.hoveredSceneName = null;
   }
 
+  public onSetFocusedPair(pair: models.CMRProductPair): void {
+    this.hoveredPairNames = pair[0].name + pair[1].name;
+  }
+
+  public onClearFocusedPair(): void {
+    this.hoveredPairNames = null;
+  }
   public onZoomTo(scene: models.CMRProduct): void {
     this.mapService.zoomToScene(scene);
   }
 
   public withOffset(val: number, offset: number): number {
     return Math.trunc(val + offset);
+  }
+
+  public pairPerpBaseline(pair: models.CMRProductPair) {
+    return Math.abs(pair[0].metadata.perpendicular - pair[1].metadata.perpendicular);
+  }
+
+  public pairTempBaseline(pair: models.CMRProductPair) {
+    return Math.abs(pair[0].metadata.temporal - pair[1].metadata.temporal);
   }
 
   ngOnDestroy() {

@@ -506,6 +506,14 @@ export function filtersReducer(state = initState, action: FiltersActions): Filte
           temporalRange: filters.temporalRange,
           perpendicularRange: filters.perpendicularRange,
         };
+      } else if (search.searchType === models.SearchType.SBAS) {
+        const filters = <models.SbasFiltersType>search.filters;
+
+        return {
+          ...state,
+          temporalRange: {start: filters.temporal, end: null},
+          perpendicularRange: {start: filters.perpendicular, end: null},
+        };
       } else {
         const filters = <models.GeographicFiltersType>search.filters;
 
@@ -727,5 +735,13 @@ export const getBaselineSearch = createSelector(
     dateRange: state.dateRange,
     temporalRange: state.temporalRange,
     perpendicularRange: state.perpendicularRange
+  })
+);
+
+export const getSbasSearch = createSelector(
+  getFiltersState,
+  (state: FiltersState) => ({
+    temporal: state.temporalRange.start,
+    perpendicular: state.perpendicularRange.start
   })
 );

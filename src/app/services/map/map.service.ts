@@ -215,6 +215,13 @@ export class MapService {
     this.selectedSource.addFeature(feature);
   }
 
+  public setSelectedPair(features): void {
+    this.selectedSource.clear();
+
+    features.forEach(feature =>
+      this.selectedSource.addFeature(feature)
+    );
+  }
   public clearFocusedScene(): void {
     this.focusSource.clear();
     this.selectHover.getFeatures().clear();

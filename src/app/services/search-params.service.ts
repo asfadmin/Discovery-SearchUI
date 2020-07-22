@@ -47,6 +47,9 @@ export class SearchParamsService {
             case models.SearchType.BASELINE: {
               return baselineParams;
             }
+            case models.SearchType.SBAS: {
+              return baselineParams;
+            }
             default: {
               return filterParams;
             }

@@ -14,8 +14,8 @@
 
       </mat-card-title>
       <mat-card-subtitle class="subtitle">
-        <a [href]="dataset.infoUrl" target="_blank" matTooltip="Dataset" class="faint-text">{{ dataset.name }}
-          <span *ngIf="dataset.name === 'SMAP'">V{{ scene.name.slice(-1) }}</span>
+        <a [href]="dataset.infoUrl" target="_blank" matTooltip="Dataset" class="faint-text">
+          {{ dataset.name }} <span *ngIf="dataset.name === 'SMAP'">V{{ scene.name.slice(-1) }}</span>
         </a> •
         <span matTooltip="Frequency">{{ dataset.frequency }}</span>
       </mat-card-subtitle>
@@ -24,7 +24,12 @@
     <mat-card-content class="content">
       <div class="w100" fxFlex fxLayout="row" fxLayoutAlign="space-between">
         <div class="w50">
-          <app-scene-metadata></app-scene-metadata>
+          <app-scene-metadata
+             [scene]="scene"
+             [dataset]="dataset"
+             [searchType]="searchType"
+             [offsets]="masterOffsets$ | async">
+          </app-scene-metadata>
         </div>
 
         <div [class.clickable]="sceneHasBrowse()" class="browse-container w40">
@@ -56,11 +61,20 @@
         Baseline Tool
       </a>
 
+      &nbsp;&nbsp;
+
+      <a *ngIf="searchType !== searchTypes.BASELINE && hasBaseline"
+         (click)="makeSBASSearch()"
+         mat-raised-button class="mini-button" target="_blank"
+         matTooltip="Use this scene in the SBAS Tool to make product pairs for interferometry">
+        SBAS Tool
+      </a>
+
       <button
          *ngIf="searchType === searchTypes.BASELINE"
         (click)="onSetSelectedAsMaster()"
         class="mini-button" color="secondary"
-        mat-raised-button>Set as Master</button>
+        mat-raised-button>Set as Reference</button>
 
       &nbsp;&nbsp;
       <a mat-raised-button class="mini-button"

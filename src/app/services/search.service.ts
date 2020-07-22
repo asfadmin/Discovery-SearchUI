@@ -44,6 +44,10 @@ export class SearchService {
       if (breakpoint !== models.Breakpoints.MOBILE) {
         this.store$.dispatch(new uiStore.CloseFiltersMenu());
       }
+    } else if (searchType === models.SearchType.SBAS) {
+      this.store$.dispatch(new scenesStore.ClearBaseline());
+      this.store$.dispatch(new filterStore.ClearPerpendicularRange());
+      this.store$.dispatch(new filterStore.ClearTemporalRange());
     }
   }
 
@@ -57,6 +61,10 @@ export class SearchService {
     if (search.searchType === models.SearchType.BASELINE) {
       const filters = <models.BaselineFiltersType>search.filters;
       this.store$.dispatch(new scenesStore.SetFilterMaster(filters.filterMaster));
+    }
+    if (search.searchType === models.SearchType.SBAS) {
+      const filters = <models.SbasFiltersType>search.filters;
+      this.store$.dispatch(new scenesStore.SetFilterMaster(filters.master));
     }
 
     this.store$.dispatch(new filterStore.SetSavedSearch(search));
