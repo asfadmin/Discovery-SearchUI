@@ -119,20 +119,6 @@ export function scenesReducer(state = initState, action: ScenesActions): ScenesS
       };
     }
 
-    case ScenesActionType.SELECT_NEXT_SCENE: {
-      const scenes = allScenesFrom(state.scenes, state.products);
-      const scene = state.products[state.selected] || null;
-
-      return selectNext(state, scenes, scene);
-    }
-
-    case ScenesActionType.SELECT_PREVIOUS_SCENE: {
-      const scenes = allScenesFrom(state.scenes, state.products);
-      const scene = state.products[state.selected] || null;
-
-      return selectPrevious(state, scenes, scene);
-    }
-
     case ScenesActionType.SET_SELECTED_PAIR: {
       return {
         ...state,
@@ -141,21 +127,6 @@ export function scenesReducer(state = initState, action: ScenesActions): ScenesS
         openUnzippedProduct: null
       };
     }
-
-    case ScenesActionType.SELECT_NEXT_WITH_BROWSE: {
-      const scenes = allScenesWithBrowse(state.scenes, state.products);
-      const scene = state.products[state.selected] || null;
-
-      return selectNext(state, scenes, scene);
-    }
-
-    case ScenesActionType.SELECT_PREVIOUS_WITH_BROWSE: {
-      const scenes = allScenesWithBrowse(state.scenes, state.products);
-      const scene = state.products[state.selected] || null;
-
-      return selectPrevious(state, scenes, scene);
-    }
-
 
     case ScenesActionType.SET_RESULTS_LOADED: {
       return {
@@ -302,73 +273,6 @@ export function scenesReducer(state = initState, action: ScenesActions): ScenesS
     }
   }
 }
-
-const selectNext = (state, scenes, scene) => {
-  if (!scenes[0]) {
-    return {
-      ...state
-    };
-  }
-
-  if (!scene) {
-    const firstScene = scenes[0];
-
-    return {
-      ...state,
-      selected: firstScene.id
-    };
-  }
-
-  const currentSelected = scenes
-    .filter(g => g.name === scene.name)
-    .pop();
-
-  const nextIdx = Math.min(
-    scenes.indexOf(currentSelected) + 1,
-    scenes.length - 1
-  );
-
-  const nextScene = scenes[nextIdx];
-
-  return {
-    ...state,
-    selected: nextScene.id,
-    openUnzippedProduct: null,
-    productUnzipLoading: null,
-  };
-};
-
-const selectPrevious = (state, scenes, scene) => {
-  if (!scenes[0]) {
-    return {
-      ...state
-    };
-  }
-
-  if (!scene) {
-    const lastScene = scenes[scenes.length - 1];
-
-    return {
-      ...state,
-      selected: lastScene.id
-    };
-  }
-
-  const currentSelected = scenes
-    .filter(g => g.name === scene.name)
-    .pop();
-
-  const previousIdx = Math.max(scenes.indexOf(currentSelected) - 1, 0);
-  const previousScene = scenes[previousIdx];
-
-  return {
-    ...state,
-    selected: previousScene.id,
-    openUnzippedProduct: null,
-    productUnzipLoading: null,
-  };
-};
-
 
 export const getScenesState = createFeatureSelector<ScenesState>('scenes');
 

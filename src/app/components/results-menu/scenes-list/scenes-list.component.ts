@@ -57,6 +57,7 @@ export class ScenesListComponent implements OnInit, OnDestroy {
     private screenSize: services.ScreenSizeService,
     private keyboardService: services.KeyboardService,
     private scenesService: services.ScenesService,
+    private pairService: services.PairService,
   ) {}
 
   ngOnInit() {
@@ -90,7 +91,7 @@ export class ScenesListComponent implements OnInit, OnDestroy {
               sceneIdx = idx;
             }
           });
-          return sceneIdx;
+          return Math.max(0, sceneIdx - 1);
         })
       ).subscribe(
         idx => {
@@ -110,7 +111,7 @@ export class ScenesListComponent implements OnInit, OnDestroy {
     );
 
     this.subs.add(
-      this.scenesService.pairs$().subscribe(
+      this.pairService.pairs$().subscribe(
         pairs => this.pairs = [...pairs.pairs, ...pairs.custom]
       )
     );

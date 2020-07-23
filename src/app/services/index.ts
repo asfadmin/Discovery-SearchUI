@@ -23,3 +23,5 @@ export { UnzipApiService } from './unzip-api.service';
 export { ChartService } from './chart.service';
 export { ScenesService } from './scenes.service';
 export { SearchService } from './search.service';
+export { PairService } from './pair.service';
+export { SceneSelectService } from './scene-select.service';

@@ -8,7 +8,7 @@ import { Store } from '@ngrx/store';
 import { AppState } from '@store/app.reducer';
 import {
   getAllProducts, getScenes, getTemporalSortDirection,
-  getPerpendicularSortDirection, getCustomPairs
+  getPerpendicularSortDirection, getCustomPairs, getScenesWithBrowse
 } from '@store/scenes/scenes.reducer';
 import {
   getTemporalRange, getPerpendicularRange, getDateRange
@@ -37,18 +37,9 @@ export class ScenesService {
     );
   }
 
-  public productsFromPairs$(): Observable<CMRProduct[]> {
-    return this.pairs$().pipe(
-      map(({ custom, pairs }) => {
-        const prods = Array.from([...custom, ...pairs].reduce((products, pair) => {
-          products.add(pair[0]);
-          products.add(pair[1]);
-
-          return products;
-        }, new Set<CMRProduct>()));
-
-        return prods;
-      })
+  public scenesWithBrowse$(): Observable<CMRProduct[]> {
+    return this.filterBaselineValues$(
+      this.store$.select(getScenesWithBrowse)
     );
   }
 
@@ -58,47 +49,10 @@ export class ScenesService {
     );
   }
 
-  public pairs$(): Observable<{custom: CMRProductPair[], pairs: CMRProductPair[]}> {
-    return combineLatest(
-      this.store$.select(getScenes).pipe(
-        map(
-          scenes => this.temporalSort(scenes, ColumnSortDirection.INCREASING)
-        ),
-      ),
-      this.store$.select(getCustomPairs),
-      this.store$.select(getTemporalRange).pipe(
-        map(range => range.start)
-      ),
-      this.store$.select(getPerpendicularRange).pipe(
-        map(range => range.start)
-      ),
-    ).pipe(
-      map(([scenes, customPairs, temporal, perp]) => ({
-        pairs: [...this.makePairs(scenes, temporal, perp)],
-        custom: [ ...customPairs ]
-      })
-      )
+  public scenesSortedWithBrowses$(): Observable<CMRProduct[]> {
+    return this.sortScenes$(
+      this.scenesWithBrowse$()
     );
-  }
-
-  private makePairs(scenes: CMRProduct[], tempThreshold: number, perpThreshold): CMRProductPair[] {
-    const pairs = [];
-
-    scenes.forEach((root, index) => {
-      for (let i = index + 1; i < scenes.length; ++i) {
-        const scene = scenes[i];
-        const tempDiff = scene.metadata.temporal - root.metadata.temporal;
-        const perpDiff = Math.abs(scene.metadata.perpendicular - root.metadata.perpendicular);
-
-        if (tempDiff > tempThreshold || perpDiff > perpThreshold) {
-          return;
-        }
-
-        pairs.push([root, scene]);
-      }
-    });
-
-    return pairs;
   }
 
   private sortScenes$(scenes$: Observable<CMRProduct[]>) {
@@ -123,22 +77,6 @@ export class ScenesService {
     );
   }
 
-  private temporalSort(scenes, direction: ColumnSortDirection) {
-    const sortFunc = (direction === ColumnSortDirection.INCREASING) ?
-        (a, b) => a.metadata.temporal - b.metadata.temporal :
-        (a, b) => b.metadata.temporal - a.metadata.temporal;
-
-    return scenes.sort(sortFunc);
-  }
-
-  private perpendicularSort(scenes, direction: ColumnSortDirection) {
-    const sortFunc = (direction === ColumnSortDirection.INCREASING) ?
-        (a, b) => a.metadata.perpendicular - b.metadata.perpendicular :
-        (a, b) => b.metadata.perpendicular - a.metadata.perpendicular;
-
-    return scenes.sort(sortFunc);
-  }
-
   private filterBaselineValues$(products: Observable<CMRProduct[]>) {
     return combineLatest(
       products,
@@ -157,6 +95,22 @@ export class ScenesService {
           scenes;
       })
     );
+  }
+
+  private temporalSort(scenes, direction: ColumnSortDirection) {
+    const sortFunc = (direction === ColumnSortDirection.INCREASING) ?
+        (a, b) => a.metadata.temporal - b.metadata.temporal :
+        (a, b) => b.metadata.temporal - a.metadata.temporal;
+
+    return scenes.sort(sortFunc);
+  }
+
+  private perpendicularSort(scenes, direction: ColumnSortDirection) {
+    const sortFunc = (direction === ColumnSortDirection.INCREASING) ?
+        (a, b) => a.metadata.perpendicular - b.metadata.perpendicular :
+        (a, b) => b.metadata.perpendicular - a.metadata.perpendicular;
+
+    return scenes.sort(sortFunc);
   }
 
   private valInRange(val: number | null, range: Range<number>): boolean {

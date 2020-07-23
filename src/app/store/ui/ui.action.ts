@@ -10,6 +10,9 @@ export enum UIActionType {
   CLOSE_FILTERS_MENU = '[UI] Close Filters Menu',
   OPEN_FILTERS_MENU = '[UI] Open Filters Menu ',
 
+  SHOW_S1_RAW_DATA = '[UI] Show S1 RAW Data',
+  HIDE_S1_RAW_DATA = '[UI] Hide S1 RAW Data',
+
   CLOSE_SIDEBAR = '[UI] Close Sidebar',
   OPEN_SIDEBAR = '[UI] Open Sidebar',
 
@@ -49,6 +52,14 @@ export class CloseSidebar implements Action {
 
 export class OpenSidebar implements Action {
   public readonly type = UIActionType.OPEN_SIDEBAR;
+}
+
+export class ShowS1RawData implements Action {
+  public readonly type = UIActionType.SHOW_S1_RAW_DATA;
+}
+
+export class HideS1RawData implements Action {
+  public readonly type = UIActionType.HIDE_S1_RAW_DATA;
 }
 
 export class StartAddingCustomPoint implements Action {
@@ -131,6 +142,8 @@ export type UIActions =
   | ToggleFiltersMenu
   | CloseFiltersMenu
   | OpenFiltersMenu
+  | ShowS1RawData
+  | HideS1RawData
   | ToggleResultsMenu
   | CloseResultsMenu
   | OpenResultsMenu

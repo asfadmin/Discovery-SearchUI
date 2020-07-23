@@ -8,7 +8,10 @@ import * as scenesStore from '@store/scenes';
 import * as queueStore from '@store/queue';
 import * as searchStore from '@store/search';
 
-import { MapService, ScenesService, ScreenSizeService, DatasetForProductService } from '@services';
+import {
+  MapService, ScenesService, ScreenSizeService,
+  DatasetForProductService, PairService
+} from '@services';
 import * as models from '@models';
 import { SubSink } from 'subsink';
 
@@ -25,7 +28,7 @@ export class ScenesListHeaderComponent implements OnInit {
   public numBaselineScenes$ = this.scenesService.scenes$().pipe(
     map(scenes => scenes.length),
   );
-  public numPairs$ = this.scenesService.pairs$().pipe(
+  public numPairs$ = this.pairService.pairs$().pipe(
     map(pairs => pairs.pairs.length + pairs.custom.length)
   );
   public sbasProducts: models.CMRProduct[];
@@ -45,6 +48,7 @@ export class ScenesListHeaderComponent implements OnInit {
     private store$: Store<AppState>,
     private mapService: MapService,
     private scenesService: ScenesService,
+    private pairService: PairService,
     private screenSize: ScreenSizeService,
     private datasetForProduct: DatasetForProductService
 
@@ -52,7 +56,7 @@ export class ScenesListHeaderComponent implements OnInit {
 
   ngOnInit() {
     this.subs.add(
-       this.scenesService.productsFromPairs$().subscribe(
+       this.pairService.productsFromPairs$().subscribe(
          products => this.sbasProducts = products
        )
     );
