@@ -11,8 +11,10 @@ import {
   getPerpendicularSortDirection, getCustomPairs, getScenesWithBrowse
 } from '@store/scenes/scenes.reducer';
 import {
-  getTemporalRange, getPerpendicularRange, getDateRange
+  getTemporalRange, getPerpendicularRange, getDateRange,
+  getSelectedDataset, getProductTypes
 } from '@store/filters/filters.reducer';
+import { getShowS1RawData } from '@store/ui/ui.reducer';
 import { getSearchType } from '@store/search/search.reducer';
 
 import { CMRProduct, CMRProductPair, SearchType, Range, ColumnSortDirection } from '@models';
@@ -26,14 +28,18 @@ export class ScenesService {
   ) { }
 
   public products$(): Observable<CMRProduct[]> {
-    return this.filterBaselineValues$(
-      this.store$.select(getAllProducts)
+    return this.hideS1Raw$(
+      this.filterBaselineValues$(
+        this.store$.select(getAllProducts)
+      )
     );
   }
 
   public scenes$(): Observable<CMRProduct[]> {
-    return this.filterBaselineValues$(
-      this.store$.select(getScenes)
+    return this.hideS1Raw$(
+      this.filterBaselineValues$(
+        this.store$.select(getScenes)
+      )
     );
   }
 
@@ -65,9 +71,39 @@ export class ScenesService {
     );
   }
 
-  private filterBaselineValues$(products: Observable<CMRProduct[]>) {
+  private hideS1Raw$(products$: Observable<CMRProduct[]>) {
     return combineLatest(
-      products,
+      products$,
+      this.store$.select(getShowS1RawData),
+      this.store$.select(getSelectedDataset),
+      this.store$.select(getProductTypes),
+      this.store$.select(getSearchType),
+    ).pipe(
+      map(([ scenes, showS1RawData, dataset, productTypes, searchType ]) => {
+        if (showS1RawData) {
+          return scenes;
+        }
+
+        if (searchType !== SearchType.DATASET) {
+          return scenes;
+        }
+
+        if (!scenes.every(scene => scene.dataset === 'Sentinel-1B' || scene.dataset === 'Sentinel-1A')) {
+          return scenes;
+        }
+
+        if (productTypes.filter(pt => pt.apiValue.includes('RAW')).length > 0) {
+          return scenes;
+        }
+
+        return scenes.filter(scene => !scene.productTypeDisplay.includes('RAW'));
+      })
+    );
+  }
+
+  private filterBaselineValues$(scenes$: Observable<CMRProduct[]>) {
+    return combineLatest(
+      scenes$,
       this.store$.select(getTemporalRange),
       this.store$.select(getPerpendicularRange),
       this.store$.select(getDateRange),
