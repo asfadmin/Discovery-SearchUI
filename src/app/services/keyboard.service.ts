@@ -23,10 +23,14 @@ export class KeyboardService {
   ) { }
 
   init() {
+    const scenesSorted$ = this.scenesService.sortScenes$(
+      this.scenesService.scenes$()
+    );
+
     fromEvent(document, 'keydown').pipe(
       withLatestFrom(combineLatest(
-        this.scenesService.scenesSorted$(),
-        this.scenesService.scenesSortedWithBrowses$(),
+        scenesSorted$,
+        this.scenesService.withBrowses$(scenesSorted$),
         this.store$.select(scenesStore.getSelectedScene),
         this.store$.select(uiStore.getOnlyScenesWithBrowse),
         this.store$.select(uiStore.getIsBrowseDialogOpen)

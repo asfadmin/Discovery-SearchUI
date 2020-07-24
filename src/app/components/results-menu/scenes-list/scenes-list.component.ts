@@ -74,10 +74,11 @@ export class ScenesListComponent implements OnInit, OnDestroy {
         pair => this.selectedPair = pair
       )
     );
+    const sortedScenes$ = this.scenesService.sortScenes$(this.scenesService.scenes$());
 
     this.subs.add(
       this.store$.select(scenesStore.getSelectedScene).pipe(
-        withLatestFrom(this.scenesService.scenesSorted$()),
+        withLatestFrom(sortedScenes$),
         /* There is some race condition with scrolling before the list is rendered.
          * Doesn't scroll without the delay even though the function is called.
          * */
@@ -105,7 +106,7 @@ export class ScenesListComponent implements OnInit, OnDestroy {
     );
 
     this.subs.add(
-      this.scenesService.scenesSorted$().subscribe(
+      sortedScenes$.subscribe(
         scenes => this.scenes = scenes
       )
     );

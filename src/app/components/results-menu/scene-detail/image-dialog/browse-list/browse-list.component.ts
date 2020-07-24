@@ -11,6 +11,7 @@ import * as scenesStore from '@store/scenes';
 import * as uiStore from '@store/ui';
 
 import * as models from '@models';
+import { ScenesService } from '@services';
 
 @Component({
   selector: 'app-browse-list',
@@ -21,6 +22,9 @@ import * as models from '@models';
 export class BrowseListComponent implements OnInit, AfterViewInit, OnDestroy {
   @ViewChild(CdkVirtualScrollViewport) scroll: CdkVirtualScrollViewport;
 
+  public scenesSorted$ = this.scenesService.sortScenes$(
+    this.scenesService.scenes$()
+  );
   public scenes$: Observable<models.CMRProduct[]>;
   public selectedName: string;
   public browses$ = this.store$.select(scenesStore.getSelectedSceneBrowses);
@@ -29,14 +33,15 @@ export class BrowseListComponent implements OnInit, AfterViewInit, OnDestroy {
 
   constructor(
     private store$: Store<AppState>,
+    private scenesService: ScenesService,
   ) { }
 
   ngOnInit() {
     this.subs.add(
       this.store$.select(uiStore.getOnlyScenesWithBrowse).subscribe(
         onlyBrowse => this.scenes$ = onlyBrowse ?
-          this.store$.select(scenesStore.getScenesWithBrowse) :
-          this.store$.select(scenesStore.getScenes)
+          this.scenesService.withBrowses$(this.scenesSorted$) :
+          this.scenesSorted$
       )
     );
 
@@ -53,8 +58,8 @@ export class BrowseListComponent implements OnInit, AfterViewInit, OnDestroy {
         withLatestFrom(this.store$.select(uiStore.getOnlyScenesWithBrowse).pipe(
           switchMap(
             onlyBrowse => this.scenes$ = onlyBrowse ?
-              this.store$.select(scenesStore.getScenesWithBrowse) :
-              this.store$.select(scenesStore.getScenes)
+              this.scenesService.withBrowses$(this.scenesSorted$) :
+              this.scenesSorted$
           )
         )),
         filter(([selected, _]) => !!selected),

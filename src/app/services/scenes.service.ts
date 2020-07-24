@@ -37,25 +37,13 @@ export class ScenesService {
     );
   }
 
-  public scenesWithBrowse$(): Observable<CMRProduct[]> {
-    return this.filterBaselineValues$(
-      this.store$.select(getScenesWithBrowse)
+  public withBrowses$(scenes$: Observable<CMRProduct[]>): Observable<CMRProduct[]> {
+    return scenes$.pipe(
+      map(scenes => scenes.filter(scene => this.sceneHasBrowse(scene)))
     );
   }
 
-  public scenesSorted$(): Observable<CMRProduct[]> {
-    return this.sortScenes$(
-      this.scenes$()
-    );
-  }
-
-  public scenesSortedWithBrowses$(): Observable<CMRProduct[]> {
-    return this.sortScenes$(
-      this.scenesWithBrowse$()
-    );
-  }
-
-  private sortScenes$(scenes$: Observable<CMRProduct[]>) {
+  public sortScenes$(scenes$: Observable<CMRProduct[]>) {
     return combineLatest(
       scenes$,
       this.store$.select(getTemporalSortDirection),
@@ -126,6 +114,12 @@ export class ScenesService {
       this.after(date, range.start) &&
       this.before(date, range.end)
     );
+  }
+
+  private sceneHasBrowse(scene: CMRProduct): boolean {
+    return scene.browses.filter(
+      browse => !browse.includes('no-browse')
+    ).length > 0;
   }
 
   private after(check: moment.Moment, pivot: Date | null): boolean {
