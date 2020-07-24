@@ -1,40 +1,20 @@
-{
-  "compileOnSave": false,
-  "compilerOptions": {
-    "baseUrl": "./",
-    "outDir": "./dist/out-tsc",
-    "sourceMap": true,
-    "declaration": false,
-    "module": "esnext",
-    "moduleResolution": "node",
-    "emitDecoratorMetadata": true,
-    "experimentalDecorators": true,
-    "target": "es2015",
-    "typeRoots": [
-      "node_modules/@types"
-    ],
-    "paths": {
-      "@components": ["src/app/components"],
-      "@services": ["src/app/services"],
-      "@pipes": ["src/app/pipes"],
-      "@models": ["src/app/models"],
-      "@store": ["src/app/store"],
-      "@shared": ["src/app/shared"],
-      "@environments": ["src/environments"],
-      "@testing": ["src/app/testing"],
+/*
+  This is a "Solution Style" tsconfig.json file, and is used by editors and TypeScript’s language server to improve development experience.
+  It is not intended to be used to perform a compilation.
 
-      "@components/*": ["src/app/components/*"],
-      "@services/*": ["src/app/services/*"],
-      "@pipes/*": ["src/app/pipes/*"],
-      "@models/*": ["src/app/models/*"],
-      "@store/*": ["src/app/store/*"],
-      "@shared/*": ["src/app/shared/*"],
-      "@environments/*": ["src/environments/*"],
-      "@testing/*": ["src/app/testing/*"]
+  To learn more about this file see: https://angular.io/config/solution-tsconfig.
+*/
+{
+  "files": [],
+  "references": [
+    {
+      "path": "./src/tsconfig.app.json"
     },
-    "lib": [
-      "es2017",
-      "dom"
-    ]
-  }
+    {
+      "path": "./src/tsconfig.spec.json"
+    },
+    {
+      "path": "./e2e/tsconfig.e2e.json"
+    }
+  ]
 }
