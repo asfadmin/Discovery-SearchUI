@@ -38,7 +38,7 @@
             <b class="product-name">{{ product.name }}</b>
           </div>
 
-          <div *ngIf="datasetForProduct.match(product) as dataset" style="margin-bottom: 12px">
+          <div *ngIf="datasetForProduct.match(product) as dataset" style="margin-bottom: 12px;">
             <a [href]="dataset.infoUrl" target="_blank" matTooltip="Dataset" class="faint-text">
               {{ dataset.name }}
             </a> •
@@ -73,25 +73,94 @@
   <mat-card-subtitle
     [class.medium-header]="breakpoint <= breakpoints.MEDIUM"
     class="header sbas-header">
-      <div *ngIf="!isAddingCustomPoint">
-        <b (click)="startAddingCustomPoint()"
-          class="clickable">
-            Add Pair
-        </b> - Custom Interferogram Pair
+
+    <div fxFlex="" class="sbas-button-group">
+      <div fxLayout="row" fxLayoutAlign="center" class="button-group-label">
+        <label>Zoom</label>
       </div>
-      <div *ngIf="isAddingCustomPoint">
-        <b (click)="stopAddingCustomPoint()"
-         class="clickable">
-          Stop Adding
-        </b> - Click 2 different points to select
+      <div fxLayout="row">
+        <div>
+          <mat-button-toggle-group fxFlex="" name="layerType">
+            <mat-button-toggle class="control-mat-button-toggle"
+                               (click)="zoomIn()"
+                               matTooltip="Zoom In">
+              <mat-icon class="control-icon">add</mat-icon>
+            </mat-button-toggle>
+
+            <mat-button-toggle class="control-mat-button-toggle"
+                               (click)="zoomOut()"
+                               matTooltip="Zoom out">
+              <mat-icon class="control-icon">remove</mat-icon>
+            </mat-button-toggle>
+          </mat-button-toggle-group>
+        </div>
       </div>
-      <div *ngIf="isSelectedPairCustom">
-        <b (click)="deleteSelectedPair()"
-          style="margin-left: 20px;"
-          class="clickable">
-         Delete Selected
-        </b>
+    </div>
+
+    <div fxFlex="" class="sbas-button-group-filler sbas-button-group"></div>
+
+    <div fxFlex="" class="sbas-button-group">
+      <div fxLayout="row" fxLayoutAlign="center" class="button-group-label">
+        <label>Custom Pair</label>
       </div>
+      <div fxLayout="row" fxLayoutAlign="center">
+        <div>
+
+          <mat-button-toggle-group fxFlex="" class="sbas-ribbon-group" name="pairControl">
+
+            <mat-button-toggle
+                          [disabled]="isAddingCustomPoint"
+                          value="add"
+                          class="control-mat-button-toggle"
+                          (click)="startAddingCustomPoint()"
+                          matTooltip="Start adding custom point">
+              <mat-icon class="control-icon">add_circle</mat-icon>
+            </mat-button-toggle>
+
+            <mat-button-toggle
+                          [disabled]="!isAddingCustomPoint"
+                          value="stop"
+                          class="control-mat-button-toggle"
+                          (click)="stopAddingCustomPoint()"
+                          matTooltip="Stop adding custom point"
+                          >
+              <mat-icon class="control-icon">stop_circle</mat-icon>
+            </mat-button-toggle>
+
+            <mat-button-toggle
+                          [disabled]="!isSelectedPairCustom"
+                          value="remove"
+                          class="control-mat-button-toggle"
+                          (click)="deleteSelectedPair()"
+                          matTooltip="Remove custom pair"
+                          >
+              <mat-icon class="control-icon">remove_circle</mat-icon>
+            </mat-button-toggle>
+
+          </mat-button-toggle-group>
+        </div>
+      </div>
+    </div>
+
+<!--    <div *ngIf="!isAddingCustomPoint">-->
+<!--        <b (click)="startAddingCustomPoint()"-->
+<!--          class="clickable">-->
+<!--            Add Pair-->
+<!--        </b> - Custom Interferogram Pair-->
+<!--      </div>-->
+<!--      <div *ngIf="isAddingCustomPoint">-->
+<!--        <b (click)="stopAddingCustomPoint()"-->
+<!--         class="clickable">-->
+<!--          Stop Adding-->
+<!--        </b> - Click 2 different points to select-->
+<!--      </div>-->
+<!--      <div *ngIf="isSelectedPairCustom">-->
+<!--        <b (click)="deleteSelectedPair()"-->
+<!--          style="margin-left: 20px;"-->
+<!--          class="clickable">-->
+<!--         Delete Selected-->
+<!--        </b>-->
+<!--      </div>-->
   </mat-card-subtitle>
 
   <div
@@ -104,7 +173,9 @@
     <div class="sbas-column-1">
       <app-sbas-sliders></app-sbas-sliders>
     </div>
+
     <div id="sbas-chart-column" class="sbas-column-2">
+
       <app-sbas-chart></app-sbas-chart>
     </div>
   </div>
