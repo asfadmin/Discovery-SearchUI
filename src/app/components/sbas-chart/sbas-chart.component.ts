@@ -187,8 +187,8 @@ export class SBASChartComponent implements OnInit, OnDestroy {
 
     // Add brushing
     this.brush = d3.brushX()
-      .extent( [ [0,0], [this.widthValue, this.heightValue] ] )
-      .on('end', this.updateChart)
+      .extent( [ [0, 0], [this.widthValue, this.heightValue] ] )
+      .on('end', this.updateChart);
 
     const zoomBox = this.scatter.append('rect')
       .attr('width', this.widthValue)

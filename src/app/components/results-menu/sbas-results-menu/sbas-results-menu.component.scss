@@ -69,6 +69,7 @@ $info-color: $asf-primary;
 
 .control-icon {
   margin-top: -4px;
+
   @include md-icon-size($asf-ribbon-icon-size);
 }
 
