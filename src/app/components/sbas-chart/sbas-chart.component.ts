@@ -13,7 +13,7 @@ import * as uiStore from '@store/ui';
 import { ResizedEvent } from 'angular-resize-event';
 
 import { SubSink } from 'subsink';
-import { ChartService, ScenesService } from '@services';
+import { ChartService, ScenesService, PairService } from '@services';
 import { criticalBaselineFor, CMRProduct } from '@models';
 
 export enum ChartDatasets {
@@ -71,11 +71,12 @@ export class SBASChartComponent implements OnInit, OnDestroy {
     private store$: Store<AppState>,
     private chartService: ChartService,
     private scenesService: ScenesService,
+    private pairService: PairService,
   ) { }
 
   ngOnInit(): void {
     const scenes$ = this.scenesService.scenes$();
-    const pairs$ = this.scenesService.pairs$();
+    const pairs$ = this.pairService.pairs$();
 
     this.store$.select(scenesStore.getSelectedPair).pipe(
     ).subscribe(

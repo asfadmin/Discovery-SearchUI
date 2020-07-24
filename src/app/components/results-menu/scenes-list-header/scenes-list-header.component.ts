@@ -1,14 +1,20 @@
 import { Component, OnInit } from '@angular/core';
 
+import { combineLatest } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { Store } from '@ngrx/store';
 
 import { AppState } from '@store';
 import * as scenesStore from '@store/scenes';
+import * as uiStore from '@store/ui';
 import * as queueStore from '@store/queue';
 import * as searchStore from '@store/search';
+import * as filtersStore from '@store/filters';
 
-import { MapService, ScenesService, ScreenSizeService, DatasetForProductService } from '@services';
+import {
+  MapService, ScenesService, ScreenSizeService,
+  DatasetForProductService, PairService
+} from '@services';
 import * as models from '@models';
 import { SubSink } from 'subsink';
 
@@ -25,14 +31,16 @@ export class ScenesListHeaderComponent implements OnInit {
   public numBaselineScenes$ = this.scenesService.scenes$().pipe(
     map(scenes => scenes.length),
   );
-  public numPairs$ = this.scenesService.pairs$().pipe(
+  public numPairs$ = this.pairService.pairs$().pipe(
     map(pairs => pairs.pairs.length + pairs.custom.length)
   );
   public sbasProducts: models.CMRProduct[];
+  public canHideRawData: boolean;
 
   public temporalSort: models.ColumnSortDirection;
   public perpendicularSort: models.ColumnSortDirection;
   public SortDirection = models.ColumnSortDirection;
+  public showS1RawData: boolean;
 
   public searchType: models.SearchType;
   public SearchTypes = models.SearchType;
@@ -45,16 +53,30 @@ export class ScenesListHeaderComponent implements OnInit {
     private store$: Store<AppState>,
     private mapService: MapService,
     private scenesService: ScenesService,
+    private pairService: PairService,
     private screenSize: ScreenSizeService,
     private datasetForProduct: DatasetForProductService
-
   ) { }
 
   ngOnInit() {
     this.subs.add(
-       this.scenesService.productsFromPairs$().subscribe(
+       this.pairService.productsFromPairs$().subscribe(
          products => this.sbasProducts = products
        )
+    );
+
+    this.subs.add(
+      combineLatest(
+        this.scenesService.scenes$(),
+        this.store$.select(filtersStore.getSelectedDataset),
+        this.store$.select(filtersStore.getProductTypes),
+        this.store$.select(searchStore.getSearchType),
+      ).subscribe(([scenes, dataset, productTypes, searchType]) => {
+        this.canHideRawData =
+          searchType === models.SearchType.DATASET &&
+          scenes.every(scene => scene.dataset === 'Sentinel-1B' || scene.dataset === 'Sentinel-1A') &&
+          productTypes.filter(pt => pt.apiValue.includes('RAW')).length <= 0;
+      })
     );
 
     this.subs.add(
@@ -74,10 +96,24 @@ export class ScenesListHeaderComponent implements OnInit {
         perpSort => this.perpendicularSort = perpSort
       )
     );
+
+    this.subs.add(
+      this.store$.select(uiStore.getShowS1RawData).subscribe(
+        showS1RawData => this.showS1RawData = showS1RawData
+      )
+    );
   }
 
   public onZoomToResults(): void {
     this.mapService.zoomToResults();
+  }
+
+  public onToggleS1RawData(): void {
+    this.store$.dispatch(
+      this.showS1RawData ?
+        new uiStore.HideS1RawData() :
+        new uiStore.ShowS1RawData()
+    );
   }
 
   public onTogglePerpendicularSort(): void {

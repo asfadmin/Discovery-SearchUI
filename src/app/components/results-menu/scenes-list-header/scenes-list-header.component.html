@@ -21,6 +21,15 @@
 
         <div *ngIf="allProducts$ | async as products">
           <mat-icon
+            (click)="onToggleS1RawData()"
+            *ngIf="canHideRawData"
+            class="clickable noselect mr-10"
+            [class.material-icons-outlined]="showS1RawData"
+            [matTooltip]="showS1RawData ? 'Hide raw data' : 'Show raw data'">
+              remove_red_eye
+          </mat-icon>
+
+          <mat-icon
             (click)="onZoomToResults()"
             class="clickable noselect mr-10"
             matTooltip="Zoom to results">
