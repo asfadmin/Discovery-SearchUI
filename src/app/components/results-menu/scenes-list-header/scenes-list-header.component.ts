@@ -75,7 +75,7 @@ export class ScenesListHeaderComponent implements OnInit {
         this.canHideRawData =
           searchType === models.SearchType.DATASET &&
           scenes.every(scene => scene.dataset === 'Sentinel-1B' || scene.dataset === 'Sentinel-1A') &&
-          productTypes.filter(pt => pt.apiValue.includes('RAW')).length <= 0;
+          productTypes.length <= 0;
       })
     );
 

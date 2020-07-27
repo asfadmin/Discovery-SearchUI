@@ -92,7 +92,7 @@ export class ScenesService {
           return scenes;
         }
 
-        if (productTypes.filter(pt => pt.apiValue.includes('RAW')).length > 0) {
+        if (productTypes.length > 0) {
           return scenes;
         }
 
