@@ -294,3 +294,15 @@ ul {
 .tick > line {
   opacity: 0.2;
 }
+
+.tooltip {
+  position: absolute;
+  text-align: center;
+  padding: 6px 10px;
+  font: 12px sans-serif;
+  background: #c9cac4;
+  border: 0;
+  border-radius: 8px;
+  pointer-events: none;
+  z-index: 100000;
+}

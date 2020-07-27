@@ -92,13 +92,13 @@ export class SBASChartComponent implements OnInit, OnDestroy {
     );
 
     this.subs.add(
-        combineLatest(scenes$, pairs$).subscribe(([scenes, pairs]) => {
-          this.scenes = scenes;
-          this.pairs = pairs.pairs;
-          this.customPairs = pairs.custom;
+      combineLatest(scenes$, pairs$).subscribe(([scenes, pairs]) => {
+        this.scenes = scenes;
+        this.pairs = pairs.pairs;
+        this.customPairs = pairs.custom;
 
-          this.makeSbasChart();
-        })
+        this.makeSbasChart();
+      })
     );
   }
 
@@ -126,6 +126,10 @@ export class SBASChartComponent implements OnInit, OnDestroy {
       .append('g')
         .attr('transform',
               `translate(${this.margin.left},${this.margin.top})`);
+
+    const tooltip = d3.select('body').append('div')
+      .attr('class', 'tooltip')
+      .style('opacity', 0);
 
     this.chart.append('text')
       .attr('class', 'x label')
@@ -273,11 +277,20 @@ export class SBASChartComponent implements OnInit, OnDestroy {
           if (self.isAddingCustomPair) {
             self.setHoveredProduct(p, d3.select(this));
           }
+
+          tooltip
+            .style('opacity', .9);
+          tooltip.html(`${p.metadata.date.format('ll')}, ${p.metadata.perpendicular} meters`)
+            .style('left', `${d3.event.pageX + 10}px`)
+            .style('top', `${d3.event.pageY - 20}px`);
         })
         .on('mouseleave', function(p) {
           if (self.isAddingCustomPair) {
             self.clearHoveredProduct();
           }
+          tooltip.transition()
+            .duration(500)
+            .style('opacity', 0);
         })
         .attr('r', 7)
         .attr('cursor', 'pointer')
