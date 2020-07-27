@@ -16,8 +16,8 @@
 }
 
 .header {
-  height: 55px;
-  padding-top: 6px;
+  height: 30px;
+  padding-top: 20px;
   margin-bottom: 0;
   font-family: Roboto, sans-serif;
   font-weight: 400;
@@ -26,6 +26,7 @@
   background-color: $asf-primary-light;
   color: $asf-primary-dark;
   margin-top: -20px;
+  border-left: none;
 }
 
 .app-scene-list {
@@ -76,9 +77,14 @@
   right: 0;
 }
 
-.left-border-only {
+.no-left-border {
   box-shadow: none !important;
-  border-left: 1px solid rgba(0, 0, 0, 0.3);
+  border-left: none;
+}
+
+.left-border {
+  box-shadow: none !important;
+  border-left: lightgrey 1px solid;
 }
 
 .no-box-shadow {

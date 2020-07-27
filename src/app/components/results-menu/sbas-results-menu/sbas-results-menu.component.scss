@@ -65,6 +65,18 @@ $info-color: $asf-primary;
   display: flex;
   flex-direction: row;
   justify-content: center;
+  height: 50px;
+  padding-top: 0;
+  margin-bottom: 0;
+  font-family: Roboto, sans-serif;
+  font-weight: 400;
+  font-size: 16px;
+  text-align: center;
+  background-color: $asf-primary-light;
+  color: $asf-primary-dark;
+  margin-top: -20px;
+  border-left: none;
+
 }
 
 .control-icon {
