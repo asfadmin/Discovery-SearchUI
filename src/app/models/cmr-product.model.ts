@@ -1,5 +1,7 @@
 import * as moment from 'moment';
 
+export type CMRProductPair = CMRProduct[];
+
 export interface CMRProduct {
   name: string;
   productTypeDisplay: string;
@@ -18,6 +20,7 @@ export interface CMRProduct {
 
 export interface CMRProductMetadata {
   date: moment.Moment;
+  stopDate: moment.Moment;
   polygon: string;
 
   productType: string;

@@ -10,11 +10,17 @@ export enum UIActionType {
   CLOSE_FILTERS_MENU = '[UI] Close Filters Menu',
   OPEN_FILTERS_MENU = '[UI] Open Filters Menu ',
 
+  SHOW_S1_RAW_DATA = '[UI] Show S1 RAW Data',
+  HIDE_S1_RAW_DATA = '[UI] Hide S1 RAW Data',
+
   CLOSE_SIDEBAR = '[UI] Close Sidebar',
   OPEN_SIDEBAR = '[UI] Open Sidebar',
 
   SET_SAVE_SEARCH_ON = '[UI] Set Save Search On',
   SET_SAVED_SEARCH_TYPE = '[UI] Set Saved Search Type',
+
+  START_ADDING_CUSTOM_POINT = '[UI] Start Adding Custom Point',
+  STOP_ADDING_CUSTOM_POINT = '[UI] Stop Adding Custom Point',
 
   SET_IS_BROWSE_DIALOG_OPEN = '[UI] Set Is Browse Dialog Open',
   SET_ONLY_SCENES_WITH_BROWSE = '[UI] Set Only Scenes With Browse',
@@ -46,6 +52,22 @@ export class CloseSidebar implements Action {
 
 export class OpenSidebar implements Action {
   public readonly type = UIActionType.OPEN_SIDEBAR;
+}
+
+export class ShowS1RawData implements Action {
+  public readonly type = UIActionType.SHOW_S1_RAW_DATA;
+}
+
+export class HideS1RawData implements Action {
+  public readonly type = UIActionType.HIDE_S1_RAW_DATA;
+}
+
+export class StartAddingCustomPoint implements Action {
+  public readonly type = UIActionType.START_ADDING_CUSTOM_POINT;
+}
+
+export class StopAddingCustomPoint implements Action {
+  public readonly type = UIActionType.STOP_ADDING_CUSTOM_POINT;
 }
 
 export class SetSaveSearchOn implements Action {
@@ -113,11 +135,15 @@ export type UIActions =
   | CloseAOIOptions
   | OpenSidebar
   | SetSaveSearchOn
+  | StartAddingCustomPoint
+  | StopAddingCustomPoint
   | SetSavedSearchType
   | CloseSidebar
   | ToggleFiltersMenu
   | CloseFiltersMenu
   | OpenFiltersMenu
+  | ShowS1RawData
+  | HideS1RawData
   | ToggleResultsMenu
   | CloseResultsMenu
   | OpenResultsMenu

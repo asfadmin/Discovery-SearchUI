@@ -1,6 +1,6 @@
 import { Action } from '@ngrx/store';
 
-import { CMRProduct, UnzippedFolder, ColumnSortDirection, SearchType } from '@models';
+import { CMRProduct, UnzippedFolder, ColumnSortDirection, SearchType, CMRProductPair } from '@models';
 
 export enum ScenesActionType {
   SET_SCENES = '[Granuels] Set Scenes',
@@ -15,18 +15,18 @@ export enum ScenesActionType {
   CLOSE_ZIP_CONTENTS = '[Scenes] Close Zip Contents',
 
   SET_SELECTED_SCENE = '[Scenes] Set Selected Scene',
-  SELECT_NEXT_SCENE = '[Scenes] Select Next Scene',
-  SELECT_PREVIOUS_SCENE = '[Scenes] Select Previous Scene',
+  SET_SELECTED_PAIR = '[Scenes] Set Selected Pair',
 
   SET_MASTER = '[Scenes-Baseline] Set Master',
   SET_FILTER_MASTER = '[Scenes-Baseline] Set Filter Master',
   CLEAR_BASELINE = '[Scenes-Baseline] Clear Baseline',
 
-  SELECT_NEXT_WITH_BROWSE = '[Scenes] Set next with browse',
-  SELECT_PREVIOUS_WITH_BROWSE = '[Scenes] Set previous with browse',
-
   SET_PERPENDICULAR_SORT_DIRECTION = '[Scenes] Set Perpendicular Sort Direction',
   SET_TEMPORAL_SORT_DIRECTION = '[Scenes] Set Temporal Sort Direction',
+
+  ADD_CUSTOM_PAIR = '[Scenes] Add Custom Pair',
+  REMOVE_CUSTOM_PAIR = '[Scenes] Remove Custom Pair',
+  CLEAR_CUSTOM_PAIRS = '[Scenes] Clear Custom Pairs',
 }
 
 export class SetScenes implements Action {
@@ -38,11 +38,6 @@ export class SetScenes implements Action {
 export class ClearScenes implements Action {
   public readonly type = ScenesActionType.CLEAR;
 }
-export class SetSelectedScene implements Action {
-  public readonly type = ScenesActionType.SET_SELECTED_SCENE;
-
-  constructor(public payload: string) {}
-}
 
 export class SetResultsLoaded implements Action {
   public readonly type = ScenesActionType.SET_RESULTS_LOADED;
@@ -50,20 +45,16 @@ export class SetResultsLoaded implements Action {
   constructor(public payload: boolean) {}
 }
 
-export class SelectNextScene implements Action {
-  public readonly type = ScenesActionType.SELECT_NEXT_SCENE;
+export class SetSelectedScene implements Action {
+  public readonly type = ScenesActionType.SET_SELECTED_SCENE;
+
+  constructor(public payload: string) {}
 }
 
-export class SelectPreviousScene implements Action {
-  public readonly type = ScenesActionType.SELECT_PREVIOUS_SCENE;
-}
+export class SetSelectedPair implements Action {
+  public readonly type = ScenesActionType.SET_SELECTED_PAIR;
 
-export class SelectPreviousWithBrowse implements Action {
-  public readonly type = ScenesActionType.SELECT_PREVIOUS_WITH_BROWSE;
-}
-
-export class SelectNextWithBrowse implements Action {
-  public readonly type = ScenesActionType.SELECT_NEXT_WITH_BROWSE;
+  constructor(public payload: string[]) {}
 }
 
 export class LoadUnzippedProduct implements Action {
@@ -128,6 +119,22 @@ export class SetTemporalSortDirection implements Action {
   constructor(public payload: ColumnSortDirection) {}
 }
 
+export class AddCustomPair implements Action {
+  public readonly type = ScenesActionType.ADD_CUSTOM_PAIR;
+
+  constructor(public payload: CMRProductPair) {}
+}
+
+export class RemoveCustomPair implements Action {
+  public readonly type = ScenesActionType.REMOVE_CUSTOM_PAIR;
+
+  constructor(public payload: CMRProductPair) {}
+}
+
+export class ClearCustomPairs implements Action {
+  public readonly type = ScenesActionType.CLEAR_CUSTOM_PAIRS;
+}
+
 
 export type ScenesActions =
   | SetScenes
@@ -139,13 +146,13 @@ export type ScenesActions =
   | ErrorLoadingUnzipped
   | ClearUnzippedProducts
   | SetSelectedScene
-  | SelectNextScene
-  | SelectPreviousScene
-  | SelectNextWithBrowse
-  | SelectPreviousWithBrowse
+  | SetSelectedPair
   | SetResultsLoaded
   | ClearBaseline
   | SetFilterMaster
   | SetMaster
   | SetTemporalSortDirection
-  | SetPerpendicularSortDirection;
+  | SetPerpendicularSortDirection
+  | AddCustomPair
+  | RemoveCustomPair
+  | ClearCustomPairs;

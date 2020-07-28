@@ -1,4 +1,4 @@
-<ul class="scene-metadata">
+<ul *ngIf="scene !== null" class="scene-metadata">
   <li *ngIf="scene.metadata.perpendicular !== null">
     <span class="v-mid"><b>Perpendicular </b> • {{ scene.metadata.perpendicular + offsets.perpendicular }}</span>
   </li>
@@ -16,8 +16,22 @@
     </mat-icon>
 
     <mat-menu #addSceneDateMenu="matMenu">
-      <button (click)="setStartDate()" mat-menu-item>Set as start date</button>
-      <button (click)="setEndDate()" mat-menu-item>Set as end date</button>
+      <button (click)="setStartDate(scene.metadata.date)" mat-menu-item>Set as start date</button>
+      <button (click)="setEndDate(scene.metadata.date)" mat-menu-item>Set as end date</button>
+    </mat-menu>
+  </li>
+
+  <li *ngIf="prop.isRelevant(p.DATE, dataset)">
+    <span class="v-mid"><b>Stop Time</b> • {{ scene.metadata.stopDate | shortDateTime }}</span>
+    <mat-icon *ngIf="isGeoSearch()"
+      [matMenuTriggerFor]="addSceneStopDateMenu"
+      class="v-mid clickable">
+        more
+    </mat-icon>
+
+    <mat-menu #addSceneStopDateMenu="matMenu">
+      <button (click)="setStartDate(scene.metadata.stopDate)" mat-menu-item>Set as start date</button>
+      <button (click)="setEndDate(scene.metadata.stopDate)" mat-menu-item>Set as end date</button>
     </mat-menu>
   </li>
 

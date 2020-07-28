@@ -9,45 +9,18 @@ export class ChartService {
 
   constructor() { }
 
-  makeChart(element, hoverCallback, selectCallback) {
+  makeSBASChart(element, hoverCallback, selectCallback) {
+  }
+
+  makeChart(element, hoverCallback, selectCallback, datasets = null) {
     const styles = this.chartStyles();
+
+    datasets = datasets === null ? this.baselineDatasets(styles) : datasets;
 
     return new Chart(element, {
       type: 'scatter',
       data: {
-        datasets: [{
-          label: 'Master',
-          data: [],
-          ...styles.master
-        }, {
-          label: 'Selected',
-          data: [],
-          ...styles.selected
-        }, {
-          label: 'Downloads',
-          data: [],
-          ...styles.downloads
-        }, {
-          label: 'Critical Baseline',
-          data: [],
-          ...styles.scenes
-        }, {
-          label: 'Scenes',
-          data: [],
-          ...styles.scenes
-        }, {
-          label: 'Min Critical Baseline',
-          showLine: true,
-          type: 'line',
-          data: [],
-          ...styles.critical
-        }, {
-          label: 'Max Critical Baseline',
-          showLine: true,
-          type: 'line',
-          data: [],
-          ...styles.critical
-        }]
+        datasets
       },
       options: {
         responsive: true,
@@ -115,6 +88,44 @@ export class ChartService {
       }}
     );
   }
+
+  private baselineDatasets(styles) {
+    return [{
+      label: 'Reference',
+      data: [],
+      ...styles.master
+    }, {
+      label: 'Selected',
+      data: [],
+      ...styles.selected
+    }, {
+      label: 'Downloads',
+      data: [],
+      ...styles.downloads
+    }, {
+      label: 'Critical Baseline',
+      data: [],
+      ...styles.scenes
+    }, {
+      label: 'Scenes',
+      data: [],
+      ...styles.scenes
+    }, {
+      label: 'Min Critical Baseline',
+      showLine: true,
+      type: 'line',
+      data: [],
+      ...styles.critical
+    }, {
+      label: 'Max Critical Baseline',
+      showLine: true,
+      type: 'line',
+      data: [],
+      ...styles.critical
+    }];
+  }
+
+
 
   private chartStyles() {
     return {

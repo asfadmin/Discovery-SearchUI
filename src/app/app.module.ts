@@ -123,6 +123,8 @@ export const routes = [
     services.ScenesService,
     services.SearchService,
     services.Hyp3Service,
+    services.PairService,
+    services.SceneSelectService,
   ],
   bootstrap: [ AppComponent ],
 })

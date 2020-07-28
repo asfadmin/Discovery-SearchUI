@@ -14,6 +14,7 @@ import { SavedSearchComponent } from './saved-search/saved-search.component';
 import { GeographicSearchFiltersComponent } from './saved-search/geographic-search-filters/geographic-search-filters.component';
 import { ListSearchFiltersComponent } from './saved-search/list-search-filters/list-search-filters.component';
 import { BaselineSearchFiltersComponent } from './saved-search/baseline-search-filters/baseline-search-filters.component';
+import { SbasSearchFiltersComponent } from './saved-search/sbas-search-filters/sbas-search-filters.component';
 
 
 @NgModule({
@@ -22,7 +23,8 @@ import { BaselineSearchFiltersComponent } from './saved-search/baseline-search-f
     SavedSearchComponent,
     GeographicSearchFiltersComponent,
     ListSearchFiltersComponent,
-    BaselineSearchFiltersComponent
+    BaselineSearchFiltersComponent,
+    SbasSearchFiltersComponent
   ],
   imports: [
     CommonModule,

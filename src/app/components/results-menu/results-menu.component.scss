@@ -17,7 +17,7 @@
 
 .header {
   height: 30px;
-  padding-top: 6px;
+  padding-top: 20px;
   margin-bottom: 0;
   font-family: Roboto, sans-serif;
   font-weight: 400;
@@ -25,6 +25,8 @@
   text-align: center;
   background-color: $asf-primary-light;
   color: $asf-primary-dark;
+  margin-top: -20px;
+  border-left: none;
 }
 
 .app-scene-list {
@@ -36,21 +38,19 @@
   box-sizing: border-box; // required for the enableGhostResize option to work
 }
 
-.resize-handle-top,
-.resize-handle-bottom {
+.resize-handle-top {
   position: absolute;
-  height: 25px;
+  height: 16px;
   cursor: row-resize;
-  width: 100%;
   background-image: url('/assets/div-handles/hsizegrip.png');
   background-color: $asf-primary-light;
   background-position: center; /* Center the image */
   background-repeat: no-repeat; /* Do not repeat the image */
   text-align: center;
-}
-
-.resize-handle-top {
-  top: -25px;
+  top: -20px;
+  width: 45px;
+  z-index: 9;
+  display: inline-block;
 }
 
 .resize-handle-bottom {
@@ -77,9 +77,14 @@
   right: 0;
 }
 
-.left-border-only {
+.no-left-border {
   box-shadow: none !important;
-  border-left: 1px solid rgba(0, 0, 0, 0.3);
+  border-left: none;
+}
+
+.left-border {
+  box-shadow: none !important;
+  border-left: lightgrey 1px solid;
 }
 
 .no-box-shadow {

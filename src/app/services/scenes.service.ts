@@ -6,11 +6,18 @@ import * as moment from 'moment';
 
 import { Store } from '@ngrx/store';
 import { AppState } from '@store/app.reducer';
-import { getAllProducts, getScenes, getTemporalSortDirection, getPerpendicularSortDirection } from '@store/scenes/scenes.reducer';
-import { getTemporalRange, getPerpendicularRange, getDateRange } from '@store/filters/filters.reducer';
+import {
+  getAllProducts, getScenes, getTemporalSortDirection,
+  getPerpendicularSortDirection, getCustomPairs, getScenesWithBrowse
+} from '@store/scenes/scenes.reducer';
+import {
+  getTemporalRange, getPerpendicularRange, getDateRange,
+  getSelectedDataset, getProductTypes
+} from '@store/filters/filters.reducer';
+import { getShowS1RawData } from '@store/ui/ui.reducer';
 import { getSearchType } from '@store/search/search.reducer';
 
-import { CMRProduct, SearchType, Range, ColumnSortDirection } from '@models';
+import { CMRProduct, CMRProductPair, SearchType, Range, ColumnSortDirection } from '@models';
 
 @Injectable({
   providedIn: 'root'
@@ -21,24 +28,28 @@ export class ScenesService {
   ) { }
 
   public products$(): Observable<CMRProduct[]> {
-    return this.filterBaselineValues$(
-      this.store$.select(getAllProducts)
+    return this.hideS1Raw$(
+      this.filterBaselineValues$(
+        this.store$.select(getAllProducts)
+      )
     );
   }
 
   public scenes$(): Observable<CMRProduct[]> {
-    return this.filterBaselineValues$(
-      this.store$.select(getScenes)
+    return this.hideS1Raw$(
+      this.filterBaselineValues$(
+        this.store$.select(getScenes)
+      )
     );
   }
 
-  public scenesSorted$(): Observable<CMRProduct[]> {
-    return this.sortScenes$(
-      this.scenes$()
+  public withBrowses$(scenes$: Observable<CMRProduct[]>): Observable<CMRProduct[]> {
+    return scenes$.pipe(
+      map(scenes => scenes.filter(scene => this.sceneHasBrowse(scene)))
     );
   }
 
-  private sortScenes$(scenes$: Observable<CMRProduct[]>) {
+  public sortScenes$(scenes$: Observable<CMRProduct[]>) {
     return combineLatest(
       scenes$,
       this.store$.select(getTemporalSortDirection),
@@ -50,26 +61,49 @@ export class ScenesService {
             return scenes;
           }
 
-          let sortFunc;
           if (tempSort !== ColumnSortDirection.NONE) {
-            sortFunc = (tempSort === ColumnSortDirection.INCREASING) ?
-                (a, b) => a.metadata.temporal - b.metadata.temporal :
-                (a, b) => b.metadata.temporal - a.metadata.temporal;
+            return this.temporalSort(scenes, tempSort);
           } else {
-            sortFunc = (perpSort === ColumnSortDirection.INCREASING) ?
-                (a, b) => a.metadata.perpendicular - b.metadata.perpendicular :
-                (a, b) => b.metadata.perpendicular - a.metadata.perpendicular;
+            return this.perpendicularSort(scenes, perpSort);
           }
-
-          return scenes.sort(sortFunc);
         }
       )
     );
   }
 
-  private filterBaselineValues$(products: Observable<CMRProduct[]>) {
+  private hideS1Raw$(products$: Observable<CMRProduct[]>) {
     return combineLatest(
-      products,
+      products$,
+      this.store$.select(getShowS1RawData),
+      this.store$.select(getSelectedDataset),
+      this.store$.select(getProductTypes),
+      this.store$.select(getSearchType),
+    ).pipe(
+      map(([ scenes, showS1RawData, dataset, productTypes, searchType ]) => {
+        if (showS1RawData) {
+          return scenes;
+        }
+
+        if (searchType !== SearchType.DATASET) {
+          return scenes;
+        }
+
+        if (!scenes.every(scene => scene.dataset === 'Sentinel-1B' || scene.dataset === 'Sentinel-1A')) {
+          return scenes;
+        }
+
+        if (productTypes.length > 0) {
+          return scenes;
+        }
+
+        return scenes.filter(scene => !scene.productTypeDisplay.includes('RAW'));
+      })
+    );
+  }
+
+  private filterBaselineValues$(scenes$: Observable<CMRProduct[]>) {
+    return combineLatest(
+      scenes$,
       this.store$.select(getTemporalRange),
       this.store$.select(getPerpendicularRange),
       this.store$.select(getDateRange),
@@ -87,6 +121,22 @@ export class ScenesService {
     );
   }
 
+  private temporalSort(scenes, direction: ColumnSortDirection) {
+    const sortFunc = (direction === ColumnSortDirection.INCREASING) ?
+        (a, b) => a.metadata.temporal - b.metadata.temporal :
+        (a, b) => b.metadata.temporal - a.metadata.temporal;
+
+    return scenes.sort(sortFunc);
+  }
+
+  private perpendicularSort(scenes, direction: ColumnSortDirection) {
+    const sortFunc = (direction === ColumnSortDirection.INCREASING) ?
+        (a, b) => a.metadata.perpendicular - b.metadata.perpendicular :
+        (a, b) => b.metadata.perpendicular - a.metadata.perpendicular;
+
+    return scenes.sort(sortFunc);
+  }
+
   private valInRange(val: number | null, range: Range<number>): boolean {
     return (
       Number.isNaN(range.start) || range.start === null ||
@@ -100,6 +150,12 @@ export class ScenesService {
       this.after(date, range.start) &&
       this.before(date, range.end)
     );
+  }
+
+  private sceneHasBrowse(scene: CMRProduct): boolean {
+    return scene.browses.filter(
+      browse => !browse.includes('no-browse')
+    ).length > 0;
   }
 
   private after(check: moment.Moment, pivot: Date | null): boolean {

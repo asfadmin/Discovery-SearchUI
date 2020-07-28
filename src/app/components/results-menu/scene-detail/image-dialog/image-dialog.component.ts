@@ -9,6 +9,7 @@ import { AppState } from '@store';
 import * as scenesStore from '@store/scenes';
 import * as queueStore from '@store/queue';
 import * as uiStore from '@store/ui';
+import * as searchStore from '@store/search';
 
 import * as models from '@models';
 import { BrowseMapService, DatasetForProductService } from '@services';
@@ -23,6 +24,8 @@ import * as services from '@services/index';
 export class ImageDialogComponent implements OnInit, AfterViewInit, OnDestroy {
   public scene$ = this.store$.select(scenesStore.getSelectedScene);
   public browses$ = this.store$.select(scenesStore.getSelectedSceneBrowses);
+  public masterOffsets$ = this.store$.select(scenesStore.getMasterOffsets);
+  public searchType$ = this.store$.select(searchStore.getSearchType);
   public onlyShowScenesWithBrowse: boolean;
   public queuedProductIds: Set<string>;
   public scene: models.CMRProduct;
@@ -115,14 +118,6 @@ export class ImageDialogComponent implements OnInit, AfterViewInit, OnDestroy {
 
   public closeDialog() {
     this.dialogRef.close();
-  }
-
-  public selectNextProduct(): void {
-    this.store$.dispatch(new scenesStore.SelectNextScene());
-  }
-
-  public selectPreviousProduct(): void {
-    this.store$.dispatch(new scenesStore.SelectPreviousScene());
   }
 
   public onToggleQueueProduct(product: models.CMRProduct): void {

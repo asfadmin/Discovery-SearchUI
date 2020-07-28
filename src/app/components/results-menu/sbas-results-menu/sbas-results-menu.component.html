@@ -1,0 +1,186 @@
+<!-- SCENE LIST -->
+<ng-container *ngIf="breakpoint > breakpoints.MOBILE">
+  <mat-card #listCard class="mp0 sbas-list-card" fxFlex="20" fxFlex
+            [style.width]="listCardMaxWidth">
+    <mat-card-subtitle style="display: flex; flex-direction: row; justify-content: center; align-items: center;" class="header">
+      <app-scenes-list-header></app-scenes-list-header>
+    </mat-card-subtitle>
+
+    <div *ngIf="view === Views.LIST" class="app-scene-list">
+      <app-scenes-list [resize$]="resize$"></app-scenes-list>
+    </div>
+
+    <div *ngIf="view === Views.DETAIL" style="max-width: 100%;" class="w100 h100 scrollable">
+      <div *ngIf="pair">
+        <div *ngFor="let product of pair">
+          <span class="product-name">{{ product.name }}</span>
+
+          <br>
+
+          <app-scene-metadata
+             [scene]="product"
+             [dataset]="datasetForProduct.match(product)"
+             [searchType]="searchType">
+          </app-scene-metadata>
+          <hr>
+        </div>
+      </div>
+    </div>
+  </mat-card>
+
+  <mat-card class="mp0 sbas-list-card" fxFlex="20" fxFlex [style.width]="listCardMaxWidth">
+    <mat-card-subtitle style="display: flex; flex-direction: row; justify-content: center; align-items: flex-start;" class="header">
+    </mat-card-subtitle>
+    <div style="overflow: auto; height: 100%;" class="scrollable">
+      <div *ngIf="pair" style="margin: 5px; padding-bottom: 36px;">
+        <div *ngFor="let product of pair">
+          <div style="margin-bottom: 4px;">
+            <b class="product-name">{{ product.name }}</b>
+          </div>
+
+          <div *ngIf="datasetForProduct.match(product) as dataset" style="margin-bottom: 12px;">
+            <a [href]="dataset.infoUrl" target="_blank" matTooltip="Dataset" class="faint-text">
+              {{ dataset.name }}
+            </a> •
+            <span matTooltip="Frequency">{{ dataset.frequency }}</span>
+          </div>
+
+          <app-scene-metadata
+             [scene]="product"
+             [dataset]="datasetForProduct.match(product)"
+             [searchType]="searchType">
+          </app-scene-metadata>
+          <hr>
+        </div>
+      </div>
+      <div *ngIf="!pair" style="margin: 5px; padding-bottom: 36px;">
+        <div class="faint-text w100 h100" style="text-align: center; padding-top: 10px;">
+          No Pair Selected
+        </div>
+      </div>
+    </div>
+  </mat-card>
+</ng-container>
+
+<mat-card #chartCard
+          class="mp0 no-box-shadow sbas-chart-card" fxFlex="60" fxFlexFill
+          [style.max-width]="chartCardMaxWidth"
+          mwlResizable
+          [enableGhostResize]="true"
+          [resizeEdges]="{ left: true }"
+          (resizeEnd)="onResizeEnd($event)">
+
+  <mat-card-subtitle
+    [class.medium-header]="breakpoint <= breakpoints.MEDIUM"
+    class="sbas-header">
+
+    <div fxFlex="" class="sbas-button-group">
+      <div fxLayout="row" fxLayoutAlign="center" class="button-group-label">
+        <label>Zoom</label>
+      </div>
+      <div fxLayout="row">
+        <div>
+          <mat-button-toggle-group fxFlex="" name="layerType">
+            <mat-button-toggle class="control-mat-button-toggle"
+                               (click)="zoomIn()"
+                               matTooltip="Zoom In">
+              <mat-icon class="control-icon">add</mat-icon>
+            </mat-button-toggle>
+
+            <mat-button-toggle class="control-mat-button-toggle"
+                               (click)="zoomOut()"
+                               matTooltip="Zoom out">
+              <mat-icon class="control-icon">remove</mat-icon>
+            </mat-button-toggle>
+          </mat-button-toggle-group>
+        </div>
+      </div>
+    </div>
+
+    <div fxFlex="" class="sbas-button-group-filler sbas-button-group"></div>
+
+    <div fxFlex="" class="sbas-button-group">
+      <div fxLayout="row" fxLayoutAlign="center" class="button-group-label">
+        <label>Custom Pair</label>
+      </div>
+      <div fxLayout="row" fxLayoutAlign="center">
+        <div>
+
+          <mat-button-toggle-group fxFlex="" class="sbas-ribbon-group" name="pairControl">
+
+            <mat-button-toggle
+                          [disabled]="isAddingCustomPoint"
+                          value="add"
+                          class="control-mat-button-toggle"
+                          (click)="startAddingCustomPoint()"
+                          matTooltip="Start adding custom point">
+              <mat-icon class="control-icon">add_circle</mat-icon>
+            </mat-button-toggle>
+
+            <mat-button-toggle
+                          [disabled]="!isAddingCustomPoint"
+                          value="stop"
+                          class="control-mat-button-toggle"
+                          (click)="stopAddingCustomPoint()"
+                          matTooltip="Stop adding custom point"
+                          >
+              <mat-icon class="control-icon">stop_circle</mat-icon>
+            </mat-button-toggle>
+
+            <mat-button-toggle
+                          [disabled]="!isSelectedPairCustom"
+                          value="remove"
+                          class="control-mat-button-toggle"
+                          (click)="deleteSelectedPair()"
+                          matTooltip="Remove custom pair"
+                          >
+              <mat-icon class="control-icon">remove_circle</mat-icon>
+            </mat-button-toggle>
+
+          </mat-button-toggle-group>
+        </div>
+      </div>
+    </div>
+
+<!--    <div *ngIf="!isAddingCustomPoint">-->
+<!--        <b (click)="startAddingCustomPoint()"-->
+<!--          class="clickable">-->
+<!--            Add Pair-->
+<!--        </b> - Custom Interferogram Pair-->
+<!--      </div>-->
+<!--      <div *ngIf="isAddingCustomPoint">-->
+<!--        <b (click)="stopAddingCustomPoint()"-->
+<!--         class="clickable">-->
+<!--          Stop Adding-->
+<!--        </b> - Click 2 different points to select-->
+<!--      </div>-->
+<!--      <div *ngIf="isSelectedPairCustom">-->
+<!--        <b (click)="deleteSelectedPair()"-->
+<!--          style="margin-left: 20px;"-->
+<!--          class="clickable">-->
+<!--         Delete Selected-->
+<!--        </b>-->
+<!--      </div>-->
+  </mat-card-subtitle>
+
+  <div
+    class="resize-handle-left"
+    mwlResizeHandle
+    [resizeEdges]="{ left: true }">
+  </div>
+
+  <div class="sbas-chart-row">
+    <div class="sbas-column-1">
+      <app-sbas-sliders></app-sbas-sliders>
+    </div>
+
+    <div id="sbas-chart-column" class="sbas-column-2">
+
+      <app-sbas-chart></app-sbas-chart>
+    </div>
+  </div>
+
+  <div class="sbas-filter-row">
+    <app-sbas-sliders-two></app-sbas-sliders-two>
+  </div>
+</mat-card>
