@@ -10,7 +10,7 @@ import { map, withLatestFrom, startWith, switchMap, tap, filter } from 'rxjs/ope
 
 import { Hyp3Service } from '@services';
 import { AppState } from '../app.reducer';
-import { Hyp3ActionType, SetJobs, SuccessfulJobSumbission, ErrorJobSubmission, SubmitJob } from './hyp3.action';
+import { Hyp3ActionType, SetJobs, SuccessfulJobSumbission, ErrorJobSubmission, SubmitJob, SetUser } from './hyp3.action';
 
 @Injectable()
 export class Hyp3Effects {
@@ -25,6 +25,12 @@ export class Hyp3Effects {
     ofType(Hyp3ActionType.LOAD_JOBS),
     switchMap(_ => this.hyp3Service.getJobs$()),
     map(jobs => new SetJobs(jobs))
+  ));
+
+  private loadUser = createEffect(() => this.actions$.pipe(
+    ofType(Hyp3ActionType.LOAD_USER),
+    switchMap(_ => this.hyp3Service.getUser$()),
+    map(user => new SetUser(user))
   ));
 
   private submitJob = createEffect(() => this.actions$.pipe(

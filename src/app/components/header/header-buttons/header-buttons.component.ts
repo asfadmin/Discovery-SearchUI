@@ -145,6 +145,7 @@ export class HeaderButtonsComponent implements OnInit, OnDestroy {
     }
 
     this.store$.dispatch(new hyp3Store.LoadJobs());
+    this.store$.dispatch(new hyp3Store.LoadUser());
 
     this.dialog.open(Hyp3JobsDialogComponent, {
       id: 'dlQueueDialog',

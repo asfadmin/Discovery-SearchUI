@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 
 import { of, Observable } from 'rxjs';
-import { map, delay } from 'rxjs/operators';
+import { map, delay, tap } from 'rxjs/operators';
 import * as moment from 'moment';
 
 import * as models from '@models';
@@ -17,6 +17,12 @@ export class Hyp3Service {
   constructor(
     private http: HttpClient
   ) { }
+
+  public getUser$(): Observable<models.Hyp3User> {
+    const getUserUrl = `${this.url}/user`;
+
+    return this.http.get<models.Hyp3User>(getUserUrl, { withCredentials: true }).pipe(tap(console.log));
+  }
 
   public getJobs$(): Observable<models.Hyp3Job[]> {
     const getJobsUrl = `${this.url}/jobs`;

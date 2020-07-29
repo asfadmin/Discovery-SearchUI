@@ -1,18 +1,22 @@
 import { createFeatureSelector, createSelector } from '@ngrx/store';
 
 import { Hyp3ActionType, Hyp3Actions } from './hyp3.action';
-import { Hyp3Job } from '@models';
+import { Hyp3Job, Hyp3User } from '@models';
 
 /* State */
 
 export interface Hyp3State {
   jobs: Hyp3Job[];
+  user: Hyp3User | null;
+  isUserLoading: boolean;
   areJobsLoading: boolean;
   submittingJobName: string | null;
 }
 
 const initState: Hyp3State = {
   jobs: [],
+  user: null,
+  isUserLoading: true,
   areJobsLoading: false,
   submittingJobName: null,
 };
@@ -31,8 +35,37 @@ export function hyp3Reducer(state = initState, action: Hyp3Actions): Hyp3State {
     case Hyp3ActionType.SET_JOBS: {
       return {
         ...state,
-        jobs: action.payload,
+        jobs: [...action.payload, ...action.payload, ...action.payload],
         areJobsLoading: false
+      };
+    }
+
+    case Hyp3ActionType.ERROR_LOADING_JOBS: {
+      return {
+        ...state,
+        areJobsLoading: false
+      };
+    }
+
+    case Hyp3ActionType.LOAD_USER: {
+      return {
+        ...state,
+        isUserLoading: true
+      };
+    }
+
+    case Hyp3ActionType.SET_USER: {
+      return {
+        ...state,
+        user: action.payload,
+        isUserLoading: false
+      };
+    }
+
+    case Hyp3ActionType.ERROR_LOADING_USER: {
+      return {
+        ...state,
+        isUserLoading: false
       };
     }
 
@@ -54,8 +87,7 @@ export function hyp3Reducer(state = initState, action: Hyp3Actions): Hyp3State {
       return {
         ...state,
         submittingJobName: null,
-      };
-    }
+      }; }
 
     case Hyp3ActionType.ERROR_JOB_SUBMISSION: {
       return {
@@ -89,3 +121,7 @@ export const getSubmittingJobName = createSelector(
   (state: Hyp3State) => state.submittingJobName
 );
 
+export const getHyp3User = createSelector(
+  getHyp3State,
+  (state: Hyp3State) => state.user
+);
