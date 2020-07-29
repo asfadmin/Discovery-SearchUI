@@ -11,8 +11,12 @@
     </mat-card-subtitle>
   </mat-card-title-group>
 
-  <mat-card-content>
-    <mat-list role="list">
+  <mat-card-content class="jobs-list">
+    <div *ngIf="areJobsLoading" class="loading-div">
+      <mat-spinner diameter="55"></mat-spinner>
+      <div class="loading-text faint-text">Loading HyP3 Jobs</div>
+    </div>
+    <mat-list *ngIf="!areJobsLoading" role="list">
       <mat-list-item *ngFor="let job of jobs">
         <div matLine>
           {{ job.filename }}

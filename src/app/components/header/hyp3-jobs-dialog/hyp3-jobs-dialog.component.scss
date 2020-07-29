@@ -10,9 +10,31 @@
   border-bottom-width: 1px;
 }
 
+.jobs-list {
+  overflow: auto;
+  height: 550px;
+}
+
+.loading-div {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  height: 100%;
+  justify-content: center;
+  align-items: center;
+}
+
+.loading-text {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding-left: 20px;
+  font-size: 28px;
+}
+
 .close-x {
   position: absolute;
-  top: 15px;
+  top: 25px;
   right: 35px;
   text-align: right;
   float: right;

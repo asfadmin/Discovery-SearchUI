@@ -1,6 +1,8 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+
 import { MatSharedModule } from '@shared';
 import { PipesModule } from '@pipes';
 import { Hyp3JobsDialogComponent } from './hyp3-jobs-dialog.component';
@@ -11,6 +13,7 @@ import { Hyp3JobsDialogComponent } from './hyp3-jobs-dialog.component';
   imports: [
     CommonModule,
     MatSharedModule,
+    MatProgressSpinnerModule,
     PipesModule
   ]
 })

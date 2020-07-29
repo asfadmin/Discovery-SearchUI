@@ -35,7 +35,7 @@ export function hyp3Reducer(state = initState, action: Hyp3Actions): Hyp3State {
     case Hyp3ActionType.SET_JOBS: {
       return {
         ...state,
-        jobs: [...action.payload, ...action.payload, ...action.payload],
+        jobs: action.payload,
         areJobsLoading: false
       };
     }
