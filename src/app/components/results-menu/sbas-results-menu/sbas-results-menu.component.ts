@@ -120,12 +120,10 @@ export class SBASResultsMenuComponent implements OnInit, OnDestroy {
   }
 
   public zoomIn(): void {
-    console.log('zoomIn to SBAS chart');
     // this.mapService.zoomIn();
   }
 
   public zoomOut(): void {
-    console.log('zoomOut to SBAS chart');
     // this.mapService.zoomOut();
   }
 

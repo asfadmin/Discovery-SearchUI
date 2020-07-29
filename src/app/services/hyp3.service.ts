@@ -21,7 +21,7 @@ export class Hyp3Service {
   public getUser$(): Observable<models.Hyp3User> {
     const getUserUrl = `${this.url}/user`;
 
-    return this.http.get<models.Hyp3User>(getUserUrl, { withCredentials: true }).pipe(tap(console.log));
+    return this.http.get<models.Hyp3User>(getUserUrl, { withCredentials: true });
   }
 
   public getJobs$(): Observable<models.Hyp3Job[]> {
@@ -29,7 +29,7 @@ export class Hyp3Service {
     return this.http.get(getJobsUrl, { withCredentials: true }).pipe(
       map((resp: any) => {
         if (!resp.jobs) {
-          console.log('Error loading jobs');
+          // TODO: Notify user when there is an error
           return [];
         }
 

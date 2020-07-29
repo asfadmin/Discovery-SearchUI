@@ -85,7 +85,7 @@ export class SceneFilesComponent implements OnInit, OnDestroy {
       )
     );
     this.subs.add(
-      this.store$.select(hyp3Store.getSubmittingJobName).pipe(tap(console.log)).subscribe(
+      this.store$.select(hyp3Store.getSubmittingJobName).subscribe(
         jobName => this.loadingHyp3JobName = jobName
       )
     );
