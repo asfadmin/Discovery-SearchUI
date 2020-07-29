@@ -48,7 +48,8 @@
       *ngIf="isUserLoggedIn && product.metadata.beamMode === 'IW' && product.metadata.productType === 'SLC'"
       (click)="onProcessHyp3Job()"
       mat-icon-button>
-      <mat-icon>build</mat-icon>
+      <mat-icon *ngIf="loadingHyp3JobName !== product.name">build</mat-icon>
+      <fa-icon *ngIf="loadingHyp3JobName === product.name" icon="spinner" [pulse]="true"></fa-icon>
     </button>
 
     <div mat-line>

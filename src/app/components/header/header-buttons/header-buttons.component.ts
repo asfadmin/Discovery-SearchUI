@@ -11,6 +11,7 @@ import { AppState } from '@store';
 import * as queueStore from '@store/queue';
 import * as userStore from '@store/user';
 import * as uiStore from '@store/ui';
+import * as hyp3Store from '@store/hyp3';
 
 import { PreferencesComponent } from './preferences/preferences.component';
 import { HelpComponent } from '@components/help/help.component';
@@ -139,6 +140,12 @@ export class HeaderButtonsComponent implements OnInit, OnDestroy {
   }
 
   public onOpenHyp3Dialog() {
+    if (!this.isLoggedIn) {
+      return;
+    }
+
+    this.store$.dispatch(new hyp3Store.LoadJobs());
+
     this.dialog.open(Hyp3JobsDialogComponent, {
       id: 'dlQueueDialog',
       maxWidth: '100vw',

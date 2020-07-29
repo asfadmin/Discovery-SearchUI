@@ -1,15 +1,15 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { MatSnackBar } from '@angular/material/snack-bar';
 import { SubSink } from 'subsink';
 
 import { combineLatest } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { map, tap } from 'rxjs/operators';
 
 import { Store } from '@ngrx/store';
 import { AppState } from '@store';
 import * as scenesStore from '@store/scenes';
 import * as queueStore from '@store/queue';
 import * as userStore from '@store/user';
+import * as hyp3Store from '@store/hyp3';
 
 import * as models from '@models';
 import * as services from '@services';
@@ -25,6 +25,7 @@ export class SceneFilesComponent implements OnInit, OnDestroy {
       map(names => new Set(names))
   );
   public unzippedLoading: string;
+  public loadingHyp3JobName: string | null;
 
   public showUnzippedProductScreen: boolean;
   public openUnzippedProduct: models.CMRProduct;
@@ -38,7 +39,6 @@ export class SceneFilesComponent implements OnInit, OnDestroy {
   constructor(
     private store$: Store<AppState>,
     private hyp3: services.Hyp3Service,
-    private snackbar: MatSnackBar,
   ) { }
 
   ngOnInit() {
@@ -84,6 +84,11 @@ export class SceneFilesComponent implements OnInit, OnDestroy {
         unzippedLoading => this.unzippedLoading = unzippedLoading
       )
     );
+    this.subs.add(
+      this.store$.select(hyp3Store.getSubmittingJobName).pipe(tap(console.log)).subscribe(
+        jobName => this.loadingHyp3JobName = jobName
+      )
+    );
   }
 
   public onToggleQueueProduct(product: models.CMRProduct): void {
@@ -127,15 +132,7 @@ export class SceneFilesComponent implements OnInit, OnDestroy {
   }
 
   public onSubmitHyp3Job(product: models.CMRProduct) {
-    this.hyp3.submitJob$(product.name).subscribe(
-      (jobs: any) => {
-        const [job] = jobs.jobs;
-
-        if ( job.status_code === 'PENDING' ) {
-          this.snackbar.open('Job successfully submitted', job.job_type, { duration: 3000 });
-        }
-      }
-    );
+    this.store$.dispatch(new hyp3Store.SubmitJob(product.name));
   }
 
   ngOnDestroy() {

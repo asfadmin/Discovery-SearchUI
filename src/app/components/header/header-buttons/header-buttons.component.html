@@ -3,8 +3,11 @@
 
     <button (click)="onOpenHyp3Dialog()"
             class="spacing nav-icon-buttons" color="basic"
+            [disabled]="!isLoggedIn"
             matTooltip="HyP3" mat-button>
-      <img src="/assets/asf-logos/HyP3-no-text.png" style="opacity: 73%;"  height="35">
+      <img src="/assets/asf-logos/HyP3-no-text.png"
+        [class.disabled]="!isLoggedIn"
+        height="35">
       <div class="text-under faint-text">Hybrid Pluggable Processing</div>
     </button>
 

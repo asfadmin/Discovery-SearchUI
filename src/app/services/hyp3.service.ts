@@ -1,8 +1,11 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 
-import { of } from 'rxjs';
+import { of, Observable } from 'rxjs';
+import { map, delay } from 'rxjs/operators';
+import * as moment from 'moment';
 
+import * as models from '@models';
 import { AuthService } from './auth.service';
 
 @Injectable({
@@ -15,9 +18,24 @@ export class Hyp3Service {
     private http: HttpClient
   ) { }
 
-  public getJobs$() {
+  public getJobs$(): Observable<models.Hyp3Job[]> {
     const getJobsUrl = `${this.url}/jobs`;
-    return this.http.get(getJobsUrl, { withCredentials: true });
+    return this.http.get(getJobsUrl, { withCredentials: true }).pipe(
+      map((resp: any) => {
+        if (!resp.jobs) {
+          console.log('Error loading jobs');
+          return [];
+        }
+
+        const { jobs } = resp;
+
+        return jobs.map(job => ({
+          ...job,
+          expiration_time: moment.utc(job.expiration_time),
+          request_time: moment.utc(job.request_time)
+        }));
+      })
+    );
   }
 
   public submitJob$(granuleId: string, description?: string) {
@@ -33,8 +51,8 @@ export class Hyp3Service {
       }]
     };
 
-    //return of(this.dummyResp());
-     return this.http.post(submitJobUrl, body, { withCredentials: true });
+    return of(this.dummyResp()).pipe(delay(2000));
+    //return this.http.post(submitJobUrl, body, { withCredentials: true });
   }
 
   private dummyResp() {

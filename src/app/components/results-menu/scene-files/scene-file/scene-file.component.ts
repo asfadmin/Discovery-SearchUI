@@ -14,6 +14,7 @@ export class SceneFileComponent {
   @Input() isOpen: boolean;
   @Input() isUserLoggedIn: boolean;
   @Input() hasAccessToRestrictedData: boolean;
+  @Input() loadingHyp3JobName: string | null;
 
   @Output() toggle = new EventEmitter<void>();
   @Output() unzip = new EventEmitter<models.CMRProduct>();
