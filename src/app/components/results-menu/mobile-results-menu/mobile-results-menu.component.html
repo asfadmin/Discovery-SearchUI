@@ -1,8 +1,8 @@
 <div class="h100 w100">
-  <div>
+  <div class="header-mobile">
     <button (click)="onSelectList()"
      [class.selected]="view === Views.LIST" mat-button>
-      Scenes
+      Scenes {{searchType}}
     </button>
     <button (click)="onSelectDetail()"
      [class.selected]="view === Views.DETAIL" mat-button>
@@ -10,13 +10,17 @@
       <ng-container *ngIf="searchType !== SearchTypes.BASELINE">
         &amp; Files
       </ng-container>
-
     </button>
     <button *ngIf="searchType === SearchTypes.BASELINE"
      (click)="onSelectChart()"
      [class.selected]="view === Views.CHART" mat-button>
       Chart
     </button>
+<!--    <button *ngIf="searchType === SearchTypes.SBAS"-->
+<!--     (click)="onSelectChart()"-->
+<!--     [class.selected]="view === Views.CHART" mat-button>-->
+<!--      Chart-->
+<!--    </button>-->
   </div>
 
   <!-- SCENE LIST -->
