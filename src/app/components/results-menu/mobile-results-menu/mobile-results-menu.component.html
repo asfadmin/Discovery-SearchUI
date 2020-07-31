@@ -2,7 +2,7 @@
   <div class="header-mobile">
     <button (click)="onSelectList()"
      [class.selected]="view === Views.LIST" mat-button>
-      Scenes {{searchType}}
+      Scenes
     </button>
     <button (click)="onSelectDetail()"
      [class.selected]="view === Views.DETAIL" mat-button>
@@ -17,9 +17,9 @@
       Chart
     </button>
 <!--    <button *ngIf="searchType === SearchTypes.SBAS"-->
-<!--     (click)="onSelectChart()"-->
+<!--     (click)="onSelectSBASChart()"-->
 <!--     [class.selected]="view === Views.CHART" mat-button>-->
-<!--      Chart-->
+<!--      SBAS Chart-->
 <!--    </button>-->
   </div>
 
@@ -68,6 +68,17 @@
         </button>
       </mat-card-subtitle>
       <app-baseline-chart></app-baseline-chart>
+    </mat-card>
+  </div>
+
+  <div *ngIf="view === Views.SBAS" class="h100 w100">
+    <mat-card class="h100 w100 mp0 no-box-shadow" fxFlex="100" fxFlex>
+<!--      <mat-card-subtitle class="header">-->
+<!--        <button (click)="onToggleFiltersMenu()" mat-button>-->
+<!--          Baseline Criteria <mat-icon>more_horiz</mat-icon>-->
+<!--        </button>-->
+<!--      </mat-card-subtitle>-->
+      <app-sbas-chart></app-sbas-chart>
     </mat-card>
   </div>
 </div>
