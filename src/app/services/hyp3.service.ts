@@ -57,7 +57,7 @@ export class Hyp3Service {
       }]
     };
 
-    //return of(this.dummyResp()).pipe(delay(2000));
+    // return of(this.dummyResp()).pipe(delay(2000));
     return this.http.post(submitJobUrl, body, { withCredentials: true });
   }
 
