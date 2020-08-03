@@ -1,41 +1,48 @@
 <ng-container *ngIf="breakpoint$ | async as breakpoint">
-  <div *ngIf="breakpoint > breakpoints.MOBILE"
-    fxLayout="row" class="breadcrumb-row">
-    <div fxLayout="row">
-      <app-search-type-selector class="breadcrumb">
-      </app-search-type-selector>
+  <ng-container *ngIf="searchType$ | async as selectedSearchType">
 
-      <div class="breadcrumb scene-selector"
-        [class.scene-selector]="breakpoint === breakpoints.FULL"
-        [class.medium-scene-selector]="breakpoint === breakpoints.MEDIUM"
-        [class.small-scene-selector]="breakpoint === breakpoints.SMALL">
-        <app-master-scene-selector></app-master-scene-selector>
-      </div>
+    <div *ngIf="breakpoint > breakpoints.MOBILE"
+      fxLayout="row" class="breadcrumb-row">
+      <div fxLayout="row">
+        <app-search-type-selector class="breadcrumb">
+        </app-search-type-selector>
 
-      <div fxFlex="nogrow" class="breadcrumb">
-        <app-search-button></app-search-button>
-      </div>
+        <div class="breadcrumb scene-selector"
+          [class.scene-selector]="breakpoint === breakpoints.FULL"
+          [class.medium-scene-selector]="breakpoint === breakpoints.MEDIUM"
+          [class.small-scene-selector]="breakpoint === breakpoints.SMALL">
+          <app-master-scene-selector></app-master-scene-selector>
+        </div>
 
-      <div class="icon-cluster">
-        <app-header-buttons>
-        </app-header-buttons>
-      </div>
-    </div>
-  </div>
+        <div fxFlex="nogrow" class="breadcrumb">
+          <app-search-button></app-search-button>
+        </div>
 
-  <div *ngIf="breakpoint === breakpoints.MOBILE">
-    <div class="mobile-nav-bar">
-      <button (click)="onToggleFiltersMenu()"
-          style="margin-left: 5px;"
-          mat-flat-button>
-        <mat-icon>edit</mat-icon>
-        Baseline
-      </button>
-
-      <div class="mobile-icon-cluster">
-        <app-header-buttons>
-        </app-header-buttons>
+        <div class="icon-cluster">
+          <app-header-buttons>
+          </app-header-buttons>
+        </div>
       </div>
     </div>
-  </div>
+
+    <div *ngIf="breakpoint === breakpoints.MOBILE">
+      <div class="mobile-nav-bar">
+        <button (click)="onToggleFiltersMenu()"
+            style="margin-left: 5px;"
+            mat-flat-button>
+          <mat-icon>edit</mat-icon>
+          <ng-container *ngIf="selectedSearchType === searchTypes.SBAS">
+            SBAS
+          </ng-container>
+          Baseline
+        </button>
+
+        <div class="mobile-icon-cluster">
+          <app-header-buttons>
+          </app-header-buttons>
+        </div>
+      </div>
+    </div>
+
+  </ng-container>
 </ng-container>
