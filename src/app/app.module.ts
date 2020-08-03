@@ -122,6 +122,7 @@ export const routes = [
     services.ChartService,
     services.ScenesService,
     services.SearchService,
+    services.Hyp3Service,
     services.PairService,
     services.SceneSelectService,
   ],

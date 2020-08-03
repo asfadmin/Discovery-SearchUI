@@ -28,11 +28,11 @@ export class ScreenSizeService {
 
   public breakpoint$ = this.size$.pipe(
     map(({ width, height }) => {
-      if (width > 1465) {
+      if (width > 1700) {
         return models.Breakpoints.FULL;
-      } else if (width > 1160) {
+      } else if (width > 1390) {
         return models.Breakpoints.MEDIUM;
-      } else if (width > 950) {
+      } else if (width > 1130) {
         return models.Breakpoints.SMALL;
       } else {
         return models.Breakpoints.MOBILE;

@@ -4,6 +4,7 @@ import { QueueEffects } from './queue';
 import { ScenesEffects } from './scenes';
 import { UIEffects } from './ui';
 import { UserEffects } from './user';
+import { Hyp3Effects } from './hyp3';
 
 export const appEffects = [
   FiltersEffects,
@@ -12,4 +13,5 @@ export const appEffects = [
   ScenesEffects,
   UIEffects,
   UserEffects,
+  Hyp3Effects
 ];

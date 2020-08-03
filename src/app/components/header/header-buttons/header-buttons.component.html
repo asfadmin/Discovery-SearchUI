@@ -1,5 +1,16 @@
 <div *ngIf="breakpoint$ | async as breakpoint">
   <ng-container *ngIf="breakpoint > breakpoints.MOBILE">
+
+    <button (click)="onOpenHyp3Dialog()"
+            class="spacing nav-icon-buttons" color="basic"
+            [disabled]="!isLoggedIn"
+            matTooltip="HyP3" mat-button>
+        <img src="/assets/asf-logos/HyP3-graphic-only.png"
+          [class.disabled]="!isLoggedIn"
+          height="35">
+      <div class="text-under faint-text">HyP3</div>
+    </button>
+
     <button
       (click)="onOpenDownloadQueue()"
       [disabled]="queuedProducts.length <= 0"
@@ -89,6 +100,9 @@
   </button>
   <button (click)="onOpenPreferences()" mat-menu-item matSuffix>
     Preferences
+  </button>
+  <button (click)="onOpenHyp3Dialog()" mat-menu-item matSuffix>
+    Hyp3 Jobs
   </button>
   <hr class="menu-hr">
   <button (click)="onLogout()"

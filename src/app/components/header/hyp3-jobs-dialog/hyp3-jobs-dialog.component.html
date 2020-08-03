@@ -1,0 +1,37 @@
+<mat-card style="padding: 0" class="p0">
+  <mat-card-title-group class="card-title-group">
+    <mat-card-title>Hyp3 Jobs Dialog</mat-card-title>
+    <mat-card-subtitle> <b>{{ user }}</b> - {{ remaining }}/{{ limit }} monthly jobs</mat-card-subtitle>
+
+    <div class="close-x" (click)="onCloseDialog()">
+      <mat-icon>close</mat-icon>
+    </div>
+
+    <mat-card-subtitle>
+    </mat-card-subtitle>
+  </mat-card-title-group>
+
+  <mat-card-content class="jobs-list">
+    <div *ngIf="areJobsLoading" class="loading-div">
+      <mat-spinner diameter="55"></mat-spinner>
+      <div class="loading-text faint-text">Loading HyP3 Jobs</div>
+    </div>
+    <mat-list *ngIf="!areJobsLoading" role="list">
+      <mat-list-item *ngFor="let job of jobs">
+        <div matLine>
+          {{ job.filename }}
+
+        </div>
+
+        <div matLine>
+          <span *ngIf="job.bytes === 0">Virtual</span>
+          <span *ngIf="job.bytes !== 0">{{job.size | readableSizeFromBytes }}</span>
+        </div>
+
+        <a mat-icon-button matTooltip="Download" [href]="job.url" target="_blank" style="text-decoration: none;">
+          <mat-icon>cloud_download</mat-icon>
+        </a>
+      </mat-list-item>
+    </mat-list>
+  </mat-card-content>
+</mat-card>
