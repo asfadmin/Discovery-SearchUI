@@ -14,6 +14,7 @@ enum MobileViews {
   LIST = 0,
   DETAIL = 1,
   CHART = 2,
+  SBAS
 }
 
 @Component({
@@ -60,6 +61,10 @@ export class MobileResultsMenuComponent implements OnInit, OnDestroy {
 
   public onSelectChart(): void {
     this.view = MobileViews.CHART;
+  }
+
+  public onSelectSBASChart(): void {
+    this.view = MobileViews.SBAS;
   }
 
   ngOnDestroy() {
