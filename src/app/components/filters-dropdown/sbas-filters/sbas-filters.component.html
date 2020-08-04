@@ -1,0 +1,37 @@
+<mat-accordion multi>
+  <mat-expansion-panel
+    *ngIf="(breakpoint$ | async) === breakpoints.MOBILE"
+    [expanded]="defaultPanelOpenState" [disabled]="panelIsDisabled"
+    (click)="selectPanel(panels.SEARCH)"
+    [class.raised-section]="isSelected(panels.SEARCH)">
+
+    <mat-expansion-panel-header [collapsedHeight]="customCollapsedHeight" [expandedHeight]="customExpandedHeight">
+      <mat-panel-title>
+        Search Options
+      </mat-panel-title>
+    </mat-expansion-panel-header>
+
+    <div style="display: flex; margin-top: 25px;">
+      <app-search-type-selector style="margin-right: 10px;">
+      </app-search-type-selector>
+    </div>
+  </mat-expansion-panel>
+
+  <mat-expansion-panel
+    *ngIf="(breakpoint$ | async) === breakpoints.MOBILE"
+    [expanded]="defaultPanelOpenState" [disabled]="panelIsDisabled"
+    (click)="selectPanel(panels.MASTER)"
+    [class.raised-section]="isSelected(panels.MASTER)">
+
+    <mat-expansion-panel-header [collapsedHeight]="customCollapsedHeight" [expandedHeight]="customExpandedHeight">
+      <mat-panel-title>
+        Reference Scene
+      </mat-panel-title>
+    </mat-expansion-panel-header>
+
+    <div class="w100" style="display: flex; margin-top: 25px;">
+      <app-master-scene-selector class="w100"></app-master-scene-selector>
+    </div>
+  </mat-expansion-panel>
+
+</mat-accordion>
