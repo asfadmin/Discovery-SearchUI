@@ -66,7 +66,6 @@ export class HeaderButtonsComponent implements OnInit, OnDestroy {
         isLoggedIn => this.isLoggedIn = isLoggedIn
       )
     );
-    this.onOpenHyp3Dialog();
   }
 
   public onOpenDownloadQueue(): void {
