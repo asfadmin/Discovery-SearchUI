@@ -71,13 +71,15 @@ export class SearchButtonComponent implements OnInit, OnDestroy {
   }
 
   public onDoSearch(): void {
-    if (this.searchType === SearchType.BASELINE) {
+    if (this.searchType === SearchType.BASELINE
+    || this.searchType === SearchType.SBAS) {
       this.clearBaselineRanges();
     }
 
     this.store$.dispatch(new searchStore.MakeSearch());
 
     const search = this.savedSearchService.makeCurrentSearch(`${Date.now()}`);
+    console.log('search:', search);
 
     if (search) {
       this.store$.dispatch(new userStore.AddSearchToHistory(search));

@@ -16,11 +16,11 @@
      [class.selected]="view === Views.CHART" mat-button>
       Chart
     </button>
-<!--    <button *ngIf="searchType === SearchTypes.SBAS"-->
-<!--     (click)="onSelectSBASChart()"-->
-<!--     [class.selected]="view === Views.CHART" mat-button>-->
-<!--      SBAS Chart-->
-<!--    </button>-->
+    <button *ngIf="searchType === SearchTypes.SBAS"
+     (click)="onSelectSBASChart()"
+     [class.selected]="view === Views.CHART" mat-button>
+      SBAS Chart
+    </button>
   </div>
 
   <!-- SCENE LIST -->
@@ -31,6 +31,7 @@
       </mat-card-subtitle>
 
       <div class="app-scene-list">
+        mobile-results-menu
         <app-scenes-list [resize$]="resize$"></app-scenes-list>
       </div>
     </mat-card>
