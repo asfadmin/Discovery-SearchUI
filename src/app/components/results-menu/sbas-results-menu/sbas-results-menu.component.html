@@ -1,6 +1,5 @@
 <!-- SCENE LIST -->
-<!--<ng-container *ngIf=true>-->
-<!--<ng-container *ngIf="breakpoint > breakpoints.MOBILE">-->
+<ng-container *ngIf="breakpoint > breakpoints.MOBILE">
   <mat-card #listCard class="mp0 sbas-list-card" fxFlex="20" fxFlex
             [style.width]="listCardMaxWidth">
     <mat-card-subtitle style="display: flex; flex-direction: row; justify-content: center; align-items: center;" class="header">
@@ -62,7 +61,7 @@
       </div>
     </div>
   </mat-card>
-<!--</ng-container>-->
+</ng-container>
 
 <mat-card #chartCard
           class="mp0 no-box-shadow sbas-chart-card" fxFlex="60" fxFlexFill

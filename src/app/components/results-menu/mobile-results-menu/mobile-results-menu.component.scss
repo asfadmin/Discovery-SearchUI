@@ -1,5 +1,29 @@
 @import "asf-theme";
 
 .header-mobile {
-  min-height: 55px;
+  min-height: 36px;
+}
+
+.sbas-chart-row {
+  display: flex;
+  flex-direction: row;
+  height: calc(100% - 137px);
+}
+
+.sbas-filter-row {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 137px;
+  margin-top: 10px;
+}
+
+.sbas-column-1 {
+  flex-basis: 150px;
+  flex-shrink: 0;
+  flex-grow: 0;
+}
+
+.sbas-column-2 {
+  flex: 1 1 auto;
 }

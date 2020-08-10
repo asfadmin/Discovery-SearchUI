@@ -1,5 +1,5 @@
 import {Component, OnInit, Input, OnDestroy, ViewChild, ElementRef} from '@angular/core';
-import { Observable } from 'rxjs';
+import {combineLatest, Observable} from 'rxjs';
 import { tap } from 'rxjs/operators';
 import { ResizeEvent } from 'angular-resizable-element';
 
@@ -9,8 +9,8 @@ import * as uiStore from '@store/ui';
 import * as scenesStore from '@store/scenes';
 import * as searchStore from '@store/search';
 
-import { Breakpoints, CMRProductPair, SearchType } from '@models';
-import { ScreenSizeService, DatasetForProductService } from '@services';
+import {Breakpoints, CMRProduct, CMRProductPair, SearchType} from '@models';
+import {ScreenSizeService, DatasetForProductService, ScenesService, PairService} from '@services';
 
 import { SubSink } from 'subsink';
 
@@ -30,9 +30,17 @@ export class SBASResultsMenuComponent implements OnInit, OnDestroy {
   @ViewChild('chartCard', {read: ElementRef}) chartCardView: ElementRef;
 
   @Input() resize$: Observable<void>;
+  public searchType: SearchType;
+
   public pair: CMRProductPair;
   public isAddingCustomPoint: boolean;
-  public searchType: SearchType;
+  private scenes: CMRProduct[];
+  private queuedProduct;
+  private pairs;
+  private customPairs;
+  private isAddingCustomPair: boolean;
+  private selectedPair = [null, null];
+
 
   public view = CardViews.LIST;
   public Views = CardViews;
@@ -48,7 +56,9 @@ export class SBASResultsMenuComponent implements OnInit, OnDestroy {
   constructor(
     private store$: Store<AppState>,
     private screenSize: ScreenSizeService,
-    public datasetForProduct: DatasetForProductService
+    public datasetForProduct: DatasetForProductService,
+    private scenesService: ScenesService,
+    private pairService: PairService,
   ) { }
 
   ngOnInit(): void {
@@ -81,6 +91,31 @@ export class SBASResultsMenuComponent implements OnInit, OnDestroy {
         (selected: CMRProductPair) => this.pair = selected
       )
     );
+
+    const scenes$ = this.scenesService.scenes$();
+    const pairs$ = this.pairService.pairs$();
+
+    this.store$.select(scenesStore.getSelectedPair).pipe(
+    ).subscribe(
+      selected => this.selectedPair = selected
+    );
+
+    this.subs.add(
+      this.store$.select(uiStore.getIsAddingCustomPoint).pipe(
+        tap(_ => this.queuedProduct = null),
+      ).subscribe(
+        isAddingCustomPair => this.isAddingCustomPair = isAddingCustomPair
+      )
+    );
+
+    this.subs.add(
+      combineLatest(scenes$, pairs$).subscribe(([scenes, pairs]) => {
+        this.scenes = scenes;
+        this.pairs = pairs.pairs;
+        this.customPairs = pairs.custom;
+      })
+    );
+
   }
 
   public onResizeEnd(event: ResizeEvent): void {

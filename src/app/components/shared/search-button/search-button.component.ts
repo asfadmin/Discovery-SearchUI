@@ -79,7 +79,6 @@ export class SearchButtonComponent implements OnInit, OnDestroy {
     this.store$.dispatch(new searchStore.MakeSearch());
 
     const search = this.savedSearchService.makeCurrentSearch(`${Date.now()}`);
-    console.log('search:', search);
 
     if (search) {
       this.store$.dispatch(new userStore.AddSearchToHistory(search));
