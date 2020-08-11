@@ -63,8 +63,6 @@
           Baseline Tool
         </mat-button-toggle>
 
-        &nbsp;&nbsp;
-
         <mat-button-toggle *ngIf="searchType !== searchTypes.BASELINE && hasBaseline"
            (click)="makeSBASSearch()"
            class="mini-toggle-button"
@@ -78,8 +76,6 @@
            class="mini-toggle-button">
           Set as Reference
         </mat-button-toggle>
-
-        &nbsp;&nbsp;
 
         <mat-button-toggle *ngIf="searchType === searchTypes.DATASET && prop.isRelevant(p.PATH, dataset) && prop.isRelevant(p.FRAME, dataset)"
            (click)="findSimilarScenes()"
