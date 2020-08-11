@@ -77,13 +77,7 @@
         mat-raised-button>Set as Reference</button>
 
       &nbsp;&nbsp;
-      <a mat-raised-button class="mini-button"
-         target="_blank"
-         matTooltip="How to cite using this data"
-         [href]="dataset.citationUrl">
-        Citation
-      </a>
-      &nbsp;&nbsp;
+
       <a *ngIf="searchType === searchTypes.DATASET && prop.isRelevant(p.PATH, dataset) && prop.isRelevant(p.FRAME, dataset)"
          (click)="findSimilarScenes()"
          matTooltip="Search based on this scene's path/frame"
