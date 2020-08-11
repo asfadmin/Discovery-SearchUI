@@ -54,42 +54,41 @@
     </mat-card-content>
 
     <div class="detail-card-info">
-      <a *ngIf="searchType !== searchTypes.BASELINE && hasBaseline"
-         (click)="makeBaselineSearch()"
-         mat-raised-button class="mini-button" target="_blank"
-         matTooltip="Use this scene in the Baseline Tool for interferometry">
-        Baseline Tool
-      </a>
+      <mat-button-toggle-group id="sceneActions" name="sceneActions" aria-label="Scene Actions">
+        <mat-button-toggle *ngIf="searchType !== searchTypes.BASELINE && hasBaseline"
+           (click)="makeBaselineSearch()"
+           class="mini-toggle-button"
+           target="_blank"
+           matTooltip="Use this scene in the Baseline Tool for interferometry">
+          Baseline Tool
+        </mat-button-toggle>
 
-      &nbsp;&nbsp;
+        &nbsp;&nbsp;
 
-      <a *ngIf="searchType !== searchTypes.BASELINE && hasBaseline"
-         (click)="makeSBASSearch()"
-         mat-raised-button class="mini-button" target="_blank"
-         matTooltip="Use this scene in the SBAS Tool to make product pairs for interferometry">
-        SBAS Tool
-      </a>
+        <mat-button-toggle *ngIf="searchType !== searchTypes.BASELINE && hasBaseline"
+           (click)="makeSBASSearch()"
+           class="mini-toggle-button"
+           target="_blank"
+           matTooltip="Use this scene in the SBAS Tool to make product pairs for interferometry">
+          SBAS Tool
+        </mat-button-toggle>
 
-      <button
-         *ngIf="searchType === searchTypes.BASELINE"
-        (click)="onSetSelectedAsMaster()"
-        class="mini-button" color="secondary"
-        mat-raised-button>Set as Reference</button>
+        <mat-button-toggle *ngIf="searchType === searchTypes.BASELINE"
+          (click)="onSetSelectedAsMaster()"
+           class="mini-toggle-button">
+          Set as Reference
+        </mat-button-toggle>
 
-      &nbsp;&nbsp;
-      <a mat-raised-button class="mini-button"
-         target="_blank"
-         matTooltip="How to cite using this data"
-         [href]="dataset.citationUrl">
-        Citation
-      </a>
-      &nbsp;&nbsp;
-      <a *ngIf="searchType === searchTypes.DATASET && prop.isRelevant(p.PATH, dataset) && prop.isRelevant(p.FRAME, dataset)"
-         (click)="findSimilarScenes()"
-         matTooltip="Search based on this scene's path/frame"
-         mat-raised-button class="mini-button">
-        More Like This
-      </a>
+        &nbsp;&nbsp;
+
+        <mat-button-toggle *ngIf="searchType === searchTypes.DATASET && prop.isRelevant(p.PATH, dataset) && prop.isRelevant(p.FRAME, dataset)"
+           (click)="findSimilarScenes()"
+           class="mini-toggle-button"
+           matTooltip="Search based on this scene's path/frame">
+          More Like This
+        </mat-button-toggle>
+      </mat-button-toggle-group>
+
       <p *ngIf="!authService.isLoggedIn" class="faint-text accessing-text">
         Accessing this data requires you to log in.
         Some datasets also require a proposal, or agreement with a

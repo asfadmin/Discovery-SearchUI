@@ -104,3 +104,13 @@ a {
 .mat-card-header .mat-card-title {
   font-size: 16px;
 }
+
+.mini-toggle-button {
+  font-size: 12px;
+  line-height: 24px !important;
+}
+
+.mini-toggle-button .mat-button-toggle-appearance-standard .mat-button-toggle-label-content {
+  line-height: 24px !important;
+  padding: 0 12px;
+}
