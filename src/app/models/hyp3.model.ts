@@ -27,12 +27,12 @@ export interface Hyp3JobsResponse {
 
 export interface Hyp3Job {
   browse_images: string[];
-  description: string;
   expiration_time: moment.Moment;
   files: Hyp3ProductFile[];
   job_id: string;
   job_parameters: Hyp3JobParameters;
   job_type: Hyp3JobType;
+  name: string;
   request_time: moment.Moment;
   status_code: Hyp3JobStatusCode;
   thumbnail_images: string[];
