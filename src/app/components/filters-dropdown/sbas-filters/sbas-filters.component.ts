@@ -9,8 +9,10 @@ import * as models from '@models';
 import { ScreenSizeService } from '@services';
 
 enum FilterPanel {
-  MASTER = 'Master',
-  SEARCH = 'search',
+  SEARCH = 'Search Options',
+  MASTER = 'Reference Scene',
+  FILTER1 = 'Spatial Filter',
+  FILTER2 = 'Temporal Filter',
 }
 
 @Component({

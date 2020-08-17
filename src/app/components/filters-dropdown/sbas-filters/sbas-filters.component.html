@@ -7,7 +7,7 @@
 
     <mat-expansion-panel-header [collapsedHeight]="customCollapsedHeight" [expandedHeight]="customExpandedHeight">
       <mat-panel-title>
-        Search Options
+        {{ panels.SEARCH }}
       </mat-panel-title>
     </mat-expansion-panel-header>
 
@@ -25,7 +25,7 @@
 
     <mat-expansion-panel-header [collapsedHeight]="customCollapsedHeight" [expandedHeight]="customExpandedHeight">
       <mat-panel-title>
-        Reference Scene
+        {{ panels.MASTER }}
       </mat-panel-title>
     </mat-expansion-panel-header>
 
@@ -33,5 +33,42 @@
       <app-master-scene-selector class="w100"></app-master-scene-selector>
     </div>
   </mat-expansion-panel>
+
+  <mat-expansion-panel
+    *ngIf="(breakpoint$ | async) === breakpoints.MOBILE"
+    [expanded]="defaultPanelOpenState" [disabled]="panelIsDisabled"
+    (click)="selectPanel(panels.FILTER1)"
+    [class.raised-section]="isSelected(panels.FILTER1)">
+
+    <mat-expansion-panel-header [collapsedHeight]="customCollapsedHeight" [expandedHeight]="customExpandedHeight">
+      <mat-panel-title>
+        {{ panels.FILTER1 }}
+      </mat-panel-title>
+    </mat-expansion-panel-header>
+
+    <div class="w100" style="display: flex; margin-top: 25px;">
+<!--      <app-master-scene-selector class="w100"></app-master-scene-selector>-->
+      <app-sbas-sliders></app-sbas-sliders>
+    </div>
+  </mat-expansion-panel>
+
+  <mat-expansion-panel
+    *ngIf="(breakpoint$ | async) === breakpoints.MOBILE"
+    [expanded]="defaultPanelOpenState" [disabled]="panelIsDisabled"
+    (click)="selectPanel(panels.FILTER2)"
+    [class.raised-section]="isSelected(panels.FILTER2)">
+
+    <mat-expansion-panel-header [collapsedHeight]="customCollapsedHeight" [expandedHeight]="customExpandedHeight">
+      <mat-panel-title>
+        {{ panels.FILTER2 }}
+      </mat-panel-title>
+    </mat-expansion-panel-header>
+
+    <div id="mobile-sbas-slider-two" class="w100" style="display: flex; margin-top: 25px;">
+      <app-sbas-sliders-two class="w100"></app-sbas-sliders-two>
+    </div>
+  </mat-expansion-panel>
+
+
 
 </mat-accordion>

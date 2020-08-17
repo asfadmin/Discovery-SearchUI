@@ -1,11 +1,17 @@
-<div class="sbas-slider-two-wrapper">
+<div
+  [class.sbas-mobile-filter2]="(breakpoint$ | async) === breakpoints.MOBILE"
+  class="sbas-slider-two-wrapper">
+
   <div class="sbas-column-1">
     <div>
       <span class="sbas-label">Days: </span> {{temporal}}
     </div>
     <div>
-      <span class="sbas-label">Meters (m): </span> {{ perpendicular }}
+      <span class="sbas-label">Meters (m): </span> {{perpendicular}}
+<!--      <input matInput placeholder="Meters" value={{perpendicular}}>-->
     </div>
   </div>
-  <div class="sbas-column-2" #temporalFilter2></div>
+
+  <div #temporalFilter2 class="sbas-column-2">
+  </div>
 </div>

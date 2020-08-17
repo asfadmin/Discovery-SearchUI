@@ -4,6 +4,11 @@
   width: 100%;
 }
 
+.sbas-mobile-filter2.sbas-slider-two-wrapper,
+.sbas-slider-two-wrapper.sbas-mobile-filter2 {
+  height: 80px;
+}
+
 .sbas-label {
   color: grey;
 }
@@ -15,10 +20,19 @@
   padding-left: 30px;
 }
 
+.sbas-mobile-filter2 .sbas-column-1,
+.sbas-column-1 .sbas-mobile-filter2 {
+  //display: none;
+}
+
 .sbas-column-2 {
   flex-basis: calc(100% - 230px);
   flex-shrink: 0;
   flex-grow: 0;
   margin-left: 20px;
   margin-right: 30px;
+}
+
+.sbas-mobile-filter2 .sbas-column-2 {
+  width: 100%;
 }

@@ -57,6 +57,6 @@ import {MatButtonToggleModule} from '@angular/material/button-toggle';
         SceneMetadataModule,
         MatButtonToggleModule,
     ],
-  exports: [ResultsMenuComponent],
+  exports: [ResultsMenuComponent, SbasSlidersTwoComponent, SbasSlidersComponent],
 })
 export class ResultsMenuModule { }

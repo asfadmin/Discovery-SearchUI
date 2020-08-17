@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
+import {Component, OnInit, ViewChild, ElementRef, Input} from '@angular/core';
 
 import noUiSlider from 'nouislider';
 import { Subject, Observable } from 'rxjs';
@@ -9,6 +9,9 @@ import { Store } from '@ngrx/store';
 import * as filtersStore from '@store/filters';
 
 import { SubSink } from 'subsink';
+import { ScreenSizeService } from '@services';
+import * as models from '@models';
+
 declare var wNumb: any;
 
 @Component({
@@ -18,6 +21,9 @@ declare var wNumb: any;
 })
 export class SbasSlidersTwoComponent implements OnInit {
   @ViewChild('temporalFilter2', { static: true }) temporalFilter: ElementRef;
+
+  public breakpoint$ = this.screenSize.breakpoint$;
+  public breakpoints = models.Breakpoints;
 
   public temporalAutoTicks = false;
   public temporalShowTicks = true;
@@ -32,6 +38,7 @@ export class SbasSlidersTwoComponent implements OnInit {
 
   constructor(
     private store$: Store<AppState>,
+    private screenSize: ScreenSizeService
   ) { }
 
   ngOnInit(): void {
