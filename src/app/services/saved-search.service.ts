@@ -66,6 +66,7 @@ export class SavedSearchService {
       [models.SearchType.LIST]: this.currentListSearch$,
       [models.SearchType.BASELINE]: this.currentBaselineSearch$,
       [models.SearchType.SBAS]: this.currentSbasSearch$,
+      [models.SearchType.CUSTOM_PRODUCTS]: this.currentListSearch$,
     })[searchType]
     )
   );

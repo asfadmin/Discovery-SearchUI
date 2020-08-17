@@ -32,8 +32,5 @@ export class HeaderComponent implements OnInit {
 
   ngOnInit() {
   }
-
-  public onOpenDownloadQueue(): void {
-  }
 }
 

@@ -26,6 +26,9 @@
         <app-baseline-header *ngIf="searchType === searchTypes.SBAS">
         </app-baseline-header>
 
+        <app-hyp3-header *ngIf="searchType === searchTypes.HYP3">
+        </app-hyp3-header>
+
         <app-info-bar *ngIf="breakpoint !== breakpoints.MOBILE"></app-info-bar>
       </div>
     </div>
