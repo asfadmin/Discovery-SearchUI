@@ -50,11 +50,13 @@ export class SavedSearchService {
 
   private currentSbasSearch$ = combineLatest(
     this.store$.select(scenesStore.getFilterMaster),
+    this.store$.select(scenesStore.getCustomPairIds),
     this.store$.select(filtersStore.getSbasSearch),
   ).pipe(
-    map(([master, baselineFilters]) => ({
+    map(([master, customPairIds, sbasFilters]) => ({
       master,
-      ...baselineFilters
+      customPairIds,
+      ...sbasFilters
     }))
   );
 

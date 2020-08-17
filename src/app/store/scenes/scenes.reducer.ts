@@ -9,7 +9,7 @@ interface SceneEntities { [id: string]: CMRProduct; }
 export interface ScenesState {
   ids: string[];
   products: SceneEntities;
-  customPairs: CMRProductPair[];
+  customPairIds: string[][];
   selectedPair: string[] | null;
   areResultsLoaded: boolean;
   scenes: {[id: string]: string[]};
@@ -30,7 +30,7 @@ export interface ScenesState {
 export const initState: ScenesState = {
   ids: [],
   scenes: {},
-  customPairs: [],
+  customPairIds: [],
   selectedPair: null,
   unzipped: {},
   productUnzipLoading: null,
@@ -235,24 +235,35 @@ export function scenesReducer(state = initState, action: ScenesActions): ScenesS
     }
 
     case ScenesActionType.ADD_CUSTOM_PAIR: {
+      const ids = action.payload;
+
       return {
         ...state,
-        customPairs: [...state.customPairs, action.payload]
+        customPairIds: [...state.customPairIds, ids]
+      };
+    }
+
+    case ScenesActionType.ADD_CUSTOM_PAIRS: {
+      const ids = action.payload;
+
+      return {
+        ...state,
+        customPairIds: [...state.customPairIds, ...ids]
       };
     }
 
     case ScenesActionType.REMOVE_CUSTOM_PAIR: {
       const toRemove = new Set(action.payload.map(product => product.id));
 
-      const pairs = [ ...state.customPairs ].filter(pair => {
-        const ids = new Set(pair.map(product => product.id));
+      const pairs = [ ...state.customPairIds ].filter(pair => {
+        const ids = new Set(pair);
 
         return !eqSet(toRemove, ids);
       });
 
       return {
         ...state,
-        customPairs: pairs,
+        customPairIds: pairs,
         selectedPair: null ,
       };
     }
@@ -260,7 +271,7 @@ export function scenesReducer(state = initState, action: ScenesActions): ScenesS
     case ScenesActionType.CLEAR_CUSTOM_PAIRS: {
       return {
         ...state,
-        customPairs: []
+        customPairIds: []
       };
     }
 
@@ -497,9 +508,16 @@ export const getTemporalSortDirection = createSelector(
   state => state.temporalSort
 );
 
+export const getCustomPairIds = createSelector(
+  getScenesState,
+  state => state.customPairIds
+);
+
 export const getCustomPairs = createSelector(
   getScenesState,
-  state => state.customPairs
+  state => state.customPairIds.map(
+    pairIds => pairIds.map(id => state.products[id])
+  )
 );
 
 export const getSelectedPairIds = createSelector(
@@ -532,8 +550,8 @@ export const getIsSelectedPairCustom = createSelector(
 
     const selectedPairIds = new Set(selectedPair);
 
-    return state.customPairs.some(pair => {
-      const ids = new Set(pair.map(product => product.id));
+    return state.customPairIds.some(pairIds => {
+      const ids = new Set(pairIds);
 
       return eqSet(ids, selectedPairIds);
     });
