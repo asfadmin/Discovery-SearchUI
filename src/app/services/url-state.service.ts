@@ -604,8 +604,6 @@ export class UrlStateService {
       .split('$')
       .map(pair => pair.split(','));
 
-    console.log(pairsStr, pairs);
-
     return new scenesStore.AddCustomPairs(pairs);
   }
 
