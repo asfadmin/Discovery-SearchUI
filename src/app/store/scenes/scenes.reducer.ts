@@ -235,11 +235,20 @@ export function scenesReducer(state = initState, action: ScenesActions): ScenesS
     }
 
     case ScenesActionType.ADD_CUSTOM_PAIR: {
-      const ids = action.payload.map(p => p.id);
+      const ids = action.payload;
 
       return {
         ...state,
         customPairIds: [...state.customPairIds, ids]
+      };
+    }
+
+    case ScenesActionType.ADD_CUSTOM_PAIRS: {
+      const ids = action.payload;
+
+      return {
+        ...state,
+        customPairIds: [...state.customPairIds, ...ids]
       };
     }
 

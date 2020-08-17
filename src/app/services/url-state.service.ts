@@ -47,6 +47,7 @@ export class UrlStateService {
       ...this.filtersParameters(),
       ...this.missionParameters(),
       ...this.baselineParameters(),
+      ...this.sbasParameters(),
     ];
 
     this.urlParamNames = params.map(param => param.name);
@@ -168,6 +169,18 @@ export class UrlStateService {
         map(master => ({ master }))
       ),
       loader: this.loadMasterScene
+    }];
+  }
+
+  private sbasParameters(): models.UrlParameter[] {
+    return [{
+      name: 'pairs',
+      source: this.store$.select(scenesStore.getCustomPairIds).pipe(
+        map(pairIds => ({
+          pairs: pairIds.map(pair => pair.join(',')).join('$')
+        }))
+      ),
+      loader: this.loadSbasPairs
     }];
   }
 
@@ -584,6 +597,16 @@ export class UrlStateService {
 
   private loadMasterScene = (master: string): Action => {
     return new scenesStore.SetFilterMaster(master);
+  }
+
+  private loadSbasPairs = (pairsStr: string): Action => {
+    const pairs = pairsStr
+      .split('$')
+      .map(pair => pair.split(','));
+
+    console.log(pairsStr, pairs);
+
+    return new scenesStore.AddCustomPairs(pairs);
   }
 
   private updateShouldSearch(): void {

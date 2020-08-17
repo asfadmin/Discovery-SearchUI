@@ -443,7 +443,7 @@ export class SBASChartComponent implements OnInit, OnDestroy {
     }
 
     this.store$.dispatch(
-      new scenesStore.AddCustomPair([ this.queuedProduct, product ])
+      new scenesStore.AddCustomPair([ this.queuedProduct.id, product.id ])
     );
     this.queuedProduct = null;
   }
