@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild, ElementRef, Input } from '@angular/core';
 
 import noUiSlider from 'nouislider';
-import { Subject, Observable } from 'rxjs';
+import {Subject, Observable, fromEvent} from 'rxjs';
 import { delay, debounceTime, distinctUntilChanged, take, filter, map } from 'rxjs/operators';
 
 import { AppState } from '@store';
@@ -22,6 +22,7 @@ declare var wNumb: any;
 })
 export class SbasSlidersTwoComponent implements OnInit {
   @ViewChild('temporalFilter2', { static: true }) temporalFilter: ElementRef;
+  @ViewChild('meterInputField', { static: true }) meterFilter: ElementRef;
 
   public breakpoint$ = this.screenSize.breakpoint$;
   public breakpoint: models.Breakpoints;
@@ -62,6 +63,22 @@ export class SbasSlidersTwoComponent implements OnInit {
   ngOnInit(): void {
     const [tempSlider, daysValues$] = this.makeDaysSlider$(this.temporalFilter);
     this.tempSlider = tempSlider;
+
+    fromEvent(this.meterFilter.nativeElement, 'keyup').pipe(
+      // get value
+      map((event: any) => {
+        return event.target.value;
+      })
+      // if character length greater then 2
+      , filter(res => res.length > 0)
+      // Time in milliseconds between key events
+      , debounceTime(500)
+      // If previous query is diffent from current
+      , distinctUntilChanged()
+      // subscription for response
+    ).subscribe((meters: number) => {
+      this.metersValues$.next([this.perpendicular, null] );
+    });
 
     this.subs.add(
       this.screenSize.breakpoint$.subscribe(breakpoint => this.breakpoint = breakpoint )
@@ -118,7 +135,7 @@ export class SbasSlidersTwoComponent implements OnInit {
 
   public updatePerpendicular() {
     this.options.controls.meterDistance.setValue(this.perpendicular);
-    this.metersValues$.next([this.perpendicular, null] );
+    // this.metersValues$.next([this.perpendicular, null] );
     // this.slider.set(this.perpendicular);
   }
 
