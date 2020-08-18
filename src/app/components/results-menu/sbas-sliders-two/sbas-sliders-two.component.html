@@ -1,17 +1,50 @@
-<div
-  [class.sbas-mobile-filter2]="(breakpoint$ | async) === breakpoints.MOBILE"
-  class="sbas-slider-two-wrapper">
-
-  <div class="sbas-column-1">
-    <div>
-      <span class="sbas-label">Days: </span> {{temporal}}
+<!---->
+<!--SBAS Chart Filters for DESKTOP/TABLET devices-->
+<!---->
+<div [hidden]="breakpoint === breakpoints.MOBILE">
+  <div class="sbas-slider-two-wrapper">
+    <div class="sbas-column-1">
+      <div>
+        <span class="sbas-label">Days: </span> {{days}}
+      </div>
+      <div>
+        <span class="sbas-label">Meters (m): </span> {{perpendicular}}
+      </div>
     </div>
-    <div>
-      <span class="sbas-label">Meters (m): </span> {{perpendicular}}
-<!--      <input matInput placeholder="Meters" value={{perpendicular}}>-->
+
+    <div #temporalFilter2 class="sbas-column-2">
     </div>
   </div>
+</div>
 
-  <div #temporalFilter2 class="sbas-column-2">
+<!---->
+<!--SBAS Chart Filters for MOBILE devices-->
+<!---->
+<div [hidden]="breakpoint != breakpoints.MOBILE">
+  <div class="sbas-slider-two-wrapper-mobile">
+
+    <mat-form-field appearance="fill" [color]="colorControl.value" [style.width.px]=225>
+      <mat-label>Perpendicular Baseline</mat-label>
+      <input [(ngModel)]="perpendicular"
+             matInput type="number" placeholder="Ex. 185"
+             min="-999" max="999"
+             required
+             (input)="updatePerpendicular()">
+      <span matSuffix>meters</span>
+      <mat-error *ngIf="meterDistanceControl.invalid">Invalid Baseline</mat-error>
+    </mat-form-field>
+    <div class="field-spacing"></div>
+
+    <mat-form-field appearance="fill" [color]="colorControl.value" [style.width.px]=225>
+      <mat-label>Days</mat-label>
+      <input [(ngModel)]="days"
+             matInput type="number" placeholder="Ex. 20"
+             min="0" max="60"
+             required
+             (input)="updateDaysOffset()">
+      <span matSuffix>days</span>
+      <mat-error *ngIf="daysControl.invalid">Invalid number of days</mat-error>
+    </mat-form-field>
+
   </div>
 </div>

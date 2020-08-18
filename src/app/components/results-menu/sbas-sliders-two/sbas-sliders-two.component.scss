@@ -4,6 +4,13 @@
   width: 100%;
 }
 
+.sbas-slider-two-wrapper-mobile {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  justify-content: center;
+}
+
 .sbas-mobile-filter2.sbas-slider-two-wrapper,
 .sbas-slider-two-wrapper.sbas-mobile-filter2 {
   height: 80px;
@@ -35,4 +42,8 @@
 
 .sbas-mobile-filter2 .sbas-column-2 {
   width: 100%;
+}
+
+.field-spacing {
+  width: 30px;
 }
