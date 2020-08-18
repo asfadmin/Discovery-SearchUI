@@ -1,3 +1,17 @@
+@import "asf-theme";
+$config: mat-typography-config();
+
+$info-background: $asf-primary-light;
+$info-color: $asf-primary;
+
+.mobile-size {
+  margin-left: 5px !important;
+}
+
+.mobile-size .scene-count {
+  margin-top: -15px;
+}
+
 .files-header .mobile-size {
   font-size: 12px !important;
   font-weight: bold;
@@ -21,7 +35,12 @@
   display: flex;
   justify-content: flex-start;
   height: 22px;
-  margin-left: 69px;
+  margin-left: 30px;
+}
+
+.sbas-header-row-left {
+  height: 31px;
+  margin-left: 0;
 }
 
 .header-row-left .mobile-size {
@@ -65,4 +84,47 @@
 
 .mr-10 {
   margin-right: 10px;
+}
+
+.list-button {
+  border: darkgrey 1px solid;
+  background: white;
+  color: inherit;
+  padding: 0 0 0 5px;
+  margin: 0 5px 0 0;
+  font: inherit;
+  outline: none;
+  width: 35px;
+  height: 26px;
+  cursor: pointer;
+  text-align: center;
+}
+
+.list-icon {
+  margin-top: -2px;
+  font-size: 18px !important;
+  height: 18px !important;
+  width: 18px !important;
+}
+
+.list-button-group {
+  max-width: fit-content;
+  margin-top: -20px;
+  line-height: 26px !important;
+}
+
+.button-group-label {
+  text-align: center;
+  color: $info-color;
+  font-size: 12px;
+  margin-left: -10px;
+  line-height: 15px;
+}
+
+.control-mat-button-toggle {
+  background-color: white;
+}
+
+.space-filler {
+  width: 30px;
 }

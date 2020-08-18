@@ -15,6 +15,10 @@
   pointer-events: auto;
 }
 
+.results-menu {
+  margin-top: -16px;
+ }
+
 .header {
   height: 30px;
   padding-top: 20px;
@@ -43,11 +47,11 @@
   height: 16px;
   cursor: row-resize;
   background-image: url('/assets/div-handles/hsizegrip.png');
-  background-color: $asf-primary-light;
+  //background-color: $asf-primary-light;
   background-position: center; /* Center the image */
   background-repeat: no-repeat; /* Do not repeat the image */
   text-align: center;
-  top: -20px;
+  top: -15px;
   width: 45px;
   z-index: 9;
   display: inline-block;
@@ -122,6 +126,9 @@
   display: flex;
   justify-content: center;
   width: 100%;
+  height: 0;
+  padding-top: 21px;
+  background-color: $asf-primary-light;
 }
 
 .mobile {
@@ -129,3 +136,4 @@
   font-weight: bold;
   line-height: 22px;
 }
+

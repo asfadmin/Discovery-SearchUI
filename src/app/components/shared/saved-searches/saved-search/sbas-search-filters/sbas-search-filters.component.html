@@ -1,5 +1,10 @@
 <div>
-  <b>Reference: </b> {{ filters.master }}
+  <div>
+    <b>Reference: </b> {{ filters.master }}
+  </div>
+  <div *ngIf="!!filters.customPairIds && filters.customPairIds.length !== 0">
+    <b>Custom Pairs: </b> {{ filters.customPairIds.length }}
+  </div>
   <div *ngIf="filters.temporal !== null">
     <b>Temporal: </b> {{ filters.temporal }}
   </div>

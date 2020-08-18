@@ -18,6 +18,10 @@
         <ng-container *ngIf="selectedSearchType === searchTypes.BASELINE">
           Baseline Search
         </ng-container>
+
+        <ng-container *ngIf="selectedSearchType === searchTypes.SBAS">
+          SBAS Search
+        </ng-container>
       </div>
 
       <div fxFlex="nogrow">
@@ -40,6 +44,11 @@
       <ng-container *ngIf="selectedSearchType === searchTypes.BASELINE">
         <app-baseline-filters></app-baseline-filters>
       </ng-container>
+
+      <ng-container *ngIf="selectedSearchType === searchTypes.SBAS">
+        <app-sbas-filters></app-sbas-filters>
+      </ng-container>
+
     </div>
 
     <div class="footer">
