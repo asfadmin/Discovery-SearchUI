@@ -25,7 +25,8 @@
 
     <mat-form-field appearance="fill" [color]="colorControl.value" [style.width.px]=225>
       <mat-label>Perpendicular Baseline</mat-label>
-      <input [(ngModel)]="perpendicular"
+      <input #meterInputField
+             [(ngModel)]="perpendicular"
              matInput type="number" placeholder="Ex. 185"
              min="-999" max="999"
              required
