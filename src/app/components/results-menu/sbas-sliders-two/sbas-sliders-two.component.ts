@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, Input } from '@angular/core';
 
 import noUiSlider from 'nouislider';
 import { Subject, Observable } from 'rxjs';
@@ -9,6 +9,10 @@ import { Store } from '@ngrx/store';
 import * as filtersStore from '@store/filters';
 
 import { SubSink } from 'subsink';
+import { ScreenSizeService } from '@services';
+import * as models from '@models';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+
 declare var wNumb: any;
 
 @Component({
@@ -19,6 +23,10 @@ declare var wNumb: any;
 export class SbasSlidersTwoComponent implements OnInit {
   @ViewChild('temporalFilter2', { static: true }) temporalFilter: ElementRef;
 
+  public breakpoint$ = this.screenSize.breakpoint$;
+  public breakpoint: models.Breakpoints;
+  public breakpoints = models.Breakpoints;
+
   public temporalAutoTicks = false;
   public temporalShowTicks = true;
   public temporalTickInterval = 7;
@@ -26,20 +34,41 @@ export class SbasSlidersTwoComponent implements OnInit {
   public tempSlider;
   public temporal: number;
   public perpendicular: number;
+  public days: number;
+  public daysValues$ = new Subject<number[]>();
+  public metersValues$ = new Subject<number[]>();
+  public slider;
 
   private firstLoad = true;
   private subs = new SubSink();
 
+  options: FormGroup;
+  colorControl = new FormControl('primary');
+  meterDistanceControl = new FormControl(this.perpendicular, Validators.min(-999));
+  daysControl = new FormControl(this.days, Validators.min(0));
+
   constructor(
     private store$: Store<AppState>,
-  ) { }
+    private screenSize: ScreenSizeService,
+    fb: FormBuilder
+  ) {
+      this.options = fb.group({
+        color: this.colorControl,
+        meterDistance: this.meterDistanceControl,
+        days: this.daysControl,
+    });
+  }
 
   ngOnInit(): void {
-    const [tempSlider, tempValues$] = this.makeTemporalSlider$(this.temporalFilter);
+    const [tempSlider, daysValues$] = this.makeDaysSlider$(this.temporalFilter);
     this.tempSlider = tempSlider;
 
     this.subs.add(
-      tempValues$.subscribe(
+      this.screenSize.breakpoint$.subscribe(breakpoint => this.breakpoint = breakpoint )
+    );
+
+    this.subs.add(
+      daysValues$.subscribe(
         ([start]) => {
           const action = new filtersStore.SetTemporalRange({ start, end: null });
           this.store$.dispatch(action);
@@ -50,10 +79,9 @@ export class SbasSlidersTwoComponent implements OnInit {
     this.subs.add(
       this.store$.select(filtersStore.getTemporalRange).subscribe(
         temp => {
-          this.temporal = temp.start;
-
+          this.days = temp.start;
           if (this.firstLoad) {
-            this.tempSlider.set([this.temporal]);
+            this.slider.set([this.days]);
             this.firstLoad = false;
           }
         }
@@ -64,9 +92,20 @@ export class SbasSlidersTwoComponent implements OnInit {
       this.store$.select(filtersStore.getPerpendicularRange).subscribe(
         perp => {
           this.perpendicular = perp.start;
+          this.options.controls.meterDistance.setValue(this.perpendicular);
         }
       )
     );
+
+    this.subs.add(
+      this.metersValues$.subscribe(
+        ([start]) => {
+          const action = new filtersStore.SetPerpendicularRange({ start, end: null });
+          this.store$.dispatch(action);
+        }
+      )
+    );
+
   }
 
   public getTemporalSliderTickInterval(): number | 'auto' {
@@ -77,10 +116,21 @@ export class SbasSlidersTwoComponent implements OnInit {
     return 0;
   }
 
-  private makeTemporalSlider$(filterRef: ElementRef) {
-    const values$ = new Subject<number[]>();
+  public updatePerpendicular() {
+    this.options.controls.meterDistance.setValue(this.perpendicular);
+    this.metersValues$.next([this.perpendicular, null] );
+    // this.slider.set(this.perpendicular);
+  }
+
+  public updateDaysOffset() {
+    this.options.controls.days.setValue(this.days);
+    this.daysValues$.next([this.days, null] );
+    // this.slider.set(this.days);
+  }
+
+  private makeDaysSlider$(filterRef: ElementRef) {
     // @ts-ignore
-    const slider = noUiSlider.create(filterRef.nativeElement, {
+    this.slider = noUiSlider.create(filterRef.nativeElement, {
       orientation: 'horizontal',
       direction: 'ltr',
       start: [48],
@@ -103,13 +153,13 @@ export class SbasSlidersTwoComponent implements OnInit {
       }
     });
 
-    slider.on('update', (values, handle) => {
-      values$.next(values.map(v => +v));
+    this.slider.on('update', (values, handle) => {
+      this.daysValues$.next(values.map(v => +v));
     });
 
     return [
-      slider,
-      values$.asObservable().pipe(
+      this.slider,
+      this.daysValues$.asObservable().pipe(
         debounceTime(500),
         distinctUntilChanged()
       )

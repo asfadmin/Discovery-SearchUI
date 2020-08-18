@@ -8,19 +8,21 @@ import { DateSelectorModule } from '@components/shared/selectors/date-selector';
 import { SbasFiltersComponent } from './sbas-filters.component';
 import { MasterSceneSelectorModule } from '@components/shared/selectors/master-scene-selector';
 import { SearchTypeSelectorModule } from '@components/shared/selectors/search-type-selector';
+import { ResultsMenuModule } from '@components/results-menu';
 
 
 @NgModule({
   declarations: [SbasFiltersComponent],
-  imports: [
-    CommonModule,
-    MatExpansionModule,
-    MatSharedModule,
-    SeasonSelectorModule,
-    DateSelectorModule,
-    MasterSceneSelectorModule,
-    SearchTypeSelectorModule,
-  ],
+    imports: [
+        CommonModule,
+        MatExpansionModule,
+        MatSharedModule,
+        SeasonSelectorModule,
+        DateSelectorModule,
+        MasterSceneSelectorModule,
+        SearchTypeSelectorModule,
+        ResultsMenuModule,
+    ],
   exports: [
     SbasFiltersComponent
   ]

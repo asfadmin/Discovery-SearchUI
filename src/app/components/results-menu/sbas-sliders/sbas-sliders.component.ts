@@ -34,7 +34,7 @@ export class SbasSlidersComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    const [tempSlider, tempValues$] = this.makeTemporalSlider$(this.temporalFilter);
+    const [tempSlider, tempValues$] = this.makeBaselineSlider$(this.temporalFilter);
     this.tempSlider = tempSlider;
 
     this.subs.add(
@@ -60,7 +60,7 @@ export class SbasSlidersComponent implements OnInit {
     );
   }
 
-  public getTemporalSliderTickInterval(): number | 'auto' {
+  public getBaselineSliderTickInterval(): number | 'auto' {
     if (this.temporalShowTicks) {
       return this.temporalAutoTicks ? 'auto' : this.temporalTickInterval;
     }
@@ -68,7 +68,7 @@ export class SbasSlidersComponent implements OnInit {
     return 0;
   }
 
-  private makeTemporalSlider$(filterRef: ElementRef) {
+  private makeBaselineSlider$(filterRef: ElementRef) {
     const values$ = new Subject<number[]>();
     // @ts-ignore
     const slider = noUiSlider.create(filterRef.nativeElement, {
