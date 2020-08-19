@@ -7,7 +7,7 @@
 
     <mat-expansion-panel-header [collapsedHeight]="customCollapsedHeight" [expandedHeight]="customExpandedHeight">
       <mat-panel-title>
-        Search Options
+        {{ panels.SEARCH }}
       </mat-panel-title>
     </mat-expansion-panel-header>
 
@@ -25,7 +25,7 @@
 
     <mat-expansion-panel-header [collapsedHeight]="customCollapsedHeight" [expandedHeight]="customExpandedHeight">
       <mat-panel-title>
-        Reference Scene
+        {{ panels.MASTER }}
       </mat-panel-title>
     </mat-expansion-panel-header>
 
@@ -33,5 +33,4 @@
       <app-master-scene-selector class="w100"></app-master-scene-selector>
     </div>
   </mat-expansion-panel>
-
 </mat-accordion>
