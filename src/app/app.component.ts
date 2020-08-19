@@ -169,7 +169,7 @@ export class AppComponent implements OnInit, OnDestroy {
   private updateMaxSearchResults(): void {
     const checkAmount = this.searchParams$.getParams().pipe(
       debounceTime(200),
-      map(params => ({...params, ...{output: 'COUNT'}})),
+      map(params => ({...params, output: 'COUNT'})),
       tap(_ =>
         this.store$.dispatch(new searchStore.SearchAmountLoading())
       ),

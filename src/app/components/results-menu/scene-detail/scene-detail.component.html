@@ -54,7 +54,7 @@
     </mat-card-content>
 
     <div class="detail-card-info">
-      <mat-button-toggle-group id="sceneActions" name="sceneActions" aria-label="Scene Actions">
+      <mat-button-toggle-group class="scene-actions" name="sceneActions" aria-label="Scene Actions">
         <mat-button-toggle *ngIf="searchType !== searchTypes.BASELINE && hasBaseline"
            (click)="makeBaselineSearch()"
            class="mini-toggle-button"

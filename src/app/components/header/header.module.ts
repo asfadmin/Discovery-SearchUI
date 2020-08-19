@@ -38,6 +38,7 @@ import { AoiFilterComponent } from './dataset-header/aoi-filter/aoi-filter.compo
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { BaselineHeaderComponent } from './baseline-header/baseline-header.component';
 import { MasterSceneSelectorModule } from '@components/shared/selectors/master-scene-selector';
+import { Hyp3HeaderComponent } from './hyp3-header/hyp3-header.component';
 
 
 @NgModule({
@@ -47,7 +48,8 @@ import { MasterSceneSelectorModule } from '@components/shared/selectors/master-s
     DatasetHeaderComponent,
     ListHeaderComponent,
     AoiFilterComponent,
-    BaselineHeaderComponent
+    BaselineHeaderComponent,
+    Hyp3HeaderComponent
   ],
   imports: [
     CommonModule,
