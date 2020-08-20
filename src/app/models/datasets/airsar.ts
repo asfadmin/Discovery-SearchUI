@@ -3,6 +3,7 @@ import { Props } from '../filters.model';
 export const airsar = {
   id: 'AIRSAR',
   name: 'AIRSAR',
+  subName: '',
   properties: [
     Props.DATE,
     Props.BEAM_MODE,

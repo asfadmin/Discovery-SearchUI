@@ -3,6 +3,7 @@ import { Props } from '../filters.model';
 export const alos = {
   id: 'ALOS',
   name: 'ALOS PALSAR',
+  subName: '',
   properties: [
     Props.DATE,
     Props.BEAM_MODE,

@@ -3,6 +3,7 @@ import { Props } from '../filters.model';
 export const seasat = {
   id: 'SEASAT',
   name: 'SEASAT',
+  subName: '',
   properties: [
     Props.DATE,
     Props.BEAM_MODE,

@@ -17,3 +17,18 @@
 .dataset__info:hover {
   color: black;
 }
+
+.dataset__subName {
+  line-height: 12px;
+  font-size: 11px;
+  display: block;
+  position: relative;
+  top: -18px;
+}
+
+.subName__adj {
+  display: inline-block;
+  top: -2px;
+  position: relative;
+
+}

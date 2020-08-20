@@ -3,6 +3,7 @@ import { Props } from '../filters.model';
 export const radarsat_1 = {
   id: 'RADARSAT-1',
   name: 'RADARSAT-1',
+  subName: '',
   properties: [
     Props.DATE,
     Props.BEAM_MODE,

@@ -3,6 +3,7 @@ import { Props } from '../filters.model';
 export const sentinel_1 = {
   id: 'SENTINEL-1',
   name: 'Sentinel-1',
+  subName: '',
   properties: [
     Props.DATE,
     Props.BEAM_MODE,

@@ -3,6 +3,7 @@ import { Props } from '../filters.model';
 export const sirc = {
   id: 'SIR-C',
   name: 'SIR-C (BETA)',
+  subName: '',
   properties: [
     Props.DATE,
     Props.BEAM_MODE,
