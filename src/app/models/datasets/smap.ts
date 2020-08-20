@@ -3,6 +3,7 @@ import { Props } from '../filters.model';
 export const smap = {
   id: 'SMAP',
   name: 'SMAP',
+  subName: '',
   properties: [
     Props.DATE,
     Props.BEAM_MODE,

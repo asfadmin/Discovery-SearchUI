@@ -3,6 +3,7 @@ import { Props } from '../filters.model';
 export const avnir = {
   id: 'AVNIR',
   name: 'ALOS AVNIR-2',
+  subName: '',
   properties: [
     Props.DATE,
     Props.BEAM_MODE,
