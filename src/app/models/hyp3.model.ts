@@ -6,7 +6,7 @@ export interface Hyp3JobSubmissions {
 }
 
 export interface Hyp3JobSubmission {
-  description: string;
+  name: string;
   job_parameters: Hyp3JobParameters;
   job_type: Hyp3JobType;
 }
