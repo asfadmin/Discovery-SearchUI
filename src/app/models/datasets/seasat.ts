@@ -4,6 +4,7 @@ export const seasat = {
   id: 'SEASAT',
   name: 'SEASAT',
   subName: '',
+  beta: false,
   properties: [
     Props.DATE,
     Props.BEAM_MODE,

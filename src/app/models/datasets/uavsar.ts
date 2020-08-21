@@ -4,6 +4,7 @@ export const uavsar = {
   id: 'UAVSAR',
   name: 'UAVSAR',
   subName: '',
+  beta: false,
   properties: [
     Props.DATE,
     Props.BEAM_MODE,

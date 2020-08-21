@@ -4,6 +4,7 @@ export const alos = {
   id: 'ALOS',
   name: 'ALOS PALSAR',
   subName: '',
+  beta: false,
   properties: [
     Props.DATE,
     Props.BEAM_MODE,

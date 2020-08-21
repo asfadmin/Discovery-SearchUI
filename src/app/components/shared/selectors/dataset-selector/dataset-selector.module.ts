@@ -10,18 +10,20 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatSharedModule } from '@shared';
 import { DatasetSelectorComponent } from './dataset-selector.component';
 import { DatasetComponent } from './dataset/dataset.component';
+import {MatBadgeModule} from '@angular/material/badge';
 
 
 @NgModule({
-  imports: [
-    CommonModule,
-    FormsModule,
-    FontAwesomeModule,
-    MatMenuModule,
-    MatSelectModule,
-    MatListModule,
-    MatSharedModule,
-  ],
+    imports: [
+        CommonModule,
+        FormsModule,
+        FontAwesomeModule,
+        MatMenuModule,
+        MatSelectModule,
+        MatListModule,
+        MatSharedModule,
+        MatBadgeModule,
+    ],
   declarations: [
     DatasetSelectorComponent,
     DatasetComponent
