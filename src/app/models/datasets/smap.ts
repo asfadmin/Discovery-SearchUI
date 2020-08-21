@@ -4,6 +4,7 @@ export const smap = {
   id: 'SMAP',
   name: 'SMAP',
   subName: '',
+  beta: false,
   properties: [
     Props.DATE,
     Props.BEAM_MODE,

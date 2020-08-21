@@ -4,6 +4,7 @@ export const radarsat_1 = {
   id: 'RADARSAT-1',
   name: 'RADARSAT-1',
   subName: '',
+  beta: false,
   properties: [
     Props.DATE,
     Props.BEAM_MODE,

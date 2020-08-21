@@ -4,6 +4,7 @@ export const avnir = {
   id: 'AVNIR',
   name: 'ALOS AVNIR-2',
   subName: '',
+  beta: false,
   properties: [
     Props.DATE,
     Props.BEAM_MODE,
