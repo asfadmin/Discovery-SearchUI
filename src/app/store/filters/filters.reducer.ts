@@ -25,7 +25,7 @@ export interface FiltersState {
   flightDirections: Set<models.FlightDirection>;
   subtypes: models.DatasetSubtypes;
 
-  missions: {[dataset: string]: string};
+  missions: {[dataset: string]: string[]};
   selectedMission: null | string;
 
   maxResults: number;
