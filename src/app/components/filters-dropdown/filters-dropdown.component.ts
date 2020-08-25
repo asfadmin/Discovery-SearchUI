@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import {Component, OnInit, OnDestroy, Input} from '@angular/core';
 
 import {
   trigger, state, style, animate, transition
@@ -14,6 +14,7 @@ import * as searchStore from '@store/search';
 import { ScreenSizeService } from '@services';
 import { SubSink } from 'subsink';
 import * as models from '@models';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-filters-dropdown',
@@ -30,6 +31,7 @@ import * as models from '@models';
   ],
 })
 export class FiltersDropdownComponent implements OnInit, OnDestroy {
+  @Input() dataset$: Observable<models.Dataset>;
   public isFiltersMenuOpen$ = this.store$.select(uiStore.getIsFiltersMenuOpen);
 
   public searchType$ = this.store$.select(searchStore.getSearchType);

@@ -8,7 +8,10 @@ import * as uiStore from '@store/ui';
 
 import { ScreenSizeService } from '@services';
 import { Breakpoints } from '@models';
+import { SearchType } from '@models';
 import { SubSink } from 'subsink';
+import * as searchStore from '@store/search';
+import * as models from '@models';
 
 
 @Component({
@@ -23,6 +26,11 @@ export class BaselineHeaderComponent implements OnInit {
   public breakpoint$ = this.screenSize.breakpoint$;
   public breakpoints = Breakpoints;
   public areResultsLoaded: boolean;
+
+  public selectedProducts$ = this.store$.select(scenesStore.getSelectedSceneProducts);
+
+  public searchType$ = this.store$.select(searchStore.getSearchType);
+  public searchTypes = models.SearchType;
 
   private subs = new SubSink();
 

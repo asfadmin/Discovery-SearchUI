@@ -1,11 +1,49 @@
-<div class="sbas-slider-two-wrapper">
-  <div class="sbas-column-1">
-    <div>
-      <span class="sbas-label">Days: </span> {{temporal}}
+<!---->
+<!--SBAS Chart Filters for DESKTOP/TABLET devices-->
+<!---->
+<div [hidden]="breakpoint === breakpoints.MOBILE">
+  <div class="sbas-slider-two-wrapper">
+    <div class="sbas-column-1">
+      <div>
+        <span class="sbas-label">Days: </span> {{days}}
+      </div>
+      <div>
+        <span class="sbas-label">Meters (m): </span> {{perpendicular}}
+      </div>
     </div>
-    <div>
-      <span class="sbas-label">Meters (m): </span> {{ perpendicular }}
+
+    <div #temporalFilter2 class="sbas-column-2">
     </div>
   </div>
-  <div class="sbas-column-2" #temporalFilter2></div>
+</div>
+
+<!---->
+<!--SBAS Chart Filters for MOBILE devices-->
+<!---->
+<div [hidden]="breakpoint != breakpoints.MOBILE">
+  <div class="sbas-slider-two-wrapper-mobile">
+
+    <mat-form-field appearance="fill" [color]="colorControl.value" [style.width.px]=125>
+      <mat-label>Meters</mat-label>
+      <input #meterInputField
+             [(ngModel)]="perpendicular"
+             matInput type="number" placeholder="Meters"
+             min="-999" max="999"
+             required
+             (input)="updatePerpendicular()">
+      <mat-error *ngIf="meterDistanceControl.invalid">Invalid Baseline</mat-error>
+    </mat-form-field>
+    <div class="field-spacing"></div>
+
+    <mat-form-field appearance="fill" [color]="colorControl.value" [style.width.px]=125>
+      <mat-label>Days</mat-label>
+      <input [(ngModel)]="days"
+             matInput type="number" placeholder="Days"
+             min="0" max="60"
+             required
+             (input)="updateDaysOffset()">
+      <mat-error *ngIf="daysControl.invalid">Invalid number of days</mat-error>
+    </mat-form-field>
+
+  </div>
 </div>

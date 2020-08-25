@@ -13,7 +13,6 @@ import { MatSharedModule } from '@shared';
 import { PipesModule } from '@pipes';
 import { CopyToClipboardModule } from '@components/shared/copy-to-clipboard';
 
-
 import { QueueComponent } from './queue.component';
 
 @NgModule({

@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 
 import { MatSharedModule } from '@shared';
 import { SceneFilesComponent } from './scene-files.component';
@@ -11,6 +12,7 @@ import { FileContentsModule } from './file-contents';
   imports: [
     CommonModule,
     MatSharedModule,
+    MatSnackBarModule,
     SceneFileModule,
     FileContentsModule,
   ],

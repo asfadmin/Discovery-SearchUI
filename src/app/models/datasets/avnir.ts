@@ -3,6 +3,8 @@ import { Props } from '../filters.model';
 export const avnir = {
   id: 'AVNIR',
   name: 'ALOS AVNIR-2',
+  subName: '',
+  beta: false,
   properties: [
     Props.DATE,
     Props.BEAM_MODE,
@@ -17,7 +19,7 @@ export const avnir = {
     start: new Date('2006/05/16 03:36:51 UTC'),
     end: new Date('2011/04/21 20:23:36 UTC')
   },
-  infoUrl: 'https://www.eorc.jaxa.jp/ALOS/en/alos-ori/index.html',
+  infoUrl: 'https://asf.alaska.edu/data-sets/optical-data-sets/alos-avnir-2-ortho-rectified-image-product/',
   citationUrl: 'https://www.asf.alaska.edu/how-to-cite-data/',
   frequency: 'Visible and Near Infrared',
   source: {

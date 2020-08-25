@@ -8,6 +8,7 @@ import { UIState, uiReducer } from './ui';
 import { SearchState, searchReducer } from './search';
 import { QueueState, queueReducer } from './queue';
 import { UserState, userReducer } from './user';
+import { Hyp3State, hyp3Reducer } from './hyp3';
 
 
 export interface AppState {
@@ -18,6 +19,7 @@ export interface AppState {
   search: SearchState;
   queue: QueueState;
   user: UserState;
+  hyp3: Hyp3State;
 }
 
 export const reducers: ActionReducerMap<AppState> = {
@@ -28,6 +30,7 @@ export const reducers: ActionReducerMap<AppState> = {
   search: searchReducer,
   queue: queueReducer,
   user: userReducer,
+  hyp3: hyp3Reducer,
 };
 
 export const metaReducers: MetaReducer<AppState>[] =

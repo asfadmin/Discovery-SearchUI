@@ -23,8 +23,11 @@ import { SBASResultsMenuComponent } from './sbas-results-menu/sbas-results-menu.
 import { SBASChartModule } from '@components/sbas-chart/sbas-chart.module';
 import { SbasSlidersComponent } from './sbas-sliders/sbas-sliders.component';
 import { MatSliderModule } from '@angular/material/slider';
-import { FormsModule } from '@angular/forms';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import { SbasSlidersTwoComponent } from './sbas-sliders-two/sbas-sliders-two.component';
+import {MatButtonToggleModule} from '@angular/material/button-toggle';
+import {MatFormFieldModule} from '@angular/material/form-field';
+import {MatInputModule} from '@angular/material/input';
 
 @NgModule({
   declarations: [
@@ -54,7 +57,11 @@ import { SbasSlidersTwoComponent } from './sbas-sliders-two/sbas-sliders-two.com
     MatSliderModule,
     FormsModule,
     SceneMetadataModule,
+    MatButtonToggleModule,
+    MatFormFieldModule,
+    MatInputModule,
+    ReactiveFormsModule,
   ],
-  exports: [ResultsMenuComponent],
+  exports: [ResultsMenuComponent, SbasSlidersTwoComponent, SbasSlidersComponent],
 })
 export class ResultsMenuModule { }

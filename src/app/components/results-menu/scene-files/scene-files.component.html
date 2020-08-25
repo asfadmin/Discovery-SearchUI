@@ -3,7 +3,9 @@
     <app-scene-file *ngFor="let product of products"
       (toggle)="onToggleQueueProduct(product)"
       (unzip)="onOpenUnzipProduct($event)"
+      (submitHyp3Job)="onSubmitHyp3Job($event)"
       [product]="product"
+      [loadingHyp3JobName]="loadingHyp3JobName"
       [isUserLoggedIn]="isUserLoggedIn"
       [hasAccessToRestrictedData]="hasAccessToRestrictedData"
       [isUnzipLoading]="unzippedLoading === product.id"
@@ -14,36 +16,40 @@
 </div>
 
 <div *ngIf="showUnzippedProductScreen" class="products-list zip-contents">
-    <mat-list class="products-list">
-      <app-scene-file
-        *ngFor="let product of beforeWithUnzip"
-        (toggle)="onToggleQueueProduct(product)"
-        (unzip)="onOpenUnzipProduct($event)"
-        (closeProduct)="onCloseProduct($event)"
-        [product]="product"
-        [isUserLoggedIn]="isUserLoggedIn"
-        [hasAccessToRestrictedData]="hasAccessToRestrictedData"
-        [isUnzipLoading]="unzippedLoading === product.id"
-        [isQueued]="(queuedProductIds$ | async).has(product.id)"
-        [isOpen]="product.id === openUnzippedProduct.id">
-      </app-scene-file>
-    </mat-list>
-    <div>
-      <app-file-contents [product]="openUnzippedProduct">
-      </app-file-contents>
-    </div>
-    <mat-list class="products-list">
-      <app-scene-file
-        *ngFor="let product of afterUnzip"
-        (toggle)="onToggleQueueProduct(product)"
-        (unzip)="onOpenUnzipProduct($event)"
-        (closeProduct)="onCloseProduct($event)"
-        [product]="product"
-        [isUserLoggedIn]="isUserLoggedIn"
-        [hasAccessToRestrictedData]="hasAccessToRestrictedData"
-        [isUnzipLoading]="unzippedLoading === product.id"
-        [isQueued]="(queuedProductIds$ | async).has(product.id)"
-        [isOpen]="product.id === openUnzippedProduct.id">
-      </app-scene-file>
-    </mat-list>
+  <mat-list class="products-list">
+    <app-scene-file
+      *ngFor="let product of beforeWithUnzip"
+      (toggle)="onToggleQueueProduct(product)"
+      (unzip)="onOpenUnzipProduct($event)"
+      (closeProduct)="onCloseProduct($event)"
+      (submitHyp3Job)="onSubmitHyp3Job($event)"
+      [product]="product"
+      [isUserLoggedIn]="isUserLoggedIn"
+      [loadingHyp3JobName]="loadingHyp3JobName"
+      [hasAccessToRestrictedData]="hasAccessToRestrictedData"
+      [isUnzipLoading]="unzippedLoading === product.id"
+      [isQueued]="(queuedProductIds$ | async).has(product.id)"
+      [isOpen]="product.id === openUnzippedProduct.id">
+    </app-scene-file>
+  </mat-list>
+  <div>
+    <app-file-contents [product]="openUnzippedProduct">
+    </app-file-contents>
+  </div>
+  <mat-list class="products-list">
+    <app-scene-file
+      *ngFor="let product of afterUnzip"
+      (toggle)="onToggleQueueProduct(product)"
+      (unzip)="onOpenUnzipProduct($event)"
+      (closeProduct)="onCloseProduct($event)"
+      (submitHyp3Job)="onSubmitHyp3Job($event)"
+      [product]="product"
+      [isUserLoggedIn]="isUserLoggedIn"
+      [loadingHyp3JobName]="loadingHyp3JobName"
+      [hasAccessToRestrictedData]="hasAccessToRestrictedData"
+      [isUnzipLoading]="unzippedLoading === product.id"
+      [isQueued]="(queuedProductIds$ | async).has(product.id)"
+      [isOpen]="product.id === openUnzippedProduct.id">
+    </app-scene-file>
+  </mat-list>
 </div>

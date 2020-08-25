@@ -9,7 +9,7 @@ interface SceneEntities { [id: string]: CMRProduct; }
 export interface ScenesState {
   ids: string[];
   products: SceneEntities;
-  customPairs: CMRProductPair[];
+  customPairIds: string[][];
   selectedPair: string[] | null;
   areResultsLoaded: boolean;
   scenes: {[id: string]: string[]};
@@ -30,7 +30,7 @@ export interface ScenesState {
 export const initState: ScenesState = {
   ids: [],
   scenes: {},
-  customPairs: [],
+  customPairIds: [],
   selectedPair: null,
   unzipped: {},
   productUnzipLoading: null,
@@ -119,20 +119,6 @@ export function scenesReducer(state = initState, action: ScenesActions): ScenesS
       };
     }
 
-    case ScenesActionType.SELECT_NEXT_SCENE: {
-      const scenes = allScenesFrom(state.scenes, state.products);
-      const scene = state.products[state.selected] || null;
-
-      return selectNext(state, scenes, scene);
-    }
-
-    case ScenesActionType.SELECT_PREVIOUS_SCENE: {
-      const scenes = allScenesFrom(state.scenes, state.products);
-      const scene = state.products[state.selected] || null;
-
-      return selectPrevious(state, scenes, scene);
-    }
-
     case ScenesActionType.SET_SELECTED_PAIR: {
       return {
         ...state,
@@ -141,21 +127,6 @@ export function scenesReducer(state = initState, action: ScenesActions): ScenesS
         openUnzippedProduct: null
       };
     }
-
-    case ScenesActionType.SELECT_NEXT_WITH_BROWSE: {
-      const scenes = allScenesWithBrowse(state.scenes, state.products);
-      const scene = state.products[state.selected] || null;
-
-      return selectNext(state, scenes, scene);
-    }
-
-    case ScenesActionType.SELECT_PREVIOUS_WITH_BROWSE: {
-      const scenes = allScenesWithBrowse(state.scenes, state.products);
-      const scene = state.products[state.selected] || null;
-
-      return selectPrevious(state, scenes, scene);
-    }
-
 
     case ScenesActionType.SET_RESULTS_LOADED: {
       return {
@@ -264,24 +235,35 @@ export function scenesReducer(state = initState, action: ScenesActions): ScenesS
     }
 
     case ScenesActionType.ADD_CUSTOM_PAIR: {
+      const ids = action.payload;
+
       return {
         ...state,
-        customPairs: [...state.customPairs, action.payload]
+        customPairIds: [...state.customPairIds, ids]
+      };
+    }
+
+    case ScenesActionType.ADD_CUSTOM_PAIRS: {
+      const ids = action.payload;
+
+      return {
+        ...state,
+        customPairIds: [...state.customPairIds, ...ids]
       };
     }
 
     case ScenesActionType.REMOVE_CUSTOM_PAIR: {
       const toRemove = new Set(action.payload.map(product => product.id));
 
-      const pairs = [ ...state.customPairs ].filter(pair => {
-        const ids = new Set(pair.map(product => product.id));
+      const pairs = [ ...state.customPairIds ].filter(pair => {
+        const ids = new Set(pair);
 
         return !eqSet(toRemove, ids);
       });
 
       return {
         ...state,
-        customPairs: pairs,
+        customPairIds: pairs,
         selectedPair: null ,
       };
     }
@@ -289,7 +271,7 @@ export function scenesReducer(state = initState, action: ScenesActions): ScenesS
     case ScenesActionType.CLEAR_CUSTOM_PAIRS: {
       return {
         ...state,
-        customPairs: []
+        customPairIds: []
       };
     }
 
@@ -302,73 +284,6 @@ export function scenesReducer(state = initState, action: ScenesActions): ScenesS
     }
   }
 }
-
-const selectNext = (state, scenes, scene) => {
-  if (!scenes[0]) {
-    return {
-      ...state
-    };
-  }
-
-  if (!scene) {
-    const firstScene = scenes[0];
-
-    return {
-      ...state,
-      selected: firstScene.id
-    };
-  }
-
-  const currentSelected = scenes
-    .filter(g => g.name === scene.name)
-    .pop();
-
-  const nextIdx = Math.min(
-    scenes.indexOf(currentSelected) + 1,
-    scenes.length - 1
-  );
-
-  const nextScene = scenes[nextIdx];
-
-  return {
-    ...state,
-    selected: nextScene.id,
-    openUnzippedProduct: null,
-    productUnzipLoading: null,
-  };
-};
-
-const selectPrevious = (state, scenes, scene) => {
-  if (!scenes[0]) {
-    return {
-      ...state
-    };
-  }
-
-  if (!scene) {
-    const lastScene = scenes[scenes.length - 1];
-
-    return {
-      ...state,
-      selected: lastScene.id
-    };
-  }
-
-  const currentSelected = scenes
-    .filter(g => g.name === scene.name)
-    .pop();
-
-  const previousIdx = Math.max(scenes.indexOf(currentSelected) - 1, 0);
-  const previousScene = scenes[previousIdx];
-
-  return {
-    ...state,
-    selected: previousScene.id,
-    openUnzippedProduct: null,
-    productUnzipLoading: null,
-  };
-};
-
 
 export const getScenesState = createFeatureSelector<ScenesState>('scenes');
 
@@ -593,9 +508,16 @@ export const getTemporalSortDirection = createSelector(
   state => state.temporalSort
 );
 
+export const getCustomPairIds = createSelector(
+  getScenesState,
+  state => state.customPairIds
+);
+
 export const getCustomPairs = createSelector(
   getScenesState,
-  state => state.customPairs
+  state => state.customPairIds.map(
+    pairIds => pairIds.map(id => state.products[id])
+  )
 );
 
 export const getSelectedPairIds = createSelector(
@@ -628,8 +550,8 @@ export const getIsSelectedPairCustom = createSelector(
 
     const selectedPairIds = new Set(selectedPair);
 
-    return state.customPairs.some(pair => {
-      const ids = new Set(pair.map(product => product.id));
+    return state.customPairIds.some(pairIds => {
+      const ids = new Set(pairIds);
 
       return eqSet(ids, selectedPairIds);
     });

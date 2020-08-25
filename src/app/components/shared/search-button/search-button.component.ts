@@ -71,7 +71,8 @@ export class SearchButtonComponent implements OnInit, OnDestroy {
   }
 
   public onDoSearch(): void {
-    if (this.searchType === SearchType.BASELINE) {
+    if (this.searchType === SearchType.BASELINE
+    || this.searchType === SearchType.SBAS) {
       this.clearBaselineRanges();
     }
 
