@@ -2,8 +2,12 @@ import { Component, OnInit, Input, Output, EventEmitter, OnDestroy } from '@angu
 import { FormBuilder, FormGroup } from '@angular/forms';
 
 import { Observable } from 'rxjs';
-import { startWith, map, tap } from 'rxjs/operators';
+import { startWith, map, tap, filter } from 'rxjs/operators';
 import { SubSink } from 'subsink';
+
+import { Store } from '@ngrx/store';
+import { AppState } from '@store';
+import * as filtersStore from '@store/filters';
 
 import * as models from '@models';
 
@@ -25,15 +29,15 @@ export const _filter = (opt: string[], value: string): string[] => {
   styleUrls: ['./mission-selector.component.css']
 })
 export class MissionSelectorComponent implements OnInit, OnDestroy {
-  @Input() missionsByDataset$: Observable<{[dataset: string]: string[]}>;
-  @Input() missionDatasets$: Observable<string[]>;
-  @Input() selectedMission: string | null;
-  @Input() dataset$: Observable<models.Dataset>;
-
-  @Output() newMissionSelected = new EventEmitter<string>();
+  public missionsByDataset$ = this.store$.select(filtersStore.getMissionsByDataset);
+  public missionDatasets$ = this.missionsByDataset$.pipe(
+    map(missions => Object.keys(missions))
+  );
+  public dataset$ = this.store$.select(filtersStore.getSelectedDataset);
 
   public missionsByDataset: {[dataset: string]: string[]};
   public missionDatasets: string[];
+  public selectedMission: string | null;
 
   public filteredMissions: string[];
   public datasetFilter: string | null = null;
@@ -48,7 +52,10 @@ export class MissionSelectorComponent implements OnInit, OnDestroy {
     missionFilter: '',
   });
 
-  constructor(private fb: FormBuilder) {}
+  constructor(
+    private store$: Store<AppState>,
+    private fb: FormBuilder
+  ) {}
 
   ngOnInit() {
     this.subs.add(
@@ -61,6 +68,12 @@ export class MissionSelectorComponent implements OnInit, OnDestroy {
     );
 
     this.subs.add(
+      this.store$.select(filtersStore.getSelectedMission).subscribe(
+        selected => this.selectedMission = selected
+      )
+    );
+
+    this.subs.add(
       this.missionDatasets$.subscribe(
         datasets => this.missionDatasets = datasets
       )
@@ -68,7 +81,12 @@ export class MissionSelectorComponent implements OnInit, OnDestroy {
 
     this.subs.add(
       this.dataset$.pipe(
-        map(dataset => dataset.name.toLowerCase().includes('beta') ? models.MissionDataset.S1_BETA : dataset.name)
+        map(dataset => {
+          console.log(dataset);
+          return dataset.name.toLowerCase().includes('s1 insar') ?
+            models.MissionDataset.S1_BETA :
+            dataset.name;
+        })
       ).subscribe(name => this.datasetFilter = name)
     );
 
@@ -90,6 +108,7 @@ export class MissionSelectorComponent implements OnInit, OnDestroy {
   }
 
   private _filterGroup(filterValue: string): string[] {
+
     const missionsUnfiltered = this.datasetFilter ?
       this.missionsByDataset[this.datasetFilter] :
       Object.values(this.missionsByDataset).reduce(
@@ -102,7 +121,7 @@ export class MissionSelectorComponent implements OnInit, OnDestroy {
   }
 
   public setMission(mission: string): void {
-    this.newMissionSelected.emit(mission);
+    this.store$.dispatch(new filtersStore.SelectMission(mission));
   }
 
   ngOnDestroy() {
