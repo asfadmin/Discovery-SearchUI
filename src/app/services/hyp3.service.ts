@@ -49,7 +49,7 @@ export class Hyp3Service {
 
     const body = {
       jobs: [{
-        description: name || 'RTC HyP3 job',
+        name: name || 'RTC HyP3 job',
         job_parameters: {
           granule: granuleId
         },
