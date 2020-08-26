@@ -1,5 +1,11 @@
 import * as moment from 'moment';
 
+import { CMRProduct } from './cmr-product.model';
+
+export interface Hyp3JobWithScene {
+  job: Hyp3Job;
+  scene: CMRProduct;
+}
 
 export interface Hyp3JobSubmissions {
   jobs: Hyp3JobSubmission;
