@@ -3,7 +3,7 @@ import { SubSink } from 'subsink';
 
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { QueueComponent } from '@components/header/queue';
-import { Hyp3JobsDialogComponent } from '@components/header/hyp3-jobs-dialog';
+import { ProcessingQueueComponent } from '@components/header/processing-queue';
 import { ClipboardService } from 'ngx-clipboard';
 
 import { Store } from '@ngrx/store';
@@ -147,7 +147,7 @@ export class HeaderButtonsComponent implements OnInit, OnDestroy {
     this.store$.dispatch(new hyp3Store.LoadJobs());
     this.store$.dispatch(new hyp3Store.LoadUser());
 
-    this.dialog.open(Hyp3JobsDialogComponent, {
+    this.dialog.open(ProcessingQueueComponent, {
       id: 'dlQueueDialog',
       maxWidth: '100vw',
       maxHeight: '100vh'

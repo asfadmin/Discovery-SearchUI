@@ -10,11 +10,11 @@ import * as hyp3Store from '@store/hyp3';
 import * as models from '@models';
 
 @Component({
-  selector: 'app-hyp3-jobs-dialog',
-  templateUrl: './hyp3-jobs-dialog.component.html',
-  styleUrls: ['./hyp3-jobs-dialog.component.scss']
+  selector: 'app-processing-queue',
+  templateUrl: './processing-queue.component.html',
+  styleUrls: ['./processing-queue.component.scss']
 })
-export class Hyp3JobsDialogComponent implements OnInit {
+export class ProcessingQueueComponent implements OnInit {
   public jobs = [];
   public selected: models.Hyp3Job;
   public selectedJobId: string = null;
@@ -24,7 +24,7 @@ export class Hyp3JobsDialogComponent implements OnInit {
   public areJobsLoading = false;
 
   constructor(
-    private dialogRef: MatDialogRef<Hyp3JobsDialogComponent>,
+    private dialogRef: MatDialogRef<ProcessingQueueComponent>,
     private store$: Store<AppState>,
   ) { }
 
