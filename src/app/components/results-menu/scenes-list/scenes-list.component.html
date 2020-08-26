@@ -41,10 +41,10 @@
       <ng-container *ngIf="searchType === SearchTypes.CUSTOM_PRODUCTS">
         <div *cdkVirtualFor="let hyp3Job of jobs">
           <app-hyp3-job
-            *ngIf="searchType === SearchTypes.CUSTOM_PRODUCTS"
-            (mouseenter)="onSetFocusedScene(scene)"
+            *ngIf="!!hyp3Job.job"
+            (mouseenter)="onSetFocusedScene(hyp3Job.scene)"
             (mouseleave) ="onClearFocusedScene()"
-            (click)="onSceneSelected(scene.id)"
+            (click)="onSceneSelected(hyp3Job.scene.id)"
             [scene]="hyp3Job.scene"
             [job]="hyp3Job.job"
             [searchType]="searchType"

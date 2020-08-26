@@ -11,6 +11,7 @@ import { AppState } from '@store';
 import * as searchStore from '@store/search';
 import * as scenesStore from '@store/scenes';
 import * as queueStore from '@store/queue';
+import * as hyp3Store from '@store/hyp3';
 
 import { CdkVirtualScrollViewport } from '@angular/cdk/scrolling';
 
@@ -30,6 +31,7 @@ export class ScenesListComponent implements OnInit, OnDestroy {
 
   public scenes;
   public pairs;
+  public jobs;
 
   public numberOfQueue: {[scene: string]: [number, number]};
   public allQueued: {[scene: string]: boolean};
@@ -113,7 +115,28 @@ export class ScenesListComponent implements OnInit, OnDestroy {
       this.pairService.pairs$().subscribe(
         pairs => this.pairs = [...pairs.pairs, ...pairs.custom]
       )
-  );
+    );
+
+    this.subs.add(
+      combineLatest(
+        sortedScenes$,
+        this.store$.select(hyp3Store.getHyp3Jobs)
+      ).subscribe(([scenes, jobs]) => {
+        const jobsByName = jobs.reduce((byName, job) => {
+          byName[job.job_parameters.granule] = job;
+          return byName;
+        }, {});
+
+        this.jobs = scenes.map(scene => {
+          return {
+            scene,
+            job: jobsByName[scene.name]
+          };
+        });
+
+        console.log(this.jobs);
+      })
+    );
 
     this.subs.add(
       this.store$.select(searchStore.getSearchType).subscribe(

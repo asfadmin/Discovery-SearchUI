@@ -6,7 +6,7 @@ export interface Hyp3JobSubmissions {
 }
 
 export interface Hyp3JobSubmission {
-  description: string;
+  name: string;
   job_parameters: Hyp3JobParameters;
   job_type: Hyp3JobType;
 }
@@ -27,7 +27,7 @@ export interface Hyp3JobsResponse {
 
 export interface Hyp3Job {
   browse_images: string[];
-  description: string;
+  name: string;
   expiration_time: moment.Moment;
   files: Hyp3ProductFile[];
   job_id: string;

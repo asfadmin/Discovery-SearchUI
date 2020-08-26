@@ -44,12 +44,12 @@ export class Hyp3Service {
     );
   }
 
-  public submitJob$(granuleId: string, description?: string) {
+  public submitJob$(granuleId: string, name?: string) {
     const submitJobUrl = `${this.url}/jobs`;
 
     const body = {
       jobs: [{
-        description: description || 'RTC HyP3 job',
+        name: name || 'RTC HyP3 job',
         job_parameters: {
           granule: granuleId
         },
