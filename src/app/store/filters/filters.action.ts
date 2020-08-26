@@ -282,7 +282,7 @@ export class LoadMissions implements Action {
 export class SetMissions implements Action {
   public readonly type = FiltersActionType.SET_MISSIONS;
 
-  constructor(public payload: {[dataset: string]: string}) {}
+  constructor(public payload: {[dataset: string]: string[]}) {}
 }
 
 export class SelectMission implements Action {

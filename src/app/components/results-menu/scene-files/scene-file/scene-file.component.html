@@ -44,6 +44,17 @@
       </app-copy-to-clipboard>
     </a>
   </div>
+    <!--<button-->
+      <!--*ngIf="isUserLoggedIn && product.metadata.beamMode === 'IW' && product.metadata.productType === 'SLC'"-->
+      <!--(click)="onProcessHyp3Job()"-->
+      <!--mat-icon-button>-->
+      <!--<span *ngIf="loadingHyp3JobName !== product.name">-->
+        <!--<img src="/assets/asf-logos/HyP3-graphic-only.png"-->
+             <!--style="width: 20px; margin-top: 11px;"-->
+             <!--matTooltip="Initiate HyP3 Processing">-->
+      <!--</span>-->
+      <!--<fa-icon *ngIf="loadingHyp3JobName === product.name" icon="spinner" [pulse]="true"></fa-icon>-->
+    <!--</button>-->
 
     <div mat-line>
       <span *ngIf="product.bytes === 0">Virtual</span>

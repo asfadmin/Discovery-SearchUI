@@ -1,0 +1,84 @@
+<mat-card style="padding: 0;" class="p0">
+  <mat-card-title-group style="margin-bottom: 0 !important;" class="card-title-group">
+    <mat-card-title>Hyp3 Jobs Dialog</mat-card-title>
+    <mat-card-subtitle> <b>{{ user }}</b> - {{ remaining }}/{{ limit }} monthly jobs</mat-card-subtitle>
+
+    <div class="close-x" (click)="onCloseDialog()">
+      <mat-icon>close</mat-icon>
+    </div>
+
+    <mat-card-subtitle>
+    </mat-card-subtitle>
+  </mat-card-title-group>
+
+  <mat-card-content>
+    <div class="jobs-dialog">
+      <div class="jobs-display">
+
+        <div class="jobs-list-panel">
+          <div class="list-filter">
+            <mat-form-field style="margin-left: 10px;" class="example-form-field">
+              <mat-label>Filter Jobs</mat-label>
+              <input matInput type="text">
+            </mat-form-field>
+          </div>
+
+          <div class="jobs-list">
+            <mat-action-list *ngIf="!areJobsLoading" role="list">
+              <button mat-list-item
+                *ngFor="let job of jobs"
+                (click)="onSelectJob(job)"
+                [class.selected]="job.job_id === selected">
+
+                <img matListAvatar
+                  [src]="!!job.thumbnail_images ? job.thumbnail_images[0] : ''"
+                  onerror="this.src='assets/no-thumb.png'"
+                  matBadgeOverlap="false"
+                  matListAvatar>
+
+                <div matLine>
+                  {{ job.files[0].filename }}
+                </div>
+
+                <div matLine>
+                  <b>
+                    <span *ngIf="job.files[0].bytes === 0">Virtual</span>
+                    <span *ngIf="job.files[0].bytes !== 0">{{ job.files[0].size | readableSizeFromBytes }}</span>
+                  </b>
+                </div>
+
+                <a mat-icon-button matTooltip="Download" [href]="job.files[0].url" target="_blank" style="text-decoration: none;">
+                  <mat-icon>cloud_download</mat-icon>
+                </a>
+              </button>
+            </mat-action-list>
+          </div>
+        </div>
+
+        <div class="jobs-detail">
+          <div *ngIf="!selectedJobId" class="no-job-selected faint-text">
+            No Job Selected
+          </div>
+          <div *ngIf="selectedJobId">
+            <img [src]="selected.browse_images[0]" style="width: 290px;">
+            <div>
+              <div>
+                <b> {{ selected.job_type }} </b>
+              </div>
+              <div>
+                Expires:
+                <mat-chip-list>
+
+                  <mat-chip color="primary">
+                    {{ daysUntilExpiration(selected.expiration_time) }}
+                  </mat-chip>
+                </mat-chip-list>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="w100 hyp3-footer"></div>
+    </div>
+  </mat-card-content>
+</mat-card>

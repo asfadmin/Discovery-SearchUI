@@ -120,14 +120,6 @@ export class ImageDialogComponent implements OnInit, AfterViewInit, OnDestroy {
     this.dialogRef.close();
   }
 
-  public selectNextProduct(): void {
-    this.store$.dispatch(new scenesStore.SelectNextScene());
-  }
-
-  public selectPreviousProduct(): void {
-    this.store$.dispatch(new scenesStore.SelectPreviousScene());
-  }
-
   public onToggleQueueProduct(product: models.CMRProduct): void {
     this.store$.dispatch(new queueStore.ToggleProduct(product));
   }

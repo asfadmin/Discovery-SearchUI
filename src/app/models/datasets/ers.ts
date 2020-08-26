@@ -3,6 +3,8 @@ import { Props } from '../filters.model';
 export const ers = {
   id: 'ERS',
   name: 'ERS',
+  subName: '',
+  beta: false,
   properties: [
     Props.DATE,
     Props.BEAM_MODE,

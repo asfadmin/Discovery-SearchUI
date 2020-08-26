@@ -1,38 +1,95 @@
 <ng-container *ngIf="numberOfScenes$ | async as numberOfScenes">
   <ng-container *ngIf="breakpoint$ | async as breakpoint">
-    <div [className]="searchType === SearchTypes.BASELINE && breakpoint > breakpoints.MOBILE ? 'files-header-baseline' : 'files-header'">
-      <div class="header-row-left" [ngClass]="{'mobile-size': breakpoint <= breakpoints.SMALL}">
+    <div [className]="searchType === SearchTypes.BASELINE && breakpoint > breakpoints.MOBILE ?
+                                          'files-header-baseline' : 'files-header mobile-size'">
+      <div class="header-row-left"
+           [ngClass]="{'sbas-header-row-left': searchType === SearchTypes.SBAS, 'mobile-size': breakpoint <= breakpoints.SMALL}">
 
-        <div *ngIf="searchType === SearchTypes.DATASET || searchType === SearchTypes.LIST" class="mr-10">
+        <div *ngIf="searchType === SearchTypes.DATASET || searchType === SearchTypes.LIST" class="mr-10 scene-count">
           {{ numberOfScenes }} Scene{{ numberOfScenes === 1 ? '' : 's' }}
-          ({{ numberOfProducts$ | async }} of
-          {{ formatNumber(totalResultCount$ | async) }}
-          File{{ (numberOfProducts$ | async) === 1 ? '' : 's' }})
+          <span style="font-size: small;">
+            <br>
+            ({{ numberOfProducts$ | async }} of
+            {{ formatNumber(totalResultCount$ | async) }}
+            File{{ (numberOfProducts$ | async) === 1 ? '' : 's' }})
+          </span>
         </div>
 
-        <div *ngIf="searchType === SearchTypes.SBAS" class="mr-10">
+        <div *ngIf="searchType === SearchTypes.SBAS" class="mr-10" style="margin-top: -15px;">
           {{ numPairs$ | async }} Pair{{ (numPairs$ | async) === 1 ? '' : 's' }}
-          ({{ sbasProducts.length }} Scene{{ sbasProducts.length === 1 ? '' : 's' }})
+          <span style="font-size: small;">
+            <br>
+            ({{ sbasProducts.length }} Scene{{ sbasProducts.length === 1 ? '' : 's' }})
+          </span>
         </div>
 
         <div *ngIf="searchType === SearchTypes.BASELINE" class="mr-10">
           {{ numBaselineScenes$ | async }} Scene{{ (numBaselineScenes$ | async) === 1 ? '' : 's' }}
         </div>
 
-        <div *ngIf="allProducts$ | async as products">
-          <mat-icon
-            (click)="onZoomToResults()"
-            class="clickable noselect mr-10"
-            matTooltip="Zoom to results">
-            settings_overscan
-          </mat-icon>
+        <div class="space-filler"></div>
 
-          <mat-icon
-            class="clickable noselect"
-            matTooltip="Add all results to downloads"
-            [matMenuTriggerFor]="addAllProducts">
-            add_shopping_cart
-          </mat-icon>
+        <div *ngIf="allProducts$ | async as products">
+
+          <div *ngIf="canHideRawData" fxFlex="" class="list-button-group">
+            <div fxLayout="row" fxLayoutAlign="center" class="button-group-label">
+              <label>Raw</label>
+            </div>
+            <div fxLayout="row">
+              <div>
+                <mat-button-toggle-group fxFlex="" name="layerType" class="mr-10">
+                  <mat-button-toggle class="control-mat-button-toggle">
+                    <mat-icon (click)="onToggleS1RawData()"
+                              class="clickable noselect list-icon"
+                              [class.material-icons-outlined]="showS1RawData"
+                              [matTooltip]="showS1RawData ? 'Hide raw data' : 'Show raw data'">
+                              remove_red_eye
+                    </mat-icon>
+                  </mat-button-toggle>
+                </mat-button-toggle-group>
+              </div>
+            </div>
+          </div>
+
+          <div fxFlex="" class="list-button-group">
+            <div fxLayout="row" fxLayoutAlign="center" class="button-group-label">
+              <label>Zoom</label>
+            </div>
+            <div fxLayout="row">
+              <div>
+                <mat-button-toggle-group fxFlex="" name="layerType" class="mr-10">
+                  <mat-button-toggle class="control-mat-button-toggle">
+                              <mat-icon
+                                (click)="onZoomToResults()"
+                                class="clickable noselect list-icon"
+                                matTooltip="Zoom to results">
+                                settings_overscan
+                              </mat-icon>
+                  </mat-button-toggle>
+                </mat-button-toggle-group>
+              </div>
+            </div>
+          </div>
+
+          <div fxFlex="" class="list-button-group">
+            <div fxLayout="row" fxLayoutAlign="center" class="button-group-label">
+              <label>Queue</label>
+            </div>
+            <div fxLayout="row">
+              <div>
+                <mat-button-toggle-group fxFlex="" name="layerType" class="mr-10">
+                  <mat-button-toggle class="control-mat-button-toggle">
+                    <mat-icon
+                      class="clickable noselect list-icon"
+                      matTooltip="Add all results to downloads"
+                      [matMenuTriggerFor]="addAllProducts">
+                      add_shopping_cart
+                    </mat-icon>
+                  </mat-button-toggle>
+                </mat-button-toggle-group>
+              </div>
+            </div>
+          </div>
 
           <mat-menu #addAllProducts="matMenu">
             <button *ngIf="searchType !== SearchTypes.SBAS" (click)="queueAllProducts(products)" mat-menu-item>

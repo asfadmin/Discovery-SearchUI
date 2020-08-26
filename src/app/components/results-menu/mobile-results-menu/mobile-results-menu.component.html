@@ -1,5 +1,5 @@
 <div class="h100 w100">
-  <div>
+  <div class="header-mobile">
     <button (click)="onSelectList()"
      [class.selected]="view === Views.LIST" mat-button>
       Scenes
@@ -7,15 +7,20 @@
     <button (click)="onSelectDetail()"
      [class.selected]="view === Views.DETAIL" mat-button>
       Scene Detail
-      <ng-container *ngIf="searchType !== SearchTypes.BASELINE">
-        &amp; Files
+      <ng-container *ngIf="searchType !== SearchTypes.BASELINE &&
+                           searchType !== SearchTypes.SBAS">
+      &amp; Files
       </ng-container>
-
     </button>
     <button *ngIf="searchType === SearchTypes.BASELINE"
      (click)="onSelectChart()"
      [class.selected]="view === Views.CHART" mat-button>
       Chart
+    </button>
+    <button *ngIf="searchType === SearchTypes.SBAS"
+     (click)="onSelectSBASChart()"
+     [class.selected]="view === Views.SBAS" mat-button>
+      SBAS Chart
     </button>
   </div>
 
@@ -37,8 +42,9 @@
     <mat-card class="h100 w100 mp0 no-box-shadow" fxFlex="100" fxFlex>
       <mat-card-subtitle class="header mobile">
         Scene Detail
-        <ng-container *ngIf="searchType !== SearchTypes.BASELINE">
-          /
+        <ng-container *ngIf="searchType !== SearchTypes.BASELINE &&
+                      searchType !== SearchTypes.SBAS">
+        /
           <span *ngIf="selectedProducts$ | async as products; else defaultProductsHeader">
             {{ products.length || '' }} File{{ (products || []).length === 1 ? '' : 's'}}
           </span>
@@ -47,8 +53,44 @@
       </mat-card-subtitle>
 
       <div class="app-scene-list scroll-y scroll-x">
-        <app-scene-detail [isScrollable]="false"></app-scene-detail>
-        <ng-container *ngIf="searchType !== SearchTypes.BASELINE">
+        <ng-container *ngIf="searchType !== SearchTypes.SBAS; else sbasDetails">
+          <app-scene-detail [isScrollable]="false"></app-scene-detail>
+        </ng-container>
+
+<!--        For displaying both products within a pair in SBAS only-->
+        <ng-template #sbasDetails>
+          <div style="overflow: auto; height: 100%;" class="scrollable">
+            <div *ngIf="pair" style="margin: 5px; padding-bottom: 36px;">
+              <div *ngFor="let product of pair">
+                <div style="margin-bottom: 4px;">
+                  <b class="product-name">{{ product.name }}</b>
+                </div>
+
+                <div *ngIf="datasetForProduct.match(product) as dataset" style="margin-bottom: 12px;">
+                  <a [href]="dataset.infoUrl" target="_blank" matTooltip="Dataset" class="faint-text">
+                    {{ dataset.name }}
+                  </a> •
+                  <span matTooltip="Frequency">{{ dataset.frequency }}</span>
+                </div>
+
+                <app-scene-metadata
+                  [scene]="product"
+                  [dataset]="datasetForProduct.match(product)"
+                  [searchType]="searchType">
+                </app-scene-metadata>
+                <hr>
+              </div>
+            </div>
+            <div *ngIf="!pair" style="margin: 5px; padding-bottom: 36px;">
+              <div class="faint-text w100 h100" style="text-align: center; padding-top: 10px;">
+                No Pair Selected
+              </div>
+            </div>
+          </div>
+        </ng-template>
+
+        <ng-container *ngIf="searchType !== SearchTypes.BASELINE &&
+                              searchType !== SearchTypes.SBAS">
           <hr>
           <app-scene-files></app-scene-files>
         </ng-container>
@@ -64,6 +106,22 @@
         </button>
       </mat-card-subtitle>
       <app-baseline-chart></app-baseline-chart>
+    </mat-card>
+  </div>
+
+  <div *ngIf="view === Views.SBAS" class="h100 w100">
+    <mat-card class="h100 w100 mp0 no-box-shadow" fxFlex="100" fxFlex>
+
+      <div class="sbas-chart-row">
+        <div id="sbas-chart-column" class="sbas-column-2">
+          <app-sbas-chart></app-sbas-chart>
+        </div>
+      </div>
+
+      <div class="sbas-filter-row">
+        <app-sbas-sliders-two></app-sbas-sliders-two>
+      </div>
+
     </mat-card>
   </div>
 </div>

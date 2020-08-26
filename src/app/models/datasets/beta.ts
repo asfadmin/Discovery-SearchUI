@@ -2,7 +2,9 @@ import { Props } from '../filters.model';
 
 export const beta = {
   id: 'SENTINEL-1 INTERFEROGRAM (BETA)',
-  name: 'S1 InSAR (BETA)',
+  name: 'S1 InSAR',
+  subName: 'NISAR Format',
+  beta: true,
   properties: [
     Props.DATE,
     Props.BEAM_MODE,

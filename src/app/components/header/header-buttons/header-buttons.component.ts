@@ -3,6 +3,7 @@ import { SubSink } from 'subsink';
 
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { QueueComponent } from '@components/header/queue';
+import { Hyp3JobsDialogComponent } from '@components/header/hyp3-jobs-dialog';
 import { ClipboardService } from 'ngx-clipboard';
 
 import { Store } from '@ngrx/store';
@@ -10,6 +11,7 @@ import { AppState } from '@store';
 import * as queueStore from '@store/queue';
 import * as userStore from '@store/user';
 import * as uiStore from '@store/ui';
+import * as hyp3Store from '@store/hyp3';
 
 import { PreferencesComponent } from './preferences/preferences.component';
 import { HelpComponent } from '@components/help/help.component';
@@ -135,6 +137,21 @@ export class HeaderButtonsComponent implements OnInit, OnDestroy {
     this.store$.dispatch(new uiStore.SetSaveSearchOn(false));
     this.store$.dispatch(new uiStore.SetSavedSearchType(SavedSearchType.HISTORY));
     this.store$.dispatch(new uiStore.OpenSidebar());
+  }
+
+  public onOpenHyp3Dialog() {
+    if (!this.isLoggedIn) {
+      return;
+    }
+
+    this.store$.dispatch(new hyp3Store.LoadJobs());
+    this.store$.dispatch(new hyp3Store.LoadUser());
+
+    this.dialog.open(Hyp3JobsDialogComponent, {
+      id: 'dlQueueDialog',
+      maxWidth: '100vw',
+      maxHeight: '100vh'
+    });
   }
 
   public onCopy(): void {

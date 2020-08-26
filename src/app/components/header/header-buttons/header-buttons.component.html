@@ -1,5 +1,17 @@
 <div *ngIf="breakpoint$ | async as breakpoint">
   <ng-container *ngIf="breakpoint > breakpoints.MOBILE">
+
+    <!--<button (click)="onOpenHyp3Dialog()"-->
+            <!--class="spacing nav-icon-buttons" color="basic"-->
+            <!--[disabled]="!isLoggedIn"-->
+            <!--matTooltip="Hybrid Pluggable Processing Pipeline"-->
+            <!--mat-button>-->
+        <!--<img src="/assets/asf-logos/HyP3-graphic-only.png"-->
+          <!--[class.disabled]="!isLoggedIn"-->
+          <!--height="35">-->
+      <!--<div class="text-under faint-text">HyP3</div>-->
+    <!--</button>-->
+
     <button
       (click)="onOpenDownloadQueue()"
       [disabled]="queuedProducts.length <= 0"
@@ -90,6 +102,9 @@
   <button (click)="onOpenPreferences()" mat-menu-item matSuffix>
     Preferences
   </button>
+  <!--<button (click)="onOpenHyp3Dialog()" mat-menu-item matSuffix>-->
+    <!--HyP3 Jobs-->
+  <!--</button>-->
   <hr class="menu-hr">
   <button (click)="onLogout()"
       mat-menu-item matSuffix>
@@ -119,10 +134,11 @@
     Help & Tutorials
   </button>
 
-  <button mat-menu-item matSuffix (click)="onOpenHelp('newStuff')">
+  <a mat-menu-item href="https://docs.google.com/document/d/e/2PACX-1vSqQxPT8nhDQfbCLS8gBZ9SqSEeJy8BdSCiYVlBOXwsFwJ6_ct7pjtOqbXHo0Q3wzinzvO8bGWtHj0H/pub"
+          target="_blank">
     <mat-icon>new_releases</mat-icon>
     What's New
-  </button>
+  </a>
 
   <hr class="menu-hr">
 

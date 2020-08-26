@@ -36,12 +36,6 @@ export class DatasetFiltersComponent implements OnInit, OnDestroy {
   public datasets = models.datasetList;
   public selectedDataset: string;
   public p = models.Props;
-  public missionsByDataset$ = this.store$.select(filtersStore.getMissionsByDataset);
-  public selectedMission$ = this.store$.select(filtersStore.getSelectedMission);
-  public missionDatasets$ = this.missionsByDataset$.pipe(
-    map(missions => Object.keys(missions))
-  );
-  public dataset$ = this.store$.select(filtersStore.getSelectedDataset);
 
   public breakpoint$ = this.screenSize.breakpoint$;
   public breakpoints = models.Breakpoints;
@@ -60,10 +54,6 @@ export class DatasetFiltersComponent implements OnInit, OnDestroy {
         selected => this.selectedDataset = selected
       )
     );
-  }
-
-  public onNewMissionSelected(selectedMission: string): void {
-    this.store$.dispatch(new filtersStore.SelectMission(selectedMission));
   }
 
   public onDatasetChange(dataset: string): void {

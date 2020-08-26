@@ -13,7 +13,7 @@ import * as uiStore from '@store/ui';
 import { ResizedEvent } from 'angular-resize-event';
 
 import { SubSink } from 'subsink';
-import { ChartService, ScenesService } from '@services';
+import { ChartService, ScenesService, PairService } from '@services';
 import { criticalBaselineFor, CMRProduct } from '@models';
 
 export enum ChartDatasets {
@@ -58,6 +58,7 @@ export class SBASChartComponent implements OnInit, OnDestroy {
   private widthValue;
   private heightValue;
   private sbasChartHeightValue;
+  private brush;
 
   private selected: CMRProduct;
   private criticalBaseline: number;
@@ -70,11 +71,12 @@ export class SBASChartComponent implements OnInit, OnDestroy {
     private store$: Store<AppState>,
     private chartService: ChartService,
     private scenesService: ScenesService,
+    private pairService: PairService,
   ) { }
 
   ngOnInit(): void {
     const scenes$ = this.scenesService.scenes$();
-    const pairs$ = this.scenesService.pairs$();
+    const pairs$ = this.pairService.pairs$();
 
     this.store$.select(scenesStore.getSelectedPair).pipe(
     ).subscribe(
@@ -90,13 +92,13 @@ export class SBASChartComponent implements OnInit, OnDestroy {
     );
 
     this.subs.add(
-        combineLatest(scenes$, pairs$).subscribe(([scenes, pairs]) => {
-          this.scenes = scenes;
-          this.pairs = pairs.pairs;
-          this.customPairs = pairs.custom;
+      combineLatest(scenes$, pairs$).subscribe(([scenes, pairs]) => {
+        this.scenes = scenes;
+        this.pairs = pairs.pairs;
+        this.customPairs = pairs.custom;
 
-          this.makeSbasChart();
-        })
+        this.makeSbasChart();
+      })
     );
   }
 
@@ -107,6 +109,7 @@ export class SBASChartComponent implements OnInit, OnDestroy {
   public makeSbasChart() {
     if (this.chart) {
       d3.selectAll('#sbasChart > svg').remove();
+      d3.selectAll('.tooltip').remove();
     }
 
     this.margin = { top: 10, right: 0, bottom: 25, left: 50 };
@@ -124,6 +127,10 @@ export class SBASChartComponent implements OnInit, OnDestroy {
       .append('g')
         .attr('transform',
               `translate(${this.margin.left},${this.margin.top})`);
+
+    const tooltip = d3.select('body').append('div')
+      .attr('class', 'tooltip')
+      .style('opacity', 0);
 
     this.chart.append('text')
       .attr('class', 'x label')
@@ -183,6 +190,11 @@ export class SBASChartComponent implements OnInit, OnDestroy {
 
         this.updateChart();
       });
+
+    // Add brushing
+    this.brush = d3.brushX()
+      .extent( [ [0, 0], [this.widthValue, this.heightValue] ] )
+      .on('end', this.updateChart);
 
     const zoomBox = this.scatter.append('rect')
       .attr('width', this.widthValue)
@@ -266,11 +278,20 @@ export class SBASChartComponent implements OnInit, OnDestroy {
           if (self.isAddingCustomPair) {
             self.setHoveredProduct(p, d3.select(this));
           }
+
+          tooltip
+            .style('opacity', .9);
+          tooltip.html(`${p.metadata.date.format('ll')}, ${p.metadata.perpendicular} meters`)
+            .style('left', `${d3.event.pageX + 10}px`)
+            .style('top', `${d3.event.pageY - 20}px`);
         })
         .on('mouseleave', function(p) {
           if (self.isAddingCustomPair) {
             self.clearHoveredProduct();
           }
+          tooltip.transition()
+            .duration(500)
+            .style('opacity', 0);
         })
         .attr('r', 7)
         .attr('cursor', 'pointer')
@@ -423,7 +444,7 @@ export class SBASChartComponent implements OnInit, OnDestroy {
     }
 
     this.store$.dispatch(
-      new scenesStore.AddCustomPair([ this.queuedProduct, product ])
+      new scenesStore.AddCustomPair([ this.queuedProduct.id, product.id ])
     );
     this.queuedProduct = null;
   }

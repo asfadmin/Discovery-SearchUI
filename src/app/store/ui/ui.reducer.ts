@@ -11,6 +11,7 @@ export interface UIState {
   isSidebarOpen: boolean;
   isSaveSearchOn: boolean;
   isAOIOptionsOpen: boolean;
+  showS1RawData: boolean;
   isBrowseDialogOpen: boolean;
   onlyScenesWithBrowse: boolean;
   isAddingCustomPoint: boolean;
@@ -24,6 +25,7 @@ export const initState: UIState = {
   isSidebarOpen: false,
   isSaveSearchOn: false,
   isAOIOptionsOpen: false,
+  showS1RawData: false,
   isBrowseDialogOpen: false,
   onlyScenesWithBrowse: true,
   isAddingCustomPoint: false,
@@ -59,6 +61,20 @@ export function uiReducer(state = initState, action: UIActions): UIState {
       return {
         ...state,
         isSidebarOpen: false
+      };
+    }
+
+    case UIActionType.SHOW_S1_RAW_DATA: {
+      return {
+        ...state,
+        showS1RawData: true
+      };
+    }
+
+    case UIActionType.HIDE_S1_RAW_DATA: {
+      return {
+        ...state,
+        showS1RawData: false
       };
     }
 
@@ -224,4 +240,9 @@ export const getSaveSearchType = createSelector(
 export const getIsAddingCustomPoint = createSelector(
   getUIState,
   state => state.isAddingCustomPoint
+);
+
+export const getShowS1RawData = createSelector(
+  getUIState,
+  state => state.showS1RawData
 );

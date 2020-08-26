@@ -65,6 +65,9 @@ export class SearchService {
     if (search.searchType === models.SearchType.SBAS) {
       const filters = <models.SbasFiltersType>search.filters;
       this.store$.dispatch(new scenesStore.SetFilterMaster(filters.master));
+      if (filters.customPairIds) {
+        this.store$.dispatch(new scenesStore.AddCustomPairs(filters.customPairIds));
+      }
     }
 
     this.store$.dispatch(new filterStore.SetSavedSearch(search));

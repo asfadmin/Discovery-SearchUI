@@ -1,7 +1,11 @@
-<span matLine class="dataset__name">
-  <b>{{ dataset.name }} </b> -
+<span matLine class="dataset__name" [class.subName__adj]="dataset.subName">
+  <b>{{ dataset.name }}</b>
+  <span *ngIf="dataset.beta"><em> (beta)</em></span>
+  &nbsp;-&nbsp;
 </span>
 <span matLine>
-  <span class="dataset__date">{{ prettyDateRange(dataset.date) }}</span>
-  <mat-icon (click)="onOpenHelp()" class="clickable" style="margin-left: 15px;">help</mat-icon>
+  <span class="dataset__date" [class.subName__adj]="dataset.subName">{{ prettyDateRange(dataset.date) }}</span>
+  <mat-icon (click)="onOpenHelp()" class="clickable" style="margin-left: 10px;">help</mat-icon>
 </span>
+<div *ngIf="dataset.subName" class="dataset__subName faint-text">{{ dataset.subName }}</div>
+

@@ -4,6 +4,8 @@ import { Props } from './filters.model';
 export interface Dataset {
   id: string;
   name: string;
+  subName: string;
+  beta: boolean;
   apiValue: {[paramName: string]: string};
   date: DateRange;
   infoUrl: string;

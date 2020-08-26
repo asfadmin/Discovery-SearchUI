@@ -57,6 +57,7 @@ export class ScenesListComponent implements OnInit, OnDestroy {
     private screenSize: services.ScreenSizeService,
     private keyboardService: services.KeyboardService,
     private scenesService: services.ScenesService,
+    private pairService: services.PairService,
   ) {}
 
   ngOnInit() {
@@ -73,10 +74,11 @@ export class ScenesListComponent implements OnInit, OnDestroy {
         pair => this.selectedPair = pair
       )
     );
+    const sortedScenes$ = this.scenesService.sortScenes$(this.scenesService.scenes$());
 
     this.subs.add(
       this.store$.select(scenesStore.getSelectedScene).pipe(
-        withLatestFrom(this.scenesService.scenesSorted$()),
+        withLatestFrom(sortedScenes$),
         /* There is some race condition with scrolling before the list is rendered.
          * Doesn't scroll without the delay even though the function is called.
          * */
@@ -90,7 +92,7 @@ export class ScenesListComponent implements OnInit, OnDestroy {
               sceneIdx = idx;
             }
           });
-          return sceneIdx;
+          return Math.max(0, sceneIdx - 1);
         })
       ).subscribe(
         idx => {
@@ -104,16 +106,16 @@ export class ScenesListComponent implements OnInit, OnDestroy {
     );
 
     this.subs.add(
-      this.scenesService.scenesSorted$().subscribe(
+      sortedScenes$.subscribe(
         scenes => this.scenes = scenes
       )
     );
 
     this.subs.add(
-      this.scenesService.pairs$().subscribe(
+      this.pairService.pairs$().subscribe(
         pairs => this.pairs = [...pairs.pairs, ...pairs.custom]
       )
-    );
+  );
 
     this.subs.add(
       this.store$.select(searchStore.getSearchType).subscribe(
