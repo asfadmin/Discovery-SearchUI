@@ -54,16 +54,10 @@ installed using the command: `pip install -U pip`
 
 #### python 3 and pip on OS X
 For Apple OS X systems, this is the recommended approach to installing python 3 and pip.
-While OS X comes with a large number of Unix utilities, those familiar with Linux systems
+While OS X comes with many Unix utilities, those familiar with Linux systems
 will notice one key component missing: a package manager. Homebrew fills this void.
 
-To install Homebrew, open Terminal or your favorite OS X terminal emulator and run
-
-`$ ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"`
-
-The script will explain what changes it will make and prompt you before the installation begins. Once you’ve installed Homebrew, insert the Homebrew directory at the top of your PATH environment variable. You can do this by adding the following line at the bottom of your ~/.profile file
-
-`export PATH="/usr/local/opt/python/libexec/bin:$PATH"`
+To install Homebrew follow the directions here https://docs.python-guide.org/starting/install3/osx/
 
 ## Further help
 
