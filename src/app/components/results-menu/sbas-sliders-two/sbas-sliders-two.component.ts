@@ -41,6 +41,7 @@ export class SbasSlidersTwoComponent implements OnInit {
   public slider;
 
   private firstLoad = true;
+  private firstMeterLoad = true;
   private subs = new SubSink();
 
   options: FormGroup;
@@ -110,6 +111,12 @@ export class SbasSlidersTwoComponent implements OnInit {
         perp => {
           this.perpendicular = perp.start;
           this.options.controls.meterDistance.setValue(this.perpendicular);
+          if (this.firstMeterLoad) {
+            const action = new filtersStore.SetPerpendicularRange({ start: 300, end: null });
+            this.store$.dispatch(action);
+            this.firstMeterLoad = false;
+          }
+
         }
       )
     );
