@@ -10,6 +10,7 @@ import * as scenesStore from '@store/scenes';
 import * as models from '@models';
 import { ApiLinkDialogComponent } from './api-link-dialog/api-link-dialog.component';
 import { SubSink } from 'subsink';
+import {PairService} from '@services';
 
 @Component({
   selector: 'app-max-results-selector',
@@ -24,6 +25,7 @@ export class MaxResultsSelectorComponent implements OnInit, OnDestroy {
 
   public searchType$ = this.store$.select(searchStore.getSearchType);
   public searchTypes = models.SearchType;
+  public sbasProducts: models.CMRProduct[];
 
   public possibleMaxResults = [250, 1000, 5000];
   private subs = new SubSink();
@@ -31,6 +33,7 @@ export class MaxResultsSelectorComponent implements OnInit, OnDestroy {
   constructor(
     private store$: Store<AppState>,
     private dialog: MatDialog,
+    private pairService: PairService,
   ) {}
 
   ngOnInit() {
@@ -57,6 +60,13 @@ export class MaxResultsSelectorComponent implements OnInit, OnDestroy {
         areLoaded => this.areResultsLoaded = areLoaded
       )
     );
+
+    this.subs.add(
+      this.pairService.productsFromPairs$().subscribe(
+        products => this.sbasProducts = products
+      )
+    );
+
   }
 
   public onNewMaxResults(maxResults: number): void {
