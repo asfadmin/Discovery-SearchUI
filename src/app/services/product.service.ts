@@ -52,8 +52,6 @@ export class ProductService {
     return products;
   }
 
-  public fromHyp3Jobs()
-
   private getMetadataFrom =
     (g: any): models.CMRProductMetadata => ({
       date:  this.fromCMRDate(g.st),
@@ -82,6 +80,7 @@ export class ProductService {
       perpendicular: this.isNumber(+g.pb) ? +g.pb : null,
       temporal: this.isNumber(+g.tb) ? +g.tb : null,
       canInSAR: g.in,
+      job: null,
     })
 
   private isNumber = n => !isNaN(n) && isFinite(n);
