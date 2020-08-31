@@ -34,6 +34,9 @@
       </div>
     </div>
     <div class="div-flex date-time" matLine>
+      <span *ngIf="scene.metadata.job">
+        {{ scene.metadata.job.job_type }} -
+      </span>
       <span *ngIf="breakpoint > breakpoints.MOBILE && searchType !== SearchTypes.BASELINE"
         matTooltip="Start Time">
           {{ scene.metadata.date | fullDate }}

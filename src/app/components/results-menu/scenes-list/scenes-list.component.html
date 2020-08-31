@@ -5,10 +5,10 @@
         *ngIf="
           searchType === SearchTypes.DATASET ||
           searchType === SearchTypes.BASELINE ||
-          searchType === SearchTypes.LIST">
+          searchType === SearchTypes.LIST ||
+          searchType === SearchTypes.CUSTOM_PRODUCTS">
         <div *cdkVirtualFor="let scene of scenes">
           <app-scene
-            *ngIf="searchType !== SearchTypes.CUSTOM_PRODUCTS"
             (mouseenter)="onSetFocusedScene(scene)"
             (mouseleave) ="onClearFocusedScene()"
             (click)="onSceneSelected(scene.id)"
@@ -35,22 +35,6 @@
             <div style="margin-left: 10px;">{{ pairPerpBaseline(pair)}}m</div>
             <div style="margin-left: 10px;">{{ pairTempBaseline(pair)}}d</div>
           </button>
-        </div>
-      </ng-container>
-
-      <ng-container *ngIf="searchType === SearchTypes.CUSTOM_PRODUCTS">
-        <div *cdkVirtualFor="let hyp3Job of jobs">
-          <app-hyp3-job
-            *ngIf="!!hyp3Job.job"
-            (mouseenter)="onSetFocusedScene(hyp3Job.scene)"
-            (mouseleave) ="onClearFocusedScene()"
-            (click)="onSceneSelected(hyp3Job.scene.id)"
-            [scene]="hyp3Job.scene"
-            [job]="hyp3Job.job"
-            [searchType]="searchType"
-            [isHovered]="hyp3Job.scene.name === hoveredSceneName"
-            [isSelected]="hyp3Job.scene.name === selected">
-          </app-hyp3-job>
         </div>
       </ng-container>
     </div>

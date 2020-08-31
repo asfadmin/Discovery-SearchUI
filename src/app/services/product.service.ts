@@ -52,6 +52,8 @@ export class ProductService {
     return products;
   }
 
+  public fromHyp3Jobs()
+
   private getMetadataFrom =
     (g: any): models.CMRProductMetadata => ({
       date:  this.fromCMRDate(g.st),
