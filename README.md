@@ -41,6 +41,24 @@ Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.
 
 Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protractortest.org/).
 
+## Installing pip and mkDocs
+
+Install pip: 
+`curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py`
+
+Then run the following command in the folder where you have downloaded get-pip.py:
+`python get-pip.py`
+
+You can upgrade pip at anytime, or make sure you are have the latest version
+installed using the command: `pip install -U pip`
+
+#### python 3 and pip on OS X
+For Apple OS X systems, this is the recommended approach to installing python 3 and pip.
+While OS X comes with many Unix utilities, those familiar with Linux systems
+will notice one key component missing: a package manager. Homebrew fills this void.
+
+To install Homebrew follow the directions here https://docs.python-guide.org/starting/install3/osx/
+
 ## Further help
 
 To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
