@@ -139,14 +139,7 @@ export class HeaderButtonsComponent implements OnInit, OnDestroy {
     this.store$.dispatch(new uiStore.OpenSidebar());
   }
 
-  public onOpenHyp3Dialog() {
-    if (!this.isLoggedIn) {
-      return;
-    }
-
-    this.store$.dispatch(new hyp3Store.LoadJobs());
-    this.store$.dispatch(new hyp3Store.LoadUser());
-
+  public onOpenProcessingQueue() {
     this.dialog.open(ProcessingQueueComponent, {
       id: 'dlQueueDialog',
       maxWidth: '100vw',
