@@ -109,6 +109,7 @@ export class SBASChartComponent implements OnInit, OnDestroy {
   public makeSbasChart() {
     if (this.chart) {
       d3.selectAll('#sbasChart > svg').remove();
+      d3.selectAll('.tooltip').remove();
     }
 
     this.margin = { top: 10, right: 0, bottom: 25, left: 50 };
@@ -443,7 +444,7 @@ export class SBASChartComponent implements OnInit, OnDestroy {
     }
 
     this.store$.dispatch(
-      new scenesStore.AddCustomPair([ this.queuedProduct, product ])
+      new scenesStore.AddCustomPair([ this.queuedProduct.id, product.id ])
     );
     this.queuedProduct = null;
   }

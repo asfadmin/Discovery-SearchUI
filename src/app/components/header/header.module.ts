@@ -14,7 +14,7 @@ import { MatSharedModule } from '@shared';
 import { HeaderComponent } from './header.component';
 
 import { QueueModule } from './queue';
-import { Hyp3JobsDialogModule } from './hyp3-jobs-dialog';
+import { ProcessingQueueModule } from './processing-queue';
 import { HeaderButtonsModule } from './header-buttons';
 import { InfoBarComponent } from './info-bar/info-bar.component';
 
@@ -38,6 +38,7 @@ import { AoiFilterComponent } from './dataset-header/aoi-filter/aoi-filter.compo
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { BaselineHeaderComponent } from './baseline-header/baseline-header.component';
 import { MasterSceneSelectorModule } from '@components/shared/selectors/master-scene-selector';
+import { Hyp3HeaderComponent } from './hyp3-header/hyp3-header.component';
 
 
 @NgModule({
@@ -47,7 +48,8 @@ import { MasterSceneSelectorModule } from '@components/shared/selectors/master-s
     DatasetHeaderComponent,
     ListHeaderComponent,
     AoiFilterComponent,
-    BaselineHeaderComponent
+    BaselineHeaderComponent,
+    Hyp3HeaderComponent
   ],
   imports: [
     CommonModule,
@@ -66,7 +68,7 @@ import { MasterSceneSelectorModule } from '@components/shared/selectors/master-s
     PipesModule,
 
     QueueModule,
-    Hyp3JobsDialogModule,
+    ProcessingQueueModule,
 
     SearchTypeSelectorModule,
     DatasetSelectorModule,

@@ -154,4 +154,11 @@
     <a *ngIf="source.url" [href]="source.url" target="_blank"> Data courtesy of {{ dataset.source.name }}</a>
     <span *ngIf="!source.url" class="faint-text"> Data courtesy of {{ dataset.source.name }}</span>
   </li>
+
+  <li *ngIf="dataset.citationUrl as citation" class="detail-item-margin">
+    <a *ngIf="citation" [href]="citation"
+       target="_blank"
+       matTooltip="How to cite using this data">Citation</a>
+  </li>
+
 </ul>

@@ -1,5 +1,7 @@
 import * as moment from 'moment';
 
+import { Hyp3Job } from './hyp3.model';
+
 export type CMRProductPair = CMRProduct[];
 
 export interface CMRProduct {
@@ -51,6 +53,8 @@ export interface CMRProductMetadata {
   perpendicular: number | null;
   temporal: number | null;
   canInSAR: boolean;
+
+  job: Hyp3Job | null;
 }
 
 export enum FlightDirection {

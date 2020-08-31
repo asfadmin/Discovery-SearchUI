@@ -6,11 +6,17 @@ import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { Store, Action } from '@ngrx/store';
 
 import { Observable, combineLatest } from 'rxjs';
-import { map, withLatestFrom, startWith, switchMap, tap, filter } from 'rxjs/operators';
+import { map, withLatestFrom, startWith, switchMap, tap, filter, delay } from 'rxjs/operators';
 
-import { Hyp3Service } from '@services';
+import { Hyp3Service, AsfApiService, ProductService } from '@services';
 import { AppState } from '../app.reducer';
+import { SetScenes } from '../scenes/scenes.action';
+import { OpenResultsMenu } from '../ui/ui.action';
 import { Hyp3ActionType, SetJobs, SuccessfulJobSumbission, ErrorJobSubmission, SubmitJob, SetUser } from './hyp3.action';
+import { SetSearchList } from '../filters/filters.action';
+import { MakeSearch } from '../search/search.action';
+
+import { SearchType } from '@models';
 
 @Injectable()
 export class Hyp3Effects {
@@ -19,12 +25,60 @@ export class Hyp3Effects {
     private store$: Store<AppState>,
     private hyp3Service: Hyp3Service,
     private snackbar: MatSnackBar,
+    public asfApiService: AsfApiService,
+    private productService: ProductService,
   ) {}
 
   private loadJobs = createEffect(() => this.actions$.pipe(
     ofType(Hyp3ActionType.LOAD_JOBS),
     switchMap(_ => this.hyp3Service.getJobs$()),
-    map(jobs => new SetJobs(jobs))
+    switchMap(jobs => {
+      const granules = jobs.map(
+        job => job.job_parameters.granule
+      ).join(',');
+
+      return this.asfApiService.query<any[]>({ 'granule_list': granules }).pipe(
+        map(results => this.productService.fromResponse(results)
+          .filter(product => !product.metadata.productType.includes('METADATA'))
+          .reduce((products, product) => {
+            products[product.name] = product;
+            return products;
+          } , {})
+        ),
+        map(products => {
+          const virtualProducts = jobs.map(job => {
+            const product = products[job.job_parameters.granule];
+            const jobFile = job.files[0];
+
+            return {
+              ...product,
+              browses: job.browse_images ? job.browse_images : [''],
+              thumbnail: job.thumbnail_images ? job.thumbnail_images[0] : '',
+              productTypeDisplay: job.job_type,
+              downloadUrl: jobFile.url,
+              bytes: jobFile.size,
+              metadata: {
+                ...product.metadata,
+                productType: job.job_type,
+                job
+              },
+            };
+          });
+
+          return virtualProducts;
+        })
+      );
+    }),
+    switchMap(products => [
+      new SetScenes({ searchType: SearchType.CUSTOM_PRODUCTS, products }),
+      new OpenResultsMenu(),
+    ])
+  ));
+
+  private onSetJobs = createEffect(() => this.actions$.pipe(
+    ofType<SetJobs>(Hyp3ActionType.SET_JOBS),
+    delay(200),
+    map(action => new MakeSearch()),
   ));
 
   private loadUser = createEffect(() => this.actions$.pipe(

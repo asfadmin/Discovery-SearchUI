@@ -13,7 +13,7 @@ import { ScreenSizeService } from '@services';
 export class FileNameComponent implements OnInit, OnDestroy {
   @Input() name: string;
   @Input() dataset: string;
-  @Input() isFilename: boolean;
+  @Input() len: number;
 
   public sceneNameLen: number;
   private subs = new SubSink();
@@ -24,6 +24,10 @@ export class FileNameComponent implements OnInit, OnDestroy {
     this.subs.add(
       this.screenSize.size$.pipe(
       map(size => {
+        if (this.len) {
+          return this.len;
+        }
+
         if (size.width > 1900) {
           return 35;
         } else if (size.width > 1750) {

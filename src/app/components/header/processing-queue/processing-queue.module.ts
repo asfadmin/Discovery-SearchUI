@@ -7,11 +7,11 @@ import { MatChipsModule } from '@angular/material/chips';
 
 import { MatSharedModule } from '@shared';
 import { PipesModule } from '@pipes';
-import { Hyp3JobsDialogComponent } from './hyp3-jobs-dialog.component';
+import { ProcessingQueueComponent } from './processing-queue.component';
 
 
 @NgModule({
-  declarations: [Hyp3JobsDialogComponent],
+  declarations: [ProcessingQueueComponent],
   imports: [
     CommonModule,
     MatSharedModule,
@@ -21,4 +21,4 @@ import { Hyp3JobsDialogComponent } from './hyp3-jobs-dialog.component';
     PipesModule
   ]
 })
-export class Hyp3JobsDialogModule { }
+export class ProcessingQueueModule { }

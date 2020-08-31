@@ -9,6 +9,11 @@ export enum QueueActionType {
   REMOVE_ITEMS = '[Queue] Removes Item',
   CLEARN_QUEUE = '[Queue] Clear Queue',
 
+  ADD_JOB = '[Queue] Add Job',
+  TOGGLE_JOB = '[Queue] Toggle Job',
+  REMOVE_JOB = '[Queue] Remove Job',
+  CLEAR_PROCESSING_QUEUE = '[Queue] Clear Processing Queue',
+
   TOGGLE_PRODUCT = '[Queue] Toggle Product',
   QUEUE_SCENE = '[Scenes] Queue Scene',
   REMOVE_SCENE_FROM_QUEUE = '[Queue] Remove Scene From Queue',
@@ -51,6 +56,30 @@ export class ClearQueue implements Action {
   public readonly type = QueueActionType.CLEARN_QUEUE;
 }
 
+export class AddJob implements Action {
+  public readonly type = QueueActionType.ADD_JOB;
+
+  constructor(public payload: CMRProduct) {}
+}
+
+export class RemoveJob implements Action {
+  public readonly type = QueueActionType.REMOVE_JOB;
+
+  constructor(public payload: CMRProduct) {}
+}
+
+export class ToggleJob implements Action {
+  public readonly type = QueueActionType.TOGGLE_JOB;
+
+  constructor(public payload: CMRProduct) {}
+}
+
+export class ClearProcessingQueue implements Action {
+  public readonly type = QueueActionType.CLEAR_PROCESSING_QUEUE;
+
+  constructor(public payload: CMRProduct) {}
+}
+
 export class MakeDownloadScript implements Action {
   public readonly type = QueueActionType.MAKE_DOWNLOAD_SCRIPT;
 }
@@ -82,5 +111,9 @@ export type QueueActions =
   | RemoveItem
   | RemoveItems
   | ClearQueue
+  | AddJob
+  | RemoveJob
+  | ToggleJob
+  | ClearProcessingQueue
   | MakeDownloadScript
   | DownloadMetadata;

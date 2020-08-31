@@ -13,24 +13,26 @@ import { CopyToClipboardModule } from '@components/shared/copy-to-clipboard';
 import { SceneMetadataModule } from '@components/shared/scene-metadata';
 import { ImageDialogModule } from './image-dialog';
 import { SceneDetailComponent } from './scene-detail.component';
+import {MatButtonToggleModule} from '@angular/material/button-toggle';
 
 
 @NgModule({
   declarations: [SceneDetailComponent],
-  imports: [
-    CommonModule,
-    MatBadgeModule,
-    MatButtonModule,
-    MatIconModule,
-    MatMenuModule,
-    FlexLayoutModule,
-    TruncateModule,
-    MatSharedModule,
-    PipesModule,
-    CopyToClipboardModule,
-    ImageDialogModule,
-    SceneMetadataModule
-  ],
+    imports: [
+        CommonModule,
+        MatBadgeModule,
+        MatButtonModule,
+        MatIconModule,
+        MatMenuModule,
+        FlexLayoutModule,
+        TruncateModule,
+        MatSharedModule,
+        PipesModule,
+        CopyToClipboardModule,
+        ImageDialogModule,
+        SceneMetadataModule,
+        MatButtonToggleModule
+    ],
   exports: [SceneDetailComponent],
 })
 export class SceneDetailModule { }

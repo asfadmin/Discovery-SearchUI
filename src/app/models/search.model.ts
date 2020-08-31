@@ -38,6 +38,7 @@ export interface SbasFiltersType {
 
   temporal: number;
   perpendicular: number;
+  customPairIds: string[][];
 }
 
 export interface GeographicFiltersType {

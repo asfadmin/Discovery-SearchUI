@@ -50,6 +50,9 @@ export class SearchParamsService {
             case models.SearchType.SBAS: {
               return baselineParams;
             }
+            case models.SearchType.CUSTOM_PRODUCTS: {
+              return listParam;
+            }
             default: {
               return filterParams;
             }

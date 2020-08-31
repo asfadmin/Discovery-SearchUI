@@ -1,15 +1,13 @@
 <div *ngIf="breakpoint$ | async as breakpoint">
   <ng-container *ngIf="breakpoint > breakpoints.MOBILE">
 
-    <button (click)="onOpenHyp3Dialog()"
+    <button (click)="onOpenProcessingQueue()"
             class="spacing nav-icon-buttons" color="basic"
-            [disabled]="!isLoggedIn"
-            matTooltip="Hybrid Pluggable Processing Pipeline"
+            matTooltip="Custom Processing Queue"
             mat-button>
         <img src="/assets/asf-logos/HyP3-graphic-only.png"
-          [class.disabled]="!isLoggedIn"
           height="35">
-      <div class="text-under faint-text">HyP3</div>
+      <div class="text-under faint-text">Processing</div>
     </button>
 
     <button

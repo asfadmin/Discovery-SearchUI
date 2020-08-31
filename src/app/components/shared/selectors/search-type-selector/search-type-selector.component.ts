@@ -4,6 +4,7 @@ import { SubSink } from 'subsink';
 import { Store } from '@ngrx/store';
 import { AppState } from '@store';
 import * as searchStore from '@store/search';
+import * as userStore from '@store/user';
 
 import * as models from '@models';
 
@@ -15,6 +16,7 @@ import * as models from '@models';
 export class SearchTypeSelectorComponent implements OnInit, OnDestroy {
   public searchType: models.SearchType = models.SearchType.DATASET;
 
+  public isLoggedIn = false;
   public searchTypes = models.SearchType;
   private subs = new SubSink();
 
@@ -26,6 +28,12 @@ export class SearchTypeSelectorComponent implements OnInit, OnDestroy {
     this.subs.add(
       this.store$.select(searchStore.getSearchType).subscribe(
         searchType => this.searchType = searchType
+      )
+    );
+
+    this.subs.add(
+      this.store$.select(userStore.getIsUserLoggedIn).subscribe(
+        isLoggedIn => this.isLoggedIn = isLoggedIn
       )
     );
   }
