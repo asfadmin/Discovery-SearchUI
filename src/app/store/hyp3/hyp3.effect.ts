@@ -29,52 +29,6 @@ export class Hyp3Effects {
     private productService: ProductService,
   ) {}
 
-  private loadJobs = createEffect(() => this.actions$.pipe(
-    ofType(Hyp3ActionType.LOAD_JOBS),
-    switchMap(_ => this.hyp3Service.getJobs$()),
-    switchMap(jobs => {
-      const granules = jobs.map(
-        job => job.job_parameters.granule
-      ).join(',');
-
-      return this.asfApiService.query<any[]>({ 'granule_list': granules }).pipe(
-        map(results => this.productService.fromResponse(results)
-          .filter(product => !product.metadata.productType.includes('METADATA'))
-          .reduce((products, product) => {
-            products[product.name] = product;
-            return products;
-          } , {})
-        ),
-        map(products => {
-          const virtualProducts = jobs.map(job => {
-            const product = products[job.job_parameters.granule];
-            const jobFile = job.files[0];
-
-            return {
-              ...product,
-              browses: job.browse_images ? job.browse_images : [''],
-              thumbnail: job.thumbnail_images ? job.thumbnail_images[0] : '',
-              productTypeDisplay: job.job_type,
-              downloadUrl: jobFile.url,
-              bytes: jobFile.size,
-              metadata: {
-                ...product.metadata,
-                productType: job.job_type,
-                job
-              },
-            };
-          });
-
-          return virtualProducts;
-        })
-      );
-    }),
-    switchMap(products => [
-      new SetScenes({ searchType: SearchType.CUSTOM_PRODUCTS, products }),
-      new OpenResultsMenu(),
-    ])
-  ));
-
   private onSetJobs = createEffect(() => this.actions$.pipe(
     ofType<SetJobs>(Hyp3ActionType.SET_JOBS),
     delay(200),
