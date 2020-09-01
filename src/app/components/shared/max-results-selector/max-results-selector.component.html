@@ -33,14 +33,18 @@
     </span>
 
     <span *ngIf="!isMaxResultsLoading">
-      {{ currentSearchAmount !== -1 ? formatNumber(currentSearchAmount) : '0' }}
+      <span *ngIf="(searchType$ | async) !== searchTypes.SBAS">
+        {{ currentSearchAmount !== -1 ? formatNumber(currentSearchAmount) : '0' }}
+      </span>
+      <span *ngIf="(searchType$ | async) === searchTypes.SBAS">
+        {{ sbasProducts.length !== -1 ? formatNumber(sbasProducts.length) : '0' }}
+      </span>
     </span>
     <span *ngIf="isMaxResultsLoading"
       style="margin: 0 4px;">
       <fa-icon icon="spinner" [pulse]="true"></fa-icon>
     </span>
     Files
-
 </div>
 
 <mat-menu #menu="matMenu">
