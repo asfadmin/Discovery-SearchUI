@@ -1,0 +1,13 @@
+site_name: ASF SAR Data Search Manual
+site_description: Documentation for searching and processing ASF SAR data.
+google_analytics: ['UA-991100-5', 'search.asf.alaska.edu']
+
+nav:
+  - Home: index.md
+  - Search UI:
+    - Read Me: ../README.md
+    - Source Code: https://github.com/asfadmin/Discovery-SearchUI
+  - Hyp3 Processing:
+    - Developer Wiki: https://wiki.asf.alaska.edu/x/WQfdAQ
+  - About: about.md
+  - ASF Web: 'https://asf.alaska.edu/'

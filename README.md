@@ -42,15 +42,14 @@ Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.
 Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protractortest.org/).
 
 ## Installing pip and mkDocs
+This is the starting point for installing Make Docs https://www.mkdocs.org/#installation
 
-Install pip: 
-`curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py`
+If you do not have python and pip already installed and you are using OS X, then these links
+might be helpful.
 
-Then run the following command in the folder where you have downloaded get-pip.py:
-`python get-pip.py`
+To install Homebrew follow the directions here https://docs.python-guide.org/starting/install3/osx/
 
-You can upgrade pip at anytime, or make sure you are have the latest version
-installed using the command: `pip install -U pip`
+This can be helpful if you have problems installing Python or pip https://opensource.com/article/19/5/python-3-default-mac
 
 #### python 3 and pip on OS X
 For Apple OS X systems, this is the recommended approach to installing python 3 and pip.
