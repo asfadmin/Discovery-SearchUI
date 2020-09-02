@@ -54,19 +54,29 @@
           settings_overscan
         </mat-icon>
 
-        <mat-icon (click)="onToggleScene($event, scene.groupId)"
-                  class="icon-margin"
-                  matTooltip="{{
-                isQueued ?
-                  'Remove scene files from downloads':
-                  'Add scene files to downloads'
-              }}">
+        <mat-icon *ngIf="isDownloadable(scene)"
+          (click)="onToggleScene($event, scene.groupId)"
+          class="icon-margin"
+          matTooltip="{{
+            isQueued ?
+              'Remove scene files from downloads':
+              'Add scene files to downloads'
+          }}">
           {{ isQueued ? 'shopping_cart' : 'add_shopping_cart' }}
         </mat-icon>
       </div>
 
-      <div class="scene-controls" [ngClass]="{'mobile-size': breakpoint <= breakpoints.SMALL}">
+      <div *ngIf="isDownloadable(scene)" class="scene-controls" [ngClass]="{'mobile-size': breakpoint <= breakpoints.SMALL}">
         <span class="number-queued"> {{ numQueued }} </span>
+      </div>
+
+      <div *ngIf="!isDownloadable(scene)" class="scene-controls ml-2">
+        <mat-chip-list aria-label="Job Status">
+          <mat-chip *ngIf="isExpired(scene.metadata.job)" color="primary">Expired</mat-chip>
+          <mat-chip *ngIf="isPending(scene.metadata.job)" color="secondary">Pending</mat-chip>
+          <mat-chip *ngIf="isFailed(scene.metadata.job)" color="accent">Falied</mat-chip>
+          <mat-chip *ngIf="isRunning(scene.metadata.job)" color="secondary">Running</mat-chip>
+        </mat-chip-list>
       </div>
     </ng-container>
 

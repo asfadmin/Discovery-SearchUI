@@ -169,6 +169,9 @@ export class SearchEffects {
                 }) :
                 new SearchCanceled()
             ),
+            catchError(
+              error => of(new SearchError(`Error loading search results`))
+            )
           );
         }
       ),
@@ -177,25 +180,26 @@ export class SearchEffects {
 
   private hyp3JobToProducts(jobs, products) {
     const virtualProducts = jobs
-    .filter(job => job.files && job.files.length > 0)
-    .map(job => {
-      const product = products[job.job_parameters.granule];
-      const jobFile = job.files[0];
+      .map(job => {
+        const product = products[job.job_parameters.granule];
+        const jobFile = !!job.files ?
+          job.files[0] :
+          {size: -1, url: ''};
 
-      return {
-        ...product,
-        browses: job.browse_images ? job.browse_images : [''],
-        thumbnail: job.thumbnail_images ? job.thumbnail_images[0] : '',
-        productTypeDisplay: job.job_type,
-        downloadUrl: jobFile.url,
-        bytes: jobFile.size,
-        metadata: {
-          ...product.metadata,
-          productType: job.job_type,
-          job
-        },
-      };
-    });
+        return {
+          ...product,
+          browses: job.browse_images ? job.browse_images : ['assets/no-browse.png'],
+          thumbnail: job.thumbnail_images ? job.thumbnail_images[0] : 'assets/no-thumb.png',
+          productTypeDisplay: `${job.job_type} ${product.metadata.productType} `,
+          downloadUrl: jobFile.url,
+          bytes: jobFile.size,
+          metadata: {
+            ...product.metadata,
+            productType: job.job_type,
+            job
+          },
+        };
+      });
 
     return virtualProducts;
   }

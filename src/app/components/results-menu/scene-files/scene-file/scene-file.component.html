@@ -35,6 +35,9 @@
       <span *ngIf="product.productTypeDisplay.length <= 40">
         {{ product.productTypeDisplay }}
       </span>
+      <span *ngIf="product.metadata.job && product.metadata.job.expiration_time">
+        {{ expirationBadge(product.metadata.job.expiration_time) }}
+      </span>
     </b>
 
     <a *ngIf="isHovered" class="icon-margin">
@@ -45,7 +48,10 @@
     </a>
   </div>
     <button
-      *ngIf="isUserLoggedIn && product.metadata.beamMode === 'IW' && product.metadata.productType === 'SLC'"
+      *ngIf="isUserLoggedIn &&
+        product.metadata.beamMode === 'IW' &&
+        (product.metadata.productType === 'SLC' || product.metadata.productType === 'GRD_HD')
+        "
       (click)="onProcessHyp3Job()"
       mat-icon-button>
       <span *ngIf="loadingHyp3JobName !== product.name">
@@ -58,15 +64,25 @@
 
     <div mat-line>
       <span *ngIf="product.bytes === 0">Virtual</span>
-      <span *ngIf="product.bytes !== 0">{{product.bytes | readableSizeFromBytes }}</span>
+      <span *ngIf="isDownloadable(product) && product.bytes !== 0">{{product.bytes | readableSizeFromBytes }}</span>
     </div>
 
-    <a mat-icon-button [href]="product.downloadUrl" target="_blank" matTooltip="Download file">
+    <a *ngIf="isDownloadable(product)" mat-icon-button
+      [href]="product.downloadUrl" target="_blank"
+      matTooltip="Download file">
       <mat-icon>cloud_download</mat-icon>
     </a>
 
     <app-cart-toggle
+      *ngIf="isDownloadable(product)"
       (toggle)="onToggleQueueProduct()"
       [isQueued]="isQueued">
     </app-cart-toggle>
+
+    <mat-chip-list *ngIf="!isDownloadable(product)" aria-label="Job Status">
+      <mat-chip *ngIf="isExpired(product.metadata.job)" color="primary">Expired</mat-chip>
+      <mat-chip *ngIf="isPending(product.metadata.job)" color="secondary">Pending</mat-chip>
+      <mat-chip *ngIf="isFailed(product.metadata.job)" color="accent">Falied</mat-chip>
+      <mat-chip *ngIf="isRunning(product.metadata.job)" color="secondary">Running</mat-chip>
+    </mat-chip-list>
 </mat-list-item>

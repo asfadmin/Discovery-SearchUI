@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { MatChipsModule } from '@angular/material/chips';
 
 import { FontAwesomeModule, FaIconLibrary } from '@fortawesome/angular-fontawesome';
 import { faSpinner, fas } from '@fortawesome/free-solid-svg-icons';
@@ -18,6 +19,7 @@ import { SceneFileComponent } from './scene-file.component';
     CommonModule,
     FontAwesomeModule,
     MatSharedModule,
+    MatChipsModule,
     CopyToClipboardModule,
     CartToggleModule,
     TruncateModule,
