@@ -62,7 +62,7 @@ export class Hyp3Effects {
   private errorJobSubmission = createEffect(() => this.actions$.pipe(
     ofType<SubmitJob>(Hyp3ActionType.ERROR_JOB_SUBMISSION),
     map(action => this.snackbar.open(
-      'Fail to submit job', 'RTC_GAMMA',
+      'Failed to submit job', 'RTC_GAMMA',
       { duration: 3000 }
     ))
   ), {dispatch: false});
