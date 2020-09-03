@@ -44,7 +44,9 @@ export class Hyp3Effects {
   private submitJob = createEffect(() => this.actions$.pipe(
     ofType<SubmitJob>(Hyp3ActionType.SUBMIT_JOB),
     switchMap(action => this.hyp3Service.submitJob$(action.payload).pipe(
-      map(_ => new SuccessfulJobSumbission()),
+      map((jobs: any) => {
+        return new SuccessfulJobSumbission();
+      }),
       catchError(err => of(new ErrorJobSubmission())),
     ))
   ));
