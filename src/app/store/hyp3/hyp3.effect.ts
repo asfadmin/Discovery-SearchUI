@@ -5,8 +5,8 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { Store, Action } from '@ngrx/store';
 
-import { Observable, combineLatest } from 'rxjs';
-import { map, withLatestFrom, startWith, switchMap, tap, filter, delay } from 'rxjs/operators';
+import { Observable, combineLatest, of } from 'rxjs';
+import { map, withLatestFrom, startWith, switchMap, tap, filter, delay, catchError } from 'rxjs/operators';
 
 import { Hyp3Service, AsfApiService, ProductService } from '@services';
 import { AppState } from '../app.reducer';
@@ -44,15 +44,8 @@ export class Hyp3Effects {
   private submitJob = createEffect(() => this.actions$.pipe(
     ofType<SubmitJob>(Hyp3ActionType.SUBMIT_JOB),
     switchMap(action => this.hyp3Service.submitJob$(action.payload).pipe(
-      map((jobs: any) => {
-        const [job] = jobs.jobs;
-
-        if ( job.status_code === 'PENDING' ) {
-          return new SuccessfulJobSumbission();
-        } else {
-          return new ErrorJobSubmission();
-        }
-      })
+      map(_ => new SuccessfulJobSumbission()),
+      catchError(err => of(new ErrorJobSubmission())),
     ))
   ));
 
