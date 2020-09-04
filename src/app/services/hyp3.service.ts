@@ -51,7 +51,7 @@ export class Hyp3Service {
       jobs: [{
         name: name || 'RTC HyP3 job',
         job_parameters: {
-          granule: granuleId
+          granules: [granuleId]
         },
         job_type: 'RTC_GAMMA'
       }]
@@ -67,7 +67,7 @@ export class Hyp3Service {
         {
           'job_id': '54ff6e59-d277-4d53-b067-8750225aeaa1',
           'job_parameters': {
-            'granule': 'S1A_IW_SLC__1SDV_20200701T154834_20200701T154900_033263_03DA96_C249'
+            'granules': ['S1A_IW_SLC__1SDV_20200701T154834_20200701T154900_033263_03DA96_C249']
           },
           'job_type': 'RTC_GAMMA',
           'name': 'RTC HyP3 job',

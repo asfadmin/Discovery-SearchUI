@@ -147,7 +147,7 @@ export class SearchEffects {
       switchMap(
         (jobs: models.Hyp3Job[]) => {
           const granules = jobs.map(
-            job => job.job_parameters.granule
+            job => job.job_parameters.granules[0]
           ).join(',');
 
           return this.asfApiService.query<any[]>({ 'granule_list': granules }).pipe(
@@ -181,7 +181,7 @@ export class SearchEffects {
   private hyp3JobToProducts(jobs, products) {
     const virtualProducts = jobs
       .map(job => {
-        const product = products[job.job_parameters.granule];
+        const product = products[job.job_parameters.granules[0]];
         const jobFile = !!job.files ?
           job.files[0] :
           {size: -1, url: ''};
