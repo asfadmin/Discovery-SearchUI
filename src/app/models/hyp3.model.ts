@@ -55,7 +55,7 @@ export type Hyp3JobParameters =
   | Hyp3RtcGammaParameters;
 
 export interface Hyp3RtcGammaParameters {
-  granule: string;
+  granules: string[];
 }
 
 export enum Hyp3JobType {

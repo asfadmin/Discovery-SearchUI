@@ -51,7 +51,7 @@ export class ScenesService {
     ).pipe(
       map(([scenes, jobs]) => {
         const jobsByName = jobs.reduce((byName, job) => {
-          byName[job.job_parameters.granule] = job;
+          byName[job.job_parameters.granules[0]] = job;
           return byName;
         }, {});
 
