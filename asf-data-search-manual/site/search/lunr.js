@@ -4,7 +4,7 @@
  * @license MIT
  */
 
-;(function(){
+(function(){
 
 /**
  * A convenience function for configuring and constructing
