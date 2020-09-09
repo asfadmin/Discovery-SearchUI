@@ -1,11 +1,22 @@
 site_name: ASF SAR Data Search Manual
+site_name_no_asf: SAR Data Search Manual
 site_description: Documentation for searching and processing ASF SAR data.
 google_analytics: ['UA-991100-5', 'search.asf.alaska.edu']
+
+theme:
+    name: mkdocs
+    custom_dir: asf-theme/
+
+extra_css:
+  - css/extra.css
+
+logo: img/ASFLogo-Blue2.png
+copyright: Copyright @ Alaska Satellite Facility
 
 nav:
   - Home: index.md
   - Search UI:
-    - Read Me: ../README.md
+    - Tutorial Videos: https://www.youtube.com/playlist?list=PLXluIEvp5ZzIWd0yNy-ANfdwWjCD1hInA
     - Source Code: https://github.com/asfadmin/Discovery-SearchUI
   - Hyp3 Processing:
     - Developer Wiki: https://wiki.asf.alaska.edu/x/WQfdAQ
