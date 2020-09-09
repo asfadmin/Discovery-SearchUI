@@ -1,13 +1,12 @@
-# Welcome to MkDocs
+# Welcome to ASF SAR Data Search
 
-For full documentation visit [mkdocs.org](https://www.mkdocs.org).
+For an overview of all of ASF services visit [asf.alaska.edu](https://asf.alaska.edu).
 
-## Commands
+## Major Search Tools
 
-* `mkdocs new [dir-name]` - Create a new project.
-* `mkdocs serve` - Start the live-reloading docs server.
-* `mkdocs build` - Build the documentation site.
-* `mkdocs -h` - Print help message and exit.
+* `Vertex` - A graphical search interface for finding SAR data.
+* `Hyp3` - Process SAR data to create refined products.
+* `ASF API` - A command-line interface for finding SAR data.
 
 ## Project layout
 

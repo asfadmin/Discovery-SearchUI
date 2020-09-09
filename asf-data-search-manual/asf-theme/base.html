@@ -61,7 +61,6 @@
     <body{% if page and page.is_homepage %} class="homepage"{% endif %}>
         <div class="navbar fixed-top navbar-expand-lg navbar-{% if config.theme.nav_style == "light" %}light{% else %}dark{% endif %} bg-{{ config.theme.nav_style }}">
             <div class="container">
-
                 {%- block site_name %}
                 <a class="navbar-brand" href="{{ nav.homepage.url|url }}">{{ config.site_name }}</a>
                 {%- endblock %}
@@ -176,7 +175,7 @@
             {%- if config.copyright %}
                 <p>{{ config.copyright }}</p>
             {%- endif %}
-            <p>Documentation built with <a href="https://www.mkdocs.org/">MkDocs</a>.</p>
+<!--            <p>Documentation built with <a href="https://www.mkdocs.org/">MkDocs</a>.</p>-->
           {%- endblock %}
         </footer>
 
