@@ -143,10 +143,10 @@ export class SBASChartComponent implements OnInit, OnDestroy {
       .attr('class', 'y label')
       .attr('text-anchor', 'end')
       .attr('y', -this.margin.left)
-      .attr('x', -((this.heightValue - (this.margin.top)) / 2) + 80)
+      .attr('x', -((this.heightValue - (this.margin.top)) / 2) + 60)
       .attr('dy', '.75em')
       .attr('transform', 'rotate(-90)')
-      .text('Perpendicular Baseline');
+      .text('Perp. Baseline');
 
     const xExtent = d3.extent(
       this.scenes.map(s => s.metadata.date.valueOf())
