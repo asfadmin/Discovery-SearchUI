@@ -21,7 +21,7 @@ export class SceneFileComponent {
   @Output() toggle = new EventEmitter<void>();
   @Output() unzip = new EventEmitter<models.CMRProduct>();
   @Output() closeProduct = new EventEmitter<models.CMRProduct>();
-  @Output() submitHyp3Job = new EventEmitter<models.CMRProduct>();
+  @Output() queueHyp3Job = new EventEmitter<models.QueuedHyp3Job>();
 
   public isHovered = false;
 
@@ -116,6 +116,13 @@ export class SceneFileComponent {
 
   public isRunning(job: models.Hyp3Job): boolean {
     return job.status_code === models.Hyp3JobStatusCode.RUNNING;
+  }
+
+  public addRtcToProcessingQueue(): void {
+    this.queueHyp3Job.emit({
+      granules: [ this.product ],
+      job_type: models.Hyp3JobType.RTC_GAMMA
+    });
   }
 
   private expirationDays(expiration_time: moment.Moment): number {

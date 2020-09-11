@@ -131,8 +131,8 @@ export class SceneFilesComponent implements OnInit, OnDestroy {
     return pivotIdx;
   }
 
-  public onSubmitHyp3Job(product: models.CMRProduct) {
-    this.store$.dispatch(new hyp3Store.SubmitJob(product.name));
+  public onQueueHyp3Job(job: models.QueuedHyp3Job) {
+    this.store$.dispatch(new queueStore.AddJob(job));
   }
 
   ngOnDestroy() {

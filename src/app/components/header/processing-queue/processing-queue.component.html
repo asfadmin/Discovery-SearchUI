@@ -16,64 +16,79 @@
       <div class="jobs-display">
 
         <div class="jobs-list-panel">
-          <div class="list-filter">
-            <mat-form-field style="margin-left: 10px;" class="example-form-field">
-              <mat-label>Filter Jobs</mat-label>
-              <input matInput type="text">
-            </mat-form-field>
-          </div>
-
           <div class="jobs-list">
             <mat-action-list *ngIf="!areJobsLoading" role="list">
-              <button mat-list-item
-                *ngFor="let job of jobs"
-                (click)="onSelectJob(job)"
-                [class.selected]="job.job_id === selected">
+              <button mat-list-item *ngFor="let job of jobs">
 
                 <img matListAvatar
-                  [src]="!!job.thumbnail_images ? job.thumbnail_images[0] : ''"
+                  [src]="job.granules[0].thumbnail"
                   onerror="this.src='assets/no-thumb.png'"
                   matBadgeOverlap="false"
                   matListAvatar>
 
                 <div matLine>
-                  {{ job.files[0].filename }}
+                  {{ job.granules[0].name }}
                 </div>
 
                 <div matLine>
                   <b>
-                    <span *ngIf="job.files[0].bytes === 0">Virtual</span>
-                    <span *ngIf="job.files[0].bytes !== 0">{{ job.files[0].size | readableSizeFromBytes }}</span>
+                    <span *ngIf="job.granules[0].bytes === 0">Virtual</span>
+                    <span *ngIf="job.granules[0].bytes !== 0">{{ job.granules[0].bytes | readableSizeFromBytes }}</span>
                   </b>
                 </div>
-
-                <a mat-icon-button matTooltip="Download" [href]="job.files[0].url" target="_blank" style="text-decoration: none;">
-                  <mat-icon>cloud_download</mat-icon>
-                </a>
               </button>
             </mat-action-list>
           </div>
         </div>
 
         <div class="jobs-detail">
-          <div *ngIf="!selectedJobId" class="no-job-selected faint-text">
-            No Job Selected
-          </div>
-          <div *ngIf="selectedJobId">
-            <img [src]="selected.browse_images[0]" style="width: 290px;">
+          <div style="margin: 10px;">
             <div>
-              <div>
-                <b> {{ selected.job_type }} </b>
-              </div>
-              <div>
-                Expires:
-                <mat-chip-list>
-
-                  <mat-chip color="primary">
-                    {{ daysUntilExpiration(selected.expiration_time) }}
-                  </mat-chip>
-                </mat-chip-list>
-              </div>
+              <mat-form-field>
+                <mat-label>Project Name</mat-label>
+                <input matInput type="text" [(ngModel)]="projectName">
+              </mat-form-field>
+            </div>
+            <div>
+              <mat-form-field>
+                <mat-label>Radiometry</mat-label>
+                <mat-select [(value)]="radiometry">
+                  <mat-option value="gamma0">gamma0</mat-option>
+                  <mat-option value="sigma0">sigma0</mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+            <div>
+              <mat-form-field>
+                <mat-label>Scale</mat-label>
+                <mat-select [(value)]="scale">
+                  <mat-option value="power">power</mat-option>
+                  <mat-option value="amplitude">amplitude</mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+            <div>
+              <mat-slide-toggle [(ngModel)]="demMatching">
+                Dem Matching
+              </mat-slide-toggle>
+            </div>
+            <div>
+              <mat-slide-toggle [(ngModel)]="includeDem">
+                Include Dem
+              </mat-slide-toggle>
+            </div>
+            <div>
+              <mat-slide-toggle [(ngModel)]="includeIncMap">
+                Include Inc Map
+              </mat-slide-toggle>
+            </div>
+            <div>
+              <mat-slide-toggle [(ngModel)]="speckleFilter">
+                Speckle Filter
+              </mat-slide-toggle>
+            </div>
+            <div style="padding-top: 20px;">
+              <button mat-raised-button (click)="onSubmitQueue()" color="primary">Submit Queue</button>
             </div>
           </div>
         </div>

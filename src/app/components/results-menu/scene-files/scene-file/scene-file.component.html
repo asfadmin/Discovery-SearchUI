@@ -52,14 +52,20 @@
         product.metadata.beamMode === 'IW' &&
         (product.metadata.productType === 'SLC' || product.metadata.productType === 'GRD_HD')
         "
-      (click)="onProcessHyp3Job()"
+      [matMenuTriggerFor]="customJobTypes"
       mat-icon-button>
       <span *ngIf="loadingHyp3JobName !== product.name">
         <img src="/assets/asf-logos/HyP3-graphic-only.png"
              style="width: 20px; margin-top: 11px;"
-             matTooltip="Initiate HyP3 Processing">
+             matTooltip="Add to Processing Queue">
       </span>
       <fa-icon *ngIf="loadingHyp3JobName === product.name" icon="spinner" [pulse]="true"></fa-icon>
+
+      <mat-menu #customJobTypes="matMenu">
+        <button (click)="addRtcToProcessingQueue()" mat-menu-item>
+          <span>Add RTC to processing queue</span>
+        </button>
+      </mat-menu>
     </button>
 
     <div mat-line>

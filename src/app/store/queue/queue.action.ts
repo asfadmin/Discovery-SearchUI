@@ -1,6 +1,6 @@
 import { Action } from '@ngrx/store';
 
-import { CMRProduct, AsfApiOutputFormat } from '@models';
+import { CMRProduct, AsfApiOutputFormat, QueuedHyp3Job } from '@models';
 
 export enum QueueActionType {
   ADD_ITEM = '[Queue] Add Item',
@@ -10,7 +10,6 @@ export enum QueueActionType {
   CLEARN_QUEUE = '[Queue] Clear Queue',
 
   ADD_JOB = '[Queue] Add Job',
-  TOGGLE_JOB = '[Queue] Toggle Job',
   REMOVE_JOB = '[Queue] Remove Job',
   CLEAR_PROCESSING_QUEUE = '[Queue] Clear Processing Queue',
 
@@ -24,12 +23,6 @@ export enum QueueActionType {
 
 export class AddItem implements Action {
   public readonly type = QueueActionType.ADD_ITEM;
-
-  constructor(public payload: CMRProduct) {}
-}
-
-export class ToggleProduct implements Action {
-  public readonly type = QueueActionType.TOGGLE_PRODUCT;
 
   constructor(public payload: CMRProduct) {}
 }
@@ -52,6 +45,12 @@ export class RemoveItems implements Action {
   constructor(public payload: CMRProduct[]) {}
 }
 
+export class ToggleProduct implements Action {
+  public readonly type = QueueActionType.TOGGLE_PRODUCT;
+
+  constructor(public payload: CMRProduct) {}
+}
+
 export class ClearQueue implements Action {
   public readonly type = QueueActionType.CLEARN_QUEUE;
 }
@@ -59,25 +58,17 @@ export class ClearQueue implements Action {
 export class AddJob implements Action {
   public readonly type = QueueActionType.ADD_JOB;
 
-  constructor(public payload: CMRProduct) {}
+  constructor(public payload: QueuedHyp3Job) {}
 }
 
 export class RemoveJob implements Action {
   public readonly type = QueueActionType.REMOVE_JOB;
 
-  constructor(public payload: CMRProduct) {}
-}
-
-export class ToggleJob implements Action {
-  public readonly type = QueueActionType.TOGGLE_JOB;
-
-  constructor(public payload: CMRProduct) {}
+  constructor(public payload: QueuedHyp3Job) {}
 }
 
 export class ClearProcessingQueue implements Action {
   public readonly type = QueueActionType.CLEAR_PROCESSING_QUEUE;
-
-  constructor(public payload: CMRProduct) {}
 }
 
 export class MakeDownloadScript implements Action {
@@ -105,7 +96,6 @@ export class RemoveSceneFromQueue implements Action {
 export type QueueActions =
   | AddItem
   | AddItems
-  | ToggleProduct
   | QueueScene
   | RemoveSceneFromQueue
   | RemoveItem
@@ -113,7 +103,7 @@ export type QueueActions =
   | ClearQueue
   | AddJob
   | RemoveJob
-  | ToggleJob
+  | ToggleProduct
   | ClearProcessingQueue
   | MakeDownloadScript
   | DownloadMetadata;

@@ -57,6 +57,7 @@ export class SceneComponent implements OnInit {
       (
         !this.isPending(product.metadata.job) &&
         !this.isFailed(product.metadata.job) &&
+        !this.isRunning(product.metadata.job) &&
         !this.isExpired(product.metadata.job)
       )
     );
