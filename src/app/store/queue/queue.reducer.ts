@@ -1,7 +1,7 @@
 import { createFeatureSelector, createSelector } from '@ngrx/store';
 
 import { QueueActionType, QueueActions } from './queue.action';
-import { CMRProduct, QueuedJob } from '@models';
+import { CMRProduct, QueuedHyp3Job } from '@models';
 
 export interface ProductMap {
   [id: string]: CMRProduct;
@@ -10,7 +10,7 @@ export interface ProductMap {
 export interface QueueState {
   products: ProductMap;
   ids: string[];
-  customJobs: QueuedJob[];
+  customJobs: QueuedHyp3Job[];
 }
 
 export const initState: QueueState = {

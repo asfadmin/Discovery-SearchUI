@@ -78,10 +78,6 @@ export class SceneFileComponent {
     );
   }
 
-  public onProcessHyp3Job() {
-    this.submitHyp3Job.emit(this.product);
-  }
-
   public expirationBadge(expiration_time: moment.Moment): string {
     const days = this.expirationDays(expiration_time);
 
