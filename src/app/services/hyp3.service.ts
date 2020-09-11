@@ -44,6 +44,12 @@ export class Hyp3Service {
     );
   }
 
+  public submiteJobBatch$(jobBatch) {
+    const submitJobUrl = `${this.url}/jobs`;
+
+    return this.http.post(submitJobUrl, jobBatch, { withCredentials: true });
+  }
+
   public submitJob$(granuleId: string, name?: string) {
     const submitJobUrl = `${this.url}/jobs`;
 

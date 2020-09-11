@@ -6,8 +6,10 @@ import { AppState } from '@store';
 import * as moment from 'moment';
 
 import { Hyp3Service } from '@services';
+import * as queueStore from '@store/queue';
 import * as hyp3Store from '@store/hyp3';
 import * as models from '@models';
+import * as services from '@services';
 
 @Component({
   selector: 'app-processing-queue',
@@ -15,7 +17,7 @@ import * as models from '@models';
   styleUrls: ['./processing-queue.component.scss']
 })
 export class ProcessingQueueComponent implements OnInit {
-  public jobs = [];
+  public jobs: models.QueuedHyp3Job[] = [];
   public selected: models.Hyp3Job;
   public selectedJobId: string = null;
   public user = '';
@@ -23,19 +25,23 @@ export class ProcessingQueueComponent implements OnInit {
   public limit = 0;
   public areJobsLoading = false;
 
+  public radiometry = 'gamma0';
+  public scale = 'power';
+  public projectName = '';
+  public demMatching = false;
+  public includeDem = false;
+  public includeIncMap = false;
+  public speckleFilter = false;
+
   constructor(
     private dialogRef: MatDialogRef<ProcessingQueueComponent>,
     private store$: Store<AppState>,
+    private hyp3: services.Hyp3Service,
   ) { }
 
   ngOnInit(): void {
-    this.store$.select(hyp3Store.getAreHyp3JobsLoading).subscribe(
-      areLoading => this.areJobsLoading = areLoading
-    );
-    this.store$.select(hyp3Store.getHyp3Jobs).subscribe(jobs => {
-      this.jobs = jobs
-        .filter(job => job.status_code === models.Hyp3JobStatusCode.SUCCEEDED)
-        .filter(job => !!job.browse_images);
+    this.store$.select(queueStore.getQueuedJobs).subscribe(jobs => {
+      this.jobs = jobs;
     });
 
     this.store$.select(hyp3Store.getHyp3User).subscribe(
@@ -64,5 +70,31 @@ export class ProcessingQueueComponent implements OnInit {
     const current = moment();
 
     return `${current.diff(expiration_time, 'days')} days`;
+  }
+
+  public onSubmitQueue(): void {
+    const options = {
+      dem_matching: this.demMatching,
+      include_dem: this.includeDem,
+      include_inc_map: this.includeIncMap,
+      radiometry: this.radiometry,
+      scale: this.scale,
+      speckle_filter: this.speckleFilter,
+    };
+
+    const hyp3JobsBatch = this.jobs.map(job => {
+      return {
+        name: this.projectName,
+        job_type: job.job_type,
+        job_parameters: {
+          ...options,
+          granules: job.granules.map(granule => granule.name),
+        }
+      };
+    });
+
+    this.hyp3.submiteJobBatch$({jobs: hyp3JobsBatch}).subscribe(
+      resp => console.log(resp)
+    );
   }
 }
