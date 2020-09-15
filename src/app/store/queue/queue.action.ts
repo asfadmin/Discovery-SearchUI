@@ -10,6 +10,7 @@ export enum QueueActionType {
   CLEARN_QUEUE = '[Queue] Clear Queue',
 
   ADD_JOB = '[Queue] Add Job',
+  ADD_JOBS = '[Queue] Add Jobs',
   REMOVE_JOB = '[Queue] Remove Job',
   CLEAR_PROCESSING_QUEUE = '[Queue] Clear Processing Queue',
 
@@ -61,6 +62,12 @@ export class AddJob implements Action {
   constructor(public payload: QueuedHyp3Job) {}
 }
 
+export class AddJobs implements Action {
+  public readonly type = QueueActionType.ADD_JOBS;
+
+  constructor(public payload: QueuedHyp3Job[]) {}
+}
+
 export class RemoveJob implements Action {
   public readonly type = QueueActionType.REMOVE_JOB;
 
@@ -102,6 +109,7 @@ export type QueueActions =
   | RemoveItems
   | ClearQueue
   | AddJob
+  | AddJobs
   | RemoveJob
   | ToggleProduct
   | ClearProcessingQueue

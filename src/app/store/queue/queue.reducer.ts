@@ -119,11 +119,20 @@ export function queueReducer(state = initState, action: QueueActions): QueueStat
       };
     }
 
+    case QueueActionType.ADD_JOBS: {
+      return {
+        ...state,
+        customJobs: [...state.customJobs, ...action.payload]
+      };
+    }
+
     case QueueActionType.REMOVE_JOB: {
       const queue = [...state.customJobs]
         .filter(job =>
-          job.job_type !== action.payload.job_type &&
-          !sameGranules(job.granules, action.payload.granules)
+          !(
+            job.job_type === action.payload.job_type &&
+            sameGranules(job.granules, action.payload.granules)
+          )
         );
 
       return {

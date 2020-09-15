@@ -17,8 +17,8 @@
 
         <div class="jobs-list-panel">
           <div class="jobs-list">
-            <mat-action-list *ngIf="!areJobsLoading" role="list">
-              <button mat-list-item *ngFor="let job of jobs">
+            <mat-list *ngIf="!areJobsLoading" role="list">
+              <mat-list-item *ngFor="let job of jobs">
 
                 <img matListAvatar
                   [src]="job.granules[0].thumbnail"
@@ -36,8 +36,12 @@
                     <span *ngIf="job.granules[0].bytes !== 0">{{ job.granules[0].bytes | readableSizeFromBytes }}</span>
                   </b>
                 </div>
-              </button>
-            </mat-action-list>
+
+                <button (click)="onRemoveJob(job)" matTooltip="Remove job" mat-icon-button>
+                  <mat-icon>close</mat-icon>
+                </button>
+              </mat-list-item>
+            </mat-list>
           </div>
         </div>
 
@@ -87,13 +91,27 @@
                 Speckle Filter
               </mat-slide-toggle>
             </div>
+
             <div style="padding-top: 20px;">
-              <button mat-raised-button (click)="onSubmitQueue()" color="primary">Submit Queue</button>
+              <button
+                (click)="onSubmitQueue()"
+                mat-raised-button
+                color="primary">
+                <span *ngIf="!isQueueSubmitProcessing">
+                  Submit Queue
+                </span>
+
+                <span *ngIf="isQueueSubmitProcessing">
+                  Loading...
+                </span>
+              </button>
             </div>
           </div>
         </div>
       </div>
-      <div class="w100 hyp3-footer"></div>
+      <mat-progress-bar *ngIf="isQueueSubmitProcessing" mode="indeterminate"></mat-progress-bar>
+      <div class="w100 hyp3-footer">
+      </div>
     </div>
   </mat-card-content>
 </mat-card>

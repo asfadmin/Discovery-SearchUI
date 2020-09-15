@@ -2,11 +2,19 @@
   <ng-container *ngIf="breakpoint > breakpoints.MOBILE">
 
     <button (click)="onOpenProcessingQueue()"
-            class="spacing nav-icon-buttons" color="basic"
-            matTooltip="Custom Processing Queue"
-            mat-button>
-        <img src="/assets/asf-logos/HyP3-graphic-only.png"
+        [disabled]="queuedCustomProducts.length <= 0"
+        class="spacing nav-icon-buttons" color="basic"
+        matTooltip="Custom Processing Queue"
+        mat-button>
+      <div [matBadge]="queuedCustomProducts.length"
+            matBadgeColor="{{ queuedCustomProducts.length > 0 ? 'accent' : 'primary' }}"
+            matBadgePosition="above after"
+            matBadgeOverlap="true"
+            matBadgeSize="small">
+        <img
+          src="/assets/asf-logos/HyP3-graphic-only.png"
           height="35">
+      </div>
       <div class="text-under faint-text">Processing</div>
     </button>
 

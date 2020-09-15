@@ -18,7 +18,7 @@ import { HelpComponent } from '@components/help/help.component';
 import { CustomizeEnvComponent } from './customize-env/customize-env.component';
 
 import { AuthService, AsfApiService, EnvironmentService, ScreenSizeService } from '@services';
-import { CMRProduct, Breakpoints, UserAuth, SavedSearchType } from '@models';
+import { CMRProduct, Breakpoints, UserAuth, SavedSearchType, QueuedHyp3Job } from '@models';
 
 @Component({
   selector: 'app-header-buttons',
@@ -37,6 +37,7 @@ export class HeaderButtonsComponent implements OnInit, OnDestroy {
   private subs = new SubSink();
 
   public queuedProducts: CMRProduct[];
+  public queuedCustomProducts: QueuedHyp3Job[];
 
   constructor(
     public authService: AuthService,
@@ -58,6 +59,12 @@ export class HeaderButtonsComponent implements OnInit, OnDestroy {
     this.subs.add(
       this.store$.select(queueStore.getQueuedProducts).subscribe(
         products => this.queuedProducts = products
+      )
+    );
+
+    this.subs.add(
+      this.store$.select(queueStore.getQueuedJobs).subscribe(
+        jobs => this.queuedCustomProducts = jobs
       )
     );
 
