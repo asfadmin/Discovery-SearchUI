@@ -8,11 +8,13 @@ import { AppState } from '@store';
 import * as uiStore from '@store/ui';
 import * as scenesStore from '@store/scenes';
 import * as searchStore from '@store/search';
+import * as d3 from 'd3';
 
 import {Breakpoints, CMRProduct, CMRProductPair, SearchType} from '@models';
 import {ScreenSizeService, DatasetForProductService, ScenesService, PairService} from '@services';
 
 import { SubSink } from 'subsink';
+import {height} from '@fortawesome/free-solid-svg-icons/faOm';
 
 enum CardViews {
   LIST = 0,
@@ -52,6 +54,13 @@ export class SBASResultsMenuComponent implements OnInit, OnDestroy {
   public breakpoints = Breakpoints;
   public isSelectedPairCustom: boolean;
   private subs = new SubSink();
+
+  // private zoom = d3.zoom().scaleExtent([1, 8]).on('zoom', this.zoomed);
+  // private zoom = d3.zoom()
+  //   .scaleExtent([1, 40])
+  //   .on('zoom', this.zoomed);
+
+  private sbasChart = d3.select('#sbasChart.svg');
 
   constructor(
     private store$: Store<AppState>,
@@ -155,14 +164,27 @@ export class SBASResultsMenuComponent implements OnInit, OnDestroy {
   }
 
   public zoomIn(): void {
-    // this.mapService.zoomIn();
+    console.log('zooming in');
+    const zoom: any = d3.zoom()
+      .scaleExtent([1, 40])
+      .on('zoom', this.zoomed);
+
+    // https://observablehq.com/@d3/programmatic-zoom
+    console.log('sbasChart', this.sbasChart);
+    this.sbasChart.call(zoom);
+    this.sbasChart.transition().call( zoom.scaleBy, 2 );
+
+    // this.zoomClick(true);
   }
 
   public zoomOut(): void {
-    // this.mapService.zoomOut();
+    // this.zoomClick(false);
   }
 
-
+  private zoomed({transform}) {
+    const g = this.sbasChart.append('g');
+    g.attr('transform', transform);
+  }
   ngOnDestroy() {
     this.subs.unsubscribe();
   }
