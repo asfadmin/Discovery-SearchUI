@@ -1,7 +1,9 @@
 import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
-import { SubSink } from 'subsink';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSidenav } from '@angular/material/sidenav';
+import { MatIconRegistry } from '@angular/material/icon';
+import { DomSanitizer } from '@angular/platform-browser';
+import { SubSink } from 'subsink';
 
 import { Store, ActionsSubject } from '@ngrx/store';
 import { ofType } from '@ngrx/effects';
@@ -63,6 +65,8 @@ export class AppComponent implements OnInit, OnDestroy {
     private screenSize: services.ScreenSizeService,
     private searchService: services.SearchService,
     private ccService: NgcCookieConsentService,
+    private matIconRegistry: MatIconRegistry,
+    private domSanitizer: DomSanitizer,
   ) {}
 
   public ngOnInit(): void {
@@ -144,6 +148,11 @@ export class AppComponent implements OnInit, OnDestroy {
     this.subs.add(this.ccService.popupOpen$.subscribe(_ => _));
     this.subs.add(this.ccService.popupClose$.subscribe(_ => _));
     this.subs.add(this.ccService.revokeChoice$.subscribe(_ => _));
+
+    this.matIconRegistry.addSvgIcon(
+      'hyp3',
+      this.domSanitizer.bypassSecurityTrustResourceUrl('../assets/icons/hyp3.svg')
+    );
   }
 
   private loadProductQueue(): void {

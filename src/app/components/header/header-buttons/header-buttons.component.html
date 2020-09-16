@@ -5,15 +5,15 @@
         class="spacing nav-icon-buttons" color="basic"
         matTooltip="Custom Processing Queue"
         mat-button>
-      <div [matBadge]="queuedCustomProducts.length"
-            matBadgeColor="{{ queuedCustomProducts.length > 0 ? 'accent' : 'primary' }}"
-            matBadgePosition="above after"
-            matBadgeOverlap="true"
-            matBadgeSize="small">
-        <img
-          src="/assets/asf-logos/HyP3-graphic-only.png"
-          height="35">
-      </div>
+        <mat-icon
+          class="large-icon"
+          svgIcon="hyp3"
+          [matBadge]="queuedCustomProducts.length"
+          matBadgeColor="{{ queuedCustomProducts.length > 0 ? 'accent' : 'primary' }}"
+          matBadgePosition="above after"
+          matBadgeOverlap="true"
+          matBadgeSize="small">
+        </mat-icon>
       <div class="text-under faint-text">Processing</div>
     </button>
 
