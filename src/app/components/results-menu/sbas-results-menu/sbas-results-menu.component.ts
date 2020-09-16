@@ -1,5 +1,5 @@
 import {Component, OnInit, Input, OnDestroy, ViewChild, ElementRef} from '@angular/core';
-import {combineLatest, Observable} from 'rxjs';
+import {combineLatest, Observable, Subject} from 'rxjs';
 import { tap } from 'rxjs/operators';
 import { ResizeEvent } from 'angular-resizable-element';
 
@@ -55,12 +55,10 @@ export class SBASResultsMenuComponent implements OnInit, OnDestroy {
   public isSelectedPairCustom: boolean;
   private subs = new SubSink();
 
-  // private zoom = d3.zoom().scaleExtent([1, 8]).on('zoom', this.zoomed);
-  // private zoom = d3.zoom()
-  //   .scaleExtent([1, 40])
-  //   .on('zoom', this.zoomed);
-
   private sbasChart = d3.select('#sbasChart.svg');
+
+  public zoomInChart$ = new Subject();
+  public zoomOutChart$ = new Subject();
 
   constructor(
     private store$: Store<AppState>,
@@ -124,7 +122,6 @@ export class SBASResultsMenuComponent implements OnInit, OnDestroy {
         this.customPairs = pairs.custom;
       })
     );
-
   }
 
   public onResizeEnd(event: ResizeEvent): void {
@@ -164,27 +161,13 @@ export class SBASResultsMenuComponent implements OnInit, OnDestroy {
   }
 
   public zoomIn(): void {
-    console.log('zooming in');
-    const zoom: any = d3.zoom()
-      .scaleExtent([1, 40])
-      .on('zoom', this.zoomed);
-
-    // https://observablehq.com/@d3/programmatic-zoom
-    console.log('sbasChart', this.sbasChart);
-    this.sbasChart.call(zoom);
-    this.sbasChart.transition().call( zoom.scaleBy, 2 );
-
-    // this.zoomClick(true);
+    this.zoomInChart$.next();
   }
 
   public zoomOut(): void {
-    // this.zoomClick(false);
+    this.zoomOutChart$.next();
   }
 
-  private zoomed({transform}) {
-    const g = this.sbasChart.append('g');
-    g.attr('transform', transform);
-  }
   ngOnDestroy() {
     this.subs.unsubscribe();
   }

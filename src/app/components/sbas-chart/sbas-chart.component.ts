@@ -1,6 +1,6 @@
-import { Component, OnInit, ViewChild, ElementRef, OnDestroy } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, OnDestroy, Input } from '@angular/core';
 
-import { combineLatest } from 'rxjs';
+import { combineLatest, Observable } from 'rxjs';
 import { map, tap, filter } from 'rxjs/operators';
 
 import * as d3 from 'd3';
@@ -32,6 +32,9 @@ export enum ChartDatasets {
   styleUrls: ['./sbas-chart.component.scss']
 })
 export class SBASChartComponent implements OnInit, OnDestroy {
+  @Input() zoomIn$: Observable<void>;
+  @Input() zoomOut$: Observable<void>;
+
   private hoveredPair = [null, null];
   private hoveredLine;
   private selectedPair = [null, null];
@@ -48,6 +51,9 @@ export class SBASChartComponent implements OnInit, OnDestroy {
   private pairs;
   private customPairs;
   private isSelectedPairCustom = false;
+
+  private zoom;
+  private zoomBox;
 
   private queuedProduct;
   private queuedCircle;
@@ -100,6 +106,13 @@ export class SBASChartComponent implements OnInit, OnDestroy {
         this.makeSbasChart();
       })
     );
+
+    this.zoomOut$.subscribe(_ => {
+      this.zoomBox.transition().call(this.zoom.scaleBy, .5);
+    });
+    this.zoomIn$.subscribe(_ => {
+      this.zoomBox.transition().call(this.zoom.scaleBy, 2);
+    });
   }
 
   public onResized(event: ResizedEvent) {
@@ -182,7 +195,7 @@ export class SBASChartComponent implements OnInit, OnDestroy {
     this.scatter = this.chart.append('g')
       .attr('clip-path', 'url(#clip)');
 
-    const zoom = d3.zoom()
+    this.zoom = d3.zoom()
       .scaleExtent([.2, 10])
       .extent([[0, 0], [this.widthValue, this.heightValue]])
       .on('zoom', _ => {
@@ -196,7 +209,7 @@ export class SBASChartComponent implements OnInit, OnDestroy {
       .extent( [ [0, 0], [this.widthValue, this.heightValue] ] )
       .on('end', this.updateChart);
 
-    const zoomBox = this.scatter.append('rect')
+    this.zoomBox = this.scatter.append('rect')
       .attr('width', this.widthValue)
       .attr('height', this.heightValue - (this.margin.bottom + this.margin.top))
       .attr('cursor', 'pointer')
@@ -204,10 +217,10 @@ export class SBASChartComponent implements OnInit, OnDestroy {
       .style('pointer-events', 'all');
 
     if (this.currentTransform) {
-      zoomBox.call(zoom.transform, this.currentTransform);
+      this.zoomBox.call(this.zoom.transform, this.currentTransform);
     }
 
-    zoomBox.call(zoom);
+    this.zoomBox.call(this.zoom);
 
     this.line = d3.line()
       .x((product: any) => this.x(product.metadata.date.valueOf()))
