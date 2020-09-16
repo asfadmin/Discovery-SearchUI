@@ -54,11 +54,10 @@
         "
       [matMenuTriggerFor]="customJobTypes"
       mat-icon-button>
-      <span *ngIf="loadingHyp3JobName !== product.name">
-        <img src="/assets/asf-logos/HyP3-graphic-only.png"
-             style="width: 20px; margin-top: 11px;"
-             matTooltip="Add to Processing Queue">
-      </span>
+      <mat-icon *ngIf="loadingHyp3JobName !== product.name"
+        svgIcon="hyp3"
+        matTooltip="Add to Processing Queue">
+      </mat-icon>
       <fa-icon *ngIf="loadingHyp3JobName === product.name" icon="spinner" [pulse]="true"></fa-icon>
 
       <mat-menu #customJobTypes="matMenu">
