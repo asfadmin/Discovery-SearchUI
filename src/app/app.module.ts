@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
+
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { BrowserModule } from '@angular/platform-browser';
 import { HttpClientModule } from '@angular/common/http';
@@ -11,6 +12,7 @@ import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatDialogModule } from '@angular/material/dialog';
+import { MatIconModule } from '@angular/material/icon';
 
 import { environment } from '@environments/environment';
 import { StoreModule } from '@ngrx/store';
@@ -93,6 +95,7 @@ export const routes = [
     HeaderModule,
     MatMenuModule,
     MatFormFieldModule,
+    MatIconModule,
     MatDialogModule,
     BaselineChartModule,
     HelpModule,

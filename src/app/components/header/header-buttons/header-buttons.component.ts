@@ -3,7 +3,7 @@ import { SubSink } from 'subsink';
 
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { QueueComponent } from '@components/header/queue';
-import { Hyp3JobsDialogComponent } from '@components/header/hyp3-jobs-dialog';
+import { ProcessingQueueComponent } from '@components/header/processing-queue';
 import { ClipboardService } from 'ngx-clipboard';
 
 import { Store } from '@ngrx/store';
@@ -18,7 +18,7 @@ import { HelpComponent } from '@components/help/help.component';
 import { CustomizeEnvComponent } from './customize-env/customize-env.component';
 
 import { AuthService, AsfApiService, EnvironmentService, ScreenSizeService } from '@services';
-import { CMRProduct, Breakpoints, UserAuth, SavedSearchType } from '@models';
+import { CMRProduct, Breakpoints, UserAuth, SavedSearchType, QueuedHyp3Job } from '@models';
 
 @Component({
   selector: 'app-header-buttons',
@@ -37,6 +37,7 @@ export class HeaderButtonsComponent implements OnInit, OnDestroy {
   private subs = new SubSink();
 
   public queuedProducts: CMRProduct[];
+  public queuedCustomProducts: QueuedHyp3Job[];
 
   constructor(
     public authService: AuthService,
@@ -58,6 +59,12 @@ export class HeaderButtonsComponent implements OnInit, OnDestroy {
     this.subs.add(
       this.store$.select(queueStore.getQueuedProducts).subscribe(
         products => this.queuedProducts = products
+      )
+    );
+
+    this.subs.add(
+      this.store$.select(queueStore.getQueuedJobs).subscribe(
+        jobs => this.queuedCustomProducts = jobs
       )
     );
 
@@ -139,15 +146,8 @@ export class HeaderButtonsComponent implements OnInit, OnDestroy {
     this.store$.dispatch(new uiStore.OpenSidebar());
   }
 
-  public onOpenHyp3Dialog() {
-    if (!this.isLoggedIn) {
-      return;
-    }
-
-    this.store$.dispatch(new hyp3Store.LoadJobs());
-    this.store$.dispatch(new hyp3Store.LoadUser());
-
-    this.dialog.open(Hyp3JobsDialogComponent, {
+  public onOpenProcessingQueue() {
+    this.dialog.open(ProcessingQueueComponent, {
       id: 'dlQueueDialog',
       maxWidth: '100vw',
       maxHeight: '100vh'

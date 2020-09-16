@@ -16,8 +16,9 @@ import {
 } from '@store/filters/filters.reducer';
 import { getShowS1RawData } from '@store/ui/ui.reducer';
 import { getSearchType } from '@store/search/search.reducer';
+import { getHyp3Jobs } from '@store/hyp3/hyp3.reducer';
 
-import { CMRProduct, CMRProductPair, SearchType, Range, ColumnSortDirection } from '@models';
+import { CMRProduct, CMRProductPair, SearchType, Range, ColumnSortDirection, Hyp3JobWithScene } from '@models';
 
 @Injectable({
   providedIn: 'root'
@@ -40,6 +41,27 @@ export class ScenesService {
       this.filterBaselineValues$(
         this.store$.select(getScenes)
       )
+    );
+  }
+
+  public matchHyp3Jobs$(scenes$: Observable<CMRProduct[]>): Observable<Hyp3JobWithScene[]> {
+    return combineLatest(
+      scenes$,
+      this.store$.select(getHyp3Jobs)
+    ).pipe(
+      map(([scenes, jobs]) => {
+        const jobsByName = jobs.reduce((byName, job) => {
+          byName[job.job_parameters.granules[0]] = job;
+          return byName;
+        }, {});
+
+        return scenes.map(scene => {
+          return {
+            scene,
+            job: jobsByName[scene.name]
+          };
+        });
+      })
     );
   }
 
@@ -123,16 +145,16 @@ export class ScenesService {
 
   private temporalSort(scenes, direction: ColumnSortDirection) {
     const sortFunc = (direction === ColumnSortDirection.INCREASING) ?
-        (a, b) => a.metadata.temporal - b.metadata.temporal :
-        (a, b) => b.metadata.temporal - a.metadata.temporal;
+      (a, b) => a.metadata.temporal - b.metadata.temporal :
+      (a, b) => b.metadata.temporal - a.metadata.temporal;
 
     return scenes.sort(sortFunc);
   }
 
   private perpendicularSort(scenes, direction: ColumnSortDirection) {
     const sortFunc = (direction === ColumnSortDirection.INCREASING) ?
-        (a, b) => a.metadata.perpendicular - b.metadata.perpendicular :
-        (a, b) => b.metadata.perpendicular - a.metadata.perpendicular;
+      (a, b) => a.metadata.perpendicular - b.metadata.perpendicular :
+      (a, b) => b.metadata.perpendicular - a.metadata.perpendicular;
 
     return scenes.sort(sortFunc);
   }

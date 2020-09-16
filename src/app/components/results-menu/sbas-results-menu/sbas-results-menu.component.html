@@ -156,7 +156,10 @@
 
     <div id="sbas-chart-column" class="sbas-column-2">
 
-      <app-sbas-chart></app-sbas-chart>
+      <app-sbas-chart
+        [zoomIn$]="zoomInChart$"
+        [zoomOut$]="zoomOutChart$">
+      </app-sbas-chart>
     </div>
   </div>
 

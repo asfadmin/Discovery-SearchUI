@@ -44,14 +44,20 @@ export class Hyp3Service {
     );
   }
 
-  public submitJob$(granuleId: string, description?: string) {
+  public submiteJobBatch$(jobBatch) {
+    const submitJobUrl = `${this.url}/jobs`;
+
+    return this.http.post(submitJobUrl, jobBatch, { withCredentials: true });
+  }
+
+  public submitJob$(granuleId: string, name?: string) {
     const submitJobUrl = `${this.url}/jobs`;
 
     const body = {
       jobs: [{
-        description: description || 'RTC HyP3 job',
+        name: name || 'RTC HyP3 job',
         job_parameters: {
-          granule: granuleId
+          granules: [granuleId]
         },
         job_type: 'RTC_GAMMA'
       }]
@@ -65,12 +71,12 @@ export class Hyp3Service {
     return {
       'jobs': [
         {
-          'description': 'RTC HyP3 job',
           'job_id': '54ff6e59-d277-4d53-b067-8750225aeaa1',
           'job_parameters': {
-            'granule': 'S1A_IW_SLC__1SDV_20200701T154834_20200701T154900_033263_03DA96_C249'
+            'granules': ['S1A_IW_SLC__1SDV_20200701T154834_20200701T154900_033263_03DA96_C249']
           },
           'job_type': 'RTC_GAMMA',
+          'name': 'RTC HyP3 job',
           'request_time': '2020-07-08T14:07:49+00:00',
           'status_code': 'PENDING',
           'user_id': 'wbhorn'

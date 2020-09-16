@@ -1,5 +1,5 @@
 import {Component, OnInit, Input, OnDestroy, ViewChild, ElementRef} from '@angular/core';
-import {combineLatest, Observable} from 'rxjs';
+import {combineLatest, Observable, Subject} from 'rxjs';
 import { tap } from 'rxjs/operators';
 import { ResizeEvent } from 'angular-resizable-element';
 
@@ -8,11 +8,13 @@ import { AppState } from '@store';
 import * as uiStore from '@store/ui';
 import * as scenesStore from '@store/scenes';
 import * as searchStore from '@store/search';
+import * as d3 from 'd3';
 
 import {Breakpoints, CMRProduct, CMRProductPair, SearchType} from '@models';
 import {ScreenSizeService, DatasetForProductService, ScenesService, PairService} from '@services';
 
 import { SubSink } from 'subsink';
+import {height} from '@fortawesome/free-solid-svg-icons/faOm';
 
 enum CardViews {
   LIST = 0,
@@ -52,6 +54,11 @@ export class SBASResultsMenuComponent implements OnInit, OnDestroy {
   public breakpoints = Breakpoints;
   public isSelectedPairCustom: boolean;
   private subs = new SubSink();
+
+  private sbasChart = d3.select('#sbasChart.svg');
+
+  public zoomInChart$ = new Subject();
+  public zoomOutChart$ = new Subject();
 
   constructor(
     private store$: Store<AppState>,
@@ -115,7 +122,6 @@ export class SBASResultsMenuComponent implements OnInit, OnDestroy {
         this.customPairs = pairs.custom;
       })
     );
-
   }
 
   public onResizeEnd(event: ResizeEvent): void {
@@ -155,13 +161,12 @@ export class SBASResultsMenuComponent implements OnInit, OnDestroy {
   }
 
   public zoomIn(): void {
-    // this.mapService.zoomIn();
+    this.zoomInChart$.next();
   }
 
   public zoomOut(): void {
-    // this.mapService.zoomOut();
+    this.zoomOutChart$.next();
   }
-
 
   ngOnDestroy() {
     this.subs.unsubscribe();
