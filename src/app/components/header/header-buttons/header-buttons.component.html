@@ -1,16 +1,21 @@
 <div *ngIf="breakpoint$ | async as breakpoint">
   <ng-container *ngIf="breakpoint > breakpoints.MOBILE">
-
-    <!--<button (click)="onOpenHyp3Dialog()"-->
-            <!--class="spacing nav-icon-buttons" color="basic"-->
-            <!--[disabled]="!isLoggedIn"-->
-            <!--matTooltip="Hybrid Pluggable Processing Pipeline"-->
-            <!--mat-button>-->
-        <!--<img src="/assets/asf-logos/HyP3-graphic-only.png"-->
-          <!--[class.disabled]="!isLoggedIn"-->
-          <!--height="35">-->
-      <!--<div class="text-under faint-text">HyP3</div>-->
-    <!--</button>-->
+    <button (click)="onOpenProcessingQueue()"
+        [disabled]="queuedCustomProducts.length <= 0"
+        class="spacing nav-icon-buttons" color="basic"
+        matTooltip="Custom Processing Queue"
+        mat-button>
+      <div [matBadge]="queuedCustomProducts.length"
+            matBadgeColor="{{ queuedCustomProducts.length > 0 ? 'accent' : 'primary' }}"
+            matBadgePosition="above after"
+            matBadgeOverlap="true"
+            matBadgeSize="small">
+        <img
+          src="/assets/asf-logos/HyP3-graphic-only.png"
+          height="35">
+      </div>
+      <div class="text-under faint-text">Processing</div>
+    </button>
 
     <button
       (click)="onOpenDownloadQueue()"
@@ -102,9 +107,12 @@
   <button (click)="onOpenPreferences()" mat-menu-item matSuffix>
     Preferences
   </button>
+<<<<<<< HEAD
   <!--<button (click)="onOpenHyp3Dialog()" mat-menu-item matSuffix>-->
     <!--HyP3 Jobs-->
   <!--</button>-->
+=======
+>>>>>>> hyp3
   <hr class="menu-hr">
   <button (click)="onLogout()"
       mat-menu-item matSuffix>

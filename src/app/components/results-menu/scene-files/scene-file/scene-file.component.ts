@@ -1,5 +1,7 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
 
+import * as moment from 'moment';
+
 import * as models from '@models';
 
 @Component({
@@ -19,7 +21,7 @@ export class SceneFileComponent {
   @Output() toggle = new EventEmitter<void>();
   @Output() unzip = new EventEmitter<models.CMRProduct>();
   @Output() closeProduct = new EventEmitter<models.CMRProduct>();
-  @Output() submitHyp3Job = new EventEmitter<models.CMRProduct>();
+  @Output() queueHyp3Job = new EventEmitter<models.QueuedHyp3Job>();
 
   public isHovered = false;
 
@@ -76,7 +78,54 @@ export class SceneFileComponent {
     );
   }
 
-  public onProcessHyp3Job() {
-    this.submitHyp3Job.emit(this.product);
+  public expirationBadge(expiration_time: moment.Moment): string {
+    const days = this.expirationDays(expiration_time);
+
+    const plural = days === 0 ? '' : 's';
+
+    return days > 0 ? `(Expires: ${days} Day${plural})` : '';
+  }
+
+  public isDownloadable(product: models.CMRProduct): boolean {
+    return (
+      !product.metadata.job ||
+      (
+        !this.isPending(product.metadata.job) &&
+        !this.isFailed(product.metadata.job) &&
+        !this.isExpired(product.metadata.job)
+      )
+    );
+  }
+
+  public isExpired(job: models.Hyp3Job): boolean {
+    return job.status_code === models.Hyp3JobStatusCode.SUCCEEDED &&
+      this.expirationDays(job.expiration_time) <= 0;
+  }
+
+  public isFailed(job: models.Hyp3Job): boolean {
+    return job.status_code === models.Hyp3JobStatusCode.FAILED;
+  }
+
+  public isPending(job: models.Hyp3Job): boolean {
+    return job.status_code === models.Hyp3JobStatusCode.PENDING;
+  }
+
+  public isRunning(job: models.Hyp3Job): boolean {
+    return job.status_code === models.Hyp3JobStatusCode.RUNNING;
+  }
+
+  public addRtcToProcessingQueue(): void {
+    this.queueHyp3Job.emit({
+      granules: [ this.product ],
+      job_type: models.Hyp3JobType.RTC_GAMMA
+    });
+  }
+
+  private expirationDays(expiration_time: moment.Moment): number {
+    const current = moment.utc();
+
+    const expiration = moment.duration(expiration_time.diff(current));
+
+    return Math.floor(expiration.asDays());
   }
 }

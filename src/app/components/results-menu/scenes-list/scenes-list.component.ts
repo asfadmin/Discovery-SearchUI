@@ -12,7 +12,6 @@ import * as searchStore from '@store/search';
 import * as scenesStore from '@store/scenes';
 import * as queueStore from '@store/queue';
 
-import { faCopy } from '@fortawesome/free-solid-svg-icons';
 import { CdkVirtualScrollViewport } from '@angular/cdk/scrolling';
 
 import * as services from '@services';
@@ -31,12 +30,12 @@ export class ScenesListComponent implements OnInit, OnDestroy {
 
   public scenes;
   public pairs;
+  public jobs;
 
   public numberOfQueue: {[scene: string]: [number, number]};
   public allQueued: {[scene: string]: boolean};
   public selected: string;
   public selectedPair: string[];
-  public copyIcon = faCopy;
 
   public offsets = {temporal: 0, perpendicular: 0};
   public selectedFromList = false;
@@ -115,7 +114,13 @@ export class ScenesListComponent implements OnInit, OnDestroy {
       this.pairService.pairs$().subscribe(
         pairs => this.pairs = [...pairs.pairs, ...pairs.custom]
       )
-  );
+    );
+
+    this.subs.add(
+      this.scenesService.matchHyp3Jobs$(sortedScenes$).subscribe(
+        jobs => this.jobs = jobs
+      )
+    );
 
     this.subs.add(
       this.store$.select(searchStore.getSearchType).subscribe(
@@ -200,7 +205,7 @@ export class ScenesListComponent implements OnInit, OnDestroy {
     this.store$.dispatch(new scenesStore.SetSelectedScene(id));
   }
 
-  public onToggleScene(e: Event, groupId: string): void {
+  public onToggleScene(groupId: string): void {
     if (!this.allQueued[groupId]) {
       this.store$.dispatch(new queueStore.QueueScene(groupId));
     } else {
@@ -223,12 +228,9 @@ export class ScenesListComponent implements OnInit, OnDestroy {
   public onClearFocusedPair(): void {
     this.hoveredPairNames = null;
   }
+
   public onZoomTo(scene: models.CMRProduct): void {
     this.mapService.zoomToScene(scene);
-  }
-
-  public withOffset(val: number, offset: number): number {
-    return Math.trunc(val + offset);
   }
 
   public pairPerpBaseline(pair: models.CMRProductPair) {
