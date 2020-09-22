@@ -7,9 +7,21 @@
       </app-search-type-selector>
 
       <form class="breadcrumb">
-        <mat-form-field >
-          <mat-label>Filter Products</mat-label>
-          <input matInput>
+        <mat-form-field>
+          <input type="text"
+                 placeholder="Project Name"
+                 aria-label="Project Name"
+                 matInput
+                 (change)="onProjectNameChange($event.target.value)"
+                 [value]="projectName"
+                 [matAutocomplete]="projectNameAuto">
+          <mat-autocomplete
+            (optionSelected)="onProjectNameChange($event.option.value)"
+            #projectNameAuto="matAutocomplete">
+            <mat-option *ngFor="let projectName of projectNames" [value]="projectName">
+              {{projectName}}
+            </mat-option>
+          </mat-autocomplete>
         </mat-form-field>
       </form>
 

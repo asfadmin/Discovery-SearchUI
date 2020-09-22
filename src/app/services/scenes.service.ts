@@ -12,7 +12,7 @@ import {
 } from '@store/scenes/scenes.reducer';
 import {
   getTemporalRange, getPerpendicularRange, getDateRange,
-  getSelectedDataset, getProductTypes
+  getSelectedDataset, getProductTypes, getProjectName
 } from '@store/filters/filters.reducer';
 import { getShowS1RawData } from '@store/ui/ui.reducer';
 import { getSearchType } from '@store/search/search.reducer';
@@ -37,11 +37,14 @@ export class ScenesService {
   }
 
   public scenes$(): Observable<CMRProduct[]> {
-    return this.hideS1Raw$(
-      this.filterBaselineValues$(
-        this.store$.select(getScenes)
+    return (
+      this.customProductsFilters$(
+      this.hideS1Raw$(
+        this.filterBaselineValues$(
+          this.store$.select(getScenes)
+        )
       )
-    );
+    ));
   }
 
   public matchHyp3Jobs$(scenes$: Observable<CMRProduct[]>): Observable<Hyp3JobWithScene[]> {
@@ -119,6 +122,33 @@ export class ScenesService {
         }
 
         return scenes.filter(scene => !scene.productTypeDisplay.includes('RAW'));
+      })
+    );
+  }
+
+  private customProductsFilters$(scenes$: Observable<CMRProduct[]>) {
+    return combineLatest(
+      scenes$,
+      this.store$.select(getProjectName),
+      this.store$.select(getSearchType),
+    ).pipe(
+      map(([scenes, projectName, searchType]) => {
+        if (searchType !== SearchType.CUSTOM_PRODUCTS) {
+          return scenes;
+        }
+
+        if (projectName === null || projectName === '') {
+          return scenes;
+        }
+
+        return scenes.filter(scene => {
+          const sceneProjectName = scene.metadata.job.name;
+
+          return (
+            !!sceneProjectName &&
+            sceneProjectName.toLowerCase() === projectName.toLowerCase()
+          ) ;
+        });
       })
     );
   }

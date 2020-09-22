@@ -7,7 +7,7 @@ export enum QueueActionType {
   ADD_ITEMS = '[Queue] Add Items',
   REMOVE_ITEM = '[Queue] Remove Item',
   REMOVE_ITEMS = '[Queue] Removes Item',
-  CLEARN_QUEUE = '[Queue] Clear Queue',
+  CLEAR_QUEUE = '[Queue] Clear Queue',
 
   ADD_JOB = '[Queue] Add Job',
   ADD_JOBS = '[Queue] Add Jobs',
@@ -53,7 +53,7 @@ export class ToggleProduct implements Action {
 }
 
 export class ClearQueue implements Action {
-  public readonly type = QueueActionType.CLEARN_QUEUE;
+  public readonly type = QueueActionType.CLEAR_QUEUE;
 }
 
 export class AddJob implements Action {

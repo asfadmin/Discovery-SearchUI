@@ -72,6 +72,29 @@
       <span *ngIf="isDownloadable(product) && product.bytes !== 0">{{product.bytes | readableSizeFromBytes }}</span>
     </div>
 
+    <div *ngIf="product.metadata.job && product.metadata.job.job_parameters.scale" mat-line>
+      Scale: {{ product.metadata.job.job_parameters.scale }}
+    </div>
+    <div *ngIf="product.metadata.job && product.metadata.job.job_parameters.radiometry" mat-line>
+      Radiometry: {{ product.metadata.job.job_parameters.radiometry }}
+    </div>
+
+    <div *ngIf="product.metadata.job && product.metadata.job.job_parameters.include_dem" mat-line>
+      Include Dem: {{ product.metadata.job.job_parameters.include_dem }}
+    </div>
+
+    <div *ngIf="product.metadata.job && product.metadata.job.job_parameters.include_inc_map" mat-line>
+      Include Inc Map: {{ product.metadata.job.job_parameters.include_inc_map }}
+    </div>
+
+    <div *ngIf="product.metadata.job && product.metadata.job.job_parameters.dem_matching" mat-line>
+      Dem Matching: {{ product.metadata.job.job_parameters.dem_matching }}
+    </div>
+
+    <div *ngIf="product.metadata.job && product.metadata.job.job_parameters.speckle_filter" mat-line>
+      Speckle Filter: {{ product.metadata.job.job_parameters.speckle_filter }}
+    </div>
+
     <a *ngIf="isDownloadable(product)" mat-icon-button
       [href]="product.downloadUrl" target="_blank"
       matTooltip="Download file">

@@ -108,14 +108,32 @@ export function queueReducer(state = initState, action: QueueActions): QueueStat
       };
     }
 
-    case QueueActionType.CLEARN_QUEUE: {
+    case QueueActionType.CLEAR_QUEUE: {
       return initState;
     }
 
-    case QueueActionType.ADD_JOB: {
+    case QueueActionType.CLEAR_PROCESSING_QUEUE: {
       return {
         ...state,
-        customJobs: [...state.customJobs, action.payload]
+        customJobs: [],
+      };
+    }
+
+    case QueueActionType.ADD_JOB: {
+      const jobs = [...state.customJobs];
+
+      const isJobInQueue = jobs.filter(job =>
+        job.job_type === action.payload.job_type &&
+        sameGranules(job.granules, action.payload.granules)
+      ).length > 0;
+
+      if (!isJobInQueue) {
+        jobs.push(action.payload);
+      }
+
+      return {
+        ...state,
+        customJobs: jobs
       };
     }
 

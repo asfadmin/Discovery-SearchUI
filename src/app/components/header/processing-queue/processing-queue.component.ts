@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialogRef } from '@angular/material/dialog';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 import { Store } from '@ngrx/store';
 import { AppState } from '@store';
@@ -27,6 +28,7 @@ export class ProcessingQueueComponent implements OnInit {
   public limit = 0;
   public areJobsLoading = false;
   public isQueueSubmitProcessing = false;
+  public previousQueue: any[] | null = null;
 
   public radiometry = 'gamma0';
   public scale = 'power';
@@ -38,11 +40,14 @@ export class ProcessingQueueComponent implements OnInit {
 
   constructor(
     private dialogRef: MatDialogRef<ProcessingQueueComponent>,
+    private snackBar: MatSnackBar,
     private store$: Store<AppState>,
     private hyp3: services.Hyp3Service,
   ) { }
 
   ngOnInit(): void {
+    this.store$.dispatch(new hyp3Store.LoadUser());
+
     this.store$.select(queueStore.getQueuedJobs).subscribe(jobs => {
       this.jobs = jobs;
     });
@@ -103,15 +108,32 @@ export class ProcessingQueueComponent implements OnInit {
 
     this.isQueueSubmitProcessing = true;
 
-    this.hyp3.submiteJobBatch$({jobs: hyp3JobsBatch}).pipe(
-      catchError(_ => of('Error')),
+    this.hyp3.submiteJobBatch$({ jobs: hyp3JobsBatch }).pipe(
+      catchError(_ => of({jobs: []})),
       tap(_ => this.isQueueSubmitProcessing = false),
     ).subscribe(
-      resp => console.log(resp)
+      (resp: any) => {
+        this.snackBar.open(`${resp.jobs.length} jobs successfully submitted`, 'Submit', {
+          duration: 5000,
+        });
+
+        this.store$.dispatch(new queueStore.ClearProcessingQueue());
+        this.dialogRef.close();
+      }
     );
   }
 
   public onRemoveJob(job: models.QueuedHyp3Job): void {
     this.store$.dispatch(new queueStore.RemoveJob(job));
+  }
+
+  public onClearJobQueue(jobs): void {
+    this.previousQueue = jobs;
+    this.store$.dispatch(new queueStore.ClearProcessingQueue());
+  }
+
+  public onRestoreJobQueue(previousJobs): void {
+    this.store$.dispatch(new queueStore.AddJobs(previousJobs));
+    this.previousQueue = null;
   }
 }
