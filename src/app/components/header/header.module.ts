@@ -9,6 +9,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatToolbarModule } from '@angular/material/toolbar';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
 
 import { MatSharedModule } from '@shared';
 import { HeaderComponent } from './header.component';
@@ -65,6 +66,7 @@ import { Hyp3HeaderComponent } from './hyp3-header/hyp3-header.component';
     MatSelectModule,
     MatDatepickerModule,
     MatSharedModule,
+    MatAutocompleteModule,
     PipesModule,
 
     QueueModule,

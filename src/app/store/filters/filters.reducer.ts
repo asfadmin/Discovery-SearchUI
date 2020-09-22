@@ -29,6 +29,7 @@ export interface FiltersState {
   selectedMission: null | string;
 
   maxResults: number;
+  projectName: string;
 }
 
 
@@ -75,6 +76,7 @@ export const initState: FiltersState = {
   selectedMission:  null,
 
   maxResults: 250,
+  projectName: null,
 };
 
 
@@ -555,6 +557,13 @@ export function filtersReducer(state = initState, action: FiltersActions): Filte
       }
     }
 
+    case FiltersActionType.SET_PROJECT_NAME: {
+      return {
+        ...state,
+        projectName: action.payload
+      };
+    }
+
     default: {
       return state;
     }
@@ -744,4 +753,9 @@ export const getSbasSearch = createSelector(
     temporal: state.temporalRange.start,
     perpendicular: state.perpendicularRange.start
   })
+);
+
+export const getProjectName = createSelector(
+  getFiltersState,
+  (state: FiltersState) => state.projectName
 );

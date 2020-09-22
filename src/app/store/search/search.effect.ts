@@ -163,7 +163,7 @@ export class SearchEffects {
             map(([products, isCanceled]) =>
               !isCanceled ?
                 new SearchResponse({
-                  files: products,
+                  files: products.reverse(),
                   totalCount: +products.length,
                   searchType: models.SearchType.CUSTOM_PRODUCTS
                 }) :

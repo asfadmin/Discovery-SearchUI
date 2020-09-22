@@ -25,6 +25,7 @@ export interface Hyp3JobSubmission {
 export interface Hyp3User {
   quota: Hyp3UserQuota;
   user_id: string;
+  job_names: string[];
 }
 
 export interface Hyp3UserQuota {
@@ -67,7 +68,7 @@ export interface Hyp3RtcGammaParameters {
   radiometry?: RtcGammaRadiometry;
   resolution?: RtcGammaResolution;
   scale?: RtcGammaScale;
-  specle_filter?: boolean;
+  speckle_filter?: boolean;
 }
 
 export enum RtcGammaRadiometry {
