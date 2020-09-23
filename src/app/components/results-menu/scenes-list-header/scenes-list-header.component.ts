@@ -36,11 +36,14 @@ export class ScenesListHeaderComponent implements OnInit {
   );
   public sbasProducts: models.CMRProduct[];
   public canHideRawData: boolean;
+  public showS1RawData: boolean;
+
+  public canHideExpiredData: boolean;
+  public showExpiredData: boolean;
 
   public temporalSort: models.ColumnSortDirection;
   public perpendicularSort: models.ColumnSortDirection;
   public SortDirection = models.ColumnSortDirection;
-  public showS1RawData: boolean;
 
   public searchType: models.SearchType;
   public SearchTypes = models.SearchType;
@@ -81,6 +84,12 @@ export class ScenesListHeaderComponent implements OnInit {
 
     this.subs.add(
       this.store$.select(searchStore.getSearchType).subscribe(
+        searchType => this.canHideExpiredData = searchType === models.SearchType.CUSTOM_PRODUCTS
+      )
+    );
+
+    this.subs.add(
+      this.store$.select(searchStore.getSearchType).subscribe(
         searchType => this.searchType = searchType
       )
     );
@@ -102,6 +111,12 @@ export class ScenesListHeaderComponent implements OnInit {
         showS1RawData => this.showS1RawData = showS1RawData
       )
     );
+
+    this.subs.add(
+      this.store$.select(uiStore.getShowExpiredData).subscribe(
+        showExpiredData => this.showExpiredData = showExpiredData
+      )
+    );
   }
 
   public onZoomToResults(): void {
@@ -113,6 +128,14 @@ export class ScenesListHeaderComponent implements OnInit {
       this.showS1RawData ?
         new uiStore.HideS1RawData() :
         new uiStore.ShowS1RawData()
+    );
+  }
+
+  public onToggleExpiredData(): void {
+    this.store$.dispatch(
+      this.showExpiredData ?
+        new uiStore.HideExpiredData() :
+        new uiStore.ShowExpiredData()
     );
   }
 

@@ -14,11 +14,15 @@ import {
   getTemporalRange, getPerpendicularRange, getDateRange,
   getSelectedDataset, getProductTypes, getProjectName
 } from '@store/filters/filters.reducer';
-import { getShowS1RawData } from '@store/ui/ui.reducer';
+import { getShowS1RawData, getShowExpiredData } from '@store/ui/ui.reducer';
 import { getSearchType } from '@store/search/search.reducer';
 import { getHyp3Jobs } from '@store/hyp3/hyp3.reducer';
 
-import { CMRProduct, CMRProductPair, SearchType, Range, ColumnSortDirection, Hyp3JobWithScene } from '@models';
+import {
+  CMRProduct, CMRProductPair, SearchType,
+  Range, ColumnSortDirection,
+  Hyp3JobWithScene, Hyp3Job, Hyp3JobStatusCode
+} from '@models';
 
 @Injectable({
   providedIn: 'root'
@@ -30,21 +34,24 @@ export class ScenesService {
 
   public products$(): Observable<CMRProduct[]> {
     return this.hideS1Raw$(
+      this.hideExpired$(
+      this.projectNameFilter$(
       this.filterBaselineValues$(
         this.store$.select(getAllProducts)
       )
-    );
+    )));
   }
 
   public scenes$(): Observable<CMRProduct[]> {
     return (
-      this.customProductsFilters$(
+      this.projectNameFilter$(
+      this.hideExpired$(
       this.hideS1Raw$(
         this.filterBaselineValues$(
           this.store$.select(getScenes)
         )
       )
-    ));
+    )));
   }
 
   public matchHyp3Jobs$(scenes$: Observable<CMRProduct[]>): Observable<Hyp3JobWithScene[]> {
@@ -126,7 +133,7 @@ export class ScenesService {
     );
   }
 
-  private customProductsFilters$(scenes$: Observable<CMRProduct[]>) {
+  private projectNameFilter$(scenes$: Observable<CMRProduct[]>) {
     return combineLatest(
       scenes$,
       this.store$.select(getProjectName),
@@ -141,13 +148,37 @@ export class ScenesService {
           return scenes;
         }
 
-        return scenes.filter(scene => {
-          const sceneProjectName = scene.metadata.job.name;
+        return scenes
+          .filter(scene => {
+            const sceneProjectName = scene.metadata.job.name;
 
-          return (
-            !!sceneProjectName &&
-            sceneProjectName.toLowerCase() === projectName.toLowerCase()
-          ) ;
+            return (
+              !!sceneProjectName &&
+              sceneProjectName.toLowerCase() === projectName.toLowerCase()
+            );
+          });
+      })
+    );
+  }
+  private hideExpired$(scenes$: Observable<CMRProduct[]>) {
+    return combineLatest(
+      scenes$,
+      this.store$.select(getShowExpiredData),
+      this.store$.select(getSearchType),
+    ).pipe(
+      map(([scenes, showExpiredData, searchType]) => {
+        if (searchType !== SearchType.CUSTOM_PRODUCTS) {
+          return scenes;
+        }
+
+        return scenes.filter(scene => {
+          if (showExpiredData) {
+            return true;
+          }
+
+          if (!this.isExpired(scene.metadata.job)) {
+            return true;
+          }
         });
       })
     );
@@ -222,5 +253,18 @@ export class ScenesService {
       pivot === null ||
       check.isBefore(moment.utc(pivot))
     );
+  }
+
+  public isExpired(job: Hyp3Job): boolean {
+    return job.status_code === Hyp3JobStatusCode.SUCCEEDED &&
+      this.expirationDays(job.expiration_time) <= 0;
+  }
+
+  private expirationDays(expiration_time: moment.Moment): number {
+    const current = moment.utc();
+
+    const expiration = moment.duration(expiration_time.diff(current));
+
+    return Math.floor(expiration.asDays());
   }
 }
