@@ -95,6 +95,10 @@
       Speckle Filter: {{ product.metadata.job.job_parameters.speckle_filter }}
     </div>
 
+    <div *ngIf="product.metadata.job" mat-line>
+      Submitted: {{ product.metadata.job.request_time | fullDate }}
+    </div>
+
     <a *ngIf="isDownloadable(product)" mat-icon-button
       [href]="product.downloadUrl" target="_blank"
       matTooltip="Download file">

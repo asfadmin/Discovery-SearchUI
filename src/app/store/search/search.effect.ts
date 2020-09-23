@@ -184,7 +184,7 @@ export class SearchEffects {
         const product = products[job.job_parameters.granules[0]];
         const jobFile = !!job.files ?
           job.files[0] :
-          {size: -1, url: ''};
+          {size: -1, url: '', filename: product.name};
 
         return {
           ...product,
@@ -193,6 +193,8 @@ export class SearchEffects {
           productTypeDisplay: `${job.job_type} ${product.metadata.productType} `,
           downloadUrl: jobFile.url,
           bytes: jobFile.size,
+          groupId: job.job_id,
+          name: jobFile.filename,
           metadata: {
             ...product.metadata,
             productType: job.job_type,
