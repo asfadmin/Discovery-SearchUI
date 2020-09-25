@@ -1,7 +1,7 @@
 <mat-card style="padding: 0;" class="p0">
   <mat-card-title-group style="margin-bottom: 0 !important;" class="card-title-group">
     <mat-card-title>Processing Queue</mat-card-title>
-    <mat-card-subtitle> <b>{{ user }}</b> - {{ limit - remaining }} jobs left this month</mat-card-subtitle>
+    <mat-card-subtitle> <b>{{ user }}</b> - {{ remaining }} jobs left this month</mat-card-subtitle>
 
     <div class="close-x" (click)="onCloseDialog()">
       <mat-icon>close</mat-icon>
@@ -95,6 +95,7 @@
             <div style="padding-top: 20px;">
               <button
                 (click)="onSubmitQueue()"
+                [disabled]="jobs.length > remaining"
                 mat-raised-button
                 color="primary">
                 <span *ngIf="!isQueueSubmitProcessing">
@@ -105,6 +106,11 @@
                   Loading...
                 </span>
               </button>
+            </div>
+            <div style="padding-top: 10px;">
+              <span *ngIf="jobs.length > remaining">
+                {{ jobs.length }} jobs in processing queue (only {{ remaining }} remaining)
+              </span>
             </div>
           </div>
         </div>

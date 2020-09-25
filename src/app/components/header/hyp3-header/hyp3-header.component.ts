@@ -20,25 +20,12 @@ export class Hyp3HeaderComponent implements OnInit {
   public breakpoint$ = this.screenSize.breakpoint$;
   public breakpoints = models.Breakpoints;
 
-  public projectNames: string[] = [];
-  public projectName = '';
-
-  constructor( private store$: Store<AppState>,
+  constructor(
+    private store$: Store<AppState>,
     private screenSize: services.ScreenSizeService,
   ) { }
 
   ngOnInit(): void {
-    this.store$.select(hyp3Store.getHyp3User).pipe(
-      tap(user => {
-        if (user === null) {
-          this.store$.dispatch(new hyp3Store.LoadUser());
-        }
-      })
-    ).subscribe(user => {
-      if (user) {
-        this.projectNames = [ ...user.job_names, ];
-      }
-    });
   }
 
   public onRefreshJobs(): void {
@@ -47,12 +34,5 @@ export class Hyp3HeaderComponent implements OnInit {
 
   public closeAOIOptions(): void {
     this.store$.dispatch(new uiStore.CloseAOIOptions());
-  }
-
-  public onProjectNameChange(projectName): void {
-    this.projectName = projectName;
-    this.store$.dispatch(new filtersStore.SetProjectName(
-      projectName === '' ? null : projectName
-    ));
   }
 }

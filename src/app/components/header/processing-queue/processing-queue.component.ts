@@ -108,16 +108,30 @@ export class ProcessingQueueComponent implements OnInit {
 
     this.isQueueSubmitProcessing = true;
 
-    this.hyp3.submiteJobBatch$({ jobs: hyp3JobsBatch }).pipe(
-      catchError(_ => of({jobs: []})),
+    this.hyp3.submiteJobBatch$({ jobs: hyp3JobsBatch, validate_only: true }).pipe(
+      catchError(resp => {
+        if (resp.error) {
+          console.log(resp.error);
+          this.snackBar.open(`${resp.error.detail}`, 'Error', {
+            duration: 5000,
+          });
+        }
+
+        return of({jobs: null});
+      }),
       tap(_ => this.isQueueSubmitProcessing = false),
     ).subscribe(
       (resp: any) => {
+        if (resp.jobs === null) {
+          return;
+        }
+
         this.snackBar.open(`${resp.jobs.length} jobs successfully submitted`, 'Submit', {
           duration: 5000,
         });
 
         this.store$.dispatch(new queueStore.ClearProcessingQueue());
+        this.store$.dispatch(new hyp3Store.LoadUser());
         this.dialogRef.close();
       }
     );
