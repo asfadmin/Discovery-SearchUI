@@ -108,7 +108,7 @@ export class ProcessingQueueComponent implements OnInit {
 
     this.isQueueSubmitProcessing = true;
 
-    this.hyp3.submiteJobBatch$({ jobs: hyp3JobsBatch, validate_only: true }).pipe(
+    this.hyp3.submiteJobBatch$({ jobs: hyp3JobsBatch }).pipe(
       catchError(resp => {
         if (resp.error) {
           console.log(resp.error);
