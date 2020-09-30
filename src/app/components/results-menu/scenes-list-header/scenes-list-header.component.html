@@ -27,8 +27,8 @@
           {{ numBaselineScenes$ | async }} Scene{{ (numBaselineScenes$ | async) === 1 ? '' : 's' }}
         </div>
 
-        <div *ngIf="searchType === SearchTypes.CUSTOM_PRODUCT" class="mr-10">
-          {{ numberOfScenes }} Products{{ (numberOfScenes) === 1 ? '' : 's' }}
+        <div *ngIf="searchType === SearchTypes.CUSTOM_PRODUCTS" class="mr-10">
+          {{ numBaselineScenes$ | async }} Product{{ (numBaselineScenes$ | async) === 1 ? '' : 's' }}
         </div>
 
         <div class="space-filler"></div>
