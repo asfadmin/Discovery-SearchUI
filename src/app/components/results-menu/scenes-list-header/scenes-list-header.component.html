@@ -111,6 +111,26 @@
             </div>
           </div>
 
+          <div fxFlex="" class="list-button-group">
+            <div fxLayout="row" fxLayoutAlign="center" class="button-group-label">
+              <label>Pairs</label>
+            </div>
+            <div fxLayout="row">
+              <div>
+                <mat-button-toggle-group fxFlex="" name="layerType" class="mr-10">
+                  <mat-button-toggle class="control-mat-button-toggle">
+                              <mat-icon
+                                (click)="onDownloadPairCSV()"
+                                class="clickable noselect list-icon"
+                                matTooltip="Download Pair CSV">
+                                get_app
+                              </mat-icon>
+                  </mat-button-toggle>
+                </mat-button-toggle-group>
+              </div>
+            </div>
+          </div>
+
           <mat-menu #addAllProducts="matMenu">
             <button *ngIf="searchType !== SearchTypes.SBAS" (click)="queueAllProducts(products)" mat-menu-item>
               Add {{ products.length }} file{{ products.length === 1 ? '' : 's'}} to downloads

@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { saveAs } from 'file-saver';
 
 import { combineLatest } from 'rxjs';
 import { map } from 'rxjs/operators';
@@ -34,6 +35,7 @@ export class ScenesListHeaderComponent implements OnInit {
   public numPairs$ = this.pairService.pairs$().pipe(
     map(pairs => pairs.pairs.length + pairs.custom.length)
   );
+  public pairs: models.CMRProductPair[];
   public sbasProducts: models.CMRProduct[];
   public canHideRawData: boolean;
   public showS1RawData: boolean;
@@ -65,6 +67,12 @@ export class ScenesListHeaderComponent implements OnInit {
        this.pairService.productsFromPairs$().subscribe(
          products => this.sbasProducts = products
        )
+    );
+
+    this.subs.add(
+      this.pairService.pairs$().subscribe(
+        ({pairs, custom}) => this.pairs = [ ...pairs, ...custom ]
+      )
     );
 
     this.subs.add(
@@ -173,6 +181,21 @@ export class ScenesListHeaderComponent implements OnInit {
 
   public queueSBASProducts(products: models.CMRProduct[]): void {
     this.store$.dispatch(new queueStore.AddItems(products));
+  }
+
+  public onDownloadPairCSV() {
+    const pairRows = this.pairs
+      .map(([reference, secondary]) =>
+        `${reference.name},${reference.downloadUrl},${secondary.name},${secondary.downloadUrl}`
+      )
+      .join('\n');
+
+    const pairsCSV = `Reference, Reference URL, Secondary, Secondary URL,\n${pairRows}`;
+
+    const blob = new Blob([pairsCSV], {
+      type: 'text/csv;charset=utf-8;',
+    });
+    saveAs(blob, 'asf-sbas-pairs.csv');
   }
 
   public formatNumber(num: number): string {
