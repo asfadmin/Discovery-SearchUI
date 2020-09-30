@@ -6,9 +6,8 @@ import { Store } from '@ngrx/store';
 import { AppState } from '@store';
 import * as moment from 'moment';
 import { of } from 'rxjs';
-import { map, tap, catchError } from 'rxjs/operators';
+import { tap, catchError } from 'rxjs/operators';
 
-import { Hyp3Service } from '@services';
 import * as queueStore from '@store/queue';
 import * as hyp3Store from '@store/hyp3';
 import * as models from '@models';

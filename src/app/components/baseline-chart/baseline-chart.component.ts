@@ -32,7 +32,6 @@ export class BaselineChartComponent implements OnInit, OnDestroy {
   @ViewChild('baselineChart', { static: true }) baselineChart: ElementRef;
 
   private chart: Chart;
-  private selected: CMRProduct;
   private criticalBaseline: number;
   private hoveredProductId;
   private isFirstLoad = true;
@@ -64,9 +63,7 @@ export class BaselineChartComponent implements OnInit, OnDestroy {
     this.subs.add(
       combineLatest(
         products$,
-        this.store$.select(scenesStore.getSelectedScene).pipe(
-          tap(selected => this.selected = selected),
-        )
+        this.store$.select(scenesStore.getSelectedScene)
       ).subscribe(
         ([points, selected]) => {
           const extrema = this.determineMinMax(points);

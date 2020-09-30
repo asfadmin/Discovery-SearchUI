@@ -10,7 +10,7 @@ import * as scenesStore from '@store/scenes';
 import * as models from '@models';
 import { ApiLinkDialogComponent } from './api-link-dialog/api-link-dialog.component';
 import { SubSink } from 'subsink';
-import {PairService} from '@services';
+import { PairService } from '@services';
 
 @Component({
   selector: 'app-max-results-selector',
@@ -78,7 +78,7 @@ export class MaxResultsSelectorComponent implements OnInit, OnDestroy {
   }
 
   public onMoreResults(): void {
-    const dialogRef = this.dialog.open(ApiLinkDialogComponent);
+    this.dialog.open(ApiLinkDialogComponent);
   }
 
   public formatNumber(num: number): string {

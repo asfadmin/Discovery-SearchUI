@@ -1,14 +1,12 @@
 import { Component, OnInit, ViewChild, ElementRef, OnDestroy } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { SubSink } from 'subsink';
-import { filter, switchMap, tap, delay } from 'rxjs/operators';
+import { switchMap, tap, delay } from 'rxjs/operators';
 import { Store } from '@ngrx/store';
 import { AppState } from '@store';
 import * as userStore from '@store/user';
 import * as searchStore from '@store/search';
-import * as scenesStore from '@store/scenes';
 import * as uiStore from '@store/ui';
-import * as filtersStore from '@store/filters';
 
 import { SavedSearchService, ScreenSizeService, SearchService } from '@services';
 import * as models from '@models';
@@ -45,7 +43,6 @@ export class SavedSearchesComponent implements OnInit, OnDestroy {
   public expandedSearchId: string;
   public newSearchId: string;
 
-  private initFocus = true;
   private subs = new SubSink();
 
   constructor(
@@ -70,7 +67,7 @@ export class SavedSearchesComponent implements OnInit, OnDestroy {
         tap(saveSearchOn => this.saveSearchOn = saveSearchOn),
         delay(250)
       ).subscribe(
-        saveSearchOn => {
+        _ => {
           if (this.saveSearchOn) {
             this.lockedFocus = true;
             this.saveCurrentSearch();
@@ -92,14 +89,6 @@ export class SavedSearchesComponent implements OnInit, OnDestroy {
           this.filterTokens = this.savedSearchService.filterTokensFrom(searches);
           this.updateFilter();
         }
-      )
-    );
-
-    this.subs.add(
-      this.store$.select(uiStore.getIsSidebarOpen).pipe(
-        filter(isOpen => !isOpen)
-      ).subscribe(
-        isOpen => this.initFocus = true
       )
     );
   }

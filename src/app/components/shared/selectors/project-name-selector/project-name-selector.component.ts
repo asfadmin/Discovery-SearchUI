@@ -1,10 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 
-import { tap, map } from 'rxjs/operators';
+import { tap } from 'rxjs/operators';
 
 import { Store } from '@ngrx/store';
 import { AppState } from '@store';
-import * as uiStore from '@store/ui';
 import * as hyp3Store from '@store/hyp3';
 import * as filtersStore from '@store/filters';
 

@@ -1,16 +1,13 @@
-import { Component, OnInit, OnDestroy, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, OnDestroy, Input } from '@angular/core';
 
-import { filter, map, tap } from 'rxjs/operators';
 import { Store } from '@ngrx/store';
 import { SubSink } from 'subsink';
 
 import { AppState } from '@store';
 import * as filtersStore from '@store/filters';
-import * as scenesStore from '@store/scenes';
-import * as searchStore from '@store/search';
 
 import * as models from '@models';
-import { DatasetForProductService, PropertyService } from '@services';
+import { PropertyService } from '@services';
 
 
 @Component({
@@ -85,7 +82,7 @@ export class SceneMetadataComponent implements OnInit, OnDestroy {
 
   public setFlightDirection(): void {
     const dir = this.scene.metadata.flightDirection
-      .toLowerCase();
+    .toLowerCase();
 
     const capitalized = this.capitalizeFirstLetter(dir);
 
@@ -136,7 +133,7 @@ export class SceneMetadataComponent implements OnInit, OnDestroy {
   }
 
   private capitalizeFirstLetter(str) {
-      return str.charAt(0).toUpperCase() + str.slice(1);
+    return str.charAt(0).toUpperCase() + str.slice(1);
   }
 
   ngOnDestroy() {

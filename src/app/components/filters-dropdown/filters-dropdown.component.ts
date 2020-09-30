@@ -3,7 +3,6 @@ import {Component, OnInit, OnDestroy, Input} from '@angular/core';
 import {
   trigger, state, style, animate, transition
 } from '@angular/animations';
-import { MatDialog } from '@angular/material/dialog';
 
 import { Store } from '@ngrx/store';
 
@@ -45,7 +44,6 @@ export class FiltersDropdownComponent implements OnInit, OnDestroy {
   constructor(
     private store$: Store<AppState>,
     private screenSize: ScreenSizeService,
-    private dialog: MatDialog,
   ) {}
 
   ngOnInit() {

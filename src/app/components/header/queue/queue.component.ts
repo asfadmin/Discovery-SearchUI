@@ -23,8 +23,6 @@ export class QueueComponent implements OnInit, OnDestroy {
     tap(products => this.areAnyProducts = products.length > 0)
   );
 
-  private productNameLen: number;
-
   public copyIcon = faCopy;
   public breakpoint$ = this.screenSize.breakpoint$;
   public breakpoints = Breakpoints;
@@ -52,11 +50,6 @@ export class QueueComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit() {
-    this.subs.add(
-      this.screenSize.size$.pipe(
-        map(size => size.width > 1000 ? 48 : 16)
-      ).subscribe(len => this.productNameLen = len)
-    );
   }
 
   public onRemoveProduct(product: CMRProduct): void {

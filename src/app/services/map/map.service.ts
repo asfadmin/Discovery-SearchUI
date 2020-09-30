@@ -24,7 +24,6 @@ import * as views from './views';
 })
 export class MapService {
   private mapView: views.MapView;
-  private viewType: models.MapViewType;
   private map: Map;
   private polygonLayer: Layer;
 
@@ -192,8 +191,6 @@ export class MapService {
   }
 
   public setMapView(viewType: models.MapViewType, layerType: models.MapLayerTypes, overlay): void {
-    this.viewType = viewType;
-
     const view = {
       [models.MapViewType.ANTARCTIC]: views.antarctic(),
       [models.MapViewType.ARCTIC]: views.arctic(),

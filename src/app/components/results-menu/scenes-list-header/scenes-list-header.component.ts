@@ -13,7 +13,7 @@ import * as filtersStore from '@store/filters';
 
 import {
   MapService, ScenesService, ScreenSizeService,
-  DatasetForProductService, PairService
+  PairService
 } from '@services';
 import * as models from '@models';
 import { SubSink } from 'subsink';
@@ -58,7 +58,6 @@ export class ScenesListHeaderComponent implements OnInit {
     private scenesService: ScenesService,
     private pairService: PairService,
     private screenSize: ScreenSizeService,
-    private datasetForProduct: DatasetForProductService
   ) { }
 
   ngOnInit() {
@@ -71,10 +70,9 @@ export class ScenesListHeaderComponent implements OnInit {
     this.subs.add(
       combineLatest(
         this.scenesService.scenes$(),
-        this.store$.select(filtersStore.getSelectedDataset),
         this.store$.select(filtersStore.getProductTypes),
         this.store$.select(searchStore.getSearchType),
-      ).subscribe(([scenes, dataset, productTypes, searchType]) => {
+      ).subscribe(([scenes, productTypes, searchType]) => {
         this.canHideRawData =
           searchType === models.SearchType.DATASET &&
           scenes.every(scene => scene.dataset === 'Sentinel-1B' || scene.dataset === 'Sentinel-1A') &&

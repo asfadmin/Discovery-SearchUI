@@ -4,9 +4,6 @@ import { Store } from '@ngrx/store';
 import { AppState } from '@store';
 import * as searchStore from '@store/search';
 
-import { MatDialog } from '@angular/material/dialog';
-import { QueueComponent } from '@components/header/queue';
-
 import * as models from '@models/index';
 import * as services from '@services';
 
@@ -26,7 +23,6 @@ export class HeaderComponent implements OnInit {
 
   constructor(
     private store$: Store<AppState>,
-    private dialog: MatDialog,
     private screenSize: services.ScreenSizeService,
   ) { }
 

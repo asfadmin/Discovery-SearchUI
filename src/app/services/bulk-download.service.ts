@@ -10,7 +10,6 @@ import { CMRProduct } from '@models';
 })
 export class BulkDownloadService {
   private readonly url = 'https://bulk-download.asf.alaska.edu';
-  private readonly testUrl = 'https://bulk-download.asf.alaska.edu';
 
   constructor(private http: HttpClient) {}
 
@@ -22,7 +21,7 @@ export class BulkDownloadService {
     const formData = new FormData();
     formData.append('products', productsStr);
 
-    return this.http.post(this.testUrl, formData, {
+    return this.http.post(this.url, formData, {
       responseType: 'blob',
     });
   }

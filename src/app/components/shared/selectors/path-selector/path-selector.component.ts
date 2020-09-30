@@ -28,8 +28,6 @@ export class PathSelectorComponent implements OnInit, OnDestroy {
   @ViewChild('pathForm', { static: true }) public pathForm: NgForm;
 
   private inputErrors$ = new Subject<PathFormInputType>();
-  private currentError: PathFormInputType | null = null;
-  private inputTypes = PathFormInputType;
 
   public pathStart: number | null;
   public pathEnd: number | null;
@@ -142,7 +140,6 @@ export class PathSelectorComponent implements OnInit, OnDestroy {
   private handlePathFrameErrors(): void {
     this.subs.add(
       this.inputErrors$.pipe(
-        tap(inputType => this.currentError = inputType),
         map(
           inputType => this.getInput(inputType)
         ),
@@ -152,7 +149,6 @@ export class PathSelectorComponent implements OnInit, OnDestroy {
         }),
         delay(820),
       ).subscribe(control => {
-        this.currentError = null;
         control.setErrors(null);
       })
     );
@@ -165,10 +161,6 @@ export class PathSelectorComponent implements OnInit, OnDestroy {
       [PathFormInputType.FRAME_START]: this.frameStartControl,
       [PathFormInputType.FRAME_END]: this.frameEndControl,
     }[inputType];
-  }
-
-  private typeHasError(inputType: PathFormInputType): boolean {
-    return this.currentError === inputType;
   }
 
   ngOnDestroy() {

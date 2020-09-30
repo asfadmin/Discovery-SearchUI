@@ -9,10 +9,7 @@ export class ChartService {
 
   constructor() { }
 
-  makeSBASChart(element, hoverCallback, selectCallback) {
-  }
-
-  makeChart(element, hoverCallback, selectCallback, datasets = null) {
+  public makeChart(element, hoverCallback, selectCallback, datasets = null) {
     const styles = this.chartStyles();
 
     datasets = datasets === null ? this.baselineDatasets(styles) : datasets;
@@ -58,7 +55,7 @@ export class ChartService {
         },
         legend: {
           labels: {
-            filter: (legendItem, chartData) => {
+            filter: (legendItem, _) => {
               return (legendItem.datasetIndex < 4);
             }
           }

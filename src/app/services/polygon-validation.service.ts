@@ -27,7 +27,7 @@ export class PolygonValidationService {
     this.mapService.searchPolygon$.pipe(
       filter(p => !!p || this.polygons.has(p)),
       switchMap(polygon => this.asfApiService.validate(polygon).pipe(
-        catchError(resp => of(null))
+        catchError(_ => of(null))
       )),
       filter(resp => !!resp),
       map(resp => {
@@ -39,7 +39,7 @@ export class PolygonValidationService {
           this.setValidPolygon(resp);
         }
       }),
-      catchError((val, source) => source)
+      catchError((_, source) => source)
     ).subscribe(_ => _);
   }
 
@@ -54,7 +54,7 @@ export class PolygonValidationService {
   }
 
   private displayDrawError(error) {
-    const { report, type } = error;
+    const { report } = error;
 
     this.mapService.setDrawStyle(models.DrawPolygonStyle.INVALID);
     this.snackBar.open(

@@ -1,8 +1,8 @@
-import { Component, OnInit, ViewChild, ElementRef, Input } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 
 import noUiSlider from 'nouislider';
-import {Subject, Observable, fromEvent} from 'rxjs';
-import { delay, debounceTime, distinctUntilChanged, take, filter, map } from 'rxjs/operators';
+import { Subject,  fromEvent} from 'rxjs';
+import { debounceTime, distinctUntilChanged, filter, map } from 'rxjs/operators';
 
 import { AppState } from '@store';
 import { Store } from '@ngrx/store';
@@ -66,18 +66,13 @@ export class SbasSlidersTwoComponent implements OnInit {
     this.tempSlider = tempSlider;
 
     fromEvent(this.meterFilter.nativeElement, 'keyup').pipe(
-      // get value
       map((event: any) => {
         return event.target.value;
-      })
-      // if character length greater then 2
-      , filter(res => res.length > 0)
-      // Time in milliseconds between key events
-      , debounceTime(500)
-      // If previous query is diffent from current
-      , distinctUntilChanged()
-      // subscription for response
-    ).subscribe((meters: number) => {
+      }),
+      filter(res => res.length > 0),
+      debounceTime(500),
+      distinctUntilChanged()
+    ).subscribe((_: number) => {
       this.metersValues$.next([this.perpendicular, null] );
     });
 
@@ -178,7 +173,7 @@ export class SbasSlidersTwoComponent implements OnInit {
       }
     });
 
-    this.slider.on('update', (values, handle) => {
+    this.slider.on('update', (values, _) => {
       this.daysValues$.next(values.map(v => +v));
     });
 

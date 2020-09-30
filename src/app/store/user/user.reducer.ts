@@ -106,7 +106,7 @@ export function userReducer(state = initState, action: UserActions): UserState {
     }
 
     case UserActionType.UPDATE_SEARCH_WITH_FILTERS: {
-      const updateFunc = (search, actionObj) => {
+      const updateFunc = (search, _) => {
         search.filters = action.payload.filters;
         return search;
       };
@@ -115,7 +115,7 @@ export function userReducer(state = initState, action: UserActions): UserState {
     }
 
     case UserActionType.UPDATE_SEARCH_NAME: {
-      const updateFunc = (search, actionObj) => {
+      const updateFunc = (search, _) => {
         search.name = action.payload.name;
         return search;
       };

@@ -8,18 +8,18 @@ import { Store } from '@ngrx/store';
 import { AppState } from '@store/app.reducer';
 import {
   getAllProducts, getScenes, getTemporalSortDirection,
-  getPerpendicularSortDirection, getCustomPairs, getScenesWithBrowse
+  getPerpendicularSortDirection,
 } from '@store/scenes/scenes.reducer';
 import {
   getTemporalRange, getPerpendicularRange, getDateRange,
-  getSelectedDataset, getProductTypes, getProjectName
+  getProductTypes, getProjectName
 } from '@store/filters/filters.reducer';
 import { getShowS1RawData, getShowExpiredData } from '@store/ui/ui.reducer';
 import { getSearchType } from '@store/search/search.reducer';
 import { getHyp3Jobs } from '@store/hyp3/hyp3.reducer';
 
 import {
-  CMRProduct, CMRProductPair, SearchType,
+  CMRProduct, SearchType,
   Range, ColumnSortDirection,
   Hyp3JobWithScene, Hyp3Job, Hyp3JobStatusCode
 } from '@models';
@@ -107,11 +107,10 @@ export class ScenesService {
     return combineLatest(
       products$,
       this.store$.select(getShowS1RawData),
-      this.store$.select(getSelectedDataset),
       this.store$.select(getProductTypes),
       this.store$.select(getSearchType),
     ).pipe(
-      map(([ scenes, showS1RawData, dataset, productTypes, searchType ]) => {
+      map(([ scenes, showS1RawData, productTypes, searchType ]) => {
         if (showS1RawData) {
           return scenes;
         }
