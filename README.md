@@ -69,9 +69,7 @@ More information about the app can be found in the [wiki](https://github.com/asf
 ### GTM Tag Hierarchy
 - Category: Search Criteria
   - Label: Search Type
-    - Values:
-      - Geographic
-    
+  - dataLayer Variable: 'search-type': searchType      
 - One tall latte.
 - Go to a movie.
 
