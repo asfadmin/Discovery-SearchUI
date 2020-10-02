@@ -44,6 +44,7 @@ export class SearchTypeSelectorComponent implements OnInit, OnDestroy {
   }
 
   public onSetSearchType(searchType: models.SearchType): void {
+    window.dataLayer = window.dataLayer || [];
     window.dataLayer.push({
       'event': 'search-type-selected',
       'search-type': searchType
