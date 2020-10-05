@@ -16,6 +16,8 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatSharedModule } from '@shared';
 import { PipesModule } from '@pipes';
 import { ProcessingQueueComponent } from './processing-queue.component';
+import { ProcessingQueueJobsModule } from './processing-queue-jobs';
+import { ProcessingOptionsModule } from './processing-options';
 
 
 @NgModule({
@@ -32,7 +34,9 @@ import { ProcessingQueueComponent } from './processing-queue.component';
     MatProgressSpinnerModule,
     MatProgressBarModule,
     MatSnackBarModule,
-    PipesModule
+    PipesModule,
+    ProcessingQueueJobsModule,
+    ProcessingOptionsModule
   ]
 })
 export class ProcessingQueueModule {

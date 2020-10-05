@@ -1,5 +1,9 @@
 @import "asf-theme";
 
+.processing-queue {
+  padding: 0;
+}
+
 .card-title-group {
   background-color: $asf-primary-light;
   color: $asf-primary-dark;
@@ -15,10 +19,14 @@
   height: 100%;
 }
 
-.jobs-display {
+.jobs-display--desktop {
   height: 510px;
-  display: flex;
-  flex-direction: row;
+  overflow: auto;
+}
+
+.jobs-display--mobile {
+  height: 471px;
+  overflow: auto;
 }
 
 .jobs-list-panel {
@@ -75,6 +83,8 @@
 
 .hyp3-footer {
   height: 50px;
+  display: flex;
+  justify-content: space-between;
   background-color: $asf-primary-light;
   border-top-style: solid;
   border-top-color: $asf-primary-dark;

@@ -71,6 +71,19 @@ export interface Hyp3RtcGammaParameters {
   speckle_filter?: boolean;
 }
 
+export type Hyp3ProcessingOptions =
+  Hyp3RtcGammaProcessingOptions;
+
+export interface Hyp3RtcGammaProcessingOptions {
+  demMatching?: boolean;
+  includeDem?: boolean;
+  includeIncMap?: boolean;
+  radiometry?: RtcGammaRadiometry;
+  resolution?: RtcGammaResolution;
+  scale?: RtcGammaScale;
+  speckleFilter?: boolean;
+}
+
 export enum RtcGammaRadiometry {
   GAMMA0 = 'gamma0',
   SIGMA0 = 'sigma0'

@@ -114,7 +114,7 @@
             </div>
           </div>
 
-          <div fxFlex="" class="list-button-group">
+          <div *ngIf="searchType === SearchTypes.SBAS" fxFlex="" class="list-button-group">
             <div fxLayout="row" fxLayoutAlign="center" class="button-group-label">
               <label>Pairs</label>
             </div>

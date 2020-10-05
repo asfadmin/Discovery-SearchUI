@@ -1,0 +1,27 @@
+<div class="jobs-list">
+  <mat-list *ngIf="!areJobsLoading" role="list">
+    <mat-list-item *ngFor="let job of jobs">
+
+      <img matListAvatar
+        [src]="job.granules[0].thumbnail"
+        onerror="this.src='assets/no-thumb.png'"
+        matBadgeOverlap="false"
+        matListAvatar>
+
+      <div matLine>
+        {{ job.granules[0].name }}
+      </div>
+
+      <div matLine>
+        <b>
+          <span *ngIf="job.granules[0].bytes === 0">Virtual</span>
+          <span *ngIf="job.granules[0].bytes !== 0">{{ job.granules[0].bytes | readableSizeFromBytes }}</span>
+        </b>
+      </div>
+
+      <button (click)="onRemoveJob(job)" matTooltip="Remove job" mat-icon-button>
+        <mat-icon>close</mat-icon>
+      </button>
+    </mat-list-item>
+  </mat-list>
+</div>
