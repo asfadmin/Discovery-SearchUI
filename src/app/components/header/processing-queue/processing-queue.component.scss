@@ -21,7 +21,8 @@
 
 .jobs-display--desktop {
   height: 510px;
-  overflow: auto;
+  display: flex;
+  flex-direction: row;
 }
 
 .jobs-display--mobile {
