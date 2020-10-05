@@ -8,6 +8,11 @@ import * as userStore from '@store/user';
 
 import * as models from '@models';
 
+// Declare GTM dataLayer array.
+declare global {
+  interface Window { dataLayer: any[]; }
+}
+
 @Component({
   selector: 'app-search-type-selector',
   templateUrl: './search-type-selector.component.html',
@@ -39,6 +44,11 @@ export class SearchTypeSelectorComponent implements OnInit, OnDestroy {
   }
 
   public onSetSearchType(searchType: models.SearchType): void {
+    window.dataLayer = window.dataLayer || [];
+    window.dataLayer.push({
+      'event': 'search-type-selected',
+      'search-type': searchType
+    });
     this.store$.dispatch(new searchStore.ClearSearch());
     this.store$.dispatch(new searchStore.SetSearchType(searchType));
   }
