@@ -13,6 +13,11 @@ import * as hyp3Store from '@store/hyp3';
 import * as models from '@models';
 import * as services from '@services';
 
+enum ProcessingQueueTab {
+  SCENES = 'Scenes',
+  OPTIONS = 'Options'
+}
+
 @Component({
   selector: 'app-processing-queue',
   templateUrl: './processing-queue.component.html',
@@ -20,28 +25,26 @@ import * as services from '@services';
 })
 export class ProcessingQueueComponent implements OnInit {
   public jobs: models.QueuedHyp3Job[] = [];
-  public selected: models.Hyp3Job;
-  public selectedJobId: string = null;
   public user = '';
   public remaining = 0;
-  public limit = 0;
   public areJobsLoading = false;
   public isQueueSubmitProcessing = false;
   public previousQueue: any[] | null = null;
 
-  public radiometry = 'gamma0';
-  public scale = 'power';
+  public breakpoint: models.Breakpoints;
+  public breakpoints = models.Breakpoints;
+  public selectedTab = ProcessingQueueTab.SCENES;
+  public Tabs = ProcessingQueueTab;
+
   public projectName = '';
-  public demMatching = false;
-  public includeDem = false;
-  public includeIncMap = false;
-  public speckleFilter = false;
+  public processingOptions: models.Hyp3ProcessingOptions;
 
   constructor(
     private dialogRef: MatDialogRef<ProcessingQueueComponent>,
     private snackBar: MatSnackBar,
     private store$: Store<AppState>,
     private hyp3: services.Hyp3Service,
+    private screenSize: services.ScreenSizeService,
   ) { }
 
   ngOnInit(): void {
@@ -59,18 +62,24 @@ export class ProcessingQueueComponent implements OnInit {
 
         this.user = user.user_id;
         this.remaining = user.quota.remaining;
-        this.limit = user.quota.limit;
       }
+    );
+
+    this.screenSize.breakpoint$.subscribe(
+      breakpoint => this.breakpoint = breakpoint
+    );
+
+    this.store$.select(hyp3Store.getProcessingOptions).subscribe(
+      options => this.processingOptions = options
+    );
+
+    this.store$.select(hyp3Store.getProcessingProjectName).subscribe(
+      projectName => this.projectName = projectName
     );
   }
 
   public onCloseDialog() {
     this.dialogRef.close();
-  }
-
-  public onSelectJob(job: models.Hyp3Job): void {
-    this.selectedJobId = job.job_id;
-    this.selected = job;
   }
 
   public daysUntilExpiration(expiration_time: moment.Moment): string {
@@ -81,12 +90,12 @@ export class ProcessingQueueComponent implements OnInit {
 
   public onSubmitQueue(): void {
     const options = {
-      dem_matching: this.demMatching,
-      include_dem: this.includeDem,
-      include_inc_map: this.includeIncMap,
-      radiometry: this.radiometry,
-      scale: this.scale,
-      speckle_filter: this.speckleFilter,
+      dem_matching: this.processingOptions.demMatching,
+      include_dem: this.processingOptions.includeDem,
+      include_inc_map: this.processingOptions.includeIncMap,
+      radiometry: this.processingOptions.radiometry,
+      scale: this.processingOptions.scale,
+      speckle_filter: this.processingOptions.speckleFilter,
     };
 
     const hyp3JobsBatch = this.jobs.map(job => {
@@ -105,12 +114,12 @@ export class ProcessingQueueComponent implements OnInit {
       return jobOptions;
     });
 
+
     this.isQueueSubmitProcessing = true;
 
     this.hyp3.submiteJobBatch$({ jobs: hyp3JobsBatch }).pipe(
       catchError(resp => {
         if (resp.error) {
-          console.log(resp.error);
           this.snackBar.open(`${resp.error.detail}`, 'Error', {
             duration: 5000,
           });
@@ -148,5 +157,13 @@ export class ProcessingQueueComponent implements OnInit {
   public onRestoreJobQueue(previousJobs): void {
     this.store$.dispatch(new queueStore.AddJobs(previousJobs));
     this.previousQueue = null;
+  }
+
+  public onSelectScenesTab(): void {
+    this.selectedTab = ProcessingQueueTab.SCENES;
+  }
+
+  public onSelectOptionsTab(): void {
+    this.selectedTab = ProcessingQueueTab.OPTIONS;
   }
 }

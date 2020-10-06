@@ -14,7 +14,8 @@ import { FiltersDropdownComponent } from './filters-dropdown.component';
 import { ListFiltersModule } from './list-filters';
 import { DatasetFiltersModule } from './dataset-filters';
 import { BaselineFiltersModule } from './baseline-filters';
-import { SbasFiltersModule} from '@components/filters-dropdown/sbas-filters/sbas-filters.module';
+import { SbasFiltersModule } from './sbas-filters';
+import { CustomProductsFiltersModule } from './custom-products-filters';
 
 import { SearchSelectorModule } from '@components/shared/selectors/search-selector';
 
@@ -32,6 +33,7 @@ import { FlexLayoutModule } from '@angular/flex-layout';
     DatasetFiltersModule,
     BaselineFiltersModule,
     SbasFiltersModule,
+    CustomProductsFiltersModule,
     SearchButtonModule,
     ClearButtonModule,
     MaxResultsSelectorModule,

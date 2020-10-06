@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 
 import { tap } from 'rxjs/operators';
 
@@ -13,6 +13,8 @@ import * as filtersStore from '@store/filters';
   styleUrls: ['./project-name-selector.component.scss']
 })
 export class ProjectNameSelectorComponent implements OnInit {
+  @Input() processName = false;
+
   public projectNames: string[] = [];
   public projectNamesFiltered = [];
   public projectName = '';
@@ -38,9 +40,12 @@ export class ProjectNameSelectorComponent implements OnInit {
 
   public onProjectNameChange(projectName): void {
     this.projectName = projectName;
-    this.store$.dispatch(new filtersStore.SetProjectName(
-      projectName === '' ? null : projectName
-    ));
+
+    const action = (!this.processName) ?
+      new filtersStore.SetProjectName(projectName === '' ? null : projectName) :
+      new hyp3Store.SetProcessingProjectName(projectName);
+
+    this.store$.dispatch(action);
   }
 
   public onProjectNameInput(projectName): void {
