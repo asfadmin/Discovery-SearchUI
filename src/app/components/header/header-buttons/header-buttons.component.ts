@@ -19,6 +19,11 @@ import { CustomizeEnvComponent } from './customize-env/customize-env.component';
 import { AuthService, AsfApiService, EnvironmentService, ScreenSizeService } from '@services';
 import { CMRProduct, Breakpoints, UserAuth, SavedSearchType, QueuedHyp3Job } from '@models';
 
+// Declare GTM dataLayer array.
+declare global {
+  interface Window { dataLayer: any[]; }
+}
+
 @Component({
   selector: 'app-header-buttons',
   templateUrl: './header-buttons.component.html',
@@ -152,6 +157,11 @@ export class HeaderButtonsComponent implements OnInit, OnDestroy {
   }
 
   public onCopy(): void {
+    window.dataLayer = window.dataLayer || [];
+    window.dataLayer.push({
+      'event': 'copy-search-link',
+      'copy-search-link': window.location.href
+    });
     this.clipboard.copyFromContent(window.location.href);
   }
 
