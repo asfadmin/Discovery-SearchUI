@@ -11,6 +11,10 @@ import { createBox } from 'ol/interaction/Draw.js';
 import * as polygonStyle from './polygon.style';
 import * as models from '@models';
 
+// Declare GTM dataLayer array.
+declare global {
+  interface Window { dataLayer: any[]; }
+}
 
 @Injectable({
   providedIn: 'root'
@@ -107,6 +111,12 @@ export class DrawService {
   private create(drawMode: models.MapDrawModeType): Draw {
     let draw: Draw;
     this.isDrawing$.next(false);
+
+    window.dataLayer = window.dataLayer || [];
+    window.dataLayer.push({
+      'event': 'draw',
+      'draw-mode': drawMode
+    });
 
     if (drawMode === models.MapDrawModeType.BOX) {
       draw = new Draw({
