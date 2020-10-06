@@ -24,7 +24,7 @@ export class ProcessingQueueComponent implements OnInit {
   public selectedJobId: string = null;
   public user = '';
   public remaining = 0;
-  public limit = 0;
+  public max_jobs_per_month = 0;
   public areJobsLoading = false;
   public isQueueSubmitProcessing = false;
 
@@ -55,7 +55,7 @@ export class ProcessingQueueComponent implements OnInit {
 
         this.user = user.user_id;
         this.remaining = user.quota.remaining;
-        this.limit = user.quota.limit;
+        this.max_jobs_per_month = user.quota.limit;
       }
     );
   }
