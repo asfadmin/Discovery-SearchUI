@@ -34,7 +34,7 @@
       </div>
 
       <div *ngIf="breakpoint === breakpoints.MOBILE">
-        <div>
+        <div class="mobile-tab-selector">
           <button (click)="onSelectScenesTab()"
             [class.selected]="selectedTab === Tabs.SCENES" mat-button>
             Scenes

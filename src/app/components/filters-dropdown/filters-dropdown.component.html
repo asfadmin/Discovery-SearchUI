@@ -23,7 +23,7 @@
           SBAS Search
         </ng-container>
 
-        <ng-container *ngIf="selectedSearchType === searchTypes.CUSOTM_PRODUCTS">
+        <ng-container *ngIf="selectedSearchType === searchTypes.CUSTOM_PRODUCTS">
           Custom Product Filters
         </ng-container>
       </div>
@@ -54,11 +54,8 @@
       </ng-container>
 
       <ng-container *ngIf="selectedSearchType === searchTypes.CUSTOM_PRODUCTS">
-        <div>
-          Custom Products
-        </div>
+        <app-custom-products-filters></app-custom-products-filters>
       </ng-container>
-
     </div>
 
     <div class="footer">
@@ -67,7 +64,10 @@
         (breakpoint !== breakpoints.MOBILE && selectedSearchType !== searchTypes.BASELINE)
       ">
         <app-max-results-selector
-          *ngIf="selectedSearchType !== searchTypes.BASELINE"
+          *ngIf="
+             selectedSearchType !== searchTypes.BASELINE &&
+             selectedSearchType !== searchTypes.CUSTOM_PRODUCTS
+          "
           style="margin-right: 10px;">
         </app-max-results-selector>
         <app-search-button></app-search-button>
