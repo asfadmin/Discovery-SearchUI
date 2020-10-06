@@ -86,7 +86,7 @@ export class AsfApiService {
 
     const params = Object.entries(this.baseParams())
     .filter(
-      ([key, val]) => !stateParams.get(key)
+      ([key, _]) => !stateParams.get(key)
     )
     .reduce(
       (queryParams, [key, val]) => queryParams.append(key, `${val}`)
@@ -98,7 +98,7 @@ export class AsfApiService {
 
   private toHttpParams(paramsObj): HttpParams {
     return Object.entries(paramsObj)
-    .filter(([param, val]) => !!val)
+    .filter(([_, val]) => !!val)
     .reduce(
       (queryParams, [param, val]) => queryParams.set(param, <string>val),
       new HttpParams()
@@ -118,7 +118,7 @@ export class AsfApiService {
   private onlyRelevantParams(paramsObj): {[id: string]: string | null} {
   const irrelevant = Object.entries(apiParamNames)
       .filter(
-        ([property, apiName]) => !this.prop.isRelevant(<Props>property)
+        ([property, _]) => !this.prop.isRelevant(<Props>property)
       )
       .map(([_, apiName]) => apiName);
 
@@ -190,10 +190,6 @@ export class AsfApiService {
     const max_url_length = 1500;
 
     return (url.length + params.length) > max_url_length;
-  }
-
-  private dummyData(): Observable<any[]>  {
-    return this.http.get<any[]>('assets/sample-data/sentinel-1a.json');
   }
 
   private baseParams() {

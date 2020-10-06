@@ -187,10 +187,6 @@ export class SceneDetailComponent implements OnInit, OnDestroy {
     ].forEach(action => this.store$.dispatch(action));
   }
 
-  private capitalizeFirstLetter(str) {
-      return str.charAt(0).toUpperCase() + str.slice(1);
-  }
-
   ngOnDestroy() {
     this.subs.unsubscribe();
   }

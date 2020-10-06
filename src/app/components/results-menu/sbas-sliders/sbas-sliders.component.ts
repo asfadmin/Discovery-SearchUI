@@ -1,8 +1,8 @@
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 
 import noUiSlider from 'nouislider';
-import { Subject, Observable } from 'rxjs';
-import { delay, debounceTime, distinctUntilChanged, take, filter, map } from 'rxjs/operators';
+import { Subject } from 'rxjs';
+import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 
 import { AppState } from '@store';
 import { Store } from '@ngrx/store';
@@ -94,7 +94,7 @@ export class SbasSlidersComponent implements OnInit {
       }
     });
 
-    slider.on('update', (values, handle) => {
+    slider.on('update', (values, _) => {
       values$.next(values.map(v => +v));
     });
 

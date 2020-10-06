@@ -8,8 +8,6 @@ import * as filtersStore from '@store/filters';
 
 import * as services from '@services';
 import * as models from '@models';
-import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
-import { HelpComponent } from '@components/help/help.component';
 
 @Component({
   selector: 'app-info-bar',
@@ -42,7 +40,6 @@ export class InfoBarComponent implements OnInit, OnDestroy {
   constructor(
     private store$: Store<AppState>,
     private screenSize: services.ScreenSizeService,
-    private dialog: MatDialog,
   ) { }
 
   ngOnInit() {
@@ -113,19 +110,6 @@ export class InfoBarComponent implements OnInit, OnDestroy {
       missionSub,
       tempSub, perpSub
     ].forEach(sub => this.subs.add(sub));
-  }
-
-  public onOpenNewStuff(helpSelection: string): void {
-    const dialogConfig = new MatDialogConfig();
-
-    dialogConfig.panelClass = 'help-panel-config';
-    dialogConfig.data = {helpTopic: helpSelection};
-    dialogConfig.width = '80vw';
-    dialogConfig.height = '80vh';
-    dialogConfig.maxWidth = '100%';
-    dialogConfig.maxHeight = '100%';
-
-    const dialogRef = this.dialog.open(HelpComponent, dialogConfig);
   }
 
   ngOnDestroy() {

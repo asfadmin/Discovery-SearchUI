@@ -4,11 +4,9 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { of } from 'rxjs';
 import { map, switchMap, catchError } from 'rxjs/operators';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { Store } from '@ngrx/store';
 import { UnzipApiService } from '@services/unzip-api.service';
 
 import { CMRProduct } from '@models';
-import { AppState } from '../app.reducer';
 import {
   ScenesActionType, LoadUnzippedProduct,
   AddUnzippedProduct, ErrorLoadingUnzipped
@@ -18,12 +16,11 @@ import {
 export class ScenesEffects {
   constructor(
     private actions$: Actions,
-    private store$: Store<AppState>,
     private unzipApi: UnzipApiService,
     private snackBar: MatSnackBar,
   ) {}
 
-  private loadUnzippedProductFiles = createEffect(() => this.actions$.pipe(
+  public loadUnzippedProductFiles = createEffect(() => this.actions$.pipe(
     ofType<LoadUnzippedProduct>(ScenesActionType.LOAD_UNZIPPED_PRODUCT),
     switchMap(action => this.unzipApi.load$(action.payload.downloadUrl).pipe(
       map(resp => resp.response),
@@ -38,12 +35,12 @@ export class ScenesEffects {
       })
       ),
       map(unzipped => new AddUnzippedProduct(unzipped)),
-      catchError(err => of(new ErrorLoadingUnzipped(action.payload))),
+      catchError(_ => of(new ErrorLoadingUnzipped(action.payload))),
     )),
   )
   );
 
-  private errorLoadingUnzip = createEffect(() => this.actions$.pipe(
+  public errorLoadingUnzip = createEffect(() => this.actions$.pipe(
     ofType<ErrorLoadingUnzipped>(ScenesActionType.ERROR_LOADING_UNZIPPED),
     map(action => this.showUnzipApiLoadError(action.payload))
   ), { dispatch: false });

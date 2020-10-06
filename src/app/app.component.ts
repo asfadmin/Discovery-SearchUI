@@ -1,5 +1,4 @@
 import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
 import { MatSidenav } from '@angular/material/sidenav';
 import { MatIconRegistry } from '@angular/material/icon';
 import { DomSanitizer } from '@angular/platform-browser';
@@ -7,11 +6,10 @@ import { SubSink } from 'subsink';
 
 import { Store, ActionsSubject } from '@ngrx/store';
 import { ofType } from '@ngrx/effects';
-import { of, combineLatest } from 'rxjs';
+import { of } from 'rxjs';
 import { skip, filter, map, switchMap, tap, catchError, debounceTime } from 'rxjs/operators';
 
 import { NgcCookieConsentService } from 'ngx-cookieconsent';
-import { BaselineChartComponent } from '@components/baseline-chart';
 
 import { AppState } from '@store';
 import * as scenesStore from '@store/scenes';
@@ -53,15 +51,12 @@ export class AppComponent implements OnInit, OnDestroy {
 
   constructor(
     private store$: Store<AppState>,
-    private dialog: MatDialog,
     private actions$: ActionsSubject,
-    private mapService: services.MapService,
     private urlStateService: services.UrlStateService,
     private searchParams$: services.SearchParamsService,
     private polygonValidationService: services.PolygonValidationService,
     private asfSearchApi: services.AsfApiService,
     private authService: services.AuthService,
-    private userDataService: services.UserDataService,
     private screenSize: services.ScreenSizeService,
     private searchService: services.SearchService,
     private ccService: NgcCookieConsentService,
@@ -92,7 +87,7 @@ export class AppComponent implements OnInit, OnDestroy {
       this.store$.select(userStore.getUserAuth).pipe(
         filter(userAuth => !!userAuth.token)
       ).subscribe(
-        userAuth => this.store$.dispatch(new userStore.LoadProfile())
+        _ => this.store$.dispatch(new userStore.LoadProfile())
       )
     );
 
@@ -171,10 +166,6 @@ export class AppComponent implements OnInit, OnDestroy {
       const queueItems = JSON.parse(queueItemsStr);
       this.store$.dispatch(new queueStore.AddJobs(queueItems));
     }
-  }
-
-  private openBaselineChart(): void {
-    const dialogRef = this.dialog.open(BaselineChartComponent);
   }
 
   public onCloseSidebar(): void {

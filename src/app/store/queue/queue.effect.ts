@@ -25,15 +25,14 @@ export class QueueEffects {
   constructor(
     private actions$: Actions,
     private store$: Store<AppState>,
-    private searchParams$: services.SearchParamsService,
     private asfApiService: services.AsfApiService,
     private bulkDownloadService: services.BulkDownloadService,
   ) {}
 
-  private makeDownloadScript = createEffect(() => this.actions$.pipe(
+  public makeDownloadScript = createEffect(() => this.actions$.pipe(
     ofType(QueueActionType.MAKE_DOWNLOAD_SCRIPT),
     withLatestFrom(this.store$.select(getQueuedProducts)),
-    map(([action, products]) => products),
+    map(([_, products]) => products),
     switchMap(
       products => this.bulkDownloadService.downloadScript$(products)
     ),
@@ -42,7 +41,7 @@ export class QueueEffects {
     )
   ), { dispatch: false });
 
-  private downloadMetadata = createEffect(() => this.actions$.pipe(
+  public downloadMetadata = createEffect(() => this.actions$.pipe(
     ofType<DownloadMetadata>(QueueActionType.DOWNLOAD_METADATA),
     map(action => action.payload),
     withLatestFrom(this.store$.select(getQueuedProducts).pipe(
@@ -76,14 +75,14 @@ export class QueueEffects {
     ),
   ), { dispatch: false });
 
-  private queueScene = createEffect(() => this.actions$.pipe(
+  public queueScene = createEffect(() => this.actions$.pipe(
     ofType<QueueScene>(QueueActionType.QUEUE_SCENE),
     withLatestFrom(this.store$.select(scenesStore.getAllSceneProducts)),
     map(([action, sceneProducts]) => sceneProducts[action.payload]),
     map(products => new AddItems(products))
   ));
 
-  private removeScene = createEffect(() => this.actions$.pipe(
+  public removeScene = createEffect(() => this.actions$.pipe(
     ofType<RemoveSceneFromQueue>(QueueActionType.REMOVE_SCENE_FROM_QUEUE),
     withLatestFrom(this.store$.select(scenesStore.getAllSceneProducts)),
     map(([action, sceneProducts]) => sceneProducts[action.payload]),

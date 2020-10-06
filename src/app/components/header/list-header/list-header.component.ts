@@ -1,8 +1,7 @@
-import { Component, OnInit, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, } from '@angular/core';
 
 import { Store } from '@ngrx/store';
 import { AppState } from '@store';
-import * as queueStore from '@store/queue';
 import * as uiStore from '@store/ui';
 
 import { ScreenSizeService } from '@services';

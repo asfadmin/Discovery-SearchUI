@@ -28,7 +28,7 @@ export class BannerApiService {
         })),
         systime: ''
       }),
-        catchError(err => {
+        catchError(_ => {
           this.snackBar.open('Trouble loading notifications', 'ERROR', {
             duration: 5000
           });

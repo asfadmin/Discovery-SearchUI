@@ -2,7 +2,6 @@ import { Component, Input, OnInit, OnDestroy  } from '@angular/core';
 import { SubSink } from 'subsink';
 
 import { Store } from '@ngrx/store';
-import { map } from 'rxjs/operators';
 
 import { AppState } from '@store';
 import * as filtersStore from '@store/filters';

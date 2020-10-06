@@ -1,7 +1,7 @@
-import { Component, OnInit, Input, Output, EventEmitter, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { SubSink } from 'subsink';
 
-import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
+import { MatDialog } from '@angular/material/dialog';
 import { QueueComponent } from '@components/header/queue';
 import { ProcessingQueueComponent } from '@components/header/processing-queue';
 import { ClipboardService } from 'ngx-clipboard';
@@ -11,7 +11,6 @@ import { AppState } from '@store';
 import * as queueStore from '@store/queue';
 import * as userStore from '@store/user';
 import * as uiStore from '@store/ui';
-import * as hyp3Store from '@store/hyp3';
 
 import { PreferencesComponent } from './preferences/preferences.component';
 import { HelpComponent } from '@components/help/help.component';
@@ -76,6 +75,10 @@ export class HeaderButtonsComponent implements OnInit, OnDestroy {
   }
 
   public onOpenDownloadQueue(): void {
+    if (this.queuedProducts.length <= 0) {
+      return;
+    }
+
     this.dialog.open(QueueComponent, {
       id: 'dlQueueDialog',
       maxWidth: '100vw',
@@ -94,7 +97,7 @@ export class HeaderButtonsComponent implements OnInit, OnDestroy {
   public onLogout(): void {
     this.subs.add(
       this.authService.logout$().subscribe(
-        user => this.store$.dispatch(new userStore.Logout())
+        _ => this.store$.dispatch(new userStore.Logout())
       )
     );
   }
@@ -113,20 +116,18 @@ export class HeaderButtonsComponent implements OnInit, OnDestroy {
   }
 
   public onOpenHelp(helpSelection: string): void {
-    const dialogConfig = new MatDialogConfig();
-
-    dialogConfig.panelClass = 'help-panel-config';
-    dialogConfig.data = {helpTopic: helpSelection};
-    dialogConfig.width = '80vw';
-    dialogConfig.height = '80vh';
-    dialogConfig.maxWidth = '100%';
-    dialogConfig.maxHeight = '100%';
-
-    const dialogRef = this.dialog.open(HelpComponent, dialogConfig);
+    this.dialog.open(HelpComponent, {
+      panelClass: 'help-panel-config',
+      data: {helpTopic: helpSelection},
+      width: '80vw',
+      height: '80vh',
+      maxWidth: '100%',
+      maxHeight: '100%'
+    });
   }
 
   public onOpenCustomizeEnv(): void {
-    const dialogRef = this.dialog.open(CustomizeEnvComponent, {
+    this.dialog.open(CustomizeEnvComponent, {
       width: '800px',
       height: '1000px',
       maxWidth: '100%',
@@ -147,6 +148,10 @@ export class HeaderButtonsComponent implements OnInit, OnDestroy {
   }
 
   public onOpenProcessingQueue() {
+    if (this.queuedCustomProducts.length <= 0) {
+      return;
+    }
+
     this.dialog.open(ProcessingQueueComponent, {
       id: 'dlQueueDialog',
       maxWidth: '100vw',

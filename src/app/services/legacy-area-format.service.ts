@@ -34,7 +34,7 @@ export class LegacyAreaFormatService {
   }
 
   private pairPoints(numbers): number[][] {
-    const pairs = numbers.reduce((result, value, index, array) => {
+    const pairs = numbers.reduce((result, _, index, array) => {
       if (index % 2 === 0) {
         result.push(array.slice(index, index + 2));
       }

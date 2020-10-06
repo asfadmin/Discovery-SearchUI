@@ -3,7 +3,6 @@ import { HttpClient } from '@angular/common/http';
 
 import { Observable } from 'rxjs';
 
-import { CMRProduct } from '@models';
 import { EnvironmentService } from './environment.service';
 
 @Injectable({
@@ -21,10 +20,6 @@ export class UnzipApiService {
 
   public get datapool() {
     return this.env.currentEnv.datapool;
-  }
-
-  public canUnzip(product: CMRProduct): boolean {
-    return true;
   }
 
   public load$(downloadUrl: string): Observable<any> {

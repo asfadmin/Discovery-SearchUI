@@ -1,8 +1,8 @@
 import { Component, OnInit, ViewChild, ElementRef, OnDestroy } from '@angular/core';
 import noUiSlider from 'nouislider';
 
-import { Subject, Observable } from 'rxjs';
-import { delay, debounceTime, distinctUntilChanged, take, filter, map } from 'rxjs/operators';
+import { Subject } from 'rxjs';
+import { delay, debounceTime, distinctUntilChanged, take, filter } from 'rxjs/operators';
 import { AppState } from '@store';
 import { Store } from '@ngrx/store';
 import * as filtersStore from '@store/filters';
@@ -26,9 +26,6 @@ export class BaselineSlidersComponent implements OnInit, OnDestroy {
 
   public perpSlider;
   public tempSlider;
-
-  private perpendicularValues$: Observable<number[]>;
-  private temporalValues$: Observable<number[]>;
 
   private subs = new SubSink();
 
@@ -138,7 +135,7 @@ export class BaselineSlidersComponent implements OnInit, OnDestroy {
       }
     });
 
-    slider.on('update', (values, handle) => {
+    slider.on('update', (values, _) => {
       values$.next(values.map(v => +v));
     });
 

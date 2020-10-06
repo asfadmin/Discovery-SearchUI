@@ -11,6 +11,10 @@ import { createBox } from 'ol/interaction/Draw.js';
 import * as polygonStyle from './polygon.style';
 import * as models from '@models';
 
+// Declare GTM dataLayer array.
+declare global {
+  interface Window { dataLayer: any[]; }
+}
 
 @Injectable({
   providedIn: 'root'
@@ -85,7 +89,7 @@ export class DrawService {
     }
   }
 
-  public setFeature(feature, epsg): void {
+  public setFeature(feature, _): void {
     this.drawEndCallback(feature);
     this.source.clear();
     this.source.addFeature(feature);
@@ -108,6 +112,12 @@ export class DrawService {
     let draw: Draw;
     this.isDrawing$.next(false);
 
+    window.dataLayer = window.dataLayer || [];
+    window.dataLayer.push({
+      'event': 'draw',
+      'draw-mode': drawMode
+    });
+
     if (drawMode === models.MapDrawModeType.BOX) {
       draw = new Draw({
         source: this.source,
@@ -121,16 +131,12 @@ export class DrawService {
       });
     }
 
-    draw.on('drawstart', e => {
+    draw.on('drawstart', _ => {
       this.isDrawing$.next(true);
       this.clear();
     });
     draw.on('drawend', e => {
       this.drawEndCallback(e.feature);
-
-      const extent = e.feature
-        .getGeometry()
-        .getExtent();
 
       this.isDrawing$.next(false);
       this.polygon$.next(e.feature);

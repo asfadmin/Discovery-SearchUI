@@ -63,3 +63,20 @@ To install Homebrew follow the directions here https://docs.python-guide.org/sta
 To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
 
 More information about the app can be found in the [wiki](https://github.com/asfadmin/SearchUI/wiki)
+
+## Google Tag Manager Structure
+
+### GTM Tag Hierarchy
+- Category: _Search Criteria_
+  - Label: _Search Type_
+    - dataLayer Variable: 'search-type': searchType
+  - Label: _Dataset_
+    - dataLayer Variable: 'dataset': dataset
+    
+- Category: Map
+    Label: _Draw Mode_
+        dataLayer Variable: 'draw-mode': drawMode
+        
+- One tall latte.
+- Go to a movie.
+

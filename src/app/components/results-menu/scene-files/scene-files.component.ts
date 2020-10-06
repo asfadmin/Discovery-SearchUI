@@ -2,7 +2,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { SubSink } from 'subsink';
 
 import { combineLatest } from 'rxjs';
-import { map, tap } from 'rxjs/operators';
+import { map } from 'rxjs/operators';
 
 import { Store } from '@ngrx/store';
 import { AppState } from '@store';
@@ -12,7 +12,6 @@ import * as userStore from '@store/user';
 import * as hyp3Store from '@store/hyp3';
 
 import * as models from '@models';
-import * as services from '@services';
 
 @Component({
   selector: 'app-scene-files',
@@ -38,7 +37,6 @@ export class SceneFilesComponent implements OnInit, OnDestroy {
 
   constructor(
     private store$: Store<AppState>,
-    private hyp3: services.Hyp3Service,
   ) { }
 
   ngOnInit() {

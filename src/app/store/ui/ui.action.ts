@@ -13,6 +13,9 @@ export enum UIActionType {
   SHOW_S1_RAW_DATA = '[UI] Show S1 RAW Data',
   HIDE_S1_RAW_DATA = '[UI] Hide S1 RAW Data',
 
+  SHOW_EXPIRED_DATA = '[UI] Show Expired Data',
+  HIDE_EXPIRED_DATA = '[UI] Hide Expired Data',
+
   CLOSE_SIDEBAR = '[UI] Close Sidebar',
   OPEN_SIDEBAR = '[UI] Open Sidebar',
 
@@ -60,6 +63,14 @@ export class ShowS1RawData implements Action {
 
 export class HideS1RawData implements Action {
   public readonly type = UIActionType.HIDE_S1_RAW_DATA;
+}
+
+export class ShowExpiredData implements Action {
+  public readonly type = UIActionType.SHOW_EXPIRED_DATA;
+}
+
+export class HideExpiredData implements Action {
+  public readonly type = UIActionType.HIDE_EXPIRED_DATA;
 }
 
 export class StartAddingCustomPoint implements Action {
@@ -144,6 +155,8 @@ export type UIActions =
   | OpenFiltersMenu
   | ShowS1RawData
   | HideS1RawData
+  | ShowExpiredData
+  | HideExpiredData
   | ToggleResultsMenu
   | CloseResultsMenu
   | OpenResultsMenu

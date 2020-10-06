@@ -15,7 +15,7 @@ import * as filtersStore from '@store/filters';
 
 import * as services from '@services';
 import { SavedSearchType, SearchType } from '@models';
-import {MatDialog, MatDialogConfig} from '@angular/material/dialog';
+import { MatDialog } from '@angular/material/dialog';
 import { HelpComponent } from '@components/help/help.component';
 
 
@@ -129,17 +129,15 @@ export class SearchButtonComponent implements OnInit, OnDestroy {
     this.store$.dispatch(new uiStore.OpenSidebar());
   }
 
-  public onOpenHelp(helpSelection: string): void {
-    const dialogConfig = new MatDialogConfig();
-
-    dialogConfig.panelClass = 'help-panel-config';
-    dialogConfig.data = {helpTopic: helpSelection};
-    dialogConfig.width = '80vw';
-    dialogConfig.height = '80vh';
-    dialogConfig.maxWidth = '100%';
-    dialogConfig.maxHeight = '100%';
-
-    const dialogRef = this.dialog.open(HelpComponent, dialogConfig);
+  public onOpenHelp(helpTopic: string): void {
+    this.dialog.open(HelpComponent, {
+      panelClass: 'help-panel-config',
+      data: { helpTopic },
+      width: '80vw',
+      height: '80vh',
+      maxWidth: '100%',
+      maxHeight: '100%',
+    });
   }
 
   ngOnDestroy() {

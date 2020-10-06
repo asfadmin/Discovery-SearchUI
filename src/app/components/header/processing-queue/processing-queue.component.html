@@ -1,7 +1,7 @@
-<mat-card style="padding: 0;" class="p0">
+<mat-card class="processing-queue">
   <mat-card-title-group style="margin-bottom: 0 !important;" class="card-title-group">
     <mat-card-title>Processing Queue</mat-card-title>
-    <mat-card-subtitle> <b>{{ user }}</b> - {{ limit - remaining }} jobs left this month</mat-card-subtitle>
+    <mat-card-subtitle> <b>{{ user }}</b> - {{ remaining }} jobs left this month</mat-card-subtitle>
 
     <div class="close-x" (click)="onCloseDialog()">
       <mat-icon>close</mat-icon>
@@ -13,100 +13,46 @@
 
   <mat-card-content>
     <div class="jobs-dialog">
-      <div class="jobs-display">
-
+      <div *ngIf="breakpoint !== breakpoints.MOBILE" class="jobs-display--desktop">
         <div class="jobs-list-panel">
-          <div class="jobs-list">
-            <mat-list *ngIf="!areJobsLoading" role="list">
-              <mat-list-item *ngFor="let job of jobs">
-
-                <img matListAvatar
-                  [src]="job.granules[0].thumbnail"
-                  onerror="this.src='assets/no-thumb.png'"
-                  matBadgeOverlap="false"
-                  matListAvatar>
-
-                <div matLine>
-                  {{ job.granules[0].name }}
-                </div>
-
-                <div matLine>
-                  <b>
-                    <span *ngIf="job.granules[0].bytes === 0">Virtual</span>
-                    <span *ngIf="job.granules[0].bytes !== 0">{{ job.granules[0].bytes | readableSizeFromBytes }}</span>
-                  </b>
-                </div>
-
-                <button (click)="onRemoveJob(job)" matTooltip="Remove job" mat-icon-button>
-                  <mat-icon>close</mat-icon>
-                </button>
-              </mat-list-item>
-            </mat-list>
-          </div>
+          <app-processing-queue-jobs
+            [jobs]="jobs"
+            [areJobsLoading]="areJobsLoading"
+            (removeJob)="onRemoveJob($event)">
+          </app-processing-queue-jobs>
         </div>
 
         <div class="jobs-detail">
-          <div style="margin: 10px;">
-            <div>
-              <mat-form-field>
-                <mat-label>Project Name</mat-label>
-                <input matInput type="text" [(ngModel)]="projectName">
-              </mat-form-field>
-            </div>
-            <div>
-              <mat-form-field>
-                <mat-label>Radiometry</mat-label>
-                <mat-select [(value)]="radiometry">
-                  <mat-option value="gamma0">gamma0</mat-option>
-                  <mat-option value="sigma0">sigma0</mat-option>
-                </mat-select>
-              </mat-form-field>
-            </div>
-            <div>
-              <mat-form-field>
-                <mat-label>Scale</mat-label>
-                <mat-select [(value)]="scale">
-                  <mat-option value="power">power</mat-option>
-                  <mat-option value="amplitude">amplitude</mat-option>
-                </mat-select>
-              </mat-form-field>
-            </div>
-            <div>
-              <mat-slide-toggle [(ngModel)]="demMatching">
-                Dem Matching
-              </mat-slide-toggle>
-            </div>
-            <div>
-              <mat-slide-toggle [(ngModel)]="includeDem">
-                Include Dem
-              </mat-slide-toggle>
-            </div>
-            <div>
-              <mat-slide-toggle [(ngModel)]="includeIncMap">
-                Include Inc Map
-              </mat-slide-toggle>
-            </div>
-            <div>
-              <mat-slide-toggle [(ngModel)]="speckleFilter">
-                Speckle Filter
-              </mat-slide-toggle>
-            </div>
+          <app-processing-options></app-processing-options>
 
-            <div style="padding-top: 20px;">
-              <button
-                (click)="onSubmitQueue()"
-                mat-raised-button
-                color="primary">
-                <span *ngIf="!isQueueSubmitProcessing">
-                  Submit Queue
-                </span>
-
-                <span *ngIf="isQueueSubmitProcessing">
-                  Loading...
-                </span>
-              </button>
-            </div>
+          <div style="padding-top: 10px;">
+            <span *ngIf="jobs.length > remaining">
+              {{ jobs.length }} jobs in processing queue (only {{ remaining }} remaining)
+            </span>
           </div>
+        </div>
+      </div>
+
+      <div *ngIf="breakpoint === breakpoints.MOBILE">
+        <div class="mobile-tab-selector">
+          <button (click)="onSelectScenesTab()"
+            [class.selected]="selectedTab === Tabs.SCENES" mat-button>
+            Scenes
+          </button>
+          <button (click)="onSelectOptionsTab()"
+            [class.selected]="selectedTab === Tabs.OPTIONS" mat-button>
+            Processing Options
+          </button>
+        </div>
+        <div *ngIf="selectedTab === Tabs.SCENES" class="jobs-display--mobile">
+          <app-processing-queue-jobs
+            [jobs]="jobs"
+            [areJobsLoading]="areJobsLoading"
+            (removeJob)="onRemoveJob($event)">
+          </app-processing-queue-jobs>
+        </div>
+        <div *ngIf="selectedTab === Tabs.OPTIONS" class="jobs-display--mobile">
+          <app-processing-options></app-processing-options>
         </div>
       </div>
       <mat-progress-bar *ngIf="isQueueSubmitProcessing" mode="indeterminate"></mat-progress-bar>
@@ -122,7 +68,21 @@
           <mat-icon style="margin-right: 5px;">undo</mat-icon>
           <span>Restore</span>
         </button>
+
+        <button
+          (click)="onSubmitQueue()"
+          [disabled]="jobs.length > remaining"
+          mat-button>
+          <span *ngIf="!isQueueSubmitProcessing">
+            Submit Queue
+          </span>
+
+          <span *ngIf="isQueueSubmitProcessing">
+            Loading...
+          </span>
+        </button>
       </div>
+
     </div>
   </mat-card-content>
 </mat-card>

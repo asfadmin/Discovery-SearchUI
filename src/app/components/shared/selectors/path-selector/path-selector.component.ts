@@ -29,8 +29,8 @@ export class PathSelectorComponent implements OnInit, OnDestroy {
 
   private inputErrors$ = new Subject<PathFormInputType>();
   private currentError: PathFormInputType | null = null;
-  private inputTypes = PathFormInputType;
 
+  public inputTypes = PathFormInputType;
   public pathStart: number | null;
   public pathEnd: number | null;
   public frameStart: number | null;
@@ -139,6 +139,10 @@ export class PathSelectorComponent implements OnInit, OnDestroy {
     this.store$.dispatch(new filtersStore.ClearFrameRange());
   }
 
+  public typeHasError(inputType: PathFormInputType): boolean {
+    return this.currentError === inputType;
+  }
+
   private handlePathFrameErrors(): void {
     this.subs.add(
       this.inputErrors$.pipe(
@@ -165,10 +169,6 @@ export class PathSelectorComponent implements OnInit, OnDestroy {
       [PathFormInputType.FRAME_START]: this.frameStartControl,
       [PathFormInputType.FRAME_END]: this.frameEndControl,
     }[inputType];
-  }
-
-  private typeHasError(inputType: PathFormInputType): boolean {
-    return this.currentError === inputType;
   }
 
   ngOnDestroy() {

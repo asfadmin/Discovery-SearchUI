@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { saveAs } from 'file-saver';
 
 import { combineLatest } from 'rxjs';
 import { map } from 'rxjs/operators';
@@ -13,7 +14,7 @@ import * as filtersStore from '@store/filters';
 
 import {
   MapService, ScenesService, ScreenSizeService,
-  DatasetForProductService, PairService
+  PairService
 } from '@services';
 import * as models from '@models';
 import { SubSink } from 'subsink';
@@ -34,13 +35,17 @@ export class ScenesListHeaderComponent implements OnInit {
   public numPairs$ = this.pairService.pairs$().pipe(
     map(pairs => pairs.pairs.length + pairs.custom.length)
   );
+  public pairs: models.CMRProductPair[];
   public sbasProducts: models.CMRProduct[];
   public canHideRawData: boolean;
+  public showS1RawData: boolean;
+
+  public canHideExpiredData: boolean;
+  public showExpiredData: boolean;
 
   public temporalSort: models.ColumnSortDirection;
   public perpendicularSort: models.ColumnSortDirection;
   public SortDirection = models.ColumnSortDirection;
-  public showS1RawData: boolean;
 
   public searchType: models.SearchType;
   public SearchTypes = models.SearchType;
@@ -55,7 +60,6 @@ export class ScenesListHeaderComponent implements OnInit {
     private scenesService: ScenesService,
     private pairService: PairService,
     private screenSize: ScreenSizeService,
-    private datasetForProduct: DatasetForProductService
   ) { }
 
   ngOnInit() {
@@ -66,17 +70,28 @@ export class ScenesListHeaderComponent implements OnInit {
     );
 
     this.subs.add(
+      this.pairService.pairs$().subscribe(
+        ({pairs, custom}) => this.pairs = [ ...pairs, ...custom ]
+      )
+    );
+
+    this.subs.add(
       combineLatest(
         this.scenesService.scenes$(),
-        this.store$.select(filtersStore.getSelectedDataset),
         this.store$.select(filtersStore.getProductTypes),
         this.store$.select(searchStore.getSearchType),
-      ).subscribe(([scenes, dataset, productTypes, searchType]) => {
+      ).subscribe(([scenes, productTypes, searchType]) => {
         this.canHideRawData =
           searchType === models.SearchType.DATASET &&
           scenes.every(scene => scene.dataset === 'Sentinel-1B' || scene.dataset === 'Sentinel-1A') &&
           productTypes.length <= 0;
       })
+    );
+
+    this.subs.add(
+      this.store$.select(searchStore.getSearchType).subscribe(
+        searchType => this.canHideExpiredData = searchType === models.SearchType.CUSTOM_PRODUCTS
+      )
     );
 
     this.subs.add(
@@ -102,6 +117,12 @@ export class ScenesListHeaderComponent implements OnInit {
         showS1RawData => this.showS1RawData = showS1RawData
       )
     );
+
+    this.subs.add(
+      this.store$.select(uiStore.getShowExpiredData).subscribe(
+        showExpiredData => this.showExpiredData = showExpiredData
+      )
+    );
   }
 
   public onZoomToResults(): void {
@@ -113,6 +134,14 @@ export class ScenesListHeaderComponent implements OnInit {
       this.showS1RawData ?
         new uiStore.HideS1RawData() :
         new uiStore.ShowS1RawData()
+    );
+  }
+
+  public onToggleExpiredData(): void {
+    this.store$.dispatch(
+      this.showExpiredData ?
+        new uiStore.HideExpiredData() :
+        new uiStore.ShowExpiredData()
     );
   }
 
@@ -152,6 +181,21 @@ export class ScenesListHeaderComponent implements OnInit {
 
   public queueSBASProducts(products: models.CMRProduct[]): void {
     this.store$.dispatch(new queueStore.AddItems(products));
+  }
+
+  public onDownloadPairCSV() {
+    const pairRows = this.pairs
+      .map(([reference, secondary]) =>
+        `${reference.name},${reference.downloadUrl},${secondary.name},${secondary.downloadUrl}`
+      )
+      .join('\n');
+
+    const pairsCSV = `Reference, Reference URL, Secondary, Secondary URL,\n${pairRows}`;
+
+    const blob = new Blob([pairsCSV], {
+      type: 'text/csv;charset=utf-8;',
+    });
+    saveAs(blob, 'asf-sbas-pairs.csv');
   }
 
   public formatNumber(num: number): string {

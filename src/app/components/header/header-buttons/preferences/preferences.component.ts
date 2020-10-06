@@ -63,9 +63,6 @@ export class PreferencesComponent implements OnInit {
     this.saveProfile();
   }
 
-  public onNewDefaultProductTypes(types: ProductType[]): void {
-  }
-
   public saveProfile(): void {
     const action = new userStore.SetProfile({
       maxResults: this.defaultMaxResults,

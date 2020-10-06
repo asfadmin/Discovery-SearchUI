@@ -3,7 +3,7 @@ import { Router, ActivatedRoute, Params } from '@angular/router';
 
 import { Store, Action } from '@ngrx/store';
 import * as moment from 'moment';
-import { filter, map, skip, tap, debounceTime, take } from 'rxjs/operators';
+import { filter, map, skip, debounceTime, take } from 'rxjs/operators';
 
 import { AppState } from '@store';
 import * as scenesStore from '@store/scenes';
@@ -28,7 +28,6 @@ export class UrlStateService {
   private urlParams: {[id: string]: models.UrlParameter};
   private loadLocations: {[paramName: string]: models.LoadTypes};
   private params = {};
-  private dataset: string;
   private shouldDoSearch = false;
 
   constructor(
@@ -155,7 +154,6 @@ export class UrlStateService {
     return [{
       name: 'dataset',
       source: this.store$.select(filterStore.getSelectedDatasetId).pipe(
-        tap(selected => this.dataset = selected),
         map(selected => ({ dataset: selected }))
       ),
       loader: this.loadSelectedDataset
@@ -369,14 +367,6 @@ export class UrlStateService {
     }
 
     return new SetSearchType(<models.SearchType>searchType);
-  }
-
-  private loadMapDrawMode = (mode: string): Action | undefined => {
-    if (!Object.values(models.MapDrawModeType).includes(<models.MapDrawModeType>mode)) {
-      return;
-    }
-
-    return new mapStore.SetMapDrawMode(<models.MapDrawModeType>mode);
   }
 
   private loadMapView = (view: string): Action | undefined => {
@@ -610,7 +600,7 @@ export class UrlStateService {
   private updateShouldSearch(): void {
     this.store$.select(scenesStore.getAreResultsLoaded).pipe(
       filter(wereResultsLoaded => wereResultsLoaded),
-    ).subscribe(shouldSearch => this.shouldDoSearch = true);
+    ).subscribe(_ => this.shouldDoSearch = true);
   }
 
   private isNumber = n => !isNaN(n) && isFinite(n);

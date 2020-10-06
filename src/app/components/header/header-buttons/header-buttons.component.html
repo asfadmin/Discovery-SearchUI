@@ -64,9 +64,21 @@
 
   <ng-container *ngIf="breakpoint === breakpoints.MOBILE">
     <mat-icon
+      (click)="onOpenProcessingQueue()"
+      class="mobile-icon-spacing"
+      matTooltip="Custom Processing Queue"
+      svgIcon="hyp3"
+      [matBadge]="queuedCustomProducts.length"
+      matBadgeColor="{{ queuedCustomProducts.length > 0 ? 'accent' : 'primary' }}"
+      matBadgePosition="above after"
+      matBadgeOverlap="true"
+      matBadgeSize="small">
+    </mat-icon>
+
+    <mat-icon
       (click)="onOpenDownloadQueue()"
       [matBadge]="queuedProducts.length"
-                  class="mobile-icon-spacing"
+      class="mobile-icon-spacing"
       matBadgeColor="{{ queuedProducts.length > 0 ? 'accent' : 'primary' }}"
       matBadgePosition="above after"
       matBadgeOverlap="true"

@@ -103,7 +103,7 @@ export class FileUploadDialogComponent implements OnInit, OnDestroy {
 
     this.subs.add(
       this.request = this.asfApiService.upload(this.files).pipe(
-        catchError(err => of({ errors: [{ report: 'Error loading files', type: 'ERROR' }]}))
+        catchError(_ => of({ errors: [{ report: 'Error loading files', type: 'ERROR' }]}))
       ).subscribe(
         resp => {
           if (resp.wkt) {
@@ -114,7 +114,7 @@ export class FileUploadDialogComponent implements OnInit, OnDestroy {
             this.dialogRef.close();
           }
         },
-        err => {
+        _ => {
           this.snackBar.open('Error loading geospatial file',  'FILE ERROR', { duration: 3000 });
           this.dialogRef.close();
         }

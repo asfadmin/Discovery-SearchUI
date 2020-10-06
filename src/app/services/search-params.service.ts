@@ -13,7 +13,6 @@ import { getSearchType } from '@store/search/search.reducer';
 
 import { MapService } from './map/map.service';
 import { RangeService } from './range.service';
-import { PropertyService } from './property.service';
 
 import * as models from '@models';
 
@@ -25,7 +24,6 @@ export class SearchParamsService {
     private store$: Store<AppState>,
     private mapService: MapService,
     private rangeService: RangeService,
-    private prop: PropertyService,
   ) { }
 
   public getParams(): Observable<any> {
@@ -67,24 +65,24 @@ export class SearchParamsService {
 
   private filterSearchParams$() {
     return combineLatest(
-        this.searchPolygon$(),
-        this.selectedDataset$(),
-        this.dateRange$(),
-        this.season$(),
-        this.pathRange$(),
-        this.frameRange$(),
-        this.productType$(),
-        this.flightDirections$(),
-        this.beamModes$(),
-        this.polarizations$(),
-        this.maxResults$(),
-        this.missionParam$()
-      ).pipe(
-        map((params: any[]) => params
-          .reduce(
-            (total, param) =>  ({...total, ...param}),
-            {})
-        )
+      this.searchPolygon$(),
+      this.selectedDataset$(),
+      this.dateRange$(),
+      this.season$(),
+      this.pathRange$(),
+      this.frameRange$(),
+      this.productType$(),
+      this.flightDirections$(),
+      this.beamModes$(),
+      this.polarizations$(),
+      this.maxResults$(),
+      this.missionParam$()
+    ).pipe(
+      map((params: any[]) => params
+        .reduce(
+          (total, param) =>  ({...total, ...param}),
+          {})
+      )
     );
   }
 
@@ -127,8 +125,8 @@ export class SearchParamsService {
       map(([dataset, subtypes]) => {
         return subtypes.length > 0 ?
           { platform: subtypes
-              .map(subtype => subtype.apiValue)
-              .join(',')
+            .map(subtype => subtype.apiValue)
+            .join(',')
           } :
           { ...dataset.apiValue };
       })
@@ -173,7 +171,7 @@ export class SearchParamsService {
       map(types => types.map(type => type.apiValue)),
       map(
         types => Array.from(new Set(types))
-          .join(',')
+        .join(',')
       ),
       map(types => ({ processinglevel: types }))
     );
@@ -183,7 +181,7 @@ export class SearchParamsService {
     return this.store$.select(filterStore.getBeamModes).pipe(
       map(
         types => Array.from(new Set(types))
-          .join(',')
+        .join(',')
       ),
       map(beamModes => ({ beamSwath: beamModes }))
     );
@@ -193,7 +191,7 @@ export class SearchParamsService {
     return this.store$.select(filterStore.getPolarizations).pipe(
       map(
         polarizations => Array.from(new Set(polarizations))
-          .join(',')
+        .join(',')
       ),
       map(polarization => ({ polarization })),
     );

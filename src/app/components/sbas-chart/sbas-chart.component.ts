@@ -1,20 +1,17 @@
-import { Component, OnInit, ViewChild, ElementRef, OnDestroy, Input } from '@angular/core';
+import { Component, OnInit, OnDestroy, Input } from '@angular/core';
 
 import { combineLatest, Observable } from 'rxjs';
-import { map, tap, filter } from 'rxjs/operators';
+import { tap } from 'rxjs/operators';
 
 import * as d3 from 'd3';
 import { Store } from '@ngrx/store';
 import { AppState } from '@store';
 import * as scenesStore from '@store/scenes';
-import * as queueStore from '@store/queue';
 import * as uiStore from '@store/ui';
 
-import { ResizedEvent } from 'angular-resize-event';
-
 import { SubSink } from 'subsink';
-import { ChartService, ScenesService, PairService } from '@services';
-import { criticalBaselineFor, CMRProduct } from '@models';
+import { ScenesService, PairService } from '@services';
+import { CMRProduct } from '@models';
 
 export enum ChartDatasets {
   MASTER = 0,
@@ -35,7 +32,6 @@ export class SBASChartComponent implements OnInit, OnDestroy {
   @Input() zoomIn$: Observable<void>;
   @Input() zoomOut$: Observable<void>;
 
-  private hoveredPair = [null, null];
   private hoveredLine;
   private selectedPair = [null, null];
   private scenes: CMRProduct[];
@@ -50,32 +46,22 @@ export class SBASChartComponent implements OnInit, OnDestroy {
   private line;
   private pairs;
   private customPairs;
-  private isSelectedPairCustom = false;
 
   private zoom;
   private zoomBox;
 
   private queuedProduct;
   private queuedCircle;
-  private hoveredProduct;
   private hoveredCircle;
 
   private margin;
   private widthValue;
   private heightValue;
   private sbasChartHeightValue;
-  private brush;
-
-  private selected: CMRProduct;
-  private criticalBaseline: number;
-  private hoveredProductId;
-  private isFirstLoad = true;
   private subs = new SubSink();
-  private marginBottom = 50;
 
   constructor(
     private store$: Store<AppState>,
-    private chartService: ChartService,
     private scenesService: ScenesService,
     private pairService: PairService,
   ) { }
@@ -115,7 +101,7 @@ export class SBASChartComponent implements OnInit, OnDestroy {
     });
   }
 
-  public onResized(event: ResizedEvent) {
+  public onResized() {
     this.makeSbasChart();
   }
 
@@ -205,7 +191,7 @@ export class SBASChartComponent implements OnInit, OnDestroy {
       });
 
     // Add brushing
-    this.brush = d3.brushX()
+    d3.brushX()
       .extent( [ [0, 0], [this.widthValue, this.heightValue] ] )
       .on('end', this.updateChart);
 
@@ -242,10 +228,10 @@ export class SBASChartComponent implements OnInit, OnDestroy {
         .attr('stroke-width', 3)
         .attr('cursor', 'pointer')
         .attr('d', pair => this.line(pair))
-        .on('mouseover', function(d) {
-          self.setHovered(d, d3.select(this));
+        .on('mouseover', function(_) {
+          self.setHovered(d3.select(this));
         })
-        .on('mouseleave', function(d) {
+        .on('mouseleave', function(_) {
           self.clearHovered();
         })
       .on('click', pair => {
@@ -264,10 +250,10 @@ export class SBASChartComponent implements OnInit, OnDestroy {
         .attr('stroke-width', 3)
         .attr('cursor', 'pointer')
         .attr('d', pair => this.line(pair))
-        .on('mouseover', function(d) {
-          self.setHovered(d, d3.select(this));
+        .on('mouseover', function(_) {
+          self.setHovered(d3.select(this));
         })
-        .on('mouseleave', function(d) {
+        .on('mouseleave', function(_) {
           self.clearHovered();
         })
       .on('click', pair => {
@@ -289,7 +275,7 @@ export class SBASChartComponent implements OnInit, OnDestroy {
         })
         .on('mouseover', function(p) {
           if (self.isAddingCustomPair) {
-            self.setHoveredProduct(p, d3.select(this));
+            self.setHoveredProduct(d3.select(this));
           }
 
           tooltip
@@ -298,7 +284,7 @@ export class SBASChartComponent implements OnInit, OnDestroy {
             .style('left', `${d3.event.pageX + 10}px`)
             .style('top', `${d3.event.pageY - 20}px`);
         })
-        .on('mouseleave', function(p) {
+        .on('mouseleave', function(_) {
           if (self.isAddingCustomPair) {
             self.clearHoveredProduct();
           }
@@ -318,7 +304,7 @@ export class SBASChartComponent implements OnInit, OnDestroy {
     }
 
     // Add a clipPath: everything out of this area won't be drawn.
-    const clip = this.chart.append('defs').append('SVG:clipPath')
+    this.chart.append('defs').append('SVG:clipPath')
       .attr('id', 'clip')
       .append('SVG:rect')
       .attr('width', this.widthValue)
@@ -361,9 +347,7 @@ export class SBASChartComponent implements OnInit, OnDestroy {
     }
   }
 
-  private setHoveredProduct(product, newHovered): void {
-    this.hoveredProduct = product;
-
+  private setHoveredProduct(newHovered): void {
     if (this.hoveredCircle) {
       this.hoveredCircle
         .attr('fill', 'black');
@@ -376,15 +360,11 @@ export class SBASChartComponent implements OnInit, OnDestroy {
   }
 
   private clearHoveredProduct(): void {
-    this.hoveredProduct = null;
-
     this.hoveredCircle
       .attr('fill', 'black');
   }
 
-  private setHovered(pair, newHovered) {
-    this.hoveredPair = pair;
-
+  private setHovered(newHovered) {
     if (this.hoveredLine) {
       this.hoveredLine
         .style('mix-blend-mode', 'multiply')
@@ -401,8 +381,6 @@ export class SBASChartComponent implements OnInit, OnDestroy {
   }
 
   private clearHovered() {
-    this.hoveredPair = null;
-
     this.hoveredLine
       .style('mix-blend-mode', 'multiply')
       .attr('stroke', 'steelblue')
@@ -460,18 +438,6 @@ export class SBASChartComponent implements OnInit, OnDestroy {
       new scenesStore.AddCustomPair([ this.queuedProduct.id, product.id ])
     );
     this.queuedProduct = null;
-  }
-
-  private pairIds(pair) {
-    return pair.map(product => product.id);
-  }
-
-  private areEqIds(p1, p2): boolean {
-    return (
-      p1[0] !== null && p2 !== null &&
-      p1[0].id === p2[0].id &&
-      p1[1].id === p2[1].id
-    );
   }
 
   ngOnDestroy() {

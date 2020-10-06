@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 
 import { Store } from '@ngrx/store';
-import { Actions } from '@ngrx/effects';
 import { combineLatest } from 'rxjs';
 import { map, switchMap } from 'rxjs/operators';
 import * as uuid from 'uuid/v1';
@@ -77,7 +76,6 @@ export class SavedSearchService {
 
   constructor(
     private store$: Store<AppState>,
-    private actions$: Actions,
     private mapService: MapService,
   ) {
     this.currentSearch$.subscribe(
@@ -177,7 +175,6 @@ export class SavedSearchService {
     }
 
     if (this.isRange(val)) {
-      const range = <models.Range<any>>val;
       let nonNullVals = ``;
 
       if (val.start !== null) {

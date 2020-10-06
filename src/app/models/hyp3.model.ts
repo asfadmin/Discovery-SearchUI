@@ -29,7 +29,7 @@ export interface Hyp3User {
 }
 
 export interface Hyp3UserQuota {
-  limit: number;
+  max_jobs_per_month: number;
   remaining: number;
 }
 
@@ -69,6 +69,19 @@ export interface Hyp3RtcGammaParameters {
   resolution?: RtcGammaResolution;
   scale?: RtcGammaScale;
   speckle_filter?: boolean;
+}
+
+export type Hyp3ProcessingOptions =
+  Hyp3RtcGammaProcessingOptions;
+
+export interface Hyp3RtcGammaProcessingOptions {
+  demMatching?: boolean;
+  includeDem?: boolean;
+  includeIncMap?: boolean;
+  radiometry?: RtcGammaRadiometry;
+  resolution?: RtcGammaResolution;
+  scale?: RtcGammaScale;
+  speckleFilter?: boolean;
 }
 
 export enum RtcGammaRadiometry {

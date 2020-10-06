@@ -27,6 +27,10 @@
           {{ numBaselineScenes$ | async }} Scene{{ (numBaselineScenes$ | async) === 1 ? '' : 's' }}
         </div>
 
+        <div *ngIf="searchType === SearchTypes.CUSTOM_PRODUCTS" class="mr-10">
+          {{ numBaselineScenes$ | async }} Product{{ (numBaselineScenes$ | async) === 1 ? '' : 's' }}
+        </div>
+
         <div class="space-filler"></div>
 
         <div *ngIf="allProducts$ | async as products">
@@ -38,11 +42,31 @@
             <div fxLayout="row">
               <div>
                 <mat-button-toggle-group fxFlex="" name="layerType" class="mr-10">
-                  <mat-button-toggle class="control-mat-button-toggle">
-                    <mat-icon (click)="onToggleS1RawData()"
+                  <mat-button-toggle (click)="onToggleS1RawData()" class="control-mat-button-toggle">
+                    <mat-icon
                               class="clickable noselect list-icon"
                               [class.material-icons-outlined]="showS1RawData"
                               [matTooltip]="showS1RawData ? 'Hide raw data' : 'Show raw data'">
+                              remove_red_eye
+                    </mat-icon>
+                  </mat-button-toggle>
+                </mat-button-toggle-group>
+              </div>
+            </div>
+          </div>
+
+          <div *ngIf="canHideExpiredData" fxFlex="" class="list-button-group">
+            <div fxLayout="row" fxLayoutAlign="center" class="button-group-label">
+              <label>Expired</label>
+            </div>
+            <div fxLayout="row">
+              <div>
+                <mat-button-toggle-group fxFlex="" name="layerType" class="mr-10">
+                  <mat-button-toggle (click)="onToggleExpiredData()" class="control-mat-button-toggle">
+                    <mat-icon
+                              class="clickable noselect list-icon"
+                              [class.material-icons-outlined]="showExpiredData"
+                              [matTooltip]="showExpiredData ? 'Hide expired products' : 'Show expired products'">
                               remove_red_eye
                     </mat-icon>
                   </mat-button-toggle>
@@ -58,13 +82,12 @@
             <div fxLayout="row">
               <div>
                 <mat-button-toggle-group fxFlex="" name="layerType" class="mr-10">
-                  <mat-button-toggle class="control-mat-button-toggle">
-                              <mat-icon
-                                (click)="onZoomToResults()"
-                                class="clickable noselect list-icon"
-                                matTooltip="Zoom to results">
-                                settings_overscan
-                              </mat-icon>
+                  <mat-button-toggle (click)="onZoomToResults()" class="control-mat-button-toggle">
+                    <mat-icon
+                      class="clickable noselect list-icon"
+                      matTooltip="Zoom to results">
+                        settings_overscan
+                    </mat-icon>
                   </mat-button-toggle>
                 </mat-button-toggle-group>
               </div>
@@ -85,6 +108,27 @@
                       [matMenuTriggerFor]="addAllProducts">
                       add_shopping_cart
                     </mat-icon>
+                  </mat-button-toggle>
+                </mat-button-toggle-group>
+              </div>
+            </div>
+          </div>
+
+          <div *ngIf="searchType === SearchTypes.SBAS" fxFlex="" class="list-button-group">
+            <div fxLayout="row" fxLayoutAlign="center" class="button-group-label">
+              <label>Pairs</label>
+            </div>
+            <div fxLayout="row">
+              <div>
+                <mat-button-toggle-group fxFlex="" name="layerType" class="mr-10">
+                  <mat-button-toggle
+                    (click)="onDownloadPairCSV()"
+                    class="control-mat-button-toggle">
+                      <mat-icon
+                        class="clickable noselect list-icon"
+                        matTooltip="Download Pair CSV">
+                        get_app
+                      </mat-icon>
                   </mat-button-toggle>
                 </mat-button-toggle-group>
               </div>
@@ -124,7 +168,6 @@
                 class="sort-icon sort-active">keyboard_arrow_down</mat-icon>
           </div>
           <div class="header-column header-cart">
-            <!-- shopping cart header -->
           </div>
         </div>
       </ng-container>

@@ -2,20 +2,15 @@ import { Injectable } from '@angular/core';
 
 import { Observable, combineLatest } from 'rxjs';
 import { map } from 'rxjs/operators';
-import * as moment from 'moment';
 
 import { Store } from '@ngrx/store';
 import { AppState } from '@store/app.reducer';
+import { getScenes, getCustomPairs } from '@store/scenes/scenes.reducer';
 import {
-  getAllProducts, getScenes, getTemporalSortDirection,
-  getPerpendicularSortDirection, getCustomPairs
-} from '@store/scenes/scenes.reducer';
-import {
-  getTemporalRange, getPerpendicularRange, getDateRange
+  getTemporalRange, getPerpendicularRange
 } from '@store/filters/filters.reducer';
-import { getSearchType } from '@store/search/search.reducer';
 
-import { CMRProduct, CMRProductPair, SearchType, Range, ColumnSortDirection } from '@models';
+import { CMRProduct, CMRProductPair, ColumnSortDirection } from '@models';
 
 @Injectable({
   providedIn: 'root'

@@ -19,7 +19,6 @@ import { SubSink } from 'subsink';
 import { AppState } from '@store';
 import * as scenesStore from '@store/scenes';
 import * as searchStore from '@store/search';
-import * as filtersStore from '@store/filters';
 import * as mapStore from '@store/map';
 import * as uiStore from '@store/ui';
 
@@ -250,8 +249,8 @@ export class MapComponent implements OnInit, OnDestroy  {
     this.subs.add(
       this.viewType$.pipe(
         withLatestFrom(this.isMapInitialized$),
-        filter(([view, isInit]) => !isInit),
-        map(([view, isInit]) => view)
+        filter(([_, isInit]) => !isInit),
+        map(([view, _]) => view)
       ).subscribe(
         ([view, layerType]) => {
           this.setMapWith(<models.MapViewType>view, <models.MapLayerTypes>layerType);
@@ -394,8 +393,7 @@ export class MapComponent implements OnInit, OnDestroy  {
   private setMapWith(viewType: models.MapViewType, layerType: models.MapLayerTypes): void {
     this.mapService.setMapView(viewType, layerType, this.overlay);
 
-    this.mapService.setOverlayUpdate(feature => {
-    });
+    this.mapService.setOverlayUpdate(_ => { });
   }
 
   public showOverlay(): void {
