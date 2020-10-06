@@ -19,6 +19,11 @@ import { CustomizeEnvComponent } from './customize-env/customize-env.component';
 import { AuthService, AsfApiService, EnvironmentService, ScreenSizeService } from '@services';
 import { CMRProduct, Breakpoints, UserAuth, SavedSearchType, QueuedHyp3Job } from '@models';
 
+// Declare GTM dataLayer array.
+declare global {
+  interface Window { dataLayer: any[]; }
+}
+
 @Component({
   selector: 'app-header-buttons',
   templateUrl: './header-buttons.component.html',
@@ -116,6 +121,12 @@ export class HeaderButtonsComponent implements OnInit, OnDestroy {
   }
 
   public onOpenHelp(helpSelection: string): void {
+    window.dataLayer = window.dataLayer || [];
+    window.dataLayer.push({
+      'event': 'open-help',
+      'open-help': helpSelection
+    });
+
     this.dialog.open(HelpComponent, {
       panelClass: 'help-panel-config',
       data: {helpTopic: helpSelection},
@@ -124,6 +135,65 @@ export class HeaderButtonsComponent implements OnInit, OnDestroy {
       maxWidth: '100%',
       maxHeight: '100%'
     });
+  }
+
+  public onOpenWhatsNew(): void {
+    const url = 'https://docs.google.com/document/d/e/2PACX-1vSqQxPT8nhDQfbCLS8gBZ9SqSEeJy8BdSCiYVlBOXwsFwJ6_ct7pjtOqbXHo0Q3wzinzvO8bGWtHj0H/pub';
+    window.dataLayer = window.dataLayer || [];
+    window.dataLayer.push({
+      'event': 'open-whats-new',
+      'open-whats-new': url
+    });
+
+    window.open(
+      url,
+      '_blank'
+    );
+  }
+
+  public onOpenASFWebSite(): void {
+    const url = this.asfWebsiteUrl;
+
+    window.dataLayer = window.dataLayer || [];
+    window.dataLayer.push({
+      'event': 'open-asf-web-site',
+      'open-asf-web-site': url
+    });
+
+    window.open(
+      url,
+      '_blank'
+    );
+  }
+
+  public onOpenAPIWebSite(): void {
+    const url = this.asfWebsiteUrl + '/api';
+
+    window.dataLayer = window.dataLayer || [];
+    window.dataLayer.push({
+      'event': 'open-api-web-site',
+      'open-api-web-site': url
+    });
+
+    window.open(
+      url,
+      '_blank'
+    );
+  }
+
+  public onOpenDerivedDataset(dataset_path: string, dataset_name: string): void {
+    const url = this.asfWebsiteUrl + dataset_path;
+
+    window.dataLayer = window.dataLayer || [];
+    window.dataLayer.push({
+      'event': 'open-derived-dataset',
+      'open-derived-dataset': dataset_name
+    });
+
+    window.open(
+      url,
+      '_blank'
+    );
   }
 
   public onOpenCustomizeEnv(): void {
@@ -160,11 +230,22 @@ export class HeaderButtonsComponent implements OnInit, OnDestroy {
   }
 
   public onCopy(): void {
+    window.dataLayer = window.dataLayer || [];
+    window.dataLayer.push({
+      'event': 'copy-search-link',
+      'copy-search-link': window.location.href
+    });
     this.clipboard.copyFromContent(window.location.href);
   }
 
   public onShareWithEmail() {
     const subject = `New Search - ${encodeURIComponent(document.title)}`;
+
+    window.dataLayer = window.dataLayer || [];
+    window.dataLayer.push({
+      'event': 'share-with-email',
+      'share-with-email': encodeURIComponent(document.URL)
+    });
 
     window.open(
       `mailto:?subject=${subject}` +

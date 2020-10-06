@@ -154,23 +154,22 @@
     Help & Tutorials
   </button>
 
-  <a mat-menu-item href="https://docs.google.com/document/d/e/2PACX-1vSqQxPT8nhDQfbCLS8gBZ9SqSEeJy8BdSCiYVlBOXwsFwJ6_ct7pjtOqbXHo0Q3wzinzvO8bGWtHj0H/pub"
-          target="_blank">
+  <button mat-menu-item (click)="onOpenWhatsNew()">
     <mat-icon>new_releases</mat-icon>
     What's New
-  </a>
+  </button>
 
   <hr class="menu-hr">
 
-  <a mat-menu-item [href]="asfWebsiteUrl" target="_blank">
+  <button mat-menu-item (click)="onOpenASFWebSite()">
     <mat-icon>web</mat-icon>
     ASF Website
-  </a>
+  </button>
 
-  <a mat-menu-item href="{{ asfWebsiteUrl }}/get-data/api" target="_blank">
+  <button mat-menu-item (click)="onOpenAPIWebSite()">
     <mat-icon>web</mat-icon>
     ASF Search API
-  </a>
+  </button>
 
   <hr class="menu-hr">
 
@@ -214,12 +213,12 @@
 </mat-menu>
 
 <mat-menu #derivedDatasets="matMenu">
-  <a mat-menu-item href="{{ asfWebsiteUrl }}/sar-data-sets/global-ice-sheet-mapping-orbiter-gismo" target="_blank">GISMO</a>
-  <a mat-menu-item href="{{ asfWebsiteUrl }}/sar-data-sets/glacier-speed" target="_blank">Glacier Speed</a>
-  <a mat-menu-item href="{{ asfWebsiteUrl }}/sar-data-sets/international-polar-year-2007-2008" target="_blank">Polar Year</a>
-  <a mat-menu-item href="{{ asfWebsiteUrl }}/sar-data-sets/radarsat-antarctic-mapping-project-ramp" target="_blank">RAMP</a>
-  <a mat-menu-item href="{{ asfWebsiteUrl }}/sar-data-sets/sea-ice-measures" target="_blank">Sea Ice MEaSUREs</a>
-  <a mat-menu-item href="{{ asfWebsiteUrl }}/sar-data-sets/wetlands-measures" target="_blank">Wetlands MEaSUREs</a>
+  <a mat-menu-item (click)="onOpenDerivedDataset('/sar-data-sets/global-ice-sheet-mapping-orbiter-gismo', 'GISMO')">GISMO</a>
+  <a mat-menu-item (click)="onOpenDerivedDataset('/sar-data-sets/glacier-speed', 'Glacier Speed')">Glacier Speed</a>
+  <a mat-menu-item (click)="onOpenDerivedDataset('/sar-data-sets/international-polar-year-2007-2008', 'Polar Year')">Polar Year</a>
+  <a mat-menu-item (click)="onOpenDerivedDataset('/sar-data-sets/radarsat-antarctic-mapping-project-ramp', 'RAMP')">RAMP</a>
+  <a mat-menu-item (click)="onOpenDerivedDataset('/sar-data-sets/sea-ice-measures', 'Sea Ice MEaSUREs')">Sea Ice MEaSUREs</a>
+  <a mat-menu-item (click)="onOpenDerivedDataset('/sar-data-sets/wetlands-measures', 'Wetlands MEaSUREs')">Wetlands MEaSUREs</a>
 </mat-menu>
 
 <mat-menu #apiMaturity="matMenu">
