@@ -27,7 +27,6 @@ export class ProcessingQueueComponent implements OnInit {
   public jobs: models.QueuedHyp3Job[] = [];
   public user = '';
   public remaining = 0;
-  public limit = 0;
   public areJobsLoading = false;
   public isQueueSubmitProcessing = false;
   public previousQueue: any[] | null = null;
@@ -63,7 +62,6 @@ export class ProcessingQueueComponent implements OnInit {
 
         this.user = user.user_id;
         this.remaining = user.quota.remaining;
-        this.limit = user.quota.limit;
       }
     );
 
@@ -119,7 +117,7 @@ export class ProcessingQueueComponent implements OnInit {
 
     this.isQueueSubmitProcessing = true;
 
-    this.hyp3.submiteJobBatch$({ jobs: hyp3JobsBatch, validate_only: true }).pipe(
+    this.hyp3.submiteJobBatch$({ jobs: hyp3JobsBatch }).pipe(
       catchError(resp => {
         if (resp.error) {
           this.snackBar.open(`${resp.error.detail}`, 'Error', {
