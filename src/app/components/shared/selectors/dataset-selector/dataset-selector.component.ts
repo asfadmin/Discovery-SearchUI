@@ -2,6 +2,10 @@ import { Component, Input, Output, EventEmitter } from '@angular/core';
 
 import * as models from '@models';
 
+// Declare GTM dataLayer array.
+declare global {
+  interface Window { dataLayer: any[]; }
+}
 
 @Component({
   selector: 'app-dataset-selector',
@@ -14,6 +18,11 @@ export class DatasetSelectorComponent {
   @Output() selectedChange = new EventEmitter<string>();
 
   public onSelectionChange(dataset: string): void {
+    window.dataLayer = window.dataLayer || [];
+    window.dataLayer.push({
+      'event': 'dataset-selected',
+      'dataset': dataset
+    });
     this.selectedChange.emit(dataset);
   }
 }

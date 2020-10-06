@@ -67,9 +67,16 @@ More information about the app can be found in the [wiki](https://github.com/asf
 ## Google Tag Manager Structure
 
 ### GTM Tag Hierarchy
-- Category: Search Criteria
-  - Label: Search Type
-  - dataLayer Variable: 'search-type': searchType      
+- Category: _Search Criteria_
+  - Label: _Search Type_
+    - dataLayer Variable: 'search-type': searchType
+  - Label: _Dataset_
+    - dataLayer Variable: 'dataset': dataset
+    
+- Category: Map
+    Label: _Draw Mode_
+        dataLayer Variable: 'draw-mode': drawMode
+        
 - One tall latte.
 - Go to a movie.
 
