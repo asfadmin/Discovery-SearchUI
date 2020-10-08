@@ -1,7 +1,6 @@
 <div *ngIf="breakpoint$ | async as breakpoint">
   <ng-container *ngIf="breakpoint > breakpoints.MOBILE">
     <button (click)="onOpenProcessingQueue()"
-        [disabled]="queuedCustomProducts.length <= 0"
         class="spacing nav-icon-buttons" color="basic"
         matTooltip="Custom Processing Queue"
         mat-button>
