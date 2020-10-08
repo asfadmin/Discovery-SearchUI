@@ -80,6 +80,12 @@ export class HeaderButtonsComponent implements OnInit, OnDestroy {
   }
 
   public onOpenDownloadQueue(): void {
+    window.dataLayer = window.dataLayer || [];
+    window.dataLayer.push({
+      'event': 'open-download-queue',
+      'open-download-queue': this.queuedProducts.length
+    });
+
     if (this.queuedProducts.length <= 0) {
       return;
     }
@@ -218,6 +224,13 @@ export class HeaderButtonsComponent implements OnInit, OnDestroy {
   }
 
   public onOpenProcessingQueue() {
+
+    window.dataLayer = window.dataLayer || [];
+    window.dataLayer.push({
+      'event': 'open-processing-queue',
+      'open-processing-queue': this.queuedCustomProducts.length
+    });
+
     if (this.queuedCustomProducts.length <= 0) {
       return;
     }
