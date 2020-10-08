@@ -18,6 +18,10 @@ import { SavedSearchType, SearchType } from '@models';
 import { MatDialog } from '@angular/material/dialog';
 import { HelpComponent } from '@components/help/help.component';
 
+// Declare GTM dataLayer array.
+declare global {
+  interface Window { dataLayer: any[]; }
+}
 
 @Component({
   selector: 'app-search-button',
@@ -114,17 +118,38 @@ export class SearchButtonComponent implements OnInit, OnDestroy {
   }
 
   public saveCurrentSearch(): void {
+
+    window.dataLayer = window.dataLayer || [];
+    window.dataLayer.push({
+      'event': 'save-current-search',
+      'save-current-search': true
+    });
+
     this.store$.dispatch(new uiStore.SetSavedSearchType(SavedSearchType.SAVED));
     this.store$.dispatch(new uiStore.OpenSidebar());
     this.store$.dispatch(new uiStore.SetSaveSearchOn(true));
   }
 
   public onOpenSavedSearches(): void {
+
+    window.dataLayer = window.dataLayer || [];
+    window.dataLayer.push({
+      'event': 'open-saved-searches',
+      'open-saved-searches': true
+    });
+
     this.store$.dispatch(new uiStore.SetSavedSearchType(SavedSearchType.SAVED));
     this.store$.dispatch(new uiStore.OpenSidebar());
   }
 
   public onOpenSearchHistory(): void {
+
+    window.dataLayer = window.dataLayer || [];
+    window.dataLayer.push({
+      'event': 'open-search-history',
+      'open-search-history': true
+    });
+
     this.store$.dispatch(new uiStore.SetSavedSearchType(SavedSearchType.HISTORY));
     this.store$.dispatch(new uiStore.OpenSidebar());
   }
