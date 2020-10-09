@@ -12,6 +12,10 @@ import { MapInteractionModeType } from '@models';
 import { MapService } from '@services';
 import { SubSink } from 'subsink';
 
+// Declare GTM dataLayer array.
+declare global {
+  interface Window { dataLayer: any[]; }
+}
 
 @Component({
   selector: 'app-aoi-options',
@@ -40,9 +44,18 @@ export class AoiOptionsComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit() {
+
     this.subs.add(
       this.mapService.searchPolygon$.subscribe(
-        polygon => this.polygon = polygon
+        polygon => {
+          this.polygon = polygon;
+          window.dataLayer = window.dataLayer || [];
+          window.dataLayer.push({
+            'event': 'input-search-polygon',
+            'input-search-polygon': this.polygon
+          });
+
+        }
       )
     );
 
