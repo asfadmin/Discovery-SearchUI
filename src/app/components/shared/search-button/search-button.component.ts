@@ -155,6 +155,13 @@ export class SearchButtonComponent implements OnInit, OnDestroy {
   }
 
   public onOpenHelp(helpTopic: string): void {
+
+    window.dataLayer = window.dataLayer || [];
+    window.dataLayer.push({
+      'event': 'open-help',
+      'open-help': helpTopic
+    });
+
     this.dialog.open(HelpComponent, {
       panelClass: 'help-panel-config',
       data: { helpTopic },
