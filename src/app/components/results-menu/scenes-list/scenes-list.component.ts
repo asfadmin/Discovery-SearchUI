@@ -83,7 +83,7 @@ export class ScenesListComponent implements OnInit, OnDestroy {
          * */
         delay(20),
         filter(([selected, _]) => !!selected),
-        tap(([selected, _]) => this.selected = selected.name),
+        tap(([selected, _]) => this.selected = selected.id),
         map(([selected, scenes]) => {
           let sceneIdx = -1;
           scenes.forEach((scene, idx) => {

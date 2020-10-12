@@ -1,7 +1,14 @@
 <mat-card class="processing-queue">
   <mat-card-title-group style="margin-bottom: 0 !important;" class="card-title-group">
     <mat-card-title>Processing Queue</mat-card-title>
-    <mat-card-subtitle> <b>{{ user }}</b> - {{ remaining }} jobs left this month</mat-card-subtitle>
+    <mat-card-subtitle>
+      <div *ngIf="isUserLoggedIn && user !== ''">
+        <b>{{ user }}</b> - {{ remaining }} jobs left this month
+      </div>
+      <div *ngIf="!isUserLoggedIn">
+        <b>N/A</b> - login to view number of jobs left this month
+      </div>
+    </mat-card-subtitle>
 
     <div class="close-x" (click)="onCloseDialog()">
       <mat-icon>close</mat-icon>
@@ -13,6 +20,38 @@
 
   <mat-card-content>
     <div class="jobs-dialog">
+      <div *ngIf="!isUserLoggedIn" class="w100 error-header">
+        <div style="padding-left: 10px;">
+          <b>Logged in to process data</b>
+        </div>
+        <div>
+          <button (click)="onAccountButtonClicked()" color="primary" mat-flat-button>
+            Sign In
+            <mat-icon>account_circle</mat-icon>
+          </button>
+        </div>
+      </div>
+
+      <div *ngIf="isUserLoggedIn && jobs.length > remaining " class="w100 error-header">
+        <div style="padding-left: 10px;">
+          <b>Too many jobs in queue </b>
+        </div>
+        <div style="padding: 10px 5px;">
+          <b>({{ jobs.length - remaining }} extra job{{ (jobs.length - remaining) === 1 ? '' : 's'  }})</b>
+        </div>
+      </div>
+
+      <div *ngIf="isUserLoggedIn && remaining === 0" class="w100 error-header">
+        <div style="padding-left: 10px;">
+          <b>No jobs left this month</b>
+        </div>
+        <div>
+          <button (click)="onCloseDialog()" mat-flat-button>
+            <mat-icon>close</mat-icon>
+          </button>
+        </div>
+      </div>
+
       <div *ngIf="breakpoint !== breakpoints.MOBILE" class="jobs-display--desktop">
         <div class="jobs-list-panel">
           <app-processing-queue-jobs
@@ -24,12 +63,6 @@
 
         <div class="jobs-detail">
           <app-processing-options></app-processing-options>
-
-          <div style="padding-top: 10px;">
-            <span *ngIf="jobs.length > remaining">
-              {{ jobs.length }} jobs in processing queue (only {{ remaining }} remaining)
-            </span>
-          </div>
         </div>
       </div>
 
@@ -71,7 +104,11 @@
 
         <button
           (click)="onSubmitQueue()"
-          [disabled]="jobs.length > remaining"
+          [disabled]="
+            jobs.length > remaining ||
+            jobs.length === 0 ||
+            !isUserLoggedIn
+          "
           mat-button>
           <span *ngIf="!isQueueSubmitProcessing">
             Submit Queue

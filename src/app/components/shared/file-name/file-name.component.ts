@@ -4,6 +4,7 @@ import { SubSink } from 'subsink';
 import { map } from 'rxjs/operators';
 
 import { ScreenSizeService } from '@services';
+import { SearchType } from '@models';
 
 @Component({
   selector: 'app-file-name',
@@ -13,8 +14,10 @@ import { ScreenSizeService } from '@services';
 export class FileNameComponent implements OnInit, OnDestroy {
   @Input() name: string;
   @Input() dataset: string;
+  @Input() searchType: SearchType;
   @Input() len: number;
 
+  public SearchTypes = SearchType;
   public sceneNameLen: number;
   private subs = new SubSink();
 

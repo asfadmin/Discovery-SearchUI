@@ -27,7 +27,7 @@ export const initState: UIState = {
   isSaveSearchOn: false,
   isAOIOptionsOpen: false,
   showS1RawData: false,
-  showExpiredData: false,
+  showExpiredData: true,
   isBrowseDialogOpen: false,
   onlyScenesWithBrowse: true,
   isAddingCustomPoint: false,

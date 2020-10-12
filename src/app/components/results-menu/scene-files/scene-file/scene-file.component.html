@@ -27,7 +27,7 @@
     <mat-icon mat-icon-button disabled></mat-icon>
   </ng-container>
 
-  <div class="clickable" mat-line>
+  <div [class.clickable]="!product.metadata.job" mat-line>
     <b>
       <span *ngIf="product.productTypeDisplay.length > 40">
         {{ product.productTypeDisplay | truncate : 36 }}{{ product.productTypeDisplay | truncate : -4 : '' }}
@@ -40,7 +40,7 @@
       </span>
     </b>
 
-    <a *ngIf="isHovered" class="icon-margin">
+    <a *ngIf="isHovered && !product.metadata.job" class="icon-margin">
       <app-copy-to-clipboard
         [value]="product.id"
         prompt="Copy file ID">
@@ -62,7 +62,7 @@
 
       <mat-menu #customJobTypes="matMenu">
         <button (click)="addRtcToProcessingQueue()" mat-menu-item>
-          <span>Add RTC to processing queue</span>
+          <span>Add RTC job to processing queue</span>
         </button>
       </mat-menu>
     </button>
@@ -114,7 +114,7 @@
     <mat-chip-list *ngIf="!isDownloadable(product)" aria-label="Job Status">
       <mat-chip *ngIf="isExpired(product.metadata.job)" color="primary">Expired</mat-chip>
       <mat-chip *ngIf="isPending(product.metadata.job)" color="secondary">Pending</mat-chip>
-      <mat-chip *ngIf="isFailed(product.metadata.job)" color="accent">Falied</mat-chip>
+      <mat-chip *ngIf="isFailed(product.metadata.job)" color="accent">Failed</mat-chip>
       <mat-chip *ngIf="isRunning(product.metadata.job)" color="secondary">Running</mat-chip>
     </mat-chip-list>
 </mat-list-item>

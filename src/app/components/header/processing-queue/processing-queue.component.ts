@@ -10,6 +10,7 @@ import { tap, catchError } from 'rxjs/operators';
 
 import * as queueStore from '@store/queue';
 import * as hyp3Store from '@store/hyp3';
+import * as userStore from '@store/user';
 import * as models from '@models';
 import * as services from '@services';
 
@@ -26,6 +27,7 @@ enum ProcessingQueueTab {
 export class ProcessingQueueComponent implements OnInit {
   public jobs: models.QueuedHyp3Job[] = [];
   public user = '';
+  public isUserLoggedIn = false;
   public remaining = 0;
   public areJobsLoading = false;
   public isQueueSubmitProcessing = false;
@@ -42,6 +44,7 @@ export class ProcessingQueueComponent implements OnInit {
   constructor(
     private dialogRef: MatDialogRef<ProcessingQueueComponent>,
     private snackBar: MatSnackBar,
+    public authService: services.AuthService,
     private store$: Store<AppState>,
     private hyp3: services.Hyp3Service,
     private screenSize: services.ScreenSizeService,
@@ -75,6 +78,16 @@ export class ProcessingQueueComponent implements OnInit {
 
     this.store$.select(hyp3Store.getProcessingProjectName).subscribe(
       projectName => this.projectName = projectName
+    );
+
+    this.store$.select(userStore.getIsUserLoggedIn).subscribe(
+      isLoggedIn => this.isUserLoggedIn = isLoggedIn
+    );
+  }
+
+  public onAccountButtonClicked() {
+    this.authService.login$().subscribe(
+      user => this.store$.dispatch(new userStore.Login(user))
     );
   }
 
@@ -117,7 +130,7 @@ export class ProcessingQueueComponent implements OnInit {
 
     this.isQueueSubmitProcessing = true;
 
-    this.hyp3.submiteJobBatch$({ jobs: hyp3JobsBatch }).pipe(
+    this.hyp3.submiteJobBatch$({ jobs: hyp3JobsBatch, validate_only: true }).pipe(
       catchError(resp => {
         if (resp.error) {
           this.snackBar.open(`${resp.error.detail}`, 'Error', {

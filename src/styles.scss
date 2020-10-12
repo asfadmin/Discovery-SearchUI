@@ -99,6 +99,16 @@ ul {
   overflow: hidden;
 }
 
+#processingQueueDialog {
+  width: 1000px;
+  max-width: 1000px;
+  height: 650px;
+  min-height: 50%;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+}
+
 .control-mat-button-toggle {
   pointer-events: auto;
 

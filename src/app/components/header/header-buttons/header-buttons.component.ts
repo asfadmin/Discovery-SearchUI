@@ -236,7 +236,7 @@ export class HeaderButtonsComponent implements OnInit, OnDestroy {
     }
 
     this.dialog.open(ProcessingQueueComponent, {
-      id: 'dlQueueDialog',
+      id: 'processingQueueDialog',
       maxWidth: '100vw',
       maxHeight: '100vh'
     });

@@ -54,6 +54,7 @@ export interface CMRProductMetadata {
   temporal: number | null;
   canInSAR: boolean;
 
+  fileName: string | null;
   job: Hyp3Job | null;
 }
 

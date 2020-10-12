@@ -14,23 +14,25 @@
   <div class="div-flex">
     <div class="div-flex-column">
       <div class="div-flex"
-           [title]="scene.name" class="bold" matLine>
+           [title]="scene.metadata.fileName || scene.name"
+           class="bold" matLine>
         <app-file-name
-          [name]="scene.name"
-          [dataset]="scene.dataset">
+          [name]="scene.metadata.fileName || scene.name"
+          [dataset]="scene.dataset"
+          [searchType]="searchType">
         </app-file-name>
 
         <span style="margin-left: 5px;">
-      <app-copy-to-clipboard
-        *ngIf="isHovered; else notHovered"
-        prompt="Copy scene name"
-        [value]="scene.name">
-      </app-copy-to-clipboard>
-      <ng-template #notHovered>
-        <fa-icon style="visibility: hidden;" [icon]="copyIcon">
-        </fa-icon>
-      </ng-template>
-    </span>
+          <app-copy-to-clipboard
+            *ngIf="isHovered; else notHovered"
+            prompt="Copy scene name"
+            [value]="scene.metadata.fileName || scene.name">
+          </app-copy-to-clipboard>
+          <ng-template #notHovered>
+            <fa-icon style="visibility: hidden;" [icon]="copyIcon">
+            </fa-icon>
+          </ng-template>
+        </span>
       </div>
     </div>
     <div class="div-flex date-time" matLine>
@@ -74,7 +76,7 @@
         <mat-chip-list aria-label="Job Status">
           <mat-chip *ngIf="isExpired(scene.metadata.job)" color="primary">Expired</mat-chip>
           <mat-chip *ngIf="isPending(scene.metadata.job)" color="secondary">Pending</mat-chip>
-          <mat-chip *ngIf="isFailed(scene.metadata.job)" color="accent">Falied</mat-chip>
+          <mat-chip *ngIf="isFailed(scene.metadata.job)" color="accent">Failed</mat-chip>
           <mat-chip *ngIf="isRunning(scene.metadata.job)" color="secondary">Running</mat-chip>
         </mat-chip-list>
       </div>

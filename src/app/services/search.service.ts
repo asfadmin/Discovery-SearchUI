@@ -48,6 +48,8 @@ export class SearchService {
       this.store$.dispatch(new scenesStore.ClearBaseline());
       this.store$.dispatch(new filterStore.ClearPerpendicularRange());
       this.store$.dispatch(new filterStore.ClearTemporalRange());
+    } else if (searchType === models.SearchType.CUSTOM_PRODUCTS) {
+      this.store$.dispatch(new filterStore.SetProjectName(null));
     }
   }
 
