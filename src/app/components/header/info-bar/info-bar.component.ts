@@ -9,6 +9,11 @@ import * as filtersStore from '@store/filters';
 import * as services from '@services';
 import * as models from '@models';
 
+// Declare GTM dataLayer array.
+declare global {
+  interface Window { dataLayer: any[]; }
+}
+
 @Component({
   selector: 'app-info-bar',
   templateUrl: './info-bar.component.html',
@@ -110,6 +115,20 @@ export class InfoBarComponent implements OnInit, OnDestroy {
       missionSub,
       tempSub, perpSub
     ].forEach(sub => this.subs.add(sub));
+  }
+
+  public onOpenWhatsNew(): void {
+    const url = 'https://docs.google.com/document/d/e/2PACX-1vSqQxPT8nhDQfbCLS8gBZ9SqSEeJy8BdSCiYVlBOXwsFwJ6_ct7pjtOqbXHo0Q3wzinzvO8bGWtHj0H/pub';
+    window.dataLayer = window.dataLayer || [];
+    window.dataLayer.push({
+      'event': 'open-whats-new',
+      'open-whats-new': url
+    });
+
+    window.open(
+      url,
+      '_blank'
+    );
   }
 
   ngOnDestroy() {

@@ -114,6 +114,13 @@ export class HeaderButtonsComponent implements OnInit, OnDestroy {
   }
 
   public onOpenPreferences(): void {
+
+    window.dataLayer = window.dataLayer || [];
+    window.dataLayer.push({
+      'event': 'open-preferences',
+      'open-preferences': true
+    });
+
     const dialogRef = this.dialog.open(PreferencesComponent, {
       maxWidth: '100%',
       maxHeight: '100%'
@@ -212,12 +219,26 @@ export class HeaderButtonsComponent implements OnInit, OnDestroy {
   }
 
   public onOpenSavedSearches(): void {
+
+    window.dataLayer = window.dataLayer || [];
+    window.dataLayer.push({
+      'event': 'open-saved-searches',
+      'open-saved-searches': true
+    });
+
     this.store$.dispatch(new uiStore.SetSaveSearchOn(false));
     this.store$.dispatch(new uiStore.SetSavedSearchType(SavedSearchType.SAVED));
     this.store$.dispatch(new uiStore.OpenSidebar());
   }
 
   public onOpenSearchHistory() {
+
+    window.dataLayer = window.dataLayer || [];
+    window.dataLayer.push({
+      'event': 'open-search-history',
+      'open-search-history': true
+    });
+
     this.store$.dispatch(new uiStore.SetSaveSearchOn(false));
     this.store$.dispatch(new uiStore.SetSavedSearchType(SavedSearchType.HISTORY));
     this.store$.dispatch(new uiStore.OpenSidebar());
