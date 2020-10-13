@@ -53,7 +53,10 @@ export class HeaderButtonsComponent implements OnInit, OnDestroy {
   public queuedProducts: CMRProduct[];
   public queuedCustomProducts: QueuedHyp3Job[];
 
-  public queueState = false;
+  public qOnDemandState = false;
+  public qProdState = false;
+  public lastOnDemandCount = 0;
+  public lastQProdCount = 0;
 
   constructor(
     public authService: AuthService,
@@ -76,14 +79,23 @@ export class HeaderButtonsComponent implements OnInit, OnDestroy {
       this.store$.select(queueStore.getQueuedProducts).subscribe(
         products => {
           this.queuedProducts = products;
-          this.queueState = !this.queueState;
+          if ( this.lastQProdCount !== products.length ) {
+            this.lastQProdCount = products.length;
+            this.qProdState = !this.qProdState;
+          }
         }
       )
     );
 
     this.subs.add(
       this.store$.select(queueStore.getQueuedJobs).subscribe(
-        jobs => this.queuedCustomProducts = jobs
+        jobs => {
+          this.queuedCustomProducts = jobs;
+          if (this.lastOnDemandCount !== jobs.length) {
+            this.lastOnDemandCount = jobs.length;
+            this.qOnDemandState = !this.qOnDemandState;
+          }
+        }
       )
     );
 

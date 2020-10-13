@@ -1,8 +1,9 @@
 <div *ngIf="breakpoint$ | async as breakpoint">
   <ng-container *ngIf="breakpoint > breakpoints.MOBILE">
     <button (click)="onOpenProcessingQueue()"
+        [@tada]="qOnDemandState"
         class="spacing nav-icon-buttons" color="basic"
-        matTooltip="Custom Processing Queue"
+        matTooltip="On Demand Queue"
         mat-button>
         <mat-icon
           class="large-icon"
@@ -13,12 +14,12 @@
           matBadgeOverlap="true"
           matBadgeSize="small">
         </mat-icon>
-      <div class="text-under faint-text">Processing</div>
+      <div class="text-under faint-text">On Demand</div>
     </button>
 
     <button
       (click)="onOpenDownloadQueue()"
-      [@tada]="queueState"
+      [@tada]="qProdState"
       [disabled]="queuedProducts.length <= 0"
       class="spacing nav-icon-buttons"
       color="basic"
@@ -65,8 +66,9 @@
   <ng-container *ngIf="breakpoint === breakpoints.MOBILE">
     <mat-icon
       (click)="onOpenProcessingQueue()"
+      [@tada]="qOnDemandState"
       class="mobile-icon-spacing"
-      matTooltip="Custom Processing Queue"
+      matTooltip="On Demand Queue"
       svgIcon="hyp3"
       [matBadge]="queuedCustomProducts.length"
       matBadgeColor="{{ queuedCustomProducts.length > 0 ? 'accent' : 'primary' }}"
@@ -78,6 +80,7 @@
     <mat-icon
       (click)="onOpenDownloadQueue()"
       class="mobile-icon-spacing"
+      [@tada]="qProdState"
       matBadgeColor="{{ queuedProducts.length > 0 ? 'accent' : 'primary' }}"
       matBadgePosition="above after"
       matBadgeOverlap="true"
