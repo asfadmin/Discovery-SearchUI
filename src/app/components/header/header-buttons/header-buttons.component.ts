@@ -19,6 +19,9 @@ import { CustomizeEnvComponent } from './customize-env/customize-env.component';
 import { AuthService, AsfApiService, EnvironmentService, ScreenSizeService } from '@services';
 import { CMRProduct, Breakpoints, UserAuth, SavedSearchType, QueuedHyp3Job } from '@models';
 
+import { collapseAnimation, rubberBandAnimation,
+         zoomInUpAnimation,  tadaAnimation, wobbleAnimation } from 'angular-animations';
+
 // Declare GTM dataLayer array.
 declare global {
   interface Window { dataLayer: any[]; }
@@ -27,7 +30,14 @@ declare global {
 @Component({
   selector: 'app-header-buttons',
   templateUrl: './header-buttons.component.html',
-  styleUrls: ['./header-buttons.component.scss']
+  styleUrls: ['./header-buttons.component.scss'],
+  animations: [
+    rubberBandAnimation(),
+    collapseAnimation(),
+    zoomInUpAnimation(),
+    tadaAnimation({ duration: 1500 }),
+    wobbleAnimation()
+  ]
 })
 export class HeaderButtonsComponent implements OnInit, OnDestroy {
   anio: number = new Date().getFullYear();
@@ -42,6 +52,8 @@ export class HeaderButtonsComponent implements OnInit, OnDestroy {
 
   public queuedProducts: CMRProduct[];
   public queuedCustomProducts: QueuedHyp3Job[];
+
+  public queueState = false;
 
   constructor(
     public authService: AuthService,
@@ -62,7 +74,10 @@ export class HeaderButtonsComponent implements OnInit, OnDestroy {
 
     this.subs.add(
       this.store$.select(queueStore.getQueuedProducts).subscribe(
-        products => this.queuedProducts = products
+        products => {
+          this.queuedProducts = products;
+          this.queueState = !this.queueState;
+        }
       )
     );
 
@@ -95,6 +110,7 @@ export class HeaderButtonsComponent implements OnInit, OnDestroy {
       maxWidth: '100vw',
       maxHeight: '100vh'
     });
+
   }
 
   public onAccountButtonClicked() {

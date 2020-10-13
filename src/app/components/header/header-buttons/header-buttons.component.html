@@ -18,6 +18,7 @@
 
     <button
       (click)="onOpenDownloadQueue()"
+      [@tada]="queueState"
       [disabled]="queuedProducts.length <= 0"
       class="spacing nav-icon-buttons"
       color="basic"
@@ -76,7 +77,6 @@
 
     <mat-icon
       (click)="onOpenDownloadQueue()"
-      [matBadge]="queuedProducts.length"
       class="mobile-icon-spacing"
       matBadgeColor="{{ queuedProducts.length > 0 ? 'accent' : 'primary' }}"
       matBadgePosition="above after"
