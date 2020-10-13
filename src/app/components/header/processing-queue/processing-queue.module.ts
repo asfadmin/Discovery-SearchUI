@@ -18,26 +18,28 @@ import { PipesModule } from '@pipes';
 import { ProcessingQueueComponent } from './processing-queue.component';
 import { ProcessingQueueJobsModule } from './processing-queue-jobs';
 import { ProcessingOptionsModule } from './processing-options';
+import {MatDialogModule} from '@angular/material/dialog';
 
 
 @NgModule({
   declarations: [ProcessingQueueComponent],
-  imports: [
-    CommonModule,
-    FormsModule,
-    FontAwesomeModule,
-    MatSharedModule,
-    MatInputModule,
-    MatChipsModule,
-    MatSelectModule,
-    MatSlideToggleModule,
-    MatProgressSpinnerModule,
-    MatProgressBarModule,
-    MatSnackBarModule,
-    PipesModule,
-    ProcessingQueueJobsModule,
-    ProcessingOptionsModule
-  ]
+    imports: [
+        CommonModule,
+        FormsModule,
+        FontAwesomeModule,
+        MatSharedModule,
+        MatInputModule,
+        MatChipsModule,
+        MatSelectModule,
+        MatSlideToggleModule,
+        MatProgressSpinnerModule,
+        MatProgressBarModule,
+        MatSnackBarModule,
+        PipesModule,
+        ProcessingQueueJobsModule,
+        ProcessingOptionsModule,
+        MatDialogModule
+    ]
 })
 export class ProcessingQueueModule {
   constructor(library: FaIconLibrary) {

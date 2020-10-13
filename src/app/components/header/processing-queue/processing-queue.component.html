@@ -1,7 +1,12 @@
 <mat-card class="processing-queue">
   <mat-card-title-group style="margin-bottom: 0 !important;" class="card-title-group">
-    <mat-card-title>Processing Queue</mat-card-title>
-    <mat-card-subtitle>
+    <mat-card-title>
+      On Demand
+        <span class="feedback-link">
+          <a href="javascript:feedback.showForm();"> <i class="fa fa-comments-o"></i> Feedback</a>
+        </span>
+    </mat-card-title>
+    <mat-card-subtitle class="subtitle">
       <div *ngIf="isUserLoggedIn && user !== ''">
         <b>{{ user }}</b> - {{ remaining }} jobs left this month
       </div>
@@ -13,9 +18,6 @@
     <div class="close-x" (click)="onCloseDialog()">
       <mat-icon>close</mat-icon>
     </div>
-
-    <mat-card-subtitle>
-    </mat-card-subtitle>
   </mat-card-title-group>
 
   <mat-card-content>
