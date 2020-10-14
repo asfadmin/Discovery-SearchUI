@@ -1,7 +1,7 @@
 import { createFeatureSelector, createSelector } from '@ngrx/store';
 
 import { Hyp3ActionType, Hyp3Actions } from './hyp3.action';
-import { Hyp3Job, Hyp3User, Hyp3ProcessingOptions } from '@models';
+import { Hyp3Job, Hyp3User, Hyp3ProcessingOptions, RtcGammaRadiometry, RtcGammaScale } from '@models';
 
 /* State */
 
@@ -21,7 +21,14 @@ const initState: Hyp3State = {
   isUserLoading: true,
   areJobsLoading: false,
   submittingJobName: null,
-  processingOptions: {},
+  processingOptions: {
+    radiometry: RtcGammaRadiometry.GAMMA0,
+    scale: RtcGammaScale.POWER,
+    demMatching: false,
+    includeDem: false,
+    includeIncMap: false,
+    speckleFilter: false
+  },
   projectName: '',
 };
 

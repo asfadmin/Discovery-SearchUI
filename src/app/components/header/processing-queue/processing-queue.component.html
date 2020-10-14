@@ -10,6 +10,9 @@
       <div *ngIf="isUserLoggedIn && user !== ''">
         <b>{{ user }}</b> - {{ remaining }} jobs left this month
       </div>
+      <div *ngIf="isUserLoggedIn && user === ''">
+        <b>Loading...</b>
+      </div>
       <div *ngIf="!isUserLoggedIn">
         <b>N/A</b> - login to view number of jobs left this month
       </div>

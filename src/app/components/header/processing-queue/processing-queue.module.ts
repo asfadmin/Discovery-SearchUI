@@ -12,6 +12,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatBottomSheetModule } from '@angular/material/bottom-sheet';
 
 import { MatSharedModule } from '@shared';
 import { PipesModule } from '@pipes';
@@ -19,10 +20,11 @@ import { ProcessingQueueComponent } from './processing-queue.component';
 import { ProcessingQueueJobsModule } from './processing-queue-jobs';
 import { ProcessingOptionsModule } from './processing-options';
 import {MatDialogModule} from '@angular/material/dialog';
+import { QueueSubmitComponent } from './queue-submit/queue-submit.component';
 
 
 @NgModule({
-  declarations: [ProcessingQueueComponent],
+  declarations: [ProcessingQueueComponent, QueueSubmitComponent],
     imports: [
         CommonModule,
         FormsModule,
@@ -35,6 +37,7 @@ import {MatDialogModule} from '@angular/material/dialog';
         MatProgressSpinnerModule,
         MatProgressBarModule,
         MatSnackBarModule,
+        MatBottomSheetModule,
         PipesModule,
         ProcessingQueueJobsModule,
         ProcessingOptionsModule,

@@ -81,6 +81,7 @@
       (click)="onOpenDownloadQueue()"
       class="mobile-icon-spacing"
       [@tada]="qProdState"
+      [matBadge]="queuedProducts.length"
       matBadgeColor="{{ queuedProducts.length > 0 ? 'accent' : 'primary' }}"
       matBadgePosition="above after"
       matBadgeOverlap="true"

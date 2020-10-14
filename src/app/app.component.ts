@@ -6,7 +6,7 @@ import { SubSink } from 'subsink';
 
 import { Store, ActionsSubject } from '@ngrx/store';
 import { ofType } from '@ngrx/effects';
-import { of } from 'rxjs';
+import { of, combineLatest } from 'rxjs';
 import { skip, filter, map, switchMap, tap, catchError, debounceTime } from 'rxjs/operators';
 
 import { NgcCookieConsentService } from 'ngx-cookieconsent';
@@ -19,6 +19,7 @@ import * as uiStore from '@store/ui';
 import * as mapStore from '@store/map';
 import * as queueStore from '@store/queue';
 import * as userStore from '@store/user';
+import * as hyp3Store from '@store/hyp3';
 
 import * as services from '@services';
 import * as models from './models';
@@ -118,20 +119,30 @@ export class AppComponent implements OnInit, OnDestroy {
     );
 
     this.subs.add(
-      this.store$.select(queueStore.getQueuedJobs).subscribe(
-        jobs => localStorage.setItem(this.customProductsQueueStateKey, JSON.stringify(jobs))
+      combineLatest(
+        this.store$.select(queueStore.getQueuedJobs),
+        this.store$.select(hyp3Store.getProcessingOptions)
+      ).subscribe(
+       ([jobs, options]) => localStorage.setItem(
+         this.customProductsQueueStateKey, JSON.stringify({jobs, options})
+       )
       )
     );
 
     this.subs.add(
       this.store$.select(searchStore.getSearchType).pipe(
         tap(searchType => this.searchType = searchType),
+        tap(searchType => {
+          if (searchType === models.SearchType.CUSTOM_PRODUCTS) {
+            this.store$.dispatch(new searchStore.MakeSearch());
+          }
+        }),
         skip(1),
         map(searchType => {
           return searchType === models.SearchType.DATASET ?
             models.MapInteractionModeType.DRAW :
             models.MapInteractionModeType.NONE;
-        })
+        }),
       ).subscribe(
         mode => this.store$.dispatch(new mapStore.SetMapInteractionMode(mode))
       )
@@ -163,8 +174,9 @@ export class AppComponent implements OnInit, OnDestroy {
     const queueItemsStr = localStorage.getItem(this.customProductsQueueStateKey);
 
     if (queueItemsStr) {
-      const queueItems = JSON.parse(queueItemsStr);
-      this.store$.dispatch(new queueStore.AddJobs(queueItems));
+      const {jobs, options} = JSON.parse(queueItemsStr);
+      this.store$.dispatch(new queueStore.AddJobs(jobs));
+      this.store$.dispatch(new hyp3Store.SetProcessingOptions(options));
     }
   }
 

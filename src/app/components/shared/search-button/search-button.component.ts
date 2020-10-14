@@ -1,4 +1,4 @@
-import { Component, OnInit, Output, EventEmitter, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { SubSink } from 'subsink';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
@@ -29,8 +29,6 @@ declare global {
   styleUrls: ['./search-button.component.scss']
 })
 export class SearchButtonComponent implements OnInit, OnDestroy {
-  @Output() doSearch = new EventEmitter<void>();
-
   public searchType: SearchType;
   public canSearch$ = this.store$.select(searchStore.getCanSearch);
   public isMaxResultsLoading$ = this.store$.select(searchStore.getIsMaxResultsLoading);

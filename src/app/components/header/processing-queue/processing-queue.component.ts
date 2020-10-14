@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialogRef } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { MatBottomSheet } from '@angular/material/bottom-sheet';
+import { QueueSubmitComponent } from './queue-submit/queue-submit.component';
 
 import { Store } from '@ngrx/store';
 import { AppState } from '@store';
@@ -48,6 +50,7 @@ export class ProcessingQueueComponent implements OnInit {
     private store$: Store<AppState>,
     private hyp3: services.Hyp3Service,
     private screenSize: services.ScreenSizeService,
+    private bottomSheet: MatBottomSheet
   ) { }
 
   ngOnInit(): void {
@@ -147,8 +150,8 @@ export class ProcessingQueueComponent implements OnInit {
           return;
         }
 
-        this.snackBar.open(`${resp.jobs.length} jobs successfully submitted`, 'Submit', {
-          duration: 5000,
+        this.bottomSheet.open(QueueSubmitComponent, {
+          data: {numJobs: resp.jobs.length}
         });
 
         this.store$.dispatch(new queueStore.ClearProcessingQueue());

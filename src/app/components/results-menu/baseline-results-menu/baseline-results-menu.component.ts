@@ -7,7 +7,7 @@ import { AppState } from '@store';
 import * as uiStore from '@store/ui';
 
 import { Breakpoints } from '@models';
-import { ScreenSizeService } from '@services';
+import { ScreenSizeService, MapService } from '@services';
 
 import { SubSink } from 'subsink';
 
@@ -33,7 +33,8 @@ export class BaselineResultsMenuComponent implements OnInit, OnDestroy {
 
   constructor(
     private store$: Store<AppState>,
-    private screenSize: ScreenSizeService
+    private screenSize: ScreenSizeService,
+    private mapService: MapService,
   ) { }
 
   ngOnInit(): void {
@@ -42,6 +43,10 @@ export class BaselineResultsMenuComponent implements OnInit, OnDestroy {
         point => this.breakpoint = point
       )
     );
+  }
+
+  public onZoomToResults(): void {
+    this.mapService.zoomToResults();
   }
 
   public onToggleFiltersMenu(): void {
