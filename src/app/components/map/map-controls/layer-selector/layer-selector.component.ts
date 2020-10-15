@@ -36,6 +36,12 @@ export class LayerSelectorComponent implements OnInit, OnDestroy {
       new mapStore.SetStreetView() :
       new mapStore.SetSatelliteView();
 
+    window.dataLayer = window.dataLayer || [];
+    window.dataLayer.push({
+      'event': 'new-layer-type',
+      'new-layer-type': this.layerType
+    });
+
     this.store$.dispatch(action);
   }
 
