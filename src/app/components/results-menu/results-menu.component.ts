@@ -22,6 +22,7 @@ import * as models from '@models';
 export class ResultsMenuComponent implements OnInit, OnDestroy {
   public isResultsMenuOpen$ = this.store$.select(uiStore.getIsResultsMenuOpen);
   public selectedProducts$ = this.store$.select(scenesStore.getSelectedSceneProducts);
+  public products: models.CMRProduct[];
 
   public menuHeightPx: number;
 
@@ -46,6 +47,21 @@ export class ResultsMenuComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.menuHeightPx = this.defaultMenuHeight();
+
+    this.subs.add(
+      this.store$.select(scenesStore.getAllProducts).subscribe(
+        products => {
+          this.products = products;
+          console.log(this.products);
+        }
+      )
+    );
+
+    this.subs.add(
+      this.store$.select(searchStore.getSearchType).subscribe(
+        searchType => this.searchType = searchType
+      )
+    );
 
     this.subs.add(
       this.store$.select(scenesStore.getShowUnzippedProduct).subscribe(

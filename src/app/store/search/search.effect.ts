@@ -145,6 +145,14 @@ export class SearchEffects {
     return this.hyp3Service.getJobs$().pipe(
       switchMap(
         (jobs: models.Hyp3Job[]) => {
+          if (jobs.length === 0) {
+            return of(new SearchResponse({
+              files: [],
+              totalCount: 0,
+              searchType: models.SearchType.CUSTOM_PRODUCTS
+            }));
+          }
+
           const granules = jobs.map(
             job => job.job_parameters.granules[0]
           ).join(',');
