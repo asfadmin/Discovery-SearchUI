@@ -52,7 +52,6 @@ export class ResultsMenuComponent implements OnInit, OnDestroy {
       this.store$.select(scenesStore.getAllProducts).subscribe(
         products => {
           this.products = products;
-          console.log(this.products);
         }
       )
     );
