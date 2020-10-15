@@ -59,7 +59,14 @@
         <div *ngIf="products.length === 0 && searchType === SearchTypes.CUSTOM_PRODUCTS"
            class="results-menu--background no-results faint-text h100 w100 mp0"
            fxFlex fxLayout="row">
+          <div>
             No On Demand Products
+
+            <span class="feedback-link">
+              <a href="javascript:feedback.showForm();"> <i class="fa fa-comments-o"></i> Feedback</a>
+            </span>
+          </div>
+
         </div>
       </div>
     </div>
