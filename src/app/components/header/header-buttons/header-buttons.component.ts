@@ -128,7 +128,14 @@ export class HeaderButtonsComponent implements OnInit, OnDestroy {
   public onAccountButtonClicked() {
     this.subs.add(
       this.authService.login$().subscribe(
-        user => this.store$.dispatch(new userStore.Login(user))
+        user => {
+          this.store$.dispatch(new userStore.Login(user));
+          window.dataLayer = window.dataLayer || [];
+          window.dataLayer.push({
+            'event': 'account-button-clicked',
+            'account-button-clicked': user
+          });
+        }
       )
     );
   }
