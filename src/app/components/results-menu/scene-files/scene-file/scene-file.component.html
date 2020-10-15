@@ -56,13 +56,13 @@
       mat-icon-button>
       <mat-icon *ngIf="loadingHyp3JobName !== product.name"
         svgIcon="hyp3"
-        matTooltip="Add to Processing Queue">
+        matTooltip="Add to On Demand queue">
       </mat-icon>
       <fa-icon *ngIf="loadingHyp3JobName === product.name" icon="spinner" [pulse]="true"></fa-icon>
 
       <mat-menu #customJobTypes="matMenu">
         <button (click)="addRtcToProcessingQueue()" mat-menu-item>
-          <span>Add RTC job to processing queue</span>
+          <span>Add RTC job to On Demand queue</span>
         </button>
       </mat-menu>
     </button>
