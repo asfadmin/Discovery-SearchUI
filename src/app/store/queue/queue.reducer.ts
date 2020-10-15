@@ -109,7 +109,11 @@ export function queueReducer(state = initState, action: QueueActions): QueueStat
     }
 
     case QueueActionType.CLEAR_QUEUE: {
-      return initState;
+      return {
+        ...state,
+        products: {},
+        ids: [],
+      };
     }
 
     case QueueActionType.CLEAR_PROCESSING_QUEUE: {
