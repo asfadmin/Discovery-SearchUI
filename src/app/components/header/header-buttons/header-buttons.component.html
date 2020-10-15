@@ -2,6 +2,7 @@
   <ng-container *ngIf="breakpoint > breakpoints.MOBILE">
     <button (click)="onOpenProcessingQueue()"
         [@tada]="qOnDemandState"
+        [disabled]="queuedCustomProducts.length <= 0"
         class="spacing nav-icon-buttons" color="basic"
         matTooltip="On Demand Queue"
         mat-button>
@@ -122,14 +123,10 @@
   <button (click)="onOpenPreferences()" mat-menu-item matSuffix>
     Preferences
   </button>
-  <!--<button (click)="onOpenHyp3Dialog()" mat-menu-item matSuffix>-->
-    <!--HyP3 Jobs-->
-  <!--</button>-->
   <hr class="menu-hr">
   <button (click)="onLogout()"
       mat-menu-item matSuffix>
     Sign out
-    <!-- <em>{{ userAuth.id }}</em> -->
   </button>
 </mat-menu>
 
