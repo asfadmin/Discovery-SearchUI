@@ -39,7 +39,7 @@ export class LayerSelectorComponent implements OnInit, OnDestroy {
     window.dataLayer = window.dataLayer || [];
     window.dataLayer.push({
       'event': 'new-layer-type',
-      'new-layer-type': this.layerType
+      'new-layer-type': action.type
     });
 
     this.store$.dispatch(action);
