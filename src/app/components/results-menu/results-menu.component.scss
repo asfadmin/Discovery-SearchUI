@@ -149,3 +149,8 @@
     color: $asf-primary;
   }
 }
+
+.no-products-actions {
+  display: flex;
+  flex-direction: column;
+}

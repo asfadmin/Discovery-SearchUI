@@ -58,13 +58,25 @@
 
         <div *ngIf="products.length === 0 && searchType === SearchTypes.CUSTOM_PRODUCTS"
            class="results-menu--background no-results faint-text h100 w100 mp0"
-           fxFlex fxLayout="row">
-          <div>
-            No On Demand Products
+           fxFlex fxLayout="col">
+          <div class="no-products-actions">
+            <div style="margin-bottom: 14px;">
+              No On Demand Products
+            </div>
 
-            <span class="feedback-link">
-              <a href="javascript:feedback.showForm();"> <i class="fa fa-comments-o"></i> Feedback</a>
-            </span>
+            <a style="margin-bottom: 5px" mat-flat-button color="primary"
+              href="https://asfhyp3.github.io/using/vertex/"
+              target="_blank">
+              Getting Started
+            </a>
+
+            <a mat-flat-button
+              style="margin-bottom: 5px;"
+              color="primary"
+              href="javascript:feedback.showForm();">
+              <i class="fa fa-comments-o"></i> Feedback
+            </a>
+
           </div>
 
         </div>
