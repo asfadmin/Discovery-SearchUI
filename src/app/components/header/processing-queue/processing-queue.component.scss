@@ -20,26 +20,22 @@
 }
 
 .jobs-display--desktop {
-  height: 510px;
+  height: 514px;
   display: flex;
   flex-direction: row;
 }
 
 .jobs-display--mobile {
-  height: 471px;
+  height: 477px;
   overflow: auto;
 }
 
 .jobs-list-panel {
-  width: 600px;
+  width: 650px;
 }
 
 .jobs-detail {
   border-left: solid grey 1px;
-}
-
-.jobs-list {
-  height: 449px;
   overflow: auto;
 }
 
@@ -92,8 +88,42 @@
   border-top-width: 1px;
 }
 
+.error-header {
+  border-bottom-style: solid;
+  border-bottom-color: $asf-primary-dark;
+  border-bottom-width: 1px;
+  position: absolute;
+  background: white;
+  z-index: 10;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
 .mobile-tab-selector {
   border-bottom-style: solid;
   border-bottom-color: $asf-primary-dark;
   border-bottom-width: 1px;
+}
+
+.action-controls {
+  //margin-top: 15px;
+  //flex-shrink: 0;
+  //display: flex;
+  //flex-direction: row;
+  //justify-content: flex-end;
+}
+
+.feedback-link {
+  margin-left: 10px;
+  font-size: 18px;
+
+  a {
+    text-decoration: none;
+    color: $asf-primary;
+  }
+}
+
+.subtitle {
+  margin-top: -10px;
 }

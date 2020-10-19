@@ -24,6 +24,12 @@ export class ProjectNameSelectorComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    if (this.processName) {
+      this.store$.select(hyp3Store.getProcessingProjectName).subscribe(name => {
+        this.projectName = name;
+      });
+    }
+
     this.store$.select(hyp3Store.getHyp3User).pipe(
       tap(user => {
         if (user === null) {

@@ -1,9 +1,10 @@
 <div *ngIf="breakpoint$ | async as breakpoint">
   <ng-container *ngIf="breakpoint > breakpoints.MOBILE">
     <button (click)="onOpenProcessingQueue()"
+        [@tada]="qOnDemandState"
         [disabled]="queuedCustomProducts.length <= 0"
         class="spacing nav-icon-buttons" color="basic"
-        matTooltip="Custom Processing Queue"
+        matTooltip="On Demand Queue"
         mat-button>
         <mat-icon
           class="large-icon"
@@ -14,11 +15,12 @@
           matBadgeOverlap="true"
           matBadgeSize="small">
         </mat-icon>
-      <div class="text-under faint-text">Processing</div>
+      <div class="text-under faint-text">On Demand</div>
     </button>
 
     <button
       (click)="onOpenDownloadQueue()"
+      [@tada]="qProdState"
       [disabled]="queuedProducts.length <= 0"
       class="spacing nav-icon-buttons"
       color="basic"
@@ -65,8 +67,9 @@
   <ng-container *ngIf="breakpoint === breakpoints.MOBILE">
     <mat-icon
       (click)="onOpenProcessingQueue()"
+      [@tada]="qOnDemandState"
       class="mobile-icon-spacing"
-      matTooltip="Custom Processing Queue"
+      matTooltip="On Demand Queue"
       svgIcon="hyp3"
       [matBadge]="queuedCustomProducts.length"
       matBadgeColor="{{ queuedCustomProducts.length > 0 ? 'accent' : 'primary' }}"
@@ -77,8 +80,9 @@
 
     <mat-icon
       (click)="onOpenDownloadQueue()"
-      [matBadge]="queuedProducts.length"
       class="mobile-icon-spacing"
+      [@tada]="qProdState"
+      [matBadge]="queuedProducts.length"
       matBadgeColor="{{ queuedProducts.length > 0 ? 'accent' : 'primary' }}"
       matBadgePosition="above after"
       matBadgeOverlap="true"
@@ -119,17 +123,10 @@
   <button (click)="onOpenPreferences()" mat-menu-item matSuffix>
     Preferences
   </button>
-<<<<<<< HEAD
-  <!--<button (click)="onOpenHyp3Dialog()" mat-menu-item matSuffix>-->
-    <!--HyP3 Jobs-->
-  <!--</button>-->
-=======
->>>>>>> hyp3
   <hr class="menu-hr">
   <button (click)="onLogout()"
       mat-menu-item matSuffix>
     Sign out
-    <!-- <em>{{ userAuth.id }}</em> -->
   </button>
 </mat-menu>
 
@@ -154,23 +151,22 @@
     Help & Tutorials
   </button>
 
-  <a mat-menu-item href="https://docs.google.com/document/d/e/2PACX-1vSqQxPT8nhDQfbCLS8gBZ9SqSEeJy8BdSCiYVlBOXwsFwJ6_ct7pjtOqbXHo0Q3wzinzvO8bGWtHj0H/pub"
-          target="_blank">
+  <button mat-menu-item (click)="onOpenWhatsNew()">
     <mat-icon>new_releases</mat-icon>
     What's New
-  </a>
+  </button>
 
   <hr class="menu-hr">
 
-  <a mat-menu-item [href]="asfWebsiteUrl" target="_blank">
+  <button mat-menu-item (click)="onOpenASFWebSite()">
     <mat-icon>web</mat-icon>
     ASF Website
-  </a>
+  </button>
 
-  <a mat-menu-item href="{{ asfWebsiteUrl }}/get-data/api" target="_blank">
+  <button mat-menu-item (click)="onOpenAPIWebSite()">
     <mat-icon>web</mat-icon>
     ASF Search API
-  </a>
+  </button>
 
   <hr class="menu-hr">
 
@@ -214,12 +210,12 @@
 </mat-menu>
 
 <mat-menu #derivedDatasets="matMenu">
-  <a mat-menu-item href="{{ asfWebsiteUrl }}/sar-data-sets/global-ice-sheet-mapping-orbiter-gismo" target="_blank">GISMO</a>
-  <a mat-menu-item href="{{ asfWebsiteUrl }}/sar-data-sets/glacier-speed" target="_blank">Glacier Speed</a>
-  <a mat-menu-item href="{{ asfWebsiteUrl }}/sar-data-sets/international-polar-year-2007-2008" target="_blank">Polar Year</a>
-  <a mat-menu-item href="{{ asfWebsiteUrl }}/sar-data-sets/radarsat-antarctic-mapping-project-ramp" target="_blank">RAMP</a>
-  <a mat-menu-item href="{{ asfWebsiteUrl }}/sar-data-sets/sea-ice-measures" target="_blank">Sea Ice MEaSUREs</a>
-  <a mat-menu-item href="{{ asfWebsiteUrl }}/sar-data-sets/wetlands-measures" target="_blank">Wetlands MEaSUREs</a>
+  <a mat-menu-item (click)="onOpenDerivedDataset('/sar-data-sets/global-ice-sheet-mapping-orbiter-gismo', 'GISMO')">GISMO</a>
+  <a mat-menu-item (click)="onOpenDerivedDataset('/sar-data-sets/glacier-speed', 'Glacier Speed')">Glacier Speed</a>
+  <a mat-menu-item (click)="onOpenDerivedDataset('/sar-data-sets/international-polar-year-2007-2008', 'Polar Year')">Polar Year</a>
+  <a mat-menu-item (click)="onOpenDerivedDataset('/sar-data-sets/radarsat-antarctic-mapping-project-ramp', 'RAMP')">RAMP</a>
+  <a mat-menu-item (click)="onOpenDerivedDataset('/sar-data-sets/sea-ice-measures', 'Sea Ice MEaSUREs')">Sea Ice MEaSUREs</a>
+  <a mat-menu-item (click)="onOpenDerivedDataset('/sar-data-sets/wetlands-measures', 'Wetlands MEaSUREs')">Wetlands MEaSUREs</a>
 </mat-menu>
 
 <mat-menu #apiMaturity="matMenu">

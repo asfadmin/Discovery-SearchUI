@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialogRef } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { MatBottomSheet } from '@angular/material/bottom-sheet';
+import { QueueSubmitComponent } from './queue-submit/queue-submit.component';
 
 import { Store } from '@ngrx/store';
 import { AppState } from '@store';
@@ -10,6 +12,7 @@ import { tap, catchError } from 'rxjs/operators';
 
 import * as queueStore from '@store/queue';
 import * as hyp3Store from '@store/hyp3';
+import * as userStore from '@store/user';
 import * as models from '@models';
 import * as services from '@services';
 
@@ -26,6 +29,7 @@ enum ProcessingQueueTab {
 export class ProcessingQueueComponent implements OnInit {
   public jobs: models.QueuedHyp3Job[] = [];
   public user = '';
+  public isUserLoggedIn = false;
   public remaining = 0;
   public areJobsLoading = false;
   public isQueueSubmitProcessing = false;
@@ -42,9 +46,11 @@ export class ProcessingQueueComponent implements OnInit {
   constructor(
     private dialogRef: MatDialogRef<ProcessingQueueComponent>,
     private snackBar: MatSnackBar,
+    public authService: services.AuthService,
     private store$: Store<AppState>,
     private hyp3: services.Hyp3Service,
     private screenSize: services.ScreenSizeService,
+    private bottomSheet: MatBottomSheet
   ) { }
 
   ngOnInit(): void {
@@ -75,6 +81,23 @@ export class ProcessingQueueComponent implements OnInit {
 
     this.store$.select(hyp3Store.getProcessingProjectName).subscribe(
       projectName => this.projectName = projectName
+    );
+
+    this.store$.select(userStore.getIsUserLoggedIn).subscribe(
+      isLoggedIn => this.isUserLoggedIn = isLoggedIn
+    );
+  }
+
+  public onAccountButtonClicked() {
+    this.authService.login$().subscribe(
+      user => {
+        this.store$.dispatch(new userStore.Login(user));
+        window.dataLayer = window.dataLayer || [];
+        window.dataLayer.push({
+          'event': 'account-button-clicked',
+          'account-button-clicked': user
+        });
+      }
     );
   }
 
@@ -134,8 +157,8 @@ export class ProcessingQueueComponent implements OnInit {
           return;
         }
 
-        this.snackBar.open(`${resp.jobs.length} jobs successfully submitted`, 'Submit', {
-          duration: 5000,
+        this.bottomSheet.open(QueueSubmitComponent, {
+          data: {numJobs: resp.jobs.length}
         });
 
         this.store$.dispatch(new queueStore.ClearProcessingQueue());

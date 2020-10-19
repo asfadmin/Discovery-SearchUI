@@ -137,7 +137,7 @@
 
           <mat-menu #addAllProducts="matMenu">
             <button *ngIf="searchType !== SearchTypes.SBAS" (click)="queueAllProducts(products)" mat-menu-item>
-              Add {{ products.length }} file{{ products.length === 1 ? '' : 's'}} to downloads
+              Add {{ downloadable(products).length }} file{{ downloadable(products).length === 1 ? '' : 's'}} to downloads
             </button>
 
             <button *ngIf="searchType === SearchTypes.SBAS" (click)="queueSBASProducts(sbasProducts)" mat-menu-item>

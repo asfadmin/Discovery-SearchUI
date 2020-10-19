@@ -27,7 +27,7 @@
     <mat-icon mat-icon-button disabled></mat-icon>
   </ng-container>
 
-  <div class="clickable" mat-line>
+  <div [class.clickable]="!product.metadata.job" mat-line>
     <b>
       <span *ngIf="product.productTypeDisplay.length > 40">
         {{ product.productTypeDisplay | truncate : 36 }}{{ product.productTypeDisplay | truncate : -4 : '' }}
@@ -40,7 +40,7 @@
       </span>
     </b>
 
-    <a *ngIf="isHovered" class="icon-margin">
+    <a *ngIf="isHovered && !product.metadata.job" class="icon-margin">
       <app-copy-to-clipboard
         [value]="product.id"
         prompt="Copy file ID">
@@ -48,7 +48,7 @@
     </a>
   </div>
     <button
-      *ngIf="isUserLoggedIn &&
+      *ngIf="
         product.metadata.beamMode === 'IW' &&
         (product.metadata.productType === 'SLC' || product.metadata.productType === 'GRD_HD')
         "
@@ -56,13 +56,13 @@
       mat-icon-button>
       <mat-icon *ngIf="loadingHyp3JobName !== product.name"
         svgIcon="hyp3"
-        matTooltip="Add to Processing Queue">
+        matTooltip="Add to On Demand queue">
       </mat-icon>
       <fa-icon *ngIf="loadingHyp3JobName === product.name" icon="spinner" [pulse]="true"></fa-icon>
 
       <mat-menu #customJobTypes="matMenu">
         <button (click)="addRtcToProcessingQueue()" mat-menu-item>
-          <span>Add RTC to processing queue</span>
+          <span>Add RTC job to On Demand queue</span>
         </button>
       </mat-menu>
     </button>
@@ -84,7 +84,7 @@
     </div>
 
     <div *ngIf="product.metadata.job && product.metadata.job.job_parameters.include_inc_map" mat-line>
-      Include Inc Map: {{ product.metadata.job.job_parameters.include_inc_map }}
+      Include Inc. Angle Map: {{ product.metadata.job.job_parameters.include_inc_map }}
     </div>
 
     <div *ngIf="product.metadata.job && product.metadata.job.job_parameters.dem_matching" mat-line>
@@ -114,7 +114,7 @@
     <mat-chip-list *ngIf="!isDownloadable(product)" aria-label="Job Status">
       <mat-chip *ngIf="isExpired(product.metadata.job)" color="primary">Expired</mat-chip>
       <mat-chip *ngIf="isPending(product.metadata.job)" color="secondary">Pending</mat-chip>
-      <mat-chip *ngIf="isFailed(product.metadata.job)" color="accent">Falied</mat-chip>
+      <mat-chip *ngIf="isFailed(product.metadata.job)" color="accent">Failed</mat-chip>
       <mat-chip *ngIf="isRunning(product.metadata.job)" color="secondary">Running</mat-chip>
     </mat-chip-list>
 </mat-list-item>

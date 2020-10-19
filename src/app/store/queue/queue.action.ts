@@ -12,7 +12,7 @@ export enum QueueActionType {
   ADD_JOB = '[Queue] Add Job',
   ADD_JOBS = '[Queue] Add Jobs',
   REMOVE_JOB = '[Queue] Remove Job',
-  CLEAR_PROCESSING_QUEUE = '[Queue] Clear Processing Queue',
+  CLEAR_PROCESSING_QUEUE = '[Queue] Clear On Demand Queue',
 
   TOGGLE_PRODUCT = '[Queue] Toggle Product',
   QUEUE_SCENE = '[Scenes] Queue Scene',

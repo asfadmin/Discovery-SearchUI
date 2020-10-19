@@ -15,18 +15,28 @@ export class ProcessingOptionsComponent implements OnInit {
   public projectName = '';
 
   public processingType = 'RTC_GAMMA';
-  public radiometry = models.RtcGammaRadiometry.GAMMA0;
-  public scale = models.RtcGammaScale.POWER;
-  public demMatching = false;
-  public includeDem = false;
-  public includeIncMap = false;
-  public speckleFilter = false;
+  public radiometry: models.RtcGammaRadiometry;
+  public scale: models.RtcGammaScale;
+  public demMatching: boolean;
+  public includeDem: boolean;
+  public includeIncMap: boolean;
+  public speckleFilter: boolean;
 
   constructor(
     private store$: Store<AppState>,
   ) { }
 
   ngOnInit() {
+    this.store$.select(hyp3Store.getProcessingOptions).subscribe(
+      options => {
+        this.radiometry = options.radiometry;
+        this.scale = options.scale;
+        this.demMatching = options.demMatching;
+        this.includeDem = options.includeDem;
+        this.includeIncMap = options.includeIncMap;
+        this.speckleFilter = options.speckleFilter;
+      }
+    );
   }
 
   public onSetProcessingType(processingType: string): void {

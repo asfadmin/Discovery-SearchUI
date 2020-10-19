@@ -145,6 +145,14 @@ export class SearchEffects {
     return this.hyp3Service.getJobs$().pipe(
       switchMap(
         (jobs: models.Hyp3Job[]) => {
+          if (jobs.length === 0) {
+            return of(new SearchResponse({
+              files: [],
+              totalCount: 0,
+              searchType: models.SearchType.CUSTOM_PRODUCTS
+            }));
+          }
+
           const granules = jobs.map(
             job => job.job_parameters.granules[0]
           ).join(',');
@@ -169,8 +177,11 @@ export class SearchEffects {
                 new SearchCanceled()
             ),
             catchError(
-              _ => of(new SearchError(`Error loading search results`))
-            )
+              _ => {
+                console.log(_);
+                return of(new SearchError(`Error loading search results`));
+              }
+            ),
           );
         }
       ),
@@ -189,13 +200,14 @@ export class SearchEffects {
           ...product,
           browses: job.browse_images ? job.browse_images : ['assets/no-browse.png'],
           thumbnail: job.thumbnail_images ? job.thumbnail_images[0] : 'assets/no-thumb.png',
-          productTypeDisplay: `${job.job_type} ${product.metadata.productType} `,
+          productTypeDisplay: `${job.job_type.replace('_', ' ') } ${product.metadata.productType} `,
           downloadUrl: jobFile.url,
           bytes: jobFile.size,
           groupId: job.job_id,
-          name: jobFile.filename,
+          id: job.job_id,
           metadata: {
             ...product.metadata,
+            fileName: jobFile.filename,
             productType: job.job_type,
             job
           },

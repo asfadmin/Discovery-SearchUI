@@ -21,17 +21,20 @@
       <div
         [class.hidden]="(areNoScenes$ | async)"
         class="h100" style="justify-content: center;">
-        <div
-          class="resize-handle-top"
+        <div class="resize-handle-top"
           mwlResizeHandle
           [resizeEdges]="{ top: true }">
         </div>
-        <div class="results-menu--background h100 w100 mp0"
+
+        <div *ngIf="products.length !== 0" class="results-menu--background h100 w100 mp0"
              fxFlex fxLayout="row">
 
           <ng-container *ngIf="breakpoint >= breakpoints.SMALL">
             <app-desktop-results-menu class="w100 h100"
-              *ngIf="searchType !== SearchTypes.BASELINE && searchType !== SearchTypes.SBAS"
+              *ngIf="
+                searchType !== SearchTypes.BASELINE &&
+                searchType !== SearchTypes.SBAS
+              "
               [resize$]="resize$">
             </app-desktop-results-menu>
 
@@ -51,6 +54,31 @@
               [resize$]="resize$">
             </app-mobile-results-menu>
           </ng-container>
+        </div>
+
+        <div *ngIf="products.length === 0 && searchType === SearchTypes.CUSTOM_PRODUCTS"
+           class="results-menu--background no-results faint-text h100 w100 mp0"
+           fxFlex fxLayout="col">
+          <div class="no-products-actions">
+            <div style="margin-bottom: 14px;">
+              No On Demand Products
+            </div>
+
+            <a style="margin-bottom: 5px" mat-flat-button color="primary"
+              href="https://asfhyp3.github.io/using/vertex/"
+              target="_blank">
+              Getting Started
+            </a>
+
+            <a mat-flat-button
+              style="margin-bottom: 5px;"
+              color="primary"
+              href="javascript:feedback.showForm();">
+              <i class="fa fa-comments-o"></i> Feedback
+            </a>
+
+          </div>
+
         </div>
       </div>
     </div>

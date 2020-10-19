@@ -20,8 +20,12 @@ import { SubSink } from 'subsink';
 })
 export class QueueComponent implements OnInit, OnDestroy {
   public products$ = this.store$.select(queueStore.getQueuedProducts).pipe(
-    tap(products => this.areAnyProducts = products.length > 0)
+    tap(products => this.areAnyProducts = products.length > 0),
+    tap(products => {
+      this.queueHasOnDemandProducts = !products.every(product => !product.metadata.job);
+    })
   );
+  public queueHasOnDemandProducts = false;
 
   public copyIcon = faCopy;
   public breakpoint$ = this.screenSize.breakpoint$;

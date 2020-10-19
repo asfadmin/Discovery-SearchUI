@@ -16,6 +16,7 @@ export class SceneComponent implements OnInit {
 
   @Input() isHovered: boolean;
   @Input() isSelected: boolean;
+  @Input() offsets: {temporal: 0, perpendicular: number};
 
   @Input() isQueued: boolean;
   @Input() numQueued: number;

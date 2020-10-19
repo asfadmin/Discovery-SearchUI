@@ -5,6 +5,12 @@
   bottom: 0;
 }
 
+.no-results {
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+}
+
 .mobile-menu-offset {
   bottom: 90px;
 }
@@ -135,3 +141,16 @@
   line-height: 22px;
 }
 
+.feedback-link {
+  margin-left: 10px;
+
+  a {
+    text-decoration: none;
+    color: $asf-primary;
+  }
+}
+
+.no-products-actions {
+  display: flex;
+  flex-direction: column;
+}

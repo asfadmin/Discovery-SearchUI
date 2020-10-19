@@ -40,6 +40,10 @@ export class BaselineSlidersComponent implements OnInit, OnDestroy {
     this.subs.add(
       perpValues$.subscribe(
         ([start, end]) => {
+          if (start === this.perpRange.start && end === this.perpRange.end) {
+            return;
+          }
+
           const action = new filtersStore.SetPerpendicularRange({ start, end });
           this.store$.dispatch(action);
         }
@@ -52,6 +56,10 @@ export class BaselineSlidersComponent implements OnInit, OnDestroy {
     this.subs.add(
       tempValues$.subscribe(
         ([start, end]) => {
+          if (start === this.tempRange.start && end === this.tempRange.end) {
+            return;
+          }
+
           const action = new filtersStore.SetTemporalRange({ start, end });
           this.store$.dispatch(action);
         }

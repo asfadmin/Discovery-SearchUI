@@ -31,6 +31,13 @@
          [class.selected]="view === Views.DETAIL" mat-button>
           Scene Detail
         </button>
+        <button (click)="onZoomToResults()" mat-icon-button>
+          <mat-icon
+            class="clickable noselect list-icon"
+            matTooltip="Zoom to results">
+              settings_overscan
+          </mat-icon>
+        </button>
       </div>
     </mat-card-subtitle>
 
@@ -50,6 +57,13 @@
         <button (click)="onSelectDetail()"
          [class.selected]="view === Views.DETAIL" mat-button>
           Scene Detail
+        </button>
+        <button (click)="onZoomToResults()" mat-icon-button>
+          <mat-icon
+            class="clickable noselect list-icon"
+            matTooltip="Zoom to results">
+              settings_overscan
+          </mat-icon>
         </button>
       </div>
     </mat-card-subtitle>
