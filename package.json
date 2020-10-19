@@ -41,7 +41,7 @@
     "angular-resizable-element": "^3.3.3",
     "angular-resize-event": "^1.2.2",
     "braces": "^3.0.2",
-    "chart.js": "^2.9.3",
+    "chart.js": "^2.9.4",
     "chartjs-plugin-zoom": "^0.7.7",
     "cookieconsent": "^3.1.1",
     "core-js": "^3.6.5",
