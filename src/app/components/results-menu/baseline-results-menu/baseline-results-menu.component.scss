@@ -1,3 +1,9 @@
+@import "asf-theme";
+$config: mat-typography-config();
+
+$info-background: $asf-primary-light;
+$info-color: $asf-primary;
+
 .medium-header {
   padding-bottom: 8px;
 }
@@ -11,4 +17,49 @@
   cursor: pointer;
   position: absolute;
   display: inline;
+}
+
+.list-button {
+  border: darkgrey 1px solid;
+  background: white;
+  color: inherit;
+  padding: 0 0 0 5px;
+  margin: 0 5px 0 0;
+  font: inherit;
+  outline: none;
+  width: 35px;
+  height: 26px;
+  cursor: pointer;
+  text-align: center;
+}
+
+.list-icon {
+  margin-top: -2px;
+  font-size: 18px !important;
+  height: 18px !important;
+  width: 18px !important;
+}
+
+.list-button-group {
+  max-width: fit-content;
+  margin-top: -11px;
+  line-height: 26px !important;
+}
+
+.button-group-label {
+  text-align: center;
+  color: $info-color;
+  font-size: 12px;
+  margin-left: -1px;
+  line-height: 15px;
+}
+
+.scene-text {
+  font-size: 14px;
+  margin-left: 20px;
+  margin-right: 20px;
+}
+
+.button-tabs {
+  margin-left: 20px;
 }

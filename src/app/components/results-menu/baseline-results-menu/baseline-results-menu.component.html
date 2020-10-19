@@ -23,21 +23,78 @@
   <mat-card *ngIf="view === Views.LIST"  class="mp0" fxFlex="45" fxFlex>
     <mat-card-subtitle class="header medium-header">
       <div>
-        <button (click)="onSelectList()"
-         [class.selected]="view === Views.LIST" mat-button>
-          Scenes
-        </button>
-        <button (click)="onSelectDetail()"
-         [class.selected]="view === Views.DETAIL" mat-button>
-          Scene Detail
-        </button>
-        <button (click)="onZoomToResults()" mat-icon-button>
-          <mat-icon
-            class="clickable noselect list-icon"
-            matTooltip="Zoom to results">
-              settings_overscan
-          </mat-icon>
-        </button>
+
+        <div fxFlex="" class="list-button-group">
+          <div fxLayout="row" fxLayoutAlign="center" class="button-group-label">
+            &nbsp;
+          </div>
+          <div fxLayout="row">
+            <div>
+              <span fxFlex="" class="mr-10">
+                <span class="control-mat-button-toggle scene-text">
+                  {{ numBaselineScenes$ | async }} Scene{{ (numBaselineScenes$ | async) === 1 ? '' : 's' }}
+                </span>
+              </span>
+            </div>
+          </div>
+        </div>
+        <div fxFlex="" class="list-button-group">
+          <div fxLayout="row" fxLayoutAlign="center" class="button-group-label">
+            <label>Zoom</label>
+          </div>
+          <div fxLayout="row">
+            <div>
+              <mat-button-toggle-group fxFlex="" name="layerType" class="mr-10">
+                <mat-button-toggle (click)="onZoomToResults()" class="control-mat-button-toggle">
+                  <mat-icon
+                    class="clickable noselect list-icon"
+                    matTooltip="Zoom to results">
+                    settings_overscan
+                  </mat-icon>
+                </mat-button-toggle>
+              </mat-button-toggle-group>
+            </div>
+          </div>
+        </div>
+        <div fxFlex="" class="list-button-group">
+          <div fxLayout="row" fxLayoutAlign="center" class="button-group-label">
+            <label>Queue</label>
+          </div>
+          <div fxLayout="row">
+            <div>
+              <mat-button-toggle-group fxFlex="" name="layerType" class="mr-10">
+                <mat-button-toggle class="control-mat-button-toggle">
+                  <mat-icon
+                    class="clickable noselect list-icon"
+                    matTooltip="Add all results to downloads"
+                    [matMenuTriggerFor]="addAllProducts">
+                    add_shopping_cart
+                  </mat-icon>
+                </mat-button-toggle>
+              </mat-button-toggle-group>
+            </div>
+          </div>
+        </div>
+
+        <mat-menu #addAllProducts="matMenu" >
+          <div *ngIf="allProducts$ | async as products">
+            <button (click)="queueAllProducts(products)" mat-menu-item>
+              Add {{ downloadable(products).length }} file{{ downloadable(products).length === 1 ? '' : 's'}} to downloads
+            </button>
+          </div>
+        </mat-menu>
+
+        <div class="button-tabs">
+          <button (click)="onSelectList()"
+                  [class.selected]="view === Views.LIST" mat-button>
+            Scenes
+          </button>
+          <button (click)="onSelectDetail()"
+                  [class.selected]="view === Views.DETAIL" mat-button>
+            Scene Detail
+          </button>
+        </div>
+
       </div>
     </mat-card-subtitle>
 
@@ -58,13 +115,13 @@
          [class.selected]="view === Views.DETAIL" mat-button>
           Scene Detail
         </button>
-        <button (click)="onZoomToResults()" mat-icon-button>
-          <mat-icon
-            class="clickable noselect list-icon"
-            matTooltip="Zoom to results">
-              settings_overscan
-          </mat-icon>
-        </button>
+<!--        <button (click)="onZoomToResults()" mat-icon-button>-->
+<!--          <mat-icon-->
+<!--            class="clickable noselect list-icon"-->
+<!--            matTooltip="Zoom to results">-->
+<!--              settings_overscan-->
+<!--          </mat-icon>-->
+<!--        </button>-->
       </div>
     </mat-card-subtitle>
 
