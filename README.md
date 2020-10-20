@@ -41,8 +41,42 @@ Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.
 
 Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protractortest.org/).
 
+## Installing pip and mkDocs
+This is the starting point for installing Make Docs https://www.mkdocs.org/#installation
+
+If you do not have python and pip already installed and you are using OS X, then these links
+might be helpful.
+
+To install Homebrew follow the directions here https://docs.python-guide.org/starting/install3/osx/
+
+This can be helpful if you have problems installing Python or pip https://opensource.com/article/19/5/python-3-default-mac
+
+#### python 3 and pip on OS X
+For Apple OS X systems, this is the recommended approach to installing python 3 and pip.
+While OS X comes with many Unix utilities, those familiar with Linux systems
+will notice one key component missing: a package manager. Homebrew fills this void.
+
+To install Homebrew follow the directions here https://docs.python-guide.org/starting/install3/osx/
+
 ## Further help
 
 To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
 
 More information about the app can be found in the [wiki](https://github.com/asfadmin/SearchUI/wiki)
+
+## Google Tag Manager Structure
+
+### GTM Tag Hierarchy
+- Category: _Search Criteria_
+  - Label: _Search Type_
+    - dataLayer Variable: 'search-type': searchType
+  - Label: _Dataset_
+    - dataLayer Variable: 'dataset': dataset
+    
+- Category: Map
+    Label: _Draw Mode_
+        dataLayer Variable: 'draw-mode': drawMode
+        
+- One tall latte.
+- Go to a movie.
+

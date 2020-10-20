@@ -1,7 +1,7 @@
 import { createFeatureSelector, createSelector } from '@ngrx/store';
 
 import { QueueActionType, QueueActions } from './queue.action';
-import { CMRProduct } from '@models';
+import { CMRProduct, QueuedHyp3Job } from '@models';
 
 export interface ProductMap {
   [id: string]: CMRProduct;
@@ -10,11 +10,13 @@ export interface ProductMap {
 export interface QueueState {
   products: ProductMap;
   ids: string[];
+  customJobs: QueuedHyp3Job[];
 }
 
 export const initState: QueueState = {
   products: {},
   ids: [],
+  customJobs: [],
 };
 
 export function queueReducer(state = initState, action: QueueActions): QueueState {
@@ -106,8 +108,59 @@ export function queueReducer(state = initState, action: QueueActions): QueueStat
       };
     }
 
-    case QueueActionType.CLEARN_QUEUE: {
-      return initState;
+    case QueueActionType.CLEAR_QUEUE: {
+      return {
+        ...state,
+        products: {},
+        ids: [],
+      };
+    }
+
+    case QueueActionType.CLEAR_PROCESSING_QUEUE: {
+      return {
+        ...state,
+        customJobs: [],
+      };
+    }
+
+    case QueueActionType.ADD_JOB: {
+      const jobs = [...state.customJobs];
+
+      const isJobInQueue = jobs.filter(job =>
+        job.job_type === action.payload.job_type &&
+        sameGranules(job.granules, action.payload.granules)
+      ).length > 0;
+
+      if (!isJobInQueue) {
+        jobs.push(action.payload);
+      }
+
+      return {
+        ...state,
+        customJobs: jobs
+      };
+    }
+
+    case QueueActionType.ADD_JOBS: {
+      return {
+        ...state,
+        customJobs: [...state.customJobs, ...action.payload]
+      };
+    }
+
+    case QueueActionType.REMOVE_JOB: {
+      const queue = [...state.customJobs]
+        .filter(job =>
+          !(
+            job.job_type === action.payload.job_type &&
+            sameGranules(job.granules, action.payload.granules)
+          )
+        );
+
+      return {
+        ...state,
+        customJobs: queue
+      };
     }
 
     default: {
@@ -116,19 +169,46 @@ export function queueReducer(state = initState, action: QueueActions): QueueStat
   }
 }
 
+const sameGranules = (granules1: CMRProduct[], granules2: CMRProduct[]) => {
+  const ids1 = new Set(granules1.map(granule => granule.id));
+  const ids2 = new Set(granules2.map(granule => granule.id));
+
+  return eqSet(ids1, ids2);
+};
+
+function eqSet(a1, bs) {
+  return a1.size === bs.size && all(isIn(bs), a1);
+}
+
+function all(pred, a1) {
+  for (const a of a1)  {
+    if (!pred(a)) {
+      return false;
+    }
+  }
+  return true;
+}
+
+function isIn(a1) {
+  return function (a) {
+    return a1.has(a);
+  };
+}
+
+
 const add_product = (product, products) => ({
-        ...products,
-        [product.id]: product
-      });
+  ...products,
+  [product.id]: product
+});
 
 const remove_product = (toRemove, prods) => Object.keys(prods)
-        .filter(productId => productId !== toRemove.id)
-        .reduce(
-          (total, productId) => {
-          total[productId] = prods[productId];
+  .filter(productId => productId !== toRemove.id)
+  .reduce(
+    (total, productId) => {
+      total[productId] = prods[productId];
 
-          return total;
-        }, {});
+      return total;
+    }, {});
 
 
 export const getQueueState = createFeatureSelector<QueueState>('queue');
@@ -145,3 +225,9 @@ export const getQueuedProductIds = createSelector(
   getQueueState,
   (state: QueueState) => state.ids
 );
+
+export const getQueuedJobs = createSelector(
+  getQueueState,
+  (state: QueueState) => state.customJobs
+);
+

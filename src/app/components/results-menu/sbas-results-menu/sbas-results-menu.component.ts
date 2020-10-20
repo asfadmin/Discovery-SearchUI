@@ -1,6 +1,5 @@
-import {Component, OnInit, Input, OnDestroy, ViewChild, ElementRef} from '@angular/core';
-import {combineLatest, Observable} from 'rxjs';
-import { tap } from 'rxjs/operators';
+import { Component, OnInit, Input, OnDestroy, ViewChild, ElementRef } from '@angular/core';
+import { Observable, Subject } from 'rxjs';
 import { ResizeEvent } from 'angular-resizable-element';
 
 import { Store } from '@ngrx/store';
@@ -9,8 +8,8 @@ import * as uiStore from '@store/ui';
 import * as scenesStore from '@store/scenes';
 import * as searchStore from '@store/search';
 
-import {Breakpoints, CMRProduct, CMRProductPair, SearchType} from '@models';
-import {ScreenSizeService, DatasetForProductService, ScenesService, PairService} from '@services';
+import { Breakpoints, CMRProductPair, SearchType } from '@models';
+import { ScreenSizeService, DatasetForProductService } from '@services';
 
 import { SubSink } from 'subsink';
 
@@ -34,13 +33,6 @@ export class SBASResultsMenuComponent implements OnInit, OnDestroy {
 
   public pair: CMRProductPair;
   public isAddingCustomPoint: boolean;
-  private scenes: CMRProduct[];
-  private queuedProduct;
-  private pairs;
-  private customPairs;
-  private isAddingCustomPair: boolean;
-  private selectedPair = [null, null];
-
 
   public view = CardViews.LIST;
   public Views = CardViews;
@@ -53,12 +45,13 @@ export class SBASResultsMenuComponent implements OnInit, OnDestroy {
   public isSelectedPairCustom: boolean;
   private subs = new SubSink();
 
+  public zoomInChart$ = new Subject();
+  public zoomOutChart$ = new Subject();
+
   constructor(
     private store$: Store<AppState>,
     private screenSize: ScreenSizeService,
     public datasetForProduct: DatasetForProductService,
-    private scenesService: ScenesService,
-    private pairService: PairService,
   ) { }
 
   ngOnInit(): void {
@@ -91,31 +84,6 @@ export class SBASResultsMenuComponent implements OnInit, OnDestroy {
         (selected: CMRProductPair) => this.pair = selected
       )
     );
-
-    const scenes$ = this.scenesService.scenes$();
-    const pairs$ = this.pairService.pairs$();
-
-    this.store$.select(scenesStore.getSelectedPair).pipe(
-    ).subscribe(
-      selected => this.selectedPair = selected
-    );
-
-    this.subs.add(
-      this.store$.select(uiStore.getIsAddingCustomPoint).pipe(
-        tap(_ => this.queuedProduct = null),
-      ).subscribe(
-        isAddingCustomPair => this.isAddingCustomPair = isAddingCustomPair
-      )
-    );
-
-    this.subs.add(
-      combineLatest(scenes$, pairs$).subscribe(([scenes, pairs]) => {
-        this.scenes = scenes;
-        this.pairs = pairs.pairs;
-        this.customPairs = pairs.custom;
-      })
-    );
-
   }
 
   public onResizeEnd(event: ResizeEvent): void {
@@ -155,13 +123,12 @@ export class SBASResultsMenuComponent implements OnInit, OnDestroy {
   }
 
   public zoomIn(): void {
-    // this.mapService.zoomIn();
+    this.zoomInChart$.next();
   }
 
   public zoomOut(): void {
-    // this.mapService.zoomOut();
+    this.zoomOutChart$.next();
   }
-
 
   ngOnDestroy() {
     this.subs.unsubscribe();

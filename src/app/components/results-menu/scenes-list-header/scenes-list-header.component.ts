@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { saveAs } from 'file-saver';
+import * as moment from 'moment';
 
 import { combineLatest } from 'rxjs';
 import { map } from 'rxjs/operators';
@@ -13,7 +15,7 @@ import * as filtersStore from '@store/filters';
 
 import {
   MapService, ScenesService, ScreenSizeService,
-  DatasetForProductService, PairService
+  PairService
 } from '@services';
 import * as models from '@models';
 import { SubSink } from 'subsink';
@@ -34,13 +36,17 @@ export class ScenesListHeaderComponent implements OnInit {
   public numPairs$ = this.pairService.pairs$().pipe(
     map(pairs => pairs.pairs.length + pairs.custom.length)
   );
+  public pairs: models.CMRProductPair[];
   public sbasProducts: models.CMRProduct[];
   public canHideRawData: boolean;
+  public showS1RawData: boolean;
+
+  public canHideExpiredData: boolean;
+  public showExpiredData: boolean;
 
   public temporalSort: models.ColumnSortDirection;
   public perpendicularSort: models.ColumnSortDirection;
   public SortDirection = models.ColumnSortDirection;
-  public showS1RawData: boolean;
 
   public searchType: models.SearchType;
   public SearchTypes = models.SearchType;
@@ -55,7 +61,6 @@ export class ScenesListHeaderComponent implements OnInit {
     private scenesService: ScenesService,
     private pairService: PairService,
     private screenSize: ScreenSizeService,
-    private datasetForProduct: DatasetForProductService
   ) { }
 
   ngOnInit() {
@@ -66,17 +71,28 @@ export class ScenesListHeaderComponent implements OnInit {
     );
 
     this.subs.add(
+      this.pairService.pairs$().subscribe(
+        ({pairs, custom}) => this.pairs = [ ...pairs, ...custom ]
+      )
+    );
+
+    this.subs.add(
       combineLatest(
         this.scenesService.scenes$(),
-        this.store$.select(filtersStore.getSelectedDataset),
         this.store$.select(filtersStore.getProductTypes),
         this.store$.select(searchStore.getSearchType),
-      ).subscribe(([scenes, dataset, productTypes, searchType]) => {
+      ).subscribe(([scenes, productTypes, searchType]) => {
         this.canHideRawData =
           searchType === models.SearchType.DATASET &&
           scenes.every(scene => scene.dataset === 'Sentinel-1B' || scene.dataset === 'Sentinel-1A') &&
           productTypes.length <= 0;
       })
+    );
+
+    this.subs.add(
+      this.store$.select(searchStore.getSearchType).subscribe(
+        searchType => this.canHideExpiredData = searchType === models.SearchType.CUSTOM_PRODUCTS
+      )
     );
 
     this.subs.add(
@@ -102,6 +118,12 @@ export class ScenesListHeaderComponent implements OnInit {
         showS1RawData => this.showS1RawData = showS1RawData
       )
     );
+
+    this.subs.add(
+      this.store$.select(uiStore.getShowExpiredData).subscribe(
+        showExpiredData => this.showExpiredData = showExpiredData
+      )
+    );
   }
 
   public onZoomToResults(): void {
@@ -113,6 +135,14 @@ export class ScenesListHeaderComponent implements OnInit {
       this.showS1RawData ?
         new uiStore.HideS1RawData() :
         new uiStore.ShowS1RawData()
+    );
+  }
+
+  public onToggleExpiredData(): void {
+    this.store$.dispatch(
+      this.showExpiredData ?
+        new uiStore.HideExpiredData() :
+        new uiStore.ShowExpiredData()
     );
   }
 
@@ -147,16 +177,76 @@ export class ScenesListHeaderComponent implements OnInit {
   }
 
   public queueAllProducts(products: models.CMRProduct[]): void {
+    if (this.searchType === models.SearchType.CUSTOM_PRODUCTS) {
+      products = this.downloadable(products);
+    }
+
     this.store$.dispatch(new queueStore.AddItems(products));
+  }
+
+  public downloadable(products: models.CMRProduct[]): models.CMRProduct[] {
+    return products.filter(product => this.isDownloadable(product));
   }
 
   public queueSBASProducts(products: models.CMRProduct[]): void {
     this.store$.dispatch(new queueStore.AddItems(products));
   }
 
+  public onDownloadPairCSV() {
+    const pairRows = this.pairs
+      .map(([reference, secondary]) =>
+        `${reference.name},${reference.downloadUrl},${secondary.name},${secondary.downloadUrl}`
+      )
+      .join('\n');
+
+    const pairsCSV = `Reference, Reference URL, Secondary, Secondary URL,\n${pairRows}`;
+
+    const blob = new Blob([pairsCSV], {
+      type: 'text/csv;charset=utf-8;',
+    });
+    saveAs(blob, 'asf-sbas-pairs.csv');
+  }
+
   public formatNumber(num: number): string {
     return (num || 0)
       .toString()
       .replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,');
+  }
+
+  public isDownloadable(product: models.CMRProduct): boolean {
+    return (
+      !product.metadata.job ||
+      (
+        !this.isPending(product.metadata.job) &&
+        !this.isFailed(product.metadata.job) &&
+        !this.isRunning(product.metadata.job) &&
+        !this.isExpired(product.metadata.job)
+      )
+    );
+  }
+
+  public isExpired(job: models.Hyp3Job): boolean {
+    return job.status_code === models.Hyp3JobStatusCode.SUCCEEDED &&
+      this.expirationDays(job.expiration_time) <= 0;
+  }
+
+  public isFailed(job: models.Hyp3Job): boolean {
+    return job.status_code === models.Hyp3JobStatusCode.FAILED;
+  }
+
+  public isPending(job: models.Hyp3Job): boolean {
+    return job.status_code === models.Hyp3JobStatusCode.PENDING;
+  }
+
+  public isRunning(job: models.Hyp3Job): boolean {
+    return job.status_code === models.Hyp3JobStatusCode.RUNNING;
+  }
+
+  private expirationDays(expiration_time: moment.Moment): number {
+    const current = moment.utc();
+
+    const expiration = moment.duration(expiration_time.diff(current));
+
+    return Math.floor(expiration.asDays());
   }
 }

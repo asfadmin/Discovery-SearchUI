@@ -21,7 +21,7 @@ export class UserEffects {
     private userDataService: UserDataService,
   ) {}
 
-  private saveUserProfile = createEffect(() => this.actions$.pipe(
+  public saveUserProfile = createEffect(() => this.actions$.pipe(
     ofType<userActions.SaveProfile>(userActions.UserActionType.SAVE_PROFILE),
     withLatestFrom(
       combineLatest(
@@ -35,7 +35,7 @@ export class UserEffects {
     )
   ), { dispatch: false });
 
-  private loadLoadUserProfile = createEffect(() => this.actions$.pipe(
+  public loadLoadUserProfile = createEffect(() => this.actions$.pipe(
     ofType<userActions.LoadSavedSearches>(userActions.UserActionType.LOAD_PROFILE),
     withLatestFrom( this.store$.select(userReducer.getUserAuth)),
     switchMap(
@@ -47,7 +47,7 @@ export class UserEffects {
     map(profile => new userActions.SetProfile(<models.UserProfile>profile))
   ));
 
-  private saveSavedSearches = createEffect(() => this.actions$.pipe(
+  public saveSavedSearches = createEffect(() => this.actions$.pipe(
     ofType<userActions.SaveSearches>(userActions.UserActionType.SAVE_SEARCHES),
     withLatestFrom(
       combineLatest(
@@ -61,7 +61,7 @@ export class UserEffects {
     ),
   ), { dispatch: false });
 
-  private saveSearchHistory = createEffect(() => this.actions$.pipe(
+  public saveSearchHistory = createEffect(() => this.actions$.pipe(
     ofType<userActions.SaveSearches>(userActions.UserActionType.SAVE_SEARCH_HISTORY),
     withLatestFrom(
       combineLatest(
@@ -75,7 +75,7 @@ export class UserEffects {
     ),
   ), { dispatch: false });
 
-  private loadSearchHistory = createEffect(() => this.actions$.pipe(
+  public loadSearchHistory = createEffect(() => this.actions$.pipe(
     ofType<userActions.LoadSavedSearches>(userActions.UserActionType.LOAD_SEARCH_HISTORY),
     withLatestFrom( this.store$.select(userReducer.getUserAuth)),
     switchMap(
@@ -86,7 +86,7 @@ export class UserEffects {
     map(searchHistory => new userActions.SetSearchHistory(<models.Search[]>searchHistory))
   ));
 
-  private loadSearchHistoryOnLogin = createEffect(() => this.actions$.pipe(
+  public loadSearchHistoryOnLogin = createEffect(() => this.actions$.pipe(
     ofType<userActions.LoadSavedSearches>(userActions.UserActionType.LOGIN),
     withLatestFrom( this.store$.select(userReducer.getUserAuth)),
     switchMap(
@@ -97,7 +97,7 @@ export class UserEffects {
     map(searchHistory => new userActions.SetSearchHistory(<models.Search[]>searchHistory))
   ));
 
-  private loadSavedSearchesOnLogin = createEffect(() => this.actions$.pipe(
+  public loadSavedSearchesOnLogin = createEffect(() => this.actions$.pipe(
     ofType<userActions.Login>(userActions.UserActionType.LOGIN),
     switchMap(
       (action) =>
@@ -108,7 +108,7 @@ export class UserEffects {
     map(searches => new userActions.SetSearches(<models.Search[]>searches))
   ));
 
-  private loadSavedSearches = createEffect(() => this.actions$.pipe(
+  public loadSavedSearches = createEffect(() => this.actions$.pipe(
     ofType<userActions.LoadSavedSearches>(userActions.UserActionType.LOAD_SAVED_SEARCHES),
     withLatestFrom( this.store$.select(userReducer.getUserAuth)),
     switchMap(

@@ -57,7 +57,15 @@ export class AoiFilterComponent implements OnInit, OnDestroy {
 
     this.subs.add(
       this.mapService.searchPolygon$.subscribe(
-        p => this.polygon = p
+        p => {
+          this.polygon = p;
+          window.dataLayer = window.dataLayer || [];
+          window.dataLayer.push({
+            'event': 'input-search-polygon',
+            'input-search-polygon': this.polygon
+          });
+
+        }
       )
     );
 
@@ -79,6 +87,7 @@ export class AoiFilterComponent implements OnInit, OnDestroy {
     if (!didLoad) {
       this.aoiErrors$.next();
     }
+
   }
 
   public onCopy(): void {

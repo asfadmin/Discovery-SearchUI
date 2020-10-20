@@ -2,7 +2,7 @@ import { createFeatureSelector, createSelector } from '@ngrx/store';
 
 import { ScenesActionType, ScenesActions } from './scenes.action';
 
-import { CMRProduct, UnzippedFolder, ColumnSortDirection, SearchType, CMRProductPair } from '@models';
+import { CMRProduct, UnzippedFolder, ColumnSortDirection, SearchType } from '@models';
 
 interface SceneEntities { [id: string]: CMRProduct; }
 

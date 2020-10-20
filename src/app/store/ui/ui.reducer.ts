@@ -12,6 +12,7 @@ export interface UIState {
   isSaveSearchOn: boolean;
   isAOIOptionsOpen: boolean;
   showS1RawData: boolean;
+  showExpiredData: boolean;
   isBrowseDialogOpen: boolean;
   onlyScenesWithBrowse: boolean;
   isAddingCustomPoint: boolean;
@@ -26,6 +27,7 @@ export const initState: UIState = {
   isSaveSearchOn: false,
   isAOIOptionsOpen: false,
   showS1RawData: false,
+  showExpiredData: true,
   isBrowseDialogOpen: false,
   onlyScenesWithBrowse: true,
   isAddingCustomPoint: false,
@@ -68,6 +70,20 @@ export function uiReducer(state = initState, action: UIActions): UIState {
       return {
         ...state,
         showS1RawData: true
+      };
+    }
+
+    case UIActionType.HIDE_EXPIRED_DATA: {
+      return {
+        ...state,
+        showExpiredData: false
+      };
+    }
+
+    case UIActionType.SHOW_EXPIRED_DATA: {
+      return {
+        ...state,
+        showExpiredData: true
       };
     }
 
@@ -245,4 +261,9 @@ export const getIsAddingCustomPoint = createSelector(
 export const getShowS1RawData = createSelector(
   getUIState,
   state => state.showS1RawData
+);
+
+export const getShowExpiredData = createSelector(
+  getUIState,
+  state => state.showExpiredData
 );

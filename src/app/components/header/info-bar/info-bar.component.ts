@@ -8,8 +8,11 @@ import * as filtersStore from '@store/filters';
 
 import * as services from '@services';
 import * as models from '@models';
-import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
-import { HelpComponent } from '@components/help/help.component';
+
+// Declare GTM dataLayer array.
+declare global {
+  interface Window { dataLayer: any[]; }
+}
 
 @Component({
   selector: 'app-info-bar',
@@ -42,7 +45,6 @@ export class InfoBarComponent implements OnInit, OnDestroy {
   constructor(
     private store$: Store<AppState>,
     private screenSize: services.ScreenSizeService,
-    private dialog: MatDialog,
   ) { }
 
   ngOnInit() {
@@ -115,17 +117,18 @@ export class InfoBarComponent implements OnInit, OnDestroy {
     ].forEach(sub => this.subs.add(sub));
   }
 
-  public onOpenNewStuff(helpSelection: string): void {
-    const dialogConfig = new MatDialogConfig();
+  public onOpenWhatsNew(): void {
+    const url = 'https://docs.google.com/document/d/e/2PACX-1vSqQxPT8nhDQfbCLS8gBZ9SqSEeJy8BdSCiYVlBOXwsFwJ6_ct7pjtOqbXHo0Q3wzinzvO8bGWtHj0H/pub';
+    window.dataLayer = window.dataLayer || [];
+    window.dataLayer.push({
+      'event': 'open-whats-new',
+      'open-whats-new': url
+    });
 
-    dialogConfig.panelClass = 'help-panel-config';
-    dialogConfig.data = {helpTopic: helpSelection};
-    dialogConfig.width = '80vw';
-    dialogConfig.height = '80vh';
-    dialogConfig.maxWidth = '100%';
-    dialogConfig.maxHeight = '100%';
-
-    const dialogRef = this.dialog.open(HelpComponent, dialogConfig);
+    window.open(
+      url,
+      '_blank'
+    );
   }
 
   ngOnDestroy() {

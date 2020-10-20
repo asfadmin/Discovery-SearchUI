@@ -27,7 +27,7 @@ export class UserDataService {
     return this.http.get<T>(url, {
       headers
     }).pipe(
-      catchError(err => {
+      catchError(_ => {
         this.snackBar.open('Trouble loading profile information', 'ERROR', {
           duration: 5000
         });
@@ -44,7 +44,7 @@ export class UserDataService {
     return this.http.post(url, value, {
       headers
     }).pipe(
-      catchError(err => {
+      catchError(_ => {
         this.snackBar.open('Trouble setting profile information', 'ERROR', {
           duration: 5000
         });

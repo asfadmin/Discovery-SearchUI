@@ -1,7 +1,7 @@
 import { createFeatureSelector, createSelector } from '@ngrx/store';
 
 import { SearchActionType, SearchActions } from './search.action';
-import {  SearchType } from '@models';
+import { SearchType } from '@models';
 
 
 export interface SearchState {
@@ -134,7 +134,7 @@ export const getIsCanceled = createSelector(
 
 export const getCanSearch = createSelector(
   getSearchState,
-  (state: SearchState) => state.canSearch
+  (state: SearchState) => state.searchType === SearchType.CUSTOM_PRODUCTS || state.canSearch
 );
 
 export const getIsMaxResultsLoading = createSelector(

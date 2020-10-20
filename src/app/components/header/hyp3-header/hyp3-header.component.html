@@ -6,20 +6,32 @@
         class="breadcrumb">
       </app-search-type-selector>
 
-      <form class="breadcrumb">
-        <mat-form-field >
-          <mat-label>Filter Products</mat-label>
-          <input matInput>
-        </mat-form-field>
-      </form>
+      <app-project-name-selector class="breadcrumb">
+      </app-project-name-selector>
 
       <div class="breadcrumb">
-        <button (click)="onRefreshJobs()" mat-flat-button color="primary">
-          <mat-icon>refresh</mat-icon>
-        </button>
+        <div fxFlex="nogrow" class="breadcrumb search-controls">
+          <app-search-button></app-search-button>
+        </div>
       </div>
 
       <div class="icon-cluster">
+        <app-header-buttons>
+        </app-header-buttons>
+      </div>
+    </div>
+  </ng-container>
+
+  <ng-container *ngIf="breakpoint === breakpoints.MOBILE">
+    <div class="mobile-nav-bar">
+      <button
+        (click)="onToggleFiltersMenu()"
+         style="margin-left: 5px;"
+        mat-flat-button>
+        Filters
+      </button>
+
+      <div class="mobile-icon-cluster">
         <app-header-buttons>
         </app-header-buttons>
       </div>

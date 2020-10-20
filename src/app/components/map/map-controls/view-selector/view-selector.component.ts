@@ -7,6 +7,11 @@ import * as mapStore from '@store/map';
 
 import { MapViewType } from '@models';
 
+// Declare GTM dataLayer array.
+declare global {
+  interface Window { dataLayer: any[]; }
+}
+
 @Component({
   selector: 'app-view-selector',
   templateUrl: './view-selector.component.html',
@@ -24,7 +29,14 @@ export class ViewSelectorComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.subs.add(
       this.store$.select(mapStore.getMapView).subscribe(
-        view => this.view = view
+        view => {
+          this.view = view;
+          window.dataLayer = window.dataLayer || [];
+          window.dataLayer.push({
+            'event': 'map-view',
+            'map-view': this.view
+          });
+        }
       )
     );
   }

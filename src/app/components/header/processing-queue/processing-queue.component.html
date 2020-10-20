@@ -1,0 +1,130 @@
+<mat-card class="processing-queue">
+  <mat-card-title-group style="margin-bottom: 0 !important;" class="card-title-group">
+    <mat-card-title>
+      On Demand
+        <span class="feedback-link">
+          <a href="javascript:feedback.showForm();"> <i class="fa fa-comments-o"></i> Feedback</a>
+        </span>
+    </mat-card-title>
+    <mat-card-subtitle class="subtitle">
+      <div *ngIf="isUserLoggedIn && user !== ''">
+        <b>{{ user }}</b> - {{ remaining }} jobs left this month
+      </div>
+      <div *ngIf="isUserLoggedIn && user === ''">
+        <b>Loading...</b>
+      </div>
+      <div *ngIf="!isUserLoggedIn">
+        <b>N/A</b> - login to view number of jobs left this month
+      </div>
+    </mat-card-subtitle>
+
+    <div class="close-x" (click)="onCloseDialog()">
+      <mat-icon>close</mat-icon>
+    </div>
+  </mat-card-title-group>
+
+  <mat-card-content>
+    <div class="jobs-dialog">
+      <div *ngIf="!isUserLoggedIn" class="w100 error-header">
+        <div style="padding-left: 10px;">
+          <b>Sign in to process data</b>
+        </div>
+        <div>
+          <button (click)="onAccountButtonClicked()" color="primary" mat-flat-button>
+            Sign In
+            <mat-icon>account_circle</mat-icon>
+          </button>
+        </div>
+      </div>
+
+      <div *ngIf="isUserLoggedIn && jobs.length > remaining " class="w100 error-header">
+        <div style="padding-left: 10px;">
+          <b>Too many jobs in queue </b>
+        </div>
+        <div style="padding: 7px 10px;">
+          <b>({{ jobs.length - remaining }} extra job{{ (jobs.length - remaining) === 1 ? '' : 's'  }})</b>
+        </div>
+      </div>
+
+      <div *ngIf="isUserLoggedIn && remaining === 0" class="w100 error-header">
+        <div style="padding-left: 10px;">
+          <b>No jobs left this month</b>
+        </div>
+        <div>
+          <button (click)="onCloseDialog()" mat-flat-button>
+            <mat-icon>close</mat-icon>
+          </button>
+        </div>
+      </div>
+
+      <div *ngIf="breakpoint !== breakpoints.MOBILE" class="jobs-display--desktop">
+        <div class="jobs-list-panel">
+          <app-processing-queue-jobs
+            [jobs]="jobs"
+            [areJobsLoading]="areJobsLoading"
+            (removeJob)="onRemoveJob($event)">
+          </app-processing-queue-jobs>
+        </div>
+
+        <div class="jobs-detail">
+          <app-processing-options></app-processing-options>
+        </div>
+      </div>
+
+      <div *ngIf="breakpoint === breakpoints.MOBILE">
+        <div class="mobile-tab-selector">
+          <button (click)="onSelectScenesTab()"
+            [class.selected]="selectedTab === Tabs.SCENES" mat-button>
+            Scenes
+          </button>
+          <button (click)="onSelectOptionsTab()"
+            [class.selected]="selectedTab === Tabs.OPTIONS" mat-button>
+            Processing Options
+          </button>
+        </div>
+        <div *ngIf="selectedTab === Tabs.SCENES" class="jobs-display--mobile">
+          <app-processing-queue-jobs
+            [jobs]="jobs"
+            [areJobsLoading]="areJobsLoading"
+            (removeJob)="onRemoveJob($event)">
+          </app-processing-queue-jobs>
+        </div>
+        <div *ngIf="selectedTab === Tabs.OPTIONS" class="jobs-display--mobile">
+          <app-processing-options></app-processing-options>
+        </div>
+      </div>
+      <mat-progress-bar *ngIf="isQueueSubmitProcessing" mode="indeterminate"></mat-progress-bar>
+      <div class="w100 hyp3-footer">
+        <button *ngIf="previousQueue === null"
+                (click)="onClearJobQueue(jobs)" style="margin-top: 3px;" mat-button>
+          <mat-icon style="margin-right: 5px;">delete</mat-icon>
+          <span>Clear</span>
+        </button>
+
+        <button *ngIf="previousQueue !== null"
+                (click)="onRestoreJobQueue(previousQueue)" mat-button>
+          <mat-icon style="margin-right: 5px;">undo</mat-icon>
+          <span>Restore</span>
+        </button>
+
+        <button
+          (click)="onSubmitQueue()"
+          [disabled]="
+            jobs.length > remaining ||
+            jobs.length === 0 ||
+            !isUserLoggedIn
+          "
+          mat-button>
+          <span *ngIf="!isQueueSubmitProcessing">
+            Submit Queue
+          </span>
+
+          <span *ngIf="isQueueSubmitProcessing">
+            Loading...
+          </span>
+        </button>
+      </div>
+
+    </div>
+  </mat-card-content>
+</mat-card>

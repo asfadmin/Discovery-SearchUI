@@ -80,6 +80,8 @@ export class ProductService {
       perpendicular: this.isNumber(+g.pb) ? +g.pb : null,
       temporal: this.isNumber(+g.tb) ? +g.tb : null,
       canInSAR: g.in,
+      job: null,
+      fileName: null,
     })
 
   private isNumber = n => !isNaN(n) && isFinite(n);

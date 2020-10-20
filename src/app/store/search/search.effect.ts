@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
 
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { Store } from '@ngrx/store';
+import { Store, Action } from '@ngrx/store';
 
-import { of, forkJoin, combineLatest } from 'rxjs';
-import { map, withLatestFrom, switchMap, catchError, filter, tap } from 'rxjs/operators';
+import { of, forkJoin, combineLatest, Observable } from 'rxjs';
+import { map, withLatestFrom, switchMap, catchError, filter } from 'rxjs/operators';
 
 import { AppState } from '../app.reducer';
 import { SetSearchAmount, EnableSearch, DisableSearch, SetSearchType } from './search.action';
@@ -31,58 +31,39 @@ export class SearchEffects {
     private searchParams$: services.SearchParamsService,
     private asfApiService: services.AsfApiService,
     private productService: services.ProductService,
-    private mapService: services.MapService,
+    private hyp3Service: services.Hyp3Service,
   ) {}
 
-  private clearMapInteractionModeOnSearch = createEffect(() => this.actions$.pipe(
+  public clearMapInteractionModeOnSearch = createEffect(() => this.actions$.pipe(
     ofType(SearchActionType.MAKE_SEARCH),
-    map(action => new mapStore.SetMapInteractionMode(models.MapInteractionModeType.NONE))
+    map(_ => new mapStore.SetMapInteractionMode(models.MapInteractionModeType.NONE))
   ));
 
-  private closeMenusWhenSearchIsMade = createEffect(() => this.actions$.pipe(
+  public closeMenusWhenSearchIsMade = createEffect(() => this.actions$.pipe(
     ofType(SearchActionType.MAKE_SEARCH),
-    switchMap(action => [
+    switchMap(_ => [
       new uiStore.CloseFiltersMenu(),
       new uiStore.CloseAOIOptions()
     ])
   ));
 
-  private setCanSearch = createEffect(() => this.actions$.pipe(
+  public setCanSearch = createEffect(() => this.actions$.pipe(
     ofType<SetSearchAmount>(SearchActionType.SET_SEARCH_AMOUNT),
     map(action =>
       (action.payload > 0) ? new EnableSearch() : new DisableSearch()
     )
   ));
 
-  private makeSearches = createEffect(() => this.actions$.pipe(
+  public makeSearches = createEffect(() => this.actions$.pipe(
     ofType(SearchActionType.MAKE_SEARCH),
-    withLatestFrom(this.searchParams$.getParams()),
-    map(([_, params]) => [params, {...params, output: 'COUNT'}]),
-    switchMap(
-      ([params, countParams]) => forkJoin(
-        this.asfApiService.query<any[]>(params),
-        this.asfApiService.query<any[]>(countParams)
-      ).pipe(
-        withLatestFrom(combineLatest(
-          this.store$.select(getSearchType),
-          this.store$.select(getIsCanceled)
-        )
-          ),
-        map(([[response, totalCount], [searchType, isCanceled]]) =>
-          !isCanceled ?
-            new SearchResponse({
-              files: response, totalCount: +totalCount, searchType
-            }) :
-            new SearchCanceled()
-        ),
-        catchError(
-          error => of(new SearchError(`Error loading search results`))
-        )
-      )
-    ),
+    withLatestFrom(this.store$.select(getSearchType)),
+    switchMap(([_, searchType]) => searchType !== models.SearchType.CUSTOM_PRODUCTS ?
+      this.asfApiQuery$() :
+      this.customProductsQuery$()
+    )
   ));
 
-  private cancelSearchWhenFiltersCleared = createEffect(() => this.actions$.pipe(
+  public cancelSearchWhenFiltersCleared = createEffect(() => this.actions$.pipe(
     ofType(
       filtersStore.FiltersActionType.CLEAR_DATASET_FILTERS,
       filtersStore.FiltersActionType.CLEAR_LIST_FILTERS,
@@ -94,34 +75,34 @@ export class SearchEffects {
     map(_ => new CancelSearch())
   ));
 
-  private searchResponse = createEffect(() => this.actions$.pipe(
+  public searchResponse = createEffect(() => this.actions$.pipe(
     ofType<SearchResponse>(SearchActionType.SEARCH_RESPONSE),
     switchMap(action => [
       new scenesStore.SetScenes({
-        products: this.productService.fromResponse(action.payload.files),
+        products: action.payload.files,
         searchType: action.payload.searchType
       }),
       new SetSearchAmount(action.payload.totalCount)
     ])
   ));
 
-  private hideFilterMenuOnSearchResponse = createEffect(() => this.actions$.pipe(
+  public hideFilterMenuOnSearchResponse = createEffect(() => this.actions$.pipe(
     ofType<SearchResponse>(SearchActionType.SEARCH_RESPONSE),
     map(_ => new uiStore.CloseFiltersMenu()),
   ));
 
-  private showResultsMenuOnSearchResponse = createEffect(() => this.actions$.pipe(
+  public showResultsMenuOnSearchResponse = createEffect(() => this.actions$.pipe(
     ofType<SearchResponse>(SearchActionType.SEARCH_RESPONSE),
     map(_ => new uiStore.OpenResultsMenu()),
   ));
 
-  setMapInteractionModeBasedOnSearchType = createEffect(() => this.actions$.pipe(
+  public setMapInteractionModeBasedOnSearchType = createEffect(() => this.actions$.pipe(
     ofType<SetSearchType>(SearchActionType.SET_SEARCH_TYPE),
     filter(action => action.payload === models.SearchType.DATASET),
     map(_ => new mapStore.SetMapInteractionMode(models.MapInteractionModeType.DRAW))
   ));
 
-  clearResultsWhenSearchTypeChanges = createEffect(() => this.actions$.pipe(
+  public clearResultsWhenSearchTypeChanges = createEffect(() => this.actions$.pipe(
     ofType<SetSearchType>(SearchActionType.SET_SEARCH_TYPE),
     switchMap(action => [
       new scenesStore.ClearScenes(),
@@ -129,6 +110,110 @@ export class SearchEffects {
       action.payload === models.SearchType.LIST ?
         new uiStore.OpenFiltersMenu() :
         new uiStore.CloseFiltersMenu(),
-    ])
+    ]),
+    catchError(
+      _ => of(new SearchError(`Error loading search results`))
+    )
   ));
+
+  private asfApiQuery$(): Observable<Action> {
+    return this.searchParams$.getParams().pipe(
+    map(params => [params, {...params, output: 'COUNT'}]),
+    switchMap(
+      ([params, countParams]) => forkJoin(
+        this.asfApiService.query<any[]>(params),
+        this.asfApiService.query<any[]>(countParams)
+      ).pipe(
+        withLatestFrom(combineLatest(
+          this.store$.select(getSearchType),
+          this.store$.select(getIsCanceled)
+        )),
+        map(([[response, totalCount], [searchType, isCanceled]]) =>
+          !isCanceled ?
+            new SearchResponse({
+              files: this.productService.fromResponse(response),
+              totalCount: +totalCount,
+              searchType
+            }) :
+            new SearchCanceled()
+        ),
+      ))
+    );
+  }
+
+  private customProductsQuery$(): Observable<Action> {
+    return this.hyp3Service.getJobs$().pipe(
+      switchMap(
+        (jobs: models.Hyp3Job[]) => {
+          if (jobs.length === 0) {
+            return of(new SearchResponse({
+              files: [],
+              totalCount: 0,
+              searchType: models.SearchType.CUSTOM_PRODUCTS
+            }));
+          }
+
+          const granules = jobs.map(
+            job => job.job_parameters.granules[0]
+          ).join(',');
+
+          return this.asfApiService.query<any[]>({ 'granule_list': granules }).pipe(
+            map(results => this.productService.fromResponse(results)
+              .filter(product => !product.metadata.productType.includes('METADATA'))
+              .reduce((products, product) => {
+                products[product.name] = product;
+                return products;
+              } , {})
+            ),
+            map(products => this.hyp3JobToProducts(jobs, products)),
+            withLatestFrom(this.store$.select(getIsCanceled)),
+            map(([products, isCanceled]) =>
+              !isCanceled ?
+                new SearchResponse({
+                  files: products.reverse(),
+                  totalCount: +products.length,
+                  searchType: models.SearchType.CUSTOM_PRODUCTS
+                }) :
+                new SearchCanceled()
+            ),
+            catchError(
+              _ => {
+                console.log(_);
+                return of(new SearchError(`Error loading search results`));
+              }
+            ),
+          );
+        }
+      ),
+    );
+  }
+
+  private hyp3JobToProducts(jobs, products) {
+    const virtualProducts = jobs
+      .map(job => {
+        const product = products[job.job_parameters.granules[0]];
+        const jobFile = !!job.files ?
+          job.files[0] :
+          {size: -1, url: '', filename: product.name};
+
+        return {
+          ...product,
+          browses: job.browse_images ? job.browse_images : ['assets/no-browse.png'],
+          thumbnail: job.thumbnail_images ? job.thumbnail_images[0] : 'assets/no-thumb.png',
+          productTypeDisplay: `${job.job_type.replace('_', ' ') } ${product.metadata.productType} `,
+          downloadUrl: jobFile.url,
+          bytes: jobFile.size,
+          groupId: job.job_id,
+          id: job.job_id,
+          metadata: {
+            ...product.metadata,
+            fileName: jobFile.filename,
+            productType: job.job_type,
+            job
+          },
+        };
+      });
+
+    return virtualProducts;
+  }
 }

@@ -1,12 +1,18 @@
 <span>
-  <span *ngIf="!dataset.includes('Sentinel')">
-    {{ name | truncate : sceneNameLen }}
+  <span *ngIf="searchType === SearchTypes.CUSTOM_PRODUCTS">
+    {{ name | truncate : sceneNameLen - 8 }} {{ name.substr(name.length - 8) }}
   </span>
 
-  <span *ngIf="dataset === 'Sentinel-1B' || dataset === 'Sentinel-1A'">
-    {{ name | truncate : sceneNameLen - 4 }} {{ name.substr(name.length - 4) }}
-  </span>
-  <span *ngIf="dataset === 'Sentinel-1 Interferogram (BETA)'">
-   {{ name | truncate : sceneNameLen - 11 }} {{ name.substr(name.length - 11) }}
+  <span *ngIf="searchType !== SearchTypes.CUSTOM_PRODUCTS">
+    <span *ngIf="!dataset.includes('Sentinel')">
+      {{ name | truncate : sceneNameLen }}
+    </span>
+
+    <span *ngIf="dataset === 'Sentinel-1B' || dataset === 'Sentinel-1A'">
+      {{ name | truncate : sceneNameLen - 4 }} {{ name.substr(name.length - 4) }}
+    </span>
+    <span *ngIf="dataset === 'Sentinel-1 Interferogram (BETA)'">
+     {{ name | truncate : sceneNameLen - 11 }} {{ name.substr(name.length - 11) }}
+    </span>
   </span>
 </span>

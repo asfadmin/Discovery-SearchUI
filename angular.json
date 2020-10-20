@@ -43,6 +43,17 @@
             },
             "scripts": [
               "./node_modules/cookieconsent/build/cookieconsent.min.js"
+            ],
+            "allowedCommonJsDependencies": [
+              "chartjs-plugin-zoom",
+              "subsink",
+              "chart.js",
+              "file-saver",
+              "nouislider",
+              "pbf",
+              "uuid/v1",
+              "jwt-decode",
+              "css-element-queries"
             ]
           },
           "configurations": {

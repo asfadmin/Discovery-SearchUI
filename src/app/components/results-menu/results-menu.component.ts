@@ -12,7 +12,6 @@ import * as uiStore from '@store/ui';
 import * as scenesStore from '@store/scenes';
 import * as searchStore from '@store/search';
 
-import { MapService } from '@services';
 import * as models from '@models';
 
 @Component({
@@ -23,6 +22,7 @@ import * as models from '@models';
 export class ResultsMenuComponent implements OnInit, OnDestroy {
   public isResultsMenuOpen$ = this.store$.select(uiStore.getIsResultsMenuOpen);
   public selectedProducts$ = this.store$.select(scenesStore.getSelectedSceneProducts);
+  public products: models.CMRProduct[];
 
   public menuHeightPx: number;
 
@@ -42,12 +42,25 @@ export class ResultsMenuComponent implements OnInit, OnDestroy {
 
   constructor(
     private store$: Store<AppState>,
-    private mapService: MapService,
     private screenSize: ScreenSizeService,
   ) { }
 
   ngOnInit() {
     this.menuHeightPx = this.defaultMenuHeight();
+
+    this.subs.add(
+      this.store$.select(scenesStore.getAllProducts).subscribe(
+        products => {
+          this.products = products;
+        }
+      )
+    );
+
+    this.subs.add(
+      this.store$.select(searchStore.getSearchType).subscribe(
+        searchType => this.searchType = searchType
+      )
+    );
 
     this.subs.add(
       this.store$.select(scenesStore.getShowUnzippedProduct).subscribe(
@@ -63,7 +76,7 @@ export class ResultsMenuComponent implements OnInit, OnDestroy {
   }
 
   @HostListener('window:resize', ['$event'])
-  onResize( event ) {
+  onResize(_) {
     const resultDiv = document.getElementById('result-div');
 
     if (!resultDiv || !resultDiv.style) {
@@ -76,10 +89,6 @@ export class ResultsMenuComponent implements OnInit, OnDestroy {
 
   private defaultMenuHeight(): number {
     return document.documentElement.clientHeight * 0.40;
-  }
-
-  public onTabChange(e): void {
-    this.resize$.next();
   }
 
   public validate(event: ResizeEvent): boolean {

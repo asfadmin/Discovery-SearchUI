@@ -27,7 +27,7 @@
     <mat-icon mat-icon-button disabled></mat-icon>
   </ng-container>
 
-  <div class="clickable" mat-line>
+  <div [class.clickable]="!product.metadata.job" mat-line>
     <b>
       <span *ngIf="product.productTypeDisplay.length > 40">
         {{ product.productTypeDisplay | truncate : 36 }}{{ product.productTypeDisplay | truncate : -4 : '' }}
@@ -35,38 +35,86 @@
       <span *ngIf="product.productTypeDisplay.length <= 40">
         {{ product.productTypeDisplay }}
       </span>
+      <span *ngIf="product.metadata.job && product.metadata.job.expiration_time">
+        {{ expirationBadge(product.metadata.job.expiration_time) }}
+      </span>
     </b>
 
-    <a *ngIf="isHovered" class="icon-margin">
+    <a *ngIf="isHovered && !product.metadata.job" class="icon-margin">
       <app-copy-to-clipboard
         [value]="product.id"
         prompt="Copy file ID">
       </app-copy-to-clipboard>
     </a>
   </div>
-    <!--<button-->
-      <!--*ngIf="isUserLoggedIn && product.metadata.beamMode === 'IW' && product.metadata.productType === 'SLC'"-->
-      <!--(click)="onProcessHyp3Job()"-->
-      <!--mat-icon-button>-->
-      <!--<span *ngIf="loadingHyp3JobName !== product.name">-->
-        <!--<img src="/assets/asf-logos/HyP3-graphic-only.png"-->
-             <!--style="width: 20px; margin-top: 11px;"-->
-             <!--matTooltip="Initiate HyP3 Processing">-->
-      <!--</span>-->
-      <!--<fa-icon *ngIf="loadingHyp3JobName === product.name" icon="spinner" [pulse]="true"></fa-icon>-->
-    <!--</button>-->
+    <button
+      *ngIf="
+        product.metadata.beamMode === 'IW' &&
+        (product.metadata.productType === 'SLC' || product.metadata.productType === 'GRD_HD')
+        "
+      [matMenuTriggerFor]="customJobTypes"
+      mat-icon-button>
+      <mat-icon *ngIf="loadingHyp3JobName !== product.name"
+        svgIcon="hyp3"
+        matTooltip="Add to On Demand queue">
+      </mat-icon>
+      <fa-icon *ngIf="loadingHyp3JobName === product.name" icon="spinner" [pulse]="true"></fa-icon>
+
+      <mat-menu #customJobTypes="matMenu">
+        <button (click)="addRtcToProcessingQueue()" mat-menu-item>
+          <span>Add RTC job to On Demand queue</span>
+        </button>
+      </mat-menu>
+    </button>
 
     <div mat-line>
       <span *ngIf="product.bytes === 0">Virtual</span>
-      <span *ngIf="product.bytes !== 0">{{product.bytes | readableSizeFromBytes }}</span>
+      <span *ngIf="isDownloadable(product) && product.bytes !== 0">{{product.bytes | readableSizeFromBytes }}</span>
     </div>
 
-    <a mat-icon-button [href]="product.downloadUrl" target="_blank" matTooltip="Download file">
+    <div *ngIf="product.metadata.job && product.metadata.job.job_parameters.scale" mat-line>
+      Scale: {{ product.metadata.job.job_parameters.scale }}
+    </div>
+    <div *ngIf="product.metadata.job && product.metadata.job.job_parameters.radiometry" mat-line>
+      Radiometry: {{ product.metadata.job.job_parameters.radiometry }}
+    </div>
+
+    <div *ngIf="product.metadata.job && product.metadata.job.job_parameters.include_dem" mat-line>
+      Include Dem: {{ product.metadata.job.job_parameters.include_dem }}
+    </div>
+
+    <div *ngIf="product.metadata.job && product.metadata.job.job_parameters.include_inc_map" mat-line>
+      Include Inc. Angle Map: {{ product.metadata.job.job_parameters.include_inc_map }}
+    </div>
+
+    <div *ngIf="product.metadata.job && product.metadata.job.job_parameters.dem_matching" mat-line>
+      Dem Matching: {{ product.metadata.job.job_parameters.dem_matching }}
+    </div>
+
+    <div *ngIf="product.metadata.job && product.metadata.job.job_parameters.speckle_filter" mat-line>
+      Speckle Filter: {{ product.metadata.job.job_parameters.speckle_filter }}
+    </div>
+
+    <div *ngIf="product.metadata.job" mat-line>
+      Submitted: {{ product.metadata.job.request_time | fullDate }}
+    </div>
+
+    <a *ngIf="isDownloadable(product)" mat-icon-button
+      [href]="product.downloadUrl" target="_blank"
+      matTooltip="Download file">
       <mat-icon>cloud_download</mat-icon>
     </a>
 
     <app-cart-toggle
+      *ngIf="isDownloadable(product)"
       (toggle)="onToggleQueueProduct()"
       [isQueued]="isQueued">
     </app-cart-toggle>
+
+    <mat-chip-list *ngIf="!isDownloadable(product)" aria-label="Job Status">
+      <mat-chip *ngIf="isExpired(product.metadata.job)" color="primary">Expired</mat-chip>
+      <mat-chip *ngIf="isPending(product.metadata.job)" color="secondary">Pending</mat-chip>
+      <mat-chip *ngIf="isFailed(product.metadata.job)" color="accent">Failed</mat-chip>
+      <mat-chip *ngIf="isRunning(product.metadata.job)" color="secondary">Running</mat-chip>
+    </mat-chip-list>
 </mat-list-item>

@@ -1,4 +1,4 @@
-import { Component, OnInit, Output, EventEmitter, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { SubSink } from 'subsink';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
@@ -15,9 +15,13 @@ import * as filtersStore from '@store/filters';
 
 import * as services from '@services';
 import { SavedSearchType, SearchType } from '@models';
-import {MatDialog, MatDialogConfig} from '@angular/material/dialog';
+import { MatDialog } from '@angular/material/dialog';
 import { HelpComponent } from '@components/help/help.component';
 
+// Declare GTM dataLayer array.
+declare global {
+  interface Window { dataLayer: any[]; }
+}
 
 @Component({
   selector: 'app-search-button',
@@ -25,8 +29,6 @@ import { HelpComponent } from '@components/help/help.component';
   styleUrls: ['./search-button.component.scss']
 })
 export class SearchButtonComponent implements OnInit, OnDestroy {
-  @Output() doSearch = new EventEmitter<void>();
-
   public searchType: SearchType;
   public canSearch$ = this.store$.select(searchStore.getCanSearch);
   public isMaxResultsLoading$ = this.store$.select(searchStore.getIsMaxResultsLoading);
@@ -114,32 +116,58 @@ export class SearchButtonComponent implements OnInit, OnDestroy {
   }
 
   public saveCurrentSearch(): void {
+
+    window.dataLayer = window.dataLayer || [];
+    window.dataLayer.push({
+      'event': 'save-current-search',
+      'save-current-search': true
+    });
+
     this.store$.dispatch(new uiStore.SetSavedSearchType(SavedSearchType.SAVED));
     this.store$.dispatch(new uiStore.OpenSidebar());
     this.store$.dispatch(new uiStore.SetSaveSearchOn(true));
   }
 
   public onOpenSavedSearches(): void {
+
+    window.dataLayer = window.dataLayer || [];
+    window.dataLayer.push({
+      'event': 'open-saved-searches',
+      'open-saved-searches': true
+    });
+
     this.store$.dispatch(new uiStore.SetSavedSearchType(SavedSearchType.SAVED));
     this.store$.dispatch(new uiStore.OpenSidebar());
   }
 
   public onOpenSearchHistory(): void {
+
+    window.dataLayer = window.dataLayer || [];
+    window.dataLayer.push({
+      'event': 'open-search-history',
+      'open-search-history': true
+    });
+
     this.store$.dispatch(new uiStore.SetSavedSearchType(SavedSearchType.HISTORY));
     this.store$.dispatch(new uiStore.OpenSidebar());
   }
 
-  public onOpenHelp(helpSelection: string): void {
-    const dialogConfig = new MatDialogConfig();
+  public onOpenHelp(helpTopic: string): void {
 
-    dialogConfig.panelClass = 'help-panel-config';
-    dialogConfig.data = {helpTopic: helpSelection};
-    dialogConfig.width = '80vw';
-    dialogConfig.height = '80vh';
-    dialogConfig.maxWidth = '100%';
-    dialogConfig.maxHeight = '100%';
+    window.dataLayer = window.dataLayer || [];
+    window.dataLayer.push({
+      'event': 'open-help',
+      'open-help': helpTopic
+    });
 
-    const dialogRef = this.dialog.open(HelpComponent, dialogConfig);
+    this.dialog.open(HelpComponent, {
+      panelClass: 'help-panel-config',
+      data: { helpTopic },
+      width: '80vw',
+      height: '80vh',
+      maxWidth: '100%',
+      maxHeight: '100%',
+    });
   }
 
   ngOnDestroy() {

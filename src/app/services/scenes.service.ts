@@ -8,16 +8,21 @@ import { Store } from '@ngrx/store';
 import { AppState } from '@store/app.reducer';
 import {
   getAllProducts, getScenes, getTemporalSortDirection,
-  getPerpendicularSortDirection, getCustomPairs, getScenesWithBrowse
+  getPerpendicularSortDirection,
 } from '@store/scenes/scenes.reducer';
 import {
   getTemporalRange, getPerpendicularRange, getDateRange,
-  getSelectedDataset, getProductTypes
+  getProductTypes, getProjectName
 } from '@store/filters/filters.reducer';
-import { getShowS1RawData } from '@store/ui/ui.reducer';
+import { getShowS1RawData, getShowExpiredData } from '@store/ui/ui.reducer';
 import { getSearchType } from '@store/search/search.reducer';
+import { getHyp3Jobs } from '@store/hyp3/hyp3.reducer';
 
-import { CMRProduct, CMRProductPair, SearchType, Range, ColumnSortDirection } from '@models';
+import {
+  CMRProduct, SearchType,
+  Range, ColumnSortDirection,
+  Hyp3JobWithScene, Hyp3Job, Hyp3JobStatusCode
+} from '@models';
 
 @Injectable({
   providedIn: 'root'
@@ -29,17 +34,44 @@ export class ScenesService {
 
   public products$(): Observable<CMRProduct[]> {
     return this.hideS1Raw$(
+      this.hideExpired$(
+      this.projectNameFilter$(
       this.filterBaselineValues$(
         this.store$.select(getAllProducts)
       )
-    );
+    )));
   }
 
   public scenes$(): Observable<CMRProduct[]> {
-    return this.hideS1Raw$(
-      this.filterBaselineValues$(
-        this.store$.select(getScenes)
+    return (
+      this.projectNameFilter$(
+      this.hideExpired$(
+      this.hideS1Raw$(
+        this.filterBaselineValues$(
+          this.store$.select(getScenes)
+        )
       )
+    )));
+  }
+
+  public matchHyp3Jobs$(scenes$: Observable<CMRProduct[]>): Observable<Hyp3JobWithScene[]> {
+    return combineLatest(
+      scenes$,
+      this.store$.select(getHyp3Jobs)
+    ).pipe(
+      map(([scenes, jobs]) => {
+        const jobsByName = jobs.reduce((byName, job) => {
+          byName[job.job_parameters.granules[0]] = job;
+          return byName;
+        }, {});
+
+        return scenes.map(scene => {
+          return {
+            scene,
+            job: jobsByName[scene.name]
+          };
+        });
+      })
     );
   }
 
@@ -75,11 +107,10 @@ export class ScenesService {
     return combineLatest(
       products$,
       this.store$.select(getShowS1RawData),
-      this.store$.select(getSelectedDataset),
       this.store$.select(getProductTypes),
       this.store$.select(getSearchType),
     ).pipe(
-      map(([ scenes, showS1RawData, dataset, productTypes, searchType ]) => {
+      map(([ scenes, showS1RawData, productTypes, searchType ]) => {
         if (showS1RawData) {
           return scenes;
         }
@@ -97,6 +128,57 @@ export class ScenesService {
         }
 
         return scenes.filter(scene => !scene.productTypeDisplay.includes('RAW'));
+      })
+    );
+  }
+
+  private projectNameFilter$(scenes$: Observable<CMRProduct[]>) {
+    return combineLatest(
+      scenes$,
+      this.store$.select(getProjectName),
+      this.store$.select(getSearchType),
+    ).pipe(
+      map(([scenes, projectName, searchType]) => {
+        if (searchType !== SearchType.CUSTOM_PRODUCTS) {
+          return scenes;
+        }
+
+        if (projectName === null || projectName === '') {
+          return scenes;
+        }
+
+        return scenes
+          .filter(scene => {
+            const sceneProjectName = scene.metadata.job.name;
+
+            return (
+              !!sceneProjectName &&
+              sceneProjectName.toLowerCase() === projectName.toLowerCase()
+            );
+          });
+      })
+    );
+  }
+  private hideExpired$(scenes$: Observable<CMRProduct[]>) {
+    return combineLatest(
+      scenes$,
+      this.store$.select(getShowExpiredData),
+      this.store$.select(getSearchType),
+    ).pipe(
+      map(([scenes, showExpiredData, searchType]) => {
+        if (searchType !== SearchType.CUSTOM_PRODUCTS) {
+          return scenes;
+        }
+
+        return scenes.filter(scene => {
+          if (showExpiredData) {
+            return true;
+          }
+
+          if (!this.isExpired(scene.metadata.job)) {
+            return true;
+          }
+        });
       })
     );
   }
@@ -123,16 +205,16 @@ export class ScenesService {
 
   private temporalSort(scenes, direction: ColumnSortDirection) {
     const sortFunc = (direction === ColumnSortDirection.INCREASING) ?
-        (a, b) => a.metadata.temporal - b.metadata.temporal :
-        (a, b) => b.metadata.temporal - a.metadata.temporal;
+      (a, b) => a.metadata.temporal - b.metadata.temporal :
+      (a, b) => b.metadata.temporal - a.metadata.temporal;
 
     return scenes.sort(sortFunc);
   }
 
   private perpendicularSort(scenes, direction: ColumnSortDirection) {
     const sortFunc = (direction === ColumnSortDirection.INCREASING) ?
-        (a, b) => a.metadata.perpendicular - b.metadata.perpendicular :
-        (a, b) => b.metadata.perpendicular - a.metadata.perpendicular;
+      (a, b) => a.metadata.perpendicular - b.metadata.perpendicular :
+      (a, b) => b.metadata.perpendicular - a.metadata.perpendicular;
 
     return scenes.sort(sortFunc);
   }
@@ -170,5 +252,18 @@ export class ScenesService {
       pivot === null ||
       check.isBefore(moment.utc(pivot))
     );
+  }
+
+  public isExpired(job: Hyp3Job): boolean {
+    return job.status_code === Hyp3JobStatusCode.SUCCEEDED &&
+      this.expirationDays(job.expiration_time) <= 0;
+  }
+
+  private expirationDays(expiration_time: moment.Moment): number {
+    const current = moment.utc();
+
+    const expiration = moment.duration(expiration_time.diff(current));
+
+    return Math.floor(expiration.asDays());
   }
 }

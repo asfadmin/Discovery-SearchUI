@@ -1,7 +1,7 @@
 import { createFeatureSelector, createSelector } from '@ngrx/store';
 
 import { Hyp3ActionType, Hyp3Actions } from './hyp3.action';
-import { Hyp3Job, Hyp3User } from '@models';
+import { Hyp3Job, Hyp3User, Hyp3ProcessingOptions, RtcGammaRadiometry, RtcGammaScale } from '@models';
 
 /* State */
 
@@ -11,6 +11,8 @@ export interface Hyp3State {
   isUserLoading: boolean;
   areJobsLoading: boolean;
   submittingJobName: string | null;
+  processingOptions: Hyp3ProcessingOptions;
+  projectName: string;
 }
 
 const initState: Hyp3State = {
@@ -19,6 +21,15 @@ const initState: Hyp3State = {
   isUserLoading: true,
   areJobsLoading: false,
   submittingJobName: null,
+  processingOptions: {
+    radiometry: RtcGammaRadiometry.GAMMA0,
+    scale: RtcGammaScale.POWER,
+    demMatching: false,
+    includeDem: false,
+    includeIncMap: false,
+    speckleFilter: false
+  },
+  projectName: '',
 };
 
 /* Reducer */
@@ -44,6 +55,20 @@ export function hyp3Reducer(state = initState, action: Hyp3Actions): Hyp3State {
       return {
         ...state,
         areJobsLoading: false
+      };
+    }
+
+    case Hyp3ActionType.SET_PROCESSING_OPTIONS: {
+      return {
+        ...state,
+        processingOptions: action.payload
+      };
+    }
+
+    case Hyp3ActionType.SET_PROCESSING_PROJECT_NAME: {
+      return {
+        ...state,
+        projectName: action.payload
       };
     }
 
@@ -124,4 +149,14 @@ export const getSubmittingJobName = createSelector(
 export const getHyp3User = createSelector(
   getHyp3State,
   (state: Hyp3State) => state.user
+);
+
+export const getProcessingOptions = createSelector(
+  getHyp3State,
+  (state: Hyp3State) => state.processingOptions
+);
+
+export const getProcessingProjectName = createSelector(
+  getHyp3State,
+  (state: Hyp3State) => state.projectName
 );

@@ -37,6 +37,7 @@
     "@types/wnumb": "^1.2.0",
     "@yellowspot/ng-truncate": "^1.5.1",
     "ajv": "^6.12.3",
+    "angular-animations": "^0.11.0",
     "angular-resizable-element": "^3.3.3",
     "angular-resize-event": "^1.2.2",
     "braces": "^3.0.2",

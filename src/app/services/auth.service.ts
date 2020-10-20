@@ -15,8 +15,6 @@ import * as models from '@models';
   providedIn: 'root'
 })
 export class AuthService {
-  private maturity = 'prod';
-
   constructor(
     private env: EnvironmentService,
     private http: HttpClient,
@@ -33,10 +31,6 @@ export class AuthService {
 
   public get ursClientId() {
     return this.env.currentEnv.urs_client_id;
-  }
-
-  public setMaturity(maturity: string): void {
-    this.maturity = maturity;
   }
 
   public login$(): Observable<models.UserAuth | null> {
@@ -76,7 +70,7 @@ export class AuthService {
 
         return user;
       }),
-      catchError(resp => {
+      catchError(_ => {
         this.snackBar.open('Trouble logging in', 'ERROR', {
           duration: 5000,
         });
@@ -94,8 +88,8 @@ export class AuthService {
         responseType: 'text',
         withCredentials: true
       }).pipe(
-        map(resp => this.getUser()),
-        catchError(resp => {
+        map(_ => this.getUser()),
+        catchError(_ => {
           this.snackBar.open('Trouble logging out', 'ERROR', {
             duration: 5000,
           });

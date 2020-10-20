@@ -25,11 +25,12 @@ import { DatasetForProductService } from '@services';
 export class SceneDetailComponent implements OnInit, OnDestroy {
   @Input() isScrollable = true;
 
+  public scene: models.CMRProduct;
+
   public browses$ = this.store$.select(scenesStore.getSelectedSceneBrowses);
   public dataset: models.Dataset;
   public searchType: models.SearchType;
   public searchTypes = models.SearchType;
-  public scene: models.CMRProduct;
   public sceneLen: number;
   public p = models.Props;
   public breakpoint$ = this.screenSize.breakpoint$;
@@ -118,41 +119,6 @@ export class SceneDetailComponent implements OnInit, OnDestroy {
     return !this.scene.browses[0].includes('no-browse');
   }
 
-  private datasetFor(granule: models.CMRProduct): models.Dataset {
-    const exact = (dataset, granuleDataset) => (
-      dataset.id.toLowerCase() === granuleDataset
-    );
-
-    const partial = (dataset, granuleDataset) => (
-      dataset.id.toLowerCase().includes(granuleDataset) ||
-      granuleDataset.includes(dataset.id.toLowerCase())
-    );
-
-    const subtype = (dataset, granuleDataset) => (
-      dataset.subtypes.length ?
-        dataset.subtypes.filter(st => st.apiValue.toLowerCase() === granuleDataset) : null
-    );
-
-    return (
-      this.getDatasetMatching(granule, exact) ||
-      this.getDatasetMatching(granule, partial) ||
-      this.getDatasetMatching(granule, subtype) ||
-      models.datasets[0]
-    );
-  }
-
-  private getDatasetMatching(
-    granule: models.CMRProduct,
-    comparator: (dataset: models.Dataset, granuleDataset: string) => boolean
-  ): models.Dataset {
-    return  models.datasetList
-      .filter(dataset => {
-        const granuleDataset = granule.dataset.toLocaleLowerCase();
-
-        return comparator(dataset, granuleDataset);
-      })[0];
-  }
-
   public hasBaselineProductType(): boolean {
     if (!this.selectedProducts || this.dataset.id !== models.sentinel_1.id) {
       return true;
@@ -212,16 +178,13 @@ export class SceneDetailComponent implements OnInit, OnDestroy {
 
   public makeSBASSearch(): void {
     const sceneName = this.baselineSceneName();
+
     [
       new searchStore.ClearSearch(),
       new searchStore.SetSearchType(models.SearchType.SBAS),
       new scenesStore.SetFilterMaster(sceneName),
       new searchStore.MakeSearch()
     ].forEach(action => this.store$.dispatch(action));
-  }
-
-  private capitalizeFirstLetter(str) {
-      return str.charAt(0).toUpperCase() + str.slice(1);
   }
 
   ngOnDestroy() {

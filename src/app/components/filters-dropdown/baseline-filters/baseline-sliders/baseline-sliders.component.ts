@@ -1,8 +1,8 @@
 import { Component, OnInit, ViewChild, ElementRef, OnDestroy } from '@angular/core';
 import noUiSlider from 'nouislider';
 
-import { Subject, Observable } from 'rxjs';
-import { delay, debounceTime, distinctUntilChanged, take, filter, map } from 'rxjs/operators';
+import { Subject } from 'rxjs';
+import { delay, debounceTime, distinctUntilChanged, take, filter } from 'rxjs/operators';
 import { AppState } from '@store';
 import { Store } from '@ngrx/store';
 import * as filtersStore from '@store/filters';
@@ -27,9 +27,6 @@ export class BaselineSlidersComponent implements OnInit, OnDestroy {
   public perpSlider;
   public tempSlider;
 
-  private perpendicularValues$: Observable<number[]>;
-  private temporalValues$: Observable<number[]>;
-
   private subs = new SubSink();
 
   constructor(
@@ -43,6 +40,10 @@ export class BaselineSlidersComponent implements OnInit, OnDestroy {
     this.subs.add(
       perpValues$.subscribe(
         ([start, end]) => {
+          if (start === this.perpRange.start && end === this.perpRange.end) {
+            return;
+          }
+
           const action = new filtersStore.SetPerpendicularRange({ start, end });
           this.store$.dispatch(action);
         }
@@ -55,6 +56,10 @@ export class BaselineSlidersComponent implements OnInit, OnDestroy {
     this.subs.add(
       tempValues$.subscribe(
         ([start, end]) => {
+          if (start === this.tempRange.start && end === this.tempRange.end) {
+            return;
+          }
+
           const action = new filtersStore.SetTemporalRange({ start, end });
           this.store$.dispatch(action);
         }
@@ -138,7 +143,7 @@ export class BaselineSlidersComponent implements OnInit, OnDestroy {
       }
     });
 
-    slider.on('update', (values, handle) => {
+    slider.on('update', (values, _) => {
       values$.next(values.map(v => +v));
     });
 

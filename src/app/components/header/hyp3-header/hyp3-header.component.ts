@@ -25,6 +25,11 @@ export class Hyp3HeaderComponent implements OnInit {
   ngOnInit(): void {
   }
 
+  public onToggleFiltersMenu(): void {
+    this.store$.dispatch(new uiStore.ToggleFiltersMenu());
+    this.store$.dispatch(new uiStore.CloseAOIOptions());
+  }
+
   public onRefreshJobs(): void {
     this.store$.dispatch(new hyp3Store.LoadJobs());
   }

@@ -89,6 +89,10 @@
               Metadata Download
               <mat-icon>arrow_drop_up</mat-icon>
             </button>
+
+            <div *ngIf="queueHasOnDemandProducts">
+              On Demand products in queue - limited export options
+            </div>
           </ng-container>
 
           <ng-container *ngIf="breakpoint === breakpoints.MOBILE">
@@ -111,21 +115,21 @@
             <button mat-menu-item (click)="onMakeDownloadScript()">
               Download Python Script (.py)
             </button>
-            <button mat-menu-item (click)="onMetalinkDownload()">
+            <button mat-menu-item [disabled]="queueHasOnDemandProducts" (click)="onMetalinkDownload()">
               Metadata (metalink)
             </button>
           </mat-menu>
 
           <mat-menu #metadataMenu="matMenu" yPosition="above">
-            <button mat-menu-item (click)="onCsvDownload()">
+            <button mat-menu-item [disabled]="queueHasOnDemandProducts" (click)="onCsvDownload()">
               Metadata (csv)
             </button>
 
-            <button mat-menu-item (click)="onKmlDownload()">
+            <button mat-menu-item [disabled]="queueHasOnDemandProducts" (click)="onKmlDownload()">
               Metadata (kml)
             </button>
 
-            <button mat-menu-item (click)="onGeojsonDownload()">
+            <button mat-menu-item [disabled]="queueHasOnDemandProducts" (click)="onGeojsonDownload()">
               Metadata (geojson)
             </button>
           </mat-menu>

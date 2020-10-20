@@ -1,7 +1,8 @@
 import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
-import { SubSink } from 'subsink';
-import { MatDialog } from '@angular/material/dialog';
 import { MatSidenav } from '@angular/material/sidenav';
+import { MatIconRegistry } from '@angular/material/icon';
+import { DomSanitizer } from '@angular/platform-browser';
+import { SubSink } from 'subsink';
 
 import { Store, ActionsSubject } from '@ngrx/store';
 import { ofType } from '@ngrx/effects';
@@ -9,7 +10,6 @@ import { of, combineLatest } from 'rxjs';
 import { skip, filter, map, switchMap, tap, catchError, debounceTime } from 'rxjs/operators';
 
 import { NgcCookieConsentService } from 'ngx-cookieconsent';
-import { BaselineChartComponent } from '@components/baseline-chart';
 
 import { AppState } from '@store';
 import * as scenesStore from '@store/scenes';
@@ -19,6 +19,7 @@ import * as uiStore from '@store/ui';
 import * as mapStore from '@store/map';
 import * as queueStore from '@store/queue';
 import * as userStore from '@store/user';
+import * as hyp3Store from '@store/hyp3';
 
 import * as services from '@services';
 import * as models from './models';
@@ -32,6 +33,7 @@ export class AppComponent implements OnInit, OnDestroy {
   @ViewChild('sidenav', {static: true}) sidenav: MatSidenav;
 
   private queueStateKey = 'asf-queue-state';
+  private customProductsQueueStateKey = 'asf-custom-products-queue-state';
 
   public shouldOmitSearchPolygon$ = this.store$.select(filterStore.getShouldOmitSearchPolygon);
   public isLoading$ = this.store$.select(searchStore.getIsLoading);
@@ -50,18 +52,17 @@ export class AppComponent implements OnInit, OnDestroy {
 
   constructor(
     private store$: Store<AppState>,
-    private dialog: MatDialog,
     private actions$: ActionsSubject,
-    private mapService: services.MapService,
     private urlStateService: services.UrlStateService,
     private searchParams$: services.SearchParamsService,
     private polygonValidationService: services.PolygonValidationService,
     private asfSearchApi: services.AsfApiService,
     private authService: services.AuthService,
-    private userDataService: services.UserDataService,
     private screenSize: services.ScreenSizeService,
     private searchService: services.SearchService,
     private ccService: NgcCookieConsentService,
+    private matIconRegistry: MatIconRegistry,
+    private domSanitizer: DomSanitizer,
   ) {}
 
   public ngOnInit(): void {
@@ -74,6 +75,7 @@ export class AppComponent implements OnInit, OnDestroy {
 
     this.polygonValidationService.validate();
     this.loadProductQueue();
+    this.loadCustomProductsQueue();
     this.loadMissions();
 
     this.store$.select(uiStore.getIsSidebarOpen).subscribe(
@@ -86,7 +88,7 @@ export class AppComponent implements OnInit, OnDestroy {
       this.store$.select(userStore.getUserAuth).pipe(
         filter(userAuth => !!userAuth.token)
       ).subscribe(
-        userAuth => this.store$.dispatch(new userStore.LoadProfile())
+        _ => this.store$.dispatch(new userStore.LoadProfile())
       )
     );
 
@@ -117,14 +119,30 @@ export class AppComponent implements OnInit, OnDestroy {
     );
 
     this.subs.add(
+      combineLatest(
+        this.store$.select(queueStore.getQueuedJobs),
+        this.store$.select(hyp3Store.getProcessingOptions)
+      ).subscribe(
+       ([jobs, options]) => localStorage.setItem(
+         this.customProductsQueueStateKey, JSON.stringify({jobs, options})
+       )
+      )
+    );
+
+    this.subs.add(
       this.store$.select(searchStore.getSearchType).pipe(
         tap(searchType => this.searchType = searchType),
+        tap(searchType => {
+          if (searchType === models.SearchType.CUSTOM_PRODUCTS) {
+            this.store$.dispatch(new searchStore.MakeSearch());
+          }
+        }),
         skip(1),
         map(searchType => {
           return searchType === models.SearchType.DATASET ?
             models.MapInteractionModeType.DRAW :
             models.MapInteractionModeType.NONE;
-        })
+        }),
       ).subscribe(
         mode => this.store$.dispatch(new mapStore.SetMapInteractionMode(mode))
       )
@@ -136,6 +154,11 @@ export class AppComponent implements OnInit, OnDestroy {
     this.subs.add(this.ccService.popupOpen$.subscribe(_ => _));
     this.subs.add(this.ccService.popupClose$.subscribe(_ => _));
     this.subs.add(this.ccService.revokeChoice$.subscribe(_ => _));
+
+    this.matIconRegistry.addSvgIcon(
+      'hyp3',
+      this.domSanitizer.bypassSecurityTrustResourceUrl('../assets/icons/hyp3.svg')
+    );
   }
 
   private loadProductQueue(): void {
@@ -147,8 +170,14 @@ export class AppComponent implements OnInit, OnDestroy {
     }
   }
 
-  private openBaselineChart(): void {
-    const dialogRef = this.dialog.open(BaselineChartComponent);
+  private loadCustomProductsQueue(): void {
+    const queueItemsStr = localStorage.getItem(this.customProductsQueueStateKey);
+
+    if (queueItemsStr) {
+      const {jobs, options} = JSON.parse(queueItemsStr);
+      this.store$.dispatch(new queueStore.AddJobs(jobs));
+      this.store$.dispatch(new hyp3Store.SetProcessingOptions(options));
+    }
   }
 
   public onCloseSidebar(): void {

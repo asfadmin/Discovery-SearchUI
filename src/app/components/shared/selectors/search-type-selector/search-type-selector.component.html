@@ -1,18 +1,18 @@
-<div fxFlex="nogrow">
+<div class="gtm-search-type-selector" fxFlex="nogrow">
   <mat-form-field fxFlex="120px">
     <mat-label>Search Type</mat-label>
-    <mat-select
+    <mat-select class="gtm-search-type"
       [(ngModel)]="searchType"
       (selectionChange)="onSetSearchType($event.value)">
       <mat-option [value]="searchTypes.DATASET">Geographic</mat-option>
       <mat-option [value]="searchTypes.LIST">List</mat-option>
       <mat-option [value]="searchTypes.BASELINE">Baseline</mat-option>
       <mat-option [value]="searchTypes.SBAS">SBAS</mat-option>
-      <!--<mat-option-->
-        <!--[value]="searchTypes.CUSTOM_PRODUCTS"-->
-        <!--[disabled]="!isLoggedIn">-->
-          <!--Custom Products-->
-      <!--</mat-option>-->
+      <mat-option
+        [value]="searchTypes.CUSTOM_PRODUCTS"
+        [disabled]="!isLoggedIn">
+          On Demand Products
+      </mat-option>
     </mat-select>
   </mat-form-field>
 </div>

@@ -1,0 +1,89 @@
+<div class="processing-options" style="margin: 10px;">
+  <div>
+    <app-project-name-selector [processName]="true">
+    </app-project-name-selector>
+  </div>
+  <div>
+    <mat-form-field>
+      <mat-label>Processing Type</mat-label>
+      <mat-select [(value)]="processingType"
+        (selectionChange)="onSetProcessingType($event.value)">
+        <mat-option value="RTC_GAMMA">RTC Gamma</mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+  <div class="options-header">Processing Options</div>
+  <div>
+    <mat-form-field>
+      <mat-label>Radiometry</mat-label>
+      <mat-select [(value)]="radiometry"
+        (selectionChange)="onSetRadiometry($event.value)">
+        <mat-option value="gamma0">gamma0</mat-option>
+        <mat-option value="sigma0">sigma0</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <p class="dropdown-option--description faint-text">
+      Backscatter coefficient normalization, either by ground area
+      (sigma0) or illuminated area projected into the look direction (gamma0).
+    </p>
+  </div>
+  <div>
+    <mat-form-field>
+      <mat-label>Scale</mat-label>
+      <mat-select [(value)]="scale"
+        (selectionChange)="onSetScale($event.value)">
+        <mat-option value="power">power</mat-option>
+        <mat-option value="amplitude">amplitude</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <p class="dropdown-option--description faint-text">
+      Scale of output image; either power or amplitude.
+    </p>
+  </div>
+  <div>
+    <mat-slide-toggle
+      (change)="onSetDemMatching($event.checked)"
+      [(ngModel)]="demMatching">
+      DEM Matching
+    </mat-slide-toggle>
+    <p class="faint-text">
+      Coregisters SAR data to the DEM, rather than using
+      dead reckoning based on orbit files.
+    </p>
+  </div>
+  <div>
+    <mat-slide-toggle
+      (change)="onSetIncludeDem($event.checked)"
+      [(ngModel)]="includeDem">
+      Include DEM
+    </mat-slide-toggle>
+
+    <p class="faint-text">
+      Include the DEM file in the product package.
+    </p>
+  </div>
+  <div>
+    <mat-slide-toggle
+      (change)="onSetIncludeIncMap($event.checked)"
+      [(ngModel)]="includeIncMap">
+      Include Inc. Angle Map
+    </mat-slide-toggle>
+
+    <p class="faint-text">
+      Include the incidence angle map in the product package.
+    </p>
+  </div>
+  <div style="padding-bottom: 5px;">
+    <mat-slide-toggle
+      (change)="onSetSpeckleFilter($event.checked)"
+      [(ngModel)]="speckleFilter">
+      Speckle Filter
+    </mat-slide-toggle>
+
+    <p class="faint-text">
+      Apply an Enhanced Lee speckle filter.
+    </p>
+  </div>
+</div>

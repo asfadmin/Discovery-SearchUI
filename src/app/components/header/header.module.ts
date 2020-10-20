@@ -9,12 +9,13 @@ import { MatInputModule } from '@angular/material/input';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatToolbarModule } from '@angular/material/toolbar';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
 
 import { MatSharedModule } from '@shared';
 import { HeaderComponent } from './header.component';
 
 import { QueueModule } from './queue';
-import { Hyp3JobsDialogModule } from './hyp3-jobs-dialog';
+import { ProcessingQueueModule } from './processing-queue';
 import { HeaderButtonsModule } from './header-buttons';
 import { InfoBarComponent } from './info-bar/info-bar.component';
 
@@ -29,6 +30,7 @@ import { SearchButtonModule } from '@components/shared/search-button';
 import { ClearButtonModule } from '@components/shared/clear-button';
 import { PipesModule } from '@pipes';
 import { SearchTypeSelectorModule } from '@components/shared/selectors/search-type-selector';
+import { ProjectNameSelectorModule } from '@components/shared/selectors/project-name-selector';
 
 import { LogoModule } from '@components/header/logo/logo.module';
 import { DatasetHeaderComponent } from './dataset-header/dataset-header.component';
@@ -65,10 +67,11 @@ import { Hyp3HeaderComponent } from './hyp3-header/hyp3-header.component';
     MatSelectModule,
     MatDatepickerModule,
     MatSharedModule,
+    MatAutocompleteModule,
     PipesModule,
 
     QueueModule,
-    Hyp3JobsDialogModule,
+    ProcessingQueueModule,
 
     SearchTypeSelectorModule,
     DatasetSelectorModule,
@@ -80,6 +83,7 @@ import { Hyp3HeaderComponent } from './hyp3-header/hyp3-header.component';
     HeaderButtonsModule,
     MasterSceneSelectorModule,
     LogoModule,
+    ProjectNameSelectorModule
   ],
   exports: [
     HeaderComponent

@@ -1,5 +1,9 @@
 @import "asf-theme";
 
+.processing-queue {
+  padding: 0;
+}
+
 .card-title-group {
   background-color: $asf-primary-light;
   color: $asf-primary-dark;
@@ -15,22 +19,23 @@
   height: 100%;
 }
 
-.jobs-display {
-  height: 510px;
+.jobs-display--desktop {
+  height: 514px;
   display: flex;
   flex-direction: row;
 }
 
+.jobs-display--mobile {
+  height: 477px;
+  overflow: auto;
+}
+
 .jobs-list-panel {
-  width: 600px;
+  width: 650px;
 }
 
 .jobs-detail {
   border-left: solid grey 1px;
-}
-
-.jobs-list {
-  height: 449px;
   overflow: auto;
 }
 
@@ -75,8 +80,50 @@
 
 .hyp3-footer {
   height: 50px;
+  display: flex;
+  justify-content: space-between;
   background-color: $asf-primary-light;
   border-top-style: solid;
   border-top-color: $asf-primary-dark;
   border-top-width: 1px;
+}
+
+.error-header {
+  border-bottom-style: solid;
+  border-bottom-color: $asf-primary-dark;
+  border-bottom-width: 1px;
+  position: absolute;
+  background: white;
+  z-index: 10;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.mobile-tab-selector {
+  border-bottom-style: solid;
+  border-bottom-color: $asf-primary-dark;
+  border-bottom-width: 1px;
+}
+
+.action-controls {
+  //margin-top: 15px;
+  //flex-shrink: 0;
+  //display: flex;
+  //flex-direction: row;
+  //justify-content: flex-end;
+}
+
+.feedback-link {
+  margin-left: 10px;
+  font-size: 18px;
+
+  a {
+    text-decoration: none;
+    color: $asf-primary;
+  }
+}
+
+.subtitle {
+  margin-top: -10px;
 }

@@ -20,10 +20,12 @@ import { SubSink } from 'subsink';
 })
 export class QueueComponent implements OnInit, OnDestroy {
   public products$ = this.store$.select(queueStore.getQueuedProducts).pipe(
-    tap(products => this.areAnyProducts = products.length > 0)
+    tap(products => this.areAnyProducts = products.length > 0),
+    tap(products => {
+      this.queueHasOnDemandProducts = !products.every(product => !product.metadata.job);
+    })
   );
-
-  private productNameLen: number;
+  public queueHasOnDemandProducts = false;
 
   public copyIcon = faCopy;
   public breakpoint$ = this.screenSize.breakpoint$;
@@ -52,11 +54,6 @@ export class QueueComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit() {
-    this.subs.add(
-      this.screenSize.size$.pipe(
-        map(size => size.width > 1000 ? 48 : 16)
-      ).subscribe(len => this.productNameLen = len)
-    );
   }
 
   public onRemoveProduct(product: CMRProduct): void {
