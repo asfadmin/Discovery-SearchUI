@@ -15,6 +15,8 @@ import { HelpFiltersComponent } from './help-pages/help-filters/help-filters.com
 import { HelpSavedSearchesComponent } from './help-pages/help-saved-searches/help-saved-searches.component';
 import { HelpNewStuffComponent } from './help-pages/help-new-stuff/help-new-stuff.component';
 import { HelpMoreLikeThisComponent } from '@components/help/help-pages/help-more-like-this/help-more-like-this.component';
+import { HelpBaselineSearchComponent } from '@components/help/help-pages/help-baseline-search/help-baseline-search.component';
+import { HelpSbasSearchComponent } from '@components/help/help-pages/help-sbas-search/help-sbas-search.component';
 import { HelpUnzippingComponent } from '@components/help/help-pages/help-unzipping/help-unzipping.component';
 import { HelpDownloadQueueComponent } from './help-pages/help-download-queue/help-download-queue.component';
 import { HelpExportOptionsComponent } from './help-pages/help-export-options/help-export-options.component';
@@ -23,6 +25,8 @@ import { HelpExportOptionsComponent } from './help-pages/help-export-options/hel
 @NgModule({
   declarations: [
     HelpComponent,
+    HelpBaselineSearchComponent,
+    HelpSbasSearchComponent,
     HelpGeoSearchComponent,
     HelpListSearchComponent,
     HelpSearchResultsComponent,
