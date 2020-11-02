@@ -46,20 +46,20 @@
   box-sizing: border-box; // required for the enableGhostResize option to work
 }
 
-.resize-handle-top {
-  position: absolute;
-  height: 16px;
-  cursor: row-resize;
-  background-image: url('/assets/div-handles/hsizegrip.png');
-  //background-color: $asf-primary-light;
-  background-position: center; /* Center the image */
-  background-repeat: no-repeat; /* Do not repeat the image */
-  text-align: center;
-  top: -15px;
-  width: 45px;
-  z-index: 9;
-  display: inline-block;
-}
+//.resize-handle-top {
+//  position: absolute;
+//  height: 16px;
+//  cursor: row-resize;
+//  background-image: url('/assets/div-handles/hsizegrip.png');
+//  background-color: $asf-primary-light;
+//  background-position: center; /* Center the image */
+//  background-repeat: no-repeat; /* Do not repeat the image */
+//  text-align: center;
+//  top: -15px;
+//  width: 45px;
+//  z-index: 9;
+//  display: inline-block;
+//}
 
 .resize-handle-bottom {
   bottom: 0;
@@ -116,9 +116,16 @@
   margin-top: -25px;
   z-index: 9;
 }
-
-.filler {
+.resize-handle-filler {
+  cursor: row-resize;
   width: 75px;
+  height: 16px;
+  margin-top: -19px;
+  z-index: 9;
+  background-image: url('/assets/div-handles/hsizegrip.png');
+  background-color: $asf-primary-light;
+  background-position: center;
+  background-repeat: no-repeat;
 }
 
 .resize-spacer {

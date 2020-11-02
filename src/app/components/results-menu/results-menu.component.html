@@ -5,9 +5,11 @@
     <div
       id="result-div"
       class="w100 results-menu"
+      [resizeEdges]="{ top: true }"
       [ngClass]="{'mobile-size': breakpoint === breakpoints.MOBILE}"
       [style.height.px]="menuHeightPx"
       mwlResizable
+      mwlResizeHandle
       [validateResize]="validate"
       [enableGhostResize]="true"
       [resizeSnapGrid]="{ left: 50, right: 50 }"
@@ -15,16 +17,18 @@
       (resizing)="onResizeEnd($event)">
       <div class="min-max-controls">
         <div (click)="maxResultWindow()" class="resize-max material-icons">keyboard_arrow_up</div>
-        <div class="filler"></div>
+        <div class="resize-handle-filler"></div>
         <div (click)="minResultWindow()" class="resize-min material-icons">keyboard_arrow_down</div>
       </div>
       <div
         [class.hidden]="(areNoScenes$ | async)"
         class="h100" style="justify-content: center;">
-        <div class="resize-handle-top"
-          mwlResizeHandle
-          [resizeEdges]="{ top: true }">
-        </div>
+<!--        <div-->
+<!--          class="resize-handle-top"-->
+<!--          mwlResizeHandle-->
+<!--          [resizeEdges]="{ top: true }"-->
+<!--        >-->
+<!--        </div>-->
 
         <div *ngIf="products.length !== 0" class="results-menu--background h100 w100 mp0"
              fxFlex fxLayout="row">
