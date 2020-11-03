@@ -26,7 +26,7 @@ export class BrowseListComponent implements OnInit, AfterViewInit, OnDestroy {
     this.scenesService.scenes$()
   );
   public scenes$: Observable<models.CMRProduct[]>;
-  public selectedName: string;
+  public selectedId: string;
   public browses$ = this.store$.select(scenesStore.getSelectedSceneBrowses);
   private selectedFromList = false;
   private subs = new SubSink();
@@ -47,7 +47,7 @@ export class BrowseListComponent implements OnInit, AfterViewInit, OnDestroy {
 
     this.subs.add(
       this.store$.select(scenesStore.getSelectedScene).subscribe(
-        scene => this.selectedName = scene ? scene.name : null
+        scene => this.selectedId = scene ? scene.id : null
       )
     );
   }
@@ -63,7 +63,7 @@ export class BrowseListComponent implements OnInit, AfterViewInit, OnDestroy {
           )
         )),
         filter(([selected, _]) => !!selected),
-        tap(([selected, _]) => this.selectedName = selected.name),
+        tap(([selected, _]) => this.selectedId = selected.id),
         map(([selected, scenes]) => scenes.indexOf(selected)),
       ).subscribe(
         idx => {

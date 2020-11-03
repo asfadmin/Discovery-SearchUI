@@ -171,7 +171,7 @@ export class ScenesListComponent implements OnInit, OnDestroy {
         map(
           scenes => Object.entries(scenes)
             .reduce((total, [scene, amt]) => {
-              total[scene] = amt[0] === amt[1];
+              total[scene] = amt[0] >= amt[1];
 
               return total;
             }, {})

@@ -18,4 +18,8 @@ export class LogoComponent implements OnInit {
 
   ngOnInit(): void {
   }
+
+  onResetSearch() {
+    window.location = <any>'/';
+  }
 }

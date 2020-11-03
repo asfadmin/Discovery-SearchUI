@@ -30,6 +30,7 @@ declare global {
 })
 export class SearchButtonComponent implements OnInit, OnDestroy {
   public searchType: SearchType;
+  public searchTypes = SearchType;
   public canSearch$ = this.store$.select(searchStore.getCanSearch);
   public isMaxResultsLoading$ = this.store$.select(searchStore.getIsMaxResultsLoading);
   public loading$ = this.store$.select(searchStore.getIsLoading);

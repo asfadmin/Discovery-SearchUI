@@ -1,7 +1,7 @@
 <cdk-virtual-scroll-viewport orientation="horizontal" class="browse-list-viewport w100 h100" itemSize="140">
   <div *cdkVirtualFor="let scene of (scenes$ | async)"
     (click)="onNewSceneSelected(scene)"
-    [class.selected]="scene.name === selectedName"
+    [class.selected]="scene.id === selectedId"
     class="clickable">
     <div class="browse-image--container"
          [matBadgeHidden]="scene.browses.length <= 1"
