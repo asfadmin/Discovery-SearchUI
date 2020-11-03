@@ -98,15 +98,16 @@
   flex: 0 0 25px;
   cursor: pointer;
   text-align: center;
-  margin-top: -25px;
+  margin-top: -18px;
   z-index: 9;
 }
+
 .resize-handle-filler {
-  cursor: row-resize;
-  width: 75px;
-  height: 16px;
-  margin-top: -19px;
-  z-index: 9;
+  //cursor: row-resize;
+  width: 56px;
+  height: 14px;
+  margin-top: -26px;
+  //z-index: 9;
   background-image: url('/assets/div-handles/hsizegrip.png');
   background-color: $asf-primary-light;
   background-position: center;
