@@ -15,7 +15,7 @@
       [resizeSnapGrid]="{ left: 50, right: 50 }"
       (resizeEnd)="onFinalResize($event)"
       (resizing)="onResizeEnd($event)">
-      <div class="min-max-controls">
+      <div *ngIf="products.length !== 0" class="min-max-controls">
         <div (click)="maxResultWindow()" class="resize-max material-icons">keyboard_arrow_up</div>
         <div class="resize-handle-filler"></div>
         <div (click)="minResultWindow()" class="resize-min material-icons">keyboard_arrow_down</div>
