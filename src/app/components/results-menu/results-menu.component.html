@@ -15,20 +15,15 @@
       [resizeSnapGrid]="{ left: 50, right: 50 }"
       (resizeEnd)="onFinalResize($event)"
       (resizing)="onResizeEnd($event)">
+
       <div *ngIf="products.length !== 0" class="min-max-controls">
         <div (click)="maxResultWindow()" class="resize-max material-icons">keyboard_arrow_up</div>
         <div class="resize-handle-filler"></div>
         <div (click)="minResultWindow()" class="resize-min material-icons">keyboard_arrow_down</div>
       </div>
-      <div
-        [class.hidden]="(areNoScenes$ | async)"
+
+      <div [class.hidden]="(areNoScenes$ | async)"
         class="h100" style="justify-content: center;">
-<!--        <div-->
-<!--          class="resize-handle-top"-->
-<!--          mwlResizeHandle-->
-<!--          [resizeEdges]="{ top: true }"-->
-<!--        >-->
-<!--        </div>-->
 
         <div *ngIf="products.length !== 0" class="results-menu--background h100 w100 mp0"
              fxFlex fxLayout="row">
