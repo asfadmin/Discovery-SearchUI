@@ -29,7 +29,8 @@
 
   <span matTooltip = "Sign in to save your search" [matTooltipDisabled]="isLoggedIn"
         matTooltipPosition = "after">
-    <button mat-menu-item [disabled]="!isLoggedIn" (click)="saveCurrentSearch()">
+    <button *ngIf="searchType !== searchTypes.CUSTOM_PRODUCTS"
+      mat-menu-item [disabled]="!isLoggedIn" (click)="saveCurrentSearch()">
       Save Search
     </button>
   </span>

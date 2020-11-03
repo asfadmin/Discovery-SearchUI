@@ -8,7 +8,7 @@ import { Store } from '@ngrx/store';
 import { AppState } from '@store';
 import * as moment from 'moment';
 import { of } from 'rxjs';
-import { tap, catchError } from 'rxjs/operators';
+import { tap, catchError, skip } from 'rxjs/operators';
 
 import * as queueStore from '@store/queue';
 import * as hyp3Store from '@store/hyp3';
@@ -60,7 +60,7 @@ export class ProcessingQueueComponent implements OnInit {
       this.jobs = jobs;
     });
 
-    this.store$.select(hyp3Store.getHyp3User).subscribe(
+    this.store$.select(hyp3Store.getHyp3User).pipe(skip(1)).subscribe(
       user => {
         if (user === null) {
           return;

@@ -25,7 +25,7 @@
 
   <mat-card-content>
     <div class="jobs-dialog">
-      <div *ngIf="!isUserLoggedIn" class="w100 error-header">
+      <div *ngIf="!isUserLoggedIn && user !== ''" class="w100 error-header">
         <div style="padding-left: 10px;">
           <b>Sign in to process data</b>
         </div>
@@ -37,7 +37,7 @@
         </div>
       </div>
 
-      <div *ngIf="isUserLoggedIn && jobs.length > remaining " class="w100 error-header">
+      <div *ngIf="isUserLoggedIn && user !== '' && jobs.length > remaining " class="w100 error-header">
         <div style="padding-left: 10px;">
           <b>Too many jobs in queue </b>
         </div>
@@ -46,7 +46,7 @@
         </div>
       </div>
 
-      <div *ngIf="isUserLoggedIn && remaining === 0" class="w100 error-header">
+      <div *ngIf="isUserLoggedIn && user !== '' && remaining === 0" class="w100 error-header">
         <div style="padding-left: 10px;">
           <b>No jobs left this month</b>
         </div>
