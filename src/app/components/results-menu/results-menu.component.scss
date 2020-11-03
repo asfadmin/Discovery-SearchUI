@@ -46,21 +46,6 @@
   box-sizing: border-box; // required for the enableGhostResize option to work
 }
 
-//.resize-handle-top {
-//  position: absolute;
-//  height: 16px;
-//  cursor: row-resize;
-//  background-image: url('/assets/div-handles/hsizegrip.png');
-//  background-color: $asf-primary-light;
-//  background-position: center; /* Center the image */
-//  background-repeat: no-repeat; /* Do not repeat the image */
-//  text-align: center;
-//  top: -15px;
-//  width: 45px;
-//  z-index: 9;
-//  display: inline-block;
-//}
-
 .resize-handle-bottom {
   bottom: 0;
 }
