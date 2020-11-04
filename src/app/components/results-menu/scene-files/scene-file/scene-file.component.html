@@ -72,9 +72,14 @@
       <span *ngIf="isDownloadable(product) && product.bytes !== 0">{{product.bytes | readableSizeFromBytes }}</span>
     </div>
 
+    <div *ngIf="product.metadata.job && product.metadata.job.name" mat-line>
+      Project Name: {{ product.metadata.job.name }}
+    </div>
+
     <div *ngIf="product.metadata.job && product.metadata.job.job_parameters.scale" mat-line>
       Scale: {{ product.metadata.job.job_parameters.scale }}
     </div>
+
     <div *ngIf="product.metadata.job && product.metadata.job.job_parameters.radiometry" mat-line>
       Radiometry: {{ product.metadata.job.job_parameters.radiometry }}
     </div>

@@ -18,7 +18,7 @@ export interface Hyp3State {
 const initState: Hyp3State = {
   jobs: [],
   user: null,
-  isUserLoading: true,
+  isUserLoading: false,
   areJobsLoading: false,
   submittingJobName: null,
   processingOptions: {
@@ -149,6 +149,11 @@ export const getSubmittingJobName = createSelector(
 export const getHyp3User = createSelector(
   getHyp3State,
   (state: Hyp3State) => state.user
+);
+
+export const getIsHyp3UserLoading = createSelector(
+  getHyp3State,
+  (state: Hyp3State) => state.isUserLoading
 );
 
 export const getProcessingOptions = createSelector(
