@@ -91,10 +91,6 @@ export class ProcessingQueueComponent implements OnInit {
 
     this.store$.select(userStore.getIsUserLoggedIn).subscribe(
       isLoggedIn => {
-        if (!this.isUserLoggedIn && isLoggedIn) {
-          this.store$.dispatch(new hyp3Store.LoadUser());
-        }
-
         this.isUserLoggedIn = isLoggedIn;
       }
     );
