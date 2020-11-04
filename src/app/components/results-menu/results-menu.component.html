@@ -12,12 +12,12 @@
       [validateResize]="validate"
       [enableGhostResize]="true"
       [resizeSnapGrid]="{ left: 50, right: 50 }"
-      (resizeEnd)="onFinalResize($event)"
+      (resizeEnd)="onFinalResize()"
       (resizing)="onResizeEnd($event)">
 
       <div *ngIf="products.length !== 0" class="min-max-controls">
         <div (click)="maxResultWindow()" class="resize-max material-icons">keyboard_arrow_up</div>
-        <div class="resize-handle-filler"></div>
+        <div mwlResizeHandle class="resize-handle-filler"></div>
         <div (click)="minResultWindow()" class="resize-min material-icons">keyboard_arrow_down</div>
       </div>
 
