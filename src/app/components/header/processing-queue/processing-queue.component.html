@@ -7,7 +7,7 @@
         </span>
     </mat-card-title>
     <mat-card-subtitle class="subtitle">
-      <div *ngIf="isUserLoggedIn && user !== ''">
+      <div *ngIf="isUserLoggedIn && !isUserLoading && user !== ''">
         <b>{{ user }}</b> - {{ remaining }} jobs left this month
       </div>
       <div *ngIf="isUserLoggedIn && isUserLoading">

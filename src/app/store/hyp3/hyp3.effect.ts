@@ -30,11 +30,12 @@ export class Hyp3Effects {
 
   public loadUser = createEffect(() => this.actions$.pipe(
     ofType(Hyp3ActionType.LOAD_USER),
-    switchMap(_ => this.hyp3Service.getUser$()),
-    map(user => new SetUser(user)),
-    catchError(_ => {
-      return of(new ErrorLoadingUser());
-    })
+    switchMap(_ => this.hyp3Service.getUser$().pipe(
+      map(user => new SetUser(user)),
+      catchError(() => {
+        return of(new ErrorLoadingUser());
+      })
+    ))
   ));
 
   public submitJob = createEffect(() => this.actions$.pipe(
