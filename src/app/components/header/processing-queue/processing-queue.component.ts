@@ -8,7 +8,7 @@ import { Store } from '@ngrx/store';
 import { AppState } from '@store';
 import * as moment from 'moment';
 import { of } from 'rxjs';
-import { tap, catchError, skip } from 'rxjs/operators';
+import { tap, catchError } from 'rxjs/operators';
 
 import * as queueStore from '@store/queue';
 import * as hyp3Store from '@store/hyp3';
@@ -30,6 +30,7 @@ export class ProcessingQueueComponent implements OnInit {
   public jobs: models.QueuedHyp3Job[] = [];
   public user = '';
   public isUserLoggedIn = false;
+  public isUserLoading = true;
   public remaining = 0;
   public areJobsLoading = false;
   public isQueueSubmitProcessing = false;
@@ -44,9 +45,9 @@ export class ProcessingQueueComponent implements OnInit {
   public processingOptions: models.Hyp3ProcessingOptions;
 
   constructor(
+    public authService: services.AuthService,
     private dialogRef: MatDialogRef<ProcessingQueueComponent>,
     private snackBar: MatSnackBar,
-    public authService: services.AuthService,
     private store$: Store<AppState>,
     private hyp3: services.Hyp3Service,
     private screenSize: services.ScreenSizeService,
@@ -56,11 +57,16 @@ export class ProcessingQueueComponent implements OnInit {
   ngOnInit(): void {
     this.store$.dispatch(new hyp3Store.LoadUser());
 
+    this.store$.select(hyp3Store.getIsHyp3UserLoading).subscribe(
+      isUserLoading => {
+        this.isUserLoading = isUserLoading;
+    });
+
     this.store$.select(queueStore.getQueuedJobs).subscribe(jobs => {
       this.jobs = jobs;
     });
 
-    this.store$.select(hyp3Store.getHyp3User).pipe(skip(1)).subscribe(
+    this.store$.select(hyp3Store.getHyp3User).subscribe(
       user => {
         if (user === null) {
           return;
