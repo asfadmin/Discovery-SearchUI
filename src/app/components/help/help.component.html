@@ -52,6 +52,12 @@
           <ng-template [ngSwitchCase]="'moreLikeThis'">
             <app-help-more-like-this></app-help-more-like-this>
           </ng-template>
+          <ng-template [ngSwitchCase]="'baselineSearch'">
+            <app-help-baseline-search></app-help-baseline-search>
+          </ng-template>
+          <ng-template [ngSwitchCase]="'sbasSearch'">
+            <app-help-sbas-search></app-help-sbas-search>
+          </ng-template>
           <ng-template [ngSwitchDefault]>
             <app-help-toc></app-help-toc>
           </ng-template>

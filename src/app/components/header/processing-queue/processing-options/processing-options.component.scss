@@ -1,5 +1,6 @@
 .processing-options {
   height: 100%;
+  min-width: 320px;
 }
 
 .dropdown-option--description {
@@ -10,4 +11,8 @@
 .options-header {
   font-weight: bold;
   margin-bottom: 10px;
+}
+
+.option-info--spacing {
+  margin-left: 5px;
 }

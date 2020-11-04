@@ -4,11 +4,12 @@ import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
 
 import { combineLatest } from 'rxjs';
-import { withLatestFrom, switchMap, map, filter } from 'rxjs/operators';
+import { withLatestFrom, switchMap, map, filter, delay } from 'rxjs/operators';
 
 import { AppState } from '../app.reducer';
 import * as userActions from './user.action';
 import * as userReducer from './user.reducer';
+import * as hyp3Store from '../hyp3/hyp3.action';
 
 import { UserDataService } from '@services/user-data.service';
 import * as models from '@models';
@@ -106,6 +107,12 @@ export class UserEffects {
     filter(resp => this.isSuccessfulResponse(resp)),
     map(searches => this.datesToDateObjectFor(searches)),
     map(searches => new userActions.SetSearches(<models.Search[]>searches))
+  ));
+
+  public loadHyp3UserOnLogin = createEffect(() => this.actions$.pipe(
+    ofType<userActions.LoadSavedSearches>(userActions.UserActionType.LOGIN),
+    delay(400),
+    map(_ => new hyp3Store.LoadUser())
   ));
 
   public loadSavedSearches = createEffect(() => this.actions$.pipe(

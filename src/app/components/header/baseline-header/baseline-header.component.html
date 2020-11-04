@@ -31,10 +31,12 @@
             style="margin-left: 5px;"
             mat-flat-button>
           <mat-icon>edit</mat-icon>
-          <ng-container *ngIf="selectedSearchType === searchTypes.SBAS">
+          <ng-container *ngIf="selectedSearchType === searchTypes.SBAS; else not_sbas_search">
             SBAS
           </ng-container>
-          Baseline
+          <ng-template #not_sbas_search>
+            Baseline
+          </ng-template>
         </button>
 
         <div class="mobile-icon-cluster">

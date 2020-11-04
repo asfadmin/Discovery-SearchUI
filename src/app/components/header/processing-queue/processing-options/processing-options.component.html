@@ -23,10 +23,11 @@
       </mat-select>
     </mat-form-field>
 
-    <p class="dropdown-option--description faint-text">
+    <app-option-info class="option-info--spacing" infoText="
       Backscatter coefficient normalization, either by ground area
       (sigma0) or illuminated area projected into the look direction (gamma0).
-    </p>
+      ">
+    </app-option-info>
   </div>
   <div>
     <mat-form-field>
@@ -38,9 +39,10 @@
       </mat-select>
     </mat-form-field>
 
-    <p class="dropdown-option--description faint-text">
+    <app-option-info class="option-info--spacing" infoText="
       Scale of output image; either power or amplitude.
-    </p>
+      ">
+    </app-option-info>
   </div>
   <div>
     <mat-slide-toggle
@@ -48,10 +50,12 @@
       [(ngModel)]="demMatching">
       DEM Matching
     </mat-slide-toggle>
-    <p class="faint-text">
+
+    <app-option-info class="option-info--spacing" infoText="
       Coregisters SAR data to the DEM, rather than using
       dead reckoning based on orbit files.
-    </p>
+      ">
+    </app-option-info>
   </div>
   <div>
     <mat-slide-toggle
@@ -60,9 +64,11 @@
       Include DEM
     </mat-slide-toggle>
 
-    <p class="faint-text">
+
+    <app-option-info class="option-info--spacing" infoText="
       Include the DEM file in the product package.
-    </p>
+      ">
+    </app-option-info>
   </div>
   <div>
     <mat-slide-toggle
@@ -71,9 +77,10 @@
       Include Inc. Angle Map
     </mat-slide-toggle>
 
-    <p class="faint-text">
+    <app-option-info class="option-info--spacing" infoText="
       Include the incidence angle map in the product package.
-    </p>
+      ">
+    </app-option-info>
   </div>
   <div style="padding-bottom: 5px;">
     <mat-slide-toggle
@@ -82,8 +89,10 @@
       Speckle Filter
     </mat-slide-toggle>
 
-    <p class="faint-text">
+    <app-option-info class="option-info--spacing" infoText="
       Apply an Enhanced Lee speckle filter.
-    </p>
+      ">
+    </app-option-info>
+    <p></p>
   </div>
 </div>
