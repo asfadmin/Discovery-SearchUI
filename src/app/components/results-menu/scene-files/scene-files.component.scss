@@ -1,3 +1,5 @@
+@import "asf-theme";
+
 .products-list {
   padding-top: 0;
   padding-bottom: 24px;
@@ -6,4 +8,17 @@
 
 .zip-contents {
   padding-bottom: 20px;
+}
+
+.dem-warning {
+  font-size: 14px;
+  padding-left: 25px;
+  padding-top: 2px;
+  padding-bottom: 5px;
+  color: $asf-blue;
+  background-color: $asf-warn;
+}
+
+.more-link {
+  color: red;
 }
