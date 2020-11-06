@@ -51,3 +51,18 @@
   float: right;
   cursor: pointer;
 }
+
+.dem-warning {
+  font-size: 14px;
+  margin-top: 5px;
+  padding-top: 2px;
+  padding-right: 5px;
+  padding-bottom: 5px;
+  padding-left: 5px;
+  color: $asf-blue;
+  background-color: $asf-warn;
+}
+
+.more-link {
+  color: red;
+}

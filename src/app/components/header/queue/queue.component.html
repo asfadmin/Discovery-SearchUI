@@ -7,14 +7,14 @@
       </div>
       <mat-card-subtitle>
         {{ numberOfProducts$ | async }} Files, {{ (totalSize$ | async) | readableSizeFromBytes }}
-<!--        <div *ngIf="showDemWarning" class="dem-warning">-->
-<!--          Resampled DEM (SRTM or NED) used for RTC processing.-->
-<!--          <a class="more-link"-->
-<!--             target="_blank"-->
-<!--             href="https://asf.alaska.edu/data-sets/derived-data-sets/alos-palsar-rtc/alos-palsar-radiometric-terrain-correction/#DEM_Information">-->
-<!--            More...-->
-<!--          </a>-->
-<!--        </div>-->
+        <div *ngIf="showDemWarning" class="dem-warning">
+          Resampled DEM (SRTM or NED) used for RTC processing.
+          <a class="more-link"
+             target="_blank"
+             href="https://asf.alaska.edu/data-sets/derived-data-sets/alos-palsar-rtc/alos-palsar-radiometric-terrain-correction/#DEM_Information">
+            More...
+          </a>
+        </div>
       </mat-card-subtitle>
     </mat-card-title-group>
 
