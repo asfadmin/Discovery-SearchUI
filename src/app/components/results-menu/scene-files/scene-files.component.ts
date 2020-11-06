@@ -33,6 +33,7 @@ export class SceneFilesComponent implements OnInit, OnDestroy {
   public unzippedProducts: {[id: string]: models.UnzippedFolder[]};
   public isUserLoggedIn: boolean;
   public hasAccessToRestrictedData: boolean;
+  public showDemWarning: boolean;
   private subs = new SubSink();
 
   constructor(
@@ -48,6 +49,7 @@ export class SceneFilesComponent implements OnInit, OnDestroy {
         ([products, unzipped]) => {
           this.products = products;
           this.openUnzippedProduct = unzipped;
+          this.showDemWarning = this.demWarning(products);
 
           if (unzipped && products) {
             this.beforeWithUnzip = this.getBeforeWithUnzip(products);
@@ -127,6 +129,25 @@ export class SceneFilesComponent implements OnInit, OnDestroy {
     });
 
     return pivotIdx;
+  }
+
+  public demWarning(products) {
+    let warn = false;
+
+    products.forEach((product) => {
+      console.log('product.dataset:', product.dataset);
+      console.log('product.name:', product.name);
+      console.log('product.file:', product.file);
+      console.log('product.id:', product.id);
+      console.log('product.productTypeDisplay:', product.productTypeDisplay);
+      console.log('product.metadata.productType:', product.metadata.productType);
+      if (product.dataset === 'ALOS' &&
+          product.metadata.productType.includes('RTC_') ) {
+        warn = true;
+      }
+    });
+
+    return warn;
   }
 
   public onQueueHyp3Job(job: models.QueuedHyp3Job) {
