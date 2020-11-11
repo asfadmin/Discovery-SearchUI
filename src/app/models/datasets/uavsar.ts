@@ -3,7 +3,7 @@ import { Props } from '../filters.model';
 export const uavsar = {
   id: 'UAVSAR',
   name: 'UAVSAR',
-  subName: 'NISAR-simulated',
+  subName: '',
   beta: false,
   properties: [
     Props.DATE,
