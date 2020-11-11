@@ -33,6 +33,7 @@ export class SceneFilesComponent implements OnInit, OnDestroy {
   public unzippedProducts: {[id: string]: models.UnzippedFolder[]};
   public isUserLoggedIn: boolean;
   public hasAccessToRestrictedData: boolean;
+  public showDemWarning: boolean;
   private subs = new SubSink();
 
   constructor(
@@ -48,6 +49,7 @@ export class SceneFilesComponent implements OnInit, OnDestroy {
         ([products, unzipped]) => {
           this.products = products;
           this.openUnzippedProduct = unzipped;
+          this.showDemWarning = this.demWarning(products);
 
           if (unzipped && products) {
             this.beforeWithUnzip = this.getBeforeWithUnzip(products);
@@ -127,6 +129,19 @@ export class SceneFilesComponent implements OnInit, OnDestroy {
     });
 
     return pivotIdx;
+  }
+
+  public demWarning(products) {
+    let warn = false;
+
+    products.forEach((product) => {
+      if (product.dataset === 'ALOS' &&
+          product.metadata.productType.includes('RTC_') ) {
+        warn = true;
+      }
+    });
+
+    return warn;
   }
 
   public onQueueHyp3Job(job: models.QueuedHyp3Job) {

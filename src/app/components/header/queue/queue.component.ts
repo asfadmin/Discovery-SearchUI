@@ -19,13 +19,9 @@ import { SubSink } from 'subsink';
   styleUrls: ['./queue.component.scss']
 })
 export class QueueComponent implements OnInit, OnDestroy {
-  public products$ = this.store$.select(queueStore.getQueuedProducts).pipe(
-    tap(products => this.areAnyProducts = products.length > 0),
-    tap(products => {
-      this.queueHasOnDemandProducts = !products.every(product => !product.metadata.job);
-    })
-  );
+
   public queueHasOnDemandProducts = false;
+  public showDemWarning: boolean;
 
   public copyIcon = faCopy;
   public breakpoint$ = this.screenSize.breakpoint$;
@@ -33,6 +29,14 @@ export class QueueComponent implements OnInit, OnDestroy {
 
   public previousQueue: any[] | null = null;
   public areAnyProducts = false;
+
+  public products$ = this.store$.select(queueStore.getQueuedProducts).pipe(
+    tap(products => this.areAnyProducts = products.length > 0),
+    tap(products => {
+      this.queueHasOnDemandProducts = !products.every(product => !product.metadata.job);
+      this.showDemWarning = (this.areAnyProducts) ? this.demWarning((products)) : false;
+    })
+  );
 
   public numberOfProducts$ = this.products$.pipe(
     map(products => products.length)
@@ -102,6 +106,19 @@ export class QueueComponent implements OnInit, OnDestroy {
 
   private downloadMetadata(format: AsfApiOutputFormat): void {
     this.store$.dispatch(new queueStore.DownloadMetadata(format));
+  }
+
+  public demWarning(products) {
+    let warn = false;
+
+    products.forEach((product) => {
+      if (product.dataset === 'ALOS' &&
+        product.metadata.productType.includes('RTC_') ) {
+        warn = true;
+      }
+    });
+
+    return warn;
   }
 
   onCloseDownloadQueue() {
