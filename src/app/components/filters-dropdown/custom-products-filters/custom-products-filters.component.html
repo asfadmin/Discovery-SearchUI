@@ -25,12 +25,16 @@
 
     <mat-expansion-panel-header [collapsedHeight]="customCollapsedHeight" [expandedHeight]="customExpandedHeight">
       <mat-panel-title>
-        {{ panels.PROJECT_NAME }}
+        Job Filters
       </mat-panel-title>
     </mat-expansion-panel-header>
 
     <div class="w100" style="display: flex; margin-top: 25px;">
       <app-project-name-selector></app-project-name-selector>
+    </div>
+
+    <div class="w100" style="display: flex; margin-top: 25px;">
+      <app-job-status-selector></app-job-status-selector>
     </div>
   </mat-expansion-panel>
 </mat-accordion>

@@ -7,6 +7,7 @@ import { MakeSearch, ClearSearch, SetSearchType } from '@store/search/search.act
 import * as filterStore from '@store/filters';
 import * as mapStore from '@store/map';
 import * as uiStore from '@store/ui';
+import * as hyp3Store from '@store/hyp3';
 
 import * as models from '@models';
 import { MapService, } from './map/map.service';
@@ -49,7 +50,8 @@ export class SearchService {
       this.store$.dispatch(new filterStore.ClearPerpendicularRange());
       this.store$.dispatch(new filterStore.ClearTemporalRange());
     } else if (searchType === models.SearchType.CUSTOM_PRODUCTS) {
-      this.store$.dispatch(new filterStore.SetProjectName(null));
+      this.store$.dispatch(new filterStore.SetProjectName(''));
+      this.store$.dispatch(new filterStore.SetJobStatuses([]));
     }
   }
 

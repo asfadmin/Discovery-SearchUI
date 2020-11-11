@@ -12,6 +12,8 @@ import * as uiStore from '@store/ui';
 import * as queueStore from '@store/queue';
 import * as searchStore from '@store/search';
 import * as filtersStore from '@store/filters';
+import * as hyp3Store from '@store/hyp2';
+
 
 import {
   MapService, ScenesService, ScreenSizeService,
@@ -184,9 +186,29 @@ export class ScenesListHeaderComponent implements OnInit {
     this.store$.dispatch(new queueStore.AddItems(products));
   }
 
+  public queueAllOnDemand(products: models.CMRProduct[]): void {
+    const jobs = products.map(
+      product => ({
+        granules: [ product ],
+        job_type: models.Hyp3JobType.RTC_GAMMA
+      })
+    );
+
+    this.store$.dispatch(new queueStore.AddJobs(jobs));
+  }
+
   public downloadable(products: models.CMRProduct[]): models.CMRProduct[] {
     return products.filter(product => this.isDownloadable(product));
   }
+
+  public slc(products: models.CMRProduct[]): models.CMRProduct[] {
+    return products.filter(product => product.metadata.productType === 'SLC');
+  }
+
+  public grd(products: models.CMRProduct[]): models.CMRProduct[] {
+    return products.filter(product => product.metadata.productType === 'GRD_HD');
+  }
+
 
   public queueSBASProducts(products: models.CMRProduct[]): void {
     this.store$.dispatch(new queueStore.AddItems(products));
