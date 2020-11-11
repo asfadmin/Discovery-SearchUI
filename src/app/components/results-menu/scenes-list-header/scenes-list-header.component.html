@@ -114,6 +114,28 @@
             </div>
           </div>
 
+          <div *ngIf="
+            searchType !== SearchTypes.CUSTOM_PRODUCTS &&
+            (slc(products).length > 0 || grd(products).length > 0)" fxFlex="" class="list-button-group">
+            <div fxLayout="row" fxLayoutAlign="center" class="button-group-label">
+              <label>On Demand</label>
+            </div>
+            <div fxLayout="row">
+              <div>
+                <mat-button-toggle-group fxFlex="" name="layerType" class="mr-10">
+                  <mat-button-toggle class="control-mat-button-toggle">
+                    <mat-icon
+                      class="clickable noselect list-icon"
+                      matTooltip="Add all results to On Demand queue"
+                      svgIcon="hyp3"
+                      [matMenuTriggerFor]="addAllOnDemand">
+                    </mat-icon>
+                  </mat-button-toggle>
+                </mat-button-toggle-group>
+              </div>
+            </div>
+          </div>
+
           <div *ngIf="searchType === SearchTypes.SBAS" fxFlex="" class="list-button-group">
             <div fxLayout="row" fxLayoutAlign="center" class="button-group-label">
               <label>Pairs</label>
@@ -142,6 +164,15 @@
 
             <button *ngIf="searchType === SearchTypes.SBAS" (click)="queueSBASProducts(sbasProducts)" mat-menu-item>
               Add {{ sbasProducts.length }} file{{ sbasProducts.length === 1 ? '' : 's'}} to downloads
+            </button>
+          </mat-menu>
+
+          <mat-menu #addAllOnDemand="matMenu">
+            <button *ngIf="slc(products).length > 0" (click)="queueAllOnDemand(slc(products))" mat-menu-item>
+              Add {{ slc(products).length }} SLC jobs to On Deman
+            </button>
+            <button *ngIf="grd(products).length > 0" (click)="queueAllOnDemand(grd(products))" mat-menu-item>
+              Add {{ grd(products).length }} GRD-HD jobs to On Deman
             </button>
           </mat-menu>
         </div>

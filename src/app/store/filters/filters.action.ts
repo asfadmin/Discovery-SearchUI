@@ -39,8 +39,11 @@ export enum FiltersActionType {
   ADD_BEAM_MODE = '[Filters-Beam-Mode] Add Beam Mode',
   SET_BEAM_MODES = '[Filters-Beam-Mode] Set Dataset Beam Modes',
 
-  ADD_POLARIZATION = '[Filters-Beam-Mode] Add Polarization',
+  ADD_POLARIZATION = '[Filters-Polarization] Add Polarization',
   SET_POLARIZATIONS = '[Filters-Polarization] Set Dataset Polarizations',
+
+  ADD_JOB_STATUS = '[Filters-Job-Status] Add Job Status',
+  SET_JOB_STATUSES = '[Filters-Job-Status] Set Job Statuses',
 
   ADD_FLIGHT_DIRECTION = '[Filters-Flight-Dir] Add Flight Direction',
   SET_FLIGHT_DIRECTIONS = '[Filters-Flight-Dir] Set Flight Directions',
@@ -234,6 +237,18 @@ export class SetFlightDirections implements Action {
   constructor(public payload: models.FlightDirection[]) {}
 }
 
+export class AddJobStatus implements Action {
+  public readonly type = FiltersActionType.ADD_JOB_STATUS;
+
+  constructor(public payload: models.Hyp3JobStatusCode) {}
+}
+
+export class SetJobStatuses implements Action {
+  public readonly type = FiltersActionType.SET_JOB_STATUSES;
+
+  constructor(public payload: models.Hyp3JobStatusCode[]) {}
+}
+
 export class AddBeamMode implements Action {
   public readonly type = FiltersActionType.ADD_BEAM_MODE;
 
@@ -348,6 +363,8 @@ export type FiltersActions =
   | AddFlightDirection
   | AddBeamMode
   | SetBeamModes
+  | AddJobStatus
+  | SetJobStatuses
   | AddSubtype
   | SetSubtypes
   | AddPolarization

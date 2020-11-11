@@ -24,6 +24,7 @@ export interface FiltersState {
   polarizations: models.DatasetPolarizations;
   flightDirections: Set<models.FlightDirection>;
   subtypes: models.DatasetSubtypes;
+  jobStatuses: models.Hyp3JobStatusCode[];
 
   missions: {[dataset: string]: string[]};
   selectedMission: null | string;
@@ -71,6 +72,7 @@ export const initState: FiltersState = {
   polarizations: [],
   subtypes: [],
   flightDirections: new Set<models.FlightDirection>([]),
+  jobStatuses: [],
 
   missions: {},
   selectedMission:  null,
@@ -401,6 +403,20 @@ export function filtersReducer(state = initState, action: FiltersActions): Filte
       return {
         ...state,
         beamModes: [ ...action.payload ]
+      };
+    }
+
+    case FiltersActionType.ADD_JOB_STATUS: {
+      return {
+        ...state,
+        jobStatuses: [ ...state.jobStatuses, action.payload ]
+      };
+    }
+
+    case FiltersActionType.SET_JOB_STATUSES: {
+      return {
+        ...state,
+        jobStatuses: [ ...action.payload ]
       };
     }
 
@@ -758,4 +774,9 @@ export const getSbasSearch = createSelector(
 export const getProjectName = createSelector(
   getFiltersState,
   (state: FiltersState) => state.projectName
+);
+
+export const getJobStatuses = createSelector(
+  getFiltersState,
+  (state: FiltersState) => state.jobStatuses
 );
