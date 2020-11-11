@@ -12,7 +12,6 @@ import * as uiStore from '@store/ui';
 import * as queueStore from '@store/queue';
 import * as searchStore from '@store/search';
 import * as filtersStore from '@store/filters';
-import * as hyp3Store from '@store/hyp3';
 
 
 import {
