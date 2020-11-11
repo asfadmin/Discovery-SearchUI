@@ -7,7 +7,6 @@ import { MakeSearch, ClearSearch, SetSearchType } from '@store/search/search.act
 import * as filterStore from '@store/filters';
 import * as mapStore from '@store/map';
 import * as uiStore from '@store/ui';
-import * as hyp3Store from '@store/hyp3';
 
 import * as models from '@models';
 import { MapService, } from './map/map.service';
