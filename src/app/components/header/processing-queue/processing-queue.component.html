@@ -1,6 +1,17 @@
 <mat-card class="processing-queue">
   <mat-card-title-group style="margin-bottom: 0 !important;" class="card-title-group">
     <mat-card-title>
+
+      <span>
+        <mat-icon
+          class="large-icon"
+          svgIcon="hyp3"
+          matBadgePosition="above after"
+          matBadgeOverlap="true"
+          matBadgeSize="small">
+        </mat-icon>
+      </span>
+
       On Demand
         <span class="feedback-link">
           <a href="javascript:feedback.showForm();"> <i class="fa fa-comments-o"></i> Feedback</a>
@@ -114,7 +125,7 @@
             jobs.length === 0 ||
             !isUserLoggedIn
           "
-          mat-button>
+          mat-flat-button color="primary">
           <span *ngIf="!isQueueSubmitProcessing">
             Submit Queue
           </span>
