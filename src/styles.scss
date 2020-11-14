@@ -70,11 +70,11 @@ ul {
 }
 
 .mat-slide-toggle.mat-checked .mat-slide-toggle-thumb {
-  background-color: $asf-warn;
+  background-color: $asf-primary;
 }
 
-.mat-slide-toggle.mat-checked .mat-slide-toggle-content {
-  background-color: $asf-warn;
+.mat-slide-toggle.mat-checked .mat-slide-toggle-bar {
+  background-color: darkgrey;
 }
 
 .max-width-100 {

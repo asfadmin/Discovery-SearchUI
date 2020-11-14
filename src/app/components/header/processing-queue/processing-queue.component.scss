@@ -25,7 +25,7 @@
 }
 
 .jobs-display--mobile {
-  height: 477px;
+  height: 463px;
   overflow: auto;
 }
 
@@ -78,7 +78,6 @@
 .on-demand-icon {
   @include md-icon-size(72px);
 
-  //margin-left: 16px;
   color: $asf-primary-dark;
 }
 
@@ -115,14 +114,6 @@
   border-bottom-width: 1px;
 }
 
-.action-controls {
-  //margin-top: 15px;
-  //flex-shrink: 0;
-  //display: flex;
-  //flex-direction: row;
-  //justify-content: flex-end;
-}
-
 .feedback-div {
   position: absolute;
   top: 60px;
@@ -142,10 +133,12 @@
 }
 
 .subtitle {
-  margin-top: -40px;
+  margin-top: -34px;
   font-style: italic;
   margin-left: 76px;
   font-size: 14px;
+  margin-bottom: 17px;
+  color: $asf-primary;
 }
 
 .mat-card-content {
