@@ -1,7 +1,6 @@
 <mat-card class="processing-queue">
   <mat-card-title-group class="card-title-group">
     <mat-card-title>
-
       <div class="on-demand-branding">
         <mat-icon
           class="on-demand-icon"
@@ -14,19 +13,19 @@
       <div class="on-demand-text">
         On Demand
       </div>
+      <div class="subtitle">
+        powered by HyP3
+      </div>
     </mat-card-title>
-    <mat-card-subtitle class="subtitle">
-      powered by HyP3
-    </mat-card-subtitle>
 
     <div class="close-x" (click)="onCloseDialog()">
       <mat-icon>close</mat-icon>
     </div>
-    <div class="feedback-div">
-              <span class="feedback-link">
-          <a href="javascript:feedback.showForm();"> <i class="fa fa-comments-o"></i> Feedback</a>
-        </span>
+
+    <div class="feedback-div feedback-link">
+      <a href="javascript:feedback.showForm();"> <i class="fa fa-comments-o"></i> Feedback</a>
     </div>
+
   </mat-card-title-group>
 
   <mat-card-content>
@@ -132,7 +131,12 @@
 
         <div class="footer-job-notification">
           <div *ngIf="isUserLoggedIn && !isUserLoading && user !== ''">
-            {{ remaining }} jobs left this month
+            <span *ngIf="breakpoint === breakpoints.MOBILE">
+              {{ remaining }} job max
+            </span>
+            <span *ngIf="breakpoint === !breakpoints.MOBILE">
+             {{ remaining }} jobs left this month
+            </span>
           </div>
           <div *ngIf="isUserLoggedIn && isUserLoading">
             <b>Loading...</b>
