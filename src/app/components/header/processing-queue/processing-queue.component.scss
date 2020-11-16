@@ -7,7 +7,7 @@
 .card-title-group {
   background-color: $asf-primary-light;
   color: $asf-primary-dark;
-  padding: 10px 10px 0 10px;
+  padding: 10px 10px 4px 10px;
   border-bottom-style: solid;
   border-bottom-color: $asf-primary-dark;
   border-bottom-width: 1px;
@@ -164,7 +164,6 @@
 .footer-clear {
   flex: none;
   align-self: center;
-  margin: 0 16px;
 }
 
 .footer-submit {
@@ -173,7 +172,7 @@
 }
 
 .footer-job-notification {
-  display: inline-flex;
+  flex: none;
   margin-right: 20px;
   align-self: center;
   color: $asf-primary-dark;
