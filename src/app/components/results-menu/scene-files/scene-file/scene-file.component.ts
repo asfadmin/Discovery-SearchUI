@@ -70,12 +70,7 @@ export class SceneFileComponent {
   }
 
   public canUnzip(product: models.CMRProduct): boolean {
-    const dataset = product.dataset.toLowerCase();
-
-    return (
-      !dataset.includes('sentinel') &&
-      product.downloadUrl.endsWith('.zip')
-    );
+    return product.downloadUrl.endsWith('.zip');
   }
 
   public expirationBadge(expiration_time: moment.Moment): string {

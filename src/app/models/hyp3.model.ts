@@ -104,7 +104,7 @@ export enum Hyp3JobType {
 
 export enum Hyp3JobStatusCode {
   PENDING = 'PENDING',
-    RUNNING = 'RUNNING',
-    SUCCEEDED = 'SUCCEEDED',
-    FAILED = 'FAILED'
+  RUNNING = 'RUNNING',
+  SUCCEEDED = 'SUCCEEDED',
+  FAILED = 'FAILED'
 }

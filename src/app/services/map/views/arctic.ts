@@ -8,7 +8,7 @@ import { MapView, CustomProjection } from './map-view';
 
 
 export function arctic(): MapView  {
-  const extent = [-4194304, -4194304, 4194304, 4194304];
+  const extent = [-7295304, -7295304, 7295304, 7295304];
   const projection = new CustomProjection(
     'EPSG:3413',
     '+proj=stere +lat_0=90 +lat_ts=70 +lon_0=-45 +k=1 ' +

@@ -11,6 +11,7 @@ import { ScreenSizeService } from '@services';
 enum FilterPanel {
   SEARCH = 'Search Options',
   PROJECT_NAME = 'Project Name',
+  DATE_FILTER = 'Date Filter',
 }
 
 @Component({

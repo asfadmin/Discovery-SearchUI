@@ -44,9 +44,11 @@ export class SceneFilesComponent implements OnInit, OnDestroy {
     this.subs.add(
       combineLatest(
         this.store$.select(scenesStore.getSelectedSceneProducts),
-        this.store$.select(scenesStore.getOpenUnzippedProduct)
+        this.store$.select(scenesStore.getOpenUnzippedProduct),
+        this.store$.select(scenesStore.getUnzippedProducts)
       ).subscribe(
-        ([products, unzipped]) => {
+        ([products, unzipped, unzippedFiles]) => {
+          this.unzippedProducts = unzippedFiles;
           this.products = products;
           this.openUnzippedProduct = unzipped;
           this.showDemWarning = this.demWarning(products);
@@ -72,11 +74,6 @@ export class SceneFilesComponent implements OnInit, OnDestroy {
     this.subs.add(
       this.store$.select(scenesStore.getShowUnzippedProduct).subscribe(
         showUnzipped => this.showUnzippedProductScreen = showUnzipped
-      )
-    );
-    this.subs.add(
-      this.store$.select(scenesStore.getUnzippedProducts).subscribe(
-        unzippedProducts => this.unzippedProducts = unzippedProducts
       )
     );
     this.subs.add(
@@ -131,8 +128,12 @@ export class SceneFilesComponent implements OnInit, OnDestroy {
     return pivotIdx;
   }
 
-  public demWarning(products) {
+  public demWarning(products): boolean {
     let warn = false;
+
+    if (!products) {
+      return false;
+    }
 
     products.forEach((product) => {
       if (product.dataset === 'ALOS' &&
