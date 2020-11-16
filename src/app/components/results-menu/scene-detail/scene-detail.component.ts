@@ -9,6 +9,7 @@ import * as scenesStore from '@store/scenes';
 import * as filtersStore from '@store/filters';
 import * as searchStore from '@store/search';
 import * as uiStore from '@store/ui';
+import * as userStore from '@store/user';
 
 import * as models from '@models';
 import { AuthService, PropertyService, ScreenSizeService } from '@services';
@@ -31,6 +32,7 @@ export class SceneDetailComponent implements OnInit, OnDestroy {
   public dataset: models.Dataset;
   public searchType: models.SearchType;
   public searchTypes = models.SearchType;
+  public isLoggedIn: boolean;
   public sceneLen: number;
   public p = models.Props;
   public breakpoint$ = this.screenSize.breakpoint$;
@@ -53,6 +55,11 @@ export class SceneDetailComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit() {
+    this.subs.add(
+      this.store$.select(userStore.getIsUserLoggedIn).subscribe(
+        isLoggedIn => this.isLoggedIn = isLoggedIn
+      )
+    );
 
     this.subs.add(
       this.screenSize.size$.pipe(
