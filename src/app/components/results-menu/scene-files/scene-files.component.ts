@@ -128,8 +128,12 @@ export class SceneFilesComponent implements OnInit, OnDestroy {
     return pivotIdx;
   }
 
-  public demWarning(products) {
+  public demWarning(products): boolean {
     let warn = false;
+
+    if (!products) {
+      return false;
+    }
 
     products.forEach((product) => {
       if (product.dataset === 'ALOS' &&

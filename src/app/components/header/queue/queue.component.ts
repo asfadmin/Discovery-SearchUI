@@ -111,6 +111,10 @@ export class QueueComponent implements OnInit, OnDestroy {
   public demWarning(products) {
     let warn = false;
 
+    if (!products) {
+      return false;
+    }
+
     products.forEach((product) => {
       if (product.dataset === 'ALOS' &&
         product.metadata.productType.includes('RTC_') ) {
