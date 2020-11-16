@@ -85,7 +85,13 @@ export class MissionSelectorComponent implements OnInit, OnDestroy {
             models.MissionDataset.S1_BETA :
             dataset.name;
         })
-      ).subscribe(name => this.datasetFilter = name)
+      ).subscribe(name => {
+        this.datasetFilter = name;
+        this.stateForm.patchValue({
+          'missionFilter': ''
+        });
+        this.filteredMissions = this._filterGroup(this.currentFilter);
+      })
     );
 
     this.subs.add(
@@ -98,11 +104,6 @@ export class MissionSelectorComponent implements OnInit, OnDestroy {
           filtered => this.filteredMissions = filtered
         )
     );
-  }
-
-  public selectDatasetFilter(dataset: string): void {
-    this.datasetFilter = dataset;
-    this.filteredMissions = this._filterGroup(this.currentFilter);
   }
 
   private _filterGroup(filterValue: string): string[] {

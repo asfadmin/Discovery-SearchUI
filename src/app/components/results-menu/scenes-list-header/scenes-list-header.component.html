@@ -168,11 +168,17 @@
           </mat-menu>
 
           <mat-menu #addAllOnDemand="matMenu">
+            <button [matMenuTriggerFor]="addAllRTCDemand" mat-menu-item>
+              RTC Gamma
+            </button>
+          </mat-menu>
+
+          <mat-menu #addAllRTCDemand="matMenu">
             <button *ngIf="slc(products).length > 0" (click)="queueAllOnDemand(slc(products))" mat-menu-item>
-              Add {{ slc(products).length }} SLC jobs to On Deman
+              Add {{ slc(products).length }} SLC jobs
             </button>
             <button *ngIf="grd(products).length > 0" (click)="queueAllOnDemand(grd(products))" mat-menu-item>
-              Add {{ grd(products).length }} GRD-HD jobs to On Deman
+              Add {{ grd(products).length }} GRD-HD jobs
             </button>
           </mat-menu>
         </div>

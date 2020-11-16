@@ -8,7 +8,7 @@ import { SearchTypeSelectorModule } from '@components/shared/selectors/search-ty
 import { ProjectNameSelectorModule } from '@components/shared/selectors/project-name-selector';
 import { CustomProductsFiltersComponent } from './custom-products-filters.component';
 import { JobStatusSelectorModule } from '@components/shared/selectors/job-status-selector';
-
+import { DateSelectorModule } from '@components/shared/selectors/date-selector';
 
 
 @NgModule({
@@ -17,6 +17,7 @@ import { JobStatusSelectorModule } from '@components/shared/selectors/job-status
     CommonModule,
     MatExpansionModule,
     MatSharedModule,
+    DateSelectorModule,
     SearchTypeSelectorModule,
     ProjectNameSelectorModule,
     JobStatusSelectorModule,

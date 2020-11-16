@@ -80,8 +80,22 @@ export class DateSelectorComponent implements OnInit, OnDestroy {
         dateExtrema$,
         baselineDateExtrema$
       ).subscribe(([searchType, extrema, baselineExtrema]) => {
-        this.extrema = searchType === SearchType.DATASET ?
-          extrema : baselineExtrema;
+        if (searchType === SearchType.DATASET) {
+          this.extrema = extrema;
+        } else if (searchType === SearchType.CUSTOM_PRODUCTS) {
+          this.extrema = {
+            start: {
+              min: null,
+              max: null
+            },
+            end: {
+              min: null,
+              max: null
+            }
+          };
+        } else {
+          this.extrema = baselineExtrema;
+        }
       })
     );
 

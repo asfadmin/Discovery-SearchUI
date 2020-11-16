@@ -200,7 +200,7 @@ export class SearchEffects {
           ...product,
           browses: job.browse_images ? job.browse_images : ['assets/no-browse.png'],
           thumbnail: job.thumbnail_images ? job.thumbnail_images[0] : 'assets/no-thumb.png',
-          productTypeDisplay: `${job.job_type.replace('_', ' ') } ${product.metadata.productType} `,
+          productTypeDisplay: `${job.job_type}, ${product.metadata.productType} `,
           downloadUrl: jobFile.url,
           bytes: jobFile.size,
           groupId: job.job_id,

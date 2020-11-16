@@ -38,9 +38,9 @@ export class ScenesService {
       this.projectNameFilter$(
       this.jobStatusFilter$(
       this.filterBaselineValues$(
+      this.filterByDate$(
         this.store$.select(getAllProducts)
-      )
-    ))));
+      ))))));
   }
 
   public scenes$(): Observable<CMRProduct[]> {
@@ -49,11 +49,10 @@ export class ScenesService {
       this.hideExpired$(
       this.jobStatusFilter$(
       this.hideS1Raw$(
-        this.filterBaselineValues$(
+      this.filterBaselineValues$(
+      this.filterByDate$(
           this.store$.select(getScenes)
-        )
-      )
-    ))));
+    )))))));
   }
 
   public matchHyp3Jobs$(scenes$: Observable<CMRProduct[]>): Observable<Hyp3JobWithScene[]> {
@@ -232,6 +231,46 @@ export class ScenesService {
           ) :
           scenes;
       })
+    );
+  }
+
+  private filterByDate$(scenes$: Observable<CMRProduct[]>) {
+    return combineLatest(
+      scenes$,
+      this.store$.select(getDateRange),
+      this.store$.select(getSearchType),
+    ).pipe(
+      map(
+        ([scenes, dateRange, searchType]) => {
+          if (searchType !== SearchType.CUSTOM_PRODUCTS) {
+            return scenes;
+          }
+
+
+          const range = {
+            start: moment(dateRange.start),
+            end: moment(dateRange.end)
+          };
+
+          if (dateRange.start === null && dateRange.end === null) {
+            return scenes;
+          }
+
+          return scenes.filter(scene => {
+            if (dateRange.start === null && dateRange.end !== null) {
+              return scene.metadata.date <= range.end ;
+            } else if (dateRange.start !== null && dateRange.end === null) {
+              return scene.metadata.date >= range.start ;
+            } else {
+              return (
+                scene.metadata.date >= range.start  &&
+                scene.metadata.date <= range.end
+              );
+            }
+          });
+        }
+
+      )
     );
   }
 
