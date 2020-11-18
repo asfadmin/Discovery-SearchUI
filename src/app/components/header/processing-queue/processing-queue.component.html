@@ -127,25 +127,29 @@
 
       </div>
 
-      <div class="footer-submit">
-
-        <div class="footer-job-notification">
-          <div *ngIf="isUserLoggedIn && !isUserLoading && user !== ''">
+      <div class="footer-job-notification">
+        <div *ngIf="isUserLoggedIn && !isUserLoading && user !== ''">
             <span *ngIf="breakpoint === breakpoints.MOBILE">
               {{ remaining }} job max
             </span>
-            <span *ngIf="breakpoint === !breakpoints.MOBILE">
+          <span *ngIf="breakpoint !== breakpoints.MOBILE">
              {{ remaining }} jobs left this month
             </span>
-          </div>
-          <div *ngIf="isUserLoggedIn && isUserLoading">
-            <b>Loading...</b>
-          </div>
-          <div *ngIf="!isUserLoggedIn">
-            <b>N/A</b> - login to view number of jobs left this month
-          </div>
         </div>
+        <div *ngIf="isUserLoggedIn && isUserLoading">
+          <b>Loading...</b>
+        </div>
+        <div *ngIf="!isUserLoggedIn">
+            <span *ngIf="breakpoint === breakpoints.MOBILE">
+             <b>N/A</b> - login to view
+            </span>
+            <span *ngIf="breakpoint !== breakpoints.MOBILE">
+              <b>N/A</b> - login to view number of jobs left this month
+            </span>
+        </div>
+      </div>
 
+      <div class="footer-submit">
         <button
           (click)="onSubmitQueue()"
           [disabled]="
@@ -165,7 +169,6 @@
             Loading...
           </span>
         </button>
-
       </div>
 
     </div>
