@@ -2,9 +2,9 @@
     <mat-select
       (selectionChange)="onNewJobStatusSelected($event.value)"
       [(ngModel)]="selectedJobStatuses"
-      placeholder="Job Statuses" multiple>
+      placeholder="Job Status" multiple>
       <mat-option *ngFor="let jobStatus of jobStatuses" [value]="jobStatus">
-        {{ jobStatus }}
+        {{ upperCaseFirst(jobStatus, true) }}
       </mat-option>
     </mat-select>
   </mat-form-field>
