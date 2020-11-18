@@ -12,6 +12,7 @@ import { SubSink } from 'subsink';
   templateUrl: './job-status-selector.component.html',
   styleUrls: ['./job-status-selector.component.scss']
 })
+
 export class JobStatusSelectorComponent implements OnInit, OnDestroy {
   public selectedJobStatuses: Hyp3JobStatusCode[] = [];
   public jobStatuses = Object.keys(Hyp3JobStatusCode);
@@ -33,6 +34,13 @@ export class JobStatusSelectorComponent implements OnInit, OnDestroy {
 
   public onNewJobStatusSelected(jobStatuses): void {
     this.store$.dispatch(new filtersStore.SetJobStatuses(jobStatuses));
+  }
+
+  public upperCaseFirst = (str: string, forceLower?: boolean): string => {
+    if (forceLower) {
+      str = str.toLowerCase();
+    }
+    return str.replace(/^\w/, chr => chr.toUpperCase());
   }
 
   ngOnDestroy() {
