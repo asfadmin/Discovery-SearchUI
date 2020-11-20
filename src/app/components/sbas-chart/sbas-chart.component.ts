@@ -318,7 +318,10 @@ export class SBASChartComponent implements OnInit, OnDestroy {
 
     if (this.currentTransform) {
       this.updateChart();
+    } else {
+      this.zoomToFit();
     }
+
   }
 
   private updateChart() {
@@ -444,7 +447,7 @@ export class SBASChartComponent implements OnInit, OnDestroy {
     this.queuedProduct = null;
   }
 
-  private zoomToFit(transitionDuration) {
+  private zoomToFit(transitionDuration = 0) {
     const root = this.chart;
     const bounds = root.node().getBBox();
     const parent = root.node().parentElement;
@@ -461,7 +464,7 @@ export class SBASChartComponent implements OnInit, OnDestroy {
       .translate(translate[0], translate[1])
       .scale(scale);
 
-    root
+    this.zoomBox
       .transition()
       .duration(transitionDuration || 0) // milliseconds
       .call(this.zoom.transform, transform);
