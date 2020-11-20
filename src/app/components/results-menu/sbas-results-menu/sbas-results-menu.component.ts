@@ -47,6 +47,7 @@ export class SBASResultsMenuComponent implements OnInit, OnDestroy {
 
   public zoomInChart$ = new Subject();
   public zoomOutChart$ = new Subject();
+  public zoomToFitChart$ = new Subject();
 
   constructor(
     private store$: Store<AppState>,
@@ -128,6 +129,10 @@ export class SBASResultsMenuComponent implements OnInit, OnDestroy {
 
   public zoomOut(): void {
     this.zoomOutChart$.next();
+  }
+
+  public zoomToFit(): void {
+    this.zoomToFitChart$.next();
   }
 
   ngOnDestroy() {

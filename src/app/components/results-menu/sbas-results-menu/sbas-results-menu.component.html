@@ -88,6 +88,12 @@
             </mat-button-toggle>
 
             <mat-button-toggle class="control-mat-button-toggle"
+                               (click)="zoomToFit()"
+                               matTooltip="Zoom To Fit">
+              <mat-icon class="control-icon">aspect_ratio</mat-icon>
+            </mat-button-toggle>
+
+            <mat-button-toggle class="control-mat-button-toggle"
                                (click)="zoomOut()"
                                matTooltip="Zoom out">
               <mat-icon class="control-icon">remove</mat-icon>
@@ -158,6 +164,7 @@
 
       <app-sbas-chart
         [zoomIn$]="zoomInChart$"
+        [zoomToFit$]="zoomToFitChart$"
         [zoomOut$]="zoomOutChart$">
       </app-sbas-chart>
     </div>
