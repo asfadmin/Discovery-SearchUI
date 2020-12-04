@@ -201,11 +201,15 @@ export class ScenesListHeaderComponent implements OnInit {
   }
 
   public slc(products: models.CMRProduct[]): models.CMRProduct[] {
-    return products.filter(product => product.metadata.productType === 'SLC');
+    return products
+      .filter(product => product.metadata.beamMode === 'IW')
+      .filter(product => product.metadata.productType === 'SLC');
   }
 
   public grd(products: models.CMRProduct[]): models.CMRProduct[] {
-    return products.filter(product => product.metadata.productType === 'GRD_HD');
+    return products
+      .filter(product => product.metadata.beamMode === 'IW')
+      .filter(product => product.metadata.productType === 'GRD_HD');
   }
 
 
