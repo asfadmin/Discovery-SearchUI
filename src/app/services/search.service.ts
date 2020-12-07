@@ -24,9 +24,9 @@ export class SearchService {
   ) { }
 
   public clear(searchType: models.SearchType, breakpoint: models.Breakpoints): void {
-    if (searchType === models.SearchType.DATASET) {
-      this.mapService.clearDrawLayer();
+    this.mapService.clearDrawLayer();
 
+    if (searchType === models.SearchType.DATASET) {
       const actions = [
         new filterStore.ClearDatasetFilters(),
         new mapStore.SetMapInteractionMode(models.MapInteractionModeType.DRAW),
@@ -49,7 +49,9 @@ export class SearchService {
       this.store$.dispatch(new filterStore.ClearPerpendicularRange());
       this.store$.dispatch(new filterStore.ClearTemporalRange());
     } else if (searchType === models.SearchType.CUSTOM_PRODUCTS) {
-      this.store$.dispatch(new filterStore.SetProjectName(null));
+      this.store$.dispatch(new filterStore.SetProjectName(''));
+      this.store$.dispatch(new filterStore.SetJobStatuses([]));
+      this.store$.dispatch(new filterStore.ClearDateRange());
     }
   }
 

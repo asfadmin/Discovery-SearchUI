@@ -34,11 +34,17 @@ $info-color: $asf-primary;
 }
 
 .sbas-list-card {
-  //min-width: 0;
+  box-shadow: none !important;
 }
 
 .sbas-chart-card {
   //flex: 55;
+}
+
+.sbas-metadata {
+  overflow: auto;
+  height: 100%;
+  border-left: solid 1px $asf-primary-light;
 }
 
 .product-name {

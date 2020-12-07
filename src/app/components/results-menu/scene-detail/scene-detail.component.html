@@ -85,10 +85,20 @@
         </mat-button-toggle>
       </mat-button-toggle-group>
 
-      <p *ngIf="!authService.isLoggedIn" class="faint-text accessing-text">
-        Accessing this data requires you to log in.
-        Some datasets also require a proposal, or agreement with a
-        EULA which is presented after log in.
+      <p class="faint-text accessing-text">
+        <span *ngIf="!isLoggedIn">
+          Accessing this data requires you to log in.
+        </span>
+
+        <span *ngIf="
+          dataset.id === 'RADARSAT-1' ||
+          dataset.id === 'JERS-1'
+        ">
+          JERS-1 and RADARSAT-1 datasets require a
+          <a href="https://www.asf.alaska.edu/restricted-data-access-request/" target="_blank">
+            Restricted Data Use Agreement
+          </a>
+        </span>
       </p>
     </div>
   </div>

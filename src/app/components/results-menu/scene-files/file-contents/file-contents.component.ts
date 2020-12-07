@@ -1,9 +1,10 @@
-import { Component, OnInit, Input, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FlatTreeControl } from '@angular/cdk/tree';
 import { MatTreeFlatDataSource, MatTreeFlattener } from '@angular/material/tree';
 import { SubSink } from 'subsink';
 
-import { map, filter } from 'rxjs/operators';
+import { combineLatest } from 'rxjs';
+import { map, filter, tap } from 'rxjs/operators';
 import { Store } from '@ngrx/store';
 import { AppState } from '@store';
 import * as scenesStore from '@store/scenes';
@@ -26,7 +27,7 @@ interface ExampleFlatNode {
   styleUrls: ['./file-contents.component.scss']
 })
 export class FileContentsComponent implements OnInit, OnDestroy {
-  @Input() product: CMRProduct;
+  public product: CMRProduct;
 
   sceneNameLen: number;
   treeControl = new FlatTreeControl<ExampleFlatNode>(
@@ -59,8 +60,12 @@ export class FileContentsComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.subs.add(
-      this.store$.select(scenesStore.getUnzippedProducts).pipe(
-        map(unzipped => unzipped[this.product.id]),
+      combineLatest(
+        this.store$.select(scenesStore.getUnzippedProducts),
+        this.store$.select(scenesStore.getOpenUnzippedProduct)
+      ).pipe(
+        tap(([_, product]) => this.product = product),
+        map(([unzipped, product]) => unzipped[product ? product.id : null]),
         filter(unzipped => !!unzipped),
       ).subscribe(
         unzipped => this.dataSource.data = unzipped

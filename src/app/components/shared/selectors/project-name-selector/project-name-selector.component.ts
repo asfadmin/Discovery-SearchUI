@@ -42,7 +42,14 @@ export class ProjectNameSelectorComponent implements OnInit, OnDestroy {
           this.projectName = name;
         })
       );
+    } else {
+      this.subs.add(
+        this.store$.select(filtersStore.getProjectName).subscribe(name => {
+          this.projectName = name;
+        })
+      );
     }
+
 
     this.subs.add(
       this.store$.select(hyp3Store.getHyp3User).pipe(

@@ -20,6 +20,7 @@ import { HelpSbasSearchComponent } from '@components/help/help-pages/help-sbas-s
 import { HelpUnzippingComponent } from '@components/help/help-pages/help-unzipping/help-unzipping.component';
 import { HelpDownloadQueueComponent } from './help-pages/help-download-queue/help-download-queue.component';
 import { HelpExportOptionsComponent } from './help-pages/help-export-options/help-export-options.component';
+import { HelpOnDemandComponent } from './help-pages/help-on-demand/help-on-demand.component';
 
 
 @NgModule({
@@ -40,6 +41,7 @@ import { HelpExportOptionsComponent } from './help-pages/help-export-options/hel
     HelpUnzippingComponent,
     HelpDownloadQueueComponent,
     HelpExportOptionsComponent,
+    HelpOnDemandComponent,
   ],
   imports: [
     CommonModule,

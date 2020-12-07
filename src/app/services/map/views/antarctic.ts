@@ -7,7 +7,7 @@ import * as proj from 'ol/proj';
 import { MapView, CustomProjection } from './map-view';
 
 export function antarctic(): MapView {
-  const extent = [-4194304, -4194304, 4194304, 4194304];
+  const extent = [-7295304, -7295304, 7295304, 7295304];
   const projection = new CustomProjection(
     'EPSG:3031',
     '+proj=stere +lat_0=-90 +lat_ts=-71 +lon_0=0 +k=1 +x_0=0 +y_0=0 ' +

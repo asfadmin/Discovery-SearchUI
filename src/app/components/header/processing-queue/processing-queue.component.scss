@@ -7,8 +7,7 @@
 .card-title-group {
   background-color: $asf-primary-light;
   color: $asf-primary-dark;
-  padding: 10px 10px 0 10px;
-  margin-bottom: 10px;
+  padding: 10px 10px 4px 10px;
   border-bottom-style: solid;
   border-bottom-color: $asf-primary-dark;
   border-bottom-width: 1px;
@@ -20,13 +19,13 @@
 }
 
 .jobs-display--desktop {
-  height: 514px;
+  height: 500px;
   display: flex;
   flex-direction: row;
 }
 
 .jobs-display--mobile {
-  height: 477px;
+  height: 463px;
   overflow: auto;
 }
 
@@ -69,23 +68,32 @@
   font-size: 28px;
 }
 
+.on-demand-branding {
+  display: inline-block;
+  vertical-align: middle;
+  margin-left: 0;
+  margin-bottom: -5px;
+}
+
+.on-demand-icon {
+  @include md-icon-size(72px);
+
+  color: $asf-primary-dark;
+}
+
+.on-demand-text {
+  display: inline-block;
+  vertical-align: middle;
+  margin-top: -16px;
+}
+
 .close-x {
   position: absolute;
-  top: 25px;
-  right: 35px;
+  top: 16px;
+  right: 16px;
   text-align: right;
   float: right;
   cursor: pointer;
-}
-
-.hyp3-footer {
-  height: 50px;
-  display: flex;
-  justify-content: space-between;
-  background-color: $asf-primary-light;
-  border-top-style: solid;
-  border-top-color: $asf-primary-dark;
-  border-top-width: 1px;
 }
 
 .error-header {
@@ -106,16 +114,16 @@
   border-bottom-width: 1px;
 }
 
-.action-controls {
-  //margin-top: 15px;
-  //flex-shrink: 0;
-  //display: flex;
-  //flex-direction: row;
-  //justify-content: flex-end;
+.feedback-div {
+  position: absolute;
+  top: 60px;
+  right: 16px;
+  text-align: right;
+  float: right;
+  cursor: pointer;
 }
 
 .feedback-link {
-  margin-left: 10px;
   font-size: 18px;
 
   a {
@@ -125,5 +133,53 @@
 }
 
 .subtitle {
-  margin-top: -10px;
+  margin-top: -34px;
+  font-style: italic;
+  margin-left: 76px;
+  font-size: 14px;
+  margin-bottom: 17px;
+  color: $asf-primary;
+}
+
+.mat-card-content {
+  margin-bottom: 0;
+}
+
+.mat-card-footer {
+  margin: 0;
+  height: 60px;
+}
+
+.hyp3-footer {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  height: 100%;
+  background-color: $asf-primary-light;
+  border-top-style: solid;
+  border-top-color: $asf-primary-dark;
+  border-top-width: 1px;
+}
+
+.footer-clear {
+  flex: none;
+  align-self: center;
+}
+
+.footer-submit {
+  flex: none;
+  margin: 12px 16px;
+}
+
+.footer-job-notification {
+  flex: none;
+  margin-right: 20px;
+  align-self: center;
+  color: $asf-primary-dark;
+  font-size: 14px;
+}
+
+.footer-submit-button {
+  display: inline-flex;
+  align-self: center;
 }

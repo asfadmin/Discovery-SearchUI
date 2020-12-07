@@ -12,7 +12,7 @@ import {
 } from '@store/scenes/scenes.reducer';
 import {
   getTemporalRange, getPerpendicularRange, getDateRange,
-  getProductTypes, getProjectName
+  getProductTypes, getProjectName, getJobStatuses
 } from '@store/filters/filters.reducer';
 import { getShowS1RawData, getShowExpiredData } from '@store/ui/ui.reducer';
 import { getSearchType } from '@store/search/search.reducer';
@@ -36,22 +36,23 @@ export class ScenesService {
     return this.hideS1Raw$(
       this.hideExpired$(
       this.projectNameFilter$(
+      this.jobStatusFilter$(
       this.filterBaselineValues$(
+      this.filterByDate$(
         this.store$.select(getAllProducts)
-      )
-    )));
+      ))))));
   }
 
   public scenes$(): Observable<CMRProduct[]> {
     return (
       this.projectNameFilter$(
       this.hideExpired$(
+      this.jobStatusFilter$(
       this.hideS1Raw$(
-        this.filterBaselineValues$(
+      this.filterBaselineValues$(
+      this.filterByDate$(
           this.store$.select(getScenes)
-        )
-      )
-    )));
+    )))))));
   }
 
   public matchHyp3Jobs$(scenes$: Observable<CMRProduct[]>): Observable<Hyp3JobWithScene[]> {
@@ -159,6 +160,36 @@ export class ScenesService {
       })
     );
   }
+
+  private jobStatusFilter$(scenes$: Observable<CMRProduct[]>) {
+    return combineLatest(
+      scenes$,
+      this.store$.select(getJobStatuses),
+      this.store$.select(getSearchType),
+    ).pipe(
+      map(([scenes, jobStatuses, searchType]) => {
+        if (searchType !== SearchType.CUSTOM_PRODUCTS) {
+          return scenes;
+        }
+
+        if (jobStatuses.length === 0) {
+          return scenes;
+        }
+
+        const statuses = new Set(jobStatuses);
+
+        return scenes
+          .filter(scene => {
+            const statusCode = scene.metadata.job.status_code;
+
+            return (
+              statuses.has(statusCode)
+            );
+          });
+      })
+    );
+  }
+
   private hideExpired$(scenes$: Observable<CMRProduct[]>) {
     return combineLatest(
       scenes$,
@@ -200,6 +231,46 @@ export class ScenesService {
           ) :
           scenes;
       })
+    );
+  }
+
+  private filterByDate$(scenes$: Observable<CMRProduct[]>) {
+    return combineLatest(
+      scenes$,
+      this.store$.select(getDateRange),
+      this.store$.select(getSearchType),
+    ).pipe(
+      map(
+        ([scenes, dateRange, searchType]) => {
+          if (searchType !== SearchType.CUSTOM_PRODUCTS) {
+            return scenes;
+          }
+
+
+          const range = {
+            start: moment(dateRange.start),
+            end: moment(dateRange.end)
+          };
+
+          if (dateRange.start === null && dateRange.end === null) {
+            return scenes;
+          }
+
+          return scenes.filter(scene => {
+            if (dateRange.start === null && dateRange.end !== null) {
+              return scene.metadata.date <= range.end ;
+            } else if (dateRange.start !== null && dateRange.end === null) {
+              return scene.metadata.date >= range.start ;
+            } else {
+              return (
+                scene.metadata.date >= range.start  &&
+                scene.metadata.date <= range.end
+              );
+            }
+          });
+        }
+
+      )
     );
   }
 
