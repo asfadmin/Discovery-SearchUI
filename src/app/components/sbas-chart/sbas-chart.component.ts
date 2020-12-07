@@ -31,6 +31,7 @@ export enum ChartDatasets {
 export class SBASChartComponent implements OnInit, OnDestroy {
   @Input() zoomIn$: Observable<void>;
   @Input() zoomOut$: Observable<void>;
+  @Input() zoomToFit$: Observable<void>;
 
   private hoveredLine;
   private selectedPair = [null, null];
@@ -98,6 +99,9 @@ export class SBASChartComponent implements OnInit, OnDestroy {
     });
     this.zoomIn$.subscribe(_ => {
       this.zoomBox.transition().call(this.zoom.scaleBy, 2);
+    });
+    this.zoomToFit$.subscribe(_ => {
+      this.zoomToFit(0);
     });
   }
 
@@ -314,7 +318,10 @@ export class SBASChartComponent implements OnInit, OnDestroy {
 
     if (this.currentTransform) {
       this.updateChart();
+    } else {
+      this.zoomToFit();
     }
+
   }
 
   private updateChart() {
@@ -438,6 +445,29 @@ export class SBASChartComponent implements OnInit, OnDestroy {
       new scenesStore.AddCustomPair([ this.queuedProduct.id, product.id ])
     );
     this.queuedProduct = null;
+  }
+
+  private zoomToFit(transitionDuration = 0) {
+    const root = this.chart;
+    const bounds = root.node().getBBox();
+    const parent = root.node().parentElement;
+    const fullWidth = parent.clientWidth || parent.parentNode.clientWidth,
+      fullHeight = parent.clientHeight || parent.parentNode.clientHeight;
+    const width = bounds.width,
+      height = bounds.height;
+    const midX = bounds.x + width / 2,
+      midY = bounds.y + height / 2;
+    if (width === 0 || height === 0) { return; } // nothing to fit
+    const scale = 0.85 / Math.max(width / fullWidth, height / fullHeight);
+    const translate = [fullWidth / 2 - scale * midX, fullHeight / 2 - scale * midY];
+    const transform = d3.zoomIdentity
+      .translate(translate[0], translate[1])
+      .scale(scale);
+
+    this.zoomBox
+      .transition()
+      .duration(transitionDuration || 0) // milliseconds
+      .call(this.zoom.transform, transform);
   }
 
   ngOnDestroy() {
