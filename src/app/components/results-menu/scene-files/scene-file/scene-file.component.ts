@@ -70,7 +70,15 @@ export class SceneFileComponent {
   }
 
   public canUnzip(product: models.CMRProduct): boolean {
-    return product.downloadUrl.endsWith('.zip');
+    const dataset = product.dataset.toLowerCase();
+
+    return (
+      (
+        !dataset.includes('sentinel') ||
+        dataset === 'sentinel-1 interferogram (beta)'
+      ) &&
+      product.downloadUrl.endsWith('.zip')
+    );
   }
 
   public expirationBadge(expiration_time: moment.Moment): string {
