@@ -137,6 +137,7 @@ export class SceneFilesComponent implements OnInit, OnDestroy {
 
     products.forEach((product) => {
       if (product.dataset === 'ALOS' &&
+          product.metadata.productType &&
           product.metadata.productType.includes('RTC_') ) {
         warn = true;
       }
