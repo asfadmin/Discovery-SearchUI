@@ -9,10 +9,23 @@
       <app-project-name-selector class="breadcrumb">
       </app-project-name-selector>
 
-      <app-date-selector class="breadcrumb"></app-date-selector>
+      <div
+        *ngIf="breakpoint > breakpoints.SMALL"
+        fxFlex="300px"
+        class="breadcrumb">
+        <app-date-selector></app-date-selector>
+      </div>
 
-      <app-job-status-selector class="breadcrumb">
+      <app-job-status-selector *ngIf="breakpoint === breakpoints.FULL" class="breadcrumb">
       </app-job-status-selector>
+
+      <div *ngIf="breakpoint !== breakpoints.FULL"
+           fxFlex="nogrow" class="breadcrumb">
+        <button (click)="onToggleFiltersMenu()"
+                mat-button class="additional-filters-button">
+          Filters <br> <mat-icon>more_horiz</mat-icon>
+        </button>
+      </div>
 
       <div class="breadcrumb">
         <div fxFlex="nogrow" class="breadcrumb search-controls">
@@ -33,7 +46,7 @@
         (click)="onToggleFiltersMenu()"
          style="margin-left: 5px;"
         mat-flat-button>
-        Filters
+        On Demand Filters
       </button>
 
       <div class="mobile-icon-cluster">
