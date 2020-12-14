@@ -65,6 +65,7 @@ export interface Hyp3RtcGammaParameters {
   dem_matching?: boolean;
   include_dem?: boolean;
   include_inc_map?: boolean;
+  include_scattering_area?: boolean;
   radiometry?: RtcGammaRadiometry;
   resolution?: RtcGammaResolution;
   scale?: RtcGammaScale;
@@ -78,6 +79,7 @@ export interface Hyp3RtcGammaProcessingOptions {
   demMatching?: boolean;
   includeDem?: boolean;
   includeIncMap?: boolean;
+  includeScatteringArea?: boolean;
   radiometry?: RtcGammaRadiometry;
   resolution?: RtcGammaResolution;
   scale?: RtcGammaScale;

@@ -31,12 +31,19 @@
             style="margin-left: 5px;"
             mat-flat-button>
           <mat-icon>edit</mat-icon>
-          <ng-container *ngIf="selectedSearchType === searchTypes.SBAS; else not_sbas_search">
-            SBAS
+          <ng-container [ngSwitch]="selectedSearchType">
+            <span *ngSwitchCase = searchTypes.SBAS>
+              SBAS
+            </span>
+            <span *ngSwitchCase = searchTypes.BASELINE>
+              Baseline
+            </span>
+            <span *ngSwitchCase = searchTypes.CUSTOM_PRODUCTS>
+              On Demand
+            </span>
+            <span *ngSwitchDefault>
+            </span>
           </ng-container>
-          <ng-template #not_sbas_search>
-            Baseline
-          </ng-template>
         </button>
 
         <div class="mobile-icon-cluster">

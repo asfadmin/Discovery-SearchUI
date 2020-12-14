@@ -1,6 +1,5 @@
 <mat-accordion multi>
   <mat-expansion-panel
-    *ngIf="(breakpoint$ | async) === breakpoints.MOBILE"
     [expanded]="defaultPanelOpenState" [disabled]="panelIsDisabled"
     (click)="selectPanel(panels.SEARCH)"
     [class.raised-section]="isSelected(panels.SEARCH)">
@@ -18,7 +17,6 @@
   </mat-expansion-panel>
 
   <mat-expansion-panel
-    *ngIf="(breakpoint$ | async) === breakpoints.MOBILE"
     [expanded]="defaultPanelOpenState" [disabled]="panelIsDisabled"
     (click)="selectPanel(panels.DATE_FILTER)"
     [class.raised-section]="isSelected(panels.DATE_FILTER)">
@@ -35,7 +33,6 @@
   </mat-expansion-panel>
 
   <mat-expansion-panel
-    *ngIf="(breakpoint$ | async) === breakpoints.MOBILE"
     [expanded]="defaultPanelOpenState" [disabled]="panelIsDisabled"
     (click)="selectPanel(panels.PROJECT_NAME)"
     [class.raised-section]="isSelected(panels.PROJECT_NAME)">

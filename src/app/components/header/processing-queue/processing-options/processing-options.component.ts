@@ -21,6 +21,7 @@ export class ProcessingOptionsComponent implements OnInit {
   public includeDem: boolean;
   public includeIncMap: boolean;
   public speckleFilter: boolean;
+  public includeScatteringArea: boolean;
 
   constructor(
     private store$: Store<AppState>,
@@ -35,6 +36,7 @@ export class ProcessingOptionsComponent implements OnInit {
         this.includeDem = options.includeDem;
         this.includeIncMap = options.includeIncMap;
         this.speckleFilter = options.speckleFilter;
+        this.includeScatteringArea = options.includeScatteringArea;
       }
     );
   }
@@ -62,13 +64,18 @@ export class ProcessingOptionsComponent implements OnInit {
     this.updateProcessingOptions();
   }
 
-  public onSetIncludeDem(includeDem: boolean): void {
-    this.includeDem = includeDem;
+  public onSetIncludeScatteringArea(includeScatteringArea: boolean): void {
+    this.includeScatteringArea = includeScatteringArea;
     this.updateProcessingOptions();
   }
 
   public onSetIncludeIncMap(includeIncMap: boolean): void {
     this.includeIncMap = includeIncMap;
+    this.updateProcessingOptions();
+  }
+
+  public onSetIncludeDem(includeDem: boolean): void {
+    this.includeDem = includeDem;
     this.updateProcessingOptions();
   }
 
@@ -84,6 +91,7 @@ export class ProcessingOptionsComponent implements OnInit {
       demMatching: this.demMatching,
       includeDem: this.includeDem,
       includeIncMap: this.includeIncMap,
+      includeScatteringArea: this.includeScatteringArea,
       speckleFilter: this.speckleFilter,
     }));
   }
