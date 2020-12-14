@@ -105,6 +105,7 @@ export function scenesReducer(state = initState, action: ScenesActions): ScenesS
         areResultsLoaded: true,
         products,
         scenes,
+        unzipped: {},
         productUnzipLoading: null,
         openUnzippedProduct: null
       };

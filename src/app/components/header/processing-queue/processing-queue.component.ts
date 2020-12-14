@@ -124,6 +124,7 @@ export class ProcessingQueueComponent implements OnInit {
       dem_matching: this.processingOptions.demMatching,
       include_dem: this.processingOptions.includeDem,
       include_inc_map: this.processingOptions.includeIncMap,
+      include_scattering_area: this.processingOptions.includeScatteringArea,
       radiometry: this.processingOptions.radiometry,
       scale: this.processingOptions.scale,
       speckle_filter: this.processingOptions.speckleFilter,
