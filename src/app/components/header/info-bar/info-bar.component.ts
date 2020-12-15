@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import {Component, OnInit, OnDestroy, Input, HostListener} from '@angular/core';
 
 import { Store } from '@ngrx/store';
 import { SubSink } from 'subsink';
@@ -8,6 +8,7 @@ import * as filtersStore from '@store/filters';
 
 import * as services from '@services';
 import * as models from '@models';
+import {Observable} from 'rxjs';
 
 // Declare GTM dataLayer array.
 declare global {
@@ -20,6 +21,7 @@ declare global {
   styleUrls: ['./info-bar.component.scss']
 })
 export class InfoBarComponent implements OnInit, OnDestroy {
+  @Input() resize$: Observable<void>;
   public breakpoint$ = this.screenSize.breakpoint$;
   public breakpoints = models.Breakpoints;
 
@@ -45,9 +47,10 @@ export class InfoBarComponent implements OnInit, OnDestroy {
   constructor(
     private store$: Store<AppState>,
     private screenSize: services.ScreenSizeService,
-  ) { }
+  ) { this.showSearch(); }
 
   ngOnInit() {
+
     const startSub = this.store$.select(filtersStore.getStartDate).subscribe(
       start => this.startDate = start
     );
@@ -115,6 +118,12 @@ export class InfoBarComponent implements OnInit, OnDestroy {
       missionSub,
       tempSub, perpSub
     ].forEach(sub => this.subs.add(sub));
+
+  }
+
+  @HostListener('window:resize', ['$event'])
+  onResize(_) {
+    this.screenResized();
   }
 
   public onOpenWhatsNew(): void {
@@ -129,6 +138,21 @@ export class InfoBarComponent implements OnInit, OnDestroy {
       url,
       '_blank'
     );
+  }
+
+  public showSearch() {
+    const id = 'b8df7ea0-38a5-11eb-9b20-0242ac130002';
+    const ci_search = document.createElement('script');
+    ci_search.type = 'text/javascript';
+    ci_search.async = true;
+    ci_search.src = 'https://cse.expertrec.com/api/js/ci_common.js?id=' + id;
+    const s = document.getElementsByTagName('script')[0];
+    s.parentNode.insertBefore(ci_search, s);
+}
+
+  public screenResized() {
+    // console.log('info-bar: onResized Function');
+    // this.showSearch();
   }
 
   ngOnDestroy() {
