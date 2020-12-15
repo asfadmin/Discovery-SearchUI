@@ -4,6 +4,9 @@
      class="info-bar">
 
   <div class="first-info">
+    <a class="new-stuff" (click)="onOpenWhatsNew()">
+      What's New
+    </a>
     <span *ngIf="(breakpoint < breakpoints.FULL) && !!startDate">
       <b>Start:</b> {{ startDate | shortDate }}
     </span>
@@ -48,8 +51,6 @@
     </span>
   </div>
   <div fxFlex class="last-info">
-    <a class="new-stuff" (click)="onOpenWhatsNew()">
-      What's New
-    </a>
+    <ci-search id="ASF_SEARCH"></ci-search>
   </div>
 </div>
