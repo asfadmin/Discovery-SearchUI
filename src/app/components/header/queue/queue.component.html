@@ -24,10 +24,10 @@
     <mat-card-content>
       <mat-list role="list" class="dl-list">
         <ng-container *ngIf="products$ | async as products">
-          <mat-list-item [ngClass]="{'dl-list-item' : breakpoint === breakpoints.MOBILE }"
+          <mat-list-item
             *cdkVirtualFor="let product of products"
             role="listitem">
-              <div matLine class="dl-text">
+              <div matLine [ngClass]="{'dl-list-item' : breakpoint === breakpoints.MOBILE }">
                 <b>
                   <span *ngIf="breakpoint !== breakpoints.MOBILE">{{ product.name | truncate: 50 }}X</span>
                   <span *ngIf="breakpoint === breakpoints.MOBILE">{{ product.name | truncate: 5 }}M</span>
@@ -42,7 +42,7 @@
                   <span *ngIf="product.bytes !== 0">{{product.bytes | readableSizeFromBytes }}</span>
                 </span>
               </div>
-              <div style="margin-top: 3px;" matLine>
+              <div style="margin-top: 3px;" matLine [ngClass]="{'dl-list-item' : breakpoint === breakpoints.MOBILE }">
                 {{ product.productTypeDisplay }}
               </div>
 
