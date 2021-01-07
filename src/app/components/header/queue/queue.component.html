@@ -28,7 +28,7 @@
           <mat-list-item
             *cdkVirtualFor="let product of products"
             role="listitem">
-              <div matLine [ngClass]="{'dl-list-item' : breakpoint === breakpoints.MOBILE }">
+              <div matLine [ngClass]="{'dl-list-item-mobile' : breakpoint === breakpoints.MOBILE }">
                 <b>
                   <span *ngIf="breakpoint !== breakpoints.MOBILE">{{ product.name | truncate: 50 }}</span>
                   <span *ngIf="breakpoint === breakpoints.MOBILE">{{ product.name | truncate: 10 }}</span>
@@ -43,7 +43,7 @@
                   <span *ngIf="product.bytes !== 0">{{product.bytes | readableSizeFromBytes }}</span>
                 </span>
               </div>
-              <div style="margin-top: 3px;" matLine [ngClass]="{'dl-list-item' : breakpoint === breakpoints.MOBILE }">
+              <div style="margin-top: 3px;" matLine [ngClass]="{'dl-list-item-mobile' : breakpoint === breakpoints.MOBILE }">
                 {{ product.productTypeDisplay }}
               </div>
 
