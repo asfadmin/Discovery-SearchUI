@@ -20,7 +20,8 @@
 
   <cdk-virtual-scroll-viewport class="dl-card-content"
     minBufferPx="800" maxBufferPx="1200"
-    itemSize="72">
+    itemSize="72"
+    [ngClass]="{'dl-card-content-mobile' : breakpoint === breakpoints.MOBILE }">
     <mat-card-content>
       <mat-list role="list" class="dl-list">
         <ng-container *ngIf="products$ | async as products">
@@ -29,8 +30,8 @@
             role="listitem">
               <div matLine [ngClass]="{'dl-list-item' : breakpoint === breakpoints.MOBILE }">
                 <b>
-                  <span *ngIf="breakpoint !== breakpoints.MOBILE">{{ product.name | truncate: 50 }}X</span>
-                  <span *ngIf="breakpoint === breakpoints.MOBILE">{{ product.name | truncate: 5 }}M</span>
+                  <span *ngIf="breakpoint !== breakpoints.MOBILE">{{ product.name | truncate: 50 }}</span>
+                  <span *ngIf="breakpoint === breakpoints.MOBILE">{{ product.name | truncate: 15 }}</span>
                   <span *ngIf="product.dataset === 'Sentinel-1B' || product.dataset === 'Sentinel-1A'"
                     >{{ product.name.substr(product.name.length - 4) }}</span>
                   <span *ngIf="product.dataset === 'Sentinel-1 Interferogram (BETA)'"
