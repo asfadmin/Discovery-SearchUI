@@ -24,10 +24,10 @@
     <mat-card-content>
       <mat-list role="list" class="dl-list">
         <ng-container *ngIf="products$ | async as products">
-          <mat-list-item class="dl-list-item"
+          <mat-list-item [ngClass]="{'dl-list-item' : breakpoint === breakpoints.MOBILE }"
             *cdkVirtualFor="let product of products"
             role="listitem">
-              <div matLine>
+              <div matLine class="dl-text">
                 <b>
                   <span *ngIf="breakpoint !== breakpoints.MOBILE">{{ product.name | truncate: 50 }}X</span>
                   <span *ngIf="breakpoint === breakpoints.MOBILE">{{ product.name | truncate: 5 }}M</span>
