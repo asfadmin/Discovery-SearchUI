@@ -29,8 +29,8 @@
             role="listitem">
               <div matLine>
                 <b>
-                  <span *ngIf="breakpoint !== breakpoints.MOBILE">{{ product.name | truncate: 50 }}</span>
-                  <span *ngIf="breakpoint === breakpoints.MOBILE">{{ product.name | truncate: 20 }}</span>
+                  <span *ngIf="breakpoint !== breakpoints.MOBILE">{{ product.name | truncate: 50 }}X</span>
+                  <span *ngIf="breakpoint === breakpoints.MOBILE">{{ product.name | truncate: 20 }}M</span>
                   <span *ngIf="product.dataset === 'Sentinel-1B' || product.dataset === 'Sentinel-1A'"
                     >{{ product.name.substr(product.name.length - 4) }}</span>
                   <span *ngIf="product.dataset === 'Sentinel-1 Interferogram (BETA)'"
