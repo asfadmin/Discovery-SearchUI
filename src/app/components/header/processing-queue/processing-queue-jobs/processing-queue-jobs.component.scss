@@ -1,4 +1,12 @@
+@import "asf-theme";
+
 .jobs-list {
   overflow: auto;
   height: 100%;
+}
+
+.jobs-empty-message {
+  text-align: center;
+  font-size: 18px;
+  color: $asf-primary-dark;
 }

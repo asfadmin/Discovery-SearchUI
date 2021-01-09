@@ -115,10 +115,6 @@ export class HeaderButtonsComponent implements OnInit, OnDestroy {
       'open-download-queue': this.queuedProducts.length
     });
 
-    if (this.queuedProducts.length <= 0) {
-      return;
-    }
-
     this.dialog.open(QueueComponent, {
       id: 'dlQueueDialog',
       maxWidth: '100vw',
@@ -297,10 +293,6 @@ export class HeaderButtonsComponent implements OnInit, OnDestroy {
       'event': 'open-processing-queue',
       'open-processing-queue': this.queuedCustomProducts.length
     });
-
-    if (this.queuedCustomProducts.length <= 0) {
-      return;
-    }
 
     this.dialog.open(ProcessingQueueComponent, {
       id: 'processingQueueDialog',
