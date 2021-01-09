@@ -24,7 +24,7 @@
     [ngClass]="{'dl-card-content-mobile' : breakpoint === breakpoints.MOBILE }">
     <mat-card-content>
       <mat-list role="list" class="dl-list">
-        <ng-container *ngIf="products$ | async as products">
+        <ng-container *ngIf="products$ | async as products ; else emptyQueue">
           <mat-list-item
             *cdkVirtualFor="let product of products"
             role="listitem">
@@ -62,6 +62,12 @@
                 <mat-icon>close</mat-icon>
               </button>
           </mat-list-item>
+        </ng-container>
+        <ng-container #emptyQueue>
+          <div class="dl-empty-message">
+            <br><br>
+            Your download queue is empty.
+          </div>
         </ng-container>
       </mat-list>
     </mat-card-content>

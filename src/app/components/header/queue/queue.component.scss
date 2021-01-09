@@ -56,6 +56,12 @@
   cursor: pointer;
 }
 
+.dl-empty-message {
+  text-align: center;
+  font-size: 18px;
+  color: $asf-primary-dark;
+}
+
 .dem-warning {
   font-size: 14px;
   margin-top: 5px;
