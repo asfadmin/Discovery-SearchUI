@@ -1,6 +1,10 @@
 <div class="jobs-list">
   <mat-list *ngIf="!areJobsLoading" role="list">
-    <ng-container *ngIf="jobs.length > 0 ; else emptyQueue">
+    <ng-container
+      *ngIf="jobs.length > 0 ; then jobsQueued; else emptyQueue">
+    </ng-container>
+
+    <ng-template #jobsQueued>
       <mat-list-item *ngFor="let job of jobs">
         <img matListAvatar
           [src]="job.granules[0].thumbnail"
@@ -23,8 +27,20 @@
           <mat-icon>close</mat-icon>
         </button>
       </mat-list-item>
-    </ng-container>
-    <ng-container #emptyQueue>
+      <template #emptyQueue>
+        <div class="jobs-empty-message">
+          <br><br>
+          Your jobs queue is empty.
+        </div>
+        <div class="jobs-empty-message-docs-link">
+          <a href="https://hyp3-docs.asf.alaska.edu/" target="_blank">
+            On Demand (HyP3) Documentation
+          </a>
+        </div>
+      </template>
+    </ng-template>
+
+    <ng-template #emptyQueue>
       <div class="jobs-empty-message">
         <br><br>
         Your jobs queue is empty.
@@ -34,6 +50,7 @@
           On Demand (HyP3) Documentation
         </a>
       </div>
-    </ng-container>
+    </ng-template>
+
   </mat-list>
 </div>
