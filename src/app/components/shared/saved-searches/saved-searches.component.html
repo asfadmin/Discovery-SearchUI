@@ -38,7 +38,8 @@
 
     <div class="saved-searches__save-button">
       <button
-         *ngIf="savedSearchType === SavedSearchType.SAVED"
+         *ngIf="savedSearchType === SavedSearchType.SAVED &&
+           (searchType$ | async) !== SearchType.CUSTOM_PRODUCTS"
          (click)="saveCurrentSearch()"
               mat-raised-button
               color="accent">

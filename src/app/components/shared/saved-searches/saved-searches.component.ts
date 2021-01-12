@@ -20,6 +20,7 @@ export class SavedSearchesComponent implements OnInit, OnDestroy {
   @ViewChild('filterInput', { static: true }) filterInput: ElementRef;
 
   public searchType$ = this.store$.select(searchStore.getSearchType);
+  public SearchType = models.SearchType;
   public saveSearchOn: boolean;
   public savedSearchType: models.SavedSearchType;
   public lockedFocus = false;

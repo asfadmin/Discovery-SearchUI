@@ -8,7 +8,7 @@
 
     <input matInput
       [(ngModel)]="startDate"
-      matTooltip="MM/DD/YYYY"
+      matTooltip="Scene Start Date (MM/DD/YYYY)"
       (dateChange)="onStartDateChange($event)"
       [min]="extrema.start.min"
       [max]="extrema.start.max"
@@ -28,7 +28,7 @@
       [min]="extrema.end.min"
       [max]="extrema.end.max"
       [matDatepicker]="end"
-      matTooltip="MM/DD/YYYY"
+      matTooltip="Scene End Date (MM/DD/YYYY)"
       name="endInput">
     <mat-datepicker-toggle matSuffix [for]="end"></mat-datepicker-toggle>
     <mat-datepicker [startView]="!!endDate ? 'month' : 'multi-year'" #end></mat-datepicker>

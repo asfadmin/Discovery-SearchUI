@@ -1,5 +1,6 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { SubSink } from 'subsink';
+import { HttpClient } from '@angular/common/http';
 
 import { MatDialog } from '@angular/material/dialog';
 import { QueueComponent } from '@components/header/queue';
@@ -44,6 +45,7 @@ export class HeaderButtonsComponent implements OnInit, OnDestroy {
   anio: number = new Date().getFullYear();
   public asfWebsiteUrl = 'https://www.asf.alaska.edu';
   public maturity = this.env.maturity;
+  public commitUrl = '';
 
   public userAuth: UserAuth;
   public isLoggedIn = false;
@@ -67,9 +69,19 @@ export class HeaderButtonsComponent implements OnInit, OnDestroy {
     private screenSize: ScreenSizeService,
     private dialog: MatDialog,
     private store$: Store<AppState>,
+    private http: HttpClient,
   ) {}
 
   ngOnInit() {
+    this.subs.add(
+      this.http.get('assets/commit-hash.json').subscribe(
+        (commitData: any) => {
+          this.commitUrl = `https://github.com/asfadmin/Discovery-SearchUI/tree/${commitData.hash}`;
+          console.log(this.commitUrl, commitData);
+        }
+      )
+    );
+
     this.subs.add(
       this.store$.select(userStore.getUserAuth).subscribe(
         user => this.userAuth = user
@@ -114,10 +126,6 @@ export class HeaderButtonsComponent implements OnInit, OnDestroy {
       'event': 'open-download-queue',
       'open-download-queue': this.queuedProducts.length
     });
-
-    if (this.queuedProducts.length <= 0) {
-      return;
-    }
 
     this.dialog.open(QueueComponent, {
       id: 'dlQueueDialog',
@@ -297,10 +305,6 @@ export class HeaderButtonsComponent implements OnInit, OnDestroy {
       'event': 'open-processing-queue',
       'open-processing-queue': this.queuedCustomProducts.length
     });
-
-    if (this.queuedCustomProducts.length <= 0) {
-      return;
-    }
 
     this.dialog.open(ProcessingQueueComponent, {
       id: 'processingQueueDialog',

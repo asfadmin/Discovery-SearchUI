@@ -26,6 +26,7 @@ export class QueueComponent implements OnInit, OnDestroy {
   public copyIcon = faCopy;
   public breakpoint$ = this.screenSize.breakpoint$;
   public breakpoints = Breakpoints;
+  public breakpoint: Breakpoints;
 
   public previousQueue: any[] | null = null;
   public areAnyProducts = false;
@@ -58,6 +59,11 @@ export class QueueComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit() {
+    this.subs.add(
+      this.screenSize.breakpoint$.subscribe(
+        breakpoint => this.breakpoint = breakpoint
+      )
+    );
   }
 
   public onRemoveProduct(product: CMRProduct): void {

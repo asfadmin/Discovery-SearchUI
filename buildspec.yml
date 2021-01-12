@@ -11,6 +11,7 @@ phases:
     commands:
       - cp src/app/services/envs/env-${MATURITY}.ts src/app/services/env.ts
       - npm install --prod
+      - echo "{\"hash\":\"$CODEBUILD_RESOLVED_SOURCE_VERSION\"}" > src/assets/commit-hash.json
   build:
     commands:
       - ng build --prod

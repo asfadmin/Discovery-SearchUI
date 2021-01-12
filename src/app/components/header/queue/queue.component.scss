@@ -5,6 +5,10 @@
   overflow-y: scroll;
 }
 
+.dl-card-content-mobile {
+  width: 380px;
+}
+
 .dl-card-title-group {
   background-color: $asf-primary-light;
   color: $asf-primary-dark;
@@ -52,6 +56,12 @@
   cursor: pointer;
 }
 
+.dl-empty-message {
+  text-align: center;
+  font-size: 20px;
+  color: $asf-primary-dark;
+}
+
 .dem-warning {
   font-size: 14px;
   margin-top: 5px;
@@ -61,6 +71,11 @@
   padding-left: 5px;
   color: $asf-blue;
   background-color: rgb(220, 220, 220);
+}
+
+.dl-list-item-mobile {
+  width: 200px;
+  overflow: hidden;
 }
 
 .more-link {

@@ -1,4 +1,21 @@
+@import "asf-theme";
+
 .jobs-list {
   overflow: auto;
   height: 100%;
+}
+
+.jobs-empty-message {
+  text-align: center;
+  font-size: 20px;
+  color: $asf-primary-dark;
+}
+
+.jobs-empty-message-docs-link,
+.jobs-empty-message-docs-link a {
+  display: block;
+  text-align: center;
+  font-size: 14px;
+  color: $asf-blue;
+  margin-top: 10px;
 }

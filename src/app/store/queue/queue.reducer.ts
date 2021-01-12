@@ -142,9 +142,19 @@ export function queueReducer(state = initState, action: QueueActions): QueueStat
     }
 
     case QueueActionType.ADD_JOBS: {
+      const jobs = [...state.customJobs];
+      const new_jobs = [...action.payload];
+
+      const jobsToQueue = new_jobs.filter(new_job =>
+        !jobs.some(old_job =>
+            old_job.job_type === new_job.job_type &&
+            sameGranules(old_job.granules, new_job.granules)
+        )
+      );
+
       return {
         ...state,
-        customJobs: [...state.customJobs, ...action.payload]
+        customJobs: [...jobs, ...jobsToQueue]
       };
     }
 
