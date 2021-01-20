@@ -12,7 +12,7 @@
     },
     test: {
       api: 'https://api-test.asf.alaska.edu',
-      auth: 'https://auth-test-jnk.asf.alaska.edu',
+      auth: 'https://auth-test-jenk.asf.alaska.edu',
       urs: 'https://uat.urs.earthdata.nasa.gov',
       urs_client_id: 'Qkd0Z9KbhG86qedkRC7nSA',
       unzip: 'https://unzip-test.asf.alaska.edu',

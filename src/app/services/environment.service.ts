@@ -17,6 +17,8 @@ export interface Environment {
   datapool: string;
   banner: string;
   user_data: string;
+  cmr_token?: string;
+  cmr_provider?: string;
 }
 
 
@@ -45,7 +47,7 @@ export class EnvironmentService {
     }
   }
 
-  private loadEnvs(): Environments {
+  public loadEnvs(): Environments {
     if (!this.isProd) {
       return this.loadWithCustom();
     } else {
@@ -60,6 +62,10 @@ export class EnvironmentService {
   public setMaturity(maturity: string): void {
     this.maturity = maturity;
     localStorage.setItem(this.maturityKey, this.maturity);
+  }
+
+  public setEnvs(envs: any): void {
+    this.envs = <Environments>envs;
   }
 
   private loadWithCustom(): Environments {
