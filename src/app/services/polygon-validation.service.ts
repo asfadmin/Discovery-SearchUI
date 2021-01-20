@@ -15,6 +15,7 @@ import * as models from '@models';
 })
 export class PolygonValidationService {
   private polygons: Set<string> = new Set([]);
+  private isUpdatedFromRepair = false;
 
   constructor(
     private snackBar: MatSnackBar,
@@ -25,6 +26,12 @@ export class PolygonValidationService {
 
   public validate(): void {
     this.mapService.searchPolygon$.pipe(
+      filter(_ => {
+        const skip = !this.isUpdatedFromRepair;
+        this.isUpdatedFromRepair = false;
+
+        return skip;
+      }),
       filter(p => !!p || this.polygons.has(p)),
       switchMap(polygon => this.asfApiService.validate(polygon).pipe(
         catchError(_ => of(null))
@@ -64,7 +71,7 @@ export class PolygonValidationService {
   }
 
   private setValidPolygon(resp) {
-    this.polygons.add(resp.wkt.wrapped);
+    this.polygons.add(resp.wkt.unwrapped);
     this.mapService.setDrawStyle(models.DrawPolygonStyle.VALID);
 
     const repairs = resp.repairs
@@ -73,7 +80,7 @@ export class PolygonValidationService {
       );
 
     if (repairs.length === 0) {
-      return resp.wkt.wrapped;
+      return resp.wkt.unwrapped;
     }
 
     const { report, type }  = resp.repairs.pop();
@@ -85,8 +92,11 @@ export class PolygonValidationService {
       );
     }
 
+    this.isUpdatedFromRepair = true;
+    console.log('Updating using unwrapped: ');
+    console.log(resp.wkt);
     const features = this.wktService.wktToFeature(
-      resp.wkt.wrapped,
+      resp.wkt.unwrapped,
       this.mapService.epsg()
     );
 

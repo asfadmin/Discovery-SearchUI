@@ -9,8 +9,6 @@ import { EnvironmentService } from '@services';
   styleUrls: ['./customize-env.component.scss', '../preferences/preferences.component.scss']
 })
 export class CustomizeEnvComponent implements OnInit {
-
-  public currentEnv = this.env.envs;
   public envStr: string;
 
   constructor(
@@ -19,7 +17,7 @@ export class CustomizeEnvComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.envStr = JSON.stringify(this.currentEnv, null, 2);
+    this.envStr = JSON.stringify(this.env.envs, null, 2);
   }
 
   setCustomEnv(): void {
@@ -32,16 +30,20 @@ export class CustomizeEnvComponent implements OnInit {
         });
         return;
       }
+
       localStorage.setItem('customEnv', this.envStr);
+      this.env.setEnvs(customEnv);
     } catch {
       this.snackBar.open(`JSON parse error while setting env`, 'ERROR', {
         duration: 5000
       });
+      return;
     }
+
   }
 
   resetToDefaultEnv(): void {
-    this.envStr = JSON.stringify(this.currentEnv, null, 2);
     localStorage.removeItem('customEnv');
+    this.env.loadEnvs();
   }
 }

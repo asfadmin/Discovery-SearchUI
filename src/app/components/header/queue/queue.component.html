@@ -20,17 +20,19 @@
 
   <cdk-virtual-scroll-viewport class="dl-card-content"
     minBufferPx="800" maxBufferPx="1200"
-    itemSize="72">
+    itemSize="72"
+    [ngClass]="{'dl-card-content-mobile' : breakpoint === breakpoints.MOBILE }">
     <mat-card-content>
       <mat-list role="list" class="dl-list">
+
         <ng-container *ngIf="products$ | async as products">
-          <mat-list-item class="dl-list-item"
+          <mat-list-item
             *cdkVirtualFor="let product of products"
             role="listitem">
-
-              <div matLine>
+              <div matLine [ngClass]="{'dl-list-item-mobile' : breakpoint === breakpoints.MOBILE }">
                 <b>
-                  <span> {{ product.name | truncate : productNameLen }}</span>
+                  <span *ngIf="breakpoint !== breakpoints.MOBILE">{{ product.name | truncate: 50 }}</span>
+                  <span *ngIf="breakpoint === breakpoints.MOBILE">{{ product.name | truncate: 10 }}</span>
                   <span *ngIf="product.dataset === 'Sentinel-1B' || product.dataset === 'Sentinel-1A'"
                     >{{ product.name.substr(product.name.length - 4) }}</span>
                   <span *ngIf="product.dataset === 'Sentinel-1 Interferogram (BETA)'"
@@ -42,7 +44,7 @@
                   <span *ngIf="product.bytes !== 0">{{product.bytes | readableSizeFromBytes }}</span>
                 </span>
               </div>
-              <div style="margin-top: 3px;" matLine>
+              <div style="margin-top: 3px;" matLine [ngClass]="{'dl-list-item-mobile' : breakpoint === breakpoints.MOBILE }">
                 {{ product.productTypeDisplay }}
               </div>
 
@@ -62,6 +64,14 @@
               </button>
           </mat-list-item>
         </ng-container>
+
+        <ng-container *ngIf="(products$ | async).length < 1">
+          <div class="dl-empty-message">
+            <br><br>
+            Your download queue is empty.
+          </div>
+        </ng-container>
+
       </mat-list>
     </mat-card-content>
   </cdk-virtual-scroll-viewport>

@@ -2,7 +2,6 @@
   <ng-container *ngIf="breakpoint > breakpoints.MOBILE">
     <button (click)="onOpenProcessingQueue()"
         [@tada]="qOnDemandState"
-        [disabled]="queuedCustomProducts.length <= 0"
         class="spacing nav-icon-buttons" color="basic"
         matTooltip="On Demand Queue"
         mat-button>
@@ -21,7 +20,6 @@
     <button
       (click)="onOpenDownloadQueue()"
       [@tada]="qProdState"
-      [disabled]="queuedProducts.length <= 0"
       class="spacing nav-icon-buttons"
       color="basic"
       matTooltip="Downloads" mat-button>
@@ -245,6 +243,13 @@
         target="_blank">
       <mat-icon>code</mat-icon>
       Vertex Code Repository
+    </a>
+
+    <a mat-menu-item
+        [href]="commitUrl"
+        target="_blank">
+      <mat-icon>code</mat-icon>
+      Build Commit
     </a>
 
     <a *ngIf="(breakpoint$ | async) !== breakpoints.MOBILE"

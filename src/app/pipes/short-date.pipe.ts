@@ -11,7 +11,7 @@ export class FullDatePipe implements PipeTransform {
   transform(date: Date): string {
     const dateUtc = moment.utc(date);
 
-    return dateUtc.format('MMMM DD YYYY HH:mm:ss');
+    return dateUtc.format('MMMM DD YYYY HH:mm:ss') + 'Z';
   }
 }
 
@@ -36,6 +36,6 @@ export class ShortDateTimePipe implements PipeTransform {
   transform(date: Date): string {
     const dateUtc = moment.utc(date);
 
-    return dateUtc.format('MM/DD/YY, HH:mm:ss');
+    return dateUtc.format('MM/DD/YY, HH:mm:ss') + 'Z';
   }
 }
