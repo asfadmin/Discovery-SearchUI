@@ -8,7 +8,7 @@
       unzip: 'https://unzip.asf.alaska.edu',
       datapool: 'https://datapool.asf.alaska.edu',
       banner: 'https://banners.asf.alaska.edu/calendar/prod',
-      user_data: 'https://appdata.asf.alaska.edu'
+      user_data: 'https://appdata.asf.alaska.edu',
     },
     test: {
       api: 'https://api-test.asf.alaska.edu',

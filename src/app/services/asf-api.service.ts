@@ -28,8 +28,18 @@ export class AsfApiService {
 
   public query<T>(stateParamsObj: {[paramName: string]: string | number | null}): Observable<T> {
     const useProdApi = stateParamsObj['maxResults'] >= 5000;
-    if (!this.env.isProd && !useProdApi) {
-      stateParamsObj['maturity'] = this.env.currentEnv.api_maturity;
+    if (!this.env.isProd) {
+      if (!useProdApi) {
+        stateParamsObj['maturity'] = this.env.currentEnv.api_maturity;
+      }
+
+      if (this.env.currentEnv.cmr_provider) {
+        stateParamsObj['provider'] = this.env.currentEnv.cmr_provider;
+      }
+
+      if (this.env.currentEnv.cmr_token) {
+        stateParamsObj['token'] = this.env.currentEnv.cmr_token;
+      }
     }
 
     const params = this.queryParamsFrom(stateParamsObj);
