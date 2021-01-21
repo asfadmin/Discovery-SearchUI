@@ -11,19 +11,16 @@
   </mat-card>
 
   <mat-card class="mp0 no-box-shadow" fxFlex="21" fxFlexFill>
-    <mat-card-subtitle class="header">
-      Scene Detail
-    </mat-card-subtitle>
+    <mat-card-subtitle class="header"> Scene Detail </mat-card-subtitle>
 
     <app-scene-detail></app-scene-detail>
   </mat-card>
 </ng-container>
 
 <ng-container *ngIf="breakpoint <= breakpoints.MEDIUM">
-  <mat-card *ngIf="view === Views.LIST"  class="mp0" fxFlex="45" fxFlex>
+  <mat-card *ngIf="view === Views.LIST" class="mp0" fxFlex="45" fxFlex>
     <mat-card-subtitle class="header medium-header">
       <div>
-
         <div fxFlex="" class="list-button-group">
           <div fxLayout="row" fxLayoutAlign="center" class="button-group-label">
             &nbsp;
@@ -32,7 +29,9 @@
             <div>
               <span fxFlex="" class="mr-10">
                 <span class="control-mat-button-toggle scene-text">
-                  {{ numBaselineScenes$ | async }} Scene{{ (numBaselineScenes$ | async) === 1 ? '' : 's' }}
+                  {{ numBaselineScenes$ | async }} Scene{{
+                    (numBaselineScenes$ | async) === 1 ? "" : "s"
+                  }}
                 </span>
               </span>
             </div>
@@ -45,10 +44,14 @@
           <div fxLayout="row">
             <div>
               <mat-button-toggle-group fxFlex="" name="layerType" class="mr-10">
-                <mat-button-toggle (click)="onZoomToResults()" class="control-mat-button-toggle">
+                <mat-button-toggle
+                  (click)="onZoomToResults()"
+                  class="control-mat-button-toggle"
+                >
                   <mat-icon
                     class="clickable noselect list-icon"
-                    matTooltip="Zoom to results">
+                    matTooltip="Zoom to results"
+                  >
                     settings_overscan
                   </mat-icon>
                 </mat-button-toggle>
@@ -67,7 +70,8 @@
                   <mat-icon
                     class="clickable noselect list-icon"
                     matTooltip="Add all results to downloads"
-                    [matMenuTriggerFor]="addAllProducts">
+                    [matMenuTriggerFor]="addAllProducts"
+                  >
                     add_shopping_cart
                   </mat-icon>
                 </mat-button-toggle>
@@ -75,26 +79,88 @@
             </div>
           </div>
         </div>
+        <div fxFlex="" class="list-button-group">
+          <div fxLayout="row" fxLayoutAlign="center" class="button-group-label">
+            <label>Download</label>
+          </div>
+          <div fxLayout="row">
+            <div>
+              <mat-button-toggle-group fxFlex="" name="layerType" class="mr-10">
+                <mat-button-toggle class="control-mat-button-toggle">
+                  <mat-icon
+                    class="clickable noselect list-icon"
+                    matTooltip="Download data/metadata as"
+                    [matMenuTriggerFor]="addAllOnDemand"
+                  >
+                    get_app
+                  </mat-icon>
+                </mat-button-toggle>
+              </mat-button-toggle-group>
+            </div>
+          </div>
+        </div>
 
-        <mat-menu #addAllProducts="matMenu" >
+        <mat-menu #addAllProducts="matMenu">
           <div *ngIf="allProducts$ | async as products">
             <button (click)="queueAllProducts(products)" mat-menu-item>
-              Add {{ downloadable(products).length }} file{{ downloadable(products).length === 1 ? '' : 's'}} to downloads
+              Add {{ downloadable(products).length }} file{{
+                downloadable(products).length === 1 ? "" : "s"
+              }}
+              to downloads
             </button>
           </div>
         </mat-menu>
 
+        <mat-menu #addAllOnDemand="matMenu">
+          <button mat-menu-item [matMenuTriggerFor]="addAllOnDemandMetadata">
+            Metadata
+          </button>
+          <button mat-menu-item [matMenuTriggerFor]="addAllOnDemandData">
+            Data
+          </button>
+        </mat-menu>
+
+        <mat-menu #addAllOnDemandMetadata="matMenu">
+          <div *ngIf="allProducts$ | async as products">
+            <button (click)="onCsvDownload(products)" mat-menu-item>
+              csv
+            </button>
+            <button (click)="onGeojsonDownload(products)" mat-menu-item>
+              geojson
+            </button>
+            <button (click)="onKmlDownload(products)" mat-menu-item>
+            kml
+          </button>
+        </div>
+        </mat-menu>
+
+        <mat-menu #addAllOnDemandData="matMenu">
+          <div *ngIf="allProducts$ | async as products">
+            <button (click)="onMakeDownloadScript(products)" mat-menu-item>
+              python (.py)
+            </button>
+            <button (click)="onMetalinkDownload(products)" mat-menu-item>
+            metalink
+          </button>
+        </div>
+        </mat-menu>
+
         <div class="button-tabs">
-          <button (click)="onSelectList()"
-                  [class.selected]="view === Views.LIST" mat-button>
+          <button
+            (click)="onSelectList()"
+            [class.selected]="view === Views.LIST"
+            mat-button
+          >
             Scenes
           </button>
-          <button (click)="onSelectDetail()"
-                  [class.selected]="view === Views.DETAIL" mat-button>
+          <button
+            (click)="onSelectDetail()"
+            [class.selected]="view === Views.DETAIL"
+            mat-button
+          >
             Scene Detail
           </button>
         </div>
-
       </div>
     </mat-card-subtitle>
 
@@ -103,25 +169,35 @@
     </div>
   </mat-card>
 
-
-  <mat-card *ngIf="view === Views.DETAIL" class="mp0 no-box-shadow" fxFlex="45" fxFlexFill>
+  <mat-card
+    *ngIf="view === Views.DETAIL"
+    class="mp0 no-box-shadow"
+    fxFlex="45"
+    fxFlexFill
+  >
     <mat-card-subtitle class="header medium-header">
       <div>
-        <button (click)="onSelectList()"
-         [class.selected]="view === Views.LIST" mat-button>
+        <button
+          (click)="onSelectList()"
+          [class.selected]="view === Views.LIST"
+          mat-button
+        >
           Scenes
         </button>
-        <button (click)="onSelectDetail()"
-         [class.selected]="view === Views.DETAIL" mat-button>
+        <button
+          (click)="onSelectDetail()"
+          [class.selected]="view === Views.DETAIL"
+          mat-button
+        >
           Scene Detail
         </button>
-<!--        <button (click)="onZoomToResults()" mat-icon-button>-->
-<!--          <mat-icon-->
-<!--            class="clickable noselect list-icon"-->
-<!--            matTooltip="Zoom to results">-->
-<!--              settings_overscan-->
-<!--          </mat-icon>-->
-<!--        </button>-->
+        <!--        <button (click)="onZoomToResults()" mat-icon-button>-->
+        <!--          <mat-icon-->
+        <!--            class="clickable noselect list-icon"-->
+        <!--            matTooltip="Zoom to results">-->
+        <!--              settings_overscan-->
+        <!--          </mat-icon>-->
+        <!--        </button>-->
       </div>
     </mat-card-subtitle>
 
@@ -129,12 +205,18 @@
   </mat-card>
 </ng-container>
 
-<mat-card class="mp0 no-box-shadow" [fxFlex]="breakpoint <= breakpoints.MEDIUM ? 55 : 45" fxFlexFill>
+<mat-card
+  class="mp0 no-box-shadow"
+  [fxFlex]="breakpoint <= breakpoints.MEDIUM ? 55 : 45"
+  fxFlexFill
+>
   <mat-card-subtitle
     [class.medium-header]="breakpoint <= breakpoints.MEDIUM"
-    class="header">
+    class="header"
+  >
     <div class="baseline-criteria-label" (click)="onToggleFiltersMenu()">
-      Baseline Criteria <div class="more-icon"><mat-icon>more_horiz</mat-icon></div>
+      Baseline Criteria
+      <div class="more-icon"><mat-icon>more_horiz</mat-icon></div>
     </div>
   </mat-card-subtitle>
   <app-baseline-chart></app-baseline-chart>
