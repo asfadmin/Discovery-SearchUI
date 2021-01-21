@@ -133,7 +133,7 @@ export class BaselineResultsMenuComponent implements OnInit, OnDestroy {
       const currentQueue = this.queuedProducts;
       this.clearDispatchRestoreQueue(new queueStore.DownloadMetadata(AsfApiOutputFormat.CSV), products, currentQueue);
     }
-  
+
     public onKmlDownload(products: models.CMRProduct[]): void {
       const currentQueue = this.queuedProducts;
       this.clearDispatchRestoreQueue(new queueStore.DownloadMetadata(AsfApiOutputFormat.KML), products, currentQueue);
@@ -143,7 +143,7 @@ export class BaselineResultsMenuComponent implements OnInit, OnDestroy {
       const currentQueue = this.queuedProducts;
       this.clearDispatchRestoreQueue(new queueStore.DownloadMetadata(AsfApiOutputFormat.GEOJSON), products, currentQueue);
     }
-  
+
     public onMetalinkDownload(products: models.CMRProduct[]): void {
       const currentQueue = this.queuedProducts;
       this.clearDispatchRestoreQueue(new queueStore.DownloadMetadata(AsfApiOutputFormat.METALINK), products, currentQueue);
