@@ -136,21 +136,21 @@ export class BaselineResultsMenuComponent implements OnInit, OnDestroy {
         const currentQueue = this.queuedProducts;
         this.clearDispatchRestoreQueue(new queueStore.DownloadMetadata(AsfApiOutputFormat.CSV), products, currentQueue);
       }
-    
+
         // TODO: Implement similar functionality to queue.component.ts
       public onKmlDownload(products: models.CMRProduct[]): void {
         const currentQueue = this.queuedProducts;
         this.clearDispatchRestoreQueue(new queueStore.DownloadMetadata(AsfApiOutputFormat.KML), products, currentQueue);
         // this.downloadMetadata(AsfApiOutputFormat.KML);
       }
-    
+
         // TODO: Implement similar functionality to queue.component.ts
       public onGeojsonDownload(products: models.CMRProduct[]): void {
         const currentQueue = this.queuedProducts;
         this.clearDispatchRestoreQueue(new queueStore.DownloadMetadata(AsfApiOutputFormat.GEOJSON), products, currentQueue);
         // this.downloadMetadata(AsfApiOutputFormat.GEOJSON);
       }
-    
+
         // TODO: Implement similar functionality to queue.component.ts
       public onMetalinkDownload(products: models.CMRProduct[]): void {
         const currentQueue = this.queuedProducts;
