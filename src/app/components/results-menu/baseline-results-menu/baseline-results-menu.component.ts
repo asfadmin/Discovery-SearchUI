@@ -115,48 +115,39 @@ export class BaselineResultsMenuComponent implements OnInit, OnDestroy {
     );
   }
 
-      private clearDispatchRestoreQueue(queueStoreAction: Action,  products: models.CMRProduct[], currentQueue: models.CMRProduct[]): void {
-        this.store$.dispatch(new queueStore.ClearQueue());
-        this.store$.dispatch(new queueStore.AddItems(products));
-        this.store$.dispatch(queueStoreAction);
+    private clearDispatchRestoreQueue(queueStoreAction: Action,  products: models.CMRProduct[], currentQueue: models.CMRProduct[]): void {
+      this.store$.dispatch(new queueStore.ClearQueue());
+      this.store$.dispatch(new queueStore.AddItems(products));
+      this.store$.dispatch(queueStoreAction);
 
-        this.store$.dispatch(new queueStore.ClearQueue());
-        this.store$.dispatch(new queueStore.AddItems(currentQueue));
-      }
+      this.store$.dispatch(new queueStore.ClearQueue());
+      this.store$.dispatch(new queueStore.AddItems(currentQueue));
+    }
 
-      // TODO: Implement similar functionality to queue.component.ts
-      public onMakeDownloadScript(products: models.CMRProduct[]): void {
-        const currentQueue = this.queuedProducts;
+    public onMakeDownloadScript(products: models.CMRProduct[]): void {
+      const currentQueue = this.queuedProducts;
+      this.clearDispatchRestoreQueue(new queueStore.MakeDownloadScript(), products, currentQueue);
+    }
 
-        this.clearDispatchRestoreQueue(new queueStore.MakeDownloadScript(), products, currentQueue);
-      }
+    public onCsvDownload(products: models.CMRProduct[]): void {
+      const currentQueue = this.queuedProducts;
+      this.clearDispatchRestoreQueue(new queueStore.DownloadMetadata(AsfApiOutputFormat.CSV), products, currentQueue);
+    }
+  
+    public onKmlDownload(products: models.CMRProduct[]): void {
+      const currentQueue = this.queuedProducts;
+      this.clearDispatchRestoreQueue(new queueStore.DownloadMetadata(AsfApiOutputFormat.KML), products, currentQueue);
+    }
 
-        // TODO: Implement similar functionality to queue.component.ts
-      public onCsvDownload(products: models.CMRProduct[]): void {
-        const currentQueue = this.queuedProducts;
-        this.clearDispatchRestoreQueue(new queueStore.DownloadMetadata(AsfApiOutputFormat.CSV), products, currentQueue);
-      }
-    
-        // TODO: Implement similar functionality to queue.component.ts
-      public onKmlDownload(products: models.CMRProduct[]): void {
-        const currentQueue = this.queuedProducts;
-        this.clearDispatchRestoreQueue(new queueStore.DownloadMetadata(AsfApiOutputFormat.KML), products, currentQueue);
-        // this.downloadMetadata(AsfApiOutputFormat.KML);
-      }
-    
-        // TODO: Implement similar functionality to queue.component.ts
-      public onGeojsonDownload(products: models.CMRProduct[]): void {
-        const currentQueue = this.queuedProducts;
-        this.clearDispatchRestoreQueue(new queueStore.DownloadMetadata(AsfApiOutputFormat.GEOJSON), products, currentQueue);
-        // this.downloadMetadata(AsfApiOutputFormat.GEOJSON);
-      }
-    
-        // TODO: Implement similar functionality to queue.component.ts
-      public onMetalinkDownload(products: models.CMRProduct[]): void {
-        const currentQueue = this.queuedProducts;
-        this.clearDispatchRestoreQueue(new queueStore.DownloadMetadata(AsfApiOutputFormat.METALINK), products, currentQueue);
-        // this.downloadMetadata(AsfApiOutputFormat.METALINK);
-      }
+    public onGeojsonDownload(products: models.CMRProduct[]): void {
+      const currentQueue = this.queuedProducts;
+      this.clearDispatchRestoreQueue(new queueStore.DownloadMetadata(AsfApiOutputFormat.GEOJSON), products, currentQueue);
+    }
+  
+    public onMetalinkDownload(products: models.CMRProduct[]): void {
+      const currentQueue = this.queuedProducts;
+      this.clearDispatchRestoreQueue(new queueStore.DownloadMetadata(AsfApiOutputFormat.METALINK), products, currentQueue);
+    }
 
   public isExpired(job: models.Hyp3Job): boolean {
     return job.status_code === models.Hyp3JobStatusCode.SUCCEEDED &&
