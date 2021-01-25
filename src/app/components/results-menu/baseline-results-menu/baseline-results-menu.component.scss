@@ -19,6 +19,10 @@ $info-color: $asf-primary;
   display: inline;
 }
 
+.mr-10 {
+  margin-right: 10px;
+}
+
 .list-button {
   border: darkgrey 1px solid;
   background: white;
@@ -50,7 +54,7 @@ $info-color: $asf-primary;
   text-align: center;
   color: $info-color;
   font-size: 12px;
-  margin-left: -1px;
+  margin-left: -10px;
   line-height: 15px;
 }
 
