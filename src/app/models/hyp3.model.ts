@@ -72,10 +72,8 @@ export interface Hyp3RtcGammaParameters {
   speckle_filter?: boolean;
 }
 
-export type Hyp3ProcessingOptions =
-  Hyp3RtcGammaProcessingOptions;
-
-export interface Hyp3RtcGammaProcessingOptions {
+export interface Hyp3ProcessingOptions {
+  // Hyp3RtcGammaProcessingOptions
   demMatching?: boolean;
   includeDem?: boolean;
   includeIncMap?: boolean;
@@ -84,11 +82,21 @@ export interface Hyp3RtcGammaProcessingOptions {
   resolution?: RtcGammaResolution;
   scale?: RtcGammaScale;
   speckleFilter?: boolean;
+
+  // Hyp3InSarProcessingOptions
+  includeLookVectors?: boolean;
+  includeLosDisplacement?: boolean;
+  looks?: InSarGammaLooks;
 }
 
 export enum RtcGammaRadiometry {
   GAMMA0 = 'gamma0',
   SIGMA0 = 'sigma0'
+}
+
+export enum InSarGammaLooks {
+  _20x4 = '20x4',
+  _10x2 = '10x2'
 }
 
 export enum RtcGammaResolution {
@@ -101,7 +109,8 @@ export enum RtcGammaScale {
 }
 
 export enum Hyp3JobType {
-  RTC_GAMMA = 'RTC_GAMMA'
+  RTC_GAMMA = 'RTC_GAMMA',
+  INSAR_GAMMA = 'INSAR_GAMMA'
 }
 
 export enum Hyp3JobStatusCode {

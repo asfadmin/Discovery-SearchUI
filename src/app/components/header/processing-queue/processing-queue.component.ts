@@ -121,20 +121,27 @@ export class ProcessingQueueComponent implements OnInit {
 
   public onSubmitQueue(): void {
     const options = {
-      dem_matching: this.processingOptions.demMatching,
-      include_dem: this.processingOptions.includeDem,
-      include_inc_map: this.processingOptions.includeIncMap,
-      include_scattering_area: this.processingOptions.includeScatteringArea,
-      radiometry: this.processingOptions.radiometry,
-      scale: this.processingOptions.scale,
-      speckle_filter: this.processingOptions.speckleFilter,
+      [models.Hyp3JobType.RTC_GAMMA]: {
+        dem_matching: this.processingOptions.demMatching,
+        include_dem: this.processingOptions.includeDem,
+        include_inc_map: this.processingOptions.includeIncMap,
+        include_scattering_area: this.processingOptions.includeScatteringArea,
+        radiometry: this.processingOptions.radiometry,
+        scale: this.processingOptions.scale,
+        speckle_filter: this.processingOptions.speckleFilter,
+      },
+      [models.Hyp3JobType.INSAR_GAMMA]: {
+        include_look_vectors: this.processingOptions.includeLookVectors,
+        include_los_displacement: this.processingOptions.includeLosDisplacement,
+        looks: this.processingOptions.looks,
+      }
     };
 
     const hyp3JobsBatch = this.jobs.map(job => {
       const jobOptions: any = {
         job_type: job.job_type,
         job_parameters: {
-          ...options,
+          ...options[job.job_type],
           granules: job.granules.map(granule => granule.name),
         }
       };
