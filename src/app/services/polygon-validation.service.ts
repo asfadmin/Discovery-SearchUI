@@ -93,8 +93,6 @@ export class PolygonValidationService {
     }
 
     this.isUpdatedFromRepair = true;
-    console.log('Updating using unwrapped: ');
-    console.log(resp.wkt);
     const features = this.wktService.wktToFeature(
       resp.wkt.unwrapped,
       this.mapService.epsg()

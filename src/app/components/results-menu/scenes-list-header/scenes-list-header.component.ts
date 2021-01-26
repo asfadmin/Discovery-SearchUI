@@ -213,10 +213,6 @@ export class ScenesListHeaderComponent implements OnInit {
   }
 
   public grd_hs(products: models.CMRProduct[]): models.CMRProduct[] {
-    console.log(products, products
-      .filter(product => product.metadata.beamMode === 'IW')
-      .filter(product => product.metadata.productType === 'GRD_HS'));
-
     return products
       .filter(product => product.metadata.beamMode === 'IW')
       .filter(product => product.metadata.productType === 'GRD_HS');
