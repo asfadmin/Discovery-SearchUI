@@ -57,11 +57,10 @@ export interface Hyp3ProductFile {
   url: string;
 }
 
-export type Hyp3JobParameters =
-  | Hyp3RtcGammaParameters;
-
-export interface Hyp3RtcGammaParameters {
+export interface Hyp3JobParameters {
   granules: string[];
+
+  // Hyp3RtcGammaParameters
   dem_matching?: boolean;
   include_dem?: boolean;
   include_inc_map?: boolean;
@@ -70,7 +69,17 @@ export interface Hyp3RtcGammaParameters {
   resolution?: RtcGammaResolution;
   scale?: RtcGammaScale;
   speckle_filter?: boolean;
+
+  // Hyp3InSarGammaParameters
+  include_look_vectors?: boolean;
+  include_los_displacement?: boolean;
+  looks?: InSarGammaLooks;
 }
+
+export interface Hyp3InSarGammaParameters {
+  granules: string[];
+}
+
 
 export interface Hyp3ProcessingOptions {
   // Hyp3RtcGammaProcessingOptions
