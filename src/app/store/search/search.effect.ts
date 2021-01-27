@@ -190,6 +190,7 @@ export class SearchEffects {
 
   private hyp3JobToProducts(jobs, products) {
     const virtualProducts = jobs
+      .filter(job => products[job.job_parameters.granules[0]])
       .map(job => {
         const product = products[job.job_parameters.granules[0]];
         const jobFile = !!job.files ?

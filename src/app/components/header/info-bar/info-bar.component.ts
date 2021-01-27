@@ -151,7 +151,6 @@ export class InfoBarComponent implements OnInit, OnDestroy {
 }
 
   public screenResized() {
-    // console.log('info-bar: onResized Function');
     // this.showSearch();
   }
 
