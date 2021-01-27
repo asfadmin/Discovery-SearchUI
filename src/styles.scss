@@ -100,13 +100,13 @@ ul {
 }
 
 #processingQueueDialog {
-  width: 1000px;
-  max-width: 1000px;
-  height: 650px;
-  min-height: 50%;
-  margin: 0;
+  //width: 1000px;
+  //max-width: 1000px;
+  //height: 650px;
+  //min-height: 50%;
+  //margin: 0;
   padding: 0;
-  overflow: hidden;
+  //overflow: hidden;
 }
 
 .control-mat-button-toggle {
@@ -254,6 +254,12 @@ ul {
 .mat-list-base .mat-list-item.mat-2-line,
 .mat-list-base .mat-list-option.mat-2-line {
   height: 58px !important;
+}
+
+.mat-list-base-item {
+  .job-list-item {
+    display: flex;
+  }
 }
 
 .slider .noUi-connect {

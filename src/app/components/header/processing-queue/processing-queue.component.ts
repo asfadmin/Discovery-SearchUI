@@ -15,6 +15,7 @@ import * as hyp3Store from '@store/hyp3';
 import * as userStore from '@store/user';
 import * as models from '@models';
 import * as services from '@services';
+import { ResizeEvent } from 'angular-resizable-element';
 
 enum ProcessingQueueTab {
   SCENES = 'Scenes',
@@ -43,6 +44,8 @@ export class ProcessingQueueComponent implements OnInit {
 
   public projectName = '';
   public processingOptions: models.Hyp3ProcessingOptions;
+
+  public style: object = {};
 
   constructor(
     public authService: services.AuthService,
@@ -197,5 +200,15 @@ export class ProcessingQueueComponent implements OnInit {
 
   public onSelectOptionsTab(): void {
     this.selectedTab = ProcessingQueueTab.OPTIONS;
+  }
+
+  onResizeEnd(event: ResizeEvent): void {
+    this.style = {
+      position: 'fixed',
+      left: `${event.rectangle.left}px`,
+      top: `${event.rectangle.top}px`,
+      width: `${event.rectangle.width}px`,
+      height: `${event.rectangle.height}px`
+    };
   }
 }
