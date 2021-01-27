@@ -79,9 +79,34 @@
             </div>
           </div>
         </div>
+
+        <div *ngIf="allProducts$ | async as products">
+        <div *ngIf="
+        searchType !== SearchTypes.CUSTOM_PRODUCTS &&
+        (slc(products).length > 0 || grd(products).length > 0)" fxFlex="" class="list-button-group">
+        <div fxLayout="row" fxLayoutAlign="center" class="button-group-label">
+          <label>On Demand</label>
+        </div>
+        <div fxLayout="row" fxLayoutAlign="center">
+          <div>
+            <mat-button-toggle-group fxFlex="" name="layerType" class="mr-10">
+              <mat-button-toggle class="control-mat-button-toggle">
+                <mat-icon
+                  class="clickable noselect list-icon"
+                  matTooltip="Add all results to On Demand queue"
+                  svgIcon="hyp3"
+                  [matMenuTriggerFor]="addAllOnDemand">
+                </mat-icon>
+              </mat-button-toggle>
+            </mat-button-toggle-group>
+          </div>
+        </div>
+      </div>
+    </div>
+
         <div fxFlex="" class="list-button-group">
           <div fxLayout="row" fxLayoutAlign="center" class="button-group-label">
-            <label>Download</label>
+            <label>Export</label>
           </div>
           <div fxLayout="row">
             <div>
@@ -90,7 +115,7 @@
                   <mat-icon
                     class="clickable noselect list-icon"
                     matTooltip="Download data/metadata as"
-                    [matMenuTriggerFor]="addAllOnDemand"
+                    [matMenuTriggerFor]="ExportAll"
                   >
                     get_app
                   </mat-icon>
@@ -106,21 +131,39 @@
               Add {{ downloadable(products).length }} file{{
                 downloadable(products).length === 1 ? "" : "s"
               }}
-              to downloads
+              to_downloads
             </button>
           </div>
         </mat-menu>
 
+
         <mat-menu #addAllOnDemand="matMenu">
-          <button mat-menu-item [matMenuTriggerFor]="addAllOnDemandMetadata">
+          <button [matMenuTriggerFor]="addAllRTCDemand" mat-menu-item>
+            RTC Gamma
+          </button>
+        </mat-menu>
+
+        <mat-menu #addAllRTCDemand="matMenu">
+          <div *ngIf="allProducts$ | async as products">
+          <button *ngIf="slc(products).length > 0" (click)="queueAllOnDemand(slc(products))" mat-menu-item>
+            Add {{ slc(products).length }} SLC jobs
+          </button>
+          <button *ngIf="grd(products).length > 0" (click)="queueAllOnDemand(grd(products))" mat-menu-item>
+            Add {{ grd(products).length }} GRD-HD jobs
+          </button>
+        </div>
+        </mat-menu>
+
+        <mat-menu #ExportAll="matMenu">
+          <button mat-menu-item [matMenuTriggerFor]="ExportAllMetadata">
             Metadata
           </button>
-          <button mat-menu-item [matMenuTriggerFor]="addAllOnDemandData">
+          <button mat-menu-item [matMenuTriggerFor]="ExportAllData">
             Data
           </button>
         </mat-menu>
 
-        <mat-menu #addAllOnDemandMetadata="matMenu">
+        <mat-menu #ExportAllMetadata="matMenu">
           <div *ngIf="allProducts$ | async as products">
             <button (click)="onCsvDownload(products)" mat-menu-item>
               csv
@@ -134,7 +177,7 @@
         </div>
         </mat-menu>
 
-        <mat-menu #addAllOnDemandData="matMenu">
+        <mat-menu #ExportAllData="matMenu">
           <div *ngIf="allProducts$ | async as products">
             <button (click)="onMakeDownloadScript(products)" mat-menu-item>
               python (.py)

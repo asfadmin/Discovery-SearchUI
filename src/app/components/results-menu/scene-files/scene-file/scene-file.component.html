@@ -108,6 +108,18 @@
       Speckle Filter: {{ product.metadata.job.job_parameters.speckle_filter }}
     </div>
 
+    <div *ngIf="product.metadata.job && product.metadata.job.job_parameters.include_look_vectors " mat-line>
+      Include Look Vectors: {{ product.metadata.job.job_parameters.include_look_vectors }}
+    </div>
+
+    <div *ngIf="product.metadata.job && product.metadata.job.job_parameters.include_los_displacement" mat-line>
+      Include Los Displacement: {{ product.metadata.job.job_parameters.include_los_displacement }}
+    </div>
+
+    <div *ngIf="product.metadata.job && product.metadata.job.job_parameters.looks" mat-line>
+      Looks: {{ product.metadata.job.job_parameters.looks }}
+    </div>
+
     <div *ngIf="product.metadata.job" mat-line>
       Job Submitted: {{ product.metadata.job.request_time | fullDate }}
     </div>

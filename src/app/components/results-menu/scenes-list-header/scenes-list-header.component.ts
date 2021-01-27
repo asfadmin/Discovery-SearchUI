@@ -4,7 +4,7 @@ import * as moment from 'moment';
 
 import { combineLatest } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { Store } from '@ngrx/store';
+import { Action, Store } from '@ngrx/store';
 
 import { AppState } from '@store';
 import * as scenesStore from '@store/scenes';
@@ -20,6 +20,7 @@ import {
 } from '@services';
 import * as models from '@models';
 import { SubSink } from 'subsink';
+import { AsfApiOutputFormat } from '@models';
 
 @Component({
   selector: 'app-scenes-list-header',
@@ -39,6 +40,7 @@ export class ScenesListHeaderComponent implements OnInit {
   );
   public pairs: models.CMRProductPair[];
   public sbasProducts: models.CMRProduct[];
+  public queuedProducts: models.CMRProduct[];
   public canHideRawData: boolean;
   public showS1RawData: boolean;
 
@@ -124,6 +126,12 @@ export class ScenesListHeaderComponent implements OnInit {
       this.store$.select(uiStore.getShowExpiredData).subscribe(
         showExpiredData => this.showExpiredData = showExpiredData
       )
+    );
+
+    this.subs.add(
+      this.store$.select(queueStore.getQueuedProducts).subscribe(
+        products => this.queuedProducts = products
+        )
     );
   }
 
@@ -263,6 +271,40 @@ export class ScenesListHeaderComponent implements OnInit {
         !this.isExpired(product.metadata.job)
       )
     );
+  }
+
+  private clearDispatchRestoreQueue(queueStoreAction: Action,  products: models.CMRProduct[], currentQueue: models.CMRProduct[]): void {
+    this.store$.dispatch(new queueStore.ClearQueue());
+    this.store$.dispatch(new queueStore.AddItems(products));
+    this.store$.dispatch(queueStoreAction);
+
+    this.store$.dispatch(new queueStore.ClearQueue());
+    this.store$.dispatch(new queueStore.AddItems(currentQueue));
+  }
+
+  public onMakeDownloadScript(products: models.CMRProduct[]): void {
+    const currentQueue = this.queuedProducts;
+    this.clearDispatchRestoreQueue(new queueStore.MakeDownloadScript(), products, currentQueue);
+  }
+
+  public onCsvDownload(products: models.CMRProduct[]): void {
+    const currentQueue = this.queuedProducts;
+    this.clearDispatchRestoreQueue(new queueStore.DownloadMetadata(AsfApiOutputFormat.CSV), products, currentQueue);
+  }
+
+  public onKmlDownload(products: models.CMRProduct[]): void {
+    const currentQueue = this.queuedProducts;
+    this.clearDispatchRestoreQueue(new queueStore.DownloadMetadata(AsfApiOutputFormat.KML), products, currentQueue);
+  }
+
+  public onGeojsonDownload(products: models.CMRProduct[]): void {
+    const currentQueue = this.queuedProducts;
+    this.clearDispatchRestoreQueue(new queueStore.DownloadMetadata(AsfApiOutputFormat.GEOJSON), products, currentQueue);
+  }
+
+  public onMetalinkDownload(products: models.CMRProduct[]): void {
+    const currentQueue = this.queuedProducts;
+    this.clearDispatchRestoreQueue(new queueStore.DownloadMetadata(AsfApiOutputFormat.METALINK), products, currentQueue);
   }
 
   public isExpired(job: models.Hyp3Job): boolean {

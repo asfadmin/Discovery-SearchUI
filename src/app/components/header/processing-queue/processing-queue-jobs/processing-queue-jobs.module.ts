@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ProcessingQueueJobsComponent } from './processing-queue-jobs.component';
 
+import { MatChipsModule } from '@angular/material/chips';
 import { MatSharedModule } from '@shared';
 import { PipesModule } from '@pipes';
 
@@ -13,6 +14,7 @@ import { PipesModule } from '@pipes';
     CommonModule,
     PipesModule,
     MatSharedModule,
+    MatChipsModule,
   ],
   exports: [
     ProcessingQueueJobsComponent

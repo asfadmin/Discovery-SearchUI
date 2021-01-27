@@ -38,7 +38,7 @@ export class BaselineResultsMenuComponent implements OnInit, OnDestroy {
   public Views = CardViews;
 
   public searchType: models.SearchType;
-
+  public SearchTypes = models.SearchType;
   public sbasProducts: models.CMRProduct[];
   public queuedProducts: models.CMRProduct[];
 
@@ -99,6 +99,18 @@ export class BaselineResultsMenuComponent implements OnInit, OnDestroy {
     this.store$.dispatch(new queueStore.AddItems(products));
   }
 
+  public slc(products: models.CMRProduct[]): models.CMRProduct[] {
+    return products
+      .filter(product => product.metadata.beamMode === 'IW')
+      .filter(product => product.metadata.productType === 'SLC');
+  }
+
+  public grd(products: models.CMRProduct[]): models.CMRProduct[] {
+    return products
+      .filter(product => product.metadata.beamMode === 'IW')
+      .filter(product => product.metadata.productType === 'GRD_HD');
+  }
+
   public downloadable(products: models.CMRProduct[]): models.CMRProduct[] {
     return products.filter(product => this.isDownloadable(product));
   }
@@ -147,6 +159,16 @@ export class BaselineResultsMenuComponent implements OnInit, OnDestroy {
     public onMetalinkDownload(products: models.CMRProduct[]): void {
       const currentQueue = this.queuedProducts;
       this.clearDispatchRestoreQueue(new queueStore.DownloadMetadata(AsfApiOutputFormat.METALINK), products, currentQueue);
+    }
+
+    public queueAllOnDemand(products: models.CMRProduct[]): void {
+      const jobs = products.map(
+        product => ({
+          granules: [ product ],
+          job_type: models.Hyp3JobType.RTC_GAMMA
+        })
+      );
+      this.store$.dispatch(new queueStore.AddJobs(jobs));
     }
 
   public isExpired(job: models.Hyp3Job): boolean {
