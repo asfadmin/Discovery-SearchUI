@@ -18,6 +18,9 @@
 
           <div matLine>
             <b>
+              {{ job.job_type }}
+            </b>
+            <b>
               <span *ngIf="job.granules[0].bytes === 0">Virtual</span>
               <span *ngIf="job.granules[0].bytes !== 0">{{ job.granules[0].bytes | readableSizeFromBytes }}</span>
             </b>

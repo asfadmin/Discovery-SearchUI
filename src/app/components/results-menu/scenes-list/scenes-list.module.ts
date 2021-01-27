@@ -6,6 +6,7 @@ import { TruncateModule } from '@yellowspot/ng-truncate';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { MatBadgeModule } from '@angular/material/badge';
 import { MatChipsModule } from '@angular/material/chips';
+import { MatMenuModule } from '@angular/material/menu';
 
 import { MatSharedModule } from '@shared';
 import { PipesModule } from '@pipes';
@@ -32,6 +33,7 @@ import { Hyp3JobComponent } from './hyp3-job/hyp3-job.component';
     FontAwesomeModule,
     CopyToClipboardModule,
     MatSharedModule,
+    MatMenuModule,
     PipesModule,
     FileNameModule
   ],

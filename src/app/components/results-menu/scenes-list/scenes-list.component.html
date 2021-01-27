@@ -36,6 +36,20 @@
             <b>{{ pair[0].metadata.date | shortDate }} to {{ pair[1].metadata.date | shortDate }}</b>
             <div style="margin-left: 10px;">{{ pairPerpBaseline(pair)}}m</div>
             <div style="margin-left: 10px;">{{ pairTempBaseline(pair)}}d</div>
+              <mat-icon
+                (click)="(pair)"
+                class="clickable noselect list-icon"
+                style="margin-left: 10px;"
+                matTooltip="Add pair to On Demand queue"
+                svgIcon="hyp3"
+                [matMenuTriggerFor]="addPairToOnDemand">
+              </mat-icon>
+
+              <mat-menu #addPairToOnDemand="matMenu">
+                <button (click)="onAddPairToQueue(pair)" mat-menu-item>
+                  Add pair to On Demand queue
+                </button>
+              </mat-menu>
           </button>
         </div>
       </ng-container>

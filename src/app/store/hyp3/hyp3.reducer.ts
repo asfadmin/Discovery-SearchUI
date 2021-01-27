@@ -1,7 +1,10 @@
 import { createFeatureSelector, createSelector } from '@ngrx/store';
 
 import { Hyp3ActionType, Hyp3Actions } from './hyp3.action';
-import { Hyp3Job, Hyp3User, Hyp3ProcessingOptions, RtcGammaRadiometry, RtcGammaScale } from '@models';
+import {
+  Hyp3Job, Hyp3User, Hyp3ProcessingOptions,
+  RtcGammaRadiometry, RtcGammaScale, InSarGammaLooks
+} from '@models';
 
 /* State */
 
@@ -27,7 +30,11 @@ const initState: Hyp3State = {
     demMatching: false,
     includeDem: false,
     includeIncMap: false,
-    speckleFilter: false
+    speckleFilter: false,
+
+    includeLookVectors: false,
+    includeLosDisplacement: false,
+    looks: InSarGammaLooks._20x4,
   },
   projectName: '',
 };

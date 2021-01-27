@@ -136,6 +136,27 @@
             </div>
           </div>
 
+          <div fxFlex="" class="list-button-group">
+            <div fxLayout="row" fxLayoutAlign="center" class="button-group-label">
+              <label>Export</label>
+            </div>
+            <div fxLayout="row">
+              <div>
+                <mat-button-toggle-group fxFlex="" name="layerType" class="mr-10">
+                  <mat-button-toggle class="control-mat-button-toggle">
+                    <mat-icon
+                      class="clickable noselect list-icon"
+                      matTooltip="Download data/metadata as"
+                      [matMenuTriggerFor]="ExportAll"
+                    >
+                      get_app
+                    </mat-icon>
+                  </mat-button-toggle>
+                </mat-button-toggle-group>
+              </div>
+            </div>
+          </div>
+
           <div *ngIf="searchType === SearchTypes.SBAS" fxFlex="" class="list-button-group">
             <div fxLayout="row" fxLayoutAlign="center" class="button-group-label">
               <label>Pairs</label>
@@ -173,6 +194,15 @@
             </button>
           </mat-menu>
 
+          <mat-menu #ExportAll="matMenu">
+            <button mat-menu-item [matMenuTriggerFor]="ExportAllMetadata">
+              Metadata
+            </button>
+            <button mat-menu-item [matMenuTriggerFor]="ExportAllData">
+              Data
+            </button>
+          </mat-menu>
+
           <mat-menu #addAllRTCDemand="matMenu">
             <button *ngIf="slc(products).length > 0" (click)="queueAllOnDemand(slc(products))" mat-menu-item>
               Add {{ slc(products).length }} SLC jobs
@@ -183,6 +213,31 @@
           </mat-menu>
         </div>
       </div>
+
+      <mat-menu #ExportAllMetadata="matMenu">
+        <div *ngIf="allProducts$ | async as products">
+          <button (click)="onCsvDownload(products)" mat-menu-item>
+            csv
+          </button>
+          <button (click)="onGeojsonDownload(products)" mat-menu-item>
+            geojson
+          </button>
+          <button (click)="onKmlDownload(products)" mat-menu-item>
+          kml
+        </button>
+      </div>
+      </mat-menu>
+
+      <mat-menu #ExportAllData="matMenu">
+        <div *ngIf="allProducts$ | async as products">
+          <button (click)="onMakeDownloadScript(products)" mat-menu-item>
+            python (.py)
+          </button>
+          <button (click)="onMetalinkDownload(products)" mat-menu-item>
+          metalink
+        </button>
+      </div>
+      </mat-menu>
 
       <ng-container *ngIf="searchType === SearchTypes.BASELINE">
         <div class="header-row-right" *ngIf="breakpoint > breakpoints.MOBILE">
