@@ -137,6 +137,12 @@ export class SearchEffects {
             }) :
             new SearchCanceled()
         ),
+        catchError(
+          _ => {
+            console.log(_);
+            return of(new SearchError(`Error loading search results`));
+          }
+        ),
       ))
     );
   }
