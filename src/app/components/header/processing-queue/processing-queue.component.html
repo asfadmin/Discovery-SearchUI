@@ -55,7 +55,9 @@
 
           <div class="content-top-area">
             <div class="top-item">
-              Top Item 1
+                <div class="jobs-detail">
+                  <app-processing-options></app-processing-options>
+                </div>
             </div>
             <div class="top-item">
               Top Item 2
@@ -109,9 +111,6 @@
                         </app-processing-queue-jobs>
                       </div>
 
-<!--                      <div class="jobs-detail">-->
-<!--                        <app-processing-options></app-processing-options>-->
-<!--                      </div>-->
                     </div>
 
                     <div *ngIf="breakpoint === breakpoints.MOBILE">

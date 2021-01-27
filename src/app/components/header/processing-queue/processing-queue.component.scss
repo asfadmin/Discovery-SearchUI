@@ -211,7 +211,7 @@ $footer-height: 60px;
   flex-direction: row;
   flex-wrap: wrap;
   align-items: stretch;
-  background-color: lightblue;
+  background-color: adjust-color($asf-primary-light, $lightness: 15%);
   height: 100%;
 }
 
