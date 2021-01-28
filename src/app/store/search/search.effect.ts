@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { Store, Action } from '@ngrx/store';
 
-import { of, forkJoin, combineLatest, Observable } from 'rxjs';
+import { of, forkJoin, combineLatest, Observable, EMPTY } from 'rxjs';
 import { map, withLatestFrom, switchMap, catchError, filter } from 'rxjs/operators';
 
 import { AppState } from '../app.reducer';
@@ -22,6 +22,7 @@ import {
 import { getIsCanceled, getSearchType } from './search.reducer';
 
 import * as models from '@models';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Injectable()
 export class SearchEffects {
@@ -136,6 +137,14 @@ export class SearchEffects {
               searchType
             }) :
             new SearchCanceled()
+        ),
+        catchError(
+          (err: HttpErrorResponse) => {
+            if (err.status !== 400) {
+              return of(new SearchError(`Uknown Error`));
+            }
+            return EMPTY;
+          }
         ),
       ))
     );
