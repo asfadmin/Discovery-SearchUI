@@ -50,7 +50,11 @@
     <button
       *ngIf="
         product.metadata.beamMode === 'IW' &&
-        (product.metadata.productType === 'SLC' || product.metadata.productType === 'GRD_HD')
+        (
+          product.metadata.productType === 'SLC' ||
+          product.metadata.productType === 'GRD_HD' ||
+          product.metadata.productType === 'GRD_HS'
+        )
         "
       [matMenuTriggerFor]="customJobTypes"
       mat-icon-button>
@@ -102,6 +106,18 @@
 
     <div *ngIf="product.metadata.job && product.metadata.job.job_parameters.speckle_filter" mat-line>
       Speckle Filter: {{ product.metadata.job.job_parameters.speckle_filter }}
+    </div>
+
+    <div *ngIf="product.metadata.job && product.metadata.job.job_parameters.include_look_vectors " mat-line>
+      Include Look Vectors: {{ product.metadata.job.job_parameters.include_look_vectors }}
+    </div>
+
+    <div *ngIf="product.metadata.job && product.metadata.job.job_parameters.include_los_displacement" mat-line>
+      Include Los Displacement: {{ product.metadata.job.job_parameters.include_los_displacement }}
+    </div>
+
+    <div *ngIf="product.metadata.job && product.metadata.job.job_parameters.looks" mat-line>
+      Looks: {{ product.metadata.job.job_parameters.looks }}
     </div>
 
     <div *ngIf="product.metadata.job" mat-line>

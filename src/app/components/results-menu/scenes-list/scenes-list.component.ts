@@ -213,6 +213,13 @@ export class ScenesListComponent implements OnInit, OnDestroy {
     }
   }
 
+  public onAddPairToQueue(pair: models.CMRProductPair): void {
+    this.store$.dispatch(new queueStore.AddJob({
+      granules: pair,
+      job_type: models.Hyp3JobType.INSAR_GAMMA
+    }));
+  }
+
   public onSetFocusedScene(scene: models.CMRProduct): void {
     this.hoveredSceneName = scene.name;
   }

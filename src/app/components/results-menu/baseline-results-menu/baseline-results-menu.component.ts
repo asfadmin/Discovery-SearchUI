@@ -2,11 +2,11 @@ import { Component, OnInit, Input, OnDestroy } from '@angular/core';
 
 import { Observable } from 'rxjs';
 
-import { Store } from '@ngrx/store';
+import { Action, Store } from '@ngrx/store';
 import { AppState } from '@store';
 import * as uiStore from '@store/ui';
 
-import { Breakpoints } from '@models';
+import { AsfApiOutputFormat, Breakpoints } from '@models';
 import {ScreenSizeService, MapService, ScenesService, PairService} from '@services';
 
 import { SubSink } from 'subsink';
@@ -38,8 +38,9 @@ export class BaselineResultsMenuComponent implements OnInit, OnDestroy {
   public Views = CardViews;
 
   public searchType: models.SearchType;
-
+  public SearchTypes = models.SearchType;
   public sbasProducts: models.CMRProduct[];
+  public queuedProducts: models.CMRProduct[];
 
   public breakpoint: Breakpoints;
   public breakpoints = Breakpoints;
@@ -65,6 +66,13 @@ export class BaselineResultsMenuComponent implements OnInit, OnDestroy {
         products => this.sbasProducts = products
       )
     );
+
+    this.subs.add(
+      this.store$.select(queueStore.getQueuedProducts).subscribe(
+        products => this.queuedProducts = products
+        )
+    );
+
   }
 
   public onZoomToResults(): void {
@@ -91,6 +99,18 @@ export class BaselineResultsMenuComponent implements OnInit, OnDestroy {
     this.store$.dispatch(new queueStore.AddItems(products));
   }
 
+  public slc(products: models.CMRProduct[]): models.CMRProduct[] {
+    return products
+      .filter(product => product.metadata.beamMode === 'IW')
+      .filter(product => product.metadata.productType === 'SLC');
+  }
+
+  public grd(products: models.CMRProduct[]): models.CMRProduct[] {
+    return products
+      .filter(product => product.metadata.beamMode === 'IW')
+      .filter(product => product.metadata.productType === 'GRD_HD');
+  }
+
   public downloadable(products: models.CMRProduct[]): models.CMRProduct[] {
     return products.filter(product => this.isDownloadable(product));
   }
@@ -106,6 +126,50 @@ export class BaselineResultsMenuComponent implements OnInit, OnDestroy {
       )
     );
   }
+
+    private clearDispatchRestoreQueue(queueStoreAction: Action,  products: models.CMRProduct[], currentQueue: models.CMRProduct[]): void {
+      this.store$.dispatch(new queueStore.ClearQueue());
+      this.store$.dispatch(new queueStore.AddItems(products));
+      this.store$.dispatch(queueStoreAction);
+
+      this.store$.dispatch(new queueStore.ClearQueue());
+      this.store$.dispatch(new queueStore.AddItems(currentQueue));
+    }
+
+    public onMakeDownloadScript(products: models.CMRProduct[]): void {
+      const currentQueue = this.queuedProducts;
+      this.clearDispatchRestoreQueue(new queueStore.MakeDownloadScript(), products, currentQueue);
+    }
+
+    public onCsvDownload(products: models.CMRProduct[]): void {
+      const currentQueue = this.queuedProducts;
+      this.clearDispatchRestoreQueue(new queueStore.DownloadMetadata(AsfApiOutputFormat.CSV), products, currentQueue);
+    }
+
+    public onKmlDownload(products: models.CMRProduct[]): void {
+      const currentQueue = this.queuedProducts;
+      this.clearDispatchRestoreQueue(new queueStore.DownloadMetadata(AsfApiOutputFormat.KML), products, currentQueue);
+    }
+
+    public onGeojsonDownload(products: models.CMRProduct[]): void {
+      const currentQueue = this.queuedProducts;
+      this.clearDispatchRestoreQueue(new queueStore.DownloadMetadata(AsfApiOutputFormat.GEOJSON), products, currentQueue);
+    }
+
+    public onMetalinkDownload(products: models.CMRProduct[]): void {
+      const currentQueue = this.queuedProducts;
+      this.clearDispatchRestoreQueue(new queueStore.DownloadMetadata(AsfApiOutputFormat.METALINK), products, currentQueue);
+    }
+
+    public queueAllOnDemand(products: models.CMRProduct[]): void {
+      const jobs = products.map(
+        product => ({
+          granules: [ product ],
+          job_type: models.Hyp3JobType.RTC_GAMMA
+        })
+      );
+      this.store$.dispatch(new queueStore.AddJobs(jobs));
+    }
 
   public isExpired(job: models.Hyp3Job): boolean {
     return job.status_code === models.Hyp3JobStatusCode.SUCCEEDED &&
