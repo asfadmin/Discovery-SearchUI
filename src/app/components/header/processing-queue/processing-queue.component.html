@@ -21,12 +21,15 @@
           </div>
           <div class="on-demand-text">
             On Demand
+            <div class="project-name">
+              <app-project-name-selector [processName]="true">
+              </app-project-name-selector>
+            </div>
           </div>
           <div class="subtitle">
             powered by HyP3
           </div>
         </mat-card-title>
-
       </mat-card-title-group>
 
       <div class="feedback-div feedback-link">
@@ -37,7 +40,15 @@
           <mat-icon>close</mat-icon>
       </div>
 
-      <mat-card-content>
+<!--      <div class="dataset-menu">-->
+<!--        <mat-tab-group>-->
+<!--          <mat-tab label="First"> Content 1 </mat-tab>-->
+<!--          <mat-tab label="Second"> Content 2 </mat-tab>-->
+<!--          <mat-tab label="Third"> Content 3 </mat-tab>-->
+<!--        </mat-tab-group>-->
+<!--      </div>-->
+
+  <mat-card-content>
 
         <div class="content-block">
 
@@ -54,25 +65,8 @@
             </div>
 
           <div class="content-top-area">
-            <div class="top-item">
-                <div class="jobs-detail">
-                  <app-processing-options></app-processing-options>
-                </div>
-            </div>
-            <div class="top-item">
-              Top Item 2
-            </div>
-            <div class="top-item">
-              Top Item 3
-            </div>
-            <div class="top-item">
-              Top Item 4
-            </div>
-            <div class="top-item">
-              Top Item 5
-            </div>
-            <div class="top-item">
-              Top Item 6
+            <div class="jobs-detail">
+              <app-processing-options></app-processing-options>
             </div>
           </div>
 

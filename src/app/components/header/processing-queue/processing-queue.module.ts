@@ -23,6 +23,8 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { QueueSubmitComponent } from './queue-submit/queue-submit.component';
 import { ResizableModule } from 'angular-resizable-element';
 import { DragDropModule } from '@angular/cdk/drag-drop';
+import { ProjectNameSelectorModule } from '@components/shared/selectors/project-name-selector';
+import {MatTabsModule} from '@angular/material/tabs';
 
 
 @NgModule({
@@ -41,11 +43,13 @@ import { DragDropModule } from '@angular/cdk/drag-drop';
     MatSnackBarModule,
     MatBottomSheetModule,
     PipesModule,
+    ProjectNameSelectorModule,
     ProcessingQueueJobsModule,
     ProcessingOptionsModule,
     MatDialogModule,
     ResizableModule,
-    DragDropModule
+    DragDropModule,
+    MatTabsModule
   ]
 })
 export class ProcessingQueueModule {
