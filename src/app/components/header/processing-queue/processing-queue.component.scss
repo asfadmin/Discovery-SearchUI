@@ -1,7 +1,38 @@
 @import "asf-theme";
 
-.processing-queue {
+$header-height: 90px;
+$footer-height: 60px;
+
+.mat-dialog-container {
   padding: 0;
+}
+
+.processing-queue {
+  width: 600px;
+  min-width: 600px;
+  //max-width: 1000px;
+  height: 80%;
+  min-height: 600px;
+  margin: 0;
+  padding: 0;
+  //overflow: hidden;
+  position: relative;
+  //top: 0px;
+  //bottom: 0px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  //margin: auto;
+  //border-radius: 30px;
+  border-color: $asf-primary-dark;
+  border-style: solid;
+  border-width: 1px;
+  font-size: 25px;
+  font-weight: bold;
+  color: $asf-primary-dark;
+  background-color: white;
+  resize: both;
+  overflow-y: hidden;
 }
 
 .card-title-group {
@@ -11,17 +42,26 @@
   border-bottom-style: solid;
   border-bottom-color: $asf-primary-dark;
   border-bottom-width: 1px;
+  width: 100%;
+  height: $header-height;
+  position: absolute;
+  top: 0;
+  flex: 1 1 auto;
+}
+
+.dataset-menu {
+  display: block;
 }
 
 .jobs-dialog {
   width: 100%;
-  height: 100%;
+  height: calc(100% - #{$footer-height});
 }
 
 .jobs-display--desktop {
-  height: 500px;
-  display: flex;
-  flex-direction: row;
+  //height: 500px;
+  //display: flex;
+  //flex-direction: row;
 }
 
 .jobs-display--mobile {
@@ -30,11 +70,10 @@
 }
 
 .jobs-list-panel {
-  width: 650px;
+  width: 100%;
 }
 
 .jobs-detail {
-  border-left: solid grey 1px;
   overflow: auto;
 }
 
@@ -96,11 +135,17 @@
   cursor: pointer;
 }
 
+.project-name {
+  display: inline-block;
+  font-size: 14px;
+  margin-top: 10px;
+  margin-left: 20px;
+}
+
 .error-header {
   border-bottom-style: solid;
   border-bottom-color: $asf-primary-dark;
   border-bottom-width: 1px;
-  position: absolute;
   background: white;
   z-index: 10;
   display: flex;
@@ -143,11 +188,67 @@
 
 .mat-card-content {
   margin-bottom: 0;
+  position: absolute;
+  display: block;
+  top: $header-height;
+  height: calc(100% - #{$header-height} - #{$footer-height});
+  width: 100%;
+  border-top: solid 1px $asf-primary-dark;
+  background-color: white;
+  overflow-y: scroll;
+
+  .mat-card-content-2 {
+    top: initial;
+    height: calc(100% - #{$footer-height});
+    overflow: initial;
+  }
+}
+
+.content-block {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.content-message-area {
+  flex: 1 0 100%;
+  width: 100%;
+  margin-left: 10px;
+}
+
+.content-top-area {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  padding: 0 10px 0 10px;
+  background-color: adjust-color($asf-primary-light, $lightness: 15%);
+  height: 100%;
+}
+
+.top-item {
+  flex: 1 0 auto;
+  height: 100%;
+  min-width: 200px;
+}
+
+.content-bottom-area {
+  display: flex;
+  flex-direction: row;
+  background-color: lightgreen;
+  height: 100%;
+}
+
+.bottom-item {
+  flex: 1 0 auto;
+  height: 100%;
 }
 
 .mat-card-footer {
+  position: absolute;
+  bottom: 0;
   margin: 0;
-  height: 60px;
+  width: 100%;
+  height: $footer-height;
 }
 
 .hyp3-footer {
@@ -182,4 +283,59 @@
 .footer-submit-button {
   display: inline-flex;
   align-self: center;
+}
+
+.mwlResizable {
+  box-sizing: border-box;
+}
+
+.rectangle {
+  position: relative;
+  //top: 0px;
+  //bottom: 0px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  min-height: 300px;
+  //margin: auto;
+  //border-radius: 30px;
+  border-color: red;
+  border-style: solid;
+  font-size: 25px;
+  font-weight: bold;
+  color: red;
+  background-color: grey;
+}
+
+.resize-handle-top,
+.resize-handle-bottom {
+  position: absolute;
+  height: 5px;
+  cursor: row-resize;
+  width: 100%;
+}
+
+.resize-handle-top {
+  top: 0;
+}
+
+.resize-handle-bottom {
+  bottom: 0;
+}
+
+.resize-handle-left,
+.resize-handle-right {
+  position: absolute;
+  height: 100%;
+  cursor: col-resize;
+  width: 5px;
+}
+
+.resize-handle-left {
+  left: 0;
+}
+
+.resize-handle-right {
+  right: 0;
 }

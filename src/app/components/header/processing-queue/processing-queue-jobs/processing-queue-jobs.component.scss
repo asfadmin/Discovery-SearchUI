@@ -1,8 +1,34 @@
 @import "asf-theme";
 
 .jobs-list {
-  overflow: auto;
-  height: 100%;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+
+  .mat-list-base {
+    display: flex;
+    flex-wrap: wrap;
+    width: 100%;
+  }
+
+  .mat-list-text {
+    //max-width: 40%;
+  }
+}
+
+.button-remove-job {
+  margin-left: 10px;
+  margin-top: -22px;
+}
+
+.granule-name {
+  width: auto;
+  max-width: 100%;
+}
+
+.job-list-item {
+  display: flex;
+  flex: 1 0 200px;
 }
 
 .jobs-empty-message {
@@ -19,3 +45,4 @@
   color: $asf-blue;
   margin-top: 10px;
 }
+
