@@ -30,6 +30,34 @@
             powered by HyP3
           </div>
         </mat-card-title>
+        <div class="dataset-menu">
+          <span class="processing-type-text">Processing Type: </span>
+          <button mat-flat-button color="primary" [matMenuTriggerFor]="menu_RTC">RTC</button>
+          <mat-menu #menu_RTC="matMenu">
+            <button mat-menu-item>Not Needed</button>
+            <button mat-menu-item>But An Idea</button>
+            <button mat-menu-item>Gamma</button>
+            <button mat-menu-item>Beta</button>
+          </mat-menu>
+          <button mat-flat-button color="primary" [matMenuTriggerFor]="menu_2">InSAR</button>
+          <mat-menu #menu_2="matMenu">
+            <button mat-menu-item>Maybe Subsets</button>
+            <button mat-menu-item>Or Variants</button>
+          </mat-menu>
+          <button mat-flat-button color="primary" [matMenuTriggerFor]="menu_3">Ragnarok</button>
+          <mat-menu #menu_3="matMenu">
+            <button mat-menu-item>Norse Legend</button>
+            <button mat-menu-item>End of the World</button>
+          </mat-menu>
+          <button mat-flat-button color="primary" [matMenuTriggerFor]="menu_more">More&#8230;</button>
+          <mat-menu #menu_more="matMenu">
+            <button mat-menu-item>Processing Type 4</button>
+            <button mat-menu-item>Processing Type 5</button>
+            <button mat-menu-item>Processing Type 6</button>
+            <button mat-menu-item>Processing Type 7</button>
+            <button mat-menu-item>Processing Type 8</button>
+          </mat-menu>
+        </div>
       </mat-card-title-group>
 
       <div class="feedback-div feedback-link">
@@ -40,13 +68,6 @@
           <mat-icon>close</mat-icon>
       </div>
 
-<!--      <div class="dataset-menu">-->
-<!--        <mat-tab-group>-->
-<!--          <mat-tab label="First"> Content 1 </mat-tab>-->
-<!--          <mat-tab label="Second"> Content 2 </mat-tab>-->
-<!--          <mat-tab label="Third"> Content 3 </mat-tab>-->
-<!--        </mat-tab-group>-->
-<!--      </div>-->
 
   <mat-card-content>
 
@@ -190,14 +211,14 @@
             <button
               (click)="onSubmitQueue()"
               [disabled]="
-              jobs.length > remaining ||
-              jobs.length === 0 ||
-              !isUserLoggedIn
-            "
+                jobs.length > remaining ||
+                jobs.length === 0 ||
+                !isUserLoggedIn
+              "
               mat-flat-button
               color="primary"
-              class="footer-submit-button">
-
+              class="footer-submit-button"
+            >
             <span *ngIf="!isQueueSubmitProcessing">
               Submit {{ jobs.length }} Job<span *ngIf="jobs.length > 1">s</span>
             </span>
@@ -211,116 +232,4 @@
         </div>
       </mat-card-footer>
 
-
 </div>
-
-
-<!--    <mat-card-title-group class="card-title-group">-->
-<!--      <mat-card-title>-->
-<!--        <div class="on-demand-branding">-->
-<!--          <mat-icon-->
-<!--            class="on-demand-icon"-->
-<!--            svgIcon="hyp3"-->
-<!--            matBadgePosition="above after"-->
-<!--            matBadgeOverlap="true"-->
-<!--            matBadgeSize="small">-->
-<!--          </mat-icon>-->
-<!--        </div>-->
-<!--        <div class="on-demand-text">-->
-<!--          On Demand-->
-<!--        </div>-->
-<!--        <div class="subtitle">-->
-<!--          powered by HyP3-->
-<!--        </div>-->
-<!--      </mat-card-title>-->
-
-<!--      <div class="feedback-div feedback-link">-->
-<!--        <a href="javascript:feedback.showForm();" onfocus="this.blur()"> <i class="fa fa-comments-o"></i> Feedback</a>-->
-<!--      </div>-->
-
-<!--    </mat-card-title-group>-->
-
-
-<!--      <div class="close-x" (click)="onCloseDialog()">-->
-<!--        <mat-icon>close</mat-icon>-->
-<!--    </div>-->
-
-
-
-<!--    <mat-card-content>-->
-<!--      <div class="jobs-dialog">-->
-<!--      </div>-->
-<!--    </mat-card-content>-->
-
-<!--    <mat-card-footer>-->
-<!--      <div class="w100 hyp3-footer">-->
-
-<!--        <div class="footer-clear">-->
-
-<!--          <button *ngIf="previousQueue === null"-->
-<!--                  (click)="onClearJobQueue(jobs)"-->
-<!--                  mat-button>-->
-<!--            <mat-icon>delete</mat-icon>-->
-<!--            <span>Clear</span>-->
-<!--          </button>-->
-
-<!--          <button *ngIf="previousQueue !== null"-->
-<!--                  (click)="onRestoreJobQueue(previousQueue)"-->
-<!--                  mat-flat-button-->
-<!--                  color="primary"-->
-<!--                  class="footer-clear-button">-->
-<!--            <mat-icon>undo</mat-icon>-->
-<!--            <span>Restore</span>-->
-<!--          </button>-->
-
-<!--        </div>-->
-
-<!--        <div class="footer-job-notification">-->
-<!--          <div *ngIf="isUserLoggedIn && !isUserLoading && user !== ''">-->
-<!--            <span *ngIf="breakpoint === breakpoints.MOBILE">-->
-<!--              {{ remaining }} job max-->
-<!--            </span>-->
-<!--            <span *ngIf="breakpoint !== breakpoints.MOBILE">-->
-<!--             {{ remaining }} jobs left this month-->
-<!--            </span>-->
-<!--          </div>-->
-<!--          <div *ngIf="isUserLoggedIn && isUserLoading">-->
-<!--            <b>Loading...</b>-->
-<!--          </div>-->
-<!--          <div *ngIf="!isUserLoggedIn">-->
-<!--            <span *ngIf="breakpoint === breakpoints.MOBILE">-->
-<!--             <b>N/A</b> - login to view-->
-<!--            </span>-->
-<!--            <span *ngIf="breakpoint !== breakpoints.MOBILE">-->
-<!--              <b>N/A</b> - login to view number of jobs left this month-->
-<!--            </span>-->
-<!--          </div>-->
-<!--        </div>-->
-
-<!--        <div class="footer-submit">-->
-<!--          <button-->
-<!--            (click)="onSubmitQueue()"-->
-<!--            [disabled]="-->
-<!--            jobs.length > remaining ||-->
-<!--            jobs.length === 0 ||-->
-<!--            !isUserLoggedIn-->
-<!--          "-->
-<!--            mat-flat-button-->
-<!--            color="primary"-->
-<!--            class="footer-submit-button">-->
-
-<!--          <span *ngIf="!isQueueSubmitProcessing">-->
-<!--            Submit {{ jobs.length }} Job<span *ngIf="jobs.length > 1">s</span>-->
-<!--          </span>-->
-
-<!--            <span *ngIf="isQueueSubmitProcessing">-->
-<!--            Loading...-->
-<!--          </span>-->
-<!--          </button>-->
-<!--        </div>-->
-
-<!--      </div>-->
-<!--    </mat-card-footer>-->
-<!--</mat-card>-->
-
-

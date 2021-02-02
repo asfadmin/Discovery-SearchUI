@@ -25,32 +25,34 @@ import { ResizableModule } from 'angular-resizable-element';
 import { DragDropModule } from '@angular/cdk/drag-drop';
 import { ProjectNameSelectorModule } from '@components/shared/selectors/project-name-selector';
 import {MatTabsModule} from '@angular/material/tabs';
+import {MatMenuModule} from '@angular/material/menu';
 
 
 @NgModule({
   declarations: [ProcessingQueueComponent, QueueSubmitComponent],
-  imports: [
-    CommonModule,
-    FormsModule,
-    FontAwesomeModule,
-    MatSharedModule,
-    MatInputModule,
-    MatChipsModule,
-    MatSelectModule,
-    MatSlideToggleModule,
-    MatProgressSpinnerModule,
-    MatProgressBarModule,
-    MatSnackBarModule,
-    MatBottomSheetModule,
-    PipesModule,
-    ProjectNameSelectorModule,
-    ProcessingQueueJobsModule,
-    ProcessingOptionsModule,
-    MatDialogModule,
-    ResizableModule,
-    DragDropModule,
-    MatTabsModule
-  ]
+    imports: [
+        CommonModule,
+        FormsModule,
+        FontAwesomeModule,
+        MatSharedModule,
+        MatInputModule,
+        MatChipsModule,
+        MatSelectModule,
+        MatSlideToggleModule,
+        MatProgressSpinnerModule,
+        MatProgressBarModule,
+        MatSnackBarModule,
+        MatBottomSheetModule,
+        PipesModule,
+        ProjectNameSelectorModule,
+        ProcessingQueueJobsModule,
+        ProcessingOptionsModule,
+        MatDialogModule,
+        ResizableModule,
+        DragDropModule,
+        MatTabsModule,
+        MatMenuModule
+    ]
 })
 export class ProcessingQueueModule {
   constructor(library: FaIconLibrary) {

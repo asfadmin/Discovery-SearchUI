@@ -1,6 +1,6 @@
 @import "asf-theme";
 
-$header-height: 90px;
+$header-height: 120px;
 $footer-height: 60px;
 
 .mat-dialog-container {
@@ -47,10 +47,6 @@ $footer-height: 60px;
   position: absolute;
   top: 0;
   flex: 1 1 auto;
-}
-
-.dataset-menu {
-  display: block;
 }
 
 .jobs-dialog {
@@ -140,6 +136,28 @@ $footer-height: 60px;
   font-size: 14px;
   margin-top: 10px;
   margin-left: 20px;
+}
+
+.dataset-menu {
+  display: block;
+  position: absolute;
+  top: 84px;
+  height: 36px;
+  width: 100%;
+  background-color: adjust-color($asf-primary-light, $lightness: +7%);
+  border-top-color: #3d3e38;
+  border-top-width: 1px;
+  border-top-style: solid;
+
+  button {
+    transform: scale(0.75);
+    background-color: $asf-primary;
+  }
+}
+
+.processing-type-text {
+  font-size: 14px;
+  margin: 0 10px;
 }
 
 .error-header {
