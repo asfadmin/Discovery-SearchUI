@@ -212,6 +212,7 @@ $footer-height: 60px;
   width: 100%;
   background-color: white;
   overflow-y: scroll;
+  overflow-x: hidden;
 
   .mat-card-content-2 {
     top: initial;
