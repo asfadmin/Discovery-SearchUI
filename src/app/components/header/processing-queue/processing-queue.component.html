@@ -32,24 +32,37 @@
         </mat-card-title>
         <div class="dataset-menu">
           <span class="processing-type-text">Processing Type: </span>
-          <button mat-flat-button color="primary" [matMenuTriggerFor]="menu_RTC">RTC</button>
+          <button mat-flat-button color="primary" [matMenuTriggerFor]="menu_RTC">
+            RTC
+            <span class="processing-type-count">52</span>
+          </button>
           <mat-menu #menu_RTC="matMenu">
             <button mat-menu-item>Not Needed</button>
             <button mat-menu-item>But An Idea</button>
             <button mat-menu-item>Gamma</button>
             <button mat-menu-item>Beta</button>
           </mat-menu>
-          <button mat-flat-button color="primary" [matMenuTriggerFor]="menu_2">InSAR</button>
+          <button mat-flat-button color="accent" [matMenuTriggerFor]="menu_2">
+            InSAR
+            <span class="processing-type-count">0</span>
+          </button>
           <mat-menu #menu_2="matMenu">
             <button mat-menu-item>Maybe Subsets</button>
             <button mat-menu-item>Or Variants</button>
           </mat-menu>
-          <button mat-flat-button color="primary" [matMenuTriggerFor]="menu_3">Ragnarok</button>
+          <button mat-flat-button color="accent" [matMenuTriggerFor]="menu_3">
+            RAGNAROK
+            <span class="processing-type-count">0</span>
+          </button>
           <mat-menu #menu_3="matMenu">
             <button mat-menu-item>Norse Legend</button>
             <button mat-menu-item>End of the World</button>
           </mat-menu>
-          <button mat-flat-button color="primary" [matMenuTriggerFor]="menu_more">More&#8230;</button>
+          <button mat-flat-button color="accent" [matMenuTriggerFor]="menu_more">
+            More
+            <span class="processing-type-count">0</span>
+            &#8230;
+          </button>
           <mat-menu #menu_more="matMenu">
             <button mat-menu-item>Processing Type 4</button>
             <button mat-menu-item>Processing Type 5</button>
