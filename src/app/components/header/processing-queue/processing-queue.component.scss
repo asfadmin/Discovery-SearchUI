@@ -221,6 +221,11 @@ $footer-height: 60px;
   }
 }
 
+// forces the scrollbar to remain hidden
+.mat-card-content::-webkit-scrollbar {
+  display: none;
+}
+
 .content-block {
   display: flex;
   flex-direction: column;
