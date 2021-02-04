@@ -10,20 +10,14 @@ $footer-height: 60px;
 .processing-queue {
   width: 600px;
   min-width: 600px;
-  //max-width: 1000px;
   height: 80%;
   min-height: 600px;
   margin: 0;
   padding: 0;
-  //overflow: hidden;
   position: relative;
-  //top: 0px;
-  //bottom: 0px;
   display: flex;
   align-items: center;
   justify-content: center;
-  //margin: auto;
-  //border-radius: 30px;
   border-color: $asf-primary-dark;
   border-style: solid;
   border-width: 1px;
@@ -32,13 +26,13 @@ $footer-height: 60px;
   color: $asf-primary-dark;
   background-color: white;
   resize: both;
-  overflow-y: hidden;
+  overflow-y: scroll;
 }
 
 .card-title-group {
   background-color: $asf-primary-light;
   color: $asf-primary-dark;
-  padding: 10px 10px 4px 10px;
+  padding: 10px 0 4px 0;
   border-bottom-style: solid;
   border-bottom-color: $asf-primary-dark;
   border-bottom-width: 1px;
@@ -150,14 +144,19 @@ $footer-height: 60px;
   border-top-style: solid;
 
   button {
-    transform: scale(0.75);
-    background-color: $asf-primary;
+    //transform: scale(0.75);
+    //background-color: adjust-color($asf-primary, $lightness: +10%);
   }
 }
 
 .processing-type-text {
-  font-size: 14px;
+  font-size: 16px;
   margin: 0 10px;
+}
+
+.processing-type-count {
+  font-size: 8px;
+  vertical-align: super;
 }
 
 .error-header {
@@ -211,15 +210,20 @@ $footer-height: 60px;
   top: $header-height;
   height: calc(100% - #{$header-height} - #{$footer-height});
   width: 100%;
-  border-top: solid 1px $asf-primary-dark;
   background-color: white;
   overflow-y: scroll;
+  overflow-x: hidden;
 
   .mat-card-content-2 {
     top: initial;
     height: calc(100% - #{$footer-height});
     overflow: initial;
   }
+}
+
+// forces the scrollbar to remain hidden
+.mat-card-content::-webkit-scrollbar {
+  display: none;
 }
 
 .content-block {
@@ -238,8 +242,9 @@ $footer-height: 60px;
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
-  padding: 0 10px 0 10px;
+  margin: 0 0 0 15px;
   background-color: adjust-color($asf-primary-light, $lightness: 15%);
+  border-bottom: solid 1px grey;
   height: 100%;
 }
 
