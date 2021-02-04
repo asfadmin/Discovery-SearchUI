@@ -86,12 +86,13 @@
         <mat-icon *ngIf="isDownloadable(scene)"
           (click)="onToggleOnDemandScene()"
           class="icon-margin"
-          svgIcon="hyp3"
+          svgIcon="{{jobQueued ? 'remove_on_demand' : 'add_on_demand'}}"
           matTooltip="{{
             jobQueued ?
               'Remove scene files from on demand':
               'Add scene files to on demand'
           }}">
+
         </mat-icon>
       </div>
     </ng-container>
@@ -120,12 +121,13 @@
           <mat-icon *ngIf="isDownloadable(scene)"
             (click)="onToggleOnDemandScene()"
             class="icon-margin"
-            svgIcon="hyp3"
+            svgIcon="{{jobQueued ? 'remove_on_demand' : 'add_on_demand'}}"
             matTooltip="{{
               jobQueued ?
                 'Remove scene files from on demand':
                 'Add scene files to on demand'
             }}">
+
           </mat-icon>
         </div>
     </div>
