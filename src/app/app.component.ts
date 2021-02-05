@@ -159,14 +159,6 @@ export class AppComponent implements OnInit, OnDestroy {
       'hyp3',
       this.domSanitizer.bypassSecurityTrustResourceUrl('../assets/icons/hyp3.svg')
     );
-    this.matIconRegistry.addSvgIcon(
-      'add_on_demand',
-      this.domSanitizer.bypassSecurityTrustResourceUrl('../assets/icons/add_on_demand.svg')
-    );
-    this.matIconRegistry.addSvgIcon(
-      'remove_on_demand',
-      this.domSanitizer.bypassSecurityTrustResourceUrl('../assets/icons/remove_on_demand.svg')
-    );
   }
 
   private loadProductQueue(): void {
