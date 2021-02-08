@@ -57,6 +57,20 @@
         </mat-icon>
 
         <mat-icon *ngIf="isDownloadable(scene)"
+          (click)="onToggleOnDemandScene()"
+          class="icon-margin"
+          svgIcon="hyp3"
+          matBadgeSize="small"
+          matBadgeColor="{{ jobQueued ? 'primary' : 'accent' }}"
+          matBadge="{{jobQueued ? '-' : '+'}}"
+          matTooltip="{{
+            jobQueued ?
+              'Remove scene files from on demand':
+              'Add scene files to on demand'
+          }}">  
+        </mat-icon>
+
+        <mat-icon *ngIf="isDownloadable(scene)"
           (click)="onToggleScene($event, scene.groupId)"
           class="icon-margin"
           matTooltip="{{
@@ -66,6 +80,7 @@
           }}">
           {{ isQueued ? 'shopping_cart' : 'add_shopping_cart' }}
         </mat-icon>
+
       </div>
 
       <div *ngIf="isDownloadable(scene)" class="scene-controls" [ngClass]="{'mobile-size': breakpoint <= breakpoints.SMALL}">
@@ -80,6 +95,8 @@
           <mat-chip *ngIf="isRunning(scene.metadata.job)" color="secondary">Running</mat-chip>
         </mat-chip-list>
       </div>
+
+
     </ng-container>
 
     <ng-container *ngIf="searchType === SearchTypes.BASELINE">
@@ -89,20 +106,35 @@
             {{ withOffset(scene.metadata.perpendicular, offsets.perpendicular) }}m
           </div>
 
-          <div class="metric-flex-field">
-            {{ withOffset(scene.metadata.temporal, offsets.temporal) }}d
-          </div>
-
-          <div class="cart-flex-field">
-            <mat-icon (click)="onToggleScene($event, scene.groupId)"
-                      class="icon-margin"
-                      matTooltip="{{
-              isQueued ? 'Remove scene files from downloads': 'Add scene files to downloads'
-            }}">
-              {{ isQueued ? 'shopping_cart' : 'add_shopping_cart' }}
-            </mat-icon>
-          </div>
-        </div>
-      </div>
+            <div class="metric-flex-field">
+              {{ withOffset(scene.metadata.temporal, offsets.temporal) }}d
+            </div>
+            <div class="cart-flex-field">
+              <mat-icon *ngIf="isDownloadable(scene)"
+                (click)="onToggleOnDemandScene()"
+                class="icon-margin"
+                svgIcon="hyp3"
+                matBadgeSize="small"
+                matBadgeColor="{{ jobQueued ? 'primary' : 'accent' }}"
+                matBadge="{{jobQueued ? '-' : '+'}}"
+                matTooltip="{{
+                  jobQueued ?
+                    'Remove scene files from on demand':
+                    'Add scene files to on demand'
+                }}">
+              </mat-icon>
+              <mat-icon *ngIf="isDownloadable(scene)" 
+                (click)="onToggleScene($event, scene.groupId)"
+                class="icon-margin"
+                matTooltip="{{
+                  isQueued ? 
+                    'Remove scene files from downloads': 
+                    'Add scene files to downloads'
+                }}">
+                {{ isQueued ? 'shopping_cart' : 'add_shopping_cart' }}
+              </mat-icon>
+            </div>
+    </div>
+  </div>
     </ng-container>
   </button>
