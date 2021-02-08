@@ -56,11 +56,17 @@ export class SceneComponent implements OnInit {
   }
 
   public onToggleOnDemandScene(): void {
-    this.ToggleOnDemandScene.emit({
-      granules: [ this.scene ],
-      job_type: models.Hyp3JobType.RTC_GAMMA
-    } as QueuedHyp3Job);
-    this.jobQueued = !this.jobQueued;
+    // this.scene.productTypeDisplay
+    console.log(this.scene);
+    const filetype = this.scene.metadata.productType;
+    if (this.scene.metadata.beamMode === 'IW' && (filetype === 'GRD_HD' || filetype === 'GRD-HS' || filetype === 'SLC')) {
+      this.ToggleOnDemandScene.emit({
+        granules: [ this.scene ],
+        job_type: models.Hyp3JobType.RTC_GAMMA
+      } as QueuedHyp3Job);
+      this.jobQueued = !this.jobQueued;
+    }
+
   }
 
   public isDownloadable(product: models.CMRProduct): boolean {
@@ -71,6 +77,17 @@ export class SceneComponent implements OnInit {
         !this.isFailed(product.metadata.job) &&
         !this.isRunning(product.metadata.job) &&
         !this.isExpired(product.metadata.job)
+      )
+    );
+  }
+
+  public isProcessable(product: models.CMRProduct): boolean {
+    return (
+      product.metadata.beamMode === 'IW' &&
+      (
+        product.metadata.productType === 'GRD_HD' ||
+        product.metadata.productType === 'GRD-HS' ||
+        product.metadata.productType === 'SLC'
       )
     );
   }
