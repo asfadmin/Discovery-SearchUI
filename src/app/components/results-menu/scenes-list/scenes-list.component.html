@@ -13,11 +13,13 @@
             (mouseleave) ="onClearFocusedScene()"
             (click)="onSceneSelected(scene.id)"
             (toggleScene)="onToggleScene(scene.groupId)"
+            (ToggleOnDemandScene)="onToggleOnDemandScene($event)"
             (zoomTo)="onZoomTo(scene)"
             [scene]="scene"
             [offsets]="offsets"
             [searchType]="searchType"
             [isQueued]="allQueued[scene.groupId]"
+            [jobQueued]="allJobNames.includes(scene.name)"
             [numQueued]="numberOfQueue[scene.groupId]"
             [isHovered]="scene.name === hoveredSceneName"
             [isSelected]="scene.id === selected">
@@ -37,6 +39,7 @@
             <div style="margin-left: 10px;">{{ pairPerpBaseline(pair)}}m</div>
             <div style="margin-left: 10px;">{{ pairTempBaseline(pair)}}d</div>
               <mat-icon
+                 *ngIf="false"
                 (click)="(pair)"
                 class="clickable noselect list-icon"
                 style="margin-left: 10px;"

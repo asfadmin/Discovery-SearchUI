@@ -77,7 +77,6 @@ export class HeaderButtonsComponent implements OnInit, OnDestroy {
       this.http.get('assets/commit-hash.json').subscribe(
         (commitData: any) => {
           this.commitUrl = `https://github.com/asfadmin/Discovery-SearchUI/tree/${commitData.hash}`;
-          console.log(this.commitUrl, commitData);
         }
       )
     );

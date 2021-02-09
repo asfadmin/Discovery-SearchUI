@@ -116,7 +116,8 @@
 
           <div *ngIf="
             searchType !== SearchTypes.CUSTOM_PRODUCTS &&
-            (slc(products).length > 0 || grd(products).length > 0)" fxFlex="" class="list-button-group">
+            (slc(products).length > 0 || grd_hd(products).length > 0 || grd_hs(products).length > 0)"
+            fxFlex="" class="list-button-group">
             <div fxLayout="row" fxLayoutAlign="center" class="button-group-label">
               <label>On Demand</label>
             </div>
@@ -136,7 +137,7 @@
             </div>
           </div>
 
-          <div fxFlex="" class="list-button-group">
+          <div *ngIf="searchType === SearchTypes.BASELINE" fxFlex="" class="list-button-group">
             <div fxLayout="row" fxLayoutAlign="center" class="button-group-label">
               <label>Export</label>
             </div>
@@ -207,8 +208,11 @@
             <button *ngIf="slc(products).length > 0" (click)="queueAllOnDemand(slc(products))" mat-menu-item>
               Add {{ slc(products).length }} SLC jobs
             </button>
-            <button *ngIf="grd(products).length > 0" (click)="queueAllOnDemand(grd(products))" mat-menu-item>
-              Add {{ grd(products).length }} GRD-HD jobs
+            <button *ngIf="grd_hd(products).length > 0" (click)="queueAllOnDemand(grd_hd(products))" mat-menu-item>
+              Add {{ grd_hd(products).length }} GRD-HD jobs
+            </button>
+            <button *ngIf="grd_hs(products).length > 0" (click)="queueAllOnDemand(grd_hs(products))" mat-menu-item>
+              Add {{ grd_hs(products).length }} GRD-HS jobs
             </button>
           </mat-menu>
         </div>
