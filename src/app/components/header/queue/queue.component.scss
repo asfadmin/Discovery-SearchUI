@@ -29,7 +29,7 @@ $background-color: $uaf-primary-blue;
     0 3px 14px 2px rgba(0, 0, 0, 0.12);
 }
 
-mwlResizable {
+mwlresizable {
   box-sizing: border-box; // required for the enableGhostResize option to work
 }
 
@@ -184,10 +184,7 @@ button {
   font-size: 14px;
   color: #fff;
   justify-content: center;
-  margin-top: 10px;
-  margin-right: 10px;
-  margin-left: 10px;
-  margin-bottom: 10px;
+  margin: 10px;
 
   .save {
     background-color: #e37b00;
