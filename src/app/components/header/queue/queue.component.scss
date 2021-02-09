@@ -5,7 +5,6 @@ $footer-height: 60px;
 $bottom-offset: 10px;
 $background-color: $uaf-primary-blue;
 
-
 .download-queue {
   //display: flex;
   //align-items: center;
@@ -30,7 +29,7 @@ $background-color: $uaf-primary-blue;
     0 3px 14px 2px rgba(0, 0, 0, 0.12);
 }
 
-mwlResizable {
+mwlresizable {
   box-sizing: border-box; // required for the enableGhostResize option to work
 }
 
@@ -180,19 +179,21 @@ button {
 }
 
 .buttons {
-  grid-template-columns: auto auto ;
+  grid-template-columns: auto auto;
   display: grid;
   font-size: 14px;
   color: #fff;
   justify-content: center;
   margin: 10px;
+
   .save {
-    background-color: #E37B00;
+    background-color: #e37b00;
     margin-left: 2px;
   }
+
   .close {
     background-color: #747578;
-    margin-right: 2px
+    margin-right: 2px;
   }
 }
 
