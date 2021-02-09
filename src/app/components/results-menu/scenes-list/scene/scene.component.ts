@@ -56,17 +56,12 @@ export class SceneComponent implements OnInit {
   }
 
   public onToggleOnDemandScene(): void {
-    // this.scene.productTypeDisplay
-    console.log(this.scene);
-    const filetype = this.scene.metadata.productType;
-    if (this.scene.metadata.beamMode === 'IW' && (filetype === 'GRD_HD' || filetype === 'GRD-HS' || filetype === 'SLC')) {
       this.ToggleOnDemandScene.emit({
         granules: [ this.scene ],
         job_type: models.Hyp3JobType.RTC_GAMMA
       } as QueuedHyp3Job);
-      this.jobQueued = !this.jobQueued;
-    }
 
+      this.jobQueued = !this.jobQueued;
   }
 
   public isDownloadable(product: models.CMRProduct): boolean {

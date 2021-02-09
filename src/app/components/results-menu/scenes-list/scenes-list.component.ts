@@ -280,25 +280,20 @@ export class ScenesListComponent implements OnInit, OnDestroy {
     const ids1 = new Set(granules1.map(granule => granule.id));
     const ids2 = new Set(granules2.map(granule => granule.id));
 
-    return this.eqSet(ids1, ids2);
+    return this.eqSet(Array.from(ids1), Array.from(ids2));
   }
 
-  public eqSet(a1, bs) {
-    return a1.size === bs.size && this.all(this.isIn(bs), a1);
+  public eqSet(a1: string[], bs: string[]) {
+    return a1.length === bs.length && this.all(this.isIn(bs), a1);
   }
 
-  private all(pred, a1) {
-    for (const a of a1)  {
-      if (!pred(a)) {
-        return false;
-      }
-    }
-    return true;
+  private all(pred, a1: string[]) {
+    return a1.every(pred);
   }
 
-  private isIn(a1) {
-    return function (a) {
-      return a1.has(a);
+  private isIn(a1: string[]) {
+    return function (a: string) {
+      return a1.includes(a);
     };
   }
 
