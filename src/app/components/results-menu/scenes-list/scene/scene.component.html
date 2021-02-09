@@ -71,20 +71,6 @@
         </mat-icon>
 
         <mat-icon *ngIf="isDownloadable(scene)"
-          (click)="onToggleOnDemandScene()"
-          class="icon-margin"
-          svgIcon="hyp3"
-          matBadgeSize="small"
-          matBadgeColor="{{ jobQueued ? 'primary' : 'accent' }}"
-          matBadge="{{jobQueued ? '-' : '+'}}"
-          matTooltip="{{
-            jobQueued ?
-              'Remove scene files from on demand':
-              'Add scene files to on demand'
-          }}">  
-        </mat-icon>
-
-        <mat-icon *ngIf="isDownloadable(scene)"
           (click)="onToggleScene($event, scene.groupId)"
           class="icon-margin"
           matTooltip="{{
