@@ -90,10 +90,14 @@ ul {
 }
 
 #dlQueueDialog {
-  width: 900px;
-  max-width: 900px;
-  height: 650px;
-  min-height: 50%;
+  position: relative;
+  //display: block;
+  max-width: 100vw;
+  max-height: 100vh;
+  width: 400px;
+  min-width: 400px;
+  height: 500px;
+  min-height: 400px;
   margin: 0;
   padding: 0;
   overflow: hidden;

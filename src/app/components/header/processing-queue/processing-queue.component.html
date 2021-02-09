@@ -1,8 +1,9 @@
 <div class="processing-queue"
           cdkDrag
+          cdkDragHandle
           cdkDragRootElement=".cdk-overlay-pane"
-          [ngStyle]="style"
           mwlResizable
+          [ngStyle]="style"
           [enableGhostResize]="true"
           [resizeEdges]="{ right: true, bottom: true }"
           (resizeEnd)="onResizeEnd($event)"

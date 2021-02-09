@@ -7,6 +7,21 @@ $footer-height: 60px;
   padding: 0;
 }
 
+::ng-deep.mat-dialog-container {
+  resize: both;
+  overflow: auto;
+  background: #fff;
+}
+
+[mat-dialog-title] {
+  margin: -24px -24px 0px -24px !important;
+  padding: 10px 24px;
+  background: #369;
+  color: #fff;
+  cursor: move;
+  text-align: center;
+}
+
 .processing-queue {
   width: 600px;
   min-width: 600px;
@@ -25,8 +40,8 @@ $footer-height: 60px;
   font-weight: bold;
   color: $asf-primary-dark;
   background-color: white;
-  resize: both;
-  overflow-y: scroll;
+  //resize: both;
+  //overflow-y: scroll;
 }
 
 .card-title-group {
@@ -243,7 +258,6 @@ $footer-height: 60px;
   flex-direction: row;
   flex-wrap: wrap;
   margin: 0 0 0 15px;
-  background-color: adjust-color($asf-primary-light, $lightness: 15%);
   border-bottom: solid 1px grey;
   height: 100%;
 }
@@ -362,3 +376,4 @@ $footer-height: 60px;
 .resize-handle-right {
   right: 0;
 }
+

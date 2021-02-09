@@ -112,10 +112,6 @@ export class ProcessingQueueComponent implements OnInit {
     );
   }
 
-  public onCloseDialog() {
-    this.dialogRef.close();
-  }
-
   public daysUntilExpiration(expiration_time: moment.Moment): string {
     const current = moment();
 
@@ -155,7 +151,6 @@ export class ProcessingQueueComponent implements OnInit {
 
       return jobOptions;
     });
-
 
     this.isQueueSubmitProcessing = true;
 
@@ -209,7 +204,7 @@ export class ProcessingQueueComponent implements OnInit {
     this.selectedTab = ProcessingQueueTab.OPTIONS;
   }
 
-  onResizeEnd(event: ResizeEvent): void {
+  public onResizeEnd(event: ResizeEvent): void {
     this.style = {
       position: 'fixed',
       left: `${event.rectangle.left}px`,
@@ -218,4 +213,9 @@ export class ProcessingQueueComponent implements OnInit {
       height: `${event.rectangle.height}px`
     };
   }
+
+  public onCloseDialog() {
+    this.dialogRef.close();
+  }
+
 }

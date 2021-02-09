@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import {Component, OnInit, OnDestroy, Input} from '@angular/core';
 
 import { faCopy } from '@fortawesome/free-solid-svg-icons';
 import { ClipboardService } from 'ngx-clipboard';
@@ -12,6 +12,7 @@ import { ScreenSizeService } from '@services';
 import { CMRProduct, AsfApiOutputFormat, Breakpoints } from '@models';
 import { MatDialogRef } from '@angular/material/dialog';
 import { SubSink } from 'subsink';
+import { ResizeEvent } from 'angular-resizable-element';
 
 @Component({
   selector: 'app-queue',
@@ -19,6 +20,8 @@ import { SubSink } from 'subsink';
   styleUrls: ['./queue.component.scss']
 })
 export class QueueComponent implements OnInit, OnDestroy {
+
+  @Input() appQueueComponentModel: string;
 
   public queueHasOnDemandProducts = false;
   public showDemWarning: boolean;
@@ -30,6 +33,8 @@ export class QueueComponent implements OnInit, OnDestroy {
 
   public previousQueue: any[] | null = null;
   public areAnyProducts = false;
+
+  public style: object = {};
 
   public products$ = this.store$.select(queueStore.getQueuedProducts).pipe(
     tap(products => this.areAnyProducts = products.length > 0),
@@ -129,6 +134,16 @@ export class QueueComponent implements OnInit, OnDestroy {
     });
 
     return warn;
+  }
+
+  public onResizeEnd(event: ResizeEvent): void {
+    this.style = {
+      // position: 'fixed',
+      left: `${event.rectangle.left}px`,
+      top: `${event.rectangle.top}px`,
+      width: `${event.rectangle.width}px`,
+      height: `${event.rectangle.height}px`
+    };
   }
 
   onCloseDownloadQueue() {
