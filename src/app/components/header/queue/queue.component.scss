@@ -5,7 +5,6 @@ $footer-height: 60px;
 $bottom-offset: 10px;
 $background-color: $uaf-primary-blue;
 
-
 .download-queue {
   //display: flex;
   //align-items: center;
@@ -180,19 +179,24 @@ button {
 }
 
 .buttons {
-  grid-template-columns: auto auto ;
+  grid-template-columns: auto auto;
   display: grid;
   font-size: 14px;
   color: #fff;
   justify-content: center;
-  margin: 10px;
+  margin-top: 10px;
+  margin-right: 10px;
+  margin-left: 10px;
+  margin-bottom: 10px;
+
   .save {
-    background-color: #E37B00;
+    background-color: #e37b00;
     margin-left: 2px;
   }
+
   .close {
     background-color: #747578;
-    margin-right: 2px
+    margin-right: 2px;
   }
 }
 
