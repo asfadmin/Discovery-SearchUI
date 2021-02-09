@@ -56,6 +56,20 @@
           settings_overscan
         </mat-icon>
 
+        <mat-icon *ngIf="isDownloadable(scene) && isProcessable(scene) && searchType !== SearchTypes.CUSTOM_PRODUCTS"
+          (click)="onToggleOnDemandScene()"
+          class="icon-margin"
+          svgIcon="hyp3"
+          matBadgeSize="small"
+          matBadgeColor="{{ jobQueued ? 'primary' : 'accent' }}"
+          matBadge="{{jobQueued ? '-' : '+'}}"
+          matTooltip="{{
+            jobQueued ?
+              'Remove scene files from on demand':
+              'Add scene files to on demand'
+          }}">  
+        </mat-icon>
+
         <mat-icon *ngIf="isDownloadable(scene)"
           (click)="onToggleOnDemandScene()"
           class="icon-margin"
@@ -110,7 +124,7 @@
               {{ withOffset(scene.metadata.temporal, offsets.temporal) }}d
             </div>
             <div class="cart-flex-field">
-              <mat-icon *ngIf="isDownloadable(scene)"
+              <mat-icon *ngIf="isDownloadable(scene) && isProcessable(scene) && searchType !== SearchTypes.CUSTOM_PRODUCTS"
                 (click)="onToggleOnDemandScene()"
                 class="icon-margin"
                 svgIcon="hyp3"

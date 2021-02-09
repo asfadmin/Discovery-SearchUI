@@ -75,6 +75,17 @@ export class SceneComponent implements OnInit {
     );
   }
 
+  public isProcessable(product: models.CMRProduct): boolean {
+    return (
+      product.metadata.beamMode === 'IW' &&
+      (
+        product.metadata.productType === 'GRD_HD' ||
+        product.metadata.productType === 'GRD-HS' ||
+        product.metadata.productType === 'SLC'
+      )
+    );
+  }
+
   public isExpired(job: models.Hyp3Job): boolean {
     return job.status_code === models.Hyp3JobStatusCode.SUCCEEDED &&
       this.expirationDays(job.expiration_time) <= 0;
