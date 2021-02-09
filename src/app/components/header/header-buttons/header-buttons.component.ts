@@ -129,8 +129,8 @@ export class HeaderButtonsComponent implements OnInit, OnDestroy {
 
     this.dialog.open(QueueComponent, {
       id: 'dlQueueDialog',
-      maxWidth: '100vw',
-      maxHeight: '100vh'
+      maxHeight: '100vh',
+      maxWidth: '100vw'
     });
 
   }
