@@ -3,67 +3,8 @@
 $header-height: 67px;
 $footer-height: 60px;
 $bottom-offset: 10px;
-$background-color: $uaf-primary-blue;
-
-.download-queue {
-  //display: flex;
-  //align-items: center;
-  //justify-content: center;
-  width: 60vw;
-  height: 60vw;
-  background-color: #fd4140;
-  border: solid 1px #121621;
-  color: #121621;
-  margin: auto;
-  transition: box-shadow 200ms cubic-bezier(0, 0, 0.2, 1);
-  box-shadow:
-    0 3px 1px -2px rgba(0, 0, 0, 0.2),
-    0 2px 2px 0 rgba(0, 0, 0, 0.14),
-    0 1px 5px 0 rgba(0, 0, 0, 0.12);
-}
-
-.download-queue:active {
-  box-shadow:
-    0 5px 5px -3px rgba(0, 0, 0, 0.2),
-    0 8px 10px 1px rgba(0, 0, 0, 0.14),
-    0 3px 14px 2px rgba(0, 0, 0, 0.12);
-}
-
-mwlresizable {
-  box-sizing: border-box; // required for the enableGhostResize option to work
-}
-
-.resize-handle-top,
-.resize-handle-bottom {
-  position: fixed;
-  height: 5px;
-  cursor: row-resize;
-  width: 100%;
-}
-
-.resize-handle-top {
-  top: 0;
-}
-
-.resize-handle-bottom {
-  bottom: 0;
-}
-
-.resize-handle-left,
-.resize-handle-right {
-  position: fixed;
-  height: 100%;
-  cursor: col-resize;
-  width: 5px;
-}
-
-.resize-handle-left {
-  left: 0;
-}
-
-.resize-handle-right {
-  right: 0;
-}
+$background-color: $asf-primary-light;
+$color: $asf-primary-dark;
 
 .dl-card-content {
   //height: 450px;
@@ -86,13 +27,13 @@ mwlresizable {
   margin-top: -25px;
   font-style: italic;
   font-size: 16px;
-  color: $asf-primary-light;
+  color: $asf-primary;
 }
 
 .dl-card-actions {
   height: 100px;
   background-color: $background-color;
-  color: white;
+  color: $color;
   padding: 20px 20px 0 20px;
   border-top-style: solid;
   border-top-color: $asf-primary-dark;
@@ -104,7 +45,7 @@ mwlresizable {
 
   .mat-button {
     font-size: 16px;
-    color: $asf-primary-dark;
+    color: $color;
   }
 }
 
@@ -113,19 +54,19 @@ mwlresizable {
 
   .mat-button {
     font-size: 16px;
-    color: $asf-primary-dark;
+    color: $color;
   }
 }
 
 .dl-close-x {
   position: absolute;
-  top: 15px;
-  right: 15px;
+  top: 30px;
+  right: 36px;
   text-align: right;
   float: right;
   cursor: pointer;
   z-index: 100;
-  color: white;
+  color: $color;
 }
 
 .dl-empty-message {
@@ -152,8 +93,8 @@ mwlresizable {
 
 .feedback-div {
   position: absolute;
-  top: 50px;
-  right: 16px;
+  top: 67px;
+  right: 40px;
   text-align: right;
   float: right;
   cursor: pointer;
@@ -164,7 +105,7 @@ mwlresizable {
 
   a {
     text-decoration: none;
-    color: $asf-primary-light;
+    color: $asf-primary;
   }
 }
 
@@ -173,7 +114,7 @@ mwlresizable {
 }
 
 button {
-  width: 90px;
+  //width: 90px;
   height: 36px;
   font-weight: 100;
 }
@@ -201,11 +142,16 @@ button {
   resize: both;
   overflow: auto;
   background: $background-color;
+  width: 720px;
+  height: 500px;
+  min-width: 400px;
+  min-height: 400px;
+
 }
 
 .dl-mat-dialog-content {
-  height: calc(100% - #{$header-height} - #{$footer-height} - 30px);
-  max-height: calc(100% - #{$header-height} - #{$footer-height} - 30px);
+  height: calc(100% - #{$header-height} - #{$footer-height} - 21px);
+  max-height: calc(100% - #{$header-height} - #{$footer-height} - 21px);
   background-color: white;
   padding: 0;
   margin: 0;
@@ -223,10 +169,10 @@ button {
 }
 
 [mat-dialog-title] {
-  margin: 0 0 0 0 !important;
-  padding: 0 0 0 0;
+  margin: -24px -24px 0 -24px !important;
+  padding: 18px 24px;
   background-color: $background-color;
-  color: #fff;
+  color: $color;
   cursor: move;
   text-align: left;
   height: $header-height;

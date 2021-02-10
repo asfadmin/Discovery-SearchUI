@@ -92,15 +92,13 @@ ul {
 #dlQueueDialog {
   position: relative;
   //display: block;
-  max-width: 100vw;
-  max-height: 100vh;
-  width: 400px;
-  min-width: 400px;
-  height: 500px;
-  min-height: 400px;
+  //max-width: 100vw;
+  //max-height: 100vh;
+  //width: 400px;
   margin: 0;
   padding: 0;
   overflow: hidden;
+  background-color: $asf-primary-light;
 }
 
 #processingQueueDialog {

@@ -16,7 +16,8 @@ import { CopyToClipboardModule } from '@components/shared/copy-to-clipboard';
 import { QueueComponent } from './queue.component';
 import { ResizableModule } from 'angular-resizable-element';
 import { DragDropModule } from '@angular/cdk/drag-drop';
-import {MatDialogModule} from '@angular/material/dialog';
+import { MatDialogModule } from '@angular/material/dialog';
+import { AngularResizedEventModule } from 'angular-resize-event';
 
 @NgModule({
   declarations: [
@@ -29,7 +30,6 @@ import {MatDialogModule} from '@angular/material/dialog';
         TruncateModule,
         ClipboardModule,
         FontAwesomeModule,
-
         CopyToClipboardModule,
         MatSharedModule,
         PipesModule,
@@ -37,6 +37,7 @@ import {MatDialogModule} from '@angular/material/dialog';
         ResizableModule,
         DragDropModule,
         MatDialogModule,
+        AngularResizedEventModule
     ],
   exports: [
     QueueComponent
