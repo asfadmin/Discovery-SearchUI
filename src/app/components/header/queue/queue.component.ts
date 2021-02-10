@@ -12,7 +12,8 @@ import { ScreenSizeService } from '@services';
 import { CMRProduct, AsfApiOutputFormat, Breakpoints } from '@models';
 import { MatDialogRef } from '@angular/material/dialog';
 import { SubSink } from 'subsink';
-import { ResizeEvent } from 'angular-resizable-element';
+// import { ResizeEvent } from 'angular-resizable-element';
+import { ResizedEvent } from 'angular-resize-event';
 
 @Component({
   selector: 'app-queue',
@@ -35,6 +36,9 @@ export class QueueComponent implements OnInit, OnDestroy {
   public areAnyProducts = false;
 
   public style: object = {};
+  public dlWidth = 1000;
+  public dlHeight = 1000;
+  public dlWidthMin = 715;
 
   public products$ = this.store$.select(queueStore.getQueuedProducts).pipe(
     tap(products => this.areAnyProducts = products.length > 0),
@@ -136,15 +140,11 @@ export class QueueComponent implements OnInit, OnDestroy {
     return warn;
   }
 
-  public onResizeEnd(event: ResizeEvent): void {
-    this.style = {
-      // position: 'fixed',
-      left: `${event.rectangle.left}px`,
-      top: `${event.rectangle.top}px`,
-      width: `${event.rectangle.width}px`,
-      height: `${event.rectangle.height}px`
-    };
+  public onResized(event: ResizedEvent) {
+    this.dlWidth = event.newWidth;
+    this.dlHeight = event.newHeight;
   }
+
 
   onCloseDownloadQueue() {
     this.dialogRef.close();
