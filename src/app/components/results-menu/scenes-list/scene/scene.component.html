@@ -56,7 +56,7 @@
           settings_overscan
         </mat-icon>
 
-        <mat-icon *ngIf="isDownloadable(scene)"
+        <mat-icon *ngIf="isDownloadable(scene) && isProcessable(scene) && searchType !== SearchTypes.CUSTOM_PRODUCTS"
           (click)="onToggleOnDemandScene()"
           class="icon-margin"
           svgIcon="hyp3"
@@ -110,7 +110,7 @@
               {{ withOffset(scene.metadata.temporal, offsets.temporal) }}d
             </div>
             <div class="cart-flex-field">
-              <mat-icon *ngIf="isDownloadable(scene)"
+              <mat-icon *ngIf="isDownloadable(scene) && isProcessable(scene) && searchType !== SearchTypes.CUSTOM_PRODUCTS"
                 (click)="onToggleOnDemandScene()"
                 class="icon-margin"
                 svgIcon="hyp3"
