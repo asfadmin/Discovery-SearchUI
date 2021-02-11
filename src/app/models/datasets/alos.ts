@@ -40,6 +40,9 @@ export const alos = {
     apiValue: 'L1.5',
     displayName: 'Level 1.5 Image'
   }, {
+    apiValue: 'L2.2',
+    displayName: 'Level 2.2'
+  }, {
     apiValue: 'RTC_LOW_RES',
     displayName: 'Low-Res Terrain Corrected'
   }, {
