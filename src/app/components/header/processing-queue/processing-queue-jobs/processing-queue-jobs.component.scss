@@ -1,19 +1,40 @@
 @import "asf-theme";
 
+.mat-list-base {
+  padding-top: 8px;
+  display: flex;
+  flex-wrap: wrap;
+  width: 100%;
+}
+
 .jobs-list {
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
+}
+
+.flex-list {
+  //display: flex !important;
+  //flex-direction: row;
+  //flex-wrap: wrap;
 
   .mat-list-base {
-    display: flex;
+    display: flex !important;
     flex-wrap: wrap;
-    width: 100%;
   }
 
   .mat-list-text {
     //max-width: 40%;
   }
+}
+
+.mat-list-base .mat-list-item,
+.mat-list-base .mat-list-option {
+  display: flex;
+  flex: 1 1 740px;
+  flex-direction: row;
+  flex-wrap: wrap;
+  transform: scale(0.97);
 }
 
 .button-remove-job {
@@ -27,9 +48,10 @@
 }
 
 .job-list-item {
-  display: flex;
-  flex: 1 0 200px;
-  transform: scale(0.97);
+  //flex: 1 0 auto !important;
+  //flex-direction: row;
+  //flex-wrap: wrap;
+  //transform: scale(0.97);
 }
 
 .jobs-empty-message {

@@ -90,11 +90,11 @@ ul {
 }
 
 #dlQueueDialog {
-  position: relative;
   //display: block;
   //max-width: 100vw;
   //max-height: 100vh;
   //width: 400px;
+  position: relative;
   margin: 0;
   padding: 0;
   overflow: hidden;
@@ -107,8 +107,11 @@ ul {
   //height: 650px;
   //min-height: 50%;
   //margin: 0;
-  padding: 0;
-  //overflow: hidden;
+  position: relative;
+  margin: 0;
+  padding: 0 10px 10px 0 !important;
+  overflow: hidden;
+  background-color: $asf-primary-light;
 }
 
 .control-mat-button-toggle {
