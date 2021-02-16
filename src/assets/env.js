@@ -9,6 +9,7 @@
       datapool: 'https://datapool.asf.alaska.edu',
       banner: 'https://banners.asf.alaska.edu/calendar/prod',
       user_data: 'https://appdata.asf.alaska.edu',
+      hyp3_api: 'https://hyp3-api.asf.alaska.edu',
     },
     test: {
       api: 'https://api-test.asf.alaska.edu',
@@ -18,7 +19,8 @@
       unzip: 'https://unzip-test.asf.alaska.edu',
       datapool: 'https://datapool-test.asf.alaska.edu',
       banner: 'https://banners.asf.alaska.edu/calendar/test',
-      user_data: 'https://gg0fcoca5c.execute-api.us-east-1.amazonaws.com/test'
+      user_data: 'https://gg0fcoca5c.execute-api.us-east-1.amazonaws.com/test',
+      hyp3_api: 'https://hyp3-api.asf.alaska.edu',
     },
     defaultEnv: 'test'
   }

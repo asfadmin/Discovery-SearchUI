@@ -56,12 +56,11 @@ export class SceneComponent implements OnInit {
   }
 
   public onToggleOnDemandScene(): void {
-      this.ToggleOnDemandScene.emit({
-        granules: [ this.scene ],
-        job_type: models.Hyp3JobType.RTC_GAMMA
-      } as QueuedHyp3Job);
-
-      this.jobQueued = !this.jobQueued;
+    this.ToggleOnDemandScene.emit({
+      granules: [ this.scene ],
+      job_type: models.Hyp3JobType.RTC_GAMMA
+    } as QueuedHyp3Job);
+    this.jobQueued = !this.jobQueued;
   }
 
   public isDownloadable(product: models.CMRProduct): boolean {

@@ -17,6 +17,7 @@ export interface Environment {
   datapool: string;
   banner: string;
   user_data: string;
+  hyp3_api: string;
   cmr_token?: string;
   cmr_provider?: string;
 }
@@ -84,5 +85,10 @@ export class EnvironmentService {
 
   private loadFromEnvFile(): Environments {
     return <Environments>env;
+  }
+
+  public resetToDefault(): void {
+    this.envs = this.loadFromEnvFile();
+    console.log(this.envs);
   }
 }

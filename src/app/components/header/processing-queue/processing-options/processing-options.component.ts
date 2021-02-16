@@ -13,7 +13,6 @@ import * as models from '@models';
   styleUrls: ['./processing-options.component.scss']
 })
 export class ProcessingOptionsComponent implements OnInit {
-  public projectName = '';
   public jobs: models.QueuedHyp3Job[];
   public JobTypes = models.Hyp3JobType;
 
@@ -58,10 +57,6 @@ export class ProcessingOptionsComponent implements OnInit {
     return this.jobs.some(
       job => job.job_type === jobType
     );
-  }
-
-  public onProjectNameChange(projectName: string): void {
-    this.store$.dispatch(new hyp3Store.SetProcessingProjectName(projectName));
   }
 
   public onSetRadiometry(radiometry: models.RtcGammaRadiometry): void {
