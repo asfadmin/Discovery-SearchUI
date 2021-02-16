@@ -39,11 +39,11 @@ export class CustomizeEnvComponent implements OnInit {
       });
       return;
     }
-
   }
 
   resetToDefaultEnv(): void {
     localStorage.removeItem('customEnv');
-    this.env.loadEnvs();
+    this.env.resetToDefault();
+    this.envStr = JSON.stringify(this.env.envs, null, 2);
   }
 }
