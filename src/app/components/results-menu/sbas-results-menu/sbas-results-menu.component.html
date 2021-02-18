@@ -147,6 +147,24 @@
         </div>
       </div>
     </div>
+
+    <div fxFlex="" class="sbas-button-group-filler sbas-button-group"></div>
+
+    <div fxFlex="" class = 'sbas-button-group'>
+      <div fxLayout="row" fxLayoutAlign="center" class="button-group-label">
+        <label>SBAS Criteria</label>
+      </div>
+      
+      <div fxLayout="row" fxLayoutAlign="center">
+        <div>
+        <mat-button-toggle class="control-mat-button-toggle"
+                          (click)="onToggleFiltersMenu()"
+                          matTooltip="Toggle Filters Menu">
+                          <div class="control-icon"><mat-icon>filter_alt</mat-icon></div>
+        </mat-button-toggle>
+      </div>
+    </div>
+    </div>
   </mat-card-subtitle>
 
   <div
