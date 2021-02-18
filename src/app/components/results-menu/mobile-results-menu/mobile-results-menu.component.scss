@@ -6,6 +6,15 @@
 
 .header {
   padding-top: 20px;
+  height: 30px;
+  margin-bottom: 0;
+  font-family: Roboto, sans-serif;
+  font-weight: 400;
+  font-size: 16px;
+  text-align: center;
+  background-color: $asf-primary-light;
+  color: $asf-primary-dark;
+  border-left: none;
 }
 
 .sbas-chart-row {
@@ -31,4 +40,32 @@
 .sbas-column-2 {
   flex: 1 1 auto;
   margin-left: 10px;
+}
+
+.baseline-criteria-button-toggle-group {
+  flex: 0 1 160px !important;
+  margin-top: -5px;
+}
+
+.baseline-criteria-button-toggle {
+  background-color: white !important;
+}
+
+.criteria-button-group {
+  outline: none;
+  width: auto;
+  line-height: 26px !important;
+}
+
+.baseline-header-button-group {
+  justify-content: center;
+}
+
+.control-mat-button-toggle {
+  background-color: white;
+}
+
+.more-horiz {
+  font-size: 16px !important;
+  margin-bottom: -11px;
 }
