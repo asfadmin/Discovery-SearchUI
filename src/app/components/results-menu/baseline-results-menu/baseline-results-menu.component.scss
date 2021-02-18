@@ -32,8 +32,8 @@ $info-color: $asf-primary;
 }
 
 .baseline-criteria-button-toggle-group {
-  flex: 0 1 170px !important;
-  margin-top: -5px;
+  flex: 0 1 160px !important;
+  //margin-top: -5px;
 }
 
 .baseline-criteria-button-toggle {
@@ -52,6 +52,10 @@ $info-color: $asf-primary;
   display: inline;
 }
 
+.more-horiz {
+  font-size: 16px !important;
+  margin-bottom: -11px;
+}
 .mr-10 {
   margin-right: 10px;
 }
