@@ -10,7 +10,7 @@
   margin-bottom: 0;
   font-family: Roboto, sans-serif;
   font-weight: 400;
-  font-size: 16px;
+  font-size: 14px;
   text-align: center;
   background-color: $asf-primary-light;
   color: $asf-primary-dark;
@@ -43,12 +43,13 @@
 }
 
 .baseline-criteria-button-toggle-group {
-  flex: 0 1 160px !important;
+  flex: 0 1 149px !important;
   margin-top: -5px;
 }
 
 .baseline-criteria-button-toggle {
   background-color: white !important;
+  font-size: 14px;
 }
 
 .criteria-button-group {
