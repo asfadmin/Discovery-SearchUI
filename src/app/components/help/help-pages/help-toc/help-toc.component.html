@@ -11,7 +11,7 @@
     <div class="help-video">
       <div class="videoWrapper">
 
-        <mat-card class="mat-card-step" (click)="data.helpTopic = 'geoSearch'" >
+        <mat-card class="mat-card-step" (click)="setHelpTopic('geoSearch')" >
           <mat-card-header>
             <div mat-card-avatar class="help-toc-icon">
               <mat-icon>looks_one</mat-icon>
@@ -22,7 +22,7 @@
           </mat-card-header>
         </mat-card>
 
-        <mat-card class="mat-card-step" (click)="data.helpTopic = 'listSearch'" >
+        <mat-card class="mat-card-step" (click)="setHelpTopic('listSearch')" >
           <mat-card-header>
             <div mat-card-avatar class="help-toc-icon">
               <mat-icon>looks_two</mat-icon>
@@ -33,7 +33,7 @@
           </mat-card-header>
         </mat-card>
 
-        <mat-card class="mat-card-step" (click)="data.helpTopic = 'searchResults'" >
+        <mat-card class="mat-card-step" (click)="setHelpTopic('searchResults')" >
           <mat-card-header>
             <div mat-card-avatar class="help-toc-icon">
               <mat-icon>looks_3</mat-icon>
@@ -64,16 +64,16 @@
         <div class="help-toc-1">
           <h3>Defining Data Searches</h3>
           <ul>
-            <li (click)="data.helpTopic = 'logIn'">
+            <li (click)="setHelpTopic('logIn')">
               Getting an EOSDIS ID and Logging In - (2:05)
             </li>
-            <li (click)="data.helpTopic = 'mapControls'">
+            <li (click)="setHelpTopic('mapControls')">
               Map Controls In-Depth - (3:34)
             </li>
-            <li  (click)="data.helpTopic = 'filters'">
+            <li (click)="setHelpTopic('filters')">
               Using Advanced Filters - (3:51)
             </li>
-            <li (click)="data.helpTopic = 'savedSearches'">
+            <li (click)="setHelpTopic('savedSearches')">
               Saved Searches and Search History - (4:21)
             </li>
           </ul>
@@ -81,19 +81,19 @@
         <div class="help-toc-2">
           <h3>Using Search Results</h3>
           <ul>
-            <li (click)="data.helpTopic = 'downloadQueue'">
+            <li (click)="setHelpTopic('downloadQueue')">
               Downloading Data - (2:27)
             </li>
-            <li (click)="data.helpTopic = 'unzipping'">
+            <li (click)="setHelpTopic('unzipping')">
               Using Zipped Product Files - (1:17)
             </li>
-            <li (click)="data.helpTopic = 'moreLikeThis'">
+            <li (click)="setHelpTopic('moreLikeThis')">
               Using The "More Like This" Feature - (2:15)
             </li>
-            <li (click)="data.helpTopic = 'baselineSearch'">
+            <li (click)="setHelpTopic('baselineSearch')">
               Performing Baseline Searches - (3:54)
             </li>
-            <li (click)="data.helpTopic = 'sbasSearch'">
+            <li (click)="setHelpTopic('sbasSearch')">
               Performing SBAS Searches - (5:45)
             </li>
           </ul>
@@ -101,15 +101,13 @@
         <div class="help-toc-3">
           <h3>Advanced Features</h3>
           <ul>
-            <li (click)="data.helpTopic = 'onDemand'">
+            <li (click)="setHelpTopic('onDemand')">
               On Demand Processing (HyP3) - (4:23)
             </li>
           </ul>
         </div>
       </div>
-
   </div>
-
 </div>
 
 

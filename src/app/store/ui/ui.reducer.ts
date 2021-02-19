@@ -17,6 +17,7 @@ export interface UIState {
   onlyScenesWithBrowse: boolean;
   isAddingCustomPoint: boolean;
   savedSearchType: SavedSearchType;
+  helpDialogTopic: string | null;
   banners: Banner[];
 }
 
@@ -32,6 +33,7 @@ export const initState: UIState = {
   onlyScenesWithBrowse: true,
   isAddingCustomPoint: false,
   savedSearchType: SavedSearchType.SAVED,
+  helpDialogTopic: null,
   banners: [],
 };
 
@@ -178,6 +180,13 @@ export function uiReducer(state = initState, action: UIActions): UIState {
       };
     }
 
+    case UIActionType.SET_HELP_DIALOG_TOPIC: {
+      return {
+        ...state,
+        helpDialogTopic: action.payload
+      };
+    }
+
     case UIActionType.ADD_BANNERS: {
       const banners = [
         ...state.banners, ...action.payload
@@ -266,4 +275,9 @@ export const getShowS1RawData = createSelector(
 export const getShowExpiredData = createSelector(
   getUIState,
   state => state.showExpiredData
+);
+
+export const getHelpDialogTopic = createSelector(
+  getUIState,
+  state => state.helpDialogTopic
 );

@@ -2,6 +2,7 @@ import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
 import { MatSidenav } from '@angular/material/sidenav';
 import { MatIconRegistry } from '@angular/material/icon';
 import { DomSanitizer } from '@angular/platform-browser';
+import { MatDialog } from '@angular/material/dialog';
 import { SubSink } from 'subsink';
 
 import { Store, ActionsSubject } from '@ngrx/store';
@@ -10,6 +11,7 @@ import { of, combineLatest } from 'rxjs';
 import { skip, filter, map, switchMap, tap, catchError, debounceTime } from 'rxjs/operators';
 
 import { NgcCookieConsentService } from 'ngx-cookieconsent';
+import { HelpComponent } from '@components/help/help.component';
 
 import { AppState } from '@store';
 import * as scenesStore from '@store/scenes';
@@ -47,6 +49,7 @@ export class AppComponent implements OnInit, OnDestroy {
 
   public interactionTypes = models.MapInteractionModeType;
   public searchType: models.SearchType;
+  private helpTopic: string | null;
 
   private subs = new SubSink();
 
@@ -63,9 +66,38 @@ export class AppComponent implements OnInit, OnDestroy {
     private ccService: NgcCookieConsentService,
     private matIconRegistry: MatIconRegistry,
     private domSanitizer: DomSanitizer,
+    private dialog: MatDialog,
   ) {}
 
   public ngOnInit(): void {
+    this.store$.select(uiStore.getHelpDialogTopic).subscribe(topic => {
+      const previousTopic = this.helpTopic;
+      this.helpTopic = topic;
+
+      if (!topic || !!previousTopic) {
+        return;
+      }
+
+      window.dataLayer = window.dataLayer || [];
+      window.dataLayer.push({
+        'event': 'open-help',
+        'open-help': topic
+      });
+
+      const ref = this.dialog.open(HelpComponent, {
+        panelClass: 'help-panel-config',
+        data: {helpTopic: topic},
+        width: '80vw',
+        height: '80vh',
+        maxWidth: '100%',
+        maxHeight: '100%'
+      });
+
+      ref.afterClosed().subscribe(_ => {
+        this.store$.dispatch(new uiStore.SetHelpDialogTopic(null));
+      });
+    });
+
     this.store$.dispatch(new uiStore.LoadBanners());
     this.subs.add(
       this.screenSize.breakpoint$.subscribe(

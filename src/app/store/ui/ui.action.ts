@@ -27,6 +27,7 @@ export enum UIActionType {
 
   SET_IS_BROWSE_DIALOG_OPEN = '[UI] Set Is Browse Dialog Open',
   SET_ONLY_SCENES_WITH_BROWSE = '[UI] Set Only Scenes With Browse',
+  SET_HELP_DIALOG_TOPIC = '[UI] Set Help Dialog Topic',
 
   TOGGLE_BOTTOM_MENU = '[UI] Toggle Bottom Menu',
   CLOSE_BOTTOM_MENU = '[UI] Close Bottom Menu',
@@ -125,6 +126,12 @@ export class SetOnlyScenesWithBrowse implements Action {
   constructor(public payload: boolean) {}
 }
 
+export class SetHelpDialogTopic implements Action {
+  public readonly type = UIActionType.SET_HELP_DIALOG_TOPIC;
+
+  constructor(public payload: string | null) {}
+}
+
 export class RemoveBanner implements Action {
   public readonly type = UIActionType.REMOVE_BANNER;
 
@@ -161,6 +168,7 @@ export type UIActions =
   | CloseResultsMenu
   | OpenResultsMenu
   | SetOnlyScenesWithBrowse
+  | SetHelpDialogTopic
   | SetIsBrowseDialogOpen
   | LoadBanners
   | RemoveBanner

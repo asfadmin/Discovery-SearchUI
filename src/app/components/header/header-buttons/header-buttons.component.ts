@@ -15,7 +15,6 @@ import * as uiStore from '@store/ui';
 import * as hyp3Store from '@store/hyp3';
 
 import { PreferencesComponent } from './preferences/preferences.component';
-import { HelpComponent } from '@components/help/help.component';
 import { CustomizeEnvComponent } from './customize-env/customize-env.component';
 
 import { AuthService, AsfApiService, EnvironmentService, ScreenSizeService } from '@services';
@@ -166,7 +165,6 @@ export class HeaderButtonsComponent implements OnInit, OnDestroy {
   }
 
   public onOpenPreferences(): void {
-
     window.dataLayer = window.dataLayer || [];
     window.dataLayer.push({
       'event': 'open-preferences',
@@ -186,20 +184,7 @@ export class HeaderButtonsComponent implements OnInit, OnDestroy {
   }
 
   public onOpenHelp(helpSelection: string): void {
-    window.dataLayer = window.dataLayer || [];
-    window.dataLayer.push({
-      'event': 'open-help',
-      'open-help': helpSelection
-    });
-
-    this.dialog.open(HelpComponent, {
-      panelClass: 'help-panel-config',
-      data: {helpTopic: helpSelection},
-      width: '80vw',
-      height: '80vh',
-      maxWidth: '100%',
-      maxHeight: '100%'
-    });
+    this.store$.dispatch(new uiStore.SetHelpDialogTopic(helpSelection));
   }
 
   public onOpenWhatsNew(): void {

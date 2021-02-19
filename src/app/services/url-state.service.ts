@@ -9,6 +9,7 @@ import { AppState } from '@store';
 import * as scenesStore from '@store/scenes';
 import * as mapStore from '@store/map';
 import * as filterStore from '@store/filters';
+import * as uiStore from '@store/ui';
 import { SetSearchType, MakeSearch } from '@store/search/search.action';
 import { getSearchType } from '@store/search/search.reducer';
 
@@ -211,6 +212,12 @@ export class UrlStateService {
         map(scene => ({ granule: !!scene ? scene.id : null }))
       ),
       loader: this.loadSelectedScene
+    }, {
+      name: 'topic',
+      source: this.store$.select(uiStore.getHelpDialogTopic).pipe(
+        map(topic => ({ topic }))
+      ),
+      loader: this.loadHelpTopic
     }];
   }
 
@@ -587,6 +594,10 @@ export class UrlStateService {
 
   private loadMasterScene = (master: string): Action => {
     return new scenesStore.SetFilterMaster(master);
+  }
+
+  private loadHelpTopic = (topic: string): Action => {
+    return new uiStore.SetHelpDialogTopic(topic);
   }
 
   private loadSbasPairs = (pairsStr: string): Action => {
