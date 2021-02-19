@@ -16,7 +16,10 @@ export interface UIState {
   isBrowseDialogOpen: boolean;
   onlyScenesWithBrowse: boolean;
   isAddingCustomPoint: boolean;
+  isDownloadQueueOpen: boolean;
+  isOnDemandQueueOpen: boolean;
   savedSearchType: SavedSearchType;
+  helpDialogTopic: string | null;
   banners: Banner[];
 }
 
@@ -31,7 +34,10 @@ export const initState: UIState = {
   isBrowseDialogOpen: false,
   onlyScenesWithBrowse: true,
   isAddingCustomPoint: false,
+  isDownloadQueueOpen: false,
+  isOnDemandQueueOpen: false,
   savedSearchType: SavedSearchType.SAVED,
+  helpDialogTopic: null,
   banners: [],
 };
 
@@ -178,6 +184,27 @@ export function uiReducer(state = initState, action: UIActions): UIState {
       };
     }
 
+    case UIActionType.SET_IS_ON_DEMAND_QUEUE_OPEN: {
+      return {
+        ...state,
+        isOnDemandQueueOpen: action.payload
+      };
+    }
+
+    case UIActionType.SET_IS_DOWNLOAD_QUEUE_OPEN: {
+      return {
+        ...state,
+        isDownloadQueueOpen: action.payload
+      };
+    }
+
+    case UIActionType.SET_HELP_DIALOG_TOPIC: {
+      return {
+        ...state,
+        helpDialogTopic: action.payload
+      };
+    }
+
     case UIActionType.ADD_BANNERS: {
       const banners = [
         ...state.banners, ...action.payload
@@ -266,4 +293,19 @@ export const getShowS1RawData = createSelector(
 export const getShowExpiredData = createSelector(
   getUIState,
   state => state.showExpiredData
+);
+
+export const getHelpDialogTopic = createSelector(
+  getUIState,
+  state => state.helpDialogTopic
+);
+
+export const getIsDownloadQueueOpen = createSelector(
+  getUIState,
+  state => state.isDownloadQueueOpen
+);
+
+export const getIsOnDemandQueueOpen = createSelector(
+  getUIState,
+  state => state.isOnDemandQueueOpen
 );
