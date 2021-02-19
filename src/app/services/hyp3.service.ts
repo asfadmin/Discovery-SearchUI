@@ -5,26 +5,30 @@ import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import * as moment from 'moment';
 
+import { EnvironmentService } from './environment.service';
 import * as models from '@models';
 
 @Injectable({
   providedIn: 'root'
 })
 export class Hyp3Service {
-  private url = 'https://hyp3-api.asf.alaska.edu';
-
   constructor(
-    private http: HttpClient
+    private http: HttpClient,
+    private env: EnvironmentService,
   ) { }
 
+  public get apiUrl() {
+    return this.env.currentEnv.hyp3_api;
+  }
+
   public getUser$(): Observable<models.Hyp3User> {
-    const getUserUrl = `${this.url}/user`;
+    const getUserUrl = `${this.apiUrl}/user`;
 
     return this.http.get<models.Hyp3User>(getUserUrl, { withCredentials: true });
   }
 
   public getJobs$(): Observable<models.Hyp3Job[]> {
-    const getJobsUrl = `${this.url}/jobs`;
+    const getJobsUrl = `${this.apiUrl}/jobs`;
     return this.http.get(getJobsUrl, { withCredentials: true }).pipe(
       map((resp: any) => {
         if (!resp.jobs) {
@@ -44,13 +48,13 @@ export class Hyp3Service {
   }
 
   public submiteJobBatch$(jobBatch) {
-    const submitJobUrl = `${this.url}/jobs`;
+    const submitJobUrl = `${this.apiUrl}/jobs`;
 
     return this.http.post(submitJobUrl, jobBatch, { withCredentials: true });
   }
 
   public submitJob$(granuleId: string, name?: string) {
-    const submitJobUrl = `${this.url}/jobs`;
+    const submitJobUrl = `${this.apiUrl}/jobs`;
 
     const body = {
       jobs: [{

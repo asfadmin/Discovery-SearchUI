@@ -1,35 +1,39 @@
 <div class="jobs-list">
-  <mat-list *ngIf="!areJobsLoading" role="list">
+  <mat-list *ngIf="!areJobsLoading" role="list" class="flex-list">
     <ng-container
       *ngIf="jobs.length > 0 ; then jobsQueued; else emptyQueue">
     </ng-container>
 
     <ng-template #jobsQueued>
-      <mat-list-item *ngFor="let job of jobs">
-        <img matListAvatar
-          [src]="job.granules[0].thumbnail"
-          onerror="this.src='assets/no-thumb.png'"
-          matBadgeOverlap="false"
-          matListAvatar>
+      <mat-list-item *ngFor="let job of jobs" class="job-list-item">
+          <img matListAvatar
+               [src]="job.granules[0].thumbnail"
+               onerror="this.src='assets/no-thumb.png'"
+               matBadgeOverlap="false"
+               matListAvatar>
 
-        <div matLine>
-          {{ job.granules[0].name }}
-        </div>
+          <div matLine class="granule-name">
+            {{ job.granules[0].name }}
+          </div>
 
-        <div matLine>
-          <b>
-            {{ job.job_type }}
-          </b>
+          <div matLine>
+            <b>
+              {{ job.job_type }}
+            </b>
+            <b>
+              <span *ngIf="job.granules[0].bytes === 0">Virtual</span>
+              <span *ngIf="job.granules[0].bytes !== 0">{{ job.granules[0].bytes | readableSizeFromBytes }}</span>
+            </b>
+          </div>
 
-          <b>
-            <span *ngIf="job.granules[0].bytes === 0">Virtual</span>
-            <span *ngIf="job.granules[0].bytes !== 0">{{ job.granules[0].bytes | readableSizeFromBytes }}</span>
-          </b>
-        </div>
+          <div class="button-remove-job">
+            <button (click)="onRemoveJob(job)"
+                    matTooltip="Remove job"
+                    mat-icon-button>
+              <mat-icon>close</mat-icon>
+            </button>
+          </div>
 
-        <button (click)="onRemoveJob(job)" matTooltip="Remove job" mat-icon-button>
-          <mat-icon>close</mat-icon>
-        </button>
       </mat-list-item>
       <template #emptyQueue>
         <div class="jobs-empty-message">

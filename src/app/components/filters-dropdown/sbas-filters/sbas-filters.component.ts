@@ -13,6 +13,7 @@ enum FilterPanel {
   MASTER = 'Reference Scene',
   FILTER1 = 'Spatial Filter',
   FILTER2 = 'Temporal Filter',
+  DATE = 'Date',
 }
 
 @Component({

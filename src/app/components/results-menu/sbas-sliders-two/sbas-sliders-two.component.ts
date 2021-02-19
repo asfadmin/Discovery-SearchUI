@@ -45,7 +45,8 @@ export class SbasSlidersTwoComponent implements OnInit {
   private subs = new SubSink();
 
   options: FormGroup;
-  colorControl = new FormControl('primary');
+  colorControl: FormControl;
+
   meterDistanceControl: FormControl;
   daysControl: FormControl;
 
@@ -65,6 +66,10 @@ export class SbasSlidersTwoComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.colorControl = new FormControl('primary');
+    this.meterDistanceControl = new FormControl(this.perpendicular, Validators.min(-999));
+    this.daysControl = new FormControl(this.days, Validators.min(0));
+
     const [tempSlider, daysValues$] = this.makeDaysSlider$(this.temporalFilter);
     this.tempSlider = tempSlider;
 
