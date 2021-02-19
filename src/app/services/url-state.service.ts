@@ -218,6 +218,18 @@ export class UrlStateService {
         map(topic => ({ topic }))
       ),
       loader: this.loadHelpTopic
+    }, {
+      name: 'isDlOpen',
+      source: this.store$.select(uiStore.getIsDownloadQueueOpen).pipe(
+        map(isDlOpen => ({ isDlOpen }))
+      ),
+      loader: this.loadIsDownloadQueueOpen
+    }, {
+      name: 'isOnDemandOpen',
+      source: this.store$.select(uiStore.getIsOnDemandQueueOpen).pipe(
+        map(isOnDemandOpen => ({ isOnDemandOpen }))
+      ),
+      loader: this.loadIsOnDemandQueueOpen
     }];
   }
 
@@ -606,6 +618,14 @@ export class UrlStateService {
       .map(pair => pair.split(','));
 
     return new scenesStore.AddCustomPairs(pairs);
+  }
+
+  private loadIsDownloadQueueOpen = (isDownloadQueueOpen: string): Action => {
+    return new uiStore.SetIsDownloadQueueOpen(!!isDownloadQueueOpen);
+  }
+
+  private loadIsOnDemandQueueOpen = (isOnDemandQueueOpen: string): Action => {
+    return new uiStore.SetIsOnDemandQueueOpen(!!isOnDemandQueueOpen);
   }
 
   private updateShouldSearch(): void {

@@ -4,6 +4,8 @@ import { MatIconRegistry } from '@angular/material/icon';
 import { DomSanitizer } from '@angular/platform-browser';
 import { MatDialog } from '@angular/material/dialog';
 import { SubSink } from 'subsink';
+import { QueueComponent } from '@components/header/queue';
+import { ProcessingQueueComponent } from '@components/header/processing-queue';
 
 import { Store, ActionsSubject } from '@ngrx/store';
 import { ofType } from '@ngrx/effects';
@@ -46,6 +48,8 @@ export class AppComponent implements OnInit, OnDestroy {
   public queuedProducts$ = this.store$.select(queueStore.getQueuedProducts).pipe(
     map(q => q || [])
   );
+  public numberQueuedProducts: number;
+  public queuedCustomProducts: models.QueuedHyp3Job[];
 
   public interactionTypes = models.MapInteractionModeType;
   public searchType: models.SearchType;
@@ -70,6 +74,12 @@ export class AppComponent implements OnInit, OnDestroy {
   ) {}
 
   public ngOnInit(): void {
+    this.subs.add(
+      this.store$.select(queueStore.getQueuedJobs).subscribe(
+        jobs => this.queuedCustomProducts = jobs
+      )
+    );
+
     this.store$.select(uiStore.getHelpDialogTopic).subscribe(topic => {
       const previousTopic = this.helpTopic;
       this.helpTopic = topic;
@@ -96,6 +106,58 @@ export class AppComponent implements OnInit, OnDestroy {
       ref.afterClosed().subscribe(_ => {
         this.store$.dispatch(new uiStore.SetHelpDialogTopic(null));
       });
+    });
+
+    this.store$.select(uiStore.getIsDownloadQueueOpen).subscribe(isDownloadQueueOpen => {
+      if (!isDownloadQueueOpen) {
+        return;
+      }
+
+      this.store$.dispatch(new hyp3Store.LoadUser());
+
+      window.dataLayer = window.dataLayer || [];
+      window.dataLayer.push({
+        'event': 'open-download-queue',
+        'open-download-queue': this.numberQueuedProducts
+      });
+
+      const ref = this.dialog.open(QueueComponent, {
+        id: 'dlQueueDialog',
+        maxWidth: '100vw',
+        maxHeight: '100vh'
+      });
+
+      this.subs.add(
+        ref.afterClosed().subscribe(
+          _ => this.store$.dispatch(new uiStore.SetIsDownloadQueueOpen(null))
+        )
+      );
+    });
+
+    this.store$.select(uiStore.getIsOnDemandQueueOpen).subscribe(isOnDemandQueueOpen => {
+      if (!isOnDemandQueueOpen) {
+        return;
+      }
+
+      this.store$.dispatch(new hyp3Store.LoadUser());
+
+      window.dataLayer = window.dataLayer || [];
+      window.dataLayer.push({
+        'event': 'open-processing-queue',
+        'open-processing-queue': this.queuedCustomProducts.length
+      });
+
+      const ref = this.dialog.open(ProcessingQueueComponent, {
+        id: 'processingQueueDialog',
+        maxWidth: '100vw',
+        maxHeight: '100vh'
+      });
+
+      this.subs.add(
+        ref.afterClosed().subscribe(
+          _ => this.store$.dispatch(new uiStore.SetIsOnDemandQueueOpen(null))
+        )
+      );
     });
 
     this.store$.dispatch(new uiStore.LoadBanners());
@@ -146,7 +208,10 @@ export class AppComponent implements OnInit, OnDestroy {
 
     this.subs.add(
       this.queuedProducts$.subscribe(
-        products => localStorage.setItem(this.queueStateKey, JSON.stringify(products))
+        products => {
+          this.numberQueuedProducts = products.length;
+          localStorage.setItem(this.queueStateKey, JSON.stringify(products));
+        }
       )
     );
 

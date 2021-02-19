@@ -3,8 +3,6 @@ import { SubSink } from 'subsink';
 import { HttpClient } from '@angular/common/http';
 
 import { MatDialog } from '@angular/material/dialog';
-import { QueueComponent } from '@components/header/queue';
-import { ProcessingQueueComponent } from '@components/header/processing-queue';
 import { ClipboardService } from 'ngx-clipboard';
 
 import { Store } from '@ngrx/store';
@@ -12,7 +10,6 @@ import { AppState } from '@store';
 import * as queueStore from '@store/queue';
 import * as userStore from '@store/user';
 import * as uiStore from '@store/ui';
-import * as hyp3Store from '@store/hyp3';
 
 import { PreferencesComponent } from './preferences/preferences.component';
 import { CustomizeEnvComponent } from './customize-env/customize-env.component';
@@ -118,19 +115,7 @@ export class HeaderButtonsComponent implements OnInit, OnDestroy {
   }
 
   public onOpenDownloadQueue(): void {
-    this.store$.dispatch(new hyp3Store.LoadUser());
-    window.dataLayer = window.dataLayer || [];
-    window.dataLayer.push({
-      'event': 'open-download-queue',
-      'open-download-queue': this.queuedProducts.length
-    });
-
-    this.dialog.open(QueueComponent, {
-      id: 'dlQueueDialog',
-      maxWidth: '100vw',
-      maxHeight: '100vh'
-    });
-
+    this.store$.dispatch(new uiStore.SetIsDownloadQueueOpen(true));
   }
 
   public onAccountButtonClicked() {
@@ -282,19 +267,7 @@ export class HeaderButtonsComponent implements OnInit, OnDestroy {
   }
 
   public onOpenProcessingQueue() {
-    this.store$.dispatch(new hyp3Store.LoadUser());
-
-    window.dataLayer = window.dataLayer || [];
-    window.dataLayer.push({
-      'event': 'open-processing-queue',
-      'open-processing-queue': this.queuedCustomProducts.length
-    });
-
-    this.dialog.open(ProcessingQueueComponent, {
-      id: 'processingQueueDialog',
-      maxWidth: '100vw',
-      maxHeight: '100vh'
-    });
+    this.store$.dispatch(new uiStore.SetIsOnDemandQueueOpen(true));
   }
 
   public onCopy(): void {
