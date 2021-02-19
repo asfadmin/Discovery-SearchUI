@@ -1,5 +1,9 @@
-import { Component, Inject, OnInit } from '@angular/core';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { Component, OnInit } from '@angular/core';
+import { MatDialogRef } from '@angular/material/dialog';
+
+import { Store } from '@ngrx/store';
+import { AppState } from '@store';
+import * as uiStore from '@store/ui';
 
 @Component({
   selector: 'app-help',
@@ -7,13 +11,21 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
   styleUrls: ['./help.component.scss']
 })
 export class HelpComponent implements OnInit {
+  public topic: string;
 
   constructor(
-    @Inject(MAT_DIALOG_DATA) public data: any,
     private dialogRef: MatDialogRef<HelpComponent>,
+    private store$: Store<AppState>,
   ) { }
 
   ngOnInit(): void {
+    this.store$.select(uiStore.getHelpDialogTopic).subscribe(
+      topic => this.topic = topic
+    );
+  }
+
+  public setHelpTopic(topic: string): void {
+    this.store$.dispatch(new uiStore.SetHelpDialogTopic(topic));
   }
 
   public onClose(): void {
