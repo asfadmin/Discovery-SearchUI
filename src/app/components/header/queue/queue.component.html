@@ -113,6 +113,10 @@
             </button>
 
             <ng-container *ngIf="breakpoint > breakpoints.MOBILE && dlWidth >= dlWidthMin">
+              <span *ngIf="queueHasOnDemandProducts" class="on-demand-warning">
+                On Demand products in queue - limited export options
+              </span>
+
               <button mat-flat-button color="primary" [matMenuTriggerFor]="dataMenu" [disabled]="!areAnyProducts" class="btn-primary">
                 Data Download
                 <mat-icon>arrow_drop_up</mat-icon>
@@ -121,10 +125,6 @@
                 Metadata Download
                 <mat-icon>arrow_drop_up</mat-icon>
               </button>
-
-              <div *ngIf="queueHasOnDemandProducts">
-                On Demand products in queue - limited export options
-              </div>
             </ng-container>
 
             <ng-container *ngIf="breakpoint === breakpoints.MOBILE || dlWidth < dlWidthMin">
