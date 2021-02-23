@@ -4,7 +4,7 @@ import { NgForm } from '@angular/forms';
 import * as moment from 'moment';
 
 import { Subject, combineLatest } from 'rxjs';
-import { filter, tap, delay } from 'rxjs/operators';
+import { filter, tap, delay, startWith } from 'rxjs/operators';
 import { SubSink } from 'subsink';
 
 import { Store, ActionsSubject } from '@ngrx/store';
@@ -14,7 +14,7 @@ import * as filtersStore from '@store/filters';
 import * as searchStore from '@store/search';
 
 import { DateRangeExtrema, SearchType } from '@models';
-import { DateExtremaService } from '@services';
+import { DateExtremaService, PairService } from '@services';
 
 @Component({
   selector: 'app-date-selector',
@@ -52,6 +52,7 @@ export class DateSelectorComponent implements OnInit, OnDestroy {
     private store$: Store<AppState>,
     private actions$: ActionsSubject,
     private dateExtremaService: DateExtremaService,
+    private pairsService: PairService
   ) { }
 
   ngOnInit() {
@@ -73,12 +74,18 @@ export class DateSelectorComponent implements OnInit, OnDestroy {
         this.startDate$,
         this.endDate$,
     );
+    const sbasDateExtrema$ = this.dateExtremaService.getSbasExtrema$(
+      this.pairsService.pairs$(),
+      this.startDate$,
+      this.endDate$
+    );
 
     this.subs.add(
-      combineLatest(
-        this.store$.select(searchStore.getSearchType)   ,
+      combineLatest([
+        this.store$.select(searchStore.getSearchType),
         dateExtrema$,
         baselineDateExtrema$
+      ]
       ).subscribe(([searchType, extrema, baselineExtrema]) => {
         if (searchType === SearchType.DATASET) {
           this.extrema = extrema;
@@ -93,6 +100,23 @@ export class DateSelectorComponent implements OnInit, OnDestroy {
               max: null
             }
           };
+        } else if (searchType === SearchType.SBAS) {
+          this.subs.add(
+            sbasDateExtrema$.pipe(
+            startWith({
+              start: {
+                min: null,
+                max: null
+              },
+              end: {
+                min: null,
+                max: null
+              }
+            })
+            ).subscribe(
+              sbasExtrema => this.extrema = sbasExtrema
+            )
+          );
         } else {
           this.extrema = baselineExtrema;
         }
@@ -137,7 +161,7 @@ export class DateSelectorComponent implements OnInit, OnDestroy {
       date = this.toJSDate(momentDate);
     }
 
-    this.store$.dispatch(new filtersStore.SetEndDate(date));
+      this.store$.dispatch(new filtersStore.SetEndDate(date));
   }
 
   private toJSDate(date: moment.Moment) {

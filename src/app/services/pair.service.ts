@@ -7,7 +7,7 @@ import { Store } from '@ngrx/store';
 import { AppState } from '@store/app.reducer';
 import { getScenes, getCustomPairs } from '@store/scenes/scenes.reducer';
 import {
-  getTemporalRange, getPerpendicularRange
+  getTemporalRange, getPerpendicularRange, getDateRange, DateRangeState
 } from '@store/filters/filters.reducer';
 
 import { CMRProduct, CMRProductPair, ColumnSortDirection } from '@models';
@@ -48,17 +48,21 @@ export class PairService {
       this.store$.select(getPerpendicularRange).pipe(
         map(range => range.start)
       ),
+      this.store$.select(getDateRange)
     ).pipe(
-      map(([scenes, customPairs, temporal, perp]) => ({
-        pairs: [...this.makePairs(scenes, temporal, perp)],
+      map(([scenes, customPairs, temporal, perp, dateRange]) => ({
+        pairs: [...this.makePairs(scenes, temporal, perp, dateRange)],
         custom: [ ...customPairs ]
       })
       )
     );
   }
 
-  private makePairs(scenes: CMRProduct[], tempThreshold: number, perpThreshold): CMRProductPair[] {
+  private makePairs(scenes: CMRProduct[], tempThreshold: number, perpThreshold, dateRange: DateRangeState): CMRProductPair[] {
     const pairs = [];
+
+    const startDateExtrema = new Date(dateRange.start.toISOString());
+    const endDateExtrema = new Date(dateRange.end.toISOString());
 
     scenes.forEach((root, index) => {
       for (let i = index + 1; i < scenes.length; ++i) {
@@ -66,7 +70,14 @@ export class PairService {
         const tempDiff = scene.metadata.temporal - root.metadata.temporal;
         const perpDiff = Math.abs(scene.metadata.perpendicular - root.metadata.perpendicular);
 
-        if (tempDiff > tempThreshold || perpDiff > perpThreshold) {
+        const P1StartDate = new Date(root.metadata.date.toISOString());
+        const P1StopDate = new Date(root.metadata.stopDate.toISOString());
+        const P2StartDate = new Date(scene.metadata.date.toISOString());
+        const P2StopDate = new Date(scene.metadata.stopDate.toISOString());
+
+        if (tempDiff > tempThreshold || perpDiff > perpThreshold ||
+          P1StartDate < startDateExtrema || P1StopDate > endDateExtrema ||
+          P2StartDate < startDateExtrema || P2StopDate > endDateExtrema) {
           return;
         }
 

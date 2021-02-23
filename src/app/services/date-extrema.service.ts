@@ -1,11 +1,11 @@
 import { Injectable } from '@angular/core';
 
-import { Observable, combineLatest } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { Observable, combineLatest} from 'rxjs';
+import {map, reduce } from 'rxjs/operators';
 
 import * as moment from 'moment';
 
-import { Dataset, DateRangeExtrema, CMRProduct } from '@models';
+import { Dataset, DateRangeExtrema, CMRProduct, CMRProductPair } from '@models';
 
 @Injectable({
   providedIn: 'root'
@@ -125,6 +125,80 @@ export class DateExtremaService {
           }
         }
       )
+    ),
+    // tap(output => console.log(output))
+    );
+  }
+
+  public getSbasExtrema$(
+    scenes$: Observable<{
+      custom: CMRProductPair[];
+      pairs: CMRProductPair[];
+  }>,
+    startDate$: Observable<Date | null>,
+    endDate$: Observable<Date | null>,
+  ) {
+    const sceneMin$ = scenes$.pipe(
+      map(value => value.pairs),
+      reduce((flattened: CMRProduct[], pair) => flattened.concat(pair[0], pair[1]), []),
+      map(scenes => moment.min(scenes.map(scene => scene.metadata.date))),
+      map(sceneMin => moment.utc(sceneMin).toDate())
+      // tap(sceneMin => console.log(`Scene Min ${sceneMin}`))
+    );
+
+    const sceneMax$ = scenes$.pipe(
+      map(x => x.pairs),
+      reduce((flattened: CMRProduct[], pair) => flattened.concat(pair[0], pair[1]), []),
+      map(scenes => moment.max(scenes.map(scene => scene.metadata.date))),
+      map(sceneMax => moment.utc(sceneMax).toDate())
+      // tap(sceneMax => console.log(`Scene Max ${sceneMax}`))
+    );
+
+    const startMin$ = sceneMin$;
+
+    const startMax$ = combineLatest(
+      sceneMax$, endDate$
+    ).pipe(
+      map(([sceneMax, userEnd]) => {
+        if (!!userEnd) {
+          return userEnd;
+        }
+
+        return sceneMax || new Date(Date.now());
+      })
+    );
+
+    const endMin$ = combineLatest(
+      sceneMin$,
+      startDate$
+    ).pipe(
+      map(([sceneMin, userStart]) => {
+        if (!!userStart) {
+          return userStart;
+        }
+
+        return sceneMin;
+      })
+    );
+
+    const endMax$ = sceneMax$;
+
+    return combineLatest(startMin$, startMax$, endMin$, endMax$).pipe(
+      map(
+        ([startMin, startMax, endMin, endMax]): DateRangeExtrema => {
+
+          return ({
+          start: {
+            min: startMin,
+            max: startMax
+          },
+          end: {
+            min: endMin,
+            max: endMax
+          }
+        }
+      )
+        }
     )
     );
   }
