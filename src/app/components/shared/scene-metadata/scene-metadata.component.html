@@ -116,7 +116,7 @@
     <b>Pointing Angle </b> • {{ scene.metadata.pointingAngle }}
   </li>
 
-  <li *ngIf="prop.isRelevant(p.FARADAY_ROTATION, dataset)"
+  <li *ngIf="prop.isRelevant(p.FARADAY_ROTATION, dataset) && scene.metadata.faradayRotation !== 0"
     class="detail-item-margin">
     <b>Faraday Rotation </b> • {{ scene.metadata.faradayRotation }}
   </li>
