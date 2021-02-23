@@ -2,9 +2,9 @@
 
   <header>
     <div mat-dialog-title class="help-header"><h3>Search Help</h3></div>
-    <div class="help-menu" *ngIf="data.helpTopic != 'toc'">
+    <div class="help-menu" *ngIf="topic != 'toc'">
       <button mat-raised-button color="accent"
-              (click)="data.helpTopic = 'toc'">
+              (click)="setHelpTopic('toc')">
         All Help & Tutorials
       </button>
     </div>
@@ -12,7 +12,7 @@
 
   <main>
       <div class="help-content">
-        <div [ngSwitch]="data.helpTopic">
+        <div [ngSwitch]="topic">
           <ng-template [ngSwitchCase]="'toc'">
             <app-help-toc></app-help-toc>
           </ng-template>
@@ -77,5 +77,4 @@
       </div>
     </div>
   </footer>
-
 </div>
