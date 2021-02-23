@@ -197,7 +197,7 @@ export class DateExtremaService {
             max: endMax
           }
         }
-      )
+      );
         }
     )
     );
