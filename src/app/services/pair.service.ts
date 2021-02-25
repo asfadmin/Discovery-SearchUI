@@ -61,8 +61,16 @@ export class PairService {
   private makePairs(scenes: CMRProduct[], tempThreshold: number, perpThreshold, dateRange: DateRangeState): CMRProductPair[] {
     const pairs = [];
 
-    const startDateExtrema = new Date(dateRange.start.toISOString());
-    const endDateExtrema = new Date(dateRange.end.toISOString());
+    let startDateExtrema;
+    let endDateExtrema;
+
+    if (!!dateRange.start) {
+    startDateExtrema = new Date(dateRange.start.toISOString());
+    }
+    if (!!dateRange.end) {
+      endDateExtrema = new Date(dateRange.end.toISOString());
+    }
+    // }
 
     scenes.forEach((root, index) => {
       for (let i = index + 1; i < scenes.length; ++i) {
@@ -75,10 +83,20 @@ export class PairService {
         const P2StartDate = new Date(scene.metadata.date.toISOString());
         const P2StopDate = new Date(scene.metadata.stopDate.toISOString());
 
-        if (tempDiff > tempThreshold || perpDiff > perpThreshold ||
-          P1StartDate < startDateExtrema || P1StopDate > endDateExtrema ||
-          P2StartDate < startDateExtrema || P2StopDate > endDateExtrema) {
+        if (tempDiff > tempThreshold || perpDiff > perpThreshold) {
           return;
+        }
+
+        if (startDateExtrema !== null) {
+          if (P1StartDate < startDateExtrema || P2StartDate < startDateExtrema) {
+            return;
+          }
+        }
+
+        if (endDateExtrema !== null) {
+          if ( P1StopDate > endDateExtrema || P2StopDate > endDateExtrema) {
+              return;
+            }
         }
 
         pairs.push([root, scene]);
