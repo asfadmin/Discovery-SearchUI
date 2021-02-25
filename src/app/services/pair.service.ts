@@ -61,8 +61,8 @@ export class PairService {
   private makePairs(scenes: CMRProduct[], tempThreshold: number, perpThreshold, dateRange: DateRangeState): CMRProductPair[] {
     const pairs = [];
 
-    let startDateExtrema;
-    let endDateExtrema;
+    let startDateExtrema: Date;
+    let endDateExtrema: Date;
 
     if (!!dateRange.start) {
     startDateExtrema = new Date(dateRange.start.toISOString());
