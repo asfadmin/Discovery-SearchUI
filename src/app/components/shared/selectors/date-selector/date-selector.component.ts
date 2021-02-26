@@ -4,7 +4,7 @@ import { NgForm } from '@angular/forms';
 import * as moment from 'moment';
 
 import { Subject, combineLatest } from 'rxjs';
-import { filter, tap, delay, startWith } from 'rxjs/operators';
+import { filter, tap, delay } from 'rxjs/operators';
 import { SubSink } from 'subsink';
 
 import { Store, ActionsSubject } from '@ngrx/store';
@@ -14,7 +14,7 @@ import * as filtersStore from '@store/filters';
 import * as searchStore from '@store/search';
 
 import { DateRangeExtrema, SearchType } from '@models';
-import { DateExtremaService, PairService } from '@services';
+import { DateExtremaService } from '@services';
 
 @Component({
   selector: 'app-date-selector',
@@ -51,8 +51,7 @@ export class DateSelectorComponent implements OnInit, OnDestroy {
   constructor(
     private store$: Store<AppState>,
     private actions$: ActionsSubject,
-    private dateExtremaService: DateExtremaService,
-    private pairsService: PairService
+    private dateExtremaService: DateExtremaService
   ) { }
 
   ngOnInit() {
@@ -74,17 +73,12 @@ export class DateSelectorComponent implements OnInit, OnDestroy {
         this.startDate$,
         this.endDate$,
     );
-    const sbasDateExtrema$ = this.dateExtremaService.getSbasExtrema$(
-      this.pairsService.pairs$(),
-      this.startDate$,
-      this.endDate$
-    );
 
     this.subs.add(
       combineLatest([
         this.store$.select(searchStore.getSearchType),
         dateExtrema$,
-        baselineDateExtrema$
+        baselineDateExtrema$,
       ]
       ).subscribe(([searchType, extrema, baselineExtrema]) => {
         if (searchType === SearchType.DATASET) {
@@ -100,24 +94,7 @@ export class DateSelectorComponent implements OnInit, OnDestroy {
               max: null
             }
           };
-        } else if (searchType === SearchType.SBAS) {
-          this.subs.add(
-            sbasDateExtrema$.pipe(
-            startWith({
-              start: {
-                min: null,
-                max: null
-              },
-              end: {
-                min: null,
-                max: null
-              }
-            })
-            ).subscribe(
-              sbasExtrema => this.extrema = sbasExtrema
-            )
-          );
-        } else {
+         } else {
           this.extrema = baselineExtrema;
         }
       })
