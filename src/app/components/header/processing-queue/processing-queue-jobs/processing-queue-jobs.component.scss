@@ -21,10 +21,11 @@
   .mat-list-base {
     display: flex !important;
     flex-wrap: wrap;
+    width: 100% !important;
   }
 
   .mat-list-text {
-    //max-width: 40%;
+    //width: 287px;
   }
 }
 

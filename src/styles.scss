@@ -332,3 +332,8 @@ ul {
   pointer-events: none;
   z-index: 100000;
 }
+
+.jobs-display--mobile .mat-list-base .mat-list-item .mat-list-item-content,
+.jobs-display--mobile .mat-list-base .mat-list-option .mat-list-item-content {
+  width: 100%;
+}
