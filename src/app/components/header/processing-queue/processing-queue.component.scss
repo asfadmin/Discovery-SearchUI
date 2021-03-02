@@ -12,7 +12,7 @@ $color: $asf-primary-dark;
   background: $background-color;
   width: 80vw;
   height: 86vh;
-  min-width: 400px;
+  min-width: 350px;
   min-height: 500px;
 }
 
@@ -27,9 +27,9 @@ $color: $asf-primary-dark;
 
 .processing-queue {
   //width: 600px;
-  min-width: 600px;
+  min-width: 350px;
   height: 100%;
-  min-height: 600px;
+  min-height: 500px;
   margin: 0;
   padding: 0;
   position: relative;
@@ -149,6 +149,11 @@ $color: $asf-primary-dark;
   margin-left: 20px;
 }
 
+.project-name-mobile {
+  transform: scale(0.75);
+  margin-left: 4px;
+}
+
 .dataset-menu {
   display: block;
   position: absolute;
@@ -261,7 +266,7 @@ $color: $asf-primary-dark;
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
-  margin: 0 0 0 15px;
+  padding: 0 0 0 15px;
   border-bottom: solid 1px grey;
   height: 100%;
 }
@@ -322,7 +327,7 @@ $color: $asf-primary-dark;
 
 .footer-submit {
   flex: none;
-  margin: 12px 16px;
+  margin: 12px 16px 12px 0;
 }
 
 .footer-job-notification {
