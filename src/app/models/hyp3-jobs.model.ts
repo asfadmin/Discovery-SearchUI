@@ -37,3 +37,5 @@ export const hyp3JobTypes = {
   RTCGamma: RtcGammaJobType,
   InSarGamma: InsarGammaJobType
 };
+
+export const hyp3JobTypesList = Object.values(hyp3JobTypes);

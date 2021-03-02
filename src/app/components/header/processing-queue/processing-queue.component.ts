@@ -44,6 +44,7 @@ export class ProcessingQueueComponent implements OnInit {
 
   public projectName = '';
   public processingOptions: models.Hyp3ProcessingOptions;
+  public hyp3JobTypesList: models.Hyp3JobType[];
 
   public style: object = {};
   public dlWidth = 1000;
@@ -70,6 +71,11 @@ export class ProcessingQueueComponent implements OnInit {
 
     this.store$.select(queueStore.getQueuedJobs).subscribe(jobs => {
       this.jobs = jobs;
+    });
+
+    this.store$.select(queueStore.getQueuedJobTypes).subscribe(jobTypes => {
+      console.log(jobTypes);
+      this.hyp3JobTypesList = <any>jobTypes;
     });
 
     this.store$.select(hyp3Store.getHyp3User).subscribe(
