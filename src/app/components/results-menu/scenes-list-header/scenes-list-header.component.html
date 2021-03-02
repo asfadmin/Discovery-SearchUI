@@ -195,15 +195,6 @@
             </button>
           </mat-menu>
 
-          <mat-menu #ExportAll="matMenu">
-            <button mat-menu-item [matMenuTriggerFor]="ExportAllMetadata">
-              Metadata
-            </button>
-            <button mat-menu-item [matMenuTriggerFor]="ExportAllData">
-              Data
-            </button>
-          </mat-menu>
-
           <mat-menu #addAllRTCDemand="matMenu">
             <button *ngIf="slc(products).length > 0" (click)="queueAllOnDemand(slc(products))" mat-menu-item>
               Add {{ slc(products).length }} SLC jobs
@@ -215,6 +206,16 @@
               Add {{ grd_hs(products).length }} GRD-HS jobs
             </button>
           </mat-menu>
+
+          <mat-menu #ExportAll="matMenu">
+            <button mat-menu-item [matMenuTriggerFor]="ExportAllMetadata">
+              Metadata
+            </button>
+            <button mat-menu-item [matMenuTriggerFor]="ExportAllData">
+              Data
+            </button>
+          </mat-menu>
+
         </div>
       </div>
 

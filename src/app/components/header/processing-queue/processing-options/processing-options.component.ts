@@ -14,7 +14,7 @@ import * as models from '@models';
 })
 export class ProcessingOptionsComponent implements OnInit {
   public jobs: models.QueuedHyp3Job[];
-  public JobTypes = models.Hyp3JobType;
+  public JobTypes = models.hyp3JobTypes;
 
   public radiometry: models.RtcGammaRadiometry;
   public scale: models.RtcGammaScale;
@@ -55,7 +55,7 @@ export class ProcessingOptionsComponent implements OnInit {
   }
   public hasJobType(jobType: models.Hyp3JobType): boolean {
     return this.jobs.some(
-      job => job.job_type === jobType
+      job => job.job_type.id === jobType.id
     );
   }
 

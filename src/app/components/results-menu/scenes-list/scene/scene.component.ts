@@ -58,7 +58,7 @@ export class SceneComponent implements OnInit {
   public onToggleOnDemandScene(): void {
     this.ToggleOnDemandScene.emit({
       granules: [ this.scene ],
-      job_type: models.Hyp3JobType.RTC_GAMMA
+      job_type: models.hyp3JobTypes.RTCGamma
     } as QueuedHyp3Job);
     this.jobQueued = !this.jobQueued;
   }

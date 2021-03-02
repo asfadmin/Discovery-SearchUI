@@ -15,7 +15,6 @@ import * as hyp3Store from '@store/hyp3';
 import * as userStore from '@store/user';
 import * as models from '@models';
 import * as services from '@services';
-// import { ResizeEvent } from 'angular-resizable-element';
 import { ResizedEvent } from 'angular-resize-event';
 
 enum ProcessingQueueTab {
@@ -124,7 +123,7 @@ export class ProcessingQueueComponent implements OnInit {
 
   public onSubmitQueue(): void {
     const options = {
-      [models.Hyp3JobType.RTC_GAMMA]: {
+      [models.hyp3JobTypes.RTCGamma.id]: {
         dem_matching: this.processingOptions.demMatching,
         include_dem: this.processingOptions.includeDem,
         include_inc_map: this.processingOptions.includeIncMap,
@@ -133,7 +132,7 @@ export class ProcessingQueueComponent implements OnInit {
         scale: this.processingOptions.scale,
         speckle_filter: this.processingOptions.speckleFilter,
       },
-      [models.Hyp3JobType.INSAR_GAMMA]: {
+      [models.hyp3JobTypes.InSarGamma.id]: {
         include_look_vectors: this.processingOptions.includeLookVectors,
         include_los_displacement: this.processingOptions.includeLosDisplacement,
         looks: this.processingOptions.looks,
@@ -144,7 +143,7 @@ export class ProcessingQueueComponent implements OnInit {
       const jobOptions: any = {
         job_type: job.job_type,
         job_parameters: {
-          ...options[job.job_type],
+          ...options[job.job_type.id],
           granules: job.granules.map(granule => granule.name),
         }
       };

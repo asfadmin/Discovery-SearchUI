@@ -13,7 +13,6 @@ import * as queueStore from '@store/queue';
 import * as searchStore from '@store/search';
 import * as filtersStore from '@store/filters';
 
-
 import {
   MapService, ScenesService, ScreenSizeService,
   PairService
@@ -197,7 +196,7 @@ export class ScenesListHeaderComponent implements OnInit {
     const jobs = products.map(
       product => ({
         granules: [ product ],
-        job_type: models.Hyp3JobType.RTC_GAMMA
+        job_type: models.hyp3JobTypes.RTCGamma
       })
     );
 
