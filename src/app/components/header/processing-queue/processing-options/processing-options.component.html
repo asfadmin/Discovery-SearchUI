@@ -35,66 +35,51 @@
         </app-option-info>
       </div>
       <div class="flex-field">
-        <mat-slide-toggle
-          (change)="onSetDemMatching($event.checked)"
-          [(ngModel)]="demMatching">
-          DEM Matching
-        </mat-slide-toggle>
-
-        <app-option-info class="option-info--spacing" infoText="
-          Coregisters SAR data to the DEM, rather than using
-          dead reckoning based on orbit files.
+        <app-toggle-option
+          (valueChange)="onSetDemMatching($event)"
+          [value]="demMatching"
+          optionName="DEM Matching"
+          optionInfo="
+            Coregisters SAR data to the DEM, rather than using
+            dead reckoning based on orbit files.
           ">
-        </app-option-info>
+        </app-toggle-option>
       </div>
       <div class="flex-field">
-        <mat-slide-toggle
-          (change)="onSetIncludeDem($event.checked)"
-          [(ngModel)]="includeDem">
-          Include DEM
-        </mat-slide-toggle>
-
-
-        <app-option-info class="option-info--spacing" infoText="
-          Include the DEM file in the product package.
-          ">
-        </app-option-info>
+        <app-toggle-option
+          (valueChange)="onSetIncludeDem($event)"
+          [value]="includeDem"
+          optionName="Include DEM"
+          optionInfo="Include the DEM file in the product package.">
+        </app-toggle-option>
       </div>
       <div class="flex-field">
-        <mat-slide-toggle
-          (change)="onSetIncludeIncMap($event.checked)"
-          [(ngModel)]="includeIncMap">
-          Include Inc. Angle Map
-        </mat-slide-toggle>
-
-        <app-option-info class="option-info--spacing" infoText="
-          Include the incidence angle map in the product package.
+        <app-toggle-option
+          (valueChange)="onSetIncludeIncMap($event)"
+          [value]="includeIncMap"
+          optionName="Include Inc. Angle Map"
+          optionInfo="
+            Include the incidence angle map in the product package.
           ">
-        </app-option-info>
+        </app-toggle-option>
       </div>
       <div class="flex-field">
-        <mat-slide-toggle
-          (change)="onSetIncludeScatteringArea($event.checked)"
-          [(ngModel)]="includeScatteringArea">
-          Include Scattering Area
-        </mat-slide-toggle>
-
-        <app-option-info class="option-info--spacing" infoText="
-          Include the scattering area in the product package
+        <app-toggle-option
+          (valueChange)="onSetIncludeScatteringArea($event)"
+          [value]="includeScatteringArea"
+          optionName="Include Scattering Area"
+          optionInfo="
+            Include the scattering area in the product package
           ">
-        </app-option-info>
+        </app-toggle-option>
       </div>
       <div class="flex-field">
-        <mat-slide-toggle
-          (change)="onSetSpeckleFilter($event.checked)"
-          [(ngModel)]="speckleFilter">
-          Speckle Filter
-        </mat-slide-toggle>
-
-        <app-option-info class="option-info--spacing" infoText="
-          Apply an Enhanced Lee speckle filter.
-          ">
-        </app-option-info>
+        <app-toggle-option
+          (valueChange)="onSetSpeckleFilter($event)"
+          [value]="speckleFilter"
+          optionName="Speckle Filter"
+          optionInfo="Apply an Enhanced Lee speckle filter.">
+        </app-toggle-option>
         <p></p>
       </div>
     </ng-container>
@@ -119,30 +104,26 @@
       </div>
 
       <div style="padding-bottom: 5px;">
-        <mat-slide-toggle
-          (change)="onSetIncludeLookVectors($event.checked)"
-          [(ngModel)]="includeLookVectors">
-          Include Look Vectors
-        </mat-slide-toggle>
-
-        <app-option-info class="option-info--spacing" infoText="
-          Include the look vector theta and phi files in the product package
+        <app-toggle-option
+          (valueChange)="onSetIncludeLookVectors($event)"
+          [value]="includeLookVectors"
+          optionName="Include Look Vectors"
+          optionInfo="
+            Include the look vector theta and phi files in the product package
           ">
-        </app-option-info>
+        </app-toggle-option>
       </div>
 
       <div style="padding-bottom: 5px;">
-        <mat-slide-toggle
-          (change)="setIncludeLosDisplacement($event.checked)"
-          [(ngModel)]="includeLosDisplacement">
-          Include Los Displacement
-        </mat-slide-toggle>
-
-        <app-option-info class="option-info--spacing" infoText="
-          Include a GeoTIFF in the product package containing displacement
-          values along the Line-Of-Sight (LOS)
+        <app-toggle-option
+          (valueChange)="setIncludeLosDisplacement($event)"
+          [value]="includeLosDisplacement"
+          optionName="Include Los Displacement"
+          optionInfo="
+            Include a GeoTIFF in the product package containing displacement
+            values along the Line-Of-Sight (LOS)
           ">
-        </app-option-info>
+        </app-toggle-option>
         <p></p>
       </div>
     </ng-container>

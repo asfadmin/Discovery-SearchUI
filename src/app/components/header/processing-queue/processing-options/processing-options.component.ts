@@ -72,6 +72,7 @@ export class ProcessingOptionsComponent implements OnInit {
   }
 
   public onSetDemMatching(demMatching: boolean): void {
+    console.log(demMatching);
     this.demMatching = demMatching;
     this.updateProcessingOptions();
   }
