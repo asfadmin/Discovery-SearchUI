@@ -1,5 +1,8 @@
-import { Component, Inject, OnInit } from '@angular/core';
-import { MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { Component, OnInit } from '@angular/core';
+
+import { Store } from '@ngrx/store';
+import { AppState } from '@store';
+import * as uiStore from '@store/ui';
 
 @Component({
   selector: 'app-help-toc',
@@ -7,12 +10,19 @@ import { MAT_DIALOG_DATA } from '@angular/material/dialog';
   styleUrls: ['./help-toc.component.scss']
 })
 export class HelpTocComponent implements OnInit {
+  public topic: string;
 
   constructor(
-    @Inject(MAT_DIALOG_DATA) public data: any,
+    private store$: Store<AppState>,
   ) { }
 
   ngOnInit(): void {
+    this.store$.select(uiStore.getHelpDialogTopic).subscribe(
+      topic => this.topic = topic
+    );
   }
 
+  public setHelpTopic(topic: string): void {
+    this.store$.dispatch(new uiStore.SetHelpDialogTopic(topic));
+  }
 }

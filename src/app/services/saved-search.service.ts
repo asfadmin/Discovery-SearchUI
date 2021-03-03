@@ -51,9 +51,11 @@ export class SavedSearchService {
     this.store$.select(scenesStore.getFilterMaster),
     this.store$.select(scenesStore.getCustomPairIds),
     this.store$.select(filtersStore.getSbasSearch),
+    this.store$.select(filtersStore.getDateRange)
   ).pipe(
-    map(([master, customPairIds, sbasFilters]) => ({
+    map(([master, customPairIds, sbasFilters, dateRange]) => ({
       master,
+      dateRange,
       customPairIds,
       ...sbasFilters
     }))

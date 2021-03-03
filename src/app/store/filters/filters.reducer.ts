@@ -529,6 +529,7 @@ export function filtersReducer(state = initState, action: FiltersActions): Filte
 
         return {
           ...state,
+          dateRange: filters.dateRange,
           temporalRange: {start: filters.temporal, end: null},
           perpendicularRange: {start: filters.perpendicular, end: null},
         };
@@ -767,6 +768,7 @@ export const getSbasSearch = createSelector(
   getFiltersState,
   (state: FiltersState) => ({
     temporal: state.temporalRange.start,
+    dateRange: state.dateRange,
     perpendicular: state.perpendicularRange.start
   })
 );

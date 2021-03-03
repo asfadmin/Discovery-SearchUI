@@ -11,6 +11,22 @@ $info-color: $asf-primary;
   height: calc(100% - 137px);
 }
 
+.sbas-criteria-button-toggle-group {
+  flex: 0 1 149px !important;
+  margin-top: 5px;
+}
+
+.sbas-criteria-button-toggle {
+  background-color: white !important;
+  font-size: 14px;
+}
+
+.criteria-button-group {
+  outline: none;
+  width: auto;
+  line-height: 26px !important;
+}
+
 .sbas-filter-row {
   display: flex;
   flex-direction: column;

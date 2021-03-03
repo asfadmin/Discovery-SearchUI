@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 
-import { Observable, combineLatest } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { Observable, combineLatest} from 'rxjs';
+import {map } from 'rxjs/operators';
 
 import * as moment from 'moment';
 
@@ -125,7 +125,7 @@ export class DateExtremaService {
           }
         }
       )
-    )
+    ),
     );
   }
 }

@@ -46,6 +46,7 @@ export class SbasSlidersTwoComponent implements OnInit {
 
   options: FormGroup;
   colorControl: FormControl;
+
   meterDistanceControl: FormControl;
   daysControl: FormControl;
 
@@ -54,6 +55,9 @@ export class SbasSlidersTwoComponent implements OnInit {
     private screenSize: ScreenSizeService,
     fb: FormBuilder
   ) {
+    this.meterDistanceControl = new FormControl(this.perpendicular, Validators.min(-999));
+    this.daysControl = new FormControl(this.days, Validators.min(0));
+
       this.options = fb.group({
         color: this.colorControl,
         meterDistance: this.meterDistanceControl,

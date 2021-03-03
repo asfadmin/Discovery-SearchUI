@@ -211,19 +211,22 @@ export class ScenesListHeaderComponent implements OnInit {
   public slc(products: models.CMRProduct[]): models.CMRProduct[] {
     return products
       .filter(product => product.metadata.beamMode === 'IW')
-      .filter(product => product.metadata.productType === 'SLC');
+      .filter(product => product.metadata.productType === 'SLC')
+      .filter(product => !product.metadata.polarization.includes('Dual'));
   }
 
   public grd_hd(products: models.CMRProduct[]): models.CMRProduct[] {
     return products
       .filter(product => product.metadata.beamMode === 'IW')
-      .filter(product => product.metadata.productType === 'GRD_HD');
+      .filter(product => product.metadata.productType === 'GRD_HD')
+      .filter(product => !product.metadata.polarization.includes('Dual'));
   }
 
   public grd_hs(products: models.CMRProduct[]): models.CMRProduct[] {
     return products
       .filter(product => product.metadata.beamMode === 'IW')
-      .filter(product => product.metadata.productType === 'GRD_HS');
+      .filter(product => product.metadata.productType === 'GRD_HS')
+      .filter(product => !product.metadata.polarization.includes('Dual'));
   }
 
 
