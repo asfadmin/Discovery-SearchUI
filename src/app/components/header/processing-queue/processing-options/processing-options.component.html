@@ -4,36 +4,28 @@
       <div class="options-header">RTC Gamma Options</div>
 
       <div class="flex-field">
-        <mat-form-field>
-          <mat-label>Radiometry</mat-label>
-          <mat-select [(value)]="radiometry"
-            (selectionChange)="onSetRadiometry($event.value)">
-            <mat-option value="gamma0">gamma0</mat-option>
-            <mat-option value="sigma0">sigma0</mat-option>
-          </mat-select>
-        </mat-form-field>
-
-        <app-option-info class="option-info--spacing" infoText="
-          Backscatter coefficient normalization, either by ground area
-          (sigma0) or illuminated area projected into the look direction (gamma0).
+        <app-dropdown-option
+          (valueChange)="onSetRadiometry($event)"
+          [value]="radiometry"
+          [options]="['gamma0', 'sigma0']"
+          optionName="Radiometry"
+          optionInfo="
+            Backscatter coefficient normalization, either by ground area
+            (sigma0) or illuminated area projected into the look direction (gamma0).
           ">
-        </app-option-info>
+        </app-dropdown-option>
       </div>
+
       <div class="flex-field">
-        <mat-form-field>
-          <mat-label>Scale</mat-label>
-          <mat-select [(value)]="scale"
-            (selectionChange)="onSetScale($event.value)">
-            <mat-option value="power">power</mat-option>
-            <mat-option value="amplitude">amplitude</mat-option>
-          </mat-select>
-        </mat-form-field>
-
-        <app-option-info class="option-info--spacing" infoText="
-          Scale of output image; either power or amplitude.
-          ">
-        </app-option-info>
+        <app-dropdown-option
+          (valueChange)="onSetScale($event)"
+          [value]="scale"
+          [options]="['power', 'amplitude']"
+          optionName="Scale"
+          optionInfo="Scale of output image; either power or amplitude.">
+        </app-dropdown-option>
       </div>
+
       <div class="flex-field">
         <app-toggle-option
           (valueChange)="onSetDemMatching($event)"
@@ -45,6 +37,7 @@
           ">
         </app-toggle-option>
       </div>
+
       <div class="flex-field">
         <app-toggle-option
           (valueChange)="onSetIncludeDem($event)"
@@ -53,6 +46,7 @@
           optionInfo="Include the DEM file in the product package.">
         </app-toggle-option>
       </div>
+
       <div class="flex-field">
         <app-toggle-option
           (valueChange)="onSetIncludeIncMap($event)"
@@ -63,6 +57,7 @@
           ">
         </app-toggle-option>
       </div>
+
       <div class="flex-field">
         <app-toggle-option
           (valueChange)="onSetIncludeScatteringArea($event)"
@@ -73,6 +68,7 @@
           ">
         </app-toggle-option>
       </div>
+
       <div class="flex-field">
         <app-toggle-option
           (valueChange)="onSetSpeckleFilter($event)"
@@ -88,19 +84,13 @@
       <div class="options-header">InSar Gamma Options</div>
 
       <div>
-        <mat-form-field>
-          <mat-label>Looks</mat-label>
-          <mat-select [(value)]="looks"
-            (selectionChange)="onSetLooks($event.value)">
-            <mat-option value="20x4">20x4</mat-option>
-            <mat-option value="10x2">10x2</mat-option>
-          </mat-select>
-        </mat-form-field>
-
-        <app-option-info class="option-info--spacing" infoText="
-          Number of looks to take in range and azimuth.
-          ">
-        </app-option-info>
+        <app-dropdown-option
+          (valueChange)="onSetLooks($event)"
+          [value]="looks"
+          [options]="['20x4', '10x2']"
+          optionName="Looks"
+          optionInfo="Number of looks to take in range and azimuth.">
+        </app-dropdown-option>
       </div>
 
       <div style="padding-bottom: 5px;">

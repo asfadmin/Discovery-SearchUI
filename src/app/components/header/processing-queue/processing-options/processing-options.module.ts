@@ -11,11 +11,12 @@ import { ProjectNameSelectorModule } from '@components/shared/selectors/project-
 import { ProcessingOptionsComponent } from './processing-options.component';
 import { OptionInfoComponent } from './option-info/option-info.component';
 import { ToggleOptionComponent } from './toggle-option/toggle-option.component';
+import { DropdownOptionComponent } from './dropdown-option/dropdown-option.component';
 
 
 
 @NgModule({
-  declarations: [ProcessingOptionsComponent, OptionInfoComponent, ToggleOptionComponent],
+  declarations: [ProcessingOptionsComponent, OptionInfoComponent, ToggleOptionComponent, DropdownOptionComponent],
   imports: [
     CommonModule,
     FormsModule,
