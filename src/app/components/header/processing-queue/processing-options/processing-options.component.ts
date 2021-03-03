@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 
 import { Store } from '@ngrx/store';
 import { AppState } from '@store';
@@ -13,8 +13,10 @@ import * as models from '@models';
   styleUrls: ['./processing-options.component.scss']
 })
 export class ProcessingOptionsComponent implements OnInit {
+  @Input() selectedJobType: models.Hyp3JobType;
+
   public jobs: models.QueuedHyp3Job[];
-  public JobTypes = models.Hyp3JobType;
+  public JobTypes = models.hyp3JobTypes;
 
   public radiometry: models.RtcGammaRadiometry;
   public scale: models.RtcGammaScale;
@@ -55,7 +57,7 @@ export class ProcessingOptionsComponent implements OnInit {
   }
   public hasJobType(jobType: models.Hyp3JobType): boolean {
     return this.jobs.some(
-      job => job.job_type === jobType
+      job => job.job_type.id === jobType.id
     );
   }
 
@@ -70,6 +72,7 @@ export class ProcessingOptionsComponent implements OnInit {
   }
 
   public onSetDemMatching(demMatching: boolean): void {
+    console.log(demMatching);
     this.demMatching = demMatching;
     this.updateProcessingOptions();
   }

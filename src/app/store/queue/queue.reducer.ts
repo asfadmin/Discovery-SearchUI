@@ -241,3 +241,17 @@ export const getQueuedJobs = createSelector(
   (state: QueueState) => state.customJobs
 );
 
+export const getQueuedJobTypes = createSelector(
+  getQueueState,
+  (state: QueueState) => {
+
+    const jobTypeDict = state.customJobs
+      .map(job => job.job_type)
+      .reduce((jobTypes, jobType) => {
+        jobTypes[jobType.id] = jobType;
+        return jobTypes;
+      }, {});
+
+    return (<any>Object.values(jobTypeDict));
+  }
+);

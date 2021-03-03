@@ -165,7 +165,7 @@ export class BaselineResultsMenuComponent implements OnInit, OnDestroy {
       const jobs = products.map(
         product => ({
           granules: [ product ],
-          job_type: models.Hyp3JobType.RTC_GAMMA
+          job_type: models.hyp3JobTypes.RTC_GAMMA
         })
       );
       this.store$.dispatch(new queueStore.AddJobs(jobs));

@@ -7,7 +7,7 @@ import { QueueSubmitComponent } from './queue-submit/queue-submit.component';
 import { Store } from '@ngrx/store';
 import { AppState } from '@store';
 import * as moment from 'moment';
-import { of } from 'rxjs';
+import { of, combineLatest } from 'rxjs';
 import { tap, catchError } from 'rxjs/operators';
 
 import * as queueStore from '@store/queue';
@@ -15,7 +15,6 @@ import * as hyp3Store from '@store/hyp3';
 import * as userStore from '@store/user';
 import * as models from '@models';
 import * as services from '@services';
-// import { ResizeEvent } from 'angular-resizable-element';
 import { ResizedEvent } from 'angular-resize-event';
 
 enum ProcessingQueueTab {
@@ -29,6 +28,7 @@ enum ProcessingQueueTab {
   styleUrls: ['./processing-queue.component.scss']
 })
 export class ProcessingQueueComponent implements OnInit {
+  public allJobs: models.QueuedHyp3Job[] = [];
   public jobs: models.QueuedHyp3Job[] = [];
   public user = '';
   public isUserLoggedIn = false;
@@ -45,6 +45,10 @@ export class ProcessingQueueComponent implements OnInit {
 
   public projectName = '';
   public processingOptions: models.Hyp3ProcessingOptions;
+
+  public hyp3JobTypes = models.hyp3JobTypes;
+  public hyp3JobTypesList: models.Hyp3JobType[];
+  public selectedJobTypeId: string | null = null;
 
   public style: object = {};
   public dlWidth = 1000;
@@ -69,8 +73,20 @@ export class ProcessingQueueComponent implements OnInit {
         this.isUserLoading = isUserLoading;
     });
 
-    this.store$.select(queueStore.getQueuedJobs).subscribe(jobs => {
-      this.jobs = jobs;
+    combineLatest(
+      this.store$.select(queueStore.getQueuedJobs),
+      this.store$.select(queueStore.getQueuedJobTypes)
+    ).subscribe(([jobs, jobTypes]) => {
+      this.hyp3JobTypesList = <any>jobTypes;
+
+      if (!this.selectedJobTypeId) {
+        this.selectedJobTypeId = !!this.hyp3JobTypesList[0] ? this.hyp3JobTypesList[0].id : null;
+      }
+
+      this.allJobs = jobs;
+      this.jobs = jobs.filter(
+        job => job.job_type.id === this.selectedJobTypeId
+      );
     });
 
     this.store$.select(hyp3Store.getHyp3User).subscribe(
@@ -124,7 +140,7 @@ export class ProcessingQueueComponent implements OnInit {
 
   public onSubmitQueue(): void {
     const options = {
-      [models.Hyp3JobType.RTC_GAMMA]: {
+      [models.hyp3JobTypes.RTC_GAMMA.id]: {
         dem_matching: this.processingOptions.demMatching,
         include_dem: this.processingOptions.includeDem,
         include_inc_map: this.processingOptions.includeIncMap,
@@ -133,18 +149,18 @@ export class ProcessingQueueComponent implements OnInit {
         scale: this.processingOptions.scale,
         speckle_filter: this.processingOptions.speckleFilter,
       },
-      [models.Hyp3JobType.INSAR_GAMMA]: {
+      [models.hyp3JobTypes.INSAR_GAMMA.id]: {
         include_look_vectors: this.processingOptions.includeLookVectors,
         include_los_displacement: this.processingOptions.includeLosDisplacement,
         looks: this.processingOptions.looks,
       }
     };
 
-    const hyp3JobsBatch = this.jobs.map(job => {
+    const hyp3JobsBatch = this.allJobs.map(job => {
       const jobOptions: any = {
-        job_type: job.job_type,
+        job_type: job.job_type.id,
         job_parameters: {
-          ...options[job.job_type],
+          ...options[job.job_type.id],
           granules: job.granules.map(granule => granule.name),
         }
       };
@@ -183,6 +199,14 @@ export class ProcessingQueueComponent implements OnInit {
         this.store$.dispatch(new hyp3Store.LoadUser());
         this.dialogRef.close();
       }
+    );
+  }
+
+  public onSetSelectedJobType(jobType: models.Hyp3JobType): void {
+    this.selectedJobTypeId = jobType.id;
+
+    this.jobs = this.allJobs.filter(
+      job => job.job_type.id === this.selectedJobTypeId
     );
   }
 
