@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 
 import { Store } from '@ngrx/store';
 import { AppState } from '@store';
@@ -13,6 +13,8 @@ import * as models from '@models';
   styleUrls: ['./processing-options.component.scss']
 })
 export class ProcessingOptionsComponent implements OnInit {
+  @Input() selectedJobType: models.Hyp3JobType;
+
   public jobs: models.QueuedHyp3Job[];
   public JobTypes = models.hyp3JobTypes;
 

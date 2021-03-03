@@ -196,7 +196,7 @@ export class ScenesListHeaderComponent implements OnInit {
     const jobs = products.map(
       product => ({
         granules: [ product ],
-        job_type: models.hyp3JobTypes.RTCGamma
+        job_type: models.hyp3JobTypes.RTC_GAMMA
       })
     );
 

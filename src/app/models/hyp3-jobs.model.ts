@@ -34,8 +34,8 @@ export const InsarGammaJobType: Hyp3JobType = {
 };
 
 export const hyp3JobTypes = {
-  RTCGamma: RtcGammaJobType,
-  InSarGamma: InsarGammaJobType
+  RTC_GAMMA: RtcGammaJobType,
+  INSAR_GAMMA: InsarGammaJobType
 };
 
 export const hyp3JobTypesList = Object.values(hyp3JobTypes);

@@ -1,148 +1,150 @@
 <div class="processing-options">
-  <ng-container *ngIf="hasJobType(JobTypes.RTCGamma)">
-    <div class="options-header">RTC Gamma Options</div>
+  <ng-container *ngIf="selectedJobType">
+    <ng-container *ngIf="selectedJobType.id === JobTypes.RTC_GAMMA.id">
+      <div class="options-header">RTC Gamma Options</div>
 
-    <div class="flex-field">
-      <mat-form-field>
-        <mat-label>Radiometry</mat-label>
-        <mat-select [(value)]="radiometry"
-          (selectionChange)="onSetRadiometry($event.value)">
-          <mat-option value="gamma0">gamma0</mat-option>
-          <mat-option value="sigma0">sigma0</mat-option>
-        </mat-select>
-      </mat-form-field>
+      <div class="flex-field">
+        <mat-form-field>
+          <mat-label>Radiometry</mat-label>
+          <mat-select [(value)]="radiometry"
+            (selectionChange)="onSetRadiometry($event.value)">
+            <mat-option value="gamma0">gamma0</mat-option>
+            <mat-option value="sigma0">sigma0</mat-option>
+          </mat-select>
+        </mat-form-field>
 
-      <app-option-info class="option-info--spacing" infoText="
-        Backscatter coefficient normalization, either by ground area
-        (sigma0) or illuminated area projected into the look direction (gamma0).
-        ">
-      </app-option-info>
-    </div>
-    <div class="flex-field">
-      <mat-form-field>
-        <mat-label>Scale</mat-label>
-        <mat-select [(value)]="scale"
-          (selectionChange)="onSetScale($event.value)">
-          <mat-option value="power">power</mat-option>
-          <mat-option value="amplitude">amplitude</mat-option>
-        </mat-select>
-      </mat-form-field>
+        <app-option-info class="option-info--spacing" infoText="
+          Backscatter coefficient normalization, either by ground area
+          (sigma0) or illuminated area projected into the look direction (gamma0).
+          ">
+        </app-option-info>
+      </div>
+      <div class="flex-field">
+        <mat-form-field>
+          <mat-label>Scale</mat-label>
+          <mat-select [(value)]="scale"
+            (selectionChange)="onSetScale($event.value)">
+            <mat-option value="power">power</mat-option>
+            <mat-option value="amplitude">amplitude</mat-option>
+          </mat-select>
+        </mat-form-field>
 
-      <app-option-info class="option-info--spacing" infoText="
-        Scale of output image; either power or amplitude.
-        ">
-      </app-option-info>
-    </div>
-    <div class="flex-field">
-      <mat-slide-toggle
-        (change)="onSetDemMatching($event.checked)"
-        [(ngModel)]="demMatching">
-        DEM Matching
-      </mat-slide-toggle>
+        <app-option-info class="option-info--spacing" infoText="
+          Scale of output image; either power or amplitude.
+          ">
+        </app-option-info>
+      </div>
+      <div class="flex-field">
+        <mat-slide-toggle
+          (change)="onSetDemMatching($event.checked)"
+          [(ngModel)]="demMatching">
+          DEM Matching
+        </mat-slide-toggle>
 
-      <app-option-info class="option-info--spacing" infoText="
-        Coregisters SAR data to the DEM, rather than using
-        dead reckoning based on orbit files.
-        ">
-      </app-option-info>
-    </div>
-    <div class="flex-field">
-      <mat-slide-toggle
-        (change)="onSetIncludeDem($event.checked)"
-        [(ngModel)]="includeDem">
-        Include DEM
-      </mat-slide-toggle>
+        <app-option-info class="option-info--spacing" infoText="
+          Coregisters SAR data to the DEM, rather than using
+          dead reckoning based on orbit files.
+          ">
+        </app-option-info>
+      </div>
+      <div class="flex-field">
+        <mat-slide-toggle
+          (change)="onSetIncludeDem($event.checked)"
+          [(ngModel)]="includeDem">
+          Include DEM
+        </mat-slide-toggle>
 
 
-      <app-option-info class="option-info--spacing" infoText="
-        Include the DEM file in the product package.
-        ">
-      </app-option-info>
-    </div>
-    <div class="flex-field">
-      <mat-slide-toggle
-        (change)="onSetIncludeIncMap($event.checked)"
-        [(ngModel)]="includeIncMap">
-        Include Inc. Angle Map
-      </mat-slide-toggle>
+        <app-option-info class="option-info--spacing" infoText="
+          Include the DEM file in the product package.
+          ">
+        </app-option-info>
+      </div>
+      <div class="flex-field">
+        <mat-slide-toggle
+          (change)="onSetIncludeIncMap($event.checked)"
+          [(ngModel)]="includeIncMap">
+          Include Inc. Angle Map
+        </mat-slide-toggle>
 
-      <app-option-info class="option-info--spacing" infoText="
-        Include the incidence angle map in the product package.
-        ">
-      </app-option-info>
-    </div>
-    <div class="flex-field">
-      <mat-slide-toggle
-        (change)="onSetIncludeScatteringArea($event.checked)"
-        [(ngModel)]="includeScatteringArea">
-        Include Scattering Area
-      </mat-slide-toggle>
+        <app-option-info class="option-info--spacing" infoText="
+          Include the incidence angle map in the product package.
+          ">
+        </app-option-info>
+      </div>
+      <div class="flex-field">
+        <mat-slide-toggle
+          (change)="onSetIncludeScatteringArea($event.checked)"
+          [(ngModel)]="includeScatteringArea">
+          Include Scattering Area
+        </mat-slide-toggle>
 
-      <app-option-info class="option-info--spacing" infoText="
-        Include the scattering area in the product package
-        ">
-      </app-option-info>
-    </div>
-    <div class="flex-field">
-      <mat-slide-toggle
-        (change)="onSetSpeckleFilter($event.checked)"
-        [(ngModel)]="speckleFilter">
-        Speckle Filter
-      </mat-slide-toggle>
+        <app-option-info class="option-info--spacing" infoText="
+          Include the scattering area in the product package
+          ">
+        </app-option-info>
+      </div>
+      <div class="flex-field">
+        <mat-slide-toggle
+          (change)="onSetSpeckleFilter($event.checked)"
+          [(ngModel)]="speckleFilter">
+          Speckle Filter
+        </mat-slide-toggle>
 
-      <app-option-info class="option-info--spacing" infoText="
-        Apply an Enhanced Lee speckle filter.
-        ">
-      </app-option-info>
-      <p></p>
-    </div>
-  </ng-container>
+        <app-option-info class="option-info--spacing" infoText="
+          Apply an Enhanced Lee speckle filter.
+          ">
+        </app-option-info>
+        <p></p>
+      </div>
+    </ng-container>
 
-  <ng-container *ngIf="hasJobType(JobTypes.InSarGamma)">
-    <div class="options-header">InSar Gamma Options</div>
+    <ng-container *ngIf="selectedJobType.id === JobTypes.INSAR_GAMMA.id">
+      <div class="options-header">InSar Gamma Options</div>
 
-    <div>
-      <mat-form-field>
-        <mat-label>Looks</mat-label>
-        <mat-select [(value)]="looks"
-          (selectionChange)="onSetLooks($event.value)">
-          <mat-option value="20x4">20x4</mat-option>
-          <mat-option value="10x2">10x2</mat-option>
-        </mat-select>
-      </mat-form-field>
+      <div>
+        <mat-form-field>
+          <mat-label>Looks</mat-label>
+          <mat-select [(value)]="looks"
+            (selectionChange)="onSetLooks($event.value)">
+            <mat-option value="20x4">20x4</mat-option>
+            <mat-option value="10x2">10x2</mat-option>
+          </mat-select>
+        </mat-form-field>
 
-      <app-option-info class="option-info--spacing" infoText="
-        Number of looks to take in range and azimuth.
-        ">
-      </app-option-info>
-    </div>
+        <app-option-info class="option-info--spacing" infoText="
+          Number of looks to take in range and azimuth.
+          ">
+        </app-option-info>
+      </div>
 
-    <div style="padding-bottom: 5px;">
-      <mat-slide-toggle
-        (change)="onSetIncludeLookVectors($event.checked)"
-        [(ngModel)]="includeLookVectors">
-        Include Look Vectors
-      </mat-slide-toggle>
+      <div style="padding-bottom: 5px;">
+        <mat-slide-toggle
+          (change)="onSetIncludeLookVectors($event.checked)"
+          [(ngModel)]="includeLookVectors">
+          Include Look Vectors
+        </mat-slide-toggle>
 
-      <app-option-info class="option-info--spacing" infoText="
-        Include the look vector theta and phi files in the product package
-        ">
-      </app-option-info>
-    </div>
+        <app-option-info class="option-info--spacing" infoText="
+          Include the look vector theta and phi files in the product package
+          ">
+        </app-option-info>
+      </div>
 
-    <div style="padding-bottom: 5px;">
-      <mat-slide-toggle
-        (change)="setIncludeLosDisplacement($event.checked)"
-        [(ngModel)]="includeLosDisplacement">
-        Include Los Displacement
-      </mat-slide-toggle>
+      <div style="padding-bottom: 5px;">
+        <mat-slide-toggle
+          (change)="setIncludeLosDisplacement($event.checked)"
+          [(ngModel)]="includeLosDisplacement">
+          Include Los Displacement
+        </mat-slide-toggle>
 
-      <app-option-info class="option-info--spacing" infoText="
-        Include a GeoTIFF in the product package containing displacement
-        values along the Line-Of-Sight (LOS)
-        ">
-      </app-option-info>
-      <p></p>
-    </div>
+        <app-option-info class="option-info--spacing" infoText="
+          Include a GeoTIFF in the product package containing displacement
+          values along the Line-Of-Sight (LOS)
+          ">
+        </app-option-info>
+        <p></p>
+      </div>
+    </ng-container>
   </ng-container>
 </div>
