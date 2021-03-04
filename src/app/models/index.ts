@@ -16,4 +16,6 @@ export * from './search.model';
 export * from './saved-search.model';
 export * from './unzip.model';
 export * from './critical-baseline.model';
+export * from './hyp3-job-type.model';
 export * from './hyp3.model';
+export * from './hyp3-jobs.model';

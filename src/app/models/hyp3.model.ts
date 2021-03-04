@@ -1,6 +1,7 @@
 import * as moment from 'moment';
 
 import { CMRProduct } from './cmr-product.model';
+import { Hyp3JobType } from './hyp3-job-type.model';
 
 export interface QueuedHyp3Job {
   granules: CMRProduct[];
@@ -115,11 +116,6 @@ export enum RtcGammaResolution {
 export enum RtcGammaScale {
   POWER = 'power',
   AMPLITUDE = 'amplitude'
-}
-
-export enum Hyp3JobType {
-  RTC_GAMMA = 'RTC_GAMMA',
-  INSAR_GAMMA = 'INSAR_GAMMA'
 }
 
 export enum Hyp3JobStatusCode {

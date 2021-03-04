@@ -1,0 +1,14 @@
+<mat-form-field>
+  <mat-label>{{ optionName }}</mat-label>
+  <mat-select [(value)]="value"
+    (selectionChange)="onValueChange($event.value)">
+    <mat-option *ngFor="let option of options"
+      [value]="option">
+      {{ option }}
+    </mat-option>
+  </mat-select>
+</mat-form-field>
+
+<app-option-info class="option-info--spacing"
+  [infoText]="optionInfo">
+</app-option-info>
