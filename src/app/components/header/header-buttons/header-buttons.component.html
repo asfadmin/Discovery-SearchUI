@@ -1,6 +1,7 @@
 <div *ngIf="breakpoint$ | async as breakpoint">
   <ng-container *ngIf="breakpoint > breakpoints.MOBILE">
-    <button (click)="onOpenProcessingQueue()"
+    <button
+        [matMenuTriggerFor]="onDemandQueue"
         [@tada]="qOnDemandState"
         class="spacing nav-icon-buttons" color="basic"
         matTooltip="On Demand Queue"
@@ -16,7 +17,17 @@
         </mat-icon>
       <div class="text-under faint-text">On Demand</div>
     </button>
-
+    <mat-menu #onDemandQueue="matMenu">
+      <button
+      (click)="onOpenProcessingQueue()" 
+      mat-menu-item>On Demand Queue</button>
+      <button mat-menu-item 
+      (click) = "onSetSearchTypeOnDemand()"
+      [disabled]="!isLoggedIn">Submitted Products</button>
+      <button mat-menu-item>
+        <a target="_blank" href="https://hyp3-docs.asf.alaska.edu/">Help</a>
+      </button>
+    </mat-menu>
     <button
       (click)="onOpenDownloadQueue()"
       [@tada]="qProdState"
