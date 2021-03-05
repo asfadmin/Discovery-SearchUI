@@ -3,7 +3,7 @@ import { ScenesService } from '@services';
 import { SubSink } from 'subsink';
 
 import * as models from '@models';
-import * as filtersStore from '@store/filters'
+import * as filtersStore from '@store/filters';
 import { AppState } from '@store';
 import { Store } from '@ngrx/store';
 
