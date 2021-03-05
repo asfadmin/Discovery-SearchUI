@@ -1,5 +1,6 @@
-<p>job-product-name-selector works!</p>
 <mat-form-field class="example-full-width">
-    <mat-label>Product Name</mat-label>
-    <input matInput placeholder="S1A..." value="">
+    <mat-label>Product/Source Granule</mat-label>
+    <input matInput placeholder="S1A..." 
+    (input)="onFilterProductName($event.target.value)"
+    value="">
   </mat-form-field>

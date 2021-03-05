@@ -33,7 +33,8 @@ export class ScenesService {
   ) { }
 
   public products$(): Observable<CMRProduct[]> {
-    return this.hideS1Raw$(
+    return
+      this.hideS1Raw$(
       this.hideExpired$(
       this.projectNameFilter$(
       this.jobStatusFilter$(
@@ -247,7 +248,6 @@ export class ScenesService {
             return scenes;
           }
 
-
           const range = {
             start: moment(dateRange.start),
             end: moment(dateRange.end)
@@ -348,7 +348,14 @@ export class ScenesService {
     ).pipe(
       map( ([scenes, searchType, productNameFilter]) => {
         if (searchType === SearchType.CUSTOM_PRODUCTS && !!productNameFilter) {
-          return scenes.filter(scene => scene.name.includes(productNameFilter));
+          return scenes.filter(scene => {
+              const fileName = scene.metadata.fileName.toLowerCase();
+              const sourceGranule = scene.name.toLowerCase();
+
+              return fileName.includes(productNameFilter.toLowerCase())
+              || sourceGranule.includes(productNameFilter.toLowerCase());
+            }
+          );
         }
 
         return scenes;
