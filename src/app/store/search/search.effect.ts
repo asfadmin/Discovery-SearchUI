@@ -71,6 +71,7 @@ export class SearchEffects {
       filtersStore.FiltersActionType.CLEAR_SELECTED_MISSION,
       filtersStore.FiltersActionType.CLEAR_TEMPORAL_RANGE,
       filtersStore.FiltersActionType.CLEAR_PERPENDICULAR_RANGE,
+      filtersStore.FiltersActionType.CLEAR_PRODUCT_NAME_FILTER,
       scenesStore.ScenesActionType.CLEAR_BASELINE,
     ),
     map(_ => new CancelSearch())

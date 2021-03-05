@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { saveAs } from 'file-saver';
 import * as moment from 'moment';
 
@@ -26,7 +26,7 @@ import { AsfApiOutputFormat } from '@models';
   templateUrl: './scenes-list-header.component.html',
   styleUrls: ['./scenes-list-header.component.scss']
 })
-export class ScenesListHeaderComponent implements OnInit {
+export class ScenesListHeaderComponent implements OnInit, OnDestroy {
   public totalResultCount$ = this.store$.select(searchStore.getTotalResultCount);
   public numberOfScenes$ = this.store$.select(scenesStore.getNumberOfScenes);
   public numberOfProducts$ = this.store$.select(scenesStore.getNumberOfProducts);
@@ -332,5 +332,9 @@ export class ScenesListHeaderComponent implements OnInit {
     const expiration = moment.duration(expiration_time.diff(current));
 
     return Math.floor(expiration.asDays());
+  }
+
+  ngOnDestroy(): void {
+    this.subs.unsubscribe();
   }
 }

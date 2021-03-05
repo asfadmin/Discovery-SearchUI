@@ -9,7 +9,7 @@ import { ProjectNameSelectorModule } from '@components/shared/selectors/project-
 import { CustomProductsFiltersComponent } from './custom-products-filters.component';
 import { JobStatusSelectorModule } from '@components/shared/selectors/job-status-selector';
 import { DateSelectorModule } from '@components/shared/selectors/date-selector';
-
+import { JobProductNameSelectorModule } from '@components/shared/selectors/job-product-name-selector';
 
 @NgModule({
   declarations: [CustomProductsFiltersComponent],
@@ -21,6 +21,7 @@ import { DateSelectorModule } from '@components/shared/selectors/date-selector';
     SearchTypeSelectorModule,
     ProjectNameSelectorModule,
     JobStatusSelectorModule,
+    JobProductNameSelectorModule
   ],
   exports: [
     CustomProductsFiltersComponent
