@@ -12,7 +12,7 @@ import {
 } from '@store/scenes/scenes.reducer';
 import {
   getTemporalRange, getPerpendicularRange, getDateRange,
-  getProductTypes, getProjectName, getJobStatuses
+  getProductTypes, getProjectName, getJobStatuses, getProductNameFilter
 } from '@store/filters/filters.reducer';
 import { getShowS1RawData, getShowExpiredData } from '@store/ui/ui.reducer';
 import { getSearchType } from '@store/search/search.reducer';
@@ -33,7 +33,8 @@ export class ScenesService {
   ) { }
 
   public products$(): Observable<CMRProduct[]> {
-    return this.hideS1Raw$(
+    return;
+      this.hideS1Raw$(
       this.hideExpired$(
       this.projectNameFilter$(
       this.jobStatusFilter$(
@@ -45,6 +46,7 @@ export class ScenesService {
 
   public scenes$(): Observable<CMRProduct[]> {
     return (
+      this.filterByProductName$(
       this.projectNameFilter$(
       this.hideExpired$(
       this.jobStatusFilter$(
@@ -52,7 +54,7 @@ export class ScenesService {
       this.filterBaselineValues$(
       this.filterByDate$(
           this.store$.select(getScenes)
-    )))))));
+    ))))))));
   }
 
   public matchHyp3Jobs$(scenes$: Observable<CMRProduct[]>): Observable<Hyp3JobWithScene[]> {
@@ -246,7 +248,6 @@ export class ScenesService {
             return scenes;
           }
 
-
           const range = {
             start: moment(dateRange.start),
             end: moment(dateRange.end)
@@ -336,5 +337,30 @@ export class ScenesService {
     const expiration = moment.duration(expiration_time.diff(current));
 
     return Math.floor(expiration.asDays());
+  }
+
+  private filterByProductName$(scenes$: Observable<CMRProduct[]>): Observable<CMRProduct[]> {
+    return combineLatest([
+      scenes$,
+      this.store$.select(getSearchType),
+      this.store$.select(getProductNameFilter),
+    ]
+    ).pipe(
+      map( ([scenes, searchType, productNameFilter]) => {
+        if (searchType === SearchType.CUSTOM_PRODUCTS && !!productNameFilter) {
+          return scenes.filter(scene => {
+              const fileName = scene.metadata.fileName.toLowerCase();
+              const sourceGranule = scene.name.toLowerCase();
+
+              return fileName.includes(productNameFilter.toLowerCase())
+              || sourceGranule.includes(productNameFilter.toLowerCase());
+            }
+          );
+        }
+
+        return scenes;
+      }
+      )
+    );
   }
 }

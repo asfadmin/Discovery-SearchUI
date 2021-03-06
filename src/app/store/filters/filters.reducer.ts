@@ -31,6 +31,7 @@ export interface FiltersState {
 
   maxResults: number;
   projectName: string;
+  productFilterName: string;
 }
 
 
@@ -79,6 +80,7 @@ export const initState: FiltersState = {
 
   maxResults: 250,
   projectName: null,
+  productFilterName: null
 };
 
 
@@ -580,7 +582,18 @@ export function filtersReducer(state = initState, action: FiltersActions): Filte
         projectName: action.payload
       };
     }
-
+    case FiltersActionType.SET_PRODUCT_NAME_FILTER: {
+      return {
+        ...state,
+        productFilterName: action.payload
+      };
+    }
+    case FiltersActionType.CLEAR_PRODUCT_NAME_FILTER: {
+      return {
+        ...state,
+        productFilterName: null
+      };
+    }
     default: {
       return state;
     }
@@ -781,4 +794,9 @@ export const getProjectName = createSelector(
 export const getJobStatuses = createSelector(
   getFiltersState,
   (state: FiltersState) => state.jobStatuses
+);
+
+export const getProductNameFilter = createSelector(
+  getFiltersState,
+  (state: FiltersState) => state.productFilterName
 );
