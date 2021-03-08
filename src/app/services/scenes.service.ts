@@ -33,7 +33,7 @@ export class ScenesService {
   ) { }
 
   public products$(): Observable<CMRProduct[]> {
-    return
+    return (
       this.hideS1Raw$(
       this.hideExpired$(
       this.projectNameFilter$(
@@ -41,7 +41,8 @@ export class ScenesService {
       this.filterBaselineValues$(
       this.filterByDate$(
         this.store$.select(getAllProducts)
-      ))))));
+      ))))))
+    );
   }
 
   public scenes$(): Observable<CMRProduct[]> {
