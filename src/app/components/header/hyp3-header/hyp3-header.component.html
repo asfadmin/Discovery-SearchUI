@@ -10,11 +10,14 @@
       </app-project-name-selector>
 
       <div
-        *ngIf="breakpoint > breakpoints.SMALL"
-        fxFlex="300px"
-        class="breadcrumb">
-        <app-date-selector></app-date-selector>
+      *ngIf="breakpoint > breakpoints.SMALL"
+      fxFlex="300px"
+      class="breadcrumb">
+      <app-date-selector></app-date-selector>
       </div>
+
+      <app-job-product-name-selector *ngIf="breakpoint === breakpoints.FULL" class="breadcrumb">
+      </app-job-product-name-selector>
 
       <app-job-status-selector *ngIf="breakpoint === breakpoints.FULL" class="breadcrumb">
       </app-job-status-selector>
