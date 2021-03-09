@@ -32,6 +32,7 @@ import { PipesModule } from '@pipes';
 import { SearchTypeSelectorModule } from '@components/shared/selectors/search-type-selector';
 import { ProjectNameSelectorModule } from '@components/shared/selectors/project-name-selector';
 import { JobStatusSelectorModule } from '@components/shared/selectors/job-status-selector';
+import { JobProductNameSelectorModule } from '@components/shared/selectors/job-product-name-selector';
 
 import { LogoModule } from '@components/header/logo/logo.module';
 import { DatasetHeaderComponent } from './dataset-header/dataset-header.component';
@@ -42,7 +43,6 @@ import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { BaselineHeaderComponent } from './baseline-header/baseline-header.component';
 import { MasterSceneSelectorModule } from '@components/shared/selectors/master-scene-selector';
 import { Hyp3HeaderComponent } from './hyp3-header/hyp3-header.component';
-
 
 @NgModule({
   declarations: [
@@ -86,6 +86,7 @@ import { Hyp3HeaderComponent } from './hyp3-header/hyp3-header.component';
     LogoModule,
     ProjectNameSelectorModule,
     JobStatusSelectorModule,
+    JobProductNameSelectorModule
   ],
   exports: [
     HeaderComponent

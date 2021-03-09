@@ -196,14 +196,14 @@
           </mat-menu>
 
           <mat-menu #addAllRTCDemand="matMenu">
-            <button *ngIf="slc(products).length > 0" (click)="queueAllOnDemand(slc(products))" mat-menu-item>
-              Add {{ slc(products).length }} SLC jobs
+            <button *ngIf="hyp3able(slc(products)).length > 0" (click)="queueAllOnDemand(slc(products))" mat-menu-item>
+              Add {{ hyp3able(slc(products)).length }} SLC jobs
             </button>
-            <button *ngIf="grd_hd(products).length > 0" (click)="queueAllOnDemand(grd_hd(products))" mat-menu-item>
-              Add {{ grd_hd(products).length }} GRD-HD jobs
+            <button *ngIf="hyp3able(grd_hd(products)).length > 0" (click)="queueAllOnDemand(grd_hd(products))" mat-menu-item>
+              Add {{ hyp3able(grd_hd(products)).length }} GRD-HD jobs
             </button>
-            <button *ngIf="grd_hs(products).length > 0" (click)="queueAllOnDemand(grd_hs(products))" mat-menu-item>
-              Add {{ grd_hs(products).length }} GRD-HS jobs
+            <button *ngIf="hyp3able(grd_hs(products)).length > 0" (click)="queueAllOnDemand(grd_hs(products))" mat-menu-item>
+              Add {{ hyp3able(grd_hs(products)).length }} GRD-HS jobs
             </button>
           </mat-menu>
 
