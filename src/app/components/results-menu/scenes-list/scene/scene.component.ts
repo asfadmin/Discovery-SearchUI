@@ -81,7 +81,8 @@ export class SceneComponent implements OnInit {
       (
         product.metadata.productType === 'GRD_HD' ||
         product.metadata.productType === 'GRD-HS' ||
-        product.metadata.productType === 'SLC'
+        product.metadata.productType === 'SLC' &&
+        !product.metadata.polarization.includes('Dual')
       )
     );
   }
