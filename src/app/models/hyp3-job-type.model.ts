@@ -5,6 +5,7 @@ export interface Hyp3JobType {
   name: string;
   numProducts: number;
   productTypes: Hyp3JobProductType[];
+  options: Hyp3JobOption[];
 }
 
 export interface Hyp3JobProductType {
@@ -14,3 +15,15 @@ export interface Hyp3JobProductType {
   polarizations: string[];
 }
 
+export interface Hyp3JobOption {
+  name: string;
+  apiName: string;
+  type: JobOptionType;
+  info: string;
+  options?: string[];
+}
+
+export enum JobOptionType {
+  DROPDOWN = 'DROPDOWN',
+  TOGGLE = 'TOGGLE'
+}

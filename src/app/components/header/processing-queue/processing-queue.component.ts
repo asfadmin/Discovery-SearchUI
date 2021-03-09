@@ -37,6 +37,7 @@ export class ProcessingQueueComponent implements OnInit {
   public areJobsLoading = false;
   public isQueueSubmitProcessing = false;
   public previousQueue: any[] | null = null;
+  public isReviewingQueue = false;
 
   public breakpoint: models.Breakpoints;
   public breakpoints = models.Breakpoints;
@@ -49,6 +50,7 @@ export class ProcessingQueueComponent implements OnInit {
   public hyp3JobTypes = models.hyp3JobTypes;
   public hyp3JobTypesList: models.Hyp3JobType[];
   public selectedJobTypeId: string | null = null;
+  public jobTypesWithQueued = [];
 
   public style: object = {};
   public dlWidth = 1000;
@@ -80,13 +82,24 @@ export class ProcessingQueueComponent implements OnInit {
       this.hyp3JobTypesList = <any>jobTypes;
 
       if (!this.selectedJobTypeId) {
-        this.selectedJobTypeId = !!this.hyp3JobTypesList[0] ? this.hyp3JobTypesList[0].id : null;
+        this.selectedJobTypeId = !!this.hyp3JobTypesList[0] ?
+          this.hyp3JobTypesList[0].id : null;
       }
 
       this.allJobs = jobs;
       this.jobs = jobs.filter(
         job => job.job_type.id === this.selectedJobTypeId
       );
+
+      this.jobTypesWithQueued = jobTypes.map((jobType) => {
+        return {
+          jobType: jobType,
+          selected: true,
+          jobs: this.allJobs.filter(
+            job => job.job_type.id === jobType.id
+          )
+        };
+      });
     });
 
     this.store$.select(hyp3Store.getHyp3User).subscribe(
@@ -138,7 +151,29 @@ export class ProcessingQueueComponent implements OnInit {
     return `${current.diff(expiration_time, 'days')} days`;
   }
 
+  public onToggleJobType(tabQueue): void {
+    this.jobTypesWithQueued = this.jobTypesWithQueued.map(
+      tab => {
+        if (tab.jobType.id === tabQueue.jobType.id) {
+          return {
+            jobType: tab.jobType,
+            selected: !tab.selected,
+            jobs: tab.jobs
+          };
+        } else {
+          return tab;
+        }
+      }
+    );
+  }
+
   public onSubmitQueue(): void {
+    if (!this.isReviewingQueue) {
+      this.isReviewingQueue = true;
+      return;
+    }
+
+    this.isReviewingQueue = false;
     const options = {
       [models.hyp3JobTypes.RTC_GAMMA.id]: {
         dem_matching: this.processingOptions.demMatching,
@@ -156,7 +191,12 @@ export class ProcessingQueueComponent implements OnInit {
       }
     };
 
-    const hyp3JobsBatch = this.allJobs.map(job => {
+    const jobs = this.jobTypesWithQueued
+      .filter(jobType => jobType.selected)
+      .map(jobType => jobType.jobs)
+      .reduce((acc, val) => acc.concat(val), []);
+
+    const hyp3JobsBatch = jobs.map(job => {
       const jobOptions: any = {
         job_type: job.job_type.id,
         job_parameters: {
@@ -237,8 +277,14 @@ export class ProcessingQueueComponent implements OnInit {
     this.dlHeight = event.newHeight;
   }
 
+  public amountSelected(jobTypes): number {
+    return jobTypes
+      .filter((jobType) => jobType.selected)
+      .map(jobType => jobType.jobs.length)
+      .reduce((a, b) => a + b, 0);
+  }
+
   public onCloseDialog() {
     this.dialogRef.close();
   }
-
 }
