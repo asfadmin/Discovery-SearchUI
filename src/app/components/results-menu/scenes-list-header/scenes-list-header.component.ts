@@ -193,8 +193,7 @@ export class ScenesListHeaderComponent implements OnInit, OnDestroy {
   }
 
   public queueAllOnDemand(products: models.CMRProduct[]): void {
-    const jobs = products.map(
-      product => ({
+    const jobs = this.hyp3able(products).map( product => ({
         granules: [ product ],
         job_type: models.hyp3JobTypes.RTC_GAMMA
       })
@@ -207,27 +206,27 @@ export class ScenesListHeaderComponent implements OnInit, OnDestroy {
     return products.filter(product => this.isDownloadable(product));
   }
 
+  public hyp3able(products: models.CMRProduct[]): models.CMRProduct[] {
+    return products.filter(product => !product.metadata.polarization.includes('Dual'));
+  }
+
   public slc(products: models.CMRProduct[]): models.CMRProduct[] {
     return products
       .filter(product => product.metadata.beamMode === 'IW')
-      .filter(product => product.metadata.productType === 'SLC')
-      .filter(product => !product.metadata.polarization.includes('Dual'));
+      .filter(product => product.metadata.productType === 'SLC');
   }
 
   public grd_hd(products: models.CMRProduct[]): models.CMRProduct[] {
     return products
       .filter(product => product.metadata.beamMode === 'IW')
-      .filter(product => product.metadata.productType === 'GRD_HD')
-      .filter(product => !product.metadata.polarization.includes('Dual'));
+      .filter(product => product.metadata.productType === 'GRD_HD');
   }
 
   public grd_hs(products: models.CMRProduct[]): models.CMRProduct[] {
     return products
       .filter(product => product.metadata.beamMode === 'IW')
-      .filter(product => product.metadata.productType === 'GRD_HS')
-      .filter(product => !product.metadata.polarization.includes('Dual'));
+      .filter(product => product.metadata.productType === 'GRD_HS');
   }
-
 
   public queueSBASProducts(products: models.CMRProduct[]): void {
     this.store$.dispatch(new queueStore.AddItems(products));
