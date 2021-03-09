@@ -1,9 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { ScenesService } from '@services';
 import { SubSink } from 'subsink';
 
-import * as models from '@models';
-import * as filtersStore from '@store/filters';
+import * as filtersStore from '@store/filters'
 import { AppState } from '@store';
 import { Store } from '@ngrx/store';
 
@@ -14,22 +12,19 @@ import { Store } from '@ngrx/store';
 })
 export class JobProductNameSelectorComponent implements OnInit, OnDestroy {
 
-  public jobs: models.CMRProduct[];
-
+  public productNameFilter: string;
   private subs = new SubSink();
 
   constructor(
-    private store$: Store<AppState>,
-    private scenesService: ScenesService,
+    private store$: Store<AppState>
   ) { }
 
   ngOnInit(): void {
     this.subs.add(
-      this.scenesService.scenes$().subscribe(
-        jobs => this.jobs = jobs
+      this.store$.select(filtersStore.getProductNameFilter).subscribe(
+        productNameFilter => this.productNameFilter = productNameFilter
       )
     );
-
   }
 
   public onFilterProductName(productName: string): void {
