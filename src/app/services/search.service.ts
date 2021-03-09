@@ -52,6 +52,7 @@ export class SearchService {
       this.store$.dispatch(new filterStore.SetProjectName(''));
       this.store$.dispatch(new filterStore.SetJobStatuses([]));
       this.store$.dispatch(new filterStore.ClearDateRange());
+      this.store$.dispatch(new filterStore.SetProductNameFilter(''));
     }
   }
 

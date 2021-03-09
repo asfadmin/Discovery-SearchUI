@@ -2,5 +2,5 @@
     <mat-label>Product/Source Granule</mat-label>
     <input matInput placeholder="S1A..." 
     (input)="onFilterProductName($event.target.value)"
-    value="">
+    [value]="productNameFilter">
   </mat-form-field>
