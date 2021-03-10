@@ -352,18 +352,25 @@ export class ScenesService {
           let fileIds: string[] = [];
 
           if (productNameFilter.includes(',')) {
-            fileIds = productNameFilter.split(',');
+            fileIds = productNameFilter.toLowerCase()
+            .replace(' ', '')
+            .split(',')
+            .map(id => id.split('.')[0]);
+          } else {
+            fileIds.push(productNameFilter.replace(/\s+/g, '').toLowerCase().split('.')[0]);
           }
 
           return scenes.filter(scene => {
-              const fileName = scene.metadata.fileName.toLowerCase();
+              const fileName = scene.metadata.fileName.toLowerCase().split('.')[0];
               const sourceGranule = scene.name.toLowerCase();
 
+              for (const id of fileIds) {
+                if (fileName.includes(id) || sourceGranule.includes(id)) {
+                  return true;
+                }
+              }
 
-
-              return fileName.includes(productNameFilter.toLowerCase())
-              || sourceGranule.includes(productNameFilter.toLowerCase())
-              || fileIds.includes(scene.id);
+              return fileIds.includes(scene.id) || fileIds.includes(fileName);
             }
           );
         }
