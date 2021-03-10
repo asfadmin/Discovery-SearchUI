@@ -349,12 +349,21 @@ export class ScenesService {
     ).pipe(
       map( ([scenes, searchType, productNameFilter]) => {
         if (searchType === SearchType.CUSTOM_PRODUCTS && !!productNameFilter) {
+          let fileIds: string[] = [];
+
+          if (productNameFilter.includes(',')) {
+            fileIds = productNameFilter.split(',');
+          }
+
           return scenes.filter(scene => {
               const fileName = scene.metadata.fileName.toLowerCase();
               const sourceGranule = scene.name.toLowerCase();
 
+
+
               return fileName.includes(productNameFilter.toLowerCase())
-              || sourceGranule.includes(productNameFilter.toLowerCase());
+              || sourceGranule.includes(productNameFilter.toLowerCase())
+              || fileIds.includes(scene.id);
             }
           );
         }
