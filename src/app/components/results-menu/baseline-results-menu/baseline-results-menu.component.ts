@@ -166,8 +166,7 @@ export class BaselineResultsMenuComponent implements OnInit, OnDestroy {
     }
 
     public queueAllOnDemand(products: models.CMRProduct[]): void {
-      const jobs = products.filter(product => !product.metadata.polarization.includes('Dual')
-      ).map(
+      const jobs = this.hyp3able(products).map(
         product => ({
           granules: [ product ],
           job_type: models.Hyp3JobType.RTC_GAMMA
