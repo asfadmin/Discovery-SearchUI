@@ -145,11 +145,11 @@
 
         <mat-menu #addAllRTCDemand="matMenu">
           <div *ngIf="allProducts$ | async as products">
-          <button *ngIf="slc(products).length > 0" (click)="queueAllOnDemand(slc(products))" mat-menu-item>
-            Add {{ slc(products).length }} SLC jobs
+          <button *ngIf="hyp3able(slc(products)).length > 0" (click)="queueAllOnDemand(slc(products))" mat-menu-item>
+            Add {{ hyp3able(slc(products)).length }} SLC jobs
           </button>
-          <button *ngIf="grd(products).length > 0" (click)="queueAllOnDemand(grd(products))" mat-menu-item>
-            Add {{ grd(products).length }} GRD-HD jobs
+          <button *ngIf="hyp3able(grd(products)).length > 0" (click)="queueAllOnDemand(grd(products))" mat-menu-item>
+            Add {{ hyp3able(grd(products)).length }} GRD-HD jobs
           </button>
         </div>
         </mat-menu>

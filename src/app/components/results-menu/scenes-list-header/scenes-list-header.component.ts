@@ -194,8 +194,7 @@ export class ScenesListHeaderComponent implements OnInit, OnDestroy {
   }
 
   public queueAllOnDemand(products: models.CMRProduct[]): void {
-    const jobs = products.map(
-      product => ({
+    const jobs = this.hyp3able(products).map( product => ({
         granules: [ product ],
         job_type: models.Hyp3JobType.RTC_GAMMA
       })
@@ -206,6 +205,10 @@ export class ScenesListHeaderComponent implements OnInit, OnDestroy {
 
   public downloadable(products: models.CMRProduct[]): models.CMRProduct[] {
     return products.filter(product => this.isDownloadable(product));
+  }
+
+  public hyp3able(products: models.CMRProduct[]): models.CMRProduct[] {
+    return products.filter(product => !product.metadata.polarization.includes('Dual'));
   }
 
   public slc(products: models.CMRProduct[]): models.CMRProduct[] {
@@ -225,7 +228,6 @@ export class ScenesListHeaderComponent implements OnInit, OnDestroy {
       .filter(product => product.metadata.beamMode === 'IW')
       .filter(product => product.metadata.productType === 'GRD_HS');
   }
-
 
   public queueSBASProducts(products: models.CMRProduct[]): void {
     this.store$.dispatch(new queueStore.AddItems(products));
