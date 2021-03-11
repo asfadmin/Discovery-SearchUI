@@ -155,7 +155,7 @@ export class ProcessingQueueComponent implements OnInit {
   }
 
   public onReviewQueue() {
-    this.dialog.open(ConfirmationComponent, {
+    const confirmationRef = this.dialog.open(ConfirmationComponent, {
       width: '600px',
       height: '400px',
       maxWidth: '100%',
@@ -163,7 +163,7 @@ export class ProcessingQueueComponent implements OnInit {
       data: this.jobTypesWithQueued
     });
 
-    this.dialogRef.afterClosed().subscribe(
+    confirmationRef.afterClosed().subscribe(
       jobTypesWithQueued => {
         if (!jobTypesWithQueued) {
           return;

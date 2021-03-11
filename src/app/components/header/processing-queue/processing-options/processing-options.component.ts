@@ -46,10 +46,7 @@ export class ProcessingOptionsComponent implements OnInit {
       ...this.optionValues,
       [apiName]: value
     };
-    this.updateProcessingOptions();
-  }
 
-  private updateProcessingOptions(): void {
     this.store$.dispatch(new hyp3Store.SetProcessingOptions({
       ...this.optionValues
     }));
