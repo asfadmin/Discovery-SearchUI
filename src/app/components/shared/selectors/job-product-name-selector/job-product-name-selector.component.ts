@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, Input } from '@angular/core';
 import { SubSink } from 'subsink';
 
 import * as filtersStore from '@store/filters'
@@ -11,7 +11,7 @@ import { Store } from '@ngrx/store';
   styleUrls: ['./job-product-name-selector.component.scss']
 })
 export class JobProductNameSelectorComponent implements OnInit, OnDestroy {
-
+  @Input() headerView: boolean;
   public productNameFilter: string;
   private subs = new SubSink();
 
