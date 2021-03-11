@@ -347,14 +347,42 @@ export class ScenesService {
       this.store$.select(getProductNameFilter),
     ]
     ).pipe(
-      map( ([scenes, searchType, productNameFilter]) => {
+      map(([scenes, searchType, productNameFilter]) => {
         if (searchType === SearchType.CUSTOM_PRODUCTS && !!productNameFilter) {
+          let fileIds: string[] = [];
+
+          if (productNameFilter.includes(',')) {
+            fileIds = productNameFilter.split(',');
+          } else {
+            fileIds.push(productNameFilter.split('.')[0]);
+          }
+
+          fileIds = fileIds
+            .map(id =>
+                id.replace(/\s+/g, '')
+                .toLowerCase()
+                .trim()
+                .split('.')[0]
+              )
+            .filter(id => id.length > 0);
+
+          const IdMap = new Map(fileIds.map(id => [id, true]));
+
           return scenes.filter(scene => {
-              const fileName = scene.metadata.fileName.toLowerCase();
+              const fileName = scene.metadata.fileName.toLowerCase().split('.')[0];
               const sourceGranule = scene.name.toLowerCase();
 
-              return fileName.includes(productNameFilter.toLowerCase())
-              || sourceGranule.includes(productNameFilter.toLowerCase());
+              if (IdMap.get(fileName) || IdMap.get(sourceGranule) || IdMap.get(scene.id)) {
+                return true;
+              }
+
+              for (const id of fileIds) {
+                if (fileName.includes(id) || sourceGranule.includes(id)) {
+                  return true;
+                }
+              }
+
+              return false;
             }
           );
         }

@@ -799,4 +799,4 @@ export const getJobStatuses = createSelector(
 export const getProductNameFilter = createSelector(
   getFiltersState,
   (state: FiltersState) => state.productFilterName
-)
+);

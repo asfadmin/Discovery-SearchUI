@@ -1,6 +1,10 @@
-<mat-form-field class="example-full-width">
-    <mat-label>Product/Source Granule</mat-label>
-    <input matInput placeholder="S1A..." 
+<mat-form-field>
+    <mat-label>Product/Source Scene</mat-label>
+    <textarea *ngIf="!headerView" matInput placeholder="S1A..." 
     (input)="onFilterProductName($event.target.value)"
-    value="">
-  </mat-form-field>
+    [value]="productNameFilter"
+    [rows]="3"></textarea>
+    <input *ngIf="headerView" matInput placeholder="S1A..." 
+    (input)="onFilterProductName($event.target.value)"
+    [value]="productNameFilter">  
+</mat-form-field>
