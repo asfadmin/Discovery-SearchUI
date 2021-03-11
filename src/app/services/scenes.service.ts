@@ -369,10 +369,10 @@ export class ScenesService {
               const fileName = scene.metadata.fileName.toLowerCase().split('.')[0];
               const sourceGranule = scene.name.toLowerCase();
 
-              return fileIds.some(id => fileName.includes(id) || sourceGranule.includes(id)) 
-              || fileIds.includes(fileName) 
-              || fileIds.includes(sourceGranule) 
-              || fileIds.includes(scene.id)
+              return fileIds.some(id => fileName.includes(id) || sourceGranule.includes(id))
+              || fileIds.includes(fileName)
+              || fileIds.includes(sourceGranule)
+              || fileIds.includes(scene.id);
             }
           );
         }
