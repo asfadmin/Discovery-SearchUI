@@ -1,0 +1,15 @@
+<div>
+  <h1> Review <button mat-button (click)="onCancelQueue()">X</button> </h1>
+
+  <div *ngFor="let tabQueue of jobTypesWithQueued">
+    <mat-selection-list>
+      <mat-list-option (click)="onToggleJobType(tabQueue)" [selected]="tabQueue.selected">
+        {{ tabQueue.jobType.name }} ({{tabQueue.jobs.length}})
+      </mat-list-option>
+    </mat-selection-list>
+    <p></p>
+  </div>
+
+  <button mat-button (click)="onCancelQueue()">Cancel</button>
+  <button mat-button (click)="onSubmitQueue()">Submit {{ amountSelected(jobTypesWithQueued) }}</button>
+</div>

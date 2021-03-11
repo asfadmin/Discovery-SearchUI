@@ -92,6 +92,7 @@ export interface Hyp3ProcessingOptions {
   resolution?: RtcGammaResolution;
   scale?: RtcGammaScale;
   speckleFilter?: boolean;
+  includeRGB?: boolean;
 
   // Hyp3InSarProcessingOptions
   includeLookVectors?: boolean;

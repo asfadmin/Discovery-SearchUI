@@ -1,8 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { MatDialogRef } from '@angular/material/dialog';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatBottomSheet } from '@angular/material/bottom-sheet';
+
 import { QueueSubmitComponent } from './queue-submit/queue-submit.component';
+import { ConfirmationComponent } from './confirmation/confirmation.component';
 
 import { Store } from '@ngrx/store';
 import { AppState } from '@store';
@@ -37,7 +39,6 @@ export class ProcessingQueueComponent implements OnInit {
   public areJobsLoading = false;
   public isQueueSubmitProcessing = false;
   public previousQueue: any[] | null = null;
-  public isReviewingQueue = false;
 
   public breakpoint: models.Breakpoints;
   public breakpoints = models.Breakpoints;
@@ -59,12 +60,14 @@ export class ProcessingQueueComponent implements OnInit {
 
   constructor(
     public authService: services.AuthService,
+    public dialog: MatDialog,
     private dialogRef: MatDialogRef<ProcessingQueueComponent>,
     private snackBar: MatSnackBar,
     private store$: Store<AppState>,
     private hyp3: services.Hyp3Service,
     private screenSize: services.ScreenSizeService,
-    private bottomSheet: MatBottomSheet
+    private bottomSheet: MatBottomSheet,
+
   ) { }
 
   ngOnInit(): void {
@@ -151,29 +154,27 @@ export class ProcessingQueueComponent implements OnInit {
     return `${current.diff(expiration_time, 'days')} days`;
   }
 
-  public onToggleJobType(tabQueue): void {
-    this.jobTypesWithQueued = this.jobTypesWithQueued.map(
-      tab => {
-        if (tab.jobType.id === tabQueue.jobType.id) {
-          return {
-            jobType: tab.jobType,
-            selected: !tab.selected,
-            jobs: tab.jobs
-          };
-        } else {
-          return tab;
+  public onReviewQueue() {
+    this.dialog.open(ConfirmationComponent, {
+      width: '600px',
+      height: '400px',
+      maxWidth: '100%',
+      maxHeight: '100%',
+      data: this.jobTypesWithQueued
+    });
+
+    this.dialogRef.afterClosed().subscribe(
+      jobTypesWithQueued => {
+        if (!jobTypesWithQueued) {
+          return;
         }
+
+        this.onSubmitQueue(jobTypesWithQueued);
       }
     );
   }
 
-  public onSubmitQueue(): void {
-    if (!this.isReviewingQueue) {
-      this.isReviewingQueue = true;
-      return;
-    }
-
-    this.isReviewingQueue = false;
+  public onSubmitQueue(jobTypesWithQueued): void {
     const options = {
       [models.hyp3JobTypes.RTC_GAMMA.id]: {
         dem_matching: this.processingOptions.demMatching,
@@ -183,6 +184,7 @@ export class ProcessingQueueComponent implements OnInit {
         radiometry: this.processingOptions.radiometry,
         scale: this.processingOptions.scale,
         speckle_filter: this.processingOptions.speckleFilter,
+        include_rgb: this.processingOptions.includeRGB,
       },
       [models.hyp3JobTypes.INSAR_GAMMA.id]: {
         include_look_vectors: this.processingOptions.includeLookVectors,
@@ -191,7 +193,7 @@ export class ProcessingQueueComponent implements OnInit {
       }
     };
 
-    const jobs = this.jobTypesWithQueued
+    const jobs = jobTypesWithQueued
       .filter(jobType => jobType.selected)
       .map(jobType => jobType.jobs)
       .reduce((acc, val) => acc.concat(val), []);
@@ -275,13 +277,6 @@ export class ProcessingQueueComponent implements OnInit {
   public onResized(event: ResizedEvent) {
     this.dlWidth = event.newWidth;
     this.dlHeight = event.newHeight;
-  }
-
-  public amountSelected(jobTypes): number {
-    return jobTypes
-      .filter((jobType) => jobType.selected)
-      .map(jobType => jobType.jobs.length)
-      .reduce((a, b) => a + b, 0);
   }
 
   public onCloseDialog() {

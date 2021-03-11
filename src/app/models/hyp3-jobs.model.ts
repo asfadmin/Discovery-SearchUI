@@ -54,6 +54,14 @@ export const RtcGammaJobType: Hyp3JobType = {
     type: JobOptionType.TOGGLE,
     info: `Include the scattering area in the product package.`
   }, {
+    name: 'Include RGB',
+    apiName: 'includeRGB',
+    type: JobOptionType.TOGGLE,
+    info: `
+      Include a false-color RGB decomposition in the product
+      package for dual-pol granules (ignored for single-pol granules)
+    `
+  }, {
     name: 'Speckle Filter',
     apiName: 'speckleFilter',
     type: JobOptionType.TOGGLE,
