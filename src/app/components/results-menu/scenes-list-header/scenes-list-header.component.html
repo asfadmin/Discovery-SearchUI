@@ -193,6 +193,9 @@
             <button [matMenuTriggerFor]="addAllRTCDemand" mat-menu-item>
               RTC Gamma
             </button>
+            <button [matMenuTriggerFor]="addAllInSarDemand" mat-menu-item>
+              InSar Gamma
+            </button>
           </mat-menu>
 
           <mat-menu #addAllRTCDemand="matMenu">
@@ -204,6 +207,12 @@
             </button>
             <button *ngIf="hyp3able(grd_hs(products)).length > 0" (click)="queueAllOnDemand(grd_hs(products))" mat-menu-item>
               Add {{ hyp3able(grd_hs(products)).length }} GRD-HS jobs
+            </button>
+          </mat-menu>
+
+          <mat-menu #addAllInSarDemand="matMenu">
+            <button *ngIf="hyp3able(slc(products)).length > 0" (click)="queueAllOnDemand(slc(products))" mat-menu-item>
+              Add {{ hyp3able(slc(products)).length }} pairs
             </button>
           </mat-menu>
 

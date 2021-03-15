@@ -10,6 +10,13 @@
     <p></p>
   </div>
 
+  <app-project-name-selector [processName]="true">
+  </app-project-name-selector>
+
   <button mat-button (click)="onCancelQueue()">Cancel</button>
-  <button mat-button (click)="onSubmitQueue()">Submit {{ amountSelected(jobTypesWithQueued) }}</button>
+  <button mat-button
+    (click)="onSubmitQueue()"
+    [disabled]="amountSelected(jobTypesWithQueued) === 0" >
+      Submit {{ amountSelected(jobTypesWithQueued) }}
+  </button>
 </div>

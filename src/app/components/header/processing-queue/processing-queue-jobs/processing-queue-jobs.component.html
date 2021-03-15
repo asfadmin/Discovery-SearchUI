@@ -47,15 +47,14 @@
           </a>
         </div>
       </div>
+
+      <div class="jobs-search">
+        <button [disabled]="!isLoggedIn"
+                (click)="viewCustomProducts($event)" color="primary" mat-flat-button>
+          View Submitted Jobs
+        </button>
+        <p class="not-logged-in" *ngIf="!isLoggedIn">Sign in to view submitted jobs</p>
+      </div>
     </ng-template>
-
-    <div class="jobs-search">
-      <button [disabled]="!isLoggedIn"
-              (click)="viewCustomProducts($event)" color="primary" mat-flat-button>
-        View Submitted Jobs
-      </button>
-      <p class="not-logged-in" *ngIf="!isLoggedIn">Sign in to view submitted jobs</p>
-    </div>
-
   </mat-list>
 </div>

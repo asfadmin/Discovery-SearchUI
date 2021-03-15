@@ -83,21 +83,7 @@ export interface Hyp3InSarGammaParameters {
 
 
 export interface Hyp3ProcessingOptions {
-  // Hyp3RtcGammaProcessingOptions
-  demMatching?: boolean;
-  includeDem?: boolean;
-  includeIncMap?: boolean;
-  includeScatteringArea?: boolean;
-  radiometry?: RtcGammaRadiometry;
-  resolution?: RtcGammaResolution;
-  scale?: RtcGammaScale;
-  speckleFilter?: boolean;
-  includeRGB?: boolean;
-
-  // Hyp3InSarProcessingOptions
-  includeLookVectors?: boolean;
-  includeLosDisplacement?: boolean;
-  looks?: InSarGammaLooks;
+  [key: string]: any;
 }
 
 export enum RtcGammaRadiometry {

@@ -62,6 +62,7 @@
     <div class="content-top-area">
       <div class="jobs-detail">
         <app-processing-options
+           *ngIf="selectedJobTypeId"
            [selectedJobType]="hyp3JobTypes[selectedJobTypeId]">
         </app-processing-options>
       </div>

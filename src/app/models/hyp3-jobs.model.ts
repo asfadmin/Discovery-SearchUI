@@ -32,7 +32,7 @@ export const RtcGammaJobType: Hyp3JobType = {
     info: `Scale of output image; either power or amplitude.`
   }, {
     name: 'DEM Matching',
-    apiName: 'demMatching',
+    apiName: 'dem_matching',
     type: JobOptionType.TOGGLE,
     info: `
       Coregisters SAR data to the DEM, rather than using
@@ -40,22 +40,22 @@ export const RtcGammaJobType: Hyp3JobType = {
     `
   }, {
     name: 'Include DEM',
-    apiName: 'includeDem',
+    apiName: 'include_dem',
     type: JobOptionType.TOGGLE,
     info: `Include the DEM file in the product package.`
   }, {
     name: 'Include Inc. Angle Map',
-    apiName: 'includeIncMap',
+    apiName: 'include_inc_map',
     type: JobOptionType.TOGGLE,
     info: `Include the incidence angle map in the product package.`
   }, {
     name: 'Include Scattering Area',
-    apiName: 'includeScatteringArea',
+    apiName: 'include_scattering_area',
     type: JobOptionType.TOGGLE,
     info: `Include the scattering area in the product package.`
   }, {
     name: 'Include RGB',
-    apiName: 'includeRGB',
+    apiName: 'include_rgb',
     type: JobOptionType.TOGGLE,
     info: `
       Include a false-color RGB decomposition in the product
@@ -63,7 +63,7 @@ export const RtcGammaJobType: Hyp3JobType = {
     `
   }, {
     name: 'Speckle Filter',
-    apiName: 'speckleFilter',
+    apiName: 'speckle_filter',
     type: JobOptionType.TOGGLE,
     info: `Apply an Enhanced Lee speckle filter.`
   }]
@@ -91,14 +91,14 @@ export const InsarGammaJobType: Hyp3JobType = {
     info: `Number of looks to take in range and azimuth.`
   }, {
     name: 'Include Look Vectors',
-    apiName: 'includeLookVectors',
+    apiName: 'include_look_vectors',
     type: JobOptionType.TOGGLE,
     info: `
       Include the look vector theta and phi files in the product package.
     `
   }, {
     name: 'Include Los Displacement',
-    apiName: 'includeLosDisplacement',
+    apiName: 'include_los_displacement',
     type: JobOptionType.TOGGLE,
     info: `
       Include a GeoTIFF in the product package containing displacement

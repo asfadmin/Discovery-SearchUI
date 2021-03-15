@@ -14,8 +14,7 @@ import { tap, catchError } from 'rxjs/operators';
 
 import * as queueStore from '@store/queue';
 import * as hyp3Store from '@store/hyp3';
-import * as userStore from '@store/user';
-import * as models from '@models';
+import * as userStore from '@store/user'; import * as models from '@models';
 import * as services from '@services';
 import { ResizedEvent } from 'angular-resize-event';
 
@@ -38,7 +37,7 @@ export class ProcessingQueueComponent implements OnInit {
   public remaining = 0;
   public areJobsLoading = false;
   public isQueueSubmitProcessing = false;
-  public previousQueue: any[] | null = null;
+  public previousQueue: {jobs: any[]; jobTypeId: string} | null = null;
 
   public breakpoint: models.Breakpoints;
   public breakpoints = models.Breakpoints;
@@ -175,23 +174,23 @@ export class ProcessingQueueComponent implements OnInit {
   }
 
   public onSubmitQueue(jobTypesWithQueued): void {
-    const options = {
-      [models.hyp3JobTypes.RTC_GAMMA.id]: {
-        dem_matching: this.processingOptions.demMatching,
-        include_dem: this.processingOptions.includeDem,
-        include_inc_map: this.processingOptions.includeIncMap,
-        include_scattering_area: this.processingOptions.includeScatteringArea,
-        radiometry: this.processingOptions.radiometry,
-        scale: this.processingOptions.scale,
-        speckle_filter: this.processingOptions.speckleFilter,
-        include_rgb: this.processingOptions.includeRGB,
-      },
-      [models.hyp3JobTypes.INSAR_GAMMA.id]: {
-        include_look_vectors: this.processingOptions.includeLookVectors,
-        include_los_displacement: this.processingOptions.includeLosDisplacement,
-        looks: this.processingOptions.looks,
-      }
-    };
+    const jobOptionNames = {};
+    models.hyp3JobTypesList.forEach(
+      jobType => jobOptionNames[jobType.id] = new Set(
+        jobType.options.map(option => option.apiName)
+      )
+    );
+
+    const options = {};
+    models.hyp3JobTypesList.forEach(jobType => {
+      options[jobType.id] = {};
+
+      Object.entries(this.processingOptions).forEach(([name, value]) => {
+        if (jobOptionNames[jobType.id].has(name)) {
+          options[jobType.id][name] = value;
+        }
+      });
+    });
 
     const jobs = jobTypesWithQueued
       .filter(jobType => jobType.selected)
@@ -257,12 +256,14 @@ export class ProcessingQueueComponent implements OnInit {
   }
 
   public onClearJobQueue(jobs): void {
-    this.previousQueue = jobs;
+    this.previousQueue = { jobTypeId: this.selectedJobTypeId, jobs };
     this.store$.dispatch(new queueStore.ClearProcessingQueue());
+    this.selectedJobTypeId = null;
   }
 
-  public onRestoreJobQueue(previousJobs): void {
-    this.store$.dispatch(new queueStore.AddJobs(previousJobs));
+  public onRestoreJobQueue(previousQueue): void {
+    this.selectedJobTypeId = previousQueue.jobTypeId;
+    this.store$.dispatch(new queueStore.AddJobs(previousQueue.jobs));
     this.previousQueue = null;
   }
 
