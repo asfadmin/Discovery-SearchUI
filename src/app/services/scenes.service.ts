@@ -354,35 +354,25 @@ export class ScenesService {
           if (productNameFilter.includes(',')) {
             fileIds = productNameFilter.split(',');
           } else {
-            fileIds.push(productNameFilter.split('.')[0]);
+            fileIds.push(productNameFilter);
           }
 
           fileIds = fileIds
             .map(id =>
-                id.replace(/\s+/g, '')
-                .toLowerCase()
+                id.toLowerCase()
                 .trim()
                 .split('.')[0]
               )
             .filter(id => id.length > 0);
 
-          const IdMap = new Map(fileIds.map(id => [id, true]));
-
           return scenes.filter(scene => {
               const fileName = scene.metadata.fileName.toLowerCase().split('.')[0];
               const sourceGranule = scene.name.toLowerCase();
 
-              if (IdMap.get(fileName) || IdMap.get(sourceGranule) || IdMap.get(scene.id)) {
-                return true;
-              }
-
-              for (const id of fileIds) {
-                if (fileName.includes(id) || sourceGranule.includes(id)) {
-                  return true;
-                }
-              }
-
-              return false;
+              return fileIds.some(id => fileName.includes(id) || sourceGranule.includes(id))
+              || fileIds.includes(fileName)
+              || fileIds.includes(sourceGranule)
+              || fileIds.includes(scene.id);
             }
           );
         }
