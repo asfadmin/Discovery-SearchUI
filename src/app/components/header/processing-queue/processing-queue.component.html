@@ -128,14 +128,14 @@
     <div class="footer-clear">
 
       <button *ngIf="previousQueue === null"
-         (click)="onClearJobQueue(jobs)"
+         (click)="onClearJobQueue()"
          mat-button>
         <mat-icon>delete</mat-icon>
         <span>Clear</span>
       </button>
 
       <button *ngIf="previousQueue !== null"
-         (click)="onRestoreJobQueue(previousQueue)"
+         (click)="onRestoreJobQueue()"
          mat-flat-button
          color="primary"
          class="footer-clear-button">

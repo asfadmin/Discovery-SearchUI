@@ -255,15 +255,15 @@ export class ProcessingQueueComponent implements OnInit {
     this.store$.dispatch(new queueStore.RemoveJob(job));
   }
 
-  public onClearJobQueue(jobs): void {
-    this.previousQueue = { jobTypeId: this.selectedJobTypeId, jobs };
+  public onClearJobQueue(): void {
+    this.previousQueue = { jobTypeId: this.selectedJobTypeId, jobs: this.allJobs };
     this.store$.dispatch(new queueStore.ClearProcessingQueue());
     this.selectedJobTypeId = null;
   }
 
-  public onRestoreJobQueue(previousQueue): void {
-    this.selectedJobTypeId = previousQueue.jobTypeId;
-    this.store$.dispatch(new queueStore.AddJobs(previousQueue.jobs));
+  public onRestoreJobQueue(): void {
+    this.selectedJobTypeId = this.previousQueue.jobTypeId;
+    this.store$.dispatch(new queueStore.AddJobs(this.previousQueue.jobs));
     this.previousQueue = null;
   }
 
