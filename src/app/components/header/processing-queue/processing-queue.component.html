@@ -27,11 +27,12 @@
       </ng-container>
     </div>
 
-    <ng-container *ngFor="let hyp3Job of hyp3JobTypesList">
+    <ng-container *ngFor="let hyp3Job of jobTypesWithQueued">
       <button mat-flat-button
-       (click)="onSetSelectedJobType(hyp3Job)"
-       [color]="selectedJobTypeId === hyp3Job.id ? 'secondary' : 'primary'">
-        {{ hyp3Job.name }}
+        class="job-type--button"
+       (click)="onSetSelectedJobType(hyp3Job.jobType)"
+       [color]="selectedJobTypeId === hyp3Job.jobType.id ? 'secondary' : 'primary'">
+        {{ hyp3Job.jobType.name }} ({{ hyp3Job.jobs.length }})
       </button>
     </ng-container>
   </div>

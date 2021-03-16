@@ -48,8 +48,11 @@
               </mat-icon>
 
               <mat-menu #addPairToOnDemand="matMenu">
-                <button (click)="onAddPairToQueue(pair)" mat-menu-item>
-                  Add pair to On Demand queue
+                <button (click)="onAddInSarJob(pair)" mat-menu-item>
+                  Add InSar Gamma job
+                </button>
+                <button (click)="onAddAutoRiftJob(pair)" mat-menu-item>
+                  Add AutoRift job
                 </button>
               </mat-menu>
           </button>

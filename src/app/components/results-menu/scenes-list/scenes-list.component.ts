@@ -241,10 +241,17 @@ export class ScenesListComponent implements OnInit, OnDestroy {
     }
   }
 
-  public onAddPairToQueue(pair: models.CMRProductPair): void {
+  public onAddInSarJob(pair: models.CMRProductPair): void {
     this.store$.dispatch(new queueStore.AddJob({
       granules: pair,
       job_type: models.hyp3JobTypes.INSAR_GAMMA
+    }));
+  }
+
+  public onAddAutoRiftJob(pair: models.CMRProductPair): void {
+    this.store$.dispatch(new queueStore.AddJob({
+      granules: pair,
+      job_type: models.hyp3JobTypes.AUTORIFT
     }));
   }
 

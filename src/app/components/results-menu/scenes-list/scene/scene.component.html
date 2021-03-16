@@ -67,7 +67,7 @@
             jobQueued ?
               'Remove scene files from on demand':
               'Add scene files to on demand'
-          }}">  
+          }}">
         </mat-icon>
 
         <mat-icon *ngIf="isDownloadable(scene)"
@@ -123,12 +123,12 @@
                     'Add scene files to on demand'
                 }}">
               </mat-icon>
-              <mat-icon *ngIf="isDownloadable(scene)" 
+              <mat-icon *ngIf="isDownloadable(scene)"
                 (click)="onToggleScene($event, scene.groupId)"
                 class="icon-margin"
                 matTooltip="{{
-                  isQueued ? 
-                    'Remove scene files from downloads': 
+                  isQueued ?
+                    'Remove scene files from downloads':
                     'Add scene files to downloads'
                 }}">
                 {{ isQueued ? 'shopping_cart' : 'add_shopping_cart' }}

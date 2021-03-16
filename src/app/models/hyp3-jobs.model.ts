@@ -107,9 +107,27 @@ export const InsarGammaJobType: Hyp3JobType = {
   }]
 };
 
+export const AutoRift: Hyp3JobType = {
+  id: 'AUTORIFT',
+  name: 'AutoRift',
+  numProducts: 1,
+  productTypes: [{
+    dataset: sentinel_1,
+    productTypes: [
+      'SLC', 'GRD_HD', 'GRD_HS'
+    ],
+    beamModes: ['IW'],
+    polarizations: [
+      'VV+VH', 'HH+HV', 'VV', 'HH',
+    ]
+  }],
+  options: []
+};
+
 export const hyp3JobTypes = {
   RTC_GAMMA: RtcGammaJobType,
-  INSAR_GAMMA: InsarGammaJobType
+  INSAR_GAMMA: InsarGammaJobType,
+  AUTORIFT: AutoRift
 };
 
 export const hyp3JobTypesList = Object.values(hyp3JobTypes);

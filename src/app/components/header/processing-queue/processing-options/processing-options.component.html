@@ -2,8 +2,6 @@
   <ng-container *ngIf="selectedJobType">
     <ng-container *ngFor="let jobType of JobTypesList">
       <ng-container *ngIf="selectedJobType.id === jobType.id">
-        <div class="options-header">Options</div>
-
         <div class="flex-field" *ngFor="let option of jobType.options">
           <app-dropdown-option
              *ngIf="option.type === 'DROPDOWN'"
