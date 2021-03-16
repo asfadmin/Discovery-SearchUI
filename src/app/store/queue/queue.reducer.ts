@@ -123,6 +123,20 @@ export function queueReducer(state = initState, action: QueueActions): QueueStat
       };
     }
 
+    case QueueActionType.CLEAR_PROCESSING_QUEUE_BY_JOB_TYPE: {
+      const jobs = [...state.customJobs];
+      const jobTypes = action.payload;
+
+      const customJobs = jobs.filter(
+        job => !jobTypes.has(job.job_type.id)
+      );
+
+      return {
+        ...state,
+        customJobs
+      };
+    }
+
     case QueueActionType.ADD_JOB: {
       const jobs = [...state.customJobs];
 

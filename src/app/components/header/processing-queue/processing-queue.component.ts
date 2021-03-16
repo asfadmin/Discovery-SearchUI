@@ -84,8 +84,7 @@ export class ProcessingQueueComponent implements OnInit {
       this.hyp3JobTypesList = <any>jobTypes;
 
       if (!this.selectedJobTypeId) {
-        this.selectedJobTypeId = !!this.hyp3JobTypesList[0] ?
-          this.hyp3JobTypesList[0].id : null;
+        this.selectDefaultJobType();
       }
 
       this.allJobs = jobs;
@@ -236,9 +235,15 @@ export class ProcessingQueueComponent implements OnInit {
           data: {numJobs: resp.jobs.length}
         });
 
-        this.store$.dispatch(new queueStore.ClearProcessingQueue());
+        const jobTypes = new Set<string>(jobs.map((job) => job.job_type.id));
+        this.selectedJobTypeId = null;
+        this.store$.dispatch(new queueStore.ClearProcessingQueueByJobType(jobTypes));
+
         this.store$.dispatch(new hyp3Store.LoadUser());
-        this.dialogRef.close();
+
+        if (this.allJobs.length === 0) {
+          this.dialogRef.close();
+        }
       }
     );
   }
@@ -282,5 +287,10 @@ export class ProcessingQueueComponent implements OnInit {
 
   public onCloseDialog() {
     this.dialogRef.close();
+  }
+
+  private selectDefaultJobType(): void {
+    this.selectedJobTypeId = !!this.hyp3JobTypesList[0] ?
+      this.hyp3JobTypesList[0].id : null;
   }
 }
