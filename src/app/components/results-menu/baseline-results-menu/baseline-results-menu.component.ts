@@ -105,10 +105,16 @@ export class BaselineResultsMenuComponent implements OnInit, OnDestroy {
       .filter(product => product.metadata.productType === 'SLC');
   }
 
-  public grd(products: models.CMRProduct[]): models.CMRProduct[] {
+  public grd_hd(products: models.CMRProduct[]): models.CMRProduct[] {
     return products
       .filter(product => product.metadata.beamMode === 'IW')
-      .filter(product => product.metadata.productType === 'GRD_HD');
+      .filter(product => product.metadata.productType === 'GRD_HD')
+  }
+
+  public grd_hs(products: models.CMRProduct[]): models.CMRProduct[] {
+    return products
+      .filter(product => product.metadata.beamMode === 'IW')
+      .filter(product => product.metadata.productType === 'GRD_HS')
   }
 
   public downloadable(products: models.CMRProduct[]): models.CMRProduct[] {

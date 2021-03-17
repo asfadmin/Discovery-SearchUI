@@ -83,8 +83,7 @@
         <div *ngIf="allProducts$ | async as products">
 
           <div *ngIf="
-          searchType !== SearchTypes.CUSTOM_PRODUCTS &&
-          (slc(products).length > 0 || grd(products).length > 0)" fxFlex="" class="list-button-group">
+          searchType !== SearchTypes.CUSTOM_PRODUCTS" fxFlex="" class="list-button-group">
             <div fxLayout="row" fxLayoutAlign="center" class="button-group-label">
               <label>On Demand</label>
             </div>
@@ -105,9 +104,11 @@
           </div>
 
           <mat-menu #addAllOnDemand>
-            <div [matTooltip]="hyp3able(grd(products)).length === 0 ? 'No compatible RTC Gamma Products' : ''">
+            <div [matTooltip]="
+            hyp3able(grd_hd(products)).length === 0 && hyp3able(grd_hs(products)).length === 0 
+            ? 'No compatible RTC Gamma Products' : ''">
               <button [matMenuTriggerFor]="addAllRTCDemand"
-              [disabled]="hyp3able(grd(products)).length === 0"
+              [disabled]="hyp3able(grd_hd(products)).length === 0 && hyp3able(grd_hs(products)).length"
               mat-menu-item>
                 RTC Gamma
               </button>
@@ -123,9 +124,13 @@
 
           <mat-menu #addAllRTCDemand>
             <button
-              (click)="queueAllOnDemand(grd(products))" mat-menu-item>
-              Add {{ hyp3able(grd(products)).length }} GRD-HD jobs
+              (click)="queueAllOnDemand(grd_hd(products))" mat-menu-item>
+              Add {{ hyp3able(grd_hd(products)).length }} GRD-HD jobs
             </button>
+            <button
+            (click)="queueAllOnDemand(grd_hs(products))" mat-menu-item>
+            Add {{ hyp3able(grd_hs(products)).length }} GRD-HS jobs
+          </button>
           </mat-menu>
 
           <mat-menu #addAllInSARDemand>

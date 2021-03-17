@@ -198,7 +198,8 @@
               </button>
             </div>
 
-            <div [matTooltip]="hyp3able(slc(products)).length === 0 ? 'No compatible InSAR Products' : ''">
+            <div *ngIf="searchType === SearchTypes.SBAS"
+             [matTooltip]="hyp3able(slc(products)).length === 0 ? 'No compatible InSAR Products' : ''">
               <button 
                 [disabled]="hyp3able(slc(products)).length === 0" 
                 [matMenuTriggerFor]="addAllInSarDemand" mat-menu-item>
