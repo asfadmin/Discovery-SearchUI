@@ -115,8 +115,7 @@
           </div>
 
           <div *ngIf="
-            searchType !== SearchTypes.CUSTOM_PRODUCTS &&
-            (slc(products).length > 0 || grd_hd(products).length > 0 || grd_hs(products).length > 0)"
+            searchType !== SearchTypes.CUSTOM_PRODUCTS"
             fxFlex="" class="list-button-group">
             <div fxLayout="row" fxLayoutAlign="center" class="button-group-label">
               <label>On Demand</label>
@@ -189,19 +188,27 @@
             </button>
           </mat-menu>
 
-          <mat-menu #addAllOnDemand="matMenu">
-            <button [matMenuTriggerFor]="addAllRTCDemand" mat-menu-item>
-              RTC Gamma
-            </button>
-            <button [matMenuTriggerFor]="addAllInSarDemand" mat-menu-item>
-              InSar Gamma
-            </button>
+          <mat-menu #addAllOnDemand>
+
+            <div [matTooltip]="hyp3able(grd_hd(products)).length === 0 && hyp3able(grd_hs(products)).length === 0 ? 'No compatible RTC Gamma Products' : ''">
+              <button
+                [disabled]="hyp3able(grd_hd(products)).length === 0 && hyp3able(grd_hs(products)).length === 0"
+                [matMenuTriggerFor]="addAllRTCDemand" mat-menu-item>
+                RTC Gamma
+              </button>
+            </div>
+
+            <div [matTooltip]="hyp3able(slc(products)).length === 0 ? 'No compatible InSAR Products' : ''">
+              <button 
+                [disabled]="hyp3able(slc(products)).length === 0" 
+                [matMenuTriggerFor]="addAllInSarDemand" mat-menu-item>
+                InSAR Gamma
+              </button>
+            </div>
+
           </mat-menu>
 
-          <mat-menu #addAllRTCDemand="matMenu">
-            <button *ngIf="hyp3able(slc(products)).length > 0" (click)="queueAllOnDemand(slc(products))" mat-menu-item>
-              Add {{ hyp3able(slc(products)).length }} SLC jobs
-            </button>
+          <mat-menu #addAllRTCDemand>
             <button *ngIf="hyp3able(grd_hd(products)).length > 0" (click)="queueAllOnDemand(grd_hd(products))" mat-menu-item>
               Add {{ hyp3able(grd_hd(products)).length }} GRD-HD jobs
             </button>
@@ -210,7 +217,7 @@
             </button>
           </mat-menu>
 
-          <mat-menu #addAllInSarDemand="matMenu">
+          <mat-menu #addAllInSarDemand>
             <button *ngIf="hyp3able(slc(products)).length > 0" (click)="queueAllOnDemand(slc(products))" mat-menu-item>
               Add {{ hyp3able(slc(products)).length }} pairs
             </button>

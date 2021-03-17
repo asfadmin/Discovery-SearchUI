@@ -81,28 +81,61 @@
         </div>
 
         <div *ngIf="allProducts$ | async as products">
-        <div *ngIf="
-        searchType !== SearchTypes.CUSTOM_PRODUCTS &&
-        (slc(products).length > 0 || grd(products).length > 0)" fxFlex="" class="list-button-group">
-        <div fxLayout="row" fxLayoutAlign="center" class="button-group-label">
-          <label>On Demand</label>
-        </div>
-        <div fxLayout="row" fxLayoutAlign="center">
-          <div>
-            <mat-button-toggle-group fxFlex="" name="layerType" class="mr-10">
-              <mat-button-toggle class="control-mat-button-toggle">
-                <mat-icon
-                  class="clickable noselect list-icon"
-                  matTooltip="Add all results to On Demand queue"
-                  svgIcon="hyp3"
-                  [matMenuTriggerFor]="addAllOnDemand">
-                </mat-icon>
-              </mat-button-toggle>
-            </mat-button-toggle-group>
+
+          <div *ngIf="
+          searchType !== SearchTypes.CUSTOM_PRODUCTS &&
+          (slc(products).length > 0 || grd(products).length > 0)" fxFlex="" class="list-button-group">
+            <div fxLayout="row" fxLayoutAlign="center" class="button-group-label">
+              <label>On Demand</label>
+            </div>
+            <div fxLayout="row" fxLayoutAlign="center">
+              <div>
+                <mat-button-toggle-group fxFlex="" name="layerType" class="mr-10">
+                  <mat-button-toggle class="control-mat-button-toggle">
+                    <mat-icon
+                      class="clickable noselect list-icon"
+                      matTooltip="Add all results to On Demand queue"
+                      svgIcon="hyp3"
+                      [matMenuTriggerFor]="addAllOnDemand">
+                    </mat-icon>
+                  </mat-button-toggle>
+                </mat-button-toggle-group>
+              </div>
+            </div>
           </div>
+
+          <mat-menu #addAllOnDemand>
+            <div [matTooltip]="hyp3able(grd(products)).length === 0 ? 'No compatible RTC Gamma Products' : ''">
+              <button [matMenuTriggerFor]="addAllRTCDemand"
+              [disabled]="hyp3able(grd(products)).length === 0"
+              mat-menu-item>
+                RTC Gamma
+              </button>
+            </div>
+            <div [matTooltip]="hyp3able(slc(products)).length === 0 ? 'No compatible InSAR Gamma Products' : ''">
+              <button [matMenuTriggerFor]="addAllInSARDemand"
+              [disabled]="hyp3able(slc(products)).length === 0" 
+              mat-menu-item>
+                InSAR Gamma
+              </button>
+            </div>
+          </mat-menu>
+
+          <mat-menu #addAllRTCDemand>
+            <button
+              (click)="queueAllOnDemand(grd(products))" mat-menu-item>
+              Add {{ hyp3able(grd(products)).length }} GRD-HD jobs
+            </button>
+          </mat-menu>
+
+          <mat-menu #addAllInSARDemand>
+            <button          
+              (click)="queueAllOnDemand(slc(products))" mat-menu-item>
+              Add {{ hyp3able(slc(products)).length }} SLC jobs
+            </button>
+          </mat-menu>
+
         </div>
-      </div>
-    </div>
 
         <div fxFlex="" class="list-button-group">
           <div fxLayout="row" fxLayoutAlign="center" class="button-group-label">
@@ -137,22 +170,6 @@
         </mat-menu>
 
 
-        <mat-menu #addAllOnDemand="matMenu">
-          <button [matMenuTriggerFor]="addAllRTCDemand" mat-menu-item>
-            RTC Gamma
-          </button>
-        </mat-menu>
-
-        <mat-menu #addAllRTCDemand="matMenu">
-          <div *ngIf="allProducts$ | async as products">
-          <button *ngIf="hyp3able(slc(products)).length > 0" (click)="queueAllOnDemand(slc(products))" mat-menu-item>
-            Add {{ hyp3able(slc(products)).length }} SLC jobs
-          </button>
-          <button *ngIf="hyp3able(grd(products)).length > 0" (click)="queueAllOnDemand(grd(products))" mat-menu-item>
-            Add {{ hyp3able(grd(products)).length }} GRD-HD jobs
-          </button>
-        </div>
-        </mat-menu>
 
         <mat-menu #ExportAll="matMenu">
           <button mat-menu-item [matMenuTriggerFor]="ExportAllMetadata">

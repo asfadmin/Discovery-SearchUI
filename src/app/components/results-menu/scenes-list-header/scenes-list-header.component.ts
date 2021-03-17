@@ -193,9 +193,10 @@ export class ScenesListHeaderComponent implements OnInit, OnDestroy {
   }
 
   public queueAllOnDemand(products: models.CMRProduct[]): void {
+    const job_type = products[0].metadata.productType.includes('GRD') ? models.hyp3JobTypes.RTC_GAMMA : models.hyp3JobTypes.INSAR_GAMMA;
     const jobs = this.hyp3able(products).map( product => ({
         granules: [ product ],
-        job_type: models.hyp3JobTypes.RTC_GAMMA
+        job_type
       })
     );
 
