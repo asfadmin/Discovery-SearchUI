@@ -154,10 +154,11 @@ export class ProcessingQueueComponent implements OnInit {
 
   public onReviewQueue() {
     const confirmationRef = this.dialog.open(ConfirmationComponent, {
-      width: '600px',
+      id: 'ConfirmProcess',
+      width: '500px',
       height: '400px',
-      maxWidth: '100%',
-      maxHeight: '100%',
+      maxWidth: '500px',
+      maxHeight: '400px',
       data: this.jobTypesWithQueued
     });
 
