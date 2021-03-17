@@ -1,22 +1,31 @@
-<div>
-  <h1> Review <button mat-button (click)="onCancelQueue()">X</button> </h1>
+<h2 mat-dialog-title>Review Submission</h2>
+
+<div mat-dialog-content class="mat-dialog-content">
+
+  <app-project-name-selector [processName]="true">
+  </app-project-name-selector>
 
   <div *ngFor="let tabQueue of jobTypesWithQueued">
     <mat-selection-list>
-      <mat-list-option (click)="onToggleJobType(tabQueue)" [selected]="tabQueue.selected">
+      <mat-list-option (click)="onToggleJobType(tabQueue)"
+                       checkboxPosition="before"
+                       [selected]="tabQueue.selected">
         {{ tabQueue.jobType.name }} ({{tabQueue.jobs.length}})
       </mat-list-option>
     </mat-selection-list>
     <p></p>
   </div>
 
-  <app-project-name-selector [processName]="true">
-  </app-project-name-selector>
+</div>
 
+<div mat-dialog-actions>
   <button mat-button (click)="onCancelQueue()">Cancel</button>
-  <button mat-button
-    (click)="onSubmitQueue()"
-    [disabled]="amountSelected(jobTypesWithQueued) === 0" >
-      Submit {{ amountSelected(jobTypesWithQueued) }}
+  <button mat-flat-button
+          color="primary"
+          (click)="onSubmitQueue()"
+          [disabled]="amountSelected(jobTypesWithQueued) === 0"
+          cdkFocusInitial>
+    Submit {{ amountSelected(jobTypesWithQueued) }}
+    Job<span *ngIf="amountSelected(jobTypesWithQueued) > 1">s</span>
   </button>
 </div>
