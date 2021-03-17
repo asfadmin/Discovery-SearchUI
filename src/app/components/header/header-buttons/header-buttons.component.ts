@@ -214,6 +214,21 @@ export class HeaderButtonsComponent implements OnInit, OnDestroy {
     );
   }
 
+  public onOpenOnDemandDocs(): void {
+    const url = 'https://hyp3-docs.asf.alaska.edu/';
+
+    window.dataLayer = window.dataLayer || [];
+    window.dataLayer.push({
+      'event': 'open-hyp3-docs',
+      'open-asf-web-site': url
+    });
+
+    window.open(
+      url,
+      '_blank'
+    );
+  }
+
   public onOpenAPIWebSite(): void {
     const url = this.asfWebsiteUrl + '/api';
 
