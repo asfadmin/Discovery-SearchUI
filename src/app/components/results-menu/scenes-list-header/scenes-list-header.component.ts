@@ -57,6 +57,10 @@ export class ScenesListHeaderComponent implements OnInit, OnDestroy {
 
   private subs = new SubSink();
 
+  public RTC = models.hyp3JobTypes.RTC_GAMMA;
+  public InSAR = models.hyp3JobTypes.INSAR_GAMMA;
+  public AutoRift = models.hyp3JobTypes.AUTORIFT;
+
   constructor(
     private store$: Store<AppState>,
     private mapService: MapService,
@@ -192,8 +196,7 @@ export class ScenesListHeaderComponent implements OnInit, OnDestroy {
     this.store$.dispatch(new queueStore.AddItems(products));
   }
 
-  public queueAllOnDemand(products: models.CMRProduct[]): void {
-    const job_type = products[0].metadata.productType.includes('GRD') ? models.hyp3JobTypes.RTC_GAMMA : models.hyp3JobTypes.INSAR_GAMMA;
+  public queueAllOnDemand(products: models.CMRProduct[], job_type: models.Hyp3JobType): void {
     const jobs = this.hyp3able(products).map( product => ({
         granules: [ product ],
         job_type

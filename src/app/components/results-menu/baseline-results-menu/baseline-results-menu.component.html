@@ -124,20 +124,24 @@
 
           <mat-menu #addAllRTCDemand>
             <button
-              (click)="queueAllOnDemand(grd_hd(products))" mat-menu-item>
+              (click)="queueAllOnDemand(grd_hd(products), RTC)" mat-menu-item>
               Add {{ hyp3able(grd_hd(products)).length }} GRD-HD jobs
             </button>
             <button
-            (click)="queueAllOnDemand(grd_hs(products))" mat-menu-item>
+            (click)="queueAllOnDemand(grd_hs(products), RTC)" mat-menu-item>
             Add {{ hyp3able(grd_hs(products)).length }} GRD-HS jobs
           </button>
           </mat-menu>
 
           <mat-menu #addAllInSARDemand>
             <button          
-              (click)="queueAllOnDemand(slc(products))" mat-menu-item>
+              (click)="queueAllOnDemand(slc(products), InSAR)" mat-menu-item>
               Add {{ hyp3able(slc(products)).length }} SLC jobs
             </button>
+            <button          
+            (click)="queueAllOnDemand(slc(products), AutoRift)" mat-menu-item>
+            Add {{ hyp3able(slc(products)).length }} AUTORift jobs
+          </button>
           </mat-menu>
 
         </div>
