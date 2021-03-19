@@ -96,8 +96,8 @@
       <button mat-menu-item
       (click) = "onSetSearchTypeOnDemand()"
       [disabled]="!isLoggedIn">Submitted Products</button>
-      <button mat-menu-item>
-        <a target="_blank" href="https://hyp3-docs.asf.alaska.edu/">Help</a>
+      <button mat-menu-item (click)="onOpenOnDemandDocs()">
+        On Demand (HyP3) Docs
       </button>
     </mat-menu>
 
