@@ -111,8 +111,7 @@
               {{ withOffset(scene.metadata.temporal, offsets.temporal) }}d
             </div>
             <div class="cart-flex-field">
-              <mat-icon *ngIf="isDownloadable(scene) && isProcessable(scene) && 
-              (scene.metadata.productType !== 'SLC' || searchType === SearchTypes.SBAS || searchType === SearchTypes.BASELINE)"
+              <mat-icon *ngIf="isDownloadable(scene) && isProcessable(scene)"
                 (click)="onToggleOnDemandScene()"
                 class="icon-margin"
                 svgIcon="hyp3"
