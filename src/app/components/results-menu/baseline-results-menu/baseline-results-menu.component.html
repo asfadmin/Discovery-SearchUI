@@ -105,35 +105,39 @@
 
           <mat-menu #addAllOnDemand>
             <div [matTooltip]="
-            hyp3able(grd_hd(products)).length === 0 && hyp3able(grd_hs(products)).length === 0 
+            hyp3able(grd_hd(products)).length === 0 && hyp3able(grd_hs(products)).length === 0 && hyp3able(slc(products)).length === 0 
             ? 'No compatible RTC Gamma Products' : ''">
               <button [matMenuTriggerFor]="addAllRTCDemand"
-              [disabled]="hyp3able(grd_hd(products)).length === 0 && hyp3able(grd_hs(products)).length"
+              [disabled]="hyp3able(grd_hd(products)).length === 0 && hyp3able(grd_hs(products)).length === 0 && hyp3able(slc(products)).length === 0"
               mat-menu-item>
                 RTC Gamma
               </button>
             </div>
-            <div [matTooltip]="hyp3able(slc(products)).length === 0 ? 'No compatible InSAR Gamma Products' : ''">
+            <!-- <div [matTooltip]="hyp3able(slc(products)).length === 0 ? 'No compatible InSAR Gamma Products' : ''">
               <button [matMenuTriggerFor]="addAllInSARDemand"
               [disabled]="hyp3able(slc(products)).length === 0" 
               mat-menu-item>
                 InSAR Gamma
               </button>
-            </div>
+            </div> -->
           </mat-menu>
 
           <mat-menu #addAllRTCDemand>
-            <button
+            <button *ngIf="hyp3able(grd_hd(products)).length > 0"
               (click)="queueAllOnDemand(grd_hd(products), RTC)" mat-menu-item>
               Add {{ hyp3able(grd_hd(products)).length }} GRD-HD jobs
             </button>
-            <button
+            <button *ngIf="hyp3able(grd_hs(products)).length > 0"
             (click)="queueAllOnDemand(grd_hs(products), RTC)" mat-menu-item>
             Add {{ hyp3able(grd_hs(products)).length }} GRD-HS jobs
           </button>
+          <button *ngIf="hyp3able(slc(products)).length > 0"          
+          (click)="queueAllOnDemand(slc(products), RTC)" mat-menu-item>
+          Add {{ hyp3able(slc(products)).length }} SLC jobs
+        </button>
           </mat-menu>
 
-          <mat-menu #addAllInSARDemand>
+          <!-- <mat-menu #addAllInSARDemand>
             <button          
               (click)="queueAllOnDemand(slc(products), InSAR)" mat-menu-item>
               Add {{ hyp3able(slc(products)).length }} SLC jobs
@@ -142,7 +146,7 @@
             (click)="queueAllOnDemand(slc(products), AutoRift)" mat-menu-item>
             Add {{ hyp3able(slc(products)).length }} AUTORift jobs
           </button>
-          </mat-menu>
+          </mat-menu> -->
 
         </div>
 

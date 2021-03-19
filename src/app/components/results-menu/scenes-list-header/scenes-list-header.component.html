@@ -190,9 +190,10 @@
 
           <mat-menu #addAllOnDemand>
 
-            <div [matTooltip]="hyp3able(grd_hd(products)).length === 0 && hyp3able(grd_hs(products)).length === 0 ? 'No compatible RTC Gamma Products' : ''">
+            <div [matTooltip]="hyp3able(grd_hd(products)).length === 0 && hyp3able(grd_hs(products)).length === 0 && hyp3able(slc(products)).length === 0
+            ? 'No compatible RTC Gamma Products' : ''">
               <button
-                [disabled]="hyp3able(grd_hd(products)).length === 0 && hyp3able(grd_hs(products)).length === 0"
+                [disabled]="hyp3able(grd_hd(products)).length === 0 && hyp3able(grd_hs(products)).length === 0 && hyp3able(slc(products)).length === 0"
                 [matMenuTriggerFor]="addAllRTCDemand" mat-menu-item>
                 RTC Gamma
               </button>
@@ -215,6 +216,9 @@
             </button>
             <button *ngIf="hyp3able(grd_hs(products)).length > 0" (click)="queueAllOnDemand(grd_hs(products), RTC)" mat-menu-item>
               Add {{ hyp3able(grd_hs(products)).length }} GRD-HS jobs
+            </button>
+            <button *ngIf="hyp3able(slc(products)).length > 0" (click)="queueAllOnDemand(slc(products), RTC)" mat-menu-item>
+              Add {{ hyp3able(slc(products)).length }} SLC jobs
             </button>
           </mat-menu>
 
