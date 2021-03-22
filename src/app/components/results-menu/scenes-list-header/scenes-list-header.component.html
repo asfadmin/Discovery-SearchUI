@@ -191,27 +191,27 @@
           <mat-menu #addAllOnDemand>
 
             <div [matTooltip]="hyp3able(grd_hd(products)).length === 0 && hyp3able(grd_hs(products)).length === 0 && hyp3able(slc(products)).length === 0
-            ? 'No compatible RTC Gamma Products' : ''">
+            ? 'No compatible RTC GAMMA Products' : ''">
               <button
                 [disabled]="hyp3able(grd_hd(products)).length === 0 && hyp3able(grd_hs(products)).length === 0 && hyp3able(slc(products)).length === 0"
                 [matMenuTriggerFor]="addAllRTCDemand" mat-menu-item>
-                RTC Gamma
+                RTC GAMMA
               </button>
             </div>
 
             <div *ngIf="searchType === SearchTypes.SBAS"
              [matTooltip]="hyp3able(slc(products)).length === 0 ? 'No compatible InSAR Products' : ''">
-              <button 
-                [disabled]="hyp3able(slc(products)).length === 0" 
+              <button
+                [disabled]="hyp3able(slc(products)).length === 0"
                 [matMenuTriggerFor]="addAllInSarDemand" mat-menu-item>
-                InSAR Gamma
+                InSAR GAMMA
               </button>
             </div>
 
             <div *ngIf="searchType === SearchTypes.SBAS"
             [matTooltip]="hyp3able(slc(products)).length === 0 ? 'No compatible AutoRIFT Products' : ''">
-             <button 
-               [disabled]="hyp3able(slc(products)).length === 0" 
+             <button
+               [disabled]="hyp3able(slc(products)).length === 0"
                [matMenuTriggerFor]="addAllAutoRIFTDemand" mat-menu-item>
                AutoRIFT
              </button>
@@ -236,7 +236,7 @@
               Add {{ hyp3able(pairs).length }} SLC pairs
             </button>
           </mat-menu>
-          
+
           <mat-menu #addAllAutoRIFTDemand>
             <button *ngIf="hyp3able(pairs).length > 0" (click)="queueAllOnDemand(pairs, AutoRift)" mat-menu-item>
               Add {{ hyp3able(pairs).length }} SLC pairs
