@@ -209,7 +209,7 @@
             </div>
 
             <div *ngIf="searchType === SearchTypes.SBAS"
-            [matTooltip]="hyp3able(slc(products)).length === 0 ? 'No compatible InSAR Products' : ''">
+            [matTooltip]="hyp3able(slc(products)).length === 0 ? 'No compatible AutoRIFT Products' : ''">
              <button 
                [disabled]="hyp3able(slc(products)).length === 0" 
                [matMenuTriggerFor]="addAllAutoRIFTDemand" mat-menu-item>
