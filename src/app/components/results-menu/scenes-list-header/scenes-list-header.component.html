@@ -232,14 +232,14 @@
           </mat-menu>
 
           <mat-menu #addAllInSarDemand>
-            <button *ngIf="hyp3able(slc(products)).length > 0" (click)="queueAllOnDemand(slc(products), InSAR)" mat-menu-item>
-              Add {{ hyp3able(slc(products)).length }} SLC pairs
+            <button *ngIf="hyp3able(pairs).length > 0" (click)="queueAllOnDemand(pairs, InSAR)" mat-menu-item>
+              Add {{ hyp3able(pairs).length }} SLC pairs
             </button>
           </mat-menu>
           
           <mat-menu #addAllAutoRIFTDemand>
-            <button *ngIf="hyp3able(slc(products)).length > 0" (click)="queueAllOnDemand(slc(products), AutoRift)" mat-menu-item>
-              Add {{ hyp3able(slc(products)).length }} SLC pairs
+            <button *ngIf="hyp3able(pairs).length > 0" (click)="queueAllOnDemand(pairs, AutoRift)" mat-menu-item>
+              Add {{ hyp3able(pairs).length }} SLC pairs
             </button>
           </mat-menu>
 
