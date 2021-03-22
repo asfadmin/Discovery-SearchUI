@@ -3,7 +3,7 @@ import { Hyp3JobType, JobOptionType } from './hyp3-job-type.model';
 
 export const RtcGammaJobType: Hyp3JobType = {
   id: 'RTC_GAMMA',
-  name: 'RTC Gamma',
+  name: 'RTC GAMMA',
   numProducts: 1,
   productTypes: [{
     dataset: sentinel_1,
@@ -71,7 +71,7 @@ export const RtcGammaJobType: Hyp3JobType = {
 
 export const InsarGammaJobType: Hyp3JobType = {
   id: 'INSAR_GAMMA',
-  name: 'InSar Gamma',
+  name: 'InSar GAMMA',
   numProducts: 2,
   productTypes: [{
     dataset: sentinel_1,
