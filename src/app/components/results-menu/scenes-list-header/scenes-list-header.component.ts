@@ -13,7 +13,6 @@ import * as queueStore from '@store/queue';
 import * as searchStore from '@store/search';
 import * as filtersStore from '@store/filters';
 
-
 import {
   MapService, ScenesService, ScreenSizeService,
   PairService
@@ -57,6 +56,10 @@ export class ScenesListHeaderComponent implements OnInit, OnDestroy {
   public breakpoints = models.Breakpoints;
 
   private subs = new SubSink();
+
+  public RTC = models.hyp3JobTypes.RTC_GAMMA;
+  public InSAR = models.hyp3JobTypes.INSAR_GAMMA;
+  public AutoRift = models.hyp3JobTypes.AUTORIFT;
 
   constructor(
     private store$: Store<AppState>,
@@ -193,10 +196,10 @@ export class ScenesListHeaderComponent implements OnInit, OnDestroy {
     this.store$.dispatch(new queueStore.AddItems(products));
   }
 
-  public queueAllOnDemand(products: models.CMRProduct[]): void {
+  public queueAllOnDemand(products: models.CMRProduct[], job_type: models.Hyp3JobType): void {
     const jobs = this.hyp3able(products).map( product => ({
         granules: [ product ],
-        job_type: models.Hyp3JobType.RTC_GAMMA
+        job_type
       })
     );
 

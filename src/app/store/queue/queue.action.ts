@@ -13,6 +13,7 @@ export enum QueueActionType {
   ADD_JOBS = '[Queue] Add Jobs',
   REMOVE_JOB = '[Queue] Remove Job',
   CLEAR_PROCESSING_QUEUE = '[Queue] Clear On Demand Queue',
+  CLEAR_PROCESSING_QUEUE_BY_JOB_TYPE = '[Queue] Clear On Demand Queue By Type',
 
   TOGGLE_PRODUCT = '[Queue] Toggle Product',
   QUEUE_SCENE = '[Scenes] Queue Scene',
@@ -78,6 +79,12 @@ export class ClearProcessingQueue implements Action {
   public readonly type = QueueActionType.CLEAR_PROCESSING_QUEUE;
 }
 
+export class ClearProcessingQueueByJobType implements Action {
+  public readonly type = QueueActionType.CLEAR_PROCESSING_QUEUE_BY_JOB_TYPE;
+
+  constructor(public payload: Set<string>) {}
+}
+
 export class MakeDownloadScript implements Action {
   public readonly type = QueueActionType.MAKE_DOWNLOAD_SCRIPT;
 }
@@ -113,5 +120,6 @@ export type QueueActions =
   | RemoveJob
   | ToggleProduct
   | ClearProcessingQueue
+  | ClearProcessingQueueByJobType
   | MakeDownloadScript
   | DownloadMetadata;

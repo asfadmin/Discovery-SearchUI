@@ -46,6 +46,10 @@ export class BaselineResultsMenuComponent implements OnInit, OnDestroy {
   public breakpoints = Breakpoints;
   private subs = new SubSink();
 
+  public RTC = models.hyp3JobTypes.RTC_GAMMA;
+  public InSAR = models.hyp3JobTypes.INSAR_GAMMA;
+  public AutoRift = models.hyp3JobTypes.AUTORIFT;
+
   constructor(
     private store$: Store<AppState>,
     private screenSize: ScreenSizeService,
@@ -105,10 +109,16 @@ export class BaselineResultsMenuComponent implements OnInit, OnDestroy {
       .filter(product => product.metadata.productType === 'SLC');
   }
 
-  public grd(products: models.CMRProduct[]): models.CMRProduct[] {
+  public grd_hd(products: models.CMRProduct[]): models.CMRProduct[] {
     return products
       .filter(product => product.metadata.beamMode === 'IW')
       .filter(product => product.metadata.productType === 'GRD_HD');
+  }
+
+  public grd_hs(products: models.CMRProduct[]): models.CMRProduct[] {
+    return products
+      .filter(product => product.metadata.beamMode === 'IW')
+      .filter(product => product.metadata.productType === 'GRD_HS');
   }
 
   public downloadable(products: models.CMRProduct[]): models.CMRProduct[] {
@@ -165,11 +175,11 @@ export class BaselineResultsMenuComponent implements OnInit, OnDestroy {
       this.clearDispatchRestoreQueue(new queueStore.DownloadMetadata(AsfApiOutputFormat.METALINK), products, currentQueue);
     }
 
-    public queueAllOnDemand(products: models.CMRProduct[]): void {
+    public queueAllOnDemand(products: models.CMRProduct[], job_type: models.Hyp3JobType): void {
       const jobs = this.hyp3able(products).map(
         product => ({
           granules: [ product ],
-          job_type: models.Hyp3JobType.RTC_GAMMA
+          job_type
         })
       );
       this.store$.dispatch(new queueStore.AddJobs(jobs));

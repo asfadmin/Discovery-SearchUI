@@ -21,10 +21,11 @@
   .mat-list-base {
     display: flex !important;
     flex-wrap: wrap;
+    width: 100% !important;
   }
 
   .mat-list-text {
-    //max-width: 40%;
+    //width: 287px;
   }
 }
 
@@ -54,10 +55,31 @@
   //transform: scale(0.97);
 }
 
+.empty-queue {
+  display: block;
+  width: 100%;
+}
+
 .jobs-empty-message {
   text-align: center;
   font-size: 20px;
   color: $asf-primary-dark;
+  margin: 0 auto;
+  padding-top: 30px;
+}
+
+.jobs-search {
+  display: block;
+  width: 100%;
+  text-align: center;
+  font-size: 20px;
+  margin: 40px auto;
+}
+
+.not-logged-in {
+  font-size: small;
+  font-style: italic;
+  margin-top: 3px;
 }
 
 .jobs-empty-message-docs-link,
@@ -66,6 +88,7 @@
   text-align: center;
   font-size: 14px;
   color: $asf-blue;
-  margin-top: 10px;
+  padding-top-top: 10px;
+  margin: 0 auto;
 }
 

@@ -347,14 +347,32 @@ export class ScenesService {
       this.store$.select(getProductNameFilter),
     ]
     ).pipe(
-      map( ([scenes, searchType, productNameFilter]) => {
+      map(([scenes, searchType, productNameFilter]) => {
         if (searchType === SearchType.CUSTOM_PRODUCTS && !!productNameFilter) {
+          let fileIds: string[] = [];
+
+          if (productNameFilter.includes(',')) {
+            fileIds = productNameFilter.split(',');
+          } else {
+            fileIds.push(productNameFilter);
+          }
+
+          fileIds = fileIds
+            .map(id =>
+                id.toLowerCase()
+                .trim()
+                .split('.')[0]
+              )
+            .filter(id => id.length > 0);
+
           return scenes.filter(scene => {
-              const fileName = scene.metadata.fileName.toLowerCase();
+              const fileName = scene.metadata.fileName.toLowerCase().split('.')[0];
               const sourceGranule = scene.name.toLowerCase();
 
-              return fileName.includes(productNameFilter.toLowerCase())
-              || sourceGranule.includes(productNameFilter.toLowerCase());
+              return fileIds.some(id => fileName.includes(id) || sourceGranule.includes(id))
+              || fileIds.includes(fileName)
+              || fileIds.includes(sourceGranule)
+              || fileIds.includes(scene.id);
             }
           );
         }

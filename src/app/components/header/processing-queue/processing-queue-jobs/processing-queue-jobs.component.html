@@ -18,7 +18,7 @@
 
           <div matLine>
             <b>
-              {{ job.job_type }}
+              {{ job.job_type.name }}
             </b>
             <b>
               <span *ngIf="job.granules[0].bytes === 0">Virtual</span>
@@ -33,11 +33,12 @@
               <mat-icon>close</mat-icon>
             </button>
           </div>
-
       </mat-list-item>
-      <template #emptyQueue>
+    </ng-template>
+
+    <ng-template #emptyQueue>
+      <div class="empty-queue">
         <div class="jobs-empty-message">
-          <br><br>
           Your jobs queue is empty.
         </div>
         <div class="jobs-empty-message-docs-link">
@@ -45,20 +46,15 @@
             On Demand (HyP3) Documentation
           </a>
         </div>
-      </template>
-    </ng-template>
-
-    <ng-template #emptyQueue>
-      <div class="jobs-empty-message">
-        <br><br>
-        Your jobs queue is empty.
       </div>
-      <div class="jobs-empty-message-docs-link">
-        <a href="https://hyp3-docs.asf.alaska.edu/" target="_blank">
-          On Demand (HyP3) Documentation
-        </a>
+
+      <div class="jobs-search">
+        <button [disabled]="!isLoggedIn"
+                (click)="viewCustomProducts($event)" color="primary" mat-flat-button>
+          View Submitted Jobs
+        </button>
+        <p class="not-logged-in" *ngIf="!isLoggedIn">Sign in to view submitted jobs</p>
       </div>
     </ng-template>
-
   </mat-list>
 </div>

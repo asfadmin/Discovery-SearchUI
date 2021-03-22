@@ -142,10 +142,10 @@ button {
   resize: both;
   overflow: auto;
   background: $background-color;
-  width: 720px;
-  height: 500px;
-  min-width: 400px;
-  min-height: 400px;
+  width: 80vw;
+  height: 86vh;
+  min-width: 350px;
+  min-height: 500px;
 
 }
 
@@ -181,4 +181,13 @@ button {
 .mat-list-base .mat-list-item .mat-list-item-content,
 .mat-list-base .mat-list-option .mat-list-item-content {
   padding: 0 !important;
+}
+
+.on-demand-warning {
+  font-size: small;
+  font-style: italic;
+  color: $uaf-primary-blue;
+  position: fixed;
+  margin-top: -18px;
+  margin-left: 24px;
 }

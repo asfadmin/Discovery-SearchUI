@@ -23,8 +23,9 @@ $top-background-color: lighten(lightgrey, 10%);
 
 .help-header {
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   justify-content: center;
+  text-align: center;
 
   h1,
   h2,
