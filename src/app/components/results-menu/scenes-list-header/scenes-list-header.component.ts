@@ -211,7 +211,7 @@ export class ScenesListHeaderComponent implements OnInit, OnDestroy {
   }
 
   public hyp3able(products: models.CMRProduct[]): models.CMRProduct[] {
-    if(Array.isArray(products[0])) {
+    if (Array.isArray(products[0])) {
       return products.filter(pair => !pair[0].metadata.polarization.includes('Dual') && !pair[1].metadata.polarization.includes('Dual'));
     } else {
       return products.filter(product => !product.metadata.polarization.includes('Dual'));
