@@ -42,11 +42,11 @@
             <div fxLayout="row">
               <div>
                 <mat-button-toggle-group fxFlex="" name="layerType" class="mr-10">
-                  <mat-button-toggle (click)="onToggleS1RawData()" class="control-mat-button-toggle">
-                    <mat-icon
-                              class="clickable noselect list-icon"
-                              [class.material-icons-outlined]="showS1RawData"
-                              [matTooltip]="showS1RawData ? 'Hide raw data' : 'Show raw data'">
+                  <mat-button-toggle (click)="onToggleS1RawData()"
+                                     class="control-mat-button-toggle clickable noselect"
+                                     [matTooltip]="showS1RawData ? 'Hide raw data' : 'Show raw data'">
+                    <mat-icon class="list-icon"
+                              [class.material-icons-outlined]="showS1RawData">
                               remove_red_eye
                     </mat-icon>
                   </mat-button-toggle>
@@ -62,11 +62,11 @@
             <div fxLayout="row">
               <div>
                 <mat-button-toggle-group fxFlex="" name="layerType" class="mr-10">
-                  <mat-button-toggle (click)="onToggleExpiredData()" class="control-mat-button-toggle">
-                    <mat-icon
-                              class="clickable noselect list-icon"
-                              [class.material-icons-outlined]="showExpiredData"
-                              [matTooltip]="showExpiredData ? 'Hide expired products' : 'Show expired products'">
+                  <mat-button-toggle (click)="onToggleExpiredData()"
+                                     class="control-mat-button-toggle clickable noselect"
+                                     [matTooltip]="showExpiredData ? 'Hide expired products' : 'Show expired products'">
+                    <mat-icon class="list-icon"
+                              [class.material-icons-outlined]="showExpiredData">
                               remove_red_eye
                     </mat-icon>
                   </mat-button-toggle>
@@ -82,10 +82,10 @@
             <div fxLayout="row">
               <div>
                 <mat-button-toggle-group fxFlex="" name="layerType" class="mr-10">
-                  <mat-button-toggle (click)="onZoomToResults()" class="control-mat-button-toggle">
-                    <mat-icon
-                      class="clickable noselect list-icon"
-                      matTooltip="Zoom to results">
+                  <mat-button-toggle (click)="onZoomToResults()"
+                                     class="control-mat-button-toggle clickable noselect"
+                                     matTooltip="Zoom to results">
+                    <mat-icon class="list-icon">
                         settings_overscan
                     </mat-icon>
                   </mat-button-toggle>
@@ -100,12 +100,11 @@
             </div>
             <div fxLayout="row">
               <div>
-                <mat-button-toggle-group fxFlex="" name="layerType" class="mr-10">
-                  <mat-button-toggle class="control-mat-button-toggle">
-                    <mat-icon
-                      class="clickable noselect list-icon"
-                      matTooltip="Add all results to downloads"
-                      [matMenuTriggerFor]="addAllProducts">
+                <mat-button-toggle-group fxFlex="" name="layerType" class="mr-10 clickable noselect ">
+                  <mat-button-toggle class="control-mat-button-toggle"
+                                     [matMenuTriggerFor]="addAllProducts"
+                                     matTooltip="Add all results to downloads">
+                    <mat-icon class="list-icon">
                       add_shopping_cart
                     </mat-icon>
                   </mat-button-toggle>
@@ -123,12 +122,11 @@
             <div fxLayout="row">
               <div>
                 <mat-button-toggle-group fxFlex="" name="layerType" class="mr-10">
-                  <mat-button-toggle class="control-mat-button-toggle">
-                    <mat-icon
-                      class="clickable noselect list-icon"
-                      matTooltip="Add all results to On Demand queue"
-                      svgIcon="hyp3"
-                      [matMenuTriggerFor]="addAllOnDemand">
+                  <mat-button-toggle class="control-mat-button-toggle clickable noselect"
+                                     [matMenuTriggerFor]="addAllOnDemand"
+                                     matTooltip="Add all results to On Demand queue">
+                    <mat-icon class="list-icon"
+                      svgIcon="hyp3">
                     </mat-icon>
                   </mat-button-toggle>
                 </mat-button-toggle-group>
@@ -143,12 +141,10 @@
             <div fxLayout="row">
               <div>
                 <mat-button-toggle-group fxFlex="" name="layerType" class="mr-10">
-                  <mat-button-toggle class="control-mat-button-toggle">
-                    <mat-icon
-                      class="clickable noselect list-icon"
-                      matTooltip="Download data/metadata as"
-                      [matMenuTriggerFor]="ExportAll"
-                    >
+                  <mat-button-toggle class="control-mat-button-toggle clickable noselect"
+                                     [matMenuTriggerFor]="ExportAll"
+                                     matTooltip="Download data/metadata as">
+                    <mat-icon class="list-icon">
                       get_app
                     </mat-icon>
                   </mat-button-toggle>
@@ -166,10 +162,9 @@
                 <mat-button-toggle-group fxFlex="" name="layerType" class="mr-10">
                   <mat-button-toggle
                     (click)="onDownloadPairCSV()"
-                    class="control-mat-button-toggle">
-                      <mat-icon
-                        class="clickable noselect list-icon"
-                        matTooltip="Download Pair CSV">
+                    class="control-mat-button-toggle clickable noselect"
+                    matTooltip="Download Pair CSV">
+                      <mat-icon class="list-icon">
                         get_app
                       </mat-icon>
                   </mat-button-toggle>
