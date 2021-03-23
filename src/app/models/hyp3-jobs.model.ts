@@ -109,7 +109,7 @@ export const InsarGammaJobType: Hyp3JobType = {
 
 export const AutoRift: Hyp3JobType = {
   id: 'AUTORIFT',
-  name: 'AutoRift',
+  name: 'autoRIFT',
   numProducts: 1,
   productTypes: [{
     dataset: sentinel_1,
