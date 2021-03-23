@@ -36,8 +36,8 @@ import * as models from './models';
 export class AppComponent implements OnInit, OnDestroy {
   @ViewChild('sidenav', {static: true}) sidenav: MatSidenav;
 
-  private queueStateKey = 'asf-queue-state';
-  private customProductsQueueStateKey = 'asf-custom-products-queue-state';
+  private queueStateKey = 'asf-queue-state-v1';
+  private customProductsQueueStateKey = 'asf-custom-products-queue-state-v1';
 
   public shouldOmitSearchPolygon$ = this.store$.select(filterStore.getShouldOmitSearchPolygon);
   public isLoading$ = this.store$.select(searchStore.getIsLoading);
