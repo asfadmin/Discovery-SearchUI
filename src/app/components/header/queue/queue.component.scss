@@ -4,6 +4,7 @@ $header-height: 67px;
 $footer-height: 60px;
 $bottom-offset: 10px;
 $warn-msg-height: 27px;
+$warn-msg-mobile-height: 45px;
 $idk-pad: 21px;
 $background-color: $asf-primary-light;
 $color: $asf-primary-dark;
@@ -159,6 +160,11 @@ button {
 .dl-mat-dialog-content-warn {
   height: calc(100% - #{$header-height} - #{$footer-height} - #{$warn-msg-height} - #{$idk-pad});
   max-height: calc(100% - #{$header-height} - #{$footer-height} - #{$warn-msg-height} - #{$idk-pad});
+}
+
+.dl-mat-dialog-content-warn-mobile {
+  height: calc(100% - #{$header-height} - #{$footer-height} - #{$warn-msg-mobile-height} - #{$idk-pad});
+  max-height: calc(100% - #{$header-height} - #{$footer-height} - #{$warn-msg-mobile-height} - #{$idk-pad});
 }
 
 .dl-mat-dialog-actions {
