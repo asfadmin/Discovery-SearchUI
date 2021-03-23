@@ -3,6 +3,8 @@
 $header-height: 67px;
 $footer-height: 60px;
 $bottom-offset: 10px;
+$warn-msg-height: 27px;
+$idk-pad: 21px;
 $background-color: $asf-primary-light;
 $color: $asf-primary-dark;
 
@@ -77,13 +79,10 @@ $color: $asf-primary-dark;
 
 .dem-warning {
   font-size: 14px;
-  margin-top: 5px;
-  padding-top: 2px;
-  padding-right: 5px;
-  padding-bottom: 5px;
-  padding-left: 5px;
+  padding: 7px;
   color: $asf-blue;
   background-color: rgb(220, 220, 220);
+  width: 100%;
 }
 
 .dl-list-item-mobile {
@@ -150,11 +149,16 @@ button {
 }
 
 .dl-mat-dialog-content {
-  height: calc(100% - #{$header-height} - #{$footer-height} - 21px);
-  max-height: calc(100% - #{$header-height} - #{$footer-height} - 21px);
+  height: calc(100% - #{$header-height} - #{$footer-height} - #{$idk-pad});
+  max-height: calc(100% - #{$header-height} - #{$footer-height} - #{$idk-pad});
   background-color: white;
   padding: 0;
   margin: 0;
+}
+
+.dl-mat-dialog-content-warn {
+  height: calc(100% - #{$header-height} - #{$footer-height} - #{$warn-msg-height} - #{$idk-pad});
+  max-height: calc(100% - #{$header-height} - #{$footer-height} - #{$warn-msg-height} - #{$idk-pad});
 }
 
 .dl-mat-dialog-actions {
