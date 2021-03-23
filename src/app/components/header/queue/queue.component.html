@@ -35,7 +35,8 @@
 </div>
 
 <mat-dialog-content class="dl-mat-dialog-content"
-                    [class.dl-mat-dialog-content-warn]="showDemWarning">
+                    [class.dl-mat-dialog-content-warn]="showDemWarning"
+                    [class.dl-mat-dialog-content-warn-mobile]="showDemWarning && breakpoint === breakpoints.MOBILE">
           <mat-list role="list" class="dl-list">
             <ng-container *ngIf="products$ | async as products">
               <mat-list-item
