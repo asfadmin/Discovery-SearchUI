@@ -219,11 +219,24 @@ export class ScenesListHeaderComponent implements OnInit, OnDestroy {
     return products.filter(product => this.isDownloadable(product));
   }
 
-  public hyp3able(products: models.CMRProduct[]): models.CMRProduct[] {
+  public hyp3able(products): models.CMRProduct[] {
     if (Array.isArray(products[0])) {
-      return products.filter(pair => !pair[0].metadata.polarization.includes('Dual') && !pair[1].metadata.polarization.includes('Dual'));
+      return products.filter(pair => {
+          if (pair.length !== 2) {
+            return false;
+          }
+          if (pair[0].metadata.polarization !== null && pair[1].metadata.polarization !== null) {
+            return !pair[0].metadata.polarization.includes('Dual') && !pair[1].metadata.polarization.includes('Dual');
+          }
+          return false;
+        });
     } else {
-      return products.filter(product => !product.metadata.polarization.includes('Dual'));
+      return products.filter(product => {
+        if (product.metadata.polarization === null) {
+          return false;
+        }
+        return !product.metadata.polarization.includes('Dual');
+      });
     }
   }
 
