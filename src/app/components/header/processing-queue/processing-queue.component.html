@@ -33,6 +33,12 @@
        (click)="onSetSelectedJobType(hyp3Job.jobType)"
        [color]="selectedJobTypeId === hyp3Job.jobType.id ? 'secondary' : 'primary'">
         {{ hyp3Job.jobType.name }} ({{ hyp3Job.jobs.length }})
+        <button *ngIf="previousQueue === null"
+        (click)="onClearSingleJobQueue(hyp3Job.jobType)"
+        mat-button>
+       <mat-icon>delete</mat-icon>
+       Clear
+     </button>
       </button>
     </ng-container>
   </div>

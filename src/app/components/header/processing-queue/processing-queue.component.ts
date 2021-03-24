@@ -271,6 +271,11 @@ export class ProcessingQueueComponent implements OnInit {
     this.selectedJobTypeId = null;
   }
 
+  public onClearSingleJobQueue(jobType: models.Hyp3JobType): void {
+    console.log(jobType);
+    this.store$.dispatch(new queueStore.ClearProcessingQueueByJobType(new Set<string>(jobType.id)));
+  }
+
   public onRestoreJobQueue(): void {
     this.selectedJobTypeId = this.previousQueue.jobTypeId;
     this.store$.dispatch(new queueStore.AddJobs(this.previousQueue.jobs));
