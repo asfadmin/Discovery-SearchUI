@@ -87,13 +87,19 @@ export class PairService {
         const P2StartDate = new Date(scene.metadata.date.toISOString());
         const P2StopDate = new Date(scene.metadata.stopDate.toISOString());
 
-        const p1DayOfYear = this.getDayOfYear(P1StartDate);
-        const p2DayOfYear = this.getDayOfYear(P2StopDate);
+        // const p1DayOfYear = this.getDayOfYear(P1StartDate);
+        // const p2DayOfYear = this.getDayOfYear(P2StopDate);
 
         if (!!season.start && !!season.end) {
-          if (p1DayOfYear < season.start || p2DayOfYear > season.end) {
-            return;
-          }
+          // if ( P1StartDate < P2StartDate) {
+            if (!this.dayInSeason(P1StartDate, P1StopDate, P2StartDate, P2StopDate, season)) {
+              return;
+            }
+        // } else {
+        //   if (!this.dayInSeason(P2StartDate, P2StopDate, P1StartDate, P1StopDate, season)) {
+        //     return;
+        //   }
+        // }
         }
 
         if (tempDiff > tempThreshold || perpDiff > perpThreshold) {
@@ -117,6 +123,28 @@ export class PairService {
     });
 
     return pairs;
+  }
+
+  private dayInSeason(P1StartDate: Date, P1EndDate: Date, P2StartDate: Date, P2EndDate: Date, season) {
+    if (season.start < season.end) {
+        return (
+          season.start <= this.getDayOfYear(P1StartDate)
+          && season.end >= this.getDayOfYear(P1EndDate)
+          && season.start <= this.getDayOfYear(P2StartDate)
+          && season.end >= this.getDayOfYear(P2EndDate)
+        );
+      } else {
+        return !(
+          season.start >= this.getDayOfYear(P1StartDate)
+          && season.start >= this.getDayOfYear(P1EndDate)
+          && season.end <= this.getDayOfYear(P1StartDate)
+          && season.end <= this.getDayOfYear(P1EndDate)
+          && season.start >= this.getDayOfYear(P2StartDate)
+          && season.start >= this.getDayOfYear(P2EndDate)
+          && season.end <= this.getDayOfYear(P2StartDate)
+          && season.end <= this.getDayOfYear(P2EndDate)
+        );
+      }
   }
 
   private getDayOfYear(date: Date) {
