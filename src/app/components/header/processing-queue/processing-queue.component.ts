@@ -272,8 +272,31 @@ export class ProcessingQueueComponent implements OnInit {
   }
 
   public onClearSingleJobQueue(jobType: models.Hyp3JobType): void {
-    console.log(jobType);
-    this.store$.dispatch(new queueStore.ClearProcessingQueueByJobType(new Set<string>(jobType.id)));
+
+    if (jobType.id === this.selectedJobTypeId) {
+
+      let TabIdx = this.jobTypesWithQueued.findIndex((queuedJobType) => {return queuedJobType.jobType === jobType});
+
+      if(this.jobTypesWithQueued.length > TabIdx + 1) {
+        ++TabIdx;
+      } else if (TabIdx > 0) {
+        --TabIdx;
+      } else {
+        TabIdx = -1;
+      }
+
+      if(TabIdx === -1) {
+        this.selectedJobTypeId = null;
+      } else {
+        this.onSetSelectedJobType(this.jobTypesWithQueued[TabIdx].jobType)
+      }
+    }
+
+    this.store$.dispatch(new queueStore.ClearProcessingQueueByJobType(new Set<string>([jobType.id])));
+    if (this.allJobs.length === 0) {
+      this.dialogRef.close();
+    }
+    
   }
 
   public onRestoreJobQueue(): void {

@@ -33,12 +33,6 @@
        (click)="onSetSelectedJobType(hyp3Job.jobType)"
        [color]="selectedJobTypeId === hyp3Job.jobType.id ? 'secondary' : 'primary'">
         {{ hyp3Job.jobType.name }} ({{ hyp3Job.jobs.length }})
-        <button *ngIf="previousQueue === null"
-        (click)="onClearSingleJobQueue(hyp3Job.jobType)"
-        mat-button>
-       <mat-icon>delete</mat-icon>
-       Clear
-     </button>
       </button>
     </ng-container>
   </div>
@@ -135,11 +129,25 @@
     <div class="footer-clear">
 
       <button *ngIf="previousQueue === null"
-         (click)="onClearJobQueue()"
+          [matMenuTriggerFor]="clearJobQueue"
          mat-button>
         <mat-icon>delete</mat-icon>
         <span>Clear</span>
       </button>
+      <mat-menu #clearJobQueue>
+        <button *ngIf="previousQueue === null"
+        (click)="onClearJobQueue()"
+        mat-button>
+          <span>Clear All Processing Types</span>
+        </button>
+        <div *ngFor="let hyp3Job of jobTypesWithQueued">
+            <button
+            (click)="onClearSingleJobQueue(hyp3Job.jobType)"
+            mat-button>
+           Clear {{ hyp3Job.jobType.name }} ({{ hyp3Job.jobs.length }})
+         </button>
+        </div>
+      </mat-menu>
 
       <button *ngIf="previousQueue !== null"
          (click)="onRestoreJobQueue()"
