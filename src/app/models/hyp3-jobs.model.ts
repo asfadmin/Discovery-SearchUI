@@ -71,7 +71,7 @@ export const RtcGammaJobType: Hyp3JobType = {
 
 export const InsarGammaJobType: Hyp3JobType = {
   id: 'INSAR_GAMMA',
-  name: 'InSar GAMMA',
+  name: 'InSAR GAMMA',
   numProducts: 2,
   productTypes: [{
     dataset: sentinel_1,
