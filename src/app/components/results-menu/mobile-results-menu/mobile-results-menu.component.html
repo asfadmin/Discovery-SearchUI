@@ -101,9 +101,16 @@
   <div *ngIf="view === Views.CHART" class="h100 w100">
     <mat-card class="h100 w100 mp0 no-box-shadow" fxFlex="100" fxFlex>
       <mat-card-subtitle class="header">
-        <button (click)="onToggleFiltersMenu()" mat-button>
-          Baseline Criteria <mat-icon>more_horiz</mat-icon>
-        </button>
+        <div class="baseline-header-button-group">
+          <mat-button-toggle-group fxFlex="" name="baselineCriteria"
+                                   class="criteria-button-group baseline-criteria-button-toggle-group">
+            <mat-button-toggle class="control-mat-button-toggle baseline-criteria-button-toggle"
+                               (click)="onToggleFiltersMenu()"
+            >
+              Baseline Criteria<mat-icon class="more-horiz">more_horiz</mat-icon>
+            </mat-button-toggle>
+          </mat-button-toggle-group>
+        </div>
       </mat-card-subtitle>
       <app-baseline-chart></app-baseline-chart>
     </mat-card>
@@ -111,7 +118,18 @@
 
   <div *ngIf="view === Views.SBAS" class="h100 w100">
     <mat-card class="h100 w100 mp0 no-box-shadow" fxFlex="100" fxFlex>
-
+      <mat-card-subtitle class="header">
+        <div class="baseline-header-button-group">
+          <mat-button-toggle-group fxFlex="" name="SBASCriteria"
+                                   class="criteria-button-group sbas-criteria-button-toggle-group">
+            <mat-button-toggle class="control-mat-button-toggle sbas-criteria-button-toggle"
+                               (click)="onToggleFiltersMenu()"
+            >
+              SBAS Criteria<mat-icon class="more-horiz">more_horiz</mat-icon>
+            </mat-button-toggle>
+          </mat-button-toggle-group>
+        </div>
+      </mat-card-subtitle>
       <div class="sbas-chart-row">
         <div id="sbas-chart-column" class="sbas-column-2">
           <app-sbas-chart></app-sbas-chart>

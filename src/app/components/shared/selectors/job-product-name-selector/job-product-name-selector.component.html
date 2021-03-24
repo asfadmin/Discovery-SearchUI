@@ -1,0 +1,10 @@
+<mat-form-field>
+    <mat-label>Product/Source Scene</mat-label>
+    <textarea *ngIf="!headerView" matInput placeholder="S1A..." 
+    (input)="onFilterProductName($event.target.value)"
+    [value]="productNameFilter"
+    [rows]="3"></textarea>
+    <input *ngIf="headerView" matInput placeholder="S1A..." 
+    (input)="onFilterProductName($event.target.value)"
+    [value]="productNameFilter">  
+</mat-form-field>

@@ -14,24 +14,31 @@ import { PipesModule } from '@pipes';
 import { CopyToClipboardModule } from '@components/shared/copy-to-clipboard';
 
 import { QueueComponent } from './queue.component';
+import { ResizableModule } from 'angular-resizable-element';
+import { DragDropModule } from '@angular/cdk/drag-drop';
+import { MatDialogModule } from '@angular/material/dialog';
+import { AngularResizedEventModule } from 'angular-resize-event';
 
 @NgModule({
   declarations: [
     QueueComponent
   ],
-  imports: [
-    CommonModule,
-    MatMenuModule,
-    ScrollingModule,
-    TruncateModule,
-    ClipboardModule,
-    FontAwesomeModule,
-
-    CopyToClipboardModule,
-    MatSharedModule,
-    PipesModule,
-    FlexLayoutModule,
-  ],
+    imports: [
+        CommonModule,
+        MatMenuModule,
+        ScrollingModule,
+        TruncateModule,
+        ClipboardModule,
+        FontAwesomeModule,
+        CopyToClipboardModule,
+        MatSharedModule,
+        PipesModule,
+        FlexLayoutModule,
+        ResizableModule,
+        DragDropModule,
+        MatDialogModule,
+        AngularResizedEventModule
+    ],
   exports: [
     QueueComponent
   ]

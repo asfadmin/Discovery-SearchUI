@@ -41,6 +41,7 @@ export class SearchService {
       this.store$.dispatch(new scenesStore.ClearBaseline());
       this.store$.dispatch(new filterStore.ClearPerpendicularRange());
       this.store$.dispatch(new filterStore.ClearTemporalRange());
+      this.store$.dispatch(new filterStore.ClearSeason());
       if (breakpoint !== models.Breakpoints.MOBILE) {
         this.store$.dispatch(new uiStore.CloseFiltersMenu());
       }
@@ -48,10 +49,12 @@ export class SearchService {
       this.store$.dispatch(new scenesStore.ClearBaseline());
       this.store$.dispatch(new filterStore.ClearPerpendicularRange());
       this.store$.dispatch(new filterStore.ClearTemporalRange());
+      this.store$.dispatch(new filterStore.ClearSeason());
     } else if (searchType === models.SearchType.CUSTOM_PRODUCTS) {
       this.store$.dispatch(new filterStore.SetProjectName(''));
       this.store$.dispatch(new filterStore.SetJobStatuses([]));
       this.store$.dispatch(new filterStore.ClearDateRange());
+      this.store$.dispatch(new filterStore.SetProductNameFilter(''));
     }
   }
 

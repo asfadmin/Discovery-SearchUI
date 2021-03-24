@@ -45,7 +45,7 @@
 }
 
 .div-flex {
-  flex: 1 1 auto;
+  flex: 0.9 1 auto;
 }
 
 .mobile-size .div-flex {
@@ -64,8 +64,8 @@
 }
 
 .cart-flex-field {
-  margin-left: 10px;
-  flex: 1 0 60px;
+  margin-left: 5px;
+  flex: 1 0 auto;
   float: left;
   text-align: left;
 }

@@ -12,7 +12,7 @@ import {
 } from '@store/scenes/scenes.reducer';
 import {
   getTemporalRange, getPerpendicularRange, getDateRange,
-  getProductTypes, getProjectName, getJobStatuses
+  getProductTypes, getProjectName, getJobStatuses, getProductNameFilter, getSeason
 } from '@store/filters/filters.reducer';
 import { getShowS1RawData, getShowExpiredData } from '@store/ui/ui.reducer';
 import { getSearchType } from '@store/search/search.reducer';
@@ -33,18 +33,21 @@ export class ScenesService {
   ) { }
 
   public products$(): Observable<CMRProduct[]> {
-    return this.hideS1Raw$(
+    return (
+      this.hideS1Raw$(
       this.hideExpired$(
       this.projectNameFilter$(
       this.jobStatusFilter$(
       this.filterBaselineValues$(
       this.filterByDate$(
         this.store$.select(getAllProducts)
-      ))))));
+      ))))))
+    );
   }
 
   public scenes$(): Observable<CMRProduct[]> {
     return (
+      this.filterByProductName$(
       this.projectNameFilter$(
       this.hideExpired$(
       this.jobStatusFilter$(
@@ -52,7 +55,7 @@ export class ScenesService {
       this.filterBaselineValues$(
       this.filterByDate$(
           this.store$.select(getScenes)
-    )))))));
+    ))))))));
   }
 
   public matchHyp3Jobs$(scenes$: Observable<CMRProduct[]>): Observable<Hyp3JobWithScene[]> {
@@ -221,13 +224,15 @@ export class ScenesService {
       this.store$.select(getPerpendicularRange),
       this.store$.select(getDateRange),
       this.store$.select(getSearchType),
+      this.store$.select(getSeason),
     ).pipe(
-      map(([scenes, tempRange, perpRange, dateRange, searchType]) => {
+      map(([scenes, tempRange, perpRange, dateRange, searchType, season]) => {
         return (searchType === SearchType.BASELINE) ?
           scenes.filter(scene =>
             this.valInRange(scene.metadata.temporal, tempRange) &&
             this.valInRange(scene.metadata.perpendicular, perpRange) &&
-            this.dateInRange(scene.metadata.date, dateRange)
+            this.dateInRange(scene.metadata.date, dateRange) &&
+            this.dayInSeason(scene.metadata.date, scene.metadata.stopDate, season)
           ) :
           scenes;
       })
@@ -245,7 +250,6 @@ export class ScenesService {
           if (searchType !== SearchType.CUSTOM_PRODUCTS) {
             return scenes;
           }
-
 
           const range = {
             start: moment(dateRange.start),
@@ -305,6 +309,27 @@ export class ScenesService {
     );
   }
 
+  private dayInSeason(startDate: moment.Moment, endDate: moment.Moment, season: Range<number | null>) {
+    if (season.start < season.end) {
+        return (
+          season.start <= this.getDayOfYear(new Date(startDate.toISOString()))
+          && season.end >= this.getDayOfYear(new Date(endDate.toISOString()))
+        );
+      } else {
+        return !(
+          season.start >= this.getDayOfYear(new Date(startDate.toISOString()))
+          && season.start >= this.getDayOfYear(new Date(endDate.toISOString()))
+          && season.end <= this.getDayOfYear(new Date(startDate.toISOString()))
+          && season.end <= this.getDayOfYear(new Date(endDate.toISOString()))
+        );
+      }
+  }
+
+  private getDayOfYear(date: Date) {
+    const temp = new Date(date.getFullYear(), 0, 0);
+    return Math.floor(date.getTime() - temp.getTime()) / 1000 / 60 / 60 / 24;
+  }
+
   private sceneHasBrowse(scene: CMRProduct): boolean {
     return scene.browses.filter(
       browse => !browse.includes('no-browse')
@@ -336,5 +361,48 @@ export class ScenesService {
     const expiration = moment.duration(expiration_time.diff(current));
 
     return Math.floor(expiration.asDays());
+  }
+
+  private filterByProductName$(scenes$: Observable<CMRProduct[]>): Observable<CMRProduct[]> {
+    return combineLatest([
+      scenes$,
+      this.store$.select(getSearchType),
+      this.store$.select(getProductNameFilter),
+    ]
+    ).pipe(
+      map(([scenes, searchType, productNameFilter]) => {
+        if (searchType === SearchType.CUSTOM_PRODUCTS && !!productNameFilter) {
+          let fileIds: string[] = [];
+
+          if (productNameFilter.includes(',')) {
+            fileIds = productNameFilter.split(',');
+          } else {
+            fileIds.push(productNameFilter);
+          }
+
+          fileIds = fileIds
+            .map(id =>
+                id.toLowerCase()
+                .trim()
+                .split('.')[0]
+              )
+            .filter(id => id.length > 0);
+
+          return scenes.filter(scene => {
+              const fileName = scene.metadata.fileName.toLowerCase().split('.')[0];
+              const sourceGranule = scene.name.toLowerCase();
+
+              return fileIds.some(id => fileName.includes(id) || sourceGranule.includes(id))
+              || fileIds.includes(fileName)
+              || fileIds.includes(sourceGranule)
+              || fileIds.includes(scene.id);
+            }
+          );
+        }
+
+        return scenes;
+      }
+      )
+    );
   }
 }

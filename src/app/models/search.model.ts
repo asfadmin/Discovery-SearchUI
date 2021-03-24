@@ -36,6 +36,7 @@ export interface BaselineFiltersType {
 export interface SbasFiltersType {
   master: string | null;
 
+  dateRange: Range<null | Date>;
   temporal: number;
   perpendicular: number;
   customPairIds: string[][];

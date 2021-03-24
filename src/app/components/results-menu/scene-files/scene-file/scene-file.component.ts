@@ -121,7 +121,7 @@ export class SceneFileComponent {
   public addRtcToProcessingQueue(): void {
     this.queueHyp3Job.emit({
       granules: [ this.product ],
-      job_type: models.Hyp3JobType.RTC_GAMMA
+      job_type: models.hyp3JobTypes.RTC_GAMMA
     });
   }
 

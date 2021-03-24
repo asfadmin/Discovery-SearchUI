@@ -69,6 +69,9 @@ export enum FiltersActionType {
   SET_MAX_RESULTS = '[Filters] Set Max Results',
   SET_SAVED_SEARCH = '[Filters] Set Saved Search',
   SET_PROJECT_NAME = '[Filters] Set Project Name',
+
+  SET_PRODUCT_NAME_FILTER = '[Filters] Set Product Name Filter',
+  CLEAR_PRODUCT_NAME_FILTER = '[Filters] Clear Product Name Filter',
 }
 
 export class SetState implements Action {
@@ -329,6 +332,17 @@ export class SetProjectName implements Action {
   constructor(public payload: string) {}
 }
 
+export class SetProductNameFilter implements Action {
+  public readonly type = FiltersActionType.SET_PRODUCT_NAME_FILTER;
+
+  constructor(public payload: string) {}
+}
+
+export class ClearProductNameFilter implements Action {
+  public readonly type = FiltersActionType.CLEAR_PRODUCT_NAME_FILTER;
+
+  constructor() {}
+}
 
 export type FiltersActions =
   | SetState
@@ -377,4 +391,6 @@ export type FiltersActions =
   | SetSavedSearch
   | ClearSelectedMission
   | SetMaxResults
-  | SetProjectName;
+  | SetProjectName
+  | SetProductNameFilter
+  | ClearProductNameFilter;

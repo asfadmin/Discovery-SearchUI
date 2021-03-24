@@ -4,6 +4,7 @@ import * as moment from 'moment';
 
 import * as services from '@services';
 import * as models from '@models';
+import { QueuedHyp3Job } from '@models';
 
 @Component({
   selector: 'app-scene',
@@ -19,10 +20,12 @@ export class SceneComponent implements OnInit {
   @Input() offsets: {temporal: 0, perpendicular: number};
 
   @Input() isQueued: boolean;
+  @Input() jobQueued: boolean;
   @Input() numQueued: number;
 
   @Output() zoomTo = new EventEmitter();
   @Output() toggleScene = new EventEmitter();
+  @Output() ToggleOnDemandScene: EventEmitter<QueuedHyp3Job> = new EventEmitter();
 
   public breakpoint: models.Breakpoints;
   public breakpoints = models.Breakpoints;
@@ -52,6 +55,14 @@ export class SceneComponent implements OnInit {
     this.toggleScene.emit();
   }
 
+  public onToggleOnDemandScene(): void {
+    this.ToggleOnDemandScene.emit({
+      granules: [ this.scene ],
+      job_type: models.hyp3JobTypes.RTC_GAMMA
+    } as QueuedHyp3Job);
+    this.jobQueued = !this.jobQueued;
+  }
+
   public isDownloadable(product: models.CMRProduct): boolean {
     return (
       !product.metadata.job ||
@@ -60,6 +71,18 @@ export class SceneComponent implements OnInit {
         !this.isFailed(product.metadata.job) &&
         !this.isRunning(product.metadata.job) &&
         !this.isExpired(product.metadata.job)
+      )
+    );
+  }
+
+  public isProcessable(product: models.CMRProduct): boolean {
+    return (
+      product.metadata.beamMode === 'IW' &&
+      (
+        product.metadata.productType === 'GRD_HD' ||
+        product.metadata.productType === 'GRD_HS' ||
+        product.metadata.productType === 'SLC' &&
+        !product.metadata.polarization.includes('Dual')
       )
     );
   }

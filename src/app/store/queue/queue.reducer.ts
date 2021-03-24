@@ -123,6 +123,20 @@ export function queueReducer(state = initState, action: QueueActions): QueueStat
       };
     }
 
+    case QueueActionType.CLEAR_PROCESSING_QUEUE_BY_JOB_TYPE: {
+      const jobs = [...state.customJobs];
+      const jobTypes = action.payload;
+
+      const customJobs = jobs.filter(
+        job => !jobTypes.has(job.job_type.id)
+      );
+
+      return {
+        ...state,
+        customJobs
+      };
+    }
+
     case QueueActionType.ADD_JOB: {
       const jobs = [...state.customJobs];
 
@@ -241,3 +255,17 @@ export const getQueuedJobs = createSelector(
   (state: QueueState) => state.customJobs
 );
 
+export const getQueuedJobTypes = createSelector(
+  getQueueState,
+  (state: QueueState) => {
+
+    const jobTypeDict = state.customJobs
+      .map(job => job.job_type)
+      .reduce((jobTypes, jobType) => {
+        jobTypes[jobType.id] = jobType;
+        return jobTypes;
+      }, {});
+
+    return (<any>Object.values(jobTypeDict));
+  }
+);

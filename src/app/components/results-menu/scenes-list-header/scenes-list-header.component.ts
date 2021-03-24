@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { saveAs } from 'file-saver';
 import * as moment from 'moment';
 
@@ -13,7 +13,6 @@ import * as queueStore from '@store/queue';
 import * as searchStore from '@store/search';
 import * as filtersStore from '@store/filters';
 
-
 import {
   MapService, ScenesService, ScreenSizeService,
   PairService
@@ -27,7 +26,7 @@ import { AsfApiOutputFormat } from '@models';
   templateUrl: './scenes-list-header.component.html',
   styleUrls: ['./scenes-list-header.component.scss']
 })
-export class ScenesListHeaderComponent implements OnInit {
+export class ScenesListHeaderComponent implements OnInit, OnDestroy {
   public totalResultCount$ = this.store$.select(searchStore.getTotalResultCount);
   public numberOfScenes$ = this.store$.select(scenesStore.getNumberOfScenes);
   public numberOfProducts$ = this.store$.select(scenesStore.getNumberOfProducts);
@@ -57,6 +56,10 @@ export class ScenesListHeaderComponent implements OnInit {
   public breakpoints = models.Breakpoints;
 
   private subs = new SubSink();
+
+  public RTC = models.hyp3JobTypes.RTC_GAMMA;
+  public InSAR = models.hyp3JobTypes.INSAR_GAMMA;
+  public AutoRift = models.hyp3JobTypes.AUTORIFT;
 
   constructor(
     private store$: Store<AppState>,
@@ -193,19 +196,48 @@ export class ScenesListHeaderComponent implements OnInit {
     this.store$.dispatch(new queueStore.AddItems(products));
   }
 
-  public queueAllOnDemand(products: models.CMRProduct[]): void {
-    const jobs = products.map(
-      product => ({
-        granules: [ product ],
-        job_type: models.Hyp3JobType.RTC_GAMMA
-      })
-    );
+  public queueAllOnDemand(products: models.CMRProduct[], job_type: models.Hyp3JobType): void {
+    let jobs;
+    if (Array.isArray(products[0])) {
+        jobs = this.hyp3able(products).map( pair => ({
+          granules: pair,
+          job_type
+        })
+      );
+    } else {
+      jobs = this.hyp3able(products).map( product => ({
+          granules: [ product ],
+          job_type
+        })
+      );
+    }
 
     this.store$.dispatch(new queueStore.AddJobs(jobs));
   }
 
   public downloadable(products: models.CMRProduct[]): models.CMRProduct[] {
     return products.filter(product => this.isDownloadable(product));
+  }
+
+  public hyp3able(products): models.CMRProduct[] {
+    if (Array.isArray(products[0])) {
+      return products.filter(pair => {
+          if (pair.length !== 2) {
+            return false;
+          }
+          if (pair[0].metadata.polarization !== null && pair[1].metadata.polarization !== null) {
+            return !pair[0].metadata.polarization.includes('Dual') && !pair[1].metadata.polarization.includes('Dual');
+          }
+          return false;
+        });
+    } else {
+      return products.filter(product => {
+        if (product.metadata.polarization === null) {
+          return false;
+        }
+        return !product.metadata.polarization.includes('Dual');
+      });
+    }
   }
 
   public slc(products: models.CMRProduct[]): models.CMRProduct[] {
@@ -225,7 +257,6 @@ export class ScenesListHeaderComponent implements OnInit {
       .filter(product => product.metadata.beamMode === 'IW')
       .filter(product => product.metadata.productType === 'GRD_HS');
   }
-
 
   public queueSBASProducts(products: models.CMRProduct[]): void {
     this.store$.dispatch(new queueStore.AddItems(products));
@@ -330,5 +361,9 @@ export class ScenesListHeaderComponent implements OnInit {
     const expiration = moment.duration(expiration_time.diff(current));
 
     return Math.floor(expiration.asDays());
+  }
+
+  ngOnDestroy(): void {
+    this.subs.unsubscribe();
   }
 }

@@ -1,6 +1,7 @@
 <div *ngIf="breakpoint$ | async as breakpoint">
   <ng-container *ngIf="breakpoint > breakpoints.MOBILE">
-    <button (click)="onOpenProcessingQueue()"
+    <button
+        [matMenuTriggerFor]="onDemandQueue"
         [@tada]="qOnDemandState"
         class="spacing nav-icon-buttons" color="basic"
         matTooltip="On Demand Queue"
@@ -17,6 +18,18 @@
       <div class="text-under faint-text">On Demand</div>
     </button>
 
+    <mat-menu #onDemandQueue="matMenu">
+      <button
+      (click)="onOpenProcessingQueue()"
+      mat-menu-item>On Demand Queue</button>
+      <button mat-menu-item
+      (click) = "onSetSearchTypeOnDemand()"
+      [disabled]="!isLoggedIn">Submitted Products
+      </button>
+      <button mat-menu-item (click)="onOpenOnDemandDocs()">
+        On Demand (HyP3) Docs
+      </button>
+    </mat-menu>
     <button
       (click)="onOpenDownloadQueue()"
       [@tada]="qProdState"
@@ -64,7 +77,7 @@
 
   <ng-container *ngIf="breakpoint === breakpoints.MOBILE">
     <mat-icon
-      (click)="onOpenProcessingQueue()"
+      [matMenuTriggerFor]="onDemandQueue"
       [@tada]="qOnDemandState"
       class="mobile-icon-spacing"
       matTooltip="On Demand Queue"
@@ -75,6 +88,18 @@
       matBadgeOverlap="true"
       matBadgeSize="small">
     </mat-icon>
+
+    <mat-menu #onDemandQueue="matMenu">
+      <button
+      (click)="onOpenProcessingQueue()"
+      mat-menu-item>On Demand Queue</button>
+      <button mat-menu-item
+      (click) = "onSetSearchTypeOnDemand()"
+      [disabled]="!isLoggedIn">Submitted Products</button>
+      <button mat-menu-item (click)="onOpenOnDemandDocs()">
+        On Demand (HyP3) Docs
+      </button>
+    </mat-menu>
 
     <mat-icon
       (click)="onOpenDownloadQueue()"

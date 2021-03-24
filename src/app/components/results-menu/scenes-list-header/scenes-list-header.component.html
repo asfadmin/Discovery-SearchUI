@@ -42,11 +42,11 @@
             <div fxLayout="row">
               <div>
                 <mat-button-toggle-group fxFlex="" name="layerType" class="mr-10">
-                  <mat-button-toggle (click)="onToggleS1RawData()" class="control-mat-button-toggle">
-                    <mat-icon
-                              class="clickable noselect list-icon"
-                              [class.material-icons-outlined]="showS1RawData"
-                              [matTooltip]="showS1RawData ? 'Hide raw data' : 'Show raw data'">
+                  <mat-button-toggle (click)="onToggleS1RawData()"
+                                     class="control-mat-button-toggle clickable noselect"
+                                     [matTooltip]="showS1RawData ? 'Hide raw data' : 'Show raw data'">
+                    <mat-icon class="list-icon"
+                              [class.material-icons-outlined]="showS1RawData">
                               remove_red_eye
                     </mat-icon>
                   </mat-button-toggle>
@@ -62,11 +62,11 @@
             <div fxLayout="row">
               <div>
                 <mat-button-toggle-group fxFlex="" name="layerType" class="mr-10">
-                  <mat-button-toggle (click)="onToggleExpiredData()" class="control-mat-button-toggle">
-                    <mat-icon
-                              class="clickable noselect list-icon"
-                              [class.material-icons-outlined]="showExpiredData"
-                              [matTooltip]="showExpiredData ? 'Hide expired products' : 'Show expired products'">
+                  <mat-button-toggle (click)="onToggleExpiredData()"
+                                     class="control-mat-button-toggle clickable noselect"
+                                     [matTooltip]="showExpiredData ? 'Hide expired products' : 'Show expired products'">
+                    <mat-icon class="list-icon"
+                              [class.material-icons-outlined]="showExpiredData">
                               remove_red_eye
                     </mat-icon>
                   </mat-button-toggle>
@@ -82,10 +82,10 @@
             <div fxLayout="row">
               <div>
                 <mat-button-toggle-group fxFlex="" name="layerType" class="mr-10">
-                  <mat-button-toggle (click)="onZoomToResults()" class="control-mat-button-toggle">
-                    <mat-icon
-                      class="clickable noselect list-icon"
-                      matTooltip="Zoom to results">
+                  <mat-button-toggle (click)="onZoomToResults()"
+                                     class="control-mat-button-toggle clickable noselect"
+                                     matTooltip="Zoom to results">
+                    <mat-icon class="list-icon">
                         settings_overscan
                     </mat-icon>
                   </mat-button-toggle>
@@ -100,12 +100,11 @@
             </div>
             <div fxLayout="row">
               <div>
-                <mat-button-toggle-group fxFlex="" name="layerType" class="mr-10">
-                  <mat-button-toggle class="control-mat-button-toggle">
-                    <mat-icon
-                      class="clickable noselect list-icon"
-                      matTooltip="Add all results to downloads"
-                      [matMenuTriggerFor]="addAllProducts">
+                <mat-button-toggle-group fxFlex="" name="layerType" class="mr-10 clickable noselect ">
+                  <mat-button-toggle class="control-mat-button-toggle"
+                                     [matMenuTriggerFor]="addAllProducts"
+                                     matTooltip="Add all results to downloads">
+                    <mat-icon class="list-icon">
                       add_shopping_cart
                     </mat-icon>
                   </mat-button-toggle>
@@ -115,8 +114,7 @@
           </div>
 
           <div *ngIf="
-            searchType !== SearchTypes.CUSTOM_PRODUCTS &&
-            (slc(products).length > 0 || grd_hd(products).length > 0 || grd_hs(products).length > 0)"
+            searchType !== SearchTypes.CUSTOM_PRODUCTS"
             fxFlex="" class="list-button-group">
             <div fxLayout="row" fxLayoutAlign="center" class="button-group-label">
               <label>On Demand</label>
@@ -124,12 +122,11 @@
             <div fxLayout="row">
               <div>
                 <mat-button-toggle-group fxFlex="" name="layerType" class="mr-10">
-                  <mat-button-toggle class="control-mat-button-toggle">
-                    <mat-icon
-                      class="clickable noselect list-icon"
-                      matTooltip="Add all results to On Demand queue"
-                      svgIcon="hyp3"
-                      [matMenuTriggerFor]="addAllOnDemand">
+                  <mat-button-toggle class="control-mat-button-toggle clickable noselect"
+                                     [matMenuTriggerFor]="addAllOnDemand"
+                                     matTooltip="Add all results to On Demand queue">
+                    <mat-icon class="list-icon"
+                      svgIcon="hyp3">
                     </mat-icon>
                   </mat-button-toggle>
                 </mat-button-toggle-group>
@@ -144,12 +141,10 @@
             <div fxLayout="row">
               <div>
                 <mat-button-toggle-group fxFlex="" name="layerType" class="mr-10">
-                  <mat-button-toggle class="control-mat-button-toggle">
-                    <mat-icon
-                      class="clickable noselect list-icon"
-                      matTooltip="Download data/metadata as"
-                      [matMenuTriggerFor]="ExportAll"
-                    >
+                  <mat-button-toggle class="control-mat-button-toggle clickable noselect"
+                                     [matMenuTriggerFor]="ExportAll"
+                                     matTooltip="Download data/metadata as">
+                    <mat-icon class="list-icon">
                       get_app
                     </mat-icon>
                   </mat-button-toggle>
@@ -167,10 +162,9 @@
                 <mat-button-toggle-group fxFlex="" name="layerType" class="mr-10">
                   <mat-button-toggle
                     (click)="onDownloadPairCSV()"
-                    class="control-mat-button-toggle">
-                      <mat-icon
-                        class="clickable noselect list-icon"
-                        matTooltip="Download Pair CSV">
+                    class="control-mat-button-toggle clickable noselect"
+                    matTooltip="Download Pair CSV">
+                      <mat-icon class="list-icon">
                         get_app
                       </mat-icon>
                   </mat-button-toggle>
@@ -189,9 +183,58 @@
             </button>
           </mat-menu>
 
-          <mat-menu #addAllOnDemand="matMenu">
-            <button [matMenuTriggerFor]="addAllRTCDemand" mat-menu-item>
-              RTC Gamma
+          <mat-menu #addAllOnDemand>
+
+            <div [matTooltip]="hyp3able(grd_hd(products)).length === 0 && hyp3able(grd_hs(products)).length === 0 && hyp3able(slc(products)).length === 0
+            ? 'No compatible RTC GAMMA Products' : ''">
+              <button
+                [disabled]="hyp3able(grd_hd(products)).length === 0 && hyp3able(grd_hs(products)).length === 0 && hyp3able(slc(products)).length === 0"
+                [matMenuTriggerFor]="addAllRTCDemand" mat-menu-item>
+                RTC GAMMA
+              </button>
+            </div>
+
+            <div *ngIf="searchType === SearchTypes.SBAS"
+             [matTooltip]="hyp3able(slc(products)).length === 0 ? 'No compatible InSAR Products' : ''">
+              <button
+                [disabled]="hyp3able(slc(products)).length === 0"
+                [matMenuTriggerFor]="addAllInSarDemand" mat-menu-item>
+                InSAR GAMMA
+              </button>
+            </div>
+
+            <div *ngIf="searchType === SearchTypes.SBAS"
+            [matTooltip]="hyp3able(slc(products)).length === 0 ? 'No compatible AutoRIFT Products' : ''">
+             <button
+               [disabled]="hyp3able(slc(products)).length === 0"
+               [matMenuTriggerFor]="addAllAutoRIFTDemand" mat-menu-item>
+               autoRIFT
+             </button>
+           </div>
+
+          </mat-menu>
+
+          <mat-menu #addAllRTCDemand>
+            <button *ngIf="hyp3able(grd_hd(products)).length > 0" (click)="queueAllOnDemand(grd_hd(products), RTC)" mat-menu-item>
+              Add {{ hyp3able(grd_hd(products)).length }} GRD-HD jobs
+            </button>
+            <button *ngIf="hyp3able(grd_hs(products)).length > 0" (click)="queueAllOnDemand(grd_hs(products), RTC)" mat-menu-item>
+              Add {{ hyp3able(grd_hs(products)).length }} GRD-HS jobs
+            </button>
+            <button *ngIf="hyp3able(slc(products)).length > 0" (click)="queueAllOnDemand(slc(products), RTC)" mat-menu-item>
+              Add {{ hyp3able(slc(products)).length }} SLC jobs
+            </button>
+          </mat-menu>
+
+          <mat-menu #addAllInSarDemand>
+            <button *ngIf="hyp3able(pairs).length > 0" (click)="queueAllOnDemand(pairs, InSAR)" mat-menu-item>
+              Add {{ hyp3able(pairs).length }} SLC pairs
+            </button>
+          </mat-menu>
+
+          <mat-menu #addAllAutoRIFTDemand>
+            <button *ngIf="hyp3able(pairs).length > 0" (click)="queueAllOnDemand(pairs, AutoRift)" mat-menu-item>
+              Add {{ hyp3able(pairs).length }} SLC pairs
             </button>
           </mat-menu>
 
@@ -204,17 +247,6 @@
             </button>
           </mat-menu>
 
-          <mat-menu #addAllRTCDemand="matMenu">
-            <button *ngIf="slc(products).length > 0" (click)="queueAllOnDemand(slc(products))" mat-menu-item>
-              Add {{ slc(products).length }} SLC jobs
-            </button>
-            <button *ngIf="grd_hd(products).length > 0" (click)="queueAllOnDemand(grd_hd(products))" mat-menu-item>
-              Add {{ grd_hd(products).length }} GRD-HD jobs
-            </button>
-            <button *ngIf="grd_hs(products).length > 0" (click)="queueAllOnDemand(grd_hs(products))" mat-menu-item>
-              Add {{ grd_hs(products).length }} GRD-HS jobs
-            </button>
-          </mat-menu>
         </div>
       </div>
 

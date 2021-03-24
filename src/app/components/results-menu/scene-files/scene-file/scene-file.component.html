@@ -54,7 +54,8 @@
           product.metadata.productType === 'SLC' ||
           product.metadata.productType === 'GRD_HD' ||
           product.metadata.productType === 'GRD_HS'
-        )
+        ) &&
+        !product.metadata.polarization.includes('Dual')
         "
       [matMenuTriggerFor]="customJobTypes"
       mat-icon-button>

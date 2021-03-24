@@ -8,15 +8,55 @@ $info-color: $asf-primary;
   padding-bottom: 8px;
 }
 
-.baseline-criteria-label {
+.header-button-group {
+  //margin-top: -20px;
+  width: 189px;
+  display: flex;
+  justify-content: center;
+}
+
+.baseline-header-button-group {
+  justify-content: center;
+}
+
+.mat-button-toggle-button {
+  border: 0;
+  background: none;
+  color: inherit;
+  padding: 0;
+  margin: 0;
+  font: inherit;
+  outline: none;
+  width: 100%;
   cursor: pointer;
-  margin-top: 0;
+}
+
+.baseline-criteria-button-toggle-group {
+  flex: 0 1 149px !important;
+  margin-top: -5px;
+}
+
+.baseline-criteria-button-toggle {
+  background-color: white !important;
+  font-size: 14px;
+
+}
+
+.criteria-button-group {
+  outline: none;
+  width: auto;
+  // line-height: 26px !important;
 }
 
 .more-icon {
   cursor: pointer;
   position: absolute;
   display: inline;
+}
+
+.more-horiz {
+  font-size: 16px !important;
+  margin-bottom: -11px;
 }
 
 .mr-10 {

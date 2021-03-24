@@ -7,7 +7,7 @@
 
     <mat-expansion-panel-header [collapsedHeight]="customCollapsedHeight" [expandedHeight]="customExpandedHeight">
       <mat-panel-title>
-        {{ panels.SEARCH }}
+        Search Options
       </mat-panel-title>
     </mat-expansion-panel-header>
 
@@ -33,4 +33,54 @@
       <app-master-scene-selector class="w100"></app-master-scene-selector>
     </div>
   </mat-expansion-panel>
+
+
+
+
+
+
+
+
+
+  <mat-expansion-panel [expanded]="defaultPanelOpenState" [disabled]="panelIsDisabled"
+    (click)="selectPanel(panels.DATE)"
+    *ngIf="areResultsLoaded"
+    [class.raised-section]="isSelected(panels.DATE)">
+    <mat-expansion-panel-header [collapsedHeight]="customCollapsedHeight" [expandedHeight]="customExpandedHeight">
+      <mat-panel-title>
+        Date Filters
+      </mat-panel-title>
+    </mat-expansion-panel-header>
+
+    <div style="margin-top: 20px;">
+      <app-date-selector></app-date-selector>
+    </div>
+  </mat-expansion-panel>
+
+  <mat-expansion-panel [expanded]="defaultPanelOpenState" [disabled]="panelIsDisabled"
+  (click)="selectPanel(panels.SEASON)"
+  *ngIf="areResultsLoaded"
+  [class.raised-section]="isSelected(panels.SEASON)">
+  <mat-expansion-panel-header [collapsedHeight]="customCollapsedHeight" [expandedHeight]="customExpandedHeight">
+    <mat-panel-title>
+      Season Filters
+    </mat-panel-title>
+  </mat-expansion-panel-header>
+
+  <div style="margin-top: 20px;">
+    <app-season-selector></app-season-selector>
+  </div>
+</mat-expansion-panel>
+  <!-- <mat-expansion-panel [expanded]="defaultPanelOpenState" [disabled]="panelIsDisabled"
+    (click)="selectPanel(panels.FILTER1)"
+    *ngIf="areResultsLoaded"
+    [class.raised-section]="isSelected(panels.FILTER1)">
+    <mat-expansion-panel-header [collapsedHeight]="customCollapsedHeight" [expandedHeight]="customExpandedHeight">
+      <mat-panel-title>
+        Temporal Criteria
+      </mat-panel-title>
+    </mat-expansion-panel-header> -->
+
+    <!-- <app-baseline-sliders></app-baseline-sliders> -->
+  <!-- </mat-expansion-panel> -->
 </mat-accordion>

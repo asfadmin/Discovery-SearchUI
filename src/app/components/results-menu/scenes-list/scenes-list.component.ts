@@ -16,7 +16,7 @@ import { CdkVirtualScrollViewport } from '@angular/cdk/scrolling';
 
 import * as services from '@services';
 import * as models from '@models';
-
+import { QueuedHyp3Job } from '@models';
 
 @Component({
   selector: 'app-scenes-list',
@@ -34,6 +34,8 @@ export class ScenesListComponent implements OnInit, OnDestroy {
 
   public numberOfQueue: {[scene: string]: [number, number]};
   public allQueued: {[scene: string]: boolean};
+  public allJobNames: string[];
+  public queuedJobs: QueuedHyp3Job[];
   public selected: string;
   public selectedPair: string[];
 
@@ -73,6 +75,19 @@ export class ScenesListComponent implements OnInit, OnDestroy {
         pair => this.selectedPair = pair
       )
     );
+
+    this.store$.select(queueStore.getQueuedJobs).subscribe(jobs => {
+      const flattened: string[] = [];
+        for (const job of jobs) {
+          for (const product of job.granules) {
+            flattened.push(product.name);
+          }
+        }
+
+      this.queuedJobs = jobs;
+      this.allJobNames = flattened;
+    });
+
     const sortedScenes$ = this.scenesService.sortScenes$(this.scenesService.scenes$());
 
     this.subs.add(
@@ -213,10 +228,30 @@ export class ScenesListComponent implements OnInit, OnDestroy {
     }
   }
 
-  public onAddPairToQueue(pair: models.CMRProductPair): void {
+  public onToggleOnDemandScene(job: models.QueuedHyp3Job): void {
+    const isJobInQueue = this.queuedJobs.filter(queuedJob =>
+      queuedJob.job_type === job.job_type &&
+      this.sameGranules(job.granules, queuedJob.granules)
+    ).length > 0;
+
+    if (!isJobInQueue) {
+      this.store$.dispatch(new queueStore.AddJob(job));
+    } else {
+      this.store$.dispatch(new queueStore.RemoveJob(job));
+    }
+  }
+
+  public onAddInSarJob(pair: models.CMRProductPair): void {
     this.store$.dispatch(new queueStore.AddJob({
       granules: pair,
-      job_type: models.Hyp3JobType.INSAR_GAMMA
+      job_type: models.hyp3JobTypes.INSAR_GAMMA
+    }));
+  }
+
+  public onAddAutoRiftJob(pair: models.CMRProductPair): void {
+    this.store$.dispatch(new queueStore.AddJob({
+      granules: pair,
+      job_type: models.hyp3JobTypes.AUTORIFT
     }));
   }
 
@@ -246,6 +281,27 @@ export class ScenesListComponent implements OnInit, OnDestroy {
 
   public pairTempBaseline(pair: models.CMRProductPair) {
     return Math.abs(pair[0].metadata.temporal - pair[1].metadata.temporal);
+  }
+
+  public sameGranules(granules1: models.CMRProduct[], granules2: models.CMRProduct[]) {
+    const ids1 = new Set(granules1.map(granule => granule.id));
+    const ids2 = new Set(granules2.map(granule => granule.id));
+
+    return this.eqSet(Array.from(ids1), Array.from(ids2));
+  }
+
+  public eqSet(a1: string[], bs: string[]) {
+    return a1.length === bs.length && this.all(this.isIn(bs), a1);
+  }
+
+  private all(pred, a1: string[]) {
+    return a1.every(pred);
+  }
+
+  private isIn(a1: string[]) {
+    return function (a: string) {
+      return a1.includes(a);
+    };
   }
 
   ngOnDestroy() {

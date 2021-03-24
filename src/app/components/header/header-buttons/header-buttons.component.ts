@@ -10,12 +10,13 @@ import { AppState } from '@store';
 import * as queueStore from '@store/queue';
 import * as userStore from '@store/user';
 import * as uiStore from '@store/ui';
+import * as searchStore from '@store/search';
 
 import { PreferencesComponent } from './preferences/preferences.component';
 import { CustomizeEnvComponent } from './customize-env/customize-env.component';
 
 import { AuthService, AsfApiService, EnvironmentService, ScreenSizeService } from '@services';
-import { CMRProduct, Breakpoints, UserAuth, SavedSearchType, QueuedHyp3Job } from '@models';
+import { CMRProduct, Breakpoints, UserAuth, SavedSearchType, QueuedHyp3Job, SearchType } from '@models';
 
 import { collapseAnimation, rubberBandAnimation,
          zoomInUpAnimation,  tadaAnimation, wobbleAnimation } from 'angular-animations';
@@ -118,6 +119,18 @@ export class HeaderButtonsComponent implements OnInit, OnDestroy {
     this.store$.dispatch(new uiStore.SetIsDownloadQueueOpen(true));
   }
 
+  public onSetSearchTypeOnDemand(): void {
+    const searchType = SearchType.CUSTOM_PRODUCTS;
+
+    window.dataLayer = window.dataLayer || [];
+    window.dataLayer.push({
+      'event': 'search-type-selected',
+      'search-type': searchType
+    });
+    this.store$.dispatch(new searchStore.ClearSearch());
+    this.store$.dispatch(new searchStore.SetSearchType(searchType));
+  }
+
   public onAccountButtonClicked() {
     this.subs.add(
       this.authService.login$().subscribe(
@@ -192,6 +205,21 @@ export class HeaderButtonsComponent implements OnInit, OnDestroy {
     window.dataLayer = window.dataLayer || [];
     window.dataLayer.push({
       'event': 'open-asf-web-site',
+      'open-asf-web-site': url
+    });
+
+    window.open(
+      url,
+      '_blank'
+    );
+  }
+
+  public onOpenOnDemandDocs(): void {
+    const url = 'https://hyp3-docs.asf.alaska.edu/';
+
+    window.dataLayer = window.dataLayer || [];
+    window.dataLayer.push({
+      'event': 'open-hyp3-docs',
       'open-asf-web-site': url
     });
 

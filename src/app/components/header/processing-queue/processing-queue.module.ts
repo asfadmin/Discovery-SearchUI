@@ -19,12 +19,18 @@ import { PipesModule } from '@pipes';
 import { ProcessingQueueComponent } from './processing-queue.component';
 import { ProcessingQueueJobsModule } from './processing-queue-jobs';
 import { ProcessingOptionsModule } from './processing-options';
-import {MatDialogModule} from '@angular/material/dialog';
+import { MatDialogModule } from '@angular/material/dialog';
 import { QueueSubmitComponent } from './queue-submit/queue-submit.component';
+import { ResizableModule } from 'angular-resizable-element';
+import { DragDropModule } from '@angular/cdk/drag-drop';
+import { ProjectNameSelectorModule } from '@components/shared/selectors/project-name-selector';
+import {MatTabsModule} from '@angular/material/tabs';
+import {MatMenuModule} from '@angular/material/menu';
+import { ConfirmationComponent } from './confirmation/confirmation.component';
 
 
 @NgModule({
-  declarations: [ProcessingQueueComponent, QueueSubmitComponent],
+  declarations: [ProcessingQueueComponent, QueueSubmitComponent, ConfirmationComponent],
     imports: [
         CommonModule,
         FormsModule,
@@ -39,9 +45,14 @@ import { QueueSubmitComponent } from './queue-submit/queue-submit.component';
         MatSnackBarModule,
         MatBottomSheetModule,
         PipesModule,
+        ProjectNameSelectorModule,
         ProcessingQueueJobsModule,
         ProcessingOptionsModule,
-        MatDialogModule
+        MatDialogModule,
+        ResizableModule,
+        DragDropModule,
+        MatTabsModule,
+        MatMenuModule
     ]
 })
 export class ProcessingQueueModule {
