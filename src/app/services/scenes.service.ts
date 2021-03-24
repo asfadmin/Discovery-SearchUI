@@ -12,7 +12,7 @@ import {
 } from '@store/scenes/scenes.reducer';
 import {
   getTemporalRange, getPerpendicularRange, getDateRange,
-  getProductTypes, getProjectName, getJobStatuses, getProductNameFilter
+  getProductTypes, getProjectName, getJobStatuses, getProductNameFilter, getSeason
 } from '@store/filters/filters.reducer';
 import { getShowS1RawData, getShowExpiredData } from '@store/ui/ui.reducer';
 import { getSearchType } from '@store/search/search.reducer';
@@ -224,13 +224,15 @@ export class ScenesService {
       this.store$.select(getPerpendicularRange),
       this.store$.select(getDateRange),
       this.store$.select(getSearchType),
+      this.store$.select(getSeason),
     ).pipe(
-      map(([scenes, tempRange, perpRange, dateRange, searchType]) => {
+      map(([scenes, tempRange, perpRange, dateRange, searchType, season]) => {
         return (searchType === SearchType.BASELINE) ?
           scenes.filter(scene =>
             this.valInRange(scene.metadata.temporal, tempRange) &&
             this.valInRange(scene.metadata.perpendicular, perpRange) &&
-            this.dateInRange(scene.metadata.date, dateRange)
+            this.dateInRange(scene.metadata.date, dateRange) &&
+            this.dayInSeason(scene.metadata.date, scene.metadata.stopDate, season)
           ) :
           scenes;
       })
@@ -305,6 +307,27 @@ export class ScenesService {
       this.after(date, range.start) &&
       this.before(date, range.end)
     );
+  }
+
+  private dayInSeason(startDate: moment.Moment, endDate: moment.Moment, season: Range<number | null>) {
+    if (season.start < season.end) {
+        return (
+          season.start <= this.getDayOfYear(new Date(startDate.toISOString()))
+          && season.end >= this.getDayOfYear(new Date(endDate.toISOString()))
+        );
+      } else {
+        return !(
+          season.start >= this.getDayOfYear(new Date(startDate.toISOString()))
+          && season.start >= this.getDayOfYear(new Date(endDate.toISOString()))
+          && season.end <= this.getDayOfYear(new Date(startDate.toISOString()))
+          && season.end <= this.getDayOfYear(new Date(endDate.toISOString()))
+        );
+      }
+  }
+
+  private getDayOfYear(date: Date) {
+    const temp = new Date(date.getFullYear(), 0, 0);
+    return Math.floor(date.getTime() - temp.getTime()) / 1000 / 60 / 60 / 24;
   }
 
   private sceneHasBrowse(scene: CMRProduct): boolean {

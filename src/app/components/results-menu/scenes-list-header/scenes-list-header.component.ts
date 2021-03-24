@@ -197,11 +197,20 @@ export class ScenesListHeaderComponent implements OnInit, OnDestroy {
   }
 
   public queueAllOnDemand(products: models.CMRProduct[], job_type: models.Hyp3JobType): void {
-    const jobs = this.hyp3able(products).map( product => ({
-        granules: [ product ],
-        job_type
-      })
-    );
+    let jobs;
+    if (Array.isArray(products[0])) {
+        jobs = this.hyp3able(products).map( pair => ({
+          granules: pair,
+          job_type
+        })
+      );
+    } else {
+      jobs = this.hyp3able(products).map( product => ({
+          granules: [ product ],
+          job_type
+        })
+      );
+    }
 
     this.store$.dispatch(new queueStore.AddJobs(jobs));
   }
@@ -211,7 +220,11 @@ export class ScenesListHeaderComponent implements OnInit, OnDestroy {
   }
 
   public hyp3able(products: models.CMRProduct[]): models.CMRProduct[] {
-    return products.filter(product => !product.metadata.polarization.includes('Dual'));
+    if (Array.isArray(products[0])) {
+      return products.filter(pair => !pair[0].metadata.polarization.includes('Dual') && !pair[1].metadata.polarization.includes('Dual'));
+    } else {
+      return products.filter(product => !product.metadata.polarization.includes('Dual'));
+    }
   }
 
   public slc(products: models.CMRProduct[]): models.CMRProduct[] {

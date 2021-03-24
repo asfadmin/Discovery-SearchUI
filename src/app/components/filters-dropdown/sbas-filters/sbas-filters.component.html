@@ -57,6 +57,20 @@
     </div>
   </mat-expansion-panel>
 
+  <mat-expansion-panel [expanded]="defaultPanelOpenState" [disabled]="panelIsDisabled"
+  (click)="selectPanel(panels.SEASON)"
+  *ngIf="areResultsLoaded"
+  [class.raised-section]="isSelected(panels.SEASON)">
+  <mat-expansion-panel-header [collapsedHeight]="customCollapsedHeight" [expandedHeight]="customExpandedHeight">
+    <mat-panel-title>
+      Season Filters
+    </mat-panel-title>
+  </mat-expansion-panel-header>
+
+  <div style="margin-top: 20px;">
+    <app-season-selector></app-season-selector>
+  </div>
+</mat-expansion-panel>
   <!-- <mat-expansion-panel [expanded]="defaultPanelOpenState" [disabled]="panelIsDisabled"
     (click)="selectPanel(panels.FILTER1)"
     *ngIf="areResultsLoaded"

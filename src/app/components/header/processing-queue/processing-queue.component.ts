@@ -9,7 +9,7 @@ import { ConfirmationComponent } from './confirmation/confirmation.component';
 import { Store } from '@ngrx/store';
 import { AppState } from '@store';
 import * as moment from 'moment';
-import { of, combineLatest } from 'rxjs';
+import { of } from 'rxjs';
 import { tap, catchError } from 'rxjs/operators';
 
 import * as queueStore from '@store/queue';
@@ -77,10 +77,14 @@ export class ProcessingQueueComponent implements OnInit {
         this.isUserLoading = isUserLoading;
     });
 
-    combineLatest(
-      this.store$.select(queueStore.getQueuedJobs),
-      this.store$.select(queueStore.getQueuedJobTypes)
-    ).subscribe(([jobs, jobTypes]) => {
+    this.store$.select(queueStore.getQueuedJobs).subscribe((jobs) => {
+      const jobTypes: models.Hyp3JobType[] = Object.values(jobs
+        .map(job => job.job_type)
+        .reduce((types, jobType) => {
+          types[jobType.id] = jobType;
+          return types;
+        }, {}));
+
       this.hyp3JobTypesList = <any>jobTypes;
 
       if (!this.selectedJobTypeId) {

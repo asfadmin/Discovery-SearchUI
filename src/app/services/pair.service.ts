@@ -7,7 +7,7 @@ import { Store } from '@ngrx/store';
 import { AppState } from '@store/app.reducer';
 import { getScenes, getCustomPairs } from '@store/scenes/scenes.reducer';
 import {
-  getTemporalRange, getPerpendicularRange, getDateRange, DateRangeState
+  getTemporalRange, getPerpendicularRange, getDateRange, DateRangeState, getSeason
 } from '@store/filters/filters.reducer';
 
 import { CMRProduct, CMRProductPair, ColumnSortDirection } from '@models';
@@ -48,17 +48,20 @@ export class PairService {
       this.store$.select(getPerpendicularRange).pipe(
         map(range => range.start)
       ),
-      this.store$.select(getDateRange)
+      this.store$.select(getDateRange),
+      this.store$.select(getSeason),
     ).pipe(
-      map(([scenes, customPairs, temporal, perp, dateRange]) => ({
-        pairs: [...this.makePairs(scenes, temporal, perp, dateRange)],
+      map(([scenes, customPairs, temporal, perp, dateRange, season]) => ({
+        pairs: [...this.makePairs(scenes, temporal, perp, dateRange, season)],
         custom: [ ...customPairs ]
       })
       )
     );
   }
 
-  private makePairs(scenes: CMRProduct[], tempThreshold: number, perpThreshold, dateRange: DateRangeState): CMRProductPair[] {
+  private makePairs(scenes: CMRProduct[], tempThreshold: number, perpThreshold,
+    dateRange: DateRangeState,
+    season): CMRProductPair[] {
     const pairs = [];
 
     let startDateExtrema: Date;
@@ -70,6 +73,7 @@ export class PairService {
     if (!!dateRange.end) {
       endDateExtrema = new Date(dateRange.end.toISOString());
     }
+
     // }
 
     scenes.forEach((root, index) => {
@@ -82,6 +86,21 @@ export class PairService {
         const P1StopDate = new Date(root.metadata.stopDate.toISOString());
         const P2StartDate = new Date(scene.metadata.date.toISOString());
         const P2StopDate = new Date(scene.metadata.stopDate.toISOString());
+
+        // const p1DayOfYear = this.getDayOfYear(P1StartDate);
+        // const p2DayOfYear = this.getDayOfYear(P2StopDate);
+
+        if (!!season.start && !!season.end) {
+          // if ( P1StartDate < P2StartDate) {
+            if (!this.dayInSeason(P1StartDate, P1StopDate, P2StartDate, P2StopDate, season)) {
+              return;
+            }
+        // } else {
+        //   if (!this.dayInSeason(P2StartDate, P2StopDate, P1StartDate, P1StopDate, season)) {
+        //     return;
+        //   }
+        // }
+        }
 
         if (tempDiff > tempThreshold || perpDiff > perpThreshold) {
           return;
@@ -104,6 +123,33 @@ export class PairService {
     });
 
     return pairs;
+  }
+
+  private dayInSeason(P1StartDate: Date, P1EndDate: Date, P2StartDate: Date, P2EndDate: Date, season) {
+    if (season.start < season.end) {
+        return (
+          season.start <= this.getDayOfYear(P1StartDate)
+          && season.end >= this.getDayOfYear(P1EndDate)
+          && season.start <= this.getDayOfYear(P2StartDate)
+          && season.end >= this.getDayOfYear(P2EndDate)
+        );
+      } else {
+        return !(
+          season.start >= this.getDayOfYear(P1StartDate)
+          && season.start >= this.getDayOfYear(P1EndDate)
+          && season.end <= this.getDayOfYear(P1StartDate)
+          && season.end <= this.getDayOfYear(P1EndDate)
+          && season.start >= this.getDayOfYear(P2StartDate)
+          && season.start >= this.getDayOfYear(P2EndDate)
+          && season.end <= this.getDayOfYear(P2StartDate)
+          && season.end <= this.getDayOfYear(P2EndDate)
+        );
+      }
+  }
+
+  private getDayOfYear(date: Date) {
+    const temp = new Date(date.getFullYear(), 0, 0);
+    return Math.floor(date.getTime() - temp.getTime()) / 1000 / 60 / 60 / 24;
   }
 
   private temporalSort(scenes, direction: ColumnSortDirection) {

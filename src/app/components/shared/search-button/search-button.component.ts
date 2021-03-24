@@ -74,9 +74,10 @@ export class SearchButtonComponent implements OnInit, OnDestroy {
   }
 
   public onDoSearch(): void {
-    if (this.searchType === SearchType.BASELINE
-    || this.searchType === SearchType.SBAS) {
+    if (this.searchType === SearchType.BASELINE) {
       this.clearBaselineRanges();
+    } else if (this.searchType === SearchType.SBAS) {
+      this.setBaselineRanges();
     }
 
     this.store$.dispatch(new searchStore.MakeSearch());
@@ -114,6 +115,13 @@ export class SearchButtonComponent implements OnInit, OnDestroy {
   private clearBaselineRanges() {
     this.store$.dispatch(new filtersStore.ClearPerpendicularRange());
     this.store$.dispatch(new filtersStore.ClearTemporalRange());
+  }
+
+  private setBaselineRanges() {
+    const days_action = new filtersStore.SetTemporalRange({ start: 48, end: null });
+    this.store$.dispatch(days_action);
+    const meters_action = new filtersStore.SetPerpendicularRange({ start: 300, end: null });
+    this.store$.dispatch(meters_action);
   }
 
   public saveCurrentSearch(): void {
