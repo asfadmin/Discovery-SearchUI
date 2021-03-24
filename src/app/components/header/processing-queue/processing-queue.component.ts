@@ -275,9 +275,9 @@ export class ProcessingQueueComponent implements OnInit {
 
     if (jobType.id === this.selectedJobTypeId) {
 
-      let TabIdx = this.jobTypesWithQueued.findIndex((queuedJobType) => {return queuedJobType.jobType === jobType});
+      let TabIdx = this.jobTypesWithQueued.findIndex((queuedJobType) => queuedJobType.jobType === jobType);
 
-      if(this.jobTypesWithQueued.length > TabIdx + 1) {
+      if (this.jobTypesWithQueued.length > TabIdx + 1) {
         ++TabIdx;
       } else if (TabIdx > 0) {
         --TabIdx;
@@ -285,10 +285,10 @@ export class ProcessingQueueComponent implements OnInit {
         TabIdx = -1;
       }
 
-      if(TabIdx === -1) {
+      if (TabIdx === -1) {
         this.selectedJobTypeId = null;
       } else {
-        this.onSetSelectedJobType(this.jobTypesWithQueued[TabIdx].jobType)
+        this.onSetSelectedJobType(this.jobTypesWithQueued[TabIdx].jobType);
       }
     }
 
@@ -296,7 +296,7 @@ export class ProcessingQueueComponent implements OnInit {
     if (this.allJobs.length === 0) {
       this.dialogRef.close();
     }
-    
+
   }
 
   public onRestoreJobQueue(): void {
