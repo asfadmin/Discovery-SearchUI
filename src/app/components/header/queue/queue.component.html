@@ -113,6 +113,11 @@
               <fa-icon style="margin-left: 5px;" [icon]="copyIcon"></fa-icon>
             </button>
 
+            <button (click)="onCopyQueueURLs(products)" mat-button [disabled]="!areAnyProducts" class="btn-primary">
+              <span *ngIf="breakpoint > breakpoints.MOBILE && dlWidth >= dlWidthMin">Copy Download URLs</span>
+              <fa-icon style="margin-left: 5px;" [icon]="copyIcon"></fa-icon>
+            </button>
+
             <ng-container *ngIf="breakpoint > breakpoints.MOBILE && dlWidth >= dlWidthMin">
               <span *ngIf="queueHasOnDemandProducts" class="on-demand-warning">
                 On Demand products in queue - limited export options

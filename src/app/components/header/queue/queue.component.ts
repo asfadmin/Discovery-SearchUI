@@ -114,8 +114,15 @@ export class QueueComponent implements OnInit, OnDestroy {
     const productListStr = products
       .filter(product => !product.isUnzippedFile)
       .map(product => product.id)
-      .join(',');
+      .join('\n');
+    this.clipboardService.copyFromContent(productListStr);
+  }
 
+  public onCopyQueueURLs(products: CMRProduct[]): void {
+    const productListStr = products
+      .filter(product => !product.isUnzippedFile)
+      .map(product => product.downloadUrl)
+      .join('\n');
     this.clipboardService.copyFromContent(productListStr);
   }
 
