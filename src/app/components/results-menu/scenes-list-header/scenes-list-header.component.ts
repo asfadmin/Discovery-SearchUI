@@ -198,12 +198,12 @@ export class ScenesListHeaderComponent implements OnInit, OnDestroy {
 
   public queueAllOnDemand(products: models.CMRProduct[], job_type: models.Hyp3JobType): void {
     let jobs;
-    if(Array.isArray(products[0])) {
+    if (Array.isArray(products[0])) {
         jobs = this.hyp3able(products).map( pair => ({
           granules: pair,
           job_type
         })
-      );      
+      );
     } else {
       jobs = this.hyp3able(products).map( product => ({
           granules: [ product ],
@@ -220,7 +220,7 @@ export class ScenesListHeaderComponent implements OnInit, OnDestroy {
   }
 
   public hyp3able(products: models.CMRProduct[]): models.CMRProduct[] {
-    if(Array.isArray(products[0])) {
+    if (Array.isArray(products[0])) {
       return products.filter(pair => !pair[0].metadata.polarization.includes('Dual') && !pair[1].metadata.polarization.includes('Dual'));
     } else {
       return products.filter(product => !product.metadata.polarization.includes('Dual'));

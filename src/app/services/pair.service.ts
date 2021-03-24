@@ -59,7 +59,7 @@ export class PairService {
     );
   }
 
-  private makePairs(scenes: CMRProduct[], tempThreshold: number, perpThreshold, 
+  private makePairs(scenes: CMRProduct[], tempThreshold: number, perpThreshold,
     dateRange: DateRangeState,
     season): CMRProductPair[] {
     const pairs = [];
