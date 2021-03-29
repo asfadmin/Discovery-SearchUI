@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 
 import { Observable, combineLatest } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { debounceTime, map } from 'rxjs/operators';
 
 import { Store } from '@ngrx/store';
 import { AppState } from '@store/app.reducer';
@@ -51,6 +51,7 @@ export class PairService {
       this.store$.select(getDateRange),
       this.store$.select(getSeason),
     ).pipe(
+      debounceTime(0),
       map(([scenes, customPairs, temporal, perp, dateRange, season]) => ({
         pairs: [...this.makePairs(scenes, temporal, perp, dateRange, season)],
         custom: [ ...customPairs ]
