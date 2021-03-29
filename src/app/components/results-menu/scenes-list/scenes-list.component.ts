@@ -3,7 +3,7 @@ import {
 } from '@angular/core';
 
 import { combineLatest, Observable } from 'rxjs';
-import { tap, withLatestFrom, filter, map, delay } from 'rxjs/operators';
+import { tap, withLatestFrom, filter, map, delay, debounceTime } from 'rxjs/operators';
 import { SubSink } from 'subsink';
 
 import { Store } from '@ngrx/store';
@@ -120,13 +120,13 @@ export class ScenesListComponent implements OnInit, OnDestroy {
     );
 
     this.subs.add(
-      sortedScenes$.subscribe(
+      sortedScenes$.pipe(debounceTime(0)).subscribe(
         scenes => this.scenes = scenes
       )
     );
 
     this.subs.add(
-      this.pairService.pairs$().subscribe(
+      this.pairService.pairs$().pipe(debounceTime(0)).subscribe(
         pairs => this.pairs = [...pairs.pairs, ...pairs.custom]
       )
     );
@@ -147,6 +147,7 @@ export class ScenesListComponent implements OnInit, OnDestroy {
       this.store$.select(queueStore.getQueuedProducts),
       this.store$.select(scenesStore.getAllSceneProducts),
     ).pipe(
+      debounceTime(0),
       map(([queueProducts, searchScenes]) => {
 
         const queuedProductGroups: {[id: string]: string[]} = queueProducts.reduce((total, product) => {

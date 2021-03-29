@@ -3,7 +3,7 @@ import { saveAs } from 'file-saver';
 import * as moment from 'moment';
 
 import { combineLatest } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { debounceTime, map } from 'rxjs/operators';
 import { Action, Store } from '@ngrx/store';
 
 import { AppState } from '@store';
@@ -87,6 +87,8 @@ export class ScenesListHeaderComponent implements OnInit, OnDestroy {
         this.scenesService.scenes$(),
         this.store$.select(filtersStore.getProductTypes),
         this.store$.select(searchStore.getSearchType),
+      ).pipe(
+        debounceTime(0)
       ).subscribe(([scenes, productTypes, searchType]) => {
         this.canHideRawData =
           searchType === models.SearchType.DATASET &&
