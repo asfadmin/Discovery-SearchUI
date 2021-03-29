@@ -109,7 +109,12 @@
         <ng-container *ngIf="breakpoint$ | async as breakpoint">
           <div *ngIf="areAnyProducts" fxFlex="80" class="dl-download-buttons">
             <button (click)="onCopyQueue(products)" mat-button [disabled]="!areAnyProducts" class="btn-primary">
-              <span *ngIf="breakpoint > breakpoints.MOBILE && dlWidth >= dlWidthMin">Copy File IDs</span>
+              <span *ngIf="breakpoint > breakpoints.MOBILE && dlWidth >= dlWidthMin">Copy </span>File IDs
+              <fa-icon style="margin-left: 5px;" [icon]="copyIcon"></fa-icon>
+            </button>
+
+            <button (click)="onCopyQueueURLs(products)" mat-button [disabled]="!areAnyProducts" class="btn-primary">
+              <span *ngIf="breakpoint > breakpoints.MOBILE && dlWidth >= dlWidthMin">Copy </span>URLs
               <fa-icon style="margin-left: 5px;" [icon]="copyIcon"></fa-icon>
             </button>
 
