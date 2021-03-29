@@ -91,7 +91,7 @@
 
 <mat-dialog-actions class="dl-mat-dialog-actions">
 
-    <div class="dl-card-actions" fxLayout="row" fxFlexFill>
+    <div class="dl-card-actions" fxLayout="row" fxFlexFill *ngIf="breakpoint$ | async as breakpoint">
       <ng-container *ngIf="products$ | async as products">
         <div fxFlex="20" class="dl-clear-button">
             <button *ngIf="previousQueue === null"
@@ -106,7 +106,7 @@
             <span>Restore</span>
           </button>
         </div>
-        <ng-container *ngIf="breakpoint$ | async as breakpoint">
+        <ng-container>
           <div *ngIf="areAnyProducts" fxFlex="80" class="dl-download-buttons">
             <button (click)="onCopyQueue(products)" mat-button [disabled]="!areAnyProducts" class="btn-primary">
               <span *ngIf="breakpoint > breakpoints.MOBILE && dlWidth >= dlWidthMin">Copy File </span>IDs
