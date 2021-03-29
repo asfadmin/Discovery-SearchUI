@@ -97,7 +97,7 @@
             <button *ngIf="previousQueue === null"
                     (click)="onClearQueue(products)" mat-button>
               <mat-icon style="margin-right: 5px;">delete</mat-icon>
-              <span>Clear</span>
+              <span *ngIf="breakpoint > breakpoints.MOBILE && dlWidth >= dlWidthMin">Clear</span>
             </button>
 
           <button *ngIf="previousQueue !== null"
@@ -109,7 +109,7 @@
         <ng-container *ngIf="breakpoint$ | async as breakpoint">
           <div *ngIf="areAnyProducts" fxFlex="80" class="dl-download-buttons">
             <button (click)="onCopyQueue(products)" mat-button [disabled]="!areAnyProducts" class="btn-primary">
-              <span *ngIf="breakpoint > breakpoints.MOBILE && dlWidth >= dlWidthMin">Copy </span>File IDs
+              <span *ngIf="breakpoint > breakpoints.MOBILE && dlWidth >= dlWidthMin">Copy File </span>IDs
               <fa-icon style="margin-left: 5px;" [icon]="copyIcon"></fa-icon>
             </button>
 
