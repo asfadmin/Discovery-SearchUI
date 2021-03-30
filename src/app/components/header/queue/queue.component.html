@@ -93,7 +93,7 @@
 
     <div class="dl-card-actions" fxLayout="row" fxFlexFill *ngIf="breakpoint$ | async as breakpoint">
       <ng-container *ngIf="products$ | async as products">
-        <div fxFlex="20" class="dl-clear-button">
+        <div fxFlex="15" class="dl-clear-button">
             <button *ngIf="previousQueue === null"
                     (click)="onClearQueue(products)" mat-button>
               <mat-icon style="margin-right: 5px;">delete</mat-icon>
@@ -107,15 +107,21 @@
           </button>
         </div>
         <ng-container>
-          <div *ngIf="areAnyProducts" fxFlex="80" class="dl-download-buttons">
-            <button (click)="onCopyQueue(products)" mat-button [disabled]="!areAnyProducts" class="btn-primary">
-              <span *ngIf="breakpoint > breakpoints.MOBILE && dlWidth >= dlWidthMin">Copy File </span>IDs
+          <div *ngIf="areAnyProducts" fxFlex="85" class="dl-download-buttons">
+            <button (click)="onCopyQueue(products)" mat-button [disabled]="!areAnyProducts" class="btn-primary"
+                    [class.button-clipboard-mobile]="breakpoint === breakpoints.MOBILE || dlWidth < dlWidthMin"
+                    matTooltip="Copy File IDs to clipboard"
+                    [matTooltipPosition]="'above'">
               <fa-icon style="margin-left: 5px;" [icon]="copyIcon"></fa-icon>
+              &nbsp;<span *ngIf="breakpoint > breakpoints.MOBILE && dlWidth >= dlWidthMin">Copy File </span>IDs
             </button>
 
-            <button (click)="onCopyQueueURLs(products)" mat-button [disabled]="!areAnyProducts" class="btn-primary">
-              <span *ngIf="breakpoint > breakpoints.MOBILE && dlWidth >= dlWidthMin">Copy </span>URLs
+            <button (click)="onCopyQueueURLs(products)" mat-button [disabled]="!areAnyProducts" class="btn-primary"
+                    [class.button-clipboard-mobile]="breakpoint === breakpoints.MOBILE || dlWidth < dlWidthMin"
+                    matTooltip="Copy File URLs to clipboard"
+                    [matTooltipPosition]="'above'">
               <fa-icon style="margin-left: 5px;" [icon]="copyIcon"></fa-icon>
+              &nbsp;<span *ngIf="breakpoint > breakpoints.MOBILE && dlWidth >= dlWidthMin">Copy </span>URLs
             </button>
 
             <ng-container *ngIf="breakpoint > breakpoints.MOBILE && dlWidth >= dlWidthMin">
@@ -123,7 +129,9 @@
                 On Demand products in queue - limited export options
               </span>
 
-              <button mat-flat-button color="primary" [matMenuTriggerFor]="dataMenu" [disabled]="!areAnyProducts" class="btn-primary">
+              <button mat-flat-button color="primary" [matMenuTriggerFor]="dataMenu" [disabled]="!areAnyProducts"
+                      class="btn-primary"
+                      style="margin-left: 15px;">
                 Data Download
                 <mat-icon>arrow_drop_up</mat-icon>
               </button>
@@ -134,7 +142,7 @@
             </ng-container>
 
             <ng-container *ngIf="breakpoint === breakpoints.MOBILE || dlWidth < dlWidthMin">
-              <button mat-flat-button [matMenuTriggerFor]="typesMenu">
+              <button mat-flat-button [matMenuTriggerFor]="typesMenu" style="padding: 0 0 0 5px; margin-left: 15px;">
                 Downloads
                 <mat-icon>arrow_drop_up</mat-icon>
               </button>

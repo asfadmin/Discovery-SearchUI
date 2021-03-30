@@ -138,6 +138,10 @@ button {
   }
 }
 
+.button-clipboard-mobile {
+  padding: 0 0 0 5px !important;
+}
+
 ::ng-deep.mat-dialog-container {
   resize: both;
   overflow: auto;
