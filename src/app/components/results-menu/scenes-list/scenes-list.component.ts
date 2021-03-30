@@ -120,13 +120,13 @@ export class ScenesListComponent implements OnInit, OnDestroy {
     );
 
     this.subs.add(
-      sortedScenes$.pipe(debounceTime(0)).subscribe(
+      sortedScenes$.pipe(debounceTime(250)).subscribe(
         scenes => this.scenes = scenes
       )
     );
 
     this.subs.add(
-      this.pairService.pairs$().pipe(debounceTime(0)).subscribe(
+      this.pairService.pairs$().pipe(debounceTime(250)).subscribe(
         pairs => this.pairs = [...pairs.pairs, ...pairs.custom]
       )
     );

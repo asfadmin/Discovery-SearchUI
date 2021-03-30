@@ -88,7 +88,7 @@ export class ScenesListHeaderComponent implements OnInit, OnDestroy {
         this.store$.select(filtersStore.getProductTypes),
         this.store$.select(searchStore.getSearchType),
       ).pipe(
-        debounceTime(0)
+        debounceTime(250)
       ).subscribe(([scenes, productTypes, searchType]) => {
         this.canHideRawData =
           searchType === models.SearchType.DATASET &&

@@ -51,7 +51,7 @@ export class PairService {
       this.store$.select(getDateRange),
       this.store$.select(getSeason),
     ).pipe(
-      debounceTime(0),
+      debounceTime(250),
       map(([scenes, customPairs, temporal, perp, dateRange, season]) => ({
         pairs: [...this.makePairs(scenes, temporal, perp, dateRange, season)],
         custom: [ ...customPairs ]
