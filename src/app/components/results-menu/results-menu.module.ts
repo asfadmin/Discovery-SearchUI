@@ -38,7 +38,7 @@ import {MatInputModule} from '@angular/material/input';
     BaselineResultsMenuComponent,
     SBASResultsMenuComponent,
     SbasSlidersComponent,
-    SbasSlidersTwoComponent
+    SbasSlidersTwoComponent,
   ],
   imports: [
     CommonModule,

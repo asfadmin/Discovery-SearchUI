@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 
 import { Observable, combineLatest } from 'rxjs';
-import { debounceTime, map } from 'rxjs/operators';
+import { debounceTime, map, withLatestFrom } from 'rxjs/operators';
 
 import { Store } from '@ngrx/store';
 import { AppState } from '@store/app.reducer';
@@ -9,8 +9,9 @@ import { getScenes, getCustomPairs } from '@store/scenes/scenes.reducer';
 import {
   getTemporalRange, getPerpendicularRange, getDateRange, DateRangeState, getSeason
 } from '@store/filters/filters.reducer';
+import { getSearchType } from '@store/search/search.reducer';
 
-import { CMRProduct, CMRProductPair, ColumnSortDirection } from '@models';
+import { CMRProduct, CMRProductPair, ColumnSortDirection, SearchType } from '@models';
 
 @Injectable({
   providedIn: 'root'
@@ -52,11 +53,18 @@ export class PairService {
       this.store$.select(getSeason),
     ).pipe(
       debounceTime(250),
-      map(([scenes, customPairs, temporal, perp, dateRange, season]) => ({
-        pairs: [...this.makePairs(scenes, temporal, perp, dateRange, season)],
-        custom: [ ...customPairs ]
+      withLatestFrom(this.store$.select(getSearchType)),
+      map(([params, searchType]) => {
+        const [scenes, customPairs, temporal, perp, dateRange, season] = params;
+
+        return searchType === SearchType.SBAS ? ({
+          pairs: [...this.makePairs(scenes, temporal, perp, dateRange, season)],
+          custom: [ ...customPairs ]
+        }) : ({
+          pairs: [],
+          custom: []
+        });
       })
-      )
     );
   }
 
