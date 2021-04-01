@@ -21,6 +21,7 @@ export enum QueueActionType {
 
   MAKE_DOWNLOAD_SCRIPT  = '[Queue] Make Bulk Download From Queue',
   DOWNLOAD_METADATA = '[Queue] Download Metadata',
+  DOWNLOAD_SEARCHTYPE_METADATA = '[Queue] Download Search Result Metadata'
 }
 
 export class AddItem implements Action {
@@ -95,6 +96,11 @@ export class DownloadMetadata implements Action {
   constructor(public payload: AsfApiOutputFormat) {}
 }
 
+export class DownloadSearchtypeMetadata implements Action {
+  public readonly type = QueueActionType.DOWNLOAD_SEARCHTYPE_METADATA;
+
+  constructor(public payload: AsfApiOutputFormat) {}
+}
 export class QueueScene implements Action {
   public readonly type = QueueActionType.QUEUE_SCENE;
 
@@ -122,4 +128,5 @@ export type QueueActions =
   | ClearProcessingQueue
   | ClearProcessingQueueByJobType
   | MakeDownloadScript
-  | DownloadMetadata;
+  | DownloadMetadata
+  | DownloadSearchtypeMetadata;
