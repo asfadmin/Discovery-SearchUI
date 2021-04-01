@@ -31,7 +31,6 @@
               "./node_modules/ol/ol.css",
               "./node_modules/nouislider/distribute/nouislider.min.css",
               "src/styles.scss",
-              "node_modules/ngx-toastr/toastr.css",
               "./node_modules/cookieconsent/build/cookieconsent.min.css",
               "./node_modules/tippy.js/dist/tippy.css",
               "./node_modules/tippy.js/dist/backdrop.css",
