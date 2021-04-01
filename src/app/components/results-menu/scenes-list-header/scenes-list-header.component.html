@@ -33,8 +33,7 @@
 
         <div class="space-filler"></div>
 
-        <div *ngIf="allProducts$ | async as products">
-
+        <div *ngIf="products">
           <div *ngIf="canHideRawData" fxFlex="" class="list-button-group">
             <div fxLayout="row" fxLayoutAlign="center" class="button-group-label">
               <label>Raw</label>
@@ -114,7 +113,8 @@
           </div>
 
           <div *ngIf="
-            searchType !== SearchTypes.CUSTOM_PRODUCTS"
+            searchType !== SearchTypes.CUSTOM_PRODUCTS
+            "
             fxFlex="" class="list-button-group">
             <div fxLayout="row" fxLayoutAlign="center" class="button-group-label">
               <label>On Demand</label>
@@ -184,58 +184,27 @@
           </mat-menu>
 
           <mat-menu #addAllOnDemand>
-
-            <div [matTooltip]="hyp3able(grd_hd(products)).length === 0 && hyp3able(grd_hs(products)).length === 0 && hyp3able(slc(products)).length === 0
-            ? 'No compatible RTC GAMMA Products' : ''">
+            <div *ngFor="let productsByJobType of hyp3ableProducts" [matTooltip]="">
               <button
-                [disabled]="hyp3able(grd_hd(products)).length === 0 && hyp3able(grd_hs(products)).length === 0 && hyp3able(slc(products)).length === 0"
-                [matMenuTriggerFor]="addAllRTCDemand" mat-menu-item>
-                RTC GAMMA
+                [disabled]="productsByJobType.total === 0"
+                [matMenuTriggerFor]="addAllByProductType"
+                [matMenuTriggerData]="{ productsByJobType: productsByJobType }"
+                mat-menu-item>
+                {{ productsByJobType.jobType.name }}
               </button>
             </div>
-
-            <div *ngIf="searchType === SearchTypes.SBAS"
-             [matTooltip]="hyp3able(slc(products)).length === 0 ? 'No compatible InSAR Products' : ''">
-              <button
-                [disabled]="hyp3able(slc(products)).length === 0"
-                [matMenuTriggerFor]="addAllInSarDemand" mat-menu-item>
-                InSAR GAMMA
-              </button>
-            </div>
-
-            <div *ngIf="searchType === SearchTypes.SBAS"
-            [matTooltip]="hyp3able(slc(products)).length === 0 ? 'No compatible AutoRIFT Products' : ''">
-             <button
-               [disabled]="hyp3able(slc(products)).length === 0"
-               [matMenuTriggerFor]="addAllAutoRIFTDemand" mat-menu-item>
-               autoRIFT
-             </button>
-           </div>
-
           </mat-menu>
 
-          <mat-menu #addAllRTCDemand>
-            <button *ngIf="hyp3able(grd_hd(products)).length > 0" (click)="queueAllOnDemand(grd_hd(products), RTC)" mat-menu-item>
-              Add {{ hyp3able(grd_hd(products)).length }} GRD-HD jobs
-            </button>
-            <button *ngIf="hyp3able(grd_hs(products)).length > 0" (click)="queueAllOnDemand(grd_hs(products), RTC)" mat-menu-item>
-              Add {{ hyp3able(grd_hs(products)).length }} GRD-HS jobs
-            </button>
-            <button *ngIf="hyp3able(slc(products)).length > 0" (click)="queueAllOnDemand(slc(products), RTC)" mat-menu-item>
-              Add {{ hyp3able(slc(products)).length }} SLC jobs
-            </button>
-          </mat-menu>
-
-          <mat-menu #addAllInSarDemand>
-            <button *ngIf="hyp3able(pairs).length > 0" (click)="queueAllOnDemand(pairs, InSAR)" mat-menu-item>
-              Add {{ hyp3able(pairs).length }} SLC pairs
-            </button>
-          </mat-menu>
-
-          <mat-menu #addAllAutoRIFTDemand>
-            <button *ngIf="hyp3able(pairs).length > 0" (click)="queueAllOnDemand(pairs, AutoRift)" mat-menu-item>
-              Add {{ hyp3able(pairs).length }} SLC pairs
-            </button>
+          <mat-menu #addAllByProductType>
+            <ng-template matMenuContent let-byJobType="productsByJobType">
+              <div *ngFor="let prodType of byJobType.byProductType">
+                <button *ngIf="prodType.products.length !== 0"
+                  (click)="queueAllOnDemand(prodType.products, byJobType.jobType)"
+                  [disabled]="" mat-menu-item>
+                  Add {{ prodType.products.length }} {{ prodType.productType }} jobs
+                </button>
+              </div>
+            </ng-template>
           </mat-menu>
 
           <mat-menu #ExportAll="matMenu">
@@ -246,12 +215,11 @@
               Data
             </button>
           </mat-menu>
-
         </div>
       </div>
 
       <mat-menu #ExportAllMetadata="matMenu">
-        <div *ngIf="allProducts$ | async as products">
+        <div *ngIf="products">
           <button (click)="onCsvDownload(products)" mat-menu-item>
             csv
           </button>
@@ -265,7 +233,7 @@
       </mat-menu>
 
       <mat-menu #ExportAllData="matMenu">
-        <div *ngIf="allProducts$ | async as products">
+        <div *ngIf="products">
           <button (click)="onMakeDownloadScript(products)" mat-menu-item>
             python (.py)
           </button>

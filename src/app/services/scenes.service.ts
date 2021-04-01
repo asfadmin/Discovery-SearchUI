@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 
 import { Observable, combineLatest } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { debounceTime, map } from 'rxjs/operators';
 import * as moment from 'moment';
 
 import { Store } from '@ngrx/store';
@@ -91,6 +91,7 @@ export class ScenesService {
       this.store$.select(getTemporalSortDirection),
       this.store$.select(getPerpendicularSortDirection)
     ).pipe(
+      debounceTime(0),
       map(
         ([scenes, tempSort, perpSort]) => {
           if (tempSort === ColumnSortDirection.NONE && perpSort === ColumnSortDirection.NONE) {
@@ -114,6 +115,7 @@ export class ScenesService {
       this.store$.select(getProductTypes),
       this.store$.select(getSearchType),
     ).pipe(
+      debounceTime(0),
       map(([ scenes, showS1RawData, productTypes, searchType ]) => {
         if (showS1RawData) {
           return scenes;
@@ -142,6 +144,7 @@ export class ScenesService {
       this.store$.select(getProjectName),
       this.store$.select(getSearchType),
     ).pipe(
+      debounceTime(0),
       map(([scenes, projectName, searchType]) => {
         if (searchType !== SearchType.CUSTOM_PRODUCTS) {
           return scenes;
@@ -170,6 +173,7 @@ export class ScenesService {
       this.store$.select(getJobStatuses),
       this.store$.select(getSearchType),
     ).pipe(
+      debounceTime(0),
       map(([scenes, jobStatuses, searchType]) => {
         if (searchType !== SearchType.CUSTOM_PRODUCTS) {
           return scenes;
@@ -199,6 +203,7 @@ export class ScenesService {
       this.store$.select(getShowExpiredData),
       this.store$.select(getSearchType),
     ).pipe(
+      debounceTime(200),
       map(([scenes, showExpiredData, searchType]) => {
         if (searchType !== SearchType.CUSTOM_PRODUCTS) {
           return scenes;
@@ -226,6 +231,7 @@ export class ScenesService {
       this.store$.select(getSearchType),
       this.store$.select(getSeason),
     ).pipe(
+      debounceTime(20),
       map(([scenes, tempRange, perpRange, dateRange, searchType, season]) => {
         return (searchType === SearchType.BASELINE) ?
           scenes.filter(scene =>
@@ -245,6 +251,7 @@ export class ScenesService {
       this.store$.select(getDateRange),
       this.store$.select(getSearchType),
     ).pipe(
+      debounceTime(0),
       map(
         ([scenes, dateRange, searchType]) => {
           if (searchType !== SearchType.CUSTOM_PRODUCTS) {
@@ -370,6 +377,7 @@ export class ScenesService {
       this.store$.select(getProductNameFilter),
     ]
     ).pipe(
+      debounceTime(0),
       map(([scenes, searchType, productNameFilter]) => {
         if (searchType === SearchType.CUSTOM_PRODUCTS && !!productNameFilter) {
           let fileIds: string[] = [];
