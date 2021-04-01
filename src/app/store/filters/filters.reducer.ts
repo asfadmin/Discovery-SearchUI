@@ -321,7 +321,8 @@ export function filtersReducer(state = initState, action: FiltersActions): Filte
         pathRange: {
           start: metadata.path,
           end: metadata.path
-        }
+        },
+        selectedMission: metadata.missionName,
       };
     }
 

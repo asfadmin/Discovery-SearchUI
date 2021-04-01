@@ -26,6 +26,7 @@ export class QueueEffects {
     private actions$: Actions,
     private store$: Store<AppState>,
     private asfApiService: services.AsfApiService,
+    private searchParamsService: services.SearchParamsService,
     private bulkDownloadService: services.BulkDownloadService,
   ) {}
 
@@ -44,23 +45,16 @@ export class QueueEffects {
   public downloadMetadata = createEffect(() => this.actions$.pipe(
     ofType<DownloadMetadata>(QueueActionType.DOWNLOAD_METADATA),
     map(action => action.payload),
-    withLatestFrom(this.store$.select(getQueuedProducts).pipe(
-        map(
-          products => products
-            .map(product => product.id)
-            .join(',')
-        ),
-        map(
-          productIds => ({
-            product_list: productIds
-          })
-        )
-      )
+    withLatestFrom(this.searchParamsService.getParams()),
+    map(
+      products =>  ({
+        format: products[0],
+        searchParams: products[1]})
     ),
     map(
-      ([format, params]): MetadataDownload => ({
-        params: { ...params, ...{output: format} },
-        format
+      (x): MetadataDownload => ({
+        params: { ...x.searchParams, ...{output: x.format.toLowerCase()} },
+        format: x.format
       })
     ),
     switchMap(
