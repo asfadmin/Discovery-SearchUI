@@ -3,7 +3,7 @@ import {
 } from '@angular/core';
 
 import { combineLatest, Observable } from 'rxjs';
-import { tap, withLatestFrom, filter, map, delay } from 'rxjs/operators';
+import { tap, withLatestFrom, filter, map, delay, debounceTime } from 'rxjs/operators';
 import { SubSink } from 'subsink';
 
 import { Store } from '@ngrx/store';
@@ -120,13 +120,13 @@ export class ScenesListComponent implements OnInit, OnDestroy {
     );
 
     this.subs.add(
-      sortedScenes$.subscribe(
+      sortedScenes$.pipe(debounceTime(250)).subscribe(
         scenes => this.scenes = scenes
       )
     );
 
     this.subs.add(
-      this.pairService.pairs$().subscribe(
+      this.pairService.pairs$().pipe(debounceTime(250)).subscribe(
         pairs => this.pairs = [...pairs.pairs, ...pairs.custom]
       )
     );
@@ -147,6 +147,7 @@ export class ScenesListComponent implements OnInit, OnDestroy {
       this.store$.select(queueStore.getQueuedProducts),
       this.store$.select(scenesStore.getAllSceneProducts),
     ).pipe(
+      debounceTime(0),
       map(([queueProducts, searchScenes]) => {
 
         const queuedProductGroups: {[id: string]: string[]} = queueProducts.reduce((total, product) => {
@@ -241,10 +242,17 @@ export class ScenesListComponent implements OnInit, OnDestroy {
     }
   }
 
-  public onAddPairToQueue(pair: models.CMRProductPair): void {
+  public onAddInSarJob(pair: models.CMRProductPair): void {
     this.store$.dispatch(new queueStore.AddJob({
       granules: pair,
-      job_type: models.Hyp3JobType.INSAR_GAMMA
+      job_type: models.hyp3JobTypes.INSAR_GAMMA
+    }));
+  }
+
+  public onAddAutoRiftJob(pair: models.CMRProductPair): void {
+    this.store$.dispatch(new queueStore.AddJob({
+      granules: pair,
+      job_type: models.hyp3JobTypes.AUTORIFT
     }));
   }
 

@@ -26,10 +26,11 @@ import { DragDropModule } from '@angular/cdk/drag-drop';
 import { ProjectNameSelectorModule } from '@components/shared/selectors/project-name-selector';
 import {MatTabsModule} from '@angular/material/tabs';
 import {MatMenuModule} from '@angular/material/menu';
+import { ConfirmationComponent } from './confirmation/confirmation.component';
 
 
 @NgModule({
-  declarations: [ProcessingQueueComponent, QueueSubmitComponent],
+  declarations: [ProcessingQueueComponent, QueueSubmitComponent, ConfirmationComponent],
     imports: [
         CommonModule,
         FormsModule,

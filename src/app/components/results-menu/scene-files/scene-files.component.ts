@@ -2,7 +2,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { SubSink } from 'subsink';
 
 import { combineLatest } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { debounceTime, map } from 'rxjs/operators';
 
 import { Store } from '@ngrx/store';
 import { AppState } from '@store';
@@ -46,7 +46,8 @@ export class SceneFilesComponent implements OnInit, OnDestroy {
         this.store$.select(scenesStore.getSelectedSceneProducts),
         this.store$.select(scenesStore.getOpenUnzippedProduct),
         this.store$.select(scenesStore.getUnzippedProducts)
-      ).subscribe(
+      ).pipe(debounceTime(0))
+      .subscribe(
         ([products, unzipped, unzippedFiles]) => {
           this.unzippedProducts = unzippedFiles;
           this.products = products;

@@ -12,14 +12,6 @@
     </h1>
     <div class="dl-subtitle">
       {{ numberOfProducts$ | async }} Files, {{ (totalSize$ | async) | readableSizeFromBytes }}
-      <div *ngIf="showDemWarning" class="dem-warning">
-        Resampled DEM (SRTM or NED) used for RTC processing.
-        <a class="more-link"
-           target="_blank"
-           href="https://asf.alaska.edu/data-sets/derived-data-sets/alos-palsar-rtc/alos-palsar-radiometric-terrain-correction/#DEM_Information">
-          More...
-        </a>
-      </div>
     </div>
   </div>
 
@@ -33,10 +25,19 @@
 
 </div>
 
-<mat-dialog-content class="dl-mat-dialog-content">
+<div *ngIf="showDemWarning" class="dem-warning">
+  Resampled DEM (SRTM or NED) used for RTC processing.
+  <a class="more-link"
+     target="_blank"
+     href="https://asf.alaska.edu/data-sets/derived-data-sets/alos-palsar-rtc/alos-palsar-radiometric-terrain-correction/#DEM_Information">
+    More...
+  </a>
+</div>
 
+<mat-dialog-content class="dl-mat-dialog-content"
+                    [class.dl-mat-dialog-content-warn]="showDemWarning"
+                    [class.dl-mat-dialog-content-warn-mobile]="showDemWarning && breakpoint === breakpoints.MOBILE">
           <mat-list role="list" class="dl-list">
-
             <ng-container *ngIf="products$ | async as products">
               <mat-list-item
                 *ngFor="let product of products"
@@ -90,13 +91,13 @@
 
 <mat-dialog-actions class="dl-mat-dialog-actions">
 
-    <div class="dl-card-actions" fxLayout="row" fxFlexFill>
+    <div class="dl-card-actions" fxLayout="row" fxFlexFill *ngIf="breakpoint$ | async as breakpoint">
       <ng-container *ngIf="products$ | async as products">
-        <div fxFlex="20" class="dl-clear-button">
+        <div fxFlex="15" class="dl-clear-button">
             <button *ngIf="previousQueue === null"
                     (click)="onClearQueue(products)" mat-button>
               <mat-icon style="margin-right: 5px;">delete</mat-icon>
-              <span>Clear</span>
+              <span *ngIf="breakpoint > breakpoints.MOBILE && dlWidth >= dlWidthMin">Clear</span>
             </button>
 
           <button *ngIf="previousQueue !== null"
@@ -105,11 +106,22 @@
             <span>Restore</span>
           </button>
         </div>
-        <ng-container *ngIf="breakpoint$ | async as breakpoint">
-          <div *ngIf="areAnyProducts" fxFlex="80" class="dl-download-buttons">
-            <button (click)="onCopyQueue(products)" mat-button [disabled]="!areAnyProducts" class="btn-primary">
-              <span *ngIf="breakpoint > breakpoints.MOBILE && dlWidth >= dlWidthMin">Copy File IDs</span>
+        <ng-container>
+          <div *ngIf="areAnyProducts" fxFlex="85" class="dl-download-buttons">
+            <button (click)="onCopyQueue(products)" mat-button [disabled]="!areAnyProducts" class="btn-primary"
+                    [class.button-clipboard-mobile]="breakpoint === breakpoints.MOBILE || dlWidth < dlWidthMin"
+                    matTooltip="Copy File IDs to clipboard"
+                    [matTooltipPosition]="'above'">
               <fa-icon style="margin-left: 5px;" [icon]="copyIcon"></fa-icon>
+              &nbsp;<span *ngIf="breakpoint > breakpoints.MOBILE && dlWidth >= dlWidthMin">Copy File </span>IDs
+            </button>
+
+            <button (click)="onCopyQueueURLs(products)" mat-button [disabled]="!areAnyProducts" class="btn-primary"
+                    [class.button-clipboard-mobile]="breakpoint === breakpoints.MOBILE || dlWidth < dlWidthMin"
+                    matTooltip="Copy File URLs to clipboard"
+                    [matTooltipPosition]="'above'">
+              <fa-icon style="margin-left: 5px;" [icon]="copyIcon"></fa-icon>
+              &nbsp;<span *ngIf="breakpoint > breakpoints.MOBILE && dlWidth >= dlWidthMin">Copy </span>URLs
             </button>
 
             <ng-container *ngIf="breakpoint > breakpoints.MOBILE && dlWidth >= dlWidthMin">
@@ -117,7 +129,9 @@
                 On Demand products in queue - limited export options
               </span>
 
-              <button mat-flat-button color="primary" [matMenuTriggerFor]="dataMenu" [disabled]="!areAnyProducts" class="btn-primary">
+              <button mat-flat-button color="primary" [matMenuTriggerFor]="dataMenu" [disabled]="!areAnyProducts"
+                      class="btn-primary"
+                      style="margin-left: 15px;">
                 Data Download
                 <mat-icon>arrow_drop_up</mat-icon>
               </button>
@@ -128,7 +142,7 @@
             </ng-container>
 
             <ng-container *ngIf="breakpoint === breakpoints.MOBILE || dlWidth < dlWidthMin">
-              <button mat-flat-button [matMenuTriggerFor]="typesMenu">
+              <button mat-flat-button [matMenuTriggerFor]="typesMenu" style="padding: 0 0 0 5px; margin-left: 15px;">
                 Downloads
                 <mat-icon>arrow_drop_up</mat-icon>
               </button>

@@ -1,9 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { saveAs } from 'file-saver';
 import * as moment from 'moment';
 
 import { combineLatest } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { debounceTime, map } from 'rxjs/operators';
 import { Action, Store } from '@ngrx/store';
 
 import { AppState } from '@store';
@@ -12,7 +12,6 @@ import * as uiStore from '@store/ui';
 import * as queueStore from '@store/queue';
 import * as searchStore from '@store/search';
 import * as filtersStore from '@store/filters';
-
 
 import {
   MapService, ScenesService, ScreenSizeService,
@@ -27,11 +26,11 @@ import { AsfApiOutputFormat } from '@models';
   templateUrl: './scenes-list-header.component.html',
   styleUrls: ['./scenes-list-header.component.scss']
 })
-export class ScenesListHeaderComponent implements OnInit {
+export class ScenesListHeaderComponent implements OnInit, OnDestroy {
   public totalResultCount$ = this.store$.select(searchStore.getTotalResultCount);
   public numberOfScenes$ = this.store$.select(scenesStore.getNumberOfScenes);
   public numberOfProducts$ = this.store$.select(scenesStore.getNumberOfProducts);
-  public allProducts$ = this.scenesService.products$();
+  public products;
   public numBaselineScenes$ = this.scenesService.scenes$().pipe(
     map(scenes => scenes.length),
   );
@@ -58,6 +57,12 @@ export class ScenesListHeaderComponent implements OnInit {
 
   private subs = new SubSink();
 
+  public RTC = models.hyp3JobTypes.RTC_GAMMA;
+  public InSAR = models.hyp3JobTypes.INSAR_GAMMA;
+  public AutoRift = models.hyp3JobTypes.AUTORIFT;
+
+  public hyp3ableProducts = [];
+
   constructor(
     private store$: Store<AppState>,
     private mapService: MapService,
@@ -74,8 +79,19 @@ export class ScenesListHeaderComponent implements OnInit {
     );
 
     this.subs.add(
-      this.pairService.pairs$().subscribe(
-        ({pairs, custom}) => this.pairs = [ ...pairs, ...custom ]
+      combineLatest(
+        this.scenesService.products$(),
+        this.pairService.pairs$()
+      ).subscribe(
+        ([products, {pairs, custom}]) => {
+          this.products = products;
+          this.pairs = [ ...pairs, ...custom ];
+
+          this.hyp3ableProducts = this.getHyp3ableProducts([
+            ...this.products.map(prod => [prod]),
+            ...this.pairs
+          ]);
+        }
       )
     );
 
@@ -84,6 +100,8 @@ export class ScenesListHeaderComponent implements OnInit {
         this.scenesService.scenes$(),
         this.store$.select(filtersStore.getProductTypes),
         this.store$.select(searchStore.getSearchType),
+      ).pipe(
+        debounceTime(250)
       ).subscribe(([scenes, productTypes, searchType]) => {
         this.canHideRawData =
           searchType === models.SearchType.DATASET &&
@@ -193,13 +211,11 @@ export class ScenesListHeaderComponent implements OnInit {
     this.store$.dispatch(new queueStore.AddItems(products));
   }
 
-  public queueAllOnDemand(products: models.CMRProduct[]): void {
-    const jobs = products.map(
-      product => ({
-        granules: [ product ],
-        job_type: models.Hyp3JobType.RTC_GAMMA
-      })
-    );
+  public queueAllOnDemand(products: models.CMRProduct[][], job_type: models.Hyp3JobType): void {
+    const jobs: models.QueuedHyp3Job[] = products.map(product => ({
+      granules: product,
+      job_type
+    }));
 
     this.store$.dispatch(new queueStore.AddJobs(jobs));
   }
@@ -207,28 +223,6 @@ export class ScenesListHeaderComponent implements OnInit {
   public downloadable(products: models.CMRProduct[]): models.CMRProduct[] {
     return products.filter(product => this.isDownloadable(product));
   }
-
-  public slc(products: models.CMRProduct[]): models.CMRProduct[] {
-    return products
-      .filter(product => product.metadata.beamMode === 'IW')
-      .filter(product => product.metadata.productType === 'SLC')
-      .filter(product => !product.metadata.polarization.includes('Dual'));
-  }
-
-  public grd_hd(products: models.CMRProduct[]): models.CMRProduct[] {
-    return products
-      .filter(product => product.metadata.beamMode === 'IW')
-      .filter(product => product.metadata.productType === 'GRD_HD')
-      .filter(product => !product.metadata.polarization.includes('Dual'));
-  }
-
-  public grd_hs(products: models.CMRProduct[]): models.CMRProduct[] {
-    return products
-      .filter(product => product.metadata.beamMode === 'IW')
-      .filter(product => product.metadata.productType === 'GRD_HS')
-      .filter(product => !product.metadata.polarization.includes('Dual'));
-  }
-
 
   public queueSBASProducts(products: models.CMRProduct[]): void {
     this.store$.dispatch(new queueStore.AddItems(products));
@@ -333,5 +327,41 @@ export class ScenesListHeaderComponent implements OnInit {
     const expiration = moment.duration(expiration_time.diff(current));
 
     return Math.floor(expiration.asDays());
+  }
+
+  private getHyp3ableProducts(products) {
+    return models.hyp3JobTypesList.map(jobType => {
+      const hyp3ableProducts = products.filter(
+        product => models.isHyp3able(product, jobType)
+      );
+
+      const byProdType = jobType.productTypes.reduce(
+        (types, prodType) => {
+          prodType.productTypes.forEach(pt => {
+            types[pt] = [];
+          });
+          return types;
+        }, {}
+      );
+
+      hyp3ableProducts.forEach(product => {
+        const prodType = product[0].metadata.productType;
+        byProdType[prodType].push(product);
+      });
+
+      return {
+        jobType,
+        byProductType: Object.entries(byProdType).map(([productType, prods]) => ({
+          productType, products: prods
+        })),
+        total: Object.values(byProdType).reduce(
+          (sum, prods) => sum + (<any>prods).length, 0
+        )
+      };
+    });
+  }
+
+  ngOnDestroy(): void {
+    this.subs.unsubscribe();
   }
 }

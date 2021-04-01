@@ -56,7 +56,8 @@
           settings_overscan
         </mat-icon>
 
-        <mat-icon *ngIf="isDownloadable(scene) && isProcessable(scene) && searchType === SearchTypes.BASELINE"
+        <mat-icon *ngIf="isDownloadable(scene) && isProcessable(scene) && 
+        (scene.metadata.productType !== 'SLC' || searchType === SearchTypes.SBAS || searchType === SearchTypes.BASELINE)"
           (click)="onToggleOnDemandScene()"
           class="icon-margin"
           svgIcon="hyp3"
@@ -67,7 +68,7 @@
             jobQueued ?
               'Remove scene files from on demand':
               'Add scene files to on demand'
-          }}">  
+          }}">
         </mat-icon>
 
         <mat-icon *ngIf="isDownloadable(scene)"
@@ -110,7 +111,7 @@
               {{ withOffset(scene.metadata.temporal, offsets.temporal) }}d
             </div>
             <div class="cart-flex-field">
-              <mat-icon *ngIf="isDownloadable(scene) && isProcessable(scene) && searchType === SearchTypes.BASELINE"
+              <mat-icon *ngIf="isDownloadable(scene) && isProcessable(scene)"
                 (click)="onToggleOnDemandScene()"
                 class="icon-margin"
                 svgIcon="hyp3"
@@ -123,12 +124,12 @@
                     'Add scene files to on demand'
                 }}">
               </mat-icon>
-              <mat-icon *ngIf="isDownloadable(scene)" 
+              <mat-icon *ngIf="isDownloadable(scene)"
                 (click)="onToggleScene($event, scene.groupId)"
                 class="icon-margin"
                 matTooltip="{{
-                  isQueued ? 
-                    'Remove scene files from downloads': 
+                  isQueued ?
+                    'Remove scene files from downloads':
                     'Add scene files to downloads'
                 }}">
                 {{ isQueued ? 'shopping_cart' : 'add_shopping_cart' }}

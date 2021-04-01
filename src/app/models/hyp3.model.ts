@@ -1,6 +1,7 @@
 import * as moment from 'moment';
 
 import { CMRProduct } from './cmr-product.model';
+import { Hyp3JobType } from './hyp3-job-type.model';
 
 export interface QueuedHyp3Job {
   granules: CMRProduct[];
@@ -82,20 +83,7 @@ export interface Hyp3InSarGammaParameters {
 
 
 export interface Hyp3ProcessingOptions {
-  // Hyp3RtcGammaProcessingOptions
-  demMatching?: boolean;
-  includeDem?: boolean;
-  includeIncMap?: boolean;
-  includeScatteringArea?: boolean;
-  radiometry?: RtcGammaRadiometry;
-  resolution?: RtcGammaResolution;
-  scale?: RtcGammaScale;
-  speckleFilter?: boolean;
-
-  // Hyp3InSarProcessingOptions
-  includeLookVectors?: boolean;
-  includeLosDisplacement?: boolean;
-  looks?: InSarGammaLooks;
+  [key: string]: any;
 }
 
 export enum RtcGammaRadiometry {
@@ -115,11 +103,6 @@ export enum RtcGammaResolution {
 export enum RtcGammaScale {
   POWER = 'power',
   AMPLITUDE = 'amplitude'
-}
-
-export enum Hyp3JobType {
-  RTC_GAMMA = 'RTC_GAMMA',
-  INSAR_GAMMA = 'INSAR_GAMMA'
 }
 
 export enum Hyp3JobStatusCode {

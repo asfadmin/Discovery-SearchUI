@@ -58,7 +58,7 @@ export class SceneComponent implements OnInit {
   public onToggleOnDemandScene(): void {
     this.ToggleOnDemandScene.emit({
       granules: [ this.scene ],
-      job_type: models.Hyp3JobType.RTC_GAMMA
+      job_type: models.hyp3JobTypes.RTC_GAMMA
     } as QueuedHyp3Job);
     this.jobQueued = !this.jobQueued;
   }
@@ -80,8 +80,9 @@ export class SceneComponent implements OnInit {
       product.metadata.beamMode === 'IW' &&
       (
         product.metadata.productType === 'GRD_HD' ||
-        product.metadata.productType === 'GRD-HS' ||
-        product.metadata.productType === 'SLC'
+        product.metadata.productType === 'GRD_HS' ||
+        product.metadata.productType === 'SLC' &&
+        !product.metadata.polarization.includes('Dual')
       )
     );
   }

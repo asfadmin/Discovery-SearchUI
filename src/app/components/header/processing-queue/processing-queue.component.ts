@@ -1,8 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { MatDialogRef } from '@angular/material/dialog';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatBottomSheet } from '@angular/material/bottom-sheet';
+
 import { QueueSubmitComponent } from './queue-submit/queue-submit.component';
+import { ConfirmationComponent } from './confirmation/confirmation.component';
 
 import { Store } from '@ngrx/store';
 import { AppState } from '@store';
@@ -12,10 +14,8 @@ import { tap, catchError } from 'rxjs/operators';
 
 import * as queueStore from '@store/queue';
 import * as hyp3Store from '@store/hyp3';
-import * as userStore from '@store/user';
-import * as models from '@models';
+import * as userStore from '@store/user'; import * as models from '@models';
 import * as services from '@services';
-// import { ResizeEvent } from 'angular-resizable-element';
 import { ResizedEvent } from 'angular-resize-event';
 
 enum ProcessingQueueTab {
@@ -29,6 +29,7 @@ enum ProcessingQueueTab {
   styleUrls: ['./processing-queue.component.scss']
 })
 export class ProcessingQueueComponent implements OnInit {
+  public allJobs: models.QueuedHyp3Job[] = [];
   public jobs: models.QueuedHyp3Job[] = [];
   public user = '';
   public isUserLoggedIn = false;
@@ -36,7 +37,7 @@ export class ProcessingQueueComponent implements OnInit {
   public remaining = 0;
   public areJobsLoading = false;
   public isQueueSubmitProcessing = false;
-  public previousQueue: any[] | null = null;
+  public previousQueue: {jobs: any[]; jobTypeId: string} | null = null;
 
   public breakpoint: models.Breakpoints;
   public breakpoints = models.Breakpoints;
@@ -46,6 +47,11 @@ export class ProcessingQueueComponent implements OnInit {
   public projectName = '';
   public processingOptions: models.Hyp3ProcessingOptions;
 
+  public hyp3JobTypes = models.hyp3JobTypes;
+  public hyp3JobTypesList: models.Hyp3JobType[];
+  public selectedJobTypeId: string | null = null;
+  public jobTypesWithQueued = [];
+
   public style: object = {};
   public dlWidth = 1000;
   public dlHeight = 1000;
@@ -53,12 +59,14 @@ export class ProcessingQueueComponent implements OnInit {
 
   constructor(
     public authService: services.AuthService,
+    public dialog: MatDialog,
     private dialogRef: MatDialogRef<ProcessingQueueComponent>,
     private snackBar: MatSnackBar,
     private store$: Store<AppState>,
     private hyp3: services.Hyp3Service,
     private screenSize: services.ScreenSizeService,
-    private bottomSheet: MatBottomSheet
+    private bottomSheet: MatBottomSheet,
+
   ) { }
 
   ngOnInit(): void {
@@ -69,8 +77,34 @@ export class ProcessingQueueComponent implements OnInit {
         this.isUserLoading = isUserLoading;
     });
 
-    this.store$.select(queueStore.getQueuedJobs).subscribe(jobs => {
-      this.jobs = jobs;
+    this.store$.select(queueStore.getQueuedJobs).subscribe((jobs) => {
+      const jobTypes: models.Hyp3JobType[] = Object.values(jobs
+        .map(job => job.job_type)
+        .reduce((types, jobType) => {
+          types[jobType.id] = jobType;
+          return types;
+        }, {}));
+
+      this.hyp3JobTypesList = <any>jobTypes;
+
+      if (!this.selectedJobTypeId) {
+        this.selectDefaultJobType();
+      }
+
+      this.allJobs = jobs;
+      this.jobs = jobs.filter(
+        job => job.job_type.id === this.selectedJobTypeId
+      );
+
+      this.jobTypesWithQueued = jobTypes.map((jobType) => {
+        return {
+          jobType: jobType,
+          selected: true,
+          jobs: this.allJobs.filter(
+            job => job.job_type.id === jobType.id
+          )
+        };
+      });
     });
 
     this.store$.select(hyp3Store.getHyp3User).subscribe(
@@ -122,29 +156,56 @@ export class ProcessingQueueComponent implements OnInit {
     return `${current.diff(expiration_time, 'days')} days`;
   }
 
-  public onSubmitQueue(): void {
-    const options = {
-      [models.Hyp3JobType.RTC_GAMMA]: {
-        dem_matching: this.processingOptions.demMatching,
-        include_dem: this.processingOptions.includeDem,
-        include_inc_map: this.processingOptions.includeIncMap,
-        include_scattering_area: this.processingOptions.includeScatteringArea,
-        radiometry: this.processingOptions.radiometry,
-        scale: this.processingOptions.scale,
-        speckle_filter: this.processingOptions.speckleFilter,
-      },
-      [models.Hyp3JobType.INSAR_GAMMA]: {
-        include_look_vectors: this.processingOptions.includeLookVectors,
-        include_los_displacement: this.processingOptions.includeLosDisplacement,
-        looks: this.processingOptions.looks,
-      }
-    };
+  public onReviewQueue() {
+    const confirmationRef = this.dialog.open(ConfirmationComponent, {
+      id: 'ConfirmProcess',
+      width: '500px',
+      height: '500px',
+      maxWidth: '500px',
+      maxHeight: '500px',
+      data: this.jobTypesWithQueued
+    });
 
-    const hyp3JobsBatch = this.jobs.map(job => {
+    confirmationRef.afterClosed().subscribe(
+      jobTypesWithQueued => {
+        if (!jobTypesWithQueued) {
+          return;
+        }
+
+        this.onSubmitQueue(jobTypesWithQueued);
+      }
+    );
+  }
+
+  public onSubmitQueue(jobTypesWithQueued): void {
+    const jobOptionNames = {};
+    models.hyp3JobTypesList.forEach(
+      jobType => jobOptionNames[jobType.id] = new Set(
+        jobType.options.map(option => option.apiName)
+      )
+    );
+
+    const options = {};
+    models.hyp3JobTypesList.forEach(jobType => {
+      options[jobType.id] = {};
+
+      Object.entries(this.processingOptions).forEach(([name, value]) => {
+        if (jobOptionNames[jobType.id].has(name)) {
+          options[jobType.id][name] = value;
+        }
+      });
+    });
+
+    const jobs = jobTypesWithQueued
+      .filter(jobType => jobType.selected)
+      .map(jobType => jobType.jobs)
+      .reduce((acc, val) => acc.concat(val), []);
+
+    const hyp3JobsBatch = jobs.map(job => {
       const jobOptions: any = {
-        job_type: job.job_type,
+        job_type: job.job_type.id,
         job_parameters: {
-          ...options[job.job_type],
+          ...options[job.job_type.id],
           granules: job.granules.map(granule => granule.name),
         }
       };
@@ -179,10 +240,24 @@ export class ProcessingQueueComponent implements OnInit {
           data: {numJobs: resp.jobs.length}
         });
 
-        this.store$.dispatch(new queueStore.ClearProcessingQueue());
+        const jobTypes = new Set<string>(jobs.map((job) => job.job_type.id));
+        this.selectedJobTypeId = null;
+        this.store$.dispatch(new queueStore.ClearProcessingQueueByJobType(jobTypes));
+
         this.store$.dispatch(new hyp3Store.LoadUser());
-        this.dialogRef.close();
+
+        if (this.allJobs.length === 0) {
+          this.dialogRef.close();
+        }
       }
+    );
+  }
+
+  public onSetSelectedJobType(jobType: models.Hyp3JobType): void {
+    this.selectedJobTypeId = jobType.id;
+
+    this.jobs = this.allJobs.filter(
+      job => job.job_type.id === this.selectedJobTypeId
     );
   }
 
@@ -190,13 +265,43 @@ export class ProcessingQueueComponent implements OnInit {
     this.store$.dispatch(new queueStore.RemoveJob(job));
   }
 
-  public onClearJobQueue(jobs): void {
-    this.previousQueue = jobs;
+  public onClearJobQueue(): void {
+    this.previousQueue = { jobTypeId: this.selectedJobTypeId, jobs: this.allJobs };
     this.store$.dispatch(new queueStore.ClearProcessingQueue());
+    this.selectedJobTypeId = null;
   }
 
-  public onRestoreJobQueue(previousJobs): void {
-    this.store$.dispatch(new queueStore.AddJobs(previousJobs));
+  public onClearSingleJobQueue(jobType: models.Hyp3JobType): void {
+
+    if (jobType.id === this.selectedJobTypeId) {
+
+      let TabIdx = this.jobTypesWithQueued.findIndex((queuedJobType) => queuedJobType.jobType === jobType);
+
+      if (this.jobTypesWithQueued.length > TabIdx + 1) {
+        ++TabIdx;
+      } else if (TabIdx > 0) {
+        --TabIdx;
+      } else {
+        TabIdx = -1;
+      }
+
+      if (TabIdx === -1) {
+        this.selectedJobTypeId = null;
+      } else {
+        this.onSetSelectedJobType(this.jobTypesWithQueued[TabIdx].jobType);
+      }
+    }
+
+    this.store$.dispatch(new queueStore.ClearProcessingQueueByJobType(new Set<string>([jobType.id])));
+    if (this.allJobs.length === 0) {
+      this.dialogRef.close();
+    }
+
+  }
+
+  public onRestoreJobQueue(): void {
+    this.selectedJobTypeId = this.previousQueue.jobTypeId;
+    this.store$.dispatch(new queueStore.AddJobs(this.previousQueue.jobs));
     this.previousQueue = null;
   }
 
@@ -217,4 +322,8 @@ export class ProcessingQueueComponent implements OnInit {
     this.dialogRef.close();
   }
 
+  private selectDefaultJobType(): void {
+    this.selectedJobTypeId = !!this.hyp3JobTypesList[0] ?
+      this.hyp3JobTypesList[0].id : null;
+  }
 }

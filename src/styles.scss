@@ -337,3 +337,31 @@ ul {
 .jobs-display--mobile .mat-list-base .mat-list-option .mat-list-item-content {
   width: 100%;
 }
+
+
+$background-color: $asf-primary-light;
+$d-width: 500px;
+$d-height: 500px;
+
+#ConfirmProcess {
+  resize: none;
+  overflow: hidden;
+  background: $background-color !important;
+  width: $d-width !important;
+  height: $d-height !important;
+  min-width: $d-width !important;
+  min-height: $d-height !important;
+  max-width: $d-width !important;
+  max-height: $d-height !important;
+
+  .mat-list-base {
+    padding-top: 0;
+  }
+}
+
+.mat-pseudo-checkbox-checked,
+.mat-pseudo-checkbox-indeterminate,
+.mat-accent .mat-pseudo-checkbox-checked,
+.mat-accent .mat-pseudo-checkbox-indeterminate {
+  background: gray;
+}

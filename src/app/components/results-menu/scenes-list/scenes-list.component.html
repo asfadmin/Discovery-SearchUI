@@ -39,22 +39,26 @@
             <div style="margin-left: 10px;">{{ pairPerpBaseline(pair)}}m</div>
             <div style="margin-left: 10px;">{{ pairTempBaseline(pair)}}d</div>
               <mat-icon
-                 *ngIf="false"
-                (click)="(pair)"
                 class="clickable noselect list-icon"
                 style="margin-left: 10px;"
                 matTooltip="Add pair to On Demand queue"
                 svgIcon="hyp3"
-                [matMenuTriggerFor]="addPairToOnDemand">
+                [matMenuTriggerFor]="addPairToOnDemand"
+                [matMenuTriggerData]="{ pair: pair }">
               </mat-icon>
-
-              <mat-menu #addPairToOnDemand="matMenu">
-                <button (click)="onAddPairToQueue(pair)" mat-menu-item>
-                  Add pair to On Demand queue
-                </button>
-              </mat-menu>
           </button>
         </div>
+
+        <mat-menu #addPairToOnDemand="matMenu">
+          <ng-template matMenuContent let-pair="pair">
+            <button (click)="onAddInSarJob(pair)" mat-menu-item>
+              Add InSAR GAMMA job
+            </button>
+            <button (click)="onAddAutoRiftJob(pair)" mat-menu-item>
+              Add autoRIFT job
+            </button>
+          </ng-template>
+        </mat-menu>
       </ng-container>
     </div>
   </cdk-virtual-scroll-viewport>

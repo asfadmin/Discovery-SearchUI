@@ -1,0 +1,12 @@
+<div>
+  <mat-slide-toggle
+    (change)="onValueChange($event.checked)"
+    [(ngModel)]="value">
+    {{ optionName }}
+  </mat-slide-toggle>
+
+
+  <app-option-info class="option-info--spacing"
+    [infoText]="optionInfo">
+  </app-option-info>
+</div>
