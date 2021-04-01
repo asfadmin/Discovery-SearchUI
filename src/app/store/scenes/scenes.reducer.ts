@@ -372,6 +372,26 @@ export const getSelectedSceneBrowses = createSelector(
   }
 );
 
+export const getSelectedOnDemandProductSceneBrowses = createSelector (
+  getScenesState,
+  (state: ScenesState) => {
+    const selected = state.products[state.selected];
+
+    if (!selected) {
+      return;
+    }
+
+    const browses = [];
+
+    const scenesForProduct = selected.metadata.job.job_parameters.scenes;
+    for (const productScene of scenesForProduct) {
+      browses.push(productScene.browses[0]);
+    }
+
+    return browses;
+  }
+)
+
 const productsForScene = (selected, state) => {
   if (!selected) {
     return;

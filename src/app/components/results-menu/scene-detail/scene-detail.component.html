@@ -30,6 +30,35 @@
              [searchType]="searchType"
              [offsets]="masterOffsets$ | async">
           </app-scene-metadata>
+          <div *ngIf="searchType === searchTypes.CUSTOM_PRODUCTS">
+            <div *ngIf="scene.metadata.job.job_parameters.scenes.length > 1">
+            <div *ngFor="let prod of scene.metadata.job.job_parameters.scenes; let idx = index">
+              <div fxFlex fxLayout="row">
+              <app-scene-metadata
+              [scene]="prod"
+              [dataset]="dataset"
+              [searchType]="searchType"
+              [offsets]="masterOffsets$ | async">
+           </app-scene-metadata>
+           <div [class.clickable]="productHasSceneBrowses()" class="browse-container w40">
+            <div
+              class="img-container">
+              <img
+                class="browse-img fit-to-container"
+                [hidden]="isImageLoading"
+                [src]="(jobBrowses$ | async)[idx]"
+                (load)="isImageLoading = false"
+                onerror="this.src='assets/no-browse.png'"
+                alt="Sentinel1 scene browse image">
+              <div [class.hidden]="!productHasSceneBrowses()" class="img-overlay fit-to-container">
+                  <mat-icon class="overlay-icon">fullscreen</mat-icon>
+                </div>
+            </div>
+          </div>
+        </div>
+        </div>
+            </div>
+          </div>
         </div>
 
         <div [class.clickable]="sceneHasBrowse()" class="browse-container w40">

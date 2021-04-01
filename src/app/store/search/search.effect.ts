@@ -164,7 +164,9 @@ export class SearchEffects {
           }
 
           const granules = jobs.map(
-            job => job.job_parameters.granules[0]
+            job => {
+              return job.job_parameters.granules.join(',');
+            }
           ).join(',');
 
           return this.asfApiService.query<any[]>({ 'granule_list': granules }).pipe(
@@ -206,6 +208,12 @@ export class SearchEffects {
         const jobFile = !!job.files ?
           job.files[0] :
           {size: -1, url: '', filename: product.name};
+
+        const scene_keys = job.job_parameters.granules;
+        job.job_parameters.scenes = [];
+        for (const scene_key of scene_keys) {
+          job.job_parameters.scenes.push(products[scene_key]);
+        }
 
         return {
           ...product,
