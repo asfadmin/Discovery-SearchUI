@@ -149,27 +149,20 @@ export class QueueComponent implements OnInit, OnDestroy {
   }
 
   public demWarning(products) {
-    let warn = false;
-
     if (!products) {
       return false;
     }
 
-    products.forEach((product) => {
-      if (product.dataset === 'ALOS' &&
-        product.metadata.productType.includes('RTC_') ) {
-        warn = true;
-      }
-    });
-
-    return warn;
+    return products.filter(product => product.metadata.productType !== null)
+    .some(product => product.dataset === 'ALOS' &&
+        product.metadata.productType.includes('RTC_')
+      );
   }
 
   public onResized(event: ResizedEvent) {
     this.dlWidth = event.newWidth;
     this.dlHeight = event.newHeight;
   }
-
 
   onCloseDownloadQueue() {
     this.dialogRef.close();

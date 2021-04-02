@@ -7,6 +7,39 @@
   font-family: Roboto, sans-serif;
 }
 
+// regular style toast
+@import '~ngx-toastr/toastr';
+
+// toast style overrides
+.toast.success,
+#toast-container > .toast-success {
+  color: white !important;
+  background-color: $asf-blue !important;
+  background-image: url("/assets/icons/check_circle_white_48dp.svg") !important;
+}
+
+.toast-error,
+#toast-container > .toast-error {
+  color: white !important;
+  background-color: red !important;
+  background-image: url("/assets/icons/error_white_48dp.svg") !important;
+
+}
+
+.toast-info,
+#toast-container > .toast-info {
+  color: $asf-primary-dark !important;
+  background-color: white !important;
+  background-image: url("/assets/icons/info_black_48dp.svg") !important;
+}
+
+.toast-warning,
+#toast-container > .toast-warning {
+  color: $asf-primary-dark !important;
+  background-color: $asf-warn !important;
+  background-image: url("/assets/icons/warning_black_48dp.svg") !important;
+}
+
 .card-spacing {
   margin: 4px;
 }
@@ -337,7 +370,6 @@ ul {
 .jobs-display--mobile .mat-list-base .mat-list-option .mat-list-item-content {
   width: 100%;
 }
-
 
 $background-color: $asf-primary-light;
 $d-width: 500px;

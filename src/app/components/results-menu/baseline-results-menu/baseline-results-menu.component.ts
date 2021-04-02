@@ -157,22 +157,22 @@ export class BaselineResultsMenuComponent implements OnInit, OnDestroy {
 
     public onCsvDownload(products: models.CMRProduct[]): void {
       const currentQueue = this.queuedProducts;
-      this.clearDispatchRestoreQueue(new queueStore.DownloadMetadata(AsfApiOutputFormat.CSV), products, currentQueue);
+      this.clearDispatchRestoreQueue(new queueStore.DownloadSearchtypeMetadata(AsfApiOutputFormat.CSV), products, currentQueue);
     }
 
     public onKmlDownload(products: models.CMRProduct[]): void {
       const currentQueue = this.queuedProducts;
-      this.clearDispatchRestoreQueue(new queueStore.DownloadMetadata(AsfApiOutputFormat.KML), products, currentQueue);
+      this.clearDispatchRestoreQueue(new queueStore.DownloadSearchtypeMetadata(AsfApiOutputFormat.KML), products, currentQueue);
     }
 
     public onGeojsonDownload(products: models.CMRProduct[]): void {
       const currentQueue = this.queuedProducts;
-      this.clearDispatchRestoreQueue(new queueStore.DownloadMetadata(AsfApiOutputFormat.GEOJSON), products, currentQueue);
+      this.clearDispatchRestoreQueue(new queueStore.DownloadSearchtypeMetadata(AsfApiOutputFormat.GEOJSON), products, currentQueue);
     }
 
     public onMetalinkDownload(products: models.CMRProduct[]): void {
       const currentQueue = this.queuedProducts;
-      this.clearDispatchRestoreQueue(new queueStore.DownloadMetadata(AsfApiOutputFormat.METALINK), products, currentQueue);
+      this.clearDispatchRestoreQueue(new queueStore.DownloadSearchtypeMetadata(AsfApiOutputFormat.METALINK), products, currentQueue);
     }
 
     public queueAllOnDemand(products: models.CMRProduct[], job_type: models.Hyp3JobType): void {
