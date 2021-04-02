@@ -8,7 +8,7 @@ import * as moment from 'moment';
 import { map, withLatestFrom, switchMap } from 'rxjs/operators';
 
 import { AppState } from '../app.reducer';
-import { QueueActionType, DownloadMetadata, QueueScene, AddItems, RemoveItems, RemoveSceneFromQueue } from './queue.action';
+import { QueueActionType, DownloadMetadata, QueueScene, AddItems, RemoveItems, RemoveSceneFromQueue, DownloadSearchtypeMetadata } from './queue.action';
 import { getQueuedProducts } from './queue.reducer';
 import * as scenesStore from '@store/scenes';
 
@@ -42,19 +42,53 @@ export class QueueEffects {
     )
   ), { dispatch: false });
 
-  public downloadMetadata = createEffect(() => this.actions$.pipe(
-    ofType<DownloadMetadata>(QueueActionType.DOWNLOAD_METADATA),
+  public downloadSearchtypeMetadata = createEffect(() => this.actions$.pipe(
+    ofType<DownloadSearchtypeMetadata>(QueueActionType.DOWNLOAD_SEARCHTYPE_METADATA),
     map(action => action.payload),
     withLatestFrom(this.searchParamsService.getParams()),
     map(
-      products =>  ({
-        format: products[0],
-        searchParams: products[1]})
+      ([format, searchParams]) =>  ({
+        format,
+        searchParams})
     ),
     map(
       (x): MetadataDownload => ({
         params: { ...x.searchParams, ...{output: x.format.toLowerCase()} },
         format: x.format
+      })
+    ),
+    switchMap(
+      (search: MetadataDownload) => this.asfApiService.query<string>(search.params).pipe(
+        map(resp => new Blob([resp], { type: 'text/plain'})),
+        map(
+          blob => FileSaver.saveAs(blob,
+            `asf-datapool-results-${this.currentDate()}.${search.format.toLowerCase()}`
+          )
+        )
+      ),
+    ),
+  ), { dispatch: false });
+
+  public downloadMetadata = createEffect(() => this.actions$.pipe(
+    ofType<DownloadMetadata>(QueueActionType.DOWNLOAD_METADATA),
+    map(action => action.payload),
+    withLatestFrom(this.store$.select(getQueuedProducts).pipe(
+        map(
+          products => products
+            .map(product => product.id)
+            .join(',')
+        ),
+        map(
+          productIds => ({
+            product_list: productIds
+          })
+        )
+      )
+    ),
+    map(
+      ([format, params]): MetadataDownload => ({
+        params: { ...params, ...{output: format} },
+        format
       })
     ),
     switchMap(
