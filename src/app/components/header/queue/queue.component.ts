@@ -14,6 +14,7 @@ import { MatDialogRef } from '@angular/material/dialog';
 import { SubSink } from 'subsink';
 // import { ResizeEvent } from 'angular-resizable-element';
 import { ResizedEvent } from 'angular-resize-event';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-queue',
@@ -65,6 +66,7 @@ export class QueueComponent implements OnInit, OnDestroy {
     private clipboardService: ClipboardService,
     private dialogRef: MatDialogRef<QueueComponent>,
     private screenSize: ScreenSizeService,
+    private toastr: ToastrService,
   ) {}
 
   ngOnInit() {
@@ -114,9 +116,32 @@ export class QueueComponent implements OnInit, OnDestroy {
     const productListStr = products
       .filter(product => !product.isUnzippedFile)
       .map(product => product.id)
-      .join(',');
-
+      .join('\n');
     this.clipboardService.copyFromContent(productListStr);
+    const lines = this.lineCount(productListStr);
+    const s = lines > 1 ? 's' : '';
+    this.toastr.info(lines + ' File ID' + s + ' Copied', 'Clipboard Updated');
+  }
+
+  public onCopyQueueURLs(products: CMRProduct[]): void {
+    const productListStr = products
+      .filter(product => !product.isUnzippedFile)
+      .map(product => product.downloadUrl)
+      .join('\n');
+    this.clipboardService.copyFromContent(productListStr);
+    const lines = this.lineCount(productListStr);
+    const s = lines > 1 ? 's' : '';
+    this.toastr.info(lines + ' URL' + s + ' Copied', 'Clipboard Updated');
+  }
+
+  private lineCount( str: string ) {
+    let length = 1;
+    for ( let i = 0; i < str.length; ++i ) {
+      if ( str[i] === '\n') {
+        length++;
+      }
+    }
+    return length;
   }
 
   private downloadMetadata(format: AsfApiOutputFormat): void {
@@ -124,27 +149,20 @@ export class QueueComponent implements OnInit, OnDestroy {
   }
 
   public demWarning(products) {
-    let warn = false;
-
     if (!products) {
       return false;
     }
 
-    products.forEach((product) => {
-      if (product.dataset === 'ALOS' &&
-        product.metadata.productType.includes('RTC_') ) {
-        warn = true;
-      }
-    });
-
-    return warn;
+    return products.filter(product => product.metadata.productType !== null)
+    .some(product => product.dataset === 'ALOS' &&
+        product.metadata.productType.includes('RTC_')
+      );
   }
 
   public onResized(event: ResizedEvent) {
     this.dlWidth = event.newWidth;
     this.dlHeight = event.newHeight;
   }
-
 
   onCloseDownloadQueue() {
     this.dialogRef.close();

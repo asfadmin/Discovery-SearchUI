@@ -18,6 +18,7 @@ import { environment } from '@environments/environment';
 import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
+import { ToastrModule } from 'ngx-toastr';
 
 import * as store from './store';
 
@@ -99,6 +100,7 @@ export const routes = [
     MatDialogModule,
     BaselineChartModule,
     HelpModule,
+    ToastrModule.forRoot(),
   ],
   providers: [
     services.AsfApiService,
