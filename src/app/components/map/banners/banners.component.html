@@ -1,11 +1,11 @@
-<mat-card *ngFor="let banner of banners"
+<div *ngFor="let banner of banners"
           class="banner-card"
           fxFlex="auto">
 
-  <div class="banner-text">
-    <div [innerHTML]="banner.text" class="inner-banner-text"></div>
-    <button (click)="remove(banner)" mat-icon-button bb-icon>
-      <mat-icon>clear</mat-icon>
-    </button>
+  <div [bannerCreate]=banner>
+<!--    <div [innerHTML]="banner.text" class="inner-banner-text"></div>-->
+<!--    <button (click)="remove(banner)" mat-icon-button bb-icon>-->
+<!--      <mat-icon>clear</mat-icon>-->
+<!--    </button>-->
   </div>
-</mat-card>
+</div>
