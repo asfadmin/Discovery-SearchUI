@@ -23,6 +23,7 @@ export class BannerApiService {
       map(banners => ({
         banners: <any[]>banners.map(banner => ({
           text: banner.text || banner.name,
+          name: banner.name,
           type: '',
           target: ''
         })),
