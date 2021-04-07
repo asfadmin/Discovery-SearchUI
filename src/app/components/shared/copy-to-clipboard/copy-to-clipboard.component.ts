@@ -40,7 +40,7 @@ export class CopyToClipboardComponent implements OnDestroy {
         this.toastr.info(this.toastrHeader);
       }
     }
-    
+
     this.subs.add(
       of((' ' + this.prompt).slice(1)).pipe(
         tap(() => this.prompt = this.notification),
