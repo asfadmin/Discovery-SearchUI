@@ -22,7 +22,7 @@ export class BannerApiService {
     return this.http.get<any[]>(this.bannerUrl()).pipe(
       map(banners => ({
         banners: <any[]>banners.map(banner => ({
-          text: banner.text || banner.name,
+          text: banner.text,
           name: banner.name,
           type: '',
           target: ''
