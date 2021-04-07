@@ -72,9 +72,9 @@
 
     <ng-template #jobsQueued>
       
-      <mat-accordion *ngFor="let job of jobs" style="width: 100%;">
-        <mat-expansion-panel class="mat-elevation-z0">
-              <mat-expansion-panel-header class="pair-expansion-panel-header">
+      <mat-accordion *ngFor="let job of jobs" style="width: 100%; padding-top: 8px">
+        <mat-expansion-panel class="mat-elevation-z0" style="padding-left: 16px;">
+              <mat-expansion-panel-header class="pair-expansion-panel-header" [collapsedHeight]="'58px'">
       <mat-panel-title>
         
         <img style="
@@ -107,39 +107,38 @@
             {{ job.job_type.name }}
             <span *ngIf="job.granules[0].bytes === 0">Virtual</span>
             <span *ngIf="job.granules[0].bytes !== 0">{{ job.granules[0].bytes | readableSizeFromBytes }}</span>
-          </b>
-          
+          </b>         
         </span>
-
-
-  
-
       </div>
-      
       </mat-panel-description>
-
-      
-
           </mat-expansion-panel-header>
-          
+
           <div style="margin-top: 5px !important;">
-        <ng-container *ngFor="let granule of job.granules">
+        <ng-container *ngFor="let granule of job.granules; let idx = index">
           <div style="display: flex; margin-left: 25px;">
-          <img style="
-          width: 40px;
-          height: 40px;
-          border-radius: 6px !important;
-          margin-right: 25px;"
-          [src]="granule.thumbnail"
-          onerror="this.src='assets/no-thumb.png'"
-          matBadgeOverlap="false">
-          <p>{{granule.name}}</p>
+            <div *ngIf="idx ===0">Primary: 
+              <div style="margin-left: 25px;">
+                {{granule.name}}
+                <app-copy-to-clipboard
+                [value]="granule.name"
+                prompt="Copy primary scene name"
+                class="clipboard-icon"></app-copy-to-clipboard>
+              </div>
+            </div>
+            <div *ngIf="idx > 0">Secondary: 
+              <div style="margin-left: 25px;">
+                {{granule.name}}
+                <app-copy-to-clipboard
+                [value]="granule.name"
+                prompt="Copy secondary scene name"
+                class="clipboard-icon"></app-copy-to-clipboard>
+              </div>
+            </div>
         </div>
         </ng-container>
       </div>
         </mat-expansion-panel>
       </mat-accordion>
-
     </ng-template>
 
     <ng-template #emptyQueue>
