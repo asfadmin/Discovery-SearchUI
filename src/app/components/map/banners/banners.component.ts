@@ -17,8 +17,8 @@ export class BannerCreateDirective implements OnInit {
   ngOnInit(): void {
     let warningFlag = false;
 
-    if (this.bannerCreate.name.toLowerCase().indexOf('outage') > -1||
-      this.bannerCreate.name.toLowerCase().indexOf('network')  > -1||
+    if (this.bannerCreate.name.toLowerCase().indexOf('outage') > -1 ||
+      this.bannerCreate.name.toLowerCase().indexOf('network')  > -1 ||
       this.bannerCreate.name.toLowerCase().indexOf('problem') > -1
     ) { warningFlag = true; }
 
