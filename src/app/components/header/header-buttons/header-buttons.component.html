@@ -2,7 +2,6 @@
   <ng-container *ngIf="breakpoint > breakpoints.MOBILE">
     <button
         [matMenuTriggerFor]="onDemandQueue"
-        [@tada]="qOnDemandState"
         class="spacing nav-icon-buttons" color="basic"
         matTooltip="On Demand Queue"
         mat-button>
@@ -77,7 +76,6 @@
   <ng-container *ngIf="breakpoint === breakpoints.MOBILE">
     <mat-icon
       [matMenuTriggerFor]="onDemandQueue"
-      [@tada]="qOnDemandState"
       class="mobile-icon-spacing"
       matTooltip="On Demand Queue"
       svgIcon="hyp3"
@@ -103,7 +101,6 @@
     <mat-icon
       (click)="onOpenDownloadQueue()"
       class="mobile-icon-spacing"
-      [@tada]="qProdState"
       [matBadge]="queuedProducts.length"
       matBadgeColor="{{ queuedProducts.length > 0 ? 'accent' : 'primary' }}"
       matBadgePosition="above after"

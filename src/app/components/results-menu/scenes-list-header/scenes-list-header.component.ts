@@ -20,6 +20,7 @@ import {
 import * as models from '@models';
 import { SubSink } from 'subsink';
 import { AsfApiOutputFormat } from '@models';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-scenes-list-header',
@@ -69,6 +70,7 @@ export class ScenesListHeaderComponent implements OnInit, OnDestroy {
     private scenesService: ScenesService,
     private pairService: PairService,
     private screenSize: ScreenSizeService,
+    private toastr: ToastrService,
   ) { }
 
   ngOnInit() {
@@ -208,6 +210,8 @@ export class ScenesListHeaderComponent implements OnInit, OnDestroy {
       products = this.downloadable(products);
     }
 
+    const singleProd = products.length === 1;
+    this.toastr.info('Added ' + products.length + ' product' + (singleProd ? '' : 's'), 'Added to Download Queue');
     this.store$.dispatch(new queueStore.AddItems(products));
   }
 
@@ -216,6 +220,9 @@ export class ScenesListHeaderComponent implements OnInit, OnDestroy {
       granules: product,
       job_type
     }));
+
+    const singleJob = jobs.length === 1;
+    this.toastr.info('Added ' + jobs.length + ' ' + job_type.name + ' job' + (singleJob ? '' : 's'), 'Added to On Demand Queue');
 
     this.store$.dispatch(new queueStore.AddJobs(jobs));
   }
