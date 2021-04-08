@@ -9,7 +9,6 @@ import { MatSharedModule } from '@shared';
   declarations: [ToastrMessageComponent],
   imports: [
     CommonModule,
-    ToastrMessageModule,
     MatSharedModule
   ],
   exports: [ToastrMessageComponent]

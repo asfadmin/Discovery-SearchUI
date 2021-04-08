@@ -12,7 +12,6 @@ import { MatSharedModule } from '@shared';
 import { PipesModule } from '@pipes';
 
 import { CopyToClipboardModule } from '@components/shared/copy-to-clipboard';
-import { ToastrMessageModule } from '@components/shared/toastr-message';
 import { FileNameModule } from '@components/shared/file-name';
 import { ScenesListComponent } from './scenes-list.component';
 import { SceneComponent } from './scene/scene.component';
@@ -33,7 +32,6 @@ import { Hyp3JobComponent } from './hyp3-job/hyp3-job.component';
     TruncateModule,
     FontAwesomeModule,
     CopyToClipboardModule,
-    ToastrMessageModule,
     MatSharedModule,
     MatMenuModule,
     PipesModule,
