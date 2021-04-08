@@ -5,7 +5,7 @@ import { Store } from '@ngrx/store';
 
 import * as FileSaver from 'file-saver';
 import * as moment from 'moment';
-import { map, withLatestFrom, switchMap } from 'rxjs/operators';
+import { map, withLatestFrom, switchMap, tap } from 'rxjs/operators';
 
 import { AppState } from '../app.reducer';
 import { QueueActionType, DownloadMetadata, QueueScene, AddItems, RemoveItems, RemoveSceneFromQueue, DownloadSearchtypeMetadata } from './queue.action';
@@ -14,6 +14,7 @@ import * as scenesStore from '@store/scenes';
 
 import * as services from '@services';
 import * as models from '@models';
+import { ToastrService } from 'ngx-toastr';
 
 export interface MetadataDownload {
   params: {[id: string]: string | null};
@@ -28,6 +29,7 @@ export class QueueEffects {
     private asfApiService: services.AsfApiService,
     private searchParamsService: services.SearchParamsService,
     private bulkDownloadService: services.BulkDownloadService,
+    private toastr: ToastrService,
   ) {}
 
   public makeDownloadScript = createEffect(() => this.actions$.pipe(
@@ -107,6 +109,9 @@ export class QueueEffects {
     ofType<QueueScene>(QueueActionType.QUEUE_SCENE),
     withLatestFrom(this.store$.select(scenesStore.getAllSceneProducts)),
     map(([action, sceneProducts]) => sceneProducts[action.payload]),
+    tap(products => {
+      this.toastr.info(products.length + ' scene' + (products.length > 1 ? 's ' : ' ') + 'added', 'Downloads Added');
+    }),
     map(products => new AddItems(products))
   ));
 
@@ -114,6 +119,9 @@ export class QueueEffects {
     ofType<RemoveSceneFromQueue>(QueueActionType.REMOVE_SCENE_FROM_QUEUE),
     withLatestFrom(this.store$.select(scenesStore.getAllSceneProducts)),
     map(([action, sceneProducts]) => sceneProducts[action.payload]),
+    tap(products => {
+      this.toastr.info(products.length + ' scene' + (products.length > 1 ? 's ' : ' ') + 'removed', 'Downloads Removed');
+    }),
     map(products => new RemoveItems(products))
   ));
 

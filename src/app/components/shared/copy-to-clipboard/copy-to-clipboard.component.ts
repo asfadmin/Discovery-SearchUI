@@ -6,6 +6,7 @@ import { tap, delay } from 'rxjs/operators';
 
 import { faCopy } from '@fortawesome/free-solid-svg-icons';
 import { ClipboardService } from 'ngx-clipboard';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-copy-to-clipboard',
@@ -14,6 +15,8 @@ import { ClipboardService } from 'ngx-clipboard';
 })
 export class CopyToClipboardComponent implements OnDestroy {
   @Input() value: string;
+  @Input() toastrHeader: string;
+  @Input() toastrInfo: string;
   @Input() prompt = 'Copy to clipboard';
   @Input() notification = 'Copied';
 
@@ -22,11 +25,22 @@ export class CopyToClipboardComponent implements OnDestroy {
   public copyIcon = faCopy;
   private subs = new SubSink();
 
-  constructor(private clipboardService: ClipboardService) { }
+  constructor(
+    private clipboardService: ClipboardService,
+    private toastr: ToastrService,
+    ) { }
 
   public onCopyIconClicked(e: Event): void {
     this.clipboardService.copyFromContent(this.value);
 
+    if (!!this.toastrHeader) {
+      if (!!this.toastrInfo) {
+        this.toastr.info(this.toastrInfo, this.toastrHeader);
+      } else {
+        this.toastr.info(this.toastrHeader);
+      }
+    }
+    
     this.subs.add(
       of((' ' + this.prompt).slice(1)).pipe(
         tap(() => this.prompt = this.notification),

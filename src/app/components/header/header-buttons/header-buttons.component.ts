@@ -20,6 +20,7 @@ import { CMRProduct, Breakpoints, UserAuth, SavedSearchType, QueuedHyp3Job, Sear
 
 import { collapseAnimation, rubberBandAnimation,
          zoomInUpAnimation,  tadaAnimation, wobbleAnimation } from 'angular-animations';
+import { ToastrService } from 'ngx-toastr';
 
 // Declare GTM dataLayer array.
 declare global {
@@ -67,6 +68,7 @@ export class HeaderButtonsComponent implements OnInit, OnDestroy {
     private dialog: MatDialog,
     private store$: Store<AppState>,
     private http: HttpClient,
+    private toastr: ToastrService,
   ) {}
 
   ngOnInit() {
@@ -305,6 +307,7 @@ export class HeaderButtonsComponent implements OnInit, OnDestroy {
       'copy-search-link': window.location.href
     });
     this.clipboard.copyFromContent(window.location.href);
+    this.toastr.info('Search Link Copied');
   }
 
   public onShareWithEmail() {

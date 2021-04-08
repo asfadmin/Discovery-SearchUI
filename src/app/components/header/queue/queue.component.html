@@ -65,7 +65,9 @@
                      *ngIf="!product.isUnzippedFile && !product.metadata.job"
                      style="margin-right: 15px;"
                      prompt="Copy File ID"
-                     [value]="product.id">
+                     [value]="product.id"
+                     [toastrHeader]="'File ID Copied'"
+                     >
                   </app-copy-to-clipboard>
 
                   <a mat-icon-button matTooltip="Download" [href]="product.downloadUrl" target="_blank" style="text-decoration: none;">
