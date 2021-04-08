@@ -19,7 +19,13 @@ export const RtcGammaJobType: Hyp3JobType = {
     name: 'Radiometry',
     apiName: 'radiometry',
     type: JobOptionType.DROPDOWN,
-    options: ['gamma0', 'sigma0'],
+    options: [{
+      name: 'gamma0',
+      apiValue: 'gamma0'
+    }, {
+      name: 'sigma0',
+      apiValue: 'sigma0'
+    }],
     default: 'gamma0',
     info: `
       Backscatter coefficient normalization, either by ground area
@@ -29,14 +35,26 @@ export const RtcGammaJobType: Hyp3JobType = {
     name: 'Scale',
     apiName: 'scale',
     type: JobOptionType.DROPDOWN,
-    options: ['power', 'amplitude'],
+    options: [{
+      name: 'power',
+      apiValue: 'power'
+    }, {
+      name: 'amplitude',
+      apiValue: 'amplitude'
+    }],
     default: 'power',
     info: `Scale of output image; either power or amplitude.`
   }, {
     name: 'DEM Name',
     apiName: 'dem_name',
     type: JobOptionType.DROPDOWN,
-    options: ['copernicus', 'legacy'],
+    options: [{
+      name: 'Copernicuus DEM',
+      apiValue: 'copernicus'
+    }, {
+      name: 'NED/SRTM',
+      apiValue: 'legacy'
+    }],
     default: 'copernicus',
     info: `
       Name of the DEM to use for processing. copernicus will use the Copernicus
@@ -106,7 +124,13 @@ export const InsarGammaJobType: Hyp3JobType = {
     name: 'Looks',
     apiName: 'looks',
     type: JobOptionType.DROPDOWN,
-    options: ['20x4', '10x2'],
+    options: [{
+      name: '20x4',
+      apiValue: '20x4'
+    }, {
+      name: '10x2',
+      apiValue: '10x2'
+    }],
     default: '20x4',
     info: `Number of looks to take in range and azimuth.`
   }, {

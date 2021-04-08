@@ -6,19 +6,19 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
   styleUrls: ['./dropdown-option.component.scss']
 })
 export class DropdownOptionComponent implements OnInit {
-  @Input() value: boolean;
+  @Input() value: string;
   @Input() optionName: string;
   @Input() optionInfo: string;
   @Input() options: string[];
 
-  @Output() valueChange = new EventEmitter<boolean>();
+  @Output() valueChange = new EventEmitter<string>();
 
   constructor() { }
 
   ngOnInit(): void {
   }
 
-  public onValueChange(toggleValue: boolean): void {
+  public onValueChange(toggleValue: string): void {
     this.value = toggleValue;
     this.valueChange.emit(this.value);
   }
