@@ -49,7 +49,7 @@ export const RtcGammaJobType: Hyp3JobType = {
     apiName: 'dem_name',
     type: JobOptionType.DROPDOWN,
     options: [{
-      name: 'Copernicuus DEM',
+      name: 'Copernicus DEM',
       apiValue: 'copernicus'
     }, {
       name: 'NED/SRTM',
