@@ -61,6 +61,9 @@ export interface Hyp3ProductFile {
 export interface Hyp3JobParameters {
   granules: string[];
 
+  // for jobs with multiple granules (InSAR and AutoRIFT)
+  scenes?: CMRProduct[];
+
   // Hyp3RtcGammaParameters
   dem_matching?: boolean;
   include_dem?: boolean;

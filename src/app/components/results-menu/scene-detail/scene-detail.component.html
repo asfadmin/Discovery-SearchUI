@@ -103,6 +103,22 @@
           </a>
         </span>
       </p>
+      <div *ngIf="searchType === searchTypes.CUSTOM_PRODUCTS">
+        <div *ngIf="scene.metadata.job.job_parameters.scenes.length > 1">
+          <hr>
+          <span class="detail-card-header"><b>{{ scene.metadata.job.job_parameters.scenes[1].name }}</b> (<i>Secondary Scene</i>)</span>
+          <app-copy-to-clipboard
+          [value]="scene.metadata.job.job_parameters.scenes[1].name"
+          prompt="Copy secondary scene name"
+          class="clipboard-icon"></app-copy-to-clipboard>
+          <app-scene-metadata
+          [scene]="scene.metadata.job.job_parameters.scenes[1]"
+          [dataset]="dataset"
+          [searchType]="searchType"
+          [offsets]="masterOffsets$ | async">
+       </app-scene-metadata>
+        </div>
+      </div>
     </div>
   </div>
 </div>

@@ -1,5 +1,9 @@
 @import "asf-theme";
 
+.clipboard-icon {
+  margin: 0 10px;
+}
+
 .mat-list-base {
   padding-top: 8px;
   display: flex;
@@ -92,3 +96,7 @@
   margin: 0 auto;
 }
 
+.pair-expansion-panel-header {
+  background: white !important;
+  border-style: none !important;
+}
