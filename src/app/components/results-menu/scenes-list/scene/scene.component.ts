@@ -60,7 +60,6 @@ export class SceneComponent implements OnInit {
       granules: [ this.scene ],
       job_type: models.hyp3JobTypes.RTC_GAMMA
     } as QueuedHyp3Job);
-    this.jobQueued = !this.jobQueued;
   }
 
   public isDownloadable(product: models.CMRProduct): boolean {

@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { MatBottomSheet } from '@angular/material/bottom-sheet';
+// import { MatBottomSheet } from '@angular/material/bottom-sheet';
 
-import { QueueSubmitComponent } from './queue-submit/queue-submit.component';
+// import { QueueSubmitComponent } from './queue-submit/queue-submit.component';
 import { ConfirmationComponent } from './confirmation/confirmation.component';
 
 import { Store } from '@ngrx/store';
@@ -17,6 +17,7 @@ import * as hyp3Store from '@store/hyp3';
 import * as userStore from '@store/user'; import * as models from '@models';
 import * as services from '@services';
 import { ResizedEvent } from 'angular-resize-event';
+import { ToastrService } from 'ngx-toastr';
 
 enum ProcessingQueueTab {
   SCENES = 'Scenes',
@@ -65,8 +66,8 @@ export class ProcessingQueueComponent implements OnInit {
     private store$: Store<AppState>,
     private hyp3: services.Hyp3Service,
     private screenSize: services.ScreenSizeService,
-    private bottomSheet: MatBottomSheet,
-
+    // private bottomSheet: MatBottomSheet,
+    private toastr: ToastrService,
   ) { }
 
   ngOnInit(): void {
@@ -235,10 +236,10 @@ export class ProcessingQueueComponent implements OnInit {
         if (resp.jobs === null) {
           return;
         }
-
-        this.bottomSheet.open(QueueSubmitComponent, {
-          data: {numJobs: resp.jobs.length}
-        });
+        this.toastr.info(resp.jobs.length + ' job' + (resp.jobs.length > 1 ? 's' : '') + ' processing', 'Jobs Submitted');
+        // this.bottomSheet.open(QueueSubmitComponent, {
+        //   data: {numJobs: resp.jobs.length}
+        // });
 
         const jobTypes = new Set<string>(jobs.map((job) => job.job_type.id));
         this.selectedJobTypeId = null;
@@ -275,9 +276,9 @@ export class ProcessingQueueComponent implements OnInit {
 
     if (jobType.id === this.selectedJobTypeId) {
 
-      let TabIdx = this.jobTypesWithQueued.findIndex((queuedJobType) => {return queuedJobType.jobType === jobType});
+      let TabIdx = this.jobTypesWithQueued.findIndex((queuedJobType) => queuedJobType.jobType === jobType);
 
-      if(this.jobTypesWithQueued.length > TabIdx + 1) {
+      if (this.jobTypesWithQueued.length > TabIdx + 1) {
         ++TabIdx;
       } else if (TabIdx > 0) {
         --TabIdx;
@@ -285,10 +286,10 @@ export class ProcessingQueueComponent implements OnInit {
         TabIdx = -1;
       }
 
-      if(TabIdx === -1) {
+      if (TabIdx === -1) {
         this.selectedJobTypeId = null;
       } else {
-        this.onSetSelectedJobType(this.jobTypesWithQueued[TabIdx].jobType)
+        this.onSetSelectedJobType(this.jobTypesWithQueued[TabIdx].jobType);
       }
     }
 
@@ -296,7 +297,7 @@ export class ProcessingQueueComponent implements OnInit {
     if (this.allJobs.length === 0) {
       this.dialogRef.close();
     }
-    
+
   }
 
   public onRestoreJobQueue(): void {

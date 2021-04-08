@@ -14,6 +14,7 @@ import {map} from 'rxjs/operators';
 import * as models from '@models';
 import * as queueStore from '@store/queue';
 import * as moment from 'moment';
+import { ToastrService } from 'ngx-toastr';
 
 enum CardViews {
   LIST = 0,
@@ -56,6 +57,7 @@ export class BaselineResultsMenuComponent implements OnInit, OnDestroy {
     private mapService: MapService,
     private scenesService: ScenesService,
     private pairService: PairService,
+    private toastr: ToastrService,
   ) { }
 
   ngOnInit(): void {
@@ -100,6 +102,8 @@ export class BaselineResultsMenuComponent implements OnInit, OnDestroy {
       products = this.downloadable(products);
     }
 
+    const singleProd = products.length === 1;
+    this.toastr.info('Added ' + products.length + ' scene' + (singleProd ? '' : 's'), 'Added to Download Queue');
     this.store$.dispatch(new queueStore.AddItems(products));
   }
 
@@ -157,22 +161,22 @@ export class BaselineResultsMenuComponent implements OnInit, OnDestroy {
 
     public onCsvDownload(products: models.CMRProduct[]): void {
       const currentQueue = this.queuedProducts;
-      this.clearDispatchRestoreQueue(new queueStore.DownloadMetadata(AsfApiOutputFormat.CSV), products, currentQueue);
+      this.clearDispatchRestoreQueue(new queueStore.DownloadSearchtypeMetadata(AsfApiOutputFormat.CSV), products, currentQueue);
     }
 
     public onKmlDownload(products: models.CMRProduct[]): void {
       const currentQueue = this.queuedProducts;
-      this.clearDispatchRestoreQueue(new queueStore.DownloadMetadata(AsfApiOutputFormat.KML), products, currentQueue);
+      this.clearDispatchRestoreQueue(new queueStore.DownloadSearchtypeMetadata(AsfApiOutputFormat.KML), products, currentQueue);
     }
 
     public onGeojsonDownload(products: models.CMRProduct[]): void {
       const currentQueue = this.queuedProducts;
-      this.clearDispatchRestoreQueue(new queueStore.DownloadMetadata(AsfApiOutputFormat.GEOJSON), products, currentQueue);
+      this.clearDispatchRestoreQueue(new queueStore.DownloadSearchtypeMetadata(AsfApiOutputFormat.GEOJSON), products, currentQueue);
     }
 
     public onMetalinkDownload(products: models.CMRProduct[]): void {
       const currentQueue = this.queuedProducts;
-      this.clearDispatchRestoreQueue(new queueStore.DownloadMetadata(AsfApiOutputFormat.METALINK), products, currentQueue);
+      this.clearDispatchRestoreQueue(new queueStore.DownloadSearchtypeMetadata(AsfApiOutputFormat.METALINK), products, currentQueue);
     }
 
     public queueAllOnDemand(products: models.CMRProduct[], job_type: models.Hyp3JobType): void {
@@ -182,6 +186,9 @@ export class BaselineResultsMenuComponent implements OnInit, OnDestroy {
           job_type
         })
       );
+
+      const singleJob = jobs.length === 1;
+      this.toastr.info('Added ' + jobs.length + ' ' + job_type.name + ' job' + (singleJob ? '' : 's'), 'Added to On Demand Queue');
       this.store$.dispatch(new queueStore.AddJobs(jobs));
     }
 

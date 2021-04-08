@@ -9,6 +9,7 @@
 
         <app-copy-to-clipboard
           [value]="scene.name"
+          [toastrHeader]="'Scene Name Copied'"
           prompt="Copy scene name"
           class="clipboard-icon"></app-copy-to-clipboard>
 
@@ -79,7 +80,7 @@
 
         <mat-button-toggle *ngIf="
            (searchType === searchTypes.DATASET || searchType === searchTypes.LIST)  &&
-           prop.isRelevant(p.PATH, dataset) && prop.isRelevant(p.FRAME, dataset)"
+           ((prop.isRelevant(p.PATH, dataset) && prop.isRelevant(p.FRAME, dataset) || (dataset.id === 'UAVSAR')))"
            (click)="findSimilarScenes()"
            class="mini-toggle-button"
            matTooltip="Search based on this scene's path/frame">

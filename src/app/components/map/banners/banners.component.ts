@@ -1,31 +1,35 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
-import {
-  trigger, style, animate, transition
-} from '@angular/animations';
-
+import {Component, OnInit, Input, Output, EventEmitter, Directive} from '@angular/core';
+import { ToastrService } from 'ngx-toastr';
 import { Banner } from '@models';
+
+// tslint:disable-next-line:directive-selector
+@Directive({selector: '[bannerCreate]'})
+export class BannerCreateDirective implements OnInit {
+  @Input() bannerCreate: Banner;
+
+  constructor( private toastr: ToastrService ) {
+  }
+
+  ngOnInit(): void {
+    this.toastr.warning(this.bannerCreate.text, this.bannerCreate.name, {
+      enableHtml: true,
+      closeButton: true,
+      disableTimeOut: true,
+    });
+  }
+}
 
 @Component({
   selector: 'app-banners',
   templateUrl: './banners.component.html',
   styleUrls: ['./banners.component.scss'],
-  animations: [
-    trigger('bannerTransition', [
-      transition(':enter', [
-        style({transform: 'translateY(-100%)'}),
-        animate('200ms ease-in', style({transform: 'translateX(0%)'}))
-      ]),
-      transition(':leave', [
-        animate('200ms ease-out', style({transform: 'translateX(-100%)'}))
-      ])
-    ])
-  ],
 })
 export class BannersComponent implements OnInit {
   @Input() banners: Banner[];
   @Output() removeBanner = new EventEmitter<Banner>();
 
-  constructor() { }
+  constructor() {
+  }
 
   ngOnInit(): void {
   }

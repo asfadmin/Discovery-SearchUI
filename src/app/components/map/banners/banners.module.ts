@@ -3,16 +3,15 @@ import { CommonModule } from '@angular/common';
 import { MatSharedModule } from '@shared';
 import { FlexLayoutModule } from '@angular/flex-layout';
 
-import { BannersComponent } from './banners.component';
-
+import { BannersComponent, BannerCreateDirective } from './banners.component';
 
 @NgModule({
-  declarations: [BannersComponent],
+  declarations: [BannersComponent, BannerCreateDirective],
   imports: [
     CommonModule,
     MatSharedModule,
     FlexLayoutModule
   ],
-  exports: [ BannersComponent ]
+  exports: [ BannersComponent, BannerCreateDirective ]
 })
 export class BannersModule { }
