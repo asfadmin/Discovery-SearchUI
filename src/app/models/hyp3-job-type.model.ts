@@ -21,7 +21,8 @@ export interface Hyp3JobOption {
   apiName: string;
   type: JobOptionType;
   info: string;
-  options?: string[];
+  default: any;
+  options?: { apiValue: string; name: string; }[];
 }
 
 export enum JobOptionType {
