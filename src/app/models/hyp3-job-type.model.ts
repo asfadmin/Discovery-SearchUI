@@ -21,6 +21,7 @@ export interface Hyp3JobOption {
   apiName: string;
   type: JobOptionType;
   info: string;
+  default: any;
   options?: string[];
 }
 
