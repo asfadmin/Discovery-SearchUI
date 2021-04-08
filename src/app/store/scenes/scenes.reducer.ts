@@ -390,7 +390,7 @@ export const getSelectedOnDemandProductSceneBrowses = createSelector (
 
     return browses;
   }
-)
+);
 
 const productsForScene = (selected, state) => {
   if (!selected) {

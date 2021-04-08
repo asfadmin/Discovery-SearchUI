@@ -6,7 +6,7 @@ import { ProcessingQueueJobsComponent } from './processing-queue-jobs.component'
 import { MatChipsModule } from '@angular/material/chips';
 import { MatSharedModule } from '@shared';
 import { PipesModule } from '@pipes';
-import { CopyToClipboardModule } from './../../../shared/copy-to-clipboard/copy-to-clipboard.module'
+import { CopyToClipboardModule } from './../../../shared/copy-to-clipboard/copy-to-clipboard.module';
 
 
 @NgModule({
