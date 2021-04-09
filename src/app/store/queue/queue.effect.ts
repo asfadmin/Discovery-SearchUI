@@ -5,12 +5,13 @@ import { Store } from '@ngrx/store';
 
 import * as FileSaver from 'file-saver';
 import * as moment from 'moment';
-import { map, withLatestFrom, switchMap, tap } from 'rxjs/operators';
+import { map, withLatestFrom, switchMap, tap, skip } from 'rxjs/operators';
 
 import { AppState } from '../app.reducer';
-import { QueueActionType, DownloadMetadata, QueueScene, AddItems, RemoveItems, RemoveSceneFromQueue, DownloadSearchtypeMetadata } from './queue.action';
+import { QueueActionType, DownloadMetadata, AddItems, RemoveItems, RemoveSceneFromQueue, DownloadSearchtypeMetadata, AddJob, RemoveJob, AddJobs, ToggleProduct, QueueScene } from './queue.action';
 import { getQueuedProducts } from './queue.reducer';
 import * as scenesStore from '@store/scenes';
+// import * as queueStore from '@store/queue';
 
 import * as services from '@services';
 import * as models from '@models';
@@ -109,18 +110,65 @@ export class QueueEffects {
     ofType<QueueScene>(QueueActionType.QUEUE_SCENE),
     withLatestFrom(this.store$.select(scenesStore.getAllSceneProducts)),
     map(([action, sceneProducts]) => sceneProducts[action.payload]),
-    tap(products => {
-      this.toastr.info(products.length + ' scene' + (products.length > 1 ? 's ' : ' ') + 'added', 'Downloads Added');
-    }),
     map(products => new AddItems(products))
   ));
+
+  public toggleProduct = createEffect(() => this.actions$.pipe(
+    ofType<ToggleProduct>(QueueActionType.TOGGLE_PRODUCT),
+    withLatestFrom(this.store$.select(getQueuedProducts)),
+    map(([action, sceneProducts]) => sceneProducts.includes(action.payload)),
+    tap(inQueue => {
+      this.toastr.info('Scene ' + (inQueue ? 'added to' : 'removed from') + ' the Download Queue');
+    })
+  ),
+  { dispatch: false }
+  );
+
+  public addItems = createEffect(() => this.actions$.pipe(
+    ofType<AddItems>(QueueActionType.ADD_ITEMS),
+    tap(act => {
+      this.toastr.info(act.payload.length + ' products added to the Download Queue', 'Downloads Added');
+    }),
+  ),
+  { dispatch: false }
+  );
+
+  public addJob = createEffect(() => this.actions$.pipe(
+    ofType<AddJob>(QueueActionType.ADD_JOB),
+    tap(act => {
+      this.toastr.info(act.payload.job_type.name + ' Job Added to On Demand Queue');
+    }),
+  ),
+  { dispatch: false }
+  );
+
+  public addJobs = createEffect(() => this.actions$.pipe(
+    ofType<AddJobs>(QueueActionType.ADD_JOBS),
+    skip(1),
+    map(action => action.payload),
+    tap(jobs => {
+      const singleJob = jobs.length === 1;
+      this.toastr.info(jobs.length + ' ' + jobs[0].job_type.name + ' job' + (singleJob ? '' : 's') + ' added to On Demand Queue', 'Jobs Added');
+    }),
+  ),
+  { dispatch: false }
+  );
+
+  public removeJob = createEffect(() => this.actions$.pipe(
+    ofType<RemoveJob>(QueueActionType.REMOVE_JOB),
+    tap(act => {
+      this.toastr.info(act.payload.job_type.name + ' Job Removed from On Demand Queue');
+    }),
+  ),
+  { dispatch: false }
+  );
 
   public removeScene = createEffect(() => this.actions$.pipe(
     ofType<RemoveSceneFromQueue>(QueueActionType.REMOVE_SCENE_FROM_QUEUE),
     withLatestFrom(this.store$.select(scenesStore.getAllSceneProducts)),
     map(([action, sceneProducts]) => sceneProducts[action.payload]),
     tap(products => {
-      this.toastr.info(products.length + ' scene' + (products.length > 1 ? 's ' : ' ') + 'removed', 'Downloads Removed');
+      this.toastr.info(products.length + ' scene' + (products.length > 1 ? 's ' : ' ') + 'removed from the Download Queue', 'Downloads Removed');
     }),
     map(products => new RemoveItems(products))
   ));

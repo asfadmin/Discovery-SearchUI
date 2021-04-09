@@ -17,7 +17,6 @@ import { CdkVirtualScrollViewport } from '@angular/cdk/scrolling';
 import * as services from '@services';
 import * as models from '@models';
 import { QueuedHyp3Job } from '@models';
-import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-scenes-list',
@@ -60,7 +59,6 @@ export class ScenesListComponent implements OnInit, OnDestroy {
     private keyboardService: services.KeyboardService,
     private scenesService: services.ScenesService,
     private pairService: services.PairService,
-    private toastr: ToastrService,
   ) {}
 
   ngOnInit() {
@@ -239,10 +237,8 @@ export class ScenesListComponent implements OnInit, OnDestroy {
 
     if (!isJobInQueue) {
       this.store$.dispatch(new queueStore.AddJob(job));
-      this.toastr.info('Job added to On Demand Queue');
     } else {
       this.store$.dispatch(new queueStore.RemoveJob(job));
-      this.toastr.info('Job removed from On Demand Queue');
     }
   }
 
