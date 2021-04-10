@@ -43,7 +43,6 @@
     <a *ngIf="isHovered && !product.metadata.job" class="icon-margin">
       <app-copy-to-clipboard
         [value]="product.id"
-        [toastrHeader]="'File ID Copied'"
         prompt="Copy file ID">
       </app-copy-to-clipboard>
     </a>

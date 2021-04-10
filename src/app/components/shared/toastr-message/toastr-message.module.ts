@@ -11,6 +11,7 @@ import { MatSharedModule } from '@shared';
     CommonModule,
     MatSharedModule
   ],
+  entryComponents: [ToastrMessageComponent],
   exports: [ToastrMessageComponent]
 })
 export class ToastrMessageModule { }

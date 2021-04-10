@@ -27,7 +27,7 @@
             *ngIf="isHovered; else notHovered"
             prompt="Copy scene name"
             [value]="scene.metadata.fileName || scene.name"
-            [toastrHeader]="'Scene Name Copied'">
+            >
           </app-copy-to-clipboard>
           <ng-template #notHovered>
             <fa-icon style="visibility: hidden;" [icon]="copyIcon">

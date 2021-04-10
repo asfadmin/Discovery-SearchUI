@@ -15,12 +15,11 @@ import * as searchStore from '@store/search';
 import { PreferencesComponent } from './preferences/preferences.component';
 import { CustomizeEnvComponent } from './customize-env/customize-env.component';
 
-import { AuthService, AsfApiService, EnvironmentService, ScreenSizeService } from '@services';
+import { AuthService, AsfApiService, EnvironmentService, ScreenSizeService, NotificationService } from '@services';
 import { CMRProduct, Breakpoints, UserAuth, SavedSearchType, QueuedHyp3Job, SearchType } from '@models';
 
 import { collapseAnimation, rubberBandAnimation,
          zoomInUpAnimation,  tadaAnimation, wobbleAnimation } from 'angular-animations';
-import { ToastrService } from 'ngx-toastr';
 
 // Declare GTM dataLayer array.
 declare global {
@@ -68,7 +67,7 @@ export class HeaderButtonsComponent implements OnInit, OnDestroy {
     private dialog: MatDialog,
     private store$: Store<AppState>,
     private http: HttpClient,
-    private toastr: ToastrService,
+    private notificationService: NotificationService,
   ) {}
 
   ngOnInit() {
@@ -307,7 +306,7 @@ export class HeaderButtonsComponent implements OnInit, OnDestroy {
       'copy-search-link': window.location.href
     });
     this.clipboard.copyFromContent(window.location.href);
-    this.toastr.info('Search Link Copied');
+    this.notificationService.clipboardSearchLink();
   }
 
   public onShareWithEmail() {

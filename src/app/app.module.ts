@@ -30,6 +30,7 @@ import { ResultsMenuModule } from '@components/results-menu';
 import { BaselineChartModule } from '@components/baseline-chart';
 import { HelpModule } from './components/help';
 import { AppComponent } from './app.component';
+// import { ToastrMessageComponent } from './components/shared/toastr-message/';
 
 import { CustomBreakPointsProvider } from '@services/custom-breakpoints.ts';
 import * as services from '@services';
@@ -70,7 +71,6 @@ export const routes = [
   { path: '**', name: 'AppComponent', component: AppComponent },
 ];
 
-
 @NgModule({
   declarations: [
     AppComponent,
@@ -100,7 +100,11 @@ export const routes = [
     MatDialogModule,
     BaselineChartModule,
     HelpModule,
-    ToastrModule.forRoot(),
+    ToastrModule.forRoot(
+    //   {
+    //   toastComponent: ToastrMessageComponent
+    // }
+    ),
   ],
   providers: [
     services.AsfApiService,
