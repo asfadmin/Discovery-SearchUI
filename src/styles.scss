@@ -23,7 +23,6 @@
   color: white !important;
   background-color: red !important;
   background-image: url("/assets/icons/error_white_48dp.svg") !important;
-
 }
 
 .toast-info,
@@ -38,6 +37,21 @@
   color: $asf-primary-dark !important;
   background-color: $asf-warn !important;
   background-image: url("/assets/icons/warning_black_48dp.svg") !important;
+}
+
+.toast-close-button,
+#toast-container > .toast-close-button {
+  color: black;
+}
+
+.toast-message a,
+.toast-message label {
+  color: $asf-primary;
+}
+
+.toast-message a:hover {
+  color: $asf-blue;
+  text-decoration: underline;
 }
 
 .card-spacing {
@@ -396,4 +410,11 @@ $d-height: 500px;
 .mat-accent .mat-pseudo-checkbox-checked,
 .mat-accent .mat-pseudo-checkbox-indeterminate {
   background: gray;
+}
+
+#toast-container {
+  position: relative;
+  top: 115px;
+  right: 25px;
+  float: right;
 }

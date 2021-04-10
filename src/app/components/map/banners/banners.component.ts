@@ -1,21 +1,29 @@
-import {Component, OnInit, Input, Output, EventEmitter, Directive} from '@angular/core';
-import { ToastrService } from 'ngx-toastr';
+import { Component, OnInit, Input, Output, EventEmitter, Directive } from '@angular/core';
+import { ActiveToast, Toast, ToastrService } from 'ngx-toastr';
 import { Banner } from '@models';
 
 // tslint:disable-next-line:directive-selector
 @Directive({selector: '[bannerCreate]'})
 export class BannerCreateDirective implements OnInit {
   @Input() bannerCreate: Banner;
-
   constructor( private toastr: ToastrService ) {
   }
 
   ngOnInit(): void {
-    this.toastr.warning(this.bannerCreate.text, this.bannerCreate.name, {
+    const text: string = this.bannerCreate.text;
+    const toast: ActiveToast<any> = this.toastr.info(text, this.bannerCreate.name, {
       enableHtml: true,
       closeButton: true,
       disableTimeOut: true,
+      tapToDismiss: false,
     });
+
+    const toastComponent: Toast = toast.toastRef.componentInstance;
+    toastComponent.message = text;
+  }
+
+  public myFunction() {
+    console.log('myFunction()');
   }
 }
 
