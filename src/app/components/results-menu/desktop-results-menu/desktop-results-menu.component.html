@@ -15,8 +15,7 @@
     <mat-card-subtitle class="header">
       Scene Detail
     </mat-card-subtitle>
-
-    <app-scene-detail></app-scene-detail>
+        <app-scene-detail *ngIf="scenesLength !== 0"></app-scene-detail>
   </mat-card>
 
   <!-- FILE LIST -->
@@ -29,7 +28,7 @@
     </mat-card-subtitle>
 
     <div class="app-scene-list left-border scroll-y">
-      <app-scene-files></app-scene-files>
+      <app-scene-files *ngIf="scenesLength !== 0"></app-scene-files>
     </div>
   </mat-card>
 </ng-container>
@@ -45,9 +44,10 @@
     </mat-card-subtitle>
 
     <div class="app-scene-list scroll-y scroll-x">
-      <app-scene-detail [isScrollable]="false"></app-scene-detail>
-      <hr/>
-      <app-scene-files></app-scene-files>
+            <app-scene-detail *ngIf="scenesLength !== 0" [isScrollable]="false"></app-scene-detail>
+
+          <hr/>
+          <app-scene-files *ngIf="scenesLength !== 0"></app-scene-files>
     </div>
   </mat-card>
 </ng-container>
