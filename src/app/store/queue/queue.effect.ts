@@ -15,7 +15,6 @@ import * as scenesStore from '@store/scenes';
 
 import * as services from '@services';
 import * as models from '@models';
-import { ToastrService } from 'ngx-toastr';
 
 export interface MetadataDownload {
   params: {[id: string]: string | null};
@@ -30,7 +29,7 @@ export class QueueEffects {
     private asfApiService: services.AsfApiService,
     private searchParamsService: services.SearchParamsService,
     private bulkDownloadService: services.BulkDownloadService,
-    private toastr: ToastrService,
+    private notificationService: services.NotificationService,
   ) {}
 
   public makeDownloadScript = createEffect(() => this.actions$.pipe(
@@ -117,27 +116,22 @@ export class QueueEffects {
     ofType<ToggleProduct>(QueueActionType.TOGGLE_PRODUCT),
     withLatestFrom(this.store$.select(getQueuedProducts)),
     map(([action, sceneProducts]) => sceneProducts.includes(action.payload)),
-    tap(inQueue => {
-      this.toastr.info('Scene ' + (inQueue ? 'added to' : 'removed from') + ' the Download Queue');
-    })
+    tap(inQueue => this.notificationService.downloadQueue(inQueue))
   ),
   { dispatch: false }
   );
 
   public addItems = createEffect(() => this.actions$.pipe(
     ofType<AddItems>(QueueActionType.ADD_ITEMS),
-    tap(act => {
-      this.toastr.info(act.payload.length + ' products added to the Download Queue', 'Downloads Added');
-    }),
+    skip(1),
+    tap(act => this.notificationService.downloadQueue(true, act.payload.length)),
   ),
   { dispatch: false }
   );
 
   public addJob = createEffect(() => this.actions$.pipe(
     ofType<AddJob>(QueueActionType.ADD_JOB),
-    tap(act => {
-      this.toastr.info(act.payload.job_type.name + ' Job Added to On Demand Queue');
-    }),
+    tap(act => this.notificationService.demandQueue(true, 1, act.payload.job_type.name)),
   ),
   { dispatch: false }
   );
@@ -146,19 +140,15 @@ export class QueueEffects {
     ofType<AddJobs>(QueueActionType.ADD_JOBS),
     skip(1),
     map(action => action.payload),
-    tap(jobs => {
-      const singleJob = jobs.length === 1;
-      this.toastr.info(jobs.length + ' ' + jobs[0].job_type.name + ' job' + (singleJob ? '' : 's') + ' added to On Demand Queue', 'Jobs Added');
-    }),
+    tap(jobs => this.notificationService.demandQueue(true, jobs.length, jobs[0].job_type.name)),
   ),
   { dispatch: false }
   );
 
   public removeJob = createEffect(() => this.actions$.pipe(
     ofType<RemoveJob>(QueueActionType.REMOVE_JOB),
-    tap(act => {
-      this.toastr.info(act.payload.job_type.name + ' Job Removed from On Demand Queue');
-    }),
+    map(action => action.payload),
+    tap(job => this.notificationService.demandQueue(false, 1, job.job_type.name)),
   ),
   { dispatch: false }
   );
@@ -167,9 +157,7 @@ export class QueueEffects {
     ofType<RemoveSceneFromQueue>(QueueActionType.REMOVE_SCENE_FROM_QUEUE),
     withLatestFrom(this.store$.select(scenesStore.getAllSceneProducts)),
     map(([action, sceneProducts]) => sceneProducts[action.payload]),
-    tap(products => {
-      this.toastr.info(products.length + ' scene' + (products.length > 1 ? 's ' : ' ') + 'removed from the Download Queue', 'Downloads Removed');
-    }),
+    tap(products => this.notificationService.downloadQueue(false, products.length)),
     map(products => new RemoveItems(products))
   ));
 

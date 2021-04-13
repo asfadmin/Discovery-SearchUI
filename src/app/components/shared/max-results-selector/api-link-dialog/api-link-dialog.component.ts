@@ -7,7 +7,6 @@ import { MatDialogRef } from '@angular/material/dialog';
 import { SubSink } from 'subsink';
 
 import * as services from '@services';
-import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-api-link-dialog',
@@ -55,7 +54,7 @@ export class ApiLinkDialogComponent implements OnInit, OnDestroy {
     private searchParams: services.SearchParamsService,
     private clipboard: ClipboardService,
     private dialogRef: MatDialogRef<ApiLinkDialogComponent>,
-    private toastr: ToastrService,
+    private notificationService: services.NotificationService,
   ) { }
 
   ngOnInit() {
@@ -93,7 +92,7 @@ export class ApiLinkDialogComponent implements OnInit, OnDestroy {
 
   public onCopyLink(): void {
     this.clipboard.copyFromContent(this.apiLink);
-    this.toastr.info('API URL Copied');
+    this.notificationService.clipboardAPIURL();
   }
 
   public onCloseDownloadQueue(): void {

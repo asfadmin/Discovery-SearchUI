@@ -72,8 +72,6 @@
             <div>
               <app-copy-to-clipboard
                 [value]="listExamples[mode]"
-                [toastrHeader]="(mode === types.SCENE ? 'Scene Names Copied' : 'File IDs Copied')"
-                [toastrInfo]="listExamples[mode].split(',').length + (mode === types.SCENE ? ' scene names' : ' file IDs') + ' copied'"
                 [prompt]="mode === types.SCENE ? 'Copy Scene names' : 'Copy File IDs'"
                 style="margin: 0 3px;"
                 class="clipboard-icon">

@@ -8,13 +8,12 @@ import { Store } from '@ngrx/store';
 import { AppState } from '@store';
 import * as queueStore from '@store/queue';
 
-import { ScreenSizeService } from '@services';
+import { NotificationService, ScreenSizeService } from '@services';
 import { CMRProduct, AsfApiOutputFormat, Breakpoints } from '@models';
 import { MatDialogRef } from '@angular/material/dialog';
 import { SubSink } from 'subsink';
 // import { ResizeEvent } from 'angular-resizable-element';
 import { ResizedEvent } from 'angular-resize-event';
-import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-queue',
@@ -66,7 +65,7 @@ export class QueueComponent implements OnInit, OnDestroy {
     private clipboardService: ClipboardService,
     private dialogRef: MatDialogRef<QueueComponent>,
     private screenSize: ScreenSizeService,
-    private toastr: ToastrService,
+    private notificationService: NotificationService,
   ) {}
 
   ngOnInit() {
@@ -119,8 +118,8 @@ export class QueueComponent implements OnInit, OnDestroy {
       .join('\n');
     this.clipboardService.copyFromContent(productListStr);
     const lines = this.lineCount(productListStr);
-    const s = lines > 1 ? 's' : '';
-    this.toastr.info(lines + ' File ID' + s + ' Copied', 'Clipboard Updated');
+    this.notificationService.clipboardCopyQueue(lines, true);
+
   }
 
   public onCopyQueueURLs(products: CMRProduct[]): void {
@@ -130,8 +129,7 @@ export class QueueComponent implements OnInit, OnDestroy {
       .join('\n');
     this.clipboardService.copyFromContent(productListStr);
     const lines = this.lineCount(productListStr);
-    const s = lines > 1 ? 's' : '';
-    this.toastr.info(lines + ' URL' + s + ' Copied', 'Clipboard Updated');
+    this.notificationService.clipboardCopyQueue(lines, false);
   }
 
   private lineCount( str: string ) {

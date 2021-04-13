@@ -1,27 +1,19 @@
-import { Component, OnInit } from '@angular/core';
-import { Input } from 'hammerjs';
-import { ToastrService } from 'ngx-toastr';
-
+import { Component } from '@angular/core';
+import { Toast, ToastrService, ToastPackage } from 'ngx-toastr';
 @Component({
-  selector: 'app-toastr-message',
+  // tslint:disable-next-line: component-selector
+  selector: '[app-toastr-message]',
   templateUrl: './toastr-message.component.html',
-  styleUrls: ['./toastr-message.component.scss']
+  styleUrls: ['./toastr-message.component.scss'],
+  preserveWhitespaces: false,
 })
-export class ToastrMessageComponent implements OnInit {
-  @Input headerText: string;
-  @Input infoText: string;
+export class ToastrMessageComponent extends Toast {
 
   constructor(
-    private toastr: ToastrService
-  ) { }
-
-  ngOnInit(): void {
-  }
-
-  public submitMessage(e: Event) {
-    this.toastr.info();
-
-    e.stopPropagation();
-  }
+    protected toastrService: ToastrService,
+    public toastPackage: ToastPackage,
+  ) {
+    super(toastrService, toastPackage);
+   }
 
 }

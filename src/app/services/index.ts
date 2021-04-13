@@ -26,3 +26,4 @@ export { SearchService } from './search.service';
 export { Hyp3Service } from './hyp3.service';
 export { PairService } from './pair.service';
 export { SceneSelectService } from './scene-select.service';
+export { NotificationService } from './notification.service';

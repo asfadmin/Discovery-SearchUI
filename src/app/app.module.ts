@@ -30,6 +30,7 @@ import { ResultsMenuModule } from '@components/results-menu';
 import { BaselineChartModule } from '@components/baseline-chart';
 import { HelpModule } from './components/help';
 import { AppComponent } from './app.component';
+// import { ToastrMessageComponent } from './components/shared/toastr-message/';
 
 import { CustomBreakPointsProvider } from '@services/custom-breakpoints.ts';
 import * as services from '@services';
@@ -69,7 +70,6 @@ const cookieConfig: NgcCookieConsentConfig = {
 export const routes = [
   { path: '**', name: 'AppComponent', component: AppComponent },
 ];
-
 
 @NgModule({
   declarations: [

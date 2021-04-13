@@ -1,1 +1,16 @@
-<p>toastr-message works!</p>
+<div class="row btn" [style.display]="state.value === 'inactive' ? 'none' : ''">
+  <div>
+    <div [class]="options.titleClass" [attr.aria-label]="title">
+      {{ title }}
+    </div>
+    <div role="alert" aria-live="polite"
+      [class]="options.messageClass" [innerHTML]="message">
+    </div>
+    <div role="alert" aria-live="polite"
+      [class]="options.messageClass" [attr.aria-label]="message">
+      {{ message }}
+    </div>
+  </div>
+  <div class="col-3 text-right">
+  </div>
+</div>

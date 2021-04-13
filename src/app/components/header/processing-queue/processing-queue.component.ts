@@ -17,7 +17,7 @@ import * as hyp3Store from '@store/hyp3';
 import * as userStore from '@store/user'; import * as models from '@models';
 import * as services from '@services';
 import { ResizedEvent } from 'angular-resize-event';
-import { ToastrService } from 'ngx-toastr';
+// import { ToastrService } from 'ngx-toastr';
 
 enum ProcessingQueueTab {
   SCENES = 'Scenes',
@@ -67,7 +67,8 @@ export class ProcessingQueueComponent implements OnInit {
     private hyp3: services.Hyp3Service,
     private screenSize: services.ScreenSizeService,
     // private bottomSheet: MatBottomSheet,
-    private toastr: ToastrService,
+    // private toastr: ToastrService,
+    private notificationService: services.NotificationService,
   ) { }
 
   ngOnInit(): void {
@@ -236,7 +237,7 @@ export class ProcessingQueueComponent implements OnInit {
         if (resp.jobs === null) {
           return;
         }
-        this.toastr.info(resp.jobs.length + ' job' + (resp.jobs.length > 1 ? 's' : '') + ' processing', 'Jobs Submitted');
+        this.notificationService.jobsSubmitted(resp.jobs.length);
         // this.bottomSheet.open(QueueSubmitComponent, {
         //   data: {numJobs: resp.jobs.length}
         // });
