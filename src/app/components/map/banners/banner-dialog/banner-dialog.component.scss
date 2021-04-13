@@ -1,0 +1,12 @@
+@import "asf-theme";
+
+.title {
+  background-color: $asf-primary-light;
+  border-bottom: 1px solid $asf-primary-dark;
+  padding: 15px;
+}
+
+.actions {
+  background-color: $asf-primary-light;
+  border-top: 1px solid $asf-primary-dark;
+}

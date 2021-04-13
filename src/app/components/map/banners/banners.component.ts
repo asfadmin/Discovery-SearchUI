@@ -1,17 +1,36 @@
-import { Component, OnInit, Input, Output, EventEmitter, Directive } from '@angular/core';
+import { Component, OnInit, Input, Directive } from '@angular/core';
 import { ActiveToast, Toast, ToastrService } from 'ngx-toastr';
 import { Banner } from '@models';
+import {MatDialog} from '@angular/material/dialog';
+import {BannerDialogComponent} from '@components/map/banners/banner-dialog/banner-dialog.component';
+
+export interface DialogData {
+  title: string;
+}
+
 
 // tslint:disable-next-line:directive-selector
 @Directive({selector: '[bannerCreate]'})
 export class BannerCreateDirective implements OnInit {
   @Input() bannerCreate: Banner;
-  constructor( private toastr: ToastrService ) {
-  }
+  constructor( private toastr: ToastrService,
+               public bannerDialog: MatDialog,
+               ) {}
+
+  public toastRef;
+  public maxMsgLength = 150;
+  public msgOverflow = false;
+  public moreMsg = '... <a>[MORE]</a>';
 
   ngOnInit(): void {
-    const text: string = this.bannerCreate.text;
-    const toast: ActiveToast<any> = this.toastr.info(text, this.bannerCreate.name, {
+    const title: string = this.bannerCreate.name;
+    const msg = this.bannerCreate.text.substring( 0, this.maxMsgLength );
+
+    (this.bannerCreate.text.length > this.maxMsgLength) ?
+      this.msgOverflow = true :
+      this.msgOverflow = false;
+
+    const toast: ActiveToast<any> = this.toastr.info(msg, title, {
       enableHtml: true,
       closeButton: true,
       disableTimeOut: true,
@@ -19,11 +38,20 @@ export class BannerCreateDirective implements OnInit {
     });
 
     const toastComponent: Toast = toast.toastRef.componentInstance;
-    toastComponent.message = text;
-  }
+    if (this.msgOverflow) {
+      toastComponent.message = msg + this.moreMsg;
+    }
 
-  public myFunction() {
-    console.log('myFunction()');
+    toast.onTap.subscribe(_x => {
+      if (this.msgOverflow) {
+        const dialogRef = this.bannerDialog.open(BannerDialogComponent, {
+          data: {title: title},
+          panelClass: 'banner-dialog',
+          maxWidth: '80vw',
+        });
+        dialogRef.componentInstance.htmlContent = this.bannerCreate.text;
+      }
+    });
   }
 }
 
@@ -34,7 +62,6 @@ export class BannerCreateDirective implements OnInit {
 })
 export class BannersComponent implements OnInit {
   @Input() banners: Banner[];
-  @Output() removeBanner = new EventEmitter<Banner>();
 
   constructor() {
   }
@@ -42,7 +69,4 @@ export class BannersComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  public remove(banner: Banner): void {
-    this.removeBanner.emit(banner);
-  }
 }
