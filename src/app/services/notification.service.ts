@@ -1,12 +1,21 @@
 import { Injectable } from '@angular/core';
-import { ToastrService } from 'ngx-toastr';
-
+import  {
+        // IndividualConfig,
+          ToastrService
+        } from 'ngx-toastr';
+// import { ToastrMessageComponent } from 'src/app/components/shared/toastr-message/toastr-message.component'
 @Injectable({
   providedIn: 'root'
 })
 export class NotificationService {
 
   constructor(private toastr: ToastrService) {}
+
+  // Custom toastr config example, toastClass styling in styles.scss
+  // private exampleCustomToastConfig: Partial<IndividualConfig> = {
+  //   toastClass: 'pinkToast',
+  //   toastComponent: ToastrMessageComponent
+  // };
 
   public demandQueue(added: boolean = true, count: number = 0, job_type: string) {
     let headerText: string;
@@ -45,6 +54,9 @@ export class NotificationService {
 
   public clipboardAPIURL() {
     this.toastr.info('API URL Copied');
+    // this.toastr.info('', 'API URL Copied', {
+    //   toastComponent: ToastrMessageComponent
+    // });
   }
 
   public clipboardCopyQueue(lineCount: number, isFileIDs: boolean) {

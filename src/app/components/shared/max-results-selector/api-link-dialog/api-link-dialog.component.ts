@@ -92,7 +92,6 @@ export class ApiLinkDialogComponent implements OnInit, OnDestroy {
 
   public onCopyLink(): void {
     this.clipboard.copyFromContent(this.apiLink);
-    // this.toastr.info('API URL Copied');
     this.notificationService.clipboardAPIURL();
   }
 

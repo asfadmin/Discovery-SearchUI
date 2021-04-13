@@ -27,9 +27,9 @@
 
 .toast-info,
 #toast-container > .toast-info {
-  color: $asf-primary-dark !important;
-  background-color: white !important;
-  background-image: url("/assets/icons/info_black_48dp.svg") !important;
+  color: $asf-primary-dark;
+  background-color: white;
+  background-image: url("/assets/icons/info_black_48dp.svg");
 }
 
 .toast-warning,
@@ -42,6 +42,28 @@
 .toast-close-button,
 #toast-container > .toast-close-button {
   color: black;
+}
+
+// .toast-info,
+// #toast-container > .yourclass {
+//   color: $asf-primary-dark !important;
+//   background-color: $asf-warn !important;
+//   background-image: url("/assets/icons/warning_black_48dp.svg") !important;
+// }
+
+#toast-container > .pinkToast.toast-info {
+  position: relative;
+  overflow: hidden;
+  margin: 0 0 6px;
+  padding: 15px 15px 15px 50px;
+  width: 300px;
+  border-radius: 3px 3px 3px 3px;
+  background-position: 15px center;
+  background-repeat: no-repeat;
+  background-size: 24px;
+  box-shadow: 0 0 12px #999999;
+  color:  white;
+  background-color: pink;
 }
 
 .toast-message a,
