@@ -10,6 +10,10 @@
 // regular style toast
 @import '~ngx-toastr/toastr';
 
+.toast-container {
+  z-index: 999;
+}
+
 // toast style overrides
 .toast.success,
 #toast-container > .toast-success {
@@ -74,6 +78,21 @@
 .toast-message a:hover {
   color: $asf-blue;
   text-decoration: underline;
+}
+
+.banner-dialog {
+  mat-dialog-container {
+    padding: 0;
+  }
+
+  mat-dialog-content {
+    padding: 15px 40px;
+  }
+
+  mat-dialog-actions {
+    padding: 7px 15px 7px 15px;
+    margin: 0;
+  }
 }
 
 .card-spacing {
