@@ -11,8 +11,13 @@
 @import '~ngx-toastr/toastr';
 
 #toast-container {
+  position: relative;
+  top: 115px;
+  right: 25px;
+  float: right;
   z-index: 999;
 }
+
 
 // toast style overrides
 .toast.success,
@@ -487,9 +492,3 @@ $d-height: 500px;
   background: gray;
 }
 
-#toast-container {
-  position: relative;
-  top: 115px;
-  right: 25px;
-  float: right;
-}
