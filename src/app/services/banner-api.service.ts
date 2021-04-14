@@ -45,8 +45,7 @@ export class BannerApiService {
             banners: <any[]>banners.map(banner => ({
               text: banner.text,
               name: banner.name,
-              type: calendar,
-              target: ''
+              type: calendar
             })),
             systime: ''
           }),
