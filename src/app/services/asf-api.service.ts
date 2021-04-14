@@ -34,11 +34,11 @@ export class AsfApiService {
       }
 
       if (this.env.currentEnv.cmr_provider) {
-        stateParamsObj['provider'] = this.env.currentEnv.cmr_provider;
+        stateParamsObj['cmr_provider'] = this.env.currentEnv.cmr_provider;
       }
 
       if (this.env.currentEnv.cmr_token) {
-        stateParamsObj['token'] = this.env.currentEnv.cmr_token;
+        stateParamsObj['cmr_token'] = this.env.currentEnv.cmr_token;
       }
     }
 
