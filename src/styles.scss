@@ -10,7 +10,7 @@
 // regular style toast
 @import '~ngx-toastr/toastr';
 
-.toast-container {
+#toast-container {
   z-index: 999;
 }
 
@@ -66,7 +66,7 @@
   background-repeat: no-repeat;
   background-size: 24px;
   box-shadow: 0 0 12px #999999;
-  color:  white;
+  color: white;
   background-color: pink;
 }
 
