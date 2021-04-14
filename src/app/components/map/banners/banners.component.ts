@@ -21,22 +21,39 @@ export class BannerCreateDirective implements OnInit {
   public maxMsgLength = 150;
   public msgOverflow = false;
   public moreMsg = '... <a>[MORE]</a>';
+  public overrides = {
+    enableHtml: true,
+    closeButton: true,
+    disableTimeOut: true,
+    tapToDismiss: false,
+  };
 
   ngOnInit(): void {
     const title: string = this.bannerCreate.name;
-    const msg = this.bannerCreate.text.substring( 0, this.maxMsgLength );
-    
+    const msg: string = this.bannerCreate.text.substring( 0, this.maxMsgLength );
+    const type: string = this.bannerCreate.type;
+    let toast: ActiveToast<any>;
 
-    (this.bannerCreate.text.length > this.maxMsgLength) ?
-      this.msgOverflow = true :
-      this.msgOverflow = false;
+    this. msgOverflow = (this.bannerCreate.text.length > this.maxMsgLength);
 
-    const toast: ActiveToast<any> = this.toastr.info(msg, title, {
-      enableHtml: true,
-      closeButton: true,
-      disableTimeOut: true,
-      tapToDismiss: false,
-    });
+    switch (type) {
+      case 'error': {
+        toast = this.toastr.error(msg, title, this.overrides);
+        break;
+      }
+      case 'outages': {
+        toast = this.toastr.warning(msg, title, this.overrides);
+        break;
+      }
+      case 'news': {
+        toast = this.toastr.info(msg, title, this.overrides);
+        break;
+      }
+      default: {
+        toast = this.toastr.info(msg, title, this.overrides);
+        break;
+      }
+    }
 
     const toastComponent: Toast = toast.toastRef.componentInstance;
     if (this.msgOverflow) {

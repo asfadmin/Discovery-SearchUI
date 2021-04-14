@@ -366,7 +366,8 @@ export class AppComponent implements OnInit, OnDestroy {
   private errorBanner(): models.Banner {
     return  {
       text: 'ASF is experiencing errors loading data.  Please try again later.',
-      name: 'error',
+      name: 'Error',
+      type: 'error'
     };
   }
 
