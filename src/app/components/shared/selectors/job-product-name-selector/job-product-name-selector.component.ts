@@ -72,7 +72,7 @@ export class JobProductNameSelectorComponent implements OnInit, OnDestroy {
   public autoCompleteEntry(suggestion: string) {
     let output = '';
 
-    if(this.productNameFilter != null) {
+    if (this.productNameFilter != null) {
     if (this.productNameFilter.split(',').length > 1) {
       if (this.productNameFilter.replace(/\s+/g, '').endsWith(',')) {
         output = this.productNameFilter + suggestion;
