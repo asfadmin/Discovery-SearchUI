@@ -1,10 +1,28 @@
+<form #jobNameForm="ngForm">
 <mat-form-field>
     <mat-label>Product/Source Scene</mat-label>
     <textarea *ngIf="!headerView" matInput placeholder="S1A..." 
     (input)="onFilterProductName($event.target.value)"
     [value]="productNameFilter"
+    [matAutocomplete]="jobNameSelector"
+    [formControl]="myControl"
     [rows]="3"></textarea>
     <input *ngIf="headerView" matInput placeholder="S1A..." 
     (input)="onFilterProductName($event.target.value)"
-    [value]="productNameFilter">  
+    [value]="productNameFilter"
+    [formControl]="myControl"
+    [matAutocomplete]="jobNameSelector">  
 </mat-form-field>
+
+<mat-autocomplete
+[panelWidth] = "275"
+(optionSelected)="onFilterProductName($event.option.value)"
+#jobNameSelector="matAutocomplete">
+<mat-option *ngFor="let fileName of filteredOptionsList" 
+    [value]="autoCompleteEntry(fileName)">
+    <div [matTooltip] = fileName>
+        {{(fileName.slice(0, 15) + " ... " + fileName.slice(fileName.length - 4, fileName.length)).toUpperCase()}}
+    </div>
+</mat-option>
+</mat-autocomplete>
+</form>
