@@ -43,7 +43,7 @@ export class NotificationService {
       infoText = count + ' scenes ' + (added ? 'added to' : 'removed from') + ' the Download Queue';
       this.toastr.info(infoText, headerText);
     } else {
-      infoText = 'Job ' + (added ? 'added to' : 'removed from') + ' the Download Queue';
+      infoText = 'Scene ' + (added ? 'added to' : 'removed from') + ' the Download Queue';
       this.toastr.info(infoText);
     }
   }
