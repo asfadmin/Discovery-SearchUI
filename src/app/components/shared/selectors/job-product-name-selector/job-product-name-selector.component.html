@@ -15,13 +15,13 @@
 </mat-form-field>
 
 <mat-autocomplete
-[panelWidth] = "275"
+[panelWidth] = "300"
 (optionSelected)="onFilterProductName($event.option.value)"
 #jobNameSelector="matAutocomplete">
 <mat-option *ngFor="let fileName of filteredOptionsList" 
     [value]="autoCompleteEntry(fileName)">
     <div [matTooltip] = fileName>
-        {{(fileName.slice(0, 15) + " ... " + fileName.slice(fileName.length - 4, fileName.length)).toUpperCase()}}
+        <span [innerHtml]="autoSuggestionDisplay(fileName)"></span>
     </div>
 </mat-option>
 </mat-autocomplete>

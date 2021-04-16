@@ -105,6 +105,34 @@ export class JobProductNameSelectorComponent implements OnInit, OnDestroy {
     return suggestion.includes(this.productNameFilter) ? suggestion : '';
   }
 
+  public autoSuggestionDisplay(suggestion: string) {
+    const lastEntry = this.latestInput();
+    if (lastEntry === '') {
+      return (suggestion.slice(0, 15) + ' ... ' + suggestion.slice(suggestion.length - 4)).toUpperCase();
+    }
+    const idx = suggestion.indexOf(lastEntry);
+
+    let bolded = idx !== -1 ? suggestion.slice(idx, idx + lastEntry.length) : '';
+    bolded = '<strong><em>' + bolded + '</em></strong>';
+
+    bolded = (idx < 15 ? suggestion.slice(0, Math.min(15, Math.max(idx, 0))) : '')
+    + (idx >= 15 ? suggestion.slice(0, 15) +  ' ... ' : '')
+    + (suggestion.length - 4 < idx ? suggestion.slice(suggestion.length - 4, idx) : '')
+    + bolded
+    + (idx < 15 && idx >= 0 ? suggestion.slice(idx + lastEntry.length, 15)
+    + ( suggestion.length - 4 <= idx ? ' ... ' : '') : '')
+    + (suggestion.length - 4 < idx ? suggestion.slice(idx + lastEntry.length) : '')
+    + (suggestion.length - 4 > idx ? ' ... ' + suggestion.slice(suggestion.length - 4) : '')
+    + (suggestion.length - 4 === idx ? suggestion.slice(suggestion.length - 4 + lastEntry.length) : '');
+
+    return bolded.toUpperCase();
+  }
+
+  private latestInput(): string {
+    const entries = this.productNameFilter.replace(/\s+/g, '').split(',');
+    return entries[entries.length - 1].toLowerCase();
+  }
+
   ngOnDestroy(): void {
     this.subs.unsubscribe();
   }
