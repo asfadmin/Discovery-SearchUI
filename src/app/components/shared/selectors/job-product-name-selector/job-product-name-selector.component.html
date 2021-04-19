@@ -15,7 +15,7 @@
 </mat-form-field>
 
 <mat-autocomplete
-[panelWidth] = "300"
+[panelWidth] = "isJobFilterOptionsOpen ? 500 : 300"
 (optionSelected)="onFilterProductName($event.option.value)"
 #jobNameSelector="matAutocomplete">
 <mat-option *ngFor="let fileName of filteredOptionsList" 
@@ -25,4 +25,35 @@
     </div>
 </mat-option>
 </mat-autocomplete>
+<mat-icon
+(click)="toggleJobFilterOptions()"
+matTooltip="More options"
+class="clickable additional-aoi-toggle"
+matSuffix>
+{{ isJobFilterOptionsOpen ? 'arrow_drop_up' : 'arrow_drop_down' }}
+</mat-icon>
+
+</form>
+
+<form>
+    <mat-card
+    [@fadeTransition]
+    *ngIf="isJobFilterOptionsOpen"
+    class="breadcrumb-filter">
+<!-- <app-aoi-options (close)="closeAOIOptions()"></app-aoi-options> -->
+
+    <mat-card-header>Product Name Filter Options</mat-card-header> 
+    <mat-card-content>
+        <mat-form-field style="width: 100%;">
+            <textarea
+            matInput placeholder="S1A..." 
+            (input)="onFilterProductName($event.target.value)"
+            [value]="productNameFilter"
+            [matAutocomplete]="jobNameSelector"
+            [formControl]="myControl"
+            [rows]="5"
+            ></textarea>
+        </mat-form-field>
+    </mat-card-content>
+</mat-card>
 </form>
