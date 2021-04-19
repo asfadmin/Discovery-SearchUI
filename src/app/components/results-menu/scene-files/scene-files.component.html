@@ -16,6 +16,7 @@
       [product]="product"
       [loadingHyp3JobName]="loadingHyp3JobName"
       [isUserLoggedIn]="isUserLoggedIn"
+      [validHyp3JobTypes]="validJobTypesByProduct[product.id]"
       [hasAccessToRestrictedData]="hasAccessToRestrictedData"
       [isUnzipLoading]="unzippedLoading === product.id"
       [isQueued]="(queuedProductIds$ | async).has(product.id)"
@@ -34,6 +35,7 @@
       (queueHyp3Job)="onQueueHyp3Job($event)"
       [product]="product"
       [isUserLoggedIn]="isUserLoggedIn"
+      [validHyp3JobTypes]="validJobTypesByProduct[product.id]"
       [loadingHyp3JobName]="loadingHyp3JobName"
       [hasAccessToRestrictedData]="hasAccessToRestrictedData"
       [isUnzipLoading]="unzippedLoading === product.id"
@@ -56,6 +58,7 @@
       [isUserLoggedIn]="isUserLoggedIn"
       [loadingHyp3JobName]="loadingHyp3JobName"
       [hasAccessToRestrictedData]="hasAccessToRestrictedData"
+      [validHyp3JobTypes]="validJobTypesByProduct[product.id]"
       [isUnzipLoading]="unzippedLoading === product.id"
       [isQueued]="(queuedProductIds$ | async).has(product.id)"
       [isOpen]="product.id === openUnzippedProduct.id">

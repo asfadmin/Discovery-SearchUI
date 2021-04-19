@@ -338,15 +338,6 @@ export const getSelectedSceneProducts = createSelector(
   }
 );
 
-export const getSceneProducts = createSelector(
-  getScenesState,
-  (state: ScenesState, props: {sceneId: string}) => {
-    const selected = state.products[props.sceneId];
-
-    return productsForScene(selected, state);
-  }
-);
-
 export const getSelectedSceneBrowses = createSelector(
   getScenesState,
   (state: ScenesState) => {
@@ -390,7 +381,7 @@ export const getSelectedOnDemandProductSceneBrowses = createSelector (
 
     return browses;
   }
-)
+);
 
 const productsForScene = (selected, state) => {
   if (!selected) {

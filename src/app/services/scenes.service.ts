@@ -16,12 +16,11 @@ import {
 } from '@store/filters/filters.reducer';
 import { getShowS1RawData, getShowExpiredData } from '@store/ui/ui.reducer';
 import { getSearchType } from '@store/search/search.reducer';
-import { getHyp3Jobs } from '@store/hyp3/hyp3.reducer';
 
 import {
   CMRProduct, SearchType,
   Range, ColumnSortDirection,
-  Hyp3JobWithScene, Hyp3Job, Hyp3JobStatusCode
+  Hyp3Job, Hyp3JobStatusCode
 } from '@models';
 
 @Injectable({
@@ -56,27 +55,6 @@ export class ScenesService {
       this.filterByDate$(
           this.store$.select(getScenes)
     ))))))));
-  }
-
-  public matchHyp3Jobs$(scenes$: Observable<CMRProduct[]>): Observable<Hyp3JobWithScene[]> {
-    return combineLatest(
-      scenes$,
-      this.store$.select(getHyp3Jobs)
-    ).pipe(
-      map(([scenes, jobs]) => {
-        const jobsByName = jobs.reduce((byName, job) => {
-          byName[job.job_parameters.granules[0]] = job;
-          return byName;
-        }, {});
-
-        return scenes.map(scene => {
-          return {
-            scene,
-            job: jobsByName[scene.name]
-          };
-        });
-      })
-    );
   }
 
   public withBrowses$(scenes$: Observable<CMRProduct[]>): Observable<CMRProduct[]> {

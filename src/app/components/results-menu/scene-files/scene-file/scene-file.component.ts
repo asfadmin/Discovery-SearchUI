@@ -15,6 +15,7 @@ export class SceneFileComponent {
   @Input() isUnzipLoading: boolean;
   @Input() isOpen: boolean;
   @Input() isUserLoggedIn: boolean;
+  @Input() validHyp3JobTypes: models.Hyp3JobType[];
   @Input() hasAccessToRestrictedData: boolean;
   @Input() loadingHyp3JobName: string | null;
 
@@ -122,6 +123,13 @@ export class SceneFileComponent {
     this.queueHyp3Job.emit({
       granules: [ this.product ],
       job_type: models.hyp3JobTypes.RTC_GAMMA
+    });
+  }
+
+  public addJobToProcessingQueue(jobType: models.Hyp3JobType): void {
+    this.queueHyp3Job.emit({
+      granules: [ this.product ],
+      job_type: jobType
     });
   }
 

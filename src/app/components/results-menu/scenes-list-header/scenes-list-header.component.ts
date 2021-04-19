@@ -15,7 +15,7 @@ import * as filtersStore from '@store/filters';
 
 import {
   MapService, ScenesService, ScreenSizeService,
-  PairService
+  PairService, Hyp3Service
 } from '@services';
 import * as models from '@models';
 import { SubSink } from 'subsink';
@@ -69,6 +69,7 @@ export class ScenesListHeaderComponent implements OnInit, OnDestroy {
     private scenesService: ScenesService,
     private pairService: PairService,
     private screenSize: ScreenSizeService,
+    private hyp3: Hyp3Service,
   ) { }
 
   ngOnInit() {
@@ -87,7 +88,7 @@ export class ScenesListHeaderComponent implements OnInit, OnDestroy {
           this.products = products;
           this.pairs = [ ...pairs, ...custom ];
 
-          this.hyp3ableProducts = this.getHyp3ableProducts([
+          this.hyp3ableProducts = this.hyp3.getHyp3ableProducts([
             ...this.products.map(prod => [prod]),
             ...this.pairs
           ]);
@@ -339,38 +340,6 @@ export class ScenesListHeaderComponent implements OnInit, OnDestroy {
     const expiration = moment.duration(expiration_time.diff(current));
 
     return Math.floor(expiration.asDays());
-  }
-
-  private getHyp3ableProducts(products) {
-    return models.hyp3JobTypesList.map(jobType => {
-      const hyp3ableProducts = products.filter(
-        product => models.isHyp3able(product, jobType)
-      );
-
-      const byProdType = jobType.productTypes.reduce(
-        (types, prodType) => {
-          prodType.productTypes.forEach(pt => {
-            types[pt] = [];
-          });
-          return types;
-        }, {}
-      );
-
-      hyp3ableProducts.forEach(product => {
-        const prodType = product[0].metadata.productType;
-        byProdType[prodType].push(product);
-      });
-
-      return {
-        jobType,
-        byProductType: Object.entries(byProdType).map(([productType, prods]) => ({
-          productType, products: prods
-        })),
-        total: Object.values(byProdType).reduce(
-          (sum, prods) => sum + (<any>prods).length, 0
-        )
-      };
-    });
   }
 
   ngOnDestroy(): void {

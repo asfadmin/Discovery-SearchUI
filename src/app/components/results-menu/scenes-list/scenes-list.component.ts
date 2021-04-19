@@ -39,6 +39,8 @@ export class ScenesListComponent implements OnInit, OnDestroy {
   public selected: string;
   public selectedPair: string[];
 
+  public hyp3ableByScene: {[scene: string]: {hyp3able: models.Hyp3ableProductByJobType[], total: number}} = {};
+
   public offsets = {temporal: 0, perpendicular: 0};
   public selectedFromList = false;
   public hoveredSceneName: string | null = null;
@@ -59,6 +61,7 @@ export class ScenesListComponent implements OnInit, OnDestroy {
     private keyboardService: services.KeyboardService,
     private scenesService: services.ScenesService,
     private pairService: services.PairService,
+    private hyp3: services.Hyp3Service,
   ) {}
 
   ngOnInit() {
@@ -121,19 +124,30 @@ export class ScenesListComponent implements OnInit, OnDestroy {
 
     this.subs.add(
       sortedScenes$.pipe(debounceTime(250)).subscribe(
-        scenes => this.scenes = scenes
+        scenes => {
+          this.scenes = scenes;
+        }
       )
     );
 
     this.subs.add(
       this.pairService.pairs$().pipe(debounceTime(250)).subscribe(
-        pairs => this.pairs = [...pairs.pairs, ...pairs.custom]
-      )
-    );
+        pairs => {
+          this.pairs = [...pairs.pairs, ...pairs.custom].map(
+            pair => {
+              const hyp3able = this.hyp3.getHyp3ableProducts([pair]);
+              const total = hyp3able.reduce((sum, byJobType) => sum + byJobType.total , 0);
 
-    this.subs.add(
-      this.scenesService.matchHyp3Jobs$(sortedScenes$).subscribe(
-        jobs => this.jobs = jobs
+              return {
+                pair,
+                hyp3able: {
+                  byJobType: hyp3able,
+                  total
+                }
+              };
+            }
+          );
+        }
       )
     );
 
@@ -141,6 +155,25 @@ export class ScenesListComponent implements OnInit, OnDestroy {
       this.store$.select(searchStore.getSearchType).subscribe(
         searchType => this.searchType = searchType
       )
+    );
+
+
+    this.store$.select(scenesStore.getAllSceneProducts).subscribe(
+      searchScenes => {
+        this.hyp3ableByScene = {};
+        Object.entries(searchScenes).forEach(([groupId, products]) => {
+          const hyp3able = this.hyp3.getHyp3ableProducts(
+            (<models.CMRProduct[]>products).map(product => [product])
+          );
+
+          const total = hyp3able.reduce((sum, byJobType) => sum + byJobType.total , 0);
+
+          this.hyp3ableByScene[groupId] = {
+            hyp3able,
+            total
+          };
+        });
+      }
     );
 
     const queueScenes$ = combineLatest(
@@ -168,30 +201,30 @@ export class ScenesListComponent implements OnInit, OnDestroy {
 
         return numberOfQueuedProducts;
       }
-    ));
+      ));
 
     this.subs.add(
       queueScenes$.pipe(
         map(
           scenes => Object.entries(scenes)
-            .reduce((total, [scene, amt]) => {
-              total[scene] = `${amt[0]}/${amt[1]}`;
+          .reduce((total, [scene, amt]) => {
+            total[scene] = `${amt[0]}/${amt[1]}`;
 
-              return total;
-            }, {})
-      )).subscribe(numberOfQueue => this.numberOfQueue = numberOfQueue)
+            return total;
+          }, {})
+        )).subscribe(numberOfQueue => this.numberOfQueue = numberOfQueue)
     );
 
     this.subs.add(
       queueScenes$.pipe(
         map(
           scenes => Object.entries(scenes)
-            .reduce((total, [scene, amt]) => {
-              total[scene] = amt[0] >= amt[1];
+          .reduce((total, [scene, amt]) => {
+            total[scene] = amt[0] >= amt[1];
 
-              return total;
-            }, {})
-      )).subscribe(allQueued => this.allQueued = allQueued)
+            return total;
+          }, {})
+        )).subscribe(allQueued => this.allQueued = allQueued)
     );
 
     this.resize$.subscribe(

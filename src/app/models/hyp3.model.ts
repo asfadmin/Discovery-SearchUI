@@ -69,6 +69,7 @@ export interface Hyp3JobParameters {
   include_dem?: boolean;
   include_inc_map?: boolean;
   include_scattering_area?: boolean;
+  include_rgb: boolean;
   radiometry?: RtcGammaRadiometry;
   resolution?: RtcGammaResolution;
   scale?: RtcGammaScale;
@@ -78,6 +79,8 @@ export interface Hyp3JobParameters {
   include_look_vectors?: boolean;
   include_los_displacement?: boolean;
   looks?: InSarGammaLooks;
+
+  dem_name: string;
 }
 
 export interface Hyp3InSarGammaParameters {

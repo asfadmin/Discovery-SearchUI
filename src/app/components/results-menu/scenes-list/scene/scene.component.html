@@ -57,19 +57,11 @@
           settings_overscan
         </mat-icon>
 
-        <mat-icon *ngIf="isDownloadable(scene) && isProcessable(scene) && 
-        (scene.metadata.productType !== 'SLC' || searchType === SearchTypes.SBAS || searchType === SearchTypes.BASELINE)"
-          (click)="onToggleOnDemandScene()"
+        <mat-icon
+          *ngIf="hyp3ableByJobType.total > 0"
           class="icon-margin"
-          svgIcon="hyp3"
-          matBadgeSize="small"
-          matBadgeColor="{{ jobQueued ? 'primary' : 'accent' }}"
-          matBadge="{{jobQueued ? '-' : '+'}}"
-          matTooltip="{{
-            jobQueued ?
-              'Remove scene files from on demand':
-              'Add scene files to on demand'
-          }}">
+          [matMenuTriggerFor]="addAllOnDemand"
+          svgIcon="hyp3">
         </mat-icon>
 
         <mat-icon *ngIf="isDownloadable(scene)"
@@ -112,18 +104,10 @@
               {{ withOffset(scene.metadata.temporal, offsets.temporal) }}d
             </div>
             <div class="cart-flex-field">
-              <mat-icon *ngIf="isDownloadable(scene) && isProcessable(scene)"
-                (click)="onToggleOnDemandScene()"
+              <mat-icon *ngIf="hyp3ableByJobType.total > 0"
+                [matMenuTriggerFor]="addAllOnDemand"
                 class="icon-margin"
-                svgIcon="hyp3"
-                matBadgeSize="small"
-                matBadgeColor="{{ jobQueued ? 'primary' : 'accent' }}"
-                matBadge="{{jobQueued ? '-' : '+'}}"
-                matTooltip="{{
-                  jobQueued ?
-                    'Remove scene files from on demand':
-                    'Add scene files to on demand'
-                }}">
+                svgIcon="hyp3">
               </mat-icon>
               <mat-icon *ngIf="isDownloadable(scene)"
                 (click)="onToggleScene($event, scene.groupId)"
@@ -138,5 +122,31 @@
             </div>
     </div>
   </div>
-    </ng-container>
+</ng-container>
+
+<mat-menu #addAllOnDemand>
+  <div *ngFor="let productsByJobType of hyp3ableByJobType.hyp3able" [matTooltip]="">
+    <button
+      [disabled]="productsByJobType.total === 0"
+      [matMenuTriggerFor]="addAllByProductType"
+      [matMenuTriggerData]="{ productsByJobType: productsByJobType }"
+      mat-menu-item>
+      {{ productsByJobType.jobType.name }}
+    </button>
+  </div>
+</mat-menu>
+
+<mat-menu #addAllByProductType>
+  <ng-template matMenuContent let-byJobType="productsByJobType">
+    <div *ngFor="let prodType of byJobType.byProductType">
+      <button *ngIf="prodType.products.length !== 0"
+        (click)="queueAllOnDemand(prodType.products, byJobType.jobType)"
+        [disabled]="" mat-menu-item>
+        Add {{ prodType.products.length }} {{ prodType.productType }} jobs
+      </button>
+    </div>
+  </ng-template>
+</mat-menu>
+
   </button>
+

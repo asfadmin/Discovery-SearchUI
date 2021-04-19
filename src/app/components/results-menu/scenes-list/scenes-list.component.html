@@ -19,6 +19,7 @@
             [offsets]="offsets"
             [searchType]="searchType"
             [isQueued]="allQueued[scene.groupId]"
+            [hyp3ableByJobType]="hyp3ableByScene[scene.groupId]"
             [jobQueued]="allJobNames.includes(scene.name)"
             [numQueued]="numberOfQueue[scene.groupId]"
             [isHovered]="scene.name === hoveredSceneName"
@@ -30,33 +31,49 @@
       <ng-container *ngIf="searchType === SearchTypes.SBAS">
         <div *cdkVirtualFor="let pair of pairs">
           <button class="button-flex-row" mat-list-item
-            (click)="onPairSelected(pair)"
-            (mouseenter)="onSetFocusedPair(pair)"
+            (click)="onPairSelected(pair.pair)"
+            (mouseenter)="onSetFocusedPair(pair.pair)"
             (mouseleave) ="onClearFocusedPair()"
-            [class.selected]="selectedPair ? pair[0].id + pair[1].id === selectedPair[0] + selectedPair[1] : false"
-            [class.hovered]="pair[0].name + pair[1].name === hoveredPairNames">
-            <b>{{ pair[0].metadata.date | shortDate }} to {{ pair[1].metadata.date | shortDate }}</b>
-            <div style="margin-left: 10px;">{{ pairPerpBaseline(pair)}}m</div>
-            <div style="margin-left: 10px;">{{ pairTempBaseline(pair)}}d</div>
+            [class.selected]="selectedPair ? pair.pair[0].id + pair.pair[1].id === selectedPair[0] + selectedPair[1] : false"
+            [class.hovered]="pair.pair[0].name + pair.pair[1].name === hoveredPairNames">
+            <b>{{ pair.pair[0].metadata.date | shortDate }} to {{ pair.pair[1].metadata.date | shortDate }}</b>
+            <div style="margin-left: 10px;">{{ pairPerpBaseline(pair.pair)}}m</div>
+            <div style="margin-left: 10px;">{{ pairTempBaseline(pair.pair)}}d</div>
               <mat-icon
+                *ngIf="pair.hyp3able.total > 0"
                 class="clickable noselect list-icon"
                 style="margin-left: 10px;"
                 matTooltip="Add pair to On Demand queue"
                 svgIcon="hyp3"
-                [matMenuTriggerFor]="addPairToOnDemand"
-                [matMenuTriggerData]="{ pair: pair }">
+                [matMenuTriggerFor]="addPairOnDemand"
+                [matMenuTriggerData]="{ hyp3able: pair.hyp3able.byJobType }">
               </mat-icon>
           </button>
         </div>
 
-        <mat-menu #addPairToOnDemand="matMenu">
-          <ng-template matMenuContent let-pair="pair">
-            <button (click)="onAddInSarJob(pair)" mat-menu-item>
-              Add InSAR GAMMA job
+        <mat-menu #addPairOnDemand>
+          <ng-template matMenuContent let-hyp3able="hyp3able">
+          <div *ngFor="let productsByJobType of hyp3able" [matTooltip]="">
+            <button
+              [disabled]="productsByJobType.total === 0"
+              [matMenuTriggerFor]="addAllByProductType"
+              [matMenuTriggerData]="{ productsByJobType: productsByJobType }"
+              mat-menu-item>
+              {{ productsByJobType.jobType.name }}
             </button>
-            <button (click)="onAddAutoRiftJob(pair)" mat-menu-item>
-              Add autoRIFT job
-            </button>
+          </div>
+          </ng-template>
+        </mat-menu>
+
+        <mat-menu #addAllByProductType>
+          <ng-template matMenuContent let-byJobType="productsByJobType">
+            <div *ngFor="let prodType of byJobType.byProductType">
+              <button *ngIf="prodType.products.length !== 0"
+                (click)="queueAllOnDemand(prodType.products, byJobType.jobType)"
+                [disabled]="" mat-menu-item>
+                Add {{ prodType.products.length }} {{ prodType.productType }} jobs
+              </button>
+            </div>
           </ng-template>
         </mat-menu>
       </ng-container>
