@@ -6,10 +6,11 @@ import { AppState } from '@store';
 import { Store } from '@ngrx/store';
 import { map } from 'rxjs/operators';
 import { FormControl } from '@angular/forms';
-import { ScenesService } from '@services';
+import { ScenesService, ScreenSizeService } from '@services';
 import { getScenes } from '@store/scenes';
 import { combineLatest } from 'rxjs';
 import { animate, style, transition, trigger } from '@angular/animations';
+import { Breakpoints } from '@models';
 
 @Component({
   selector: 'app-job-product-name-selector',
@@ -38,15 +39,32 @@ export class JobProductNameSelectorComponent implements OnInit, OnDestroy {
   public isJobFilterOptionsOpen = false;
   public myControl = new FormControl();
 
+  public breakpoints = Breakpoints;
+  public breakpoint: Breakpoints;
+  public screenWidth;
+
   constructor(
     private store$: Store<AppState>,
     private scenesService: ScenesService,
+    private screenSize: ScreenSizeService,
   ) { }
 
   ngOnInit(): void {
     this.subs.add(
       this.store$.select(filtersStore.getProductNameFilter).subscribe(
         productNameFilter => this.productNameFilter = productNameFilter
+      )
+    );
+
+    this.subs.add(
+      this.screenSize.size$.subscribe(
+        screenSize => this.screenWidth = screenSize.width
+      )
+    );
+
+    this.subs.add(
+      this.screenSize.breakpoint$.subscribe(
+        val => this.breakpoint = val
       )
     );
 

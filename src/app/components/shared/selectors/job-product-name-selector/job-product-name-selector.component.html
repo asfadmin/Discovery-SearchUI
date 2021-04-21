@@ -1,12 +1,13 @@
 <form #jobNameForm="ngForm">
-<mat-form-field>
+<mat-form-field [class.filter-view] = '!headerView'
+                [class.filter-view-mobile]='!headerView && (screenWidth <= 450 || breakpoint <= breakpoints.MOBILE)'>
     <mat-label>Product/Source Scene</mat-label>
     <textarea *ngIf="!headerView" matInput placeholder="S1A..." 
     (input)="onFilterProductName($event.target.value)"
     [value]="productNameFilter"
     [matAutocomplete]="jobNameSelector"
     [formControl]="myControl"
-    [rows]="3"></textarea>
+    [rows]="5"></textarea>
     <input *ngIf="headerView" matInput placeholder="S1A..." 
     (input)="onFilterProductName($event.target.value)"
     [value]="productNameFilter"
