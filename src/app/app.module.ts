@@ -30,12 +30,11 @@ import { ResultsMenuModule } from '@components/results-menu';
 import { BaselineChartModule } from '@components/baseline-chart';
 import { HelpModule } from './components/help';
 import { AppComponent } from './app.component';
-// import { ToastrMessageComponent } from './components/shared/toastr-message/';
-
 import { CustomBreakPointsProvider } from '@services/custom-breakpoints.ts';
 import * as services from '@services';
 
 import { NgcCookieConsentModule, NgcCookieConsentConfig } from 'ngx-cookieconsent';
+// import { FileDownloadDirective } from './directives/file-download.directive';
 
 // info about cookie consent module: https://tinesoft.github.io/ngx-cookieconsent/home
 const cookieConfig: NgcCookieConsentConfig = {
@@ -74,6 +73,7 @@ export const routes = [
 @NgModule({
   declarations: [
     AppComponent,
+    // FileDownloadDirective,
   ],
   imports: [
     BrowserModule,
