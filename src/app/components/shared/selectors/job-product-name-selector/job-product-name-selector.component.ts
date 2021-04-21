@@ -6,14 +6,28 @@ import { AppState } from '@store';
 import { Store } from '@ngrx/store';
 import { map } from 'rxjs/operators';
 import { FormControl } from '@angular/forms';
-import { ScenesService } from '@services';
+import { ScenesService, ScreenSizeService } from '@services';
 import { getScenes } from '@store/scenes';
 import { combineLatest } from 'rxjs';
+import { animate, style, transition, trigger } from '@angular/animations';
+import { Breakpoints } from '@models';
 
 @Component({
   selector: 'app-job-product-name-selector',
   templateUrl: './job-product-name-selector.component.html',
-  styleUrls: ['./job-product-name-selector.component.scss']
+  styleUrls: ['./job-product-name-selector.component.scss'],
+  animations: [
+    trigger('fadeTransition', [
+      transition(':enter', [
+        style({opacity: 0}),
+        animate('100ms ease-in', style({opacity: 1}))
+      ]),
+      transition(':leave', [
+        style({opacity: 1}),
+        animate('100ms ease-out', style({opacity: 0}))
+      ])
+    ])
+  ],
 })
 export class JobProductNameSelectorComponent implements OnInit, OnDestroy {
   @Input() headerView: boolean;
@@ -22,17 +36,35 @@ export class JobProductNameSelectorComponent implements OnInit, OnDestroy {
   public filteredOptionsList: string[];
   public unfilteredScenes: string[];
 
+  public isJobFilterOptionsOpen = false;
   public myControl = new FormControl();
+
+  public breakpoints = Breakpoints;
+  public breakpoint: Breakpoints;
+  public screenWidth;
 
   constructor(
     private store$: Store<AppState>,
     private scenesService: ScenesService,
+    private screenSize: ScreenSizeService,
   ) { }
 
   ngOnInit(): void {
     this.subs.add(
       this.store$.select(filtersStore.getProductNameFilter).subscribe(
         productNameFilter => this.productNameFilter = productNameFilter
+      )
+    );
+
+    this.subs.add(
+      this.screenSize.size$.subscribe(
+        screenSize => this.screenWidth = screenSize.width
+      )
+    );
+
+    this.subs.add(
+      this.screenSize.breakpoint$.subscribe(
+        val => this.breakpoint = val
       )
     );
 
@@ -133,6 +165,9 @@ export class JobProductNameSelectorComponent implements OnInit, OnDestroy {
     return entries[entries.length - 1].toLowerCase();
   }
 
+  public toggleJobFilterOptions() {
+    this.isJobFilterOptionsOpen = !this.isJobFilterOptionsOpen;
+  }
   ngOnDestroy(): void {
     this.subs.unsubscribe();
   }
