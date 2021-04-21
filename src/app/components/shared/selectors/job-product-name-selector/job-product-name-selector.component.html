@@ -11,7 +11,15 @@
     (input)="onFilterProductName($event.target.value)"
     [value]="productNameFilter"
     [formControl]="myControl"
-    [matAutocomplete]="jobNameSelector">  
+    [matAutocomplete]="jobNameSelector">
+    <mat-icon
+    *ngIf="headerView"
+    (click)="toggleJobFilterOptions()"
+    matTooltip="More options"
+    style="vertical-align: middle"
+    matSuffix>
+    {{ isJobFilterOptionsOpen ? 'arrow_drop_up' : 'arrow_drop_down' }}
+    </mat-icon>
 </mat-form-field>
 
 <mat-autocomplete
@@ -25,13 +33,6 @@
     </div>
 </mat-option>
 </mat-autocomplete>
-<mat-icon
-(click)="toggleJobFilterOptions()"
-matTooltip="More options"
-class="clickable additional-aoi-toggle"
-matSuffix>
-{{ isJobFilterOptionsOpen ? 'arrow_drop_up' : 'arrow_drop_down' }}
-</mat-icon>
 
 </form>
 
@@ -40,7 +41,6 @@ matSuffix>
     [@fadeTransition]
     *ngIf="isJobFilterOptionsOpen"
     class="breadcrumb-filter">
-<!-- <app-aoi-options (close)="closeAOIOptions()"></app-aoi-options> -->
 
     <mat-card-header>Product Name Filter Options</mat-card-header> 
     <mat-card-content>
