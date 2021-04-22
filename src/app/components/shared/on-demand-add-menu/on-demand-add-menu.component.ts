@@ -30,4 +30,8 @@ export class OnDemandAddMenuComponent implements OnInit {
 
     this.store$.dispatch(new queueStore.AddJobs(jobs));
   }
+
+  public onOpenHelp(infoUrl) {
+    window.open(infoUrl);
+  }
 }

@@ -150,4 +150,9 @@ export class SceneFileComponent {
 
     return Math.floor(expiration.asDays());
   }
+
+  public onOpenHelp(e: Event, infoUrl: string) {
+    e.stopPropagation();
+    window.open(infoUrl);
+  }
 }

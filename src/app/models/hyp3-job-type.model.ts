@@ -4,6 +4,7 @@ import { CMRProduct } from './cmr-product.model';
 export interface Hyp3JobType {
   id: string;
   name: string;
+  infoUrl: string;
   numProducts: number;
   productTypes: Hyp3JobProductType[];
   options: Hyp3JobOption[];
