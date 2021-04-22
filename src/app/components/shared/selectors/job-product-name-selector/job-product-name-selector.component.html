@@ -43,7 +43,12 @@
     *ngIf="isJobFilterOptionsOpen"
     class="breadcrumb-filter">
 
-    <mat-card-header>Product Name Filter Options</mat-card-header> 
+    <mat-card-header style="display: block;">
+        <strong>Options</strong>
+        <button class="options-clear-button" (click)="onCloseOptions()" matTooltip="Hide options" mat-icon-button>
+          <mat-icon>clear</mat-icon>
+        </button>
+    </mat-card-header> 
     <mat-card-content>
         <mat-form-field style="width: 100%;">
             <textarea
@@ -55,6 +60,9 @@
             [rows]="5"
             ></textarea>
         </mat-form-field>
+        <button class="options-clear-button" (click)="onClearFilter()" mat-flat-button matTooltip="Clear Product Name Filter">
+            <strong>Clear</strong>
+        </button>
     </mat-card-content>
 </mat-card>
 </form>
