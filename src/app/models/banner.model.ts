@@ -6,4 +6,5 @@ export interface BannerApiResponse {
 export interface Banner {
   text: string;
   name: string;
+  type: string;
 }

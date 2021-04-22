@@ -5,6 +5,7 @@
     </ng-container>
 
     <ng-template #jobsQueued>
+      
       <mat-list-item *ngFor="let job of jobs" class="job-list-item">
           <img matListAvatar
                [src]="job.granules[0].thumbnail"
@@ -16,7 +17,7 @@
             {{ job.granules[0].name }}
           </div>
 
-          <div matLine>
+          <div *ngIf="job.job_type.name === 'RTC GAMMA'" matLine>
             <b>
               {{ job.job_type.name }}
             </b>
@@ -24,6 +25,9 @@
               <span *ngIf="job.granules[0].bytes === 0">Virtual</span>
               <span *ngIf="job.granules[0].bytes !== 0">{{ job.granules[0].bytes | readableSizeFromBytes }}</span>
             </b>
+          </div>
+          <div *ngIf="job.job_type.name !== 'RTC GAMMA'" style="font-size: 14px;" matLine>
+          {{job.granules[1].name}}
           </div>
 
           <div class="button-remove-job">
@@ -34,6 +38,7 @@
             </button>
           </div>
       </mat-list-item>
+
     </ng-template>
 
     <ng-template #emptyQueue>

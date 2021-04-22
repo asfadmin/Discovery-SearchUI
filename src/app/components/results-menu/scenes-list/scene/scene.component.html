@@ -26,7 +26,8 @@
           <app-copy-to-clipboard
             *ngIf="isHovered; else notHovered"
             prompt="Copy scene name"
-            [value]="scene.metadata.fileName || scene.name">
+            [value]="scene.metadata.fileName || scene.name"
+            >
           </app-copy-to-clipboard>
           <ng-template #notHovered>
             <fa-icon style="visibility: hidden;" [icon]="copyIcon">
@@ -56,19 +57,12 @@
           settings_overscan
         </mat-icon>
 
-        <mat-icon *ngIf="isDownloadable(scene) && isProcessable(scene) && 
-        (scene.metadata.productType !== 'SLC' || searchType === SearchTypes.SBAS || searchType === SearchTypes.BASELINE)"
-          (click)="onToggleOnDemandScene()"
+        <mat-icon
+          *ngIf="hyp3ableByJobType.total > 0"
           class="icon-margin"
-          svgIcon="hyp3"
-          matBadgeSize="small"
-          matBadgeColor="{{ jobQueued ? 'primary' : 'accent' }}"
-          matBadge="{{jobQueued ? '-' : '+'}}"
-          matTooltip="{{
-            jobQueued ?
-              'Remove scene files from on demand':
-              'Add scene files to on demand'
-          }}">
+          [matMenuTriggerFor]="sceneAdd.addMenu"
+          [matMenuTriggerData]="{ hyp3able: hyp3ableByJobType.byJobType }"
+          svgIcon="hyp3">
         </mat-icon>
 
         <mat-icon *ngIf="isDownloadable(scene)"
@@ -111,18 +105,11 @@
               {{ withOffset(scene.metadata.temporal, offsets.temporal) }}d
             </div>
             <div class="cart-flex-field">
-              <mat-icon *ngIf="isDownloadable(scene) && isProcessable(scene)"
-                (click)="onToggleOnDemandScene()"
+              <mat-icon *ngIf="hyp3ableByJobType.total > 0"
+                [matMenuTriggerFor]="sceneAdd.addMenu"
+                [matMenuTriggerData]="{ hyp3able: hyp3ableByJobType.byJobType }"
                 class="icon-margin"
-                svgIcon="hyp3"
-                matBadgeSize="small"
-                matBadgeColor="{{ jobQueued ? 'primary' : 'accent' }}"
-                matBadge="{{jobQueued ? '-' : '+'}}"
-                matTooltip="{{
-                  jobQueued ?
-                    'Remove scene files from on demand':
-                    'Add scene files to on demand'
-                }}">
+                svgIcon="hyp3">
               </mat-icon>
               <mat-icon *ngIf="isDownloadable(scene)"
                 (click)="onToggleScene($event, scene.groupId)"
@@ -137,5 +124,10 @@
             </div>
     </div>
   </div>
-    </ng-container>
-  </button>
+</ng-container>
+
+<app-on-demand-add-menu #sceneAdd>
+</app-on-demand-add-menu>
+
+</button>
+

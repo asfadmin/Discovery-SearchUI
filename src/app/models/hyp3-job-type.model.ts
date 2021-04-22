@@ -4,6 +4,7 @@ import { CMRProduct } from './cmr-product.model';
 export interface Hyp3JobType {
   id: string;
   name: string;
+  infoUrl: string;
   numProducts: number;
   productTypes: Hyp3JobProductType[];
   options: Hyp3JobOption[];
@@ -21,27 +22,22 @@ export interface Hyp3JobOption {
   apiName: string;
   type: JobOptionType;
   info: string;
-  options?: string[];
+  default: any;
+  options?: { apiValue: string; name: string; }[];
+}
+
+export interface Hyp3ableProductByJobType {
+  jobType: Hyp3JobType;
+  byProductType: Hyp3ableByProductType[];
+  total: number;
+}
+
+export interface Hyp3ableByProductType {
+  productType: string;
+  products: CMRProduct[][];
 }
 
 export enum JobOptionType {
   DROPDOWN = 'DROPDOWN',
   TOGGLE = 'TOGGLE'
 }
-
-export const isHyp3able = (products: CMRProduct[], jobType: Hyp3JobType): boolean => {
-  return (
-    products.length === jobType.numProducts &&
-    jobType.productTypes.some(productType => {
-      const types = new Set(productType.productTypes);
-      const pols = new Set(productType.polarizations);
-      const beamModes = new Set(productType.beamModes);
-
-      return products.every(product =>
-        types.has(product.metadata.productType) &&
-        pols.has(product.metadata.polarization) &&
-        beamModes.has(product.metadata.beamMode)
-      );
-    })
-  );
-};

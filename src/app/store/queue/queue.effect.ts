@@ -5,12 +5,13 @@ import { Store } from '@ngrx/store';
 
 import * as FileSaver from 'file-saver';
 import * as moment from 'moment';
-import { map, withLatestFrom, switchMap } from 'rxjs/operators';
+import { map, withLatestFrom, switchMap, tap, skip } from 'rxjs/operators';
 
 import { AppState } from '../app.reducer';
-import { QueueActionType, DownloadMetadata, QueueScene, AddItems, RemoveItems, RemoveSceneFromQueue, DownloadSearchtypeMetadata } from './queue.action';
+import { QueueActionType, DownloadMetadata, AddItems, RemoveItems, RemoveSceneFromQueue, DownloadSearchtypeMetadata, AddJob, RemoveJob, AddJobs, ToggleProduct, QueueScene } from './queue.action';
 import { getQueuedProducts } from './queue.reducer';
 import * as scenesStore from '@store/scenes';
+// import * as queueStore from '@store/queue';
 
 import * as services from '@services';
 import * as models from '@models';
@@ -28,6 +29,7 @@ export class QueueEffects {
     private asfApiService: services.AsfApiService,
     private searchParamsService: services.SearchParamsService,
     private bulkDownloadService: services.BulkDownloadService,
+    private notificationService: services.NotificationService,
   ) {}
 
   public makeDownloadScript = createEffect(() => this.actions$.pipe(
@@ -110,10 +112,52 @@ export class QueueEffects {
     map(products => new AddItems(products))
   ));
 
+  public toggleProduct = createEffect(() => this.actions$.pipe(
+    ofType<ToggleProduct>(QueueActionType.TOGGLE_PRODUCT),
+    withLatestFrom(this.store$.select(getQueuedProducts)),
+    map(([action, sceneProducts]) => sceneProducts.includes(action.payload)),
+    tap(inQueue => this.notificationService.downloadQueue(inQueue))
+  ),
+  { dispatch: false }
+  );
+
+  public addItems = createEffect(() => this.actions$.pipe(
+    ofType<AddItems>(QueueActionType.ADD_ITEMS),
+    skip(1),
+    tap(act => this.notificationService.downloadQueue(true, act.payload.length)),
+  ),
+  { dispatch: false }
+  );
+
+  public addJob = createEffect(() => this.actions$.pipe(
+    ofType<AddJob>(QueueActionType.ADD_JOB),
+    tap(act => this.notificationService.demandQueue(true, 1, act.payload.job_type.name)),
+  ),
+  { dispatch: false }
+  );
+
+  public addJobs = createEffect(() => this.actions$.pipe(
+    ofType<AddJobs>(QueueActionType.ADD_JOBS),
+    skip(1),
+    map(action => action.payload),
+    tap(jobs => this.notificationService.demandQueue(true, jobs.length, jobs[0].job_type.name)),
+  ),
+  { dispatch: false }
+  );
+
+  public removeJob = createEffect(() => this.actions$.pipe(
+    ofType<RemoveJob>(QueueActionType.REMOVE_JOB),
+    map(action => action.payload),
+    tap(job => this.notificationService.demandQueue(false, 1, job.job_type.name)),
+  ),
+  { dispatch: false }
+  );
+
   public removeScene = createEffect(() => this.actions$.pipe(
     ofType<RemoveSceneFromQueue>(QueueActionType.REMOVE_SCENE_FROM_QUEUE),
     withLatestFrom(this.store$.select(scenesStore.getAllSceneProducts)),
     map(([action, sceneProducts]) => sceneProducts[action.payload]),
+    tap(products => this.notificationService.downloadQueue(false, products.length)),
     map(products => new RemoveItems(products))
   ));
 

@@ -1,10 +1,60 @@
-<mat-form-field>
+<form #jobNameForm="ngForm">
+<mat-form-field [class.filter-view] = '!headerView'
+                [class.filter-view-mobile]='!headerView && (screenWidth <= 450 || breakpoint <= breakpoints.MOBILE)'>
     <mat-label>Product/Source Scene</mat-label>
     <textarea *ngIf="!headerView" matInput placeholder="S1A..." 
     (input)="onFilterProductName($event.target.value)"
     [value]="productNameFilter"
-    [rows]="3"></textarea>
+    [matAutocomplete]="jobNameSelector"
+    [formControl]="myControl"
+    [rows]="5"></textarea>
     <input *ngIf="headerView" matInput placeholder="S1A..." 
     (input)="onFilterProductName($event.target.value)"
-    [value]="productNameFilter">  
+    [value]="productNameFilter"
+    [formControl]="myControl"
+    [matAutocomplete]="jobNameSelector">
+    <mat-icon
+    *ngIf="headerView"
+    (click)="toggleJobFilterOptions()"
+    matTooltip="More options"
+    style="vertical-align: middle"
+    matSuffix>
+    {{ isJobFilterOptionsOpen ? 'arrow_drop_up' : 'arrow_drop_down' }}
+    </mat-icon>
 </mat-form-field>
+
+<mat-autocomplete
+[panelWidth] = "isJobFilterOptionsOpen ? 500 : 300"
+(optionSelected)="onFilterProductName($event.option.value)"
+#jobNameSelector="matAutocomplete">
+<mat-option *ngFor="let fileName of filteredOptionsList" 
+    [value]="autoCompleteEntry(fileName)">
+    <div [matTooltip] = fileName>
+        <span [innerHtml]="autoSuggestionDisplay(fileName)"></span>
+    </div>
+</mat-option>
+</mat-autocomplete>
+
+</form>
+
+<form>
+    <mat-card
+    [@fadeTransition]
+    *ngIf="isJobFilterOptionsOpen"
+    class="breadcrumb-filter">
+
+    <mat-card-header>Product Name Filter Options</mat-card-header> 
+    <mat-card-content>
+        <mat-form-field style="width: 100%;">
+            <textarea
+            matInput placeholder="S1A..." 
+            (input)="onFilterProductName($event.target.value)"
+            [value]="productNameFilter"
+            [matAutocomplete]="jobNameSelector"
+            [formControl]="myControl"
+            [rows]="5"
+            ></textarea>
+        </mat-form-field>
+    </mat-card-content>
+</mat-card>
+</form>

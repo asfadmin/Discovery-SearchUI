@@ -15,6 +15,7 @@ export class SceneFileComponent {
   @Input() isUnzipLoading: boolean;
   @Input() isOpen: boolean;
   @Input() isUserLoggedIn: boolean;
+  @Input() validHyp3JobTypes: models.Hyp3JobType[];
   @Input() hasAccessToRestrictedData: boolean;
   @Input() loadingHyp3JobName: string | null;
 
@@ -125,11 +126,33 @@ export class SceneFileComponent {
     });
   }
 
+  public addJobToProcessingQueue(jobType: models.Hyp3JobType): void {
+    this.queueHyp3Job.emit({
+      granules: [ this.product ],
+      job_type: jobType
+    });
+  }
+
+  public jobParamsToList(metadata) {
+    return !!metadata.job ?
+      models.hyp3JobOptionsOrdered
+      .filter(option => metadata.job.job_parameters[option.apiName])
+      .map(option => {
+        return {name: option.name, val: metadata.job.job_parameters[option.apiName]};
+      }) :
+      [];
+  }
+
   private expirationDays(expiration_time: moment.Moment): number {
     const current = moment.utc();
 
     const expiration = moment.duration(expiration_time.diff(current));
 
     return Math.floor(expiration.asDays());
+  }
+
+  public onOpenHelp(e: Event, infoUrl: string) {
+    e.stopPropagation();
+    window.open(infoUrl);
   }
 }

@@ -15,7 +15,7 @@ import * as searchStore from '@store/search';
 import { PreferencesComponent } from './preferences/preferences.component';
 import { CustomizeEnvComponent } from './customize-env/customize-env.component';
 
-import { AuthService, AsfApiService, EnvironmentService, ScreenSizeService } from '@services';
+import { AuthService, AsfApiService, EnvironmentService, ScreenSizeService, NotificationService } from '@services';
 import { CMRProduct, Breakpoints, UserAuth, SavedSearchType, QueuedHyp3Job, SearchType } from '@models';
 
 import { collapseAnimation, rubberBandAnimation,
@@ -67,6 +67,7 @@ export class HeaderButtonsComponent implements OnInit, OnDestroy {
     private dialog: MatDialog,
     private store$: Store<AppState>,
     private http: HttpClient,
+    private notificationService: NotificationService,
   ) {}
 
   ngOnInit() {
@@ -183,6 +184,21 @@ export class HeaderButtonsComponent implements OnInit, OnDestroy {
 
   public onOpenHelp(helpSelection: string): void {
     this.store$.dispatch(new uiStore.SetHelpDialogTopic(helpSelection));
+  }
+
+  public onOpenUserGuide(): void {
+    const url = 'https://docs.asf.alaska.edu/';
+
+    window.dataLayer = window.dataLayer || [];
+    window.dataLayer.push({
+      'event': 'open-user-guide',
+      'open-user-guide': url
+    });
+
+    window.open(
+      url,
+      '_blank'
+    );
   }
 
   public onOpenWhatsNew(): void {
@@ -305,6 +321,7 @@ export class HeaderButtonsComponent implements OnInit, OnDestroy {
       'copy-search-link': window.location.href
     });
     this.clipboard.copyFromContent(window.location.href);
+    this.notificationService.clipboardSearchLink();
   }
 
   public onShareWithEmail() {

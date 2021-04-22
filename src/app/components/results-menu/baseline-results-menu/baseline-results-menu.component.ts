@@ -55,7 +55,7 @@ export class BaselineResultsMenuComponent implements OnInit, OnDestroy {
     private screenSize: ScreenSizeService,
     private mapService: MapService,
     private scenesService: ScenesService,
-    private pairService: PairService,
+    private pairService: PairService
   ) { }
 
   ngOnInit(): void {
@@ -182,6 +182,7 @@ export class BaselineResultsMenuComponent implements OnInit, OnDestroy {
           job_type
         })
       );
+
       this.store$.dispatch(new queueStore.AddJobs(jobs));
     }
 

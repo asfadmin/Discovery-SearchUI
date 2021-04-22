@@ -61,11 +61,15 @@ export interface Hyp3ProductFile {
 export interface Hyp3JobParameters {
   granules: string[];
 
+  // for jobs with multiple granules (InSAR and AutoRIFT)
+  scenes?: CMRProduct[];
+
   // Hyp3RtcGammaParameters
   dem_matching?: boolean;
   include_dem?: boolean;
   include_inc_map?: boolean;
   include_scattering_area?: boolean;
+  include_rgb: boolean;
   radiometry?: RtcGammaRadiometry;
   resolution?: RtcGammaResolution;
   scale?: RtcGammaScale;
@@ -75,6 +79,8 @@ export interface Hyp3JobParameters {
   include_look_vectors?: boolean;
   include_los_displacement?: boolean;
   looks?: InSarGammaLooks;
+
+  dem_name: string;
 }
 
 export interface Hyp3InSarGammaParameters {

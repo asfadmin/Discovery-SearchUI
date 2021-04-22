@@ -18,10 +18,13 @@ import { ResizableModule } from 'angular-resizable-element';
 import { DragDropModule } from '@angular/cdk/drag-drop';
 import { MatDialogModule } from '@angular/material/dialog';
 import { AngularResizedEventModule } from 'angular-resize-event';
+import { FileDownloadDirective } from '@directives/file-download.directive';
+
 
 @NgModule({
   declarations: [
-    QueueComponent
+    QueueComponent,
+    FileDownloadDirective
   ],
     imports: [
         CommonModule,

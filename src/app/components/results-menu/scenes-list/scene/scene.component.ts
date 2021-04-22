@@ -4,7 +4,7 @@ import * as moment from 'moment';
 
 import * as services from '@services';
 import * as models from '@models';
-import { QueuedHyp3Job } from '@models';
+import { QueuedHyp3Job, Hyp3ableProductByJobType } from '@models';
 
 @Component({
   selector: 'app-scene',
@@ -22,6 +22,7 @@ export class SceneComponent implements OnInit {
   @Input() isQueued: boolean;
   @Input() jobQueued: boolean;
   @Input() numQueued: number;
+  @Input() hyp3ableByJobType: {hyp3able: Hyp3ableProductByJobType[], total: number};
 
   @Output() zoomTo = new EventEmitter();
   @Output() toggleScene = new EventEmitter();
@@ -60,7 +61,6 @@ export class SceneComponent implements OnInit {
       granules: [ this.scene ],
       job_type: models.hyp3JobTypes.RTC_GAMMA
     } as QueuedHyp3Job);
-    this.jobQueued = !this.jobQueued;
   }
 
   public isDownloadable(product: models.CMRProduct): boolean {

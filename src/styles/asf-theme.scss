@@ -33,6 +33,7 @@ $asf-warn: mat-color($asf-app-warn);
 $asf-blue: mat-color($asf-app-blue);
 $asf-primary-light: lighten($asf-primary, 40%);
 $asf-primary-dark: darken($asf-primary, 15%);
+$asf-background-white: #fafafa;
 
 $custom-typography: mat-typography-config(
   $font-family: 'Roboto, sans-serif',

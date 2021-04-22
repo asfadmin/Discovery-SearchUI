@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { MatBottomSheet } from '@angular/material/bottom-sheet';
+// import { MatBottomSheet } from '@angular/material/bottom-sheet';
 
-import { QueueSubmitComponent } from './queue-submit/queue-submit.component';
+// import { QueueSubmitComponent } from './queue-submit/queue-submit.component';
 import { ConfirmationComponent } from './confirmation/confirmation.component';
 
 import { Store } from '@ngrx/store';
@@ -17,6 +17,7 @@ import * as hyp3Store from '@store/hyp3';
 import * as userStore from '@store/user'; import * as models from '@models';
 import * as services from '@services';
 import { ResizedEvent } from 'angular-resize-event';
+// import { ToastrService } from 'ngx-toastr';
 
 enum ProcessingQueueTab {
   SCENES = 'Scenes',
@@ -65,8 +66,9 @@ export class ProcessingQueueComponent implements OnInit {
     private store$: Store<AppState>,
     private hyp3: services.Hyp3Service,
     private screenSize: services.ScreenSizeService,
-    private bottomSheet: MatBottomSheet,
-
+    // private bottomSheet: MatBottomSheet,
+    // private toastr: ToastrService,
+    private notificationService: services.NotificationService,
   ) { }
 
   ngOnInit(): void {
@@ -235,10 +237,10 @@ export class ProcessingQueueComponent implements OnInit {
         if (resp.jobs === null) {
           return;
         }
-
-        this.bottomSheet.open(QueueSubmitComponent, {
-          data: {numJobs: resp.jobs.length}
-        });
+        this.notificationService.jobsSubmitted(resp.jobs.length);
+        // this.bottomSheet.open(QueueSubmitComponent, {
+        //   data: {numJobs: resp.jobs.length}
+        // });
 
         const jobTypes = new Set<string>(jobs.map((job) => job.job_type.id));
         this.selectedJobTypeId = null;
