@@ -9,8 +9,6 @@
           searchType === SearchTypes.CUSTOM_PRODUCTS">
         <div *cdkVirtualFor="let scene of scenes">
           <app-scene
-            (mouseenter)="onSetFocusedScene(scene)"
-            (mouseleave) ="onClearFocusedScene()"
             (click)="onSceneSelected(scene.id)"
             (toggleScene)="onToggleScene(scene.groupId)"
             (ToggleOnDemandScene)="onToggleOnDemandScene($event)"

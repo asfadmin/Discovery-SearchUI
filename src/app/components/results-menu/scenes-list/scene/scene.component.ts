@@ -15,7 +15,6 @@ export class SceneComponent implements OnInit {
   @Input() scene: models.CMRProduct;
   @Input() searchType: models.SearchType;
 
-  @Input() isHovered: boolean;
   @Input() isSelected: boolean;
   @Input() offsets: {temporal: 0, perpendicular: number};
 
@@ -28,6 +27,7 @@ export class SceneComponent implements OnInit {
   @Output() toggleScene = new EventEmitter();
   @Output() ToggleOnDemandScene: EventEmitter<QueuedHyp3Job> = new EventEmitter();
 
+  public hovered: boolean;
   public breakpoint: models.Breakpoints;
   public breakpoints = models.Breakpoints;
 
@@ -43,6 +43,15 @@ export class SceneComponent implements OnInit {
       breakpoint => this.breakpoint = breakpoint
     );
   }
+
+  public onSetFocused(): void {
+    this.hovered = true;
+  }
+
+  public onClearFocused(): void {
+    this.hovered = false;
+  }
+
 
   public withOffset(val: number, offset: number): number {
     return Math.trunc(val + offset);
