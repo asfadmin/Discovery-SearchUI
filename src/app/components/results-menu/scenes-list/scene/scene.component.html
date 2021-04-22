@@ -60,7 +60,8 @@
         <mat-icon
           *ngIf="hyp3ableByJobType.total > 0"
           class="icon-margin"
-          [matMenuTriggerFor]="addAllOnDemand"
+          [matMenuTriggerFor]="sceneAdd.addMenu"
+          [matMenuTriggerData]="{ hyp3able: hyp3ableByJobType.hyp3able }"
           svgIcon="hyp3">
         </mat-icon>
 
@@ -105,7 +106,8 @@
             </div>
             <div class="cart-flex-field">
               <mat-icon *ngIf="hyp3ableByJobType.total > 0"
-                [matMenuTriggerFor]="addAllOnDemand"
+                [matMenuTriggerFor]="sceneAdd.addMenu"
+                [matMenuTriggerData]="{ hyp3able: hyp3ableByJobType.hyp3able }"
                 class="icon-margin"
                 svgIcon="hyp3">
               </mat-icon>
@@ -124,29 +126,8 @@
   </div>
 </ng-container>
 
-<mat-menu #addAllOnDemand>
-  <div *ngFor="let productsByJobType of hyp3ableByJobType.hyp3able" [matTooltip]="">
-    <button
-      [disabled]="productsByJobType.total === 0"
-      [matMenuTriggerFor]="addAllByProductType"
-      [matMenuTriggerData]="{ productsByJobType: productsByJobType }"
-      mat-menu-item>
-      {{ productsByJobType.jobType.name }}
-    </button>
-  </div>
-</mat-menu>
+<app-on-demand-add-menu #sceneAdd>
+</app-on-demand-add-menu>
 
-<mat-menu #addAllByProductType>
-  <ng-template matMenuContent let-byJobType="productsByJobType">
-    <div *ngFor="let prodType of byJobType.byProductType">
-      <button *ngIf="prodType.products.length !== 0"
-        (click)="queueAllOnDemand(prodType.products, byJobType.jobType)"
-        [disabled]="" mat-menu-item>
-        Add {{ prodType.products.length }} {{ prodType.productType }} jobs
-      </button>
-    </div>
-  </ng-template>
-</mat-menu>
-
-  </button>
+</button>
 

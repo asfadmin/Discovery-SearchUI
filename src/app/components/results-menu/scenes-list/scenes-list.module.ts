@@ -11,11 +11,13 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatSharedModule } from '@shared';
 import { PipesModule } from '@pipes';
 
+import { OnDemandAddMenuModule } from '@components/shared/on-demand-add-menu';
 import { CopyToClipboardModule } from '@components/shared/copy-to-clipboard';
 import { FileNameModule } from '@components/shared/file-name';
 import { ScenesListComponent } from './scenes-list.component';
 import { SceneComponent } from './scene/scene.component';
 import { Hyp3JobComponent } from './hyp3-job/hyp3-job.component';
+import { PairComponent } from './pair/pair.component';
 
 
 @NgModule({
@@ -23,6 +25,7 @@ import { Hyp3JobComponent } from './hyp3-job/hyp3-job.component';
     ScenesListComponent,
     SceneComponent,
     Hyp3JobComponent,
+    PairComponent,
   ],
   imports: [
     CommonModule,
@@ -35,7 +38,8 @@ import { Hyp3JobComponent } from './hyp3-job/hyp3-job.component';
     MatSharedModule,
     MatMenuModule,
     PipesModule,
-    FileNameModule
+    FileNameModule,
+    OnDemandAddMenuModule,
   ],
   exports: [
     ScenesListComponent

@@ -183,3 +183,12 @@ export const hyp3DefaultJobOptions = hyp3JobTypesList.reduce((options, jobType) 
   );
   return options;
 }, {});
+export const hyp3JobOptionsByName = hyp3JobTypesList.reduce((options, jobType) => {
+  jobType.options.forEach(
+    option => options[option.apiName] = option
+  );
+  return options;
+}, {});
+export const hyp3JobOptionsOrdered = hyp3JobTypesList.reduce(
+  (options, jobType) => [...options, ...jobType.options]
+ , []);

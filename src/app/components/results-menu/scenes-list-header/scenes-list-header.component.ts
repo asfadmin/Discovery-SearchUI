@@ -211,15 +211,6 @@ export class ScenesListHeaderComponent implements OnInit, OnDestroy {
     this.store$.dispatch(new queueStore.AddItems(products));
   }
 
-  public queueAllOnDemand(products: models.CMRProduct[][], job_type: models.Hyp3JobType): void {
-    const jobs: models.QueuedHyp3Job[] = products.map(product => ({
-      granules: product,
-      job_type
-    }));
-
-    this.store$.dispatch(new queueStore.AddJobs(jobs));
-  }
-
   public downloadable(products: models.CMRProduct[]): models.CMRProduct[] {
     return products.filter(product => this.isDownloadable(product));
   }
