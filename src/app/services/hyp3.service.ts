@@ -69,8 +69,8 @@ export class Hyp3Service {
     return this.http.post(submitJobUrl, body, { withCredentials: true });
   }
 
-  public getHyp3ableProducts(products: models.CMRProduct[][]): models.Hyp3ableProductByJobType[] {
-    return models.hyp3JobTypesList.map(jobType => {
+  public getHyp3ableProducts(products: models.CMRProduct[][]): {byJobType: models.Hyp3ableProductByJobType[]; total: number} {
+    const byJobType = models.hyp3JobTypesList.map(jobType => {
       const hyp3ableProducts = products.filter(
         product => this.isHyp3able(product, jobType)
       );
@@ -100,7 +100,11 @@ export class Hyp3Service {
           (sum, prods) => sum + (<any>prods).length, 0
         )
       };
-    });
+    }).filter(hyp3able => hyp3able.total > 0);
+
+    const total = byJobType.reduce((sum, jobType) => sum + jobType.total , 0);
+
+    return ({ byJobType, total });
   }
 
   public getValidJobTypes(product: models.CMRProduct[]): models.Hyp3JobType[] {

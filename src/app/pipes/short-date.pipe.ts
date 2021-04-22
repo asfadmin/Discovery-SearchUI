@@ -7,7 +7,6 @@ import * as moment from 'moment';
   name: 'fullDate'
 })
 export class FullDatePipe implements PipeTransform {
-
   transform(date: Date): string {
     const dateUtc = moment.utc(date);
 

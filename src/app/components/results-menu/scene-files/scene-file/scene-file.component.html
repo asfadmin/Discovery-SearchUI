@@ -60,9 +60,8 @@
       <mat-menu #customJobTypes="matMenu">
         <button *ngFor="let jobType of validHyp3JobTypes"
           (click)="addJobToProcessingQueue(jobType)" mat-menu-item>
-          <span>
             Add {{ jobType.name }} to On Demand
-          </span>
+            <mat-icon (click)="onOpenHelp($event, jobType.infoUrl)" class="clickable" style="margin-left: 10px;">help</mat-icon>
         </button>
       </mat-menu>
     </button>
@@ -76,56 +75,12 @@
       Project Name: {{ product.metadata.job.name }}
     </div>
 
-    <div *ngIf="product.metadata.job && product.metadata.job.job_parameters.scale" mat-line>
-      Scale: {{ product.metadata.job.job_parameters.scale }}
-    </div>
-
-    <div *ngIf="product.metadata.job && product.metadata.job.job_parameters.radiometry" mat-line>
-      Radiometry: {{ product.metadata.job.job_parameters.radiometry }}
-    </div>
-
-    <div *ngIf="product.metadata.job && product.metadata.job.job_parameters.include_dem" mat-line>
-      Include Dem: {{ product.metadata.job.job_parameters.include_dem }}
-    </div>
-
-    <div *ngIf="product.metadata.job && product.metadata.job.job_parameters.dem_name" mat-line>
-      Dem Name: {{ product.metadata.job.job_parameters.dem_name }}
-    </div>
-
-    <div *ngIf="product.metadata.job && product.metadata.job.job_parameters.include_inc_map" mat-line>
-      Include Inc. Angle Map: {{ product.metadata.job.job_parameters.include_inc_map }}
-    </div>
-
-    <div *ngIf="product.metadata.job && product.metadata.job.job_parameters.include_scattering_area" mat-line>
-      Include Scattering Area: {{ product.metadata.job.job_parameters.include_scattering_area }}
-    </div>
-
-    <div *ngIf="product.metadata.job && product.metadata.job.job_parameters.dem_matching" mat-line>
-      Dem Matching: {{ product.metadata.job.job_parameters.dem_matching }}
-    </div>
-
-    <div *ngIf="product.metadata.job && product.metadata.job.job_parameters.speckle_filter" mat-line>
-      Speckle Filter: {{ product.metadata.job.job_parameters.speckle_filter }}
-    </div>
-
-    <div *ngIf="product.metadata.job && product.metadata.job.job_parameters.include_look_vectors " mat-line>
-      Include Look Vectors: {{ product.metadata.job.job_parameters.include_look_vectors }}
-    </div>
-
-    <div *ngIf="product.metadata.job && product.metadata.job.job_parameters.include_los_displacement" mat-line>
-      Include Los Displacement: {{ product.metadata.job.job_parameters.include_los_displacement }}
-    </div>
-
-    <div *ngIf="product.metadata.job && product.metadata.job.job_parameters.include_rgb" mat-line>
-      Include RGB: {{ product.metadata.job.job_parameters.include_rgb }}
-    </div>
-
-    <div *ngIf="product.metadata.job && product.metadata.job.job_parameters.looks" mat-line>
-      Looks: {{ product.metadata.job.job_parameters.looks }}
-    </div>
-
     <div *ngIf="product.metadata.job" mat-line>
       Job Submitted: {{ product.metadata.job.request_time | fullDate }}
+    </div>
+
+    <div *ngFor="let param of jobParamsToList(product.metadata)" mat-line>
+      {{ param.name }}: {{ param.val }}
     </div>
 
     <a *ngIf="isDownloadable(product)" mat-icon-button

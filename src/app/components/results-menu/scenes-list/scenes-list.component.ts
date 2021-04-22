@@ -37,9 +37,8 @@ export class ScenesListComponent implements OnInit, OnDestroy {
   public allJobNames: string[];
   public queuedJobs: QueuedHyp3Job[];
   public selected: string;
-  public selectedPair: string[];
 
-  public hyp3ableByScene: {[scene: string]: {hyp3able: models.Hyp3ableProductByJobType[], total: number}} = {};
+  public hyp3ableByScene: {[scene: string]: {byJobType: models.Hyp3ableProductByJobType[], total: number}} = {};
 
   public offsets = {temporal: 0, perpendicular: 0};
   public selectedFromList = false;
@@ -70,12 +69,6 @@ export class ScenesListComponent implements OnInit, OnDestroy {
     this.subs.add(
       this.store$.select(scenesStore.getMasterOffsets).subscribe(
         offsets => this.offsets = offsets
-      )
-    );
-
-    this.subs.add(
-      this.store$.select(scenesStore.getSelectedPairIds).subscribe(
-        pair => this.selectedPair = pair
       )
     );
 
@@ -135,15 +128,11 @@ export class ScenesListComponent implements OnInit, OnDestroy {
         pairs => {
           this.pairs = [...pairs.pairs, ...pairs.custom].map(
             pair => {
-              const hyp3able = this.hyp3.getHyp3ableProducts([pair]);
-              const total = hyp3able.reduce((sum, byJobType) => sum + byJobType.total , 0);
+              const hyp3able = this.hyp3.getHyp3ableProducts([pair, ...pair.map(p => [p])]);
 
               return {
                 pair,
-                hyp3able: {
-                  byJobType: hyp3able,
-                  total
-                }
+                hyp3able
               };
             }
           );
@@ -166,12 +155,8 @@ export class ScenesListComponent implements OnInit, OnDestroy {
             (<models.CMRProduct[]>products).map(product => [product])
           );
 
-          const total = hyp3able.reduce((sum, byJobType) => sum + byJobType.total , 0);
 
-          this.hyp3ableByScene[groupId] = {
-            hyp3able,
-            total
-          };
+          this.hyp3ableByScene[groupId] = hyp3able;
         });
       }
     );
@@ -244,11 +229,6 @@ export class ScenesListComponent implements OnInit, OnDestroy {
     this.scroll.scrollToIndex(idx);
   }
 
-  public onPairSelected(pair): void {
-    const action = new scenesStore.SetSelectedPair(pair.map(p => p.id));
-    this.store$.dispatch(action);
-  }
-
   public onSceneSelected(id: string): void {
     this.selectedFromList = true;
     this.store$.dispatch(new scenesStore.SetSelectedScene(id));
@@ -289,32 +269,8 @@ export class ScenesListComponent implements OnInit, OnDestroy {
     }));
   }
 
-  public onSetFocusedScene(scene: models.CMRProduct): void {
-    this.hoveredSceneName = scene.name;
-  }
-
-  public onClearFocusedScene(): void {
-    this.hoveredSceneName = null;
-  }
-
-  public onSetFocusedPair(pair: models.CMRProductPair): void {
-    this.hoveredPairNames = pair[0].name + pair[1].name;
-  }
-
-  public onClearFocusedPair(): void {
-    this.hoveredPairNames = null;
-  }
-
   public onZoomTo(scene: models.CMRProduct): void {
     this.mapService.zoomToScene(scene);
-  }
-
-  public pairPerpBaseline(pair: models.CMRProductPair) {
-    return Math.abs(pair[0].metadata.perpendicular - pair[1].metadata.perpendicular);
-  }
-
-  public pairTempBaseline(pair: models.CMRProductPair) {
-    return Math.abs(pair[0].metadata.temporal - pair[1].metadata.temporal);
   }
 
   public sameGranules(granules1: models.CMRProduct[], granules2: models.CMRProduct[]) {

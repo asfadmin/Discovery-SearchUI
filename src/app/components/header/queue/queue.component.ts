@@ -12,7 +12,6 @@ import { NotificationService, ScreenSizeService } from '@services';
 import { CMRProduct, AsfApiOutputFormat, Breakpoints } from '@models';
 import { MatDialogRef } from '@angular/material/dialog';
 import { SubSink } from 'subsink';
-// import { ResizeEvent } from 'angular-resizable-element';
 import { ResizedEvent } from 'angular-resize-event';
 
 @Component({

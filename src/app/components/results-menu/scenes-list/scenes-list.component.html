@@ -9,8 +9,6 @@
           searchType === SearchTypes.CUSTOM_PRODUCTS">
         <div *cdkVirtualFor="let scene of scenes">
           <app-scene
-            (mouseenter)="onSetFocusedScene(scene)"
-            (mouseleave) ="onClearFocusedScene()"
             (click)="onSceneSelected(scene.id)"
             (toggleScene)="onToggleScene(scene.groupId)"
             (ToggleOnDemandScene)="onToggleOnDemandScene($event)"
@@ -30,52 +28,11 @@
 
       <ng-container *ngIf="searchType === SearchTypes.SBAS">
         <div *cdkVirtualFor="let pair of pairs">
-          <button class="button-flex-row" mat-list-item
-            (click)="onPairSelected(pair.pair)"
-            (mouseenter)="onSetFocusedPair(pair.pair)"
-            (mouseleave) ="onClearFocusedPair()"
-            [class.selected]="selectedPair ? pair.pair[0].id + pair.pair[1].id === selectedPair[0] + selectedPair[1] : false"
-            [class.hovered]="pair.pair[0].name + pair.pair[1].name === hoveredPairNames">
-            <b>{{ pair.pair[0].metadata.date | shortDate }} to {{ pair.pair[1].metadata.date | shortDate }}</b>
-            <div style="margin-left: 10px;">{{ pairPerpBaseline(pair.pair)}}m</div>
-            <div style="margin-left: 10px;">{{ pairTempBaseline(pair.pair)}}d</div>
-              <mat-icon
-                *ngIf="pair.hyp3able.total > 0"
-                class="clickable noselect list-icon"
-                style="margin-left: 10px;"
-                matTooltip="Add pair to On Demand queue"
-                svgIcon="hyp3"
-                [matMenuTriggerFor]="addPairOnDemand"
-                [matMenuTriggerData]="{ hyp3able: pair.hyp3able.byJobType }">
-              </mat-icon>
-          </button>
+          <app-pair
+            [pair]="pair.pair"
+            [hyp3able]="pair.hyp3able">
+          </app-pair>
         </div>
-
-        <mat-menu #addPairOnDemand>
-          <ng-template matMenuContent let-hyp3able="hyp3able">
-          <div *ngFor="let productsByJobType of hyp3able" [matTooltip]="">
-            <button
-              [disabled]="productsByJobType.total === 0"
-              [matMenuTriggerFor]="addAllByProductType"
-              [matMenuTriggerData]="{ productsByJobType: productsByJobType }"
-              mat-menu-item>
-              {{ productsByJobType.jobType.name }}
-            </button>
-          </div>
-          </ng-template>
-        </mat-menu>
-
-        <mat-menu #addAllByProductType>
-          <ng-template matMenuContent let-byJobType="productsByJobType">
-            <div *ngFor="let prodType of byJobType.byProductType">
-              <button *ngIf="prodType.products.length !== 0"
-                (click)="queueAllOnDemand(prodType.products, byJobType.jobType)"
-                [disabled]="" mat-menu-item>
-                Add {{ prodType.products.length }} {{ prodType.productType }} jobs
-              </button>
-            </div>
-          </ng-template>
-        </mat-menu>
       </ng-container>
     </div>
   </cdk-virtual-scroll-viewport>

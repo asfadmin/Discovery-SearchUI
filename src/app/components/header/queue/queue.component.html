@@ -69,7 +69,15 @@
                      >
                   </app-copy-to-clipboard>
 
-                  <a mat-icon-button matTooltip="Download" [href]="product.downloadUrl" target="_blank" style="text-decoration: none;">
+                  <a [appFileDownload]="product.name"
+                     #down="fileDownload"
+                     [disabled]="!product.downloadUrl || down.busy"
+                     [href]="product.downloadUrl"
+                     mat-icon-button
+                     matTooltip="Download"
+                     style="text-decoration: none;"
+                     target="_blank"
+                  >
                     <mat-icon>cloud_download</mat-icon>
                   </a>
 
@@ -114,7 +122,9 @@
                     matTooltip="Copy File IDs to clipboard"
                     [matTooltipPosition]="'above'">
               <fa-icon style="margin-left: 5px;" [icon]="copyIcon"></fa-icon>
-              &nbsp;<span *ngIf="breakpoint > breakpoints.MOBILE && dlWidth >= dlWidthMin">Copy File </span>IDs
+              &nbsp;
+              <span *ngIf="breakpoint > breakpoints.MOBILE && dlWidth >= dlWidthMin; else mobileCopyFileIds">Copy File IDs</span>
+              <ng-template #mobileCopyFileIds>IDs</ng-template>
             </button>
 
             <button (click)="onCopyQueueURLs(products)" mat-button [disabled]="!areAnyProducts" class="btn-primary"
@@ -122,7 +132,9 @@
                     matTooltip="Copy File URLs to clipboard"
                     [matTooltipPosition]="'above'">
               <fa-icon style="margin-left: 5px;" [icon]="copyIcon"></fa-icon>
-              &nbsp;<span *ngIf="breakpoint > breakpoints.MOBILE && dlWidth >= dlWidthMin">Copy </span>URLs
+              &nbsp;
+              <span *ngIf="breakpoint > breakpoints.MOBILE && dlWidth >= dlWidthMin; else mobileCopyURLs">Copy URLs</span>
+              <ng-template #mobileCopyURLs>URLs</ng-template>
             </button>
 
             <ng-container *ngIf="breakpoint > breakpoints.MOBILE && dlWidth >= dlWidthMin">
