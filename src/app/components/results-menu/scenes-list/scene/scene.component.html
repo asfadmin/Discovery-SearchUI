@@ -1,5 +1,7 @@
 <button class="button-flex-row" mat-list-item
-    [class.hovered]="isHovered"
+    (mouseenter)="onSetFocused()"
+    (mouseleave) ="onClearFocused()"
+    [class.hovered]="hovered"
     [class.selected]="isSelected"
     [ngClass]="{'mobile-size': breakpoint <= breakpoints.SMALL}">
 
@@ -24,7 +26,7 @@
 
         <span style="margin-left: 5px;">
           <app-copy-to-clipboard
-            *ngIf="isHovered; else notHovered"
+            *ngIf="hovered; else notHovered"
             prompt="Copy scene name"
             [value]="scene.metadata.fileName || scene.name"
             >

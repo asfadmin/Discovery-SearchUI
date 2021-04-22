@@ -269,14 +269,6 @@ export class ScenesListComponent implements OnInit, OnDestroy {
     }));
   }
 
-  public onSetFocusedScene(scene: models.CMRProduct): void {
-    this.hoveredSceneName = scene.name;
-  }
-
-  public onClearFocusedScene(): void {
-    this.hoveredSceneName = null;
-  }
-
   public onZoomTo(scene: models.CMRProduct): void {
     this.mapService.zoomToScene(scene);
   }
