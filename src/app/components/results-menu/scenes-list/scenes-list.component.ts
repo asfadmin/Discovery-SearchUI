@@ -128,7 +128,7 @@ export class ScenesListComponent implements OnInit, OnDestroy {
         pairs => {
           this.pairs = [...pairs.pairs, ...pairs.custom].map(
             pair => {
-              const hyp3able = this.hyp3.getHyp3ableProducts([pair]);
+              const hyp3able = this.hyp3.getHyp3ableProducts([pair, ...pair.map(p => [p])]);
 
               return {
                 pair,
