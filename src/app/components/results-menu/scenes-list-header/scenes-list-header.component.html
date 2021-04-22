@@ -112,7 +112,7 @@
             </div>
           </div>
 
-          <div *ngIf="searchType !== SearchTypes.CUSTOM_PRODUCTS"
+          <div *ngIf="searchType !== SearchTypes.CUSTOM_PRODUCTS || hyp3able.total > 0"
             fxFlex="" class="list-button-group">
             <div fxLayout="row" fxLayoutAlign="center" class="button-group-label">
               <label>On Demand</label>
@@ -122,7 +122,7 @@
                 <mat-button-toggle-group fxFlex="" name="layerType" class="mr-10">
                   <mat-button-toggle class="control-mat-button-toggle clickable noselect"
                                      [matMenuTriggerFor]="listAdd.addMenu"
-                                     [matMenuTriggerData]="{ hyp3able: hyp3ableProducts }"
+                                     [matMenuTriggerData]="{ hyp3able: hyp3able.byJobType }"
                                      matTooltip="Add all results to On Demand queue">
                     <mat-icon class="list-icon"
                       svgIcon="hyp3">

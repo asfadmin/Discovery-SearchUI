@@ -38,7 +38,7 @@ export class ScenesListComponent implements OnInit, OnDestroy {
   public queuedJobs: QueuedHyp3Job[];
   public selected: string;
 
-  public hyp3ableByScene: {[scene: string]: {hyp3able: models.Hyp3ableProductByJobType[], total: number}} = {};
+  public hyp3ableByScene: {[scene: string]: {byJobType: models.Hyp3ableProductByJobType[], total: number}} = {};
 
   public offsets = {temporal: 0, perpendicular: 0};
   public selectedFromList = false;
@@ -129,14 +129,10 @@ export class ScenesListComponent implements OnInit, OnDestroy {
           this.pairs = [...pairs.pairs, ...pairs.custom].map(
             pair => {
               const hyp3able = this.hyp3.getHyp3ableProducts([pair]);
-              const total = hyp3able.reduce((sum, byJobType) => sum + byJobType.total , 0);
 
               return {
                 pair,
-                hyp3able: {
-                  byJobType: hyp3able,
-                  total
-                }
+                hyp3able
               };
             }
           );
@@ -159,12 +155,8 @@ export class ScenesListComponent implements OnInit, OnDestroy {
             (<models.CMRProduct[]>products).map(product => [product])
           );
 
-          const total = hyp3able.reduce((sum, byJobType) => sum + byJobType.total , 0);
 
-          this.hyp3ableByScene[groupId] = {
-            hyp3able,
-            total
-          };
+          this.hyp3ableByScene[groupId] = hyp3able;
         });
       }
     );

@@ -61,7 +61,7 @@ export class ScenesListHeaderComponent implements OnInit, OnDestroy {
   public InSAR = models.hyp3JobTypes.INSAR_GAMMA;
   public AutoRift = models.hyp3JobTypes.AUTORIFT;
 
-  public hyp3ableProducts = [];
+  public hyp3able = {};
 
   constructor(
     private store$: Store<AppState>,
@@ -88,7 +88,7 @@ export class ScenesListHeaderComponent implements OnInit, OnDestroy {
           this.products = products;
           this.pairs = [ ...pairs, ...custom ];
 
-          this.hyp3ableProducts = this.hyp3.getHyp3ableProducts([
+          this.hyp3able = this.hyp3.getHyp3ableProducts([
             ...this.products.map(prod => [prod]),
             ...this.pairs
           ]);
