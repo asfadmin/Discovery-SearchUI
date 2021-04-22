@@ -9,14 +9,16 @@
   padding: 3px 16px 16px 16px;
 }
 
-.header-view {
-
-}
-
 .filter-view {
   width: 385px;
 }
 
 .filter-view-mobile {
   max-width: 180px;
+}
+
+.options-clear-button {
+  border: none; 
+  background: none; 
+  float: right
 }

@@ -45,11 +45,10 @@
 
     <mat-card-header style="display: block;">
         <strong>Options</strong>
-        <div style="float: right;">
-        <button style="background: none; border: none;" (click)="onCloseOptions()" matTooltip="Hide options" mat-icon-button>
+        <button class="options-clear-button" (click)="onCloseOptions()" matTooltip="Hide options" mat-icon-button>
           <mat-icon>clear</mat-icon>
         </button>
-      </div></mat-card-header> 
+    </mat-card-header> 
     <mat-card-content>
         <mat-form-field style="width: 100%;">
             <textarea
@@ -61,7 +60,7 @@
             [rows]="5"
             ></textarea>
         </mat-form-field>
-        <button style="border: none; background: none; float: right" (click)="onClearFilter()" mat-flat-button matTooltip="Clear Product Name Filter">
+        <button class="options-clear-button" (click)="onClearFilter()" mat-flat-button matTooltip="Clear Product Name Filter">
             <strong>Clear</strong>
         </button>
     </mat-card-content>
