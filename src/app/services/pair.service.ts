@@ -137,7 +137,13 @@ export class PairService {
   public findNearestneighbour(reference_scene: CMRProduct, scenes: CMRProduct[], temporal: boolean) {
 
     scenes = this.hyp3able(scenes);
+    scenes = scenes.filter(scene => 
+      scene.id.includes('SLC')
+      && !scene.id.includes('METADATA') 
+      && (temporal ? scene.metadata.temporal != null : scene.metadata.perpendicular != null)
+    );
 
+    console.log(scenes);
     let neighbours: number[];
 
     if(temporal) {

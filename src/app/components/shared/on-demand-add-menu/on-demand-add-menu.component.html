@@ -10,6 +10,17 @@
 
         <mat-icon (click)="onOpenHelp(productsByJobType.jobType.infoUrl)" class="clickable" style="margin-left: 10px;">help</mat-icon>
       </button>
+
+      <button
+      [disabled]="productsByJobType.total === 0"
+      [matMenuTriggerFor]="addByClosestPair"
+      [matMenuTriggerData]="{ productsByJobType: productsByJobType }"
+      mat-menu-item>
+      closest pair
+      <!-- {{ productsByJobType.jobType.name }} -->
+
+      <mat-icon (click)="onOpenHelp(productsByJobType.jobType.infoUrl)" class="clickable" style="margin-left: 10px;">help</mat-icon>
+    </button>
     </div>
   </ng-template>
 </mat-menu>
@@ -17,10 +28,22 @@
 <mat-menu #addAllByProductType>
   <ng-template matMenuContent let-byJobType="productsByJobType">
     <div *ngFor="let prodType of byJobType.byProductType">
-      <button *ngIf="prodType.products.length !== 0"
+      <button *ngIf="isPairable(prodType.products)"
         (click)="queueAllOnDemand(prodType.products, byJobType.jobType)"
         [disabled]="" mat-menu-item>
         Add {{ prodType.products.length }} {{ prodType.productType }} jobs
+      </button>
+    </div>
+  </ng-template>
+</mat-menu>
+
+<mat-menu #addByClosestPair>
+  <ng-template matMenuContent let-byJobType="productsByJobType">
+    <div *ngFor="let prodType of byJobType.byProductType">
+      <button *ngIf="prodType.products.length !== 0"
+        (click)="queueClosestPair(prodType.products)"
+        [disabled]="" mat-menu-item>
+        Add closest pair
       </button>
     </div>
   </ng-template>
