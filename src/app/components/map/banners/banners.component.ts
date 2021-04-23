@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, Directive } from '@angular/core';
-import { ActiveToast, Toast, ToastrService } from 'ngx-toastr';
+import { ActiveToast, ToastrService } from 'ngx-toastr';
 import { Banner } from '@models';
 import { MatDialog } from '@angular/material/dialog';
 import { BannerDialogComponent } from '@components/map/banners/banner-dialog/banner-dialog.component';
@@ -30,11 +30,28 @@ export class BannerCreateDirective implements OnInit {
 
   ngOnInit(): void {
     const title: string = this.bannerCreate.name;
-    const msg: string = this.bannerCreate.text.substring( 0, this.maxMsgLength );
     const type: string = this.bannerCreate.type;
+    let msg: string = this.bannerCreate.text.substring(0, this.maxMsgLength);
     let toast: ActiveToast<any>;
+    let oneLiner = false;
 
-    this. msgOverflow = (this.bannerCreate.text.length > this.maxMsgLength);
+    const lines = this.bannerCreate.text.split('<br>');
+
+    this.msgOverflow = (this.bannerCreate.text.length > this.maxMsgLength);
+
+    if (lines.length > 2 && lines[1].trim().length === 0 && lines[1].length <= this.maxMsgLength) {
+      oneLiner = true;
+    }
+
+    console.log('lines:', lines);
+
+    if (oneLiner) {
+      msg = lines[0].trim() + this.moreMsg;
+    } else {
+      if (this.msgOverflow) {
+        msg = msg.trim() + this.moreMsg;
+      }
+    }
 
     switch (type) {
       case 'error': {
@@ -55,13 +72,8 @@ export class BannerCreateDirective implements OnInit {
       }
     }
 
-    const toastComponent: Toast = toast.toastRef.componentInstance;
-    if (this.msgOverflow) {
-      toastComponent.message = msg + this.moreMsg;
-    }
-
     toast.onTap.subscribe(_x => {
-      if (this.msgOverflow) {
+      if (this.msgOverflow || oneLiner) {
         const dialogRef = this.bannerDialog.open(BannerDialogComponent, {
           data: {title: title},
           panelClass: 'banner-dialog',
