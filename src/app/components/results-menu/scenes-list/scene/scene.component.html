@@ -60,7 +60,7 @@
         </mat-icon>
 
         <mat-icon
-          *ngIf="hyp3ableByJobType.total > 0"
+          *ngIf="!!hyp3ableByJobType && hyp3ableByJobType.total > 0"
           class="icon-margin"
           [matMenuTriggerFor]="sceneAdd.addMenu"
           [matMenuTriggerData]="{ hyp3able: hyp3ableByJobType.byJobType }"
