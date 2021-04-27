@@ -8,7 +8,10 @@
         mat-menu-item>
         {{ productsByJobType.jobType.name }}
 
-        <mat-icon (click)="onOpenHelp(productsByJobType.jobType.infoUrl)" class="clickable" style="margin-left: 10px;">help</mat-icon>
+        <mat-icon (click)="onOpenHelp(productsByJobType.jobType.infoUrl)"
+          class="clickable" style="margin-left: 10px;">
+            help
+        </mat-icon>
       </button>
     </div>
   </ng-template>
@@ -20,7 +23,8 @@
       <button *ngIf="prodType.products.length !== 0"
         (click)="queueAllOnDemand(prodType.products, byJobType.jobType)"
         [disabled]="" mat-menu-item>
-        Add {{ prodType.products.length }} {{ prodType.productType }} jobs
+        Add {{ prodType.products.length }} {{ prodType.productType }}
+        {{ byJobType.jobType.numProducts === 2 ? 'pair' : 'job' }}{{ prodType.products.length > 1 ? 's' : '' }}
       </button>
     </div>
   </ng-template>

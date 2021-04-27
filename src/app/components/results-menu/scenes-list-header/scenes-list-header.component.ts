@@ -61,7 +61,7 @@ export class ScenesListHeaderComponent implements OnInit, OnDestroy {
   public InSAR = models.hyp3JobTypes.INSAR_GAMMA;
   public AutoRift = models.hyp3JobTypes.AUTORIFT;
 
-  public hyp3able = {};
+  public hyp3able = { total: 0, byJobType: [] };
 
   constructor(
     private store$: Store<AppState>,
