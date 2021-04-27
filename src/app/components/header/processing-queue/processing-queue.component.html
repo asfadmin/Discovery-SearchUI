@@ -45,7 +45,7 @@
       (onMenuOpen)='onOpenTabMenu()'
       (onMenuClose)='onCloseTabMenu()'
       style="padding-right: 5px;">
-        Job Type: {{selectedJobTypeId}}
+        {{selectedJobTypeId}}
         <mat-icon>
           {{isTabMenuOpen ? 'arrow_drop_up' : 'arrow_drop_down'}}
         </mat-icon>
@@ -53,7 +53,7 @@
       <mat-menu #TabMenu="matMenu" class="tab-menu">
         <ng-container *ngFor="let hyp3Job of jobTypesWithQueued">
           <button mat-button
-          style = "width: 160px; background-color: white;"
+          style = "background-color: white;"
           (click)="onSetSelectedJobType(hyp3Job.jobType)"
           [color]="selectedJobTypeId === hyp3Job.jobType.id ? 'secondary' : 'primary'">
           <div>  
