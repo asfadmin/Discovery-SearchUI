@@ -45,7 +45,7 @@
       (onMenuOpen)='onOpenTabMenu()'
       (onMenuClose)='onCloseTabMenu()'
       style="padding-right: 5px;">
-        {{selectedJobTypeId}}
+        {{selectedJobTypeId}} ({{ jobTypesWithQueued[getTabIdIndex(selectedJobTypeId)].jobs.length }})
         <mat-icon>
           {{isTabMenuOpen ? 'arrow_drop_up' : 'arrow_drop_down'}}
         </mat-icon>

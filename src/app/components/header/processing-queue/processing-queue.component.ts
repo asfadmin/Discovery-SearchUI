@@ -302,6 +302,9 @@ export class ProcessingQueueComponent implements OnInit {
     }
 
   }
+  public getTabIdIndex(id: models.Hyp3JobType) {
+    return this.jobTypesWithQueued.findIndex((queuedJobType) => queuedJobType.jobType.id === id);
+  }
 
   public onRestoreJobQueue(): void {
     this.selectedJobTypeId = this.previousQueue.jobTypeId;
