@@ -66,7 +66,7 @@ export class MaxResultsSelectorComponent implements OnInit, OnDestroy {
     this.subs.add(
       this.sceneService.scenes$().subscribe(
         scenes => this.numberOfScenes = scenes.length)
-    )
+    );
 
     this.subs.add(
       this.pairService.productsFromPairs$().subscribe(
