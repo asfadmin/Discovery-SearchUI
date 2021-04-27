@@ -134,6 +134,48 @@ export class PairService {
     return pairs;
   }
 
+  public findNearestneighbour(reference_scene: CMRProduct, scenes: CMRProduct[], temporal: boolean) {
+
+    scenes = this.hyp3able(scenes);
+    scenes = scenes.filter(scene => 
+      scene.id.includes('SLC')
+      && !scene.id.includes('METADATA') 
+      && (temporal ? scene.metadata.temporal != null : scene.metadata.perpendicular != null)
+    );
+
+    console.log(scenes);
+    let neighbours: number[];
+
+    if(temporal) {
+      scenes.sort((a, b) => a.metadata.temporal < b.metadata.temporal ? -1 : 1);
+      neighbours = scenes.map(scene => scene.metadata.perpendicular);
+    } else {
+      scenes.sort((a, b) => a.metadata.perpendicular < b.metadata.perpendicular ? -1 : 1);
+      neighbours = scenes.map(scene => scene.metadata.perpendicular);
+    }
+
+    const reference_idx = scenes.findIndex(scene => scene.id === reference_scene.id);
+
+    let neighbour_idx = reference_idx;
+
+    if (reference_idx === scenes.length - 1) {
+      neighbour_idx = reference_idx - 1;
+    } else if (reference_idx === 0) {
+      neighbour_idx = reference_idx + 1;
+    } else {
+      const left_neighbour_diff = Math.abs(neighbour_idx[reference_idx] - neighbours[reference_idx - 1]);
+      const right_neighbour_diff = Math.abs(neighbour_idx[reference_idx] - neighbours[reference_idx - 1]);
+      neighbour_idx = left_neighbour_diff < right_neighbour_diff ? reference_idx - 1 : reference_idx + 1;
+    }
+
+    return scenes[neighbour_idx];
+
+  }
+
+  private hyp3able(products: CMRProduct[]) {
+    return products.filter(product => !product.metadata.polarization.includes('Dual'));
+  }
+
   private dayInSeason(P1StartDate: Date, P1EndDate: Date, P2StartDate: Date, P2EndDate: Date, season) {
     if (season.start < season.end) {
         return (
