@@ -27,13 +27,41 @@
       </ng-container>
     </div>
 
-    <ng-container *ngFor="let hyp3Job of jobTypesWithQueued">
+    <ng-container *ngIf="breakpoint !== breakpoints.MOBILE;">
+      <ng-container *ngFor="let hyp3Job of jobTypesWithQueued">
+        <button mat-flat-button
+          class="job-type--button"
+        (click)="onSetSelectedJobType(hyp3Job.jobType)"
+        [color]="selectedJobTypeId === hyp3Job.jobType.id ? 'secondary' : 'primary'">
+          {{ hyp3Job.jobType.name }} ({{ hyp3Job.jobs.length }})
+        </button>
+      </ng-container>
+    </ng-container>
+
+    <ng-container *ngIf="breakpoint === breakpoints.MOBILE;">
       <button mat-flat-button
-        class="job-type--button"
-       (click)="onSetSelectedJobType(hyp3Job.jobType)"
-       [color]="selectedJobTypeId === hyp3Job.jobType.id ? 'secondary' : 'primary'">
-        {{ hyp3Job.jobType.name }} ({{ hyp3Job.jobs.length }})
+      [color]="'primary'"
+      [matMenuTriggerFor]="TabMenu"
+      (onMenuOpen)='onOpenTabMenu()'
+      (onMenuClose)='onCloseTabMenu()'
+      style="padding-right: 5px;">
+        Job Type: {{selectedJobTypeId}}
+        <mat-icon>
+          {{isTabMenuOpen ? 'arrow_drop_up' : 'arrow_drop_down'}}
+        </mat-icon>
       </button>
+      <mat-menu #TabMenu="matMenu" class="tab-menu">
+        <ng-container *ngFor="let hyp3Job of jobTypesWithQueued">
+          <button mat-button
+          style = "width: 160px; background-color: white;"
+          (click)="onSetSelectedJobType(hyp3Job.jobType)"
+          [color]="selectedJobTypeId === hyp3Job.jobType.id ? 'secondary' : 'primary'">
+          <div>  
+          {{ hyp3Job.jobType.name }} ({{ hyp3Job.jobs.length }})
+        </div>
+          </button>
+        </ng-container>
+      </mat-menu>
     </ng-container>
   </div>
 

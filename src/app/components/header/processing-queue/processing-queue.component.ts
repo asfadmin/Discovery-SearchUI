@@ -38,12 +38,14 @@ export class ProcessingQueueComponent implements OnInit {
   public remaining = 0;
   public areJobsLoading = false;
   public isQueueSubmitProcessing = false;
+  public isTabMenuOpen = false;
   public previousQueue: {jobs: any[]; jobTypeId: string} | null = null;
 
   public breakpoint: models.Breakpoints;
   public breakpoints = models.Breakpoints;
   public selectedTab = ProcessingQueueTab.SCENES;
   public Tabs = ProcessingQueueTab;
+
 
   public projectName = '';
   public processingOptions: models.Hyp3ProcessingOptions;
@@ -161,9 +163,9 @@ export class ProcessingQueueComponent implements OnInit {
   public onReviewQueue() {
     const confirmationRef = this.dialog.open(ConfirmationComponent, {
       id: 'ConfirmProcess',
-      width: '500px',
+      width: '350px',
       height: '500px',
-      maxWidth: '500px',
+      maxWidth: '350px',
       maxHeight: '500px',
       data: this.jobTypesWithQueued
     });
@@ -322,6 +324,15 @@ export class ProcessingQueueComponent implements OnInit {
 
   public onCloseDialog() {
     this.dialogRef.close();
+  }
+
+  public onCloseTabMenu() {
+    this.isTabMenuOpen = false;
+  }
+
+
+  public onOpenTabMenu() {
+    this.isTabMenuOpen = true;
   }
 
   private selectDefaultJobType(): void {
