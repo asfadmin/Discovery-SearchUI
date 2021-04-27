@@ -41,7 +41,15 @@
     <ng-container *ngIf="breakpoint === breakpoints.MOBILE;">
       <button mat-flat-button
       [color]="'primary'"
-      [matMenuTriggerFor]="TabMenu">Job Type: {{selectedJobTypeId}}</button>
+      [matMenuTriggerFor]="TabMenu"
+      (onMenuOpen)='onOpenTabMenu()'
+      (onMenuClose)='onCloseTabMenu()'
+      style="padding-right: 5px;">
+        Job Type: {{selectedJobTypeId}}
+        <mat-icon>
+          {{isTabMenuOpen ? 'arrow_drop_up' : 'arrow_drop_down'}}
+        </mat-icon>
+      </button>
       <mat-menu #TabMenu="matMenu" class="tab-menu">
         <ng-container *ngFor="let hyp3Job of jobTypesWithQueued">
           <button mat-button
