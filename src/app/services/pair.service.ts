@@ -11,7 +11,7 @@ import {
 } from '@store/filters/filters.reducer';
 import { getSearchType } from '@store/search/search.reducer';
 
-import { CMRProduct, CMRProductPair, ColumnSortDirection, SearchType } from '@models';
+import { CMRProduct, CMRProductPair, ColumnSortDirection, Range, SearchType } from '@models';
 
 @Injectable({
   providedIn: 'root'
@@ -134,7 +134,11 @@ export class PairService {
     return pairs;
   }
 
-  public findNearestneighbour(reference_scene: CMRProduct, scenes: CMRProduct[], temporal: boolean) {
+  public findNearestneighbour(reference_scene: CMRProduct, 
+    scenes: CMRProduct[], 
+    temporal: boolean, perpendicular: boolean, 
+    temporalRange: Range<number>, perpendicularRange: Range<number>,
+    amount: number) {
 
     scenes = this.hyp3able(scenes);
     scenes = scenes.filter(scene => 
@@ -144,32 +148,73 @@ export class PairService {
     );
 
     console.log(scenes);
-    let neighbours: number[];
+    // let neighbours: number[];
 
-    if(temporal) {
-      scenes.sort((a, b) => a.metadata.temporal < b.metadata.temporal ? -1 : 1);
-      neighbours = scenes.map(scene => scene.metadata.perpendicular);
-    } else {
-      scenes.sort((a, b) => a.metadata.perpendicular < b.metadata.perpendicular ? -1 : 1);
-      neighbours = scenes.map(scene => scene.metadata.perpendicular);
+    // if(temporal && perpendicular) {
+    //   // scenes.sort((a, b) => a.metadata.temporal < b.metadata.temporal ? -1 : 1);
+    //   neighbours = scenes.map(scene => scene.metadata.perpendicular);
+    // } else {
+    //   // scenes.sort((a, b) => a.metadata.perpendicular < b.metadata.perpendicular ? -1 : 1);
+    //   neighbours = scenes.map(scene => scene.metadata.perpendicular);
+    // }
+
+    const RefperpDiffNormalized = (reference_scene.metadata.perpendicular - perpendicularRange.start)
+      / (perpendicularRange.end - perpendicularRange.start);
+
+    const ReftempDiffNormalized = (reference_scene.metadata.temporal - temporalRange.start)
+      / (temporalRange.end - temporalRange.start);
+
+    const refPoint = [RefperpDiffNormalized, ReftempDiffNormalized];
+
+    let SortedScenes = scenes.sort((a, b) => {
+      let AperpDiffNormalized = RefperpDiffNormalized;
+      let AtempDiffNormalized = ReftempDiffNormalized;
+      let BperpDiffNormalized = RefperpDiffNormalized;
+      let BtempDiffNormalized = ReftempDiffNormalized;
+      if(perpendicular) {
+        AperpDiffNormalized = (a.metadata.perpendicular - perpendicularRange.start) / (perpendicularRange.end - perpendicularRange.start);
+        BperpDiffNormalized = (b.metadata.perpendicular - perpendicularRange.start) / (perpendicularRange.end - perpendicularRange.start);
+
+      }
+
+
+      if
+      (temporal) {
+        BtempDiffNormalized = (b.metadata.temporal - temporalRange.start) / (temporalRange.end - temporalRange.start);
+        AtempDiffNormalized = (a.metadata.temporal - temporalRange.start) / (temporalRange.end - temporalRange.start);
+      }
+
+      const PointA = [AperpDiffNormalized, AtempDiffNormalized];
+      const PointB = [BperpDiffNormalized, BtempDiffNormalized];
+      if(this.distance(PointA, refPoint) < this.distance(PointB, refPoint)) {
+        return -1;
+      }
+
+      return 1;
     }
+    );
 
-    const reference_idx = scenes.findIndex(scene => scene.id === reference_scene.id);
+    // const reference_idx = scenes.findIndex(scene => scene.id === reference_scene.id);
 
-    let neighbour_idx = reference_idx;
+    // let neighbour_idx = reference_idx;
 
-    if (reference_idx === scenes.length - 1) {
-      neighbour_idx = reference_idx - 1;
-    } else if (reference_idx === 0) {
-      neighbour_idx = reference_idx + 1;
-    } else {
-      const left_neighbour_diff = Math.abs(neighbour_idx[reference_idx] - neighbours[reference_idx - 1]);
-      const right_neighbour_diff = Math.abs(neighbour_idx[reference_idx] - neighbours[reference_idx - 1]);
-      neighbour_idx = left_neighbour_diff < right_neighbour_diff ? reference_idx - 1 : reference_idx + 1;
-    }
+    // if (reference_idx === scenes.length - 1) {
+    //   neighbour_idx = reference_idx - 1;
+    // } else if (reference_idx === 0) {
+    //   neighbour_idx = reference_idx + 1;
+    // } else {
+    //   const left_neighbour_diff = Math.abs(neighbour_idx[reference_idx] - neighbours[reference_idx - 1]);
+    //   const right_neighbour_diff = Math.abs(neighbour_idx[reference_idx] - neighbours[reference_idx - 1]);
+    //   neighbour_idx = left_neighbour_diff < right_neighbour_diff ? reference_idx - 1 : reference_idx + 1;
+    // }
 
-    return scenes[neighbour_idx];
+    console.log(SortedScenes);
+    return SortedScenes.slice(0, Math.min(amount, SortedScenes.length));
 
+  }
+
+  private distance(lhs: number[], rhs: number[]) {
+    return Math.sqrt(Math.pow(lhs[0] - rhs[0], 2) + Math.pow(lhs[1] - rhs[1], 2));
   }
 
   private hyp3able(products: CMRProduct[]) {

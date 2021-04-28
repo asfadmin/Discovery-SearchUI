@@ -45,7 +45,7 @@
   <ng-template matMenuContent let-byJobType="productsByJobType">
     <div *ngFor="let prodType of byJobType.byProductType">
       <button *ngIf="prodType.products.length !== 0"
-        (click)="queueClosestPair(prodType.products)"
+        (click)="queueClosestPair()"
         [disabled]="" mat-menu-item>
         Add closest pair
       </button>

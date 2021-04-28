@@ -9,7 +9,8 @@ import * as models from '@models';
 import { PairService } from '@services';
 import { SubSink } from 'subsink';
 import { CMRProduct } from '@models';
-import { getScenes } from '@store/scenes';
+import { getMasterName, getScenes } from '@store/scenes';
+import { getPerpendicularRange, getTemporalRange } from '@store/filters';
 
 @Component({
   selector: 'app-on-demand-add-menu',
@@ -22,6 +23,11 @@ export class OnDemandAddMenuComponent implements OnInit {
   @ViewChild('addMenu', {static: true}) addMenu: MatMenu;
 
   private scenes: CMRProduct[] = [];
+  private referenceScene: CMRProduct;
+  private referenceSceneIdx: number;
+  private temporalRange;
+  private perpendicularRange;
+
   private subs = new SubSink();
 
   constructor(private store$: Store<AppState>,
@@ -34,6 +40,26 @@ export class OnDemandAddMenuComponent implements OnInit {
         scenes => this.scenes = scenes
       )
     );
+    this.subs.add(
+      this.store$.select(getMasterName).subscribe(
+        refSceneName => {
+            this.referenceSceneIdx = this.scenes.findIndex(scene => scene.name === refSceneName);
+            this.referenceScene = this.scenes[this.referenceSceneIdx];
+        }
+      )
+    );
+    this.subs.add(
+      this.store$.select(getTemporalRange).subscribe( range =>
+        this.temporalRange = range
+      )
+    );
+
+    this.subs.add(
+      this.store$.select(getPerpendicularRange).subscribe( range =>
+        this.perpendicularRange = range
+      )
+    );
+
   }
 
   public queueAllOnDemand(products: models.CMRProduct[][], job_type: models.Hyp3JobType): void {
@@ -45,11 +71,14 @@ export class OnDemandAddMenuComponent implements OnInit {
     this.store$.dispatch(new queueStore.AddJobs(jobs));
   }
 
-  public queueClosestPair(products: models.CMRProduct[][]): void {
-    console.log(products);
-    const closestProduct = this.pairService.findNearestneighbour(products[0][0], this.scenes, false);
-    console.log(`reference scene:\t ${JSON.stringify(products[0][0])}`);
-    console.log(`closest scene:\t ${JSON.stringify(closestProduct)}`);
+  public queueClosestPair(): void {
+    const closestProduct = this.pairService.findNearestneighbour(this.referenceScene, this.scenes.filter(scene => this.referenceScene.id !== scene.id), true, true, this.temporalRange, this.perpendicularRange, 3);
+    // console.log(`reference scene:\t ${JSON.stringify(products[0][0])}`);
+    for (let prod of closestProduct) {
+      console.log(prod.name);
+    }
+    console.log(closestProduct);
+    // console.log(`closest scene:\t ${JSON.stringify(closestProduct)}`);
   }
 
   public isPairable(products: models.CMRProduct[][]) {
