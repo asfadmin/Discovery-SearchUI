@@ -78,6 +78,12 @@ export class OnDemandAddMenuComponent implements OnInit {
       console.log(prod.name);
     }
     console.log(closestProduct);
+    const closestProductList = [];
+    for (let idx = 0; idx < 3; idx++) {
+      closestProductList.push([this.referenceScene, closestProduct[idx]]);
+    }
+
+    this.queueAllOnDemand(closestProductList, models.hyp3JobTypes.INSAR_GAMMA)
     // console.log(`closest scene:\t ${JSON.stringify(closestProduct)}`);
   }
 

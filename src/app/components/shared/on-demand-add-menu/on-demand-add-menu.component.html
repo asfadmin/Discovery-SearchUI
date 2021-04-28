@@ -31,7 +31,7 @@
 <mat-menu #addAllByProductType>
   <ng-template matMenuContent let-byJobType="productsByJobType">
     <div *ngFor="let prodType of byJobType.byProductType">
-      <button *ngIf="isPairable(prodType.products)"
+      <button 
         (click)="queueAllOnDemand(prodType.products, byJobType.jobType)"
         [disabled]="" mat-menu-item>
         Add {{ prodType.products.length }} {{ prodType.productType }}
@@ -44,7 +44,7 @@
 <mat-menu #addByClosestPair>
   <ng-template matMenuContent let-byJobType="productsByJobType">
     <div *ngFor="let prodType of byJobType.byProductType">
-      <button *ngIf="prodType.products.length !== 0"
+      <button *ngIf="prodType.products.length !== 0 && prodType.products.length > 2"
         (click)="queueClosestPair()"
         [disabled]="" mat-menu-item>
         Add closest pair
