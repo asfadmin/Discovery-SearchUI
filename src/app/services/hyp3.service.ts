@@ -68,4 +68,63 @@ export class Hyp3Service {
 
     return this.http.post(submitJobUrl, body, { withCredentials: true });
   }
+
+  public getHyp3ableProducts(products: models.CMRProduct[][]): {byJobType: models.Hyp3ableProductByJobType[]; total: number} {
+    const byJobType = models.hyp3JobTypesList.map(jobType => {
+      const hyp3ableProducts = products.filter(
+        product => this.isHyp3able(product, jobType)
+      );
+
+      const byProdType: {[key: string]: models.CMRProduct[][]} = jobType.productTypes.reduce(
+        (types, prodType) => {
+          prodType.productTypes.forEach(pt => {
+            types[pt] = [];
+          });
+          return types;
+        }, {}
+      );
+
+      hyp3ableProducts.forEach(product => {
+        const prodType = product[0].metadata.productType;
+        byProdType[prodType].push(product);
+      });
+
+      const byProductType: models.Hyp3ableByProductType[] = Object.entries(byProdType).map(([productType, prods]) => ({
+          productType, products: <any>prods
+        }));
+
+      return {
+        jobType,
+        byProductType,
+        total: Object.values(byProdType).reduce(
+          (sum, prods) => sum + (<any>prods).length, 0
+        )
+      };
+    }).filter(hyp3able => hyp3able.total > 0);
+
+    const total = byJobType.reduce((sum, jobType) => sum + jobType.total , 0);
+
+    return ({ byJobType, total });
+  }
+
+  public getValidJobTypes(product: models.CMRProduct[]): models.Hyp3JobType[] {
+    return models.hyp3JobTypesList.filter(jobType => this.isHyp3able(product, jobType));
+  }
+
+  public isHyp3able(products: models.CMRProduct[], jobType: models.Hyp3JobType): boolean {
+    return (
+      products.length === jobType.numProducts &&
+      jobType.productTypes.some(productType => {
+        const types = new Set(productType.productTypes);
+        const pols = new Set(productType.polarizations);
+        const beamModes = new Set(productType.beamModes);
+
+        return products.every(product =>
+          types.has(product.metadata.productType) &&
+          pols.has(product.metadata.polarization) &&
+          beamModes.has(product.metadata.beamMode)
+        );
+      })
+    );
+  }
 }

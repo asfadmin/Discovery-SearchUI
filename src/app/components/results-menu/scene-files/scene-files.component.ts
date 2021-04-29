@@ -11,6 +11,7 @@ import * as queueStore from '@store/queue';
 import * as userStore from '@store/user';
 import * as hyp3Store from '@store/hyp3';
 
+import { Hyp3Service } from '@services';
 import * as models from '@models';
 
 @Component({
@@ -25,6 +26,7 @@ export class SceneFilesComponent implements OnInit, OnDestroy {
   );
   public unzippedLoading: string;
   public loadingHyp3JobName: string | null;
+  public validJobTypesByProduct: {[productId: string]: models.Hyp3JobType[]} = {};
 
   public showUnzippedProductScreen: boolean;
   public openUnzippedProduct: models.CMRProduct;
@@ -38,6 +40,7 @@ export class SceneFilesComponent implements OnInit, OnDestroy {
 
   constructor(
     private store$: Store<AppState>,
+    private hyp3: Hyp3Service,
   ) { }
 
   ngOnInit() {
@@ -51,6 +54,10 @@ export class SceneFilesComponent implements OnInit, OnDestroy {
         ([products, unzipped, unzippedFiles]) => {
           this.unzippedProducts = unzippedFiles;
           this.products = products;
+          this.validJobTypesByProduct = {};
+          this.products.forEach(product => {
+            this.validJobTypesByProduct[product.id] = this.hyp3.getValidJobTypes([product]);
+          });
           this.openUnzippedProduct = unzipped;
           this.showDemWarning = this.demWarning(products);
 

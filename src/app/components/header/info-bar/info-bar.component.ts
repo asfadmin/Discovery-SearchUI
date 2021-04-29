@@ -126,20 +126,6 @@ export class InfoBarComponent implements OnInit, OnDestroy {
     this.screenResized();
   }
 
-  public onOpenWhatsNew(): void {
-    const url = 'https://docs.google.com/document/d/e/2PACX-1vSqQxPT8nhDQfbCLS8gBZ9SqSEeJy8BdSCiYVlBOXwsFwJ6_ct7pjtOqbXHo0Q3wzinzvO8bGWtHj0H/pub';
-    window.dataLayer = window.dataLayer || [];
-    window.dataLayer.push({
-      'event': 'open-whats-new',
-      'open-whats-new': url
-    });
-
-    window.open(
-      url,
-      '_blank'
-    );
-  }
-
   public showSearch() {
     const id = 'b8df7ea0-38a5-11eb-9b20-0242ac130002';
     const ci_search = document.createElement('script');

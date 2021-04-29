@@ -29,6 +29,7 @@ export class SceneDetailComponent implements OnInit, OnDestroy {
   public scene: models.CMRProduct;
 
   public browses$ = this.store$.select(scenesStore.getSelectedSceneBrowses);
+  public jobBrowses$ = this.store$.select(scenesStore.getSelectedOnDemandProductSceneBrowses);
   public dataset: models.Dataset;
   public searchType: models.SearchType;
   public searchTypes = models.SearchType;
@@ -126,6 +127,13 @@ export class SceneDetailComponent implements OnInit, OnDestroy {
     return !this.scene.browses[0].includes('no-browse');
   }
 
+  public productHasSceneBrowses() {
+    if (this.searchType === this.searchTypes.CUSTOM_PRODUCTS) {
+      return this.scene.metadata.job.job_parameters.scenes.some(x => !x.browses[0].includes('no-browse'));
+    }
+    return false;
+  }
+
   public hasBaselineProductType(): boolean {
     if (!this.selectedProducts || this.dataset.id !== models.sentinel_1.id) {
       return true;
@@ -176,7 +184,6 @@ export class SceneDetailComponent implements OnInit, OnDestroy {
   public makeBaselineSearch(): void {
     const sceneName = this.baselineSceneName();
     [
-      new searchStore.ClearSearch(),
       new searchStore.SetSearchType(models.SearchType.BASELINE),
       new scenesStore.SetFilterMaster(sceneName),
       new searchStore.MakeSearch()
@@ -187,7 +194,6 @@ export class SceneDetailComponent implements OnInit, OnDestroy {
     const sceneName = this.baselineSceneName();
 
     [
-      new searchStore.ClearSearch(),
       new searchStore.SetSearchType(models.SearchType.SBAS),
       new scenesStore.SetFilterMaster(sceneName),
       new searchStore.MakeSearch()

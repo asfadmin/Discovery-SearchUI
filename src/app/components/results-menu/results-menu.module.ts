@@ -1,7 +1,11 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatTabsModule } from '@angular/material/tabs';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import { ResizableModule } from 'angular-resizable-element';
+import {MatButtonToggleModule} from '@angular/material/button-toggle';
+import {MatFormFieldModule} from '@angular/material/form-field';
+import {MatInputModule} from '@angular/material/input';
 
 import { TruncateModule } from '@yellowspot/ng-truncate';
 import { FlexLayoutModule } from '@angular/flex-layout';
@@ -12,6 +16,7 @@ import { MatSharedModule } from '@shared';
 import { ScenesListModule } from './scenes-list';
 import { ResultsMenuComponent } from './results-menu.component';
 import { SceneMetadataModule } from '@components/shared/scene-metadata';
+import { OnDemandAddMenuModule } from '@components/shared/on-demand-add-menu';
 import { SceneFilesModule } from './scene-files';
 import { SceneDetailModule } from './scene-detail';
 import { ScenesListHeaderComponent } from './scenes-list-header/scenes-list-header.component';
@@ -23,11 +28,7 @@ import { SBASResultsMenuComponent } from './sbas-results-menu/sbas-results-menu.
 import { SBASChartModule } from '@components/sbas-chart/sbas-chart.module';
 import { SbasSlidersComponent } from './sbas-sliders/sbas-sliders.component';
 import { MatSliderModule } from '@angular/material/slider';
-import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import { SbasSlidersTwoComponent } from './sbas-sliders-two/sbas-sliders-two.component';
-import {MatButtonToggleModule} from '@angular/material/button-toggle';
-import {MatFormFieldModule} from '@angular/material/form-field';
-import {MatInputModule} from '@angular/material/input';
 
 @NgModule({
   declarations: [
@@ -53,6 +54,7 @@ import {MatInputModule} from '@angular/material/input';
     SceneFilesModule,
     SceneDetailModule,
     BaselineChartModule,
+    OnDemandAddMenuModule,
     SBASChartModule,
     MatSliderModule,
     FormsModule,

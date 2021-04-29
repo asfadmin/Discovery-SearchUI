@@ -4,7 +4,7 @@ import * as moment from 'moment';
 
 import * as services from '@services';
 import * as models from '@models';
-import { QueuedHyp3Job } from '@models';
+import { QueuedHyp3Job, Hyp3ableProductByJobType } from '@models';
 
 @Component({
   selector: 'app-scene',
@@ -15,18 +15,19 @@ export class SceneComponent implements OnInit {
   @Input() scene: models.CMRProduct;
   @Input() searchType: models.SearchType;
 
-  @Input() isHovered: boolean;
   @Input() isSelected: boolean;
   @Input() offsets: {temporal: 0, perpendicular: number};
 
   @Input() isQueued: boolean;
   @Input() jobQueued: boolean;
   @Input() numQueued: number;
+  @Input() hyp3ableByJobType: {hyp3able: Hyp3ableProductByJobType[], total: number};
 
   @Output() zoomTo = new EventEmitter();
   @Output() toggleScene = new EventEmitter();
   @Output() ToggleOnDemandScene: EventEmitter<QueuedHyp3Job> = new EventEmitter();
 
+  public hovered: boolean;
   public breakpoint: models.Breakpoints;
   public breakpoints = models.Breakpoints;
 
@@ -42,6 +43,15 @@ export class SceneComponent implements OnInit {
       breakpoint => this.breakpoint = breakpoint
     );
   }
+
+  public onSetFocused(): void {
+    this.hovered = true;
+  }
+
+  public onClearFocused(): void {
+    this.hovered = false;
+  }
+
 
   public withOffset(val: number, offset: number): number {
     return Math.trunc(val + offset);
@@ -60,7 +70,6 @@ export class SceneComponent implements OnInit {
       granules: [ this.scene ],
       job_type: models.hyp3JobTypes.RTC_GAMMA
     } as QueuedHyp3Job);
-    this.jobQueued = !this.jobQueued;
   }
 
   public isDownloadable(product: models.CMRProduct): boolean {

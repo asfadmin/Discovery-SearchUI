@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { MatBottomSheet } from '@angular/material/bottom-sheet';
+// import { MatBottomSheet } from '@angular/material/bottom-sheet';
 
-import { QueueSubmitComponent } from './queue-submit/queue-submit.component';
+// import { QueueSubmitComponent } from './queue-submit/queue-submit.component';
 import { ConfirmationComponent } from './confirmation/confirmation.component';
 
 import { Store } from '@ngrx/store';
@@ -17,6 +17,7 @@ import * as hyp3Store from '@store/hyp3';
 import * as userStore from '@store/user'; import * as models from '@models';
 import * as services from '@services';
 import { ResizedEvent } from 'angular-resize-event';
+// import { ToastrService } from 'ngx-toastr';
 
 enum ProcessingQueueTab {
   SCENES = 'Scenes',
@@ -37,12 +38,14 @@ export class ProcessingQueueComponent implements OnInit {
   public remaining = 0;
   public areJobsLoading = false;
   public isQueueSubmitProcessing = false;
+  public isTabMenuOpen = false;
   public previousQueue: {jobs: any[]; jobTypeId: string} | null = null;
 
   public breakpoint: models.Breakpoints;
   public breakpoints = models.Breakpoints;
   public selectedTab = ProcessingQueueTab.SCENES;
   public Tabs = ProcessingQueueTab;
+
 
   public projectName = '';
   public processingOptions: models.Hyp3ProcessingOptions;
@@ -65,8 +68,9 @@ export class ProcessingQueueComponent implements OnInit {
     private store$: Store<AppState>,
     private hyp3: services.Hyp3Service,
     private screenSize: services.ScreenSizeService,
-    private bottomSheet: MatBottomSheet,
-
+    // private bottomSheet: MatBottomSheet,
+    // private toastr: ToastrService,
+    private notificationService: services.NotificationService,
   ) { }
 
   ngOnInit(): void {
@@ -159,9 +163,9 @@ export class ProcessingQueueComponent implements OnInit {
   public onReviewQueue() {
     const confirmationRef = this.dialog.open(ConfirmationComponent, {
       id: 'ConfirmProcess',
-      width: '500px',
+      width: '350px',
       height: '500px',
-      maxWidth: '500px',
+      maxWidth: '350px',
       maxHeight: '500px',
       data: this.jobTypesWithQueued
     });
@@ -235,10 +239,10 @@ export class ProcessingQueueComponent implements OnInit {
         if (resp.jobs === null) {
           return;
         }
-
-        this.bottomSheet.open(QueueSubmitComponent, {
-          data: {numJobs: resp.jobs.length}
-        });
+        this.notificationService.jobsSubmitted(resp.jobs.length);
+        // this.bottomSheet.open(QueueSubmitComponent, {
+        //   data: {numJobs: resp.jobs.length}
+        // });
 
         const jobTypes = new Set<string>(jobs.map((job) => job.job_type.id));
         this.selectedJobTypeId = null;
@@ -298,6 +302,9 @@ export class ProcessingQueueComponent implements OnInit {
     }
 
   }
+  public getTabIdIndex(id: models.Hyp3JobType) {
+    return this.jobTypesWithQueued.findIndex((queuedJobType) => queuedJobType.jobType.id === id);
+  }
 
   public onRestoreJobQueue(): void {
     this.selectedJobTypeId = this.previousQueue.jobTypeId;
@@ -320,6 +327,15 @@ export class ProcessingQueueComponent implements OnInit {
 
   public onCloseDialog() {
     this.dialogRef.close();
+  }
+
+  public onCloseTabMenu() {
+    this.isTabMenuOpen = false;
+  }
+
+
+  public onOpenTabMenu() {
+    this.isTabMenuOpen = true;
   }
 
   private selectDefaultJobType(): void {

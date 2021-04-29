@@ -338,15 +338,6 @@ export const getSelectedSceneProducts = createSelector(
   }
 );
 
-export const getSceneProducts = createSelector(
-  getScenesState,
-  (state: ScenesState, props: {sceneId: string}) => {
-    const selected = state.products[props.sceneId];
-
-    return productsForScene(selected, state);
-  }
-);
-
 export const getSelectedSceneBrowses = createSelector(
   getScenesState,
   (state: ScenesState) => {
@@ -369,6 +360,26 @@ export const getSelectedSceneBrowses = createSelector(
     return unique.length > 1 ?
       unique.filter(b => !b.includes('no-browse')) :
       unique;
+  }
+);
+
+export const getSelectedOnDemandProductSceneBrowses = createSelector (
+  getScenesState,
+  (state: ScenesState) => {
+    const selected = state.products[state.selected];
+
+    if (!selected) {
+      return;
+    }
+
+    const browses = [];
+
+    const scenesForProduct = selected.metadata.job.job_parameters.scenes;
+    for (const productScene of scenesForProduct) {
+      browses.push(productScene.browses[0]);
+    }
+
+    return browses;
   }
 );
 

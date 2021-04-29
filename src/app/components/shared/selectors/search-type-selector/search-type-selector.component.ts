@@ -49,7 +49,6 @@ export class SearchTypeSelectorComponent implements OnInit, OnDestroy {
       'event': 'search-type-selected',
       'search-type': searchType
     });
-    this.store$.dispatch(new searchStore.ClearSearch());
     this.store$.dispatch(new searchStore.SetSearchType(searchType));
   }
 

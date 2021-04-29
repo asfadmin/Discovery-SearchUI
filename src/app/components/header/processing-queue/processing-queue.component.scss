@@ -16,6 +16,11 @@ $color: $asf-primary-dark;
   min-height: 500px;
 }
 
+::ng-deep .tab-menu .mat-menu-content {
+  // min-width: none !important;
+  width: 160px !important;
+}
+
 [mat-dialog-title] {
   //margin: -24px -24px 0 -24px !important;
   //padding: 10px 24px;

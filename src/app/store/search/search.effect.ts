@@ -99,13 +99,13 @@ export class SearchEffects {
   ));
 
   public setMapInteractionModeBasedOnSearchType = createEffect(() => this.actions$.pipe(
-    ofType<SetSearchType>(SearchActionType.SET_SEARCH_TYPE),
+    ofType<SetSearchType>(SearchActionType.SET_SEARCH_TYPE_AFTER_SAVE),
     filter(action => action.payload === models.SearchType.DATASET),
     map(_ => new mapStore.SetMapInteractionMode(models.MapInteractionModeType.DRAW))
   ));
 
   public clearResultsWhenSearchTypeChanges = createEffect(() => this.actions$.pipe(
-    ofType<SetSearchType>(SearchActionType.SET_SEARCH_TYPE),
+    ofType<SetSearchType>(SearchActionType.SET_SEARCH_TYPE_AFTER_SAVE),
     switchMap(action => [
       new scenesStore.ClearScenes(),
       new uiStore.CloseAOIOptions(),
@@ -164,7 +164,9 @@ export class SearchEffects {
           }
 
           const granules = jobs.map(
-            job => job.job_parameters.granules[0]
+            job => {
+              return job.job_parameters.granules.join(',');
+            }
           ).join(',');
 
           return this.asfApiService.query<any[]>({ 'granule_list': granules }).pipe(
@@ -206,6 +208,12 @@ export class SearchEffects {
         const jobFile = !!job.files ?
           job.files[0] :
           {size: -1, url: '', filename: product.name};
+
+        const scene_keys = job.job_parameters.granules;
+        job.job_parameters.scenes = [];
+        for (const scene_key of scene_keys) {
+          job.job_parameters.scenes.push(products[scene_key]);
+        }
 
         return {
           ...product,

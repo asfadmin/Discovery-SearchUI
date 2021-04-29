@@ -112,9 +112,7 @@
             </div>
           </div>
 
-          <div *ngIf="
-            searchType !== SearchTypes.CUSTOM_PRODUCTS
-            "
+          <div *ngIf="searchType !== SearchTypes.CUSTOM_PRODUCTS && hyp3able.total > 0"
             fxFlex="" class="list-button-group">
             <div fxLayout="row" fxLayoutAlign="center" class="button-group-label">
               <label>On Demand</label>
@@ -123,13 +121,17 @@
               <div>
                 <mat-button-toggle-group fxFlex="" name="layerType" class="mr-10">
                   <mat-button-toggle class="control-mat-button-toggle clickable noselect"
-                                     [matMenuTriggerFor]="addAllOnDemand"
+                                     [matMenuTriggerFor]="listAdd.addMenu"
+                                     [matMenuTriggerData]="{ hyp3able: hyp3able.byJobType }"
                                      matTooltip="Add all results to On Demand queue">
                     <mat-icon class="list-icon"
                       svgIcon="hyp3">
                     </mat-icon>
                   </mat-button-toggle>
                 </mat-button-toggle-group>
+
+                <app-on-demand-add-menu #listAdd>
+                </app-on-demand-add-menu>
               </div>
             </div>
           </div>
@@ -181,30 +183,6 @@
             <button *ngIf="searchType === SearchTypes.SBAS" (click)="queueSBASProducts(sbasProducts)" mat-menu-item>
               Add {{ sbasProducts.length }} file{{ sbasProducts.length === 1 ? '' : 's'}} to downloads
             </button>
-          </mat-menu>
-
-          <mat-menu #addAllOnDemand>
-            <div *ngFor="let productsByJobType of hyp3ableProducts" [matTooltip]="">
-              <button
-                [disabled]="productsByJobType.total === 0"
-                [matMenuTriggerFor]="addAllByProductType"
-                [matMenuTriggerData]="{ productsByJobType: productsByJobType }"
-                mat-menu-item>
-                {{ productsByJobType.jobType.name }}
-              </button>
-            </div>
-          </mat-menu>
-
-          <mat-menu #addAllByProductType>
-            <ng-template matMenuContent let-byJobType="productsByJobType">
-              <div *ngFor="let prodType of byJobType.byProductType">
-                <button *ngIf="prodType.products.length !== 0"
-                  (click)="queueAllOnDemand(prodType.products, byJobType.jobType)"
-                  [disabled]="" mat-menu-item>
-                  Add {{ prodType.products.length }} {{ prodType.productType }} jobs
-                </button>
-              </div>
-            </ng-template>
           </mat-menu>
 
           <mat-menu #ExportAll="matMenu">

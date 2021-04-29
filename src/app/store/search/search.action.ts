@@ -17,6 +17,7 @@ export enum SearchActionType {
   SET_SEARCH_AMOUNT = '[Search] Set Search Results Amount',
   SEARCH_AMOUNT_LOADING = '[Search] Search Amount Is Loading',
   SET_SEARCH_TYPE = '[UI] Set Search Type',
+  SET_SEARCH_TYPE_AFTER_SAVE = '[UI] Set Search Type After Save'
 }
 
 export class MakeSearch implements Action {
@@ -71,6 +72,12 @@ export class SetSearchType implements Action {
   constructor(public payload: SearchType) {}
 }
 
+export class SetSearchTypeAfterSave implements Action {
+  public readonly type = SearchActionType.SET_SEARCH_TYPE_AFTER_SAVE;
+
+  constructor(public payload: SearchType) {}
+}
+
 
 export type SearchActions =
   | MakeSearch
@@ -82,4 +89,5 @@ export type SearchActions =
   | SearchAmountLoading
   | SearchError
   | SearchResponse
-  | SetSearchType;
+  | SetSearchType
+  | SetSearchTypeAfterSave;

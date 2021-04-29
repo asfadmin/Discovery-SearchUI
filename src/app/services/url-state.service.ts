@@ -352,8 +352,8 @@ export class UrlStateService {
       source: this.mapService.center$.pipe(
         map(
           ({ lon, lat }) => ({
-            lon: this.limitDecimals(lon),
-            lat: this.limitDecimals(lat)
+            lon: lon.toFixed(3),
+            lat: lat.toFixed(3)
           })
         ),
         map(({ lon, lat }) => ({ center: `${lon},${lat}` }))
@@ -362,7 +362,7 @@ export class UrlStateService {
     }, {
       name: 'zoom',
       source: this.mapService.zoom$.pipe(
-        map(zoom => ({ zoom }))
+        map(zoom => ({ zoom: zoom.toFixed(3) }))
       ),
       loader: this.loadMapZoom
     }, {
@@ -638,8 +638,4 @@ export class UrlStateService {
   private isValidDate = (d: Date): boolean => d instanceof Date && !isNaN(d.valueOf());
   private clamp = (value: number, min: number, max: number) =>
     Math.min(Math.max(value, min), max)
-
-  private limitDecimals(num: number) {
-    return num.toString().match(/^-?\d+(?:\.\d{0,6})?/)[0];
-  }
 }

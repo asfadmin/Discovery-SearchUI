@@ -4,9 +4,6 @@
      class="info-bar">
 
   <div class="first-info">
-    <a class="new-stuff" (click)="onOpenWhatsNew()">
-      What's New
-    </a>
     <span *ngIf="(breakpoint < breakpoints.FULL) && !!startDate">
       <b>Start:</b> {{ startDate | shortDate }}
     </span>

@@ -18,7 +18,7 @@ import { environment } from '@environments/environment';
 import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
-import { ToastrModule } from 'ngx-toastr';
+import { ToastContainerModule, ToastrModule } from 'ngx-toastr';
 
 import * as store from './store';
 
@@ -30,11 +30,11 @@ import { ResultsMenuModule } from '@components/results-menu';
 import { BaselineChartModule } from '@components/baseline-chart';
 import { HelpModule } from './components/help';
 import { AppComponent } from './app.component';
-
 import { CustomBreakPointsProvider } from '@services/custom-breakpoints.ts';
 import * as services from '@services';
 
 import { NgcCookieConsentModule, NgcCookieConsentConfig } from 'ngx-cookieconsent';
+// import { FileDownloadDirective } from './directives/file-download.directive';
 
 // info about cookie consent module: https://tinesoft.github.io/ngx-cookieconsent/home
 const cookieConfig: NgcCookieConsentConfig = {
@@ -70,10 +70,10 @@ export const routes = [
   { path: '**', name: 'AppComponent', component: AppComponent },
 ];
 
-
 @NgModule({
   declarations: [
     AppComponent,
+    // FileDownloadDirective,
   ],
   imports: [
     BrowserModule,
@@ -100,7 +100,8 @@ export const routes = [
     MatDialogModule,
     BaselineChartModule,
     HelpModule,
-    ToastrModule.forRoot(),
+    ToastrModule.forRoot( { positionClass: 'inline', preventDuplicates: true }),
+    ToastContainerModule,
   ],
   providers: [
     services.AsfApiService,

@@ -56,6 +56,7 @@
             </div>
           </div>
         </div>
+
         <div fxFlex="" class="list-button-group">
           <div fxLayout="row" fxLayoutAlign="center" class="button-group-label">
             <label>Queue</label>
@@ -75,73 +76,28 @@
           </div>
         </div>
 
-        <div *ngIf="allProducts$ | async as products">
-
-          <div *ngIf="
-          searchType !== SearchTypes.CUSTOM_PRODUCTS" fxFlex="" class="list-button-group">
-            <div fxLayout="row" fxLayoutAlign="center" class="button-group-label">
-              <label>On Demand</label>
-            </div>
-            <div fxLayout="row" fxLayoutAlign="center">
-              <div>
-                <mat-button-toggle-group fxFlex="" name="layerType" class="mr-10">
-                  <mat-button-toggle class="control-mat-button-toggle clickable noselect"
-                                     [matMenuTriggerFor]="addAllOnDemand"
-                                     matTooltip="Add all results to On Demand queue">
-                    <mat-icon class="list-icon"
-                      svgIcon="hyp3">
-                    </mat-icon>
-                  </mat-button-toggle>
-                </mat-button-toggle-group>
-              </div>
+        <div *ngIf="searchType !== SearchTypes.CUSTOM_PRODUCTS || hyp3able.total > 0"
+          fxFlex="" style="margin-left: 10px;" class="list-button-group">
+          <div fxLayout="row" fxLayoutAlign="center" class="button-group-label">
+            <label>On Demand</label>
+          </div>
+          <div fxLayout="row" fxLayoutAlign="center">
+            <div>
+              <mat-button-toggle-group fxFlex="" name="layerType" class="mr-10">
+                <mat-button-toggle class="control-mat-button-toggle clickable noselect"
+                                   [matMenuTriggerFor]="baselineAdd.addMenu"
+                                   [matMenuTriggerData]="{ hyp3able: hyp3able.byJobType }"
+                                   matTooltip="Add all results to On Demand queue">
+                  <mat-icon class="list-icon"
+                    svgIcon="hyp3">
+                  </mat-icon>
+                </mat-button-toggle>
+              </mat-button-toggle-group>
             </div>
           </div>
 
-          <mat-menu #addAllOnDemand>
-            <div [matTooltip]="
-            hyp3able(grd_hd(products)).length === 0 && hyp3able(grd_hs(products)).length === 0 && hyp3able(slc(products)).length === 0
-            ? 'No compatible RTC GAMMA Products' : ''">
-              <button [matMenuTriggerFor]="addAllRTCDemand"
-              [disabled]="hyp3able(grd_hd(products)).length === 0 && hyp3able(grd_hs(products)).length === 0 && hyp3able(slc(products)).length === 0"
-              mat-menu-item>
-                RTC GAMMA
-              </button>
-            </div>
-            <!-- <div [matTooltip]="hyp3able(slc(products)).length === 0 ? 'No compatible InSAR GAMMA Products' : ''">
-              <button [matMenuTriggerFor]="addAllInSARDemand"
-              [disabled]="hyp3able(slc(products)).length === 0"
-              mat-menu-item>
-                InSAR GAMMA
-              </button>
-            </div> -->
-          </mat-menu>
-
-          <mat-menu #addAllRTCDemand>
-            <button *ngIf="hyp3able(grd_hd(products)).length > 0"
-              (click)="queueAllOnDemand(grd_hd(products), RTC)" mat-menu-item>
-              Add {{ hyp3able(grd_hd(products)).length }} GRD-HD jobs
-            </button>
-            <button *ngIf="hyp3able(grd_hs(products)).length > 0"
-            (click)="queueAllOnDemand(grd_hs(products), RTC)" mat-menu-item>
-            Add {{ hyp3able(grd_hs(products)).length }} GRD-HS jobs
-          </button>
-          <button *ngIf="hyp3able(slc(products)).length > 0"
-          (click)="queueAllOnDemand(slc(products), RTC)" mat-menu-item>
-          Add {{ hyp3able(slc(products)).length }} SLC jobs
-        </button>
-          </mat-menu>
-
-          <!-- <mat-menu #addAllInSARDemand>
-            <button
-              (click)="queueAllOnDemand(slc(products), InSAR)" mat-menu-item>
-              Add {{ hyp3able(slc(products)).length }} SLC jobs
-            </button>
-            <button
-            (click)="queueAllOnDemand(slc(products), AutoRift)" mat-menu-item>
-            Add {{ hyp3able(slc(products)).length }} autoRIFT jobs
-          </button>
-          </mat-menu> -->
-
+          <app-on-demand-add-menu #baselineAdd>
+          </app-on-demand-add-menu>
         </div>
 
         <div fxFlex="" class="list-button-group">
@@ -164,14 +120,12 @@
         </div>
 
         <mat-menu #addAllProducts="matMenu">
-          <div *ngIf="allProducts$ | async as products">
-            <button (click)="queueAllProducts(products)" mat-menu-item>
-              Add {{ downloadable(products).length }} file{{
-                downloadable(products).length === 1 ? "" : "s"
-              }}
-              to_downloads
-            </button>
-          </div>
+          <button (click)="queueAllProducts(products)" mat-menu-item>
+            Add {{ downloadable(products).length }} file{{
+              downloadable(products).length === 1 ? "" : "s"
+            }}
+            to_downloads
+          </button>
         </mat-menu>
 
 
@@ -186,28 +140,24 @@
         </mat-menu>
 
         <mat-menu #ExportAllMetadata="matMenu">
-          <div *ngIf="allProducts$ | async as products">
-            <button (click)="onCsvDownload(products)" mat-menu-item>
-              csv
-            </button>
-            <button (click)="onGeojsonDownload(products)" mat-menu-item>
-              geojson
-            </button>
-            <button (click)="onKmlDownload(products)" mat-menu-item>
+          <button (click)="onCsvDownload(products)" mat-menu-item>
+            csv
+          </button>
+          <button (click)="onGeojsonDownload(products)" mat-menu-item>
+            geojson
+          </button>
+          <button (click)="onKmlDownload(products)" mat-menu-item>
             kml
           </button>
-        </div>
         </mat-menu>
 
         <mat-menu #ExportAllData="matMenu">
-          <div *ngIf="allProducts$ | async as products">
-            <button (click)="onMakeDownloadScript(products)" mat-menu-item>
-              python (.py)
-            </button>
-            <button (click)="onMetalinkDownload(products)" mat-menu-item>
+          <button (click)="onMakeDownloadScript(products)" mat-menu-item>
+            python (.py)
+          </button>
+          <button (click)="onMetalinkDownload(products)" mat-menu-item>
             metalink
           </button>
-        </div>
         </mat-menu>
 
         <div class="button-tabs">

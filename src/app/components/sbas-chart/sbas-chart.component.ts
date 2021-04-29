@@ -35,7 +35,7 @@ export class SBASChartComponent implements OnInit, OnDestroy {
 
   private hoveredLine;
   private selectedPair = [null, null];
-  private scenes: CMRProduct[];
+  private scenes: CMRProduct[] = [];
   private isAddingCustomPair: boolean;
   private x;
   private y;
@@ -45,8 +45,8 @@ export class SBASChartComponent implements OnInit, OnDestroy {
   private chart;
   private scatter;
   private line;
-  private pairs;
-  private customPairs;
+  private pairs = [];
+  private customPairs = [];
 
   private zoom;
   private zoomBox;
@@ -152,7 +152,9 @@ export class SBASChartComponent implements OnInit, OnDestroy {
       .text('Perp. Baseline');
 
     const xExtent = d3.extent(
-      this.scenes.map(s => s.metadata.date.valueOf())
+      this.scenes.map(
+        s => s.metadata.date.valueOf()
+      )
     );
 
     this.x = d3.scaleUtc()
@@ -168,7 +170,8 @@ export class SBASChartComponent implements OnInit, OnDestroy {
       );
 
     const yExtent = d3.extent(
-      this.scenes.map(s => s.metadata.perpendicular)
+      this.scenes.map(
+        s => s.metadata.perpendicular)
     );
 
     this.y = d3.scaleLinear()
@@ -281,10 +284,11 @@ export class SBASChartComponent implements OnInit, OnDestroy {
           if (self.isAddingCustomPair) {
             self.setHoveredProduct(d3.select(this));
           }
+          const date = p.metadata.date.toDate();
 
           tooltip
             .style('opacity', .9);
-          tooltip.html(`${p.metadata.date.format('ll')}, ${p.metadata.perpendicular} meters`)
+          tooltip.html(`${self.tooltipDateFormat(date)}, ${p.metadata.perpendicular} meters`)
             .style('left', `${d3.event.pageX + 10}px`)
             .style('top', `${d3.event.pageY - 20}px`);
         })
@@ -468,6 +472,19 @@ export class SBASChartComponent implements OnInit, OnDestroy {
       .transition()
       .duration(transitionDuration || 0) // milliseconds
       .call(this.zoom.transform, transform);
+  }
+
+  private tooltipDateFormat(date) {
+    function join(t, a, s) {
+      function format(m) {
+        const f = new Intl.DateTimeFormat('en', m);
+        return f.format(t);
+      }
+      return a.map(format).join(s);
+    }
+
+    const dateFormat = [{month: 'short'}, {day: 'numeric'},  {year: 'numeric'}];
+    return join(date, dateFormat, ' ');
   }
 
   ngOnDestroy() {

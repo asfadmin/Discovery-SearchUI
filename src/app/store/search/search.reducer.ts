@@ -92,7 +92,7 @@ export function searchReducer(state = initState, action: SearchActions): SearchS
       };
     }
 
-    case SearchActionType.SET_SEARCH_TYPE: {
+    case SearchActionType.SET_SEARCH_TYPE_AFTER_SAVE: {
       return {
         ...state,
         searchType: action.payload,

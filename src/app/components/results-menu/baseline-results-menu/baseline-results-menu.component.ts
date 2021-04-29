@@ -1,18 +1,21 @@
 import { Component, OnInit, Input, OnDestroy } from '@angular/core';
 
-import { Observable } from 'rxjs';
+import { Observable, combineLatest } from 'rxjs';
+import {map} from 'rxjs/operators';
 
 import { Action, Store } from '@ngrx/store';
 import { AppState } from '@store';
 import * as uiStore from '@store/ui';
+import * as queueStore from '@store/queue';
 
-import { AsfApiOutputFormat, Breakpoints } from '@models';
-import {ScreenSizeService, MapService, ScenesService, PairService} from '@services';
+import {
+  ScreenSizeService, MapService, ScenesService, PairService,
+  Hyp3Service
+} from '@services';
 
 import { SubSink } from 'subsink';
-import {map} from 'rxjs/operators';
+
 import * as models from '@models';
-import * as queueStore from '@store/queue';
 import * as moment from 'moment';
 
 enum CardViews {
@@ -32,7 +35,8 @@ export class BaselineResultsMenuComponent implements OnInit, OnDestroy {
     map(scenes => scenes.length),
   );
 
-  public allProducts$ = this.scenesService.products$();
+  public pairs = [];
+  public products = [];
 
   public view = CardViews.LIST;
   public Views = CardViews;
@@ -42,13 +46,15 @@ export class BaselineResultsMenuComponent implements OnInit, OnDestroy {
   public sbasProducts: models.CMRProduct[];
   public queuedProducts: models.CMRProduct[];
 
-  public breakpoint: Breakpoints;
-  public breakpoints = Breakpoints;
+  public breakpoint: models.Breakpoints;
+  public breakpoints = models.Breakpoints;
   private subs = new SubSink();
 
   public RTC = models.hyp3JobTypes.RTC_GAMMA;
   public InSAR = models.hyp3JobTypes.INSAR_GAMMA;
   public AutoRift = models.hyp3JobTypes.AUTORIFT;
+
+  public hyp3able = {};
 
   constructor(
     private store$: Store<AppState>,
@@ -56,9 +62,27 @@ export class BaselineResultsMenuComponent implements OnInit, OnDestroy {
     private mapService: MapService,
     private scenesService: ScenesService,
     private pairService: PairService,
+    private hyp3: Hyp3Service,
   ) { }
 
   ngOnInit(): void {
+    this.subs.add(
+      combineLatest(
+        this.scenesService.products$(),
+        this.pairService.pairs$()
+      ).subscribe(
+        ([products, {pairs, custom}]) => {
+          this.products = products;
+          this.pairs = [ ...pairs, ...custom ];
+
+          this.hyp3able = this.hyp3.getHyp3ableProducts([
+            ...this.products.map(prod => [prod]),
+            ...this.pairs
+          ]);
+        }
+      )
+    );
+
     this.subs.add(
       this.screenSize.breakpoint$.subscribe(
         point => this.breakpoint = point
@@ -76,7 +100,6 @@ export class BaselineResultsMenuComponent implements OnInit, OnDestroy {
         products => this.queuedProducts = products
         )
     );
-
   }
 
   public onZoomToResults(): void {
@@ -103,30 +126,8 @@ export class BaselineResultsMenuComponent implements OnInit, OnDestroy {
     this.store$.dispatch(new queueStore.AddItems(products));
   }
 
-  public slc(products: models.CMRProduct[]): models.CMRProduct[] {
-    return products
-      .filter(product => product.metadata.beamMode === 'IW')
-      .filter(product => product.metadata.productType === 'SLC');
-  }
-
-  public grd_hd(products: models.CMRProduct[]): models.CMRProduct[] {
-    return products
-      .filter(product => product.metadata.beamMode === 'IW')
-      .filter(product => product.metadata.productType === 'GRD_HD');
-  }
-
-  public grd_hs(products: models.CMRProduct[]): models.CMRProduct[] {
-    return products
-      .filter(product => product.metadata.beamMode === 'IW')
-      .filter(product => product.metadata.productType === 'GRD_HS');
-  }
-
   public downloadable(products: models.CMRProduct[]): models.CMRProduct[] {
     return products.filter(product => this.isDownloadable(product));
-  }
-
-  public hyp3able(products: models.CMRProduct[]): models.CMRProduct[] {
-    return products.filter(product => !product.metadata.polarization.includes('Dual'));
   }
 
   public isDownloadable(product: models.CMRProduct): boolean {
@@ -157,32 +158,22 @@ export class BaselineResultsMenuComponent implements OnInit, OnDestroy {
 
     public onCsvDownload(products: models.CMRProduct[]): void {
       const currentQueue = this.queuedProducts;
-      this.clearDispatchRestoreQueue(new queueStore.DownloadSearchtypeMetadata(AsfApiOutputFormat.CSV), products, currentQueue);
+      this.clearDispatchRestoreQueue(new queueStore.DownloadSearchtypeMetadata(models.AsfApiOutputFormat.CSV), products, currentQueue);
     }
 
     public onKmlDownload(products: models.CMRProduct[]): void {
       const currentQueue = this.queuedProducts;
-      this.clearDispatchRestoreQueue(new queueStore.DownloadSearchtypeMetadata(AsfApiOutputFormat.KML), products, currentQueue);
+      this.clearDispatchRestoreQueue(new queueStore.DownloadSearchtypeMetadata(models.AsfApiOutputFormat.KML), products, currentQueue);
     }
 
     public onGeojsonDownload(products: models.CMRProduct[]): void {
       const currentQueue = this.queuedProducts;
-      this.clearDispatchRestoreQueue(new queueStore.DownloadSearchtypeMetadata(AsfApiOutputFormat.GEOJSON), products, currentQueue);
+      this.clearDispatchRestoreQueue(new queueStore.DownloadSearchtypeMetadata(models.AsfApiOutputFormat.GEOJSON), products, currentQueue);
     }
 
     public onMetalinkDownload(products: models.CMRProduct[]): void {
       const currentQueue = this.queuedProducts;
-      this.clearDispatchRestoreQueue(new queueStore.DownloadSearchtypeMetadata(AsfApiOutputFormat.METALINK), products, currentQueue);
-    }
-
-    public queueAllOnDemand(products: models.CMRProduct[], job_type: models.Hyp3JobType): void {
-      const jobs = this.hyp3able(products).map(
-        product => ({
-          granules: [ product ],
-          job_type
-        })
-      );
-      this.store$.dispatch(new queueStore.AddJobs(jobs));
+      this.clearDispatchRestoreQueue(new queueStore.DownloadSearchtypeMetadata(models.AsfApiOutputFormat.METALINK), products, currentQueue);
     }
 
   public isExpired(job: models.Hyp3Job): boolean {

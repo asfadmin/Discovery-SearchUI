@@ -9,8 +9,6 @@
           searchType === SearchTypes.CUSTOM_PRODUCTS">
         <div *cdkVirtualFor="let scene of scenes">
           <app-scene
-            (mouseenter)="onSetFocusedScene(scene)"
-            (mouseleave) ="onClearFocusedScene()"
             (click)="onSceneSelected(scene.id)"
             (toggleScene)="onToggleScene(scene.groupId)"
             (ToggleOnDemandScene)="onToggleOnDemandScene($event)"
@@ -19,6 +17,7 @@
             [offsets]="offsets"
             [searchType]="searchType"
             [isQueued]="allQueued[scene.groupId]"
+            [hyp3ableByJobType]="hyp3ableByScene[scene.groupId]"
             [jobQueued]="allJobNames.includes(scene.name)"
             [numQueued]="numberOfQueue[scene.groupId]"
             [isHovered]="scene.name === hoveredSceneName"
@@ -29,36 +28,11 @@
 
       <ng-container *ngIf="searchType === SearchTypes.SBAS">
         <div *cdkVirtualFor="let pair of pairs">
-          <button class="button-flex-row" mat-list-item
-            (click)="onPairSelected(pair)"
-            (mouseenter)="onSetFocusedPair(pair)"
-            (mouseleave) ="onClearFocusedPair()"
-            [class.selected]="selectedPair ? pair[0].id + pair[1].id === selectedPair[0] + selectedPair[1] : false"
-            [class.hovered]="pair[0].name + pair[1].name === hoveredPairNames">
-            <b>{{ pair[0].metadata.date | shortDate }} to {{ pair[1].metadata.date | shortDate }}</b>
-            <div style="margin-left: 10px;">{{ pairPerpBaseline(pair)}}m</div>
-            <div style="margin-left: 10px;">{{ pairTempBaseline(pair)}}d</div>
-              <mat-icon
-                class="clickable noselect list-icon"
-                style="margin-left: 10px;"
-                matTooltip="Add pair to On Demand queue"
-                svgIcon="hyp3"
-                [matMenuTriggerFor]="addPairToOnDemand"
-                [matMenuTriggerData]="{ pair: pair }">
-              </mat-icon>
-          </button>
+          <app-pair
+            [pair]="pair.pair"
+            [hyp3able]="pair.hyp3able">
+          </app-pair>
         </div>
-
-        <mat-menu #addPairToOnDemand="matMenu">
-          <ng-template matMenuContent let-pair="pair">
-            <button (click)="onAddInSarJob(pair)" mat-menu-item>
-              Add InSAR GAMMA job
-            </button>
-            <button (click)="onAddAutoRiftJob(pair)" mat-menu-item>
-              Add autoRIFT job
-            </button>
-          </ng-template>
-        </mat-menu>
       </ng-container>
     </div>
   </cdk-virtual-scroll-viewport>
