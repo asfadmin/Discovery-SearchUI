@@ -76,6 +76,11 @@ export class SavedSearchService {
   private currentSearch: models.FilterType;
   private searchType: models.SearchType;
 
+  private searchStateByType = models.SearchTypes.reduce((acc, searchType) => {
+    acc[searchType] = null;
+    return acc;
+  }, {});
+
   constructor(
     private store$: Store<AppState>,
     private mapService: MapService,
@@ -87,6 +92,14 @@ export class SavedSearchService {
     this.searchType$.subscribe(
       searchType => this.searchType = searchType
     );
+  }
+
+  public saveSearchState(searchType: models.SearchType, search: models.Search | null) {
+    this.searchStateByType[searchType] = search;
+  }
+
+  public getSearchState(searchType: models.SearchType): models.Search | null {
+    return this.searchStateByType[searchType];
   }
 
   public makeCurrentSearch(searchName: string): models.Search | null {

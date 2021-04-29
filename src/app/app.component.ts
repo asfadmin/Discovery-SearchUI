@@ -67,6 +67,7 @@ export class AppComponent implements OnInit, OnDestroy {
     private authService: services.AuthService,
     private screenSize: services.ScreenSizeService,
     private searchService: services.SearchService,
+    private savedSearchService: services.SavedSearchService,
     private ccService: NgcCookieConsentService,
     private matIconRegistry: MatIconRegistry,
     private domSanitizer: DomSanitizer,
@@ -207,6 +208,31 @@ export class AppComponent implements OnInit, OnDestroy {
     );
 
     this.subs.add(
+      this.actions$.pipe(
+        ofType<searchStore.SetSearchType>(searchStore.SearchActionType.SET_SEARCH_TYPE),
+      ).subscribe(
+        action => {
+          const saveSearch = this.savedSearchService.makeCurrentSearch(this.searchType);
+          this.savedSearchService.saveSearchState(
+            this.searchType,
+            saveSearch
+          );
+
+          this.store$.dispatch(new searchStore.ClearSearch());
+          this.store$.dispatch(new searchStore.SetSearchTypeAfterSave(action.payload));
+
+          const searchState = this.savedSearchService.getSearchState(action.payload);
+
+          if (searchState) {
+            this.searchService.loadSearch(searchState);
+            this.store$.dispatch(new searchStore.MakeSearch());
+          }
+
+        }
+      )
+    );
+
+    this.subs.add(
       this.queuedProducts$.subscribe(
         products => {
           this.numberQueuedProducts = products.length;
@@ -289,7 +315,7 @@ export class AppComponent implements OnInit, OnDestroy {
     this.store$.dispatch(new scenesStore.ClearScenes());
     this.store$.dispatch(new uiStore.CloseResultsMenu());
 
-    this.searchService.clear(this.searchType, this.breakpoint);
+    this.searchService.clear(this.searchType);
   }
 
   private updateMaxSearchResults(): void {

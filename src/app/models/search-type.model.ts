@@ -5,3 +5,5 @@ export enum SearchType {
   SBAS = 'SBAS Search',
   CUSTOM_PRODUCTS = 'Custom Products',
 }
+
+export const SearchTypes = Object.keys(SearchType);
