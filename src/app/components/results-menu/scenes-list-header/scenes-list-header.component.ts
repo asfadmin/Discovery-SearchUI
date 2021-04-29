@@ -17,9 +17,9 @@ import {
   MapService, ScenesService, ScreenSizeService,
   PairService, Hyp3Service
 } from '@services';
+
 import * as models from '@models';
 import { SubSink } from 'subsink';
-import { AsfApiOutputFormat } from '@models';
 
 @Component({
   selector: 'app-scenes-list-header',
@@ -61,7 +61,7 @@ export class ScenesListHeaderComponent implements OnInit, OnDestroy {
   public InSAR = models.hyp3JobTypes.INSAR_GAMMA;
   public AutoRift = models.hyp3JobTypes.AUTORIFT;
 
-  public hyp3able = {};
+  public hyp3able = { total: 0, byJobType: [] };
 
   constructor(
     private store$: Store<AppState>,
@@ -261,7 +261,7 @@ export class ScenesListHeaderComponent implements OnInit, OnDestroy {
     );
   }
 
-  private clearDispatchRestoreQueue(outputFormat: AsfApiOutputFormat,
+  private clearDispatchRestoreQueue(outputFormat: models.AsfApiOutputFormat,
     products: models.CMRProduct[],
     currentQueue: models.CMRProduct[]): void {
     if (outputFormat === null) {
@@ -290,22 +290,22 @@ export class ScenesListHeaderComponent implements OnInit, OnDestroy {
 
   public onCsvDownload(products: models.CMRProduct[]): void {
     const currentQueue = this.queuedProducts;
-    this.clearDispatchRestoreQueue(AsfApiOutputFormat.CSV, products, currentQueue);
+    this.clearDispatchRestoreQueue(models.AsfApiOutputFormat.CSV, products, currentQueue);
   }
 
   public onKmlDownload(products: models.CMRProduct[]): void {
     const currentQueue = this.queuedProducts;
-    this.clearDispatchRestoreQueue(AsfApiOutputFormat.KML, products, currentQueue);
+    this.clearDispatchRestoreQueue(models.AsfApiOutputFormat.KML, products, currentQueue);
   }
 
   public onGeojsonDownload(products: models.CMRProduct[]): void {
     const currentQueue = this.queuedProducts;
-    this.clearDispatchRestoreQueue(AsfApiOutputFormat.GEOJSON, products, currentQueue);
+    this.clearDispatchRestoreQueue(models.AsfApiOutputFormat.GEOJSON, products, currentQueue);
   }
 
   public onMetalinkDownload(products: models.CMRProduct[]): void {
     const currentQueue = this.queuedProducts;
-    this.clearDispatchRestoreQueue(AsfApiOutputFormat.METALINK, products, currentQueue);
+    this.clearDispatchRestoreQueue(models.AsfApiOutputFormat.METALINK, products, currentQueue);
   }
 
   public isExpired(job: models.Hyp3Job): boolean {

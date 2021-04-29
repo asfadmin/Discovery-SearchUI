@@ -168,6 +168,15 @@ export class JobProductNameSelectorComponent implements OnInit, OnDestroy {
   public toggleJobFilterOptions() {
     this.isJobFilterOptionsOpen = !this.isJobFilterOptionsOpen;
   }
+
+  public onCloseOptions() {
+    this.isJobFilterOptionsOpen = false;
+  }
+
+  public onClearFilter() {
+    this.onFilterProductName('');
+  }
+
   ngOnDestroy(): void {
     this.subs.unsubscribe();
   }

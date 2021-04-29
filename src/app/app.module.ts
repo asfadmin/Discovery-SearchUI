@@ -100,7 +100,7 @@ export const routes = [
     MatDialogModule,
     BaselineChartModule,
     HelpModule,
-    ToastrModule.forRoot( { positionClass: 'inline' }),
+    ToastrModule.forRoot( { positionClass: 'inline', preventDuplicates: true }),
     ToastContainerModule,
   ],
   providers: [

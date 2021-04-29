@@ -15,9 +15,8 @@
   top: 115px;
   right: 25px;
   float: right;
-  z-index: 999;
+  //z-index: 9999;
 }
-
 
 // toast style overrides
 .toast.success,
@@ -475,7 +474,7 @@ ul {
 }
 
 $background-color: $asf-primary-light;
-$d-width: 500px;
+$d-width: 350px;
 $d-height: 500px;
 
 #ConfirmProcess {
@@ -491,6 +490,10 @@ $d-height: 500px;
 
   .mat-list-base {
     padding-top: 0;
+  }
+
+  .mat-dialog-content {
+    padding-right: 10px;
   }
 }
 
