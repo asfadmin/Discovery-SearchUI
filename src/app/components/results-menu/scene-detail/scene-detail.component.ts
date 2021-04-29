@@ -176,6 +176,7 @@ export class SceneDetailComponent implements OnInit, OnDestroy {
 
     [
       new searchStore.SetSearchType(models.SearchType.DATASET),
+      new searchStore.ClearSearch(),
       new filtersStore.SetFiltersSimilarTo(scene),
       new searchStore.MakeSearch()
     ].forEach(action => this.store$.dispatch(action));
@@ -185,6 +186,7 @@ export class SceneDetailComponent implements OnInit, OnDestroy {
     const sceneName = this.baselineSceneName();
     [
       new searchStore.SetSearchType(models.SearchType.BASELINE),
+      new searchStore.ClearSearch(),
       new scenesStore.SetFilterMaster(sceneName),
       new searchStore.MakeSearch()
     ].forEach(action => this.store$.dispatch(action));
@@ -195,6 +197,7 @@ export class SceneDetailComponent implements OnInit, OnDestroy {
 
     [
       new searchStore.SetSearchType(models.SearchType.SBAS),
+      new searchStore.ClearSearch(),
       new scenesStore.SetFilterMaster(sceneName),
       new searchStore.MakeSearch()
     ].forEach(action => this.store$.dispatch(action));
