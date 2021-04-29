@@ -15,11 +15,12 @@
       </button>
 
       <button
+      *ngIf="productsByJobType.byProductType[0].products.length > 2"
       [disabled]="productsByJobType.total === 0"
       [matMenuTriggerFor]="addByClosestPair"
       [matMenuTriggerData]="{ productsByJobType: productsByJobType }"
       mat-menu-item>
-      closest pair
+      Add closest pair
       <!-- {{ productsByJobType.jobType.name }} -->
 
       <mat-icon (click)="onOpenHelp(productsByJobType.jobType.infoUrl)" class="clickable" style="margin-left: 10px;">help</mat-icon>
@@ -43,12 +44,19 @@
 
 <mat-menu #addByClosestPair>
   <ng-template matMenuContent let-byJobType="productsByJobType">
-    <div *ngFor="let prodType of byJobType.byProductType">
+    <app-closest-pair></app-closest-pair>
+    <!-- productsbyjobtype.byproducttype[0].products -->
+    <!-- <div *ngFor="let prodType of byJobType.byProductType">
       <button *ngIf="prodType.products.length !== 0 && prodType.products.length > 2"
-        (click)="queueClosestPair()"
+        (click)="queueClosestPair(InSAR)"
         [disabled]="" mat-menu-item>
-        Add closest pair
+        InSAR pair
       </button>
-    </div>
+      <button *ngIf="prodType.products.length !== 0 && prodType.products.length > 2"
+        (click)="queueClosestPair(AutoRift)"
+        [disabled]="" mat-menu-item>
+        AutoRIFT pair
+      </button>
+    </div> -->
   </ng-template>
 </mat-menu>
