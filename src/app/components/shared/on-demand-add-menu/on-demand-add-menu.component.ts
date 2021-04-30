@@ -69,6 +69,7 @@ export class OnDemandAddMenuComponent implements OnInit {
   }
 
   public queueBaselinePairOnDemand(products: models.CMRProduct[][], job_type: models.Hyp3JobType) {
+    products = products.filter(prod => prod[0].id !== this.referenceScene.id);
     const jobs: models.QueuedHyp3Job[] = products.map(product => {
       return {
       granules: [this.referenceScene, product[0]],
