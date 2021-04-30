@@ -61,6 +61,13 @@ export function hyp3Reducer(state = initState, action: Hyp3Actions): Hyp3State {
       };
     }
 
+    case Hyp3ActionType.CLEAR_PROCESSING_OPTIONS: {
+      return {
+        ...state,
+        processingOptions: hyp3DefaultJobOptions
+      };
+    }
+
     case Hyp3ActionType.SET_PROCESSING_PROJECT_NAME: {
       return {
         ...state,
