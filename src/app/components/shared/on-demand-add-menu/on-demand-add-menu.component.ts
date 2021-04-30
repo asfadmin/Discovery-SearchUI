@@ -68,13 +68,15 @@ export class OnDemandAddMenuComponent implements OnInit {
     this.store$.dispatch(new queueStore.AddJobs(jobs));
   }
 
-  public queuePairOnDemand(product: models.CMRProduct, job_type: models.Hyp3JobType) {
-    const job: models.QueuedHyp3Job = {
-      granules: [this.referenceScene, product],
+  public queueBaselinePairOnDemand(products: models.CMRProduct[][], job_type: models.Hyp3JobType) {
+    const jobs: models.QueuedHyp3Job[] = products.map(product => {
+      return {
+      granules: [this.referenceScene, product[0]],
       job_type
-    };
+    } as models.QueuedHyp3Job;
+  });
 
-    this.store$.dispatch(new queueStore.AddJob(job));
+    this.store$.dispatch(new queueStore.AddJobs(jobs));
   }
 
   public onOpenHelp(infoUrl) {

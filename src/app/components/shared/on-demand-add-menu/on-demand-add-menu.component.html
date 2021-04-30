@@ -25,13 +25,13 @@
       </button> -->
 
       <button
-        *ngIf="productsByJobType.byProductType[0].products.length === 1"
+        *ngIf="productsByJobType.byProductType[0].products.length >= 1 && searchType === searchTypes.BASELINE"
         [disabled]="productsByJobType.total === 0"
         [matMenuTriggerFor]="addBaselinePair"
         [matMenuTriggerData]="{ productsByJobType: productsByJobType }"
         mat-menu-item>
-        Add Pair
-        <mat-icon (click)="onOpenHelp(productsByJobType.jobType.infoUrl)" class="clickable" style="margin-left: 10px;">help</mat-icon>
+        InSAR GAMMA
+        <mat-icon (click)="onOpenHelp(InSAR.infoUrl)" class="clickable" style="margin-left: 10px;">help</mat-icon>
       </button>
 
     </div>
@@ -63,15 +63,17 @@
     <div *ngFor="let prodType of byJobType.byProductType">
       <div *ngIf="prodType.productType === 'SLC' && prodType.products[0].id !== referenceScene.id">
         <button
-          (click)="queuePairOnDemand(prodType.products[0][0], InSAR)"
+          (click)="queueBaselinePairOnDemand(prodType.products, InSAR)"
           [disabled]="" mat-menu-item>
-          Add InSAR pair
+          Add {{ prodType.products.length }} {{ prodType.productType }}
+          {{ byJobType.jobType.numProducts === 2 ? 'pair' : 'job' }}{{ prodType.products.length > 1 ? 's' : '' }}
         </button>
-        <button
-        (click)="queuePairOnDemand(prodType.products[0][0], AutoRift)"
-        [disabled]="" mat-menu-item>
-        Add AutoRIFT pair
-      </button>
+        <!-- <button
+          (click)="queueBaselinePairOnDemand(prodType.products, AutoRift)"
+          [disabled]="" mat-menu-item>
+          Add {{ prodType.products.length }} AutoRIFT
+          {{ byJobType.jobType.numProducts === 2 ? 'pair' : 'job' }}{{ prodType.products.length > 1 ? 's' : '' }}
+      </button> -->
       </div>
     </div>
   </ng-template>
