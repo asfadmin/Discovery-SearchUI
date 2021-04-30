@@ -134,29 +134,29 @@ export class PairService {
     return pairs;
   }
 
-  public findNearestneighbour(reference_scene: CMRProduct, 
+  public findNearestneighbour(reference_scene: CMRProduct,
     scenes: CMRProduct[],
     temporalRange: Range<number>,
     amount: number) {
 
     scenes = this.hyp3able(scenes);
-    scenes = scenes.filter(scene => 
+    scenes = scenes.filter(scene =>
       scene.id.includes('SLC')
-      && !scene.id.includes('METADATA') 
+      && !scene.id.includes('METADATA')
       && scene.metadata.temporal != null
     );
 
-    const totalDays = temporalRange.end - temporalRange.start; 
+    const totalDays = temporalRange.end - temporalRange.start;
     const ReftempDiffNormalized = (reference_scene.metadata.temporal - temporalRange.start) / totalDays;
 
     const SortedScenes = scenes.sort((a, b) => {
-       
+
         const AtempDiffNormalized = (a.metadata.temporal - temporalRange.start) / totalDays;
         const BtempDiffNormalized = (b.metadata.temporal - temporalRange.start) / totalDays;
-        
-        if(Math.abs(AtempDiffNormalized-ReftempDiffNormalized) < Math.abs(BtempDiffNormalized-ReftempDiffNormalized)) {
+
+        if (Math.abs(AtempDiffNormalized - ReftempDiffNormalized) < Math.abs(BtempDiffNormalized - ReftempDiffNormalized)) {
           return -1;
-        } else if(Math.abs(AtempDiffNormalized-ReftempDiffNormalized) === Math.abs(BtempDiffNormalized-ReftempDiffNormalized)) {
+        } else if (Math.abs(AtempDiffNormalized - ReftempDiffNormalized) === Math.abs(BtempDiffNormalized - ReftempDiffNormalized)) {
           return 0;
         }
         return 1;
