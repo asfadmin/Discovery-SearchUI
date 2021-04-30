@@ -99,13 +99,13 @@ export class SearchEffects {
   ));
 
   public setMapInteractionModeBasedOnSearchType = createEffect(() => this.actions$.pipe(
-    ofType<SetSearchType>(SearchActionType.SET_SEARCH_TYPE),
+    ofType<SetSearchType>(SearchActionType.SET_SEARCH_TYPE_AFTER_SAVE),
     filter(action => action.payload === models.SearchType.DATASET),
     map(_ => new mapStore.SetMapInteractionMode(models.MapInteractionModeType.DRAW))
   ));
 
   public clearResultsWhenSearchTypeChanges = createEffect(() => this.actions$.pipe(
-    ofType<SetSearchType>(SearchActionType.SET_SEARCH_TYPE),
+    ofType<SetSearchType>(SearchActionType.SET_SEARCH_TYPE_AFTER_SAVE),
     switchMap(action => [
       new scenesStore.ClearScenes(),
       new uiStore.CloseAOIOptions(),

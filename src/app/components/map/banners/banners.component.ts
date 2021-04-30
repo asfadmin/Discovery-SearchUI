@@ -43,8 +43,6 @@ export class BannerCreateDirective implements OnInit {
       oneLiner = true;
     }
 
-    console.log('lines:', lines);
-
     if (oneLiner) {
       msg = lines[0].trim() + this.moreMsg;
     } else {

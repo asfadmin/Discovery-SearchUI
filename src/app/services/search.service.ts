@@ -23,34 +23,28 @@ export class SearchService {
     private wktService: WktService,
   ) { }
 
-  public clear(searchType: models.SearchType, breakpoint: models.Breakpoints): void {
+  public clear(searchType: models.SearchType): void {
     this.mapService.clearDrawLayer();
 
-    if (searchType === models.SearchType.DATASET) {
-      const actions = [
-        new filterStore.ClearDatasetFilters(),
-        new mapStore.SetMapInteractionMode(models.MapInteractionModeType.DRAW),
-      ];
+    const actions = [
+      new filterStore.ClearDatasetFilters(),
+      new mapStore.SetMapInteractionMode(models.MapInteractionModeType.DRAW),
+      new filterStore.ClearListFilters(),
+      // List
+      new filterStore.ClearListFilters(),
+      // Baseline/SBAS
+      new scenesStore.ClearBaseline(),
+      new filterStore.ClearPerpendicularRange(),
+      new filterStore.ClearTemporalRange(),
+      new filterStore.ClearSeason(),
+      new uiStore.CloseFiltersMenu(),
+    ];
 
-      actions.forEach(
-        action => this.store$.dispatch(action)
-      );
-    } else if (searchType === models.SearchType.LIST) {
-      this.store$.dispatch(new filterStore.ClearListFilters());
-    } else if (searchType === models.SearchType.BASELINE) {
-      this.store$.dispatch(new scenesStore.ClearBaseline());
-      this.store$.dispatch(new filterStore.ClearPerpendicularRange());
-      this.store$.dispatch(new filterStore.ClearTemporalRange());
-      this.store$.dispatch(new filterStore.ClearSeason());
-      if (breakpoint !== models.Breakpoints.MOBILE) {
-        this.store$.dispatch(new uiStore.CloseFiltersMenu());
-      }
-    } else if (searchType === models.SearchType.SBAS) {
-      this.store$.dispatch(new scenesStore.ClearBaseline());
-      this.store$.dispatch(new filterStore.ClearPerpendicularRange());
-      this.store$.dispatch(new filterStore.ClearTemporalRange());
-      this.store$.dispatch(new filterStore.ClearSeason());
-    } else if (searchType === models.SearchType.CUSTOM_PRODUCTS) {
+    actions.forEach(
+      action => this.store$.dispatch(action)
+    );
+
+    if (searchType === models.SearchType.CUSTOM_PRODUCTS) {
       this.store$.dispatch(new filterStore.SetProjectName(''));
       this.store$.dispatch(new filterStore.SetJobStatuses([]));
       this.store$.dispatch(new filterStore.ClearDateRange());
@@ -62,6 +56,13 @@ export class SearchService {
     this.store$.dispatch(new ClearSearch());
     this.store$.dispatch(new SetSearchType(search.searchType));
 
+    this.loadSearch(search);
+
+    this.store$.dispatch(new uiStore.CloseSidebar());
+    this.store$.dispatch(new MakeSearch());
+  }
+
+  public loadSearch(search: models.Search) {
     if (search.searchType === models.SearchType.DATASET) {
       this.loadSearchPolygon(search);
     }
@@ -78,8 +79,6 @@ export class SearchService {
     }
 
     this.store$.dispatch(new filterStore.SetSavedSearch(search));
-    this.store$.dispatch(new uiStore.CloseSidebar());
-    this.store$.dispatch(new MakeSearch());
   }
 
   private loadSearchPolygon(search: models.Search): void {
