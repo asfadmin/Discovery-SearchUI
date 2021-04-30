@@ -14,29 +14,25 @@
         </mat-icon>
       </button>
 
+      <!-- <button
+        *ngIf="productsByJobType.byProductType[0].products.length > 2"
+        [disabled]="productsByJobType.total === 0"
+        [matMenuTriggerFor]="addByClosestPair"
+        [matMenuTriggerData]="{ productsByJobType: productsByJobType }"
+        mat-menu-item>
+        Add Closest Pair
+        <mat-icon (click)="onOpenHelp(productsByJobType.jobType.infoUrl)" class="clickable" style="margin-left: 10px;">help</mat-icon>
+      </button> -->
+
       <button
-      *ngIf="productsByJobType.byProductType[0].products.length > 2"
-      [disabled]="productsByJobType.total === 0"
-      [matMenuTriggerFor]="addByClosestPair"
-      [matMenuTriggerData]="{ productsByJobType: productsByJobType }"
-      mat-menu-item>
-      Add closest pair
-      <!-- {{ productsByJobType.jobType.name }} -->
-
-      <mat-icon (click)="onOpenHelp(productsByJobType.jobType.infoUrl)" class="clickable" style="margin-left: 10px;">help</mat-icon>
-    </button>
-
-    <button
-    *ngIf="productsByJobType.byProductType[0].products.length === 1"
-    [disabled]="productsByJobType.total === 0"
-    [matMenuTriggerFor]="addBaselinePair"
-    [matMenuTriggerData]="{ productsByJobType: productsByJobType }"
-    mat-menu-item>
-    Add Pair
-    <!-- {{ productsByJobType.jobType.name }} -->
-
-    <mat-icon (click)="onOpenHelp(productsByJobType.jobType.infoUrl)" class="clickable" style="margin-left: 10px;">help</mat-icon>
-  </button>
+        *ngIf="productsByJobType.byProductType[0].products.length === 1"
+        [disabled]="productsByJobType.total === 0"
+        [matMenuTriggerFor]="addBaselinePair"
+        [matMenuTriggerData]="{ productsByJobType: productsByJobType }"
+        mat-menu-item>
+        Add Pair
+        <mat-icon (click)="onOpenHelp(productsByJobType.jobType.infoUrl)" class="clickable" style="margin-left: 10px;">help</mat-icon>
+      </button>
 
     </div>
   </ng-template>
@@ -55,11 +51,11 @@
   </ng-template>
 </mat-menu>
 
-<mat-menu #addByClosestPair>
+<!-- <mat-menu #addByClosestPair>
   <ng-template matMenuContent let-byJobType="productsByJobType">
     <app-closest-pair></app-closest-pair>
   </ng-template>
-</mat-menu>
+</mat-menu> -->
 
 <mat-menu #addBaselinePair>
   <ng-template matMenuContent let-byJobType="productsByJobType">
@@ -78,6 +74,5 @@
       </button>
       </div>
     </div>
-    <!-- <app-closest-pair></app-closest-pair> -->
   </ng-template>
 </mat-menu>
