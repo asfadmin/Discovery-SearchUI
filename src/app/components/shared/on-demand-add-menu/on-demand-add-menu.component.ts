@@ -9,9 +9,9 @@ import * as models from '@models';
 // import { PairService } from '@services';
 import { SubSink } from 'subsink';
 // import { CMRProduct } from '@models';
-// import { getMasterName, getScenes } from '@store/scenes';
-// import { getPerpendicularRange, getTemporalRange } from '@store/filters';
+import { getMasterName, getScenes } from '@store/scenes';
 import { getSearchType } from '@store/search';
+import { CMRProduct } from '@models';
 
 @Component({
   selector: 'app-on-demand-add-menu',
@@ -23,27 +23,38 @@ export class OnDemandAddMenuComponent implements OnInit {
 
   @ViewChild('addMenu', {static: true}) addMenu: MatMenu;
 
-  // private scenes: CMRProduct[] = [];
-  // private referenceScene: CMRProduct;
-  // private referenceSceneIdx: number;
-  // private temporalRange;
-  // private perpendicularRange;
+  public referenceScene: CMRProduct;
+  private scenes: CMRProduct[];
 
   public searchType: models.SearchType;
   public searchTypes = models.SearchType;
-  // public InSAR = models.hyp3JobTypes.INSAR_GAMMA;
-  // public AutoRift = models.hyp3JobTypes.AUTORIFT;
+  public InSAR = models.hyp3JobTypes.INSAR_GAMMA;
+  public AutoRift = models.hyp3JobTypes.AUTORIFT;
 
   private subs = new SubSink();
 
   constructor(private store$: Store<AppState>,
-              // private pairService: PairService,
               ) { }
 
   ngOnInit(): void {
 
     this.subs.add(
       this.store$.select(getSearchType).subscribe( searchtype => this.searchType = searchtype)
+    );
+
+    this.subs.add(
+      this.store$.select(getScenes).subscribe(
+        scenes => this.scenes = scenes
+      )
+    );
+
+    this.subs.add(
+      this.store$.select(getMasterName).subscribe(
+        refSceneName => {
+            const referenceSceneIdx = this.scenes.findIndex(scene => scene.name === refSceneName);
+            this.referenceScene = this.scenes[referenceSceneIdx];
+        }
+      )
     );
 
   }
@@ -57,31 +68,14 @@ export class OnDemandAddMenuComponent implements OnInit {
     this.store$.dispatch(new queueStore.AddJobs(jobs));
   }
 
-  // public queueClosestPair(job_type: models.Hyp3JobType): void {
-  //   const closestProduct = this.pairService.findNearestneighbour(this.referenceScene, this.scenes.filter(scene => this.referenceScene.id !== scene.id), true, true, this.temporalRange, this.perpendicularRange, 3);
-  //   // console.log(`reference scene:\t ${JSON.stringify(products[0][0])}`);
-  //   for (let prod of closestProduct) {
-  //     console.log(prod.name);
-  //   }
-  //   console.log(closestProduct);
-  //   const closestProductList = [];
-  //   for (let idx = 0; idx < 3; idx++) {
-  //     closestProductList.push([this.referenceScene, closestProduct[idx]]);
-  //   }
+  public queuePairOnDemand(product: models.CMRProduct, job_type: models.Hyp3JobType) {
+    const job: models.QueuedHyp3Job = {
+      granules: [this.referenceScene, product],
+      job_type
+    };
 
-  //   this.queueAllOnDemand(closestProductList, job_type);
-  //   // console.log(`closest scene:\t ${JSON.stringify(closestProduct)}`);
-  // }
-
-  // public isPairable(products: models.CMRProduct[][]) {
-  //   if (products[0] !== null) {
-  //     return false;
-  //   }
-
-  //   return products[0].find(product => product.metadata.productType === 'SLC'
-  //   && product.metadata.perpendicular !== null
-  //   && product.metadata.temporal !== null) !== null;
-  // }
+    this.store$.dispatch(new queueStore.AddJob(job));
+  }
 
   public onOpenHelp(infoUrl) {
     window.open(infoUrl);

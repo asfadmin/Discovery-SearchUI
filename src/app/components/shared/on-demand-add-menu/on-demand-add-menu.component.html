@@ -25,6 +25,19 @@
 
       <mat-icon (click)="onOpenHelp(productsByJobType.jobType.infoUrl)" class="clickable" style="margin-left: 10px;">help</mat-icon>
     </button>
+
+    <button
+    *ngIf="productsByJobType.byProductType[0].products.length === 1"
+    [disabled]="productsByJobType.total === 0"
+    [matMenuTriggerFor]="addBaselinePair"
+    [matMenuTriggerData]="{ productsByJobType: productsByJobType }"
+    mat-menu-item>
+    Add Pair
+    <!-- {{ productsByJobType.jobType.name }} -->
+
+    <mat-icon (click)="onOpenHelp(productsByJobType.jobType.infoUrl)" class="clickable" style="margin-left: 10px;">help</mat-icon>
+  </button>
+
     </div>
   </ng-template>
 </mat-menu>
@@ -45,18 +58,26 @@
 <mat-menu #addByClosestPair>
   <ng-template matMenuContent let-byJobType="productsByJobType">
     <app-closest-pair></app-closest-pair>
-    <!-- productsbyjobtype.byproducttype[0].products -->
-    <!-- <div *ngFor="let prodType of byJobType.byProductType">
-      <button *ngIf="prodType.products.length !== 0 && prodType.products.length > 2"
-        (click)="queueClosestPair(InSAR)"
+  </ng-template>
+</mat-menu>
+
+<mat-menu #addBaselinePair>
+  <ng-template matMenuContent let-byJobType="productsByJobType">
+
+    <div *ngFor="let prodType of byJobType.byProductType">
+      <div *ngIf="prodType.productType === 'SLC' && prodType.products[0].id !== referenceScene.id">
+        <button
+          (click)="queuePairOnDemand(prodType.products[0][0], InSAR)"
+          [disabled]="" mat-menu-item>
+          Add InSAR pair
+        </button>
+        <button
+        (click)="queuePairOnDemand(prodType.products[0][0], AutoRift)"
         [disabled]="" mat-menu-item>
-        InSAR pair
+        Add AutoRIFT pair
       </button>
-      <button *ngIf="prodType.products.length !== 0 && prodType.products.length > 2"
-        (click)="queueClosestPair(AutoRift)"
-        [disabled]="" mat-menu-item>
-        AutoRIFT pair
-      </button>
-    </div> -->
+      </div>
+    </div>
+    <!-- <app-closest-pair></app-closest-pair> -->
   </ng-template>
 </mat-menu>
