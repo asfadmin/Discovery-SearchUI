@@ -252,6 +252,7 @@ export class ProcessingQueueComponent implements OnInit {
 
         if (this.allJobs.length === 0) {
           this.dialogRef.close();
+          this.store$.dispatch(new hyp3Store.ClearProcessingOptions());
         }
       }
     );
@@ -299,8 +300,8 @@ export class ProcessingQueueComponent implements OnInit {
 
     this.store$.dispatch(new queueStore.ClearProcessingQueueByJobType(new Set<string>([jobType.id])));
     if (this.allJobs.length === 0) {
-      this.store$.dispatch(new hyp3Store.ClearProcessingOptions());
       this.dialogRef.close();
+      this.store$.dispatch(new hyp3Store.ClearProcessingOptions());
     }
 
   }
