@@ -41,6 +41,7 @@ export class SceneDetailComponent implements OnInit, OnDestroy {
   public isImageLoading = false;
   public selectedProducts: models.CMRProduct[];
   public hasBaseline: boolean;
+  public browseIndex = 0;
 
   public masterOffsets$ = this.store$.select(scenesStore.getMasterOffsets);
 

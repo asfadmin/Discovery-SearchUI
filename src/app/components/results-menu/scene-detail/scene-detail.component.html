@@ -32,21 +32,33 @@
           </app-scene-metadata>
         </div>
 
-        <div [class.clickable]="sceneHasBrowse()" class="browse-container w40">
-          <div (click)="onOpenImage();"
-            class="img-container"
-               [matBadgeHidden]="(browses$ | async).length <= 1"
-               matBadge="{{ (browses$ | async).length }}"
-               matBadgePosition="above after">
+        <div class="browse-container w40">
+          <div 
+            class="img-container">
             <img
               class="browse-img fit-to-container"
               [hidden]="isImageLoading"
-              [src]="(browses$ | async)[0]"
+              [src]="(browses$ | async)[browseIndex]"
+              (click)="onOpenImage();"
               (load)="isImageLoading = false"
               onerror="this.src='assets/no-browse.png'"
+              [class.clickable]="sceneHasBrowse()"
               alt="Sentinel1 scene browse image">
-            <div [class.hidden]="!sceneHasBrowse()" class="img-overlay fit-to-container">
-                <mat-icon class="overlay-icon">fullscreen</mat-icon>
+              <div class="banner" *ngIf="sceneHasBrowse()">
+                <div class="browse-pager">
+                  <div *ngIf="browseIndex > 0" (click)="browseIndex = browseIndex - 1" 
+                    class="clickable"><  
+                      </div> {{browseIndex+1}} / {{(browses$ | async).length}} <div
+                     *ngIf="browseIndex+1 < (browses$ | async).length"
+                     (click)="browseIndex = browseIndex + 1" 
+                     class="clickable"> ></div>
+                </div>
+                <a class="download" [class.clickable]="sceneHasBrowse()" [href]="(browses$ | async)[0]" target="_blank">
+                  <mat-icon>download</mat-icon>
+                </a>
+                <div class="fullscreen" [class.clickable]="sceneHasBrowse()" (click)="onOpenImage();">
+                  <mat-icon>open_in_full</mat-icon>
+                </div>
               </div>
           </div>
         </div>

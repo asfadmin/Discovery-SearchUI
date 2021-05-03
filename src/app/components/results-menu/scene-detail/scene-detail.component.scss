@@ -44,6 +44,7 @@ a {
 .browse-img {
   width: 100%;
   z-index: 90;
+  cursor: zoom-in;
 }
 
 .img-overlay {
@@ -53,6 +54,33 @@ a {
   left: 50%;
   transition: 0.2s ease;
   transform: translate(-50%, -50%);
+}
+.banner {
+  position: absolute;
+  background: linear-gradient(45deg, #726d6dd4, #5f5454db);
+  top: 0;
+  display: flex;
+  height: 0;
+  width: 100%;
+  justify-content: flex-end;
+  align-items: center;
+  padding-top: 2px;
+  box-shadow: #00000038 0 7px 18px;
+  transition: 0.5s ease;
+  opacity: 0;
+  mat-icon {
+    color: black;
+    margin-right: 5px;
+  }
+}
+.browse-pager {
+  display: inherit;
+  margin-left: 5%;
+  margin-right: auto;
+}
+.img-container:hover .banner {
+  opacity: 1;
+  height: 15%;
 }
 
 .overlay-icon {
