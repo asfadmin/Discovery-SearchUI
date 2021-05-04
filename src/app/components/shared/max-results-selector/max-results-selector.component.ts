@@ -24,7 +24,7 @@ export class MaxResultsSelectorComponent implements OnInit, OnDestroy {
   public currentSearchAmount: number;
   public areResultsLoaded = false;
 
-  public searchType$ = this.store$.select(searchStore.getSearchType);
+  public searchType: models.SearchType;
   public searchTypes = models.SearchType;
   public sbasProducts: models.CMRProduct[];
 
@@ -39,6 +39,12 @@ export class MaxResultsSelectorComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit() {
+    this.subs.add(
+      this.store$.select(searchStore.getSearchType).subscribe(
+        searchType => this.searchType = searchType
+      )
+    );
+
     this.subs.add(
       this.store$.select(filtersStore.getMaxSearchResults).subscribe(
         maxResults => this.maxResults = maxResults
@@ -89,6 +95,10 @@ export class MaxResultsSelectorComponent implements OnInit, OnDestroy {
   }
 
   public formatNumber(num: number): string {
+    if (num === null) {
+      return '';
+    }
+
     return num
       .toString()
       .replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,');

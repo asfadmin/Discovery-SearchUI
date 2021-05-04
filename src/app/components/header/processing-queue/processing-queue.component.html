@@ -38,7 +38,10 @@
       </ng-container>
     </ng-container>
 
-    <ng-container *ngIf="breakpoint === breakpoints.MOBILE;">
+    <ng-container *ngIf="
+      breakpoint === breakpoints.MOBILE &&
+      !!jobTypesWithQueued && jobTypesWithQueued.length > 0">
+
       <button mat-flat-button
       [color]="'primary'"
       [matMenuTriggerFor]="TabMenu"
@@ -56,7 +59,7 @@
           style = "background-color: white;"
           (click)="onSetSelectedJobType(hyp3Job.jobType)"
           [color]="selectedJobTypeId === hyp3Job.jobType.id ? 'secondary' : 'primary'">
-          <div>  
+          <div>
           {{ hyp3Job.jobType.name }} ({{ hyp3Job.jobs.length }})
         </div>
           </button>
@@ -65,8 +68,14 @@
     </ng-container>
   </div>
 
-  <div class="feedback-div feedback-link">
+  <div class="feedback-div header-link">
     <a href="javascript:feedback.showForm();" onfocus="this.blur()"> <i class="fa fa-comments-o"></i> Feedback</a>
+  </div>
+
+  <div class="help-div header-link">
+    <a href="https://hyp3-docs.asf.alaska.edu/" onfocus="this.blur()" target="_blank">
+      <i class="fa fa-question-circle-o"></i> Docs
+    </a>
   </div>
 
   <div class="close-x" (click)="onCloseDialog()">
@@ -231,6 +240,5 @@
          </span>
       </button>
     </div>
-
   </div>
 </mat-dialog-actions>
