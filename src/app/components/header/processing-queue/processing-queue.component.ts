@@ -252,7 +252,6 @@ export class ProcessingQueueComponent implements OnInit {
 
         if (this.allJobs.length === 0) {
           this.dialogRef.close();
-          this.store$.dispatch(new hyp3Store.ClearProcessingOptions());
         }
       }
     );
