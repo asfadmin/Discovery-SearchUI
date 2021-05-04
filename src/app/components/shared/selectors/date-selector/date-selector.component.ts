@@ -134,7 +134,7 @@ export class DateSelectorComponent implements OnInit, OnDestroy {
       date = null;
       this.endDateErrors$.next();
     } else {
-      const momentDate = e.value.set({h: 23, m: 59});
+      const momentDate = e.value.set({h: 23, m: 59, s: 59});
       date = this.toJSDate(momentDate);
     }
 
