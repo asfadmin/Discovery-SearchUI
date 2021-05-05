@@ -145,9 +145,9 @@ export class PairService {
         const AtempDiffNormalized = (a.metadata.temporal - temporalRange.start) / totalDays;
         const BtempDiffNormalized = (b.metadata.temporal - temporalRange.start) / totalDays;
 
-        if(Math.abs(AtempDiffNormalized-ReftempDiffNormalized) < Math.abs(BtempDiffNormalized-ReftempDiffNormalized)) {
+        if (Math.abs(AtempDiffNormalized - ReftempDiffNormalized) < Math.abs(BtempDiffNormalized - ReftempDiffNormalized)) {
           return -1;
-        } else if(Math.abs(AtempDiffNormalized-ReftempDiffNormalized) === Math.abs(BtempDiffNormalized-ReftempDiffNormalized)) {
+        } else if (Math.abs(AtempDiffNormalized - ReftempDiffNormalized) === Math.abs(BtempDiffNormalized - ReftempDiffNormalized)) {
           return 0;
         }
         return 1;
