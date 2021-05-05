@@ -30,11 +30,11 @@ export class SearchParamsService {
     return combineLatest(
       this.searchType$(),
       this.listParam$(),
-      this.filterSearchParams$(),
       this.baselineSearchParams$(),
     ).pipe(
+      withLatestFrom(this.filterSearchParams$()),
       map(
-        ([searchType, listParam, filterParams, baselineParams]) => {
+        ([[searchType, listParam, baselineParams], filterParams ]) => {
           switch (searchType) {
             case models.SearchType.LIST: {
               return listParam;
