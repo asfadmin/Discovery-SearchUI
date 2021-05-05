@@ -10,7 +10,7 @@ import * as scenesStore from '@store/scenes';
 import * as models from '@models';
 import { ApiLinkDialogComponent } from './api-link-dialog/api-link-dialog.component';
 import { SubSink } from 'subsink';
-import { PairService } from '@services';
+import { PairService, ScenesService } from '@services';
 
 @Component({
   selector: 'app-max-results-selector',
@@ -19,11 +19,12 @@ import { PairService } from '@services';
 })
 export class MaxResultsSelectorComponent implements OnInit, OnDestroy {
   public maxResults: number;
+  public numberOfScenes: number;
   public isMaxResultsLoading: boolean;
   public currentSearchAmount: number;
   public areResultsLoaded = false;
 
-  public searchType$ = this.store$.select(searchStore.getSearchType);
+  public searchType: models.SearchType;
   public searchTypes = models.SearchType;
   public sbasProducts: models.CMRProduct[];
 
@@ -34,9 +35,16 @@ export class MaxResultsSelectorComponent implements OnInit, OnDestroy {
     private store$: Store<AppState>,
     private dialog: MatDialog,
     private pairService: PairService,
+    private sceneService: ScenesService,
   ) {}
 
   ngOnInit() {
+    this.subs.add(
+      this.store$.select(searchStore.getSearchType).subscribe(
+        searchType => this.searchType = searchType
+      )
+    );
+
     this.subs.add(
       this.store$.select(filtersStore.getMaxSearchResults).subscribe(
         maxResults => this.maxResults = maxResults
@@ -62,6 +70,11 @@ export class MaxResultsSelectorComponent implements OnInit, OnDestroy {
     );
 
     this.subs.add(
+      this.sceneService.scenes$().subscribe(
+        scenes => this.numberOfScenes = scenes.length)
+    );
+
+    this.subs.add(
       this.pairService.productsFromPairs$().subscribe(
         products => this.sbasProducts = products
       )
@@ -82,6 +95,10 @@ export class MaxResultsSelectorComponent implements OnInit, OnDestroy {
   }
 
   public formatNumber(num: number): string {
+    if (typeof num !== 'number') {
+      return '';
+    }
+
     return num
       .toString()
       .replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,');

@@ -272,6 +272,7 @@ export class ProcessingQueueComponent implements OnInit {
   public onClearJobQueue(): void {
     this.previousQueue = { jobTypeId: this.selectedJobTypeId, jobs: this.allJobs };
     this.store$.dispatch(new queueStore.ClearProcessingQueue());
+    this.store$.dispatch(new hyp3Store.ClearProcessingOptions());
     this.selectedJobTypeId = null;
   }
 
@@ -299,6 +300,7 @@ export class ProcessingQueueComponent implements OnInit {
     this.store$.dispatch(new queueStore.ClearProcessingQueueByJobType(new Set<string>([jobType.id])));
     if (this.allJobs.length === 0) {
       this.dialogRef.close();
+      this.store$.dispatch(new hyp3Store.ClearProcessingOptions());
     }
 
   }

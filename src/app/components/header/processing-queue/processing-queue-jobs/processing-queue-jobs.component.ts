@@ -52,6 +52,7 @@ export class ProcessingQueueJobsComponent implements OnInit {
 
   public viewCustomProducts(event: MouseEvent): void {
     this.store$.dispatch(new searchStore.SetSearchType(SearchType.CUSTOM_PRODUCTS));
+    this.store$.dispatch(new searchStore.ClearSearch());
 
     this.store$.dispatch(new searchStore.MakeSearch());
 
