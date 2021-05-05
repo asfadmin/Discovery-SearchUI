@@ -14,7 +14,10 @@
         </mat-icon>
       </button>
 
-      <div *ngIf="productsByJobType.byProductType[0].products.length >= 1 && searchType === searchTypes.BASELINE && productsByJobType.byProductType[0].products[0][0].id !== referenceScene.id">
+      <div *ngIf="
+        productsByJobType.byProductType[0].products.length >= 1 &&
+        searchType === searchTypes.BASELINE &&
+        productsByJobType.byProductType[0].products[0][0].id !== referenceScene.id">
         <button
         [disabled]="productsByJobType.total === 0"
         [matMenuTriggerFor]="addBaselinePair"
@@ -50,11 +53,14 @@
 <mat-menu #addAllByProductType>
   <ng-template matMenuContent let-byJobType="productsByJobType">
     <div *ngFor="let prodType of byJobType.byProductType">
-      <button 
+      <button
+        *ngIf="prodType.products.length !== 0"
         (click)="queueAllOnDemand(prodType.products, byJobType.jobType)"
         [disabled]="" mat-menu-item>
+
         Add {{ prodType.products.length }} {{ prodType.productType }}
         {{ byJobType.jobType.numProducts === 2 ? 'pair' : 'job' }}{{ prodType.products.length > 1 ? 's' : '' }}
+
       </button>
     </div>
   </ng-template>
