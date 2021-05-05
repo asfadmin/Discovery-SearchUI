@@ -19,6 +19,8 @@ export enum Hyp3ActionType {
   ERROR_JOB_SUBMISSION = '[Hyp3] Error Job Submission',
 
   CLEAR_JOBS = '[Hyp3] Clear Jobs',
+  CLEAR_PROCESSING_OPTIONS = '[Hyp3] Clear Processing Options',
+  CLEAR_PROCESSING_OPTIONS_BY_JOB_TYPE = '[Hyp3] Clear Processing Options by Job Type',
 }
 
 export class LoadJobs implements Action {
@@ -35,6 +37,16 @@ export class SetProcessingOptions implements Action {
   public readonly type = Hyp3ActionType.SET_PROCESSING_OPTIONS;
 
   constructor(public payload: Hyp3ProcessingOptions) {}
+}
+
+export class ClearProcessingOptions implements Action {
+  public readonly type = Hyp3ActionType.CLEAR_PROCESSING_OPTIONS;
+}
+
+export class ClearProcessingOptionsByJobType implements Action {
+  public readonly type = Hyp3ActionType.CLEAR_PROCESSING_OPTIONS_BY_JOB_TYPE;
+
+  constructor(public payload: string) {}
 }
 
 export class SetProcessingProjectName implements Action {
@@ -87,6 +99,8 @@ export type Hyp3Actions =
   | SetUser
   | ErrorLoadingUser
   | SetProcessingOptions
+  | ClearProcessingOptions
+  | ClearProcessingOptionsByJobType
   | SetProcessingProjectName
   | ClearJobs
   | SubmitJob

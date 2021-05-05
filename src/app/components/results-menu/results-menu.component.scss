@@ -2,7 +2,6 @@
 
 .rectangle-wrapper {
   position: fixed;
-  bottom: 0;
 }
 
 .no-results {
@@ -12,17 +11,17 @@
 }
 
 .mobile-menu-offset {
-  bottom: 90px;
+  bottom: 117px;
+}
+
+.desktop-menu-offset {
+  bottom: 20px;
 }
 
 .results-menu--background {
   background: rgba(238, 238, 238, 0.7);
   background: white;
   pointer-events: auto;
-}
-
-.results-menu {
-  margin-top: -16px;
 }
 
 .header {
@@ -44,30 +43,6 @@
 
 .mwlResizable {
   box-sizing: border-box; // required for the enableGhostResize option to work
-}
-
-.resize-handle-bottom {
-  bottom: 0;
-}
-
-.resize-handle-left,
-.resize-handle-right {
-  position: absolute;
-  height: 100%;
-  cursor: col-resize;
-  width: 14px;
-  background-image: url('/assets/div-handles/vsizegrip.png');
-  background-color: $asf-primary-light;
-  background-position: center; /* Center the image */
-  background-repeat: no-repeat; /* Do not repeat the image */
-}
-
-.resize-handle-left {
-  left: 0;
-}
-
-.resize-handle-right {
-  right: 0;
 }
 
 .no-left-border {
@@ -95,19 +70,16 @@
 
 .resize-min,
 .resize-max {
-  flex: 0 0 25px;
+  flex: 0 0 40px;
   cursor: pointer;
   text-align: center;
-  margin-top: -18px;
-  z-index: 9;
+  z-index: 10;
 }
 
 .resize-handle-filler {
-  //cursor: row-resize;
   width: 56px;
-  height: 14px;
-  margin-top: -26px;
-  //z-index: 9;
+  height: 25px;
+  z-index: 9;
   background-image: url('/assets/div-handles/hsizegrip.png');
   background-color: $asf-primary-light;
   background-position: center;
@@ -121,11 +93,20 @@
 
 .min-max-controls {
   display: flex;
+  justify-content: flex-end;
+  width: 100%;
+  padding-right: 20px;
+  height: 35px;
+  z-index: 9;
+}
+
+.resize-controls {
+  display: flex;
   justify-content: center;
   width: 100%;
-  height: 0;
-  padding-top: 21px;
+  height: 25px;
   background-color: $asf-primary-light;
+  z-index: 9;
 }
 
 .mobile {

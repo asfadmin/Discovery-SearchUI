@@ -213,13 +213,22 @@ $color: $asf-primary-dark;
   cursor: pointer;
 }
 
-.feedback-link {
+.header-link {
   font-size: 18px;
 
   a {
     text-decoration: none;
     color: $asf-primary;
   }
+}
+
+.help-div {
+  position: absolute;
+  top: 53px;
+  right: 130px;
+  text-align: right;
+  float: right;
+  cursor: pointer;
 }
 
 .subtitle {

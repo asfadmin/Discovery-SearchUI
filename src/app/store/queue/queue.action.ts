@@ -21,7 +21,9 @@ export enum QueueActionType {
 
   MAKE_DOWNLOAD_SCRIPT  = '[Queue] Make Bulk Download From Queue',
   DOWNLOAD_METADATA = '[Queue] Download Metadata',
-  DOWNLOAD_SEARCHTYPE_METADATA = '[Queue] Download Search Result Metadata'
+  DOWNLOAD_SEARCHTYPE_METADATA = '[Queue] Download Search Result Metadata',
+
+  FIND_PAIR = '[Scenes] finds the closest pair to a given scene'
 }
 
 export class AddItem implements Action {
@@ -107,6 +109,11 @@ export class QueueScene implements Action {
   constructor(public payload: string) {}
 }
 
+export class FindPair implements Action {
+  public readonly type = QueueActionType.FIND_PAIR;
+
+  constructor(public payload: CMRProduct) {}
+}
 export class RemoveSceneFromQueue implements Action {
   public readonly type = QueueActionType.REMOVE_SCENE_FROM_QUEUE;
 
@@ -129,4 +136,5 @@ export type QueueActions =
   | ClearProcessingQueueByJobType
   | MakeDownloadScript
   | DownloadMetadata
-  | DownloadSearchtypeMetadata;
+  | DownloadSearchtypeMetadata
+  | FindPair;

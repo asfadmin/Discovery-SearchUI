@@ -8,7 +8,7 @@ import * as moment from 'moment';
 import { map, withLatestFrom, switchMap, tap, skip } from 'rxjs/operators';
 
 import { AppState } from '../app.reducer';
-import { QueueActionType, DownloadMetadata, AddItems, RemoveItems, RemoveSceneFromQueue, DownloadSearchtypeMetadata, AddJob, RemoveJob, AddJobs, ToggleProduct, QueueScene } from './queue.action';
+import { QueueActionType, DownloadMetadata, AddItems, RemoveItems, RemoveSceneFromQueue, DownloadSearchtypeMetadata, AddJob, RemoveJob, AddJobs, ToggleProduct, QueueScene, FindPair } from './queue.action';
 import { getQueuedProducts } from './queue.reducer';
 import * as scenesStore from '@store/scenes';
 // import * as queueStore from '@store/queue';
@@ -103,6 +103,10 @@ export class QueueEffects {
         )
       ),
     ),
+  ), { dispatch: false });
+
+  public findPair = createEffect(() => this.actions$.pipe(
+    ofType<FindPair>(QueueActionType.FIND_PAIR),
   ), { dispatch: false });
 
   public queueScene = createEffect(() => this.actions$.pipe(

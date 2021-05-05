@@ -773,6 +773,7 @@ export const getBaselineSearch = createSelector(
   getFiltersState,
   (state: FiltersState) => ({
     dateRange: state.dateRange,
+    season: state.season,
     temporalRange: state.temporalRange,
     perpendicularRange: state.perpendicularRange
   })
@@ -783,6 +784,7 @@ export const getSbasSearch = createSelector(
   (state: FiltersState) => ({
     temporal: state.temporalRange.start,
     dateRange: state.dateRange,
+    season: state.season,
     perpendicular: state.perpendicularRange.start
   })
 );

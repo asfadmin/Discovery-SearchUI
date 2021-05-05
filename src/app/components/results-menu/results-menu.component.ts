@@ -101,18 +101,17 @@ export class ResultsMenuComponent implements OnInit, OnDestroy {
     );
   }
 
-  public maxResultWindow(): void {
-    this.maximizeResult();
-  }
-
-  public minResultWindow(): void {
-    this.menuHeightPx = 33;
+  public maxResultWindow(e: Event): void {
+    e.stopPropagation();
+    const maxHeight = window.innerHeight - 160;
+    this.menuHeightPx = maxHeight;
     this.resize$.next();
   }
 
-  public maximizeResult(): void {
-    const maxHeight = window.innerHeight - 160;
-    this.menuHeightPx = maxHeight;
+  public minResultWindow(e: Event): void {
+    e.stopPropagation();
+    console.log('min');
+    this.menuHeightPx = 33;
     this.resize$.next();
   }
 

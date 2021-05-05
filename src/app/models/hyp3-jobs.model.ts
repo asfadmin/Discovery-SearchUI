@@ -4,7 +4,7 @@ import { Hyp3JobType, JobOptionType } from './hyp3-job-type.model';
 export const RtcGammaJobType: Hyp3JobType = {
   id: 'RTC_GAMMA',
   name: 'RTC GAMMA',
-  infoUrl: 'https://hyp3-docs.asf.alaska.edu/guides/rtc_product_guide/',
+  infoUrl: 'https://hyp3-docs.asf.alaska.edu/products/#rtc',
   numProducts: 1,
   productTypes: [{
     dataset: sentinel_1,
@@ -110,7 +110,7 @@ export const RtcGammaJobType: Hyp3JobType = {
 export const InsarGammaJobType: Hyp3JobType = {
   id: 'INSAR_GAMMA',
   name: 'InSAR GAMMA',
-  infoUrl: 'https://asf.alaska.edu/data-sets/derived-data-sets/insar/',
+  infoUrl: 'https://hyp3-docs.asf.alaska.edu/products/#insar',
   numProducts: 2,
   productTypes: [{
     dataset: sentinel_1,
@@ -158,7 +158,7 @@ export const InsarGammaJobType: Hyp3JobType = {
 export const AutoRift: Hyp3JobType = {
   id: 'AUTORIFT',
   name: 'autoRIFT',
-  infoUrl: 'https://hyp3-docs.asf.alaska.edu/',
+  infoUrl: 'https://hyp3-docs.asf.alaska.edu/products/#autorift',
   numProducts: 2,
   productTypes: [{
     dataset: sentinel_1,
