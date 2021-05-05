@@ -95,7 +95,7 @@ export class MaxResultsSelectorComponent implements OnInit, OnDestroy {
   }
 
   public formatNumber(num: number): string {
-    if (num === null) {
+    if (typeof num !== 'number') {
       return '';
     }
 

@@ -1,10 +1,11 @@
 <ng-container *ngIf="isResultsMenuOpen$ | async">
   <div *ngIf="breakpoint$ | async as breakpoint"
     [class.mobile-menu-offset]="breakpoint === breakpoints.MOBILE"
+    [class.desktop-menu-offset]="breakpoint !== breakpoints.MOBILE"
     class="rectangle-wrapper w100">
     <div
       id="result-div"
-      class="w100 results-menu"
+      class="w100"
       [resizeEdges]="{ top: true }"
       [ngClass]="{'mobile-size': breakpoint === breakpoints.MOBILE}"
       [style.height.px]="menuHeightPx"
@@ -12,11 +13,10 @@
       [validateResize]="validate"
       [enableGhostResize]="true"
       [resizeCursorPrecision]="20"
-      [resizeSnapGrid]="{ left: 50, right: 50 }"
       (resizeEnd)="onFinalResize()"
       (resizing)="onResizeEnd($event)">
 
-      <div *ngIf="products.length !== 0" class="min-max-controls">
+      <div *ngIf="products.length !== 0" class="resize-controls">
         <div mwlResizeHandle class="resize-handle-filler"></div>
       </div>
 

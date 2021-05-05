@@ -2,7 +2,6 @@
 
 .rectangle-wrapper {
   position: fixed;
-  bottom: 0;
 }
 
 .no-results {
@@ -12,17 +11,17 @@
 }
 
 .mobile-menu-offset {
-  bottom: 90px;
+  bottom: 117px;
+}
+
+.desktop-menu-offset {
+  bottom: 20px;
 }
 
 .results-menu--background {
   background: rgba(238, 238, 238, 0.7);
   background: white;
   pointer-events: auto;
-}
-
-.results-menu {
-  margin-top: -16px;
 }
 
 .header {
@@ -93,6 +92,15 @@
 }
 
 .min-max-controls {
+  display: flex;
+  justify-content: flex-end;
+  width: 100%;
+  padding-right: 20px;
+  height: 35px;
+  z-index: 9;
+}
+
+.resize-controls {
   display: flex;
   justify-content: center;
   width: 100%;
