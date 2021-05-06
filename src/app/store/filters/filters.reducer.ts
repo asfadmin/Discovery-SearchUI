@@ -32,6 +32,8 @@ export interface FiltersState {
   maxResults: number;
   projectName: string;
   productFilterName: string;
+
+  previousFilters: FiltersState;
 }
 
 
@@ -80,7 +82,9 @@ export const initState: FiltersState = {
 
   maxResults: 250,
   projectName: null,
-  productFilterName: null
+  productFilterName: null,
+
+  previousFilters: null
 };
 
 
@@ -594,6 +598,21 @@ export function filtersReducer(state = initState, action: FiltersActions): Filte
         ...state,
         productFilterName: null
       };
+    }
+    case FiltersActionType.STORE_CURRENT_FILTERS: {
+      return {
+        ...state,
+        previousFilters: state
+      };
+    }
+    case FiltersActionType.RESTORE_FILTERS: {
+      if (state.previousFilters !== null) {
+        return {
+          ...state.previousFilters,
+          previousFilters: null
+        };
+      }
+      return state;
     }
     default: {
       return state;
