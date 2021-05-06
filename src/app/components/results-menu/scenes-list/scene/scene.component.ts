@@ -75,20 +75,4 @@ export class SceneComponent implements OnInit {
   public isDownloadable(product: models.CMRProduct): boolean {
     return this.hyp3.isDownloadable(product);
   }
-
-  public isExpired(job: models.Hyp3Job): boolean {
-    return this.hyp3.isExpired(job);
-  }
-
-  public isFailed(job: models.Hyp3Job): boolean {
-    return this.hyp3.isFailed(job);
-  }
-
-  public isPending(job: models.Hyp3Job): boolean {
-    return this.hyp3.isPending(job);
-  }
-
-  public isRunning(job: models.Hyp3Job): boolean {
-    return this.hyp3.isRunning(job);
-  }
 }
