@@ -127,4 +127,45 @@ export class Hyp3Service {
       })
     );
   }
+
+  public downloadable(products: models.CMRProduct[]): models.CMRProduct[] {
+    return products.filter(product => this.isDownloadable(product));
+  }
+
+  public isDownloadable(product: models.CMRProduct): boolean {
+    return (
+      !product.metadata.job ||
+      (
+        !this.isPending(product.metadata.job) &&
+        !this.isFailed(product.metadata.job) &&
+        !this.isRunning(product.metadata.job) &&
+        !this.isExpired(product.metadata.job)
+      )
+    );
+  }
+
+  public isExpired(job: models.Hyp3Job): boolean {
+    return job.status_code === models.Hyp3JobStatusCode.SUCCEEDED &&
+      this.expirationDays(job.expiration_time) <= 0;
+  }
+
+  public isFailed(job: models.Hyp3Job): boolean {
+    return job.status_code === models.Hyp3JobStatusCode.FAILED;
+  }
+
+  public isPending(job: models.Hyp3Job): boolean {
+    return job.status_code === models.Hyp3JobStatusCode.PENDING;
+  }
+
+  public isRunning(job: models.Hyp3Job): boolean {
+    return job.status_code === models.Hyp3JobStatusCode.RUNNING;
+  }
+
+  private expirationDays(expiration_time: moment.Moment): number {
+    const current = moment.utc();
+
+    const expiration = moment.duration(expiration_time.diff(current));
+
+    return Math.floor(expiration.asDays());
+  }
 }
