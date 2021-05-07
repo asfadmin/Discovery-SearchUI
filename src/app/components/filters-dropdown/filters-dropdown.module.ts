@@ -6,6 +6,7 @@ import { MatTabsModule } from '@angular/material/tabs';
 import { MatSharedModule } from '@shared';
 
 import { SearchButtonModule } from '@components/shared/search-button';
+import { CancelFilterChangesModule } from '@components/shared/cancel-filter-changes';
 import { ClearButtonModule } from '@components/shared/clear-button';
 import { MaxResultsSelectorModule } from '@components/shared/max-results-selector';
 
@@ -35,6 +36,7 @@ import { FlexLayoutModule } from '@angular/flex-layout';
     SbasFiltersModule,
     CustomProductsFiltersModule,
     SearchButtonModule,
+    CancelFilterChangesModule,
     ClearButtonModule,
     MaxResultsSelectorModule,
 
