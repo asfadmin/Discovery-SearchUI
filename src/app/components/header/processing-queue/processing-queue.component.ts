@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 // import { MatBottomSheet } from '@angular/material/bottom-sheet';
@@ -17,7 +17,6 @@ import * as hyp3Store from '@store/hyp3';
 import * as userStore from '@store/user'; import * as models from '@models';
 import * as services from '@services';
 import { ResizedEvent } from 'angular-resize-event';
-// import { ToastrService } from 'ngx-toastr';
 
 enum ProcessingQueueTab {
   SCENES = 'Scenes',
@@ -29,7 +28,11 @@ enum ProcessingQueueTab {
   templateUrl: './processing-queue.component.html',
   styleUrls: ['./processing-queue.component.scss']
 })
-export class ProcessingQueueComponent implements OnInit {
+export class ProcessingQueueComponent implements OnInit, AfterViewInit {
+  @ViewChild('contentArea') contentAreaRef: ElementRef;
+  @ViewChild('contentTopArea') topRef: ElementRef;
+  @ViewChild('contentBottomArea') bottomRef: ElementRef;
+  @ViewChild('errorHeader') errorHeaderRef: ElementRef;
   public allJobs: models.QueuedHyp3Job[] = [];
   public jobs: models.QueuedHyp3Job[] = [];
   public user = '';
@@ -59,6 +62,11 @@ export class ProcessingQueueComponent implements OnInit {
   public dlWidth = 1000;
   public dlHeight = 1000;
   public dlWidthMin = 715;
+
+  public contentAreaHeight = 0;
+  public contentTopAreaHeight = 0;
+  public contentBottomAreaHeight = 0;
+  public errorHeaderHeight = 0;
 
   constructor(
     public authService: services.AuthService,
@@ -137,8 +145,20 @@ export class ProcessingQueueComponent implements OnInit {
     this.store$.select(userStore.getIsUserLoggedIn).subscribe(
       isLoggedIn => {
         this.isUserLoggedIn = isLoggedIn;
+        this.updateContentBottomHeight();
       }
     );
+  }
+
+  ngAfterViewInit() {
+    if (!this.isUserLoggedIn && !this.isUserLoading) {
+      if (!this.errorHeaderRef === undefined) {
+        this.errorHeaderHeight = this.errorHeaderRef.nativeElement.offsetHeight;
+      } else {
+        this.errorHeaderHeight = 0;
+      }
+    }
+    this.updateContentBottomHeight();
   }
 
   public onAccountButtonClicked() {
@@ -323,6 +343,13 @@ export class ProcessingQueueComponent implements OnInit {
   public onResized(event: ResizedEvent) {
     this.dlWidth = event.newWidth;
     this.dlHeight = event.newHeight;
+    this.updateContentBottomHeight()
+  }
+
+  public updateContentBottomHeight() {
+    this.contentAreaHeight = this.contentAreaRef.nativeElement.offsetHeight;
+    this.contentTopAreaHeight = this.topRef.nativeElement.offsetHeight;
+    this.contentBottomAreaHeight = this.contentAreaHeight - this.contentTopAreaHeight - this.errorHeaderHeight;
   }
 
   public onCloseDialog() {
