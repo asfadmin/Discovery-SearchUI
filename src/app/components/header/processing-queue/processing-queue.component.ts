@@ -343,7 +343,7 @@ export class ProcessingQueueComponent implements OnInit, AfterViewInit {
   public onResized(event: ResizedEvent) {
     this.dlWidth = event.newWidth;
     this.dlHeight = event.newHeight;
-    this.updateContentBottomHeight()
+    this.updateContentBottomHeight();
   }
 
   public updateContentBottomHeight() {
