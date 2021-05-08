@@ -71,6 +71,7 @@ $color: $asf-primary-dark;
 }
 
 .jobs-display--desktop {
+  //overflow-y: auto;
   //height: 500px;
   //display: flex;
   //flex-direction: row;
@@ -78,7 +79,7 @@ $color: $asf-primary-dark;
 
 .jobs-display--mobile {
   height: 463px;
-  overflow: auto;
+  overflow: visible;
 }
 
 .jobs-list-panel {
@@ -250,7 +251,7 @@ $color: $asf-primary-dark;
   max-height: calc(100% - #{$header-height} - #{$footer-height} - #{$bottom-offset});
   width: 100%;
   //background-color: white;
-  overflow-y: auto;
+  overflow-y: hidden;
   overflow-x: hidden;
   background-color: white;
   padding: 0;
@@ -262,6 +263,11 @@ $color: $asf-primary-dark;
     overflow: initial;
   }
 }
+
+.dialog-content-mobile {
+  overflow-y: auto !important;
+}
+
 
 .content-block {
   display: flex;
@@ -296,6 +302,11 @@ $color: $asf-primary-dark;
   flex-direction: row;
   //background-color: lightgreen;
   height: 100%;
+  overflow-y: auto;
+}
+
+.content-bottom-area-mobile {
+  overflow-y: visible;
 }
 
 .bottom-item {

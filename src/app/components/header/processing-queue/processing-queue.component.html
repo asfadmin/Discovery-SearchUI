@@ -83,9 +83,13 @@
   </div>
 </div>
 
-<mat-dialog-content class="mat-dialog-content">
+<mat-dialog-content #contentArea
+                    (resized)="onResized($event)"
+                    class="mat-dialog-content"
+                    [class.dialog-content-mobile]="breakpoint == breakpoints.MOBILE"
+>
   <div class="content-block">
-    <div *ngIf="!isUserLoggedIn && !isUserLoading" class="w100 error-header">
+    <div #errorHeader *ngIf="!isUserLoggedIn && !isUserLoading" class="w100 error-header">
       <div style="padding-left: 10px;">
         <b>Sign in to process data</b>
       </div>
@@ -97,7 +101,7 @@
       </div>
     </div>
 
-    <div class="content-top-area">
+    <div #contentTopArea class="content-top-area">
       <div class="jobs-detail">
         <app-processing-options
            *ngIf="selectedJobTypeId"
@@ -106,7 +110,9 @@
       </div>
     </div>
 
-    <div class="content-bottom-area">
+    <div #contentBottomArea class="content-bottom-area"
+         [style.height.px]="contentBottomAreaHeight"
+         [class.content-bottom-area-mobile]="breakpoint == breakpoints.MOBILE">
       <div class="bottom-item">
         <!-- PRODUCT LIST AREA STARTS HERE -->
         <div class="mat-dialog-content-2">
