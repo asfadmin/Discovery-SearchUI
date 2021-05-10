@@ -293,8 +293,10 @@ export class AppComponent implements OnInit, OnDestroy {
   private isEmptySearch(searchState): boolean {
     if (searchState.searchType === models.SearchType.LIST) {
       return searchState.filters.list.length < 1;
-    } else if (searchState.searchType === models.SearchType.SBAS || searchState.searchType === models.SearchType.BASELINE) {
+    } else if (searchState.searchType === models.SearchType.BASELINE) {
       return !searchState.filters.filterMaster;
+    } else if (searchState.searchType === models.SearchType.SBAS) {
+      return !searchState.filters.master;
     }
 
     return false;
