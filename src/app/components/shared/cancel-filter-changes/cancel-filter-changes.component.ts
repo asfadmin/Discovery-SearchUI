@@ -10,7 +10,7 @@ import * as filtersStore from '@store/filters';
 })
 export class CancelFilterChangesComponent implements OnInit {
 
-  constructor(private store$: Store<AppState>,) { }
+  constructor(private store$: Store<AppState>, ) { }
 
   ngOnInit(): void {
   }
