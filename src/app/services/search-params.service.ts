@@ -59,6 +59,39 @@ export class SearchParamsService {
     );
   }
 
+  public getlatestParams(): Observable<any> {
+    return combineLatest(
+      this.searchType$(),
+      this.listParam$(),
+      this.baselineSearchParams$(),
+      this.filterSearchParams$()
+    ).pipe(
+      map(
+        ([searchType, listParam, baselineParams, filterParams ]) => {
+          switch (searchType) {
+            case models.SearchType.LIST: {
+              return listParam;
+            }
+            case models.SearchType.DATASET: {
+              return filterParams;
+            }
+            case models.SearchType.BASELINE: {
+              return baselineParams;
+            }
+            case models.SearchType.SBAS: {
+              return baselineParams;
+            }
+            case models.SearchType.CUSTOM_PRODUCTS: {
+              return listParam;
+            }
+            default: {
+              return filterParams;
+            }
+          }
+        }),
+    );
+  }
+
   private searchType$() {
     return this.store$.select(getSearchType);
   }

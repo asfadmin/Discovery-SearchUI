@@ -59,11 +59,12 @@
     </div>
 
     <div class="footer">
+      <app-cancel-filter-changes></app-cancel-filter-changes>
       <ng-container *ngIf="
         breakpoint === breakpoints.MOBILE ||
         (breakpoint !== breakpoints.MOBILE && selectedSearchType !== searchTypes.BASELINE && selectedSearchType !== searchTypes.SBAS)
       ">
-        <app-max-results-selector
+        <app-max-results-selector class = "search-button"
           *ngIf="
              selectedSearchType !== searchTypes.BASELINE && selectedSearchType !== searchTypes.SBAS &&
              selectedSearchType !== searchTypes.CUSTOM_PRODUCTS

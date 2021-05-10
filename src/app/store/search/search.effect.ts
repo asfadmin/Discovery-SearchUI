@@ -43,6 +43,7 @@ export class SearchEffects {
   public closeMenusWhenSearchIsMade = createEffect(() => this.actions$.pipe(
     ofType(SearchActionType.MAKE_SEARCH),
     switchMap(_ => [
+      new uiStore.ToggleFiltersMenu(),
       new uiStore.CloseFiltersMenu(),
       new uiStore.CloseAOIOptions()
     ])

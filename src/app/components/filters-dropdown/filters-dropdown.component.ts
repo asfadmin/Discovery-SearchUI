@@ -66,4 +66,3 @@ export class FiltersDropdownComponent implements OnInit, OnDestroy {
     this.subs.unsubscribe();
   }
 }
-
