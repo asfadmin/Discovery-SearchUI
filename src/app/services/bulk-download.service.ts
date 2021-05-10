@@ -23,6 +23,7 @@ export class BulkDownloadService {
 
     return this.http.post(this.url, formData, {
       responseType: 'blob',
+      observe: 'response'
     });
   }
 }

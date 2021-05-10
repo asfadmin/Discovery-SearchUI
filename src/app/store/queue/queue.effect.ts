@@ -43,7 +43,7 @@ export class QueueEffects {
       products => this.bulkDownloadService.downloadScript$(products)
     ),
     map(
-      blob => FileSaver.saveAs(blob, `download-all-${this.currentDate()}.py`)
+      req => { FileSaver.saveAs(req.body, req.headers.get('Content-Disposition').slice(20)); }
     )
   ), { dispatch: false });
 
