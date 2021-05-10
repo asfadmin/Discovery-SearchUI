@@ -337,7 +337,7 @@ export class AppComponent implements OnInit, OnDestroy {
   }
 
   private updateMaxSearchResults(): void {
-    const checkAmount = this.searchParams$.getParams().pipe(
+    const checkAmount = this.searchParams$.getlatestParams().pipe(
       debounceTime(200),
       map(params => ({...params, output: 'COUNT'})),
       tap(_ =>
