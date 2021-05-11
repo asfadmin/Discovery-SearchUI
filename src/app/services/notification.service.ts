@@ -85,4 +85,8 @@ export class NotificationService {
       this.toastr.info(infoText);
     }
   }
+
+  public closeFiltersPanel() {
+    this.toastr.warning('Filters panel closed without applying changes. Click the search button in filters panel to apply any changes.', 'Unapplied Filters');
+  }
 }
