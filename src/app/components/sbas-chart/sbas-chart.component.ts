@@ -91,11 +91,13 @@ export class SBASChartComponent implements OnInit, OnDestroy {
         this.customPairs = pairs.custom;
 
         if (this.selectedPair === null && Array.isArray(this.pairs)) {
-          const firstPair = this.pairs[0];
+          if (this.pairs.length > 0) {
+            const firstPair = this.pairs[0];
 
-          this.store$.dispatch(
-            new scenesStore.SetSelectedPair(firstPair.map(product => product.id))
-          );
+            this.store$.dispatch(
+              new scenesStore.SetSelectedPair(firstPair.map(product => product.id))
+            );
+          }
         }
 
         this.makeSbasChart();
