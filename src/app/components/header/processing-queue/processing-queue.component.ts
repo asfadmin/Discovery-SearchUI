@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 // import { MatBottomSheet } from '@angular/material/bottom-sheet';
@@ -28,7 +28,7 @@ enum ProcessingQueueTab {
   templateUrl: './processing-queue.component.html',
   styleUrls: ['./processing-queue.component.scss']
 })
-export class ProcessingQueueComponent implements OnInit, AfterViewInit {
+export class ProcessingQueueComponent implements OnInit {
   @ViewChild('contentArea') contentAreaRef: ElementRef;
   @ViewChild('contentTopArea') topRef: ElementRef;
   @ViewChild('contentBottomArea') bottomRef: ElementRef;
@@ -148,9 +148,7 @@ export class ProcessingQueueComponent implements OnInit, AfterViewInit {
         this.updateContentBottomHeight();
       }
     );
-  }
 
-  ngAfterViewInit() {
     if (!this.isUserLoggedIn && !this.isUserLoading) {
       if (!this.errorHeaderRef === undefined) {
         this.errorHeaderHeight = this.errorHeaderRef.nativeElement.offsetHeight;
@@ -349,9 +347,11 @@ export class ProcessingQueueComponent implements OnInit, AfterViewInit {
   }
 
   public updateContentBottomHeight() {
-    this.contentAreaHeight = this.contentAreaRef.nativeElement.offsetHeight;
-    this.contentTopAreaHeight = this.topRef.nativeElement.offsetHeight;
-    this.contentBottomAreaHeight = this.contentAreaHeight - this.contentTopAreaHeight - this.errorHeaderHeight;
+    if (this.contentAreaRef !== undefined && this.topRef !== undefined) {
+      this.contentAreaHeight = this.contentAreaRef.nativeElement.offsetHeight;
+      this.contentTopAreaHeight = this.topRef.nativeElement.offsetHeight;
+      this.contentBottomAreaHeight = this.contentAreaHeight - this.contentTopAreaHeight - this.errorHeaderHeight;
+    }
   }
 
   public onCloseDialog() {
