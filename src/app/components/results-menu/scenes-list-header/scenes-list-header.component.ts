@@ -38,7 +38,7 @@ export class ScenesListHeaderComponent implements OnInit, OnDestroy {
     map(pairs => pairs.pairs.length + pairs.custom.length)
   );
   public pairs: models.CMRProductPair[];
-  public sbasProducts: models.CMRProduct[];
+  public sbasProducts: models.CMRProduct[] = [];
   public queuedProducts: models.CMRProduct[];
   public canHideRawData: boolean;
   public showS1RawData: boolean;
