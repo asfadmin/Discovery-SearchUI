@@ -45,8 +45,7 @@ export class OnDemandAddMenuComponent implements OnInit {
       this.store$.select(getScenes).pipe(
         withLatestFrom(this.store$.select(getMasterName))
         ).subscribe(
-        ([scenes, referenceName]) =>
-        {
+        ([scenes, referenceName]) => {
           this.scenes = scenes;
           if (!!referenceName) {
             const referenceSceneIdx = this.scenes.findIndex(scene => scene.name === referenceName);
