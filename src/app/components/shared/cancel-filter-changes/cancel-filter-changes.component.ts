@@ -1,23 +1,43 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { SearchType } from '@models';
 import { Store } from '@ngrx/store';
 import { AppState } from '@store';
 import * as filtersStore from '@store/filters';
-
+import * as searchStore from '@store/search';
+import { SubSink } from 'subsink';
 @Component({
   selector: 'app-cancel-filter-changes',
   templateUrl: './cancel-filter-changes.component.html',
   styleUrls: ['./cancel-filter-changes.component.scss']
 })
-export class CancelFilterChangesComponent implements OnInit {
+export class CancelFilterChangesComponent implements OnInit, OnDestroy {
 
-  constructor(private store$: Store<AppState>,) { }
+  private searchType$ = this.store$.select(searchStore.getSearchType);
+  private searchType: SearchType;
+  private subs = new SubSink();
+
+  constructor(private store$: Store<AppState>) {
+   }
 
   ngOnInit(): void {
+    this.subs.add(
+        this.searchType$.subscribe(
+          currentSearchType => this.searchType = currentSearchType
+        )
+      );
+  }
+
+  ngOnDestroy(): void {
+    this.subs.unsubscribe();
   }
 
   public onCancelFiltersChange(): void {
-    this.store$.dispatch(new filtersStore.RestoreFilters());
-    this.store$.dispatch(new filtersStore.StoreCurrentFilters());
+    if (this.searchType === SearchType.LIST) {
+      this.store$.dispatch(new filtersStore.ClearListFilters());
+    } else {
+      this.store$.dispatch(new filtersStore.RestoreFilters());
+      this.store$.dispatch(new filtersStore.StoreCurrentFilters());
+    }
   }
 
 }
