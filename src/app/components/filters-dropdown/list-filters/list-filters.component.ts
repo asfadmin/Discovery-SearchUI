@@ -71,7 +71,7 @@ export class ListFiltersComponent implements OnInit, OnDestroy {
 
     this.subs.add(
       this.newListInput$.asObservable().pipe(
-        debounceTime(1000),
+        debounceTime(750),
         withLatestFrom(this.listSearchMode$)
       ).subscribe(([text, searchMode]) => {
         const scenes = text

@@ -87,6 +87,6 @@ export class NotificationService {
   }
 
   public closeFiltersPanel() {
-    this.toastr.warning('Filters panel closed without applying changes. Click the search button in filters panel to apply any changes.', 'Unapplied Filters');
+    this.toastr.info('Filters dismissed and not applied');
   }
 }

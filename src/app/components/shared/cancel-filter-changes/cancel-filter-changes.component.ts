@@ -34,10 +34,11 @@ export class CancelFilterChangesComponent implements OnInit, OnDestroy {
   public onCancelFiltersChange(): void {
     if (this.searchType === SearchType.LIST) {
       this.store$.dispatch(new filtersStore.ClearListFilters());
-    } else {
-      this.store$.dispatch(new filtersStore.RestoreFilters());
-      this.store$.dispatch(new filtersStore.StoreCurrentFilters());
     }
+
+    this.store$.dispatch(new filtersStore.RestoreFilters());
+    this.store$.dispatch(new filtersStore.StoreCurrentFilters());
+
   }
 
 }
