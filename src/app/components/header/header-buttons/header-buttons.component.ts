@@ -199,6 +199,20 @@ export class HeaderButtonsComponent implements OnInit, OnDestroy {
       '_blank'
     );
   }
+  public onOpenHyP3Guide(): void {
+    const url = 'https://hyp3-docs.asf.alaska.edu/';
+
+    window.dataLayer = window.dataLayer || [];
+    window.dataLayer.push({
+      'event': 'open-user-guide',
+      'open-user-guide': url
+    });
+
+    window.open(
+      url,
+      '_blank'
+    );
+  }
 
   public onOpenWhatsNew(): void {
     const url = 'https://docs.google.com/document/d/e/2PACX-1vSqQxPT8nhDQfbCLS8gBZ9SqSEeJy8BdSCiYVlBOXwsFwJ6_ct7pjtOqbXHo0Q3wzinzvO8bGWtHj0H/pub';
