@@ -17,13 +17,10 @@ $color: $asf-primary-dark;
 }
 
 ::ng-deep .tab-menu .mat-menu-content {
-  // min-width: none !important;
   width: 160px !important;
 }
 
 [mat-dialog-title] {
-  //margin: -24px -24px 0 -24px !important;
-  //padding: 10px 24px;
   background: #369;
   color: #fff;
   cursor: move;
@@ -31,7 +28,6 @@ $color: $asf-primary-dark;
 }
 
 .processing-queue {
-  //width: 600px;
   min-width: 350px;
   height: 100%;
   min-height: 500px;
@@ -45,9 +41,6 @@ $color: $asf-primary-dark;
   font-weight: bold;
   color: $asf-primary-dark;
   background-color: $background-color;
-  //resize: both;
-  //overflow: hidden;
-  //overflow-y: scroll;
 }
 
 .pq-card-title-group {
@@ -68,13 +61,6 @@ $color: $asf-primary-dark;
 .jobs-dialog {
   width: 100%;
   height: calc(100% - #{$footer-height});
-}
-
-.jobs-display--desktop {
-  //overflow-y: auto;
-  //height: 500px;
-  //display: flex;
-  //flex-direction: row;
 }
 
 .jobs-display--mobile {
@@ -171,11 +157,6 @@ $color: $asf-primary-dark;
   border-top-color: #3d3e38;
   border-top-width: 1px;
   border-top-style: solid;
-
-  button {
-    //transform: scale(0.75);
-    //background-color: adjust-color($asf-primary, $lightness: +10%);
-  }
 }
 
 .processing-type-text {
@@ -250,7 +231,6 @@ $color: $asf-primary-dark;
   height: calc(100% - #{$header-height} - #{$footer-height} - #{$bottom-offset});
   max-height: calc(100% - #{$header-height} - #{$footer-height} - #{$bottom-offset});
   width: 100%;
-  //background-color: white;
   overflow-y: hidden;
   overflow-x: hidden;
   background-color: white;
@@ -300,7 +280,6 @@ $color: $asf-primary-dark;
 .content-bottom-area {
   display: flex;
   flex-direction: row;
-  //background-color: lightgreen;
   height: 100%;
   overflow-y: auto;
 }
@@ -310,7 +289,6 @@ $color: $asf-primary-dark;
 }
 
 .bottom-item {
-  //flex: 1 0 auto;
   height: 100%;
   width: 100%;
 }
@@ -374,15 +352,11 @@ $color: $asf-primary-dark;
 
 .rectangle {
   position: relative;
-  //top: 0px;
-  //bottom: 0px;
   display: flex;
   align-items: center;
   justify-content: center;
   width: 100%;
   min-height: 300px;
-  //margin: auto;
-  //border-radius: 30px;
   border-color: red;
   border-style: solid;
   font-size: 25px;

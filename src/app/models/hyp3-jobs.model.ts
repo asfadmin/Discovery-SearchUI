@@ -144,7 +144,7 @@ export const InsarGammaJobType: Hyp3JobType = {
       Include the look vector theta and phi files in the product package.
     `
   }, {
-    name: 'Include Los Displacement',
+    name: 'Include LOS Displacement',
     apiName: 'include_los_displacement',
     type: JobOptionType.TOGGLE,
     default: false,

@@ -72,22 +72,16 @@
     <a href="javascript:feedback.showForm();" onfocus="this.blur()"> <i class="fa fa-comments-o"></i> Feedback</a>
   </div>
 
-<!--  <div class="help-div header-link">-->
-<!--    <a href="https://hyp3-docs.asf.alaska.edu/" onfocus="this.blur()" target="_blank">-->
-<!--      <i class="fa fa-question-circle-o"></i> Docs-->
-<!--    </a>-->
-<!--  </div>-->
-
   <div class="close-x" (click)="onCloseDialog()">
     <mat-icon>close</mat-icon>
   </div>
 </div>
 
 <mat-dialog-content #contentArea
-                    (resized)="onResized($event)"
-                    class="mat-dialog-content"
-                    [class.dialog-content-mobile]="breakpoint == breakpoints.MOBILE"
->
+  (resized)="onResized($event)"
+  class="mat-dialog-content"
+  [class.dialog-content-mobile]="breakpoint == breakpoints.MOBILE">
+
   <div class="content-block">
     <div #errorHeader *ngIf="!isUserLoggedIn && !isUserLoading" class="w100 error-header">
       <div style="padding-left: 10px;">
@@ -114,6 +108,7 @@
          [style.height.px]="contentBottomAreaHeight"
          [class.content-bottom-area-mobile]="breakpoint == breakpoints.MOBILE">
       <div class="bottom-item">
+
         <!-- PRODUCT LIST AREA STARTS HERE -->
         <div class="mat-dialog-content-2">
           <div class="jobs-dialog">
@@ -156,8 +151,6 @@
                 </app-processing-queue-jobs>
               </div>
             </div>
-
-            <mat-progress-bar *ngIf="isQueueSubmitProcessing" mode="indeterminate"></mat-progress-bar>
           </div>
 
         </div>
@@ -167,6 +160,11 @@
 </mat-dialog-content>
 
 <mat-dialog-actions class="mat-dialog-actions">
+  <mat-progress-bar
+    *ngIf="isQueueSubmitProcessing"
+    [mode]="progress === null ? 'query' : 'determinate'" [value]="progress">
+  </mat-progress-bar>
+
   <div class="w100 hyp3-footer">
 
     <div class="footer-clear">
