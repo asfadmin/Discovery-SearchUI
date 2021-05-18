@@ -91,6 +91,7 @@ export class SearchButtonComponent implements OnInit, OnDestroy {
   }
 
   public onClearSearch(): void {
+    this.store$.dispatch(new filtersStore.ClearListFilters());
     this.store$.dispatch(new searchStore.ClearSearch());
   }
 
