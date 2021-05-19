@@ -134,13 +134,16 @@ export class SceneFileComponent {
   }
 
   public jobParamsToList(metadata) {
+    const jobType = models.hyp3JobTypes[metadata.job.job_type];
+    const options = !!jobType ? jobType.options : models.hyp3JobOptionsOrdered;
+
     return !!metadata.job ?
-      models.hyp3JobOptionsOrdered
-      .filter(option => metadata.job.job_parameters[option.apiName])
-      .map(option => {
-        return {name: option.name, val: metadata.job.job_parameters[option.apiName]};
-      }) :
-      [];
+      options
+        .filter(option => metadata.job.job_parameters[option.apiName])
+        .map(option => {
+          return {name: option.name, val: metadata.job.job_parameters[option.apiName]};
+        }) :
+        [];
   }
 
   private expirationDays(expiration_time: moment.Moment): number {
