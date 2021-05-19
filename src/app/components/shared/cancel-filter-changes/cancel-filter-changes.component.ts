@@ -4,6 +4,7 @@ import { Store } from '@ngrx/store';
 import { AppState } from '@store';
 import * as filtersStore from '@store/filters';
 import * as searchStore from '@store/search';
+import * as uiStore from '@store/ui';
 import { SubSink } from 'subsink';
 @Component({
   selector: 'app-cancel-filter-changes',
@@ -38,6 +39,7 @@ export class CancelFilterChangesComponent implements OnInit, OnDestroy {
 
     this.store$.dispatch(new filtersStore.RestoreFilters());
     this.store$.dispatch(new filtersStore.StoreCurrentFilters());
+    this.store$.dispatch(new uiStore.CloseFiltersMenu());
 
   }
 

@@ -2,7 +2,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { SubSink } from 'subsink';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
-import { Subject } from 'rxjs';
+import { combineLatest, Subject } from 'rxjs';
 import { tap, delay } from 'rxjs/operators';
 import { Store, ActionsSubject } from '@ngrx/store';
 import { ofType } from '@ngrx/effects';
@@ -17,6 +17,7 @@ import * as services from '@services';
 import { SavedSearchType, SearchType } from '@models';
 import { MatDialog } from '@angular/material/dialog';
 import { HelpComponent } from '@components/help/help.component';
+import { getFilterMaster } from '@store/scenes';
 
 // Declare GTM dataLayer array.
 declare global {
@@ -39,6 +40,10 @@ export class SearchButtonComponent implements OnInit, OnDestroy {
   public isSearchError = false;
 
   private subs = new SubSink();
+
+  private stackReferenceScene: string;
+  private latestReferenceScene: string;
+  private isFiltersOpen = false;
 
   constructor(
     private store$: Store<AppState>,
@@ -70,23 +75,56 @@ export class SearchButtonComponent implements OnInit, OnDestroy {
       )
     );
 
+    this.subs.add(
+      this.actions$.pipe(
+        ofType<searchStore.SearchError>(searchStore.SearchActionType.SET_SEARCH_TYPE)
+      ).subscribe(
+        _ => {
+          this.stackReferenceScene = null;
+          this.latestReferenceScene = null;
+        }
+      )
+    );
+
+    this.subs.add(
+      combineLatest(this.store$.select(getFilterMaster),
+      this.store$.select(uiStore.getIsFiltersMenuOpen)).subscribe(([latestFilter, isOpen]) => {
+      if (isOpen && this.searchType === this.searchTypes.BASELINE || this.searchType === this.searchTypes.SBAS) {
+          this.latestReferenceScene = latestFilter;
+          if (this.stackReferenceScene == null || '') {
+            this.stackReferenceScene = latestFilter;
+          }
+      }
+      this.isFiltersOpen = isOpen;
+      }
+      )
+    );
+
     this.handleSearchErrors();
   }
 
   public onDoSearch(): void {
-    if (this.searchType === SearchType.BASELINE) {
-      this.clearBaselineRanges();
-    } else if (this.searchType === SearchType.SBAS) {
-      this.setBaselineRanges();
-    }
+    if ((this.searchType !== this.searchTypes.SBAS && this.searchType !== this.searchTypes.BASELINE) ||
+    ((this.stackReferenceScene !== this.latestReferenceScene || !this.isFiltersOpen) &&
+        (this.searchType === this.searchTypes.SBAS || this.searchType === this.searchTypes.BASELINE))
+      ) {
+      if (this.searchType === SearchType.BASELINE) {
+        this.clearBaselineRanges();
+      } else if (this.searchType === SearchType.SBAS) {
+        this.setBaselineRanges();
+      }
 
-    this.store$.dispatch(new searchStore.MakeSearch());
+      this.store$.dispatch(new searchStore.MakeSearch());
 
-    const search = this.savedSearchService.makeCurrentSearch(`${Date.now()}`);
+      const search = this.savedSearchService.makeCurrentSearch(`${Date.now()}`);
 
-    if (search) {
-      this.store$.dispatch(new userStore.AddSearchToHistory(search));
-      this.store$.dispatch(new userStore.SaveSearchHistory());
+      if (search) {
+        this.store$.dispatch(new userStore.AddSearchToHistory(search));
+        this.store$.dispatch(new userStore.SaveSearchHistory());
+      }
+    } else {
+      this.stackReferenceScene = null;
+      this.store$.dispatch(new uiStore.CloseFiltersMenu());
     }
   }
 
