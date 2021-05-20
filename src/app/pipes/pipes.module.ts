@@ -3,14 +3,15 @@ import { CommonModule } from '@angular/common';
 
 import { ReadableSizeFromBytesPipe } from './readable-size-from-bytes.pipe';
 import { ShortDatePipe, ShortDateTimePipe, FullDatePipe } from './short-date.pipe';
-
+import { JoinPipe } from './join.pipe';
 
 @NgModule({
   declarations: [
     ReadableSizeFromBytesPipe,
     ShortDatePipe,
     ShortDateTimePipe,
-    FullDatePipe
+    FullDatePipe,
+    JoinPipe
   ],
   imports: [
     CommonModule
@@ -19,7 +20,8 @@ import { ShortDatePipe, ShortDateTimePipe, FullDatePipe } from './short-date.pip
     ReadableSizeFromBytesPipe,
     ShortDatePipe,
     ShortDateTimePipe,
-    FullDatePipe
+    FullDatePipe,
+    JoinPipe
   ]
 })
 export class PipesModule { }
