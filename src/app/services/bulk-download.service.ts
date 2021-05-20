@@ -3,15 +3,21 @@ import { HttpClient } from '@angular/common/http';
 
 import { Observable } from 'rxjs';
 
+import { EnvironmentService } from '@services/environment.service';
 import { CMRProduct } from '@models';
 
 @Injectable({
   providedIn: 'root'
 })
 export class BulkDownloadService {
-  private readonly url = 'https://bulk-download.asf.alaska.edu';
+  constructor(
+    private http: HttpClient,
+    private env: EnvironmentService,
+  ) {}
 
-  constructor(private http: HttpClient) {}
+  private get url(): string {
+    return this.env.currentEnv.bulk_download;
+  }
 
   public downloadScript$(products: CMRProduct[]): Observable<any> {
     const productsStr = products

@@ -31,7 +31,7 @@ export class CustomizeEnvComponent implements OnInit {
         return;
       }
 
-      localStorage.setItem('customEnv', this.envStr);
+      localStorage.setItem('customEnv-1', this.envStr);
       this.env.setEnvs(customEnv);
     } catch {
       this.snackBar.open(`JSON parse error while setting env`, 'ERROR', {
@@ -42,7 +42,7 @@ export class CustomizeEnvComponent implements OnInit {
   }
 
   resetToDefaultEnv(): void {
-    localStorage.removeItem('customEnv');
+    localStorage.removeItem('customEnv-1');
     this.env.resetToDefault();
     this.envStr = JSON.stringify(this.env.envs, null, 2);
   }
