@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild, ElementRef, OnDestroy } from '@angular/core';
 import noUiSlider from 'nouislider';
 
-import { Subject } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
 import { delay, debounceTime, distinctUntilChanged, take, filter } from 'rxjs/operators';
 import { AppState } from '@store';
 import { Store } from '@ngrx/store';
@@ -11,6 +11,10 @@ import { SubSink } from 'subsink';
 
 import * as models from '@models';
 
+export interface BaselineSlider {
+  slider: any;
+  values: Observable<number[]>;
+}
 
 @Component({
   selector: 'app-baseline-sliders',
@@ -31,10 +35,15 @@ export class BaselineSlidersComponent implements OnInit, OnDestroy {
 
   constructor(
     private store$: Store<AppState>,
+    // private actions$: ActionsSubject,
   ) { }
 
   ngOnInit(): void {
-    const [perpSlider, perpValues$] = this.makeSlider$(this.perpendicularFilter);
+    const perpBaselineSlider = this.makeSlider$(this.perpendicularFilter);
+    const perpSlider = perpBaselineSlider.slider;
+    const perpValues$ = perpBaselineSlider.values;
+
+    // const [perpSlider, perpValues$] = this.makeSlider$(this.perpendicularFilter);
     this.perpSlider = perpSlider;
 
     this.subs.add(
@@ -50,7 +59,10 @@ export class BaselineSlidersComponent implements OnInit, OnDestroy {
       )
     );
 
-    const [tempSlider, tempValues$] = this.makeSlider$(this.temporalFilter);
+    const tempBaselineSlider = this.makeSlider$(this.temporalFilter);
+    const tempSlider = tempBaselineSlider.slider;
+    const tempValues$ = tempBaselineSlider.values;
+    // const [tempSlider, tempValues$] = this.makeSlider$(this.temporalFilter);
     this.tempSlider = tempSlider;
 
     this.subs.add(
@@ -65,6 +77,13 @@ export class BaselineSlidersComponent implements OnInit, OnDestroy {
         }
       )
     );
+
+    // this.subs.add(
+    //   this.actions$.pipe(
+    //     ofType<ToggleFiltersMenu>()).subscribe(
+    //       tempValues$
+    //   )
+    // )
 
     this.store$.select(filtersStore.getTemporalRange).pipe(
       take(1),
@@ -95,6 +114,7 @@ export class BaselineSlidersComponent implements OnInit, OnDestroy {
       this.store$.select(filtersStore.getTemporalRange).subscribe(
         temp => {
           this.tempRange = temp;
+          tempSlider.set([temp.start, temp.end]);
         }
       )
     );
@@ -126,12 +146,15 @@ export class BaselineSlidersComponent implements OnInit, OnDestroy {
 
     this.subs.add(
       this.store$.select(filtersStore.getPerpendicularRange).subscribe(
-        perp => this.perpRange = perp
+        perp => {
+          this.perpRange = perp;
+          perpSlider.set([perp.start, perp.end]);
+        }
       )
     );
   }
 
-  private makeSlider$(filterRef: ElementRef) {
+  private makeSlider$(filterRef: ElementRef): BaselineSlider {
     const values$ = new Subject<number[]>();
     const slider = noUiSlider.create(filterRef.nativeElement, {
       start: [null, null],
@@ -147,13 +170,13 @@ export class BaselineSlidersComponent implements OnInit, OnDestroy {
       values$.next(values.map(v => +v));
     });
 
-    return [
+    return {
       slider,
-      values$.asObservable().pipe(
+      values: values$.asObservable().pipe(
         debounceTime(500),
         distinctUntilChanged()
       )
-    ];
+      };
   }
 
   private setRangeOnSlider(slider, range): void {
