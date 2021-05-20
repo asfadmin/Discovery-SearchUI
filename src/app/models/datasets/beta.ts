@@ -12,6 +12,7 @@ export const beta = {
     Props.FLIGHT_DIRECTION,
     Props.POLARIZATION,
     Props.MISSION_NAME,
+    Props.ABSOLUTE_ORBIT,
   ],
   apiValue: { asfplatform: 'SENTINEL-1 INTERFEROGRAM (BETA)' },
   date: { start: new Date(2014, 3, 25) },
