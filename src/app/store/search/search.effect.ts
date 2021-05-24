@@ -244,34 +244,33 @@ export class SearchEffects {
     format: new GeoJSON(),
   });
   private findCountries(shapeString: string) {
-    let parser = new WKT();
-    let feature = parser.readFeature(shapeString);
-    let countries = []
+    const parser = new WKT();
+    const feature = parser.readFeature(shapeString);
+    let countries = [];
     this.vectorSource.forEachFeature(f => {
       if (f.getGeometry().intersectsExtent(feature.getGeometry().getExtent())) {
-        countries.push(f)
+        countries.push(f);
       }
-    })
-    countries = countries.map(c => c.values_.name)
+    });
+    countries = countries.map(c => c.values_.name);
     window.dataLayer = window.dataLayer || [];
     window.dataLayer.push({
-      "event": "search-countries",
-      "search-countries": countries
-    })
+      'event': 'search-countries',
+      'search-countries': countries
+    });
   }
   private logCountries(): void {
     this.searchParams$.getParams().pipe(first()).subscribe(params => {
       if (params.intersectsWith) {
-        if(this.vectorSource.getFeatures().length > 0){
-          this.findCountries(params.intersectsWith)
-        }
-        else {
+        if (this.vectorSource.getFeatures().length > 0) {
+          this.findCountries(params.intersectsWith);
+        } else {
         this.http.get('/assets/countries.geojson').subscribe(f => {
           this.vectorSource.addFeatures(this.vectorSource.getFormat().readFeatures(f));
-          this.findCountries(params.intersectsWith)
-        })
+          this.findCountries(params.intersectsWith);
+        });
       }
       }
-    })
+    });
   }
 }
