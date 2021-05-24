@@ -2,16 +2,18 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ListSearchType } from '@models';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
-import { Subject } from 'rxjs';
+import { combineLatest, Subject } from 'rxjs';
 import { map, debounceTime, withLatestFrom } from 'rxjs/operators';
 import { SubSink } from 'subsink';
 
-import { Store } from '@ngrx/store';
+import { ActionsSubject, Store } from '@ngrx/store';
 import { AppState } from '@store';
 import * as filtersStore from '@store/filters';
+import * as searchStore from '@store/search';
 
 import * as models from '@models';
 import * as services from '@services';
+import { ofType } from '@ngrx/effects';
 
 enum ListPanel {
   SEARCH = 'search',
@@ -58,16 +60,27 @@ export class ListFiltersComponent implements OnInit, OnDestroy {
     private snackBar: MatSnackBar,
     private store$: Store<AppState>,
     private screenSize: services.ScreenSizeService,
+    private actions$: ActionsSubject,
   ) {}
 
   ngOnInit() {
     this.subs.add(
-      this.store$.select(filtersStore.getSearchList).pipe(
-        map(list => list.join('\n'))
-      ).subscribe(
-        listStr => this.searchList = listStr
+      combineLatest(
+      this.actions$.pipe(
+        ofType(searchStore.SearchActionType.SET_SEARCH_TYPE_AFTER_SAVE, searchStore.SearchActionType.MAKE_SEARCH, filtersStore.FiltersActionType.RESTORE_FILTERS),
+        withLatestFrom(this.store$.select(filtersStore.getSearchList).pipe(map(list => list.join('\n')))),
+        // )
+      )).subscribe(([[_, listStr]]) => this.searchList = listStr
       )
     );
+
+    // this.subs.add(
+    //   this.store$.select(filtersStore.getSearchList).pipe(
+    //     map(list => list.join('\n'))
+    //   ).subscribe(
+    //     listStr => this.searchList = listStr
+    //   )
+    // );
 
     this.subs.add(
       this.newListInput$.asObservable().pipe(

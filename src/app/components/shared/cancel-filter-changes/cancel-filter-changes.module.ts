@@ -5,7 +5,6 @@ import { MatMenuModule } from '@angular/material/menu';
 
 import { MatSharedModule } from '@shared';
 import { CancelFilterChangesComponent } from './cancel-filter-changes.component';
-// import { SearchButtonComponent } from './search-button.component';
 
 @NgModule({
   declarations: [
