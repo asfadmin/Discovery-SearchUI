@@ -4,7 +4,7 @@ import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { Store, Action } from '@ngrx/store';
 
 import { of, forkJoin, combineLatest, Observable, EMPTY } from 'rxjs';
-import { map, withLatestFrom, switchMap, catchError, filter } from 'rxjs/operators';
+import { map, withLatestFrom, switchMap, catchError, filter, first } from 'rxjs/operators';
 
 import { AppState } from '../app.reducer';
 import { SetSearchAmount, EnableSearch, DisableSearch, SetSearchType } from './search.action';
@@ -22,8 +22,10 @@ import {
 import { getIsCanceled, getSearchType } from './search.reducer';
 
 import * as models from '@models';
-import { HttpErrorResponse } from '@angular/common/http';
-
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import WKT from 'ol/format/WKT';
+import GeoJSON from 'ol/format/GeoJSON';
+import VectorSource from 'ol/source/Vector';
 @Injectable()
 export class SearchEffects {
   constructor(
@@ -33,6 +35,7 @@ export class SearchEffects {
     private asfApiService: services.AsfApiService,
     private productService: services.ProductService,
     private hyp3Service: services.Hyp3Service,
+    private http: HttpClient
   ) {}
 
   public clearMapInteractionModeOnSearch = createEffect(() => this.actions$.pipe(
@@ -120,6 +123,7 @@ export class SearchEffects {
   ));
 
   private asfApiQuery$(): Observable<Action> {
+    this.logCountries();
     return this.searchParams$.getParams().pipe(
     map(params => [params, {...params, output: 'COUNT'}]),
     switchMap(
@@ -235,5 +239,39 @@ export class SearchEffects {
       });
 
     return virtualProducts;
+  }
+  private vectorSource = new VectorSource({
+    format: new GeoJSON(),
+  });
+  private findCountries(shapeString: string) {
+    let parser = new WKT();
+    let feature = parser.readFeature(shapeString);
+    let countries = []
+    this.vectorSource.forEachFeature(f => {
+      if (f.getGeometry().intersectsExtent(feature.getGeometry().getExtent())) {
+        countries.push(f)
+      }
+    })
+    countries = countries.map(c => c.values_.name)
+    window.dataLayer = window.dataLayer || [];
+    window.dataLayer.push({
+      "event": "search-countries",
+      "search-countries": countries
+    })
+  }
+  private logCountries(): void {
+    this.searchParams$.getParams().pipe(first()).subscribe(params => {
+      if (params.intersectsWith) {
+        if(this.vectorSource.getFeatures().length > 0){
+          this.findCountries(params.intersectsWith)
+        }
+        else {
+        this.http.get('/assets/countries.geojson').subscribe(f => {
+          this.vectorSource.addFeatures(this.vectorSource.getFormat().readFeatures(f));
+          this.findCountries(params.intersectsWith)
+        })
+      }
+      }
+    })
   }
 }
