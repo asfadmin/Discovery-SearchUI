@@ -147,7 +147,7 @@ export class SearchEffects {
         catchError(
           (err: HttpErrorResponse) => {
             if (err.status !== 400) {
-              return of(new SearchError(`Uknown Error`));
+              return of(new SearchError(`Unknown Error`));
             }
             return EMPTY;
           }
