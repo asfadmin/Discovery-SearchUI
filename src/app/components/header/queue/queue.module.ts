@@ -19,6 +19,7 @@ import { DragDropModule } from '@angular/cdk/drag-drop';
 import { MatDialogModule } from '@angular/material/dialog';
 import { AngularResizedEventModule } from 'angular-resize-event';
 import { FileDownloadDirective } from '@directives/file-download.directive';
+import {MatProgressBarModule} from '@angular/material/progress-bar';
 
 
 @NgModule({
@@ -40,7 +41,8 @@ import { FileDownloadDirective } from '@directives/file-download.directive';
         ResizableModule,
         DragDropModule,
         MatDialogModule,
-        AngularResizedEventModule
+        AngularResizedEventModule,
+        MatProgressBarModule
     ],
   exports: [
     QueueComponent
