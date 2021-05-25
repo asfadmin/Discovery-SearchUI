@@ -29,12 +29,12 @@ export class SearchParamsService {
   public getParams(): Observable<any> {
     return combineLatest(
       this.searchType$(),
-      this.listParam$(),
       this.baselineSearchParams$(),
     ).pipe(
+      withLatestFrom(this.listParam$()),
       withLatestFrom(this.filterSearchParams$()),
       map(
-        ([[searchType, listParam, baselineParams], filterParams ]) => {
+        ([[[searchType, baselineParams], listParam], filterParams ]) => {
           switch (searchType) {
             case models.SearchType.LIST: {
               return listParam;
