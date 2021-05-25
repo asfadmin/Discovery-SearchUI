@@ -13,10 +13,6 @@ import { CMRProduct, AsfApiOutputFormat, Breakpoints } from '@models';
 import { MatDialogRef } from '@angular/material/dialog';
 import { SubSink } from 'subsink';
 import { ResizedEvent } from 'angular-resize-event';
-import {HttpClient} from '@angular/common/http';
-import { saveAs } from 'file-saver';
-import { Observable } from 'rxjs';
-import { download, Download } from 'ngx-operators';
 
 @Component({
   selector: 'app-queue',
@@ -26,8 +22,6 @@ import { download, Download } from 'ngx-operators';
 export class QueueComponent implements OnInit, OnDestroy {
 
   @Input() appQueueComponentModel: string;
-
-  download$: Observable<Download>;
 
   public queueHasOnDemandProducts = false;
   public showDemWarning: boolean;
@@ -71,7 +65,6 @@ export class QueueComponent implements OnInit, OnDestroy {
     private dialogRef: MatDialogRef<QueueComponent>,
     private screenSize: ScreenSizeService,
     private notificationService: NotificationService,
-    private http: HttpClient,
   ) {}
 
   ngOnInit() {
@@ -166,16 +159,6 @@ export class QueueComponent implements OnInit, OnDestroy {
   public onResized(event: ResizedEvent) {
     this.dlWidth = event.newWidth;
     this.dlHeight = event.newHeight;
-  }
-
-  public download(href) {
-    console.log('href:', href);
-    this.download$ = this.http.get(href, {
-      withCredentials: true,
-      reportProgress: true,
-      observe: 'events',
-      responseType: 'blob'
-    }).pipe(download(() => saveAs('special.nc')));
   }
 
   onCloseDownloadQueue() {
