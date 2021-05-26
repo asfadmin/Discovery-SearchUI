@@ -193,7 +193,14 @@ export class ProcessingQueueComponent implements OnInit {
           return;
         }
 
-        this.onSubmitQueue(jobTypesWithQueued, this.validateOnly);
+        if (this.env.maturity === 'prod') {
+          this.validateOnly = false;
+        }
+
+        this.onSubmitQueue(
+          jobTypesWithQueued,
+          this.validateOnly
+        );
       }
     );
   }
