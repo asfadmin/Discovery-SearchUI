@@ -50,6 +50,7 @@ export class ProcessingQueueComponent implements OnInit {
 
   public projectName = '';
   public processingOptions: models.Hyp3ProcessingOptions;
+  public validateOnly = false;
 
   public hyp3JobTypes = models.hyp3JobTypes;
   public hyp3JobTypesList: models.Hyp3JobType[];
@@ -70,6 +71,7 @@ export class ProcessingQueueComponent implements OnInit {
   constructor(
     public authService: services.AuthService,
     public dialog: MatDialog,
+    public env: services.EnvironmentService,
     private dialogRef: MatDialogRef<ProcessingQueueComponent>,
     private snackBar: MatSnackBar,
     private store$: Store<AppState>,
@@ -191,7 +193,7 @@ export class ProcessingQueueComponent implements OnInit {
           return;
         }
 
-        this.onSubmitQueue(jobTypesWithQueued);
+        this.onSubmitQueue(jobTypesWithQueued, this.validateOnly);
       }
     );
   }
@@ -215,7 +217,7 @@ export class ProcessingQueueComponent implements OnInit {
     return R;
   }
 
-  public onSubmitQueue(jobTypesWithQueued): void {
+  public onSubmitQueue(jobTypesWithQueued, validateOnly: boolean): void {
     const hyp3JobsBatch = this.hyp3.formatJobs(jobTypesWithQueued, {
       projectName: this.projectName,
       processingOptions: this.processingOptions
@@ -229,7 +231,7 @@ export class ProcessingQueueComponent implements OnInit {
     this.isQueueSubmitProcessing = true;
 
     from(hyp3JobRequestBatches).pipe(
-      concatMap(batch => this.hyp3.submiteJobBatch$({ jobs: batch }).pipe(
+      concatMap(batch => this.hyp3.submiteJobBatch$({ jobs: batch, validate_only: validateOnly }).pipe(
         catchError(resp => {
           if (resp.error) {
             this.snackBar.open(`${resp.error.detail}`, 'Error', {
@@ -361,6 +363,10 @@ export class ProcessingQueueComponent implements OnInit {
 
   public onOpenTabMenu() {
     this.isTabMenuOpen = true;
+  }
+
+  public onValidateOnlyToggle(val: boolean): void {
+    this.validateOnly = val;
   }
 
   private selectDefaultJobType(): void {
