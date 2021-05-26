@@ -280,7 +280,7 @@ export class SearchEffects {
             catchError(
               _ => {
                 console.log(_);
-                return of(new SearchError(`Error loading search results`));
+                return of(new SearchError(`Error loading next batch of On Demand results`));
               }
             ),
           );
