@@ -95,10 +95,8 @@
       [isQueued]="isQueued">
     </app-cart-toggle>
 
-    <mat-chip-list *ngIf="!isDownloadable(product)" aria-label="Job Status">
-      <mat-chip *ngIf="isExpired(product.metadata.job)" color="primary">Expired</mat-chip>
-      <mat-chip *ngIf="isPending(product.metadata.job)" color="secondary">Pending</mat-chip>
-      <mat-chip *ngIf="isFailed(product.metadata.job)" color="accent">Failed</mat-chip>
-      <mat-chip *ngIf="isRunning(product.metadata.job)" color="secondary">Running</mat-chip>
-    </mat-chip-list>
+    <app-hyp3-job-status-badge
+      *ngIf="!isDownloadable(product)"
+      [job]="product.metadata.job">
+    </app-hyp3-job-status-badge>
 </mat-list-item>

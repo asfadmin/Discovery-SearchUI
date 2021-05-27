@@ -90,6 +90,16 @@ export class SBASChartComponent implements OnInit, OnDestroy {
         this.pairs = pairs.pairs;
         this.customPairs = pairs.custom;
 
+        if (this.selectedPair === null && Array.isArray(this.pairs)) {
+          if (this.pairs.length > 0) {
+            const firstPair = this.pairs[0];
+
+            this.store$.dispatch(
+              new scenesStore.SetSelectedPair(firstPair.map(product => product.id))
+            );
+          }
+        }
+
         this.makeSbasChart();
       })
     );
@@ -226,10 +236,8 @@ export class SBASChartComponent implements OnInit, OnDestroy {
     .selectAll('path');
 
     const self = this;
-    lines
-      .data(this.pairs)
-      .join('path')
-        .style('mix-blend-mode', 'multiply')
+    const addPairAttributes = (ps) => {
+      ps
         .attr('class', 'base-line')
         .attr('stroke', 'steelblue')
         .attr('stroke-width', 3)
@@ -247,28 +255,21 @@ export class SBASChartComponent implements OnInit, OnDestroy {
         );
         this.setSelected(pair);
       });
+    };
 
-    lines
-      .data(this.customPairs)
-      .join('path')
-        .style('stroke-dasharray', ' 5,5')
-        .attr('class', 'base-line')
-        .attr('stroke', 'steelblue')
-        .attr('stroke-width', 3)
-        .attr('cursor', 'pointer')
-        .attr('d', pair => this.line(pair))
-        .on('mouseover', function(_) {
-          self.setHovered(d3.select(this));
-        })
-        .on('mouseleave', function(_) {
-          self.clearHovered();
-        })
-      .on('click', pair => {
-        this.store$.dispatch(
-          new scenesStore.SetSelectedPair(pair.map(product => product.id))
-        );
-        this.setSelected(pair);
-      });
+    addPairAttributes(
+      lines
+        .data(this.pairs)
+        .join('path')
+          .style('mix-blend-mode', 'multiply')
+    );
+
+    addPairAttributes(
+      lines
+        .data(this.customPairs)
+        .join('path')
+          .style('stroke-dasharray', ' 5,5')
+    );
 
     this.scatter.append('g')
       .selectAll('circle')

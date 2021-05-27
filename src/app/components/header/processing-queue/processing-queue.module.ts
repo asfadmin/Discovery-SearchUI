@@ -27,6 +27,7 @@ import { ProjectNameSelectorModule } from '@components/shared/selectors/project-
 import {MatTabsModule} from '@angular/material/tabs';
 import {MatMenuModule} from '@angular/material/menu';
 import { ConfirmationComponent } from './confirmation/confirmation.component';
+import { AngularResizedEventModule } from 'angular-resize-event';
 
 
 @NgModule({
@@ -50,9 +51,10 @@ import { ConfirmationComponent } from './confirmation/confirmation.component';
         ProcessingOptionsModule,
         MatDialogModule,
         ResizableModule,
+        AngularResizedEventModule,
         DragDropModule,
         MatTabsModule,
-        MatMenuModule
+        MatMenuModule,
     ]
 })
 export class ProcessingQueueModule {

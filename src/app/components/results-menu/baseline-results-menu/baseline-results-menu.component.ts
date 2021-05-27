@@ -16,7 +16,6 @@ import {
 import { SubSink } from 'subsink';
 
 import * as models from '@models';
-import * as moment from 'moment';
 
 enum CardViews {
   LIST = 0,
@@ -37,6 +36,7 @@ export class BaselineResultsMenuComponent implements OnInit, OnDestroy {
 
   public pairs = [];
   public products = [];
+  public downloadableProds = [];
 
   public view = CardViews.LIST;
   public Views = CardViews;
@@ -53,6 +53,7 @@ export class BaselineResultsMenuComponent implements OnInit, OnDestroy {
   public RTC = models.hyp3JobTypes.RTC_GAMMA;
   public InSAR = models.hyp3JobTypes.INSAR_GAMMA;
   public AutoRift = models.hyp3JobTypes.AUTORIFT;
+  public ApiFormat = models.AsfApiOutputFormat;
 
   public hyp3able = {};
 
@@ -73,6 +74,7 @@ export class BaselineResultsMenuComponent implements OnInit, OnDestroy {
       ).subscribe(
         ([products, {pairs, custom}]) => {
           this.products = products;
+          this.downloadableProds = this.hyp3.downloadable(products);
           this.pairs = [ ...pairs, ...custom ];
 
           this.hyp3able = this.hyp3.getHyp3ableProducts([
@@ -98,7 +100,7 @@ export class BaselineResultsMenuComponent implements OnInit, OnDestroy {
     this.subs.add(
       this.store$.select(queueStore.getQueuedProducts).subscribe(
         products => this.queuedProducts = products
-        )
+      )
     );
   }
 
@@ -120,85 +122,45 @@ export class BaselineResultsMenuComponent implements OnInit, OnDestroy {
 
   public queueAllProducts(products: models.CMRProduct[]): void {
     if (this.searchType === models.SearchType.CUSTOM_PRODUCTS) {
-      products = this.downloadable(products);
+      products = this.hyp3.downloadable(products);
     }
 
     this.store$.dispatch(new queueStore.AddItems(products));
   }
 
-  public downloadable(products: models.CMRProduct[]): models.CMRProduct[] {
-    return products.filter(product => this.isDownloadable(product));
+  public onMetadataExport(products: models.CMRProduct[], format: models.AsfApiOutputFormat): void {
+    const currentQueue = this.queuedProducts;
+    const action = new queueStore.DownloadSearchtypeMetadata(format);
+
+    this.clearDispatchRestoreQueue(action, products, currentQueue);
   }
 
-  public isDownloadable(product: models.CMRProduct): boolean {
-    return (
-      !product.metadata.job ||
-      (
-        !this.isPending(product.metadata.job) &&
-        !this.isFailed(product.metadata.job) &&
-        !this.isRunning(product.metadata.job) &&
-        !this.isExpired(product.metadata.job)
-      )
+  public onMakeDownloadScript(products: models.CMRProduct[]): void {
+    const currentQueue = this.queuedProducts;
+
+    this.clearDispatchRestoreQueue(
+      new queueStore.MakeDownloadScript(),
+      products,
+      currentQueue
     );
   }
 
-    private clearDispatchRestoreQueue(queueStoreAction: Action,  products: models.CMRProduct[], currentQueue: models.CMRProduct[]): void {
-      this.store$.dispatch(new queueStore.ClearQueue());
-      this.store$.dispatch(new queueStore.AddItems(products));
-      this.store$.dispatch(queueStoreAction);
+  private clearDispatchRestoreQueue(
+    queueStoreAction: Action,
+    products: models.CMRProduct[],
+    currentQueue: models.CMRProduct[]
+  ): void {
+    const actions = [
+      new queueStore.ClearQueue(),
+      new queueStore.AddItems(products),
+      queueStoreAction,
+      new queueStore.ClearQueue(),
+      new queueStore.AddItems(currentQueue)
+    ];
 
-      this.store$.dispatch(new queueStore.ClearQueue());
-      this.store$.dispatch(new queueStore.AddItems(currentQueue));
-    }
-
-    public onMakeDownloadScript(products: models.CMRProduct[]): void {
-      const currentQueue = this.queuedProducts;
-      this.clearDispatchRestoreQueue(new queueStore.MakeDownloadScript(), products, currentQueue);
-    }
-
-    public onCsvDownload(products: models.CMRProduct[]): void {
-      const currentQueue = this.queuedProducts;
-      this.clearDispatchRestoreQueue(new queueStore.DownloadSearchtypeMetadata(models.AsfApiOutputFormat.CSV), products, currentQueue);
-    }
-
-    public onKmlDownload(products: models.CMRProduct[]): void {
-      const currentQueue = this.queuedProducts;
-      this.clearDispatchRestoreQueue(new queueStore.DownloadSearchtypeMetadata(models.AsfApiOutputFormat.KML), products, currentQueue);
-    }
-
-    public onGeojsonDownload(products: models.CMRProduct[]): void {
-      const currentQueue = this.queuedProducts;
-      this.clearDispatchRestoreQueue(new queueStore.DownloadSearchtypeMetadata(models.AsfApiOutputFormat.GEOJSON), products, currentQueue);
-    }
-
-    public onMetalinkDownload(products: models.CMRProduct[]): void {
-      const currentQueue = this.queuedProducts;
-      this.clearDispatchRestoreQueue(new queueStore.DownloadSearchtypeMetadata(models.AsfApiOutputFormat.METALINK), products, currentQueue);
-    }
-
-  public isExpired(job: models.Hyp3Job): boolean {
-    return job.status_code === models.Hyp3JobStatusCode.SUCCEEDED &&
-      this.expirationDays(job.expiration_time) <= 0;
-  }
-
-  public isFailed(job: models.Hyp3Job): boolean {
-    return job.status_code === models.Hyp3JobStatusCode.FAILED;
-  }
-
-  public isPending(job: models.Hyp3Job): boolean {
-    return job.status_code === models.Hyp3JobStatusCode.PENDING;
-  }
-
-  public isRunning(job: models.Hyp3Job): boolean {
-    return job.status_code === models.Hyp3JobStatusCode.RUNNING;
-  }
-
-  private expirationDays(expiration_time: moment.Moment): number {
-    const current = moment.utc();
-
-    const expiration = moment.duration(expiration_time.diff(current));
-
-    return Math.floor(expiration.asDays());
+    actions.forEach(action =>
+      this.store$.dispatch(action)
+    );
   }
 
   ngOnDestroy() {

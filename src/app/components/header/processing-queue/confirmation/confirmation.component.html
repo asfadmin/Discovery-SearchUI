@@ -25,7 +25,9 @@
           (click)="onSubmitQueue()"
           [disabled]="amountSelected(jobTypesWithQueued) === 0"
           cdkFocusInitial>
-    Submit {{ amountSelected(jobTypesWithQueued) }}
-    Job<span *ngIf="amountSelected(jobTypesWithQueued) > 1">s</span>
+    <span>
+      Submit {{ amountSelected(jobTypesWithQueued) }}
+      Job<span *ngIf="amountSelected(jobTypesWithQueued) > 1">s</span>
+    </span>
   </button>
 </div>

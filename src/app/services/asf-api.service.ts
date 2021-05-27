@@ -45,7 +45,7 @@ export class AsfApiService {
     const params = this.queryParamsFrom(stateParamsObj);
 
     const queryParamsStr = params.toString()
-      .replace('+', '%2B');
+      .replace(/\+/g, '%2B');
 
     const endpoint = params.get('master') ?
       this.baselineEndpoint() : this.searchEndpoint({ useProdApi });
@@ -72,7 +72,7 @@ export class AsfApiService {
        this.searchEndpoint();
 
     const queryParamsStr = params.toString()
-      .replace('+', '%2B');
+      .replace(/\+/g, '%2B');
 
     return `${endpoint}?${queryParamsStr}`;
   }

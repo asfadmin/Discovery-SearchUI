@@ -13,6 +13,7 @@ import { PipesModule } from '@pipes';
 
 import { OnDemandAddMenuModule } from '@components/shared/on-demand-add-menu';
 import { CopyToClipboardModule } from '@components/shared/copy-to-clipboard';
+import { Hyp3JobStatusBadgeModule } from '@components/shared/hyp3-job-status-badge';
 import { FileNameModule } from '@components/shared/file-name';
 import { ScenesListComponent } from './scenes-list.component';
 import { SceneComponent } from './scene/scene.component';
@@ -35,6 +36,7 @@ import { PairComponent } from './pair/pair.component';
     TruncateModule,
     FontAwesomeModule,
     CopyToClipboardModule,
+    Hyp3JobStatusBadgeModule,
     MatSharedModule,
     MatMenuModule,
     PipesModule,

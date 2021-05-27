@@ -59,6 +59,10 @@
   //transform: scale(0.97);
 }
 
+.pqj-mobile {
+  overflow-y: auto;
+}
+
 .empty-queue {
   display: block;
   width: 100%;
@@ -92,7 +96,7 @@
   text-align: center;
   font-size: 14px;
   color: $asf-blue;
-  padding-top-top: 10px;
+  padding-top: 10px;
   margin: 0 auto;
 }
 

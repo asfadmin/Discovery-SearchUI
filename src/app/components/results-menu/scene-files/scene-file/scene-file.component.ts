@@ -2,6 +2,7 @@ import { Component, Input, Output, EventEmitter } from '@angular/core';
 
 import * as moment from 'moment';
 
+import { Hyp3Service } from '@services';
 import * as models from '@models';
 
 @Component({
@@ -26,7 +27,7 @@ export class SceneFileComponent {
 
   public isHovered = false;
 
-  constructor() {}
+  constructor(private hyp3: Hyp3Service) {}
 
   public onToggleQueueProduct(): void {
     this.toggle.emit();
@@ -91,39 +92,7 @@ export class SceneFileComponent {
   }
 
   public isDownloadable(product: models.CMRProduct): boolean {
-    return (
-      !product.metadata.job ||
-      (
-        !this.isPending(product.metadata.job) &&
-        !this.isFailed(product.metadata.job) &&
-        !this.isRunning(product.metadata.job) &&
-        !this.isExpired(product.metadata.job)
-      )
-    );
-  }
-
-  public isExpired(job: models.Hyp3Job): boolean {
-    return job.status_code === models.Hyp3JobStatusCode.SUCCEEDED &&
-      this.expirationDays(job.expiration_time) <= 0;
-  }
-
-  public isFailed(job: models.Hyp3Job): boolean {
-    return job.status_code === models.Hyp3JobStatusCode.FAILED;
-  }
-
-  public isPending(job: models.Hyp3Job): boolean {
-    return job.status_code === models.Hyp3JobStatusCode.PENDING;
-  }
-
-  public isRunning(job: models.Hyp3Job): boolean {
-    return job.status_code === models.Hyp3JobStatusCode.RUNNING;
-  }
-
-  public addRtcToProcessingQueue(): void {
-    this.queueHyp3Job.emit({
-      granules: [ this.product ],
-      job_type: models.hyp3JobTypes.RTC_GAMMA
-    });
+    return this.hyp3.isDownloadable(product);
   }
 
   public addJobToProcessingQueue(jobType: models.Hyp3JobType): void {
@@ -134,13 +103,18 @@ export class SceneFileComponent {
   }
 
   public jobParamsToList(metadata) {
-    return !!metadata.job ?
-      models.hyp3JobOptionsOrdered
+    if (!metadata.job) {
+      return [];
+    }
+
+    const jobType = models.hyp3JobTypes[metadata.job.job_type];
+    const options = !!jobType ? jobType.options : models.hyp3JobOptionsOrdered;
+
+    return options
       .filter(option => metadata.job.job_parameters[option.apiName])
       .map(option => {
         return {name: option.name, val: metadata.job.job_parameters[option.apiName]};
-      }) :
-      [];
+      });
   }
 
   private expirationDays(expiration_time: moment.Moment): number {

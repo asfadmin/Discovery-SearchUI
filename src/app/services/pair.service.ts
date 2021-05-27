@@ -96,19 +96,10 @@ export class PairService {
         const P2StartDate = new Date(scene.metadata.date.toISOString());
         const P2StopDate = new Date(scene.metadata.stopDate.toISOString());
 
-        // const p1DayOfYear = this.getDayOfYear(P1StartDate);
-        // const p2DayOfYear = this.getDayOfYear(P2StopDate);
-
         if (!!season.start && !!season.end) {
-          // if ( P1StartDate < P2StartDate) {
             if (!this.dayInSeason(P1StartDate, P1StopDate, P2StartDate, P2StopDate, season)) {
               return;
             }
-        // } else {
-        //   if (!this.dayInSeason(P2StartDate, P2StopDate, P1StartDate, P1StopDate, season)) {
-        //     return;
-        //   }
-        // }
         }
 
         if (tempDiff > tempThreshold || perpDiff > perpThreshold) {
@@ -134,29 +125,29 @@ export class PairService {
     return pairs;
   }
 
-  public findNearestneighbour(reference_scene: CMRProduct, 
+  public findNearestneighbour(reference_scene: CMRProduct,
     scenes: CMRProduct[],
     temporalRange: Range<number>,
     amount: number) {
 
     scenes = this.hyp3able(scenes);
-    scenes = scenes.filter(scene => 
+    scenes = scenes.filter(scene =>
       scene.id.includes('SLC')
-      && !scene.id.includes('METADATA') 
+      && !scene.id.includes('METADATA')
       && scene.metadata.temporal != null
     );
 
-    const totalDays = temporalRange.end - temporalRange.start; 
+    const totalDays = temporalRange.end - temporalRange.start;
     const ReftempDiffNormalized = (reference_scene.metadata.temporal - temporalRange.start) / totalDays;
 
     const SortedScenes = scenes.sort((a, b) => {
-       
+
         const AtempDiffNormalized = (a.metadata.temporal - temporalRange.start) / totalDays;
         const BtempDiffNormalized = (b.metadata.temporal - temporalRange.start) / totalDays;
-        
-        if(Math.abs(AtempDiffNormalized-ReftempDiffNormalized) < Math.abs(BtempDiffNormalized-ReftempDiffNormalized)) {
+
+        if (Math.abs(AtempDiffNormalized - ReftempDiffNormalized) < Math.abs(BtempDiffNormalized - ReftempDiffNormalized)) {
           return -1;
-        } else if(Math.abs(AtempDiffNormalized-ReftempDiffNormalized) === Math.abs(BtempDiffNormalized-ReftempDiffNormalized)) {
+        } else if (Math.abs(AtempDiffNormalized - ReftempDiffNormalized) === Math.abs(BtempDiffNormalized - ReftempDiffNormalized)) {
           return 0;
         }
         return 1;

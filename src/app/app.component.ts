@@ -223,9 +223,15 @@ export class AppComponent implements OnInit, OnDestroy {
 
           const searchState = this.savedSearchService.getSearchState(action.payload);
 
-          if (searchState) {
+          if (
+            searchState &&
+            searchState.searchType !== models.SearchType.CUSTOM_PRODUCTS
+            ) {
             this.searchService.loadSearch(searchState);
-            this.store$.dispatch(new searchStore.MakeSearch());
+
+            if (!this.isEmptySearch(searchState)) {
+              this.store$.dispatch(new searchStore.MakeSearch());
+            }
           }
 
         }
@@ -284,6 +290,18 @@ export class AppComponent implements OnInit, OnDestroy {
     );
   }
 
+  private isEmptySearch(searchState): boolean {
+    if (searchState.searchType === models.SearchType.LIST) {
+      return searchState.filters.list.length < 1;
+    } else if (searchState.searchType === models.SearchType.BASELINE) {
+      return !searchState.filters.filterMaster;
+    } else if (searchState.searchType === models.SearchType.SBAS) {
+      return !searchState.filters.master;
+    }
+
+    return false;
+  }
+
   private loadProductQueue(): void {
     const queueItemsStr = localStorage.getItem(this.queueStateKey);
 
@@ -319,7 +337,7 @@ export class AppComponent implements OnInit, OnDestroy {
   }
 
   private updateMaxSearchResults(): void {
-    const checkAmount = this.searchParams$.getParams().pipe(
+    const checkAmount = this.searchParams$.getlatestParams().pipe(
       debounceTime(200),
       map(params => ({...params, output: 'COUNT'})),
       tap(_ =>

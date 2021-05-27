@@ -171,8 +171,13 @@
   </button>
 
   <button mat-menu-item matSuffix (click)="onOpenUserGuide()">
-    <mat-icon>info</mat-icon>
-    User Guide
+    <mat-icon>book</mat-icon>
+    Vertex User Guide
+  </button>
+
+  <button mat-menu-item matSuffix (click)="onOpenHyP3Guide()">
+    <mat-icon>book</mat-icon>
+    HyP3 User Guide
   </button>
 
   <button mat-menu-item [matMenuTriggerFor]="developerMenu">
@@ -271,7 +276,7 @@
       Build Commit
     </a>
 
-    <a *ngIf="(breakpoint$ | async) !== breakpoints.MOBILE"
+    <a
        mat-menu-item
         href="https://cloudwatch.amazonaws.com/dashboard.html?dashboard=ASF-Discovery&context=eyJSIjoidXMtZWFzdC0xIiwiRCI6ImN3LWRiLTE1MzA4NzUzNzQ4NCIsIlUiOiJ1cy1lYXN0LTFfUDZSbVVnbldzIiwiQyI6IjYzZ2xoMHJ2dXIwajNpbjFiODM3cmJmc24iLCJJIjoidXMtZWFzdC0xOjNmOGU2Y2ZlLTA5YmQtNDQzZS04NDg1LTE4ZmJjZDdlZGUyMiIsIk8iOiJhcm46YXdzOmlhbTo6MTUzMDg3NTM3NDg0OnJvbGUvc2VydmljZS1yb2xlL0Nsb3VkV2F0Y2hEYXNoYm9hcmQtUHVibGljLVJlYWRPbmx5QWNjZXNzLUFTRi1EaXNjb3ZlcnktNTNaM1NBUDgiLCJNIjoiUHVibGljIn0%3D"
         target="_blank">

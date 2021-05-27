@@ -17,7 +17,7 @@
 
         <div *ngIf="searchType === SearchTypes.SBAS" class="mr-10" style="margin-top: -15px;">
           {{ numPairs$ | async }} Pair{{ (numPairs$ | async) === 1 ? '' : 's' }}
-          <span *ngIf="breakpoint > breakpoints.MEDIUM" style="font-size: small;">
+          <span *ngIf="!!sbasProducts && breakpoint > breakpoints.MEDIUM" style="font-size: small;">
             <br>
             ({{ sbasProducts.length }} Scene{{ sbasProducts.length === 1 ? '' : 's' }})
           </span>
@@ -176,8 +176,8 @@
           </div>
 
           <mat-menu #addAllProducts="matMenu">
-            <button *ngIf="searchType !== SearchTypes.SBAS" (click)="queueAllProducts(products)" mat-menu-item>
-              Add {{ downloadable(products).length }} file{{ downloadable(products).length === 1 ? '' : 's'}} to downloads
+            <button *ngIf="searchType !== SearchTypes.SBAS" (click)="queueAllProducts(downloadableProds)" mat-menu-item>
+              Add {{ downloadableProds.length }} file{{ downloadableProds.length === 1 ? '' : 's'}} to downloads
             </button>
 
             <button *ngIf="searchType === SearchTypes.SBAS" (click)="queueSBASProducts(sbasProducts)" mat-menu-item>
@@ -198,16 +198,16 @@
 
       <mat-menu #ExportAllMetadata="matMenu">
         <div *ngIf="products">
-          <button (click)="onCsvDownload(products)" mat-menu-item>
+          <button (click)="onMetadataExport(products, ApiFormat.CSV)" mat-menu-item>
             csv
           </button>
-          <button (click)="onGeojsonDownload(products)" mat-menu-item>
+          <button (click)="onMetadataExport(products, ApiFormat.GEOJSON)" mat-menu-item>
             geojson
           </button>
-          <button (click)="onKmlDownload(products)" mat-menu-item>
-          kml
-        </button>
-      </div>
+          <button (click)="onMetadataExport(products, ApiFormat.KML)" mat-menu-item>
+            kml
+          </button>
+        </div>
       </mat-menu>
 
       <mat-menu #ExportAllData="matMenu">
@@ -215,9 +215,10 @@
           <button (click)="onMakeDownloadScript(products)" mat-menu-item>
             python (.py)
           </button>
-          <button (click)="onMetalinkDownload(products)" mat-menu-item>
-          metalink
-        </button>
+
+          <button (click)="onMetadataExport(products, ApiFormat.METALINK)" mat-menu-item>
+            metalink
+          </button>
       </div>
       </mat-menu>
 

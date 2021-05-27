@@ -32,7 +32,7 @@ export interface CMRProductMetadata {
 
   path: number;
   frame: number;
-  absoluteOrbit: number;
+  absoluteOrbit: number[];
 
   stackSize: number;
   // ALOS PALSAR

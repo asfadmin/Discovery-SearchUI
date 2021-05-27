@@ -9,25 +9,13 @@ import { FormControl } from '@angular/forms';
 import { ScenesService, ScreenSizeService } from '@services';
 import { getScenes } from '@store/scenes';
 import { combineLatest } from 'rxjs';
-import { animate, style, transition, trigger } from '@angular/animations';
-import { Breakpoints } from '@models';
+import { Breakpoints, menuAnimation } from '@models';
 
 @Component({
   selector: 'app-job-product-name-selector',
   templateUrl: './job-product-name-selector.component.html',
   styleUrls: ['./job-product-name-selector.component.scss'],
-  animations: [
-    trigger('fadeTransition', [
-      transition(':enter', [
-        style({opacity: 0}),
-        animate('100ms ease-in', style({opacity: 1}))
-      ]),
-      transition(':leave', [
-        style({opacity: 1}),
-        animate('100ms ease-out', style({opacity: 0}))
-      ])
-    ])
-  ],
+  animations: menuAnimation,
 })
 export class JobProductNameSelectorComponent implements OnInit, OnDestroy {
   @Input() headerView: boolean;

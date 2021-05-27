@@ -65,7 +65,7 @@ export class ProductService {
 
       path: +g.p,
       frame:  +g.f,
-      absoluteOrbit: +g.o,
+      absoluteOrbit: Array.isArray(g.o) ? g.o : [g.o],
 
       faradayRotation: +g.fr,
       offNadirAngle: +g.on,

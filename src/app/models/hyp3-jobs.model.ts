@@ -96,7 +96,7 @@ export const RtcGammaJobType: Hyp3JobType = {
     default: false,
     info: `
       Include a false-color RGB decomposition in the product
-      package for dual-pol granules (ignored for single-pol granules)
+      package for dual-pol granules (ignored for single-pol granules).
     `
   }, {
     name: 'Speckle Filter',
@@ -136,6 +136,22 @@ export const InsarGammaJobType: Hyp3JobType = {
     default: '20x4',
     info: `Number of looks to take in range and azimuth.`
   }, {
+    name: 'Include DEM',
+    apiName: 'include_dem',
+    type: JobOptionType.TOGGLE,
+    default: false,
+    info: `
+      Include the DEM file in the product package.
+    `
+  }, {
+    name: 'Include Inc. Angle Map',
+    apiName: 'include_inc_map',
+    type: JobOptionType.TOGGLE,
+    default: false,
+    info: `
+      Include the incidence angle map in the product package.
+    `
+  }, {
     name: 'Include Look Vectors',
     apiName: 'include_look_vectors',
     type: JobOptionType.TOGGLE,
@@ -144,13 +160,21 @@ export const InsarGammaJobType: Hyp3JobType = {
       Include the look vector theta and phi files in the product package.
     `
   }, {
-    name: 'Include Los Displacement',
+    name: 'Include LOS Displacement',
     apiName: 'include_los_displacement',
     type: JobOptionType.TOGGLE,
     default: false,
     info: `
       Include a GeoTIFF in the product package containing displacement
-      values along the Line-Of-Sight (LOS)
+      values along the Line-Of-Sight (LOS).
+    `
+  }, {
+    name: 'Include Wrapped Phase',
+    apiName: 'include_wrapped_phase',
+    type: JobOptionType.TOGGLE,
+    default: false,
+    info: `
+      Include the wrapped phase GeoTIFF in the product package.
     `
   }]
 };

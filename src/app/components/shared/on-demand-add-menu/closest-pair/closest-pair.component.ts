@@ -27,7 +27,7 @@ export class ClosestPairComponent implements OnInit {
   private subs = new SubSink();
 
   constructor(private store$: Store<AppState>,
-    private pairService: PairService,) { }
+    private pairService: PairService, ) { }
 
   ngOnInit(): void {
     this.subs.add(
@@ -49,7 +49,7 @@ export class ClosestPairComponent implements OnInit {
   }
 
   public queueClosestPair(job_type: models.Hyp3JobType): void {
-    const closestProduct = this.pairService.findNearestneighbour(this.referenceScene, 
+    const closestProduct = this.pairService.findNearestneighbour(this.referenceScene,
       this.scenes.filter(scene => this.referenceScene.id !== scene.id),
       this.temporalRange,
       this.points
@@ -75,5 +75,5 @@ export class ClosestPairComponent implements OnInit {
   public updatePairCount(val: number) {
     this.points = Math.min(val, this.scenes.length - 2);
   }
-  
+
 }
