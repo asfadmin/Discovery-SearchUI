@@ -32,7 +32,6 @@ import { HelpModule } from './components/help';
 import { AppComponent } from './app.component';
 import { CustomBreakPointsProvider } from '@services/custom-breakpoints.ts';
 import * as services from '@services';
-import { getSaver, SAVER } from '@services/saver.provider';
 
 import { NgcCookieConsentModule, NgcCookieConsentConfig } from 'ngx-cookieconsent';
 // import { FileDownloadDirective } from './directives/file-download.directive';
@@ -132,7 +131,6 @@ export const routes = [
     services.Hyp3Service,
     services.PairService,
     services.SceneSelectService,
-    {provide: SAVER, useFactory: getSaver},
   ],
   bootstrap: [ AppComponent ],
 })
