@@ -7,7 +7,7 @@ import { of, forkJoin, combineLatest, Observable, EMPTY } from 'rxjs';
 import { map, withLatestFrom, switchMap, catchError, filter, first } from 'rxjs/operators';
 
 import { AppState } from '../app.reducer';
-import { SetSearchAmount, EnableSearch, DisableSearch, SetSearchType } from './search.action';
+import { SetSearchAmount, EnableSearch, DisableSearch, SetSearchType, SetNextJobsUrl, Hyp3BatchResponse } from './search.action';
 import * as scenesStore from '@store/scenes';
 import * as filtersStore from '@store/filters';
 import * as mapStore from '@store/map';
@@ -26,6 +26,8 @@ import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import WKT from 'ol/format/WKT';
 import GeoJSON from 'ol/format/GeoJSON';
 import VectorSource from 'ol/source/Vector';
+import { getScenes } from '@store/scenes';
+import { SearchType } from '@models';
 @Injectable()
 export class SearchEffects {
   constructor(
@@ -68,6 +70,13 @@ export class SearchEffects {
     )
   ));
 
+  public getNextJobBatch = createEffect(() => this.actions$.pipe(
+    ofType<SetNextJobsUrl>(SearchActionType.SET_NEXT_JOBS_URL),
+    withLatestFrom(this.store$.select(getScenes)),
+    filter(([action, scenes]) => !!action.payload && scenes !== undefined),
+    switchMap(([action, currentScenes]) => this.nextCustomProduct$(action.payload, currentScenes))
+  ));
+
   public cancelSearchWhenFiltersCleared = createEffect(() => this.actions$.pipe(
     ofType(
       filtersStore.FiltersActionType.CLEAR_DATASET_FILTERS,
@@ -90,6 +99,27 @@ export class SearchEffects {
       }),
       new SetSearchAmount(action.payload.totalCount)
     ])
+  ));
+
+  public onDemandSearchResponse = createEffect(() => this.actions$.pipe(
+      ofType<SearchResponse>(SearchActionType.SEARCH_RESPONSE),
+      withLatestFrom(this.store$.select(getSearchType)),
+      filter(([_, searchType]) => searchType === SearchType.CUSTOM_PRODUCTS),
+      switchMap(([action, _]) =>
+        [!!action.payload.next ? new SetNextJobsUrl(action.payload.next) : new SetNextJobsUrl('')]
+      )
+    ));
+
+  public hyp3BatchResponse = createEffect(() => this.actions$.pipe(
+    ofType<Hyp3BatchResponse>(SearchActionType.HYP3_BATCH_RESPONSE),
+    switchMap(action => [
+      new scenesStore.SetScenes({
+        products: action.payload.files,
+        searchType: action.payload.searchType
+      }),
+      !!action.payload.next ? new SetNextJobsUrl(action.payload.next) : new SetNextJobsUrl(''),
+    ]
+    )
   ));
 
   // public hideFilterMenuOnSearchResponse = createEffect(() => this.actions$.pipe(
@@ -159,7 +189,8 @@ export class SearchEffects {
   private customProductsQuery$(): Observable<Action> {
     return this.hyp3Service.getJobs$().pipe(
       switchMap(
-        (jobs: models.Hyp3Job[]) => {
+        (jobsRes: {hyp3Jobs: models.Hyp3Job[], next: string}) => {
+          const jobs = jobsRes.hyp3Jobs;
           if (jobs.length === 0) {
             return of(new SearchResponse({
               files: [],
@@ -189,7 +220,8 @@ export class SearchEffects {
                 new SearchResponse({
                   files: products,
                   totalCount: +products.length,
-                  searchType: models.SearchType.CUSTOM_PRODUCTS
+                  searchType: models.SearchType.CUSTOM_PRODUCTS,
+                  next: jobsRes.next
                 }) :
                 new SearchCanceled()
             ),
@@ -197,6 +229,58 @@ export class SearchEffects {
               _ => {
                 console.log(_);
                 return of(new SearchError(`Error loading search results`));
+              }
+            ),
+          );
+        }
+      ),
+    );
+  }
+
+  private nextCustomProduct$(next: string, latestScenes: models.CMRProduct[]): Observable<Action> {
+    return this.hyp3Service.getJobsByUrl$(next).pipe(
+      switchMap(
+        (jobsRes) => {
+          const jobs = jobsRes.hyp3Jobs;
+          if (jobs.length === 0) {
+            return of(new Hyp3BatchResponse({
+              files: [],
+              totalCount: 0,
+              searchType: models.SearchType.CUSTOM_PRODUCTS,
+              next: ''
+            }));
+          }
+
+          const granules = jobs.map(
+            job => {
+              return job.job_parameters.granules.join(',');
+            }
+          ).join(',');
+
+          return this.asfApiService.query<any[]>({ 'granule_list': granules }).pipe(
+            map(results => this.productService.fromResponse(results)
+              .filter(product => !product.metadata.productType.includes('METADATA'))
+              .reduce((products, product) => {
+                products[product.name] = product;
+                return products;
+              } , {})
+            ),
+            map(products => this.hyp3JobToProducts(jobs, products)),
+            withLatestFrom(this.store$.select(getIsCanceled)),
+            map(([products, isCanceled]) =>
+              !isCanceled ?
+                new Hyp3BatchResponse({
+                  files: latestScenes.concat(products),
+                  totalCount: +products.length,
+                  searchType: models.SearchType.CUSTOM_PRODUCTS,
+                  next: jobsRes.next
+                }) :
+                new SearchCanceled()
+            ),
+            catchError(
+              _ => {
+                console.log(_);
+                return of(new SearchError(`Error loading next batch of On Demand results`));
               }
             ),
           );

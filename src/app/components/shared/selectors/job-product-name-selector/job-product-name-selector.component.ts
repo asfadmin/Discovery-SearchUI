@@ -4,7 +4,7 @@ import { SubSink } from 'subsink';
 import * as filtersStore from '@store/filters';
 import { AppState } from '@store';
 import { Store } from '@ngrx/store';
-import { map } from 'rxjs/operators';
+import { filter, map } from 'rxjs/operators';
 import { FormControl } from '@angular/forms';
 import { ScenesService, ScreenSizeService } from '@services';
 import { getScenes } from '@store/scenes';
@@ -39,7 +39,9 @@ export class JobProductNameSelectorComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.subs.add(
-      this.store$.select(filtersStore.getProductNameFilter).subscribe(
+      this.store$.select(filtersStore.getProductNameFilter).pipe(
+        filter(filterName => !!filterName),
+      ).subscribe(
         productNameFilter => this.productNameFilter = productNameFilter
       )
     );
@@ -64,7 +66,7 @@ export class JobProductNameSelectorComponent implements OnInit, OnDestroy {
 
     this.subs.add(
       this.store$.select(getScenes).subscribe(
-        res => this.unfilteredScenes = res.map(scene => scene.metadata.fileName.toLowerCase().split('.')[0])
+        res => this.unfilteredScenes = Array.from(new Set(res.map(scene => scene.metadata.fileName.toLowerCase().split('.')[0])))
       )
     );
 
@@ -75,7 +77,7 @@ export class JobProductNameSelectorComponent implements OnInit, OnDestroy {
           if (this.productNameFilter != null) {
             const temp = this.productNameFilter.replace(/\s+/g, '').endsWith(',')
               ? this.unfilteredScenes.filter(scene => !res.includes(scene)) : res;
-            this.filteredOptionsList = temp.filter(file => this.autoSuggestion(file.toLowerCase()));
+            this.filteredOptionsList = Array.from(new Set(temp.filter(file => this.autoSuggestion(file.toLowerCase()))));
           } else {
             this.filteredOptionsList = this.unfilteredScenes;
           }

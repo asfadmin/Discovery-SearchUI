@@ -16,7 +16,12 @@ import { DropdownOptionComponent } from './dropdown-option/dropdown-option.compo
 
 
 @NgModule({
-  declarations: [ProcessingOptionsComponent, OptionInfoComponent, ToggleOptionComponent, DropdownOptionComponent],
+  declarations: [
+    ProcessingOptionsComponent,
+    OptionInfoComponent,
+    ToggleOptionComponent,
+    DropdownOptionComponent
+  ],
   imports: [
     CommonModule,
     FormsModule,
