@@ -50,7 +50,7 @@
     "deep-extend": "^0.6.0",
     "file-saver": "^2.0.5",
     "flex-layout-sass": "^1.0.8",
-    "glob": "^7.1.6",
+    "glob": "^7.1.7",
     "intl": "^1.2.5",
     "jwt-decode": "^2.2.0",
     "moment": "^2.29.1",
