@@ -70,19 +70,29 @@
                   </app-copy-to-clipboard>
 
                   <!-- http://local.asf.alaska.edu:4444/#/?searchType=List%20Search&listSearchType=Product&searchList=S1-GUNW-A-R-014-tops-20200513_20200419-153046-28315N_26591N-PP-e3ef-v2_0_3&resultsLoaded=true&granule=S1-GUNW-A-R-014-tops-20200513_20200419-153046-28315N_26591N-PP-e3ef-v2_0_3 -->
-                  <!-- <a [appFileDownload]="product.name"
-                     #down="fileDownload"
-                     [disabled]="!product.downloadUrl || down.busy"
-                     [href]="product.downloadUrl"
-                     mat-icon-button
-                     matTooltip="Download"
-                     style="text-decoration: none;"
-                  >
-                    <mat-icon>cloud_download</mat-icon>
-                  </a>
-                  -->
+<!--                  <a [appFileDownload]="product.name"-->
+<!--                     #down="fileDownload"-->
+<!--                     [disabled]="!product.downloadUrl || down.busy"-->
+<!--                     [href]="product.downloadUrl"-->
+<!--                     mat-icon-button-->
+<!--                     matTooltip="Download"-->
+<!--                     style="text-decoration: none;"-->
+<!--                     target="_blank"-->
+<!--                  >-->
+<!--                  <a [href]="product.downloadUrl"-->
+<!--                     mat-icon-button-->
+<!--                     matTooltip="Download"-->
+<!--                     style="text-decoration: none;"-->
+<!--                     target="_blank"-->
+<!--                  >-->
+<!--                    <mat-icon>cloud_download</mat-icon>-->
+<!--                  </a>-->
 
-                <button (click)="download()" mat-raised-button color="primary">Download</button>
+                <button (click)="download(product.downloadUrl, product.name)"
+                        [disabled]="!product.downloadUrl"
+                        mat-raised-button color="primary">
+                          Download
+                </button>
                 <mat-progress-bar
                   *ngIf="download$ | async as download"
                   [mode]="download.state == 'PENDING' ? 'buffer' : 'determinate'"

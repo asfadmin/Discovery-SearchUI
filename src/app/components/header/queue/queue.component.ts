@@ -151,8 +151,8 @@ export class QueueComponent implements OnInit, OnDestroy {
     this.store$.dispatch(new queueStore.DownloadMetadata(format));
   }
 
-  public download() {
-    this.download$ = this.downloads.download();
+  public download(url: string, filename: string) {
+    this.download$ = this.downloads.download(url, filename);
   }
 
   public demWarning(products) {
