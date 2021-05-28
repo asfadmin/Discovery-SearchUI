@@ -82,7 +82,7 @@
                   </a>
                   -->
 
-                <button>Download</button>
+                <button (click)="download()" mat-raised-button color="primary">Download</button>
                 <mat-progress-bar
                   *ngIf="download$ | async as download"
                   [mode]="download.state == 'PENDING' ? 'buffer' : 'determinate'"

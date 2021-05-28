@@ -13,6 +13,9 @@ import { CMRProduct, AsfApiOutputFormat, Breakpoints } from '@models';
 import { MatDialogRef } from '@angular/material/dialog';
 import { SubSink } from 'subsink';
 import { ResizedEvent } from 'angular-resize-event';
+import { DownloadService } from '@services/download.service';
+import { Download } from '@services/download';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-queue',
@@ -22,6 +25,8 @@ import { ResizedEvent } from 'angular-resize-event';
 export class QueueComponent implements OnInit, OnDestroy {
 
   @Input() appQueueComponentModel: string;
+
+  download$: Observable<Download>;
 
   public queueHasOnDemandProducts = false;
   public showDemWarning: boolean;
@@ -65,6 +70,7 @@ export class QueueComponent implements OnInit, OnDestroy {
     private dialogRef: MatDialogRef<QueueComponent>,
     private screenSize: ScreenSizeService,
     private notificationService: NotificationService,
+    private downloads: DownloadService,
   ) {}
 
   ngOnInit() {
@@ -143,6 +149,10 @@ export class QueueComponent implements OnInit, OnDestroy {
 
   private downloadMetadata(format: AsfApiOutputFormat): void {
     this.store$.dispatch(new queueStore.DownloadMetadata(format));
+  }
+
+  public download() {
+    this.download$ = this.downloads.download();
   }
 
   public demWarning(products) {
