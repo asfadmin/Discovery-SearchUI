@@ -204,3 +204,10 @@ button {
   margin-top: -18px;
   margin-left: 24px;
 }
+
+.progress-bar {
+  position: absolute;
+  margin-top: 47px;
+  height: 3px;
+  width: calc(100% - 43px);
+}
