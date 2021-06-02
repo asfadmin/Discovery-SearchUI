@@ -173,13 +173,15 @@ export class SceneDetailComponent implements OnInit, OnDestroy {
 
   public findSimilarScenes(): void {
     const scene = this.scene;
+    const shouldClear = this.searchType !== models.SearchType.DATASET;
+    this.store$.dispatch(new searchStore.SetSearchType(models.SearchType.DATASET));
 
-    [
-      new searchStore.SetSearchType(models.SearchType.DATASET),
-      new searchStore.ClearSearch(),
-      new filtersStore.SetFiltersSimilarTo(scene),
-      new searchStore.MakeSearch()
-    ].forEach(action => this.store$.dispatch(action));
+    if (shouldClear) {
+      this.store$.dispatch(new searchStore.ClearSearch());
+    }
+
+    this.store$.dispatch(new filtersStore.SetFiltersSimilarTo(scene));
+    this.store$.dispatch(new searchStore.MakeSearch());
   }
 
   public makeBaselineSearch(): void {
