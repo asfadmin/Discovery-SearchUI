@@ -70,7 +70,7 @@
                   </app-copy-to-clipboard>
 
                   <!-- http://local.asf.alaska.edu:4444/#/?searchType=List%20Search&listSearchType=Product&searchList=S1-GUNW-A-R-014-tops-20200513_20200419-153046-28315N_26591N-PP-e3ef-v2_0_3&resultsLoaded=true&granule=S1-GUNW-A-R-014-tops-20200513_20200419-153046-28315N_26591N-PP-e3ef-v2_0_3 -->
-                  <!-- <a [appFileDownload]="product.name"
+                  <a [appFileDownload]="product.name"
                      #down="fileDownload"
                      [disabled]="!product.downloadUrl || down.busy"
                      [href]="product.downloadUrl"
@@ -80,15 +80,14 @@
                   >
                     <mat-icon>cloud_download</mat-icon>
                   </a>
-                  -->
 
-                <button (click)="download(product.downloadUrl)">Download</button>
-                <mat-progress-bar
-                  *ngIf="download$ | async as download"
-                  [mode]="download.state == 'PENDING' ? 'buffer' : 'determinate'"
-                  [value]="download.progress"
-                >
-                </mat-progress-bar>
+<!--                <button (click)="download(product.downloadUrl)">Download</button>-->
+<!--                <mat-progress-bar-->
+<!--                  *ngIf="download$ | async as download"-->
+<!--                  [mode]="download.state == 'PENDING' ? 'buffer' : 'determinate'"-->
+<!--                  [value]="download.progress"-->
+<!--                >-->
+<!--                </mat-progress-bar>-->
 
                   <button (click)="onRemoveProduct(product)" matTooltip="Remove file" mat-icon-button>
                     <mat-icon>close</mat-icon>
