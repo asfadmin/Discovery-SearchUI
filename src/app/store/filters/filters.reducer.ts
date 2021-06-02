@@ -826,13 +826,13 @@ export const getProductNameFilter = createSelector(
 export const areFiltersChanged = createSelector(
   getFiltersState,
   (state: FiltersState) => {
-    if(state.previousFilters === null) {
+    if (state.previousFilters === null) {
       return false;
     }
     const keys = Object.keys(state).filter(key => key !== 'previousFilters');
     return keys.some(key => state[key] !== state.previousFilters[key]);
     // for (const key in keys) {
-      
+
     // })
   }
-)
+);

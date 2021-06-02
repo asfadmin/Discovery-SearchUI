@@ -66,7 +66,7 @@ export class FiltersDropdownComponent implements OnInit, OnDestroy {
       this.store$.select(areFiltersChanged).subscribe(
         filtersChanged => this.areFiltersChanged = filtersChanged
       )
-    )
+    );
   }
 
   public closePanel(): void {

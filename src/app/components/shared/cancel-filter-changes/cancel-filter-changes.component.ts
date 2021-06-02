@@ -40,7 +40,6 @@ export class CancelFilterChangesComponent implements OnInit, OnDestroy {
     this.store$.dispatch(new filtersStore.RestoreFilters());
     this.store$.dispatch(new filtersStore.StoreCurrentFilters());
     this.store$.dispatch(new uiStore.CloseFiltersMenu());
-
   }
 
 }

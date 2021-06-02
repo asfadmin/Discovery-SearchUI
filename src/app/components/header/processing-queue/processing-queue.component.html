@@ -97,6 +97,13 @@
 
     <div #contentTopArea class="content-top-area">
       <div class="jobs-detail">
+        <div *ngIf="selectedJobTypeId" style="margin-right: 10px;">
+          <p>
+            {{ hyp3JobTypes[selectedJobTypeId].description }}
+            <a target="_blank" [href]="hyp3JobTypes[selectedJobTypeId].infoUrl">[MORE]</a>
+          </p>
+        </div>
+
         <app-processing-options
            *ngIf="selectedJobTypeId"
            [selectedJobType]="hyp3JobTypes[selectedJobTypeId]">
@@ -224,6 +231,14 @@
     </div>
 
     <div class="footer-submit">
+      <mat-slide-toggle
+         *ngIf="env.maturity !== 'prod' && breakpoint !== breakpoints.MOBILE"
+        style="margin-right: 16px;"
+        (change)="onValidateOnlyToggle($event.checked)"
+        [(ngModel)]="validateOnly">
+        Validate Only
+      </mat-slide-toggle>
+
       <button
          (click)="onReviewQueue()"
          [disabled]="

@@ -68,22 +68,28 @@ export class Hyp3Service {
     });
   }
 
-  public getJobs$(): Observable<models.Hyp3Job[]> {
+  public getJobs$(): Observable<{hyp3Jobs: models.Hyp3Job[], next: string}> {
     const getJobsUrl = `${this.apiUrl}/jobs`;
-    return this.http.get(getJobsUrl, { withCredentials: true }).pipe(
+    return this.getJobsByUrl$(getJobsUrl);
+  }
+
+  public getJobsByUrl$(url: string): Observable<{hyp3Jobs: models.Hyp3Job[], next: string}> {
+    return this.http.get(url, { withCredentials: true }).pipe(
       map((resp: any) => {
         if (!resp.jobs) {
           // TODO: Notify user when there is an error
-          return [];
+          return {hyp3Jobs: [], next: ''};
         }
 
-        const { jobs } = resp;
+        const { jobs, next } = resp;
 
-        return jobs.map(job => ({
+        const hyp3Jobs = jobs.map(job => ({
           ...job,
           expiration_time: moment.utc(job.expiration_time),
           request_time: moment.utc(job.request_time)
         }));
+
+        return {hyp3Jobs, next};
       })
     );
   }
