@@ -14,6 +14,8 @@ export enum SearchActionType {
   ENABLE_SEARCH = '[Search] Enable Search',
   DISABLE_SEARCH = '[Search] Disable Search',
 
+  SET_NEXT_JOBS_URL = '[Search] Sets the next url to search for user jobs',
+  HYP3_BATCH_RESPONSE = '[Search] Hyp3 Response Batch',
   SET_SEARCH_AMOUNT = '[Search] Set Search Results Amount',
   SEARCH_AMOUNT_LOADING = '[Search] Search Amount Is Loading',
   SET_SEARCH_TYPE = '[UI] Set Search Type',
@@ -57,13 +59,25 @@ export class SetSearchAmount implements Action {
 export class SearchResponse implements Action {
   public readonly type = SearchActionType.SEARCH_RESPONSE;
 
-  constructor(public payload: {files: CMRProduct[], totalCount: number, searchType: SearchType}) {}
+  constructor(public payload: {files: CMRProduct[], totalCount: number, searchType: SearchType, next?: string}) {}
 }
 
 export class SearchError implements Action {
   public readonly type = SearchActionType.SEARCH_ERROR;
 
   constructor(public payload: string) {}
+}
+
+export class SetNextJobsUrl implements Action {
+  public readonly type = SearchActionType.SET_NEXT_JOBS_URL;
+
+  constructor(public payload: string) {}
+}
+
+export class Hyp3BatchResponse implements Action {
+  public readonly type = SearchActionType.HYP3_BATCH_RESPONSE;
+
+  constructor(public payload: {files: CMRProduct[], totalCount: number, searchType: SearchType, next: string}) {}
 }
 
 export class SetSearchType implements Action {
@@ -78,7 +92,6 @@ export class SetSearchTypeAfterSave implements Action {
   constructor(public payload: SearchType) {}
 }
 
-
 export type SearchActions =
   | MakeSearch
   | SetSearchAmount
@@ -89,5 +102,7 @@ export type SearchActions =
   | SearchAmountLoading
   | SearchError
   | SearchResponse
+  | SetNextJobsUrl
+  | Hyp3BatchResponse
   | SetSearchType
   | SetSearchTypeAfterSave;

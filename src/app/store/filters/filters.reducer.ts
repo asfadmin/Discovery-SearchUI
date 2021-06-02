@@ -32,6 +32,8 @@ export interface FiltersState {
   maxResults: number;
   projectName: string;
   productFilterName: string;
+
+  previousFilters: FiltersState;
 }
 
 
@@ -80,7 +82,9 @@ export const initState: FiltersState = {
 
   maxResults: 250,
   projectName: null,
-  productFilterName: null
+  productFilterName: null,
+
+  previousFilters: null
 };
 
 
@@ -595,6 +599,21 @@ export function filtersReducer(state = initState, action: FiltersActions): Filte
         productFilterName: null
       };
     }
+    case FiltersActionType.STORE_CURRENT_FILTERS: {
+      return {
+        ...state,
+        previousFilters: state
+      };
+    }
+    case FiltersActionType.RESTORE_FILTERS: {
+      if (state.previousFilters !== null) {
+        return {
+          ...state.previousFilters,
+          previousFilters: null
+        };
+      }
+      return state;
+    }
     default: {
       return state;
     }
@@ -802,4 +821,18 @@ export const getJobStatuses = createSelector(
 export const getProductNameFilter = createSelector(
   getFiltersState,
   (state: FiltersState) => state.productFilterName
+);
+
+export const areFiltersChanged = createSelector(
+  getFiltersState,
+  (state: FiltersState) => {
+    if (state.previousFilters === null) {
+      return false;
+    }
+    const keys = Object.keys(state).filter(key => key !== 'previousFilters');
+    return keys.some(key => state[key] !== state.previousFilters[key]);
+    // for (const key in keys) {
+
+    // })
+  }
 );

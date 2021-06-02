@@ -10,10 +10,11 @@ import { AppState } from '@store';
 import * as uiStore from '@store/ui';
 import * as searchStore from '@store/search';
 
-import { ScreenSizeService } from '@services';
+import { NotificationService, ScreenSizeService } from '@services';
 import { SubSink } from 'subsink';
 import * as models from '@models';
 import { Observable } from 'rxjs';
+import { areFiltersChanged } from '@store/filters';
 
 @Component({
   selector: 'app-filters-dropdown',
@@ -34,16 +35,20 @@ export class FiltersDropdownComponent implements OnInit, OnDestroy {
   public isFiltersMenuOpen$ = this.store$.select(uiStore.getIsFiltersMenuOpen);
 
   public searchType$ = this.store$.select(searchStore.getSearchType);
+  private searchType;
   public searchTypes = models.SearchType;
 
   public breakpoint: models.Breakpoints;
   public breakpoints = models.Breakpoints;
+
+  private areFiltersChanged;
 
   public subs = new SubSink();
 
   constructor(
     private store$: Store<AppState>,
     private screenSize: ScreenSizeService,
+    private notificationService: NotificationService,
   ) {}
 
   ngOnInit() {
@@ -52,9 +57,22 @@ export class FiltersDropdownComponent implements OnInit, OnDestroy {
         breakpoint => this.breakpoint = breakpoint
       )
     );
+    this.subs.add(
+      this.searchType$.subscribe(
+        searchType => this.searchType = searchType
+      )
+    );
+    this.subs.add(
+      this.store$.select(areFiltersChanged).subscribe(
+        filtersChanged => this.areFiltersChanged = filtersChanged
+      )
+    );
   }
 
   public closePanel(): void {
+    if (this.searchType !== this.searchTypes.SBAS && this.searchType !== this.searchTypes.BASELINE && this.areFiltersChanged) {
+      this.notificationService.closeFiltersPanel();
+    }
     this.store$.dispatch(new uiStore.CloseFiltersMenu());
   }
 
@@ -66,4 +84,3 @@ export class FiltersDropdownComponent implements OnInit, OnDestroy {
     this.subs.unsubscribe();
   }
 }
-

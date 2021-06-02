@@ -14,10 +14,7 @@
         </mat-icon>
       </button>
 
-      <div *ngIf="
-        productsByJobType.byProductType[0].products.length >= 1 &&
-        searchType === searchTypes.BASELINE &&
-        productsByJobType.byProductType[0].products[0][0].id !== referenceScene.id">
+      <div *ngIf="isBaselineStack(productsByJobType.byProductType, searchType)">
         <button
         [disabled]="productsByJobType.total === 0"
         [matMenuTriggerFor]="addBaselinePair"

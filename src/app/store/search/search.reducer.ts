@@ -13,6 +13,7 @@ export interface SearchState {
   canSearch: boolean;
   totalResults: null | number;
   searchType: SearchType | null;
+  nextHyp3JobUrl: null | string;
 }
 
 export const initState: SearchState = {
@@ -24,6 +25,7 @@ export const initState: SearchState = {
   canSearch: false,
   totalResults: null,
   searchType: SearchType.DATASET,
+  nextHyp3JobUrl: null,
 };
 
 export function searchReducer(state = initState, action: SearchActions): SearchState {
@@ -99,6 +101,13 @@ export function searchReducer(state = initState, action: SearchActions): SearchS
       };
     }
 
+    case SearchActionType.SET_NEXT_JOBS_URL: {
+      return {
+        ...state,
+        nextHyp3JobUrl: action.payload,
+      };
+    }
+
     default: {
       return state;
     }
@@ -145,4 +154,9 @@ export const getIsMaxResultsLoading = createSelector(
 export const getSearchType = createSelector(
   getSearchState,
   state => state.searchType
+);
+
+export const getNextHyp3JobsUrl = createSelector(
+  getSearchState,
+  (state: SearchState) => state.nextHyp3JobUrl
 );

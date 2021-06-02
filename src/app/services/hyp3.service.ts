@@ -27,22 +27,69 @@ export class Hyp3Service {
     return this.http.get<models.Hyp3User>(getUserUrl, { withCredentials: true });
   }
 
-  public getJobs$(): Observable<models.Hyp3Job[]> {
+  public formatJobs(jobTypesWithQueued, options: {processingOptions: any, projectName: string}) {
+    const jobOptionNames = {};
+    models.hyp3JobTypesList.forEach(
+      jobType => jobOptionNames[jobType.id] = new Set(
+        jobType.options.map(option => option.apiName)
+      )
+    );
+
+    const ops = {};
+    models.hyp3JobTypesList.forEach(jobType => {
+      ops[jobType.id] = {};
+
+      Object.entries(options.processingOptions).forEach(([name, value]) => {
+        if (jobOptionNames[jobType.id].has(name)) {
+          ops[jobType.id][name] = value;
+        }
+      });
+    });
+
+    const jobs = jobTypesWithQueued
+      .filter(jobType => jobType.selected)
+      .map(jobType => jobType.jobs)
+      .reduce((acc, val) => acc.concat(val), []);
+
+    return jobs.map(job => {
+      const jobOptions: any = {
+        job_type: job.job_type.id,
+        job_parameters: {
+          ...options[job.job_type.id],
+          granules: job.granules.map(granule => granule.name),
+        }
+      };
+
+      if (options.projectName !== '') {
+        jobOptions.name = options.projectName;
+      }
+
+      return jobOptions;
+    });
+  }
+
+  public getJobs$(): Observable<{hyp3Jobs: models.Hyp3Job[], next: string}> {
     const getJobsUrl = `${this.apiUrl}/jobs`;
-    return this.http.get(getJobsUrl, { withCredentials: true }).pipe(
+    return this.getJobsByUrl$(getJobsUrl);
+  }
+
+  public getJobsByUrl$(url: string): Observable<{hyp3Jobs: models.Hyp3Job[], next: string}> {
+    return this.http.get(url, { withCredentials: true }).pipe(
       map((resp: any) => {
         if (!resp.jobs) {
           // TODO: Notify user when there is an error
-          return [];
+          return {hyp3Jobs: [], next: ''};
         }
 
-        const { jobs } = resp;
+        const { jobs, next } = resp;
 
-        return jobs.map(job => ({
+        const hyp3Jobs = jobs.map(job => ({
           ...job,
           expiration_time: moment.utc(job.expiration_time),
           request_time: moment.utc(job.request_time)
         }));
+
+        return {hyp3Jobs, next};
       })
     );
   }
@@ -126,5 +173,46 @@ export class Hyp3Service {
         );
       })
     );
+  }
+
+  public downloadable(products: models.CMRProduct[]): models.CMRProduct[] {
+    return products.filter(product => this.isDownloadable(product));
+  }
+
+  public isDownloadable(product: models.CMRProduct): boolean {
+    return (
+      !product.metadata.job ||
+      (
+        !this.isPending(product.metadata.job) &&
+        !this.isFailed(product.metadata.job) &&
+        !this.isRunning(product.metadata.job) &&
+        !this.isExpired(product.metadata.job)
+      )
+    );
+  }
+
+  public isExpired(job: models.Hyp3Job): boolean {
+    return job.status_code === models.Hyp3JobStatusCode.SUCCEEDED &&
+      this.expirationDays(job.expiration_time) <= 0;
+  }
+
+  public isFailed(job: models.Hyp3Job): boolean {
+    return job.status_code === models.Hyp3JobStatusCode.FAILED;
+  }
+
+  public isPending(job: models.Hyp3Job): boolean {
+    return job.status_code === models.Hyp3JobStatusCode.PENDING;
+  }
+
+  public isRunning(job: models.Hyp3Job): boolean {
+    return job.status_code === models.Hyp3JobStatusCode.RUNNING;
+  }
+
+  private expirationDays(expiration_time: moment.Moment): number {
+    const current = moment.utc();
+
+    const expiration = moment.duration(expiration_time.diff(current));
+
+    return Math.floor(expiration.asDays());
   }
 }

@@ -28,12 +28,12 @@ export class FileDownloadDirective implements OnDestroy {
   private blob: string;
   private href: string;
 
-  constructor(@Inject(SAMEORIGIN) private sameOrigin: RegExp,
-              private http: HttpClient,
-              private ref: ElementRef<HTMLAnchorElement>,
-              private sanitizer: DomSanitizer) {
-    console.log('file-download.directive constructor');
-  }
+  constructor(
+    @Inject(SAMEORIGIN) private sameOrigin: RegExp,
+    private http: HttpClient,
+    private ref: ElementRef<HTMLAnchorElement>,
+    private sanitizer: DomSanitizer
+  ) {}
 
   // Turns the 'download' attribute into an input
   @HostBinding('attr.appFileDownload')
@@ -59,11 +59,10 @@ export class FileDownloadDirective implements OnDestroy {
 
   // Listens to the click events
   @HostListener('click') onClick() {
-
-    console.log('file-download.directive click event');
-
     // Do nothing on empty href
-    if (!this.href || this.busy) { return false; }
+    if (!this.href || this.busy) {
+      return false;
+    }
 
     // Proceed with the download on files from the same origin
     if (this.error || this.sameOrigin.test(this.href)) { return true; }
@@ -82,7 +81,6 @@ export class FileDownloadDirective implements OnDestroy {
 
       // Catches possible errors such as CORS not allowing the file download
       catchError( error => {
-
         // Reports the error preventing the download
         console.error('Unable to download the source file', error);
 

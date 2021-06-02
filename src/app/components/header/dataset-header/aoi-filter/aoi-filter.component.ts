@@ -1,6 +1,5 @@
 import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
 import { NgForm } from '@angular/forms';
-import { trigger, style, animate, transition } from '@angular/animations';
 import { ClipboardService } from 'ngx-clipboard';
 import { SubSink } from 'subsink';
 
@@ -11,24 +10,14 @@ import * as uiStore from '@store/ui';
 import { Subject } from 'rxjs';
 import { tap, delay } from 'rxjs/operators';
 
+import { menuAnimation } from '@models';
 import * as services from '@services';
 
 @Component({
   selector: 'app-aoi-filter',
   templateUrl: './aoi-filter.component.html',
   styleUrls: ['./aoi-filter.component.css', '../../header.component.scss'],
-  animations: [
-    trigger('fadeTransition', [
-      transition(':enter', [
-        style({opacity: 0}),
-        animate('100ms ease-in', style({opacity: 1}))
-      ]),
-      transition(':leave', [
-        style({opacity: 1}),
-        animate('100ms ease-out', style({opacity: 0}))
-      ])
-    ])
-  ],
+  animations: menuAnimation,
 })
 export class AoiFilterComponent implements OnInit, OnDestroy {
   @ViewChild('polygonForm') public polygonForm: NgForm;

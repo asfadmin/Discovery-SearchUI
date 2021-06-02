@@ -72,20 +72,18 @@
     <a href="javascript:feedback.showForm();" onfocus="this.blur()"> <i class="fa fa-comments-o"></i> Feedback</a>
   </div>
 
-  <div class="help-div header-link">
-    <a href="https://hyp3-docs.asf.alaska.edu/" onfocus="this.blur()" target="_blank">
-      <i class="fa fa-question-circle-o"></i> Docs
-    </a>
-  </div>
-
   <div class="close-x" (click)="onCloseDialog()">
     <mat-icon>close</mat-icon>
   </div>
 </div>
 
-<mat-dialog-content class="mat-dialog-content">
+<mat-dialog-content #contentArea
+  (resized)="onResized($event)"
+  class="mat-dialog-content"
+  [class.dialog-content-mobile]="breakpoint == breakpoints.MOBILE">
+
   <div class="content-block">
-    <div *ngIf="!isUserLoggedIn && !isUserLoading" class="w100 error-header">
+    <div #errorHeader *ngIf="!isUserLoggedIn && !isUserLoading" class="w100 error-header">
       <div style="padding-left: 10px;">
         <b>Sign in to process data</b>
       </div>
@@ -97,8 +95,15 @@
       </div>
     </div>
 
-    <div class="content-top-area">
+    <div #contentTopArea class="content-top-area">
       <div class="jobs-detail">
+        <div *ngIf="selectedJobTypeId" style="margin-right: 10px;">
+          <p>
+            {{ hyp3JobTypes[selectedJobTypeId].description }}
+            <a target="_blank" [href]="hyp3JobTypes[selectedJobTypeId].infoUrl">[MORE]</a>
+          </p>
+        </div>
+
         <app-processing-options
            *ngIf="selectedJobTypeId"
            [selectedJobType]="hyp3JobTypes[selectedJobTypeId]">
@@ -106,8 +111,11 @@
       </div>
     </div>
 
-    <div class="content-bottom-area">
+    <div #contentBottomArea class="content-bottom-area"
+         [style.height.px]="contentBottomAreaHeight"
+         [class.content-bottom-area-mobile]="breakpoint == breakpoints.MOBILE">
       <div class="bottom-item">
+
         <!-- PRODUCT LIST AREA STARTS HERE -->
         <div class="mat-dialog-content-2">
           <div class="jobs-dialog">
@@ -150,8 +158,6 @@
                 </app-processing-queue-jobs>
               </div>
             </div>
-
-            <mat-progress-bar *ngIf="isQueueSubmitProcessing" mode="indeterminate"></mat-progress-bar>
           </div>
 
         </div>
@@ -161,6 +167,11 @@
 </mat-dialog-content>
 
 <mat-dialog-actions class="mat-dialog-actions">
+  <mat-progress-bar
+    *ngIf="isQueueSubmitProcessing"
+    [mode]="progress === null ? 'query' : 'determinate'" [value]="progress">
+  </mat-progress-bar>
+
   <div class="w100 hyp3-footer">
 
     <div class="footer-clear">
@@ -220,6 +231,14 @@
     </div>
 
     <div class="footer-submit">
+      <mat-slide-toggle
+         *ngIf="env.maturity !== 'prod' && breakpoint !== breakpoints.MOBILE"
+        style="margin-right: 16px;"
+        (change)="onValidateOnlyToggle($event.checked)"
+        [(ngModel)]="validateOnly">
+        Validate Only
+      </mat-slide-toggle>
+
       <button
          (click)="onReviewQueue()"
          [disabled]="

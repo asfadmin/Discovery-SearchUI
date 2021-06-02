@@ -1,0 +1,6 @@
+<mat-chip-list aria-label="Job Status">
+  <mat-chip *ngIf="isExpired(job)" color="primary">Expired</mat-chip>
+  <mat-chip *ngIf="isPending(job)" color="secondary">Pending</mat-chip>
+  <mat-chip *ngIf="isFailed(job)" color="accent">Failed</mat-chip>
+  <mat-chip *ngIf="isRunning(job)" color="secondary">Running</mat-chip>
+</mat-chip-list>

@@ -1,10 +1,9 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { saveAs } from 'file-saver';
-import * as moment from 'moment';
 
 import { combineLatest } from 'rxjs';
 import { debounceTime, map } from 'rxjs/operators';
-import { Store } from '@ngrx/store';
+import { Store, Action } from '@ngrx/store';
 
 import { AppState } from '@store';
 import * as scenesStore from '@store/scenes';
@@ -30,7 +29,8 @@ export class ScenesListHeaderComponent implements OnInit, OnDestroy {
   public totalResultCount$ = this.store$.select(searchStore.getTotalResultCount);
   public numberOfScenes$ = this.store$.select(scenesStore.getNumberOfScenes);
   public numberOfProducts$ = this.store$.select(scenesStore.getNumberOfProducts);
-  public products;
+  public products = [];
+  public downloadableProds = [];
   public numBaselineScenes$ = this.scenesService.scenes$().pipe(
     map(scenes => scenes.length),
   );
@@ -38,7 +38,7 @@ export class ScenesListHeaderComponent implements OnInit, OnDestroy {
     map(pairs => pairs.pairs.length + pairs.custom.length)
   );
   public pairs: models.CMRProductPair[];
-  public sbasProducts: models.CMRProduct[];
+  public sbasProducts: models.CMRProduct[] = [];
   public queuedProducts: models.CMRProduct[];
   public canHideRawData: boolean;
   public showS1RawData: boolean;
@@ -54,6 +54,7 @@ export class ScenesListHeaderComponent implements OnInit, OnDestroy {
   public SearchTypes = models.SearchType;
   public breakpoint$ = this.screenSize.breakpoint$;
   public breakpoints = models.Breakpoints;
+  public ApiFormat = models.AsfApiOutputFormat;
 
   private subs = new SubSink();
 
@@ -86,6 +87,7 @@ export class ScenesListHeaderComponent implements OnInit, OnDestroy {
       ).subscribe(
         ([products, {pairs, custom}]) => {
           this.products = products;
+          this.downloadableProds = this.hyp3.downloadable(products);
           this.pairs = [ ...pairs, ...custom ];
 
           this.hyp3able = this.hyp3.getHyp3ableProducts([
@@ -175,44 +177,37 @@ export class ScenesListHeaderComponent implements OnInit, OnDestroy {
   }
 
   public onTogglePerpendicularSort(): void {
-    let direction: models.ColumnSortDirection;
-
-    if (this.perpendicularSort === models.ColumnSortDirection.NONE) {
-      direction = models.ColumnSortDirection.INCREASING;
-    } else if (this.perpendicularSort === models.ColumnSortDirection.INCREASING) {
-      direction = models.ColumnSortDirection.DECREASING;
-    } else if (this.perpendicularSort === models.ColumnSortDirection.DECREASING) {
-      direction = models.ColumnSortDirection.INCREASING;
-    }
+    const direction = this.oppositeDirection(this.perpendicularSort);
 
     this.store$.dispatch(new scenesStore.SetTemporalSortDirection(models.ColumnSortDirection.NONE));
     this.store$.dispatch(new scenesStore.SetPerpendicularSortDirection(direction));
   }
 
   public onToggleTemporalSort(): void {
-    let direction: models.ColumnSortDirection;
-
-    if (this.temporalSort === models.ColumnSortDirection.NONE) {
-      direction = models.ColumnSortDirection.INCREASING;
-    } else if (this.temporalSort === models.ColumnSortDirection.INCREASING) {
-      direction = models.ColumnSortDirection.DECREASING;
-    } else if (this.temporalSort === models.ColumnSortDirection.DECREASING) {
-      direction = models.ColumnSortDirection.INCREASING;
-    }
+    const direction = this.oppositeDirection(this.temporalSort);
 
     this.store$.dispatch(new scenesStore.SetPerpendicularSortDirection(models.ColumnSortDirection.NONE));
     this.store$.dispatch(new scenesStore.SetTemporalSortDirection(direction));
   }
 
-  public queueAllProducts(products: models.CMRProduct[]): void {
-    if (this.searchType === models.SearchType.CUSTOM_PRODUCTS) {
-      products = this.downloadable(products);
+  private oppositeDirection(currentDir: models.ColumnSortDirection): models.ColumnSortDirection {
+    let direction = models.ColumnSortDirection.INCREASING;
+
+    if (currentDir === models.ColumnSortDirection.INCREASING) {
+      direction = models.ColumnSortDirection.DECREASING;
+    } else if (currentDir === models.ColumnSortDirection.DECREASING) {
+      direction = models.ColumnSortDirection.INCREASING;
     }
-    this.store$.dispatch(new queueStore.AddItems(products));
+
+    return direction;
   }
 
-  public downloadable(products: models.CMRProduct[]): models.CMRProduct[] {
-    return products.filter(product => this.isDownloadable(product));
+  public queueAllProducts(products: models.CMRProduct[]): void {
+    if (this.searchType === models.SearchType.CUSTOM_PRODUCTS) {
+      products = this.hyp3.downloadable(products);
+    }
+
+    this.store$.dispatch(new queueStore.AddItems(products));
   }
 
   public queueSBASProducts(products: models.CMRProduct[]): void {
@@ -249,88 +244,41 @@ export class ScenesListHeaderComponent implements OnInit, OnDestroy {
       .replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,');
   }
 
-  public isDownloadable(product: models.CMRProduct): boolean {
-    return (
-      !product.metadata.job ||
-      (
-        !this.isPending(product.metadata.job) &&
-        !this.isFailed(product.metadata.job) &&
-        !this.isRunning(product.metadata.job) &&
-        !this.isExpired(product.metadata.job)
-      )
-    );
-  }
-
-  private clearDispatchRestoreQueue(outputFormat: models.AsfApiOutputFormat,
-    products: models.CMRProduct[],
-    currentQueue: models.CMRProduct[]): void {
-    if (outputFormat === null) {
-      this.store$.dispatch(new queueStore.ClearQueue());
-      this.store$.dispatch(new queueStore.AddItems(products));
-      this.store$.dispatch(new queueStore.MakeDownloadScript());
-
-      this.store$.dispatch(new queueStore.ClearQueue());
-      this.store$.dispatch(new queueStore.AddItems(currentQueue));
-    } else if (this.searchType === this.SearchTypes.BASELINE) {
-      this.store$.dispatch(new queueStore.DownloadSearchtypeMetadata(outputFormat));
-    } else {
-      this.store$.dispatch(new queueStore.ClearQueue());
-      this.store$.dispatch(new queueStore.AddItems(products));
-      this.store$.dispatch(new queueStore.DownloadMetadata(outputFormat));
-
-      this.store$.dispatch(new queueStore.ClearQueue());
-      this.store$.dispatch(new queueStore.AddItems(currentQueue));
-    }
-  }
-
   public onMakeDownloadScript(products: models.CMRProduct[]): void {
     const currentQueue = this.queuedProducts;
-    this.clearDispatchRestoreQueue(null, products, currentQueue);
+    const action = new queueStore.MakeDownloadScript();
+
+    this.clearDispatchRestoreQueue(action, products, currentQueue);
   }
 
-  public onCsvDownload(products: models.CMRProduct[]): void {
+  public onMetadataExport(products: models.CMRProduct[], format: models.AsfApiOutputFormat): void {
     const currentQueue = this.queuedProducts;
-    this.clearDispatchRestoreQueue(models.AsfApiOutputFormat.CSV, products, currentQueue);
+    const action = new queueStore.DownloadSearchtypeMetadata(format);
+
+    if (this.searchType === this.SearchTypes.BASELINE) {
+      this.store$.dispatch(action);
+    } else {
+      this.clearDispatchRestoreQueue(action, products, currentQueue);
+    }
+
   }
 
-  public onKmlDownload(products: models.CMRProduct[]): void {
-    const currentQueue = this.queuedProducts;
-    this.clearDispatchRestoreQueue(models.AsfApiOutputFormat.KML, products, currentQueue);
-  }
+  private clearDispatchRestoreQueue(
+    queueStoreAction: Action,
+    products: models.CMRProduct[],
+    currentQueue: models.CMRProduct[]
+  ): void {
+    const actions = [
+      new queueStore.ClearQueue(),
+      new queueStore.AddItems(products),
+      queueStoreAction,
+      new queueStore.ClearQueue(),
+      new queueStore.AddItems(currentQueue)
+    ];
 
-  public onGeojsonDownload(products: models.CMRProduct[]): void {
-    const currentQueue = this.queuedProducts;
-    this.clearDispatchRestoreQueue(models.AsfApiOutputFormat.GEOJSON, products, currentQueue);
-  }
-
-  public onMetalinkDownload(products: models.CMRProduct[]): void {
-    const currentQueue = this.queuedProducts;
-    this.clearDispatchRestoreQueue(models.AsfApiOutputFormat.METALINK, products, currentQueue);
-  }
-
-  public isExpired(job: models.Hyp3Job): boolean {
-    return job.status_code === models.Hyp3JobStatusCode.SUCCEEDED &&
-      this.expirationDays(job.expiration_time) <= 0;
-  }
-
-  public isFailed(job: models.Hyp3Job): boolean {
-    return job.status_code === models.Hyp3JobStatusCode.FAILED;
-  }
-
-  public isPending(job: models.Hyp3Job): boolean {
-    return job.status_code === models.Hyp3JobStatusCode.PENDING;
-  }
-
-  public isRunning(job: models.Hyp3Job): boolean {
-    return job.status_code === models.Hyp3JobStatusCode.RUNNING;
-  }
-
-  private expirationDays(expiration_time: moment.Moment): number {
-    const current = moment.utc();
-
-    const expiration = moment.duration(expiration_time.diff(current));
-
-    return Math.floor(expiration.asDays());
+    actions.forEach(action =>
+      this.store$.dispatch(action)
+    );
   }
 
   ngOnDestroy(): void {

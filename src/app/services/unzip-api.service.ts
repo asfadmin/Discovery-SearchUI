@@ -23,7 +23,8 @@ export class UnzipApiService {
   }
 
   public load$(downloadUrl: string): Observable<any> {
-    const productUnzipUrl = downloadUrl.replace('datapool', 'unzip');
+    const datapoolUrl = 'https://datapool.asf.alaska.edu';
+    const productUnzipUrl = downloadUrl.replace(datapoolUrl, this.apiUrl);
 
     return this.http.get(productUnzipUrl, { withCredentials: true });
   }

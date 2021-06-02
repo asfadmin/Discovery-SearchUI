@@ -85,15 +85,9 @@
       </div>
 
       <div *ngIf="!isDownloadable(scene)" class="scene-controls ml-2">
-        <mat-chip-list aria-label="Job Status">
-          <mat-chip *ngIf="isExpired(scene.metadata.job)" color="primary">Expired</mat-chip>
-          <mat-chip *ngIf="isPending(scene.metadata.job)" color="secondary">Pending</mat-chip>
-          <mat-chip *ngIf="isFailed(scene.metadata.job)" color="accent">Failed</mat-chip>
-          <mat-chip *ngIf="isRunning(scene.metadata.job)" color="secondary">Running</mat-chip>
-        </mat-chip-list>
+        <app-hyp3-job-status-badge [job]="scene.metadata.job">
+        </app-hyp3-job-status-badge>
       </div>
-
-
     </ng-container>
 
     <ng-container *ngIf="searchType === SearchTypes.BASELINE">

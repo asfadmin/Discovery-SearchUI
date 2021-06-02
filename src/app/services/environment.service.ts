@@ -17,6 +17,7 @@ export interface Environment {
   datapool: string;
   banner: string;
   user_data: string;
+  bulk_download: string;
   hyp3_api: string;
   cmr_token?: string;
   cmr_provider?: string;
@@ -71,7 +72,7 @@ export class EnvironmentService {
 
   private loadWithCustom(): Environments {
     try {
-      const customEnvJson = localStorage.getItem('customEnv');
+      const customEnvJson = localStorage.getItem('customEnv-1');
       const customEnv = JSON.parse(customEnvJson);
       if (!customEnv) {
         return this.loadFromEnvFile();

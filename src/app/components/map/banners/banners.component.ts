@@ -20,7 +20,7 @@ export class BannerCreateDirective implements OnInit {
   public toastRef;
   public maxMsgLength = 150;
   public msgOverflow = false;
-  public moreMsg = '... <a>[MORE]</a>';
+  public moreMsg = ' <a>[MORE]</a>';
   public overrides = {
     enableHtml: true,
     closeButton: true,
@@ -47,7 +47,7 @@ export class BannerCreateDirective implements OnInit {
       msg = lines[0].trim() + this.moreMsg;
     } else {
       if (this.msgOverflow) {
-        msg = msg.trim() + this.moreMsg;
+        msg = msg.trim() + '...' + this.moreMsg;
       }
     }
 

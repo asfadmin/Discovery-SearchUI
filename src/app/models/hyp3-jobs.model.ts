@@ -5,6 +5,11 @@ export const RtcGammaJobType: Hyp3JobType = {
   id: 'RTC_GAMMA',
   name: 'RTC GAMMA',
   infoUrl: 'https://hyp3-docs.asf.alaska.edu/products/#rtc',
+  description: `
+    Radiometric Terrain Correction (RTC) removes geometric and radiometric
+    distortions in SAR datasets and creates analysis-ready data suitable for use
+    in GIS applications.
+  `,
   numProducts: 1,
   productTypes: [{
     dataset: sentinel_1,
@@ -111,6 +116,12 @@ export const InsarGammaJobType: Hyp3JobType = {
   id: 'INSAR_GAMMA',
   name: 'InSAR GAMMA',
   infoUrl: 'https://hyp3-docs.asf.alaska.edu/products/#insar',
+  description: `
+    Interferometric Synthetic Aperture Radar (InSAR) processing uses two SAR images
+    collected over the same area to determine geometric properties of the surface.
+    The phase measurements of the two images acquired at different times are differenced
+    to detect and quantify surface changes.
+  `,
   numProducts: 2,
   productTypes: [{
     dataset: sentinel_1,
@@ -183,6 +194,10 @@ export const AutoRift: Hyp3JobType = {
   id: 'AUTORIFT',
   name: 'autoRIFT',
   infoUrl: 'https://hyp3-docs.asf.alaska.edu/products/#autorift',
+  description: `
+    autoRIFT is a highly accurate and efficeint algorithm for finding the pixel
+    displacement between two radar images.
+  `,
   numProducts: 2,
   productTypes: [{
     dataset: sentinel_1,

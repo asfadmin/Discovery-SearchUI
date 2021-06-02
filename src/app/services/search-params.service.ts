@@ -29,12 +29,45 @@ export class SearchParamsService {
   public getParams(): Observable<any> {
     return combineLatest(
       this.searchType$(),
-      this.listParam$(),
-      this.filterSearchParams$(),
       this.baselineSearchParams$(),
     ).pipe(
+      withLatestFrom(this.listParam$()),
+      withLatestFrom(this.filterSearchParams$()),
       map(
-        ([searchType, listParam, filterParams, baselineParams]) => {
+        ([[[searchType, baselineParams], listParam], filterParams ]) => {
+          switch (searchType) {
+            case models.SearchType.LIST: {
+              return listParam;
+            }
+            case models.SearchType.DATASET: {
+              return filterParams;
+            }
+            case models.SearchType.BASELINE: {
+              return baselineParams;
+            }
+            case models.SearchType.SBAS: {
+              return baselineParams;
+            }
+            case models.SearchType.CUSTOM_PRODUCTS: {
+              return listParam;
+            }
+            default: {
+              return filterParams;
+            }
+          }
+        }),
+    );
+  }
+
+  public getlatestParams(): Observable<any> {
+    return combineLatest(
+      this.searchType$(),
+      this.listParam$(),
+      this.baselineSearchParams$(),
+      this.filterSearchParams$()
+    ).pipe(
+      map(
+        ([searchType, listParam, baselineParams, filterParams ]) => {
           switch (searchType) {
             case models.SearchType.LIST: {
               return listParam;
