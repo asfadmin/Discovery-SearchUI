@@ -20,39 +20,6 @@
         <span matTooltip="Frequency">{{ dataset.frequency }}</span>
       </mat-card-subtitle>
     </mat-card-header>
-
-    <mat-card-content class="content">
-      <div class="w100" fxFlex fxLayout="row" fxLayoutAlign="space-between">
-        <div class="w50">
-          <app-scene-metadata
-             [scene]="scene"
-             [dataset]="dataset"
-             [searchType]="searchType"
-             [offsets]="masterOffsets$ | async">
-          </app-scene-metadata>
-        </div>
-
-        <div [class.clickable]="sceneHasBrowse()" class="browse-container w40">
-          <div (click)="onOpenImage();"
-            class="img-container"
-               [matBadgeHidden]="(browses$ | async).length <= 1"
-               matBadge="{{ (browses$ | async).length }}"
-               matBadgePosition="above after">
-            <img
-              class="browse-img fit-to-container"
-              [hidden]="isImageLoading"
-              [src]="(browses$ | async)[0]"
-              (load)="isImageLoading = false"
-              onerror="this.src='assets/no-browse.png'"
-              alt="Sentinel1 scene browse image">
-            <div [class.hidden]="!sceneHasBrowse()" class="img-overlay fit-to-container">
-                <mat-icon class="overlay-icon">fullscreen</mat-icon>
-              </div>
-          </div>
-        </div>
-      </div>
-    </mat-card-content>
-
     <div class="detail-card-info">
       <mat-button-toggle-group class="scene-actions" name="sceneActions" aria-label="Scene Actions">
         <mat-button-toggle *ngIf="searchType !== searchTypes.BASELINE && hasBaseline"
@@ -119,6 +86,57 @@
         </div>
       </div>
     </div>
+    <mat-card-content class="content">
+      <div class="w100" fxFlex fxLayout="column" fxLayoutAlign="space-between">
+        <div class="w100">
+          <app-scene-metadata
+             [scene]="scene"
+             [dataset]="dataset"
+             [searchType]="searchType"
+             [offsets]="masterOffsets$ | async">
+          </app-scene-metadata>
+        </div>
+        <div class="browse-container w100" *ngIf="sceneHasBrowse()">
+          <div class="banner" fxLayout fxLayout="row" fxLayoutAlign="center">
+            <div class="menu-items">
+              <div class="fullscreen clickable" (click)="onOpenImage();" matTooltip="Open in Image Viewer">
+                <mat-icon>preview</mat-icon>
+              </div>
+              <a class="download clickable" [href]="(browses$ | async)[0]" target="_blank" matTooltip="Download this image">
+                <mat-icon>download</mat-icon>
+              </a>
+            </div>
+            <div class="browse-pager" *ngIf="browses$ | async as browses">
+              <span 
+              [class.clickable]="browseIndex > 0"
+              (click)="browseIndex > 0 && browseIndex = browseIndex - 1" 
+              >
+              <mat-icon>arrow_back</mat-icon>
+              </span>
+               {{browseIndex+1}} / {{browses.length}} 
+              <span
+                [class.clickable]="browseIndex+1 < browses.length"
+                (click)="browseIndex+1 < browses.length && browseIndex = browseIndex + 1" 
+                 >
+                <mat-icon>arrow_forward</mat-icon>
+              </span>
+            </div>
+          </div>
+          <div 
+            class="img-container">
+            <img
+              class="browse-img fit-to-container"
+              [hidden]="isImageLoading"
+              [src]="(browses$ | async)[browseIndex]"
+              (click)="onOpenImage();"
+              (load)="isImageLoading = false"
+              onerror="this.src='assets/no-browse.png'"
+              [class.clickable]="sceneHasBrowse()"
+              alt="Sentinel1 scene browse image">
+          </div>
+        </div>
+      </div>
+    </mat-card-content>
   </div>
 </div>
 
