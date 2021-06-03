@@ -6,7 +6,7 @@
 
     <ng-template #jobsQueued>
 
-      <mat-list-item *ngFor="let job of jobs" class="job-list-item">
+      <mat-list-item *ngFor="let job of jobs.reverse()" class="job-list-item">
           <img matListAvatar
                [src]="job.granules[0].thumbnail"
                onerror="this.src='assets/no-thumb.png'"
