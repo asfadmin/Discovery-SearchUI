@@ -6,7 +6,7 @@ import { NgxCsvParser } from 'ngx-csv-parser';
 import { NgxCSVParserError } from 'ngx-csv-parser'
 
 import { combineLatest, Subject } from 'rxjs';
-import { map, debounceTime, withLatestFrom } from 'rxjs/operators';
+import { map, debounceTime, withLatestFrom, first } from 'rxjs/operators';
 import { SubSink } from 'subsink';
 
 import { ActionsSubject, Store } from '@ngrx/store';
@@ -213,7 +213,7 @@ export class ListFiltersComponent implements OnInit, OnDestroy {
   private parseCSV(file) {
     // Parse the file you want to select for the operation along with the configuration
     this.ngxCsvParser.parse(file, { header: true, delimiter: ',' })
-    .pipe().subscribe((result: Array<any>) => {
+    .pipe(first()).subscribe((result: Array<any>) => {
       const granules: string[] = result.map(row => row['Granule Name']);
       this.updateSearchList(granules);
     }, (error: NgxCSVParserError) => {
