@@ -3,10 +3,10 @@ import { ListSearchType } from '@models';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
 import { NgxCsvParser } from 'ngx-csv-parser';
-import { NgxCSVParserError } from 'ngx-csv-parser'
-
-import { combineLatest, Subject } from 'rxjs';
-import { map, debounceTime, withLatestFrom, first } from 'rxjs/operators';
+import { NgxCSVParserError } from 'ngx-csv-parser';
+import * as xml2js from 'xml2js';
+import { combineLatest, from, Subject } from 'rxjs';
+import { map, debounceTime, withLatestFrom, first, tap, delay } from 'rxjs/operators';
 import { SubSink } from 'subsink';
 
 import { ActionsSubject, Store } from '@ngrx/store';
@@ -23,6 +23,11 @@ enum ListPanel {
   LIST = 'list'
 }
 
+enum FileErrors {
+  TOO_LARGE = 'Too large',
+  INVALID_TYPE = 'Invalid Type'
+}
+
 @Component({
   selector: 'app-list-filters',
   templateUrl: './list-filters.component.html',
@@ -33,6 +38,9 @@ export class ListFiltersComponent implements OnInit, OnDestroy {
   public types = ListSearchType;
   public panels = ListPanel;
   public files: Set<File> = new Set();
+
+  public fileError$ = new Subject<{fileName: string, fileError: FileErrors}>();
+
   defaultPanelOpenState = true;
   panelIsDisabled = true;
   customCollapsedHeight = '30px';
@@ -68,6 +76,24 @@ export class ListFiltersComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit() {
+
+    this.subs.add(
+      this.fileError$.pipe(
+        tap(
+          (file_error) => {
+            if (file_error.fileError === FileErrors.INVALID_TYPE) {
+              this.snackBar.open( `Invalid File Type for file ${file_error.fileName}`, 'FILE ERROR', { duration: 5000 });
+            } else if (file_error.fileError === FileErrors.TOO_LARGE) {
+              this.snackBar.open( `File is too large (over 10MB) for file ${file_error.fileName}`, 'FILE ERROR', { duration: 5000 });
+            }
+          }
+        ),
+        delay(820)
+      ).subscribe(
+        _ => _
+      )
+    );
+
     this.subs.add(
       combineLatest(
       this.actions$.pipe(
@@ -144,22 +170,34 @@ export class ListFiltersComponent implements OnInit, OnDestroy {
   public onFileDrop(ev) {
     const files = ev.dataTransfer.files;
 
-    for(let file of files) {
-    if(this.isValidFileType(file.name)) {
-      const filetype = this.getFileType(file.name);
+    for (const file of files) {
+      const fileName: string = file.name;
+      const size_limit = 10e6;
 
-      switch(filetype) {
-        case 'csv':
-          this.parseCSV(file);
-          break;
-        case 'geojson':
-          this.parseGeoJSON(file);
-          break;
-        default:
-          break;
+      if (file.size > size_limit) {
+        this.fileError$.next({fileName, fileError: FileErrors.TOO_LARGE});
+        continue;
       }
-    }
-    
+
+      if (this.isValidFileType(file.name)) {
+        const filetype = this.getFileType(file.name);
+
+        switch (filetype) {
+          case 'csv':
+            this.parseCSV(file);
+            break;
+          case 'geojson':
+            this.parseGeoJSON(file);
+            break;
+          case 'kml':
+            this.parseKML(file);
+            break;
+          default:
+            break;
+        }
+      } else {
+        this.fileError$.next({fileName, fileError: FileErrors.INVALID_TYPE});
+      }
     }
     // if (ev.dataTransfer.items) {
     //   for (const item of ev.dataTransfer.items) {
@@ -197,7 +235,7 @@ export class ListFiltersComponent implements OnInit, OnDestroy {
   // }
 
   private isValidFileType(fileName: string): boolean {
-    const validFileTypes = ['csv', 'geojson'];
+    const validFileTypes = ['csv', 'geojson', 'kml'];
 
     const fileExtension = this.getFileType(fileName);
 
@@ -224,14 +262,28 @@ export class ListFiltersComponent implements OnInit, OnDestroy {
   private parseGeoJSON(file) {
     const filereader = new FileReader();
       filereader.onload = _ => {
-
         const res = filereader.result as string;
-
         const features: any[] = JSON.parse(res)['features'];
-        
         const granules = features.map(feature => feature['properties']['fileID']);
 
         this.updateSearchList(granules);
+    };
+    filereader.readAsText(file);
+  }
+
+  private parseKML(file) {
+    const filereader = new FileReader();
+      filereader.onload = _ => {
+        const res = filereader.result as string;
+        const parser = new xml2js.Parser({ explicitArray: false });
+        const observable = from (parser.parseStringPromise(res));
+
+        observable.pipe(first()).subscribe(result => {
+            const placemarks: [] = result['kml']['Document']['Placemark'];
+            const granules: string[] = placemarks.map(placemark => placemark['name']);
+
+            this.updateSearchList(granules);
+          });
     };
     filereader.readAsText(file);
   }
