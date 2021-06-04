@@ -1,3 +1,4 @@
+<div (dragover) = "onFileDragOver($event)" (drop)="onFileDrop($event)">
 <ng-container *ngIf="listSearchMode$ | async as mode">
   <mat-accordion *ngIf="breakpoint$ | async as breakpoint" multi>
     <mat-expansion-panel
@@ -84,3 +85,4 @@
     </mat-expansion-panel>
   </mat-accordion>
 </ng-container>
+</div>

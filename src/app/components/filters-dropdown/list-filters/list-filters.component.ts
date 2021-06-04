@@ -2,6 +2,9 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ListSearchType } from '@models';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
+import { NgxCsvParser } from 'ngx-csv-parser';
+import { NgxCSVParserError } from 'ngx-csv-parser'
+
 import { combineLatest, Subject } from 'rxjs';
 import { map, debounceTime, withLatestFrom } from 'rxjs/operators';
 import { SubSink } from 'subsink';
@@ -29,7 +32,7 @@ export class ListFiltersComponent implements OnInit, OnDestroy {
   public selectedPanel: ListPanel | null = null;
   public types = ListSearchType;
   public panels = ListPanel;
-
+  public files: Set<File> = new Set();
   defaultPanelOpenState = true;
   panelIsDisabled = true;
   customCollapsedHeight = '30px';
@@ -61,6 +64,7 @@ export class ListFiltersComponent implements OnInit, OnDestroy {
     private store$: Store<AppState>,
     private screenSize: services.ScreenSizeService,
     private actions$: ActionsSubject,
+    private ngxCsvParser: NgxCsvParser,
   ) {}
 
   ngOnInit() {
@@ -132,6 +136,84 @@ export class ListFiltersComponent implements OnInit, OnDestroy {
   public onNewListSearchMode(mode: models.ListSearchType): void {
     this.store$.dispatch(new filtersStore.SetListSearchType(mode));
   }
+
+  public onFileDragOver(e) {
+    e.preventDefault();
+  }
+
+  public onFileDrop(ev) {
+    const files = ev.dataTransfer.files;
+
+    // Parse the file you want to select for the operation along with the configuration
+    this.ngxCsvParser.parse(files[0], { header: true, delimiter: ',' })
+      .pipe().subscribe((result: Array<any>) => {
+
+        // console.log('Result', result);
+        // for(let res of result) {
+        //   console.log(res['Granule Name']);
+        // }
+        const granules: string[] = result.map(row => row['Granule Name']);
+        if(this.searchList !== undefined && this.searchList !== '') {
+          this.searchList += ',' + granules.join();
+        } else {
+          this.searchList = granules.join();
+        }
+        // this.searchList = [this.searchList, granules.join()].join(' ');
+        // result[0].forEach(obj => {
+        //   console.log(obj['Granule Name']);
+        // })
+        // this.csvRecords = result;
+      }, (error: NgxCSVParserError) => {
+        console.log('Error', error);
+      });
+    // if (ev.dataTransfer.items) {
+    //   for (const item of ev.dataTransfer.items) {
+    //     if (item.kind === 'file') {
+    //       const file = item.getAsFile();
+    //       this.addFile(file);
+    //     }
+    //   }
+    // } else {
+    //   for (const file of ev.dataTransfer.files) {
+    //     this.addFile(file);
+    //   }
+    // }
+
+    ev.preventDefault();
+  }
+
+  // private addFile(file): void {
+  //   const fileName = file.name;
+  //   // const size_limit = 10e6;
+
+  //   console.log(fileName);
+    
+  //   // if (file.size > size_limit) {
+  //   //   this.fileError$.next(FileErrors.TOO_LARGE);
+  //   //   return;
+  //   // }
+
+  //   if (this.isValidFileType(fileName)) {
+  //     this.files.add(file);
+  //   } 
+  //   // else {
+  //   //   this.fileError$.next(FileErrors.INVALID_TYPE);
+  //   // }
+  // }
+
+  // private isValidFileType(fileName: string): boolean {
+  //   const validFileTypes = ['csv'];
+
+  //   const fileExtension = this.getFileType(fileName);
+
+  //   return validFileTypes.some(
+  //     ext => ext === fileExtension
+  //   );
+  // }
+
+  // private getFileType(fileName: string): string {
+  //   return fileName.split('.').pop().toLowerCase();
+  // }
 
   ngOnDestroy() {
     this.subs.unsubscribe();
