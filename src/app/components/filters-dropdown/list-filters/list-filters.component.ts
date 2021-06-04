@@ -144,28 +144,23 @@ export class ListFiltersComponent implements OnInit, OnDestroy {
   public onFileDrop(ev) {
     const files = ev.dataTransfer.files;
 
-    // Parse the file you want to select for the operation along with the configuration
-    this.ngxCsvParser.parse(files[0], { header: true, delimiter: ',' })
-      .pipe().subscribe((result: Array<any>) => {
+    for(let file of files) {
+    if(this.isValidFileType(file.name)) {
+      const filetype = this.getFileType(file.name);
 
-        // console.log('Result', result);
-        // for(let res of result) {
-        //   console.log(res['Granule Name']);
-        // }
-        const granules: string[] = result.map(row => row['Granule Name']);
-        if(this.searchList !== undefined && this.searchList !== '') {
-          this.searchList += ',' + granules.join();
-        } else {
-          this.searchList = granules.join();
-        }
-        // this.searchList = [this.searchList, granules.join()].join(' ');
-        // result[0].forEach(obj => {
-        //   console.log(obj['Granule Name']);
-        // })
-        // this.csvRecords = result;
-      }, (error: NgxCSVParserError) => {
-        console.log('Error', error);
-      });
+      switch(filetype) {
+        case 'csv':
+          this.parseCSV(file);
+          break;
+        case 'geojson':
+          this.parseGeoJSON(file);
+          break;
+        default:
+          break;
+      }
+    }
+    
+    }
     // if (ev.dataTransfer.items) {
     //   for (const item of ev.dataTransfer.items) {
     //     if (item.kind === 'file') {
@@ -201,19 +196,53 @@ export class ListFiltersComponent implements OnInit, OnDestroy {
   //   // }
   // }
 
-  // private isValidFileType(fileName: string): boolean {
-  //   const validFileTypes = ['csv'];
+  private isValidFileType(fileName: string): boolean {
+    const validFileTypes = ['csv', 'geojson'];
 
-  //   const fileExtension = this.getFileType(fileName);
+    const fileExtension = this.getFileType(fileName);
 
-  //   return validFileTypes.some(
-  //     ext => ext === fileExtension
-  //   );
-  // }
+    return validFileTypes.some(
+      ext => ext === fileExtension
+    );
+  }
 
-  // private getFileType(fileName: string): string {
-  //   return fileName.split('.').pop().toLowerCase();
-  // }
+  private getFileType(fileName: string): string {
+    return fileName.split('.').pop().toLowerCase();
+  }
+
+  private parseCSV(file) {
+    // Parse the file you want to select for the operation along with the configuration
+    this.ngxCsvParser.parse(file, { header: true, delimiter: ',' })
+    .pipe().subscribe((result: Array<any>) => {
+      const granules: string[] = result.map(row => row['Granule Name']);
+      this.updateSearchList(granules);
+    }, (error: NgxCSVParserError) => {
+      console.log('Error', error);
+    });
+  }
+
+  private parseGeoJSON(file) {
+    const filereader = new FileReader();
+      filereader.onload = _ => {
+
+        const res = filereader.result as string;
+
+        const features: any[] = JSON.parse(res)['features'];
+        
+        const granules = features.map(feature => feature['properties']['fileID']);
+
+        this.updateSearchList(granules);
+    };
+    filereader.readAsText(file);
+  }
+
+  private updateSearchList(granules: string[]) {
+    if(this.searchList !== undefined && this.searchList !== '') {
+      this.searchList += ',' + granules.join();
+    } else {
+      this.searchList = granules.join();
+    }
+  }
 
   ngOnDestroy() {
     this.subs.unsubscribe();
