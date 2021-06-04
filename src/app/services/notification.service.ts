@@ -89,10 +89,10 @@ export class NotificationService {
   public closeFiltersPanel() {
     this.info('Filters dismissed and not applied');
   }
-  public info(message: string, title = '', options={}): ActiveToast<any> {
+  public info(message: string, title = '', options= {}): ActiveToast<any> {
     return this.toastr.info(message, title, {...options, ...this.toastOptions});
   }
-  public error(message: string, title = '', options={}): ActiveToast<any> {
+  public error(message: string, title = '', options= {}): ActiveToast<any> {
     return this.toastr.error(message, title, {...options, ...this.toastOptions});
   }
 }
