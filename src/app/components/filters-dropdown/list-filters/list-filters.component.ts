@@ -192,6 +192,9 @@ export class ListFiltersComponent implements OnInit, OnDestroy {
           case 'kml':
             this.parseKML(file);
             break;
+          case 'metalink':
+            this.parseMetalink(file);
+            break;
           default:
             break;
         }
@@ -235,7 +238,7 @@ export class ListFiltersComponent implements OnInit, OnDestroy {
   // }
 
   private isValidFileType(fileName: string): boolean {
-    const validFileTypes = ['csv', 'geojson', 'kml'];
+    const validFileTypes = ['csv', 'geojson', 'kml', 'metalink'];
 
     const fileExtension = this.getFileType(fileName);
 
@@ -283,6 +286,23 @@ export class ListFiltersComponent implements OnInit, OnDestroy {
             const granules: string[] = placemarks.map(placemark => placemark['name']);
 
             this.updateSearchList(granules);
+          });
+    };
+    filereader.readAsText(file);
+  }
+
+  private parseMetalink(file) {
+    const filereader = new FileReader();
+      filereader.onload = _ => {
+        const res = filereader.result as string;
+        const parser = new xml2js.Parser({ explicitArray: false });
+        const observable = from (parser.parseStringPromise(res));
+
+        observable.pipe(first()).subscribe(result => {
+            const files: [] = result['metalink']['files']['file'];
+            const fileNames = files.map(fileMeta => (fileMeta['$']['name'] as string).split('.').shift());
+
+            this.updateSearchList(fileNames);
           });
     };
     filereader.readAsText(file);
