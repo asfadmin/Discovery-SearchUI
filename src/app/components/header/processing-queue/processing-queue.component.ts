@@ -1,6 +1,5 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
-import { MatSnackBar } from '@angular/material/snack-bar';
 
 import { ConfirmationComponent } from './confirmation/confirmation.component';
 
@@ -73,7 +72,6 @@ export class ProcessingQueueComponent implements OnInit {
     public dialog: MatDialog,
     public env: services.EnvironmentService,
     private dialogRef: MatDialogRef<ProcessingQueueComponent>,
-    private snackBar: MatSnackBar,
     private store$: Store<AppState>,
     private hyp3: services.Hyp3Service,
     private screenSize: services.ScreenSizeService,
@@ -241,8 +239,8 @@ export class ProcessingQueueComponent implements OnInit {
       concatMap(batch => this.hyp3.submiteJobBatch$({ jobs: batch, validate_only: validateOnly }).pipe(
         catchError(resp => {
           if (resp.error) {
-            this.snackBar.open(`${resp.error.detail}`, 'Error', {
-              duration: 5000,
+            this.notificationService.error(`${resp.error.detail}`, 'Error', {
+              timeOut: 5000,
             });
           }
 

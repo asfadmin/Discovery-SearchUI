@@ -1,11 +1,11 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { MatSnackBar } from '@angular/material/snack-bar';
 import { Observable, of } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 
 import { EnvironmentService } from './environment.service';
 import { UserAuth } from '@models';
+import { NotificationService } from './notification.service';
 
 
 @Injectable({
@@ -15,9 +15,9 @@ export class UserDataService {
   private baseUrl = this.getBaseUrlFrom();
 
   constructor(
-    private snackBar: MatSnackBar,
     private env: EnvironmentService,
     private http: HttpClient,
+    private notificationService: NotificationService,
   ) { }
 
   public getAttribute$<T>(userAuth: UserAuth, attribute: string): Observable<T> {
@@ -28,8 +28,8 @@ export class UserDataService {
       headers
     }).pipe(
       catchError(_ => {
-        this.snackBar.open('Trouble loading profile information', 'ERROR', {
-          duration: 5000
+        this.notificationService.error('Trouble loading profile information', 'Error', {
+          timeOut: 5000
         });
 
         return of(null);
@@ -45,8 +45,8 @@ export class UserDataService {
       headers
     }).pipe(
       catchError(_ => {
-        this.snackBar.open('Trouble setting profile information', 'ERROR', {
-          duration: 5000
+        this.notificationService.error('Trouble setting profile information', 'Error', {
+          timeOut: 5000
         });
 
         return of(null);

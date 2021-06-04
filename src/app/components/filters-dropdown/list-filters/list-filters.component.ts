@@ -1,6 +1,5 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ListSearchType } from '@models';
-import { MatSnackBar } from '@angular/material/snack-bar';
 
 import { combineLatest, Subject } from 'rxjs';
 import { map, debounceTime, withLatestFrom } from 'rxjs/operators';
@@ -57,10 +56,10 @@ export class ListFiltersComponent implements OnInit, OnDestroy {
   };
 
   constructor(
-    private snackBar: MatSnackBar,
     private store$: Store<AppState>,
     private screenSize: services.ScreenSizeService,
     private actions$: ActionsSubject,
+    private notificationService: services.NotificationService,
   ) {}
 
   ngOnInit() {
@@ -99,8 +98,8 @@ export class ListFiltersComponent implements OnInit, OnDestroy {
             'file' : 'scene';
           const plural = duplicates === 1 ? '' : 's';
 
-          this.snackBar.open(`Removed ${duplicates} duplicate ${mode}${plural} from search list`, 'Search', {
-            duration: 5000
+          this.notificationService.info(`Removed ${duplicates} duplicate ${mode}${plural} from search list`, 'Search', {
+            timeOut: 5000
           });
         }
 

@@ -1,12 +1,11 @@
 import { Injectable } from '@angular/core';
-import { MatSnackBar } from '@angular/material/snack-bar';
 
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 
 import { of } from 'rxjs';
 import { map, switchMap, delay, catchError } from 'rxjs/operators';
 
-import { Hyp3Service, AsfApiService } from '@services';
+import { Hyp3Service, AsfApiService, NotificationService } from '@services';
 import {
   Hyp3ActionType, SetJobs, SuccessfulJobSumbission,
   ErrorJobSubmission, SubmitJob, SetUser, ErrorLoadingUser
@@ -18,8 +17,8 @@ export class Hyp3Effects {
   constructor(
     private actions$: Actions,
     private hyp3Service: Hyp3Service,
-    private snackbar: MatSnackBar,
     public asfApiService: AsfApiService,
+    private notificationService: NotificationService,
   ) {}
 
   public onSetJobs = createEffect(() => this.actions$.pipe(
@@ -49,17 +48,17 @@ export class Hyp3Effects {
 
   public successfulJobSubmission = createEffect(() => this.actions$.pipe(
     ofType(Hyp3ActionType.SUCCESSFUL_JOB_SUBMISSION),
-    map(_ => this.snackbar.open(
+    map(_ => this.notificationService.info(
       'Job successfully submitted', 'RTC_GAMMA',
-      { duration: 3000 }
+      { timeOut: 3000 }
     ))
   ), {dispatch: false});
 
   public errorJobSubmission = createEffect(() => this.actions$.pipe(
     ofType<SubmitJob>(Hyp3ActionType.ERROR_JOB_SUBMISSION),
-    map(_ => this.snackbar.open(
+    map(_ => this.notificationService.error(
       'Failed to submit job', 'RTC_GAMMA',
-      { duration: 3000 }
+      { timeOut: 3000 }
     ))
   ), {dispatch: false});
 }

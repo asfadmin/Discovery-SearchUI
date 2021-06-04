@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 
-import { ToastrService } from 'ngx-toastr';
+import { ActiveToast, ToastrService } from 'ngx-toastr';
 
 @Injectable({
   providedIn: 'root'
@@ -10,10 +10,10 @@ export class NotificationService {
   constructor(private toastr: ToastrService) {}
 
   // Custom toastr config example, toastClass styling in styles.scss
-  // private exampleCustomToastConfig: Partial<IndividualConfig> = {
-  //   toastClass: 'pinkToast',
-  //   toastComponent: ToastrMessageComponent
-  // };
+  private toastOptions = {
+    // toastClass: 'pinkToast',
+    // toastComponent: ToastrMessageComponent
+  };
 
   public demandQueue(added: boolean = true, count: number = 0, job_type: string) {
     let headerText: string;
@@ -23,17 +23,17 @@ export class NotificationService {
     if (count > 1) {
       headerText = 'Jobs Added';
       infoText = `${count} ${job_type} jobs ${action} the On Demand Queue`;
-      this.toastr.info(infoText, headerText);
+      this.info(infoText, headerText);
     } else {
       infoText = `${job_type} job ${action} the On Demand Queue`;
-      this.toastr.info(infoText);
+      this.info(infoText);
     }
   }
 
   public jobsSubmitted(count: number) {
     const jobText = count > 1 ? `${count} jobs` : 'Job';
 
-    this.toastr.info(`${jobText} processing`, 'Jobs Submitted');
+    this.info(`${jobText} processing`, 'Jobs Submitted');
   }
 
   public downloadQueue(added: boolean = true, count: number = 0) {
@@ -44,26 +44,26 @@ export class NotificationService {
     if (count > 1) {
       headerText = 'Scenes Added';
       infoText = `${count} scenes ${action} the Download Queue`;
-      this.toastr.info(infoText, headerText);
+      this.info(infoText, headerText);
     } else {
       infoText = `Scene ${action} the Download Queue`;
-      this.toastr.info(infoText);
+      this.info(infoText);
     }
   }
 
   public clipboardSearchLink() {
-    this.toastr.info('Search Link Copied');
+    this.info('Search Link Copied');
   }
 
   public clipboardAPIURL() {
-    this.toastr.info('API URL Copied');
+    this.info('API URL Copied');
   }
 
   public clipboardCopyQueue(lineCount: number, isFileIDs: boolean) {
     const contentType = isFileIDs ? 'File ID' : 'URL';
     const s = lineCount > 1 ? 's' : '';
 
-    this.toastr.info(
+    this.info(
       `${lineCount} ${contentType}${s} Copied`,
       'Clipboard Updated'
     );
@@ -78,15 +78,21 @@ export class NotificationService {
       headerText = `${contentType}s Copied`;
       infoText = `${count} ${contentType}s copied`;
 
-      this.toastr.info(infoText, headerText);
+      this.info(infoText, headerText);
     } else {
       infoText = `${contentType} Copied`;
 
-      this.toastr.info(infoText);
+      this.info(infoText);
     }
   }
 
   public closeFiltersPanel() {
-    this.toastr.info('Filters dismissed and not applied');
+    this.info('Filters dismissed and not applied');
+  }
+  public info(message: string, title = '', options={}): ActiveToast<any> {
+    return this.toastr.info(message, title, {...options, ...this.toastOptions});
+  }
+  public error(message: string, title = '', options={}): ActiveToast<any> {
+    return this.toastr.error(message, title, {...options, ...this.toastOptions});
   }
 }

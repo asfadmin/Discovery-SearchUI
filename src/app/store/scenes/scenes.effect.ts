@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
-import { MatSnackBar } from '@angular/material/snack-bar';
 
 import { of } from 'rxjs';
 import { map, switchMap, catchError } from 'rxjs/operators';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { UnzipApiService } from '@services/unzip-api.service';
+import { NotificationService } from '@services/notification.service';
 
 import { CMRProduct } from '@models';
 import {
@@ -17,7 +17,7 @@ export class ScenesEffects {
   constructor(
     private actions$: Actions,
     private unzipApi: UnzipApiService,
-    private snackBar: MatSnackBar,
+    private notificationService: NotificationService,
   ) {}
 
   public loadUnzippedProductFiles = createEffect(() => this.actions$.pipe(
@@ -46,10 +46,10 @@ export class ScenesEffects {
   ), { dispatch: false });
 
   private showUnzipApiLoadError(product: CMRProduct): void {
-    this.snackBar.open(
+    this.notificationService.error(
       `Error loading files for ${product.id}`,
-      'ERROR',
-      { duration: 5000 }
+      'Error',
+      { timeOut: 5000 }
     );
   }
 }

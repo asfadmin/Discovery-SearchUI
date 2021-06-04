@@ -7,7 +7,6 @@ import { HttpClientModule } from '@angular/common/http';
 import { FlexLayoutModule } from '@angular/flex-layout';
 
 import { MatBottomSheetModule } from '@angular/material/bottom-sheet';
-import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -80,7 +79,6 @@ export const routes = [
     BrowserAnimationsModule,
     HttpClientModule,
     NgcCookieConsentModule.forRoot(cookieConfig),
-    MatSnackBarModule,
     MatBottomSheetModule,
     MatSharedModule,
     FlexLayoutModule.withConfig({disableDefaultBps: true},

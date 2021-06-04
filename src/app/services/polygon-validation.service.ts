@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-import { MatSnackBar } from '@angular/material/snack-bar';
 
 import { of } from 'rxjs';
 import { filter, map, switchMap, catchError } from 'rxjs/operators';
@@ -9,6 +8,7 @@ import { AsfApiService } from './asf-api.service';
 import { WktService } from './wkt.service';
 
 import * as models from '@models';
+import { NotificationService } from './notification.service';
 
 @Injectable({
   providedIn: 'root'
@@ -18,10 +18,10 @@ export class PolygonValidationService {
   private isUpdatedFromRepair = false;
 
   constructor(
-    private snackBar: MatSnackBar,
     private mapService: MapService,
     private asfApiService: AsfApiService,
     private wktService: WktService,
+    private notificationService: NotificationService,
   ) { }
 
   public validate(): void {
@@ -64,9 +64,9 @@ export class PolygonValidationService {
     const { report } = error;
 
     this.mapService.setDrawStyle(models.DrawPolygonStyle.INVALID);
-    this.snackBar.open(
-      report, 'INVALID POLYGON',
-      { duration: 4000, }
+    this.notificationService.info(
+      report, 'Invalid Polygon',
+      { timeOut: 4000, }
     );
   }
 
@@ -86,9 +86,9 @@ export class PolygonValidationService {
     const { report, type }  = resp.repairs.pop();
 
     if (type !== models.PolygonRepairTypes.WRAP) {
-      this.snackBar.open(
+      this.notificationService.info(
         report, type,
-        { duration: 4000, }
+        { timeOut: 4000, }
       );
     }
 

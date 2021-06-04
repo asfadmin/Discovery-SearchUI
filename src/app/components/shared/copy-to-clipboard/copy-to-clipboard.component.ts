@@ -6,7 +6,7 @@ import { tap, delay } from 'rxjs/operators';
 
 import { faCopy } from '@fortawesome/free-solid-svg-icons';
 import { ClipboardService } from 'ngx-clipboard';
-import { NotificationService } from '@services';
+import { NotificationService } from '@services/notification.service';
 
 @Component({
   selector: 'app-copy-to-clipboard',

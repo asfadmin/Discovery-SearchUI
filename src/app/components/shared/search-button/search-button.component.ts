@@ -1,6 +1,5 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { SubSink } from 'subsink';
-import { MatSnackBar } from '@angular/material/snack-bar';
 
 import { combineLatest, Subject } from 'rxjs';
 import { tap, delay } from 'rxjs/operators';
@@ -50,7 +49,7 @@ export class SearchButtonComponent implements OnInit, OnDestroy {
     private actions$: ActionsSubject,
     private savedSearchService: services.SavedSearchService,
     private dialog: MatDialog,
-    private snackBar: MatSnackBar,
+    private notificationService: services.NotificationService,
   ) {
   }
 
@@ -138,7 +137,7 @@ export class SearchButtonComponent implements OnInit, OnDestroy {
       this.searchError$.pipe(
         tap(_ => {
           this.isSearchError = true;
-          this.snackBar.open('Trouble loading search results', 'SEARCH ERROR', { duration: 5000 });
+          this.notificationService.error('Trouble loading search results', 'Search Error', { timeOut: 5000 });
         }),
         delay(820),
       ).subscribe(_ => {

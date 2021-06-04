@@ -11,7 +11,6 @@ import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
-import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatBottomSheetModule } from '@angular/material/bottom-sheet';
 
 import { MatSharedModule } from '@shared';
@@ -43,7 +42,6 @@ import { AngularResizedEventModule } from 'angular-resize-event';
         MatSlideToggleModule,
         MatProgressSpinnerModule,
         MatProgressBarModule,
-        MatSnackBarModule,
         MatBottomSheetModule,
         PipesModule,
         ProjectNameSelectorModule,

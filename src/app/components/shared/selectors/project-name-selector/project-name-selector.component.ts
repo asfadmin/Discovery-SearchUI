@@ -1,7 +1,6 @@
 import { Component, OnInit, Input, ViewChild, OnDestroy } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { SubSink } from 'subsink';
-import { MatSnackBar } from '@angular/material/snack-bar';
 
 import { Subject } from 'rxjs';
 import { tap, delay } from 'rxjs/operators';
@@ -10,6 +9,7 @@ import { Store } from '@ngrx/store';
 import { AppState } from '@store';
 import * as hyp3Store from '@store/hyp3';
 import * as filtersStore from '@store/filters';
+import { NotificationService } from '@services/notification.service';
 
 @Component({
   selector: 'app-project-name-selector',
@@ -30,8 +30,8 @@ export class ProjectNameSelectorComponent implements OnInit, OnDestroy {
 
   constructor(
     private store$: Store<AppState>,
-    private snackBar: MatSnackBar,
-  ) { }
+    private notificationService: NotificationService,
+    ) { }
 
   ngOnInit(): void {
     this.handleNameErrors();
@@ -94,8 +94,8 @@ export class ProjectNameSelectorComponent implements OnInit, OnDestroy {
     this.subs.add(
       this.nameErrors$.pipe(
         tap(_ => {
-          this.snackBar.open('Project Name too long. (over 20 characters)', 'ERROR', {
-            duration: 5000
+          this.notificationService.error('Project Name too long. (over 20 characters)', 'Error', {
+            timeOut: 5000
           });
           this.isNameError = true;
           this.projectNameForm.reset();
