@@ -202,40 +202,9 @@ export class ListFiltersComponent implements OnInit, OnDestroy {
         this.fileError$.next({fileName, fileError: FileErrors.INVALID_TYPE});
       }
     }
-    // if (ev.dataTransfer.items) {
-    //   for (const item of ev.dataTransfer.items) {
-    //     if (item.kind === 'file') {
-    //       const file = item.getAsFile();
-    //       this.addFile(file);
-    //     }
-    //   }
-    // } else {
-    //   for (const file of ev.dataTransfer.files) {
-    //     this.addFile(file);
-    //   }
-    // }
 
     ev.preventDefault();
   }
-
-  // private addFile(file): void {
-  //   const fileName = file.name;
-  //   // const size_limit = 10e6;
-
-  //   console.log(fileName);
-    
-  //   // if (file.size > size_limit) {
-  //   //   this.fileError$.next(FileErrors.TOO_LARGE);
-  //   //   return;
-  //   // }
-
-  //   if (this.isValidFileType(fileName)) {
-  //     this.files.add(file);
-  //   } 
-  //   // else {
-  //   //   this.fileError$.next(FileErrors.INVALID_TYPE);
-  //   // }
-  // }
 
   private isValidFileType(fileName: string): boolean {
     const validFileTypes = ['csv', 'geojson', 'kml', 'metalink'];
@@ -252,7 +221,6 @@ export class ListFiltersComponent implements OnInit, OnDestroy {
   }
 
   private parseCSV(file) {
-    // Parse the file you want to select for the operation along with the configuration
     this.ngxCsvParser.parse(file, { header: true, delimiter: ',' })
     .pipe(first()).subscribe((result: Array<any>) => {
       const granules: string[] = result.map(row => row['Granule Name']);
@@ -309,11 +277,15 @@ export class ListFiltersComponent implements OnInit, OnDestroy {
   }
 
   private updateSearchList(granules: string[]) {
-    if(this.searchList !== undefined && this.searchList !== '') {
-      this.searchList += ',' + granules.join();
+    let current_list = this.searchList;
+    if(current_list !== undefined && current_list !== '') {
+      current_list += ',' + granules.join();
     } else {
-      this.searchList = granules.join();
+      current_list = granules.join();
     }
+
+    this.searchList = current_list;
+    this.onTextInputChange(current_list);
   }
 
   ngOnDestroy() {
