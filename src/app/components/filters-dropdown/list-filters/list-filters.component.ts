@@ -278,7 +278,7 @@ export class ListFiltersComponent implements OnInit, OnDestroy {
 
   private updateSearchList(granules: string[]) {
     let current_list = this.searchList;
-    if(current_list !== undefined && current_list !== '') {
+    if (current_list !== undefined && current_list !== '') {
       current_list += ',' + granules.join();
     } else {
       current_list = granules.join();
