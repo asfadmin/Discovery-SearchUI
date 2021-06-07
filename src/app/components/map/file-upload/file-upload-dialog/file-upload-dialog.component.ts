@@ -7,6 +7,7 @@ import { MatDialogRef } from '@angular/material/dialog';
 import { SubSink } from 'subsink';
 
 import { AsfApiService, NotificationService } from '@services';
+import { HttpErrorResponse } from '@angular/common/http';
 
 enum FileErrors {
   TOO_LARGE = 'Too large',
@@ -102,7 +103,13 @@ export class FileUploadDialogComponent implements OnInit, OnDestroy {
 
     this.subs.add(
       this.request = this.asfApiService.upload(this.files).pipe(
-        catchError(_ => of({ errors: [{ report: 'Error loading files', type: 'Error' }]}))
+        catchError((error: HttpErrorResponse) => {
+          if(error.status !== 0) {
+            return of({ errors: [{ report: 'Error loading files', type: 'Error'}]});
+          } else {
+            return of({ errors: [{ report: 'File upload timeout', type: 'Error'}]});
+          }
+      })
       ).subscribe(
         resp => {
           if (resp.wkt) {
