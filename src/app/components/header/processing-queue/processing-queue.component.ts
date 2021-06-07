@@ -239,7 +239,7 @@ export class ProcessingQueueComponent implements OnInit {
       concatMap(batch => this.hyp3.submiteJobBatch$({ jobs: batch, validate_only: validateOnly }).pipe(
         catchError(resp => {
           if (resp.error) {
-            this.notificationService.error(`${resp.error.detail}`, 'Error', {
+            this.notificationService.error(`${resp.error.detail === 'No authorization token provided' ? 'Your authorization has expired. Please sign in again.' : resp.error.detail}`, 'Error', {
               timeOut: 5000,
             });
           }
