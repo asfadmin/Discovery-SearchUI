@@ -30,12 +30,6 @@ export class NotificationService {
     }
   }
 
-  public jobsSubmitted(count: number) {
-    const jobText = count > 1 ? `${count} jobs` : 'Job';
-
-    this.info(`${jobText} processing`, 'Jobs Submitted');
-  }
-
   public downloadQueue(added: boolean = true, count: number = 0) {
     let headerText: string;
     let infoText = '';

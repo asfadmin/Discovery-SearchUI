@@ -11,7 +11,9 @@ import { tap, catchError, delay, concatMap, finalize } from 'rxjs/operators';
 
 import * as queueStore from '@store/queue';
 import * as hyp3Store from '@store/hyp3';
-import * as userStore from '@store/user'; import * as models from '@models';
+import * as searchStore from '@store/search';
+import * as userStore from '@store/user';
+import * as models from '@models';
 import * as services from '@services';
 import { ResizedEvent } from 'angular-resize-event';
 
@@ -255,7 +257,12 @@ export class ProcessingQueueComponent implements OnInit {
         this.progress = null;
         this.isQueueSubmitProcessing = false;
 
-        this.notificationService.jobsSubmitted(hyp3JobsBatch.length);
+        const jobText = hyp3JobsBatch.length > 1 ? `${hyp3JobsBatch.length} jobs` : 'Job';
+
+        this.notificationService.info(`${jobText} processing, click to open your jobs.`, 'Jobs Submitted').onTap.subscribe(() => {
+          const searchType = models.SearchType.CUSTOM_PRODUCTS;
+          this.store$.dispatch(new searchStore.SetSearchType(searchType));
+        });
         this.store$.dispatch(new hyp3Store.LoadUser());
         if (this.allJobs.length === 0) {
           this.dialogRef.close();
