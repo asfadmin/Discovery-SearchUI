@@ -104,7 +104,7 @@ export class FileUploadDialogComponent implements OnInit, OnDestroy {
     this.subs.add(
       this.request = this.asfApiService.upload(this.files).pipe(
         catchError((error: HttpErrorResponse) => {
-          if(error.status !== 0) {
+          if (error.status !== 0) {
             return of({ errors: [{ report: 'Error loading files', type: 'Error'}]});
           } else {
             return of({ errors: [{ report: 'File upload timeout', type: 'Error'}]});
