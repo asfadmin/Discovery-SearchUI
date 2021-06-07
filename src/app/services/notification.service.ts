@@ -93,6 +93,6 @@ export class NotificationService {
     return this.toastr.info(message, title, {...options, ...this.toastOptions});
   }
   public error(message: string, title = '', options={}): ActiveToast<any> {
-    return this.toastr.error(message, title, {...options, ...this.toastOptions});
+    return this.toastr.warning(message, title, {...options, ...this.toastOptions});
   }
 }
