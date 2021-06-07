@@ -5,7 +5,7 @@ import {map } from 'rxjs/operators';
 
 import * as moment from 'moment';
 
-import { Dataset, DateRangeExtrema, CMRProduct } from '@models';
+import { Dataset, CMRProduct } from '@models';
 
 @Injectable({
   providedIn: 'root'
@@ -52,19 +52,7 @@ export class DateExtremaService {
     );
 
     return combineLatest(startMin$, startMax$, endMin$, endMax$).pipe(
-      map(
-        ([startMin, startMax, endMin, endMax]): DateRangeExtrema => ({
-          start: {
-            min: startMin,
-            max: startMax
-          },
-          end: {
-            min: endMin,
-            max: endMax
-          }
-        }
-      )
-    )
+      map(extrema => this.buildExtrema(...extrema)),
     );
   }
 
@@ -113,19 +101,22 @@ export class DateExtremaService {
     const endMax$ = sceneMax$;
 
     return combineLatest(startMin$, startMax$, endMin$, endMax$).pipe(
-      map(
-        ([startMin, startMax, endMin, endMax]): DateRangeExtrema => ({
-          start: {
-            min: startMin,
-            max: startMax
-          },
-          end: {
-            min: endMin,
-            max: endMax
-          }
-        }
-      )
-    ),
+      map(extrema => this.buildExtrema(...extrema)),
     );
+  }
+
+  private buildExtrema(startMin, startMax, endMin, endMax) {
+    const extrema = {
+      start: {
+        min: startMin,
+        max: startMax
+      },
+      end: {
+        min: endMin,
+        max: endMax
+      }
+    };
+
+    return extrema;
   }
 }

@@ -4,30 +4,18 @@ import { SubSink } from 'subsink';
 import * as filtersStore from '@store/filters';
 import { AppState } from '@store';
 import { Store } from '@ngrx/store';
-import { map } from 'rxjs/operators';
+import { filter, map } from 'rxjs/operators';
 import { FormControl } from '@angular/forms';
 import { ScenesService, ScreenSizeService } from '@services';
 import { getScenes } from '@store/scenes';
 import { combineLatest } from 'rxjs';
-import { animate, style, transition, trigger } from '@angular/animations';
-import { Breakpoints } from '@models';
+import { Breakpoints, menuAnimation } from '@models';
 
 @Component({
   selector: 'app-job-product-name-selector',
   templateUrl: './job-product-name-selector.component.html',
   styleUrls: ['./job-product-name-selector.component.scss'],
-  animations: [
-    trigger('fadeTransition', [
-      transition(':enter', [
-        style({opacity: 0}),
-        animate('100ms ease-in', style({opacity: 1}))
-      ]),
-      transition(':leave', [
-        style({opacity: 1}),
-        animate('100ms ease-out', style({opacity: 0}))
-      ])
-    ])
-  ],
+  animations: menuAnimation,
 })
 export class JobProductNameSelectorComponent implements OnInit, OnDestroy {
   @Input() headerView: boolean;
@@ -51,7 +39,9 @@ export class JobProductNameSelectorComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.subs.add(
-      this.store$.select(filtersStore.getProductNameFilter).subscribe(
+      this.store$.select(filtersStore.getProductNameFilter).pipe(
+        filter(filterName => !!filterName),
+      ).subscribe(
         productNameFilter => this.productNameFilter = productNameFilter
       )
     );
@@ -76,7 +66,7 @@ export class JobProductNameSelectorComponent implements OnInit, OnDestroy {
 
     this.subs.add(
       this.store$.select(getScenes).subscribe(
-        res => this.unfilteredScenes = res.map(scene => scene.metadata.fileName.toLowerCase().split('.')[0])
+        res => this.unfilteredScenes = Array.from(new Set(res.map(scene => scene.metadata.fileName.toLowerCase().split('.')[0])))
       )
     );
 
@@ -87,7 +77,7 @@ export class JobProductNameSelectorComponent implements OnInit, OnDestroy {
           if (this.productNameFilter != null) {
             const temp = this.productNameFilter.replace(/\s+/g, '').endsWith(',')
               ? this.unfilteredScenes.filter(scene => !res.includes(scene)) : res;
-            this.filteredOptionsList = temp.filter(file => this.autoSuggestion(file.toLowerCase()));
+            this.filteredOptionsList = Array.from(new Set(temp.filter(file => this.autoSuggestion(file.toLowerCase()))));
           } else {
             this.filteredOptionsList = this.unfilteredScenes;
           }

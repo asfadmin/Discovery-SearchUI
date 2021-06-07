@@ -110,7 +110,6 @@ export class ResultsMenuComponent implements OnInit, OnDestroy {
 
   public minResultWindow(e: Event): void {
     e.stopPropagation();
-    console.log('min');
     this.menuHeightPx = 33;
     this.resize$.next();
   }

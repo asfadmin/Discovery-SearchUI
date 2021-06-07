@@ -7,6 +7,8 @@ export const env = {
     banner: 'https://banners.asf.alaska.edu',
     user_data: 'https://appdata.asf.alaska.edu',
     hyp3_api: 'https://hyp3-api.asf.alaska.edu',
+    unzip: 'https://unzip.asf.alaska.edu',
+    bulk_download: 'https://bulk-download.asf.alaska.edu',
   },
   test: {
     api: 'https://api-test.asf.alaska.edu',
@@ -17,6 +19,8 @@ export const env = {
     banner: 'https://banners.asf.alaska.edu',
     user_data: 'https://gg0fcoca5c.execute-api.us-east-1.amazonaws.com/test',
     hyp3_api: 'https://hyp3-api.asf.alaska.edu',
+    unzip: 'https://unzip.asf.alaska.edu',
+    bulk_download: 'https://bulk-download.asf.alaska.edu',
   },
   defaultEnv: 'test'
 };

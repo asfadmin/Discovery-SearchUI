@@ -16,7 +16,7 @@
       class="clickable"
       name="startInput">
     <mat-datepicker-toggle matSuffix [for]="start"></mat-datepicker-toggle>
-    <mat-datepicker [startView]="!!startDate ? 'month' : 'multi-year'" #start></mat-datepicker>
+    <mat-datepicker touchUi="true" [startView]="!!startDate ? 'month' : 'multi-year'" #start></mat-datepicker>
   </mat-form-field>
 
   <mat-form-field class="date-input-field"
@@ -31,6 +31,6 @@
       matTooltip="Scene End Date (MM/DD/YYYY)"
       name="endInput">
     <mat-datepicker-toggle matSuffix [for]="end"></mat-datepicker-toggle>
-    <mat-datepicker [startView]="!!endDate ? 'month' : 'multi-year'" #end></mat-datepicker>
+    <mat-datepicker touchUi="true" [startView]="!!endDate ? 'month' : 'multi-year'" #end></mat-datepicker>
   </mat-form-field>
 </form>

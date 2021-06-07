@@ -28,11 +28,11 @@
         </ng-container>
       </div>
 
-      <div fxFlex="nogrow">
+      <!-- <div fxFlex="nogrow">
         <mat-icon (click)="closePanel()" class="clickable">
           close
         </mat-icon>
-      </div>
+      </div> -->
     </div>
 
     <div class="filters-list">
@@ -59,17 +59,15 @@
     </div>
 
     <div class="footer">
-      <ng-container *ngIf="
-        breakpoint === breakpoints.MOBILE ||
-        (breakpoint !== breakpoints.MOBILE && selectedSearchType !== searchTypes.BASELINE && selectedSearchType !== searchTypes.SBAS)
-      ">
-        <app-max-results-selector
+      <ng-container>
+        <app-max-results-selector class = "search-button"
           *ngIf="
              selectedSearchType !== searchTypes.BASELINE && selectedSearchType !== searchTypes.SBAS &&
              selectedSearchType !== searchTypes.CUSTOM_PRODUCTS
           "
           style="margin-right: 10px;">
         </app-max-results-selector>
+        <app-cancel-filter-changes></app-cancel-filter-changes>
         <app-search-button></app-search-button>
       </ng-container>
     </div>

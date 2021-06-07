@@ -72,6 +72,9 @@ export enum FiltersActionType {
 
   SET_PRODUCT_NAME_FILTER = '[Filters] Set Product Name Filter',
   CLEAR_PRODUCT_NAME_FILTER = '[Filters] Clear Product Name Filter',
+
+  RESTORE_FILTERS = '[Filters] Restores Previous Filters',
+  STORE_CURRENT_FILTERS = '[Filters] Stores Current Filters',
 }
 
 export class SetState implements Action {
@@ -344,6 +347,18 @@ export class ClearProductNameFilter implements Action {
   constructor() {}
 }
 
+export class RestoreFilters implements Action {
+  public readonly type = FiltersActionType.RESTORE_FILTERS;
+
+  constructor() {}
+}
+
+export class StoreCurrentFilters implements Action {
+  public readonly type = FiltersActionType.STORE_CURRENT_FILTERS;
+
+  constructor() {}
+}
+
 export type FiltersActions =
   | SetState
   | SetSelectedDataset
@@ -393,4 +408,6 @@ export type FiltersActions =
   | SetMaxResults
   | SetProjectName
   | SetProductNameFilter
-  | ClearProductNameFilter;
+  | ClearProductNameFilter
+  | RestoreFilters
+  | StoreCurrentFilters;

@@ -5,6 +5,7 @@ export interface Hyp3JobType {
   id: string;
   name: string;
   infoUrl: string;
+  description: string;
   numProducts: number;
   productTypes: Hyp3JobProductType[];
   options: Hyp3JobOption[];

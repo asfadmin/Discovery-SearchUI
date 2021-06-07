@@ -8,10 +8,13 @@ import * as moment from 'moment';
 import { map, withLatestFrom, switchMap, tap, skip } from 'rxjs/operators';
 
 import { AppState } from '../app.reducer';
-import { QueueActionType, DownloadMetadata, AddItems, RemoveItems, RemoveSceneFromQueue, DownloadSearchtypeMetadata, AddJob, RemoveJob, AddJobs, ToggleProduct, QueueScene, FindPair } from './queue.action';
+import {
+  QueueActionType, DownloadMetadata, AddItems, RemoveItems,
+  RemoveSceneFromQueue, DownloadSearchtypeMetadata,
+  AddJob, RemoveJob, AddJobs, ToggleProduct, QueueScene, FindPair
+} from './queue.action';
 import { getQueuedProducts } from './queue.reducer';
 import * as scenesStore from '@store/scenes';
-// import * as queueStore from '@store/queue';
 
 import * as services from '@services';
 import * as models from '@models';
@@ -60,14 +63,7 @@ export class QueueEffects {
       })
     ),
     switchMap(
-      (search: MetadataDownload) => this.asfApiService.query<string>(search.params).pipe(
-        map(resp => new Blob([resp], { type: 'text/plain'})),
-        map(
-          blob => FileSaver.saveAs(blob,
-            `asf-datapool-results-${this.currentDate()}.${search.format.toLowerCase()}`
-          )
-        )
-      ),
+      (search: MetadataDownload) => this.downloadSearch(search)
     ),
   ), { dispatch: false });
 
@@ -94,14 +90,7 @@ export class QueueEffects {
       })
     ),
     switchMap(
-      (search: MetadataDownload) => this.asfApiService.query<string>(search.params).pipe(
-        map(resp => new Blob([resp], { type: 'text/plain'})),
-        map(
-          blob => FileSaver.saveAs(blob,
-            `asf-datapool-results-${this.currentDate()}.${search.format.toLowerCase()}`
-          )
-        )
-      ),
+      (search: MetadataDownload) => this.downloadSearch(search),
     ),
   ), { dispatch: false });
 
@@ -122,7 +111,7 @@ export class QueueEffects {
     map(([action, sceneProducts]) => sceneProducts.includes(action.payload)),
     tap(inQueue => this.notificationService.downloadQueue(inQueue))
   ),
-  { dispatch: false }
+    { dispatch: false }
   );
 
   public addItems = createEffect(() => this.actions$.pipe(
@@ -130,14 +119,14 @@ export class QueueEffects {
     skip(1),
     tap(act => this.notificationService.downloadQueue(true, act.payload.length)),
   ),
-  { dispatch: false }
+    { dispatch: false }
   );
 
   public addJob = createEffect(() => this.actions$.pipe(
     ofType<AddJob>(QueueActionType.ADD_JOB),
     tap(act => this.notificationService.demandQueue(true, 1, act.payload.job_type.name)),
   ),
-  { dispatch: false }
+    { dispatch: false }
   );
 
   public addJobs = createEffect(() => this.actions$.pipe(
@@ -146,7 +135,7 @@ export class QueueEffects {
     map(action => action.payload),
     tap(jobs => this.notificationService.demandQueue(true, jobs.length, jobs[0].job_type.name)),
   ),
-  { dispatch: false }
+    { dispatch: false }
   );
 
   public removeJob = createEffect(() => this.actions$.pipe(
@@ -154,7 +143,7 @@ export class QueueEffects {
     map(action => action.payload),
     tap(job => this.notificationService.demandQueue(false, 1, job.job_type.name)),
   ),
-  { dispatch: false }
+    { dispatch: false }
   );
 
   public removeScene = createEffect(() => this.actions$.pipe(
@@ -164,6 +153,17 @@ export class QueueEffects {
     tap(products => this.notificationService.downloadQueue(false, products.length)),
     map(products => new RemoveItems(products))
   ));
+
+  private downloadSearch(search: MetadataDownload) {
+    return this.asfApiService.query<string>(search.params).pipe(
+      map(resp => new Blob([resp], { type: 'text/plain'})),
+      map(
+        blob => FileSaver.saveAs(blob,
+          `asf-datapool-results-${this.currentDate()}.${search.format.toLowerCase()}`
+        )
+      )
+    );
+  }
 
   private currentDate(): string {
     return moment().format('YYYY-MM-DD_hh-mm-ss');
