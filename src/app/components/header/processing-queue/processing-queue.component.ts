@@ -260,9 +260,9 @@ export class ProcessingQueueComponent implements OnInit {
         const jobText = hyp3JobsBatch.length > 1 ? `${hyp3JobsBatch.length} jobs` : 'Job';
 
         this.notificationService.info(`${jobText} processing, click to open your jobs.`, 'Jobs Submitted', {
-      closeButton: true,
-      disableTimeOut: true,
-    }).onTap.subscribe(() => {
+          closeButton: true,
+          disableTimeOut: true,
+        }).onTap.subscribe(() => {
           const searchType = models.SearchType.CUSTOM_PRODUCTS;
           this.store$.dispatch(new searchStore.SetSearchType(searchType));
         });
