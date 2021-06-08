@@ -207,7 +207,8 @@ button {
 
 .progress-bar {
   position: absolute;
-  margin-top: 47px;
-  height: 3px;
+  margin-top: 23px;
+  height: 2px;
   width: calc(100% - 43px);
+  opacity: 30%;
 }

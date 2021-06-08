@@ -88,7 +88,7 @@
 <!--                    <mat-icon>cloud_download</mat-icon>-->
 <!--                  </a>-->
 
-                  <a (click)="downloadFile(product.downloadUrl, product.name)"
+                  <a (click)="downloadFile(product.downloadUrl, product.id)"
                          [disabled]="!product.downloadUrl"
                          mat-icon-button
                          matTooltip="Download"
@@ -100,13 +100,14 @@
                   <button (click)="onRemoveProduct(product)" matTooltip="Remove file" mat-icon-button>
                     <mat-icon>close</mat-icon>
                   </button>
-                <div class="progress-bar">
-                  <mat-progress-bar
-                    *ngIf="download$ | async as download"
-                    [mode]="download.state == 'PENDING' ? 'buffer' : 'determinate'"
-                    [value]="download.progress"
-                  >
-                  </mat-progress-bar>
+                <div class="progress-bar" *ngIf="download$ | async as download">
+<!--                    <mat-progress-bar [ngStyle]="{'visibility': (download.state === 'DONE' ) ? 'hidden' : 'visible'}"-->
+                    <mat-progress-bar
+                      *ngIf="download.id == product.id"
+                      [mode]="download.state == 'PENDING' ? 'buffer' : 'determinate'"
+                      [value]="download.progress"
+                    >
+                    </mat-progress-bar>
                 </div>
               </mat-list-item>
             </ng-container>
