@@ -35,7 +35,7 @@ export class SceneFileComponent implements OnInit, OnDestroy {
   private subs = new SubSink;
 
   constructor(private hyp3: Hyp3Service,
-    private store$: Store<AppState>,) {}
+    private store$: Store<AppState>, ) {}
 
   ngOnInit() {
     this.subs.add(
