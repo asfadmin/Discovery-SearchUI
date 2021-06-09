@@ -37,6 +37,7 @@ import { NgcCookieConsentModule, NgcCookieConsentConfig } from 'ngx-cookieconsen
 
 // info about cookie consent module: https://tinesoft.github.io/ngx-cookieconsent/home
 const cookieConfig: NgcCookieConsentConfig = {
+  'autoOpen': false,
     'cookie': {
       'domain': window.location.hostname
   },

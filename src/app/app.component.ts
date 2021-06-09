@@ -10,7 +10,7 @@ import { ProcessingQueueComponent } from '@components/header/processing-queue';
 import { Store, ActionsSubject } from '@ngrx/store';
 import { ofType } from '@ngrx/effects';
 import { of, combineLatest } from 'rxjs';
-import { skip, filter, map, switchMap, tap, catchError, debounceTime } from 'rxjs/operators';
+import { skip, filter, map, switchMap, tap, catchError, debounceTime, take } from 'rxjs/operators';
 
 import { NgcCookieConsentService } from 'ngx-cookieconsent';
 import { HelpComponent } from '@components/help/help.component';
@@ -72,6 +72,7 @@ export class AppComponent implements OnInit, OnDestroy {
     private matIconRegistry: MatIconRegistry,
     private domSanitizer: DomSanitizer,
     private dialog: MatDialog,
+    private notificationService: services.NotificationService
   ) {}
 
   public ngOnInit(): void {
@@ -279,7 +280,18 @@ export class AppComponent implements OnInit, OnDestroy {
 
     this.updateMaxSearchResults();
     this.healthCheck();
-
+    if (!this.ccService.hasConsented()) {
+      this.notificationService.info('This website uses cookies to ensure you get the best experience on our website. <a href="https://cookiesandyou.com/" target="_blank">Learn More</a>', '', {
+        closeButton: true,
+        disableTimeOut: true,
+        enableHtml: true,
+        tapToDismiss: false,
+      }).onHidden.pipe(take(1)).subscribe(() => {
+        const expireDate = new Date();
+        expireDate.setFullYear(expireDate.getFullYear() + 1);
+        document.cookie = `cookieconsent_status=dismiss; expires=${expireDate.toUTCString()}`;
+      });
+    }
     this.subs.add(this.ccService.popupOpen$.subscribe(_ => _));
     this.subs.add(this.ccService.popupClose$.subscribe(_ => _));
     this.subs.add(this.ccService.revokeChoice$.subscribe(_ => _));
