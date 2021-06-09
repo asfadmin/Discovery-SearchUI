@@ -11,7 +11,7 @@ import { AppState } from '../app.reducer';
 import {
   QueueActionType, DownloadMetadata, AddItems, RemoveItems,
   RemoveSceneFromQueue, DownloadSearchtypeMetadata,
-  AddJob, RemoveJob, AddJobs, ToggleProduct, QueueScene, FindPair
+  AddJob, RemoveJob, AddJobs, ToggleProduct, QueueScene, FindPair, MakeDownloadScriptFromList
 } from './queue.action';
 import { getQueuedProducts } from './queue.reducer';
 import * as scenesStore from '@store/scenes';
@@ -41,6 +41,19 @@ export class QueueEffects {
     map(([_, products]) => products),
     switchMap(
       products => this.bulkDownloadService.downloadScript$(products)
+    ),
+    map(
+      blob => FileSaver.saveAs(blob, `download-all-${this.currentDate()}.py`)
+    )
+  ), { dispatch: false });
+
+  public makeDownloadScriptFromList = createEffect(() => this.actions$.pipe(
+    ofType<MakeDownloadScriptFromList>(QueueActionType.MAKE_DOWNLOAD_SCRIPT_FROM_LIST),
+    map(action => action.payload),
+    // withLatestFrom(this.scenesService.scenes$()),
+    // map(products => products.map(prod => prod)),
+    switchMap(
+      (products) => this.bulkDownloadService.downloadScript$(products)
     ),
     map(
       blob => FileSaver.saveAs(blob, `download-all-${this.currentDate()}.py`)
