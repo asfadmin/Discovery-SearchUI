@@ -257,9 +257,9 @@ export class ProcessingQueueComponent implements OnInit {
         this.progress = null;
         this.isQueueSubmitProcessing = false;
 
-        const jobText = hyp3JobsBatch.length > 1 ? `${hyp3JobsBatch.length} jobs` : 'Job';
+        const jobText = hyp3JobsBatch.length > 1 ? `${hyp3JobsBatch.length} Jobs` : 'Job';
 
-        this.notificationService.info(`${jobText} processing, click to open your jobs.`, 'Jobs Submitted', {
+        this.notificationService.info(`Click to view Submitted Products.`, `${jobText} Submitted`, {
           closeButton: true,
           disableTimeOut: true,
         }).onTap.subscribe(() => {
