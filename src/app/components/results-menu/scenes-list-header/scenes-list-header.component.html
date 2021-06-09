@@ -198,13 +198,13 @@
 
       <mat-menu #ExportAllMetadata="matMenu">
         <div *ngIf="products">
-          <button (click)="onMetadataExport(products, ApiFormat.CSV)" mat-menu-item>
+          <button (click)="onMetadataExport(ApiFormat.CSV)" mat-menu-item>
             csv
           </button>
-          <button (click)="onMetadataExport(products, ApiFormat.GEOJSON)" mat-menu-item>
+          <button (click)="onMetadataExport(ApiFormat.GEOJSON)" mat-menu-item>
             geojson
           </button>
-          <button (click)="onMetadataExport(products, ApiFormat.KML)" mat-menu-item>
+          <button (click)="onMetadataExport(ApiFormat.KML)" mat-menu-item>
             kml
           </button>
         </div>
@@ -216,7 +216,7 @@
             python (.py)
           </button>
 
-          <button (click)="onMetadataExport(products, ApiFormat.METALINK)" mat-menu-item>
+          <button (click)="onMetadataExport(ApiFormat.METALINK)" mat-menu-item>
             metalink
           </button>
       </div>
