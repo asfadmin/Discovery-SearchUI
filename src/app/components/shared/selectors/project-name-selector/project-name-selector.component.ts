@@ -67,7 +67,7 @@ export class ProjectNameSelectorComponent implements OnInit, OnDestroy {
     );
   }
 
-  public onProjectNameChange(projectName): void {
+  public onProjectNameChange(projectName: string): void {
     if (projectName.length > 20) {
       projectName = null;
       this.nameErrors$.next();
@@ -82,9 +82,15 @@ export class ProjectNameSelectorComponent implements OnInit, OnDestroy {
     this.store$.dispatch(action);
   }
 
-  public onProjectNameInput(projectName): void {
-    const filterValue = projectName.toLowerCase();
-
+  public onProjectNameInput(projectName: string): void {
+    let filterValue: string;
+    if (projectName.length > 20) {
+      projectName = null;
+      this.nameErrors$.next();
+      filterValue = '';
+    } else {
+      filterValue = projectName.toLowerCase();
+    }
     this.projectNamesFiltered = this.projectNames.filter(
       option => option.toLowerCase().includes(filterValue)
     );
