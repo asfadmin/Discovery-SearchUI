@@ -39,7 +39,7 @@ export class DatasetHeaderComponent implements OnInit, OnDestroy {
   }
 
   public onToggleFiltersMenu(): void {
-    this.store$.dispatch(new uiStore.ToggleFiltersMenu());
+    this.store$.dispatch(new uiStore.OpenFiltersMenu());
     this.store$.dispatch(new uiStore.CloseAOIOptions());
   }
 

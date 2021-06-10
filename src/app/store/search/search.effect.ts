@@ -90,6 +90,15 @@ export class SearchEffects {
     map(_ => new CancelSearch())
   ));
 
+    cancelSearchonOnPanelOpen = createEffect(() => this.actions$.pipe(
+      ofType(uiStore.UIActionType.OPEN_FILTERS_MENU),
+      switchMap(_ => [
+        new filtersStore.StoreCurrentFilters(),
+        new CancelSearch()
+      ])
+    )
+  );
+
   public searchResponse = createEffect(() => this.actions$.pipe(
     ofType<SearchResponse>(SearchActionType.SEARCH_RESPONSE),
     switchMap(action => [
