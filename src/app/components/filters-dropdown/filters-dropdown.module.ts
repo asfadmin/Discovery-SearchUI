@@ -7,6 +7,7 @@ import { MatSharedModule } from '@shared';
 
 import { SearchButtonModule } from '@components/shared/search-button';
 import { CancelFilterChangesModule } from '@components/shared/cancel-filter-changes';
+import { SaveUserFiltersModule } from '@components/shared/save-user-filters';
 import { ClearButtonModule } from '@components/shared/clear-button';
 import { MaxResultsSelectorModule } from '@components/shared/max-results-selector';
 
@@ -37,6 +38,7 @@ import { FlexLayoutModule } from '@angular/flex-layout';
     CustomProductsFiltersModule,
     SearchButtonModule,
     CancelFilterChangesModule,
+    SaveUserFiltersModule,
     ClearButtonModule,
     MaxResultsSelectorModule,
 
