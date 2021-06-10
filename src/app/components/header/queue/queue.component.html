@@ -42,8 +42,12 @@
               <mat-list-item
                 *ngFor="let product of products"
                 role="listitem">
-                  <div matLine [ngClass]="{'dl-list-item-mobile' : breakpoint === breakpoints.MOBILE }">
-                    <b>
+                <div matLine class="item-content" [ngClass]="{'dl-list-item-mobile' : breakpoint === breakpoints.MOBILE }">
+                  <mat-checkbox class="item-checkbox"
+                                color=primary
+                                (change)="toggleItemSelected( product.id, product.downloadUrl )">
+                  </mat-checkbox>
+                  <b>
                       <span *ngIf="breakpoint !== breakpoints.MOBILE">{{ product.name | truncate: 50 }}</span>
                       <span *ngIf="breakpoint === breakpoints.MOBILE">{{ product.name | truncate: 10 }}</span>
                       <span *ngIf="product.dataset === 'Sentinel-1B' || product.dataset === 'Sentinel-1A'"
@@ -57,7 +61,7 @@
                       <span *ngIf="product.bytes !== 0">{{product.bytes | readableSizeFromBytes }}</span>
                     </span>
                   </div>
-                  <div style="margin-top: 3px;" matLine [ngClass]="{'dl-list-item-mobile' : breakpoint === breakpoints.MOBILE }">
+                  <div style="margin-top: 3px; margin-left: 32px;" matLine [ngClass]="{'dl-list-item-mobile' : breakpoint === breakpoints.MOBILE }">
                     {{ product.productTypeDisplay }}
                   </div>
 
@@ -69,24 +73,24 @@
                      >
                   </app-copy-to-clipboard>
 
-                  <!-- http://local.asf.alaska.edu:4444/#/?searchType=List%20Search&listSearchType=Product&searchList=S1-GUNW-A-R-014-tops-20200513_20200419-153046-28315N_26591N-PP-e3ef-v2_0_3&resultsLoaded=true&granule=S1-GUNW-A-R-014-tops-20200513_20200419-153046-28315N_26591N-PP-e3ef-v2_0_3 -->
-<!--                  <a [appFileDownload]="product.name"-->
-<!--                     #down="fileDownload"-->
-<!--                     [disabled]="!product.downloadUrl || down.busy"-->
-<!--                     [href]="product.downloadUrl"-->
-<!--                     mat-icon-button-->
-<!--                     matTooltip="Download"-->
-<!--                     style="text-decoration: none;"-->
-<!--                     target="_blank"-->
-<!--                  >-->
-<!--                  <a [href]="product.downloadUrl"-->
-<!--                     mat-icon-button-->
-<!--                     matTooltip="Download"-->
+                                        <!-- http://local.asf.alaska.edu:4444/#/?searchType=List%20Search&listSearchType=Product&searchList=S1-GUNW-A-R-014-tops-20200513_20200419-153046-28315N_26591N-PP-e3ef-v2_0_3&resultsLoaded=true&granule=S1-GUNW-A-R-014-tops-20200513_20200419-153046-28315N_26591N-PP-e3ef-v2_0_3 -->
+                      <!--                  <a [appFileDownload]="product.name"-->
+                      <!--                     #down="fileDownload"-->
+                      <!--                     [disabled]="!product.downloadUrl || down.busy"-->
+                      <!--                     [href]="product.downloadUrl"-->
+                      <!--                     mat-icon-button-->
+                      <!--                     matTooltip="Download"-->
+                      <!--                     style="text-decoration: none;"-->
+                      <!--                     target="_blank"-->
+                      <!--                  >-->
+                      <!--                  <a [href]="product.downloadUrl"-->
+                      <!--                     mat-icon-button-->
+                      <!--                     matTooltip="Download"-->
 
-<!--                     target="_blank"-->
-<!--                  >-->
-<!--                    <mat-icon>cloud_download</mat-icon>-->
-<!--                  </a>-->
+                      <!--                     target="_blank"-->
+                      <!--                  >-->
+                      <!--                    <mat-icon>cloud_download</mat-icon>-->
+                      <!--                  </a>-->
 
                   <a (click)="downloadFile(product.downloadUrl, product.id)"
                          [disabled]="!product.downloadUrl"

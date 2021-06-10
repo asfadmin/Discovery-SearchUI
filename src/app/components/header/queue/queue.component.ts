@@ -17,6 +17,11 @@ import { DownloadService } from '@services/download.service';
 import { Download } from '@services/download';
 import { Observable } from 'rxjs';
 
+export interface SelectedItem {
+  id: string;
+  url: string;
+}
+
 @Component({
   selector: 'app-queue',
   templateUrl: './queue.component.html',
@@ -43,6 +48,8 @@ export class QueueComponent implements OnInit, OnDestroy {
   public dlWidth = 1000;
   public dlHeight = 1000;
   public dlWidthMin = 715;
+
+  public selectedItem: SelectedItem[] = [];
 
   public products$ = this.store$.select(queueStore.getQueuedProducts).pipe(
     tap(products => this.areAnyProducts = products.length > 0),
@@ -153,6 +160,19 @@ export class QueueComponent implements OnInit, OnDestroy {
 
   public downloadFile(url: string, filename: string) {
     this.download$ = this.downloads.download(url, filename);
+  }
+
+  public toggleItemSelected(productId, downloadUrl) {
+    const idx = this.selectedItem.findIndex( o => o.id === productId );
+    if (idx > -1) {
+      this.selectedItem.splice( idx, 1 );
+    } else {
+      this.selectedItem.push({
+        id: productId,
+        url: downloadUrl,
+      });
+    }
+    console.log('itemSelected:', this.selectedItem);
   }
 
   public demWarning(products) {
