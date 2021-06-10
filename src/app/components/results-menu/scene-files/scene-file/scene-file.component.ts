@@ -4,10 +4,9 @@ import * as moment from 'moment';
 
 import { Hyp3Service } from '@services';
 import * as models from '@models';
-import * as scenesStore from '@store/scenes';
-import { Store } from '@ngrx/store';
-import { AppState } from '@store';
 import { SubSink } from 'subsink';
+import { of } from 'rxjs';
+import { filter } from 'rxjs/operators';
 
 @Component({
   selector: 'app-scene-file',
@@ -15,6 +14,7 @@ import { SubSink } from 'subsink';
   styleUrls: ['./scene-file.component.scss']
 })
 export class SceneFileComponent implements OnInit, OnDestroy {
+  @Input() product: models.CMRProduct;
   @Input() isQueued: boolean;
   @Input() isUnzipLoading: boolean;
   @Input() isOpen: boolean;
@@ -28,21 +28,20 @@ export class SceneFileComponent implements OnInit, OnDestroy {
   @Output() closeProduct = new EventEmitter<models.CMRProduct>();
   @Output() queueHyp3Job = new EventEmitter<models.QueuedHyp3Job>();
 
-  public product: models.CMRProduct;
   public isHovered = false;
   public paramsList = [];
 
   private subs = new SubSink;
 
   constructor(private hyp3: Hyp3Service,
-    private store$: Store<AppState>,) {}
+    ) {}
 
   ngOnInit() {
     this.subs.add(
-      this.store$.select(scenesStore.getSelectedScene).subscribe(
-        prod => {
-          this.product = prod;
-          this.paramsList = this.jobParamsToList(this.product.metadata);
+        of(this.product).pipe(
+          filter(prod => !!prod.metadata)
+        ).subscribe( prod => {
+          this.paramsList = this.jobParamsToList(prod.metadata);
         }
       )
       );
