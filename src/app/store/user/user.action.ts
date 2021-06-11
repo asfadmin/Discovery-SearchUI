@@ -120,7 +120,7 @@ export class DeleteSavedSearch implements Action {
 export class AddNewFiltersPreset implements Action {
   public readonly type = UserActionType.ADD_NEW_FILTERS_PRESET;
 
-  constructor(public payload: string) {}
+  constructor(public payload: Search) {}
 }
 
 export class DeleteFiltersPreset implements Action {

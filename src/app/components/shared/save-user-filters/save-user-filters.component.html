@@ -1,1 +1,2 @@
-<button mat-flat-button (click)="onSaveFilters()" style="margin-right: 13px;">Save Filters</button>
+<div></div>
+<button mat-flat-button (click)="onSaveFilters()" style="margin-right: 13px;">{{userFilters.length > 0 ? userFilters[0].newSearch.split(" ")[0] : "nothing"}}</button>
