@@ -1,6 +1,6 @@
 import { Action } from '@ngrx/store';
 
-import { UserAuth, UserProfile, Search, GeographicFiltersType } from '@models';
+import { UserAuth, UserProfile, Search, GeographicFiltersType, FilterType, SearchType } from '@models';
 
 export enum UserActionType {
   LOGIN = '[User] Login',
@@ -120,7 +120,7 @@ export class DeleteSavedSearch implements Action {
 export class AddNewFiltersPreset implements Action {
   public readonly type = UserActionType.ADD_NEW_FILTERS_PRESET;
 
-  constructor(public payload: Search) {}
+  constructor(public payload: {name: string, searchType: SearchType, filter: FilterType}) {}
 }
 
 export class DeleteFiltersPreset implements Action {

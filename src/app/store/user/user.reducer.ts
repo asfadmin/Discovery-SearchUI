@@ -2,6 +2,7 @@ import { createFeatureSelector, createSelector } from '@ngrx/store';
 
 import { UserActionType, UserActions } from './user.action';
 import * as models from '@models';
+import { SearchType } from '@models';
 /* State */
 
 export interface UserState {
@@ -11,7 +12,7 @@ export interface UserState {
     searches: models.Search[];
     searchHistory: models.Search[];
   };
-  savedFilterPresets: models.Search[];
+  savedFilterPresets: {name: string, searchType: SearchType, filter: models.FilterType}[];
 }
 
 const initState: UserState = {
@@ -141,14 +142,14 @@ export function userReducer(state = initState, action: UserActions): UserState {
     case UserActionType.ADD_NEW_FILTERS_PRESET: {
       return {
         ...state,
-        savedFilterPresets: state.savedFilterPresets.concat(action.payload)
+        savedFilterPresets: [ ...state.savedFilterPresets, action.payload]
       };
     }
 
     case UserActionType.DELETE_FILTERS_PRESET: {
       return {
         ...state,
-        savedFilterPresets: state.savedFilterPresets.filter(filterPreset => filterPreset.name !== action.payload)
+        savedFilterPresets: state.savedFilterPresets.slice(1) //filter(filterPreset => filterPreset.name !== action.payload)
       };
     }
 

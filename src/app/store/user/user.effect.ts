@@ -10,9 +10,11 @@ import { AppState } from '../app.reducer';
 import * as userActions from './user.action';
 import * as userReducer from './user.reducer';
 import * as hyp3Store from '../hyp3/hyp3.action';
-
+import * as filterStore from '@store/filters';
+import * as searchStore from '@store/search';
 import { UserDataService } from '@services/user-data.service';
 import * as models from '@models';
+import { GeographicFiltersType, SearchType } from '@models';
 
 @Injectable()
 export class UserEffects {
@@ -127,6 +129,33 @@ export class UserEffects {
     map(searches => new userActions.SetSearches(<models.Search[]>searches))
   ));
 
+  public loadSavedFilters = createEffect(() => this.actions$.pipe(
+    ofType<userActions.LoadFiltersPreset>(userActions.UserActionType.LOAD_FILTERS_PRESET),
+    withLatestFrom(this.store$.select(searchStore.getSearchType)),
+    filter(([_, searchtype]) => searchtype === SearchType.DATASET),
+    map(([action, _]) => action.payload),
+    withLatestFrom(this.store$.select(userReducer.getSavedFilters)),
+    map(([preset_name, userFilters]) => {
+      const targetFilter = userFilters.find(preset => preset.name === preset_name);
+
+      const actions = this.setDatasetFilters(targetFilter.filter as GeographicFiltersType);
+      actions.forEach(action => this.store$.dispatch(action));
+      // this.store$.dispatch(new filterStore.ClearDatasetFilters)
+      // this.store$.dispatch(new filterstore.)
+      // if(searchType === SearchType.DATASET) {
+        // actions.push(new filterStore.ClearDatasetFilters);
+
+        // actions.push(new filterStore.setdata)
+      // } else if(searchType === SearchType.LIST) {
+
+      // } else if(searchType === SearchType.BASELINE) {
+
+      // } else{
+
+      // }
+    })
+  ), {dispatch: false});
+
   private isSuccessfulResponse(resp): boolean {
     try {
       return !(
@@ -181,4 +210,25 @@ export class UserEffects {
   }
 
   private isNumber = n => !isNaN(n) && isFinite(n);
+
+  private setDatasetFilters(datasetFilter: GeographicFiltersType) {
+    const actions = [
+      new filterStore.SetStartDate(datasetFilter.dateRange.start),
+      new filterStore.SetEndDate(datasetFilter.dateRange.end),
+      new filterStore.SetSeasonStart(datasetFilter.season.start),
+      new filterStore.SetSeasonEnd(datasetFilter.season.end),
+      new filterStore.SetPathStart(datasetFilter.pathRange.start),
+      new filterStore.SetPathEnd(datasetFilter.pathRange.end),
+      new filterStore.SetFrameStart(datasetFilter.frameRange.start),
+      new filterStore.SetFrameEnd(datasetFilter.frameRange.end),
+
+      new filterStore.SetProductTypes(datasetFilter.productTypes),
+      new filterStore.SetBeamModes(datasetFilter.beamModes),
+      new filterStore.SetPolarizations(datasetFilter.polarizations),
+      new filterStore.SetSubtypes(datasetFilter.subtypes),
+      new filterStore.SetFlightDirections(datasetFilter.flightDirections)
+    ]
+
+    return actions;
+  }
 }

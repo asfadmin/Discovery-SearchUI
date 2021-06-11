@@ -1,2 +1,16 @@
-<div></div>
-<button mat-flat-button (click)="onSaveFilters()" style="margin-right: 13px;">{{userFilters.length > 0 ? userFilters[0].newSearch.split(" ")[0] : "nothing"}}</button>
+<button mat-button mat-flat-button [matMenuTriggerFor]="filterPresetsMenu">Options</button>
+
+<mat-menu #filterPresetsMenu="matMenu">
+  <button mat-menu-item (click)="onSaveFilters()" style="margin-right: 13px;">Save Filters</button>
+  <button mat-menu-item [disabled]="userFilters.length == 0" [matMenuTriggerFor]="filtersLoadMenu">Load Filters</button>
+</mat-menu>
+
+<mat-menu #filtersLoadMenu="matMenu">
+  <div *ngFor="let filterPreset of filterBySearchType(userFilters)">
+    <button mat-menu-item (click)="loadPreset(filterPreset)">
+      {{filterPreset.name}}
+    </button>
+  </div>
+</mat-menu>
+
+<!-- {{ ? userFilters[userFilters.length - 1].name : "nothing"}} -->
