@@ -13,14 +13,12 @@
   </div>
 </mat-menu>
 
-
 <mat-menu #filtersSaveMenu="matMenu">
   <div>
   <mat-form-field>
     <input matInput type="text" [(ngModel)]="newFilterName" (click)="$event.stopPropagation()">
 
 </mat-form-field>
-<button mat-button (click)="onSaveFilters()" >confirm</button>
+<button [disabled]="!isValidPresetName(newFilterName)" mat-button (click)="onSaveFilters()" >confirm</button>
 </div>
 </mat-menu>
-<!-- {{ ? userFilters[userFilters.length - 1].name : "nothing"}} -->
