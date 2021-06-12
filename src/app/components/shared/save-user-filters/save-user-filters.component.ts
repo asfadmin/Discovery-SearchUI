@@ -24,6 +24,7 @@ export class SaveUserFiltersComponent implements OnInit {
   private currentFiltersBySearchType = {};
 
   public currentSearchType: SearchType;
+  public newFilterName: string;
 
   private subs = new SubSink();
 
@@ -36,7 +37,6 @@ export class SaveUserFiltersComponent implements OnInit {
     this.subs.add(
       this.store$.select(userStore.getSavedFilters).pipe(
         filter(fitlerPresets => fitlerPresets.length > 0),
-        tap(val => console.log(val)),
       ).subscribe ( userFilters => this.userFilters = userFilters)
     );
 
@@ -65,8 +65,19 @@ export class SaveUserFiltersComponent implements OnInit {
   }
 
   public onSaveFilters() {
-    const currentFilterName = (this.currentFilters.length + 1).toString();
-    this.store$.dispatch(new userStore.AddNewFiltersPreset({name: currentFilterName, filter: this.currentFiltersBySearchType[this.currentSearchType], searchType: this.currentSearchType}));
+    // const currentFilterName = (this.currentFilters.length + 1).toString();
+    if(this.newFilterName === undefined) {
+      return;
+    }
+    if(this.newFilterName === '') {
+      return;
+    }
+    if(this.currentFilters.map(preset => preset.name).includes(this.newFilterName)) {
+      return;
+    }
+    this.store$.dispatch(new userStore.AddNewFiltersPreset({name: this.newFilterName, filter: this.currentFiltersBySearchType[this.currentSearchType], searchType: this.currentSearchType}));
+
+    this.newFilterName = '';
     // this.userFilters.push((this.userFilters.length - 1).toString());
   }
 

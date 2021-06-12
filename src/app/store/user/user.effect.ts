@@ -138,21 +138,10 @@ export class UserEffects {
     map(([preset_name, userFilters]) => {
       const targetFilter = userFilters.find(preset => preset.name === preset_name);
 
+      this.store$.dispatch(new filterStore.ClearDatasetFilters)
+
       const actions = this.setDatasetFilters(targetFilter.filter as GeographicFiltersType);
       actions.forEach(action => this.store$.dispatch(action));
-      // this.store$.dispatch(new filterStore.ClearDatasetFilters)
-      // this.store$.dispatch(new filterstore.)
-      // if(searchType === SearchType.DATASET) {
-        // actions.push(new filterStore.ClearDatasetFilters);
-
-        // actions.push(new filterStore.setdata)
-      // } else if(searchType === SearchType.LIST) {
-
-      // } else if(searchType === SearchType.BASELINE) {
-
-      // } else{
-
-      // }
     })
   ), {dispatch: false});
 

@@ -1,7 +1,7 @@
-<button mat-button mat-flat-button [matMenuTriggerFor]="filterPresetsMenu">Options</button>
+<button mat-button mat-flat-button [matMenuTriggerFor]="filterPresetsMenu"  style="margin-right: 13px;">Options</button>
 
 <mat-menu #filterPresetsMenu="matMenu">
-  <button mat-menu-item (click)="onSaveFilters()" style="margin-right: 13px;">Save Filters</button>
+  <button mat-menu-item [matMenuTriggerFor]="filtersSaveMenu">Save Filters</button>
   <button mat-menu-item [disabled]="userFilters.length == 0" [matMenuTriggerFor]="filtersLoadMenu">Load Filters</button>
 </mat-menu>
 
@@ -13,4 +13,14 @@
   </div>
 </mat-menu>
 
+
+<mat-menu #filtersSaveMenu="matMenu">
+  <div>
+  <mat-form-field>
+    <input matInput type="text" [(ngModel)]="newFilterName" (click)="$event.stopPropagation()">
+
+</mat-form-field>
+<button mat-button (click)="onSaveFilters()" >confirm</button>
+</div>
+</mat-menu>
 <!-- {{ ? userFilters[userFilters.length - 1].name : "nothing"}} -->
