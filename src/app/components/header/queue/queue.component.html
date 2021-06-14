@@ -11,6 +11,13 @@
       Downloads
     </h1>
     <div class="dl-subtitle">
+      <mat-checkbox class="item-summary-checkbox"
+                    [checked]=false
+                    color=primary
+                    [indeterminate]=[someChecked]
+                    >
+      </mat-checkbox>
+      <mat-icon>cloud_download</mat-icon> {{ selectedItems.length }} of
       {{ numberOfProducts$ | async }} Files, {{ (totalSize$ | async) | readableSizeFromBytes }}
     </div>
   </div>

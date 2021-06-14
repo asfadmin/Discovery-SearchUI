@@ -17,7 +17,7 @@ import { DownloadService } from '@services/download.service';
 import { Download } from '@services/download';
 import { Observable } from 'rxjs';
 
-export interface SelectedItem {
+export interface selectedItems {
   id: string;
   url: string;
 }
@@ -49,7 +49,9 @@ export class QueueComponent implements OnInit, OnDestroy {
   public dlHeight = 1000;
   public dlWidthMin = 715;
 
-  public selectedItem: SelectedItem[] = [];
+  public selectedItems: selectedItems[] = [];
+  public allChecked = false;
+  public someChecked = false;
 
   public products$ = this.store$.select(queueStore.getQueuedProducts).pipe(
     tap(products => this.areAnyProducts = products.length > 0),
@@ -163,16 +165,19 @@ export class QueueComponent implements OnInit, OnDestroy {
   }
 
   public toggleItemSelected(productId, downloadUrl) {
-    const idx = this.selectedItem.findIndex( o => o.id === productId );
+    const idx = this.selectedItems.findIndex( o => o.id === productId );
     if (idx > -1) {
-      this.selectedItem.splice( idx, 1 );
+      this.selectedItems.splice( idx, 1 );
     } else {
-      this.selectedItem.push({
+      this.selectedItems.push({
         id: productId,
         url: downloadUrl,
       });
     }
-    console.log('itemSelected:', this.selectedItem);
+    if ( this.selectedItems.length > 0 ) {
+        this.someChecked = true;
+      }
+    console.log('itemSelected:', this.selectedItems);
   }
 
   public demWarning(products) {
