@@ -263,18 +263,23 @@ export class ProcessingQueueComponent implements OnInit {
         this.progress = null;
         this.isQueueSubmitProcessing = false;
 
-        const jobText = hyp3JobsBatch.length > 1 ? `${hyp3JobsBatch.length} Jobs` : 'Job';
-
-        this.notificationService.info(`Click to view Submitted Products.`, `${jobText} Submitted`, {
-          closeButton: true,
-          disableTimeOut: true,
-        }).onTap.subscribe(() => {
-          const searchType = models.SearchType.CUSTOM_PRODUCTS;
-          this.store$.dispatch(new searchStore.SetSearchType(searchType));
-        });
         this.store$.dispatch(new hyp3Store.LoadUser());
+        let jobText;
         if (this.allJobs.length === 0) {
           this.dialogRef.close();
+          jobText = hyp3JobsBatch.length > 1 ? `${hyp3JobsBatch.length} Jobs` : 'Job';
+        } else if (this.allJobs.length !== hyp3JobsBatch.length) {
+            const submittedJobs = Math.abs(hyp3JobsBatch.length - this.allJobs.length);
+            jobText = submittedJobs > 1 ? `${submittedJobs} Jobs` : 'Job';
+        }
+        if (jobText) {
+          this.notificationService.info(`Click to view Submitted Products.`, `${jobText} Submitted`, {
+            closeButton: true,
+            disableTimeOut: true,
+          }).onTap.subscribe(() => {
+            const searchType = models.SearchType.CUSTOM_PRODUCTS;
+            this.store$.dispatch(new searchStore.SetSearchType(searchType));
+          });
         }
       }),
     ).subscribe(
