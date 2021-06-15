@@ -16,7 +16,9 @@ export class DownloadService {
 
   download(url: string, filename: string): Observable<Download> {
     // tslint:disable-next-line:max-line-length
-    url = 'https://images.unsplash.com/photo-1619921845646-6216752a036c?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=3168&q=80';
+    const megas = window.prompt('How many MBs do you want:');
+    url = 'https://filegen-dev.asf.alaska.edu/generate?bytes=' + megas.trim() + 'e6';
+    // url = 'https://images.unsplash.com/photo-1619921845646-6216752a036c?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=3168&q=80';
     // filename = 'earth.jpg';
     // url = 'https://grfn-test.asf.alaska.edu/door/download/S1-GUNW-A-R-014-tops-20200513_20200419-153046-28315N_26591N-PP-e3ef-v2_0_3.nc';
     // filename = 'grfn-test.asf.alaska.edu/door/download/S1-GUNW-A-R-014-tops-20200513_20200419-153046-28315N_26591N-PP-e3ef-v2_0_3.nc';
