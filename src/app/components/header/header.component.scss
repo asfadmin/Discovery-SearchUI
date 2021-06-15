@@ -1,3 +1,4 @@
+@use '~@angular/material' as mat;
 @import "asf-theme";
 @import "~flex-layout-sass/mixin";
 
@@ -8,7 +9,7 @@
   overflow-y: hidden;
 }
 
-$config: mat-typography-config();
+$config: mat.define-typography-config();
 
 .breadcrumb-list {
   background-color: white;
@@ -44,7 +45,7 @@ $config: mat-typography-config();
 
 .max-results {
   text-align: left;
-  font-family: mat-font-family($config);
+  font-family: mat.font-family($config);
   font-size: 14px;
   margin-top: -5px;
   line-height: 28px;

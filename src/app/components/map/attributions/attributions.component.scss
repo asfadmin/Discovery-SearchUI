@@ -1,6 +1,7 @@
+@use '~@angular/material' as mat;
 @import "asf-theme";
 
-$config: mat-typography-config();
+$config: mat.define-typography-config();
 
 .position-right {
   position: fixed;
@@ -27,7 +28,7 @@ $config: mat-typography-config();
   border-width: 1px 0 0 1px;
   color: $asf-primary;
   max-width: calc(50vw - 100px);
-  font-family: mat-font-family($config);
+  font-family: mat.font-family($config);
   font-weight: 400;
   font-size: 13px;
 }

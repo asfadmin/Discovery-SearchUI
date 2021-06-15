@@ -55,7 +55,7 @@ export class Hyp3Service {
       const jobOptions: any = {
         job_type: job.job_type.id,
         job_parameters: {
-          ...options[job.job_type.id],
+          ...ops[job.job_type.id],
           granules: job.granules.map(granule => granule.name),
         }
       };
