@@ -175,6 +175,10 @@ export class SearchButtonComponent implements OnInit, OnDestroy {
     this.store$.dispatch(new uiStore.SetSaveSearchOn(true));
   }
 
+  public saveCurrentFilters(): void {
+    this.store$.dispatch(new uiStore.OpenSidebar());
+  }
+
   public onOpenSavedSearches(): void {
 
     window.dataLayer = window.dataLayer || [];

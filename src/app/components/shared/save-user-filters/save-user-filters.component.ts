@@ -1,19 +1,30 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/core';
 import { FilterType, SearchType } from '@models';
 import { Store } from '@ngrx/store';
 import { AppState } from '@store';
 import * as userStore from '@store/user';
 import * as filterStore from '@store/filters';
 import * as searchStore from '@store/search';
+import * as uiStore from '@store/ui';
+import * as models from '@models';
 import { filter } from 'rxjs/operators';
 import { SubSink } from 'subsink';
 import { combineLatest } from 'rxjs';
 @Component({
   selector: 'app-save-user-filters',
   templateUrl: './save-user-filters.component.html',
-  styleUrls: ['./save-user-filters.component.scss']
+  styleUrls: ['./save-user-filters.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class SaveUserFiltersComponent implements OnInit, OnDestroy {
+
+  // private saveFilterOn = false;
+  public breakpoint: models.Breakpoints;
+  public breakpoints = models.Breakpoints;
+
+  public searchType$ = this.store$.select(searchStore.getSearchType);
+  public SearchType = models.SearchType;
+
 
   private currentFilters: {name: string, searchType: SearchType, filter: FilterType}[] = [];
 

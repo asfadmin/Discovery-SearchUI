@@ -1,24 +1,38 @@
-<button mat-button mat-flat-button [matMenuTriggerFor]="filterPresetsMenu"  style="margin-right: 13px;">Options</button>
+<!-- <button mat-button mat-flat-button [matMenuTriggerFor]="filterPresetsMenu"  style="margin-right: 13px;">Options</button>
 
 <mat-menu #filterPresetsMenu="matMenu">
   <button mat-menu-item [matMenuTriggerFor]="filtersSaveMenu">Save Filters</button>
   <button mat-menu-item [disabled]="userFilters.length == 0" [matMenuTriggerFor]="filtersLoadMenu">Load Filters</button>
-</mat-menu>
+</mat-menu> -->
 
-<mat-menu #filtersLoadMenu="matMenu">
+<div [ngClass]="{'saved-searches-mobile': breakpoint <= breakpoints.SMALL,
+'saved-searches': breakpoint > breakpoints.SMALL}">
+<!-- <mat-menu> -->
   <div *ngFor="let filterPreset of filterBySearchType(userFilters)">
-    <button mat-menu-item (click)="loadPreset(filterPreset)">
-      {{filterPreset.name}}
-    </button>
-  </div>
-</mat-menu>
+    <div class="detailed-view">
 
-<mat-menu #filtersSaveMenu="matMenu">
-  <div>
+    <mat-expansion-panel>
+      <mat-expansion-panel-header>
+        {{filterPreset.name}}
+      </mat-expansion-panel-header>
+    <app-geographic-search-filters
+    [filters]="filterPreset.filter">
+  </app-geographic-search-filters>
+  <button mat-menu-item (click)="loadPreset(filterPreset)">
+    Apply Filter
+  </button>
+</mat-expansion-panel>
+</div>
+  </div>
+<!-- </mat-menu> -->
+
+<!-- <mat-menu>
+  <div> -->
   <mat-form-field>
     <input matInput type="text" [(ngModel)]="newFilterName" (click)="$event.stopPropagation()">
 
 </mat-form-field>
 <button [disabled]="!isValidPresetName(newFilterName)" mat-button (click)="onSaveFilters()" >confirm</button>
+<!-- </div> -->
+<!-- </mat-menu> -->
 </div>
-</mat-menu>

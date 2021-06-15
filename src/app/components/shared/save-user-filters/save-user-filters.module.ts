@@ -6,7 +6,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatSharedModule } from '@shared';
 import { SaveUserFiltersComponent } from './save-user-filters.component';
 import { FormsModule } from '@angular/forms';
-
+import { MatExpansionModule } from '@angular/material/expansion';
 @NgModule({
   declarations: [
     SaveUserFiltersComponent
@@ -18,6 +18,7 @@ import { FormsModule } from '@angular/forms';
     MatInputModule,
     FormsModule,
     MatMenuModule,
+    MatExpansionModule,
   ],
   exports: [
     SaveUserFiltersComponent

@@ -35,6 +35,14 @@
     </button>
   </span>
 
+  <span matTooltip = "Sign in to save your search" [matTooltipDisabled]="isLoggedIn"
+        matTooltipPosition = "after">
+    <button *ngIf="searchType === searchTypes.DATASET"
+      mat-menu-item [disabled]="!isLoggedIn" (click)="saveCurrentFilters()">
+      Save Filters
+    </button>
+  </span>
+
   <mat-divider></mat-divider>
 
   <span

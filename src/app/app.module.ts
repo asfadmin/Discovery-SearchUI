@@ -23,6 +23,7 @@ import * as store from './store';
 
 import { MatSharedModule } from '@shared';
 import { SavedSearchesModule } from '@components/shared/saved-searches';
+import { SaveUserFiltersModule } from '@components/shared/save-user-filters';
 import { HeaderModule } from '@components/header';
 import { MapModule } from '@components/map';
 import { ResultsMenuModule } from '@components/results-menu';
@@ -90,6 +91,7 @@ export const routes = [
     !environment.production ? StoreDevtoolsModule.instrument() : [],
     MatSidenavModule,
     SavedSearchesModule,
+    SaveUserFiltersModule,
     MapModule,
     ResultsMenuModule,
     HeaderModule,
