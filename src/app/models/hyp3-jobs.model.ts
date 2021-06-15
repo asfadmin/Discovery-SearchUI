@@ -77,38 +77,38 @@ export const RtcGammaJobType: Hyp3JobType = {
       dead reckoning based on orbit files.
     `
   }, {
-    name: 'Include DEM',
-    apiName: 'include_dem',
-    type: JobOptionType.TOGGLE,
-    default: false,
-    info: `Include the DEM file in the product package.`
-  }, {
-    name: 'Include Inc. Angle Map',
-    apiName: 'include_inc_map',
-    type: JobOptionType.TOGGLE,
-    default: false,
-    info: `Include the incidence angle map in the product package.`
-  }, {
-    name: 'Include Scattering Area',
-    apiName: 'include_scattering_area',
-    type: JobOptionType.TOGGLE,
-    default: false,
-    info: `Include the scattering area in the product package.`
-  }, {
-    name: 'Include RGB',
-    apiName: 'include_rgb',
-    type: JobOptionType.TOGGLE,
-    default: false,
-    info: `
-      Include a false-color RGB decomposition in the product
-      package for dual-pol granules (ignored for single-pol granules).
-    `
-  }, {
     name: 'Speckle Filter',
     apiName: 'speckle_filter',
     type: JobOptionType.TOGGLE,
     default: false,
     info: `Apply an Enhanced Lee speckle filter.`
+  }, {
+    name: 'Include DEM',
+    apiName: 'include_dem',
+    type: JobOptionType.CHECKBOX,
+    default: false,
+    info: `Include the DEM file in the product package.`
+  }, {
+    name: 'Include Inc. Angle Map',
+    apiName: 'include_inc_map',
+    type: JobOptionType.CHECKBOX,
+    default: false,
+    info: `Include the incidence angle map in the product package.`
+  }, {
+    name: 'Include Scattering Area',
+    apiName: 'include_scattering_area',
+    type: JobOptionType.CHECKBOX,
+    default: false,
+    info: `Include the scattering area in the product package.`
+  }, {
+    name: 'Include RGB',
+    apiName: 'include_rgb',
+    type: JobOptionType.CHECKBOX,
+    default: false,
+    info: `
+      Include a false-color RGB decomposition in the product
+      package for dual-pol granules (ignored for single-pol granules).
+    `
   }]
 };
 
@@ -149,7 +149,7 @@ export const InsarGammaJobType: Hyp3JobType = {
   }, {
     name: 'Include DEM',
     apiName: 'include_dem',
-    type: JobOptionType.TOGGLE,
+    type: JobOptionType.CHECKBOX,
     default: false,
     info: `
       Include the DEM file in the product package.
@@ -157,7 +157,7 @@ export const InsarGammaJobType: Hyp3JobType = {
   }, {
     name: 'Include Inc. Angle Map',
     apiName: 'include_inc_map',
-    type: JobOptionType.TOGGLE,
+    type: JobOptionType.CHECKBOX,
     default: false,
     info: `
       Include the incidence angle map in the product package.
@@ -165,7 +165,7 @@ export const InsarGammaJobType: Hyp3JobType = {
   }, {
     name: 'Include Look Vectors',
     apiName: 'include_look_vectors',
-    type: JobOptionType.TOGGLE,
+    type: JobOptionType.CHECKBOX,
     default: false,
     info: `
       Include the look vector theta and phi files in the product package.
@@ -173,7 +173,7 @@ export const InsarGammaJobType: Hyp3JobType = {
   }, {
     name: 'Include LOS Displacement',
     apiName: 'include_los_displacement',
-    type: JobOptionType.TOGGLE,
+    type: JobOptionType.CHECKBOX,
     default: false,
     info: `
       Include a GeoTIFF in the product package containing displacement
@@ -182,7 +182,7 @@ export const InsarGammaJobType: Hyp3JobType = {
   }, {
     name: 'Include Wrapped Phase',
     apiName: 'include_wrapped_phase',
-    type: JobOptionType.TOGGLE,
+    type: JobOptionType.CHECKBOX,
     default: false,
     info: `
       Include the wrapped phase GeoTIFF in the product package.
