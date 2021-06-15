@@ -4,7 +4,7 @@ import { Hyp3JobType, JobOptionType } from './hyp3-job-type.model';
 export const RtcGammaJobType: Hyp3JobType = {
   id: 'RTC_GAMMA',
   name: 'RTC GAMMA',
-  infoUrl: 'https://hyp3-docs.asf.alaska.edu/products/#rtc',
+  infoUrl: 'https://hyp3-docs.asf.alaska.edu/guides/rtc_product_guide/',
   description: `
     Radiometric Terrain Correction (RTC) removes geometric and radiometric
     distortions in SAR datasets and creates analysis-ready data suitable for use
@@ -115,7 +115,7 @@ export const RtcGammaJobType: Hyp3JobType = {
 export const InsarGammaJobType: Hyp3JobType = {
   id: 'INSAR_GAMMA',
   name: 'InSAR GAMMA',
-  infoUrl: 'https://hyp3-docs.asf.alaska.edu/products/#insar',
+  infoUrl: 'https://hyp3-docs.asf.alaska.edu/guides/insar_product_guide/',
   description: `
     Interferometric Synthetic Aperture Radar (InSAR) processing uses two SAR images
     collected over the same area to determine geometric properties of the surface.
