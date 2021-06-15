@@ -29,7 +29,7 @@ import { ResultsMenuModule } from '@components/results-menu';
 import { BaselineChartModule } from '@components/baseline-chart';
 import { HelpModule } from './components/help';
 import { AppComponent } from './app.component';
-import { CustomBreakPointsProvider } from '@services/custom-breakpoints.ts';
+import { CustomBreakPointsProvider } from '@services/custom-breakpoints';
 import * as services from '@services';
 
 import { NgcCookieConsentModule, NgcCookieConsentConfig } from 'ngx-cookieconsent';

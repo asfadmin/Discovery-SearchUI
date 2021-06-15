@@ -1,6 +1,7 @@
+@use '~@angular/material' as mat;
 @import "asf-theme";
 
-$config: mat-typography-config();
+$config: mat.define-typography-config();
 
 $info-background: $asf-primary-light;
 $info-color: $asf-primary;
@@ -131,6 +132,6 @@ $info-color: $asf-primary;
 }
 
 label {
-  font-family: mat-font-family($config);
+  font-family: mat.font-family($config);
   font-size: 11px;
 }
