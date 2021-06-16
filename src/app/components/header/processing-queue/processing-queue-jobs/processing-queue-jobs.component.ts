@@ -30,8 +30,8 @@ export class ProcessingQueueJobsComponent implements OnInit {
 
   public sortTypes = Object.keys(ProcessingQueueJobsSortType).map(key => ProcessingQueueJobsSortType[key]);
   public sortOrders = Object.keys(ProcessingQueueJobsSortOrder).map(key => ProcessingQueueJobsSortOrder[key]);
-  public sortOrder: ProcessingQueueJobsSortOrder = ProcessingQueueJobsSortOrder.ASCENDING;
-  public sortType: ProcessingQueueJobsSortType = ProcessingQueueJobsSortType.DATE_ADDED;
+  public sortOrder: ProcessingQueueJobsSortOrder = ProcessingQueueJobsSortOrder.LATEST;
+  public sortType: ProcessingQueueJobsSortType = ProcessingQueueJobsSortType.ACQUISITION;
 
   private subs = new SubSink();
 
@@ -75,8 +75,8 @@ export class ProcessingQueueJobsComponent implements OnInit {
     event.preventDefault();
   }
 
-  public sortJobQueue(jobs: models.QueuedHyp3Job[], order: ProcessingQueueJobsSortOrder, sortType: ProcessingQueueJobsSortType): models.QueuedHyp3Job[] {
-    if(sortType === ProcessingQueueJobsSortType.ACQUISITION) {
+  public sortJobQueue(jobs: models.QueuedHyp3Job[]): models.QueuedHyp3Job[] {
+    if(this.sortType === ProcessingQueueJobsSortType.ACQUISITION) {
       jobs = jobs.sort((a, b) => {
         if(a.granules[0].metadata.date < b.granules[0].metadata.date) {
           return -1;
@@ -87,7 +87,7 @@ export class ProcessingQueueJobsComponent implements OnInit {
         });
     }
 
-    if(order === ProcessingQueueJobsSortOrder.DESCENDING) {
+    if(this.sortOrder === ProcessingQueueJobsSortOrder.LATEST) {
       jobs = jobs.reverse();
     }
 
@@ -106,8 +106,8 @@ export class ProcessingQueueJobsComponent implements OnInit {
 }
 
 export enum ProcessingQueueJobsSortOrder {
-  ASCENDING = 'Latest',
-  DESCENDING = 'Oldest'
+  OLDEST =  'Oldest',
+  LATEST ='Latest'
 }
 export enum ProcessingQueueJobsSortType {
   ACQUISITION = 'Start Date',
