@@ -133,6 +133,7 @@ export const routes = [
     services.PairService,
     services.SceneSelectService,
     {provide: SAVER, useFactory: getSaver},
+    // { provide: Window, useValue: window },
   ],
   bootstrap: [ AppComponent ],
 })
