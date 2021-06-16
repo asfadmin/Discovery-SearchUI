@@ -108,3 +108,20 @@ a {
   line-height: 24px !important;
   padding: 0 12px;
 }
+
+.tool-menu {
+  position: sticky;
+  bottom: 0px;
+  background: #C9CAC4;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  height: 35px;
+  button {
+    background: none;
+    border: none;
+  }
+  button:enabled {
+    cursor: pointer;
+  }
+}

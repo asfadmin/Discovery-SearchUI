@@ -42,7 +42,7 @@ export class SceneDetailComponent implements OnInit, OnDestroy {
   public selectedProducts: models.CMRProduct[];
   public hasBaseline: boolean;
   public browseIndex = 0;
-
+  public detailsOpen = true;
   public masterOffsets$ = this.store$.select(scenesStore.getMasterOffsets);
 
   private subs = new SubSink();
