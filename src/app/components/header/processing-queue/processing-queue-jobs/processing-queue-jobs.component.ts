@@ -17,7 +17,9 @@ import {SubSink} from 'subsink';
   templateUrl: './processing-queue-jobs.component.html',
   styleUrls: ['./processing-queue-jobs.component.scss']
 })
+
 export class ProcessingQueueJobsComponent implements OnInit {
+
   @Input() jobs: models.QueuedHyp3Job[];
   @Input() areJobsLoading: boolean;
 
@@ -25,6 +27,11 @@ export class ProcessingQueueJobsComponent implements OnInit {
 
   public projectName = '';
   public isLoggedIn: boolean;
+
+  public sortTypes = Object.keys(ProcessingQueueJobsSortType).map(key => ProcessingQueueJobsSortType[key]);
+  public sortOrders = Object.keys(ProcessingQueueJobsSortOrder).map(key => ProcessingQueueJobsSortOrder[key]);
+  public sortOrder: ProcessingQueueJobsSortOrder = ProcessingQueueJobsSortOrder.LATEST;
+  public sortType: ProcessingQueueJobsSortType = ProcessingQueueJobsSortType.ACQUISITION;
 
   private subs = new SubSink();
 
@@ -68,4 +75,41 @@ export class ProcessingQueueJobsComponent implements OnInit {
     event.preventDefault();
   }
 
+  public sortJobQueue(jobs: models.QueuedHyp3Job[]): models.QueuedHyp3Job[] {
+    if(this.sortType === ProcessingQueueJobsSortType.ACQUISITION) {
+      jobs = jobs.sort((a, b) => {
+        if(a.granules[0].metadata.date < b.granules[0].metadata.date) {
+          return -1;
+        } else if(a.granules[0].metadata.date > b.granules[0].metadata.date) {
+          return 1;
+        }
+        return 0;
+        });
+    }
+
+    if(this.sortOrder === ProcessingQueueJobsSortOrder.LATEST) {
+      jobs = jobs.reverse();
+    }
+
+    return jobs;
+    // const key = sortType === ProcessingQueueJobsSortType.ACQUISITION ?
+  }
+
+  public setProccesQueueJobsOrder(order: ProcessingQueueJobsSortOrder) {
+    this.sortOrder = order;
+  }
+
+  public setProccesQueueJobsType(orderType: ProcessingQueueJobsSortType) {
+    this.sortType = orderType;
+  }
+
+}
+
+export enum ProcessingQueueJobsSortOrder {
+  OLDEST =  'Oldest',
+  LATEST ='Latest'
+}
+export enum ProcessingQueueJobsSortType {
+  ACQUISITION = 'Start Date',
+  DATE_ADDED = 'Date Added',
 }
