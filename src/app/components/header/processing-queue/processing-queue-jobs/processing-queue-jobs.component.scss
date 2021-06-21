@@ -33,6 +33,20 @@
   }
 }
 
+.flex-field {
+  flex: 1 0 auto;
+  // width: 250px;
+  margin-left: 25px;
+}
+
+.sort-options {
+  flex-direction: row;
+  display: flex;
+  flex-wrap: wrap;
+  margin-top: 25px;
+  background-color: white;
+}
+
 .mat-list-base .mat-list-item,
 .mat-list-base .mat-list-option {
   display: flex;

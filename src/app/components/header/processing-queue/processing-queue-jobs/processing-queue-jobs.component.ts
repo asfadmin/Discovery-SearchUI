@@ -92,15 +92,6 @@ export class ProcessingQueueJobsComponent implements OnInit {
     }
 
     return jobs;
-    // const key = sortType === ProcessingQueueJobsSortType.ACQUISITION ?
-  }
-
-  public setProccesQueueJobsOrder(order: ProcessingQueueJobsSortOrder) {
-    this.sortOrder = order;
-  }
-
-  public setProccesQueueJobsType(orderType: ProcessingQueueJobsSortType) {
-    this.sortType = orderType;
   }
 
 }
