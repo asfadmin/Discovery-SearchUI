@@ -41,7 +41,7 @@ a {
 }
 
 .banner {
-  background: #C9CAC4;
+  background: $asf-primary-light;
   height: 40px;
   width: calc(100% + 32px);
   margin-left: -16px;
@@ -112,7 +112,7 @@ a {
 .tool-menu {
   position: sticky;
   bottom: 0px;
-  background: #C9CAC4;
+  background: darken($asf-primary-light, 5%);
   display: flex;
   justify-content: space-around;
   align-items: center;
