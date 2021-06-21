@@ -85,6 +85,18 @@ export class PairService {
 
     // }
 
+    const bounds = (x: string) => x.replace('POLYGON ', '').replace('((', '').replace('))', '').split(',').slice(0, 4).
+    map(coord => coord.trimStart().split(' ')).
+      map(coordVal => ({lat: parseFloat(coordVal[0]), lon: parseFloat(coordVal[1])}));
+
+    const calcCenter = (coords: {lat: number, lon: number}[]) =>
+    {
+      const centroid = coords.reduce((acc, curr) => ({lat: acc.lat + curr.lat, lon: acc.lon + curr.lon}));
+      centroid.lon = centroid.lon / 4.0;
+      centroid.lat = centroid.lat / 4.0;
+      return centroid;
+    }
+
     scenes.forEach((root, index) => {
       for (let i = index + 1; i < scenes.length; ++i) {
         const scene = scenes[i];
@@ -96,6 +108,7 @@ export class PairService {
         const P2StartDate = new Date(scene.metadata.date.toISOString());
         const P2StopDate = new Date(scene.metadata.stopDate.toISOString());
 
+        // const p2Bounds =
         if (!!season.start && !!season.end) {
             if (!this.dayInSeason(P1StartDate, P1StopDate, P2StartDate, P2StopDate, season)) {
               return;
@@ -116,6 +129,19 @@ export class PairService {
           if ( P1StopDate > endDateExtrema || P2StopDate > endDateExtrema) {
               return;
             }
+        }
+
+        // const p1Center = scene.metadata.polygon.replace('(', '').replace(')', '').split(',').slice(0, 4);
+        const p1Bounds = bounds(root.metadata.polygon);
+        const p2Bounds = bounds(scene.metadata.polygon);
+
+        const p1Center = calcCenter(p1Bounds);
+        const p2Center = calcCenter(p2Bounds);
+
+        if(p1Center.lon > p2Center.lon && p1Center.lon > Math.max(p2Bounds[0].lon, p2Bounds[1].lon)) {
+          return;
+        } else if(p1Center.lon < p2Center.lon && p1Center.lon < Math.max(p2Bounds[2].lon, p2Bounds[3].lon)) {
+          return;
         }
 
         pairs.push([root, scene]);

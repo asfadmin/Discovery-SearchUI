@@ -136,6 +136,8 @@ export class ScenesListComponent implements OnInit, OnDestroy {
               };
             }
           );
+
+          // console.log(this.pairs);
         }
       )
     );
