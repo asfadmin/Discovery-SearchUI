@@ -85,3 +85,11 @@ a {
   border-bottom-width: 1px;
   border-bottom-color: lighten($asf-primary-light, 10%);
 }
+.bar {
+  position: absolute;
+  bottom: 0;
+  height: 20px;
+  background: $asf-primary-light;
+  width: 100%;
+  z-index: 997;
+}

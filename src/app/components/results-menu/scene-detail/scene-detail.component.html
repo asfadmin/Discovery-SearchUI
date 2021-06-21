@@ -104,7 +104,7 @@
         </div>
       </div>
     </mat-card-content>
-    <div class="tool-menu" >
+    <div class="tool-menu" [ngStyle]="{ 'bottom': breakpoint === breakpoints.SMALL ? '19px' : (breakpoint < breakpoints.SMALL ? '17px' : '0px')}">
       <div>
         Search:
       </div>
