@@ -1,11 +1,11 @@
-import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FilterType, SearchType } from '@models';
 import { Store } from '@ngrx/store';
 import { AppState } from '@store';
 import * as userStore from '@store/user';
 import * as filterStore from '@store/filters';
 import * as searchStore from '@store/search';
-import * as uiStore from '@store/ui';
+// import * as uiStore from '@store/ui';
 import * as models from '@models';
 import { filter } from 'rxjs/operators';
 import { SubSink } from 'subsink';
@@ -13,8 +13,7 @@ import { combineLatest } from 'rxjs';
 @Component({
   selector: 'app-save-user-filters',
   templateUrl: './save-user-filters.component.html',
-  styleUrls: ['./save-user-filters.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  styleUrls: ['./save-user-filters.component.scss']
 })
 export class SaveUserFiltersComponent implements OnInit, OnDestroy {
 
@@ -32,6 +31,8 @@ export class SaveUserFiltersComponent implements OnInit, OnDestroy {
 
   private currentFiltersBySearchType = {};
 
+  public displayedFilter = [];
+
   public currentSearchType: SearchType;
   public newFilterName = '';
 
@@ -44,7 +45,12 @@ export class SaveUserFiltersComponent implements OnInit, OnDestroy {
     this.subs.add(
       this.store$.select(userStore.getSavedFilters).pipe(
         filter(fitlerPresets => fitlerPresets.length > 0),
-      ).subscribe ( userFilters => this.userFilters = userFilters)
+      ).subscribe ( userFilters =>
+        {
+          this.userFilters = userFilters;
+          const output = this.filterBySearchType(this.userFilters);
+          this.displayedFilter = output;
+        })
     );
 
     this.subs.add(
@@ -53,7 +59,14 @@ export class SaveUserFiltersComponent implements OnInit, OnDestroy {
     // this.store$.select(filterStore.get)
 
     this.subs.add(
-      this.store$.select(searchStore.getSearchType).subscribe(searchtype => this.currentSearchType = searchtype)
+      this.store$.select(searchStore.getSearchType).subscribe(searchtype =>
+        {
+          this.currentSearchType = searchtype;
+          const output = this.filterBySearchType(this.userFilters);
+          this.displayedFilter = output;
+          // this.displayedFilter = this.filterBySearchType(this.userFilters);
+        }
+          )
     );
 
     this.subs.add(
@@ -85,7 +98,13 @@ export class SaveUserFiltersComponent implements OnInit, OnDestroy {
   }
 
   public filterBySearchType(filters: {name: string, searchType: SearchType, filter: FilterType}[]) {
-    return filters.filter(preset => preset.searchType === this.currentSearchType);
+    let output = filters.filter(preset => preset.searchType === this.currentSearchType);
+    return output;
+  }
+
+  public getFilterParams(savedFilter: FilterType) {
+    return Object.entries(savedFilter).map(vals => ({key: vals[0], value: vals[1]})).filter(vals => !!vals.value && vals.value != '');
+    // return params;
   }
 
   public loadPreset(filterPreset: {name: string, searchType: SearchType, filter: FilterType}) {

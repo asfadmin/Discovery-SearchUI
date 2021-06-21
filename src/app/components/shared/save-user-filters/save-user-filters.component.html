@@ -8,22 +8,27 @@
 <div [ngClass]="{'saved-searches-mobile': breakpoint <= breakpoints.SMALL,
 'saved-searches': breakpoint > breakpoints.SMALL}">
 <!-- <mat-menu> -->
-  <div *ngFor="let filterPreset of filterBySearchType(userFilters)">
+  <div *ngFor="let filterPreset of displayedFilter">
     <div class="detailed-view">
 
-    <mat-expansion-panel>
-      <mat-expansion-panel-header>
+    <!-- <mat-expansion-panel>
+      <mat-expansion-panel-header> -->
         {{filterPreset.name}}
-      </mat-expansion-panel-header>
+      <!-- </mat-expansion-panel-header> -->
+      <!-- <mat-list *ngFor="let item of getFilterParams(filterPreset.filter)">
+        <mat-list-item>
+          {{item.key}}: {{item.value}}
+        </mat-list-item>
+      </mat-list> -->
     <app-geographic-search-filters
     [filters]="filterPreset.filter">
   </app-geographic-search-filters>
   <button mat-menu-item (click)="loadPreset(filterPreset)">
     Apply Filter
   </button>
-</mat-expansion-panel>
-</div>
+<!-- </mat-expansion-panel> -->
   </div>
+</div>
 <!-- </mat-menu> -->
 
 <!-- <mat-menu>

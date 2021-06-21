@@ -176,6 +176,11 @@ export class SearchButtonComponent implements OnInit, OnDestroy {
   }
 
   public saveCurrentFilters(): void {
+    window.dataLayer = window.dataLayer || [];
+    window.dataLayer.push({
+      'event': 'save-current-filters',
+      'save-current-filters': true
+    });
     this.store$.dispatch(new uiStore.OpenSidebar());
   }
 
