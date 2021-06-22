@@ -91,13 +91,12 @@ export class PairService {
     map(coord => coord.trimStart().split(' ')).
       map(coordVal => ({ lon: parseFloat(coordVal[0]), lat: parseFloat(coordVal[1])}));
 
-    const calcCenter = (coords: {lat: number, lon: number}[]) =>
-    {
+    const calcCenter = (coords: {lat: number, lon: number}[]) => {
       const centroid = coords.reduce((acc, curr) => ({lat: acc.lat + curr.lat, lon: acc.lon + curr.lon}));
       centroid.lon = centroid.lon / 4.0;
       centroid.lat = centroid.lat / 4.0;
       return centroid;
-    }
+    };
 
     scenes.forEach((root, index) => {
       for (let i = index + 1; i < scenes.length; ++i) {
@@ -133,13 +132,13 @@ export class PairService {
             }
         }
 
-        if(overlapToggle) {
+        if (overlapToggle) {
           const p1Bounds = bounds(root.metadata.polygon);
           const p2Bounds = bounds(scene.metadata.polygon);
 
           const p1Center = calcCenter(p1Bounds);
 
-          if(p1Center.lat > Math.max(p2Bounds[0].lat, p2Bounds[1].lat) || p1Center.lat < Math.min(p2Bounds[2].lat, p2Bounds[3].lat)) {
+          if (p1Center.lat > Math.max(p2Bounds[0].lat, p2Bounds[1].lat) || p1Center.lat < Math.min(p2Bounds[2].lat, p2Bounds[3].lat)) {
             return;
           }
         }
