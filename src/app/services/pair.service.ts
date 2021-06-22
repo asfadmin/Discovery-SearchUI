@@ -138,11 +138,8 @@ export class PairService {
           const p2Bounds = bounds(scene.metadata.polygon);
 
           const p1Center = calcCenter(p1Bounds);
-          const p2Center = calcCenter(p2Bounds);
 
-          if(p1Center.lat > p2Center.lat && p1Center.lat > Math.max(p2Bounds[0].lat, p2Bounds[1].lat)) {
-            return;
-          } else if(p1Center.lat < p2Center.lat && p1Center.lat < Math.max(p2Bounds[2].lat, p2Bounds[3].lat)) {
+          if(p1Center.lat > Math.max(p2Bounds[0].lat, p2Bounds[1].lat) || p1Center.lat < Math.min(p2Bounds[2].lat, p2Bounds[3].lat)) {
             return;
           }
         }
