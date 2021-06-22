@@ -622,7 +622,7 @@ export function filtersReducer(state = initState, action: FiltersActions): Filte
       return {
         ...state,
         SBASoverlapToggle: !state.SBASoverlapToggle
-      }
+      };
     }
     default: {
       return state;
