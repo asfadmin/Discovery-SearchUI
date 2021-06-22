@@ -7,7 +7,7 @@ import { Store } from '@ngrx/store';
 import { AppState } from '@store/app.reducer';
 import { getScenes, getCustomPairs } from '@store/scenes/scenes.reducer';
 import {
-  getTemporalRange, getPerpendicularRange, getDateRange, DateRangeState, getSeason
+  getTemporalRange, getPerpendicularRange, getDateRange, DateRangeState, getSeason, getSBASOverlapToggle
 } from '@store/filters/filters.reducer';
 import { getSearchType } from '@store/search/search.reducer';
 
@@ -51,14 +51,15 @@ export class PairService {
       ),
       this.store$.select(getDateRange),
       this.store$.select(getSeason),
+      this.store$.select(getSBASOverlapToggle),
     ).pipe(
       debounceTime(250),
       withLatestFrom(this.store$.select(getSearchType)),
       map(([params, searchType]) => {
-        const [scenes, customPairs, temporal, perp, dateRange, season] = params;
+        const [scenes, customPairs, temporal, perp, dateRange, season, sbasOverlapToggle] = params;
 
         return searchType === SearchType.SBAS ? ({
-          pairs: [...this.makePairs(scenes, temporal, perp, dateRange, season)],
+          pairs: [...this.makePairs(scenes, temporal, perp, dateRange, season, sbasOverlapToggle)],
           custom: [ ...customPairs ]
         }) : ({
           pairs: [],
@@ -70,7 +71,8 @@ export class PairService {
 
   private makePairs(scenes: CMRProduct[], tempThreshold: number, perpThreshold,
     dateRange: DateRangeState,
-    season): CMRProductPair[] {
+    season,
+    overlapToggle: boolean): CMRProductPair[] {
     const pairs = [];
 
     let startDateExtrema: Date;
@@ -85,6 +87,18 @@ export class PairService {
 
     // }
 
+    const bounds = (x: string) => x.replace('POLYGON ', '').replace('((', '').replace('))', '').split(',').slice(0, 4).
+    map(coord => coord.trimStart().split(' ')).
+      map(coordVal => ({ lon: parseFloat(coordVal[0]), lat: parseFloat(coordVal[1])}));
+
+    const calcCenter = (coords: {lat: number, lon: number}[]) =>
+    {
+      const centroid = coords.reduce((acc, curr) => ({lat: acc.lat + curr.lat, lon: acc.lon + curr.lon}));
+      centroid.lon = centroid.lon / 4.0;
+      centroid.lat = centroid.lat / 4.0;
+      return centroid;
+    }
+
     scenes.forEach((root, index) => {
       for (let i = index + 1; i < scenes.length; ++i) {
         const scene = scenes[i];
@@ -96,6 +110,7 @@ export class PairService {
         const P2StartDate = new Date(scene.metadata.date.toISOString());
         const P2StopDate = new Date(scene.metadata.stopDate.toISOString());
 
+        // const p2Bounds =
         if (!!season.start && !!season.end) {
             if (!this.dayInSeason(P1StartDate, P1StopDate, P2StartDate, P2StopDate, season)) {
               return;
@@ -116,6 +131,20 @@ export class PairService {
           if ( P1StopDate > endDateExtrema || P2StopDate > endDateExtrema) {
               return;
             }
+        }
+
+        if(overlapToggle) {
+          const p1Bounds = bounds(root.metadata.polygon);
+          const p2Bounds = bounds(scene.metadata.polygon);
+
+          const p1Center = calcCenter(p1Bounds);
+          const p2Center = calcCenter(p2Bounds);
+
+          if(p1Center.lat > p2Center.lat && p1Center.lat > Math.max(p2Bounds[0].lat, p2Bounds[1].lat)) {
+            return;
+          } else if(p1Center.lat < p2Center.lat && p1Center.lat < Math.max(p2Bounds[2].lat, p2Bounds[3].lat)) {
+            return;
+          }
         }
 
         pairs.push([root, scene]);
