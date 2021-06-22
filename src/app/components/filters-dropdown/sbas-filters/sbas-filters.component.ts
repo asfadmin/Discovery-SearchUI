@@ -15,6 +15,7 @@ enum FilterPanel {
   FILTER2 = 'Temporal Filter',
   DATE = 'Date',
   SEASON = 'Season',
+  OVERLAP = 'Overlap'
 }
 
 @Component({
