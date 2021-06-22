@@ -4,6 +4,7 @@ import { MatExpansionModule } from '@angular/material/expansion';
 
 import { MatSharedModule } from '@shared';
 import { SeasonSelectorModule } from '@components/shared/selectors/season-selector';
+import { SbasOverlapSelectorModule } from '@components/shared/selectors/sbas-overlap-selector';
 import { DateSelectorModule } from '@components/shared/selectors/date-selector';
 import { SbasFiltersComponent } from './sbas-filters.component';
 import { MasterSceneSelectorModule } from '@components/shared/selectors/master-scene-selector';
@@ -18,6 +19,7 @@ import { ResultsMenuModule } from '@components/results-menu';
         MatExpansionModule,
         MatSharedModule,
         SeasonSelectorModule,
+        SbasOverlapSelectorModule,
         DateSelectorModule,
         MasterSceneSelectorModule,
         SearchTypeSelectorModule,

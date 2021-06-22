@@ -75,6 +75,8 @@ export enum FiltersActionType {
 
   RESTORE_FILTERS = '[Filters] Restores Previous Filters',
   STORE_CURRENT_FILTERS = '[Filters] Stores Current Filters',
+
+  TOGGLE_50_PERCENT_OVERLAP = '[Filters] Toggles SBAS 50 Percent Overlap Check'
 }
 
 export class SetState implements Action {
@@ -359,6 +361,12 @@ export class StoreCurrentFilters implements Action {
   constructor() {}
 }
 
+export class Toggle50PercentOverlap implements Action {
+  public readonly type = FiltersActionType.TOGGLE_50_PERCENT_OVERLAP;
+
+  constructor() {}
+}
+
 export type FiltersActions =
   | SetState
   | SetSelectedDataset
@@ -410,4 +418,5 @@ export type FiltersActions =
   | SetProductNameFilter
   | ClearProductNameFilter
   | RestoreFilters
-  | StoreCurrentFilters;
+  | StoreCurrentFilters
+  | Toggle50PercentOverlap;
