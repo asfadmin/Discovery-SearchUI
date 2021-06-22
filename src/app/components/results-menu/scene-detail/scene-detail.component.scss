@@ -125,3 +125,6 @@ a {
     cursor: pointer;
   }
 }
+.height-sticky {
+  height: calc(100% - 35px);
+}
