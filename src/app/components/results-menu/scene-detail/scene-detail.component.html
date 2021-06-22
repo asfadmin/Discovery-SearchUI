@@ -20,40 +20,8 @@
         <span matTooltip="Frequency">{{ dataset.frequency }}</span>
       </mat-card-subtitle>
     </mat-card-header>
+
     <div class="detail-card-info">
-      <mat-button-toggle-group class="scene-actions" name="sceneActions" aria-label="Scene Actions">
-        <mat-button-toggle *ngIf="searchType !== searchTypes.BASELINE && hasBaseline"
-           (click)="makeBaselineSearch()"
-           class="mini-toggle-button"
-           target="_blank"
-           matTooltip="Use this scene in the Baseline Tool for interferometry">
-          Baseline Tool
-        </mat-button-toggle>
-
-        <mat-button-toggle *ngIf="searchType !== searchTypes.BASELINE && hasBaseline"
-           (click)="makeSBASSearch()"
-           class="mini-toggle-button"
-           target="_blank"
-           matTooltip="Use this scene in the SBAS Tool to make product pairs for interferometry">
-          SBAS Tool
-        </mat-button-toggle>
-
-        <mat-button-toggle *ngIf="searchType === searchTypes.BASELINE"
-          (click)="onSetSelectedAsMaster()"
-           class="mini-toggle-button">
-          Set as Reference
-        </mat-button-toggle>
-
-        <mat-button-toggle *ngIf="
-           (searchType === searchTypes.DATASET || searchType === searchTypes.LIST)  &&
-           ((prop.isRelevant(p.PATH, dataset) && prop.isRelevant(p.FRAME, dataset) || (dataset.id === 'UAVSAR')))"
-           (click)="findSimilarScenes()"
-           class="mini-toggle-button"
-           matTooltip="Search based on this scene's path/frame">
-          More Like This
-        </mat-button-toggle>
-      </mat-button-toggle-group>
-
       <p class="faint-text accessing-text">
         <span *ngIf="!isLoggedIn">
           Accessing this data requires you to log in.
@@ -89,12 +57,11 @@
     <mat-card-content class="content">
       <div class="w100" fxFlex fxLayout="column" fxLayoutAlign="space-between">
         <div class="w100">
-          <app-scene-metadata
-             [scene]="scene"
-             [dataset]="dataset"
-             [searchType]="searchType"
-             [offsets]="masterOffsets$ | async">
-          </app-scene-metadata>
+          <details [(open)]="detailsOpen">
+            <summary class="clickable"></summary>
+            <app-scene-metadata [scene]="scene" [dataset]="dataset" [searchType]="searchType" [offsets]="masterOffsets$ | async">
+            </app-scene-metadata>
+          </details>
         </div>
         <div class="browse-container w100" *ngIf="sceneHasBrowse()">
           <div class="banner" fxLayout fxLayout="row" fxLayoutAlign="center">
@@ -137,6 +104,28 @@
         </div>
       </div>
     </mat-card-content>
+    <div class="tool-menu" [ngStyle]="{ 'bottom': breakpoint === breakpoints.SMALL ? '19px' : (breakpoint < breakpoints.SMALL ? '17px' : '0px')}">
+      <div>
+        Search:
+      </div>
+      <button [disabled]="!hasBaseline" (click)="makeBaselineSearch()"
+        class="mini-toggle-button" target="_blank" matTooltip="Use this scene in the Baseline Tool for interferometry">
+        Baseline
+      </button>
+    
+      <button [disabled]="!hasBaseline" (click)="makeSBASSearch()"
+        class="mini-toggle-button" target="_blank"
+        matTooltip="Use this scene in the SBAS Tool to make product pairs for interferometry">
+        SBAS
+      </button>
+      
+      <button
+        [disabled]="!(
+                       ((prop.isRelevant(p.PATH, dataset) && prop.isRelevant(p.FRAME, dataset) || (dataset.id === 'UAVSAR'))))"
+        (click)="findSimilarScenes()" class="mini-toggle-button" matTooltip="Geographic search based on this scene's path/frame">
+        More Like This
+      </button>
+    </div>
   </div>
 </div>
 

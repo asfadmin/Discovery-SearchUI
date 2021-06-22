@@ -41,7 +41,7 @@ a {
 }
 
 .banner {
-  background: #C9CAC4;
+  background: $asf-primary-light;
   height: 40px;
   width: calc(100% + 32px);
   margin-left: -16px;
@@ -107,4 +107,21 @@ a {
 .mini-toggle-button .mat-button-toggle-appearance-standard .mat-button-toggle-label-content {
   line-height: 24px !important;
   padding: 0 12px;
+}
+
+.tool-menu {
+  position: sticky;
+  bottom: 0px;
+  background: darken($asf-primary-light, 5%);
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  height: 35px;
+  button {
+    background: none;
+    border: none;
+  }
+  button:enabled {
+    cursor: pointer;
+  }
 }

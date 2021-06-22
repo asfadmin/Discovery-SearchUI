@@ -1,16 +1,35 @@
 <div class="jobs-list">
-  <div>
-    <!-- <mat-list>
-      <mat-list-item *ngFor="let item of sortTypes">
-       <button mat-button (click) ="setProccesQueueJobsType(item)"> {{item}} </button>
-      </mat-list-item>
-    </mat-list>
-    <mat-list>
-      <mat-list-item *ngFor="let item of sortOrders">
-       <button mat-button (click) ="setProccesQueueJobsOrder(item)"> {{item}} </button>
-      </mat-list-item>
-    </mat-list> -->
+
+  <div  class="sort-options">
+
+    <div  class = "flex-field">
+      <mat-form-field>
+        <mat-label>Sort Criteria</mat-label>
+          <mat-select [(ngModel)]='sortType'>
+            <div *ngFor="let item of sortTypes">
+              <mat-option [value]="item">
+                {{item}}
+              </mat-option>
+            </div>
+          </mat-select>
+        </mat-form-field>
+      </div>
+
+    <div class = "flex-field">
+      <mat-form-field>
+        <mat-label>Sort Order</mat-label>
+        <mat-select [(ngModel)]='sortOrder'>
+          <div *ngFor="let item of sortOrders">
+            <mat-option [value]="item">
+              {{item}}
+            </mat-option>
+          </div>
+        </mat-select>
+      </mat-form-field>
+    </div>
+
   </div>
+
   <mat-list *ngIf="!areJobsLoading" role="list" class="flex-list">
     <ng-container
       *ngIf="jobs.length > 0 ; then jobsQueued; else emptyQueue">

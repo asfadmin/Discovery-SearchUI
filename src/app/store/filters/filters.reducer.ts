@@ -34,6 +34,8 @@ export interface FiltersState {
   productFilterName: string;
 
   previousFilters: FiltersState;
+
+  SBASoverlapToggle: boolean;
 }
 
 
@@ -84,7 +86,9 @@ export const initState: FiltersState = {
   projectName: null,
   productFilterName: null,
 
-  previousFilters: null
+  previousFilters: null,
+
+  SBASoverlapToggle: true
 };
 
 
@@ -614,6 +618,12 @@ export function filtersReducer(state = initState, action: FiltersActions): Filte
       }
       return state;
     }
+    case FiltersActionType.TOGGLE_50_PERCENT_OVERLAP: {
+      return {
+        ...state,
+        SBASoverlapToggle: !state.SBASoverlapToggle
+      }
+    }
     default: {
       return state;
     }
@@ -835,4 +845,9 @@ export const areFiltersChanged = createSelector(
 
     // })
   }
+);
+
+export const getSBASOverlapToggle = createSelector(
+  getFiltersState,
+  (state: FiltersState) => state.SBASoverlapToggle
 );
