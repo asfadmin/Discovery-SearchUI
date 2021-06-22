@@ -108,27 +108,21 @@
       <div>
         Search:
       </div>
-      <button [disabled]="!(searchType !== searchTypes.BASELINE && hasBaseline)" (click)="makeBaselineSearch()"
+      <button [disabled]="!hasBaseline" (click)="makeBaselineSearch()"
         class="mini-toggle-button" target="_blank" matTooltip="Use this scene in the Baseline Tool for interferometry">
-        Baseline Tool
+        Baseline
       </button>
     
-      <button [disabled]="!(searchType !== searchTypes.BASELINE && hasBaseline)" (click)="makeSBASSearch()"
+      <button [disabled]="!hasBaseline" (click)="makeSBASSearch()"
         class="mini-toggle-button" target="_blank"
         matTooltip="Use this scene in the SBAS Tool to make product pairs for interferometry">
-        SBAS Tool
+        SBAS
       </button>
-    
-      <button [disabled]="!(searchType === searchTypes.BASELINE)" (click)="onSetSelectedAsMaster()"
-        class="mini-toggle-button">
-        Set as Reference
-      </button>
-    
+      
       <button
         [disabled]="!(
-                       (searchType === searchTypes.DATASET || searchType === searchTypes.LIST)  &&
                        ((prop.isRelevant(p.PATH, dataset) && prop.isRelevant(p.FRAME, dataset) || (dataset.id === 'UAVSAR'))))"
-        (click)="findSimilarScenes()" class="mini-toggle-button" matTooltip="Search based on this scene's path/frame">
+        (click)="findSimilarScenes()" class="mini-toggle-button" matTooltip="Geographic search based on this scene's path/frame">
         More Like This
       </button>
     </div>
