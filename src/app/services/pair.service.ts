@@ -87,7 +87,7 @@ export class PairService {
 
     const bounds = (x: string) => x.replace('POLYGON ', '').replace('((', '').replace('))', '').split(',').slice(0, 4).
     map(coord => coord.trimStart().split(' ')).
-      map(coordVal => ({lat: parseFloat(coordVal[0]), lon: parseFloat(coordVal[1])}));
+      map(coordVal => ({ lon: parseFloat(coordVal[0]), lat: parseFloat(coordVal[1])}));
 
     const calcCenter = (coords: {lat: number, lon: number}[]) =>
     {
@@ -131,16 +131,15 @@ export class PairService {
             }
         }
 
-        // const p1Center = scene.metadata.polygon.replace('(', '').replace(')', '').split(',').slice(0, 4);
         const p1Bounds = bounds(root.metadata.polygon);
         const p2Bounds = bounds(scene.metadata.polygon);
 
         const p1Center = calcCenter(p1Bounds);
         const p2Center = calcCenter(p2Bounds);
 
-        if(p1Center.lon > p2Center.lon && p1Center.lon > Math.max(p2Bounds[0].lon, p2Bounds[1].lon)) {
+        if(p1Center.lat > p2Center.lat && p1Center.lat > Math.max(p2Bounds[0].lat, p2Bounds[1].lat)) {
           return;
-        } else if(p1Center.lon < p2Center.lon && p1Center.lon < Math.max(p2Bounds[2].lon, p2Bounds[3].lon)) {
+        } else if(p1Center.lat < p2Center.lat && p1Center.lat < Math.max(p2Bounds[2].lat, p2Bounds[3].lat)) {
           return;
         }
 
