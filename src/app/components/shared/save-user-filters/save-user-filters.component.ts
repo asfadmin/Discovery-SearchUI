@@ -7,7 +7,6 @@ import * as filterStore from '@store/filters';
 import * as searchStore from '@store/search';
 // import * as uiStore from '@store/ui';
 import * as models from '@models';
-import { filter } from 'rxjs/operators';
 import { SubSink } from 'subsink';
 import { combineLatest } from 'rxjs';
 @Component({
@@ -43,9 +42,7 @@ export class SaveUserFiltersComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
 
     this.subs.add(
-      this.store$.select(userStore.getSavedFilters).pipe(
-        filter(fitlerPresets => fitlerPresets.length > 0),
-      ).subscribe ( userFilters =>
+      this.store$.select(userStore.getSavedFilters).subscribe ( userFilters =>
         {
           this.userFilters = userFilters;
           const output = this.filterBySearchType(this.userFilters);

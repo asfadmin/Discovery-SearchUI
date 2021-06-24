@@ -26,7 +26,9 @@ export enum UserActionType {
 
   ADD_NEW_FILTERS_PRESET = '[User] Save Search Filters',
   DELETE_FILTERS_PRESET = '[User] Delete Saved Filters Preset',
-  LOAD_FILTERS_PRESET = '[User] Load Saved Filters Preset'
+  LOAD_FILTERS_PRESET = '[User] Load Saved Filters Preset',
+
+  UPDATE_FILTERS_PRESET_NAME = '[User] Change Filter Preset Name'
 }
 
 export class Login implements Action {
@@ -135,6 +137,12 @@ export class LoadFiltersPreset implements Action {
   constructor(public payload: string) {}
 }
 
+export class UpdateFilterPresetName implements Action {
+  public readonly type = UserActionType.UPDATE_FILTERS_PRESET_NAME;
+
+  constructor(public payload: {oldName: string, newName: string}) {}
+}
+
 export type UserActions =
   | SaveProfile
   | SetProfile
@@ -153,5 +161,6 @@ export type UserActions =
   | AddNewFiltersPreset
   | DeleteFiltersPreset
   | LoadFiltersPreset
+  | UpdateFilterPresetName
   | Logout
   | Login;

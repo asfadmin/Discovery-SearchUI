@@ -6,16 +6,43 @@
     </div>
       <div class='filter-header-info'>
         <div class="filter-title">
-          {{filterPreset.name}}
+
+
+
+
+    <span *ngIf="!isEditingName"
+        (click)="onEditName()"
+        class="search-name clickable">
+      {{ filterPreset.name }} <mat-icon class="edit-icon">edit</mat-icon>
+    </span>
+
+      <span *ngIf="isEditingName">
+      <form class="name-edit-form" #nameEditForm="ngForm">
+        <mat-form-field>
+          <input matInput
+                 [(ngModel)]="editName"
+                 (change)="onNewName($event.target.value)"
+                 name="editNameInput"
+                 placeholder="Filter Preset Name" #nameEditInput>
+        </mat-form-field>
+      </form>
+    </span>
+
+
+
+
+    {{ filterPreset.searchType }}
         </div>
-        <span>
-          {{ filterPreset.searchType }}
-        </span>
     </div>
     <div>
       <button mat-button (click)="loadPreset(filterPreset)">
         Apply Filter
       </button>
+      <button
+      (click)="onDeletePreset()"
+      mat-flat-button>
+      <i class="material-icons">delete_forever</i>
+    </button>
     </div>
   </div>
 
