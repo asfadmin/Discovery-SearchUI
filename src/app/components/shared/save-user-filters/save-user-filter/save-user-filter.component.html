@@ -1,0 +1,57 @@
+<div class="saved-filter">
+  <div class="filter-description">
+    <div (click)=togglePanel() class="clickable expand-arrow">
+      <mat-icon *ngIf="!expanded" class="expand-arrow--icon">keyboard_arrow_right</mat-icon>
+      <mat-icon *ngIf="expanded" class="expand-arrow--icon">keyboard_arrow_down</mat-icon>
+    </div>
+      <div class='filter-header-info'>
+        <div class="filter-title">
+          {{filterPreset.name}}
+        </div>
+        <span>
+          {{ filterPreset.searchType }}
+        </span>
+    </div>
+    <div>
+      <button mat-button (click)="loadPreset(filterPreset)">
+        Apply Filter
+      </button>
+    </div>
+  </div>
+
+</div>
+
+<div *ngIf="expanded" class="detailed-view">
+  <div>
+    <app-list-search-filters
+      *ngIf="filterPreset.searchType === SearchType.LIST"
+      [filters]="filterPreset.filter">
+    </app-list-search-filters>
+
+    <app-geographic-search-filters
+      *ngIf="filterPreset.searchType === SearchType.DATASET"
+      [filters]="filterPreset.filter">
+    </app-geographic-search-filters>
+
+    <app-baseline-search-filters
+      *ngIf="filterPreset.searchType === SearchType.BASELINE"
+      [filters]="filterPreset.filter">
+    </app-baseline-search-filters>
+
+    <app-sbas-search-filters
+      *ngIf="filterPreset.searchType === SearchType.SBAS"
+      [filters]="filterPreset.filter">
+    </app-sbas-search-filters>
+  </div>
+
+  <!-- <div
+    *ngIf="isSavedSearch"
+    [matTooltip]="search.searchType === searchType ? 'Update Saved Search With Current Filters' : 'Current Search Wrong Type'">
+    <button
+      (click)="onUpdateFilters(search.id)"
+      class="search-action" color="secondary"
+      mat-flat-button [disabled]="search.searchType !== searchType">
+      Update
+    </button>
+  </div> -->
+</div>

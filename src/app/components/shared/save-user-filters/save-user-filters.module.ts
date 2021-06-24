@@ -5,11 +5,14 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatInputModule } from '@angular/material/input';
 import { MatSharedModule } from '@shared';
 import { SaveUserFiltersComponent } from './save-user-filters.component';
+import { SavedSearchesModule } from '../saved-searches';
 import { FormsModule } from '@angular/forms';
 import { MatExpansionModule } from '@angular/material/expansion';
+import { SaveUserFilterComponent } from './save-user-filter/save-user-filter.component';
 @NgModule({
   declarations: [
-    SaveUserFiltersComponent
+    SaveUserFiltersComponent,
+    SaveUserFilterComponent
   ],
   imports: [
     CommonModule,
@@ -19,6 +22,7 @@ import { MatExpansionModule } from '@angular/material/expansion';
     FormsModule,
     MatMenuModule,
     MatExpansionModule,
+    SavedSearchesModule,
   ],
   exports: [
     SaveUserFiltersComponent

@@ -14,7 +14,6 @@ export class GeographicSearchFiltersComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
-    console.log("WORKING");
   }
 
   public formatTypesList(fileTypes: ProductType[]): string {

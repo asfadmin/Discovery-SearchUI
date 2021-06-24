@@ -7,37 +7,136 @@
 
 <div [ngClass]="{'saved-searches-mobile': breakpoint <= breakpoints.SMALL,
 'saved-searches': breakpoint > breakpoints.SMALL}">
-<!-- <mat-menu> -->
-  <div *ngFor="let filterPreset of displayedFilter">
-    <div class="detailed-view">
+  <div *ngFor="let filterPreset of displayedFilter" style="margin-top: 25px;">
+
+    <app-save-user-filter
+    [filterPreset]="filterPreset"></app-save-user-filter>
 
     <!-- <mat-expansion-panel>
-      <mat-expansion-panel-header> -->
-        {{filterPreset.name}}
-      <!-- </mat-expansion-panel-header> -->
-      <!-- <mat-list *ngFor="let item of getFilterParams(filterPreset.filter)">
-        <mat-list-item>
-          {{item.key}}: {{item.value}}
-        </mat-list-item>
-      </mat-list> -->
-    <app-geographic-search-filters
-    [filters]="filterPreset.filter">
-  </app-geographic-search-filters>
-  <button mat-menu-item (click)="loadPreset(filterPreset)">
-    Apply Filter
-  </button>
-<!-- </mat-expansion-panel> -->
-  </div>
-</div>
-<!-- </mat-menu> -->
+      <mat-expansion-panel-header class="header-view">
+        <h3 class ="filter-expansion-panel">{{filterPreset.name}}</h3>
+        <div class="filter-apply-button">
+          <button mat-menu-item (click)="loadPreset(filterPreset)">
+            Apply Filter
+          </button>
+        </div>
+      </mat-expansion-panel-header>
 
-<!-- <mat-menu>
-  <div> -->
+      <app-geographic-search-filters
+        [filters]="filterPreset.filter">
+      </app-geographic-search-filters>
+
+    </mat-expansion-panel> -->
+  </div>
+
+
+
   <mat-form-field>
     <input matInput type="text" [(ngModel)]="newFilterName" (click)="$event.stopPropagation()">
+  </mat-form-field>
 
-</mat-form-field>
-<button [disabled]="!isValidPresetName(newFilterName)" mat-button (click)="onSaveFilters()" >confirm</button>
-<!-- </div> -->
-<!-- </mat-menu> -->
+  <button [disabled]="!isValidPresetName(newFilterName)" mat-button (click)="onSaveFilters()" >
+    confirm
+  </button>
 </div>
+
+
+
+<!--
+<div class="saved-search">
+  <div class="search-description">
+    <div (click)="expandSearch()" class="clickable expand-arrow">
+      <mat-icon *ngIf="!isExpanded" class="expand-arrow--icon">keyboard_arrow_right</mat-icon>
+      <mat-icon *ngIf="isExpanded" class="expand-arrow--icon">keyboard_arrow_down</mat-icon>
+    </div>
+    <div class="">
+      <div class="search-title">
+      <span *ngIf="!isEditingName"
+            (click)="onEditName()"
+            [matTooltip]="isSavedSearch ? 'Edit Name' : ''"
+            [class.clickable]="isSavedSearch"
+            class="search-name clickable">
+        {{ formatName(search.name) }} <mat-icon *ngIf="isSavedSearch" class="edit-icon">edit</mat-icon>
+      </span>
+
+        <span *ngIf="isEditingName">
+        <form class="name-edit-form" #nameEditForm="ngForm" onsubmit="return false">
+          <mat-form-field>
+            <input matInput
+                   [(ngModel)]="editName"
+                   (change)="onNewName($event.target.value)"
+                   (keyup.enter)="onEditFocusLeave()"
+                   (focusout)="onEditFocusLeave()"
+                   name="editNameInput"
+                   placeholder="Search Name" #nameEditInput>
+          </mat-form-field>
+        </form>
+      </span>
+
+        <span>
+        {{ search.searchType }}
+      </span>
+      </div>
+
+      <div *ngIf="!isEditingName" class="search-preview">
+        <span *ngIf="search.searchType === SearchType.DATASET">
+          {{ search.filters.selectedDataset }} {{ formatDatesFor(search.filters) }}
+        </span>
+        <span *ngIf="search.searchType === SearchType.LIST">
+          {{ listPreview(search.filters) }}
+        </span>
+      </div>
+    </div>
+  </div>
+
+  <div class="search-action-group">
+    <button
+      (click)="onSetSearch()"
+      class="search-action"
+      mat-flat-button>
+      <i class="material-icons">image_search</i>
+    </button>
+
+    <button *ngIf="isSavedSearch"
+      (click)="onDeleteSearch()"
+      class="search-action"
+      mat-flat-button>
+      <i class="material-icons">delete_forever</i>
+    </button>
+  </div>
+</div>
+
+<div *ngIf="isExpanded" class="detailed-view">
+  <div>
+    <app-list-search-filters
+      *ngIf="search.searchType === SearchType.LIST"
+      [filters]="search.filters">
+    </app-list-search-filters>
+
+    <app-geographic-search-filters
+      *ngIf="search.searchType === SearchType.DATASET"
+      [filters]="search.filters">
+    </app-geographic-search-filters>
+
+    <app-baseline-search-filters
+      *ngIf="search.searchType === SearchType.BASELINE"
+      [filters]="search.filters">
+    </app-baseline-search-filters>
+
+    <app-sbas-search-filters
+      *ngIf="search.searchType === SearchType.SBAS"
+      [filters]="search.filters">
+    </app-sbas-search-filters>
+  </div>
+
+  <div
+    *ngIf="isSavedSearch"
+    [matTooltip]="search.searchType === searchType ? 'Update Saved Search With Current Filters' : 'Current Search Wrong Type'">
+    <button
+      (click)="onUpdateFilters(search.id)"
+      class="search-action" color="secondary"
+      mat-flat-button [disabled]="search.searchType !== searchType">
+      Update
+    </button>
+  </div>
+</div> -->

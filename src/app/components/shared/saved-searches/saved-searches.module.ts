@@ -37,7 +37,8 @@ import { SbasSearchFiltersComponent } from './saved-search/sbas-search-filters/s
     PipesModule,
   ],
   exports: [
-    SavedSearchesComponent
+    SavedSearchesComponent,
+    GeographicSearchFiltersComponent
   ]
 })
 export class SavedSearchesModule { }
