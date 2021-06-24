@@ -38,7 +38,9 @@ import { SbasSearchFiltersComponent } from './saved-search/sbas-search-filters/s
   ],
   exports: [
     SavedSearchesComponent,
-    GeographicSearchFiltersComponent
+    GeographicSearchFiltersComponent,
+    SbasSearchFiltersComponent,
+    BaselineSearchFiltersComponent
   ]
 })
 export class SavedSearchesModule { }
