@@ -305,6 +305,11 @@ export const getIsSaveSearchOn = createSelector(
   state => state.isSaveSearchOn
 );
 
+export const getIsSaveFilterOn = createSelector(
+  getUIState,
+  state => state.isSaveFilterOn
+);
+
 export const getSaveSearchType = createSelector(
   getUIState,
   state => state.savedSearchType

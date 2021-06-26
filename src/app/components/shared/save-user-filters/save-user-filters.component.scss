@@ -1,6 +1,6 @@
 @import "asf-theme";
 
-.saved-searches {
+.saved-filters {
   left: 0;
   position: static;
   top: 32px;
@@ -19,6 +19,9 @@
 .saved-searches__header,
 .saved-searches__footer,
 .saved-searches__footer-mobile {
+  min-width: 600px;
+  width: 600px;
+  max-width: 900px;
   background-color: $asf-primary-light;
 }
 
@@ -133,7 +136,7 @@
 }
 
 .content-wrapper {
-  display: flex;
+  // display: flex;
   flex-direction: row;
 }
 

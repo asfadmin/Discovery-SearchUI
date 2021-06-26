@@ -5,10 +5,11 @@ import { AppState } from '@store';
 import * as userStore from '@store/user';
 import * as filterStore from '@store/filters';
 import * as searchStore from '@store/search';
-// import * as uiStore from '@store/ui';
+import * as uiStore from '@store/ui';
 import * as models from '@models';
 import { SubSink } from 'subsink';
 import { combineLatest } from 'rxjs';
+import { delay, tap } from 'rxjs/operators';
 @Component({
   selector: 'app-save-user-filters',
   templateUrl: './save-user-filters.component.html',
@@ -22,6 +23,8 @@ export class SaveUserFiltersComponent implements OnInit, OnDestroy {
 
   public searchType$ = this.store$.select(searchStore.getSearchType);
   public SearchType = models.SearchType;
+
+  public saveFilterOn: boolean;
 
 
   private currentFilters: {name: string, searchType: SearchType, filter: FilterType}[] = [];
@@ -79,6 +82,21 @@ export class SaveUserFiltersComponent implements OnInit, OnDestroy {
         })
     );
 
+    this.subs.add(
+      this.store$.select(uiStore.getIsSaveFilterOn).pipe(
+        tap(saveSearchOn => this.saveFilterOn = saveSearchOn),
+        delay(250)
+      ).subscribe(
+        _ => {
+          if (this.saveFilterOn) {
+            this.newFilterName = 'New Filter Preset'
+            this.onSaveFilters();
+            this.store$.dispatch(new uiStore.SetSaveFilterOn(false));
+          }
+        }
+      )
+    );
+
   }
 
   ngOnDestroy() {
@@ -108,4 +126,7 @@ export class SaveUserFiltersComponent implements OnInit, OnDestroy {
     this.store$.dispatch(new userStore.LoadFiltersPreset(filterPreset.name));
   }
 
+  public onClose() {
+    this.store$.dispatch(new uiStore.CloseFiltersSidebar());
+  }
 }

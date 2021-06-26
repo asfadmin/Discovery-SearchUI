@@ -3,8 +3,8 @@
     [ngClass]="{'app-sidenav-mobile': breakpoint <= breakpoints.SMALL,
                 'app-sidenav': breakpoint > breakpoints.SMALL}"
     #sidenav (keydown.escape)="onCloseSidebar()" disableClose>
-    <app-saved-searches></app-saved-searches>
-    <app-save-user-filters></app-save-user-filters>
+    <app-saved-searches *ngIf="!isSaveFiltersPanelOpen"></app-saved-searches>
+    <app-save-user-filters *ngIf="isSaveFiltersPanelOpen"></app-save-user-filters>
   </mat-sidenav>
 
   <mat-sidenav-content>

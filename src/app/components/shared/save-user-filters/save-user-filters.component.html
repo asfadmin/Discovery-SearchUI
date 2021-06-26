@@ -6,8 +6,19 @@
 </mat-menu> -->
 
 <div [ngClass]="{'saved-searches-mobile': breakpoint <= breakpoints.SMALL,
-'saved-searches': breakpoint > breakpoints.SMALL}">
-  <div *ngFor="let filterPreset of displayedFilter" style="margin-top: 25px;">
+'saved-filters': breakpoint > breakpoints.SMALL}">
+<div class="saved-searches__header">
+  <div class="saved-searches__header-title">
+    <span>Saved Filters</span>
+  </div>
+</div>
+
+  <div class="content-wrapper">
+    <div *ngIf="searchType$ | async as searchType"
+    [ngClass]="{'saved-searches__content-mobile': breakpoint <= breakpoints.SMALL,
+                'saved-searches__content': breakpoint > breakpoints.SMALL}">
+  <div *ngIf="displayedFilter.length > 0">
+  <div *ngFor="let filterPreset of displayedFilter" class="saved-searches-row">
 
     <app-save-user-filter
     [filterPreset]="filterPreset"></app-save-user-filter>
@@ -29,17 +40,35 @@
     </mat-expansion-panel> -->
   </div>
 
-
-
+</div>
+</div>
+<!--
   <mat-form-field>
     <input matInput type="text" [(ngModel)]="newFilterName" (click)="$event.stopPropagation()">
   </mat-form-field>
 
   <button [disabled]="!isValidPresetName(newFilterName)" mat-button (click)="onSaveFilters()" >
     confirm
-  </button>
+  </button> -->
+  <ng-template #noSavedSFiltersBlock>
+    <div class="no-saved-searches">
+      <h2>You have no saved Filters.</h2>
+    </div>
+  </ng-template>
 </div>
 
+<div [ngClass]="{'saved-searches__footer-mobile': breakpoint <= breakpoints.SMALL,
+'saved-searches__footer': breakpoint > breakpoints.SMALL}">
+<div class="saved-searches__close-button">
+<button (click)="onClose()"
+mat-raised-button
+color="primary">
+Done
+</button>
+</div>
+</div>
+
+</div>
 
 
 <!--
