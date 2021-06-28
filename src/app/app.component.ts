@@ -28,8 +28,6 @@ import * as hyp3Store from '@store/hyp3';
 import * as services from '@services';
 import * as models from './models';
 
-import { CreateSubscriptionComponent } from './components/header/create-subscription';
-
 @Component({
   selector   : 'app-root',
   templateUrl: './app.component.html',
