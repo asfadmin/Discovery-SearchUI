@@ -102,7 +102,7 @@ export class SavedSearchService {
     return this.searchStateByType[searchType];
   }
 
-  public makeCurrentSearch(searchName: string): models.Search | null {
+  public makeCurrentSearch(searchName: string): models.Search {
     return {
       name: searchName,
       id: uuid(),

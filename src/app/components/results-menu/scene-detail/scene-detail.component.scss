@@ -38,6 +38,7 @@ a {
 
 .browse-img {
   cursor: zoom-in;
+  padding-bottom: 35px;
 }
 
 .banner {
@@ -124,4 +125,7 @@ a {
   button:enabled {
     cursor: pointer;
   }
+}
+.height-sticky {
+  height: calc(100% - 35px);
 }

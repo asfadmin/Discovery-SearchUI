@@ -1,6 +1,6 @@
 <div mat-dialog-title
   class="processing-queue"
-  (resized)="onResized($event)"
+  (resized)="onResized()"
   cdkDrag cdkDragHandle
   cdkDragRootElement=".cdk-overlay-pane"
   cdkDragBoundary=".cdk-global-overlay-wrapper">
@@ -21,7 +21,7 @@
         <div class="on-demand-text">
           On Demand
         </div>
-        <div class="subtitle">
+        <div class="on-demand-subtitle">
           powered by HyP3
         </div>
       </ng-container>
@@ -43,20 +43,21 @@
       !!jobTypesWithQueued && jobTypesWithQueued.length > 0">
 
       <button mat-flat-button
-      [color]="'primary'"
-      [matMenuTriggerFor]="TabMenu"
-      (onMenuOpen)='onOpenTabMenu()'
-      (onMenuClose)='onCloseTabMenu()'
-      style="padding-right: 5px;">
-        {{selectedJobTypeId}} ({{ jobTypesWithQueued[getTabIdIndex(selectedJobTypeId)].jobs.length }})
-        <mat-icon>
-          {{isTabMenuOpen ? 'arrow_drop_up' : 'arrow_drop_down'}}
-        </mat-icon>
+        [color]="'primary'"
+        [matMenuTriggerFor]="TabMenu"
+        (onMenuOpen)='onOpenTabMenu()'
+        (onMenuClose)='onCloseTabMenu()'
+        style="padding-right: 5px;">
+          {{selectedJobTypeId}} ({{ jobTypesWithQueued[getTabIdIndex(selectedJobTypeId)].jobs.length }})
+          <mat-icon>
+            {{isTabMenuOpen ? 'arrow_drop_up' : 'arrow_drop_down'}}
+          </mat-icon>
       </button>
+
       <mat-menu #TabMenu="matMenu" class="tab-menu">
         <ng-container *ngFor="let hyp3Job of jobTypesWithQueued">
           <button mat-button
-          style = "background-color: white;"
+          style="background-color: white;"
           (click)="onSetSelectedJobType(hyp3Job.jobType)"
           [color]="selectedJobTypeId === hyp3Job.jobType.id ? 'secondary' : 'primary'">
           <div>
@@ -84,9 +85,9 @@
 </div>
 
 <mat-dialog-content #contentArea
-  (resized)="onResized($event)"
+  (resized)="onResized()"
   class="mat-dialog-content"
-  [class.dialog-content-mobile]="breakpoint == breakpoints.MOBILE">
+  [class.dialog-content-mobile]="breakpoint === breakpoints.MOBILE">
 
   <div class="content-block">
     <div #errorHeader *ngIf="!isUserLoggedIn && !isUserLoading" class="w100 error-header">
@@ -175,13 +176,12 @@
 <mat-dialog-actions class="mat-dialog-actions">
   <mat-progress-bar
     *ngIf="isQueueSubmitProcessing"
-    [mode]="progress === null ? 'query' : 'determinate'" [value]="progress">
+    [mode]="progress === null ? 'query' : 'determinate'"
+    [value]="progress">
   </mat-progress-bar>
 
   <div class="w100 hyp3-footer">
-
     <div class="footer-clear">
-
       <button *ngIf="previousQueue === null"
           [matMenuTriggerFor]="clearJobQueue"
          mat-button>
@@ -211,7 +211,6 @@
         <mat-icon>undo</mat-icon>
         <span>Restore</span>
       </button>
-
     </div>
 
     <div class="footer-job-notification">

@@ -186,7 +186,7 @@ export class HeaderButtonsComponent implements OnInit, OnDestroy {
   }
 
   public onOpenUserGuide(): void {
-    const url = 'https://docs.asf.alaska.edu/';
+    const url = 'https://docs.asf.alaska.edu/vertex/manual/';
 
     window.dataLayer = window.dataLayer || [];
     window.dataLayer.push({

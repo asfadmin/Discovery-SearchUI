@@ -2,7 +2,7 @@
   class="detail-card scrollable"
   [class.scrollable]="isScrollable">
 
-  <div *ngIf="scene">
+  <div *ngIf="scene" class="height-sticky">
     <mat-card-header>
       <mat-card-title class="detail-card-header">
         <span>{{ scene.name }}</span>
@@ -104,31 +104,30 @@
         </div>
       </div>
     </mat-card-content>
-    <div class="tool-menu" [ngStyle]="{ 'bottom': breakpoint === breakpoints.SMALL ? '19px' : (breakpoint < breakpoints.SMALL ? '17px' : '0px')}">
-      <div>
-        Search:
-      </div>
-      <button [disabled]="!hasBaseline" (click)="makeBaselineSearch()"
-        class="mini-toggle-button" target="_blank" matTooltip="Use this scene in the Baseline Tool for interferometry">
-        Baseline
-      </button>
-    
-      <button [disabled]="!hasBaseline" (click)="makeSBASSearch()"
-        class="mini-toggle-button" target="_blank"
-        matTooltip="Use this scene in the SBAS Tool to make product pairs for interferometry">
-        SBAS
-      </button>
-      
-      <button
-        [disabled]="!(
-                       ((prop.isRelevant(p.PATH, dataset) && prop.isRelevant(p.FRAME, dataset) || (dataset.id === 'UAVSAR'))))"
-        (click)="findSimilarScenes()" class="mini-toggle-button" matTooltip="Geographic search based on this scene's path/frame">
-        More Like This
-      </button>
-    </div>
   </div>
 </div>
+ <div class="tool-menu" *ngIf="scene && breakpoint$ | async as breakpoint" [ngStyle]="{ 'bottom': breakpoint === breakpoints.SMALL ? '19px' : (breakpoint < breakpoints.SMALL ? '17px' : '0px')}">
+  <div>
+    Search:
+  </div>
+  <button [disabled]="!hasBaseline" (click)="makeBaselineSearch()"
+    class="mini-toggle-button" target="_blank" matTooltip="Use this scene in the Baseline Tool for interferometry">
+    Baseline
+  </button>
 
+  <button [disabled]="!hasBaseline" (click)="makeSBASSearch()"
+    class="mini-toggle-button" target="_blank"
+    matTooltip="Use this scene in the SBAS Tool to make product pairs for interferometry">
+    SBAS
+  </button>
+
+  <button
+    [disabled]="!(
+                   ((prop.isRelevant(p.PATH, dataset) && prop.isRelevant(p.FRAME, dataset) || (dataset.id === 'UAVSAR'))))"
+    (click)="findSimilarScenes()" class="mini-toggle-button" matTooltip="Geographic search based on this scene's path/frame">
+    More Like This
+  </button>
+</div>
 
 <div *ngIf="!scene">
   <div fxFlex fxLayoutAlign="center" gdAlignColumns="center">

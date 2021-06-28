@@ -315,6 +315,13 @@ export class AppComponent implements OnInit, OnDestroy {
       'hyp3',
       this.domSanitizer.bypassSecurityTrustResourceUrl('../assets/icons/hyp3.svg')
     );
+
+    //this.dialog.open(CreateSubscriptionComponent, {
+      //id: 'subscriptionQueueDialog',
+      //maxWidth: '100vw',
+      //maxHeight: '100vh'
+    //});
+
   }
 
   private isEmptySearch(searchState): boolean {

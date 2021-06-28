@@ -5,7 +5,7 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatInputModule } from '@angular/material/input';
 import { MatSharedModule } from '@shared';
 import { SaveUserFiltersComponent } from './save-user-filters.component';
-import { SavedSearchesModule } from '../saved-searches';
+import { SearchFiltersModule } from '../saved-searches/saved-search/search-filters';
 import { FormsModule } from '@angular/forms';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { SaveUserFilterComponent } from './save-user-filter/save-user-filter.component';
@@ -22,7 +22,7 @@ import { SaveUserFilterComponent } from './save-user-filter/save-user-filter.com
     FormsModule,
     MatMenuModule,
     MatExpansionModule,
-    SavedSearchesModule,
+    SearchFiltersModule,
   ],
   exports: [
     SaveUserFiltersComponent

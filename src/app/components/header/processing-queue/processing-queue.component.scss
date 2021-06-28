@@ -222,7 +222,7 @@ $color: $asf-primary-dark;
   cursor: pointer;
 }
 
-.subtitle {
+.on-demand-subtitle {
   margin-top: -42px;
   font-style: italic;
   margin-left: 75px;
@@ -300,14 +300,6 @@ $color: $asf-primary-dark;
 .bottom-item {
   height: 100%;
   width: 100%;
-}
-
-.mat-dialog-footer {
-  position: absolute;
-  bottom: 0;
-  margin: 0;
-  width: 100%;
-  height: $footer-height;
 }
 
 .mat-dialog-actions {

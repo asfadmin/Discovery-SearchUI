@@ -11,20 +11,13 @@ import { MatSharedModule } from '@shared';
 
 import { SavedSearchesComponent } from './saved-searches.component';
 import { SavedSearchComponent } from './saved-search/saved-search.component';
-import { GeographicSearchFiltersComponent } from './saved-search/geographic-search-filters/geographic-search-filters.component';
-import { ListSearchFiltersComponent } from './saved-search/list-search-filters/list-search-filters.component';
-import { BaselineSearchFiltersComponent } from './saved-search/baseline-search-filters/baseline-search-filters.component';
-import { SbasSearchFiltersComponent } from './saved-search/sbas-search-filters/sbas-search-filters.component';
+import { SearchFiltersModule } from './saved-search/search-filters';
 
 
 @NgModule({
   declarations: [
     SavedSearchesComponent,
     SavedSearchComponent,
-    GeographicSearchFiltersComponent,
-    ListSearchFiltersComponent,
-    BaselineSearchFiltersComponent,
-    SbasSearchFiltersComponent
   ],
   imports: [
     CommonModule,
@@ -35,12 +28,10 @@ import { SbasSearchFiltersComponent } from './saved-search/sbas-search-filters/s
     MatButtonToggleModule,
     MatSharedModule,
     PipesModule,
+    SearchFiltersModule,
   ],
   exports: [
     SavedSearchesComponent,
-    GeographicSearchFiltersComponent,
-    SbasSearchFiltersComponent,
-    BaselineSearchFiltersComponent
   ]
 })
 export class SavedSearchesModule { }
