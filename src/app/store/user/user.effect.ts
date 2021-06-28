@@ -14,7 +14,7 @@ import * as filterStore from '@store/filters';
 import * as searchStore from '@store/search';
 import { UserDataService } from '@services/user-data.service';
 import * as models from '@models';
-import { GeographicFiltersType, SearchType } from '@models';
+import { BaselineFiltersType, GeographicFiltersType, SbasFiltersType, SearchType } from '@models';
 
 @Injectable()
 export class UserEffects {
@@ -132,15 +132,34 @@ export class UserEffects {
   public loadSavedFilters = createEffect(() => this.actions$.pipe(
     ofType<userActions.LoadFiltersPreset>(userActions.UserActionType.LOAD_FILTERS_PRESET),
     withLatestFrom(this.store$.select(searchStore.getSearchType)),
-    filter(([_, searchtype]) => searchtype === SearchType.DATASET),
-    map(([action, _]) => action.payload),
+    filter(([_, searchtype]) => searchtype !== SearchType.LIST && searchtype !== SearchType.CUSTOM_PRODUCTS),
     withLatestFrom(this.store$.select(userReducer.getSavedFilters)),
-    map(([preset_name, userFilters]) => {
-      const targetFilter = userFilters.find(preset => preset.name === preset_name);
+    map(([[action, searchType], userFilters]) => {
+      const targetFilter = userFilters
+        .filter(preset => preset.searchType === searchType)
+        .find(preset => preset.name === action.payload);
 
-      this.store$.dispatch(new filterStore.ClearDatasetFilters)
+      let actions = [];
 
-      const actions = this.setDatasetFilters(targetFilter.filter as GeographicFiltersType);
+      switch (searchType) {
+        case SearchType.DATASET:
+          this.store$.dispatch(new filterStore.ClearDatasetFilters());
+          actions = this.setDatasetFilters(targetFilter.filter as GeographicFiltersType);
+          break;
+        case SearchType.BASELINE:
+          this.store$.dispatch(new filterStore.ClearPerpendicularRange());
+          this.store$.dispatch(new filterStore.ClearTemporalRange());
+          actions = this.setBaselineFilters(targetFilter.filter as BaselineFiltersType);
+          break;
+        case SearchType.SBAS:
+          this.store$.dispatch(new filterStore.ClearPerpendicularRange());
+          this.store$.dispatch(new filterStore.ClearTemporalRange());
+          actions = this.setSBASFilters(targetFilter.filter as SbasFiltersType);
+          break;
+        default:
+          break;
+      }
+
       actions.forEach(action => this.store$.dispatch(action));
     })
   ), {dispatch: false});
@@ -202,6 +221,7 @@ export class UserEffects {
 
   private setDatasetFilters(datasetFilter: GeographicFiltersType) {
     const actions = [
+      new filterStore.SetSelectedDataset(datasetFilter.selectedDataset),
       new filterStore.SetStartDate(datasetFilter.dateRange.start),
       new filterStore.SetEndDate(datasetFilter.dateRange.end),
       new filterStore.SetSeasonStart(datasetFilter.season.start),
@@ -215,8 +235,35 @@ export class UserEffects {
       new filterStore.SetBeamModes(datasetFilter.beamModes),
       new filterStore.SetPolarizations(datasetFilter.polarizations),
       new filterStore.SetSubtypes(datasetFilter.subtypes),
-      new filterStore.SetFlightDirections(datasetFilter.flightDirections)
+      new filterStore.SetFlightDirections(datasetFilter.flightDirections),
+      new filterStore.SelectMission(datasetFilter.selectedMission)
     ]
+
+    return actions;
+  }
+
+  private setBaselineFilters(baselineFilter: BaselineFiltersType) {
+    const actions = [
+      new filterStore.SetStartDate(baselineFilter.dateRange.start),
+      new filterStore.SetEndDate(baselineFilter.dateRange.end),
+      new filterStore.SetSeasonStart(baselineFilter.season.start),
+      new filterStore.SetSeasonEnd(baselineFilter.season.end),
+      new filterStore.SetTemporalRange(baselineFilter.temporalRange),
+      new filterStore.SetPerpendicularRange(baselineFilter.perpendicularRange)
+    ];
+
+    return actions;
+  }
+
+  private setSBASFilters(sbasFilter: SbasFiltersType) {
+    const actions = [
+      new filterStore.SetStartDate(sbasFilter.dateRange.start),
+      new filterStore.SetEndDate(sbasFilter.dateRange.end),
+      new filterStore.SetSeasonStart(sbasFilter.season.start),
+      new filterStore.SetSeasonEnd(sbasFilter.season.end),
+      new filterStore.SetTemporalEnd(sbasFilter.temporal),
+      new filterStore.SetPerpendicularEnd(sbasFilter.perpendicular)
+    ];
 
     return actions;
   }

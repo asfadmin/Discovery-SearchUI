@@ -11,4 +11,7 @@
   <div *ngIf="filters.perpendicular !== null">
     <b>Perpendicular: </b> {{ filters.perpendicular }}
   </div>
+  <div *ngIf="filters.season.start !== null || filters.season.end !== null">
+    <b>Season: </b> {{ filters.season.start }} to {{ filters.season.end }}
+  </div>
 </div>
