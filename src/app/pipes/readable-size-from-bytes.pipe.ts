@@ -15,8 +15,7 @@ export class ReadableSizeFromBytesPipe implements PipeTransform {
     if (bytes === 0) {
       return '0 Bytes';
     }
-
-    const k = 1024;
+    const k = 1000;
     const sizes = ['B', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'];
     const i = Math.floor(Math.log(bytes) / Math.log(k));
 
@@ -24,7 +23,6 @@ export class ReadableSizeFromBytesPipe implements PipeTransform {
       .toFixed(decimals));
 
     const unit = sizes[i];
-
     return `${numUnits} ${unit}`;
   }
 }
