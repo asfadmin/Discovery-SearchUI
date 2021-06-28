@@ -28,6 +28,8 @@ import * as hyp3Store from '@store/hyp3';
 import * as services from '@services';
 import * as models from './models';
 
+import { CreateSubscriptionComponent } from './components/header/create-subscription';
+
 @Component({
   selector   : 'app-root',
   templateUrl: './app.component.html',
@@ -300,6 +302,13 @@ export class AppComponent implements OnInit, OnDestroy {
       'hyp3',
       this.domSanitizer.bypassSecurityTrustResourceUrl('../assets/icons/hyp3.svg')
     );
+
+    //this.dialog.open(CreateSubscriptionComponent, {
+      //id: 'subscriptionQueueDialog',
+      //maxWidth: '100vw',
+      //maxHeight: '100vh'
+    //});
+
   }
 
   private isEmptySearch(searchState): boolean {

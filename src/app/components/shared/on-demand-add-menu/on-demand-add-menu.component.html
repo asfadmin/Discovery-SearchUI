@@ -21,28 +21,18 @@
         [matMenuTriggerData]="{ productsByJobType: productsByJobType, JobType: InSAR }"
         mat-menu-item>
         {{InSAR.name}}
-        <mat-icon (click)="onOpenHelp(InSAR.infoUrl)" class="clickable" style="margin-left: 10px;">help</mat-icon>
-      </button>
+          <mat-icon (click)="onOpenHelp(InSAR.infoUrl)" class="clickable" style="margin-left: 10px;">help</mat-icon>
+        </button>
 
-      <button
-      [disabled]="productsByJobType.total === 0"
-      [matMenuTriggerFor]="addBaselinePair"
-      [matMenuTriggerData]="{ productsByJobType: productsByJobType, JobType: AutoRift }"
-      mat-menu-item>
-      {{AutoRift.name}}
-      <mat-icon (click)="onOpenHelp(AutoRift.infoUrl)" class="clickable" style="margin-left: 10px;">help</mat-icon>
-    </button>
-      </div>
-      <!-- <button
-        *ngIf="productsByJobType.byProductType[0].products.length > 2"
+        <button
         [disabled]="productsByJobType.total === 0"
-        [matMenuTriggerFor]="addByClosestPair"
-        [matMenuTriggerData]="{ productsByJobType: productsByJobType }"
+        [matMenuTriggerFor]="addBaselinePair"
+        [matMenuTriggerData]="{ productsByJobType: productsByJobType, JobType: AutoRift }"
         mat-menu-item>
-        Add Closest Pair
-        <mat-icon (click)="onOpenHelp(productsByJobType.jobType.infoUrl)" class="clickable" style="margin-left: 10px;">help</mat-icon>
-      </button> -->
-
+          {{AutoRift.name}}
+          <mat-icon (click)="onOpenHelp(AutoRift.infoUrl)" class="clickable" style="margin-left: 10px;">help</mat-icon>
+        </button>
+        </div>
     </div>
   </ng-template>
 </mat-menu>
@@ -57,17 +47,12 @@
 
         Add {{ prodType.products.length }} {{ prodType.productType }}
         {{ byJobType.jobType.numProducts === 2 ? 'pair' : 'job' }}{{ prodType.products.length > 1 ? 's' : '' }}
-
       </button>
     </div>
+
+    <button (click)="onOpenCreateSubscription()" mat-menu-item>Create Subscription</button>
   </ng-template>
 </mat-menu>
-
-<!-- <mat-menu #addByClosestPair>
-  <ng-template matMenuContent let-byJobType="productsByJobType">
-    <app-closest-pair></app-closest-pair>
-  </ng-template>
-</mat-menu> -->
 
 <mat-menu #addBaselinePair>
   <ng-template matMenuContent let-byJobType="productsByJobType" let-jobType="JobType">

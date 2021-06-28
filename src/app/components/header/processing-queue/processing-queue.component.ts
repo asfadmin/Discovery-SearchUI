@@ -15,7 +15,6 @@ import * as searchStore from '@store/search';
 import * as userStore from '@store/user';
 import * as models from '@models';
 import * as services from '@services';
-import { ResizedEvent } from 'angular-resize-event';
 
 enum ProcessingQueueTab {
   SCENES = 'Scenes',
@@ -57,11 +56,6 @@ export class ProcessingQueueComponent implements OnInit {
   public hyp3JobTypesList: models.Hyp3JobType[];
   public selectedJobTypeId: string | null = null;
   public jobTypesWithQueued = [];
-
-  public style: object = {};
-  public dlWidth = 1000;
-  public dlHeight = 1000;
-  public dlWidthMin = 715;
 
   public contentAreaHeight = 0;
   public contentTopAreaHeight = 0;
@@ -318,7 +312,6 @@ export class ProcessingQueueComponent implements OnInit {
   }
 
   public onClearSingleJobQueue(jobType: models.Hyp3JobType): void {
-
     if (jobType.id === this.selectedJobTypeId) {
 
       let TabIdx = this.jobTypesWithQueued.findIndex((queuedJobType) => queuedJobType.jobType === jobType);
@@ -364,9 +357,7 @@ export class ProcessingQueueComponent implements OnInit {
     this.selectedTab = ProcessingQueueTab.OPTIONS;
   }
 
-  public onResized(event: ResizedEvent) {
-    this.dlWidth = event.newWidth;
-    this.dlHeight = event.newHeight;
+  public onResized() {
     this.updateContentBottomHeight();
   }
 
