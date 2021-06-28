@@ -5,7 +5,7 @@
 </span>
 <span matLine>
   <span class="dataset__date" [class.subName__adj]="dataset.subName">{{ prettyDateRange(dataset.date) }}</span>
-  <mat-icon (click)="onOpenHelp()" class="clickable" style="margin-left: 10px;">help</mat-icon>
+  <mat-icon (click)="onOpenHelp()" class="clickable" style="margin-left: 10px;">info</mat-icon>
 </span>
 <div *ngIf="dataset.subName" class="dataset__subName faint-text">{{ dataset.subName }}</div>
 

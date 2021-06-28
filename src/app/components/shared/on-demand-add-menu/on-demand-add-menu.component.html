@@ -10,7 +10,7 @@
 
         <mat-icon (click)="onOpenHelp(productsByJobType.jobType.infoUrl)"
           class="clickable" style="margin-left: 10px;">
-            help
+            icon
         </mat-icon>
       </button>
 
@@ -21,7 +21,7 @@
         [matMenuTriggerData]="{ productsByJobType: productsByJobType, JobType: InSAR }"
         mat-menu-item>
         {{InSAR.name}}
-          <mat-icon (click)="onOpenHelp(InSAR.infoUrl)" class="clickable" style="margin-left: 10px;">help</mat-icon>
+          <mat-icon (click)="onOpenHelp(InSAR.infoUrl)" class="clickable" style="margin-left: 10px;">info</mat-icon>
         </button>
 
         <button
@@ -30,7 +30,7 @@
         [matMenuTriggerData]="{ productsByJobType: productsByJobType, JobType: AutoRift }"
         mat-menu-item>
           {{AutoRift.name}}
-          <mat-icon (click)="onOpenHelp(AutoRift.infoUrl)" class="clickable" style="margin-left: 10px;">help</mat-icon>
+          <mat-icon (click)="onOpenHelp(AutoRift.infoUrl)" class="clickable" style="margin-left: 10px;">info</mat-icon>
         </button>
         </div>
     </div>
