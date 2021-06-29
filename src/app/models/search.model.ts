@@ -25,7 +25,7 @@ export interface ListFiltersType {
 
 export interface BaselineFiltersType {
   filterMaster: string | null;
-  master: string | null;
+  reference: string | null;
 
   dateRange: Range<null | Date>;
 
@@ -34,7 +34,7 @@ export interface BaselineFiltersType {
 }
 
 export interface SbasFiltersType {
-  master: string | null;
+  reference: string | null;
 
   dateRange: Range<null | Date>;
   temporal: number;
