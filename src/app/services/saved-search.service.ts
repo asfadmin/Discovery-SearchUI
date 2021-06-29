@@ -40,9 +40,9 @@ export class SavedSearchService {
     this.store$.select(scenesStore.getMasterName),
     this.store$.select(filtersStore.getBaselineSearch),
   ).pipe(
-    map(([filterMaster, master, baselineFilters]) => ({
+    map(([filterMaster, reference, baselineFilters]) => ({
       filterMaster,
-      master,
+      reference,
       ...baselineFilters
     }))
   );
@@ -53,8 +53,8 @@ export class SavedSearchService {
     this.store$.select(filtersStore.getSbasSearch),
     this.store$.select(filtersStore.getDateRange)
   ).pipe(
-    map(([master, customPairIds, sbasFilters, dateRange]) => ({
-      master,
+    map(([reference, customPairIds, sbasFilters, dateRange]) => ({
+      reference,
       dateRange,
       customPairIds,
       ...sbasFilters
