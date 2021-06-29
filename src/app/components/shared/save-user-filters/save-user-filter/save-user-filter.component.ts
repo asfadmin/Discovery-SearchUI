@@ -13,7 +13,7 @@ import { timer } from 'rxjs';
 export class SaveUserFilterComponent implements OnInit {
   @ViewChild('nameEditInput') nameEditInput: ElementRef;
 
-  @Input() filterPreset: {name: string, id: string, searchType: SearchType, filter: FilterType};
+  @Input() filterPreset: {name: string, id: string, searchType: SearchType, filters: FilterType};
   public SearchType = models.SearchType;
   public expanded = false;
   public isEditingName = false;
@@ -28,12 +28,13 @@ export class SaveUserFilterComponent implements OnInit {
     this.expanded = !this.expanded;
   }
 
-  public loadPreset(filterPreset: {name: string, id: string, searchType: SearchType, filter: FilterType}) {
+  public loadPreset(filterPreset: {name: string, id: string, searchType: SearchType, filters: FilterType}) {
     this.store$.dispatch(new userStore.LoadFiltersPreset(filterPreset.id));
   }
 
   public onDeletePreset() {
     this.store$.dispatch(new userStore.DeleteFiltersPreset(this.filterPreset.id));
+    this.store$.dispatch(new userStore.SaveFilters());
   }
 
   public onNewName(newName: string) {
@@ -42,6 +43,7 @@ export class SaveUserFilterComponent implements OnInit {
 
     // const payload = {newName, oldName: this.filterPreset.name } as {newName: string, oldName: string}
     this.store$.dispatch(new userStore.UpdateFilterPresetName({newName, presetID: this.filterPreset.id }));
+    this.store$.dispatch(new userStore.SaveFilters());
     // this.updateName.emit({ name: newName});
   }
 

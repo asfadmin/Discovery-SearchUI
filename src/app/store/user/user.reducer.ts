@@ -12,7 +12,7 @@ export interface UserState {
     searches: models.Search[];
     searchHistory: models.Search[];
   };
-  savedFilterPresets: {name: string, id: string, searchType: SearchType, filter: models.FilterType}[];
+  savedFilterPresets: {name: string, id: string, searchType: SearchType, filters: models.FilterType}[];
 }
 
 const initState: UserState = {
@@ -164,6 +164,13 @@ export function userReducer(state = initState, action: UserActions): UserState {
       return {
         ...state,
         savedFilterPresets: newFilterPresets
+      };
+    }
+
+    case UserActionType.SET_FILTERS: {
+      return {
+        ...state,
+        savedFilterPresets: action.payload
       };
     }
 

@@ -28,9 +28,9 @@ export class SaveUserFiltersComponent implements OnInit, OnDestroy {
   public saveFilterOn: boolean;
 
 
-  private currentFilters: {name: string, id: string, searchType: SearchType, filter: FilterType}[] = [];
+  private currentFilters: {name: string, id: string, searchType: SearchType, filters: FilterType}[] = [];
 
-  public userFilters: {name: string, id: string, searchType: SearchType, filter: FilterType}[] = [];
+  public userFilters: {name: string, id: string, searchType: SearchType, filters: FilterType}[] = [];
 
   private currentFiltersBySearchType = {};
 
@@ -105,15 +105,16 @@ export class SaveUserFiltersComponent implements OnInit, OnDestroy {
   }
 
   public onSaveFilters() {
-    this.store$.dispatch(new userStore.AddNewFiltersPreset({name: this.newFilterName, id: uuid() as string, filter: this.currentFiltersBySearchType[this.currentSearchType], searchType: this.currentSearchType}));
+    this.store$.dispatch(new userStore.AddNewFiltersPreset({name: this.newFilterName, id: uuid() as string, filters: this.currentFiltersBySearchType[this.currentSearchType], searchType: this.currentSearchType}));
     this.newFilterName = '';
+    this.store$.dispatch(new userStore.SaveFilters());
   }
 
   public isValidPresetName(name: string) {
     return name !== '' && !this.currentFilters.map(preset => preset.name).includes(name);
   }
 
-  public filterBySearchType(filters: {name: string, searchType: SearchType, filter: FilterType}[]) {
+  public filterBySearchType(filters: {name: string, searchType: SearchType, filters: FilterType}[]) {
     let output = filters.filter(preset => preset.searchType === this.currentSearchType);
     return output;
   }
@@ -123,7 +124,7 @@ export class SaveUserFiltersComponent implements OnInit, OnDestroy {
     // return params;
   }
 
-  public loadPreset(filterPreset: {name: string, id: string, searchType: SearchType, filter: FilterType}) {
+  public loadPreset(filterPreset: {name: string, id: string, searchType: SearchType, filters: FilterType}) {
     this.store$.dispatch(new userStore.LoadFiltersPreset(filterPreset.id));
   }
 

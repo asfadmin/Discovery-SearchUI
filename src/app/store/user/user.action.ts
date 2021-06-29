@@ -19,6 +19,10 @@ export enum UserActionType {
   SAVE_SEARCH_HISTORY = '[User] Save Search History',
   LOAD_SEARCH_HISTORY = '[User] Load Search History',
 
+  LOAD_SAVED_FILTERS = '[User] Load Saved Filters',
+  SAVE_FILTERS = '[User] Save Filter Presets',
+  SET_FILTERS = '[User] Set Filter Presets',
+
   ADD_NEW_SEARCH = '[User] Add new search',
   UPDATE_SEARCH_WITH_FILTERS = '[User] Update search with current filters',
   UPDATE_SEARCH_NAME = '[User] Edit Search Name',
@@ -89,6 +93,23 @@ export class SetSearches implements Action {
   constructor(public payload: Search[]) {}
 }
 
+export class LoadSavedFilters implements Action {
+  public readonly type = UserActionType.LOAD_SAVED_FILTERS;
+
+  constructor(public payload: {name: string, id: string, searchType: SearchType, filters: FilterType}[]) {}
+}
+
+export class SaveFilters implements Action {
+  public readonly type = UserActionType.SAVE_FILTERS;
+}
+
+
+export class SetFilters implements Action {
+  public readonly type = UserActionType.SET_FILTERS;
+
+  constructor(public payload: {name: string, id: string, searchType: SearchType, filters: FilterType}[]) {}
+}
+
 export class AddNewSearch implements Action {
   public readonly type = UserActionType.ADD_NEW_SEARCH;
 
@@ -122,7 +143,7 @@ export class DeleteSavedSearch implements Action {
 export class AddNewFiltersPreset implements Action {
   public readonly type = UserActionType.ADD_NEW_FILTERS_PRESET;
 
-  constructor(public payload: {name: string, id: string, searchType: SearchType, filter: FilterType}) {}
+  constructor(public payload: {name: string, id: string, searchType: SearchType, filters: FilterType}) {}
 }
 
 export class DeleteFiltersPreset implements Action {
@@ -158,9 +179,12 @@ export type UserActions =
   | LoadSearchHistory
   | SetSearchHistory
   | AddSearchToHistory
+  | LoadSavedFilters
+  | SaveFilters
   | AddNewFiltersPreset
   | DeleteFiltersPreset
   | LoadFiltersPreset
+  | SetFilters
   | UpdateFilterPresetName
   | Logout
   | Login;

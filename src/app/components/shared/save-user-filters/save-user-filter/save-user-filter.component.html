@@ -36,7 +36,7 @@
     </div>
     <div>
       <button mat-button (click)="loadPreset(filterPreset)">
-        Apply Filter
+        Apply Filters
       </button>
       <button
       (click)="onDeletePreset()"
@@ -52,22 +52,22 @@
   <div>
     <app-list-search-filters
       *ngIf="filterPreset.searchType === SearchType.LIST"
-      [filters]="filterPreset.filter">
+      [filters]="filterPreset.filters">
     </app-list-search-filters>
 
     <app-geographic-search-filters
       *ngIf="filterPreset.searchType === SearchType.DATASET"
-      [filters]="filterPreset.filter">
+      [filters]="filterPreset.filters">
     </app-geographic-search-filters>
 
     <app-baseline-search-filters
       *ngIf="filterPreset.searchType === SearchType.BASELINE"
-      [filters]="filterPreset.filter">
+      [filters]="filterPreset.filters">
     </app-baseline-search-filters>
 
     <app-sbas-search-filters
       *ngIf="filterPreset.searchType === SearchType.SBAS"
-      [filters]="filterPreset.filter">
+      [filters]="filterPreset.filters">
     </app-sbas-search-filters>
   </div>
 
