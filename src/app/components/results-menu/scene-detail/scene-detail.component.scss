@@ -1,4 +1,5 @@
 @use '~@angular/material' as mat;
+
 @import "asf-theme";
 
 $config: mat.define-typography-config();
@@ -48,6 +49,7 @@ a {
   margin-left: -16px;
   box-shadow: #00000038 0 7px 18px;
   color: #606368;
+
   mat-icon {
     color: #606368;
     margin-left: 5px;
@@ -55,18 +57,19 @@ a {
     font-size: 24px;
   }
 }
+
 .browse-pager {
   display: inherit;
   margin-right: 5%;
   align-items: center;
 }
+
 .menu-items {
   display: inherit;
   margin-right: auto;
   margin-left: 5%;
   align-items: center;
 }
-
 
 .content {
   margin: 0 16px 16px 16px;
@@ -112,20 +115,23 @@ a {
 
 .tool-menu {
   position: sticky;
-  bottom: 0px;
+  bottom: 0;
   background: darken($asf-primary-light, 5%);
   display: flex;
   justify-content: space-around;
   align-items: center;
   height: 35px;
+
   button {
     background: none;
     border: none;
   }
+
   button:enabled {
     cursor: pointer;
   }
 }
+
 .height-sticky {
   height: calc(100% - 35px);
 }
