@@ -41,13 +41,12 @@ export class SaveUserFiltersComponent implements OnInit, OnDestroy {
 
   private subs = new SubSink();
 
-  constructor(private store$: Store<AppState>){}
+  constructor(private store$: Store<AppState>) {}
 
   ngOnInit(): void {
 
     this.subs.add(
-      this.store$.select(userStore.getSavedFilters).subscribe ( userFilters =>
-        {
+      this.store$.select(userStore.getSavedFilters).subscribe ( userFilters => {
           this.userFilters = userFilters;
           const output = this.filterBySearchType(this.userFilters);
           this.displayedFilter = output;
@@ -60,8 +59,7 @@ export class SaveUserFiltersComponent implements OnInit, OnDestroy {
     // this.store$.select(filterStore.get)
 
     this.subs.add(
-      this.store$.select(searchStore.getSearchType).subscribe(searchtype =>
-        {
+      this.store$.select(searchStore.getSearchType).subscribe(searchtype => {
           this.currentSearchType = searchtype;
           const output = this.filterBySearchType(this.userFilters);
           this.displayedFilter = output;
@@ -90,7 +88,7 @@ export class SaveUserFiltersComponent implements OnInit, OnDestroy {
       ).subscribe(
         _ => {
           if (this.saveFilterOn) {
-            this.newFilterName = 'New Filter Preset'
+            this.newFilterName = 'New Filter Preset';
             this.onSaveFilters();
             this.store$.dispatch(new uiStore.SetSaveFilterOn(false));
           }
@@ -115,7 +113,7 @@ export class SaveUserFiltersComponent implements OnInit, OnDestroy {
   }
 
   public filterBySearchType(filters: {name: string, searchType: SearchType, filters: FilterType}[]) {
-    let output = filters.filter(preset => preset.searchType === this.currentSearchType);
+    const output = filters.filter(preset => preset.searchType === this.currentSearchType);
     return output;
   }
 
