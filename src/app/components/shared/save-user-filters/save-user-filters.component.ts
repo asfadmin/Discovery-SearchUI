@@ -10,6 +10,7 @@ import * as models from '@models';
 import { SubSink } from 'subsink';
 import { combineLatest } from 'rxjs';
 import { delay, tap } from 'rxjs/operators';
+import * as uuid from 'uuid/v1';
 @Component({
   selector: 'app-save-user-filters',
   templateUrl: './save-user-filters.component.html',
@@ -27,9 +28,9 @@ export class SaveUserFiltersComponent implements OnInit, OnDestroy {
   public saveFilterOn: boolean;
 
 
-  private currentFilters: {name: string, searchType: SearchType, filter: FilterType}[] = [];
+  private currentFilters: {name: string, id: string, searchType: SearchType, filter: FilterType}[] = [];
 
-  public userFilters: {name: string, searchType: SearchType, filter: FilterType}[] = [];
+  public userFilters: {name: string, id: string, searchType: SearchType, filter: FilterType}[] = [];
 
   private currentFiltersBySearchType = {};
 
@@ -104,7 +105,7 @@ export class SaveUserFiltersComponent implements OnInit, OnDestroy {
   }
 
   public onSaveFilters() {
-    this.store$.dispatch(new userStore.AddNewFiltersPreset({name: this.newFilterName, filter: this.currentFiltersBySearchType[this.currentSearchType], searchType: this.currentSearchType}));
+    this.store$.dispatch(new userStore.AddNewFiltersPreset({name: this.newFilterName, id: uuid() as string, filter: this.currentFiltersBySearchType[this.currentSearchType], searchType: this.currentSearchType}));
     this.newFilterName = '';
   }
 

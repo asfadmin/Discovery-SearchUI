@@ -13,7 +13,7 @@ import { timer } from 'rxjs';
 export class SaveUserFilterComponent implements OnInit {
   @ViewChild('nameEditInput') nameEditInput: ElementRef;
 
-  @Input() filterPreset: {name: string, searchType: SearchType, filter: FilterType};
+  @Input() filterPreset: {name: string, id: string, searchType: SearchType, filter: FilterType};
   public SearchType = models.SearchType;
   public expanded = false;
   public isEditingName = false;
@@ -28,12 +28,12 @@ export class SaveUserFilterComponent implements OnInit {
     this.expanded = !this.expanded;
   }
 
-  public loadPreset(filterPreset: {name: string, searchType: SearchType, filter: FilterType}) {
-    this.store$.dispatch(new userStore.LoadFiltersPreset(filterPreset.name));
+  public loadPreset(filterPreset: {name: string, id: string, searchType: SearchType, filter: FilterType}) {
+    this.store$.dispatch(new userStore.LoadFiltersPreset(filterPreset.id));
   }
 
   public onDeletePreset() {
-    this.store$.dispatch(new userStore.DeleteFiltersPreset(this.filterPreset.name));
+    this.store$.dispatch(new userStore.DeleteFiltersPreset(this.filterPreset.id));
   }
 
   public onNewName(newName: string) {
@@ -41,7 +41,7 @@ export class SaveUserFilterComponent implements OnInit {
     this.editName = '';
 
     // const payload = {newName, oldName: this.filterPreset.name } as {newName: string, oldName: string}
-    this.store$.dispatch(new userStore.UpdateFilterPresetName({newName, oldName: this.filterPreset.name }));
+    this.store$.dispatch(new userStore.UpdateFilterPresetName({newName, presetID: this.filterPreset.id }));
     // this.updateName.emit({ name: newName});
   }
 

@@ -122,7 +122,7 @@ export class DeleteSavedSearch implements Action {
 export class AddNewFiltersPreset implements Action {
   public readonly type = UserActionType.ADD_NEW_FILTERS_PRESET;
 
-  constructor(public payload: {name: string, searchType: SearchType, filter: FilterType}) {}
+  constructor(public payload: {name: string, id: string, searchType: SearchType, filter: FilterType}) {}
 }
 
 export class DeleteFiltersPreset implements Action {
@@ -140,7 +140,7 @@ export class LoadFiltersPreset implements Action {
 export class UpdateFilterPresetName implements Action {
   public readonly type = UserActionType.UPDATE_FILTERS_PRESET_NAME;
 
-  constructor(public payload: {oldName: string, newName: string}) {}
+  constructor(public payload: {presetID: string, newName: string}) {}
 }
 
 export type UserActions =
