@@ -137,7 +137,7 @@ export class UserEffects {
     map(([[action, searchType], userFilters]) => {
       const targetFilter = userFilters
         .filter(preset => preset.searchType === searchType)
-        .find(preset => preset.name === action.payload);
+        .find(preset => preset.id === action.payload);
 
       let actions = [];
 

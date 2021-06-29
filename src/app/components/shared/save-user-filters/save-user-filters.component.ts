@@ -123,8 +123,8 @@ export class SaveUserFiltersComponent implements OnInit, OnDestroy {
     // return params;
   }
 
-  public loadPreset(filterPreset: {name: string, searchType: SearchType, filter: FilterType}) {
-    this.store$.dispatch(new userStore.LoadFiltersPreset(filterPreset.name));
+  public loadPreset(filterPreset: {name: string, id: string, searchType: SearchType, filter: FilterType}) {
+    this.store$.dispatch(new userStore.LoadFiltersPreset(filterPreset.id));
   }
 
   public onClose() {
