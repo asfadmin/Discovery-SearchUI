@@ -1,5 +1,5 @@
 <div>
-  <div>
+  <div *ngIf="!!filters.reference">
     <b>Reference: </b> {{ filters.reference }}
   </div>
   <div *ngIf="!!filters.customPairIds && filters.customPairIds.length !== 0">
