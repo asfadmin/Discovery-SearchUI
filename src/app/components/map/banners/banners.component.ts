@@ -8,14 +8,11 @@ export interface DialogData {
   title: string;
 }
 
-
 // tslint:disable-next-line:directive-selector
 @Directive({selector: '[bannerCreate]'})
 export class BannerCreateDirective implements OnInit {
   @Input() bannerCreate: Banner;
-  constructor( private toastr: ToastrService,
-               public bannerDialog: MatDialog,
-               ) {}
+  private closedBannersKey = 'closed-banners-key';
 
   public toastRef;
   public maxMsgLength = 150;
@@ -28,11 +25,26 @@ export class BannerCreateDirective implements OnInit {
     tapToDismiss: false,
   };
 
+  constructor(
+    private toastr: ToastrService,
+    public dialog: MatDialog,
+  ) {}
+
   ngOnInit(): void {
+    const id: string = this.bannerCreate.id;
+    const closedBanners = this.loadClosedBannerIds();
+
+    if (!closedBanners[id]) {
+      this.createToast();
+    }
+  }
+
+  private createToast(): void {
     const title: string = this.bannerCreate.name;
     const type: string = this.bannerCreate.type;
-    let msg: string = this.bannerCreate.text.substring(0, this.maxMsgLength);
     let toast: ActiveToast<any>;
+
+    let msg: string = this.bannerCreate.text.substring(0, this.maxMsgLength);
     let oneLiner = false;
 
     const lines = this.bannerCreate.text.split('<br>');
@@ -70,9 +82,17 @@ export class BannerCreateDirective implements OnInit {
       }
     }
 
+    toast.onHidden.subscribe(_ => {
+      const closedBanners = this.loadClosedBannerIds();
+
+      closedBanners[this.bannerCreate.id] = true;
+
+      this.saveClosedBannerIds(closedBanners);
+    });
+
     toast.onTap.subscribe(_x => {
       if (this.msgOverflow || oneLiner) {
-        const dialogRef = this.bannerDialog.open(BannerDialogComponent, {
+        const dialogRef = this.dialog.open(BannerDialogComponent, {
           data: {title: title},
           panelClass: 'banner-dialog',
           maxWidth: '80vw',
@@ -80,6 +100,20 @@ export class BannerCreateDirective implements OnInit {
         dialogRef.componentInstance.htmlContent = this.bannerCreate.text;
       }
     });
+  }
+
+  private loadClosedBannerIds(): {[id: string]: boolean} {
+    const closedBannersStr = localStorage.getItem(this.closedBannersKey);
+
+    if (closedBannersStr) {
+      return JSON.parse(closedBannersStr);
+    } else {
+      return {};
+    }
+  }
+
+  private saveClosedBannerIds(closed: {[id: string]: boolean}): void {
+    localStorage.setItem(this.closedBannersKey, JSON.stringify(closed));
   }
 }
 

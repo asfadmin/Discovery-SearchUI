@@ -4,6 +4,7 @@ export interface BannerApiResponse {
 }
 
 export interface Banner {
+  id: string;
   text: string;
   name: string;
   type: string;

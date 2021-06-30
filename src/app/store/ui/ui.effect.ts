@@ -26,6 +26,7 @@ export class UIEffects {
     switchMap(() => this.bannerApi.load().pipe(
       catchError(() => of({
         banners: [{
+          id: 'Error',
           text: 'Error loading notifications' ,
           name: 'Error',
           type: 'error'
