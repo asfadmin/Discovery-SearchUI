@@ -11,6 +11,7 @@ import { SubSink } from 'subsink';
 import { combineLatest } from 'rxjs';
 import { delay, tap } from 'rxjs/operators';
 import * as uuid from 'uuid/v1';
+import { ScreenSizeService } from '@services';
 @Component({
   selector: 'app-save-user-filters',
   templateUrl: './save-user-filters.component.html',
@@ -27,9 +28,6 @@ export class SaveUserFiltersComponent implements OnInit, OnDestroy {
 
   public saveFilterOn: boolean;
 
-
-  private currentFilters: {name: string, id: string, searchType: SearchType, filters: FilterType}[] = [];
-
   public userFilters: {name: string, id: string, searchType: SearchType, filters: FilterType}[] = [];
 
   private currentFiltersBySearchType = {};
@@ -41,9 +39,16 @@ export class SaveUserFiltersComponent implements OnInit, OnDestroy {
 
   private subs = new SubSink();
 
-  constructor(private store$: Store<AppState>){}
+  constructor(private store$: Store<AppState>,
+    private screenSize: ScreenSizeService){}
 
   ngOnInit(): void {
+
+    this.subs.add(
+      this.screenSize.breakpoint$.subscribe(
+        breakpoint => this.breakpoint = breakpoint
+      )
+    );
 
     this.subs.add(
       this.store$.select(userStore.getSavedFilters).subscribe ( userFilters =>
@@ -55,26 +60,20 @@ export class SaveUserFiltersComponent implements OnInit, OnDestroy {
     );
 
     this.subs.add(
-      this.store$.select(userStore.getSavedFilters).subscribe(currentFilters => this.currentFilters = currentFilters)
-    );
-    // this.store$.select(filterStore.get)
-
-    this.subs.add(
       this.store$.select(searchStore.getSearchType).subscribe(searchtype =>
         {
           this.currentSearchType = searchtype;
           const output = this.filterBySearchType(this.userFilters);
           this.displayedFilter = output;
-          // this.displayedFilter = this.filterBySearchType(this.userFilters);
         }
           )
     );
 
     this.subs.add(
-      combineLatest(this.store$.select(filterStore.getGeographicSearch),
+      combineLatest([this.store$.select(filterStore.getGeographicSearch),
         this.store$.select(filterStore.getListSearch),
         this.store$.select(filterStore.getBaselineSearch),
-        this.store$.select(filterStore.getSbasSearch))
+        this.store$.select(filterStore.getSbasSearch)])
         .subscribe(([geo, list, baseline, sbas]) => {
           this.currentFiltersBySearchType[SearchType.DATASET] = geo;
           this.currentFiltersBySearchType[SearchType.LIST] = list;
@@ -110,22 +109,9 @@ export class SaveUserFiltersComponent implements OnInit, OnDestroy {
     this.store$.dispatch(new userStore.SaveFilters());
   }
 
-  public isValidPresetName(name: string) {
-    return name !== '' && !this.currentFilters.map(preset => preset.name).includes(name);
-  }
-
   public filterBySearchType(filters: {name: string, searchType: SearchType, filters: FilterType}[]) {
     let output = filters.filter(preset => preset.searchType === this.currentSearchType);
     return output;
-  }
-
-  public getFilterParams(savedFilter: FilterType) {
-    return Object.entries(savedFilter).map(vals => ({key: vals[0], value: vals[1]})).filter(vals => !!vals.value && vals.value != '');
-    // return params;
-  }
-
-  public loadPreset(filterPreset: {name: string, id: string, searchType: SearchType, filters: FilterType}) {
-    this.store$.dispatch(new userStore.LoadFiltersPreset(filterPreset.id));
   }
 
   public onClose() {

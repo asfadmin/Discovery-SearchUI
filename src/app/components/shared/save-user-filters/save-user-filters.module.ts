@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatInputModule } from '@angular/material/input';
+import { MatDialogModule } from '@angular/material/dialog';
 import { MatSharedModule } from '@shared';
 import { SaveUserFiltersComponent } from './save-user-filters.component';
 import { SearchFiltersModule } from '../saved-searches/saved-search/search-filters';
@@ -21,6 +22,7 @@ import { SaveUserFilterComponent } from './save-user-filter/save-user-filter.com
     MatInputModule,
     FormsModule,
     MatMenuModule,
+    MatDialogModule,
     MatExpansionModule,
     SearchFiltersModule,
   ],

@@ -12,7 +12,7 @@
 
     <span *ngIf="!isEditingName"
         (click)="onEditName()"
-        class="search-name clickable">
+        class="filter-name clickable">
       {{ filterPreset.name }} <mat-icon class="edit-icon">edit</mat-icon>
     </span>
 
@@ -50,10 +50,6 @@
 
 <div *ngIf="expanded" class="detailed-view">
   <div>
-    <app-list-search-filters
-      *ngIf="filterPreset.searchType === SearchType.LIST"
-      [filters]="filterPreset.filters">
-    </app-list-search-filters>
 
     <app-geographic-search-filters
       *ngIf="filterPreset.searchType === SearchType.DATASET"
@@ -71,14 +67,4 @@
     </app-sbas-search-filters>
   </div>
 
-  <!-- <div
-    *ngIf="isSavedSearch"
-    [matTooltip]="search.searchType === searchType ? 'Update Saved Search With Current Filters' : 'Current Search Wrong Type'">
-    <button
-      (click)="onUpdateFilters(search.id)"
-      class="search-action" color="secondary"
-      mat-flat-button [disabled]="search.searchType !== searchType">
-      Update
-    </button>
-  </div> -->
 </div>
