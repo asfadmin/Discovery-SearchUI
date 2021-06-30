@@ -3,7 +3,6 @@ import { Action } from '@ngrx/store';
 import { CMRProduct, AsfApiOutputFormat, QueuedHyp3Job } from '@models';
 
 export enum QueueActionType {
-  ADD_ITEM = '[Queue] Add Item',
   ADD_ITEMS = '[Queue] Add Items',
   REMOVE_ITEM = '[Queue] Remove Item',
   REMOVE_ITEMS = '[Queue] Removes Item',
@@ -26,12 +25,6 @@ export enum QueueActionType {
   DOWNLOAD_SEARCHTYPE_METADATA = '[Queue] Download Search Result Metadata',
 
   FIND_PAIR = '[Scenes] finds the closest pair to a given scene'
-}
-
-export class AddItem implements Action {
-  public readonly type = QueueActionType.ADD_ITEM;
-
-  constructor(public payload: CMRProduct) {}
 }
 
 export class AddItems implements Action {
@@ -134,7 +127,6 @@ export class RemoveSceneFromQueue implements Action {
 }
 
 export type QueueActions =
-  | AddItem
   | AddItems
   | QueueScene
   | RemoveSceneFromQueue

@@ -94,12 +94,6 @@ export const initState: FiltersState = {
 
 export function filtersReducer(state = initState, action: FiltersActions): FiltersState {
   switch (action.type) {
-    case FiltersActionType.SET_STATE: {
-      return {
-        ...state,
-        ...action.payload
-      };
-    }
 
     case FiltersActionType.SET_SELECTED_DATASET: {
       if (!action.payload) {
@@ -417,13 +411,6 @@ export function filtersReducer(state = initState, action: FiltersActions): Filte
       };
     }
 
-    case FiltersActionType.ADD_JOB_STATUS: {
-      return {
-        ...state,
-        jobStatuses: [ ...state.jobStatuses, action.payload ]
-      };
-    }
-
     case FiltersActionType.SET_JOB_STATUSES: {
       return {
         ...state,
@@ -448,29 +435,10 @@ export function filtersReducer(state = initState, action: FiltersActions): Filte
         polarizations: [ ...action.payload ]
       };
     }
-
-    case FiltersActionType.ADD_SUBTYPE: {
-      const newPols = Array.from(
-        new Set([...state.subtypes, action.payload])
-      );
-
-      return {
-        ...state,
-        subtypes: [ ...newPols ]
-      };
-    }
-
     case FiltersActionType.SET_SUBTYPES: {
       return {
         ...state,
         subtypes: [ ...action.payload ]
-      };
-    }
-
-    case FiltersActionType.ADD_FLIGHT_DIRECTION: {
-      return {
-        ...state,
-        flightDirections: new Set([action.payload, ...Array.from(state.flightDirections)])
       };
     }
 
@@ -492,13 +460,6 @@ export function filtersReducer(state = initState, action: FiltersActions): Filte
       return {
         ...state,
         selectedMission: action.payload
-      };
-    }
-
-    case FiltersActionType.CLEAR_SELECTED_MISSION: {
-      return {
-        ...state,
-        selectedMission: null
       };
     }
 
@@ -595,12 +556,6 @@ export function filtersReducer(state = initState, action: FiltersActions): Filte
       return {
         ...state,
         productFilterName: action.payload
-      };
-    }
-    case FiltersActionType.CLEAR_PRODUCT_NAME_FILTER: {
-      return {
-        ...state,
-        productFilterName: null
       };
     }
     case FiltersActionType.STORE_CURRENT_FILTERS: {
