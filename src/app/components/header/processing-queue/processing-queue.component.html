@@ -61,8 +61,8 @@
           (click)="onSetSelectedJobType(hyp3Job.jobType)"
           [color]="selectedJobTypeId === hyp3Job.jobType.id ? 'secondary' : 'primary'">
           <div>
-          {{ hyp3Job.jobType.name }} ({{ hyp3Job.jobs.length }})
-        </div>
+            {{ hyp3Job.jobType.name }} ({{ hyp3Job.jobs.length }})
+          </div>
           </button>
         </ng-container>
       </mat-menu>
@@ -166,7 +166,6 @@
               </div>
             </div>
           </div>
-
         </div>
       </div>
     </div>
@@ -188,18 +187,18 @@
         <mat-icon>delete</mat-icon>
         <span>Clear</span>
       </button>
+
       <mat-menu #clearJobQueue>
         <button *ngIf="previousQueue === null"
         (click)="onClearJobQueue()"
         mat-button>
           <span>Clear All Processing Types</span>
         </button>
+
         <div *ngFor="let hyp3Job of jobTypesWithQueued">
-            <button
-            (click)="onClearSingleJobQueue(hyp3Job.jobType)"
-            mat-button>
-           Clear {{ hyp3Job.jobType.name }} ({{ hyp3Job.jobs.length }})
-         </button>
+          <button (click)="onClearSingleJobQueue(hyp3Job.jobType)" mat-button>
+            Clear {{ hyp3Job.jobType.name }} ({{ hyp3Job.jobs.length }})
+          </button>
         </div>
       </mat-menu>
 

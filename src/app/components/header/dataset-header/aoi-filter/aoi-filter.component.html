@@ -1,8 +1,8 @@
 <form
-      #polygonForm="ngForm"
-      (mouseenter)="isHoveringAOISelector = true"
-      (mouseleave)="isHoveringAOISelector = false"
-      (keydown.enter)="$event.preventDefault()">
+  #polygonForm="ngForm"
+  (mouseenter)="isHoveringAOISelector = true"
+  (mouseleave)="isHoveringAOISelector = false"
+  (keydown.enter)="$event.preventDefault()">
 
   <mat-form-field
     [class.invalid-input-animation]="isAOIError"

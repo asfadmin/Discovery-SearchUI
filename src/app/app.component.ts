@@ -280,6 +280,7 @@ export class AppComponent implements OnInit, OnDestroy {
 
     this.updateMaxSearchResults();
     this.healthCheck();
+
     if (!this.ccService.hasConsented()) {
       this.notificationService.info('This website uses cookies to ensure you get the best experience on our website. <a href="https://cookiesandyou.com/" target="_blank">Learn More</a>', '', {
         closeButton: true,
@@ -292,6 +293,7 @@ export class AppComponent implements OnInit, OnDestroy {
         document.cookie = `cookieconsent_status=dismiss; expires=${expireDate.toUTCString()}`;
       });
     }
+
     this.subs.add(this.ccService.popupOpen$.subscribe(_ => _));
     this.subs.add(this.ccService.popupClose$.subscribe(_ => _));
     this.subs.add(this.ccService.revokeChoice$.subscribe(_ => _));

@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 
 import { FontAwesomeModule, FaIconLibrary } from '@fortawesome/angular-fontawesome';
 import { faSpinner, fas } from '@fortawesome/free-solid-svg-icons';
+import { ScrollingModule } from '@angular/cdk/scrolling';
 
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
@@ -30,30 +31,35 @@ import { AngularResizedEventModule } from 'angular-resize-event';
 
 
 @NgModule({
-  declarations: [ProcessingQueueComponent, QueueSubmitComponent, ConfirmationComponent],
-    imports: [
-        CommonModule,
-        FormsModule,
-        FontAwesomeModule,
-        MatSharedModule,
-        MatInputModule,
-        MatChipsModule,
-        MatSelectModule,
-        MatSlideToggleModule,
-        MatProgressSpinnerModule,
-        MatProgressBarModule,
-        MatBottomSheetModule,
-        PipesModule,
-        ProjectNameSelectorModule,
-        ProcessingQueueJobsModule,
-        ProcessingOptionsModule,
-        MatDialogModule,
-        ResizableModule,
-        AngularResizedEventModule,
-        DragDropModule,
-        MatTabsModule,
-        MatMenuModule,
-    ]
+  declarations: [
+    ProcessingQueueComponent,
+    QueueSubmitComponent,
+    ConfirmationComponent
+  ],
+  imports: [
+    CommonModule,
+    FormsModule,
+    FontAwesomeModule,
+    MatSharedModule,
+    MatInputModule,
+    MatChipsModule,
+    MatSelectModule,
+    MatSlideToggleModule,
+    MatProgressSpinnerModule,
+    MatProgressBarModule,
+    MatBottomSheetModule,
+    PipesModule,
+    ProjectNameSelectorModule,
+    ProcessingQueueJobsModule,
+    ProcessingOptionsModule,
+    MatDialogModule,
+    ResizableModule,
+    AngularResizedEventModule,
+    DragDropModule,
+    MatTabsModule,
+    MatMenuModule,
+    ScrollingModule,
+  ]
 })
 export class ProcessingQueueModule {
   constructor(library: FaIconLibrary) {

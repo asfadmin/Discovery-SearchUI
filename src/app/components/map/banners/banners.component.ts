@@ -96,5 +96,4 @@ export class BannersComponent implements OnInit {
 
   ngOnInit(): void {
   }
-
 }
