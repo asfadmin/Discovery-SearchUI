@@ -180,24 +180,24 @@ export class AppComponent implements OnInit, OnDestroy {
 
     this.store$.select(uiStore.getIsSidebarOpen).subscribe(
       isSidebarOpen => {
-        if(isSidebarOpen){
+        if (isSidebarOpen) {
           this.isSaveSearchPanelOpen = true;
-          this.sidenav.open()
+          this.sidenav.open();
         } else {
           this.isSaveSearchPanelOpen = false;
-          this.sidenav.close()
+          this.sidenav.close();
         }
       }
     );
 
     this.store$.select(uiStore.getIsFiltersSidebarOpen).subscribe(
       isSidebarOpen => {
-        if(isSidebarOpen){
+        if (isSidebarOpen) {
           this.isSaveFiltersPanelOpen = true;
-          this.sidenav.open()
+          this.sidenav.open();
         } else {
           this.isSaveFiltersPanelOpen = false;
-          this.sidenav.close()
+          this.sidenav.close();
         }
       }
     );
@@ -323,11 +323,11 @@ export class AppComponent implements OnInit, OnDestroy {
       this.domSanitizer.bypassSecurityTrustResourceUrl('../assets/icons/hyp3.svg')
     );
 
-    //this.dialog.open(CreateSubscriptionComponent, {
-      //id: 'subscriptionQueueDialog',
-      //maxWidth: '100vw',
-      //maxHeight: '100vh'
-    //});
+    // this.dialog.open(CreateSubscriptionComponent, {
+      // id: 'subscriptionQueueDialog',
+      // maxWidth: '100vw',
+      // maxHeight: '100vh'
+    // });
 
   }
 
