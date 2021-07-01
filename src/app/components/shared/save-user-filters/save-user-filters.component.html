@@ -14,7 +14,9 @@
       <div *ngIf="displayedFilter.length > 0">
         <div *ngFor="let filterPreset of displayedFilter" class="saved-filters-presets-row">
           <app-save-user-filter
-            [filterPreset]="filterPreset">
+            [filterPreset]="filterPreset"
+            [isNew]="filterPreset.id === newSearchId"
+            (updateName)="updatedSearchName($event)">
           </app-save-user-filter>
         </div>
       </div>

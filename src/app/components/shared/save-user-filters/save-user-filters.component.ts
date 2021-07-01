@@ -36,6 +36,7 @@ export class SaveUserFiltersComponent implements OnInit, OnDestroy {
 
   public currentSearchType: SearchType;
   public newFilterName = '';
+  public newSearchId = '';
 
   private subs = new SubSink();
 
@@ -104,7 +105,9 @@ export class SaveUserFiltersComponent implements OnInit, OnDestroy {
   }
 
   public onSaveFilters() {
-    this.store$.dispatch(new userStore.AddNewFiltersPreset({name: this.newFilterName, id: uuid() as string, filters: this.currentFiltersBySearchType[this.currentSearchType], searchType: this.currentSearchType}));
+    const id = uuid() as string;
+    this.newSearchId = id;
+    this.store$.dispatch(new userStore.AddNewFiltersPreset({name: this.newFilterName, id, filters: this.currentFiltersBySearchType[this.currentSearchType], searchType: this.currentSearchType}));
     this.newFilterName = '';
     this.store$.dispatch(new userStore.SaveFilters());
   }
@@ -112,6 +115,12 @@ export class SaveUserFiltersComponent implements OnInit, OnDestroy {
   public filterBySearchType(filters: {name: string, searchType: SearchType, filters: FilterType}[]) {
     let output = filters.filter(preset => preset.searchType === this.currentSearchType);
     return output;
+  }
+
+  public updatedSearchName(id: string) {
+    if(id === this.newSearchId) {
+      this.newSearchId = '';
+    }
   }
 
   public onClose() {

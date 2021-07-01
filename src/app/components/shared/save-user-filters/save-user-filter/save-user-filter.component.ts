@@ -1,4 +1,4 @@
-import { Component, ElementRef, Input, ViewChild } from '@angular/core';
+import { Component, EventEmitter, ElementRef, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { FilterType, SearchType } from '@models';
 import * as models from '@models'
 import * as userStore from '@store/user';
@@ -10,16 +10,26 @@ import { timer } from 'rxjs';
   templateUrl: './save-user-filter.component.html',
   styleUrls: ['./save-user-filter.component.scss']
 })
-export class SaveUserFilterComponent {
+export class SaveUserFilterComponent implements OnInit {
   @ViewChild('nameEditInput') nameEditInput: ElementRef;
 
   @Input() filterPreset: {name: string, id: string, searchType: SearchType, filters: FilterType};
+  @Input() isNew: boolean;
+
+  @Output() updateName = new EventEmitter<string>();
+
   public SearchType = models.SearchType;
   public expanded = false;
   public isEditingName = false;
   public editName: string;
   public lockedFocus = false;
   constructor(private store$: Store<AppState>) { }
+
+  ngOnInit() {
+    if (this.isNew) {
+      this.onEditName();
+    }
+  }
 
   public togglePanel() {
     this.expanded = !this.expanded;
@@ -40,6 +50,8 @@ export class SaveUserFilterComponent {
 
     this.store$.dispatch(new userStore.UpdateFilterPresetName({newName, presetID: this.filterPreset.id }));
     this.store$.dispatch(new userStore.SaveFilters());
+
+    this.updateName.emit(this.filterPreset.id);
   }
 
   public onEditName() {
