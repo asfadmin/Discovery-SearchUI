@@ -180,24 +180,24 @@ export class AppComponent implements OnInit, OnDestroy {
 
     this.store$.select(uiStore.getIsSidebarOpen).subscribe(
       isSidebarOpen => {
-        if(isSidebarOpen){
+        if (isSidebarOpen) {
           this.isSaveSearchPanelOpen = true;
-          this.sidenav.open()
+          this.sidenav.open();
         } else {
           this.isSaveSearchPanelOpen = false;
-          this.sidenav.close()
+          this.sidenav.close();
         }
       }
     );
 
     this.store$.select(uiStore.getIsFiltersSidebarOpen).subscribe(
       isSidebarOpen => {
-        if(isSidebarOpen){
+        if (isSidebarOpen) {
           this.isSaveFiltersPanelOpen = true;
-          this.sidenav.open()
+          this.sidenav.open();
         } else {
           this.isSaveFiltersPanelOpen = false;
-          this.sidenav.close()
+          this.sidenav.close();
         }
       }
     );
