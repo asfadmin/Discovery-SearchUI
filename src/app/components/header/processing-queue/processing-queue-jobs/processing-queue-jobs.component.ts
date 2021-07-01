@@ -52,8 +52,8 @@ export class ProcessingQueueJobsComponent implements OnInit {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    if(changes['jobs']) {
-      if(changes['jobs'].previousValue !== changes['jobs'].previousValue) {
+    if (changes['jobs']) {
+      if (changes['jobs'].previousValue !== changes['jobs'].previousValue) {
         this.jobs = changes['jobs'].currentValue;
       }
     }
@@ -86,18 +86,18 @@ export class ProcessingQueueJobsComponent implements OnInit {
   }
 
   public sortJobQueue(jobs: models.QueuedHyp3Job[]): models.QueuedHyp3Job[] {
-    if(this.sortType === ProcessingQueueJobsSortType.ACQUISITION) {
+    if (this.sortType === ProcessingQueueJobsSortType.ACQUISITION) {
       jobs = jobs.sort((a, b) => {
-        if(a.granules[0].metadata.date < b.granules[0].metadata.date) {
+        if (a.granules[0].metadata.date < b.granules[0].metadata.date) {
           return -1;
-        } else if(a.granules[0].metadata.date > b.granules[0].metadata.date) {
+        } else if (a.granules[0].metadata.date > b.granules[0].metadata.date) {
           return 1;
         }
         return 0;
         });
     }
 
-    if(this.sortOrder === ProcessingQueueJobsSortOrder.LATEST) {
+    if (this.sortOrder === ProcessingQueueJobsSortOrder.LATEST) {
       jobs.reverse();
     }
 
@@ -108,7 +108,7 @@ export class ProcessingQueueJobsComponent implements OnInit {
 
 export enum ProcessingQueueJobsSortOrder {
   OLDEST =  'Oldest',
-  LATEST ='Latest'
+  LATEST = 'Latest'
 }
 export enum ProcessingQueueJobsSortType {
   ACQUISITION = 'Start Date',
