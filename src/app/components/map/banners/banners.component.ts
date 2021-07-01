@@ -45,21 +45,22 @@ export class BannerCreateDirective implements OnInit {
     let toast: ActiveToast<any>;
 
     let msg: string = this.bannerCreate.text.substring(0, this.maxMsgLength);
-    let oneLiner = false;
 
     const lines = this.bannerCreate.text.split('<br>');
 
     this.msgOverflow = (this.bannerCreate.text.length > this.maxMsgLength);
 
-    if (lines.length > 2 && lines[1].trim().length === 0 && lines[1].length <= this.maxMsgLength) {
-      oneLiner = true;
-    }
+    const oneLiner = (
+      lines.length > 2 &&
+      lines[1].trim().length === 0 &&
+      lines[1].length <= this.maxMsgLength
+    );
 
     if (oneLiner) {
-      msg = lines[0].trim() + this.moreMsg;
+      msg = `${lines[0].trim()}${this.moreMsg}`;
     } else {
       if (this.msgOverflow) {
-        msg = msg.trim() + '...' + this.moreMsg;
+        msg = `${msg.trim()}...${this.moreMsg}`;
       }
     }
 

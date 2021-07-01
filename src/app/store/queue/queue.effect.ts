@@ -50,8 +50,6 @@ export class QueueEffects {
   public makeDownloadScriptFromList = createEffect(() => this.actions$.pipe(
     ofType<MakeDownloadScriptFromList>(QueueActionType.MAKE_DOWNLOAD_SCRIPT_FROM_LIST),
     map(action => action.payload),
-    // withLatestFrom(this.scenesService.scenes$()),
-    // map(products => products.map(prod => prod)),
     switchMap(
       (products) => this.bulkDownloadService.downloadScript$(products)
     ),
@@ -65,14 +63,12 @@ export class QueueEffects {
     map(action => action.payload),
     withLatestFrom(this.searchParamsService.getParams()),
     map(
-      ([format, searchParams]) =>  ({
-        format,
-        searchParams})
-    ),
-    map(
-      (x): MetadataDownload => ({
-        params: { ...x.searchParams, ...{output: x.format.toLowerCase()} },
-        format: x.format
+      ([format, searchParams]): MetadataDownload => ({
+        params: {
+          ...searchParams,
+          ...{output: format.toLowerCase()}
+        },
+        format: format
       })
     ),
     switchMap(
