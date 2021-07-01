@@ -34,7 +34,7 @@
     </ng-container>
 
     <ng-template #jobsQueued>
-      <mat-list-item *ngFor="let job of sortJobQueue(jobs)">
+      <mat-list-item *ngFor="let job of sortOrder === Order.LATEST ? orderByType(jobs).reverse() : orderByType(jobs)">
           <img matListAvatar
                [src]="job.granules[0].thumbnail"
                onerror="this.src='assets/no-thumb.png'"

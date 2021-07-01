@@ -11,6 +11,8 @@ import * as userStore from '@store/user';
 import { MatDialogRef } from '@angular/material/dialog';
 import { ProcessingQueueComponent } from '@components/header/processing-queue';
 import {SubSink} from 'subsink';
+import { of } from 'rxjs';
+import { distinctUntilChanged } from 'rxjs/operators';
 
 @Component({
   selector: 'app-processing-queue-jobs',
@@ -33,6 +35,10 @@ export class ProcessingQueueJobsComponent implements OnInit {
   public sortOrder: ProcessingQueueJobsSortOrder = ProcessingQueueJobsSortOrder.LATEST;
   public sortType: ProcessingQueueJobsSortType = ProcessingQueueJobsSortType.ACQUISITION;
 
+  public Order = ProcessingQueueJobsSortOrder;
+
+  public displayedJobs: models.QueuedHyp3Job[] = [];
+
   private subs = new SubSink();
 
   constructor(
@@ -46,6 +52,10 @@ export class ProcessingQueueJobsComponent implements OnInit {
       this.store$.select(userStore.getIsUserLoggedIn).subscribe(
         isLoggedIn => this.isLoggedIn = isLoggedIn
       )
+    );
+
+    this.subs.add(
+      of(this.jobs).pipe(distinctUntilChanged()).subscribe(jobs => this.displayedJobs = jobs)
     );
   }
 
@@ -75,7 +85,7 @@ export class ProcessingQueueJobsComponent implements OnInit {
     event.preventDefault();
   }
 
-  public sortJobQueue(jobs: models.QueuedHyp3Job[]): models.QueuedHyp3Job[] {
+  public orderByType(jobs: models.QueuedHyp3Job[]) {
     if(this.sortType === ProcessingQueueJobsSortType.ACQUISITION) {
       jobs = jobs.sort((a, b) => {
         if(a.granules[0].metadata.date < b.granules[0].metadata.date) {
@@ -87,12 +97,33 @@ export class ProcessingQueueJobsComponent implements OnInit {
         });
     }
 
-    if(this.sortOrder === ProcessingQueueJobsSortOrder.LATEST) {
-      jobs.reverse();
-    }
-
     return jobs;
   }
+
+  public reverseOrder(jobs: models.QueuedHyp3Job[]) {
+    if(this.sortOrder === ProcessingQueueJobsSortOrder.LATEST) {
+      jobs = jobs.reverse();
+    }
+  }
+
+  // public sortJobQueue(jobs: models.QueuedHyp3Job[],
+  //   sortType: ProcessingQueueJobsSortType,
+  //   sortOrder: ProcessingQueueJobsSortOrder): models.QueuedHyp3Job[] {
+  //   if(sortType === ProcessingQueueJobsSortType.ACQUISITION) {
+  //     jobs = jobs.sort((a, b) => {
+  //       if(a.granules[0].metadata.date < b.granules[0].metadata.date) {
+  //         return -1;
+  //       } else if(a.granules[0].metadata.date > b.granules[0].metadata.date) {
+  //         return 1;
+  //       }
+  //       return 0;
+  //       });
+  //   }
+
+
+
+  //   return jobs;
+  // }
 
 }
 
