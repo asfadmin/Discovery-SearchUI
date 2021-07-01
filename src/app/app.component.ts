@@ -302,18 +302,28 @@ export class AppComponent implements OnInit, OnDestroy {
 
     this.updateMaxSearchResults();
     this.healthCheck();
+
     if (!this.ccService.hasConsented()) {
-      this.notificationService.info('This website uses cookies to ensure you get the best experience on our website. <a href="https://cookiesandyou.com/" target="_blank">Learn More</a>', '', {
+      const options = {
         closeButton: true,
         disableTimeOut: true,
         enableHtml: true,
         tapToDismiss: false,
-      }).onHidden.pipe(take(1)).subscribe(() => {
+      };
+
+      const toast = this.notificationService.info(
+        'This website uses cookies to ensure you get the best experience on our website. <a href="https://cookiesandyou.com/" target="_blank">Learn More</a>',
+        '',
+        options
+      );
+
+      toast.onHidden.pipe(take(0)).subscribe(() => {
         const expireDate = new Date();
         expireDate.setFullYear(expireDate.getFullYear() + 1);
         document.cookie = `cookieconsent_status=dismiss; expires=${expireDate.toUTCString()}`;
       });
     }
+
     this.subs.add(this.ccService.popupOpen$.subscribe(_ => _));
     this.subs.add(this.ccService.popupClose$.subscribe(_ => _));
     this.subs.add(this.ccService.revokeChoice$.subscribe(_ => _));
@@ -322,13 +332,6 @@ export class AppComponent implements OnInit, OnDestroy {
       'hyp3',
       this.domSanitizer.bypassSecurityTrustResourceUrl('../assets/icons/hyp3.svg')
     );
-
-    //this.dialog.open(CreateSubscriptionComponent, {
-      //id: 'subscriptionQueueDialog',
-      //maxWidth: '100vw',
-      //maxHeight: '100vh'
-    //});
-
   }
 
   private isEmptySearch(searchState): boolean {
@@ -450,6 +453,7 @@ export class AppComponent implements OnInit, OnDestroy {
 
   private errorBanner(): models.Banner {
     return  {
+      id: 'Error',
       text: 'ASF is experiencing errors loading data.  Please try again later.',
       name: 'Error',
       type: 'error'

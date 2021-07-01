@@ -26,9 +26,9 @@ export class PropertyService {
   }
 
   public saveProperties(props, paramName: string, keyFunc = v => v) {
-      const param = props.map(keyFunc).join(',');
+    const param = props.map(keyFunc).join(',');
 
-      return { [paramName]: param };
+    return { [paramName]: param };
   }
 
   public loadProperties(loadStr: string, datasetPropertyKey: string, keyFunc = v => v): any[] {
@@ -39,8 +39,8 @@ export class PropertyService {
     const possibleTypes = (possibleValuesStr || '').split(',');
 
     const dataset = models.datasetList
-        .filter(d => datasetName === d.id)
-        .pop();
+      .filter(d => datasetName === d.id)
+      .pop();
 
     if (!dataset) {
       return;

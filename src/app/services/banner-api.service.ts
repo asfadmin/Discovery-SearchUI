@@ -43,6 +43,7 @@ export class BannerApiService {
     return this.http.get<any[]>(url).pipe(
           map(banners => ({
             banners: <any[]>banners.map(banner => ({
+              id: banner.id,
               text: banner.text,
               name: banner.name,
               type: calendar

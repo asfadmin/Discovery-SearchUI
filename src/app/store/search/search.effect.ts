@@ -129,11 +129,6 @@ export class SearchEffects {
     )
   ));
 
-  // public hideFilterMenuOnSearchResponse = createEffect(() => this.actions$.pipe(
-  //   ofType<SearchResponse>(SearchActionType.SEARCH_RESPONSE),
-  //   map(_ => new uiStore.CloseFiltersMenu()),
-  // ));
-
   public showResultsMenuOnSearchResponse = createEffect(() => this.actions$.pipe(
     ofType<SearchResponse>(SearchActionType.SEARCH_RESPONSE),
     map(_ => new uiStore.OpenResultsMenu()),

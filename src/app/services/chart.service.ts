@@ -122,8 +122,6 @@ export class ChartService {
     }];
   }
 
-
-
   private chartStyles() {
     return {
       master: {

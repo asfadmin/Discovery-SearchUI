@@ -1,8 +1,8 @@
 <form
-      #polygonForm="ngForm"
-      (mouseenter)="isHoveringAOISelector = true"
-      (mouseleave)="isHoveringAOISelector = false"
-      (keydown.enter)="$event.preventDefault()">
+  #polygonForm="ngForm"
+  (mouseenter)="isHoveringAOISelector = true"
+  (mouseleave)="isHoveringAOISelector = false"
+  (keydown.enter)="$event.preventDefault()">
 
   <mat-form-field
     [class.invalid-input-animation]="isAOIError"
@@ -21,6 +21,14 @@
       [class.ghost-item]="!isHoveringAOISelector"
       class="clickable copy-icon" matSuffix>
       file_copy
+    </mat-icon>
+
+    <mat-icon
+      (click)="openAOIImport()"
+      matTooltip="Import Area of Interest"
+      class="clickable additional-aoi-toggle"
+      matSuffix>
+      save_alt
     </mat-icon>
 
     <mat-icon
