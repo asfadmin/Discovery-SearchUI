@@ -56,7 +56,7 @@ export class SaveUserFiltersComponent implements OnInit, OnDestroy {
         {
           this.userFilters = userFilters;
           const output = this.filterBySearchType(this.userFilters);
-          this.displayedFilter = output;
+          this.displayedFilter = output.reverse();
         })
     );
 
@@ -65,7 +65,7 @@ export class SaveUserFiltersComponent implements OnInit, OnDestroy {
         {
           this.currentSearchType = searchtype;
           const output = this.filterBySearchType(this.userFilters);
-          this.displayedFilter = output;
+          this.displayedFilter = output.reverse();
         }
           )
     );

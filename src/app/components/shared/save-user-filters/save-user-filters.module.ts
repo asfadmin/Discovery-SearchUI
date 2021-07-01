@@ -5,6 +5,7 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatInputModule } from '@angular/material/input';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatSharedModule } from '@shared';
+import { PipesModule } from '@pipes';
 import { SaveUserFiltersComponent } from './save-user-filters.component';
 import { SearchFiltersModule } from '../saved-searches/saved-search/search-filters';
 import { FormsModule } from '@angular/forms';
@@ -21,6 +22,7 @@ import { SaveUserFilterComponent } from './save-user-filter/save-user-filter.com
     MatButtonToggleModule,
     MatInputModule,
     FormsModule,
+    PipesModule,
     MatMenuModule,
     MatDialogModule,
     MatExpansionModule,
