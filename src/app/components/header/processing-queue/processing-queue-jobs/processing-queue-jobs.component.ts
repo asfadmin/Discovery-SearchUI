@@ -25,7 +25,7 @@ export class ProcessingQueueJobsComponent implements OnInit {
 
   @Input() areJobsLoading: boolean;
 
-  @Input('jobs') set jobs(val: models.QueuedHyp3Job[]) { this.jobs$.next(val); };
+  @Input('jobs') set jobs(val: models.QueuedHyp3Job[]) { this.jobs$.next(val); }
   private jobs$ = new BehaviorSubject<models.QueuedHyp3Job[]>([]);
   private sortChange$ = new BehaviorSubject<void>(null);
 
@@ -35,7 +35,7 @@ export class ProcessingQueueJobsComponent implements OnInit {
   jobsfiltered$ = combineLatest(this.jobs$.pipe(distinctUntilChanged()), this.sortChange$).pipe(
     map(([jobs, _]) => jobs),
     filter(jobs => !!jobs),
-    map(jobs => this.sortJobQueue(jobs)))
+    map(jobs => this.sortJobQueue(jobs)));
 
   @Output() removeJob = new EventEmitter<models.QueuedHyp3Job>();
 
@@ -68,7 +68,7 @@ export class ProcessingQueueJobsComponent implements OnInit {
       this.jobsfiltered$.subscribe(
         jobs => this.jobsDisplay = jobs
       )
-    )
+    );
   }
 
   public onSortChange() {
@@ -103,18 +103,18 @@ export class ProcessingQueueJobsComponent implements OnInit {
 
   public sortJobQueue(jobs: models.QueuedHyp3Job[]): models.QueuedHyp3Job[] {
     let output = [].concat(jobs);
-    if(this.sortType === ProcessingQueueJobsSortType.ACQUISITION) {
+    if (this.sortType === ProcessingQueueJobsSortType.ACQUISITION) {
       output = output.sort((a, b) => {
-        if(a.granules[0].metadata.date < b.granules[0].metadata.date) {
+        if (a.granules[0].metadata.date < b.granules[0].metadata.date) {
           return -1;
-        } else if(a.granules[0].metadata.date > b.granules[0].metadata.date) {
+        } else if (a.granules[0].metadata.date > b.granules[0].metadata.date) {
           return 1;
         }
         return 0;
         });
     }
 
-    if(this.sortOrder === ProcessingQueueJobsSortOrder.LATEST) {
+    if (this.sortOrder === ProcessingQueueJobsSortOrder.LATEST) {
       output = output.reverse();
     }
 
