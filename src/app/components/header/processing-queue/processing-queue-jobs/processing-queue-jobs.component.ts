@@ -88,7 +88,7 @@ export class ProcessingQueueJobsComponent implements OnInit {
     }
 
     if(this.sortOrder === ProcessingQueueJobsSortOrder.LATEST) {
-      jobs = jobs.reverse();
+      jobs.reverse();
     }
 
     return jobs;
