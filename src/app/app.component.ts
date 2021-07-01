@@ -53,6 +53,10 @@ export class AppComponent implements OnInit, OnDestroy {
 
   public interactionTypes = models.MapInteractionModeType;
   public searchType: models.SearchType;
+
+  public isSaveSearchPanelOpen = false;
+  public isSaveFiltersPanelOpen = false;
+
   private helpTopic: string | null;
 
   private subs = new SubSink();
@@ -175,9 +179,27 @@ export class AppComponent implements OnInit, OnDestroy {
     this.loadMissions();
 
     this.store$.select(uiStore.getIsSidebarOpen).subscribe(
-      isSidebarOpen => isSidebarOpen ?
-        this.sidenav.open() :
-        this.sidenav.close()
+      isSidebarOpen => {
+        if(isSidebarOpen){
+          this.isSaveSearchPanelOpen = true;
+          this.sidenav.open()
+        } else {
+          this.isSaveSearchPanelOpen = false;
+          this.sidenav.close()
+        }
+      }
+    );
+
+    this.store$.select(uiStore.getIsFiltersSidebarOpen).subscribe(
+      isSidebarOpen => {
+        if(isSidebarOpen){
+          this.isSaveFiltersPanelOpen = true;
+          this.sidenav.open()
+        } else {
+          this.isSaveFiltersPanelOpen = false;
+          this.sidenav.close()
+        }
+      }
     );
 
     this.subs.add(

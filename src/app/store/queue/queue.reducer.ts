@@ -21,18 +21,6 @@ export const initState: QueueState = {
 
 export function queueReducer(state = initState, action: QueueActions): QueueState {
   switch (action.type) {
-    case QueueActionType.ADD_ITEM: {
-      const newProduct = action.payload;
-
-      const products = add_product(newProduct, { ...state.products });
-
-      const ids = Object.keys(products);
-
-      return {
-        ...state,
-        products, ids
-      };
-    }
 
     case QueueActionType.ADD_ITEMS: {
       const newProducts = action.payload;

@@ -1,0 +1,69 @@
+@import "asf-theme";
+
+.close-icon {
+  font-size: 32px;
+}
+
+.content-wrapper {
+  display: flex;
+  flex-direction: row;
+}
+
+.header-view {
+  padding: 10px 10px 10px 60px;
+  height: 100px;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  word-break: break-all;
+}
+
+.filter-expansion-panel {
+  width: 75%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.filter-apply-button {
+  width: 25%;
+  margin-right: 25px;
+  margin-top: 10px;
+}
+
+.saved-filter {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  padding: 7px 10px;
+  margin: 0;
+}
+
+.filter-description {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  justify-content: space-between;
+  width: 100%;
+  padding: 5px;
+}
+
+.expand-arrow {
+  margin-right: 20px;
+  margin-top: -2px;
+}
+
+.expand-arrow--icon {
+  font-size: 38px;
+}
+.detailed-view {
+  padding: 0 10px 15px 60px;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  word-break: break-all;
+}
+
+.filter-header-info {
+  flex-grow: 2;
+}

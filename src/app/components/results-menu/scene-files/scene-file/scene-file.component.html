@@ -61,7 +61,7 @@
         <button *ngFor="let jobType of validHyp3JobTypes"
           (click)="addJobToProcessingQueue(jobType)" mat-menu-item>
             Add {{ jobType.name }} to On Demand
-            <mat-icon (click)="onOpenHelp($event, jobType.infoUrl)" class="clickable" style="margin-left: 10px;">help</mat-icon>
+            <mat-icon (click)="onOpenHelp($event, jobType.infoUrl)" class="clickable" style="margin-left: 10px;">info</mat-icon>
         </button>
       </mat-menu>
     </button>

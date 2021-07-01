@@ -175,6 +175,16 @@ export class SearchButtonComponent implements OnInit, OnDestroy {
     this.store$.dispatch(new uiStore.SetSaveSearchOn(true));
   }
 
+  public saveCurrentFilters(): void {
+    window.dataLayer = window.dataLayer || [];
+    window.dataLayer.push({
+      'event': 'save-current-filters',
+      'save-current-filters': true
+    });
+    this.store$.dispatch(new uiStore.OpenFiltersSidebar());
+    this.store$.dispatch(new uiStore.SetSaveFilterOn(true));
+  }
+
   public onOpenSavedSearches(): void {
 
     window.dataLayer = window.dataLayer || [];
@@ -185,6 +195,17 @@ export class SearchButtonComponent implements OnInit, OnDestroy {
 
     this.store$.dispatch(new uiStore.SetSavedSearchType(SavedSearchType.SAVED));
     this.store$.dispatch(new uiStore.OpenSidebar());
+  }
+
+  public onOpenSavedFilters(): void {
+
+    window.dataLayer = window.dataLayer || [];
+    window.dataLayer.push({
+      'event': 'open-saved-filters',
+      'open-saved-filters': true
+    });
+
+    this.store$.dispatch(new uiStore.OpenFiltersSidebar());
   }
 
   public onOpenSearchHistory(): void {

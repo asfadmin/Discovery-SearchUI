@@ -1,6 +1,6 @@
 import { Action } from '@ngrx/store';
 
-import { UserAuth, UserProfile, Search, GeographicFiltersType } from '@models';
+import { UserAuth, UserProfile, Search, GeographicFiltersType, FilterType, SearchType } from '@models';
 
 export enum UserActionType {
   LOGIN = '[User] Login',
@@ -19,10 +19,20 @@ export enum UserActionType {
   SAVE_SEARCH_HISTORY = '[User] Save Search History',
   LOAD_SEARCH_HISTORY = '[User] Load Search History',
 
+  LOAD_SAVED_FILTERS = '[User] Load Saved Filters',
+  SAVE_FILTERS = '[User] Save Filter Presets',
+  SET_FILTERS = '[User] Set Filter Presets',
+
   ADD_NEW_SEARCH = '[User] Add new search',
   UPDATE_SEARCH_WITH_FILTERS = '[User] Update search with current filters',
   UPDATE_SEARCH_NAME = '[User] Edit Search Name',
   DELETE_SAVED_SEARCH = '[User] Delete Saved Search',
+
+  ADD_NEW_FILTERS_PRESET = '[User] Save Search Filters',
+  DELETE_FILTERS_PRESET = '[User] Delete Saved Filters Preset',
+  LOAD_FILTERS_PRESET = '[User] Load Saved Filters Preset',
+
+  UPDATE_FILTERS_PRESET_NAME = '[User] Change Filter Preset Name'
 }
 
 export class Login implements Action {
@@ -83,6 +93,23 @@ export class SetSearches implements Action {
   constructor(public payload: Search[]) {}
 }
 
+export class LoadSavedFilters implements Action {
+  public readonly type = UserActionType.LOAD_SAVED_FILTERS;
+
+  constructor(public payload: {name: string, id: string, searchType: SearchType, filters: FilterType}[]) {}
+}
+
+export class SaveFilters implements Action {
+  public readonly type = UserActionType.SAVE_FILTERS;
+}
+
+
+export class SetFilters implements Action {
+  public readonly type = UserActionType.SET_FILTERS;
+
+  constructor(public payload: {name: string, id: string, searchType: SearchType, filters: FilterType}[]) {}
+}
+
 export class AddNewSearch implements Action {
   public readonly type = UserActionType.ADD_NEW_SEARCH;
 
@@ -113,6 +140,29 @@ export class DeleteSavedSearch implements Action {
   constructor(public payload: string) {}
 }
 
+export class AddNewFiltersPreset implements Action {
+  public readonly type = UserActionType.ADD_NEW_FILTERS_PRESET;
+
+  constructor(public payload: {name: string, id: string, searchType: SearchType, filters: FilterType}) {}
+}
+
+export class DeleteFiltersPreset implements Action {
+  public readonly type = UserActionType.DELETE_FILTERS_PRESET;
+
+  constructor(public payload: string) {}
+}
+
+export class LoadFiltersPreset implements Action {
+  public readonly type = UserActionType.LOAD_FILTERS_PRESET;
+
+  constructor(public payload: string) {}
+}
+
+export class UpdateFilterPresetName implements Action {
+  public readonly type = UserActionType.UPDATE_FILTERS_PRESET_NAME;
+
+  constructor(public payload: {presetID: string, newName: string}) {}
+}
 
 export type UserActions =
   | SaveProfile
@@ -129,5 +179,12 @@ export type UserActions =
   | LoadSearchHistory
   | SetSearchHistory
   | AddSearchToHistory
+  | LoadSavedFilters
+  | SaveFilters
+  | AddNewFiltersPreset
+  | DeleteFiltersPreset
+  | LoadFiltersPreset
+  | SetFilters
+  | UpdateFilterPresetName
   | Logout
   | Login;

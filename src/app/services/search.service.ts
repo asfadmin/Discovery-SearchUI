@@ -72,7 +72,7 @@ export class SearchService {
     }
     if (search.searchType === models.SearchType.SBAS) {
       const filters = <models.SbasFiltersType>search.filters;
-      this.store$.dispatch(new scenesStore.SetFilterMaster(filters.master));
+      this.store$.dispatch(new scenesStore.SetFilterMaster(filters.reference));
       if (filters.customPairIds) {
         this.store$.dispatch(new scenesStore.AddCustomPairs(filters.customPairIds));
       }
