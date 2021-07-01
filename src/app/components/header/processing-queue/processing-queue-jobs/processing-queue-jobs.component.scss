@@ -18,24 +18,15 @@
 }
 
 .flex-list {
-  //display: flex !important;
-  //flex-direction: row;
-  //flex-wrap: wrap;
-
   .mat-list-base {
     display: flex !important;
     flex-wrap: wrap;
     width: 100% !important;
   }
-
-  .mat-list-text {
-    //width: 287px;
-  }
 }
 
 .flex-field {
   flex: 1 0 auto;
-  // width: 250px;
   margin-left: 25px;
 }
 
@@ -64,13 +55,6 @@
 .granule-name {
   width: auto;
   max-width: 100%;
-}
-
-.job-list-item {
-  //flex: 1 0 auto !important;
-  //flex-direction: row;
-  //flex-wrap: wrap;
-  //transform: scale(0.97);
 }
 
 .pqj-mobile {

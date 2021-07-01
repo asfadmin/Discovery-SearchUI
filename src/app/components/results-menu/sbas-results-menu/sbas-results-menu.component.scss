@@ -54,10 +54,6 @@ $info-color: $asf-primary;
   box-shadow: none !important;
 }
 
-.sbas-chart-card {
-  //flex: 55;
-}
-
 .sbas-metadata {
   overflow: auto;
   height: 100%;
@@ -70,10 +66,7 @@ $info-color: $asf-primary;
 
 .chart-resize-handle-left,
 .chart-resize-handle-right {
-  //position: absolute;
   height: 100%;
-  //cursor: col-resize;
-  //width: 14px;
   background-image: url('//assets/div-handles/hsizegrip.png');
   background-color: $asf-primary-light;
   background-position: left;

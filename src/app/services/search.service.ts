@@ -29,10 +29,7 @@ export class SearchService {
     const actions = [
       new filterStore.ClearDatasetFilters(),
       new mapStore.SetMapInteractionMode(models.MapInteractionModeType.DRAW),
-      // new filterStore.ClearListFilters(),
-      // // List
-      // new filterStore.ClearListFilters(),
-      // Baseline/SBAS
+      // List
       new scenesStore.ClearBaseline(),
       new filterStore.ClearPerpendicularRange(),
       new filterStore.ClearTemporalRange(),

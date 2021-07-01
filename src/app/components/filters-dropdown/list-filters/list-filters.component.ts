@@ -81,9 +81,17 @@ export class ListFiltersComponent implements OnInit, OnDestroy {
         tap(
           (file_error) => {
             if (file_error.fileError === FileErrors.INVALID_TYPE) {
-              this.notificationService.error( `Invalid File Type for file ${file_error.fileName}`, 'File Error', { duration: 5000 });
+              this.notificationService.error(
+                `Invalid File Type for file ${file_error.fileName}`,
+                'File Error',
+                { duration: 5000 }
+              );
             } else if (file_error.fileError === FileErrors.TOO_LARGE) {
-              this.notificationService.error( `File is too large (over 10MB) for file ${file_error.fileName}`, 'File Error', { duration: 5000 });
+              this.notificationService.error(
+                `File is too large (over 10MB) for file ${file_error.fileName}`,
+                'File Error',
+                { duration: 5000 }
+              );
             }
           }
         ),
@@ -96,20 +104,15 @@ export class ListFiltersComponent implements OnInit, OnDestroy {
     this.subs.add(
       combineLatest(
       this.actions$.pipe(
-        ofType(searchStore.SearchActionType.SET_SEARCH_TYPE_AFTER_SAVE, searchStore.SearchActionType.MAKE_SEARCH, filtersStore.FiltersActionType.RESTORE_FILTERS),
+        ofType(
+          searchStore.SearchActionType.SET_SEARCH_TYPE_AFTER_SAVE,
+          searchStore.SearchActionType.MAKE_SEARCH,
+          filtersStore.FiltersActionType.RESTORE_FILTERS
+        ),
         withLatestFrom(this.store$.select(filtersStore.getSearchList).pipe(map(list => list.join('\n')))),
-        // )
       )).subscribe(([[_, listStr]]) => this.searchList = listStr
       )
     );
-
-    // this.subs.add(
-    //   this.store$.select(filtersStore.getSearchList).pipe(
-    //     map(list => list.join('\n'))
-    //   ).subscribe(
-    //     listStr => this.searchList = listStr
-    //   )
-    // );
 
     this.subs.add(
       this.newListInput$.asObservable().pipe(
@@ -277,7 +280,8 @@ export class ListFiltersComponent implements OnInit, OnDestroy {
 
   private updateSearchList(granules: string[]) {
     let current_list = this.searchList;
-    if(current_list !== undefined && current_list !== '') {
+
+    if (current_list !== undefined && current_list !== '') {
       current_list += ',' + granules.join();
     } else {
       current_list = granules.join();

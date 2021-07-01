@@ -1,4 +1,4 @@
-import {Component, OnInit, OnDestroy, Input, HostListener} from '@angular/core';
+import { Component, OnInit, OnDestroy, Input } from '@angular/core';
 
 import { Store } from '@ngrx/store';
 import { SubSink } from 'subsink';
@@ -47,7 +47,9 @@ export class InfoBarComponent implements OnInit, OnDestroy {
   constructor(
     private store$: Store<AppState>,
     private screenSize: services.ScreenSizeService,
-  ) { this.showSearch(); }
+  ) {
+    this.showSearch();
+  }
 
   ngOnInit() {
 
@@ -121,11 +123,6 @@ export class InfoBarComponent implements OnInit, OnDestroy {
 
   }
 
-  @HostListener('window:resize', ['$event'])
-  onResize(_) {
-    this.screenResized();
-  }
-
   public showSearch() {
     const id = 'b8df7ea0-38a5-11eb-9b20-0242ac130002';
     const ci_search = document.createElement('script');
@@ -134,10 +131,6 @@ export class InfoBarComponent implements OnInit, OnDestroy {
     ci_search.src = 'https://cse.expertrec.com/api/js/ci_common.js?id=' + id;
     const s = document.getElementsByTagName('script')[0];
     s.parentNode.insertBefore(ci_search, s);
-}
-
-  public screenResized() {
-    // this.showSearch();
   }
 
   ngOnDestroy() {

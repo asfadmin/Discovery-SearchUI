@@ -796,9 +796,6 @@ export const areFiltersChanged = createSelector(
     }
     const keys = Object.keys(state).filter(key => key !== 'previousFilters');
     return keys.some(key => state[key] !== state.previousFilters[key]);
-    // for (const key in keys) {
-
-    // })
   }
 );
 

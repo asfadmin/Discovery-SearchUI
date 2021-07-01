@@ -9,15 +9,6 @@ $idk-pad: 21px;
 $background-color: $asf-primary-light;
 $color: $asf-primary-dark;
 
-.dl-card-content {
-  //height: 450px;
-  //overflow-y: scroll;
-}
-
-.dl-card-content-mobile {
-  width: 380px;
-}
-
 .dl-title-group {
   padding: 0 10px 0 10px;
   margin-top: -$bottom-offset;
@@ -114,7 +105,6 @@ $color: $asf-primary-dark;
 }
 
 button {
-  //width: 90px;
   height: 36px;
   font-weight: 100;
 }
