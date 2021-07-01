@@ -1,16 +1,18 @@
-import { Component, OnInit, Input, Output, EventEmitter, SimpleChanges } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 
 import * as models from '@models';
 import * as hyp3Store from '@store/hyp3';
 import { Store } from '@ngrx/store';
 import { AppState } from '@store';
 import * as searchStore from '@store/search';
-import { SearchType } from '@models';
+import { QueuedHyp3Job, SearchType } from '@models';
 import * as services from '@services';
 import * as userStore from '@store/user';
 import { MatDialogRef } from '@angular/material/dialog';
 import { ProcessingQueueComponent } from '@components/header/processing-queue';
 import {SubSink} from 'subsink';
+import { BehaviorSubject, combineLatest } from 'rxjs';
+import { distinctUntilChanged, filter, map } from 'rxjs/operators';
 
 @Component({
   selector: 'app-processing-queue-jobs',
@@ -20,8 +22,20 @@ import {SubSink} from 'subsink';
 
 export class ProcessingQueueJobsComponent implements OnInit {
 
-  @Input() jobs: models.QueuedHyp3Job[];
+
   @Input() areJobsLoading: boolean;
+
+  @Input('jobs') set jobs(val: models.QueuedHyp3Job[]) { this.jobs$.next(val); };
+  private jobs$ = new BehaviorSubject<models.QueuedHyp3Job[]>([]);
+  private sortChange$ = new BehaviorSubject<void>(null);
+
+  // change detection keeps updating the view when it shouldn't causing flickering.
+  // this observable ensures we only update the dispalyed processing queue list when the values actually change
+  // or when the user changes the sorting order.
+  jobsfiltered$ = combineLatest(this.jobs$.pipe(distinctUntilChanged()), this.sortChange$).pipe(
+    map(([jobs, _]) => jobs),
+    filter(jobs => !!jobs),
+    map(jobs => this.sortJobQueue(jobs)))
 
   @Output() removeJob = new EventEmitter<models.QueuedHyp3Job>();
 
@@ -33,7 +47,7 @@ export class ProcessingQueueJobsComponent implements OnInit {
   public sortOrder: ProcessingQueueJobsSortOrder = ProcessingQueueJobsSortOrder.LATEST;
   public sortType: ProcessingQueueJobsSortType = ProcessingQueueJobsSortType.ACQUISITION;
 
-  public Order = ProcessingQueueJobsSortOrder;
+  public jobsDisplay: QueuedHyp3Job[] = [];
 
   private subs = new SubSink();
 
@@ -49,14 +63,16 @@ export class ProcessingQueueJobsComponent implements OnInit {
         isLoggedIn => this.isLoggedIn = isLoggedIn
       )
     );
+
+    this.subs.add(
+      this.jobsfiltered$.subscribe(
+        jobs => this.jobsDisplay = jobs
+      )
+    )
   }
 
-  ngOnChanges(changes: SimpleChanges): void {
-    if(changes['jobs']) {
-      if(changes['jobs'].previousValue !== changes['jobs'].previousValue) {
-        this.jobs = changes['jobs'].currentValue;
-      }
-    }
+  public onSortChange() {
+    this.sortChange$.next(null);
   }
 
   public onProjectNameChange(projectName: string): void {
@@ -86,8 +102,9 @@ export class ProcessingQueueJobsComponent implements OnInit {
   }
 
   public sortJobQueue(jobs: models.QueuedHyp3Job[]): models.QueuedHyp3Job[] {
+    let output = [].concat(jobs);
     if(this.sortType === ProcessingQueueJobsSortType.ACQUISITION) {
-      jobs = jobs.sort((a, b) => {
+      output = output.sort((a, b) => {
         if(a.granules[0].metadata.date < b.granules[0].metadata.date) {
           return -1;
         } else if(a.granules[0].metadata.date > b.granules[0].metadata.date) {
@@ -98,17 +115,17 @@ export class ProcessingQueueJobsComponent implements OnInit {
     }
 
     if(this.sortOrder === ProcessingQueueJobsSortOrder.LATEST) {
-      jobs.reverse();
+      output = output.reverse();
     }
 
-    return jobs;
+    return output;
   }
 
 }
 
 export enum ProcessingQueueJobsSortOrder {
   OLDEST =  'Oldest',
-  LATEST ='Latest'
+  LATEST = 'Latest'
 }
 export enum ProcessingQueueJobsSortType {
   ACQUISITION = 'Start Date',
