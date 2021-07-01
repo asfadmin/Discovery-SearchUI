@@ -317,7 +317,7 @@ export class AppComponent implements OnInit, OnDestroy {
         options
       );
 
-      toast.onHidden.pipe(take(0)).subscribe(() => {
+      toast.onHidden.pipe(take(1)).subscribe(() => {
         const expireDate = new Date();
         expireDate.setFullYear(expireDate.getFullYear() + 1);
         document.cookie = `cookieconsent_status=dismiss; expires=${expireDate.toUTCString()}`;
