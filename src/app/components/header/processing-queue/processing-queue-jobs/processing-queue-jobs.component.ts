@@ -13,6 +13,7 @@ import { ProcessingQueueComponent } from '@components/header/processing-queue';
 import {SubSink} from 'subsink';
 import { BehaviorSubject, combineLatest } from 'rxjs';
 import { distinctUntilChanged, filter, map } from 'rxjs/operators';
+import * as moment from 'moment';
 
 @Component({
   selector: 'app-processing-queue-jobs',
@@ -105,9 +106,9 @@ export class ProcessingQueueJobsComponent implements OnInit {
     let output = [].concat(jobs);
     if(this.sortType === ProcessingQueueJobsSortType.ACQUISITION) {
       output = output.sort((a, b) => {
-        if(a.granules[0].metadata.date < b.granules[0].metadata.date) {
+        if(moment(a.granules[0].metadata.date) < moment(b.granules[0].metadata.date)) {
           return -1;
-        } else if(a.granules[0].metadata.date > b.granules[0].metadata.date) {
+        } else if(moment(a.granules[0].metadata.date) > moment(b.granules[0].metadata.date)) {
           return 1;
         }
         return 0;
