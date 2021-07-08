@@ -35,7 +35,6 @@ export class DownloadService {
     }).pipe(download(filename, blob => this.save(blob, filename)));
   }
 
-
   // blob(url: string, filename?: string): Observable<Blob> {
   blob(url: string): Observable<Blob> {
     return this.http.get(url, {

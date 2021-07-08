@@ -8,6 +8,10 @@ export const SAVER = new InjectionToken<Saver>('saver');
 
 export function myStreamSaver (blob, filename) {
 
+  // StreamSaver can detect and use the Ponyfill that is loaded from the cdn.
+  // streamSaver.WritableStream = streamSaver.WritableStream;
+  // streamSaver.TransformStream = streamSaver.TransformStream;
+
   console.log('Window:', window);
 
   const fileStream = streamSaver.createWriteStream( filename, {
@@ -23,15 +27,16 @@ export function myStreamSaver (blob, filename) {
       .then(() => console.log('done writing'));
   }
 
-  // window.writer = fileStream.getWriter();
-  //
-  // const reader = readableStream.body.getReader();
-  // const pump = () => reader.read()
-  //   .then(res => readableStream.done
-  //     ? writer.close()
-  //     : writer.write(res.value).then(pump));
-  //
-  // pump();
+  // less optimized
+  const writer = fileStream.getWriter();
+
+  const reader = readableStream.body.getReader();
+  const pump = () => reader.read()
+    .then(res => readableStream.done
+      ? writer.close()
+      : writer.write(res.value).then(pump));
+
+  pump();
 }
 export function getSaver(): Saver {
   return myStreamSaver;

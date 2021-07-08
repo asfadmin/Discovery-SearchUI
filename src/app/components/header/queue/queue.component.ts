@@ -17,6 +17,7 @@ import { DownloadService } from '@services/download.service';
 import { Download } from '@services/download';
 import { Observable } from 'rxjs';
 
+
 export interface selectedItems {
   id: string;
   url: string;
@@ -162,8 +163,7 @@ export class QueueComponent implements OnInit, OnDestroy {
 
   public downloadFile(url: string, filename: string) {
     console.log('downloadFile() url:', url, ' filename:', filename);
-    this.download$ = this.downloads.download(url, filename);
-    // this.downloads.download(url, filename);
+    this.downloads.download(url, filename).subscribe();
   }
 
   public toggleItemSelected(productId, downloadUrl) {
