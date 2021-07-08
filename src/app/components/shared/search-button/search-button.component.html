@@ -37,7 +37,7 @@
 
   <span matTooltip = "Sign in to save your filters" [matTooltipDisabled]="isLoggedIn"
         matTooltipPosition = "after">
-    <button *ngIf="searchType !== searchTypes.CUSTOM_PRODUCTS"
+    <button *ngIf="searchType !== searchTypes.CUSTOM_PRODUCTS && searchType !== searchTypes.LIST"
       mat-menu-item [disabled]="!isLoggedIn" (click)="saveCurrentFilters()">
       Save Filters
     </button>
@@ -63,7 +63,7 @@
   [matTooltipDisabled]="isLoggedIn"
   matTooltip="Sign in to see your saved filters"
   matTooltipPosition="after">
-    <button mat-menu-item [disabled]="!isLoggedIn" *ngIf="searchType !== searchTypes.CUSTOM_PRODUCTS"
+    <button mat-menu-item [disabled]="!isLoggedIn" *ngIf="searchType !== searchTypes.CUSTOM_PRODUCTS && searchType !== searchTypes.LIST"
     (click)="onOpenSavedFilters()">Saved Filters...</button>
   </span>
 
