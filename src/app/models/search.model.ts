@@ -43,6 +43,8 @@ export interface SbasFiltersType {
   temporal: number;
   perpendicular: number;
   customPairIds: string[][];
+
+  thresholdOverlap: boolean;
 }
 
 export interface GeographicFiltersType {

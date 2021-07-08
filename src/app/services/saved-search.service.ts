@@ -51,12 +51,15 @@ export class SavedSearchService {
     this.store$.select(scenesStore.getFilterMaster),
     this.store$.select(scenesStore.getCustomPairIds),
     this.store$.select(filtersStore.getSbasSearch),
-    this.store$.select(filtersStore.getDateRange)
+    this.store$.select(filtersStore.getDateRange),
+    this.store$.select(filtersStore.getSBASOverlapToggle),
   ).pipe(
-    map(([reference, customPairIds, sbasFilters, dateRange]) => ({
+    map(([reference, customPairIds, sbasFilters, dateRange, thresholdOverlap]) => ({
       reference,
       dateRange,
       customPairIds,
+      thresholdOverlap,
+
       ...sbasFilters
     }))
   );

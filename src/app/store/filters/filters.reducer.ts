@@ -35,7 +35,7 @@ export interface FiltersState {
 
   previousFilters: FiltersState;
 
-  SBASoverlapToggle: boolean;
+  thresholdOverlap: boolean;
 }
 
 
@@ -88,7 +88,7 @@ export const initState: FiltersState = {
 
   previousFilters: null,
 
-  SBASoverlapToggle: true
+  thresholdOverlap: true
 };
 
 
@@ -576,7 +576,7 @@ export function filtersReducer(state = initState, action: FiltersActions): Filte
     case FiltersActionType.TOGGLE_50_PERCENT_OVERLAP: {
       return {
         ...state,
-        SBASoverlapToggle: !state.SBASoverlapToggle
+        thresholdOverlap: !state.thresholdOverlap
       }
     }
     default: {
@@ -769,7 +769,8 @@ export const getSbasSearch = createSelector(
     temporal: state.temporalRange.start,
     dateRange: state.dateRange,
     season: state.season,
-    perpendicular: state.perpendicularRange.start
+    perpendicular: state.perpendicularRange.start,
+    thresholdOverlap: state.thresholdOverlap
   })
 );
 
@@ -801,5 +802,5 @@ export const areFiltersChanged = createSelector(
 
 export const getSBASOverlapToggle = createSelector(
   getFiltersState,
-  (state: FiltersState) => state.SBASoverlapToggle
+  (state: FiltersState) => state.thresholdOverlap
 );

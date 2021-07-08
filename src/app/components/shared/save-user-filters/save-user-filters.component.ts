@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { FilterType, SearchType } from '@models';
+import { FilterType, GeographicFiltersType, SearchType } from '@models';
 import { Store } from '@ngrx/store';
 import { AppState } from '@store';
 import * as userStore from '@store/user';
@@ -9,7 +9,7 @@ import * as uiStore from '@store/ui';
 import * as models from '@models';
 import { SubSink } from 'subsink';
 import { combineLatest } from 'rxjs';
-import { delay, tap } from 'rxjs/operators';
+import { delay, map, tap } from 'rxjs/operators';
 import * as uuid from 'uuid/v1';
 import { ScreenSizeService } from '@services';
 @Component({
@@ -24,6 +24,7 @@ export class SaveUserFiltersComponent implements OnInit, OnDestroy {
   public breakpoints = models.Breakpoints;
 
   public searchType$ = this.store$.select(searchStore.getSearchType);
+  public searchType: models.SearchType;
   public SearchType = models.SearchType;
 
   public saveFilterOn: boolean;
@@ -52,7 +53,19 @@ export class SaveUserFiltersComponent implements OnInit, OnDestroy {
     );
 
     this.subs.add(
-      this.store$.select(userStore.getSavedFilters).subscribe ( userFilters =>
+      this.store$.select(userStore.getSavedFilters).pipe(
+        map(presets => presets.map(preset =>
+          preset.searchType === this.SearchType.DATASET ?
+            ({ ...preset,
+                filters: {
+                  ... preset.filters,
+                  flightDirections: Array.from((preset.filters as GeographicFiltersType).flightDirections)
+                }
+            })
+            : preset
+          )
+        )
+      ).subscribe ( userFilters =>
         {
           this.userFilters = userFilters;
           const output = this.filterBySearchType(this.userFilters);
@@ -71,7 +84,10 @@ export class SaveUserFiltersComponent implements OnInit, OnDestroy {
     );
 
     this.subs.add(
-      combineLatest([this.store$.select(filterStore.getGeographicSearch),
+      combineLatest([
+        this.store$.select(filterStore.getGeographicSearch).pipe(
+          map(preset => ({... preset, flightDirections: Array.from(preset.flightDirections)}))
+        ),
         this.store$.select(filterStore.getListSearch),
         this.store$.select(filterStore.getBaselineSearch),
         this.store$.select(filterStore.getSbasSearch)])
@@ -84,8 +100,14 @@ export class SaveUserFiltersComponent implements OnInit, OnDestroy {
     );
 
     this.subs.add(
+      this.searchType$.subscribe(searchType => {
+        this.searchType = searchType
+      })
+    )
+
+    this.subs.add(
       this.store$.select(uiStore.getIsSaveFilterOn).pipe(
-        tap(saveSearchOn => this.saveFilterOn = saveSearchOn),
+        tap(saveFilterOn => this.saveFilterOn = saveFilterOn),
         delay(250)
       ).subscribe(
         _ => {
@@ -114,6 +136,17 @@ export class SaveUserFiltersComponent implements OnInit, OnDestroy {
 
   public filterBySearchType(filters: {name: string, searchType: SearchType, filters: FilterType}[]) {
     let output = filters.filter(preset => preset.searchType === this.currentSearchType);
+    if(this.searchType === SearchType.DATASET) {
+      output = output.map(preset => (
+          { ...preset,
+            filters: {
+              ... preset.filters,
+              flightDirections: Array.from((preset.filters as GeographicFiltersType).flightDirections)
+            }
+          }
+        )
+      );
+    }
     return output;
   }
 
