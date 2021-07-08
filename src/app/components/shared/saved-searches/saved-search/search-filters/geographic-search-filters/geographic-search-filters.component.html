@@ -29,8 +29,11 @@
   <div *ngIf="filters.flightDirections.length">
     <b>Flight Dir:</b> {{ filters.flightDirections }}
   </div>
+  <div *ngIf="filters.selectedDataset">
+    <b>Dataset:</b> {{ filters.selectedDataset }}
+  </div>
   <div *ngIf="filters.subtypes.length">
-    <b>Dataset:</b> {{ formatTypesList(filters.subtypes) }}
+    <b>Dataset Subtypes:</b> {{ formatTypesList(filters.subtypes) }}
   </div>
   <div *ngIf="filters.selectedMission">
     <b>Campaign:</b> {{ filters.selectedMission }}
