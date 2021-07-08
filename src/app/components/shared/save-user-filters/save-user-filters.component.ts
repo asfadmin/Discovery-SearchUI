@@ -42,7 +42,7 @@ export class SaveUserFiltersComponent implements OnInit, OnDestroy {
   private subs = new SubSink();
 
   constructor(private store$: Store<AppState>,
-    private screenSize: ScreenSizeService){}
+    private screenSize: ScreenSizeService) {}
 
   ngOnInit(): void {
 
@@ -65,8 +65,7 @@ export class SaveUserFiltersComponent implements OnInit, OnDestroy {
             : preset
           )
         )
-      ).subscribe ( userFilters =>
-        {
+      ).subscribe ( userFilters => {
           this.userFilters = userFilters;
           const output = this.filterBySearchType(this.userFilters);
           this.displayedFilter = output.reverse();
@@ -74,8 +73,7 @@ export class SaveUserFiltersComponent implements OnInit, OnDestroy {
     );
 
     this.subs.add(
-      this.store$.select(searchStore.getSearchType).subscribe(searchtype =>
-        {
+      this.store$.select(searchStore.getSearchType).subscribe(searchtype => {
           this.currentSearchType = searchtype;
           const output = this.filterBySearchType(this.userFilters);
           this.displayedFilter = output.reverse();
@@ -101,9 +99,9 @@ export class SaveUserFiltersComponent implements OnInit, OnDestroy {
 
     this.subs.add(
       this.searchType$.subscribe(searchType => {
-        this.searchType = searchType
+        this.searchType = searchType;
       })
-    )
+    );
 
     this.subs.add(
       this.store$.select(uiStore.getIsSaveFilterOn).pipe(
@@ -112,7 +110,7 @@ export class SaveUserFiltersComponent implements OnInit, OnDestroy {
       ).subscribe(
         _ => {
           if (this.saveFilterOn) {
-            this.newFilterName = 'New Filter Preset'
+            this.newFilterName = 'New Filter Preset';
             this.onSaveFilters();
             this.store$.dispatch(new uiStore.SetSaveFilterOn(false));
           }
@@ -136,7 +134,7 @@ export class SaveUserFiltersComponent implements OnInit, OnDestroy {
 
   public filterBySearchType(filters: {name: string, searchType: SearchType, filters: FilterType}[]) {
     let output = filters.filter(preset => preset.searchType === this.currentSearchType);
-    if(this.searchType === SearchType.DATASET) {
+    if (this.searchType === SearchType.DATASET) {
       output = output.map(preset => (
           { ...preset,
             filters: {
@@ -151,7 +149,7 @@ export class SaveUserFiltersComponent implements OnInit, OnDestroy {
   }
 
   public updatedSearchName(id: string) {
-    if(id === this.newSearchId) {
+    if (id === this.newSearchId) {
       this.newSearchId = '';
     }
   }
