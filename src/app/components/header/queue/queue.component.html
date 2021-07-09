@@ -111,7 +111,7 @@
                   <button (click)="onRemoveProduct(product)" matTooltip="Remove file" mat-icon-button>
                     <mat-icon>close</mat-icon>
                   </button>
-                <div class="progress-bar" *ngIf="download$ | async as download">
+                <div class="progress-bar" *ngIf="dFile  as download">
 <!--                    <mat-progress-bar [ngStyle]="{'visibility': (download.state === 'DONE' ) ? 'hidden' : 'visible'}"-->
                     <mat-progress-bar
                       *ngIf="download.id == product.id"

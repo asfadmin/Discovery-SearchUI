@@ -33,6 +33,7 @@ export class QueueComponent implements OnInit, OnDestroy {
   @Input() appQueueComponentModel: string;
 
   download$: Observable<Download>;
+  public dFile: Download;
 
   public queueHasOnDemandProducts = false;
   public showDemWarning: boolean;
@@ -163,7 +164,11 @@ export class QueueComponent implements OnInit, OnDestroy {
 
   public downloadFile(url: string, filename: string) {
     console.log('downloadFile() url:', url, ' filename:', filename);
-    this.downloads.download(url, filename).subscribe();
+    // this.download$ = this.downloads.download(url, filename);
+    this.downloads.download(url, filename).subscribe( dFile => {
+      this.dFile = dFile;
+      console.log(this.dFile.id, this.dFile.progress);
+    });
   }
 
   public toggleItemSelected(productId, downloadUrl) {
