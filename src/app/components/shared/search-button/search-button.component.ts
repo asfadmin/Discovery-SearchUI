@@ -43,6 +43,7 @@ export class SearchButtonComponent implements OnInit, OnDestroy {
   private stackReferenceScene: string;
   private latestReferenceScene: string;
   private isFiltersOpen = false;
+  private resultsMenuOpen = false;
 
   constructor(
     private store$: Store<AppState>,
@@ -63,6 +64,11 @@ export class SearchButtonComponent implements OnInit, OnDestroy {
     this.subs.add(
       this.store$.select(searchStore.getSearchType).subscribe(
         searchType => this.searchType = searchType
+      )
+    );
+    this.subs.add(
+      this.store$.select(uiStore.getIsResultsMenuOpen).subscribe(
+        openThing => this.resultsMenuOpen = openThing
       )
     );
 
@@ -103,9 +109,11 @@ export class SearchButtonComponent implements OnInit, OnDestroy {
   }
 
   public onDoSearch(): void {
-    if ((this.searchType !== this.searchTypes.SBAS && this.searchType !== this.searchTypes.BASELINE) ||
+    if (((this.searchType === this.searchTypes.SBAS || this.searchType === this.searchTypes.BASELINE ) && this.isFiltersOpen &&
+      (this.stackReferenceScene !== this.latestReferenceScene || !this.resultsMenuOpen)) ||
     ((this.stackReferenceScene !== this.latestReferenceScene || !this.isFiltersOpen) &&
-        (this.searchType === this.searchTypes.SBAS || this.searchType === this.searchTypes.BASELINE))
+        (this.searchType === this.searchTypes.SBAS || this.searchType === this.searchTypes.BASELINE)) ||
+        (this.searchType !== this.searchTypes.SBAS && this.searchType !== this.searchTypes.BASELINE)
       ) {
       if (this.searchType === SearchType.BASELINE) {
         this.clearBaselineRanges();

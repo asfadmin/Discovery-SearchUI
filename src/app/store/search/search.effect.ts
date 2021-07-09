@@ -145,7 +145,9 @@ export class SearchEffects {
     switchMap(action => [
       new scenesStore.ClearScenes(),
       new uiStore.CloseAOIOptions(),
-      action.payload === models.SearchType.LIST ?
+      action.payload === models.SearchType.LIST ||
+      action.payload === models.SearchType.SBAS ||
+      action.payload === models.SearchType.BASELINE ?
         new uiStore.OpenFiltersMenu() :
         new uiStore.CloseFiltersMenu(),
     ]),

@@ -9,6 +9,7 @@ import { BaselineFiltersComponent } from './baseline-filters.component';
 import { MasterSceneSelectorModule } from '@components/shared/selectors/master-scene-selector';
 import { SearchTypeSelectorModule } from '@components/shared/selectors/search-type-selector';
 import { BaselineSlidersModule } from './baseline-sliders';
+import { CopyToClipboardModule } from '@components/shared/copy-to-clipboard';
 
 
 @NgModule({
@@ -22,6 +23,7 @@ import { BaselineSlidersModule } from './baseline-sliders';
     DateSelectorModule,
     SearchTypeSelectorModule,
     BaselineSlidersModule,
+    CopyToClipboardModule
   ],
   exports: [
     BaselineFiltersComponent

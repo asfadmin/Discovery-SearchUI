@@ -18,7 +18,7 @@
   </mat-expansion-panel>
 
   <mat-expansion-panel
-    *ngIf="(breakpoint$ | async) === breakpoints.MOBILE"
+    *ngIf="(breakpoint$ | async) === breakpoints.MOBILE || !areResultsLoaded"
     [expanded]="defaultPanelOpenState" [disabled]="panelIsDisabled"
     (click)="selectPanel(panels.MASTER)"
     [class.raised-section]="isSelected(panels.MASTER)">
@@ -31,6 +31,15 @@
 
     <div class="w100" style="display: flex; margin-top: 25px;">
       <app-master-scene-selector class="w100"></app-master-scene-selector>
+    </div>
+    <div class="bl-example">
+      Example: S1A_IW_SLC__1SSV_20150601T010209_20150601T010236_006173_00808F_20A0
+      <app-copy-to-clipboard
+      value="S1A_IW_SLC__1SSV_20150601T010209_20150601T010236_006173_00808F_20A0"
+      prompt="Copy Name"
+      style="margin: 0 3px;"
+      class="clipboard-icon">
+    </app-copy-to-clipboard>
     </div>
   </mat-expansion-panel>
 

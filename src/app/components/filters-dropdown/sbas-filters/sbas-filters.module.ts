@@ -10,6 +10,7 @@ import { SbasFiltersComponent } from './sbas-filters.component';
 import { MasterSceneSelectorModule } from '@components/shared/selectors/master-scene-selector';
 import { SearchTypeSelectorModule } from '@components/shared/selectors/search-type-selector';
 import { ResultsMenuModule } from '@components/results-menu';
+import { CopyToClipboardModule } from '@components/shared/copy-to-clipboard';
 
 
 @NgModule({
@@ -24,6 +25,7 @@ import { ResultsMenuModule } from '@components/results-menu';
         MasterSceneSelectorModule,
         SearchTypeSelectorModule,
         ResultsMenuModule,
+        CopyToClipboardModule
     ],
   exports: [
     SbasFiltersComponent
