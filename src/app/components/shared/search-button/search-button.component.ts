@@ -68,7 +68,7 @@ export class SearchButtonComponent implements OnInit, OnDestroy {
     );
     this.subs.add(
       this.store$.select(uiStore.getIsResultsMenuOpen).subscribe(
-        openThing => this.resultsMenuOpen = openThing
+        isOpen => this.resultsMenuOpen = isOpen
       )
     );
 
