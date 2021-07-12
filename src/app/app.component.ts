@@ -367,6 +367,7 @@ export class AppComponent implements OnInit, OnDestroy {
 
   public onCloseSidebar(): void {
     this.store$.dispatch(new uiStore.CloseSidebar());
+    this.store$.dispatch(new uiStore.CloseFiltersSidebar());
   }
 
   public onLoadUrlState(): void {
