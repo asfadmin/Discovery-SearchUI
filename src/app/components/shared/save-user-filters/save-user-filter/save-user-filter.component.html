@@ -9,7 +9,7 @@
 
 
 
-
+<div>
     <span *ngIf="!isEditingName"
         (click)="onEditName()"
         class="filter-name clickable">
@@ -32,6 +32,14 @@
 
 
     {{ filterPreset.searchType }}
+  </div>
+
+  <div style="margin-top: 5px;">
+    <span *ngIf="filterPreset.searchType === SearchType.DATASET">
+      {{ filterPreset.filters.selectedDataset }}
+    </span>
+  </div>
+
         </div>
     </div>
     <div>
