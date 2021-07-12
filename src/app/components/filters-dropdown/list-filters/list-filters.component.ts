@@ -232,15 +232,14 @@ export class ListFiltersComponent implements OnInit, OnDestroy {
   private parseCSV(file) {
     this.ngxCsvParser.parse(file, { header: true, delimiter: ',' })
     .pipe(first()).subscribe((result: Array<any>) => {
-      const granules: string[] = result.map(row =>
-        {
-          let processingType ='';
+      const granules: string[] = result.map(row => {
+          let processingType = '';
 
-          if(this.listSearchMode === ListSearchType.PRODUCT) {
+          if (this.listSearchMode === ListSearchType.PRODUCT) {
             processingType = `-{row['Processing Level']}`;
           }
 
-          return row['Granule Name'] + processingType
+          return row['Granule Name'] + processingType;
         });
       this.updateSearchList(granules);
     }, (error: NgxCSVParserError) => {
@@ -253,7 +252,7 @@ export class ListFiltersComponent implements OnInit, OnDestroy {
       filereader.onload = _ => {
         const res = filereader.result as string;
         const features: any[] = JSON.parse(res)['features'];
-        const typeKey = this.listSearchMode === ListSearchType.PRODUCT ? 'fileID' : 'sceneName'
+        const typeKey = this.listSearchMode === ListSearchType.PRODUCT ? 'fileID' : 'sceneName';
         const granules = features.map(feature => feature['properties'][typeKey]);
 
         this.updateSearchList(granules);
@@ -270,27 +269,26 @@ export class ListFiltersComponent implements OnInit, OnDestroy {
 
           observable.pipe(first()).subscribe(result => {
               const placemarks: [] = result['kml']['Document']['Placemark'];
-              const granules: string[] = placemarks.map(placemark =>
-                {
+              const granules: string[] = placemarks.map(placemark => {
                   let suffix = '';
-                  if(this.listSearchMode === ListSearchType.PRODUCT) {
+                  if (this.listSearchMode === ListSearchType.PRODUCT) {
                     const metadata: string[] =  placemark['description']['div'][0]['ul']['li'];
                     const processingTypeField = metadata.find(field => field.startsWith('Processing type'));
                     const temp = processingTypeField.split(' ').pop();
 
                     const processingType = temp.slice(1, temp.length - 1); // removes parenthesis
 
-                    if(processingType.toLowerCase() === 'slc') {
+                    if (processingType.toLowerCase() === 'slc') {
                       suffix = '-' + processingType;
                     }
 
-                    if(processingType.toLowerCase() === 'grd-hd' || processingType.toLowerCase() === 'grd_hd') {
+                    if (processingType.toLowerCase() === 'grd-hd' || processingType.toLowerCase() === 'grd_hd') {
                       suffix = '-' + 'GRD_HD';
 
                     }
 
-                    if(processingType.toLowerCase() === 'metadata-grd-hd' || processingType.toLowerCase() === 'metadata_grd_hd') {
-                      suffix ='-' + 'METADATA_GRD_HD';
+                    if (processingType.toLowerCase() === 'metadata-grd-hd' || processingType.toLowerCase() === 'metadata_grd_hd') {
+                      suffix = '-' + 'METADATA_GRD_HD';
                     }
                   }
                   return placemark['name'] + suffix;
@@ -303,7 +301,7 @@ export class ListFiltersComponent implements OnInit, OnDestroy {
   }
 
   private parseMetalink(file) {
-    if(this.listSearchMode === ListSearchType.SCENE) {
+    if (this.listSearchMode === ListSearchType.SCENE) {
     const filereader = new FileReader();
       filereader.onload = _ => {
         const res = filereader.result as string;
