@@ -283,6 +283,15 @@ export class ListFiltersComponent implements OnInit, OnDestroy {
                     if(processingType.toLowerCase() === 'slc') {
                       suffix = '-' + processingType;
                     }
+
+                    if(processingType.toLowerCase() === 'grd-hd' || processingType.toLowerCase() === 'grd_hd') {
+                      suffix = '-' + 'GRD_HD';
+
+                    }
+
+                    if(processingType.toLowerCase() === 'metadata-grd-hd' || processingType.toLowerCase() === 'metadata_grd_hd') {
+                      suffix ='-' + 'METADATA_GRD_HD';
+                    }
                   }
                   return placemark['name'] + suffix;
                 });
