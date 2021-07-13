@@ -263,6 +263,7 @@ export class ListFiltersComponent implements OnInit, OnDestroy {
   }
 
   private parseKML(file) {
+    if(this.listSearchMode === ListSearchType.SCENE) {
       const filereader = new FileReader();
         filereader.onload = _ => {
           const res = filereader.result as string;
@@ -273,43 +274,14 @@ export class ListFiltersComponent implements OnInit, OnDestroy {
               const placemarks: [] = result['kml']['Document']['Placemark'];
               const granules: string[] = placemarks.map(placemark =>
                 {
-                  let suffix = '';
-                  if(this.listSearchMode === ListSearchType.PRODUCT) {
-                    const metadata: string[] =  placemark['description']['div'][0]['ul']['li'];
-                    const processingTypeField = metadata.find(field => field.startsWith('Processing type'));
-
-                    let processingTypeFull = processingTypeField.split(' ');
-
-
-                    let temp = processingTypeFull.pop();
-
-                    let processingType = temp.slice(1, temp.length - 1); // removes parenthesis
-
-                    temp = processingTypeFull.pop();
-
-                    if(temp.toLowerCase() === 'metadata') {
-                      processingType = temp.toLowerCase() + '_' + processingType;
-                    }
-
-                    if(processingType.toLowerCase() === 'slc' || processingType.toLowerCase().endsWith('raw')) {
-                      suffix = '-' + processingType;
-                    }
-
-                    if(processingType.toLowerCase().endsWith('grd-hd') || processingType.toLowerCase().endsWith('grd_hd')) {
-                      if(processingType.toLowerCase().endsWith('grd-hd')) {
-                        processingType = processingType.toLowerCase();
-                        processingType = processingType.replace('grd-hd', 'grd_hd');
-                      }
-                      suffix = '-' + processingType.toLowerCase();
-                    }
-                  }
-                  return placemark['name'] + suffix;
+                  return placemark['name'];
                 });
 
               this.updateSearchList(granules);
             });
       };
       filereader.readAsText(file);
+    }
   }
 
   private parseMetalink(file) {
