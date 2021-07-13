@@ -232,16 +232,15 @@ export class ListFiltersComponent implements OnInit, OnDestroy {
   private parseCSV(file) {
     this.ngxCsvParser.parse(file, { header: true, delimiter: ',' })
     .pipe(first()).subscribe((result: Array<any>) => {
-      const granules: string[] = result.map(row =>
-        {
-          let processingType ='';
+      const granules: string[] = result.map(row => {
+          let processingType = '';
 
-          if(this.listSearchMode === ListSearchType.PRODUCT) {
-            const processLevel = row['Processing Level'].replace('-', '_')
+          if (this.listSearchMode === ListSearchType.PRODUCT) {
+            const processLevel = row['Processing Level'].replace('-', '_');
             processingType = '-' + processLevel;
           }
 
-          return row['Granule Name'] + processingType
+          return row['Granule Name'] + processingType;
         });
       this.updateSearchList(granules);
     }, (error: NgxCSVParserError) => {
@@ -254,7 +253,7 @@ export class ListFiltersComponent implements OnInit, OnDestroy {
       filereader.onload = _ => {
         const res = filereader.result as string;
         const features: any[] = JSON.parse(res)['features'];
-        const typeKey = this.listSearchMode === ListSearchType.PRODUCT ? 'fileID' : 'sceneName'
+        const typeKey = this.listSearchMode === ListSearchType.PRODUCT ? 'fileID' : 'sceneName';
         const granules = features.map(feature => feature['properties'][typeKey]);
 
         this.updateSearchList(granules);
@@ -271,14 +270,13 @@ export class ListFiltersComponent implements OnInit, OnDestroy {
 
           observable.pipe(first()).subscribe(result => {
               const placemarks: [] = result['kml']['Document']['Placemark'];
-              const granules: string[] = placemarks.map(placemark =>
-                {
+              const granules: string[] = placemarks.map(placemark => {
                   let suffix = '';
-                  if(this.listSearchMode === ListSearchType.PRODUCT) {
+                  if (this.listSearchMode === ListSearchType.PRODUCT) {
                     const metadata: string[] =  placemark['description']['div'][0]['ul']['li'];
                     const processingTypeField = metadata.find(field => field.startsWith('Processing type'));
 
-                    let processingTypeFull = processingTypeField.split(' ');
+                    const processingTypeFull = processingTypeField.split(' ');
 
 
                     let temp = processingTypeFull.pop();
@@ -287,16 +285,16 @@ export class ListFiltersComponent implements OnInit, OnDestroy {
 
                     temp = processingTypeFull.pop();
 
-                    if(temp.toLowerCase() === 'metadata') {
+                    if (temp.toLowerCase() === 'metadata') {
                       processingType = temp.toLowerCase() + '_' + processingType;
                     }
 
-                    if(processingType.toLowerCase() === 'slc' || processingType.toLowerCase().endsWith('raw')) {
+                    if (processingType.toLowerCase() === 'slc' || processingType.toLowerCase().endsWith('raw')) {
                       suffix = '-' + processingType;
                     }
 
-                    if(processingType.toLowerCase().endsWith('grd-hd') || processingType.toLowerCase().endsWith('grd_hd')) {
-                      if(processingType.toLowerCase().endsWith('grd-hd')) {
+                    if (processingType.toLowerCase().endsWith('grd-hd') || processingType.toLowerCase().endsWith('grd_hd')) {
+                      if (processingType.toLowerCase().endsWith('grd-hd')) {
                         processingType = processingType.toLowerCase();
                         processingType = processingType.replace('grd-hd', 'grd_hd');
                       }
@@ -313,7 +311,7 @@ export class ListFiltersComponent implements OnInit, OnDestroy {
   }
 
   private parseMetalink(file) {
-    if(this.listSearchMode === ListSearchType.SCENE) {
+    if (this.listSearchMode === ListSearchType.SCENE) {
     const filereader = new FileReader();
       filereader.onload = _ => {
         const res = filereader.result as string;
