@@ -1,6 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
 
 import { SbasFiltersType } from '@models';
+import { EnvironmentService } from '@services';
 
 @Component({
   selector: 'app-sbas-search-filters',
@@ -10,7 +11,9 @@ import { SbasFiltersType } from '@models';
 export class SbasSearchFiltersComponent implements OnInit {
   @Input() filters: SbasFiltersType;
 
-  constructor() { }
+  public maturity = this.env.maturity;
+
+  constructor(private env: EnvironmentService) { }
 
   ngOnInit(): void {
   }

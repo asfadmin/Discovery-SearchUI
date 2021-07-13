@@ -28,7 +28,7 @@
         {{ panels.MASTER }}
       </mat-panel-title>
     </mat-expansion-panel-header>
-    
+
     <div class="w100" style="display: flex; margin-top: 25px;">
       <app-master-scene-selector class="w100"></app-master-scene-selector>
 
@@ -87,11 +87,11 @@
 
 <mat-expansion-panel [expanded]="defaultPanelOpenState" [disabled]="panelIsDisabled"
 (click)="selectPanel(panels.OVERLAP)"
-*ngIf="areResultsLoaded"
+*ngIf="areResultsLoaded && maturity !== 'prod'"
 [class.raised-section]="isSelected(panels.OVERLAP)">
 <mat-expansion-panel-header [collapsedHeight]="customCollapsedHeight" [expandedHeight]="customExpandedHeight">
   <mat-panel-title>
-    Latitudinal Overlap
+    Latitudinal Overlap (Experimental)
   </mat-panel-title>
 </mat-expansion-panel-header>
 <div style="margin-top: 20px;">

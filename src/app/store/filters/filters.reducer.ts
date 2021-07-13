@@ -88,7 +88,7 @@ export const initState: FiltersState = {
 
   previousFilters: null,
 
-  thresholdOverlap: true
+  thresholdOverlap: false
 };
 
 
