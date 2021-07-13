@@ -237,7 +237,8 @@ export class ListFiltersComponent implements OnInit, OnDestroy {
           let processingType ='';
 
           if(this.listSearchMode === ListSearchType.PRODUCT) {
-            processingType = `-{row['Processing Level']}`;
+            const processLevel = row['Processing Level'].replace('-', '_')
+            processingType = '-' + processLevel;
           }
 
           return row['Granule Name'] + processingType
@@ -276,21 +277,30 @@ export class ListFiltersComponent implements OnInit, OnDestroy {
                   if(this.listSearchMode === ListSearchType.PRODUCT) {
                     const metadata: string[] =  placemark['description']['div'][0]['ul']['li'];
                     const processingTypeField = metadata.find(field => field.startsWith('Processing type'));
-                    const temp = processingTypeField.split(' ').pop();
 
-                    const processingType = temp.slice(1, temp.length - 1); // removes parenthesis
+                    let processingTypeFull = processingTypeField.split(' ');
 
-                    if(processingType.toLowerCase() === 'slc') {
+
+                    let temp = processingTypeFull.pop();
+
+                    let processingType = temp.slice(1, temp.length - 1); // removes parenthesis
+
+                    temp = processingTypeFull.pop();
+
+                    if(temp.toLowerCase() === 'metadata') {
+                      processingType = temp.toLowerCase() + '_' + processingType;
+                    }
+
+                    if(processingType.toLowerCase() === 'slc' || processingType.toLowerCase().endsWith('raw')) {
                       suffix = '-' + processingType;
                     }
 
-                    if(processingType.toLowerCase() === 'grd-hd' || processingType.toLowerCase() === 'grd_hd') {
-                      suffix = '-' + 'GRD_HD';
-
-                    }
-
-                    if(processingType.toLowerCase() === 'metadata-grd-hd' || processingType.toLowerCase() === 'metadata_grd_hd') {
-                      suffix ='-' + 'METADATA_GRD_HD';
+                    if(processingType.toLowerCase().endsWith('grd-hd') || processingType.toLowerCase().endsWith('grd_hd')) {
+                      if(processingType.toLowerCase().endsWith('grd-hd')) {
+                        processingType = processingType.toLowerCase();
+                        processingType = processingType.replace('grd-hd', 'grd_hd');
+                      }
+                      suffix = '-' + processingType.toLowerCase();
                     }
                   }
                   return placemark['name'] + suffix;
