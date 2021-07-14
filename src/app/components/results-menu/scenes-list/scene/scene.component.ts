@@ -4,6 +4,10 @@ import { faCopy } from '@fortawesome/free-solid-svg-icons';
 import * as services from '@services';
 import * as models from '@models';
 import { QueuedHyp3Job, Hyp3ableProductByJobType } from '@models';
+import { AppState } from '@store';
+import { Store } from '@ngrx/store';
+
+import * as queueStore from '@store/queue';
 
 @Component({
   selector: 'app-scene',
@@ -36,6 +40,7 @@ export class SceneComponent implements OnInit {
   constructor(
     private screenSize: services.ScreenSizeService,
     private hyp3: services.Hyp3Service,
+    private store$: Store<AppState>,
   ) { }
 
   ngOnInit(): void {
@@ -74,5 +79,22 @@ export class SceneComponent implements OnInit {
 
   public isDownloadable(product: models.CMRProduct): boolean {
     return this.hyp3.isDownloadable(product);
+  }
+
+  public queueExpiredHyp3Job() {
+    const job_types = models.hyp3JobTypes;
+    const job_type = Object.keys(job_types).find(id =>
+      {
+        return this.scene.metadata.job.job_type === id as any;
+      });
+
+    this.store$.dispatch(new queueStore.AddJob({
+      granules: this.scene.metadata.job.job_parameters.scenes,
+      job_type: job_types[job_type]
+    }));
+  }
+
+  public isExpired(job: models.Hyp3Job): boolean {
+    return this.hyp3.isExpired(job);
   }
 }
