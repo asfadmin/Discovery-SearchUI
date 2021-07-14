@@ -85,11 +85,17 @@
       </div>
 
       <div *ngIf="searchType === SearchTypes.CUSTOM_PRODUCTS">
-        <mat-icon
+        <!-- <mat-icon
         *ngIf="isExpired(scene.metadata.job)"
         (click)="queueExpiredHyp3Job()"
         class="icon-margin"
         matTooltip="Resubmit expired {{scene.metadata.job.job_type}} job to On Demand Queue"
+        svgIcon="hyp3">
+      </mat-icon> -->
+      <mat-icon *ngIf="isExpired(scene.metadata.job)"
+        [matMenuTriggerFor]="sceneAdd.addMenu"
+        [matMenuTriggerData]="{ hyp3able: getExpiredHyp3ableObject().byJobType }"
+        class="icon-margin"
         svgIcon="hyp3">
       </mat-icon>
       </div>
