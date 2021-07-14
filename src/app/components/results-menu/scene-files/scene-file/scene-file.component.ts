@@ -133,8 +133,7 @@ export class SceneFileComponent implements OnInit, OnDestroy {
 
   public queueExpiredHyp3Job() {
     const job_types = models.hyp3JobTypes;
-    const job_type = Object.keys(job_types).find(id =>
-      {
+    const job_type = Object.keys(job_types).find(id => {
         return this.product.metadata.job.job_type === id as any;
       });
 
