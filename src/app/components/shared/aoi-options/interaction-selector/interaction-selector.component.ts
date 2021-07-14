@@ -46,7 +46,10 @@ export class InteractionSelectorComponent implements OnInit, OnDestroy {
     () => this.onNewInteractionMode(
       this.interaction === MapInteractionModeType.EDIT ? MapInteractionModeType.NONE : MapInteractionModeType.EDIT
       )
-
+  public onImportSelected() {
+    const action = new mapStore.SetMapInteractionMode(MapInteractionModeType.UPLOAD);
+    this.store$.dispatch(action);
+  }
   public onClearSelected = () => {
     this.clearButton.checked = false;
     this.mapService.clearDrawLayer();
