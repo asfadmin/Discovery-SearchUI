@@ -96,14 +96,21 @@
     </app-cart-toggle>
 
   <div *ngIf="(searchType$ | async) === searchTypes.CUSTOM_PRODUCTS" style="margin-right: 10px;">
+    <button *ngIf="isExpired(product.metadata.job)"
+    [matMenuTriggerFor]="expiredJobs"
+    mat-icon-button>
+      <mat-icon
+      class="clickable"
+        matTooltip="Add to On Demand queue"
+        svgIcon="hyp3">
+      </mat-icon>
+    </button>
+    <mat-menu #expiredJobs ='matMenu'>
 
-    <mat-icon
-    *ngIf="isExpired(product.metadata.job)"
-    (click)="queueExpiredHyp3Job()"
-    class="clickable"
-      matTooltip="Resubmit Expired {{product.metadata.job.job_type}} Job to On Demand queue"
-      svgIcon="hyp3">
-    </mat-icon>
+    <button (click)="queueExpiredHyp3Job()" mat-menu-item>
+      Add Expired {{ product.metadata.job.job_type }} job to On Demand Queue
+    </button>
+  </mat-menu>
   </div>
 
     <app-hyp3-job-status-badge
