@@ -34,6 +34,7 @@ import { CustomBreakPointsProvider } from '@services/custom-breakpoints';
 import * as services from '@services';
 
 import { NgcCookieConsentModule, NgcCookieConsentConfig } from 'ngx-cookieconsent';
+import { getSaver, SAVER } from '@services/saver.provider';
 // import { FileDownloadDirective } from './directives/file-download.directive';
 
 // info about cookie consent module: https://tinesoft.github.io/ngx-cookieconsent/home
@@ -132,6 +133,8 @@ export const routes = [
     services.Hyp3Service,
     services.PairService,
     services.SceneSelectService,
+    {provide: SAVER, useFactory: getSaver},
+    // { provide: Window, useValue: window },
   ],
   bootstrap: [ AppComponent ],
 })

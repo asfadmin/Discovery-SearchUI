@@ -17,6 +17,14 @@ import {HttpClient} from '@angular/common/http';
 import { saveAs } from 'file-saver';
 import { Observable } from 'rxjs';
 import { download, Download } from 'ngx-operators';
+import {DownloadService} from '@services/download.service';
+
+
+// tslint:disable-next-line:class-name
+export interface selectedItems {
+  id: string;
+  url: string;
+}
 
 @Component({
   selector: 'app-queue',
@@ -28,6 +36,7 @@ export class QueueComponent implements OnInit, OnDestroy {
   @Input() appQueueComponentModel: string;
 
   download$: Observable<Download>;
+  public dFile: Download;
 
   public queueHasOnDemandProducts = false;
   public showDemWarning: boolean;
@@ -44,6 +53,10 @@ export class QueueComponent implements OnInit, OnDestroy {
   public dlWidth = 1000;
   public dlHeight = 1000;
   public dlWidthMin = 715;
+
+  public selectedItems: selectedItems[] = [];
+  public allChecked = false;
+  public someChecked = false;
 
   public products$ = this.store$.select(queueStore.getQueuedProducts).pipe(
     tap(products => this.areAnyProducts = products.length > 0),
@@ -72,6 +85,7 @@ export class QueueComponent implements OnInit, OnDestroy {
     private screenSize: ScreenSizeService,
     private notificationService: NotificationService,
     private http: HttpClient,
+    private downloads: DownloadService,
   ) {}
 
   ngOnInit() {
@@ -150,6 +164,28 @@ export class QueueComponent implements OnInit, OnDestroy {
 
   private downloadMetadata(format: AsfApiOutputFormat): void {
     this.store$.dispatch(new queueStore.DownloadMetadata(format));
+  }
+
+  public downloadFile(url: string, filename: string) {
+    this.downloads.download(url, filename).subscribe( resp => {
+      this.dFile = resp;
+    });
+  }
+
+  public toggleItemSelected(productId, downloadUrl) {
+    const idx = this.selectedItems.findIndex( o => o.id === productId );
+    if (idx > -1) {
+      this.selectedItems.splice( idx, 1 );
+    } else {
+      this.selectedItems.push({
+        id: productId,
+        url: downloadUrl,
+      });
+    }
+    if ( this.selectedItems.length > 0 ) {
+        this.someChecked = true;
+      }
+    console.log('itemSelected:', this.selectedItems);
   }
 
   public demWarning(products) {
