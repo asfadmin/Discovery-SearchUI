@@ -21,6 +21,7 @@ import { AngularResizedEventModule } from 'angular-resize-event';
 import { FileDownloadDirective } from '@directives/file-download.directive';
 import {MatProgressBarModule} from '@angular/material/progress-bar';
 import {MatCheckboxModule} from '@angular/material/checkbox';
+import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 
 
 @NgModule({
@@ -44,7 +45,8 @@ import {MatCheckboxModule} from '@angular/material/checkbox';
         MatDialogModule,
         AngularResizedEventModule,
         MatProgressBarModule,
-        MatCheckboxModule
+        MatCheckboxModule,
+        MatProgressSpinnerModule
     ],
   exports: [
     QueueComponent

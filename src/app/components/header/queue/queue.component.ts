@@ -163,11 +163,8 @@ export class QueueComponent implements OnInit, OnDestroy {
   }
 
   public downloadFile(url: string, filename: string) {
-    console.log('downloadFile() url:', url, ' filename:', filename);
-    // this.download$ = this.downloads.download(url, filename);
-    this.downloads.download(url, filename).subscribe( dFile => {
-      this.dFile = dFile;
-      console.log(this.dFile.id, this.dFile.progress);
+    this.downloads.download(url, filename).subscribe( resp => {
+      this.dFile = resp;
     });
   }
 

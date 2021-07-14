@@ -119,6 +119,17 @@
                       [value]="download.progress"
                     >
                     </mat-progress-bar>
+                    <mat-progress-spinner
+                      *ngIf="download.id == product.id"
+                      style="width: 40px; height: 40px;"
+                      class='progress-spinner'
+                      [mode]="download.state == 'PENDING' ? 'buffer' : 'determinate'"
+                      [value]='download.progress'
+                      [diameter]="40">
+                    </mat-progress-spinner>
+                    <div *ngIf="download.id == product.id" class="progress-spinner">
+                      {{ download.progress }}
+                    </div>
                 </div>
               </mat-list-item>
             </ng-container>
