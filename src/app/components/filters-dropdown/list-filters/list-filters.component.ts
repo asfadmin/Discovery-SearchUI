@@ -47,6 +47,7 @@ export class ListFiltersComponent implements OnInit, OnDestroy {
 
   public searchList: string;
   public listSearchMode$ = this.store$.select(filtersStore.getListSearchMode);
+  private listSearchMode: ListSearchType;
   private newListInput$ = new Subject<string | null>();
   public breakpoint$ = this.screenSize.breakpoint$;
   public breakpoints = models.Breakpoints;
@@ -99,6 +100,12 @@ export class ListFiltersComponent implements OnInit, OnDestroy {
       ).subscribe(
         _ => _
       )
+
+
+    );
+
+    this.subs.add(
+      this.listSearchMode$.subscribe(mode => this.listSearchMode = mode)
     );
 
     this.subs.add(
@@ -225,7 +232,17 @@ export class ListFiltersComponent implements OnInit, OnDestroy {
   private parseCSV(file) {
     this.ngxCsvParser.parse(file, { header: true, delimiter: ',' })
     .pipe(first()).subscribe((result: Array<any>) => {
-      const granules: string[] = result.map(row => row['Granule Name']);
+      const granules: string[] = result.map(row =>
+        {
+          let processingType ='';
+
+          if(this.listSearchMode === ListSearchType.PRODUCT) {
+            const processLevel = row['Processing Level'].replace('-', '_')
+            processingType = '-' + processLevel;
+          }
+
+          return row['Granule Name'] + processingType
+        });
       this.updateSearchList(granules);
     }, (error: NgxCSVParserError) => {
       console.log('Error', error);
@@ -237,7 +254,8 @@ export class ListFiltersComponent implements OnInit, OnDestroy {
       filereader.onload = _ => {
         const res = filereader.result as string;
         const features: any[] = JSON.parse(res)['features'];
-        const granules = features.map(feature => feature['properties']['fileID']);
+        const typeKey = this.listSearchMode === ListSearchType.PRODUCT ? 'fileID' : 'sceneName'
+        const granules = features.map(feature => feature['properties'][typeKey]);
 
         this.updateSearchList(granules);
     };
@@ -245,23 +263,29 @@ export class ListFiltersComponent implements OnInit, OnDestroy {
   }
 
   private parseKML(file) {
-    const filereader = new FileReader();
-      filereader.onload = _ => {
-        const res = filereader.result as string;
-        const parser = new xml2js.Parser({ explicitArray: false });
-        const observable = from (parser.parseStringPromise(res));
+    if(this.listSearchMode === ListSearchType.SCENE) {
+      const filereader = new FileReader();
+        filereader.onload = _ => {
+          const res = filereader.result as string;
+          const parser = new xml2js.Parser({ explicitArray: false });
+          const observable = from (parser.parseStringPromise(res));
 
-        observable.pipe(first()).subscribe(result => {
-            const placemarks: [] = result['kml']['Document']['Placemark'];
-            const granules: string[] = placemarks.map(placemark => placemark['name']);
+          observable.pipe(first()).subscribe(result => {
+              const placemarks: [] = result['kml']['Document']['Placemark'];
+              const granules: string[] = placemarks.map(placemark =>
+                {
+                  return placemark['name'];
+                });
 
-            this.updateSearchList(granules);
-          });
-    };
-    filereader.readAsText(file);
+              this.updateSearchList(granules);
+            });
+      };
+      filereader.readAsText(file);
+    }
   }
 
   private parseMetalink(file) {
+    if(this.listSearchMode === ListSearchType.SCENE) {
     const filereader = new FileReader();
       filereader.onload = _ => {
         const res = filereader.result as string;
@@ -276,6 +300,7 @@ export class ListFiltersComponent implements OnInit, OnDestroy {
           });
     };
     filereader.readAsText(file);
+  }
   }
 
   private updateSearchList(granules: string[]) {

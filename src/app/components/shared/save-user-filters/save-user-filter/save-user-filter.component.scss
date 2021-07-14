@@ -30,6 +30,11 @@
   margin-top: 10px;
 }
 
+.filter-title {
+  display: flex;
+  flex-direction: column;
+}
+
 .saved-filter {
   display: flex;
   flex-direction: row;

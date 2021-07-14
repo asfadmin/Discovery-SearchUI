@@ -27,44 +27,28 @@
     Clear Search
   </button>
 
-  <span matTooltip = "Sign in to save your search" [matTooltipDisabled]="isLoggedIn"
-        matTooltipPosition = "after">
-    <button *ngIf="searchType !== searchTypes.CUSTOM_PRODUCTS"
-      mat-menu-item [disabled]="!isLoggedIn" (click)="saveCurrentSearch()">
-      Save Search
-    </button>
-  </span>
-
-  <span matTooltip = "Sign in to save your filters" [matTooltipDisabled]="isLoggedIn"
-        matTooltipPosition = "after">
-    <button *ngIf="searchType !== searchTypes.CUSTOM_PRODUCTS && searchType !== searchTypes.LIST"
-      mat-menu-item [disabled]="!isLoggedIn" (click)="saveCurrentFilters()">
-      Save Filters
-    </button>
-  </span>
-
   <mat-divider></mat-divider>
 
   <span
-    [matTooltipDisabled]="isLoggedIn"
-    matTooltip="Sign in to see your saved searches"
-    matTooltipPosition="after">
-      <button mat-menu-item [disabled]="!isLoggedIn" (click)="onOpenSavedSearches()">Saved Searches...</button>
-  </span>
-
-  <span
-    [matTooltipDisabled]="isLoggedIn"
-    matTooltip="Sign in to see your search history"
-    matTooltipPosition="after">
-      <button mat-menu-item [disabled]="!isLoggedIn" (click)="onOpenSearchHistory()">Search History...</button>
+  [matTooltipDisabled]="isLoggedIn"
+  matTooltip="Sign in to see your saved searches"
+  matTooltipPosition="after">
+    <button
+    mat-menu-item
+    [matMenuTriggerFor]="savedSearchesMenu">
+    Saved Searches
+    </button>
   </span>
 
   <span
   [matTooltipDisabled]="isLoggedIn"
   matTooltip="Sign in to see your saved filters"
   matTooltipPosition="after">
-    <button mat-menu-item [disabled]="!isLoggedIn" *ngIf="searchType !== searchTypes.CUSTOM_PRODUCTS && searchType !== searchTypes.LIST"
-    (click)="onOpenSavedFilters()">Saved Filters...</button>
+    <button
+    mat-menu-item
+    [matMenuTriggerFor]="savedFiltersMenu">
+    Saved Filters
+    </button>
   </span>
 
   <mat-divider></mat-divider>
@@ -75,3 +59,49 @@
       <button mat-menu-item (click)="onOpenHelp('toc')">Help & Tutorials</button>
   </span>
 </mat-menu>
+
+<mat-menu #savedFiltersMenu="matMenu">
+  <span matTooltip = "Sign in to save your filters" [matTooltipDisabled]="isLoggedIn"
+        matTooltipPosition = "after">
+    <button *ngIf="searchType !== searchTypes.CUSTOM_PRODUCTS && searchType !== searchTypes.LIST"
+      mat-menu-item [disabled]="!isLoggedIn" (click)="saveCurrentFilters()">
+      Save Filters
+    </button>
+  </span>
+
+  <span
+  [matTooltipDisabled]="isLoggedIn"
+  matTooltip="Sign in to see your saved filters"
+  matTooltipPosition="after">
+    <button mat-menu-item [disabled]="!isLoggedIn" *ngIf="searchType !== searchTypes.CUSTOM_PRODUCTS && searchType !== searchTypes.LIST"
+    (click)="onOpenSavedFilters()">View Filters...</button>
+  </span>
+
+
+</mat-menu>
+
+<mat-menu #savedSearchesMenu="matMenu">
+
+  <span matTooltip = "Sign in to save your search" [matTooltipDisabled]="isLoggedIn"
+        matTooltipPosition = "after">
+    <button *ngIf="searchType !== searchTypes.CUSTOM_PRODUCTS"
+      mat-menu-item [disabled]="!isLoggedIn" (click)="saveCurrentSearch()">
+      Save Search
+    </button>
+  </span>
+
+  <span
+  [matTooltipDisabled]="isLoggedIn"
+  matTooltip="Sign in to see your saved searches"
+  matTooltipPosition="after">
+    <button mat-menu-item [disabled]="!isLoggedIn" (click)="onOpenSavedSearches()">View Searches...</button>
+  </span>
+
+  <span
+    [matTooltipDisabled]="isLoggedIn"
+    matTooltip="Sign in to see your search history"
+    matTooltipPosition="after">
+      <button mat-menu-item [disabled]="!isLoggedIn" (click)="onOpenSearchHistory()">Search History...</button>
+  </span>
+
+  </mat-menu>
