@@ -95,6 +95,17 @@
       [isQueued]="isQueued">
     </app-cart-toggle>
 
+  <div *ngIf="(searchType$ | async) === searchTypes.CUSTOM_PRODUCTS" style="margin-right: 10px;">
+
+    <mat-icon
+    *ngIf="isExpired(product.metadata.job)"
+    (click)="queueExpiredHyp3Job()"
+    class="clickable"
+      matTooltip="Resubmit Expired {{product.metadata.job.job_type}} Job to On Demand queue"
+      svgIcon="hyp3">
+    </mat-icon>
+  </div>
+
     <app-hyp3-job-status-badge
       *ngIf="!isDownloadable(product)"
       [job]="product.metadata.job">

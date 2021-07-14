@@ -2,11 +2,18 @@ import { Component, Input, Output, EventEmitter, OnInit, OnDestroy } from '@angu
 
 import * as moment from 'moment';
 
+
+import * as queueStore from '@store/queue';
+import * as searchStore from '@store/search';
+
 import { Hyp3Service } from '@services';
 import * as models from '@models';
 import { SubSink } from 'subsink';
 import { of } from 'rxjs';
 import { filter } from 'rxjs/operators';
+import { AppState } from '@store';
+import { Store } from '@ngrx/store';
+import { SearchType } from '@models';
 
 @Component({
   selector: 'app-scene-file',
@@ -28,12 +35,16 @@ export class SceneFileComponent implements OnInit, OnDestroy {
   @Output() closeProduct = new EventEmitter<models.CMRProduct>();
   @Output() queueHyp3Job = new EventEmitter<models.QueuedHyp3Job>();
 
+  public searchType$ = this.store$.select(searchStore.getSearchType);
+  public searchTypes = SearchType;
   public isHovered = false;
   public paramsList = [];
 
   private subs = new SubSink;
 
-  constructor(private hyp3: Hyp3Service,
+  constructor(
+      private hyp3: Hyp3Service,
+      private store$: Store<AppState>,
     ) {}
 
   ngOnInit() {
@@ -120,6 +131,19 @@ export class SceneFileComponent implements OnInit, OnDestroy {
     });
   }
 
+  public queueExpiredHyp3Job() {
+    const job_types = models.hyp3JobTypes;
+    const job_type = Object.keys(job_types).find(id =>
+      {
+        return this.product.metadata.job.job_type === id as any;
+      });
+
+    this.store$.dispatch(new queueStore.AddJob({
+      granules: this.product.metadata.job.job_parameters.scenes,
+      job_type: job_types[job_type]
+    }));
+  }
+
   public jobParamsToList(metadata) {
     if (!metadata.job) {
       return [];
@@ -150,5 +174,9 @@ export class SceneFileComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.subs.unsubscribe();
+  }
+
+  public isExpired(job: models.Hyp3Job): boolean {
+    return this.hyp3.isExpired(job);
   }
 }
