@@ -72,10 +72,12 @@ export class OnDemandAddMenuComponent implements OnInit {
   }
 
   public isBaselineStack(byProductType: Hyp3ableByProductType[], searchType: SearchType) {
+    if (searchType !== this.searchTypes.BASELINE) {
+      return false;
+    }
     const slcProducts = this.findSLCs(byProductType).products;
 
-    return searchType === this.searchTypes.BASELINE &&
-    slcProducts.length >= 1 &&
+    return slcProducts.length >= 1 &&
     this.isNotReferenceScene(slcProducts);
   }
 
