@@ -1,10 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { AppState } from '@store';
 import * as userStore from '@store/user';
 
 import { MatDialogRef } from '@angular/material/dialog';
-import { MapLayerTypes, UserAuth, ProductType, datasetList } from '@models';
+import { MapLayerTypes, UserAuth, ProductType, datasetList, SearchType } from '@models';
+import { SubSink } from 'subsink';
 
 
 @Component({
@@ -12,17 +13,29 @@ import { MapLayerTypes, UserAuth, ProductType, datasetList } from '@models';
   templateUrl: './preferences.component.html',
   styleUrls: ['./preferences.component.scss']
 })
-export class PreferencesComponent implements OnInit {
+export class PreferencesComponent implements OnInit, OnDestroy {
   public datasets = datasetList;
   public defaultMaxResults: number;
   public defaultMapLayer: MapLayerTypes;
   public defaultDataset: string;
   public defaultProductTypes: ProductType[];
 
+  public defaultGeoSearchFiltersID;
+  public defaultBaselineSearchFiltersID;
+  public defaultSBASSearchFiltersID;
+
   public maxResults = [250, 1000, 5000];
   public mapLayerTypes = MapLayerTypes;
 
   public userAuth: UserAuth;
+
+  public searchType = SearchType;
+  public selectedSearchType = SearchType.DATASET;
+
+  public userFiltersBySearchType = {};
+  public selectedFiltersIDs;
+
+  private subs = new SubSink();
 
   constructor(
     private dialogRef: MatDialogRef<PreferencesComponent>,
@@ -30,16 +43,36 @@ export class PreferencesComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.store$.select(userStore.getUserProfile).subscribe(
-      profile => {
-        this.defaultMaxResults = profile.maxResults;
-        this.defaultMapLayer = profile.mapLayer;
-        this.defaultDataset = profile.defaultDataset;
-      }
+    this.subs.add(
+      this.store$.select(userStore.getUserProfile).subscribe(
+        profile => {
+          this.defaultMaxResults = profile.maxResults;
+          this.defaultMapLayer = profile.mapLayer;
+          this.defaultDataset = profile.defaultDataset;
+        }
+      )
     );
 
-    this.store$.select(userStore.getUserAuth).subscribe(
-      user => this.userAuth = user
+    this.subs.add(
+      this.store$.select(userStore.getUserAuth).subscribe(
+        user => this.userAuth = user
+      )
+    );
+
+    this.subs.add(
+      this.store$.select(userStore.getSavedFilters).subscribe(savedFilters =>
+        {
+          for(const searchtype in SearchType) {
+            if(searchtype !== "LIST" && searchtype !== "CUSTOM_PRODUCTS") {
+              this.userFiltersBySearchType[SearchType[searchtype]] = [];
+            }
+          }
+
+          savedFilters.forEach(preset => this.userFiltersBySearchType[preset.searchType].push(preset));
+
+          console.log(this.userFiltersBySearchType);
+        }
+        )
     );
 
   }
@@ -71,5 +104,9 @@ export class PreferencesComponent implements OnInit {
     });
 
     this.store$.dispatch(action);
+  }
+
+  ngOnDestroy() {
+    this.subs.unsubscribe();
   }
 }

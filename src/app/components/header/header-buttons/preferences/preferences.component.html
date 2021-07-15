@@ -35,6 +35,18 @@
           </mat-option>
         </mat-select>
       </mat-form-field>
+
+      <mat-form-field *ngFor="let type of searchType">
+        {{type}}
+        <mat-label>Default Search Filters Presets</mat-label>
+        <mat-select
+          [(ngModel)]="selectedFiltersIDs[type]"
+          (selectionChange)="onChangeDefaultLayerType($event.value)" name="preset">
+          <mat-option [value]="preset.id" *ngFor="let preset of userFiltersBySearchType[type]">
+            {{ preset.name }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
     </form>
   </div>
 
