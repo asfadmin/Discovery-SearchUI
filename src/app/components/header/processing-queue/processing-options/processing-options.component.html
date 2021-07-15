@@ -2,7 +2,7 @@
   <ng-container *ngIf="selectedJobType">
     <ng-container *ngFor="let jobType of JobTypesList">
       <ng-container *ngIf="selectedJobType.id === jobType.id">
-        <div class="flex-field" *ngFor="let option of jobType.options">
+        <div class="flex-field" *ngFor="let option of jobType.options" [matTooltip]="option.info">
           <app-dropdown-option
              *ngIf="option.type === 'DROPDOWN'"
             (valueChange)="onSetOptionValue(option.apiName, $event)"
