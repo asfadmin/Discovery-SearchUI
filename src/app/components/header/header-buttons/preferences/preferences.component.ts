@@ -30,10 +30,11 @@ export class PreferencesComponent implements OnInit, OnDestroy {
   public userAuth: UserAuth;
 
   public searchType = SearchType;
+  public searchTypeKeys = Object.keys(this.searchType).filter(val => val !== 'LIST' && val !== 'CUSTOM_PRODUCTS')
   public selectedSearchType = SearchType.DATASET;
 
   public userFiltersBySearchType = {};
-  public selectedFiltersIDs;
+  public selectedFiltersIDs = {};
 
   private subs = new SubSink();
 
@@ -94,6 +95,12 @@ export class PreferencesComponent implements OnInit, OnDestroy {
   public onChangeDefaultLayerType(layerType: MapLayerTypes): void {
     this.defaultMapLayer = layerType;
     this.saveProfile();
+  }
+
+  public onChangeDefaultFilterType(filterID: string, searchType: SearchType): void {
+    // this.defaultMapLayer = layerType;
+    this.selectedFiltersIDs[searchType] = filterID;
+    // this.saveProfile();
   }
 
   public saveProfile(): void {
