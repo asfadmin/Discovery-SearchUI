@@ -13,7 +13,7 @@ import { timer } from 'rxjs';
 export class SaveUserFilterComponent implements OnInit {
   @ViewChild('nameEditInput') nameEditInput: ElementRef;
 
-  @Input() filterPreset: {name: string, id: string, searchType: SearchType, filters: FilterType};
+  @Input() filterPreset: models.SavedFilterPreset;
   @Input() isNew: boolean;
 
   @Output() updateName = new EventEmitter<string>();
@@ -35,7 +35,7 @@ export class SaveUserFilterComponent implements OnInit {
     this.expanded = !this.expanded;
   }
 
-  public loadPreset(filterPreset: {name: string, id: string, searchType: SearchType, filters: FilterType}) {
+  public loadPreset(filterPreset: models.SavedFilterPreset) {
     this.store$.dispatch(new userStore.LoadFiltersPreset(filterPreset.id));
   }
 

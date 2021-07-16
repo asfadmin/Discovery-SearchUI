@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { FilterType, GeographicFiltersType, SearchType } from '@models';
+import { GeographicFiltersType, SearchType } from '@models';
 import { Store } from '@ngrx/store';
 import { AppState } from '@store';
 import * as userStore from '@store/user';
@@ -29,7 +29,7 @@ export class SaveUserFiltersComponent implements OnInit, OnDestroy {
 
   public saveFilterOn: boolean;
 
-  public userFilters: {name: string, id: string, searchType: SearchType, filters: FilterType}[] = [];
+  public userFilters: models.SavedFilterPreset[] = [];
 
   private currentFiltersBySearchType = {};
 
@@ -129,12 +129,18 @@ export class SaveUserFiltersComponent implements OnInit, OnDestroy {
   public onSaveFilters() {
     const id = uuid() as string;
     this.newSearchId = id;
-    this.store$.dispatch(new userStore.AddNewFiltersPreset({name: this.newFilterName, id, filters: this.currentFiltersBySearchType[this.currentSearchType], searchType: this.currentSearchType}));
+    this.store$.dispatch(new userStore.AddNewFiltersPreset(
+      {
+        name: this.newFilterName,
+        id,
+        filters: this.currentFiltersBySearchType[this.currentSearchType],
+        searchType: this.currentSearchType
+      } as models.SavedFilterPreset));
     this.newFilterName = '';
     this.store$.dispatch(new userStore.SaveFilters());
   }
 
-  public filterBySearchType(filters: {name: string, searchType: SearchType, filters: FilterType}[]) {
+  public filterBySearchType(filters: models.SavedFilterPreset[]) {
     let output = filters.filter(preset => preset.searchType === this.currentSearchType);
     if(this.searchType === SearchType.DATASET) {
       output = output.map(preset => (
