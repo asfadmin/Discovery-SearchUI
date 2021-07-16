@@ -274,7 +274,7 @@ export class UserEffects {
       new filterStore.SetSubtypes(datasetFilter.subtypes),
       new filterStore.SetFlightDirections(datasetFilter.flightDirections),
       new filterStore.SelectMission(datasetFilter.selectedMission)
-    ]
+    ];
 
     return actions;
   }

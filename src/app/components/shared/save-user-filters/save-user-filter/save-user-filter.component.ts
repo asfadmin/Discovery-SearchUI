@@ -1,6 +1,6 @@
 import { Component, EventEmitter, ElementRef, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { FilterType, SearchType } from '@models';
-import * as models from '@models'
+import * as models from '@models';
 import * as userStore from '@store/user';
 import { Store } from '@ngrx/store';
 import { AppState } from '@store';

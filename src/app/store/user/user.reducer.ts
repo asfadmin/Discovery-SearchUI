@@ -159,7 +159,7 @@ export function userReducer(state = initState, action: UserActions): UserState {
         ... state.savedFilterPresets.find(preset => preset.id == action.payload.presetID),
         name: action.payload.newName
       };
-      const newFilterPresets = state.savedFilterPresets.filter(preset => preset.id !== action.payload.presetID)
+      const newFilterPresets = state.savedFilterPresets.filter(preset => preset.id !== action.payload.presetID);
       newFilterPresets.splice(newFilterIdx, 0, newFilter);
       return {
         ...state,
@@ -248,4 +248,4 @@ export const getSearchHistory = createSelector(
 export const getSavedFilters = createSelector(
   getUserState,
   (state: UserState) => state.savedFilterPresets
-)
+);
