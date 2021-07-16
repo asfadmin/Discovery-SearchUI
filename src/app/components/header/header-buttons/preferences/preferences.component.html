@@ -37,8 +37,7 @@
       </mat-form-field>
 
       <h3>Default Search Filters Presets</h3>
-      <div *ngFor="let type of searchTypeKeys">
-      <mat-form-field>
+      <mat-form-field class="default-filters-presets" *ngFor="let type of searchTypeKeys">
         <mat-label>{{type}}</mat-label>
         <mat-select
         (selectionChange)="onChangeDefaultFilterType($event.value, type)"
@@ -48,7 +47,6 @@
           </mat-option>
         </mat-select>
       </mat-form-field>
-    </div>
     </form>
   </div>
 
