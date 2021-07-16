@@ -40,6 +40,7 @@
       <mat-form-field class="default-filters-presets" *ngFor="let type of searchTypeKeys">
         <mat-label>{{type}}</mat-label>
         <mat-select
+        [(value)]="currentFilterDisplayNames[searchType[type]]"
         (selectionChange)="onChangeDefaultFilterType($event.value, type)"
         name="preset">
           <mat-option [value]="preset.id" *ngFor="let preset of userFiltersBySearchType[searchType[type]]">
