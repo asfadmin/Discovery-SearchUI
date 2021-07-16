@@ -4,7 +4,7 @@ import { AppState } from '@store';
 import * as userStore from '@store/user';
 
 import { MatDialogRef } from '@angular/material/dialog';
-import { MapLayerTypes, UserAuth, ProductType, datasetList, SearchType } from '@models';
+import { MapLayerTypes, UserAuth, ProductType, datasetList, SearchType, SavedFilterPreset } from '@models';
 import { SubSink } from 'subsink';
 
 
@@ -34,11 +34,14 @@ export class PreferencesComponent implements OnInit, OnDestroy {
   public selectedSearchType = SearchType.DATASET;
 
   public userFiltersBySearchType = {};
+  public userFilters: SavedFilterPreset[];
   public selectedFiltersIDs = {
     'Baseline Search' : '',
     'Geographic Search' : '',
     'SBAS Search' : ''
   };
+
+  public currentFilterDisplayNames = {};
 
   private subs = new SubSink();
 
@@ -55,6 +58,7 @@ export class PreferencesComponent implements OnInit, OnDestroy {
           this.defaultMapLayer = profile.mapLayer;
           this.defaultDataset = profile.defaultDataset;
           this.selectedFiltersIDs = profile.defaultFilterPresets;
+
         }
       )
     );
@@ -68,6 +72,7 @@ export class PreferencesComponent implements OnInit, OnDestroy {
     this.subs.add(
       this.store$.select(userStore.getSavedFilters).subscribe(savedFilters =>
         {
+          this.userFilters = savedFilters;
           for(const searchtype in SearchType) {
             if(searchtype !== "LIST" && searchtype !== "CUSTOM_PRODUCTS") {
               this.userFiltersBySearchType[SearchType[searchtype]] = [];
@@ -76,8 +81,8 @@ export class PreferencesComponent implements OnInit, OnDestroy {
 
           savedFilters.forEach(preset => this.userFiltersBySearchType[preset.searchType].push(preset));
 
-          console.log(this.userFiltersBySearchType);
-          console.log(this.selectedFiltersIDs);
+          const searchTypeKeys = Object.keys(this.selectedFiltersIDs);
+          searchTypeKeys.forEach(key => this.currentFilterDisplayNames[key] = this.userFilters.find(preset => preset.id === this.selectedFiltersIDs[key]).id);
         }
         )
     );
@@ -104,14 +109,12 @@ export class PreferencesComponent implements OnInit, OnDestroy {
   }
 
   public onChangeDefaultFilterType(filterID: string, searchType: string): void {
-    // this.defaultMapLayer = layerType;
     const key = SearchType[searchType];
     this.selectedFiltersIDs = {
       ... this.selectedFiltersIDs,
-      [key] : filterID
+      [key]: filterID
     }
-    // this.selectedFiltersIDs[SearchType[searchType]] = filterID;
-    console.log(this.selectedFiltersIDs);
+
     this.saveProfile();
   }
 
