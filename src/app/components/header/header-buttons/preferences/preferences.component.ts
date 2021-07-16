@@ -97,9 +97,10 @@ export class PreferencesComponent implements OnInit, OnDestroy {
     this.saveProfile();
   }
 
-  public onChangeDefaultFilterType(filterID: string, searchType: SearchType): void {
+  public onChangeDefaultFilterType(filterID: string, searchType: string): void {
     // this.defaultMapLayer = layerType;
-    this.selectedFiltersIDs[searchType] = filterID;
+    this.selectedFiltersIDs[SearchType[searchType]] = filterID;
+    console.log(this.selectedFiltersIDs);
     // this.saveProfile();
   }
 

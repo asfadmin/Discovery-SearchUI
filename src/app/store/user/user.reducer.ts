@@ -2,7 +2,6 @@ import { createFeatureSelector, createSelector } from '@ngrx/store';
 
 import { UserActionType, UserActions } from './user.action';
 import * as models from '@models';
-import { SearchType } from '@models';
 /* State */
 
 export interface UserState {
@@ -12,7 +11,7 @@ export interface UserState {
     searches: models.Search[];
     searchHistory: models.Search[];
   };
-  savedFilterPresets: {name: string, id: string, searchType: SearchType, filters: models.FilterType}[];
+  savedFilterPresets: models.SavedFilterPreset[];
 }
 
 const initState: UserState = {
