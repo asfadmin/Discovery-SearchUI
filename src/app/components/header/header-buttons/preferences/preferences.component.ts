@@ -34,7 +34,11 @@ export class PreferencesComponent implements OnInit, OnDestroy {
   public selectedSearchType = SearchType.DATASET;
 
   public userFiltersBySearchType = {};
-  public selectedFiltersIDs = {};
+  public selectedFiltersIDs = {
+    'Baseline Search' : '',
+    'Geographic Search' : '',
+    'SBAS Search' : ''
+  };
 
   private subs = new SubSink();
 
@@ -50,6 +54,7 @@ export class PreferencesComponent implements OnInit, OnDestroy {
           this.defaultMaxResults = profile.maxResults;
           this.defaultMapLayer = profile.mapLayer;
           this.defaultDataset = profile.defaultDataset;
+          this.selectedFiltersIDs = profile.defaultFilterPresets;
         }
       )
     );
@@ -72,6 +77,7 @@ export class PreferencesComponent implements OnInit, OnDestroy {
           savedFilters.forEach(preset => this.userFiltersBySearchType[preset.searchType].push(preset));
 
           console.log(this.userFiltersBySearchType);
+          console.log(this.selectedFiltersIDs);
         }
         )
     );
@@ -99,16 +105,22 @@ export class PreferencesComponent implements OnInit, OnDestroy {
 
   public onChangeDefaultFilterType(filterID: string, searchType: string): void {
     // this.defaultMapLayer = layerType;
-    this.selectedFiltersIDs[SearchType[searchType]] = filterID;
+    const key = SearchType[searchType];
+    this.selectedFiltersIDs = {
+      ... this.selectedFiltersIDs,
+      [key] : filterID
+    }
+    // this.selectedFiltersIDs[SearchType[searchType]] = filterID;
     console.log(this.selectedFiltersIDs);
-    // this.saveProfile();
+    this.saveProfile();
   }
 
   public saveProfile(): void {
     const action = new userStore.SetProfile({
       maxResults: this.defaultMaxResults,
       mapLayer: this.defaultMapLayer,
-      defaultDataset: this.defaultDataset
+      defaultDataset: this.defaultDataset,
+      defaultFilterPresets: this.selectedFiltersIDs
     });
 
     this.store$.dispatch(action);
