@@ -41,7 +41,7 @@
         <mat-label>{{type}}</mat-label>
         <mat-select
         (selectionChange)="onChangeDefaultFilterType($event.value, type)"
-        [(ngModel)]="selectedFiltersIDs[searchType[type]]" name="preset">
+        name="preset">
           <mat-option [value]="preset.id" *ngFor="let preset of userFiltersBySearchType[searchType[type]]">
             {{ preset.name }}
           </mat-option>

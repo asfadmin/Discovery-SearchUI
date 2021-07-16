@@ -1,6 +1,6 @@
 
 import { MapLayerTypes } from './map.model';
-
+// import { SearchType } from '@models';
 export interface UserAuth {
   id: string | null;
   token: string | null;
@@ -11,6 +11,11 @@ export interface UserProfile {
   defaultDataset: string;
   mapLayer: MapLayerTypes;
   maxResults: number;
+  defaultFilterPresets: {
+    'Baseline Search' : string,
+    'Geographic Search' : string,
+    'SBAS Search' : string
+  }
 }
 
 export interface URSGroup {
