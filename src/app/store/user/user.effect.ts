@@ -169,6 +169,7 @@ export class UserEffects {
   public loadSavedFiltersOfSearchType = createEffect(() => this.actions$.pipe(
     ofType<userActions.LoadFiltersPreset>(userActions.UserActionType.LOAD_FILTERS_PRESET),
     map(action => action.payload),
+    filter(filterPresetID => filterPresetID !== '' && filterPresetID !== undefined),
     withLatestFrom(this.store$.select(searchStore.getSearchType)),
     filter(([_, searchtype]) => searchtype !== SearchType.LIST && searchtype !== SearchType.CUSTOM_PRODUCTS),
     withLatestFrom(this.store$.select(userReducer.getSavedFilters)),
@@ -179,26 +180,28 @@ export class UserEffects {
 
       let actions = [];
 
-      switch (searchType) {
-        case SearchType.DATASET:
-          this.store$.dispatch(new filterStore.ClearDatasetFilters());
-          actions = this.setDatasetFilters(targetFilter.filters as GeographicFiltersType);
-          break;
-        case SearchType.BASELINE:
-          this.store$.dispatch(new filterStore.ClearPerpendicularRange());
-          this.store$.dispatch(new filterStore.ClearTemporalRange());
-          actions = this.setBaselineFilters(targetFilter.filters as BaselineFiltersType);
-          break;
-        case SearchType.SBAS:
-          this.store$.dispatch(new filterStore.ClearPerpendicularRange());
-          this.store$.dispatch(new filterStore.ClearTemporalRange());
-          actions = this.setSBASFilters(targetFilter.filters as SbasFiltersType);
-          break;
-        default:
-          break;
-      }
+      if(!!targetFilter) {
+        switch (searchType) {
+          case SearchType.DATASET:
+            this.store$.dispatch(new filterStore.ClearDatasetFilters());
+            actions = this.setDatasetFilters(targetFilter.filters as GeographicFiltersType);
+            break;
+          case SearchType.BASELINE:
+            this.store$.dispatch(new filterStore.ClearPerpendicularRange());
+            this.store$.dispatch(new filterStore.ClearTemporalRange());
+            actions = this.setBaselineFilters(targetFilter.filters as BaselineFiltersType);
+            break;
+          case SearchType.SBAS:
+            this.store$.dispatch(new filterStore.ClearPerpendicularRange());
+            this.store$.dispatch(new filterStore.ClearTemporalRange());
+            actions = this.setSBASFilters(targetFilter.filters as SbasFiltersType);
+            break;
+          default:
+            break;
+        }
 
-      actions.forEach(action => this.store$.dispatch(action));
+        actions.forEach(action => this.store$.dispatch(action));
+    }
     })
   ), {dispatch: false});
 
