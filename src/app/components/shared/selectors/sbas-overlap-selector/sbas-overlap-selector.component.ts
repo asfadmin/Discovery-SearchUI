@@ -11,7 +11,7 @@ import * as filtersStore from '@store/filters';
 })
 export class SbasOverlapSelectorComponent implements OnInit {
 
-  public fiftyPercentOverlapToggled: boolean = false;
+  public fiftyPercentOverlapToggled = false;
   private subs = new SubSink();
 
   constructor(private store$: Store<AppState>) { }

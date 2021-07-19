@@ -83,8 +83,7 @@ export class SceneComponent implements OnInit {
 
   public queueExpiredHyp3Job() {
     const job_types = models.hyp3JobTypes;
-    const job_type = Object.keys(job_types).find(id =>
-      {
+    const job_type = Object.keys(job_types).find(id => {
         return this.scene.metadata.job.job_type === id as any;
       });
 
@@ -96,33 +95,32 @@ export class SceneComponent implements OnInit {
 
   public getExpiredHyp3ableObject(): {byJobType: models.Hyp3ableProductByJobType[], total: number} {
     const job_types = models.hyp3JobTypes;
-    const job_type = Object.keys(job_types).find(id =>
-      {
+    const job_type = Object.keys(job_types).find(id => {
         return this.scene.metadata.job.job_type === id as any;
       });
 
-    let byJobType: Hyp3ableProductByJobType[] = [];
+    const byJobType: Hyp3ableProductByJobType[] = [];
 
-    let temp: models.Hyp3ableByProductType = {
+    const temp: models.Hyp3ableByProductType = {
       productType: this.scene.metadata.job.job_type as any,
       products: [this.scene.metadata.job.job_parameters.scenes]
     };
 
-    let byProductType: models.Hyp3ableByProductType[] = [];
+    const byProductType: models.Hyp3ableByProductType[] = [];
     byProductType.push(temp);
 
-    let hp = {
+    const hp = {
       byProductType,
       total: 1,
       jobType: job_types[job_type]
-    } as models.Hyp3ableProductByJobType
+    } as models.Hyp3ableProductByJobType;
     byJobType.push(hp);
     // byJobType.push(byProductType);
 
     const output = {
       byJobType,
       total: 1
-    } as {byJobType: models.Hyp3ableProductByJobType[], total: number}
+    } as {byJobType: models.Hyp3ableProductByJobType[], total: number};
 
     return output;
   }
