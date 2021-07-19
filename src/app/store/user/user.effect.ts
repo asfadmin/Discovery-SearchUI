@@ -168,13 +168,14 @@ export class UserEffects {
 
   public loadSavedFiltersOfSearchType = createEffect(() => this.actions$.pipe(
     ofType<userActions.LoadFiltersPreset>(userActions.UserActionType.LOAD_FILTERS_PRESET),
+    map(action => action.payload),
     withLatestFrom(this.store$.select(searchStore.getSearchType)),
     filter(([_, searchtype]) => searchtype !== SearchType.LIST && searchtype !== SearchType.CUSTOM_PRODUCTS),
     withLatestFrom(this.store$.select(userReducer.getSavedFilters)),
-    map(([[action, searchType], userFilters]) => {
+    map(([[presetId, searchType], userFilters]) => {
       const targetFilter = userFilters
         .filter(preset => preset.searchType === searchType)
-        .find(preset => preset.id === action.payload);
+        .find(preset => preset.id === presetId);
 
       let actions = [];
 
@@ -274,7 +275,7 @@ export class UserEffects {
       new filterStore.SetSubtypes(datasetFilter.subtypes),
       new filterStore.SetFlightDirections(datasetFilter.flightDirections),
       new filterStore.SelectMission(datasetFilter.selectedMission)
-    ]
+    ];
 
     return actions;
   }

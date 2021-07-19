@@ -1,5 +1,5 @@
 import { Component, EventEmitter, ElementRef, Input, OnInit, Output, ViewChild } from '@angular/core';
-import * as models from '@models'
+import * as models from '@models';
 import * as userStore from '@store/user';
 import { Store } from '@ngrx/store';
 import { AppState } from '@store';
@@ -34,8 +34,8 @@ export class SaveUserFilterComponent implements OnInit {
     this.expanded = !this.expanded;
   }
 
-  public loadPreset(filterPreset: models.SavedFilterPreset) {
-    this.store$.dispatch(new userStore.LoadFiltersPreset(filterPreset.id));
+  public loadPreset() {
+    this.store$.dispatch(new userStore.LoadFiltersPreset(this.filterPreset.id));
   }
 
   public onDeletePreset() {

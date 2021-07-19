@@ -577,7 +577,7 @@ export function filtersReducer(state = initState, action: FiltersActions): Filte
       return {
         ...state,
         thresholdOverlap: !state.thresholdOverlap
-      }
+      };
     }
     default: {
       return state;
