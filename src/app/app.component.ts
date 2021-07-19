@@ -216,7 +216,7 @@ export class AppComponent implements OnInit, OnDestroy {
           this.urlStateService.setDefaults(profile);
 
           const defaultFilterID = profile.defaultFilterPresets[this.searchType];
-          if(!!defaultFilterID) {
+          if (!!defaultFilterID) {
             this.store$.dispatch(new userStore.LoadFiltersPreset(defaultFilterID));
           }
         })
@@ -252,7 +252,7 @@ export class AppComponent implements OnInit, OnDestroy {
 
           const searchState = this.savedSearchService.getSearchState(action.payload);
 
-          const searchTypeDefaultFiltersID = profile.defaultFilterPresets[action.payload]
+          const searchTypeDefaultFiltersID = profile.defaultFilterPresets[action.payload];
 
           if (
             searchState &&
@@ -262,10 +262,10 @@ export class AppComponent implements OnInit, OnDestroy {
 
             if (!this.isEmptySearch(searchState)) {
               this.store$.dispatch(new searchStore.MakeSearch());
-            } else if(!!searchTypeDefaultFiltersID) {
+            } else if (!!searchTypeDefaultFiltersID) {
               this.store$.dispatch(new userStore.LoadFiltersPreset(searchTypeDefaultFiltersID));
             }
-          } else if(!!searchTypeDefaultFiltersID) {
+          } else if (!!searchTypeDefaultFiltersID) {
             this.store$.dispatch(new userStore.LoadFiltersPreset(searchTypeDefaultFiltersID));
           }
 

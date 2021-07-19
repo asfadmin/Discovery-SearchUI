@@ -30,7 +30,7 @@ export class PreferencesComponent implements OnInit, OnDestroy {
   public userAuth: UserAuth;
 
   public searchType = SearchType;
-  public searchTypeKeys = Object.keys(this.searchType).filter(val => val !== 'LIST' && val !== 'CUSTOM_PRODUCTS')
+  public searchTypeKeys = Object.keys(this.searchType).filter(val => val !== 'LIST' && val !== 'CUSTOM_PRODUCTS');
   public selectedSearchType = SearchType.DATASET;
 
   public userFiltersBySearchType = {};
@@ -70,11 +70,10 @@ export class PreferencesComponent implements OnInit, OnDestroy {
     );
 
     this.subs.add(
-      this.store$.select(userStore.getSavedFilters).subscribe(savedFilters =>
-        {
+      this.store$.select(userStore.getSavedFilters).subscribe(savedFilters => {
           this.userFilters = savedFilters;
-          for(const searchtype in SearchType) {
-            if(searchtype !== "LIST" && searchtype !== "CUSTOM_PRODUCTS") {
+          for (const searchtype in SearchType) {
+            if (searchtype !== 'LIST' && searchtype !== 'CUSTOM_PRODUCTS') {
               this.userFiltersBySearchType[SearchType[searchtype]] = [];
             }
           }
@@ -113,7 +112,7 @@ export class PreferencesComponent implements OnInit, OnDestroy {
     this.selectedFiltersIDs = {
       ... this.selectedFiltersIDs,
       [key]: filterID
-    }
+    };
 
     this.saveProfile();
   }
