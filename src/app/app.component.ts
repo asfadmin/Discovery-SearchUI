@@ -10,7 +10,7 @@ import { ProcessingQueueComponent } from '@components/header/processing-queue';
 import { Store, ActionsSubject } from '@ngrx/store';
 import { ofType } from '@ngrx/effects';
 import { of, combineLatest } from 'rxjs';
-import { skip, filter, map, switchMap, tap, catchError, debounceTime, take } from 'rxjs/operators';
+import { skip, filter, map, switchMap, tap, catchError, debounceTime, take, withLatestFrom } from 'rxjs/operators';
 
 import { NgcCookieConsentService } from 'ngx-cookieconsent';
 import { HelpComponent } from '@components/help/help.component';
@@ -214,6 +214,11 @@ export class AppComponent implements OnInit, OnDestroy {
       this.store$.select(userStore.getUserProfile).subscribe(
         profile => {
           this.urlStateService.setDefaults(profile);
+
+          const defaultFilterID = profile.defaultFilterPresets[this.searchType];
+          if(defaultFilterID !== '') {
+            this.store$.dispatch(new userStore.LoadFiltersPreset(defaultFilterID));
+          }
         })
     );
 
@@ -233,8 +238,9 @@ export class AppComponent implements OnInit, OnDestroy {
     this.subs.add(
       this.actions$.pipe(
         ofType<searchStore.SetSearchType>(searchStore.SearchActionType.SET_SEARCH_TYPE),
+        withLatestFrom(this.store$.select(userStore.getUserProfile))
       ).subscribe(
-        action => {
+        ([action, profile]) => {
           const saveSearch = this.savedSearchService.makeCurrentSearch(this.searchType);
           this.savedSearchService.saveSearchState(
             this.searchType,
@@ -246,6 +252,8 @@ export class AppComponent implements OnInit, OnDestroy {
 
           const searchState = this.savedSearchService.getSearchState(action.payload);
 
+          const searchTypeDefaultFiltersID = profile.defaultFilterPresets[action.payload]
+
           if (
             searchState &&
             searchState.searchType !== models.SearchType.CUSTOM_PRODUCTS
@@ -254,7 +262,11 @@ export class AppComponent implements OnInit, OnDestroy {
 
             if (!this.isEmptySearch(searchState)) {
               this.store$.dispatch(new searchStore.MakeSearch());
+            } else if(searchTypeDefaultFiltersID !== '') {
+              this.store$.dispatch(new userStore.LoadFiltersPreset(searchTypeDefaultFiltersID));
             }
+          } else if(searchTypeDefaultFiltersID !== '') {
+            this.store$.dispatch(new userStore.LoadFiltersPreset(searchTypeDefaultFiltersID));
           }
 
         }
