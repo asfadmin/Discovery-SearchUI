@@ -40,9 +40,9 @@ export class SavedSearchService {
     this.store$.select(scenesStore.getMasterName),
     this.store$.select(filtersStore.getBaselineSearch),
   ).pipe(
-    map(([filterMaster, master, baselineFilters]) => ({
+    map(([filterMaster, reference, baselineFilters]) => ({
       filterMaster,
-      master,
+      reference,
       ...baselineFilters
     }))
   );
@@ -51,12 +51,15 @@ export class SavedSearchService {
     this.store$.select(scenesStore.getFilterMaster),
     this.store$.select(scenesStore.getCustomPairIds),
     this.store$.select(filtersStore.getSbasSearch),
-    this.store$.select(filtersStore.getDateRange)
+    this.store$.select(filtersStore.getDateRange),
+    this.store$.select(filtersStore.getSBASOverlapToggle),
   ).pipe(
-    map(([master, customPairIds, sbasFilters, dateRange]) => ({
-      master,
+    map(([reference, customPairIds, sbasFilters, dateRange, thresholdOverlap]) => ({
+      reference,
       dateRange,
       customPairIds,
+      thresholdOverlap,
+
       ...sbasFilters
     }))
   );
@@ -102,7 +105,7 @@ export class SavedSearchService {
     return this.searchStateByType[searchType];
   }
 
-  public makeCurrentSearch(searchName: string): models.Search | null {
+  public makeCurrentSearch(searchName: string): models.Search {
     return {
       name: searchName,
       id: uuid(),

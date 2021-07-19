@@ -10,7 +10,7 @@ import { ProcessingQueueComponent } from '@components/header/processing-queue';
 import { Store, ActionsSubject } from '@ngrx/store';
 import { ofType } from '@ngrx/effects';
 import { of, combineLatest } from 'rxjs';
-import { skip, filter, map, switchMap, tap, catchError, debounceTime } from 'rxjs/operators';
+import { skip, filter, map, switchMap, tap, catchError, debounceTime, take } from 'rxjs/operators';
 
 import { NgcCookieConsentService } from 'ngx-cookieconsent';
 import { HelpComponent } from '@components/help/help.component';
@@ -53,6 +53,10 @@ export class AppComponent implements OnInit, OnDestroy {
 
   public interactionTypes = models.MapInteractionModeType;
   public searchType: models.SearchType;
+
+  public isSaveSearchPanelOpen = false;
+  public isSaveFiltersPanelOpen = false;
+
   private helpTopic: string | null;
 
   private subs = new SubSink();
@@ -72,6 +76,7 @@ export class AppComponent implements OnInit, OnDestroy {
     private matIconRegistry: MatIconRegistry,
     private domSanitizer: DomSanitizer,
     private dialog: MatDialog,
+    private notificationService: services.NotificationService
   ) {}
 
   public ngOnInit(): void {
@@ -174,9 +179,27 @@ export class AppComponent implements OnInit, OnDestroy {
     this.loadMissions();
 
     this.store$.select(uiStore.getIsSidebarOpen).subscribe(
-      isSidebarOpen => isSidebarOpen ?
-        this.sidenav.open() :
-        this.sidenav.close()
+      isSidebarOpen => {
+        if (isSidebarOpen) {
+          this.isSaveSearchPanelOpen = true;
+          this.sidenav.open();
+        } else {
+          this.isSaveSearchPanelOpen = false;
+          this.sidenav.close();
+        }
+      }
+    );
+
+    this.store$.select(uiStore.getIsFiltersSidebarOpen).subscribe(
+      isSidebarOpen => {
+        if (isSidebarOpen) {
+          this.isSaveFiltersPanelOpen = true;
+          this.sidenav.open();
+        } else {
+          this.isSaveFiltersPanelOpen = false;
+          this.sidenav.close();
+        }
+      }
     );
 
     this.subs.add(
@@ -280,6 +303,27 @@ export class AppComponent implements OnInit, OnDestroy {
     this.updateMaxSearchResults();
     this.healthCheck();
 
+    if (!this.ccService.hasConsented()) {
+      const options = {
+        closeButton: true,
+        disableTimeOut: true,
+        enableHtml: true,
+        tapToDismiss: false,
+      };
+
+      const toast = this.notificationService.info(
+        'This website uses cookies to ensure you get the best experience on our website. <a href="https://cookiesandyou.com/" target="_blank">Learn More</a>',
+        '',
+        options
+      );
+
+      toast.onHidden.pipe(take(1)).subscribe(() => {
+        const expireDate = new Date();
+        expireDate.setFullYear(expireDate.getFullYear() + 1);
+        document.cookie = `cookieconsent_status=dismiss; expires=${expireDate.toUTCString()}`;
+      });
+    }
+
     this.subs.add(this.ccService.popupOpen$.subscribe(_ => _));
     this.subs.add(this.ccService.popupClose$.subscribe(_ => _));
     this.subs.add(this.ccService.revokeChoice$.subscribe(_ => _));
@@ -323,6 +367,7 @@ export class AppComponent implements OnInit, OnDestroy {
 
   public onCloseSidebar(): void {
     this.store$.dispatch(new uiStore.CloseSidebar());
+    this.store$.dispatch(new uiStore.CloseFiltersSidebar());
   }
 
   public onLoadUrlState(): void {
@@ -409,6 +454,7 @@ export class AppComponent implements OnInit, OnDestroy {
 
   private errorBanner(): models.Banner {
     return  {
+      id: 'Error',
       text: 'ASF is experiencing errors loading data.  Please try again later.',
       name: 'Error',
       type: 'error'

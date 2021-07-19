@@ -1,6 +1,7 @@
+@use '~@angular/material' as mat;
 @import "asf-theme";
 
-$config: mat-typography-config();
+$config: mat.define-typography-config();
 
 a {
   text-decoration: none;
@@ -13,7 +14,7 @@ a {
 }
 
 .scrollable {
-  height: calc(100% - 36px);
+  height: calc(100% - 70px);
   overflow: auto;
 }
 
@@ -25,8 +26,6 @@ a {
 .detail-card-info {
   margin-left: 16px;
   margin-right: 16px;
-  margin-top: -16px;
-  margin-bottom: 36px;
 }
 
 .clipboard-icon {
@@ -37,41 +36,36 @@ a {
   max-width: 100%;
 }
 
-.img-container {
-  position: relative;
-}
-
 .browse-img {
-  width: 100%;
-  z-index: 90;
+  cursor: zoom-in;
 }
 
-.img-overlay {
-  z-index: 100;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transition: 0.2s ease;
-  transform: translate(-50%, -50%);
+.banner {
+  background: $asf-primary-light;
+  height: 40px;
+  width: calc(100% + 32px);
+  margin-left: -16px;
+  box-shadow: #00000038 0 7px 18px;
+  color: #606368;
+  mat-icon {
+    color: #606368;
+    margin-left: 5px;
+    margin-right: 5px;
+    font-size: 24px;
+  }
+}
+.browse-pager {
+  display: inherit;
+  margin-right: 5%;
+  align-items: center;
+}
+.menu-items {
+  display: inherit;
+  margin-right: auto;
+  margin-left: 5%;
+  align-items: center;
 }
 
-.overlay-icon {
-  margin: 0;
-  opacity: 0;
-  transition: 0.2s ease;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%) scale(4);
-}
-
-.img-container:hover .img-overlay {
-  background-color: rgba(0, 0, 0, 0.2);
-}
-
-.img-container:hover .overlay-icon {
-  opacity: 1;
-}
 
 .content {
   margin: 0 16px 16px 16px;
@@ -113,4 +107,21 @@ a {
 .mini-toggle-button .mat-button-toggle-appearance-standard .mat-button-toggle-label-content {
   line-height: 24px !important;
   padding: 0 12px;
+}
+
+.tool-menu {
+  position: sticky;
+  bottom: 0px;
+  background: darken($asf-primary-light, 5%);
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  height: 35px;
+  button {
+    background: none;
+    border: none;
+  }
+  button:enabled {
+    cursor: pointer;
+  }
 }

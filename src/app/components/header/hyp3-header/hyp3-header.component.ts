@@ -26,7 +26,7 @@ export class Hyp3HeaderComponent implements OnInit {
   }
 
   public onToggleFiltersMenu(): void {
-    this.store$.dispatch(new uiStore.ToggleFiltersMenu());
+    this.store$.dispatch(new uiStore.OpenFiltersMenu());
     this.store$.dispatch(new uiStore.CloseAOIOptions());
   }
 

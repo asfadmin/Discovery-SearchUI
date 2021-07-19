@@ -10,6 +10,7 @@ import { SearchTypeSelectorModule } from '@components/shared/selectors/search-ty
 
 import { MatSharedModule } from '@shared';
 import { CopyToClipboardModule } from '@components/shared/copy-to-clipboard';
+import { NgxCsvParserModule } from 'ngx-csv-parser';
 
 import { ListFiltersComponent } from './list-filters.component';
 
@@ -24,10 +25,11 @@ import { ListFiltersComponent } from './list-filters.component';
 
     FormsModule,
     CopyToClipboardModule,
+    NgxCsvParserModule,
     MatFormFieldModule,
     MatInputModule,
     MatButtonToggleModule,
-    MatSharedModule
+    MatSharedModule,
   ],
   exports: [
     ListFiltersComponent

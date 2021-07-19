@@ -81,14 +81,21 @@ export class SearchEffects {
     ofType(
       filtersStore.FiltersActionType.CLEAR_DATASET_FILTERS,
       filtersStore.FiltersActionType.CLEAR_LIST_FILTERS,
-      filtersStore.FiltersActionType.CLEAR_SELECTED_MISSION,
       filtersStore.FiltersActionType.CLEAR_TEMPORAL_RANGE,
       filtersStore.FiltersActionType.CLEAR_PERPENDICULAR_RANGE,
-      filtersStore.FiltersActionType.CLEAR_PRODUCT_NAME_FILTER,
       scenesStore.ScenesActionType.CLEAR_BASELINE,
     ),
     map(_ => new CancelSearch())
   ));
+
+    cancelSearchonOnPanelOpen = createEffect(() => this.actions$.pipe(
+      ofType(uiStore.UIActionType.OPEN_FILTERS_MENU),
+      switchMap(_ => [
+        new filtersStore.StoreCurrentFilters(),
+        new CancelSearch()
+      ])
+    )
+  );
 
   public searchResponse = createEffect(() => this.actions$.pipe(
     ofType<SearchResponse>(SearchActionType.SEARCH_RESPONSE),
@@ -122,11 +129,6 @@ export class SearchEffects {
     )
   ));
 
-  // public hideFilterMenuOnSearchResponse = createEffect(() => this.actions$.pipe(
-  //   ofType<SearchResponse>(SearchActionType.SEARCH_RESPONSE),
-  //   map(_ => new uiStore.CloseFiltersMenu()),
-  // ));
-
   public showResultsMenuOnSearchResponse = createEffect(() => this.actions$.pipe(
     ofType<SearchResponse>(SearchActionType.SEARCH_RESPONSE),
     map(_ => new uiStore.OpenResultsMenu()),
@@ -143,7 +145,9 @@ export class SearchEffects {
     switchMap(action => [
       new scenesStore.ClearScenes(),
       new uiStore.CloseAOIOptions(),
-      action.payload === models.SearchType.LIST ?
+      action.payload === models.SearchType.LIST ||
+      action.payload === models.SearchType.SBAS ||
+      action.payload === models.SearchType.BASELINE ?
         new uiStore.OpenFiltersMenu() :
         new uiStore.CloseFiltersMenu(),
     ]),

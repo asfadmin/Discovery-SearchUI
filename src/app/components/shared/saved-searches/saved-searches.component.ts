@@ -1,5 +1,4 @@
 import { Component, OnInit, ViewChild, ElementRef, OnDestroy } from '@angular/core';
-import { MatSnackBar } from '@angular/material/snack-bar';
 import { SubSink } from 'subsink';
 import { switchMap, tap, delay } from 'rxjs/operators';
 import { Store } from '@ngrx/store';
@@ -8,7 +7,7 @@ import * as userStore from '@store/user';
 import * as searchStore from '@store/search';
 import * as uiStore from '@store/ui';
 
-import { SavedSearchService, ScreenSizeService, SearchService } from '@services';
+import { NotificationService, SavedSearchService, ScreenSizeService, SearchService } from '@services';
 import * as models from '@models';
 
 @Component({
@@ -50,8 +49,8 @@ export class SavedSearchesComponent implements OnInit, OnDestroy {
     private savedSearchService: SavedSearchService,
     private store$: Store<AppState>,
     private screenSize: ScreenSizeService,
-    private snackBar: MatSnackBar,
     private searchService: SearchService,
+    private notificationService: NotificationService
   ) { }
 
   ngOnInit() {
@@ -136,9 +135,9 @@ export class SavedSearchesComponent implements OnInit, OnDestroy {
   }
 
   private notifyUserListTooLong(len: number, strType: string): void {
-    this.snackBar.open(
+    this.notificationService.error(
       `${strType} too long, must be under 10,000 characters to save (${len.toLocaleString()})`, `ERROR`,
-      { duration: 6000, }
+      { timeOut: 6000, }
     );
   }
 

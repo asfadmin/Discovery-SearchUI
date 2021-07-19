@@ -3,7 +3,7 @@ import { saveAs } from 'file-saver';
 
 import { combineLatest } from 'rxjs';
 import { debounceTime, map } from 'rxjs/operators';
-import { Store, Action } from '@ngrx/store';
+import { Store } from '@ngrx/store';
 
 import { AppState } from '@store';
 import * as scenesStore from '@store/scenes';
@@ -245,40 +245,15 @@ export class ScenesListHeaderComponent implements OnInit, OnDestroy {
   }
 
   public onMakeDownloadScript(products: models.CMRProduct[]): void {
-    const currentQueue = this.queuedProducts;
-    const action = new queueStore.MakeDownloadScript();
-
-    this.clearDispatchRestoreQueue(action, products, currentQueue);
+    this.store$.dispatch(new queueStore.MakeDownloadScriptFromList(products));
   }
 
-  public onMetadataExport(products: models.CMRProduct[], format: models.AsfApiOutputFormat): void {
-    const currentQueue = this.queuedProducts;
+  public onMetadataExport(format: models.AsfApiOutputFormat): void {
     const action = new queueStore.DownloadSearchtypeMetadata(format);
 
     if (this.searchType === this.SearchTypes.BASELINE) {
       this.store$.dispatch(action);
-    } else {
-      this.clearDispatchRestoreQueue(action, products, currentQueue);
     }
-
-  }
-
-  private clearDispatchRestoreQueue(
-    queueStoreAction: Action,
-    products: models.CMRProduct[],
-    currentQueue: models.CMRProduct[]
-  ): void {
-    const actions = [
-      new queueStore.ClearQueue(),
-      new queueStore.AddItems(products),
-      queueStoreAction,
-      new queueStore.ClearQueue(),
-      new queueStore.AddItems(currentQueue)
-    ];
-
-    actions.forEach(action =>
-      this.store$.dispatch(action)
-    );
   }
 
   ngOnDestroy(): void {

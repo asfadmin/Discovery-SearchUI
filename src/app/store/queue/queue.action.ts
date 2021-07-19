@@ -3,7 +3,6 @@ import { Action } from '@ngrx/store';
 import { CMRProduct, AsfApiOutputFormat, QueuedHyp3Job } from '@models';
 
 export enum QueueActionType {
-  ADD_ITEM = '[Queue] Add Item',
   ADD_ITEMS = '[Queue] Add Items',
   REMOVE_ITEM = '[Queue] Remove Item',
   REMOVE_ITEMS = '[Queue] Removes Item',
@@ -21,16 +20,11 @@ export enum QueueActionType {
   REMOVE_SCENE_FROM_QUEUE = '[Queue] Remove Scene From Queue',
 
   MAKE_DOWNLOAD_SCRIPT  = '[Queue] Make Bulk Download From Queue',
+  MAKE_DOWNLOAD_SCRIPT_FROM_LIST = '[Queue] Make a bulk Download script from search results',
   DOWNLOAD_METADATA = '[Queue] Download Metadata',
   DOWNLOAD_SEARCHTYPE_METADATA = '[Queue] Download Search Result Metadata',
 
   FIND_PAIR = '[Scenes] finds the closest pair to a given scene'
-}
-
-export class AddItem implements Action {
-  public readonly type = QueueActionType.ADD_ITEM;
-
-  constructor(public payload: CMRProduct) {}
 }
 
 export class AddItems implements Action {
@@ -99,6 +93,11 @@ export class MakeDownloadScript implements Action {
   public readonly type = QueueActionType.MAKE_DOWNLOAD_SCRIPT;
 }
 
+export class MakeDownloadScriptFromList implements Action {
+  public readonly type = QueueActionType.MAKE_DOWNLOAD_SCRIPT_FROM_LIST;
+  constructor(public payload: CMRProduct[]) {}
+}
+
 export class DownloadMetadata implements Action {
   public readonly type = QueueActionType.DOWNLOAD_METADATA;
 
@@ -128,7 +127,6 @@ export class RemoveSceneFromQueue implements Action {
 }
 
 export type QueueActions =
-  | AddItem
   | AddItems
   | QueueScene
   | RemoveSceneFromQueue
@@ -143,6 +141,7 @@ export type QueueActions =
   | ClearProcessingQueue
   | ClearProcessingQueueByJobType
   | MakeDownloadScript
+  | MakeDownloadScriptFromList
   | DownloadMetadata
   | DownloadSearchtypeMetadata
   | FindPair;

@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 
 import { FontAwesomeModule, FaIconLibrary } from '@fortawesome/angular-fontawesome';
 import { faSpinner, fas } from '@fortawesome/free-solid-svg-icons';
+import { ScrollingModule } from '@angular/cdk/scrolling';
 
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
@@ -11,8 +12,9 @@ import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
-import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatBottomSheetModule } from '@angular/material/bottom-sheet';
+import { MatTabsModule } from '@angular/material/tabs';
+import { MatMenuModule } from '@angular/material/menu';
 
 import { MatSharedModule } from '@shared';
 import { PipesModule } from '@pipes';
@@ -24,38 +26,40 @@ import { QueueSubmitComponent } from './queue-submit/queue-submit.component';
 import { ResizableModule } from 'angular-resizable-element';
 import { DragDropModule } from '@angular/cdk/drag-drop';
 import { ProjectNameSelectorModule } from '@components/shared/selectors/project-name-selector';
-import {MatTabsModule} from '@angular/material/tabs';
-import {MatMenuModule} from '@angular/material/menu';
 import { ConfirmationComponent } from './confirmation/confirmation.component';
 import { AngularResizedEventModule } from 'angular-resize-event';
 
 
 @NgModule({
-  declarations: [ProcessingQueueComponent, QueueSubmitComponent, ConfirmationComponent],
-    imports: [
-        CommonModule,
-        FormsModule,
-        FontAwesomeModule,
-        MatSharedModule,
-        MatInputModule,
-        MatChipsModule,
-        MatSelectModule,
-        MatSlideToggleModule,
-        MatProgressSpinnerModule,
-        MatProgressBarModule,
-        MatSnackBarModule,
-        MatBottomSheetModule,
-        PipesModule,
-        ProjectNameSelectorModule,
-        ProcessingQueueJobsModule,
-        ProcessingOptionsModule,
-        MatDialogModule,
-        ResizableModule,
-        AngularResizedEventModule,
-        DragDropModule,
-        MatTabsModule,
-        MatMenuModule,
-    ]
+  declarations: [
+    ProcessingQueueComponent,
+    QueueSubmitComponent,
+    ConfirmationComponent
+  ],
+  imports: [
+    CommonModule,
+    FormsModule,
+    FontAwesomeModule,
+    MatSharedModule,
+    MatInputModule,
+    MatChipsModule,
+    MatSelectModule,
+    MatSlideToggleModule,
+    MatProgressSpinnerModule,
+    MatProgressBarModule,
+    MatBottomSheetModule,
+    PipesModule,
+    ProjectNameSelectorModule,
+    ProcessingQueueJobsModule,
+    ProcessingOptionsModule,
+    MatDialogModule,
+    ResizableModule,
+    AngularResizedEventModule,
+    DragDropModule,
+    MatTabsModule,
+    MatMenuModule,
+    ScrollingModule,
+  ]
 })
 export class ProcessingQueueModule {
   constructor(library: FaIconLibrary) {

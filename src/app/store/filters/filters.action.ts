@@ -4,7 +4,6 @@ import * as models from '@models';
 
 export enum FiltersActionType {
   SET_SELECTED_DATASET = '[Filters-Dataset] Set Selected Dataset',
-  SET_STATE = '[Filters-Date] Set State',
 
   SET_TEMPORAL_START = '[Filters-Temporal] Set Temporal Start',
   SET_TEMPORAL_END = '[Filters-Temporal] Set Temporal End',
@@ -42,13 +41,10 @@ export enum FiltersActionType {
   ADD_POLARIZATION = '[Filters-Polarization] Add Polarization',
   SET_POLARIZATIONS = '[Filters-Polarization] Set Dataset Polarizations',
 
-  ADD_JOB_STATUS = '[Filters-Job-Status] Add Job Status',
   SET_JOB_STATUSES = '[Filters-Job-Status] Set Job Statuses',
 
-  ADD_FLIGHT_DIRECTION = '[Filters-Flight-Dir] Add Flight Direction',
   SET_FLIGHT_DIRECTIONS = '[Filters-Flight-Dir] Set Flight Directions',
 
-  ADD_SUBTYPE = '[Filters-Subtype] Add Dataset Subtype',
   SET_SUBTYPES = '[Filters-Subtype] Set Subtypes',
 
   OMIT_SEARCH_POLYGON = '[Filters-Search] Omit Search Polygon',
@@ -60,27 +56,20 @@ export enum FiltersActionType {
   SET_LIST_SEARCH_TYPE = '[Filters-List] Set List Search Type',
   SET_SEARCH_LIST = '[Filters-List] Set Search List',
 
-  LOAD_MISSIONS = '[Filters-Mission] Load Missions',
   SET_MISSIONS = '[Filters-Mission] Set Missions',
 
   SELECT_MISSION = '[Filters-Mission] Select Mission',
-  CLEAR_SELECTED_MISSION = '[Filters-Mission] Clear Selected Mission',
 
   SET_MAX_RESULTS = '[Filters] Set Max Results',
   SET_SAVED_SEARCH = '[Filters] Set Saved Search',
   SET_PROJECT_NAME = '[Filters] Set Project Name',
 
   SET_PRODUCT_NAME_FILTER = '[Filters] Set Product Name Filter',
-  CLEAR_PRODUCT_NAME_FILTER = '[Filters] Clear Product Name Filter',
 
   RESTORE_FILTERS = '[Filters] Restores Previous Filters',
   STORE_CURRENT_FILTERS = '[Filters] Stores Current Filters',
-}
 
-export class SetState implements Action {
-  public readonly type = FiltersActionType.SET_STATE;
-
-  constructor(public payload: any) {}
+  TOGGLE_50_PERCENT_OVERLAP = '[Filters] Toggles SBAS 50 Percent Overlap Check'
 }
 
 export class SetSelectedDataset implements Action {
@@ -231,24 +220,11 @@ export class ClearListFilters implements Action {
   public readonly type = FiltersActionType.CLEAR_LIST_FILTERS;
 }
 
-export class AddFlightDirection implements Action {
-  public readonly type = FiltersActionType.ADD_FLIGHT_DIRECTION;
-
-  constructor(public payload: models.FlightDirection) {}
-}
-
 export class SetFlightDirections implements Action {
   public readonly type = FiltersActionType.SET_FLIGHT_DIRECTIONS;
 
   constructor(public payload: models.FlightDirection[]) {}
 }
-
-export class AddJobStatus implements Action {
-  public readonly type = FiltersActionType.ADD_JOB_STATUS;
-
-  constructor(public payload: models.Hyp3JobStatusCode) {}
-}
-
 export class SetJobStatuses implements Action {
   public readonly type = FiltersActionType.SET_JOB_STATUSES;
 
@@ -279,12 +255,6 @@ export class SetPolarizations implements Action {
   constructor(public payload: models.DatasetPolarizations) {}
 }
 
-export class AddSubtype implements Action {
-  public readonly type = FiltersActionType.ADD_SUBTYPE;
-
-  constructor(public payload: models.DatasetSubtype) {}
-}
-
 export class SetSubtypes implements Action {
   public readonly type = FiltersActionType.SET_SUBTYPES;
 
@@ -295,10 +265,6 @@ export class SetSearchList implements Action {
   public readonly type = FiltersActionType.SET_SEARCH_LIST;
 
   constructor(public payload: string[]) {}
-}
-
-export class LoadMissions implements Action {
-  public readonly type = FiltersActionType.LOAD_MISSIONS;
 }
 
 export class SetMissions implements Action {
@@ -312,11 +278,6 @@ export class SelectMission implements Action {
 
   constructor(public payload: string) {}
 }
-
-export class ClearSelectedMission implements Action {
-  public readonly type = FiltersActionType.CLEAR_SELECTED_MISSION;
-}
-
 export class SetSavedSearch implements Action {
   public readonly type = FiltersActionType.SET_SAVED_SEARCH;
 
@@ -341,12 +302,6 @@ export class SetProductNameFilter implements Action {
   constructor(public payload: string) {}
 }
 
-export class ClearProductNameFilter implements Action {
-  public readonly type = FiltersActionType.CLEAR_PRODUCT_NAME_FILTER;
-
-  constructor() {}
-}
-
 export class RestoreFilters implements Action {
   public readonly type = FiltersActionType.RESTORE_FILTERS;
 
@@ -359,8 +314,13 @@ export class StoreCurrentFilters implements Action {
   constructor() {}
 }
 
+export class Toggle50PercentOverlap implements Action {
+  public readonly type = FiltersActionType.TOGGLE_50_PERCENT_OVERLAP;
+
+  constructor() {}
+}
+
 export type FiltersActions =
-  | SetState
   | SetSelectedDataset
   | SetPerpendicularStart
   | SetPerpendicularEnd
@@ -389,25 +349,20 @@ export type FiltersActions =
   | SetListSearchType
   | SetSearchList
   | SetFlightDirections
-  | AddFlightDirection
   | AddBeamMode
   | SetBeamModes
-  | AddJobStatus
   | SetJobStatuses
-  | AddSubtype
   | SetSubtypes
   | AddPolarization
   | SetPolarizations
   | ClearDatasetFilters
   | ClearListFilters
-  | LoadMissions
   | SetMissions
   | SelectMission
   | SetSavedSearch
-  | ClearSelectedMission
   | SetMaxResults
   | SetProjectName
   | SetProductNameFilter
-  | ClearProductNameFilter
   | RestoreFilters
-  | StoreCurrentFilters;
+  | StoreCurrentFilters
+  | Toggle50PercentOverlap;

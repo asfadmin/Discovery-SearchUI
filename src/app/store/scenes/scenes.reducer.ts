@@ -227,14 +227,6 @@ export function scenesReducer(state = initState, action: ScenesActions): ScenesS
       };
     }
 
-    case ScenesActionType.CLEAR_UNZIPPED_PRODUCTS: {
-      return {
-        ...state,
-        unzipped: {},
-        productUnzipLoading: null,
-      };
-    }
-
     case ScenesActionType.ADD_CUSTOM_PAIR: {
       const ids = action.payload;
 
@@ -266,13 +258,6 @@ export function scenesReducer(state = initState, action: ScenesActions): ScenesS
         ...state,
         customPairIds: pairs,
         selectedPair: null ,
-      };
-    }
-
-    case ScenesActionType.CLEAR_CUSTOM_PAIRS: {
-      return {
-        ...state,
-        customPairIds: []
       };
     }
 

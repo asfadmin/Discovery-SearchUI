@@ -10,7 +10,6 @@ export enum ScenesActionType {
   LOAD_UNZIPPED_PRODUCT = '[Scenes] Load unzipped product',
   OPEN_UNZIPPED_PRODUCT = '[Scenes] Open unzipped product',
   ADD_UNZIPPED_PRODUCT = '[Scenes] Add unzipped product',
-  CLEAR_UNZIPPED_PRODUCTS = '[Scenes] Clear unzipped products',
   ERROR_LOADING_UNZIPPED = '[Scenes] Error loading unzipped',
   CLOSE_ZIP_CONTENTS = '[Scenes] Close Zip Contents',
 
@@ -26,8 +25,7 @@ export enum ScenesActionType {
 
   ADD_CUSTOM_PAIR = '[Scenes] Add Custom Pair',
   ADD_CUSTOM_PAIRS = '[Scenes] Add Custom Pairs',
-  REMOVE_CUSTOM_PAIR = '[Scenes] Remove Custom Pair',
-  CLEAR_CUSTOM_PAIRS = '[Scenes] Clear Custom Pairs',
+  REMOVE_CUSTOM_PAIR = '[Scenes] Remove Custom Pair'
 }
 
 export class SetScenes implements Action {
@@ -88,10 +86,6 @@ export class AddUnzippedProduct implements Action {
   constructor(public payload: { product: CMRProduct, unzipped: UnzippedFolder[] }) {}
 }
 
-export class ClearUnzippedProducts implements Action {
-  public readonly type = ScenesActionType.CLEAR_UNZIPPED_PRODUCTS;
-}
-
 export class SetMaster implements Action {
   public readonly type = ScenesActionType.SET_MASTER;
 
@@ -138,11 +132,6 @@ export class RemoveCustomPair implements Action {
   constructor(public payload: CMRProductPair) {}
 }
 
-export class ClearCustomPairs implements Action {
-  public readonly type = ScenesActionType.CLEAR_CUSTOM_PAIRS;
-}
-
-
 export type ScenesActions =
   | SetScenes
   | ClearScenes
@@ -151,7 +140,6 @@ export type ScenesActions =
   | LoadUnzippedProduct
   | CloseZipContents
   | ErrorLoadingUnzipped
-  | ClearUnzippedProducts
   | SetSelectedScene
   | SetSelectedPair
   | SetResultsLoaded
@@ -162,5 +150,4 @@ export type ScenesActions =
   | SetPerpendicularSortDirection
   | AddCustomPair
   | AddCustomPairs
-  | RemoveCustomPair
-  | ClearCustomPairs;
+  | RemoveCustomPair;

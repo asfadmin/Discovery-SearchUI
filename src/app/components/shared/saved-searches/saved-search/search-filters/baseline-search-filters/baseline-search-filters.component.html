@@ -1,5 +1,7 @@
 <div>
-  <b>Reference: </b> {{ filters.filterMaster }}
+  <div *ngIf="!!filters.filterMaster">
+    <b>Reference: </b> {{ filters.filterMaster }}
+  </div>
   <div *ngIf="!!filters.dateRange.start">
     <b>Start: </b> {{ filters.dateRange.start | shortDate }}
   </div>
@@ -11,5 +13,8 @@
   </div>
   <div *ngIf="filters.perpendicularRange.start !== null || filters.perpendicularRange.end !== null">
     <b>Perpendicular: </b> {{ filters.perpendicularRange.start }} to {{ filters.perpendicularRange.end }}
+  </div>
+  <div *ngIf="filters.season.start !== null || filters.season.end !== null">
+    <b>Season: </b> {{ filters.season.start }} to {{ filters.season.end }}
   </div>
 </div>

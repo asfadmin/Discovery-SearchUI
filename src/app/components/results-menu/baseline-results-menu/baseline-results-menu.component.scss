@@ -1,5 +1,6 @@
+@use '~@angular/material' as mat;
 @import "asf-theme";
-$config: mat-typography-config();
+$config: mat.define-typography-config();
 
 $info-background: $asf-primary-light;
 $info-color: $asf-primary;
@@ -9,7 +10,6 @@ $info-color: $asf-primary;
 }
 
 .header-button-group {
-  //margin-top: -20px;
   width: 189px;
   display: flex;
   justify-content: center;
@@ -44,7 +44,6 @@ $info-color: $asf-primary;
 .criteria-button-group {
   outline: none;
   width: auto;
-  // line-height: 26px !important;
 }
 
 .more-icon {

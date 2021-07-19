@@ -6,11 +6,12 @@ import { SubSink } from 'subsink';
 import { Store } from '@ngrx/store';
 import { AppState } from '@store';
 import * as uiStore from '@store/ui';
+import * as mapStore from '@store/map';
 
 import { Subject } from 'rxjs';
 import { tap, delay } from 'rxjs/operators';
 
-import { menuAnimation } from '@models';
+import { menuAnimation, MapInteractionModeType } from '@models';
 import * as services from '@services';
 
 @Component({
@@ -59,6 +60,11 @@ export class AoiFilterComponent implements OnInit, OnDestroy {
     );
 
     this.handleAOIErrors();
+  }
+
+  public openAOIImport() {
+    const action = new mapStore.SetMapInteractionMode(MapInteractionModeType.UPLOAD);
+    this.store$.dispatch(action);
   }
 
   public toggleAOIOptions(): void {

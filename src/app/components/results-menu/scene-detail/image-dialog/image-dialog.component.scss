@@ -1,6 +1,7 @@
+@use '~@angular/material' as mat;
 @import "asf-theme";
 
-$config: mat-typography-config();
+$config: mat.define-typography-config();
 
 .mp0-ellipsis-mobile {
   width: 250px;
@@ -24,7 +25,7 @@ a {
 }
 
 .browse-dialog {
-  font-family: mat-font-family($config);
+  font-family: mat.font-family($config);
   background-color: $asf-primary-light;
   height: 100%;
 

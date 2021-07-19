@@ -28,6 +28,7 @@ export class AsfApiService {
 
   public query<T>(stateParamsObj: {[paramName: string]: string | number | null}): Observable<T> {
     const useProdApi = stateParamsObj['maxResults'] >= 5000;
+
     if (!this.env.isProd) {
       if (!useProdApi) {
         stateParamsObj['maturity'] = this.env.currentEnv.api_maturity;
@@ -48,7 +49,8 @@ export class AsfApiService {
       .replace(/\+/g, '%2B');
 
     const endpoint = params.get('master') ?
-      this.baselineEndpoint() : this.searchEndpoint({ useProdApi });
+      this.baselineEndpoint() :
+      this.searchEndpoint({ useProdApi });
 
     const formData = this.toFormData(params);
 

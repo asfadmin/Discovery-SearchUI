@@ -1,6 +1,5 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
-import { MatSnackBar } from '@angular/material/snack-bar';
 
 import { ConfirmationComponent } from './confirmation/confirmation.component';
 
@@ -12,9 +11,10 @@ import { tap, catchError, delay, concatMap, finalize } from 'rxjs/operators';
 
 import * as queueStore from '@store/queue';
 import * as hyp3Store from '@store/hyp3';
-import * as userStore from '@store/user'; import * as models from '@models';
+import * as searchStore from '@store/search';
+import * as userStore from '@store/user';
+import * as models from '@models';
 import * as services from '@services';
-import { ResizedEvent } from 'angular-resize-event';
 
 enum ProcessingQueueTab {
   SCENES = 'Scenes',
@@ -57,11 +57,6 @@ export class ProcessingQueueComponent implements OnInit {
   public selectedJobTypeId: string | null = null;
   public jobTypesWithQueued = [];
 
-  public style: object = {};
-  public dlWidth = 1000;
-  public dlHeight = 1000;
-  public dlWidthMin = 715;
-
   public contentAreaHeight = 0;
   public contentTopAreaHeight = 0;
   public contentBottomAreaHeight = 0;
@@ -73,7 +68,6 @@ export class ProcessingQueueComponent implements OnInit {
     public dialog: MatDialog,
     public env: services.EnvironmentService,
     private dialogRef: MatDialogRef<ProcessingQueueComponent>,
-    private snackBar: MatSnackBar,
     private store$: Store<AppState>,
     private hyp3: services.Hyp3Service,
     private screenSize: services.ScreenSizeService,
@@ -241,9 +235,15 @@ export class ProcessingQueueComponent implements OnInit {
       concatMap(batch => this.hyp3.submiteJobBatch$({ jobs: batch, validate_only: validateOnly }).pipe(
         catchError(resp => {
           if (resp.error) {
-            this.snackBar.open(`${resp.error.detail}`, 'Error', {
-              duration: 5000,
+            if (resp.error.detail === 'No authorization token provided' || resp.error.detail === 'Provided apikey is not valid') {
+              this.notificationService.error('Your authorization has expired. Please sign in again.', 'Error', {
+                timeOut: 5000,
             });
+            } else {
+              this.notificationService.error( resp.error.detail, 'Error', {
+                timeOut: 5000,
+              });
+            }
           }
 
           return of({jobs: null});
@@ -257,10 +257,23 @@ export class ProcessingQueueComponent implements OnInit {
         this.progress = null;
         this.isQueueSubmitProcessing = false;
 
-        this.notificationService.jobsSubmitted(hyp3JobsBatch.length);
         this.store$.dispatch(new hyp3Store.LoadUser());
+        let jobText;
         if (this.allJobs.length === 0) {
           this.dialogRef.close();
+          jobText = hyp3JobsBatch.length > 1 ? `${hyp3JobsBatch.length} Jobs` : 'Job';
+        } else if (this.allJobs.length !== hyp3JobsBatch.length) {
+            const submittedJobs = Math.abs(hyp3JobsBatch.length - this.allJobs.length);
+            jobText = submittedJobs > 1 ? `${submittedJobs} Jobs` : 'Job';
+        }
+        if (jobText) {
+          this.notificationService.info(`Click to view Submitted Products.`, `${jobText} Submitted`, {
+            closeButton: true,
+            disableTimeOut: true,
+          }).onTap.subscribe(() => {
+            const searchType = models.SearchType.CUSTOM_PRODUCTS;
+            this.store$.dispatch(new searchStore.SetSearchType(searchType));
+          });
         }
       }),
     ).subscribe(
@@ -299,7 +312,6 @@ export class ProcessingQueueComponent implements OnInit {
   }
 
   public onClearSingleJobQueue(jobType: models.Hyp3JobType): void {
-
     if (jobType.id === this.selectedJobTypeId) {
 
       let TabIdx = this.jobTypesWithQueued.findIndex((queuedJobType) => queuedJobType.jobType === jobType);
@@ -345,9 +357,7 @@ export class ProcessingQueueComponent implements OnInit {
     this.selectedTab = ProcessingQueueTab.OPTIONS;
   }
 
-  public onResized(event: ResizedEvent) {
-    this.dlWidth = event.newWidth;
-    this.dlHeight = event.newHeight;
+  public onResized() {
     this.updateContentBottomHeight();
   }
 

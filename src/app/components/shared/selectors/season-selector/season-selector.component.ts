@@ -63,7 +63,7 @@ export class SeasonSelectorComponent implements OnInit, OnDestroy {
     date.setTime(timeOfFirst + dayNumMilli);
 
     return  date.toLocaleDateString('en-US', {
-      month, day: 'numeric'
+      month: <'numeric'>month, day: 'numeric'
     });
   }
 

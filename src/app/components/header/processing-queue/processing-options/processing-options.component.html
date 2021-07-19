@@ -19,6 +19,14 @@
             [optionName]="option.name"
             [optionInfo]="option.info">
           </app-toggle-option>
+
+          <app-checkbox-option
+             *ngIf="option.type === 'CHECKBOX'"
+            (valueChange)="onSetOptionValue(option.apiName, $event)"
+            [value]="optionValues[option.apiName]"
+            [optionName]="option.name"
+            [optionInfo]="option.info">
+          </app-checkbox-option>
         </div>
       </ng-container>
     </ng-container>

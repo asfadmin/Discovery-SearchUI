@@ -5,7 +5,6 @@ import { FormsModule } from '@angular/forms';
 import { MatSharedModule } from '@shared';
 import { MatInputModule } from '@angular/material/input';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
-import { MatSnackBarModule } from '@angular/material/snack-bar';
 
 import { ProjectNameSelectorComponent } from './project-name-selector.component';
 
@@ -18,7 +17,6 @@ import { ProjectNameSelectorComponent } from './project-name-selector.component'
     MatSharedModule,
     MatInputModule,
     MatAutocompleteModule,
-    MatSnackBarModule,
   ],
   exports: [
     ProjectNameSelectorComponent

@@ -47,7 +47,7 @@ export class BaselineHeaderComponent implements OnInit {
   }
 
   public onToggleFiltersMenu(): void {
-    this.store$.dispatch(new uiStore.ToggleFiltersMenu());
+    this.store$.dispatch(new uiStore.OpenFiltersMenu());
   }
 
   public onOpenDownloadQueue(): void {

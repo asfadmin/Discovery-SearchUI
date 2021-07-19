@@ -139,6 +139,9 @@
   <button (click)="onOpenSearchHistory()" mat-menu-item matSuffix>
     Search History
   </button>
+  <button [disabled]="(searchType$ | async) === searchTypes.LIST || (searchType$ | async) === searchTypes.CUSTOM_PRODUCTS" (click)="onOpenSavedFilters()" mat-menu-item matSuffx>
+    Saved Filters
+  </button>
   <button (click)="onOpenPreferences()" mat-menu-item matSuffix>
     Preferences
   </button>

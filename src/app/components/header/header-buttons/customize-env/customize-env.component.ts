@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { MatSnackBar } from '@angular/material/snack-bar';
 
-import { EnvironmentService } from '@services';
+import { EnvironmentService, NotificationService } from '@services';
 
 @Component({
   selector: 'app-customize-env',
@@ -13,7 +12,7 @@ export class CustomizeEnvComponent implements OnInit {
 
   constructor(
     private env: EnvironmentService,
-    private snackBar: MatSnackBar,
+    private notificationService: NotificationService,
   ) { }
 
   ngOnInit() {
@@ -25,8 +24,8 @@ export class CustomizeEnvComponent implements OnInit {
       const customEnv = JSON.parse(this.envStr);
 
       if (customEnv.defaultEnv !== 'test') {
-        this.snackBar.open(`defaultEnv must be set to 'test'`, 'ERROR', {
-          duration: 5000
+        this.notificationService.error(`defaultEnv must be set to 'test'`, 'Error', {
+          timeOut: 5000
         });
         return;
       }
@@ -34,8 +33,8 @@ export class CustomizeEnvComponent implements OnInit {
       localStorage.setItem('customEnv-1', this.envStr);
       this.env.setEnvs(customEnv);
     } catch {
-      this.snackBar.open(`JSON parse error while setting env`, 'ERROR', {
-        duration: 5000
+      this.notificationService.error(`JSON parse error while setting env`, 'Error', {
+        timeOut: 5000
       });
       return;
     }

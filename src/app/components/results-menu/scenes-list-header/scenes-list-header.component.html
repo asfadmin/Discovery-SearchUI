@@ -3,7 +3,10 @@
     <div [className]="searchType === SearchTypes.BASELINE && breakpoint > breakpoints.MOBILE ?
                                         'files-header-baseline' : 'files-header mobile-size'">
       <div class="header-row-left"
-           [ngClass]="{'sbas-header-row-left': searchType === SearchTypes.SBAS, 'mobile-size': breakpoint <= breakpoints.SMALL}">
+        [ngClass]="{
+          'sbas-header-row-left': searchType === SearchTypes.SBAS,
+          'mobile-size': breakpoint <= breakpoints.SMALL
+        }">
 
         <div *ngIf="searchType === SearchTypes.DATASET || searchType === SearchTypes.LIST" class="mr-10 scene-count">
           {{ numberOfScenes }} Scene{{ numberOfScenes === 1 ? '' : 's' }}
@@ -198,13 +201,13 @@
 
       <mat-menu #ExportAllMetadata="matMenu">
         <div *ngIf="products">
-          <button (click)="onMetadataExport(products, ApiFormat.CSV)" mat-menu-item>
+          <button (click)="onMetadataExport(ApiFormat.CSV)" mat-menu-item>
             csv
           </button>
-          <button (click)="onMetadataExport(products, ApiFormat.GEOJSON)" mat-menu-item>
+          <button (click)="onMetadataExport(ApiFormat.GEOJSON)" mat-menu-item>
             geojson
           </button>
-          <button (click)="onMetadataExport(products, ApiFormat.KML)" mat-menu-item>
+          <button (click)="onMetadataExport(ApiFormat.KML)" mat-menu-item>
             kml
           </button>
         </div>
@@ -216,7 +219,7 @@
             python (.py)
           </button>
 
-          <button (click)="onMetadataExport(products, ApiFormat.METALINK)" mat-menu-item>
+          <button (click)="onMetadataExport(ApiFormat.METALINK)" mat-menu-item>
             metalink
           </button>
       </div>

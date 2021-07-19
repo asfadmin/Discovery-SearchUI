@@ -74,7 +74,7 @@
 
 <app-filters-dropdown></app-filters-dropdown>
 
-<app-file-upload
+<app-file-upload *ngIf="searchType === searchTypes.DATASET"
   (dialogClose)="onFileUploadDialogClosed($event)"
   (newSearchPolygon)="onNewSearchPolygon($event)"
   [interaction$]="interactionMode$">

@@ -1,12 +1,40 @@
 <div class="jobs-list">
+
+  <div class="sort-options">
+    <div class="flex-field">
+      <mat-form-field>
+        <mat-label>Sort Criteria</mat-label>
+        <mat-select (selectionChange)="onSortChange()" [(ngModel)]='sortType'>
+          <div *ngFor="let item of sortTypes">
+            <mat-option [value]="item">
+              {{item}}
+            </mat-option>
+          </div>
+        </mat-select>
+      </mat-form-field>
+    </div>
+
+    <div class="flex-field">
+      <mat-form-field>
+        <mat-label>Sort Order</mat-label>
+        <mat-select (selectionChange)="onSortChange()" [(ngModel)]='sortOrder'>
+          <div *ngFor="let item of sortOrders">
+            <mat-option [value]="item">
+              {{item}}
+            </mat-option>
+          </div>
+        </mat-select>
+      </mat-form-field>
+    </div>
+  </div>
+
   <mat-list *ngIf="!areJobsLoading" role="list" class="flex-list">
     <ng-container
-      *ngIf="jobs.length > 0 ; then jobsQueued; else emptyQueue">
+      *ngIf="jobsDisplay.length > 0 ; then jobsQueued; else emptyQueue">
     </ng-container>
 
     <ng-template #jobsQueued>
-
-      <mat-list-item *ngFor="let job of jobs" class="job-list-item">
+      <mat-list-item *ngFor="let job of jobsDisplay">
           <img matListAvatar
                [src]="job.granules[0].thumbnail"
                onerror="this.src='assets/no-thumb.png'"

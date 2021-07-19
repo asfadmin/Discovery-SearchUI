@@ -1,0 +1,193 @@
+@import "asf-theme";
+
+$header-height: 120px;
+$footer-height: 60px;
+$bottom-offset: 10px;
+$background-color: $asf-primary-light;
+$color: $asf-primary-dark;
+
+::ng-deep.mat-dialog-container {
+  resize: both;
+  overflow: auto;
+  background: $background-color;
+  width: 80vw;
+  height: 86vh;
+  min-width: 350px;
+  min-height: 500px;
+}
+
+[mat-dialog-title] {
+  background: #369;
+  color: #fff;
+  cursor: move;
+  text-align: center;
+}
+
+.queue { min-width: 350px;
+  height: 100%;
+  min-height: 500px;
+  margin: 0;
+  padding: 0;
+  position: relative;
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+  font-size: 25px;
+  font-weight: bold;
+  color: $asf-primary-dark;
+  background-color: $background-color;
+}
+
+.mat-dialog-content {
+  position: absolute;
+  display: block;
+  top: $header-height;
+  height: calc(100% - #{$header-height} - #{$footer-height} - #{$bottom-offset});
+  max-height: calc(100% - #{$header-height} - #{$footer-height} - #{$bottom-offset});
+  width: 100%;
+  overflow-y: hidden;
+  overflow-x: hidden;
+  background-color: white;
+  padding: 0;
+  margin: 0;
+
+  .mat-dialog-content-2 {
+    top: initial;
+    height: calc(100% - #{$footer-height});
+    overflow: initial;
+  }
+}
+
+.content-top-area {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  padding: 0 0 0 15px;
+  border-bottom: solid 1px grey;
+  height: 100%;
+}
+
+.content-area {
+  padding: 0 0 0 15px;
+  border-bottom: solid 1px grey;
+  height: 100%;
+}
+
+.content-bottom-area {
+  display: flex;
+  flex-direction: row;
+  height: 100%;
+  overflow-y: auto;
+}
+
+.pq-card-title-group {
+  background-color: $asf-primary-light;
+  color: $asf-primary-dark;
+  padding: 10px 10px 0 0;
+  border-bottom-style: solid;
+  border-bottom-color: $asf-primary-dark;
+  border-bottom-width: 1px;
+  width: 100%;
+  height: $header-height;
+  position: absolute;
+  top: 0;
+  flex: 1 1 auto;
+  text-align: left;
+}
+
+.header-link {
+  font-size: 18px;
+
+  a {
+    text-decoration: none;
+    color: $asf-primary;
+  }
+}
+
+.feedback-div {
+  position: absolute;
+  top: 53px;
+  right: 16px;
+  text-align: right;
+  float: right;
+  cursor: pointer;
+}
+
+.docs-div {
+  position: absolute;
+  top: 53px;
+  right: 130px;
+  text-align: right;
+  float: right;
+  cursor: pointer;
+}
+
+.content-block {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  text-align: left;
+}
+
+.footer {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  height: 100%;
+  background-color: $asf-primary-light;
+  border-top-style: solid;
+  border-top-color: $asf-primary-dark;
+  border-top-width: 1px;
+}
+
+.mat-dialog-actions {
+  position: absolute;
+  display: flex;
+  background-color: $background-color;
+  width: 100%;
+  height: $footer-height;
+  bottom: $bottom-offset;
+  margin-bottom: 0;
+  padding: 0;
+}
+
+.hyp3-footer {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  height: 100%;
+  background-color: $asf-primary-light;
+  border-top-style: solid;
+  border-top-color: $asf-primary-dark;
+  border-top-width: 1px;
+}
+
+.on-demand-branding {
+  display: inline-block;
+  vertical-align: middle;
+  margin-left: 0;
+  margin-bottom: -5px;
+}
+
+.on-demand-icon {
+  @include md-icon-size(72px);
+
+  color: $asf-primary-dark;
+}
+
+.on-demand-text {
+  display: inline-block;
+  vertical-align: middle;
+  margin-top: -16px;
+}
+
+.on-demand-subtitle {
+  margin-top: -42px;
+  font-style: italic;
+  margin-left: 75px;
+  font-size: 14px;
+  margin-bottom: 17px;
+  color: #65665c;
+  display: block;
+  position: absolute;
+}

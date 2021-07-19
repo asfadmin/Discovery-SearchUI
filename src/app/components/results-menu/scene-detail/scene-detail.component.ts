@@ -41,7 +41,8 @@ export class SceneDetailComponent implements OnInit, OnDestroy {
   public isImageLoading = false;
   public selectedProducts: models.CMRProduct[];
   public hasBaseline: boolean;
-
+  public browseIndex = 0;
+  public detailsOpen = true;
   public masterOffsets$ = this.store$.select(scenesStore.getMasterOffsets);
 
   private subs = new SubSink();
@@ -84,7 +85,7 @@ export class SceneDetailComponent implements OnInit, OnDestroy {
     this.subs.add(
       this.store$.select(scenesStore.getSelectedSceneProducts).pipe(
         tap(products => this.selectedProducts = products),
-      ).subscribe(_ => this.updateHasBaseline())
+      ).subscribe(_ => {this.updateHasBaseline(); this.browseIndex = 0})
     );
 
     this.subs.add(
