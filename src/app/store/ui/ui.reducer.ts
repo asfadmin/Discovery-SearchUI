@@ -9,7 +9,9 @@ export interface UIState {
   isFiltersMenuOpen: boolean;
   isResultsMenuOpen: boolean;
   isSidebarOpen: boolean;
+  isFiltersSidebarOpen: boolean;
   isSaveSearchOn: boolean;
+  isSaveFilterOn: boolean;
   isAOIOptionsOpen: boolean;
   showS1RawData: boolean;
   showExpiredData: boolean;
@@ -27,7 +29,9 @@ export const initState: UIState = {
   isFiltersMenuOpen: false,
   isResultsMenuOpen: false,
   isSidebarOpen: false,
+  isFiltersSidebarOpen: false,
   isSaveSearchOn: false,
+  isSaveFilterOn: false,
   isAOIOptionsOpen: false,
   showS1RawData: false,
   showExpiredData: true,
@@ -69,6 +73,20 @@ export function uiReducer(state = initState, action: UIActions): UIState {
       return {
         ...state,
         isSidebarOpen: false
+      };
+    }
+
+    case UIActionType.OPEN_FILTERS_SIDEBAR: {
+      return {
+        ...state,
+        isFiltersSidebarOpen: true
+      };
+    }
+
+    case UIActionType.CLOSE_FILTERS_SIDEBAR: {
+      return {
+        ...state,
+        isFiltersSidebarOpen: false
       };
     }
 
@@ -118,6 +136,13 @@ export function uiReducer(state = initState, action: UIActions): UIState {
       return {
         ...state,
         isSaveSearchOn: action.payload,
+      };
+    }
+
+    case UIActionType.SET_SAVE_FILTER_ON: {
+      return {
+        ...state,
+        isSaveFilterOn: action.payload,
       };
     }
 
@@ -270,9 +295,19 @@ export const getIsSidebarOpen = createSelector(
   state => state.isSidebarOpen
 );
 
+export const getIsFiltersSidebarOpen = createSelector(
+  getUIState,
+  state => state.isFiltersSidebarOpen
+);
+
 export const getIsSaveSearchOn = createSelector(
   getUIState,
   state => state.isSaveSearchOn
+);
+
+export const getIsSaveFilterOn = createSelector(
+  getUIState,
+  state => state.isSaveFilterOn
 );
 
 export const getSaveSearchType = createSelector(

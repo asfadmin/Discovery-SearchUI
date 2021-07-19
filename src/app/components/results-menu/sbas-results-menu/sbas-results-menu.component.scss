@@ -1,6 +1,7 @@
+@use '~@angular/material' as mat;
 @import "asf-theme";
 
-$config: mat-typography-config();
+$config: mat.define-typography-config();
 
 $info-background: $asf-primary-light;
 $info-color: $asf-primary;
@@ -53,10 +54,6 @@ $info-color: $asf-primary;
   box-shadow: none !important;
 }
 
-.sbas-chart-card {
-  //flex: 55;
-}
-
 .sbas-metadata {
   overflow: auto;
   height: 100%;
@@ -69,10 +66,7 @@ $info-color: $asf-primary;
 
 .chart-resize-handle-left,
 .chart-resize-handle-right {
-  //position: absolute;
   height: 100%;
-  //cursor: col-resize;
-  //width: 14px;
   background-image: url('//assets/div-handles/hsizegrip.png');
   background-color: $asf-primary-light;
   background-position: left;
@@ -131,6 +125,6 @@ $info-color: $asf-primary;
 }
 
 label {
-  font-family: mat-font-family($config);
+  font-family: mat.font-family($config);
   font-size: 11px;
 }

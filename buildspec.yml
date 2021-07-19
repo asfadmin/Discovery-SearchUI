@@ -6,15 +6,15 @@ phases:
       nodejs: 12
     commands:
       - npm set progress=false
-      - npm install -g @angular/cli@9.0.0
+      - npm install -g @angular/cli@12.0.4
   pre_build:
     commands:
       - cp src/app/services/envs/env-${MATURITY}.ts src/app/services/env.ts
-      - npm install --prod
+      - npm install
       - echo "{\"hash\":\"$CODEBUILD_RESOLVED_SOURCE_VERSION\"}" > src/assets/commit-hash.json
   build:
     commands:
-      - ng build --prod
+      - ng build --configuration production
   post_build:
     commands:
       - cd dist/${APPLICATION}

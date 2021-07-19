@@ -34,6 +34,8 @@ export interface FiltersState {
   productFilterName: string;
 
   previousFilters: FiltersState;
+
+  thresholdOverlap: boolean;
 }
 
 
@@ -84,18 +86,14 @@ export const initState: FiltersState = {
   projectName: null,
   productFilterName: null,
 
-  previousFilters: null
+  previousFilters: null,
+
+  thresholdOverlap: false
 };
 
 
 export function filtersReducer(state = initState, action: FiltersActions): FiltersState {
   switch (action.type) {
-    case FiltersActionType.SET_STATE: {
-      return {
-        ...state,
-        ...action.payload
-      };
-    }
 
     case FiltersActionType.SET_SELECTED_DATASET: {
       if (!action.payload) {
@@ -413,13 +411,6 @@ export function filtersReducer(state = initState, action: FiltersActions): Filte
       };
     }
 
-    case FiltersActionType.ADD_JOB_STATUS: {
-      return {
-        ...state,
-        jobStatuses: [ ...state.jobStatuses, action.payload ]
-      };
-    }
-
     case FiltersActionType.SET_JOB_STATUSES: {
       return {
         ...state,
@@ -444,29 +435,10 @@ export function filtersReducer(state = initState, action: FiltersActions): Filte
         polarizations: [ ...action.payload ]
       };
     }
-
-    case FiltersActionType.ADD_SUBTYPE: {
-      const newPols = Array.from(
-        new Set([...state.subtypes, action.payload])
-      );
-
-      return {
-        ...state,
-        subtypes: [ ...newPols ]
-      };
-    }
-
     case FiltersActionType.SET_SUBTYPES: {
       return {
         ...state,
         subtypes: [ ...action.payload ]
-      };
-    }
-
-    case FiltersActionType.ADD_FLIGHT_DIRECTION: {
-      return {
-        ...state,
-        flightDirections: new Set([action.payload, ...Array.from(state.flightDirections)])
       };
     }
 
@@ -488,13 +460,6 @@ export function filtersReducer(state = initState, action: FiltersActions): Filte
       return {
         ...state,
         selectedMission: action.payload
-      };
-    }
-
-    case FiltersActionType.CLEAR_SELECTED_MISSION: {
-      return {
-        ...state,
-        selectedMission: null
       };
     }
 
@@ -593,12 +558,6 @@ export function filtersReducer(state = initState, action: FiltersActions): Filte
         productFilterName: action.payload
       };
     }
-    case FiltersActionType.CLEAR_PRODUCT_NAME_FILTER: {
-      return {
-        ...state,
-        productFilterName: null
-      };
-    }
     case FiltersActionType.STORE_CURRENT_FILTERS: {
       return {
         ...state,
@@ -613,6 +572,12 @@ export function filtersReducer(state = initState, action: FiltersActions): Filte
         };
       }
       return state;
+    }
+    case FiltersActionType.TOGGLE_50_PERCENT_OVERLAP: {
+      return {
+        ...state,
+        thresholdOverlap: !state.thresholdOverlap
+      };
     }
     default: {
       return state;
@@ -804,7 +769,8 @@ export const getSbasSearch = createSelector(
     temporal: state.temporalRange.start,
     dateRange: state.dateRange,
     season: state.season,
-    perpendicular: state.perpendicularRange.start
+    perpendicular: state.perpendicularRange.start,
+    thresholdOverlap: state.thresholdOverlap
   })
 );
 
@@ -831,8 +797,10 @@ export const areFiltersChanged = createSelector(
     }
     const keys = Object.keys(state).filter(key => key !== 'previousFilters');
     return keys.some(key => state[key] !== state.previousFilters[key]);
-    // for (const key in keys) {
-
-    // })
   }
+);
+
+export const getSBASOverlapToggle = createSelector(
+  getFiltersState,
+  (state: FiltersState) => state.thresholdOverlap
 );

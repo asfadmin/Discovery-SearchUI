@@ -1,19 +1,19 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { MatSnackBar } from '@angular/material/snack-bar';
 
 import { Observable, of, combineLatest } from 'rxjs';
 import { map, catchError } from 'rxjs/operators';
 
 import { EnvironmentService } from './environment.service';
 import { BannerApiResponse } from '@models';
+import { NotificationService } from './notification.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class BannerApiService {
   constructor(
-    private snackBar: MatSnackBar,
+    private notificationService: NotificationService,
     private env: EnvironmentService,
     private http: HttpClient
   ) { }
@@ -43,6 +43,7 @@ export class BannerApiService {
     return this.http.get<any[]>(url).pipe(
           map(banners => ({
             banners: <any[]>banners.map(banner => ({
+              id: banner.id,
               text: banner.text,
               name: banner.name,
               type: calendar
@@ -50,8 +51,8 @@ export class BannerApiService {
             systime: ''
           }),
             catchError(_ => {
-              this.snackBar.open('Trouble loading notifications', 'ERROR', {
-                duration: 5000
+              this.notificationService.error('Trouble loading notifications', 'Error', {
+                timeOut: 5000
               });
 
               return of(null);

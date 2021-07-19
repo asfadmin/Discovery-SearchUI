@@ -43,6 +43,7 @@ import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { BaselineHeaderComponent } from './baseline-header/baseline-header.component';
 import { MasterSceneSelectorModule } from '@components/shared/selectors/master-scene-selector';
 import { Hyp3HeaderComponent } from './hyp3-header/hyp3-header.component';
+import { CreateSubscriptionModule } from './create-subscription/create-subscription.module';
 
 @NgModule({
   declarations: [
@@ -52,7 +53,7 @@ import { Hyp3HeaderComponent } from './hyp3-header/hyp3-header.component';
     ListHeaderComponent,
     AoiFilterComponent,
     BaselineHeaderComponent,
-    Hyp3HeaderComponent
+    Hyp3HeaderComponent,
   ],
   imports: [
     CommonModule,
@@ -86,7 +87,8 @@ import { Hyp3HeaderComponent } from './hyp3-header/hyp3-header.component';
     LogoModule,
     ProjectNameSelectorModule,
     JobStatusSelectorModule,
-    JobProductNameSelectorModule
+    JobProductNameSelectorModule,
+    CreateSubscriptionModule
   ],
   exports: [
     HeaderComponent

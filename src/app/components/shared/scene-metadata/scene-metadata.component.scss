@@ -1,6 +1,7 @@
+@use '~@angular/material' as mat;
 @import "asf-theme";
 
-$config: mat-typography-config();
+$config: mat.define-typography-config();
 
 a {
   text-decoration: none;
@@ -10,9 +11,9 @@ a {
 .scene-metadata {
   font-size: 12px;
   margin-top: 5px;
-
+  columns: 2;
   .mat-icon {
-    @include md-icon-size(16px);
+    @include md-icon-size(12px);
 
     margin-left: 4px;
   }

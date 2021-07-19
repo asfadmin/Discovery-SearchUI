@@ -19,8 +19,13 @@ export enum UIActionType {
   CLOSE_SIDEBAR = '[UI] Close Sidebar',
   OPEN_SIDEBAR = '[UI] Open Sidebar',
 
+  OPEN_FILTERS_SIDEBAR  = '[UI] Close Filters Sidebar',
+  CLOSE_FILTERS_SIDEBAR = '[UI] Open FIlters Sidebar',
+
   SET_SAVE_SEARCH_ON = '[UI] Set Save Search On',
   SET_SAVED_SEARCH_TYPE = '[UI] Set Saved Search Type',
+
+  SET_SAVE_FILTER_ON = '[UI] Set Save Filter On',
 
   START_ADDING_CUSTOM_POINT = '[UI] Start Adding Custom Point',
   STOP_ADDING_CUSTOM_POINT = '[UI] Stop Adding Custom Point',
@@ -60,6 +65,13 @@ export class OpenSidebar implements Action {
   public readonly type = UIActionType.OPEN_SIDEBAR;
 }
 
+export class OpenFiltersSidebar implements Action {
+  public readonly type = UIActionType.OPEN_FILTERS_SIDEBAR;
+}
+
+export class CloseFiltersSidebar implements Action {
+  public readonly type = UIActionType.CLOSE_FILTERS_SIDEBAR;
+}
 export class ShowS1RawData implements Action {
   public readonly type = UIActionType.SHOW_S1_RAW_DATA;
 }
@@ -90,6 +102,11 @@ export class SetSaveSearchOn implements Action {
   constructor(public payload: boolean) {}
 }
 
+export class SetSaveFilterOn implements Action {
+  public readonly type = UIActionType.SET_SAVE_FILTER_ON;
+
+  constructor(public payload: boolean) {}
+}
 export class SetSavedSearchType implements Action {
   public readonly type = UIActionType.SET_SAVED_SEARCH_TYPE;
 
@@ -167,10 +184,13 @@ export type UIActions =
   | CloseAOIOptions
   | OpenSidebar
   | SetSaveSearchOn
+  | SetSaveFilterOn
   | StartAddingCustomPoint
   | StopAddingCustomPoint
   | SetSavedSearchType
   | CloseSidebar
+  | OpenFiltersSidebar
+  | CloseFiltersSidebar
   | ToggleFiltersMenu
   | CloseFiltersMenu
   | OpenFiltersMenu

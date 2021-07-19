@@ -58,6 +58,9 @@ export class HeaderButtonsComponent implements OnInit, OnDestroy {
   public lastOnDemandCount = 0;
   public lastQProdCount = 0;
 
+  public searchType$ = this.store$.select(searchStore.getSearchType);
+  public searchTypes = SearchType;
+
   constructor(
     public authService: AuthService,
     public env: EnvironmentService,
@@ -186,7 +189,7 @@ export class HeaderButtonsComponent implements OnInit, OnDestroy {
   }
 
   public onOpenUserGuide(): void {
-    const url = 'https://docs.asf.alaska.edu/';
+    const url = 'https://docs.asf.alaska.edu/vertex/manual/';
 
     window.dataLayer = window.dataLayer || [];
     window.dataLayer.push({
@@ -308,6 +311,17 @@ export class HeaderButtonsComponent implements OnInit, OnDestroy {
     this.store$.dispatch(new uiStore.SetSaveSearchOn(false));
     this.store$.dispatch(new uiStore.SetSavedSearchType(SavedSearchType.SAVED));
     this.store$.dispatch(new uiStore.OpenSidebar());
+  }
+
+  public onOpenSavedFilters(): void {
+
+    window.dataLayer = window.dataLayer || [];
+    window.dataLayer.push({
+      'event': 'open-saved-filters',
+      'open-saved-filters': true
+    });
+
+    this.store$.dispatch(new uiStore.OpenFiltersSidebar());
   }
 
   public onOpenSearchHistory() {

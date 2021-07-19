@@ -5,7 +5,6 @@ import { of } from 'rxjs';
 import { map, catchError, switchMap, withLatestFrom } from 'rxjs/operators';
 import * as uiActions from './ui.action';
 import * as filtersStore from '@store/filters';
-// import * as searchStore from '@store/search';
 import { getSearchType } from '@store/search/search.reducer';
 
 import { BannerApiService } from '../../services/banner-api.service';
@@ -27,6 +26,7 @@ export class UIEffects {
     switchMap(() => this.bannerApi.load().pipe(
       catchError(() => of({
         banners: [{
+          id: 'Error',
           text: 'Error loading notifications' ,
           name: 'Error',
           type: 'error'

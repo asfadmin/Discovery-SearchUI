@@ -47,13 +47,6 @@ export function hyp3Reducer(state = initState, action: Hyp3Actions): Hyp3State {
       };
     }
 
-    case Hyp3ActionType.ERROR_LOADING_JOBS: {
-      return {
-        ...state,
-        areJobsLoading: false
-      };
-    }
-
     case Hyp3ActionType.SET_PROCESSING_OPTIONS: {
       return {
         ...state,
@@ -62,13 +55,6 @@ export function hyp3Reducer(state = initState, action: Hyp3Actions): Hyp3State {
     }
 
     case Hyp3ActionType.CLEAR_PROCESSING_OPTIONS: {
-      return {
-        ...state,
-        processingOptions: hyp3DefaultJobOptions
-      };
-    }
-
-    case Hyp3ActionType.CLEAR_PROCESSING_OPTIONS_BY_JOB_TYPE: {
       return {
         ...state,
         processingOptions: hyp3DefaultJobOptions
@@ -101,13 +87,6 @@ export function hyp3Reducer(state = initState, action: Hyp3Actions): Hyp3State {
       return {
         ...state,
         isUserLoading: false
-      };
-    }
-
-    case Hyp3ActionType.CLEAR_JOBS: {
-      return {
-        ...state,
-        jobs: [],
       };
     }
 

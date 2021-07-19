@@ -35,7 +35,6 @@ export class BaselineSlidersComponent implements OnInit, OnDestroy {
 
   constructor(
     private store$: Store<AppState>,
-    // private actions$: ActionsSubject,
   ) { }
 
   ngOnInit(): void {
@@ -43,7 +42,6 @@ export class BaselineSlidersComponent implements OnInit, OnDestroy {
     const perpSlider = perpBaselineSlider.slider;
     const perpValues$ = perpBaselineSlider.values;
 
-    // const [perpSlider, perpValues$] = this.makeSlider$(this.perpendicularFilter);
     this.perpSlider = perpSlider;
 
     this.subs.add(
@@ -62,7 +60,6 @@ export class BaselineSlidersComponent implements OnInit, OnDestroy {
     const tempBaselineSlider = this.makeSlider$(this.temporalFilter);
     const tempSlider = tempBaselineSlider.slider;
     const tempValues$ = tempBaselineSlider.values;
-    // const [tempSlider, tempValues$] = this.makeSlider$(this.temporalFilter);
     this.tempSlider = tempSlider;
 
     this.subs.add(
@@ -77,13 +74,6 @@ export class BaselineSlidersComponent implements OnInit, OnDestroy {
         }
       )
     );
-
-    // this.subs.add(
-    //   this.actions$.pipe(
-    //     ofType<ToggleFiltersMenu>()).subscribe(
-    //       tempValues$
-    //   )
-    // )
 
     this.store$.select(filtersStore.getTemporalRange).pipe(
       take(1),

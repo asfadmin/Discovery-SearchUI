@@ -2,7 +2,6 @@ import { createFeatureSelector, createSelector } from '@ngrx/store';
 
 import { UserActionType, UserActions } from './user.action';
 import * as models from '@models';
-
 /* State */
 
 export interface UserState {
@@ -12,6 +11,7 @@ export interface UserState {
     searches: models.Search[];
     searchHistory: models.Search[];
   };
+  savedFilterPresets: models.SavedFilterPreset[];
 }
 
 const initState: UserState = {
@@ -28,7 +28,9 @@ const initState: UserState = {
   savedSearches: {
     searches: [],
     searchHistory: []
-  }
+  },
+  savedFilterPresets: []
+
 };
 
 /* Reducer */
@@ -136,6 +138,43 @@ export function userReducer(state = initState, action: UserActions): UserState {
       };
     }
 
+    case UserActionType.ADD_NEW_FILTERS_PRESET: {
+      return {
+        ...state,
+        savedFilterPresets: [ ...state.savedFilterPresets, action.payload]
+      };
+    }
+
+    case UserActionType.DELETE_FILTERS_PRESET: {
+      return {
+        ...state,
+        savedFilterPresets: state.savedFilterPresets.filter(preset => preset.id !== action.payload)
+      };
+    }
+
+    case UserActionType.UPDATE_FILTERS_PRESET_NAME: {
+      const newFilterIdx = state.savedFilterPresets.findIndex(preset => preset.id === action.payload.presetID);
+
+      const newFilter = {
+        ... state.savedFilterPresets.find(preset => preset.id === action.payload.presetID),
+        name: action.payload.newName
+      };
+
+      const newFilterPresets = state.savedFilterPresets.filter(preset => preset.id !== action.payload.presetID);
+      newFilterPresets.splice(newFilterIdx, 0, newFilter);
+      return {
+        ...state,
+        savedFilterPresets: newFilterPresets
+      };
+    }
+
+    case UserActionType.SET_FILTERS: {
+      return {
+        ...state,
+        savedFilterPresets: action.payload
+      };
+    }
+
     default: {
       return state;
     }
@@ -205,4 +244,9 @@ export const getSavedSearches = createSelector(
 export const getSearchHistory = createSelector(
   getUserState,
   (state: UserState) => state.savedSearches.searchHistory
+);
+
+export const getSavedFilters = createSelector(
+  getUserState,
+  (state: UserState) => state.savedFilterPresets
 );

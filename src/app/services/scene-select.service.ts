@@ -4,7 +4,6 @@ import { Injectable } from '@angular/core';
   providedIn: 'root'
 })
 export class SceneSelectService {
-
   constructor() { }
 
   public nextId = (scenes, scene) => {

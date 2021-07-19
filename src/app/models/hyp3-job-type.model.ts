@@ -40,5 +40,6 @@ export interface Hyp3ableByProductType {
 
 export enum JobOptionType {
   DROPDOWN = 'DROPDOWN',
-  TOGGLE = 'TOGGLE'
+  TOGGLE = 'TOGGLE',
+  CHECKBOX = 'CHECKBOX'
 }

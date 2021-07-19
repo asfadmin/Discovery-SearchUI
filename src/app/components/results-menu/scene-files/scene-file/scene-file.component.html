@@ -61,7 +61,7 @@
         <button *ngFor="let jobType of validHyp3JobTypes"
           (click)="addJobToProcessingQueue(jobType)" mat-menu-item>
             Add {{ jobType.name }} to On Demand
-            <mat-icon (click)="onOpenHelp($event, jobType.infoUrl)" class="clickable" style="margin-left: 10px;">help</mat-icon>
+            <mat-icon (click)="onOpenHelp($event, jobType.infoUrl)" class="clickable" style="margin-left: 10px;">info</mat-icon>
         </button>
       </mat-menu>
     </button>
@@ -79,7 +79,7 @@
       Job Submitted: {{ product.metadata.job.request_time | fullDate }}
     </div>
 
-    <div *ngFor="let param of jobParamsToList(product.metadata)" mat-line>
+    <div *ngFor="let param of paramsList" mat-line>
       {{ param.name }}: {{ param.val }}
     </div>
 
@@ -94,6 +94,24 @@
       (toggle)="onToggleQueueProduct()"
       [isQueued]="isQueued">
     </app-cart-toggle>
+
+  <div *ngIf="(searchType$ | async) === searchTypes.CUSTOM_PRODUCTS" style="margin-right: 10px;">
+    <button *ngIf="isExpired(product.metadata.job)"
+    [matMenuTriggerFor]="expiredJobs"
+    mat-icon-button>
+      <mat-icon
+      class="clickable"
+        matTooltip="Add to On Demand queue"
+        svgIcon="hyp3">
+      </mat-icon>
+    </button>
+    <mat-menu #expiredJobs ='matMenu'>
+
+    <button (click)="queueExpiredHyp3Job()" mat-menu-item>
+      Add Expired {{ product.metadata.job.job_type }} job to On Demand Queue
+    </button>
+  </mat-menu>
+  </div>
 
     <app-hyp3-job-status-badge
       *ngIf="!isDownloadable(product)"

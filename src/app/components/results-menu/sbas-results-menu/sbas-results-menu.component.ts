@@ -112,7 +112,7 @@ export class SBASResultsMenuComponent implements OnInit, OnDestroy {
   }
 
   public onToggleFiltersMenu(): void {
-    this.store$.dispatch(new uiStore.ToggleFiltersMenu());
+    this.store$.dispatch(new uiStore.OpenFiltersMenu());
   }
 
   public onSelectList(): void {

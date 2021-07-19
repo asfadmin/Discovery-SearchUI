@@ -1,5 +1,6 @@
 import { Component, OnInit, Input, ViewChild } from '@angular/core';
 import { MatMenu } from '@angular/material/menu';
+import { MatDialog } from '@angular/material/dialog';
 
 import { Store } from '@ngrx/store';
 import { AppState } from '@store';
@@ -11,6 +12,7 @@ import { getMasterName, getScenes } from '@store/scenes';
 import { getSearchType } from '@store/search';
 import { CMRProduct, Hyp3ableByProductType, SearchType } from '@models';
 import { withLatestFrom } from 'rxjs/operators';
+import { CreateSubscriptionComponent } from '../../header/create-subscription';
 
 @Component({
   selector: 'app-on-demand-add-menu',
@@ -32,8 +34,10 @@ export class OnDemandAddMenuComponent implements OnInit {
 
   private subs = new SubSink();
 
-  constructor(private store$: Store<AppState>,
-              ) { }
+  constructor(
+    private store$: Store<AppState>,
+    private dialog: MatDialog,
+  ) { }
 
   ngOnInit(): void {
 
@@ -68,10 +72,12 @@ export class OnDemandAddMenuComponent implements OnInit {
   }
 
   public isBaselineStack(byProductType: Hyp3ableByProductType[], searchType: SearchType) {
+    if (searchType !== this.searchTypes.BASELINE) {
+      return false;
+    }
     const slcProducts = this.findSLCs(byProductType).products;
 
-    return searchType === this.searchTypes.BASELINE &&
-    slcProducts.length >= 1 &&
+    return slcProducts.length >= 1 &&
     this.isNotReferenceScene(slcProducts);
   }
 
@@ -94,6 +100,14 @@ export class OnDemandAddMenuComponent implements OnInit {
   });
 
     this.store$.dispatch(new queueStore.AddJobs(jobs));
+  }
+
+  public onOpenCreateSubscription() {
+    this.dialog.open(CreateSubscriptionComponent, {
+      id: 'subscriptionQueueDialog',
+      maxWidth: '100vw',
+      maxHeight: '100vh',
+    });
   }
 
   public onOpenHelp(infoUrl) {

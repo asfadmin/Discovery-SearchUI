@@ -29,10 +29,7 @@ export class SearchService {
     const actions = [
       new filterStore.ClearDatasetFilters(),
       new mapStore.SetMapInteractionMode(models.MapInteractionModeType.DRAW),
-      // new filterStore.ClearListFilters(),
-      // // List
-      // new filterStore.ClearListFilters(),
-      // Baseline/SBAS
+      // List
       new scenesStore.ClearBaseline(),
       new filterStore.ClearPerpendicularRange(),
       new filterStore.ClearTemporalRange(),
@@ -72,7 +69,7 @@ export class SearchService {
     }
     if (search.searchType === models.SearchType.SBAS) {
       const filters = <models.SbasFiltersType>search.filters;
-      this.store$.dispatch(new scenesStore.SetFilterMaster(filters.master));
+      this.store$.dispatch(new scenesStore.SetFilterMaster(filters.reference));
       if (filters.customPairIds) {
         this.store$.dispatch(new scenesStore.AddCustomPairs(filters.customPairIds));
       }

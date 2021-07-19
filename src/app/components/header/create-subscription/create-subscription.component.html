@@ -1,0 +1,90 @@
+<div mat-dialog-title
+  class="queue">
+  <div class="pq-card-title-group">
+    <div>
+      <div class="on-demand-branding">
+        <mat-icon
+           class="on-demand-icon"
+           svgIcon="hyp3"
+           matBadgePosition="above after"
+           matBadgeOverlap="true"
+           matBadgeSize="small">
+        </mat-icon>
+      </div>
+
+      <ng-container *ngIf="breakpoint !== breakpoints.MOBILE">
+        <div class="on-demand-text">
+          Create Subscription
+        </div>
+        <div class="on-demand-subtitle">
+          powered by HyP3
+        </div>
+      </ng-container>
+    </div>
+  </div>
+
+  <div class="feedback-div header-link">
+    <a href="javascript:feedback.showForm();" onfocus="this.blur()"> <i class="fa fa-comments-o"></i> Feedback</a>
+  </div>
+
+  <div class="docs-div header-link">
+    <a href="https://hyp3-docs.asf.alaska.edu/" target="_blank" onfocus="this.blur()">
+      <i class="fa fa-external-link"></i> Docs
+    </a>
+  </div>
+</div>
+
+<mat-dialog-content
+  #contentArea class="mat-dialog-content">
+  <div class="content-block">
+    <div class="content-area">
+      <p>
+        Create a subscription to automatically processes new data based on current search
+      </p>
+
+      <h2>Subscription</h2>
+      <div>
+        <mat-form-field style="margin-right: 12px;" appearance="fill">
+          <mat-label>Duration</mat-label>
+          <mat-select disableRipple>
+            <mat-option value="30">30 Days</mat-option>
+            <mat-option value="29">29 Days</mat-option>
+            <mat-option value="28">28 Days</mat-option>
+          </mat-select>
+        </mat-form-field>
+
+        <mat-form-field appearance="fill">
+          <mat-label>Project</mat-label>
+          <mat-select value="30" disableRipple>
+            <mat-option value="30">Cool Stuff</mat-option>
+            <mat-option value="29">Slick Stuff</mat-option>
+            <mat-option value="28">Nice Stuff</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+
+      <h2>Processing Options</h2>
+      <app-processing-options
+         *ngIf="selectedJobTypeId"
+         [selectedJobType]="hyp3JobTypes[selectedJobTypeId]">
+      </app-processing-options>
+
+      <h2>Search Options</h2>
+
+      <div style="margin-bottom: 10px;">
+        <div><b>Search Type:</b> {{ search.searchType }}</div>
+        <app-search-filters [search]="search"></app-search-filters>
+      </div>
+    </div>
+  </div>
+</mat-dialog-content>
+
+<mat-dialog-actions class="mat-dialog-actions">
+  <div class="w100 hyp3-footer">
+      <button
+         mat-flat-button
+         color="primary">
+           Submit
+      </button>
+  </div>
+</mat-dialog-actions>

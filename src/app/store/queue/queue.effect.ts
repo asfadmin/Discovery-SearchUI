@@ -11,7 +11,7 @@ import { AppState } from '../app.reducer';
 import {
   QueueActionType, DownloadMetadata, AddItems, RemoveItems,
   RemoveSceneFromQueue, DownloadSearchtypeMetadata,
-  AddJob, RemoveJob, AddJobs, ToggleProduct, QueueScene, FindPair
+  AddJob, RemoveJob, AddJobs, ToggleProduct, QueueScene, FindPair, MakeDownloadScriptFromList
 } from './queue.action';
 import { getQueuedProducts } from './queue.reducer';
 import * as scenesStore from '@store/scenes';
@@ -43,6 +43,17 @@ export class QueueEffects {
       products => this.bulkDownloadService.downloadScript$(products)
     ),
     map(
+      req => { FileSaver.saveAs(req.body, req.headers.get('Content-Disposition').slice(20)); }
+    )
+  ), { dispatch: false });
+
+  public makeDownloadScriptFromList = createEffect(() => this.actions$.pipe(
+    ofType<MakeDownloadScriptFromList>(QueueActionType.MAKE_DOWNLOAD_SCRIPT_FROM_LIST),
+    map(action => action.payload),
+    switchMap(
+      (products) => this.bulkDownloadService.downloadScript$(products)
+    ),
+    map(
       blob => FileSaver.saveAs(blob, `download-all-${this.currentDate()}.py`)
     )
   ), { dispatch: false });
@@ -52,14 +63,12 @@ export class QueueEffects {
     map(action => action.payload),
     withLatestFrom(this.searchParamsService.getParams()),
     map(
-      ([format, searchParams]) =>  ({
-        format,
-        searchParams})
-    ),
-    map(
-      (x): MetadataDownload => ({
-        params: { ...x.searchParams, ...{output: x.format.toLowerCase()} },
-        format: x.format
+      ([format, searchParams]): MetadataDownload => ({
+        params: {
+          ...searchParams,
+          ...{output: format.toLowerCase()}
+        },
+        format: format
       })
     ),
     switchMap(

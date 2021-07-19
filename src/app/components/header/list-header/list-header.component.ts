@@ -25,6 +25,6 @@ export class ListHeaderComponent implements OnInit {
   }
 
   public onToggleFiltersMenu(): void {
-    this.store$.dispatch(new uiStore.ToggleFiltersMenu());
+    this.store$.dispatch(new uiStore.OpenFiltersMenu());
   }
 }

@@ -7,7 +7,6 @@ import { HttpClientModule } from '@angular/common/http';
 import { FlexLayoutModule } from '@angular/flex-layout';
 
 import { MatBottomSheetModule } from '@angular/material/bottom-sheet';
-import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -24,13 +23,14 @@ import * as store from './store';
 
 import { MatSharedModule } from '@shared';
 import { SavedSearchesModule } from '@components/shared/saved-searches';
+import { SaveUserFiltersModule } from '@components/shared/save-user-filters';
 import { HeaderModule } from '@components/header';
 import { MapModule } from '@components/map';
 import { ResultsMenuModule } from '@components/results-menu';
 import { BaselineChartModule } from '@components/baseline-chart';
 import { HelpModule } from './components/help';
 import { AppComponent } from './app.component';
-import { CustomBreakPointsProvider } from '@services/custom-breakpoints.ts';
+import { CustomBreakPointsProvider } from '@services/custom-breakpoints';
 import * as services from '@services';
 
 import { NgcCookieConsentModule, NgcCookieConsentConfig } from 'ngx-cookieconsent';
@@ -38,6 +38,7 @@ import { NgcCookieConsentModule, NgcCookieConsentConfig } from 'ngx-cookieconsen
 
 // info about cookie consent module: https://tinesoft.github.io/ngx-cookieconsent/home
 const cookieConfig: NgcCookieConsentConfig = {
+  'autoOpen': false,
     'cookie': {
       'domain': window.location.hostname
   },
@@ -80,7 +81,6 @@ export const routes = [
     BrowserAnimationsModule,
     HttpClientModule,
     NgcCookieConsentModule.forRoot(cookieConfig),
-    MatSnackBarModule,
     MatBottomSheetModule,
     MatSharedModule,
     FlexLayoutModule.withConfig({disableDefaultBps: true},
@@ -91,6 +91,7 @@ export const routes = [
     !environment.production ? StoreDevtoolsModule.instrument() : [],
     MatSidenavModule,
     SavedSearchesModule,
+    SaveUserFiltersModule,
     MapModule,
     ResultsMenuModule,
     HeaderModule,

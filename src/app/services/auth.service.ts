@@ -1,14 +1,17 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { MatSnackBar } from '@angular/material/snack-bar';
 
 import { interval, Subject, Observable, of } from 'rxjs';
 import { map, takeUntil, take, filter, catchError } from 'rxjs/operators';
+import { Store } from '@ngrx/store';
+import { AppState } from '@store';
 
 import { EnvironmentService } from './environment.service';
 import * as jwt_decode from 'jwt-decode';
+import * as userStore from '@store/user';
 
 import * as models from '@models';
+import { NotificationService } from './notification.service';
 
 
 @Injectable({
@@ -18,7 +21,8 @@ export class AuthService {
   constructor(
     private env: EnvironmentService,
     private http: HttpClient,
-    private snackBar: MatSnackBar,
+    private notificationService: NotificationService,
+    private store$: Store<AppState>,
   ) {}
 
   public get authUrl() {
@@ -71,8 +75,8 @@ export class AuthService {
         return user;
       }),
       catchError(_ => {
-        this.snackBar.open('Trouble logging in', 'ERROR', {
-          duration: 5000,
+        this.notificationService.error('Trouble logging in', 'Error', {
+          timeOut: 5000,
         });
         loginWindowClosed.next();
         return of(null);
@@ -90,8 +94,8 @@ export class AuthService {
       }).pipe(
         map(_ => this.getUser()),
         catchError(_ => {
-          this.snackBar.open('Trouble logging out', 'ERROR', {
-            duration: 5000,
+          this.notificationService.error('Trouble logging out', 'Error', {
+            timeOut: 5000,
           });
           return of(this.getUser());
         }),
@@ -106,18 +110,26 @@ export class AuthService {
     if (!token) {
       return this.nullUser();
     }
+    try {
+      const user = jwt_decode(token);
 
-    const user = jwt_decode(token);
+      if (this.isExpired(user)) {
+        return this.nullUser();
+      }
 
-    if (this.isExpired(user)) {
+      setTimeout(() => {
+        this.store$.dispatch(new userStore.Logout());
+        this.notificationService.info('Session Expired', 'Please login again');
+      }, user.exp * 1000 - Date.now());
+
+      return this.makeUser(
+        user['urs-user-id'],
+        user['urs-groups'],
+        token
+      );
+    } catch (error) {
       return this.nullUser();
     }
-
-    return this.makeUser(
-      user['urs-user-id'],
-      user['urs-groups'],
-      token
-    );
   }
 
   private makeUser(id: string, groups: models.URSGroup[], token: string): models.UserAuth {

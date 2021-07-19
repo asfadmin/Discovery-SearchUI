@@ -146,14 +146,11 @@ export class SbasSlidersTwoComponent implements OnInit {
 
   public updatePerpendicular() {
     this.options.controls.meterDistance.setValue(this.perpendicular);
-    // this.metersValues$.next([this.perpendicular, null] );
-    // this.slider.set(this.perpendicular);
   }
 
   public updateDaysOffset() {
     this.options.controls.days.setValue(this.days);
     this.daysValues$.next([this.days, null] );
-    // this.slider.set(this.days);
   }
 
   private makeDaysSlider$(filterRef: ElementRef) {

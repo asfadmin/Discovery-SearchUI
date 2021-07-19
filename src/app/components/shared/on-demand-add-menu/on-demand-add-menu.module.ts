@@ -1,11 +1,15 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { MatMenuModule } from '@angular/material/menu';
-import { MatSharedModule } from '@shared';
 import { FormsModule } from '@angular/forms';
+import { MatMenuModule } from '@angular/material/menu';
+import { MatInputModule } from '@angular/material/input';
+
+import { MatSharedModule } from '@shared';
+
 import { OnDemandAddMenuComponent } from './on-demand-add-menu.component';
 import { ClosestPairComponent } from './closest-pair/closest-pair.component';
-import {MatInputModule} from '@angular/material/input';
+
+import { CreateSubscriptionModule } from '../../header/create-subscription';
 
 @NgModule({
   declarations: [OnDemandAddMenuComponent, ClosestPairComponent],
@@ -14,7 +18,8 @@ import {MatInputModule} from '@angular/material/input';
     MatMenuModule,
     MatSharedModule,
     MatInputModule,
-    FormsModule
+    FormsModule,
+    CreateSubscriptionModule,
   ],
   exports: [ OnDemandAddMenuComponent ]
 })

@@ -1,47 +1,47 @@
 /* csslint ignoreAtRules: ["include"] */
-@import '~@angular/material/theming';
+@use '~@angular/material' as mat;
 @import 'variables';
 // Plus imports for other components in your app.
 
 // Include the common styles for Angular Material. We include this here so that you only
 // have to load a single css file for Angular Material in your app.
 // Be sure that you only ever include this mixin once!
-@include mat-core();
+@include mat.core();
 
 // Define the palettes for your theme using the Material Design palettes available in palette.scss
 // (imported above). For each palette, you can optionally specify a default, lighter, and darker
 // hue. Available color palettes: https://material.io/design/color/
-$asf-app-primary: mat-palette($mat-asf-primary, 700, 400, 900);
-$asf-app-accent:  mat-palette($mat-grey, 300, 100, 400);
-$asf-app-blue:  mat-palette($mat-asf-blue, 700, 400, 900);
+$asf-app-primary: mat.define-palette($mat-asf-primary, 700, 400, 900);
+$asf-app-accent:  mat.define-palette(mat.$grey-palette, 300, 100, 400);
+$asf-app-blue:  mat.define-palette($mat-asf-blue, 700, 400, 900);
 
 // The warn palette is optional (defaults to red).
-$asf-app-warn:    mat-palette($mat-asf-yellow, 200, 100, 500);
+$asf-app-warn:    mat.define-palette($mat-asf-yellow, 200, 100, 500);
 
 // Create the theme object (a Sass map containing all of the palettes).
-$asf-app-theme: mat-light-theme($asf-app-primary, $asf-app-accent);
+$asf-app-theme: mat.define-light-theme($asf-app-primary, $asf-app-accent);
 
 // Include theme styles for core and each component used in your app.
 // Alternatively, you can import and @include the theme mixins for each component
 // that you are using.
-@include angular-material-theme($asf-app-theme);
+@include mat.all-component-themes($asf-app-theme);
 
 // Create your Sass color vars (will be available in all the project)
-$asf-primary: mat-color($asf-app-primary);
-$asf-accent: mat-color($asf-app-accent);
-$asf-warn: mat-color($asf-app-warn);
-$asf-blue: mat-color($asf-app-blue);
+$asf-primary: mat.get-color-from-palette($asf-app-primary);
+$asf-accent: mat.get-color-from-palette($asf-app-accent);
+$asf-warn: mat.get-color-from-palette($asf-app-warn);
+$asf-blue: mat.get-color-from-palette($asf-app-blue);
 $asf-primary-light: lighten($asf-primary, 40%);
 $asf-primary-dark: darken($asf-primary, 15%);
 $asf-background-white: #fafafa;
 
-$custom-typography: mat-typography-config(
+$custom-typography: mat.define-typography-config(
   $font-family: 'Roboto, sans-serif',
-  $headline: mat-typography-level(32px, 48px, 700),
-  $body-1: mat-typography-level(16px, 24px, 500)
+  $headline: mat.define-typography-level(32px, 48px, 700),
+  $body-1: mat.define-typography-level(16px, 24px, 500)
 );
 
-@include mat-core($custom-typography);
+@include mat.core($custom-typography);
 
 @mixin md-icon-size($size: 24px) {
   font-size: $size !important;

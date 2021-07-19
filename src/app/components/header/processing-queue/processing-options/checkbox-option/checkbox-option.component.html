@@ -1,0 +1,13 @@
+<div>
+  <mat-checkbox
+    (change)="onValueChange($event.checked)"
+    [(ngModel)]="value"
+    color="primary">
+    {{ optionName }}
+  </mat-checkbox>
+
+
+  <app-option-info class="option-info--spacing"
+    [infoText]="optionInfo">
+  </app-option-info>
+</div>

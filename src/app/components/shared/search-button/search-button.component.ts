@@ -1,6 +1,5 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { SubSink } from 'subsink';
-import { MatSnackBar } from '@angular/material/snack-bar';
 
 import { combineLatest, Subject } from 'rxjs';
 import { tap, delay } from 'rxjs/operators';
@@ -44,13 +43,14 @@ export class SearchButtonComponent implements OnInit, OnDestroy {
   private stackReferenceScene: string;
   private latestReferenceScene: string;
   private isFiltersOpen = false;
+  private resultsMenuOpen = false;
 
   constructor(
     private store$: Store<AppState>,
     private actions$: ActionsSubject,
     private savedSearchService: services.SavedSearchService,
     private dialog: MatDialog,
-    private snackBar: MatSnackBar,
+    private notificationService: services.NotificationService,
   ) {
   }
 
@@ -64,6 +64,11 @@ export class SearchButtonComponent implements OnInit, OnDestroy {
     this.subs.add(
       this.store$.select(searchStore.getSearchType).subscribe(
         searchType => this.searchType = searchType
+      )
+    );
+    this.subs.add(
+      this.store$.select(uiStore.getIsResultsMenuOpen).subscribe(
+        isOpen => this.resultsMenuOpen = isOpen
       )
     );
 
@@ -104,9 +109,11 @@ export class SearchButtonComponent implements OnInit, OnDestroy {
   }
 
   public onDoSearch(): void {
-    if ((this.searchType !== this.searchTypes.SBAS && this.searchType !== this.searchTypes.BASELINE) ||
+    if (((this.searchType === this.searchTypes.SBAS || this.searchType === this.searchTypes.BASELINE ) && this.isFiltersOpen &&
+      (this.stackReferenceScene !== this.latestReferenceScene || !this.resultsMenuOpen)) ||
     ((this.stackReferenceScene !== this.latestReferenceScene || !this.isFiltersOpen) &&
-        (this.searchType === this.searchTypes.SBAS || this.searchType === this.searchTypes.BASELINE))
+        (this.searchType === this.searchTypes.SBAS || this.searchType === this.searchTypes.BASELINE)) ||
+        (this.searchType !== this.searchTypes.SBAS && this.searchType !== this.searchTypes.BASELINE)
       ) {
       if (this.searchType === SearchType.BASELINE) {
         this.clearBaselineRanges();
@@ -138,7 +145,7 @@ export class SearchButtonComponent implements OnInit, OnDestroy {
       this.searchError$.pipe(
         tap(_ => {
           this.isSearchError = true;
-          this.snackBar.open('Trouble loading search results', 'SEARCH ERROR', { duration: 5000 });
+          this.notificationService.error('Trouble loading search results', 'Search Error', { timeOut: 5000 });
         }),
         delay(820),
       ).subscribe(_ => {
@@ -176,6 +183,16 @@ export class SearchButtonComponent implements OnInit, OnDestroy {
     this.store$.dispatch(new uiStore.SetSaveSearchOn(true));
   }
 
+  public saveCurrentFilters(): void {
+    window.dataLayer = window.dataLayer || [];
+    window.dataLayer.push({
+      'event': 'save-current-filters',
+      'save-current-filters': true
+    });
+    this.store$.dispatch(new uiStore.OpenFiltersSidebar());
+    this.store$.dispatch(new uiStore.SetSaveFilterOn(true));
+  }
+
   public onOpenSavedSearches(): void {
 
     window.dataLayer = window.dataLayer || [];
@@ -186,6 +203,17 @@ export class SearchButtonComponent implements OnInit, OnDestroy {
 
     this.store$.dispatch(new uiStore.SetSavedSearchType(SavedSearchType.SAVED));
     this.store$.dispatch(new uiStore.OpenSidebar());
+  }
+
+  public onOpenSavedFilters(): void {
+
+    window.dataLayer = window.dataLayer || [];
+    window.dataLayer.push({
+      'event': 'open-saved-filters',
+      'open-saved-filters': true
+    });
+
+    this.store$.dispatch(new uiStore.OpenFiltersSidebar());
   }
 
   public onOpenSearchHistory(): void {

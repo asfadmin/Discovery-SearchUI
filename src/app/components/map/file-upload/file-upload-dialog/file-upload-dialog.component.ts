@@ -1,5 +1,4 @@
 import { Component, ViewChild, OnInit, OnDestroy } from '@angular/core';
-import { MatSnackBar } from '@angular/material/snack-bar';
 
 import { Subject, Subscription, of } from 'rxjs';
 import { delay, tap, catchError } from 'rxjs/operators';
@@ -7,7 +6,8 @@ import { delay, tap, catchError } from 'rxjs/operators';
 import { MatDialogRef } from '@angular/material/dialog';
 import { SubSink } from 'subsink';
 
-import { AsfApiService } from '@services';
+import { AsfApiService, NotificationService } from '@services';
+import { HttpErrorResponse } from '@angular/common/http';
 
 enum FileErrors {
   TOO_LARGE = 'Too large',
@@ -34,8 +34,8 @@ export class FileUploadDialogComponent implements OnInit, OnDestroy {
 
   constructor(
     private dialogRef: MatDialogRef<FileUploadDialogComponent>,
-    private snackBar: MatSnackBar,
     private asfApiService: AsfApiService,
+    private notificationService: NotificationService,
   ) {}
 
   public ngOnInit(): void {
@@ -45,9 +45,9 @@ export class FileUploadDialogComponent implements OnInit, OnDestroy {
         tap(
           error => {
             if (error === FileErrors.INVALID_TYPE) {
-              this.snackBar.open( `Invalid File Type`, 'FILE ERROR', { duration: 5000 });
+              this.notificationService.error( `Invalid File Type`, 'File Error', { timeOut: 5000 });
             } else if (error === FileErrors.TOO_LARGE) {
-              this.snackBar.open( `File is too large (over 10MB)`, 'FILE ERROR', { duration: 5000 });
+              this.notificationService.error( `File is too large (over 10MB)`, 'File Error', { timeOut: 5000 });
             }
           }
         ),
@@ -103,19 +103,25 @@ export class FileUploadDialogComponent implements OnInit, OnDestroy {
 
     this.subs.add(
       this.request = this.asfApiService.upload(this.files).pipe(
-        catchError(_ => of({ errors: [{ report: 'Error loading files', type: 'ERROR' }]}))
+        catchError((error: HttpErrorResponse) => {
+          if (error.status !== 0) {
+            return of({ errors: [{ report: 'Error loading files', type: 'Error'}]});
+          } else {
+            return of({ errors: [{ report: 'File upload timeout', type: 'Error'}]});
+          }
+      })
       ).subscribe(
         resp => {
           if (resp.wkt) {
             this.dialogRef.close(resp.wkt.unwrapped);
           } else if (resp.errors && resp.errors.length > 0) {
             const { report, type } = resp.errors[0];
-            this.snackBar.open(report, type, { duration: 5000 });
+            this.notificationService.error(report, type, { timeOut: 5000 });
             this.dialogRef.close();
           }
         },
         _ => {
-          this.snackBar.open('Error loading geospatial file',  'FILE ERROR', { duration: 3000 });
+          this.notificationService.error('Error loading geospatial file',  'File Error', { timeOut: 3000 });
           this.dialogRef.close();
         }
       )
