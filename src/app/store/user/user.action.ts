@@ -1,6 +1,6 @@
 import { Action } from '@ngrx/store';
 
-import { UserAuth, UserProfile, Search, GeographicFiltersType, FilterType, SearchType } from '@models';
+import { UserAuth, UserProfile, Search, GeographicFiltersType, SavedFilterPreset } from '@models';
 
 export enum UserActionType {
   LOGIN = '[User] Login',
@@ -96,7 +96,7 @@ export class SetSearches implements Action {
 export class LoadSavedFilters implements Action {
   public readonly type = UserActionType.LOAD_SAVED_FILTERS;
 
-  constructor(public payload: {name: string, id: string, searchType: SearchType, filters: FilterType}[]) {}
+  constructor(public payload: SavedFilterPreset[]) {}
 }
 
 export class SaveFilters implements Action {
@@ -107,7 +107,7 @@ export class SaveFilters implements Action {
 export class SetFilters implements Action {
   public readonly type = UserActionType.SET_FILTERS;
 
-  constructor(public payload: {name: string, id: string, searchType: SearchType, filters: FilterType}[]) {}
+  constructor(public payload: SavedFilterPreset[]) {}
 }
 
 export class AddNewSearch implements Action {
@@ -143,7 +143,7 @@ export class DeleteSavedSearch implements Action {
 export class AddNewFiltersPreset implements Action {
   public readonly type = UserActionType.ADD_NEW_FILTERS_PRESET;
 
-  constructor(public payload: {name: string, id: string, searchType: SearchType, filters: FilterType}) {}
+  constructor(public payload: SavedFilterPreset) {}
 }
 
 export class DeleteFiltersPreset implements Action {
