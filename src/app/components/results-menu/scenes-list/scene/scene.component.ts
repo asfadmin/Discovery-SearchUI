@@ -1,6 +1,8 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { faCopy } from '@fortawesome/free-solid-svg-icons';
 
+import { ConfirmationComponent } from '@components/header/processing-queue/confirmation/confirmation.component';
+
 import * as services from '@services';
 import * as models from '@models';
 import { QueuedHyp3Job, Hyp3ableProductByJobType } from '@models';
@@ -8,6 +10,7 @@ import { AppState } from '@store';
 import { Store } from '@ngrx/store';
 
 import * as queueStore from '@store/queue';
+import { MatDialog } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-scene',
@@ -37,10 +40,14 @@ export class SceneComponent implements OnInit {
   public copyIcon = faCopy;
   public SearchTypes = models.SearchType;
 
+  public validateOnly = false;
+
   constructor(
+    public env: services.EnvironmentService,
     private screenSize: services.ScreenSizeService,
     private hyp3: services.Hyp3Service,
     private store$: Store<AppState>,
+    public dialog: MatDialog,
   ) { }
 
   ngOnInit(): void {
@@ -125,6 +132,63 @@ export class SceneComponent implements OnInit {
     } as {byJobType: models.Hyp3ableProductByJobType[], total: number}
 
     return output;
+  }
+
+  public onSubmitQueue(jobTypesWithQueued, validateOnly: boolean) {
+    console.log(jobTypesWithQueued);
+    console.log(validateOnly);
+    // const hyp3JobsBatch = this.hyp3.formatJobs(jobTypesWithQueued, {
+    //   projectName: this.projectName,
+    //   processingOptions: this.processingOptions
+    // });
+  }
+
+  public onReviewQueue() {
+
+    const job_types = models.hyp3JobTypes;
+    const job_type = Object.keys(job_types).find(id =>
+      {
+        return this.scene.metadata.job.job_type === id as any;
+      });
+
+      // this.scene.metadata.job.job_parameters
+
+    const confirmationRef = this.dialog.open(ConfirmationComponent, {
+      id: 'ConfirmProcess',
+      width: '350px',
+      height: '500px',
+      maxWidth: '350px',
+      maxHeight: '500px',
+      data: [{
+        jobType: job_types[job_type],
+        selected: true,
+        jobs: [{
+          granules: this.scene.metadata.job.job_parameters.scenes,
+          job_type: job_types[job_type]
+        } as QueuedHyp3Job ]
+      }]
+    });
+
+    confirmationRef.afterClosed().subscribe(
+      jobTypesWithQueued => {
+        if (!jobTypesWithQueued) {
+          return;
+        }
+
+        if (this.env.maturity === 'prod') {
+          this.validateOnly = false;
+        }
+
+        this.onSubmitQueue(
+          jobTypesWithQueued,
+          this.validateOnly
+        );
+      }
+    );
+  }
+
+  public onValidateOnlyToggle(val: boolean): void {
+    this.validateOnly = val;
   }
 
   public isExpired(job: models.Hyp3Job): boolean {

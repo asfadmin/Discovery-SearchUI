@@ -91,6 +91,9 @@
         class="icon-margin"
         svgIcon="hyp3">
       </mat-icon>
+      <button (click)="onReviewQueue()" mat-button>
+        Resubmit
+      </button>
       </div>
       <div *ngIf="!isDownloadable(scene)" class="scene-controls ml-2">
         <app-hyp3-job-status-badge [job]="scene.metadata.job">
