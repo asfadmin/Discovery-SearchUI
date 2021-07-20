@@ -276,7 +276,7 @@ export class UserEffects {
       new filterStore.SetBeamModes(datasetFilter.beamModes),
       new filterStore.SetPolarizations(datasetFilter.polarizations),
       new filterStore.SetSubtypes(datasetFilter.subtypes),
-      new filterStore.SetFlightDirections(datasetFilter.flightDirections),
+      new filterStore.SetFlightDirections(Array.from(datasetFilter.flightDirections)),
       new filterStore.SelectMission(datasetFilter.selectedMission)
     ];
 
