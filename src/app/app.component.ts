@@ -215,9 +215,9 @@ export class AppComponent implements OnInit, OnDestroy {
         profile => {
           this.urlStateService.setDefaults(profile);
 
-          if(this.searchType !== models.SearchType.LIST && this.searchType !== models.SearchType.CUSTOM_PRODUCTS) {
+          if (this.searchType !== models.SearchType.LIST && this.searchType !== models.SearchType.CUSTOM_PRODUCTS) {
             const defaultFilterID = profile.defaultFilterPresets[this.searchType];
-            if(!!defaultFilterID) {
+            if (!!defaultFilterID) {
               this.store$.dispatch(new userStore.LoadFiltersPreset(defaultFilterID));
             }
         }
@@ -230,9 +230,9 @@ export class AppComponent implements OnInit, OnDestroy {
       this.subs.add(
       this.store$.select(userStore.getUserProfile).subscribe(
         profile => {
-          if(this.searchType !== models.SearchType.LIST && this.searchType !== models.SearchType.CUSTOM_PRODUCTS) {
+          if (this.searchType !== models.SearchType.LIST && this.searchType !== models.SearchType.CUSTOM_PRODUCTS) {
             const defaultFilterID = profile.defaultFilterPresets[this.searchType];
-            if(!!defaultFilterID) {
+            if (!!defaultFilterID) {
               this.store$.dispatch(new userStore.LoadFiltersPreset(defaultFilterID));
             }
         }
@@ -268,8 +268,8 @@ export class AppComponent implements OnInit, OnDestroy {
 
           let searchTypeDefaultFiltersID;
 
-          if(action.payload !== models.SearchType.CUSTOM_PRODUCTS && action.payload !== models.SearchType.LIST) {
-            searchTypeDefaultFiltersID = profile.defaultFilterPresets[action.payload]
+          if (action.payload !== models.SearchType.CUSTOM_PRODUCTS && action.payload !== models.SearchType.LIST) {
+            searchTypeDefaultFiltersID = profile.defaultFilterPresets[action.payload];
           }
 
           const validFiltersPreset = action.payload !== models.SearchType.CUSTOM_PRODUCTS && action.payload !== models.SearchType.LIST;
@@ -281,10 +281,10 @@ export class AppComponent implements OnInit, OnDestroy {
 
             if (!this.isEmptySearch(searchState)) {
               this.store$.dispatch(new searchStore.MakeSearch());
-            } else if(validFiltersPreset) {
+            } else if (validFiltersPreset) {
               this.store$.dispatch(new userStore.LoadFiltersPreset(searchTypeDefaultFiltersID));
             }
-          } else if(validFiltersPreset) {
+          } else if (validFiltersPreset) {
             this.store$.dispatch(new userStore.LoadFiltersPreset(searchTypeDefaultFiltersID));
           }
 
