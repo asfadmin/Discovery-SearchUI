@@ -34,6 +34,19 @@
         </button>
         </div>
     </div>
+    <div *ngIf="isExpired">
+      <button
+        [disabled]="!expiredJobs"
+        (click)="onReviewQueue()"
+        mat-menu-item>
+        Re-Process Job
+
+        <mat-icon
+          class="clickable" style="margin-left: 10px;">
+            icon
+        </mat-icon>
+      </button>
+    </div>
   </ng-template>
 </mat-menu>
 

@@ -165,7 +165,7 @@ export class SceneComponent implements OnInit {
       processingOptions
     });
 
-    this.hyp3.submiteJobBatch$({jobs: hyp3JobsBatch, validate_only: true}).pipe(
+    this.hyp3.submiteJobBatch$({jobs: hyp3JobsBatch, validate_only: false}).pipe(
       catchError(resp => {
         if (resp.error) {
           if (resp.error.detail === 'No authorization token provided' || resp.error.detail === 'Provided apikey is not valid') {

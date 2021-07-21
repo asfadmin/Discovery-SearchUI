@@ -5,14 +5,18 @@ import { MatDialog } from '@angular/material/dialog';
 import { Store } from '@ngrx/store';
 import { AppState } from '@store';
 import * as queueStore from '@store/queue';
+import * as hyp3Store from '@store/hyp3';
 
 import * as models from '@models';
 import { SubSink } from 'subsink';
 import { getMasterName, getScenes } from '@store/scenes';
 import { getSearchType } from '@store/search';
 import { CMRProduct, Hyp3ableByProductType, SearchType } from '@models';
-import { withLatestFrom } from 'rxjs/operators';
+import { catchError, finalize, withLatestFrom } from 'rxjs/operators';
 import { CreateSubscriptionComponent } from '../../header/create-subscription';
+import { ConfirmationComponent } from '@components/header/processing-queue/confirmation/confirmation.component';
+import { EnvironmentService, Hyp3Service, NotificationService } from '@services';
+import { of } from 'rxjs';
 
 @Component({
   selector: 'app-on-demand-add-menu',
@@ -21,6 +25,8 @@ import { CreateSubscriptionComponent } from '../../header/create-subscription';
 })
 export class OnDemandAddMenuComponent implements OnInit {
   @Input() hyp3ableProducts: models.Hyp3ableProductByJobType;
+  @Input() isExpired: boolean = false;
+  @Input() expiredJobs: models.Hyp3Job;
 
   @ViewChild('addMenu', {static: true}) addMenu: MatMenu;
 
@@ -32,11 +38,16 @@ export class OnDemandAddMenuComponent implements OnInit {
   public InSAR = models.hyp3JobTypes.INSAR_GAMMA;
   public AutoRift = models.hyp3JobTypes.AUTORIFT;
 
+  private projectName = '';
+  private validateOnly = false;
   private subs = new SubSink();
 
   constructor(
     private store$: Store<AppState>,
     private dialog: MatDialog,
+    public env: EnvironmentService,
+    private hyp3: Hyp3Service,
+    private notificationService: NotificationService,
   ) { }
 
   ngOnInit(): void {
@@ -59,6 +70,10 @@ export class OnDemandAddMenuComponent implements OnInit {
           }
         }
       )
+    );
+
+    this.store$.select(hyp3Store.getProcessingProjectName).subscribe(
+      projectName => this.projectName = projectName
     );
   }
 
@@ -112,5 +127,106 @@ export class OnDemandAddMenuComponent implements OnInit {
 
   public onOpenHelp(infoUrl) {
     window.open(infoUrl);
+  }
+
+
+  public onReviewQueue() {
+
+    const job_types = models.hyp3JobTypes;
+    const job_type = Object.keys(job_types).find(id =>
+      {
+        return this.expiredJobs.job_type === id as any;
+      });
+
+      // this.scene.metadata.job.job_parameters
+
+    const confirmationRef = this.dialog.open(ConfirmationComponent, {
+      id: 'ConfirmProcess',
+      width: '350px',
+      height: '500px',
+      maxWidth: '350px',
+      maxHeight: '500px',
+      data: [{
+        jobType: job_types[job_type],
+        selected: true,
+        jobs: [{
+          granules: this.expiredJobs.job_parameters.scenes,
+          job_type: job_types[job_type]
+        } as models.QueuedHyp3Job ]
+      }]
+    });
+
+    confirmationRef.afterClosed().subscribe(
+      jobTypesWithQueued => {
+        if (!jobTypesWithQueued) {
+          return;
+        }
+
+        if (this.env.maturity === 'prod') {
+          this.validateOnly = false;
+        }
+
+        this.onSubmitQueue(
+          jobTypesWithQueued,
+          this.validateOnly
+        );
+      }
+    );
+  }
+
+  public onSubmitQueue(jobTypesWithQueued, validateOnly: boolean) {
+    console.log(this.expiredJobs);
+    console.log(jobTypesWithQueued);
+    console.log(validateOnly);
+
+    // console.log(this.processingOptions);
+
+    const processOptionKeys = Object.keys(this.expiredJobs.job_parameters).filter(key => key !== 'granules');
+    let processingOptions = {};
+    processOptionKeys.forEach(key => processingOptions[key] = this.expiredJobs.job_parameters[key]);
+    // let processingOptions = {[key in processOptionKeys]: this.scene.metadata.job[key]};
+    const hyp3JobsBatch = this.hyp3.formatJobs(jobTypesWithQueued, {
+      projectName: this.projectName,
+      processingOptions
+    });
+
+    this.hyp3.submiteJobBatch$({jobs: hyp3JobsBatch, validate_only: true}).pipe(
+      catchError(resp => {
+        if (resp.error) {
+          if (resp.error.detail === 'No authorization token provided' || resp.error.detail === 'Provided apikey is not valid') {
+            this.notificationService.error('Your authorization has expired. Please sign in again.', 'Error', {
+              timeOut: 5000,
+          });
+          } else {
+            this.notificationService.error( resp.error.detail, 'Error', {
+              timeOut: 5000,
+            });
+          }
+        }
+
+        return of({jobs: null});
+      }),
+      finalize(() => {
+        this.store$.dispatch(new hyp3Store.LoadUser());
+      }),
+    ).subscribe(
+      (resp: any) => {
+        if (resp.jobs === null) {
+          return;
+        }
+        console.log(resp);
+
+        // const successfulJobs = resp.jobs.map(job => ({
+        //   granules: job.job_parameters.granules.map(g => ({name: g})),
+        //   job_type: models.hyp3JobTypes[job.job_type]
+        // }));
+
+        // this.store$.dispatch(new queueStore.RemoveJobs(successfulJobs));
+      }
+    );
+    // const hyp3JobsBatch = this.hyp3.formatJobs(jobTypesWithQueued, {
+    //   projectName: this.projectName,
+    //   processingOptions: this.processingOptions
+  // });
   }
 }
