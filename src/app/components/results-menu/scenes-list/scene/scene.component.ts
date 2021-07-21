@@ -129,6 +129,9 @@ export class SceneComponent implements OnInit {
   }
 
   public isExpired(job: models.Hyp3Job): boolean {
+    if(job == null) {
+      return false;
+    }
     return this.hyp3.isExpired(job);
   }
 }
