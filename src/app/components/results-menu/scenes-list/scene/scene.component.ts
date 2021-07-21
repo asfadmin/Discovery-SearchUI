@@ -5,12 +5,16 @@ import { ConfirmationComponent } from '@components/header/processing-queue/confi
 
 import * as services from '@services';
 import * as models from '@models';
+
 import { QueuedHyp3Job, Hyp3ableProductByJobType } from '@models';
 import { AppState } from '@store';
 import { Store } from '@ngrx/store';
 
+import * as hyp3Store from '@store/hyp3';
 import * as queueStore from '@store/queue';
 import { MatDialog } from '@angular/material/dialog';
+import { catchError, finalize } from 'rxjs/operators';
+import { of } from 'rxjs';
 
 @Component({
   selector: 'app-scene',
@@ -40,6 +44,8 @@ export class SceneComponent implements OnInit {
   public copyIcon = faCopy;
   public SearchTypes = models.SearchType;
 
+  public projectName = '';
+  public processingOptions: models.Hyp3ProcessingOptions;
   public validateOnly = false;
 
   constructor(
@@ -48,11 +54,21 @@ export class SceneComponent implements OnInit {
     private hyp3: services.Hyp3Service,
     private store$: Store<AppState>,
     public dialog: MatDialog,
+    private notificationService: services.NotificationService,
   ) { }
 
   ngOnInit(): void {
     this.screenSize.breakpoint$.subscribe(
       breakpoint => this.breakpoint = breakpoint
+    );
+
+
+    this.store$.select(hyp3Store.getProcessingOptions).subscribe(
+      options => this.processingOptions = options
+    );
+
+    this.store$.select(hyp3Store.getProcessingProjectName).subscribe(
+      projectName => this.projectName = projectName
     );
   }
 
@@ -137,10 +153,56 @@ export class SceneComponent implements OnInit {
   public onSubmitQueue(jobTypesWithQueued, validateOnly: boolean) {
     console.log(jobTypesWithQueued);
     console.log(validateOnly);
+
+    console.log(this.processingOptions);
+
+    const processOptionKeys = Object.keys(this.scene.metadata.job.job_parameters).filter(key => key !== 'granules');
+    let processingOptions = {};
+    processOptionKeys.forEach(key => processingOptions[key] = this.scene.metadata.job.job_parameters[key]);
+    // let processingOptions = {[key in processOptionKeys]: this.scene.metadata.job[key]};
+    const hyp3JobsBatch = this.hyp3.formatJobs(jobTypesWithQueued, {
+      projectName: this.projectName,
+      processingOptions
+    });
+
+    this.hyp3.submiteJobBatch$({jobs: hyp3JobsBatch, validate_only: true}).pipe(
+      catchError(resp => {
+        if (resp.error) {
+          if (resp.error.detail === 'No authorization token provided' || resp.error.detail === 'Provided apikey is not valid') {
+            this.notificationService.error('Your authorization has expired. Please sign in again.', 'Error', {
+              timeOut: 5000,
+          });
+          } else {
+            this.notificationService.error( resp.error.detail, 'Error', {
+              timeOut: 5000,
+            });
+          }
+        }
+
+        return of({jobs: null});
+      }),
+      finalize(() => {
+        this.store$.dispatch(new hyp3Store.LoadUser());
+      }),
+    ).subscribe(
+      (resp: any) => {
+        if (resp.jobs === null) {
+          return;
+        }
+        console.log(resp);
+
+        // const successfulJobs = resp.jobs.map(job => ({
+        //   granules: job.job_parameters.granules.map(g => ({name: g})),
+        //   job_type: models.hyp3JobTypes[job.job_type]
+        // }));
+
+        // this.store$.dispatch(new queueStore.RemoveJobs(successfulJobs));
+      }
+    );
     // const hyp3JobsBatch = this.hyp3.formatJobs(jobTypesWithQueued, {
     //   projectName: this.projectName,
     //   processingOptions: this.processingOptions
-    // });
+  // });
   }
 
   public onReviewQueue() {
