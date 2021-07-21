@@ -110,8 +110,8 @@
     <button (click)="queueExpiredHyp3Job()" mat-menu-item>
       Add Expired {{ product.metadata.job.job_type }} job to On Demand Queue
     </button>
-    <button (click)="onReviewQueue()" mat-menu-item>
-      Re-Process Expired Job with Options
+    <button (click)="onReviewQueue()" [disabled]="remaining <= 0" [matTooltip]="remaining > 0 ? '' : 'No more jobs available for this month'" mat-menu-item>
+      Re-Process Expired Job with Same Options
     </button>
   </mat-menu>
   </div>

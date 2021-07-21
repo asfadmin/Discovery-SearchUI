@@ -44,6 +44,7 @@ export class SceneFileComponent implements OnInit, OnDestroy {
   public paramsList = [];
 
   private projectName = '';
+  public remaining = 0;
 
   private subs = new SubSink;
 
@@ -63,6 +64,21 @@ export class SceneFileComponent implements OnInit, OnDestroy {
         }
       )
       );
+
+      this.store$.select(hyp3Store.getProcessingProjectName).subscribe(
+        projectName => this.projectName = projectName
+      );
+
+      this.store$.select(hyp3Store.getHyp3User).subscribe(
+        user => {
+          if (user === null) {
+            return;
+          }
+
+          this.remaining = user.quota.remaining;
+        }
+      );
+
   }
 
   public onToggleQueueProduct(): void {
