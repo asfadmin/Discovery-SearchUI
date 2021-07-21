@@ -9,6 +9,7 @@ import { SubSink } from 'subsink';
 import { AsfApiService, NotificationService } from '@services';
 import { HttpErrorResponse } from '@angular/common/http';
 
+
 enum FileErrors {
   TOO_LARGE = 'Too large',
   INVALID_TYPE = 'Invalid Type'

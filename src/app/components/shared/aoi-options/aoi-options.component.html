@@ -1,4 +1,4 @@
-<div class="layout">
+<div (dragover)="onFileHovered($event)" class="layout">
   <div *ngIf="showHeader" class="header-layout mb">
     <div><b>Options</b></div>
 
@@ -9,8 +9,8 @@
     </div>
   </div>
 
-  <div>
-    <form #polygonInputForm="ngForm" (keydown.enter)="$event.preventDefault()">
+  <div class="aoi-input-area">
+    <form style="width: 100%;" #polygonInputForm="ngForm" (keydown.enter)="$event.preventDefault()">
       <mat-form-field [class.invalid-input-animation]="isAOIError" class="w100" style="height: 100px;">
         <mat-label> Area of Interest • WKT </mat-label>
         <textarea
@@ -24,6 +24,10 @@
         </textarea>
       </mat-form-field>
     </form>
+
+    <div class="drop-text-box">
+      <div style="padding: 10px;"> Drag files here. </div>
+    </div>
   </div>
 
   <div class="form-layout">
