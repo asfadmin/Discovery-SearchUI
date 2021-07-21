@@ -217,6 +217,17 @@ button {
 }
 
 .progress-spinner {
+  display: block;
+  width: 40px;
+  height: 40px;
   position: relative;
   float: right;
+}
+
+.progress-spinner-value {
+  position: absolute;
+  left: 7px;
+  text-align: center;
+  width: 25px;
+  top: 0;
 }

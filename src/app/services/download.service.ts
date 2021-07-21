@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { download, Download } from './download';
 import { Observable } from 'rxjs';
 import { SAVER, Saver } from '@services/saver.provider';
+import { UAParser } from 'ua-parser-js';
 
 @Injectable({providedIn: 'root'})
 export class DownloadService {
@@ -15,31 +16,65 @@ export class DownloadService {
   ) {}
 
   download(url: string, filename: string): Observable<Download> {
-    // tslint:disable-next-line:max-line-length
+
+    // UAParser.js - https://www.npmjs.com/package/ua-parser-js
+    // JavaScript library to detect Browser, Engine, OS, CPU, and Device type/model from User-Agent data with relatively small footprint
+    const parser = new UAParser();
+    const userAgent = parser.getResult();
+    // console.log(userAgent.browser);             // {name: "Chromium", version: "15.0.874.106"}
+    // console.log(userAgent.device);              // {model: undefined, type: undefined, vendor: undefined}
+    // console.log(userAgent.os);                  // {name: "Ubuntu", version: "11.10"}
+    // console.log(userAgent.os.version);          // "11.10"
+    // console.log(userAgent.engine.name);         // "WebKit"
+    // console.log(userAgent.cpu.architecture);    // "amd64"
+
     const megas = window.prompt('How many MBs do you want:');
     url = 'https://filegen-dev.asf.alaska.edu/generate?bytes=' + megas.trim() + 'e6';
-    // url = 'https://images.unsplash.com/photo-1619921845646-6216752a036c?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=3168&q=80';
-    // filename = 'earth.jpg';
-    // url = 'https://grfn-test.asf.alaska.edu/door/download/S1-GUNW-A-R-014-tops-20200513_20200419-153046-28315N_26591N-PP-e3ef-v2_0_3.nc';
-    // filename = 'grfn-test.asf.alaska.edu/door/download/S1-GUNW-A-R-014-tops-20200513_20200419-153046-28315N_26591N-PP-e3ef-v2_0_3.nc';
-    // url = 'https://grfn-test.asf.alaska.edu/door/browse/S1-GUNW-A-R-004-tops-20150825_20150310-230613-37822N_35782N-PP-43bb-v2_0_4.png';
-    // filename = 'S1-GUNW-A-R-004-tops-20150825_20150310-230613-37822N_35782N-PP-43bb-v2_0_4.png';
-    console.log('Calling http.get');
+    console.log('Download Service Executing');
     console.log('url:', url);
     console.log('filename:', filename);
+
+    if (userAgent.browser.name !== 'Chrome') {
+      // classicDownload( url, filename );
+      // return;
+    }
+
+    // tslint:disable-next-line:max-line-length
     return this.http.get(url, {
       withCredentials: this.wCreds,
       reportProgress: true,
       observe: 'events',
-      responseType: 'blob'
-    }).pipe(download(filename, blob => this.save(blob, filename)));
+      responseType: 'blob',
+    }).pipe(download(filename, blob => this.save(blob, url, filename)));
   }
 
   // blob(url: string, filename?: string): Observable<Blob> {
   blob(url: string): Observable<Blob> {
     return this.http.get(url, {
       withCredentials: this.wCreds,
-      responseType: 'blob'
+      responseType: 'blob',
     });
   }
+}
+
+export function classicDownload( url, _filename ) {
+  console.log('classicDownload url:', url);
+  const link = document.createElement('a');
+  link.style.display = 'none';
+  link.href = url;
+  // link.pathname = _filename;
+  link.target = '_blank';
+  link.type = 'blob';
+
+  // It needs to be added to the DOM so it can be clicked
+  document.body.appendChild(link);
+  link.click();
+
+  // To make this work on Firefox we need to wait
+  // a little while before removing it.
+  setTimeout(() => {
+    URL.revokeObjectURL(link.href);
+    link.parentNode.removeChild(link);
+    console.log('link removed');
+  }, 0);
 }

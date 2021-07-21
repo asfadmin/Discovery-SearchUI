@@ -13,11 +13,11 @@ import { CMRProduct, AsfApiOutputFormat, Breakpoints } from '@models';
 import { MatDialogRef } from '@angular/material/dialog';
 import { SubSink } from 'subsink';
 import { ResizedEvent } from 'angular-resize-event';
-import {HttpClient} from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { saveAs } from 'file-saver';
 import { Observable } from 'rxjs';
 import { download, Download } from 'ngx-operators';
-import {DownloadService} from '@services/download.service';
+import { DownloadService } from '@services/download.service';
 
 
 // tslint:disable-next-line:class-name
@@ -37,6 +37,7 @@ export class QueueComponent implements OnInit, OnDestroy {
 
   download$: Observable<Download>;
   public dFile: Download;
+  public dlInProgress: boolean = false;
 
   public queueHasOnDemandProducts = false;
   public showDemWarning: boolean;
@@ -85,7 +86,7 @@ export class QueueComponent implements OnInit, OnDestroy {
     private screenSize: ScreenSizeService,
     private notificationService: NotificationService,
     private http: HttpClient,
-    private downloads: DownloadService,
+    private downloadService: DownloadService,
   ) {}
 
   ngOnInit() {
@@ -167,8 +168,12 @@ export class QueueComponent implements OnInit, OnDestroy {
   }
 
   public downloadFile(url: string, filename: string) {
-    this.downloads.download(url, filename).subscribe( resp => {
+    if (this.dlInProgress) { return; }
+    this.dlInProgress = true;
+    this.downloadService.download(url, filename).subscribe( resp => {
       this.dFile = resp;
+      if (resp.state === 'DONE') { this.dlInProgress = false; }
+      console.log ('download in progress:', this.dlInProgress, 'resp:', resp);
     });
   }
 

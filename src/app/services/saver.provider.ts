@@ -1,18 +1,21 @@
 import { InjectionToken } from '@angular/core';
+
 // @ts-ignore
 import streamSaver from 'streamsaver';
 
-export type Saver = (blob: Blob, filename?: string) => void;
+export type Saver = (blob: Blob, url: string, filename?: string) => void;
 
 export const SAVER = new InjectionToken<Saver>('saver');
 
-export function myStreamSaver (blob, filename) {
+export function myStreamSaver (blob, _url, filename) {
 
   // StreamSaver can detect and use the Ponyfill that is loaded from the cdn.
   // streamSaver.WritableStream = streamSaver.WritableStream;
   // streamSaver.TransformStream = streamSaver.TransformStream;
 
   console.log('Window:', window);
+  // console.log('mySteamSaver url:', _url);
+  // console.log('mySteamSaver filename:', filename);
 
   const fileStream = streamSaver.createWriteStream( filename, {
     size: blob.size // Makes the percentage visible in the download
@@ -22,23 +25,22 @@ export function myStreamSaver (blob, filename) {
 
   // more optimized pipe version
   // (Safari may have pipeTo but it's useless without the WritableStream)
-  if (window.WritableStream && readableStream.pipeTo) {
+  if (streamSaver.WritableStream && readableStream.pipeTo) {
     return readableStream.pipeTo(fileStream)
-      .then(() => console.log('done writing'));
+      .then(() => console.log('pipeTo fileStream done writing'));
   }
 
   // less optimized
   const writer = fileStream.getWriter();
-
   const reader = readableStream.body.getReader();
   const pump = () => reader.read()
     .then(res => readableStream.done
       ? writer.close()
       : writer.write(res.value).then(pump));
+  pump().then();
 
-  pump();
 }
+
 export function getSaver(): Saver {
   return myStreamSaver;
 }
-
