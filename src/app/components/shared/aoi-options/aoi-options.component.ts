@@ -12,6 +12,8 @@ import { MapInteractionModeType } from '@models';
 import { MapService } from '@services';
 import { SubSink } from 'subsink';
 
+import * as models from '@models';
+
 // Declare GTM dataLayer array.
 declare global {
   interface Window { dataLayer: any[]; }
@@ -60,6 +62,12 @@ export class AoiOptionsComponent implements OnInit, OnDestroy {
     );
 
     this.handleAOIErrors();
+  }
+
+  public onFileHovered(e): void {
+    const mode = models.MapInteractionModeType.UPLOAD;
+    this.store$.dispatch(new mapStore.SetMapInteractionMode(mode));
+    e.preventDefault();
   }
 
   public onInputSearchPolygon(polygon: string): void {
