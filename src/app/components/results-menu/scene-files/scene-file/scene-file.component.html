@@ -110,6 +110,9 @@
     <button (click)="queueExpiredHyp3Job()" mat-menu-item>
       Add Expired {{ product.metadata.job.job_type }} job to On Demand Queue
     </button>
+    <button (click)="onReviewQueue()" mat-menu-item>
+      Re-Process Expired Job with Options
+    </button>
   </mat-menu>
   </div>
 

@@ -40,6 +40,8 @@ export class OnDemandAddMenuComponent implements OnInit {
 
   private projectName = '';
   private validateOnly = false;
+
+  public remaining = 0;
   private subs = new SubSink();
 
   constructor(
@@ -74,6 +76,16 @@ export class OnDemandAddMenuComponent implements OnInit {
 
     this.store$.select(hyp3Store.getProcessingProjectName).subscribe(
       projectName => this.projectName = projectName
+    );
+
+    this.store$.select(hyp3Store.getHyp3User).subscribe(
+      user => {
+        if (user === null) {
+          return;
+        }
+
+        this.remaining = user.quota.remaining;
+      }
     );
   }
 

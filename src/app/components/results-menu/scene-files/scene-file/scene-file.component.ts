@@ -5,15 +5,18 @@ import * as moment from 'moment';
 
 import * as queueStore from '@store/queue';
 import * as searchStore from '@store/search';
+import * as hyp3Store from '@store/hyp3';
 
-import { Hyp3Service } from '@services';
+import { Hyp3Service, NotificationService } from '@services';
 import * as models from '@models';
 import { SubSink } from 'subsink';
 import { of } from 'rxjs';
-import { filter } from 'rxjs/operators';
+import { catchError, filter, finalize } from 'rxjs/operators';
 import { AppState } from '@store';
 import { Store } from '@ngrx/store';
 import { SearchType } from '@models';
+import { ConfirmationComponent } from '@components/header/processing-queue/confirmation/confirmation.component';
+import { MatDialog } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-scene-file',
@@ -40,11 +43,15 @@ export class SceneFileComponent implements OnInit, OnDestroy {
   public isHovered = false;
   public paramsList = [];
 
+  private projectName = '';
+
   private subs = new SubSink;
 
   constructor(
       private hyp3: Hyp3Service,
       private store$: Store<AppState>,
+      private notificationService: NotificationService,
+      private dialog: MatDialog,
     ) {}
 
   ngOnInit() {
@@ -174,6 +181,107 @@ export class SceneFileComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     this.subs.unsubscribe();
   }
+
+  public onReviewQueue() {
+
+    const job_types = models.hyp3JobTypes;
+    const job_type = Object.keys(job_types).find(id =>
+      {
+        return this.product.metadata.job.job_type === id as any;
+      });
+
+      // this.scene.metadata.job.job_parameters
+
+    const confirmationRef = this.dialog.open(ConfirmationComponent, {
+      id: 'ConfirmProcess',
+      width: '350px',
+      height: '500px',
+      maxWidth: '350px',
+      maxHeight: '500px',
+      data: [{
+        jobType: job_types[job_type],
+        selected: true,
+        jobs: [{
+          granules: this.product.metadata.job.job_parameters.scenes,
+          job_type: job_types[job_type]
+        } as models.QueuedHyp3Job ]
+      }]
+    });
+
+    confirmationRef.afterClosed().subscribe(
+      jobTypesWithQueued => {
+        if (!jobTypesWithQueued) {
+          return;
+        }
+
+        // if (this.env.maturity === 'prod') {
+        //   this.validateOnly = false;
+        // }
+
+        this.onSubmitQueue(
+          jobTypesWithQueued,
+          false,
+        );
+      }
+    );
+  }
+
+  public onSubmitQueue(jobTypesWithQueued, validateOnly: boolean) {
+    console.log(this.product.metadata.job);
+    console.log(jobTypesWithQueued);
+    console.log(validateOnly);
+
+    // console.log(this.processingOptions);
+
+    const processOptionKeys = Object.keys(this.product.metadata.job.job_parameters).filter(key => key !== 'granules');
+    let processingOptions = {};
+    processOptionKeys.forEach(key => processingOptions[key] = this.product.metadata.job.job_parameters[key]);
+    // let processingOptions = {[key in processOptionKeys]: this.scene.metadata.job[key]};
+    const hyp3JobsBatch = this.hyp3.formatJobs(jobTypesWithQueued, {
+      projectName: this.projectName,
+      processingOptions
+    });
+
+    this.hyp3.submiteJobBatch$({jobs: hyp3JobsBatch, validate_only: true}).pipe(
+      catchError(resp => {
+        if (resp.error) {
+          if (resp.error.detail === 'No authorization token provided' || resp.error.detail === 'Provided apikey is not valid') {
+            this.notificationService.error('Your authorization has expired. Please sign in again.', 'Error', {
+              timeOut: 5000,
+          });
+          } else {
+            this.notificationService.error( resp.error.detail, 'Error', {
+              timeOut: 5000,
+            });
+          }
+        }
+
+        return of({jobs: null});
+      }),
+      finalize(() => {
+        this.store$.dispatch(new hyp3Store.LoadUser());
+      }),
+    ).subscribe(
+      (resp: any) => {
+        if (resp.jobs === null) {
+          return;
+        }
+        console.log(resp);
+
+        // const successfulJobs = resp.jobs.map(job => ({
+        //   granules: job.job_parameters.granules.map(g => ({name: g})),
+        //   job_type: models.hyp3JobTypes[job.job_type]
+        // }));
+
+        // this.store$.dispatch(new queueStore.RemoveJobs(successfulJobs));
+      }
+    );
+    // const hyp3JobsBatch = this.hyp3.formatJobs(jobTypesWithQueued, {
+    //   projectName: this.projectName,
+    //   processingOptions: this.processingOptions
+  // });
+  }
+
 
   public isExpired(job: models.Hyp3Job): boolean {
     return this.hyp3.isExpired(job);
