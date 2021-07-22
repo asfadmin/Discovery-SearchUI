@@ -51,7 +51,7 @@
 
       <div *ngIf="isExpired && expiredJobs.job_type === prodType.productType">
         <button
-          [disabled]="!expiredJobs"
+          [disabled]="!expiredJobs && remaining < 1"
           (click)="onReviewExpiredJob()"
           mat-menu-item>
           Re-Process Expired {{expiredJobs.job_type}} {{ byJobType.jobType.numProducts === 2 ? 'pair' : 'job' }}
