@@ -224,7 +224,7 @@ export class AppComponent implements OnInit, OnDestroy {
       ).subscribe( defaultFilters =>
         this.store$.dispatch(new filterStore.SetDefaultFilters(defaultFilters))
       )
-    )
+    );
 
     const user = this.authService.getUser();
     if (user.id) {
