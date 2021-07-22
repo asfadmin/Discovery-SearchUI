@@ -12,7 +12,7 @@ import { SubSink } from 'subsink';
 import { getMasterName, getScenes } from '@store/scenes';
 import { getSearchType } from '@store/search';
 import { CMRProduct, Hyp3ableByProductType, SearchType } from '@models';
-import { catchError, finalize, withLatestFrom } from 'rxjs/operators';
+import { catchError, finalize, first, withLatestFrom } from 'rxjs/operators';
 import { CreateSubscriptionComponent } from '../../header/create-subscription';
 import { ConfirmationComponent } from '@components/header/processing-queue/confirmation/confirmation.component';
 import { EnvironmentService, Hyp3Service, NotificationService } from '@services';
@@ -141,16 +141,11 @@ export class OnDemandAddMenuComponent implements OnInit {
     window.open(infoUrl);
   }
 
-
-  public onReviewQueue() {
+  public onReviewExpiredJob() {
 
     const job_types = models.hyp3JobTypes;
     const job_type = Object.keys(job_types).find(id =>
-      {
-        return this.expiredJobs.job_type === id as any;
-      });
-
-      // this.scene.metadata.job.job_parameters
+      this.expiredJobs.job_type === id as any);
 
     const confirmationRef = this.dialog.open(ConfirmationComponent, {
       id: 'ConfirmProcess',
@@ -178,7 +173,7 @@ export class OnDemandAddMenuComponent implements OnInit {
           this.validateOnly = false;
         }
 
-        this.onSubmitQueue(
+        this.onResubmitExpiredJob(
           jobTypesWithQueued,
           this.validateOnly
         );
@@ -186,23 +181,18 @@ export class OnDemandAddMenuComponent implements OnInit {
     );
   }
 
-  public onSubmitQueue(jobTypesWithQueued, validateOnly: boolean) {
-    console.log(this.expiredJobs);
-    console.log(jobTypesWithQueued);
-    console.log(validateOnly);
-
-    // console.log(this.processingOptions);
+  public onResubmitExpiredJob(jobTypesWithQueued, validateOnly: boolean) {
 
     const processOptionKeys = Object.keys(this.expiredJobs.job_parameters).filter(key => key !== 'granules');
     let processingOptions = {};
     processOptionKeys.forEach(key => processingOptions[key] = this.expiredJobs.job_parameters[key]);
-    // let processingOptions = {[key in processOptionKeys]: this.scene.metadata.job[key]};
+
     const hyp3JobsBatch = this.hyp3.formatJobs(jobTypesWithQueued, {
       projectName: this.projectName,
       processingOptions
     });
 
-    this.hyp3.submiteJobBatch$({jobs: hyp3JobsBatch, validate_only: true}).pipe(
+    this.hyp3.submiteJobBatch$({jobs: hyp3JobsBatch, validate_only: validateOnly}).pipe(
       catchError(resp => {
         if (resp.error) {
           if (resp.error.detail === 'No authorization token provided' || resp.error.detail === 'Provided apikey is not valid') {
@@ -220,25 +210,20 @@ export class OnDemandAddMenuComponent implements OnInit {
       }),
       finalize(() => {
         this.store$.dispatch(new hyp3Store.LoadUser());
-      }),
-    ).subscribe(
-      (resp: any) => {
-        if (resp.jobs === null) {
-          return;
+
+        let jobText;
+        const submittedJobs = Math.abs(hyp3JobsBatch.length);
+        jobText = submittedJobs > 1 ? `${submittedJobs} Jobs` : 'Job';
+        if (jobText) {
+          this.notificationService.info(`${submittedJobs} expired ${jobText} submitted for re-processing.`,
+          `Expired ${jobText} Submitted`,
+          {
+            closeButton: true,
+            disableTimeOut: true,
+          })
         }
-        console.log(resp);
-
-        // const successfulJobs = resp.jobs.map(job => ({
-        //   granules: job.job_parameters.granules.map(g => ({name: g})),
-        //   job_type: models.hyp3JobTypes[job.job_type]
-        // }));
-
-        // this.store$.dispatch(new queueStore.RemoveJobs(successfulJobs));
-      }
-    );
-    // const hyp3JobsBatch = this.hyp3.formatJobs(jobTypesWithQueued, {
-    //   projectName: this.projectName,
-    //   processingOptions: this.processingOptions
-  // });
+      }),
+      first(),
+    ).subscribe();
   }
 }

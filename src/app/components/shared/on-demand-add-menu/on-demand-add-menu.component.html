@@ -34,19 +34,6 @@
         </button>
         </div>
     </div>
-    <div *ngIf="isExpired">
-      <button
-        [disabled]="!expiredJobs"
-        (click)="onReviewQueue()"
-        mat-menu-item>
-        Re-Process Job ({{remaining}} remaining this month)
-
-        <mat-icon
-          class="clickable" style="margin-left: 10px;">
-            icon
-        </mat-icon>
-      </button>
-    </div>
   </ng-template>
 </mat-menu>
 
@@ -58,9 +45,23 @@
         (click)="queueAllOnDemand(prodType.products, byJobType.jobType)"
         [disabled]="" mat-menu-item>
 
-        Add {{ prodType.products.length }} {{ prodType.productType }}
+        Add {{isExpired ? 'Expired' : ''}}  {{ isExpired ? '' : prodType.products.length }} {{ prodType.productType }}
         {{ byJobType.jobType.numProducts === 2 ? 'pair' : 'job' }}{{ prodType.products.length > 1 ? 's' : '' }}
       </button>
+
+      <div *ngIf="isExpired && expiredJobs.job_type === prodType.productType">
+        <button
+          [disabled]="!expiredJobs"
+          (click)="onReviewExpiredJob()"
+          mat-menu-item>
+          Re-Process Expired {{expiredJobs.job_type}} {{ byJobType.jobType.numProducts === 2 ? 'pair' : 'job' }}
+
+          <mat-icon
+            class="clickable" style="margin-left: 10px;">
+              icon
+          </mat-icon>
+        </button>
+      </div>
     </div>
 
     <button (click)="onOpenCreateSubscription()" mat-menu-item>Create Subscription</button>

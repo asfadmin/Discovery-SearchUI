@@ -7,11 +7,11 @@ import * as queueStore from '@store/queue';
 import * as searchStore from '@store/search';
 import * as hyp3Store from '@store/hyp3';
 
-import { Hyp3Service, NotificationService } from '@services';
+import { EnvironmentService, Hyp3Service, NotificationService } from '@services';
 import * as models from '@models';
 import { SubSink } from 'subsink';
 import { of } from 'rxjs';
-import { catchError, filter, finalize } from 'rxjs/operators';
+import { catchError, filter, finalize, first } from 'rxjs/operators';
 import { AppState } from '@store';
 import { Store } from '@ngrx/store';
 import { SearchType } from '@models';
@@ -47,10 +47,12 @@ export class SceneFileComponent implements OnInit, OnDestroy {
   public remaining = 0;
 
   private subs = new SubSink;
+  private validateOnly = false;
 
   constructor(
       private hyp3: Hyp3Service,
       private store$: Store<AppState>,
+      public env: EnvironmentService,
       private notificationService: NotificationService,
       private dialog: MatDialog,
     ) {}
@@ -198,7 +200,7 @@ export class SceneFileComponent implements OnInit, OnDestroy {
     this.subs.unsubscribe();
   }
 
-  public onReviewQueue() {
+  public onReviewExpiredJob() {
 
     const job_types = models.hyp3JobTypes;
     const job_type = Object.keys(job_types).find(id =>
@@ -230,35 +232,30 @@ export class SceneFileComponent implements OnInit, OnDestroy {
           return;
         }
 
-        // if (this.env.maturity === 'prod') {
-        //   this.validateOnly = false;
-        // }
+        if (this.env.maturity === 'prod') {
+          this.validateOnly = false;
+        }
 
-        this.onSubmitQueue(
+        this.onResubmitExpiredJob(
           jobTypesWithQueued,
-          false,
+          this.validateOnly,
         );
       }
     );
   }
 
-  public onSubmitQueue(jobTypesWithQueued, validateOnly: boolean) {
-    console.log(this.product.metadata.job);
-    console.log(jobTypesWithQueued);
-    console.log(validateOnly);
-
-    // console.log(this.processingOptions);
+  public onResubmitExpiredJob(jobTypesWithQueued, validateOnly: boolean) {
 
     const processOptionKeys = Object.keys(this.product.metadata.job.job_parameters).filter(key => key !== 'granules');
     let processingOptions = {};
     processOptionKeys.forEach(key => processingOptions[key] = this.product.metadata.job.job_parameters[key]);
-    // let processingOptions = {[key in processOptionKeys]: this.scene.metadata.job[key]};
+
     const hyp3JobsBatch = this.hyp3.formatJobs(jobTypesWithQueued, {
       projectName: this.projectName,
       processingOptions
     });
 
-    this.hyp3.submiteJobBatch$({jobs: hyp3JobsBatch, validate_only: true}).pipe(
+    this.hyp3.submiteJobBatch$({jobs: hyp3JobsBatch, validate_only: validateOnly}).pipe(
       catchError(resp => {
         if (resp.error) {
           if (resp.error.detail === 'No authorization token provided' || resp.error.detail === 'Provided apikey is not valid') {
@@ -276,26 +273,21 @@ export class SceneFileComponent implements OnInit, OnDestroy {
       }),
       finalize(() => {
         this.store$.dispatch(new hyp3Store.LoadUser());
-      }),
-    ).subscribe(
-      (resp: any) => {
-        if (resp.jobs === null) {
-          return;
+
+        let jobText;
+        const submittedJobs = Math.abs(hyp3JobsBatch.length);
+        jobText = submittedJobs > 1 ? `${submittedJobs} Jobs` : 'Job';
+        if (jobText) {
+          this.notificationService.info(`${submittedJobs} expired ${jobText} submitted for re-processing.`,
+          `Expired ${jobText} Submitted`,
+          {
+            closeButton: true,
+            disableTimeOut: true,
+          })
         }
-        console.log(resp);
-
-        // const successfulJobs = resp.jobs.map(job => ({
-        //   granules: job.job_parameters.granules.map(g => ({name: g})),
-        //   job_type: models.hyp3JobTypes[job.job_type]
-        // }));
-
-        // this.store$.dispatch(new queueStore.RemoveJobs(successfulJobs));
-      }
-    );
-    // const hyp3JobsBatch = this.hyp3.formatJobs(jobTypesWithQueued, {
-    //   projectName: this.projectName,
-    //   processingOptions: this.processingOptions
-  // });
+      }),
+      first(),
+    ).subscribe();
   }
 
 
