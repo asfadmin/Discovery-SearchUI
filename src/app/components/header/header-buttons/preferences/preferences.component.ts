@@ -79,7 +79,7 @@ export class PreferencesComponent implements OnInit, OnDestroy {
             }
           }
 
-          savedFilters.forEach(preset => this.userFiltersBySearchType[preset.searchType].push(preset));
+          savedFilters.forEach(preset => this.userFiltersBySearchType[preset.searchType]?.push(preset));
 
           const searchTypeKeys = Object.keys(this.selectedFiltersIDs);
           searchTypeKeys.forEach(key =>
