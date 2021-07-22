@@ -79,6 +79,8 @@
                      >
                   </app-copy-to-clipboard>
 
+                  <app-download-file-button></app-download-file-button>
+
                   <a (click)="downloadFile(product.downloadUrl, product.id)"
                          [disabled]="!product.downloadUrl || dlInProgress"
                          mat-icon-button

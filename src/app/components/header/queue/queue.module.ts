@@ -12,6 +12,7 @@ import { TruncateModule } from '@yellowspot/ng-truncate';
 import { MatSharedModule } from '@shared';
 import { PipesModule } from '@pipes';
 import { CopyToClipboardModule } from '@components/shared/copy-to-clipboard';
+import { DownloadFileButtonModule } from '@components/shared/download-file-button/download-file-button.module';
 
 import { QueueComponent } from './queue.component';
 import { ResizableModule } from 'angular-resizable-element';
@@ -19,9 +20,9 @@ import { DragDropModule } from '@angular/cdk/drag-drop';
 import { MatDialogModule } from '@angular/material/dialog';
 import { AngularResizedEventModule } from 'angular-resize-event';
 import { FileDownloadDirective } from '@directives/file-download.directive';
-import {MatProgressBarModule} from '@angular/material/progress-bar';
-import {MatCheckboxModule} from '@angular/material/checkbox';
-import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 
 @NgModule({
@@ -35,6 +36,7 @@ import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
         ScrollingModule,
         TruncateModule,
         ClipboardModule,
+        DownloadFileButtonModule,
         FontAwesomeModule,
         CopyToClipboardModule,
         MatSharedModule,
