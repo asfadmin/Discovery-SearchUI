@@ -17,7 +17,7 @@ import { HttpClient } from '@angular/common/http';
 import { saveAs } from 'file-saver';
 import { Observable } from 'rxjs';
 import { download, Download } from 'ngx-operators';
-import { DownloadService } from '@services/download.service';
+// import { DownloadService } from '@services/download.service';
 
 
 // tslint:disable-next-line:class-name
@@ -36,8 +36,8 @@ export class QueueComponent implements OnInit, OnDestroy {
   @Input() appQueueComponentModel: string;
 
   download$: Observable<Download>;
-  public dFile: Download;
-  public dlInProgress: boolean = false;
+  // public dFile: Download;
+  // public dlInProgress: boolean = false;
 
   public queueHasOnDemandProducts = false;
   public showDemWarning: boolean;
@@ -86,7 +86,7 @@ export class QueueComponent implements OnInit, OnDestroy {
     private screenSize: ScreenSizeService,
     private notificationService: NotificationService,
     private http: HttpClient,
-    private downloadService: DownloadService,
+    // private downloadService: DownloadService,
   ) {}
 
   ngOnInit() {
@@ -167,15 +167,15 @@ export class QueueComponent implements OnInit, OnDestroy {
     this.store$.dispatch(new queueStore.DownloadMetadata(format));
   }
 
-  public downloadFile(url: string, filename: string) {
-    if (this.dlInProgress) { return; }
-    this.dlInProgress = true;
-    this.downloadService.download(url, filename).subscribe( resp => {
-      this.dFile = resp;
-      if (resp.state === 'DONE') { this.dlInProgress = false; }
-      console.log ('download in progress:', this.dlInProgress, 'resp:', resp);
-    });
-  }
+  // public downloadFile(url: string, filename: string) {
+  //   if (this.dlInProgress) { return; }
+  //   this.dlInProgress = true;
+  //   this.downloadService.download(url, filename).subscribe( resp => {
+  //     this.dFile = resp;
+  //     if (resp.state === 'DONE') { this.dlInProgress = false; }
+  //     console.log ('download in progress:', this.dlInProgress, 'resp:', resp);
+  //   });
+  // }
 
   public toggleItemSelected(productId, downloadUrl) {
     const idx = this.selectedItems.findIndex( o => o.id === productId );

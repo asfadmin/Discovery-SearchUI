@@ -79,38 +79,8 @@
                      >
                   </app-copy-to-clipboard>
 
-                  <app-download-file-button></app-download-file-button>
-
-                  <a (click)="downloadFile(product.downloadUrl, product.id)"
-                         [disabled]="!product.downloadUrl || dlInProgress"
-                         mat-icon-button
-                         matTooltip="Download"
-                         style="text-decoration: none;"
-                  >
-                      <ng-container *ngIf="dFile as download; else queueComponentDownloadIcon">
-                        <template *ngIf="download.id == product.id; else queueComponentDownloadIconDisabled"
-                          class="progress-spinner">
-                          <mat-progress-spinner
-                            [mode]="download.state == 'PENDING' ? 'buffer' : 'determinate'"
-                            [value]='download.progress'
-                            [diameter]="40">
-                          </mat-progress-spinner>
-                          <div class="progress-spinner-value">
-                            {{ download.progress }}
-                          </div>
-                        </template>
-                      </ng-container>
-                    <ng-template #queueComponentDownloadIcon>
-                      <mat-icon>cloud_download</mat-icon>
-                    </ng-template>
-                    <ng-template #queueComponentDownloadIconDisabled>
-<!--                      https://angular.io/guide/built-in-directives-->
-<!--                      <span *ngIf="download.id == this.parentNode.id">x</span>-->
-<!--                      <span *ngIf="download.id != this.parentNode.id">y</span>-->
-                      <mat-icon>cloud_download</mat-icon>
-                    </ng-template>
-
-                  </a>
+                  <app-download-file-button [product] = "product">
+                  </app-download-file-button>
 
                   <button (click)="onRemoveProduct(product)" matTooltip="Remove file" mat-icon-button>
                     <mat-icon>close</mat-icon>

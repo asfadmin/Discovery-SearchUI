@@ -1,1 +1,29 @@
-<p>download-file-button works!</p>
+<button (click)="downloadFile(product.downloadUrl, product.id)"
+   [disabled]="!product.downloadUrl || dlInProgress"
+   mat-icon-button
+   matTooltip="Download file"
+   style="text-decoration: none;"
+>
+  <ng-container *ngIf="dFile as download; else downloadIcon">
+    <template *ngIf="dlInProgress"
+              class="progress-spinner">
+      <mat-progress-spinner
+        [mode]="download.state == 'PENDING' ? 'buffer' : 'determinate'"
+        [value]='download.progress'
+        [diameter]="40">
+      </mat-progress-spinner>
+      <span class="progress-spinner-value">
+        {{ download.progress }}
+      </span>
+    </template>
+  </ng-container>
+  <ng-container #downloadIcon>
+    <ng-container *ngIf="dlComplete">
+      <mat-icon>done</mat-icon>
+    </ng-container>
+    <ng-container *ngIf="!dlComplete">
+      <mat-icon>cloud_download</mat-icon>
+    </ng-container>
+  </ng-container>
+</button>
+
