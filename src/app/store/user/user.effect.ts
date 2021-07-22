@@ -169,19 +169,22 @@ export class UserEffects {
   public loadSavedFiltersOfSearchType = createEffect(() => this.actions$.pipe(
     ofType<userActions.LoadFiltersPreset>(userActions.UserActionType.LOAD_FILTERS_PRESET),
     map(action => action.payload),
-    filter(filterPresetID => filterPresetID !== '' && filterPresetID !== undefined),
     withLatestFrom(this.store$.select(searchStore.getSearchType)),
-    filter(([_, searchtype]) => searchtype !== SearchType.LIST && searchtype !== SearchType.CUSTOM_PRODUCTS),
+    filter(([filterPresetID, searchtype]) => filterPresetID !== ''
+      && !!filterPresetID
+      && searchtype !== SearchType.LIST
+      && searchtype !== SearchType.CUSTOM_PRODUCTS),
     withLatestFrom(this.store$.select(userReducer.getSavedFilters)),
-    map(([[presetId, searchType], userFilters]) => {
-      const targetFilter = userFilters
-        .filter(preset => preset.searchType === searchType)
-        .find(preset => preset.id === presetId);
+    map(([[presetId, searchType], userFilters]) => userFilters.filter(preset =>
+        preset.searchType === searchType).find(preset => preset.id === presetId)
+      ),
+    filter(targetFilter => !!targetFilter),
+    map(targetFilter => {
 
       let actions = [];
 
       if(!!targetFilter) {
-        switch (searchType) {
+        switch (targetFilter.searchType) {
           case SearchType.DATASET:
             this.store$.dispatch(new filterStore.ClearDatasetFilters());
             actions = this.setDatasetFilters(targetFilter.filters as GeographicFiltersType);

@@ -216,11 +216,11 @@ export class AppComponent implements OnInit, OnDestroy {
           this.urlStateService.setDefaults(profile);
 
           if(this.searchType !== models.SearchType.LIST && this.searchType !== models.SearchType.CUSTOM_PRODUCTS) {
-            const defaultFilterID = profile.defaultFilterPresets[this.searchType];
+            const defaultFilterID = profile.defaultFilterPresets?.[this.searchType];
             if(!!defaultFilterID) {
               this.store$.dispatch(new userStore.LoadFiltersPreset(defaultFilterID));
             }
-        }
+          }
         })
     );
 
@@ -231,7 +231,7 @@ export class AppComponent implements OnInit, OnDestroy {
       this.store$.select(userStore.getUserProfile).subscribe(
         profile => {
           if(this.searchType !== models.SearchType.LIST && this.searchType !== models.SearchType.CUSTOM_PRODUCTS) {
-            const defaultFilterID = profile.defaultFilterPresets[this.searchType];
+            const defaultFilterID = profile.defaultFilterPresets?.[this.searchType];
             if(!!defaultFilterID) {
               this.store$.dispatch(new userStore.LoadFiltersPreset(defaultFilterID));
             }
@@ -269,10 +269,13 @@ export class AppComponent implements OnInit, OnDestroy {
           let searchTypeDefaultFiltersID;
 
           if(action.payload !== models.SearchType.CUSTOM_PRODUCTS && action.payload !== models.SearchType.LIST) {
-            searchTypeDefaultFiltersID = profile.defaultFilterPresets[action.payload]
+            searchTypeDefaultFiltersID = profile.defaultFilterPresets?.[action.payload]
           }
 
-          const validFiltersPreset = action.payload !== models.SearchType.CUSTOM_PRODUCTS && action.payload !== models.SearchType.LIST;
+          const validFiltersPreset = action.payload !== models.SearchType.CUSTOM_PRODUCTS
+            && action.payload !== models.SearchType.LIST
+            && !!searchTypeDefaultFiltersID;
+
           if (
             searchState &&
             searchState.searchType !== models.SearchType.CUSTOM_PRODUCTS
