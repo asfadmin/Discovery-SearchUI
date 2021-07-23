@@ -12,7 +12,6 @@ import { TruncateModule } from '@yellowspot/ng-truncate';
 import { MatSharedModule } from '@shared';
 import { PipesModule } from '@pipes';
 import { CopyToClipboardModule } from '@components/shared/copy-to-clipboard';
-import { DownloadFileButtonModule } from '@components/shared/download-file-button/download-file-button.module';
 
 import { QueueComponent } from './queue.component';
 import { ResizableModule } from 'angular-resizable-element';
@@ -24,6 +23,7 @@ import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
+import { DownloadFileButtonModule } from './download-file-button/download-file-button.module';
 
 @NgModule({
   declarations: [
