@@ -505,6 +505,16 @@ export function filtersReducer(state = initState, action: FiltersActions): Filte
           temporalRange: {start: filters.temporal, end: null},
           perpendicularRange: {start: filters.perpendicular, end: null},
         };
+      } else if (search.searchType === models.SearchType.CUSTOM_PRODUCTS) {
+          const filters = <models.CustomProductFiltersType>search.filters;
+
+          return {
+            ... state,
+            jobStatuses: filters.jobStatuses,
+            dateRange: filters.dateRange,
+            projectName: filters.projectName,
+            productFilterName: filters.productFilterName
+          };
       } else {
         const filters = <models.GeographicFiltersType>search.filters;
 
@@ -771,6 +781,17 @@ export const getSbasSearch = createSelector(
     season: state.season,
     perpendicular: state.perpendicularRange.start,
     thresholdOverlap: state.thresholdOverlap
+  })
+);
+
+export const getCustomProductSearch = createSelector(
+  getFiltersState,
+  (state: FiltersState) => ({
+    dateRange: state.dateRange,
+    jobStatuses: state.jobStatuses,
+
+    projectName: state.projectName,
+    productFilterName: state.productFilterName
   })
 );
 
