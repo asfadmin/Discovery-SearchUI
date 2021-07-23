@@ -4,7 +4,7 @@
    matTooltip="Download file"
    style="text-decoration: none;"
 >
-  <ng-container *ngIf="dFile as download; else downloadIcon">
+  <ng-container *ngIf="dFile as download">
     <template *ngIf="dlInProgress"
               class="progress-spinner">
       <mat-progress-spinner
@@ -17,7 +17,8 @@
       </span>
     </template>
   </ng-container>
-  <ng-container #downloadIcon>
+
+  <ng-container *ngIf="!dFile || dlComplete">
     <ng-container *ngIf="dlComplete">
       <mat-icon>done</mat-icon>
     </ng-container>

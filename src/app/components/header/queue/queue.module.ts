@@ -24,32 +24,34 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 import { DownloadFileButtonModule } from './download-file-button/download-file-button.module';
+import { DownloadAllModule } from '@components/header/queue/download-all/download-all.module';
 
 @NgModule({
   declarations: [
     QueueComponent,
     FileDownloadDirective
   ],
-    imports: [
-        CommonModule,
-        MatMenuModule,
-        ScrollingModule,
-        TruncateModule,
-        ClipboardModule,
-        DownloadFileButtonModule,
-        FontAwesomeModule,
-        CopyToClipboardModule,
-        MatSharedModule,
-        PipesModule,
-        FlexLayoutModule,
-        ResizableModule,
-        DragDropModule,
-        MatDialogModule,
-        AngularResizedEventModule,
-        MatProgressBarModule,
-        MatCheckboxModule,
-        MatProgressSpinnerModule
-    ],
+  imports: [
+    CommonModule,
+    MatMenuModule,
+    ScrollingModule,
+    TruncateModule,
+    ClipboardModule,
+    DownloadFileButtonModule,
+    FontAwesomeModule,
+    CopyToClipboardModule,
+    MatSharedModule,
+    PipesModule,
+    FlexLayoutModule,
+    ResizableModule,
+    DragDropModule,
+    MatDialogModule,
+    AngularResizedEventModule,
+    MatProgressBarModule,
+    MatCheckboxModule,
+    MatProgressSpinnerModule,
+    DownloadAllModule
+  ],
   exports: [
     QueueComponent
   ]

@@ -1,7 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { Download } from 'ngx-operators';
 import { DownloadService } from '@services/download.service';
-import { Observable } from 'rxjs';
 import { CMRProduct } from '@models';
 
 @Component({
@@ -11,8 +10,6 @@ import { CMRProduct } from '@models';
 })
 export class DownloadFileButtonComponent implements OnInit {
   @Input() product: CMRProduct;
-
-  download$: Observable<Download>;
   public dFile: Download;
   public dlInProgress = false;
   public dlComplete = false;
