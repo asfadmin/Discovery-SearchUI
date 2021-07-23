@@ -5,19 +5,15 @@ import * as moment from 'moment';
 
 import * as queueStore from '@store/queue';
 import * as searchStore from '@store/search';
-import * as hyp3Store from '@store/hyp3';
 
-import { EnvironmentService, Hyp3Service, NotificationService } from '@services';
+import { EnvironmentService, Hyp3Service } from '@services';
 import * as models from '@models';
 import { SubSink } from 'subsink';
 import { of } from 'rxjs';
-import { catchError, filter, finalize, first } from 'rxjs/operators';
+import { filter } from 'rxjs/operators';
 import { AppState } from '@store';
 import { Store } from '@ngrx/store';
 import { SearchType } from '@models';
-import { ConfirmationComponent } from '@components/header/processing-queue/confirmation/confirmation.component';
-import { MatDialog } from '@angular/material/dialog';
-
 @Component({
   selector: 'app-scene-file',
   templateUrl: './scene-file.component.html',
@@ -43,18 +39,12 @@ export class SceneFileComponent implements OnInit, OnDestroy {
   public isHovered = false;
   public paramsList = [];
 
-  private projectName = '';
-  public remaining = 0;
-
   private subs = new SubSink;
-  private validateOnly = false;
 
   constructor(
       private hyp3: Hyp3Service,
       private store$: Store<AppState>,
       public env: EnvironmentService,
-      private notificationService: NotificationService,
-      private dialog: MatDialog,
     ) {}
 
   ngOnInit() {
@@ -65,21 +55,7 @@ export class SceneFileComponent implements OnInit, OnDestroy {
           this.paramsList = this.jobParamsToList(prod.metadata);
         }
       )
-      );
-
-      this.store$.select(hyp3Store.getProcessingProjectName).subscribe(
-        projectName => this.projectName = projectName
-      );
-
-      this.store$.select(hyp3Store.getHyp3User).subscribe(
-        user => {
-          if (user === null) {
-            return;
-          }
-
-          this.remaining = user.quota.remaining;
-        }
-      );
+    );
 
   }
 
@@ -199,97 +175,6 @@ export class SceneFileComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     this.subs.unsubscribe();
   }
-
-  public onReviewExpiredJob() {
-
-    const job_types = models.hyp3JobTypes;
-    const job_type = Object.keys(job_types).find(id =>
-      {
-        return this.product.metadata.job.job_type === id as any;
-      });
-
-      // this.scene.metadata.job.job_parameters
-
-    const confirmationRef = this.dialog.open(ConfirmationComponent, {
-      id: 'ConfirmProcess',
-      width: '350px',
-      height: '500px',
-      maxWidth: '350px',
-      maxHeight: '500px',
-      data: [{
-        jobType: job_types[job_type],
-        selected: true,
-        jobs: [{
-          granules: this.product.metadata.job.job_parameters.scenes,
-          job_type: job_types[job_type]
-        } as models.QueuedHyp3Job ]
-      }]
-    });
-
-    confirmationRef.afterClosed().subscribe(
-      jobTypesWithQueued => {
-        if (!jobTypesWithQueued) {
-          return;
-        }
-
-        if (this.env.maturity === 'prod') {
-          this.validateOnly = false;
-        }
-
-        this.onResubmitExpiredJob(
-          jobTypesWithQueued,
-          this.validateOnly,
-        );
-      }
-    );
-  }
-
-  public onResubmitExpiredJob(jobTypesWithQueued, validateOnly: boolean) {
-
-    const processOptionKeys = Object.keys(this.product.metadata.job.job_parameters).filter(key => key !== 'granules');
-    let processingOptions = {};
-    processOptionKeys.forEach(key => processingOptions[key] = this.product.metadata.job.job_parameters[key]);
-
-    const hyp3JobsBatch = this.hyp3.formatJobs(jobTypesWithQueued, {
-      projectName: this.projectName,
-      processingOptions
-    });
-
-    this.hyp3.submiteJobBatch$({jobs: hyp3JobsBatch, validate_only: validateOnly}).pipe(
-      catchError(resp => {
-        if (resp.error) {
-          if (resp.error.detail === 'No authorization token provided' || resp.error.detail === 'Provided apikey is not valid') {
-            this.notificationService.error('Your authorization has expired. Please sign in again.', 'Error', {
-              timeOut: 5000,
-          });
-          } else {
-            this.notificationService.error( resp.error.detail, 'Error', {
-              timeOut: 5000,
-            });
-          }
-        }
-
-        return of({jobs: null});
-      }),
-      finalize(() => {
-        this.store$.dispatch(new hyp3Store.LoadUser());
-
-        let jobText;
-        const submittedJobs = Math.abs(hyp3JobsBatch.length);
-        jobText = submittedJobs > 1 ? `${submittedJobs} Jobs` : 'Job';
-        if (jobText) {
-          this.notificationService.info(`${submittedJobs} expired ${jobText} submitted for re-processing.`,
-          `Expired ${jobText} Submitted`,
-          {
-            closeButton: true,
-            disableTimeOut: true,
-          })
-        }
-      }),
-      first(),
-    ).subscribe();
-  }
-
 
   public isExpired(job: models.Hyp3Job): boolean {
     return this.hyp3.isExpired(job);
