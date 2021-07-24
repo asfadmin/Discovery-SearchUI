@@ -3,6 +3,7 @@ import { Store } from '@ngrx/store';
 import { AppState } from '@store';
 import { SubSink } from 'subsink';
 import * as filtersStore from '@store/filters';
+import { SBASOverlap } from '@models';
 
 @Component({
   selector: 'app-sbas-overlap-selector',
@@ -12,7 +13,10 @@ import * as filtersStore from '@store/filters';
 export class SbasOverlapSelectorComponent implements OnInit {
 
   public fiftyPercentOverlapToggled: boolean = false;
+  public SBASOverlapThreshold: SBASOverlap = SBASOverlap.ALL;
   private subs = new SubSink();
+
+  public overlapTypes = Object.keys(SBASOverlap);
 
   constructor(private store$: Store<AppState>) { }
 
@@ -22,10 +26,23 @@ export class SbasOverlapSelectorComponent implements OnInit {
         toggledOn => this.fiftyPercentOverlapToggled = toggledOn
       )
     );
+    this.subs.add(
+      this.store$.select(filtersStore.getSBASOverlapThreshold).subscribe(
+        threshold => this.SBASOverlapThreshold = threshold
+      )
+    )
   }
 
   public onChange(): void {
     this.store$.dispatch(new filtersStore.Toggle50PercentOverlap());
+  }
+
+  public onSetThreshold(value): void {
+    this.store$.dispatch(new filtersStore.SetSBASOverlapThreshold(SBASOverlap[value]));
+  }
+
+  public getOverlapTypeValue(val: SBASOverlap): string {
+    return SBASOverlap[val];
   }
 
 }

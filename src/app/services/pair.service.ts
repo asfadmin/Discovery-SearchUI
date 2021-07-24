@@ -7,11 +7,11 @@ import { Store } from '@ngrx/store';
 import { AppState } from '@store/app.reducer';
 import { getScenes, getCustomPairs } from '@store/scenes/scenes.reducer';
 import {
-  getTemporalRange, getPerpendicularRange, getDateRange, DateRangeState, getSeason, getSBASOverlapToggle
+  getTemporalRange, getPerpendicularRange, getDateRange, DateRangeState, getSeason, getSBASOverlapThreshold
 } from '@store/filters/filters.reducer';
 import { getSearchType } from '@store/search/search.reducer';
 
-import { CMRProduct, CMRProductPair, ColumnSortDirection, Range, SearchType } from '@models';
+import { CMRProduct, CMRProductPair, ColumnSortDirection, Range, SBASOverlap, SearchType } from '@models';
 
 @Injectable({
   providedIn: 'root'
@@ -51,15 +51,15 @@ export class PairService {
       ),
       this.store$.select(getDateRange),
       this.store$.select(getSeason),
-      this.store$.select(getSBASOverlapToggle),
+      this.store$.select(getSBASOverlapThreshold),
     ).pipe(
       debounceTime(250),
       withLatestFrom(this.store$.select(getSearchType)),
       map(([params, searchType]) => {
-        const [scenes, customPairs, temporal, perp, dateRange, season, sbasOverlapToggle] = params;
+        const [scenes, customPairs, temporal, perp, dateRange, season, sbasOverlapThreshold] = params;
 
         return searchType === SearchType.SBAS ? ({
-          pairs: [...this.makePairs(scenes, temporal, perp, dateRange, season, sbasOverlapToggle)],
+          pairs: [...this.makePairs(scenes, temporal, perp, dateRange, season, sbasOverlapThreshold)],
           custom: [ ...customPairs ]
         }) : ({
           pairs: [],
@@ -72,7 +72,7 @@ export class PairService {
   private makePairs(scenes: CMRProduct[], tempThreshold: number, perpThreshold,
     dateRange: DateRangeState,
     season,
-    overlapToggle: boolean): CMRProductPair[] {
+    overlapThreshold: SBASOverlap): CMRProductPair[] {
     const pairs = [];
 
     let startDateExtrema: Date;
@@ -130,7 +130,7 @@ export class PairService {
             }
         }
 
-        if (overlapToggle) {
+        if (overlapThreshold === SBASOverlap.HALF_OVERLAP) {
           const p1Bounds = bounds(root.metadata.polygon);
           const p2Bounds = bounds(scene.metadata.polygon);
 
@@ -140,6 +140,24 @@ export class PairService {
             p1Center.lat > Math.max(p2Bounds[0].lat, p2Bounds[1].lat) ||
             p1Center.lat < Math.min(p2Bounds[2].lat, p2Bounds[3].lat)
           ) {
+            return;
+          }
+        } else if(overlapThreshold === SBASOverlap.ANY_OVERLAP) {
+          const p1Bounds = bounds(root.metadata.polygon);
+          const p2Bounds = bounds(scene.metadata.polygon);
+
+          const p1Top = p1Bounds.slice(0, 2);
+          const p1Bottom = p1Bounds.slice(2, p1Bounds.length);
+          const p2Top = p2Bounds.slice(0, 2);
+          const p2Bottom = p2Bounds.slice(2, p1Bounds.length);
+
+          const p1Ymin = Math.min(p1Bottom[0].lat, p1Bottom[1].lat);
+          const p1YMax = Math.max(p1Top[0].lat, p1Top[1].lat);
+
+          const p2Ymin = Math.min(p2Bottom[0].lat, p2Bottom[1].lat);
+          const p2YMax = Math.max(p2Top[0].lat, p2Top[1].lat);
+
+          if(p1YMax < p2Ymin || p1Ymin > p2YMax) {
             return;
           }
         }
