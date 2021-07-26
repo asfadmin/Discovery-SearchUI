@@ -3,6 +3,7 @@ import { faCopy } from '@fortawesome/free-solid-svg-icons';
 
 import * as services from '@services';
 import * as models from '@models';
+
 import { QueuedHyp3Job, Hyp3ableProductByJobType } from '@models';
 import { AppState } from '@store';
 import { Store } from '@ngrx/store';
@@ -38,6 +39,7 @@ export class SceneComponent implements OnInit {
   public SearchTypes = models.SearchType;
 
   constructor(
+    public env: services.EnvironmentService,
     private screenSize: services.ScreenSizeService,
     private hyp3: services.Hyp3Service,
     private store$: Store<AppState>,
@@ -56,7 +58,6 @@ export class SceneComponent implements OnInit {
   public onClearFocused(): void {
     this.hovered = false;
   }
-
 
   public withOffset(val: number, offset: number): number {
     return Math.trunc(val + offset);
@@ -111,13 +112,13 @@ export class SceneComponent implements OnInit {
     let byProductType: models.Hyp3ableByProductType[] = [];
     byProductType.push(temp);
 
-    let hp = {
+    const hyp3ableProduct = {
       byProductType,
       total: 1,
       jobType: job_types[job_type]
     } as models.Hyp3ableProductByJobType
-    byJobType.push(hp);
-    // byJobType.push(byProductType);
+
+    byJobType.push(hyp3ableProduct);
 
     const output = {
       byJobType,
@@ -128,6 +129,9 @@ export class SceneComponent implements OnInit {
   }
 
   public isExpired(job: models.Hyp3Job): boolean {
+    if(job == null) {
+      return false;
+    }
     return this.hyp3.isExpired(job);
   }
 }
