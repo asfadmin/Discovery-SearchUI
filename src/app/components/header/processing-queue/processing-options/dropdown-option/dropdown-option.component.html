@@ -1,4 +1,6 @@
-<mat-form-field [matTooltip]="optionInfo">
+<mat-form-field [matTooltip]="optionInfo"
+  matTooltipClass="on-demand-tooltip"
+  >
   <mat-label>{{ optionName }}</mat-label>
   <mat-select [(value)]="value"
     (selectionChange)="onValueChange($event.value)">

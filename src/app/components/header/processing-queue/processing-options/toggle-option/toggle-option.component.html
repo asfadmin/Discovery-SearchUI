@@ -1,5 +1,6 @@
 <div>
   <mat-slide-toggle [matTooltip]="optionInfo"
+    matTooltipClass="on-demand-tooltip"
     (change)="onValueChange($event.checked)"
     [(ngModel)]="value">
     {{ optionName }}

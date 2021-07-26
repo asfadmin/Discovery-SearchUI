@@ -3,7 +3,9 @@
     (change)="onValueChange($event.checked)"
     [(ngModel)]="value"
     color="primary"
-    [matTooltip]="optionInfo">
+    [matTooltip]="optionInfo"
+    matTooltipClass="on-demand-tooltip"
+    >
     {{ optionName }}
   </mat-checkbox>
 
