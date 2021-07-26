@@ -130,7 +130,10 @@
   </div>
 </ng-container>
 
-<app-on-demand-add-menu #sceneAdd>
+<app-on-demand-add-menu
+#sceneAdd
+[isExpired]="isExpired(scene.metadata.job)"
+[expiredJobs]="scene.metadata.job">
 </app-on-demand-add-menu>
 
 </button>
