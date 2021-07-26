@@ -18,6 +18,7 @@ import { of } from 'rxjs';
 })
 export class Hyp3JobStatusBadgeComponent implements OnInit {
   @Input() job: Hyp3Job;
+  @Input() isFileDetails: boolean = true;
 
   private projectName = '';
   private validateOnly = false;
