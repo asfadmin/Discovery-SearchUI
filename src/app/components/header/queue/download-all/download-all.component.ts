@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit, Output, EventEmitter} from '@angular/core';
 
 @Component({
   selector: 'app-download-all',
@@ -6,6 +6,7 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./download-all.component.scss']
 })
 export class DownloadAllComponent implements OnInit {
+  @Output() dlAllEvent = new EventEmitter();
 
   constructor() { }
 
@@ -13,7 +14,8 @@ export class DownloadAllComponent implements OnInit {
   }
 
   public downloadAll(): void {
-  console.log('downloadAll() is executing.');
+    console.log('downloadAll() is executing.');
+    this.dlAllEvent.emit('hello world');
   }
 
 }

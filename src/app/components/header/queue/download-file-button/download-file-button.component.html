@@ -2,7 +2,7 @@
    [disabled]="!product.downloadUrl || dlInProgress"
    mat-icon-button
    matTooltip="Download file"
-   style="text-decoration: none;"
+   class="download-file-button"
 >
   <ng-container *ngIf="dFile as download">
     <template *ngIf="dlInProgress"

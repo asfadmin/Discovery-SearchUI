@@ -43,7 +43,7 @@
 <mat-dialog-content class="dl-mat-dialog-content"
                     [class.dl-mat-dialog-content-warn]="showDemWarning"
                     [class.dl-mat-dialog-content-warn-mobile]="showDemWarning && breakpoint === breakpoints.MOBILE">
-          <mat-list role="list" class="dl-list">
+          <mat-list #matListProducts role="list" class="dl-list">
             <ng-container *ngIf="products$ | async as products">
               <mat-list-item
                 *ngFor="let product of products"
@@ -79,7 +79,9 @@
                      >
                   </app-copy-to-clipboard>
 
-                  <app-download-file-button [product] = "product">
+                  <app-download-file-button
+                    [attr.id]="product.id"
+                    [product] = "product">
                   </app-download-file-button>
 
                   <button (click)="onRemoveProduct(product)" matTooltip="Remove file" mat-icon-button>
@@ -172,7 +174,12 @@
             </ng-container>
 
             <mat-menu #dataMenu="matMenu" yPosition="above">
-              <app-download-all></app-download-all>
+<!--              https://stackoverflow.com/questions/37587732/how-to-call-another-components-function-in-angular2-->
+<!--              https://angular.io/guide/component-interaction-->
+              <app-download-all
+                (dlAllEvent)="downloadAllFiles($event)"
+              >
+              </app-download-all>
               <button mat-menu-item (click)="onMakeDownloadScript()">
                 Download Python Script (.py)
               </button>

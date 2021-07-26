@@ -1,4 +1,4 @@
-import {Component, OnInit, OnDestroy, Input} from '@angular/core';
+import { Component, OnInit, OnDestroy, Input } from '@angular/core';
 
 import { faCopy } from '@fortawesome/free-solid-svg-icons';
 import { ClipboardService } from 'ngx-clipboard';
@@ -167,16 +167,6 @@ export class QueueComponent implements OnInit, OnDestroy {
     this.store$.dispatch(new queueStore.DownloadMetadata(format));
   }
 
-  // public downloadFile(url: string, filename: string) {
-  //   if (this.dlInProgress) { return; }
-  //   this.dlInProgress = true;
-  //   this.downloadService.download(url, filename).subscribe( resp => {
-  //     this.dFile = resp;
-  //     if (resp.state === 'DONE') { this.dlInProgress = false; }
-  //     console.log ('download in progress:', this.dlInProgress, 'resp:', resp);
-  //   });
-  // }
-
   public toggleItemSelected(productId, downloadUrl) {
     const idx = this.selectedItems.findIndex( o => o.id === productId );
     if (idx > -1) {
@@ -217,6 +207,18 @@ export class QueueComponent implements OnInit, OnDestroy {
       observe: 'events',
       responseType: 'blob'
     }).pipe(download(() => saveAs('special.nc')));
+  }
+
+  public downloadAllFiles($event) {
+    console.log('queue.component:', $event);
+    // const productList: HTMLElement [] = this.matListProducts.getElementsByClassName('download-file-button') as HTMLElement [];
+    const productList: HTMLCollectionOf<Element> = document.getElementsByClassName('download-file-button');
+    console.log('productList:', productList);
+    for (let i = 0; i < productList.length; i++) {
+      console.log(productList[i]);
+      const el: HTMLButtonElement = productList[i] as HTMLButtonElement;
+      el.click();
+    }
   }
 
   onCloseDownloadQueue() {
