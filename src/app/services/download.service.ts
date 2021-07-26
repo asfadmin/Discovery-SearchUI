@@ -1,5 +1,5 @@
 import { Injectable, Inject } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import {HttpClient, HttpHeaders} from '@angular/common/http';
 import { download, Download } from './download';
 import { Observable } from 'rxjs';
 import { SAVER, Saver } from '@services/saver.provider';
@@ -41,6 +41,7 @@ export class DownloadService {
 
     // tslint:disable-next-line:max-line-length
     return this.http.get(url, {
+      headers: new HttpHeaders,
       withCredentials: this.wCreds,
       reportProgress: true,
       observe: 'events',
