@@ -1,5 +1,5 @@
 import { Injectable, Inject } from '@angular/core';
-import {HttpClient, HttpHeaders} from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { download, Download } from './download';
 import { Observable } from 'rxjs';
 import { SAVER, Saver } from '@services/saver.provider';
@@ -39,13 +39,8 @@ export class DownloadService {
       // return;
     }
 
-    const asfHeader = new HttpHeaders( {
-      'Access-Control-Allow-Origin': window.location.host,
-    });
-
     // tslint:disable-next-line:max-line-length
     return this.http.get(url, {
-      headers: asfHeader,
       withCredentials: this.wCreds,
       reportProgress: true,
       observe: 'events',
