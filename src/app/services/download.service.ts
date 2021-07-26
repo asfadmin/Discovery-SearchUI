@@ -8,7 +8,7 @@ import { UAParser } from 'ua-parser-js';
 @Injectable({providedIn: 'root'})
 export class DownloadService {
 
-  wCreds = false;
+  wCreds = true;
 
   constructor(
     private http: HttpClient,
