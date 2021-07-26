@@ -1,5 +1,5 @@
 <div>
-  <mat-slide-toggle
+  <mat-slide-toggle [matTooltip]="optionInfo"
     (change)="onValueChange($event.checked)"
     [(ngModel)]="value">
     {{ optionName }}
