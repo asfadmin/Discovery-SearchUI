@@ -6,7 +6,7 @@ import * as moment from 'moment';
 import * as queueStore from '@store/queue';
 import * as searchStore from '@store/search';
 
-import { Hyp3Service } from '@services';
+import { EnvironmentService, Hyp3Service } from '@services';
 import * as models from '@models';
 import { SubSink } from 'subsink';
 import { of } from 'rxjs';
@@ -14,7 +14,6 @@ import { filter } from 'rxjs/operators';
 import { AppState } from '@store';
 import { Store } from '@ngrx/store';
 import { SearchType } from '@models';
-
 @Component({
   selector: 'app-scene-file',
   templateUrl: './scene-file.component.html',
@@ -45,6 +44,7 @@ export class SceneFileComponent implements OnInit, OnDestroy {
   constructor(
       private hyp3: Hyp3Service,
       private store$: Store<AppState>,
+      public env: EnvironmentService,
     ) {}
 
   ngOnInit() {
@@ -55,7 +55,8 @@ export class SceneFileComponent implements OnInit, OnDestroy {
           this.paramsList = this.jobParamsToList(prod.metadata);
         }
       )
-      );
+    );
+
   }
 
   public onToggleQueueProduct(): void {
