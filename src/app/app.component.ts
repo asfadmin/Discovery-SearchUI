@@ -180,24 +180,24 @@ export class AppComponent implements OnInit, OnDestroy {
 
     this.store$.select(uiStore.getIsSidebarOpen).subscribe(
       isSidebarOpen => {
-        if(isSidebarOpen){
+        if (isSidebarOpen) {
           this.isSaveSearchPanelOpen = true;
-          this.sidenav.open()
+          this.sidenav.open();
         } else {
           this.isSaveSearchPanelOpen = false;
-          this.sidenav.close()
+          this.sidenav.close();
         }
       }
     );
 
     this.store$.select(uiStore.getIsFiltersSidebarOpen).subscribe(
       isSidebarOpen => {
-        if(isSidebarOpen){
+        if (isSidebarOpen) {
           this.isSaveFiltersPanelOpen = true;
-          this.sidenav.open()
+          this.sidenav.open();
         } else {
           this.isSaveFiltersPanelOpen = false;
-          this.sidenav.close()
+          this.sidenav.close();
         }
       }
     );
@@ -247,8 +247,7 @@ export class AppComponent implements OnInit, OnDestroy {
           const searchState = this.savedSearchService.getSearchState(action.payload);
 
           if (
-            searchState &&
-            searchState.searchType !== models.SearchType.CUSTOM_PRODUCTS
+            searchState
             ) {
             this.searchService.loadSearch(searchState);
 
@@ -340,7 +339,7 @@ export class AppComponent implements OnInit, OnDestroy {
     } else if (searchState.searchType === models.SearchType.BASELINE) {
       return !searchState.filters.filterMaster;
     } else if (searchState.searchType === models.SearchType.SBAS) {
-      return !searchState.filters.master;
+      return !searchState.filters.reference;
     }
 
     return false;

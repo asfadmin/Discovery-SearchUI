@@ -14,7 +14,7 @@ import * as filterStore from '@store/filters';
 import * as searchStore from '@store/search';
 import { UserDataService } from '@services/user-data.service';
 import * as models from '@models';
-import { BaselineFiltersType, FilterType, GeographicFiltersType, SbasFiltersType, SearchType } from '@models';
+import { BaselineFiltersType, GeographicFiltersType, SbasFiltersType, SearchType } from '@models';
 
 @Injectable()
 export class UserEffects {
@@ -132,8 +132,8 @@ export class UserEffects {
         this.userDataService.getAttribute$(action.payload, 'SavedFilters')
     ),
     filter(resp => this.isSuccessfulResponse(resp)),
-    map(filters => this.datesToDateObjectFor(filters) as {name: string, id: string, searchType: SearchType, filters: FilterType}[]),
-    map(Filterpresets => new userActions.SetFilters(<{name: string, id: string, searchType: SearchType, filters: FilterType}[]>Filterpresets))
+    map(filters => this.datesToDateObjectFor(filters) as models.SavedFilterPreset[]),
+    map(Filterpresets => new userActions.SetFilters(<models.SavedFilterPreset[]>Filterpresets))
   ));
 
   public loadHyp3UserOnLogin = createEffect(() => this.actions$.pipe(
@@ -162,19 +162,20 @@ export class UserEffects {
         this.userDataService.getAttribute$(userAuth, 'SavedFilters')
     ),
     filter(resp => this.isSuccessfulResponse(resp)),
-    map(filtersPresets => this.datesToDateObjectFor(filtersPresets) as {name: string, id: string, searchType: SearchType, filters: FilterType}[]),
-    map(filtersPresets => new userActions.SetFilters(<{name: string, id: string, searchType: SearchType, filters: FilterType}[]>filtersPresets))
+    map(filtersPresets => this.datesToDateObjectFor(filtersPresets) as models.SavedFilterPreset[]),
+    map(filtersPresets => new userActions.SetFilters(<models.SavedFilterPreset[]>filtersPresets))
   ));
 
   public loadSavedFiltersOfSearchType = createEffect(() => this.actions$.pipe(
     ofType<userActions.LoadFiltersPreset>(userActions.UserActionType.LOAD_FILTERS_PRESET),
+    map(action => action.payload),
     withLatestFrom(this.store$.select(searchStore.getSearchType)),
     filter(([_, searchtype]) => searchtype !== SearchType.LIST && searchtype !== SearchType.CUSTOM_PRODUCTS),
     withLatestFrom(this.store$.select(userReducer.getSavedFilters)),
-    map(([[action, searchType], userFilters]) => {
+    map(([[presetId, searchType], userFilters]) => {
       const targetFilter = userFilters
         .filter(preset => preset.searchType === searchType)
-        .find(preset => preset.id === action.payload);
+        .find(preset => preset.id === presetId);
 
       let actions = [];
 
@@ -213,7 +214,7 @@ export class UserEffects {
     }
   }
 
-  private datesToDateObjectFor(searches): models.Search[] | {name: string, id: string, searchType: SearchType, filter: FilterType}[] {
+  private datesToDateObjectFor(searches): models.Search[] | models.SavedFilterPreset[] {
     return searches.map(search => {
       if (search.searchType === models.SearchType.LIST || !search.filters.dateRange) {
         return search;
@@ -274,7 +275,7 @@ export class UserEffects {
       new filterStore.SetSubtypes(datasetFilter.subtypes),
       new filterStore.SetFlightDirections(datasetFilter.flightDirections),
       new filterStore.SelectMission(datasetFilter.selectedMission)
-    ]
+    ];
 
     return actions;
   }
