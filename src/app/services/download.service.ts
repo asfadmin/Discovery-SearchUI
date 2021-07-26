@@ -39,9 +39,13 @@ export class DownloadService {
       // return;
     }
 
+    const asfHeader = new HttpHeaders( {
+      'Access-Control-Allow-Origin': window.location.host,
+    });
+
     // tslint:disable-next-line:max-line-length
     return this.http.get(url, {
-      headers: new HttpHeaders,
+      headers: asfHeader,
       withCredentials: this.wCreds,
       reportProgress: true,
       observe: 'events',
