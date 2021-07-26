@@ -15,18 +15,29 @@ export class NotificationService {
     // toastComponent: ToastrMessageComponent
   };
 
-  public demandQueue(added: boolean = true, count: number = 0, job_type: string) {
+  public demandQueue(added: boolean = true, count: number = 0, job_type: string, duplicates = 0) {
     let headerText: string;
     let infoText = '';
     const action = added ? 'added to' : 'removed from';
-
+    count -= duplicates;
+    if (count <= 0) {
+      if (duplicates > 1 ) {
+        this.error('All jobs submitted were duplicates', 'Duplicates Jobs');
+       } else {
+        this.error('Job submitted was a duplicate', 'Duplicate Job');
+      }
+      return;
+    }
     if (count > 1) {
-      headerText = 'Jobs Added';
-      infoText = `${count} ${job_type} jobs ${action} the On Demand Queue`;
+      headerText = `Jobs ${action} queue`;
+      infoText = `${count} ${job_type} jobs ${action} the On Demand Queue.`;
+      if (duplicates && added) {
+        infoText += ` ${duplicates} duplicate ${duplicates > 1 ? 'jobs' : 'job'} not ${action} the queue.`;
+      }
       this.info(infoText, headerText);
     } else {
-      infoText = `${job_type} job ${action} the On Demand Queue`;
-      this.info(infoText);
+      infoText = `${job_type} job ${action} the On Demand Queue.`;
+      this.info(infoText, `Job ${action} queue`);
     }
   }
 
