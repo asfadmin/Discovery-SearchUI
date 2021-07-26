@@ -18,6 +18,7 @@ import { of } from 'rxjs';
 })
 export class Hyp3JobStatusBadgeComponent implements OnInit {
   @Input() job: Hyp3Job;
+  @Input() isFileDetails = true;
 
   private projectName = '';
   private validateOnly = false;
@@ -105,7 +106,7 @@ export class Hyp3JobStatusBadgeComponent implements OnInit {
   public onResubmitExpiredJob(jobTypesWithQueued, validateOnly: boolean) {
 
     const processOptionKeys = Object.keys(this.job.job_parameters).filter(key => key !== 'granules');
-    let processingOptions = {};
+    const processingOptions = {};
     processOptionKeys.forEach(key => processingOptions[key] = this.job.job_parameters[key]);
 
     const hyp3JobsBatch = this.hyp3.formatJobs(jobTypesWithQueued, {
@@ -141,7 +142,7 @@ export class Hyp3JobStatusBadgeComponent implements OnInit {
           {
             closeButton: true,
             disableTimeOut: true,
-          })
+          });
         }
       }),
       first(),
