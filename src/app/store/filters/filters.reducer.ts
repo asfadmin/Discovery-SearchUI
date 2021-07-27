@@ -91,7 +91,7 @@ export const initState: FiltersState = {
   previousFilters: null,
 
   thresholdOverlap: false,
-  sbasOverlapThreshold: SBASOverlap.ALL
+  sbasOverlapThreshold: SBASOverlap.HALF_OVERLAP
 };
 
 
