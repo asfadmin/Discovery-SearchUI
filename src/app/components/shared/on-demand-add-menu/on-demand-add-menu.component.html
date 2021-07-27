@@ -40,8 +40,7 @@
 <mat-menu #addAllByProductType>
   <ng-template matMenuContent let-byJobType="productsByJobType">
     <div *ngFor="let prodType of byJobType.byProductType">
-      <button
-        *ngIf="prodType.products.length !== 0"
+      <button *ngIf="prodType.products.length !== 0"
         (click)="queueAllOnDemand(prodType.products, byJobType.jobType)"
         [disabled]="" mat-menu-item>
 
@@ -49,8 +48,6 @@
         {{ byJobType.jobType.numProducts === 2 ? 'pair' : 'job' }}{{ prodType.products.length > 1 ? 's' : '' }}
       </button>
     </div>
-
-    <button (click)="onOpenCreateSubscription()" mat-menu-item>Create Subscription</button>
   </ng-template>
 </mat-menu>
 
