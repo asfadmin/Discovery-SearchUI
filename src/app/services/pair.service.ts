@@ -146,10 +146,13 @@ export class PairService {
           const p1Bounds = bounds(root.metadata.polygon);
           const p2Bounds = bounds(scene.metadata.polygon);
 
-          const p1Top = p1Bounds.slice(0, 2);
-          const p1Bottom = p1Bounds.slice(2, p1Bounds.length);
-          const p2Top = p2Bounds.slice(0, 2);
-          const p2Bottom = p2Bounds.slice(2, p1Bounds.length);
+          const p1LowToHight = p1Bounds.sort((a, b) => a.lat < b.lat ? -1: 1);
+          const p1Top = p1LowToHight.slice(2, p1Bounds.length);
+          const p1Bottom = p1LowToHight.slice(0, 2);
+
+          const p2LowToHight = p2Bounds.sort((a, b) => a.lat < b.lat ? -1: 1);
+          const p2Top = p2LowToHight.slice(2, p2Bounds.length);
+          const p2Bottom = p2LowToHight.slice(0, 2);
 
           const p1Ymin = Math.min(p1Bottom[0].lat, p1Bottom[1].lat);
           const p1YMax = Math.max(p1Top[0].lat, p1Top[1].lat);
