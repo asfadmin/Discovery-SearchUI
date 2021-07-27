@@ -331,9 +331,9 @@ export class SetSBASOverlapThreshold implements Action {
 export class SetDefaultFilters implements Action {
   public readonly type = FiltersActionType.SET_DEFAULT_FILTERS;
   constructor(public payload: {
-    'Baseline Search' : string,
-    'Geographic Search' : string,
-    'SBAS Search' : string
+    'Baseline Search': string,
+    'Geographic Search': string,
+    'SBAS Search': string
   }) {}
 }
 

@@ -183,7 +183,7 @@ export class UserEffects {
 
       let actions = [];
 
-      if(!!targetFilter) {
+      if (!!targetFilter) {
         this.store$.dispatch(new filterStore.ClearDatasetFilters());
         this.store$.dispatch(new filterStore.ClearPerpendicularRange());
         this.store$.dispatch(new filterStore.ClearTemporalRange());
