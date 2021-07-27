@@ -71,7 +71,7 @@ export enum FiltersActionType {
   STORE_CURRENT_FILTERS = '[Filters] Stores Current Filters',
 
   TOGGLE_50_PERCENT_OVERLAP = '[Filters] Toggles SBAS 50 Percent Overlap Check',
-  SET_SBAS_OVERLAP_THRESHOLD = '[Filters] Set SBAS Pair Overlap Threshold'
+  SET_SBAS_OVERLAP_THRESHOLD = '[Filters] Set SBAS Pair Overlap Threshold',
   SET_DEFAULT_FILTERS = '[Filters] Set User Profile Default Filters'
 }
 
