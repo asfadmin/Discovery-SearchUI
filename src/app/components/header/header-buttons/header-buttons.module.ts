@@ -8,6 +8,7 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatSelectModule } from '@angular/material/select';
 import { MatSharedModule } from '@shared';
+import { MatFormFieldModule } from '@angular/material/form-field';
 import { DatasetSelectorModule } from '@components/shared/selectors/dataset-selector';
 
 import { HeaderButtonsComponent } from './header-buttons.component';
@@ -26,6 +27,7 @@ import { CustomizeEnvComponent } from './customize-env/customize-env.component';
     MatSharedModule,
     MatSelectModule,
     DatasetSelectorModule,
+    MatFormFieldModule
   ],
   exports: [ HeaderButtonsComponent ]
 })

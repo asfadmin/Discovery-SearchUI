@@ -10,7 +10,7 @@ import { ProcessingQueueComponent } from '@components/header/processing-queue';
 import { Store, ActionsSubject } from '@ngrx/store';
 import { ofType } from '@ngrx/effects';
 import { of, combineLatest } from 'rxjs';
-import { skip, filter, map, switchMap, tap, catchError, debounceTime, take } from 'rxjs/operators';
+import { skip, filter, map, switchMap, tap, catchError, debounceTime, take, withLatestFrom } from 'rxjs/operators';
 
 import { NgcCookieConsentService } from 'ngx-cookieconsent';
 import { HelpComponent } from '@components/help/help.component';
@@ -217,6 +217,15 @@ export class AppComponent implements OnInit, OnDestroy {
         })
     );
 
+    this.subs.add(
+      this.actions$.pipe(
+      ofType<userStore.SetProfile>(userStore.UserActionType.SET_PROFILE),
+      map(action => action.payload.defaultFilterPresets),
+      ).subscribe( defaultFilters =>
+        this.store$.dispatch(new filterStore.SetDefaultFilters(defaultFilters))
+      )
+    );
+
     const user = this.authService.getUser();
     if (user.id) {
       this.store$.dispatch(new userStore.Login(user));
@@ -233,8 +242,9 @@ export class AppComponent implements OnInit, OnDestroy {
     this.subs.add(
       this.actions$.pipe(
         ofType<searchStore.SetSearchType>(searchStore.SearchActionType.SET_SEARCH_TYPE),
+        withLatestFrom(this.store$.select(userStore.getUserProfile))
       ).subscribe(
-        action => {
+        ([action, profile]) => {
           const saveSearch = this.savedSearchService.makeCurrentSearch(this.searchType);
           this.savedSearchService.saveSearchState(
             this.searchType,
@@ -253,7 +263,11 @@ export class AppComponent implements OnInit, OnDestroy {
 
             if (!this.isEmptySearch(searchState)) {
               this.store$.dispatch(new searchStore.MakeSearch());
+            } else {
+              this.store$.dispatch(new filterStore.SetDefaultFilters(profile?.defaultFilterPresets));
             }
+          } else {
+            this.store$.dispatch(new filterStore.SetDefaultFilters(profile?.defaultFilterPresets));
           }
 
         }
@@ -294,9 +308,14 @@ export class AppComponent implements OnInit, OnDestroy {
             models.MapInteractionModeType.DRAW :
             models.MapInteractionModeType.NONE;
         }),
+        withLatestFrom(this.store$.select(userStore.getUserProfile).pipe(
+          map(profile => profile.defaultFilterPresets))
+        ),
       ).subscribe(
-        mode => this.store$.dispatch(new mapStore.SetMapInteractionMode(mode))
-      )
+        ([mode, defaultFilters]) => {
+        this.store$.dispatch(new mapStore.SetMapInteractionMode(mode));
+        this.store$.dispatch(new filterStore.SetDefaultFilters(defaultFilters));
+        })
     );
 
     this.updateMaxSearchResults();
