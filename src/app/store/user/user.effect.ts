@@ -47,6 +47,15 @@ export class UserEffects {
     ),
     filter(resp => this.isSuccessfulResponse(resp)),
     filter(resp => this.isValidProfile(resp)),
+    map(
+      (profile: models.UserProfile) => !profile.defaultFilterPresets ? { ...profile,
+        defaultFilterPresets: {
+          'Baseline Search' : '',
+          'Geographic Search' : '',
+          'SBAS Search' : ''
+        }
+      } : profile
+    ),
     map(profile => new userActions.SetProfile(<models.UserProfile>profile))
   ));
 
