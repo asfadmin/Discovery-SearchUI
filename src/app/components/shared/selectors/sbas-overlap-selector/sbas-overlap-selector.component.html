@@ -1,1 +1,10 @@
-<mat-slide-toggle (change)="onChange()" [checked]="fiftyPercentOverlapToggled">50% Overlap Threshold</mat-slide-toggle>
+<div class ="sbas-selector-container">
+<mat-form-field class="sbas-selector-form-field">
+  <mat-label>Overlap Threshold</mat-label>
+<mat-select [placeholder]="getOverlapTypeValue(SBASOverlapThreshold)" (selectionChange)="onSetThreshold($event.value)">
+  <mat-option [value]="overlapType" *ngFor="let overlapType of overlapTypes">
+    {{getOverlapTypeValue(overlapType)}}
+  </mat-option>
+</mat-select>
+</mat-form-field>
+</div>

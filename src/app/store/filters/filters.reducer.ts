@@ -2,6 +2,7 @@ import { createFeatureSelector, createSelector } from '@ngrx/store';
 
 import { FiltersActionType, FiltersActions } from './filters.action';
 import * as models from '@models';
+import { SBASOverlap } from '@models';
 
 
 export interface FiltersState {
@@ -36,6 +37,7 @@ export interface FiltersState {
   previousFilters: FiltersState;
 
   thresholdOverlap: boolean;
+  sbasOverlapThreshold: SBASOverlap;
 }
 
 
@@ -88,7 +90,8 @@ export const initState: FiltersState = {
 
   previousFilters: null,
 
-  thresholdOverlap: false
+  thresholdOverlap: false,
+  sbasOverlapThreshold: SBASOverlap.ALL
 };
 
 
@@ -589,6 +592,12 @@ export function filtersReducer(state = initState, action: FiltersActions): Filte
         thresholdOverlap: !state.thresholdOverlap
       };
     }
+    case FiltersActionType.SET_SBAS_OVERLAP_THRESHOLD: {
+      return {
+        ...state,
+        sbasOverlapThreshold: action.payload
+      };
+    }
     default: {
       return state;
     }
@@ -824,4 +833,9 @@ export const areFiltersChanged = createSelector(
 export const getSBASOverlapToggle = createSelector(
   getFiltersState,
   (state: FiltersState) => state.thresholdOverlap
+);
+
+export const getSBASOverlapThreshold = createSelector(
+  getFiltersState,
+  (state: FiltersState) => state.sbasOverlapThreshold
 );

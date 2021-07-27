@@ -20,3 +20,4 @@ export * from './hyp3-job-type.model';
 export * from './hyp3.model';
 export * from './hyp3-jobs.model';
 export * from './saved-filter-preset.model';
+export * from './sbas-overlap.model';
