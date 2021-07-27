@@ -142,15 +142,15 @@ export class PairService {
           ) {
             return;
           }
-        } else if(overlapThreshold === SBASOverlap.ANY_OVERLAP) {
+        } else if (overlapThreshold === SBASOverlap.ANY_OVERLAP) {
           const p1Bounds = bounds(root.metadata.polygon);
           const p2Bounds = bounds(scene.metadata.polygon);
 
-          const p1LowToHight = p1Bounds.sort((a, b) => a.lat < b.lat ? -1: 1);
+          const p1LowToHight = p1Bounds.sort((a, b) => a.lat < b.lat ? -1 : 1);
           const p1Top = p1LowToHight.slice(2, p1Bounds.length);
           const p1Bottom = p1LowToHight.slice(0, 2);
 
-          const p2LowToHight = p2Bounds.sort((a, b) => a.lat < b.lat ? -1: 1);
+          const p2LowToHight = p2Bounds.sort((a, b) => a.lat < b.lat ? -1 : 1);
           const p2Top = p2LowToHight.slice(2, p2Bounds.length);
           const p2Bottom = p2LowToHight.slice(0, 2);
 
@@ -160,7 +160,7 @@ export class PairService {
           const p2Ymin = Math.min(p2Bottom[0].lat, p2Bottom[1].lat);
           const p2YMax = Math.max(p2Top[0].lat, p2Top[1].lat);
 
-          if(p1YMax < p2Ymin || p1Ymin > p2YMax) {
+          if (p1YMax < p2Ymin || p1Ymin > p2YMax) {
             return;
           }
         }

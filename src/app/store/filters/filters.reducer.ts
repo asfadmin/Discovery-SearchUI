@@ -596,7 +596,7 @@ export function filtersReducer(state = initState, action: FiltersActions): Filte
       return {
         ...state,
         sbasOverlapThreshold: action.payload
-      }
+      };
     }
     default: {
       return state;
@@ -838,4 +838,4 @@ export const getSBASOverlapToggle = createSelector(
 export const getSBASOverlapThreshold = createSelector(
   getFiltersState,
   (state: FiltersState) => state.sbasOverlapThreshold
-)
+);

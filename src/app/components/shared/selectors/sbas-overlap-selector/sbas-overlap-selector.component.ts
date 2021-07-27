@@ -12,7 +12,7 @@ import { SBASOverlap } from '@models';
 })
 export class SbasOverlapSelectorComponent implements OnInit {
 
-  public fiftyPercentOverlapToggled: boolean = false;
+  public fiftyPercentOverlapToggled = false;
   public SBASOverlapThreshold: SBASOverlap = SBASOverlap.ALL;
   private subs = new SubSink();
 
@@ -30,7 +30,7 @@ export class SbasOverlapSelectorComponent implements OnInit {
       this.store$.select(filtersStore.getSBASOverlapThreshold).subscribe(
         threshold => this.SBASOverlapThreshold = threshold
       )
-    )
+    );
   }
 
   public onChange(): void {
