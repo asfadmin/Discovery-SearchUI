@@ -13,7 +13,7 @@ import * as uiStore from '@store/ui';
 import * as filtersStore from '@store/filters';
 
 import * as services from '@services';
-import { SavedSearchType, SearchType } from '@models';
+import { SavedSearchType, SBASOverlap, SearchType } from '@models';
 import { MatDialog } from '@angular/material/dialog';
 import { HelpComponent } from '@components/help/help.component';
 import { getFilterMaster } from '@store/scenes';
@@ -51,6 +51,7 @@ export class SearchButtonComponent implements OnInit, OnDestroy {
     private savedSearchService: services.SavedSearchService,
     private dialog: MatDialog,
     private notificationService: services.NotificationService,
+    private environmentService: services.EnvironmentService,
   ) {
   }
 
@@ -109,6 +110,10 @@ export class SearchButtonComponent implements OnInit, OnDestroy {
   }
 
   public onDoSearch(): void {
+    if(this.searchType === this.searchTypes.SBAS && this.environmentService.maturity === 'prod') {
+      this.store$.dispatch(new filtersStore.SetSBASOverlapThreshold(SBASOverlap.ALL));
+    }
+
     if (((this.searchType === this.searchTypes.SBAS || this.searchType === this.searchTypes.BASELINE ) && this.isFiltersOpen &&
       (this.stackReferenceScene !== this.latestReferenceScene || !this.resultsMenuOpen)) ||
     ((this.stackReferenceScene !== this.latestReferenceScene || !this.isFiltersOpen) &&
