@@ -274,8 +274,7 @@ export class AppComponent implements OnInit, OnDestroy {
 
           const validFiltersPreset = action.payload !== models.SearchType.CUSTOM_PRODUCTS && action.payload !== models.SearchType.LIST;
           if (
-            searchState &&
-            searchState.searchType !== models.SearchType.CUSTOM_PRODUCTS
+            searchState
             ) {
             this.searchService.loadSearch(searchState);
 
@@ -371,7 +370,7 @@ export class AppComponent implements OnInit, OnDestroy {
     } else if (searchState.searchType === models.SearchType.BASELINE) {
       return !searchState.filters.filterMaster;
     } else if (searchState.searchType === models.SearchType.SBAS) {
-      return !searchState.filters.master;
+      return !searchState.filters.reference;
     }
 
     return false;

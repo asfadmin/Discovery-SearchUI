@@ -6,6 +6,8 @@
         <textarea *ngIf="!headerView" matInput placeholder="S1A..."
         (input)="onFilterProductName($event.target.value)"
         [value]="productNameFilter"
+        [(ngModel)]="productNameFilter"
+
         [matAutocomplete]="jobNameSelector"
         [formControl]="myControl"
         [rows]="5">
@@ -17,6 +19,7 @@
         <input *ngIf="headerView" matInput placeholder="S1A..."
         (input)="onFilterProductName($event.target.value)"
         [value]="productNameFilter"
+        [(ngModel)]="productNameFilter"
         [formControl]="myControl"
         [matAutocomplete]="jobNameSelector">
         <mat-icon
@@ -61,6 +64,7 @@
                 matInput placeholder="S1A..."
                 (input)="onFilterProductName($event.target.value)"
                 [value]="productNameFilter"
+                [(ngModel)]="productNameFilter"
                 [matAutocomplete]="jobNameSelector"
                 [formControl]="myControl"
                 [rows]="5"

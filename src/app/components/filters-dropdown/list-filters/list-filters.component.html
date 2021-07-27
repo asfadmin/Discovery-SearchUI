@@ -56,14 +56,21 @@
               </mat-button-toggle-group>
             </div>
           </div>
-          <mat-form-field class="w100">
-            <textarea matInput
-                      (input)="onTextInputChange($event.target.value)"
-                      [(ngModel)]="searchList"
-                      style="height: 150px;"
-                      placeholder="List of {{ mode === types.SCENE ? 'Scene names' : 'File IDs.' }}">
-            </textarea>
-          </mat-form-field>
+          <div class="input-field-container">
+            <mat-form-field class="w100 file-list-container">
+              <textarea matInput
+                        (input)="onTextInputChange($event.target.value)"
+                        [(ngModel)]="searchList"
+                        style="height: 150px;"
+                        placeholder="List of {{ mode === types.SCENE ? 'Scene names' : 'File IDs.' }}">
+              </textarea>
+            </mat-form-field>
+            <div class="file-upload-container ">
+              <div class='file-upload-text'>
+                Drag and Drop Files Here...
+              </div>
+            </div>
+        </div>
         </div>
         <div class="ls-example">
           <div>

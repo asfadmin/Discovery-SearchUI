@@ -3,3 +3,28 @@
   color: grey;
   word-break: break-all;
 }
+
+.file-upload-container {
+  width: 30%;
+  border: 1px;
+  border-style: dashed;
+  margin-bottom: 20px;
+}
+
+.file-upload-text {
+  margin-top: 25%;
+  margin-right: 15%;
+  margin-left: 20%;
+  color: rgba(0, 0, 0, 0.54);
+  font-weight: 400;
+}
+
+.file-list-container {
+  width: 70%;
+  margin-right: 15px;
+}
+
+.input-field-container {
+  display: flex;
+  flex-direction: row;
+}
