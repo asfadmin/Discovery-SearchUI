@@ -40,8 +40,7 @@
 <mat-menu #addAllByProductType>
   <ng-template matMenuContent let-byJobType="productsByJobType">
     <div *ngFor="let prodType of byJobType.byProductType">
-      <button
-        *ngIf="prodType.products.length !== 0"
+      <button *ngIf="prodType.products.length !== 0"
         (click)="queueAllOnDemand(prodType.products, byJobType.jobType)"
         [disabled]="" mat-menu-item>
 
