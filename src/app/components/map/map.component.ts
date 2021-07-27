@@ -205,7 +205,7 @@ export class MapComponent implements OnInit, OnDestroy  {
   }
 
   public onFileHovered(e): void {
-    this.onNewInteractionMode(models.MapInteractionModeType.UPLOAD);
+    this.store$.dispatch(new uiStore.OpenAOIOptions());
     e.preventDefault();
   }
 
