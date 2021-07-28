@@ -71,7 +71,7 @@ export class FiltersDropdownComponent implements OnInit, OnDestroy {
       )
     );
 
-    if(this.environmentService.maturity === 'prod') {
+    if (this.environmentService.maturity === 'prod') {
       this.store$.dispatch(new filterStore.SetSBASOverlapThreshold(SBASOverlap.ALL));
     }
   }
