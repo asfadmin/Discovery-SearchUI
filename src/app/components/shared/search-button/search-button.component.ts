@@ -109,10 +109,14 @@ export class SearchButtonComponent implements OnInit, OnDestroy {
     this.handleSearchErrors();
   }
 
-  public onDoSearch(): void {
+  public setDefaultOverlapOnProd() {
     if(this.searchType === this.searchTypes.SBAS && this.environmentService.maturity === 'prod') {
       this.store$.dispatch(new filtersStore.SetSBASOverlapThreshold(SBASOverlap.ALL));
     }
+  }
+
+  public onDoSearch(): void {
+    this.setDefaultOverlapOnProd();
 
     if (((this.searchType === this.searchTypes.SBAS || this.searchType === this.searchTypes.BASELINE ) && this.isFiltersOpen &&
       (this.stackReferenceScene !== this.latestReferenceScene || !this.resultsMenuOpen)) ||
