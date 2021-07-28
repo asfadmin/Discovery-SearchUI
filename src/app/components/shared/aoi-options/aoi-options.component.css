@@ -2,6 +2,7 @@
   display: flex;
   flex-direction: column;
   justify-content: space-evenly;
+  height: 250px;
 }
 
 .header-layout {
@@ -29,6 +30,7 @@
 .aoi-input-area {
   display: flex;
   flex-direction: row;
+  height: 200px;
 }
 
 .drop-text-box {
