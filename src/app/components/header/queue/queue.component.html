@@ -45,10 +45,10 @@
                     [class.dl-mat-dialog-content-warn-mobile]="showDemWarning && breakpoint === breakpoints.MOBILE">
           <mat-list #matListProducts role="list" class="dl-list">
             <ng-container *ngIf="products$ | async as products">
-              <mat-list-item
-                *ngFor="let product of products"
-                role="listitem">
-                <div matLine class="item-content" [ngClass]="{'dl-list-item-mobile' : breakpoint === breakpoints.MOBILE }">
+              <mat-list-item *ngFor="let product of products" role="listitem">
+                <div matLine
+                     class="item-content"
+                     [ngClass]="{'dl-list-item-mobile' : breakpoint === breakpoints.MOBILE }">
                   <mat-checkbox class="item-checkbox"
                                 color=primary
                                 (change)="toggleItemSelected( product.id, product.downloadUrl )">
@@ -81,7 +81,8 @@
 
                   <app-download-file-button
                     [attr.id]="product.id"
-                    [product] = "product">
+                    [product] = "product"
+                    (productDownloaded)="prodDownloaded($event)">
                   </app-download-file-button>
 
                   <button (click)="onRemoveProduct(product)" matTooltip="Remove file" mat-icon-button>

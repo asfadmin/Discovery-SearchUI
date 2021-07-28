@@ -1,4 +1,4 @@
-import {Component, Input, OnInit } from '@angular/core';
+import { Component, Input, Output, EventEmitter, OnInit } from '@angular/core';
 import { Download } from 'ngx-operators';
 import { DownloadService } from '@services/download.service';
 import { CMRProduct } from '@models';
@@ -10,6 +10,8 @@ import { CMRProduct } from '@models';
 })
 export class DownloadFileButtonComponent implements OnInit {
   @Input() product: CMRProduct;
+  @Output()
+  productDownloaded: EventEmitter<CMRProduct> = new EventEmitter<CMRProduct>();
   public dFile: Download;
   public dlInProgress = false;
   public dlComplete = false;
@@ -22,16 +24,19 @@ export class DownloadFileButtonComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  public downloadFile(url: string, filename: string) {
+  public downloadFile(product: CMRProduct) {
     if (this.dlInProgress) {
       return;
     }
     this.dlInProgress = true;
-    this.downloadService.download(url, filename).subscribe(resp => {
+    const url = product.downloadUrl;
+    const fileName = product.file;
+    this.downloadService.download(url, fileName).subscribe(resp => {
       this.dFile = resp;
       if (resp.state === 'DONE') {
         this.dlInProgress = false;
         this.dlComplete = true;
+        this.productDownloaded.emit(product);
       }
       // console.log ('download in progress:', this.dlInProgress, 'resp:', resp);
     });

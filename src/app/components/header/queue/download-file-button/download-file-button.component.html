@@ -1,4 +1,4 @@
-<button (click)="downloadFile(product.downloadUrl, product.id)"
+<button (click)="downloadFile( product )"
    [disabled]="!product.downloadUrl || dlInProgress"
    mat-icon-button
    matTooltip="Download file"

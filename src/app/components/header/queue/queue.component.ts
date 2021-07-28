@@ -221,6 +221,10 @@ export class QueueComponent implements OnInit, OnDestroy {
     }
   }
 
+  public prodDownloaded(product) {
+    console.log('prodDownloaded():', product);
+  }
+
   onCloseDownloadQueue() {
     this.dialogRef.close();
   }
