@@ -45,6 +45,9 @@ export class SceneDetailComponent implements OnInit, OnDestroy {
   public detailsOpen = true;
   public masterOffsets$ = this.store$.select(scenesStore.getMasterOffsets);
 
+  private defaultBaselineFiltersID = '';
+  private defaultSBASFiltersID = '';
+
   private subs = new SubSink();
 
   constructor(
@@ -85,12 +88,25 @@ export class SceneDetailComponent implements OnInit, OnDestroy {
     this.subs.add(
       this.store$.select(scenesStore.getSelectedSceneProducts).pipe(
         tap(products => this.selectedProducts = products),
-      ).subscribe(_ => {this.updateHasBaseline(); this.browseIndex = 0})
+      ).subscribe(_ => {this.updateHasBaseline(); this.browseIndex = 0;})
     );
 
     this.subs.add(
       this.store$.select(searchStore.getSearchType).subscribe(
         searchType => this.searchType = searchType
+      )
+    );
+
+    this.subs.add(
+      this.store$.select(userStore.getUserProfile).pipe(
+        filter(profile => !!profile),
+        map(profile => profile.defaultFilterPresets),
+        filter(defaultFilterPresets => !!defaultFilterPresets),
+        ).subscribe(
+        profile => {
+          this.defaultBaselineFiltersID = profile['Baseline Search'];
+          this.defaultSBASFiltersID = profile['SBAS Search'];
+        }
       )
     );
   }
@@ -190,6 +206,7 @@ export class SceneDetailComponent implements OnInit, OnDestroy {
     [
       new searchStore.SetSearchType(models.SearchType.BASELINE),
       new searchStore.ClearSearch(),
+      new userStore.LoadFiltersPreset(this.defaultBaselineFiltersID),
       new scenesStore.SetFilterMaster(sceneName),
       new searchStore.MakeSearch()
     ].forEach(action => this.store$.dispatch(action));
@@ -201,6 +218,7 @@ export class SceneDetailComponent implements OnInit, OnDestroy {
     [
       new searchStore.SetSearchType(models.SearchType.SBAS),
       new searchStore.ClearSearch(),
+      new userStore.LoadFiltersPreset(this.defaultSBASFiltersID),
       new scenesStore.SetFilterMaster(sceneName),
       new searchStore.MakeSearch()
     ].forEach(action => this.store$.dispatch(action));
