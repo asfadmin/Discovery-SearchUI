@@ -59,6 +59,11 @@ export class QueueComponent implements OnInit, OnDestroy {
   public allChecked = false;
   public someChecked = false;
 
+  public dlQueueCount = 0;
+  public dlQueueNumProcessed = 0;
+  public dlDefaultChunkSize = 3;
+  public productList: HTMLCollectionOf<Element>;
+
   public products$ = this.store$.select(queueStore.getQueuedProducts).pipe(
     tap(products => this.areAnyProducts = products.length > 0),
     tap(products => {
@@ -211,18 +216,24 @@ export class QueueComponent implements OnInit, OnDestroy {
 
   public downloadAllFiles($event) {
     console.log('queue.component:', $event);
-    // const productList: HTMLElement [] = this.matListProducts.getElementsByClassName('download-file-button') as HTMLElement [];
-    const productList: HTMLCollectionOf<Element> = document.getElementsByClassName('download-file-button');
-    console.log('productList:', productList);
-    for (let i = 0; i < productList.length; i++) {
-      console.log(productList[i]);
-      const el: HTMLButtonElement = productList[i] as HTMLButtonElement;
+    this.productList = document.getElementsByClassName('download-file-button');
+    this.dlQueueNumProcessed = 0;
+    this.dlQueueCount = this.productList.length;
+    const biteSize = this.dlQueueCount < this.dlDefaultChunkSize ? this.dlQueueCount : this.dlDefaultChunkSize;
+    for (let i = 0; i < biteSize; i++) {
+      console.log(this.productList[i]);
+      const el: HTMLButtonElement = this.productList[i] as HTMLButtonElement;
       el.click();
+      this.dlQueueNumProcessed++;
     }
   }
 
   public prodDownloaded(product) {
     console.log('prodDownloaded():', product);
+    if (this.dlQueueNumProcessed < this.dlQueueCount) {
+      const el: HTMLButtonElement = this.productList[this.dlQueueNumProcessed++] as HTMLButtonElement;
+      el.click();
+    }
   }
 
   onCloseDownloadQueue() {
