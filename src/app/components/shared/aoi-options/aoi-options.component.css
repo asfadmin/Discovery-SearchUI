@@ -42,3 +42,12 @@
   justify-content: center;
   align-items: center;
 }
+
+.aoi-input--desktop {
+  width: 60%;
+  margin-right: 10px;
+}
+
+.aoi-input--mobile {
+  width: 100%;
+}
