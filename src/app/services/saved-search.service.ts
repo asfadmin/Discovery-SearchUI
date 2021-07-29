@@ -63,7 +63,21 @@ export class SavedSearchService {
       ...sbasFilters
     }))
   );
-
+  private currentCustomProductSearch$ = combineLatest(
+    this.store$.select(filtersStore.getJobStatuses),
+    this.store$.select(filtersStore.getDateRange),
+    this.store$.select(filtersStore.getProjectName),
+    this.store$.select(filtersStore.getProductNameFilter),
+    this.store$.select(filtersStore.getCustomProductSearch)
+  ).pipe(
+    map(([jobStatuses, dateRange, projectName, productFilterName, customProductFilters]) => ({
+      jobStatuses,
+      dateRange,
+      projectName,
+      productFilterName,
+      ...customProductFilters
+    }))
+  );
   private searchType$ = this.store$.select(getSearchType);
 
   public currentSearch$ = this.searchType$.pipe(
@@ -72,7 +86,7 @@ export class SavedSearchService {
       [models.SearchType.LIST]: this.currentListSearch$,
       [models.SearchType.BASELINE]: this.currentBaselineSearch$,
       [models.SearchType.SBAS]: this.currentSbasSearch$,
-      [models.SearchType.CUSTOM_PRODUCTS]: this.currentListSearch$,
+      [models.SearchType.CUSTOM_PRODUCTS]: this.currentCustomProductSearch$,
     })[searchType]
     )
   );

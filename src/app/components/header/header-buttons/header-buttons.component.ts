@@ -58,6 +58,9 @@ export class HeaderButtonsComponent implements OnInit, OnDestroy {
   public lastOnDemandCount = 0;
   public lastQProdCount = 0;
 
+  public searchType$ = this.store$.select(searchStore.getSearchType);
+  public searchTypes = SearchType;
+
   constructor(
     public authService: AuthService,
     public env: EnvironmentService,

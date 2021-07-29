@@ -1,17 +1,20 @@
-<div class="dialg-header">
+<div class="dialog-header">
   <div mat-dialog-title>Preferences for {{ userAuth.id }}</div>
 </div>
 
 <mat-dialog-content>
   <div class="display: flex;">
     <form #preferencesForm="ngForm" onsubmit="return false">
-      <app-dataset-selector
-         [(selected)]="defaultDataset"
-         (selectedChange)="onDatasetSelectionChange($event)"
-         [datasets]="datasets">
-      </app-dataset-selector>
 
-      <mat-form-field>
+      <div class="default-dataset">
+        <app-dataset-selector
+          [(selected)]="defaultDataset"
+          (selectedChange)="onDatasetSelectionChange($event)"
+          [datasets]="datasets">
+        </app-dataset-selector>
+      </div>
+
+      <mat-form-field class="default-max-result">
         <mat-label>Default Max Result Amount</mat-label>
         <mat-select
           [(ngModel)]="defaultMaxResults"
@@ -32,6 +35,28 @@
           </mat-option>
           <mat-option [value]="mapLayerTypes.STREET ">
             {{ mapLayerTypes.STREET  }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field class="default-max-concurrent-downloads">
+        <mat-label>Default Max Concurrent Downloads</mat-label>
+        <input matInput type="text" appOnlynumber
+               [value]="defaultMaxConcurrentDownloads"
+               [(ngModel)]="defaultMaxConcurrentDownloads"
+               (change)="onChangeDefaultMaxConcurrentDownloads($event.target.value)"
+               name="maxDownloads">
+      </mat-form-field>
+
+      <div class="section-heading">Default Search Filters Presets</div>
+      <mat-form-field class="default-filters-presets" *ngFor="let type of searchTypeKeys">
+        <mat-label>{{type}}</mat-label>
+        <mat-select
+        [(value)]="currentFilterDisplayNames[searchType[type]]"
+        (selectionChange)="onChangeDefaultFilterType($event.value, type)"
+        name="preset">
+          <mat-option [value]="preset.id" *ngFor="let preset of userFiltersBySearchType[searchType[type]]">
+            {{ preset.name }}
           </mat-option>
         </mat-select>
       </mat-form-field>

@@ -13,7 +13,7 @@ import {
   RemoveSceneFromQueue, DownloadSearchtypeMetadata,
   AddJob, RemoveJob, AddJobs, ToggleProduct, QueueScene, FindPair, MakeDownloadScriptFromList
 } from './queue.action';
-import { getQueuedProducts } from './queue.reducer';
+import { getDuplicates, getQueuedProducts } from './queue.reducer';
 import * as scenesStore from '@store/scenes';
 
 import * as services from '@services';
@@ -133,7 +133,8 @@ export class QueueEffects {
 
   public addJob = createEffect(() => this.actions$.pipe(
     ofType<AddJob>(QueueActionType.ADD_JOB),
-    tap(act => this.notificationService.demandQueue(true, 1, act.payload.job_type.name)),
+    withLatestFrom(this.store$.select(getDuplicates)),
+    tap(([act, duplicates]) => this.notificationService.demandQueue(true, 1, act.payload.job_type.name, duplicates)),
   ),
     { dispatch: false }
   );
@@ -142,7 +143,8 @@ export class QueueEffects {
     ofType<AddJobs>(QueueActionType.ADD_JOBS),
     skip(1),
     map(action => action.payload),
-    tap(jobs => this.notificationService.demandQueue(true, jobs.length, jobs[0].job_type.name)),
+    withLatestFrom(this.store$.select(getDuplicates)),
+    map(([jobs, duplicates]) => this.notificationService.demandQueue(true, jobs.length, jobs[0].job_type.name, duplicates)),
   ),
     { dispatch: false }
   );

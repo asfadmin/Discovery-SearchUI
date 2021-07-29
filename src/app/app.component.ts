@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild, AfterViewInit } from '@angular/core';
 import { MatSidenav } from '@angular/material/sidenav';
 import { MatIconRegistry } from '@angular/material/icon';
 import { DomSanitizer } from '@angular/platform-browser';
@@ -10,7 +10,7 @@ import { ProcessingQueueComponent } from '@components/header/processing-queue';
 import { Store, ActionsSubject } from '@ngrx/store';
 import { ofType } from '@ngrx/effects';
 import { of, combineLatest } from 'rxjs';
-import { skip, filter, map, switchMap, tap, catchError, debounceTime, take } from 'rxjs/operators';
+import { skip, filter, map, switchMap, tap, catchError, debounceTime, take, withLatestFrom } from 'rxjs/operators';
 
 import { NgcCookieConsentService } from 'ngx-cookieconsent';
 import { HelpComponent } from '@components/help/help.component';
@@ -33,7 +33,7 @@ import * as models from './models';
   templateUrl: './app.component.html',
   styleUrls  : ['./app.component.scss']
 })
-export class AppComponent implements OnInit, OnDestroy {
+export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
   @ViewChild('sidenav', {static: true}) sidenav: MatSidenav;
 
   private queueStateKey = 'asf-queue-state-v1';
@@ -79,6 +79,16 @@ export class AppComponent implements OnInit, OnDestroy {
     private notificationService: services.NotificationService
   ) {}
 
+  public ngAfterViewInit(): void {
+    this.subs.add(
+      this.store$.select(userStore.getUserProfile).pipe(
+        filter(profile => !!profile.defaultFilterPresets),
+        map(profile => profile.defaultFilterPresets)
+        ).subscribe(presets =>
+          this.store$.dispatch(new filterStore.SetDefaultFilters(presets)))
+    );
+  }
+
   public ngOnInit(): void {
     this.subs.add(
       this.store$.select(queueStore.getQueuedJobs).subscribe(
@@ -86,6 +96,7 @@ export class AppComponent implements OnInit, OnDestroy {
       )
     );
 
+    this.subs.add(
     this.store$.select(uiStore.getHelpDialogTopic).subscribe(topic => {
       const previousTopic = this.helpTopic;
       this.helpTopic = topic;
@@ -112,8 +123,10 @@ export class AppComponent implements OnInit, OnDestroy {
       ref.afterClosed().subscribe(_ => {
         this.store$.dispatch(new uiStore.SetHelpDialogTopic(null));
       });
-    });
+    })
+    );
 
+    this.subs.add(
     this.store$.select(uiStore.getIsDownloadQueueOpen).subscribe(isDownloadQueueOpen => {
       if (!isDownloadQueueOpen) {
         return;
@@ -138,8 +151,10 @@ export class AppComponent implements OnInit, OnDestroy {
           _ => this.store$.dispatch(new uiStore.SetIsDownloadQueueOpen(null))
         )
       );
-    });
+    })
+    );
 
+    this.subs.add(
     this.store$.select(uiStore.getIsOnDemandQueueOpen).subscribe(isOnDemandQueueOpen => {
       if (!isOnDemandQueueOpen) {
         return;
@@ -164,7 +179,8 @@ export class AppComponent implements OnInit, OnDestroy {
           _ => this.store$.dispatch(new uiStore.SetIsOnDemandQueueOpen(null))
         )
       );
-    });
+    })
+    );
 
     this.store$.dispatch(new uiStore.LoadBanners());
     this.subs.add(
@@ -178,28 +194,32 @@ export class AppComponent implements OnInit, OnDestroy {
     this.loadCustomProductsQueue();
     this.loadMissions();
 
-    this.store$.select(uiStore.getIsSidebarOpen).subscribe(
-      isSidebarOpen => {
-        if(isSidebarOpen){
-          this.isSaveSearchPanelOpen = true;
-          this.sidenav.open()
-        } else {
-          this.isSaveSearchPanelOpen = false;
-          this.sidenav.close()
+    this.subs.add(
+      this.store$.select(uiStore.getIsSidebarOpen).subscribe(
+        isSidebarOpen => {
+          if (isSidebarOpen) {
+            this.isSaveSearchPanelOpen = true;
+            this.sidenav.open();
+          } else {
+            this.isSaveSearchPanelOpen = false;
+            this.sidenav.close();
+          }
         }
-      }
+      )
     );
 
-    this.store$.select(uiStore.getIsFiltersSidebarOpen).subscribe(
-      isSidebarOpen => {
-        if(isSidebarOpen){
-          this.isSaveFiltersPanelOpen = true;
-          this.sidenav.open()
-        } else {
-          this.isSaveFiltersPanelOpen = false;
-          this.sidenav.close()
+    this.subs.add(
+      this.store$.select(uiStore.getIsFiltersSidebarOpen).subscribe(
+        isSidebarOpen => {
+          if (isSidebarOpen) {
+            this.isSaveFiltersPanelOpen = true;
+            this.sidenav.open();
+          } else {
+            this.isSaveFiltersPanelOpen = false;
+            this.sidenav.close();
+          }
         }
-      }
+      )
     );
 
     this.subs.add(
@@ -215,6 +235,15 @@ export class AppComponent implements OnInit, OnDestroy {
         profile => {
           this.urlStateService.setDefaults(profile);
         })
+    );
+
+    this.subs.add(
+      this.actions$.pipe(
+      ofType<userStore.SetProfile>(userStore.UserActionType.SET_PROFILE),
+      map(action => action.payload.defaultFilterPresets),
+      ).subscribe( defaultFilters =>
+        this.store$.dispatch(new filterStore.SetDefaultFilters(defaultFilters))
+      )
     );
 
     const user = this.authService.getUser();
@@ -233,8 +262,9 @@ export class AppComponent implements OnInit, OnDestroy {
     this.subs.add(
       this.actions$.pipe(
         ofType<searchStore.SetSearchType>(searchStore.SearchActionType.SET_SEARCH_TYPE),
+        withLatestFrom(this.store$.select(userStore.getUserProfile))
       ).subscribe(
-        action => {
+        ([action, profile]) => {
           const saveSearch = this.savedSearchService.makeCurrentSearch(this.searchType);
           this.savedSearchService.saveSearchState(
             this.searchType,
@@ -247,14 +277,17 @@ export class AppComponent implements OnInit, OnDestroy {
           const searchState = this.savedSearchService.getSearchState(action.payload);
 
           if (
-            searchState &&
-            searchState.searchType !== models.SearchType.CUSTOM_PRODUCTS
+            searchState
             ) {
             this.searchService.loadSearch(searchState);
 
             if (!this.isEmptySearch(searchState)) {
               this.store$.dispatch(new searchStore.MakeSearch());
+            } else {
+              this.store$.dispatch(new filterStore.SetDefaultFilters(profile?.defaultFilterPresets));
             }
+          } else {
+            this.store$.dispatch(new filterStore.SetDefaultFilters(profile?.defaultFilterPresets));
           }
 
         }
@@ -295,9 +328,14 @@ export class AppComponent implements OnInit, OnDestroy {
             models.MapInteractionModeType.DRAW :
             models.MapInteractionModeType.NONE;
         }),
+        withLatestFrom(this.store$.select(userStore.getUserProfile).pipe(
+          map(profile => profile.defaultFilterPresets))
+        ),
       ).subscribe(
-        mode => this.store$.dispatch(new mapStore.SetMapInteractionMode(mode))
-      )
+        ([mode, defaultFilters]) => {
+        this.store$.dispatch(new mapStore.SetMapInteractionMode(mode));
+        this.store$.dispatch(new filterStore.SetDefaultFilters(defaultFilters));
+        })
     );
 
     this.updateMaxSearchResults();
@@ -340,7 +378,7 @@ export class AppComponent implements OnInit, OnDestroy {
     } else if (searchState.searchType === models.SearchType.BASELINE) {
       return !searchState.filters.filterMaster;
     } else if (searchState.searchType === models.SearchType.SBAS) {
-      return !searchState.filters.master;
+      return !searchState.filters.reference;
     }
 
     return false;

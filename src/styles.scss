@@ -15,6 +15,7 @@
   top: 115px;
   right: 25px;
   float: right;
+  z-index: 99 !important;
 }
 
 // toast style overrides
@@ -500,4 +501,8 @@ $d-height: 500px;
 .mat-accent .mat-pseudo-checkbox-checked,
 .mat-accent .mat-pseudo-checkbox-indeterminate {
   background: gray;
+}
+
+.on-demand-tooltip {
+  font-size: 16px;
 }

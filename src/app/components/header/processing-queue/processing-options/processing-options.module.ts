@@ -10,7 +10,6 @@ import { MatSharedModule } from '@shared';
 
 import { ProjectNameSelectorModule } from '@components/shared/selectors/project-name-selector';
 import { ProcessingOptionsComponent } from './processing-options.component';
-import { OptionInfoComponent } from './option-info/option-info.component';
 import { ToggleOptionComponent } from './toggle-option/toggle-option.component';
 import { DropdownOptionComponent } from './dropdown-option/dropdown-option.component';
 import { CheckboxOptionComponent } from './checkbox-option/checkbox-option.component';
@@ -20,7 +19,6 @@ import { CheckboxOptionComponent } from './checkbox-option/checkbox-option.compo
 @NgModule({
   declarations: [
     ProcessingOptionsComponent,
-    OptionInfoComponent,
     ToggleOptionComponent,
     DropdownOptionComponent,
     CheckboxOptionComponent

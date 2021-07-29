@@ -84,8 +84,16 @@
         <span class="number-queued"> {{ numQueued }} </span>
       </div>
 
+      <div *ngIf="searchType === SearchTypes.CUSTOM_PRODUCTS" style="margin-right: 10px;">
+      <mat-icon *ngIf="isExpired(scene.metadata.job)"
+        [matMenuTriggerFor]="sceneAdd.addMenu"
+        [matMenuTriggerData]="{ hyp3able: getExpiredHyp3ableObject().byJobType }"
+        class="icon-margin"
+        svgIcon="hyp3">
+      </mat-icon>
+      </div>
       <div *ngIf="!isDownloadable(scene)" class="scene-controls ml-2">
-        <app-hyp3-job-status-badge [job]="scene.metadata.job">
+        <app-hyp3-job-status-badge [job]="scene.metadata.job" [isFileDetails]="false">
         </app-hyp3-job-status-badge>
       </div>
     </ng-container>
@@ -122,7 +130,10 @@
   </div>
 </ng-container>
 
-<app-on-demand-add-menu #sceneAdd>
+<app-on-demand-add-menu
+#sceneAdd
+[isExpired]="isExpired(scene.metadata.job)"
+[expiredJobs]="scene.metadata.job">
 </app-on-demand-add-menu>
 
 </button>
