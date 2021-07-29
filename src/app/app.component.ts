@@ -224,6 +224,15 @@ export class AppComponent implements OnInit, OnDestroy {
         })
     );
 
+    this.subs.add(
+      this.actions$.pipe(
+      ofType<userStore.SetProfile>(userStore.UserActionType.SET_PROFILE),
+      map(action => action.payload.defaultFilterPresets),
+      ).subscribe( defaultFilters =>
+        this.store$.dispatch(new filterStore.SetDefaultFilters(defaultFilters))
+      )
+    );
+
     const user = this.authService.getUser();
     if (user.id) {
       this.store$.dispatch(new userStore.Login(user));
@@ -267,13 +276,6 @@ export class AppComponent implements OnInit, OnDestroy {
 
           const searchState = this.savedSearchService.getSearchState(action.payload);
 
-          let searchTypeDefaultFiltersID;
-
-          if(action.payload !== models.SearchType.CUSTOM_PRODUCTS && action.payload !== models.SearchType.LIST) {
-            searchTypeDefaultFiltersID = profile.defaultFilterPresets[action.payload]
-          }
-
-          const validFiltersPreset = action.payload !== models.SearchType.CUSTOM_PRODUCTS && action.payload !== models.SearchType.LIST;
           if (
             searchState
             ) {
@@ -281,11 +283,11 @@ export class AppComponent implements OnInit, OnDestroy {
 
             if (!this.isEmptySearch(searchState)) {
               this.store$.dispatch(new searchStore.MakeSearch());
-            } else if(validFiltersPreset) {
-              this.store$.dispatch(new userStore.LoadFiltersPreset(searchTypeDefaultFiltersID));
+            } else {
+              this.store$.dispatch(new filterStore.SetDefaultFilters(profile?.defaultFilterPresets));
             }
-          } else if(validFiltersPreset) {
-            this.store$.dispatch(new userStore.LoadFiltersPreset(searchTypeDefaultFiltersID));
+          } else {
+            this.store$.dispatch(new filterStore.SetDefaultFilters(profile?.defaultFilterPresets));
           }
 
         }
@@ -326,9 +328,14 @@ export class AppComponent implements OnInit, OnDestroy {
             models.MapInteractionModeType.DRAW :
             models.MapInteractionModeType.NONE;
         }),
+        withLatestFrom(this.store$.select(userStore.getUserProfile).pipe(
+          map(profile => profile.defaultFilterPresets))
+        ),
       ).subscribe(
-        mode => this.store$.dispatch(new mapStore.SetMapInteractionMode(mode))
-      )
+        ([mode, defaultFilters]) => {
+        this.store$.dispatch(new mapStore.SetMapInteractionMode(mode));
+        this.store$.dispatch(new filterStore.SetDefaultFilters(defaultFilters));
+        })
     );
 
     this.updateMaxSearchResults();

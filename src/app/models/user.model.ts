@@ -12,10 +12,10 @@ export interface UserProfile {
   mapLayer: MapLayerTypes;
   maxResults: number;
   defaultFilterPresets: {
-    'Baseline Search' : string,
-    'Geographic Search' : string,
-    'SBAS Search' : string
-  }
+    'Baseline Search': string,
+    'Geographic Search': string,
+    'SBAS Search': string
+  };
 }
 
 export interface URSGroup {
