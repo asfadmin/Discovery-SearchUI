@@ -189,7 +189,7 @@ export class UserEffects {
 
       let actions = [];
 
-      if(!!targetFilter) {
+      if (!!targetFilter) {
         switch (searchType) {
           case SearchType.DATASET:
             this.store$.dispatch(new filterStore.ClearDatasetFilters());

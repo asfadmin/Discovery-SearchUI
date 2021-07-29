@@ -269,8 +269,8 @@ export class AppComponent implements OnInit, OnDestroy {
 
           let searchTypeDefaultFiltersID;
 
-          if(action.payload !== models.SearchType.CUSTOM_PRODUCTS && action.payload !== models.SearchType.LIST) {
-            searchTypeDefaultFiltersID = profile.defaultFilterPresets[action.payload]
+          if (action.payload !== models.SearchType.CUSTOM_PRODUCTS && action.payload !== models.SearchType.LIST) {
+            searchTypeDefaultFiltersID = profile.defaultFilterPresets[action.payload];
           }
 
           const validFiltersPreset = action.payload !== models.SearchType.CUSTOM_PRODUCTS && action.payload !== models.SearchType.LIST;
@@ -281,10 +281,10 @@ export class AppComponent implements OnInit, OnDestroy {
 
             if (!this.isEmptySearch(searchState)) {
               this.store$.dispatch(new searchStore.MakeSearch());
-            } else if(validFiltersPreset) {
+            } else if (validFiltersPreset) {
               this.store$.dispatch(new userStore.LoadFiltersPreset(searchTypeDefaultFiltersID));
             }
-          } else if(validFiltersPreset) {
+          } else if (validFiltersPreset) {
             this.store$.dispatch(new userStore.LoadFiltersPreset(searchTypeDefaultFiltersID));
           }
 
