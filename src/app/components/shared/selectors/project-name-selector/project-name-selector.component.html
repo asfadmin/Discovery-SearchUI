@@ -11,6 +11,7 @@
            (input)="onProjectNameInput($event.target.value)"
            (change)="onProjectNameChange($event.target.value)"
            [value]="projectName"
+           [(ngModel)]="projectName"
 
            [matAutocomplete]="projectNameAuto">
     <mat-autocomplete

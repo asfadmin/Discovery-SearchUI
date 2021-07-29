@@ -41,10 +41,11 @@
   </span>
 
   <span
-  [matTooltipDisabled]="isLoggedIn"
-  matTooltip="Sign in to see your saved filters"
+  [matTooltipDisabled]="isLoggedIn && searchType !== searchTypes.LIST && searchType !== searchTypes.CUSTOM_PRODUCTS"
+  matTooltip="{{ isLoggedIn && (searchType === searchTypes.LIST || searchType === searchTypes.CUSTOM_PRODUCTS) ? 'Saved Filters are not available for Search Type' : 'Sign in to see your saved filters'}}"
   matTooltipPosition="after">
     <button
+    [disabled]="searchType === searchTypes.LIST || searchType === searchTypes.CUSTOM_PRODUCTS"
     mat-menu-item
     [matMenuTriggerFor]="savedFiltersMenu">
     Saved Filters

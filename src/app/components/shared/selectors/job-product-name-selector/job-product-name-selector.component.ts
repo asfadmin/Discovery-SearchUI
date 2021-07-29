@@ -19,7 +19,7 @@ import { Breakpoints, menuAnimation } from '@models';
 })
 export class JobProductNameSelectorComponent implements OnInit, OnDestroy {
   @Input() headerView: boolean;
-  public productNameFilter: string;
+  public productNameFilter = '';
   private subs = new SubSink();
   public filteredOptionsList: string[];
   public unfilteredScenes: string[];

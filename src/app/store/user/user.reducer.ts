@@ -2,7 +2,6 @@ import { createFeatureSelector, createSelector } from '@ngrx/store';
 
 import { UserActionType, UserActions } from './user.action';
 import * as models from '@models';
-import { SearchType } from '@models';
 /* State */
 
 export interface UserState {
@@ -12,7 +11,7 @@ export interface UserState {
     searches: models.Search[];
     searchHistory: models.Search[];
   };
-  savedFilterPresets: {name: string, id: string, searchType: SearchType, filters: models.FilterType}[];
+  savedFilterPresets: models.SavedFilterPreset[];
 }
 
 const initState: UserState = {
@@ -24,7 +23,12 @@ const initState: UserState = {
   profile: {
     defaultDataset: 'SENTINEL-1',
     mapLayer: models.MapLayerTypes.SATELLITE,
-    maxResults: 250
+    maxResults: 250,
+    defaultFilterPresets: {
+      'Baseline Search' : '',
+      'Geographic Search' : '',
+      'SBAS Search' : ''
+    }
   },
   savedSearches: {
     searches: [],
@@ -154,12 +158,14 @@ export function userReducer(state = initState, action: UserActions): UserState {
     }
 
     case UserActionType.UPDATE_FILTERS_PRESET_NAME: {
-      const newFilterIdx = state.savedFilterPresets.findIndex(preset => preset.id == action.payload.presetID);
+      const newFilterIdx = state.savedFilterPresets.findIndex(preset => preset.id === action.payload.presetID);
+
       const newFilter = {
-        ... state.savedFilterPresets.find(preset => preset.id == action.payload.presetID),
+        ... state.savedFilterPresets.find(preset => preset.id === action.payload.presetID),
         name: action.payload.newName
       };
-      const newFilterPresets = state.savedFilterPresets.filter(preset => preset.id !== action.payload.presetID)
+
+      const newFilterPresets = state.savedFilterPresets.filter(preset => preset.id !== action.payload.presetID);
       newFilterPresets.splice(newFilterIdx, 0, newFilter);
       return {
         ...state,
@@ -248,4 +254,4 @@ export const getSearchHistory = createSelector(
 export const getSavedFilters = createSelector(
   getUserState,
   (state: UserState) => state.savedFilterPresets
-)
+);

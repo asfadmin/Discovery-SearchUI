@@ -14,7 +14,7 @@ import * as filterStore from '@store/filters';
 import * as searchStore from '@store/search';
 import { UserDataService } from '@services/user-data.service';
 import * as models from '@models';
-import { BaselineFiltersType, FilterType, GeographicFiltersType, SbasFiltersType, SearchType } from '@models';
+import { BaselineFiltersType, GeographicFiltersType, SbasFiltersType, SearchType } from '@models';
 
 @Injectable()
 export class UserEffects {
@@ -132,8 +132,8 @@ export class UserEffects {
         this.userDataService.getAttribute$(action.payload, 'SavedFilters')
     ),
     filter(resp => this.isSuccessfulResponse(resp)),
-    map(filters => this.datesToDateObjectFor(filters) as {name: string, id: string, searchType: SearchType, filters: FilterType}[]),
-    map(Filterpresets => new userActions.SetFilters(<{name: string, id: string, searchType: SearchType, filters: FilterType}[]>Filterpresets))
+    map(filters => this.datesToDateObjectFor(filters) as models.SavedFilterPreset[]),
+    map(Filterpresets => new userActions.SetFilters(<models.SavedFilterPreset[]>Filterpresets))
   ));
 
   public loadHyp3UserOnLogin = createEffect(() => this.actions$.pipe(
@@ -162,42 +162,47 @@ export class UserEffects {
         this.userDataService.getAttribute$(userAuth, 'SavedFilters')
     ),
     filter(resp => this.isSuccessfulResponse(resp)),
-    map(filtersPresets => this.datesToDateObjectFor(filtersPresets) as {name: string, id: string, searchType: SearchType, filters: FilterType}[]),
-    map(filtersPresets => new userActions.SetFilters(<{name: string, id: string, searchType: SearchType, filters: FilterType}[]>filtersPresets))
+    map(filtersPresets => this.datesToDateObjectFor(filtersPresets) as models.SavedFilterPreset[]),
+    map(filtersPresets => new userActions.SetFilters(<models.SavedFilterPreset[]>filtersPresets))
   ));
 
   public loadSavedFiltersOfSearchType = createEffect(() => this.actions$.pipe(
     ofType<userActions.LoadFiltersPreset>(userActions.UserActionType.LOAD_FILTERS_PRESET),
+    map(action => action.payload),
     withLatestFrom(this.store$.select(searchStore.getSearchType)),
-    filter(([_, searchtype]) => searchtype !== SearchType.LIST && searchtype !== SearchType.CUSTOM_PRODUCTS),
+    filter(([filterPresetID, searchtype]) => filterPresetID !== ''
+      && !!filterPresetID
+      && searchtype !== SearchType.LIST
+      && searchtype !== SearchType.CUSTOM_PRODUCTS),
     withLatestFrom(this.store$.select(userReducer.getSavedFilters)),
-    map(([[action, searchType], userFilters]) => {
-      const targetFilter = userFilters
-        .filter(preset => preset.searchType === searchType)
-        .find(preset => preset.id === action.payload);
+    map(([[presetId, searchType], userFilters]) => userFilters.filter(preset =>
+        preset.searchType === searchType).find(preset => preset.id === presetId)
+      ),
+    filter(targetFilter => !!targetFilter),
+    map(targetFilter => {
 
       let actions = [];
 
-      switch (searchType) {
-        case SearchType.DATASET:
-          this.store$.dispatch(new filterStore.ClearDatasetFilters());
-          actions = this.setDatasetFilters(targetFilter.filters as GeographicFiltersType);
-          break;
-        case SearchType.BASELINE:
-          this.store$.dispatch(new filterStore.ClearPerpendicularRange());
-          this.store$.dispatch(new filterStore.ClearTemporalRange());
-          actions = this.setBaselineFilters(targetFilter.filters as BaselineFiltersType);
-          break;
-        case SearchType.SBAS:
-          this.store$.dispatch(new filterStore.ClearPerpendicularRange());
-          this.store$.dispatch(new filterStore.ClearTemporalRange());
-          actions = this.setSBASFilters(targetFilter.filters as SbasFiltersType);
-          break;
-        default:
-          break;
-      }
+      if (!!targetFilter) {
+        this.store$.dispatch(new filterStore.ClearDatasetFilters());
+        this.store$.dispatch(new filterStore.ClearPerpendicularRange());
+        this.store$.dispatch(new filterStore.ClearTemporalRange());
+        switch (targetFilter.searchType) {
+          case SearchType.DATASET:
+            actions = this.setDatasetFilters(targetFilter.filters as GeographicFiltersType);
+            break;
+          case SearchType.BASELINE:
+            actions = this.setBaselineFilters(targetFilter.filters as BaselineFiltersType);
+            break;
+          case SearchType.SBAS:
+            actions = this.setSBASFilters(targetFilter.filters as SbasFiltersType);
+            break;
+          default:
+            break;
+        }
 
-      actions.forEach(action => this.store$.dispatch(action));
+        actions.forEach(action => this.store$.dispatch(action));
+    }
     })
   ), {dispatch: false});
 
@@ -213,7 +218,7 @@ export class UserEffects {
     }
   }
 
-  private datesToDateObjectFor(searches): models.Search[] | {name: string, id: string, searchType: SearchType, filter: FilterType}[] {
+  private datesToDateObjectFor(searches): models.Search[] | models.SavedFilterPreset[] {
     return searches.map(search => {
       if (search.searchType === models.SearchType.LIST || !search.filters.dateRange) {
         return search;
@@ -272,9 +277,9 @@ export class UserEffects {
       new filterStore.SetBeamModes(datasetFilter.beamModes),
       new filterStore.SetPolarizations(datasetFilter.polarizations),
       new filterStore.SetSubtypes(datasetFilter.subtypes),
-      new filterStore.SetFlightDirections(datasetFilter.flightDirections),
+      new filterStore.SetFlightDirections(Array.from(datasetFilter.flightDirections)),
       new filterStore.SelectMission(datasetFilter.selectedMission)
-    ]
+    ];
 
     return actions;
   }

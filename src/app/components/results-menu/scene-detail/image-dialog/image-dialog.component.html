@@ -60,9 +60,17 @@
             [searchType]="searchType$|  async"
             [offsets]="masterOffsets$ | async">
           </app-scene-metadata>
-
           <hr>
-
+        <ng-container  *ngIf="(searchType$ | async) === searchTypes.CUSTOM_PRODUCTS">
+          <div class="detail-header">Product Details</div>
+          <ul style="columns: 1; font-size: 12px;">
+            <li *ngIf="scene.metadata.job.name">Project Name: {{scene.metadata.job.name}}</li>
+            <li *ngFor="let param of paramsList" >
+              {{ param.name }}: {{ param.val }}
+            </li>
+          </ul>
+          <hr>
+        </ng-container>
           <div class="detail-header">{{ products.length }} Files</div>
           <mat-action-list dense class="file-list">
             <button  *ngFor="let product of products"
