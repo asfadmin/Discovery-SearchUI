@@ -86,7 +86,7 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
         map(profile => profile.defaultFilterPresets)
         ).subscribe(presets =>
           this.store$.dispatch(new filterStore.SetDefaultFilters(presets)))
-    )
+    );
   }
 
   public ngOnInit(): void {
