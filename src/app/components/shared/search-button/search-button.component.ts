@@ -117,18 +117,13 @@ export class SearchButtonComponent implements OnInit, OnDestroy {
 
   public onDoSearch(): void {
     this.setDefaultOverlapOnProd();
-
-    if (((this.searchType === this.searchTypes.SBAS || this.searchType === this.searchTypes.BASELINE ) && this.isFiltersOpen &&
-      (this.stackReferenceScene !== this.latestReferenceScene || !this.resultsMenuOpen)) ||
-    ((this.stackReferenceScene !== this.latestReferenceScene || !this.isFiltersOpen) &&
-        (this.searchType === this.searchTypes.SBAS || this.searchType === this.searchTypes.BASELINE)) ||
-        (this.searchType !== this.searchTypes.SBAS && this.searchType !== this.searchTypes.BASELINE)
+    const SBASorBaseline = this.searchType === this.searchTypes.SBAS || this.searchType === this.searchTypes.BASELINE;
+    const isNewReferenceScene = this.stackReferenceScene !== this.latestReferenceScene;
+    if (
+      (SBASorBaseline && this.isFiltersOpen && (isNewReferenceScene || !this.resultsMenuOpen))
+      || ((isNewReferenceScene || !this.isFiltersOpen) && SBASorBaseline)
+      || SBASorBaseline
       ) {
-      if (this.searchType === SearchType.BASELINE) {
-        this.clearBaselineRanges();
-      } else if (this.searchType === SearchType.SBAS) {
-        this.setBaselineRanges();
-      }
 
       this.store$.dispatch(new searchStore.MakeSearch());
 
@@ -165,18 +160,6 @@ export class SearchButtonComponent implements OnInit, OnDestroy {
 
   public onSearchError(): void {
     this.searchError$.next();
-  }
-
-  private clearBaselineRanges() {
-    this.store$.dispatch(new filtersStore.ClearPerpendicularRange());
-    this.store$.dispatch(new filtersStore.ClearTemporalRange());
-  }
-
-  private setBaselineRanges() {
-    const days_action = new filtersStore.SetTemporalRange({ start: 48, end: null });
-    this.store$.dispatch(days_action);
-    const meters_action = new filtersStore.SetPerpendicularRange({ start: 300, end: null });
-    this.store$.dispatch(meters_action);
   }
 
   public saveCurrentSearch(): void {
