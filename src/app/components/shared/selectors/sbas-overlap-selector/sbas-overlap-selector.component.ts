@@ -14,6 +14,7 @@ export class SbasOverlapSelectorComponent implements OnInit {
 
   public fiftyPercentOverlapToggled = false;
   public SBASOverlapThreshold: SBASOverlap = SBASOverlap.ALL;
+  public SBASOverlapTypes = SBASOverlap;
   private subs = new SubSink();
 
   public overlapTypes = Object.keys(SBASOverlap);
@@ -38,11 +39,6 @@ export class SbasOverlapSelectorComponent implements OnInit {
   }
 
   public onSetThreshold(value): void {
-    this.store$.dispatch(new filtersStore.SetSBASOverlapThreshold(SBASOverlap[value]));
+    this.store$.dispatch(new filtersStore.SetSBASOverlapThreshold(value));
   }
-
-  public getOverlapTypeValue(val: SBASOverlap): string {
-    return SBASOverlap[val];
-  }
-
 }
