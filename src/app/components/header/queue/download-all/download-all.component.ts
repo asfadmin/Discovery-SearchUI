@@ -15,7 +15,7 @@ export class DownloadAllComponent implements OnInit {
 
   public downloadAll(): void {
     console.log('downloadAll() is executing.');
-    this.dlAllEvent.emit('hello world');
+    this.dlAllEvent.emit();
   }
 
 }

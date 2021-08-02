@@ -17,6 +17,7 @@ import { HttpClient } from '@angular/common/http';
 import { saveAs } from 'file-saver';
 import { Observable } from 'rxjs';
 import { download, Download } from 'ngx-operators';
+import * as userStore from '@store/user';
 // import { DownloadService } from '@services/download.service';
 
 
@@ -100,6 +101,15 @@ export class QueueComponent implements OnInit, OnDestroy {
         breakpoint => this.breakpoint = breakpoint
       )
     );
+
+    this.subs.add(
+      this.store$.select(userStore.getUserProfile).subscribe(
+        profile => {
+          this.dlDefaultChunkSize = profile.defaultMaxConcurrentDownloads;
+        }
+      )
+    );
+
   }
 
   public onRemoveProduct(product: CMRProduct): void {
