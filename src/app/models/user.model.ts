@@ -11,7 +11,7 @@ export interface UserProfile {
   defaultDataset: string;
   mapLayer: MapLayerTypes;
   maxResults: number;
-  defaultMaxConcurrentDownloads;
+  defaultMaxConcurrentDownloads: number;
   defaultFilterPresets: {
     'Baseline Search': string,
     'Geographic Search': string,
