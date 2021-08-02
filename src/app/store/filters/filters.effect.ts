@@ -47,7 +47,7 @@ export class FiltersEffects {
     withLatestFrom(this.store$.select(getSearchType)),
     filter(([_, searchtype]) => searchtype !== SearchType.LIST && searchtype !== SearchType.CUSTOM_PRODUCTS),
     map(([defaultFilters, searchtype]) => defaultFilters[searchtype]),
-    filter(targetFilterID => !!targetFilterID && targetFilterID !== ''),
+    filter(targetFilterID => targetFilterID == '' || !!targetFilterID),
     map(targetFilterID => new LoadFiltersPreset(targetFilterID))
     )
     );

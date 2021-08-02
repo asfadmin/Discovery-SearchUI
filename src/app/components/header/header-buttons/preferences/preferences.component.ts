@@ -4,7 +4,7 @@ import { AppState } from '@store';
 import * as userStore from '@store/user';
 
 import { MatDialogRef } from '@angular/material/dialog';
-import { MapLayerTypes, UserAuth, ProductType, datasetList, SearchType, SavedFilterPreset } from '@models';
+import { MapLayerTypes, UserAuth, ProductType, datasetList, SearchType, SavedFilterPreset, FilterType } from '@models';
 import { SubSink } from 'subsink';
 
 
@@ -74,7 +74,13 @@ export class PreferencesComponent implements OnInit, OnDestroy {
           this.userFilters = savedFilters;
           for (const searchtype in SearchType) {
             if (searchtype !== 'LIST' && searchtype !== 'CUSTOM_PRODUCTS') {
-              this.userFiltersBySearchType[SearchType[searchtype]] = [];
+              const defaultPreset = {} as SavedFilterPreset
+              defaultPreset.filters = {} as FilterType
+              defaultPreset.id = '';
+              defaultPreset.name = 'Default'
+              defaultPreset.searchType = SearchType[searchtype];
+
+              this.userFiltersBySearchType[SearchType[searchtype]] = [defaultPreset];
             }
           }
 
