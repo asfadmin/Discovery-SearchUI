@@ -30,6 +30,8 @@ export class DownloadService {
 
     // const megas = window.prompt('How many MBs do you want:');
     // url = 'https://filegen-dev.asf.alaska.edu/generate?bytes=' + megas.trim() + 'e6';
+    // url = 'https://filegen-dev.asf.alaska.edu/generate?bytes=10e6';
+
     console.log('Download Service Executing');
     console.log('url:', url);
     console.log('filename:', filename);

@@ -63,6 +63,7 @@ export class QueueComponent implements OnInit, OnDestroy {
   public dlQueueCount = 0;
   public dlQueueNumProcessed = 0;
   public dlDefaultChunkSize = 3;
+  public dlQueueProgress = 0;
   public productList: HTMLCollectionOf<Element>;
 
   public products$ = this.store$.select(queueStore.getQueuedProducts).pipe(
@@ -240,6 +241,7 @@ export class QueueComponent implements OnInit, OnDestroy {
 
   public prodDownloaded(product) {
     console.log('prodDownloaded():', product);
+    this.dlQueueProgress = this.dlQueueNumProcessed / this.dlQueueCount;
     if (this.dlQueueNumProcessed < this.dlQueueCount) {
       const el: HTMLButtonElement = this.productList[this.dlQueueNumProcessed++] as HTMLButtonElement;
       el.click();

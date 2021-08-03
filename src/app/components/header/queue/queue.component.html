@@ -10,15 +10,16 @@
       Downloads
     </h1>
     <div class="dl-subtitle">
-      <mat-checkbox class="item-summary-checkbox"
-                    [checked]=false
-                    color=primary
-                    [indeterminate]=[someChecked]
-                    >
-      </mat-checkbox>
-      <mat-icon>cloud_download</mat-icon> {{ selectedItems.length }} of
+<!--      <mat-checkbox class="item-summary-checkbox"-->
+<!--                    [checked]=false-->
+<!--                    color=primary-->
+<!--                    [indeterminate]=[someChecked]-->
+<!--                    >-->
+<!--      </mat-checkbox>-->
+<!--      <mat-icon>cloud_download</mat-icon> {{ selectedItems.length }} of-->
       {{ numberOfProducts$ | async }} Files, {{ (totalSize$ | async) | readableSizeFromBytes }}
     </div>
+    <mat-progress-bar class="global-progress" mode="determinate" value="{{ dlQueueProgress }}"></mat-progress-bar>
   </div>
 
   <div class="feedback-div feedback-link">
@@ -49,10 +50,10 @@
                 <div matLine
                      class="item-content"
                      [ngClass]="{'dl-list-item-mobile' : breakpoint === breakpoints.MOBILE }">
-                  <mat-checkbox class="item-checkbox"
-                                color=primary
-                                (change)="toggleItemSelected( product.id, product.downloadUrl )">
-                  </mat-checkbox>
+<!--                  <mat-checkbox class="item-checkbox"-->
+<!--                                color=primary-->
+<!--                                (change)="toggleItemSelected( product.id, product.downloadUrl )">-->
+<!--                  </mat-checkbox>-->
                   <b>
                       <span *ngIf="breakpoint !== breakpoints.MOBILE">{{ product.name | truncate: 50 }}</span>
                       <span *ngIf="breakpoint === breakpoints.MOBILE">{{ product.name | truncate: 10 }}</span>
