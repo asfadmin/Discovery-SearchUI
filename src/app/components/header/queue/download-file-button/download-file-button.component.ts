@@ -35,9 +35,7 @@ export class DownloadFileButtonComponent implements OnInit {
       if (resp.state === 'DONE') {
         this.dlInProgress = false;
         this.dlComplete = true;
-        if (this.productDownloaded) {
-          this.productDownloaded.emit(product);
-        }
+        this.productDownloaded.emit(product);
       }
     });
   }
