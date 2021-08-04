@@ -135,6 +135,10 @@ export class SBASResultsMenuComponent implements OnInit, OnDestroy {
     this.zoomToFitChart$.next();
   }
 
+  public onOpenHelp(url: string): void {
+    window.open(url);
+  }
+
   ngOnDestroy() {
     this.subs.unsubscribe();
   }
