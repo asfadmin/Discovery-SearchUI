@@ -283,7 +283,7 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
             this.searchService.loadSearch(searchState);
 
             if (!this.isEmptySearch(searchState)) {
-              if(action.payload !== models.SearchType.BASELINE && action.payload !== models.SearchType.SBAS) {
+              if (action.payload !== models.SearchType.BASELINE && action.payload !== models.SearchType.SBAS) {
                 this.clearBaselineRanges();
               }
               this.store$.dispatch(new searchStore.MakeSearch());
