@@ -18,8 +18,7 @@ export class DownloadFileButtonComponent implements OnInit {
 
   constructor(
     private downloadService: DownloadService,
-  ) {
-  }
+  ) {}
 
   ngOnInit(): void {
   }
@@ -36,9 +35,10 @@ export class DownloadFileButtonComponent implements OnInit {
       if (resp.state === 'DONE') {
         this.dlInProgress = false;
         this.dlComplete = true;
-        this.productDownloaded.emit(product);
+        if (this.productDownloaded) {
+          this.productDownloaded.emit(product);
+        }
       }
-      // console.log ('download in progress:', this.dlInProgress, 'resp:', resp);
     });
   }
 }
