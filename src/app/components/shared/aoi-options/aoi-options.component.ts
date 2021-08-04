@@ -88,6 +88,10 @@ export class AoiOptionsComponent implements OnInit, OnDestroy {
     this.close.emit();
   }
 
+  public onOpenHelp(): void {
+    window.open('https://docs.asf.alaska.edu/vertex/manual/#area-of-interest-options');
+  }
+
   private handleAOIErrors(): void {
     this.subs.add(
       this.aoiErrors$.pipe(

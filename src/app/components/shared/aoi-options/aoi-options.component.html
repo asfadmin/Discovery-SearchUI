@@ -1,6 +1,9 @@
 <div class="layout">
   <div *ngIf="showHeader" class="header-layout mb">
-    <div><b>Options</b></div>
+    <div>
+      <b>Options</b>
+      <mat-icon (click)="onOpenHelp()" class="clickable" style="margin-left: 10px;">info</mat-icon>
+    </div>
 
     <div>
       <button (click)="onClose()" matTooltip="Hide options" mat-icon-button>
