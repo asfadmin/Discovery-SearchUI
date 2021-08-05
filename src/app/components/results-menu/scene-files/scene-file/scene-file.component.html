@@ -90,7 +90,8 @@
 <!--    </a>-->
     <app-download-file-button
       [attr.id]="product.id"
-      [product] = "product">
+      [product] = "product"
+      (productDownloaded)="prodDownloaded($event)">
     </app-download-file-button>
 
     <app-cart-toggle
