@@ -45,6 +45,7 @@ export class MapComponent implements OnInit, OnDestroy  {
   public drawMode$ = this.store$.select(mapStore.getMapDrawMode);
   public interactionMode$ = this.store$.select(mapStore.getMapInteractionMode);
   public mousePosition$ = this.mapService.mousePosition$;
+  public isFiltersMenuOpen: boolean;
 
   public banners$ = this.store$.select(uiStore.getBanners);
 
@@ -202,10 +203,18 @@ export class MapComponent implements OnInit, OnDestroy  {
         action => this.store$.dispatch(action)
       )
     );
+
+    this.subs.add(
+      this.store$.select(uiStore.getIsFiltersMenuOpen).subscribe(
+        isOpen => this.isFiltersMenuOpen = isOpen
+      )
+    );
   }
 
   public onFileHovered(e): void {
-    this.onNewInteractionMode(models.MapInteractionModeType.UPLOAD);
+    if (!this.isFiltersMenuOpen && this.searchType === models.SearchType.DATASET) {
+      this.store$.dispatch(new uiStore.OpenAOIOptions());
+    }
     e.preventDefault();
   }
 

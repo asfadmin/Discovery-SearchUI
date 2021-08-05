@@ -35,6 +35,7 @@ import { FileUploadDialogComponent } from './file-upload-dialog';
   ],
   exports: [
     FileUploadComponent,
+    FileUploadDialogComponent
   ]
 })
 export class FileUploadModule { }

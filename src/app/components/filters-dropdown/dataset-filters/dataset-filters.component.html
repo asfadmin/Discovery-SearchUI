@@ -25,7 +25,6 @@
   </mat-expansion-panel>
 
   <mat-expansion-panel
-    *ngIf="breakpoint < breakpoints.MEDIUM"
     [expanded]="defaultPanelOpenState" [disabled]="panelIsDisabled"
     (click)="selectPanel(panels.AOI)"
     [class.raised-section]="isSelected(panels.AOI)">

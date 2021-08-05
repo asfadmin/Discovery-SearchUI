@@ -47,6 +47,15 @@ export class UserEffects {
     ),
     filter(resp => this.isSuccessfulResponse(resp)),
     filter(resp => this.isValidProfile(resp)),
+    map(
+      (profile: models.UserProfile) => !profile.defaultFilterPresets ? { ...profile,
+        defaultFilterPresets: {
+          'Baseline Search' : '',
+          'Geographic Search' : '',
+          'SBAS Search' : ''
+        }
+      } : profile
+    ),
     map(profile => new userActions.SetProfile(<models.UserProfile>profile))
   ));
 
@@ -169,6 +178,7 @@ export class UserEffects {
   public loadSavedFiltersOfSearchType = createEffect(() => this.actions$.pipe(
     ofType<userActions.LoadFiltersPreset>(userActions.UserActionType.LOAD_FILTERS_PRESET),
     map(action => action.payload),
+    filter(filterPresetID => filterPresetID !== '' && filterPresetID !== undefined),
     withLatestFrom(this.store$.select(searchStore.getSearchType)),
     filter(([filterPresetID, searchtype]) => filterPresetID !== ''
       && !!filterPresetID
