@@ -26,6 +26,7 @@ export class ImageDialogComponent implements OnInit, AfterViewInit, OnDestroy {
   public browses$ = this.store$.select(scenesStore.getSelectedSceneBrowses);
   public masterOffsets$ = this.store$.select(scenesStore.getMasterOffsets);
   public searchType$ = this.store$.select(searchStore.getSearchType);
+  public searchTypes = models.SearchType;
   public onlyShowScenesWithBrowse: boolean;
   public queuedProductIds: Set<string>;
   public scene: models.CMRProduct;
@@ -34,11 +35,12 @@ export class ImageDialogComponent implements OnInit, AfterViewInit, OnDestroy {
   public isImageLoading = false;
   public isShow = false;
   public currentBrowse = null;
+  public paramsList: any;
 
   public breakpoint$ = this.screenSize.breakpoint$;
   public breakpoints = models.Breakpoints;
 
-  private image;
+  private image: HTMLImageElement;
   private subs = new SubSink();
 
   constructor(
@@ -74,6 +76,14 @@ export class ImageDialogComponent implements OnInit, AfterViewInit, OnDestroy {
         tap(g => this.scene = g),
         map(scene => this.datasetForProduct.match(scene)),
       ).subscribe(dataset => this.dataset = dataset)
+    );
+    this.subs.add(
+      this.scene$.pipe(
+        filter(prod => !!prod.metadata)
+      ).subscribe( prod => {
+        this.paramsList = this.jobParamsToList(prod.metadata);
+      }
+    )
     );
   }
 
@@ -116,6 +126,20 @@ export class ImageDialogComponent implements OnInit, AfterViewInit, OnDestroy {
     this.image.src = browse;
   }
 
+  public jobParamsToList(metadata) {
+    if (!metadata.job) {
+      return [];
+    }
+
+    const jobType = models.hyp3JobTypes[metadata.job.job_type];
+    const options = !!jobType ? jobType.options : models.hyp3JobOptionsOrdered;
+
+    return options
+      .filter(option => metadata.job.job_parameters[option.apiName])
+      .map(option => {
+        return {name: option.name, val: metadata.job.job_parameters[option.apiName]};
+      });
+  }
   public closeDialog() {
     this.dialogRef.close();
   }

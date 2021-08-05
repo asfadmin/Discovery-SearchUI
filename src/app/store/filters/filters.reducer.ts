@@ -2,6 +2,7 @@ import { createFeatureSelector, createSelector } from '@ngrx/store';
 
 import { FiltersActionType, FiltersActions } from './filters.action';
 import * as models from '@models';
+import { SBASOverlap } from '@models';
 
 
 export interface FiltersState {
@@ -36,6 +37,7 @@ export interface FiltersState {
   previousFilters: FiltersState;
 
   thresholdOverlap: boolean;
+  sbasOverlapThreshold: SBASOverlap;
 }
 
 
@@ -88,7 +90,8 @@ export const initState: FiltersState = {
 
   previousFilters: null,
 
-  thresholdOverlap: false
+  thresholdOverlap: false,
+  sbasOverlapThreshold: SBASOverlap.HALF_OVERLAP
 };
 
 
@@ -505,6 +508,16 @@ export function filtersReducer(state = initState, action: FiltersActions): Filte
           temporalRange: {start: filters.temporal, end: null},
           perpendicularRange: {start: filters.perpendicular, end: null},
         };
+      } else if (search.searchType === models.SearchType.CUSTOM_PRODUCTS) {
+          const filters = <models.CustomProductFiltersType>search.filters;
+
+          return {
+            ... state,
+            jobStatuses: filters.jobStatuses,
+            dateRange: filters.dateRange,
+            projectName: filters.projectName,
+            productFilterName: filters.productFilterName
+          };
       } else {
         const filters = <models.GeographicFiltersType>search.filters;
 
@@ -577,6 +590,12 @@ export function filtersReducer(state = initState, action: FiltersActions): Filte
       return {
         ...state,
         thresholdOverlap: !state.thresholdOverlap
+      };
+    }
+    case FiltersActionType.SET_SBAS_OVERLAP_THRESHOLD: {
+      return {
+        ...state,
+        sbasOverlapThreshold: action.payload
       };
     }
     default: {
@@ -774,6 +793,17 @@ export const getSbasSearch = createSelector(
   })
 );
 
+export const getCustomProductSearch = createSelector(
+  getFiltersState,
+  (state: FiltersState) => ({
+    dateRange: state.dateRange,
+    jobStatuses: state.jobStatuses,
+
+    projectName: state.projectName,
+    productFilterName: state.productFilterName
+  })
+);
+
 export const getProjectName = createSelector(
   getFiltersState,
   (state: FiltersState) => state.projectName
@@ -803,4 +833,9 @@ export const areFiltersChanged = createSelector(
 export const getSBASOverlapToggle = createSelector(
   getFiltersState,
   (state: FiltersState) => state.thresholdOverlap
+);
+
+export const getSBASOverlapThreshold = createSelector(
+  getFiltersState,
+  (state: FiltersState) => state.sbasOverlapThreshold
 );

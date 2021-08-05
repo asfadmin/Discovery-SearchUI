@@ -1,13 +1,13 @@
 import { Component, ViewChild, OnInit, OnDestroy } from '@angular/core';
 
-import { Subject, Subscription, of } from 'rxjs';
+import { Subject, of } from 'rxjs';
 import { delay, tap, catchError } from 'rxjs/operators';
 
-import { MatDialogRef } from '@angular/material/dialog';
 import { SubSink } from 'subsink';
 
-import { AsfApiService, NotificationService } from '@services';
+import { AsfApiService, NotificationService, MapService } from '@services';
 import { HttpErrorResponse } from '@angular/common/http';
+
 
 enum FileErrors {
   TOO_LARGE = 'Too large',
@@ -23,9 +23,7 @@ export class FileUploadDialogComponent implements OnInit, OnDestroy {
   @ViewChild('file', { static: true }) file;
 
   public files: Set<File> = new Set();
-  public request: Subscription;
   public canBeClosed = true;
-  public showCancelButton = true;
   public uploading = false;
 
   public fileError$ = new Subject<FileErrors>();
@@ -33,7 +31,7 @@ export class FileUploadDialogComponent implements OnInit, OnDestroy {
   private subs = new SubSink();
 
   constructor(
-    private dialogRef: MatDialogRef<FileUploadDialogComponent>,
+    private mapService: MapService,
     private asfApiService: AsfApiService,
     private notificationService: NotificationService,
   ) {}
@@ -102,7 +100,7 @@ export class FileUploadDialogComponent implements OnInit, OnDestroy {
     this.uploading = true;
 
     this.subs.add(
-      this.request = this.asfApiService.upload(this.files).pipe(
+      this.asfApiService.upload(this.files).pipe(
         catchError((error: HttpErrorResponse) => {
           if (error.status !== 0) {
             return of({ errors: [{ report: 'Error loading files', type: 'Error'}]});
@@ -112,25 +110,36 @@ export class FileUploadDialogComponent implements OnInit, OnDestroy {
       })
       ).subscribe(
         resp => {
+          this.reset();
+
           if (resp.wkt) {
-            this.dialogRef.close(resp.wkt.unwrapped);
+            // set wkt (resp.wkt.unwrapped)
+            this.setAOI(resp.wkt.unwrapped);
           } else if (resp.errors && resp.errors.length > 0) {
             const { report, type } = resp.errors[0];
             this.notificationService.error(report, type, { timeOut: 5000 });
-            this.dialogRef.close();
+            // return
           }
         },
         _ => {
           this.notificationService.error('Error loading geospatial file',  'File Error', { timeOut: 3000 });
-          this.dialogRef.close();
+          // return
         }
       )
     );
 
     this.canBeClosed = false;
-    this.dialogRef.disableClose = true;
+  }
 
-    this.showCancelButton = false;
+  private reset() {
+    this.uploading = false;
+    this.canBeClosed = true;
+
+    this.files.clear();
+  }
+
+  private setAOI(wkt: string) {
+    this.mapService.loadPolygonFrom(wkt);
   }
 
   private addFile(file): void {

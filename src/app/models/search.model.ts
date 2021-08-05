@@ -3,7 +3,7 @@ import { ListSearchType } from './filter-types.model';
 import { Range } from './range.model';
 import { FlightDirection } from './cmr-product.model';
 import * as fromDatasets from './dataset.model';
-
+import { Hyp3JobStatusCode } from './hyp3.model';
 
 export interface Search {
   searchType: SearchType;
@@ -16,6 +16,7 @@ export type FilterType =
   ListFiltersType |
   GeographicFiltersType |
   BaselineFiltersType |
+  CustomProductFiltersType |
   SbasFiltersType;
 
 export interface ListFiltersType {
@@ -45,6 +46,15 @@ export interface SbasFiltersType {
   customPairIds: string[][];
 
   thresholdOverlap: boolean;
+}
+
+export interface CustomProductFiltersType {
+  jobStatuses: Hyp3JobStatusCode[];
+
+  dateRange: Range<null | Date>;
+
+  projectName: string;
+  productFilterName: string;
 }
 
 export interface GeographicFiltersType {

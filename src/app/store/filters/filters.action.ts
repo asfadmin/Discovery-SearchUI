@@ -1,6 +1,7 @@
 import { Action } from '@ngrx/store';
 
 import * as models from '@models';
+import { SBASOverlap } from '@models';
 
 export enum FiltersActionType {
   SET_SELECTED_DATASET = '[Filters-Dataset] Set Selected Dataset',
@@ -69,7 +70,9 @@ export enum FiltersActionType {
   RESTORE_FILTERS = '[Filters] Restores Previous Filters',
   STORE_CURRENT_FILTERS = '[Filters] Stores Current Filters',
 
-  TOGGLE_50_PERCENT_OVERLAP = '[Filters] Toggles SBAS 50 Percent Overlap Check'
+  TOGGLE_50_PERCENT_OVERLAP = '[Filters] Toggles SBAS 50 Percent Overlap Check',
+  SET_SBAS_OVERLAP_THRESHOLD = '[Filters] Set SBAS Pair Overlap Threshold',
+  SET_DEFAULT_FILTERS = '[Filters] Set User Profile Default Filters'
 }
 
 export class SetSelectedDataset implements Action {
@@ -320,6 +323,20 @@ export class Toggle50PercentOverlap implements Action {
   constructor() {}
 }
 
+export class SetSBASOverlapThreshold implements Action {
+  public readonly type = FiltersActionType.SET_SBAS_OVERLAP_THRESHOLD;
+
+  constructor(public payload: SBASOverlap) {}
+}
+export class SetDefaultFilters implements Action {
+  public readonly type = FiltersActionType.SET_DEFAULT_FILTERS;
+  constructor(public payload: {
+    'Baseline Search': string,
+    'Geographic Search': string,
+    'SBAS Search': string
+  }) {}
+}
+
 export type FiltersActions =
   | SetSelectedDataset
   | SetPerpendicularStart
@@ -365,4 +382,6 @@ export type FiltersActions =
   | SetProductNameFilter
   | RestoreFilters
   | StoreCurrentFilters
-  | Toggle50PercentOverlap;
+  | Toggle50PercentOverlap
+  | SetSBASOverlapThreshold
+  | SetDefaultFilters;

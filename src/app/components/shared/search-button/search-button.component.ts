@@ -13,7 +13,7 @@ import * as uiStore from '@store/ui';
 import * as filtersStore from '@store/filters';
 
 import * as services from '@services';
-import { SavedSearchType, SearchType } from '@models';
+import { SavedSearchType, SBASOverlap, SearchType } from '@models';
 import { MatDialog } from '@angular/material/dialog';
 import { HelpComponent } from '@components/help/help.component';
 import { getFilterMaster } from '@store/scenes';
@@ -51,6 +51,7 @@ export class SearchButtonComponent implements OnInit, OnDestroy {
     private savedSearchService: services.SavedSearchService,
     private dialog: MatDialog,
     private notificationService: services.NotificationService,
+    private environmentService: services.EnvironmentService,
   ) {
   }
 
@@ -108,18 +109,20 @@ export class SearchButtonComponent implements OnInit, OnDestroy {
     this.handleSearchErrors();
   }
 
+  public setDefaultOverlapOnProd() {
+    if (this.searchType === this.searchTypes.SBAS && this.environmentService.maturity === 'prod') {
+      this.store$.dispatch(new filtersStore.SetSBASOverlapThreshold(SBASOverlap.ALL));
+    }
+  }
+
   public onDoSearch(): void {
+    this.setDefaultOverlapOnProd();
     if (((this.searchType === this.searchTypes.SBAS || this.searchType === this.searchTypes.BASELINE ) && this.isFiltersOpen &&
       (this.stackReferenceScene !== this.latestReferenceScene || !this.resultsMenuOpen)) ||
     ((this.stackReferenceScene !== this.latestReferenceScene || !this.isFiltersOpen) &&
         (this.searchType === this.searchTypes.SBAS || this.searchType === this.searchTypes.BASELINE)) ||
         (this.searchType !== this.searchTypes.SBAS && this.searchType !== this.searchTypes.BASELINE)
       ) {
-      if (this.searchType === SearchType.BASELINE) {
-        this.clearBaselineRanges();
-      } else if (this.searchType === SearchType.SBAS) {
-        this.setBaselineRanges();
-      }
 
       this.store$.dispatch(new searchStore.MakeSearch());
 
@@ -156,18 +159,6 @@ export class SearchButtonComponent implements OnInit, OnDestroy {
 
   public onSearchError(): void {
     this.searchError$.next();
-  }
-
-  private clearBaselineRanges() {
-    this.store$.dispatch(new filtersStore.ClearPerpendicularRange());
-    this.store$.dispatch(new filtersStore.ClearTemporalRange());
-  }
-
-  private setBaselineRanges() {
-    const days_action = new filtersStore.SetTemporalRange({ start: 48, end: null });
-    this.store$.dispatch(days_action);
-    const meters_action = new filtersStore.SetPerpendicularRange({ start: 300, end: null });
-    this.store$.dispatch(meters_action);
   }
 
   public saveCurrentSearch(): void {

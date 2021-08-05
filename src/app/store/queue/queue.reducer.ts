@@ -11,12 +11,14 @@ export interface QueueState {
   products: ProductMap;
   ids: string[];
   customJobs: QueuedHyp3Job[];
+  duplicates: number;
 }
 
 export const initState: QueueState = {
   products: {},
   ids: [],
   customJobs: [],
+  duplicates: 0
 };
 
 export function queueReducer(state = initState, action: QueueActions): QueueState {
@@ -139,24 +141,31 @@ export function queueReducer(state = initState, action: QueueActions): QueueStat
 
       return {
         ...state,
-        customJobs: jobs
+        customJobs: jobs,
+        duplicates: isJobInQueue ? 1 : 0
       };
     }
 
     case QueueActionType.ADD_JOBS: {
       const jobs = [...state.customJobs];
       const new_jobs = [...action.payload];
-
+      let _duplicates = 0;
       const jobsToQueue = new_jobs.filter(new_job =>
-        !jobs.some(old_job =>
-            old_job.job_type === new_job.job_type &&
-            sameGranules(old_job.granules, new_job.granules)
+        !jobs.some(old_job => {
+          const result = old_job.job_type === new_job.job_type &&
+          sameGranules(old_job.granules, new_job.granules);
+          if (result) {
+            _duplicates += 1;
+          }
+          return result;
+        }
         )
       );
 
       return {
         ...state,
-        customJobs: [...jobs, ...jobsToQueue]
+        customJobs: [...jobs, ...jobsToQueue],
+        duplicates: _duplicates
       };
     }
 
@@ -271,6 +280,11 @@ export const getQueuedProductIds = createSelector(
 export const getQueuedJobs = createSelector(
   getQueueState,
   (state: QueueState) => state.customJobs
+);
+
+export const getDuplicates = createSelector(
+  getQueueState,
+  (state: QueueState) => state.duplicates
 );
 
 export const getQueuedJobTypes = createSelector(

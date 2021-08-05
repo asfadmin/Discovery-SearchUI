@@ -44,7 +44,7 @@
         (click)="queueAllOnDemand(prodType.products, byJobType.jobType)"
         [disabled]="" mat-menu-item>
 
-        Add {{ prodType.products.length }} {{ prodType.productType }}
+        Add  {{ isExpired ? '' : prodType.products.length}} {{ isExpired ? '' : prodType.productType }}
         {{ byJobType.jobType.numProducts === 2 ? 'pair' : 'job' }}{{ prodType.products.length > 1 ? 's' : '' }}
       </button>
     </div>

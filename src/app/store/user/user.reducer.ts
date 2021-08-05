@@ -23,7 +23,12 @@ const initState: UserState = {
   profile: {
     defaultDataset: 'SENTINEL-1',
     mapLayer: models.MapLayerTypes.SATELLITE,
-    maxResults: 250
+    maxResults: 250,
+    defaultFilterPresets: {
+      'Baseline Search' : '',
+      'Geographic Search' : '',
+      'SBAS Search' : ''
+    }
   },
   savedSearches: {
     searches: [],

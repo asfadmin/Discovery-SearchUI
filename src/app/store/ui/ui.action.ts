@@ -5,6 +5,7 @@ import { Banner, SavedSearchType } from '@models';
 export enum UIActionType {
   TOGGLE_AOI_OPTIONS = '[UI] Toggle AOI Options',
   CLOSE_AOI_OPTIONS = '[UI] Close AOI Options',
+  OPEN_AOI_OPTIONS = '[UI] Open AOI Options',
 
   TOGGLE_FILTERS_MENU = '[UI] Toggle Filters Menu',
   CLOSE_FILTERS_MENU = '[UI] Close Filters Menu',
@@ -51,6 +52,10 @@ export class ToggleAOIOptions implements Action {
 
 export class CloseAOIOptions implements Action {
   public readonly type = UIActionType.CLOSE_AOI_OPTIONS;
+}
+
+export class OpenAOIOptions implements Action {
+  public readonly type = UIActionType.OPEN_AOI_OPTIONS;
 }
 
 export class ToggleFiltersMenu implements Action {
@@ -182,6 +187,7 @@ export class LoadBanners implements Action {
 export type UIActions =
   | ToggleAOIOptions
   | CloseAOIOptions
+  | OpenAOIOptions
   | OpenSidebar
   | SetSaveSearchOn
   | SetSaveFilterOn

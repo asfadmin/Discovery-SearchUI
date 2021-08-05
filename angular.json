@@ -52,7 +52,8 @@
               "pbf",
               "uuid/v1",
               "jwt-decode",
-              "css-element-queries"
+              "css-element-queries",
+              "xml2js"
             ],
             "vendorChunk": true,
             "extractLicenses": false,

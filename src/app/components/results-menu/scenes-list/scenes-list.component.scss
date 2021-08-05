@@ -52,6 +52,12 @@
   text-align: right;
 }
 
+.mobile-baseline.metric-flex-field {
+  flex: 1 0 45px;
+  float: right;
+  text-align: right;
+}
+
 .metric-field {
   float: right;
   text-align: right;
@@ -89,6 +95,11 @@
 
 .mobile-size .material-icons {
   font-size: 14px;
+}
+
+.mobile-size .icon-margin.mobile-svg {
+  height: 14px;
+  margin-left: 10px;
 }
 
 .mobile-size .mat-list-base .mat-list-item {
