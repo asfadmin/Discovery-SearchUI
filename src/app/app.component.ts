@@ -235,6 +235,13 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
       this.store$.select(userStore.getUserProfile).subscribe(
         profile => {
           this.urlStateService.setDefaults(profile);
+
+          if (this.searchType !== models.SearchType.LIST && this.searchType !== models.SearchType.CUSTOM_PRODUCTS) {
+            const defaultFilterID = profile.defaultFilterPresets[this.searchType];
+            if (!!defaultFilterID) {
+              this.store$.dispatch(new userStore.LoadFiltersPreset(defaultFilterID));
+            }
+        }
         })
     );
 
@@ -250,6 +257,19 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
     const user = this.authService.getUser();
     if (user.id) {
       this.store$.dispatch(new userStore.Login(user));
+      this.subs.add(
+      this.store$.select(userStore.getUserProfile).subscribe(
+        profile => {
+
+          if (this.searchType !== models.SearchType.LIST && this.searchType !== models.SearchType.CUSTOM_PRODUCTS) {
+            const defaultFilterID = profile.defaultFilterPresets[this.searchType];
+            if (!!defaultFilterID) {
+              this.store$.dispatch(new userStore.LoadFiltersPreset(defaultFilterID));
+          }
+        }
+      }
+      )
+      );
     }
 
     this.subs.add(
