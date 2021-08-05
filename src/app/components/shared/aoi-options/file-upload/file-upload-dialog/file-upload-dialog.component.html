@@ -34,6 +34,11 @@
           </div>
         </div>
       </div>
+
+      <div *ngIf="files.size < 2" class="faint-text import-formats">
+       (<span matTooltip="shapefile">shp</span>, <span matTooltip="geojson">geojson</span>,
+       <span matTooltip="kml">kml</span>, <span matTooltip="shapefile zip archive">zip</span>)
+      </div>
     </div>
   </div>
 
