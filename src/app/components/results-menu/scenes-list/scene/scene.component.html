@@ -5,7 +5,7 @@
     [class.selected]="isSelected"
     [ngClass]="{'mobile-size': breakpoint <= breakpoints.SMALL}">
 
-  <div class="image-flex">
+  <div class="image-flex" *ngIf="searchType !== SearchTypes.BASELINE || breakpoint > breakpoints.SMALL">
     <img class="list-thumbnail"
          [src]="scene.thumbnail"
          onerror="this.src='assets/no-thumb.png'"
@@ -61,7 +61,7 @@
 
         <mat-icon
           *ngIf="!!hyp3ableByJobType && hyp3ableByJobType.total > 0"
-          class="icon-margin"
+          class="icon-margin mobile-svg"
           [matMenuTriggerFor]="sceneAdd.addMenu"
           [matMenuTriggerData]="{ hyp3able: hyp3ableByJobType.byJobType }"
           svgIcon="hyp3">
@@ -84,11 +84,11 @@
         <span class="number-queued"> {{ numQueued }} </span>
       </div>
 
-      <div *ngIf="searchType === SearchTypes.CUSTOM_PRODUCTS" style="margin-right: 10px;">
+      <div *ngIf="searchType === SearchTypes.CUSTOM_PRODUCTS" style="margin-right: 10px;" [ngClass]="{'mobile-size': breakpoint <= breakpoints.SMALL}">
       <mat-icon *ngIf="isExpired(scene.metadata.job)"
         [matMenuTriggerFor]="sceneAdd.addMenu"
         [matMenuTriggerData]="{ hyp3able: getExpiredHyp3ableObject().byJobType }"
-        class="icon-margin"
+        class="icon-margin mobile-svg"
         svgIcon="hyp3">
       </mat-icon>
       </div>
@@ -101,18 +101,18 @@
     <ng-container *ngIf="searchType === SearchTypes.BASELINE">
       <div style="display: flex;" [ngClass]="{'mobile-size': breakpoint <= breakpoints.SMALL}">
         <div style="display: flex; justify-content: space-evenly; width: 135px;">
-          <div class="metric-flex-field">
+          <div [ngClass]="{'mobile-baseline': breakpoint <= breakpoints.SMALL, 'metric-flex-field': true}">
             {{ withOffset(scene.metadata.perpendicular, offsets.perpendicular) }}m
           </div>
 
-            <div class="metric-flex-field">
+            <div [ngClass]="{'mobile-baseline': breakpoint <= breakpoints.SMALL, 'metric-flex-field': true}">
               {{ withOffset(scene.metadata.temporal, offsets.temporal) }}d
             </div>
             <div class="cart-flex-field">
               <mat-icon *ngIf="hyp3ableByJobType.total > 0"
                 [matMenuTriggerFor]="sceneAdd.addMenu"
                 [matMenuTriggerData]="{ hyp3able: hyp3ableByJobType.byJobType }"
-                class="icon-margin"
+                class="icon-margin mobile-svg"
                 svgIcon="hyp3">
               </mat-icon>
               <mat-icon *ngIf="isDownloadable(scene)"

@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild, AfterViewInit } from '@angular/core';
 import { MatSidenav } from '@angular/material/sidenav';
 import { MatIconRegistry } from '@angular/material/icon';
 import { DomSanitizer } from '@angular/platform-browser';
@@ -24,6 +24,7 @@ import * as mapStore from '@store/map';
 import * as queueStore from '@store/queue';
 import * as userStore from '@store/user';
 import * as hyp3Store from '@store/hyp3';
+import * as filtersStore from '@store/filters';
 
 import * as services from '@services';
 import * as models from './models';
@@ -33,7 +34,7 @@ import * as models from './models';
   templateUrl: './app.component.html',
   styleUrls  : ['./app.component.scss']
 })
-export class AppComponent implements OnInit, OnDestroy {
+export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
   @ViewChild('sidenav', {static: true}) sidenav: MatSidenav;
 
   private queueStateKey = 'asf-queue-state-v1';
@@ -79,6 +80,16 @@ export class AppComponent implements OnInit, OnDestroy {
     private notificationService: services.NotificationService
   ) {}
 
+  public ngAfterViewInit(): void {
+    this.subs.add(
+      this.store$.select(userStore.getUserProfile).pipe(
+        filter(profile => !!profile.defaultFilterPresets),
+        map(profile => profile.defaultFilterPresets)
+        ).subscribe(presets =>
+          this.store$.dispatch(new filterStore.SetDefaultFilters(presets)))
+    );
+  }
+
   public ngOnInit(): void {
     this.subs.add(
       this.store$.select(queueStore.getQueuedJobs).subscribe(
@@ -86,6 +97,7 @@ export class AppComponent implements OnInit, OnDestroy {
       )
     );
 
+    this.subs.add(
     this.store$.select(uiStore.getHelpDialogTopic).subscribe(topic => {
       const previousTopic = this.helpTopic;
       this.helpTopic = topic;
@@ -112,8 +124,10 @@ export class AppComponent implements OnInit, OnDestroy {
       ref.afterClosed().subscribe(_ => {
         this.store$.dispatch(new uiStore.SetHelpDialogTopic(null));
       });
-    });
+    })
+    );
 
+    this.subs.add(
     this.store$.select(uiStore.getIsDownloadQueueOpen).subscribe(isDownloadQueueOpen => {
       if (!isDownloadQueueOpen) {
         return;
@@ -138,8 +152,10 @@ export class AppComponent implements OnInit, OnDestroy {
           _ => this.store$.dispatch(new uiStore.SetIsDownloadQueueOpen(null))
         )
       );
-    });
+    })
+    );
 
+    this.subs.add(
     this.store$.select(uiStore.getIsOnDemandQueueOpen).subscribe(isOnDemandQueueOpen => {
       if (!isOnDemandQueueOpen) {
         return;
@@ -164,7 +180,8 @@ export class AppComponent implements OnInit, OnDestroy {
           _ => this.store$.dispatch(new uiStore.SetIsOnDemandQueueOpen(null))
         )
       );
-    });
+    })
+    );
 
     this.store$.dispatch(new uiStore.LoadBanners());
     this.subs.add(
@@ -178,28 +195,32 @@ export class AppComponent implements OnInit, OnDestroy {
     this.loadCustomProductsQueue();
     this.loadMissions();
 
-    this.store$.select(uiStore.getIsSidebarOpen).subscribe(
-      isSidebarOpen => {
-        if (isSidebarOpen) {
-          this.isSaveSearchPanelOpen = true;
-          this.sidenav.open();
-        } else {
-          this.isSaveSearchPanelOpen = false;
-          this.sidenav.close();
+    this.subs.add(
+      this.store$.select(uiStore.getIsSidebarOpen).subscribe(
+        isSidebarOpen => {
+          if (isSidebarOpen) {
+            this.isSaveSearchPanelOpen = true;
+            this.sidenav.open();
+          } else {
+            this.isSaveSearchPanelOpen = false;
+            this.sidenav.close();
+          }
         }
-      }
+      )
     );
 
-    this.store$.select(uiStore.getIsFiltersSidebarOpen).subscribe(
-      isSidebarOpen => {
-        if (isSidebarOpen) {
-          this.isSaveFiltersPanelOpen = true;
-          this.sidenav.open();
-        } else {
-          this.isSaveFiltersPanelOpen = false;
-          this.sidenav.close();
+    this.subs.add(
+      this.store$.select(uiStore.getIsFiltersSidebarOpen).subscribe(
+        isSidebarOpen => {
+          if (isSidebarOpen) {
+            this.isSaveFiltersPanelOpen = true;
+            this.sidenav.open();
+          } else {
+            this.isSaveFiltersPanelOpen = false;
+            this.sidenav.close();
+          }
         }
-      }
+      )
     );
 
     this.subs.add(
@@ -282,6 +303,9 @@ export class AppComponent implements OnInit, OnDestroy {
             this.searchService.loadSearch(searchState);
 
             if (!this.isEmptySearch(searchState)) {
+              if (action.payload !== models.SearchType.BASELINE && action.payload !== models.SearchType.SBAS) {
+                this.clearBaselineRanges();
+              }
               this.store$.dispatch(new searchStore.MakeSearch());
             } else {
               this.store$.dispatch(new filterStore.SetDefaultFilters(profile?.defaultFilterPresets));
@@ -497,6 +521,11 @@ export class AppComponent implements OnInit, OnDestroy {
       name: 'Error',
       type: 'error'
     };
+  }
+
+  private clearBaselineRanges() {
+    this.store$.dispatch(new filtersStore.ClearPerpendicularRange());
+    this.store$.dispatch(new filtersStore.ClearTemporalRange());
   }
 
   ngOnDestroy() {
