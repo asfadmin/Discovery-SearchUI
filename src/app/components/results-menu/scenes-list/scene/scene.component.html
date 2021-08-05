@@ -5,7 +5,7 @@
     [class.selected]="isSelected"
     [ngClass]="{'mobile-size': breakpoint <= breakpoints.SMALL}">
 
-  <div class="image-flex">
+  <div class="image-flex" *ngIf="searchType !== SearchTypes.BASELINE || breakpoint > breakpoints.SMALL">
     <img class="list-thumbnail"
          [src]="scene.thumbnail"
          onerror="this.src='assets/no-thumb.png'"
@@ -101,11 +101,11 @@
     <ng-container *ngIf="searchType === SearchTypes.BASELINE">
       <div style="display: flex;" [ngClass]="{'mobile-size': breakpoint <= breakpoints.SMALL}">
         <div style="display: flex; justify-content: space-evenly; width: 135px;">
-          <div class="metric-flex-field">
+          <div [ngClass]="{'mobile-baseline': breakpoint <= breakpoints.SMALL, 'metric-flex-field': true}">
             {{ withOffset(scene.metadata.perpendicular, offsets.perpendicular) }}m
           </div>
 
-            <div class="metric-flex-field">
+            <div [ngClass]="{'mobile-baseline': breakpoint <= breakpoints.SMALL, 'metric-flex-field': true}">
               {{ withOffset(scene.metadata.temporal, offsets.temporal) }}d
             </div>
             <div class="cart-flex-field">
