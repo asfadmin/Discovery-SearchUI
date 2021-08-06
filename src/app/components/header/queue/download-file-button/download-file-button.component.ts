@@ -33,14 +33,15 @@ export class DownloadFileButtonComponent implements OnInit {
 
     this.dlInProgress = true;
 
+    console.log('href:', href);
     // if an href is passed then the product ignored
-    if (href) {
-      this.url = href;
-      this.fileName = this.url.substring(this.url.lastIndexOf('/') + 1);
-    } else {
+    // if (href) {
+    //   this.url = href;
+    //   this.fileName = this.url.substring(this.url.lastIndexOf('/') + 1);
+    // } else {
       this.url = product.downloadUrl;
       this.fileName = product.file;
-    }
+    // }
 
     this.downloadService.download(this.url, this.fileName).subscribe(resp => {
       this.dFile = resp;
