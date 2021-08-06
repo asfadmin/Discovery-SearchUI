@@ -89,7 +89,7 @@
 <!--      <mat-icon>cloud_download</mat-icon>-->
 <!--    </a>-->
     <app-download-file-button
-      [attr.id]="product.id"
+      [attr.id]="'scene_' + product.id"
       [product] = "product"
       (productDownloaded)="prodDownloaded($event)">
     </app-download-file-button>
