@@ -81,7 +81,7 @@
                   </app-copy-to-clipboard>
 
                   <app-download-file-button
-                    [attr.id]="product.id"
+                    [attr.id]="'dlq_' + product.id"
                     [product] = "product"
                     (productDownloaded)="prodDownloaded($event)">
                   </app-download-file-button>
