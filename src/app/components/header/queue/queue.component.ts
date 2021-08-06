@@ -227,9 +227,15 @@ export class QueueComponent implements OnInit, OnDestroy {
 
   public downloadAllFiles($event) {
     console.log('queue.component:', $event);
-    this.productList = document.getElementsByClassName('download-file-button');
+    const container = document.querySelector('#matListProducts');
+    this.productList = container.getElementsByClassName('download-file-button');
+    console.log('productList:', this.productList);
+    // this.productList = document.getElementsByClassName('download-file-button');
     this.dlQueueNumProcessed = 0;
     this.dlQueueCount = this.productList.length;
+    this.dlDefaultChunkSize = typeof this.dlDefaultChunkSize === 'undefined' ? 3 : this.dlDefaultChunkSize;
+    console.log('dlQueueCount:', this.dlQueueCount);
+    console.log('dlDefaultChunkSize:', this.dlDefaultChunkSize);
     const biteSize = this.dlQueueCount < this.dlDefaultChunkSize ? this.dlQueueCount : this.dlDefaultChunkSize;
     for (let i = 0; i < biteSize; i++) {
       console.log(this.productList[i]);

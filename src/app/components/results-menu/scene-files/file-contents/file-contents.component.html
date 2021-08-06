@@ -21,7 +21,6 @@
 
       <div class="download-cart-icons" fxFlex="81px">
         <app-download-file-button
-          [attr.id]="node.url"
           [href]="node.url"
           [product] = "product"
           (productDownloaded)="prodDownloaded($event)">
