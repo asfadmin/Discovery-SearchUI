@@ -25,7 +25,6 @@
   </mat-expansion-panel>
 
   <mat-expansion-panel
-    *ngIf="breakpoint < breakpoints.MEDIUM"
     [expanded]="defaultPanelOpenState" [disabled]="panelIsDisabled"
     (click)="selectPanel(panels.AOI)"
     [class.raised-section]="isSelected(panels.AOI)">
@@ -46,8 +45,9 @@
     [class.raised-section]="isSelected(panels.DATE)"
     >
     <mat-expansion-panel-header [collapsedHeight]="customCollapsedHeight" [expandedHeight]="customExpandedHeight">
-      <mat-panel-title>
+      <mat-panel-title style="align-items: center;">
         Date Filters
+        <mat-icon (click)="onOpenHelp('https://docs.asf.alaska.edu/vertex/manual/#date-filters')" class="clickable" style="margin-left: 10px;">info</mat-icon>
       </mat-panel-title>
     </mat-expansion-panel-header>
 
@@ -64,8 +64,9 @@
     [class.raised-section]="isSelected(panels.ADDITIONAL)"
     >
     <mat-expansion-panel-header [collapsedHeight]="customCollapsedHeight" [expandedHeight]="customExpandedHeight">
-      <mat-panel-title>
+      <mat-panel-title style="align-items: center;">
         Additional Filters
+        <mat-icon (click)="onOpenHelp('https://docs.asf.alaska.edu/vertex/manual/#additional-filters')" class="clickable" style="margin-left: 10px;">info</mat-icon>
       </mat-panel-title>
     </mat-expansion-panel-header>
 
@@ -80,8 +81,9 @@
     [class.raised-section]="isSelected(panels.PATH)"
     >
     <mat-expansion-panel-header [collapsedHeight]="customCollapsedHeight" [expandedHeight]="customExpandedHeight">
-      <mat-panel-title>
+      <mat-panel-title style="align-items: center;">
         Path and Frame Filters
+        <mat-icon (click)="onOpenHelp('https://docs.asf.alaska.edu/vertex/manual/#path-and-frame-filters')" class="clickable" style="margin-left: 10px;">info</mat-icon>
       </mat-panel-title>
     </mat-expansion-panel-header>
 

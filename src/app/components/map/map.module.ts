@@ -13,7 +13,6 @@ import { LayerSelectorModule } from './map-controls/layer-selector';
 import { MapComponent } from './map.component';
 import { MapControlsModule } from './map-controls';
 import { AoiOptionsModule } from '@components/shared/aoi-options';
-import { FileUploadModule } from './file-upload';
 import { AttributionsComponent } from './attributions/attributions.component';
 import { FiltersDropdownModule } from '@components/filters-dropdown';
 import { BannersModule } from './banners';
@@ -30,7 +29,6 @@ import { BannersModule } from './banners';
     ViewSelectorModule,
     LayerSelectorModule,
     MapControlsModule,
-    FileUploadModule,
     FiltersDropdownModule,
     AoiOptionsModule,
 

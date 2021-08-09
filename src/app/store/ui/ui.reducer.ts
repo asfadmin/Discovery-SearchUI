@@ -62,6 +62,13 @@ export function uiReducer(state = initState, action: UIActions): UIState {
       };
     }
 
+    case UIActionType.OPEN_AOI_OPTIONS: {
+      return {
+        ...state,
+        isAOIOptionsOpen: true
+      };
+    }
+
     case UIActionType.OPEN_SIDEBAR: {
       return {
         ...state,

@@ -1,6 +1,9 @@
-<div class="layout">
+<div (dragover)="onFileHovered($event)" class="layout">
   <div *ngIf="showHeader" class="header-layout mb">
-    <div><b>Options</b></div>
+    <div>
+      <b>Options</b>
+      <mat-icon (click)="onOpenHelp()" class="clickable" style="margin-left: 10px;">info</mat-icon>
+    </div>
 
     <div>
       <button (click)="onClose()" matTooltip="Hide options" mat-icon-button>
@@ -9,31 +12,32 @@
     </div>
   </div>
 
-  <div>
-    <form #polygonInputForm="ngForm" (keydown.enter)="$event.preventDefault()">
-      <mat-form-field [class.invalid-input-animation]="isAOIError" class="w100" style="height: 100px;">
+  <div class="aoi-input-area">
+    <form #polygonInputForm="ngForm"
+      (keydown.enter)="$event.preventDefault()"
+      [class.aoi-input--desktop]="breakpoint !== breakpoints.MOBILE"
+      [class.aoi-input--mobile]="breakpoint === breakpoints.MOBILE">
+
+      <mat-form-field [class.invalid-input-animation]="isAOIError" class="w100">
         <mat-label> Area of Interest • WKT </mat-label>
         <textarea
           (change)="onInputSearchPolygon($event.target.value)"
           [value]="polygon"
           [(ngModel)]="polygon"
           name="searchPolygonLarge"
-          cdkTextareaAutosize cdkAutosizeMinRows="3"
+          cdkTextareaAutosize cdkAutosizeMinRows="7"
           cdkAutosizeMaxRows="8"
           matInput>
         </textarea>
+        <button matSuffix mat-button
+          (click)="onClearPolygon()"
+          aria-label="Clear" >
+          Clear
+        </button>
       </mat-form-field>
     </form>
-  </div>
 
-  <div class="form-layout">
-    <button (click)="onFileUpload()" mat-flat-button color="primary">
-      Import Area of Interest
-    </button>
-
-    <button (click)="onClearPolygon()" mat-flat-button matTooltip="Clear Area of Intreset">
-      Clear
-    </button>
+    <app-file-upload-dialog *ngIf="breakpoint !== breakpoints.MOBILE" style="width: 40%;"></app-file-upload-dialog>
   </div>
 </div>
 

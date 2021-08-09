@@ -60,6 +60,10 @@ export class SbasFiltersComponent implements OnInit, OnDestroy {
     this.selectedPanel = panel;
   }
 
+  public onOpenHelp(url: string): void {
+    window.open(url);
+  }
+
   ngOnDestroy() {
     this.subs.unsubscribe();
   }

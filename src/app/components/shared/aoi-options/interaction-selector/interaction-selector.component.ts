@@ -5,6 +5,7 @@ import { SubSink } from 'subsink';
 import { Store } from '@ngrx/store';
 import { AppState } from '@store';
 import * as mapStore from '@store/map';
+import * as uiStore from '@store/ui';
 
 import { MapInteractionModeType } from '@models';
 import * as services from '@services';
@@ -46,10 +47,12 @@ export class InteractionSelectorComponent implements OnInit, OnDestroy {
     () => this.onNewInteractionMode(
       this.interaction === MapInteractionModeType.EDIT ? MapInteractionModeType.NONE : MapInteractionModeType.EDIT
       )
+
   public onImportSelected() {
-    const action = new mapStore.SetMapInteractionMode(MapInteractionModeType.UPLOAD);
+    const action = new uiStore.OpenAOIOptions();
     this.store$.dispatch(action);
   }
+
   public onClearSelected = () => {
     this.clearButton.checked = false;
     this.mapService.clearDrawLayer();

@@ -24,6 +24,7 @@ import * as mapStore from '@store/map';
 import * as queueStore from '@store/queue';
 import * as userStore from '@store/user';
 import * as hyp3Store from '@store/hyp3';
+import * as filtersStore from '@store/filters';
 
 import * as services from '@services';
 import * as models from './models';
@@ -234,6 +235,13 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
       this.store$.select(userStore.getUserProfile).subscribe(
         profile => {
           this.urlStateService.setDefaults(profile);
+
+          if (this.searchType !== models.SearchType.LIST && this.searchType !== models.SearchType.CUSTOM_PRODUCTS) {
+            const defaultFilterID = profile.defaultFilterPresets[this.searchType];
+            if (!!defaultFilterID) {
+              this.store$.dispatch(new userStore.LoadFiltersPreset(defaultFilterID));
+            }
+        }
         })
     );
 
@@ -249,6 +257,19 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
     const user = this.authService.getUser();
     if (user.id) {
       this.store$.dispatch(new userStore.Login(user));
+      this.subs.add(
+      this.store$.select(userStore.getUserProfile).subscribe(
+        profile => {
+
+          if (this.searchType !== models.SearchType.LIST && this.searchType !== models.SearchType.CUSTOM_PRODUCTS) {
+            const defaultFilterID = profile.defaultFilterPresets[this.searchType];
+            if (!!defaultFilterID) {
+              this.store$.dispatch(new userStore.LoadFiltersPreset(defaultFilterID));
+          }
+        }
+      }
+      )
+      );
     }
 
     this.subs.add(
@@ -282,6 +303,9 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
             this.searchService.loadSearch(searchState);
 
             if (!this.isEmptySearch(searchState)) {
+              if (action.payload !== models.SearchType.BASELINE && action.payload !== models.SearchType.SBAS) {
+                this.clearBaselineRanges();
+              }
               this.store$.dispatch(new searchStore.MakeSearch());
             } else {
               this.store$.dispatch(new filterStore.SetDefaultFilters(profile?.defaultFilterPresets));
@@ -497,6 +521,11 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
       name: 'Error',
       type: 'error'
     };
+  }
+
+  private clearBaselineRanges() {
+    this.store$.dispatch(new filtersStore.ClearPerpendicularRange());
+    this.store$.dispatch(new filtersStore.ClearTemporalRange());
   }
 
   ngOnDestroy() {
