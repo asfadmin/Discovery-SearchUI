@@ -34,8 +34,8 @@ export class DownloadService {
 
 
     if (userAgent.browser.name !== 'Chrome') {
-      // classicDownload( url, filename );
-      // return;
+      classicDownload( url, filename );
+      return;
     }
 
     // tslint:disable-next-line:max-line-length
