@@ -22,7 +22,7 @@ import { EnvironmentService } from '@services';
 })
 export class OnDemandAddMenuComponent implements OnInit {
   @Input() hyp3ableProducts: models.Hyp3ableProductByJobType;
-  @Input() isExpired: boolean = false;
+  @Input() isExpired = false;
   @Input() expiredJobs: models.Hyp3Job;
 
   @ViewChild('addMenu', {static: true}) addMenu: MatMenu;
