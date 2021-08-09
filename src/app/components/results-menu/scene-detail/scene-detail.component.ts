@@ -228,6 +228,14 @@ export class SceneDetailComponent implements OnInit, OnDestroy {
     this.detailsOpen = (event.target as HTMLDetailsElement).open;
   }
 
+  public isRestrictedDataset(): boolean {
+    return (
+      this.scene.dataset.includes('RADARSAT-1') ||
+      this.scene.dataset.includes('JERS-1')
+    );
+  }
+
+
   ngOnDestroy() {
     this.subs.unsubscribe();
   }
