@@ -50,10 +50,6 @@
                 <div matLine
                      class="item-content"
                      [ngClass]="{'dl-list-item-mobile' : breakpoint === breakpoints.MOBILE }">
-<!--                  <mat-checkbox class="item-checkbox"-->
-<!--                                color=primary-->
-<!--                                (change)="toggleItemSelected( product.id, product.downloadUrl )">-->
-<!--                  </mat-checkbox>-->
                   <b>
                       <span *ngIf="breakpoint !== breakpoints.MOBILE">{{ product.name | truncate: 50 }}</span>
                       <span *ngIf="breakpoint === breakpoints.MOBILE">{{ product.name | truncate: 10 }}</span>
@@ -176,10 +172,8 @@
             </ng-container>
 
             <mat-menu #dataMenu="matMenu" yPosition="above">
-<!--              https://stackoverflow.com/questions/37587732/how-to-call-another-components-function-in-angular2-->
-<!--              https://angular.io/guide/component-interaction-->
               <app-download-all
-                (dlAllEvent)="downloadAllFiles($event)"
+                (dlAllEvent)="downloadAllFiles()"
               >
               </app-download-all>
               <button mat-menu-item (click)="onMakeDownloadScript()">

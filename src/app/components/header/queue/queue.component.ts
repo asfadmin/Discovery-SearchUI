@@ -196,7 +196,6 @@ export class QueueComponent implements OnInit, OnDestroy {
     if ( this.selectedItems.length > 0 ) {
         this.someChecked = true;
       }
-    console.log('itemSelected:', this.selectedItems);
   }
 
   public demWarning(products) {
@@ -216,7 +215,6 @@ export class QueueComponent implements OnInit, OnDestroy {
   }
 
   public download(href) {
-    console.log('href:', href);
     this.download$ = this.http.get(href, {
       withCredentials: true,
       reportProgress: true,
@@ -225,20 +223,14 @@ export class QueueComponent implements OnInit, OnDestroy {
     }).pipe(download(() => saveAs('special.nc')));
   }
 
-  public downloadAllFiles($event) {
-    console.log('queue.component:', $event);
+  public downloadAllFiles() {
     const container = document.querySelector('#matListProducts');
     this.productList = container.getElementsByClassName('download-file-button');
-    console.log('productList:', this.productList);
-    // this.productList = document.getElementsByClassName('download-file-button');
     this.dlQueueNumProcessed = 0;
     this.dlQueueCount = this.productList.length;
     this.dlDefaultChunkSize = typeof this.dlDefaultChunkSize === 'undefined' ? 3 : this.dlDefaultChunkSize;
-    console.log('dlQueueCount:', this.dlQueueCount);
-    console.log('dlDefaultChunkSize:', this.dlDefaultChunkSize);
     const biteSize = this.dlQueueCount < this.dlDefaultChunkSize ? this.dlQueueCount : this.dlDefaultChunkSize;
     for (let i = 0; i < biteSize; i++) {
-      console.log(this.productList[i]);
       const el: HTMLButtonElement = this.productList[i] as HTMLButtonElement;
       el.click();
       this.dlQueueNumProcessed++;

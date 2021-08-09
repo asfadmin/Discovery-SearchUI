@@ -32,9 +32,6 @@ export class DownloadService {
     // url = 'https://filegen-dev.asf.alaska.edu/generate?bytes=' + megas.trim() + 'e6';
     // url = 'https://filegen-dev.asf.alaska.edu/generate?bytes=10e6';
 
-    console.log('Download Service Executing');
-    console.log('url:', url);
-    console.log('filename:', filename);
 
     if (userAgent.browser.name !== 'Chrome') {
       // classicDownload( url, filename );
@@ -60,7 +57,6 @@ export class DownloadService {
 }
 
 export function classicDownload( url, _filename ) {
-  console.log('classicDownload url:', url);
   const link = document.createElement('a');
   link.style.display = 'none';
   link.href = url;
@@ -77,6 +73,5 @@ export function classicDownload( url, _filename ) {
   setTimeout(() => {
     URL.revokeObjectURL(link.href);
     link.parentNode.removeChild(link);
-    console.log('link removed');
   }, 0);
 }

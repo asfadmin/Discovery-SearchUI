@@ -33,7 +33,6 @@ export class DownloadFileButtonComponent implements OnInit {
 
     this.dlInProgress = true;
 
-    console.log('href:', href);
     // if an href is passed then the product ignored
     if (typeof href !== 'undefined') {
       this.url = href;
