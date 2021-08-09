@@ -9,7 +9,7 @@
           class="large-icon"
           svgIcon="hyp3"
           [matBadge]="queuedCustomProducts.length"
-          matBadgeColor="{{ queuedCustomProducts.length > 0 ? 'accent' : 'primary' }}"
+          [matBadgeColor]="getMatBadgeColor()"
           matBadgePosition="above after"
           matBadgeOverlap="true"
           matBadgeSize="small">
@@ -38,7 +38,7 @@
       <mat-icon
         class="large-icon"
         [matBadge]="queuedProducts.length"
-        matBadgeColor="{{ queuedProducts.length > 0 ? 'accent' : 'primary' }}"
+        [matBadgeColor]="getMatBadgeColor()"
         matBadgePosition="above after"
         matBadgeOverlap="true"
         matBadgeSize="small">
@@ -80,7 +80,7 @@
       matTooltip="On Demand Queue"
       svgIcon="hyp3"
       [matBadge]="queuedCustomProducts.length"
-      matBadgeColor="{{ queuedCustomProducts.length > 0 ? 'accent' : 'primary' }}"
+      [matBadgeColor]="getMatBadgeColor()"
       matBadgePosition="above after"
       matBadgeOverlap="true"
       matBadgeSize="small">
@@ -102,7 +102,7 @@
       (click)="onOpenDownloadQueue()"
       class="mobile-icon-spacing"
       [matBadge]="queuedProducts.length"
-      matBadgeColor="{{ queuedProducts.length > 0 ? 'accent' : 'primary' }}"
+      [matBadgeColor]="getMatBadgeColor()"
       matBadgePosition="above after"
       matBadgeOverlap="true"
       matBadgeSize="small">

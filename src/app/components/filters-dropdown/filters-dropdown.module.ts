@@ -21,7 +21,7 @@ import { CustomProductsFiltersModule } from './custom-products-filters';
 import { SearchSelectorModule } from '@components/shared/selectors/search-selector';
 
 import { FlexLayoutModule } from '@angular/flex-layout';
-
+import { PipesModule } from '@pipes';
 @NgModule({
   imports: [
     CommonModule,
@@ -43,6 +43,7 @@ import { FlexLayoutModule } from '@angular/flex-layout';
     FlexLayoutModule,
 
     SearchSelectorModule,
+    PipesModule,
   ],
   declarations: [
     FiltersDropdownComponent,

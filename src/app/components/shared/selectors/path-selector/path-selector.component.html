@@ -2,14 +2,14 @@
   <mat-form-field *ngIf="prop.isRelevant(p.PATH)"
     [class.invalid-input-animation]="typeHasError(inputTypes.PATH_START)">
     <input matInput
-      (input)="onValueChanged($event.target.value, inputTypes.PATH_START)"
+      (input)="onValueChanged($event, inputTypes.PATH_START)"
       [(ngModel)]="pathStart"
       name="pathStart" placeholder="Path Start">
   </mat-form-field>
   <mat-form-field *ngIf="prop.isRelevant(p.PATH)" class="range-form-input"
     [class.invalid-input-animation]="typeHasError(inputTypes.PATH_END)">
     <input matInput
-      (input)="onValueChanged($event.target.value, inputTypes.PATH_END)"
+      (input)="onValueChanged($event, inputTypes.PATH_END)"
       [(ngModel)]="pathEnd"
       name="pathEnd" placeholder="Path End">
   </mat-form-field>
@@ -17,14 +17,14 @@
   <mat-form-field *ngIf="prop.isRelevant(p.FRAME)"
     [class.invalid-input-animation]="typeHasError(inputTypes.FRAME_START)">
     <input matInput
-      (input)="onValueChanged($event.target.value, inputTypes.FRAME_START)"
+      (input)="onValueChanged($event, inputTypes.FRAME_START)"
       [(ngModel)]="frameStart"
       name="frameStart" placeholder="Frame Start">
   </mat-form-field>
   <mat-form-field *ngIf="prop.isRelevant(p.FRAME)" class="range-form-input"
     [class.invalid-input-animation]="typeHasError(inputTypes.FRAME_END)">
     <input matInput
-      (input)="onValueChanged($event.target.value, inputTypes.FRAME_END)"
+      (input)="onValueChanged($event, inputTypes.FRAME_END)"
       [(ngModel)]="frameEnd"
       name="frameEnd" placeholder="Frame End">
   </mat-form-field>

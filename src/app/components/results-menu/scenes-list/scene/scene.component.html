@@ -44,11 +44,11 @@
       </span>
       <span *ngIf="breakpoint > breakpoints.MOBILE && searchType !== SearchTypes.BASELINE"
         matTooltip="Scene Start Time">
-          {{ scene.metadata.date | fullDate }}
+          {{ scene.metadata.date.toDate() | fullDate }}
       </span>
       <span *ngIf="breakpoint === breakpoints.MOBILE || searchType === SearchTypes.BASELINE"
         matTooltip="Scene Start Time">
-        {{ scene.metadata.date | shortDate }}
+        {{ scene.metadata.date.toDate() | shortDate }}
       </span>
     </div>
   </div>
@@ -68,7 +68,7 @@
         </mat-icon>
 
         <mat-icon *ngIf="isDownloadable(scene)"
-          (click)="onToggleScene($event, scene.groupId)"
+          (click)="onToggleScene()"
           class="icon-margin"
           matTooltip="{{
             isQueued ?
@@ -116,7 +116,7 @@
                 svgIcon="hyp3">
               </mat-icon>
               <mat-icon *ngIf="isDownloadable(scene)"
-                (click)="onToggleScene($event, scene.groupId)"
+                (click)="onToggleScene()"
                 class="icon-margin"
                 matTooltip="{{
                   isQueued ?

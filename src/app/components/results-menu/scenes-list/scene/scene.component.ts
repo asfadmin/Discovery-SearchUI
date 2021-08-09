@@ -20,12 +20,12 @@ export class SceneComponent implements OnInit {
   @Input() searchType: models.SearchType;
 
   @Input() isSelected: boolean;
-  @Input() offsets: {temporal: 0, perpendicular: number};
+  @Input() offsets: {temporal: number, perpendicular: number} = {temporal: 0, perpendicular: null};
 
   @Input() isQueued: boolean;
   @Input() jobQueued: boolean;
   @Input() numQueued: number;
-  @Input() hyp3ableByJobType: {hyp3able: Hyp3ableProductByJobType[], total: number};
+  @Input() hyp3ableByJobType: { total: number, byJobType: models.Hyp3ableProductByJobType[]};
 
   @Output() zoomTo = new EventEmitter();
   @Output() toggleScene = new EventEmitter();

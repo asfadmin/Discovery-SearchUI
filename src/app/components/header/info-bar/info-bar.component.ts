@@ -18,7 +18,7 @@ declare global {
 @Component({
   selector: 'app-info-bar',
   templateUrl: './info-bar.component.html',
-  styleUrls: ['./info-bar.component.scss']
+  styleUrls: ['./info-bar.component.scss'],
 })
 export class InfoBarComponent implements OnInit, OnDestroy {
   @Input() resize$: Observable<void>;

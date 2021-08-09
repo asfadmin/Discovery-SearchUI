@@ -76,7 +76,8 @@ export class AoiFilterComponent implements OnInit, OnDestroy {
     this.store$.dispatch(new uiStore.CloseAOIOptions());
   }
 
-  public onInputSearchPolygon(polygon: string): void {
+  public onInputSearchPolygon(event: Event): void {
+    const polygon = (event.target as HTMLInputElement).value;
     const didLoad = this.mapService.loadPolygonFrom(polygon);
 
     if (!didLoad) {

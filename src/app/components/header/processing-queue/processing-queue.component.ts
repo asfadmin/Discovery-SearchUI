@@ -339,7 +339,7 @@ export class ProcessingQueueComponent implements OnInit {
     }
   }
 
-  public getTabIdIndex(id: models.Hyp3JobType) {
+  public getTabIdIndex(id: string) {
     return this.jobTypesWithQueued.findIndex((queuedJobType) => queuedJobType.jobType.id === id);
   }
 

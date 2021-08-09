@@ -45,9 +45,9 @@ export class SBASResultsMenuComponent implements OnInit, OnDestroy {
   public isSelectedPairCustom: boolean;
   private subs = new SubSink();
 
-  public zoomInChart$ = new Subject();
-  public zoomOutChart$ = new Subject();
-  public zoomToFitChart$ = new Subject();
+  public zoomInChart$ = new Subject<void>();
+  public zoomOutChart$ =  new Subject<void>();
+  public zoomToFitChart$ =  new Subject<void>();
 
   constructor(
     private store$: Store<AppState>,

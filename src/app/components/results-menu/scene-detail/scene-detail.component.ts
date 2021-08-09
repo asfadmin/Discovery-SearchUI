@@ -224,6 +224,10 @@ export class SceneDetailComponent implements OnInit, OnDestroy {
     ].forEach(action => this.store$.dispatch(action));
   }
 
+  public onSetDetailsOpen(event: Event) {
+    this.detailsOpen = (event.target as HTMLDetailsElement).open;
+  }
+
   ngOnDestroy() {
     this.subs.unsubscribe();
   }

@@ -94,8 +94,10 @@ export class PathSelectorComponent implements OnInit, OnDestroy {
     return (charCode > 31 && (charCode < 48 || charCode > 57));
   }
 
-  public onValueChanged(inputValue: string, inputType: PathFormInputType): void {
+  public onValueChanged(event: Event, inputType: PathFormInputType): void {
     let val: number | null;
+
+    const inputValue = (event.target as HTMLInputElement).value;
 
     if (!this.isValidNumber(inputValue)) {
       if (inputValue !== '') {

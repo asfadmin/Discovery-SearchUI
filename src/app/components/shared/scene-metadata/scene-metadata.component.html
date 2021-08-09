@@ -8,7 +8,7 @@
   </li>
 
   <li *ngIf="prop.isRelevant(p.DATE, dataset)">
-    <span class="v-mid"><b>Start Time</b> • {{ scene.metadata.date | shortDateTime }}</span>
+    <span class="v-mid"><b>Start Time</b> • {{ scene.metadata.date.toDate() | shortDateTime }}</span>
     <mat-icon *ngIf="isGeoSearch()"
       [matMenuTriggerFor]="addSceneDateMenu"
       class="v-mid clickable">
@@ -22,7 +22,7 @@
   </li>
 
   <li *ngIf="prop.isRelevant(p.DATE, dataset)">
-    <span class="v-mid"><b>Stop Time</b> • {{ scene.metadata.stopDate | shortDateTime }}</span>
+    <span class="v-mid"><b>Stop Time</b> • {{ scene.metadata.stopDate.toDate() | shortDateTime }}</span>
     <mat-icon *ngIf="isGeoSearch()"
       [matMenuTriggerFor]="addSceneStopDateMenu"
       class="v-mid clickable">

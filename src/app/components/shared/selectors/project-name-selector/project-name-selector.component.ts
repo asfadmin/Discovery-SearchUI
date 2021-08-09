@@ -67,7 +67,8 @@ export class ProjectNameSelectorComponent implements OnInit, OnDestroy {
     );
   }
 
-  public onProjectNameChange(projectName: string): void {
+  public onProjectNameChange(event: Event): void {
+    let projectName = (event.target as HTMLInputElement).value;
     if (projectName.length > 20) {
       projectName = null;
       this.nameErrors$.next();
@@ -82,7 +83,8 @@ export class ProjectNameSelectorComponent implements OnInit, OnDestroy {
     this.store$.dispatch(action);
   }
 
-  public onProjectNameInput(projectName: string): void {
+  public onProjectNameInput(event: Event): void {
+    let projectName = (event.target as HTMLInputElement).value;
     let filterValue: string;
     if (projectName.length > 20) {
       projectName = null;
