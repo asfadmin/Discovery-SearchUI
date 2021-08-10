@@ -38,11 +38,11 @@
       <span>{{ job.job_type }} - </span>
       <span *ngIf="breakpoint > breakpoints.MOBILE && searchType !== SearchTypes.BASELINE"
         matTooltip="Start Time">
-          {{ scene.metadata.date.toDate() | fullDate }}
+          {{ scene.metadata.date | fullDate }}
       </span>
       <span *ngIf="breakpoint === breakpoints.MOBILE || searchType === SearchTypes.BASELINE"
         matTooltip="Start Time">
-        {{ scene.metadata.date.toDate() | shortDate }}
+        {{ scene.metadata.date | shortDate }}
       </span>
     </div>
   </div>

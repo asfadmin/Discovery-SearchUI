@@ -15,10 +15,10 @@
             {{ dataset.name }}
           </a> •
           <span *ngIf="breakpoint > breakpoints.MOBILE">
-            {{ scene.metadata.date.toDate() | fullDate }}
+            {{ scene.metadata.date | fullDate }}
           </span>
           <span *ngIf="breakpoint === breakpoints.MOBILE">
-            {{ scene.metadata.date.toDate() | shortDateTime }}
+            {{ scene.metadata.date | shortDateTime }}
           </span>
         </span>
       </div>

@@ -44,11 +44,11 @@
       </span>
       <span *ngIf="breakpoint > breakpoints.MOBILE && searchType !== SearchTypes.BASELINE"
         matTooltip="Scene Start Time">
-          {{ scene.metadata.date.toDate() | fullDate }}
+          {{ scene.metadata.date | fullDate }}
       </span>
       <span *ngIf="breakpoint === breakpoints.MOBILE || searchType === SearchTypes.BASELINE"
         matTooltip="Scene Start Time">
-        {{ scene.metadata.date.toDate() | shortDate }}
+        {{ scene.metadata.date| shortDate }}
       </span>
     </div>
   </div>

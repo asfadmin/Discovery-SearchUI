@@ -76,7 +76,7 @@
     </div>
 
     <div *ngIf="product.metadata.job" mat-line>
-      Job Submitted: {{ product.metadata.job.request_time.toDate()| fullDate }}
+      Job Submitted: {{ product.metadata.job.request_time| fullDate }}
     </div>
 
     <div *ngFor="let param of paramsList" mat-line>
