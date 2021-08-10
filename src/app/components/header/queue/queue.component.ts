@@ -252,16 +252,15 @@ export class QueueComponent implements OnInit, OnDestroy {
   }
 }
 
-async function task( i: number, prodList ) { // 3
+async function bite( biteSize: number, prodList: any ) {
+  for (let i = 0; i < biteSize; i++) {
+    await nibble( i, prodList );
+  }
+}
+async function nibble( i: number, prodList ) { // 3
   await timer(1000);
   const el: HTMLButtonElement = prodList[i] as HTMLButtonElement;
   el.click();
-}
-
-async function bite( biteSize: number, prodList: any ) {
-  for (let i = 0; i < biteSize; i++) {
-        await task( i, prodList );
-  }
 }
 
 function timer(ms) { return new Promise(res => setTimeout(res, ms)); }

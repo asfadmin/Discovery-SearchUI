@@ -36,7 +36,7 @@ export function download(
         // tslint:disable-next-line:no-shadowed-variable
         (download: Download, event): Download => {
           if (isHttpProgressEvent(event)) {
-            // console.log('event.total:', event.total);
+            console.log('event.total:', event.total);
             return {
               progress: event.total
                 ? Math.round((100 * event.loaded) / event.total)
