@@ -1,4 +1,4 @@
-import { NgModule, NO_ERRORS_SCHEMA } from '@angular/core';
+import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { FlexLayoutModule } from '@angular/flex-layout';
@@ -44,6 +44,7 @@ import { BaselineHeaderComponent } from './baseline-header/baseline-header.compo
 import { MasterSceneSelectorModule } from '@components/shared/selectors/master-scene-selector';
 import { Hyp3HeaderComponent } from './hyp3-header/hyp3-header.component';
 import { CreateSubscriptionModule } from './create-subscription/create-subscription.module';
+import { CiSearchModule } from './info-bar/ci-search/ci-search.module';
 
 @NgModule({
   declarations: [
@@ -88,11 +89,11 @@ import { CreateSubscriptionModule } from './create-subscription/create-subscript
     ProjectNameSelectorModule,
     JobStatusSelectorModule,
     JobProductNameSelectorModule,
-    CreateSubscriptionModule
+    CreateSubscriptionModule,
+    CiSearchModule
   ],
   exports: [
     HeaderComponent
   ],
-  schemas: [ NO_ERRORS_SCHEMA ]
 })
 export class HeaderModule { }
