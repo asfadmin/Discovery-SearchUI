@@ -81,7 +81,7 @@
                 <a mat-menu-item [href]="product.downloadUrl" target="_blank" matTooltip="Download file">
             <span style="margin-right: 10px; margin-left: 10px;">
               <span *ngIf="product.bytes === 0">Virtual</span>
-              <span *ngIf="product.bytes !== 0">{{product.bytes | readableSizeFromBytes }}</span>
+              <span *ngIf="product.bytes !== 0">{{product.bytes.toString() | readableSizeFromBytes }}</span>
             </span>
                   <span>
               <mat-icon>cloud_download</mat-icon>

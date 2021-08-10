@@ -68,7 +68,7 @@
 
     <div mat-line>
       <span *ngIf="product.bytes === 0">Virtual</span>
-      <span *ngIf="isDownloadable(product) && product.bytes !== 0">{{product.bytes | readableSizeFromBytes }}</span>
+      <span *ngIf="isDownloadable(product) && product.bytes !== 0">{{product.bytes.toString() | readableSizeFromBytes }}</span>
     </div>
 
     <div *ngIf="product.metadata.job && product.metadata.job.name" mat-line>
@@ -76,7 +76,7 @@
     </div>
 
     <div *ngIf="product.metadata.job" mat-line>
-      Job Submitted: {{ product.metadata.job.request_time | fullDate }}
+      Job Submitted: {{ product.metadata.job.request_time| fullDate }}
     </div>
 
     <div *ngFor="let param of paramsList" mat-line>

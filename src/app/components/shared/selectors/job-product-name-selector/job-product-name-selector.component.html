@@ -4,7 +4,7 @@
         <mat-label>Product/Source Scene</mat-label>
         <div *ngIf="!headerView">
         <textarea *ngIf="!headerView" matInput placeholder="S1A..."
-        (input)="onFilterProductName($event.target.value)"
+        (input)="onFilterProductName($event)"
         [value]="productNameFilter"
         [(ngModel)]="productNameFilter"
 
@@ -17,7 +17,7 @@
             </button>
         </div>
         <input *ngIf="headerView" matInput placeholder="S1A..."
-        (input)="onFilterProductName($event.target.value)"
+        (input)="onFilterProductName($event)"
         [value]="productNameFilter"
         [(ngModel)]="productNameFilter"
         [formControl]="myControl"
@@ -62,7 +62,7 @@
             <mat-form-field style="width: 100%;">
                 <textarea
                 matInput placeholder="S1A..."
-                (input)="onFilterProductName($event.target.value)"
+                (input)="onFilterProductName($event)"
                 [value]="productNameFilter"
                 [(ngModel)]="productNameFilter"
                 [matAutocomplete]="jobNameSelector"

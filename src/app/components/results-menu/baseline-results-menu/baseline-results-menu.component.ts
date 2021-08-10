@@ -55,7 +55,7 @@ export class BaselineResultsMenuComponent implements OnInit, OnDestroy {
   public AutoRift = models.hyp3JobTypes.AUTORIFT;
   public ApiFormat = models.AsfApiOutputFormat;
 
-  public hyp3able = {};
+  public hyp3able: { total: number, byJobType: models.Hyp3ableProductByJobType[]};
 
   constructor(
     private store$: Store<AppState>,
@@ -161,6 +161,10 @@ export class BaselineResultsMenuComponent implements OnInit, OnDestroy {
     actions.forEach(action =>
       this.store$.dispatch(action)
     );
+  }
+
+  public isOfCardView(view: CardViews) {
+    return this.view === view;
   }
 
   ngOnDestroy() {

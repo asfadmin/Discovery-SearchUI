@@ -17,7 +17,7 @@ import { AttributionsComponent } from './attributions/attributions.component';
 import { FiltersDropdownModule } from '@components/filters-dropdown';
 import { BannersModule } from './banners';
 
-
+import { FileUploadModule } from '@components/shared/aoi-options/file-upload';
 @NgModule({
   imports: [
     CommonModule,
@@ -36,6 +36,7 @@ import { BannersModule } from './banners';
     ClearButtonModule,
     MaxResultsSelectorModule,
     BannersModule,
+    FileUploadModule,
   ],
   declarations: [
     MapComponent,

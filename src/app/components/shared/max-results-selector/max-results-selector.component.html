@@ -24,7 +24,7 @@
 <div
   *ngIf="searchType !== searchTypes.DATASET"
   style="padding: 2px;" class="faint-text">
-  <span [class.invisible]="searchType !== searchTypes.DATASET">
+  <span [class.invisible]="true">
     <span>
         {{ formatNumber(maxResults) }} <mat-icon
           class="faint-text clickable">arrow_drop_down</mat-icon>

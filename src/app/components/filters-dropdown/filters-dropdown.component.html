@@ -31,7 +31,7 @@
 
     <div class="filters-list">
       <ng-container *ngIf="selectedSearchType === searchTypes.DATASET">
-        <app-dataset-filters [dataset]="dataset$ | async">
+        <app-dataset-filters [dataset]="(dataset$ | async)">
         </app-dataset-filters>
       </ng-container>
 

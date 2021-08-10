@@ -33,7 +33,7 @@ import { SBASOverlap } from '@models';
   ],
 })
 export class FiltersDropdownComponent implements OnInit, OnDestroy {
-  @Input() dataset$: Observable<models.Dataset>;
+  @Input() dataset$: Observable<models.CMRProduct>;
   public isFiltersMenuOpen$ = this.store$.select(uiStore.getIsFiltersMenuOpen);
 
   public searchType$ = this.store$.select(searchStore.getSearchType);

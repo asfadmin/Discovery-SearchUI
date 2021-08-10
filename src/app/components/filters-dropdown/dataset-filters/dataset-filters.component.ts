@@ -14,7 +14,8 @@ enum FilterPanel {
   ADDITIONAL = 'Additional',
   CAMPAIGN = 'Campaign',
   PATH = 'Path',
-  AOI = 'Aoi'
+  AOI = 'Aoi',
+  SEARCH = 'Search'
 }
 
 @Component({

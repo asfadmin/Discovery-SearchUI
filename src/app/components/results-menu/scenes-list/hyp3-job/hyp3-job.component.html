@@ -53,7 +53,7 @@
           settings_overscan
         </mat-icon>
 
-        <mat-icon (click)="onToggleScene($event, scene.groupId)"
+        <mat-icon (click)="onToggleScene()"
                   class="icon-margin"
                   matTooltip="{{
                 isQueued ?
@@ -73,15 +73,15 @@
       <div style="display: flex;" [ngClass]="{'mobile-size': breakpoint <= breakpoints.SMALL}">
         <div style="display: flex; justify-content: space-evenly; width: 135px;">
           <div class="metric-flex-field">
-            {{ withOffset(scene.metadata.perpendicular, offsets.perpendicular) }}m
+            <!-- {{ withOffset(scene.metadata.perpendicular, offsets.perpendicular) }}m -->
           </div>
 
           <div class="metric-flex-field">
-            {{ withOffset(scene.metadata.temporal, offsets.temporal) }}d
+            <!-- {{ withOffset(scene.metadata.temporal, offsets.temporal) }}d -->
           </div>
 
           <div class="cart-flex-field">
-            <mat-icon (click)="onToggleScene($event, scene.groupId)"
+            <mat-icon (click)="onToggleScene()"
                       class="icon-margin"
                       matTooltip="{{
               isQueued ? 'Remove scene files from downloads': 'Add scene files to downloads'
