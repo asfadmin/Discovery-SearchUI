@@ -2,6 +2,7 @@ import { Component, Input, Output, EventEmitter, OnInit } from '@angular/core';
 import { Download } from 'ngx-operators';
 import { DownloadService } from '@services/download.service';
 import { CMRProduct } from '@models';
+import {UAParser} from 'ua-parser-js';
 
 @Component({
   selector: 'app-download-file-button',
@@ -33,7 +34,6 @@ export class DownloadFileButtonComponent implements OnInit {
 
     this.dlInProgress = true;
 
-    // if an href is passed then the product ignored
     if (typeof href !== 'undefined') {
       this.url = href;
       this.fileName = this.url.substring(this.url.lastIndexOf('/') + 1);
@@ -42,7 +42,31 @@ export class DownloadFileButtonComponent implements OnInit {
       this.fileName = product.file;
     }
 
+    // UAParser.js - https://www.npmjs.com/package/ua-parser-js
+    // JavaScript library to detect Browser, Engine, OS, CPU, and Device type/model from User-Agent data with relatively small footprint
+    const parser = new UAParser();
+    const userAgent = parser.getResult();
+    // console.log(userAgent.browser);             // {name: "Chromium", version: "15.0.874.106"}
+    // console.log(userAgent.device);              // {model: undefined, type: undefined, vendor: undefined}
+    // console.log(userAgent.os);                  // {name: "Ubuntu", version: "11.10"}
+    // console.log(userAgent.os.version);          // "11.10"
+    // console.log(userAgent.engine.name);         // "WebKit"
+    // console.log(userAgent.cpu.architecture);    // "amd64"
+
+    // const megas = window.prompt('How many MBs do you want:');
+    // url = 'https://filegen-dev.asf.alaska.edu/generate?bytes=' + megas.trim() + 'e6';
+    // url = 'https://filegen-dev.asf.alaska.edu/generate?bytes=10e6';
+
+    if (userAgent.browser.name !== 'Chrome') {
+      classicDownload(this.url, this.fileName);
+      this.dlInProgress = false;
+      this.dlComplete = true;
+      this.productDownloaded.emit( product );
+      return;
+    }
+
     this.downloadService.download(this.url, this.fileName).subscribe(resp => {
+      console.log('resp', resp);
       this.dFile = resp;
       if (resp.state === 'DONE') {
         this.dlInProgress = false;
@@ -51,4 +75,25 @@ export class DownloadFileButtonComponent implements OnInit {
       }
     });
   }
+}
+
+export function classicDownload( url, _filename ) {
+  const link = document.createElement('a');
+
+  link.style.display = 'none';
+  link.href = url;
+  // link.pathname = _filename;
+  link.target = '_blank';
+  link.type = 'blob';
+
+  // It needs to be added to the DOM so it can be clicked
+  document.body.appendChild(link);
+  link.click();
+
+  // To make this work on Firefox we need to wait
+  // a little while before removing it.
+  setTimeout(() => {
+    URL.revokeObjectURL(link.href);
+    link.parentNode.removeChild(link);
+  }, 0);
 }
