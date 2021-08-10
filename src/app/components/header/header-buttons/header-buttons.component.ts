@@ -387,10 +387,6 @@ export class HeaderButtonsComponent implements OnInit, OnDestroy {
     this.env.setMaturity(maturity);
   }
 
-  public getMatBadgeColor(): ThemePalette {
-    return this.queuedProducts.length > 0 ? this.accentPalette : this.primaryPalette;
-  }
-
   ngOnDestroy() {
     this.subs.unsubscribe();
   }
