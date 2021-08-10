@@ -229,12 +229,9 @@ export class QueueComponent implements OnInit, OnDestroy {
     this.dlQueueNumProcessed = 0;
     this.dlQueueCount = this.productList.length;
     this.dlDefaultChunkSize = typeof this.dlDefaultChunkSize === 'undefined' ? 3 : this.dlDefaultChunkSize;
-    const biteSize = this.dlQueueCount < this.dlDefaultChunkSize ? this.dlQueueCount : this.dlDefaultChunkSize;
-    for (let i = 0; i < biteSize; i++) {
-      const el: HTMLButtonElement = this.productList[i] as HTMLButtonElement;
-      el.click();
-      this.dlQueueNumProcessed++;
-    }
+    // const biteSize = this.dlQueueCount < this.dlDefaultChunkSize ? this.dlQueueCount : this.dlDefaultChunkSize;
+    const biteSize = 3;
+    bite( biteSize, this.productList ).then( () => { this.dlQueueNumProcessed = biteSize; } );
   }
 
   public prodDownloaded(product) {
@@ -254,3 +251,17 @@ export class QueueComponent implements OnInit, OnDestroy {
     this.subs.unsubscribe();
   }
 }
+
+async function task( i: number, prodList ) { // 3
+  await timer(1000);
+  const el: HTMLButtonElement = prodList[i] as HTMLButtonElement;
+  el.click();
+}
+
+async function bite( biteSize: number, prodList: any ) {
+  for (let i = 0; i < biteSize; i++) {
+        await task( i, prodList );
+  }
+}
+
+function timer(ms) { return new Promise(res => setTimeout(res, ms)); }

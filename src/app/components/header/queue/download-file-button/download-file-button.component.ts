@@ -58,10 +58,11 @@ export class DownloadFileButtonComponent implements OnInit {
     // url = 'https://filegen-dev.asf.alaska.edu/generate?bytes=10e6';
 
     if (userAgent.browser.name !== 'Chrome') {
-      classicDownload(this.url, this.fileName);
-      this.dlInProgress = false;
-      this.dlComplete = true;
-      this.productDownloaded.emit( product );
+      classicDownload(this.url, this.fileName).then( () => {
+        this.dlInProgress = false;
+        this.dlComplete = true;
+        this.productDownloaded.emit( product );
+      });
       return;
     }
 
@@ -77,23 +78,24 @@ export class DownloadFileButtonComponent implements OnInit {
   }
 }
 
-export function classicDownload( url, _filename ) {
+async function classicDownload( url, _filename ) {
   const link = document.createElement('a');
 
   link.style.display = 'none';
   link.href = url;
   // link.pathname = _filename;
-  link.target = '_blank';
+  // link.target = '_blank';
   link.type = 'blob';
 
   // It needs to be added to the DOM so it can be clicked
   document.body.appendChild(link);
   link.click();
 
-  // To make this work on Firefox we need to wait
+  // To make this work we need to wait
   // a little while before removing it.
-  setTimeout(() => {
-    URL.revokeObjectURL(link.href);
-    link.parentNode.removeChild(link);
-  }, 0);
+  await timer(1000);
+  URL.revokeObjectURL(link.href);
+  link.parentNode.removeChild(link);
 }
+
+function timer(ms) { return new Promise(res => setTimeout(res, ms)); }
