@@ -59,7 +59,7 @@
           <div class="input-field-container">
             <mat-form-field class="w100 file-list-container">
               <textarea matInput
-                        (input)="onTextInputChange($event.target.value)"
+                        (input)="onTextInputChange($event)"
                         [(ngModel)]="searchList"
                         style="height: 150px;"
                         placeholder="List of {{ mode === types.SCENE ? 'Scene names' : 'File IDs.' }}">

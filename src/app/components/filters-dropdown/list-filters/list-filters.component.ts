@@ -164,7 +164,12 @@ export class ListFiltersComponent implements OnInit, OnDestroy {
     this.onNewListSearchMode(ListSearchType.PRODUCT);
   }
 
-  public onTextInputChange(text: string): void {
+  public onTextInputChange(event: Event): void {
+    const text = (event.target as HTMLInputElement).value;
+    this.setNewListInput(text);
+  }
+
+  private setNewListInput(text: string): void {
     this.newListInput$.next(text);
   }
 
@@ -311,7 +316,7 @@ export class ListFiltersComponent implements OnInit, OnDestroy {
     }
 
     this.searchList = current_list;
-    this.onTextInputChange(current_list);
+    this.setNewListInput(current_list);
   }
 
   ngOnDestroy() {

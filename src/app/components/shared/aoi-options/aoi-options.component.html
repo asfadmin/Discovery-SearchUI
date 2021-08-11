@@ -21,7 +21,7 @@
       <mat-form-field [class.invalid-input-animation]="isAOIError" class="w100">
         <mat-label> Area of Interest • WKT </mat-label>
         <textarea
-          (change)="onInputSearchPolygon($event.target.value)"
+          (change)="onInputSearchPolygon($event)"
           [value]="polygon"
           [(ngModel)]="polygon"
           name="searchPolygonLarge"

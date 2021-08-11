@@ -32,7 +32,7 @@ export class ScenesListComponent implements OnInit, OnDestroy {
   public pairs;
   public jobs;
 
-  public numberOfQueue: {[scene: string]: [number, number]};
+  public numberOfQueue: {[scene: string]: number};
   public allQueued: {[scene: string]: boolean};
   public allJobNames: string[];
   public queuedJobs: QueuedHyp3Job[];
