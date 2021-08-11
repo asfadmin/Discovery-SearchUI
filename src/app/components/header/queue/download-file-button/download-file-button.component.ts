@@ -67,7 +67,6 @@ export class DownloadFileButtonComponent implements OnInit {
     }
 
     this.downloadService.download(this.url, this.fileName).subscribe(resp => {
-      console.log('resp', resp);
       this.dFile = resp;
       if (resp.state === 'DONE') {
         this.dlInProgress = false;
@@ -81,10 +80,12 @@ export class DownloadFileButtonComponent implements OnInit {
 async function classicDownload( url, _filename ) {
   const link = document.createElement('a');
 
+  const re = /(?:\.([^.]+))?$/;
+  const ext = re.exec(url)[1];
+
   link.style.display = 'none';
   link.href = url;
-  // link.pathname = _filename;
-  // link.target = '_blank';
+  (ext.toUpperCase() === 'XML') ? link.target = '_blank' : link.target = '_self';
   link.type = 'blob';
 
   // It needs to be added to the DOM so it can be clicked

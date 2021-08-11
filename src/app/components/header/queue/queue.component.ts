@@ -234,8 +234,7 @@ export class QueueComponent implements OnInit, OnDestroy {
     bite( biteSize, this.productList ).then( () => { this.dlQueueNumProcessed = biteSize; } );
   }
 
-  public prodDownloaded(product) {
-    console.log('prodDownloaded():', product);
+  public prodDownloaded(_product) {
     this.dlQueueProgress = (this.dlQueueNumProcessed / this.dlQueueCount) * 100;
     if (this.dlQueueNumProcessed < this.dlQueueCount) {
       const el: HTMLButtonElement = this.productList[this.dlQueueNumProcessed++] as HTMLButtonElement;

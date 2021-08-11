@@ -9,14 +9,6 @@ export const SAVER = new InjectionToken<Saver>('saver');
 
 export function myStreamSaver (blob, _url, filename) {
 
-  // StreamSaver can detect and use the Ponyfill that is loaded from the cdn.
-  // streamSaver.WritableStream = streamSaver.WritableStream;
-  // streamSaver.TransformStream = streamSaver.TransformStream;
-
-  console.log('Window:', window);
-  // console.log('mySteamSaver url:', _url);
-  // console.log('mySteamSaver filename:', filename);
-
   const fileStream = streamSaver.createWriteStream( filename, {
     size: blob.size // Makes the percentage visible in the download
   });
