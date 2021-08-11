@@ -78,15 +78,24 @@
               • {{ product.productTypeDisplay }}
               <mat-menu #action_menu="matMenu" xPosition="before">
 
-                <a mat-menu-item [href]="product.downloadUrl" target="_blank" matTooltip="Download file">
-            <span style="margin-right: 10px; margin-left: 10px;">
-              <span *ngIf="product.bytes === 0">Virtual</span>
-              <span *ngIf="product.bytes !== 0">{{product.bytes.toString() | readableSizeFromBytes }}</span>
-            </span>
-                  <span>
-              <mat-icon>android</mat-icon>
-            </span>
-                </a>
+<!--                <a mat-menu-item [href]="product.downloadUrl" target="_blank" matTooltip="Download file">-->
+<!--            <span style="margin-right: 10px; margin-left: 10px;">-->
+<!--              <span *ngIf="product.bytes === 0">Virtual</span>-->
+<!--              <span *ngIf="product.bytes !== 0">{{product.bytes.toString() | readableSizeFromBytes }}</span>-->
+<!--            </span>-->
+<!--                  <span>-->
+<!--              <mat-icon>android</mat-icon>-->
+<!--            </span>-->
+<!--                </a>-->
+                <span style="margin-right: 10px; margin-left: 10px;">
+                  <span *ngIf="product.bytes === 0">Virtual</span>
+                  <span *ngIf="product.bytes !== 0">{{product.bytes.toString() | readableSizeFromBytes }}</span>
+                </span>
+                <app-download-file-button
+                  [attr.id]="'imgV_' + product.id"
+                  [product] = "product"
+                  (productDownloaded)="prodDownloaded($event)">
+                </app-download-file-button>
 
                 <button (click)="onToggleQueueProduct(product)"
                         matTooltip="{{ !queuedProductIds.has(product.id) ? 'Add file to queue' : 'Remove file from queue' }}"

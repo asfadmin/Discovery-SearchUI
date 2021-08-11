@@ -39,14 +39,14 @@
         </mat-select>
       </mat-form-field>
 
-      <mat-form-field class="default-max-concurrent-downloads">
-        <mat-label>Max Concurrent Downloads</mat-label>
-        <input matInput type="number" appOnlynumber
-               [value]="defaultMaxConcurrentDownloads"
-               [(ngModel)]="defaultMaxConcurrentDownloads"
-               (change)="onChangeDefaultMaxConcurrentDownloads($event.target['value'])"
-               name="maxDownloads">
-      </mat-form-field>
+<!--      <mat-form-field class="default-max-concurrent-downloads">-->
+<!--        <mat-label>Max Concurrent Downloads</mat-label>-->
+<!--        <input matInput type="number" appOnlynumber-->
+<!--               [value]="defaultMaxConcurrentDownloads"-->
+<!--               [(ngModel)]="defaultMaxConcurrentDownloads"-->
+<!--               (change)="onChangeDefaultMaxConcurrentDownloads($event.target['value'])"-->
+<!--               name="maxDownloads">-->
+<!--      </mat-form-field>-->
 
       <div class="section-heading">Default Search Filters Presets</div>
       <mat-form-field class="default-filters-presets" *ngFor="let type of searchTypeKeys">
