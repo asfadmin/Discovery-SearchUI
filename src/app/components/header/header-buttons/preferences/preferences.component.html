@@ -44,7 +44,7 @@
         <input matInput type="number" appOnlynumber
                [value]="defaultMaxConcurrentDownloads"
                [(ngModel)]="defaultMaxConcurrentDownloads"
-               (change)="onChangeDefaultMaxConcurrentDownloads($event.target.value)"
+               (change)="onChangeDefaultMaxConcurrentDownloads($event.target['value'])"
                name="maxDownloads">
       </mat-form-field>
 

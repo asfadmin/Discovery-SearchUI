@@ -8,7 +8,7 @@
     <template *ngIf="dlInProgress"
               class="progress-spinner">
       <mat-progress-spinner
-        [mode]="download.state == 'PENDING' ? 'buffer' : 'determinate'"
+        [mode]="download.state == 'PENDING' ? 'indeterminate' : 'determinate'"
         [value]='download.progress'
         [diameter]="40">
       </mat-progress-spinner>
