@@ -334,12 +334,17 @@ export class MapService {
       this.map.setView(this.mapView.view);
     }
 
-    this.mapView.gridlines?.setVisible?.(this.gridLinesVisible);
-    const layers = this.map.getLayers().getArray();
-    const gridlineIdx = layers.findIndex(l => l.get('name') === this.mapView.gridlines?.get('name'));
-    this.map.getLayers().array_[gridlineIdx]?.setVisible(this.gridLinesVisible)
-    console.log("Layer visible: " + this.map.getLayers().array_[gridlineIdx]?.getVisible())
-
+    if(this.mapView.projection.epsg === 'EPSG:3857') {
+      this.mapView.gridlines?.setVisible?.(this.gridLinesVisible);
+      const layers = this.map.getLayers().getArray();
+      const gridlineIdx = layers.findIndex(l => l.get('name') === this.mapView.gridlines?.get('name'));
+      this.map.getLayers().array_[gridlineIdx]?.setVisible(this.gridLinesVisible)
+      console.log("Layer visible: " + this.map.getLayers().array_[gridlineIdx]?.getVisible())
+    } else {
+      const layers = this.map.getLayers().getArray();
+      const gridlineIdx = layers.findIndex(l => l.get('name') === 'gridlines');
+      this.map.getLayers().array_[gridlineIdx]?.setVisible(false);
+    }
     this.mapView.layer.setOpacity(1);
 
     const mapLayers = this.map.getLayers();
