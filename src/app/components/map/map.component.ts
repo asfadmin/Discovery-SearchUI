@@ -68,6 +68,7 @@ export class MapComponent implements OnInit, OnDestroy  {
     this.store$.select(mapStore.getMapView),
     this.store$.select(mapStore.getMapLayerType),
   );
+  private gridlinesActive$ = this.store$.select(mapStore.getAreGridlinesActive);
 
   public breakpoint: models.Breakpoints;
   public breakpoints = models.Breakpoints;
@@ -152,6 +153,12 @@ export class MapComponent implements OnInit, OnDestroy  {
         mode => this.mapService.setInteractionMode(mode)
       )
     );
+
+    this.subs.add(
+      this.gridlinesActive$.subscribe(
+        active => this.mapService.setGridLinesActive(active)
+      )
+    )
 
     this.subs.add(
       combineLatest(

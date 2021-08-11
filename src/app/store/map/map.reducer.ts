@@ -10,6 +10,7 @@ export interface MapState {
   drawMode: models.MapDrawModeType;
   interactionMode: models.MapInteractionModeType;
   layerType: models.MapLayerTypes;
+  gridLinesActive: boolean;
   isMapInitialized: boolean;
 }
 
@@ -18,6 +19,7 @@ export const initState: MapState = {
   drawMode: models.MapDrawModeType.BOX,
   interactionMode: models.MapInteractionModeType.DRAW,
   layerType: models.MapLayerTypes.SATELLITE,
+  gridLinesActive: false,
   isMapInitialized: false,
 };
 
@@ -59,6 +61,13 @@ export function mapReducer(state = initState, action: MapActions): MapState {
       };
     }
 
+    case MapActionType.SET_MAP_GRID_LINES: {
+      return {
+        ...state,
+        gridLinesActive: action.payload
+      }
+    }
+
     case MapActionType.MAP_INITIALIZED: {
       return {
         ...state,
@@ -94,6 +103,11 @@ export const getMapInteractionMode = createSelector(
   getMapState,
   (state: MapState) => state.interactionMode
 );
+
+export const getAreGridlinesActive = createSelector(
+  getMapState,
+  (state: MapState) => state.gridLinesActive
+)
 
 export const getIsMapInitialization = createSelector(
   getMapState,

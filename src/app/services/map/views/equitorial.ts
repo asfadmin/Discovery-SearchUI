@@ -24,8 +24,11 @@ function equatorialView(url: string): MapView {
       lineDash: [0.5, 4],
     }),
     showLabels: true,
-    wrapX: false,
+    wrapX: models.mapOptions.wrapX,
   })
+
+  graticule.set('name', 'gridlines');
+
   const view = new View({
     center: [-10852977.98, 4818505.78],
     projection: projection.epsg,

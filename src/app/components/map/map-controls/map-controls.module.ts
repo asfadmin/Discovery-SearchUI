@@ -9,6 +9,7 @@ import { MatSharedModule } from '@shared';
 import { ViewSelectorModule } from './view-selector';
 import { AoiOptionsModule } from '@components/shared/aoi-options';
 import { LayerSelectorModule } from './layer-selector';
+import { GridlinesSelectorModule } from './gridlines-selector';
 
 import { MapControlsComponent } from './map-controls.component';
 
@@ -22,7 +23,8 @@ import { MapControlsComponent } from './map-controls.component';
     MatSharedModule,
     AoiOptionsModule,
     ViewSelectorModule,
-    LayerSelectorModule
+    LayerSelectorModule,
+    GridlinesSelectorModule
   ],
   declarations: [
     MapControlsComponent,

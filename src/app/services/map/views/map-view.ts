@@ -10,7 +10,7 @@ export class MapView {
     public projection: Projection,
     public view: View,
     public layer: TileLayer,
-    public gridlines: GraticuleLayer
+    public gridlines?: GraticuleLayer
   ) {}
 }
 
