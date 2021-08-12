@@ -24,6 +24,7 @@ const initState: UserState = {
     defaultDataset: 'SENTINEL-1',
     mapLayer: models.MapLayerTypes.SATELLITE,
     maxResults: 250,
+    defaultMaxConcurrentDownloads: 3,
     defaultFilterPresets: {
       'Baseline Search' : '',
       'Geographic Search' : '',

@@ -83,11 +83,11 @@
       {{ param.name }}: {{ param.val }}
     </div>
 
-    <a *ngIf="isDownloadable(product)" mat-icon-button
-      [href]="product.downloadUrl" target="_blank"
-      matTooltip="Download file">
-      <mat-icon>cloud_download</mat-icon>
-    </a>
+    <app-download-file-button
+      [attr.id]="'scene_' + product.id"
+      [product] = "product"
+      (productDownloaded)="prodDownloaded($event)">
+    </app-download-file-button>
 
     <app-cart-toggle
       *ngIf="isDownloadable(product)"
