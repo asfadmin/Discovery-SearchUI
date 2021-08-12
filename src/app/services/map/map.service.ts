@@ -26,7 +26,7 @@ export class MapService {
   private mapView: views.MapView;
   private map: Map;
   private polygonLayer: Layer;
-  private gridLinesVisible: Boolean
+  private gridLinesVisible: boolean;
   // private gridlinesActive: boolean;
 
   private selectClick = new Select({
@@ -168,9 +168,6 @@ export class MapService {
   }
 
   public setGridLinesActive(active: boolean) {
-    // this.drawService.setInteractionMode(this.map, mode);
-    console.log(active);
-    console.log((this.map.getLayers().array_ as [])[this.map.getLayers().array_.length - 1]);
     this.gridLinesVisible = active;
     this.map = this.updatedMap();
   }
@@ -338,12 +335,12 @@ export class MapService {
       this.mapView.gridlines?.setVisible?.(this.gridLinesVisible);
       const layers = this.map.getLayers().getArray();
       const gridlineIdx = layers.findIndex(l => l.get('name') === this.mapView.gridlines?.get('name'));
-      this.map.getLayers().array_[gridlineIdx]?.setVisible(this.gridLinesVisible)
-      console.log("Layer visible: " + this.map.getLayers().array_[gridlineIdx]?.getVisible())
+      this.map.getLayers().getArray()[gridlineIdx]?.setVisible(this.gridLinesVisible)
+      console.log("Layer visible: " + this.map.getLayers().getArray()[gridlineIdx]?.getVisible())
     } else {
       const layers = this.map.getLayers().getArray();
       const gridlineIdx = layers.findIndex(l => l.get('name') === 'gridlines');
-      this.map.getLayers().array_[gridlineIdx]?.setVisible(false);
+      this.map.getLayers().getArray()[gridlineIdx]?.setVisible(false);
     }
     this.mapView.layer.setOpacity(1);
 

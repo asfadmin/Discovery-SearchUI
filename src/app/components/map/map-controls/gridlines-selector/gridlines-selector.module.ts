@@ -4,7 +4,7 @@ import { FlexLayoutModule } from '@angular/flex-layout';
 
 import { MatSharedModule } from '@shared';
 import { MatCheckboxModule } from '@angular/material/checkbox';
-
+import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { GridlinesSelectorComponent } from './gridlines-selector.component';
 
 
@@ -17,6 +17,7 @@ import { GridlinesSelectorComponent } from './gridlines-selector.component';
     FlexLayoutModule,
     MatCheckboxModule,
     MatSharedModule,
+    MatButtonToggleModule
   ],
   exports: [
     GridlinesSelectorComponent

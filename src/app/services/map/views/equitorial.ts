@@ -21,7 +21,7 @@ function equatorialView(url: string): MapView {
     strokeStyle: new Stroke({
       color: 'rgba(255,120,0,0.9)',
       width: 2,
-      lineDash: [0.5, 4],
+      // lineDash: [0.5, 4],
     }),
     showLabels: true,
     wrapX: models.mapOptions.wrapX,
