@@ -2,7 +2,7 @@ import { View } from 'ol';
 import { XYZ } from 'ol/source';
 import { Tile as TileLayer, Graticule as GraticuleLayer } from 'ol/layer';
 import * as proj from 'ol/proj';
-import { Stroke } from 'ol/style';
+import { Stroke, Text } from 'ol/style';
 import { MapView, Projection } from './map-view';
 import * as models from '@models';
 
@@ -17,14 +17,32 @@ function equatorialView(url: string): MapView {
 
   const layer = new TileLayer({ source });
 
+  const latLonLabelStyle = new Text({
+    font: '14px Roboto,sans-serif',
+    textBaseline: 'bottom',
+    stroke: new Stroke({
+      color: 'rgba(255,255,255,1)',
+      width: 3
+    })
+  });
+
   const graticule = new GraticuleLayer({
     strokeStyle: new Stroke({
-      color: 'rgba(255,120,0,0.9)',
+      color: 'rgba(255,255,255,0.9)',
       width: 2,
       // lineDash: [0.5, 4],
     }),
+    latLabelStyle: latLonLabelStyle,
+    lonLabelStyle: latLonLabelStyle,
+    intervals: [90, 45, 20],
     showLabels: true,
     wrapX: models.mapOptions.wrapX,
+    lonLabelPosition: .9,
+    latLabelPosition: .05,
+    extent: proj.transformExtent(
+      [-Number.MAX_VALUE, -90, Number.MAX_VALUE, 90],
+      'EPSG:4326', projection.epsg
+    )
   })
 
   graticule.set('name', 'gridlines');
