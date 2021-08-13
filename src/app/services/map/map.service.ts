@@ -331,16 +331,13 @@ export class MapService {
       this.map.setView(this.mapView.view);
     }
 
+    const layers = this.map.getLayers().getArray();
     if(this.mapView.projection.epsg === 'EPSG:3857') {
-      this.mapView.gridlines?.setVisible?.(this.gridLinesVisible);
-      const layers = this.map.getLayers().getArray();
-      const gridlineIdx = layers.findIndex(l => l.get('name') === this.mapView.gridlines?.get('name'));
-      this.map.getLayers().getArray()[gridlineIdx]?.setVisible(this.gridLinesVisible)
-      console.log("Layer visible: " + this.map.getLayers().getArray()[gridlineIdx]?.getVisible())
+      const gridlineIdx = layers.findIndex(l => l.get('ol_uid') === '100');
+      layers[gridlineIdx] = this.mapView.gridlines;
+      layers[gridlineIdx]?.setVisible(this.gridLinesVisible);
     } else {
-      const layers = this.map.getLayers().getArray();
-      const gridlineIdx = layers.findIndex(l => l.get('name') === 'gridlines');
-      this.map.getLayers().getArray()[gridlineIdx]?.setVisible(false);
+      layers.find(l => l.get('ol_uid') === '100')?.setVisible(false);
     }
     this.mapView.layer.setOpacity(1);
 

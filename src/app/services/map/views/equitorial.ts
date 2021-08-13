@@ -17,8 +17,20 @@ function equatorialView(url: string): MapView {
 
   const layer = new TileLayer({ source });
 
+  const lonFormatter = function(lon: number) {
+    let formattedLon = Math.abs(Math.round(lon * 100) / 100).toString() + String.fromCharCode(176) + ' ';
+    formattedLon += (lon < 0) ? 'W' : ((lon > 0) ? 'E' : '');
+    return formattedLon;
+  };
+
+  const latFormatter = function(lat: number) {
+    let formattedLat = Math.abs(Math.round(lat * 100) / 100).toString() + String.fromCharCode(176) + ' ';
+    formattedLat += (lat < 0) ? 'S' : ((lat > 0) ? 'N' : '');
+    return formattedLat;
+  };
+
   const latLonLabelStyle = new Text({
-    font: '14px Roboto,sans-serif',
+    font: '16px Roboto,sans-serif',
     textBaseline: 'bottom',
     stroke: new Stroke({
       color: 'rgba(255,255,255,1)',
@@ -26,26 +38,35 @@ function equatorialView(url: string): MapView {
     })
   });
 
-  const graticule = new GraticuleLayer({
-    strokeStyle: new Stroke({
+  const strokeStyle = url.includes('streets') ?
+    new Stroke({
+      color: 'rgba(0, 0, 0,0.9)',
+      width: 1.5,
+    }) :
+    new Stroke({
       color: 'rgba(255,255,255,0.9)',
-      width: 2,
-      // lineDash: [0.5, 4],
-    }),
+      width: 1.5,
+    })
+
+  const graticule = new GraticuleLayer({
+    strokeStyle,
     latLabelStyle: latLonLabelStyle,
     lonLabelStyle: latLonLabelStyle,
-    intervals: [90, 45, 20],
+    intervals: [90, 45, 30, 20, 5, 2, 1, 0.5, 0.2, 0.1],
     showLabels: true,
     wrapX: models.mapOptions.wrapX,
     lonLabelPosition: .9,
-    latLabelPosition: .05,
+    latLabelPosition: .95,
+    lonLabelFormatter: lonFormatter,
+    latLabelFormatter: latFormatter,
     extent: proj.transformExtent(
       [-Number.MAX_VALUE, -90, Number.MAX_VALUE, 90],
       'EPSG:4326', projection.epsg
-    )
+    ),
+    maxLines: 10,
   })
 
-  graticule.set('name', 'gridlines');
+  graticule.set('ol_uid', '100');
 
   const view = new View({
     center: [-10852977.98, 4818505.78],
