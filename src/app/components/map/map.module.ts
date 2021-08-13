@@ -9,6 +9,7 @@ import { ClearButtonModule } from '@components/shared/clear-button';
 import { MaxResultsSelectorModule } from '@components/shared/max-results-selector';
 import { ViewSelectorModule } from './map-controls/view-selector';
 import { LayerSelectorModule } from './map-controls/layer-selector';
+import { GridlinesSelectorModule } from './map-controls/gridlines-selector';
 
 import { MapComponent } from './map.component';
 import { MapControlsModule } from './map-controls';
@@ -28,6 +29,7 @@ import { FileUploadModule } from '@components/shared/aoi-options/file-upload';
 
     ViewSelectorModule,
     LayerSelectorModule,
+    GridlinesSelectorModule,
     MapControlsModule,
     FiltersDropdownModule,
     AoiOptionsModule,

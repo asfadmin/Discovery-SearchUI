@@ -47,7 +47,6 @@
         <div class="mobile-control-group">
           <app-interaction-selector></app-interaction-selector>
         </div>
-
         <div class="mobile-control-group">
           <app-draw-selector></app-draw-selector>
         </div>
@@ -62,6 +61,9 @@
           <div *ngIf="(view$ | async) === viewTypes.EQUITORIAL"
             class="mobile-control-group">
             <app-layer-selector></app-layer-selector>
+          </div>
+          <div class="mobile-control-group">
+            <app-gridlines-selector></app-gridlines-selector>
           </div>
       </div>
     </ng-container>
