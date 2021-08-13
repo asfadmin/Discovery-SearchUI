@@ -62,7 +62,8 @@
             class="mobile-control-group">
             <app-layer-selector></app-layer-selector>
           </div>
-          <div class="mobile-control-group">
+          <div [hidden]="(view$ | async) !== viewTypes.EQUITORIAL"
+          class="mobile-control-group">
             <app-gridlines-selector></app-gridlines-selector>
           </div>
       </div>
