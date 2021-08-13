@@ -160,6 +160,9 @@ export class ImageDialogComponent implements OnInit, AfterViewInit, OnDestroy {
     this.loadBrowseImage(scene, browse);
   }
 
+  public prodDownloaded( _product ) {
+  }
+
   ngOnDestroy() {
     this.subs.unsubscribe();
   }
