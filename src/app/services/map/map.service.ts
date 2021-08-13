@@ -332,7 +332,7 @@ export class MapService {
     }
 
     const layers = this.map.getLayers().getArray();
-    if(this.mapView.projection.epsg === 'EPSG:3857') {
+    if (this.mapView.projection.epsg === 'EPSG:3857') {
       const gridlineIdx = layers.findIndex(l => l.get('ol_uid') === '100');
       layers[gridlineIdx] = this.mapView.gridlines;
       layers[gridlineIdx]?.setVisible(this.gridLinesVisible);

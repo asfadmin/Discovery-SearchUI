@@ -46,7 +46,7 @@ function equatorialView(url: string): MapView {
     new Stroke({
       color: 'rgba(255,255,255,0.9)',
       width: 1.5,
-    })
+    });
 
   const graticule = new GraticuleLayer({
     strokeStyle,
@@ -64,7 +64,7 @@ function equatorialView(url: string): MapView {
       'EPSG:4326', projection.epsg
     ),
     maxLines: 10,
-  })
+  });
 
   graticule.set('ol_uid', '100');
 

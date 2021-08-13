@@ -52,7 +52,7 @@ export function antarctic(): MapView {
     }),
     showLabels: true,
     wrapX: false,
-  })
+  });
 
   graticule.set('name', 'gridlines');
 

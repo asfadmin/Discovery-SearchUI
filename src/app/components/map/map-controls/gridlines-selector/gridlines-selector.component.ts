@@ -11,7 +11,7 @@ import { SubSink } from 'subsink';
 })
 export class GridlinesSelectorComponent implements OnInit, OnDestroy {
   public areGridlinesActive$ = this.store$.select(mapStore.getAreGridlinesActive);
-  public active: boolean = false;
+  public active = false;
 
   public subs = new SubSink();
 
@@ -20,7 +20,7 @@ export class GridlinesSelectorComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.subs.add(
       this.areGridlinesActive$.subscribe(active => this.active = active)
-    )
+    );
   }
 
   ngOnDestroy(): void {
@@ -28,6 +28,6 @@ export class GridlinesSelectorComponent implements OnInit, OnDestroy {
   }
 
   public onToggleGridlines() {
-    this.store$.dispatch(new mapStore.SetGridlines(!this.active))
+    this.store$.dispatch(new mapStore.SetGridlines(!this.active));
   }
 }

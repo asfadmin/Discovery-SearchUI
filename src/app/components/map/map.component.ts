@@ -158,7 +158,7 @@ export class MapComponent implements OnInit, OnDestroy  {
       this.gridlinesActive$.subscribe(
         active => this.mapService.setGridLinesActive(active)
       )
-    )
+    );
 
     this.subs.add(
       combineLatest(

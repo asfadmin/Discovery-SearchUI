@@ -54,7 +54,7 @@ export function arctic(): MapView  {
     }),
     showLabels: true,
     wrapX: false,
-  })
+  });
 
   graticule.set('name', 'gridlines');
 

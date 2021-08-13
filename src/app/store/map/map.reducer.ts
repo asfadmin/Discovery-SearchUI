@@ -65,7 +65,7 @@ export function mapReducer(state = initState, action: MapActions): MapState {
       return {
         ...state,
         gridLinesActive: action.payload
-      }
+      };
     }
 
     case MapActionType.MAP_INITIALIZED: {
@@ -107,7 +107,7 @@ export const getMapInteractionMode = createSelector(
 export const getAreGridlinesActive = createSelector(
   getMapState,
   (state: MapState) => state.gridLinesActive
-)
+);
 
 export const getIsMapInitialization = createSelector(
   getMapState,
