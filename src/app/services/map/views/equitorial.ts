@@ -40,11 +40,11 @@ function equatorialView(url: string): MapView {
 
   const strokeStyle = url.includes('streets') ?
     new Stroke({
-      color: 'rgba(0, 0, 0,0.9)',
+      color: 'rgba(0, 0, 0,0.5)',
       width: 1.5,
     }) :
     new Stroke({
-      color: 'rgba(255,255,255,0.9)',
+      color: 'rgba(255,255,255,0.5)',
       width: 1.5,
     });
 
@@ -52,7 +52,8 @@ function equatorialView(url: string): MapView {
     strokeStyle,
     latLabelStyle: latLonLabelStyle,
     lonLabelStyle: latLonLabelStyle,
-    intervals: [90, 45, 30, 20, 5, 2, 1, 0.5, 0.2, 0.1],
+    intervals: [90, 45, 30, 20, 10, 5, 2],
+    targetSize: 200,
     showLabels: true,
     wrapX: models.mapOptions.wrapX,
     lonLabelPosition: .9,
