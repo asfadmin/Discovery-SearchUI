@@ -76,7 +76,7 @@ export class OtherSelectorComponent implements OnInit, OnDestroy {
     this.store$.dispatch(new filtersStore.SetPolarizations(polarizations));
   }
 
-  public onNewProductTypes(productTypes: models.ProductType[]): void {
+  public onNewProductTypes(productTypes: models.DatasetProductTypes): void {
     this.store$.dispatch(new filtersStore.SetProductTypes(productTypes));
   }
 
