@@ -21,7 +21,6 @@ import { CustomProductsFiltersModule } from './custom-products-filters';
 import { SearchSelectorModule } from '@components/shared/selectors/search-selector';
 
 import { FlexLayoutModule } from '@angular/flex-layout';
-
 @NgModule({
   imports: [
     CommonModule,

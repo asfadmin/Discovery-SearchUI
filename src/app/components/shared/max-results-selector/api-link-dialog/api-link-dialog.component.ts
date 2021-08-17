@@ -82,8 +82,9 @@ export class ApiLinkDialogComponent implements OnInit, OnDestroy {
     );
   }
 
-  public onAmountChange(amount: string): void {
-    this.amount$.next(+amount);
+  public onAmountChange(event: Event): void {
+    const amount = (event.target as HTMLInputElement).valueAsNumber;
+    this.amount$.next(amount);
   }
 
   public onFormatChange(format: string): void {

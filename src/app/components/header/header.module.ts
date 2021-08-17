@@ -44,6 +44,7 @@ import { BaselineHeaderComponent } from './baseline-header/baseline-header.compo
 import { MasterSceneSelectorModule } from '@components/shared/selectors/master-scene-selector';
 import { Hyp3HeaderComponent } from './hyp3-header/hyp3-header.component';
 import { CreateSubscriptionModule } from './create-subscription/create-subscription.module';
+import { CiSearchModule } from './info-bar/ci-search/ci-search.module';
 
 @NgModule({
   declarations: [
@@ -88,10 +89,11 @@ import { CreateSubscriptionModule } from './create-subscription/create-subscript
     ProjectNameSelectorModule,
     JobStatusSelectorModule,
     JobProductNameSelectorModule,
-    CreateSubscriptionModule
+    CreateSubscriptionModule,
+    CiSearchModule
   ],
   exports: [
     HeaderComponent
-  ]
+  ],
 })
 export class HeaderModule { }

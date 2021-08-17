@@ -1,0 +1,59 @@
+<input (change)="onFilesAdded()"
+  class="hidden" type="file" multiple #file/>
+
+<div
+  (drop)="onFileDrop($event)"
+  fxLayout="column" fxLayoutAlign="space-evenly stretch"
+  class="container">
+
+  <div fxFlex>
+    <div fxFlex fxLayout="column">
+      <mat-list class="file-list">
+        <mat-list-item *ngFor="let file of files">
+          <h4 class="limit-text" mat-line>{{file.name}}</h4>
+
+          <button (click)="onRemoveFile(file)" mat-icon-button>
+            <mat-icon>close</mat-icon>
+          </button>
+        </mat-list-item>
+      </mat-list>
+
+      <div [class.is-file-error]="isFileError"
+        fxFlex fxLayoutAlign="center" gdAlignColumns="center"
+        [class.drop-text-box]="canBeClosed">
+
+        <div *ngIf="canBeClosed"> Drag geospatial files here. </div>
+
+        <div class="loading-box" *ngIf="!canBeClosed">
+          <div class="loading-text">
+            Loading files...
+          </div>
+          <div>
+            <mat-progress-spinner diameter="40" class="loading-spinner" color="primary" mode="indeterminate">
+            </mat-progress-spinner>
+          </div>
+        </div>
+      </div>
+
+      <div *ngIf="files.size < 2" class="faint-text import-formats">
+       (<span matTooltip="shapefile">shp</span>, <span matTooltip="geojson">geojson</span>,
+       <span matTooltip="kml">kml</span>, <span matTooltip="shapefile zip archive">zip</span>)
+      </div>
+    </div>
+  </div>
+
+  <div class="actions">
+    <button (click)="addFiles()"
+      [disabled]="uploading"
+      style="margin-right: 10px;"
+      color="primary" class="add-files-btn" mat-raised-button>
+        Select Files
+    </button>
+
+    <button mat-raised-button color="primary"
+      (click)="onUpload()"
+      [disabled]="areNoFiles(files)">
+      Import
+    </button>
+  </div>
+</div>

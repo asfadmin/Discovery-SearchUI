@@ -16,7 +16,8 @@ $config: mat.define-typography-config();
 }
 
 .breadcrumb-filter {
-  max-width: 370px;
+  width: 900px;
+  max-width: 100%;
   min-width: 300px;
   height: auto;
   position: fixed;

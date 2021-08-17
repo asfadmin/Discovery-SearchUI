@@ -9,7 +9,7 @@ export enum MapActionType {
   SET_MAP_VIEW = '[Map] Set Map View',
   SET_MAP_DRAW_MODE = '[Map] Set Map Draw Mode',
   SET_MAP_INTERACTION_MODE = '[Map] Set Map Interaction Mode',
-
+  SET_MAP_GRID_LINES = '[Map] Set Map Graticule Lines',
   MAP_INITIALIZED = '[Map] Map Initialized',
 }
 
@@ -39,9 +39,16 @@ export class SetMapInteractionMode implements Action {
   constructor(public payload: models.MapInteractionModeType) {}
 }
 
+export class SetGridlines implements Action {
+  public readonly type = MapActionType.SET_MAP_GRID_LINES;
+
+  constructor(public payload: boolean) {}
+}
+
 export class MapInitialzed implements Action {
   public readonly type = MapActionType.MAP_INITIALIZED;
 }
+
 
 export type MapActions =
   | SetMapView
@@ -49,4 +56,5 @@ export type MapActions =
   | SetSatelliteView
   | SetMapDrawMode
   | SetMapInteractionMode
+  | SetGridlines
   | MapInitialzed;

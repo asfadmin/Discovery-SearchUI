@@ -18,26 +18,28 @@ import { PipesModule } from '@pipes';
 import { SceneMetadataModule } from '@components/shared/scene-metadata';
 import { ImageDialogComponent } from './image-dialog.component';
 import { BrowseListComponent } from './browse-list/browse-list.component';
+import {DownloadFileButtonModule} from '@components/header/queue/download-file-button/download-file-button.module';
 
 @NgModule({
   declarations: [ImageDialogComponent, BrowseListComponent],
-  imports: [
-    CommonModule,
-    ScrollingModule,
-    FlexLayoutModule,
-    DragDropModule,
-    MatBadgeModule,
-    MatButtonModule,
-    MatIconModule,
-    MatProgressSpinnerModule,
-    MatSharedModule,
-    MatCheckboxModule,
-    MatListModule,
-    MatDialogModule,
-    MatMenuModule,
-    PipesModule,
-    SceneMetadataModule,
-  ],
+    imports: [
+        CommonModule,
+        ScrollingModule,
+        FlexLayoutModule,
+        DragDropModule,
+        MatBadgeModule,
+        MatButtonModule,
+        MatIconModule,
+        MatProgressSpinnerModule,
+        MatSharedModule,
+        MatCheckboxModule,
+        MatListModule,
+        MatDialogModule,
+        MatMenuModule,
+        PipesModule,
+        SceneMetadataModule,
+        DownloadFileButtonModule,
+    ],
   exports: [ImageDialogComponent],
 })
 export class ImageDialogModule { }

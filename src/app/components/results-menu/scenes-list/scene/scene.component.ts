@@ -20,12 +20,12 @@ export class SceneComponent implements OnInit {
   @Input() searchType: models.SearchType;
 
   @Input() isSelected: boolean;
-  @Input() offsets: {temporal: 0, perpendicular: number};
+  @Input() offsets: {temporal: number, perpendicular: number} = {temporal: 0, perpendicular: null};
 
   @Input() isQueued: boolean;
   @Input() jobQueued: boolean;
   @Input() numQueued: number;
-  @Input() hyp3ableByJobType: {hyp3able: Hyp3ableProductByJobType[], total: number};
+  @Input() hyp3ableByJobType: { total: number, byJobType: models.Hyp3ableProductByJobType[]};
 
   @Output() zoomTo = new EventEmitter();
   @Output() toggleScene = new EventEmitter();
@@ -84,8 +84,7 @@ export class SceneComponent implements OnInit {
 
   public queueExpiredHyp3Job() {
     const job_types = models.hyp3JobTypes;
-    const job_type = Object.keys(job_types).find(id =>
-      {
+    const job_type = Object.keys(job_types).find(id => {
         return this.scene.metadata.job.job_type === id as any;
       });
 
@@ -97,39 +96,38 @@ export class SceneComponent implements OnInit {
 
   public getExpiredHyp3ableObject(): {byJobType: models.Hyp3ableProductByJobType[], total: number} {
     const job_types = models.hyp3JobTypes;
-    const job_type = Object.keys(job_types).find(id =>
-      {
+    const job_type = Object.keys(job_types).find(id => {
         return this.scene.metadata.job.job_type === id as any;
       });
 
-    let byJobType: Hyp3ableProductByJobType[] = [];
+    const byJobType: Hyp3ableProductByJobType[] = [];
 
-    let temp: models.Hyp3ableByProductType = {
+    const temp: models.Hyp3ableByProductType = {
       productType: this.scene.metadata.job.job_type as any,
       products: [this.scene.metadata.job.job_parameters.scenes]
     };
 
-    let byProductType: models.Hyp3ableByProductType[] = [];
+    const byProductType: models.Hyp3ableByProductType[] = [];
     byProductType.push(temp);
 
     const hyp3ableProduct = {
       byProductType,
       total: 1,
       jobType: job_types[job_type]
-    } as models.Hyp3ableProductByJobType
+    } as models.Hyp3ableProductByJobType;
 
     byJobType.push(hyp3ableProduct);
 
     const output = {
       byJobType,
       total: 1
-    } as {byJobType: models.Hyp3ableProductByJobType[], total: number}
+    } as {byJobType: models.Hyp3ableProductByJobType[], total: number};
 
     return output;
   }
 
   public isExpired(job: models.Hyp3Job): boolean {
-    if(job == null) {
+    if (job == null) {
       return false;
     }
     return this.hyp3.isExpired(job);

@@ -20,6 +20,7 @@ import { CMRProduct, Breakpoints, UserAuth, SavedSearchType, QueuedHyp3Job, Sear
 
 import { collapseAnimation, rubberBandAnimation,
          zoomInUpAnimation,  tadaAnimation, wobbleAnimation } from 'angular-animations';
+import { ThemePalette } from '@angular/material/core';
 
 // Declare GTM dataLayer array.
 declare global {
@@ -49,6 +50,9 @@ export class HeaderButtonsComponent implements OnInit, OnDestroy {
   public breakpoint$ = this.screenSize.breakpoint$;
   public breakpoints = Breakpoints;
   private subs = new SubSink();
+
+  public accentPalette: ThemePalette = 'accent' as const;
+  public primaryPalette: ThemePalette = 'primary' as const;
 
   public queuedProducts: CMRProduct[];
   public queuedCustomProducts: QueuedHyp3Job[];

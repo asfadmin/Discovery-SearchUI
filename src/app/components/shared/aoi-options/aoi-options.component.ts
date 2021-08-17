@@ -8,8 +8,8 @@ import { Store } from '@ngrx/store';
 
 import { AppState } from '@store';
 import * as mapStore from '@store/map';
-import { MapInteractionModeType } from '@models';
-import { MapService } from '@services';
+import { MapInteractionModeType, Breakpoints } from '@models';
+import { MapService, ScreenSizeService } from '@services';
 import { SubSink } from 'subsink';
 
 // Declare GTM dataLayer array.
@@ -31,6 +31,9 @@ export class AoiOptionsComponent implements OnInit, OnDestroy {
   public drawMode$ = this.store$.select(mapStore.getMapDrawMode);
   public interactionMode$ = this.store$.select(mapStore.getMapInteractionMode);
 
+  public breakpoint: Breakpoints;
+  public breakpoints = Breakpoints;
+
   public polygon: string;
   public interactionTypes = MapInteractionModeType;
 
@@ -41,6 +44,7 @@ export class AoiOptionsComponent implements OnInit, OnDestroy {
   constructor(
     private store$: Store<AppState>,
     private mapService: MapService,
+    private screenSize: ScreenSizeService,
   ) {}
 
   ngOnInit() {
@@ -59,10 +63,21 @@ export class AoiOptionsComponent implements OnInit, OnDestroy {
       )
     );
 
+    this.subs.add(
+      this.screenSize.breakpoint$.subscribe(
+        breakpoint => this.breakpoint = breakpoint
+      )
+    );
+
     this.handleAOIErrors();
   }
 
-  public onInputSearchPolygon(polygon: string): void {
+  public onFileHovered(e): void {
+    e.preventDefault();
+  }
+
+  public onInputSearchPolygon(event: Event): void {
+    const polygon = (event.target as HTMLInputElement).value;
     const didLoad = this.mapService.loadPolygonFrom(polygon);
 
     if (!didLoad) {
@@ -86,6 +101,10 @@ export class AoiOptionsComponent implements OnInit, OnDestroy {
 
   public onClose(): void {
     this.close.emit();
+  }
+
+  public onOpenHelp(): void {
+    window.open('https://docs.asf.alaska.edu/vertex/manual/#area-of-interest-options');
   }
 
   private handleAOIErrors(): void {

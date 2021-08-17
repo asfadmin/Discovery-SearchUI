@@ -18,6 +18,7 @@ export class PreferencesComponent implements OnInit, OnDestroy {
   public defaultMaxResults: number;
   public defaultMapLayer: MapLayerTypes;
   public defaultDataset: string;
+  public defaultMaxConcurrentDownloads: number;
   public defaultProductTypes: ProductType[];
 
   public defaultGeoSearchFiltersID;
@@ -58,7 +59,7 @@ export class PreferencesComponent implements OnInit, OnDestroy {
           this.defaultMapLayer = profile.mapLayer;
           this.defaultDataset = profile.defaultDataset;
           this.selectedFiltersIDs = profile.defaultFilterPresets;
-
+          this.defaultMaxConcurrentDownloads = profile.defaultMaxConcurrentDownloads;
         }
       )
     );
@@ -115,6 +116,11 @@ export class PreferencesComponent implements OnInit, OnDestroy {
     this.saveProfile();
   }
 
+  public onChangeDefaultMaxConcurrentDownloads(maxDownloads: number): void {
+    this.defaultMaxConcurrentDownloads = maxDownloads;
+    this.saveProfile();
+  }
+
   public onChangeDefaultFilterType(filterID: string, searchType: string): void {
     const key = SearchType[searchType];
     this.selectedFiltersIDs = {
@@ -130,6 +136,7 @@ export class PreferencesComponent implements OnInit, OnDestroy {
       maxResults: this.defaultMaxResults,
       mapLayer: this.defaultMapLayer,
       defaultDataset: this.defaultDataset,
+      defaultMaxConcurrentDownloads: this.defaultMaxConcurrentDownloads,
       defaultFilterPresets: this.selectedFiltersIDs
     });
 
