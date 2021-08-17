@@ -80,7 +80,7 @@ export class PreferencesComponent implements OnInit, OnDestroy {
                 id: '',
                 name: 'Default',
                 searchType: searchtype[searchtype]
-              }
+              };
 
               this.userFiltersBySearchType[SearchType[searchtype]] = [defaultPreset];
             }

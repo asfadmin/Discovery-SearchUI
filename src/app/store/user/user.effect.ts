@@ -185,18 +185,18 @@ export class UserEffects {
       && searchtype !== SearchType.CUSTOM_PRODUCTS),
     withLatestFrom(this.store$.select(userReducer.getSavedFilters)),
     map(([[presetId, searchType], userFilters]) => {
-      if(presetId === '') {
+      if (presetId === '') {
         const defaultPreset: models.SavedFilterPreset = {
           filters: {} as models.FilterType,
           id: '',
           name: 'Default',
           searchType
-        }
+        };
 
         return defaultPreset;
       }
       return userFilters.filter(preset =>
-        preset.searchType === searchType).find(preset => preset.id === presetId)
+        preset.searchType === searchType).find(preset => preset.id === presetId);
       }
       ),
     filter(targetFilter => !!targetFilter),
@@ -208,7 +208,7 @@ export class UserEffects {
         this.store$.dispatch(new filterStore.ClearDatasetFilters());
         this.store$.dispatch(new filterStore.ClearPerpendicularRange());
         this.store$.dispatch(new filterStore.ClearTemporalRange());
-        if(targetFilter.id === '') {
+        if (targetFilter.id === '') {
           return;
         }
         switch (targetFilter.searchType) {
