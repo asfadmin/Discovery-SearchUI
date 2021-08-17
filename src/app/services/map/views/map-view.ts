@@ -1,6 +1,5 @@
-import { Tile as TileLayer } from 'ol/layer';
+import { Tile as TileLayer, Graticule as GraticuleLayer } from 'ol/layer';
 import { View } from 'ol';
-
 import * as proj from 'ol/proj';
 import * as customProj4 from 'ol/proj/proj4';
 
@@ -10,7 +9,8 @@ export class MapView {
   constructor(
     public projection: Projection,
     public view: View,
-    public layer: TileLayer
+    public layer: TileLayer,
+    public gridlines?: GraticuleLayer
   ) {}
 }
 

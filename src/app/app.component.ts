@@ -394,6 +394,11 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
       'hyp3',
       this.domSanitizer.bypassSecurityTrustResourceUrl('../assets/icons/hyp3.svg')
     );
+
+    this.matIconRegistry.addSvgIcon(
+      'gridlines',
+      this.domSanitizer.bypassSecurityTrustResourceUrl('../assets/icons/gridlines.svg')
+    );
   }
 
   private isEmptySearch(searchState): boolean {
