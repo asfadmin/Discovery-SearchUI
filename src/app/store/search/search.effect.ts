@@ -28,6 +28,8 @@ import GeoJSON from 'ol/format/GeoJSON';
 import VectorSource from 'ol/source/Vector';
 import { getScenes } from '@store/scenes';
 import { SearchType } from '@models';
+import { Feature } from 'ol';
+import Geometry from 'ol/geom/Geometry';
 @Injectable()
 export class SearchEffects {
   constructor(
@@ -354,7 +356,9 @@ export class SearchEffects {
           this.findCountries(params.intersectsWith);
         } else {
         this.http.get('/assets/countries.geojson').subscribe(f => {
-          this.vectorSource.addFeatures(this.vectorSource.getFormat().readFeatures(f));
+          this.vectorSource.addFeatures(
+            this.vectorSource.getFormat().readFeatures(f) as Feature<Geometry>[]
+          );
           this.findCountries(params.intersectsWith);
         });
       }

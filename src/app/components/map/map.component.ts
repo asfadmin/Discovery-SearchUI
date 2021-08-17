@@ -373,7 +373,7 @@ export class MapComponent implements OnInit, OnDestroy  {
     return features;
   }
 
-  private scenePolygonsLayer$(projection: string): Observable<VectorSource> {
+  private scenePolygonsLayer$(projection: string): Observable<VectorLayer> {
     return this.scenesService.scenes$().pipe(
       map(scenes => this.scenesToFeature(scenes, projection)),
       map(features => this.featuresToSource(features))
@@ -393,7 +393,7 @@ export class MapComponent implements OnInit, OnDestroy  {
     return features;
   }
 
-  private featuresToSource(features): VectorSource {
+  private featuresToSource(features): VectorLayer {
     const layer = new VectorLayer({
       source: new VectorSource({
         features, wrapX: true
