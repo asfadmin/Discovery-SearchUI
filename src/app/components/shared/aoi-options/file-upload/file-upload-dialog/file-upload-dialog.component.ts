@@ -17,7 +17,7 @@ enum FileErrors {
 @Component({
   selector: 'app-file-upload-dialog',
   templateUrl: 'file-upload-dialog.component.html',
-  styleUrls: ['./file-upload-dialog.component.css']
+  styleUrls: ['./file-upload-dialog.component.scss']
 })
 export class FileUploadDialogComponent implements OnInit, OnDestroy {
   @ViewChild('file', { static: true }) file;

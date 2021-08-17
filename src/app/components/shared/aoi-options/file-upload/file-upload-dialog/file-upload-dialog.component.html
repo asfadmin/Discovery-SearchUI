@@ -6,8 +6,8 @@
   fxLayout="column" fxLayoutAlign="space-evenly stretch"
   class="container">
 
-  <div fxFlex>
-    <div fxFlex fxLayout="column">
+  <div fxFlex fxLayout="column">
+    <div fxFlex>
       <mat-list class="file-list">
         <mat-list-item *ngFor="let file of files">
           <h4 class="limit-text" mat-line>{{file.name}}</h4>
@@ -22,7 +22,7 @@
         fxFlex fxLayoutAlign="center" gdAlignColumns="center"
         [class.drop-text-box]="canBeClosed">
 
-        <div *ngIf="canBeClosed"> Drag geospatial files here. </div>
+        <div *ngIf="canBeClosed" class="drop-file-area"></div>
 
         <div class="loading-box" *ngIf="!canBeClosed">
           <div class="loading-text">
@@ -34,13 +34,7 @@
           </div>
         </div>
       </div>
-
-      <div *ngIf="files.size < 2" class="faint-text import-formats">
-       (<span matTooltip="shapefile">shp</span>, <span matTooltip="geojson">geojson</span>,
-       <span matTooltip="kml">kml</span>, <span matTooltip="shapefile zip archive">zip</span>)
-      </div>
     </div>
-  </div>
 
   <div class="actions">
     <button (click)="addFiles()"
