@@ -75,11 +75,12 @@ export class PreferencesComponent implements OnInit, OnDestroy {
           this.userFilters = savedFilters;
           for (const searchtype in SearchType) {
             if (searchtype !== 'LIST' && searchtype !== 'CUSTOM_PRODUCTS') {
-              const defaultPreset = {} as SavedFilterPreset
-              defaultPreset.filters = {} as FilterType
-              defaultPreset.id = '';
-              defaultPreset.name = 'Default'
-              defaultPreset.searchType = SearchType[searchtype];
+              const defaultPreset: SavedFilterPreset = {
+                filters: {} as FilterType,
+                id: '',
+                name: 'Default',
+                searchType: searchtype[searchtype]
+              }
 
               this.userFiltersBySearchType[SearchType[searchtype]] = [defaultPreset];
             }

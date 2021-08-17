@@ -186,11 +186,12 @@ export class UserEffects {
     withLatestFrom(this.store$.select(userReducer.getSavedFilters)),
     map(([[presetId, searchType], userFilters]) => {
       if(presetId === '') {
-        const defaultPreset = {} as models.SavedFilterPreset
-        defaultPreset.filters = {} as models.FilterType
-        defaultPreset.id = '';
-        defaultPreset.name = 'Default'
-        defaultPreset.searchType = searchType;
+        const defaultPreset: models.SavedFilterPreset = {
+          filters: {} as models.FilterType,
+          id: '',
+          name: 'Default',
+          searchType
+        }
 
         return defaultPreset;
       }
@@ -207,7 +208,7 @@ export class UserEffects {
         this.store$.dispatch(new filterStore.ClearDatasetFilters());
         this.store$.dispatch(new filterStore.ClearPerpendicularRange());
         this.store$.dispatch(new filterStore.ClearTemporalRange());
-        if(targetFilter.id == '') {
+        if(targetFilter.id === '') {
           return;
         }
         switch (targetFilter.searchType) {
