@@ -236,17 +236,25 @@ export class ListFiltersComponent implements OnInit, OnDestroy {
 
   private parseCSV(file) {
     this.ngxCsvParser.parse(file, { header: true, delimiter: ',' })
-    .pipe(first()).subscribe((result: Array<any>) => {
-      const granules: string[] = result.map(row => {
+    .pipe(first()).subscribe((result: Array<{}>) => {
+      const granules_key = Object.keys(result[0]).find(key => key.toLowerCase().includes('granule'));
+      if(!granules_key) {
+        return;
+      }
+
+      const granules: string[] = result
+        .filter(entry => entry.hasOwnProperty(granules_key))
+        .map(entry => {
           let processingType = '';
 
           if (this.listSearchMode === ListSearchType.PRODUCT) {
-            const processLevel = row['Processing Level'].replace('-', '_');
+            const processLevel = entry['Processing Level'].replace('-', '_');
             processingType = '-' + processLevel;
           }
 
-          return row['Granule Name'] + processingType;
+          return entry[granules_key] + processingType;
         });
+
       this.updateSearchList(granules);
     }, (error: NgxCSVParserError) => {
       console.log('Error', error);
