@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { Observable, combineLatest } from 'rxjs';
 import { debounceTime, map } from 'rxjs/operators';
 import * as moment from 'moment';
-
+import * as uiStore from '@store/ui';
 import { Store } from '@ngrx/store';
 import { AppState } from '@store/app.reducer';
 import {
@@ -22,6 +22,7 @@ import {
   Range, ColumnSortDirection,
   Hyp3Job, Hyp3JobStatusCode
 } from '@models';
+import { NotificationService } from './notification.service';
 
 @Injectable({
   providedIn: 'root'
@@ -29,6 +30,7 @@ import {
 export class ScenesService {
   constructor(
     private store$: Store<AppState>,
+    private notificationService: NotificationService,
   ) { }
 
   public products$(): Observable<CMRProduct[]> {
@@ -111,7 +113,13 @@ export class ScenesService {
           return scenes;
         }
 
-        return scenes.filter(scene => !scene.productTypeDisplay.includes('RAW'));
+        const filteredScenes = scenes.filter(scene => !scene.productTypeDisplay.includes('RAW'));
+
+        if (filteredScenes.length === 0 && scenes.length > 0) {
+          this.store$.dispatch(new uiStore.ShowS1RawData);
+          this.notificationService.rawDataAutoToggle();
+        }
+        return filteredScenes;
       })
     );
   }
