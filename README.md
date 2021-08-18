@@ -6,22 +6,35 @@ CodeFactor](https://www.codefactor.io/repository/github/asfadmin/discovery-searc
  ASF's Angular search web application
 
 ## Deployments
+| Maturity | Deployment |
+| --- | --- |
+| Devel | https://search-dev.asf.alaska.edu/ |
+| Test | https://search-tset.asf.alaska.edu/ |
+| Prod | https://search.asf.alaska.edu/ |
 
-- **Devel:** https://search-dev.asf.alaska.edu/
-- **Test:** https://search-test.asf.alaska.edu/
-- **Prod:** https://search.asf.alaska.edu/
-
-
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 6.2.4.
+This project was generated with the [Angular CLI](https://github.com/angular/angular-cli).
 
 ## Intialize after downloading
 After you first download the repo, setup your instance by doing `npm install` from the project root directory. If you don't have npm installed go [here](https://www.npmjs.com/get-npm) for installation instructions. 
 
 ## Development server
 
-The app is run locally using the Angular CLI. Installation instructions can be found [here](https://angular.io/cli). After angular is installed, run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files. You can optionally supply a port number, for example `ng serve --port 4444`
-If you change your host file on your local machine then this command might be appropriate `ng serve --port 4444 --host local.asf.alaska.edu`.
+The app is run locally using the Angular CLI. Installation instructions can be found [here](https://angular.io/cli).
 
+After angular is installed, run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files. You can optionally supply a port number, for example `ng serve --port 4444`
+
+In order to get certain services to work it's necesarry to set up a .asf.alaska.edu domain pointing to your local server in your host file. This process varies on the OS you are using. 
+| OS | Method |
+| --- | --- |
+| Linux | modify the /etc/hosts file |
+```
+ng serve --port 4444 --host local.asf.alaska.edu
+```
+Some services require https in order to work. Angular supports running with ssl, though to get the browser to not give warnings you'll need to generate your own ssl certs. For development purposes, the default --ssl argument should work fine. Example usage
+```bash
+ng serve --port 4444 --ssl --host local.asf.alaska.edu
+
+```
 
 ## Code scaffolding
 
@@ -34,30 +47,8 @@ Run `npm install --save package_name` to install a package.
 
 Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `--prod` flag for a production build.
 
-## Running unit tests
-
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
-
-## Running end-to-end tests
-
-Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protractortest.org/).
-
-## Installing pip and mkDocs
-This is the starting point for installing Make Docs https://www.mkdocs.org/#installation
-
-If you do not have python and pip already installed and you are using OS X, then these links
-might be helpful.
-
-To install Homebrew follow the directions here https://docs.python-guide.org/starting/install3/osx/
-
-This can be helpful if you have problems installing Python or pip https://opensource.com/article/19/5/python-3-default-mac
-
-#### python 3 and pip on OS X
-For Apple OS X systems, this is the recommended approach to installing python 3 and pip.
-While OS X comes with many Unix utilities, those familiar with Linux systems
-will notice one key component missing: a package manager. Homebrew fills this void.
-
-To install Homebrew follow the directions here https://docs.python-guide.org/starting/install3/osx/
+## Testing
+Testing is run via [Ghost Inspector](https://ghostinspector.com/).
 
 ## Further help
 
