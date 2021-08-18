@@ -102,4 +102,10 @@ export class NotificationService {
   public error(message: string, title = '', options = {}): ActiveToast<any> {
     return this.toastr.warning(message, title, {...options, ...this.toastOptions});
   }
+
+  public rawDataAutoToggle() {
+    const title = 'Showing Raw Results';
+    const message = 'Only raw results found. Select different file types in the filters menu, or increase max search results';
+    this.toastr.info(message, title);
+  }
 }
