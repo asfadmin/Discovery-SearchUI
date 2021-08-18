@@ -107,6 +107,12 @@ export class NotificationService {
     toast.onTap.pipe(take(1)).subscribe(_ => this.store$.dispatch(new uiStore.ShowS1RawData));
   }
 
+  public listImportFailed(fileExtension: string) {
+    const title = `List Import Failed`;
+    const message = `Click to open documentation for .${fileExtension} file format`;
+    return this.error(message, title);
+  }
+
   public info(message: string, title = '', options = {}): ActiveToast<any> {
     return this.toastr.info(message, title, {...options, ...this.toastOptions});
   }
@@ -114,5 +120,4 @@ export class NotificationService {
   public error(message: string, title = '', options = {}): ActiveToast<any> {
     return this.toastr.warning(message, title, {...options, ...this.toastOptions});
   }
-
 }

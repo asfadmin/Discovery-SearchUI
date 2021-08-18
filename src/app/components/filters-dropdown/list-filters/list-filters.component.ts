@@ -5,7 +5,7 @@ import { NgxCsvParser } from 'ngx-csv-parser';
 import { NgxCSVParserError } from 'ngx-csv-parser';
 import * as xml2js from 'xml2js';
 import { combineLatest, from, Subject } from 'rxjs';
-import { map, debounceTime, withLatestFrom, first, tap, delay } from 'rxjs/operators';
+import { map, debounceTime, withLatestFrom, first, tap, delay, filter } from 'rxjs/operators';
 import { SubSink } from 'subsink';
 
 import { ActionsSubject, Store } from '@ngrx/store';
@@ -236,12 +236,16 @@ export class ListFiltersComponent implements OnInit, OnDestroy {
 
   private parseCSV(file) {
     this.ngxCsvParser.parse(file, { header: true, delimiter: ',' })
-    .pipe(first()).subscribe((result: Array<{}>) => {
-      const granules_key = Object.keys(result[0]).find(key => key.toLowerCase().includes('granule'));
-      if(!granules_key) {
-        return;
-      }
-
+    .pipe(
+      first(),
+      map((output: Array<{}>) => ({result: output, granules_key: Object.keys(output[0]).find(key => key.toLowerCase().includes('granule'))})),
+      tap(res => {
+        if(res.granules_key === undefined) {
+          this.notificationService.listImportFailed('csv');
+        }
+      }),
+      filter(result => !!result.granules_key),
+      ).subscribe(({result, granules_key}) => {
       const granules: string[] = result
         .filter(entry => entry.hasOwnProperty(granules_key))
         .map(entry => {
@@ -250,7 +254,7 @@ export class ListFiltersComponent implements OnInit, OnDestroy {
           if (this.listSearchMode === ListSearchType.PRODUCT) {
             const processLevel = '-' + entry?.['Processing Level']?.replace('-', '_');
             if(processLevel !== '-') {
-              processingType += processLevel;
+              processingType = processLevel;
             }
           }
 
@@ -258,8 +262,8 @@ export class ListFiltersComponent implements OnInit, OnDestroy {
         });
 
       this.updateSearchList(granules);
-    }, (error: NgxCSVParserError) => {
-      console.log('Error', error);
+    }, (_: NgxCSVParserError) => {
+      this.notificationService.listImportFailed('csv');
     });
   }
 
