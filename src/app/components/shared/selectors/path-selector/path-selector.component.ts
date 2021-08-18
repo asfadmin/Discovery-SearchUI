@@ -97,11 +97,9 @@ export class PathSelectorComponent implements OnInit, OnDestroy {
   public onValueChanged(event: Event, inputType: PathFormInputType): void {
     const inputValue = (event.target as HTMLInputElement).valueAsNumber;
 
-    let val: number | null;
+    let val: number | null = null;
 
-    if (!this.isValidNumber(inputValue)) {
-      val = null;
-    } else {
+    if (this.isValidNumber(inputValue)) {
       val = inputValue;
     }
 
@@ -121,7 +119,7 @@ export class PathSelectorComponent implements OnInit, OnDestroy {
   }
 
   private isValidNumber(val: number): boolean {
-    return !!val && !isNaN(val) && val >= 0;
+    return !isNaN(val) && val >= 0;
   }
 
   public onNewOmitPolygon(e): void {
