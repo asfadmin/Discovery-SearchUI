@@ -2,12 +2,16 @@ import { Injectable } from '@angular/core';
 
 import { ActiveToast, ToastrService } from 'ngx-toastr';
 
+import * as uiStore from '@store/ui';
+import { AppState } from '@store';
+import { Store } from '@ngrx/store';
+import { take } from 'rxjs/operators';
 @Injectable({
   providedIn: 'root'
 })
 export class NotificationService {
 
-  constructor(private toastr: ToastrService) {}
+  constructor(private toastr: ToastrService, private store$: Store<AppState>) {}
 
   // Custom toastr config example, toastClass styling in styles.scss
   private toastOptions = {
@@ -95,6 +99,14 @@ export class NotificationService {
     this.info('Filters dismissed and not applied');
   }
 
+  public rawDataHidden() {
+    const title = 'Hiding Raw Results';
+    const message = 'Click to show raw results';
+
+    const toast = this.info(message, title);
+    toast.onTap.pipe(take(1)).subscribe(_ => this.store$.dispatch(new uiStore.ShowS1RawData));
+  }
+
   public info(message: string, title = '', options = {}): ActiveToast<any> {
     return this.toastr.info(message, title, {...options, ...this.toastOptions});
   }
@@ -102,4 +114,5 @@ export class NotificationService {
   public error(message: string, title = '', options = {}): ActiveToast<any> {
     return this.toastr.warning(message, title, {...options, ...this.toastOptions});
   }
+
 }
