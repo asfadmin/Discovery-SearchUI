@@ -115,7 +115,7 @@ export class ScenesService {
 
         const filteredScenes = scenes.filter(scene => !scene.productTypeDisplay.includes('RAW'));
 
-        if(filteredScenes.length === 0 && scenes.length > 0) {
+        if (filteredScenes.length === 0 && scenes.length > 0) {
           this.store$.dispatch(new uiStore.ShowS1RawData);
           this.notificationService.rawDataAutoToggle();
         }
