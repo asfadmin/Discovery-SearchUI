@@ -3,7 +3,6 @@ import { Injectable } from '@angular/core';
 import { Observable, combineLatest } from 'rxjs';
 import { debounceTime, map } from 'rxjs/operators';
 import * as moment from 'moment';
-import * as uiStore from '@store/ui';
 import { Store } from '@ngrx/store';
 import { AppState } from '@store/app.reducer';
 import {
@@ -116,8 +115,7 @@ export class ScenesService {
         const filteredScenes = scenes.filter(scene => !scene.productTypeDisplay.includes('RAW'));
 
         if (filteredScenes.length === 0 && scenes.length > 0) {
-          this.store$.dispatch(new uiStore.ShowS1RawData);
-          this.notificationService.rawDataAutoToggle();
+          this.notificationService.rawDataHidden();
         }
         return filteredScenes;
       })
