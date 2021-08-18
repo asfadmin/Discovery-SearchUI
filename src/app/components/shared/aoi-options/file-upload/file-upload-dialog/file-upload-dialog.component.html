@@ -36,18 +36,19 @@
       </div>
     </div>
 
-  <div class="actions">
-    <button (click)="addFiles()"
-      [disabled]="uploading"
-      style="margin-right: 10px;"
-      color="primary" class="add-files-btn" mat-raised-button>
-        Select Files
-    </button>
+    <div class="actions">
+      <button (click)="addFiles()"
+        [disabled]="uploading"
+        style="margin-right: 10px;"
+        color="primary" class="add-files-btn" mat-raised-button>
+          Select Files
+      </button>
 
-    <button mat-raised-button color="primary"
-      (click)="onUpload()"
-      [disabled]="areNoFiles(files)">
-      Import
-    </button>
+      <button mat-raised-button color="primary"
+        (click)="onUpload()"
+        [disabled]="areNoFiles(files)">
+        Import
+      </button>
+    </div>
   </div>
 </div>
