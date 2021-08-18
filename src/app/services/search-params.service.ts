@@ -194,7 +194,6 @@ export class SearchParamsService {
 
   private frameRange$() {
     return this.store$.select(filterStore.getFrameRange).pipe(
-      map(range => ({start: range.start !== null ? range.start.toString() : '', end: range.end !== null ? range.end.toString() : ''})),
       map(range => this.rangeService.toCMRString(range)),
       map(frameRange => ({ frame: frameRange })),
     );
