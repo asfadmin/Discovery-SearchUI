@@ -248,8 +248,10 @@ export class ListFiltersComponent implements OnInit, OnDestroy {
           let processingType = '';
 
           if (this.listSearchMode === ListSearchType.PRODUCT) {
-            const processLevel = entry['Processing Level'].replace('-', '_');
-            processingType = '-' + processLevel;
+            const processLevel = '-' + entry?.['Processing Level']?.replace('-', '_');
+            if(processLevel !== '-') {
+              processingType += processLevel;
+            }
           }
 
           return entry[granules_key] + processingType;
