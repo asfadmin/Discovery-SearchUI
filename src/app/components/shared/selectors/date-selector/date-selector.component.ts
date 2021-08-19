@@ -37,7 +37,8 @@ export class DateSelectorComponent implements OnInit, OnDestroy {
       map(dataset => dataset.date.end),
       map(endDate => endDate <= this.currentDate ? endDate : this.currentDate)
     );
-  public minDate$ = this.selectedDataset$.pipe(map(dataset => dataset.date.start ));
+  public minDate$ = this.selectedDataset$.pipe(
+    map(dataset => dataset.date.start ));
   public startDate$ = this.store$.select(filtersStore.getStartDate);
   public endDate$ = this.store$.select(filtersStore.getEndDate);
   public startDate: Date;
@@ -109,12 +110,23 @@ export class DateSelectorComponent implements OnInit, OnDestroy {
 
     this.subs.add(
       this.startDate$.subscribe(
-        start => this.startDate = start
+        start =>
+        {
+          this.startDate = start;
+          if(this.endDate < this.startDate && !!this.endDate) {
+            this.store$.dispatch(new filtersStore.SetEndDate(this.startDate));
+          }
+        }
       )
     );
     this.subs.add(
       this.endDate$.subscribe(
-        end => this.endDate = end
+        end => {
+          this.endDate = end;
+          if(this.startDate > this.endDate && !!this.startDate) {
+            this.store$.dispatch(new filtersStore.SetStartDate(this.endDate));
+          }
+        }
       )
     );
   }
