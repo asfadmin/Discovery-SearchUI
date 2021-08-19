@@ -1,4 +1,6 @@
 import { Component, OnInit, ViewChild, ElementRef, OnDestroy } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
+
 import { SubSink } from 'subsink';
 import { switchMap, tap, delay } from 'rxjs/operators';
 import { Store } from '@ngrx/store';
@@ -7,7 +9,8 @@ import * as userStore from '@store/user';
 import * as searchStore from '@store/search';
 import * as uiStore from '@store/ui';
 
-import { NotificationService, SavedSearchService, ScreenSizeService, SearchService } from '@services';
+import { SavedSearchService, ScreenSizeService, SearchService } from '@services';
+import { SaveSearchDialogComponent } from '@components/shared/save-search-dialog';
 import * as models from '@models';
 
 @Component({
@@ -46,11 +49,11 @@ export class SavedSearchesComponent implements OnInit, OnDestroy {
   private subs = new SubSink();
 
   constructor(
-    private savedSearchService: SavedSearchService,
+    private dialog: MatDialog,
     private store$: Store<AppState>,
+    private savedSearchService: SavedSearchService,
     private screenSize: ScreenSizeService,
     private searchService: SearchService,
-    private notificationService: NotificationService
   ) { }
 
   ngOnInit() {
@@ -70,7 +73,6 @@ export class SavedSearchesComponent implements OnInit, OnDestroy {
         _ => {
           if (this.saveSearchOn) {
             this.lockedFocus = true;
-            this.saveCurrentSearch();
             this.store$.dispatch(new uiStore.SetSaveSearchOn(false));
           }
         }
@@ -98,47 +100,14 @@ export class SavedSearchesComponent implements OnInit, OnDestroy {
   }
 
   public saveCurrentSearch(): void {
-    const search = this.savedSearchService.makeCurrentSearch('');
-
-    if (!this.searchCanBeSaved(search)) {
-      return;
-    }
-
-    this.newSearchId = search.id;
-
-    this.store$.dispatch(new userStore.AddNewSearch(search));
-    this.savedSearchService.saveSearches();
-  }
-
-  private searchCanBeSaved(search: models.Search): boolean {
-    const maxLen = 10000;
-
-    if (search.searchType === models.SearchType.DATASET) {
-      const filters = <models.GeographicFiltersType>search.filters;
-      const len = filters.polygon !== null ? filters.polygon.length : 0;
-
-      if (len > maxLen) {
-        this.notifyUserListTooLong(len, 'Polygon');
-        return false;
-      }
-    } else if (search.searchType === models.SearchType.LIST) {
-      const filters = <models.ListFiltersType>search.filters;
-      const len = filters.list.join(',').length;
-
-      if (len > maxLen) {
-        this.notifyUserListTooLong(len, 'List');
-        return false;
-      }
-    }
-
-    return true;
-  }
-
-  private notifyUserListTooLong(len: number, strType: string): void {
-    this.notificationService.error(
-      `${strType} too long, must be under 10,000 characters to save (${len.toLocaleString()})`, `ERROR`,
-      { timeOut: 6000, }
-    );
+    this.dialog.open(SaveSearchDialogComponent, {
+      id: 'ConfirmProcess',
+      width: '550px',
+      height: '500px',
+      maxWidth: '550px',
+      maxHeight: '500px',
+      data: {}
+    });
   }
 
   public updateSearchFilters(id: string): void {
@@ -169,7 +138,7 @@ export class SavedSearchesComponent implements OnInit, OnDestroy {
 
   public updateSearchName(update: {id: string, name: string}): void {
     if (update.name === '') {
-      update.name = '(No title)' ;
+      update.name = '(No name)' ;
     }
     this.newSearchId = '';
 
