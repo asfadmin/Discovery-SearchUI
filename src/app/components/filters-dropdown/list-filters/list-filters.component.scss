@@ -1,3 +1,5 @@
+@import "asf-theme";
+
 .ls-example {
   font-style: italic;
   color: grey;
@@ -6,9 +8,28 @@
 
 .file-upload-container {
   width: 30%;
-  border: 1px;
-  border-style: dashed;
   margin-bottom: 20px;
+}
+
+.drop-file-area {
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-color: rgb(245, 245, 245);
+  background-position: center;
+  width: 350px;
+  height: 180px;
+  display: inline-block;
+  //border: $asf-primary-dark dashed 2px;
+  outline: 2px dashed $asf-primary;
+  outline-offset: -8px;
+}
+
+.drop-file-area-scenes {
+  background-image: url("/assets/scene_file_upload.png");
+}
+
+.drop-file-area-files {
+  background-image: url("/assets/file_upload.png");
 }
 
 .file-upload-text {

@@ -532,10 +532,10 @@ export class UrlStateService {
   }
 
   private loadProductTypes = (typesStr: string): Action | undefined => {
-    const productTypes = this.prop.loadProperties(
+    const productTypes: models.DatasetProductTypes = this.prop.loadProperties(
       typesStr,
       'productTypes',
-      v => v.apiValue
+      (v: models.ProductType) => v.apiValue
     );
 
     if (!productTypes) {

@@ -59,16 +59,15 @@
           <div class="input-field-container">
             <mat-form-field class="w100 file-list-container">
               <textarea matInput
-                        (input)="onTextInputChange($event.target.value)"
+                        (input)="onTextInputChange($event)"
                         [(ngModel)]="searchList"
                         style="height: 150px;"
                         placeholder="List of {{ mode === types.SCENE ? 'Scene names' : 'File IDs.' }}">
               </textarea>
             </mat-form-field>
-            <div class="file-upload-container ">
-              <div class='file-upload-text'>
-                Drag and Drop Files Here...
-              </div>
+            <div class="drop-file-area file-upload-container"
+                 [class.drop-file-area-scenes]=" mode === types.SCENE "
+                 [class.drop-file-area-files]=" mode != types.SCENE ">
             </div>
         </div>
         </div>

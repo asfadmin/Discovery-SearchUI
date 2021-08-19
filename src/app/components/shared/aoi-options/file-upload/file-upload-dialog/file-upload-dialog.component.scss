@@ -1,3 +1,5 @@
+@import "asf-theme";
+
 .add-files-btn {
   float: right;
 }
@@ -23,9 +25,23 @@
 }
 
 .drop-text-box {
-  outline: 2px dashed rgba(0, 0, 0, 0.2);
-  color: rgba(0, 0, 0, 0.6);
-  outline-offset: -10px;
+  //outline: 2px dashed rgba(0, 0, 0, 0.2);
+  //color: rgba(0, 0, 0, 0.6);
+  //outline-offset: -10px;
+}
+
+.drop-file-area {
+  background-image: url("/assets/geospatial_upload.png");
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-color: rgb(245, 245, 245);
+  background-position: center;
+  width: 350px;
+  height: 160px;
+  display: inline-block;
+  //border: $asf-primary-dark dashed 2px;
+  outline: 2px dashed $asf-primary;
+  outline-offset: -8px;
 }
 
 .is-file-error {

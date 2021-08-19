@@ -1,4 +1,4 @@
-import {Component, OnInit, OnDestroy, Input} from '@angular/core';
+import { Component, OnInit, OnDestroy, Input } from '@angular/core';
 
 import { faCopy } from '@fortawesome/free-solid-svg-icons';
 import { ClipboardService } from 'ngx-clipboard';
@@ -13,10 +13,19 @@ import { CMRProduct, AsfApiOutputFormat, Breakpoints } from '@models';
 import { MatDialogRef } from '@angular/material/dialog';
 import { SubSink } from 'subsink';
 import { ResizedEvent } from 'angular-resize-event';
-import {HttpClient} from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { saveAs } from 'file-saver';
 import { Observable } from 'rxjs';
 import { download, Download } from 'ngx-operators';
+import * as userStore from '@store/user';
+// import { DownloadService } from '@services/download.service';
+
+
+// tslint:disable-next-line:class-name
+export interface selectedItems {
+  id: string;
+  url: string;
+}
 
 @Component({
   selector: 'app-queue',
@@ -28,6 +37,8 @@ export class QueueComponent implements OnInit, OnDestroy {
   @Input() appQueueComponentModel: string;
 
   download$: Observable<Download>;
+  // public dFile: Download;
+  // public dlInProgress: boolean = false;
 
   public queueHasOnDemandProducts = false;
   public showDemWarning: boolean;
@@ -44,6 +55,16 @@ export class QueueComponent implements OnInit, OnDestroy {
   public dlWidth = 1000;
   public dlHeight = 1000;
   public dlWidthMin = 715;
+
+  public selectedItems: selectedItems[] = [];
+  public allChecked = false;
+  public someChecked = false;
+
+  public dlQueueCount = 0;
+  public dlQueueNumProcessed = 0;
+  public dlDefaultChunkSize = 3;
+  public dlQueueProgress = 0;
+  public productList: HTMLCollectionOf<Element>;
 
   public products$ = this.store$.select(queueStore.getQueuedProducts).pipe(
     tap(products => this.areAnyProducts = products.length > 0),
@@ -72,6 +93,7 @@ export class QueueComponent implements OnInit, OnDestroy {
     private screenSize: ScreenSizeService,
     private notificationService: NotificationService,
     private http: HttpClient,
+    // private downloadService: DownloadService,
   ) {}
 
   ngOnInit() {
@@ -80,6 +102,15 @@ export class QueueComponent implements OnInit, OnDestroy {
         breakpoint => this.breakpoint = breakpoint
       )
     );
+
+    this.subs.add(
+      this.store$.select(userStore.getUserProfile).subscribe(
+        profile => {
+          this.dlDefaultChunkSize = profile.defaultMaxConcurrentDownloads;
+        }
+      )
+    );
+
   }
 
   public onRemoveProduct(product: CMRProduct): void {
@@ -152,6 +183,21 @@ export class QueueComponent implements OnInit, OnDestroy {
     this.store$.dispatch(new queueStore.DownloadMetadata(format));
   }
 
+  public toggleItemSelected(productId, downloadUrl) {
+    const idx = this.selectedItems.findIndex( o => o.id === productId );
+    if (idx > -1) {
+      this.selectedItems.splice( idx, 1 );
+    } else {
+      this.selectedItems.push({
+        id: productId,
+        url: downloadUrl,
+      });
+    }
+    if ( this.selectedItems.length > 0 ) {
+        this.someChecked = true;
+      }
+  }
+
   public demWarning(products) {
     if (!products) {
       return false;
@@ -169,13 +215,31 @@ export class QueueComponent implements OnInit, OnDestroy {
   }
 
   public download(href) {
-    console.log('href:', href);
     this.download$ = this.http.get(href, {
       withCredentials: true,
       reportProgress: true,
       observe: 'events',
       responseType: 'blob'
     }).pipe(download(() => saveAs('special.nc')));
+  }
+
+  public downloadAllFiles() {
+    const container = document.querySelector('#matListProducts');
+    this.productList = container.getElementsByClassName('download-file-button');
+    this.dlQueueNumProcessed = 0;
+    this.dlQueueCount = this.productList.length;
+    this.dlDefaultChunkSize = typeof this.dlDefaultChunkSize === 'undefined' ? 3 : this.dlDefaultChunkSize;
+    // const biteSize = this.dlQueueCount < this.dlDefaultChunkSize ? this.dlQueueCount : this.dlDefaultChunkSize;
+    const biteSize = 3;
+    bite( biteSize, this.productList ).then( () => { this.dlQueueNumProcessed = biteSize; } );
+  }
+
+  public prodDownloaded(_product) {
+    this.dlQueueProgress = (this.dlQueueNumProcessed / this.dlQueueCount) * 100;
+    if (this.dlQueueNumProcessed < this.dlQueueCount) {
+      const el: HTMLButtonElement = this.productList[this.dlQueueNumProcessed++] as HTMLButtonElement;
+      el.click();
+    }
   }
 
   onCloseDownloadQueue() {
@@ -186,3 +250,16 @@ export class QueueComponent implements OnInit, OnDestroy {
     this.subs.unsubscribe();
   }
 }
+
+async function bite( biteSize: number, prodList: any ) {
+  for (let i = 0; i < biteSize; i++) {
+    await nibble( i, prodList );
+  }
+}
+async function nibble( i: number, prodList ) { // 3
+  await timer(1000);
+  const el: HTMLButtonElement = prodList[i] as HTMLButtonElement;
+  el.click();
+}
+
+function timer(ms) { return new Promise(res => setTimeout(res, ms)); }

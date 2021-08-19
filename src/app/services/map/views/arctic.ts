@@ -1,8 +1,11 @@
 import { View } from 'ol';
 import WMTSTileGrid from 'ol/tilegrid/WMTS.js';
 import { WMTS } from 'ol/source';
-import { Tile as TileLayer } from 'ol/layer';
+import { Tile as TileLayer,
+  Graticule as GraticuleLayer
+} from 'ol/layer';
 import * as proj from 'ol/proj';
+import { Stroke } from 'ol/style';
 
 import { MapView, CustomProjection } from './map-view';
 
@@ -40,12 +43,25 @@ export function arctic(): MapView  {
       tileSize: 512
     })
   });
-
   const layer = new TileLayer({ source, extent });
+
+
+  const graticule = new GraticuleLayer({
+    strokeStyle: new Stroke({
+      color: 'rgba(255,120,0,0.9)',
+      width: 2,
+      lineDash: [0.5, 4],
+    }),
+    showLabels: true,
+    wrapX: false,
+  });
+
+  graticule.set('name', 'gridlines');
 
   return new MapView(
     projection,
     view,
-    layer
+    layer,
+    graticule
   );
 }

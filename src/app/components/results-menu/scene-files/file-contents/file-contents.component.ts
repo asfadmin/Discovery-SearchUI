@@ -137,6 +137,10 @@ export class FileContentsComponent implements OnInit, OnDestroy {
     return this.queuedProductIds.has(nodeId);
   }
 
+  public prodDownloaded( product ) {
+    product = product;
+  }
+
   ngOnDestroy() {
     this.subs.unsubscribe();
   }

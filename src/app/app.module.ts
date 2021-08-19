@@ -34,6 +34,8 @@ import { CustomBreakPointsProvider } from '@services/custom-breakpoints';
 import * as services from '@services';
 
 import { NgcCookieConsentModule, NgcCookieConsentConfig } from 'ngx-cookieconsent';
+import { getSaver, SAVER } from '@services/saver.provider';
+// import { OnlynumberDirective } from './directives/onlynumber.directive';
 // import { FileDownloadDirective } from './directives/file-download.directive';
 
 // info about cookie consent module: https://tinesoft.github.io/ngx-cookieconsent/home
@@ -74,6 +76,7 @@ export const routes = [
 @NgModule({
   declarations: [
     AppComponent,
+    // OnlynumberDirective,
     // FileDownloadDirective,
   ],
   imports: [
@@ -84,7 +87,7 @@ export const routes = [
     MatBottomSheetModule,
     MatSharedModule,
     FlexLayoutModule.withConfig({disableDefaultBps: true},
-    CustomBreakPointsProvider.useValue),
+      CustomBreakPointsProvider.useValue),
     RouterModule.forRoot(routes, {useHash: true}),
     StoreModule.forRoot(store.reducers, {metaReducers: store.metaReducers}),
     EffectsModule.forRoot(store.appEffects),
@@ -101,7 +104,7 @@ export const routes = [
     MatDialogModule,
     BaselineChartModule,
     HelpModule,
-    ToastrModule.forRoot( { positionClass: 'inline', preventDuplicates: true }),
+    ToastrModule.forRoot({positionClass: 'inline', preventDuplicates: true}),
     ToastContainerModule,
   ],
   providers: [
@@ -132,7 +135,11 @@ export const routes = [
     services.Hyp3Service,
     services.PairService,
     services.SceneSelectService,
+    {provide: SAVER, useFactory: getSaver},
+    // { provide: Window, useValue: window },
   ],
-  bootstrap: [ AppComponent ],
+  bootstrap: [AppComponent],
+  exports: [
+  ]
 })
 export class AppModule {}

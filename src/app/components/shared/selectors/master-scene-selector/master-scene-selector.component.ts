@@ -24,8 +24,8 @@ export class MasterSceneSelectorComponent implements OnInit, OnDestroy {
     );
   }
 
-  public onMasterSceneChanged(master: string): void {
-    this.store$.dispatch(new scenesStore.SetFilterMaster(master));
+  public onMasterSceneChanged(event: Event): void {
+    this.store$.dispatch(new scenesStore.SetFilterMaster((event.target as HTMLInputElement).value));
   }
 
   ngOnDestroy() {

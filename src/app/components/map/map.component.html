@@ -16,8 +16,7 @@
     <div fxLayout="row" class="banner-row">
       <div fxLayout="column">
         <app-banners
-          [banners]="banners$ | async"
-          (removeBanner)="removeBanner($event)">
+          [banners]="banners$ | async">
         </app-banners>
       </div>
     </div>
@@ -48,7 +47,6 @@
         <div class="mobile-control-group">
           <app-interaction-selector></app-interaction-selector>
         </div>
-
         <div class="mobile-control-group">
           <app-draw-selector></app-draw-selector>
         </div>
@@ -63,6 +61,10 @@
           <div *ngIf="(view$ | async) === viewTypes.EQUITORIAL"
             class="mobile-control-group">
             <app-layer-selector></app-layer-selector>
+          </div>
+          <div [hidden]="(view$ | async) !== viewTypes.EQUITORIAL"
+          class="mobile-control-group">
+            <app-gridlines-selector></app-gridlines-selector>
           </div>
       </div>
     </ng-container>

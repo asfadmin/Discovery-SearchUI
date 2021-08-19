@@ -20,7 +20,7 @@ declare global {
 @Component({
   selector: 'app-aoi-options',
   templateUrl: './aoi-options.component.html',
-  styleUrls: ['./aoi-options.component.css'],
+  styleUrls: ['./aoi-options.component.scss'],
 })
 export class AoiOptionsComponent implements OnInit, OnDestroy {
   @ViewChild('polygonInputForm') public polygonForm: NgForm;
@@ -76,7 +76,8 @@ export class AoiOptionsComponent implements OnInit, OnDestroy {
     e.preventDefault();
   }
 
-  public onInputSearchPolygon(polygon: string): void {
+  public onInputSearchPolygon(event: Event): void {
+    const polygon = (event.target as HTMLInputElement).value;
     const didLoad = this.mapService.loadPolygonFrom(polygon);
 
     if (!didLoad) {

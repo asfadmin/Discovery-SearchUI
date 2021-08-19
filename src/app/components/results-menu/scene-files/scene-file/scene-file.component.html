@@ -68,7 +68,7 @@
 
     <div mat-line>
       <span *ngIf="product.bytes === 0">Virtual</span>
-      <span *ngIf="isDownloadable(product) && product.bytes !== 0">{{product.bytes | readableSizeFromBytes }}</span>
+      <span *ngIf="isDownloadable(product) && product.bytes !== 0">{{product.bytes.toString() | readableSizeFromBytes }}</span>
     </div>
 
     <div *ngIf="product.metadata.job && product.metadata.job.name" mat-line>
@@ -76,18 +76,18 @@
     </div>
 
     <div *ngIf="product.metadata.job" mat-line>
-      Job Submitted: {{ product.metadata.job.request_time | fullDate }}
+      Job Submitted: {{ product.metadata.job.request_time| fullDate }}
     </div>
 
     <div *ngFor="let param of paramsList" mat-line>
       {{ param.name }}: {{ param.val }}
     </div>
 
-    <a *ngIf="isDownloadable(product)" mat-icon-button
-      [href]="product.downloadUrl" target="_blank"
-      matTooltip="Download file">
-      <mat-icon>cloud_download</mat-icon>
-    </a>
+    <app-download-file-button
+      [attr.id]="'scene_' + product.id"
+      [product] = "product"
+      (productDownloaded)="prodDownloaded($event)">
+    </app-download-file-button>
 
     <app-cart-toggle
       *ngIf="isDownloadable(product)"
