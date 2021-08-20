@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 
 import { BehaviorSubject, Subject } from 'rxjs';
-import { map, sampleTime } from 'rxjs/operators';
+import { debounceTime, map, sampleTime, switchMap } from 'rxjs/operators';
 
 import { Map } from 'ol';
 import { Vector as VectorLayer } from 'ol/layer';
@@ -17,6 +17,8 @@ import * as models from '@models';
 
 import * as polygonStyle from './polygon.style';
 import * as views from './views';
+import { SarviewsEventsService } from '@services';
+import { SarviewsFloodEvent, SarviewsQuakeEvent, SarviewsVolcanicEvent } from '@models';
 
 
 @Injectable({
@@ -72,6 +74,25 @@ export class MapService {
 
   public newSelectedScene$ = new Subject<string>();
 
+
+  private sarviewsEvents$ = this.sarviewsEventService.getSarviewsEvents().pipe(debounceTime(250));
+
+  private quakeIds$ = this.sarviewsEvents$.pipe(
+    map(events => events.filter(sarviewsEvent => sarviewsEvent.event_type === 'quake')),
+    map(quakeEvents => quakeEvents.map(quake => quake.event_id)),
+  );
+
+  private volcanoIds$ = this.sarviewsEvents$.pipe(
+    map(events => events.filter(sarviewsEvent => sarviewsEvent.event_type === 'volcano')),
+    map(volcanoEvents => volcanoEvents.map(volcano => volcano.event_id)),
+  );
+
+  private floodIds$ = this.sarviewsEvents$.pipe(
+    map(events => events.filter(sarviewsEvent => sarviewsEvent.event_type === 'flood')),
+    map(volcanoEvents => volcanoEvents.map(volcano => volcano.event_id)),
+  );
+
+
   public isDrawing$ = this.drawService.isDrawing$;
   public searchPolygon$ = this.drawService.polygon$.pipe(
     map(
@@ -81,10 +102,36 @@ export class MapService {
     )
   );
 
+  public quakeEvents$ = this.quakeIds$.pipe(
+    switchMap(ids => this.sarviewsEventService.getEventFeatures(ids)),
+    map(events => <SarviewsQuakeEvent[]>events));
+
+  public volcanicEvents$ = this.volcanoIds$.pipe(
+    switchMap(ids => this.sarviewsEventService.getEventFeatures(ids)),
+    map(events => <SarviewsVolcanicEvent[]>events));
+
+  public floodEvents$ = this.floodIds$.pipe(
+    switchMap(ids => this.sarviewsEventService.getEventFeatures(ids)),
+    map(events => <SarviewsFloodEvent[]>events)
+  );
+
+  public quakePolygons$ = this.quakeEvents$.pipe(
+    map(feature => this.wktService.featureToWkt(feature, this.epsg()))
+    );
+
+  public volcanoPolygons$ = this.volcanicEvents$.pipe(
+    map(feature => this.wktService.featureToWkt(feature, this.epsg()))
+  );
+
+  public floodPolygon$ = this.floodEvents$.pipe(
+      map(feature => this.wktService.featureToWkt(feature, this.epsg()))
+  );
+
   constructor(
     private wktService: WktService,
     private legacyAreaFormat: LegacyAreaFormatService,
     private drawService: DrawService,
+    private sarviewsEventService: SarviewsEventsService,
   ) {}
 
   public epsg(): string {
@@ -149,6 +196,12 @@ export class MapService {
 
     this.polygonLayer = layer;
     this.map.addLayer(this.polygonLayer);
+  }
+
+  public setLayers(layer: Layer): void {
+    // for(const layer in layers) {
+      this.map.addLayer(layer);
+    // }
   }
 
   public setOverlayUpdate(updateCallback): void {
