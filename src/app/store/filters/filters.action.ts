@@ -72,7 +72,10 @@ export enum FiltersActionType {
 
   TOGGLE_50_PERCENT_OVERLAP = '[Filters] Toggles SBAS 50 Percent Overlap Check',
   SET_SBAS_OVERLAP_THRESHOLD = '[Filters] Set SBAS Pair Overlap Threshold',
-  SET_DEFAULT_FILTERS = '[Filters] Set User Profile Default Filters'
+  SET_DEFAULT_FILTERS = '[Filters] Set User Profile Default Filters',
+
+  SET_SARVIEWS_EVENT_TYPES = '[Filters] Set SARViews event types',
+  SET_SARVIEWS_EVENT_NAME_FILTER = '[Filters] Set SARViews event name filter',
 }
 
 export class SetSelectedDataset implements Action {
@@ -328,6 +331,18 @@ export class SetSBASOverlapThreshold implements Action {
 
   constructor(public payload: SBASOverlap) {}
 }
+
+export class SetSarviewsEventTypes implements Action {
+  public readonly type = FiltersActionType.SET_SARVIEWS_EVENT_TYPES;
+
+  constructor(public payload: models.SarviewsEventType[]) {}
+}
+
+export class SetSarviewsEventNameFilter implements Action {
+  public readonly type = FiltersActionType.SET_SARVIEWS_EVENT_NAME_FILTER;
+
+  constructor(public payload: string) {}
+}
 export class SetDefaultFilters implements Action {
   public readonly type = FiltersActionType.SET_DEFAULT_FILTERS;
   constructor(public payload: {
@@ -384,4 +399,6 @@ export type FiltersActions =
   | StoreCurrentFilters
   | Toggle50PercentOverlap
   | SetSBASOverlapThreshold
-  | SetDefaultFilters;
+  | SetDefaultFilters
+  | SetSarviewsEventTypes
+  | SetSarviewsEventNameFilter;

@@ -81,9 +81,13 @@ export class SavedSearchService {
 
   private currentSarviewsEventSearch$ = combineLatest(
     this.store$.select(filtersStore.getDateRange),
+    this.store$.select(filtersStore.getSarviewsEventTypes),
+    this.store$.select(filtersStore.getSarviewsEventNameFilter),
   ).pipe(
-    map(([dateRange]) => ({
-      dateRange
+    map(([dateRange, sarviewsEventTypes, sarviewsEventNameFilter]) => ({
+      dateRange,
+      sarviewsEventTypes,
+      sarviewsEventNameFilter
     })
   )
   );

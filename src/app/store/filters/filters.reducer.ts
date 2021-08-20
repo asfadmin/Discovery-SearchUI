@@ -38,6 +38,9 @@ export interface FiltersState {
 
   thresholdOverlap: boolean;
   sbasOverlapThreshold: SBASOverlap;
+
+  sarviewsEventTypes: models.SarviewsEventType[];
+  sarviewsEventNameFilter: string;
 }
 
 
@@ -91,7 +94,10 @@ export const initState: FiltersState = {
   previousFilters: null,
 
   thresholdOverlap: false,
-  sbasOverlapThreshold: SBASOverlap.HALF_OVERLAP
+  sbasOverlapThreshold: SBASOverlap.HALF_OVERLAP,
+
+  sarviewsEventTypes: [],
+  sarviewsEventNameFilter: null,
 };
 
 
@@ -598,6 +604,18 @@ export function filtersReducer(state = initState, action: FiltersActions): Filte
         sbasOverlapThreshold: action.payload
       };
     }
+    case FiltersActionType.SET_SARVIEWS_EVENT_TYPES: {
+      return {
+        ...state,
+        sarviewsEventTypes: [ ... action.payload ]
+      }
+    }
+    case FiltersActionType.SET_SARVIEWS_EVENT_NAME_FILTER: {
+      return {
+        ...state,
+        sarviewsEventNameFilter: action.payload
+      }
+    }
     default: {
       return state;
     }
@@ -839,3 +857,13 @@ export const getSBASOverlapThreshold = createSelector(
   getFiltersState,
   (state: FiltersState) => state.sbasOverlapThreshold
 );
+
+export const getSarviewsEventTypes = createSelector(
+  getFiltersState,
+  (state: FiltersState) => state.sarviewsEventTypes
+);
+
+export const getSarviewsEventNameFilter = createSelector(
+  getFiltersState,
+  (state: FiltersState) => state.sarviewsEventNameFilter
+)

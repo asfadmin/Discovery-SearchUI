@@ -1,8 +1,8 @@
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { SarviewsEvent } from '@models';
+import { SarviewsEvent, SarviewsFloodEvent, SarviewsQuakeEvent, SarviewsVolcanicEvent } from '@models';
 import { forkJoin, Observable, of } from 'rxjs';
-import { catchError, map } from 'rxjs/operators';
+import { catchError, map, switchMap } from 'rxjs/operators';
 import { Feature } from 'geojson';
 
 @Injectable({
@@ -29,5 +29,47 @@ export class SarviewsEventsService {
 
   public getEventFeature(usgs_id: string): Observable<SarviewsEvent>  {
     return this.http.get<Feature>(this.eventsUrl + "/" + usgs_id).pipe(catchError(error => of(error)));
+  }
+
+
+  private sarviewsEvents$ = this.getSarviewsEvents();
+
+  public quakeIds$() {
+    return this.sarviewsEvents$.pipe(
+      map(events => events.filter(sarviewsEvent => sarviewsEvent.event_type === 'quake')),
+      map(quakeEvents => quakeEvents.map(quake => quake.event_id)),
+    );
+  }
+
+  public volcanoIds$() {
+    return this.sarviewsEvents$.pipe(
+    map(events => events.filter(sarviewsEvent => sarviewsEvent.event_type === 'volcano')),
+    map(volcanoEvents => volcanoEvents.map(volcano => volcano.event_id)),
+    );
+  }
+
+  public floodIds$() {
+    return this.sarviewsEvents$.pipe(
+    map(events => events.filter(sarviewsEvent => sarviewsEvent.event_type === 'flood')),
+    map(volcanoEvents => volcanoEvents.map(volcano => volcano.event_id)),
+    );
+  }
+
+  public quakeEvents$() {
+    return this.quakeIds$().pipe(
+    switchMap(ids => this.getEventFeatures(ids)),
+    map(events => <SarviewsQuakeEvent[]>events));
+  }
+
+  public volcanoEvents$() {
+    return this.volcanoIds$().pipe(
+    switchMap(ids => this.getEventFeatures(ids)),
+    map(events => <SarviewsVolcanicEvent[]>events));
+  }
+
+  public floodEvents$() {
+    return this.floodIds$().pipe(
+    switchMap(ids => this.getEventFeatures(ids)),
+    map(events => <SarviewsFloodEvent[]>events));
   }
 }
