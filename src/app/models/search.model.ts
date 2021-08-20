@@ -4,6 +4,7 @@ import { Range } from './range.model';
 import { FlightDirection } from './cmr-product.model';
 import * as fromDatasets from './dataset.model';
 import { Hyp3JobStatusCode } from './hyp3.model';
+// import { SarviewsEventType } from './sarviews-event.model';
 
 export interface Search {
   searchType: SearchType;
@@ -17,7 +18,8 @@ export type FilterType =
   GeographicFiltersType |
   BaselineFiltersType |
   CustomProductFiltersType |
-  SbasFiltersType;
+  SbasFiltersType |
+  SarviewsFiltersType;
 
 export interface ListFiltersType {
   listType: ListSearchType;
@@ -77,3 +79,13 @@ export interface GeographicFiltersType {
   selectedMission: null | string;
 }
 
+export interface SarviewsFiltersType {
+  // eventType: SarviewsEventType;
+
+  // pathRange: Range<number | null>;
+  // frameRange: Range<number | null>;
+  // season: Range<number | null>;
+  dateRange: Range<null | Date>;
+
+  // eventFilterName: string;
+}

@@ -413,14 +413,11 @@ export class MapComponent implements OnInit, OnDestroy  {
       .map(sarviewEvent => {
         const wkt = sarviewEvent.wkt;
         const feature = this.wktService.wktToFeature(wkt, projection);
-        feature.set('filename', feature.id);
+        feature.set('filename', sarviewEvent.description);
 
-        console.log(feature);
         const polygon = feature.getGeometry().getCoordinates()[0][0].slice(0, 4);
 
-
-        console.log(polygon);
-        if(polygon.length == 2) {
+        if(polygon.length === 2) {
           const point = new Point([polygon[0], polygon[1]]);
           feature.set("eventPoint", point);
           feature.setGeometryName("eventPoint");

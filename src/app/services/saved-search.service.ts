@@ -78,6 +78,16 @@ export class SavedSearchService {
       ...customProductFilters
     }))
   );
+
+  private currentSarviewsEventSearch$ = combineLatest(
+    this.store$.select(filtersStore.getDateRange),
+  ).pipe(
+    map(([dateRange]) => ({
+      dateRange
+    })
+  )
+  );
+
   private searchType$ = this.store$.select(getSearchType);
 
   public currentSearch$ = this.searchType$.pipe(
@@ -87,6 +97,7 @@ export class SavedSearchService {
       [models.SearchType.BASELINE]: this.currentBaselineSearch$,
       [models.SearchType.SBAS]: this.currentSbasSearch$,
       [models.SearchType.CUSTOM_PRODUCTS]: this.currentCustomProductSearch$,
+      [models.SearchType.SARVIEWS_EVENTS]: this.currentSarviewsEventSearch$,
     })[searchType]
     )
   );

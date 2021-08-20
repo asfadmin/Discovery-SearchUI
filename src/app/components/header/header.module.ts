@@ -45,6 +45,7 @@ import { MasterSceneSelectorModule } from '@components/shared/selectors/master-s
 import { Hyp3HeaderComponent } from './hyp3-header/hyp3-header.component';
 import { CreateSubscriptionModule } from './create-subscription/create-subscription.module';
 import { CiSearchModule } from './info-bar/ci-search/ci-search.module';
+import { SarviewsHeaderComponent } from './sarviews-header/sarviews-header.component';
 
 @NgModule({
   declarations: [
@@ -55,6 +56,7 @@ import { CiSearchModule } from './info-bar/ci-search/ci-search.module';
     AoiFilterComponent,
     BaselineHeaderComponent,
     Hyp3HeaderComponent,
+    SarviewsHeaderComponent,
   ],
   imports: [
     CommonModule,
