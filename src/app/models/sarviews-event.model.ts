@@ -1,36 +1,30 @@
 import { Range } from './range.model';
 
-export type SarviewsEvent = SarviewsQuakeEvent
-  | SarviewsVolcanicEvent
-  | SarviewsFloodEvent
+// export type SarviewsEvent = SarviewsQuakeEvent
+//   | SarviewsVolcanicEvent
+//   | SarviewsFloodEvent
 
-export interface SarviewsQuakeEvent {
+export interface SarviewsQuakeEvent extends SarviewsEvent {
   depth: string;
-  description: string;
   event_date: Date;
-  event_id: string;
-  event_type: string;
   magnitude: number;
-  processing_timeframe: Range<null | Date>;
   usgs_event_id: string;
-  wkt: string;
 }
 
-export interface SarviewsVolcanicEvent {
-  description: string;
-  event_id: string;
-  event_type: string;
-  processing_timeframe: Range<null | Date>;
+export interface SarviewsVolcanicEvent extends SarviewsEvent {
   smithsonian_event_id: string;
-  wkt: string;
 }
 
-export interface SarviewsFloodEvent {
+export interface SarviewsFloodEvent extends SarviewsEvent {
+}
+
+export interface SarviewsEvent {
   description: string;
   event_id: string;
   event_type: string;
   processing_timeframe: Range<null | Date>;
   wkt: string;
+  coordinates: number[]
 }
 
 export const enum SarviewsEventType {

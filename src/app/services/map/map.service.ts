@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 
 import { BehaviorSubject, Subject } from 'rxjs';
-import { debounceTime, map, sampleTime, switchMap } from 'rxjs/operators';
+import { debounceTime, map, sampleTime, switchMap, tap } from 'rxjs/operators';
 
 import { Map } from 'ol';
 import { Vector as VectorLayer } from 'ol/layer';
@@ -116,15 +116,16 @@ export class MapService {
   );
 
   public quakePolygons$ = this.quakeEvents$.pipe(
-    map(feature => this.wktService.featureToWkt(feature, this.epsg()))
+    map(feature => feature.map(f => this.wktService.featureToWkt(f, this.epsg()))),
+    tap(feature => console.log(feature))
     );
 
   public volcanoPolygons$ = this.volcanicEvents$.pipe(
-    map(feature => this.wktService.featureToWkt(feature, this.epsg()))
+    map(feature => feature.map(f => this.wktService.featureToWkt(f, this.epsg()))),
   );
 
   public floodPolygon$ = this.floodEvents$.pipe(
-      map(feature => this.wktService.featureToWkt(feature, this.epsg()))
+    map(feature => feature.map(f => this.wktService.featureToWkt(f, this.epsg())))
   );
 
   constructor(

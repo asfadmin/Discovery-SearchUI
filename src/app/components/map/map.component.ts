@@ -13,6 +13,7 @@ import {
 import { Vector as VectorLayer} from 'ol/layer';
 import { Vector as VectorSource } from 'ol/source';
 import Overlay from 'ol/Overlay';
+import Point from 'ol/geom/Point';
 
 import tippy, {followCursor} from 'tippy.js';
 import { SubSink } from 'subsink';
@@ -414,9 +415,32 @@ export class MapComponent implements OnInit, OnDestroy  {
         const feature = this.wktService.wktToFeature(wkt, projection);
         feature.set('filename', feature.id);
 
+        console.log(feature);
+        const polygon = feature.getGeometry().getCoordinates()[0][0].slice(0, 4);
+
+
+        console.log(polygon);
+        if(polygon.length == 2) {
+          const point = new Point([polygon[0], polygon[1]]);
+          feature.set("eventPoint", point);
+          feature.setGeometryName("eventPoint");
+          return feature;
+        }
+
+        const centerLat = (polygon[0][0] + polygon[1][0] + polygon[2][0] + polygon[3][0]) / 4.0;
+        const centerLon = (polygon[0][1] + polygon[1][1] + polygon[2][1] + polygon[3][1]) / 4.0;
+        const point = new Point([centerLat, centerLon]);
+
+
+        feature.set("eventPoint", point);
+        feature.setGeometryName("eventPoint");
+
+        console.log(feature);
         return feature;
       });
 
+
+      console.log(features);
       return features;
   }
 
