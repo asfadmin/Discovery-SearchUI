@@ -244,7 +244,7 @@ export class ListFiltersComponent implements OnInit, OnDestroy {
         })
       ),
       tap(res => {
-        if(res.granules_key === undefined) {
+        if (res.granules_key === undefined) {
           this.notificationService.listImportFailed('csv');
         }
       }),
@@ -257,7 +257,7 @@ export class ListFiltersComponent implements OnInit, OnDestroy {
 
           if (this.listSearchMode === ListSearchType.PRODUCT) {
             const processLevel = '-' + entry?.['Processing Level']?.replace('-', '_');
-            if(processLevel !== '-') {
+            if (processLevel !== '-') {
               processingType = processLevel;
             }
           }
@@ -276,7 +276,7 @@ export class ListFiltersComponent implements OnInit, OnDestroy {
       filereader.onload = _ => {
         const res = filereader.result as string;
         const featuresCollection: GeoJSON.FeatureCollection = JSON.parse(res);
-        if(!featuresCollection) {
+        if (!featuresCollection) {
           this.notificationService.listImportFailed('GeoJSON');
           return;
         }
@@ -284,7 +284,7 @@ export class ListFiltersComponent implements OnInit, OnDestroy {
 
         const typeKey = this.listSearchMode === ListSearchType.PRODUCT ? 'fileID' : 'sceneName';
         const granules = features?.map(feature => feature?.properties?.[typeKey]);
-        if(!granules) {
+        if (!granules) {
           this.notificationService.listImportFailed('GeoJSON');
           return;
         }
@@ -305,7 +305,7 @@ export class ListFiltersComponent implements OnInit, OnDestroy {
           observable.pipe(first()).subscribe(result => {
               const placemarks: [] = result?.['kml']?.['Document']?.['Placemark'] ?? null;
 
-              if(!placemarks) {
+              if (!placemarks) {
                 this.notificationService.listImportFailed('KML');
                 return;
               }
@@ -314,7 +314,7 @@ export class ListFiltersComponent implements OnInit, OnDestroy {
                   return placemark?.['name'];
                 });
 
-              if(!granules) {
+              if (!granules) {
                 this.notificationService.listImportFailed('KML');
                 return;
               }
@@ -336,13 +336,13 @@ export class ListFiltersComponent implements OnInit, OnDestroy {
 
         observable.pipe(first()).subscribe(result => {
             const files: [] = result?.['metalink']?.['files']?.['file'];
-            if(!files) {
+            if (!files) {
               this.notificationService.listImportFailed('Metalink');
               return;
             }
             const fileNames = files.map(fileMeta => (fileMeta?.['$']?.['name'] as string)?.split('.')?.shift());
 
-            if(!fileNames) {
+            if (!fileNames) {
               this.notificationService.listImportFailed('Metalink');
               return;
             }
