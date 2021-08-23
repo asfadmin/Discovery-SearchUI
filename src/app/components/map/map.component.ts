@@ -340,7 +340,8 @@ export class MapComponent implements OnInit, OnDestroy  {
         withLatestFrom(this.sceneSARViewsEventsLayer$(this.mapService.epsg())),
         map(([_, layers]) => layers),
       ).subscribe(
-        layers => layers.forEach(layer => this.mapService.setLayers(layer))
+        layers =>
+          this.mapService.setLayers(layers)
       )
     )
 
@@ -397,7 +398,7 @@ export class MapComponent implements OnInit, OnDestroy  {
     );
   }
 
-  private sceneSARViewsEventsLayer$(projection: string): Observable<VectorSource> {
+  private sceneSARViewsEventsLayer$(projection: string): Observable<VectorLayer> {
     return combineLatest([
         this.sarviewsService.quakeEvents$(),
         this.sarviewsService.volcanoEvents$(),
@@ -429,7 +430,7 @@ export class MapComponent implements OnInit, OnDestroy  {
         const feature = this.wktService.wktToFeature(wkt, projection);
         feature.set('filename', sarviewEvent.description);
 
-        const polygon = feature.getGeometry().getCoordinates()[0][0].slice(0, 4);
+        const polygon = feature.getGeometry()[0][0].slice(0, 4);
 
         if(polygon.length === 2) {
           const point = new Point([polygon[0], polygon[1]]);

@@ -4,7 +4,7 @@ import { BehaviorSubject, Subject } from 'rxjs';
 import { map, sampleTime } from 'rxjs/operators';
 
 import { Map } from 'ol';
-import { Vector as VectorLayer } from 'ol/layer';
+import { Layer, Vector as VectorLayer } from 'ol/layer';
 import { Vector as VectorSource } from 'ol/source';
 import * as proj from 'ol/proj';
 import Point from 'ol/geom/Point';
@@ -20,6 +20,8 @@ import * as models from '@models';
 import * as polygonStyle from './polygon.style';
 import * as views from './views';
 import { SarviewsEvent } from '@models';
+import MultiPolygon from 'ol/geom/MultiPolygon';
+import { Coordinate } from 'ol/coordinate';
 // import { SarviewsEventsService } from '@services';
 
 
@@ -181,7 +183,7 @@ export class MapService {
   }
 
   public setSarviewsEventsLayers(layers: Layer[]): void {
-    for(const layer in layers) {
+    for(const layer of layers) {
       this.map.addLayer(layer);
     }
   }
@@ -193,10 +195,12 @@ export class MapService {
         const feature = this.wktService.wktToFeature(wkt, projection);
         feature.set('filename', sarviewEvent.description);
 
-        const polygon = feature.getGeometry().getCoordinates()[0][0].slice(0, 4);
+        const geom = (feature.getGeometry() as MultiPolygon).getCoordinates();
+
+        const polygon: Coordinate[] = geom[0][0].slice(0, 4);
 
         if(polygon.length === 2) {
-          const point = new Point([polygon[0], polygon[1]]);
+          const point = new Point([polygon[0][0], polygon[0][1]]);
           feature.set("eventPoint", point);
           feature.setGeometryName("eventPoint");
           return feature;
