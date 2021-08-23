@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 
 import Map from 'ol/Map.js';
 import View from 'ol/View.js';
-import {getCenter} from 'ol/extent.js';
+import {Extent, getCenter} from 'ol/extent.js';
 import ImageLayer from 'ol/layer/Image.js';
 import Projection from 'ol/proj/Projection.js';
 import Static from 'ol/source/ImageStatic.js';
@@ -21,7 +21,7 @@ export class BrowseMapService {
   constructor() { }
 
   public setBrowse(browse: string, dim: Dimension): void {
-    const extent = [0, 0, dim.width, dim.height];
+    const extent: Extent = [0, 0, dim.width, dim.height];
 
     const projection = new Projection({
       code: 'scene-browse',

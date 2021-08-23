@@ -5,7 +5,7 @@ import { map, sampleTime } from 'rxjs/operators';
 
 import { Map } from 'ol';
 import { Vector as VectorLayer } from 'ol/layer';
-import { Vector as VectorSource, Layer } from 'ol/source';
+import { Vector as VectorSource } from 'ol/source';
 import * as proj from 'ol/proj';
 import Point from 'ol/geom/Point';
 
@@ -29,7 +29,7 @@ import { SarviewsEvent } from '@models';
 export class MapService {
   private mapView: views.MapView;
   private map: Map;
-  private polygonLayer: Layer;
+  private polygonLayer: VectorLayer;
   private gridLinesVisible: boolean;
   // private gridlinesActive: boolean;
 
@@ -165,7 +165,7 @@ export class MapService {
   }
 
 
-  public setLayer(layer: Layer): void {
+  public setLayer(layer: VectorLayer): void {
     if (!!this.polygonLayer) {
       this.map.removeLayer(this.polygonLayer);
     }
@@ -353,8 +353,7 @@ export class MapService {
       target: 'map',
       view: this.mapView.view,
       controls: [],
-      overlays: [overlay],
-      loadTilesWhileAnimating: true
+      overlays: [overlay]
     });
 
     newMap.addInteraction(this.selectClick);
