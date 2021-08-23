@@ -108,9 +108,11 @@ export class NotificationService {
   }
 
   public listImportFailed(fileExtension: string) {
-    const title = `List Import Failed`;
-    const message = `Click to open documentation for .${fileExtension} file format`;
-    return this.error(message, title);
+    fileExtension = fileExtension[0].toUpperCase() + fileExtension.slice(1, fileExtension.length);
+    const title = `${fileExtension} List Import Failed`;
+    const message = `Click to open documentation on accepted file formatting`;
+    const errorToast = this.error(message, title);
+    errorToast.onTap.pipe(take(1)).subscribe(_ => window.open(`https://docs.asf.alaska.edu/vertex/manual/#list-search-file-import`));
   }
 
   public info(message: string, title = '', options = {}): ActiveToast<any> {
