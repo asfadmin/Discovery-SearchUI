@@ -238,7 +238,11 @@ export class ListFiltersComponent implements OnInit, OnDestroy {
     this.ngxCsvParser.parse(file, { header: true, delimiter: ',' })
     .pipe(
       first(),
-      map((output: Array<{}>) => ({result: output, granules_key: Object.keys(output[0]).find(key => key.toLowerCase().includes('granule'))})),
+      map((output: Array<{}>) => ({
+          result: output,
+          granules_key: Object.keys(output[0]).find(key => key.toLowerCase().includes('granule'))
+        })
+      ),
       tap(res => {
         if(res.granules_key === undefined) {
           this.notificationService.listImportFailed('csv');
@@ -296,7 +300,7 @@ export class ListFiltersComponent implements OnInit, OnDestroy {
         filereader.onload = _ => {
           const res = filereader.result as string;
           const parser = new xml2js.Parser({ explicitArray: false });
-          const observable = from (parser.parseStringPromise(res).catch(_ => {}));
+          const observable = from (parser.parseStringPromise(res).catch(__ => {}));
 
           observable.pipe(first()).subscribe(result => {
               const placemarks: [] = result?.['kml']?.['Document']?.['Placemark'] ?? null;
@@ -328,7 +332,7 @@ export class ListFiltersComponent implements OnInit, OnDestroy {
       filereader.onload = _ => {
         const res = filereader.result as string;
         const parser = new xml2js.Parser({ explicitArray: false });
-        const observable = from (parser.parseStringPromise(res).catch(_ => {}));
+        const observable = from (parser.parseStringPromise(res).catch(__ => {}));
 
         observable.pipe(first()).subscribe(result => {
             const files: [] = result?.['metalink']?.['files']?.['file'];
