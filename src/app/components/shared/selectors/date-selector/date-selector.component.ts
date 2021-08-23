@@ -110,10 +110,9 @@ export class DateSelectorComponent implements OnInit, OnDestroy {
 
     this.subs.add(
       this.startDate$.subscribe(
-        start =>
-        {
+        start => {
           this.startDate = start;
-          if(this.endDate < this.startDate && !!this.endDate) {
+          if (this.endDate < this.startDate && !!this.endDate) {
             this.store$.dispatch(new filtersStore.SetEndDate(this.startDate));
           }
         }
@@ -123,7 +122,7 @@ export class DateSelectorComponent implements OnInit, OnDestroy {
       this.endDate$.subscribe(
         end => {
           this.endDate = end;
-          if(this.startDate > this.endDate && !!this.startDate) {
+          if (this.startDate > this.endDate && !!this.startDate) {
             this.store$.dispatch(new filtersStore.SetStartDate(this.endDate));
           }
         }
