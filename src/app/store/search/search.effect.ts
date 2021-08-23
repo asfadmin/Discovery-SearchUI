@@ -149,6 +149,11 @@ export class SearchEffects {
     map(_ => new uiStore.OpenResultsMenu()),
   ));
 
+  public showSarviewsEventResultsMenuOnSearchResponse = createEffect(() => this.actions$.pipe(
+    ofType<SarviewsEventsResponse>(SearchActionType.SARVIEWS_SEARCH_RESPONSE),
+    map(_ => new uiStore.OpenResultsMenu()),
+  ));
+
   public setMapInteractionModeBasedOnSearchType = createEffect(() => this.actions$.pipe(
     ofType<SetSearchType>(SearchActionType.SET_SEARCH_TYPE_AFTER_SAVE),
     filter(action => action.payload === models.SearchType.DATASET),
@@ -311,9 +316,8 @@ export class SearchEffects {
 
   private sarviewsEventsQuery$() {
     return this.sarviewsService.getSarviewsEvents$().pipe(
-    map(events =>
-        new SarviewsEventsResponse({events })
-      )
+      filter(events => !!events),
+      map(events => new SarviewsEventsResponse({events }))
     );
   }
 

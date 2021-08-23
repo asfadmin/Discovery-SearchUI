@@ -213,12 +213,11 @@ export class MapService {
 
         feature.set("eventPoint", point);
         feature.setGeometryName("eventPoint");
+        feature.set("sarviews_id", sarviewEvent.event_id);
 
         // console.log(feature);
         return feature;
       });
-
-
       // console.log(features);
       return features;
   }
@@ -377,6 +376,16 @@ export class MapService {
       const [ lon, lat ] = proj.toLonLat(e.coordinate, this.epsg());
       this.mousePositionSubject$.next({ lon, lat });
     });
+
+    newMap.on("click", (evnt) => this.map.forEachFeatureAtPixel(
+      evnt.pixel,
+      (feature) => {
+        var sarview_id = feature.get('sarviews_id');
+        if(!!sarview_id) {
+          window.open(`https://sarviews-hazards.alaska.edu/Event/${sarview_id}`)
+        }
+        evnt.preventDefault();
+      }))
 
     this.drawService.getLayer().setZIndex(100);
     this.focusLayer.setZIndex(99);

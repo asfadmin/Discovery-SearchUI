@@ -7,7 +7,6 @@ import { Observable, combineLatest } from 'rxjs';
 import {
   map, filter, switchMap, tap,
   withLatestFrom,
-  mergeAll,
 } from 'rxjs/operators';
 
 import { Vector as VectorLayer} from 'ol/layer';
@@ -25,9 +24,9 @@ import * as mapStore from '@store/map';
 import * as uiStore from '@store/ui';
 
 import * as models from '@models';
-import { MapService, WktService, ScreenSizeService, ScenesService, SarviewsEventsService } from '@services';
+import { MapService, WktService, ScreenSizeService, ScenesService } from '@services';
 import * as polygonStyle from '@services/map/polygon.style';
-import { SarviewsEvent, SearchType } from '@models';
+import { SarviewsEvent } from '@models';
 
 enum FullscreenControls {
   MAP = 'Map',
@@ -86,8 +85,7 @@ export class MapComponent implements OnInit, OnDestroy  {
     private mapService: MapService,
     private wktService: WktService,
     private screenSize: ScreenSizeService,
-    private scenesService: ScenesService,
-    private sarviewsService: SarviewsEventsService,
+    private scenesService: ScenesService
   ) {}
 
   ngOnInit(): void {
@@ -326,25 +324,21 @@ export class MapComponent implements OnInit, OnDestroy  {
           this.setMapWith(<models.MapViewType>view, <models.MapLayerTypes>mapLayerType)
         ),
         switchMap(_ =>
-          [this.scenePolygonsLayer$(this.mapService.epsg()),
-          this.sceneSARViewsEventsLayer$(this.mapService.epsg())]
+          this.scenePolygonsLayer$(this.mapService.epsg()),
         ),
       ).subscribe(
-        layers => layers.forEach(layer => this.mapService.setLayers(layer))
+        layer => this.mapService.setLayer(layer)
       )
     );
 
     this.subs.add(
-      this.store$.select(searchStore.getSearchType).pipe(
-        filter(searchType => searchType === SearchType.SARVIEWS_EVENTS),
-        withLatestFrom(this.sceneSARViewsEventsLayer$(this.mapService.epsg())),
-        map(([_, layers]) => layers),
+      this.sceneSARViewsEventsLayer$(this.mapService.epsg()).pipe(
+        filter(layers => !!layers)
       ).subscribe(
         layers =>
           this.mapService.setLayers(layers)
       )
     )
-
 
     const selectedAfterInitialization$ = this.isMapInitialized$.pipe(
       filter(isMapInitiliazed => isMapInitiliazed),
@@ -399,12 +393,8 @@ export class MapComponent implements OnInit, OnDestroy  {
   }
 
   private sceneSARViewsEventsLayer$(projection: string): Observable<VectorLayer> {
-    return combineLatest([
-        this.sarviewsService.quakeEvents$(),
-        this.sarviewsService.volcanoEvents$(),
-        this.sarviewsService.floodEvents$()]).pipe(
-      mergeAll(),
-      map(events => <SarviewsEvent[]>events),
+    return this.store$.select(scenesStore.getSarviewsEvents).pipe(
+      filter(events => !!events),
       map(events => this.mapService.sarviewsEventsToFeatures(events, projection)),
       map(features => this.featuresToSource(features))
     );
