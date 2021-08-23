@@ -7,6 +7,8 @@ import { Map } from 'ol';
 import { Vector as VectorLayer } from 'ol/layer';
 import { Vector as VectorSource, Layer } from 'ol/source';
 import * as proj from 'ol/proj';
+import Point from 'ol/geom/Point';
+
 import { click, pointerMove } from 'ol/events/condition';
 import Select from 'ol/interaction/Select';
 
@@ -17,7 +19,8 @@ import * as models from '@models';
 
 import * as polygonStyle from './polygon.style';
 import * as views from './views';
-import { SarviewsEventsService } from '@services';
+import { SarviewsEvent } from '@models';
+// import { SarviewsEventsService } from '@services';
 
 
 @Injectable({
@@ -82,29 +85,29 @@ export class MapService {
     )
   );
 
-  public quakeEvents$ = this.sarviewsEventService.quakeEvents$();
+  // public quakeEvents$ = this.sarviewsEventService.quakeEvents$();
 
-  public volcanicEvents$ = this.sarviewsEventService.volcanoEvents$();
+  // public volcanicEvents$ = this.sarviewsEventService.volcanoEvents$();
 
-  public floodEvents$ = this.sarviewsEventService.floodEvents$();
+  // public floodEvents$ = this.sarviewsEventService.floodEvents$();
 
-  public quakePolygons$ = this.quakeEvents$.pipe(
-    map(feature => feature.map(f => this.wktService.featureToWkt(f, this.epsg()))),
-    );
+  // public quakePolygons$ = this.quakeEvents$.pipe(
+  //   map(feature => feature.map(f => this.wktService.featureToWkt(f, this.epsg()))),
+  //   );
 
-  public volcanoPolygons$ = this.volcanicEvents$.pipe(
-    map(feature => feature.map(f => this.wktService.featureToWkt(f, this.epsg()))),
-  );
+  // public volcanoPolygons$ = this.volcanicEvents$.pipe(
+  //   map(feature => feature.map(f => this.wktService.featureToWkt(f, this.epsg()))),
+  // );
 
-  public floodPolygon$ = this.floodEvents$.pipe(
-    map(feature => feature.map(f => this.wktService.featureToWkt(f, this.epsg())))
-  );
+  // public floodPolygon$ = this.floodEvents$.pipe(
+  //   map(feature => feature.map(f => this.wktService.featureToWkt(f, this.epsg())))
+  // );
 
   constructor(
     private wktService: WktService,
     private legacyAreaFormat: LegacyAreaFormatService,
     private drawService: DrawService,
-    private sarviewsEventService: SarviewsEventsService,
+    // private sarviewsEventService: SarviewsEventsService,
   ) {}
 
   public epsg(): string {
@@ -175,6 +178,45 @@ export class MapService {
     // for(const layer in layers) {
       this.map.addLayer(layer);
     // }
+  }
+
+  public setSarviewsEventsLayers(layers: Layer[]): void {
+    for(const layer in layers) {
+      this.map.addLayer(layer);
+    }
+  }
+
+  public sarviewsEventsToFeatures(events: SarviewsEvent[], projection: string) {
+    const features = events
+      .map(sarviewEvent => {
+        const wkt = sarviewEvent.wkt;
+        const feature = this.wktService.wktToFeature(wkt, projection);
+        feature.set('filename', sarviewEvent.description);
+
+        const polygon = feature.getGeometry().getCoordinates()[0][0].slice(0, 4);
+
+        if(polygon.length === 2) {
+          const point = new Point([polygon[0], polygon[1]]);
+          feature.set("eventPoint", point);
+          feature.setGeometryName("eventPoint");
+          return feature;
+        }
+
+        const centerLat = (polygon[0][0] + polygon[1][0] + polygon[2][0] + polygon[3][0]) / 4.0;
+        const centerLon = (polygon[0][1] + polygon[1][1] + polygon[2][1] + polygon[3][1]) / 4.0;
+        const point = new Point([centerLat, centerLon]);
+
+
+        feature.set("eventPoint", point);
+        feature.setGeometryName("eventPoint");
+
+        // console.log(feature);
+        return feature;
+      });
+
+
+      // console.log(features);
+      return features;
   }
 
   public setOverlayUpdate(updateCallback): void {

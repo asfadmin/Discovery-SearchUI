@@ -14,7 +14,7 @@ export class SarviewsEventsService {
 
   constructor(private http: HttpClient) { }
 
-  public getSarviewsEvents(): Observable<SarviewsEvent[]> {
+  public getSarviewsEvents$(): Observable<SarviewsEvent[]> {
     return this.http.get<SarviewsEvent[]>(this.eventsUrl);
   }
 
@@ -32,7 +32,7 @@ export class SarviewsEventsService {
   }
 
 
-  private sarviewsEvents$ = this.getSarviewsEvents();
+  private sarviewsEvents$ = this.getSarviewsEvents$();
 
   public quakeIds$() {
     return this.sarviewsEvents$.pipe(

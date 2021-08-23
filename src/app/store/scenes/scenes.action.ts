@@ -1,10 +1,11 @@
 import { Action } from '@ngrx/store';
 
-import { CMRProduct, UnzippedFolder, ColumnSortDirection, SearchType, CMRProductPair } from '@models';
+import { CMRProduct, UnzippedFolder, ColumnSortDirection, SearchType, CMRProductPair, SarviewsEvent } from '@models';
 
 export enum ScenesActionType {
   SET_SCENES = '[Granuels] Set Scenes',
   CLEAR = '[Granuels] Clear Scenes',
+  SET_SARVIEWS_EVENTS = '[SARViews] Set SARViews Events',
 
   SET_RESULTS_LOADED = '[Scenes] Set Results Loaded',
   LOAD_UNZIPPED_PRODUCT = '[Scenes] Load unzipped product',
@@ -32,6 +33,12 @@ export class SetScenes implements Action {
   public readonly type = ScenesActionType.SET_SCENES;
 
   constructor(public payload: {products: CMRProduct[], searchType: SearchType} ) {}
+}
+
+export class SetSarviewsEvents implements Action {
+  public readonly type = ScenesActionType.SET_SARVIEWS_EVENTS;
+
+  constructor(public payload: {events: SarviewsEvent[]}) {}
 }
 
 export class ClearScenes implements Action {
@@ -150,4 +157,5 @@ export type ScenesActions =
   | SetPerpendicularSortDirection
   | AddCustomPair
   | AddCustomPairs
-  | RemoveCustomPair;
+  | RemoveCustomPair
+  | SetSarviewsEvents;

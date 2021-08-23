@@ -7,7 +7,7 @@ import { of, forkJoin, combineLatest, Observable, EMPTY } from 'rxjs';
 import { map, withLatestFrom, switchMap, catchError, filter, first } from 'rxjs/operators';
 
 import { AppState } from '../app.reducer';
-import { SetSearchAmount, EnableSearch, DisableSearch, SetSearchType, SetNextJobsUrl, Hyp3BatchResponse } from './search.action';
+import { SetSearchAmount, EnableSearch, DisableSearch, SetSearchType, SetNextJobsUrl, Hyp3BatchResponse, SarviewsEventsResponse } from './search.action';
 import * as scenesStore from '@store/scenes';
 import * as filtersStore from '@store/filters';
 import * as mapStore from '@store/map';
@@ -37,6 +37,7 @@ export class SearchEffects {
     private asfApiService: services.AsfApiService,
     private productService: services.ProductService,
     private hyp3Service: services.Hyp3Service,
+    private sarviewsService: services.SarviewsEventsService,
     private http: HttpClient
   ) {}
 
@@ -65,7 +66,7 @@ export class SearchEffects {
     ofType(SearchActionType.MAKE_SEARCH),
     withLatestFrom(this.store$.select(getSearchType)),
     switchMap(([_, searchType]) => searchType !== models.SearchType.CUSTOM_PRODUCTS ?
-      this.asfApiQuery$() :
+      (searchType !== models.SearchType.SARVIEWS_EVENTS ? this.asfApiQuery$() : this.sarviewsEventsQuery$()) :
       this.customProductsQuery$()
     )
   ));
@@ -129,6 +130,18 @@ export class SearchEffects {
     )
   ));
 
+  public sarviewsSearchResponse = createEffect(() => this.actions$.pipe(
+    ofType<SarviewsEventsResponse>(SearchActionType.SARVIEWS_SEARCH_RESPONSE),
+    withLatestFrom(this.store$.select(getSearchType)),
+    filter(([_, searchType]) => searchType === SearchType.SARVIEWS_EVENTS),
+    switchMap(([action, _]) => [
+      new scenesStore.SetSarviewsEvents({
+        events: action.payload.events
+      }),
+      new SetSearchAmount(action.payload.events.length)
+    ])
+  ))
+
   public showResultsMenuOnSearchResponse = createEffect(() => this.actions$.pipe(
     ofType<SearchResponse>(SearchActionType.SEARCH_RESPONSE),
     map(_ => new uiStore.OpenResultsMenu()),
@@ -147,7 +160,8 @@ export class SearchEffects {
       new uiStore.CloseAOIOptions(),
       action.payload === models.SearchType.LIST ||
       action.payload === models.SearchType.SBAS ||
-      action.payload === models.SearchType.BASELINE ?
+      action.payload === models.SearchType.BASELINE ||
+      action.payload === models.SearchType.SARVIEWS_EVENTS ?
         new uiStore.OpenFiltersMenu() :
         new uiStore.CloseFiltersMenu(),
     ]),
@@ -290,6 +304,14 @@ export class SearchEffects {
           );
         }
       ),
+    );
+  }
+
+  private sarviewsEventsQuery$() {
+    return this.sarviewsService.getSarviewsEvents$().pipe(
+    map(events =>
+        new SarviewsEventsResponse({events })
+      )
     );
   }
 

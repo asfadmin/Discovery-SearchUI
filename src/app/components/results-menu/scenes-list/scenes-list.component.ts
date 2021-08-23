@@ -16,7 +16,7 @@ import { CdkVirtualScrollViewport } from '@angular/cdk/scrolling';
 
 import * as services from '@services';
 import * as models from '@models';
-import { QueuedHyp3Job } from '@models';
+import { QueuedHyp3Job, SarviewsEvent } from '@models';
 
 @Component({
   selector: 'app-scenes-list',
@@ -31,6 +31,7 @@ export class ScenesListComponent implements OnInit, OnDestroy {
   public scenes;
   public pairs;
   public jobs;
+  public sarviewsEvents: SarviewsEvent[];
 
   public numberOfQueue: {[scene: string]: number};
   public allQueued: {[scene: string]: boolean};
@@ -60,7 +61,7 @@ export class ScenesListComponent implements OnInit, OnDestroy {
     private keyboardService: services.KeyboardService,
     private scenesService: services.ScenesService,
     private pairService: services.PairService,
-    private hyp3: services.Hyp3Service,
+    private hyp3: services.Hyp3Service
   ) {}
 
   ngOnInit() {
@@ -122,6 +123,12 @@ export class ScenesListComponent implements OnInit, OnDestroy {
         }
       )
     );
+
+    this.subs.add(
+      this.store$.select(scenesStore.getSarviewsEvents).pipe(tap(events => console.log(events))).subscribe(
+        events => this.sarviewsEvents = events
+      )
+    )
 
     this.subs.add(
       this.pairService.pairs$().pipe(debounceTime(250)).subscribe(

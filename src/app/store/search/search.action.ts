@@ -1,6 +1,6 @@
 import { Action } from '@ngrx/store';
 
-import { CMRProduct, SearchType } from '@models';
+import { CMRProduct, SarviewsEvent, SearchType } from '@models';
 
 export enum SearchActionType {
   MAKE_SEARCH = '[Search] Make A Search',
@@ -19,7 +19,9 @@ export enum SearchActionType {
   SET_SEARCH_AMOUNT = '[Search] Set Search Results Amount',
   SEARCH_AMOUNT_LOADING = '[Search] Search Amount Is Loading',
   SET_SEARCH_TYPE = '[UI] Set Search Type',
-  SET_SEARCH_TYPE_AFTER_SAVE = '[UI] Set Search Type After Save'
+  SET_SEARCH_TYPE_AFTER_SAVE = '[UI] Set Search Type After Save',
+
+  SARVIEWS_SEARCH_RESPONSE ='[Search] SARViews Search Response',
 }
 
 export class MakeSearch implements Action {
@@ -60,6 +62,12 @@ export class SearchResponse implements Action {
   public readonly type = SearchActionType.SEARCH_RESPONSE;
 
   constructor(public payload: {files: CMRProduct[], totalCount: number, searchType: SearchType, next?: string}) {}
+}
+
+export class SarviewsEventsResponse implements Action {
+  public readonly type = SearchActionType.SARVIEWS_SEARCH_RESPONSE;
+
+  constructor(public payload: {events: SarviewsEvent[]}) {}
 }
 
 export class SearchError implements Action {
@@ -105,4 +113,5 @@ export type SearchActions =
   | SetNextJobsUrl
   | Hyp3BatchResponse
   | SetSearchType
-  | SetSearchTypeAfterSave;
+  | SetSearchTypeAfterSave
+  | SarviewsEventsResponse;

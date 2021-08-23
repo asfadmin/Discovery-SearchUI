@@ -2,13 +2,14 @@ import { createFeatureSelector, createSelector } from '@ngrx/store';
 
 import { ScenesActionType, ScenesActions } from './scenes.action';
 
-import { CMRProduct, UnzippedFolder, ColumnSortDirection, SearchType } from '@models';
+import { CMRProduct, UnzippedFolder, ColumnSortDirection, SearchType, SarviewsEvent } from '@models';
 
 interface SceneEntities { [id: string]: CMRProduct; }
 
 export interface ScenesState {
   ids: string[];
   products: SceneEntities;
+  sarviewsEvents: SarviewsEvent[];
   customPairIds: string[][];
   selectedPair: string[] | null;
   areResultsLoaded: boolean;
@@ -31,6 +32,7 @@ export const initState: ScenesState = {
   ids: [],
   scenes: {},
   customPairIds: [],
+  sarviewsEvents: [],
   selectedPair: null,
   unzipped: {},
   productUnzipLoading: null,
@@ -263,6 +265,13 @@ export function scenesReducer(state = initState, action: ScenesActions): ScenesS
 
     case ScenesActionType.CLEAR: {
       return initState;
+    }
+
+    case ScenesActionType.SET_SARVIEWS_EVENTS: {
+      return {
+        ...state,
+        sarviewsEvents: action.payload.events
+      }
     }
 
     default: {
@@ -554,6 +563,11 @@ export const getIsSelectedPairCustom = createSelector(
     });
   }
 );
+
+export const getSarviewsEvents = createSelector(
+  getScenesState,
+  state => state.sarviewsEvents
+)
 
 function eqSet(aSet, bSet): boolean {
   if (aSet.size !== bSet.size) {

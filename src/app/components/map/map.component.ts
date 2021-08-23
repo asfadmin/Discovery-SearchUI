@@ -25,9 +25,9 @@ import * as mapStore from '@store/map';
 import * as uiStore from '@store/ui';
 
 import * as models from '@models';
-import { MapService, WktService, ScreenSizeService, ScenesService } from '@services';
+import { MapService, WktService, ScreenSizeService, ScenesService, SarviewsEventsService } from '@services';
 import * as polygonStyle from '@services/map/polygon.style';
-import { SarviewsEvent } from '@models';
+import { SarviewsEvent, SearchType } from '@models';
 
 enum FullscreenControls {
   MAP = 'Map',
@@ -86,7 +86,8 @@ export class MapComponent implements OnInit, OnDestroy  {
     private mapService: MapService,
     private wktService: WktService,
     private screenSize: ScreenSizeService,
-    private scenesService: ScenesService
+    private scenesService: ScenesService,
+    private sarviewsService: SarviewsEventsService,
   ) {}
 
   ngOnInit(): void {
@@ -333,6 +334,16 @@ export class MapComponent implements OnInit, OnDestroy  {
       )
     );
 
+    this.subs.add(
+      this.store$.select(searchStore.getSearchType).pipe(
+        filter(searchType => searchType === SearchType.SARVIEWS_EVENTS),
+        withLatestFrom(this.sceneSARViewsEventsLayer$(this.mapService.epsg())),
+        map(([_, layers]) => layers),
+      ).subscribe(
+        layers => layers.forEach(layer => this.mapService.setLayers(layer))
+      )
+    )
+
 
     const selectedAfterInitialization$ = this.isMapInitialized$.pipe(
       filter(isMapInitiliazed => isMapInitiliazed),
@@ -387,10 +398,13 @@ export class MapComponent implements OnInit, OnDestroy  {
   }
 
   private sceneSARViewsEventsLayer$(projection: string): Observable<VectorSource> {
-    return combineLatest([this.mapService.quakeEvents$, this.mapService.volcanicEvents$, this.mapService.floodEvents$]).pipe(
+    return combineLatest([
+        this.sarviewsService.quakeEvents$(),
+        this.sarviewsService.volcanoEvents$(),
+        this.sarviewsService.floodEvents$()]).pipe(
       mergeAll(),
       map(events => <SarviewsEvent[]>events),
-      map(events => this.sarviewsEventsToFeature(events, projection)),
+      map(events => this.mapService.sarviewsEventsToFeatures(events, projection)),
       map(features => this.featuresToSource(features))
     );
   }
@@ -408,7 +422,7 @@ export class MapComponent implements OnInit, OnDestroy  {
     return features;
   }
 
-  private sarviewsEventsToFeature(events: SarviewsEvent[], projection: string) {
+  public sarviewsEventsToFeature(events: SarviewsEvent[], projection: string) {
     const features = events
       .map(sarviewEvent => {
         const wkt = sarviewEvent.wkt;
@@ -432,12 +446,12 @@ export class MapComponent implements OnInit, OnDestroy  {
         feature.set("eventPoint", point);
         feature.setGeometryName("eventPoint");
 
-        console.log(feature);
+        // console.log(feature);
         return feature;
       });
 
 
-      console.log(features);
+      // console.log(features);
       return features;
   }
 

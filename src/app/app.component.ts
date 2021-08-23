@@ -342,7 +342,7 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
       this.store$.select(searchStore.getSearchType).pipe(
         tap(searchType => this.searchType = searchType),
         tap(searchType => {
-          if (searchType === models.SearchType.CUSTOM_PRODUCTS) {
+          if (searchType === models.SearchType.CUSTOM_PRODUCTS || searchType === models.SearchType.SARVIEWS_EVENTS) {
             this.store$.dispatch(new searchStore.MakeSearch());
           }
         }),
