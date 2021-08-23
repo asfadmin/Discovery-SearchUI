@@ -78,13 +78,13 @@ export const datasetList: Dataset[] = [
 
 export const datasetIds = datasetList.map(dataset => dataset.id);
 
-export const datasets = datasetList.reduce(
+export const datasets: {[datasetID: string]: Dataset} = datasetList.reduce(
   (datasetsObj, dataset) => {
     datasetsObj[dataset.id] = dataset;
 
     return datasetsObj;
   },
-  {}
+  {} as {[datasetID: string]: Dataset}
 );
 
 export const flightDirections = [
