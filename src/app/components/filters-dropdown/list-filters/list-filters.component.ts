@@ -263,7 +263,7 @@ export class ListFiltersComponent implements OnInit, OnDestroy {
 
       this.updateSearchList(granules);
     }, (_: NgxCSVParserError) => {
-      this.notificationService.listImportFailed('csv');
+      this.notificationService.listImportFailed('CSV');
     });
   }
 
@@ -271,9 +271,19 @@ export class ListFiltersComponent implements OnInit, OnDestroy {
     const filereader = new FileReader();
       filereader.onload = _ => {
         const res = filereader.result as string;
-        const features: any[] = JSON.parse(res)['features'];
+        const featuresCollection: GeoJSON.FeatureCollection = JSON.parse(res);
+        if(!featuresCollection) {
+          this.notificationService.listImportFailed('GeoJSON');
+          return;
+        }
+        const features = featuresCollection.features;
+
         const typeKey = this.listSearchMode === ListSearchType.PRODUCT ? 'fileID' : 'sceneName';
-        const granules = features.map(feature => feature['properties'][typeKey]);
+        const granules = features?.map(feature => feature?.properties?.[typeKey]);
+        if(!granules) {
+          this.notificationService.listImportFailed('GeoJSON');
+          return;
+        }
 
         this.updateSearchList(granules);
     };
@@ -286,13 +296,24 @@ export class ListFiltersComponent implements OnInit, OnDestroy {
         filereader.onload = _ => {
           const res = filereader.result as string;
           const parser = new xml2js.Parser({ explicitArray: false });
-          const observable = from (parser.parseStringPromise(res));
+          const observable = from (parser.parseStringPromise(res).catch(_ => {}));
 
           observable.pipe(first()).subscribe(result => {
-              const placemarks: [] = result['kml']['Document']['Placemark'];
+              const placemarks: [] = result?.['kml']?.['Document']?.['Placemark'] ?? null;
+
+              if(!placemarks) {
+                this.notificationService.listImportFailed('KML');
+                return;
+              }
+
               const granules: string[] = placemarks.map(placemark => {
-                  return placemark['name'];
+                  return placemark?.['name'];
                 });
+
+              if(!granules) {
+                this.notificationService.listImportFailed('KML');
+                return;
+              }
 
               this.updateSearchList(granules);
             });
@@ -307,12 +328,20 @@ export class ListFiltersComponent implements OnInit, OnDestroy {
       filereader.onload = _ => {
         const res = filereader.result as string;
         const parser = new xml2js.Parser({ explicitArray: false });
-        const observable = from (parser.parseStringPromise(res));
+        const observable = from (parser.parseStringPromise(res).catch(_ => {}));
 
         observable.pipe(first()).subscribe(result => {
-            const files: [] = result['metalink']['files']['file'];
-            const fileNames = files.map(fileMeta => (fileMeta['$']['name'] as string).split('.').shift());
+            const files: [] = result?.['metalink']?.['files']?.['file'];
+            if(!files) {
+              this.notificationService.listImportFailed('Metalink');
+              return;
+            }
+            const fileNames = files.map(fileMeta => (fileMeta?.['$']?.['name'] as string)?.split('.')?.shift());
 
+            if(!fileNames) {
+              this.notificationService.listImportFailed('Metalink');
+              return;
+            }
             this.updateSearchList(fileNames);
           });
     };

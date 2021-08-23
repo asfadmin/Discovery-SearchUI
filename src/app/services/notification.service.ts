@@ -108,7 +108,6 @@ export class NotificationService {
   }
 
   public listImportFailed(fileExtension: string) {
-    fileExtension = fileExtension[0].toUpperCase() + fileExtension.slice(1, fileExtension.length);
     const title = `${fileExtension} List Import Failed`;
     const message = `Click to open documentation on accepted file formatting`;
     const errorToast = this.error(message, title);
