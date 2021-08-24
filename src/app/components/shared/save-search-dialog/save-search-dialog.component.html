@@ -1,22 +1,22 @@
-<h2 mat-dialog-title>Save Search</h2>
+<h2 mat-dialog-title>{{ saveTypeName }}</h2>
 
 <div mat-dialog-content class="mat-dialog-content">
   <div>
     <form #saveSearchName="ngForm">
       <mat-form-field [class.invalid-input-animation]="isNameError">
         <input type="text" autofocus
-               #searchNameInput="ngModel" ngModel
+               #saveNameInput="ngModel" ngModel
                name="searchNameInput"
-               placeholder="Saved Search Name"
-               aria-label="Saved Search Name" matInput
-               (input)="onSearchNameInput($event)"
-               (change)="onSearchNameChange($event)"
-               [value]="searchName"
-               [(ngModel)]="searchName">
+               placeholder="{{ saveTypeName + ' Name' }}" matInput
+               (input)="onSaveNameInput($event)"
+               (change)="onSaveNameChange($event)"
+               [value]="saveName"
+               [(ngModel)]="saveName">
       </mat-form-field>
     </form>
 
   </div>
+
   <div class="save-search-filters">
     <div style="margin-bottom: 4px;">
       <b>{{ search.searchType }}</b>
@@ -34,7 +34,7 @@
           (click)="onSubmitSave()"
           cdkFocusInitial>
     <span>
-      Save Search
+      {{ saveTypeName }}
     </span>
   </button>
 </div>

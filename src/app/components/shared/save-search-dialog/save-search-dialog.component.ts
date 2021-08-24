@@ -1,8 +1,13 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import * as uuid from 'uuid/v1';
 
+import { combineLatest } from 'rxjs';
+import { map } from 'rxjs/operators';
 import { Store } from '@ngrx/store';
 import { AppState } from '@store';
+import * as searchStore from '@store/search';
+import * as filterStore from '@store/filters';
 import * as userStore from '@store/user';
 import * as uiStore from '@store/ui';
 
@@ -16,8 +21,15 @@ import * as models from '@models';
 })
 export class SaveSearchDialogComponent implements OnInit {
   public search: models.Search;
-  public searchName: string;
+
+  private currentFiltersBySearchType = {};
+  public searchType: models.SearchType;
+
+  public saveName: string;
   public isNameError = false;
+
+  public saveType: models.SavedSearchType;
+  public saveTypeName: string;
 
   constructor(
     public dialogRef: MatDialogRef<SaveSearchDialogComponent>,
@@ -28,23 +40,62 @@ export class SaveSearchDialogComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.search = this.savedSearchService.makeCurrentSearch('');
+    this.saveType = this.data.saveType;
+    console.log(this.saveType);
 
-    if (!this.searchCanBeSaved(this.search)) {
-      this.onCancelSave();
+    if (this.saveType === models.SavedSearchType.SAVED) {
+      this.saveTypeName = 'Save Search';
+      this.search = this.savedSearchService.makeCurrentSearch('');
+
+      if (!this.searchCanBeSaved(this.search)) {
+        this.onCancelSave();
+      }
+    }
+
+    if (this.saveType === models.SavedSearchType.FILTER) {
+      this.saveTypeName = 'Save Filters';
+
+      combineLatest([
+        this.store$.select(filterStore.getGeographicSearch).pipe(
+          map(preset => ({... preset, flightDirections: Array.from(preset.flightDirections)}))
+        ),
+        this.store$.select(filterStore.getListSearch),
+        this.store$.select(filterStore.getBaselineSearch),
+        this.store$.select(filterStore.getSbasSearch),
+        this.store$.select(searchStore.getSearchType)
+      ])
+        .subscribe(([geo, list, baseline, sbas, searchType]) => {
+          this.currentFiltersBySearchType[models.SearchType.DATASET] = geo;
+          this.currentFiltersBySearchType[models.SearchType.LIST] = list;
+          this.currentFiltersBySearchType[models.SearchType.BASELINE] = baseline;
+          this.currentFiltersBySearchType[models.SearchType.SBAS] = sbas;
+          this.searchType = searchType;
+
+          this.search = this.newFilterPreset();
+
+        });
     }
   }
 
-  public onSearchNameChange(event: Event): void {
-    // TODO: error checking here
-    const htmlEvent = event.target as HTMLInputElement;
-    this.searchName = htmlEvent.value;
+  public newFilterPreset() {
+    const id = uuid() as string;
+    return {
+      name: this.saveName,
+      id,
+      filters: this.currentFiltersBySearchType[this.searchType],
+      searchType: this.searchType
+    } as models.SavedFilterPreset;
   }
 
-  public onSearchNameInput(event: Event): void {
-    // TODO: error checking here
+
+  public onSaveNameChange(event: Event): void {
     const htmlEvent = event.target as HTMLInputElement;
-    this.searchName = htmlEvent.value;
+    this.saveName = htmlEvent.value;
+  }
+
+  public onSaveNameInput(event: Event): void {
+    const htmlEvent = event.target as HTMLInputElement;
+    this.saveName = htmlEvent.value;
   }
 
   public onCancelSave(): void {
@@ -53,16 +104,25 @@ export class SaveSearchDialogComponent implements OnInit {
   }
 
   public onSubmitSave(): void {
-    this.store$.dispatch(new userStore.AddNewSearch({
-      ...this.search, name: this.searchName
-    }));
-    this.savedSearchService.saveSearches();
+    if (this.saveType === models.SavedSearchType.SAVED) {
+      this.store$.dispatch(new userStore.AddNewSearch({
+        ...this.search, name: this.saveName
+      }));
+      this.savedSearchService.saveSearches();
 
-    const addName = ` as '${this.searchName}'`;
+    }
+
+    if (this.saveType === models.SavedSearchType.FILTER) {
+      this.store$.dispatch(new userStore.AddNewFiltersPreset({
+        ...this.search, name: this.saveName
+      }));
+      this.store$.dispatch(new userStore.SaveFilters());
+    }
+
+    const addName = ` as '${this.saveName}'`;
     this.notificationService.info(
-      `Saved current ${this.search.searchType}${this.searchName ? addName : ''}`
+      `Saved current ${this.search.searchType}${this.saveName ? addName : ''}`
     );
-
     this.dialogRef.close();
   }
 

@@ -2,7 +2,7 @@ import { Component, OnInit, ViewChild, ElementRef, OnDestroy } from '@angular/co
 import { MatDialog } from '@angular/material/dialog';
 
 import { SubSink } from 'subsink';
-import { switchMap, tap, delay } from 'rxjs/operators';
+import { switchMap } from 'rxjs/operators';
 import { Store } from '@ngrx/store';
 import { AppState } from '@store';
 import * as userStore from '@store/user';
@@ -23,7 +23,6 @@ export class SavedSearchesComponent implements OnInit, OnDestroy {
 
   public searchType$ = this.store$.select(searchStore.getSearchType);
   public SearchType = models.SearchType;
-  public saveSearchOn: boolean;
   public savedSearchType: models.SavedSearchType;
   public lockedFocus = false;
 
@@ -66,20 +65,6 @@ export class SavedSearchesComponent implements OnInit, OnDestroy {
     );
 
     this.subs.add(
-      this.store$.select(uiStore.getIsSaveSearchOn).pipe(
-        tap(saveSearchOn => this.saveSearchOn = saveSearchOn),
-        delay(250)
-      ).subscribe(
-        _ => {
-          if (this.saveSearchOn) {
-            this.lockedFocus = true;
-            this.store$.dispatch(new uiStore.SetSaveSearchOn(false));
-          }
-        }
-      )
-    );
-
-    this.subs.add(
       this.savedSearchType$.subscribe(
         savedSearchType => this.savedSearchType = savedSearchType
       )
@@ -106,7 +91,7 @@ export class SavedSearchesComponent implements OnInit, OnDestroy {
       height: '500px',
       maxWidth: '550px',
       maxHeight: '500px',
-      data: {}
+      data: { saveType: models.SavedSearchType.SAVED }
     });
   }
 

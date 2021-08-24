@@ -4,6 +4,8 @@ import * as userStore from '@store/user';
 import { Store } from '@ngrx/store';
 import { AppState } from '@store';
 import { timer } from 'rxjs';
+import { NotificationService } from '@services';
+
 @Component({
   selector: 'app-save-user-filter',
   templateUrl: './save-user-filter.component.html',
@@ -22,7 +24,10 @@ export class SaveUserFilterComponent implements OnInit {
   public isEditingName = false;
   public editName: string;
   public lockedFocus = false;
-  constructor(private store$: Store<AppState>) { }
+  constructor(
+    private store$: Store<AppState>,
+    private notificationService: NotificationService
+  ) { }
 
   ngOnInit() {
     if (this.isNew) {
@@ -36,6 +41,11 @@ export class SaveUserFilterComponent implements OnInit {
 
   public loadPreset() {
     this.store$.dispatch(new userStore.LoadFiltersPreset(this.filterPreset.id));
+
+    const fromName = this.filterPreset.name ? `from '${this.filterPreset.name}'` : ``;
+    this.notificationService.info(
+      `Applied filters ${fromName}`
+    );
   }
 
   public onDeletePreset() {

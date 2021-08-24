@@ -75,22 +75,22 @@
               </a>
             </div>
             <div class="browse-pager" *ngIf="browses$ | async as browses">
-              <span 
+              <span
               [class.clickable]="browseIndex > 0"
-              (click)="browseIndex > 0 && browseIndex = browseIndex - 1" 
+              (click)="browseIndex > 0 && browseIndex = browseIndex - 1"
               >
               <mat-icon>arrow_back</mat-icon>
               </span>
-               {{browseIndex+1}} / {{browses.length}} 
+               {{browseIndex+1}} / {{browses.length}}
               <span
                 [class.clickable]="browseIndex+1 < browses.length"
-                (click)="browseIndex+1 < browses.length && browseIndex = browseIndex + 1" 
+                (click)="browseIndex+1 < browses.length && browseIndex = browseIndex + 1"
                  >
                 <mat-icon>arrow_forward</mat-icon>
               </span>
             </div>
           </div>
-          <div 
+          <div
             class="img-container">
             <img
               class="browse-img fit-to-container"

@@ -62,8 +62,9 @@
 </mat-menu>
 
 <mat-menu #savedFiltersMenu="matMenu">
-  <span matTooltip = "Sign in to save your filters" [matTooltipDisabled]="isLoggedIn"
-        matTooltipPosition = "after">
+  <span matTooltip="Sign in to save your filters"
+        [matTooltipDisabled]="isLoggedIn"
+        matTooltipPosition="after">
     <button *ngIf="searchType !== searchTypes.CUSTOM_PRODUCTS && searchType !== searchTypes.LIST"
       mat-menu-item [disabled]="!isLoggedIn" (click)="saveCurrentFilters()">
       Save Filters
@@ -74,10 +75,13 @@
   [matTooltipDisabled]="isLoggedIn"
   matTooltip="Sign in to see your saved filters"
   matTooltipPosition="after">
-    <button mat-menu-item [disabled]="!isLoggedIn" *ngIf="searchType !== searchTypes.CUSTOM_PRODUCTS && searchType !== searchTypes.LIST"
-    (click)="onOpenSavedFilters()">View Filters...</button>
+    <button *ngIf="searchType !== searchTypes.CUSTOM_PRODUCTS && searchType !== searchTypes.LIST"
+      (click)="onOpenSavedFilters()"
+      mat-menu-item
+      [disabled]="!isLoggedIn">
+      View Filters...
+    </button>
   </span>
-
 
 </mat-menu>
 
