@@ -5,6 +5,7 @@ import { forkJoin, Observable, of } from 'rxjs';
 import { catchError, map, switchMap } from 'rxjs/operators';
 import { Feature } from 'geojson';
 
+
 @Injectable({
   providedIn: 'root'
 })
@@ -12,7 +13,8 @@ export class SarviewsEventsService {
 
   private eventsUrl = `https://gm3385dq6j.execute-api.us-west-2.amazonaws.com/events`;
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient,
+              ) { }
 
   public getSarviewsEvents$(): Observable<SarviewsEvent[]> {
     return this.http.get<SarviewsEvent[]>(this.eventsUrl);
@@ -72,4 +74,8 @@ export class SarviewsEventsService {
     switchMap(ids => this.getEventFeatures(ids)),
     map(events => <SarviewsFloodEvent[]>events));
   }
+
+  // public getSarviewsEventCenter(coord: LonLat) {
+  //   this.mapService.selectedSarviewEvent$.next()
+  // }
 }

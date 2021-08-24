@@ -1,6 +1,7 @@
 <button class="button-flex-row" mat-list-item
     (mouseenter)="onSetFocused()"
     (mouseleave) ="onClearFocused()"
+    (click) ="onSetSelected()"
     [class.hovered]="hovered"
     [class.selected]="isSelected"
     [ngClass]="{'mobile-size': breakpoint <= breakpoints.SMALL}">

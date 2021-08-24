@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject, Subject } from 'rxjs';
 import { map, sampleTime } from 'rxjs/operators';
 
-import { Map, Overlay } from 'ol';
+import { Feature, Map, Overlay } from 'ol';
 import { Layer, Vector as VectorLayer } from 'ol/layer';
 import { Vector as VectorSource } from 'ol/source';
 import * as proj from 'ol/proj';
@@ -38,7 +38,13 @@ export class MapService {
 
   public selectedSarviewEvent$: EventEmitter<string> = new EventEmitter();
   public mapInit$: EventEmitter<Map> = new EventEmitter();
+
+  private sarviewsFeaturesByID: {[id: string]: Feature} = {};
   // private gridlinesActive: boolean;
+
+  public getEventCoordinate(sarviews_id: string): Point {
+    return this.sarviewsFeaturesByID[sarviews_id].getGeometry() as Point;
+  }
 
   private selectClick = new Select({
     condition: click,
@@ -188,11 +194,12 @@ export class MapService {
 
         const geom = (feature.getGeometry() as MultiPolygon).getCoordinates();
 
-        const polygon: Coordinate[] = geom[0][0].slice(0, 4);
+        const polygon: unknown = geom[0][0];
 
         let point: Point;
-        if(polygon.length === 2) {
-          point = new Point([polygon[0][0], polygon[0][1]]);
+        if((polygon as Coordinate).length === 2) {
+          let x = polygon as Coordinate;
+          point = new Point([x[0], x[1]]);
         } else {
           const centerLat = (polygon[0][0] + polygon[1][0] + polygon[2][0] + polygon[3][0]) / 4.0;
           const centerLon = (polygon[0][1] + polygon[1][1] + polygon[2][1] + polygon[3][1]) / 4.0;
@@ -205,6 +212,8 @@ export class MapService {
         feature.set("sarviews_id", sarviewEvent.event_id);
 
         // console.log(feature);
+        this.sarviewsFeaturesByID[sarviewEvent.event_id] = feature;
+
         return feature;
       });
       // console.log(features);
@@ -249,6 +258,18 @@ export class MapService {
       center: proj.fromLonLat([lon, lat]),
       duration: 500
     });
+  }
+
+  public panToEvent(eventCoord: Coordinate) {
+    // const feature = this.map.getfeature(this.map.getPixelFromCoordinate(eventCoord))[0].getGeometry();
+    // console.log(feature.getExtent());
+    // this.map.getView().setCenter(eventCoord);
+    this.map.getView().animate({
+      center: eventCoord,
+      duration: 500,
+      zoom: 5.0
+    });
+    // this.map.getView().setCenter(feature[0]);
   }
 
   public setZoom(zoom: number): void {
