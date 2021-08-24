@@ -36,6 +36,7 @@ export class MapService {
   private gridLinesVisible: boolean;
   private popupOverlay: Overlay;
 
+  public selectedSarviewEvent$: EventEmitter<string> = new EventEmitter();
   public mapInit$: EventEmitter<Map> = new EventEmitter();
   // private gridlinesActive: boolean;
 
@@ -382,17 +383,27 @@ export class MapService {
 
     // newMap.addOverlay(this.popupOverlay);
 
-    newMap.on("singleclick", (evnt) => this.map.forEachFeatureAtPixel(
+    newMap.on("singleclick", (evnt) =>
+    {
+      if(this.map.hasFeatureAtPixel(evnt.pixel)) {
+      this.map.forEachFeatureAtPixel(
       evnt.pixel,
       (feature) => {
-        var sarview_id = feature.get('sarviews_id');
+        const sarview_id: string = feature.get('sarviews_id');
         if(!!sarview_id) {
+          this.selectedSarviewEvent$.next(sarview_id);
           // window.open(`https://sarviews-hazards.alaska.edu/Event/${sarview_id}`)
+          this.popupOverlay.setPosition([evnt.coordinate[0], evnt.coordinate[1] + 200]);
+          // this.popupOverlay.getElement().innerHTML = '<p>You clicked here:</p>';
         }
-        this.popupOverlay.setPosition(evnt.coordinate);
-        this.popupOverlay.getElement().innerHTML = '<p>You clicked here:</p>';
+
         evnt.preventDefault();
-      }))
+
+        });
+      } else {
+        this.popupOverlay.setPosition(undefined);
+      }
+    })
 
     this.drawService.getLayer().setZIndex(100);
     this.focusLayer.setZIndex(99);

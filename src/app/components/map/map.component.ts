@@ -79,6 +79,9 @@ export class MapComponent implements OnInit, OnDestroy  {
   public searchType: models.SearchType;
   public searchTypes = models.SearchType;
 
+  private sarviewsEvents: SarviewsEvent[];
+  public selectedSarviewEvent: SarviewsEvent;
+
   private subs = new SubSink();
 
   constructor(
@@ -98,6 +101,7 @@ export class MapComponent implements OnInit, OnDestroy  {
         duration: 250,
       },
     });
+
 
     this.mapService.setMapOverlay(popupOverlay);
     this.mapService.mapInit$.pipe(
@@ -122,6 +126,12 @@ export class MapComponent implements OnInit, OnDestroy  {
     //     popupOverlay.getElement().innerHTML = '<p>You clicked here:</p>';
     //     evnt.preventDefault();
     //   }));
+
+    this.mapService.selectedSarviewEvent$.pipe(
+      filter(id => !!id)
+    ).subscribe(
+      id => this.selectedSarviewEvent = this.sarviewsEvents.find(event => event.event_id === id)
+    )
 
 
     this.subs.add(
@@ -429,6 +439,7 @@ export class MapComponent implements OnInit, OnDestroy  {
   private sceneSARViewsEventsLayer$(projection: string): Observable<VectorLayer> {
     return this.store$.select(scenesStore.getSarviewsEvents).pipe(
       filter(events => !!events),
+      tap(events => this.sarviewsEvents = events),
       map(events => this.mapService.sarviewsEventsToFeatures(events, projection)),
       map(features => this.featuresToSource(features))
     );
