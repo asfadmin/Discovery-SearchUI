@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject, Subject } from 'rxjs';
 import { map, sampleTime } from 'rxjs/operators';
 
-import { Map } from 'ol';
+import { Map, Overlay } from 'ol';
 import { Layer, Vector as VectorLayer } from 'ol/layer';
 import { Vector as VectorSource } from 'ol/source';
 import * as proj from 'ol/proj';
@@ -22,6 +22,7 @@ import * as views from './views';
 import { SarviewsEvent } from '@models';
 import MultiPolygon from 'ol/geom/MultiPolygon';
 import { Coordinate } from 'ol/coordinate';
+import { EventEmitter } from '@angular/core';
 // import { SarviewsEventsService } from '@services';
 
 
@@ -33,6 +34,9 @@ export class MapService {
   private map: Map;
   private polygonLayer: VectorLayer;
   private gridLinesVisible: boolean;
+  private popupOverlay: Overlay;
+
+  public mapInit$: EventEmitter<Map> = new EventEmitter();
   // private gridlinesActive: boolean;
 
   private selectClick = new Select({
@@ -40,6 +44,10 @@ export class MapService {
     style: polygonStyle.hidden,
     layers: l => l.get('selectable') || false
   });
+
+  public setMapOverlay(popupContainer: Overlay) {
+    this.popupOverlay = popupContainer;
+  }
 
   private selectHover = new Select({
     condition: pointerMove,
@@ -86,24 +94,6 @@ export class MapService {
         null
     )
   );
-
-  // public quakeEvents$ = this.sarviewsEventService.quakeEvents$();
-
-  // public volcanicEvents$ = this.sarviewsEventService.volcanoEvents$();
-
-  // public floodEvents$ = this.sarviewsEventService.floodEvents$();
-
-  // public quakePolygons$ = this.quakeEvents$.pipe(
-  //   map(feature => feature.map(f => this.wktService.featureToWkt(f, this.epsg()))),
-  //   );
-
-  // public volcanoPolygons$ = this.volcanicEvents$.pipe(
-  //   map(feature => feature.map(f => this.wktService.featureToWkt(f, this.epsg()))),
-  // );
-
-  // public floodPolygon$ = this.floodEvents$.pipe(
-  //   map(feature => feature.map(f => this.wktService.featureToWkt(f, this.epsg())))
-  // );
 
   constructor(
     private wktService: WktService,
@@ -350,6 +340,7 @@ export class MapService {
       this.updatedMap();
   }
 
+
   private createNewMap(overlay): Map {
     const newMap = new Map({
       layers: [ this.mapView.layer, this.drawService.getLayer(), this.focusLayer, this.selectedLayer, this.mapView?.gridlines ],
@@ -377,13 +368,29 @@ export class MapService {
       this.mousePositionSubject$.next({ lon, lat });
     });
 
-    newMap.on("click", (evnt) => this.map.forEachFeatureAtPixel(
+    // const popupOverlay = new Overlay({
+    //   element: this.popupOverlay,
+    //   autoPan: true,
+    //   autoPanAnimation: {
+    //     duration: 250,
+    //   },
+    // });
+
+    newMap.once('postrender', () => {
+      this.onMapReady(newMap);
+    });
+
+    // newMap.addOverlay(this.popupOverlay);
+
+    newMap.on("singleclick", (evnt) => this.map.forEachFeatureAtPixel(
       evnt.pixel,
       (feature) => {
         var sarview_id = feature.get('sarviews_id');
         if(!!sarview_id) {
-          window.open(`https://sarviews-hazards.alaska.edu/Event/${sarview_id}`)
+          // window.open(`https://sarviews-hazards.alaska.edu/Event/${sarview_id}`)
         }
+        this.popupOverlay.setPosition(evnt.coordinate);
+        this.popupOverlay.getElement().innerHTML = '<p>You clicked here:</p>';
         evnt.preventDefault();
       }))
 
@@ -406,6 +413,9 @@ export class MapService {
     return newMap;
   }
 
+  public onMapReady(map: Map) {
+    this.mapInit$.next(map);
+  }
   private updatedMap(): Map {
     if (this.map.getView().getProjection().getCode() !== this.mapView.projection.epsg) {
       this.map.setView(this.mapView.view);

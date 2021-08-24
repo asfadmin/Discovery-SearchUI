@@ -43,6 +43,7 @@ export class MapComponent implements OnInit, OnDestroy  {
   @Output() loadUrlState = new EventEmitter<void>();
   @ViewChild('overlay', { static: true }) overlayRef: ElementRef;
   @ViewChild('map', { static: true }) mapRef: ElementRef;
+  @ViewChild('sarviewPopupContainer', {static: true}) popupRef: ElementRef;
 
   public drawMode$ = this.store$.select(mapStore.getMapDrawMode);
   public interactionMode$ = this.store$.select(mapStore.getMapInteractionMode);
@@ -89,6 +90,39 @@ export class MapComponent implements OnInit, OnDestroy  {
   ) {}
 
   ngOnInit(): void {
+
+    const popupOverlay = new Overlay({
+      element: this.popupRef.nativeElement,
+      autoPan: true,
+      autoPanAnimation: {
+        duration: 250,
+      },
+    });
+
+    this.mapService.setMapOverlay(popupOverlay);
+    this.mapService.mapInit$.pipe(
+      filter(olMap => !!olMap)
+      ).subscribe(
+        olMap =>
+        {
+          olMap.addOverlay(popupOverlay);
+          this.mapService.setMapOverlay(popupOverlay);
+        }
+      )
+    // this.mapService.getMap().addOverlay(popupOverlay);
+
+    // this.mapService.getMap().on("singleclick", (evnt) => this.mapService.getMap().forEachFeatureAtPixel(
+    //   evnt.pixel,
+    //   (feature) => {
+    //     var sarview_id = feature.get('sarviews_id');
+    //     if(!!sarview_id) {
+    //       window.open(`https://sarviews-hazards.alaska.edu/Event/${sarview_id}`)
+    //     }
+    //     popupOverlay.setPosition(evnt.coordinate);
+    //     popupOverlay.getElement().innerHTML = '<p>You clicked here:</p>';
+    //     evnt.preventDefault();
+    //   }));
+
 
     this.subs.add(
       this.screenSize.breakpoint$.subscribe(
