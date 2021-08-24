@@ -190,18 +190,16 @@ export class MapService {
 
         const polygon: Coordinate[] = geom[0][0].slice(0, 4);
 
+        let point: Point;
         if(polygon.length === 2) {
-          const point = new Point([polygon[0][0], polygon[0][1]]);
-          feature.set("eventPoint", point);
-          feature.setGeometryName("eventPoint");
-          return feature;
+          point = new Point([polygon[0][0], polygon[0][1]]);
+        } else {
+          const centerLat = (polygon[0][0] + polygon[1][0] + polygon[2][0] + polygon[3][0]) / 4.0;
+          const centerLon = (polygon[0][1] + polygon[1][1] + polygon[2][1] + polygon[3][1]) / 4.0;
+          point = new Point([centerLat, centerLon]);
         }
 
-        const centerLat = (polygon[0][0] + polygon[1][0] + polygon[2][0] + polygon[3][0]) / 4.0;
-        const centerLon = (polygon[0][1] + polygon[1][1] + polygon[2][1] + polygon[3][1]) / 4.0;
-        const point = new Point([centerLat, centerLon]);
-
-
+        point.scale(20);
         feature.set("eventPoint", point);
         feature.setGeometryName("eventPoint");
         feature.set("sarviews_id", sarviewEvent.event_id);
@@ -339,6 +337,10 @@ export class MapService {
     this.map = (!this.map) ?
       this.createNewMap(overlay) :
       this.updatedMap();
+
+    this.map.once('postrender', () => {
+      this.onMapReady(this.map);
+    });
   }
 
 
@@ -376,10 +378,6 @@ export class MapService {
     //     duration: 250,
     //   },
     // });
-
-    newMap.once('postrender', () => {
-      this.onMapReady(newMap);
-    });
 
     // newMap.addOverlay(this.popupOverlay);
 

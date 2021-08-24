@@ -20,10 +20,10 @@
         <div mwlResizeHandle class="resize-handle-filler"></div>
       </div>
 
-      <div [class.hidden]="(areNoScenes$ | async)"
+      <div [class.hidden]="(areNoScenes$ | async) && !(!(noSarviewsEvents$ | async) && searchType === SearchTypes.SARVIEWS_EVENTS)"
         class="h100" style="justify-content: center;">
 
-        <div *ngIf="products.length !== 0" class="results-menu--background h100 w100 mp0"
+        <div *ngIf="products.length !== 0 || !(noSarviewsEvents$ | async)" class="results-menu--background h100 w100 mp0"
              fxFlex fxLayout="row">
 
           <ng-container *ngIf="breakpoint >= breakpoints.SMALL">

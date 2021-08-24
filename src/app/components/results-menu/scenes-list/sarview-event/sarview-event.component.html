@@ -1,0 +1,10 @@
+<button class="button-flex-row" mat-list-item
+    (mouseenter)="onSetFocused()"
+    (mouseleave) ="onClearFocused()"
+    [class.hovered]="hovered"
+    [class.selected]="isSelected"
+    [ngClass]="{'mobile-size': breakpoint <= breakpoints.SMALL}">
+  Description: {{event.description}}
+  Type: {{event.event_type}}
+  Start: {{event.processing_timeframe.start}} End: {{event.processing_timeframe.end}}
+  </button>
