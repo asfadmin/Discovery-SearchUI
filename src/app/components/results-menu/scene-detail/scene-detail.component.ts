@@ -88,7 +88,10 @@ export class SceneDetailComponent implements OnInit, OnDestroy {
     this.subs.add(
       this.store$.select(scenesStore.getSelectedSceneProducts).pipe(
         tap(products => this.selectedProducts = products),
-      ).subscribe(_ => {this.updateHasBaseline(); this.browseIndex = 0;})
+      ).subscribe(_ => {
+        this.updateHasBaseline();
+        this.browseIndex = 0;
+      })
     );
 
     this.subs.add(
@@ -234,7 +237,6 @@ export class SceneDetailComponent implements OnInit, OnDestroy {
       this.scene.dataset.includes('JERS-1')
     );
   }
-
 
   ngOnDestroy() {
     this.subs.unsubscribe();
