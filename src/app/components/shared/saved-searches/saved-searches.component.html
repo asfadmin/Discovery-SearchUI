@@ -27,8 +27,8 @@
         <mat-form-field>
           <input matInput
                  [(ngModel)]="searchFilter"
-                 (change)="onNewFilter($event.target.value)"
-                 (input)="onNewFilter($event.target.value)"
+                 (change)="onNewFilter($event)"
+                 (input)="onNewFilter($event)"
                  (keyup.enter)="unfocusFilter()"
                  name="filterSearches"
                  placeholder="Filter Searches">

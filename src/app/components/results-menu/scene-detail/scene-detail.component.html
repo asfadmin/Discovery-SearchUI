@@ -42,7 +42,7 @@
     <mat-card-content class="content">
       <div class="w100" fxFlex fxLayout="column" fxLayoutAlign="space-between">
         <div class="w100">
-          <details [(open)]="detailsOpen">
+          <details open (open)="onSetDetailsOpen($event)">
             <summary class="clickable"></summary>
             <app-scene-metadata [scene]="scene" [dataset]="dataset" [searchType]="searchType" [offsets]="masterOffsets$ | async">
             </app-scene-metadata>

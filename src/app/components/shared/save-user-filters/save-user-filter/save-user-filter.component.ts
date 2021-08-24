@@ -53,7 +53,8 @@ export class SaveUserFilterComponent implements OnInit {
     this.store$.dispatch(new userStore.SaveFilters());
   }
 
-  public onNewName(newName: string) {
+  public onNewName(event: Event) {
+    const newName = (event.target as HTMLInputElement).value;
     this.isEditingName = false;
     this.editName = '';
 

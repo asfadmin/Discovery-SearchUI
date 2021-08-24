@@ -17,7 +17,7 @@ enum FileErrors {
 @Component({
   selector: 'app-file-upload-dialog',
   templateUrl: 'file-upload-dialog.component.html',
-  styleUrls: ['./file-upload-dialog.component.css']
+  styleUrls: ['./file-upload-dialog.component.scss']
 })
 export class FileUploadDialogComponent implements OnInit, OnDestroy {
   @ViewChild('file', { static: true }) file;
@@ -153,6 +153,7 @@ export class FileUploadDialogComponent implements OnInit, OnDestroy {
 
     if (this.isValidFileType(fileName)) {
       this.files.add(file);
+      this.notificationService.info(`'${file.name}' ready to import`, 'AOI Import', { timeOut: 5000 });
     } else {
       this.fileError$.next(FileErrors.INVALID_TYPE);
     }

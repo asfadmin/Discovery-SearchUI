@@ -40,7 +40,7 @@ export class SavedSearchesComponent implements OnInit, OnDestroy {
   public breakpoints = models.Breakpoints;
 
   private filterTokens = [];
-  private filteredSearches = new Set<string>();
+  public filteredSearches = new Set<string>();
   public searchFilter = '';
   public expandedSearchId: string;
   public newSearchId: string;
@@ -99,7 +99,8 @@ export class SavedSearchesComponent implements OnInit, OnDestroy {
     this.savedSearchService.updateSearchWithCurrentFilters(id);
   }
 
-  public onNewFilter(filterStr: string): void {
+  public onNewFilter(event: Event): void {
+    const filterStr = (event.target as HTMLInputElement).value;
     this.searchFilter = filterStr;
     this.updateFilter();
   }

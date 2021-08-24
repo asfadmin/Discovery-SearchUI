@@ -55,6 +55,15 @@
         </div>
       </div>
 
+      <div fxFlex="" class="group-margin" [hidden]="(view$ | async) !== viewTypes.EQUITORIAL">
+        <div fxLayout="row" fxLayoutAlign="center" class="button-group-label">
+          <label>Gridlines</label>
+        </div>
+        <div fxLayout="row">
+          <app-gridlines-selector></app-gridlines-selector>
+        </div>
+      </div>
+
       <div *ngIf="searchType === searchTypes.DATASET" fxFlex="" class="group-margin">
         <div fxLayout="row" fxLayoutAlign="center" class="button-group-label">
           <label>Area of Interest</label>

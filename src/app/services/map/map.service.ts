@@ -26,6 +26,8 @@ export class MapService {
   private mapView: views.MapView;
   private map: Map;
   private polygonLayer: Layer;
+  private gridLinesVisible: boolean;
+  // private gridlinesActive: boolean;
 
   private selectClick = new Select({
     condition: click,
@@ -165,6 +167,11 @@ export class MapService {
     this.drawService.setInteractionMode(this.map, mode);
   }
 
+  public setGridLinesActive(active: boolean) {
+    this.gridLinesVisible = active;
+    this.map = this.updatedMap();
+  }
+
   public setDrawMode(mode: models.MapDrawModeType): void {
     this.drawService.setDrawMode(this.map, mode);
   }
@@ -274,7 +281,7 @@ export class MapService {
 
   private createNewMap(overlay): Map {
     const newMap = new Map({
-      layers: [ this.mapView.layer, this.drawService.getLayer(), this.focusLayer, this.selectedLayer ],
+      layers: [ this.mapView.layer, this.drawService.getLayer(), this.focusLayer, this.selectedLayer, this.mapView?.gridlines ],
       target: 'map',
       view: this.mapView.view,
       controls: [],
@@ -324,7 +331,16 @@ export class MapService {
       this.map.setView(this.mapView.view);
     }
 
+    const layers = this.map.getLayers().getArray();
+    if (this.mapView.projection.epsg === 'EPSG:3857') {
+      const gridlineIdx = layers.findIndex(l => l.get('ol_uid') === '100');
+      layers[gridlineIdx] = this.mapView.gridlines;
+      layers[gridlineIdx]?.setVisible(this.gridLinesVisible);
+    } else {
+      layers.find(l => l.get('ol_uid') === '100')?.setVisible(false);
+    }
     this.mapView.layer.setOpacity(1);
+
     const mapLayers = this.map.getLayers();
     mapLayers.setAt(0, this.mapView.layer);
 

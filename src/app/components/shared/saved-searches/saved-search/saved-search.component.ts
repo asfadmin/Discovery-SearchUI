@@ -67,7 +67,8 @@ export class SavedSearchComponent implements OnInit {
     );
   }
 
-  public onNewName(newName: string): void {
+  public onNewName(event: Event): void {
+    const newName = (event.target as HTMLInputElement).value;
     this.isEditingName = false;
     this.editName = '';
 

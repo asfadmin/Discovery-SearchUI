@@ -18,7 +18,7 @@ declare global {
 @Component({
   selector: 'app-info-bar',
   templateUrl: './info-bar.component.html',
-  styleUrls: ['./info-bar.component.scss']
+  styleUrls: ['./info-bar.component.scss'],
 })
 export class InfoBarComponent implements OnInit, OnDestroy {
   @Input() resize$: Observable<void>;
@@ -48,7 +48,6 @@ export class InfoBarComponent implements OnInit, OnDestroy {
     private store$: Store<AppState>,
     private screenSize: services.ScreenSizeService,
   ) {
-    this.showSearch();
   }
 
   ngOnInit() {
@@ -121,16 +120,6 @@ export class InfoBarComponent implements OnInit, OnDestroy {
       tempSub, perpSub
     ].forEach(sub => this.subs.add(sub));
 
-  }
-
-  public showSearch() {
-    const id = 'b8df7ea0-38a5-11eb-9b20-0242ac130002';
-    const ci_search = document.createElement('script');
-    ci_search.type = 'text/javascript';
-    ci_search.async = true;
-    ci_search.src = 'https://cse.expertrec.com/api/js/ci_common.js?id=' + id;
-    const s = document.getElementsByTagName('script')[0];
-    s.parentNode.insertBefore(ci_search, s);
   }
 
   ngOnDestroy() {

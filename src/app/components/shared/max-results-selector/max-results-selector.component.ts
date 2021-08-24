@@ -59,7 +59,7 @@ export class MaxResultsSelectorComponent implements OnInit, OnDestroy {
 
     this.subs.add(
       this.store$.select(searchStore.getSearchAmount).subscribe(
-        amount => this.currentSearchAmount = amount
+        amount => this.currentSearchAmount = Number.isNaN(amount) ? 0 : amount
       )
     );
 

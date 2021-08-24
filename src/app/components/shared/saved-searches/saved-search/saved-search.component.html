@@ -19,7 +19,7 @@
           <mat-form-field>
             <input matInput
                    [(ngModel)]="editName"
-                   (change)="onNewName($event.target.value)"
+                   (change)="onNewName($event)"
                    (keyup.enter)="onEditFocusLeave()"
                    (focusout)="onEditFocusLeave()"
                    name="editNameInput"
@@ -35,10 +35,10 @@
 
       <div *ngIf="!isEditingName" class="search-preview">
         <span *ngIf="search.searchType === SearchType.DATASET">
-          {{ search.filters.selectedDataset }} {{ formatDatesFor(search.filters) }}
+          {{ (search.filters | geographicFilter).selectedDataset }} {{ formatDatesFor((search.filters | geographicFilter)) }}
         </span>
         <span *ngIf="search.searchType === SearchType.LIST">
-          {{ listPreview(search.filters) }}
+          {{ listPreview(search.filters | listFilter) }}
         </span>
       </div>
     </div>
