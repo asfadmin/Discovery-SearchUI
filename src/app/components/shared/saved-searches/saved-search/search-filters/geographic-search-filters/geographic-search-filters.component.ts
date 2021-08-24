@@ -24,6 +24,7 @@ export class GeographicSearchFiltersComponent implements OnInit {
 
   public noFilters(filters: GeographicFiltersType): boolean {
     return (
+      !filters.selectedDataset &&
       !filters.polygon &&
       !filters.dateRange.start &&
       !filters.dateRange.end &&

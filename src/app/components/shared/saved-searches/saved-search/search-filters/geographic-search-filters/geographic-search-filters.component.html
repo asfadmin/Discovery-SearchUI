@@ -1,4 +1,7 @@
 <div *ngIf="!noFilters(filters)">
+  <div *ngIf="!!filters.selectedDataset">
+    <b>Dataset:</b> {{ filters.selectedDataset }}
+  </div>
   <div *ngIf="!!filters.polygon">
     <b>Search Area:</b> {{ showSearchAreaType(filters.polygon) }}
   </div>
