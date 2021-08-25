@@ -78,4 +78,8 @@ export class SarviewsEventsService {
   // public getSarviewsEventCenter(coord: LonLat) {
   //   this.mapService.selectedSarviewEvent$.next()
   // }
+
+  public getSarviewsEventUrl(sarviews_id: string) {
+    return `https://sarviews-hazards.alaska.edu/Event/${sarviews_id}`;
+  }
 }

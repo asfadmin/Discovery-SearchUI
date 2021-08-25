@@ -12,7 +12,7 @@ import * as uiStore from '@store/ui';
 import * as userStore from '@store/user';
 
 import * as models from '@models';
-import { AuthService, PropertyService, ScreenSizeService } from '@services';
+import { AuthService, PropertyService, SarviewsEventsService, ScreenSizeService } from '@services';
 import { ImageDialogComponent } from './image-dialog';
 
 import { DatasetForProductService } from '@services';
@@ -27,6 +27,7 @@ export class SceneDetailComponent implements OnInit, OnDestroy {
   @Input() isScrollable = true;
 
   public scene: models.CMRProduct;
+  public sarviewEvent: models.SarviewsEvent;
 
   public browses$ = this.store$.select(scenesStore.getSelectedSceneBrowses);
   public jobBrowses$ = this.store$.select(scenesStore.getSelectedOnDemandProductSceneBrowses);
@@ -56,7 +57,8 @@ export class SceneDetailComponent implements OnInit, OnDestroy {
     public dialog: MatDialog,
     public authService: AuthService,
     public prop: PropertyService,
-    private datasetForProduct: DatasetForProductService
+    private datasetForProduct: DatasetForProductService,
+    private sarviewsService: SarviewsEventsService,
   ) {}
 
   ngOnInit() {
@@ -65,6 +67,7 @@ export class SceneDetailComponent implements OnInit, OnDestroy {
         isLoggedIn => this.isLoggedIn = isLoggedIn
       )
     );
+
 
     this.subs.add(
       this.screenSize.size$.pipe(
@@ -76,6 +79,12 @@ export class SceneDetailComponent implements OnInit, OnDestroy {
       tap(_ => this.isImageLoading = true)
     );
 
+    const sarviewsEvent$ = this.store$.select(scenesStore.getSelectedSarviewsEvent);
+
+
+    this.subs.add(
+      sarviewsEvent$.subscribe(event => this.sarviewEvent = event)
+    )
     this.subs.add(
       scene$.pipe(
         tap(scene => this.scene = scene),
@@ -233,6 +242,10 @@ export class SceneDetailComponent implements OnInit, OnDestroy {
       this.scene.dataset.includes('RADARSAT-1') ||
       this.scene.dataset.includes('JERS-1')
     );
+  }
+
+  public getSarviewsURL() {
+    return this.sarviewsService.getSarviewsEventUrl(this.sarviewEvent.event_id);
   }
 
 

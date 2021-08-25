@@ -2,7 +2,11 @@ import { Component, Input, OnInit } from '@angular/core';
 import { SarviewsEvent } from '@models';
 
 import * as models from '@models';
+import * as sceneStore from '@store/scenes';
+
 import { MapService } from '@services';
+import { Store } from '@ngrx/store';
+import { AppState } from '@store';
 
 @Component({
   selector: 'app-sarview-event',
@@ -19,6 +23,7 @@ export class SarviewEventComponent implements OnInit {
   public breakpoints = models.Breakpoints;
 
   constructor(private mapService: MapService,
+    private store$: Store<AppState>,
               ) { }
 
   ngOnInit(): void {
@@ -41,6 +46,7 @@ export class SarviewEventComponent implements OnInit {
     let coords = point.getCoordinates();
     // coords = coords.map(val => +val);
     this.mapService.panToEvent(coords);
+    this.store$.dispatch(new sceneStore.SetSelectedSarviewsEvent(this.event.event_id));
     // this.mapService.setCenter({lon: coords[0] / 360, lat: coords[1] / 180});
     // this.mapService.setZoom(5);
   }

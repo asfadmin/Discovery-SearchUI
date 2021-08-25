@@ -2,6 +2,33 @@
   class="detail-card scrollable"
   [class.scrollable]="isScrollable">
 
+  <div *ngIf="sarviewEvent">
+    <mat-card-header>
+      <mat-card-title class="detail-card-header">
+        <span>{{ sarviewEvent.description }}</span>
+
+      </mat-card-title>
+      <mat-card-subtitle class="subtitle">
+        <a [href]="getSarviewsURL()" target="_blank" matTooltip="SARViews Event Page" class="faint-text">
+          {{ sarviewEvent.event_type }}
+        </a> •
+        <span matTooltip="eventType">{{ sarviewEvent.event_type }}</span>
+      </mat-card-subtitle>
+    </mat-card-header>
+
+    <div class="detail-card-info">
+      <p class="faint-text accessing-text">
+        <span>
+          {{sarviewEvent.coordinates}}
+          {{sarviewEvent.description}}
+        </span>
+      </p>
+
+    </div>
+  </div>
+
+
+<div *ngIf="searchType !== searchTypes.SARVIEWS_EVENTS">
   <div *ngIf="scene">
     <mat-card-header>
       <mat-card-title class="detail-card-header">
@@ -129,8 +156,9 @@
     More Like This
   </button>
 </div>
+</div>
 
-<div *ngIf="!scene">
+<div *ngIf="!scene && !sarviewEvent">
   <div fxFlex fxLayoutAlign="center" gdAlignColumns="center">
     <span class="faint-text">No Scene Selected</span>
   </div>

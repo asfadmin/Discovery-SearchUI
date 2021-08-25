@@ -55,7 +55,7 @@ export class SceneFilesComponent implements OnInit, OnDestroy {
           this.unzippedProducts = unzippedFiles;
           this.products = products;
           this.validJobTypesByProduct = {};
-          this.products.forEach(product => {
+          this.products?.forEach(product => {
             this.validJobTypesByProduct[product.id] = this.hyp3.getValidJobTypes([product]);
           });
           this.openUnzippedProduct = unzipped;

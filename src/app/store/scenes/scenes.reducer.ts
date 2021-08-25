@@ -10,6 +10,7 @@ export interface ScenesState {
   ids: string[];
   products: SceneEntities;
   sarviewsEvents: SarviewsEvent[];
+  selectedSARViewsID: string;
   customPairIds: string[][];
   selectedPair: string[] | null;
   areResultsLoaded: boolean;
@@ -33,6 +34,7 @@ export const initState: ScenesState = {
   scenes: {},
   customPairIds: [],
   sarviewsEvents: [],
+  selectedSARViewsID: null,
   selectedPair: null,
   unzipped: {},
   productUnzipLoading: null,
@@ -129,6 +131,13 @@ export function scenesReducer(state = initState, action: ScenesActions): ScenesS
         productUnzipLoading: null,
         openUnzippedProduct: null
       };
+    }
+
+    case ScenesActionType.SET_SELECTED_SARVIEWS_EVENT: {
+      return {
+        ...state,
+        selectedSARViewsID: action.payload
+      }
     }
 
     case ScenesActionType.SET_RESULTS_LOADED: {
@@ -434,6 +443,11 @@ export const getSelectedScene = createSelector(
   getScenesState,
   (state: ScenesState) => state.products[state.selected] || null
 );
+
+export const getSelectedSarviewsEvent = createSelector(
+  getScenesState,
+  (state: ScenesState) => state.sarviewsEvents.find(event => event.event_id === state.selectedSARViewsID) || null
+)
 
 export const getUnzipLoading = createSelector(
   getScenesState,

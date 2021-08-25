@@ -16,6 +16,7 @@ export enum ScenesActionType {
 
   SET_SELECTED_SCENE = '[Scenes] Set Selected Scene',
   SET_SELECTED_PAIR = '[Scenes] Set Selected Pair',
+  SET_SELECTED_SARVIEWS_EVENT = '[SARViews] Set Selected SARViews Event',
 
   SET_MASTER = '[Scenes-Baseline] Set Master',
   SET_FILTER_MASTER = '[Scenes-Baseline] Set Filter Master',
@@ -41,6 +42,11 @@ export class SetSarviewsEvents implements Action {
   constructor(public payload: {events: SarviewsEvent[]}) {}
 }
 
+export class SetSelectedSarviewsEvent implements Action {
+  public readonly type = ScenesActionType.SET_SELECTED_SARVIEWS_EVENT;
+
+  constructor(public payload: string) {};
+}
 export class ClearScenes implements Action {
   public readonly type = ScenesActionType.CLEAR;
 }
@@ -158,4 +164,5 @@ export type ScenesActions =
   | AddCustomPair
   | AddCustomPairs
   | RemoveCustomPair
-  | SetSarviewsEvents;
+  | SetSarviewsEvents
+  | SetSelectedSarviewsEvent;
