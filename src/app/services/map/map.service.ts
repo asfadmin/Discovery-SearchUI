@@ -16,6 +16,7 @@ import { WktService } from '../wkt.service';
 import { DrawService } from './draw.service';
 import { LegacyAreaFormatService } from '../legacy-area-format.service';
 import * as models from '@models';
+import * as sceneStore from '@store/scenes';
 
 import * as polygonStyle from './polygon.style';
 import * as views from './views';
@@ -23,6 +24,8 @@ import { SarviewsEvent } from '@models';
 import MultiPolygon from 'ol/geom/MultiPolygon';
 import { Coordinate } from 'ol/coordinate';
 import { EventEmitter } from '@angular/core';
+import { Store } from '@ngrx/store';
+import { AppState } from '@store';
 // import { SarviewsEventsService } from '@services';
 
 
@@ -106,6 +109,7 @@ export class MapService {
     private wktService: WktService,
     private legacyAreaFormat: LegacyAreaFormatService,
     private drawService: DrawService,
+    private store$: Store<AppState>,
     // private sarviewsEventService: SarviewsEventsService,
   ) {}
 
@@ -413,6 +417,7 @@ export class MapService {
           this.selectedSarviewEvent$.next(sarview_id);
           // window.open(`https://sarviews-hazards.alaska.edu/Event/${sarview_id}`)
           this.popupOverlay.setPosition([evnt.coordinate[0], evnt.coordinate[1] + 200]);
+          this.store$.dispatch(new sceneStore.SetSelectedSarviewsEvent(sarview_id));
           // this.popupOverlay.getElement().innerHTML = '<p>You clicked here:</p>';
         }
 
