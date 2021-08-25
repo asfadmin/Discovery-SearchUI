@@ -6,6 +6,7 @@ import { ShortDatePipe, ShortDateTimePipe, FullDatePipe } from './short-date.pip
 import { JoinPipe } from './join.pipe';
 import { BaselineFilterPipe, SBASFilterPipe, GeographicFilterPipe, ListFilterPipe }from './filter-type.pipe';
 import { HTMLInputValuePipe } from './html-input-value.pipe';
+import { floodPipe, quakePipe, volcanoPipe } from './sarviews-event.pipe';
 @NgModule({
   declarations: [
     ReadableSizeFromBytesPipe,
@@ -18,6 +19,9 @@ import { HTMLInputValuePipe } from './html-input-value.pipe';
     GeographicFilterPipe,
     ListFilterPipe,
     HTMLInputValuePipe,
+    quakePipe,
+    volcanoPipe,
+    floodPipe
   ],
   imports: [
     CommonModule
@@ -32,7 +36,10 @@ import { HTMLInputValuePipe } from './html-input-value.pipe';
     SBASFilterPipe,
     GeographicFilterPipe,
     ListFilterPipe,
-    HTMLInputValuePipe
+    HTMLInputValuePipe,
+    quakePipe,
+    volcanoPipe,
+    floodPipe,
   ]
 })
 export class PipesModule { }
