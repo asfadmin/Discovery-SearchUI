@@ -2,7 +2,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { SubSink } from 'subsink';
 
 import { combineLatest } from 'rxjs';
-import { debounceTime, map } from 'rxjs/operators';
+import { debounceTime, filter, map, switchMap } from 'rxjs/operators';
 
 import { Store } from '@ngrx/store';
 import { AppState } from '@store';
@@ -11,7 +11,7 @@ import * as queueStore from '@store/queue';
 import * as userStore from '@store/user';
 import * as hyp3Store from '@store/hyp3';
 
-import { Hyp3Service } from '@services';
+import { Hyp3Service, SarviewsEventsService } from '@services';
 import * as models from '@models';
 
 @Component({
@@ -24,6 +24,15 @@ export class SceneFilesComponent implements OnInit, OnDestroy {
   public queuedProductIds$ = this.store$.select(queueStore.getQueuedProductIds).pipe(
       map(names => new Set(names))
   );
+  public selectedSarviewsEventID$ = this.store$.select(scenesStore.getSelectedSarviewsEvent).pipe(
+      filter(event => !!event),
+      map(event => event.event_id)
+  );
+
+  public sarviewsEventProducts$ = this.selectedSarviewsEventID$.pipe(
+    switchMap(eventId => this.sarviewsService.getEventFeature(eventId)),
+    map(event => event.products));
+
   public unzippedLoading: string;
   public loadingHyp3JobName: string | null;
   public validJobTypesByProduct: {[productId: string]: models.Hyp3JobType[]} = {};
@@ -41,6 +50,7 @@ export class SceneFilesComponent implements OnInit, OnDestroy {
   constructor(
     private store$: Store<AppState>,
     private hyp3: Hyp3Service,
+    private sarviewsService: SarviewsEventsService,
   ) { }
 
   ngOnInit() {

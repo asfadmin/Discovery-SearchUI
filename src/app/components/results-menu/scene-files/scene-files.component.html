@@ -24,6 +24,14 @@
     </app-scene-file>
   </mat-list>
 </div>
+<div *ngIf="(sarviewsEventProducts$ | async) as sarviewsEventProducts">
+  <mat-list class="product-list">
+    <div *ngFor="let prod of sarviewsEventProducts.slice(0, 5)">
+      <img style="width: 200px; height: 200px;" src="{{prod.files.browse_url}}">
+      {{prod.files.product_name}}
+    </div>
+  </mat-list>
+</div>
 
 <div *ngIf="showUnzippedProductScreen" class="products-list zip-contents">
   <mat-list class="products-list">

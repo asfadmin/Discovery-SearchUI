@@ -28,7 +28,7 @@
     </mat-card-subtitle>
 
     <div class="app-scene-list left-border scroll-y">
-      <app-scene-files *ngIf="scenesLength !== 0"></app-scene-files>
+      <app-scene-files *ngIf="sarviewsEventsLength != 0"></app-scene-files>
     </div>
   </mat-card>
 </ng-container>
@@ -44,10 +44,10 @@
     </mat-card-subtitle>
 
     <div class="app-scene-list scroll-y scroll-x">
-            <app-scene-detail *ngIf="scenesLength !== 0 || sarviewsEventsLength != 0" [isScrollable]="false"></app-scene-detail>
+            <app-scene-detail *ngIf="sarviewsEventsLength != 0" [isScrollable]="false"></app-scene-detail>
 
           <hr/>
-          <app-scene-files *ngIf="scenesLength !== 0"></app-scene-files>
+          <!-- <app-scene-files *ngIf="scenesLength !== 0"></app-scene-files> -->
     </div>
   </mat-card>
 </ng-container>

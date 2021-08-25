@@ -1,8 +1,12 @@
-import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { HttpClient,
+  // HttpErrorResponse
+ } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { SarviewsEvent, SarviewsFloodEvent, SarviewsQuakeEvent, SarviewsVolcanicEvent } from '@models';
-import { forkJoin, Observable, of } from 'rxjs';
-import { catchError, map, switchMap } from 'rxjs/operators';
+import { SarviewsEvent, SarviewsProcessedEvent } from '@models';
+import {
+  // forkJoin,
+   Observable, of } from 'rxjs';
+import { catchError, map } from 'rxjs/operators';
 import { Feature } from 'geojson';
 
 
@@ -20,16 +24,16 @@ export class SarviewsEventsService {
     return this.http.get<SarviewsEvent[]>(this.eventsUrl);
   }
 
-  public getEventFeatures(usgs_event_ids: string[]): Observable<SarviewsEvent[]> {
-    return forkJoin(
-      usgs_event_ids.map(id => this.getEventFeature(id))).pipe(
-      map(features => features.filter(
-          feature => !(feature instanceof (HttpErrorResponse)))
-      )
-    );
-  }
+  // public getEventFeatures(usgs_event_ids: string[]): Observable<SarviewsEvent[]> {
+  //   return forkJoin(
+  //     usgs_event_ids.map(id => this.getEventFeature(id))).pipe(
+  //     map(features => features.filter(
+  //         feature => !(feature instanceof (HttpErrorResponse)))
+  //     )
+  //   );
+  // }
 
-  public getEventFeature(usgs_id: string): Observable<SarviewsEvent>  {
+  public getEventFeature(usgs_id: string): Observable<SarviewsProcessedEvent>  {
     return this.http.get<Feature>(this.eventsUrl + "/" + usgs_id).pipe(catchError(error => of(error)));
   }
 
@@ -57,23 +61,23 @@ export class SarviewsEventsService {
     );
   }
 
-  public quakeEvents$() {
-    return this.quakeIds$().pipe(
-    switchMap(ids => this.getEventFeatures(ids)),
-    map(events => <SarviewsQuakeEvent[]>events));
-  }
+  // public quakeEvents$() {
+  //   return this.quakeIds$().pipe(
+  //   switchMap(ids => this.getEventFeatures(ids)),
+  //   map(events => <SarviewsQuakeEvent[]>events));
+  // }
 
-  public volcanoEvents$() {
-    return this.volcanoIds$().pipe(
-    switchMap(ids => this.getEventFeatures(ids)),
-    map(events => <SarviewsVolcanicEvent[]>events));
-  }
+  // public volcanoEvents$() {
+  //   return this.volcanoIds$().pipe(
+  //   switchMap(ids => this.getEventFeatures(ids)),
+  //   map(events => <SarviewsVolcanicEvent[]>events));
+  // }
 
-  public floodEvents$() {
-    return this.floodIds$().pipe(
-    switchMap(ids => this.getEventFeatures(ids)),
-    map(events => <SarviewsFloodEvent[]>events));
-  }
+  // public floodEvents$() {
+  //   return this.floodIds$().pipe(
+  //   switchMap(ids => this.getEventFeatures(ids)),
+  //   map(events => <SarviewsFloodEvent[]>events));
+  // }
 
   // public getSarviewsEventCenter(coord: LonLat) {
   //   this.mapService.selectedSarviewEvent$.next()

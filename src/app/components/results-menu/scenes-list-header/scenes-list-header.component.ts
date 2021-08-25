@@ -29,6 +29,7 @@ export class ScenesListHeaderComponent implements OnInit, OnDestroy {
   public totalResultCount$ = this.store$.select(searchStore.getTotalResultCount);
   public numberOfScenes$ = this.store$.select(scenesStore.getNumberOfScenes);
   public numberOfProducts$ = this.store$.select(scenesStore.getNumberOfProducts);
+  public numSarviewsScenes$ = this.store$.select(scenesStore.getNumberOfSarviewsEvents);
   public products = [];
   public downloadableProds = [];
   public numBaselineScenes$ = this.scenesService.scenes$().pipe(
@@ -37,6 +38,7 @@ export class ScenesListHeaderComponent implements OnInit, OnDestroy {
   public numPairs$ = this.pairService.pairs$().pipe(
     map(pairs => pairs.pairs.length + pairs.custom.length)
   );
+
   public pairs: models.CMRProductPair[];
   public sbasProducts: models.CMRProduct[] = [];
   public queuedProducts: models.CMRProduct[];

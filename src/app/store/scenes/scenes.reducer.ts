@@ -583,6 +583,11 @@ export const getSarviewsEvents = createSelector(
   state => state.sarviewsEvents
 )
 
+export const getNumberOfSarviewsEvents = createSelector(
+  getSarviewsEvents,
+  events => events.length
+);
+
 function eqSet(aSet, bSet): boolean {
   if (aSet.size !== bSet.size) {
     return false;

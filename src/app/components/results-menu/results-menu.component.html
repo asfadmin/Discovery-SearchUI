@@ -16,7 +16,7 @@
       (resizeEnd)="onFinalResize()"
       (resizing)="onResizeEnd($event)">
 
-      <div *ngIf="products.length !== 0" class="resize-controls">
+      <div *ngIf="products.length !== 0 || !(noSarviewsEvents$ | async)" class="resize-controls">
         <div mwlResizeHandle class="resize-handle-filler"></div>
       </div>
 
@@ -30,10 +30,16 @@
             <app-desktop-results-menu class="w100 h100"
               *ngIf="
                 searchType !== SearchTypes.BASELINE &&
-                searchType !== SearchTypes.SBAS
+                searchType !== SearchTypes.SBAS &&
+                searchType !== SearchTypes.SARVIEWS_EVENTS
               "
               [resize$]="resize$">
             </app-desktop-results-menu>
+
+            <app-sarviews-results-menu class="w100 h100"
+            *ngIf="searchType === SearchTypes.SARVIEWS_EVENTS"
+            [resize$]="resize$">
+            </app-sarviews-results-menu>
 
             <app-baseline-results-menu class="w100 h100"
               *ngIf="searchType === SearchTypes.BASELINE"

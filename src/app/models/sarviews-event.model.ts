@@ -4,6 +4,10 @@ import { Range } from './range.model';
 //   | SarviewsVolcanicEvent
 //   | SarviewsFloodEvent
 
+export interface SarviewsProcessedEvent extends SarviewsQuakeEvent, SarviewsVolcanicEvent, SarviewsFloodEvent {
+  products: SarviewsProduct[];
+}
+
 export interface SarviewsQuakeEvent extends SarviewsEvent {
   depth: string;
   event_date: Date;
@@ -31,4 +35,30 @@ export const enum SarviewsEventType {
   QUAKE = 'quake',
   VOLCANO = 'volcano',
   FLOOD = 'flood'
+}
+
+export interface SarviewsProduct {
+  event_id: string;
+  files: SarviewsFileDetails;
+  granules: SarviewProductGranule[];
+  job_type: string;
+  processing_date: Date;
+  product_id: string;
+  status_code: string;
+}
+
+export interface SarviewsFileDetails {
+  browse_url: string;
+  product_name: string;
+  product_url: string;
+  thumbnail_url: string;
+  product_size: number;
+}
+
+export interface SarviewProductGranule {
+  acquisition_date: Date;
+  frame: number;
+  path: number;
+  granume_name: string;
+  wkt: string;
 }
