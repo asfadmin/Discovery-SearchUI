@@ -7,6 +7,7 @@ import * as sceneStore from '@store/scenes';
 import { MapService } from '@services';
 import { Store } from '@ngrx/store';
 import { AppState } from '@store';
+import { filter, map } from 'rxjs/operators';
 
 @Component({
   selector: 'app-sarview-event',
@@ -17,18 +18,20 @@ export class SarviewEventComponent implements OnInit {
   @Input() event: SarviewsEvent
 
   public hovered = false;
-  public isSelected = false;
 
   public breakpoint: models.Breakpoints;
   public breakpoints = models.Breakpoints;
+
+  public isSelected$ = this.store$.select(sceneStore.getSelectedSarviewsEvent).pipe(
+    filter(event => !!event),
+    map(sarviewsEvent => sarviewsEvent.event_id === this.event.event_id)
+  )
 
   constructor(private mapService: MapService,
     private store$: Store<AppState>,
               ) { }
 
   ngOnInit(): void {
-    console.log(this.event);
-
   }
 
   public onSetFocused() {
@@ -40,15 +43,11 @@ export class SarviewEventComponent implements OnInit {
   }
 
   public onSetSelected() {
-    this.isSelected = true;
     this.mapService.selectedSarviewEvent$.next(this.event.event_id);
     const point = this.mapService.getEventCoordinate(this.event.event_id);
     let coords = point.getCoordinates();
-    // coords = coords.map(val => +val);
     this.mapService.panToEvent(coords);
     this.store$.dispatch(new sceneStore.SetSelectedSarviewsEvent(this.event.event_id));
-    // this.mapService.setCenter({lon: coords[0] / 360, lat: coords[1] / 180});
-    // this.mapService.setZoom(5);
   }
 
 }

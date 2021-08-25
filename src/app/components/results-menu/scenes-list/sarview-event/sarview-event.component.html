@@ -3,9 +3,12 @@
     (mouseleave) ="onClearFocused()"
     (click) ="onSetSelected()"
     [class.hovered]="hovered"
-    [class.selected]="isSelected"
+    [class.selected]="(isSelected$ | async)"
     [ngClass]="{'mobile-size': breakpoint <= breakpoints.SMALL}">
-  Description: {{event.description}}
-  Type: {{event.event_type}}
-  Start: {{event.processing_timeframe.start}} End: {{event.processing_timeframe.end}}
+  <span>
+    Description: {{event.description}}
+  <div>
+    {{event.event_type[0].toUpperCase() + event.event_type.slice(1, event.event_type.length)}}
+  </div>
+</span>
   </button>

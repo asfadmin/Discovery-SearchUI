@@ -23,15 +23,26 @@
 
     <div class="detail-card-info">
       <p class="faint-text accessing-text" *ngIf="sarviewEvent.event_type === 'quake'">
-        <span>Magnitude: {{(sarviewEvent | quakeEvent).magnitude}}</span>
-        <span>Depth: {{(sarviewEvent | quakeEvent).depth}}</span>
-        <span>USGS id: {{(sarviewEvent | quakeEvent).usgs_event_id}}</span>
+        <span>
+        <p>Magnitude: {{(sarviewEvent | quakeEvent).magnitude}}</p>
+        <p>Depth: {{(sarviewEvent | quakeEvent).depth}}</p>
+        <p>USGS id: {{(sarviewEvent | quakeEvent).usgs_event_id}}</p>
+      </span>
       </p>
       <p class="faint-text accessing-text" *ngIf="sarviewEvent.event_type === 'volcano'">
-        <span>Smithsonian id: {{(sarviewEvent | volcanicEvent).smithsonian_event_id}}</span>
+        <span>
+        <p>Smithsonian id: {{(sarviewEvent | volcanicEvent).smithsonian_event_id}}</p>
+      </span>
       </p>
       <p class="faint-text accessing-text" *ngIf="sarviewEvent.event_type === 'flood'">
-        <span>Smithsonian id: {{(sarviewEvent | floodEvent).description}}</span>
+        <span>
+          <p>Description: {{(sarviewEvent | floodEvent).description}}</p></span>
+      </p>
+      <p>
+        Start Date: {{sarviewEvent.processing_timeframe.start | shortDateTime}}
+      </p>
+      <p *ngIf="sarviewEvent.processing_timeframe.end">
+        End Date: {{sarviewEvent.processing_timeframe.end | shortDateTime}}
       </p>
 
     </div>
