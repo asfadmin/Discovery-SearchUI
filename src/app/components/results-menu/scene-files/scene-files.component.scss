@@ -34,3 +34,15 @@
   border-radius: 4px;
   outline: 0;
 }
+
+.sarview-products-list {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  justify-content: space-between;
+}
+
+.sarview-product {
+  font-weight: 300;
+  align-self: center;
+}

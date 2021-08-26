@@ -25,12 +25,29 @@
   </mat-list>
 </div>
 <div *ngIf="(sarviewsEventProducts$ | async) as sarviewsEventProducts">
-  <mat-list class="product-list">
-    <div *ngFor="let prod of sarviewsEventProducts.slice(0, 5)">
-      <img style="width: 200px; height: 200px;" src="{{prod.files.browse_url}}">
-      {{prod.files.product_name}}
+  <div *ngIf="(selectedSarviewsEventID$ | async) as selectedID">
+    <button mat-button (click)="onOpenPinnedProducts(selectedID)">View Selected Products on SARViews</button>
+    <!-- <div>{{currentPinnedUrl(selectedID)}}</div> -->
+    <!-- <mat-form-field> -->
+  <mat-selection-list [(ngModel)]="selectedProducts" class="product-list">
+    <div *ngFor="let type of (sarviewsEventProductTypes$ | async)">
+    <mat-expansion-panel>
+      <mat-expansion-panel-header matSubheader>{{type}}: {{(sarviewsEventsProductsByProcessingType$ | async)[type].length}} product{{(sarviewsEventsProductsByProcessingType$ | async)[type].length != 1 ? 's' : ''}}</mat-expansion-panel-header>
+      <mat-list-option [value]="prod" *ngFor="let prod of (sarviewsEventsProductsByProcessingType$ | async)[type]">
+      <div class="sarview-products-list">
+        <img style="width: 50px; height: 50px;" src="{{prod.files.browse_url}}">
+
+      <div class="sarview-product">{{formatProductName(prod.files.product_name)}}</div>
+      <div></div>
     </div>
-  </mat-list>
+    </mat-list-option>
+
+  </mat-expansion-panel>
+
+</div>
+
+  </mat-selection-list>
+<!-- </mat-form-field> -->
 </div>
 
 <div *ngIf="showUnzippedProductScreen" class="products-list zip-contents">

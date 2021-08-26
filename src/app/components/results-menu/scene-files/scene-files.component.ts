@@ -2,7 +2,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { SubSink } from 'subsink';
 
 import { combineLatest } from 'rxjs';
-import { debounceTime, filter, map, switchMap } from 'rxjs/operators';
+import { debounceTime, filter, map, switchMap, withLatestFrom } from 'rxjs/operators';
 
 import { Store } from '@ngrx/store';
 import { AppState } from '@store';
@@ -13,6 +13,8 @@ import * as hyp3Store from '@store/hyp3';
 
 import { Hyp3Service, SarviewsEventsService } from '@services';
 import * as models from '@models';
+import { SarviewsProduct } from '@models';
+
 
 @Component({
   selector: 'app-scene-files',
@@ -31,7 +33,26 @@ export class SceneFilesComponent implements OnInit, OnDestroy {
 
   public sarviewsEventProducts$ = this.selectedSarviewsEventID$.pipe(
     switchMap(eventId => this.sarviewsService.getEventFeature(eventId)),
+    filter(events => !!events),
     map(event => event.products));
+
+  public sarviewsEventProductTypes$ = this.sarviewsEventProducts$.pipe(
+    map(products => {
+      let selectedEventProductProcessingTypes = new Set<string>();
+      products.forEach(product => selectedEventProductProcessingTypes.add(product.job_type));
+      return Array.from(selectedEventProductProcessingTypes).sort();
+    })
+  )
+
+  public sarviewsEventsProductsByProcessingType$ = this.sarviewsEventProductTypes$.pipe(
+    withLatestFrom(this.sarviewsEventProducts$),
+    map(([processing_types, eventProducts]) => {
+      let productsByProductType: {[processing_type: string]: SarviewsProduct[]} = {};
+      processing_types.forEach(t => productsByProductType[t] = []);
+      eventProducts.forEach(prod => productsByProductType[prod.job_type].push(prod));
+      return productsByProductType;
+    })
+  );
 
   public unzippedLoading: string;
   public loadingHyp3JobName: string | null;
@@ -45,6 +66,8 @@ export class SceneFilesComponent implements OnInit, OnDestroy {
   public isUserLoggedIn: boolean;
   public hasAccessToRestrictedData: boolean;
   public showDemWarning: boolean;
+  public selectedProducts: SarviewsProduct[];
+
   private subs = new SubSink();
 
   constructor(
@@ -166,6 +189,27 @@ export class SceneFilesComponent implements OnInit, OnDestroy {
 
   public onQueueHyp3Job(job: models.QueuedHyp3Job) {
     this.store$.dispatch(new queueStore.AddJob(job));
+  }
+
+  public formatProductName(product_name: string) {
+    if(product_name.length > 18) {
+      return product_name.slice(0, 29) + '...' + product_name.slice(product_name.length - 8);
+    }
+    return product_name;
+  }
+
+  // public onSarviewProductSelectionChange(current_id: string) {
+  //   console.log(this.sarviewsService.getSarviewsEventPinnedUrl(current_id, this.selectedProducts));
+  // }
+
+  public currentPinnedUrl(current_id: string): string {
+    if(!!current_id && !!this.selectedProducts) {
+    return this.sarviewsService.getSarviewsEventPinnedUrl(current_id, this.selectedProducts);
+    }
+  }
+
+  public onOpenPinnedProducts(current_id: string) {
+    window.open(this.currentPinnedUrl(current_id));
   }
 
   ngOnDestroy() {

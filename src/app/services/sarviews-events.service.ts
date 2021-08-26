@@ -2,7 +2,7 @@ import { HttpClient,
   // HttpErrorResponse
  } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { SarviewsEvent, SarviewsProcessedEvent } from '@models';
+import { SarviewsEvent, SarviewsProcessedEvent, SarviewsProduct } from '@models';
 import {
   // forkJoin,
    Observable, of } from 'rxjs';
@@ -82,8 +82,23 @@ export class SarviewsEventsService {
   // public getSarviewsEventCenter(coord: LonLat) {
   //   this.mapService.selectedSarviewEvent$.next()
   // }
+  public getSarviewsEventPinnedUrl(sarviews_url: string, products: SarviewsProduct[]) {
+    const baseUrl = this.getSarviewsEventUrl(sarviews_url);
+    const pinnedIds = products.map(prod => prod.product_id).reduce((prev, curr) => {
+      return prev + curr + ','
+    }, '?pinned=');
+    return baseUrl + pinnedIds;
+  }
 
   public getSarviewsEventUrl(sarviews_id: string) {
     return `https://sarviews-hazards.alaska.edu/Event/${sarviews_id}`;
+  }
+
+  public getUSGSEventUrl(usgs_id: string) {
+    return `https://earthquake.usgs.gov/earthquakes/eventpage/${usgs_id}#executive`;
+  }
+
+  public getSmithsonianURL(smithsonian_id: string) {
+    return `http://volcano.si.edu/volcano.cfm?vn=${smithsonian_id}`;
   }
 }
