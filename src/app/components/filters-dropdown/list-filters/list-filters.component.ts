@@ -5,7 +5,7 @@ import { NgxCsvParser } from 'ngx-csv-parser';
 import { NgxCSVParserError } from 'ngx-csv-parser';
 import * as xml2js from 'xml2js';
 import { combineLatest, from, Subject } from 'rxjs';
-import { map, debounceTime, withLatestFrom, first, tap, delay } from 'rxjs/operators';
+import { map, debounceTime, withLatestFrom, first, tap, delay, filter } from 'rxjs/operators';
 import { SubSink } from 'subsink';
 
 import { ActionsSubject, Store } from '@ngrx/store';
@@ -236,20 +236,38 @@ export class ListFiltersComponent implements OnInit, OnDestroy {
 
   private parseCSV(file) {
     this.ngxCsvParser.parse(file, { header: true, delimiter: ',' })
-    .pipe(first()).subscribe((result: Array<any>) => {
-      const granules: string[] = result.map(row => {
+    .pipe(
+      first(),
+      map((output: Array<{}>) => ({
+          result: output,
+          granules_key: Object.keys(output[0]).find(key => key.toLowerCase().includes('granule'))
+        })
+      ),
+      tap(res => {
+        if (res.granules_key === undefined) {
+          this.notificationService.listImportFailed('csv');
+        }
+      }),
+      filter(result => !!result.granules_key),
+      ).subscribe(({result, granules_key}) => {
+      const granules: string[] = result
+        .filter(entry => entry.hasOwnProperty(granules_key))
+        .map(entry => {
           let processingType = '';
 
           if (this.listSearchMode === ListSearchType.PRODUCT) {
-            const processLevel = row['Processing Level'].replace('-', '_');
-            processingType = '-' + processLevel;
+            const processLevel = '-' + entry?.['Processing Level']?.replace('-', '_');
+            if (processLevel !== '-') {
+              processingType = processLevel;
+            }
           }
 
-          return row['Granule Name'] + processingType;
+          return entry[granules_key] + processingType;
         });
+
       this.updateSearchList(granules);
-    }, (error: NgxCSVParserError) => {
-      console.log('Error', error);
+    }, (_: NgxCSVParserError) => {
+      this.notificationService.listImportFailed('CSV');
     });
   }
 
@@ -257,9 +275,19 @@ export class ListFiltersComponent implements OnInit, OnDestroy {
     const filereader = new FileReader();
       filereader.onload = _ => {
         const res = filereader.result as string;
-        const features: any[] = JSON.parse(res)['features'];
+        const featuresCollection: GeoJSON.FeatureCollection = JSON.parse(res);
+        if (!featuresCollection) {
+          this.notificationService.listImportFailed('GeoJSON');
+          return;
+        }
+        const features = featuresCollection.features;
+
         const typeKey = this.listSearchMode === ListSearchType.PRODUCT ? 'fileID' : 'sceneName';
-        const granules = features.map(feature => feature['properties'][typeKey]);
+        const granules = features?.map(feature => feature?.properties?.[typeKey]);
+        if (!granules) {
+          this.notificationService.listImportFailed('GeoJSON');
+          return;
+        }
 
         this.updateSearchList(granules);
     };
@@ -272,13 +300,24 @@ export class ListFiltersComponent implements OnInit, OnDestroy {
         filereader.onload = _ => {
           const res = filereader.result as string;
           const parser = new xml2js.Parser({ explicitArray: false });
-          const observable = from (parser.parseStringPromise(res));
+          const observable = from (parser.parseStringPromise(res).catch(__ => {}));
 
           observable.pipe(first()).subscribe(result => {
-              const placemarks: [] = result['kml']['Document']['Placemark'];
+              const placemarks: [] = result?.['kml']?.['Document']?.['Placemark'] ?? null;
+
+              if (!placemarks) {
+                this.notificationService.listImportFailed('KML');
+                return;
+              }
+
               const granules: string[] = placemarks.map(placemark => {
-                  return placemark['name'];
+                  return placemark?.['name'];
                 });
+
+              if (!granules) {
+                this.notificationService.listImportFailed('KML');
+                return;
+              }
 
               this.updateSearchList(granules);
             });
@@ -293,12 +332,20 @@ export class ListFiltersComponent implements OnInit, OnDestroy {
       filereader.onload = _ => {
         const res = filereader.result as string;
         const parser = new xml2js.Parser({ explicitArray: false });
-        const observable = from (parser.parseStringPromise(res));
+        const observable = from (parser.parseStringPromise(res).catch(__ => {}));
 
         observable.pipe(first()).subscribe(result => {
-            const files: [] = result['metalink']['files']['file'];
-            const fileNames = files.map(fileMeta => (fileMeta['$']['name'] as string).split('.').shift());
+            const files: [] = result?.['metalink']?.['files']?.['file'];
+            if (!files) {
+              this.notificationService.listImportFailed('Metalink');
+              return;
+            }
+            const fileNames = files.map(fileMeta => (fileMeta?.['$']?.['name'] as string)?.split('.')?.shift());
 
+            if (!fileNames) {
+              this.notificationService.listImportFailed('Metalink');
+              return;
+            }
             this.updateSearchList(fileNames);
           });
     };

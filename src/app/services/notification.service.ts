@@ -107,6 +107,13 @@ export class NotificationService {
     toast.onTap.pipe(take(1)).subscribe(_ => this.store$.dispatch(new uiStore.ShowS1RawData));
   }
 
+  public listImportFailed(fileExtension: string) {
+    const title = `${fileExtension} List Import Failed`;
+    const message = `Click to open documentation on accepted file formatting`;
+    const errorToast = this.error(message, title);
+    errorToast.onTap.pipe(take(1)).subscribe(_ => window.open(`https://docs.asf.alaska.edu/vertex/manual/#list-search-file-import`));
+  }
+
   public info(message: string, title = '', options = {}): ActiveToast<any> {
     return this.toastr.info(message, title, {...options, ...this.toastOptions});
   }
@@ -114,5 +121,4 @@ export class NotificationService {
   public error(message: string, title = '', options = {}): ActiveToast<any> {
     return this.toastr.warning(message, title, {...options, ...this.toastOptions});
   }
-
 }

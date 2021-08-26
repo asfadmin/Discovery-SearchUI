@@ -17,6 +17,7 @@ import { SavedSearchType, SBASOverlap, SearchType } from '@models';
 import { MatDialog } from '@angular/material/dialog';
 import { HelpComponent } from '@components/help/help.component';
 import { getFilterMaster } from '@store/scenes';
+import { SaveSearchDialogComponent } from '@components/shared/save-search-dialog';
 
 // Declare GTM dataLayer array.
 declare global {
@@ -162,16 +163,22 @@ export class SearchButtonComponent implements OnInit, OnDestroy {
   }
 
   public saveCurrentSearch(): void {
-
     window.dataLayer = window.dataLayer || [];
     window.dataLayer.push({
       'event': 'save-current-search',
       'save-current-search': true
     });
 
+    this.dialog.open(SaveSearchDialogComponent, {
+      id: 'ConfirmProcess',
+      width: '550px',
+      height: '500px',
+      maxWidth: '550px',
+      maxHeight: '500px',
+      data: { saveType: SavedSearchType.SAVED }
+    });
     this.store$.dispatch(new uiStore.SetSavedSearchType(SavedSearchType.SAVED));
     this.store$.dispatch(new uiStore.OpenSidebar());
-    this.store$.dispatch(new uiStore.SetSaveSearchOn(true));
   }
 
   public saveCurrentFilters(): void {
@@ -180,6 +187,16 @@ export class SearchButtonComponent implements OnInit, OnDestroy {
       'event': 'save-current-filters',
       'save-current-filters': true
     });
+
+    this.dialog.open(SaveSearchDialogComponent, {
+      id: 'ConfirmProcess',
+      width: '550px',
+      height: '500px',
+      maxWidth: '550px',
+      maxHeight: '500px',
+      data: { saveType: SavedSearchType.FILTER }
+    });
+
     this.store$.dispatch(new uiStore.OpenFiltersSidebar());
     this.store$.dispatch(new uiStore.SetSaveFilterOn(true));
   }

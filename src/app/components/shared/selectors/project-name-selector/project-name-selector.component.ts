@@ -67,8 +67,12 @@ export class ProjectNameSelectorComponent implements OnInit, OnDestroy {
     );
   }
 
-  public onProjectNameChange(event: Event): void {
-    let projectName = (event.target as HTMLInputElement).value;
+  public onPNameChange(pName: string) {
+    this.onProjectNameChange(null, pName);
+  }
+
+  public onProjectNameChange(event: Event, pName?: string): void {
+    let projectName = (pName) ? pName : (event.target as HTMLInputElement).value;
     if (projectName.length > 20) {
       projectName = null;
       this.nameErrors$.next();

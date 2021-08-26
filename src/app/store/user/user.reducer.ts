@@ -115,8 +115,10 @@ export function userReducer(state = initState, action: UserActions): UserState {
 
     case UserActionType.UPDATE_SEARCH_WITH_FILTERS: {
       const updateFunc = (search, _) => {
-        search.filters = action.payload.filters;
-        return search;
+        return {
+          ...search,
+          filters: action.payload.filters
+        };
       };
 
       return updateItem(state, action, updateFunc);
@@ -124,8 +126,10 @@ export function userReducer(state = initState, action: UserActions): UserState {
 
     case UserActionType.UPDATE_SEARCH_NAME: {
       const updateFunc = (search, _) => {
-        search.name = action.payload.name;
-        return search;
+        return {
+          ...search,
+          name: action.payload.name
+        };
       };
 
       return updateItem(state, action, updateFunc);

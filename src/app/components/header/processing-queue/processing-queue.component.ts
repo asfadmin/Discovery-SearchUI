@@ -65,8 +65,8 @@ export class ProcessingQueueComponent implements OnInit {
 
   constructor(
     public authService: services.AuthService,
-    public dialog: MatDialog,
     public env: services.EnvironmentService,
+    public dialog: MatDialog,
     private dialogRef: MatDialogRef<ProcessingQueueComponent>,
     private store$: Store<AppState>,
     private hyp3: services.Hyp3Service,
@@ -288,6 +288,14 @@ export class ProcessingQueueComponent implements OnInit {
         }));
 
         this.store$.dispatch(new queueStore.RemoveJobs(successfulJobs));
+
+        const jobsInTab = this.allJobs.filter(
+          job => job.job_type.id === this.selectedJobTypeId
+        );
+
+        if (jobsInTab.length === 0) {
+          this.setNextTabIndex(models.hyp3JobTypes[this.selectedJobTypeId]);
+        }
       }
     );
   }
@@ -313,22 +321,7 @@ export class ProcessingQueueComponent implements OnInit {
 
   public onClearSingleJobQueue(jobType: models.Hyp3JobType): void {
     if (jobType.id === this.selectedJobTypeId) {
-
-      let TabIdx = this.jobTypesWithQueued.findIndex((queuedJobType) => queuedJobType.jobType === jobType);
-
-      if (this.jobTypesWithQueued.length > TabIdx + 1) {
-        ++TabIdx;
-      } else if (TabIdx > 0) {
-        --TabIdx;
-      } else {
-        TabIdx = -1;
-      }
-
-      if (TabIdx === -1) {
-        this.selectedJobTypeId = null;
-      } else {
-        this.onSetSelectedJobType(this.jobTypesWithQueued[TabIdx].jobType);
-      }
+      this.setNextTabIndex(jobType);
     }
 
     this.store$.dispatch(new queueStore.ClearProcessingQueueByJobType(new Set<string>([jobType.id])));
@@ -336,6 +329,26 @@ export class ProcessingQueueComponent implements OnInit {
     if (this.allJobs.length === 0) {
       this.dialogRef.close();
       this.store$.dispatch(new hyp3Store.ClearProcessingOptions());
+    }
+  }
+
+  public setNextTabIndex(jobType: models.Hyp3JobType) {
+    let TabIdx = this.jobTypesWithQueued.findIndex(
+      (queuedJobType) => queuedJobType.jobType === jobType
+    );
+
+    if (this.jobTypesWithQueued.length > TabIdx + 1) {
+      ++TabIdx;
+    } else if (TabIdx > 0) {
+      --TabIdx;
+    } else {
+      TabIdx = -1;
+    }
+
+    if (TabIdx === -1) {
+      this.selectedJobTypeId = null;
+    } else {
+      this.onSetSelectedJobType(this.jobTypesWithQueued[TabIdx].jobType);
     }
   }
 

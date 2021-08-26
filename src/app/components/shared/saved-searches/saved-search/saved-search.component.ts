@@ -62,7 +62,7 @@ export class SavedSearchComponent implements OnInit {
     this.editName = this.search.name === '(No title)' ?
       '' : this.search.name;
 
-    timer(20).subscribe(
+    timer(40).subscribe(
       _ => this.nameEditInput.nativeElement.focus()
     );
   }
@@ -118,7 +118,7 @@ export class SavedSearchComponent implements OnInit {
 
   public formatName(searchName: string): string {
     if (this.isSavedSearch) {
-      return searchName;
+      return !!searchName ? searchName : '(No name)';
     } else {
       const date = this.formatIfDate(new Date(+searchName));
 
