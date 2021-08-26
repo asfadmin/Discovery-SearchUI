@@ -200,7 +200,7 @@ export class ClearFrameRange implements Action {
 export class SetFiltersSimilarTo implements Action {
   public readonly type = FiltersActionType.SET_FILTERS_SIMILAR_TO;
 
-  constructor(public payload: models.CMRProduct) {}
+  constructor(public payload: {product: models.CMRProduct, dataset: models.Dataset}) {}
 }
 
 export class SetProductTypes implements Action {

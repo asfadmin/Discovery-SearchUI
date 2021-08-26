@@ -199,8 +199,7 @@ export class SceneDetailComponent implements OnInit, OnDestroy {
     if (shouldClear) {
       this.store$.dispatch(new searchStore.ClearSearch());
     }
-
-    this.store$.dispatch(new filtersStore.SetFiltersSimilarTo(scene));
+    this.store$.dispatch(new filtersStore.SetFiltersSimilarTo({product: scene, dataset: this.datasetForProduct.match(scene)}));
     this.store$.dispatch(new searchStore.MakeSearch());
   }
 
