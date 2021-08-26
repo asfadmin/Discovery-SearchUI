@@ -45,7 +45,10 @@
       <p *ngIf="sarviewEvent.processing_timeframe.end">
         End Date: {{sarviewEvent.processing_timeframe.end | shortDateTime}}
       </p>
-
+      <button (click)="makeSarviewsEventGeoSearch()"
+      class="mini-toggle-button" target="_blank" matTooltip="Use this event's polygon for a Geographic Search">
+      Geographic
+    </button>
     </div>
   </div>
 

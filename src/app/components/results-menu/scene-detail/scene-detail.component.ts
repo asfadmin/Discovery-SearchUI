@@ -12,7 +12,7 @@ import * as uiStore from '@store/ui';
 import * as userStore from '@store/user';
 
 import * as models from '@models';
-import { AuthService, PropertyService, SarviewsEventsService, ScreenSizeService } from '@services';
+import { AuthService, MapService, PropertyService, SarviewsEventsService, ScreenSizeService } from '@services';
 import { ImageDialogComponent } from './image-dialog';
 
 import { DatasetForProductService } from '@services';
@@ -59,6 +59,7 @@ export class SceneDetailComponent implements OnInit, OnDestroy {
     public prop: PropertyService,
     private datasetForProduct: DatasetForProductService,
     private sarviewsService: SarviewsEventsService,
+    private mapService: MapService,
   ) {}
 
   ngOnInit() {
@@ -246,6 +247,27 @@ export class SceneDetailComponent implements OnInit, OnDestroy {
 
   public getSarviewsURL() {
     return this.sarviewsService.getSarviewsEventUrl(this.sarviewEvent.event_id);
+  }
+
+  public makeSarviewsEventGeoSearch() {
+    const wkt = this.sarviewEvent.wkt;
+    const timeFrame = this.sarviewEvent.processing_timeframe;
+
+    [
+      new searchStore.SetSearchType(models.SearchType.DATASET),
+      new searchStore.ClearSearch(),
+      new filtersStore.SetSelectedDataset('SENTINEL-1'),
+    ].forEach(action => this.store$.dispatch(action));
+
+    if(!!timeFrame.start) {
+      this.store$.dispatch(new filtersStore.SetStartDate(new Date(timeFrame.start)));
+    }
+    if(!!timeFrame.end) {
+      this.store$.dispatch(new filtersStore.SetEndDate(new Date(timeFrame.end)));
+    }
+    this.mapService.loadPolygonFrom(wkt);
+
+    this.store$.dispatch(new searchStore.MakeSearch());
   }
 
 

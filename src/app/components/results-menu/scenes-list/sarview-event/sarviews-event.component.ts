@@ -10,11 +10,11 @@ import { AppState } from '@store';
 import { filter, map } from 'rxjs/operators';
 
 @Component({
-  selector: 'app-sarview-event',
-  templateUrl: './sarview-event.component.html',
-  styleUrls: ['./sarview-event.component.scss']
+  selector: 'app-sarviews-event',
+  templateUrl: './sarviews-event.component.html',
+  styleUrls: ['./sarviews-event.component.scss']
 })
-export class SarviewEventComponent implements OnInit {
+export class SarviewsEventComponent implements OnInit {
   @Input() event: SarviewsEvent
 
   public hovered = false;

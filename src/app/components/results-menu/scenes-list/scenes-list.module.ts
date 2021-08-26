@@ -19,7 +19,7 @@ import { ScenesListComponent } from './scenes-list.component';
 import { SceneComponent } from './scene/scene.component';
 import { Hyp3JobComponent } from './hyp3-job/hyp3-job.component';
 import { PairComponent } from './pair/pair.component';
-import { SarviewEventComponent } from './sarview-event/sarview-event.component';
+import { SarviewsEventComponent } from './sarview-event/sarviews-event.component';
 
 
 @NgModule({
@@ -28,7 +28,7 @@ import { SarviewEventComponent } from './sarview-event/sarview-event.component';
     SceneComponent,
     Hyp3JobComponent,
     PairComponent,
-    SarviewEventComponent,
+    SarviewsEventComponent,
   ],
   imports: [
     CommonModule,

@@ -2,7 +2,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { SubSink } from 'subsink';
 
 import { combineLatest } from 'rxjs';
-import { debounceTime, filter, map, switchMap, withLatestFrom } from 'rxjs/operators';
+import { debounceTime, filter, map, switchMap } from 'rxjs/operators';
 
 import { Store } from '@ngrx/store';
 import { AppState } from '@store';
@@ -44,14 +44,17 @@ export class SceneFilesComponent implements OnInit, OnDestroy {
     })
   )
 
-  public sarviewsEventsProductsByProcessingType$ = this.sarviewsEventProductTypes$.pipe(
-    withLatestFrom(this.sarviewsEventProducts$),
+  public sarviewsEventsProductsByProcessingType$ = combineLatest([this.sarviewsEventProductTypes$, this.sarviewsEventProducts$]).pipe(
     map(([processing_types, eventProducts]) => {
       let productsByProductType: {[processing_type: string]: SarviewsProduct[]} = {};
       processing_types.forEach(t => productsByProductType[t] = []);
       eventProducts.forEach(prod => productsByProductType[prod.job_type].push(prod));
       return productsByProductType;
     })
+  );
+
+  public areSarviewsEventsReady$ = this.sarviewsEventsProductsByProcessingType$.pipe(
+    map(products => products !== null && products !== undefined)
   );
 
   public unzippedLoading: string;
