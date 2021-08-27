@@ -1,6 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { Store } from '@ngrx/store';
+import { ScenesService } from '@services';
 import { AppState } from '@store';
 
 import * as filterStore from '@store/filters';
@@ -13,7 +14,9 @@ export class SarviewsEventSearchSelectorComponent implements OnInit {
   @ViewChild('eventsQueryForm') public eventsQueryForm: NgForm;
   public eventQuery: string = '';
 
-  constructor(private store$: Store<AppState>) { }
+  public filteredEvents$ = this.sceneService.saviewsEvents$();
+  constructor(private store$: Store<AppState>,
+              private sceneService: ScenesService) { }
 
   ngOnInit(): void {
   }

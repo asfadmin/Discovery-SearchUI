@@ -7,4 +7,17 @@
     [(ngModel)]="eventQuery"
     >
   </mat-form-field>
+  <mat-autocomplete>
+    [panelWidth] = "500"
+    (optionSelected)="onSearchQueryChange($event)"
+    #jobNameSelector="matAutocomplete">
+    <mat-option *ngFor="let event of (filteredEvents$ | async)"
+        [value]="event.description">
+        <div matTooltip = 'event description, id, or type'>
+            <span>
+              {{event.description}}
+            </span>
+        </div>
+    </mat-option>
+  </mat-autocomplete>
 </form>
