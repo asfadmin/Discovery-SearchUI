@@ -5,22 +5,27 @@
         (click)="closeAOIOptions()"
         class="breadcrumb">
       </app-search-type-selector>
-
-      <app-dataset-selector
+      <!-- <app-dataset-selector
          [(selected)]="selectedDataset"
          (selectedChange)="onDatasetChange($event)"
          [datasets]="datasets"
          fxFlex="130px"
          (click)="closeAOIOptions()"
          class="breadcrumb">
-      </app-dataset-selector>
+      </app-dataset-selector> -->
 
-      <app-aoi-filter *ngIf="breakpoint > breakpoints.SMALL" class="breadcrumb">
-      </app-aoi-filter>
+      <!-- <app-aoi-filter *ngIf="breakpoint > breakpoints.SMALL" class="breadcrumb">
+      </app-aoi-filter> -->
     </div>
 
     <div fxLayout.lt-md="row">
       <div fxLayout="row">
+        <div
+        *ngIf="breakpoint === breakpoints.FULL"
+        fxFlex="175px" fxFlex.lt-lg="50"
+          class="breadcrumb">
+          <app-sarviews-event-search-selector></app-sarviews-event-search-selector>
+     </div>
         <div
            *ngIf="breakpoint === breakpoints.FULL"
            fxFlex="300px" fxFlex.lt-lg="50"

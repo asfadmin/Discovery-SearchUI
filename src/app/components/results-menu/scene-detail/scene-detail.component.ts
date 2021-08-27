@@ -16,6 +16,8 @@ import { AuthService, MapService, PropertyService, SarviewsEventsService, Screen
 import { ImageDialogComponent } from './image-dialog';
 
 import { DatasetForProductService } from '@services';
+import {circular} from 'ol/geom/Polygon';
+import WKT from 'ol/format/WKT';
 
 @Component({
   selector: 'app-scene-detail',
@@ -246,12 +248,30 @@ export class SceneDetailComponent implements OnInit, OnDestroy {
   }
 
   public getSarviewsURL() {
-    return this.sarviewsService.getSarviewsEventUrl(this.sarviewEvent.event_id);
+    return this.sarviewsService.getSarviewsEventUrl(this.sarviewEvent?.event_id ?? '');
   }
 
   public makeSarviewsEventGeoSearch() {
     const wkt = this.sarviewEvent.wkt;
     const timeFrame = this.sarviewEvent.processing_timeframe;
+
+    const bounds = (x: string) => x.replace("MULTIPOLYGON", '').trimStart().replace('(((', '').replace(')))', '').split(',').slice(0, 4).
+    map(coord => coord.trimStart().split(' ')).
+      map(coordVal => ({ lon: parseFloat(coordVal[0]), lat: parseFloat(coordVal[1])}));
+
+    const calcCenter = (coords: {lat: number, lon: number}[]) => {
+      const centroid = coords.reduce((acc, curr) => ({lat: acc.lat + curr.lat, lon: acc.lon + curr.lon}));
+      centroid.lon = centroid.lon / 4.0;
+      centroid.lat = centroid.lat / 4.0;
+      return centroid;
+    };
+
+    const bound = bounds(wkt);
+    const center = calcCenter(bound);
+
+    let circle = circular([center.lon, center.lat], 183710);
+    var format = new WKT();
+    const wktString = format.writeGeometry(circle);
 
     [
       new searchStore.SetSearchType(models.SearchType.DATASET),
@@ -265,7 +285,7 @@ export class SceneDetailComponent implements OnInit, OnDestroy {
     if(!!timeFrame.end) {
       this.store$.dispatch(new filtersStore.SetEndDate(new Date(timeFrame.end)));
     }
-    this.mapService.loadPolygonFrom(wkt);
+    this.mapService.loadPolygonFrom(wktString);
 
     this.store$.dispatch(new searchStore.MakeSearch());
   }

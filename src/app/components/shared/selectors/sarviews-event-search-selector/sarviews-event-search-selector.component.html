@@ -1,0 +1,10 @@
+<form #eventsQueryForm="ngForm">
+  <mat-form-field>
+    <input type="text"
+    placeholder="Event Search"
+    (change)="onSearchQueryChange($event)"
+    matInput
+    [(ngModel)]="eventQuery"
+    >
+  </mat-form-field>
+</form>
