@@ -1,6 +1,9 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
+import { Store } from '@ngrx/store';
+import { AppState } from '@store';
 
+import * as filterStore from '@store/filters';
 @Component({
   selector: 'app-sarviews-event-search-selector',
   templateUrl: './sarviews-event-search-selector.component.html',
@@ -10,7 +13,7 @@ export class SarviewsEventSearchSelectorComponent implements OnInit {
   @ViewChild('eventsQueryForm') public eventsQueryForm: NgForm;
   public eventQuery: string = '';
 
-  constructor() { }
+  constructor(private store$: Store<AppState>) { }
 
   ngOnInit(): void {
   }
@@ -33,6 +36,7 @@ export class SarviewsEventSearchSelectorComponent implements OnInit {
 
   public onSearchQueryChange(event: Event): void {
     let query = (event.target as HTMLInputElement).value;
+    this.store$.dispatch(new filterStore.SetSarviewsEventNameFilter(query));
     console.log(query);
 
   }

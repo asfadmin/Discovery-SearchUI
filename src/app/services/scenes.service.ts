@@ -1,17 +1,18 @@
 import { Injectable } from '@angular/core';
 
 import { Observable, combineLatest } from 'rxjs';
-import { debounceTime, map } from 'rxjs/operators';
+import { debounceTime, filter, map } from 'rxjs/operators';
 import * as moment from 'moment';
 import { Store } from '@ngrx/store';
 import { AppState } from '@store/app.reducer';
 import {
   getAllProducts, getScenes, getTemporalSortDirection,
   getPerpendicularSortDirection,
+  getSarviewsEvents,
 } from '@store/scenes/scenes.reducer';
 import {
   getTemporalRange, getPerpendicularRange, getDateRange,
-  getProductTypes, getProjectName, getJobStatuses, getProductNameFilter, getSeason
+  getProductTypes, getProjectName, getJobStatuses, getProductNameFilter, getSeason, getSarviewsEventNameFilter
 } from '@store/filters/filters.reducer';
 import { getShowS1RawData, getShowExpiredData } from '@store/ui/ui.reducer';
 import { getSearchType } from '@store/search/search.reducer';
@@ -19,7 +20,7 @@ import { getSearchType } from '@store/search/search.reducer';
 import {
   CMRProduct, SearchType,
   Range, ColumnSortDirection,
-  Hyp3Job, Hyp3JobStatusCode
+  Hyp3Job, Hyp3JobStatusCode, SarviewsEvent
 } from '@models';
 import { NotificationService } from './notification.service';
 
@@ -57,6 +58,15 @@ export class ScenesService {
           this.store$.select(getScenes)
     ))))))));
   }
+
+  public saviewsEvents$(): Observable<SarviewsEvent[]> {
+    return (
+      this.filterSarviewsEventsByName$(
+        this.store$.select(getSarviewsEvents)
+      )
+    )
+  }
+
 
   public withBrowses$(scenes$: Observable<CMRProduct[]>): Observable<CMRProduct[]> {
     return scenes$.pipe(
@@ -393,6 +403,27 @@ export class ScenesService {
         }
 
         return scenes;
+      }
+      )
+    );
+  }
+
+  public filterSarviewsEventsByName$(events$: Observable<SarviewsEvent[]>): Observable<SarviewsEvent[]> {
+    return combineLatest(
+      [
+        events$,
+        this.store$.select(getSarviewsEventNameFilter).pipe(
+            filter(nameFilter => !!nameFilter),
+            map(nameFilter => nameFilter.toLowerCase()),
+          )
+      ]
+    ).pipe(
+      map(([events, nameFilter]) => {
+        return events.filter(
+          event => event.description.toLowerCase().includes(nameFilter)
+            || event.event_id.toLowerCase().includes(nameFilter)
+            || event.event_type.toLowerCase().includes(nameFilter)
+        )
       }
       )
     );

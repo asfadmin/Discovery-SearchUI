@@ -125,7 +125,7 @@ export class ScenesListComponent implements OnInit, OnDestroy {
     );
 
     this.subs.add(
-      this.store$.select(scenesStore.getSarviewsEvents).pipe(tap(events => console.log(events))).subscribe(
+      this.scenesService.saviewsEvents$().pipe(tap(events => console.log(events))).subscribe(
         events => this.sarviewsEvents = events
       )
     )
