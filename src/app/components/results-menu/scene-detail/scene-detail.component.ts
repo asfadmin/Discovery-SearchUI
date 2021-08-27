@@ -255,7 +255,8 @@ export class SceneDetailComponent implements OnInit, OnDestroy {
     const wkt = this.sarviewEvent.wkt;
     const timeFrame = this.sarviewEvent.processing_timeframe;
 
-    const bounds = (x: string) => x.replace("MULTIPOLYGON", '').trimStart().replace('(((', '').replace(')))', '').split(',').slice(0, 4).
+    const bounds = (x: string) => x.replace('MULTI', '').replace("POLYGON", '').trimStart().replace('((', '').replace('))', '')
+    .replace('(', '').replace(')', '').split(',').slice(0, 4).
     map(coord => coord.trimStart().split(' ')).
       map(coordVal => ({ lon: parseFloat(coordVal[0]), lat: parseFloat(coordVal[1])}));
 
@@ -269,7 +270,7 @@ export class SceneDetailComponent implements OnInit, OnDestroy {
     const bound = bounds(wkt);
     const center = calcCenter(bound);
 
-    let circle = circular([center.lon, center.lat], 183710);
+    let circle = circular([center.lon, center.lat], 583710);
     var format = new WKT();
     const wktString = format.writeGeometry(circle);
 
