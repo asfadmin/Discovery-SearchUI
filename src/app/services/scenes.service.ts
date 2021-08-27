@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 
 import { Observable, combineLatest } from 'rxjs';
-import { debounceTime, filter, map } from 'rxjs/operators';
+import { debounceTime, map } from 'rxjs/operators';
 import * as moment from 'moment';
 import { Store } from '@ngrx/store';
 import { AppState } from '@store/app.reducer';
@@ -62,7 +62,9 @@ export class ScenesService {
   public saviewsEvents$(): Observable<SarviewsEvent[]> {
     return (
       this.filterSarviewsEventsByName$(
-        this.store$.select(getSarviewsEvents)
+        this.filterByEventDate$(
+          this.store$.select(getSarviewsEvents)
+        )
       )
     )
   }
@@ -408,23 +410,61 @@ export class ScenesService {
     );
   }
 
-  public filterSarviewsEventsByName$(events$: Observable<SarviewsEvent[]>): Observable<SarviewsEvent[]> {
+  public filterSarviewsEventsByName$(events$: Observable<SarviewsEvent[]>) {
     return combineLatest(
       [
         events$,
         this.store$.select(getSarviewsEventNameFilter).pipe(
-            filter(nameFilter => !!nameFilter),
-            map(nameFilter => nameFilter.toLowerCase()),
+            map(nameFilter => nameFilter?.toLowerCase()),
           )
       ]
     ).pipe(
       map(([events, nameFilter]) => {
+        if(nameFilter === null || nameFilter === undefined || nameFilter === '') {
+          return events;
+        }
         return events.filter(
           event => event.description.toLowerCase().includes(nameFilter)
             || event.event_id.toLowerCase().includes(nameFilter)
             || event.event_type.toLowerCase().includes(nameFilter)
         )
       }
+      )
+    );
+  }
+
+  private filterByEventDate$(events$: Observable<SarviewsEvent[]>) {
+    return combineLatest([
+      events$,
+      this.store$.select(getDateRange),
+    ]
+    ).pipe(
+      debounceTime(0),
+      map(
+        ([events, dateRange]) => {
+          const range = {
+            start: moment(dateRange.start),
+            end: moment(dateRange.end)
+          };
+
+          if (dateRange.start === null && dateRange.end === null) {
+            return events;
+          }
+
+          return events.filter(scene => {
+            if (dateRange.start === null && dateRange.end !== null) {
+              return moment(scene.processing_timeframe.end) <= range.end ;
+            } else if (dateRange.start !== null && dateRange.end === null) {
+              return moment(scene.processing_timeframe.start) >= range.start ;
+            } else {
+              return (
+                moment(scene.processing_timeframe.start) >= range.start  &&
+                moment(scene.processing_timeframe.end) <= range.end
+              );
+            }
+          });
+        }
+
       )
     );
   }

@@ -68,7 +68,7 @@ export class SearchEffects {
     ofType(SearchActionType.MAKE_SEARCH),
     withLatestFrom(this.store$.select(getSearchType)),
     switchMap(([_, searchType]) => searchType !== models.SearchType.CUSTOM_PRODUCTS ?
-      (searchType !== models.SearchType.SARVIEWS_EVENTS ? this.asfApiQuery$() : this.sarviewsEventsQuery$()) :
+      (searchType === models.SearchType.SARVIEWS_EVENTS ? this.sarviewsEventsQuery$() : this.asfApiQuery$()) :
       this.customProductsQuery$()
     )
   ));
@@ -167,8 +167,7 @@ export class SearchEffects {
       new uiStore.CloseAOIOptions(),
       action.payload === models.SearchType.LIST ||
       action.payload === models.SearchType.SBAS ||
-      action.payload === models.SearchType.BASELINE ||
-      action.payload === models.SearchType.SARVIEWS_EVENTS ?
+      action.payload === models.SearchType.BASELINE ?
         new uiStore.OpenFiltersMenu() :
         new uiStore.CloseFiltersMenu(),
     ]),
