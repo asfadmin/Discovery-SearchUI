@@ -1,0 +1,10 @@
+<mat-form-field>
+  <mat-select
+  [(value)]="eventTypes"
+  (selectionChange)="onNewEventTypes($event)">
+  <mat-option
+    *ngFor="let type of eventTypes">
+  {{type[0].toUpperCase() + type.slice(1)}}
+  </mat-option>
+  </mat-select>
+</mat-form-field>

@@ -4,7 +4,7 @@ import { NgForm } from '@angular/forms';
 import * as moment from 'moment';
 
 import { Subject, combineLatest } from 'rxjs';
-import { filter, tap, delay, map } from 'rxjs/operators';
+import { filter, tap, delay, map, withLatestFrom } from 'rxjs/operators';
 import { SubSink } from 'subsink';
 
 import { Store, ActionsSubject } from '@ngrx/store';
@@ -34,11 +34,27 @@ export class DateSelectorComponent implements OnInit, OnDestroy {
   private currentDate = new Date();
   private selectedDataset$ = this.store$.select(filtersStore.getSelectedDataset);
   public maxDate$ = this.selectedDataset$.pipe(
-      map(dataset => dataset.date.end),
-      map(endDate => endDate <= this.currentDate ? endDate : this.currentDate)
+    withLatestFrom(this.store$.select(searchStore.getSearchType)),
+    map(([dataset, searchType]) => {
+      if(searchType === SearchType.SARVIEWS_EVENTS) {
+        return this.extrema.start.min;
+      }
+        return dataset.date.end;
+      }
+    ),
+    map(endDate => endDate <= this.currentDate ? endDate : this.currentDate)
     );
+
   public minDate$ = this.selectedDataset$.pipe(
-    map(dataset => dataset.date.start ));
+    withLatestFrom(this.store$.select(searchStore.getSearchType)),
+    map(([dataset, searchType]) => {
+        if(searchType === SearchType.SARVIEWS_EVENTS) {
+          return this.extrema.start.min;
+        }
+        return dataset.date.start;
+      }
+    )
+  );
   public startDate$ = this.store$.select(filtersStore.getStartDate);
   public endDate$ = this.store$.select(filtersStore.getEndDate);
   public startDate: Date;

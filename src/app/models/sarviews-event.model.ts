@@ -31,7 +31,7 @@ export interface SarviewsEvent {
   coordinates: number[]
 }
 
-export const enum SarviewsEventType {
+export enum SarviewsEventType {
   QUAKE = 'quake',
   VOLCANO = 'volcano',
   FLOOD = 'flood'

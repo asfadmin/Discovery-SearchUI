@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 
 import { Observable, combineLatest} from 'rxjs';
-import {map, max } from 'rxjs/operators';
+import {map } from 'rxjs/operators';
 
 import * as moment from 'moment';
 

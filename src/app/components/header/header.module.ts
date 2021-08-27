@@ -46,7 +46,7 @@ import { Hyp3HeaderComponent } from './hyp3-header/hyp3-header.component';
 import { CreateSubscriptionModule } from './create-subscription/create-subscription.module';
 import { CiSearchModule } from './info-bar/ci-search/ci-search.module';
 import { SarviewsHeaderComponent } from './sarviews-header/sarviews-header.component';
-
+import { SarviewsEventTypeSelectorModule } from '@components/shared/selectors/sarviews-event-type-selector';
 @NgModule({
   declarations: [
     HeaderComponent,
@@ -93,7 +93,8 @@ import { SarviewsHeaderComponent } from './sarviews-header/sarviews-header.compo
     JobProductNameSelectorModule,
     CreateSubscriptionModule,
     CiSearchModule,
-    SarviewsEventSearchSelectorModule
+    SarviewsEventSearchSelectorModule,
+    SarviewsEventTypeSelectorModule
   ],
   exports: [
     HeaderComponent
