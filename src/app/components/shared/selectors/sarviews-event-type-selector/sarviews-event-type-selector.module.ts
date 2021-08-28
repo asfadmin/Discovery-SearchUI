@@ -16,6 +16,9 @@ import { SarviewsEventTypeSelectorComponent } from './sarviews-event-type-select
     MatSelectModule,
     MatFormFieldModule,
     FormsModule
+  ],
+  exports: [
+    SarviewsEventTypeSelectorComponent
   ]
 })
 export class SarviewsEventTypeSelectorModule { }

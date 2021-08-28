@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 
 import { Observable, combineLatest} from 'rxjs';
-import {map } from 'rxjs/operators';
+import {filter, map } from 'rxjs/operators';
 
 import * as moment from 'moment';
 
@@ -107,6 +107,8 @@ export class DateExtremaService {
 
   public getSarviewsExtrema$(events$: Observable<SarviewsEvent[]>) {
     return events$.pipe(
+      filter(events => !!events),
+      filter(events => events.length >0),
       map(events => events.map(event => event.processing_timeframe)),
       map(eventsDateRange => {
         const min = eventsDateRange.map(eventRange => eventRange.start)

@@ -26,6 +26,12 @@
           class="breadcrumb">
           <app-sarviews-event-search-selector></app-sarviews-event-search-selector>
      </div>
+     <div
+     *ngIf="breakpoint === breakpoints.FULL"
+     fxFlex="175px" fxFlex.lt-lg="50"
+       class="breadcrumb">
+       <app-sarviews-event-type-selector></app-sarviews-event-type-selector>
+  </div>
         <div
            *ngIf="breakpoint === breakpoints.FULL"
            fxFlex="300px" fxFlex.lt-lg="50"

@@ -25,7 +25,9 @@ export class SarviewsEventTypeSelectorComponent implements OnInit, OnDestroy {
 
   public onNewEventTypes(event: MatSelectChange) {
     const selectedEventNames = (event.value as string[]);
-    const selectedEventTypes: SarviewsEventType[] = selectedEventNames.map(name => SarviewsEventType[name]);
+    const selectedEventTypes: SarviewsEventType[] = Object.keys(SarviewsEventType).filter(
+      key => !!selectedEventNames.find(name => name === SarviewsEventType[key]))
+      .map(key => SarviewsEventType[key]);
 
     this.store$.dispatch(new filterStore.SetSarviewsEventTypes(selectedEventTypes));
   }
@@ -33,7 +35,7 @@ export class SarviewsEventTypeSelectorComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.subs.add(
       this.currentEventTypes$.subscribe(
-        types => this.selectedTypesList = types.map(t => t.valueOf())
+        types => this.selectedTypesList = Object.values(types)
       )
     );
   }

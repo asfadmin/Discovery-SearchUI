@@ -12,7 +12,7 @@ import {
 } from '@store/scenes/scenes.reducer';
 import {
   getTemporalRange, getPerpendicularRange, getDateRange,
-  getProductTypes, getProjectName, getJobStatuses, getProductNameFilter, getSeason, getSarviewsEventNameFilter
+  getProductTypes, getProjectName, getJobStatuses, getProductNameFilter, getSeason, getSarviewsEventNameFilter, getSarviewsEventTypes
 } from '@store/filters/filters.reducer';
 import { getShowS1RawData, getShowExpiredData } from '@store/ui/ui.reducer';
 import { getSearchType } from '@store/search/search.reducer';
@@ -62,8 +62,10 @@ export class ScenesService {
   public saviewsEvents$(): Observable<SarviewsEvent[]> {
     return (
       this.filterSarviewsEventsByName$(
+        this.filterByEventType$(
         this.filterByEventDate$(
           this.store$.select(getSarviewsEvents)
+          )
         )
       )
     )
@@ -467,5 +469,22 @@ export class ScenesService {
 
       )
     );
+  }
+
+  private filterByEventType$(events$: Observable<SarviewsEvent[]>){
+    return combineLatest([
+      events$,
+      this.store$.select(getSarviewsEventTypes)
+    ]).pipe(
+      map(
+        ([events, types]) => {
+          if(types.length === 0) {
+            return events;
+          }
+
+          return events.filter(event => !!types.find(t => t === event.event_type.toLowerCase()));
+        }
+      )
+    )
   }
 }
