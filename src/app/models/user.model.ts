@@ -1,6 +1,5 @@
-
 import { MapLayerTypes } from './map.model';
-// import { SearchType } from '@models';
+
 export interface UserAuth {
   id: string | null;
   token: string | null;

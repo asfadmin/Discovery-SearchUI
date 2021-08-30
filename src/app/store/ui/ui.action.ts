@@ -1,6 +1,6 @@
 import { Action } from '@ngrx/store';
 
-import { Banner, SavedSearchType } from '@models';
+import { Banner, SidebarType } from '@models';
 
 export enum UIActionType {
   TOGGLE_AOI_OPTIONS = '[UI] Toggle AOI Options',
@@ -17,15 +17,8 @@ export enum UIActionType {
   SHOW_EXPIRED_DATA = '[UI] Show Expired Data',
   HIDE_EXPIRED_DATA = '[UI] Hide Expired Data',
 
-  CLOSE_SIDEBAR = '[UI] Close Sidebar',
   OPEN_SIDEBAR = '[UI] Open Sidebar',
-
-  OPEN_FILTERS_SIDEBAR  = '[UI] Close Filters Sidebar',
-  CLOSE_FILTERS_SIDEBAR = '[UI] Open FIlters Sidebar',
-
-  SET_SAVED_SEARCH_TYPE = '[UI] Set Saved Search Type',
-
-  SET_SAVE_FILTER_ON = '[UI] Set Save Filter On',
+  CLOSE_SIDEBAR = '[UI] Close Sidebar',
 
   START_ADDING_CUSTOM_POINT = '[UI] Start Adding Custom Point',
   STOP_ADDING_CUSTOM_POINT = '[UI] Stop Adding Custom Point',
@@ -61,21 +54,16 @@ export class ToggleFiltersMenu implements Action {
   public readonly type = UIActionType.TOGGLE_FILTERS_MENU;
 }
 
+export class OpenSidebar implements Action {
+  public readonly type = UIActionType.OPEN_SIDEBAR;
+
+  constructor(public payload: SidebarType) {}
+}
+
 export class CloseSidebar implements Action {
   public readonly type = UIActionType.CLOSE_SIDEBAR;
 }
 
-export class OpenSidebar implements Action {
-  public readonly type = UIActionType.OPEN_SIDEBAR;
-}
-
-export class OpenFiltersSidebar implements Action {
-  public readonly type = UIActionType.OPEN_FILTERS_SIDEBAR;
-}
-
-export class CloseFiltersSidebar implements Action {
-  public readonly type = UIActionType.CLOSE_FILTERS_SIDEBAR;
-}
 export class ShowS1RawData implements Action {
   public readonly type = UIActionType.SHOW_S1_RAW_DATA;
 }
@@ -98,17 +86,6 @@ export class StartAddingCustomPoint implements Action {
 
 export class StopAddingCustomPoint implements Action {
   public readonly type = UIActionType.STOP_ADDING_CUSTOM_POINT;
-}
-
-export class SetSaveFilterOn implements Action {
-  public readonly type = UIActionType.SET_SAVE_FILTER_ON;
-
-  constructor(public payload: boolean) {}
-}
-export class SetSavedSearchType implements Action {
-  public readonly type = UIActionType.SET_SAVED_SEARCH_TYPE;
-
-  constructor(public payload: SavedSearchType) {}
 }
 
 export class CloseFiltersMenu implements Action {
@@ -182,13 +159,9 @@ export type UIActions =
   | CloseAOIOptions
   | OpenAOIOptions
   | OpenSidebar
-  | SetSaveFilterOn
+  | CloseSidebar
   | StartAddingCustomPoint
   | StopAddingCustomPoint
-  | SetSavedSearchType
-  | CloseSidebar
-  | OpenFiltersSidebar
-  | CloseFiltersSidebar
   | ToggleFiltersMenu
   | CloseFiltersMenu
   | OpenFiltersMenu

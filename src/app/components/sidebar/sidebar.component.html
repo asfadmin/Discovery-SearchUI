@@ -1,0 +1,12 @@
+<div (keydown.escape)="onCloseSidebar()">
+  <app-saved-searches *ngIf="
+    sidebar === SidebarType.SAVED_SEARCHES ||
+    sidebar === SidebarType.SEARCH_HISTORY">
+  </app-saved-searches>
+
+  <app-save-user-filters *ngIf="sidebar === SidebarType.USER_FILTERS">
+  </app-save-user-filters>
+
+  <app-on-demand-subscriptions *ngIf="sidebar === SidebarType.ON_DEMAND_SUBSCRIPTIONS">
+  </app-on-demand-subscriptions>
+</div>

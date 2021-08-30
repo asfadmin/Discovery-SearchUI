@@ -151,6 +151,12 @@ export class UserEffects {
     map(_ => new hyp3Store.LoadUser())
   ));
 
+  public loadOnDemandSubscriptionsOnLogin = createEffect(() => this.actions$.pipe(
+    ofType<userActions.LoadSavedSearches>(userActions.UserActionType.LOGIN),
+    delay(400),
+    map(_ => new hyp3Store.LoadSubscriptions())
+  ));
+
   public loadSavedSearches = createEffect(() => this.actions$.pipe(
     ofType<userActions.LoadSavedSearches>(userActions.UserActionType.LOAD_SAVED_SEARCHES),
     withLatestFrom( this.store$.select(userReducer.getUserAuth)),

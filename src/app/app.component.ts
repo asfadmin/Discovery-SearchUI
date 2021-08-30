@@ -55,9 +55,6 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
   public interactionTypes = models.MapInteractionModeType;
   public searchType: models.SearchType;
 
-  public isSaveSearchPanelOpen = false;
-  public isSaveFiltersPanelOpen = false;
-
   private helpTopic: string | null;
 
   private subs = new SubSink();
@@ -196,27 +193,13 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
     this.loadMissions();
 
     this.subs.add(
-      this.store$.select(uiStore.getIsSidebarOpen).subscribe(
-        isSidebarOpen => {
-          if (isSidebarOpen) {
-            this.isSaveSearchPanelOpen = true;
-            this.sidenav.open();
-          } else {
-            this.isSaveSearchPanelOpen = false;
-            this.sidenav.close();
-          }
-        }
-      )
-    );
+      this.store$.select(uiStore.getSidebar).subscribe(
+        sidebar => {
+          const isSidebarOpen = sidebar !== models.SidebarType.NONE;
 
-    this.subs.add(
-      this.store$.select(uiStore.getIsFiltersSidebarOpen).subscribe(
-        isSidebarOpen => {
           if (isSidebarOpen) {
-            this.isSaveFiltersPanelOpen = true;
             this.sidenav.open();
           } else {
-            this.isSaveFiltersPanelOpen = false;
             this.sidenav.close();
           }
         }
@@ -430,11 +413,6 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
     }
   }
 
-  public onCloseSidebar(): void {
-    this.store$.dispatch(new uiStore.CloseSidebar());
-    this.store$.dispatch(new uiStore.CloseFiltersSidebar());
-  }
-
   public onLoadUrlState(): void {
     this.urlStateService.load();
   }
@@ -444,6 +422,10 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
     this.store$.dispatch(new uiStore.CloseResultsMenu());
 
     this.searchService.clear(this.searchType);
+  }
+
+  public onCloseSidebar(): void {
+    this.store$.dispatch(new uiStore.CloseSidebar());
   }
 
   private updateMaxSearchResults(): void {

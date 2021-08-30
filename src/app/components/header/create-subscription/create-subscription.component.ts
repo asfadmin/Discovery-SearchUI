@@ -1,4 +1,5 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
+import { MatDialogRef } from '@angular/material/dialog';
 import { SubSink } from 'subsink';
 
 import { combineLatest } from 'rxjs';
@@ -28,6 +29,7 @@ export class CreateSubscriptionComponent implements OnInit, OnDestroy {
   private subs = new SubSink();
 
   constructor(
+    public dialogRef: MatDialogRef<CreateSubscriptionComponent>,
     private savedSearchService: SavedSearchService,
     private screenSize: ScreenSizeService,
     private store$: Store<AppState>,
@@ -52,6 +54,10 @@ export class CreateSubscriptionComponent implements OnInit, OnDestroy {
         };
       })
     );
+  }
+
+  public onSubmitSubscription(): void {
+    this.dialogRef.close();
   }
 
   ngOnDestroy(): void {
