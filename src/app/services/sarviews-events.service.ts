@@ -7,8 +7,8 @@ import {
   // forkJoin,
    Observable, of } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
-import { Feature } from 'geojson';
-
+// import { Feature } from 'geojson';
+import { Range } from '@models';
 
 @Injectable({
   providedIn: 'root'
@@ -21,7 +21,15 @@ export class SarviewsEventsService {
               ) { }
 
   public getSarviewsEvents$(): Observable<SarviewsEvent[]> {
-    return this.http.get<SarviewsEvent[]>(this.eventsUrl);
+    return this.http.get<SarviewsEvent[]>(this.eventsUrl).pipe(
+      map(events => events.map(
+        event => {
+          return {
+            ...event,
+            processing_timeframe: this.getDates(event)
+          };
+        }
+    )));
   }
 
   // public getEventFeatures(usgs_event_ids: string[]): Observable<SarviewsEvent[]> {
@@ -34,7 +42,15 @@ export class SarviewsEventsService {
   // }
 
   public getEventFeature(usgs_id: string): Observable<SarviewsProcessedEvent>  {
-    return this.http.get<Feature>(this.eventsUrl + "/" + usgs_id).pipe(catchError(error => of(error)));
+    return this.http.get<SarviewsProcessedEvent>(this.eventsUrl + "/" + usgs_id).pipe(
+      catchError(error => of(error)),
+      map((event: SarviewsProcessedEvent) => {
+        return {
+          ...event,
+          processing_timeframe: this.getDates(event)
+        };
+      })
+      );
   }
 
 
@@ -100,5 +116,17 @@ export class SarviewsEventsService {
 
   public getSmithsonianURL(smithsonian_id: string) {
     return `http://volcano.si.edu/volcano.cfm?vn=${smithsonian_id}`;
+  }
+
+  private getDates(event: SarviewsEvent | SarviewsProcessedEvent): Range<Date> {
+    let eventDates = event.processing_timeframe;
+    if(!!eventDates.start) {
+      eventDates.start = new Date(eventDates.start);
+    }
+    if(!!eventDates.end) {
+      eventDates.end = new Date(eventDates.end);
+    }
+
+    return eventDates;
   }
 }

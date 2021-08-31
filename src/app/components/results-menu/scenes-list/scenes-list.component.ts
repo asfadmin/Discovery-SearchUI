@@ -117,6 +117,32 @@ export class ScenesListComponent implements OnInit, OnDestroy {
     );
 
     this.subs.add(
+      this.store$.select(scenesStore.getSelectedSarviewsEvent).pipe(
+        withLatestFrom(this.scenesService.saviewsEvents$()),
+        delay(20),
+        filter(([selected, _]) => !!selected),
+        // tap(([selected, _]) => this.selected = selected.id),
+        map(([selected, events]) => {
+          let sceneIdx = -1;
+          events.forEach((event, idx) => {
+            if (event.event_id === selected.event_id) {
+              sceneIdx = idx;
+            }
+          });
+          return Math.max(0, sceneIdx - 1);
+        })
+      ).subscribe(
+        idx => {
+          // if (!this.selectedFromList) {
+            this.scrollTo(idx);
+          // }
+
+          // this.selectedFromList = false;
+        }
+      )
+    );
+
+    this.subs.add(
       sortedScenes$.pipe(debounceTime(250)).subscribe(
         scenes => {
           this.scenes = scenes;

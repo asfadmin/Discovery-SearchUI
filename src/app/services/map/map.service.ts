@@ -26,6 +26,11 @@ import { Coordinate } from 'ol/coordinate';
 import { EventEmitter } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { AppState } from '@store';
+import { Icon, Style } from 'ol/style';
+import IconAnchorUnits from 'ol/style/IconAnchorUnits';
+import Polygon, { circular } from 'ol/geom/Polygon';
+import WKT from 'ol/format/WKT';
+// import WKT from 'ol/format/WKT';
 // import { SarviewsEventsService } from '@services';
 
 
@@ -36,6 +41,7 @@ export class MapService {
   private mapView: views.MapView;
   private map: Map;
   private polygonLayer: VectorLayer;
+  private sarviewsEventRadiusPolygon: Polygon;
   private gridLinesVisible: boolean;
   private popupOverlay: Overlay;
 
@@ -190,6 +196,7 @@ export class MapService {
   }
 
   public sarviewsEventsToFeatures(events: SarviewsEvent[], projection: string) {
+    const currentDate = new Date();
     const features = events
       .map(sarviewEvent => {
         const wkt = sarviewEvent.wkt;
@@ -215,6 +222,28 @@ export class MapService {
         feature.setGeometryName("eventPoint");
         feature.set("sarviews_id", sarviewEvent.event_id);
 
+        if(sarviewEvent.event_type !== 'flood') {
+          let iconName = sarviewEvent.event_type === 'quake' ? 'Earthquake_inactive.svg' : 'Volcano_inactive.svg';
+          if(!!sarviewEvent.processing_timeframe.end) {
+            if(currentDate <= new Date(sarviewEvent.processing_timeframe.end)) {
+              iconName = iconName.replace('_inactive', '');
+            }
+          } else {
+            iconName = iconName.replace('_inactive', '');
+          }
+          const iconStyle = new Style({
+            image: new Icon({
+              anchor: [0.5, 46],
+              anchorXUnits: IconAnchorUnits.FRACTION,
+              anchorYUnits: IconAnchorUnits.PIXELS,
+              src: `/assets/${iconName}`,
+              scale: 0.1,
+              offset: [0, 10]
+            }),
+          });
+
+          feature.setStyle(iconStyle);
+        }
         // console.log(feature);
         this.sarviewsFeaturesByID[sarviewEvent.event_id] = feature;
 
@@ -470,5 +499,47 @@ export class MapService {
     mapLayers.setAt(0, this.mapView.layer);
 
     return this.map;
+  }
+
+  public onSetSarviewsPolygonPreview(sarviewEvent: SarviewsEvent, radius: number) {
+    if(!this.sarviewsEventRadiusPolygon) {
+      const wkt = sarviewEvent.wkt;
+      const bound = this.parseBoundsFromString(wkt);
+      const center = this.calcCenter(bound);
+      this.sarviewsEventRadiusPolygon = circular([center.lon, center.lat], radius);
+      // this.setDrawFeature(this.sarviewsEventRadiusPolygon);
+      // wktstring = this.sarviewsEventRadiusPolygon.get
+
+    } else {
+      const bound = this.parseBoundsFromString(sarviewEvent.wkt);
+      const center = this.calcCenter(bound);
+      let temp = circular([center.lon, center.lat], radius)
+      this.sarviewsEventRadiusPolygon.setCoordinates(temp.getCoordinates());
+    }
+
+    var format = new WKT();
+    const wktString = format.writeGeometry(this.sarviewsEventRadiusPolygon);
+
+    const features = this.wktService.wktToFeature(
+      wktString,
+      this.epsg()
+    );
+
+    this.setDrawFeature(features);
+    // this.loadPolygonFrom(wktString);
+  }
+
+  private parseBoundsFromString(x: string): {lon: number, lat: number}[] {
+    return x.replace('MULTI', '').replace("POLYGON", '').trimStart().replace('((', '').replace('))', '')
+      .replace('(', '').replace(')', '').split(',').slice(0, 4).
+      map(coord => coord.trimStart().split(' ')).
+      map(coordVal => ({ lon: parseFloat(coordVal[0]), lat: parseFloat(coordVal[1])}));
+  }
+
+  private calcCenter(coords: {lon: number, lat: number}[]) {
+    const centroid = coords.reduce((acc, curr) => ({lat: acc.lat + curr.lat, lon: acc.lon + curr.lon}));
+    centroid.lon = centroid.lon / 4.0;
+    centroid.lat = centroid.lat / 4.0;
+    return centroid;
   }
 }

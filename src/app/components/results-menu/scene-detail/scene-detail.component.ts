@@ -18,6 +18,7 @@ import { ImageDialogComponent } from './image-dialog';
 import { DatasetForProductService } from '@services';
 import {circular} from 'ol/geom/Polygon';
 import WKT from 'ol/format/WKT';
+import { MatSliderChange } from '@angular/material/slider';
 
 @Component({
   selector: 'app-scene-detail',
@@ -47,6 +48,7 @@ export class SceneDetailComponent implements OnInit, OnDestroy {
   public browseIndex = 0;
   public detailsOpen = true;
   public masterOffsets$ = this.store$.select(scenesStore.getMasterOffsets);
+  public sarviewsEventGeoSearchRadius = 550000
 
   private defaultBaselineFiltersID = '';
   private defaultSBASFiltersID = '';
@@ -86,7 +88,12 @@ export class SceneDetailComponent implements OnInit, OnDestroy {
 
 
     this.subs.add(
-      sarviewsEvent$.subscribe(event => this.sarviewEvent = event)
+      sarviewsEvent$.subscribe(event =>
+          {
+          this.sarviewEvent = event;
+          this.mapService.onSetSarviewsPolygonPreview(event, this.sarviewsEventGeoSearchRadius);
+          }
+        )
     )
     this.subs.add(
       scene$.pipe(
@@ -201,6 +208,9 @@ export class SceneDetailComponent implements OnInit, OnDestroy {
   }
 
   public findSimilarScenes(): void {
+    if(this.searchType === models.SearchType.SARVIEWS_EVENTS) {
+      this.makeSarviewsEventGeoSearch();
+    } else {
     const scene = this.scene;
     const shouldClear = this.searchType !== models.SearchType.DATASET;
     this.store$.dispatch(new searchStore.SetSearchType(models.SearchType.DATASET));
@@ -211,6 +221,7 @@ export class SceneDetailComponent implements OnInit, OnDestroy {
 
     this.store$.dispatch(new filtersStore.SetFiltersSimilarTo(scene));
     this.store$.dispatch(new searchStore.MakeSearch());
+  }
   }
 
   public makeBaselineSearch(): void {
@@ -270,7 +281,7 @@ export class SceneDetailComponent implements OnInit, OnDestroy {
     const bound = bounds(wkt);
     const center = calcCenter(bound);
 
-    let circle = circular([center.lon, center.lat], 583710);
+    let circle = circular([center.lon, center.lat], this.sarviewsEventGeoSearchRadius);
     var format = new WKT();
     const wktString = format.writeGeometry(circle);
 
@@ -291,6 +302,14 @@ export class SceneDetailComponent implements OnInit, OnDestroy {
     this.store$.dispatch(new searchStore.MakeSearch());
   }
 
+  public onEventSearchRadiusChange(event: MatSliderChange) {
+    this.sarviewsEventGeoSearchRadius = event.value;
+    this.mapService.onSetSarviewsPolygonPreview(this.sarviewEvent, this.sarviewsEventGeoSearchRadius);
+  }
+
+  public onToggleRadiusPreview() {
+
+  }
 
   ngOnDestroy() {
     this.subs.unsubscribe();
