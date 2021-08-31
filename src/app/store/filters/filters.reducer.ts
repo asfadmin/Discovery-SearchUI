@@ -41,6 +41,7 @@ export interface FiltersState {
 
   sarviewsEventTypes: models.SarviewsEventType[];
   sarviewsEventNameFilter: string;
+  sarviewsEventActiveOnly: boolean;
 }
 
 
@@ -98,6 +99,7 @@ export const initState: FiltersState = {
 
   sarviewsEventTypes: [],
   sarviewsEventNameFilter: null,
+  sarviewsEventActiveOnly: false,
 };
 
 
@@ -616,6 +618,12 @@ export function filtersReducer(state = initState, action: FiltersActions): Filte
         sarviewsEventNameFilter: action.payload
       }
     }
+    case FiltersActionType.SET_SARVIEWS_EVENT_ACTIVE_FILTER: {
+      return {
+        ...state,
+        sarviewsEventActiveOnly: action.payload
+      }
+    }
     default: {
       return state;
     }
@@ -866,4 +874,9 @@ export const getSarviewsEventTypes = createSelector(
 export const getSarviewsEventNameFilter = createSelector(
   getFiltersState,
   (state: FiltersState) => state.sarviewsEventNameFilter
-)
+);
+
+export const getSarviewsEventActiveFilter = createSelector(
+  getFiltersState,
+  (state: FiltersState) => state.sarviewsEventActiveOnly
+);

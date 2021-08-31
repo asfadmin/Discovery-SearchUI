@@ -76,6 +76,7 @@ export enum FiltersActionType {
 
   SET_SARVIEWS_EVENT_TYPES = '[Filters] Set SARViews event types',
   SET_SARVIEWS_EVENT_NAME_FILTER = '[Filters] Set SARViews event name filter',
+  SET_SARVIEWS_EVENT_ACTIVE_FILTER = '[Filters] Set SARViews event active processing filter',
 }
 
 export class SetSelectedDataset implements Action {
@@ -343,6 +344,13 @@ export class SetSarviewsEventNameFilter implements Action {
 
   constructor(public payload: string) {}
 }
+
+export class SetSarviewsEventActiveFilter implements Action {
+  public readonly type = FiltersActionType.SET_SARVIEWS_EVENT_ACTIVE_FILTER;
+
+  constructor(public payload: boolean) {}
+}
+
 export class SetDefaultFilters implements Action {
   public readonly type = FiltersActionType.SET_DEFAULT_FILTERS;
   constructor(public payload: {
@@ -401,4 +409,5 @@ export type FiltersActions =
   | SetSBASOverlapThreshold
   | SetDefaultFilters
   | SetSarviewsEventTypes
-  | SetSarviewsEventNameFilter;
+  | SetSarviewsEventNameFilter
+  | SetSarviewsEventActiveFilter;
