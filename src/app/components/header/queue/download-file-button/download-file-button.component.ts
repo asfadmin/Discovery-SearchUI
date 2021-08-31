@@ -2,7 +2,7 @@ import { Component, Input, Output, EventEmitter, OnInit } from '@angular/core';
 import { Download } from 'ngx-operators';
 import { DownloadService } from '@services/download.service';
 import { CMRProduct } from '@models';
-// import {UAParser} from 'ua-parser-js';
+import { UAParser } from 'ua-parser-js';
 
 @Component({
   selector: 'app-download-file-button',
@@ -44,8 +44,8 @@ export class DownloadFileButtonComponent implements OnInit {
 
     // UAParser.js - https://www.npmjs.com/package/ua-parser-js
     // JavaScript library to detect Browser, Engine, OS, CPU, and Device type/model from User-Agent data with relatively small footprint
-    // const parser = new UAParser();
-    // const userAgent = parser.getResult();
+    const parser = new UAParser();
+    const userAgent = parser.getResult();
     // console.log(userAgent.browser);             // {name: "Chromium", version: "15.0.874.106"}
     // console.log(userAgent.device);              // {model: undefined, type: undefined, vendor: undefined}
     // console.log(userAgent.os);                  // {name: "Ubuntu", version: "11.10"}
@@ -57,8 +57,8 @@ export class DownloadFileButtonComponent implements OnInit {
     // url = 'https://filegen-dev.asf.alaska.edu/generate?bytes=' + megas.trim() + 'e6';
     // url = 'https://filegen-dev.asf.alaska.edu/generate?bytes=10e6';
 
-    // if (userAgent.browser.name !== 'Chrome') {
-    if (true) {
+    // if (true) {
+    if (userAgent.browser.name !== 'Chrome') {
       classicDownload(this.url, this.fileName).then( () => {
         this.dlInProgress = false;
         this.dlComplete = true;
