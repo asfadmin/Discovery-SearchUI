@@ -172,10 +172,10 @@
             </ng-container>
 
             <mat-menu #dataMenu="matMenu" yPosition="above">
-<!--              <app-download-all-->
-<!--                (dlAllEvent)="downloadAllFiles()"-->
-<!--              >-->
-<!--              </app-download-all>-->
+              <app-download-all
+                (dlAllEvent)="downloadAllFiles()"
+              >
+              </app-download-all>
               <button mat-menu-item (click)="onMakeDownloadScript()">
                 Download Python Script (.py)
               </button>
