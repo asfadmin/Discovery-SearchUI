@@ -29,11 +29,14 @@
     <button mat-button (click)="onOpenPinnedProducts(selectedID)">View Selected Products on SARViews</button>
     <!-- <div>{{currentPinnedUrl(selectedID)}}</div> -->
     <!-- <mat-form-field> -->
-  <mat-selection-list [(ngModel)]="selectedProducts" class="product-list">
-    <div *ngFor="let type of (sarviewsEventProductTypes$ | async)">
-    <mat-expansion-panel>
-      <mat-expansion-panel-header matSubheader>{{type}}: {{(sarviewsEventsProductsByProcessingType$ | async)[type].length}} product{{(sarviewsEventsProductsByProcessingType$ | async)[type].length != 1 ? 's' : ''}}</mat-expansion-panel-header>
-      <mat-list-option [value]="prod" *ngFor="let prod of (sarviewsEventsProductsByProcessingType$ | async)[type]">
+  <mat-selection-list [(ngModel)]="selectedProducts" class="product-list" *ngIf="(sarviewsEventProductTypes$ | async) as productTypes">
+    <div *ngFor="let type of productTypes">
+      <div *ngIf="productsByProductType !== null">
+    <mat-expansion-panel *ngIf="productsByProductType[type] as byProcessingType">
+      <mat-expansion-panel-header matSubheader>{{type}}:
+        {{byProcessingType.length}}
+        product{{byProcessingType.length != 1 ? 's' : ''}}</mat-expansion-panel-header>
+      <mat-list-option [value]="prod" *ngFor="let prod of byProcessingType">
       <div class="sarview-products-list">
         <img style="width: 50px; height: 50px;" src="{{prod.files.browse_url}}">
 
@@ -43,7 +46,7 @@
     </mat-list-option>
 
   </mat-expansion-panel>
-
+  </div>
 </div>
 
   </mat-selection-list>

@@ -2,7 +2,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { SubSink } from 'subsink';
 
 import { combineLatest } from 'rxjs';
-import { debounceTime, filter, map, switchMap } from 'rxjs/operators';
+import { debounceTime, filter, map, switchMap, withLatestFrom } from 'rxjs/operators';
 
 import { Store } from '@ngrx/store';
 import { AppState } from '@store';
@@ -23,6 +23,7 @@ import { SarviewsProduct } from '@models';
 })
 export class SceneFilesComponent implements OnInit, OnDestroy {
   public products: models.CMRProduct[];
+  public productsByProductType: {[processing_type: string]: SarviewsProduct[]} = {};
   public queuedProductIds$ = this.store$.select(queueStore.getQueuedProductIds).pipe(
       map(names => new Set(names))
   );
@@ -44,8 +45,11 @@ export class SceneFilesComponent implements OnInit, OnDestroy {
     })
   )
 
-  public sarviewsEventsProductsByProcessingType$ = combineLatest([this.sarviewsEventProductTypes$, this.sarviewsEventProducts$]).pipe(
-    map(([processing_types, eventProducts]) => {
+  public sarviewsEventsProductsByProcessingType$ = this.sarviewsEventProducts$.pipe(
+    filter(events => !!events),
+    withLatestFrom(this.sarviewsEventProductTypes$),
+    filter(([_, processing_types]) => !!processing_types),
+    map(([eventProducts, processing_types]) => {
       let productsByProductType: {[processing_type: string]: SarviewsProduct[]} = {};
       processing_types.forEach(t => productsByProductType[t] = []);
       eventProducts.forEach(prod => productsByProductType[prod.job_type].push(prod));
@@ -102,6 +106,12 @@ export class SceneFilesComponent implements OnInit, OnDestroy {
             this.afterUnzip = this.getAfterUnzip(products);
           }
         }
+      )
+    );
+
+    this.subs.add(
+      this.sarviewsEventsProductsByProcessingType$.subscribe(
+        val => this.productsByProductType = val
       )
     );
 

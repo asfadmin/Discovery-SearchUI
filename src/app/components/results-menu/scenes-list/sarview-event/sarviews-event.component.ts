@@ -3,6 +3,7 @@ import { SarviewsEvent } from '@models';
 
 import * as models from '@models';
 import * as sceneStore from '@store/scenes';
+import * as proj from 'ol/proj';
 
 import { MapService } from '@services';
 import { Store } from '@ngrx/store';
@@ -46,7 +47,8 @@ export class SarviewsEventComponent implements OnInit {
     this.mapService.selectedSarviewEvent$.next(this.event.event_id);
     const point = this.mapService.getEventCoordinate(this.event.event_id);
     let coords = point.getCoordinates();
-    this.mapService.panToEvent(coords);
+    const [lat, lon] = proj.toLonLat(coords, this.mapService.epsg());
+    this.mapService.panToEvent({lat, lon});
     this.store$.dispatch(new sceneStore.SetSelectedSarviewsEvent(this.event.event_id));
   }
 

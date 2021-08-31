@@ -2,13 +2,18 @@ import { HttpClient,
   // HttpErrorResponse
  } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { SarviewsEvent, SarviewsProcessedEvent, SarviewsProduct } from '@models';
+import { LonLat, SarviewsEvent, SarviewsProcessedEvent, SarviewsProduct } from '@models';
 import {
   // forkJoin,
    Observable, of } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 // import { Feature } from 'geojson';
 import { Range } from '@models';
+import { WktService } from '@services';
+import { MapService } from './map/map.service';
+import { Coordinate } from 'ol/coordinate';
+import MultiPolygon from 'ol/geom/MultiPolygon';
+import Polygon from 'ol/geom/Polygon';
 
 @Injectable({
   providedIn: 'root'
@@ -18,6 +23,8 @@ export class SarviewsEventsService {
   private eventsUrl = `https://gm3385dq6j.execute-api.us-west-2.amazonaws.com/events`;
 
   constructor(private http: HttpClient,
+    private wktService: WktService,
+    private mapService: MapService,
               ) { }
 
   public getSarviewsEvents$(): Observable<SarviewsEvent[]> {
@@ -26,7 +33,8 @@ export class SarviewsEventsService {
         event => {
           return {
             ...event,
-            processing_timeframe: this.getDates(event)
+            processing_timeframe: this.getDates(event),
+            point: this.getEventPoint(event.wkt),
           };
         }
     )));
@@ -128,5 +136,24 @@ export class SarviewsEventsService {
     }
 
     return eventDates;
+  }
+
+  private getEventPoint(wkt: string): LonLat {
+    const isMultiPolygon = wkt.includes('MULTIPOLYGON');
+    const feature = this.wktService.wktToFeature(wkt, this.mapService.epsg());
+
+    const geom = feature.getGeometry();
+
+    let polygonCoordinates: Coordinate[];
+    if(isMultiPolygon) {
+      polygonCoordinates = (geom as MultiPolygon).getPolygon(0).getCoordinates()[0];
+    } else {
+      polygonCoordinates = (geom as Polygon).getCoordinates()[0];
+    }
+
+      const centerLat = (polygonCoordinates[0][0] + polygonCoordinates[1][0] + polygonCoordinates[2][0] + polygonCoordinates[3][0]) / 4.0;
+      const centerLon = (polygonCoordinates[0][1] + polygonCoordinates[1][1] + polygonCoordinates[2][1] + polygonCoordinates[3][1]) / 4.0;
+
+      return{lon: centerLon, lat: centerLat};
   }
 }

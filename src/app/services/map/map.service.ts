@@ -20,9 +20,8 @@ import * as sceneStore from '@store/scenes';
 
 import * as polygonStyle from './polygon.style';
 import * as views from './views';
-import { SarviewsEvent } from '@models';
-import MultiPolygon from 'ol/geom/MultiPolygon';
-import { Coordinate } from 'ol/coordinate';
+import { LonLat, SarviewsEvent } from '@models';
+// import { Coordinate } from 'ol/coordinate';
 import { EventEmitter } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { AppState } from '@store';
@@ -30,6 +29,7 @@ import { Icon, Style } from 'ol/style';
 import IconAnchorUnits from 'ol/style/IconAnchorUnits';
 import Polygon, { circular } from 'ol/geom/Polygon';
 import WKT from 'ol/format/WKT';
+// import MultiPolygon from 'ol/geom/MultiPolygon';
 // import WKT from 'ol/format/WKT';
 // import { SarviewsEventsService } from '@services';
 
@@ -203,32 +203,24 @@ export class MapService {
         const feature = this.wktService.wktToFeature(wkt, projection);
         feature.set('filename', sarviewEvent.description);
 
-        const geom = (feature.getGeometry() as MultiPolygon).getCoordinates();
-
-        const polygon: unknown = geom[0][0];
-
         let point: Point;
-        if((polygon as Coordinate).length === 2) {
-          let x = polygon as Coordinate;
-          point = new Point([x[0], x[1]]);
-        } else {
-          const centerLat = (polygon[0][0] + polygon[1][0] + polygon[2][0] + polygon[3][0]) / 4.0;
-          const centerLon = (polygon[0][1] + polygon[1][1] + polygon[2][1] + polygon[3][1]) / 4.0;
-          point = new Point([centerLat, centerLon]);
-        }
+        point = new Point([sarviewEvent.point.lat, sarviewEvent.point.lon]);
 
-        point.scale(20);
+        // point.scale(20);
         feature.set("eventPoint", point);
         feature.setGeometryName("eventPoint");
         feature.set("sarviews_id", sarviewEvent.event_id);
 
         if(sarviewEvent.event_type !== 'flood') {
+          let active = false;
           let iconName = sarviewEvent.event_type === 'quake' ? 'Earthquake_inactive.svg' : 'Volcano_inactive.svg';
           if(!!sarviewEvent.processing_timeframe.end) {
             if(currentDate <= new Date(sarviewEvent.processing_timeframe.end)) {
+              active = true;
               iconName = iconName.replace('_inactive', '');
             }
           } else {
+            active = true;
             iconName = iconName.replace('_inactive', '');
           }
           const iconStyle = new Style({
@@ -240,16 +232,16 @@ export class MapService {
               scale: 0.1,
               offset: [0, 10]
             }),
+            zIndex: active ? 1: 0
           });
 
           feature.setStyle(iconStyle);
         }
-        // console.log(feature);
+
         this.sarviewsFeaturesByID[sarviewEvent.event_id] = feature;
 
         return feature;
       });
-      // console.log(features);
       return features;
   }
 
@@ -293,14 +285,16 @@ export class MapService {
     });
   }
 
-  public panToEvent(eventCoord: Coordinate) {
+  public panToEvent(eventCoord: LonLat) {
     // const feature = this.map.getfeature(this.map.getPixelFromCoordinate(eventCoord))[0].getGeometry();
     // console.log(feature.getExtent());
     // this.map.getView().setCenter(eventCoord);
+    // const latOffset = ((eventCoord.lon + 180) / 2) - 90;
+    const x = proj.fromLonLat([eventCoord.lat, eventCoord.lon - 8], this.epsg());
     this.map.getView().animate({
-      center: eventCoord,
+      center: x,
       duration: 500,
-      zoom: 5.0
+      zoom: 5.0,
     });
     // this.map.getView().setCenter(feature[0]);
   }

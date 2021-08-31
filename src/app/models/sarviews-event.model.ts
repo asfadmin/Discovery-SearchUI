@@ -1,3 +1,5 @@
+// import Point from 'ol/geom/Point';
+import { LonLat } from './map.model';
 import { Range } from './range.model';
 
 // export type SarviewsEvent = SarviewsQuakeEvent
@@ -28,7 +30,7 @@ export interface SarviewsEvent {
   event_type: string;
   processing_timeframe: Range<null | Date>;
   wkt: string;
-  coordinates: number[]
+  point: LonLat;
 }
 
 export enum SarviewsEventType {
