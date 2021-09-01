@@ -42,6 +42,7 @@ export interface FiltersState {
   sarviewsEventTypes: models.SarviewsEventType[];
   sarviewsEventNameFilter: string;
   sarviewsEventActiveOnly: boolean;
+  sarviewsMagnitudeRange: models.Range<number>;
 }
 
 
@@ -100,6 +101,10 @@ export const initState: FiltersState = {
   sarviewsEventTypes: [],
   sarviewsEventNameFilter: null,
   sarviewsEventActiveOnly: false,
+  sarviewsMagnitudeRange: {
+    start: null,
+    end: null
+  },
 };
 
 
@@ -624,6 +629,30 @@ export function filtersReducer(state = initState, action: FiltersActions): Filte
         sarviewsEventActiveOnly: action.payload
       }
     }
+    case FiltersActionType.SET_SARVIEWS_MAGNITUDE_START: {
+      return {
+        ...state,
+        sarviewsMagnitudeRange: {...state.sarviewsMagnitudeRange, start: action.payload}
+      }
+    }
+    case FiltersActionType.SET_SARVIEWS_MAGNITUDE_END: {
+      return {
+        ...state,
+        sarviewsMagnitudeRange: {...state.sarviewsMagnitudeRange, end: action.payload}
+      }
+    }
+    case FiltersActionType.SET_SARVIEWS_MAGNITUDE_RANGE: {
+      return {
+        ...state,
+        sarviewsMagnitudeRange: action.payload
+      }
+    }
+    case FiltersActionType.CLEAR_SARVIEWS_MAGNITUDE_RANGE: {
+      return {
+        ...state,
+        sarviewsMagnitudeRange: initState.sarviewsMagnitudeRange
+      }
+    }
     default: {
       return state;
     }
@@ -879,4 +908,9 @@ export const getSarviewsEventNameFilter = createSelector(
 export const getSarviewsEventActiveFilter = createSelector(
   getFiltersState,
   (state: FiltersState) => state.sarviewsEventActiveOnly
+);
+
+export const getSarviewsMagnitudeRange = createSelector(
+  getFiltersState,
+  (state: FiltersState) => state.sarviewsMagnitudeRange
 );

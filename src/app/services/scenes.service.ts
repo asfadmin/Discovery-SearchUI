@@ -12,7 +12,7 @@ import {
 } from '@store/scenes/scenes.reducer';
 import {
   getTemporalRange, getPerpendicularRange, getDateRange,
-  getProductTypes, getProjectName, getJobStatuses, getProductNameFilter, getSeason, getSarviewsEventNameFilter, getSarviewsEventTypes
+  getProductTypes, getProjectName, getJobStatuses, getProductNameFilter, getSeason, getSarviewsEventNameFilter, getSarviewsEventTypes, getSarviewsEventActiveFilter
 } from '@store/filters/filters.reducer';
 import { getShowS1RawData, getShowExpiredData } from '@store/ui/ui.reducer';
 import { getSearchType } from '@store/search/search.reducer';
@@ -64,8 +64,10 @@ export class ScenesService {
       this.filterSarviewsEventsByName$(
         this.filterByEventType$(
         this.filterByEventDate$(
-          this.store$.select(getSarviewsEvents)
+          this.filterByEventActivity$(
+            this.store$.select(getSarviewsEvents)
           )
+        )
         )
       )
     )
@@ -486,5 +488,31 @@ export class ScenesService {
         }
       )
     )
+  }
+
+  private filterByEventActivity$(events$: Observable<SarviewsEvent[]>) {
+    return combineLatest([
+      events$,
+      this.store$.select(getSarviewsEventActiveFilter)
+    ]).pipe(
+      map(([events, activeOnly]) => {
+        if(!activeOnly) {
+          return events;
+        }
+
+        const currentDate = new Date();
+
+        return events.filter( event => {
+          if(!!event.processing_timeframe.end) {
+            if(currentDate <= event.processing_timeframe.end) {
+              return true;
+            }
+          } else {
+            return true;
+          }
+          return false;
+        });
+      })
+    );
   }
 }

@@ -77,6 +77,11 @@ export enum FiltersActionType {
   SET_SARVIEWS_EVENT_TYPES = '[Filters] Set SARViews event types',
   SET_SARVIEWS_EVENT_NAME_FILTER = '[Filters] Set SARViews event name filter',
   SET_SARVIEWS_EVENT_ACTIVE_FILTER = '[Filters] Set SARViews event active processing filter',
+  SET_SARVIEWS_MAGNITUDE_START = '[Filters] Set SARViews quake event magnitude range filter start',
+  SET_SARVIEWS_MAGNITUDE_END = '[Filters] Set SARViews quake event magnitude range filter end',
+  SET_SARVIEWS_MAGNITUDE_RANGE = '[Filters] Set SARViews quake event magnitude range filter',
+  CLEAR_SARVIEWS_MAGNITUDE_RANGE = '[Filters] Clear SARViews quake event magnitude range',
+
 }
 
 export class SetSelectedDataset implements Action {
@@ -351,6 +356,28 @@ export class SetSarviewsEventActiveFilter implements Action {
   constructor(public payload: boolean) {}
 }
 
+export class SetSarviewsMagnitudeStart implements Action {
+  public readonly type = FiltersActionType.SET_SARVIEWS_MAGNITUDE_START;
+
+  constructor(public payload: number) {}
+}
+
+export class SetSarviewsMagnitudeEnd implements Action {
+  public readonly type = FiltersActionType.SET_SARVIEWS_MAGNITUDE_END;
+
+  constructor(public payload: number) {}
+}
+
+export class SetSarviewsMagnitudeRange implements Action {
+  public readonly type = FiltersActionType.SET_SARVIEWS_MAGNITUDE_RANGE;
+
+  constructor(public payload: models.Range<number>) {}
+}
+
+export class ClearSarviewsMagnitudeRange implements Action {
+  public readonly type = FiltersActionType.CLEAR_SARVIEWS_MAGNITUDE_RANGE;
+}
+
 export class SetDefaultFilters implements Action {
   public readonly type = FiltersActionType.SET_DEFAULT_FILTERS;
   constructor(public payload: {
@@ -410,4 +437,8 @@ export type FiltersActions =
   | SetDefaultFilters
   | SetSarviewsEventTypes
   | SetSarviewsEventNameFilter
-  | SetSarviewsEventActiveFilter;
+  | SetSarviewsEventActiveFilter
+  | SetSarviewsMagnitudeStart
+  | SetSarviewsMagnitudeEnd
+  | SetSarviewsMagnitudeRange
+  | ClearSarviewsMagnitudeRange;
