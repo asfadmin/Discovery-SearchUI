@@ -133,11 +133,11 @@ export class ScenesListComponent implements OnInit, OnDestroy {
         })
       ).subscribe(
         idx => {
-          // if (!this.selectedFromList) {
+          if (!this.selectedFromList) {
             this.scrollTo(idx);
-          // }
+          }
 
-          // this.selectedFromList = false;
+          this.selectedFromList = false;
         }
       )
     );
