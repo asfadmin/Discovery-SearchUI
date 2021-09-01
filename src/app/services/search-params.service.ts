@@ -130,7 +130,7 @@ export class SearchParamsService {
 
   private baselineSearchParams$() {
     return this.store$.select(scenesStore.getFilterMaster).pipe(
-      map(master => ({ master }))
+      map(reference => ({ reference }))
     );
   }
 
