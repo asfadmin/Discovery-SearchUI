@@ -12,7 +12,7 @@ import {
 } from '@store/scenes/scenes.reducer';
 import {
   getTemporalRange, getPerpendicularRange, getDateRange,
-  getProductTypes, getProjectName, getJobStatuses, getProductNameFilter, getSeason, getSarviewsEventNameFilter, getSarviewsEventTypes, getSarviewsEventActiveFilter
+  getProductTypes, getProjectName, getJobStatuses, getProductNameFilter, getSeason, getSarviewsEventNameFilter, getSarviewsEventTypes, getSarviewsEventActiveFilter, getSarviewsMagnitudeRange
 } from '@store/filters/filters.reducer';
 import { getShowS1RawData, getShowExpiredData } from '@store/ui/ui.reducer';
 import { getSearchType } from '@store/search/search.reducer';
@@ -20,7 +20,7 @@ import { getSearchType } from '@store/search/search.reducer';
 import {
   CMRProduct, SearchType,
   Range, ColumnSortDirection,
-  Hyp3Job, Hyp3JobStatusCode, SarviewsEvent
+  Hyp3Job, Hyp3JobStatusCode, SarviewsEvent, SarviewsQuakeEvent
 } from '@models';
 import { NotificationService } from './notification.service';
 
@@ -61,13 +61,15 @@ export class ScenesService {
 
   public saviewsEvents$(): Observable<SarviewsEvent[]> {
     return (
+      this.filterByEventMagnitude$(
       this.filterSarviewsEventsByName$(
         this.filterByEventType$(
         this.filterByEventDate$(
           this.filterByEventActivity$(
-            this.store$.select(getSarviewsEvents)
+                this.store$.select(getSarviewsEvents)
+              )
+            )
           )
-        )
         )
       )
     )
@@ -514,5 +516,35 @@ export class ScenesService {
         });
       })
     );
+  }
+
+  private filterByEventMagnitude$(events$: Observable<SarviewsEvent[]>) {
+    return combineLatest([
+      events$,
+      this.store$.select(getSarviewsMagnitudeRange),
+    ]).pipe(
+      map(([events, magRange]) => {
+        {
+          if(!magRange.start && !magRange.end) {
+            return events;
+          } else if(magRange.start === 0 && magRange.end === 10) {
+            return events;
+          }
+
+          return events.filter(event => {
+            if(event.event_type.toLowerCase() === 'quake') {
+              const magEvent = <SarviewsQuakeEvent>event;
+              const start = !!magRange.start ? magRange.start : 0;
+              const end = !!magRange.end ? magRange.end : 10;
+
+              return magEvent.magnitude <= end && magEvent.magnitude >= start;
+            }
+
+            return true;
+            }
+          );
+        }
+      })
+    )
   }
 }
