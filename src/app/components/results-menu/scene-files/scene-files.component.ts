@@ -2,7 +2,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { SubSink } from 'subsink';
 
 import { combineLatest } from 'rxjs';
-import { debounceTime, filter, map, switchMap, withLatestFrom } from 'rxjs/operators';
+import { debounceTime, filter, map, withLatestFrom } from 'rxjs/operators';
 
 import { Store } from '@ngrx/store';
 import { AppState } from '@store';
@@ -32,10 +32,7 @@ export class SceneFilesComponent implements OnInit, OnDestroy {
       map(event => event.event_id)
   );
 
-  public sarviewsEventProducts$ = this.selectedSarviewsEventID$.pipe(
-    switchMap(eventId => this.sarviewsService.getEventFeature(eventId)),
-    filter(events => !!events),
-    map(event => event.products));
+  public sarviewsEventProducts$ = this.store$.select(scenesStore.getSelectedSarviewsEventProducts);
 
   public sarviewsEventProductTypes$ = this.sarviewsEventProducts$.pipe(
     map(products => {
@@ -214,6 +211,10 @@ export class SceneFilesComponent implements OnInit, OnDestroy {
   // public onSarviewProductSelectionChange(current_id: string) {
   //   console.log(this.sarviewsService.getSarviewsEventPinnedUrl(current_id, this.selectedProducts));
   // }
+
+  public downloadProduct(product_url: string) {
+    window.open(product_url);
+  }
 
   public currentPinnedUrl(current_id: string): string {
     if(!!current_id && !!this.selectedProducts) {

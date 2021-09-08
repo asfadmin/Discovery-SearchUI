@@ -19,6 +19,7 @@ import {
 
 import * as models from '@models';
 import { SubSink } from 'subsink';
+import { SarviewsProduct } from '@models';
 
 @Component({
   selector: 'app-scenes-list-header',
@@ -32,6 +33,7 @@ export class ScenesListHeaderComponent implements OnInit, OnDestroy {
   public numSarviewsScenes$ = this.store$.select(scenesStore.getNumberOfSarviewsEvents);
   public products = [];
   public downloadableProds = [];
+  public sarviewsEventProducts: SarviewsProduct[] = [];
   public numBaselineScenes$ = this.scenesService.scenes$().pipe(
     map(scenes => scenes.length),
   );
@@ -156,6 +158,12 @@ export class ScenesListHeaderComponent implements OnInit, OnDestroy {
         products => this.queuedProducts = products
         )
     );
+
+    this.subs.add(
+      this.store$.select(scenesStore.getSelectedSarviewsEventProducts).subscribe(
+        products => this.sarviewsEventProducts = products
+      )
+    )
   }
 
   public onZoomToResults(): void {
@@ -248,6 +256,10 @@ export class ScenesListHeaderComponent implements OnInit, OnDestroy {
 
   public onMakeDownloadScript(products: models.CMRProduct[]): void {
     this.store$.dispatch(new queueStore.MakeDownloadScriptFromList(products));
+  }
+
+  public onMakeSarviewsProductDownloadScript(products: models.SarviewsProduct[]): void {
+    this.store$.dispatch(new queueStore.makeDownloadScriptFromSarviewsProducts(products));
   }
 
   public onMetadataExport(format: models.AsfApiOutputFormat): void {
