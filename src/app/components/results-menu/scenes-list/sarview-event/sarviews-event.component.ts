@@ -8,7 +8,6 @@ import * as proj from 'ol/proj';
 import { MapService } from '@services';
 import { Store } from '@ngrx/store';
 import { AppState } from '@store';
-import { filter, map } from 'rxjs/operators';
 
 @Component({
   selector: 'app-sarviews-event',
@@ -17,16 +16,11 @@ import { filter, map } from 'rxjs/operators';
 })
 export class SarviewsEventComponent implements OnInit {
   @Input() event: SarviewsEvent
-
+  @Input() selected: boolean;
   public hovered = false;
 
   public breakpoint: models.Breakpoints;
   public breakpoints = models.Breakpoints;
-
-  public isSelected$ = this.store$.select(sceneStore.getSelectedSarviewsEvent).pipe(
-    filter(event => !!event),
-    map(sarviewsEvent => sarviewsEvent.event_id === this.event.event_id)
-  )
 
   constructor(private mapService: MapService,
     private store$: Store<AppState>,

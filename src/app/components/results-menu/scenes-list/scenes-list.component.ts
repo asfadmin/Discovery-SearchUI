@@ -38,6 +38,7 @@ export class ScenesListComponent implements OnInit, OnDestroy {
   public allJobNames: string[];
   public queuedJobs: QueuedHyp3Job[];
   public selected: string;
+  public selectedEvent: string;
 
   public hyp3ableByScene: {[scene: string]: {byJobType: models.Hyp3ableProductByJobType[], total: number}} = {};
 
@@ -121,6 +122,7 @@ export class ScenesListComponent implements OnInit, OnDestroy {
         withLatestFrom(this.scenesService.saviewsEvents$()),
         delay(20),
         filter(([selected, _]) => !!selected),
+        tap(([selected, _]) => this.selectedEvent = selected.event_id),
         // tap(([selected, _]) => this.selected = selected.id),
         map(([selected, events]) => {
           let sceneIdx = -1;
