@@ -15,6 +15,7 @@ import { UpdateSearchWithFilters, UpdateSearchName, DeleteSavedSearch,
 } from '@store/user/user.action';
 
 import * as models from '@models';
+import { getSarviewsMagnitudeRange } from '@store/filters';
 
 
 @Injectable({
@@ -83,11 +84,16 @@ export class SavedSearchService {
     this.store$.select(filtersStore.getDateRange),
     this.store$.select(filtersStore.getSarviewsEventTypes),
     this.store$.select(filtersStore.getSarviewsEventNameFilter),
+    this.store$.select(filtersStore.getSarviewsEventActiveFilter),
+    this.store$.select(getSarviewsMagnitudeRange),
   ).pipe(
-    map(([dateRange, sarviewsEventTypes, sarviewsEventNameFilter]) => ({
+    map(([dateRange, sarviewsEventTypes, sarviewsEventNameFilter,
+      activeOnly, magnitude]) => ({
       dateRange,
       sarviewsEventTypes,
-      sarviewsEventNameFilter
+      sarviewsEventNameFilter,
+      activeOnly,
+      magnitude
     })
   )
   );

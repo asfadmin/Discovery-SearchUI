@@ -57,8 +57,8 @@ export class DateSelectorComponent implements OnInit, OnDestroy {
   );
   public startDate$ = this.store$.select(filtersStore.getStartDate);
   public endDate$ = this.store$.select(filtersStore.getEndDate);
-  public startDate: Date;
-  public endDate: Date;
+  public startDate: Date = new Date();
+  public endDate: Date = new Date();
 
   private subs = new SubSink();
 

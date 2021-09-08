@@ -87,6 +87,7 @@ export interface SarviewsFiltersType {
   // frameRange: Range<number | null>;
   // season: Range<number | null>;
   dateRange: Range<null | Date>;
-
+  magnitude: Range<null | number>;
+  activeOnly: boolean;
   sarviewsEventNameFilter: string;
 }

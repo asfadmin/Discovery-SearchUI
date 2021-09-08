@@ -7,30 +7,30 @@
     <mat-label>Start Date</mat-label>
 
     <input matInput
-      [(ngModel)]="startDate"
+      [ngModel]="startDate"
       matTooltip="Scene Start Date (MM/DD/YYYY)"
       (dateChange)="onStartDateChange($event)"
       [min]="minDate$ | async"
       [max]="maxDate$ | async"
-      [matDatepicker]="start"
+      [matDatepicker]="startDatePicker"
       class="clickable"
       name="startInput">
-    <mat-datepicker-toggle matSuffix [for]="start"></mat-datepicker-toggle>
-    <mat-datepicker touchUi="true" [startView]="!!startDate ? 'month' : 'multi-year'" #start></mat-datepicker>
+    <mat-datepicker-toggle matSuffix [for]="startDatePicker"></mat-datepicker-toggle>
+    <mat-datepicker touchUi="true" [startAt]="" [startView]="!!startDate ? 'month' : 'multi-year'" #startDatePicker></mat-datepicker>
   </mat-form-field>
 
   <mat-form-field class="date-input-field"
     [class.invalid-input-animation]="isEndError">
     <mat-label>End Date</mat-label>
     <input matInput
-      [(ngModel)]="endDate"
+      [ngModel]="endDate"
       (dateChange)="onEndDateChange($event)"
       [min]="minDate$ | async"
       [max]="maxDate$ | async"
-      [matDatepicker]="end"
+      [matDatepicker]="endDatePicker"
       matTooltip="Scene End Date (MM/DD/YYYY)"
       name="endInput">
-    <mat-datepicker-toggle matSuffix [for]="end"></mat-datepicker-toggle>
-    <mat-datepicker touchUi="true" [startView]="!!endDate ? 'month' : 'multi-year'" #end></mat-datepicker>
+    <mat-datepicker-toggle matSuffix [for]="endDatePicker"></mat-datepicker-toggle>
+    <mat-datepicker touchUi="true" [startAt]="" [startView]="!!endDate ? 'month' : 'multi-year'" #endDatePicker></mat-datepicker>
   </mat-form-field>
 </form>

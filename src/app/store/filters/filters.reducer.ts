@@ -531,6 +531,17 @@ export function filtersReducer(state = initState, action: FiltersActions): Filte
             projectName: filters.projectName,
             productFilterName: filters.productFilterName
           };
+      } else if(search.searchType === models.SearchType.SARVIEWS_EVENTS) {
+        const filters = <models.SarviewsFiltersType>search.filters;
+
+        return {
+          ... state,
+          dateRange: filters.dateRange,
+          sarviewsEventTypes: filters.sarviewsEventTypes,
+          sarviewsEventNameFilter: filters.sarviewsEventNameFilter,
+          sarviewsEventActiveOnly: filters.activeOnly,
+          sarviewsMagnitudeRange: filters.magnitude
+        }
       } else {
         const filters = <models.GeographicFiltersType>search.filters;
 
