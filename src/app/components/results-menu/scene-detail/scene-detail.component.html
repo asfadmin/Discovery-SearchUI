@@ -47,8 +47,11 @@
       </p>
     </div>
     <div style="display: flex; flex-direction:column">
-    <span style="margin-left: 15px;">More Like This Search Radius: {{sarviewsEventGeoSearchRadius / 1000}} KM</span>
-    <mat-slider style="width: 50%; margin-left: 15px; margin-right: 15px;" min="30" max="750000" (input)="onEventSearchRadiusChange($event)" [value]="sarviewsEventGeoSearchRadius" horizontal></mat-slider>
+    <div class="sarivews-radius-display">
+      More Like This Search Radius:
+        <div style="text-align: right; min-width: 100px;"> {{(sarviewsEventGeoSearchRadius / 1000).toFixed(1)}} Km</div>
+      </div>
+    <mat-slider style="width: 50%; margin-left: 15px; margin-right: 15px;" min="200000" max="750000" (input)="onEventSearchRadiusChange($event)" [value]="sarviewsEventGeoSearchRadius" horizontal></mat-slider>
   </div>
   </div>
 

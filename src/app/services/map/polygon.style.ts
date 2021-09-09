@@ -36,7 +36,7 @@ export const scene = new Style({
 
   export const icon = new Style({
     stroke,
-    fill
+    fill,
   });
 
 export const omitted = new Style({

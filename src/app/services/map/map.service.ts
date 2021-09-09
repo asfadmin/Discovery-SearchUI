@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject, Subject } from 'rxjs';
 import { map, sampleTime } from 'rxjs/operators';
 
-import { Feature, Map, Overlay } from 'ol';
+import { Feature, Map } from 'ol';
 import { Vector as VectorLayer } from 'ol/layer';
 import { Vector as VectorSource } from 'ol/source';
 import * as proj from 'ol/proj';
@@ -29,6 +29,7 @@ import { Icon, Style } from 'ol/style';
 import IconAnchorUnits from 'ol/style/IconAnchorUnits';
 import Polygon, { circular } from 'ol/geom/Polygon';
 import WKT from 'ol/format/WKT';
+import Geometry from 'ol/geom/Geometry';
 // import MultiPolygon from 'ol/geom/MultiPolygon';
 // import WKT from 'ol/format/WKT';
 // import { SarviewsEventsService } from '@services';
@@ -44,7 +45,7 @@ export class MapService {
   private sarviewsEventsLayer: VectorLayer;
   private sarviewsEventRadiusPolygon: Polygon;
   private gridLinesVisible: boolean;
-  private popupOverlay: Overlay;
+  // private popupOverlay: Overlay;
 
   public selectedSarviewEvent$: EventEmitter<string> = new EventEmitter();
   public mapInit$: EventEmitter<Map> = new EventEmitter();
@@ -62,15 +63,22 @@ export class MapService {
     layers: l => l.get('selectable') || false
   });
 
-  public setMapOverlay(popupContainer: Overlay) {
-    this.popupOverlay = popupContainer;
-  }
+  // public setMapOverlay(popupContainer: Overlay) {
+  //   this.popupOverlay = popupContainer;
+  // }
 
   private selectHover = new Select({
     condition: pointerMove,
     style: polygonStyle.hover,
     layers: l => l.get('selectable') || false
   });
+
+  private selectSarviewEventHover = new Select({
+    condition: pointerMove,
+    style: null,
+    layers: l => l === this.sarviewsEventsLayer || false
+  });
+
 
   private selectedSource = new VectorSource({
     wrapX: models.mapOptions.wrapX
@@ -118,7 +126,15 @@ export class MapService {
     private drawService: DrawService,
     private store$: Store<AppState>,
     // private sarviewsEventService: SarviewsEventsService,
-  ) {}
+  ) {
+
+//   eventSelectControl = new Select(this.sarviewsEventsLayer, {
+//     hover: true
+// });
+// eventSelectControl.events.register('featurehighlighted', null, onFeatureHighlighted);
+
+
+  }
 
   public epsg(): string {
     return this.mapView.projection.epsg;
@@ -134,11 +150,13 @@ export class MapService {
 
   public enableInteractions(): void {
     this.selectHover.setActive(true);
+    this.selectSarviewEventHover.setActive(true);
     this.selectClick.setActive(true);
   }
 
   public disableInteractions(): void {
     this.selectHover.setActive(false);
+    this.selectSarviewEventHover.setActive(false);
     this.selectClick.setActive(false);
   }
 
@@ -195,7 +213,7 @@ export class MapService {
     // }
   }
 
-  public sarviewsEventsToFeatures(events: SarviewsEvent[], projection: string) {
+  public sarviewsEventsToFeatures(events: SarviewsEvent[], projection: string): Feature<Geometry>[] {
     const currentDate = new Date();
     const features = events
       .map(sarviewEvent => {
@@ -403,6 +421,7 @@ export class MapService {
 
     newMap.addInteraction(this.selectClick);
     newMap.addInteraction(this.selectHover);
+    newMap.addInteraction(this.selectSarviewEventHover);
     this.selectClick.on('select', e => {
       e.target.getFeatures().forEach(
         feature => this.newSelectedScene$.next(feature.get('filename'))
@@ -410,6 +429,11 @@ export class MapService {
     });
 
     this.selectHover.on('select', e => {
+      this.map.getTargetElement().style.cursor =
+        e.selected.length > 0 ? 'pointer' : '';
+    });
+
+    this.selectSarviewEventHover.on('select', e => {
       this.map.getTargetElement().style.cursor =
         e.selected.length > 0 ? 'pointer' : '';
     });
@@ -439,7 +463,7 @@ export class MapService {
         if(!!sarview_id) {
           this.selectedSarviewEvent$.next(sarview_id);
           // window.open(`https://sarviews-hazards.alaska.edu/Event/${sarview_id}`)
-          this.popupOverlay.setPosition([evnt.coordinate[0], evnt.coordinate[1] + 200]);
+          // this.popupOverlay.setPosition([evnt.coordinate[0], evnt.coordinate[1] + 200]);
           this.store$.dispatch(new sceneStore.SetSelectedSarviewsEvent(sarview_id));
           // this.popupOverlay.getElement().innerHTML = '<p>You clicked here:</p>';
         }
@@ -447,8 +471,6 @@ export class MapService {
         evnt.preventDefault();
 
         });
-      } else {
-        this.popupOverlay.setPosition(undefined);
       }
     })
 

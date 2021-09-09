@@ -44,7 +44,7 @@ export class MapComponent implements OnInit, OnDestroy  {
   @Output() loadUrlState = new EventEmitter<void>();
   @ViewChild('overlay', { static: true }) overlayRef: ElementRef;
   @ViewChild('map', { static: true }) mapRef: ElementRef;
-  @ViewChild('sarviewPopupContainer', {static: true}) popupRef: ElementRef;
+  // @ViewChild('sarviewPopupContainer', {static: true}) popupRef: ElementRef;
 
   public drawMode$ = this.store$.select(mapStore.getMapDrawMode);
   public interactionMode$ = this.store$.select(mapStore.getMapInteractionMode);
@@ -95,25 +95,25 @@ export class MapComponent implements OnInit, OnDestroy  {
 
   ngOnInit(): void {
 
-    const popupOverlay = new Overlay({
-      element: this.popupRef.nativeElement,
-      autoPan: true,
-      autoPanAnimation: {
-        duration: 250,
-      },
-    });
+    // const popupOverlay = new Overlay({
+    //   element: this.popupRef.nativeElement,
+    //   autoPan: true,
+    //   autoPanAnimation: {
+    //     duration: 250,
+    //   },
+    // });
 
 
-    this.mapService.setMapOverlay(popupOverlay);
-    this.mapService.mapInit$.pipe(
-      filter(olMap => !!olMap)
-      ).subscribe(
-        olMap =>
-        {
-          olMap.addOverlay(popupOverlay);
-          this.mapService.setMapOverlay(popupOverlay);
-        }
-      )
+    // this.mapService.setMapOverlay(popupOverlay);
+    // this.mapService.mapInit$.pipe(
+    //   filter(olMap => !!olMap)
+    //   ).subscribe(
+    //     olMap =>
+    //     {
+    //       olMap.addOverlay(popupOverlay);
+    //       this.mapService.setMapOverlay(popupOverlay);
+    //     }
+    //   )
     // this.mapService.getMap().addOverlay(popupOverlay);
 
     // this.mapService.getMap().on("singleclick", (evnt) => this.mapService.getMap().forEachFeatureAtPixel(
@@ -497,7 +497,9 @@ export class MapComponent implements OnInit, OnDestroy  {
       style
     });
 
-    layer.set('selectable', 'true');
+    if(style !== polygonStyle.icon) {
+      layer.set('selectable', 'true');
+    }
 
     return layer;
   }
