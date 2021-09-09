@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
+import { Component, OnInit, ViewChild, OnDestroy, Input } from '@angular/core';
 import { MatDatepickerInputEvent } from '@angular/material/datepicker';
 import { NgForm } from '@angular/forms';
 import * as moment from 'moment';
@@ -23,6 +23,7 @@ import { DateExtremaService } from '@services';
 })
 export class DateSelectorComponent implements OnInit, OnDestroy {
   @ViewChild('dateForm', { static: true }) public dateForm: NgForm;
+  @Input() public extendEndDateBy: number;
 
   public startDateErrors$ = new Subject<void>();
   public endDateErrors$ = new Subject<void>();
@@ -35,7 +36,19 @@ export class DateSelectorComponent implements OnInit, OnDestroy {
   private selectedDataset$ = this.store$.select(filtersStore.getSelectedDataset);
   public maxDate$ = this.selectedDataset$.pipe(
       map(dataset => dataset.date.end),
-      map(endDate => endDate <= this.currentDate ? endDate : this.currentDate)
+    map(endDate => {
+      const date = endDate <= this.currentDate ? endDate : this.currentDate;
+      console.log(date);
+
+      if (this.extendEndDateBy && !!date) {
+        const d = new Date(date.valueOf());
+        d.setDate(d.getDate() + this.extendEndDateBy);
+        console.log(d);
+        return d;
+      }
+
+      return date;
+    })
     );
   public minDate$ = this.selectedDataset$.pipe(
     map(dataset => dataset.date.start ));
@@ -89,6 +102,15 @@ export class DateSelectorComponent implements OnInit, OnDestroy {
         baselineDateExtrema$,
       ]
       ).subscribe(([searchType, extrema, baselineExtrema]) => {
+        if (this.extendEndDateBy && extrema.end.max !== null) {
+          const endMax = extrema.end.max;
+          const d = new Date(endMax.valueOf());
+          console.log(this.extendEndDateBy);
+          d.setDate(d.getDate() + this.extendEndDateBy);
+
+          extrema.end.max = d ;
+        }
+
         if (searchType === SearchType.DATASET) {
           this.extrema = extrema;
         } else if (searchType === SearchType.CUSTOM_PRODUCTS) {

@@ -8,9 +8,7 @@
 
   <div class="saved-searches__subhead">
     <div class="saved-searches__save-button">
-      <button
-         *ngIf="(searchType$ | async) === SearchType.DATASET"
-         (click)="onCreateSubscription()"
+      <button (click)="onCreateSubscription()"
               mat-raised-button
               color="accent">
         Create Susbscription

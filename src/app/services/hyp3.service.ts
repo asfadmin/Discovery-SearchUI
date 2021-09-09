@@ -117,6 +117,12 @@ export class Hyp3Service {
     return this.http.post(submitJobUrl, body, { withCredentials: true });
   }
 
+  public submiteSubscription$(sub) {
+    const submitUrl = `${this.apiUrl}/subscriptions`;
+
+    return this.http.post(submitUrl, sub, { withCredentials: true });
+  }
+
   public getSubscriptions$(): Observable<models.OnDemandSubscription[]> {
     return of(subsResponse).pipe(
       map(resp => {

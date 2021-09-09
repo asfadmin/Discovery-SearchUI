@@ -39,53 +39,170 @@
   <div class="content-block">
     <div class="content-area">
       <p>
-        Create a subscription to automatically processes new data based on current search
+      Create a subscription to automatically processes new data.
       </p>
 
-      <h2>Subscription</h2>
-      <div>
-        <mat-form-field style="margin-right: 12px;" appearance="fill">
-          <mat-label>Duration</mat-label>
-          <mat-select disableRipple>
-            <mat-option value="30">30 Days</mat-option>
-            <mat-option value="29">29 Days</mat-option>
-            <mat-option value="28">28 Days</mat-option>
-          </mat-select>
-        </mat-form-field>
+      <mat-stepper #stepper>
+        <mat-step>
+          <ng-template matStepLabel>Search Options</ng-template>
 
-        <mat-form-field appearance="fill">
-          <mat-label>Project</mat-label>
-          <mat-select value="30" disableRipple>
-            <mat-option value="30">Cool Stuff</mat-option>
-            <mat-option value="29">Slick Stuff</mat-option>
-            <mat-option value="28">Nice Stuff</mat-option>
-          </mat-select>
-        </mat-form-field>
-      </div>
+          <div>
+            <div style="margin-bottom: 5px;">
+              <b>Subscription Date</b>
+            </div>
+            <app-date-selector [extendEndDateBy]="30"></app-date-selector>
+          </div>
 
-      <h2>Processing Options</h2>
-      <app-processing-options
-         *ngIf="selectedJobTypeId"
-         [selectedJobType]="hyp3JobTypes[selectedJobTypeId]">
-      </app-processing-options>
+          <div>
+            <app-aoi-options></app-aoi-options>
+          </div>
 
-      <h2>Search Options</h2>
+          <div style="margin-bottom: 10px;">
+            <div style="margin-bottom: 5px;">
+              <b>Subscription Options</b>
+            </div>
 
-      <div style="margin-bottom: 10px;">
-        <div><b>Search Type:</b> {{ search.searchType }}</div>
-        <app-search-filters [search]="search"></app-search-filters>
-      </div>
+            <mat-form-field class="sub-option">
+              <mat-select
+                [(value)]="productType"
+                (selectionChange)="onNewProductType($event)"
+                [disabled]="productTypes.length < 1"
+                placeholder="File Type">
+                  <mat-option
+                    *ngFor="let type of productTypes"
+                    [value]="type.apiValue"
+                    [matTooltip]="type.displayName">
+                      {{type.displayName}}
+                  </mat-option>
+              </mat-select>
+
+              <mat-hint align="start">
+                {{ !productType ? 'Select file type' : productType + ' selected' }}
+              </mat-hint>
+            </mat-form-field>
+
+            <mat-form-field class="sub-option">
+              <mat-select
+                (selectionChange)="onNewFlightDirection($event)"
+                [(value)]="flightDirection"
+                placeholder="Direction">
+                <mat-option *ngFor="let direction of flightDirectionTypes" [value]="direction">
+                  {{direction}}
+                </mat-option>
+              </mat-select>
+
+              <mat-hint align="start">
+                {{ !flightDirection ? 'No flight direction selected' : 'Flight direction selected' }}
+              </mat-hint>
+            </mat-form-field>
+
+            <mat-form-field class="sub-option">
+              <mat-select
+                (selectionChange)="onNewPolarization($event)"
+                [(value)]="polarization"
+                placeholder="Polarization">
+                <mat-option *ngFor="let pol of polarizations" [value]="pol">
+                  {{pol}}
+                </mat-option>
+              </mat-select>
+
+              <mat-hint align="start">
+                {{ !polarization ? 'No polarization selected' : 'Polarization selected' }}
+              </mat-hint>
+            </mat-form-field>
+
+            <mat-form-field class="sub-option">
+              <mat-select
+                [(value)]="subtype"
+                (selectionChange)="onNewSubType($event)"
+                placeholder="Sentinel-1 Type">
+                  <mat-option
+                    *ngFor="let type of s1Subtypes"
+                    [value]="type.apiValue"
+                    [matTooltip]="type.displayName">
+                      {{type.displayName}}
+                  </mat-option>
+              </mat-select>
+
+              <mat-hint align="start">
+                {{ !productType ? 'Select type' : subtype + ' selected' }}
+              </mat-hint>
+            </mat-form-field>
+
+          </div>
+        </mat-step>
+
+        <mat-step label="Current Processing Options">
+          <ng-template matStepLabel>Processing Options</ng-template>
+
+          <h3>RTC Gamma</h3>
+          <app-processing-options
+                  *ngIf="selectedJobTypeId"
+                  [selectedJobType]="hyp3JobTypes[selectedJobTypeId]">
+          </app-processing-options>
+        </mat-step>
+
+        <mat-step>
+          <ng-template matStepLabel>Review</ng-template>
+
+          <h3>Name: </h3>
+          <app-project-name-selector [processName]="true"></app-project-name-selector>
+
+          <h3>Search:</h3>
+          <div>
+            <div *ngIf="!!subtype">
+              <b>Dataset:</b> {{ subtype }}
+            </div>
+            <div *ngIf="!!polygon">
+              <b>Search Area:</b> {{ showSearchAreaType(polygon) }}
+            </div>
+
+            <div *ngIf="!!dateRange.start">
+              <b>Start:</b> {{ dateRange.start | shortDate }}
+            </div>
+            <div *ngIf="!!dateRange.end">
+              <b>End:</b> {{ dateRange.end | shortDate }}
+            </div>
+
+            <div *ngIf="!!productType">
+              <b>File Type:</b> {{ productType }}
+            </div>
+
+            <div *ngIf="!!polarizations">
+              <b>Polarization:</b> {{ polarization }}
+            </div>
+
+            <div *ngIf="!!flightDirection">
+              <b>Flight Dir:</b> {{ flightDirection }}
+            </div>
+          </div>
+
+          <h3>Processing Options:</h3>
+
+          <div>
+            <div *ngFor="let param of processingOptionsList">
+              <b>{{ param[0] }}:</b> {{ param[1] }}
+            </div>
+          </div>
+        </mat-step>
+      </mat-stepper>
     </div>
   </div>
 </mat-dialog-content>
 
 <mat-dialog-actions class="mat-dialog-actions">
   <div class="w100 hyp3-footer">
-      <button
-         (click)="onSubmitSubscription()"
-         mat-flat-button
-         color="primary">
-           Submit
-      </button>
+    <button (click)="onBack()" mat-flat-button
+      [disabled]="stepper.selectedIndex === 0">
+      Back
+    </button>
+
+    <button
+       (click)="onNext()"
+       [disabled]=""
+       mat-flat-button
+       color="primary">
+      {{ isLastStep() ? 'Submit' : 'Next'}}
+    </button>
   </div>
 </mat-dialog-actions>
