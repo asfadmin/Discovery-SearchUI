@@ -47,6 +47,18 @@ export class SearchService {
       this.store$.dispatch(new filterStore.ClearDateRange());
       this.store$.dispatch(new filterStore.SetProductNameFilter(''));
     }
+
+    if(searchType === models.SearchType.SARVIEWS_EVENTS) {
+      this.store$.dispatch(new filterStore.SetSarviewsEventNameFilter(''));
+      this.store$.dispatch(new filterStore.SetSarviewsEventTypes([]));
+      this.store$.dispatch(new filterStore.SetSarviewsEventActiveFilter(false));
+      this.store$.dispatch(new filterStore.SetSarviewsMagnitudeRange(
+        {
+          start: null,
+          end: null
+        }
+      ));
+    }
   }
 
   public load(search: models.Search) {

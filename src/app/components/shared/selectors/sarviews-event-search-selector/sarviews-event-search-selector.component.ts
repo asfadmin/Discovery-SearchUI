@@ -40,7 +40,5 @@ export class SarviewsEventSearchSelectorComponent implements OnInit {
   public onSearchQueryChange(event: Event): void {
     let query = (event.target as HTMLInputElement).value;
     this.store$.dispatch(new filterStore.SetSarviewsEventNameFilter(query));
-    console.log(query);
-
   }
 }

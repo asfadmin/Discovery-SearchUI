@@ -3,7 +3,7 @@ import { ResizeEvent } from 'angular-resizable-element';
 import { SubSink } from 'subsink';
 
 import { Subject } from 'rxjs';
-import { filter, map, tap } from 'rxjs/operators';
+import { filter, map } from 'rxjs/operators';
 import { Store } from '@ngrx/store';
 import { ScreenSizeService } from '@services';
 
@@ -20,7 +20,7 @@ import * as models from '@models';
   styleUrls: ['./results-menu.component.scss'],
 })
 export class ResultsMenuComponent implements OnInit, OnDestroy {
-  public isResultsMenuOpen$ = this.store$.select(uiStore.getIsResultsMenuOpen).pipe(tap(val => console.log(val)));
+  public isResultsMenuOpen$ = this.store$.select(uiStore.getIsResultsMenuOpen);
   public selectedProducts$ = this.store$.select(scenesStore.getSelectedSceneProducts);
   public products: models.CMRProduct[];
 
@@ -32,7 +32,6 @@ export class ResultsMenuComponent implements OnInit, OnDestroy {
 
   public noSarviewsEvents$ = this.store$.select(scenesStore.getSarviewsEvents).pipe(
     filter(events => events != undefined && events != null),
-    tap(events => console.log(events)),
     map(events => events.length === 0)
   )
 

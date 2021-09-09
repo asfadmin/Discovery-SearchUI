@@ -55,7 +55,7 @@ export class SarviewsResultsMenuComponent implements OnInit, OnDestroy {
       ).subscribe(
         ([selected, events]) => {
           if(selected == null && !!events) {
-            this.store$.dispatch(new scenesStore.SetSelectedSarviewsEvent(events[0].event_id))
+            this.store$.dispatch(new scenesStore.SetSelectedSarviewsEvent(events[0]?.event_id))
           }
         }
       )

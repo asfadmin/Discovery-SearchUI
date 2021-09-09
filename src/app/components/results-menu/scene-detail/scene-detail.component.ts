@@ -84,7 +84,8 @@ export class SceneDetailComponent implements OnInit, OnDestroy {
       tap(_ => this.isImageLoading = true)
     );
 
-    const sarviewsEvent$ = this.store$.select(scenesStore.getSelectedSarviewsEvent);
+    const sarviewsEvent$ = this.store$.select(scenesStore.getSelectedSarviewsEvent).pipe(
+      filter(selectedEvent => !!selectedEvent));
 
 
     this.subs.add(

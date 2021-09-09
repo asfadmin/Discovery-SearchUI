@@ -4,7 +4,7 @@ import { BehaviorSubject, Subject } from 'rxjs';
 import { map, sampleTime } from 'rxjs/operators';
 
 import { Feature, Map, Overlay } from 'ol';
-import { Layer, Vector as VectorLayer } from 'ol/layer';
+import { Vector as VectorLayer } from 'ol/layer';
 import { Vector as VectorSource } from 'ol/source';
 import * as proj from 'ol/proj';
 import Point from 'ol/geom/Point';
@@ -41,6 +41,7 @@ export class MapService {
   private mapView: views.MapView;
   private map: Map;
   private polygonLayer: VectorLayer;
+  private sarviewsEventsLayer: VectorLayer;
   private sarviewsEventRadiusPolygon: Polygon;
   private gridLinesVisible: boolean;
   private popupOverlay: Overlay;
@@ -183,16 +184,15 @@ export class MapService {
     this.map.addLayer(this.polygonLayer);
   }
 
-  public setLayers(layer: Layer): void {
+  public setEventsLayer(layer: VectorLayer): void {
     // for(const layer in layers) {
+      if (!!this.sarviewsEventsLayer) {
+        this.map.removeLayer(this.sarviewsEventsLayer);
+      }
+
+      this.sarviewsEventsLayer = layer;
       this.map.addLayer(layer);
     // }
-  }
-
-  public setSarviewsEventsLayers(layers: Layer[]): void {
-    for(const layer of layers) {
-      this.map.addLayer(layer);
-    }
   }
 
   public sarviewsEventsToFeatures(events: SarviewsEvent[], projection: string) {

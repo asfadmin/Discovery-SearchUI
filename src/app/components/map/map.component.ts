@@ -27,6 +27,7 @@ import * as models from '@models';
 import { MapService, WktService, ScreenSizeService, ScenesService } from '@services';
 import * as polygonStyle from '@services/map/polygon.style';
 import { SarviewsEvent } from '@models';
+import { StyleLike } from 'ol/style/Style';
 
 enum FullscreenControls {
   MAP = 'Map',
@@ -130,7 +131,7 @@ export class MapComponent implements OnInit, OnDestroy  {
     this.mapService.selectedSarviewEvent$.pipe(
       filter(id => !!id)
     ).subscribe(
-      id => this.selectedSarviewEvent = this.sarviewsEvents.find(event => event.event_id === id)
+      id => this.selectedSarviewEvent = this.sarviewsEvents?.find(event => event?.event_id === id)
     )
 
 
@@ -377,10 +378,10 @@ export class MapComponent implements OnInit, OnDestroy  {
 
     this.subs.add(
       this.sceneSARViewsEventsLayer$(this.mapService.epsg()).pipe(
-        filter(layers => !!layers)
+        filter(layers => !!layers),
       ).subscribe(
-        layers =>
-          this.mapService.setLayers(layers)
+        sarviewsEventsLayer =>
+          this.mapService.setEventsLayer(sarviewsEventsLayer)
       )
     )
 
@@ -432,16 +433,16 @@ export class MapComponent implements OnInit, OnDestroy  {
   private scenePolygonsLayer$(projection: string): Observable<VectorLayer> {
     return this.scenesService.scenes$().pipe(
       map(scenes => this.scenesToFeature(scenes, projection)),
-      map(features => this.featuresToSource(features))
+      map(features => this.featuresToSource(features, polygonStyle.scene))
     );
   }
 
   private sceneSARViewsEventsLayer$(projection: string): Observable<VectorLayer> {
     return this.store$.select(scenesStore.getSarviewsEvents).pipe(
-      filter(events => !!events),
+      // filter(events => !!events),
       tap(events => this.sarviewsEvents = events),
       map(events => this.mapService.sarviewsEventsToFeatures(events, projection)),
-      map(features => this.featuresToSource(features))
+      map(features => this.featuresToSource(features, polygonStyle.icon))
     );
   }
 
@@ -482,21 +483,18 @@ export class MapComponent implements OnInit, OnDestroy  {
         feature.set("eventPoint", point);
         feature.setGeometryName("eventPoint");
 
-        // console.log(feature);
         return feature;
       });
 
-
-      // console.log(features);
       return features;
   }
 
-  private featuresToSource(features): VectorLayer {
+  private featuresToSource(features, style: StyleLike): VectorLayer {
     const layer = new VectorLayer({
       source: new VectorSource({
         features, wrapX: true
       }),
-      style: polygonStyle.scene
+      style
     });
 
     layer.set('selectable', 'true');
