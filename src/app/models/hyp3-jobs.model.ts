@@ -146,6 +146,15 @@ export const InsarGammaJobType: Hyp3JobType = {
     default: '20x4',
     info: `Number of looks to take in range and azimuth.`
   }, {
+    name: 'Apply Water Mask',
+    apiName: 'apply_water_mask',
+    type: JobOptionType.TOGGLE,
+    default: false,
+    info: `
+      Sets pixels over coastal and large inland waterbodies as invalid
+      for phase unwrapping.
+    `
+  }, {
     name: 'Include DEM',
     apiName: 'include_dem',
     type: JobOptionType.CHECKBOX,
