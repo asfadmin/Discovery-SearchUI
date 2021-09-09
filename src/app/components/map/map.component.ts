@@ -438,7 +438,7 @@ export class MapComponent implements OnInit, OnDestroy  {
   }
 
   private sceneSARViewsEventsLayer$(projection: string): Observable<VectorLayer> {
-    return this.store$.select(scenesStore.getSarviewsEvents).pipe(
+    return this.scenesService.saviewsEvents$().pipe(
       // filter(events => !!events),
       tap(events => this.sarviewsEvents = events),
       map(events => this.mapService.sarviewsEventsToFeatures(events, projection)),

@@ -262,7 +262,6 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
       this.subs.add(
       this.store$.select(userStore.getUserProfile).subscribe(
         profile => {
-
           if (this.searchType !== models.SearchType.LIST && this.searchType !== models.SearchType.CUSTOM_PRODUCTS) {
             const defaultFilterID = profile.defaultFilterPresets[this.searchType];
             if (!!defaultFilterID) {
@@ -270,8 +269,7 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
           }
         }
       }
-      )
-      );
+      ));
     }
 
     this.subs.add(

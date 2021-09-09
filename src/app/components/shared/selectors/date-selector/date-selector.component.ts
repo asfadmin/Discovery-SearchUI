@@ -145,7 +145,8 @@ export class DateSelectorComponent implements OnInit, OnDestroy {
         start => {
           this.startDate = start;
           if (this.endDate < this.startDate && !!this.endDate) {
-            this.store$.dispatch(new filtersStore.SetEndDate(this.startDate));
+            const endOfDay = this.endDateFormat(this.startDate);
+            this.store$.dispatch(new filtersStore.SetEndDate(endOfDay));
           }
         }
       )
@@ -184,11 +185,15 @@ export class DateSelectorComponent implements OnInit, OnDestroy {
       date = null;
       this.endDateErrors$.next();
     } else {
-      const momentDate = e.value.set({h: 23, m: 59, s: 59});
-      date = this.toJSDate(momentDate);
+      date = this.endDateFormat(e.value);
     }
 
       this.store$.dispatch(new filtersStore.SetEndDate(date));
+  }
+
+  private endDateFormat(date: Date | moment.Moment) {
+    const endDate = moment(date).set({h: 23, m: 59, s: 59});
+    return this.toJSDate(endDate);
   }
 
   private toJSDate(date: moment.Moment) {

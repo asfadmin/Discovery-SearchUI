@@ -312,7 +312,6 @@ export class HeaderButtonsComponent implements OnInit, OnDestroy {
       'open-saved-searches': true
     });
 
-    this.store$.dispatch(new uiStore.SetSaveSearchOn(false));
     this.store$.dispatch(new uiStore.SetSavedSearchType(SavedSearchType.SAVED));
     this.store$.dispatch(new uiStore.OpenSidebar());
   }
@@ -336,7 +335,6 @@ export class HeaderButtonsComponent implements OnInit, OnDestroy {
       'open-search-history': true
     });
 
-    this.store$.dispatch(new uiStore.SetSaveSearchOn(false));
     this.store$.dispatch(new uiStore.SetSavedSearchType(SavedSearchType.HISTORY));
     this.store$.dispatch(new uiStore.OpenSidebar());
   }
