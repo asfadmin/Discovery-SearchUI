@@ -13,6 +13,7 @@ import { Vector as VectorLayer} from 'ol/layer';
 import { Vector as VectorSource } from 'ol/source';
 import Overlay from 'ol/Overlay';
 import Point from 'ol/geom/Point';
+import * as proj from 'ol/proj';
 
 import tippy, {followCursor} from 'tippy.js';
 import { SubSink } from 'subsink';
@@ -28,6 +29,7 @@ import { MapService, WktService, ScreenSizeService, ScenesService } from '@servi
 import * as polygonStyle from '@services/map/polygon.style';
 import { SarviewsEvent } from '@models';
 import { StyleLike } from 'ol/style/Style';
+import { getSelectedSarviewsEvent } from '@store/scenes';
 
 enum FullscreenControls {
   MAP = 'Map',
@@ -94,6 +96,16 @@ export class MapComponent implements OnInit, OnDestroy  {
   ) {}
 
   ngOnInit(): void {
+    this.subs.add(
+    this.store$.select(getSelectedSarviewsEvent).pipe(
+      filter(event => !!event),
+    ).subscribe( event => {
+      const point = this.mapService.getEventCoordinate(event.event_id);
+      let coords = point.getCoordinates();
+      const [lat, lon] = proj.toLonLat(coords, this.mapService.epsg());
+      this.mapService.panToEvent({lat, lon})
+    })
+    );
 
     // const popupOverlay = new Overlay({
     //   element: this.popupRef.nativeElement,
