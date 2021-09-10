@@ -59,7 +59,7 @@ export class ScenesService {
     ))))))));
   }
 
-  public saviewsEvents$(): Observable<SarviewsEvent[]> {
+  public sarviewsEvents$(): Observable<SarviewsEvent[]> {
     return (
       this.filterByEventMagnitude$(
       this.filterSarviewsEventsByName$(

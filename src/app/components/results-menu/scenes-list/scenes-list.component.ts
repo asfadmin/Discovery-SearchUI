@@ -119,7 +119,7 @@ export class ScenesListComponent implements OnInit, OnDestroy {
 
     this.subs.add(
       this.store$.select(scenesStore.getSelectedSarviewsEvent).pipe(
-        withLatestFrom(this.scenesService.saviewsEvents$()),
+        withLatestFrom(this.scenesService.sarviewsEvents$()),
         delay(20),
         filter(([selected, _]) => !!selected),
         tap(([selected, _]) => this.selectedEvent = selected.event_id),
@@ -153,7 +153,7 @@ export class ScenesListComponent implements OnInit, OnDestroy {
     );
 
     this.subs.add(
-      this.scenesService.saviewsEvents$().subscribe(
+      this.scenesService.sarviewsEvents$().subscribe(
         events => this.sarviewsEvents = events
       )
     )

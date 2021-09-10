@@ -30,7 +30,7 @@ export class ScenesListHeaderComponent implements OnInit, OnDestroy {
   public totalResultCount$ = this.store$.select(searchStore.getTotalResultCount);
   public numberOfScenes$ = this.store$.select(scenesStore.getNumberOfScenes);
   public numberOfProducts$ = this.store$.select(scenesStore.getNumberOfProducts);
-  public numberOfFilteredEvents$ = this.scenesService.saviewsEvents$().pipe(
+  public numberOfFilteredEvents$ = this.scenesService.sarviewsEvents$().pipe(
     filter(events => !!events),
     map(events => events.length));
   public numSarviewsScenes$ = this.store$.select(scenesStore.getNumberOfSarviewsEvents);

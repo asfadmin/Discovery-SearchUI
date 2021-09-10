@@ -2,14 +2,15 @@
   <mat-form-field>
     <input type="text"
     placeholder="Event Search"
-    (change)="onSearchQueryChange($event)"
+    (input)="onSearchQueryChange($event)"
     matInput
     [(ngModel)]="eventQuery"
+    [matAutocomplete]="jobNameSelector"
     >
   </mat-form-field>
-  <mat-autocomplete>
+  <mat-autocomplete
     [panelWidth] = "500"
-    (optionSelected)="onSearchQueryChange($event)"
+    (optionSelected)="onMatAutoCompleteSelect($event)"
     #jobNameSelector="matAutocomplete">
     <mat-option *ngFor="let event of (filteredEvents$ | async)"
         [value]="event.description">

@@ -10,8 +10,9 @@ declare var wNumb: any;
 
 import noUiSlider from 'nouislider';
 import { Observable, Subject } from 'rxjs';
-import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
+import { debounceTime, distinctUntilChanged, map } from 'rxjs/operators';
 import { ScreenSizeService } from '@services';
+import { SarviewsEventType } from '@models';
 
 @Component({
   selector: 'app-sarviews-event-magnitude-selector',
@@ -20,7 +21,7 @@ import { ScreenSizeService } from '@services';
 })
 export class SarviewsEventMagnitudeSelectorComponent implements OnInit, OnDestroy {
   @ViewChild('magnitudeFilter', { static: true }) magnitudeFilter: ElementRef;
-  public magnitudeRange: models.Range<number> = {start: null, end: null};
+  public magnitudeRange: models.Range<number> = {start: 0, end: 10};
   public slider;
   public magSlider;
 
@@ -32,7 +33,14 @@ export class SarviewsEventMagnitudeSelectorComponent implements OnInit, OnDestro
 
   public magnitudeValues$ = new Subject<number[]>();
 
-  constructor(private store$: Store<AppState>, private screenSize: ScreenSizeService) { }
+  public quakeTypesEnabled$ = this.store$.select(filterStore.getSarviewsEventTypes).pipe(
+    map(eventTypes => {
+      return eventTypes === [] || eventTypes.includes(SarviewsEventType.QUAKE)}),
+  );
+
+  constructor(private store$: Store<AppState>,
+    private screenSize: ScreenSizeService,
+    ) { }
 
   ngOnInit(): void {
     this.subs.add(
@@ -53,6 +61,18 @@ export class SarviewsEventMagnitudeSelectorComponent implements OnInit, OnDestro
         ([start, end]) => {
           const action = new filterStore.SetSarviewsMagnitudeRange({ start, end });
           this.store$.dispatch(action);
+        }
+      )
+    );
+
+    this.subs.add(
+      this.quakeTypesEnabled$.subscribe(
+        isEnabled => {
+          if(!isEnabled) {
+            this.magnitudeFilter.nativeElement.setAttribute('disabled', true);
+          } else {
+            this.magnitudeFilter.nativeElement.removeAttribute('disabled');
+          }
         }
       )
     );

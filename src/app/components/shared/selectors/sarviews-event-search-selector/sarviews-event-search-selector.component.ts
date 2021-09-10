@@ -1,5 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
+import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 import { Store } from '@ngrx/store';
 import { ScenesService } from '@services';
 import { AppState } from '@store';
@@ -14,7 +15,7 @@ export class SarviewsEventSearchSelectorComponent implements OnInit {
   @ViewChild('eventsQueryForm') public eventsQueryForm: NgForm;
   public eventQuery: string = '';
 
-  public filteredEvents$ = this.sceneService.saviewsEvents$();
+  public filteredEvents$ = this.sceneService.sarviewsEvents$();
   constructor(private store$: Store<AppState>,
               private sceneService: ScenesService) { }
 
@@ -36,6 +37,11 @@ export class SarviewsEventSearchSelectorComponent implements OnInit {
 
   //   this.store$.dispatch(action);
   // }
+
+  public onMatAutoCompleteSelect(event: MatAutocompleteSelectedEvent) {
+    const eventDescription = event.option.value;
+    this.store$.dispatch(new filterStore.SetSarviewsEventNameFilter(eventDescription));
+  }
 
   public onSearchQueryChange(event: Event): void {
     let query = (event.target as HTMLInputElement).value;
