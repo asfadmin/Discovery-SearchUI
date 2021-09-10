@@ -29,7 +29,7 @@
     <button mat-button (click)="onOpenPinnedProducts(selectedID)">View Selected Products on SARViews</button>
     <!-- <div>{{currentPinnedUrl(selectedID)}}</div> -->
     <!-- <mat-form-field> -->
-  <mat-selection-list [(ngModel)]="selectedProducts" class="product-list" *ngIf="(sarviewsEventProductTypes$ | async) as productTypes">
+  <mat-selection-list [ngModelOptions]="{standalone: true}" [(ngModel)]="selectedProducts" class="product-list" *ngIf="(sarviewsEventProductTypes$ | async) as productTypes">
     <div *ngFor="let type of productTypes">
       <div *ngIf="productsByProductType !== null">
     <mat-expansion-panel *ngIf="productsByProductType[type] as byProcessingType">

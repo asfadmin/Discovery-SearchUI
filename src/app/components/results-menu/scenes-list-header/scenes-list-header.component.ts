@@ -2,7 +2,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { saveAs } from 'file-saver';
 
 import { combineLatest } from 'rxjs';
-import { debounceTime, map } from 'rxjs/operators';
+import { debounceTime, filter, map } from 'rxjs/operators';
 import { Store } from '@ngrx/store';
 
 import { AppState } from '@store';
@@ -30,6 +30,9 @@ export class ScenesListHeaderComponent implements OnInit, OnDestroy {
   public totalResultCount$ = this.store$.select(searchStore.getTotalResultCount);
   public numberOfScenes$ = this.store$.select(scenesStore.getNumberOfScenes);
   public numberOfProducts$ = this.store$.select(scenesStore.getNumberOfProducts);
+  public numberOfFilteredEvents$ = this.scenesService.saviewsEvents$().pipe(
+    filter(events => !!events),
+    map(events => events.length));
   public numSarviewsScenes$ = this.store$.select(scenesStore.getNumberOfSarviewsEvents);
   public products = [];
   public downloadableProds = [];
