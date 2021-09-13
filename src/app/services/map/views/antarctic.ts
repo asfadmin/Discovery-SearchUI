@@ -25,7 +25,7 @@ export function antarctic(): MapView {
     format: 'image/jpeg',
     matrixSet: '500m',
 
-    style: 'wmts_style',
+    style: 'default',
     tileGrid: new WMTSTileGrid({
       origin: [-4194304, 4194304],
       resolutions: [
