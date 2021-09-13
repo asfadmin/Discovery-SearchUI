@@ -5,6 +5,7 @@
     (input)="onSearchQueryChange($event)"
     matInput
     [(ngModel)]="eventQuery"
+    [ngModelOptions]="{standalone: true}"
     [matAutocomplete]="jobNameSelector"
     >
   </mat-form-field>

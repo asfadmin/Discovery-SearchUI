@@ -35,7 +35,7 @@ export class SarviewsEventMagnitudeSelectorComponent implements OnInit, OnDestro
 
   public quakeTypesEnabled$ = this.store$.select(filterStore.getSarviewsEventTypes).pipe(
     map(eventTypes => {
-      return eventTypes === [] || eventTypes.includes(SarviewsEventType.QUAKE)}),
+      return eventTypes.length === 0 || eventTypes.includes(SarviewsEventType.QUAKE)}),
   );
 
   constructor(private store$: Store<AppState>,

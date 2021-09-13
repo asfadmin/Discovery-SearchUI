@@ -27,6 +27,12 @@
         <p>Magnitude: {{(sarviewEvent | quakeEvent).magnitude}}</p>
         <p>Depth: {{(sarviewEvent | quakeEvent).depth}}</p>
         <p>USGS id: {{(sarviewEvent | quakeEvent).usgs_event_id}}</p>
+        <p *ngIf="sarviewEvent.processing_timeframe">
+          Start Date: {{sarviewEvent.processing_timeframe.start | shortDateTime}}
+        </p>
+        <p *ngIf="sarviewEvent.processing_timeframe">
+          End Date: {{sarviewEvent.processing_timeframe.end | shortDateTime}}
+        </p>
         <a target="_blank" href="{{'https://earthquake.usgs.gov/earthquakes/eventpage/' + (sarviewEvent | quakeEvent).usgs_event_id + '#executive'}}">USGS Event Page</a>
       </span>
       </p>
@@ -39,12 +45,7 @@
         <span>
           <p>Description: {{(sarviewEvent | floodEvent).description}}</p></span>
       </p>
-      <p>
-        Start Date: {{sarviewEvent.processing_timeframe.start | shortDateTime}}
-      </p>
-      <p *ngIf="sarviewEvent.processing_timeframe.end">
-        End Date: {{sarviewEvent.processing_timeframe.end | shortDateTime}}
-      </p>
+
     </div>
     <div style="display: flex; flex-direction:column">
     <div class="sarivews-radius-display">

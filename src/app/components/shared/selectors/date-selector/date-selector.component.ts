@@ -37,7 +37,7 @@ export class DateSelectorComponent implements OnInit, OnDestroy {
     withLatestFrom(this.store$.select(searchStore.getSearchType)),
     map(([dataset, searchType]) => {
       if(searchType === SearchType.SARVIEWS_EVENTS) {
-        return this.extrema.start.min;
+        return this.extrema?.end.max;
       }
         return dataset.date.end;
       }
@@ -49,7 +49,7 @@ export class DateSelectorComponent implements OnInit, OnDestroy {
     withLatestFrom(this.store$.select(searchStore.getSearchType)),
     map(([dataset, searchType]) => {
         if(searchType === SearchType.SARVIEWS_EVENTS) {
-          return this.extrema.start.min;
+          return this.extrema?.start.min;
         }
         return dataset.date.start;
       }
