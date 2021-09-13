@@ -30,7 +30,7 @@
         <p *ngIf="sarviewEvent.processing_timeframe">
           Start Date: {{sarviewEvent.processing_timeframe.start | shortDateTime}}
         </p>
-        <p *ngIf="sarviewEvent.processing_timeframe">
+        <p *ngIf="sarviewEvent.processing_timeframe && !isActiveSarviewEvent">
           End Date: {{sarviewEvent.processing_timeframe.end | shortDateTime}}
         </p>
         <a target="_blank" href="{{'https://earthquake.usgs.gov/earthquakes/eventpage/' + (sarviewEvent | quakeEvent).usgs_event_id + '#executive'}}">USGS Event Page</a>
@@ -39,11 +39,25 @@
       <p class="faint-text accessing-text" *ngIf="sarviewEvent.event_type === 'volcano'">
         <span>
         <p>Smithsonian id: {{(sarviewEvent | volcanicEvent).smithsonian_event_id}}</p>
+        <p *ngIf="sarviewEvent.processing_timeframe">
+          Start Date: {{sarviewEvent.processing_timeframe.start | shortDateTime}}
+        </p>
+        <p *ngIf="sarviewEvent.processing_timeframe && !isActiveSarviewEvent">
+          End Date: {{sarviewEvent.processing_timeframe.end | shortDateTime}}
+        </p>
+        <a target="_blank" href="{{'http://volcano.si.edu/volcano.cfm?vn=' + (sarviewEvent | quakeEvent).usgs_event_id + '#executive'}}">Smithsonian Entry</a>
       </span>
       </p>
       <p class="faint-text accessing-text" *ngIf="sarviewEvent.event_type === 'flood'">
         <span>
-          <p>Description: {{(sarviewEvent | floodEvent).description}}</p></span>
+          <p>Description: {{(sarviewEvent | floodEvent).description}}</p>
+          <p *ngIf="sarviewEvent.processing_timeframe">
+            Start Date: {{sarviewEvent.processing_timeframe.start | shortDateTime}}
+          </p>
+          <p *ngIf="sarviewEvent.processing_timeframe && !isActiveSarviewEvent">
+            End Date: {{sarviewEvent.processing_timeframe.end | shortDateTime}}
+          </p>
+        </span>
       </p>
 
     </div>

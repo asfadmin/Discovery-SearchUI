@@ -31,6 +31,7 @@ export class SceneDetailComponent implements OnInit, OnDestroy {
 
   public scene: models.CMRProduct;
   public sarviewEvent: models.SarviewsEvent;
+  public isActiveSarviewEvent = false;
 
   public browses$ = this.store$.select(scenesStore.getSelectedSceneBrowses);
   public jobBrowses$ = this.store$.select(scenesStore.getSelectedOnDemandProductSceneBrowses);
@@ -92,6 +93,13 @@ export class SceneDetailComponent implements OnInit, OnDestroy {
       sarviewsEvent$.subscribe(event =>
           {
           this.sarviewEvent = event;
+          if(event.processing_timeframe) {
+            if(event.processing_timeframe.end?.getDay() === new Date().getDay() || !event.processing_timeframe.end) {
+              this.isActiveSarviewEvent = true;
+            } else {
+              this.isActiveSarviewEvent = false;
+            }
+          }
           this.mapService.onSetSarviewsPolygonPreview(event, this.sarviewsEventGeoSearchRadius);
           }
         )

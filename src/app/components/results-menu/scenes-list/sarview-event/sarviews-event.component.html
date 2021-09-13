@@ -9,7 +9,8 @@
 
   <div class="event-header">
     <div>{{event.description}}</div>
-    <div class="event-header-date"> {{event.processing_timeframe.start | shortDate}} {{event.processing_timeframe.end | shortDate}}</div>
+    <div class="event-header-date"> {{event.processing_timeframe.start | shortDate}}
+      {{!!event.processing_timeframe.end ? 'to ' + (event.processing_timeframe.end | shortDate) : ''}}</div>
   </div>
 
   <div class="event-details">
