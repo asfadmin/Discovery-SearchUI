@@ -14,6 +14,7 @@ import * as searchStore from '@store/search';
 import * as models from '@models';
 import { BrowseMapService, DatasetForProductService } from '@services';
 import * as services from '@services/index';
+import { SarviewsProduct } from '@models';
 
 
 @Component({
@@ -35,6 +36,7 @@ export class ImageDialogComponent implements OnInit, AfterViewInit, OnDestroy {
   public queuedProductIds: Set<string>;
   public scene: models.CMRProduct;
   public sarviewsEvent: models.SarviewsEvent;
+  public currentSarviewsProduct: models.SarviewsProduct;
   public products: models.CMRProduct[];
   public sarviewsProducts: models.SarviewsProduct[];
   public dataset: models.Dataset;
@@ -142,29 +144,30 @@ export class ImageDialogComponent implements OnInit, AfterViewInit, OnDestroy {
     this.image.src = browse;
   }
 
-  private loadSarviewsBrowseImage(browse): void {
+  private loadSarviewsBrowseImage(product: SarviewsProduct): void {
     this.isImageLoading = true;
     this.image = new Image();
     const browseService = this.browseMap;
-    // const currentScene = this.scene;
+    const currentProd = this.currentSarviewsProduct;
+    this.currentSarviewsProduct = product;
     const self = this;
 
     this.image.addEventListener('load', function() {
-      // if (currentScene !== scene) {
-      //   return;
-      // }
+      if (currentProd === product) {
+        return;
+      }
 
       self.isImageLoading = false;
       const [width, height] = [
         this.naturalWidth, this.naturalHeight
       ];
 
-      browseService.setBrowse(browse, {
+      browseService.setBrowse(product.files.browse_url, {
         width, height
       });
     });
 
-    this.image.src = browse;
+    this.image.src = product.files.browse_url;
   }
 
   public jobParamsToList(metadata) {
@@ -201,7 +204,7 @@ export class ImageDialogComponent implements OnInit, AfterViewInit, OnDestroy {
     this.loadBrowseImage(scene, browse);
   }
 
-  public onNewSarviewsBrowseSelected(browse): void {
+  public onNewSarviewsBrowseSelected(browse: SarviewsProduct): void {
     this.loadSarviewsBrowseImage(browse);
   }
 

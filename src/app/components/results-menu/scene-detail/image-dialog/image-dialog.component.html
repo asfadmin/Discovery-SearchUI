@@ -117,17 +117,22 @@
 
         </div>
 
-        <div class="thumbs" *ngIf="(sarviewsEventBrowses$ | async)?.length > 1 && (searchType$ | async) === searchTypes.SARVIEWS_EVENTS">
-          <div *ngFor="let browse of (sarviewsEventBrowses$ | async)"
+        <div class="thumbs" *ngIf="(sarviewsEventProducts$ | async)?.length > 1 && (searchType$ | async) === searchTypes.SARVIEWS_EVENTS">
+          <div *ngFor="let browse of (sarviewsEventProducts$ | async)"
                (click)="onNewSarviewsBrowseSelected(browse)"
                class="clickable">
-            <img mat-card-sm-image src="{{ browse }}">
+            <img mat-card-sm-image src="{{ browse.files.thumbnail_url }}">
           </div>
         </div>
 
         <div *ngIf="(searchType$ | async) === searchTypes.SARVIEWS_EVENTS" class="scene-detail">
 
-          <div class="detail-header">Scene Detail</div>
+          <div class="detail-header">Product Detail</div>
+          <div *ngIf="!!currentSarviewsProduct">
+            <div *ngFor="let granule of currentSarviewsProduct.granules">
+              {{granule.granule_name}}
+            </div>
+          </div>
           <!-- <app-scene-metadata
             [scene]="scene$ | async"
             [dataset]="dataset"
@@ -148,9 +153,10 @@
           <div class="detail-header">{{ sarviewsProducts?.length }} Files</div>
           <mat-action-list dense class="file-list">
             <button  *ngFor="let product of sarviewsProducts"
-                     [matMenuTriggerFor]="action_menu" mat-list-item>
-              • {{ product.job_type }}
-              <mat-menu #action_menu="matMenu" xPosition="before">
+            (click)="onNewSarviewsBrowseSelected(product)"
+                     [matMenuTriggerFor]="sarviews_action_menu" mat-list-item>
+              • {{ product.files.product_name.slice(0, 28) + "..." + product.files.product_name.slice(product.files.product_name.length - 8, product.files.product_name.length - 4) }}
+              <mat-menu #sarviews_action_menu="matMenu" xPosition="before">
 
 <!--                <a mat-menu-item [href]="product.downloadUrl" target="_blank" matTooltip="Download file">-->
 <!--            <span style="margin-right: 10px; margin-left: 10px;">-->
