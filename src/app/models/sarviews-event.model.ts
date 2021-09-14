@@ -61,6 +61,6 @@ export interface SarviewProductGranule {
   acquisition_date: Date;
   frame: number;
   path: number;
-  granume_name: string;
+  granule_name: string;
   wkt: string;
 }

@@ -226,6 +226,14 @@ export class SceneFilesComponent implements OnInit, OnDestroy {
     window.open(this.currentPinnedUrl(current_id));
   }
 
+  public copyEventsOfType(type: string) {
+    const products = this.productsByProductType[type];
+    const granule_names = products.map(prod =>
+      prod.granules.reduce((acc, granule_name) =>
+        acc += granule_name.granule_name + ', ', ''));
+    console.log(granule_names);
+  }
+
   ngOnDestroy() {
     this.subs.unsubscribe();
   }

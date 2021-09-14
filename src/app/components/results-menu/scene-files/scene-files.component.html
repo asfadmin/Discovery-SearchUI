@@ -36,7 +36,11 @@
     <mat-expansion-panel *ngIf="productsByProductType[type] as byProcessingType">
       <mat-expansion-panel-header style="height: 75px; background-color: white !important;">{{type}}:
         {{byProcessingType.length}}
-        product{{byProcessingType.length != 1 ? 's' : ''}}</mat-expansion-panel-header>
+        product{{byProcessingType.length != 1 ? 's' : ''}}
+        <button (click)="copyEventsOfType(type)" mat-button>
+          Copy Scene Names to clipboard
+        </button>
+      </mat-expansion-panel-header>
 
       <mat-list-option [value]="prod" *ngFor="let prod of byProcessingType">
       <div class="sarview-products-list">

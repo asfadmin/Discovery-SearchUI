@@ -19,7 +19,9 @@ import {
 
 import * as models from '@models';
 import { SubSink } from 'subsink';
-import { SarviewsProduct } from '@models';
+import { CMRProductMetadata, hyp3JobTypes, SarviewsProduct } from '@models';
+import * as moment from 'moment';
+import { AddItems } from '@store/queue';
 
 @Component({
   selector: 'app-scenes-list-header',
@@ -263,6 +265,42 @@ export class ScenesListHeaderComponent implements OnInit, OnDestroy {
 
   public onMakeSarviewsProductDownloadScript(products: models.SarviewsProduct[]): void {
     this.store$.dispatch(new queueStore.makeDownloadScriptFromSarviewsProducts(products));
+  }
+
+  public onQueueSarviewsProducts(products: models.SarviewsProduct[]): void {
+    let jobTypes = Object.values(hyp3JobTypes);
+    var toCMRProducts: models.CMRProduct[] = products.map(
+      prod => {
+
+        let job = jobTypes.find(t => t.id === prod.job_type);
+        let productTypeDisplay = `${job.name}, ${job.productTypes[0].productTypes[0]}`
+        let output: models.CMRProduct = {
+          name: prod.files.product_name,
+          productTypeDisplay,
+          file: "",
+          id: prod.product_id,
+          downloadUrl: prod.files.product_url,
+          bytes: prod.files.product_size,
+          browses: [prod.files.browse_url],
+          thumbnail: prod.files.thumbnail_url,
+          dataset: 'Sentinel-1',
+          groupId: 'SARViews',
+          isUnzippedFile: false,
+
+          metadata: {
+            date: moment(prod.processing_date),
+            stopDate: moment(prod.processing_date),
+            polygon: prod.granules[0].wkt,
+            productType: job.name,
+
+          } as CMRProductMetadata
+        };
+
+        return output;
+
+      }
+    )
+    this.store$.dispatch(new AddItems(toCMRProducts));
   }
 
   public onMetadataExport(format: models.AsfApiOutputFormat): void {
