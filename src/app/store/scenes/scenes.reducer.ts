@@ -395,6 +395,24 @@ export const getSelectedOnDemandProductSceneBrowses = createSelector (
   }
 );
 
+export const getSelectedSarviewsEventProductBrowses = createSelector (
+  getScenesState,
+  (state: ScenesState) => {
+    const selected = state.selectedSarviewsEventProducts;
+
+    if (!selected) {
+      return;
+    }
+
+    const browses = selected.reduce((acc: string[], curr) => [...acc, curr.files.browse_url], []);
+    // for (const productScene of scenesForProduct) {
+    //   browses.push(productScene.browses[0]);
+    // }
+
+    return browses;
+  }
+);
+
 const productsForScene = (selected, state) => {
   if (!selected) {
     return;

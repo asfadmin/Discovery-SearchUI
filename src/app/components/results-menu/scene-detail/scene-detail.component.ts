@@ -35,6 +35,7 @@ export class SceneDetailComponent implements OnInit, OnDestroy {
 
   public browses$ = this.store$.select(scenesStore.getSelectedSceneBrowses);
   public jobBrowses$ = this.store$.select(scenesStore.getSelectedOnDemandProductSceneBrowses);
+  public selectedSarviewsEventBrowses$ = this.store$.select(scenesStore.getSelectedSarviewsEventProductBrowses);
   public dataset: models.Dataset;
   public searchType: models.SearchType;
   public searchTypes = models.SearchType;
@@ -53,6 +54,8 @@ export class SceneDetailComponent implements OnInit, OnDestroy {
 
   private defaultBaselineFiltersID = '';
   private defaultSBASFiltersID = '';
+
+  public sarviewsBrowses: string[] = [];
 
   private subs = new SubSink();
 
@@ -140,6 +143,13 @@ export class SceneDetailComponent implements OnInit, OnDestroy {
         }
       )
     );
+
+    this.subs.add(
+      this.selectedSarviewsEventBrowses$.subscribe(
+        browses => this.sarviewsBrowses = browses
+      )
+    );
+
   }
 
   public updateHasBaseline(): void {
@@ -172,12 +182,19 @@ export class SceneDetailComponent implements OnInit, OnDestroy {
   }
 
   public sceneHasBrowse() {
-    return !this.scene.browses[0].includes('no-browse');
+    return !this.scene?.browses[0].includes('no-browse');
   }
 
   public productHasSceneBrowses() {
     if (this.searchType === this.searchTypes.CUSTOM_PRODUCTS) {
       return this.scene.metadata.job.job_parameters.scenes.some(x => !x.browses[0].includes('no-browse'));
+    }
+    return false;
+  }
+
+  public sarviewsEventHasSceneBrowses() {
+    if (this.searchType === this.searchTypes.SARVIEWS_EVENTS) {
+      return this.sarviewsBrowses?.length > 0;
     }
     return false;
   }

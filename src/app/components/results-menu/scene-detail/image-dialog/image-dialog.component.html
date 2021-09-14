@@ -1,38 +1,40 @@
 <div class="browse-dialog"
      *ngIf="breakpoint$ | async as breakpoint"
     >
-    <div *ngIf="scene$ | async as scene" fxLayout="row" class="dialog-header--layout">
-      <div fxFlex="auto">
-        <h3 class="mp0">
-          <span [ngClass]="{'mp0-ellipsis-mobile': breakpoint <= breakpoints.SMALL,
-                            'mp0-ellipsis': breakpoint > breakpoints.SMALL}">
-            {{ scene.name }}
+    <div *ngIf="(searchType$ | async) !== searchTypes.SARVIEWS_EVENTS">
+      <div *ngIf="scene$ | async as scene" fxLayout="row" class="dialog-header--layout">
+        <div fxFlex="auto">
+          <h3 class="mp0">
+            <span [ngClass]="{'mp0-ellipsis-mobile': breakpoint <= breakpoints.SMALL,
+                              'mp0-ellipsis': breakpoint > breakpoints.SMALL}">
+              {{ scene.name }}
+            </span>
+          </h3>
+          <span class="faint-text">
+            <a *ngIf="dataset" [href]="dataset.infoUrl"
+                target="_blank" matTooltip="Dataset" class="faint-text">
+              {{ dataset.name }}
+            </a> •
+            <span *ngIf="breakpoint > breakpoints.MOBILE">
+              {{ scene.metadata.date | fullDate }}
+            </span>
+            <span *ngIf="breakpoint === breakpoints.MOBILE">
+              {{ scene.metadata.date | shortDateTime }}
+            </span>
           </span>
-        </h3>
-        <span class="faint-text">
-          <a *ngIf="dataset" [href]="dataset.infoUrl"
-              target="_blank" matTooltip="Dataset" class="faint-text">
-            {{ dataset.name }}
-          </a> •
-          <span *ngIf="breakpoint > breakpoints.MOBILE">
-            {{ scene.metadata.date | fullDate }}
-          </span>
-          <span *ngIf="breakpoint === breakpoints.MOBILE">
-            {{ scene.metadata.date | shortDateTime }}
-          </span>
-        </span>
+        </div>
+        <div fxFlex="35px" class="close-icon">
+          <button (click)="closeDialog()" mat-icon-button>
+            <mat-icon class="close-button">close</mat-icon>
+          </button>
+        </div>
       </div>
-      <div fxFlex="35px" class="close-icon">
-        <button (click)="closeDialog()" mat-icon-button>
-          <mat-icon class="close-button">close</mat-icon>
-        </button>
-      </div>
-    </div>
+  </div>
 
   <div fxLayout="row"
     [ngClass]="(breakpoint < breakpoints.SMALL) ? 'main-window-mobile' : 'main-window'">
 
-    <div class="thumbs" *ngIf="(browses$ | async).length > 1">
+    <div class="thumbs" *ngIf="(browses$ | async)?.length > 1 && (searchType$ | async) !== searchTypes.SARVIEWS_EVENTS">
       <div *ngFor="let browse of (browses$ | async)"
            (click)="onNewBrowseSelected(scene, browse)"
            class="clickable">
@@ -51,7 +53,7 @@
 
       <div *ngIf="!isShow" fxFlex="20" class="scene-detail-wrapper">
 
-        <div class="scene-detail">
+        <div *ngIf="(searchType$ | async) !== searchTypes.SARVIEWS_EVENTS" class="scene-detail">
 
           <div class="detail-header">Scene Detail</div>
           <app-scene-metadata
@@ -71,7 +73,7 @@
           </ul>
           <hr>
         </ng-container>
-          <div class="detail-header">{{ products.length }} Files</div>
+          <div class="detail-header">{{ products?.length }} Files</div>
           <mat-action-list dense class="file-list">
             <button  *ngFor="let product of products"
                      [matMenuTriggerFor]="action_menu" mat-list-item>
@@ -114,6 +116,97 @@
           </mat-action-list>
 
         </div>
+
+        <div class="thumbs" *ngIf="(sarviewsEventBrowses$ | async)?.length > 1 && (searchType$ | async) === searchTypes.SARVIEWS_EVENTS">
+          <div *ngFor="let browse of (sarviewsEventBrowses$ | async)"
+               (click)="onNewSarviewsBrowseSelected(browse)"
+               class="clickable">
+            <img mat-card-sm-image src="{{ browse }}">
+          </div>
+        </div>
+
+        <div *ngIf="(searchType$ | async) === searchTypes.SARVIEWS_EVENTS" class="scene-detail">
+
+          <div class="detail-header">Scene Detail</div>
+          <!-- <app-scene-metadata
+            [scene]="scene$ | async"
+            [dataset]="dataset"
+            [searchType]="searchType$|  async"
+            [offsets]="masterOffsets$ | async">
+          </app-scene-metadata> -->
+          <hr>
+        <ng-container>
+          <div class="detail-header">Product Details</div>
+          <ul style="columns: 1; font-size: 12px;">
+            <li *ngIf="sarviewsEvent">Event: {{sarviewsEvent.description}}</li>
+            <!-- <li *ngFor="let param of paramsList" >
+              {{ param.name }}: {{ param.val }}
+            </li> -->
+          </ul>
+          <hr>
+        </ng-container>
+          <div class="detail-header">{{ sarviewsProducts?.length }} Files</div>
+          <mat-action-list dense class="file-list">
+            <button  *ngFor="let product of sarviewsProducts"
+                     [matMenuTriggerFor]="action_menu" mat-list-item>
+              • {{ product.job_type }}
+              <mat-menu #action_menu="matMenu" xPosition="before">
+
+<!--                <a mat-menu-item [href]="product.downloadUrl" target="_blank" matTooltip="Download file">-->
+<!--            <span style="margin-right: 10px; margin-left: 10px;">-->
+<!--              <span *ngIf="product.bytes === 0">Virtual</span>-->
+<!--              <span *ngIf="product.bytes !== 0">{{product.bytes.toString() | readableSizeFromBytes }}</span>-->
+<!--            </span>-->
+<!--                  <span>-->
+<!--              <mat-icon>android</mat-icon>-->
+<!--            </span>-->
+<!--                </a>-->
+                <span style="margin-right: 10px; margin-left: 10px;">
+                  <span *ngIf="product.files.product_size === 0">Virtual</span>
+                  <span *ngIf="product.files.product_size !== 0">{{product.files.product_size.toString() | readableSizeFromBytes }}</span>
+                </span>
+                <!-- <app-download-file-button
+                  [attr.id]="'imgV_' + product.id"
+                  [product] = "product"
+                  (productDownloaded)="prodDownloaded($event)">
+                </app-download-file-button> -->
+
+                <!-- <button (click)="onToggleQueueProduct(product)"
+                        matTooltip="{{ !queuedProductIds.has(product.id) ? 'Add file to queue' : 'Remove file from queue' }}"
+                        mat-menu-item> -->
+            <!-- <span *ngIf="!queuedProductIds.has(product.id)">
+              Add
+              <mat-icon >add_shopping_cart</mat-icon>
+            </span>
+                  <span *ngIf="queuedProductIds.has(product.id)">
+              Remove
+              <mat-icon >shopping_cart</mat-icon>
+            </span> -->
+          </mat-menu>
+                </button>
+          </mat-action-list>
+
+        </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
       </div>
     </ng-container>
 
@@ -150,6 +243,3 @@
   </div>
 
 </div>
-
-
-

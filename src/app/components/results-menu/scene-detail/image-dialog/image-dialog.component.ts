@@ -15,6 +15,7 @@ import * as models from '@models';
 import { BrowseMapService, DatasetForProductService } from '@services';
 import * as services from '@services/index';
 
+
 @Component({
   selector: 'app-image-dialog',
   templateUrl: './image-dialog.component.html',
@@ -24,13 +25,18 @@ import * as services from '@services/index';
 export class ImageDialogComponent implements OnInit, AfterViewInit, OnDestroy {
   public scene$ = this.store$.select(scenesStore.getSelectedScene);
   public browses$ = this.store$.select(scenesStore.getSelectedSceneBrowses);
+  public sarviewsEventProducts$ = this.store$.select(scenesStore.getSelectedSarviewsEventProducts);
+  public sarviewsEventBrowses$ = this.store$.select(scenesStore.getSelectedSarviewsEventProductBrowses);
+  public sarviewsEvent$ = this.store$.select(scenesStore.getSelectedSarviewsEvent);
   public masterOffsets$ = this.store$.select(scenesStore.getMasterOffsets);
   public searchType$ = this.store$.select(searchStore.getSearchType);
   public searchTypes = models.SearchType;
   public onlyShowScenesWithBrowse: boolean;
   public queuedProductIds: Set<string>;
   public scene: models.CMRProduct;
+  public sarviewsEvent: models.SarviewsEvent;
   public products: models.CMRProduct[];
+  public sarviewsProducts: models.SarviewsProduct[];
   public dataset: models.Dataset;
   public isImageLoading = false;
   public isShow = false;
@@ -79,11 +85,21 @@ export class ImageDialogComponent implements OnInit, AfterViewInit, OnDestroy {
     );
     this.subs.add(
       this.scene$.pipe(
-        filter(prod => !!prod.metadata)
+        filter(prod => !!prod?.metadata)
       ).subscribe( prod => {
         this.paramsList = this.jobParamsToList(prod.metadata);
       }
     )
+    );
+    this.subs.add(
+      this.sarviewsEventProducts$.subscribe(
+        products => this.sarviewsProducts = products
+      )
+    );
+    this.subs.add(
+      this.sarviewsEvent$.subscribe(
+        event => this.sarviewsEvent = event
+      )
     );
   }
 
@@ -112,6 +128,31 @@ export class ImageDialogComponent implements OnInit, AfterViewInit, OnDestroy {
       if (currentScene !== scene) {
         return;
       }
+
+      self.isImageLoading = false;
+      const [width, height] = [
+        this.naturalWidth, this.naturalHeight
+      ];
+
+      browseService.setBrowse(browse, {
+        width, height
+      });
+    });
+
+    this.image.src = browse;
+  }
+
+  private loadSarviewsBrowseImage(browse): void {
+    this.isImageLoading = true;
+    this.image = new Image();
+    const browseService = this.browseMap;
+    // const currentScene = this.scene;
+    const self = this;
+
+    this.image.addEventListener('load', function() {
+      // if (currentScene !== scene) {
+      //   return;
+      // }
 
       self.isImageLoading = false;
       const [width, height] = [
@@ -158,6 +199,10 @@ export class ImageDialogComponent implements OnInit, AfterViewInit, OnDestroy {
 
   public onNewBrowseSelected(scene, browse): void {
     this.loadBrowseImage(scene, browse);
+  }
+
+  public onNewSarviewsBrowseSelected(browse): void {
+    this.loadSarviewsBrowseImage(browse);
   }
 
   public prodDownloaded( _product ) {
