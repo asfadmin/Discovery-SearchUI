@@ -52,7 +52,7 @@ export class SarviewsEventMagnitudeSelectorComponent implements OnInit, OnDestro
   private mobilePips =  {
     mode: 'positions',
     values: [0, 25, 50, 75, 100],
-    density: 1,
+    density: 5,
     stepped: true,
     format: wNumb({
       decimals: 1,
@@ -128,16 +128,7 @@ export class SarviewsEventMagnitudeSelectorComponent implements OnInit, OnDestro
         'min': 0,
         'max': 10
       },
-      pips: {
-        mode: 'positions',
-        values: [0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100],
-        density: 1,
-        stepped: true,
-        format: wNumb({
-          decimals: 1,
-          suffix: ' mag'
-        })
-      }
+      pips: this.fullPips
     });
 
     this.slider.on('update', (values: any[], _) => {
@@ -159,14 +150,16 @@ export class SarviewsEventMagnitudeSelectorComponent implements OnInit, OnDestro
     if(breakpoint === Breakpoints.MOBILE) {
       this.slider.updateOptions(
         {
-          pips: this.mobilePips
+          pips: this.mobilePips,
+          step: 0.5
         },
         true
       )
     } else {
       this.slider.updateOptions(
         {
-          pips: this.fullPips
+          pips: this.fullPips,
+          step: 0.1
         },
         true
       )
