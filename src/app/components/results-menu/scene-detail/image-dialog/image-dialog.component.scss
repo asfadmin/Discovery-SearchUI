@@ -67,6 +67,19 @@ a {
       margin-left: 10px;
     }
   }
+
+  .sarview-detail-wrapper {
+    min-width: 200px;
+    border-left-color: $asf-primary-dark;
+    border-left-style: solid;
+    border-left-width: 1px;
+    overflow: hidden;
+    background-color: $asf-primary-light;
+
+    .scene-detail {
+      margin-left: 10px;
+    }
+  }
 }
 
 .dialog-header--layout {
@@ -118,6 +131,11 @@ a {
 .file-list {
   overflow-y: auto;
 
+}
+
+.sarviews-product-list {
+  overflow-y: scroll;
+  max-height: 510px;
   button {
     height: 25px;
   }

@@ -51,7 +51,9 @@
 
     <ng-container *ngIf="breakpoint > breakpoints.MOBILE">
 
-      <div *ngIf="!isShow" fxFlex="20" class="scene-detail-wrapper">
+      <div *ngIf="!isShow" fxFlex="20"
+      [ngClass]="{'sarview-detail-wrapper' : (searchType$ | async) === searchTypes.SARVIEWS_EVENTS,
+       'scene-detail-wrapper' : (searchType$ | async) !== searchTypes.SARVIEWS_EVENTS}">
 
         <div *ngIf="(searchType$ | async) !== searchTypes.SARVIEWS_EVENTS" class="scene-detail">
 
@@ -126,13 +128,29 @@
         </div>
 
         <div *ngIf="(searchType$ | async) === searchTypes.SARVIEWS_EVENTS" class="scene-detail">
-
-          <div class="detail-header">Product Detail</div>
-          <div *ngIf="!!currentSarviewsProduct">
-            <div *ngFor="let granule of currentSarviewsProduct.granules">
-              {{granule.granule_name}}
-            </div>
+          <ng-container>
+            <div class="detail-header">Event Details</div>
+            <ul style="columns: 1; font-size: 12px;">
+              <li *ngIf="sarviewsEvent">Event: {{sarviewsEvent.description}}</li>
+              <!-- <li *ngFor="let param of paramsList" >
+                {{ param.name }}: {{ param.val }}
+              </li> -->
+            </ul>
+            <hr>
+          </ng-container>
+          <ng-container >
+          <div style="min-height: 185px;">
+          <div class="detail-header">SARView Product Detail</div>
+          <div style="columns: 1; font-size: 12px; word-wrap: break-word;" *ngIf="!!currentSarviewsProduct">
+            {{currentSarviewsProduct.files.product_name}}
+            <ul style="font-size: 12px; list-style-type: circle;" *ngFor="let granule of currentSarviewsProduct.granules">
+              <li style="font-weight: bold;">{{granule.granule_name}}</li>
+              <li>Date: {{granule.acquisition_date | shortDate}}</li>
+              <li>Path: {{granule.path}}</li>
+              <li>Frame: {{granule.frame}}</li>
+            </ul>
           </div>
+        </div>
           <!-- <app-scene-metadata
             [scene]="scene$ | async"
             [dataset]="dataset"
@@ -140,22 +158,13 @@
             [offsets]="masterOffsets$ | async">
           </app-scene-metadata> -->
           <hr>
-        <ng-container>
-          <div class="detail-header">Product Details</div>
-          <ul style="columns: 1; font-size: 12px;">
-            <li *ngIf="sarviewsEvent">Event: {{sarviewsEvent.description}}</li>
-            <!-- <li *ngFor="let param of paramsList" >
-              {{ param.name }}: {{ param.val }}
-            </li> -->
-          </ul>
-          <hr>
         </ng-container>
           <div class="detail-header">{{ sarviewsProducts?.length }} Files</div>
-          <mat-action-list dense class="file-list">
+          <mat-action-list class="sarviews-product-list">
             <button  *ngFor="let product of sarviewsProducts"
             (click)="onNewSarviewsBrowseSelected(product)"
                      [matMenuTriggerFor]="sarviews_action_menu" mat-list-item>
-              • {{ product.files.product_name.slice(0, 28) + "..." + product.files.product_name.slice(product.files.product_name.length - 8, product.files.product_name.length - 4) }}
+              {{ product.files.product_name.slice(0, 28) + "..." + product.files.product_name.slice(product.files.product_name.length - 8, product.files.product_name.length - 4) }}
               <mat-menu #sarviews_action_menu="matMenu" xPosition="before">
 
 <!--                <a mat-menu-item [href]="product.downloadUrl" target="_blank" matTooltip="Download file">-->
@@ -189,7 +198,7 @@
               <mat-icon >shopping_cart</mat-icon>
             </span> -->
           </mat-menu>
-                </button>
+        </button>
           </mat-action-list>
 
         </div>
