@@ -30,19 +30,21 @@
     <!-- <div>{{currentPinnedUrl(selectedID)}}</div> -->
     <!-- <mat-form-field> -->
   <mat-selection-list [ngModelOptions]="{standalone: true}" [(ngModel)]="selectedProducts" class="product-list" *ngIf="(sarviewsEventProductTypes$ | async) as productTypes">
-    <mat-accordion>
+    <!-- <mat-accordion> -->
     <div *ngFor="let type of productTypes">
       <div *ngIf="productsByProductType !== null">
-    <mat-expansion-panel *ngIf="productsByProductType[type] as byProcessingType">
+    <!-- <mat-expansion-panel *ngIf="productsByProductType[type] as byProcessingType">
       <mat-expansion-panel-header style="height: 75px; background-color: white !important;">{{type}}:
         {{byProcessingType.length}}
         product{{byProcessingType.length != 1 ? 's' : ''}}
         <button (click)="copyEventsOfType(type)" mat-button>
           Copy Scene Names to clipboard
         </button>
-      </mat-expansion-panel-header>
+      </mat-expansion-panel-header> -->
 
-      <mat-list-option [value]="prod" *ngFor="let prod of byProcessingType">
+      <div *ngIf="productsByProductType[type] as byProcessingType">
+      <cdk-virtual-scroll-viewport [itemSize]="50" style="height: 250px; min-height: 250px;">
+      <mat-list-option  [value]="prod" *cdkVirtualFor="let prod of byProcessingType">
       <div class="sarview-products-list">
         <img style="width: 50px; height: 50px;" src="{{prod.files.browse_url}}">
 
@@ -51,11 +53,13 @@
       <div></div>
     </div>
     </mat-list-option>
+    </cdk-virtual-scroll-viewport>
 
-  </mat-expansion-panel>
+  </div>
+  <!-- </mat-expansion-panel> -->
   </div>
 </div>
-</mat-accordion>
+<!-- </mat-accordion> -->
   </mat-selection-list>
 <!-- </mat-form-field> -->
 </div>

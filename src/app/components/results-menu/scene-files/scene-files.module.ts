@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
+import { ScrollingModule } from '@angular/cdk/scrolling'
 import { MatSharedModule } from '@shared';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { SceneFilesComponent } from './scene-files.component';
@@ -23,6 +24,7 @@ import { MatButtonModule } from '@angular/material/button';
     FormsModule,
     MatInputModule,
     MatButtonModule,
+    ScrollingModule,
   ],
   exports: [
     SceneFilesComponent
