@@ -167,16 +167,18 @@ a {
 }
 
 .sarviews-thumbs {
-  flex-direction: row;
-  flex: 1 1 0%;
+  // flex-direction: row;
+  // flex: 1 1 0%;
   box-sizing: border-box;
   position: relative;
   bottom: 10px;
   left: 20px;
   z-index: 9;
-  display: flex;
+  // display: flex;
   overflow-x: scroll;
-  width: 95%;
+  width: 100%;
+  min-height: 125px;
+  max-height: 125px;
 }
 
 .mat-card-sm-image {
@@ -187,4 +189,21 @@ a {
 .mat-card-md-image {
   width: 125px;
   height: 125px;
+}
+
+.cdk-virtual-scroll-content-wrapper .viewport {
+  display: flex;
+  flex-direction: row;
+  max-height: 125px;
+}
+
+.cdk-virtual-scroll-content-wrapper {
+  display: flex;
+  flex-direction: row;
+  max-height: 125px;
+}
+
+::ng-deep .cdk-virtual-scroll-orientation-horizontal .cdk-virtual-scroll-content-wrapper {
+  min-height: 125px !important;
+  max-height: 125px !important;
 }

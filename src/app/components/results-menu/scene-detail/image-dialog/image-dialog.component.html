@@ -131,10 +131,10 @@
             <hr>
           </ng-container>
           <ng-container >
-          <div style="min-height: 185px;">
+          <div style="min-height: 223px;">
           <div class="detail-header">SARView Product Detail</div>
           <div style="columns: 1; font-size: 12px; word-wrap: break-word;" *ngIf="!!currentSarviewsProduct">
-            {{currentSarviewsProduct.files.product_name}}
+            <div style="font-weight: bold;">{{currentSarviewsProduct.files.product_name}}</div>
             <ul style="font-size: 12px; list-style-type: circle;" *ngFor="let granule of currentSarviewsProduct.granules">
               <li style="font-weight: bold;">{{granule.granule_name}}</li>
               <li>Date: {{granule.acquisition_date | shortDate}}</li>
@@ -224,14 +224,20 @@
     <div *ngIf="(searchType$ | async) !== searchTypes.SARVIEWS_EVENTS">
       <app-browse-list fxFlex class="browse-list"></app-browse-list>
     </div>
-    <div style="margin-top: 3%;" *ngIf="(searchType$ | async) === searchTypes.SARVIEWS_EVENTS">
-      <div class="sarviews-thumbs" *ngIf="(sarviewsEventProducts$ | async)?.length > 1 && (searchType$ | async) === searchTypes.SARVIEWS_EVENTS">
-        <div *ngFor="let browse of (sarviewsEventProducts$ | async)"
+    <div style="margin-top: 3%; width: 95%;" *ngIf="(searchType$ | async) === searchTypes.SARVIEWS_EVENTS">
+      <div style="width: 100%" *ngIf="(sarviewsEventProducts$ | async) as eventProducts">
+      <cdk-virtual-scroll-viewport orientation="horizontal" [itemSize]="125" class="sarviews-thumbs" *ngIf="eventProducts.length > 1">
+        <!-- <div style="height: 130px;" *cdkVirtualFor="let browse of eventProducts"
              (click)="onNewSarviewsBrowseSelected(browse)"
-             class="clickable">
-          <img mat-card-md-image src="{{ browse.files.thumbnail_url }}">
-        </div>
-      </div>
+             class="clickable"> -->
+          <img cdkVirtualForTemplateCacheSize=50
+          *cdkVirtualFor="let browse of eventProducts"
+             (click)="onNewSarviewsBrowseSelected(browse)"
+             class="clickable"
+          mat-card-md-image src="{{ browse.files.thumbnail_url }}">
+        <!-- </div> -->
+      </cdk-virtual-scroll-viewport>
+    </div>
     </div>
   </ng-container>
 
