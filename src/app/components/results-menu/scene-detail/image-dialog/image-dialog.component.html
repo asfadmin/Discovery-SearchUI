@@ -119,14 +119,6 @@
 
         </div>
 
-        <div class="thumbs" *ngIf="(sarviewsEventProducts$ | async)?.length > 1 && (searchType$ | async) === searchTypes.SARVIEWS_EVENTS">
-          <div *ngFor="let browse of (sarviewsEventProducts$ | async)"
-               (click)="onNewSarviewsBrowseSelected(browse)"
-               class="clickable">
-            <img mat-card-sm-image src="{{ browse.files.thumbnail_url }}">
-          </div>
-        </div>
-
         <div *ngIf="(searchType$ | async) === searchTypes.SARVIEWS_EVENTS" class="scene-detail">
           <ng-container>
             <div class="detail-header">Event Details</div>
@@ -163,9 +155,9 @@
           <mat-action-list class="sarviews-product-list">
             <button  *ngFor="let product of sarviewsProducts"
             (click)="onNewSarviewsBrowseSelected(product)"
-                     [matMenuTriggerFor]="sarviews_action_menu" mat-list-item>
+                     mat-list-item>
               {{ product.files.product_name.slice(0, 28) + "..." + product.files.product_name.slice(product.files.product_name.length - 8, product.files.product_name.length - 4) }}
-              <mat-menu #sarviews_action_menu="matMenu" xPosition="before">
+              <!-- <mat-menu #sarviews_action_menu="matMenu" xPosition="before"> -->
 
 <!--                <a mat-menu-item [href]="product.downloadUrl" target="_blank" matTooltip="Download file">-->
 <!--            <span style="margin-right: 10px; margin-left: 10px;">-->
@@ -176,10 +168,10 @@
 <!--              <mat-icon>android</mat-icon>-->
 <!--            </span>-->
 <!--                </a>-->
-                <span style="margin-right: 10px; margin-left: 10px;">
+                <!-- <span style="margin-right: 10px; margin-left: 10px;">
                   <span *ngIf="product.files.product_size === 0">Virtual</span>
                   <span *ngIf="product.files.product_size !== 0">{{product.files.product_size.toString() | readableSizeFromBytes }}</span>
-                </span>
+                </span> -->
                 <!-- <app-download-file-button
                   [attr.id]="'imgV_' + product.id"
                   [product] = "product"
@@ -197,7 +189,7 @@
               Remove
               <mat-icon >shopping_cart</mat-icon>
             </span> -->
-          </mat-menu>
+          <!-- </mat-menu> -->
         </button>
           </mat-action-list>
 
@@ -229,8 +221,17 @@
 
 
   <ng-container *ngIf="breakpoint > breakpoints.MOBILE">
-    <div>
+    <div *ngIf="(searchType$ | async) !== searchTypes.SARVIEWS_EVENTS">
       <app-browse-list fxFlex class="browse-list"></app-browse-list>
+    </div>
+    <div style="margin-top: 3%;" *ngIf="(searchType$ | async) === searchTypes.SARVIEWS_EVENTS">
+      <div class="sarviews-thumbs" *ngIf="(sarviewsEventProducts$ | async)?.length > 1 && (searchType$ | async) === searchTypes.SARVIEWS_EVENTS">
+        <div *ngFor="let browse of (sarviewsEventProducts$ | async)"
+             (click)="onNewSarviewsBrowseSelected(browse)"
+             class="clickable">
+          <img mat-card-md-image src="{{ browse.files.thumbnail_url }}">
+        </div>
+      </div>
     </div>
   </ng-container>
 

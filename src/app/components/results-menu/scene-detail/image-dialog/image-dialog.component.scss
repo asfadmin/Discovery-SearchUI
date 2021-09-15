@@ -135,7 +135,7 @@ a {
 
 .sarviews-product-list {
   overflow-y: scroll;
-  max-height: 510px;
+  max-height: 480px;
   button {
     height: 25px;
   }
@@ -166,7 +166,25 @@ a {
   z-index: 9;
 }
 
+.sarviews-thumbs {
+  flex-direction: row;
+  flex: 1 1 0%;
+  box-sizing: border-box;
+  position: relative;
+  bottom: 10px;
+  left: 20px;
+  z-index: 9;
+  display: flex;
+  overflow-x: scroll;
+  width: 95%;
+}
+
 .mat-card-sm-image {
   width: 50px;
   height: 50px;
+}
+
+.mat-card-md-image {
+  width: 125px;
+  height: 125px;
 }
