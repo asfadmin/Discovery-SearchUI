@@ -12,7 +12,7 @@ import noUiSlider from 'nouislider';
 import { Observable, Subject } from 'rxjs';
 import { debounceTime, distinctUntilChanged, map } from 'rxjs/operators';
 import { ScreenSizeService } from '@services';
-import { SarviewsEventType } from '@models';
+import { Breakpoints, SarviewsEventType } from '@models';
 
 @Component({
   selector: 'app-sarviews-event-magnitude-selector',
@@ -38,6 +38,28 @@ export class SarviewsEventMagnitudeSelectorComponent implements OnInit, OnDestro
       return eventTypes.length === 0 || eventTypes.includes(SarviewsEventType.QUAKE)}),
   );
 
+  private fullPips = {
+    mode: 'positions',
+    values: [0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100],
+    density: 1,
+    stepped: true,
+    format: wNumb({
+      decimals: 1,
+      suffix: ' mag'
+    })
+  }
+
+  private mobilePips =  {
+    mode: 'positions',
+    values: [0, 25, 50, 75, 100],
+    density: 1,
+    stepped: true,
+    format: wNumb({
+      decimals: 1,
+      suffix: ' mag'
+    })
+  }
+
   constructor(private store$: Store<AppState>,
     private screenSize: ScreenSizeService,
     ) { }
@@ -51,6 +73,15 @@ export class SarviewsEventMagnitudeSelectorComponent implements OnInit, OnDestro
         }
       )
     );
+
+    this.subs.add(
+      this.breakpoint$.pipe(distinctUntilChanged()).subscribe(
+        breakpoint => {
+          this.breakpoint = breakpoint;
+          this.OnUpdatePipSize(this.breakpoint);
+        }
+      )
+    )
 
     const temp = this.makeMagnitudeSlider$(this.magnitudeFilter);
     this.magSlider = temp.magSlider;
@@ -124,6 +155,23 @@ export class SarviewsEventMagnitudeSelectorComponent implements OnInit, OnDestro
     };
   }
 
+  private OnUpdatePipSize(breakpoint: Breakpoints) {
+    if(breakpoint === Breakpoints.MOBILE) {
+      this.slider.updateOptions(
+        {
+          pips: this.mobilePips
+        },
+        true
+      )
+    } else {
+      this.slider.updateOptions(
+        {
+          pips: this.fullPips
+        },
+        true
+      )
+    }
+  }
 
 
 }

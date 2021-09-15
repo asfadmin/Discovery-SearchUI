@@ -177,8 +177,8 @@ a {
   // display: flex;
   overflow-x: scroll;
   width: 100%;
-  min-height: 125px;
-  max-height: 125px;
+  min-height: 150px;
+  // max-height: 125px;
 }
 
 .mat-card-sm-image {
@@ -189,18 +189,6 @@ a {
 .mat-card-md-image {
   width: 125px;
   height: 125px;
-}
-
-.cdk-virtual-scroll-content-wrapper .viewport {
-  display: flex;
-  flex-direction: row;
-  max-height: 125px;
-}
-
-.cdk-virtual-scroll-content-wrapper {
-  display: flex;
-  flex-direction: row;
-  max-height: 125px;
 }
 
 ::ng-deep .cdk-virtual-scroll-orientation-horizontal .cdk-virtual-scroll-content-wrapper {
