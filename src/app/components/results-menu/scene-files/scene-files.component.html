@@ -24,15 +24,14 @@
     </app-scene-file>
   </mat-list>
 </div>
-<div *ngIf="(sarviewsEventProducts$ | async) as sarviewsEventProducts">
-  <div *ngIf="(selectedSarviewsEventID$ | async) as selectedID">
-    <button mat-button (click)="onOpenPinnedProducts(selectedID)">View Selected Products on SARViews</button>
+  <div *ngIf="selectedSarviewEventID && !!sarviewsProducts">
+    <button mat-button (click)="onOpenPinnedProducts(selectedSarviewEventID)">View Selected Products on SARViews</button>
     <!-- <div>{{currentPinnedUrl(selectedID)}}</div> -->
     <!-- <mat-form-field> -->
-  <mat-selection-list [ngModelOptions]="{standalone: true}" [(ngModel)]="selectedProducts" class="product-list" *ngIf="(sarviewsEventProductTypes$ | async) as productTypes">
+
     <!-- <mat-accordion> -->
-    <div *ngFor="let type of productTypes">
-      <div *ngIf="productsByProductType !== null">
+    <!-- <div *ngFor="let type of productTypes">
+      <div *ngIf="productsByProductType !== null"> -->
     <!-- <mat-expansion-panel *ngIf="productsByProductType[type] as byProcessingType">
       <mat-expansion-panel-header style="height: 75px; background-color: white !important;">{{type}}:
         {{byProcessingType.length}}
@@ -42,9 +41,9 @@
         </button>
       </mat-expansion-panel-header> -->
 
-      <div *ngIf="productsByProductType[type] as byProcessingType">
-      <cdk-virtual-scroll-viewport [itemSize]="50" style="height: 250px; min-height: 250px;">
-      <mat-list-option  [value]="prod" *cdkVirtualFor="let prod of byProcessingType">
+      <cdk-virtual-scroll-viewport [itemSize]="50" style="height: 350px;">
+    <mat-selection-list [(ngModel)]="selectedProducts" class="product-list">
+      <mat-list-option [value]="prod" *cdkVirtualFor="let prod of sarviewsProducts">
       <div class="sarview-products-list">
         <img style="width: 50px; height: 50px;" src="{{prod.files.browse_url}}">
 
@@ -53,16 +52,11 @@
       <div></div>
     </div>
     </mat-list-option>
+  </mat-selection-list>
     </cdk-virtual-scroll-viewport>
 
   </div>
-  <!-- </mat-expansion-panel> -->
-  </div>
-</div>
-<!-- </mat-accordion> -->
-  </mat-selection-list>
 <!-- </mat-form-field> -->
-</div>
 
 <div *ngIf="showUnzippedProductScreen" class="products-list zip-contents">
   <mat-list class="products-list">

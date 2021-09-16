@@ -1,8 +1,8 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, AfterContentInit } from '@angular/core';
 import { SubSink } from 'subsink';
 
 import { combineLatest } from 'rxjs';
-import { debounceTime, filter, map, withLatestFrom } from 'rxjs/operators';
+import { debounceTime, distinctUntilChanged, filter, map, withLatestFrom } from 'rxjs/operators';
 
 import { Store } from '@ngrx/store';
 import { AppState } from '@store';
@@ -21,9 +21,11 @@ import { SarviewsProduct } from '@models';
   templateUrl: './scene-files.component.html',
   styleUrls: ['./scene-files.component.scss']
 })
-export class SceneFilesComponent implements OnInit, OnDestroy {
+export class SceneFilesComponent implements OnInit, OnDestroy, AfterContentInit {
   public products: models.CMRProduct[];
   public productsByProductType: {[processing_type: string]: SarviewsProduct[]} = {};
+  public sarviewsProducts: models.SarviewsProduct[];
+
   public queuedProductIds$ = this.store$.select(queueStore.getQueuedProductIds).pipe(
       map(names => new Set(names))
   );
@@ -71,7 +73,7 @@ export class SceneFilesComponent implements OnInit, OnDestroy {
   public hasAccessToRestrictedData: boolean;
   public showDemWarning: boolean;
   public selectedProducts: SarviewsProduct[];
-
+  public selectedSarviewEventID: string;
   private subs = new SubSink();
 
   constructor(
@@ -137,6 +139,20 @@ export class SceneFilesComponent implements OnInit, OnDestroy {
         jobName => this.loadingHyp3JobName = jobName
       )
     );
+  }
+
+  ngAfterContentInit() {
+    this.subs.add(
+      this.sarviewsEventProducts$.pipe(distinctUntilChanged((a, b) => a[0]?.event_id === b[0]?.event_id)).subscribe(
+        val => this.sarviewsProducts = val
+      )
+    );
+
+    this.subs.add(
+      this.selectedSarviewsEventID$.subscribe(
+        val => this.selectedSarviewEventID = val
+      )
+    )
   }
 
   public onToggleQueueProduct(product: models.CMRProduct): void {
