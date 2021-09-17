@@ -75,18 +75,18 @@
               </a>
             </div>
             <div class="browse-pager" *ngIf="browses$ | async as browses">
-              <span
+              <span class="navigation-icon"
               [class.clickable]="browseIndex > 0"
               (click)="browseIndex > 0 && browseIndex = browseIndex - 1"
               >
-              <mat-icon>arrow_back</mat-icon>
+              <mat-icon [class.not-clickable]="browseIndex < 1">navigate_before</mat-icon>
               </span>
                {{browseIndex+1}} / {{browses.length}}
-              <span
+              <span class="navigation-icon"
                 [class.clickable]="browseIndex+1 < browses.length"
                 (click)="browseIndex+1 < browses.length && browseIndex = browseIndex + 1"
                  >
-                <mat-icon>arrow_forward</mat-icon>
+                <mat-icon [class.not-clickable]="browseIndex+1 >= browses.length">navigate_next</mat-icon>
               </span>
             </div>
           </div>
@@ -108,24 +108,24 @@
   </div>
 </div>
  <div class="tool-menu" *ngIf="scene && breakpoint$ | async as breakpoint" [ngStyle]="{ 'bottom': breakpoint === breakpoints.SMALL ? '19px' : (breakpoint < breakpoints.SMALL ? '17px' : '0px')}">
-  <div>
-    Search:
+  <div class="search-button-label">
+    SEARCH:
   </div>
-  <button [disabled]="!hasBaseline" (click)="makeBaselineSearch()"
-    class="mini-toggle-button" target="_blank" matTooltip="Use this scene in the Baseline Tool for interferometry">
+  <button mat-stroked-button color="primary" [disabled]="!hasBaseline" (click)="makeBaselineSearch()"
+    class="mini-toggle-button search-button" target="_blank" matTooltip="Use this scene in the Baseline Tool for interferometry">
     Baseline
   </button>
 
-  <button [disabled]="!hasBaseline" (click)="makeSBASSearch()"
-    class="mini-toggle-button" target="_blank"
+  <button mat-stroked-button color="primary" [disabled]="!hasBaseline" (click)="makeSBASSearch()"
+    class="mini-toggle-button search-button" target="_blank"
     matTooltip="Use this scene in the SBAS Tool to make product pairs for interferometry">
     SBAS
   </button>
 
-  <button
+  <button mat-stroked-button color="primary"
     [disabled]="!(
                    ((prop.isRelevant(p.PATH, dataset) && prop.isRelevant(p.FRAME, dataset) || (dataset.id === 'UAVSAR'))))"
-    (click)="findSimilarScenes()" class="mini-toggle-button" matTooltip="Geographic search based on this scene's path/frame">
+    (click)="findSimilarScenes()" class="mini-toggle-button search-button" matTooltip="Geographic search based on this scene's path/frame">
     More Like This
   </button>
 </div>
