@@ -24,8 +24,12 @@
     </app-scene-file>
   </mat-list>
 </div>
-  <div *ngIf="selectedSarviewEventID && !!sarviewsProducts">
-    <button mat-button (click)="onOpenPinnedProducts(selectedSarviewEventID)">View Selected Products on SARViews</button>
+  <div *ngIf="selectedSarviewEventID && !!sarviewsProducts" style="height: 100%; display: flex; flex-direction: column;">
+    <div style="width: 100%"><button mat-button (click)="onOpenPinnedProducts(selectedSarviewEventID)">View Selected Products on SARViews</button>
+    <button (click)="copyProductSourceScenes()" mat-button>
+      Copy Scene Names to clipboard
+    </button>
+  </div>
     <!-- <div>{{currentPinnedUrl(selectedID)}}</div> -->
     <!-- <mat-form-field> -->
 
@@ -40,8 +44,8 @@
           Copy Scene Names to clipboard
         </button>
       </mat-expansion-panel-header> -->
-
-      <cdk-virtual-scroll-viewport [itemSize]="50" style="height: 350px;">
+<div style="height: 100%; width: 100%;">
+      <cdk-virtual-scroll-viewport [itemSize]="50" style="min-height: calc(100% - 30px);">
     <mat-selection-list [(ngModel)]="selectedProducts" class="product-list">
       <mat-list-option [value]="prod" *cdkVirtualFor="let prod of sarviewsProducts">
       <div class="sarview-products-list">
@@ -54,7 +58,7 @@
     </mat-list-option>
   </mat-selection-list>
     </cdk-virtual-scroll-viewport>
-
+  </div>
   </div>
 <!-- </mat-form-field> -->
 

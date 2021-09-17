@@ -90,7 +90,10 @@ export class SarviewsEventMagnitudeSelectorComponent implements OnInit, OnDestro
     this.subs.add(
       magnitudeValuesObserverable$.subscribe(
         ([start, end]) => {
-          const action = new filterStore.SetSarviewsMagnitudeRange({ start, end });
+          const action = new filterStore.SetSarviewsMagnitudeRange({
+            start: !!start ? start : 0,
+            end:  !!end ? end : 10
+          });
           this.store$.dispatch(action);
         }
       )

@@ -52,7 +52,7 @@
     <ng-container *ngIf="breakpoint > breakpoints.MOBILE">
 
       <div *ngIf="!isShow" fxFlex="20"
-      [ngClass]="{'sarview-detail-wrapper' : (searchType$ | async) === searchTypes.SARVIEWS_EVENTS,
+      [ngClass]="{'sarviews-detail-wrapper' : (searchType$ | async) === searchTypes.SARVIEWS_EVENTS,
        'scene-detail-wrapper' : (searchType$ | async) !== searchTypes.SARVIEWS_EVENTS}">
 
         <div *ngIf="(searchType$ | async) !== searchTypes.SARVIEWS_EVENTS" class="scene-detail">
@@ -119,7 +119,7 @@
 
         </div>
 
-        <div *ngIf="(searchType$ | async) === searchTypes.SARVIEWS_EVENTS" class="scene-detail">
+        <div *ngIf="(searchType$ | async) === searchTypes.SARVIEWS_EVENTS" class="sarviews-scene-detail">
           <ng-container>
             <div class="detail-header">Event Details</div>
             <ul style="columns: 1; font-size: 12px;">
@@ -128,8 +128,9 @@
                 {{ param.name }}: {{ param.val }}
               </li> -->
             </ul>
-            <hr>
+
           </ng-container>
+          <hr style="width: 100%;">
           <ng-container >
           <div style="min-height: 223px;">
           <div class="detail-header">SARView Product Detail</div>
@@ -141,78 +142,29 @@
               <li>Path: {{granule.path}}</li>
               <li>Frame: {{granule.frame}}</li>
             </ul>
+            <mat-icon
+            (click)="onCopyLink(currentSarviewsProduct.granules)"
+            matTooltip="Copy to clipboard"
+            class="clickable copy-icon" matSuffix>
+            file_copy
+          </mat-icon>
           </div>
         </div>
-          <!-- <app-scene-metadata
-            [scene]="scene$ | async"
-            [dataset]="dataset"
-            [searchType]="searchType$|  async"
-            [offsets]="masterOffsets$ | async">
-          </app-scene-metadata> -->
-          <hr>
+
         </ng-container>
+        <hr style="width: 100%;">
+        <ng-container >
           <div class="detail-header">{{ sarviewsProducts?.length }} Files</div>
           <mat-action-list class="sarviews-product-list">
             <button  *ngFor="let product of sarviewsProducts"
             (click)="onNewSarviewsBrowseSelected(product)"
                      mat-list-item>
               {{ product.files.product_name.slice(0, 28) + "..." + product.files.product_name.slice(product.files.product_name.length - 8, product.files.product_name.length - 4) }}
-              <!-- <mat-menu #sarviews_action_menu="matMenu" xPosition="before"> -->
 
-<!--                <a mat-menu-item [href]="product.downloadUrl" target="_blank" matTooltip="Download file">-->
-<!--            <span style="margin-right: 10px; margin-left: 10px;">-->
-<!--              <span *ngIf="product.bytes === 0">Virtual</span>-->
-<!--              <span *ngIf="product.bytes !== 0">{{product.bytes.toString() | readableSizeFromBytes }}</span>-->
-<!--            </span>-->
-<!--                  <span>-->
-<!--              <mat-icon>android</mat-icon>-->
-<!--            </span>-->
-<!--                </a>-->
-                <!-- <span style="margin-right: 10px; margin-left: 10px;">
-                  <span *ngIf="product.files.product_size === 0">Virtual</span>
-                  <span *ngIf="product.files.product_size !== 0">{{product.files.product_size.toString() | readableSizeFromBytes }}</span>
-                </span> -->
-                <!-- <app-download-file-button
-                  [attr.id]="'imgV_' + product.id"
-                  [product] = "product"
-                  (productDownloaded)="prodDownloaded($event)">
-                </app-download-file-button> -->
-
-                <!-- <button (click)="onToggleQueueProduct(product)"
-                        matTooltip="{{ !queuedProductIds.has(product.id) ? 'Add file to queue' : 'Remove file from queue' }}"
-                        mat-menu-item> -->
-            <!-- <span *ngIf="!queuedProductIds.has(product.id)">
-              Add
-              <mat-icon >add_shopping_cart</mat-icon>
-            </span>
-                  <span *ngIf="queuedProductIds.has(product.id)">
-              Remove
-              <mat-icon >shopping_cart</mat-icon>
-            </span> -->
-          <!-- </mat-menu> -->
         </button>
           </mat-action-list>
-
+        </ng-container>
         </div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
       </div>
     </ng-container>
@@ -221,23 +173,8 @@
 
 
   <ng-container *ngIf="breakpoint > breakpoints.MOBILE">
-    <div *ngIf="(searchType$ | async) !== searchTypes.SARVIEWS_EVENTS">
+      <div>
       <app-browse-list fxFlex class="browse-list"></app-browse-list>
-    </div>
-    <div style="margin-top: 3%; width: 95%;" *ngIf="(searchType$ | async) === searchTypes.SARVIEWS_EVENTS">
-      <div style="width: 100%" *ngIf="(sarviewsEventProducts$ | async) as eventProducts">
-      <cdk-virtual-scroll-viewport orientation="horizontal" [itemSize]="125" class="sarviews-thumbs" *ngIf="eventProducts.length > 1">
-        <!-- <div style="height: 130px;" *cdkVirtualFor="let browse of eventProducts"
-             (click)="onNewSarviewsBrowseSelected(browse)"
-             class="clickable"> -->
-          <img
-          *cdkVirtualFor="let browse of eventProducts"
-             (click)="onNewSarviewsBrowseSelected(browse)"
-             class="clickable"
-          mat-card-md-image src="{{ browse.files.thumbnail_url }}">
-        <!-- </div> -->
-      </cdk-virtual-scroll-viewport>
-    </div>
     </div>
   </ng-container>
 

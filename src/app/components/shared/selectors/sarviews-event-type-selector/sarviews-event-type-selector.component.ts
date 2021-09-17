@@ -17,7 +17,7 @@ export class SarviewsEventTypeSelectorComponent implements OnInit, OnDestroy {
   constructor(private store$: Store<AppState>) { }
 
   public currentEventTypes$ = this.store$.select(filterStore.getSarviewsEventTypes);
-  public eventTypes = [SarviewsEventType.FLOOD, SarviewsEventType.QUAKE, SarviewsEventType.VOLCANO];
+  public eventTypes = [SarviewsEventType.QUAKE, SarviewsEventType.VOLCANO];
 
   public selectedTypesList: string[] = [];
 

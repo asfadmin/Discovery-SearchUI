@@ -11,9 +11,10 @@ import * as queueStore from '@store/queue';
 import * as userStore from '@store/user';
 import * as hyp3Store from '@store/hyp3';
 
-import { Hyp3Service, SarviewsEventsService } from '@services';
+import { Hyp3Service, NotificationService, SarviewsEventsService } from '@services';
 import * as models from '@models';
-import { SarviewsProduct } from '@models';
+import { SarviewProductGranule, SarviewsProduct } from '@models';
+import { ClipboardService } from 'ngx-clipboard';
 
 
 @Component({
@@ -80,6 +81,8 @@ export class SceneFilesComponent implements OnInit, OnDestroy, AfterContentInit 
     private store$: Store<AppState>,
     private hyp3: Hyp3Service,
     private sarviewsService: SarviewsEventsService,
+    private clipboard: ClipboardService,
+    private notificationService: NotificationService,
   ) { }
 
   ngOnInit() {
@@ -242,12 +245,14 @@ export class SceneFilesComponent implements OnInit, OnDestroy, AfterContentInit 
     window.open(this.currentPinnedUrl(current_id));
   }
 
-  public copyEventsOfType(type: string) {
-    const products = this.productsByProductType[type];
-    const granule_names = products.map(prod =>
-      prod.granules.reduce((acc, granule_name) =>
-        acc += granule_name.granule_name + ', ', ''));
-    console.log(granule_names);
+  public copyProductSourceScenes() {
+    const products = this.sarviewsProducts
+    const granule_name_list = products.reduce(
+      (acc, curr) => acc = acc.concat(curr.granules), [] as SarviewProductGranule[]
+      ).map(gran => gran.granule_name);
+
+    this.clipboard.copyFromContent( granule_name_list.join(','));
+    this.notificationService.info(`Scene Names Copied`);
   }
 
   ngOnDestroy() {

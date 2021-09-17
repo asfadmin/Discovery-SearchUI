@@ -12,6 +12,7 @@ a {
 .detail-card {
   max-width: 100%;
   border-left: lightgrey 1px solid;
+  overflow-x: hidden !important;
 }
 
 .scrollable {
@@ -135,7 +136,8 @@ a {
 .sarivews-radius-display {
   display: flex;
   justify-content: space-around;
-  width: 50%;
-  margin-left: 15px;
+  width: 75%;
+  margin-top: 15px;
+  // margin-left: 15px;
 }
 

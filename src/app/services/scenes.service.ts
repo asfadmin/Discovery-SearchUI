@@ -20,7 +20,7 @@ import { getSearchType } from '@store/search/search.reducer';
 import {
   CMRProduct, SearchType,
   Range, ColumnSortDirection,
-  Hyp3Job, Hyp3JobStatusCode, SarviewsEvent, SarviewsQuakeEvent
+  Hyp3Job, Hyp3JobStatusCode, SarviewsEvent, SarviewsQuakeEvent, SarviewsVolcanicEvent
 } from '@models';
 import { NotificationService } from './notification.service';
 
@@ -429,11 +429,19 @@ export class ScenesService {
         if(nameFilter === null || nameFilter === undefined || nameFilter === '') {
           return events;
         }
+
         return events.filter(
-          event => event.description.toLowerCase().includes(nameFilter)
+          event => {
+            const isQuake = event.event_type.toLowerCase() === 'quake';
+            const isVolcano = event.event_type.toLowerCase() === 'volcano';
+
+            return event.description.toLowerCase().includes(nameFilter)
             || event.event_id.toLowerCase().includes(nameFilter)
             || event.event_type.toLowerCase().includes(nameFilter)
-        )
+            || (!isVolcano ? (isQuake ? (event as SarviewsQuakeEvent).usgs_event_id?.includes(nameFilter) :
+            true)
+            : (event as SarviewsVolcanicEvent).smithsonian_event_id?.includes(nameFilter))
+            })
       }
       )
     );

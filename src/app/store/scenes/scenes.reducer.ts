@@ -10,7 +10,8 @@ export interface ScenesState {
   ids: string[];
   products: SceneEntities;
   sarviewsEvents: SarviewsEvent[];
-  selectedSARViewsID: string;
+  selectedSarviewsID: string;
+  selectedSarviewsProduct: SarviewsProduct;
   selectedSarviewsEventProducts: SarviewsProduct[];
   customPairIds: string[][];
   selectedPair: string[] | null;
@@ -35,7 +36,8 @@ export const initState: ScenesState = {
   scenes: {},
   customPairIds: [],
   sarviewsEvents: [],
-  selectedSARViewsID: null,
+  selectedSarviewsID: null,
+  selectedSarviewsProduct: null,
   selectedSarviewsEventProducts: [],
   selectedPair: null,
   unzipped: {},
@@ -138,7 +140,7 @@ export function scenesReducer(state = initState, action: ScenesActions): ScenesS
     case ScenesActionType.SET_SELECTED_SARVIEWS_EVENT: {
       return {
         ...state,
-        selectedSARViewsID: action.payload
+        selectedSarviewsID: action.payload
       }
     }
 
@@ -289,6 +291,13 @@ export function scenesReducer(state = initState, action: ScenesActions): ScenesS
       return {
         ...state,
         selectedSarviewsEventProducts: [...action.payload]
+      }
+    }
+
+    case ScenesActionType.SET_SELECTED_SARVIEW_PRODUCT: {
+      return {
+        ...state,
+        selectedSarviewsProduct: action.payload
       }
     }
 
@@ -480,7 +489,12 @@ export const getSelectedScene = createSelector(
 
 export const getSelectedSarviewsEvent = createSelector(
   getScenesState,
-  (state: ScenesState) => state.sarviewsEvents.find(event => event.event_id === state.selectedSARViewsID) || null
+  (state: ScenesState) => state.sarviewsEvents.find(event => event.event_id === state.selectedSarviewsID) || null
+)
+
+export const getSelectedSarviewsProduct = createSelector(
+ getScenesState,
+ (state: ScenesState) => state.selectedSarviewsProduct
 )
 
 export const getUnzipLoading = createSelector(

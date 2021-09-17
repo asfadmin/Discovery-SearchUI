@@ -14,7 +14,8 @@ import * as searchStore from '@store/search';
 import * as models from '@models';
 import { BrowseMapService, DatasetForProductService } from '@services';
 import * as services from '@services/index';
-import { SarviewsProduct } from '@models';
+import { SarviewProductGranule, SarviewsProduct } from '@models';
+import { ClipboardService } from 'ngx-clipboard';
 
 
 @Component({
@@ -56,7 +57,9 @@ export class ImageDialogComponent implements OnInit, AfterViewInit, OnDestroy {
     public dialogRef: MatDialogRef<ImageDialogComponent>,
     private browseMap: BrowseMapService,
     private datasetForProduct: DatasetForProductService,
-    private screenSize: services.ScreenSizeService
+    private screenSize: services.ScreenSizeService,
+    private clipboard: ClipboardService,
+    private notificationService: services.NotificationService,
   ) { }
 
   ngOnInit() {
@@ -103,6 +106,18 @@ export class ImageDialogComponent implements OnInit, AfterViewInit, OnDestroy {
         event => this.sarviewsEvent = event
       )
     );
+    this.subs.add(
+      this.store$.select(scenesStore.getSelectedSarviewsProduct).subscribe(
+        product => {
+          if(!!product) {
+            this.onNewSarviewsBrowseSelected(product)
+          }
+          // else {
+          //   this.store$.dispatch(new scenesStore.setSelectedSarviewProduct(this.sarviewsProducts[0]));
+          // }
+        }
+      )
+    )
   }
 
   ngAfterViewInit() {
@@ -209,6 +224,12 @@ export class ImageDialogComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   public prodDownloaded( _product ) {
+  }
+
+  public onCopyLink(content: SarviewProductGranule[]): void {
+    const names = content.map(val => val.granule_name).join(',');
+    this.clipboard.copyFromContent(names);
+    this.notificationService.info( '', `Scene${content.length > 1 ? 's ' : ' '}Copied`)
   }
 
   ngOnDestroy() {

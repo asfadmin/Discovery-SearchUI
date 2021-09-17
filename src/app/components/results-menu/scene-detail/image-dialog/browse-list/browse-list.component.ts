@@ -9,6 +9,7 @@ import { Store } from '@ngrx/store';
 import { AppState } from '@store';
 import * as scenesStore from '@store/scenes';
 import * as uiStore from '@store/ui';
+import * as searchStore from '@store/search';
 
 import * as models from '@models';
 import { ScenesService } from '@services';
@@ -28,6 +29,12 @@ export class BrowseListComponent implements OnInit, AfterViewInit, OnDestroy {
   public scenes$: Observable<models.CMRProduct[]>;
   public selectedId: string;
   public browses$ = this.store$.select(scenesStore.getSelectedSceneBrowses);
+  public sarviewsProducts$ = this.store$.select(scenesStore.getSelectedSarviewsEventProducts);
+  public selectedProductId: string;
+
+  public searchType$ = this.store$.select(searchStore.getSearchType);
+  public searchTypes = models.SearchType;
+
   private selectedFromList = false;
   private subs = new SubSink();
 
@@ -50,6 +57,12 @@ export class BrowseListComponent implements OnInit, AfterViewInit, OnDestroy {
         scene => this.selectedId = scene ? scene.id : null
       )
     );
+
+    this.subs.add(
+      this.store$.select(scenesStore.getSelectedSarviewsProduct).subscribe(
+        product => this.selectedProductId = !!product ? product.product_id : null
+      )
+    )
   }
 
   ngAfterViewInit() {
@@ -80,6 +93,11 @@ export class BrowseListComponent implements OnInit, AfterViewInit, OnDestroy {
   public onNewSceneSelected(scene: models.CMRProduct): void {
     this.selectedFromList = true;
     this.store$.dispatch(new scenesStore.SetSelectedScene(scene.id));
+  }
+
+  public onNewProductSelected(product: models.SarviewsProduct): void {
+    this.selectedFromList = true;
+    this.store$.dispatch(new scenesStore.setSelectedSarviewProduct(product));
   }
 
   ngOnDestroy() {

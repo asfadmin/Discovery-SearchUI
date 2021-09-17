@@ -68,7 +68,7 @@ a {
     }
   }
 
-  .sarview-detail-wrapper {
+  .sarviews-detail-wrapper {
     min-width: 200px;
     border-left-color: $asf-primary-dark;
     border-left-style: solid;
@@ -76,8 +76,10 @@ a {
     overflow: hidden;
     background-color: $asf-primary-light;
 
-    .scene-detail {
+    .sarviews-scene-detail {
       margin-left: 10px;
+      display: flex;
+      flex-direction: column;
     }
   }
 }

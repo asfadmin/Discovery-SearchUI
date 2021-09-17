@@ -29,6 +29,9 @@ export class SarviewsEventsService {
 
   public getSarviewsEvents$(): Observable<SarviewsEvent[]> {
     return this.http.get<SarviewsEvent[]>(this.eventsUrl).pipe(
+      map(events => events.filter(
+        event => event.event_type.toLowerCase() !== 'flood'
+      )),
       map(events => events.map(
         event => {
           return {
