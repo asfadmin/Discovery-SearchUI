@@ -126,7 +126,10 @@
               <li *ngIf="sarviewsEvent">{{sarviewsEvent.event_type === 'quake'
                 ? 'usgs id: ' + (sarviewsEvent | quakeEvent).usgs_event_id
                 : 'smithsonian id: ' + (sarviewsEvent | volcanicEvent).smithsonian_event_id}}
-                 ({{sarviewsEvent.description}})</li>
+                 </li>
+                 <li>
+                  description: {{sarviewsEvent.description}}
+                 </li>
               <!-- <li *ngFor="let param of paramsList" >
                 {{ param.name }}: {{ param.val }}
               </li> -->
@@ -136,26 +139,29 @@
           <hr style="width: 100%;">
           <ng-container >
           <div style="min-height: 260px;">
-          <div class="detail-header">SARView Product Detail</div>
+          <div class="detail-header">SARViews Product Detail</div>
           <div style="columns: 1; font-size: 12px; word-wrap: break-word;" *ngIf="!!currentSarviewsProduct">
             <div style="font-weight: bold;">{{currentSarviewsProduct.files.product_name}}</div>
+            <button matTooltip="Download Product" class="download-icon" mat-icon-button (click)="downloadSarviewsProduct(currentSarviewsProduct); $event.stopPropagation();"><mat-icon>cloud_download</mat-icon></button>
+            <div style="font-size: 12px; font-weight: bold; margin-top: 10px; font-size: 14px;">Reference Scene{{currentSarviewsProduct.granules.length > 1 ? 's' : ''}}:
+                <mat-icon
+                (click)="onCopyLink(currentSarviewsProduct.granules)"
+                matTooltip="Copy source scene names to clipboard"
+                class="clickable download-icon" matSuffix>
+                file_copy
+              </mat-icon>
+            </div>
             <ul style="font-size: 12px; list-style-type: circle;" *ngFor="let granule of currentSarviewsProduct.granules">
               <li style="font-weight: bold;">{{granule.granule_name}}</li>
               <li>Date: {{granule.acquisition_date | shortDate}}</li>
               <li>Path: {{granule.path}}</li>
               <li>Frame: {{granule.frame}}</li>
             </ul>
-            <mat-icon
-            (click)="onCopyLink(currentSarviewsProduct.granules)"
-            matTooltip="Copy to clipboard"
-            class="clickable copy-icon" matSuffix>
-            file_copy
-          </mat-icon>
           </div>
         </div>
 
         </ng-container>
-        <hr style="width: 100%;">
+        <hr style="width: 100%; margin-top: 25px;">
         <ng-container style="min-height: calc(100% - 50px);
         height: calc(100% - 50px);">
           <div class="detail-header">{{ sarviewsProducts?.length }} Files</div>

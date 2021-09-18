@@ -2,7 +2,7 @@ import { Component, OnInit, AfterViewInit, OnDestroy } from '@angular/core';
 import { MatDialogRef } from '@angular/material/dialog';
 import { SubSink } from 'subsink';
 
-import { filter, map, tap, debounceTime } from 'rxjs/operators';
+import { filter, map, tap, debounceTime, first } from 'rxjs/operators';
 import { Store } from '@ngrx/store';
 
 import { AppState } from '@store';
@@ -132,6 +132,18 @@ export class ImageDialogComponent implements OnInit, AfterViewInit, OnDestroy {
         }
       )
     );
+    this.subs.add(
+      this.sarviewsEventProducts$.pipe(
+        filter(products => !!products),
+        debounceTime(250),
+        first(),
+      ).subscribe(
+        products => {
+          this.currentBrowse = products[0].files.product_url;
+          this.loadSarviewsBrowseImage(products[0]);
+        }
+      )
+    );
   }
 
   private loadBrowseImage(scene, browse): void {
@@ -230,6 +242,10 @@ export class ImageDialogComponent implements OnInit, AfterViewInit, OnDestroy {
     const names = content.map(val => val.granule_name).join(',');
     this.clipboard.copyFromContent(names);
     this.notificationService.info( '', `Scene${content.length > 1 ? 's ' : ' '}Copied`)
+  }
+
+  public downloadSarviewsProduct(product: SarviewsProduct) {
+    window.open(product.files.product_url, '_blank');
   }
 
   ngOnDestroy() {
