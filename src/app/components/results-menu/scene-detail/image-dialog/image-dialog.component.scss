@@ -80,6 +80,7 @@ a {
       margin-left: 10px;
       display: flex;
       flex-direction: column;
+      height: 100%;
     }
   }
 }
@@ -137,7 +138,6 @@ a {
 
 .sarviews-product-list {
   overflow-y: scroll;
-  max-height: 480px;
   button {
     height: 25px;
   }

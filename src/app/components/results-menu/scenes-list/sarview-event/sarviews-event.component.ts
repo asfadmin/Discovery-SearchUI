@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { SarviewsEvent } from '@models';
+import { SarviewsEvent, SarviewsQuakeEvent, SarviewsVolcanicEvent } from '@models';
 
 import * as models from '@models';
 import * as sceneStore from '@store/scenes';
@@ -44,6 +44,14 @@ export class SarviewsEventComponent implements OnInit {
     const [lat, lon] = proj.toLonLat(coords, this.mapService.epsg());
     this.mapService.panToEvent({lat, lon});
     this.store$.dispatch(new sceneStore.SetSelectedSarviewsEvent(this.event.event_id));
+  }
+
+  public eventIDDisplay(): string {
+    if(this.event.event_type.toLowerCase() === 'quake') {
+      return 'usgs: ' + (this.event as SarviewsQuakeEvent).usgs_event_id;
+    } else {
+      return 'smithsonian: ' + (this.event as SarviewsVolcanicEvent).smithsonian_event_id;
+    }
   }
 
 }
