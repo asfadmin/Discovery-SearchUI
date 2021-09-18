@@ -140,6 +140,12 @@ a {
   button:enabled {
     cursor: pointer;
   }
+
+  button[disabled='true'] {
+    cursor: default;
+    background-color: $asf-primary-light !important;
+    color: $asf-primary !important;
+  }
 }
 
 .search-button-label {
