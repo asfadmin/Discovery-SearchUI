@@ -17,6 +17,8 @@ import { CMRProductMetadata, hyp3JobTypes, SarviewProductGranule, SarviewsProduc
 import { ClipboardService } from 'ngx-clipboard';
 import * as moment from 'moment';
 
+import { faCopy } from '@fortawesome/free-solid-svg-icons';
+
 
 @Component({
   selector: 'app-scene-files',
@@ -24,6 +26,7 @@ import * as moment from 'moment';
   styleUrls: ['./scene-files.component.scss']
 })
 export class SceneFilesComponent implements OnInit, OnDestroy, AfterContentInit {
+  public copyIcon = faCopy;
   public products: models.CMRProduct[];
   public productsByProductType: {[processing_type: string]: SarviewsProduct[]} = {};
   public sarviewsProducts: models.SarviewsProduct[];

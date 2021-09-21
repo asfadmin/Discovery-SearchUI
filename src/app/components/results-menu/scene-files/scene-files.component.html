@@ -25,9 +25,20 @@
   </mat-list>
 </div>
   <div *ngIf="selectedSarviewEventID && !!sarviewsProducts" style="height: 100%; display: flex; flex-direction: column;">
-    <div style="width: 100%"><button mat-button (click)="onOpenPinnedProducts(selectedSarviewEventID)">View Selected Products on SARViews</button>
-    <button (click)="copyProductSourceScenes()" mat-button>
-      Copy Scene Names to clipboard
+    <div style="width: 100%; display: flex; flex-direction: row; justify-content: space-evenly;">
+<button mat-button (click) = "copyProductSourceScenes()">
+  <fa-icon [icon]="copyIcon"></fa-icon> Copy Scenes to Clipboard
+</button>
+      <!--
+    <app-copy-to-clipboard
+    [value]="copyProductSourceScenes()"
+    prompt="Copy all scene names to Clipboard"
+    notification="Scene Names Copied to Clipboard">
+
+    </app-copy-to-clipboard> -->
+    <button mat-button (click)="onOpenPinnedProducts(selectedSarviewEventID)">
+      <mat-icon>web</mat-icon>
+      View Selected in SARViews
     </button>
   </div>
     <!-- <div>{{currentPinnedUrl(selectedID)}}</div> -->
