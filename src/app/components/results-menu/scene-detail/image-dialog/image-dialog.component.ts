@@ -2,7 +2,7 @@ import { Component, OnInit, AfterViewInit, OnDestroy } from '@angular/core';
 import { MatDialogRef } from '@angular/material/dialog';
 import { SubSink } from 'subsink';
 
-import { filter, map, tap, debounceTime, first } from 'rxjs/operators';
+import { filter, map, tap, debounceTime, first, distinctUntilChanged } from 'rxjs/operators';
 import { Store } from '@ngrx/store';
 
 import { AppState } from '@store';
@@ -46,7 +46,7 @@ export class ImageDialogComponent implements OnInit, AfterViewInit, OnDestroy {
   public currentBrowse = null;
   public paramsList: any;
 
-  public breakpoint$ = this.screenSize.breakpoint$;
+  public breakpoint$ = this.screenSize.breakpoint$.pipe(distinctUntilChanged((a, b) => a === b));
   public breakpoints = models.Breakpoints;
 
   private image: HTMLImageElement;

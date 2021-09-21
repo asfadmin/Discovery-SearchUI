@@ -66,7 +66,11 @@ export class SarviewsEventMagnitudeSelectorComponent implements OnInit, OnDestro
 
   ngOnInit(): void {
     this.subs.add(
-      this.store$.select(filterStore.getSarviewsMagnitudeRange).subscribe(
+      this.store$.select(filterStore.getSarviewsMagnitudeRange).pipe(
+        distinctUntilChanged((a, b) => {
+          return a.start === b.start && a.end === b.end
+        }),
+      ).subscribe(
         magnitudeRange => {
           this.magnitudeRange = magnitudeRange;
           this.magnitudeValues$.next([magnitudeRange.start, magnitudeRange.end]);

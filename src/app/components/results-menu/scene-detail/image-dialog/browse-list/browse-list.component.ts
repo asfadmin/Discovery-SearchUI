@@ -65,11 +65,6 @@ export class BrowseListComponent implements OnInit, AfterViewInit, OnDestroy {
       )
     )
 
-    this.subs.add(
-      this.sarviewsProducts$.subscribe(
-        sarviewsProducts => this.sarviewsProducts = sarviewsProducts
-      )
-    );
   }
 
   ngAfterViewInit() {
@@ -93,6 +88,12 @@ export class BrowseListComponent implements OnInit, AfterViewInit, OnDestroy {
 
           this.selectedFromList = false;
         }
+      )
+    );
+
+    this.subs.add(
+      this.sarviewsProducts$.subscribe(
+        sarviewsProducts => this.sarviewsProducts = sarviewsProducts
       )
     );
   }
