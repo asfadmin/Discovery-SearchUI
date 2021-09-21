@@ -30,6 +30,7 @@ export class BrowseListComponent implements OnInit, AfterViewInit, OnDestroy {
   public selectedId: string;
   public browses$ = this.store$.select(scenesStore.getSelectedSceneBrowses);
   public sarviewsProducts$ = this.store$.select(scenesStore.getSelectedSarviewsEventProducts);
+  public sarviewsProducts: models.SarviewsProduct[] = [];
   public selectedProductId: string;
 
   public searchType$ = this.store$.select(searchStore.getSearchType);
@@ -63,6 +64,12 @@ export class BrowseListComponent implements OnInit, AfterViewInit, OnDestroy {
         product => this.selectedProductId = !!product ? product.product_id : null
       )
     )
+
+    this.subs.add(
+      this.sarviewsProducts$.subscribe(
+        sarviewsProducts => this.sarviewsProducts = sarviewsProducts
+      )
+    );
   }
 
   ngAfterViewInit() {

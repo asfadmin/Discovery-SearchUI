@@ -19,8 +19,8 @@
 </cdk-virtual-scroll-viewport>
 
 
-<cdk-virtual-scroll-viewport orientation="horizontal" *ngIf="(searchType$ | async) === searchTypes.SARVIEWS_EVENTS;" class="browse-list-viewport w100 h100" itemSize="140" #sarviewsScroll>
-<div *cdkVirtualFor="let product of (sarviewsProducts$ | async)"
+<cdk-virtual-scroll-viewport orientation="horizontal" *ngIf="(searchType$ | async) === searchTypes.SARVIEWS_EVENTS && !!sarviewsProducts" class="browse-list-viewport w100 h100" itemSize="140" #sarviewsScroll>
+<div *cdkVirtualFor="let product of sarviewsProducts"
 (click)="onNewProductSelected(product)"
 [class.selected]="product.product_id === selectedProductId"
 class="clickable">
