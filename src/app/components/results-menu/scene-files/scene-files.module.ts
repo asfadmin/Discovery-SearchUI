@@ -11,7 +11,7 @@ import { MatExpansionModule } from '@angular/material/expansion';
 import {FormsModule } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
-
+import { PipesModule } from '@pipes';
 @NgModule({
   declarations: [SceneFilesComponent],
   imports: [
@@ -25,6 +25,7 @@ import { MatButtonModule } from '@angular/material/button';
     MatInputModule,
     MatButtonModule,
     ScrollingModule,
+    PipesModule
   ],
   exports: [
     SceneFilesComponent
