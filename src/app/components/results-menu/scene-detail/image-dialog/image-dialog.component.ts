@@ -135,7 +135,7 @@ export class ImageDialogComponent implements OnInit, AfterViewInit, OnDestroy {
     this.subs.add(
       this.sarviewsEventProducts$.pipe(
         filter(products => !!products),
-        debounceTime(250),
+        debounceTime(500),
         first(),
       ).subscribe(
         products => {

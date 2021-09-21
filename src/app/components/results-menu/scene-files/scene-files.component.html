@@ -52,7 +52,8 @@
         <img style="width: 50px; height: 50px;" src="{{prod.files.browse_url}}">
 
       <div class="sarview-product">{{formatProductName(prod.files.product_name)}}</div>
-      <button mat-icon-button (click)="downloadProduct(prod.files.product_url); $event.stopPropagation();"><mat-icon>cloud_download</mat-icon></button>
+        <button mat-icon-button (click)="onQueueSarviewsProduct(prod); $event.stopPropagation();"><mat-icon>add_shopping_cart</mat-icon></button>
+        <button mat-icon-button (click)="downloadProduct(prod.files.product_url); $event.stopPropagation();"><mat-icon>cloud_download</mat-icon></button>
       <div></div>
     </div>
     </mat-list-option>

@@ -13,8 +13,9 @@ import * as hyp3Store from '@store/hyp3';
 
 import { Hyp3Service, NotificationService, SarviewsEventsService } from '@services';
 import * as models from '@models';
-import { SarviewProductGranule, SarviewsProduct } from '@models';
+import { CMRProductMetadata, hyp3JobTypes, SarviewProductGranule, SarviewsProduct } from '@models';
 import { ClipboardService } from 'ngx-clipboard';
+import * as moment from 'moment';
 
 
 @Component({
@@ -253,6 +254,39 @@ export class SceneFilesComponent implements OnInit, OnDestroy, AfterContentInit 
 
     this.clipboard.copyFromContent( granule_name_list.join(','));
     this.notificationService.info(`Scene Names Copied`);
+  }
+
+  public onQueueSarviewsProduct(product: models.SarviewsProduct): void {
+    let jobTypes = Object.values(hyp3JobTypes);
+    let jobType = jobTypes.find(t => t.id === product.job_type);
+
+
+      let productTypeDisplay = `${jobType.name}, ${jobType.productTypes[0].productTypes[0]}`
+      let toCMRProduct: models.CMRProduct = {
+        name: product.files.product_name,
+        productTypeDisplay,
+        file: "",
+        id: product.product_id,
+        downloadUrl: product.files.product_url,
+        bytes: product.files.product_size,
+        browses: [product.files.browse_url],
+        thumbnail: product.files.thumbnail_url,
+        dataset: 'Sentinel-1',
+        groupId: 'SARViews',
+        isUnzippedFile: false,
+
+        metadata: {
+          date: moment(product.processing_date),
+          stopDate: moment(product.processing_date),
+          polygon: product.granules[0].wkt,
+          productType: jobType.name,
+
+        } as CMRProductMetadata
+
+
+      }
+
+    this.store$.dispatch(new queueStore.AddItems([toCMRProduct]));
   }
 
   ngOnDestroy() {
