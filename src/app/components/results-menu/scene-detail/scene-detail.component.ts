@@ -35,7 +35,7 @@ export class SceneDetailComponent implements OnInit, OnDestroy {
 
   public browses$ = this.store$.select(scenesStore.getSelectedSceneBrowses);
   public jobBrowses$ = this.store$.select(scenesStore.getSelectedOnDemandProductSceneBrowses);
-  public selectedSarviewsEventBrowses$ = this.store$.select(scenesStore.getSelectedSarviewsEventProductBrowses);
+  public selectedSarviewsEventProducts$ = this.store$.select(scenesStore.getSelectedSarviewsEventProducts);
   public dataset: models.Dataset;
   public searchType: models.SearchType;
   public searchTypes = models.SearchType;
@@ -55,7 +55,7 @@ export class SceneDetailComponent implements OnInit, OnDestroy {
   private defaultBaselineFiltersID = '';
   private defaultSBASFiltersID = '';
 
-  public sarviewsBrowses: string[] = [];
+  public sarviewsProducts: models.SarviewsProduct[] = [];
 
   private subs = new SubSink();
 
@@ -145,8 +145,8 @@ export class SceneDetailComponent implements OnInit, OnDestroy {
     );
 
     this.subs.add(
-      this.selectedSarviewsEventBrowses$.subscribe(
-        browses => this.sarviewsBrowses = browses
+      this.selectedSarviewsEventProducts$.subscribe(
+        browses => this.sarviewsProducts = browses
       )
     );
 
@@ -194,7 +194,7 @@ export class SceneDetailComponent implements OnInit, OnDestroy {
 
   public sarviewsEventHasSceneBrowses() {
     if (this.searchType === this.searchTypes.SARVIEWS_EVENTS) {
-      return this.sarviewsBrowses?.length > 0;
+      return this.sarviewsProducts?.length > 0;
     }
     return false;
   }
@@ -215,6 +215,9 @@ export class SceneDetailComponent implements OnInit, OnDestroy {
       return;
     }
 
+    if(this.searchType === models.SearchType.SARVIEWS_EVENTS) {
+      this.store$.dispatch(new scenesStore.setSelectedSarviewProduct(this.sarviewsProducts[this.browseIndex]));
+    }
     this.store$.dispatch(new uiStore.SetIsBrowseDialogOpen(true));
 
     const dialogRef = this.dialog.open(ImageDialogComponent, {

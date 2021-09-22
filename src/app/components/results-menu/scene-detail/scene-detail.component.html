@@ -186,21 +186,21 @@
         <div class="fullscreen clickable" (click)="onOpenImage();" matTooltip="Open in Image Viewer">
           <mat-icon>preview</mat-icon>
         </div>
-        <a class="download clickable" [href]="sarviewsBrowses[browseIndex]" target="_blank" matTooltip="Download this image">
+        <a class="download clickable" [href]="sarviewsProducts[browseIndex].files.product_url" target="_blank" matTooltip="Download this image">
           <mat-icon>download</mat-icon>
         </a>
       </div>
-      <div class="browse-pager" *ngIf="sarviewsBrowses">
+      <div class="browse-pager" *ngIf="sarviewsProducts">
         <span
         [class.clickable]="browseIndex > 0"
         (click)="browseIndex > 0 && browseIndex = browseIndex - 1"
         >
         <mat-icon>arrow_back</mat-icon>
         </span>
-         {{browseIndex+1}} / {{sarviewsBrowses.length}}
+         {{browseIndex+1}} / {{sarviewsProducts.length}}
         <span
-          [class.clickable]="browseIndex+1 < sarviewsBrowses.length"
-          (click)="browseIndex+1 < sarviewsBrowses.length && browseIndex = browseIndex + 1"
+          [class.clickable]="browseIndex+1 < sarviewsProducts.length"
+          (click)="browseIndex+1 < sarviewsProducts.length && browseIndex = browseIndex + 1"
            >
           <mat-icon>arrow_forward</mat-icon>
         </span>
@@ -211,7 +211,7 @@
       <img
         class="browse-img fit-to-container"
         [hidden]="isImageLoading"
-        [src]="sarviewsBrowses[browseIndex]"
+        [src]="sarviewsProducts[browseIndex].files.browse_url"
         (click)="onOpenImage();"
         (load)="isImageLoading = false"
         onerror="this.src='assets/no-browse.png'"

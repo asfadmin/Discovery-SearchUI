@@ -2,7 +2,7 @@ import { Component, OnInit, AfterViewInit, OnDestroy } from '@angular/core';
 import { MatDialogRef } from '@angular/material/dialog';
 import { SubSink } from 'subsink';
 
-import { filter, map, tap, debounceTime, first, distinctUntilChanged } from 'rxjs/operators';
+import { filter, map, tap, debounceTime, first, distinctUntilChanged, delay } from 'rxjs/operators';
 import { Store } from '@ngrx/store';
 
 import { AppState } from '@store';
@@ -49,7 +49,7 @@ export class ImageDialogComponent implements OnInit, AfterViewInit, OnDestroy {
   public breakpoint$ = this.screenSize.breakpoint$.pipe(distinctUntilChanged((a, b) => a === b));
   public breakpoints = models.Breakpoints;
 
-  private image: HTMLImageElement;
+  private image: HTMLImageElement = new Image();
   private subs = new SubSink();
 
   constructor(
@@ -107,7 +107,9 @@ export class ImageDialogComponent implements OnInit, AfterViewInit, OnDestroy {
       )
     );
     this.subs.add(
-      this.store$.select(scenesStore.getSelectedSarviewsProduct).subscribe(
+      this.store$.select(scenesStore.getSelectedSarviewsProduct).pipe(
+        delay(750),
+      ).subscribe(
         product => {
           if(!!product) {
             this.onNewSarviewsBrowseSelected(product)
