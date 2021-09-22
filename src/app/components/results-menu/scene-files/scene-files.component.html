@@ -40,11 +40,12 @@
     </div>
 
     <div style="height: 100%; width: 100%;">
-      <cdk-virtual-scroll-viewport [itemSize]="50" style="min-height: calc(100% - 30px);">
-        <mat-selection-list [(ngModel)]="selectedProducts" class="product-list">
-          <mat-list-option checkboxPosition="before" [value]="prod" *cdkVirtualFor="let prod of sarviewsProducts" style="margin-right: 0px !important;">
+      <!-- <div style="min-height: calc(100% - 30px);"> -->
+        <mat-selection-list
+        multiple [(ngModel)]="selectedProducts" class="products-list" style="height: calc(100% - 100px);">
+          <mat-list-option class="virtual-scroll" checkboxPosition="before" [value]="prod" *ngFor="let prod of sarviewsProducts" style="margin-right: 0px !important;">
             <div class="sarview-products-list">
-              <img style="width: 50px; height: 50px;" src="{{prod.files.browse_url}}">
+              <img style="width: 50px; height: 50px;" src="{{prod.files.thumbnail_url}}">
               <div class="sarview-product">
                 <div style="font-weight: bold;">{{formatProductName(prod.files.product_name)}}</div>
                 <div>{{prod.files.product_size.toString() | readableSizeFromBytes }}, {{prod.job_type.replace("_", " ")}}</div>
@@ -57,8 +58,8 @@
           </div>
         </mat-list-option>
       </mat-selection-list>
-    </cdk-virtual-scroll-viewport>
     </div>
+    <!-- </div> -->
   </div>
 
 <div *ngIf="showUnzippedProductScreen" class="products-list zip-contents">

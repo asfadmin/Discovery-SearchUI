@@ -19,7 +19,6 @@ import * as moment from 'moment';
 
 import { faCopy } from '@fortawesome/free-solid-svg-icons';
 
-
 @Component({
   selector: 'app-scene-files',
   templateUrl: './scene-files.component.html',
@@ -77,7 +76,7 @@ export class SceneFilesComponent implements OnInit, OnDestroy, AfterContentInit 
   public isUserLoggedIn: boolean;
   public hasAccessToRestrictedData: boolean;
   public showDemWarning: boolean;
-  public selectedProducts: SarviewsProduct[];
+  public selectedProducts: SarviewsProduct[] = [];
   public selectedSarviewEventID: string;
   private subs = new SubSink();
 
