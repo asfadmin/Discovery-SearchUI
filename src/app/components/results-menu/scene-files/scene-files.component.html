@@ -25,63 +25,41 @@
   </mat-list>
 </div>
   <div *ngIf="selectedSarviewEventID && !!sarviewsProducts" style="height: 100%; display: flex; flex-direction: column;">
-    <div style="width: 100%; display: flex; flex-direction: row; justify-content: space-evenly;">
-<button style="border-radius: 4px !important;" class="mat-flat-button mat-primary search-button" color="primary" mat-flat-button (click) = "copyProductSourceScenes()">
-  <div class="sarviews-button-display">
-  <fa-icon [icon]="copyIcon"></fa-icon> Copy All Scenes to Clipboard
-</div>
-</button>
-      <!--
-    <app-copy-to-clipboard
-    [value]="copyProductSourceScenes()"
-    prompt="Copy all scene names to Clipboard"
-    notification="Scene Names Copied to Clipboard">
-
-    </app-copy-to-clipboard> -->
-    <button class="mat-flat-button mat-primary" style="border-radius: 4px !important;" color="primary" mat-flat-button (click)="onOpenPinnedProducts(selectedSarviewEventID)">
-      <div class="sarviews-button-display">
-        <mat-icon>web</mat-icon>
-      View Selected in SARViews
+    <div style="width: 100%; display: flex; flex-direction: row; justify-content: space-evenly; margin-bottom: 10px;">
+      <button style="border-radius: 4px !important;" class="mat-flat-button mat-primary search-button" color="primary" mat-flat-button (click) = "copyProductSourceScenes()">
+        <div class="sarviews-button-display">
+        <fa-icon [icon]="copyIcon"></fa-icon> Copy All Scenes to Clipboard
+        </div>
+      </button>
+      <button class="mat-flat-button mat-primary" style="border-radius: 4px !important;" color="primary" mat-flat-button (click)="onOpenPinnedProducts(selectedSarviewEventID)">
+        <div class="sarviews-button-display">
+          <mat-icon>web</mat-icon>
+          View Selected in SARViews
+        </div>
+      </button>
     </div>
-    </button>
 
-  </div>
-    <!-- <div>{{currentPinnedUrl(selectedID)}}</div> -->
-    <!-- <mat-form-field> -->
-
-    <!-- <mat-accordion> -->
-    <!-- <div *ngFor="let type of productTypes">
-      <div *ngIf="productsByProductType !== null"> -->
-    <!-- <mat-expansion-panel *ngIf="productsByProductType[type] as byProcessingType">
-      <mat-expansion-panel-header style="height: 75px; background-color: white !important;">{{type}}:
-        {{byProcessingType.length}}
-        product{{byProcessingType.length != 1 ? 's' : ''}}
-        <button (click)="copyEventsOfType(type)" mat-button>
-          Copy Scene Names to clipboard
-        </button>
-      </mat-expansion-panel-header> -->
-<div style="height: 100%; width: 100%;">
+    <div style="height: 100%; width: 100%;">
       <cdk-virtual-scroll-viewport [itemSize]="50" style="min-height: calc(100% - 30px);">
-    <mat-selection-list [(ngModel)]="selectedProducts" class="product-list">
-      <mat-list-option checkboxPosition="before" [value]="prod" *cdkVirtualFor="let prod of sarviewsProducts" style="margin-right: 0px !important;">
-      <div class="sarview-products-list">
-        <img style="width: 50px; height: 50px;" src="{{prod.files.browse_url}}">
-      <div class="sarview-product">
-        <div style="font-weight: bold;">{{formatProductName(prod.files.product_name)}}</div>
-        <div>{{prod.files.product_size.toString() | readableSizeFromBytes }}, {{prod.job_type.replace("_", " ")}}</div>
-      </div>
-      <div>
-        <button mat-icon-button (click)="onQueueSarviewsProduct(prod); $event.stopPropagation();"><mat-icon>add_shopping_cart</mat-icon></button>
-        <button mat-icon-button (click)="downloadProduct(prod.files.product_url); $event.stopPropagation();"><mat-icon>cloud_download</mat-icon></button>
-      </div>
-      <div></div>
-    </div>
-    </mat-list-option>
-  </mat-selection-list>
+        <mat-selection-list [(ngModel)]="selectedProducts" class="product-list">
+          <mat-list-option checkboxPosition="before" [value]="prod" *cdkVirtualFor="let prod of sarviewsProducts" style="margin-right: 0px !important;">
+            <div class="sarview-products-list">
+              <img style="width: 50px; height: 50px;" src="{{prod.files.browse_url}}">
+              <div class="sarview-product">
+                <div style="font-weight: bold;">{{formatProductName(prod.files.product_name)}}</div>
+                <div>{{prod.files.product_size.toString() | readableSizeFromBytes }}, {{prod.job_type.replace("_", " ")}}</div>
+              </div>
+              <div>
+                <button mat-icon-button (click)="onQueueSarviewsProduct(prod); $event.stopPropagation();"><mat-icon>add_shopping_cart</mat-icon></button>
+                <button mat-icon-button (click)="downloadProduct(prod.files.product_url); $event.stopPropagation();"><mat-icon>cloud_download</mat-icon></button>
+              </div>
+              <div></div>
+          </div>
+        </mat-list-option>
+      </mat-selection-list>
     </cdk-virtual-scroll-viewport>
+    </div>
   </div>
-  </div>
-<!-- </mat-form-field> -->
 
 <div *ngIf="showUnzippedProductScreen" class="products-list zip-contents">
   <mat-list class="products-list">
