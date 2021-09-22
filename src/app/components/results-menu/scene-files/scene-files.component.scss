@@ -46,3 +46,10 @@
   align-self: center;
   justify-self: center;
 }
+
+.sarviews-button-display {
+  flex-direction: row;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
