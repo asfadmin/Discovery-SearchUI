@@ -19,7 +19,6 @@ import { DatasetForProductService } from '@services';
 // import {circular} from 'ol/geom/Polygon';
 // import WKT from 'ol/format/WKT';
 import { MatSliderChange } from '@angular/material/slider';
-
 @Component({
   selector: 'app-scene-detail',
   templateUrl: './scene-detail.component.html',
@@ -50,7 +49,7 @@ export class SceneDetailComponent implements OnInit, OnDestroy {
   public browseIndex = 0;
   public detailsOpen = true;
   public masterOffsets$ = this.store$.select(scenesStore.getMasterOffsets);
-  public sarviewsEventGeoSearchRadius = 550000
+  public sarviewsEventGeoSearchRadius = 1.0
 
   private defaultBaselineFiltersID = '';
   private defaultSBASFiltersID = '';
@@ -295,27 +294,7 @@ export class SceneDetailComponent implements OnInit, OnDestroy {
   }
 
   public makeSarviewsEventGeoSearch() {
-    const wkt = this.sarviewEvent.wkt;
     const timeFrame = this.sarviewEvent.processing_timeframe;
-
-    // const bounds = (x: string) => x.replace('MULTI', '').replace("POLYGON", '').trimStart().replace('((', '').replace('))', '')
-    // .replace('(', '').replace(')', '').split(',').slice(0, 4).
-    // map(coord => coord.trimStart().split(' ')).
-    //   map(coordVal => ({ lon: parseFloat(coordVal[0]), lat: parseFloat(coordVal[1])}));
-
-    // const calcCenter = (coords: {lat: number, lon: number}[]) => {
-    //   const centroid = coords.reduce((acc, curr) => ({lat: acc.lat + curr.lat, lon: acc.lon + curr.lon}));
-    //   centroid.lon = centroid.lon / 4.0;
-    //   centroid.lat = centroid.lat / 4.0;
-    //   return centroid;
-    // };
-
-    // const bound = bounds(wkt);
-    // const center = calcCenter(bound);
-
-    // let circle = circular([center.lon, center.lat], this.sarviewsEventGeoSearchRadius);
-    // var format = new WKT();
-    // const wktString = format.writeGeometry(circle);
 
     [
       new searchStore.SetSearchType(models.SearchType.DATASET),
@@ -329,7 +308,7 @@ export class SceneDetailComponent implements OnInit, OnDestroy {
     if(!!timeFrame.end) {
       this.store$.dispatch(new filtersStore.SetEndDate(new Date(timeFrame.end)));
     }
-    this.mapService.loadPolygonFrom(wkt);
+    this.mapService.onSetSarviewsPolygonPreview(this.sarviewEvent, this.sarviewsEventGeoSearchRadius);
 
     this.store$.dispatch(new searchStore.MakeSearch());
   }

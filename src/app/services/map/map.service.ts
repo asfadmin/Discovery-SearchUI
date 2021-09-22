@@ -520,48 +520,13 @@ export class MapService {
   }
 
   public onSetSarviewsPolygonPreview(sarviewEvent: SarviewsEvent, radius: number) {
-    console.log(radius);
-    // if(!this.sarviewsEventRadiusPolygon) {
-      const wkt = sarviewEvent.wkt;
-      // const bound = this.parseBoundsFromString(wkt);
-      // const center = this.calcCenter(bound);
-      // const box = format.readGeometry(wkt) as Polygon;
-      // this.sarviewsEventRadiusPolygon = box;
-      //  circular([center.lon, center.lat], radius);
-      // this.setDrawFeature(this.sarviewsEventRadiusPolygon);
-      // wktstring = this.sarviewsEventRadiusPolygon.get
-
-    // }
-    // else {
-    //   const bound = this.parseBoundsFromString(sarviewEvent.wkt);
-    //   const center = this.calcCenter(bound);
-    //   let temp = circular([center.lon, center.lat], radius)
-    //   this.sarviewsEventRadiusPolygon.setCoordinates(temp.getCoordinates());
-    // }
-
-    // var format = new WKT();
-    // const wktString = format.writeGeometry(this.sarviewsEventRadiusPolygon);
-
+    const wkt = sarviewEvent.wkt;
     const features = this.wktService.wktToFeature(
       wkt,
       this.epsg()
     );
 
+    features.getGeometry().scale(radius);
     this.setDrawFeature(features);
-    // this.loadPolygonFrom(wktString);
   }
-
-  // private parseBoundsFromString(x: string): {lon: number, lat: number}[] {
-  //   return x.replace('MULTI', '').replace("POLYGON", '').trimStart().replace('((', '').replace('))', '')
-  //     .replace('(', '').replace(')', '').split(',').slice(0, 4).
-  //     map(coord => coord.trimStart().split(' ')).
-  //     map(coordVal => ({ lon: parseFloat(coordVal[0]), lat: parseFloat(coordVal[1])}));
-  // }
-
-  // private calcCenter(coords: {lon: number, lat: number}[]) {
-  //   const centroid = coords.reduce((acc, curr) => ({lat: acc.lat + curr.lat, lon: acc.lon + curr.lon}));
-  //   centroid.lon = centroid.lon / 4.0;
-  //   centroid.lat = centroid.lat / 4.0;
-  //   return centroid;
-  // }
 }
