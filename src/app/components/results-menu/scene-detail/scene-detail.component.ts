@@ -102,7 +102,7 @@ export class SceneDetailComponent implements OnInit, OnDestroy {
               this.isActiveSarviewEvent = false;
             }
           }
-          this.mapService.onSetSarviewsPolygonPreview(event, this.sarviewsEventGeoSearchRadius);
+          this.mapService.onSetSarviewsPolygon(event, this.sarviewsEventGeoSearchRadius);
           }
         )
     )
@@ -308,14 +308,14 @@ export class SceneDetailComponent implements OnInit, OnDestroy {
     if(!!timeFrame.end) {
       this.store$.dispatch(new filtersStore.SetEndDate(new Date(timeFrame.end)));
     }
-    this.mapService.onSetSarviewsPolygonPreview(this.sarviewEvent, this.sarviewsEventGeoSearchRadius);
+    this.mapService.onSetSarviewsPolygon(this.sarviewEvent, this.sarviewsEventGeoSearchRadius);
 
     this.store$.dispatch(new searchStore.MakeSearch());
   }
 
   public onEventSearchRadiusChange(event: MatSliderChange) {
     this.sarviewsEventGeoSearchRadius = event.value;
-    this.mapService.onSetSarviewsPolygonPreview(this.sarviewEvent, this.sarviewsEventGeoSearchRadius);
+    this.mapService.onSetSarviewsPolygon(this.sarviewEvent, this.sarviewsEventGeoSearchRadius);
   }
 
   public onToggleRadiusPreview() {

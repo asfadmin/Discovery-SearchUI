@@ -42,9 +42,14 @@
       </div>
     </div>
 
-    <div fxFlex id="browse-map" fxFlex class="browse-map--size">
-    </div>
+    <div fxFlex id="browse-map" fxFlex class="browse-map--size" fxLayout="row-reverse" fxLayoutAlign="end end" >
 
+    </div>
+      <div>
+      <button
+      style="position: absolute; bottom: 5px; right: 20%; margin: 15px; min-width: 200px; border-radius: 4px !important;"
+      mat-flat-button (click)="OpenProductInSarviews()">Open Product In SARViews</button>
+    </div>
     <div *ngIf="isImageLoading" color="accent" class="browse-map--overlay">
       <mat-spinner></mat-spinner>
     </div>

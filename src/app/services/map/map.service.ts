@@ -519,7 +519,7 @@ export class MapService {
     return this.map;
   }
 
-  public onSetSarviewsPolygonPreview(sarviewEvent: SarviewsEvent, radius: number) {
+  public onSetSarviewsPolygon(sarviewEvent: SarviewsEvent, radius: number) {
     const wkt = sarviewEvent.wkt;
     const features = this.wktService.wktToFeature(
       wkt,

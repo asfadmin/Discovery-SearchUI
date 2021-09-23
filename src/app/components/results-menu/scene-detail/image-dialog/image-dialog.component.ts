@@ -12,7 +12,7 @@ import * as uiStore from '@store/ui';
 import * as searchStore from '@store/search';
 
 import * as models from '@models';
-import { BrowseMapService, DatasetForProductService } from '@services';
+import { BrowseMapService, DatasetForProductService, SarviewsEventsService } from '@services';
 import * as services from '@services/index';
 import { SarviewProductGranule, SarviewsProduct } from '@models';
 import { ClipboardService } from 'ngx-clipboard';
@@ -60,6 +60,7 @@ export class ImageDialogComponent implements OnInit, AfterViewInit, OnDestroy {
     private screenSize: services.ScreenSizeService,
     private clipboard: ClipboardService,
     private notificationService: services.NotificationService,
+    private sarviewsService: SarviewsEventsService,
   ) { }
 
   ngOnInit() {
@@ -248,6 +249,11 @@ export class ImageDialogComponent implements OnInit, AfterViewInit, OnDestroy {
 
   public downloadSarviewsProduct(product: SarviewsProduct) {
     window.open(product.files.product_url, '_blank');
+  }
+
+  public OpenProductInSarviews() {
+    const url = this.sarviewsService.getSarviewsEventPinnedUrl(this.sarviewsEvent.event_id, [this.currentSarviewsProduct]);
+    window.open(url);
   }
 
   ngOnDestroy() {
