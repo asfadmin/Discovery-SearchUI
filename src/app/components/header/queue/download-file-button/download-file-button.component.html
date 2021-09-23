@@ -1,4 +1,5 @@
 <button (click)="downloadFile( product, href )"
+        (contextmenu)="hiddenContextMenu($event, hiddenPrefix + product.id)"
    [disabled]="!product.downloadUrl || dlInProgress"
    mat-icon-button
    matTooltip="Download file"
@@ -27,4 +28,9 @@
     </ng-container>
   </ng-container>
 </button>
+<a [id]="hiddenPrefix + product.id"
+   [href]="product.downloadUrl"
+   target="_blank" >
+   x
+</a>
 
