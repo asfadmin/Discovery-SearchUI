@@ -16,6 +16,8 @@ import { BrowseMapService, DatasetForProductService, SarviewsEventsService } fro
 import * as services from '@services/index';
 import { SarviewProductGranule, SarviewsProduct } from '@models';
 import { ClipboardService } from 'ngx-clipboard';
+// import Polygon from 'ol/geom/Polygon';
+// import { getCenter } from 'ol/extent';
 
 
 @Component({
@@ -61,6 +63,7 @@ export class ImageDialogComponent implements OnInit, AfterViewInit, OnDestroy {
     private clipboard: ClipboardService,
     private notificationService: services.NotificationService,
     private sarviewsService: SarviewsEventsService,
+    // private wktService: services.WktService,
   ) { }
 
   ngOnInit() {
@@ -192,9 +195,14 @@ export class ImageDialogComponent implements OnInit, AfterViewInit, OnDestroy {
         this.naturalWidth, this.naturalHeight
       ];
 
+      // const wkt = currentProd.granules[0].wkt;
+      // const format = self.wktService.wktToFeature(wkt, 'EPSG:4326');
+      // console.log(format.getGeometry());
+      // const flatCoords = getCenter((format.getGeometry() as Polygon).getExtent());
+      // console.log(flatCoords);
       browseService.setBrowse(product.files.browse_url, {
         width, height
-      });
+      }, currentProd.granules[0].wkt );
     });
 
     this.image.src = product.files.browse_url;
