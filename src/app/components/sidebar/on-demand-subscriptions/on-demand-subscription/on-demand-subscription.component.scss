@@ -1,0 +1,37 @@
+.subscription {
+  padding: 10px;
+}
+
+.subscription--header {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.subscription--header-info {
+  display: flex;
+}
+
+.subscription--preview {
+  display: flex;
+  flex-direction: column;
+}
+
+.preview--top {
+  font-weight: bold;
+}
+
+.subscription--detail {
+  margin: 10px;
+  margin-left: 45px;
+}
+
+.expand-arrow {
+  margin-right: 20px;
+  margin-top: -2px;
+}
+
+.expand-arrow--icon {
+  font-size: 38px;
+}

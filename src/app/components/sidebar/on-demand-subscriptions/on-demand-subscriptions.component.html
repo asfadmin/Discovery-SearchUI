@@ -24,7 +24,10 @@
       <div *ngIf="subscriptions.length > 0; else noSubscriptions">
         <div *ngFor="let subscription of subscriptions" class="saved-filters-presets-row">
           <app-on-demand-subscription
-            [subscription]="subscription">
+            [subscription]="subscription"
+            [isExpanded]="subscription.id === selectedSubId"
+            (toggleExpand)="onToggleSelected($event)"
+            (viewProducts)="onLoadProductsFor($event)">
           </app-on-demand-subscription>
         </div>
       </div>

@@ -1,12 +1,11 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 
-import { Observable, of } from 'rxjs';
+import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import * as moment from 'moment';
 
 import { EnvironmentService } from './environment.service';
-import { subsResponse } from './subscription';
 import * as models from '@models';
 
 @Injectable({
@@ -124,15 +123,18 @@ export class Hyp3Service {
   }
 
   public getSubscriptions$(): Observable<models.OnDemandSubscription[]> {
-    return of(subsResponse).pipe(
-      map(resp => {
-        return resp.subscriptions.map(([sub]) => {
+    const subscriptionsUrl = `${this.apiUrl}/subscriptions`;
+
+    return this.http.get(subscriptionsUrl, { withCredentials: true }).pipe(
+      map((resp: any) => {
+        console.log(resp);
+        return resp.subscriptions.map((sub) => {
           return  {
             name: sub.job_specification.name,
             id: sub.subscription_id,
-            jobParameters: {},
+            jobParameters: sub.job_specification,
             jobType: models.hyp3JobTypes[sub.job_specification.job_type],
-            filters: {},
+            filters: sub.search_parameters,
           };
         });
         console.log(resp);

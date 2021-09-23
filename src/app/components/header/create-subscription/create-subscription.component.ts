@@ -12,7 +12,7 @@ import { AppState } from '@store';
 import * as hyp3Store from '@store/hyp3';
 import * as filtersStore from '@store/filters';
 
-import { ScreenSizeService, MapService, Hyp3Service } from '@services';
+import { ScreenSizeService, MapService, Hyp3Service, EnvironmentService } from '@services';
 import * as models from '@models';
 
 @Component({
@@ -65,6 +65,7 @@ export class CreateSubscriptionComponent implements OnInit, OnDestroy {
 
   public breakpoint: models.Breakpoints;
   public breakpoints = models.Breakpoints;
+  public validateOnly = false;
 
   private subs = new SubSink();
 
@@ -73,6 +74,7 @@ export class CreateSubscriptionComponent implements OnInit, OnDestroy {
     private screenSize: ScreenSizeService,
     private mapService: MapService,
     private hyp3: Hyp3Service,
+    public env: EnvironmentService,
     private store$: Store<AppState>,
   ) { }
 
@@ -150,11 +152,10 @@ export class CreateSubscriptionComponent implements OnInit, OnDestroy {
       }
     };
 
-    console.log(sub);
 
-    this.hyp3.submiteSubscription$(sub).subscribe(resp => {
-      console.log(resp);
-
+    this.hyp3.submiteSubscription$({
+      subscription: sub, validate_only: this.validateOnly
+    }).subscribe(_ => {
       this.dialogRef.close();
     });
   }
@@ -189,6 +190,10 @@ export class CreateSubscriptionComponent implements OnInit, OnDestroy {
     }
 
     return this.stepper.selectedIndex === this.stepper.steps.length - 1;
+  }
+
+  public onValidateOnlyToggle(val: boolean): void {
+    this.validateOnly = val;
   }
 
   ngOnDestroy(): void {

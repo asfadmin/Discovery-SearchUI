@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 
 import * as models from '@models';
 
@@ -9,10 +9,21 @@ import * as models from '@models';
 })
 export class OnDemandSubscriptionComponent implements OnInit {
   @Input() subscription: models.OnDemandSubscription;
+  @Input() isExpanded: boolean;
+
+  @Output() toggleExpand = new EventEmitter<string>();
+  @Output() viewProducts = new EventEmitter<string>();
 
   constructor() { }
 
   ngOnInit(): void {
   }
 
+  public onToggleExpand(): void {
+    this.toggleExpand.emit(this.subscription.id);
+  }
+
+  public loadOnDemandSearch(): void {
+    this.viewProducts.emit(this.subscription.name);
+  }
 }

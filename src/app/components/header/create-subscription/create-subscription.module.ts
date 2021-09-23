@@ -1,8 +1,10 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 
 import { MatSelectModule } from '@angular/material/select';
 import { MatStepperModule } from '@angular/material/stepper';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatInputModule } from '@angular/material/input';
 import { MatSharedModule } from '@shared';
 
@@ -24,9 +26,11 @@ import { PipesModule } from '@pipes';
   ],
   imports: [
     CommonModule,
+    FormsModule,
     MatDialogModule,
     MatSelectModule,
     MatStepperModule,
+    MatSlideToggleModule,
     MatInputModule,
     MatSharedModule,
     ProcessingOptionsModule,

@@ -35,13 +35,9 @@
 </div>
 
 <mat-dialog-content
-  #contentArea class="mat-dialog-content">
+  #contentArea style="overflow: auto;" class="mat-dialog-content">
   <div class="content-block">
     <div class="content-area">
-      <p>
-      Create a subscription to automatically processes new data.
-      </p>
-
       <mat-stepper #stepper>
         <mat-step>
           <ng-template matStepLabel>Search Options</ng-template>
@@ -148,6 +144,7 @@
           <h3>Name: </h3>
           <app-project-name-selector [processName]="true"></app-project-name-selector>
 
+
           <h3>Search:</h3>
           <div>
             <div *ngIf="!!subtype">
@@ -184,6 +181,7 @@
               <b>{{ param[0] }}:</b> {{ param[1] }}
             </div>
           </div>
+
         </mat-step>
       </mat-stepper>
     </div>
@@ -197,12 +195,22 @@
       Back
     </button>
 
-    <button
-       (click)="onNext()"
-       [disabled]=""
-       mat-flat-button
-       color="primary">
-      {{ isLastStep() ? 'Submit' : 'Next'}}
-    </button>
+    <div>
+      <mat-slide-toggle
+         *ngIf="breakpoint !== breakpoints.MOBILE"
+        style="margin-right: 16px;"
+        (change)="onValidateOnlyToggle($event.checked)"
+        [(ngModel)]="validateOnly">
+        Validate Only
+      </mat-slide-toggle>
+
+      <button
+         (click)="onNext()"
+         [disabled]=""
+         mat-flat-button
+         color="primary">
+        {{ isLastStep() ? 'Submit' : 'Next'}}
+      </button>
+    </div>
   </div>
 </mat-dialog-actions>

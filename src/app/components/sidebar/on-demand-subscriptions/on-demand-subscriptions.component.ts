@@ -4,6 +4,7 @@ import { SubSink } from 'subsink';
 
 import { Store } from '@ngrx/store';
 import { AppState } from '@store';
+import * as filtersStore from '@store/filters';
 import * as uiStore from '@store/ui';
 import * as hyp3Store from '@store/hyp3';
 import * as searchStore from '@store/search';
@@ -23,6 +24,7 @@ import * as models from '@models';
 })
 export class OnDemandSubscriptionsComponent implements OnInit, OnDestroy {
   public subscriptions = [];
+  public selectedSubId: string = null;
 
   public breakpoint: models.Breakpoints;
   public breakpoints = models.Breakpoints;
@@ -60,15 +62,33 @@ export class OnDemandSubscriptionsComponent implements OnInit, OnDestroy {
   }
 
   public onCreateSubscription() {
-    this.dialog.open(CreateSubscriptionComponent, {
+    const ref = this.dialog.open(CreateSubscriptionComponent, {
       id: 'subscriptionQueueDialog',
       maxWidth: '100vw',
       maxHeight: '100vh',
     });
+
+    ref.afterClosed().subscribe(
+      _ => this.store$.dispatch(new hyp3Store.LoadSubscriptions())
+    );
   }
 
   public onClose() {
     this.store$.dispatch(new uiStore.CloseSidebar());
+  }
+
+  public onToggleSelected(subId: string): void {
+    if (this.selectedSubId === subId) {
+      this.selectedSubId = null;
+    } else {
+      this.selectedSubId = subId;
+    }
+  }
+
+  public onLoadProductsFor(subName: string): void {
+    this.store$.dispatch(new uiStore.CloseSidebar());
+    this.store$.dispatch(new searchStore.SetSearchType(models.SearchType.CUSTOM_PRODUCTS));
+    this.store$.dispatch(new filtersStore.SetProjectName(subName));
   }
 
   ngOnDestroy() {

@@ -1,8 +1,43 @@
-<div style="padding: 10px;">
-  <div>
-    {{ subscription.name }}
+<div class="subscription">
+  <div class="subscription--header">
+    <div class="subscription--header-info">
+      <div (click)="onToggleExpand()" class="clickable expand-arrow">
+        <mat-icon *ngIf="!isExpanded" class="expand-arrow--icon">keyboard_arrow_right</mat-icon>
+        <mat-icon *ngIf="isExpanded" class="expand-arrow--icon">keyboard_arrow_down</mat-icon>
+      </div>
+
+      <div class="subscription--preview">
+        <div class="preview--top">
+          {{ subscription.name }} <span>&#183;</span>
+          {{ subscription.jobType.name }}
+        </div>
+        <div>
+          {{ subscription.filters.start | shortDate }} to {{ subscription.filters.end | shortDate }}
+        </div>
+      </div>
+    </div>
+
+    <div class="subscription--header-actions">
+      <button
+        (click)="loadOnDemandSearch()"
+        class="subscription--action"
+        matTooltip="View Processed Products"
+        mat-flat-button>
+        <i class="material-icons">image_search</i>
+      </button>
+    </div>
   </div>
-  <div>
-    {{ subscription.jobType.name }}
+
+  <div *ngIf="isExpanded" class="subscription--detail">
+    <div style="margin-bottom: 22px;">
+      <app-subscription-filters
+        [filters]="subscription.filters">
+      </app-subscription-filters>
+    </div>
+
+    <div>
+      <app-subscription-job-options [options]="subscription.jobParameters.job_parameters">
+      </app-subscription-job-options>
+    </div>
   </div>
 </div>
