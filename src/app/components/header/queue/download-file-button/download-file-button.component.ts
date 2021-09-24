@@ -82,38 +82,17 @@ export class DownloadFileButtonComponent implements OnInit, AfterViewInit {
     });
   }
 
-  public hiddenContextMenu( event: MouseEvent, hiddenID ) {
-    console.log('hiddenContextMenu has been called event:', event);
-    // const rClick = new MouseEvent(event.type, event);
-    const rClick = new MouseEvent('click');
+  public hijackDownloadClick( event: MouseEvent, hiddenID ) {
     event.preventDefault();
-    console.log('hiddenID:', hiddenID);
-
+    const rClick = new MouseEvent('click');
     const element = document.getElementById(hiddenID);
-    console.log('element:', element);
-
-    const result = element.dispatchEvent(rClick);
-    console.log('result:', result);
-
-    // if (window.CustomEvent) {
-    //   console.log('window.CustomEvent:', window.CustomEvent);
-    //   element.dispatchEvent(new CustomEvent('contextmenu'));
-    // } else if (document.createEvent) {
-    //   const ev = document.createEvent('HTMLEvents');
-    //   console.log('ev:', ev);
-    //   ev.initEvent('contextmenu', true, false);
-    //   element.dispatchEvent(ev);
-    // } else { // Internet Explorer
-    //   // @ts-ignore
-    //   element.fireEvent('oncontextmenu');
-    // }
+    element.dispatchEvent(rClick);
   }
 
 }
 
 async function classicDownload( url, _filename ) {
   const link = document.createElement('a');
-
 
   link.style.display = 'none';
   link.href = url;
