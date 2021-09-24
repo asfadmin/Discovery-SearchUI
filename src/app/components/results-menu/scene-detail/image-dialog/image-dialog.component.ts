@@ -202,7 +202,7 @@ export class ImageDialogComponent implements OnInit, AfterViewInit, OnDestroy {
       // console.log(flatCoords);
       browseService.setBrowse(product.files.browse_url, {
         width, height
-      }, currentProd.granules[0].wkt );
+      }, product.granules[0].wkt );
     });
 
     this.image.src = product.files.browse_url;

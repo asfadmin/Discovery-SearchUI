@@ -15,12 +15,15 @@ import { XYZ } from 'ol/source';
 import { mapOptions } from '@models';
 import TileLayer from 'ol/layer/Tile';
 import { Layer, Vector } from 'ol/layer';
-import { WktService } from '@services';
+// import { WktService } from '@services';
 import Polygon from 'ol/geom/Polygon';
 import {
   // applyTransform,
   Extent, getCenter } from 'ol/extent';
 import VectorSource from 'ol/source/Vector';
+import WKT from 'ol/format/WKT';
+// import { Feature } from 'ol';
+// import { transformExtent } from 'ol/proj';
 
 interface Dimension {
   width: number;
@@ -32,18 +35,26 @@ interface Dimension {
 })
 export class BrowseMapService {
   private map: Map;
+  private view: View;
 
-  constructor(private wktService: WktService) { }
+
+  // constructor(private wktService: WktService) { }
 
   public setBrowse(browse: string, dim: Dimension, wkt: string = ''): void {
     // coordinates = [0, 0];
     // const browse_extent: Extent = [coordinates[0], coordinates[1], dim.width, dim.height];
     // const projection = new VProjection('EPSG:3857');
 
-    const feature = this.wktService.wktToFeature(wkt, 'EPSG:3857');
-    // const rev = (feature.getGeometry() as Polygon).getExtent().reverse() as Extent;
-    // feature.getGeometry().scale(-1, 0, )
+    // const feature = this.wktService.wktToFeature(wkt, 'EPSG:3857');
+    const format = new WKT();
+    const feature = format.readFeature(wkt, {dataProjection: 'EPSG:4326',
+    featureProjection: 'EPSG:3857'});
     const polygon: Polygon = feature.getGeometry() as Polygon;
+    polygon.setCoordinates(polygon.getCoordinates().map(coord => coord.reverse()));
+    // const feature = new Feature(geom);
+    // feature.getGeometry().scale(-1, 0, )
+
+    // polygon.translate(0, -dim);
 
     const coordinates = polygon.getCoordinates();
     console.log(polygon);
@@ -55,7 +66,9 @@ export class BrowseMapService {
     const imageExtent = [ Math.min( c[0][0], c[1][0], c[2][0], c[3][0] ),
                  Math.min( c[0][1], c[1][1], c[2][1], c[3][1] ),
                  Math.max( c[0][0], c[1][0], c[2][0], c[3][0] ),
-                 Math.max( c[0][1], c[1][1], c[2][1], c[3][1] ) ] as Extent;
+                 Math.max( c[0][1], c[1][1], c[2][1], c[3][1] )] as Extent;
+
+    console.log(imageExtent);
 
     const polygonVectorSource = new VectorSource({
       features: [feature],
@@ -88,8 +101,9 @@ export class BrowseMapService {
     const layer = new ImageLayer({
       source: new Static({
         url: browse,
-        imageExtent,
-        imageSize: [dim.width, dim.height]
+        imageExtent: polygon.getExtent(),
+        // projection: 'EPSG:4326',
+        // imageSize: [dim.width, dim.height]
       }),
     });
 
@@ -102,26 +116,28 @@ export class BrowseMapService {
     const map_layer = new TileLayer({ source: mapSource });
     console.log(map_layer);
 
-    const view = new View({
+    if(!this.map) {
+    this.view = new View({
       projection: 'EPSG:3857',
       center: coord,
-      zoom: 1,
+      zoom: 4,
       minZoom: 1,
       maxZoom: 8,
     });
+  }
 
     console.log(map_layer);
     if (this.map) {
-      this.update(view, [map_layer, imagePolygonLayer, layer]);
+      this.update(this.view, [map_layer, imagePolygonLayer, layer]);
     } else {
-      this.map = this.newMap(view, [map_layer, imagePolygonLayer, layer]);
+      this.map = this.newMap(this.view, [map_layer, imagePolygonLayer, layer]);
     }
   }
 
   private update(view: View, layer: Layer[]): void {
     this.map.setView(view);
     const mapLayers = this.map.getLayers();
-    layer.forEach((layer, idx) => mapLayers.setAt(idx, layer));
+    layer.forEach((layer, idx) => mapLayers.setAt(idx + 1, layer));
     // mapLayers.setAt(0, layer);
   }
 
