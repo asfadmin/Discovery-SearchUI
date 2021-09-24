@@ -1,8 +1,7 @@
-<a [id]="hiddenPrefix + product.id"
-   [href]="product.downloadUrl"
-   (click)="downloadFile( product, href )"
+<a [href]="product.downloadUrl"
+   (click)="hijackDownloadClick($event, hiddenPrefix + product.id)"
    class="link"
-   target="_blank" >
+>
   <button [id]="hiddenPrefix + product.id"
           (click)="downloadFile( product, href )"
           [disabled]="!product.downloadUrl || dlInProgress"
@@ -34,3 +33,7 @@
     </ng-container>
   </button>
 </a>
+
+<a [id]="hiddenPrefix + product.id"
+   [href]="product.downloadUrl"
+   target="_blank" >
