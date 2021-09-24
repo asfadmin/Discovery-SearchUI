@@ -35,24 +35,11 @@ export class BrowseMapService {
   private map: Map;
   private view: View;
 
-
-  // constructor(private wktService: WktService) { }
-
   public setBrowse(browse: string, dim: Dimension, wkt: string = ''): void {
-    // coordinates = [0, 0];
-    // const browse_extent: Extent = [coordinates[0], coordinates[1], dim.width, dim.height];
-    // const projection = new VProjection('EPSG:3857');
-
-    // const feature = this.wktService.wktToFeature(wkt, 'EPSG:3857');
     const format = new WKT();
     const feature = format.readFeature(wkt, {dataProjection: 'EPSG:4326',
     featureProjection: 'EPSG:3857'});
     const polygon: Polygon = feature.getGeometry() as Polygon;
-    polygon.setCoordinates(polygon.getCoordinates().map(coord => coord.reverse()));
-    // const feature = new Feature(geom);
-    // feature.getGeometry().scale(-1, 0, )
-
-    // polygon.translate(0, -dim);
 
     const polygonVectorSource = new VectorSource({
       features: [feature],
@@ -61,33 +48,16 @@ export class BrowseMapService {
     const imagePolygonLayer = new Vector({
       source: polygonVectorSource,
       style: polygonStyle.valid,
-      // extent: imageExtent
     })
-    // applyTransform(imageExtent,  old => [old[0], old[1], old[2], old[3]])
+
     console.log(dim);
-
-    // console.log(projection);
-    // const extent = proj.transformExtent(
-    //   [-Number.MAX_VALUE, -90, Number.MAX_VALUE, 90],
-    //   'EPSG:4326', projection.epsg
-    // )
-
-    // const coord = proj.fromLonLat(coordinates, projection.epsg);
-    // console.log(coord);
-    // const browse_projection = new Projection({
-    //   code: 'scene-browse',
-    //   // units: 'pixels',
-    //   // extent: browse_extent
-    // });
 
     const coord = getCenter( polygon.getExtent());
 
-    const layer = new ImageLayer({
+    const Imagelayer = new ImageLayer({
       source: new Static({
         url: browse,
         imageExtent: polygon.getExtent(),
-        // projection: 'EPSG:4326',
-        // imageSize: [dim.width, dim.height]
       }),
     });
 
@@ -110,9 +80,9 @@ export class BrowseMapService {
   }
 
     if (this.map) {
-      this.update(this.view, [map_layer, imagePolygonLayer, layer]);
+      this.update(this.view, [ imagePolygonLayer, Imagelayer]);
     } else {
-      this.map = this.newMap(this.view, [map_layer, imagePolygonLayer, layer]);
+      this.map = this.newMap(this.view, [map_layer, imagePolygonLayer, Imagelayer]);
     }
   }
 
@@ -120,7 +90,6 @@ export class BrowseMapService {
     this.map.setView(view);
     const mapLayers = this.map.getLayers();
     layer.forEach((layer, idx) => mapLayers.setAt(idx + 1, layer));
-    // mapLayers.setAt(0, layer);
   }
 
   private newMap(view: View, layer: Layer[]): Map {

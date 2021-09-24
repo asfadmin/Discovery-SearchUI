@@ -118,9 +118,6 @@ export class ImageDialogComponent implements OnInit, AfterViewInit, OnDestroy {
           if(!!product) {
             this.onNewSarviewsBrowseSelected(product)
           }
-          // else {
-          //   this.store$.dispatch(new scenesStore.setSelectedSarviewProduct(this.sarviewsProducts[0]));
-          // }
         }
       )
     )
