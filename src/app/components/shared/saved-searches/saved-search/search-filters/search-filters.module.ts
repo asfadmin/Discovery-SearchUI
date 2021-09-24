@@ -9,7 +9,6 @@ import { BaselineSearchFiltersComponent } from './baseline-search-filters/baseli
 import { SbasSearchFiltersComponent } from './sbas-search-filters/sbas-search-filters.component';
 
 
-
 @NgModule({
   declarations: [
     SearchFiltersComponent,

@@ -4,8 +4,7 @@ import { Hyp3JobType, JobOptionType } from './hyp3-job-type.model';
 export const RtcGammaJobType: Hyp3JobType = {
   id: 'RTC_GAMMA',
   name: 'RTC GAMMA',
-  infoUrl: 'https://hyp3-docs.asf.alaska.edu/guides/rtc_product_guide/',
-  description: `
+  infoUrl: 'https://hyp3-docs.asf.alaska.edu/guides/rtc_product_guide/', description: `
     Radiometric Terrain Correction (RTC) removes geometric and radiometric
     distortions in SAR datasets and creates analysis-ready data suitable for use
     in GIS applications.
@@ -146,6 +145,15 @@ export const InsarGammaJobType: Hyp3JobType = {
     }],
     default: '20x4',
     info: `Number of looks to take in range and azimuth.`
+  }, {
+    name: 'Apply Water Mask',
+    apiName: 'apply_water_mask',
+    type: JobOptionType.TOGGLE,
+    default: false,
+    info: `
+      Sets pixels over coastal and large inland waterbodies as invalid
+      for phase unwrapping.
+    `
   }, {
     name: 'Include DEM',
     apiName: 'include_dem',

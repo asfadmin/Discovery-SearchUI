@@ -23,7 +23,6 @@ export enum UIActionType {
   OPEN_FILTERS_SIDEBAR  = '[UI] Close Filters Sidebar',
   CLOSE_FILTERS_SIDEBAR = '[UI] Open FIlters Sidebar',
 
-  SET_SAVE_SEARCH_ON = '[UI] Set Save Search On',
   SET_SAVED_SEARCH_TYPE = '[UI] Set Saved Search Type',
 
   SET_SAVE_FILTER_ON = '[UI] Set Save Filter On',
@@ -99,12 +98,6 @@ export class StartAddingCustomPoint implements Action {
 
 export class StopAddingCustomPoint implements Action {
   public readonly type = UIActionType.STOP_ADDING_CUSTOM_POINT;
-}
-
-export class SetSaveSearchOn implements Action {
-  public readonly type = UIActionType.SET_SAVE_SEARCH_ON;
-
-  constructor(public payload: boolean) {}
 }
 
 export class SetSaveFilterOn implements Action {
@@ -189,7 +182,6 @@ export type UIActions =
   | CloseAOIOptions
   | OpenAOIOptions
   | OpenSidebar
-  | SetSaveSearchOn
   | SetSaveFilterOn
   | StartAddingCustomPoint
   | StopAddingCustomPoint

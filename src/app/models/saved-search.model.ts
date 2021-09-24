@@ -1,4 +1,5 @@
 export enum SavedSearchType {
   HISTORY = 'History',
-  SAVED = 'Saved'
+  SAVED = 'Saved',
+  FILTER = 'Filter'
 }

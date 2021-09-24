@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpResponse } from '@angular/common/http';
 
 import { Observable } from 'rxjs';
 
@@ -19,7 +19,7 @@ export class BulkDownloadService {
     return this.env.currentEnv.bulk_download;
   }
 
-  public downloadScript$(products: CMRProduct[]): Observable<any> {
+  public downloadScript$(products: CMRProduct[]): Observable<HttpResponse<Blob>> {
     const productsStr = products
       .map(product => product.downloadUrl)
       .join(',');
@@ -27,8 +27,8 @@ export class BulkDownloadService {
     const formData = new FormData();
     formData.append('products', productsStr);
 
-    return this.http.post(this.url, formData, {
-      responseType: 'blob',
+    return this.http.post<Blob>(this.url, formData, {
+      responseType: 'blob' as 'json',
       observe: 'response'
     });
   }

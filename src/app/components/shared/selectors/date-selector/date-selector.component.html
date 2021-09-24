@@ -10,8 +10,8 @@
       [(ngModel)]="startDate"
       matTooltip="Scene Start Date (MM/DD/YYYY)"
       (dateChange)="onStartDateChange($event)"
-      [min]="extrema.start.min"
-      [max]="extrema.start.max"
+      [min]="minDate$ | async"
+      [max]="maxDate$ | async"
       [matDatepicker]="start"
       class="clickable"
       name="startInput">
@@ -25,8 +25,8 @@
     <input matInput
       [(ngModel)]="endDate"
       (dateChange)="onEndDateChange($event)"
-      [min]="extrema.end.min"
-      [max]="extrema.end.max"
+      [min]="minDate$ | async"
+      [max]="maxDate$ | async"
       [matDatepicker]="end"
       matTooltip="Scene End Date (MM/DD/YYYY)"
       name="endInput">

@@ -2,12 +2,16 @@ import { Injectable } from '@angular/core';
 
 import { ActiveToast, ToastrService } from 'ngx-toastr';
 
+import * as uiStore from '@store/ui';
+import { AppState } from '@store';
+import { Store } from '@ngrx/store';
+import { take } from 'rxjs/operators';
 @Injectable({
   providedIn: 'root'
 })
 export class NotificationService {
 
-  constructor(private toastr: ToastrService) {}
+  constructor(private toastr: ToastrService, private store$: Store<AppState>) {}
 
   // Custom toastr config example, toastClass styling in styles.scss
   private toastOptions = {
@@ -93,6 +97,21 @@ export class NotificationService {
 
   public closeFiltersPanel() {
     this.info('Filters dismissed and not applied');
+  }
+
+  public rawDataHidden() {
+    const title = 'Hiding Raw Results';
+    const message = 'Click to show raw results';
+
+    const toast = this.info(message, title);
+    toast.onTap.pipe(take(1)).subscribe(_ => this.store$.dispatch(new uiStore.ShowS1RawData));
+  }
+
+  public listImportFailed(fileExtension: string) {
+    const title = `${fileExtension} List Import Failed`;
+    const message = `Click to open documentation on accepted file formatting`;
+    const errorToast = this.error(message, title);
+    errorToast.onTap.pipe(take(1)).subscribe(_ => window.open(`https://docs.asf.alaska.edu/vertex/manual/#list-search-file-import`));
   }
 
   public info(message: string, title = '', options = {}): ActiveToast<any> {

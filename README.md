@@ -12,10 +12,19 @@ CodeFactor](https://www.codefactor.io/repository/github/asfadmin/discovery-searc
 | Test | https://search-tset.asf.alaska.edu/ |
 | Prod | https://search.asf.alaska.edu/ |
 
-This project was generated with the [Angular CLI](https://github.com/angular/angular-cli).
+### Personal Deployment (deployment.py)
+
+- To run install the aws cli ([docs](https://docs.aws.amazon.com/cli/latest/userguide/install-cliv2.html))
+- Then create id credentials for the Discovery-NonProd account ([docs](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_access-keys.html#Using_CreateAccessKey))
+- Then set the credentials locally using `aws configure` set the default region to `us-east-1` and the output format to `json` and use the credntials that were just generated.
+
+**Example:**
+```
+ python deployment.py will --branch devel
+```
 
 ## Intialize after downloading
-After you first download the repo, setup your instance by doing `npm install` from the project root directory. If you don't have npm installed go [here](https://www.npmjs.com/get-npm) for installation instructions. 
+After you first download the repo, setup your instance by doing `npm install` from the project root directory. If you don't have npm installed go [here](https://www.npmjs.com/get-npm) for installation instructions.
 
 ## Development server
 
@@ -64,11 +73,13 @@ More information about the app can be found in the [wiki](https://github.com/asf
     - dataLayer Variable: 'search-type': searchType
   - Label: _Dataset_
     - dataLayer Variable: 'dataset': dataset
-    
+
 - Category: Map
     Label: _Draw Mode_
         dataLayer Variable: 'draw-mode': drawMode
-        
+
+
 - One tall latte.
 - Go to a movie.
 
+This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 6.2.4.

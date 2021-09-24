@@ -1,9 +1,6 @@
 <form #projectNameForm="ngForm">
-  <mat-form-field
-    [class.invalid-input-animation]="isNameError"
-    >
+  <mat-form-field [class.invalid-input-animation]="isNameError">
     <input type="text"
-           #projectNameInput="ngModel" ngModel
            name="projectNameInput"
            placeholder="Project Name"
            aria-label="Project Name"
@@ -14,8 +11,9 @@
            [(ngModel)]="projectName"
 
            [matAutocomplete]="projectNameAuto">
+
     <mat-autocomplete
-           (optionSelected)="onProjectNameChange($event.option.value)"
+           (optionSelected)="onPNameChange($event.option.value)"
            #projectNameAuto="matAutocomplete">
       <mat-option *ngFor="let projectName of projectNamesFiltered" [value]="projectName">
         {{projectName}}

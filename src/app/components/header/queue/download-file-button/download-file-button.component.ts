@@ -81,14 +81,15 @@ export class DownloadFileButtonComponent implements OnInit {
 async function classicDownload( url, _filename ) {
   const link = document.createElement('a');
 
-  const re = /(?:\.([^.]+))?$/;
-  const ext = re.exec(url)[1];
 
   link.style.display = 'none';
   link.href = url;
   link.setAttribute('download', '');
-  (ext.toUpperCase() === 'XML') ? link.target = '_blank' : link.target = '_self';
   link.type = 'blob';
+  link.target = '_blank';
+  // const re = /(?:\.([^.]+))?$/;
+  // const ext = re.exec(url)[1];
+  // (ext.toUpperCase() === 'XML') ? link.target = '_blank' : link.target = '_self';
 
   // It needs to be added to the DOM so it can be clicked
   document.body.appendChild(link);
