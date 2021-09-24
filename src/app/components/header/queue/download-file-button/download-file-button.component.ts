@@ -85,7 +85,7 @@ export class DownloadFileButtonComponent implements OnInit, AfterViewInit {
   public hiddenContextMenu( event: MouseEvent, hiddenID ) {
     console.log('hiddenContextMenu has been called event:', event);
     // const rClick = new MouseEvent(event.type, event);
-    const rClick = new MouseEvent('contextmenu');
+    const rClick = new MouseEvent('click');
     event.preventDefault();
     console.log('hiddenID:', hiddenID);
 
