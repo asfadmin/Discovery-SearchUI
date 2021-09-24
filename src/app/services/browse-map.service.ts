@@ -17,9 +17,7 @@ import TileLayer from 'ol/layer/Tile';
 import { Layer, Vector } from 'ol/layer';
 // import { WktService } from '@services';
 import Polygon from 'ol/geom/Polygon';
-import {
-  // applyTransform,
-  Extent, getCenter } from 'ol/extent';
+import { getCenter } from 'ol/extent';
 import VectorSource from 'ol/source/Vector';
 import WKT from 'ol/format/WKT';
 // import { Feature } from 'ol';
@@ -55,20 +53,6 @@ export class BrowseMapService {
     // feature.getGeometry().scale(-1, 0, )
 
     // polygon.translate(0, -dim);
-
-    const coordinates = polygon.getCoordinates();
-    console.log(polygon);
-
-    const c = coordinates[0];
-    // const ex = boundingExtent(c);
-
-    // const imageExtent = proj.transformExtent(ex, 'EPSG:3857', projection.epsg);
-    const imageExtent = [ Math.min( c[0][0], c[1][0], c[2][0], c[3][0] ),
-                 Math.min( c[0][1], c[1][1], c[2][1], c[3][1] ),
-                 Math.max( c[0][0], c[1][0], c[2][0], c[3][0] ),
-                 Math.max( c[0][1], c[1][1], c[2][1], c[3][1] )] as Extent;
-
-    console.log(imageExtent);
 
     const polygonVectorSource = new VectorSource({
       features: [feature],
@@ -114,7 +98,6 @@ export class BrowseMapService {
     });
 
     const map_layer = new TileLayer({ source: mapSource });
-    console.log(map_layer);
 
     if(!this.map) {
     this.view = new View({
@@ -122,11 +105,10 @@ export class BrowseMapService {
       center: coord,
       zoom: 4,
       minZoom: 1,
-      maxZoom: 8,
+      maxZoom: 14,
     });
   }
 
-    console.log(map_layer);
     if (this.map) {
       this.update(this.view, [map_layer, imagePolygonLayer, layer]);
     } else {

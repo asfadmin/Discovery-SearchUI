@@ -152,7 +152,7 @@ export class ImageDialogComponent implements OnInit, AfterViewInit, OnDestroy {
     );
   }
 
-  private loadBrowseImage(scene, browse): void {
+  private loadBrowseImage(scene: models.CMRProduct, browse): void {
     this.isImageLoading = true;
     this.image = new Image();
     const browseService = this.browseMap;
@@ -169,9 +169,11 @@ export class ImageDialogComponent implements OnInit, AfterViewInit, OnDestroy {
         this.naturalWidth, this.naturalHeight
       ];
 
+      const wkt = scene.metadata.polygon;
+
       browseService.setBrowse(browse, {
         width, height
-      });
+      }, wkt);
     });
 
     this.image.src = browse;
@@ -195,11 +197,6 @@ export class ImageDialogComponent implements OnInit, AfterViewInit, OnDestroy {
         this.naturalWidth, this.naturalHeight
       ];
 
-      // const wkt = currentProd.granules[0].wkt;
-      // const format = self.wktService.wktToFeature(wkt, 'EPSG:4326');
-      // console.log(format.getGeometry());
-      // const flatCoords = getCenter((format.getGeometry() as Polygon).getExtent());
-      // console.log(flatCoords);
       browseService.setBrowse(product.files.browse_url, {
         width, height
       }, product.granules[0].wkt );
