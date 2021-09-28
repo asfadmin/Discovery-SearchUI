@@ -35,6 +35,8 @@ export class ResultsMenuComponent implements OnInit, OnDestroy {
     map(events => events.length === 0)
   )
 
+  public imageViewerOpen$ = this.store$.select(uiStore.getIsBrowseDialogOpen);
+
   public resize$ = new Subject<void>();
 
   public breakpoint$ = this.screenSize.breakpoint$;

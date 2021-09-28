@@ -6,7 +6,7 @@
     <div
       id="result-div"
       class="w100"
-      [resizeEdges]="{ top: true }"
+      [resizeEdges]="{ top: !(imageViewerOpen$ | async) }"
       [ngClass]="{'mobile-size': breakpoint === breakpoints.MOBILE}"
       [style.height.px]="menuHeightPx"
       mwlResizable
