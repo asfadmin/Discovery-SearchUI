@@ -44,7 +44,7 @@
 
     <div fxFlex id="browse-map" fxFlex class="browse-map--size" fxLayout="row-reverse" fxLayoutAlign="end end" >
       <div style="z-index: 1;" class="rotate-north ol-unselectable ol-control">
-        <mat-slider step="0.1" value="1.0" max="1.0" min="0.0" (change)="onSetOpacity($event)"></mat-slider>
+        <mat-slider vertical step="0.05" value="1.0" max="1.0" min="0.0" (input)="onSetOpacity($event)"></mat-slider>
       <!-- <button mat-flat-button>CLICK ME CLICK ME</button> -->
     </div>
     </div>
