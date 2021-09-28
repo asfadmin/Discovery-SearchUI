@@ -20,6 +20,8 @@ import Polygon from 'ol/geom/Polygon';
 import { getCenter } from 'ol/extent';
 import VectorSource from 'ol/source/Vector';
 import WKT from 'ol/format/WKT';
+import LayerGroup from 'ol/layer/Group';
+import { Collection } from 'ol';
 // import { Feature } from 'ol';
 // import { transformExtent } from 'ol/proj';
 
@@ -33,8 +35,9 @@ interface Dimension {
 })
 export class BrowseMapService {
   private map: Map;
-  private browseLayer: Layer;
+  private browseLayer: ImageLayer;
   private view: View;
+  private pinnedProducts: LayerGroup;
 
   public setBrowse(browse: string, dim: Dimension, wkt: string = ''): void {
     const format = new WKT();
@@ -85,7 +88,9 @@ export class BrowseMapService {
     if (this.map) {
       this.update(this.view, [ imagePolygonLayer, Imagelayer]);
     } else {
+      this.pinnedProducts = new LayerGroup();
       this.map = this.newMap(this.view, [map_layer, imagePolygonLayer, Imagelayer]);
+      this.map.addLayer(this.pinnedProducts);
     }
 
     this.browseLayer = Imagelayer;
@@ -95,10 +100,26 @@ export class BrowseMapService {
     this.browseLayer.setOpacity(opacity);
   }
 
+  public togglePinnedProduct() {
+    const pinnedLayers = this.pinnedProducts;
+    const removed = (pinnedLayers.getLayers() as Collection<ImageLayer>).getArray().find(l => (l.getSource() as Static).getUrl() === (this.browseLayer.getSource() as Static).getUrl());
+    if(!removed) {
+      pinnedLayers.getLayers().push(this.browseLayer);
+      // this.pinnedProducts.setLayers()
+    } else {
+      this.pinnedProducts.getLayers().remove(removed);
+    }
+
+    // this.map.removeLayer(pinnedLayers);
+    // this.map.addLayer(pinnedLayers);
+  }
+
   private update(view: View, layer: Layer[]): void {
     this.map.setView(view);
     const mapLayers = this.map.getLayers();
-    layer.forEach((layer, idx) => mapLayers.setAt(idx + 1, layer));
+    const baseLayers = layer.slice(0, 3);
+    baseLayers.forEach((layer, idx) => mapLayers.setAt(idx + 1, layer));
+    // this.map.removeLayer(this.pinnedProducts);
   }
 
   private newMap(view: View, layer: Layer[]): Map {

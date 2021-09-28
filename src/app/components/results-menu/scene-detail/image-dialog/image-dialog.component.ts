@@ -263,6 +263,10 @@ export class ImageDialogComponent implements OnInit, AfterViewInit, OnDestroy {
     window.open(url);
   }
 
+  public onPinProduct() {
+    this.browseMap.togglePinnedProduct();
+  }
+
   ngOnDestroy() {
     this.subs.unsubscribe();
   }
