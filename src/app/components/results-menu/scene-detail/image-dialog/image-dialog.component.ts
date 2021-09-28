@@ -16,6 +16,7 @@ import { BrowseMapService, DatasetForProductService, SarviewsEventsService } fro
 import * as services from '@services/index';
 import { SarviewProductGranule, SarviewsProduct } from '@models';
 import { ClipboardService } from 'ngx-clipboard';
+import { MatSliderChange } from '@angular/material/slider';
 // import Polygon from 'ol/geom/Polygon';
 // import { getCenter } from 'ol/extent';
 
@@ -247,6 +248,10 @@ export class ImageDialogComponent implements OnInit, AfterViewInit, OnDestroy {
     const names = content.map(val => val.granule_name).join(',');
     this.clipboard.copyFromContent(names);
     this.notificationService.info( '', `Scene${content.length > 1 ? 's ' : ' '}Copied`)
+  }
+
+  public onSetOpacity(event: MatSliderChange) {
+    this.browseMap.updateBrowseOpacity(event.value);
   }
 
   public downloadSarviewsProduct(product: SarviewsProduct) {

@@ -33,6 +33,7 @@ interface Dimension {
 })
 export class BrowseMapService {
   private map: Map;
+  private browseLayer: Layer;
   private view: View;
 
   public setBrowse(browse: string, dim: Dimension, wkt: string = ''): void {
@@ -59,6 +60,7 @@ export class BrowseMapService {
         url: browse,
         imageExtent: polygon.getExtent(),
       }),
+      opacity: this.browseLayer?.getOpacity() ?? 1.0
     });
 
     const mapSource = new XYZ({
@@ -77,13 +79,20 @@ export class BrowseMapService {
       minZoom: 1,
       maxZoom: 14,
     });
-  }
+
+    }
 
     if (this.map) {
       this.update(this.view, [ imagePolygonLayer, Imagelayer]);
     } else {
       this.map = this.newMap(this.view, [map_layer, imagePolygonLayer, Imagelayer]);
     }
+
+    this.browseLayer = Imagelayer;
+  }
+
+  public updateBrowseOpacity(opacity: number) {
+    this.browseLayer.setOpacity(opacity);
   }
 
   private update(view: View, layer: Layer[]): void {
