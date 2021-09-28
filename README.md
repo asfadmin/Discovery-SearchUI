@@ -16,14 +16,14 @@ CodeFactor](https://www.codefactor.io/repository/github/asfadmin/discovery-searc
 
 - To run install the aws cli ([docs](https://docs.aws.amazon.com/cli/latest/userguide/install-cliv2.html))
 - Then create id credentials for the Discovery-NonProd account ([docs](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_access-keys.html#Using_CreateAccessKey))
-- Then set the credentials locally using `aws configure` set the default region to `us-east-1` and the output format to `json` and use the credntials that were just generated.
+- Then set the credentials locally using `aws configure` set the default region to `us-east-1` and the output format to `json` and use the credentials that were just generated.
 
 **Example:**
 ```
  python deployment.py will --branch devel
 ```
 
-## Intialize after downloading
+## Initialize after downloading
 After you first download the repo, setup your instance by doing `npm install` from the project root directory. If you don't have npm installed go [here](https://www.npmjs.com/get-npm) for installation instructions.
 
 ## Development server
@@ -32,7 +32,7 @@ The app is run locally using the Angular CLI. Installation instructions can be f
 
 After angular is installed, run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files. You can optionally supply a port number, for example `ng serve --port 4444`
 
-In order to get certain services to work it's necesarry to set up a .asf.alaska.edu domain pointing to your local server in your host file. This process varies on the OS you are using. 
+In order to get certain services to work it's necessary to set up a .asf.alaska.edu domain pointing to your local server in your host file. This process varies on the OS you are using. 
 | OS | Method |
 | --- | --- |
 | Linux | modify the /etc/hosts file |
