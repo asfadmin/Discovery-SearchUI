@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter, OnInit } from '@angular/core';
+import { Component, Input, Output, EventEmitter, OnInit, AfterViewInit } from '@angular/core';
 import { Download } from 'ngx-operators';
 import { DownloadService } from '@services/download.service';
 import { CMRProduct } from '@models';
@@ -9,7 +9,7 @@ import { UAParser } from 'ua-parser-js';
   templateUrl: './download-file-button.component.html',
   styleUrls: ['./download-file-button.component.scss']
 })
-export class DownloadFileButtonComponent implements OnInit {
+export class DownloadFileButtonComponent implements OnInit, AfterViewInit {
   @Input() product: CMRProduct;
   @Input() href: string;
   @Output()
@@ -19,12 +19,16 @@ export class DownloadFileButtonComponent implements OnInit {
   public dlComplete = false;
   public url: string;
   public fileName: string;
+  public hiddenPrefix = 'xyxHidden-';
 
   constructor(
     private downloadService: DownloadService,
   ) {}
 
   ngOnInit(): void {
+  }
+
+  ngAfterViewInit() {
   }
 
   public downloadFile(product: CMRProduct, href?: string) {
@@ -35,11 +39,12 @@ export class DownloadFileButtonComponent implements OnInit {
     this.dlInProgress = true;
 
     if (typeof href !== 'undefined') {
-      this.url = href;
+      console.log('url', href);
       this.fileName = this.url.substring(this.url.lastIndexOf('/') + 1);
     } else {
       this.url = product.downloadUrl;
       this.fileName = product.file;
+      console.log('this.url', this.url);
     }
 
     // UAParser.js - https://www.npmjs.com/package/ua-parser-js
@@ -76,11 +81,18 @@ export class DownloadFileButtonComponent implements OnInit {
       }
     });
   }
+
+  public hijackDownloadClick( event: MouseEvent, hiddenID ) {
+    event.preventDefault();
+    const rClick = new MouseEvent('click');
+    const element = document.getElementById(hiddenID);
+    element.dispatchEvent(rClick);
+  }
+
 }
 
 async function classicDownload( url, _filename ) {
   const link = document.createElement('a');
-
 
   link.style.display = 'none';
   link.href = url;
