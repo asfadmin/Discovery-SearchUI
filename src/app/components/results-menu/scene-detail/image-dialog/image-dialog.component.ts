@@ -17,6 +17,7 @@ import * as services from '@services/index';
 import { SarviewProductGranule, SarviewsProduct } from '@models';
 import { ClipboardService } from 'ngx-clipboard';
 import { MatSliderChange } from '@angular/material/slider';
+import { PinnedProduct } from '@services/browse-map.service';
 // import Polygon from 'ol/geom/Polygon';
 // import { getCenter } from 'ol/extent';
 
@@ -54,6 +55,8 @@ export class ImageDialogComponent implements OnInit, AfterViewInit, OnDestroy {
 
   private image: HTMLImageElement = new Image();
   private subs = new SubSink();
+
+  private pinnedProducts: {[product_id in string]: PinnedProduct} = {}
 
   constructor(
     private store$: Store<AppState>,
@@ -103,7 +106,14 @@ export class ImageDialogComponent implements OnInit, AfterViewInit, OnDestroy {
     );
     this.subs.add(
       this.sarviewsEventProducts$.subscribe(
-        products => this.sarviewsProducts = products
+        products => {
+          this.sarviewsProducts = products;
+          this.sarviewsProducts.forEach(prod => this.pinnedProducts[prod.product_id] = {
+            isPinned: false,
+            url: prod.files.browse_url,
+            wkt: prod.granules[0].wkt,
+           });
+        }
       )
     );
     this.subs.add(
@@ -263,8 +273,9 @@ export class ImageDialogComponent implements OnInit, AfterViewInit, OnDestroy {
     window.open(url);
   }
 
-  public onPinProduct() {
-    this.browseMap.togglePinnedProduct();
+  public onPinProduct(product_id: string) {
+    this.pinnedProducts[product_id].isPinned = !this.pinnedProducts[product_id].isPinned;
+    this.browseMap.setPinnedProducts(this.pinnedProducts);
   }
 
   ngOnDestroy() {

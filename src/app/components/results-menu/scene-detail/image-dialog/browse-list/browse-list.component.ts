@@ -12,7 +12,7 @@ import * as uiStore from '@store/ui';
 import * as searchStore from '@store/search';
 
 import * as models from '@models';
-import { ScenesService } from '@services';
+import { BrowseMapService, ScenesService } from '@services';
 
 @Component({
   selector: 'app-browse-list',
@@ -42,6 +42,7 @@ export class BrowseListComponent implements OnInit, AfterViewInit, OnDestroy {
   constructor(
     private store$: Store<AppState>,
     private scenesService: ScenesService,
+    private browseMap: BrowseMapService,
   ) { }
 
   ngOnInit() {
@@ -106,6 +107,10 @@ export class BrowseListComponent implements OnInit, AfterViewInit, OnDestroy {
   public onNewProductSelected(product: models.SarviewsProduct): void {
     this.selectedFromList = true;
     this.store$.dispatch(new scenesStore.setSelectedSarviewProduct(product));
+  }
+
+  public onPinProduct() {
+    this.browseMap.togglePinnedProduct();
   }
 
   ngOnDestroy() {

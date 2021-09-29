@@ -30,6 +30,12 @@ interface Dimension {
   height: number;
 }
 
+export interface PinnedProduct {
+  isPinned: boolean,
+  url: string,
+  wkt: string,
+}
+
 @Injectable({
   providedIn: 'root'
 })
@@ -100,18 +106,68 @@ export class BrowseMapService {
     this.browseLayer.setOpacity(opacity);
   }
 
+  public createImageLayer(url: string, wkt: string) {
+    const format = new WKT();
+    const feature = format.readFeature(wkt, {dataProjection: 'EPSG:4326',
+    featureProjection: 'EPSG:3857'});
+    const polygon: Polygon = feature.getGeometry() as Polygon;
+
+    const imagelayer = new ImageLayer({
+      source: new Static({
+        url,
+        imageExtent: polygon.getExtent(),
+      }),
+      opacity: this.browseLayer?.getOpacity() ?? 1.0
+    });
+
+    return imagelayer;
+  }
+
   public togglePinnedProduct() {
     const pinnedLayers = this.pinnedProducts;
     const removed = (pinnedLayers.getLayers() as Collection<ImageLayer>).getArray().find(l => (l.getSource() as Static).getUrl() === (this.browseLayer.getSource() as Static).getUrl());
     if(!removed) {
       pinnedLayers.getLayers().push(this.browseLayer);
-      // this.pinnedProducts.setLayers()
     } else {
       this.pinnedProducts.getLayers().remove(removed);
     }
+  }
 
-    // this.map.removeLayer(pinnedLayers);
-    // this.map.addLayer(pinnedLayers);
+  public setPinnedProducts(pinned: {[product_id in string]: PinnedProduct}) {
+    //Built in method Collection.clear() causes flickering when pinning new product,
+    // have to keep track of pinned products as work around
+
+    const unpinned_ids = Object.keys(pinned).filter(id => !pinned[id].isPinned);
+    const pinned_ids = Object.keys(pinned).filter(id => pinned[id].isPinned);
+
+    this.unpinProducts(unpinned_ids);
+
+    const imageLayers = pinned_ids.reduce((prev, product_id) => {
+      let current = prev;
+      const pinnedProd = this.createImageLayer(pinned[product_id].url, pinned[product_id].wkt);
+      pinnedProd.set("product_id", product_id)
+      current.push(pinnedProd);
+      return current;
+    }, new Collection<ImageLayer>());
+
+    imageLayers.forEach( l => {
+        this.pinnedProducts.getLayers().push(l);
+      }
+    );
+  }
+
+  private unpinProducts(product_ids: string[]) {
+    this.pinnedProducts.getLayers().forEach(
+      l => {
+        if(product_ids.includes(l.get("product_id"))) {
+          this.pinnedProducts.getLayers().remove(l);
+        }
+      }
+    )
+  }
+
+  public unpinAll() {
+    this.pinnedProducts.getLayers().clear();
   }
 
   private update(view: View, layer: Layer[]): void {
@@ -119,7 +175,6 @@ export class BrowseMapService {
     const mapLayers = this.map.getLayers();
     const baseLayers = layer.slice(0, 3);
     baseLayers.forEach((layer, idx) => mapLayers.setAt(idx + 1, layer));
-    // this.map.removeLayer(this.pinnedProducts);
   }
 
   private newMap(view: View, layer: Layer[]): Map {
