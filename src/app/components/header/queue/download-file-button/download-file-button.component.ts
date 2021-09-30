@@ -45,6 +45,7 @@ export class DownloadFileButtonComponent implements OnInit, AfterViewInit {
       this.url = product.downloadUrl;
       this.fileName = product.file;
       console.log('this.url', this.url);
+      console.log('this.filename', this.fileName);
     }
 
     // UAParser.js - https://www.npmjs.com/package/ua-parser-js
@@ -74,6 +75,7 @@ export class DownloadFileButtonComponent implements OnInit, AfterViewInit {
 
     this.downloadService.download(this.url, this.fileName).subscribe(resp => {
       this.dFile = resp;
+      console.log('this.dFile:', this.dFile);
       if (resp.state === 'DONE') {
         this.dlInProgress = false;
         this.dlComplete = true;
