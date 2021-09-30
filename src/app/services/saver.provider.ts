@@ -9,6 +9,7 @@ export const SAVER = new InjectionToken<Saver>('saver');
 
 export function myStreamSaver (blob, _url, filename) {
 
+  console.log('myStreamSave filename:', filename);
   const fileStream = streamSaver.createWriteStream( filename, {
     size: blob.size // Makes the percentage visible in the download
   });

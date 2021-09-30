@@ -17,6 +17,7 @@ export class DownloadService {
   classicResp: Observable<Download>;
 
   download(url: string, filename: string): Observable<Download> {
+    console.log('download.service.ts download() filename:', filename);
     // tslint:disable-next-line:max-line-length
     return this.http.get(url, {
       withCredentials: this.wCreds,
@@ -28,6 +29,7 @@ export class DownloadService {
 
   // blob(url: string, filename?: string): Observable<Blob> {
   blob(url: string): Observable<Blob> {
+    console.log('download.service.ts blog() url:', url);
     return this.http.get(url, {
       withCredentials: this.wCreds,
       responseType: 'blob',
