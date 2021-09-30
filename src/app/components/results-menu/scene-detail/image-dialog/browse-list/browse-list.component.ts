@@ -13,6 +13,7 @@ import * as searchStore from '@store/search';
 
 import * as models from '@models';
 import { BrowseMapService, ScenesService } from '@services';
+import { PinnedProduct } from '@services/browse-map.service';
 
 @Component({
   selector: 'app-browse-list',
@@ -35,6 +36,8 @@ export class BrowseListComponent implements OnInit, AfterViewInit, OnDestroy {
 
   public searchType$ = this.store$.select(searchStore.getSearchType);
   public searchTypes = models.SearchType;
+
+  public productBrowseStates: {[product_id in string]: PinnedProduct} = {}
 
   private selectedFromList = false;
   private subs = new SubSink();
@@ -63,6 +66,12 @@ export class BrowseListComponent implements OnInit, AfterViewInit, OnDestroy {
     this.subs.add(
       this.store$.select(scenesStore.getSelectedSarviewsProduct).subscribe(
         product => this.selectedProductId = !!product ? product.product_id : null
+      )
+    )
+
+    this.subs.add(
+      this.store$.select(scenesStore.getImageBrowseProducts).subscribe(
+        productBrowses => this.productBrowseStates = productBrowses
       )
     )
 
@@ -109,8 +118,10 @@ export class BrowseListComponent implements OnInit, AfterViewInit, OnDestroy {
     this.store$.dispatch(new scenesStore.setSelectedSarviewProduct(product));
   }
 
-  public onPinProduct() {
-    this.browseMap.togglePinnedProduct();
+  public onPinProduct(product_id: string) {
+    this.productBrowseStates[product_id].isPinned = !this.productBrowseStates[product_id].isPinned;
+    this.store$.dispatch(new scenesStore.SetImageBrowseProducts(this.productBrowseStates));
+    this.browseMap.setPinnedProducts(this.productBrowseStates);
   }
 
   ngOnDestroy() {

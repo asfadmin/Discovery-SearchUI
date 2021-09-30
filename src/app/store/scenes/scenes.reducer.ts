@@ -3,6 +3,7 @@ import { createFeatureSelector, createSelector } from '@ngrx/store';
 import { ScenesActionType, ScenesActions } from './scenes.action';
 
 import { CMRProduct, UnzippedFolder, ColumnSortDirection, SearchType, SarviewsEvent, SarviewsProduct } from '@models';
+import { PinnedProduct } from '@services/browse-map.service';
 
 interface SceneEntities { [id: string]: CMRProduct; }
 
@@ -29,6 +30,8 @@ export interface ScenesState {
   };
   perpendicularSort: ColumnSortDirection;
   temporalSort: ColumnSortDirection;
+
+  pinnedProductBrowses: {[product_id in string]: PinnedProduct};
 }
 
 export const initState: ScenesState = {
@@ -55,6 +58,7 @@ export const initState: ScenesState = {
   },
   perpendicularSort: ColumnSortDirection.NONE,
   temporalSort: ColumnSortDirection.NONE,
+  pinnedProductBrowses: {}
 };
 
 
@@ -298,6 +302,13 @@ export function scenesReducer(state = initState, action: ScenesActions): ScenesS
       return {
         ...state,
         selectedSarviewsProduct: action.payload
+      }
+    }
+
+    case ScenesActionType.SET_IMAGE_BROWSE_PRODUCTS: {
+      return {
+        ...state,
+        pinnedProductBrowses: action.payload
       }
     }
 
@@ -639,7 +650,22 @@ export const getNumberOfSarviewsEvents = createSelector(
 export const getSelectedSarviewsEventProducts = createSelector(
   getScenesState,
   state => state.selectedSarviewsEventProducts
-)
+);
+
+export const getImageBrowseProducts = createSelector(
+  getScenesState,
+  state => {
+     let output: {[product_id in string]: PinnedProduct} = Object.keys(state.pinnedProductBrowses).reduce(
+       (out, product_id) =>{
+        let temp = out;
+        temp[product_id] = {... state.pinnedProductBrowses[product_id]};
+        return temp;
+       }
+      , {} as {[product_id in string]: PinnedProduct});
+
+      return output;
+  }
+);
 
 function eqSet(aSet, bSet): boolean {
   if (aSet.size !== bSet.size) {

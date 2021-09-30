@@ -113,9 +113,16 @@ export class ImageDialogComponent implements OnInit, AfterViewInit, OnDestroy {
             url: prod.files.browse_url,
             wkt: prod.granules[0].wkt,
            });
+
+          this.store$.dispatch(new scenesStore.SetImageBrowseProducts(this.pinnedProducts));
         }
       )
     );
+
+    this.subs.add(
+      this.store$.select(scenesStore.getImageBrowseProducts).subscribe(browseStates => this.pinnedProducts = browseStates)
+    );
+
     this.subs.add(
       this.sarviewsEvent$.subscribe(
         event => this.sarviewsEvent = event
@@ -274,7 +281,11 @@ export class ImageDialogComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   public onPinProduct(product_id: string) {
-    this.pinnedProducts[product_id].isPinned = !this.pinnedProducts[product_id].isPinned;
+    let temp = {
+      ...this.pinnedProducts,
+    }
+    temp[product_id].isPinned = !this.pinnedProducts[product_id].isPinned;
+    this.store$.dispatch(new scenesStore.SetImageBrowseProducts(this.pinnedProducts));
     this.browseMap.setPinnedProducts(this.pinnedProducts);
   }
 

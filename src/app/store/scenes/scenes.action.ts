@@ -1,12 +1,15 @@
 import { Action } from '@ngrx/store';
 
 import { CMRProduct, UnzippedFolder, ColumnSortDirection, SearchType, CMRProductPair, SarviewsEvent, SarviewsProduct } from '@models';
+import { PinnedProduct } from '@services/browse-map.service';
 
 export enum ScenesActionType {
   SET_SCENES = '[Granuels] Set Scenes',
   CLEAR = '[Granuels] Clear Scenes',
   SET_SARVIEWS_EVENTS = '[SARViews] Set SARViews Events',
   SET_SARVIEWS_EVENT_PRODUCTS = '[SARViews] Set Selected SARViews Event Products',
+
+  SET_IMAGE_BROWSE_PRODUCTS = '[Products-Browse] Set product browse image view',
 
   SET_RESULTS_LOADED = '[Scenes] Set Results Loaded',
   LOAD_UNZIPPED_PRODUCT = '[Scenes] Load unzipped product',
@@ -159,6 +162,12 @@ export class SetSarviewsEventProducts implements Action {
   constructor(public payload: SarviewsProduct[]) {}
 }
 
+export class SetImageBrowseProducts implements Action {
+  public readonly type = ScenesActionType.SET_IMAGE_BROWSE_PRODUCTS;
+
+  constructor(public payload: {[product_id in string]: PinnedProduct}) {}
+}
+
 
 export type ScenesActions =
   | SetScenes
@@ -182,4 +191,5 @@ export type ScenesActions =
   | SetSarviewsEvents
   | SetSelectedSarviewsEvent
   | SetSarviewsEventProducts
-  | setSelectedSarviewProduct;
+  | setSelectedSarviewProduct
+  | SetImageBrowseProducts;

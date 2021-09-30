@@ -30,7 +30,7 @@ class="clickable">
   <img [src]="product.files.browse_url"
    onerror="this.src='assets/no-browse.png'"
    class="browse-image no-drag">
-   <mat-checkbox (click)="onPinProduct()">
+   <mat-checkbox [checked]="productBrowseStates[product.product_id]?.isPinned" (change)="onPinProduct(product.product_id);" (click)="$event.stopPropagation()">
    </mat-checkbox>
   <div class="browse-image--date">{{ product.processing_date | shortDate }}</div>
 </div>
