@@ -73,7 +73,19 @@ export class ImageDialogComponent implements OnInit, AfterViewInit, OnDestroy {
   ngOnInit() {
     this.subs.add(
       this.store$.select(scenesStore.getSelectedSceneProducts).subscribe(
-        products => this.products = products
+        products => {
+          this.products = products;
+
+          if(!!this.products) {
+            this.products.forEach(prod => this.pinnedProducts[prod.id] = {
+              isPinned: false,
+              url: prod.browses[0],
+              wkt: prod.metadata.polygon,
+            });
+
+            this.store$.dispatch(new scenesStore.SetImageBrowseProducts(this.pinnedProducts));
+          }
+        }
       )
     );
 
@@ -108,13 +120,15 @@ export class ImageDialogComponent implements OnInit, AfterViewInit, OnDestroy {
       this.sarviewsEventProducts$.subscribe(
         products => {
           this.sarviewsProducts = products;
-          this.sarviewsProducts.forEach(prod => this.pinnedProducts[prod.product_id] = {
-            isPinned: false,
-            url: prod.files.browse_url,
-            wkt: prod.granules[0].wkt,
-           });
+          if(!!this.sarviewsProducts) {
+            this.sarviewsProducts.forEach(prod => this.pinnedProducts[prod.product_id] = {
+              isPinned: false,
+              url: prod.files.browse_url,
+              wkt: prod.granules[0].wkt,
+            });
 
-          this.store$.dispatch(new scenesStore.SetImageBrowseProducts(this.pinnedProducts));
+            this.store$.dispatch(new scenesStore.SetImageBrowseProducts(this.pinnedProducts));
+          }
         }
       )
     );
@@ -130,7 +144,7 @@ export class ImageDialogComponent implements OnInit, AfterViewInit, OnDestroy {
     );
     this.subs.add(
       this.store$.select(scenesStore.getSelectedSarviewsProduct).pipe(
-        delay(750),
+        delay(100),
       ).subscribe(
         product => {
           if(!!product) {
@@ -160,8 +174,10 @@ export class ImageDialogComponent implements OnInit, AfterViewInit, OnDestroy {
         first(),
       ).subscribe(
         products => {
-          this.currentBrowse = products[0].files.product_url;
-          this.loadSarviewsBrowseImage(products[0]);
+          if(!this.currentSarviewsProduct) {
+            this.currentBrowse = products[0].files.product_url;
+            this.loadSarviewsBrowseImage(products[0]);
+          }
         }
       )
     );
