@@ -30,6 +30,14 @@ export interface Download {
 export function download(
   id: string,
   saver?: (b: Blob) => void): (source: Observable<HttpEvent<Blob>>) => Observable<Download> {
+
+  console.log('download() id:', id);
+  console.log('saver:', saver);
+
+  // const headers = resp.headers;
+  // console.log(headers); //<--- Check log for content disposition
+  // const contentDisposition= headers.get('content-disposition');
+
   return (source: Observable<HttpEvent<Blob>>) =>
     source.pipe(
       scan(
