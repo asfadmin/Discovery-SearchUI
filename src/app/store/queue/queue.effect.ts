@@ -54,7 +54,7 @@ export class QueueEffects {
       (products) => this.bulkDownloadService.downloadScript$(products)
     ),
     map(
-      blob => FileSaver.saveAs(blob, `download-all-${this.currentDate()}.py`)
+      blob => FileSaver.saveAs(blob.body, `download-all-${this.currentDate()}.py`)
     )
   ), { dispatch: false });
 

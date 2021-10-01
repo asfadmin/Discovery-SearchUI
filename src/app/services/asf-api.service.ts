@@ -48,7 +48,7 @@ export class AsfApiService {
     const queryParamsStr = params.toString()
       .replace(/\+/g, '%2B');
 
-    const endpoint = params.get('master') ?
+    const endpoint = params.get('reference') ?
       this.baselineEndpoint() :
       this.searchEndpoint({ useProdApi });
 
