@@ -77,12 +77,6 @@ export class DownloadFileButtonComponent implements OnInit, AfterViewInit {
       this.dFile = resp;
       console.log('this.dFile:', this.dFile);
 
-      // @ts-ignore
-      const headers = resp.headers;
-      console.log(headers);
-      // @ts-ignore
-      const contentDisposition= headers.get('content-disposition');
-
       if (resp.state === 'DONE') {
         this.dlInProgress = false;
         this.dlComplete = true;

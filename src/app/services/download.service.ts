@@ -19,12 +19,20 @@ export class DownloadService {
   download(url: string, filename: string): Observable<Download> {
     console.log('download.service.ts download() filename:', filename);
     // tslint:disable-next-line:max-line-length
-    return this.http.get(url, {
+    const resp = this.http.get(url, {
       withCredentials: this.wCreds,
       reportProgress: true,
       observe: 'events',
       responseType: 'blob',
-    }).pipe(download(filename, blob => this.save(blob, url, filename)));
+    });
+
+    console.log('download.service.ts download() resp:', resp);
+
+    // const headers = resp.headers;
+    // console.log(headers);
+    // const contentDisposition = headers.get('content-disposition');
+
+    return resp.pipe(download(filename, blob => this.save(blob, url, filename)));
   }
 
   // blob(url: string, filename?: string): Observable<Blob> {
