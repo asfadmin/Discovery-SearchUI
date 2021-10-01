@@ -35,7 +35,8 @@ After angular is installed, run `ng serve` for a dev server. Navigate to `http:/
 In order to get certain services to work, it's necessary to set up a .asf.alaska.edu domain pointing to your local server in your host file. This process varies on the OS you are using. 
 | OS | Method |
 | --- | --- |
-| Linux | modify the /etc/hosts file |
+| Mac/Linux | modify the /etc/hosts file |
+| Windows | Modify c:\windows\system32\drivers\etc\hosts as Administrator |
 ```
 ng serve --port 4444 --host local.asf.alaska.edu
 ```
