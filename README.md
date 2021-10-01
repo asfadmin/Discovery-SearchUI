@@ -44,7 +44,7 @@ ng serve --port 4444 --host local.asf.alaska.edu
 Some services of Vertex require https in order to work. Angular supports running with ssl, though some browser may not be happy with the self signed certs and not let you access the page through HTTPS. In order to get around this [mkcert](https://github.com/FiloSottile/mkcert) can act as a Certificate Authority(CA) to verify the certs it generates.
 1. Follow the instruction to install mkcert on their [README](https://github.com/FiloSottile/mkcert#installation)
 3. Run `mkcert -install` (You may need to run this as administrator)
-4. This step should be outside the directory containing this repo. To generate the certs to give to Angular run `mkcert local.asf.alaska.edu` If you want to specify the location to generate the certs you can pass the paramters `-cert-file` and `key-file` like `mkcert local.asf.alaska.edu -cert-file ~/mkcert/key.pem ~/mkcert/cert.pem`
+4. To generate the certs to give to Angular run `mkcert local.asf.alaska.edu` If you want to specify the location to generate the certs (**reccomended**) you can pass the paramters `-cert-file` and `key-file` like `mkcert local.asf.alaska.edu -cert-file ~/mkcert/key.pem ~/mkcert/cert.pem`
 5. Run angular with the following flags to specify to use ssl and where the ssl key and cert are.
 ```
 ng serve --host=local.asf.alaska.edu --ssl true --ssl-cert ~/mkcert/cert.pem --ssl-key ~/mkcert/key.pem 
