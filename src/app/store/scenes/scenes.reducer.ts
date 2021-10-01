@@ -370,6 +370,16 @@ export const getSelectedSceneProducts = createSelector(
   }
 );
 
+// export const getAllSceneProducts = createSelector(
+//   getScenesState,
+//   (state: ScenesState) => {
+//     return Object.keys(state.products).reduce(
+//       (prev: CMRProduct[], scene_id) =>
+//         Zprev.concat(productsForScene(state.products[scene_id], state)),
+//       [] as CMRProduct[])
+//   }
+// );
+
 export const getSelectedSceneBrowses = createSelector(
   getScenesState,
   (state: ScenesState) => {

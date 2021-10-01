@@ -76,8 +76,24 @@ export class ImageDialogComponent implements OnInit, AfterViewInit, OnDestroy {
         products => {
           this.products = products;
 
-          if(!!this.products) {
-            this.products.forEach(prod => this.pinnedProducts[prod.id] = {
+          // if(!!this.products) {
+          //   this.products.forEach(prod => this.pinnedProducts[prod.id] = {
+          //     isPinned: false,
+          //     url: prod.browses[0],
+          //     wkt: prod.metadata.polygon,
+          //   });
+
+          //   this.store$.dispatch(new scenesStore.SetImageBrowseProducts(this.pinnedProducts));
+          // }
+        }
+      )
+    );
+
+    this.subs.add(
+      this.store$.select(scenesStore.getAllProducts).subscribe(
+        products => {
+          if(!!products) {
+            products.forEach(prod => this.pinnedProducts[prod.id] = {
               isPinned: false,
               url: prod.browses[0],
               wkt: prod.metadata.polygon,
@@ -87,7 +103,7 @@ export class ImageDialogComponent implements OnInit, AfterViewInit, OnDestroy {
           }
         }
       )
-    );
+    )
 
     this.subs.add(
       this.store$.select(uiStore.getOnlyScenesWithBrowse).subscribe(
