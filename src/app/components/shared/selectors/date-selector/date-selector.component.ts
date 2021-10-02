@@ -160,7 +160,7 @@ export class DateSelectorComponent implements OnInit, OnDestroy {
   }
 
   private endDateFormat(date: Date | moment.Moment) {
-    const endDate = moment(date).set({h: 23, m: 59, s: 59});
+    const endDate = moment(date).utc().endOf('day');
     return this.toJSDate(endDate);
   }
 
