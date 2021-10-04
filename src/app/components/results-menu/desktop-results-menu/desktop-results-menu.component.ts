@@ -48,7 +48,7 @@ export class DesktopResultsMenuComponent implements OnInit, OnDestroy {
       this.sarviewsEvents$.subscribe(
         events => this.sarviewsEventsLength = events.length
       )
-    )
+    );
   }
 
   ngOnDestroy() {

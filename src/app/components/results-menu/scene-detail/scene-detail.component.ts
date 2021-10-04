@@ -49,7 +49,7 @@ export class SceneDetailComponent implements OnInit, OnDestroy {
   public browseIndex = 0;
   public detailsOpen = true;
   public masterOffsets$ = this.store$.select(scenesStore.getMasterOffsets);
-  public sarviewsEventGeoSearchRadius = 1.0
+  public sarviewsEventGeoSearchRadius = 1.0;
 
   private defaultBaselineFiltersID = '';
   private defaultSBASFiltersID = '';
@@ -92,11 +92,10 @@ export class SceneDetailComponent implements OnInit, OnDestroy {
 
 
     this.subs.add(
-      sarviewsEvent$.subscribe(event =>
-          {
+      sarviewsEvent$.subscribe(event => {
           this.sarviewEvent = event;
-          if(event.processing_timeframe) {
-            if(event.processing_timeframe.end?.getDay() === new Date().getDay() || !event.processing_timeframe.end) {
+          if (event.processing_timeframe) {
+            if (event.processing_timeframe.end?.getDay() === new Date().getDay() || !event.processing_timeframe.end) {
               this.isActiveSarviewEvent = true;
             } else {
               this.isActiveSarviewEvent = false;
@@ -105,7 +104,7 @@ export class SceneDetailComponent implements OnInit, OnDestroy {
           this.mapService.onSetSarviewsPolygon(event, this.sarviewsEventGeoSearchRadius);
           }
         )
-    )
+    );
     this.subs.add(
       scene$.pipe(
         tap(scene => this.scene = scene),
@@ -214,7 +213,7 @@ export class SceneDetailComponent implements OnInit, OnDestroy {
       return;
     }
 
-    if(this.searchType === models.SearchType.SARVIEWS_EVENTS) {
+    if (this.searchType === models.SearchType.SARVIEWS_EVENTS) {
       this.store$.dispatch(new scenesStore.setSelectedSarviewProduct(this.sarviewsProducts[this.browseIndex]));
     }
     this.store$.dispatch(new uiStore.SetIsBrowseDialogOpen(true));
@@ -239,7 +238,7 @@ export class SceneDetailComponent implements OnInit, OnDestroy {
   }
 
   public findSimilarScenes(): void {
-    if(this.searchType === models.SearchType.SARVIEWS_EVENTS) {
+    if (this.searchType === models.SearchType.SARVIEWS_EVENTS) {
       this.makeSarviewsEventGeoSearch();
     } else {
     const scene = this.scene;
@@ -302,10 +301,10 @@ export class SceneDetailComponent implements OnInit, OnDestroy {
       new filtersStore.SetSelectedDataset('SENTINEL-1'),
     ].forEach(action => this.store$.dispatch(action));
 
-    if(!!timeFrame.start) {
+    if (!!timeFrame.start) {
       this.store$.dispatch(new filtersStore.SetStartDate(new Date(timeFrame.start)));
     }
-    if(!!timeFrame.end) {
+    if (!!timeFrame.end) {
       this.store$.dispatch(new filtersStore.SetEndDate(new Date(timeFrame.end)));
     }
     this.mapService.onSetSarviewsPolygon(this.sarviewEvent, this.sarviewsEventGeoSearchRadius);

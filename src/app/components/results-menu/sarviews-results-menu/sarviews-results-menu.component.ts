@@ -54,12 +54,12 @@ export class SarviewsResultsMenuComponent implements OnInit, OnDestroy {
         withLatestFrom(this.sarviewsEvents$),
       ).subscribe(
         ([selected, events]) => {
-          if(selected == null && !!events) {
-            this.store$.dispatch(new scenesStore.SetSelectedSarviewsEvent(events[0]?.event_id))
+          if (selected == null && !!events) {
+            this.store$.dispatch(new scenesStore.SetSelectedSarviewsEvent(events[0]?.event_id));
           }
         }
       )
-    )
+    );
   }
 
   ngOnDestroy() {

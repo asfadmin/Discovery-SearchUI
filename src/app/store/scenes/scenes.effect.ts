@@ -53,7 +53,7 @@ export class ScenesEffects {
     distinctUntilChanged(),
     switchMap(action => this.sarviewsService.getEventFeature(action.payload)),
     map(processedEvent => new SetSarviewsEventProducts(processedEvent.products))
-  ))
+  ));
   private showUnzipApiLoadError(product: CMRProduct): void {
     this.notificationService.error(
       `Error loading files for ${product.id}`,

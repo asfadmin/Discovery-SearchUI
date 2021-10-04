@@ -142,7 +142,7 @@ export class SearchEffects {
       }),
       new SetSearchAmount(action.payload.events.length)
     ])
-  ))
+  ));
 
   public showResultsMenuOnSearchResponse = createEffect(() => this.actions$.pipe(
     ofType<SearchResponse>(SearchActionType.SEARCH_RESPONSE),

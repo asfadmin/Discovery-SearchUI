@@ -35,7 +35,7 @@ export class SarviewsEventMagnitudeSelectorComponent implements OnInit, OnDestro
 
   public quakeTypesEnabled$ = this.store$.select(filterStore.getSarviewsEventTypes).pipe(
     map(eventTypes => {
-      return eventTypes.length === 0 || eventTypes.includes(SarviewsEventType.QUAKE)}),
+      return eventTypes.length === 0 || eventTypes.includes(SarviewsEventType.QUAKE); }),
   );
 
   private fullPips = {
@@ -47,7 +47,7 @@ export class SarviewsEventMagnitudeSelectorComponent implements OnInit, OnDestro
       decimals: 1,
       suffix: ' mag'
     })
-  }
+  };
 
   private mobilePips =  {
     mode: 'positions',
@@ -58,7 +58,7 @@ export class SarviewsEventMagnitudeSelectorComponent implements OnInit, OnDestro
       decimals: 1,
       suffix: ' mag'
     })
-  }
+  };
 
   constructor(private store$: Store<AppState>,
     private screenSize: ScreenSizeService,
@@ -68,7 +68,7 @@ export class SarviewsEventMagnitudeSelectorComponent implements OnInit, OnDestro
     this.subs.add(
       this.store$.select(filterStore.getSarviewsMagnitudeRange).pipe(
         distinctUntilChanged((a, b) => {
-          return a.start === b.start && a.end === b.end
+          return a.start === b.start && a.end === b.end;
         }),
       ).subscribe(
         magnitudeRange => {
@@ -85,7 +85,7 @@ export class SarviewsEventMagnitudeSelectorComponent implements OnInit, OnDestro
           this.OnUpdatePipSize(this.breakpoint);
         }
       )
-    )
+    );
 
     const temp = this.makeMagnitudeSlider$(this.magnitudeFilter);
     this.magSlider = temp.magSlider;
@@ -106,7 +106,7 @@ export class SarviewsEventMagnitudeSelectorComponent implements OnInit, OnDestro
     this.subs.add(
       this.quakeTypesEnabled$.subscribe(
         isEnabled => {
-          if(!isEnabled) {
+          if (!isEnabled) {
             this.magnitudeFilter.nativeElement.setAttribute('disabled', true);
           } else {
             this.magnitudeFilter.nativeElement.removeAttribute('disabled');
@@ -154,14 +154,14 @@ export class SarviewsEventMagnitudeSelectorComponent implements OnInit, OnDestro
   }
 
   private OnUpdatePipSize(breakpoint: Breakpoints) {
-    if(breakpoint === Breakpoints.MOBILE) {
+    if (breakpoint === Breakpoints.MOBILE) {
       this.slider.updateOptions(
         {
           pips: this.mobilePips,
           step: 0.5
         },
         true
-      )
+      );
     } else {
       this.slider.updateOptions(
         {
@@ -169,7 +169,7 @@ export class SarviewsEventMagnitudeSelectorComponent implements OnInit, OnDestro
           step: 0.1
         },
         true
-      )
+      );
     }
   }
 

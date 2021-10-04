@@ -84,7 +84,7 @@ export function searchReducer(state = initState, action: SearchActions): SearchS
         totalResults: action.payload.events.length,
         isLoading: false,
         isCanceled: false
-      }
+      };
     }
 
     case SearchActionType.SEARCH_ERROR: {

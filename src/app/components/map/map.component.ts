@@ -101,9 +101,9 @@ export class MapComponent implements OnInit, OnDestroy  {
       filter(event => !!event),
     ).subscribe( event => {
       const point = this.mapService.getEventCoordinate(event.event_id);
-      let coords = point.getCoordinates();
+      const coords = point.getCoordinates();
       const [lat, lon] = proj.toLonLat(coords, this.mapService.epsg());
-      this.mapService.panToEvent({lat, lon})
+      this.mapService.panToEvent({lat, lon});
     })
     );
 
@@ -144,7 +144,7 @@ export class MapComponent implements OnInit, OnDestroy  {
       filter(id => !!id)
     ).subscribe(
       id => this.selectedSarviewEvent = this.sarviewsEvents?.find(event => event?.event_id === id)
-    )
+    );
 
 
     this.subs.add(
@@ -395,7 +395,7 @@ export class MapComponent implements OnInit, OnDestroy  {
         sarviewsEventsLayer =>
           this.mapService.setEventsLayer(sarviewsEventsLayer)
       )
-    )
+    );
 
     const selectedAfterInitialization$ = this.isMapInitialized$.pipe(
       filter(isMapInitiliazed => isMapInitiliazed),
@@ -480,10 +480,10 @@ export class MapComponent implements OnInit, OnDestroy  {
 
         const polygon = feature.getGeometry()[0][0].slice(0, 4);
 
-        if(polygon.length === 2) {
+        if (polygon.length === 2) {
           const point = new Point([polygon[0], polygon[1]]);
-          feature.set("eventPoint", point);
-          feature.setGeometryName("eventPoint");
+          feature.set('eventPoint', point);
+          feature.setGeometryName('eventPoint');
           return feature;
         }
 
@@ -492,8 +492,8 @@ export class MapComponent implements OnInit, OnDestroy  {
         const point = new Point([centerLat, centerLon]);
 
 
-        feature.set("eventPoint", point);
-        feature.setGeometryName("eventPoint");
+        feature.set('eventPoint', point);
+        feature.setGeometryName('eventPoint');
 
         return feature;
       });
@@ -509,7 +509,7 @@ export class MapComponent implements OnInit, OnDestroy  {
       style
     });
 
-    if(style !== polygonStyle.icon) {
+    if (style !== polygonStyle.icon) {
       layer.set('selectable', 'true');
     }
 

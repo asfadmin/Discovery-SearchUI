@@ -15,7 +15,7 @@ import { AppState } from '@store';
   styleUrls: ['./sarviews-event.component.scss']
 })
 export class SarviewsEventComponent implements OnInit {
-  @Input() event: SarviewsEvent
+  @Input() event: SarviewsEvent;
   @Input() selected: boolean;
   public hovered = false;
 
@@ -40,14 +40,14 @@ export class SarviewsEventComponent implements OnInit {
   public onSetSelected() {
     this.mapService.selectedSarviewEvent$.next(this.event.event_id);
     const point = this.mapService.getEventCoordinate(this.event.event_id);
-    let coords = point.getCoordinates();
+    const coords = point.getCoordinates();
     const [lat, lon] = proj.toLonLat(coords, this.mapService.epsg());
     this.mapService.panToEvent({lat, lon});
     this.store$.dispatch(new sceneStore.SetSelectedSarviewsEvent(this.event.event_id));
   }
 
   public eventIDDisplay(): string {
-    if(this.event.event_type.toLowerCase() === 'quake') {
+    if (this.event.event_type.toLowerCase() === 'quake') {
       return 'usgs: ' + (this.event as SarviewsQuakeEvent).usgs_event_id;
     } else {
       return 'smithsonian: ' + (this.event as SarviewsVolcanicEvent).smithsonian_event_id;

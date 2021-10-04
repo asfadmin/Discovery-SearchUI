@@ -56,7 +56,7 @@ export class ImageDialogComponent implements OnInit, AfterViewInit, OnDestroy {
   private image: HTMLImageElement = new Image();
   private subs = new SubSink();
 
-  private pinnedProducts: {[product_id in string]: PinnedProduct} = {}
+  private pinnedProducts: {[product_id in string]: PinnedProduct} = {};
 
   constructor(
     private store$: Store<AppState>,
@@ -96,7 +96,7 @@ export class ImageDialogComponent implements OnInit, AfterViewInit, OnDestroy {
         map(([products, _]) => products)
       ).subscribe(
         products => {
-          if(!!products) {
+          if (!!products) {
             products.forEach(prod => this.pinnedProducts[prod.id] = {
               isPinned: false,
               url: prod.browses[0],
@@ -107,7 +107,7 @@ export class ImageDialogComponent implements OnInit, AfterViewInit, OnDestroy {
           }
         }
       )
-    )
+    );
 
     this.subs.add(
       this.store$.select(uiStore.getOnlyScenesWithBrowse).subscribe(
@@ -140,7 +140,7 @@ export class ImageDialogComponent implements OnInit, AfterViewInit, OnDestroy {
       this.sarviewsEventProducts$.subscribe(
         products => {
           this.sarviewsProducts = products;
-          if(!!this.sarviewsProducts) {
+          if (!!this.sarviewsProducts) {
             this.sarviewsProducts.forEach(prod => this.pinnedProducts[prod.product_id] = {
               isPinned: false,
               url: prod.files.browse_url,
@@ -167,12 +167,12 @@ export class ImageDialogComponent implements OnInit, AfterViewInit, OnDestroy {
         delay(100),
       ).subscribe(
         product => {
-          if(!!product) {
-            this.onNewSarviewsBrowseSelected(product)
+          if (!!product) {
+            this.onNewSarviewsBrowseSelected(product);
           }
         }
       )
-    )
+    );
   }
 
   ngAfterViewInit() {
@@ -194,7 +194,7 @@ export class ImageDialogComponent implements OnInit, AfterViewInit, OnDestroy {
         first(),
       ).subscribe(
         products => {
-          if(!this.currentSarviewsProduct) {
+          if (!this.currentSarviewsProduct) {
             this.currentBrowse = products[0].files.product_url;
             this.loadSarviewsBrowseImage(products[0]);
           }
@@ -300,7 +300,7 @@ export class ImageDialogComponent implements OnInit, AfterViewInit, OnDestroy {
   public onCopyLink(content: SarviewProductGranule[]): void {
     const names = content.map(val => val.granule_name).join(',');
     this.clipboard.copyFromContent(names);
-    this.notificationService.info( '', `Scene${content.length > 1 ? 's ' : ' '}Copied`)
+    this.notificationService.info( '', `Scene${content.length > 1 ? 's ' : ' '}Copied`);
   }
 
   public onSetOpacity(event: MatSliderChange) {
@@ -317,9 +317,9 @@ export class ImageDialogComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   public onPinProduct(product_id: string) {
-    let temp = {
+    const temp = {
       ...this.pinnedProducts,
-    }
+    };
     temp[product_id].isPinned = !this.pinnedProducts[product_id].isPinned;
     this.store$.dispatch(new scenesStore.SetImageBrowseProducts(this.pinnedProducts));
     this.browseMap.setPinnedProducts(this.pinnedProducts);

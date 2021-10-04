@@ -21,7 +21,7 @@ export enum SearchActionType {
   SET_SEARCH_TYPE = '[UI] Set Search Type',
   SET_SEARCH_TYPE_AFTER_SAVE = '[UI] Set Search Type After Save',
 
-  SARVIEWS_SEARCH_RESPONSE ='[Search] SARViews Search Response',
+  SARVIEWS_SEARCH_RESPONSE = '[Search] SARViews Search Response',
 }
 
 export class MakeSearch implements Action {

@@ -23,14 +23,14 @@ export class BulkDownloadService {
     .map(product => product.downloadUrl)
     .join(',');
 
-    return this.downloadScript$(productsStr)
+    return this.downloadScript$(productsStr);
   }
   public downloadSarviewsProductsScript$(products: SarviewsProduct[]): Observable<HttpResponse<Blob>> {
     const productsStr = products
     .map(product => product.files.product_url)
     .join(',');
 
-    return this.downloadScript$(productsStr)
+    return this.downloadScript$(productsStr);
   }
   public downloadScript$(productsListStr: string) {
 
