@@ -9,7 +9,7 @@ CodeFactor](https://www.codefactor.io/repository/github/asfadmin/discovery-searc
 | Maturity | Deployment |
 | --- | --- |
 | Devel | https://search-dev.asf.alaska.edu/ |
-| Test | https://search-tset.asf.alaska.edu/ |
+| Test | https://search-test.asf.alaska.edu/ |
 | Prod | https://search.asf.alaska.edu/ |
 
 ### Personal Deployment (deployment.py)
