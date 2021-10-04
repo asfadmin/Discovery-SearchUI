@@ -314,7 +314,7 @@ export class MapService {
     this.map.getView().animate({
       center: x,
       duration: 500,
-      zoom: 5.0,
+      zoom: this.map.getView().getZoom(),
     });
     // this.map.getView().setCenter(feature[0]);
   }

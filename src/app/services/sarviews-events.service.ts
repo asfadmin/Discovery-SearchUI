@@ -38,9 +38,17 @@ export class SarviewsEventsService {
             ...event,
             processing_timeframe: this.getDates(event),
             point: this.getEventPoint(event.wkt),
-          };
+          } as SarviewsEvent;
         }
-    )));
+    )),
+    map(events => events.sort((a, b) => {
+      if(a.processing_timeframe.start > b.processing_timeframe.start) {
+        return -1;
+      } else if(a.processing_timeframe.start < b.processing_timeframe.start) {
+        return 1;
+      }
+      return 0;
+    })));
   }
 
   // public getEventFeatures(usgs_event_ids: string[]): Observable<SarviewsEvent[]> {
