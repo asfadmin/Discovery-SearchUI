@@ -312,7 +312,7 @@ export class ImageDialogComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   public OpenProductInSarviews() {
-    const url = this.sarviewsService.getSarviewsEventPinnedUrl(this.sarviewsEvent.event_id, [this.currentSarviewsProduct]);
+    const url = this.sarviewsService.getSarviewsEventPinnedUrl(this.sarviewsEvent.event_id, [this.currentSarviewsProduct.product_id]);
     window.open(url);
   }
 

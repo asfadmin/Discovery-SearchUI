@@ -42,10 +42,12 @@
     <div style="height: 100%; width: 100%;">
       <!-- <div style="min-height: calc(100% - 30px);"> -->
         <mat-selection-list
-        multiple [(ngModel)]="selectedProducts" class="products-list" style="height: calc(100% - 100px);">
-          <mat-list-option class="virtual-scroll" checkboxPosition="before" [value]="prod" *ngFor="let prod of sarviewsProducts" style="margin-right: 0px !important;">
+        class="products-list" dense role="list" style="height: calc(100% - 50px);">
+        <cdk-virtual-scroll-viewport [itemSize]="50" style="height: 100%;">
+          <mat-list-option (click)="onSelectSarviewsProduct(prod.product_id)" [selected]="!!this.selectedProducts[prod.product_id]" checkboxPosition="before" class="virtual-scroll" *cdkVirtualFor="let prod of sarviewsProducts"
+          style="margin-right: 0px !important; height: 50px !important">
             <div class="sarview-products-list">
-              <img style="width: 50px; height: 50px;" src="{{prod.files.thumbnail_url}}">
+              <img style="width: 50px; height: 50px;" src="{{prod.files.browse_url}}">
               <div class="sarview-product">
                 <div style="font-weight: bold;">{{formatProductName(prod.files.product_name)}}</div>
                 <div>{{prod.files.product_size.toString() | readableSizeFromBytes }}, {{prod.job_type.replace("_", " ")}}</div>
@@ -57,6 +59,7 @@
               <div></div>
           </div>
         </mat-list-option>
+      </cdk-virtual-scroll-viewport>
       </mat-selection-list>
     </div>
     <!-- </div> -->

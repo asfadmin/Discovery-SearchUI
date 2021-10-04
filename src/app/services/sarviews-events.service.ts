@@ -2,7 +2,7 @@ import { HttpClient,
   // HttpErrorResponse
  } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { LonLat, SarviewsEvent, SarviewsProcessedEvent, SarviewsProduct } from '@models';
+import { LonLat, SarviewsEvent, SarviewsProcessedEvent } from '@models';
 import {
   // forkJoin,
    Observable, of } from 'rxjs';
@@ -117,9 +117,9 @@ export class SarviewsEventsService {
   // public getSarviewsEventCenter(coord: LonLat) {
   //   this.mapService.selectedSarviewEvent$.next()
   // }
-  public getSarviewsEventPinnedUrl(sarviews_url: string, products: SarviewsProduct[]) {
+  public getSarviewsEventPinnedUrl(sarviews_url: string, product_ids: string[]) {
     const baseUrl = this.getSarviewsEventUrl(sarviews_url);
-    const pinnedIds = products.map(prod => prod.product_id).reduce((prev, curr) => {
+    const pinnedIds = product_ids.reduce((prev, curr) => {
       return prev + curr + ','
     }, '?pinned=');
     return baseUrl + pinnedIds;

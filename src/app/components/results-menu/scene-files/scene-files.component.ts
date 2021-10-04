@@ -28,6 +28,7 @@ export class SceneFilesComponent implements OnInit, OnDestroy, AfterContentInit 
   public copyIcon = faCopy;
   public products: models.CMRProduct[];
   public productsByProductType: {[processing_type: string]: SarviewsProduct[]} = {};
+  public selectedProducts: { [product_id in string]: boolean} = {};
   public sarviewsProducts: models.SarviewsProduct[];
 
   public queuedProductIds$ = this.store$.select(queueStore.getQueuedProductIds).pipe(
@@ -76,7 +77,7 @@ export class SceneFilesComponent implements OnInit, OnDestroy, AfterContentInit 
   public isUserLoggedIn: boolean;
   public hasAccessToRestrictedData: boolean;
   public showDemWarning: boolean;
-  public selectedProducts: SarviewsProduct[] = [];
+  // public selectedProducts: SarviewsProduct[] = [];
   public selectedSarviewEventID: string;
   private subs = new SubSink();
 
@@ -150,7 +151,13 @@ export class SceneFilesComponent implements OnInit, OnDestroy, AfterContentInit 
   ngAfterContentInit() {
     this.subs.add(
       this.sarviewsEventProducts$.pipe(distinctUntilChanged((a, b) => a[0]?.event_id === b[0]?.event_id)).subscribe(
-        val => this.sarviewsProducts = val
+        val => {
+          this.sarviewsProducts = val;
+          this.selectedProducts = val.map(product => product.product_id).reduce((prev, curr) => {
+            prev[curr] = false;
+            return prev;
+          }, {} as {[product_id in string]: boolean});
+        }
       )
     );
 
@@ -239,9 +246,16 @@ export class SceneFilesComponent implements OnInit, OnDestroy, AfterContentInit 
   }
 
   public currentPinnedUrl(current_id: string): string {
-    if(!!current_id && !!this.selectedProducts) {
-    return this.sarviewsService.getSarviewsEventPinnedUrl(current_id, this.selectedProducts);
-    }
+    const product_ids = Object.keys(this.selectedProducts).filter(
+      product_ids => !!this.selectedProducts?.[product_ids]
+    )
+    // if(!!current_id && !!this.selectedProducts) {
+    return this.sarviewsService.getSarviewsEventPinnedUrl(current_id, product_ids);
+    // }
+  }
+
+  public onSelectSarviewsProduct(product_id: string) {
+    this.selectedProducts[product_id] = !this.selectedProducts?.[product_id] ?? true;
   }
 
   public onOpenPinnedProducts(current_id: string) {
