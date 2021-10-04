@@ -11,6 +11,10 @@ function isHttpResponse<T>(event: HttpEvent<T>): event is HttpResponse<T> {
   return event.type === HttpEventType.Response;
 }
 
+function isHttpHeader<T>(event: HttpEvent<T>): event is HttpResponse<T> {
+  return event.type === HttpEventType.ResponseHeader;
+}
+
 function isHttpProgressEvent(
   event: HttpEvent<unknown>
 ): event is HttpProgressEvent {
@@ -31,8 +35,8 @@ export function download(
   id: string,
   saver?: (b: Blob) => void): (source: Observable<HttpEvent<Blob>>) => Observable<Download> {
 
-  console.log('download() id:', id);
-  console.log('saver:', saver);
+  console.log('download.ts download() id:', id);
+  console.log('download.ts saver:', saver);
 
   return (source: Observable<HttpEvent<Blob>>) =>
     source.pipe(
@@ -40,6 +44,9 @@ export function download(
         // tslint:disable-next-line:no-shadowed-variable
         (download: Download, event): Download => {
           console.log('download.ts download() event:', event);
+          if (isHttpHeader(event)) {
+            console.log('event.url is:', event.url);
+          }
           if (isHttpProgressEvent(event)) {
             return {
               progress: event.total
