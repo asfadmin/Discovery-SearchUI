@@ -1,6 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { SubSink } from 'subsink';
+import * as moment from 'moment';
 
 import { Store } from '@ngrx/store';
 import { AppState } from '@store';
@@ -10,7 +11,7 @@ import * as hyp3Store from '@store/hyp3';
 import * as searchStore from '@store/search';
 
 import { CreateSubscriptionComponent } from '@components/header/create-subscription';
-import { ScreenSizeService } from '@services';
+import { ScreenSizeService, Hyp3Service } from '@services';
 import * as models from '@models';
 
 @Component({
@@ -28,17 +29,19 @@ export class OnDemandSubscriptionsComponent implements OnInit, OnDestroy {
 
   public breakpoint: models.Breakpoints;
   public breakpoints = models.Breakpoints;
-
-  private subs = new SubSink();
+  public loadingSubs = new Set();
 
   public searchType$ = this.store$.select(searchStore.getSearchType);
   public searchType: models.SearchType;
   public SearchType = models.SearchType;
 
+  private subs = new SubSink();
+
   constructor(
     private store$: Store<AppState>,
     private dialog: MatDialog,
     private screenSize: ScreenSizeService,
+    private hyp3: Hyp3Service,
   ) { }
 
   ngOnInit(): void {
@@ -77,12 +80,33 @@ export class OnDemandSubscriptionsComponent implements OnInit, OnDestroy {
     this.store$.dispatch(new uiStore.CloseSidebar());
   }
 
+  public onNewEndDate(subId, date: Date): void {
+    const end = moment.utc(date).format();
+
+    this.hyp3.editSubscription(subId, {end}).subscribe(
+      _ => {
+        this.store$.dispatch(new hyp3Store.LoadSubscriptions());
+      }
+    );
+  }
+
   public onToggleSelected(subId: string): void {
     if (this.selectedSubId === subId) {
       this.selectedSubId = null;
     } else {
       this.selectedSubId = subId;
     }
+  }
+
+  public onToggleEnabled(sub: models.OnDemandSubscription): void {
+    this.loadingSubs.add(sub.id);
+
+    this.hyp3.editSubscription(sub.id, {enabled: !sub.enabled}).subscribe(
+      _ => {
+        this.store$.dispatch(new hyp3Store.LoadSubscriptions());
+        this.loadingSubs.delete(sub.id);
+      }
+    );
   }
 
   public onLoadProductsFor(subName: string): void {

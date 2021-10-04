@@ -23,8 +23,10 @@ import * as models from '@models';
 export class CreateSubscriptionComponent implements OnInit, OnDestroy {
   @ViewChild('stepper', { static: false }) public stepper: MatStepper;
 
+  public jobTypeId = models.hyp3JobTypes.RTC_GAMMA.id;
+
   public hyp3JobTypes = models.hyp3JobTypes;
-  public hyp3JobTypesList: models.Hyp3JobType[];
+  public hyp3JobTypesList = models.hyp3JobTypesList;
   public selectedJobTypeId: string | null = models.hyp3JobTypes.RTC_GAMMA.id;
 
   public productTypes = [{
@@ -176,6 +178,10 @@ export class CreateSubscriptionComponent implements OnInit, OnDestroy {
     this.subtype = e.value;
   }
 
+  public onNewJobType(e): void {
+    this.jobTypeId = e.value;
+  }
+
   public onBack(): void {
     this.stepper.previous();
   }
@@ -194,6 +200,25 @@ export class CreateSubscriptionComponent implements OnInit, OnDestroy {
 
   public onValidateOnlyToggle(val: boolean): void {
     this.validateOnly = val;
+  }
+
+  public filterOptions(optionList, jobTypeId) {
+    const jobType = models.hyp3JobTypes[jobTypeId];
+    const allOptions = !!jobType ? jobType.options : models.hyp3JobOptionsOrdered;
+
+    const options = optionList.reduce((total, op) => {
+      total[op[0]] = op[1];
+      return total;
+    }, {});
+
+    const filtered = allOptions
+      .filter(option => options[option.apiName])
+      .map(option => {
+        return {name: option.name, val: options[option.apiName]};
+      });
+
+    return filtered;
+
   }
 
   ngOnDestroy(): void {

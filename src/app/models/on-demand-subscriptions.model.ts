@@ -7,6 +7,7 @@ export interface OnDemandSubscription {
   jobParameters: any;
   jobType: Hyp3JobType;
   filters: any;
+  enabled: boolean;
 }
 
 export interface OnDemandSubscriptionFilters {

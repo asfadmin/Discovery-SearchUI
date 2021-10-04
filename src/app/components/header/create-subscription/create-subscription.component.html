@@ -53,9 +53,35 @@
             <app-aoi-options></app-aoi-options>
           </div>
 
+        </mat-step>
+
+        <mat-step label="Current Processing Options">
+          <ng-template matStepLabel>Subscription Options</ng-template>
+
           <div style="margin-bottom: 10px;">
             <div style="margin-bottom: 5px;">
-              <b>Subscription Options</b>
+              <b>Job Type</b>
+            </div>
+
+            <mat-form-field class="sub-option">
+              <mat-select
+                [(value)]="jobTypeId"
+                (selectionChange)="onNewJobType($event)"
+                [disabled]="hyp3JobTypesList.length < 1"
+                placeholder="Job Type">
+                  <mat-option
+                    *ngFor="let jobType of hyp3JobTypesList"
+                    [value]="jobType.id"
+                    [matTooltip]="jobType.name">
+                      {{jobType.name}}
+                  </mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+
+          <div style="margin-bottom: 10px;">
+            <div style="margin-bottom: 5px;">
+              <b>Search Options</b>
             </div>
 
             <mat-form-field class="sub-option">
@@ -124,28 +150,32 @@
                 {{ !productType ? 'Select type' : subtype + ' selected' }}
               </mat-hint>
             </mat-form-field>
-
           </div>
-        </mat-step>
 
-        <mat-step label="Current Processing Options">
-          <ng-template matStepLabel>Processing Options</ng-template>
+          <div style="margin-bottom: 5px;">
+            <b>Processing Options</b>
+          </div>
 
-          <h3>RTC Gamma</h3>
           <app-processing-options
                   *ngIf="selectedJobTypeId"
-                  [selectedJobType]="hyp3JobTypes[selectedJobTypeId]">
+                  [selectedJobType]="hyp3JobTypes[jobTypeId]">
           </app-processing-options>
         </mat-step>
 
         <mat-step>
           <ng-template matStepLabel>Review</ng-template>
 
-          <h3>Name: </h3>
-          <app-project-name-selector [processName]="true"></app-project-name-selector>
+          <div>
+            <b>Name: </b>
+            <app-project-name-selector [processName]="true"></app-project-name-selector>
+          </div>
+
+          <div>
+            <b>Job Type:</b> {{ jobTypeId }}
+          </div>
 
 
-          <h3>Search:</h3>
+          <h3>Search Options:</h3>
           <div>
             <div *ngIf="!!subtype">
               <b>Dataset:</b> {{ subtype }}
@@ -165,7 +195,7 @@
               <b>File Type:</b> {{ productType }}
             </div>
 
-            <div *ngIf="!!polarizations">
+            <div *ngIf="!!polarization">
               <b>Polarization:</b> {{ polarization }}
             </div>
 
@@ -177,8 +207,8 @@
           <h3>Processing Options:</h3>
 
           <div>
-            <div *ngFor="let param of processingOptionsList">
-              <b>{{ param[0] }}:</b> {{ param[1] }}
+            <div *ngFor="let param of filterOptions(processingOptionsList, jobTypeId)">
+              <b>{{ param.name }}:</b> {{ param.val }}
             </div>
           </div>
 

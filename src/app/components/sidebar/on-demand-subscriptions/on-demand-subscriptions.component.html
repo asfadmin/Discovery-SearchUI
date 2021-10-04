@@ -26,6 +26,9 @@
           <app-on-demand-subscription
             [subscription]="subscription"
             [isExpanded]="subscription.id === selectedSubId"
+            [isToggling]="loadingSubs.has(subscription.id)"
+            (newEnd)="onNewEndDate(subscription.id, $event)"
+            (toggleEnabled)="onToggleEnabled($event)"
             (toggleExpand)="onToggleSelected($event)"
             (viewProducts)="onLoadProductsFor($event)">
           </app-on-demand-subscription>

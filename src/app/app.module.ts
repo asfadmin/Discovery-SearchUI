@@ -134,6 +134,7 @@ export const routes = [
     services.Hyp3Service,
     services.PairService,
     services.SceneSelectService,
+    services.OnDemandService,
     {provide: SAVER, useFactory: getSaver},
     // { provide: Window, useValue: window },
   ],

@@ -116,6 +116,12 @@ export class Hyp3Service {
     return this.http.post(submitJobUrl, body, { withCredentials: true });
   }
 
+  public editSubscription(subId: string, edit: {enabled?: boolean, end?: string}) {
+    const subscriptionUrl = `${this.apiUrl}/subscriptions/${subId}`;
+
+    return this.http.patch(subscriptionUrl, edit, { withCredentials: true });
+  }
+
   public submiteSubscription$(sub) {
     const submitUrl = `${this.apiUrl}/subscriptions`;
 
@@ -135,6 +141,7 @@ export class Hyp3Service {
             jobParameters: sub.job_specification,
             jobType: models.hyp3JobTypes[sub.job_specification.job_type],
             filters: sub.search_parameters,
+            enabled: sub.enabled
           };
         });
         console.log(resp);

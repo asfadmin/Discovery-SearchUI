@@ -6,7 +6,7 @@ import * as moment from 'moment';
 import * as queueStore from '@store/queue';
 import * as searchStore from '@store/search';
 
-import { EnvironmentService, Hyp3Service } from '@services';
+import { EnvironmentService, Hyp3Service, OnDemandService } from '@services';
 import * as models from '@models';
 import { SubSink } from 'subsink';
 import { of } from 'rxjs';
@@ -14,6 +14,7 @@ import { filter } from 'rxjs/operators';
 import { AppState } from '@store';
 import { Store } from '@ngrx/store';
 import { SearchType } from '@models';
+
 @Component({
   selector: 'app-scene-file',
   templateUrl: './scene-file.component.html',
@@ -45,6 +46,7 @@ export class SceneFileComponent implements OnInit, OnDestroy {
       private hyp3: Hyp3Service,
       private store$: Store<AppState>,
       public env: EnvironmentService,
+      private onDemand: OnDemandService,
     ) {}
 
   ngOnInit() {
@@ -52,7 +54,12 @@ export class SceneFileComponent implements OnInit, OnDestroy {
         of(this.product).pipe(
           filter(prod => !!prod.metadata)
         ).subscribe( prod => {
-          this.paramsList = this.jobParamsToList(prod.metadata);
+
+          if (!prod.metadata.job) {
+            this.paramsList = [];
+          } else {
+            this.paramsList = this.onDemand.jobParamsToList(prod.metadata);
+          }
         }
       )
     );
@@ -142,21 +149,6 @@ export class SceneFileComponent implements OnInit, OnDestroy {
       granules: this.product.metadata.job.job_parameters.scenes,
       job_type: job_types[job_type]
     }));
-  }
-
-  public jobParamsToList(metadata) {
-    if (!metadata.job) {
-      return [];
-    }
-
-    const jobType = models.hyp3JobTypes[metadata.job.job_type];
-    const options = !!jobType ? jobType.options : models.hyp3JobOptionsOrdered;
-
-    return options
-      .filter(option => metadata.job.job_parameters[option.apiName])
-      .map(option => {
-        return {name: option.name, val: metadata.job.job_parameters[option.apiName]};
-      });
   }
 
   private expirationDays(expiration_time: moment.Moment): number {

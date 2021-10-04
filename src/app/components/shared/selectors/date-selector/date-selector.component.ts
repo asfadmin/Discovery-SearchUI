@@ -38,12 +38,10 @@ export class DateSelectorComponent implements OnInit, OnDestroy {
       map(dataset => dataset.date.end),
     map(endDate => {
       const date = endDate <= this.currentDate ? endDate : this.currentDate;
-      console.log(date);
 
       if (this.extendEndDateBy && !!date) {
         const d = new Date(date.valueOf());
         d.setDate(d.getDate() + this.extendEndDateBy);
-        console.log(d);
         return d;
       }
 
@@ -105,7 +103,6 @@ export class DateSelectorComponent implements OnInit, OnDestroy {
         if (this.extendEndDateBy && extrema.end.max !== null) {
           const endMax = extrema.end.max;
           const d = new Date(endMax.valueOf());
-          console.log(this.extendEndDateBy);
           d.setDate(d.getDate() + this.extendEndDateBy);
 
           extrema.end.max = d ;
