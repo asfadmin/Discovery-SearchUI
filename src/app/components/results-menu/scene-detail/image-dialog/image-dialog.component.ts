@@ -2,7 +2,7 @@ import { Component, OnInit, AfterViewInit, OnDestroy } from '@angular/core';
 import { MatDialogRef } from '@angular/material/dialog';
 import { SubSink } from 'subsink';
 
-import { filter, map, tap, debounceTime, first, distinctUntilChanged, delay } from 'rxjs/operators';
+import { filter, map, tap, debounceTime, first, distinctUntilChanged, delay, withLatestFrom } from 'rxjs/operators';
 import { Store } from '@ngrx/store';
 
 import { AppState } from '@store';
@@ -90,7 +90,11 @@ export class ImageDialogComponent implements OnInit, AfterViewInit, OnDestroy {
     );
 
     this.subs.add(
-      this.store$.select(scenesStore.getAllProducts).subscribe(
+      this.store$.select(scenesStore.getAllProducts).pipe(
+        withLatestFrom(this.searchType$),
+        filter(([_, searchtype]) => searchtype !== models.SearchType.SARVIEWS_EVENTS),
+        map(([products, _]) => products)
+      ).subscribe(
         products => {
           if(!!products) {
             products.forEach(prod => this.pinnedProducts[prod.id] = {
