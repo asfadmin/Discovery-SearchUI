@@ -27,11 +27,12 @@ export class DownloadService {
     });
 
     console.log('download.service.ts download() resp:', resp);
-    console.log('download.service.ts download() response filename:', this.getFileNameFromHttpResponse(resp));
+    // console.log('download.service.ts download() response filename:', this.getFileNameFromHttpResponse(resp));
 
-    // const headers = resp.headers;
-    // console.log(headers);
+    // const headers = resp.headers.headers;
+    // console.log('download.service.ts download() headers:', headers);
     // const contentDisposition = headers.get('content-disposition');
+    // console.log('download.service.ts download() contentDisposition:', contentDisposition);
 
     return resp.pipe(download(filename, blob => this.save(blob, url, filename)));
   }

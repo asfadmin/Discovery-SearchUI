@@ -34,15 +34,12 @@ export function download(
   console.log('download() id:', id);
   console.log('saver:', saver);
 
-  // const headers = resp.headers;
-  // console.log(headers); //<--- Check log for content disposition
-  // const contentDisposition= headers.get('content-disposition');
-
   return (source: Observable<HttpEvent<Blob>>) =>
     source.pipe(
       scan(
         // tslint:disable-next-line:no-shadowed-variable
         (download: Download, event): Download => {
+          console.log('download.ts download() event:', event);
           if (isHttpProgressEvent(event)) {
             return {
               progress: event.total
