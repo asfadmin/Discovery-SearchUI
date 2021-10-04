@@ -37,7 +37,7 @@ export class DownloadService {
   }
 
   getFileNameFromHttpResponse(httpResponse) {
-    const contentDispositionHeader = httpResponse.headers.get('Content-Disposition');
+    const contentDispositionHeader = httpResponse.getHeader('Content-Disposition');
     const result = contentDispositionHeader.split(';')[1].trim().split('=')[1];
     return result.replace(/"/g, '');
   }
