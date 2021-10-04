@@ -76,7 +76,6 @@ export class DownloadFileButtonComponent implements OnInit, AfterViewInit {
     this.downloadService.download(this.url, this.fileName).subscribe(resp => {
       this.dFile = resp;
       console.log('this.dFile:', this.dFile);
-      console.log('response filename:', getFileNameFromHttpResponse(resp));
 
       if (resp.state === 'DONE') {
         this.dlInProgress = false;
@@ -93,12 +92,6 @@ export class DownloadFileButtonComponent implements OnInit, AfterViewInit {
     element.dispatchEvent(rClick);
   }
 
-}
-
-function getFileNameFromHttpResponse(httpResponse) {
-  const contentDispositionHeader = httpResponse.headers('Content-Disposition');
-  const result = contentDispositionHeader.split(';')[1].trim().split('=')[1];
-  return result.replace(/"/g, '');
 }
 
 async function classicDownload( url, _filename ) {

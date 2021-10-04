@@ -27,12 +27,19 @@ export class DownloadService {
     });
 
     console.log('download.service.ts download() resp:', resp);
+    console.log('download.service.ts download() response filename:', this.getFileNameFromHttpResponse(resp));
 
     // const headers = resp.headers;
     // console.log(headers);
     // const contentDisposition = headers.get('content-disposition');
 
     return resp.pipe(download(filename, blob => this.save(blob, url, filename)));
+  }
+
+  getFileNameFromHttpResponse(httpResponse) {
+    const contentDispositionHeader = httpResponse.headers('Content-Disposition');
+    const result = contentDispositionHeader.split(';')[1].trim().split('=')[1];
+    return result.replace(/"/g, '');
   }
 
   // blob(url: string, filename?: string): Observable<Blob> {
