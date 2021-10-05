@@ -48,6 +48,7 @@ export class UrlStateService {
       ...this.missionParameters(),
       ...this.baselineParameters(),
       ...this.sbasParameters(),
+      ...this.eventMonitorParameters(),
     ];
 
     this.urlParamNames = params.map(param => param.name);
@@ -182,6 +183,19 @@ export class UrlStateService {
         }))
       ),
       loader: this.loadSbasPairs
+    }];
+  }
+
+  private eventMonitorParameters(): models.UrlParameter[] {
+    return [{
+      name: 'eventID',
+      source: this.store$.select(scenesStore.getSelectedSarviewsEvent).pipe(
+        filter(event => !!event),
+        map(event => ({
+          eventID: event.event_id
+        }))
+      ),
+      loader: this.loadEventID
     }];
   }
 
@@ -621,6 +635,8 @@ export class UrlStateService {
 
     return new scenesStore.AddCustomPairs(pairs);
   }
+
+  private loadEventID = (event_id: string): Action => new scenesStore.SetSelectedSarviewsEvent(event_id);
 
   private loadIsDownloadQueueOpen = (isDownloadQueueOpen: string): Action => {
     return new uiStore.SetIsDownloadQueueOpen(!!isDownloadQueueOpen);
