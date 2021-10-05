@@ -14,7 +14,7 @@ import { SceneMetadataModule } from '@components/shared/scene-metadata';
 import { ImageDialogModule } from './image-dialog';
 import { SceneDetailComponent } from './scene-detail.component';
 import {MatButtonToggleModule} from '@angular/material/button-toggle';
-
+import { MatSliderModule } from '@angular/material/slider';
 
 @NgModule({
   declarations: [SceneDetailComponent],
@@ -31,7 +31,8 @@ import {MatButtonToggleModule} from '@angular/material/button-toggle';
         CopyToClipboardModule,
         ImageDialogModule,
         SceneMetadataModule,
-        MatButtonToggleModule
+        MatButtonToggleModule,
+        MatSliderModule
     ],
   exports: [SceneDetailComponent],
 })

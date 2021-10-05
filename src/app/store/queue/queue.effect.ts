@@ -11,13 +11,14 @@ import { AppState } from '../app.reducer';
 import {
   QueueActionType, DownloadMetadata, AddItems, RemoveItems,
   RemoveSceneFromQueue, DownloadSearchtypeMetadata,
-  AddJob, RemoveJob, AddJobs, ToggleProduct, QueueScene, FindPair, MakeDownloadScriptFromList
+  AddJob, RemoveJob, AddJobs, ToggleProduct, QueueScene, FindPair, MakeDownloadScriptFromList, MakeDownloadScriptFromSarviewsProducts
 } from './queue.action';
 import { getDuplicates, getQueuedProducts } from './queue.reducer';
 import * as scenesStore from '@store/scenes';
 
 import * as services from '@services';
 import * as models from '@models';
+import { getSelectedSarviewsEvent } from '@store/scenes';
 
 export interface MetadataDownload {
   params: {[id: string]: string | null};
@@ -40,7 +41,7 @@ export class QueueEffects {
     withLatestFrom(this.store$.select(getQueuedProducts)),
     map(([_, products]) => products),
     switchMap(
-      products => this.bulkDownloadService.downloadScript$(products)
+      products => this.bulkDownloadService.downloadCMRProductsScript$(products)
     ),
     map(
       req => { FileSaver.saveAs(req.body, req.headers.get('Content-Disposition').slice(20)); }
@@ -51,10 +52,20 @@ export class QueueEffects {
     ofType<MakeDownloadScriptFromList>(QueueActionType.MAKE_DOWNLOAD_SCRIPT_FROM_LIST),
     map(action => action.payload),
     switchMap(
-      (products) => this.bulkDownloadService.downloadScript$(products)
+      (products) => this.bulkDownloadService.downloadCMRProductsScript$(products)
     ),
     map(
       blob => FileSaver.saveAs(blob.body, `download-all-${this.currentDate()}.py`)
+    )
+  ), { dispatch: false });
+
+  public MakeDownloadScriptFromSarviewsProductsList = createEffect(() => this.actions$.pipe(
+    ofType<MakeDownloadScriptFromSarviewsProducts>(QueueActionType.MAKE_DOWNLOAD_SCRIPT_FROM_SARVIEWS_PRODUCTS),
+    map(action => action.payload),
+    switchMap(products => this.bulkDownloadService.downloadSarviewsProductsScript$(products)),
+    withLatestFrom(this.store$.select(getSelectedSarviewsEvent).pipe(map(event => event?.description.replace(/\s/g, '-')))),
+    map(
+      ([blob, event_description]) => FileSaver.saveAs(blob.body, `download-all-${event_description}-${this.currentDate()}.py`)
     )
   ), { dispatch: false });
 

@@ -21,3 +21,4 @@ export * from './hyp3.model';
 export * from './hyp3-jobs.model';
 export * from './saved-filter-preset.model';
 export * from './sbas-overlap.model';
+export * from './sarviews-event.model';
