@@ -77,12 +77,14 @@ export class ImageDialogComponent implements OnInit, AfterViewInit, OnDestroy {
 
     this.subs.add(
       this.store$.select(scenesStore.getAllProducts).pipe(
+        first(),
         withLatestFrom(this.searchType$),
         filter(([_, searchtype]) => searchtype !== models.SearchType.SARVIEWS_EVENTS),
         map(([products, _]) => products)
       ).subscribe(
         products => {
           if (!!products) {
+            this.pinnedProducts = {};
             products.forEach(prod => this.pinnedProducts[prod.id] = {
               isPinned: false,
               url: prod.browses[0],
@@ -123,10 +125,16 @@ export class ImageDialogComponent implements OnInit, AfterViewInit, OnDestroy {
     )
     );
     this.subs.add(
-      this.sarviewsEventProducts$.subscribe(
+      this.sarviewsEventProducts$.pipe(
+        first(),
+        withLatestFrom(this.searchType$),
+        filter(([_, searchtype]) => searchtype === models.SearchType.SARVIEWS_EVENTS),
+        map(([products, _]) => products),
+      ).subscribe(
         products => {
           this.sarviewsProducts = products;
           if (!!this.sarviewsProducts) {
+            this.pinnedProducts = {};
             this.sarviewsProducts.forEach(prod => this.pinnedProducts[prod.product_id] = {
               isPinned: false,
               url: prod.files.browse_url,
@@ -175,6 +183,9 @@ export class ImageDialogComponent implements OnInit, AfterViewInit, OnDestroy {
     );
     this.subs.add(
       this.sarviewsEventProducts$.pipe(
+        withLatestFrom(this.searchType$),
+        filter(([_, searchtype]) => searchtype === models.SearchType.SARVIEWS_EVENTS),
+        map(([products, _]) => products),
         filter(products => !!products),
         debounceTime(500),
         first(),

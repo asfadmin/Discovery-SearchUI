@@ -94,9 +94,6 @@ export class BrowseMapService {
 
       this.map.on('singleclick', e => {
         this.map.forEachLayerAtPixel(e.pixel, l => {
-          console.log(e, l.getClassName());
-          console.log(l.get('product_id'));
-
           this.pinnedProducts.getLayers().remove(l);
           this.pinnedProducts.getLayers().push(l);
           return true;
