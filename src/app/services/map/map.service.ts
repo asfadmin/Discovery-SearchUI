@@ -430,8 +430,8 @@ export class MapService {
       this.mousePositionSubject$.next({ lon, lat });
     });
 
-    newMap.on("singleclick", (evnt) => {
-      if(this.map.hasFeatureAtPixel(evnt.pixel)) {
+    newMap.on('singleclick', (evnt) => {
+      if (this.map.hasFeatureAtPixel(evnt.pixel)) {
       this.map.forEachFeatureAtPixel(
       evnt.pixel,
       (feature) => {
