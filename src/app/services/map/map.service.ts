@@ -32,6 +32,8 @@ import Geometry from 'ol/geom/Geometry';
   providedIn: 'root'
 })
 export class MapService {
+  public isDrawing$ = this.drawService.isDrawing$;
+
   private mapView: views.MapView;
   private map: Map;
   private polygonLayer: VectorLayer;
@@ -95,8 +97,6 @@ export class MapService {
   );
 
   public newSelectedScene$ = new Subject<string>();
-
-  public isDrawing$ = this.drawService.isDrawing$;
 
   public searchPolygon$ = this.drawService.polygon$.pipe(
     map(
@@ -430,8 +430,7 @@ export class MapService {
       this.mousePositionSubject$.next({ lon, lat });
     });
 
-    newMap.on("singleclick", (evnt) =>
-    {
+    newMap.on("singleclick", (evnt) => {
       if(this.map.hasFeatureAtPixel(evnt.pixel)) {
       this.map.forEachFeatureAtPixel(
       evnt.pixel,

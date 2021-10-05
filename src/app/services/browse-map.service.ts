@@ -92,7 +92,7 @@ export class BrowseMapService {
       this.map = this.newMap(this.view, [map_layer, imagePolygonLayer, Imagelayer]);
       this.map.addLayer(this.pinnedProducts);
 
-      this.map.on("singleclick", e => {
+      this.map.on('singleclick', e => {
         this.map.forEachLayerAtPixel(e.pixel, l => {
           console.log(e, l.getClassName());
           console.log(l.get('product_id'));
@@ -139,7 +139,7 @@ export class BrowseMapService {
       (l.getSource() as Static).getUrl() === (this.browseLayer.getSource() as Static).getUrl()
     );
 
-    if(!removed) {
+    if (!removed) {
       pinnedLayerGroup.getLayers().push(this.browseLayer);
     } else {
       this.pinnedProducts.getLayers().remove(removed);
