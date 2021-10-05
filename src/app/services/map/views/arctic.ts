@@ -1,7 +1,7 @@
 import { View } from 'ol';
 import WMTSTileGrid from 'ol/tilegrid/WMTS.js';
 import { WMTS } from 'ol/source';
-import { Options as WMTS_Options} from 'ol/source/WMTS'
+import { Options as WMTS_Options} from 'ol/source/WMTS';
 import { Tile as TileLayer,
   Graticule as GraticuleLayer
 } from 'ol/layer';

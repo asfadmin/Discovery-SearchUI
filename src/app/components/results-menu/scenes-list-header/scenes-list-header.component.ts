@@ -168,7 +168,7 @@ export class ScenesListHeaderComponent implements OnInit, OnDestroy {
       this.store$.select(scenesStore.getSelectedSarviewsEventProducts).subscribe(
         products => this.sarviewsEventProducts = products
       )
-    )
+    );
   }
 
   public onZoomToResults(): void {
@@ -268,16 +268,16 @@ export class ScenesListHeaderComponent implements OnInit, OnDestroy {
   }
 
   public onQueueSarviewsProducts(products: models.SarviewsProduct[]): void {
-    let jobTypes = Object.values(hyp3JobTypes);
-    var toCMRProducts: models.CMRProduct[] = products.map(
+    const jobTypes = Object.values(hyp3JobTypes);
+    const toCMRProducts: models.CMRProduct[] = products.map(
       prod => {
 
-        let job = jobTypes.find(t => t.id === prod.job_type);
-        let productTypeDisplay = `${job.name}, ${job.productTypes[0].productTypes[0]}`
-        let output: models.CMRProduct = {
+        const job = jobTypes.find(t => t.id === prod.job_type);
+        const productTypeDisplay = `${job.name}, ${job.productTypes[0].productTypes[0]}`;
+        const output: models.CMRProduct = {
           name: prod.files.product_name,
           productTypeDisplay,
-          file: "",
+          file: '',
           id: prod.product_id,
           downloadUrl: prod.files.product_url,
           bytes: prod.files.product_size,
@@ -299,7 +299,7 @@ export class ScenesListHeaderComponent implements OnInit, OnDestroy {
         return output;
 
       }
-    )
+    );
     this.store$.dispatch(new AddItems(toCMRProducts));
   }
 

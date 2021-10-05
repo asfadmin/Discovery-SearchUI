@@ -457,7 +457,7 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
         this.store$.dispatch(new searchStore.SearchAmountLoading())
       ),
       switchMap(params => {
-        if(this.searchType === models.SearchType.SARVIEWS_EVENTS) {
+        if (this.searchType === models.SearchType.SARVIEWS_EVENTS) {
           return this.sarviewsService.getSarviewsEvents$().pipe(map(events => events.length));
         }
         return this.asfSearchApi.query<any[]>(params).pipe(
@@ -469,7 +469,7 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
 
           return of(-1);
         })
-      )
+      );
       }
       ),
     );

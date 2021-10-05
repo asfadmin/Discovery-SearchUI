@@ -37,7 +37,7 @@ export class BrowseListComponent implements OnInit, AfterViewInit, OnDestroy {
   public searchType$ = this.store$.select(searchStore.getSearchType);
   public searchTypes = models.SearchType;
 
-  public productBrowseStates: {[product_id in string]: PinnedProduct} = {}
+  public productBrowseStates: {[product_id in string]: PinnedProduct} = {};
 
   private selectedFromList = false;
   private subs = new SubSink();
@@ -67,13 +67,13 @@ export class BrowseListComponent implements OnInit, AfterViewInit, OnDestroy {
       this.store$.select(scenesStore.getSelectedSarviewsProduct).subscribe(
         product => this.selectedProductId = !!product ? product.product_id : null
       )
-    )
+    );
 
     this.subs.add(
       this.store$.select(scenesStore.getImageBrowseProducts).subscribe(
         productBrowses => this.productBrowseStates = productBrowses
       )
-    )
+    );
 
   }
 

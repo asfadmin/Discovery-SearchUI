@@ -108,7 +108,7 @@ export class DateExtremaService {
   public getSarviewsExtrema$(events$: Observable<SarviewsEvent[]>) {
     return events$.pipe(
       filter(events => !!events),
-      filter(events => events.length >0),
+      filter(events => events.length > 0),
       map(events => events.map(event => event.processing_timeframe)),
       map(eventsDateRange => {
         const min = eventsDateRange.map(eventRange => eventRange.start)
@@ -118,7 +118,7 @@ export class DateExtremaService {
         const extrema: Range<Date> = {start: min, end: max};
         return extrema;
       })
-    )
+    );
   }
 
   private buildExtrema(startMin, startMax, endMin, endMax) {

@@ -21,9 +21,9 @@ interface Dimension {
 }
 
 export interface PinnedProduct {
-  isPinned: boolean,
-  url: string,
-  wkt: string,
+  isPinned: boolean;
+  url: string;
+  wkt: string;
 }
 
 @Injectable({
@@ -50,11 +50,11 @@ export class BrowseMapService {
     const polygonVectorSource = new VectorSource({
       features: [feature],
       wrapX: mapOptions.wrapX
-    })
+    });
     const imagePolygonLayer = new Vector({
       source: polygonVectorSource,
       style: polygonStyle.valid,
-    })
+    });
 
     console.log(dim);
 
@@ -76,7 +76,7 @@ export class BrowseMapService {
 
     const map_layer = new TileLayer({ source: mapSource });
 
-    if(!this.map) {
+    if (!this.map) {
     this.view = new View({
       projection: 'EPSG:3857',
       center: coord,
@@ -97,12 +97,12 @@ export class BrowseMapService {
       this.map.on("singleclick", e => {
         this.map.forEachLayerAtPixel(e.pixel, l => {
           console.log(e, l.getClassName());
-          console.log(l.get("product_id"));
+          console.log(l.get('product_id'));
 
           this.pinnedProducts.getLayers().remove(l);
           this.pinnedProducts.getLayers().push(l);
           return true;
-        })
+        });
       });
     }
 
@@ -113,7 +113,7 @@ export class BrowseMapService {
     this.browseLayer.setOpacity(opacity);
   }
 
-  public createImageLayer(url: string, wkt: string, className: string = "ol-layer") {
+  public createImageLayer(url: string, wkt: string, className: string = 'ol-layer') {
     const format = new WKT();
     const feature = format.readFeature(wkt, {dataProjection: 'EPSG:4326',
     featureProjection: 'EPSG:3857'});
@@ -149,14 +149,14 @@ export class BrowseMapService {
   }
 
   public setPinnedProducts(pinnedProductStates: {[product_id in string]: PinnedProduct}) {
-    //Built in method Collection.clear() causes flickering when pinning new product,
+    // Built in method Collection.clear() causes flickering when pinning new product,
     // have to keep track of pinned products as work around
 
     const pinnedProductIds = Object.keys(pinnedProductStates);
     const unpinned_ids = pinnedProductIds.filter(id => !pinnedProductStates[id].isPinned);
     const pinned_ids = pinnedProductIds.filter(id => pinnedProductStates[id].isPinned);
 
-    if(pinned_ids.length === 0) {
+    if (pinned_ids.length === 0) {
       this.pinnedProducts.getLayers().clear();
     } else {
       this.unpinProducts(unpinned_ids);
@@ -167,18 +167,18 @@ export class BrowseMapService {
   private unpinProducts(product_ids: string[]) {
     this.pinnedProducts.getLayers().forEach(
       l => {
-        if(product_ids.includes(l?.get("product_id"))) {
+        if (product_ids.includes(l?.get('product_id'))) {
           this.pinnedProducts.getLayers().remove(l);
         }
       }
-    )
+    );
   }
 
   private pinProducts(product_ids: string[], pinned: {[product_id in string]: PinnedProduct}) {
     const imageLayers = product_ids.reduce((prev, product_id) => {
-      let current = prev;
-      const pinnedProd = this.createImageLayer(pinned[product_id].url, pinned[product_id].wkt, "product_pin");
-      pinnedProd.set("product_id", product_id);
+      const current = prev;
+      const pinnedProd = this.createImageLayer(pinned[product_id].url, pinned[product_id].wkt, 'product_pin');
+      pinnedProd.set('product_id', product_id);
       current.push(pinnedProd);
       return current;
     }, new Collection<ImageLayer>());

@@ -531,7 +531,7 @@ export function filtersReducer(state = initState, action: FiltersActions): Filte
             projectName: filters.projectName,
             productFilterName: filters.productFilterName
           };
-      } else if(search.searchType === models.SearchType.SARVIEWS_EVENTS) {
+      } else if (search.searchType === models.SearchType.SARVIEWS_EVENTS) {
         const filters = <models.SarviewsFiltersType>search.filters;
 
         return {
@@ -541,7 +541,7 @@ export function filtersReducer(state = initState, action: FiltersActions): Filte
           sarviewsEventNameFilter: filters.sarviewsEventNameFilter,
           sarviewsEventActiveOnly: filters.activeOnly,
           sarviewsMagnitudeRange: filters.magnitude
-        }
+        };
       } else {
         const filters = <models.GeographicFiltersType>search.filters;
 
@@ -626,43 +626,43 @@ export function filtersReducer(state = initState, action: FiltersActions): Filte
       return {
         ...state,
         sarviewsEventTypes: [ ... action.payload ]
-      }
+      };
     }
     case FiltersActionType.SET_SARVIEWS_EVENT_NAME_FILTER: {
       return {
         ...state,
         sarviewsEventNameFilter: action.payload
-      }
+      };
     }
     case FiltersActionType.SET_SARVIEWS_EVENT_ACTIVE_FILTER: {
       return {
         ...state,
         sarviewsEventActiveOnly: action.payload
-      }
+      };
     }
     case FiltersActionType.SET_SARVIEWS_MAGNITUDE_START: {
       return {
         ...state,
         sarviewsMagnitudeRange: {...state.sarviewsMagnitudeRange, start: action.payload}
-      }
+      };
     }
     case FiltersActionType.SET_SARVIEWS_MAGNITUDE_END: {
       return {
         ...state,
         sarviewsMagnitudeRange: {...state.sarviewsMagnitudeRange, end: action.payload}
-      }
+      };
     }
     case FiltersActionType.SET_SARVIEWS_MAGNITUDE_RANGE: {
       return {
         ...state,
         sarviewsMagnitudeRange: action.payload
-      }
+      };
     }
     case FiltersActionType.CLEAR_SARVIEWS_MAGNITUDE_RANGE: {
       return {
         ...state,
         sarviewsMagnitudeRange: initState.sarviewsMagnitudeRange
-      }
+      };
     }
     default: {
       return state;

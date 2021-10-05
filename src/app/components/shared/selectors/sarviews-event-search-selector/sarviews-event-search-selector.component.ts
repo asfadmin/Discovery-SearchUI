@@ -13,7 +13,7 @@ import * as filterStore from '@store/filters';
 })
 export class SarviewsEventSearchSelectorComponent implements OnInit {
   @ViewChild('eventsQueryForm') public eventsQueryForm: NgForm;
-  public eventQuery: string = '';
+  public eventQuery = '';
 
   public filteredEvents$ = this.sceneService.sarviewsEvents$();
   constructor(private store$: Store<AppState>,
@@ -44,7 +44,7 @@ export class SarviewsEventSearchSelectorComponent implements OnInit {
   }
 
   public onSearchQueryChange(event: Event): void {
-    let query = (event.target as HTMLInputElement).value;
+    const query = (event.target as HTMLInputElement).value;
     this.store$.dispatch(new filterStore.SetSarviewsEventNameFilter(query));
   }
 }

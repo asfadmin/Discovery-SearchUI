@@ -145,7 +145,7 @@ export function scenesReducer(state = initState, action: ScenesActions): ScenesS
       return {
         ...state,
         selectedSarviewsID: action.payload
-      }
+      };
     }
 
     case ScenesActionType.SET_RESULTS_LOADED: {
@@ -288,28 +288,28 @@ export function scenesReducer(state = initState, action: ScenesActions): ScenesS
       return {
         ...state,
         sarviewsEvents: action.payload.events
-      }
+      };
     }
 
     case ScenesActionType.SET_SARVIEWS_EVENT_PRODUCTS: {
       return {
         ...state,
         selectedSarviewsEventProducts: [...action.payload]
-      }
+      };
     }
 
     case ScenesActionType.SET_SELECTED_SARVIEW_PRODUCT: {
       return {
         ...state,
         selectedSarviewsProduct: action.payload
-      }
+      };
     }
 
     case ScenesActionType.SET_IMAGE_BROWSE_PRODUCTS: {
       return {
         ...state,
         pinnedProductBrowses: action.payload
-      }
+      };
     }
 
     default: {
@@ -511,12 +511,12 @@ export const getSelectedScene = createSelector(
 export const getSelectedSarviewsEvent = createSelector(
   getScenesState,
   (state: ScenesState) => state.sarviewsEvents.find(event => event.event_id === state.selectedSarviewsID) || null
-)
+);
 
 export const getSelectedSarviewsProduct = createSelector(
  getScenesState,
  (state: ScenesState) => state.selectedSarviewsProduct
-)
+);
 
 export const getUnzipLoading = createSelector(
   getScenesState,
@@ -650,7 +650,7 @@ export const getIsSelectedPairCustom = createSelector(
 export const getSarviewsEvents = createSelector(
   getScenesState,
   state => state.sarviewsEvents
-)
+);
 
 export const getNumberOfSarviewsEvents = createSelector(
   getSarviewsEvents,
@@ -665,9 +665,9 @@ export const getSelectedSarviewsEventProducts = createSelector(
 export const getImageBrowseProducts = createSelector(
   getScenesState,
   state => {
-     let output: {[product_id in string]: PinnedProduct} = Object.keys(state.pinnedProductBrowses).reduce(
-       (out, product_id) =>{
-        let temp = out;
+     const output: {[product_id in string]: PinnedProduct} = Object.keys(state.pinnedProductBrowses).reduce(
+       (out, product_id) => {
+        const temp = out;
         temp[product_id] = {... state.pinnedProductBrowses[product_id]};
         return temp;
        }

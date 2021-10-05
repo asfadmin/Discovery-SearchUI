@@ -200,15 +200,15 @@ export class MapService {
         point = new Point([sarviewEvent.point.lat, sarviewEvent.point.lon]);
 
         // point.scale(20);
-        feature.set("eventPoint", point);
-        feature.setGeometryName("eventPoint");
-        feature.set("sarviews_id", sarviewEvent.event_id);
+        feature.set('eventPoint', point);
+        feature.setGeometryName('eventPoint');
+        feature.set('sarviews_id', sarviewEvent.event_id);
 
-        if(sarviewEvent.event_type !== 'flood') {
+        if (sarviewEvent.event_type !== 'flood') {
           let active = false;
           let iconName = sarviewEvent.event_type === 'quake' ? 'Earthquake_inactive.svg' : 'Volcano_inactive.svg';
-          if(!!sarviewEvent.processing_timeframe.end) {
-            if(currentDate <= new Date(sarviewEvent.processing_timeframe.end)) {
+          if (!!sarviewEvent.processing_timeframe.end) {
+            if (currentDate <= new Date(sarviewEvent.processing_timeframe.end)) {
               active = true;
               iconName = iconName.replace('_inactive', '');
             }
@@ -225,7 +225,7 @@ export class MapService {
               scale: 0.1,
               offset: [0, 10]
             }),
-            zIndex: active ? 1: 0
+            zIndex: active ? 1 : 0
           });
 
           feature.setStyle(iconStyle);
@@ -437,7 +437,7 @@ export class MapService {
       evnt.pixel,
       (feature) => {
         const sarview_id: string = feature.get('sarviews_id');
-        if(!!sarview_id) {
+        if (!!sarview_id) {
           this.selectedSarviewEvent$.next(sarview_id);
           this.store$.dispatch(new sceneStore.SetSelectedSarviewsEvent(sarview_id));
         }
@@ -446,7 +446,7 @@ export class MapService {
 
         });
       }
-    })
+    });
 
     this.drawService.getLayer().setZIndex(100);
     this.focusLayer.setZIndex(99);

@@ -43,9 +43,9 @@ export class SarviewsEventsService {
         }
     )),
     map(events => events.sort((a, b) => {
-      if(a.processing_timeframe.start > b.processing_timeframe.start) {
+      if (a.processing_timeframe.start > b.processing_timeframe.start) {
         return -1;
-      } else if(a.processing_timeframe.start < b.processing_timeframe.start) {
+      } else if (a.processing_timeframe.start < b.processing_timeframe.start) {
         return 1;
       }
       return 0;
@@ -53,7 +53,7 @@ export class SarviewsEventsService {
   }
 
   public getEventFeature(usgs_id: string): Observable<SarviewsProcessedEvent>  {
-    return this.http.get<SarviewsProcessedEvent>(this.eventsUrl + "/" + usgs_id).pipe(
+    return this.http.get<SarviewsProcessedEvent>(this.eventsUrl + '/' + usgs_id).pipe(
       catchError(error => of(error)),
       map((event: SarviewsProcessedEvent) => {
         return {
@@ -88,7 +88,7 @@ export class SarviewsEventsService {
   public getSarviewsEventPinnedUrl(sarviews_url: string, product_ids: string[]) {
     const baseUrl = this.getSarviewsEventUrl(sarviews_url);
     const pinnedIds = product_ids.reduce((prev, curr) => {
-      return prev + curr + ','
+      return prev + curr + ',';
     }, '?pinned=');
     return baseUrl + pinnedIds;
   }
@@ -106,11 +106,11 @@ export class SarviewsEventsService {
   }
 
   private getDates(event: SarviewsEvent | SarviewsProcessedEvent): Range<Date> {
-    let eventDates = event.processing_timeframe;
-    if(!!eventDates.start) {
+    const eventDates = event.processing_timeframe;
+    if (!!eventDates.start) {
       eventDates.start = new Date(eventDates.start);
     }
-    if(!!eventDates.end) {
+    if (!!eventDates.end) {
       eventDates.end = new Date(eventDates.end);
     }
 
@@ -124,7 +124,7 @@ export class SarviewsEventsService {
     const geom = feature.getGeometry();
 
     let polygonCoordinates: Coordinate[];
-    if(isMultiPolygon) {
+    if (isMultiPolygon) {
       polygonCoordinates = (geom as MultiPolygon).getPolygon(0).getCoordinates()[0];
     } else {
       polygonCoordinates = (geom as Polygon).getCoordinates()[0];

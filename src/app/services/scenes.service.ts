@@ -74,7 +74,7 @@ export class ScenesService {
           )
         )
       )
-    )
+    );
   }
 
 
@@ -428,7 +428,7 @@ export class ScenesService {
       ]
     ).pipe(
       map(([events, nameFilter]) => {
-        if(nameFilter === null || nameFilter === undefined || nameFilter === '') {
+        if (nameFilter === null || nameFilter === undefined || nameFilter === '') {
           return events;
         }
 
@@ -442,8 +442,8 @@ export class ScenesService {
             || event.event_type.toLowerCase().includes(nameFilter)
             || (!isVolcano ? (isQuake ? (event as SarviewsQuakeEvent).usgs_event_id?.includes(nameFilter) :
             true)
-            : (event as SarviewsVolcanicEvent).smithsonian_event_id?.includes(nameFilter))
-            })
+            : (event as SarviewsVolcanicEvent).smithsonian_event_id?.includes(nameFilter));
+            });
       }
       )
     );
@@ -485,21 +485,21 @@ export class ScenesService {
     );
   }
 
-  private filterByEventType$(events$: Observable<SarviewsEvent[]>){
+  private filterByEventType$(events$: Observable<SarviewsEvent[]>) {
     return combineLatest([
       events$,
       this.store$.select(getSarviewsEventTypes)
     ]).pipe(
       map(
         ([events, types]) => {
-          if(types.length === 0) {
+          if (types.length === 0) {
             return events;
           }
 
           return events.filter(event => !!types.find(t => t === event.event_type.toLowerCase()));
         }
       )
-    )
+    );
   }
 
   private filterByEventActivity$(events$: Observable<SarviewsEvent[]>) {
@@ -508,15 +508,15 @@ export class ScenesService {
       this.store$.select(getSarviewsEventActiveFilter)
     ]).pipe(
       map(([events, activeOnly]) => {
-        if(!activeOnly) {
+        if (!activeOnly) {
           return events;
         }
 
         const currentDate = new Date();
 
         return events.filter( event => {
-          if(!!event.processing_timeframe.end) {
-            if(currentDate <= event.processing_timeframe.end) {
+          if (!!event.processing_timeframe.end) {
+            if (currentDate <= event.processing_timeframe.end) {
               return true;
             }
           } else {
@@ -535,14 +535,14 @@ export class ScenesService {
     ]).pipe(
       map(([events, magRange]) => {
         {
-          if(!magRange.start && !magRange.end) {
+          if (!magRange.start && !magRange.end) {
             return events;
-          } else if(magRange.start === 0 && magRange.end === 10) {
+          } else if (magRange.start === 0 && magRange.end === 10) {
             return events;
           }
 
           return events.filter(event => {
-            if(event.event_type.toLowerCase() === 'quake') {
+            if (event.event_type.toLowerCase() === 'quake') {
               const magEvent = <SarviewsQuakeEvent>event;
               const start = !!magRange.start ? magRange.start : 0;
               const end = !!magRange.end ? magRange.end : 10;
@@ -555,6 +555,6 @@ export class ScenesService {
           );
         }
       })
-    )
+    );
   }
 }

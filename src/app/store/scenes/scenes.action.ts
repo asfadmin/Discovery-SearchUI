@@ -50,7 +50,7 @@ export class SetSarviewsEvents implements Action {
 export class SetSelectedSarviewsEvent implements Action {
   public readonly type = ScenesActionType.SET_SELECTED_SARVIEWS_EVENT;
 
-  constructor(public payload: string) {};
+  constructor(public payload: string) {}
 }
 export class ClearScenes implements Action {
   public readonly type = ScenesActionType.CLEAR;

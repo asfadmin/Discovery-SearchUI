@@ -43,18 +43,18 @@ export class SceneFilesComponent implements OnInit, OnDestroy, AfterContentInit 
 
   public sarviewsEventProductTypes$ = this.sarviewsEventProducts$.pipe(
     map(products => {
-      let selectedEventProductProcessingTypes = new Set<string>();
+      const selectedEventProductProcessingTypes = new Set<string>();
       products.forEach(product => selectedEventProductProcessingTypes.add(product.job_type));
       return Array.from(selectedEventProductProcessingTypes).sort();
     })
-  )
+  );
 
   public sarviewsEventsProductsByProcessingType$ = this.sarviewsEventProducts$.pipe(
     filter(events => !!events),
     withLatestFrom(this.sarviewsEventProductTypes$),
     filter(([_, processing_types]) => !!processing_types),
     map(([eventProducts, processing_types]) => {
-      let productsByProductType: {[processing_type: string]: SarviewsProduct[]} = {};
+      const productsByProductType: {[processing_type: string]: SarviewsProduct[]} = {};
       processing_types.forEach(t => productsByProductType[t] = []);
       eventProducts.forEach(prod => productsByProductType[prod.job_type].push(prod));
       return productsByProductType;
@@ -165,7 +165,7 @@ export class SceneFilesComponent implements OnInit, OnDestroy, AfterContentInit 
       this.selectedSarviewsEventID$.subscribe(
         val => this.selectedSarviewEventID = val
       )
-    )
+    );
   }
 
   public onToggleQueueProduct(product: models.CMRProduct): void {
@@ -231,7 +231,7 @@ export class SceneFilesComponent implements OnInit, OnDestroy, AfterContentInit 
   }
 
   public formatProductName(product_name: string) {
-    if(product_name.length > 18) {
+    if (product_name.length > 18) {
       return product_name.slice(0, 29) + '...' + product_name.slice(product_name.length - 8);
     }
     return product_name;
@@ -258,7 +258,7 @@ export class SceneFilesComponent implements OnInit, OnDestroy, AfterContentInit 
   }
 
   public copyProductSourceScenes() {
-    const products = this.sarviewsProducts
+    const products = this.sarviewsProducts;
     const granule_name_list = products.reduce(
       (acc, curr) => acc = acc.concat(curr.granules), [] as SarviewProductGranule[]
       ).map(gran => gran.granule_name);
@@ -268,15 +268,15 @@ export class SceneFilesComponent implements OnInit, OnDestroy, AfterContentInit 
   }
 
   public onQueueSarviewsProduct(product: models.SarviewsProduct): void {
-    let jobTypes = Object.values(hyp3JobTypes);
-    let jobType = jobTypes.find(t => t.id === product.job_type);
+    const jobTypes = Object.values(hyp3JobTypes);
+    const jobType = jobTypes.find(t => t.id === product.job_type);
 
 
-      let productTypeDisplay = `${jobType.name}, ${jobType.productTypes[0].productTypes[0]}`
-      let toCMRProduct: models.CMRProduct = {
+      const productTypeDisplay = `${jobType.name}, ${jobType.productTypes[0].productTypes[0]}`;
+      const toCMRProduct: models.CMRProduct = {
         name: product.files.product_name,
         productTypeDisplay,
-        file: "",
+        file: '',
         id: product.product_id,
         downloadUrl: product.files.product_url,
         bytes: product.files.product_size,
@@ -295,7 +295,7 @@ export class SceneFilesComponent implements OnInit, OnDestroy, AfterContentInit 
         } as CMRProductMetadata
 
 
-      }
+      };
 
     this.store$.dispatch(new queueStore.AddItems([toCMRProduct]));
   }

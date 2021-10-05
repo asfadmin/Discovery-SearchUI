@@ -67,7 +67,7 @@ export class QueueEffects {
     map(
       ([blob, event_description]) => FileSaver.saveAs(blob.body, `download-all-${event_description}-${this.currentDate()}.py`)
     )
-  ), { dispatch: false })
+  ), { dispatch: false });
 
   public downloadSearchtypeMetadata = createEffect(() => this.actions$.pipe(
     ofType<DownloadSearchtypeMetadata>(QueueActionType.DOWNLOAD_SEARCHTYPE_METADATA),

@@ -48,7 +48,7 @@ export class SearchService {
       this.store$.dispatch(new filterStore.SetProductNameFilter(''));
     }
 
-    if(searchType === models.SearchType.SARVIEWS_EVENTS) {
+    if (searchType === models.SearchType.SARVIEWS_EVENTS) {
       this.store$.dispatch(new filterStore.SetSarviewsEventNameFilter(''));
       this.store$.dispatch(new filterStore.SetSarviewsEventTypes([]));
       this.store$.dispatch(new filterStore.SetSarviewsEventActiveFilter(false));

@@ -33,7 +33,7 @@ export class ResultsMenuComponent implements OnInit, OnDestroy {
   public noSarviewsEvents$ = this.store$.select(scenesStore.getSarviewsEvents).pipe(
     filter(events => events !== undefined && events !== null),
     map(events => events.length === 0)
-  )
+  );
 
   public imageViewerOpen$ = this.store$.select(uiStore.getIsBrowseDialogOpen);
 
