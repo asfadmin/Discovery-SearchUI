@@ -244,7 +244,7 @@ export class SceneFilesComponent implements OnInit, OnDestroy, AfterContentInit 
   public currentPinnedUrl(current_id: string): string {
     const product_ids = Object.keys(this.selectedProducts).filter(
       product_id => !!this.selectedProducts?.[product_id]
-    )
+    );
 
     return this.sarviewsService.getSarviewsEventPinnedUrl(current_id, product_ids);
   }
