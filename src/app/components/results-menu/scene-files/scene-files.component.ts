@@ -18,6 +18,7 @@ import { ClipboardService } from 'ngx-clipboard';
 import * as moment from 'moment';
 
 import { faCopy } from '@fortawesome/free-solid-svg-icons';
+import { MatSelectionListChange } from '@angular/material/list';
 
 @Component({
   selector: 'app-scene-files',
@@ -153,6 +154,7 @@ export class SceneFilesComponent implements OnInit, OnDestroy, AfterContentInit 
       this.sarviewsEventProducts$.pipe(distinctUntilChanged((a, b) => a[0]?.event_id === b[0]?.event_id)).subscribe(
         val => {
           this.sarviewsProducts = val;
+          this.selectedProducts = {};
           this.selectedProducts = val.map(product => product.product_id).reduce((prev, curr) => {
             prev[curr] = false;
             return prev;
@@ -249,8 +251,9 @@ export class SceneFilesComponent implements OnInit, OnDestroy, AfterContentInit 
     return this.sarviewsService.getSarviewsEventPinnedUrl(current_id, product_ids);
   }
 
-  public onSelectSarviewsProduct(product_id: string) {
-    this.selectedProducts[product_id] = !this.selectedProducts?.[product_id] ?? true;
+  public onSelectSarviewsProduct(selections: MatSelectionListChange) {
+    selections.options.forEach(option => this.selectedProducts[option.value] = option.selected );
+    // this.selectedProducts[product_id] = !this.selectedProducts?.[product_id] ?? true;
   }
 
   public onOpenPinnedProducts(current_id: string) {
