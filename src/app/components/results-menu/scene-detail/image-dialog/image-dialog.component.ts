@@ -18,9 +18,6 @@ import { SarviewProductGranule, SarviewsProduct } from '@models';
 import { ClipboardService } from 'ngx-clipboard';
 import { MatSliderChange } from '@angular/material/slider';
 import { PinnedProduct } from '@services/browse-map.service';
-// import Polygon from 'ol/geom/Polygon';
-// import { getCenter } from 'ol/extent';
-
 
 @Component({
   selector: 'app-image-dialog',
@@ -75,16 +72,6 @@ export class ImageDialogComponent implements OnInit, AfterViewInit, OnDestroy {
       this.store$.select(scenesStore.getSelectedSceneProducts).subscribe(
         products => {
           this.products = products;
-
-          // if(!!this.products) {
-          //   this.products.forEach(prod => this.pinnedProducts[prod.id] = {
-          //     isPinned: false,
-          //     url: prod.browses[0],
-          //     wkt: prod.metadata.polygon,
-          //   });
-
-          //   this.store$.dispatch(new scenesStore.SetImageBrowseProducts(this.pinnedProducts));
-          // }
         }
       )
     );

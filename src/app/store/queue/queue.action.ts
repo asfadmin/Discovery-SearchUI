@@ -99,7 +99,7 @@ export class MakeDownloadScriptFromList implements Action {
   constructor(public payload: CMRProduct[]) {}
 }
 
-export class makeDownloadScriptFromSarviewsProducts implements Action {
+export class MakeDownloadScriptFromSarviewsProducts implements Action {
   public readonly type = QueueActionType.MAKE_DOWNLOAD_SCRIPT_FROM_SARVIEWS_PRODUCTS;
 
   constructor(public payload: SarviewsProduct[]) {}
@@ -149,7 +149,7 @@ export type QueueActions =
   | ClearProcessingQueueByJobType
   | MakeDownloadScript
   | MakeDownloadScriptFromList
-  | makeDownloadScriptFromSarviewsProducts
+  | MakeDownloadScriptFromSarviewsProducts
   | DownloadMetadata
   | DownloadSearchtypeMetadata
   | FindPair;

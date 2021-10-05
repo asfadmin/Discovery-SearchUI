@@ -44,18 +44,17 @@
 
     <div fxFlex id="browse-map" fxFlex class="browse-map--size" fxLayout="row-reverse" fxLayoutAlign="end end" >
       <div fxFlex fxLayout="column" fxLayoutAlign="start" class="ol-control ol-unselectable" style="background-color: rgba(0, 0, 0, 0) !important; z-index: 1;">
-        <div style="padding: 2px; border-radius: 4px; height: 100%; margin-bottom: 15px; margin-left: 15px; background-color: rgba(255,255,255,0.4);">
-          <div (click)="onPinProduct(currentSarviewsProduct?.product_id ?? scene?.id)" style="height: 32px; padding-top: 10px; padding-top: 10px; background-color: rgba(0,60,136,0.5);">
-            <mat-icon style="margin-left:11px;">push_pin</mat-icon>
+        <div style="padding: 2px; border-radius: 4px; height: 100%; margin-bottom: 15px; margin-left: 15px; background-color: rgba(255, 255, 255, 0.4);">
+          <div (click)="onPinProduct(currentSarviewsProduct?.product_id ?? scene?.id)" style="height: 32px; padding-top: 10px; background-color: rgba(0, 60, 136, 0.5);">
+            <mat-icon style="margin-left: 11px;">push_pin</mat-icon>
             </div>
           </div>
-        <div style="padding: 2px; border-radius: 4px; margin-bottom: 15px; margin-left: 15px; background-color: rgba(255,255,255,0.4);">
-        <div style="padding-top: 10px; padding-top: 10px; background-color: rgba(0,60,136,0.5);">
+        <div style="padding: 2px; border-radius: 4px; margin-bottom: 15px; margin-left: 15px; background-color: rgba(255, 255, 255, 0.4);">
+        <div style="padding-top: 10px; background-color: rgba(0, 60, 136, 0.5);">
         <mat-slider style="height: 200px;" vertical step="0.01" value="1.0" max="1.0" min="0.0" (input)="onSetOpacity($event);"></mat-slider>
       </div>
     </div>
       </div>
-      <!-- <button mat-flat-button>CLICK ME CLICK ME</button> -->
     </div>
       <div *ngIf="(searchType$ | async) === searchTypes.SARVIEWS_EVENTS">
       <button
@@ -99,15 +98,6 @@
               • {{ product.productTypeDisplay }}
               <mat-menu #action_menu="matMenu" xPosition="before">
 
-<!--                <a mat-menu-item [href]="product.downloadUrl" target="_blank" matTooltip="Download file">-->
-<!--            <span style="margin-right: 10px; margin-left: 10px;">-->
-<!--              <span *ngIf="product.bytes === 0">Virtual</span>-->
-<!--              <span *ngIf="product.bytes !== 0">{{product.bytes.toString() | readableSizeFromBytes }}</span>-->
-<!--            </span>-->
-<!--                  <span>-->
-<!--              <mat-icon>android</mat-icon>-->
-<!--            </span>-->
-<!--                </a>-->
                 <span style="margin-right: 10px; margin-left: 10px;">
                   <span *ngIf="product.bytes === 0">Virtual</span>
                   <span *ngIf="product.bytes !== 0">{{product.bytes.toString() | readableSizeFromBytes }}</span>
@@ -147,9 +137,6 @@
                  <li>
                   description: {{sarviewsEvent.description}}
                  </li>
-              <!-- <li *ngFor="let param of paramsList" >
-                {{ param.name }}: {{ param.val }}
-              </li> -->
             </ul>
 
           </ng-container>
@@ -163,9 +150,9 @@
               <mat-icon>cloud_download</mat-icon>
             </button>
             {{currentSarviewsProduct.files.product_size.toString() | readableSizeFromBytes}}
-            <div style="font-size: 12px; gap: 5px; align-items: center; margin-bottom: 10px; display: flex; flex-direction: row; font-weight: bold; margin-top: 15px; font-size: 14px;">Reference Scene{{currentSarviewsProduct.granules.length > 1 ? 's' : ''}}:
+            <div style="font-size: 12px; gap: 5px; align-items: center; margin-bottom: 10px; margin-top: 15px; display: flex; flex-direction: row; font-weight: bold;">Reference Scene{{currentSarviewsProduct.granules.length > 1 ? 's' : ''}}:
               <div>
-              <mat-icon style="transform: scale(0.75)"
+              <mat-icon style="transform: scale(0.75);"
                 (click)="onCopyLink(currentSarviewsProduct.granules)"
                 matTooltip="Copy reference scene names to clipboard"
                 class="clickable download-icon" matSuffix>

@@ -41,6 +41,6 @@ export class SarviewsEventTypeSelectorComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.subs.unsubscribe;
+    this.subs.unsubscribe();
   }
 }

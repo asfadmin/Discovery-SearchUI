@@ -94,16 +94,6 @@ export class BrowseMapService {
       this.map = this.newMap(this.view, [map_layer, imagePolygonLayer, Imagelayer]);
       this.map.addLayer(this.pinnedProducts);
 
-      // this.selectClick.setActive(true);
-
-      // this.pinnedProducts.getLayers().inter
-      // this.map.addInteraction(this.selectClick);
-
-
-      // this.selectClick.on('select', e => {
-      //   console.log((e))
-      // });
-
       this.map.on("singleclick", e => {
         this.map.forEachLayerAtPixel(e.pixel, l => {
           console.log(e, l.getClassName());
@@ -144,10 +134,15 @@ export class BrowseMapService {
   }
 
   public togglePinnedProduct() {
-    const pinnedLayers = this.pinnedProducts;
-    const removed = (pinnedLayers.getLayers() as Collection<ImageLayer>).getArray().find(l => (l.getSource() as Static).getUrl() === (this.browseLayer.getSource() as Static).getUrl());
+    const pinnedLayerGroup = this.pinnedProducts;
+    const pinnedLayers = (pinnedLayerGroup.getLayers() as Collection<ImageLayer>).getArray();
+
+    const removed = pinnedLayers.find(l =>
+      (l.getSource() as Static).getUrl() === (this.browseLayer.getSource() as Static).getUrl()
+    );
+
     if(!removed) {
-      pinnedLayers.getLayers().push(this.browseLayer);
+      pinnedLayerGroup.getLayers().push(this.browseLayer);
     } else {
       this.pinnedProducts.getLayers().remove(removed);
     }
@@ -198,16 +193,16 @@ export class BrowseMapService {
     this.pinnedProducts.getLayers().clear();
   }
 
-  private update(view: View, layer: Layer[]): void {
+  private update(view: View, layers: Layer[]): void {
     this.map.setView(view);
     const mapLayers = this.map.getLayers();
-    const baseLayers = layer.slice(0, 3);
-    baseLayers.forEach((layer, idx) => mapLayers.setAt(idx + 1, layer));
+    const baseLayers = layers.slice(0, 3);
+    baseLayers.forEach((l, idx) => mapLayers.setAt(idx + 1, l));
   }
 
-  private newMap(view: View, layer: Layer[]): Map {
+  private newMap(view: View, layers: Layer[]): Map {
     return new Map({
-      layers: layer ,
+      layers: layers,
       target: 'browse-map',
       view
     });

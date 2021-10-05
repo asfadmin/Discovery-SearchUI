@@ -21,6 +21,7 @@ import Polygon from 'ol/geom/Polygon';
 export class SarviewsEventsService {
 
   private eventsUrl = `https://gm3385dq6j.execute-api.us-west-2.amazonaws.com/events`;
+  private sarviewsEvents$ = this.getSarviewsEvents$();
 
   constructor(private http: HttpClient,
     private wktService: WktService,
@@ -51,15 +52,6 @@ export class SarviewsEventsService {
     })));
   }
 
-  // public getEventFeatures(usgs_event_ids: string[]): Observable<SarviewsEvent[]> {
-  //   return forkJoin(
-  //     usgs_event_ids.map(id => this.getEventFeature(id))).pipe(
-  //     map(features => features.filter(
-  //         feature => !(feature instanceof (HttpErrorResponse)))
-  //     )
-  //   );
-  // }
-
   public getEventFeature(usgs_id: string): Observable<SarviewsProcessedEvent>  {
     return this.http.get<SarviewsProcessedEvent>(this.eventsUrl + "/" + usgs_id).pipe(
       catchError(error => of(error)),
@@ -71,9 +63,6 @@ export class SarviewsEventsService {
       })
       );
   }
-
-
-  private sarviewsEvents$ = this.getSarviewsEvents$();
 
   public quakeIds$() {
     return this.sarviewsEvents$.pipe(
@@ -96,27 +85,6 @@ export class SarviewsEventsService {
     );
   }
 
-  // public quakeEvents$() {
-  //   return this.quakeIds$().pipe(
-  //   switchMap(ids => this.getEventFeatures(ids)),
-  //   map(events => <SarviewsQuakeEvent[]>events));
-  // }
-
-  // public volcanoEvents$() {
-  //   return this.volcanoIds$().pipe(
-  //   switchMap(ids => this.getEventFeatures(ids)),
-  //   map(events => <SarviewsVolcanicEvent[]>events));
-  // }
-
-  // public floodEvents$() {
-  //   return this.floodIds$().pipe(
-  //   switchMap(ids => this.getEventFeatures(ids)),
-  //   map(events => <SarviewsFloodEvent[]>events));
-  // }
-
-  // public getSarviewsEventCenter(coord: LonLat) {
-  //   this.mapService.selectedSarviewEvent$.next()
-  // }
   public getSarviewsEventPinnedUrl(sarviews_url: string, product_ids: string[]) {
     const baseUrl = this.getSarviewsEventUrl(sarviews_url);
     const pinnedIds = product_ids.reduce((prev, curr) => {

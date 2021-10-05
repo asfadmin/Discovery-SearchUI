@@ -12,7 +12,9 @@ import {
 } from '@store/scenes/scenes.reducer';
 import {
   getTemporalRange, getPerpendicularRange, getDateRange,
-  getProductTypes, getProjectName, getJobStatuses, getProductNameFilter, getSeason, getSarviewsEventNameFilter, getSarviewsEventTypes, getSarviewsEventActiveFilter, getSarviewsMagnitudeRange
+  getProductTypes, getProjectName, getJobStatuses,
+  getProductNameFilter, getSeason, getSarviewsEventNameFilter,
+  getSarviewsEventTypes, getSarviewsEventActiveFilter, getSarviewsMagnitudeRange
 } from '@store/filters/filters.reducer';
 import { getShowS1RawData, getShowExpiredData } from '@store/ui/ui.reducer';
 import { getSearchType } from '@store/search/search.reducer';

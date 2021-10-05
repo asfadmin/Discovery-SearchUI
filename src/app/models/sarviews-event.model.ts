@@ -6,7 +6,7 @@ import { Range } from './range.model';
 //   | SarviewsVolcanicEvent
 //   | SarviewsFloodEvent
 
-export interface SarviewsProcessedEvent extends SarviewsQuakeEvent, SarviewsVolcanicEvent, SarviewsFloodEvent {
+export interface SarviewsProcessedEvent extends SarviewsQuakeEvent, SarviewsVolcanicEvent {
   products: SarviewsProduct[];
 }
 
@@ -21,8 +21,8 @@ export interface SarviewsVolcanicEvent extends SarviewsEvent {
   smithsonian_event_id: string;
 }
 
-export interface SarviewsFloodEvent extends SarviewsEvent {
-}
+// export interface SarviewsFloodEvent extends SarviewsEvent {
+// }
 
 export interface SarviewsEvent {
   description: string;

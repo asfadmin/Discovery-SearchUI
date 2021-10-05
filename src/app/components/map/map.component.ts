@@ -46,7 +46,6 @@ export class MapComponent implements OnInit, OnDestroy  {
   @Output() loadUrlState = new EventEmitter<void>();
   @ViewChild('overlay', { static: true }) overlayRef: ElementRef;
   @ViewChild('map', { static: true }) mapRef: ElementRef;
-  // @ViewChild('sarviewPopupContainer', {static: true}) popupRef: ElementRef;
 
   public drawMode$ = this.store$.select(mapStore.getMapDrawMode);
   public interactionMode$ = this.store$.select(mapStore.getMapInteractionMode);
@@ -69,23 +68,23 @@ export class MapComponent implements OnInit, OnDestroy  {
   public fullscreenControl = FullscreenControls.NONE;
   public fc = FullscreenControls;
 
-  private isMapInitialized$ = this.store$.select(mapStore.getIsMapInitialization);
-  private viewType$ = combineLatest(
-    this.store$.select(mapStore.getMapView),
-    this.store$.select(mapStore.getMapLayerType),
-  );
-  private gridlinesActive$ = this.store$.select(mapStore.getAreGridlinesActive);
-
   public breakpoint: models.Breakpoints;
   public breakpoints = models.Breakpoints;
 
   public searchType: models.SearchType;
   public searchTypes = models.SearchType;
 
-  private sarviewsEvents: SarviewsEvent[];
   public selectedSarviewEvent: SarviewsEvent;
 
   private subs = new SubSink();
+  private gridlinesActive$ = this.store$.select(mapStore.getAreGridlinesActive);
+  private isMapInitialized$ = this.store$.select(mapStore.getIsMapInitialization);
+  private viewType$ = combineLatest(
+    this.store$.select(mapStore.getMapView),
+    this.store$.select(mapStore.getMapLayerType),
+  );
+
+  private sarviewsEvents: SarviewsEvent[];
 
   constructor(
     private store$: Store<AppState>,
@@ -106,39 +105,6 @@ export class MapComponent implements OnInit, OnDestroy  {
       this.mapService.panToEvent({lat, lon})
     })
     );
-
-    // const popupOverlay = new Overlay({
-    //   element: this.popupRef.nativeElement,
-    //   autoPan: true,
-    //   autoPanAnimation: {
-    //     duration: 250,
-    //   },
-    // });
-
-
-    // this.mapService.setMapOverlay(popupOverlay);
-    // this.mapService.mapInit$.pipe(
-    //   filter(olMap => !!olMap)
-    //   ).subscribe(
-    //     olMap =>
-    //     {
-    //       olMap.addOverlay(popupOverlay);
-    //       this.mapService.setMapOverlay(popupOverlay);
-    //     }
-    //   )
-    // this.mapService.getMap().addOverlay(popupOverlay);
-
-    // this.mapService.getMap().on("singleclick", (evnt) => this.mapService.getMap().forEachFeatureAtPixel(
-    //   evnt.pixel,
-    //   (feature) => {
-    //     var sarview_id = feature.get('sarviews_id');
-    //     if(!!sarview_id) {
-    //       window.open(`https://sarviews-hazards.alaska.edu/Event/${sarview_id}`)
-    //     }
-    //     popupOverlay.setPosition(evnt.coordinate);
-    //     popupOverlay.getElement().innerHTML = '<p>You clicked here:</p>';
-    //     evnt.preventDefault();
-    //   }));
 
     this.mapService.selectedSarviewEvent$.pipe(
       filter(id => !!id)
@@ -481,8 +447,8 @@ export class MapComponent implements OnInit, OnDestroy  {
         const polygon = feature.getGeometry()[0][0].slice(0, 4);
 
         if(polygon.length === 2) {
-          const point = new Point([polygon[0], polygon[1]]);
-          feature.set("eventPoint", point);
+          const eventPoint = new Point([polygon[0], polygon[1]]);
+          feature.set("eventPoint", eventPoint);
           feature.setGeometryName("eventPoint");
           return feature;
         }

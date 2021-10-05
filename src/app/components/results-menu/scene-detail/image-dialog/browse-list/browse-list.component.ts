@@ -115,7 +115,7 @@ export class BrowseListComponent implements OnInit, AfterViewInit, OnDestroy {
 
   public onNewProductSelected(product: models.SarviewsProduct): void {
     this.selectedFromList = true;
-    this.store$.dispatch(new scenesStore.setSelectedSarviewProduct(product));
+    this.store$.dispatch(new scenesStore.SetSelectedSarviewProduct(product));
   }
 
   public onPinProduct(product_id: string) {

@@ -68,7 +68,7 @@ export class SetSelectedScene implements Action {
   constructor(public payload: string) {}
 }
 
-export class setSelectedSarviewProduct implements Action {
+export class SetSelectedSarviewProduct implements Action {
   public readonly type = ScenesActionType.SET_SELECTED_SARVIEW_PRODUCT;
 
   constructor(public payload: SarviewsProduct) {}
@@ -191,5 +191,5 @@ export type ScenesActions =
   | SetSarviewsEvents
   | SetSelectedSarviewsEvent
   | SetSarviewsEventProducts
-  | setSelectedSarviewProduct
+  | SetSelectedSarviewProduct
   | SetImageBrowseProducts;

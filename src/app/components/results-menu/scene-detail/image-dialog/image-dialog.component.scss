@@ -193,14 +193,8 @@ a {
   height: 125px;
 }
 
-::ng-deep .cdk-virtual-scroll-orientation-horizontal .cdk-virtual-scroll-content-wrapper {
-  min-height: 125px !important;
-  max-height: 125px !important;
-}
-
 .download-icon {
   height:12px !important;
   width:12px !important;
   margin-right: 15px;
-  // transform: scale(0.75);
 }

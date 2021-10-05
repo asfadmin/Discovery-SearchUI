@@ -237,21 +237,16 @@ export class SceneFilesComponent implements OnInit, OnDestroy, AfterContentInit 
     return product_name;
   }
 
-  // public onSarviewProductSelectionChange(current_id: string) {
-  //   console.log(this.sarviewsService.getSarviewsEventPinnedUrl(current_id, this.selectedProducts));
-  // }
-
   public downloadProduct(product_url: string) {
     window.open(product_url);
   }
 
   public currentPinnedUrl(current_id: string): string {
     const product_ids = Object.keys(this.selectedProducts).filter(
-      product_ids => !!this.selectedProducts?.[product_ids]
+      product_id => !!this.selectedProducts?.[product_id]
     )
-    // if(!!current_id && !!this.selectedProducts) {
+
     return this.sarviewsService.getSarviewsEventPinnedUrl(current_id, product_ids);
-    // }
   }
 
   public onSelectSarviewsProduct(product_id: string) {

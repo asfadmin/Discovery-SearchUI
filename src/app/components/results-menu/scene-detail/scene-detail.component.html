@@ -48,7 +48,7 @@
         <a target="_blank" href="{{'http://volcano.si.edu/volcano.cfm?vn=' + (sarviewEvent | quakeEvent).usgs_event_id + '#executive'}}">Smithsonian Entry</a>
       </span>
       </p>
-      <p class="faint-text accessing-text" *ngIf="sarviewEvent.event_type === 'flood'">
+      <!-- <p class="faint-text accessing-text" *ngIf="sarviewEvent.event_type === 'flood'">
         <span>
           <p>Description: {{(sarviewEvent | floodEvent).description}}</p>
           <p *ngIf="sarviewEvent.processing_timeframe">
@@ -58,10 +58,10 @@
             End Date: {{sarviewEvent.processing_timeframe.end | shortDateTime}}
           </p>
         </span>
-      </p>
+      </p> -->
 
     </div>
-    <div style="display: flex; flex-direction:column">
+    <div style="display: flex; flex-direction: column;">
     <div class="sarivews-radius-display">
       More Like This Search Scale: {{sarviewsEventGeoSearchRadius.toFixed(1)}}
     </div>

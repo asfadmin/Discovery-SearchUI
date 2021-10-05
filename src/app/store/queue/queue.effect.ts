@@ -11,7 +11,7 @@ import { AppState } from '../app.reducer';
 import {
   QueueActionType, DownloadMetadata, AddItems, RemoveItems,
   RemoveSceneFromQueue, DownloadSearchtypeMetadata,
-  AddJob, RemoveJob, AddJobs, ToggleProduct, QueueScene, FindPair, MakeDownloadScriptFromList, makeDownloadScriptFromSarviewsProducts
+  AddJob, RemoveJob, AddJobs, ToggleProduct, QueueScene, FindPair, MakeDownloadScriptFromList, MakeDownloadScriptFromSarviewsProducts
 } from './queue.action';
 import { getDuplicates, getQueuedProducts } from './queue.reducer';
 import * as scenesStore from '@store/scenes';
@@ -59,8 +59,8 @@ export class QueueEffects {
     )
   ), { dispatch: false });
 
-  public makeDownloadScriptFromSarviewsProductsList = createEffect(() => this.actions$.pipe(
-    ofType<makeDownloadScriptFromSarviewsProducts>(QueueActionType.MAKE_DOWNLOAD_SCRIPT_FROM_SARVIEWS_PRODUCTS),
+  public MakeDownloadScriptFromSarviewsProductsList = createEffect(() => this.actions$.pipe(
+    ofType<MakeDownloadScriptFromSarviewsProducts>(QueueActionType.MAKE_DOWNLOAD_SCRIPT_FROM_SARVIEWS_PRODUCTS),
     map(action => action.payload),
     switchMap(products => this.bulkDownloadService.downloadSarviewsProductsScript$(products)),
     withLatestFrom(this.store$.select(getSelectedSarviewsEvent).pipe(map(event => event?.description.replace(/\s/g, '-')))),

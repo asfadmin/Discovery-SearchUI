@@ -264,7 +264,7 @@ export class ScenesListHeaderComponent implements OnInit, OnDestroy {
   }
 
   public onMakeSarviewsProductDownloadScript(products: models.SarviewsProduct[]): void {
-    this.store$.dispatch(new queueStore.makeDownloadScriptFromSarviewsProducts(products));
+    this.store$.dispatch(new queueStore.MakeDownloadScriptFromSarviewsProducts(products));
   }
 
   public onQueueSarviewsProducts(products: models.SarviewsProduct[]): void {

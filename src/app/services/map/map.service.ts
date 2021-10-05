@@ -21,21 +21,12 @@ import * as sceneStore from '@store/scenes';
 import * as polygonStyle from './polygon.style';
 import * as views from './views';
 import { LonLat, SarviewsEvent } from '@models';
-// import { Coordinate } from 'ol/coordinate';
 import { EventEmitter } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { AppState } from '@store';
 import { Icon, Style } from 'ol/style';
 import IconAnchorUnits from 'ol/style/IconAnchorUnits';
-// import Polygon from 'ol/geom/Polygon';
-// { circular }
-
-// import WKT from 'ol/format/WKT';
 import Geometry from 'ol/geom/Geometry';
-// import MultiPolygon from 'ol/geom/MultiPolygon';
-// import WKT from 'ol/format/WKT';
-// import { SarviewsEventsService } from '@services';
-
 
 @Injectable({
   providedIn: 'root'
@@ -45,29 +36,14 @@ export class MapService {
   private map: Map;
   private polygonLayer: VectorLayer;
   private sarviewsEventsLayer: VectorLayer;
-  // private sarviewsEventRadiusPolygon: Polygon;
   private gridLinesVisible: boolean;
-  // private popupOverlay: Overlay;
-
-  public selectedSarviewEvent$: EventEmitter<string> = new EventEmitter();
-  public mapInit$: EventEmitter<Map> = new EventEmitter();
-
   private sarviewsFeaturesByID: {[id: string]: Feature} = {};
-  // private gridlinesActive: boolean;
-
-  public getEventCoordinate(sarviews_id: string): Point {
-    return this.sarviewsFeaturesByID[sarviews_id].getGeometry() as Point;
-  }
 
   private selectClick = new Select({
     condition: click,
     style: polygonStyle.hidden,
     layers: l => l.get('selectable') || false
   });
-
-  // public setMapOverlay(popupContainer: Overlay) {
-  //   this.popupOverlay = popupContainer;
-  // }
 
   private selectHover = new Select({
     condition: pointerMove,
@@ -80,7 +56,6 @@ export class MapService {
     style: null,
     layers: l => l === this.sarviewsEventsLayer || false
   });
-
 
   private selectedSource = new VectorSource({
     wrapX: models.mapOptions.wrapX
@@ -100,13 +75,21 @@ export class MapService {
     style: polygonStyle.hover
   });
 
+  private mousePositionSubject$ = new BehaviorSubject<models.LonLat>({
+    lon: 0, lat: 0
+  });
+
   public zoom$ = new Subject<number>();
   public center$ = new Subject<models.LonLat>();
   public epsg$ = new Subject<string>();
 
-  private mousePositionSubject$ = new BehaviorSubject<models.LonLat>({
-    lon: 0, lat: 0
-  });
+  public selectedSarviewEvent$: EventEmitter<string> = new EventEmitter();
+  public mapInit$: EventEmitter<Map> = new EventEmitter();
+
+  public getEventCoordinate(sarviews_id: string): Point {
+    return this.sarviewsFeaturesByID[sarviews_id].getGeometry() as Point;
+  }
+
   public mousePosition$ = this.mousePositionSubject$.pipe(
     sampleTime(100)
   );
@@ -114,6 +97,7 @@ export class MapService {
   public newSelectedScene$ = new Subject<string>();
 
   public isDrawing$ = this.drawService.isDrawing$;
+
   public searchPolygon$ = this.drawService.polygon$.pipe(
     map(
       feature => feature !== null ?
@@ -127,16 +111,7 @@ export class MapService {
     private legacyAreaFormat: LegacyAreaFormatService,
     private drawService: DrawService,
     private store$: Store<AppState>,
-    // private sarviewsEventService: SarviewsEventsService,
-  ) {
-
-//   eventSelectControl = new Select(this.sarviewsEventsLayer, {
-//     hover: true
-// });
-// eventSelectControl.events.register('featurehighlighted', null, onFeatureHighlighted);
-
-
-  }
+  ) {}
 
   public epsg(): string {
     return this.mapView.projection.epsg;
@@ -205,14 +180,12 @@ export class MapService {
   }
 
   public setEventsLayer(layer: VectorLayer): void {
-    // for(const layer in layers) {
       if (!!this.sarviewsEventsLayer) {
         this.map.removeLayer(this.sarviewsEventsLayer);
       }
 
       this.sarviewsEventsLayer = layer;
       this.map.addLayer(layer);
-    // }
   }
 
   public sarviewsEventsToFeatures(events: SarviewsEvent[], projection: string): Feature<Geometry>[] {
@@ -306,17 +279,12 @@ export class MapService {
   }
 
   public panToEvent(eventCoord: LonLat) {
-    // const feature = this.map.getfeature(this.map.getPixelFromCoordinate(eventCoord))[0].getGeometry();
-    // console.log(feature.getExtent());
-    // this.map.getView().setCenter(eventCoord);
-    // const latOffset = ((eventCoord.lon + 180) / 2) - 90;
     const x = proj.fromLonLat([eventCoord.lat, eventCoord.lon - 8], this.epsg());
     this.map.getView().animate({
       center: x,
       duration: 500,
       zoom: this.map.getView().getZoom(),
     });
-    // this.map.getView().setCenter(feature[0]);
   }
 
   public setZoom(zoom: number): void {
@@ -389,6 +357,23 @@ export class MapService {
     this.zoomToExtent(extent);
   }
 
+  public onSetSarviewsPolygon(sarviewEvent: SarviewsEvent, radius: number) {
+    const wkt = sarviewEvent.wkt;
+    const features = this.wktService.wktToFeature(
+      wkt,
+      this.epsg()
+    );
+
+    features.getGeometry().scale(radius);
+    this.setDrawFeature(features);
+  }
+
+
+  public onMapReady(map: Map) {
+    this.mapInit$.next(map);
+  }
+
+
   private zoomToExtent(extent): void {
     this.map
       .getView()
@@ -445,16 +430,6 @@ export class MapService {
       this.mousePositionSubject$.next({ lon, lat });
     });
 
-    // const popupOverlay = new Overlay({
-    //   element: this.popupOverlay,
-    //   autoPan: true,
-    //   autoPanAnimation: {
-    //     duration: 250,
-    //   },
-    // });
-
-    // newMap.addOverlay(this.popupOverlay);
-
     newMap.on("singleclick", (evnt) =>
     {
       if(this.map.hasFeatureAtPixel(evnt.pixel)) {
@@ -464,10 +439,7 @@ export class MapService {
         const sarview_id: string = feature.get('sarviews_id');
         if(!!sarview_id) {
           this.selectedSarviewEvent$.next(sarview_id);
-          // window.open(`https://sarviews-hazards.alaska.edu/Event/${sarview_id}`)
-          // this.popupOverlay.setPosition([evnt.coordinate[0], evnt.coordinate[1] + 200]);
           this.store$.dispatch(new sceneStore.SetSelectedSarviewsEvent(sarview_id));
-          // this.popupOverlay.getElement().innerHTML = '<p>You clicked here:</p>';
         }
 
         evnt.preventDefault();
@@ -495,9 +467,6 @@ export class MapService {
     return newMap;
   }
 
-  public onMapReady(map: Map) {
-    this.mapInit$.next(map);
-  }
   private updatedMap(): Map {
     if (this.map.getView().getProjection().getCode() !== this.mapView.projection.epsg) {
       this.map.setView(this.mapView.view);
@@ -519,14 +488,4 @@ export class MapService {
     return this.map;
   }
 
-  public onSetSarviewsPolygon(sarviewEvent: SarviewsEvent, radius: number) {
-    const wkt = sarviewEvent.wkt;
-    const features = this.wktService.wktToFeature(
-      wkt,
-      this.epsg()
-    );
-
-    features.getGeometry().scale(radius);
-    this.setDrawFeature(features);
-  }
 }
