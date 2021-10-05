@@ -446,10 +446,10 @@ export class MapComponent implements OnInit, OnDestroy  {
 
         const polygon = feature.getGeometry()[0][0].slice(0, 4);
 
-        if(polygon.length === 2) {
+        if (polygon.length === 2) {
           const eventPoint = new Point([polygon[0], polygon[1]]);
-          feature.set("eventPoint", eventPoint);
-          feature.setGeometryName("eventPoint");
+          feature.set('eventPoint', eventPoint);
+          feature.setGeometryName('eventPoint');
           return feature;
         }
 
