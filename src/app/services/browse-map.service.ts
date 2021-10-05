@@ -15,10 +15,10 @@ import VectorSource from 'ol/source/Vector';
 import WKT from 'ol/format/WKT';
 import LayerGroup from 'ol/layer/Group';
 import { Collection } from 'ol';
-interface Dimension {
-  width: number;
-  height: number;
-}
+// interface Dimension {
+//   width: number;
+//   height: number;
+// }
 
 export interface PinnedProduct {
   isPinned: boolean;
@@ -41,7 +41,7 @@ export class BrowseMapService {
   //   // layers: l => !!this.pinnedProducts.getLayersArray().find(pinned => pinned.get("product_id") === l?.get("product_id")),
   // });
 
-  public setBrowse(browse: string, dim: Dimension, wkt: string = ''): void {
+  public setBrowse(browse: string, wkt: string = ''): void {
     const format = new WKT();
     const feature = format.readFeature(wkt, {dataProjection: 'EPSG:4326',
     featureProjection: 'EPSG:3857'});
@@ -55,8 +55,6 @@ export class BrowseMapService {
       source: polygonVectorSource,
       style: polygonStyle.valid,
     });
-
-    console.log(dim);
 
     const coord = getCenter( polygon.getExtent());
 

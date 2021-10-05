@@ -64,7 +64,6 @@ export class ImageDialogComponent implements OnInit, AfterViewInit, OnDestroy {
     private clipboard: ClipboardService,
     private notificationService: services.NotificationService,
     private sarviewsService: SarviewsEventsService,
-    // private wktService: services.WktService,
   ) { }
 
   ngOnInit() {
@@ -203,15 +202,10 @@ export class ImageDialogComponent implements OnInit, AfterViewInit, OnDestroy {
       }
 
       self.isImageLoading = false;
-      const [width, height] = [
-        this.naturalWidth, this.naturalHeight
-      ];
 
       const wkt = scene.metadata.polygon;
 
-      browseService.setBrowse(browse, {
-        width, height
-      }, wkt);
+      browseService.setBrowse(browse, wkt);
     });
 
     this.image.src = browse;
@@ -231,13 +225,8 @@ export class ImageDialogComponent implements OnInit, AfterViewInit, OnDestroy {
       }
 
       self.isImageLoading = false;
-      const [width, height] = [
-        this.naturalWidth, this.naturalHeight
-      ];
 
-      browseService.setBrowse(product.files.browse_url, {
-        width, height
-      }, product.granules[0].wkt );
+      browseService.setBrowse(product.files.browse_url, product.granules[0].wkt );
     });
 
     this.image.src = product.files.browse_url;
