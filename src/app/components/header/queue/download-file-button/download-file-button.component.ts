@@ -79,6 +79,7 @@ export class DownloadFileButtonComponent implements OnInit, AfterViewInit {
 
       if (resp.state === 'PENDING') {
         this.fileName = resp.id;
+        console.log('download-file-button state PENDING this.filename', this.fileName);
       }
 
       if (resp.state === 'DONE') {
