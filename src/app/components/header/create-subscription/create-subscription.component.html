@@ -45,12 +45,17 @@
           <div>
             <div style="margin-bottom: 5px;">
               <b>Subscription Date</b>
+              <div *ngIf="errors.dateError" class="step-error"> *{{ errors.dateError }}</div>
             </div>
             <app-date-selector [extendEndDateBy]="30"></app-date-selector>
           </div>
 
           <div>
-            <app-aoi-options></app-aoi-options>
+            <div style="margin-bottom: 5px;">
+              <b>AOI Options</b>
+              <div *ngIf="errors.polygonError" class="step-error"> *{{ errors.polygonError }}</div>
+            </div>
+            <app-aoi-options [showHeader]="false"></app-aoi-options>
           </div>
 
         </mat-step>
@@ -167,6 +172,7 @@
 
           <div>
             <b>Name: </b>
+            <div *ngIf="errors.projectNameError" class="step-error"> *{{ errors.projectNameError }}</div>
             <app-project-name-selector [processName]="true"></app-project-name-selector>
           </div>
 

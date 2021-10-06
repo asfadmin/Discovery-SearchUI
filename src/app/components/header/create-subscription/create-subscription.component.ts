@@ -15,6 +15,12 @@ import * as filtersStore from '@store/filters';
 import { ScreenSizeService, MapService, Hyp3Service, EnvironmentService } from '@services';
 import * as models from '@models';
 
+enum CreateSubscriptionSteps {
+  SEARCH_OPTIONS = 0,
+  PROCESSING_OPTIONS = 1,
+  REVIEW = 2
+}
+
 @Component({
   selector: 'app-create-subscription',
   templateUrl: './create-subscription.component.html',
@@ -24,6 +30,11 @@ export class CreateSubscriptionComponent implements OnInit, OnDestroy {
   @ViewChild('stepper', { static: false }) public stepper: MatStepper;
 
   public jobTypeId = models.hyp3JobTypes.RTC_GAMMA.id;
+  public errors = {
+    dateError: null,
+    polygonError: null,
+    projectNameError: null,
+  };
 
   public hyp3JobTypes = models.hyp3JobTypes;
   public hyp3JobTypesList = models.hyp3JobTypesList;
@@ -130,11 +141,46 @@ export class CreateSubscriptionComponent implements OnInit, OnDestroy {
   }
 
   public onNext(): void {
-    if (this.isLastStep()) {
-      this.submitSubscription();
+    this.clearErrors();
+
+    if (this.stepper.selectedIndex === CreateSubscriptionSteps.SEARCH_OPTIONS) {
+      if (!this.dateRange.start && !this.dateRange.end) {
+        this.errors.dateError = 'Start and end date required';
+      } else if (!this.dateRange.start) {
+        this.errors.dateError = 'Start date required';
+      } else if (!this.dateRange.end) {
+        this.errors.dateError = 'End date required';
+      }
+
+      if (!this.polygon) {
+        this.errors.polygonError = 'Area of interest required (will use polygon from current search)';
+      }
+
+      if (this.errors.dateError || this.errors.polygonError) {
+        return;
+      }
+    } else if (this.stepper.selectedIndex === CreateSubscriptionSteps.PROCESSING_OPTIONS) {
+
+    } else if (this.stepper.selectedIndex === CreateSubscriptionSteps.REVIEW) {
+      if (!this.projectName) {
+        this.errors.projectNameError = 'Project Name is required';
+        return;
+      }
     }
 
-    this.stepper.next();
+    if (this.isLastStep()) {
+      this.submitSubscription();
+    } else {
+      this.stepper.next();
+    }
+  }
+
+  public isLastStep(): boolean {
+    if (!this.stepper) {
+      return false;
+    }
+
+    return this.stepper.selectedIndex === this.stepper.steps.length - 1;
   }
 
   private submitSubscription(): void {
@@ -190,14 +236,6 @@ export class CreateSubscriptionComponent implements OnInit, OnDestroy {
     return polygon.split('(')[0];
   }
 
-  public isLastStep(): boolean {
-    if (!this.stepper) {
-      return false;
-    }
-
-    return this.stepper.selectedIndex === this.stepper.steps.length - 1;
-  }
-
   public onValidateOnlyToggle(val: boolean): void {
     this.validateOnly = val;
   }
@@ -219,6 +257,14 @@ export class CreateSubscriptionComponent implements OnInit, OnDestroy {
 
     return filtered;
 
+  }
+
+  private clearErrors() {
+    this.errors = {
+      dateError: null,
+      polygonError: null,
+      projectNameError: null,
+    };
   }
 
   ngOnDestroy(): void {
