@@ -2,7 +2,7 @@ import { Component, OnInit, OnDestroy, AfterContentInit } from '@angular/core';
 import { SubSink } from 'subsink';
 
 import { combineLatest } from 'rxjs';
-import { debounceTime, distinctUntilChanged, filter, map, withLatestFrom } from 'rxjs/operators';
+import { debounceTime, distinctUntilChanged, filter, map, skip, withLatestFrom } from 'rxjs/operators';
 
 import { Store } from '@ngrx/store';
 import { AppState } from '@store';
@@ -170,7 +170,7 @@ export class SceneFilesComponent implements OnInit, OnDestroy, AfterContentInit 
     );
 
     this.subs.add(
-      this.store$.select(scenesStore.getPinnedEventBrowseIDs).subscribe(
+      this.store$.select(scenesStore.getPinnedEventBrowseIDs).pipe(skip(1)).subscribe(
         pinnedIDs => {
           if(!this.selectedProducts[pinnedIDs?.[0]] && pinnedIDs.length > 0) {
             this.onUpdatePinnedUrl();
