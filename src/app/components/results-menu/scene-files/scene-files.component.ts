@@ -2,7 +2,7 @@ import { Component, OnInit, OnDestroy, AfterContentInit } from '@angular/core';
 import { SubSink } from 'subsink';
 
 import { combineLatest } from 'rxjs';
-import { debounceTime, distinctUntilChanged, filter, map, skip, withLatestFrom } from 'rxjs/operators';
+import { debounceTime, distinctUntilChanged, filter, map, withLatestFrom } from 'rxjs/operators';
 
 import { Store } from '@ngrx/store';
 import { AppState } from '@store';
@@ -152,14 +152,20 @@ export class SceneFilesComponent implements OnInit, OnDestroy, AfterContentInit 
 
   ngAfterContentInit() {
     this.subs.add(
-      this.sarviewsEventProducts$.pipe(
-        distinctUntilChanged((a, b) => a[0]?.event_id === b[0]?.event_id),
-        withLatestFrom(this.store$.select(scenesStore.getPinnedEventBrowseIDs))
-        ).subscribe(
+      combineLatest(
+        this.sarviewsEventProducts$.pipe(distinctUntilChanged((a, b) => a[0]?.event_id === b[0]?.event_id)),
+        this.store$.select(scenesStore.getPinnedEventBrowseIDs)
+      ).subscribe(
         ([products, pinned_browse_ids]) => {
           this.sarviewsProducts = products;
           Object.keys(this.selectedProducts).forEach(id => delete this.selectedProducts[id]);
           products.forEach(prod => this.selectedProducts[prod.product_id] = pinned_browse_ids.includes(prod.product_id));
+
+          if(pinned_browse_ids.length > 0) {
+            if(!this.selectedProducts[pinned_browse_ids[0]]) {
+              this.onUpdatePinnedUrl();
+            }
+          }
           // this.selectedProducts = val.map(product => product.product_id).reduce((prev, curr) => {
           //   prev[curr] = browse_ids.includes(curr);
           //   return prev;
@@ -169,22 +175,22 @@ export class SceneFilesComponent implements OnInit, OnDestroy, AfterContentInit 
       )
     );
 
-    this.subs.add(
-      this.store$.select(scenesStore.getPinnedEventBrowseIDs).pipe(skip(1)).subscribe(
-        pinnedIDs => {
-          if(!this.selectedProducts[pinnedIDs?.[0]] && pinnedIDs.length > 0) {
-            this.onUpdatePinnedUrl();
-            // this.store$.dispatch(new scenesStore.SetImageBrowseProducts(this.selectedProducts));
-          } else {
-          // const pinnedObj = pinnedIDs.reduce((prev, curr) => prev[curr] = true, {});
-            Object.keys(this.selectedProducts).forEach(
-              id => this.selectedProducts[id] = pinnedIDs.includes(id)
-            );
-          }
-          // this.selectedProducts = { ...this.selectedProducts, ...pinnedObj}
-        }
-      )
-    )
+    // this.subs.add(
+    //   this.store$.select(scenesStore.getPinnedEventBrowseIDs).pipe(skip(1)).subscribe(
+    //     pinnedIDs => {
+    //       if(!this.selectedProducts[pinnedIDs?.[0]] && pinnedIDs.length > 0) {
+    //         this.onUpdatePinnedUrl();
+    //         // this.store$.dispatch(new scenesStore.SetImageBrowseProducts(this.selectedProducts));
+    //       } else {
+    //       // const pinnedObj = pinnedIDs.reduce((prev, curr) => prev[curr] = true, {});
+    //         Object.keys(this.selectedProducts).forEach(
+    //           id => this.selectedProducts[id] = pinnedIDs.includes(id)
+    //         );
+    //       }
+    //       // this.selectedProducts = { ...this.selectedProducts, ...pinnedObj}
+    //     }
+    //   )
+    // )
 
     this.subs.add(
       this.selectedSarviewsEventID$.subscribe(
