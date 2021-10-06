@@ -81,6 +81,7 @@ export class OnDemandSubscriptionComponent implements OnInit, OnDestroy {
       this.toggleExpand.emit(this.subscription.id);
     }
 
+    this.newEndDate = this.subscription.filters.end;
     this.isEditingEndDate = true;
   }
 

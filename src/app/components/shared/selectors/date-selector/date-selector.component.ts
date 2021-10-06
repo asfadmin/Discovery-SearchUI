@@ -41,8 +41,7 @@ export class DateSelectorComponent implements OnInit, OnDestroy {
 
       if (this.extendEndDateBy && !!date) {
         const d = new Date(date.valueOf());
-        d.setDate(d.getDate() + this.extendEndDateBy);
-        return d;
+        return new Date(d.setMonth(d.getMonth() + this.extendEndDateBy));
       }
 
       return date;
