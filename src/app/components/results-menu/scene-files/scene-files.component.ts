@@ -19,6 +19,7 @@ import * as moment from 'moment';
 
 import { faCopy } from '@fortawesome/free-solid-svg-icons';
 import { MatSelectionListChange } from '@angular/material/list';
+import { PinnedProduct } from '@services/browse-map.service';
 
 @Component({
   selector: 'app-scene-files',
@@ -253,6 +254,19 @@ export class SceneFilesComponent implements OnInit, OnDestroy, AfterContentInit 
 
   public onSelectSarviewsProduct(selections: MatSelectionListChange) {
     selections.options.forEach(option => this.selectedProducts[option.value] = option.selected );
+    const pinned = Object.keys(this.selectedProducts).reduce(
+      (prev, key) => {
+        let output = {} as PinnedProduct;
+        output.isPinned = this.selectedProducts[key];
+        const sarviewsProduct = this.sarviewsProducts.find(prod => prod.product_id === key)
+        output.url = sarviewsProduct.files.product_url;
+        output.wkt = sarviewsProduct.granules[0].wkt;
+
+        prev[key] = output;
+        return prev;
+      }, {} as {[product_id in string]: PinnedProduct}
+    )
+    this.store$.dispatch(new scenesStore.SetImageBrowseProducts(pinned));
     // this.selectedProducts[product_id] = !this.selectedProducts?.[product_id] ?? true;
   }
 

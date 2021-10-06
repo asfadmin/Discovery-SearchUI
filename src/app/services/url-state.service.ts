@@ -19,6 +19,7 @@ import { MapService } from './map/map.service';
 import { WktService } from './wkt.service';
 import { RangeService } from './range.service';
 import { PropertyService } from './property.service';
+import { PinnedProduct } from './browse-map.service';
 
 
 @Injectable({
@@ -196,8 +197,18 @@ export class UrlStateService {
         }))
       ),
       loader: this.loadEventID
+    }, {
+      name: 'PinnedProducts',
+      source: this.store$.select(scenesStore.getPinnedEventBrowseIDs).pipe(
+        filter(ids => !!ids),
+        map(ids => ({
+          pinnedProducts: ids.join(',')
+        }))
+      ),
+      loader: this.loadPinnedProducts
     }];
   }
+
 
   private missionParameters(): models.UrlParameter[] {
     return [{
@@ -637,6 +648,25 @@ export class UrlStateService {
   }
 
   private loadEventID = (event_id: string): Action => new scenesStore.SetSelectedSarviewsEvent(event_id);
+
+  private loadPinnedProducts = (pinnedProducts: string): Action => {
+    const productIDs = pinnedProducts.split(',');
+
+    const pinned = productIDs.reduce(
+      (prev, key) => {
+        let output = {} as PinnedProduct;
+        output.isPinned = true;
+        // const sarviewsProduct = this.sarviewsProducts.find(prod => prod.product_id === key)
+        output.url = '';
+        output.wkt = '';
+
+        prev[key] = output;
+        return prev;
+      }, {} as {[product_id in string]: PinnedProduct}
+    );
+
+      return new scenesStore.SetImageBrowseProducts(pinned);
+  }
 
   private loadIsDownloadQueueOpen = (isDownloadQueueOpen: string): Action => {
     return new uiStore.SetIsDownloadQueueOpen(!!isDownloadQueueOpen);
