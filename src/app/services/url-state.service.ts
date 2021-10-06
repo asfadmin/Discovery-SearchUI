@@ -198,7 +198,7 @@ export class UrlStateService {
       ),
       loader: this.loadEventID
     }, {
-      name: 'PinnedProducts',
+      name: 'pinnedProducts',
       source: this.store$.select(scenesStore.getPinnedEventBrowseIDs).pipe(
         filter(ids => !!ids),
         map(ids => ({

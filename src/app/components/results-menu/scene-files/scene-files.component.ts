@@ -152,14 +152,18 @@ export class SceneFilesComponent implements OnInit, OnDestroy, AfterContentInit 
 
   ngAfterContentInit() {
     this.subs.add(
-      this.sarviewsEventProducts$.pipe(distinctUntilChanged((a, b) => a[0]?.event_id === b[0]?.event_id)).subscribe(
-        val => {
+      this.sarviewsEventProducts$.pipe(
+        distinctUntilChanged((a, b) => a[0]?.event_id === b[0]?.event_id),
+        withLatestFrom(this.store$.select(scenesStore.getPinnedEventBrowseIDs))
+        ).subscribe(
+        ([val, browse_ids]) => {
           this.sarviewsProducts = val;
           this.selectedProducts = {};
           this.selectedProducts = val.map(product => product.product_id).reduce((prev, curr) => {
-            prev[curr] = false;
+            prev[curr] = browse_ids.includes(curr);
             return prev;
           }, {} as {[product_id in string]: boolean});
+
         }
       )
     );
@@ -254,6 +258,11 @@ export class SceneFilesComponent implements OnInit, OnDestroy, AfterContentInit 
 
   public onSelectSarviewsProduct(selections: MatSelectionListChange) {
     selections.options.forEach(option => this.selectedProducts[option.value] = option.selected );
+    this.onUpdatePinnedUrl();
+    // this.selectedProducts[product_id] = !this.selectedProducts?.[product_id] ?? true;
+  }
+
+  public onUpdatePinnedUrl() {
     const pinned = Object.keys(this.selectedProducts).reduce(
       (prev, key) => {
         let output = {} as PinnedProduct;
@@ -265,9 +274,9 @@ export class SceneFilesComponent implements OnInit, OnDestroy, AfterContentInit 
         prev[key] = output;
         return prev;
       }, {} as {[product_id in string]: PinnedProduct}
-    )
+    );
+
     this.store$.dispatch(new scenesStore.SetImageBrowseProducts(pinned));
-    // this.selectedProducts[product_id] = !this.selectedProducts?.[product_id] ?? true;
   }
 
   public onOpenPinnedProducts(current_id: string) {
