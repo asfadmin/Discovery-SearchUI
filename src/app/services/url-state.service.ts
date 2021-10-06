@@ -3,7 +3,7 @@ import { Router, ActivatedRoute, Params } from '@angular/router';
 
 import { Store, Action } from '@ngrx/store';
 import * as moment from 'moment';
-import { filter, map, skip, debounceTime, take } from 'rxjs/operators';
+import { filter, map, skip, debounceTime, take, distinctUntilChanged } from 'rxjs/operators';
 
 import { AppState } from '@store';
 import * as scenesStore from '@store/scenes';
@@ -200,7 +200,7 @@ export class UrlStateService {
     }, {
       name: 'pinnedProducts',
       source: this.store$.select(scenesStore.getPinnedEventBrowseIDs).pipe(
-        filter(ids => !!ids),
+        distinctUntilChanged(),
         map(ids => ({
           pinnedProducts: ids.join(',')
         }))

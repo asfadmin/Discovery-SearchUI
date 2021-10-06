@@ -172,10 +172,15 @@ export class SceneFilesComponent implements OnInit, OnDestroy, AfterContentInit 
     this.subs.add(
       this.store$.select(scenesStore.getPinnedEventBrowseIDs).subscribe(
         pinnedIDs => {
+          if(!this.selectedProducts[pinnedIDs?.[0]] && pinnedIDs.length > 0) {
+            this.onUpdatePinnedUrl();
+            // this.store$.dispatch(new scenesStore.SetImageBrowseProducts(this.selectedProducts));
+          } else {
           // const pinnedObj = pinnedIDs.reduce((prev, curr) => prev[curr] = true, {});
-          Object.keys(this.selectedProducts).forEach(
-            id => this.selectedProducts[id] = pinnedIDs.includes(id)
-          );
+            Object.keys(this.selectedProducts).forEach(
+              id => this.selectedProducts[id] = pinnedIDs.includes(id)
+            );
+          }
           // this.selectedProducts = { ...this.selectedProducts, ...pinnedObj}
         }
       )
