@@ -156,17 +156,30 @@ export class SceneFilesComponent implements OnInit, OnDestroy, AfterContentInit 
         distinctUntilChanged((a, b) => a[0]?.event_id === b[0]?.event_id),
         withLatestFrom(this.store$.select(scenesStore.getPinnedEventBrowseIDs))
         ).subscribe(
-        ([val, browse_ids]) => {
-          this.sarviewsProducts = val;
-          this.selectedProducts = {};
-          this.selectedProducts = val.map(product => product.product_id).reduce((prev, curr) => {
-            prev[curr] = browse_ids.includes(curr);
-            return prev;
-          }, {} as {[product_id in string]: boolean});
+        ([products, pinned_browse_ids]) => {
+          this.sarviewsProducts = products;
+          Object.keys(this.selectedProducts).forEach(id => delete this.selectedProducts[id]);
+          products.forEach(prod => this.selectedProducts[prod.product_id] = pinned_browse_ids.includes(prod.product_id));
+          // this.selectedProducts = val.map(product => product.product_id).reduce((prev, curr) => {
+          //   prev[curr] = browse_ids.includes(curr);
+          //   return prev;
+          // }, {} as {[product_id in string]: boolean});
 
         }
       )
     );
+
+    this.subs.add(
+      this.store$.select(scenesStore.getPinnedEventBrowseIDs).subscribe(
+        pinnedIDs => {
+          // const pinnedObj = pinnedIDs.reduce((prev, curr) => prev[curr] = true, {});
+          Object.keys(this.selectedProducts).forEach(
+            id => this.selectedProducts[id] = pinnedIDs.includes(id)
+          );
+          // this.selectedProducts = { ...this.selectedProducts, ...pinnedObj}
+        }
+      )
+    )
 
     this.subs.add(
       this.selectedSarviewsEventID$.subscribe(
