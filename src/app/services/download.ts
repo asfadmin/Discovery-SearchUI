@@ -1,6 +1,6 @@
 import {
   HttpEvent,
-  HttpEventType,
+  HttpEventType, HttpHeaderResponse,
   HttpProgressEvent,
   HttpResponse
 } from '@angular/common/http';
@@ -11,7 +11,7 @@ function isHttpResponse<T>(event: HttpEvent<T>): event is HttpResponse<T> {
   return event.type === HttpEventType.Response;
 }
 
-function isHttpHeader<T>(event: HttpEvent<T>): event is HttpResponse<T> {
+function isHttpHeader(event: HttpEvent<unknown>): event is HttpHeaderResponse {
   return event.type === HttpEventType.ResponseHeader;
 }
 
@@ -45,7 +45,15 @@ export function download(
         (download: Download, event): Download => {
           console.log('download.ts download() event:', event);
           if (isHttpHeader(event)) {
+            const newID = event.url.substring(event.url.lastIndexOf('/') + 1);
             console.log('event.url is:', event.url);
+            console.log('newID is:', newID);
+            return {
+              progress: 0,
+              state: 'PENDING',
+              content: null,
+              id: newID
+            };
           }
           if (isHttpProgressEvent(event)) {
             return {
@@ -65,7 +73,7 @@ export function download(
               progress: 100,
               state: 'DONE',
               content: event.body,
-              id: id
+              id: id,
             };
           }
           return download;
