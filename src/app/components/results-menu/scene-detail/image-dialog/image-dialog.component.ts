@@ -130,13 +130,14 @@ export class ImageDialogComponent implements OnInit, AfterViewInit, OnDestroy {
         withLatestFrom(this.searchType$),
         filter(([_, searchtype]) => searchtype === models.SearchType.SARVIEWS_EVENTS),
         map(([products, _]) => products),
+        withLatestFrom(this.store$.select(scenesStore.getPinnedEventBrowseIDs)),
       ).subscribe(
-        products => {
+        ([products, pinned]) => {
           this.sarviewsProducts = products;
           if (!!this.sarviewsProducts) {
             this.pinnedProducts = {};
             this.sarviewsProducts.forEach(prod => this.pinnedProducts[prod.product_id] = {
-              isPinned: false,
+              isPinned: pinned.includes(prod.product_id),
               url: prod.files.browse_url,
               wkt: prod.granules[0].wkt,
             });
@@ -198,6 +199,18 @@ export class ImageDialogComponent implements OnInit, AfterViewInit, OnDestroy {
         }
       )
     );
+    this.subs.add(
+      this.store$.select(scenesStore.getPinnedEventBrowseIDs).pipe(
+        withLatestFrom(this.searchType$),
+        filter(([_, searchtype]) => searchtype === models.SearchType.SARVIEWS_EVENTS),
+        map(([products, _]) => products),
+        filter(products => !!products),
+        debounceTime(1000),
+        first(),
+      ).subscribe(_ =>
+        this.setPinnedProducts()
+      )
+    )
   }
 
   private loadBrowseImage(scene: models.CMRProduct, browse): void {
@@ -304,10 +317,12 @@ export class ImageDialogComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   public onPinProduct(product_id: string) {
-    const temp = {
-      ...this.pinnedProducts,
-    };
-    temp[product_id].isPinned = !this.pinnedProducts[product_id].isPinned;
+    this.pinnedProducts[product_id].isPinned = !this.pinnedProducts[product_id].isPinned;
+    this.setPinnedProducts();
+
+  }
+
+  private setPinnedProducts() {
     this.store$.dispatch(new scenesStore.SetImageBrowseProducts(this.pinnedProducts));
     this.browseMap.setPinnedProducts(this.pinnedProducts);
   }
