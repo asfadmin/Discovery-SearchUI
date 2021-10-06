@@ -161,7 +161,7 @@ export class SceneFilesComponent implements OnInit, OnDestroy, AfterContentInit 
           Object.keys(this.selectedProducts).forEach(id => delete this.selectedProducts[id]);
           products.forEach(prod => this.selectedProducts[prod.product_id] = pinned_browse_ids.includes(prod.product_id));
 
-          if(pinned_browse_ids.length > 0) {
+          if(pinned_browse_ids.length > 0 && products.length > 0) {
             if(!this.selectedProducts[pinned_browse_ids[0]]) {
               this.onUpdatePinnedUrl();
             }

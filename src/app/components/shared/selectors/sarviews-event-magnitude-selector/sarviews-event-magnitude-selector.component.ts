@@ -72,7 +72,10 @@ export class SarviewsEventMagnitudeSelectorComponent implements OnInit, OnDestro
         }),
       ).subscribe(
         magnitudeRange => {
-          this.magnitudeRange = magnitudeRange;
+          this.magnitudeRange = {
+            start: magnitudeRange?.start ?? 0,
+            end: magnitudeRange?.end ?? 10
+          };
           this.magnitudeValues$.next([magnitudeRange.start, magnitudeRange.end]);
         }
       )

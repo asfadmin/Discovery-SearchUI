@@ -408,6 +408,8 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
       return !searchState.filters.filterMaster;
     } else if (searchState.searchType === models.SearchType.SBAS) {
       return !searchState.filters.reference;
+    } else if (searchState.searchType === models.SearchType.SARVIEWS_EVENTS) {
+      return searchState.filters.selectedEventID !== '';
     }
 
     return false;
