@@ -18,7 +18,7 @@ export class DownloadFileButtonComponent implements OnInit, AfterViewInit {
   public dlInProgress = false;
   public dlComplete = false;
   public url: string;
-  public fileName: string;
+  public fileName: string = null;
   public hiddenPrefix = 'xyxHidden-';
 
   public observable$: any;
@@ -93,9 +93,16 @@ export class DownloadFileButtonComponent implements OnInit, AfterViewInit {
 
 
     this.observable$ = this.downloadService.download(this.url, this.fileName);
-    this.subscription = this.observable$.subscribe( resp => this.processSubscription(resp, product, true));
-    this.observable$ = this.downloadService.download(this.url, this.fileName);
-    this.subscription = this.observable$.subscribe( resp => this.processSubscription(resp, product, false));
+    this.subscription = this.observable$.subscribe( resp => {
+      if (!this.processSubscription(resp, product, true)) {
+        console.log('processSubscription() unsubscribing now');
+        this.subscription.unsubscribe();
+        console.log('Now subscribing with the filename from the header:', this.fileName);
+        console.log('And the url:', this.url);
+        this.observable$ = this.downloadService.download(this.url, this.fileName);
+        this.subscription = this.observable$.subscribe( response => this.processSubscription(response, product, false));
+      };
+    });
   }
 
   private processSubscription(resp, product, headerOnly) {
@@ -105,9 +112,8 @@ export class DownloadFileButtonComponent implements OnInit, AfterViewInit {
     if (resp.state === 'PENDING') {
       this.fileName = resp.id;
       console.log('download-file-button state PENDING this.filename', this.fileName);
-      if (headerOnly) {
-        console.log('processSubscription() unsubscribing now');
-        this.subscription.unsubscribe();
+      if (headerOnly && this.fileName) {
+        return false;
       }
     }
 
@@ -116,6 +122,8 @@ export class DownloadFileButtonComponent implements OnInit, AfterViewInit {
       this.dlComplete = true;
       this.productDownloaded.emit(product);
     }
+
+    return true
   }
 
   public hijackDownloadClick( event: MouseEvent, hiddenID ) {
