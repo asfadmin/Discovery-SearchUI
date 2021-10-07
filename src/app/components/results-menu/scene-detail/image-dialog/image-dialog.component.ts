@@ -23,7 +23,7 @@ import { PinnedProduct } from '@services/browse-map.service';
   selector: 'app-image-dialog',
   templateUrl: './image-dialog.component.html',
   styleUrls: ['./image-dialog.component.scss'],
-  providers: [ BrowseMapService ]
+  // providers: [ BrowseMapService ]
 })
 export class ImageDialogComponent implements OnInit, AfterViewInit, OnDestroy {
   public scene$ = this.store$.select(scenesStore.getSelectedScene);
@@ -329,5 +329,6 @@ export class ImageDialogComponent implements OnInit, AfterViewInit, OnDestroy {
 
   ngOnDestroy() {
     this.subs.unsubscribe();
+    this.store$.dispatch(new uiStore.SetIsBrowseDialogOpen(false))
   }
 }

@@ -20,6 +20,8 @@ import { WktService } from './wkt.service';
 import { RangeService } from './range.service';
 import { PropertyService } from './property.service';
 import { PinnedProduct } from './browse-map.service';
+// import { MatDialog } from '@angular/material/dialog';
+// import { ImageDialogComponent } from '@components/results-menu/scene-detail/image-dialog';
 
 
 @Injectable({
@@ -39,17 +41,18 @@ export class UrlStateService {
     private wktService: WktService,
     private rangeService: RangeService,
     private router: Router,
+    // private dialog: MatDialog,
     private prop: PropertyService,
   ) {
     const params = [
       ...this.datasetParam(),
+      ...this.eventMonitorParameters(),
       ...this.mapParameters(),
       ...this.uiParameters(),
       ...this.filtersParameters(),
       ...this.missionParameters(),
       ...this.baselineParameters(),
       ...this.sbasParameters(),
-      ...this.eventMonitorParameters(),
     ];
 
     this.urlParamNames = params.map(param => param.name);
@@ -257,7 +260,15 @@ export class UrlStateService {
         map(isOnDemandOpen => ({ isOnDemandOpen }))
       ),
       loader: this.loadIsOnDemandQueueOpen
-    }];
+    },
+    // {
+    //   name: 'isImgBrowseOpen',
+    //   source: this.store$.select(uiStore.getIsBrowseDialogOpen).pipe(
+    //     map( isImgBrowseOpen => ({isImgBrowseOpen}))
+    //   ),
+    //   loader: this.loadIsImageBrowseOpen
+    // }
+  ];
   }
 
   private filtersParameters(): models.UrlParameter[] {
@@ -675,6 +686,23 @@ export class UrlStateService {
   private loadIsOnDemandQueueOpen = (isOnDemandQueueOpen: string): Action => {
     return new uiStore.SetIsOnDemandQueueOpen(!!isOnDemandQueueOpen);
   }
+
+  // private loadIsImageBrowseOpen = (isImageBrowseOpen: string): Action => {
+  //   this.dialog.open(ImageDialogComponent, {
+  //     width: '99%',
+  //     maxWidth: '99%',
+  //     height: '99%',
+  //     maxHeight: '99%',
+  //     panelClass: 'image-dialog'
+  //   });
+
+  //   // this.subs.add(
+  //   //   dialogRef.afterClosed().subscribe(
+  //   //     _ => this.store$.dispatch(new uiStore.SetIsBrowseDialogOpen(false))
+  //   //   )
+  //   // );
+  //   return new uiStore.SetIsBrowseDialogOpen(!!isImageBrowseOpen);
+  // }
 
   private updateShouldSearch(): void {
     this.store$.select(scenesStore.getAreResultsLoaded).pipe(
