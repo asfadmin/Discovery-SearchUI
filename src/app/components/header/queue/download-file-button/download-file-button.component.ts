@@ -21,6 +21,10 @@ export class DownloadFileButtonComponent implements OnInit, AfterViewInit {
   public fileName: string;
   public hiddenPrefix = 'xyxHidden-';
 
+  public observable$: any;
+  public subscription: any;
+
+
   constructor(
     private downloadService: DownloadService,
   ) {}
@@ -73,21 +77,45 @@ export class DownloadFileButtonComponent implements OnInit, AfterViewInit {
       return;
     }
 
-    this.downloadService.download(this.url, this.fileName).subscribe(resp => {
-      this.dFile = resp;
-      console.log('this.dFile:', this.dFile);
+    // keep the observerble
+    //
+    // let observable$ = this.existingForm.valueChanges;
+    //
+    // start or restart
+    //
+    // let subscription = observable$.subscribe();
+    //
+    // stop
+    //
+    // subscription.unsubscribe();
 
-      if (resp.state === 'PENDING') {
-        this.fileName = resp.id;
-        console.log('download-file-button state PENDING this.filename', this.fileName);
-      }
+    // this.downloadService.download(this.url, this.fileName).subscribe(resp => {
 
-      if (resp.state === 'DONE') {
-        this.dlInProgress = false;
-        this.dlComplete = true;
-        this.productDownloaded.emit( product );
+
+    this.observable$ = this.downloadService.download(this.url, this.fileName);
+    this.subscription = this.observable$.subscribe( resp => this.processSubscription(resp, product, true));
+    this.observable$ = this.downloadService.download(this.url, this.fileName);
+    this.subscription = this.observable$.subscribe( resp => this.processSubscription(resp, product, false));
+  }
+
+  private processSubscription(resp, product, headerOnly) {
+    this.dFile = resp;
+    console.log('this.dFile:', this.dFile);
+
+    if (resp.state === 'PENDING') {
+      this.fileName = resp.id;
+      console.log('download-file-button state PENDING this.filename', this.fileName);
+      if (headerOnly) {
+        console.log('processSubscription() unsubscribing now');
+        this.subscription.unsubscribe();
       }
-    });
+    }
+
+    if (resp.state === 'DONE') {
+      this.dlInProgress = false;
+      this.dlComplete = true;
+      this.productDownloaded.emit(product);
+    }
   }
 
   public hijackDownloadClick( event: MouseEvent, hiddenID ) {
