@@ -341,7 +341,7 @@ export function filtersReducer(state = initState, action: FiltersActions): Filte
           end: metadata.path
         },
         selectedMission: metadata.missionName,
-        selectedDatasetId: action.payload.dataset.id,
+        selectedDatasetId: action.payload.dataset.id ?? 'SENTINEL-1',
       };
     }
 
