@@ -46,13 +46,13 @@ export class UrlStateService {
   ) {
     const params = [
       ...this.datasetParam(),
-      ...this.eventMonitorParameters(),
       ...this.mapParameters(),
       ...this.uiParameters(),
       ...this.filtersParameters(),
       ...this.missionParameters(),
       ...this.baselineParameters(),
       ...this.sbasParameters(),
+      ...this.eventMonitorParameters(),
     ];
 
     this.urlParamNames = params.map(param => param.name);
@@ -194,9 +194,9 @@ export class UrlStateService {
     return [{
       name: 'eventID',
       source: this.store$.select(scenesStore.getSelectedSarviewsEvent).pipe(
-        filter(event => !!event),
+        // filter(event => !!event),
         map(event => ({
-          eventID: event.event_id
+          eventID: event?.event_id ?? ''
         }))
       ),
       loader: this.loadEventID

@@ -445,6 +445,7 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
 
   public onClearSearch(): void {
     this.store$.dispatch(new scenesStore.ClearScenes());
+    this.store$.dispatch(new scenesStore.SetSelectedSarviewsEvent(''));
     this.store$.dispatch(new uiStore.CloseResultsMenu());
 
     this.searchService.clear(this.searchType);

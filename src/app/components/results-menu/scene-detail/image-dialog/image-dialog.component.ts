@@ -198,6 +198,7 @@ export class ImageDialogComponent implements OnInit, AfterViewInit, OnDestroy {
         filter(([_, searchtype]) => searchtype === models.SearchType.SARVIEWS_EVENTS),
         map(([products, _]) => products),
         filter(products => !!products),
+        filter(products => products.length > 0),
         debounceTime(500),
         first(),
       ).subscribe(

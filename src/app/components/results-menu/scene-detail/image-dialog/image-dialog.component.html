@@ -129,12 +129,12 @@
           <ng-container>
             <div class="detail-header">Event Details</div>
             <ul style="columns: 1; font-size: 12px;">
-              <li *ngIf="sarviewsEvent">{{sarviewsEvent.event_type === 'quake'
+              <li *ngIf="!!sarviewsEvent">{{sarviewsEvent.event_type === 'quake'
                 ? 'usgs id: ' + (sarviewsEvent | quakeEvent).usgs_event_id
                 : 'smithsonian id: ' + (sarviewsEvent | volcanicEvent).smithsonian_event_id}}
                  </li>
                  <li>
-                  description: {{sarviewsEvent.description}}
+                  description: {{sarviewsEvent?.description}}
                  </li>
             </ul>
 
