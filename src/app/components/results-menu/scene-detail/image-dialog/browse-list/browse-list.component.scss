@@ -1,3 +1,9 @@
+@use '~@angular/material' as mat;
+
+@import "asf-theme";
+
+$config: mat.define-typography-config();
+
 .browse-list-viewport .cdk-virtual-scroll-content-wrapper {
   display: flex;
   flex-direction: row;
@@ -31,4 +37,12 @@
   height: 18px;
   font-size: small;
   margin-bottom: 5px;
+}
+
+.browse-list {
+  min-height: 140px;
+  border-top-color: $asf-primary-dark;
+  border-top-style: solid;
+  border-top-width: 1px;
+  background-color: $asf-primary-light;
 }

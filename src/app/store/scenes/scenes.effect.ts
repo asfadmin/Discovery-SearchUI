@@ -52,7 +52,7 @@ export class ScenesEffects {
     ofType<SetSelectedSarviewsEvent>(ScenesActionType.SET_SELECTED_SARVIEWS_EVENT),
     distinctUntilChanged(),
     switchMap(action => this.sarviewsService.getEventFeature(action.payload)),
-    map(processedEvent => new SetSarviewsEventProducts(processedEvent.products))
+    map(processedEvent => new SetSarviewsEventProducts(!!processedEvent.products ? processedEvent.products : []))
   ));
   private showUnzipApiLoadError(product: CMRProduct): void {
     this.notificationService.error(
