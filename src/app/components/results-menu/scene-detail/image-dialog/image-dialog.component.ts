@@ -2,7 +2,9 @@ import { Component, OnInit, AfterViewInit, OnDestroy } from '@angular/core';
 import { MatDialogRef } from '@angular/material/dialog';
 import { SubSink } from 'subsink';
 
-import { filter, map, tap, debounceTime, first, distinctUntilChanged, delay, withLatestFrom } from 'rxjs/operators';
+import { filter, map, tap, debounceTime, first,
+  // distinctUntilChanged,
+  delay, withLatestFrom } from 'rxjs/operators';
 import { Store } from '@ngrx/store';
 
 import { AppState } from '@store';
@@ -14,7 +16,9 @@ import * as searchStore from '@store/search';
 import * as models from '@models';
 import { BrowseMapService, DatasetForProductService, SarviewsEventsService } from '@services';
 import * as services from '@services/index';
-import { SarviewProductGranule, SarviewsProduct } from '@models';
+import {
+  // Breakpoints,
+  SarviewProductGranule, SarviewsProduct } from '@models';
 import { ClipboardService } from 'ngx-clipboard';
 import { MatSliderChange } from '@angular/material/slider';
 import { PinnedProduct } from '@services/browse-map.service';
@@ -47,8 +51,9 @@ export class ImageDialogComponent implements OnInit, AfterViewInit, OnDestroy {
   public currentBrowse = null;
   public paramsList: any;
 
-  public breakpoint$ = this.screenSize.breakpoint$.pipe(distinctUntilChanged((a, b) => a === b));
+  public breakpoint$ = this.screenSize.breakpoint$;
   public breakpoints = models.Breakpoints;
+  public breakpoint: models.Breakpoints = models.Breakpoints.FULL;
 
   private image: HTMLImageElement = new Image();
   private subs = new SubSink();
@@ -67,6 +72,11 @@ export class ImageDialogComponent implements OnInit, AfterViewInit, OnDestroy {
   ) { }
 
   ngOnInit() {
+    this.subs.add(
+      this.breakpoint$.subscribe(
+        breakpoint => this.breakpoint = breakpoint
+      )
+    )
     this.subs.add(
       this.store$.select(scenesStore.getSelectedSceneProducts).subscribe(
         products => {

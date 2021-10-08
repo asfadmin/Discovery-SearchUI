@@ -1,5 +1,5 @@
-<ng-container fxFlex class="browse-list" *ngIf="searchtype !== searchTypes.SARVIEWS_EVENTS; else sarviewsScroll">
-<cdk-virtual-scroll-viewport orientation="horizontal" class="browse-list-viewport w100 h100" itemSize="140">
+<ng-container class="browse-list" *ngIf="searchtype !== searchTypes.SARVIEWS_EVENTS; else sarviewsScroll">
+<cdk-virtual-scroll-viewport style="height: 150px;" orientation="horizontal" class="browse-list-viewport w100 h100" itemSize="140">
   <div *cdkVirtualFor="let scene of (scenes$ | async)"
     (click)="onNewSceneSelected(scene)"
     [class.selected]="scene.id === selectedId"
@@ -21,8 +21,8 @@
 </cdk-virtual-scroll-viewport>
 </ng-container>
 
-<ng-template fxFlex class="browse-list" #sarviewsScroll>
-<cdk-virtual-scroll-viewport orientation="horizontal" class="browse-list-viewport w100 h100" itemSize="140" >
+<ng-template class="browse-list" #sarviewsScroll>
+<cdk-virtual-scroll-viewport style="height: 150px;" orientation="horizontal" class="browse-list-viewport w100 h100" itemSize="140" >
 <div *cdkVirtualFor="let product of sarviewsProducts"
 (click)="onNewProductSelected(product)"
 [class.selected]="product.product_id === selectedProductId"
