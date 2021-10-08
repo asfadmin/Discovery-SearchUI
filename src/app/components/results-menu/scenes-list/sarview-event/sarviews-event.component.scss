@@ -1,0 +1,27 @@
+.event-header {
+  font-weight: bold;
+  font-size: 18px;
+  width: 66%;
+  // display: flex !important;
+  // flex-direction: row;
+  // justify-content: space-between;
+
+  .event-header-date {
+    font-weight: bold;
+    font-size: 14px;
+  }
+}
+
+.event-header-spacer {
+  flex-grow: 2;
+}
+
+.event-type {
+  font-size: 12px;
+}
+
+// .event-row {
+//   display: flex !important;
+//   flex-direction: column !important;
+//   width: 100% !important;
+// }

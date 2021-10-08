@@ -20,8 +20,10 @@ export class DesktopResultsMenuComponent implements OnInit, OnDestroy {
 
   public selectedProducts$ = this.store$.select(scenesStore.getSelectedSceneProducts);
   public scenesLength;
+  public sarviewsEventsLength;
   public breakpoint: models.Breakpoints;
   public breakpoints = models.Breakpoints;
+  public sarviewsEvents$ = this.store$.select(scenesStore.getSarviewsEvents);
 
   private subs = new SubSink();
 
@@ -40,6 +42,11 @@ export class DesktopResultsMenuComponent implements OnInit, OnDestroy {
     this.subs.add(
       this.scenesService.scenes$().subscribe(
         scenes => this.scenesLength = scenes.length
+      )
+    );
+    this.subs.add(
+      this.sarviewsEvents$.subscribe(
+        events => this.sarviewsEventsLength = events.length
       )
     );
   }

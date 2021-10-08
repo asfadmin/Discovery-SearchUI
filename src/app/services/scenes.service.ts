@@ -8,10 +8,13 @@ import { AppState } from '@store/app.reducer';
 import {
   getAllProducts, getScenes, getTemporalSortDirection,
   getPerpendicularSortDirection,
+  getSarviewsEvents,
 } from '@store/scenes/scenes.reducer';
 import {
   getTemporalRange, getPerpendicularRange, getDateRange,
-  getProductTypes, getProjectName, getJobStatuses, getProductNameFilter, getSeason
+  getProductTypes, getProjectName, getJobStatuses,
+  getProductNameFilter, getSeason, getSarviewsEventNameFilter,
+  getSarviewsEventTypes, getSarviewsEventActiveFilter, getSarviewsMagnitudeRange
 } from '@store/filters/filters.reducer';
 import { getShowS1RawData, getShowExpiredData } from '@store/ui/ui.reducer';
 import { getSearchType } from '@store/search/search.reducer';
@@ -19,7 +22,7 @@ import { getSearchType } from '@store/search/search.reducer';
 import {
   CMRProduct, SearchType,
   Range, ColumnSortDirection,
-  Hyp3Job, Hyp3JobStatusCode
+  Hyp3Job, Hyp3JobStatusCode, SarviewsEvent, SarviewsQuakeEvent, SarviewsVolcanicEvent
 } from '@models';
 import { NotificationService } from './notification.service';
 
@@ -57,6 +60,23 @@ export class ScenesService {
           this.store$.select(getScenes)
     ))))))));
   }
+
+  public sarviewsEvents$(): Observable<SarviewsEvent[]> {
+    return (
+      this.filterByEventMagnitude$(
+      this.filterSarviewsEventsByName$(
+        this.filterByEventType$(
+        this.filterByEventDate$(
+          this.filterByEventActivity$(
+                this.store$.select(getSarviewsEvents)
+              )
+            )
+          )
+        )
+      )
+    );
+  }
+
 
   public withBrowses$(scenes$: Observable<CMRProduct[]>): Observable<CMRProduct[]> {
     return scenes$.pipe(
@@ -395,6 +415,146 @@ export class ScenesService {
         return scenes;
       }
       )
+    );
+  }
+
+  public filterSarviewsEventsByName$(events$: Observable<SarviewsEvent[]>) {
+    return combineLatest(
+      [
+        events$,
+        this.store$.select(getSarviewsEventNameFilter).pipe(
+            map(nameFilter => nameFilter?.toLowerCase()),
+          )
+      ]
+    ).pipe(
+      map(([events, nameFilter]) => {
+        if (nameFilter === null || nameFilter === undefined || nameFilter === '') {
+          return events;
+        }
+
+        return events.filter(
+          event => {
+            const isQuake = event.event_type.toLowerCase() === 'quake';
+            const isVolcano = event.event_type.toLowerCase() === 'volcano';
+
+            return event.description.toLowerCase().includes(nameFilter)
+            || event.event_id.toLowerCase().includes(nameFilter)
+            || event.event_type.toLowerCase().includes(nameFilter)
+            || (!isVolcano ? (isQuake ? (event as SarviewsQuakeEvent).usgs_event_id?.includes(nameFilter) :
+            true)
+            : (event as SarviewsVolcanicEvent).smithsonian_event_id?.includes(nameFilter));
+            });
+      }
+      )
+    );
+  }
+
+  private filterByEventDate$(events$: Observable<SarviewsEvent[]>) {
+    return combineLatest([
+      events$,
+      this.store$.select(getDateRange),
+    ]
+    ).pipe(
+      debounceTime(0),
+      map(
+        ([events, dateRange]) => {
+          const range = {
+            start: moment(dateRange.start),
+            end: moment(dateRange.end)
+          };
+
+          if (dateRange.start === null && dateRange.end === null) {
+            return events;
+          }
+
+          return events.filter(scene => {
+            if (dateRange.start === null && dateRange.end !== null) {
+              return moment(scene.processing_timeframe.end) <= range.end ;
+            } else if (dateRange.start !== null && dateRange.end === null) {
+              return moment(scene.processing_timeframe.start) >= range.start ;
+            } else {
+              return (
+                moment(scene.processing_timeframe.start) >= range.start  &&
+                moment(scene.processing_timeframe.end) <= range.end
+              );
+            }
+          });
+        }
+
+      )
+    );
+  }
+
+  private filterByEventType$(events$: Observable<SarviewsEvent[]>) {
+    return combineLatest([
+      events$,
+      this.store$.select(getSarviewsEventTypes)
+    ]).pipe(
+      map(
+        ([events, types]) => {
+          if (types.length === 0) {
+            return events;
+          }
+
+          return events.filter(event => !!types.find(t => t === event.event_type.toLowerCase()));
+        }
+      )
+    );
+  }
+
+  private filterByEventActivity$(events$: Observable<SarviewsEvent[]>) {
+    return combineLatest([
+      events$,
+      this.store$.select(getSarviewsEventActiveFilter)
+    ]).pipe(
+      map(([events, activeOnly]) => {
+        if (!activeOnly) {
+          return events;
+        }
+
+        const currentDate = new Date();
+
+        return events.filter( event => {
+          if (!!event.processing_timeframe.end) {
+            if (currentDate <= event.processing_timeframe.end) {
+              return true;
+            }
+          } else {
+            return true;
+          }
+          return false;
+        });
+      })
+    );
+  }
+
+  private filterByEventMagnitude$(events$: Observable<SarviewsEvent[]>) {
+    return combineLatest([
+      events$,
+      this.store$.select(getSarviewsMagnitudeRange),
+    ]).pipe(
+      map(([events, magRange]) => {
+        {
+          if (!magRange.start && !magRange.end) {
+            return events;
+          } else if (magRange.start === 0 && magRange.end === 10) {
+            return events;
+          }
+
+          return events.filter(event => {
+            if (event.event_type.toLowerCase() === 'quake') {
+              const magEvent = <SarviewsQuakeEvent>event;
+              const start = !!magRange.start ? magRange.start : 0;
+              const end = !!magRange.end ? magRange.end : 10;
+
+              return magEvent.magnitude <= end && magEvent.magnitude >= start;
+            }
+
+            return true;
+            }
+          );
+        }
+      })
     );
   }
 }

@@ -1,0 +1,25 @@
+<form #eventsQueryForm="ngForm">
+  <mat-form-field>
+    <input type="text"
+    placeholder="Event Search"
+    (input)="onSearchQueryChange($event)"
+    matInput
+    [(ngModel)]="eventQuery"
+    [ngModelOptions]="{standalone: true}"
+    [matAutocomplete]="jobNameSelector"
+    >
+  </mat-form-field>
+  <mat-autocomplete
+    [panelWidth] = "500"
+    (optionSelected)="onMatAutoCompleteSelect($event)"
+    #jobNameSelector="matAutocomplete">
+    <mat-option *ngFor="let event of (filteredEvents$ | async)"
+        [value]="event.description">
+        <div matTooltip = 'event description, id, or type'>
+            <span>
+              {{event.description}}
+            </span>
+        </div>
+    </mat-option>
+  </mat-autocomplete>
+</form>

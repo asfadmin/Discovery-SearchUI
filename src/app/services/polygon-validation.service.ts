@@ -85,7 +85,7 @@ export class PolygonValidationService {
 
     const { report, type }  = resp.repairs.pop();
 
-    if (type !== models.PolygonRepairTypes.WRAP) {
+    if (type !== models.PolygonRepairTypes.WRAP && type !== models.PolygonRepairTypes.REVERSE) {
       this.notificationService.info(
         report, type,
         { timeOut: 4000, }
