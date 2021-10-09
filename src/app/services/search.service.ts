@@ -35,6 +35,7 @@ export class SearchService {
       new filterStore.ClearPerpendicularRange(),
       new filterStore.ClearTemporalRange(),
       new filterStore.ClearSeason(),
+      new filterStore.ClearSarviewsMagnitudeRange(),
       new uiStore.CloseFiltersMenu(),
     ];
 
@@ -91,6 +92,7 @@ export class SearchService {
       const filters = <models.SarviewsFiltersType>search.filters;
       const pinnedProductIds = filters.pinnedProductIDs;
       // if(!!filters.selectedEventID) {
+      // this.store$.dispatch(new scene)
       this.store$.dispatch(new scenesStore.SetSelectedSarviewsEvent(filters.selectedEventID));
 
         if(!!pinnedProductIds) {

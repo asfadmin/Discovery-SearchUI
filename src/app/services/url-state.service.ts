@@ -375,6 +375,13 @@ export class UrlStateService {
         map(flightDirs => ({ flightDirs }))
       ),
       loader: this.loadFlightDirections
+    }, {
+      name: 'magnitude',
+      source: this.store$.select(filterStore.getSarviewsMagnitudeRange).pipe(
+        map(range => this.rangeService.toStringWithNegatives(range)),
+        map(magnitudeRange => ({magnitude: magnitudeRange}))
+      ),
+      loader: this.loadMagnitudeRange
     }];
   }
 
@@ -685,6 +692,17 @@ export class UrlStateService {
 
   private loadIsOnDemandQueueOpen = (isOnDemandQueueOpen: string): Action => {
     return new uiStore.SetIsOnDemandQueueOpen(!!isOnDemandQueueOpen);
+  }
+
+  private loadMagnitudeRange = (rangeStr: string): Action => {
+    const range = rangeStr
+    .split('to')
+    .map(v => +v);
+
+  return new filterStore.SetSarviewsMagnitudeRange({
+    start: range[0],
+    end: range[1]
+  });
   }
 
   // private loadIsImageBrowseOpen = (isImageBrowseOpen: string): Action => {
