@@ -382,6 +382,19 @@ export class UrlStateService {
         map(magnitudeRange => ({magnitude: magnitudeRange}))
       ),
       loader: this.loadMagnitudeRange
+    }, {
+      name: 'activeEvents',
+      source: this.store$.select(filterStore.getSarviewsEventActiveFilter).pipe(
+        map(activeEvents => ({activeEvents}))
+      ),
+      loader: this.loadOnlyActiveEvents
+    }, {
+      name: 'eventTypes',
+      source: this.store$.select(filterStore.getSarviewsEventTypes).pipe(
+        map(types => types.join(',')),
+        map(eventTypes => ({eventTypes}))
+      ),
+      loader: this.loadEventTypes
     }];
   }
 
@@ -704,6 +717,17 @@ export class UrlStateService {
     end: range[1]
   });
   }
+
+  private loadEventTypes = (eventTypesStr: string): Action => {
+    const eventTypes: models.SarviewsEventType[] = eventTypesStr
+      .split(',')
+      .filter(direction => !Object.values(models.SarviewsEventType).includes(<models.SarviewsEventType>direction))
+      .map(direction => <models.SarviewsEventType>direction);
+
+    return new filterStore.SetSarviewsEventTypes(eventTypes);
+  }
+
+  private loadOnlyActiveEvents = (activeOnly: boolean): Action => new filterStore.SetSarviewsEventActiveFilter(activeOnly);
 
   // private loadIsImageBrowseOpen = (isImageBrowseOpen: string): Action => {
   //   this.dialog.open(ImageDialogComponent, {
