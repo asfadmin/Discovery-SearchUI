@@ -721,7 +721,7 @@ export class UrlStateService {
   private loadEventTypes = (eventTypesStr: string): Action => {
     const eventTypes: models.SarviewsEventType[] = eventTypesStr
       .split(',')
-      .filter(direction => !Object.values(models.SarviewsEventType).includes(<models.SarviewsEventType>direction))
+      .filter(direction => !Object.values(models.SarviewsEventType).includes(models.SarviewsEventType[direction]))
       .map(direction => <models.SarviewsEventType>direction);
 
     return new filterStore.SetSarviewsEventTypes(eventTypes);
