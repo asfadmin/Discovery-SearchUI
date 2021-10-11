@@ -328,7 +328,7 @@ export function filtersReducer(state = initState, action: FiltersActions): Filte
     }
 
     case FiltersActionType.SET_FILTERS_SIMILAR_TO: {
-      const metadata = action.payload.metadata;
+      const metadata = action.payload.product.metadata;
 
       return {
         ...state,
@@ -341,6 +341,7 @@ export function filtersReducer(state = initState, action: FiltersActions): Filte
           end: metadata.path
         },
         selectedMission: metadata.missionName,
+        selectedDatasetId: action.payload.dataset.id ?? 'SENTINEL-1',
       };
     }
 
