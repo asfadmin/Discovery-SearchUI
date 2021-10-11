@@ -123,7 +123,7 @@ export class DownloadFileButtonComponent implements OnInit, AfterViewInit {
       this.productDownloaded.emit(product);
     }
 
-    return true
+    return true;
   }
 
   public hijackDownloadClick( event: MouseEvent, hiddenID ) {
