@@ -29,7 +29,7 @@ export class SarviewsEventSearchSelectorComponent implements OnInit, OnDestroy {
       this.store$.select(filterStore.getSarviewsEventNameFilter).subscribe(
         nameFilter => this.eventQuery = nameFilter
       )
-    )
+    );
   }
 
   ngOnDestroy(): void {
