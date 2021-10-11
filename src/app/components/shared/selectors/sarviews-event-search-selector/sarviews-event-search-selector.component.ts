@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 import { Store } from '@ngrx/store';
@@ -6,37 +6,35 @@ import { ScenesService } from '@services';
 import { AppState } from '@store';
 
 import * as filterStore from '@store/filters';
+import { SubSink } from 'subsink';
 @Component({
   selector: 'app-sarviews-event-search-selector',
   templateUrl: './sarviews-event-search-selector.component.html',
   styleUrls: ['./sarviews-event-search-selector.component.scss']
 })
-export class SarviewsEventSearchSelectorComponent implements OnInit {
+export class SarviewsEventSearchSelectorComponent implements OnInit, OnDestroy {
   @ViewChild('eventsQueryForm') public eventsQueryForm: NgForm;
-  public eventQuery = '';
 
   public filteredEvents$ = this.sceneService.sarviewsEvents$();
+
+  public eventQuery = '';
+
+  private subs = new SubSink();
+
   constructor(private store$: Store<AppState>,
               private sceneService: ScenesService) { }
 
   ngOnInit(): void {
+    this.subs.add(
+      this.store$.select(filterStore.getSarviewsEventNameFilter).subscribe(
+        nameFilter => this.eventQuery = nameFilter
+      )
+    )
   }
 
-  // public onProjectNameChange(event: Event): void {
-  //   let projectName = (event.target as HTMLInputElement).value;
-  //   if (projectName.length > 20) {
-  //     projectName = null;
-  //     this.nameErrors$.next();
-  //   }
-
-  //   this.projectName = projectName;
-
-  //   const action = (!this.processName) ?
-  //     new filtersStore.SetProjectName(projectName === '' ? null : projectName) :
-  //     new hyp3Store.SetProcessingProjectName(projectName);
-
-  //   this.store$.dispatch(action);
-  // }
+  ngOnDestroy(): void {
+    this.subs.unsubscribe();
+  }
 
   public onMatAutoCompleteSelect(event: MatAutocompleteSelectedEvent) {
     const eventDescription = event.option.value;
