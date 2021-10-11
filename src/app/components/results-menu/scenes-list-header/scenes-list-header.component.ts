@@ -2,7 +2,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { saveAs } from 'file-saver';
 
 import { combineLatest } from 'rxjs';
-import { debounceTime, map } from 'rxjs/operators';
+import { debounceTime, filter, map } from 'rxjs/operators';
 import { Store } from '@ngrx/store';
 
 import { AppState } from '@store';
@@ -19,6 +19,9 @@ import {
 
 import * as models from '@models';
 import { SubSink } from 'subsink';
+import { CMRProductMetadata, hyp3JobTypes, SarviewsProduct } from '@models';
+import * as moment from 'moment';
+import { AddItems } from '@store/queue';
 
 @Component({
   selector: 'app-scenes-list-header',
@@ -29,14 +32,20 @@ export class ScenesListHeaderComponent implements OnInit, OnDestroy {
   public totalResultCount$ = this.store$.select(searchStore.getTotalResultCount);
   public numberOfScenes$ = this.store$.select(scenesStore.getNumberOfScenes);
   public numberOfProducts$ = this.store$.select(scenesStore.getNumberOfProducts);
+  public numberOfFilteredEvents$ = this.scenesService.sarviewsEvents$().pipe(
+    filter(events => !!events),
+    map(events => events.length));
+  public numSarviewsScenes$ = this.store$.select(scenesStore.getNumberOfSarviewsEvents);
   public products = [];
   public downloadableProds = [];
+  public sarviewsEventProducts: SarviewsProduct[] = [];
   public numBaselineScenes$ = this.scenesService.scenes$().pipe(
     map(scenes => scenes.length),
   );
   public numPairs$ = this.pairService.pairs$().pipe(
     map(pairs => pairs.pairs.length + pairs.custom.length)
   );
+
   public pairs: models.CMRProductPair[];
   public sbasProducts: models.CMRProduct[] = [];
   public queuedProducts: models.CMRProduct[];
@@ -154,6 +163,12 @@ export class ScenesListHeaderComponent implements OnInit, OnDestroy {
         products => this.queuedProducts = products
         )
     );
+
+    this.subs.add(
+      this.store$.select(scenesStore.getSelectedSarviewsEventProducts).subscribe(
+        products => this.sarviewsEventProducts = products
+      )
+    );
   }
 
   public onZoomToResults(): void {
@@ -246,6 +261,46 @@ export class ScenesListHeaderComponent implements OnInit, OnDestroy {
 
   public onMakeDownloadScript(products: models.CMRProduct[]): void {
     this.store$.dispatch(new queueStore.MakeDownloadScriptFromList(products));
+  }
+
+  public onMakeSarviewsProductDownloadScript(products: models.SarviewsProduct[]): void {
+    this.store$.dispatch(new queueStore.MakeDownloadScriptFromSarviewsProducts(products));
+  }
+
+  public onQueueSarviewsProducts(products: models.SarviewsProduct[]): void {
+    const jobTypes = Object.values(hyp3JobTypes);
+    const toCMRProducts: models.CMRProduct[] = products.map(
+      prod => {
+
+        const job = jobTypes.find(t => t.id === prod.job_type);
+        const productTypeDisplay = `${job.name}, ${job.productTypes[0].productTypes[0]}`;
+        const output: models.CMRProduct = {
+          name: prod.files.product_name,
+          productTypeDisplay,
+          file: '',
+          id: prod.product_id,
+          downloadUrl: prod.files.product_url,
+          bytes: prod.files.product_size,
+          browses: [prod.files.browse_url],
+          thumbnail: prod.files.thumbnail_url,
+          dataset: 'Sentinel-1',
+          groupId: 'SARViews',
+          isUnzippedFile: false,
+
+          metadata: {
+            date: moment(prod.processing_date),
+            stopDate: moment(prod.processing_date),
+            polygon: prod.granules[0].wkt,
+            productType: job.name,
+
+          } as CMRProductMetadata
+        };
+
+        return output;
+
+      }
+    );
+    this.store$.dispatch(new AddItems(toCMRProducts));
   }
 
   public onMetadataExport(format: models.AsfApiOutputFormat): void {

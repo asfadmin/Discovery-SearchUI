@@ -405,6 +405,12 @@ ul {
   background: $asf-blue;
 }
 
+
+.slider [disabled] .noUi-connect {
+  color: grey !important;
+}
+
+
 // for the sbas chart
 
 .noUi-handle {

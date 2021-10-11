@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 
-import { ActiveToast, ToastrService } from 'ngx-toastr';
+import { ActiveToast, IndividualConfig, ToastrService } from 'ngx-toastr';
 
 import * as uiStore from '@store/ui';
 import { AppState } from '@store';
@@ -14,7 +14,7 @@ export class NotificationService {
   constructor(private toastr: ToastrService, private store$: Store<AppState>) {}
 
   // Custom toastr config example, toastClass styling in styles.scss
-  private toastOptions = {
+  private toastOptions: Partial<IndividualConfig> = {
     // toastClass: 'pinkToast',
     // toastComponent: ToastrMessageComponent
   };
@@ -114,11 +114,11 @@ export class NotificationService {
     errorToast.onTap.pipe(take(1)).subscribe(_ => window.open(`https://docs.asf.alaska.edu/vertex/manual/#list-search-file-import`));
   }
 
-  public info(message: string, title = '', options = {}): ActiveToast<any> {
+  public info(message: string, title = '', options: Partial<IndividualConfig> = {}): ActiveToast<any> {
     return this.toastr.info(message, title, {...options, ...this.toastOptions});
   }
 
-  public error(message: string, title = '', options = {}): ActiveToast<any> {
+  public error(message: string, title = '', options: Partial<IndividualConfig> = {}): ActiveToast<any> {
     return this.toastr.warning(message, title, {...options, ...this.toastOptions});
   }
 }

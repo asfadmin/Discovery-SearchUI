@@ -72,7 +72,16 @@ export enum FiltersActionType {
 
   TOGGLE_50_PERCENT_OVERLAP = '[Filters] Toggles SBAS 50 Percent Overlap Check',
   SET_SBAS_OVERLAP_THRESHOLD = '[Filters] Set SBAS Pair Overlap Threshold',
-  SET_DEFAULT_FILTERS = '[Filters] Set User Profile Default Filters'
+  SET_DEFAULT_FILTERS = '[Filters] Set User Profile Default Filters',
+
+  SET_SARVIEWS_EVENT_TYPES = '[Filters] Set SARViews event types',
+  SET_SARVIEWS_EVENT_NAME_FILTER = '[Filters] Set SARViews event name filter',
+  SET_SARVIEWS_EVENT_ACTIVE_FILTER = '[Filters] Set SARViews event active processing filter',
+  SET_SARVIEWS_MAGNITUDE_START = '[Filters] Set SARViews quake event magnitude range filter start',
+  SET_SARVIEWS_MAGNITUDE_END = '[Filters] Set SARViews quake event magnitude range filter end',
+  SET_SARVIEWS_MAGNITUDE_RANGE = '[Filters] Set SARViews quake event magnitude range filter',
+  CLEAR_SARVIEWS_MAGNITUDE_RANGE = '[Filters] Clear SARViews quake event magnitude range',
+
 }
 
 export class SetSelectedDataset implements Action {
@@ -200,7 +209,7 @@ export class ClearFrameRange implements Action {
 export class SetFiltersSimilarTo implements Action {
   public readonly type = FiltersActionType.SET_FILTERS_SIMILAR_TO;
 
-  constructor(public payload: models.CMRProduct) {}
+  constructor(public payload: {product: models.CMRProduct, dataset: models.Dataset}) {}
 }
 
 export class SetProductTypes implements Action {
@@ -328,6 +337,47 @@ export class SetSBASOverlapThreshold implements Action {
 
   constructor(public payload: SBASOverlap) {}
 }
+
+export class SetSarviewsEventTypes implements Action {
+  public readonly type = FiltersActionType.SET_SARVIEWS_EVENT_TYPES;
+
+  constructor(public payload: models.SarviewsEventType[]) {}
+}
+
+export class SetSarviewsEventNameFilter implements Action {
+  public readonly type = FiltersActionType.SET_SARVIEWS_EVENT_NAME_FILTER;
+
+  constructor(public payload: string) {}
+}
+
+export class SetSarviewsEventActiveFilter implements Action {
+  public readonly type = FiltersActionType.SET_SARVIEWS_EVENT_ACTIVE_FILTER;
+
+  constructor(public payload: boolean) {}
+}
+
+export class SetSarviewsMagnitudeStart implements Action {
+  public readonly type = FiltersActionType.SET_SARVIEWS_MAGNITUDE_START;
+
+  constructor(public payload: number) {}
+}
+
+export class SetSarviewsMagnitudeEnd implements Action {
+  public readonly type = FiltersActionType.SET_SARVIEWS_MAGNITUDE_END;
+
+  constructor(public payload: number) {}
+}
+
+export class SetSarviewsMagnitudeRange implements Action {
+  public readonly type = FiltersActionType.SET_SARVIEWS_MAGNITUDE_RANGE;
+
+  constructor(public payload: models.Range<number>) {}
+}
+
+export class ClearSarviewsMagnitudeRange implements Action {
+  public readonly type = FiltersActionType.CLEAR_SARVIEWS_MAGNITUDE_RANGE;
+}
+
 export class SetDefaultFilters implements Action {
   public readonly type = FiltersActionType.SET_DEFAULT_FILTERS;
   constructor(public payload: {
@@ -384,4 +434,11 @@ export type FiltersActions =
   | StoreCurrentFilters
   | Toggle50PercentOverlap
   | SetSBASOverlapThreshold
-  | SetDefaultFilters;
+  | SetDefaultFilters
+  | SetSarviewsEventTypes
+  | SetSarviewsEventNameFilter
+  | SetSarviewsEventActiveFilter
+  | SetSarviewsMagnitudeStart
+  | SetSarviewsMagnitudeEnd
+  | SetSarviewsMagnitudeRange
+  | ClearSarviewsMagnitudeRange;

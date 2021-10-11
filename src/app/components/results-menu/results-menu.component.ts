@@ -3,7 +3,7 @@ import { ResizeEvent } from 'angular-resizable-element';
 import { SubSink } from 'subsink';
 
 import { Subject } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { filter, map } from 'rxjs/operators';
 import { Store } from '@ngrx/store';
 import { ScreenSizeService } from '@services';
 
@@ -29,6 +29,13 @@ export class ResultsMenuComponent implements OnInit, OnDestroy {
   public areNoScenes$ = this.store$.select(scenesStore.getScenes).pipe(
     map(scenes => scenes.length === 0)
   );
+
+  public noSarviewsEvents$ = this.store$.select(scenesStore.getSarviewsEvents).pipe(
+    filter(events => events !== undefined && events !== null),
+    map(events => events.length === 0)
+  );
+
+  public imageViewerOpen$ = this.store$.select(uiStore.getIsBrowseDialogOpen);
 
   public resize$ = new Subject<void>();
 
@@ -65,12 +72,6 @@ export class ResultsMenuComponent implements OnInit, OnDestroy {
     this.subs.add(
       this.store$.select(scenesStore.getShowUnzippedProduct).subscribe(
         showUnzippedProduct => this.isUnzipOpen = showUnzippedProduct
-      )
-    );
-
-    this.subs.add(
-      this.store$.select(searchStore.getSearchType).subscribe(
-        searchType => this.searchType = searchType
       )
     );
   }

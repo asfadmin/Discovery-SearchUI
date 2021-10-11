@@ -1,0 +1,43 @@
+<mat-accordion multi>
+  <mat-expansion-panel
+    [expanded]="defaultPanelOpenState" [disabled]="panelIsDisabled"
+    (click)="selectPanel(panels.EVENT_DESCRIPTION)"
+    [class.raised-section]="isSelected(panels.EVENT_DESCRIPTION)">
+
+    <mat-expansion-panel-header [collapsedHeight]="customCollapsedHeight" [expandedHeight]="customExpandedHeight">
+      <mat-panel-title>
+        Search Options
+      </mat-panel-title>
+    </mat-expansion-panel-header>
+    <div style="display: flex; margin-top: 25px;">
+      <app-sarviews-event-active-selector></app-sarviews-event-active-selector>
+    </div>
+    <div style="display: flex; margin-top: 25px;">
+      <app-sarviews-event-search-selector></app-sarviews-event-search-selector>
+    </div>
+    <div style="display: flex; margin-top: 25px;">
+      <app-sarviews-event-type-selector></app-sarviews-event-type-selector>
+    </div>
+    <div style="margin-top: 25px; margin-bottom: 25px; height: 100px;">
+      <app-sarviews-event-magnitude-selector></app-sarviews-event-magnitude-selector>
+    </div>
+  </mat-expansion-panel>
+
+  <mat-expansion-panel [expanded]="defaultPanelOpenState" [disabled]="panelIsDisabled"
+    (click)="selectPanel(panels.DATE)"
+    [class.raised-section]="isSelected(panels.DATE)">
+    <mat-expansion-panel-header [collapsedHeight]="customCollapsedHeight" [expandedHeight]="customExpandedHeight">
+      <mat-panel-title style="align-items: center;">
+        Date Filters
+        <mat-icon (click)="onOpenHelp('https://docs.asf.alaska.edu/vertex/manual/#date-filters')" class="clickable" style="margin-left: 10px;">info</mat-icon>
+      </mat-panel-title>
+    </mat-expansion-panel-header>
+
+    <div style="margin-top: 20px;">
+      <app-date-selector></app-date-selector>
+    </div>
+    <!-- <div style="margin-top: 20px;">
+      <app-season-selector></app-season-selector>
+    </div> -->
+  </mat-expansion-panel>
+</mat-accordion>

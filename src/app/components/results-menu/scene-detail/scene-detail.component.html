@@ -2,6 +2,75 @@
   class="detail-card scrollable"
   [class.scrollable]="isScrollable">
 
+  <div *ngIf="sarviewEvent">
+    <mat-card-header>
+      <mat-card-title class="detail-card-header">
+        <span>{{ sarviewEvent.description[0].toUpperCase() + sarviewEvent.description.slice(1) }}</span>
+
+      </mat-card-title>
+      <mat-card-subtitle class="subtitle">
+        <a [href]="getSarviewsURL()" target="_blank" matTooltip="SARViews Event Page" class="faint-text">
+          SARViews Event
+        </a> •              <app-copy-to-clipboard
+        [value]="getSarviewsURL()"
+        [prompt]="'Copied SARViews Event Link'"
+        style="margin: 0 3px;"
+        class="clipboard-icon">
+      </app-copy-to-clipboard>
+        <span matTooltip="eventType">{{ sarviewEvent.event_type }}</span>
+      </mat-card-subtitle>
+    </mat-card-header>
+
+    <div class="detail-card-info">
+      <p class="faint-text accessing-text" *ngIf="sarviewEvent.event_type === 'quake'">
+        <span>
+        <p>Magnitude: {{(sarviewEvent | quakeEvent).magnitude}}</p>
+        <p>Depth: {{(sarviewEvent | quakeEvent).depth}}</p>
+        <p>USGS id: {{(sarviewEvent | quakeEvent).usgs_event_id}}</p>
+        <p *ngIf="sarviewEvent.processing_timeframe">
+          Start Date: {{sarviewEvent.processing_timeframe.start | shortDateTime}}
+        </p>
+        <p *ngIf="sarviewEvent.processing_timeframe && !isActiveSarviewEvent">
+          End Date: {{sarviewEvent.processing_timeframe.end | shortDateTime}}
+        </p>
+        <a target="_blank" href="{{'https://earthquake.usgs.gov/earthquakes/eventpage/' + (sarviewEvent | quakeEvent).usgs_event_id + '#executive'}}">USGS Event Page</a>
+      </span>
+      </p>
+      <p class="faint-text accessing-text" *ngIf="sarviewEvent.event_type === 'volcano'">
+        <span>
+        <p>Smithsonian id: {{(sarviewEvent | volcanicEvent).smithsonian_event_id}}</p>
+        <p *ngIf="sarviewEvent.processing_timeframe">
+          Start Date: {{sarviewEvent.processing_timeframe.start | shortDateTime}}
+        </p>
+        <p *ngIf="sarviewEvent.processing_timeframe && !isActiveSarviewEvent">
+          End Date: {{sarviewEvent.processing_timeframe.end | shortDateTime}}
+        </p>
+        <a target="_blank" href="{{'http://volcano.si.edu/volcano.cfm?vn=' + (sarviewEvent | quakeEvent).usgs_event_id + '#executive'}}">Smithsonian Entry</a>
+      </span>
+      </p>
+      <!-- <p class="faint-text accessing-text" *ngIf="sarviewEvent.event_type === 'flood'">
+        <span>
+          <p>Description: {{(sarviewEvent | floodEvent).description}}</p>
+          <p *ngIf="sarviewEvent.processing_timeframe">
+            Start Date: {{sarviewEvent.processing_timeframe.start | shortDateTime}}
+          </p>
+          <p *ngIf="sarviewEvent.processing_timeframe && !isActiveSarviewEvent">
+            End Date: {{sarviewEvent.processing_timeframe.end | shortDateTime}}
+          </p>
+        </span>
+      </p> -->
+
+    </div>
+    <div style="display: flex; flex-direction: column;">
+    <div class="sarivews-radius-display">
+      More Like This Search Scale: {{sarviewsEventGeoSearchRadius.toFixed(1)}}
+    </div>
+    <mat-slider style="width: 50%; margin-left: 15px; margin-right: 15px;" min="0.5" max="4" step=".01" (input)="onEventSearchRadiusChange($event)" [value]="sarviewsEventGeoSearchRadius" horizontal></mat-slider>
+  </div>
+  </div>
+
+
+<div *ngIf="searchType !== searchTypes.SARVIEWS_EVENTS">
   <div *ngIf="scene">
     <mat-card-header>
       <mat-card-title class="detail-card-header">
@@ -63,6 +132,7 @@
            </app-scene-metadata>
             </div>
           </div>
+
         </div>
         <div class="browse-container w100" *ngIf="sceneHasBrowse()">
           <div class="banner" fxLayout fxLayout="row" fxLayoutAlign="center">
@@ -107,7 +177,50 @@
     </mat-card-content>
   </div>
 </div>
- <div class="tool-menu" *ngIf="scene && breakpoint$ | async as breakpoint" [ngStyle]="{ 'bottom': breakpoint === breakpoints.SMALL ? '19px' : (breakpoint < breakpoints.SMALL ? '17px' : '0px')}">
+
+<div *ngIf="searchType === searchTypes.SARVIEWS_EVENTS">
+  <div class="browse-container w100" *ngIf="sarviewsEventHasSceneBrowses()">
+    <div class="banner" fxLayout fxLayout="row" fxLayoutAlign="center">
+      <div class="menu-items">
+        <div class="fullscreen clickable" (click)="onOpenImage();" matTooltip="Open in Image Viewer">
+          <mat-icon>preview</mat-icon>
+        </div>
+        <a class="download clickable" [href]="sarviewsProducts[browseIndex].files.product_url" target="_blank" matTooltip="Download this image">
+          <mat-icon>download</mat-icon>
+        </a>
+      </div>
+      <div class="browse-pager" *ngIf="sarviewsProducts">
+        <span
+        [class.clickable]="browseIndex > 0"
+        (click)="browseIndex > 0 && browseIndex = browseIndex - 1"
+        >
+        <mat-icon>arrow_back</mat-icon>
+        </span>
+         {{browseIndex+1}} / {{sarviewsProducts.length}}
+        <span
+          [class.clickable]="browseIndex+1 < sarviewsProducts.length"
+          (click)="browseIndex+1 < sarviewsProducts.length && browseIndex = browseIndex + 1"
+           >
+          <mat-icon>arrow_forward</mat-icon>
+        </span>
+      </div>
+    </div>
+    <div
+      class="img-container">
+      <img
+        class="browse-img fit-to-container"
+        [hidden]="isImageLoading"
+        [src]="sarviewsProducts[browseIndex].files.browse_url"
+        (click)="onOpenImage();"
+        (load)="isImageLoading = false"
+        onerror="this.src='assets/no-browse.png'"
+        [class.clickable]="sarviewsEventHasSceneBrowses()"
+        alt="Sentinel1 scene browse image">
+    </div>
+  </div>
+</div>
+</div>
+ <div class="tool-menu" *ngIf="(scene || sarviewEvent) && breakpoint$ | async as breakpoint" [ngStyle]="{ 'bottom': breakpoint === breakpoints.SMALL ? '19px' : (breakpoint < breakpoints.SMALL ? '17px' : '0px')}">
   <div class="search-button-label">
     SEARCH:
   </div>
@@ -130,7 +243,7 @@
   </button>
 </div>
 
-<div *ngIf="!scene">
+<div *ngIf="!scene && !sarviewEvent">
   <div fxFlex fxLayoutAlign="center" gdAlignColumns="center">
     <span class="faint-text">No Scene Selected</span>
   </div>
