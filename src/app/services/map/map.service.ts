@@ -89,7 +89,7 @@ export class MapService {
   public mapInit$: EventEmitter<Map> = new EventEmitter();
 
   public getEventCoordinate(sarviews_id: string): Point {
-    return this.sarviewsFeaturesByID[sarviews_id].getGeometry() as Point;
+    return this.sarviewsFeaturesByID[sarviews_id]?.getGeometry() as Point ?? null;
   }
 
   public mousePosition$ = this.mousePositionSubject$.pipe(

@@ -37,7 +37,7 @@ export class SarviewsEventsService {
         event => {
           return {
             ...event,
-            processing_timeframe: this.getDates(event),
+            processing_timeframe: !!event.processing_timeframe ? this.getDates(event) : null,
             point: this.getEventPoint(event.wkt),
           } as SarviewsEvent;
         }
@@ -58,7 +58,7 @@ export class SarviewsEventsService {
       map((event: SarviewsProcessedEvent) => {
         return {
           ...event,
-          processing_timeframe: this.getDates(event)
+          processing_timeframe: !!event.processing_timeframe ? this.getDates(event) : null
         };
       })
       );
@@ -107,6 +107,10 @@ export class SarviewsEventsService {
 
   private getDates(event: SarviewsEvent | SarviewsProcessedEvent): Range<Date> {
     const eventDates = event.processing_timeframe;
+
+    if (!eventDates) {
+      return event.processing_timeframe;
+    }
     if (!!eventDates.start) {
       eventDates.start = new Date(eventDates.start);
     }

@@ -86,14 +86,18 @@ export class SavedSearchService {
     this.store$.select(filtersStore.getSarviewsEventNameFilter),
     this.store$.select(filtersStore.getSarviewsEventActiveFilter),
     this.store$.select(getSarviewsMagnitudeRange),
+    this.store$.select(scenesStore.getPinnedEventBrowseIDs),
+    this.store$.select(scenesStore.getSelectedSarviewsEvent).pipe(map(event => event?.event_id ?? '')),
   ).pipe(
     map(([dateRange, sarviewsEventTypes, sarviewsEventNameFilter,
-      activeOnly, magnitude]) => ({
+      activeOnly, magnitude, pinnedProductIDs, selectedEventID]) => ({
       dateRange,
       sarviewsEventTypes,
       sarviewsEventNameFilter,
       activeOnly,
-      magnitude
+      magnitude,
+      pinnedProductIDs,
+      selectedEventID
     })
   )
   );

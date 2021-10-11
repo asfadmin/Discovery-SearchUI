@@ -3,7 +3,7 @@ import { CdkVirtualScrollViewport } from '@angular/cdk/scrolling';
 import { SubSink } from 'subsink';
 
 import { Observable } from 'rxjs';
-import { map, filter, withLatestFrom, tap, switchMap } from 'rxjs/operators';
+import { map, filter, withLatestFrom, tap, switchMap, debounceTime } from 'rxjs/operators';
 
 import { Store } from '@ngrx/store';
 import { AppState } from '@store';
@@ -30,11 +30,14 @@ export class BrowseListComponent implements OnInit, AfterViewInit, OnDestroy {
   public scenes$: Observable<models.CMRProduct[]>;
   public selectedId: string;
   public browses$ = this.store$.select(scenesStore.getSelectedSceneBrowses);
-  public sarviewsProducts$ = this.store$.select(scenesStore.getSelectedSarviewsEventProducts);
-  public sarviewsProducts: models.SarviewsProduct[] = [];
+  public sarviewsProducts$ = this.store$.select(scenesStore.getSelectedSarviewsEventProducts).pipe(
+    filter(products => !!products),
+    debounceTime(500));
+  public sarviewsProducts: models.SarviewsProduct[];
   public selectedProductId: string;
 
   public searchType$ = this.store$.select(searchStore.getSearchType);
+  public searchtype;
   public searchTypes = models.SearchType;
 
   public productBrowseStates: {[product_id in string]: PinnedProduct} = {};
@@ -75,6 +78,11 @@ export class BrowseListComponent implements OnInit, AfterViewInit, OnDestroy {
       )
     );
 
+    this.subs.add(
+      this.searchType$.subscribe(
+        searchtype => this.searchtype = searchtype
+      )
+    );
   }
 
   ngAfterViewInit() {

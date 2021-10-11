@@ -7,6 +7,7 @@ import { Observable, combineLatest } from 'rxjs';
 import {
   map, filter, switchMap, tap,
   withLatestFrom,
+  debounceTime,
 } from 'rxjs/operators';
 
 import { Vector as VectorLayer} from 'ol/layer';
@@ -98,6 +99,7 @@ export class MapComponent implements OnInit, OnDestroy  {
     this.subs.add(
     this.store$.select(getSelectedSarviewsEvent).pipe(
       filter(event => !!event),
+      debounceTime(200),
     ).subscribe( event => {
       const point = this.mapService.getEventCoordinate(event.event_id);
       const coords = point.getCoordinates();
