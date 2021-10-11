@@ -170,31 +170,10 @@ export class SceneFilesComponent implements OnInit, OnDestroy, AfterContentInit 
               this.onUpdatePinnedUrl();
             }
           }
-          // this.selectedProducts = val.map(product => product.product_id).reduce((prev, curr) => {
-          //   prev[curr] = browse_ids.includes(curr);
-          //   return prev;
-          // }, {} as {[product_id in string]: boolean});
 
         }
       )
     );
-
-    // this.subs.add(
-    //   this.store$.select(scenesStore.getPinnedEventBrowseIDs).pipe(skip(1)).subscribe(
-    //     pinnedIDs => {
-    //       if(!this.selectedProducts[pinnedIDs?.[0]] && pinnedIDs.length > 0) {
-    //         this.onUpdatePinnedUrl();
-    //         // this.store$.dispatch(new scenesStore.SetImageBrowseProducts(this.selectedProducts));
-    //       } else {
-    //       // const pinnedObj = pinnedIDs.reduce((prev, curr) => prev[curr] = true, {});
-    //         Object.keys(this.selectedProducts).forEach(
-    //           id => this.selectedProducts[id] = pinnedIDs.includes(id)
-    //         );
-    //       }
-    //       // this.selectedProducts = { ...this.selectedProducts, ...pinnedObj}
-    //     }
-    //   )
-    // )
 
     this.subs.add(
       this.selectedSarviewsEventID$.subscribe(
