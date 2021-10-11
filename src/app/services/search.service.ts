@@ -95,7 +95,7 @@ export class SearchService {
       // this.store$.dispatch(new scene)
       this.store$.dispatch(new scenesStore.SetSelectedSarviewsEvent(filters.selectedEventID));
 
-        if(!!pinnedProductIds) {
+        if (!!pinnedProductIds) {
           this.store$.dispatch(new scenesStore.SetImageBrowseProducts(pinnedProductIds.reduce(
             (prev, curr) => {
               prev[curr] = {
