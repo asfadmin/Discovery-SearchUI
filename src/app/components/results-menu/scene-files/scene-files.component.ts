@@ -10,6 +10,7 @@ import * as scenesStore from '@store/scenes';
 import * as queueStore from '@store/queue';
 import * as userStore from '@store/user';
 import * as hyp3Store from '@store/hyp3';
+import * as uiStore from '@store/ui';
 
 import { Hyp3Service, NotificationService, SarviewsEventsService } from '@services';
 import * as models from '@models';
@@ -20,6 +21,8 @@ import * as moment from 'moment';
 import { faCopy } from '@fortawesome/free-solid-svg-icons';
 import { MatSelectionListChange } from '@angular/material/list';
 import { PinnedProduct } from '@services/browse-map.service';
+import { ImageDialogComponent } from '../scene-detail/image-dialog';
+import { MatDialog } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-scene-files',
@@ -89,6 +92,7 @@ export class SceneFilesComponent implements OnInit, OnDestroy, AfterContentInit 
     private sarviewsService: SarviewsEventsService,
     private clipboard: ClipboardService,
     private notificationService: NotificationService,
+    public dialog: MatDialog,
   ) { }
 
   ngOnInit() {
@@ -303,8 +307,26 @@ export class SceneFilesComponent implements OnInit, OnDestroy, AfterContentInit 
     this.store$.dispatch(new scenesStore.SetImageBrowseProducts(pinned));
   }
 
-  public onOpenPinnedProducts(current_id: string) {
-    window.open(this.currentPinnedUrl(current_id));
+  public onOpenPinnedProducts() {
+    // if(this.searchType === models.SearchType.SARVIEWS_EVENTS) {
+      this.store$.dispatch(new scenesStore.SetSelectedSarviewProduct(this.sarviewsProducts[0]));
+    // }
+    this.store$.dispatch(new uiStore.SetIsBrowseDialogOpen(true));
+
+    const dialogRef = this.dialog.open(ImageDialogComponent, {
+      width: '99%',
+      maxWidth: '99%',
+      height: '99%',
+      maxHeight: '99%',
+      panelClass: 'image-dialog'
+    });
+
+    this.subs.add(
+      dialogRef.afterClosed().subscribe(
+        _ => this.store$.dispatch(new uiStore.SetIsBrowseDialogOpen(false))
+      )
+    );
+    // window.open(this.currentPinnedUrl(current_id));
   }
 
   public copyProductSourceScenes() {
