@@ -165,8 +165,8 @@ export class SceneFilesComponent implements OnInit, OnDestroy, AfterContentInit 
           Object.keys(this.selectedProducts).forEach(id => delete this.selectedProducts[id]);
           products.forEach(prod => this.selectedProducts[prod.product_id] = pinned_browse_ids.includes(prod.product_id));
 
-          if(pinned_browse_ids.length > 0 && products.length > 0) {
-            if(!this.selectedProducts[pinned_browse_ids[0]]) {
+          if (pinned_browse_ids.length > 0 && products.length > 0) {
+            if (!this.selectedProducts[pinned_browse_ids[0]]) {
               this.onUpdatePinnedUrl();
             }
           }
@@ -258,7 +258,7 @@ export class SceneFilesComponent implements OnInit, OnDestroy, AfterContentInit 
   public currentPinnedUrl(current_id: string): string {
     const product_ids = Object.keys(this.selectedProducts).filter(
       product_id => !!this.selectedProducts?.[product_id]
-    )
+    );
 
     return this.sarviewsService.getSarviewsEventPinnedUrl(current_id, product_ids);
   }
@@ -272,9 +272,9 @@ export class SceneFilesComponent implements OnInit, OnDestroy, AfterContentInit 
   public onUpdatePinnedUrl() {
     const pinned = Object.keys(this.selectedProducts).reduce(
       (prev, key) => {
-        let output = {} as PinnedProduct;
+        const output = {} as PinnedProduct;
         output.isPinned = this.selectedProducts[key];
-        const sarviewsProduct = this.sarviewsProducts.find(prod => prod.product_id === key)
+        const sarviewsProduct = this.sarviewsProducts.find(prod => prod.product_id === key);
         output.url = sarviewsProduct.files.product_url;
         output.wkt = sarviewsProduct.granules[0].wkt;
 

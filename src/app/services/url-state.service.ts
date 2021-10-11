@@ -685,7 +685,7 @@ export class UrlStateService {
 
     const pinned = productIDs.reduce(
       (prev, key) => {
-        let output = {} as PinnedProduct;
+        const output = {} as PinnedProduct;
         output.isPinned = true;
         // const sarviewsProduct = this.sarviewsProducts.find(prod => prod.product_id === key)
         output.url = '';

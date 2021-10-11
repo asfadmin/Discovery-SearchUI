@@ -76,7 +76,7 @@ export class ImageDialogComponent implements OnInit, AfterViewInit, OnDestroy {
       this.breakpoint$.subscribe(
         breakpoint => this.breakpoint = breakpoint
       )
-    )
+    );
     this.subs.add(
       this.store$.select(scenesStore.getSelectedSceneProducts).subscribe(
         products => {
@@ -221,7 +221,7 @@ export class ImageDialogComponent implements OnInit, AfterViewInit, OnDestroy {
       ).subscribe(_ =>
         this.setPinnedProducts()
       )
-    )
+    );
   }
 
   private loadBrowseImage(scene: models.CMRProduct, browse): void {
@@ -340,6 +340,6 @@ export class ImageDialogComponent implements OnInit, AfterViewInit, OnDestroy {
 
   ngOnDestroy() {
     this.subs.unsubscribe();
-    this.store$.dispatch(new uiStore.SetIsBrowseDialogOpen(false))
+    this.store$.dispatch(new uiStore.SetIsBrowseDialogOpen(false));
   }
 }

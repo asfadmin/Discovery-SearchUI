@@ -108,7 +108,7 @@ export class SarviewsEventsService {
   private getDates(event: SarviewsEvent | SarviewsProcessedEvent): Range<Date> {
     const eventDates = event.processing_timeframe;
 
-    if(!eventDates) {
+    if (!eventDates) {
       return event.processing_timeframe;
     }
     if (!!eventDates.start) {
