@@ -39,6 +39,8 @@ export class ScenesListHeaderComponent implements OnInit, OnDestroy {
   public products = [];
   public downloadableProds = [];
   public sarviewsEventProducts: SarviewsProduct[] = [];
+  public pinnedEventIDs: string[];
+
   public numBaselineScenes$ = this.scenesService.scenes$().pipe(
     map(scenes => scenes.length),
   );
@@ -169,6 +171,12 @@ export class ScenesListHeaderComponent implements OnInit, OnDestroy {
         products => this.sarviewsEventProducts = products
       )
     );
+
+    this.subs.add(
+      this.store$.select(scenesStore.getPinnedEventBrowseIDs).subscribe(
+        ids => this.pinnedEventIDs = ids
+      )
+    );
   }
 
   public onZoomToResults(): void {
@@ -265,6 +273,14 @@ export class ScenesListHeaderComponent implements OnInit, OnDestroy {
 
   public onMakeSarviewsProductDownloadScript(products: models.SarviewsProduct[]): void {
     this.store$.dispatch(new queueStore.MakeDownloadScriptFromSarviewsProducts(products));
+  }
+
+  public onQueuePinnedSarviewsProducts(): void {
+    const pinned = this.sarviewsEventProducts.filter(prod =>
+      this.pinnedEventIDs.includes(prod.product_id)
+    );
+
+    this.onQueueSarviewsProducts(pinned);
   }
 
   public onQueueSarviewsProducts(products: models.SarviewsProduct[]): void {
