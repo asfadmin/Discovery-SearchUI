@@ -58,7 +58,7 @@
       <div *ngIf="(searchType$ | async) === searchTypes.SARVIEWS_EVENTS">
       <button
       style="position: absolute; bottom: 5px; right: 20%; margin: 15px; min-width: 200px; border-radius: 4px !important;"
-      mat-flat-button (click)="OpenProductInSarviews()">Open Pinned Products In SARViews</button>
+      mat-flat-button (click)="OpenProductInSarviews()">Open Pinned Products In SARVIEWS</button>
     </div>
     <div *ngIf="isImageLoading" color="accent" class="browse-map--overlay">
       <mat-spinner></mat-spinner>
@@ -142,7 +142,7 @@
           <hr style="width: 100%;">
           <ng-container >
           <div>
-          <div class="detail-header">SARViews Product Detail</div>
+          <div class="detail-header">Event Product Detail</div>
           <div style="columns: 1; font-size: 12px; word-wrap: break-word; margin-top: 15px;" *ngIf="!!currentSarviewsProduct">
             <div style="font-weight: bold;">{{currentSarviewsProduct.files.product_name}}</div>
             <button matTooltip="Download Product" class="download-icon" mat-icon-button (click)="downloadSarviewsProduct(currentSarviewsProduct); $event.stopPropagation();">
