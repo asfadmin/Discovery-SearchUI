@@ -245,10 +245,10 @@ export class QueueComponent implements OnInit, OnDestroy {
   }
 
   public limitedExportString() {
-    if(this.queueHasEventMonitoringProducts && this.queueHasOnDemandProducts) {
+    if (this.queueHasEventMonitoringProducts && this.queueHasOnDemandProducts) {
       return 'On Demand and Event products in queue - limited export options';
-    } else if(this.queueHasEventMonitoringProducts) {
-      return 'Event Monitoring products in queue - limited export options'
+    } else if (this.queueHasEventMonitoringProducts) {
+      return 'Event Monitoring products in queue - limited export options';
     } else {
       return 'On Demand products in queue - limited export options';
     }

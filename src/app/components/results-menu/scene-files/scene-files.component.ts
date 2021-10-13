@@ -133,7 +133,7 @@ export class SceneFilesComponent implements OnInit, OnDestroy, AfterContentInit 
       this.queuedProductIds$.subscribe(
         ids => this.queuedProductIds = Array.from(ids)
       )
-    )
+    );
 
     this.subs.add(
       this.store$.select(userStore.getIsUserLoggedIn).subscribe(
@@ -356,7 +356,7 @@ export class SceneFilesComponent implements OnInit, OnDestroy, AfterContentInit 
 
       };
 
-    if(this.queuedProductIds.includes(product.product_id)) {
+    if (this.queuedProductIds.includes(product.product_id)) {
       this.store$.dispatch(new queueStore.RemoveItems([toCMRProduct]));
     } else {
       this.store$.dispatch(new queueStore.AddItems([toCMRProduct]));
