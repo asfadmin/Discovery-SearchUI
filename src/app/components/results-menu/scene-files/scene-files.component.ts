@@ -35,10 +35,12 @@ export class SceneFilesComponent implements OnInit, OnDestroy, AfterContentInit 
   public productsByProductType: {[processing_type: string]: SarviewsProduct[]} = {};
   public selectedProducts: { [product_id in string]: boolean} = {};
   public sarviewsProducts: models.SarviewsProduct[];
+  public queuedProductIds: string[];
 
   public queuedProductIds$ = this.store$.select(queueStore.getQueuedProductIds).pipe(
       map(names => new Set(names))
   );
+
   public selectedSarviewsEventID$ = this.store$.select(scenesStore.getSelectedSarviewsEvent).pipe(
       filter(event => !!event),
       map(event => event.event_id)
@@ -124,6 +126,12 @@ export class SceneFilesComponent implements OnInit, OnDestroy, AfterContentInit 
     this.subs.add(
       this.sarviewsEventsProductsByProcessingType$.subscribe(
         val => this.productsByProductType = val
+      )
+    );
+
+    this.subs.add(
+      this.queuedProductIds$.subscribe(
+        ids => this.queuedProductIds = Array.from(ids)
       )
     );
 
@@ -348,7 +356,11 @@ export class SceneFilesComponent implements OnInit, OnDestroy, AfterContentInit 
 
       };
 
-    this.store$.dispatch(new queueStore.AddItems([toCMRProduct]));
+    if (this.queuedProductIds.includes(product.product_id)) {
+      this.store$.dispatch(new queueStore.RemoveItems([toCMRProduct]));
+    } else {
+      this.store$.dispatch(new queueStore.AddItems([toCMRProduct]));
+    }
   }
 
   ngOnDestroy() {
