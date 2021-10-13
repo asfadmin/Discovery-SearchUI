@@ -450,7 +450,7 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
 
     this.searchService.clear(this.searchType);
 
-    if(this.searchType === SearchType.SARVIEWS_EVENTS) {
+    if (this.searchType === SearchType.SARVIEWS_EVENTS) {
       this.store$.dispatch(new searchStore.MakeSearch());
     }
   }
