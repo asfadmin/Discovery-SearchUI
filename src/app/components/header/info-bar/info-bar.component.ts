@@ -5,6 +5,8 @@ import { SubSink } from 'subsink';
 
 import { AppState } from '@store';
 import * as filtersStore from '@store/filters';
+import * as searchStore from '@store/search';
+
 
 import * as services from '@services';
 import * as models from '@models';
@@ -22,6 +24,9 @@ declare global {
 })
 export class InfoBarComponent implements OnInit, OnDestroy {
   @Input() resize$: Observable<void>;
+  public searchType: models.SearchType = models.SearchType.DATASET;
+  public searchTypes = models.SearchType;
+  public searchType$ = this.store$.select(searchStore.getSearchType);
   public breakpoint$ = this.screenSize.breakpoint$;
   public breakpoints = models.Breakpoints;
 
@@ -119,6 +124,12 @@ export class InfoBarComponent implements OnInit, OnDestroy {
       missionSub,
       tempSub, perpSub
     ].forEach(sub => this.subs.add(sub));
+
+    this.subs.add(
+      this.store$.select(searchStore.getSearchType).subscribe(
+        searchType => this.searchType = searchType
+      )
+    );
 
   }
 
