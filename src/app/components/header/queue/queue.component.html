@@ -179,21 +179,21 @@
               <button mat-menu-item (click)="onMakeDownloadScript()">
                 Download Python Script (.py)
               </button>
-              <button mat-menu-item [disabled]="queueHasOnDemandProducts" (click)="onMetalinkDownload()">
+              <button mat-menu-item [disabled]="queueHasOnDemandProducts || queueHasEventMonitoringProducts" (click)="onMetalinkDownload()">
                 Metadata (metalink)
               </button>
             </mat-menu>
 
             <mat-menu #metadataMenu="matMenu" yPosition="above">
-              <button mat-menu-item [disabled]="queueHasOnDemandProducts" (click)="onCsvDownload()">
+              <button mat-menu-item [disabled]="queueHasOnDemandProducts || queueHasEventMonitoringProducts" (click)="onCsvDownload()">
                 Metadata (csv)
               </button>
 
-              <button mat-menu-item [disabled]="queueHasOnDemandProducts" (click)="onKmlDownload()">
+              <button mat-menu-item [disabled]="queueHasOnDemandProducts || queueHasEventMonitoringProducts" (click)="onKmlDownload()">
                 Metadata (kml)
               </button>
 
-              <button mat-menu-item [disabled]="queueHasOnDemandProducts" (click)="onGeojsonDownload()">
+              <button mat-menu-item [disabled]="queueHasOnDemandProducts || queueHasEventMonitoringProducts" (click)="onGeojsonDownload()">
                 Metadata (geojson)
               </button>
             </mat-menu>
