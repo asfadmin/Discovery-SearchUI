@@ -239,7 +239,8 @@
     [disabled]="!(
                    ((prop.isRelevant(p.PATH, dataset) && prop.isRelevant(p.FRAME, dataset) || (dataset.id === 'UAVSAR'))))"
     (click)="findSimilarScenes()" class="mini-toggle-button search-button" matTooltip="Geographic search based on this scene's path/frame">
-    More Like This
+    <span *ngIf="breakpoint === breakpoints.MOBILE">Similar</span>
+    <span *ngIf="breakpoint != breakpoints.MOBILE">More Like This</span>
   </button>
 </div>
 
