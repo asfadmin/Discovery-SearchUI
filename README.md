@@ -35,6 +35,10 @@ The app is run locally using the Angular CLI. Installation instructions can be f
 After angular is installed, run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files. You can optionally supply a port number, for example `ng serve --port 4444`
 
 In order to get certain services to work, it's necessary to set up a .asf.alaska.edu domain pointing to your local server in your host file. This process varies on the OS you are using. 
+Add the following line via the methods below to set up local.asf.alaska.edu to point towards your local development server
+```
+127.0.0.1   local.asf.alaska.edu
+```
 | OS | Method |
 | --- | --- |
 | Mac/Linux | modify the /etc/hosts file |
