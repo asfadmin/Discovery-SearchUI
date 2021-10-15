@@ -132,7 +132,7 @@ export class SarviewsEventMagnitudeSelectorComponent implements OnInit, OnDestro
     this.slider = noUiSlider.create(filterRef.nativeElement, {
       orientation: 'horizontal',
       direction: 'ltr',
-      start: [0, 10],
+      start: [this.magnitudeRange?.start ?? 0, this.magnitudeRange?.end ?? 10],
       behaviour: 'tap-drag',
       tooltips: false,
       step: 0.1,
