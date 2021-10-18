@@ -365,8 +365,7 @@ export class SceneFilesComponent implements OnInit, OnDestroy, AfterContentInit 
   }
 
   public getProductSceneCount(products: SarviewsProduct[]) {
-    const outputList = products.reduce((prev, product) =>
-      {
+    const outputList = products.reduce((prev, product) => {
         const temp = product.granules.map(granule => granule.granule_name);
 
         prev = prev.concat(temp);
