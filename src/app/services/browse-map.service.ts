@@ -152,7 +152,7 @@ export class BrowseMapService {
     const pinned_ids = pinnedProductIds.filter(id => pinnedProductStates[id].isPinned);
 
     if (pinned_ids.length === 0) {
-      this.pinnedProducts.getLayers().clear();
+      this.pinnedProducts?.getLayers().clear();
     } else {
       this.unpinProducts(unpinned_ids);
       this.pinProducts(pinned_ids, pinnedProductStates);

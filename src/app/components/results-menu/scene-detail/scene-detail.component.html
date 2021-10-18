@@ -12,22 +12,14 @@
         }}</span>
       </mat-card-title>
       <mat-card-subtitle class="subtitle">
-        <a
-          [href]="getSarviewsURL()"
-          target="_blank"
-          matTooltip="SARViews Event Page"
-          class="faint-text"
-        >
-          SARViews Event
-        </a>
-        •
-        <app-copy-to-clipboard
-          [value]="getSarviewsURL()"
-          [prompt]="'Copied SARViews Event Link'"
-          style="margin: 0 3px"
-          class="clipboard-icon"
-        >
-        </app-copy-to-clipboard>
+        <a [href]="getSarviewsURL()" target="_blank" matTooltip="SARVIEWS Event Page" class="faint-text">
+          SARVIEWS Event
+        </a> •              <app-copy-to-clipboard
+        [value]="getSarviewsURL()"
+        [prompt]="'Copied Event Link'"
+        style="margin: 0 3px;"
+        class="clipboard-icon">
+      </app-copy-to-clipboard>
         <span matTooltip="eventType">{{ sarviewEvent.event_type }}</span>
       </mat-card-subtitle>
     </mat-card-header>
@@ -390,8 +382,8 @@
     (click)="findSimilarScenes()"
     class="mini-toggle-button search-button"
   >
-    More Like This
-  </button>
+    <span *ngIf="breakpoint === breakpoints.MOBILE">Similar</span>
+    <span *ngIf="breakpoint != breakpoints.MOBILE">More Like This</span>
   </div>
 
 </div>

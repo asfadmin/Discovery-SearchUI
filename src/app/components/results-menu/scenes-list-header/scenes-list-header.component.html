@@ -284,7 +284,10 @@
       <mat-menu #QueueAllSARViewsProducts="matMenu">
         <div *ngIf="sarviewsEventProducts">
           <button (click)="onQueueSarviewsProducts(sarviewsEventProducts)" mat-menu-item>
-            Data
+            All Event Products ({{sarviewsEventProducts.length}} files)
+          </button>
+          <button (click)="onQueuePinnedSarviewsProducts()" mat-menu-item>
+            Selected Event Products ({{pinnedEventIDs.length}} files)
           </button>
           </div>
       </mat-menu>

@@ -31,10 +31,10 @@
         <fa-icon [icon]="copyIcon"></fa-icon> Copy All Scenes to Clipboard
         </div>
       </button>
-      <button class="mat-flat-button mat-primary" style="border-radius: 4px !important;" color="primary" mat-flat-button (click)="onOpenPinnedProducts(selectedSarviewEventID)">
+      <button class="mat-flat-button mat-primary" style="border-radius: 4px !important;" color="primary" mat-flat-button (click)="onOpenPinnedProducts()">
         <div class="sarviews-button-display">
-          <mat-icon>web</mat-icon>
-          View Selected on SARViews
+          <!-- <mat-icon>web</mat-icon> -->
+          View Selected on Map
         </div>
       </button>
     </div>
@@ -53,7 +53,9 @@
                 <div>{{prod.files.product_size.toString() | readableSizeFromBytes }}, {{prod.job_type.replace("_", " ")}}</div>
               </div>
               <div>
-                <button mat-icon-button (click)="onQueueSarviewsProduct(prod); $event.stopPropagation();"><mat-icon>add_shopping_cart</mat-icon></button>
+                <button mat-icon-button (click)="onQueueSarviewsProduct(prod); $event.stopPropagation();"><mat-icon *ngIf="!queuedProductIds.includes(prod.product_id)">add_shopping_cart</mat-icon>
+                  <mat-icon *ngIf="queuedProductIds.includes(prod.product_id)">shopping_cart</mat-icon>
+                </button>
                 <button mat-icon-button (click)="downloadProduct(prod.files.product_url); $event.stopPropagation();"><mat-icon>cloud_download</mat-icon></button>
               </div>
               <div></div>

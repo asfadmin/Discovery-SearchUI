@@ -10,7 +10,7 @@ declare var wNumb: any;
 
 import noUiSlider from 'nouislider';
 import { Observable, Subject } from 'rxjs';
-import { debounceTime, distinctUntilChanged, map } from 'rxjs/operators';
+import { debounceTime, distinctUntilChanged, filter, map, skip } from 'rxjs/operators';
 import { ScreenSizeService } from '@services';
 import { Breakpoints, SarviewsEventType } from '@models';
 
@@ -70,9 +70,13 @@ export class SarviewsEventMagnitudeSelectorComponent implements OnInit, OnDestro
         distinctUntilChanged((a, b) => {
           return a.start === b.start && a.end === b.end;
         }),
+        filter(range => !!range),
       ).subscribe(
         magnitudeRange => {
-          this.magnitudeRange = magnitudeRange;
+          this.magnitudeRange = {
+            start: magnitudeRange?.start,
+            end: magnitudeRange?.end
+          };
           this.magnitudeValues$.next([magnitudeRange.start, magnitudeRange.end]);
         }
       )
@@ -92,11 +96,13 @@ export class SarviewsEventMagnitudeSelectorComponent implements OnInit, OnDestro
     const magnitudeValuesObserverable$ = temp.magnitudeValues$;
 
     this.subs.add(
-      magnitudeValuesObserverable$.subscribe(
+      magnitudeValuesObserverable$.pipe(
+        skip(1),
+      ).subscribe(
         ([start, end]) => {
           const action = new filterStore.SetSarviewsMagnitudeRange({
-            start: !!start ? start : 0,
-            end:  !!end ? end : 10
+            start: start,
+            end:  end
           });
           this.store$.dispatch(action);
         }

@@ -41,6 +41,7 @@ export class QueueComponent implements OnInit, OnDestroy {
   // public dlInProgress: boolean = false;
 
   public queueHasOnDemandProducts = false;
+  public queueHasEventMonitoringProducts = false;
   public showDemWarning: boolean;
 
   public copyIcon = faCopy;
@@ -70,6 +71,7 @@ export class QueueComponent implements OnInit, OnDestroy {
     tap(products => this.areAnyProducts = products.length > 0),
     tap(products => {
       this.queueHasOnDemandProducts = !products.every(product => !product.metadata.job);
+      this.queueHasEventMonitoringProducts = !products.every(product => product.groupId !== 'SARViews');
       this.showDemWarning = (this.areAnyProducts) ? this.demWarning((products)) : false;
     })
   );
@@ -239,6 +241,16 @@ export class QueueComponent implements OnInit, OnDestroy {
     if (this.dlQueueNumProcessed < this.dlQueueCount) {
       const el: HTMLButtonElement = this.productList[this.dlQueueNumProcessed++] as HTMLButtonElement;
       el.click();
+    }
+  }
+
+  public limitedExportString() {
+    if (this.queueHasEventMonitoringProducts && this.queueHasOnDemandProducts) {
+      return 'On Demand and Event products in queue - limited export options';
+    } else if (this.queueHasEventMonitoringProducts) {
+      return 'Event Monitoring products in queue - limited export options';
+    } else {
+      return 'On Demand products in queue - limited export options';
     }
   }
 
