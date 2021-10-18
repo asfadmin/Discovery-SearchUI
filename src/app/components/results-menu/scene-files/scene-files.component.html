@@ -31,7 +31,7 @@
       [matMenuTriggerData]="{ selected: selectedSarviewsProducts}"
       >
         <div class="sarviews-button-display">
-        <fa-icon [icon]="copyIcon"></fa-icon> Copy Scene IDs
+        <fa-icon [icon]="copyIcon"></fa-icon> Copy Product
         </div>
       </button>
       <button class="mat-flat-button mat-primary" style="border-radius: 4px !important;" color="primary" mat-flat-button (click)="onOpenPinnedProducts()">
@@ -113,11 +113,37 @@
 
 <mat-menu #eventMonitoringOptions="matMenu">
   <ng-template matMenuContent let-selectedProducts="selected">
-  <button mat-menu-item (click) = "copyProductSourceScenes(sarviewsProducts)">
-    All Scenes ({{getProductSceneCount(sarviewsProducts)}})
+    <button mat-menu-item
+    [matMenuTriggerFor]="eventMonitoringIDs"
+    [matMenuTriggerData]="{selectedProducts: selectedProducts}">
+    Scene IDs
   </button>
-  <button [disabled]="getProductSceneCount(selectedProducts) === 0" mat-menu-item (click) = "copyProductSourceScenes(selectedProducts)">
-    Selected Scenes ({{getProductSceneCount(selectedProducts)}})
+  <button mat-menu-item
+  [matMenuTriggerFor]="eventMonitoringUrls"
+  [matMenuTriggerData]="{selectedProducts: selectedProducts}">
+    URLs
   </button>
 </ng-template>
+</mat-menu>
+
+<mat-menu #eventMonitoringIDs="matMenu">
+  <ng-template matMenuContent let-selectedProducts="selectedProducts">
+  <button mat-menu-item (click) = "copyProductSourceScenes(sarviewsProducts)">
+    All Products ({{getProductSceneCount(sarviewsProducts)}})
+  </button>
+  <button [disabled]="getProductSceneCount(selectedProducts) === 0" mat-menu-item (click) = "copyProductSourceScenes(selectedProducts)">
+    Selected Products ({{getProductSceneCount(selectedProducts)}})
+  </button>
+</ng-template>
+</mat-menu>
+
+<mat-menu #eventMonitoringUrls="matMenu">
+  <ng-template matMenuContent let-selectedProducts="selectedProducts">
+    <button [disabled]="sarviewsProducts.length === 0" mat-menu-item (click) = "getProductDownloadUrl(sarviewsProducts)">
+      All Products ({{sarviewsProducts.length}})
+    </button>
+    <button [disabled]="getProductSceneCount(selectedProducts) === 0" mat-menu-item (click) = "getProductDownloadUrl(selectedProducts)">
+      Selected Products ({{selectedProducts.length}})
+    </button>
+  </ng-template>
 </mat-menu>

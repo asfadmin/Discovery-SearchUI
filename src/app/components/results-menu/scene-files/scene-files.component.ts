@@ -324,7 +324,7 @@ export class SceneFilesComponent implements OnInit, OnDestroy, AfterContentInit 
     const granuleNameListSet = new Set(granuleNameList);
 
     this.clipboard.copyFromContent( Array.from(granuleNameListSet).join(','));
-    this.notificationService.info(`Scene IDs Copied`);
+    this.notificationService.clipboardCopyIcon('', granuleNameListSet.size);
   }
 
   public onQueueSarviewsProduct(product: models.SarviewsProduct): void {
@@ -376,6 +376,13 @@ export class SceneFilesComponent implements OnInit, OnDestroy, AfterContentInit 
     );
 
     return new Set(outputList).size;
+  }
+
+  public getProductDownloadUrl(products: SarviewsProduct[]) {
+    const productListStr = products.map(product => product.files.product_url);
+    this.clipboard.copyFromContent( productListStr.join('\n '));
+    const lines = products.length;
+    this.notificationService.clipboardCopyQueue(lines, false);
   }
 
   ngOnDestroy() {
