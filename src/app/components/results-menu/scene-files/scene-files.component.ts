@@ -84,7 +84,7 @@ export class SceneFilesComponent implements OnInit, OnDestroy, AfterContentInit 
   public isUserLoggedIn: boolean;
   public hasAccessToRestrictedData: boolean;
   public showDemWarning: boolean;
-  // public selectedProducts: SarviewsProduct[] = [];
+  public selectedSarviewsProducts: SarviewsProduct[] = [];
   public selectedSarviewEventID: string;
   private subs = new SubSink();
 
@@ -170,6 +170,7 @@ export class SceneFilesComponent implements OnInit, OnDestroy, AfterContentInit 
       ).subscribe(
         ([products, pinned_browse_ids]) => {
           this.sarviewsProducts = products;
+          this.selectedSarviewsProducts = products.filter(product => pinned_browse_ids.includes(product.product_id));
           Object.keys(this.selectedProducts).forEach(id => delete this.selectedProducts[id]);
           products.forEach(prod => this.selectedProducts[prod.product_id] = pinned_browse_ids.includes(prod.product_id));
 
@@ -316,14 +317,14 @@ export class SceneFilesComponent implements OnInit, OnDestroy, AfterContentInit 
     // window.open(this.currentPinnedUrl(current_id));
   }
 
-  public copyProductSourceScenes() {
-    const products = this.sarviewsProducts;
-    const granule_name_list = products.reduce(
+  public copyProductSourceScenes(products: SarviewsProduct[]) {
+    const granuleNameList = products.reduce(
       (acc, curr) => acc = acc.concat(curr.granules), [] as SarviewProductGranule[]
       ).map(gran => gran.granule_name);
+    const granuleNameListSet = new Set(granuleNameList);
 
-    this.clipboard.copyFromContent( granule_name_list.join(','));
-    this.notificationService.info(`Scene Names Copied`);
+    this.clipboard.copyFromContent( Array.from(granuleNameListSet).join(','));
+    this.notificationService.info(`Scene IDs Copied`);
   }
 
   public onQueueSarviewsProduct(product: models.SarviewsProduct): void {
@@ -361,6 +362,21 @@ export class SceneFilesComponent implements OnInit, OnDestroy, AfterContentInit 
     } else {
       this.store$.dispatch(new queueStore.AddItems([toCMRProduct]));
     }
+  }
+
+  public getProductSceneCount(products: SarviewsProduct[]) {
+    const outputList = products.reduce((prev, product) =>
+      {
+        const temp = product.granules.map(granule => granule.granule_name);
+
+        prev = prev.concat(temp);
+
+        return prev;
+
+        }, [] as string[]
+    );
+
+    return new Set(outputList).size;
   }
 
   ngOnDestroy() {

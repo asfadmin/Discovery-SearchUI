@@ -11,6 +11,7 @@ import { MatExpansionModule } from '@angular/material/expansion';
 import {FormsModule } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
+import { MatMenuModule } from '@angular/material/menu';
 import { PipesModule } from '@pipes';
 import { CopyToClipboardModule } from '@components/shared/copy-to-clipboard';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
@@ -26,6 +27,7 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
     FormsModule,
     MatInputModule,
     MatButtonModule,
+    MatMenuModule,
     ScrollingModule,
     PipesModule,
     CopyToClipboardModule,
