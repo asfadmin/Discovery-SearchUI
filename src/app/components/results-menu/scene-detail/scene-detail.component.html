@@ -325,7 +325,7 @@
   }"
 >
   <div class="search-button-label">SEARCH:</div>
-  <div
+  <div *ngIf="searchType !== searchTypes.SARVIEWS_EVENTS"
     [matTooltip]="
       hasBaseline
         ? 'Use this scene in the Baseline Tool for interferometry'
@@ -345,6 +345,7 @@
   </div>
 
   <div
+  *ngIf="searchType !== searchTypes.SARVIEWS_EVENTS"
     [matTooltip]="
       hasBaseline
         ? 'Use this scene in the SBAS Tool to make product pairs for interferometry'
@@ -366,7 +367,7 @@
   [matTooltip]="!(
     !(prop.isRelevant(p.PATH, dataset) &&
       prop.isRelevant(p.FRAME, dataset)) ||
-    dataset.id === 'UAVSAR'
+    dataset?.id === 'UAVSAR'
   ) ? 'Geographic search based on this scene\'s path/frame' : 'Not able to select similar scenes from this source'"
   >
     <button
@@ -376,16 +377,46 @@
       !(
         (prop.isRelevant(p.PATH, dataset) &&
           prop.isRelevant(p.FRAME, dataset)) ||
-        dataset.id === 'UAVSAR'
+        dataset?.id === 'UAVSAR'
       )
     "
     (click)="findSimilarScenes()"
     class="mini-toggle-button search-button"
   >
     <span *ngIf="breakpoint === breakpoints.MOBILE">Similar</span>
-    <span *ngIf="breakpoint != breakpoints.MOBILE">More Like This</span>
+    <span *ngIf="breakpoint != breakpoints.MOBILE">{{searchType !== searchTypes.SARVIEWS_EVENTS ? 'More Like This' : 'Geographic'}}</span>
+</button>
   </div>
-
+  <div
+  *ngIf="searchType === searchTypes.SARVIEWS_EVENTS"
+    matTooltip="Use this event's product scenes in list search"
+  >
+    <button
+      mat-stroked-button
+      color="primary"
+      [disabled]="sarviewsProducts.length === 0"
+      (click)="makeEventListSearch()"
+      class="mini-toggle-button search-button"
+      target="_blank"
+    >
+      List
+    </button>
+  </div>
+  <div
+  *ngIf="searchType === searchTypes.SARVIEWS_EVENTS"
+    matTooltip="Open this event on SARVIEWS"
+  >
+    <button
+      mat-stroked-button
+      color="primary"
+      [disabled]="!sarviewEvent"
+      (click)="openInSarviews()"
+      class="mini-toggle-button search-button"
+      target="_blank"
+    >
+      SARVIEWS
+    </button>
+  </div>
 </div>
 
 <div *ngIf="!scene && !sarviewEvent">
