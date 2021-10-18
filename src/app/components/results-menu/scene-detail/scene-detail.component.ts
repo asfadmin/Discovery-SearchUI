@@ -316,8 +316,20 @@ export class SceneDetailComponent implements OnInit, OnDestroy {
     this.mapService.onSetSarviewsPolygon(this.sarviewEvent, this.sarviewsEventGeoSearchRadius);
   }
 
-  public onToggleRadiusPreview() {
+  public makeEventListSearch() {
+    const product_ids = this.sarviewsProducts.map(product => product.granules[0].granule_name);
 
+    [
+      new searchStore.SetSearchType(models.SearchType.LIST),
+      new searchStore.ClearSearch(),
+      new filtersStore.SetSearchList(product_ids),
+    ].forEach(action => this.store$.dispatch(action));
+
+    this.store$.dispatch(new searchStore.MakeSearch());
+  }
+
+  public openInSarviews() {
+    window.open(this.getSarviewsURL());
   }
 
   ngOnDestroy() {
