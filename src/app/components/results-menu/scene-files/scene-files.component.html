@@ -26,9 +26,12 @@
 </div>
   <div *ngIf="selectedSarviewEventID && !!sarviewsProducts" style="height: 100%; display: flex; flex-direction: column;">
     <div style="width: 100%; display: flex; flex-direction: row; justify-content: space-evenly; margin-bottom: 10px;">
-      <button style="border-radius: 4px !important;" class="mat-flat-button mat-primary search-button" color="primary" mat-flat-button (click) = "copyProductSourceScenes()">
+      <button style="border-radius: 4px !important;" class="mat-flat-button mat-primary search-button" color="primary" mat-flat-button
+      [matMenuTriggerFor]="eventMonitoringOptions"
+      [matMenuTriggerData]="{ selected: selectedSarviewsProducts}"
+      >
         <div class="sarviews-button-display">
-        <fa-icon [icon]="copyIcon"></fa-icon> Copy All Scenes to Clipboard
+        <fa-icon [icon]="copyIcon"></fa-icon> Copy Scene IDs
         </div>
       </button>
       <button class="mat-flat-button mat-primary" style="border-radius: 4px !important;" color="primary" mat-flat-button (click)="onOpenPinnedProducts()">
@@ -107,3 +110,14 @@
     </app-scene-file>
   </mat-list>
 </div>
+
+<mat-menu #eventMonitoringOptions="matMenu">
+  <ng-template matMenuContent let-selectedProducts="selected">
+  <button mat-menu-item (click) = "copyProductSourceScenes(sarviewsProducts)">
+    All Scenes ({{getProductSceneCount(sarviewsProducts)}})
+  </button>
+  <button [disabled]="getProductSceneCount(selectedProducts) === 0" mat-menu-item (click) = "copyProductSourceScenes(selectedProducts)">
+    Selected Scenes ({{getProductSceneCount(selectedProducts)}})
+  </button>
+</ng-template>
+</mat-menu>
