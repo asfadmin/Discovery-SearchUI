@@ -204,7 +204,7 @@ export class SearchEffects {
           catchError(
             (_: HttpErrorResponse) => {
               this.store$.dispatch(new EventProductCMRSearchResponse());
-              this.notificationService.error("Error adding job to On Demand Queue");
+              this.notificationService.error('Error adding job to On Demand Queue');
               return EMPTY;
             }
           ),
