@@ -21,6 +21,9 @@
         </div>
       </ng-container>
     </div>
+    <div class="close-x" (click)="onCloseDialog()">
+      <mat-icon>close</mat-icon>
+    </div>
   </div>
 
   <div class="feedback-div header-link">
@@ -40,7 +43,7 @@
     <div class="content-area">
       <mat-stepper #stepper>
         <mat-step>
-          <ng-template matStepLabel>Search Options</ng-template>
+          <ng-template matStepLabel><span class="searchOptions">Search Options</span></ng-template>
 
           <div>
             <div style="margin-bottom: 5px;">

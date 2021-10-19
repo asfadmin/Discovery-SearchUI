@@ -6,14 +6,24 @@
     </div>
   </div>
 
-  <div class="saved-searches__subhead">
-    <div class="saved-searches__save-button">
-      <button (click)="onCreateSubscription()"
-              mat-raised-button
-              color="accent">
-        New Subscription...
-      </button>
-    </div>
+<!--  <div class="saved-searches__subhead">-->
+<!--    <div class="saved-searches__save-button">-->
+<!--      <button (click)="onCreateSubscription()"-->
+<!--              mat-raised-button-->
+<!--              color="accent">-->
+<!--        New Subscription...-->
+<!--      </button>-->
+<!--    </div>-->
+<!--  </div>-->
+
+  <div class="add-button-container">
+    <button mat-fab color="primary" aria-label="Create Subscription"
+            matTooltip="Create Subscription"
+            matTooltipPosition="above"
+            class="fab-button"
+            (click)="onCreateSubscription()">
+      <mat-icon>add</mat-icon>
+    </button>
   </div>
 
   <div class="content-wrapper">

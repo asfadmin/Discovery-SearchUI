@@ -259,6 +259,10 @@ export class CreateSubscriptionComponent implements OnInit, OnDestroy {
 
   }
 
+  public onCloseDialog() {
+    this.dialogRef.close();
+  }
+
   private clearErrors() {
     this.errors = {
       dateError: null,

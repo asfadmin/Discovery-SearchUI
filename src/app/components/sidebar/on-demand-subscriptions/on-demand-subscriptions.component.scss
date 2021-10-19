@@ -1,0 +1,20 @@
+@import "asf-theme";
+
+$divider-bar-color: lighten($asf-primary-light, 8%);
+
+.no-saved-filters-presets h2 {
+  color: #c9cac4;
+  padding-left: 15px;
+}
+
+.add-button-container {
+  display: flex;
+  justify-content: center;
+  width: 120px;
+  float: right;
+  margin-top: -18px;
+}
+
+.fab-button {
+  border-radius: 40px !important;
+}

@@ -1,6 +1,6 @@
 @import "asf-theme";
 
-$header-height: 120px;
+$header-height: 95px;
 $footer-height: 60px;
 $bottom-offset: 10px;
 $background-color: $asf-primary-light;
@@ -88,7 +88,7 @@ $color: $asf-primary-dark;
   border-bottom-color: $asf-primary-dark;
   border-bottom-width: 1px;
   width: 100%;
-  height: $header-height;
+  height: calc(#{$header-height} - 11px);
   position: absolute;
   top: 0;
   flex: 1 1 auto;
@@ -198,4 +198,15 @@ $color: $asf-primary-dark;
 
 .step-error {
   color: red;
+}
+
+.close-x {
+  position: absolute;
+  top: 10px;
+  right: 24px;
+  text-align: right;
+  float: right;
+  cursor: pointer;
+  z-index: 100;
+  color: $color;
 }

@@ -72,7 +72,9 @@ export class OnDemandSubscriptionsComponent implements OnInit, OnDestroy {
     });
 
     ref.afterClosed().subscribe(
-      _ => this.store$.dispatch(new hyp3Store.LoadSubscriptions())
+      _ => {
+        this.store$.dispatch(new hyp3Store.LoadSubscriptions());
+      }
     );
   }
 
@@ -118,4 +120,6 @@ export class OnDemandSubscriptionsComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     this.subs.unsubscribe();
   }
+
 }
+
