@@ -187,13 +187,13 @@ export class SearchEffects {
     [] as string[]).join(',');
 
     const productGranulesByType = products.reduce((prev, curr) => {
-      if(!prev[curr.job_type]) {
+      if (!prev[curr.job_type]) {
         prev[curr.job_type] = [];
       }
       prev[curr.job_type].push(curr.granules.map(granule => granule.granule_name));
 
       return prev;
-    }, {})
+    }, {});
     return {granuleList, productGranulesByType};
   }),
     switchMap((data) => forkJoin(
@@ -206,7 +206,7 @@ export class SearchEffects {
           ),
         ),
         ),
-  map(data =>({ products: this.productService.fromResponse(data.results)
+  map(data => ({ products: this.productService.fromResponse(data.results)
     .filter(product => !product.metadata.productType.includes('METADATA'))
     .reduce((products, product) => {
       products[product.name] = product;
@@ -215,18 +215,18 @@ export class SearchEffects {
   })
   ),
   map(data => {
-    let output: models.QueuedHyp3Job[] = [];
+    const output: models.QueuedHyp3Job[] = [];
 
     const jobTypes = Object.keys(data.productGranulesByType);
 
     jobTypes.forEach(type => data.productGranulesByType[type].forEach((jobGranulesNames: string[]) => {
-      output.push({job_type: hyp3JobTypes[type], granules: jobGranulesNames.map(name => (data.products[name]))})
+      output.push({job_type: hyp3JobTypes[type], granules: jobGranulesNames.map(name => (data.products[name]))});
     }));
     return output;
   }),
   tap(jobs => this.store$.dispatch(new AddJobs(jobs))),
   tap(_ => this.store$.dispatch(new EventProductCMRSearchResponse()))
-    ), {dispatch: false})
+    ), {dispatch: false});
 
   private asfApiQuery$(): Observable<Action> {
     this.logCountries();
