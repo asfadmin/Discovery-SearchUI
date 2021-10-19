@@ -55,18 +55,32 @@
                 <div style="font-weight: bold;">{{formatProductName(prod.files.product_name)}}</div>
                 <div>{{prod.files.product_size.toString() | readableSizeFromBytes }}, {{prod.job_type.replace("_", " ")}}</div>
               </div>
+              <div></div>
               <div>
+                <button mat-icon-button
+                (click)="$event.stopPropagation()"
+                [matMenuTriggerFor]="EventOnDemandQueue"
+                [matMenuTriggerData]="{product: prod}">
+                  <mat-icon class="list-icon"
+                    svgIcon="hyp3">
+                  </mat-icon>
+              </button>
                 <button mat-icon-button (click)="onQueueSarviewsProduct(prod); $event.stopPropagation();"><mat-icon *ngIf="!queuedProductIds.includes(prod.product_id)">add_shopping_cart</mat-icon>
                   <mat-icon *ngIf="queuedProductIds.includes(prod.product_id)">shopping_cart</mat-icon>
                 </button>
-                <button mat-icon-button (click)="downloadProduct(prod.files.product_url); $event.stopPropagation();"><mat-icon>cloud_download</mat-icon></button>
+                <button
+                mat-icon-button
+                (click)="downloadProduct(prod.files.product_url); $event.stopPropagation();"
+                ><mat-icon>cloud_download</mat-icon></button>
+
+                <mat-menu #EventOnDemandQueue>
+                  <ng-template matMenuContent let-product="product">
+                    <button mat-menu-item (click)="onAddEventToOnDemand(product); $event.stopPropagation();">
+                    Add {{product.job_type.replace('_', ' ')}} To On Demand
+                  </button>
+                  </ng-template>
+                </mat-menu>
               </div>
-              <div>
-                <button mat-flat-button (click)="onAddEventToOnDemand(prod)">
-                  ONDEMAND
-              </button>
-              </div>
-              <div></div>
           </div>
         </mat-list-option>
       </cdk-virtual-scroll-viewport>
