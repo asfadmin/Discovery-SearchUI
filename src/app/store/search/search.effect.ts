@@ -4,10 +4,11 @@ import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { Store, Action } from '@ngrx/store';
 
 import { of, forkJoin, combineLatest, Observable, EMPTY } from 'rxjs';
-import { map, withLatestFrom, switchMap, catchError, filter, first } from 'rxjs/operators';
+import { map, withLatestFrom, switchMap, catchError, filter, first, tap } from 'rxjs/operators';
 
 import { AppState } from '../app.reducer';
-import { SetSearchAmount, EnableSearch, DisableSearch, SetSearchType, SetNextJobsUrl, Hyp3BatchResponse, SarviewsEventsResponse } from './search.action';
+import { SetSearchAmount, EnableSearch, DisableSearch, SetSearchType, SetNextJobsUrl,
+  Hyp3BatchResponse, SarviewsEventsResponse, MakeEventProductCMRSearch, EventProductCMRSearchResponse } from './search.action';
 import * as scenesStore from '@store/scenes';
 import * as filtersStore from '@store/filters';
 import * as mapStore from '@store/map';
@@ -27,9 +28,10 @@ import WKT from 'ol/format/WKT';
 import GeoJSON from 'ol/format/GeoJSON';
 import VectorSource from 'ol/source/Vector';
 import { getScenes } from '@store/scenes';
-import { SearchType } from '@models';
+import { hyp3JobTypes, SearchType } from '@models';
 import { Feature } from 'ol';
 import Geometry from 'ol/geom/Geometry';
+import { AddJobs } from '@store/queue';
 @Injectable()
 export class SearchEffects {
   constructor(
@@ -40,6 +42,7 @@ export class SearchEffects {
     private productService: services.ProductService,
     private hyp3Service: services.Hyp3Service,
     private sarviewsService: services.SarviewsEventsService,
+    private notificationService: services.NotificationService,
     private http: HttpClient
   ) {}
 
@@ -175,6 +178,64 @@ export class SearchEffects {
       _ => of(new SearchError(`Error loading search results`))
     )
   ));
+
+  public eventMonitoringCMRProductQuery = createEffect(() => this.actions$.pipe(
+    ofType<MakeEventProductCMRSearch>(SearchActionType.MAKE_EVENT_PRODUCT_CMR_SEARCH),
+    map(action => action.payload),
+    map(products => {
+      const granuleList = products.reduce(
+      (prev, curr) => prev = prev.concat(curr.granules.map(granule => granule.granule_name)),
+    [] as string[]).join(',');
+
+    const productGranulesByType = products.reduce((prev, curr) => {
+      if (!prev[curr.job_type]) {
+        prev[curr.job_type] = [];
+      }
+      prev[curr.job_type].push(curr.granules.map(granule => granule.granule_name));
+
+      return prev;
+    }, {});
+    return {granuleList, productGranulesByType};
+  }),
+    switchMap((jobData) => forkJoin(
+      [
+        this.asfApiService.query<any[]>({ 'granule_list': jobData.granuleList }).pipe(
+          catchError(
+            (_: HttpErrorResponse) => {
+              this.store$.dispatch(new EventProductCMRSearchResponse());
+              this.notificationService.error('Error adding job to On Demand Queue');
+              return EMPTY;
+            }
+          ),
+        ),
+        of(jobData.productGranulesByType)]).pipe(
+        map( (data) => ({
+          results: data[0],
+          productGranulesByType: data[1]})
+          ),
+        ),
+        ),
+  map(data => ({ products: this.productService.fromResponse(data.results)
+    .filter(product => !product.metadata.productType.includes('METADATA'))
+    .reduce((products, product) => {
+      products[product.name] = product;
+      return products;
+    } , {}), productGranulesByType: data.productGranulesByType
+  })
+  ),
+  map(data => {
+    const output: models.QueuedHyp3Job[] = [];
+
+    const jobTypes = Object.keys(data.productGranulesByType);
+
+    jobTypes.forEach(type => data.productGranulesByType[type].forEach((jobGranulesNames: string[]) => {
+      output.push({job_type: hyp3JobTypes[type], granules: jobGranulesNames.map(name => (data.products[name]))});
+    }));
+    return output;
+  }),
+  tap(jobs => this.store$.dispatch(new AddJobs(jobs))),
+  tap(_ => this.store$.dispatch(new EventProductCMRSearchResponse()))
+    ), {dispatch: false});
 
   private asfApiQuery$(): Observable<Action> {
     this.logCountries();

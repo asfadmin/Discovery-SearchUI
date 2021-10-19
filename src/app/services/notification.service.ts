@@ -34,13 +34,13 @@ export class NotificationService {
     }
     if (count > 1) {
       headerText = `Jobs ${action} queue`;
-      infoText = `${count} ${job_type} jobs ${action} the On Demand Queue.`;
+      infoText = `${count} ${job_type === '' ? '' : job_type + ' '}jobs ${action} the On Demand Queue.`;
       if (duplicates && added) {
         infoText += ` ${duplicates} duplicate ${duplicates > 1 ? 'jobs' : 'job'} not ${action} the queue.`;
       }
       this.info(infoText, headerText);
     } else {
-      infoText = `${job_type} job ${action} the On Demand Queue.`;
+      infoText = `${job_type === '' ? '' : job_type + ' '}job ${action} the On Demand Queue.`;
       this.info(infoText, `Job ${action} queue`);
     }
   }

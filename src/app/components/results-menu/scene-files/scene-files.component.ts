@@ -23,6 +23,7 @@ import { MatSelectionListChange } from '@angular/material/list';
 import { PinnedProduct } from '@services/browse-map.service';
 import { ImageDialogComponent } from '../scene-detail/image-dialog';
 import { MatDialog } from '@angular/material/dialog';
+import { MakeEventProductCMRSearch } from '@store/search';
 
 @Component({
   selector: 'app-scene-files',
@@ -383,6 +384,10 @@ export class SceneFilesComponent implements OnInit, OnDestroy, AfterContentInit 
     this.clipboard.copyFromContent( productListStr.join('\n '));
     const lines = products.length;
     this.notificationService.clipboardCopyQueue(lines, false);
+  }
+
+  public onAddEventToOnDemand(product: SarviewsProduct) {
+    this.store$.dispatch(new MakeEventProductCMRSearch([product]));
   }
 
   ngOnDestroy() {
