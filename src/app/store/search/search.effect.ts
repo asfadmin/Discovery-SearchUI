@@ -42,6 +42,7 @@ export class SearchEffects {
     private productService: services.ProductService,
     private hyp3Service: services.Hyp3Service,
     private sarviewsService: services.SarviewsEventsService,
+    private notificationService: services.NotificationService,
     private http: HttpClient
   ) {}
 
@@ -198,7 +199,15 @@ export class SearchEffects {
   }),
     switchMap((data) => forkJoin(
       [
-        this.asfApiService.query<any[]>({ 'granule_list': data.granuleList }),
+        this.asfApiService.query<any[]>({ 'granule_list': data.granuleList }).pipe(
+          catchError(
+            (_: HttpErrorResponse) => {
+              this.store$.dispatch(new EventProductCMRSearchResponse());
+              this.notificationService.error("Error adding job to On Demand Queue");
+              return EMPTY;
+            }
+          ),
+        ),
         of(data.productGranulesByType)]).pipe(
         map( (data) => ({
           results: data[0],
