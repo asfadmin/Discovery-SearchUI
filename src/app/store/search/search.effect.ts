@@ -4,10 +4,10 @@ import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { Store, Action } from '@ngrx/store';
 
 import { of, forkJoin, combineLatest, Observable, EMPTY } from 'rxjs';
-import { map, withLatestFrom, switchMap, catchError, filter, first } from 'rxjs/operators';
+import { map, withLatestFrom, switchMap, catchError, filter, first, tap } from 'rxjs/operators';
 
 import { AppState } from '../app.reducer';
-import { SetSearchAmount, EnableSearch, DisableSearch, SetSearchType, SetNextJobsUrl, Hyp3BatchResponse, SarviewsEventsResponse } from './search.action';
+import { SetSearchAmount, EnableSearch, DisableSearch, SetSearchType, SetNextJobsUrl, Hyp3BatchResponse, SarviewsEventsResponse, MakeEventProductCMRSearch } from './search.action';
 import * as scenesStore from '@store/scenes';
 import * as filtersStore from '@store/filters';
 import * as mapStore from '@store/map';
@@ -27,9 +27,11 @@ import WKT from 'ol/format/WKT';
 import GeoJSON from 'ol/format/GeoJSON';
 import VectorSource from 'ol/source/Vector';
 import { getScenes } from '@store/scenes';
-import { SearchType } from '@models';
+import { hyp3JobTypes, SearchType } from '@models';
 import { Feature } from 'ol';
 import Geometry from 'ol/geom/Geometry';
+import { AddJobs } from '@store/queue';
+// import { AddItems, AddJob } from '@store/queue';
 @Injectable()
 export class SearchEffects {
   constructor(
@@ -175,6 +177,60 @@ export class SearchEffects {
       _ => of(new SearchError(`Error loading search results`))
     )
   ));
+
+  public eventMonitoringCMRProductQuery = createEffect(() => this.actions$.pipe(
+    ofType<MakeEventProductCMRSearch>(SearchActionType.MAKE_EVENT_PRODUCT_CMR_SEARCH),
+    map(action => action.payload),
+    map(products => {
+      const granuleList = products.reduce(
+      (prev, curr) => prev = prev.concat(curr.granules.map(granule => granule.granule_name)),
+    [] as string[]).join(',');
+
+    const productGranulesByType = products.reduce((prev, curr) => {
+      if(!prev[curr.job_type]) {
+        prev[curr.job_type] = [];
+      }
+      prev[curr.job_type].push(curr.granules.map(granule => granule.granule_name));
+
+      return prev;
+    }, {})
+    return {granuleList, productGranulesByType};
+  }),
+    switchMap((data) => forkJoin(
+      [
+        this.asfApiService.query<any[]>({ 'granule_list': data.granuleList }),
+        of(data.productGranulesByType)]).pipe(
+        map( (data) => ({
+          results: data[0],
+          productGranulesByType: data[1]})
+          ),
+        ),
+        ),
+    map(data =>({ products: this.productService.fromResponse(data.results)
+    .filter(product => !product.metadata.productType.includes('METADATA'))
+    .reduce((products, product) => {
+      products[product.name] = product;
+      return products;
+    } , {}), productGranulesByType: data.productGranulesByType
+  })
+  ),
+  tap(x => console.log(x)),
+  map(data => {
+    // const products = data.products;
+    // const productGranulesByType = data.productGranulesByType;
+    let output: models.QueuedHyp3Job[] = [];
+
+    const jobTypes = Object.keys(data.productGranulesByType);
+
+    jobTypes.forEach(type => data.productGranulesByType[type].forEach((jobGranulesNames: string[]) => {
+      output.push({job_type: hyp3JobTypes[type], granules: jobGranulesNames.map(name => (data.products[name]))})
+    }));
+    console.log(output);
+    return output;
+    // console.log(produc)
+  }),
+  map(jobs => this.store$.dispatch(new AddJobs(jobs))),
+    ), {dispatch: false})
 
   private asfApiQuery$(): Observable<Action> {
     this.logCountries();

@@ -61,6 +61,11 @@
                 </button>
                 <button mat-icon-button (click)="downloadProduct(prod.files.product_url); $event.stopPropagation();"><mat-icon>cloud_download</mat-icon></button>
               </div>
+              <div>
+                <button mat-flat-button (click)="onAddEventToOnDemand(prod)">
+                  ONDEMAND
+              </button>
+              </div>
               <div></div>
           </div>
         </mat-list-option>
