@@ -4,7 +4,7 @@ import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { Store, Action } from '@ngrx/store';
 
 import { of, forkJoin, combineLatest, Observable, EMPTY } from 'rxjs';
-import { map, withLatestFrom, switchMap, catchError, filter, first, tap } from 'rxjs/operators';
+import { map, withLatestFrom, switchMap, catchError, filter, first } from 'rxjs/operators';
 
 import { AppState } from '../app.reducer';
 import { SetSearchAmount, EnableSearch, DisableSearch, SetSearchType, SetNextJobsUrl, Hyp3BatchResponse, SarviewsEventsResponse, MakeEventProductCMRSearch } from './search.action';
@@ -214,10 +214,7 @@ export class SearchEffects {
     } , {}), productGranulesByType: data.productGranulesByType
   })
   ),
-  tap(x => console.log(x)),
   map(data => {
-    // const products = data.products;
-    // const productGranulesByType = data.productGranulesByType;
     let output: models.QueuedHyp3Job[] = [];
 
     const jobTypes = Object.keys(data.productGranulesByType);
@@ -225,9 +222,7 @@ export class SearchEffects {
     jobTypes.forEach(type => data.productGranulesByType[type].forEach((jobGranulesNames: string[]) => {
       output.push({job_type: hyp3JobTypes[type], granules: jobGranulesNames.map(name => (data.products[name]))})
     }));
-    console.log(output);
     return output;
-    // console.log(produc)
   }),
   map(jobs => this.store$.dispatch(new AddJobs(jobs))),
     ), {dispatch: false})
