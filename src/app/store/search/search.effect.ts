@@ -4,10 +4,10 @@ import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { Store, Action } from '@ngrx/store';
 
 import { of, forkJoin, combineLatest, Observable, EMPTY } from 'rxjs';
-import { map, withLatestFrom, switchMap, catchError, filter, first } from 'rxjs/operators';
+import { map, withLatestFrom, switchMap, catchError, filter, first, tap } from 'rxjs/operators';
 
 import { AppState } from '../app.reducer';
-import { SetSearchAmount, EnableSearch, DisableSearch, SetSearchType, SetNextJobsUrl, Hyp3BatchResponse, SarviewsEventsResponse, MakeEventProductCMRSearch } from './search.action';
+import { SetSearchAmount, EnableSearch, DisableSearch, SetSearchType, SetNextJobsUrl, Hyp3BatchResponse, SarviewsEventsResponse, MakeEventProductCMRSearch, EventProductCMRSearchResponse } from './search.action';
 import * as scenesStore from '@store/scenes';
 import * as filtersStore from '@store/filters';
 import * as mapStore from '@store/map';
@@ -206,7 +206,7 @@ export class SearchEffects {
           ),
         ),
         ),
-    map(data =>({ products: this.productService.fromResponse(data.results)
+  map(data =>({ products: this.productService.fromResponse(data.results)
     .filter(product => !product.metadata.productType.includes('METADATA'))
     .reduce((products, product) => {
       products[product.name] = product;
@@ -224,7 +224,8 @@ export class SearchEffects {
     }));
     return output;
   }),
-  map(jobs => this.store$.dispatch(new AddJobs(jobs))),
+  tap(jobs => this.store$.dispatch(new AddJobs(jobs))),
+  tap(_ => this.store$.dispatch(new EventProductCMRSearchResponse()))
     ), {dispatch: false})
 
   private asfApiQuery$(): Observable<Action> {

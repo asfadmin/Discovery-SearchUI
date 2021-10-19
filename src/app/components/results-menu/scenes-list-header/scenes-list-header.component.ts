@@ -22,6 +22,7 @@ import { SubSink } from 'subsink';
 import { CMRProductMetadata, hyp3JobTypes, SarviewsProduct } from '@models';
 import * as moment from 'moment';
 import { AddItems } from '@store/queue';
+import { MakeEventProductCMRSearch } from '@store/search';
 
 @Component({
   selector: 'app-scenes-list-header',
@@ -46,6 +47,12 @@ export class ScenesListHeaderComponent implements OnInit, OnDestroy {
   );
   public numPairs$ = this.pairService.pairs$().pipe(
     map(pairs => pairs.pairs.length + pairs.custom.length)
+  );
+
+
+  public selectedEventProducts$ = this.store$.select(scenesStore.getPinnedEventBrowseIDs).pipe(
+    map(browseIds =>
+      this.sarviewsEventProducts.filter(prod => browseIds.includes(prod.product_id)))
   );
 
   public pairs: models.CMRProductPair[];
@@ -319,12 +326,29 @@ export class ScenesListHeaderComponent implements OnInit, OnDestroy {
     this.store$.dispatch(new AddItems(toCMRProducts));
   }
 
+  public addOnDemandEventProducts(targetProducts: SarviewsProduct[]) {
+    this.store$.dispatch(new MakeEventProductCMRSearch(targetProducts));
+  }
+
+  public addOnDemandEventProductsBySearchType(jobType: models.Hyp3JobType) {
+    this.addOnDemandEventProducts(this.EventMonitoringByJobType(jobType));
+  }
+
+  public EventMonitoringByJobType(jobType: models.Hyp3JobType) {
+    const targetProducts = this.sarviewsEventProducts.filter(product => hyp3JobTypes[product.job_type] === jobType);
+    return targetProducts;
+  }
+
   public onMetadataExport(format: models.AsfApiOutputFormat): void {
     const action = new queueStore.DownloadSearchtypeMetadata(format);
 
     if (this.searchType === this.SearchTypes.BASELINE) {
       this.store$.dispatch(action);
     }
+  }
+
+  public onOpenHelp(infoUrl) {
+    window.open(infoUrl);
   }
 
   ngOnDestroy(): void {

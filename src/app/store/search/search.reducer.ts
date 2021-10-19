@@ -38,6 +38,14 @@ export function searchReducer(state = initState, action: SearchActions): SearchS
         isCanceled: false,
       };
     }
+    case SearchActionType.MAKE_EVENT_PRODUCT_CMR_SEARCH: {
+      return {
+        ...state,
+        error: null,
+        isLoading: true,
+        isCanceled: false,
+      };
+    }
 
     case SearchActionType.ENABLE_SEARCH: {
       return {
@@ -85,6 +93,14 @@ export function searchReducer(state = initState, action: SearchActions): SearchS
         isLoading: false,
         isCanceled: false
       };
+    }
+
+    case SearchActionType.EVENT_PRODUCT_CMR_RESPONSE: {
+      return {
+        ...state,
+        isLoading: false,
+        isCanceled: false
+      }
     }
 
     case SearchActionType.SEARCH_ERROR: {
