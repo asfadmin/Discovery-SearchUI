@@ -7,7 +7,8 @@ import { of, forkJoin, combineLatest, Observable, EMPTY } from 'rxjs';
 import { map, withLatestFrom, switchMap, catchError, filter, first, tap } from 'rxjs/operators';
 
 import { AppState } from '../app.reducer';
-import { SetSearchAmount, EnableSearch, DisableSearch, SetSearchType, SetNextJobsUrl, Hyp3BatchResponse, SarviewsEventsResponse, MakeEventProductCMRSearch, EventProductCMRSearchResponse } from './search.action';
+import { SetSearchAmount, EnableSearch, DisableSearch, SetSearchType, SetNextJobsUrl,
+  Hyp3BatchResponse, SarviewsEventsResponse, MakeEventProductCMRSearch, EventProductCMRSearchResponse } from './search.action';
 import * as scenesStore from '@store/scenes';
 import * as filtersStore from '@store/filters';
 import * as mapStore from '@store/map';
@@ -197,9 +198,9 @@ export class SearchEffects {
     }, {});
     return {granuleList, productGranulesByType};
   }),
-    switchMap((data) => forkJoin(
+    switchMap((jobData) => forkJoin(
       [
-        this.asfApiService.query<any[]>({ 'granule_list': data.granuleList }).pipe(
+        this.asfApiService.query<any[]>({ 'granule_list': jobData.granuleList }).pipe(
           catchError(
             (_: HttpErrorResponse) => {
               this.store$.dispatch(new EventProductCMRSearchResponse());
@@ -208,7 +209,7 @@ export class SearchEffects {
             }
           ),
         ),
-        of(data.productGranulesByType)]).pipe(
+        of(jobData.productGranulesByType)]).pipe(
         map( (data) => ({
           results: data[0],
           productGranulesByType: data[1]})
