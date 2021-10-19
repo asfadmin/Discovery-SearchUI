@@ -100,7 +100,7 @@ export function searchReducer(state = initState, action: SearchActions): SearchS
         ...state,
         isLoading: false,
         isCanceled: false
-      }
+      };
     }
 
     case SearchActionType.SEARCH_ERROR: {

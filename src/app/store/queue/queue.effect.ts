@@ -156,7 +156,7 @@ export class QueueEffects {
     map(action => action.payload),
     withLatestFrom(this.store$.select(getDuplicates)),
     map(([jobs, duplicates]) => {
-      const jobTypes =Array.from(jobs.reduce((types, job) =>types = types.add(job.job_type.name), new Set<string>()));
+      const jobTypes = Array.from(jobs.reduce((types, job) => types = types.add(job.job_type.name), new Set<string>()));
       this.notificationService.demandQueue(true, jobs.length, jobTypes.length === 1 ? jobTypes[0] : '', duplicates = duplicates);
     }),
   ),
