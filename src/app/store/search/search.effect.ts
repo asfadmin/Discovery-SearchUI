@@ -32,7 +32,6 @@ import { hyp3JobTypes, SearchType } from '@models';
 import { Feature } from 'ol';
 import Geometry from 'ol/geom/Geometry';
 import { AddJobs } from '@store/queue';
-// import { AddItems, AddJob } from '@store/queue';
 @Injectable()
 export class SearchEffects {
   constructor(

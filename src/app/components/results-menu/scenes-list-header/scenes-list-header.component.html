@@ -251,7 +251,6 @@
                 <ng-template matMenuContent let-selected="selected_products">
                   <button [disabled]="selected.length === 0" mat-menu-item (click)="addOnDemandEventProducts(selected)">
                     Add {{selected.length > 0 ? selected.length : ''}} Selected Job{{selected.length !== 1 ? 's' : ''}}
-                    <!-- <mat-icon (click)="onOpenHelp(t.infoUrl)" class="clickable" style="margin-left: 10px;">info</mat-icon> -->
                   </button>
                 </ng-template>
               </mat-menu>
