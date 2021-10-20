@@ -178,7 +178,7 @@ export class SarviewsEventsService {
       const hyp3Prod: models.Hyp3ableByProductType = {
         productType: product.job_type,
         products: [this.eventProductToCMRProducts(product)]
-      }
+      };
       const byProductType: models.Hyp3ableByProductType[] = [hyp3Prod];
 
       const output: models.Hyp3ableProductByJobType = {
@@ -198,16 +198,16 @@ export class SarviewsEventsService {
       products.forEach( product => {
         const productType = product.job_type;
 
-        if(!hyp3ProductsByType[productType]) {
+        if (!hyp3ProductsByType[productType]) {
           hyp3ProductsByType[productType] = [];
         }
 
         hyp3ProductsByType[productType].push(this.eventProductToCMRProducts(product));
       });
 
-      let byProductType: models.Hyp3ableByProductType[] = [];
+      const byProductType: models.Hyp3ableByProductType[] = [];
       Object.keys(hyp3ProductsByType).forEach(key =>
-        byProductType.push({productType: key, products: hyp3ProductsByType[key]}))
+        byProductType.push({productType: key, products: hyp3ProductsByType[key]}));
       // byJobType
       // const byProductType: models.Hyp3ableByProductType[] = [hyp3Prod];
 
