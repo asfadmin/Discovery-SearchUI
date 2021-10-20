@@ -2,6 +2,10 @@
   padding: 10px;
 }
 
+.subscription-disabled {
+  color: grey !important;
+}
+
 .edit-icon {
   font-size: 18px;
 }
@@ -17,6 +21,9 @@
   display: flex;
 }
 
+.subscription--header-actions {
+}
+
 .subscription--preview {
   display: flex;
   flex-direction: column;
@@ -28,6 +35,10 @@
 
 .subscription--detail {
   margin: 10px 10px 10px 45px;
+}
+
+.subscription--action {
+  background-color: unset !important;
 }
 
 .expand-arrow {

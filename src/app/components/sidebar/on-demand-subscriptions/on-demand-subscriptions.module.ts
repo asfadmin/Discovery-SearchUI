@@ -15,6 +15,7 @@ import { OnDemandSubscriptionsComponent } from './on-demand-subscriptions.compon
 import { OnDemandSubscriptionComponent } from './on-demand-subscription/on-demand-subscription.component';
 import { SubscriptionFiltersComponent } from './on-demand-subscription/subscription-filters/subscription-filters.component';
 import { SubscriptionJobOptionsComponent } from './on-demand-subscription/subscription-job-options/subscription-job-options.component';
+import {MatSlideToggleModule} from '@angular/material/slide-toggle';
 
 
 @NgModule({
@@ -24,18 +25,19 @@ import { SubscriptionJobOptionsComponent } from './on-demand-subscription/subscr
     SubscriptionFiltersComponent,
     SubscriptionJobOptionsComponent,
   ],
-  imports: [
-    CommonModule,
-    FormsModule,
-    PipesModule,
-    MatSharedModule,
-    MatDatepickerModule,
-    MatFormFieldModule,
-    MatInputModule,
-    MatSharedModule,
-    MatMomentDateModule,
-    CreateSubscriptionModule,
-  ],
+    imports: [
+        CommonModule,
+        FormsModule,
+        PipesModule,
+        MatSharedModule,
+        MatDatepickerModule,
+        MatFormFieldModule,
+        MatInputModule,
+        MatSharedModule,
+        MatMomentDateModule,
+        CreateSubscriptionModule,
+        MatSlideToggleModule,
+    ],
   exports: [
     OnDemandSubscriptionsComponent,
     OnDemandSubscriptionComponent

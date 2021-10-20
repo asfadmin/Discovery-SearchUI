@@ -2,6 +2,12 @@
 
 $divider-bar-color: lighten($asf-primary-light, 8%);
 
+.subscriptions-content-wrapper {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+}
+
 .no-saved-filters-presets h2 {
   color: #c9cac4;
   padding-left: 15px;
@@ -10,9 +16,9 @@ $divider-bar-color: lighten($asf-primary-light, 8%);
 .add-button-container {
   display: flex;
   justify-content: center;
-  width: 120px;
+  width: 100px;
   float: right;
-  margin-top: -18px;
+  margin-top: -32px;
 }
 
 .fab-button {
