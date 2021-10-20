@@ -87,9 +87,9 @@ $color: $asf-primary-dark;
   border-bottom-color: $asf-primary-dark;
   border-bottom-width: 1px;
   width: 100%;
-  height: calc(#{$header-height} - 11px);
+  height: calc(#{$header-height} - 16px);
   position: absolute;
-  top: 0;
+  top: 5px;
   flex: 1 1 auto;
   text-align: left;
 }
@@ -105,7 +105,7 @@ $color: $asf-primary-dark;
 
 .feedback-div {
   position: absolute;
-  top: 53px;
+  top: 56px;
   right: 16px;
   text-align: right;
   float: right;
@@ -114,7 +114,7 @@ $color: $asf-primary-dark;
 
 .docs-div {
   position: absolute;
-  top: 53px;
+  top: 56px;
   right: 130px;
   text-align: right;
   float: right;
@@ -153,7 +153,7 @@ $color: $asf-primary-dark;
 .hyp3-footer {
   display: flex;
   flex-direction: row;
-  justify-content: space-between;
+  justify-content: space-around;
   height: 100%;
   background-color: $asf-primary-light;
   border-top-style: solid;
@@ -164,7 +164,7 @@ $color: $asf-primary-dark;
 .on-demand-branding {
   display: inline-block;
   vertical-align: middle;
-  margin-left: 0;
+  margin-left: 10px;
   margin-bottom: -5px;
 }
 
@@ -183,7 +183,7 @@ $color: $asf-primary-dark;
 .on-demand-subtitle {
   margin-top: -42px;
   font-style: italic;
-  margin-left: 75px;
+  margin-left: 85px;
   font-size: 14px;
   margin-bottom: 17px;
   color: #65665c;

@@ -229,24 +229,28 @@
 
 <mat-dialog-actions class="mat-dialog-actions">
   <div class="w100 hyp3-footer">
-    <button (click)="onBack()" mat-flat-button
-      [disabled]="stepper.selectedIndex === 0">
-      Back
-    </button>
+    <div>
+      <button mat-flat-button
+              (click)="onBack()"
+              [disabled]="stepper.selectedIndex === 0">
+        Back
+      </button>
+    </div>
 
     <div>
       <mat-slide-toggle
-         *ngIf="breakpoint !== breakpoints.MOBILE"
-        style="margin-right: 16px;"
+        *ngIf="breakpoint !== breakpoints.MOBILE"
         (change)="onValidateOnlyToggle($event.checked)"
         [(ngModel)]="validateOnly">
         Validate Only
       </mat-slide-toggle>
+    </div>
 
-      <button
+    <div>
+      <button mat-flat-button
          (click)="onNext()"
          [disabled]=""
-         mat-flat-button
+
          color="primary">
         {{ isLastStep() ? 'Submit' : 'Next'}}
       </button>
