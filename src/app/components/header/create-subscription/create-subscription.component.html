@@ -256,31 +256,22 @@
 </mat-dialog-content>
 
 <mat-dialog-actions class="mat-dialog-actions">
-  <div class="w100 hyp3-footer">
-    <div>
-      <button mat-flat-button
-              color="primary"
-              (click)="onBack()"
-              [disabled]="stepper.selectedIndex === 0">
-        Back
-      </button>
-    </div>
-
-    <div>
+  <div class="w100 subscription-footer">
+    <div class="subscription-footer-item validate-toggle"
+         *ngIf="breakpoint !== breakpoints.MOBILE && isDevMode()">
       <mat-slide-toggle
-         *ngIf="breakpoint !== breakpoints.MOBILE && isDevMode()"
         (change)="onValidateOnlyToggle($event.checked)"
         [(ngModel)]="validateOnly">
         Validate Only
       </mat-slide-toggle>
     </div>
 
-    <div>
+    <div class="subscription-footer-item">
       <button mat-flat-button
          (click)="submitSubscription()"
-         [disabled]=""
+         [disabled]="!isLastStep()"
          color="primary">
-        {{ isLastStep() ? 'Submit' : 'Next'}}
+        Submit
       </button>
     </div>
   </div>
