@@ -16,13 +16,16 @@ import { AoiOptionsModule } from '@components/shared/aoi-options';
 
 import { CreateSubscriptionComponent } from './create-subscription.component';
 import { ProcessingOptionsModule } from '../processing-queue/processing-options';
+import { DateRangeModule } from '@components/shared/selectors/date-range/date-range.module';
 
 import { MatDialogModule } from '@angular/material/dialog';
 import { PipesModule } from '@pipes';
+import { SubscriptionDateRangeComponent } from './subscription-date-range/subscription-date-range.component';
 
 @NgModule({
   declarations: [
-    CreateSubscriptionComponent
+    CreateSubscriptionComponent,
+    SubscriptionDateRangeComponent
   ],
   imports: [
     CommonModule,
@@ -39,6 +42,7 @@ import { PipesModule } from '@pipes';
     ProjectNameSelectorModule,
     ProductTypeSelectorModule,
     AoiOptionsModule,
+    DateRangeModule,
     PipesModule,
   ],
   exports: [

@@ -12,7 +12,7 @@ import { AppState } from '@store';
 import * as hyp3Store from '@store/hyp3';
 import * as filtersStore from '@store/filters';
 
-import { ScreenSizeService, MapService, Hyp3Service, EnvironmentService } from '@services';
+import { ScreenSizeService, MapService, Hyp3Service, EnvironmentService, AsfApiService } from '@services';
 import * as models from '@models';
 
 enum CreateSubscriptionSteps {
@@ -47,7 +47,7 @@ export class CreateSubscriptionComponent implements OnInit, OnDestroy {
       apiValue: 'SLC',
       displayName: 'L1 Single Look Complex (SLC)'
   }];
-  public productType;
+  public productType = 'SLC';
 
   public flightDirectionTypes = models.flightDirections;
   public flightDirection;
@@ -66,7 +66,7 @@ export class CreateSubscriptionComponent implements OnInit, OnDestroy {
     },
     ...models.sentinel_1.subtypes
   ];
-  public subtype;
+  public subtype = 'S1';
 
   public processingOptionsList = [];
   public processingOptions;
@@ -75,6 +75,7 @@ export class CreateSubscriptionComponent implements OnInit, OnDestroy {
   public projectName: string;
   public searchFilters;
   public polygon: string;
+  public subEstimate: number | null = null;
 
   public breakpoint: models.Breakpoints;
   public breakpoints = models.Breakpoints;
@@ -88,10 +89,18 @@ export class CreateSubscriptionComponent implements OnInit, OnDestroy {
     private mapService: MapService,
     private hyp3: Hyp3Service,
     public env: EnvironmentService,
+    private asfApi: AsfApiService,
     private store$: Store<AppState>,
   ) { }
 
   ngOnInit(): void {
+
+    const end = new Date();
+    this.dateRange = {
+      start: new Date(),
+      end: new Date(end.setDate(end.getDate() + 179)),
+    };
+
     this.subs.add(
       this.screenSize.breakpoint$.subscribe(
         breakpoint => this.breakpoint = breakpoint
@@ -128,16 +137,26 @@ export class CreateSubscriptionComponent implements OnInit, OnDestroy {
     );
 
     this.subs.add(
-      this.store$.select(filtersStore.getDateRange).subscribe(
-        range => this.dateRange = range
-      )
-    );
-
-    this.subs.add(
       this.store$.select(hyp3Store.getProcessingProjectName).subscribe(
         name => this.projectName = name
       )
     );
+  }
+
+  public onNewStartDate(d: Date): void {
+    this.dateRange.start = d;
+
+    if (this.dateRange.end < this.dateRange.start && !!this.dateRange.end) {
+      this.dateRange.end = d;
+    }
+  }
+
+  public onNewEndDate(d: Date): void {
+    this.dateRange.end = d;
+
+    if (this.dateRange.start > this.dateRange.end && !!this.dateRange.start) {
+      this.dateRange.start = d;
+    }
   }
 
   public onNext(): void {
@@ -160,7 +179,7 @@ export class CreateSubscriptionComponent implements OnInit, OnDestroy {
         return;
       }
     } else if (this.stepper.selectedIndex === CreateSubscriptionSteps.PROCESSING_OPTIONS) {
-
+      this.onEstimateSubscription();
     } else if (this.stepper.selectedIndex === CreateSubscriptionSteps.REVIEW) {
       if (!this.projectName) {
         this.errors.projectNameError = 'Project Name is required';
@@ -184,6 +203,8 @@ export class CreateSubscriptionComponent implements OnInit, OnDestroy {
   }
 
   private submitSubscription(): void {
+    const searchParams = this.getSearchParams();
+
     const sub = {
       job_specification: {
         job_parameters: {
@@ -193,13 +214,9 @@ export class CreateSubscriptionComponent implements OnInit, OnDestroy {
         name: this.projectName
       },
       search_parameters: {
-        start: moment.utc(this.dateRange.start).format(),
-        end: moment.utc(this.dateRange.end).format(),
-        intersectsWith: this.polygon,
-        platform: 'S1',
+        ...searchParams,
       }
     };
-
 
     this.hyp3.submiteSubscription$({
       subscription: sub, validate_only: this.validateOnly
@@ -256,7 +273,55 @@ export class CreateSubscriptionComponent implements OnInit, OnDestroy {
       });
 
     return filtered;
+  }
 
+  public onEstimateSubscription(): void {
+    const start = new Date();
+    this.dateRange = {
+      start: new Date(start.setDate(start.getDate() - 179)),
+      end: new Date(),
+    };
+
+    const params = this.filterNullKeys({
+      start: moment.utc(this.dateRange.start).format(),
+      end: moment.utc(this.dateRange.end).format(),
+      intersectsWith: this.polygon,
+      platform: this.subtype,
+      flightDirection: !!this.flightDirection ? this.flightDirection.toUpperCase() : null,
+      polarization: !!this.polarization ? [ this.polarization ] : null,
+      processinglevel: this.productType,
+      output: 'COUNT',
+    });
+
+    this.subs.add(
+      this.asfApi.query(params).subscribe(
+        estimate => this.subEstimate = Math.round(<number>estimate / 6)
+      )
+    );
+  }
+
+  private getSearchParams() {
+    const params = {
+      start: moment.utc(this.dateRange.start).format(),
+      end: moment.utc(this.dateRange.end).format(),
+      intersectsWith: this.polygon,
+      platform: this.subtype,
+      flightDirection: !!this.flightDirection ? this.flightDirection.toUpperCase() : null,
+      polarization: !!this.polarization ? [ this.polarization ] : null,
+      processingLevel: this.productType,
+    };
+
+    return this.filterNullKeys(params);
+  }
+
+  public isDevMode(): boolean {
+    return !this.env.isProd;
+  }
+
+  private filterNullKeys(params) {
+    return Object.keys(params)
+      .filter((k) => params[k] != null)
+      .reduce((a, k) => ({ ...a, [k]: params[k] }), {});
   }
 
   public onCloseDialog() {
