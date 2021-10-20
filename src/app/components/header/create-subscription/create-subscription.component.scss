@@ -209,3 +209,13 @@ $color: $asf-primary-dark;
   z-index: 100;
   color: $color;
 }
+
+.navigation-row {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+
+.navigation-item {
+  flex: none;
+}

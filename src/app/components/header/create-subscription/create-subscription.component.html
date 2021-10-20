@@ -233,6 +233,25 @@
         </mat-step>
       </mat-stepper>
     </div>
+    <div class="navigation-row">
+      <div class="navigation-item">
+        <button mat-flat-button
+                color="primary"
+                (click)="onBack()"
+                [disabled]="stepper.selectedIndex === 0">
+          Back
+          <mat-icon>arrow_backward</mat-icon>
+        </button>
+        &nbsp;
+        <button mat-flat-button
+                color="primary"
+                (click)="onNext()"
+                [disabled]="">
+          {{ isLastStep() ? 'Submit' : 'Next'}}
+          <mat-icon>arrow_forward</mat-icon>
+        </button>
+      </div>
+    </div>
   </div>
 </mat-dialog-content>
 
@@ -240,6 +259,7 @@
   <div class="w100 hyp3-footer">
     <div>
       <button mat-flat-button
+              color="primary"
               (click)="onBack()"
               [disabled]="stepper.selectedIndex === 0">
         Back
@@ -257,9 +277,8 @@
 
     <div>
       <button mat-flat-button
-         (click)="onNext()"
+         (click)="submitSubscription()"
          [disabled]=""
-
          color="primary">
         {{ isLastStep() ? 'Submit' : 'Next'}}
       </button>

@@ -21,30 +21,32 @@ import { DateRangeModule } from '@components/shared/selectors/date-range/date-ra
 import { MatDialogModule } from '@angular/material/dialog';
 import { PipesModule } from '@pipes';
 import { SubscriptionDateRangeComponent } from './subscription-date-range/subscription-date-range.component';
+import {FlexModule} from '@angular/flex-layout';
 
 @NgModule({
   declarations: [
     CreateSubscriptionComponent,
     SubscriptionDateRangeComponent
   ],
-  imports: [
-    CommonModule,
-    FormsModule,
-    MatDialogModule,
-    MatSelectModule,
-    MatStepperModule,
-    MatSlideToggleModule,
-    MatInputModule,
-    MatSharedModule,
-    ProcessingOptionsModule,
-    SearchFiltersModule,
-    DateSelectorModule,
-    ProjectNameSelectorModule,
-    ProductTypeSelectorModule,
-    AoiOptionsModule,
-    DateRangeModule,
-    PipesModule,
-  ],
+    imports: [
+        CommonModule,
+        FormsModule,
+        MatDialogModule,
+        MatSelectModule,
+        MatStepperModule,
+        MatSlideToggleModule,
+        MatInputModule,
+        MatSharedModule,
+        ProcessingOptionsModule,
+        SearchFiltersModule,
+        DateSelectorModule,
+        ProjectNameSelectorModule,
+        ProductTypeSelectorModule,
+        AoiOptionsModule,
+        DateRangeModule,
+        PipesModule,
+        FlexModule,
+    ],
   exports: [
     CreateSubscriptionComponent
   ]

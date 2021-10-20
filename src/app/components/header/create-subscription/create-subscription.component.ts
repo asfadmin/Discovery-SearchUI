@@ -202,7 +202,7 @@ export class CreateSubscriptionComponent implements OnInit, OnDestroy {
     return this.stepper.selectedIndex === this.stepper.steps.length - 1;
   }
 
-  private submitSubscription(): void {
+  public submitSubscription(): void {
     const searchParams = this.getSearchParams();
 
     const sub = {
