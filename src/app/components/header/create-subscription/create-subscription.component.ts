@@ -277,14 +277,14 @@ export class CreateSubscriptionComponent implements OnInit, OnDestroy {
 
   public onEstimateSubscription(): void {
     const start = new Date();
-    this.dateRange = {
+    const dateRange = {
       start: new Date(start.setDate(start.getDate() - 179)),
       end: new Date(),
     };
 
     const params = this.filterNullKeys({
-      start: moment.utc(this.dateRange.start).format(),
-      end: moment.utc(this.dateRange.end).format(),
+      start: moment.utc(dateRange.start).format(),
+      end: moment.utc(dateRange.end).format(),
       intersectsWith: this.polygon,
       platform: this.subtype,
       flightDirection: !!this.flightDirection ? this.flightDirection.toUpperCase() : null,
