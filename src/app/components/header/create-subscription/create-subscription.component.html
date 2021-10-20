@@ -47,7 +47,12 @@
               <b>Subscription Date</b>
               <div *ngIf="errors.dateError" class="step-error"> *{{ errors.dateError }}</div>
             </div>
-            <app-date-selector [extendEndDateBy]="6"></app-date-selector>
+            <app-subscription-date-range
+              (newStart)="onNewStartDate($event)"
+              (newEnd)="onNewEndDate($event)"
+              [startDate]="dateRange.start"
+              [endDate]="dateRange.end">
+            </app-subscription-date-range>
           </div>
 
           <div>
@@ -110,6 +115,24 @@
 
             <mat-form-field class="sub-option">
               <mat-select
+                [(value)]="subtype"
+                (selectionChange)="onNewSubType($event)"
+                placeholder="Sentinel-1 Type">
+                  <mat-option
+                    *ngFor="let type of s1Subtypes"
+                    [value]="type.apiValue"
+                    [matTooltip]="type.displayName">
+                      {{type.displayName}}
+                  </mat-option>
+              </mat-select>
+
+              <mat-hint align="start">
+                {{ !productType ? 'Select type' : subtype + ' selected' }}
+              </mat-hint>
+            </mat-form-field>
+
+            <mat-form-field class="sub-option">
+              <mat-select
                 (selectionChange)="onNewFlightDirection($event)"
                 [(value)]="flightDirection"
                 placeholder="Direction">
@@ -137,24 +160,6 @@
                 {{ !polarization ? 'No polarization selected' : 'Polarization selected' }}
               </mat-hint>
             </mat-form-field>
-
-            <mat-form-field class="sub-option">
-              <mat-select
-                [(value)]="subtype"
-                (selectionChange)="onNewSubType($event)"
-                placeholder="Sentinel-1 Type">
-                  <mat-option
-                    *ngFor="let type of s1Subtypes"
-                    [value]="type.apiValue"
-                    [matTooltip]="type.displayName">
-                      {{type.displayName}}
-                  </mat-option>
-              </mat-select>
-
-              <mat-hint align="start">
-                {{ !productType ? 'Select type' : subtype + ' selected' }}
-              </mat-hint>
-            </mat-form-field>
           </div>
 
           <div style="margin-bottom: 5px;">
@@ -169,6 +174,10 @@
 
         <mat-step>
           <ng-template matStepLabel>Review</ng-template>
+
+          <div *ngIf="subEstimate !== null" style="margin-bottom: 5px;">
+            Based on your search parameters, this subscription will run approximately <b>{{ subEstimate }} jobs per month</b>.
+          </div>
 
           <div>
             <b>Name: </b>
@@ -233,7 +242,7 @@
 
     <div>
       <mat-slide-toggle
-         *ngIf="breakpoint !== breakpoints.MOBILE"
+         *ngIf="breakpoint !== breakpoints.MOBILE && isDevMode()"
         style="margin-right: 16px;"
         (change)="onValidateOnlyToggle($event.checked)"
         [(ngModel)]="validateOnly">
