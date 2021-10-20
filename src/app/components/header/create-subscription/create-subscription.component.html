@@ -259,7 +259,7 @@
   <div class="w100 subscription-footer">
     <div class="subscription-footer-item validate-toggle"
          *ngIf="breakpoint !== breakpoints.MOBILE && isDevMode()">
-      <mat-slide-toggle
+      <mat-slide-toggle [class.validate-only]="validateOnly"
         (change)="onValidateOnlyToggle($event.checked)"
         [(ngModel)]="validateOnly">
         Validate Only
