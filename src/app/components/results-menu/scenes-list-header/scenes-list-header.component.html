@@ -215,7 +215,8 @@
             <div>
               <mat-button-toggle-group fxFlex="" name="layerType" class="mr-10">
                 <mat-button-toggle
-                [matMenuTriggerFor]="eventMonitoringOnDemand"
+                [matMenuTriggerFor]="eventMonitoringOnDemand.addMenu"
+                [matMenuTriggerData]="{ hyp3able: hyp3ableEventProducts.byJobType }"
                 class="control-mat-button-toggle clickable noselect"
                                    matTooltip="Add all results to On Demand queue">
                   <mat-icon class="list-icon"
@@ -223,8 +224,8 @@
                   </mat-icon>
                 </mat-button-toggle>
               </mat-button-toggle-group>
-              <mat-menu #eventMonitoringOnDemand>
-                <ng-template matMenuContent>
+              <app-on-demand-add-menu #eventMonitoringOnDemand>
+                <!-- <ng-template matMenuContent>
                   <button
                   [matMenuTriggerFor]="eventMonitoringOnDemandAllProducts"
                   [matMenuTriggerData]="{job_types: [RTC, InSAR]}"
@@ -237,8 +238,8 @@
                   mat-menu-item>
                     Selected Event Products
                   </button>
-                </ng-template>
-              </mat-menu>
+                </ng-template> -->
+              </app-on-demand-add-menu>
               <mat-menu #eventMonitoringOnDemandAllProducts>
                 <ng-template matMenuContent let-jobTypes="job_types">
                   <button (click)="addOnDemandEventProductsBySearchType(t)" mat-menu-item *ngFor="let t of jobTypes">
