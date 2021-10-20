@@ -23,7 +23,6 @@ import { MatSelectionListChange } from '@angular/material/list';
 import { PinnedProduct } from '@services/browse-map.service';
 import { ImageDialogComponent } from '../scene-detail/image-dialog';
 import { MatDialog } from '@angular/material/dialog';
-import { MakeEventProductCMRSearch } from '@store/search';
 
 @Component({
   selector: 'app-scene-files',
@@ -37,6 +36,7 @@ export class SceneFilesComponent implements OnInit, OnDestroy, AfterContentInit 
   public selectedProducts: { [product_id in string]: boolean} = {};
   public sarviewsProducts: models.SarviewsProduct[];
   public queuedProductIds: string[];
+  public hyp3ableByProduct: {};
 
   public queuedProductIds$ = this.store$.select(queueStore.getQueuedProductIds).pipe(
       map(names => new Set(names))
@@ -95,6 +95,7 @@ export class SceneFilesComponent implements OnInit, OnDestroy, AfterContentInit 
     private sarviewsService: SarviewsEventsService,
     private clipboard: ClipboardService,
     private notificationService: NotificationService,
+    private eventMonitoringService: SarviewsEventsService,
     public dialog: MatDialog,
   ) { }
 
@@ -171,6 +172,10 @@ export class SceneFilesComponent implements OnInit, OnDestroy, AfterContentInit 
       ).subscribe(
         ([products, pinned_browse_ids]) => {
           this.sarviewsProducts = products;
+          this.hyp3ableByProduct = this.sarviewsProducts.reduce((prev, curr) => prev = {
+            ...prev,
+            [curr.product_id]: [this.eventMonitoringService.hyp3able(curr)]
+          }, {});
           this.selectedSarviewsProducts = products.filter(product => pinned_browse_ids.includes(product.product_id));
           Object.keys(this.selectedProducts).forEach(id => delete this.selectedProducts[id]);
           products.forEach(prod => this.selectedProducts[prod.product_id] = pinned_browse_ids.includes(prod.product_id));
@@ -387,7 +392,13 @@ export class SceneFilesComponent implements OnInit, OnDestroy, AfterContentInit 
   }
 
   public onAddEventToOnDemand(product: SarviewsProduct) {
-    this.store$.dispatch(new MakeEventProductCMRSearch([product]));
+    // const job: models.QueuedHyp3Job[] = product.map(prod => ({
+    const job: models.QueuedHyp3Job = {
+      granules:  this.eventMonitoringService.eventProductToCMRProducts(product),
+      job_type: hyp3JobTypes[product.job_type]
+      };
+
+    this.store$.dispatch(new queueStore.AddJob(job));
   }
 
   ngOnDestroy() {

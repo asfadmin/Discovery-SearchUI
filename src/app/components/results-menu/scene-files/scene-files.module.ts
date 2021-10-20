@@ -15,6 +15,7 @@ import { MatMenuModule } from '@angular/material/menu';
 import { PipesModule } from '@pipes';
 import { CopyToClipboardModule } from '@components/shared/copy-to-clipboard';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { OnDemandAddMenuModule } from '@components/shared/on-demand-add-menu';
 @NgModule({
   declarations: [SceneFilesComponent],
   imports: [
@@ -31,7 +32,8 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
     ScrollingModule,
     PipesModule,
     CopyToClipboardModule,
-    FontAwesomeModule
+    FontAwesomeModule,
+    OnDemandAddMenuModule
   ],
   exports: [
     SceneFilesComponent
