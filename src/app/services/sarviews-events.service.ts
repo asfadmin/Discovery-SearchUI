@@ -1,13 +1,8 @@
-import { HttpClient,
-  // HttpErrorResponse
- } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { LonLat, SarviewsEvent, SarviewsProcessedEvent, SarviewsProduct } from '@models';
-import {
-  // forkJoin,
-   Observable, of } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
-// import { Feature } from 'geojson';
 import { Range } from '@models';
 import { WktService } from '@services';
 import { MapService } from './map/map.service';
