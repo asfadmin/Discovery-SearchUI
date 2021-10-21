@@ -296,14 +296,14 @@ export class ScenesListHeaderComponent implements OnInit, OnDestroy {
   }
 
   public onQueueSarviewsProducts(products: models.SarviewsProduct[]): void {
-    this.store$.dispatch(new AddItems(products.map(
-      prod => this.eventMonitoringService.eventProductToCMRProducts(prod))[0])
-      );
+    this.store$.dispatch(new AddItems(products.map(product =>
+        this.eventMonitoringService.eventProductToCMRProduct(product))
+      ));
   }
 
   public addOnDemandEventProducts(targetProducts: SarviewsProduct[]) {
     const jobs: models.QueuedHyp3Job[] = targetProducts.map(prod => ({
-      granules:  this.eventMonitoringService.eventProductToCMRProducts(prod),
+      granules:  this.eventMonitoringService.getSourceCMRProducts(prod),
       job_type: hyp3JobTypes[prod.job_type]
       })
     );

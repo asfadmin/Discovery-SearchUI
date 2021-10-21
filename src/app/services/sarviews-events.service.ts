@@ -2,7 +2,7 @@ import { HttpClient,
   // HttpErrorResponse
  } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { LonLat, SarviewsEvent, SarviewsProcessedEvent } from '@models';
+import { LonLat, SarviewsEvent, SarviewsProcessedEvent, SarviewsProduct } from '@models';
 import {
   // forkJoin,
    Observable, of } from 'rxjs';
@@ -142,42 +142,56 @@ export class SarviewsEventsService {
       return{lon: centerLon, lat: centerLat};
   }
 
-  public eventProductToCMRProducts(product: models.SarviewsProduct): models.CMRProduct[] {
+  public getSourceCMRProducts(product: models.SarviewsProduct): models.CMRProduct[] {
     const jobTypes = Object.values(models.hyp3JobTypes);
     const jobType = jobTypes.find(t => t.id === product.job_type);
 
+    const productTypeDisplay = `${jobType.name}, ${jobType.productTypes[0].productTypes[0]}`;
+
+    const toCMRProducts: models.CMRProduct[] = product.granules.map( granule =>
+        this.toCMRProduct(product, granule, productTypeDisplay, jobType)
+    );
+
+      return toCMRProducts;
+  }
+
+    public eventProductToCMRProduct(product: models.SarviewsProduct): models.CMRProduct {
+      const jobTypes = Object.values(models.hyp3JobTypes);
+      const jobType = jobTypes.find(t => t.id === product.job_type);
 
       const productTypeDisplay = `${jobType.name}, ${jobType.productTypes[0].productTypes[0]}`;
 
-      const toCMRProducts: models.CMRProduct[] = product.granules.map( granule => ({
-          name: granule.granule_name,
-          productTypeDisplay,
-          file: '',
-          id: product.product_id,
-          downloadUrl: product.files.product_url,
-          bytes: product.files.product_size,
-          browses: [product.files.browse_url],
-          thumbnail: '',
-          dataset: 'Sentinel-1',
-          groupId: 'SARViews',
-          isUnzippedFile: false,
+      return this.toCMRProduct(product, product.granules[0], productTypeDisplay, jobType);
+    }
 
-          metadata: {
-            date: moment(product.processing_date),
-            stopDate: moment(product.processing_date),
-            polygon: granule.wkt,
-            productType: jobType.name
+    private toCMRProduct(product: SarviewsProduct, granule: models.SarviewProductGranule, productTypeDisplay: string, jobType: models.Hyp3JobType) {
+      return {
+        name: granule.granule_name,
+        productTypeDisplay,
+        file: '',
+        id: product.product_id,
+        downloadUrl: product.files.product_url,
+        bytes: product.files.product_size,
+        browses: [product.files.browse_url],
+        thumbnail: '',
+        dataset: 'Sentinel-1',
+        groupId: 'SARViews',
+        isUnzippedFile: false,
 
-          } as models.CMRProductMetadata
-        })
-      );
-      return toCMRProducts;
+        metadata: {
+          date: moment(product.processing_date),
+          stopDate: moment(product.processing_date),
+          polygon: granule.wkt,
+          productType: jobType.name
+
+        } as models.CMRProductMetadata
+      }
     }
 
     public hyp3able(product: models.SarviewsProduct): models.Hyp3ableProductByJobType {
       const hyp3Prod: models.Hyp3ableByProductType = {
         productType: product.job_type,
-        products: [this.eventProductToCMRProducts(product)]
+        products: [this.getSourceCMRProducts(product)]
       };
       const byProductType: models.Hyp3ableByProductType[] = [hyp3Prod];
 
@@ -202,7 +216,7 @@ export class SarviewsEventsService {
           hyp3ProductsByType[productType] = [];
         }
 
-        hyp3ProductsByType[productType].push(this.eventProductToCMRProducts(product));
+        hyp3ProductsByType[productType].push(this.getSourceCMRProducts(product));
       });
 
       const byProductType: models.Hyp3ableByProductType[] = [];

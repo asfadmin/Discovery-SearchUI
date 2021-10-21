@@ -281,7 +281,6 @@ export class SceneFilesComponent implements OnInit, OnDestroy, AfterContentInit 
   public onSelectSarviewsProduct(selections: MatSelectionListChange) {
     selections.options.forEach(option => this.selectedProducts[option.value] = option.selected );
     this.onUpdatePinnedUrl();
-    // this.selectedProducts[product_id] = !this.selectedProducts?.[product_id] ?? true;
   }
 
   public onUpdatePinnedUrl() {
@@ -302,9 +301,8 @@ export class SceneFilesComponent implements OnInit, OnDestroy, AfterContentInit 
   }
 
   public onOpenPinnedProducts() {
-    // if(this.searchType === models.SearchType.SARVIEWS_EVENTS) {
-      this.store$.dispatch(new scenesStore.SetSelectedSarviewProduct(this.sarviewsProducts[0]));
-    // }
+    this.store$.dispatch(new scenesStore.SetSelectedSarviewProduct(this.sarviewsProducts[0]));
+
     this.store$.dispatch(new uiStore.SetIsBrowseDialogOpen(true));
 
     const dialogRef = this.dialog.open(ImageDialogComponent, {
@@ -320,7 +318,6 @@ export class SceneFilesComponent implements OnInit, OnDestroy, AfterContentInit 
         _ => this.store$.dispatch(new uiStore.SetIsBrowseDialogOpen(false))
       )
     );
-    // window.open(this.currentPinnedUrl(current_id));
   }
 
   public copyProductSourceScenes(products: SarviewsProduct[]) {
@@ -392,9 +389,8 @@ export class SceneFilesComponent implements OnInit, OnDestroy, AfterContentInit 
   }
 
   public onAddEventToOnDemand(product: SarviewsProduct) {
-    // const job: models.QueuedHyp3Job[] = product.map(prod => ({
     const job: models.QueuedHyp3Job = {
-      granules:  this.eventMonitoringService.eventProductToCMRProducts(product),
+      granules:  this.eventMonitoringService.getSourceCMRProducts(product),
       job_type: hyp3JobTypes[product.job_type]
       };
 
