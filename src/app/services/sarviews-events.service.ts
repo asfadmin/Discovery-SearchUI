@@ -143,28 +143,23 @@ export class SarviewsEventsService {
   }
 
   public getSourceCMRProducts(product: models.SarviewsProduct): models.CMRProduct[] {
-    const jobTypes = Object.values(models.hyp3JobTypes);
-    const jobType = jobTypes.find(t => t.id === product.job_type);
-
-    const productTypeDisplay = `${jobType.name}, ${jobType.productTypes[0].productTypes[0]}`;
-
     const toCMRProducts: models.CMRProduct[] = product.granules.map( granule =>
-        this.toCMRProduct(product, granule, productTypeDisplay, jobType)
+        this.toCMRProduct(product, granule)
     );
 
       return toCMRProducts;
   }
 
     public eventProductToCMRProduct(product: models.SarviewsProduct): models.CMRProduct {
+      return this.toCMRProduct(product, product.granules[0]);
+    }
+
+    private toCMRProduct(product: SarviewsProduct, granule: models.SarviewProductGranule) {
       const jobTypes = Object.values(models.hyp3JobTypes);
       const jobType = jobTypes.find(t => t.id === product.job_type);
 
       const productTypeDisplay = `${jobType.name}, ${jobType.productTypes[0].productTypes[0]}`;
 
-      return this.toCMRProduct(product, product.granules[0], productTypeDisplay, jobType);
-    }
-
-    private toCMRProduct(product: SarviewsProduct, granule: models.SarviewProductGranule, productTypeDisplay: string, jobType: models.Hyp3JobType) {
       return {
         name: granule.granule_name,
         productTypeDisplay,
