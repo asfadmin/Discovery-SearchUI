@@ -185,7 +185,7 @@ export class SarviewsEventsService {
           productType: jobType.name
 
         } as models.CMRProductMetadata
-      }
+      };
     }
 
     public hyp3able(product: models.SarviewsProduct): models.Hyp3ableProductByJobType {
