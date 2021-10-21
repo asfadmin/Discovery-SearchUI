@@ -3,7 +3,6 @@ import { SarviewsEvent, SarviewsQuakeEvent, SarviewsVolcanicEvent } from '@model
 
 import * as models from '@models';
 import * as sceneStore from '@store/scenes';
-import * as proj from 'ol/proj';
 
 import { MapService } from '@services';
 import { Store } from '@ngrx/store';
@@ -39,10 +38,6 @@ export class SarviewsEventComponent implements OnInit {
 
   public onSetSelected() {
     this.mapService.selectedSarviewEvent$.next(this.event.event_id);
-    const point = this.mapService.getEventCoordinate(this.event.event_id);
-    const coords = point.getCoordinates();
-    const [lat, lon] = proj.toLonLat(coords, this.mapService.epsg());
-    this.mapService.panToEvent({lat, lon});
     this.store$.dispatch(new sceneStore.SetSelectedSarviewsEvent(this.event.event_id));
   }
 
@@ -52,6 +47,10 @@ export class SarviewsEventComponent implements OnInit {
     } else {
       return 'smithsonian: ' + (this.event as SarviewsVolcanicEvent).smithsonian_event_id;
     }
+  }
+
+  public onZoomTo() {
+    this.mapService.zoomToEvent(this.event);
   }
 
 }
