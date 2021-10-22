@@ -33,6 +33,16 @@
   </li>
 </ul>
 <ul class="scene-metadata" *ngIf="eventType === eventTypes.VOLCANO">
+  <li *ngIf="event.processing_timeframe.start !== null">
+    <span class="v-mid">
+      <b>Start Date </b> {{event.processing_timeframe.start | shortDateTime}}
+    </span>
+  </li>
+  <li *ngIf="event.processing_timeframe.end !== null">
+    <span class="v-mid">
+      <b>End Date </b> {{event.processing_timeframe.end | shortDateTime}}
+    </span>
+  </li>
   <li>
     <span class="v-mid">
       <b>Smithsonian ID </b>
@@ -43,16 +53,6 @@
       >
         {{(event | volcanicEvent).smithsonian_event_id}}
       </a>
-    </span>
-  </li>
-  <li *ngIf="event.processing_timeframe.start !== null">
-    <span class="v-mid">
-      <b>Start Date </b> {{event.processing_timeframe.start | shortDateTime}}
-    </span>
-  </li>
-  <li *ngIf="event.processing_timeframe.end !== null">
-    <span class="v-mid">
-      <b>End Date </b> {{event.processing_timeframe.end | shortDateTime}}
     </span>
   </li>
 </ul>

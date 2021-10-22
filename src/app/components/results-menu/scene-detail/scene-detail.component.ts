@@ -12,7 +12,9 @@ import * as uiStore from '@store/ui';
 import * as userStore from '@store/user';
 
 import * as models from '@models';
-import { AuthService, MapService, PropertyService, SarviewsEventsService, ScreenSizeService } from '@services';
+import { AuthService, MapService, PropertyService,
+   SarviewsEventsService,
+  ScreenSizeService } from '@services';
 import { ImageDialogComponent } from './image-dialog';
 
 import { DatasetForProductService } from '@services';
@@ -290,6 +292,16 @@ export class SceneDetailComponent implements OnInit, OnDestroy {
 
   public getSarviewsURL() {
     return this.sarviewsService.getSarviewsEventUrl(this.sarviewEvent?.event_id ?? '');
+  }
+
+  public getEventID() {
+    // return window.location.href;
+    if(this.sarviewEvent.event_type === 'quake') {
+      return (this.sarviewEvent as models.SarviewsQuakeEvent).usgs_event_id;
+    } else {
+      return (this.sarviewEvent as models.SarviewsVolcanicEvent).smithsonian_event_id;
+    }
+    // return this.sarviewsService.getSarviewsEventUrl(this.sarviewEvent?.event_id ?? '');
   }
 
   public makeSarviewsEventGeoSearch() {

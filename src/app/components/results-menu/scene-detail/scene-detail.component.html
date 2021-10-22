@@ -10,16 +10,17 @@
           sarviewEvent.description[0].toUpperCase() +
             sarviewEvent.description.slice(1)
         }}</span>
+        <app-copy-to-clipboard
+        [value]="getEventID()"
+        [prompt]="'Copied Event ID'"
+        style="margin: 0 3px;"
+        class="clipboard-icon">
+      </app-copy-to-clipboard>
       </mat-card-title>
       <mat-card-subtitle class="subtitle">
         <a [href]="getSarviewsURL()" target="_blank" matTooltip="SARVIEWS Event Page" class="faint-text">
           SARVIEWS Event
-        </a> •              <app-copy-to-clipboard
-        [value]="getSarviewsURL()"
-        [prompt]="'Copied Event Link'"
-        style="margin: 0 3px;"
-        class="clipboard-icon">
-      </app-copy-to-clipboard>
+        </a> •
         <span matTooltip="eventType">{{ sarviewEvent.event_type }}</span>
       </mat-card-subtitle>
     </mat-card-header>
