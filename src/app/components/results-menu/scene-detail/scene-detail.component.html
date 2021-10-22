@@ -24,74 +24,12 @@
       </mat-card-subtitle>
     </mat-card-header>
 
-    <div class="detail-card-info">
-      <div
-        class="faint-text accessing-text"
-        *ngIf="sarviewEvent.event_type === 'quake'"
-      >
-        <span>
-          <p>Magnitude: {{ (sarviewEvent | quakeEvent).magnitude }}</p>
-          <p>Depth: {{ (sarviewEvent | quakeEvent).depth }}</p>
-          <p>USGS id: {{ (sarviewEvent | quakeEvent).usgs_event_id }}</p>
-          <p *ngIf="sarviewEvent.processing_timeframe">
-            Start Date:
-            {{ sarviewEvent.processing_timeframe.start | shortDateTime }}
-          </p>
-          <p *ngIf="sarviewEvent.processing_timeframe && !isActiveSarviewEvent">
-            End Date:
-            {{ sarviewEvent.processing_timeframe.end | shortDateTime }}
-          </p>
-          <a
-            target="_blank"
-            href="{{
-              'https://earthquake.usgs.gov/earthquakes/eventpage/' +
-                (sarviewEvent | quakeEvent).usgs_event_id +
-                '#executive'
-            }}"
-            >USGS Event Page</a
-          >
-        </span>
-      </div>
-      <p
-        class="faint-text accessing-text"
-        *ngIf="sarviewEvent.event_type === 'volcano'"
-      >
-        <span>
-          <p>
-            Smithsonian id:
-            {{ (sarviewEvent | volcanicEvent).smithsonian_event_id }}
-          </p>
-          <p *ngIf="sarviewEvent.processing_timeframe">
-            Start Date:
-            {{ sarviewEvent.processing_timeframe.start | shortDateTime }}
-          </p>
-          <p *ngIf="sarviewEvent.processing_timeframe && !isActiveSarviewEvent">
-            End Date:
-            {{ sarviewEvent.processing_timeframe.end | shortDateTime }}
-          </p>
-          <a
-            target="_blank"
-            href="{{
-              'http://volcano.si.edu/volcano.cfm?vn=' +
-                (sarviewEvent | quakeEvent).usgs_event_id +
-                '#executive'
-            }}"
-            >Smithsonian Entry</a
-          >
-        </span>
-      </p>
-      <!-- <p class="faint-text accessing-text" *ngIf="sarviewEvent.event_type === 'flood'">
-        <span>
-          <p>Description: {{(sarviewEvent | floodEvent).description}}</p>
-          <p *ngIf="sarviewEvent.processing_timeframe">
-            Start Date: {{sarviewEvent.processing_timeframe.start | shortDateTime}}
-          </p>
-          <p *ngIf="sarviewEvent.processing_timeframe && !isActiveSarviewEvent">
-            End Date: {{sarviewEvent.processing_timeframe.end | shortDateTime}}
-          </p>
-        </span>
-      </p> -->
-    </div>
+    <app-event-metadata
+    [event]="sarviewEvent"
+    [eventType]="sarviewEvent.event_type === 'quake' ? eventTypes.QUAKE : eventTypes.VOLCANO"
+    >
+
+    </app-event-metadata>
     <div style="display: flex; flex-direction: column">
       <div class="sarivews-radius-display">
         More Like This Search Scale:
@@ -107,6 +45,15 @@
         horizontal
       ></mat-slider>
     </div>
+    <mat-card-content class="content">
+      <div
+      class="w100"
+      fxFlex
+      fxLayout="column"
+      fxLayoutAlign="space-between">
+
+      </div>
+    </mat-card-content>
   </div>
 
   <div *ngIf="searchType !== searchTypes.SARVIEWS_EVENTS">

@@ -30,6 +30,7 @@ export class SceneDetailComponent implements OnInit, OnDestroy {
 
   public scene: models.CMRProduct;
   public sarviewEvent: models.SarviewsEvent;
+  public eventTypes = models.SarviewsEventType;
   public isActiveSarviewEvent = false;
 
   public browses$ = this.store$.select(scenesStore.getSelectedSceneBrowses);
