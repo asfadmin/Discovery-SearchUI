@@ -25,11 +25,23 @@
     <span class="v-mid">
       <b>Start Date </b> {{(event | quakeEvent).processing_timeframe.start | shortDateTime}}
     </span>
+    <mat-icon
+    [matMenuTriggerFor]="addSceneDateMenu"
+    [matMenuTriggerData]="{eventDate: event.processing_timeframe.start}"
+    class="v-mid clickable">
+      settings
+  </mat-icon>
   </li>
   <li *ngIf="(event | quakeEvent).processing_timeframe.end !== null">
     <span class="v-mid">
       <b>End Date </b> {{(event | quakeEvent).processing_timeframe.end | shortDateTime}}
     </span>
+    <mat-icon
+    [matMenuTriggerFor]="addSceneDateMenu"
+    [matMenuTriggerData]="{eventDate: event.processing_timeframe.end}"
+    class="v-mid clickable">
+      settings
+  </mat-icon>
   </li>
 </ul>
 <ul class="scene-metadata" *ngIf="eventType === eventTypes.VOLCANO">
@@ -37,11 +49,23 @@
     <span class="v-mid">
       <b>Start Date </b> {{event.processing_timeframe.start | shortDateTime}}
     </span>
+    <mat-icon
+    [matMenuTriggerFor]="addSceneDateMenu"
+    [matMenuTriggerData]="{eventDate: event.processing_timeframe.start}"
+    class="v-mid clickable">
+      settings
+  </mat-icon>
   </li>
   <li *ngIf="event.processing_timeframe.end !== null">
     <span class="v-mid">
       <b>End Date </b> {{event.processing_timeframe.end | shortDateTime}}
     </span>
+    <mat-icon
+    [matMenuTriggerFor]="addSceneDateMenu"
+    [matMenuTriggerData]="{eventDate: event.processing_timeframe.end}"
+    class="v-mid clickable">
+      settings
+  </mat-icon>
   </li>
   <li>
     <span class="v-mid">
@@ -56,3 +80,10 @@
     </span>
   </li>
 </ul>
+
+<mat-menu #addSceneDateMenu="matMenu">
+  <ng-template matMenuContent let-date="eventDate">
+  <button (click)="onSetStartDate(date)" mat-menu-item>Set as start date</button>
+  <button (click)="onSetEndDate(date)" mat-menu-item>Set as end date</button>
+</ng-template>
+</mat-menu>
