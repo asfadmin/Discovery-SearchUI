@@ -43,7 +43,7 @@ export class SarviewsEventComponent implements OnInit {
 
   public eventIDDisplay(): string {
     if (this.event.event_type.toLowerCase() === 'quake') {
-      return 'usgs: ' + (this.event as SarviewsQuakeEvent).usgs_event_id;
+      return 'USGS: ' + (this.event as SarviewsQuakeEvent).usgs_event_id;
     } else {
       return 'smithsonian: ' + (this.event as SarviewsVolcanicEvent).smithsonian_event_id;
     }

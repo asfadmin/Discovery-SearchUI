@@ -1,81 +1,58 @@
-<p>event-metadata works!</p>
 <ul class="scene-metadata" *ngIf="eventType === eventTypes.QUAKE">
   <li>
     <span class="v-mid">
-<b>Magnitude </b> {{ (event | quakeEvent).magnitude }}
+      <b>Magnitude </b> {{ (event | quakeEvent).magnitude }}
+    </span>
+  </li>
+  <li>
+    <span class="v-mid">
+      <b>Depth </b> {{(event | quakeEvent).depth}}
+    </span>
+  </li>
+  <li>
+    <span class="v-mid">
+      <b>USGS ID </b>
+      <a target="_blank" href="{{
+        'https://earthquake.usgs.gov/earthquakes/eventpage/' +
+        (event | quakeEvent).usgs_event_id +
+        '#executive'}}"
+      >
+        {{(event | quakeEvent).usgs_event_id}}
+      </a>
+    </span>
+  </li>
+  <li *ngIf="(event | quakeEvent).processing_timeframe.start !== null">
+    <span class="v-mid">
+      <b>Start Date </b> {{(event | quakeEvent).processing_timeframe.start | shortDateTime}}
+    </span>
+  </li>
+  <li *ngIf="(event | quakeEvent).processing_timeframe.end !== null">
+    <span class="v-mid">
+      <b>End Date </b> {{(event | quakeEvent).processing_timeframe.end | shortDateTime}}
     </span>
   </li>
 </ul>
 <ul class="scene-metadata" *ngIf="eventType === eventTypes.VOLCANO">
-
+  <li>
+    <span class="v-mid">
+      <b>Smithsonian ID </b>
+      <a target="_blank" href="{{
+        'http://volcano.si.edu/volcano.cfm?vn=' +
+        (event | quakeEvent).usgs_event_id +
+        '#executive'}}"
+      >
+        {{(event | volcanicEvent).smithsonian_event_id}}
+      </a>
+    </span>
+  </li>
+  <li *ngIf="event.processing_timeframe.start !== null">
+    <span class="v-mid">
+      <b>Start Date </b> {{event.processing_timeframe.start | shortDateTime}}
+    </span>
+  </li>
+  <li *ngIf="event.processing_timeframe.end !== null">
+    <span class="v-mid">
+      <b>End Date </b> {{event.processing_timeframe.end | shortDateTime}}
+    </span>
+  </li>
 </ul>
-
-
-<div class="detail-card-info">
-  <div
-    class="faint-text accessing-text"
-    *ngIf="eventType === eventTypes.QUAKE"
-  >
-    <span>
-      <p>Magnitude: {{ (event | quakeEvent).magnitude }}</p>
-      <p>Depth: {{ (event | quakeEvent).depth }}</p>
-      <p>USGS id: {{ (event | quakeEvent).usgs_event_id }}</p>
-      <p *ngIf="event.processing_timeframe">
-        Start Date:
-        {{ event.processing_timeframe.start | shortDateTime }}
-      </p>
-      <p *ngIf="event.processing_timeframe">
-        End Date:
-        {{ event.processing_timeframe.end | shortDateTime }}
-      </p>
-      <a
-        target="_blank"
-        href="{{
-          'https://earthquake.usgs.gov/earthquakes/eventpage/' +
-            (event | quakeEvent).usgs_event_id +
-            '#executive'
-        }}"
-        >USGS Event Page</a
-      >
-    </span>
-  </div>
-  <p
-    class="faint-text accessing-text"
-    *ngIf="eventType === eventTypes.VOLCANO"
-  >
-    <span>
-      <p>
-        Smithsonian id:
-        {{ (event | volcanicEvent).smithsonian_event_id }}
-      </p>
-      <p *ngIf="event.processing_timeframe">
-        Start Date:
-        {{ event.processing_timeframe.start | shortDateTime }}
-      </p>
-      <p *ngIf="event.processing_timeframe">
-        End Date:
-        {{ event.processing_timeframe.end | shortDateTime }}
-      </p>
-      <a
-        target="_blank"
-        href="{{
-          'http://volcano.si.edu/volcano.cfm?vn=' +
-            (event | quakeEvent).usgs_event_id +
-            '#executive'
-        }}"
-        >Smithsonian Entry</a
-      >
-    </span>
-  </p>
-  <!-- <p class="faint-text accessing-text" *ngIf="event.event_type === 'flood'">
-    <span>
-      <p>Description: {{(event | floodEvent).description}}</p>
-      <p *ngIf="event.processing_timeframe">
-        Start Date: {{event.processing_timeframe.start | shortDateTime}}
-      </p>
-      <p *ngIf="event.processing_timeframe && !isActiveevent">
-        End Date: {{event.processing_timeframe.end | shortDateTime}}
-      </p>
-    </span>
-  </p> -->
-</div>
