@@ -32,7 +32,8 @@
       [ngClass]="{'saved-filters-presets__content-mobile': breakpoint <= breakpoints.SMALL,
                   'saved-filters-presets__content': breakpoint > breakpoints.SMALL}">
       <div *ngIf="subscriptions.length > 0; else noSubscriptions">
-        <div *ngFor="let subscription of subscriptions" class="saved-filters-presets-row">
+        <div *ngFor="let subscription of subscriptions" class="saved-filters-presets-row"
+             [class.subscription-disabled]="!subscription.enabled">
           <app-on-demand-subscription
             [subscription]="subscription"
             [isExpanded]="subscription.id === selectedSubId"

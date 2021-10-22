@@ -24,3 +24,7 @@ $divider-bar-color: lighten($asf-primary-light, 8%);
 .fab-button {
   border-radius: 40px !important;
 }
+
+.subscription-disabled {
+  color: grey !important;
+}

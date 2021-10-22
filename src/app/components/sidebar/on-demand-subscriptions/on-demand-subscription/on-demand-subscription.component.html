@@ -1,4 +1,4 @@
-<div class="subscription" [class.subscription-disabled]="!subscription.enabled">
+<div class="subscription">
   <div class="subscription--header">
     <div class="subscription--header-info">
       <div (click)="onToggleExpand()" class="clickable expand-arrow">
@@ -34,8 +34,9 @@
       </button>
 
       <mat-slide-toggle class="subscription--action"
-                        (change)="onToggleEnabled()">
-        {{ subscription.enabled ? 'Enabled' : 'Disabled' }}
+                        (change)="onToggleEnabled()"
+                        [checked]="subscription.enabled">
+        <div class="t-label">{{ subscription.enabled ? 'Enabled' : 'Disabled' }}</div>
       </mat-slide-toggle>
     </div>
   </div>
