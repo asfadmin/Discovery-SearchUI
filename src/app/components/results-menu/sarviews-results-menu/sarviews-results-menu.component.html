@@ -13,7 +13,7 @@
 <ng-container *ngIf="breakpoint > breakpoints.SMALL">
   <mat-card class="mp0 no-box-shadow" fxFlex="34" fxFlexFill>
     <mat-card-subtitle class="header">
-      {{ (sarviewsEventsLength !== 0 ? 'Event' : 'Scene') + ' Detail'}}
+    Event Detail
     </mat-card-subtitle>
         <app-scene-detail *ngIf="scenesLength !== 0 || sarviewsEventsLength !== 0"></app-scene-detail>
   </mat-card>
@@ -21,14 +21,21 @@
   <!-- FILE LIST -->
   <mat-card class="h100 mp0 no-left-border" fxFlex="33" fxFlexFill>
     <mat-card-subtitle class="header">
-      <span *ngIf="selectedProducts$ | async as products; else defaultProductsHeader">
-        {{ products.length || '' }} File{{ (products || []).length === 1 ? '' : 's'}}
+      <span>
+        {{ sarviewsProductsLength}} File{{ sarviewsProductsLength === 1 ? '' : 's'}}
       </span>
-      <ng-template #defaultProductsHeader>Files</ng-template>
+      <!-- <ng-template #defaultProductsHeader>Files</ng-template> -->
     </mat-card-subtitle>
 
     <div class="app-scene-list left-border">
-      <app-scene-files *ngIf="sarviewsEventsLength != 0"></app-scene-files>
+      <app-scene-files *ngIf="sarviewsProductsLength !== 0"></app-scene-files>
+      <div *ngIf="sarviewsProductsLength === 0" style="display: flex; align-content: center; justify-content: center; flex-wrap: wrap; height: 80%;">
+        <span style="color: rgba(0, 0, 0, 0.54);">
+          <p style="margin-left: 15px;">
+            No Products Available for this Event
+          </p>
+          </span>
+      </div>
     </div>
   </mat-card>
 </ng-container>
