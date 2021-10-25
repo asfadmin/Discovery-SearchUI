@@ -45,7 +45,7 @@ export class SarviewsEventComponent implements OnInit {
     if (this.event.event_type.toLowerCase() === 'quake') {
       return 'USGS: ' + (this.event as SarviewsQuakeEvent).usgs_event_id;
     } else {
-      return 'smithsonian: ' + (this.event as SarviewsVolcanicEvent).smithsonian_event_id;
+      return 'Smithsonian: ' + (this.event as SarviewsVolcanicEvent).smithsonian_event_id;
     }
   }
 
