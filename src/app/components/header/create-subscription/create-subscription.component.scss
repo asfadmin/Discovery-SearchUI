@@ -150,15 +150,28 @@ $color: $asf-primary-dark;
   padding: 0;
 }
 
-.hyp3-footer {
+.subscription-footer {
   display: flex;
   flex-direction: row;
-  justify-content: space-around;
+  justify-content: flex-end;
   height: 100%;
   background-color: $asf-primary-light;
   border-top-style: solid;
   border-top-color: $asf-primary-dark;
   border-top-width: 1px;
+}
+
+.subscription-footer-item {
+  margin: 15px 25px 15px 15px;
+}
+
+.validate-toggle {
+  margin-top: 22px;
+  color: grey;
+}
+
+.validate-only {
+  color: $asf-primary-dark;
 }
 
 .on-demand-branding {
@@ -208,4 +221,15 @@ $color: $asf-primary-dark;
   cursor: pointer;
   z-index: 100;
   color: $color;
+}
+
+.navigation-row {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  margin-top: 25px;
+}
+
+.navigation-item {
+  flex: none;
 }

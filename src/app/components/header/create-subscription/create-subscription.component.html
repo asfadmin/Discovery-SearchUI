@@ -233,35 +233,45 @@
         </mat-step>
       </mat-stepper>
     </div>
+    <div class="navigation-row">
+      <div class="navigation-item">
+        <button mat-flat-button
+                color="primary"
+                (click)="onBack()"
+                [disabled]="stepper.selectedIndex === 0">
+          <mat-icon>arrow_backward</mat-icon>
+          Back
+        </button>
+        &nbsp;
+        <button mat-flat-button
+                color="primary"
+                (click)="onNext()"
+                [disabled]="">
+          {{ isLastStep() ? 'Submit' : 'Next'}}
+          <mat-icon>arrow_forward</mat-icon>
+        </button>
+      </div>
+    </div>
   </div>
 </mat-dialog-content>
 
 <mat-dialog-actions class="mat-dialog-actions">
-  <div class="w100 hyp3-footer">
-    <div>
-      <button mat-flat-button
-              (click)="onBack()"
-              [disabled]="stepper.selectedIndex === 0">
-        Back
-      </button>
-    </div>
-
-    <div>
-      <mat-slide-toggle
-         *ngIf="breakpoint !== breakpoints.MOBILE && isDevMode()"
+  <div class="w100 subscription-footer">
+    <div class="subscription-footer-item validate-toggle"
+         *ngIf="breakpoint !== breakpoints.MOBILE && isDevMode()">
+      <mat-slide-toggle [class.validate-only]="validateOnly"
         (change)="onValidateOnlyToggle($event.checked)"
         [(ngModel)]="validateOnly">
         Validate Only
       </mat-slide-toggle>
     </div>
 
-    <div>
+    <div class="subscription-footer-item">
       <button mat-flat-button
-         (click)="onNext()"
-         [disabled]=""
-
+         (click)="submitSubscription()"
+         [disabled]="!isLastStep()"
          color="primary">
-        {{ isLastStep() ? 'Submit' : 'Next'}}
+        Submit
       </button>
     </div>
   </div>

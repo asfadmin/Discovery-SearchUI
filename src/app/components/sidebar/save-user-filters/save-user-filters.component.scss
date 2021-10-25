@@ -41,8 +41,9 @@
   width: 100%;
 }
 
-.saved-filters-presets-row:nth-child(odd) {
-  background-color: lighten($asf-primary-light, 15%) !important;
+.saved-filters-presets-row:nth-child(even) {
+  //background-color: lighten($asf-primary-light, 10%) !important;
+  background-color: #e0eded !important;
 }
 
 .saved-filters-presets__header {

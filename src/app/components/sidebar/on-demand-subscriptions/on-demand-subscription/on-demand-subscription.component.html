@@ -41,16 +41,20 @@
         <i class="material-icons">update</i>
       </button>
 
-      <button *ngIf="!isSubOutOfDate()" (click)="onToggleEnabled()"
+      <mat-slide-toggle
+        *ngIf="!isSubOutOfDate()"
         class="subscription--action"
-        mat-flat-button>
-        <span *ngIf="isToggling">
-          Loading...
-        </span>
-        <span *ngIf="!isToggling">
-          {{ subscription.enabled ? 'Disable' : 'Enable' }}
-        </span>
-      </button>
+        (change)="onToggleEnabled()"
+        [checked]="subscription.enabled">
+        <div class="t-label">
+          <span *ngIf="isToggling">
+            Loading...
+          </span>
+          <span *ngIf="!isToggling">
+            {{ subscription.enabled ? 'Disable' : 'Enable' }}
+          </span>
+        </div>
+      </mat-slide-toggle>
     </div>
   </div>
 
