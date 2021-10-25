@@ -1,0 +1,8 @@
+<app-date-range
+  [minDate]="minDate"
+  [maxDate]="maxDate"
+  [startDate]="startDate"
+  [endDate]="endDate"
+  (newStart)="onStartDateChange($event)"
+  (newEnd)="onEndDateChange($event)" #dateRange>
+</app-date-range>

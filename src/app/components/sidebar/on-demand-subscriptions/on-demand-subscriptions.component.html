@@ -1,0 +1,67 @@
+<div [ngClass]="{'saved-filters-presets-mobile': breakpoint <= breakpoints.SMALL,
+'saved-filters': breakpoint > breakpoints.SMALL}">
+  <div class="saved-filters-presets__header">
+    <div class="saved-filters-presets__header-title">
+      <span>On Demand Subscriptions</span>
+    </div>
+  </div>
+
+<!--  <div class="saved-searches__subhead">-->
+<!--    <div class="saved-searches__save-button">-->
+<!--      <button (click)="onCreateSubscription()"-->
+<!--              mat-raised-button-->
+<!--              color="accent">-->
+<!--        New Subscription...-->
+<!--      </button>-->
+<!--    </div>-->
+<!--  </div>-->
+
+  <div class="add-button-container">
+    <button mat-fab color="primary" aria-label="Create Subscription"
+            matTooltip="Create Subscription"
+            matTooltipPosition="left"
+            class="fab-button"
+            (click)="onCreateSubscription()">
+      <mat-icon>add</mat-icon>
+    </button>
+  </div>
+
+  <div class="subscriptions-content-wrapper">
+
+    <div *ngIf="searchType$ | async as searchType"
+      [ngClass]="{'saved-filters-presets__content-mobile': breakpoint <= breakpoints.SMALL,
+                  'saved-filters-presets__content': breakpoint > breakpoints.SMALL}">
+      <div *ngIf="subscriptions.length > 0; else noSubscriptions">
+        <div *ngFor="let subscription of subscriptions" class="saved-filters-presets-row"
+             [class.subscription-disabled]="!subscription.enabled">
+          <app-on-demand-subscription
+            [subscription]="subscription"
+            [isExpanded]="subscription.id === selectedSubId"
+            [isToggling]="loadingSubs.has(subscription.id)"
+            (newEnd)="onNewEndDate(subscription.id, $event)"
+            (renew)="onRenewSubscription($event)"
+            (toggleEnabled)="onToggleEnabled($event)"
+            (toggleExpand)="onToggleSelected($event)"
+            (viewProducts)="onLoadProductsFor($event)">
+          </app-on-demand-subscription>
+        </div>
+      </div>
+    </div>
+
+    <ng-template #noSubscriptions>
+      <div class="no-saved-filters-presets">
+        <h2>You have no subscriptions</h2>
+      </div>
+    </ng-template>
+  </div>
+
+  <div [ngClass]="{'saved-filters-presets__footer-mobile': breakpoint <= breakpoints.SMALL,
+                'saved-filters-presets__footer': breakpoint > breakpoints.SMALL}">
+    <div class="saved-filters-presets__close-button">
+      <button (click)="onClose()" mat-raised-button color="primary">
+        Done
+      </button>
+    </div>
+  </div>
+
+</div>

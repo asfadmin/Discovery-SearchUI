@@ -9,7 +9,7 @@ import { MatSharedModule } from '@shared';
 import { OnDemandAddMenuComponent } from './on-demand-add-menu.component';
 import { ClosestPairComponent } from './closest-pair/closest-pair.component';
 
-import { CreateSubscriptionModule } from '../../header/create-subscription';
+import { CreateSubscriptionModule } from '@components/header/create-subscription';
 
 @NgModule({
   declarations: [OnDemandAddMenuComponent, ClosestPairComponent],

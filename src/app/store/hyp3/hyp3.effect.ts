@@ -8,7 +8,8 @@ import { map, switchMap, delay, catchError } from 'rxjs/operators';
 import { Hyp3Service, AsfApiService, NotificationService } from '@services';
 import {
   Hyp3ActionType, SetJobs, SuccessfulJobSumbission,
-  ErrorJobSubmission, SubmitJob, SetUser, ErrorLoadingUser
+  ErrorJobSubmission, SubmitJob, SetUser, ErrorLoadingUser,
+  LoadSubscriptions, SetSubscriptions
 } from './hyp3.action';
 import { MakeSearch } from '../search/search.action';
 
@@ -25,6 +26,12 @@ export class Hyp3Effects {
     ofType<SetJobs>(Hyp3ActionType.SET_JOBS),
     delay(200),
     map(_ => new MakeSearch()),
+  ));
+
+  public onLoadSubscriptions = createEffect(() => this.actions$.pipe(
+    ofType<LoadSubscriptions>(Hyp3ActionType.LOAD_SUBSCRIPTIONS),
+    switchMap(_ => this.hyp3Service.getSubscriptions$()),
+    map(subs => new SetSubscriptions(subs))
   ));
 
   public loadUser = createEffect(() => this.actions$.pipe(
