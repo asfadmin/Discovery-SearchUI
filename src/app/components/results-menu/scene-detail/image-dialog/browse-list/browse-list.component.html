@@ -12,8 +12,8 @@
       <img [src]="scene.browses[0]"
        onerror="this.src='assets/no-browse.png'"
        class="browse-image no-drag">
-       <mat-checkbox [checked]="productBrowseStates[scene.id]?.isPinned" (change)="onPinProduct(scene.id);" (click)="$event.stopPropagation()">
-      </mat-checkbox>
+       <!-- <mat-checkbox [checked]="productBrowseStates[scene.id]?.isPinned" (change)="onPinProduct(scene.id);" (click)="$event.stopPropagation()">
+      </mat-checkbox> -->
       <div class="browse-image--date">{{ scene.metadata.date | shortDate }}</div>
     </div>
   </div>
