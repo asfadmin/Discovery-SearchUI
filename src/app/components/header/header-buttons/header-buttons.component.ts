@@ -242,7 +242,7 @@ export class HeaderButtonsComponent implements OnInit, OnDestroy {
   }
 
   public onOpenAPIWebSite(): void {
-    const url = this.asfWebsiteUrl + '/api';
+    const url = `https://docs.asf.alaska.edu/api/basics/`;
     const analyticsEvent = {
       name: 'open-api-web-site',
       value: url

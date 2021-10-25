@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 
 import { of } from 'rxjs';
-import { map, switchMap, catchError } from 'rxjs/operators';
+import { map, switchMap, catchError, distinctUntilChanged, filter } from 'rxjs/operators';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { UnzipApiService } from '@services/unzip-api.service';
 import { NotificationService } from '@services/notification.service';
@@ -11,6 +11,8 @@ import {
   ScenesActionType, LoadUnzippedProduct,
   AddUnzippedProduct, ErrorLoadingUnzipped
 } from './scenes.action';
+import { SetSarviewsEventProducts, SetSelectedSarviewsEvent } from '.';
+import { SarviewsEventsService } from '@services';
 
 @Injectable()
 export class ScenesEffects {
@@ -18,6 +20,7 @@ export class ScenesEffects {
     private actions$: Actions,
     private unzipApi: UnzipApiService,
     private notificationService: NotificationService,
+    private sarviewsService: SarviewsEventsService,
   ) {}
 
   public loadUnzippedProductFiles = createEffect(() => this.actions$.pipe(
@@ -45,6 +48,14 @@ export class ScenesEffects {
     map(action => this.showUnzipApiLoadError(action.payload))
   ), { dispatch: false });
 
+  public loadSarviewsEventProductsOnSelect = createEffect(() => this.actions$.pipe(
+    ofType<SetSelectedSarviewsEvent>(ScenesActionType.SET_SELECTED_SARVIEWS_EVENT),
+    distinctUntilChanged(),
+    switchMap(action => this.sarviewsService.getEventFeature(action.payload)),
+    // debounceTime(500),
+    filter(event => !!event.products),
+    map(processedEvent => new SetSarviewsEventProducts(!!processedEvent.products ? processedEvent.products : []))
+  ));
   private showUnzipApiLoadError(product: CMRProduct): void {
     this.notificationService.error(
       `Error loading files for ${product.id}`,

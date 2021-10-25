@@ -33,7 +33,7 @@ import { SearchTypeSelectorModule } from '@components/shared/selectors/search-ty
 import { ProjectNameSelectorModule } from '@components/shared/selectors/project-name-selector';
 import { JobStatusSelectorModule } from '@components/shared/selectors/job-status-selector';
 import { JobProductNameSelectorModule } from '@components/shared/selectors/job-product-name-selector';
-
+import { SarviewsEventSearchSelectorModule } from '@components/shared/selectors/sarviews-event-search-selector';
 import { LogoModule } from '@components/header/logo/logo.module';
 import { DatasetHeaderComponent } from './dataset-header/dataset-header.component';
 import { ListHeaderComponent } from './list-header/list-header.component';
@@ -45,7 +45,8 @@ import { MasterSceneSelectorModule } from '@components/shared/selectors/master-s
 import { Hyp3HeaderComponent } from './hyp3-header/hyp3-header.component';
 import { CreateSubscriptionModule } from './create-subscription/create-subscription.module';
 import { CiSearchModule } from './info-bar/ci-search/ci-search.module';
-
+import { SarviewsHeaderComponent } from './sarviews-header/sarviews-header.component';
+import { SarviewsEventTypeSelectorModule } from '@components/shared/selectors/sarviews-event-type-selector';
 @NgModule({
   declarations: [
     HeaderComponent,
@@ -55,6 +56,7 @@ import { CiSearchModule } from './info-bar/ci-search/ci-search.module';
     AoiFilterComponent,
     BaselineHeaderComponent,
     Hyp3HeaderComponent,
+    SarviewsHeaderComponent,
   ],
   imports: [
     CommonModule,
@@ -90,7 +92,9 @@ import { CiSearchModule } from './info-bar/ci-search/ci-search.module';
     JobStatusSelectorModule,
     JobProductNameSelectorModule,
     CreateSubscriptionModule,
-    CiSearchModule
+    CiSearchModule,
+    SarviewsEventSearchSelectorModule,
+    SarviewsEventTypeSelectorModule
   ],
   exports: [
     HeaderComponent

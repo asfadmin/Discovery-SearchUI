@@ -2,7 +2,7 @@ import { Component, OnInit, ViewChild, OnDestroy, Input } from '@angular/core';
 import * as moment from 'moment';
 
 import { combineLatest } from 'rxjs';
-import { filter, map } from 'rxjs/operators';
+import { filter, map, withLatestFrom } from 'rxjs/operators';
 import { SubSink } from 'subsink';
 
 import { Store, ActionsSubject } from '@ngrx/store';
@@ -28,7 +28,14 @@ export class DateSelectorComponent implements OnInit, OnDestroy {
   private currentDate = new Date();
   private selectedDataset$ = this.store$.select(filtersStore.getSelectedDataset);
   public maxDate$ = this.selectedDataset$.pipe(
-      map(dataset => dataset.date.end),
+    withLatestFrom(this.store$.select(searchStore.getSearchType)),
+    map(([dataset, searchType]) => {
+      if (searchType === SearchType.SARVIEWS_EVENTS) {
+        return this.extrema?.end.max;
+      }
+        return dataset.date.end;
+      }
+    ),
     map(endDate => {
       const date = endDate <= this.currentDate ? endDate : this.currentDate;
 
@@ -40,12 +47,21 @@ export class DateSelectorComponent implements OnInit, OnDestroy {
       return date;
     })
     );
+
   public minDate$ = this.selectedDataset$.pipe(
-    map(dataset => dataset.date.start ));
+    withLatestFrom(this.store$.select(searchStore.getSearchType)),
+    map(([dataset, searchType]) => {
+        if (searchType === SearchType.SARVIEWS_EVENTS) {
+          return this.extrema?.start.min;
+        }
+        return dataset.date.start;
+      }
+    )
+  );
   public startDate$ = this.store$.select(filtersStore.getStartDate);
   public endDate$ = this.store$.select(filtersStore.getEndDate);
-  public startDate: Date;
-  public endDate: Date;
+  public startDate: Date = new Date();
+  public endDate: Date = new Date();
 
   private subs = new SubSink();
 
@@ -74,21 +90,18 @@ export class DateSelectorComponent implements OnInit, OnDestroy {
         this.endDate$,
     );
 
+    const sarviewsDateExtrema$ = this.dateExtremaService.getSarviewsExtrema$(
+      this.store$.select(scenesStore.getSarviewsEvents)
+    );
+
     this.subs.add(
       combineLatest([
         this.store$.select(searchStore.getSearchType),
         dateExtrema$,
         baselineDateExtrema$,
+        sarviewsDateExtrema$,
       ]
-      ).subscribe(([searchType, extrema, baselineExtrema]) => {
-        if (this.extendEndDateBy && extrema.end.max !== null) {
-          const endMax = extrema.end.max;
-          const d = new Date(endMax.valueOf());
-          d.setDate(d.getDate() + this.extendEndDateBy);
-
-          extrema.end.max = d ;
-        }
-
+      ).subscribe(([searchType, extrema, baselineExtrema, sarviewsExtrema]) => {
         if (searchType === SearchType.DATASET) {
           this.extrema = extrema;
         } else if (searchType === SearchType.CUSTOM_PRODUCTS) {
@@ -102,8 +115,27 @@ export class DateSelectorComponent implements OnInit, OnDestroy {
               max: null
             }
           };
+         } else if (searchType === SearchType.SARVIEWS_EVENTS) {
+           this.extrema = {
+             start: {
+               min: sarviewsExtrema.start,
+               max: null
+             },
+             end: {
+               min: null,
+               max: sarviewsExtrema.end
+             }
+           };
          } else {
           this.extrema = baselineExtrema;
+        }
+
+        if (this.extendEndDateBy && extrema.end.max !== null) {
+          const endMax = extrema.end.max;
+          const d = new Date(endMax.valueOf());
+          d.setDate(d.getDate() + this.extendEndDateBy);
+
+          extrema.end.max = d ;
         }
       })
     );
@@ -141,7 +173,7 @@ export class DateSelectorComponent implements OnInit, OnDestroy {
   }
 
   private endDateFormat(date: Date | moment.Moment) {
-    const endDate = moment(date).set({h: 23, m: 59, s: 59});
+    const endDate = moment(date).utc().endOf('day');
     return this.toJSDate(endDate);
   }
 

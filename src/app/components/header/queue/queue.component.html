@@ -69,7 +69,7 @@
                   </div>
 
                   <app-copy-to-clipboard
-                     *ngIf="!product.isUnzippedFile && !product.metadata.job"
+                     *ngIf="!product.isUnzippedFile && !product.metadata.job && product.groupId !== 'SARViews'"
                      style="margin-right: 15px;"
                      prompt="Copy File ID"
                      [value]="product.id"
@@ -139,8 +139,8 @@
             </button>
 
             <ng-container *ngIf="breakpoint > breakpoints.MOBILE && dlWidth >= dlWidthMin">
-              <span *ngIf="queueHasOnDemandProducts" class="on-demand-warning">
-                On Demand products in queue - limited export options
+              <span *ngIf="queueHasOnDemandProducts || queueHasEventMonitoringProducts" class="on-demand-warning">
+                {{limitedExportString()}}
               </span>
 
               <button mat-flat-button color="primary" [matMenuTriggerFor]="dataMenu" [disabled]="!areAnyProducts"
@@ -179,21 +179,21 @@
               <button mat-menu-item (click)="onMakeDownloadScript()">
                 Download Python Script (.py)
               </button>
-              <button mat-menu-item [disabled]="queueHasOnDemandProducts" (click)="onMetalinkDownload()">
+              <button mat-menu-item [disabled]="queueHasOnDemandProducts || queueHasEventMonitoringProducts" (click)="onMetalinkDownload()">
                 Metadata (metalink)
               </button>
             </mat-menu>
 
             <mat-menu #metadataMenu="matMenu" yPosition="above">
-              <button mat-menu-item [disabled]="queueHasOnDemandProducts" (click)="onCsvDownload()">
+              <button mat-menu-item [disabled]="queueHasOnDemandProducts || queueHasEventMonitoringProducts" (click)="onCsvDownload()">
                 Metadata (csv)
               </button>
 
-              <button mat-menu-item [disabled]="queueHasOnDemandProducts" (click)="onKmlDownload()">
+              <button mat-menu-item [disabled]="queueHasOnDemandProducts || queueHasEventMonitoringProducts" (click)="onKmlDownload()">
                 Metadata (kml)
               </button>
 
-              <button mat-menu-item [disabled]="queueHasOnDemandProducts" (click)="onGeojsonDownload()">
+              <button mat-menu-item [disabled]="queueHasOnDemandProducts || queueHasEventMonitoringProducts" (click)="onGeojsonDownload()">
                 Metadata (geojson)
               </button>
             </mat-menu>

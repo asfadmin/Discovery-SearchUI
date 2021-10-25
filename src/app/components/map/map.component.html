@@ -56,7 +56,7 @@
         (click)="closeMobileFullscreenControls()"
         class="mobile-map-controls-full">
           <div class="mobile-control-group">
-            <app-view-selector></app-view-selector>
+            <app-view-selector *ngIf="searchType !== searchTypes.SARVIEWS_EVENTS"></app-view-selector>
           </div>
           <div *ngIf="(view$ | async) === viewTypes.EQUITORIAL"
             class="mobile-control-group">
@@ -90,3 +90,11 @@
   (mouseleave)="leaveDrawPopup()"
   id="popup" class="ol-popup" #overlay>
 </div>
+
+
+<!-- <div #sarviewPopupContainer style="width: 150px; height: 150px; background-color: white; border-radius: 12px;">
+<p>
+  {{selectedSarviewEvent?.description}}
+</p>
+  <button mat-button><a target="_blank" href="{{'https://sarviews-hazards.alaska.edu/Event/' + selectedSarviewEvent?.event_id}}">SARVIEWS Event Page</a></button>
+</div> -->

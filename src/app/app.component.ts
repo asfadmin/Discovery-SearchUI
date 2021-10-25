@@ -28,6 +28,7 @@ import * as filtersStore from '@store/filters';
 
 import * as services from '@services';
 import * as models from './models';
+import { SearchType } from './models';
 
 @Component({
   selector   : 'app-root',
@@ -74,7 +75,8 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
     private matIconRegistry: MatIconRegistry,
     private domSanitizer: DomSanitizer,
     private dialog: MatDialog,
-    private notificationService: services.NotificationService
+    private notificationService: services.NotificationService,
+    private sarviewsService: services.SarviewsEventsService,
   ) {}
 
   public ngAfterViewInit(): void {
@@ -323,7 +325,7 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
       this.store$.select(searchStore.getSearchType).pipe(
         tap(searchType => this.searchType = searchType),
         tap(searchType => {
-          if (searchType === models.SearchType.CUSTOM_PRODUCTS) {
+          if (searchType === models.SearchType.CUSTOM_PRODUCTS || searchType === models.SearchType.SARVIEWS_EVENTS) {
             this.store$.dispatch(new searchStore.MakeSearch());
           }
         }),
@@ -389,6 +391,8 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
       return !searchState.filters.filterMaster;
     } else if (searchState.searchType === models.SearchType.SBAS) {
       return !searchState.filters.reference;
+    } else if (searchState.searchType === models.SearchType.SARVIEWS_EVENTS) {
+      return searchState.filters.selectedEventID !== '';
     }
 
     return false;
@@ -419,6 +423,7 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
 
   public onClearSearch(): void {
     this.store$.dispatch(new scenesStore.ClearScenes());
+    this.store$.dispatch(new scenesStore.SetSelectedSarviewsEvent(''));
     this.store$.dispatch(new uiStore.CloseResultsMenu());
 
     this.searchService.clear(this.searchType);
@@ -430,12 +435,17 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
 
   private updateMaxSearchResults(): void {
     const checkAmount = this.searchParams$.getlatestParams().pipe(
+      filter(_ => this.searchType !== SearchType.SARVIEWS_EVENTS),
       debounceTime(200),
       map(params => ({...params, output: 'COUNT'})),
       tap(_ =>
         this.store$.dispatch(new searchStore.SearchAmountLoading())
       ),
-      switchMap(params => this.asfSearchApi.query<any[]>(params).pipe(
+      switchMap(params => {
+        if (this.searchType === models.SearchType.SARVIEWS_EVENTS) {
+          return this.sarviewsService.getSarviewsEvents$().pipe(map(events => events.length));
+        }
+        return this.asfSearchApi.query<any[]>(params).pipe(
         catchError(resp => {
           const { error } = resp;
           if (!resp.ok || error && error.includes('VALIDATION_ERROR')) {
@@ -444,7 +454,8 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
 
           return of(-1);
         })
-      )
+      );
+      }
       ),
     );
 

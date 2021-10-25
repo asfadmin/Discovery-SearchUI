@@ -15,6 +15,7 @@ import { UpdateSearchWithFilters, UpdateSearchName, DeleteSavedSearch,
 } from '@store/user/user.action';
 
 import * as models from '@models';
+import { getSarviewsMagnitudeRange } from '@store/filters';
 
 
 @Injectable({
@@ -78,6 +79,29 @@ export class SavedSearchService {
       ...customProductFilters
     }))
   );
+
+  private currentSarviewsEventSearch$ = combineLatest(
+    this.store$.select(filtersStore.getDateRange),
+    this.store$.select(filtersStore.getSarviewsEventTypes),
+    this.store$.select(filtersStore.getSarviewsEventNameFilter),
+    this.store$.select(filtersStore.getSarviewsEventActiveFilter),
+    this.store$.select(getSarviewsMagnitudeRange),
+    this.store$.select(scenesStore.getPinnedEventBrowseIDs),
+    this.store$.select(scenesStore.getSelectedSarviewsEvent).pipe(map(event => event?.event_id ?? '')),
+  ).pipe(
+    map(([dateRange, sarviewsEventTypes, sarviewsEventNameFilter,
+      activeOnly, magnitude, pinnedProductIDs, selectedEventID]) => ({
+      dateRange,
+      sarviewsEventTypes,
+      sarviewsEventNameFilter,
+      activeOnly,
+      magnitude,
+      pinnedProductIDs,
+      selectedEventID
+    })
+  )
+  );
+
   private searchType$ = this.store$.select(getSearchType);
 
   public currentSearch$ = this.searchType$.pipe(
@@ -87,6 +111,7 @@ export class SavedSearchService {
       [models.SearchType.BASELINE]: this.currentBaselineSearch$,
       [models.SearchType.SBAS]: this.currentSbasSearch$,
       [models.SearchType.CUSTOM_PRODUCTS]: this.currentCustomProductSearch$,
+      [models.SearchType.SARVIEWS_EVENTS]: this.currentSarviewsEventSearch$,
     })[searchType]
     )
   );

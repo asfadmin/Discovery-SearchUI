@@ -11,6 +11,7 @@ import * as uiStore from '@store/ui';
 import * as models from '@models';
 import { MapService, } from './map/map.service';
 import { WktService } from './wkt.service';
+import { PinnedProduct } from './browse-map.service';
 
 @Injectable({
   providedIn: 'root'
@@ -34,6 +35,7 @@ export class SearchService {
       new filterStore.ClearPerpendicularRange(),
       new filterStore.ClearTemporalRange(),
       new filterStore.ClearSeason(),
+      new filterStore.ClearSarviewsMagnitudeRange(),
       new uiStore.CloseFiltersMenu(),
     ];
 
@@ -46,6 +48,18 @@ export class SearchService {
       this.store$.dispatch(new filterStore.SetJobStatuses([]));
       this.store$.dispatch(new filterStore.ClearDateRange());
       this.store$.dispatch(new filterStore.SetProductNameFilter(''));
+    }
+
+    if (searchType === models.SearchType.SARVIEWS_EVENTS) {
+      this.store$.dispatch(new filterStore.SetSarviewsEventNameFilter(''));
+      this.store$.dispatch(new filterStore.SetSarviewsEventTypes([]));
+      this.store$.dispatch(new filterStore.SetSarviewsEventActiveFilter(false));
+      this.store$.dispatch(new filterStore.SetSarviewsMagnitudeRange(
+        {
+          start: null,
+          end: null
+        }
+      ));
     }
   }
 
@@ -73,6 +87,27 @@ export class SearchService {
       if (filters.customPairIds) {
         this.store$.dispatch(new scenesStore.AddCustomPairs(filters.customPairIds));
       }
+    }
+    if (search.searchType === models.SearchType.SARVIEWS_EVENTS) {
+      const filters = <models.SarviewsFiltersType>search.filters;
+      const pinnedProductIds = filters.pinnedProductIDs;
+      // if(!!filters.selectedEventID) {
+      // this.store$.dispatch(new scene)
+      this.store$.dispatch(new scenesStore.SetSelectedSarviewsEvent(filters.selectedEventID));
+
+        if (!!pinnedProductIds) {
+          this.store$.dispatch(new scenesStore.SetImageBrowseProducts(pinnedProductIds.reduce(
+            (prev, curr) => {
+              prev[curr] = {
+                isPinned: true,
+                url: '',
+                wkt: ''
+              };
+              return prev;
+            }, {} as {[product_id in string]: PinnedProduct})
+          ));
+        }
+      // }
     }
 
     this.store$.dispatch(new filterStore.SetSavedSearch(search));
