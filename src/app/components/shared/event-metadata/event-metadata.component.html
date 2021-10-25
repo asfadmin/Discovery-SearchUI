@@ -3,6 +3,12 @@
     <span class="v-mid">
       <b>Magnitude </b> {{ (event | quakeEvent).magnitude }}
     </span>
+    <mat-icon
+    [matMenuTriggerFor]="addSceneMagnitudeMenu"
+    [matMenuTriggerData]="{magnitude: (event | quakeEvent).magnitude}"
+    class="v-mid clickable">
+    settings
+    </mat-icon>
   </li>
   <li>
     <span class="v-mid">
@@ -86,4 +92,11 @@
   <button (click)="onSetStartDate(date)" mat-menu-item>Set as start date</button>
   <button (click)="onSetEndDate(date)" mat-menu-item>Set as end date</button>
 </ng-template>
+</mat-menu>
+
+<mat-menu #addSceneMagnitudeMenu>
+  <ng-template matMenuContent let-magnitude="magnitude">
+    <button (click)="onSetStartMagnitude(magnitude)" mat-menu-item>Set as magnitude range start</button>
+    <button (click)="onSetEndMagnitude(magnitude)" mat-menu-item>Set as magnitude range end</button>
+  </ng-template>
 </mat-menu>

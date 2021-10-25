@@ -2,8 +2,8 @@ import { Component, Input, OnInit } from '@angular/core';
 import * as models from '@models';
 import { Store } from '@ngrx/store';
 import { AppState } from '@store';
-import { SetEndDate, SetStartDate } from '@store/filters';
 import * as moment from 'moment';
+import * as filtersStore from '@store/filters';
 // import { Moment } from 'moment';
 
 @Component({
@@ -24,10 +24,18 @@ export class EventMetadataComponent implements OnInit {
   public onSetStartDate(date: Date) {
     const startOf = moment(date).startOf('day');
     const startDate = startOf.toDate();
-    this.store$.dispatch(new SetStartDate(startDate));
+    this.store$.dispatch(new filtersStore.SetStartDate(startDate));
   }
 
-  public onSetEndDate(date: Date) {
-    this.store$.dispatch(new SetEndDate(date));
+  public onSetEndDate(endDate: Date) {
+    this.store$.dispatch(new filtersStore.SetEndDate(endDate));
+  }
+
+  public onSetStartMagnitude(startMagnitude: number) {
+    this.store$.dispatch(new filtersStore.SetSarviewsMagnitudeStart(startMagnitude));
+  }
+
+  public onSetEndMagnitude(endMagnitude: number) {
+    this.store$.dispatch(new filtersStore.SetSarviewsMagnitudeEnd(endMagnitude));
   }
 }
