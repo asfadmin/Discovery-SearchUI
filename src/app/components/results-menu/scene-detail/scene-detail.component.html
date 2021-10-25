@@ -40,11 +40,14 @@
       >
 
       </app-event-metadata>
-      <div class="sarivews-radius-display">
+      <!-- <div class="sarivews-radius-display">
         Geographic Search Polygon Scale:
         {{ sarviewsEventGeoSearchRadius.toFixed(1) }}
-      </div>
-      <mat-slider
+      </div> -->
+      <app-event-polygon-slider (polygonScale$)="onEventSearchRadiusChange($event)">
+
+      </app-event-polygon-slider>
+      <!-- <mat-slider
       style="width: 50%; margin-left: 15px; margin-right: 15px"
       min="0.5"
       max="4"
@@ -52,7 +55,7 @@
       (input)="onEventSearchRadiusChange($event)"
       [value]="sarviewsEventGeoSearchRadius"
       horizontal
-    ></mat-slider>
+    ></mat-slider> -->
       </div>
     </mat-card-content>
   </div>
@@ -312,7 +315,8 @@
     </button>
   </div>
   <div
-  [matTooltip]="!(
+  [matTooltip]="
+  searchType === searchTypes.SARVIEWS_EVENTS ? 'Geographic search based on event polygon' : !(
     !(prop.isRelevant(p.PATH, dataset) &&
       prop.isRelevant(p.FRAME, dataset)) ||
     dataset?.id === 'UAVSAR'

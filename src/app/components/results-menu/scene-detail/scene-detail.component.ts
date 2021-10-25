@@ -18,9 +18,7 @@ import { AuthService, MapService, PropertyService,
 import { ImageDialogComponent } from './image-dialog';
 
 import { DatasetForProductService } from '@services';
-// import {circular} from 'ol/geom/Polygon';
-// import WKT from 'ol/format/WKT';
-import { MatSliderChange } from '@angular/material/slider';
+
 @Component({
   selector: 'app-scene-detail',
   templateUrl: './scene-detail.component.html',
@@ -324,9 +322,9 @@ export class SceneDetailComponent implements OnInit, OnDestroy {
     this.store$.dispatch(new searchStore.MakeSearch());
   }
 
-  public onEventSearchRadiusChange(event: MatSliderChange) {
-    this.sarviewsEventGeoSearchRadius = event.value;
-    this.mapService.onSetSarviewsPolygon(this.sarviewEvent, this.sarviewsEventGeoSearchRadius);
+  public onEventSearchRadiusChange(value: number) {
+    this.sarviewsEventGeoSearchRadius = value;
+    // this.mapService.onSetSarviewsPolygon(this.sarviewEvent, this.sarviewsEventGeoSearchRadius);
   }
 
   public makeEventListSearch() {
