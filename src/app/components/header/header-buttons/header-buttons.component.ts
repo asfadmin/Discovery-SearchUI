@@ -16,7 +16,7 @@ import { PreferencesComponent } from './preferences/preferences.component';
 import { CustomizeEnvComponent } from './customize-env/customize-env.component';
 
 import { AuthService, AsfApiService, EnvironmentService, ScreenSizeService, NotificationService } from '@services';
-import { CMRProduct, Breakpoints, UserAuth, SavedSearchType, QueuedHyp3Job, SearchType } from '@models';
+import { CMRProduct, Breakpoints, UserAuth, SidebarType, QueuedHyp3Job, SearchType, AnalyticsEvent } from '@models';
 
 import { collapseAnimation, rubberBandAnimation,
          zoomInUpAnimation,  tadaAnimation, wobbleAnimation } from 'angular-animations';
@@ -194,105 +194,71 @@ export class HeaderButtonsComponent implements OnInit, OnDestroy {
 
   public onOpenUserGuide(): void {
     const url = 'https://docs.asf.alaska.edu/vertex/manual/';
+    const analyticsEvent = {
+      name: 'open-user-guide',
+      value: url
+    };
 
-    window.dataLayer = window.dataLayer || [];
-    window.dataLayer.push({
-      'event': 'open-user-guide',
-      'open-user-guide': url
-    });
-
-    window.open(
-      url,
-      '_blank'
-    );
+    this.openNewWindow(url, analyticsEvent);
   }
   public onOpenHyP3Guide(): void {
     const url = 'https://hyp3-docs.asf.alaska.edu/';
+    const analyticsEvent = {
+      name: 'open-user-guide',
+      value: url
+    };
 
-    window.dataLayer = window.dataLayer || [];
-    window.dataLayer.push({
-      'event': 'open-user-guide',
-      'open-user-guide': url
-    });
-
-    window.open(
-      url,
-      '_blank'
-    );
+    this.openNewWindow(url, analyticsEvent);
   }
 
   public onOpenWhatsNew(): void {
     const url = 'https://docs.google.com/document/d/e/2PACX-1vSqQxPT8nhDQfbCLS8gBZ9SqSEeJy8BdSCiYVlBOXwsFwJ6_ct7pjtOqbXHo0Q3wzinzvO8bGWtHj0H/pub';
-    window.dataLayer = window.dataLayer || [];
-    window.dataLayer.push({
-      'event': 'open-whats-new',
-      'open-whats-new': url
-    });
+    const analyticsEvent = {
+      name: 'open-whats-new',
+      value: url
+    };
 
-    window.open(
-      url,
-      '_blank'
-    );
+    this.openNewWindow(url, analyticsEvent);
   }
 
   public onOpenASFWebSite(): void {
     const url = this.asfWebsiteUrl;
+    const analyticsEvent = {
+      name: 'open-asf-web-site',
+      value: url
+    };
 
-    window.dataLayer = window.dataLayer || [];
-    window.dataLayer.push({
-      'event': 'open-asf-web-site',
-      'open-asf-web-site': url
-    });
-
-    window.open(
-      url,
-      '_blank'
-    );
+    this.openNewWindow(url, analyticsEvent);
   }
 
   public onOpenOnDemandDocs(): void {
     const url = 'https://hyp3-docs.asf.alaska.edu/';
+    const analyticsEvent = {
+      name: 'open-hyp3-docs',
+      value: url
+    };
 
-    window.dataLayer = window.dataLayer || [];
-    window.dataLayer.push({
-      'event': 'open-hyp3-docs',
-      'open-asf-web-site': url
-    });
-
-    window.open(
-      url,
-      '_blank'
-    );
+    this.openNewWindow(url, analyticsEvent);
   }
 
   public onOpenAPIWebSite(): void {
     const url = `https://docs.asf.alaska.edu/api/basics/`;
+    const analyticsEvent = {
+      name: 'open-api-web-site',
+      value: url
+    };
 
-    window.dataLayer = window.dataLayer || [];
-    window.dataLayer.push({
-      'event': 'open-api-web-site',
-      'open-api-web-site': url
-    });
-
-    window.open(
-      url,
-      '_blank'
-    );
+    this.openNewWindow(url, analyticsEvent);
   }
 
   public onOpenDerivedDataset(dataset_path: string, dataset_name: string): void {
     const url = this.asfWebsiteUrl + dataset_path;
+    const analyticsEvent = {
+      name: 'open-derived-dataset',
+      value: dataset_name
+    };
 
-    window.dataLayer = window.dataLayer || [];
-    window.dataLayer.push({
-      'event': 'open-derived-dataset',
-      'open-derived-dataset': dataset_name
-    });
-
-    window.open(
-      url,
-      '_blank'
-    );
+    this.openNewWindow(url, analyticsEvent);
   }
 
   public onOpenCustomizeEnv(): void {
@@ -305,42 +271,41 @@ export class HeaderButtonsComponent implements OnInit, OnDestroy {
   }
 
   public onOpenSavedSearches(): void {
-
     window.dataLayer = window.dataLayer || [];
     window.dataLayer.push({
       'event': 'open-saved-searches',
       'open-saved-searches': true
     });
 
-    this.store$.dispatch(new uiStore.SetSavedSearchType(SavedSearchType.SAVED));
-    this.store$.dispatch(new uiStore.OpenSidebar());
+    this.store$.dispatch(new uiStore.OpenSidebar(SidebarType.SAVED_SEARCHES));
   }
 
   public onOpenSavedFilters(): void {
-
     window.dataLayer = window.dataLayer || [];
     window.dataLayer.push({
       'event': 'open-saved-filters',
       'open-saved-filters': true
     });
 
-    this.store$.dispatch(new uiStore.OpenFiltersSidebar());
+    this.store$.dispatch(new uiStore.OpenSidebar(SidebarType.USER_FILTERS));
   }
 
   public onOpenSearchHistory() {
-
     window.dataLayer = window.dataLayer || [];
     window.dataLayer.push({
       'event': 'open-search-history',
       'open-search-history': true
     });
 
-    this.store$.dispatch(new uiStore.SetSavedSearchType(SavedSearchType.HISTORY));
-    this.store$.dispatch(new uiStore.OpenSidebar());
+    this.store$.dispatch(new uiStore.OpenSidebar(SidebarType.SEARCH_HISTORY));
   }
 
   public onOpenProcessingQueue() {
     this.store$.dispatch(new uiStore.SetIsOnDemandQueueOpen(true));
+  }
+
+  public onOpenSubscriptions() {
+    this.store$.dispatch(new uiStore.OpenSidebar(SidebarType.ON_DEMAND_SUBSCRIPTIONS));
   }
 
   public onCopy(): void {
@@ -349,6 +314,7 @@ export class HeaderButtonsComponent implements OnInit, OnDestroy {
       'event': 'copy-search-link',
       'copy-search-link': window.location.href
     });
+
     this.clipboard.copyFromContent(window.location.href);
     this.notificationService.clipboardSearchLink();
   }
@@ -383,6 +349,16 @@ export class HeaderButtonsComponent implements OnInit, OnDestroy {
   private setMaturity(maturity: string): void {
     this.maturity = maturity;
     this.env.setMaturity(maturity);
+  }
+
+  private openNewWindow(url, analyticsEvent: AnalyticsEvent): void {
+    window.dataLayer = window.dataLayer || [];
+    window.dataLayer.push({
+      'event': analyticsEvent.name,
+      'open-derived-dataset': analyticsEvent.value
+    });
+
+    window.open(url, '_blank');
   }
 
   ngOnDestroy() {

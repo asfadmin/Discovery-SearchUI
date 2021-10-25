@@ -1,0 +1,29 @@
+<div>
+  <div style="font-size: 18px;">Filters</div>
+  <hr />
+  <div style="margin-left: 12px;">
+    <div *ngIf="filters.platform">
+      <b>Dataset:</b> {{ filters.platform }}
+    </div>
+
+    <div *ngIf="filters.intersectsWith">
+      <b>Search Area:</b> {{ showSearchAreaType(filters.intersectsWith) }}
+    </div>
+
+    <div *ngIf="filters.processingLevel">
+      <b>Product Type:</b> {{ filters.processingLevel }}
+    </div>
+
+    <div *ngIf="filters.polarization">
+      <b>Polarizations:</b> {{ filters.polarization }}
+    </div>
+
+    <div *ngIf="filters.flightDirection">
+      <b>Flight Direction:</b> {{ filters.flightDirection }}
+    </div>
+
+    <div *ngIf="filters.beamMode">
+      <b>Beam Mode:</b> {{ filters.beamMode }}
+    </div>
+  </div>
+</div>

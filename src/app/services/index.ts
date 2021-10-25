@@ -27,4 +27,5 @@ export { Hyp3Service } from './hyp3.service';
 export { PairService } from './pair.service';
 export { SceneSelectService } from './scene-select.service';
 export { NotificationService } from './notification.service';
+export { OnDemandService } from './on-demand.service';
 export { SarviewsEventsService } from './sarviews-events.service';

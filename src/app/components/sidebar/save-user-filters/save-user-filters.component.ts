@@ -35,8 +35,10 @@ export class SaveUserFiltersComponent implements OnInit, OnDestroy {
 
   private subs = new SubSink();
 
-  constructor(private store$: Store<AppState>,
-    private screenSize: ScreenSizeService) {}
+  constructor(
+    private store$: Store<AppState>,
+    private screenSize: ScreenSizeService,
+  ) {}
 
   ngOnInit(): void {
     this.subs.add(
@@ -103,7 +105,7 @@ export class SaveUserFiltersComponent implements OnInit, OnDestroy {
   }
 
   public onClose() {
-    this.store$.dispatch(new uiStore.CloseFiltersSidebar());
+    this.store$.dispatch(new uiStore.CloseSidebar());
   }
 
   ngOnDestroy() {

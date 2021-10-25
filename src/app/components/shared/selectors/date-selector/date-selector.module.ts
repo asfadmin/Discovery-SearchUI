@@ -8,6 +8,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatSliderModule } from '@angular/material/slider';
 import { FlexLayoutModule } from '@angular/flex-layout';
+import { DateRangeModule } from '../date-range/date-range.module';
 
 import { MAT_MOMENT_DATE_ADAPTER_OPTIONS, MatMomentDateModule } from '@angular/material-moment-adapter';
 
@@ -26,6 +27,7 @@ import { DateSelectorComponent } from './date-selector.component';
     MatFormFieldModule,
     MatInputModule,
     MatSliderModule,
+    DateRangeModule,
 
     MatSharedModule,
   ],

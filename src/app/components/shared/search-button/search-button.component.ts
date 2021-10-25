@@ -13,7 +13,7 @@ import * as uiStore from '@store/ui';
 import * as filtersStore from '@store/filters';
 
 import * as services from '@services';
-import { SavedSearchType, SBASOverlap, SearchType } from '@models';
+import { SidebarType, SBASOverlap, SearchType } from '@models';
 import { MatDialog } from '@angular/material/dialog';
 import { HelpComponent } from '@components/help/help.component';
 import { getFilterMaster } from '@store/scenes';
@@ -175,10 +175,10 @@ export class SearchButtonComponent implements OnInit, OnDestroy {
       height: '500px',
       maxWidth: '550px',
       maxHeight: '500px',
-      data: { saveType: SavedSearchType.SAVED }
+      data: { saveType: SidebarType.SAVED_SEARCHES }
     });
-    this.store$.dispatch(new uiStore.SetSavedSearchType(SavedSearchType.SAVED));
-    this.store$.dispatch(new uiStore.OpenSidebar());
+
+    this.store$.dispatch(new uiStore.OpenSidebar(SidebarType.SAVED_SEARCHES));
   }
 
   public saveCurrentFilters(): void {
@@ -194,11 +194,10 @@ export class SearchButtonComponent implements OnInit, OnDestroy {
       height: '500px',
       maxWidth: '550px',
       maxHeight: '500px',
-      data: { saveType: SavedSearchType.FILTER }
+      data: { saveType: SidebarType.USER_FILTERS }
     });
 
-    this.store$.dispatch(new uiStore.OpenFiltersSidebar());
-    this.store$.dispatch(new uiStore.SetSaveFilterOn(true));
+    this.store$.dispatch(new uiStore.OpenSidebar(SidebarType.USER_FILTERS));
   }
 
   public onOpenSavedSearches(): void {
@@ -209,8 +208,7 @@ export class SearchButtonComponent implements OnInit, OnDestroy {
       'open-saved-searches': true
     });
 
-    this.store$.dispatch(new uiStore.SetSavedSearchType(SavedSearchType.SAVED));
-    this.store$.dispatch(new uiStore.OpenSidebar());
+    this.store$.dispatch(new uiStore.OpenSidebar(SidebarType.SAVED_SEARCHES));
   }
 
   public onOpenSavedFilters(): void {
@@ -221,7 +219,7 @@ export class SearchButtonComponent implements OnInit, OnDestroy {
       'open-saved-filters': true
     });
 
-    this.store$.dispatch(new uiStore.OpenFiltersSidebar());
+    this.store$.dispatch(new uiStore.OpenSidebar(SidebarType.USER_FILTERS));
   }
 
   public onOpenSearchHistory(): void {
@@ -232,8 +230,7 @@ export class SearchButtonComponent implements OnInit, OnDestroy {
       'open-search-history': true
     });
 
-    this.store$.dispatch(new uiStore.SetSavedSearchType(SavedSearchType.HISTORY));
-    this.store$.dispatch(new uiStore.OpenSidebar());
+    this.store$.dispatch(new uiStore.OpenSidebar(SidebarType.SEARCH_HISTORY));
   }
 
   public onOpenHelp(helpTopic: string): void {
