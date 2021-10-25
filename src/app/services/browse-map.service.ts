@@ -192,7 +192,7 @@ export class BrowseMapService {
   private update(view: View, layers: Layer[]): void {
     this.map.setView(view);
     const mapLayers = this.map.getLayers();
-    if(layers.length > 1) {
+    if (layers.length > 1) {
       const baseLayers = layers.slice(0, 3);
       baseLayers.forEach((l, idx) => mapLayers.setAt(idx + 1, l));
     } else {
