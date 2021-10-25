@@ -41,8 +41,8 @@
   #contentArea style="overflow: auto;" class="mat-dialog-content">
   <div class="content-block">
     <div class="content-area">
-      <mat-stepper #stepper>
-        <mat-step>
+      <mat-stepper (selectionChange)="onSelectionChange()" #stepper>
+        <mat-step [stepControl]="searchOptionsFormGroup" errorMessage="Missing required option">
           <ng-template matStepLabel><span class="searchOptions">Search Options</span></ng-template>
 
           <div>
@@ -94,7 +94,7 @@
 
           <div style="margin-bottom: 10px;">
             <div style="margin-bottom: 5px;">
-              <b>Search Options</b>
+              <b>Dataset Options</b>
             </div>
 
             <mat-form-field class="sub-option">
@@ -175,7 +175,7 @@
           </app-processing-options>
         </mat-step>
 
-        <mat-step>
+        <mat-step [stepControl]="reviewFormGroup" [errorMessage]="errors.projectNameError">
           <ng-template matStepLabel>Review</ng-template>
 
           <div *ngIf="subEstimate !== null" style="margin-bottom: 5px;">

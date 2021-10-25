@@ -78,6 +78,18 @@ export class OnDemandSubscriptionsComponent implements OnInit, OnDestroy {
     );
   }
 
+  public onRenewSubscription(sub: models.OnDemandSubscription): void {
+    const today = new Date();
+    const endDate = new Date(today.setDate(today.getDate() + 30));
+    const end = moment.utc(endDate).format();
+
+    this.hyp3.editSubscription(sub.id, {end}).subscribe(
+      _ => {
+        this.store$.dispatch(new hyp3Store.LoadSubscriptions());
+      }
+    );
+  }
+
   public onClose() {
     this.store$.dispatch(new uiStore.CloseSidebar());
   }

@@ -38,6 +38,7 @@
             [isExpanded]="subscription.id === selectedSubId"
             [isToggling]="loadingSubs.has(subscription.id)"
             (newEnd)="onNewEndDate(subscription.id, $event)"
+            (renew)="onRenewSubscription($event)"
             (toggleEnabled)="onToggleEnabled($event)"
             (toggleExpand)="onToggleSelected($event)"
             (viewProducts)="onLoadProductsFor($event)">

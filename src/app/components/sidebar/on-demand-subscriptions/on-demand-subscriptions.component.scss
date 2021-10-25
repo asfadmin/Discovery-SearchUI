@@ -2,6 +2,10 @@
 
 $divider-bar-color: lighten($asf-primary-light, 8%);
 
+.content-wrapper {
+  width: 100%;
+}
+
 .no-saved-filters-presets h2 {
   color: #c9cac4;
   padding-left: 15px;

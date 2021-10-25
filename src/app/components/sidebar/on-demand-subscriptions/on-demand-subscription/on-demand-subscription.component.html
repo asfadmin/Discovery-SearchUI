@@ -33,7 +33,15 @@
         <i class="material-icons">image_search</i>
       </button>
 
-      <button (click)="onToggleEnabled()"
+      <button *ngIf="isSubOutOfDate()"
+        (click)="onRenewSubscription()"
+        matTooltip="Add one month to subscription"
+        class="subscription--action"
+        mat-flat-button>
+        <i class="material-icons">update</i>
+      </button>
+
+      <button *ngIf="!isSubOutOfDate()" (click)="onToggleEnabled()"
         class="subscription--action"
         mat-flat-button>
         <span *ngIf="isToggling">

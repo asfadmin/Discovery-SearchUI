@@ -4,6 +4,9 @@ import { MatStepper } from '@angular/material/stepper';
 import { SubSink } from 'subsink';
 import * as moment from 'moment';
 
+import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {STEPPER_GLOBAL_OPTIONS} from '@angular/cdk/stepper';
+
 import { combineLatest } from 'rxjs';
 import { take } from 'rxjs/operators';
 
@@ -24,7 +27,10 @@ enum CreateSubscriptionSteps {
 @Component({
   selector: 'app-create-subscription',
   templateUrl: './create-subscription.component.html',
-  styleUrls: ['./create-subscription.component.scss']
+  styleUrls: ['./create-subscription.component.scss'],
+  providers: [{
+    provide: STEPPER_GLOBAL_OPTIONS, useValue: {showError: true}
+  }]
 })
 export class CreateSubscriptionComponent implements OnInit, OnDestroy {
   @ViewChild('stepper', { static: false }) public stepper: MatStepper;
@@ -83,6 +89,9 @@ export class CreateSubscriptionComponent implements OnInit, OnDestroy {
 
   private subs = new SubSink();
 
+  public searchOptionsFormGroup: FormGroup;
+  public reviewFormGroup: FormGroup;
+
   constructor(
     public dialogRef: MatDialogRef<CreateSubscriptionComponent>,
     private screenSize: ScreenSizeService,
@@ -91,6 +100,7 @@ export class CreateSubscriptionComponent implements OnInit, OnDestroy {
     public env: EnvironmentService,
     private asfApi: AsfApiService,
     private store$: Store<AppState>,
+    private _formBuilder: FormBuilder,
   ) { }
 
   ngOnInit(): void {
@@ -100,6 +110,15 @@ export class CreateSubscriptionComponent implements OnInit, OnDestroy {
       start: new Date(),
       end: new Date(end.setDate(end.getDate() + 179)),
     };
+
+    this.searchOptionsFormGroup = this._formBuilder.group({
+      dateRange: [1, Validators.max(1)],
+      aoi: [1, Validators.max(1)]
+    });
+
+    this.reviewFormGroup = this._formBuilder.group({
+      projectName: [1, Validators.max(1)]
+    });
 
     this.subs.add(
       this.screenSize.breakpoint$.subscribe(
@@ -143,6 +162,10 @@ export class CreateSubscriptionComponent implements OnInit, OnDestroy {
     );
   }
 
+  public onSelectionChange(): void {
+    this.checkErrors();
+  }
+
   public onNewStartDate(d: Date): void {
     this.dateRange.start = d;
 
@@ -160,9 +183,26 @@ export class CreateSubscriptionComponent implements OnInit, OnDestroy {
   }
 
   public onNext(): void {
-    this.clearErrors();
+    const hasErrors = this.checkErrors();
+
+    if (hasErrors) {
+      return;
+    }
+
+    if (this.isLastStep() && this.areNoStepsWithErrors()) {
+      this.submitSubscription();
+    } else {
+      this.stepper.next();
+    }
+  }
+
+  public checkErrors(): boolean {
+    let hasErrors = true;
 
     if (this.stepper.selectedIndex === CreateSubscriptionSteps.SEARCH_OPTIONS) {
+      this.errors.dateError = null;
+      this.errors.polygonError = null;
+
       if (!this.dateRange.start && !this.dateRange.end) {
         this.errors.dateError = 'Start and end date required';
       } else if (!this.dateRange.start) {
@@ -175,23 +215,31 @@ export class CreateSubscriptionComponent implements OnInit, OnDestroy {
         this.errors.polygonError = 'Area of interest required (will use polygon from current search)';
       }
 
-      if (this.errors.dateError || this.errors.polygonError) {
-        return;
+      if (this.errors.dateError) {
+        this.searchOptionsFormGroup.controls['dateRange'].setValue(2);
+      } else if (this.errors.polygonError) {
+        this.searchOptionsFormGroup.controls['aoi'].setValue(2);
+      } else {
+        hasErrors = false;
+        this.searchOptionsFormGroup.controls['aoi'].setValue(1);
+        this.searchOptionsFormGroup.controls['dateRange'].setValue(1);
       }
     } else if (this.stepper.selectedIndex === CreateSubscriptionSteps.PROCESSING_OPTIONS) {
       this.onEstimateSubscription();
+      hasErrors = false;
     } else if (this.stepper.selectedIndex === CreateSubscriptionSteps.REVIEW) {
+      this.errors.polygonError = null;
+
       if (!this.projectName) {
         this.errors.projectNameError = 'Project Name is required';
-        return;
+        this.reviewFormGroup.controls['projectName'].setValue(2);
+      } else {
+        this.reviewFormGroup.controls['projectName'].setValue(1);
+        hasErrors = false;
       }
     }
 
-    if (this.isLastStep()) {
-      this.submitSubscription();
-    } else {
-      this.stepper.next();
-    }
+    return hasErrors;
   }
 
   public isLastStep(): boolean {
@@ -328,12 +376,12 @@ export class CreateSubscriptionComponent implements OnInit, OnDestroy {
     this.dialogRef.close();
   }
 
-  private clearErrors() {
-    this.errors = {
-      dateError: null,
-      polygonError: null,
-      projectNameError: null,
-    };
+  private areNoStepsWithErrors() {
+    return (
+      this.errors.dateError === null &&
+      this.errors.polygonError === null &&
+      this.errors.projectNameError === null
+    );
   }
 
   ngOnDestroy(): void {

@@ -22,6 +22,7 @@ export class OnDemandSubscriptionComponent implements OnInit, OnDestroy {
   @Output() toggleExpand = new EventEmitter<string>();
   @Output() viewProducts = new EventEmitter<string>();
   @Output() newEnd = new EventEmitter<Date>();
+  @Output() renew = new EventEmitter<models.OnDemandSubscription>();
 
   @ViewChild('endDateForm', { static: false }) public endDateForm: NgForm;
 
@@ -57,7 +58,7 @@ export class OnDemandSubscriptionComponent implements OnInit, OnDestroy {
 
   public getMaxDate(): Date {
     const current = new Date();
-    current.setMonth(current.getMonth() + 1);
+    current.setDate(current.getDate() + 179);
 
     return current;
   }
@@ -93,6 +94,10 @@ export class OnDemandSubscriptionComponent implements OnInit, OnDestroy {
     }
   }
 
+  public isSubOutOfDate(): boolean {
+    return new Date() > new Date(this.subscription.filters.end);
+  }
+
   public onToggleEnabled(): void {
     this.toggleEnabled.emit(this.subscription);
   }
@@ -103,6 +108,10 @@ export class OnDemandSubscriptionComponent implements OnInit, OnDestroy {
 
   public loadOnDemandSearch(): void {
     this.viewProducts.emit(this.subscription.name);
+  }
+
+  public onRenewSubscription(): void {
+    this.renew.emit(this.subscription);
   }
 
   private get subEndControl() {
