@@ -88,10 +88,6 @@ export class MapService {
   public selectedSarviewEvent$: EventEmitter<string> = new EventEmitter();
   public mapInit$: EventEmitter<Map> = new EventEmitter();
 
-  public getEventCoordinate(sarviews_id: string): Point {
-    return this.sarviewsFeaturesByID[sarviews_id]?.getGeometry() as Point ?? null;
-  }
-
   public mousePosition$ = this.mousePositionSubject$.pipe(
     sampleTime(100)
   );
@@ -115,6 +111,10 @@ export class MapService {
 
   public epsg(): string {
     return this.mapView.projection.epsg;
+  }
+
+  public getEventCoordinate(sarviews_id: string): Point {
+    return this.sarviewsFeaturesByID[sarviews_id]?.getGeometry() as Point ?? null;
   }
 
   public zoomIn(): void {
@@ -369,8 +369,8 @@ export class MapService {
   }
 
 
-  public onMapReady(map: Map) {
-    this.mapInit$.next(map);
+  public onMapReady(m: Map) {
+    this.mapInit$.next(m);
   }
 
 
