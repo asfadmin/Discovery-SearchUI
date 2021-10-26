@@ -245,8 +245,7 @@
         &nbsp;
         <button mat-flat-button
                 color="primary"
-                (click)="onNext()"
-                [disabled]="">
+                (click)="onNext()">
           {{ isLastStep() ? 'Submit' : 'Next'}}
           <mat-icon>arrow_forward</mat-icon>
         </button>
@@ -268,7 +267,7 @@
 
     <div class="subscription-footer-item">
       <button mat-flat-button
-         (click)="submitSubscription()"
+         (click)="onNext()"
          [disabled]="!isLastStep()"
          color="primary">
         Submit
