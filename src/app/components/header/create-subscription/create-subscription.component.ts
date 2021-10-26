@@ -110,6 +110,14 @@ export class CreateSubscriptionComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
 
+    // @ts-ignore
+    this.dialogRef.afterClosed().subscribe(x => {
+      this.store$.dispatch(new hyp3Store.ClearProcessingOptions());
+      this.selectedJobTypeId = null;
+      this.subs.unsubscribe();
+      this.dialogRef = null;
+    });
+
     const end = new Date();
     this.dateRange = {
       start: new Date(),
@@ -189,7 +197,6 @@ export class CreateSubscriptionComponent implements OnInit, OnDestroy {
 
   public onNext(): void {
     const hasErrors = this.checkAllErrors();
-    console.log('hasErrors:', hasErrors);
     if (hasErrors) {
       return;
     }
@@ -347,8 +354,9 @@ export class CreateSubscriptionComponent implements OnInit, OnDestroy {
   }
 
   public filterOptions(optionList, jobTypeId) {
+
     const jobType = models.hyp3JobTypes[jobTypeId];
-    const allOptions = !!jobType ? jobType.options : models.hyp3JobOptionsOrdered;
+    const allOptions = jobType ? jobType.options : models.hyp3JobOptionsOrdered;
 
     const options = optionList.reduce((total, op) => {
       total[op[0]] = op[1];
