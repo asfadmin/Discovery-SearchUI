@@ -15,7 +15,7 @@ import { AppState } from '@store';
 import * as hyp3Store from '@store/hyp3';
 import * as filtersStore from '@store/filters';
 
-import { ScreenSizeService, MapService, Hyp3Service, EnvironmentService, AsfApiService } from '@services';
+import { ScreenSizeService, MapService, Hyp3Service, EnvironmentService, AsfApiService, NotificationService } from '@services';
 import * as models from '@models';
 
 enum CreateSubscriptionSteps {
@@ -86,6 +86,10 @@ export class CreateSubscriptionComponent implements OnInit, OnDestroy {
   public breakpoint: models.Breakpoints;
   public breakpoints = models.Breakpoints;
   public validateOnly = false;
+  public searchOptionErrorsFound = true;
+  public subscriptionOptionErrorsFound = true;
+  public reviewErrorsFound = false;
+  public errorsFound = true;
 
   private subs = new SubSink();
 
@@ -101,6 +105,7 @@ export class CreateSubscriptionComponent implements OnInit, OnDestroy {
     private asfApi: AsfApiService,
     private store$: Store<AppState>,
     private _formBuilder: FormBuilder,
+    private notificationService: NotificationService,
   ) { }
 
   ngOnInit(): void {
@@ -183,13 +188,13 @@ export class CreateSubscriptionComponent implements OnInit, OnDestroy {
   }
 
   public onNext(): void {
-    const hasErrors = this.checkErrors();
-
+    const hasErrors = this.checkAllErrors();
+    console.log('hasErrors:', hasErrors);
     if (hasErrors) {
       return;
     }
 
-    if (this.isLastStep() && this.areNoStepsWithErrors()) {
+    if (this.isLastStep() && !hasErrors) {
       this.submitSubscription();
     } else {
       this.stepper.next();
@@ -197,49 +202,83 @@ export class CreateSubscriptionComponent implements OnInit, OnDestroy {
   }
 
   public checkErrors(): boolean {
-    let hasErrors = true;
 
     if (this.stepper.selectedIndex === CreateSubscriptionSteps.SEARCH_OPTIONS) {
       this.errors.dateError = null;
       this.errors.polygonError = null;
-
-      if (!this.dateRange.start && !this.dateRange.end) {
-        this.errors.dateError = 'Start and end date required';
-      } else if (!this.dateRange.start) {
-        this.errors.dateError = 'Start date required';
-      } else if (!this.dateRange.end) {
-        this.errors.dateError = 'End date required';
-      }
-
-      if (!this.polygon) {
-        this.errors.polygonError = 'Area of interest required (will use polygon from current search)';
-      }
-
-      if (this.errors.dateError) {
-        this.searchOptionsFormGroup.controls['dateRange'].setValue(2);
-      } else if (this.errors.polygonError) {
-        this.searchOptionsFormGroup.controls['aoi'].setValue(2);
-      } else {
-        hasErrors = false;
-        this.searchOptionsFormGroup.controls['aoi'].setValue(1);
-        this.searchOptionsFormGroup.controls['dateRange'].setValue(1);
-      }
+      this.checkSearchOptions();
     } else if (this.stepper.selectedIndex === CreateSubscriptionSteps.PROCESSING_OPTIONS) {
-      this.onEstimateSubscription();
-      hasErrors = false;
+      this.checkSubscriptionOptions();
     } else if (this.stepper.selectedIndex === CreateSubscriptionSteps.REVIEW) {
-      this.errors.polygonError = null;
-
-      if (!this.projectName) {
-        this.errors.projectNameError = 'Project Name is required';
-        this.reviewFormGroup.controls['projectName'].setValue(2);
-      } else {
-        this.reviewFormGroup.controls['projectName'].setValue(1);
-        hasErrors = false;
-      }
+      this.checkReviewOptions();
     }
 
-    return hasErrors;
+    this.errorsFound = this.searchOptionErrorsFound || this.subscriptionOptionErrorsFound || this.reviewErrorsFound;
+
+    return this.errorsFound;
+  }
+
+  public checkAllErrors(): boolean {
+
+    this.searchOptionErrorsFound = true;
+    this.subscriptionOptionErrorsFound = true;
+    this.reviewErrorsFound = false;
+    this.errorsFound = true;
+
+    this.errors.dateError = null;
+    this.errors.polygonError = null;
+
+    this.checkSearchOptions();
+    this.checkSubscriptionOptions();
+    this.checkReviewOptions();
+
+    this.errorsFound = this.searchOptionErrorsFound || this.subscriptionOptionErrorsFound || this.reviewErrorsFound;
+
+    return this.errorsFound;
+  }
+
+  public checkSearchOptions() {
+
+    if (!this.dateRange.start && !this.dateRange.end) {
+      this.errors.dateError = 'Start and end date required';
+    } else if (!this.dateRange.start) {
+      this.errors.dateError = 'Start date required';
+    } else if (!this.dateRange.end) {
+      this.errors.dateError = 'End date required';
+    } else if (this.dateRange.end < this.dateRange.start) {
+      this.errors.dateError = 'End date is before start date';
+    }
+
+    if (!this.polygon) {
+      this.errors.polygonError = 'Area of interest required (will use polygon from current search)';
+    }
+
+    if (this.errors.dateError) {
+      this.searchOptionsFormGroup.controls['dateRange'].setValue(2);
+    } else if (this.errors.polygonError) {
+      this.searchOptionsFormGroup.controls['aoi'].setValue(2);
+    } else {
+      this.searchOptionErrorsFound = false;
+      this.searchOptionsFormGroup.controls['aoi'].setValue(1);
+      this.searchOptionsFormGroup.controls['dateRange'].setValue(1);
+    }
+  }
+
+  public checkSubscriptionOptions() {
+    this.onEstimateSubscription();
+    this.subscriptionOptionErrorsFound = false;
+  }
+
+  public checkReviewOptions() {
+
+    if (!this.projectName) {
+      this.errors.projectNameError = 'Project Name is required';
+      this.reviewFormGroup.controls['projectName'].setValue(2);
+      this.reviewErrorsFound = true;
+    } else {
+      this.reviewFormGroup.controls['projectName'].setValue(1);
+      this.reviewErrorsFound = false;
+    }
   }
 
   public isLastStep(): boolean {
@@ -271,6 +310,8 @@ export class CreateSubscriptionComponent implements OnInit, OnDestroy {
     }).subscribe(_ => {
       this.dialogRef.close();
     });
+
+    this.notificationService.info(this.projectName + ' subscription submitted');
   }
 
   public onNewProductType(e): void {
@@ -374,14 +415,6 @@ export class CreateSubscriptionComponent implements OnInit, OnDestroy {
 
   public onCloseDialog() {
     this.dialogRef.close();
-  }
-
-  private areNoStepsWithErrors() {
-    return (
-      this.errors.dateError === null &&
-      this.errors.polygonError === null &&
-      this.errors.projectNameError === null
-    );
   }
 
   ngOnDestroy(): void {
