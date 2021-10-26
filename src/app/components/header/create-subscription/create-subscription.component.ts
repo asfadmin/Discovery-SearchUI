@@ -113,6 +113,7 @@ export class CreateSubscriptionComponent implements OnInit, OnDestroy {
     // @ts-ignore
     this.dialogRef.afterClosed().subscribe(x => {
       this.store$.dispatch(new hyp3Store.ClearProcessingOptions());
+      this.store$.dispatch(new hyp3Store.SetProcessingProjectName(''));
       this.selectedJobTypeId = null;
       this.subs.unsubscribe();
       this.dialogRef = null;
