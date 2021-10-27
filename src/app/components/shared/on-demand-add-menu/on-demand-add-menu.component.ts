@@ -113,6 +113,9 @@ export class OnDemandAddMenuComponent implements OnInit {
       id: 'subscriptionQueueDialog',
       maxWidth: '100vw',
       maxHeight: '100vh',
+      data: {
+        referenceScene: this.referenceScene
+      }
     });
 
     ref.afterClosed().subscribe(

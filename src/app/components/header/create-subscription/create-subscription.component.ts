@@ -1,21 +1,20 @@
-import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
-import { MatDialogRef } from '@angular/material/dialog';
+import { Component, OnInit, OnDestroy, ViewChild, Inject } from '@angular/core';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatStepper } from '@angular/material/stepper';
 import { SubSink } from 'subsink';
 import * as moment from 'moment';
 
-import {FormBuilder, FormGroup, Validators} from '@angular/forms';
-import {STEPPER_GLOBAL_OPTIONS} from '@angular/cdk/stepper';
-
-import { combineLatest } from 'rxjs';
-import { take } from 'rxjs/operators';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { STEPPER_GLOBAL_OPTIONS } from '@angular/cdk/stepper';
 
 import { Store } from '@ngrx/store';
 import { AppState } from '@store';
 import * as hyp3Store from '@store/hyp3';
-import * as filtersStore from '@store/filters';
 
-import { ScreenSizeService, MapService, Hyp3Service, EnvironmentService, AsfApiService, NotificationService } from '@services';
+import {
+  ScreenSizeService, MapService, Hyp3Service, EnvironmentService,
+  AsfApiService, NotificationService, WktService
+} from '@services';
 import * as models from '@models';
 
 enum CreateSubscriptionSteps {
@@ -65,6 +64,8 @@ export class CreateSubscriptionComponent implements OnInit, OnDestroy {
     'HH',
   ];
   public polarization;
+  public path: number = null;
+  public frame: number = null;
 
   public s1Subtypes = [{
       displayName: 'Sentinel-1',
@@ -97,9 +98,11 @@ export class CreateSubscriptionComponent implements OnInit, OnDestroy {
   public reviewFormGroup: FormGroup;
 
   constructor(
+    @Inject(MAT_DIALOG_DATA) public data: any,
     public dialogRef: MatDialogRef<CreateSubscriptionComponent>,
     private screenSize: ScreenSizeService,
     private mapService: MapService,
+    private wktService: WktService,
     private hyp3: Hyp3Service,
     public env: EnvironmentService,
     private asfApi: AsfApiService,
@@ -109,6 +112,12 @@ export class CreateSubscriptionComponent implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit(): void {
+    if (this.data !== null && this.data.referenceScene) {
+      const reference = <models.CMRProduct>this.data.referenceScene;
+      this.loadOptionsFromReferenceScene(reference);
+      this.selectedJobTypeId = models.hyp3JobTypes.INSAR_GAMMA.id;
+      this.jobTypeId = models.hyp3JobTypes.INSAR_GAMMA.id;
+    }
 
     // @ts-ignore
     this.dialogRef.afterClosed().subscribe(x => {
@@ -155,25 +164,33 @@ export class CreateSubscriptionComponent implements OnInit, OnDestroy {
     );
 
     this.subs.add(
-      combineLatest(
-        this.store$.select(filtersStore.getProductTypes),
-        this.store$.select(filtersStore.getSubtypes),
-        this.store$.select(filtersStore.getPolarizations),
-        this.store$.select(filtersStore.getFlightDirections),
-      ).pipe(
-        take(1)
-      ).subscribe(
-        ([productTypes, subtypes, pols, flightDirs]) => {
-          console.log(productTypes, subtypes, pols, flightDirs);
-        }
-      )
-    );
-
-    this.subs.add(
       this.store$.select(hyp3Store.getProcessingProjectName).subscribe(
         name => this.projectName = name
       )
     );
+  }
+
+  private loadOptionsFromReferenceScene(reference: models.CMRProduct): void {
+    const features = this.wktService.wktToFeature(
+      reference.metadata.polygon,
+      this.mapService.epsg()
+    );
+
+    this.mapService.setDrawFeature(features);
+    this.polarization = reference.metadata.polarization;
+    this.path = reference.metadata.path;
+
+    this.flightDirectionTypes.forEach(flightDir => {
+      if (flightDir.toLowerCase() === reference.metadata.flightDirection.toLowerCase()) {
+        this.flightDirection = flightDir;
+      }
+    });
+
+    this.s1Subtypes.forEach(subtype => {
+      if (reference.dataset === subtype.displayName) {
+        this.subtype = subtype.apiValue;
+      }
+    });
   }
 
   public onSelectionChange(): void {
@@ -384,6 +401,8 @@ export class CreateSubscriptionComponent implements OnInit, OnDestroy {
       start: moment.utc(dateRange.start).format(),
       end: moment.utc(dateRange.end).format(),
       intersectsWith: this.polygon,
+      relativeOrbit: this.path,
+      frame: this.frame,
       platform: this.subtype,
       flightDirection: !!this.flightDirection ? this.flightDirection.toUpperCase() : null,
       polarization: !!this.polarization ? [ this.polarization ] : null,
@@ -403,6 +422,8 @@ export class CreateSubscriptionComponent implements OnInit, OnDestroy {
       start: moment.utc(this.dateRange.start).format(),
       end: moment.utc(this.dateRange.end).format(),
       intersectsWith: this.polygon,
+      relativeOrbit: this.path,
+      frame: this.frame,
       platform: this.subtype,
       flightDirection: !!this.flightDirection ? this.flightDirection.toUpperCase() : null,
       polarization: !!this.polarization ? [ this.polarization ] : null,
