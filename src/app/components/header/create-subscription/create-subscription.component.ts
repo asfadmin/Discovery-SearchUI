@@ -214,12 +214,16 @@ export class CreateSubscriptionComponent implements OnInit, OnDestroy {
   }
 
   public onNext(): void {
-    const hasErrors = this.checkAllErrors();
+    const hasErrors = this.checkErrors();
     if (hasErrors) {
       return;
     }
 
     if (this.isLastStep() && !hasErrors) {
+      if (this.checkAllErrors()) {
+        return;
+      }
+
       this.submitSubscription();
     } else {
       this.stepper.next();
@@ -232,15 +236,16 @@ export class CreateSubscriptionComponent implements OnInit, OnDestroy {
       this.errors.dateError = null;
       this.errors.polygonError = null;
       this.checkSearchOptions();
+
+      return this.searchOptionErrorsFound;
     } else if (this.stepper.selectedIndex === CreateSubscriptionSteps.PROCESSING_OPTIONS) {
       this.checkSubscriptionOptions();
+      return this.subscriptionOptionErrorsFound;
+
     } else if (this.stepper.selectedIndex === CreateSubscriptionSteps.REVIEW) {
       this.checkReviewOptions();
+      return this.reviewErrorsFound;
     }
-
-    this.errorsFound = this.searchOptionErrorsFound || this.subscriptionOptionErrorsFound || this.reviewErrorsFound;
-
-    return this.errorsFound;
   }
 
   public checkAllErrors(): boolean {
@@ -263,6 +268,7 @@ export class CreateSubscriptionComponent implements OnInit, OnDestroy {
   }
 
   public checkSearchOptions() {
+    this.searchOptionErrorsFound = true;
 
     if (!this.dateRange.start && !this.dateRange.end) {
       this.errors.dateError = 'Start and end date required';
@@ -295,7 +301,6 @@ export class CreateSubscriptionComponent implements OnInit, OnDestroy {
   }
 
   public checkReviewOptions() {
-
     if (!this.projectName) {
       this.errors.projectNameError = 'Project Name is required';
       this.reviewFormGroup.controls['projectName'].setValue(2);
