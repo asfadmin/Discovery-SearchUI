@@ -1,36 +1,8 @@
-<form #dateForm="ngForm"
-  (keydown.enter)="$event.preventDefault()"
-  class="date-selector">
-  <mat-form-field
-    [class.invalid-input-animation]="isStartError"
-    class="date-input-field">
-    <mat-label>Start Date</mat-label>
-
-    <input matInput
-      [(ngModel)]="startDate"
-      matTooltip="Scene Start Date (MM/DD/YYYY)"
-      (dateChange)="onStartDateChange($event)"
-      [min]="minDate$ | async"
-      [max]="maxDate$ | async"
-      [matDatepicker]="start"
-      class="clickable"
-      name="startInput">
-    <mat-datepicker-toggle matSuffix [for]="start"></mat-datepicker-toggle>
-    <mat-datepicker touchUi="true" [startView]="!!startDate ? 'month' : 'multi-year'" #start></mat-datepicker>
-  </mat-form-field>
-
-  <mat-form-field class="date-input-field"
-    [class.invalid-input-animation]="isEndError">
-    <mat-label>End Date</mat-label>
-    <input matInput
-      [(ngModel)]="endDate"
-      (dateChange)="onEndDateChange($event)"
-      [min]="minDate$ | async"
-      [max]="maxDate$ | async"
-      [matDatepicker]="end"
-      matTooltip="Scene End Date (MM/DD/YYYY)"
-      name="endInput">
-    <mat-datepicker-toggle matSuffix [for]="end"></mat-datepicker-toggle>
-    <mat-datepicker touchUi="true" [startView]="!!endDate ? 'month' : 'multi-year'" #end></mat-datepicker>
-  </mat-form-field>
-</form>
+<app-date-range
+  [minDate]="minDate$ | async"
+  [maxDate]="maxDate$ | async"
+  [startDate]="startDate"
+  [endDate]="endDate"
+  (newStart)="onStartDateChange($event)"
+  (newEnd)="onEndDateChange($event)" #dateRange>
+</app-date-range>

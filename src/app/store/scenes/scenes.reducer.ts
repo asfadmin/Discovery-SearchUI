@@ -2,13 +2,18 @@ import { createFeatureSelector, createSelector } from '@ngrx/store';
 
 import { ScenesActionType, ScenesActions } from './scenes.action';
 
-import { CMRProduct, UnzippedFolder, ColumnSortDirection, SearchType } from '@models';
+import { CMRProduct, UnzippedFolder, ColumnSortDirection, SearchType, SarviewsEvent, SarviewsProduct } from '@models';
+import { PinnedProduct } from '@services/browse-map.service';
 
 interface SceneEntities { [id: string]: CMRProduct; }
 
 export interface ScenesState {
   ids: string[];
   products: SceneEntities;
+  sarviewsEvents: SarviewsEvent[];
+  selectedSarviewsID: string;
+  selectedSarviewsProduct: SarviewsProduct;
+  selectedSarviewsEventProducts: SarviewsProduct[];
   customPairIds: string[][];
   selectedPair: string[] | null;
   areResultsLoaded: boolean;
@@ -25,12 +30,18 @@ export interface ScenesState {
   };
   perpendicularSort: ColumnSortDirection;
   temporalSort: ColumnSortDirection;
+
+  pinnedProductBrowses: {[product_id in string]: PinnedProduct};
 }
 
 export const initState: ScenesState = {
   ids: [],
   scenes: {},
   customPairIds: [],
+  sarviewsEvents: [],
+  selectedSarviewsID: null,
+  selectedSarviewsProduct: null,
+  selectedSarviewsEventProducts: [],
   selectedPair: null,
   unzipped: {},
   productUnzipLoading: null,
@@ -47,6 +58,7 @@ export const initState: ScenesState = {
   },
   perpendicularSort: ColumnSortDirection.NONE,
   temporalSort: ColumnSortDirection.NONE,
+  pinnedProductBrowses: {}
 };
 
 
@@ -126,6 +138,13 @@ export function scenesReducer(state = initState, action: ScenesActions): ScenesS
         selectedPair: action.payload,
         productUnzipLoading: null,
         openUnzippedProduct: null
+      };
+    }
+
+    case ScenesActionType.SET_SELECTED_SARVIEWS_EVENT: {
+      return {
+        ...state,
+        selectedSarviewsID: action.payload
       };
     }
 
@@ -265,6 +284,34 @@ export function scenesReducer(state = initState, action: ScenesActions): ScenesS
       return initState;
     }
 
+    case ScenesActionType.SET_SARVIEWS_EVENTS: {
+      return {
+        ...state,
+        sarviewsEvents: action.payload.events
+      };
+    }
+
+    case ScenesActionType.SET_SARVIEWS_EVENT_PRODUCTS: {
+      return {
+        ...state,
+        selectedSarviewsEventProducts: [...action.payload]
+      };
+    }
+
+    case ScenesActionType.SET_SELECTED_SARVIEW_PRODUCT: {
+      return {
+        ...state,
+        selectedSarviewsProduct: action.payload
+      };
+    }
+
+    case ScenesActionType.SET_IMAGE_BROWSE_PRODUCTS: {
+      return {
+        ...state,
+        pinnedProductBrowses: action.payload
+      };
+    }
+
     default: {
       return state;
     }
@@ -323,6 +370,16 @@ export const getSelectedSceneProducts = createSelector(
   }
 );
 
+// export const getAllSceneProducts = createSelector(
+//   getScenesState,
+//   (state: ScenesState) => {
+//     return Object.keys(state.products).reduce(
+//       (prev: CMRProduct[], scene_id) =>
+//         Zprev.concat(productsForScene(state.products[scene_id], state)),
+//       [] as CMRProduct[])
+//   }
+// );
+
 export const getSelectedSceneBrowses = createSelector(
   getScenesState,
   (state: ScenesState) => {
@@ -363,6 +420,24 @@ export const getSelectedOnDemandProductSceneBrowses = createSelector (
     for (const productScene of scenesForProduct) {
       browses.push(productScene.browses[0]);
     }
+
+    return browses;
+  }
+);
+
+export const getSelectedSarviewsEventProductBrowses = createSelector (
+  getScenesState,
+  (state: ScenesState) => {
+    const selected = state.selectedSarviewsEventProducts;
+
+    if (!selected) {
+      return;
+    }
+
+    const browses = selected.reduce((acc: string[], curr) => [...acc, curr.files.browse_url], []);
+    // for (const productScene of scenesForProduct) {
+    //   browses.push(productScene.browses[0]);
+    // }
 
     return browses;
   }
@@ -421,9 +496,26 @@ export const getAllSceneProducts = createSelector(
   }
 );
 
+// export const getAllEventProducts = createSelector(
+//   getSelectedSarviewsEvent
+//   (state: SarviewsEvent) => {
+//     return state
+//   }
+// );
+
 export const getSelectedScene = createSelector(
   getScenesState,
   (state: ScenesState) => state.products[state.selected] || null
+);
+
+export const getSelectedSarviewsEvent = createSelector(
+  getScenesState,
+  (state: ScenesState) => state.sarviewsEvents.find(event => event.event_id === state.selectedSarviewsID) || null
+);
+
+export const getSelectedSarviewsProduct = createSelector(
+ getScenesState,
+ (state: ScenesState) => state.selectedSarviewsProduct
 );
 
 export const getUnzipLoading = createSelector(
@@ -552,6 +644,43 @@ export const getIsSelectedPairCustom = createSelector(
 
       return eqSet(ids, selectedPairIds);
     });
+  }
+);
+
+export const getSarviewsEvents = createSelector(
+  getScenesState,
+  state => state.sarviewsEvents
+);
+
+export const getNumberOfSarviewsEvents = createSelector(
+  getSarviewsEvents,
+  events => events.length
+);
+
+export const getSelectedSarviewsEventProducts = createSelector(
+  getScenesState,
+  state => state.selectedSarviewsEventProducts
+);
+
+export const getImageBrowseProducts = createSelector(
+  getScenesState,
+  state => {
+     const output: {[product_id in string]: PinnedProduct} = Object.keys(state.pinnedProductBrowses).reduce(
+       (out, product_id) => {
+        const temp = out;
+        temp[product_id] = {... state.pinnedProductBrowses[product_id]};
+        return temp;
+       }
+      , {} as {[product_id in string]: PinnedProduct});
+
+      return output;
+  }
+);
+
+export const getPinnedEventBrowseIDs = createSelector(
+  getScenesState,
+  state => {
+    return Object.keys(state.pinnedProductBrowses).filter(product_id => state.pinnedProductBrowses[product_id].isPinned);
   }
 );
 

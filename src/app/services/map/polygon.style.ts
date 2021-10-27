@@ -34,6 +34,11 @@ export const scene = new Style({
     fill
   });
 
+  export const icon = new Style({
+    stroke,
+    fill,
+  });
+
 export const omitted = new Style({
   fill: new Fill({
     color: 'rgba(255, 255, 255, 0.2)'

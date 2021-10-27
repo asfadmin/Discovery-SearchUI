@@ -28,6 +28,7 @@ import { DragDropModule } from '@angular/cdk/drag-drop';
 import { ProjectNameSelectorModule } from '@components/shared/selectors/project-name-selector';
 import { ConfirmationComponent } from './confirmation/confirmation.component';
 import { AngularResizedEventModule } from 'angular-resize-event';
+import { CreateSubscriptionModule } from '../../header/create-subscription';
 
 
 @NgModule({
@@ -59,6 +60,7 @@ import { AngularResizedEventModule } from 'angular-resize-event';
     MatTabsModule,
     MatMenuModule,
     ScrollingModule,
+    CreateSubscriptionModule
   ]
 })
 export class ProcessingQueueModule {

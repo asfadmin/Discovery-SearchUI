@@ -1,0 +1,22 @@
+<button mat-list-item
+    fxLayout="row wrap" fxLayoutAlign="space-between"
+    (mouseenter)="onSetFocused()"
+    (mouseleave) ="onClearFocused()"
+    (click) ="onSetSelected()"
+    [class.hovered]="hovered"
+    [class.selected]="selected"
+    [ngClass]="{'mobile-size': breakpoint <= breakpoints.SMALL}">
+
+  <div class="event-header">
+    <div>{{event.description}}</div>
+    <div class="event-header-date"> {{event.processing_timeframe.start | shortDate}}
+      {{!!event.processing_timeframe.end ? 'to ' + (event.processing_timeframe.end | shortDate) : ''}}</div>
+  </div>
+  <div class="event-details" style="display: flex; flex-direction: column; align-items: flex-end; margin-left: auto;">
+    <i class="event-type">{{eventIDDisplay()}}</i>
+    <i class="event-type">{{event.event_type[0].toUpperCase() + event.event_type.slice(1, event.event_type.length)}}
+       </i>
+
+  </div>
+
+</button>

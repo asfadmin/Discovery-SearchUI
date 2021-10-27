@@ -78,6 +78,15 @@ export function searchReducer(state = initState, action: SearchActions): SearchS
       };
     }
 
+    case SearchActionType.SARVIEWS_SEARCH_RESPONSE: {
+      return {
+        ...state,
+        totalResults: action.payload.events.length,
+        isLoading: false,
+        isCanceled: false
+      };
+    }
+
     case SearchActionType.SEARCH_ERROR: {
       return {
         ...state,

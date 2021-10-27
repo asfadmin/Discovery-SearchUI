@@ -85,13 +85,13 @@ export class ListFiltersComponent implements OnInit, OnDestroy {
               this.notificationService.error(
                 `Invalid File Type for file ${file_error.fileName}`,
                 'File Error',
-                { duration: 5000 }
+                { timeOut: 5000 }
               );
             } else if (file_error.fileError === FileErrors.TOO_LARGE) {
               this.notificationService.error(
                 `File is too large (over 10MB) for file ${file_error.fileName}`,
                 'File Error',
-                { duration: 5000 }
+                { timeOut: 5000 }
               );
             }
           }

@@ -34,3 +34,22 @@
   border-radius: 4px;
   outline: 0;
 }
+
+.sarview-products-list {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  justify-content: space-between;
+}
+
+.sarview-product {
+  align-self: center;
+  justify-self: center;
+}
+
+.sarviews-button-display {
+  flex-direction: row;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}

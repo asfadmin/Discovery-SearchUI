@@ -2,7 +2,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { saveAs } from 'file-saver';
 
 import { combineLatest } from 'rxjs';
-import { debounceTime, map } from 'rxjs/operators';
+import { debounceTime, filter, map } from 'rxjs/operators';
 import { Store } from '@ngrx/store';
 
 import { AppState } from '@store';
@@ -14,11 +14,13 @@ import * as filtersStore from '@store/filters';
 
 import {
   MapService, ScenesService, ScreenSizeService,
-  PairService, Hyp3Service
+  PairService, Hyp3Service, SarviewsEventsService
 } from '@services';
 
 import * as models from '@models';
 import { SubSink } from 'subsink';
+import { hyp3JobTypes, SarviewsProduct } from '@models';
+import { AddItems, AddJobs } from '@store/queue';
 
 @Component({
   selector: 'app-scenes-list-header',
@@ -29,14 +31,28 @@ export class ScenesListHeaderComponent implements OnInit, OnDestroy {
   public totalResultCount$ = this.store$.select(searchStore.getTotalResultCount);
   public numberOfScenes$ = this.store$.select(scenesStore.getNumberOfScenes);
   public numberOfProducts$ = this.store$.select(scenesStore.getNumberOfProducts);
+  public numberOfFilteredEvents$ = this.scenesService.sarviewsEvents$().pipe(
+    filter(events => !!events),
+    map(events => events.length));
+  public numSarviewsScenes$ = this.store$.select(scenesStore.getNumberOfSarviewsEvents);
   public products = [];
   public downloadableProds = [];
+  public sarviewsEventProducts: SarviewsProduct[] = [];
+  public pinnedEventIDs: string[];
+
   public numBaselineScenes$ = this.scenesService.scenes$().pipe(
     map(scenes => scenes.length),
   );
   public numPairs$ = this.pairService.pairs$().pipe(
     map(pairs => pairs.pairs.length + pairs.custom.length)
   );
+
+
+  public selectedEventProducts$ = this.store$.select(scenesStore.getPinnedEventBrowseIDs).pipe(
+    map(browseIds =>
+      this.sarviewsEventProducts.filter(prod => browseIds.includes(prod.product_id)))
+  );
+
   public pairs: models.CMRProductPair[];
   public sbasProducts: models.CMRProduct[] = [];
   public queuedProducts: models.CMRProduct[];
@@ -63,6 +79,7 @@ export class ScenesListHeaderComponent implements OnInit, OnDestroy {
   public AutoRift = models.hyp3JobTypes.AUTORIFT;
 
   public hyp3able = { total: 0, byJobType: [] };
+  public hyp3ableEventProducts = {total: 0, byJobType: []};
 
   constructor(
     private store$: Store<AppState>,
@@ -71,6 +88,7 @@ export class ScenesListHeaderComponent implements OnInit, OnDestroy {
     private pairService: PairService,
     private screenSize: ScreenSizeService,
     private hyp3: Hyp3Service,
+    private eventMonitoringService: SarviewsEventsService,
   ) { }
 
   ngOnInit() {
@@ -153,6 +171,23 @@ export class ScenesListHeaderComponent implements OnInit, OnDestroy {
       this.store$.select(queueStore.getQueuedProducts).subscribe(
         products => this.queuedProducts = products
         )
+    );
+
+    this.subs.add(
+      this.store$.select(scenesStore.getSelectedSarviewsEventProducts).subscribe(
+        products => {
+          this.sarviewsEventProducts = products;
+          this.hyp3ableEventProducts = this.eventMonitoringService.toHyp3ableProducts(this.sarviewsEventProducts);
+
+
+        }
+      )
+    );
+
+    this.subs.add(
+      this.store$.select(scenesStore.getPinnedEventBrowseIDs).subscribe(
+        ids => this.pinnedEventIDs = ids
+      )
     );
   }
 
@@ -248,12 +283,53 @@ export class ScenesListHeaderComponent implements OnInit, OnDestroy {
     this.store$.dispatch(new queueStore.MakeDownloadScriptFromList(products));
   }
 
+  public onMakeSarviewsProductDownloadScript(products: models.SarviewsProduct[]): void {
+    this.store$.dispatch(new queueStore.MakeDownloadScriptFromSarviewsProducts(products));
+  }
+
+  public onQueuePinnedSarviewsProducts(): void {
+    const pinned = this.sarviewsEventProducts.filter(prod =>
+      this.pinnedEventIDs.includes(prod.product_id)
+    );
+
+    this.onQueueSarviewsProducts(pinned);
+  }
+
+  public onQueueSarviewsProducts(products: models.SarviewsProduct[]): void {
+    this.store$.dispatch(new AddItems(products.map(product =>
+        this.eventMonitoringService.eventProductToCMRProduct(product))
+      ));
+  }
+
+  public addOnDemandEventProducts(targetProducts: SarviewsProduct[]) {
+    const jobs: models.QueuedHyp3Job[] = targetProducts.map(prod => ({
+      granules:  this.eventMonitoringService.getSourceCMRProducts(prod),
+      job_type: hyp3JobTypes[prod.job_type]
+      })
+    );
+
+    this.store$.dispatch(new AddJobs(jobs));
+  }
+
+  public addOnDemandEventProductsBySearchType(jobType: models.Hyp3JobType) {
+    this.addOnDemandEventProducts(this.EventMonitoringByJobType(jobType));
+  }
+
+  public EventMonitoringByJobType(jobType: models.Hyp3JobType) {
+    const targetProducts = this.sarviewsEventProducts.filter(product => hyp3JobTypes[product.job_type] === jobType);
+    return targetProducts;
+  }
+
   public onMetadataExport(format: models.AsfApiOutputFormat): void {
     const action = new queueStore.DownloadSearchtypeMetadata(format);
 
     if (this.searchType === this.SearchTypes.BASELINE) {
       this.store$.dispatch(action);
     }
+  }
+
+  public onOpenHelp(infoUrl) {
+    window.open(infoUrl);
   }
 
   ngOnDestroy(): void {

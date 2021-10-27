@@ -88,11 +88,11 @@ export const RtcGammaJobType: Hyp3JobType = {
     default: false,
     info: `Include the DEM file in the product package.`
   }, {
-    name: 'Include Inc. Angle Map',
+    name: 'Include Inc. Angle Maps',
     apiName: 'include_inc_map',
     type: JobOptionType.CHECKBOX,
     default: false,
-    info: `Include the incidence angle map in the product package.`
+    info: `Include the incidence angle maps (local and ellipsoidal) in the product package.`
   }, {
     name: 'Include Scattering Area',
     apiName: 'include_scattering_area',
@@ -163,12 +163,12 @@ export const InsarGammaJobType: Hyp3JobType = {
       Include the DEM file in the product package.
     `
   }, {
-    name: 'Include Inc. Angle Map',
+    name: 'Include Inc. Angle Maps',
     apiName: 'include_inc_map',
     type: JobOptionType.CHECKBOX,
     default: false,
     info: `
-      Include the incidence angle map in the product package.
+      Include the incidence angle maps (local and ellipsoidal) in the product package.
     `
   }, {
     name: 'Include Look Vectors',

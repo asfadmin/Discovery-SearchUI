@@ -2,7 +2,9 @@ import { Component, OnInit, AfterViewInit, OnDestroy } from '@angular/core';
 import { MatDialogRef } from '@angular/material/dialog';
 import { SubSink } from 'subsink';
 
-import { filter, map, tap, debounceTime } from 'rxjs/operators';
+import { filter, map, tap, debounceTime, first,
+  // distinctUntilChanged,
+  delay, withLatestFrom } from 'rxjs/operators';
 import { Store } from '@ngrx/store';
 
 import { AppState } from '@store';
@@ -12,8 +14,14 @@ import * as uiStore from '@store/ui';
 import * as searchStore from '@store/search';
 
 import * as models from '@models';
-import { BrowseMapService, DatasetForProductService } from '@services';
+import { BrowseMapService, DatasetForProductService, SarviewsEventsService } from '@services';
 import * as services from '@services/index';
+import {
+  // Breakpoints,
+  SarviewProductGranule, SarviewsProduct } from '@models';
+import { ClipboardService } from 'ngx-clipboard';
+import { MatSliderChange } from '@angular/material/slider';
+import { PinnedProduct } from '@services/browse-map.service';
 
 @Component({
   selector: 'app-image-dialog',
@@ -24,13 +32,19 @@ import * as services from '@services/index';
 export class ImageDialogComponent implements OnInit, AfterViewInit, OnDestroy {
   public scene$ = this.store$.select(scenesStore.getSelectedScene);
   public browses$ = this.store$.select(scenesStore.getSelectedSceneBrowses);
+  public sarviewsEventProducts$ = this.store$.select(scenesStore.getSelectedSarviewsEventProducts);
+  public sarviewsEventBrowses$ = this.store$.select(scenesStore.getSelectedSarviewsEventProductBrowses);
+  public sarviewsEvent$ = this.store$.select(scenesStore.getSelectedSarviewsEvent);
   public masterOffsets$ = this.store$.select(scenesStore.getMasterOffsets);
   public searchType$ = this.store$.select(searchStore.getSearchType);
   public searchTypes = models.SearchType;
   public onlyShowScenesWithBrowse: boolean;
   public queuedProductIds: Set<string>;
   public scene: models.CMRProduct;
+  public sarviewsEvent: models.SarviewsEvent;
+  public currentSarviewsProduct: models.SarviewsProduct;
   public products: models.CMRProduct[];
+  public sarviewsProducts: models.SarviewsProduct[];
   public dataset: models.Dataset;
   public isImageLoading = false;
   public isShow = false;
@@ -39,22 +53,57 @@ export class ImageDialogComponent implements OnInit, AfterViewInit, OnDestroy {
 
   public breakpoint$ = this.screenSize.breakpoint$;
   public breakpoints = models.Breakpoints;
+  public breakpoint: models.Breakpoints = models.Breakpoints.FULL;
 
-  private image: HTMLImageElement;
+  private image: HTMLImageElement = new Image();
   private subs = new SubSink();
+
+  private pinnedProducts: {[product_id in string]: PinnedProduct} = {};
 
   constructor(
     private store$: Store<AppState>,
     public dialogRef: MatDialogRef<ImageDialogComponent>,
     private browseMap: BrowseMapService,
     private datasetForProduct: DatasetForProductService,
-    private screenSize: services.ScreenSizeService
+    private screenSize: services.ScreenSizeService,
+    private clipboard: ClipboardService,
+    private notificationService: services.NotificationService,
+    private sarviewsService: SarviewsEventsService,
   ) { }
 
   ngOnInit() {
     this.subs.add(
+      this.breakpoint$.subscribe(
+        breakpoint => this.breakpoint = breakpoint
+      )
+    );
+    this.subs.add(
       this.store$.select(scenesStore.getSelectedSceneProducts).subscribe(
-        products => this.products = products
+        products => {
+          this.products = products;
+        }
+      )
+    );
+
+    this.subs.add(
+      this.store$.select(scenesStore.getAllProducts).pipe(
+        first(),
+        withLatestFrom(this.searchType$),
+        filter(([_, searchtype]) => searchtype !== models.SearchType.SARVIEWS_EVENTS),
+        map(([products, _]) => products)
+      ).subscribe(
+        products => {
+          if (!!products) {
+            this.pinnedProducts = {};
+            products.forEach(prod => this.pinnedProducts[prod.id] = {
+              isPinned: false,
+              url: prod.browses[0],
+              wkt: prod.metadata.polygon,
+            });
+
+            this.store$.dispatch(new scenesStore.SetImageBrowseProducts(this.pinnedProducts));
+          }
+        }
       )
     );
 
@@ -79,11 +128,55 @@ export class ImageDialogComponent implements OnInit, AfterViewInit, OnDestroy {
     );
     this.subs.add(
       this.scene$.pipe(
-        filter(prod => !!prod.metadata)
+        filter(prod => !!prod?.metadata)
       ).subscribe( prod => {
         this.paramsList = this.jobParamsToList(prod.metadata);
       }
     )
+    );
+    this.subs.add(
+      this.sarviewsEventProducts$.pipe(
+        first(),
+        withLatestFrom(this.searchType$),
+        filter(([_, searchtype]) => searchtype === models.SearchType.SARVIEWS_EVENTS),
+        map(([products, _]) => products),
+        withLatestFrom(this.store$.select(scenesStore.getPinnedEventBrowseIDs)),
+      ).subscribe(
+        ([products, pinned]) => {
+          this.sarviewsProducts = products;
+          if (!!this.sarviewsProducts) {
+            this.pinnedProducts = {};
+            this.sarviewsProducts.forEach(prod => this.pinnedProducts[prod.product_id] = {
+              isPinned: pinned.includes(prod.product_id),
+              url: prod.files.browse_url,
+              wkt: prod.granules[0].wkt,
+            });
+
+            this.store$.dispatch(new scenesStore.SetImageBrowseProducts(this.pinnedProducts));
+          }
+        }
+      )
+    );
+
+    this.subs.add(
+      this.store$.select(scenesStore.getImageBrowseProducts).subscribe(browseStates => this.pinnedProducts = browseStates)
+    );
+
+    this.subs.add(
+      this.sarviewsEvent$.subscribe(
+        event => this.sarviewsEvent = event
+      )
+    );
+    this.subs.add(
+      this.store$.select(scenesStore.getSelectedSarviewsProduct).pipe(
+        delay(100),
+      ).subscribe(
+        product => {
+          if (!!product) {
+            this.onNewSarviewsBrowseSelected(product);
+          }
+        }
+      )
     );
   }
 
@@ -99,9 +192,39 @@ export class ImageDialogComponent implements OnInit, AfterViewInit, OnDestroy {
         }
       )
     );
+    this.subs.add(
+      this.sarviewsEventProducts$.pipe(
+        withLatestFrom(this.searchType$),
+        filter(([_, searchtype]) => searchtype === models.SearchType.SARVIEWS_EVENTS),
+        map(([products, _]) => products),
+        filter(products => !!products),
+        filter(products => products.length > 0),
+        debounceTime(500),
+        first(),
+      ).subscribe(
+        products => {
+          if (!this.currentSarviewsProduct) {
+            this.currentBrowse = products[0].files.product_url;
+            this.loadSarviewsBrowseImage(products[0]);
+          }
+        }
+      )
+    );
+    this.subs.add(
+      this.store$.select(scenesStore.getPinnedEventBrowseIDs).pipe(
+        withLatestFrom(this.searchType$),
+        filter(([_, searchtype]) => searchtype === models.SearchType.SARVIEWS_EVENTS),
+        map(([products, _]) => products),
+        filter(products => !!products),
+        debounceTime(1000),
+        first(),
+      ).subscribe(_ =>
+        this.setPinnedProducts()
+      )
+    );
   }
 
-  private loadBrowseImage(scene, browse): void {
+  private loadBrowseImage(scene: models.CMRProduct, browse): void {
     this.isImageLoading = true;
     this.image = new Image();
     const browseService = this.browseMap;
@@ -114,16 +237,38 @@ export class ImageDialogComponent implements OnInit, AfterViewInit, OnDestroy {
       }
 
       self.isImageLoading = false;
+
+      // const wkt = scene.metadata.polygon;
       const [width, height] = [
         this.naturalWidth, this.naturalHeight
       ];
-
-      browseService.setBrowse(browse, {
-        width, height
+      browseService.setBrowse(browse, {width,
+        height
       });
     });
 
     this.image.src = browse;
+  }
+
+  private loadSarviewsBrowseImage(product: SarviewsProduct): void {
+    this.isImageLoading = true;
+    this.image = new Image();
+    const browseService = this.browseMap;
+    const currentProd = this.currentSarviewsProduct;
+    this.currentSarviewsProduct = product;
+    const self = this;
+
+    this.image.addEventListener('load', function() {
+      if (currentProd === product) {
+        return;
+      }
+
+      self.isImageLoading = false;
+
+      browseService.setMapBrowse(product.files.browse_url, product.granules[0].wkt );
+    });
+
+    this.image.src = product.files.browse_url;
   }
 
   public jobParamsToList(metadata) {
@@ -160,10 +305,48 @@ export class ImageDialogComponent implements OnInit, AfterViewInit, OnDestroy {
     this.loadBrowseImage(scene, browse);
   }
 
+  public onNewSarviewsBrowseSelected(browse: SarviewsProduct): void {
+    this.loadSarviewsBrowseImage(browse);
+  }
+
   public prodDownloaded( _product ) {
+  }
+
+  public onCopyLink(content: SarviewProductGranule[]): void {
+    const names = content.map(val => val.granule_name).join(',');
+    this.clipboard.copyFromContent(names);
+    this.notificationService.info( '', `Scene${content.length > 1 ? 's ' : ' '}Copied`);
+  }
+
+  public onSetOpacity(event: MatSliderChange) {
+    this.browseMap.updateBrowseOpacity(event.value);
+  }
+
+  public downloadSarviewsProduct(product: SarviewsProduct) {
+    window.open(product.files.product_url, '_blank');
+  }
+
+  public OpenProductInSarviews() {
+    const url = this.sarviewsService.getSarviewsEventPinnedUrl(
+        this.sarviewsEvent.event_id,
+        [...Object.keys(this.pinnedProducts).filter(key => this.pinnedProducts[key].isPinned)]
+      );
+    window.open(url);
+  }
+
+  public onPinProduct(product_id: string) {
+    this.pinnedProducts[product_id].isPinned = !this.pinnedProducts[product_id].isPinned;
+    this.setPinnedProducts();
+
+  }
+
+  private setPinnedProducts() {
+    this.store$.dispatch(new scenesStore.SetImageBrowseProducts(this.pinnedProducts));
+    this.browseMap.setPinnedProducts(this.pinnedProducts);
   }
 
   ngOnDestroy() {
     this.subs.unsubscribe();
+    this.store$.dispatch(new uiStore.SetIsBrowseDialogOpen(false));
   }
 }

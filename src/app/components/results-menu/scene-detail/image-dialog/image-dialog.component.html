@@ -1,38 +1,39 @@
 <div class="browse-dialog"
-     *ngIf="breakpoint$ | async as breakpoint"
     >
-    <div *ngIf="scene$ | async as scene" fxLayout="row" class="dialog-header--layout">
-      <div fxFlex="auto">
-        <h3 class="mp0">
-          <span [ngClass]="{'mp0-ellipsis-mobile': breakpoint <= breakpoints.SMALL,
-                            'mp0-ellipsis': breakpoint > breakpoints.SMALL}">
-            {{ scene.name }}
+    <div *ngIf="(searchType$ | async) !== searchTypes.SARVIEWS_EVENTS">
+      <div *ngIf="scene$ | async as scene" fxLayout="row" class="dialog-header--layout">
+        <div fxFlex="auto">
+          <h3 class="mp0">
+            <span [ngClass]="{'mp0-ellipsis-mobile': breakpoint <= breakpoints.SMALL,
+                              'mp0-ellipsis': breakpoint > breakpoints.SMALL}">
+              {{ scene.name }}
+            </span>
+          </h3>
+          <span class="faint-text">
+            <a *ngIf="dataset" [href]="dataset.infoUrl"
+                target="_blank" matTooltip="Dataset" class="faint-text">
+              {{ dataset.name }}
+            </a> •
+            <span *ngIf="breakpoint > breakpoints.MOBILE">
+              {{ scene.metadata.date | fullDate }}
+            </span>
+            <span *ngIf="breakpoint === breakpoints.MOBILE">
+              {{ scene.metadata.date | shortDateTime }}
+            </span>
           </span>
-        </h3>
-        <span class="faint-text">
-          <a *ngIf="dataset" [href]="dataset.infoUrl"
-              target="_blank" matTooltip="Dataset" class="faint-text">
-            {{ dataset.name }}
-          </a> •
-          <span *ngIf="breakpoint > breakpoints.MOBILE">
-            {{ scene.metadata.date | fullDate }}
-          </span>
-          <span *ngIf="breakpoint === breakpoints.MOBILE">
-            {{ scene.metadata.date | shortDateTime }}
-          </span>
-        </span>
+        </div>
+        <div fxFlex="35px" class="close-icon">
+          <button (click)="closeDialog()" mat-icon-button>
+            <mat-icon class="close-button">close</mat-icon>
+          </button>
+        </div>
       </div>
-      <div fxFlex="35px" class="close-icon">
-        <button (click)="closeDialog()" mat-icon-button>
-          <mat-icon class="close-button">close</mat-icon>
-        </button>
-      </div>
-    </div>
+  </div>
 
   <div fxLayout="row"
     [ngClass]="(breakpoint < breakpoints.SMALL) ? 'main-window-mobile' : 'main-window'">
 
-    <div class="thumbs" *ngIf="(browses$ | async).length > 1">
+    <div class="thumbs" *ngIf="(browses$ | async)?.length > 1 && (searchType$ | async) !== searchTypes.SARVIEWS_EVENTS">
       <div *ngFor="let browse of (browses$ | async)"
            (click)="onNewBrowseSelected(scene, browse)"
            class="clickable">
@@ -40,18 +41,36 @@
       </div>
     </div>
 
-    <div fxFlex id="browse-map" fxFlex class="browse-map--size">
+    <div fxFlex id="browse-map" fxFlex class="browse-map--size" fxLayout="row-reverse" fxLayoutAlign="end end" >
+      <div *ngIf="(searchType$ | async) === searchTypes.SARVIEWS_EVENTS" fxFlex fxLayout="column" fxLayoutAlign="start" class="ol-control ol-unselectable" style="background-color: rgba(0, 0, 0, 0) !important; z-index: 1;">
+        <div style="padding: 2px; border-radius: 4px; height: 100%; margin-bottom: 15px; margin-left: 15px; background-color: rgba(255, 255, 255, 0.4);">
+          <div (click)="onPinProduct(currentSarviewsProduct?.product_id ?? scene?.id)" style="height: 32px; padding-top: 10px; background-color: rgba(0, 60, 136, 0.5);">
+            <mat-icon style="margin-left: 11px;">push_pin</mat-icon>
+            </div>
+          </div>
+        <div style="padding: 2px; border-radius: 4px; margin-bottom: 15px; margin-left: 15px; background-color: rgba(255, 255, 255, 0.4);">
+        <div style="padding-top: 10px; background-color: rgba(0, 60, 136, 0.5);">
+        <mat-slider style="height: 200px;" vertical step="0.01" value="1.0" max="1.0" min="0.0" (input)="onSetOpacity($event);"></mat-slider>
+      </div>
     </div>
-
+      </div>
+    </div>
+      <div *ngIf="(searchType$ | async) === searchTypes.SARVIEWS_EVENTS">
+      <button
+      style="position: absolute; bottom: 5px; right: 20%; margin: 15px; min-width: 200px; border-radius: 4px !important;"
+      mat-flat-button (click)="OpenProductInSarviews()">Open Pinned Products In SARVIEWS</button>
+    </div>
     <div *ngIf="isImageLoading" color="accent" class="browse-map--overlay">
       <mat-spinner></mat-spinner>
     </div>
 
     <ng-container *ngIf="breakpoint > breakpoints.MOBILE">
 
-      <div *ngIf="!isShow" fxFlex="20" class="scene-detail-wrapper">
+      <div *ngIf="!isShow" fxFlex="20"
+      [ngClass]="{'sarviews-detail-wrapper' : (searchType$ | async) === searchTypes.SARVIEWS_EVENTS,
+       'scene-detail-wrapper' : (searchType$ | async) !== searchTypes.SARVIEWS_EVENTS}">
 
-        <div class="scene-detail">
+        <div *ngIf="(searchType$ | async) !== searchTypes.SARVIEWS_EVENTS" class="scene-detail">
 
           <div class="detail-header">Scene Detail</div>
           <app-scene-metadata
@@ -71,22 +90,13 @@
           </ul>
           <hr>
         </ng-container>
-          <div class="detail-header">{{ products.length }} Files</div>
+          <div class="detail-header">{{ products?.length }} Files</div>
           <mat-action-list dense class="file-list">
             <button  *ngFor="let product of products"
                      [matMenuTriggerFor]="action_menu" mat-list-item>
               • {{ product.productTypeDisplay }}
               <mat-menu #action_menu="matMenu" xPosition="before">
 
-<!--                <a mat-menu-item [href]="product.downloadUrl" target="_blank" matTooltip="Download file">-->
-<!--            <span style="margin-right: 10px; margin-left: 10px;">-->
-<!--              <span *ngIf="product.bytes === 0">Virtual</span>-->
-<!--              <span *ngIf="product.bytes !== 0">{{product.bytes.toString() | readableSizeFromBytes }}</span>-->
-<!--            </span>-->
-<!--                  <span>-->
-<!--              <mat-icon>android</mat-icon>-->
-<!--            </span>-->
-<!--                </a>-->
                 <span style="margin-right: 10px; margin-left: 10px;">
                   <span *ngIf="product.bytes === 0">Virtual</span>
                   <span *ngIf="product.bytes !== 0">{{product.bytes.toString() | readableSizeFromBytes }}</span>
@@ -114,6 +124,68 @@
           </mat-action-list>
 
         </div>
+
+        <div *ngIf="(searchType$ | async) === searchTypes.SARVIEWS_EVENTS" class="sarviews-scene-detail">
+          <ng-container>
+            <div class="detail-header">Event Details</div>
+            <ul style="columns: 1; font-size: 12px;">
+              <li *ngIf="!!sarviewsEvent">{{sarviewsEvent.event_type === 'quake'
+                ? 'usgs id: ' + (sarviewsEvent | quakeEvent).usgs_event_id
+                : 'smithsonian id: ' + (sarviewsEvent | volcanicEvent).smithsonian_event_id}}
+                 </li>
+                 <li>
+                  description: {{sarviewsEvent?.description}}
+                 </li>
+            </ul>
+
+          </ng-container>
+          <hr style="width: 100%;">
+          <ng-container >
+          <div>
+          <div class="detail-header">Event Product Detail</div>
+          <div style="columns: 1; font-size: 12px; word-wrap: break-word; margin-top: 15px;" *ngIf="!!currentSarviewsProduct">
+            <div style="font-weight: bold;">{{currentSarviewsProduct.files.product_name}}</div>
+            <button matTooltip="Download Product" class="download-icon" mat-icon-button (click)="downloadSarviewsProduct(currentSarviewsProduct); $event.stopPropagation();">
+              <mat-icon>cloud_download</mat-icon>
+            </button>
+            {{currentSarviewsProduct.files.product_size.toString() | readableSizeFromBytes}}
+            <div style="font-size: 12px; gap: 5px; align-items: center; margin-bottom: 10px; margin-top: 15px; display: flex; flex-direction: row; font-weight: bold;">Reference Scene{{currentSarviewsProduct.granules.length > 1 ? 's' : ''}}:
+              <div>
+              <mat-icon style="transform: scale(0.75);"
+                (click)="onCopyLink(currentSarviewsProduct.granules)"
+                matTooltip="Copy reference scene names to clipboard"
+                class="clickable download-icon" matSuffix>
+                file_copy
+              </mat-icon>
+            </div>
+            </div>
+            <div style="font-size: 12px;" *ngFor="let granule of currentSarviewsProduct.granules">
+              <b>{{granule.granule_name}}</b>
+              <ul style="list-style-type: circle; padding-left: 15px;">
+              <li>Date: {{granule.acquisition_date | shortDate}}</li>
+              <li>Path: {{granule.path}}</li>
+              <li>Frame: {{granule.frame}}</li>
+            </ul>
+            </div>
+          </div>
+        </div>
+
+        </ng-container>
+        <hr style="width: 100%;">
+        <ng-container style="min-height: calc(100% - 50px);
+        height: calc(100% - 50px);">
+          <div class="detail-header">{{ sarviewsProducts?.length }} Files</div>
+          <mat-action-list class="sarviews-product-list">
+            <button  *ngFor="let product of sarviewsProducts"
+            (click)="onNewSarviewsBrowseSelected(product)"
+                     mat-list-item>
+              {{ product.files.product_name.slice(0, 28) + "..." + product.files.product_name.slice(product.files.product_name.length - 8, product.files.product_name.length - 4) }}
+
+        </button>
+          </mat-action-list>
+        </ng-container>
+        </div>
+
       </div>
     </ng-container>
 
@@ -121,8 +193,8 @@
 
 
   <ng-container *ngIf="breakpoint > breakpoints.MOBILE">
-    <div>
-      <app-browse-list fxFlex class="browse-list"></app-browse-list>
+      <div>
+      <app-browse-list style="height: 150px;"></app-browse-list>
     </div>
   </ng-container>
 
@@ -150,6 +222,3 @@
   </div>
 
 </div>
-
-
-

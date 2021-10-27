@@ -3,7 +3,7 @@ import { Router, ActivatedRoute, Params } from '@angular/router';
 
 import { Store, Action } from '@ngrx/store';
 import * as moment from 'moment';
-import { filter, map, skip, debounceTime, take } from 'rxjs/operators';
+import { filter, map, skip, debounceTime, take, distinctUntilChanged } from 'rxjs/operators';
 
 import { AppState } from '@store';
 import * as scenesStore from '@store/scenes';
@@ -19,6 +19,9 @@ import { MapService } from './map/map.service';
 import { WktService } from './wkt.service';
 import { RangeService } from './range.service';
 import { PropertyService } from './property.service';
+import { PinnedProduct } from './browse-map.service';
+// import { MatDialog } from '@angular/material/dialog';
+// import { ImageDialogComponent } from '@components/results-menu/scene-detail/image-dialog';
 
 
 @Injectable({
@@ -38,6 +41,7 @@ export class UrlStateService {
     private wktService: WktService,
     private rangeService: RangeService,
     private router: Router,
+    // private dialog: MatDialog,
     private prop: PropertyService,
   ) {
     const params = [
@@ -48,6 +52,7 @@ export class UrlStateService {
       ...this.missionParameters(),
       ...this.baselineParameters(),
       ...this.sbasParameters(),
+      ...this.eventMonitorParameters(),
     ];
 
     this.urlParamNames = params.map(param => param.name);
@@ -185,6 +190,29 @@ export class UrlStateService {
     }];
   }
 
+  private eventMonitorParameters(): models.UrlParameter[] {
+    return [{
+      name: 'eventID',
+      source: this.store$.select(scenesStore.getSelectedSarviewsEvent).pipe(
+        // filter(event => !!event),
+        map(event => ({
+          eventID: event?.event_id ?? ''
+        }))
+      ),
+      loader: this.loadEventID
+    }, {
+      name: 'pinnedProducts',
+      source: this.store$.select(scenesStore.getPinnedEventBrowseIDs).pipe(
+        distinctUntilChanged(),
+        map(ids => ({
+          pinnedProducts: ids.join(',')
+        }))
+      ),
+      loader: this.loadPinnedProducts
+    }];
+  }
+
+
   private missionParameters(): models.UrlParameter[] {
     return [{
       name: 'mission',
@@ -232,7 +260,15 @@ export class UrlStateService {
         map(isOnDemandOpen => ({ isOnDemandOpen }))
       ),
       loader: this.loadIsOnDemandQueueOpen
-    }];
+    },
+    // {
+    //   name: 'isImgBrowseOpen',
+    //   source: this.store$.select(uiStore.getIsBrowseDialogOpen).pipe(
+    //     map( isImgBrowseOpen => ({isImgBrowseOpen}))
+    //   ),
+    //   loader: this.loadIsImageBrowseOpen
+    // }
+  ];
   }
 
   private filtersParameters(): models.UrlParameter[] {
@@ -339,6 +375,26 @@ export class UrlStateService {
         map(flightDirs => ({ flightDirs }))
       ),
       loader: this.loadFlightDirections
+    }, {
+      name: 'magnitude',
+      source: this.store$.select(filterStore.getSarviewsMagnitudeRange).pipe(
+        map(range => this.rangeService.toStringWithNegatives(range)),
+        map(magnitudeRange => ({magnitude: magnitudeRange}))
+      ),
+      loader: this.loadMagnitudeRange
+    }, {
+      name: 'activeEvents',
+      source: this.store$.select(filterStore.getSarviewsEventActiveFilter).pipe(
+        map(activeEvents => ({activeEvents}))
+      ),
+      loader: this.loadOnlyActiveEvents
+    }, {
+      name: 'eventTypes',
+      source: this.store$.select(filterStore.getSarviewsEventTypes).pipe(
+        map(types => types.join(',')),
+        map(eventTypes => ({eventTypes}))
+      ),
+      loader: this.loadEventTypes
     }];
   }
 
@@ -622,6 +678,27 @@ export class UrlStateService {
     return new scenesStore.AddCustomPairs(pairs);
   }
 
+  private loadEventID = (event_id: string): Action => new scenesStore.SetSelectedSarviewsEvent(event_id);
+
+  private loadPinnedProducts = (pinnedProducts: string): Action => {
+    const productIDs = pinnedProducts.split(',');
+
+    const pinned = productIDs.reduce(
+      (prev, key) => {
+        const output = {} as PinnedProduct;
+        output.isPinned = true;
+        // const sarviewsProduct = this.sarviewsProducts.find(prod => prod.product_id === key)
+        output.url = '';
+        output.wkt = '';
+
+        prev[key] = output;
+        return prev;
+      }, {} as {[product_id in string]: PinnedProduct}
+    );
+
+      return new scenesStore.SetImageBrowseProducts(pinned);
+  }
+
   private loadIsDownloadQueueOpen = (isDownloadQueueOpen: string): Action => {
     return new uiStore.SetIsDownloadQueueOpen(!!isDownloadQueueOpen);
   }
@@ -629,6 +706,45 @@ export class UrlStateService {
   private loadIsOnDemandQueueOpen = (isOnDemandQueueOpen: string): Action => {
     return new uiStore.SetIsOnDemandQueueOpen(!!isOnDemandQueueOpen);
   }
+
+  private loadMagnitudeRange = (rangeStr: string): Action => {
+    const range = rangeStr
+    .split('to')
+    .map(v => +v);
+
+  return new filterStore.SetSarviewsMagnitudeRange({
+    start: range[0],
+    end: range[1]
+  });
+  }
+
+  private loadEventTypes = (eventTypesStr: string): Action => {
+    const eventTypes: models.SarviewsEventType[] = eventTypesStr
+      .split(',')
+      .filter(direction => !Object.values(models.SarviewsEventType).includes(models.SarviewsEventType[direction]))
+      .map(direction => <models.SarviewsEventType>direction);
+
+    return new filterStore.SetSarviewsEventTypes(eventTypes);
+  }
+
+  private loadOnlyActiveEvents = (activeOnly: boolean): Action => new filterStore.SetSarviewsEventActiveFilter(activeOnly);
+
+  // private loadIsImageBrowseOpen = (isImageBrowseOpen: string): Action => {
+  //   this.dialog.open(ImageDialogComponent, {
+  //     width: '99%',
+  //     maxWidth: '99%',
+  //     height: '99%',
+  //     maxHeight: '99%',
+  //     panelClass: 'image-dialog'
+  //   });
+
+  //   // this.subs.add(
+  //   //   dialogRef.afterClosed().subscribe(
+  //   //     _ => this.store$.dispatch(new uiStore.SetIsBrowseDialogOpen(false))
+  //   //   )
+  //   // );
+  //   return new uiStore.SetIsBrowseDialogOpen(!!isImageBrowseOpen);
+  // }
 
   private updateShouldSearch(): void {
     this.store$.select(scenesStore.getAreResultsLoaded).pipe(
