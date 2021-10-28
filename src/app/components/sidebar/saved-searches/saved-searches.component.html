@@ -2,19 +2,19 @@
                'saved-searches': breakpoint > breakpoints.SMALL}">
   <div class="saved-searches__header">
       <div class="saved-searches__header-title">
-        <span *ngIf="savedSearchType === SavedSearchType.SAVED">Saved Searches</span>
-        <span *ngIf="savedSearchType === SavedSearchType.HISTORY">Search History</span>
+        <span *ngIf="sidebarType === SidebarType.SAVED_SEARCHES">Saved Searches</span>
+        <span *ngIf="sidebarType === SidebarType.SEARCH_HISTORY">Search History</span>
       </div>
       <div class="saved-searches__header-actions" >
           <div class="saved-searches__more-menu">
             <mat-button-toggle-group
-               (change)="onSavedSearchTypeChange($event.value)"
-               [value]="savedSearchType"
+               (change)="onSidebarTypeChange($event.value)"
+               [value]="sidebarType"
                name="SavedSearchType" aria-label="Saved Search Type">
               <mat-button-toggle
-                value="History">History</mat-button-toggle>
+                [value]="SidebarType.SEARCH_HISTORY">History</mat-button-toggle>
               <mat-button-toggle
-                value="Saved">Saved</mat-button-toggle>
+                [value]="SidebarType.SAVED_SEARCHES">Saved</mat-button-toggle>
             </mat-button-toggle-group>
           </div>
       </div>
@@ -38,7 +38,7 @@
 
     <div class="saved-searches__save-button">
       <button
-         *ngIf="savedSearchType === SavedSearchType.SAVED &&
+         *ngIf="sidebarType === SidebarType.SAVED_SEARCHES &&
            (searchType$ | async) !== SearchType.CUSTOM_PRODUCTS"
          (click)="saveCurrentSearch()"
               mat-raised-button
@@ -60,7 +60,7 @@
                 [searchType]="searchType"
                 [isExpanded]="search.id === expandedSearchId"
                 [isNew]="search.id === newSearchId"
-                [isSavedSearch]="savedSearchType === SavedSearchType.SAVED"
+                [isSavedSearch]="sidebarType === SidebarType.SAVED_SEARCHES"
                 [lockedFocus]="lockedFocus"
                 (unlockFocus)="onUnlockFocus()"
                 (expand)="onExpandSearch($event)"

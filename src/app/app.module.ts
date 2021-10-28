@@ -22,8 +22,7 @@ import { ToastContainerModule, ToastrModule } from 'ngx-toastr';
 import * as store from './store';
 
 import { MatSharedModule } from '@shared';
-import { SavedSearchesModule } from '@components/shared/saved-searches';
-import { SaveUserFiltersModule } from '@components/shared/save-user-filters';
+import { SidebarModule } from '@components/sidebar';
 import { HeaderModule } from '@components/header';
 import { MapModule } from '@components/map';
 import { ResultsMenuModule } from '@components/results-menu';
@@ -31,6 +30,7 @@ import { BaselineChartModule } from '@components/baseline-chart';
 import { HelpModule } from './components/help';
 import { AppComponent } from './app.component';
 import { CustomBreakPointsProvider } from '@services/custom-breakpoints';
+
 import * as services from '@services';
 
 import { NgcCookieConsentModule, NgcCookieConsentConfig } from 'ngx-cookieconsent';
@@ -93,8 +93,7 @@ export const routes = [
     EffectsModule.forRoot(store.appEffects),
     !environment.production ? StoreDevtoolsModule.instrument() : [],
     MatSidenavModule,
-    SavedSearchesModule,
-    SaveUserFiltersModule,
+    SidebarModule,
     MapModule,
     ResultsMenuModule,
     HeaderModule,
@@ -135,6 +134,7 @@ export const routes = [
     services.Hyp3Service,
     services.PairService,
     services.SceneSelectService,
+    services.OnDemandService,
     {provide: SAVER, useFactory: getSaver},
     // { provide: Window, useValue: window },
   ],

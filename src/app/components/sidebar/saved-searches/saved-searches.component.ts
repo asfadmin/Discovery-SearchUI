@@ -23,18 +23,19 @@ export class SavedSearchesComponent implements OnInit, OnDestroy {
 
   public searchType$ = this.store$.select(searchStore.getSearchType);
   public SearchType = models.SearchType;
-  public savedSearchType: models.SavedSearchType;
-  public lockedFocus = false;
 
-  public savedSearchType$ = this.store$.select(uiStore.getSaveSearchType);
-  public SavedSearchType = models.SavedSearchType;
-  public searches$ = this.savedSearchType$.pipe(
+  public sidebarType$ = this.store$.select(uiStore.getSidebar);
+  public sidebarType: models.SidebarType;
+  public SidebarType = models.SidebarType;
+
+  public searches$ = this.sidebarType$.pipe(
     switchMap(savedSearchType =>
-      (savedSearchType === models.SavedSearchType.SAVED) ?
+      (savedSearchType === models.SidebarType.SAVED_SEARCHES) ?
         this.store$.select(userStore.getSavedSearches) :
         this.store$.select(userStore.getSearchHistory)
     )
   );
+  public lockedFocus = false;
 
   public breakpoint: models.Breakpoints;
   public breakpoints = models.Breakpoints;
@@ -65,8 +66,8 @@ export class SavedSearchesComponent implements OnInit, OnDestroy {
     );
 
     this.subs.add(
-      this.savedSearchType$.subscribe(
-        savedSearchType => this.savedSearchType = savedSearchType
+      this.sidebarType$.subscribe(
+        sidebarType => this.sidebarType = sidebarType
       )
     );
 
@@ -80,8 +81,8 @@ export class SavedSearchesComponent implements OnInit, OnDestroy {
     );
   }
 
-  public onSavedSearchTypeChange(savedSearchType: models.SavedSearchType): void {
-    this.store$.dispatch(new uiStore.SetSavedSearchType(savedSearchType));
+  public onSidebarTypeChange(sidebarType: models.SidebarType): void {
+    this.store$.dispatch(new uiStore.OpenSidebar(sidebarType));
   }
 
   public saveCurrentSearch(): void {
@@ -91,7 +92,7 @@ export class SavedSearchesComponent implements OnInit, OnDestroy {
       height: '500px',
       maxWidth: '550px',
       maxHeight: '500px',
-      data: { saveType: models.SavedSearchType.SAVED }
+      data: { saveType: models.SidebarType.SAVED_SEARCHES }
     });
   }
 
@@ -143,14 +144,13 @@ export class SavedSearchesComponent implements OnInit, OnDestroy {
     this.searchService.load(search);
   }
 
-
-  public onUnlockFocus(): void {
-    this.lockedFocus = false;
-  }
-
   public onExpandSearch(searchId: string): void {
     this.expandedSearchId = this.expandedSearchId === searchId ?
     '' : searchId;
+  }
+
+  public onUnlockFocus(): void {
+    this.lockedFocus = false;
   }
 
   ngOnDestroy() {

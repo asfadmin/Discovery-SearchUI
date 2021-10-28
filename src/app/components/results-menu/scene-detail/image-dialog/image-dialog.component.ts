@@ -238,9 +238,13 @@ export class ImageDialogComponent implements OnInit, AfterViewInit, OnDestroy {
 
       self.isImageLoading = false;
 
-      const wkt = scene.metadata.polygon;
-
-      browseService.setBrowse(browse, wkt);
+      // const wkt = scene.metadata.polygon;
+      const [width, height] = [
+        this.naturalWidth, this.naturalHeight
+      ];
+      browseService.setBrowse(browse, {width,
+        height
+      });
     });
 
     this.image.src = browse;
@@ -261,7 +265,7 @@ export class ImageDialogComponent implements OnInit, AfterViewInit, OnDestroy {
 
       self.isImageLoading = false;
 
-      browseService.setBrowse(product.files.browse_url, product.granules[0].wkt );
+      browseService.setMapBrowse(product.files.browse_url, product.granules[0].wkt );
     });
 
     this.image.src = product.files.browse_url;
