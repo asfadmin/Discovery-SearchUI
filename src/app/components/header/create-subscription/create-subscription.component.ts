@@ -327,7 +327,7 @@ export class CreateSubscriptionComponent implements OnInit, OnDestroy {
         job_parameters: {
           ...this.processingOptions
         },
-        job_type: 'RTC_GAMMA',
+        job_type: this.jobTypeId,
         name: this.projectName
       },
       search_parameters: {
