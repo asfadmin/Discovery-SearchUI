@@ -1,5 +1,4 @@
 import { Component, ElementRef, OnDestroy, OnInit, Output, ViewChild } from '@angular/core';
-import { Breakpoints } from '@models';
 import { Store } from '@ngrx/store';
 import { MapService } from '@services';
 import { AppState } from '@store';
@@ -27,16 +26,6 @@ export class EventPolygonSliderComponent implements OnInit, OnDestroy {
     mode: 'positions',
     values: [0, 24, 49, 75, 100],
     density: 1,
-    stepped: true,
-    format: wNumb({
-      decimals: 1,
-    })
-  };
-
-  private mobilePips =  {
-    mode: 'positions',
-    values: [0, 25, 50, 75, 100],
-    density: 5,
     stepped: true,
     format: wNumb({
       decimals: 1,
@@ -97,26 +86,6 @@ export class EventPolygonSliderComponent implements OnInit, OnDestroy {
         distinctUntilChanged()
       )
     };
-  }
-
-  public OnUpdatePipSize(breakpoint: Breakpoints) {
-    if (breakpoint === Breakpoints.MOBILE) {
-      this.slider.updateOptions(
-        {
-          pips: this.mobilePips,
-          step: 0.5
-        },
-        true
-      );
-    } else {
-      this.slider.updateOptions(
-        {
-          pips: this.fullPips,
-          step: 0.1
-        },
-        true
-      );
-    }
   }
 
 }

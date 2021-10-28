@@ -40,22 +40,8 @@
       >
 
       </app-event-metadata>
-      <!-- <div class="sarivews-radius-display">
-        Geographic Search Polygon Scale:
-        {{ sarviewsEventGeoSearchRadius.toFixed(1) }}
-      </div> -->
       <app-event-polygon-slider (polygonScale$)="onEventSearchRadiusChange($event)">
-
       </app-event-polygon-slider>
-      <!-- <mat-slider
-      style="width: 50%; margin-left: 15px; margin-right: 15px"
-      min="0.5"
-      max="4"
-      step=".01"
-      (input)="onEventSearchRadiusChange($event)"
-      [value]="sarviewsEventGeoSearchRadius"
-      horizontal
-    ></mat-slider> -->
       </div>
     </mat-card-content>
   </div>
