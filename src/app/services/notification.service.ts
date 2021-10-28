@@ -79,7 +79,11 @@ export class NotificationService {
   }
 
   public clipboardCopyIcon(prompt: string, count: number) {
-    const contentType = prompt.includes('ID') ? 'File ID' : 'Scene name';
+    let contentType = prompt.includes('ID') ? 'File ID' : 'Scene name';
+    if (prompt.toLocaleLowerCase().includes('event')) {
+      contentType = contentType.replace('File', 'Event');
+    }
+
     let headerText: string;
     let infoText: string;
 
