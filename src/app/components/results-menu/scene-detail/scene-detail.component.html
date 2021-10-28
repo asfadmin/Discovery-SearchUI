@@ -10,103 +10,40 @@
           sarviewEvent.description[0].toUpperCase() +
             sarviewEvent.description.slice(1)
         }}</span>
+        <app-copy-to-clipboard
+        [value]="getEventID()"
+        [prompt]="'Copied Event ID'"
+        style="margin: 0 3px;"
+        class="clipboard-icon">
+      </app-copy-to-clipboard>
       </mat-card-title>
       <mat-card-subtitle class="subtitle">
         <a [href]="getSarviewsURL()" target="_blank" matTooltip="SARVIEWS Event Page" class="faint-text">
           SARVIEWS Event
-        </a> •              <app-copy-to-clipboard
-        [value]="getSarviewsURL()"
-        [prompt]="'Copied Event Link'"
-        style="margin: 0 3px;"
-        class="clipboard-icon">
-      </app-copy-to-clipboard>
+        </a> •
         <span matTooltip="eventType">{{ sarviewEvent.event_type }}</span>
       </mat-card-subtitle>
     </mat-card-header>
 
-    <div class="detail-card-info">
-      <p
-        class="faint-text accessing-text"
-        *ngIf="sarviewEvent.event_type === 'quake'"
-      >
-        <span>
-          <p>Magnitude: {{ (sarviewEvent | quakeEvent).magnitude }}</p>
-          <p>Depth: {{ (sarviewEvent | quakeEvent).depth }}</p>
-          <p>USGS id: {{ (sarviewEvent | quakeEvent).usgs_event_id }}</p>
-          <p *ngIf="sarviewEvent.processing_timeframe">
-            Start Date:
-            {{ sarviewEvent.processing_timeframe.start | shortDateTime }}
-          </p>
-          <p *ngIf="sarviewEvent.processing_timeframe && !isActiveSarviewEvent">
-            End Date:
-            {{ sarviewEvent.processing_timeframe.end | shortDateTime }}
-          </p>
-          <a
-            target="_blank"
-            href="{{
-              'https://earthquake.usgs.gov/earthquakes/eventpage/' +
-                (sarviewEvent | quakeEvent).usgs_event_id +
-                '#executive'
-            }}"
-            >USGS Event Page</a
-          >
-        </span>
-      </p>
-      <p
-        class="faint-text accessing-text"
-        *ngIf="sarviewEvent.event_type === 'volcano'"
-      >
-        <span>
-          <p>
-            Smithsonian id:
-            {{ (sarviewEvent | volcanicEvent).smithsonian_event_id }}
-          </p>
-          <p *ngIf="sarviewEvent.processing_timeframe">
-            Start Date:
-            {{ sarviewEvent.processing_timeframe.start | shortDateTime }}
-          </p>
-          <p *ngIf="sarviewEvent.processing_timeframe && !isActiveSarviewEvent">
-            End Date:
-            {{ sarviewEvent.processing_timeframe.end | shortDateTime }}
-          </p>
-          <a
-            target="_blank"
-            href="{{
-              'http://volcano.si.edu/volcano.cfm?vn=' +
-                (sarviewEvent | quakeEvent).usgs_event_id +
-                '#executive'
-            }}"
-            >Smithsonian Entry</a
-          >
-        </span>
-      </p>
-      <!-- <p class="faint-text accessing-text" *ngIf="sarviewEvent.event_type === 'flood'">
-        <span>
-          <p>Description: {{(sarviewEvent | floodEvent).description}}</p>
-          <p *ngIf="sarviewEvent.processing_timeframe">
-            Start Date: {{sarviewEvent.processing_timeframe.start | shortDateTime}}
-          </p>
-          <p *ngIf="sarviewEvent.processing_timeframe && !isActiveSarviewEvent">
-            End Date: {{sarviewEvent.processing_timeframe.end | shortDateTime}}
-          </p>
-        </span>
-      </p> -->
-    </div>
+
     <div style="display: flex; flex-direction: column">
-      <div class="sarivews-radius-display">
-        More Like This Search Scale:
-        {{ sarviewsEventGeoSearchRadius.toFixed(1) }}
-      </div>
-      <mat-slider
-        style="width: 50%; margin-left: 15px; margin-right: 15px;"
-        min="0.5"
-        max="4"
-        step=".01"
-        (input)="onEventSearchRadiusChange($event)"
-        [value]="sarviewsEventGeoSearchRadius"
-        horizontal
-      ></mat-slider>
     </div>
+    <mat-card-content class="content">
+      <div
+      class="w100"
+      fxFlex
+      fxLayout="column"
+      fxLayoutAlign="space-between">
+      <app-event-metadata
+      [event]="sarviewEvent"
+      [eventType]="sarviewEvent.event_type === 'quake' ? eventTypes.QUAKE : eventTypes.VOLCANO"
+      >
+
+      </app-event-metadata>
+      <app-event-polygon-slider (polygonScale$)="onEventSearchRadiusChange($event)">
+      </app-event-polygon-slider>
+      </div>
+    </mat-card-content>
   </div>
 
   <div *ngIf="searchType !== searchTypes.SARVIEWS_EVENTS">
@@ -364,7 +301,8 @@
     </button>
   </div>
   <div
-  [matTooltip]="!(
+  [matTooltip]="
+  searchType === searchTypes.SARVIEWS_EVENTS ? 'Geographic search based on event polygon' : !(
     !(prop.isRelevant(p.PATH, dataset) &&
       prop.isRelevant(p.FRAME, dataset)) ||
     dataset?.id === 'UAVSAR'

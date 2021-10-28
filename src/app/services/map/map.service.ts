@@ -20,7 +20,7 @@ import * as sceneStore from '@store/scenes';
 
 import * as polygonStyle from './polygon.style';
 import * as views from './views';
-import { LonLat, SarviewsEvent } from '@models';
+import { SarviewsEvent } from '@models';
 import { EventEmitter } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { AppState } from '@store';
@@ -278,15 +278,6 @@ export class MapService {
     });
   }
 
-  public panToEvent(eventCoord: LonLat) {
-    const x = proj.fromLonLat([eventCoord.lat, eventCoord.lon - 8], this.epsg());
-    this.map.getView().animate({
-      center: x,
-      duration: 500,
-      zoom: this.map.getView().getZoom(),
-    });
-  }
-
   public setZoom(zoom: number): void {
     this.map.getView().animate({
       zoom, duration: 500
@@ -343,6 +334,15 @@ export class MapService {
   public zoomToScene(scene: models.CMRProduct): void {
     const feature = this.wktService.wktToFeature(
       scene.metadata.polygon,
+      this.epsg()
+    );
+
+    this.zoomToFeature(feature);
+  }
+
+  public zoomToEvent(targetEvent: models.SarviewsEvent): void {
+    const feature = this.wktService.wktToFeature(
+      targetEvent.wkt,
       this.epsg()
     );
 

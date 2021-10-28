@@ -19,8 +19,10 @@ export class SarviewsResultsMenuComponent implements OnInit, OnDestroy {
   @Input() resize$: Observable<void>;
 
   public selectedProducts$ = this.store$.select(scenesStore.getSelectedSceneProducts);
+  public selectedEventProducts$ = this.store$.select(scenesStore.getSelectedSarviewsEventProducts);
   public scenesLength;
   public sarviewsEventsLength;
+  public sarviewsProductsLength;
   public breakpoint: models.Breakpoints;
   public breakpoints = models.Breakpoints;
   public sarviewsEvents$ = this.store$.select(scenesStore.getSarviewsEvents);
@@ -58,6 +60,11 @@ export class SarviewsResultsMenuComponent implements OnInit, OnDestroy {
             this.store$.dispatch(new scenesStore.SetSelectedSarviewsEvent(events[0]?.event_id));
           }
         }
+      )
+    );
+    this.subs.add(
+      this.selectedEventProducts$.subscribe(
+        events => this.sarviewsProductsLength = events.length
       )
     );
   }
