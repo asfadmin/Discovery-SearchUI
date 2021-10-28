@@ -293,7 +293,7 @@ export class SceneDetailComponent implements OnInit, OnDestroy {
   }
 
   public getEventID() {
-    if(this.sarviewEvent.event_type === 'quake') {
+    if (this.sarviewEvent.event_type === 'quake') {
       return (this.sarviewEvent as models.SarviewsQuakeEvent).usgs_event_id;
     }
 

@@ -49,7 +49,7 @@ export class EventPolygonSliderComponent implements OnInit, OnDestroy {
       ).subscribe(
         ([scale, selectedEvent]) => this.mapService.onSetSarviewsPolygon(selectedEvent, scale)
       )
-    )
+    );
   }
 
   ngOnDestroy(): void {
@@ -65,7 +65,7 @@ export class EventPolygonSliderComponent implements OnInit, OnDestroy {
       behaviour: 'tap-drag',
       tooltips: false,
       // step: 0.1,
-      connect: "lower",
+      connect: 'lower',
       range: {
         'min': 0.1,
         'max': 4

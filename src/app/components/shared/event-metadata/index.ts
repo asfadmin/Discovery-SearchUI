@@ -1,2 +1,2 @@
-export * from './event-metadata.module'
-export * from './event-metadata.component'
+export * from './event-metadata.module';
+export * from './event-metadata.component';

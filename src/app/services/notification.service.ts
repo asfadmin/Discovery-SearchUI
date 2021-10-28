@@ -80,7 +80,7 @@ export class NotificationService {
 
   public clipboardCopyIcon(prompt: string, count: number) {
     let contentType = prompt.includes('ID') ? 'File ID' : 'Scene name';
-    if(prompt.toLocaleLowerCase().includes('event')) {
+    if (prompt.toLocaleLowerCase().includes('event')) {
       contentType = contentType.replace('File', 'Event');
     }
 
