@@ -20,7 +20,7 @@ import * as sceneStore from '@store/scenes';
 
 import * as polygonStyle from './polygon.style';
 import * as views from './views';
-import { LonLat, SarviewsEvent } from '@models';
+import { SarviewsEvent } from '@models';
 import { EventEmitter } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { AppState } from '@store';
@@ -88,10 +88,6 @@ export class MapService {
   public selectedSarviewEvent$: EventEmitter<string> = new EventEmitter();
   public mapInit$: EventEmitter<Map> = new EventEmitter();
 
-  public getEventCoordinate(sarviews_id: string): Point {
-    return this.sarviewsFeaturesByID[sarviews_id].getGeometry() as Point;
-  }
-
   public mousePosition$ = this.mousePositionSubject$.pipe(
     sampleTime(100)
   );
@@ -115,6 +111,10 @@ export class MapService {
 
   public epsg(): string {
     return this.mapView.projection.epsg;
+  }
+
+  public getEventCoordinate(sarviews_id: string): Point {
+    return this.sarviewsFeaturesByID[sarviews_id]?.getGeometry() as Point ?? null;
   }
 
   public zoomIn(): void {
@@ -278,15 +278,6 @@ export class MapService {
     });
   }
 
-  public panToEvent(eventCoord: LonLat) {
-    const x = proj.fromLonLat([eventCoord.lat, eventCoord.lon - 8], this.epsg());
-    this.map.getView().animate({
-      center: x,
-      duration: 500,
-      zoom: this.map.getView().getZoom(),
-    });
-  }
-
   public setZoom(zoom: number): void {
     this.map.getView().animate({
       zoom, duration: 500
@@ -349,6 +340,15 @@ export class MapService {
     this.zoomToFeature(feature);
   }
 
+  public zoomToEvent(targetEvent: models.SarviewsEvent): void {
+    const feature = this.wktService.wktToFeature(
+      targetEvent.wkt,
+      this.epsg()
+    );
+
+    this.zoomToFeature(feature);
+  }
+
   public zoomToFeature(feature): void {
     const extent = feature
       .getGeometry()
@@ -369,8 +369,8 @@ export class MapService {
   }
 
 
-  public onMapReady(map: Map) {
-    this.mapInit$.next(map);
+  public onMapReady(m: Map) {
+    this.mapInit$.next(m);
   }
 
 

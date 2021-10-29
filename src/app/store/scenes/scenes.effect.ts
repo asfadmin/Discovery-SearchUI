@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 
 import { of } from 'rxjs';
-import { map, switchMap, catchError, distinctUntilChanged } from 'rxjs/operators';
+import { map, switchMap, catchError, distinctUntilChanged, filter } from 'rxjs/operators';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { UnzipApiService } from '@services/unzip-api.service';
 import { NotificationService } from '@services/notification.service';
@@ -52,7 +52,9 @@ export class ScenesEffects {
     ofType<SetSelectedSarviewsEvent>(ScenesActionType.SET_SELECTED_SARVIEWS_EVENT),
     distinctUntilChanged(),
     switchMap(action => this.sarviewsService.getEventFeature(action.payload)),
-    map(processedEvent => new SetSarviewsEventProducts(processedEvent.products))
+    // debounceTime(500),
+    filter(event => !!event.products),
+    map(processedEvent => new SetSarviewsEventProducts(!!processedEvent.products ? processedEvent.products : []))
   ));
   private showUnzipApiLoadError(product: CMRProduct): void {
     this.notificationService.error(

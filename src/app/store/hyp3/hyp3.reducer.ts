@@ -3,16 +3,18 @@ import { createFeatureSelector, createSelector } from '@ngrx/store';
 import { Hyp3ActionType, Hyp3Actions } from './hyp3.action';
 import {
   Hyp3Job, Hyp3User, Hyp3ProcessingOptions,
-  hyp3DefaultJobOptions
+  hyp3DefaultJobOptions, OnDemandSubscription
 } from '@models';
 
 /* State */
 
 export interface Hyp3State {
   jobs: Hyp3Job[];
+  subscriptions: OnDemandSubscription[];
   user: Hyp3User | null;
   isUserLoading: boolean;
   areJobsLoading: boolean;
+  areSubscriptionsLoading: boolean;
   submittingJobName: string | null;
   processingOptions: Hyp3ProcessingOptions;
   projectName: string;
@@ -20,9 +22,11 @@ export interface Hyp3State {
 
 const initState: Hyp3State = {
   jobs: [],
+  subscriptions: [],
   user: null,
   isUserLoading: false,
   areJobsLoading: false,
+  areSubscriptionsLoading: false,
   submittingJobName: null,
   processingOptions: hyp3DefaultJobOptions,
   projectName: '',
@@ -44,6 +48,21 @@ export function hyp3Reducer(state = initState, action: Hyp3Actions): Hyp3State {
         ...state,
         jobs: action.payload,
         areJobsLoading: false
+      };
+    }
+
+    case Hyp3ActionType.LOAD_SUBSCRIPTIONS: {
+      return {
+        ...state,
+        areSubscriptionsLoading: true
+      };
+    }
+
+    case Hyp3ActionType.SET_SUBSCRIPTIONS: {
+      return {
+        ...state,
+        subscriptions: action.payload,
+        areSubscriptionsLoading: false
       };
     }
 
@@ -123,6 +142,11 @@ export const getHyp3State = createFeatureSelector<Hyp3State>('hyp3');
 export const getHyp3Jobs = createSelector(
   getHyp3State,
   (state: Hyp3State) => state.jobs
+);
+
+export const getOnDemandSubscritpions = createSelector(
+  getHyp3State,
+  (state: Hyp3State) => state.subscriptions
 );
 
 export const getAreHyp3JobsLoading = createSelector(

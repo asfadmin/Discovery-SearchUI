@@ -90,4 +90,6 @@ export interface SarviewsFiltersType {
   magnitude: Range<null | number>;
   activeOnly: boolean;
   sarviewsEventNameFilter: string;
+  pinnedProductIDs: string[];
+  selectedEventID: string;
 }

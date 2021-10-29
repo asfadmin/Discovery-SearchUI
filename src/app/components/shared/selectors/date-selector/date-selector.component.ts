@@ -1,10 +1,8 @@
-import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
-import { MatDatepickerInputEvent } from '@angular/material/datepicker';
-import { NgForm } from '@angular/forms';
+import { Component, OnInit, ViewChild, OnDestroy, Input } from '@angular/core';
 import * as moment from 'moment';
 
-import { Subject, combineLatest } from 'rxjs';
-import { filter, tap, delay, map, withLatestFrom } from 'rxjs/operators';
+import { combineLatest } from 'rxjs';
+import { filter, map, withLatestFrom } from 'rxjs/operators';
 import { SubSink } from 'subsink';
 
 import { Store, ActionsSubject } from '@ngrx/store';
@@ -22,12 +20,8 @@ import { DateExtremaService } from '@services';
   styleUrls: ['./date-selector.component.scss']
 })
 export class DateSelectorComponent implements OnInit, OnDestroy {
-  @ViewChild('dateForm', { static: true }) public dateForm: NgForm;
-
-  public startDateErrors$ = new Subject<void>();
-  public endDateErrors$ = new Subject<void>();
-  public isStartError = false;
-  public isEndError = false;
+  @ViewChild('dateRange', { static: true }) public dateRange;
+  @Input() public extendEndDateBy: number;
 
   public extrema: DateRangeExtrema;
 
@@ -42,7 +36,16 @@ export class DateSelectorComponent implements OnInit, OnDestroy {
         return dataset.date.end;
       }
     ),
-    map(endDate => endDate <= this.currentDate ? endDate : this.currentDate)
+    map(endDate => {
+      const date = endDate <= this.currentDate ? endDate : this.currentDate;
+
+      if (this.extendEndDateBy && !!date) {
+        const d = new Date(date.valueOf());
+        return new Date(d.setMonth(d.getMonth() + this.extendEndDateBy));
+      }
+
+      return date;
+    })
     );
 
   public minDate$ = this.selectedDataset$.pipe(
@@ -62,16 +65,6 @@ export class DateSelectorComponent implements OnInit, OnDestroy {
 
   private subs = new SubSink();
 
-  private get startControl() {
-    return this.dateForm.form
-      .controls['startInput'];
-  }
-
-  private get endControl() {
-    return this.dateForm.form
-      .controls['endInput'];
-  }
-
   constructor(
     private store$: Store<AppState>,
     private actions$: ActionsSubject,
@@ -79,12 +72,11 @@ export class DateSelectorComponent implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit() {
-    this.handleDateErrors();
 
     this.subs.add(
       this.actions$.pipe(
         filter(action => action.type === filtersStore.FiltersActionType.CLEAR_DATASET_FILTERS)
-      ).subscribe(_ => this.dateForm.reset())
+      ).subscribe(_ => this.dateRange.reset())
     );
 
     const dateExtrema$ = this.dateExtremaService.getExtrema$(
@@ -137,6 +129,14 @@ export class DateSelectorComponent implements OnInit, OnDestroy {
          } else {
           this.extrema = baselineExtrema;
         }
+
+        if (this.extendEndDateBy && extrema.end.max !== null) {
+          const endMax = extrema.end.max;
+          const d = new Date(endMax.valueOf());
+          d.setDate(d.getDate() + this.extendEndDateBy);
+
+          extrema.end.max = d ;
+        }
       })
     );
 
@@ -151,6 +151,7 @@ export class DateSelectorComponent implements OnInit, OnDestroy {
         }
       )
     );
+
     this.subs.add(
       this.endDate$.subscribe(
         end => {
@@ -163,32 +164,12 @@ export class DateSelectorComponent implements OnInit, OnDestroy {
     );
   }
 
-  public onStartDateChange(e: MatDatepickerInputEvent<moment.Moment>): void {
-
-    let date: null | Date;
-
-    if (!this.startControl.valid || !e.value) {
-      date = null;
-      this.startDateErrors$.next();
-    } else {
-      const momentDate = e.value.set({h: 0});
-      date = this.toJSDate(momentDate);
-    }
-
+  public onStartDateChange(date): void {
     this.store$.dispatch(new filtersStore.SetStartDate(date));
   }
 
-  public onEndDateChange(e: MatDatepickerInputEvent<moment.Moment>): void {
-    let date: null | Date;
-
-    if (!this.endControl.valid || !e.value) {
-      date = null;
-      this.endDateErrors$.next();
-    } else {
-      date = this.endDateFormat(e.value);
-    }
-
-      this.store$.dispatch(new filtersStore.SetEndDate(date));
+  public onEndDateChange(date): void {
+    this.store$.dispatch(new filtersStore.SetEndDate(date));
   }
 
   private endDateFormat(date: Date | moment.Moment) {
@@ -198,36 +179,6 @@ export class DateSelectorComponent implements OnInit, OnDestroy {
 
   private toJSDate(date: moment.Moment) {
     return date.toDate();
-  }
-
-  private handleDateErrors(): void {
-    this.subs.add(
-      this.startDateErrors$.pipe(
-        tap(_ => {
-          this.isStartError = true;
-          this.startControl.reset();
-          this.startControl.setErrors({'incorrect': true});
-        }),
-        delay(820),
-      ).subscribe(_ => {
-        this.isStartError = false;
-        this.startControl.setErrors(null);
-      })
-    );
-
-    this.subs.add(
-      this.endDateErrors$.pipe(
-        tap(_ => {
-          this.isEndError = true;
-          this.endControl.reset();
-          this.endControl.setErrors({'incorrect': true});
-        }),
-        delay(820),
-      ).subscribe(_ => {
-        this.isEndError = false;
-        this.endControl.setErrors(null);
-      })
-    );
   }
 
   ngOnDestroy() {

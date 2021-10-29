@@ -7,7 +7,8 @@ import { of, forkJoin, combineLatest, Observable, EMPTY } from 'rxjs';
 import { map, withLatestFrom, switchMap, catchError, filter, first } from 'rxjs/operators';
 
 import { AppState } from '../app.reducer';
-import { SetSearchAmount, EnableSearch, DisableSearch, SetSearchType, SetNextJobsUrl, Hyp3BatchResponse, SarviewsEventsResponse } from './search.action';
+import { SetSearchAmount, EnableSearch, DisableSearch, SetSearchType, SetNextJobsUrl,
+  Hyp3BatchResponse, SarviewsEventsResponse } from './search.action';
 import * as scenesStore from '@store/scenes';
 import * as filtersStore from '@store/filters';
 import * as mapStore from '@store/map';

@@ -10,6 +10,7 @@ import * as scenesStore from '@store/scenes';
 import * as queueStore from '@store/queue';
 import * as userStore from '@store/user';
 import * as hyp3Store from '@store/hyp3';
+import * as uiStore from '@store/ui';
 
 import { Hyp3Service, NotificationService, SarviewsEventsService } from '@services';
 import * as models from '@models';
@@ -19,6 +20,9 @@ import * as moment from 'moment';
 
 import { faCopy } from '@fortawesome/free-solid-svg-icons';
 import { MatSelectionListChange } from '@angular/material/list';
+import { PinnedProduct } from '@services/browse-map.service';
+import { ImageDialogComponent } from '../scene-detail/image-dialog';
+import { MatDialog } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-scene-files',
@@ -31,10 +35,13 @@ export class SceneFilesComponent implements OnInit, OnDestroy, AfterContentInit 
   public productsByProductType: {[processing_type: string]: SarviewsProduct[]} = {};
   public selectedProducts: { [product_id in string]: boolean} = {};
   public sarviewsProducts: models.SarviewsProduct[];
+  public queuedProductIds: string[];
+  public hyp3ableByProduct: {};
 
   public queuedProductIds$ = this.store$.select(queueStore.getQueuedProductIds).pipe(
       map(names => new Set(names))
   );
+
   public selectedSarviewsEventID$ = this.store$.select(scenesStore.getSelectedSarviewsEvent).pipe(
       filter(event => !!event),
       map(event => event.event_id)
@@ -78,7 +85,7 @@ export class SceneFilesComponent implements OnInit, OnDestroy, AfterContentInit 
   public isUserLoggedIn: boolean;
   public hasAccessToRestrictedData: boolean;
   public showDemWarning: boolean;
-  // public selectedProducts: SarviewsProduct[] = [];
+  public selectedSarviewsProducts: SarviewsProduct[] = [];
   public selectedSarviewEventID: string;
   private subs = new SubSink();
 
@@ -88,6 +95,8 @@ export class SceneFilesComponent implements OnInit, OnDestroy, AfterContentInit 
     private sarviewsService: SarviewsEventsService,
     private clipboard: ClipboardService,
     private notificationService: NotificationService,
+    private eventMonitoringService: SarviewsEventsService,
+    public dialog: MatDialog,
   ) { }
 
   ngOnInit() {
@@ -123,6 +132,12 @@ export class SceneFilesComponent implements OnInit, OnDestroy, AfterContentInit 
     );
 
     this.subs.add(
+      this.queuedProductIds$.subscribe(
+        ids => this.queuedProductIds = Array.from(ids)
+      )
+    );
+
+    this.subs.add(
       this.store$.select(userStore.getIsUserLoggedIn).subscribe(
         isLoggedIn => this.isUserLoggedIn = isLoggedIn
       )
@@ -151,14 +166,26 @@ export class SceneFilesComponent implements OnInit, OnDestroy, AfterContentInit 
 
   ngAfterContentInit() {
     this.subs.add(
-      this.sarviewsEventProducts$.pipe(distinctUntilChanged((a, b) => a[0]?.event_id === b[0]?.event_id)).subscribe(
-        val => {
-          this.sarviewsProducts = val;
-          this.selectedProducts = {};
-          this.selectedProducts = val.map(product => product.product_id).reduce((prev, curr) => {
-            prev[curr] = false;
-            return prev;
-          }, {} as {[product_id in string]: boolean});
+      combineLatest(
+        this.sarviewsEventProducts$.pipe(distinctUntilChanged((a, b) => a[0]?.event_id === b[0]?.event_id)),
+        this.store$.select(scenesStore.getPinnedEventBrowseIDs)
+      ).subscribe(
+        ([products, pinned_browse_ids]) => {
+          this.sarviewsProducts = products;
+          this.hyp3ableByProduct = this.sarviewsProducts.reduce((prev, curr) => prev = {
+            ...prev,
+            [curr.product_id]: [this.eventMonitoringService.hyp3able(curr)]
+          }, {});
+          this.selectedSarviewsProducts = products.filter(product => pinned_browse_ids.includes(product.product_id));
+          Object.keys(this.selectedProducts).forEach(id => delete this.selectedProducts[id]);
+          products.forEach(prod => this.selectedProducts[prod.product_id] = pinned_browse_ids.includes(prod.product_id));
+
+          if (pinned_browse_ids.length > 0 && products.length > 0) {
+            if (!this.selectedProducts[pinned_browse_ids[0]]) {
+              this.onUpdatePinnedUrl();
+            }
+          }
+
         }
       )
     );
@@ -246,28 +273,61 @@ export class SceneFilesComponent implements OnInit, OnDestroy, AfterContentInit 
   public currentPinnedUrl(current_id: string): string {
     const product_ids = Object.keys(this.selectedProducts).filter(
       product_id => !!this.selectedProducts?.[product_id]
-    )
+    );
 
     return this.sarviewsService.getSarviewsEventPinnedUrl(current_id, product_ids);
   }
 
   public onSelectSarviewsProduct(selections: MatSelectionListChange) {
     selections.options.forEach(option => this.selectedProducts[option.value] = option.selected );
-    // this.selectedProducts[product_id] = !this.selectedProducts?.[product_id] ?? true;
+    this.onUpdatePinnedUrl();
   }
 
-  public onOpenPinnedProducts(current_id: string) {
-    window.open(this.currentPinnedUrl(current_id));
+  public onUpdatePinnedUrl() {
+    const pinned = Object.keys(this.selectedProducts).reduce(
+      (prev, key) => {
+        const output = {} as PinnedProduct;
+        output.isPinned = this.selectedProducts[key];
+        const sarviewsProduct = this.sarviewsProducts.find(prod => prod.product_id === key);
+        output.url = sarviewsProduct.files.product_url;
+        output.wkt = sarviewsProduct.granules[0].wkt;
+
+        prev[key] = output;
+        return prev;
+      }, {} as {[product_id in string]: PinnedProduct}
+    );
+
+    this.store$.dispatch(new scenesStore.SetImageBrowseProducts(pinned));
   }
 
-  public copyProductSourceScenes() {
-    const products = this.sarviewsProducts;
-    const granule_name_list = products.reduce(
+  public onOpenPinnedProducts() {
+    this.store$.dispatch(new scenesStore.SetSelectedSarviewProduct(this.sarviewsProducts[0]));
+
+    this.store$.dispatch(new uiStore.SetIsBrowseDialogOpen(true));
+
+    const dialogRef = this.dialog.open(ImageDialogComponent, {
+      width: '99%',
+      maxWidth: '99%',
+      height: '99%',
+      maxHeight: '99%',
+      panelClass: 'image-dialog'
+    });
+
+    this.subs.add(
+      dialogRef.afterClosed().subscribe(
+        _ => this.store$.dispatch(new uiStore.SetIsBrowseDialogOpen(false))
+      )
+    );
+  }
+
+  public copyProductSourceScenes(products: SarviewsProduct[]) {
+    const granuleNameList = products.reduce(
       (acc, curr) => acc = acc.concat(curr.granules), [] as SarviewProductGranule[]
       ).map(gran => gran.granule_name);
+    const granuleNameListSet = new Set(granuleNameList);
 
-    this.clipboard.copyFromContent( granule_name_list.join(','));
-    this.notificationService.info(`Scene Names Copied`);
+    this.clipboard.copyFromContent( Array.from(granuleNameListSet).join(','));
+    this.notificationService.clipboardCopyIcon('', granuleNameListSet.size);
   }
 
   public onQueueSarviewsProduct(product: models.SarviewsProduct): void {
@@ -300,7 +360,41 @@ export class SceneFilesComponent implements OnInit, OnDestroy, AfterContentInit 
 
       };
 
-    this.store$.dispatch(new queueStore.AddItems([toCMRProduct]));
+    if (this.queuedProductIds.includes(product.product_id)) {
+      this.store$.dispatch(new queueStore.RemoveItems([toCMRProduct]));
+    } else {
+      this.store$.dispatch(new queueStore.AddItems([toCMRProduct]));
+    }
+  }
+
+  public getProductSceneCount(products: SarviewsProduct[]) {
+    const outputList = products.reduce((prev, product) => {
+        const temp = product.granules.map(granule => granule.granule_name);
+
+        prev = prev.concat(temp);
+
+        return prev;
+
+        }, [] as string[]
+    );
+
+    return new Set(outputList).size;
+  }
+
+  public getProductDownloadUrl(products: SarviewsProduct[]) {
+    const productListStr = products.map(product => product.files.product_url);
+    this.clipboard.copyFromContent( productListStr.join('\n '));
+    const lines = products.length;
+    this.notificationService.clipboardCopyQueue(lines, false);
+  }
+
+  public onAddEventToOnDemand(product: SarviewsProduct) {
+    const job: models.QueuedHyp3Job = {
+      granules:  this.eventMonitoringService.getSourceCMRProducts(product),
+      job_type: hyp3JobTypes[product.job_type]
+      };
+
+    this.store$.dispatch(new queueStore.AddJob(job));
   }
 
   ngOnDestroy() {

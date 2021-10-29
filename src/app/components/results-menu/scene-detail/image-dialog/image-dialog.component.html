@@ -1,5 +1,4 @@
 <div class="browse-dialog"
-     *ngIf="breakpoint$ | async as breakpoint"
     >
     <div *ngIf="(searchType$ | async) !== searchTypes.SARVIEWS_EVENTS">
       <div *ngIf="scene$ | async as scene" fxLayout="row" class="dialog-header--layout">
@@ -43,7 +42,7 @@
     </div>
 
     <div fxFlex id="browse-map" fxFlex class="browse-map--size" fxLayout="row-reverse" fxLayoutAlign="end end" >
-      <div fxFlex fxLayout="column" fxLayoutAlign="start" class="ol-control ol-unselectable" style="background-color: rgba(0, 0, 0, 0) !important; z-index: 1;">
+      <div *ngIf="(searchType$ | async) === searchTypes.SARVIEWS_EVENTS" fxFlex fxLayout="column" fxLayoutAlign="start" class="ol-control ol-unselectable" style="background-color: rgba(0, 0, 0, 0) !important; z-index: 1;">
         <div style="padding: 2px; border-radius: 4px; height: 100%; margin-bottom: 15px; margin-left: 15px; background-color: rgba(255, 255, 255, 0.4);">
           <div (click)="onPinProduct(currentSarviewsProduct?.product_id ?? scene?.id)" style="height: 32px; padding-top: 10px; background-color: rgba(0, 60, 136, 0.5);">
             <mat-icon style="margin-left: 11px;">push_pin</mat-icon>
@@ -59,7 +58,7 @@
       <div *ngIf="(searchType$ | async) === searchTypes.SARVIEWS_EVENTS">
       <button
       style="position: absolute; bottom: 5px; right: 20%; margin: 15px; min-width: 200px; border-radius: 4px !important;"
-      mat-flat-button (click)="OpenProductInSarviews()">Open Product In SARViews</button>
+      mat-flat-button (click)="OpenProductInSarviews()">Open Pinned Products In SARVIEWS</button>
     </div>
     <div *ngIf="isImageLoading" color="accent" class="browse-map--overlay">
       <mat-spinner></mat-spinner>
@@ -130,12 +129,12 @@
           <ng-container>
             <div class="detail-header">Event Details</div>
             <ul style="columns: 1; font-size: 12px;">
-              <li *ngIf="sarviewsEvent">{{sarviewsEvent.event_type === 'quake'
+              <li *ngIf="!!sarviewsEvent">{{sarviewsEvent.event_type === 'quake'
                 ? 'usgs id: ' + (sarviewsEvent | quakeEvent).usgs_event_id
                 : 'smithsonian id: ' + (sarviewsEvent | volcanicEvent).smithsonian_event_id}}
                  </li>
                  <li>
-                  description: {{sarviewsEvent.description}}
+                  description: {{sarviewsEvent?.description}}
                  </li>
             </ul>
 
@@ -143,7 +142,7 @@
           <hr style="width: 100%;">
           <ng-container >
           <div>
-          <div class="detail-header">SARViews Product Detail</div>
+          <div class="detail-header">Event Product Detail</div>
           <div style="columns: 1; font-size: 12px; word-wrap: break-word; margin-top: 15px;" *ngIf="!!currentSarviewsProduct">
             <div style="font-weight: bold;">{{currentSarviewsProduct.files.product_name}}</div>
             <button matTooltip="Download Product" class="download-icon" mat-icon-button (click)="downloadSarviewsProduct(currentSarviewsProduct); $event.stopPropagation();">
@@ -195,7 +194,7 @@
 
   <ng-container *ngIf="breakpoint > breakpoints.MOBILE">
       <div>
-      <app-browse-list fxFlex class="browse-list"></app-browse-list>
+      <app-browse-list style="height: 150px;"></app-browse-list>
     </div>
   </ng-container>
 
