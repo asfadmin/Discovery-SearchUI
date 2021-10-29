@@ -498,7 +498,7 @@ export class UrlStateService {
   }
 
   private loadStartDate = (start: string): Action | undefined => {
-    const startDate = new Date(start);
+    const startDate = this.toECMADate(start);
 
     if (!this.isValidDate(startDate)) {
       return;
@@ -508,7 +508,7 @@ export class UrlStateService {
   }
 
   private loadEndDate = (end: string): Action => {
-    const endDate = new Date(end);
+    const endDate = this.toECMADate(end);
 
     if (!this.isValidDate(endDate)) {
       return;
@@ -750,6 +750,15 @@ export class UrlStateService {
     this.store$.select(scenesStore.getAreResultsLoaded).pipe(
       filter(wereResultsLoaded => wereResultsLoaded),
     ).subscribe(_ => this.shouldDoSearch = true);
+  }
+
+  // https://stackoverflow.com/a/21984717
+  // Replaces '-' with '/' So loading dates from url works in Firefox
+  private toECMADate(dateStr: string): Date {
+        // const ecmaFormatDate = dateStr.replace(/-/g,'/');
+        const momentDate = moment.utc(dateStr);
+        // const momentDate = moment(dateStr).utc();
+        return momentDate.toDate();
   }
 
   private isNumber = n => !isNaN(n) && isFinite(n);
