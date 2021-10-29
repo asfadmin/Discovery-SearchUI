@@ -10,15 +10,16 @@ import { mapOptions } from '@models';
 import TileLayer from 'ol/layer/Tile';
 import { Layer, Vector } from 'ol/layer';
 import Polygon from 'ol/geom/Polygon';
-import { getCenter } from 'ol/extent';
+import { Extent, getCenter } from 'ol/extent';
 import VectorSource from 'ol/source/Vector';
 import WKT from 'ol/format/WKT';
 import LayerGroup from 'ol/layer/Group';
 import { Collection } from 'ol';
-// interface Dimension {
-//   width: number;
-//   height: number;
-// }
+import Projection from 'ol/proj/Projection';
+interface Dimension {
+  width: number;
+  height: number;
+}
 
 export interface PinnedProduct {
   isPinned: boolean;
@@ -41,7 +42,7 @@ export class BrowseMapService {
   //   // layers: l => !!this.pinnedProducts.getLayersArray().find(pinned => pinned.get("product_id") === l?.get("product_id")),
   // });
 
-  public setBrowse(browse: string, wkt: string = ''): void {
+  public setMapBrowse(browse: string, wkt: string = ''): void {
     const format = new WKT();
     const feature = format.readFeature(wkt, {dataProjection: 'EPSG:4326',
     featureProjection: 'EPSG:3857'});
@@ -191,8 +192,12 @@ export class BrowseMapService {
   private update(view: View, layers: Layer[]): void {
     this.map.setView(view);
     const mapLayers = this.map.getLayers();
-    const baseLayers = layers.slice(0, 3);
-    baseLayers.forEach((l, idx) => mapLayers.setAt(idx + 1, l));
+    if (layers.length > 1) {
+      const baseLayers = layers.slice(0, 3);
+      baseLayers.forEach((l, idx) => mapLayers.setAt(idx + 1, l));
+    } else {
+      mapLayers.setAt(0, layers[0]);
+    }
   }
 
   private newMap(view: View, layers: Layer[]): Map {
@@ -206,4 +211,51 @@ export class BrowseMapService {
   cleanup(): void {
     this.map = null;
   }
+
+
+  public setBrowse(browse: string, dim: Dimension): void {
+    const extent = [0, 0, dim.width, dim.height] as Extent;
+
+    const projection = new Projection({
+      code: 'scene-browse',
+      units: 'pixels',
+      extent
+    });
+
+    const layer = new ImageLayer({
+      source: new Static({
+        url: browse,
+        projection: projection,
+        imageExtent: extent,
+      })
+    });
+
+    const view = new View({
+      projection: projection,
+      center: getCenter(extent),
+      zoom: 1,
+      minZoom: 1,
+      maxZoom: 4,
+    });
+
+    if (this.map) {
+      this.update(view, [layer]);
+    } else {
+      this.map = this.newMap(view, [layer]);
+    }
+  }
+
+  // private update(view: View, layer: ImageLayer): void {
+  //   this.map.setView(view);
+  //   const mapLayers = this.map.getLayers();
+  //   mapLayers.setAt(0, layer);
+  // }
+
+  // private newMap(view: View, layer: ImageLayer): Map {
+  //   return new Map({
+  //     layers: [ layer ],
+  //     target: 'browse-map',
+  //     view
+  //   });
+  // }
 }

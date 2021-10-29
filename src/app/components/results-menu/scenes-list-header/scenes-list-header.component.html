@@ -162,7 +162,7 @@
                   </mat-button-toggle>
                 </mat-button-toggle-group>
 
-                <app-on-demand-add-menu #listAdd>
+                <app-on-demand-add-menu [showSubscriptions]="true" #listAdd>
                 </app-on-demand-add-menu>
               </div>
             </div>
@@ -205,6 +205,59 @@
               </div>
             </div>
           </div>
+
+          <div *ngIf="searchType === SearchTypes.SARVIEWS_EVENTS && !!sarviewsEventProducts"
+          fxFlex="" class="list-button-group">
+          <div fxLayout="row" fxLayoutAlign="center" class="button-group-label">
+            <label>On Demand</label>
+          </div>
+          <div fxLayout="row">
+            <div>
+              <mat-button-toggle-group fxFlex="" name="layerType" class="mr-10">
+                <mat-button-toggle
+                [matMenuTriggerFor]="eventMonitoringOnDemand.addMenu"
+                [matMenuTriggerData]="{ hyp3able: hyp3ableEventProducts.byJobType }"
+                class="control-mat-button-toggle clickable noselect"
+                                   matTooltip="Add all results to On Demand queue">
+                  <mat-icon class="list-icon"
+                    svgIcon="hyp3">
+                  </mat-icon>
+                </mat-button-toggle>
+              </mat-button-toggle-group>
+              <app-on-demand-add-menu #eventMonitoringOnDemand>
+                <!-- <ng-template matMenuContent>
+                  <button
+                  [matMenuTriggerFor]="eventMonitoringOnDemandAllProducts"
+                  [matMenuTriggerData]="{job_types: [RTC, InSAR]}"
+                  mat-menu-item>
+                  All Event Products
+                </button>
+                  <button
+                  [mat-menu-trigger-for]="eventMonitoringOnDemandSelectedProducts"
+                  [matMenuTriggerData]="{selected_products : (selectedEventProducts$ | async)}"
+                  mat-menu-item>
+                    Selected Event Products
+                  </button>
+                </ng-template> -->
+              </app-on-demand-add-menu>
+              <mat-menu #eventMonitoringOnDemandAllProducts>
+                <ng-template matMenuContent let-jobTypes="job_types">
+                  <button (click)="addOnDemandEventProductsBySearchType(t)" mat-menu-item *ngFor="let t of jobTypes">
+                    Add {{EventMonitoringByJobType(t).length}} {{t.name === "RTC GAMMA" ? 'SLC' : t.name}} Jobs
+                    <mat-icon (click)="onOpenHelp(t.infoUrl)" class="clickable" style="margin-left: 10px;">info</mat-icon>
+                  </button>
+                </ng-template>
+              </mat-menu>
+              <mat-menu #eventMonitoringOnDemandSelectedProducts>
+                <ng-template matMenuContent let-selected="selected_products">
+                  <button [disabled]="selected.length === 0" mat-menu-item (click)="addOnDemandEventProducts(selected)">
+                    Add {{selected.length > 0 ? selected.length : ''}} Selected Job{{selected.length !== 1 ? 's' : ''}}
+                  </button>
+                </ng-template>
+              </mat-menu>
+            </div>
+          </div>
+        </div>
 
           <div *ngIf="searchType === SearchTypes.SBAS" fxFlex="" class="list-button-group">
             <div fxLayout="row" fxLayoutAlign="center" class="button-group-label">

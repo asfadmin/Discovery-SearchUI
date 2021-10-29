@@ -5,6 +5,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { Store } from '@ngrx/store';
 import { AppState } from '@store';
 import * as queueStore from '@store/queue';
+import * as hyp3Store from '@store/hyp3';
 
 import * as models from '@models';
 import { SubSink } from 'subsink';
@@ -24,6 +25,7 @@ export class OnDemandAddMenuComponent implements OnInit {
   @Input() hyp3ableProducts: models.Hyp3ableProductByJobType;
   @Input() isExpired = false;
   @Input() expiredJobs: models.Hyp3Job;
+  @Input() showSubscriptions = false;
 
   @ViewChild('addMenu', {static: true}) addMenu: MatMenu;
 
@@ -107,11 +109,20 @@ export class OnDemandAddMenuComponent implements OnInit {
   }
 
   public onOpenCreateSubscription() {
-    this.dialog.open(CreateSubscriptionComponent, {
+    const ref = this.dialog.open(CreateSubscriptionComponent, {
       id: 'subscriptionQueueDialog',
       maxWidth: '100vw',
       maxHeight: '100vh',
+      data: {
+        referenceScene: this.referenceScene
+      }
     });
+
+    ref.afterClosed().subscribe(
+      _ => {
+        this.store$.dispatch(new hyp3Store.LoadSubscriptions());
+      }
+    );
   }
 
   public onOpenHelp(infoUrl) {

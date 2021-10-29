@@ -154,13 +154,13 @@ export class ScenesListComponent implements OnInit, OnDestroy {
 
     this.subs.add(
       this.scenesService.sarviewsEvents$().pipe(
-        filter(events => !!events),
+        filter(_ => this.searchType === this.SearchTypes.SARVIEWS_EVENTS),
       ).subscribe(
         events => {
           this.sarviewsEvents = events;
 
           const eventIds = events.map(event => event.event_id);
-          if (!eventIds.includes(this.selectedEvent) && !!this.selectedEvent && eventIds.length > 0) {
+          if (!eventIds.includes(this.selectedEvent) && eventIds.length > 0) {
             this.store$.dispatch(new scenesStore.SetSelectedSarviewsEvent(eventIds[0]));
           }
         }

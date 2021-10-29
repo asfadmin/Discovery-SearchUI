@@ -14,14 +14,13 @@ import * as filtersStore from '@store/filters';
 
 import {
   MapService, ScenesService, ScreenSizeService,
-  PairService, Hyp3Service
+  PairService, Hyp3Service, SarviewsEventsService
 } from '@services';
 
 import * as models from '@models';
 import { SubSink } from 'subsink';
-import { CMRProductMetadata, hyp3JobTypes, SarviewsProduct } from '@models';
-import * as moment from 'moment';
-import { AddItems } from '@store/queue';
+import { hyp3JobTypes, SarviewsProduct } from '@models';
+import { AddItems, AddJobs } from '@store/queue';
 
 @Component({
   selector: 'app-scenes-list-header',
@@ -46,6 +45,12 @@ export class ScenesListHeaderComponent implements OnInit, OnDestroy {
   );
   public numPairs$ = this.pairService.pairs$().pipe(
     map(pairs => pairs.pairs.length + pairs.custom.length)
+  );
+
+
+  public selectedEventProducts$ = this.store$.select(scenesStore.getPinnedEventBrowseIDs).pipe(
+    map(browseIds =>
+      this.sarviewsEventProducts.filter(prod => browseIds.includes(prod.product_id)))
   );
 
   public pairs: models.CMRProductPair[];
@@ -74,6 +79,7 @@ export class ScenesListHeaderComponent implements OnInit, OnDestroy {
   public AutoRift = models.hyp3JobTypes.AUTORIFT;
 
   public hyp3able = { total: 0, byJobType: [] };
+  public hyp3ableEventProducts = {total: 0, byJobType: []};
 
   constructor(
     private store$: Store<AppState>,
@@ -82,6 +88,7 @@ export class ScenesListHeaderComponent implements OnInit, OnDestroy {
     private pairService: PairService,
     private screenSize: ScreenSizeService,
     private hyp3: Hyp3Service,
+    private eventMonitoringService: SarviewsEventsService,
   ) { }
 
   ngOnInit() {
@@ -168,7 +175,12 @@ export class ScenesListHeaderComponent implements OnInit, OnDestroy {
 
     this.subs.add(
       this.store$.select(scenesStore.getSelectedSarviewsEventProducts).subscribe(
-        products => this.sarviewsEventProducts = products
+        products => {
+          this.sarviewsEventProducts = products;
+          this.hyp3ableEventProducts = this.eventMonitoringService.toHyp3ableProducts(this.sarviewsEventProducts);
+
+
+        }
       )
     );
 
@@ -284,39 +296,28 @@ export class ScenesListHeaderComponent implements OnInit, OnDestroy {
   }
 
   public onQueueSarviewsProducts(products: models.SarviewsProduct[]): void {
-    const jobTypes = Object.values(hyp3JobTypes);
-    const toCMRProducts: models.CMRProduct[] = products.map(
-      prod => {
+    this.store$.dispatch(new AddItems(products.map(product =>
+        this.eventMonitoringService.eventProductToCMRProduct(product))
+      ));
+  }
 
-        const job = jobTypes.find(t => t.id === prod.job_type);
-        const productTypeDisplay = `${job.name}, ${job.productTypes[0].productTypes[0]}`;
-        const output: models.CMRProduct = {
-          name: prod.files.product_name,
-          productTypeDisplay,
-          file: '',
-          id: prod.product_id,
-          downloadUrl: prod.files.product_url,
-          bytes: prod.files.product_size,
-          browses: [prod.files.browse_url],
-          thumbnail: prod.files.thumbnail_url,
-          dataset: 'Sentinel-1',
-          groupId: 'SARViews',
-          isUnzippedFile: false,
-
-          metadata: {
-            date: moment(prod.processing_date),
-            stopDate: moment(prod.processing_date),
-            polygon: prod.granules[0].wkt,
-            productType: job.name,
-
-          } as CMRProductMetadata
-        };
-
-        return output;
-
-      }
+  public addOnDemandEventProducts(targetProducts: SarviewsProduct[]) {
+    const jobs: models.QueuedHyp3Job[] = targetProducts.map(prod => ({
+      granules:  this.eventMonitoringService.getSourceCMRProducts(prod),
+      job_type: hyp3JobTypes[prod.job_type]
+      })
     );
-    this.store$.dispatch(new AddItems(toCMRProducts));
+
+    this.store$.dispatch(new AddJobs(jobs));
+  }
+
+  public addOnDemandEventProductsBySearchType(jobType: models.Hyp3JobType) {
+    this.addOnDemandEventProducts(this.EventMonitoringByJobType(jobType));
+  }
+
+  public EventMonitoringByJobType(jobType: models.Hyp3JobType) {
+    const targetProducts = this.sarviewsEventProducts.filter(product => hyp3JobTypes[product.job_type] === jobType);
+    return targetProducts;
   }
 
   public onMetadataExport(format: models.AsfApiOutputFormat): void {
@@ -325,6 +326,10 @@ export class ScenesListHeaderComponent implements OnInit, OnDestroy {
     if (this.searchType === this.SearchTypes.BASELINE) {
       this.store$.dispatch(action);
     }
+  }
+
+  public onOpenHelp(infoUrl) {
+    window.open(infoUrl);
   }
 
   ngOnDestroy(): void {

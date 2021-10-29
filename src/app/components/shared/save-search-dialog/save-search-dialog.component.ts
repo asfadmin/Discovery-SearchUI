@@ -28,7 +28,7 @@ export class SaveSearchDialogComponent implements OnInit {
   public saveName: string;
   public isNameError = false;
 
-  public saveType: models.SavedSearchType;
+  public saveType: models.SidebarType;
   public saveTypeName: string;
 
   constructor(
@@ -43,7 +43,7 @@ export class SaveSearchDialogComponent implements OnInit {
     this.saveType = this.data.saveType;
     console.log(this.saveType);
 
-    if (this.saveType === models.SavedSearchType.SAVED) {
+    if (this.saveType === models.SidebarType.SAVED_SEARCHES) {
       this.saveTypeName = 'Save Search';
       this.search = this.savedSearchService.makeCurrentSearch('');
 
@@ -52,7 +52,7 @@ export class SaveSearchDialogComponent implements OnInit {
       }
     }
 
-    if (this.saveType === models.SavedSearchType.FILTER) {
+    if (this.saveType === models.SidebarType.USER_FILTERS) {
       this.saveTypeName = 'Save Filters';
 
       combineLatest([
@@ -72,7 +72,6 @@ export class SaveSearchDialogComponent implements OnInit {
           this.searchType = searchType;
 
           this.search = this.newFilterPreset();
-
         });
     }
   }
@@ -104,7 +103,7 @@ export class SaveSearchDialogComponent implements OnInit {
   }
 
   public onSubmitSave(): void {
-    if (this.saveType === models.SavedSearchType.SAVED) {
+    if (this.saveType === models.SidebarType.SAVED_SEARCHES) {
       this.store$.dispatch(new userStore.AddNewSearch({
         ...this.search, name: this.saveName
       }));
@@ -112,7 +111,7 @@ export class SaveSearchDialogComponent implements OnInit {
 
     }
 
-    if (this.saveType === models.SavedSearchType.FILTER) {
+    if (this.saveType === models.SidebarType.USER_FILTERS) {
       this.store$.dispatch(new userStore.AddNewFiltersPreset({
         ...this.search, name: this.saveName
       }));

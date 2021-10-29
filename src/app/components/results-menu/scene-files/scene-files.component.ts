@@ -36,6 +36,7 @@ export class SceneFilesComponent implements OnInit, OnDestroy, AfterContentInit 
   public selectedProducts: { [product_id in string]: boolean} = {};
   public sarviewsProducts: models.SarviewsProduct[];
   public queuedProductIds: string[];
+  public hyp3ableByProduct: {};
 
   public queuedProductIds$ = this.store$.select(queueStore.getQueuedProductIds).pipe(
       map(names => new Set(names))
@@ -84,7 +85,7 @@ export class SceneFilesComponent implements OnInit, OnDestroy, AfterContentInit 
   public isUserLoggedIn: boolean;
   public hasAccessToRestrictedData: boolean;
   public showDemWarning: boolean;
-  // public selectedProducts: SarviewsProduct[] = [];
+  public selectedSarviewsProducts: SarviewsProduct[] = [];
   public selectedSarviewEventID: string;
   private subs = new SubSink();
 
@@ -94,6 +95,7 @@ export class SceneFilesComponent implements OnInit, OnDestroy, AfterContentInit 
     private sarviewsService: SarviewsEventsService,
     private clipboard: ClipboardService,
     private notificationService: NotificationService,
+    private eventMonitoringService: SarviewsEventsService,
     public dialog: MatDialog,
   ) { }
 
@@ -170,6 +172,11 @@ export class SceneFilesComponent implements OnInit, OnDestroy, AfterContentInit 
       ).subscribe(
         ([products, pinned_browse_ids]) => {
           this.sarviewsProducts = products;
+          this.hyp3ableByProduct = this.sarviewsProducts.reduce((prev, curr) => prev = {
+            ...prev,
+            [curr.product_id]: [this.eventMonitoringService.hyp3able(curr)]
+          }, {});
+          this.selectedSarviewsProducts = products.filter(product => pinned_browse_ids.includes(product.product_id));
           Object.keys(this.selectedProducts).forEach(id => delete this.selectedProducts[id]);
           products.forEach(prod => this.selectedProducts[prod.product_id] = pinned_browse_ids.includes(prod.product_id));
 
@@ -274,7 +281,6 @@ export class SceneFilesComponent implements OnInit, OnDestroy, AfterContentInit 
   public onSelectSarviewsProduct(selections: MatSelectionListChange) {
     selections.options.forEach(option => this.selectedProducts[option.value] = option.selected );
     this.onUpdatePinnedUrl();
-    // this.selectedProducts[product_id] = !this.selectedProducts?.[product_id] ?? true;
   }
 
   public onUpdatePinnedUrl() {
@@ -295,9 +301,8 @@ export class SceneFilesComponent implements OnInit, OnDestroy, AfterContentInit 
   }
 
   public onOpenPinnedProducts() {
-    // if(this.searchType === models.SearchType.SARVIEWS_EVENTS) {
-      this.store$.dispatch(new scenesStore.SetSelectedSarviewProduct(this.sarviewsProducts[0]));
-    // }
+    this.store$.dispatch(new scenesStore.SetSelectedSarviewProduct(this.sarviewsProducts[0]));
+
     this.store$.dispatch(new uiStore.SetIsBrowseDialogOpen(true));
 
     const dialogRef = this.dialog.open(ImageDialogComponent, {
@@ -313,17 +318,16 @@ export class SceneFilesComponent implements OnInit, OnDestroy, AfterContentInit 
         _ => this.store$.dispatch(new uiStore.SetIsBrowseDialogOpen(false))
       )
     );
-    // window.open(this.currentPinnedUrl(current_id));
   }
 
-  public copyProductSourceScenes() {
-    const products = this.sarviewsProducts;
-    const granule_name_list = products.reduce(
+  public copyProductSourceScenes(products: SarviewsProduct[]) {
+    const granuleNameList = products.reduce(
       (acc, curr) => acc = acc.concat(curr.granules), [] as SarviewProductGranule[]
       ).map(gran => gran.granule_name);
+    const granuleNameListSet = new Set(granuleNameList);
 
-    this.clipboard.copyFromContent( granule_name_list.join(','));
-    this.notificationService.info(`Scene Names Copied`);
+    this.clipboard.copyFromContent( Array.from(granuleNameListSet).join(','));
+    this.notificationService.clipboardCopyIcon('', granuleNameListSet.size);
   }
 
   public onQueueSarviewsProduct(product: models.SarviewsProduct): void {
@@ -361,6 +365,36 @@ export class SceneFilesComponent implements OnInit, OnDestroy, AfterContentInit 
     } else {
       this.store$.dispatch(new queueStore.AddItems([toCMRProduct]));
     }
+  }
+
+  public getProductSceneCount(products: SarviewsProduct[]) {
+    const outputList = products.reduce((prev, product) => {
+        const temp = product.granules.map(granule => granule.granule_name);
+
+        prev = prev.concat(temp);
+
+        return prev;
+
+        }, [] as string[]
+    );
+
+    return new Set(outputList).size;
+  }
+
+  public getProductDownloadUrl(products: SarviewsProduct[]) {
+    const productListStr = products.map(product => product.files.product_url);
+    this.clipboard.copyFromContent( productListStr.join('\n '));
+    const lines = products.length;
+    this.notificationService.clipboardCopyQueue(lines, false);
+  }
+
+  public onAddEventToOnDemand(product: SarviewsProduct) {
+    const job: models.QueuedHyp3Job = {
+      granules:  this.eventMonitoringService.getSourceCMRProducts(product),
+      job_type: hyp3JobTypes[product.job_type]
+      };
+
+    this.store$.dispatch(new queueStore.AddJob(job));
   }
 
   ngOnDestroy() {

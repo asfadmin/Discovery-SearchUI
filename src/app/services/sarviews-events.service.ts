@@ -1,19 +1,16 @@
-import { HttpClient,
-  // HttpErrorResponse
- } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { LonLat, SarviewsEvent, SarviewsProcessedEvent } from '@models';
-import {
-  // forkJoin,
-   Observable, of } from 'rxjs';
+import { LonLat, SarviewsEvent, SarviewsProcessedEvent, SarviewsProduct } from '@models';
+import { Observable, of } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
-// import { Feature } from 'geojson';
 import { Range } from '@models';
 import { WktService } from '@services';
 import { MapService } from './map/map.service';
 import { Coordinate } from 'ol/coordinate';
 import MultiPolygon from 'ol/geom/MultiPolygon';
 import Polygon from 'ol/geom/Polygon';
+import * as models from '@models';
+import * as moment from 'moment';
 
 @Injectable({
   providedIn: 'root'
@@ -139,4 +136,98 @@ export class SarviewsEventsService {
 
       return{lon: centerLon, lat: centerLat};
   }
+
+  public getSourceCMRProducts(product: models.SarviewsProduct): models.CMRProduct[] {
+    const toCMRProducts: models.CMRProduct[] = product.granules.map( granule =>
+        this.toCMRProduct(product, granule)
+    );
+
+      return toCMRProducts;
+  }
+
+    public eventProductToCMRProduct(product: models.SarviewsProduct): models.CMRProduct {
+      return this.toCMRProduct(product, product.granules[0]);
+    }
+
+    private toCMRProduct(product: SarviewsProduct, granule: models.SarviewProductGranule) {
+      const jobTypes = Object.values(models.hyp3JobTypes);
+      const jobType = jobTypes.find(t => t.id === product.job_type);
+
+      const productTypeDisplay = `${jobType.name}, ${jobType.productTypes[0].productTypes[0]}`;
+
+      return {
+        name: granule.granule_name,
+        productTypeDisplay,
+        file: '',
+        id: product.product_id,
+        downloadUrl: product.files.product_url,
+        bytes: product.files.product_size,
+        browses: [product.files.browse_url],
+        thumbnail: '',
+        dataset: 'Sentinel-1',
+        groupId: 'SARViews',
+        isUnzippedFile: false,
+
+        metadata: {
+          date: moment(product.processing_date),
+          stopDate: moment(product.processing_date),
+          polygon: granule.wkt,
+          productType: jobType.name
+
+        } as models.CMRProductMetadata
+      };
+    }
+
+    public hyp3able(product: models.SarviewsProduct): models.Hyp3ableProductByJobType {
+      const hyp3Prod: models.Hyp3ableByProductType = {
+        productType: product.job_type,
+        products: [this.getSourceCMRProducts(product)]
+      };
+      const byProductType: models.Hyp3ableByProductType[] = [hyp3Prod];
+
+      const output: models.Hyp3ableProductByJobType = {
+        jobType: models.hyp3JobTypes[product.job_type],
+        byProductType,
+        total: 1
+      } ;
+      return output;
+    }
+
+    public toHyp3ableProducts(products: models.SarviewsProduct[]): {byJobType: models.Hyp3ableProductByJobType[]; total: number} {
+      // let total = 0;
+      // const productsTypes = models.hyp3JobTypes;
+
+      // const types = {};
+      const hyp3ProductsByType = {};
+      products.forEach( product => {
+        const productType = product.job_type;
+
+        if (!hyp3ProductsByType[productType]) {
+          hyp3ProductsByType[productType] = [];
+        }
+
+        hyp3ProductsByType[productType].push(this.getSourceCMRProducts(product));
+      });
+
+      const byProductType: models.Hyp3ableByProductType[] = [];
+      Object.keys(hyp3ProductsByType).forEach(key =>
+        byProductType.push({productType: key, products: hyp3ProductsByType[key]}));
+      // byJobType
+      // const byProductType: models.Hyp3ableByProductType[] = [hyp3Prod];
+
+      const output: models.Hyp3ableProductByJobType[] = Object.keys(hyp3ProductsByType).map(key => ({
+        jobType: models.hyp3JobTypes[key],
+        byProductType: byProductType.filter(prod => prod.productType === key),
+        total: byProductType.find(prod => prod.productType === key).products.length
+      }));
+
+
+      // const output: models.Hyp3ableProductByJobType = {
+      //   jobType: models.hyp3JobTypes[product.job_type],
+      //   byProductType,
+      //   total: 1
+      // } ;
+      return {byJobType: output, total: output.reduce((prev, curr) => prev += curr.total, 0)};
+
+    }
 }

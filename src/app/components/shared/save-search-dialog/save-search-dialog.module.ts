@@ -7,8 +7,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatSharedModule } from '@shared';
 
 import { SaveSearchDialogComponent } from './save-search-dialog.component';
-import { SearchFiltersModule } from '../saved-searches/saved-search/search-filters';
-
+import { SearchFiltersModule } from '@components/sidebar/saved-searches/saved-search/search-filters';
 
 
 @NgModule({
