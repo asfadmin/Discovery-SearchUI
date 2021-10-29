@@ -321,11 +321,17 @@ export class CreateSubscriptionComponent implements OnInit, OnDestroy {
 
   public submitSubscription(): void {
     const searchParams = this.getSearchParams();
+    const params = this.filterOptions(this.processingOptionsList, this.jobTypeId).reduce(
+      (ps, p) => {
+        ps[p.name] = p.val;
+        return ps;
+      }, {}
+    );
 
     const sub = {
       job_specification: {
         job_parameters: {
-          ...this.processingOptions
+          ...params
         },
         job_type: this.jobTypeId,
         name: this.projectName
