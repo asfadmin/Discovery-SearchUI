@@ -321,9 +321,9 @@ export class CreateSubscriptionComponent implements OnInit, OnDestroy {
 
   public submitSubscription(): void {
     const searchParams = this.getSearchParams();
-    const params = this.filterOptions(this.processingOptionsList, this.jobTypeId).reduce(
+    const searchOptions = this.filterOptions(this.processingOptionsList, this.jobTypeId).reduce(
       (ps, p) => {
-        ps[p.name] = p.val;
+        ps[p.apiName] = p.val;
         return ps;
       }, {}
     );
@@ -331,7 +331,7 @@ export class CreateSubscriptionComponent implements OnInit, OnDestroy {
     const sub = {
       job_specification: {
         job_parameters: {
-          ...params
+          ...searchOptions
         },
         job_type: this.jobTypeId,
         name: this.projectName
@@ -395,7 +395,7 @@ export class CreateSubscriptionComponent implements OnInit, OnDestroy {
     const filtered = allOptions
       .filter(option => options[option.apiName])
       .map(option => {
-        return {name: option.name, val: options[option.apiName]};
+        return {name: option.name, val: options[option.apiName], apiName: option.apiName};
       });
 
     return filtered;
