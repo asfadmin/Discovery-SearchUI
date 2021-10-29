@@ -12,13 +12,13 @@ import * as uiStore from '@store/ui';
 import * as userStore from '@store/user';
 
 import * as models from '@models';
-import { AuthService, MapService, PropertyService, SarviewsEventsService, ScreenSizeService } from '@services';
+import { AuthService, MapService, PropertyService,
+   SarviewsEventsService,
+  ScreenSizeService } from '@services';
 import { ImageDialogComponent } from './image-dialog';
 
 import { DatasetForProductService } from '@services';
-// import {circular} from 'ol/geom/Polygon';
-// import WKT from 'ol/format/WKT';
-import { MatSliderChange } from '@angular/material/slider';
+
 @Component({
   selector: 'app-scene-detail',
   templateUrl: './scene-detail.component.html',
@@ -30,6 +30,7 @@ export class SceneDetailComponent implements OnInit, OnDestroy {
 
   public scene: models.CMRProduct;
   public sarviewEvent: models.SarviewsEvent;
+  public eventTypes = models.SarviewsEventType;
   public isActiveSarviewEvent = false;
 
   public browses$ = this.store$.select(scenesStore.getSelectedSceneBrowses);
@@ -291,6 +292,14 @@ export class SceneDetailComponent implements OnInit, OnDestroy {
     return this.sarviewsService.getSarviewsEventUrl(this.sarviewEvent?.event_id ?? '');
   }
 
+  public getEventID() {
+    if (this.sarviewEvent.event_type === 'quake') {
+      return (this.sarviewEvent as models.SarviewsQuakeEvent).usgs_event_id;
+    }
+
+    return (this.sarviewEvent as models.SarviewsVolcanicEvent).smithsonian_event_id;
+  }
+
   public makeSarviewsEventGeoSearch() {
     const timeFrame = this.sarviewEvent.processing_timeframe;
 
@@ -311,9 +320,9 @@ export class SceneDetailComponent implements OnInit, OnDestroy {
     this.store$.dispatch(new searchStore.MakeSearch());
   }
 
-  public onEventSearchRadiusChange(event: MatSliderChange) {
-    this.sarviewsEventGeoSearchRadius = event.value;
-    this.mapService.onSetSarviewsPolygon(this.sarviewEvent, this.sarviewsEventGeoSearchRadius);
+  public onEventSearchRadiusChange(value: number) {
+    this.sarviewsEventGeoSearchRadius = value;
+    // this.mapService.onSetSarviewsPolygon(this.sarviewEvent, this.sarviewsEventGeoSearchRadius);
   }
 
   public makeEventListSearch() {
