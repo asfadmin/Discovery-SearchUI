@@ -321,11 +321,17 @@ export class CreateSubscriptionComponent implements OnInit, OnDestroy {
 
   public submitSubscription(): void {
     const searchParams = this.getSearchParams();
+    const searchOptions = this.filterOptions(this.processingOptionsList, this.jobTypeId).reduce(
+      (ps, p) => {
+        ps[p.apiName] = p.val;
+        return ps;
+      }, {}
+    );
 
     const sub = {
       job_specification: {
         job_parameters: {
-          ...this.processingOptions
+          ...searchOptions
         },
         job_type: this.jobTypeId,
         name: this.projectName
@@ -389,7 +395,7 @@ export class CreateSubscriptionComponent implements OnInit, OnDestroy {
     const filtered = allOptions
       .filter(option => options[option.apiName])
       .map(option => {
-        return {name: option.name, val: options[option.apiName]};
+        return {name: option.name, val: options[option.apiName], apiName: option.apiName};
       });
 
     return filtered;
