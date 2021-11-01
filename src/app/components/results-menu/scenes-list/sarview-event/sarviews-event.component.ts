@@ -49,6 +49,31 @@ export class SarviewsEventComponent implements OnInit {
     }
   }
 
+  public isActive(): boolean {
+    const currentDate = new Date();
+
+    if (!!this.event.processing_timeframe.end) {
+      if (currentDate <= new Date(this.event.processing_timeframe.end)) {
+        return true;
+      }
+    } else {
+      return true;
+    }
+
+    return false;
+  }
+
+  public eventIcon(): string {
+    let eventTypeIcon = this.event.event_type === 'quake' ? 'Earthquake' : 'Volcano';
+
+    if(!this.isActive()) {
+      return eventTypeIcon + '_inactive';
+    }
+
+    return eventTypeIcon;
+  }
+
+  // "Earthquake_inactive.svg
   public onZoomTo() {
     this.mapService.zoomToEvent(this.event);
   }
