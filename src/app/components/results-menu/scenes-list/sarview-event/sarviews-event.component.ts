@@ -53,14 +53,10 @@ export class SarviewsEventComponent implements OnInit {
     const currentDate = new Date();
 
     if (!!this.event.processing_timeframe.end) {
-      if (currentDate <= new Date(this.event.processing_timeframe.end)) {
-        return true;
-      }
-    } else {
-      return true;
+      return currentDate <= new Date(this.event.processing_timeframe.end)
     }
 
-    return false;
+    return true;
   }
 
   public eventIcon(): string {
