@@ -23,6 +23,22 @@
   color: red;
 }
 
+.map-icon {
+  cursor: pointer;
+  position: absolute;
+  display: inline;
+  margin-left: 5px;
+}
+
+.map-button-toggle {
+  padding-right: 40px;
+}
+
+.criteria-button-group {
+  outline: none;
+  // width: auto;
+}
+
 ::ng-deep div.mat-menu-panel {
   min-width: 112px;
 

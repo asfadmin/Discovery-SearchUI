@@ -2,7 +2,7 @@ import { Component, OnInit, OnDestroy, AfterContentInit } from '@angular/core';
 import { SubSink } from 'subsink';
 
 import { combineLatest } from 'rxjs';
-import { debounceTime, distinctUntilChanged, filter, map, withLatestFrom } from 'rxjs/operators';
+import { debounceTime, distinctUntilChanged, filter, map, take, withLatestFrom } from 'rxjs/operators';
 
 import { Store } from '@ngrx/store';
 import { AppState } from '@store';
@@ -314,7 +314,7 @@ export class SceneFilesComponent implements OnInit, OnDestroy, AfterContentInit 
     });
 
     this.subs.add(
-      dialogRef.afterClosed().subscribe(
+      dialogRef.afterClosed().pipe(take(1)).subscribe(
         _ => this.store$.dispatch(new uiStore.SetIsBrowseDialogOpen(false))
       )
     );

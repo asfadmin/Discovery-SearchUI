@@ -259,6 +259,25 @@
           </div>
         </div>
 
+        <div *ngIf="searchType === SearchTypes.SARVIEWS_EVENTS" fxFlex="" class="list-button-group">
+          <div fxLayout="row" fxLayoutAlign="center" class="button-group-label">
+            <label>Copy</label>
+          </div>
+          <div fxLayout="row">
+            <div>
+              <mat-button-toggle-group fxFlex="" name="layerType" class="mr-10">
+                <mat-button-toggle class="control-mat-button-toggle clickable noselect"
+                [matMenuTriggerFor]="eventMonitoringOptions"
+                [matMenuTriggerData]="{ selected: (selectedEventProducts$ | async)}"
+                matTooltip="Copy ids/urls"
+                >
+                <fa-icon class="list-icon" [icon]="copyIcon"></fa-icon>
+                </mat-button-toggle>
+              </mat-button-toggle-group>
+            </div>
+          </div>
+        </div>
+
           <div *ngIf="searchType === SearchTypes.SBAS" fxFlex="" class="list-button-group">
             <div fxLayout="row" fxLayoutAlign="center" class="button-group-label">
               <label>Pairs</label>
@@ -374,3 +393,41 @@
   </ng-container>
 
 </ng-container>
+
+
+<mat-menu #eventMonitoringOptions="matMenu">
+  <ng-template matMenuContent let-selectedProducts="selected">
+    <button mat-menu-item
+    [matMenuTriggerFor]="eventMonitoringIDs"
+    [matMenuTriggerData]="{selectedProducts: selectedProducts, products: (sarviewsEventProducts$ | async)}">
+    Scene IDs
+  </button>
+  <button mat-menu-item
+  [matMenuTriggerFor]="eventMonitoringUrls"
+  [matMenuTriggerData]="{selectedProducts: selectedProducts, products: (sarviewsEventProducts$ | async)}">
+    URLs
+  </button>
+</ng-template>
+</mat-menu>
+
+<mat-menu #eventMonitoringIDs="matMenu">
+  <ng-template matMenuContent let-selectedProducts="selectedProducts" let-sarviewsProducts="products">
+  <button mat-menu-item (click) = "copyProductSourceScenes(sarviewsProducts)">
+    All Products ({{getProductSceneCount(sarviewsProducts)}})
+  </button>
+  <button [disabled]="getProductSceneCount(selectedProducts) === 0" mat-menu-item (click) = "copyProductSourceScenes(selectedProducts)">
+    Selected Products ({{getProductSceneCount(selectedProducts)}})
+  </button>
+</ng-template>
+</mat-menu>
+
+<mat-menu #eventMonitoringUrls="matMenu">
+  <ng-template matMenuContent let-selectedProducts="selectedProducts" let-sarviewsProducts="products">
+    <button [disabled]="sarviewsProducts.length === 0" mat-menu-item (click) = "getProductDownloadUrl(sarviewsProducts)">
+      All Products ({{sarviewsProducts.length}})
+    </button>
+    <button [disabled]="getProductSceneCount(selectedProducts) === 0" mat-menu-item (click) = "getProductDownloadUrl(selectedProducts)">
+      Selected Products ({{selectedProducts.length}})
+    </button>
+  </ng-template>
+</mat-menu>
