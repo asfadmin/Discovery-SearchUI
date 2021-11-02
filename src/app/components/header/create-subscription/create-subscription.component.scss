@@ -233,3 +233,9 @@ $color: $asf-primary-dark;
 .navigation-item {
   flex: none;
 }
+
+.mobile-navigation-item {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+}

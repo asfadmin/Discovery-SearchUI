@@ -34,6 +34,8 @@ enum CreateSubscriptionSteps {
 export class CreateSubscriptionComponent implements OnInit, OnDestroy {
   @ViewChild('stepper', { static: false }) public stepper: MatStepper;
 
+  public steps = CreateSubscriptionSteps;
+
   public jobTypeId = models.hyp3JobTypes.RTC_GAMMA.id;
   public errors = {
     dateError: null,
