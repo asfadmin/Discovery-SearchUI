@@ -496,7 +496,7 @@ export class MapService {
   private fixPolygonAntimeridian(feature: Feature<Geometry>, wkt: string) {
     const isMultiPolygon = wkt.includes('MULTIPOLYGON');
     let polygonCoordinates: Coordinate[];
-    let geom = feature.getGeometry();
+    const geom = feature.getGeometry();
     if (isMultiPolygon) {
       polygonCoordinates = (geom as MultiPolygon).getPolygon(0).getCoordinates()[0];
       (geom as MultiPolygon).setCoordinates([[this.wktService.fixAntimeridianCoordinates(polygonCoordinates)]]);

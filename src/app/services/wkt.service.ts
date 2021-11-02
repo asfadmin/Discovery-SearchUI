@@ -25,7 +25,7 @@ export class WktService {
   public fixAntimeridianCoordinates(coordinates: Coordinate[]) {
     const lons = coordinates.map(coordinate => toLonLat(coordinate)[0]);
     let new_coords = coordinates;
-    if(Math.max(...lons) - Math.min(...lons) > 180) {
+    if (Math.max(...lons) - Math.min(...lons) > 180) {
       new_coords = coordinates.map(coordinate => toLonLat(coordinate))
       .map(coordinate => coordinate[0] > 0 ? coordinate : [coordinate[0] + 360, coordinate[1]])
       .map(coordinate => fromLonLat(coordinate));
