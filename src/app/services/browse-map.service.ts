@@ -248,7 +248,7 @@ export class BrowseMapService {
 
   private fixPolygonAntimeridian(polygon: Polygon) {
     polygon.setCoordinates(
-      [this.wktService.wktFix(polygon.getCoordinates()[0])]
+      [this.wktService.fixAntimeridianCoordinates(polygon.getCoordinates()[0])]
       );
   }
 }

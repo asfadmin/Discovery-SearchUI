@@ -499,10 +499,10 @@ export class MapService {
     let geom = feature.getGeometry();
     if (isMultiPolygon) {
       polygonCoordinates = (geom as MultiPolygon).getPolygon(0).getCoordinates()[0];
-      (geom as MultiPolygon).setCoordinates([[this.wktService.wktFix(polygonCoordinates)]]);
+      (geom as MultiPolygon).setCoordinates([[this.wktService.fixAntimeridianCoordinates(polygonCoordinates)]]);
     } else {
       polygonCoordinates = (geom as Polygon).getCoordinates()[0];
-      (geom as Polygon).setCoordinates([this.wktService.wktFix(polygonCoordinates)]);
+      (geom as Polygon).setCoordinates([this.wktService.fixAntimeridianCoordinates(polygonCoordinates)]);
     }
   }
 

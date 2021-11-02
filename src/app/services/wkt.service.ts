@@ -22,7 +22,7 @@ export class WktService {
     });
   }
 
-  public wktFix(coordinates: Coordinate[]) {
+  public fixAntimeridianCoordinates(coordinates: Coordinate[]) {
     const lons = coordinates.map(coordinate => toLonLat(coordinate)[0]);
     let new_coords = coordinates;
     if(Math.max(...lons) - Math.min(...lons) > 180) {
