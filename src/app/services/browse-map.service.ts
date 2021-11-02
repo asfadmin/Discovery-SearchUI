@@ -16,6 +16,7 @@ import WKT from 'ol/format/WKT';
 import LayerGroup from 'ol/layer/Group';
 import { Collection } from 'ol';
 import Projection from 'ol/proj/Projection';
+import { WktService } from '@services';
 interface Dimension {
   width: number;
   height: number;
@@ -36,17 +37,15 @@ export class BrowseMapService {
   private view: View;
   private pinnedProducts: LayerGroup;
 
-  // private selectClick = new Select({
-  //   condition: click,
-  //   style: null,
-  //   // layers: l => !!this.pinnedProducts.getLayersArray().find(pinned => pinned.get("product_id") === l?.get("product_id")),
-  // });
+  public constructor(private wktService: WktService) {}
 
   public setMapBrowse(browse: string, wkt: string = ''): void {
     const format = new WKT();
     const feature = format.readFeature(wkt, {dataProjection: 'EPSG:4326',
     featureProjection: 'EPSG:3857'});
     const polygon: Polygon = feature.getGeometry() as Polygon;
+
+    this.fixPolygonAntimeridian(polygon);
 
     const polygonVectorSource = new VectorSource({
       features: [feature],
@@ -57,7 +56,7 @@ export class BrowseMapService {
       style: polygonStyle.valid,
     });
 
-    const coord = getCenter( polygon.getExtent());
+    const center = getCenter( polygon.getExtent());
 
     const Imagelayer = new ImageLayer({
       source: new Static({
@@ -78,7 +77,7 @@ export class BrowseMapService {
     if (!this.map) {
     this.view = new View({
       projection: 'EPSG:3857',
-      center: coord,
+      center,
       zoom: 4,
       minZoom: 1,
       maxZoom: 14,
@@ -113,7 +112,9 @@ export class BrowseMapService {
     const format = new WKT();
     const feature = format.readFeature(wkt, {dataProjection: 'EPSG:4326',
     featureProjection: 'EPSG:3857'});
+
     const polygon: Polygon = feature.getGeometry() as Polygon;
+    this.fixPolygonAntimeridian(polygon);
 
     const imagelayer = new ImageLayer({
       source: new Static({
@@ -245,17 +246,9 @@ export class BrowseMapService {
     }
   }
 
-  // private update(view: View, layer: ImageLayer): void {
-  //   this.map.setView(view);
-  //   const mapLayers = this.map.getLayers();
-  //   mapLayers.setAt(0, layer);
-  // }
-
-  // private newMap(view: View, layer: ImageLayer): Map {
-  //   return new Map({
-  //     layers: [ layer ],
-  //     target: 'browse-map',
-  //     view
-  //   });
-  // }
+  private fixPolygonAntimeridian(polygon: Polygon) {
+    polygon.setCoordinates(
+      [this.wktService.wktFix(polygon.getCoordinates()[0])]
+      );
+  }
 }
