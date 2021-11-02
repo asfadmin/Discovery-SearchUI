@@ -2,7 +2,7 @@ import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 import { Store } from '@ngrx/store';
-import { SarviewsEventsService, ScenesService } from '@services';
+import { NotificationService, SarviewsEventsService, ScenesService } from '@services';
 import { AppState } from '@store';
 
 import * as filterStore from '@store/filters';
@@ -33,7 +33,8 @@ export class SarviewsEventSearchSelectorComponent implements OnInit, OnDestroy {
 
   constructor(private store$: Store<AppState>,
               private sceneService: ScenesService,
-              private eventService: SarviewsEventsService) { }
+              private eventService: SarviewsEventsService,
+              private notificationService: NotificationService) { }
 
   ngOnInit(): void {
     this.subs.add(
@@ -54,6 +55,10 @@ export class SarviewsEventSearchSelectorComponent implements OnInit, OnDestroy {
 
   public onSearchQueryChange(event: Event): void {
     const query = (event.target as HTMLInputElement).value;
-    this.store$.dispatch(new filterStore.SetSarviewsEventNameFilter(query));
+    if (query.length > 100) {
+      this.notificationService.error('Event Search Filter Too Long');
+    } else {
+      this.store$.dispatch(new filterStore.SetSarviewsEventNameFilter(query));
+    }
   }
 }
