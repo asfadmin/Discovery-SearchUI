@@ -711,7 +711,7 @@ export class UrlStateService {
   }
 
   private loadEventNameFilter = (eventStr: string): Action => {
-    if(eventStr.length > 100) {
+    if (eventStr.length > 100) {
       return new filterStore.SetSarviewsEventNameFilter('');
     }
 

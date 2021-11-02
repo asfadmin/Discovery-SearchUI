@@ -55,8 +55,8 @@ export class SarviewsEventSearchSelectorComponent implements OnInit, OnDestroy {
 
   public onSearchQueryChange(event: Event): void {
     const query = (event.target as HTMLInputElement).value;
-    if(query.length > 100) {
-      this.notificationService.error("Event Search Filter Too Long");
+    if (query.length > 100) {
+      this.notificationService.error('Event Search Filter Too Long');
     } else {
       this.store$.dispatch(new filterStore.SetSarviewsEventNameFilter(query));
     }
