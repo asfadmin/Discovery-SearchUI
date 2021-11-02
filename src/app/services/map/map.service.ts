@@ -221,7 +221,7 @@ export class MapService {
               anchor: [0.5, 46],
               anchorXUnits: IconAnchorUnits.FRACTION,
               anchorYUnits: IconAnchorUnits.PIXELS,
-              src: `/assets/${iconName}`,
+              src: `/assets/icons/${iconName}`,
               scale: 0.1,
               offset: [0, 10]
             }),

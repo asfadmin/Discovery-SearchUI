@@ -27,7 +27,7 @@
       <ng-container
       *ngIf="
         searchType === SearchTypes.SARVIEWS_EVENTS">
-      <div *cdkVirtualFor="let event of sarviewsEvents">
+      <div *ngFor="let event of sarviewsEvents">
         <app-sarviews-event
           [event] = event
           [selected] = "event.event_id === selectedEvent">
