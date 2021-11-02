@@ -31,6 +31,8 @@ import { MatSliderModule } from '@angular/material/slider';
 import { SbasSlidersTwoComponent } from './sbas-sliders-two/sbas-sliders-two.component';
 import { SarviewsResultsMenuComponent } from './sarviews-results-menu/sarviews-results-menu.component';
 
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+
 @NgModule({
   declarations: [
     ResultsMenuComponent,
@@ -65,6 +67,7 @@ import { SarviewsResultsMenuComponent } from './sarviews-results-menu/sarviews-r
     MatFormFieldModule,
     MatInputModule,
     ReactiveFormsModule,
+    FontAwesomeModule,
   ],
   exports: [ResultsMenuComponent, SbasSlidersTwoComponent, SbasSlidersComponent],
 })

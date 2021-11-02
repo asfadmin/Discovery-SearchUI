@@ -29,13 +29,13 @@
 }
 
 .saved-filters-presets__content {
-  max-height: calc(100vh - 350px);
+  max-height: 100%;
   overflow-y: auto;
   background-color: white;
 }
 
 .saved-filters-presets__content-mobile {
-  max-height: calc(100vh - 350px);
+  max-height: 100%;
   overflow-y: auto;
   background-color: white;
   width: 100%;
@@ -110,6 +110,7 @@
   border-top-style: solid;
   border-top-width: 1px;
   background-color: $asf-primary-light;
+  z-index: 1;
 }
 
 .saved-filters-presets__footer-mobile {

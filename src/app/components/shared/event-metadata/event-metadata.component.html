@@ -29,7 +29,7 @@
   </li>
   <li *ngIf="(event | quakeEvent).processing_timeframe.start !== null">
     <span class="v-mid">
-      <b>Start Date </b> {{(event | quakeEvent).processing_timeframe.start | shortDateTime}}
+      <b>Start Time </b> {{(event | quakeEvent).processing_timeframe.start | shortDateTime}}
     </span>
     <mat-icon
     [matMenuTriggerFor]="addSceneDateMenu"
@@ -40,7 +40,7 @@
   </li>
   <li *ngIf="(event | quakeEvent).processing_timeframe.end !== null">
     <span class="v-mid">
-      <b>End Date </b> {{(event | quakeEvent).processing_timeframe.end | shortDateTime}}
+      <b>End Time </b> {{(event | quakeEvent).processing_timeframe.end | shortDateTime}}
     </span>
     <mat-icon
     [matMenuTriggerFor]="addSceneDateMenu"
@@ -53,7 +53,7 @@
 <ul class="scene-metadata" *ngIf="eventType === eventTypes.VOLCANO">
   <li *ngIf="event.processing_timeframe.start !== null">
     <span class="v-mid">
-      <b>Start Date </b> {{event.processing_timeframe.start | shortDateTime}}
+      <b>Start Time </b> {{event.processing_timeframe.start | shortDateTime}}
     </span>
     <mat-icon
     [matMenuTriggerFor]="addSceneDateMenu"
@@ -64,7 +64,7 @@
   </li>
   <li *ngIf="event.processing_timeframe.end !== null">
     <span class="v-mid">
-      <b>End Date </b> {{event.processing_timeframe.end | shortDateTime}}
+      <b>End Time </b> {{event.processing_timeframe.end | shortDateTime}}
     </span>
     <mat-icon
     [matMenuTriggerFor]="addSceneDateMenu"
@@ -89,8 +89,8 @@
 
 <mat-menu #addSceneDateMenu="matMenu">
   <ng-template matMenuContent let-date="eventDate">
-  <button (click)="onSetStartDate(date)" mat-menu-item>Set as start date</button>
-  <button (click)="onSetEndDate(date)" mat-menu-item>Set as end date</button>
+  <button (click)="onSetStartDate(date)" mat-menu-item>Set as Start Date</button>
+  <button (click)="onSetEndDate(date)" mat-menu-item>Set as End Date</button>
 </ng-template>
 </mat-menu>
 

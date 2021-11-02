@@ -46,9 +46,10 @@ export class OnDemandAddMenuComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-
     this.subs.add(
-      this.store$.select(getSearchType).subscribe( searchtype => this.searchType = searchtype)
+      this.store$.select(getSearchType).subscribe(
+        searchtype => this.searchType = searchtype
+      )
     );
 
     this.subs.add(

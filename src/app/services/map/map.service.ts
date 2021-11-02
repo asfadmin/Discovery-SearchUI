@@ -27,6 +27,9 @@ import { AppState } from '@store';
 import { Icon, Style } from 'ol/style';
 import IconAnchorUnits from 'ol/style/IconAnchorUnits';
 import Geometry from 'ol/geom/Geometry';
+import Polygon from 'ol/geom/Polygon';
+import MultiPolygon from 'ol/geom/MultiPolygon';
+import { Coordinate } from 'ol/coordinate';
 
 @Injectable({
   providedIn: 'root'
@@ -199,7 +202,6 @@ export class MapService {
         let point: Point;
         point = new Point([sarviewEvent.point.lat, sarviewEvent.point.lon]);
 
-        // point.scale(20);
         feature.set('eventPoint', point);
         feature.setGeometryName('eventPoint');
         feature.set('sarviews_id', sarviewEvent.event_id);
@@ -221,7 +223,7 @@ export class MapService {
               anchor: [0.5, 46],
               anchorXUnits: IconAnchorUnits.FRACTION,
               anchorYUnits: IconAnchorUnits.PIXELS,
-              src: `/assets/${iconName}`,
+              src: `/assets/icons/${iconName}`,
               scale: 0.1,
               offset: [0, 10]
             }),
@@ -346,6 +348,8 @@ export class MapService {
       this.epsg()
     );
 
+    this.fixPolygonAntimeridian(feature, targetEvent.wkt);
+
     this.zoomToFeature(feature);
   }
 
@@ -363,6 +367,8 @@ export class MapService {
       wkt,
       this.epsg()
     );
+
+    this.fixPolygonAntimeridian(features, sarviewEvent.wkt);
 
     features.getGeometry().scale(radius);
     this.setDrawFeature(features);
@@ -485,6 +491,19 @@ export class MapService {
     mapLayers.setAt(0, this.mapView.layer);
 
     return this.map;
+  }
+
+  private fixPolygonAntimeridian(feature: Feature<Geometry>, wkt: string) {
+    const isMultiPolygon = wkt.includes('MULTIPOLYGON');
+    let polygonCoordinates: Coordinate[];
+    const geom = feature.getGeometry();
+    if (isMultiPolygon) {
+      polygonCoordinates = (geom as MultiPolygon).getPolygon(0).getCoordinates()[0];
+      (geom as MultiPolygon).setCoordinates([[this.wktService.fixAntimeridianCoordinates(polygonCoordinates)]]);
+    } else {
+      polygonCoordinates = (geom as Polygon).getCoordinates()[0];
+      (geom as Polygon).setCoordinates([this.wktService.fixAntimeridianCoordinates(polygonCoordinates)]);
+    }
   }
 
 }
