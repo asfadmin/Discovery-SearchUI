@@ -130,6 +130,7 @@ export class SarviewsEventsService {
     } else {
       polygonCoordinates = (geom as Polygon).getCoordinates()[0];
     }
+      polygonCoordinates = this.wktService.wktFix(polygonCoordinates);
 
       const centerLat = (polygonCoordinates[0][0] + polygonCoordinates[1][0] + polygonCoordinates[2][0] + polygonCoordinates[3][0]) / 4.0;
       const centerLon = (polygonCoordinates[0][1] + polygonCoordinates[1][1] + polygonCoordinates[2][1] + polygonCoordinates[3][1]) / 4.0;

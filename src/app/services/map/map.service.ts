@@ -27,6 +27,9 @@ import { AppState } from '@store';
 import { Icon, Style } from 'ol/style';
 import IconAnchorUnits from 'ol/style/IconAnchorUnits';
 import Geometry from 'ol/geom/Geometry';
+import Polygon from 'ol/geom/Polygon';
+import MultiPolygon from 'ol/geom/MultiPolygon';
+import { Coordinate } from 'ol/coordinate';
 
 @Injectable({
   providedIn: 'root'
@@ -199,6 +202,7 @@ export class MapService {
         let point: Point;
         point = new Point([sarviewEvent.point.lat, sarviewEvent.point.lon]);
 
+        // point = this.wktService.wktFix(point);
         // point.scale(20);
         feature.set('eventPoint', point);
         feature.setGeometryName('eventPoint');
@@ -221,7 +225,7 @@ export class MapService {
               anchor: [0.5, 46],
               anchorXUnits: IconAnchorUnits.FRACTION,
               anchorYUnits: IconAnchorUnits.PIXELS,
-              src: `/assets/${iconName}`,
+              src: `/assets/icons/${iconName}`,
               scale: 0.1,
               offset: [0, 10]
             }),
@@ -363,6 +367,16 @@ export class MapService {
       wkt,
       this.epsg()
     );
+    const isMultiPolygon = wkt.includes('MULTIPOLYGON');
+    let polygonCoordinates: Coordinate[];
+    let geom = features.getGeometry();
+    if (isMultiPolygon) {
+      polygonCoordinates = (geom as MultiPolygon).getPolygon(0).getCoordinates()[0];
+      (geom as MultiPolygon).setCoordinates([[this.wktService.wktFix(polygonCoordinates)]]);
+    } else {
+      polygonCoordinates = (geom as Polygon).getCoordinates()[0];
+      (geom as Polygon).setCoordinates([this.wktService.wktFix(polygonCoordinates)]);
+    }
 
     features.getGeometry().scale(radius);
     this.setDrawFeature(features);
