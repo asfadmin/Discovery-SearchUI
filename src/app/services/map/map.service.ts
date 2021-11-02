@@ -202,8 +202,6 @@ export class MapService {
         let point: Point;
         point = new Point([sarviewEvent.point.lat, sarviewEvent.point.lon]);
 
-        // point = this.wktService.wktFix(point);
-        // point.scale(20);
         feature.set('eventPoint', point);
         feature.setGeometryName('eventPoint');
         feature.set('sarviews_id', sarviewEvent.event_id);
@@ -350,16 +348,7 @@ export class MapService {
       this.epsg()
     );
 
-    const isMultiPolygon = targetEvent.wkt.includes('MULTIPOLYGON');
-    let polygonCoordinates: Coordinate[];
-    let geom = feature.getGeometry();
-    if (isMultiPolygon) {
-      polygonCoordinates = (geom as MultiPolygon).getPolygon(0).getCoordinates()[0];
-      (geom as MultiPolygon).setCoordinates([[this.wktService.wktFix(polygonCoordinates)]]);
-    } else {
-      polygonCoordinates = (geom as Polygon).getCoordinates()[0];
-      (geom as Polygon).setCoordinates([this.wktService.wktFix(polygonCoordinates)]);
-    }
+    this.fixPolygonAntimeridian(feature, targetEvent.wkt);
 
     this.zoomToFeature(feature);
   }
@@ -378,16 +367,8 @@ export class MapService {
       wkt,
       this.epsg()
     );
-    const isMultiPolygon = wkt.includes('MULTIPOLYGON');
-    let polygonCoordinates: Coordinate[];
-    let geom = features.getGeometry();
-    if (isMultiPolygon) {
-      polygonCoordinates = (geom as MultiPolygon).getPolygon(0).getCoordinates()[0];
-      (geom as MultiPolygon).setCoordinates([[this.wktService.wktFix(polygonCoordinates)]]);
-    } else {
-      polygonCoordinates = (geom as Polygon).getCoordinates()[0];
-      (geom as Polygon).setCoordinates([this.wktService.wktFix(polygonCoordinates)]);
-    }
+
+    this.fixPolygonAntimeridian(features, sarviewEvent.wkt);
 
     features.getGeometry().scale(radius);
     this.setDrawFeature(features);
@@ -510,6 +491,19 @@ export class MapService {
     mapLayers.setAt(0, this.mapView.layer);
 
     return this.map;
+  }
+
+  private fixPolygonAntimeridian(feature: Feature<Geometry>, wkt: string) {
+    const isMultiPolygon = wkt.includes('MULTIPOLYGON');
+    let polygonCoordinates: Coordinate[];
+    let geom = feature.getGeometry();
+    if (isMultiPolygon) {
+      polygonCoordinates = (geom as MultiPolygon).getPolygon(0).getCoordinates()[0];
+      (geom as MultiPolygon).setCoordinates([[this.wktService.wktFix(polygonCoordinates)]]);
+    } else {
+      polygonCoordinates = (geom as Polygon).getCoordinates()[0];
+      (geom as Polygon).setCoordinates([this.wktService.wktFix(polygonCoordinates)]);
+    }
   }
 
 }
