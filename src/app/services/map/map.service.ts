@@ -30,6 +30,9 @@ import Geometry from 'ol/geom/Geometry';
 import Polygon from 'ol/geom/Polygon';
 import MultiPolygon from 'ol/geom/MultiPolygon';
 import { Coordinate } from 'ol/coordinate';
+import WKT from 'ol/format/WKT';
+import ImageLayer from 'ol/layer/Image';
+import Static from 'ol/source/ImageStatic';
 
 @Injectable({
   providedIn: 'root'
@@ -41,6 +44,7 @@ export class MapService {
   private map: Map;
   private polygonLayer: VectorLayer;
   private sarviewsEventsLayer: VectorLayer;
+  private browseImageLayer: ImageLayer;
   private gridLinesVisible: boolean;
   private sarviewsFeaturesByID: {[id: string]: Feature} = {};
 
@@ -491,6 +495,36 @@ export class MapService {
     mapLayers.setAt(0, this.mapView.layer);
 
     return this.map;
+  }
+
+  public setSelectedBrowse(url: string, wkt: string) {
+    if(!!this.browseImageLayer) {
+      this.map.removeLayer(this.browseImageLayer);
+    }
+    this.browseImageLayer = this.createImageLayer(url, wkt);
+    this.map.addLayer(this.browseImageLayer);
+  }
+
+  public createImageLayer(url: string, wkt: string, className: string = 'ol-layer') {
+    const format = new WKT();
+    const feature = format.readFeature(wkt, {dataProjection: 'EPSG:4326',
+    featureProjection: 'EPSG:3857'});
+
+    const polygon: Polygon = feature.getGeometry() as Polygon;
+    this.fixPolygonAntimeridian(feature, wkt);
+
+    const imagelayer = new ImageLayer({
+      source: new Static({
+        url,
+        imageExtent: polygon.getExtent(),
+      }),
+      className,
+      zIndex: 0,
+      extent: polygon.getExtent(),
+      opacity: 1.0
+    });
+
+    return imagelayer;
   }
 
   private fixPolygonAntimeridian(feature: Feature<Geometry>, wkt: string) {
