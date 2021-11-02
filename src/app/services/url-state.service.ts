@@ -20,8 +20,6 @@ import { WktService } from './wkt.service';
 import { RangeService } from './range.service';
 import { PropertyService } from './property.service';
 import { PinnedProduct } from './browse-map.service';
-// import { MatDialog } from '@angular/material/dialog';
-// import { ImageDialogComponent } from '@components/results-menu/scene-detail/image-dialog';
 
 
 @Injectable({
@@ -395,6 +393,12 @@ export class UrlStateService {
         map(eventTypes => ({eventTypes}))
       ),
       loader: this.loadEventTypes
+    }, {
+      name: 'eventQuery',
+      source: this.store$.select(filterStore.getSarviewsEventNameFilter).pipe(
+        map(eventQuery => ({eventQuery}))
+      ),
+      loader: this.loadEventNameFilter
     }];
   }
 
@@ -687,7 +691,6 @@ export class UrlStateService {
       (prev, key) => {
         const output = {} as PinnedProduct;
         output.isPinned = true;
-        // const sarviewsProduct = this.sarviewsProducts.find(prod => prod.product_id === key)
         output.url = '';
         output.wkt = '';
 
@@ -705,6 +708,14 @@ export class UrlStateService {
 
   private loadIsOnDemandQueueOpen = (isOnDemandQueueOpen: string): Action => {
     return new uiStore.SetIsOnDemandQueueOpen(!!isOnDemandQueueOpen);
+  }
+
+  private loadEventNameFilter = (eventStr: string): Action => {
+    if(eventStr.length > 100) {
+      return new filterStore.SetSarviewsEventNameFilter('');
+    }
+
+    return new filterStore.SetSarviewsEventNameFilter(eventStr);
   }
 
   private loadMagnitudeRange = (rangeStr: string): Action => {
@@ -727,7 +738,7 @@ export class UrlStateService {
     return new filterStore.SetSarviewsEventTypes(eventTypes);
   }
 
-  private loadOnlyActiveEvents = (activeOnly: boolean): Action => new filterStore.SetSarviewsEventActiveFilter(activeOnly);
+  private loadOnlyActiveEvents = (activeOnly: string): Action => new filterStore.SetSarviewsEventActiveFilter(activeOnly === 'true');
 
   // private loadIsImageBrowseOpen = (isImageBrowseOpen: string): Action => {
   //   this.dialog.open(ImageDialogComponent, {
@@ -751,15 +762,6 @@ export class UrlStateService {
       filter(wereResultsLoaded => wereResultsLoaded),
     ).subscribe(_ => this.shouldDoSearch = true);
   }
-
-  // https://stackoverflow.com/a/21984717
-  // Replaces '-' with '/' So loading dates from url works in Firefox
-  // private toECMADate(dateStr: string): Date {
-  //       // const ecmaFormatDate = dateStr.replace(/-/g,'/');
-  //       const momentDate = moment.utc(dateStr);
-  //       // const momentDate = moment(dateStr).utc();
-  //       return momentDate.toDate();
-  // }
 
   private isNumber = n => !isNaN(n) && isFinite(n);
   private isValidDate = (d: Date): boolean => d instanceof Date && !isNaN(d.valueOf());
