@@ -53,16 +53,16 @@ export class SarviewsEventComponent implements OnInit {
     const currentDate = new Date();
 
     if (!!this.event.processing_timeframe.end) {
-      return currentDate <= new Date(this.event.processing_timeframe.end)
+      return currentDate <= new Date(this.event.processing_timeframe.end);
     }
 
     return true;
   }
 
   public eventIcon(): string {
-    let eventTypeIcon = this.event.event_type === 'quake' ? 'Earthquake' : 'Volcano';
+    const eventTypeIcon = this.event.event_type === 'quake' ? 'Earthquake' : 'Volcano';
 
-    if(!this.isActive()) {
+    if (!this.isActive()) {
       return eventTypeIcon + '_inactive';
     }
 

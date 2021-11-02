@@ -386,19 +386,19 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
     this.matIconRegistry.addSvgIcon(
       'Earthquake_inactive',
       this.domSanitizer.bypassSecurityTrustResourceUrl('../assets/icons/Earthquake_inactive.svg')
-    )
+    );
     this.matIconRegistry.addSvgIcon(
       'Earthquake',
       this.domSanitizer.bypassSecurityTrustResourceUrl('../assets/icons/Earthquake.svg')
-    )
+    );
     this.matIconRegistry.addSvgIcon(
       'Volcano_inactive',
       this.domSanitizer.bypassSecurityTrustResourceUrl('../assets/icons/Volcano_inactive.svg')
-    )
+    );
     this.matIconRegistry.addSvgIcon(
       'Volcano',
       this.domSanitizer.bypassSecurityTrustResourceUrl('../assets/icons/Volcano.svg')
-    )
+    );
   }
 
   private isEmptySearch(searchState): boolean {
