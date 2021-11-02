@@ -26,20 +26,14 @@
 </div>
   <div *ngIf="selectedSarviewEventID && !!sarviewsProducts" style="height: 100%; display: flex; flex-direction: column;">
     <div style="width: 100%; display: flex; flex-direction: row; justify-content: space-evenly; margin-bottom: 10px;">
-      <button style="border-radius: 4px !important;" class="mat-flat-button mat-primary search-button" color="primary" mat-flat-button
-      [matMenuTriggerFor]="eventMonitoringOptions"
-      [matMenuTriggerData]="{ selected: selectedSarviewsProducts}"
-      >
-        <div class="sarviews-button-display">
-        <fa-icon [icon]="copyIcon"></fa-icon> Copy Product
-        </div>
-      </button>
-      <button class="mat-flat-button mat-primary" style="border-radius: 4px !important;" color="primary" mat-flat-button (click)="onOpenPinnedProducts()">
-        <div class="sarviews-button-display">
-          <!-- <mat-icon>web</mat-icon> -->
-          View Selected on Map
-        </div>
-      </button>
+        <mat-button-toggle-group fxFlex="" name="eventProductMapButton"
+                                 class="criteria-button-group"
+                                 (click)="onOpenPinnedProducts()">
+          <mat-button-toggle class="control-mat-button-toggle map-button-toggle"
+          matTooltip="View selected products on map">
+            Event Products Map<mat-icon class="map-icon">map</mat-icon>
+          </mat-button-toggle>
+        </mat-button-toggle-group>
     </div>
 
     <div style="height: 100%; width: 100%;">
@@ -75,11 +69,6 @@
                 ><mat-icon>cloud_download</mat-icon></button>
 
                 <app-on-demand-add-menu #EventOnDemandQueue>
-                  <!-- <ng-template matMenuContent let-product="product">
-                    <button mat-menu-item (click)="onAddEventToOnDemand(product); $event.stopPropagation();">
-                    Add {{product.job_type.replace('_', ' ')}} To On Demand
-                  </button>
-                  </ng-template> -->
                 </app-on-demand-add-menu>
               </div>
           </div>
@@ -87,7 +76,6 @@
       </cdk-virtual-scroll-viewport>
       </mat-selection-list>
     </div>
-    <!-- </div> -->
   </div>
 
 <div *ngIf="showUnzippedProductScreen" class="products-list zip-contents">
@@ -130,40 +118,3 @@
     </app-scene-file>
   </mat-list>
 </div>
-
-<mat-menu #eventMonitoringOptions="matMenu">
-  <ng-template matMenuContent let-selectedProducts="selected">
-    <button mat-menu-item
-    [matMenuTriggerFor]="eventMonitoringIDs"
-    [matMenuTriggerData]="{selectedProducts: selectedProducts}">
-    Scene IDs
-  </button>
-  <button mat-menu-item
-  [matMenuTriggerFor]="eventMonitoringUrls"
-  [matMenuTriggerData]="{selectedProducts: selectedProducts}">
-    URLs
-  </button>
-</ng-template>
-</mat-menu>
-
-<mat-menu #eventMonitoringIDs="matMenu">
-  <ng-template matMenuContent let-selectedProducts="selectedProducts">
-  <button mat-menu-item (click) = "copyProductSourceScenes(sarviewsProducts)">
-    All Products ({{getProductSceneCount(sarviewsProducts)}})
-  </button>
-  <button [disabled]="getProductSceneCount(selectedProducts) === 0" mat-menu-item (click) = "copyProductSourceScenes(selectedProducts)">
-    Selected Products ({{getProductSceneCount(selectedProducts)}})
-  </button>
-</ng-template>
-</mat-menu>
-
-<mat-menu #eventMonitoringUrls="matMenu">
-  <ng-template matMenuContent let-selectedProducts="selectedProducts">
-    <button [disabled]="sarviewsProducts.length === 0" mat-menu-item (click) = "getProductDownloadUrl(sarviewsProducts)">
-      All Products ({{sarviewsProducts.length}})
-    </button>
-    <button [disabled]="getProductSceneCount(selectedProducts) === 0" mat-menu-item (click) = "getProductDownloadUrl(selectedProducts)">
-      Selected Products ({{selectedProducts.length}})
-    </button>
-  </ng-template>
-</mat-menu>
