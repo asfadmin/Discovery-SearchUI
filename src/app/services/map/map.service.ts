@@ -350,6 +350,17 @@ export class MapService {
       this.epsg()
     );
 
+    const isMultiPolygon = targetEvent.wkt.includes('MULTIPOLYGON');
+    let polygonCoordinates: Coordinate[];
+    let geom = feature.getGeometry();
+    if (isMultiPolygon) {
+      polygonCoordinates = (geom as MultiPolygon).getPolygon(0).getCoordinates()[0];
+      (geom as MultiPolygon).setCoordinates([[this.wktService.wktFix(polygonCoordinates)]]);
+    } else {
+      polygonCoordinates = (geom as Polygon).getCoordinates()[0];
+      (geom as Polygon).setCoordinates([this.wktService.wktFix(polygonCoordinates)]);
+    }
+
     this.zoomToFeature(feature);
   }
 
