@@ -337,7 +337,6 @@ export class ImageDialogComponent implements OnInit, AfterViewInit, OnDestroy {
   public onPinProduct(product_id: string) {
     this.pinnedProducts[product_id].isPinned = !this.pinnedProducts[product_id].isPinned;
     this.setPinnedProducts();
-
   }
 
   private setPinnedProducts() {

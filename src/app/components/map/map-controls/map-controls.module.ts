@@ -10,8 +10,10 @@ import { ViewSelectorModule } from './view-selector';
 import { AoiOptionsModule } from '@components/shared/aoi-options';
 import { LayerSelectorModule } from './layer-selector';
 import { GridlinesSelectorModule } from './gridlines-selector';
+import { MatSliderModule } from '@angular/material/slider';
 
 import { MapControlsComponent } from './map-controls.component';
+
 
 @NgModule({
   imports: [
@@ -21,6 +23,7 @@ import { MapControlsComponent } from './map-controls.component';
     MatButtonToggleModule,
     MatMenuModule,
     MatSharedModule,
+    MatSliderModule,
     AoiOptionsModule,
     ViewSelectorModule,
     LayerSelectorModule,

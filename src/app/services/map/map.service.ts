@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject, Subject } from 'rxjs';
 import { map, sampleTime } from 'rxjs/operators';
 
-import { Feature, Map } from 'ol';
+import { Collection, Feature, Map } from 'ol';
 import { Vector as VectorLayer } from 'ol/layer';
 import { Vector as VectorSource } from 'ol/source';
 import * as proj from 'ol/proj';
@@ -33,6 +33,8 @@ import { Coordinate } from 'ol/coordinate';
 import WKT from 'ol/format/WKT';
 import ImageLayer from 'ol/layer/Image';
 import Static from 'ol/source/ImageStatic';
+import LayerGroup from 'ol/layer/Group';
+import { PinnedProduct } from '@services/browse-map.service';
 // import RasterSource, { RasterOperationType } from 'ol/source/Raster';
 
 @Injectable({
@@ -49,6 +51,7 @@ export class MapService {
   // private browseRasterCanvas: RasterSource;
   private gridLinesVisible: boolean;
   private sarviewsFeaturesByID: {[id: string]: Feature} = {};
+  private pinnedProducts: LayerGroup;
 
   private selectClick = new Select({
     condition: click,
@@ -562,5 +565,51 @@ export class MapService {
       (geom as Polygon).setCoordinates([this.wktService.fixAntimeridianCoordinates(polygonCoordinates)]);
     }
   }
+
+  public setPinnedProducts(pinnedProductStates: {[product_id in string]: PinnedProduct}) {
+    // Built in method Collection.clear() causes flickering when pinning new product,
+    // have to keep track of pinned products as work around
+
+    const pinnedProductIds = Object.keys(pinnedProductStates);
+    const unpinned_ids = pinnedProductIds.filter(id => !pinnedProductStates[id].isPinned);
+    const pinned_ids = pinnedProductIds.filter(id => pinnedProductStates[id].isPinned);
+
+    if (pinned_ids.length === 0) {
+      this.pinnedProducts?.getLayers().clear();
+    } else {
+      this.unpinProducts(unpinned_ids);
+      this.pinProducts(pinned_ids, pinnedProductStates);
+    }
+  }
+
+  private unpinProducts(product_ids: string[]) {
+    this.pinnedProducts.getLayers().forEach(
+      l => {
+        if (product_ids.includes(l?.get('product_id'))) {
+          this.pinnedProducts.getLayers().remove(l);
+        }
+      }
+    );
+  }
+
+  private pinProducts(product_ids: string[], pinned: {[product_id in string]: PinnedProduct}) {
+    const imageLayers = product_ids.reduce((prev, product_id) => {
+      const current = prev;
+      const pinnedProd = this.createImageLayer(pinned[product_id].url, pinned[product_id].wkt, 'product_pin');
+      pinnedProd.set('product_id', product_id);
+      current.push(pinnedProd);
+      return current;
+    }, new Collection<ImageLayer>());
+
+    imageLayers.forEach( l => {
+        this.pinnedProducts.getLayers().push(l);
+      }
+    );
+  }
+
+  public updateBrowseOpacity(opacity: number) {
+    this.browseImageLayer.setOpacity(opacity);
+  }
+
 
 }
