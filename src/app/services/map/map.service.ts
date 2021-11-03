@@ -33,7 +33,7 @@ import { Coordinate } from 'ol/coordinate';
 import WKT from 'ol/format/WKT';
 import ImageLayer from 'ol/layer/Image';
 import Static from 'ol/source/ImageStatic';
-import RasterSource, { RasterOperationType } from 'ol/source/Raster';
+// import RasterSource, { RasterOperationType } from 'ol/source/Raster';
 
 @Injectable({
   providedIn: 'root'
@@ -46,7 +46,7 @@ export class MapService {
   private polygonLayer: VectorLayer;
   private sarviewsEventsLayer: VectorLayer;
   private browseImageLayer: ImageLayer;
-  private browseRasterCanvas: RasterSource;
+  // private browseRasterCanvas: RasterSource;
   private gridLinesVisible: boolean;
   private sarviewsFeaturesByID: {[id: string]: Feature} = {};
 
@@ -519,7 +519,6 @@ export class MapService {
       source: new Static({
         url,
         imageExtent: polygon.getExtent(),
-        crossOrigin: '*.asf.alaska.edu'
       }),
       className,
       zIndex: 0,
@@ -536,19 +535,19 @@ export class MapService {
     const collection = scenesWithBrowse.reduce((prev, curr) =>
     prev = [...prev, this.createImageLayer(curr.browses[0], curr.metadata.polygon)], [] as ImageLayer[])
 
-    this.browseRasterCanvas = new RasterSource({
-      sources: collection,
-      operationType: 'image' as RasterOperationType
-    })
+    // this.browseRasterCanvas = new RasterSource({
+    //   sources: collection,
+    //   operationType: 'image' as RasterOperationType
+    // })
 
-    const l = new ImageLayer({
-      source: this.browseRasterCanvas,
-    });
-
-    // collection.forEach(element => {
-    //   this.map.addLayer(element)
+    // const l = new ImageLayer({
+    //   source: this.browseRasterCanvas,
     // });
-    this.map.addLayer(l);
+
+    collection.forEach(element => {
+      this.map.addLayer(element)
+    });
+    // this.map.addLayer(l);
   }
 
   private fixPolygonAntimeridian(feature: Feature<Geometry>, wkt: string) {
