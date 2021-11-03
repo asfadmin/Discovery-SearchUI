@@ -44,6 +44,8 @@ export class DownloadFileButtonComponent implements OnInit, AfterViewInit {
 
     if (typeof href !== 'undefined') {
       console.log('url', href);
+      this.url = href;
+      product = null;
       this.fileName = this.url.substring(this.url.lastIndexOf('/') + 1);
     } else {
       this.url = product.downloadUrl;
@@ -91,7 +93,6 @@ export class DownloadFileButtonComponent implements OnInit, AfterViewInit {
 
     // this.downloadService.download(this.url, this.fileName).subscribe(resp => {
 
-
     this.observable$ = this.downloadService.download(this.url, this.fileName);
     this.subscription = this.observable$.subscribe( resp => {
       if (!this.processSubscription(resp, product, true)) {
@@ -101,8 +102,10 @@ export class DownloadFileButtonComponent implements OnInit, AfterViewInit {
         console.log('And the url:', this.url);
         this.observable$ = this.downloadService.download(this.url, this.fileName);
         this.subscription = this.observable$.subscribe( response => this.processSubscription(response, product, false));
-      };
+      }
     });
+
+
   }
 
   private processSubscription(resp, product, headerOnly) {
@@ -128,9 +131,11 @@ export class DownloadFileButtonComponent implements OnInit, AfterViewInit {
 
   public hijackDownloadClick( event: MouseEvent, hiddenID ) {
     event.preventDefault();
-    const rClick = new MouseEvent('click');
-    const element = document.getElementById(hiddenID);
-    element.dispatchEvent(rClick);
+    // const rClick = new MouseEvent('click');
+    // const element = document.getElementById(hiddenID);
+    console.log(hiddenID)
+    this.downloadFile( this.product, this.href );
+    // element.dispatchEvent(rClick);
   }
 
 }
