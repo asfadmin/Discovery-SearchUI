@@ -82,22 +82,41 @@
           <app-draw-selector></app-draw-selector>
         </div>
       </div>
+
+      <div fxFlex="" class="group-margin" *ngIf="searchType !== searchTypes.BASELINE
+      && searchType !== searchTypes.SBAS">
+        <div  fxLayout="row" fxLayoutAlign="center" class="button-group-label">
+          <label>Browse Overlay</label>
+          </div>
+          <div fxLayout="row">
+            <div>
+        <mat-button-toggle-group fxFlex="" name="layerType">
+          <mat-button-toggle class="control-mat-button-toggle"
+          (click)="onPinProduct(currentBrowseID)"
+          matTooltip="Pin/Unpin Current Browse Image">
+          <mat-icon class="control-icon">push_pin</mat-icon>
+        </mat-button-toggle>
+        <mat-button-toggle class="control-mat-button-toggle"
+        (click)="onDecrementBrowseIndex()"
+        matTooltip="Pin/Unpin Current Browse Image">
+        <mat-icon class="control-icon">arrow_back</mat-icon>
+        </mat-button-toggle>
+          <mat-button-toggle class="control-mat-button-toggle"
+          (click)="onIncrementBrowseIndex()"
+          matTooltip="Pin/Unpin Current Browse Image">
+          <mat-icon class="control-icon">arrow_forward</mat-icon>
+          </mat-button-toggle>
+        </mat-button-toggle-group>
+      </div>
+      </div>
+    </div>
+
     </div>
   </div>
-  </div>
 
 
-  <div fxLayout="row">
-    <div>
-    <mat-button-toggle-group fxFlex="" name="layerType">
-      <mat-button-toggle class="control-mat-button-toggle"
-                         (click)="onPinProduct(currentBrowseID)"
-                         matTooltip="Pin/Unpin Current Browse Image">
-                         <mat-icon class="control-icon">push_pin</mat-icon>
-      </mat-button-toggle>
-    </mat-button-toggle-group>
-    <mat-slider style="height: 200px;" horizontal step="0.01" value="1.0" max="1.0" min="0.0" (input)="onSetOpacity($event);"></mat-slider>
-  </div>
+    <!-- <mat-slider style="height: 200px;" horizontal step="0.01" value="1.0" max="1.0" min="0.0" (input)="onSetOpacity($event);"></mat-slider> -->
+
 
   <div fxLayout="row" fxFlex class="lat-lon">
     <div fxFlex="grow"></div>
