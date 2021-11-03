@@ -51,7 +51,7 @@ export class MapService {
   // private browseRasterCanvas: RasterSource;
   private gridLinesVisible: boolean;
   private sarviewsFeaturesByID: {[id: string]: Feature} = {};
-  private pinnedProducts: LayerGroup;
+  private pinnedProducts: LayerGroup = new LayerGroup();
 
   private selectClick = new Select({
     condition: click,
@@ -593,6 +593,7 @@ export class MapService {
   }
 
   private pinProducts(product_ids: string[], pinned: {[product_id in string]: PinnedProduct}) {
+    this.map.removeLayer(this.pinnedProducts);
     const imageLayers = product_ids.reduce((prev, product_id) => {
       const current = prev;
       const pinnedProd = this.createImageLayer(pinned[product_id].url, pinned[product_id].wkt, 'product_pin');
@@ -605,6 +606,8 @@ export class MapService {
         this.pinnedProducts.getLayers().push(l);
       }
     );
+
+    this.map.addLayer(this.pinnedProducts);
   }
 
   public updateBrowseOpacity(opacity: number) {

@@ -13,7 +13,7 @@ import * as services from '@services';
 import { LonLat, SearchType } from '@models';
 import { combineLatest } from 'rxjs';
 import { PinnedProduct } from '@services/browse-map.service';
-import { debounceTime, filter, first } from 'rxjs/operators';
+import { debounceTime, filter, first, startWith } from 'rxjs/operators';
 import { MatSliderChange } from '@angular/material/slider';
 
 @Component({
@@ -24,8 +24,10 @@ import { MatSliderChange } from '@angular/material/slider';
 export class MapControlsComponent implements OnInit, OnDestroy {
   public view$ = this.store$.select(mapStore.getMapView);
 
-  public selectedScene$ = this.store$.select(sceneStore.getSelectedScene);
-  public selectedEvent$ = this.store$.select(sceneStore.getSelectedSarviewsProduct);
+  public selectedScene$ = this.store$.select(sceneStore.getSelectedScene).pipe(filter(scene => !!scene),
+  startWith(null));
+  public selectedEvent$ = this.store$.select(sceneStore.getSelectedSarviewsProduct).pipe(filter(event => !!event),
+  startWith(null));
 
   public currentBrowseID: string = '';
 
@@ -58,16 +60,19 @@ export class MapControlsComponent implements OnInit, OnDestroy {
           if(this.searchType === SearchType.SARVIEWS_EVENTS) {
             if(!!event) {
               this.currentBrowseID = event.product_id;
-            } else {
+            }
+           } else {
+             if(!!scene) {
               this.currentBrowseID = scene.id;
+             }
             }
           }
-        }
       )
     )
 
     this.subs.add(
       this.store$.select(sceneStore.getAllProducts).pipe(
+        filter(products => products?.length > 0),
         debounceTime(2000),
         first(),
         filter(_ => this.searchType !== models.SearchType.SARVIEWS_EVENTS),
@@ -106,7 +111,10 @@ export class MapControlsComponent implements OnInit, OnDestroy {
 
 
   public onPinProduct(product_id: string) {
-    this.pinnedProducts[product_id].isPinned = !this.pinnedProducts[product_id].isPinned;
+    let temp: {[product_id in string]: PinnedProduct} = JSON.parse(JSON.stringify(this.pinnedProducts));
+    temp[product_id].isPinned = !temp[product_id].isPinned;
+    this.pinnedProducts = temp;
+    // this.pinnedProducts[product_id].isPinned = !this.pinnedProducts[product_id].isPinned;
     this.setPinnedProducts();
   }
 
