@@ -97,6 +97,7 @@ export class ScenesListComponent implements OnInit, OnDestroy {
         delay(20),
         filter(([selected, _]) => !!selected),
         tap(([selected, _]) => this.mapService.setSelectedBrowse(selected.browses[0], selected.metadata.polygon)),
+        tap(_ => this.mapService.createBrowseRasterCanvas(this.scenes)),
         tap(([selected, _]) => this.selected = selected.id),
         map(([selected, scenes]) => {
           let sceneIdx = -1;
