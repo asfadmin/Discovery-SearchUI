@@ -5,7 +5,7 @@ import { map, sampleTime } from 'rxjs/operators';
 
 import { Collection, Feature, Map } from 'ol';
 import { Vector as VectorLayer } from 'ol/layer';
-import { Vector as VectorSource } from 'ol/source';
+import { Raster, Vector as VectorSource } from 'ol/source';
 import * as proj from 'ol/proj';
 import Point from 'ol/geom/Point';
 
@@ -35,6 +35,7 @@ import ImageLayer from 'ol/layer/Image';
 import Static from 'ol/source/ImageStatic';
 import LayerGroup from 'ol/layer/Group';
 import { PinnedProduct } from '@services/browse-map.service';
+import { RasterOperationType } from 'ol/source/Raster';
 // import RasterSource, { RasterOperationType } from 'ol/source/Raster';
 
 @Injectable({
@@ -518,18 +519,52 @@ export class MapService {
     const polygon: Polygon = feature.getGeometry() as Polygon;
     this.fixPolygonAntimeridian(feature, wkt);
 
-    const imagelayer = new ImageLayer({
-      source: new Static({
+    // const imagelayer = new ImageLayer({
+    //   source: new Static({
+    //     url,
+    //     imageExtent: polygon.getExtent(),
+    //   }),
+    //   className,
+    //   zIndex: 0,
+    //   extent: polygon.getExtent(),
+    //   opacity: 1.0,
+    // });
+
+
+    const rLayer = new Raster({
+      sources: [new Static({
         url,
         imageExtent: polygon.getExtent(),
-      }),
-      className,
-      zIndex: 0,
-      extent: polygon.getExtent(),
-      opacity: 1.0,
+        crossOrigin: '*.asf.alaska.edu' //hyp3-event-monitoring-productbucket-1t80jdtrfscje.s3.amazonaws.com'
+      })],
+      operationType: 'pixel' as RasterOperationType,
+      operation: (p0: number[][], _) => {
+              var pixel = p0[0];
+
+            var r = pixel[0];
+            var g = pixel[1];
+            var b = pixel[2];
+
+            if(r + g + b <= 10) {
+              return [0, 0, 0, 0];
+            }
+            // // CIE luminance for the RGB
+            // var v = 0.2126 * r + 0.7152 * g + 0.0722 * b;
+
+            // pixel[0] = v; // Red
+            // pixel[1] = v; // Green
+            // pixel[2] = v; // Blue
+            // //pixel[3] = 255;
+
+            return pixel;
+          }
+      // opacity: this.browseLayer?.getOpacity() ?? 1.0
     });
 
-    return imagelayer;
+    const Imagelayer = new ImageLayer({source: rLayer, className});
+
+
+    return Imagelayer;
   }
 
   public createBrowseRasterCanvas(scenes: models.CMRProduct[]) {
