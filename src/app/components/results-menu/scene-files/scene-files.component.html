@@ -39,10 +39,10 @@
     <div style="height: 100%; width: 100%;">
       <mat-selection-list multiple
       (selectionChange)="onSelectSarviewsProduct($event)"
-      class="products-list" dense role="list" style="height: calc(100% - 50px);">
-        <cdk-virtual-scroll-viewport [itemSize]="50" style="height: 100%;">
+      class="products-list" dense role="list" style="height: calc(100% - 58px);">
+        <cdk-virtual-scroll-viewport [itemSize]="58" style="height: 100%;">
           <mat-list-option [value]="prod.product_id" [selected]="!!this.selectedProducts[prod.product_id]" checkboxPosition="before" class="virtual-scroll" *cdkVirtualFor="let prod of sarviewsProducts"
-          style="margin-right: 0 !important; height: 50px !important;">
+          style="margin-right: 0 !important; height: 58px !important;">
             <div class="sarview-products-list">
               <img style="width: 50px; height: 50px;" src="{{prod.files.browse_url}}">
               <div class="sarview-product">
