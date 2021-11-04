@@ -67,6 +67,20 @@
             </div>
             <app-aoi-options [showHeader]="false"></app-aoi-options>
           </div>
+
+          <div>
+            <mat-form-field class="sub-option">
+              <mat-label>Path</mat-label>
+              <input matInput [(ngModel)]="path" type="number">
+              <mat-hint align="start"> {{ path !== null ? '' : ' No path input' }}</mat-hint>
+            </mat-form-field>
+
+            <mat-form-field class="sub-option">
+              <mat-label>Frame</mat-label>
+              <input matInput [(ngModel)]="frame" type="number">
+              <mat-hint align="start">{{ frame !== null ? '' : ' No frame input'  }}</mat-hint>
+            </mat-form-field>
+          </div>
         </mat-step>
 
         <mat-step>
@@ -164,19 +178,6 @@
                 {{ !polarization ? 'No polarization selected' : 'Polarization selected' }}
               </mat-hint>
             </mat-form-field>
-
-            <mat-form-field class="sub-option">
-              <mat-label>Path</mat-label>
-              <input matInput [(ngModel)]="path" type="number">
-              <mat-hint align="start"> {{ path !== null ? '' : ' No path input' }}</mat-hint>
-            </mat-form-field>
-
-            <mat-form-field class="sub-option">
-              <mat-label>Frame</mat-label>
-              <input matInput [(ngModel)]="frame" type="number">
-              <mat-hint align="start">{{ frame !== null ? '' : ' No frame input'  }}</mat-hint>
-            </mat-form-field>
-
           </div>
 
           <div style="margin-bottom: 5px;">
