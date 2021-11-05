@@ -5,7 +5,7 @@ import { map, sampleTime } from 'rxjs/operators';
 
 import { Collection, Feature, Map } from 'ol';
 import { Layer, Vector as VectorLayer } from 'ol/layer';
-import { Raster, Vector as VectorSource } from 'ol/source';
+import { Vector as VectorSource } from 'ol/source';
 import * as proj from 'ol/proj';
 import Point from 'ol/geom/Point';
 
@@ -27,16 +27,10 @@ import { AppState } from '@store';
 import { Icon, Style } from 'ol/style';
 import IconAnchorUnits from 'ol/style/IconAnchorUnits';
 import Geometry from 'ol/geom/Geometry';
-import Polygon from 'ol/geom/Polygon';
-import MultiPolygon from 'ol/geom/MultiPolygon';
-import { Coordinate } from 'ol/coordinate';
 import ImageLayer from 'ol/layer/Image';
-import Static from 'ol/source/ImageStatic';
 import LayerGroup from 'ol/layer/Group';
 import { PinnedProduct } from '@services/browse-map.service';
-import { RasterOperationType } from 'ol/source/Raster';
-import { Extent } from 'ol/extent';
-// import RasterSource, { RasterOperationType } from 'ol/source/Raster';
+import { BrowseOverlayService } from '@services';
 
 @Injectable({
   providedIn: 'root'
@@ -121,6 +115,7 @@ export class MapService {
     private legacyAreaFormat: LegacyAreaFormatService,
     private drawService: DrawService,
     private store$: Store<AppState>,
+    private browseOverlayService: BrowseOverlayService,
   ) {}
 
   public epsg(): string {
@@ -359,7 +354,7 @@ export class MapService {
       this.epsg()
     );
 
-    this.fixPolygonAntimeridian(feature, targetEvent.wkt);
+    this.wktService.fixPolygonAntimeridian(feature, targetEvent.wkt);
 
     this.zoomToFeature(feature);
   }
@@ -379,7 +374,7 @@ export class MapService {
       this.epsg()
     );
 
-    this.fixPolygonAntimeridian(features, sarviewEvent.wkt);
+    this.wktService.fixPolygonAntimeridian(features, sarviewEvent.wkt);
 
     features.getGeometry().scale(radius);
     this.setDrawFeature(features);
@@ -508,89 +503,15 @@ export class MapService {
     if(!!this.browseImageLayer) {
       this.map.removeLayer(this.browseImageLayer);
     }
-    this.browseImageLayer = this.createImageLayer(url, wkt);
+    this.browseImageLayer = this.browseOverlayService.createImageLayer(url, wkt);
     this.map.addLayer(this.browseImageLayer);
-  }
-
-private createImageSource(url: string, extent: Extent) {
- return new Static({
-      url,
-      imageExtent: extent,
-    });
-  }
-
-  public createImageLayer(url: string, wkt: string, className: string = 'ol-layer', layer_id: string = '') {
-    const feature = this.wktService.wktToFeature(wkt, 'EPSG:3857');
-    const polygon = this.getPolygonFromFeature(feature, wkt);
-    const source = this.createImageSource(url, polygon.getExtent());
-
-    const output = new ImageLayer({
-      source,
-      className,
-      zIndex: 0,
-      extent: polygon.getExtent(),
-      opacity: 1.0,
-    });
-
-    if(layer_id !== '') {
-      output.set('layer_id', layer_id);
-    }
-
-    return output;
-  }
-
-  private getPolygonFromFeature(feature: Feature<Geometry>, wkt: string): Polygon {
-    const polygon: Polygon = feature.getGeometry() as Polygon;
-    this.fixPolygonAntimeridian(feature, wkt);
-
-    return polygon;
-  }
-
-  public createRasterImageLayer(url: string, wkt: string, className: string = 'ol-layer') {
-    const feature = this.wktService.wktToFeature(wkt, 'EPSG:3857');
-    const polygon = this.getPolygonFromFeature(feature, wkt);
-
-    const rLayer = new Raster({
-      sources: [new Static({
-        url,
-        imageExtent: polygon.getExtent(),
-        crossOrigin: '*.asf.alaska.edu' //hyp3-event-monitoring-productbucket-1t80jdtrfscje.s3.amazonaws.com'
-      })],
-      operationType: 'pixel' as RasterOperationType,
-      operation: (p0: number[][], _) => {
-              var pixel = p0[0];
-
-            var r = pixel[0];
-            var g = pixel[1];
-            var b = pixel[2];
-
-            if(r + g + b <= 10) {
-              return [0, 0, 0, 0];
-            }
-            // // CIE luminance for the RGB
-            // var v = 0.2126 * r + 0.7152 * g + 0.0722 * b;
-
-            // pixel[0] = v; // Red
-            // pixel[1] = v; // Green
-            // pixel[2] = v; // Blue
-            // //pixel[3] = 255;
-
-            return pixel;
-          }
-      // opacity: this.browseLayer?.getOpacity() ?? 1.0
-    });
-
-    const Imagelayer = new ImageLayer({source: rLayer, className});
-
-
-    return Imagelayer;
   }
 
   public createBrowseRasterCanvas(scenes: models.CMRProduct[]) {
     const scenesWithBrowse = scenes.filter(scene => scene.browses?.length > 0).slice(0, 10);
 
     const collection = scenesWithBrowse.reduce((prev, curr) =>
-    prev.concat(this.createImageLayer(curr.browses[0], curr.metadata.polygon)), [] as ImageLayer[])
+    prev.concat(this.browseOverlayService.createImageLayer(curr.browses[0], curr.metadata.polygon)), [] as ImageLayer[])
 
     // this.browseRasterCanvas = new RasterSource({
     //   sources: collection,
@@ -607,53 +528,8 @@ private createImageSource(url: string, extent: Extent) {
     // this.map.addLayer(l);
   }
 
-  private fixPolygonAntimeridian(feature: Feature<Geometry>, wkt: string) {
-    const isMultiPolygon = wkt.includes('MULTIPOLYGON');
-    let polygonCoordinates: Coordinate[];
-    const geom = feature.getGeometry();
-    if (isMultiPolygon) {
-      polygonCoordinates = (geom as MultiPolygon).getPolygon(0).getCoordinates()[0];
-      (geom as MultiPolygon).setCoordinates([[this.wktService.fixAntimeridianCoordinates(polygonCoordinates)]]);
-    } else {
-      polygonCoordinates = (geom as Polygon).getCoordinates()[0];
-      (geom as Polygon).setCoordinates([this.wktService.fixAntimeridianCoordinates(polygonCoordinates)]);
-    }
-  }
-
   public setPinnedProducts(pinnedProductStates: {[product_id in string]: PinnedProduct}) {
-    // Built in method Collection.clear() causes flickering when pinning new product,
-    // have to keep track of pinned products as work around
-
-    const pinnedProductIds = Object.keys(pinnedProductStates);
-    // const pinned_ids = pinnedProductIds.filter(id => pinnedProductStates[id].isPinned);
-    const currentPinnedProductsIds: string[] = this.pinnedProducts.getLayersArray().map(layer => layer.get("layer_id"));
-    const toAdd = pinnedProductIds.filter(id => !currentPinnedProductsIds.includes(id));
-    const toRemove = currentPinnedProductsIds.filter(id => !pinnedProductIds.includes(id));
-    if (pinnedProductIds.length === 0) {
-      this.pinnedProducts?.getLayers().clear();
-    } else {
-      this.unpinProducts(toRemove);
-      this.pinProducts(toAdd, pinnedProductStates)
-    }
-  }
-
-  private pinProducts(layersToAdd: string[], pinnedProductStates: {[product_id in string]: PinnedProduct}) {
-    const newLayers = layersToAdd.map(layer_id => this.createImageLayer(
-      pinnedProductStates[layer_id].url,
-      pinnedProductStates[layer_id].wkt,
-      'ol-layer',
-      layer_id
-    ));
-      this.pinnedProducts.getLayers().extend(newLayers);
-  }
-
-  private unpinProducts(layersToRemove: string[]) {
-    layersToRemove.forEach(product_id => {
-      const found = this.pinnedProducts.getLayersArray().find(layer => layer.get('layer_id') === product_id);
-      if(!!found) {
-        this.pinnedProducts.getLayers().remove(found);
-      }
-    });
+    this.browseOverlayService.setPinnedProducts(pinnedProductStates, this.pinnedProducts);
   }
 
   public updateBrowseOpacity(opacity: number) {

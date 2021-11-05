@@ -1,8 +1,12 @@
 import { Injectable } from '@angular/core';
 import { Coordinate } from 'ol/coordinate';
+import Feature from 'ol/Feature';
 // import { Feature } from 'ol';
 
 import WKT from 'ol/format/WKT.js';
+import Geometry from 'ol/geom/Geometry';
+import MultiPolygon from 'ol/geom/MultiPolygon';
+import Polygon from 'ol/geom/Polygon';
 import { fromLonLat, toLonLat } from 'ol/proj';
 // import Polygon from 'ol/geom/Polygon';
 
@@ -20,6 +24,19 @@ export class WktService {
       dataProjection: this.sceneProjection,
       featureProjection: epsg
     });
+  }
+
+  public fixPolygonAntimeridian(feature: Feature<Geometry>, wkt: string) {
+    const isMultiPolygon = wkt.includes('MULTIPOLYGON');
+    let polygonCoordinates: Coordinate[];
+    const geom = feature.getGeometry();
+    if (isMultiPolygon) {
+      polygonCoordinates = (geom as MultiPolygon).getPolygon(0).getCoordinates()[0];
+      (geom as MultiPolygon).setCoordinates([[this.fixAntimeridianCoordinates(polygonCoordinates)]]);
+    } else {
+      polygonCoordinates = (geom as Polygon).getCoordinates()[0];
+      (geom as Polygon).setCoordinates([this.fixAntimeridianCoordinates(polygonCoordinates)]);
+    }
   }
 
   public fixAntimeridianCoordinates(coordinates: Coordinate[]) {
