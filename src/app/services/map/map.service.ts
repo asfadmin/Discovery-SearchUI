@@ -532,6 +532,13 @@ export class MapService {
     this.browseOverlayService.setPinnedProducts(pinnedProductStates, this.pinnedProducts);
   }
 
+  public clearBrowseOverlays() {
+    this.pinnedProducts.getLayers().clear();
+    if(!!this.browseImageLayer) {
+      this.map.removeLayer(this.browseImageLayer);
+    }
+  }
+
   public updateBrowseOpacity(opacity: number) {
     this.browseImageLayer.setOpacity(opacity);
   }

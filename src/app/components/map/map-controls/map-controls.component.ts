@@ -13,7 +13,7 @@ import * as services from '@services';
 import { LonLat, SarviewsProduct, SearchType } from '@models';
 import { combineLatest } from 'rxjs';
 import { PinnedProduct } from '@services/browse-map.service';
-import { debounceTime, filter, first, startWith, tap } from 'rxjs/operators';
+import { filter, startWith, tap } from 'rxjs/operators';
 import { MatSliderChange } from '@angular/material/slider';
 
 @Component({
@@ -23,6 +23,7 @@ import { MatSliderChange } from '@angular/material/slider';
 })
 export class MapControlsComponent implements OnInit, OnDestroy {
   public view$ = this.store$.select(mapStore.getMapView);
+  public pinnedProducts$ = this.store$.select(sceneStore.getImageBrowseProducts);
 
   public selectedScene$ = this.store$.select(sceneStore.getSelectedScene).pipe(
     tap(_ => this.browseIndex = 0),
@@ -40,7 +41,6 @@ export class MapControlsComponent implements OnInit, OnDestroy {
   public viewTypes = models.MapViewType;
   public mousePos: LonLat;
   private subs = new SubSink();
-  private pinnedProducts: {[product_id in string]: PinnedProduct} = {};
   private browseIndex = 0;
   private selectedEventProducts: SarviewsProduct[] = [];
   private selectedScene: models.CMRProduct;
@@ -92,29 +92,6 @@ export class MapControlsComponent implements OnInit, OnDestroy {
         event => this.selectedScene = event
       )
     );
-
-    this.subs.add(
-      this.store$.select(sceneStore.getAllProducts).pipe(
-        filter(products => products?.length > 0),
-        debounceTime(2000),
-        first(),
-        filter(_ => this.searchType !== models.SearchType.SARVIEWS_EVENTS),
-      ).subscribe(
-        products => {
-          if (!!products) {
-            this.pinnedProducts = {};
-
-            this.store$.dispatch(new sceneStore.SetImageBrowseProducts(this.pinnedProducts));
-          }
-        }
-      )
-    );
-
-    this.subs.add(
-      this.store$.select(sceneStore.getImageBrowseProducts).subscribe(
-        pinnedProducts => this.pinnedProducts = pinnedProducts
-      )
-    )
   }
 
   public onNewProjection(view: models.MapViewType): void {
@@ -134,8 +111,8 @@ export class MapControlsComponent implements OnInit, OnDestroy {
   }
 
 
-  public onPinProduct(product_id: string) {
-    let temp: {[product_id in string]: PinnedProduct} = JSON.parse(JSON.stringify(this.pinnedProducts));
+  public onPinProduct(product_id: string, pinnedProducts: {[product_id in string]: PinnedProduct}) {
+    let temp: {[product_id in string]: PinnedProduct} = JSON.parse(JSON.stringify(pinnedProducts));
     if(!!temp[product_id]) {
       delete temp[product_id];
     } else {
@@ -156,9 +133,8 @@ export class MapControlsComponent implements OnInit, OnDestroy {
       temp[product_id] = {url, wkt} as PinnedProduct
     }
 
-    this.pinnedProducts = temp;
     // this.pinnedProducts[product_id].isPinned = !this.pinnedProducts[product_id].isPinned;
-    this.setPinnedProducts();
+    this.setPinnedProducts(temp);
   }
 
   public onIncrementBrowseIndex() {
@@ -185,9 +161,8 @@ export class MapControlsComponent implements OnInit, OnDestroy {
     ? this.selectedEventProducts.length : this.selectedScene.browses.length;
   }
 
-  private setPinnedProducts() {
-    this.store$.dispatch(new sceneStore.SetImageBrowseProducts(this.pinnedProducts));
-    this.mapService.setPinnedProducts(this.pinnedProducts);
+  private setPinnedProducts(products: {[product_id in string]: PinnedProduct}) {
+    this.store$.dispatch(new sceneStore.SetImageBrowseProducts(products));
   }
 
   ngOnDestroy() {

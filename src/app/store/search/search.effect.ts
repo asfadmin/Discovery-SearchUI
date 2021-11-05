@@ -4,7 +4,7 @@ import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { Store, Action } from '@ngrx/store';
 
 import { of, forkJoin, combineLatest, Observable, EMPTY } from 'rxjs';
-import { map, withLatestFrom, switchMap, catchError, filter, first } from 'rxjs/operators';
+import { map, withLatestFrom, switchMap, catchError, filter, first, tap } from 'rxjs/operators';
 
 import { AppState } from '../app.reducer';
 import { SetSearchAmount, EnableSearch, DisableSearch, SetSearchType, SetNextJobsUrl,
@@ -27,7 +27,7 @@ import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import WKT from 'ol/format/WKT';
 import GeoJSON from 'ol/format/GeoJSON';
 import VectorSource from 'ol/source/Vector';
-import { getScenes } from '@store/scenes';
+import { getScenes, ScenesActionType, SetImageBrowseProducts } from '@store/scenes';
 import { SearchType } from '@models';
 import { Feature } from 'ol';
 import Geometry from 'ol/geom/Geometry';
@@ -41,7 +41,8 @@ export class SearchEffects {
     private productService: services.ProductService,
     private hyp3Service: services.Hyp3Service,
     private sarviewsService: services.SarviewsEventsService,
-    private http: HttpClient
+    private http: HttpClient,
+    private mapService: services.MapService,
   ) {}
 
   public clearMapInteractionModeOnSearch = createEffect(() => this.actions$.pipe(
@@ -154,6 +155,17 @@ export class SearchEffects {
     ofType<SarviewsEventsResponse>(SearchActionType.SARVIEWS_SEARCH_RESPONSE),
     map(_ => new uiStore.OpenResultsMenu()),
   ));
+
+  public clearPinnedProducts = createEffect((() => this.actions$.pipe(
+    ofType<SetSearchType>(SearchActionType.SET_SEARCH_TYPE_AFTER_SAVE),
+    tap(_ => this.mapService.clearBrowseOverlays()),
+    map(_ => new SetImageBrowseProducts({}))
+  )));
+
+  public setSearchOverlays = createEffect(() => this.actions$.pipe(
+    ofType<SetImageBrowseProducts>(ScenesActionType.SET_IMAGE_BROWSE_PRODUCTS),
+    tap(action => this.mapService.setPinnedProducts(action.payload)),
+  ), {dispatch: false})
 
   public setMapInteractionModeBasedOnSearchType = createEffect(() => this.actions$.pipe(
     ofType<SetSearchType>(SearchActionType.SET_SEARCH_TYPE_AFTER_SAVE),
