@@ -405,11 +405,9 @@ ul {
   background: $asf-blue;
 }
 
-
 .slider [disabled] .noUi-connect {
   color: grey !important;
 }
-
 
 // for the sbas chart
 
@@ -533,4 +531,33 @@ $d-height: 500px;
 
 .content-block .mat-horizontal-stepper-header-container {
   margin-bottom: 20px;
+}
+
+.event-slider {
+  .noUi-handle::after,
+  .noUi-handle::before {
+    height: 10px;
+    top: 4px;
+  }
+
+  .noUi-handle::before {
+    left: 12px;
+  }
+
+  .noUi-handle::after {
+    left: 16px;
+  }
+
+  .noUi-handle {
+    width: 30px !important;
+    height: 20px !important;
+  }
+
+  .noUi-pips {
+    font-size: 14px !important;
+  }
+
+  .noUi-value {
+    margin-top: 4px;
+  }
 }

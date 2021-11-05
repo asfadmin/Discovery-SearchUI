@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, AfterContentInit } from '@angular/core';
+import {Component, OnInit, OnDestroy, AfterContentInit} from '@angular/core';
 import { SubSink } from 'subsink';
 
 import { combineLatest } from 'rxjs';
@@ -23,6 +23,8 @@ import { MatSelectionListChange } from '@angular/material/list';
 import { PinnedProduct } from '@services/browse-map.service';
 import { ImageDialogComponent } from '../scene-detail/image-dialog';
 import { MatDialog } from '@angular/material/dialog';
+import { ScreenSizeService } from '@services';
+
 
 @Component({
   selector: 'app-scene-files',
@@ -30,6 +32,8 @@ import { MatDialog } from '@angular/material/dialog';
   styleUrls: ['./scene-files.component.scss']
 })
 export class SceneFilesComponent implements OnInit, OnDestroy, AfterContentInit {
+  public breakpoint$ = this.screenSize.breakpoint$;
+  public breakpoints = models.Breakpoints;
   public copyIcon = faCopy;
   public products: models.CMRProduct[];
   public productsByProductType: {[processing_type: string]: SarviewsProduct[]} = {};
@@ -97,6 +101,7 @@ export class SceneFilesComponent implements OnInit, OnDestroy, AfterContentInit 
     private notificationService: NotificationService,
     private eventMonitoringService: SarviewsEventsService,
     public dialog: MatDialog,
+    private screenSize: ScreenSizeService,
   ) { }
 
   ngOnInit() {
