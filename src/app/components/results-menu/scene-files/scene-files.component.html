@@ -1,3 +1,6 @@
+<ng-template *ngIf="breakpoint$ | async as breakpoint">
+
+</ng-template>
 <div *ngIf="showDemWarning" class="dem-warning">
   Resampled DEM (SRTM or NED) used for RTC processing.
   <a class="more-link"
@@ -24,27 +27,35 @@
     </app-scene-file>
   </mat-list>
 </div>
-  <div *ngIf="selectedSarviewEventID && !!sarviewsProducts" style="height: 100%; display: flex; flex-direction: column;">
-    <div style="width: 100%; display: flex; flex-direction: row; justify-content: space-evenly; margin-bottom: 10px;">
+
+<div *ngIf="selectedSarviewEventID && !!sarviewsProducts" class="event-wrapper">
+    <div *ngIf="breakpoint$ | async as breakpoint"
+         class="event-product-map-row">
         <mat-button-toggle-group fxFlex="" name="eventProductMapButton"
                                  class="criteria-button-group"
+                                 [ngClass]="{'position-in-header': breakpoint > breakpoints.SMALL}"
                                  (click)="onOpenPinnedProducts()">
-          <mat-button-toggle class="control-mat-button-toggle map-button-toggle"
-          matTooltip="View selected products on map">
+          <mat-button-toggle
+            class="control-mat-button-toggle map-button-toggle"
+            matTooltip="View selected products on map"
+          >
             Event Products Map<mat-icon class="map-icon">map</mat-icon>
           </mat-button-toggle>
         </mat-button-toggle-group>
     </div>
 
-    <div style="height: 100%; width: 100%;">
+    <div class="event-products-wrapper">
       <mat-selection-list multiple
       (selectionChange)="onSelectSarviewsProduct($event)"
-      class="products-list" dense role="list" style="height: calc(100% - 58px);">
-        <cdk-virtual-scroll-viewport [itemSize]="58" style="height: 100%;">
-          <mat-list-option [value]="prod.product_id" [selected]="!!this.selectedProducts[prod.product_id]" checkboxPosition="before" class="virtual-scroll" *cdkVirtualFor="let prod of sarviewsProducts"
-          style="margin-right: 0 !important; height: 58px !important;">
+      class="products-list" dense role="list">
+        <cdk-virtual-scroll-viewport [itemSize]="58" class="prod-viewport">
+          <mat-list-option [value]="prod.product_id" [selected]="!!this.selectedProducts[prod.product_id]"
+                           *cdkVirtualFor="let prod of sarviewsProducts"
+                           checkboxPosition="before"
+                           class="virtual-scroll prod-list-option"
+          >
             <div class="sarview-products-list">
-              <img style="width: 50px; height: 50px;" src="{{prod.files.browse_url}}">
+              <img class="prod-thumb" src="{{prod.files.browse_url}}">
               <div class="sarview-product">
                 <div style="font-weight: bold;">{{formatProductName(prod.files.product_name)}}</div>
                 <div>{{prod.files.product_size.toString() | readableSizeFromBytes }}, {{prod.job_type.replace("_", " ")}}</div>
@@ -52,21 +63,25 @@
               <div></div>
               <div *ngIf="hyp3ableByProduct[prod.product_id] as byJobType">
                 <button mat-icon-button
-                (click)="$event.stopPropagation()"
-                [matMenuTriggerFor]="EventOnDemandQueue.addMenu"
-                [matMenuTriggerData]="{ hyp3able: byJobType }"
+                  (click)="$event.stopPropagation()"
+                  [matMenuTriggerFor]="EventOnDemandQueue.addMenu"
+                  [matMenuTriggerData]="{ hyp3able: byJobType }"
                 >
-                  <mat-icon class="list-icon"
-                    svgIcon="hyp3">
+                  <mat-icon
+                    class="list-icon"
+                    svgIcon="hyp3"
+                  >
                   </mat-icon>
               </button>
                 <button mat-icon-button (click)="onQueueSarviewsProduct(prod); $event.stopPropagation();"><mat-icon *ngIf="!queuedProductIds.includes(prod.product_id)">add_shopping_cart</mat-icon>
                   <mat-icon *ngIf="queuedProductIds.includes(prod.product_id)">shopping_cart</mat-icon>
                 </button>
                 <button
-                mat-icon-button
-                (click)="downloadProduct(prod.files.product_url); $event.stopPropagation();"
-                ><mat-icon>cloud_download</mat-icon></button>
+                  mat-icon-button
+                  (click)="downloadProduct(prod.files.product_url); $event.stopPropagation();"
+                >
+                  <mat-icon>cloud_download</mat-icon>
+                </button>
 
                 <app-on-demand-add-menu #EventOnDemandQueue>
                 </app-on-demand-add-menu>
