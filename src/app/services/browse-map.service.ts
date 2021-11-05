@@ -23,7 +23,6 @@ interface Dimension {
 }
 
 export interface PinnedProduct {
-  isPinned: boolean;
   url: string;
   wkt: string;
 }
@@ -150,14 +149,12 @@ export class BrowseMapService {
     // have to keep track of pinned products as work around
 
     const pinnedProductIds = Object.keys(pinnedProductStates);
-    const unpinned_ids = pinnedProductIds.filter(id => !pinnedProductStates[id].isPinned);
-    const pinned_ids = pinnedProductIds.filter(id => pinnedProductStates[id].isPinned);
 
-    if (pinned_ids.length === 0) {
+    if (pinnedProductIds.length === 0) {
       this.pinnedProducts?.getLayers().clear();
     } else {
-      this.unpinProducts(unpinned_ids);
-      this.pinProducts(pinned_ids, pinnedProductStates);
+      this.unpinProducts(pinnedProductIds);
+      this.pinProducts(pinnedProductIds, pinnedProductStates);
     }
   }
 

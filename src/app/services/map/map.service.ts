@@ -4,7 +4,7 @@ import { BehaviorSubject, Subject } from 'rxjs';
 import { map, sampleTime } from 'rxjs/operators';
 
 import { Collection, Feature, Map } from 'ol';
-import { Vector as VectorLayer } from 'ol/layer';
+import { Layer, Vector as VectorLayer } from 'ol/layer';
 import { Raster, Vector as VectorSource } from 'ol/source';
 import * as proj from 'ol/proj';
 import Point from 'ol/geom/Point';
@@ -30,12 +30,12 @@ import Geometry from 'ol/geom/Geometry';
 import Polygon from 'ol/geom/Polygon';
 import MultiPolygon from 'ol/geom/MultiPolygon';
 import { Coordinate } from 'ol/coordinate';
-import WKT from 'ol/format/WKT';
 import ImageLayer from 'ol/layer/Image';
 import Static from 'ol/source/ImageStatic';
 import LayerGroup from 'ol/layer/Group';
 import { PinnedProduct } from '@services/browse-map.service';
 import { RasterOperationType } from 'ol/source/Raster';
+import { Extent } from 'ol/extent';
 // import RasterSource, { RasterOperationType } from 'ol/source/Raster';
 
 @Injectable({
@@ -52,7 +52,8 @@ export class MapService {
   // private browseRasterCanvas: RasterSource;
   private gridLinesVisible: boolean;
   private sarviewsFeaturesByID: {[id: string]: Feature} = {};
-  private pinnedProducts: LayerGroup = new LayerGroup();
+  private pinnedCollection: Collection<Layer> = new Collection<Layer>([], {unique: true});
+  private pinnedProducts: LayerGroup = new LayerGroup({layers: this.pinnedCollection});
 
   private selectClick = new Select({
     condition: click,
@@ -415,7 +416,7 @@ export class MapService {
 
   private createNewMap(overlay): Map {
     const newMap = new Map({
-      layers: [ this.mapView.layer, this.drawService.getLayer(), this.focusLayer, this.selectedLayer, this.mapView?.gridlines ],
+      layers: [ this.mapView.layer, this.drawService.getLayer(), this.focusLayer, this.selectedLayer, this.mapView?.gridlines, this.pinnedProducts ],
       target: 'map',
       view: this.mapView.view,
       controls: [],
@@ -511,25 +512,43 @@ export class MapService {
     this.map.addLayer(this.browseImageLayer);
   }
 
-  public createImageLayer(url: string, wkt: string, className: string = 'ol-layer') {
-    const format = new WKT();
-    const feature = format.readFeature(wkt, {dataProjection: 'EPSG:4326',
-    featureProjection: 'EPSG:3857'});
+private createImageSource(url: string, extent: Extent) {
+ return new Static({
+      url,
+      imageExtent: extent,
+    });
+  }
 
+  public createImageLayer(url: string, wkt: string, className: string = 'ol-layer', layer_id: string = '') {
+    const feature = this.wktService.wktToFeature(wkt, 'EPSG:3857');
+    const polygon = this.getPolygonFromFeature(feature, wkt);
+    const source = this.createImageSource(url, polygon.getExtent());
+
+    const output = new ImageLayer({
+      source,
+      className,
+      zIndex: 0,
+      extent: polygon.getExtent(),
+      opacity: 1.0,
+    });
+
+    if(layer_id !== '') {
+      output.set('layer_id', layer_id);
+    }
+
+    return output;
+  }
+
+  private getPolygonFromFeature(feature: Feature<Geometry>, wkt: string): Polygon {
     const polygon: Polygon = feature.getGeometry() as Polygon;
     this.fixPolygonAntimeridian(feature, wkt);
 
-    // const imagelayer = new ImageLayer({
-    //   source: new Static({
-    //     url,
-    //     imageExtent: polygon.getExtent(),
-    //   }),
-    //   className,
-    //   zIndex: 0,
-    //   extent: polygon.getExtent(),
-    //   opacity: 1.0,
-    // });
+    return polygon;
+  }
 
+  public createRasterImageLayer(url: string, wkt: string, className: string = 'ol-layer') {
+    const feature = this.wktService.wktToFeature(wkt, 'EPSG:3857');
+    const polygon = this.getPolygonFromFeature(feature, wkt);
 
     const rLayer = new Raster({
       sources: [new Static({
@@ -571,7 +590,7 @@ export class MapService {
     const scenesWithBrowse = scenes.filter(scene => scene.browses?.length > 0).slice(0, 10);
 
     const collection = scenesWithBrowse.reduce((prev, curr) =>
-    prev = [...prev, this.createImageLayer(curr.browses[0], curr.metadata.polygon)], [] as ImageLayer[])
+    prev.concat(this.createImageLayer(curr.browses[0], curr.metadata.polygon)), [] as ImageLayer[])
 
     // this.browseRasterCanvas = new RasterSource({
     //   sources: collection,
@@ -606,43 +625,35 @@ export class MapService {
     // have to keep track of pinned products as work around
 
     const pinnedProductIds = Object.keys(pinnedProductStates);
-    const unpinned_ids = pinnedProductIds.filter(id => !pinnedProductStates[id].isPinned);
-    const pinned_ids = pinnedProductIds.filter(id => pinnedProductStates[id].isPinned);
-
-    if (pinned_ids.length === 0) {
+    // const pinned_ids = pinnedProductIds.filter(id => pinnedProductStates[id].isPinned);
+    const currentPinnedProductsIds: string[] = this.pinnedProducts.getLayersArray().map(layer => layer.get("layer_id"));
+    const toAdd = pinnedProductIds.filter(id => !currentPinnedProductsIds.includes(id));
+    const toRemove = currentPinnedProductsIds.filter(id => !pinnedProductIds.includes(id));
+    if (pinnedProductIds.length === 0) {
       this.pinnedProducts?.getLayers().clear();
     } else {
-      this.unpinProducts(unpinned_ids);
-      this.pinProducts(pinned_ids, pinnedProductStates);
+      this.unpinProducts(toRemove);
+      this.pinProducts(toAdd, pinnedProductStates)
     }
   }
 
-  private unpinProducts(product_ids: string[]) {
-    this.pinnedProducts.getLayers().forEach(
-      l => {
-        if (product_ids.includes(l?.get('product_id'))) {
-          this.pinnedProducts.getLayers().remove(l);
-        }
-      }
-    );
+  private pinProducts(layersToAdd: string[], pinnedProductStates: {[product_id in string]: PinnedProduct}) {
+    const newLayers = layersToAdd.map(layer_id => this.createImageLayer(
+      pinnedProductStates[layer_id].url,
+      pinnedProductStates[layer_id].wkt,
+      'ol-layer',
+      layer_id
+    ));
+      this.pinnedProducts.getLayers().extend(newLayers);
   }
 
-  private pinProducts(product_ids: string[], pinned: {[product_id in string]: PinnedProduct}) {
-    this.map.removeLayer(this.pinnedProducts);
-    const imageLayers = product_ids.reduce((prev, product_id) => {
-      const current = prev;
-      const pinnedProd = this.createImageLayer(pinned[product_id].url, pinned[product_id].wkt, 'product_pin');
-      pinnedProd.set('product_id', product_id);
-      current.push(pinnedProd);
-      return current;
-    }, new Collection<ImageLayer>());
-
-    imageLayers.forEach( l => {
-        this.pinnedProducts.getLayers().push(l);
+  private unpinProducts(layersToRemove: string[]) {
+    layersToRemove.forEach(product_id => {
+      const found = this.pinnedProducts.getLayersArray().find(layer => layer.get('layer_id') === product_id);
+      if(!!found) {
+        this.pinnedProducts.getLayers().remove(found);
       }
-    );
-
-    this.map.addLayer(this.pinnedProducts);
+    });
   }
 
   public updateBrowseOpacity(opacity: number) {

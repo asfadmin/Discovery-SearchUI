@@ -287,7 +287,6 @@ export class SceneFilesComponent implements OnInit, OnDestroy, AfterContentInit 
     const pinned = Object.keys(this.selectedProducts).reduce(
       (prev, key) => {
         const output = {} as PinnedProduct;
-        output.isPinned = this.selectedProducts[key];
         const sarviewsProduct = this.sarviewsProducts.find(prod => prod.product_id === key);
         output.url = sarviewsProduct.files.product_url;
         output.wkt = sarviewsProduct.granules[0].wkt;

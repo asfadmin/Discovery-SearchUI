@@ -38,6 +38,7 @@ export class ImageDialogComponent implements OnInit, AfterViewInit, OnDestroy {
   public masterOffsets$ = this.store$.select(scenesStore.getMasterOffsets);
   public searchType$ = this.store$.select(searchStore.getSearchType);
   public searchTypes = models.SearchType;
+  private searchType: models.SearchType;
   public onlyShowScenesWithBrowse: boolean;
   public queuedProductIds: Set<string>;
   public scene: models.CMRProduct;
@@ -95,17 +96,18 @@ export class ImageDialogComponent implements OnInit, AfterViewInit, OnDestroy {
         products => {
           if (!!products) {
             this.pinnedProducts = {};
-            products.forEach(prod => this.pinnedProducts[prod.id] = {
-              isPinned: false,
-              url: prod.browses[0],
-              wkt: prod.metadata.polygon,
-            });
 
             this.store$.dispatch(new scenesStore.SetImageBrowseProducts(this.pinnedProducts));
           }
         }
       )
     );
+
+    this.subs.add(
+      this.searchType$.subscribe(
+        searchtype => this.searchType = searchtype
+      )
+    )
 
     this.subs.add(
       this.store$.select(uiStore.getOnlyScenesWithBrowse).subscribe(
@@ -146,8 +148,8 @@ export class ImageDialogComponent implements OnInit, AfterViewInit, OnDestroy {
           this.sarviewsProducts = products;
           if (!!this.sarviewsProducts) {
             this.pinnedProducts = {};
-            this.sarviewsProducts.forEach(prod => this.pinnedProducts[prod.product_id] = {
-              isPinned: pinned.includes(prod.product_id),
+            this.sarviewsProducts.filter(prod => pinned.includes(prod.product_id)
+            ).forEach(prod => this.pinnedProducts[prod.product_id] = {
               url: prod.files.browse_url,
               wkt: prod.granules[0].wkt,
             });
@@ -329,13 +331,46 @@ export class ImageDialogComponent implements OnInit, AfterViewInit, OnDestroy {
   public OpenProductInSarviews() {
     const url = this.sarviewsService.getSarviewsEventPinnedUrl(
         this.sarviewsEvent.event_id,
-        [...Object.keys(this.pinnedProducts).filter(key => this.pinnedProducts[key].isPinned)]
+        [...Object.keys(this.pinnedProducts)]
       );
     window.open(url);
   }
 
   public onPinProduct(product_id: string) {
-    this.pinnedProducts[product_id].isPinned = !this.pinnedProducts[product_id].isPinned;
+    let temp: {[product_id in string]: PinnedProduct} = JSON.parse(JSON.stringify(this.pinnedProducts));
+    if(!!temp[product_id]) {
+      delete temp[product_id];
+    } else {
+
+      let url: string;
+      let wkt: string;
+
+      if(this.searchType === models.SearchType.SARVIEWS_EVENTS) {
+        const targetProduct = this.sarviewsProducts.find(prod => prod.product_id === product_id);
+        url = targetProduct?.product_id;
+        wkt = targetProduct?.granules[0].wkt;
+      } else {
+        const targetProduct = this.scene;
+        url = targetProduct?.browses[0];
+        wkt = targetProduct?.metadata.polygon;
+      }
+
+      temp[product_id] = {url, wkt} as PinnedProduct
+    }
+
+    this.pinnedProducts = temp;
+    // let temp: {[product_id in string]: PinnedProduct} = JSON.parse(JSON.stringify(this.pinnedProducts));
+    // // temp[product_id].isPinned = !temp[product_id].isPinned;
+    // if(!!temp[product_id]) {
+    //   delete temp[product_id];
+    // } else {
+    //   const targetProduct = this.sarviewsProducts.find(prod => prod.product_id === product_id);
+    //   if(!!targetProduct) {
+    //     temp[product_id] = {url: targetProduct.files.browse_url, wkt: targetProduct.granules[0].wkt} as PinnedProduct
+    //   }
+    // }
+    // this.pinnedProducts = temp;
+    // this.pinnedProducts[product_id].isPinned = !this.pinnedProducts[product_id].isPinned;
     this.setPinnedProducts();
   }
 

@@ -103,17 +103,18 @@ export class MapControlsComponent implements OnInit, OnDestroy {
         products => {
           if (!!products) {
             this.pinnedProducts = {};
-            products.forEach(prod => this.pinnedProducts[prod.id] = {
-              isPinned: false,
-              url: prod.browses[0],
-              wkt: prod.metadata.polygon,
-            });
 
             this.store$.dispatch(new sceneStore.SetImageBrowseProducts(this.pinnedProducts));
           }
         }
       )
     );
+
+    this.subs.add(
+      this.store$.select(sceneStore.getImageBrowseProducts).subscribe(
+        pinnedProducts => this.pinnedProducts = pinnedProducts
+      )
+    )
   }
 
   public onNewProjection(view: models.MapViewType): void {
@@ -135,7 +136,26 @@ export class MapControlsComponent implements OnInit, OnDestroy {
 
   public onPinProduct(product_id: string) {
     let temp: {[product_id in string]: PinnedProduct} = JSON.parse(JSON.stringify(this.pinnedProducts));
-    temp[product_id].isPinned = !temp[product_id].isPinned;
+    if(!!temp[product_id]) {
+      delete temp[product_id];
+    } else {
+
+      let url: string;
+      let wkt: string;
+
+      if(this.searchType === SearchType.SARVIEWS_EVENTS) {
+        const targetProduct = this.selectedEventProducts.find(prod => prod.product_id === product_id);
+        url = targetProduct?.product_id;
+        wkt = targetProduct?.granules[0].wkt;
+      } else {
+        const targetProduct = this.selectedScene;
+        url = targetProduct?.browses[this.browseIndex];
+        wkt = targetProduct?.metadata.polygon;
+      }
+
+      temp[product_id] = {url, wkt} as PinnedProduct
+    }
+
     this.pinnedProducts = temp;
     // this.pinnedProducts[product_id].isPinned = !this.pinnedProducts[product_id].isPinned;
     this.setPinnedProducts();

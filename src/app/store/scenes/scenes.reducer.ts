@@ -680,7 +680,7 @@ export const getImageBrowseProducts = createSelector(
 export const getPinnedEventBrowseIDs = createSelector(
   getScenesState,
   state => {
-    return Object.keys(state.pinnedProductBrowses).filter(product_id => state.pinnedProductBrowses[product_id].isPinned);
+    return Object.keys(state.pinnedProductBrowses);
   }
 );
 

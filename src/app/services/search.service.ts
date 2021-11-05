@@ -99,7 +99,6 @@ export class SearchService {
           this.store$.dispatch(new scenesStore.SetImageBrowseProducts(pinnedProductIds.reduce(
             (prev, curr) => {
               prev[curr] = {
-                isPinned: true,
                 url: '',
                 wkt: ''
               };

@@ -690,7 +690,6 @@ export class UrlStateService {
     const pinned = productIDs.reduce(
       (prev, key) => {
         const output = {} as PinnedProduct;
-        output.isPinned = true;
         output.url = '';
         output.wkt = '';
 
