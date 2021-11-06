@@ -7,7 +7,7 @@ import Polygon from 'ol/geom/Polygon';
 import ImageLayer from 'ol/layer/Image';
 import Static from 'ol/source/ImageStatic';
 import Raster
-// , { RasterOperationType }
+, { RasterOperationType }
 from 'ol/source/Raster';
 
 import { Coordinate } from 'ol/coordinate';
@@ -65,29 +65,29 @@ export class BrowseOverlayService {
         url,
         imageExtent: polygon.getExtent(),
         // crossOrigin: '*'
-        crossOrigin: '*.asf.alaska.edu, *.hyp3-event-monitoring-productbucket-1t80jdtrfscje.s3.amazonaws.com'
+        crossOrigin: '*.asf.alaska.edu'
       })],
-      // operationType: 'pixel' as RasterOperationType,
-      // operation: (p0: number[][], _) => {
-      //         var pixel = p0[0];
+      operationType: 'pixel' as RasterOperationType,
+      operation: (p0: number[][], _) => {
+              var pixel = p0[0];
 
-      //       var r = pixel[0];
-      //       var g = pixel[1];
-      //       var b = pixel[2];
+            var r = pixel[0];
+            var g = pixel[1];
+            var b = pixel[2];
 
-      //       if(r + g + b <= 10) {
-      //         return [0, 0, 0, 0];
-      //       }
-      //       // // CIE luminance for the RGB
-      //       // var v = 0.2126 * r + 0.7152 * g + 0.0722 * b;
+            if(r + g + b <= 10) {
+              return [0, 0, 0, 0];
+            }
+            // // CIE luminance for the RGB
+            // var v = 0.2126 * r + 0.7152 * g + 0.0722 * b;
 
-      //       // pixel[0] = v; // Red
-      //       // pixel[1] = v; // Green
-      //       // pixel[2] = v; // Blue
-      //       // //pixel[3] = 255;
+            // pixel[0] = v; // Red
+            // pixel[1] = v; // Green
+            // pixel[2] = v; // Blue
+            // //pixel[3] = 255;
 
-      //       return pixel;
-      //     }
+            return pixel;
+          }
       // opacity: this.browseLayer?.getOpacity() ?? 1.0
     });
 
