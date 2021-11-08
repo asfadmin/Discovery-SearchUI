@@ -376,7 +376,7 @@ export class ImageDialogComponent implements OnInit, AfterViewInit, OnDestroy {
 
   private setPinnedProducts() {
     this.store$.dispatch(new scenesStore.SetImageBrowseProducts(this.pinnedProducts));
-    this.browseMap.setPinnedProducts(this.pinnedProducts);
+    // this.browseMap.setPinnedProducts(this.pinnedProducts,);
   }
 
   ngOnDestroy() {

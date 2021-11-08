@@ -528,8 +528,8 @@ export class MapService {
     // this.map.addLayer(l);
   }
 
-  public setPinnedProducts(pinnedProductStates: {[product_id in string]: PinnedProduct}) {
-    this.browseOverlayService.setPinnedProducts(pinnedProductStates, this.pinnedProducts);
+  public setPinnedProducts(pinnedProductStates: {[product_id in string]: PinnedProduct}, searchType: models.SearchType) {
+    this.browseOverlayService.setPinnedProducts(pinnedProductStates, this.pinnedProducts, searchType);
   }
 
   public clearBrowseOverlays() {

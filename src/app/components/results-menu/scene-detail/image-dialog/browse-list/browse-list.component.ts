@@ -13,7 +13,7 @@ import * as searchStore from '@store/search';
 
 import * as models from '@models';
 import {
-  BrowseMapService,
+  // BrowseMapService,
    ScenesService } from '@services';
 import { PinnedProduct } from '@services/browse-map.service';
 // import { SearchType } from '@models';
@@ -52,7 +52,7 @@ export class BrowseListComponent implements OnInit, AfterViewInit, OnDestroy {
   constructor(
     private store$: Store<AppState>,
     private scenesService: ScenesService,
-    private browseMap: BrowseMapService,
+    // private browseMap: BrowseMapService,
   ) { }
 
   ngOnInit() {
@@ -176,7 +176,7 @@ export class BrowseListComponent implements OnInit, AfterViewInit, OnDestroy {
     // }
     // this.pinnedProducts = temp;
     this.store$.dispatch(new scenesStore.SetImageBrowseProducts(this.productBrowseStates));
-    this.browseMap.setPinnedProducts(this.productBrowseStates);
+    // this.browseMap.setPinnedProducts(this.productBrowseStates);
   }
 
   public isPinned(product_id: string) {

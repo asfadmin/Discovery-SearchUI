@@ -6,7 +6,7 @@ import ImageLayer from 'ol/layer/Image';
 import * as polygonStyle from './map/polygon.style';
 import Static from 'ol/source/ImageStatic.js';
 import { XYZ } from 'ol/source';
-import { mapOptions } from '@models';
+import { mapOptions, SearchType } from '@models';
 import TileLayer from 'ol/layer/Tile';
 import { Layer, Vector } from 'ol/layer';
 import Polygon from 'ol/geom/Polygon';
@@ -105,8 +105,8 @@ export class BrowseMapService {
     this.browseLayer.setOpacity(opacity);
   }
 
-  public setPinnedProducts(pinnedProductStates: {[product_id in string]: PinnedProduct}) {
-    this.browseOverlayService.setPinnedProducts(pinnedProductStates, this.pinnedProducts);
+  public setPinnedProducts(pinnedProductStates: {[product_id in string]: PinnedProduct}, searchType: SearchType) {
+    this.browseOverlayService.setPinnedProducts(pinnedProductStates, this.pinnedProducts, searchType);
   }
 
   public unpinAll() {

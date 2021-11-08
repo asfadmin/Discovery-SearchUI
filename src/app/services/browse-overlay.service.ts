@@ -14,6 +14,7 @@ import { Coordinate } from 'ol/coordinate';
 import MultiPolygon from 'ol/geom/MultiPolygon';
 import { PinnedProduct } from './browse-map.service';
 import LayerGroup from 'ol/layer/Group';
+import { SearchType } from '@models';
 
 @Injectable({
   providedIn: 'root'
@@ -65,7 +66,7 @@ export class BrowseOverlayService {
         url,
         imageExtent: polygon.getExtent(),
         // crossOrigin: '*'
-        crossOrigin: '*.asf.alaska.edu *hyp3-event-monitoring-productbucket-1t80jdtrfscje.s3.amazonaws.com'
+        crossOrigin: ''
       })],
       operationType: 'pixel' as RasterOperationType,
       operation: (p0: number[][], _) => {
@@ -118,7 +119,7 @@ export class BrowseOverlayService {
     }
   }
 
-  public setPinnedProducts(pinnedProducts: {[product_id in string]: PinnedProduct}, productLayerGroup: LayerGroup) {
+  public setPinnedProducts(pinnedProducts: {[product_id in string]: PinnedProduct}, productLayerGroup: LayerGroup, searchType: SearchType) {
     // Built in method Collection.clear() causes flickering when pinning new product,
     // have to keep track of pinned products as work around
 
@@ -131,17 +132,27 @@ export class BrowseOverlayService {
     productLayerGroup.getLayers().clear();
     } else {
       this.unpinProducts(toRemove, productLayerGroup);
-      this.pinProducts(toAdd, pinnedProducts, productLayerGroup)
+      this.pinProducts(toAdd, pinnedProducts, productLayerGroup, searchType)
     }
   }
 
-  private pinProducts(layersToAdd: string[], pinnedProductStates: {[product_id in string]: PinnedProduct}, productLayerGroup: LayerGroup) {
-    const newLayers = layersToAdd.map(layer_id => this.createImageLayer(
+  private pinProducts(layersToAdd: string[], pinnedProductStates: {[product_id in string]: PinnedProduct}, productLayerGroup: LayerGroup, searchType: SearchType) {
+    let requireCors = false;
+    if(searchType !== SearchType.SARVIEWS_EVENTS) {
+      requireCors = true;
+    }
+    const newLayers = layersToAdd.map(layer_id => requireCors ? this.createImageLayer(
       pinnedProductStates[layer_id].url,
       pinnedProductStates[layer_id].wkt,
       'ol-layer',
-      layer_id
-    ));
+      layer_id,
+    ) : this.createNormalImageLayer(
+      pinnedProductStates[layer_id].url,
+      pinnedProductStates[layer_id].wkt,
+      'ol-layer',
+      layer_id,
+    )
+    );
     productLayerGroup.getLayers().extend(newLayers);
   }
 
