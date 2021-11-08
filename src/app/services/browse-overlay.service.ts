@@ -65,7 +65,7 @@ export class BrowseOverlayService {
         url,
         imageExtent: polygon.getExtent(),
         // crossOrigin: '*'
-        crossOrigin: '*.asf.alaska.edu'
+        crossOrigin: '*.asf.alaska.edu *hyp3-event-monitoring-productbucket-1t80jdtrfscje.s3.amazonaws.com'
       })],
       operationType: 'pixel' as RasterOperationType,
       operation: (p0: number[][], _) => {
