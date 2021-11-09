@@ -168,14 +168,14 @@
               <mat-select
                 (selectionChange)="onNewPolarization($event)"
                 [(value)]="polarization"
-                placeholder="Polarization">
+                placeholder="Polarization" multiple>
                 <mat-option *ngFor="let pol of polarizations" [value]="pol">
                   {{pol}}
                 </mat-option>
               </mat-select>
 
               <mat-hint align="start">
-                {{ !polarization ? 'No polarization selected' : 'Polarization selected' }}
+                {{ polarization.length === 0 ? 'No polarization selected' : 'Polarization selected' }}
               </mat-hint>
             </mat-form-field>
           </div>
@@ -228,7 +228,7 @@
               <b>File Type:</b> {{ productType }}
             </div>
 
-            <div *ngIf="!!polarization">
+            <div *ngIf="polarization.length > 0">
               <b>Polarization:</b> {{ polarization }}
             </div>
 

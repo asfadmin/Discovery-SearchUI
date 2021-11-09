@@ -63,13 +63,12 @@ export class CreateSubscriptionComponent implements OnInit, OnDestroy {
   public flightDirection = 'All';
 
   public polarizations = [
-    'All',
     'VV+VH',
     'HH+HV',
     'VV',
     'HH',
   ];
-  public polarization = 'All';
+  public polarization = [];
   public path: number = null;
   public frame: number = null;
 
@@ -183,7 +182,7 @@ export class CreateSubscriptionComponent implements OnInit, OnDestroy {
     );
 
     this.mapService.setDrawFeature(features);
-    this.polarization = reference.metadata.polarization;
+    this.polarization = [reference.metadata.polarization];
     this.path = reference.metadata.path;
 
     this.flightDirectionTypes.forEach(flightDir => {
@@ -415,7 +414,7 @@ export class CreateSubscriptionComponent implements OnInit, OnDestroy {
     };
 
     const flightDir = this.flightDirection === 'All' ? null : this.flightDirection;
-    const pol = this.polarization === 'All' ? null : this.polarization;
+    const pol = this.polarization.join(',');
 
     const params = this.filterNullKeys({
       start: moment.utc(dateRange.start).format(),
@@ -425,7 +424,7 @@ export class CreateSubscriptionComponent implements OnInit, OnDestroy {
       frame: this.frame,
       platform: this.subtype,
       flightDirection: !!flightDir ? flightDir.toUpperCase() : null,
-      polarization: !!pol ? [ pol ] : null,
+      polarization: pol,
       processinglevel: this.productType,
       output: 'COUNT',
     });
@@ -439,7 +438,7 @@ export class CreateSubscriptionComponent implements OnInit, OnDestroy {
 
   private getSearchParams() {
     const flightDir = this.flightDirection === 'All' ? null : this.flightDirection;
-    const pol = this.polarization === 'All' ? null : this.polarization;
+    const pol = this.polarization.length > 0 ? this.polarization : null;
 
     const params = {
       start: moment.utc(this.dateRange.start).format(),
@@ -449,7 +448,7 @@ export class CreateSubscriptionComponent implements OnInit, OnDestroy {
       frame: !!this.frame ? [ this.frame ] : null,
       platform: this.subtype,
       flightDirection: !!flightDir ? flightDir.toUpperCase() : null,
-      polarization: !!pol ? [ pol ] : null,
+      polarization: pol,
       processingLevel: this.productType,
     };
 
