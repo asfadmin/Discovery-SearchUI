@@ -66,7 +66,7 @@ export class BrowseOverlayService {
         url,
         imageExtent: polygon.getExtent(),
         // crossOrigin: '*'
-        crossOrigin: ''
+        crossOrigin: '*.asf.alaska.edu'
       })],
       operationType: 'pixel' as RasterOperationType,
       operation: (p0: number[][], _) => {
