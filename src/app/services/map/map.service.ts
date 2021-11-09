@@ -503,7 +503,7 @@ export class MapService {
     if(!!this.browseImageLayer) {
       this.map.removeLayer(this.browseImageLayer);
     }
-    this.browseImageLayer = this.browseOverlayService.createImageLayer(url, wkt);
+    this.browseImageLayer = this.browseOverlayService.createNormalImageLayer(url, wkt);
     this.map.addLayer(this.browseImageLayer);
   }
 
@@ -511,7 +511,7 @@ export class MapService {
     const scenesWithBrowse = scenes.filter(scene => scene.browses?.length > 0).slice(0, 10);
 
     const collection = scenesWithBrowse.reduce((prev, curr) =>
-    prev.concat(this.browseOverlayService.createImageLayer(curr.browses[0], curr.metadata.polygon)), [] as ImageLayer[])
+    prev.concat(this.browseOverlayService.createNormalImageLayer(curr.browses[0], curr.metadata.polygon)), [] as ImageLayer[])
 
     // this.browseRasterCanvas = new RasterSource({
     //   sources: collection,
@@ -528,8 +528,8 @@ export class MapService {
     // this.map.addLayer(l);
   }
 
-  public setPinnedProducts(pinnedProductStates: {[product_id in string]: PinnedProduct}, searchType: models.SearchType) {
-    this.browseOverlayService.setPinnedProducts(pinnedProductStates, this.pinnedProducts, searchType);
+  public setPinnedProducts(pinnedProductStates: {[product_id in string]: PinnedProduct}) {
+    this.browseOverlayService.setPinnedProducts(pinnedProductStates, this.pinnedProducts);
   }
 
   public clearBrowseOverlays() {

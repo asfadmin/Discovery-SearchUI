@@ -7,14 +7,13 @@ import Polygon from 'ol/geom/Polygon';
 import ImageLayer from 'ol/layer/Image';
 import Static from 'ol/source/ImageStatic';
 import Raster
-, { RasterOperationType }
+// , { RasterOperationType }
 from 'ol/source/Raster';
 
 import { Coordinate } from 'ol/coordinate';
 import MultiPolygon from 'ol/geom/MultiPolygon';
 import { PinnedProduct } from './browse-map.service';
 import LayerGroup from 'ol/layer/Group';
-import { SearchType } from '@models';
 
 @Injectable({
   providedIn: 'root'
@@ -65,30 +64,28 @@ export class BrowseOverlayService {
       sources: [new Static({
         url,
         imageExtent: polygon.getExtent(),
-        // crossOrigin: '*'
-        crossOrigin: 'https://datapool.asf.alaska.edu'
       })],
-      operationType: 'pixel' as RasterOperationType,
-      operation: (p0: number[][], _) => {
-              var pixel = p0[0];
+      // operationType: 'pixel' as RasterOperationType,
+      // operation: (p0: number[][], _) => {
+      //         var pixel = p0[0];
 
-            var r = pixel[0];
-            var g = pixel[1];
-            var b = pixel[2];
+      //       var r = pixel[0];
+      //       var g = pixel[1];
+      //       var b = pixel[2];
 
-            if(r + g + b <= 10) {
-              return [0, 0, 0, 0];
-            }
-            // // CIE luminance for the RGB
-            // var v = 0.2126 * r + 0.7152 * g + 0.0722 * b;
+      //       if(r + g + b <= 10) {
+      //         return [0, 0, 0, 0];
+      //       }
+      //       // // CIE luminance for the RGB
+      //       // var v = 0.2126 * r + 0.7152 * g + 0.0722 * b;
 
-            // pixel[0] = v; // Red
-            // pixel[1] = v; // Green
-            // pixel[2] = v; // Blue
-            // //pixel[3] = 255;
+      //       // pixel[0] = v; // Red
+      //       // pixel[1] = v; // Green
+      //       // pixel[2] = v; // Blue
+      //       // //pixel[3] = 255;
 
-            return pixel;
-          }
+      //       return pixel;
+      //     }
       // opacity: this.browseLayer?.getOpacity() ?? 1.0
     });
 
@@ -119,7 +116,7 @@ export class BrowseOverlayService {
     }
   }
 
-  public setPinnedProducts(pinnedProducts: {[product_id in string]: PinnedProduct}, productLayerGroup: LayerGroup, searchType: SearchType) {
+  public setPinnedProducts(pinnedProducts: {[product_id in string]: PinnedProduct}, productLayerGroup: LayerGroup) {
     // Built in method Collection.clear() causes flickering when pinning new product,
     // have to keep track of pinned products as work around
 
@@ -132,21 +129,12 @@ export class BrowseOverlayService {
     productLayerGroup.getLayers().clear();
     } else {
       this.unpinProducts(toRemove, productLayerGroup);
-      this.pinProducts(toAdd, pinnedProducts, productLayerGroup, searchType)
+      this.pinProducts(toAdd, pinnedProducts, productLayerGroup)
     }
   }
 
-  private pinProducts(layersToAdd: string[], pinnedProductStates: {[product_id in string]: PinnedProduct}, productLayerGroup: LayerGroup, searchType: SearchType) {
-    let requireCors = false;
-    if(searchType !== SearchType.SARVIEWS_EVENTS) {
-      requireCors = true;
-    }
-    const newLayers = layersToAdd.map(layer_id => requireCors ? this.createImageLayer(
-      pinnedProductStates[layer_id].url,
-      pinnedProductStates[layer_id].wkt,
-      'ol-layer',
-      layer_id,
-    ) : this.createNormalImageLayer(
+  private pinProducts(layersToAdd: string[], pinnedProductStates: {[product_id in string]: PinnedProduct}, productLayerGroup: LayerGroup) {
+    const newLayers = layersToAdd.map(layer_id =>this.createNormalImageLayer(
       pinnedProductStates[layer_id].url,
       pinnedProductStates[layer_id].wkt,
       'ol-layer',

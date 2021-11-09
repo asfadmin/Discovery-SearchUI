@@ -165,7 +165,7 @@ export class SearchEffects {
   public setSearchOverlays = createEffect(() => this.actions$.pipe(
     ofType<SetImageBrowseProducts>(ScenesActionType.SET_IMAGE_BROWSE_PRODUCTS),
     withLatestFrom(this.store$.select(getSearchType)),
-    tap(([action, searchType]) => this.mapService.setPinnedProducts(action.payload, searchType)),
+    tap(([action, _]) => this.mapService.setPinnedProducts(action.payload)),
   ), {dispatch: false})
 
   public setMapInteractionModeBasedOnSearchType = createEffect(() => this.actions$.pipe(
