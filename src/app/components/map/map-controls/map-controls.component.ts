@@ -14,7 +14,6 @@ import { LonLat, SarviewsProduct, SearchType } from '@models';
 import { combineLatest } from 'rxjs';
 import { PinnedProduct } from '@services/browse-map.service';
 import { filter, startWith, tap } from 'rxjs/operators';
-import { MatSliderChange } from '@angular/material/slider';
 
 @Component({
   selector: 'app-map-controls',
@@ -44,6 +43,7 @@ export class MapControlsComponent implements OnInit, OnDestroy {
   private browseIndex = 0;
   private selectedEventProducts: SarviewsProduct[] = [];
   private selectedScene: models.CMRProduct;
+  public browseOpacity = 1.0;
 
   constructor(
     private store$: Store<AppState>,
@@ -106,8 +106,8 @@ export class MapControlsComponent implements OnInit, OnDestroy {
     this.mapService.zoomOut();
   }
 
-  public onSetOpacity(event: MatSliderChange) {
-    this.mapService.updateBrowseOpacity(event.value);
+  public onSetOpacity() {
+    this.mapService.updateBrowseOpacity(this.browseOpacity);
   }
 
 

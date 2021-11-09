@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 
 import { of } from 'rxjs';
-import { map, switchMap, catchError, distinctUntilChanged, filter, tap } from 'rxjs/operators';
+import { map, switchMap, catchError, distinctUntilChanged, filter } from 'rxjs/operators';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { UnzipApiService } from '@services/unzip-api.service';
 import { NotificationService } from '@services/notification.service';
@@ -11,8 +11,8 @@ import {
   ScenesActionType, LoadUnzippedProduct,
   AddUnzippedProduct, ErrorLoadingUnzipped
 } from './scenes.action';
-import { SetImageBrowseProducts, SetSarviewsEventProducts, SetSelectedSarviewsEvent } from '.';
-import { MapService, SarviewsEventsService } from '@services';
+import { SetSarviewsEventProducts, SetSelectedSarviewsEvent } from '.';
+import { SarviewsEventsService } from '@services';
 
 @Injectable()
 export class ScenesEffects {
@@ -21,7 +21,6 @@ export class ScenesEffects {
     private unzipApi: UnzipApiService,
     private notificationService: NotificationService,
     private sarviewsService: SarviewsEventsService,
-    private mapService: MapService,
   ) {}
 
   public loadUnzippedProductFiles = createEffect(() => this.actions$.pipe(
@@ -56,12 +55,6 @@ export class ScenesEffects {
     // debounceTime(500),
     filter(event => !!event.products),
     map(processedEvent => new SetSarviewsEventProducts(!!processedEvent.products ? processedEvent.products : []))
-  ));
-
-  public clearBrowseOverlaysOnNewEvent = createEffect(() => this.actions$.pipe(
-    ofType<SetSelectedSarviewsEvent>(ScenesActionType.SET_SELECTED_SARVIEWS_EVENT),
-    map(_ => new SetImageBrowseProducts({})),
-    tap(_ => this.mapService.clearBrowseOverlays())
   ));
 
   private showUnzipApiLoadError(product: CMRProduct): void {
