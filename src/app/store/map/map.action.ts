@@ -15,6 +15,7 @@ export enum MapActionType {
   SET_BROWSE_OVERLAYS = '[Map] Set Browse Overlays On Map',
   TOGGLE_BROWSE_OVERLAY = '[Map] Toggle Selected Browse Overlay',
   SET_BROWSE_OVERLAY_OPACITY = '[Map] Set Browse Overlay Opacity',
+  CLEAR_BROWSE_OVERLAYS = '[Map] Clear All Browse Overlays On Map'
 }
 
 export class SetStreetView implements Action {
@@ -71,6 +72,10 @@ export class SetBrowseOverlays implements Action {
   constructor(public payload: string[]) {}
 }
 
+export class ClearBrowseOverlays implements Action {
+  public readonly type = MapActionType.CLEAR_BROWSE_OVERLAYS;
+}
+
 
 export type MapActions =
   | SetMapView
@@ -82,4 +87,5 @@ export type MapActions =
   | MapInitialzed
   | ToggleBrowseOverlay
   | SetBrowseOverlays
-  | SetBrowseOverlayOpacity;
+  | SetBrowseOverlayOpacity
+  | ClearBrowseOverlays;

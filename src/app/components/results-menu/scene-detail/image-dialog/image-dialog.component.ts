@@ -21,7 +21,6 @@ import {
   SarviewProductGranule, SarviewsProduct } from '@models';
 import { ClipboardService } from 'ngx-clipboard';
 import { MatSliderChange } from '@angular/material/slider';
-import { PinnedProduct } from '@services/browse-map.service';
 import { ToggleBrowseOverlay } from '@store/map';
 
 @Component({
@@ -59,8 +58,6 @@ export class ImageDialogComponent implements OnInit, AfterViewInit, OnDestroy {
 
   private image: HTMLImageElement = new Image();
   private subs = new SubSink();
-
-  private pinnedProducts: {[product_id in string]: PinnedProduct} = {};
 
   constructor(
     private store$: Store<AppState>,
@@ -113,10 +110,6 @@ export class ImageDialogComponent implements OnInit, AfterViewInit, OnDestroy {
         this.paramsList = this.jobParamsToList(prod.metadata);
       }
     )
-    );
-
-    this.subs.add(
-      this.store$.select(scenesStore.getImageBrowseProducts).subscribe(browseStates => this.pinnedProducts = browseStates)
     );
 
     this.subs.add(
@@ -209,8 +202,11 @@ export class ImageDialogComponent implements OnInit, AfterViewInit, OnDestroy {
       }
 
       self.isImageLoading = false;
+      const [width, height] = [
+        this.naturalWidth, this.naturalHeight
+      ];
 
-      browseService.setMapBrowse(product.files.browse_url, product.granules[0].wkt );
+      browseService.setBrowse(product.files.browse_url, {width, height} );
     });
 
     this.image.src = product.files.browse_url;
@@ -273,8 +269,8 @@ export class ImageDialogComponent implements OnInit, AfterViewInit, OnDestroy {
 
   public OpenProductInSarviews() {
     const url = this.sarviewsService.getSarviewsEventPinnedUrl(
-        this.sarviewsEvent.event_id,
-        [...Object.keys(this.pinnedProducts)]
+      this.sarviewsEvent.event_id,
+      [this.currentSarviewsProduct.product_id]
       );
     window.open(url);
   }

@@ -15,6 +15,7 @@ import { combineLatest } from 'rxjs';
 
 import { filter, startWith, tap } from 'rxjs/operators';
 import { ToggleBrowseOverlay } from '@store/map';
+import { MatSliderChange } from '@angular/material/slider';
 
 @Component({
   selector: 'app-map-controls',
@@ -44,7 +45,6 @@ export class MapControlsComponent implements OnInit, OnDestroy {
   private browseIndex = 0;
   private selectedEventProducts: SarviewsProduct[] = [];
   private selectedScene: models.CMRProduct;
-  public browseOpacity = 1.0;
 
   constructor(
     private store$: Store<AppState>,
@@ -107,14 +107,17 @@ export class MapControlsComponent implements OnInit, OnDestroy {
     this.mapService.zoomOut();
   }
 
-  public onSetOpacity() {
-    this.store$.dispatch(new mapStore.SetBrowseOverlayOpacity(this.browseOpacity));
-    // this.mapService.updateBrowseOpacity(this.browseOpacity);
+  public onSetOpacity(event: MatSliderChange) {
+    this.store$.dispatch(new mapStore.SetBrowseOverlayOpacity(event.value));
   }
 
 
   public onPinProduct(product_id: string) {
     this.store$.dispatch(new ToggleBrowseOverlay(product_id));
+  }
+
+  public onUnpinAll() {
+    this.store$.dispatch(new mapStore.ClearBrowseOverlays());
   }
 
   public onIncrementBrowseIndex() {

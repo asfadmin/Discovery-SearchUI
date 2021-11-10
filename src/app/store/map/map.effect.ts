@@ -9,7 +9,7 @@ import { Store } from '@ngrx/store';
 import { MapService } from '@services';
 import { AppState } from '@store';
 import { getImageBrowseProducts, getPinnedEventBrowseIDs, getProducts, getSelectedSarviewsEventProducts, getSelectedScene } from '@store/scenes';
-import { ScenesActionType, SetImageBrowseProducts, SetSelectedSarviewsEvent, SetSelectedScene } from '@store/scenes/scenes.action';
+import { ScenesActionType, SetImageBrowseProducts, SetSelectedScene } from '@store/scenes/scenes.action';
 import { getSearchType, SearchActionType, SetSearchType } from '@store/search';
 import { filter, map, tap, withLatestFrom } from 'rxjs/operators';
 import { MapActionType, SetBrowseOverlayOpacity, SetBrowseOverlays, ToggleBrowseOverlay } from '.';
@@ -21,14 +21,12 @@ export class MapEffects {
   public constructor(private actions$: Actions,
     private mapService: MapService,
     private store$: Store<AppState>) {}
-  public clearBrowseOverlaysOnNewEvent = createEffect(() => this.actions$.pipe(
-    ofType<SetSelectedSarviewsEvent>(ScenesActionType.SET_SELECTED_SARVIEWS_EVENT),
-    map(_ => new SetImageBrowseProducts({})),
-    tap(_ => this.mapService.clearBrowseOverlays())
-  ));
 
   public clearPinnedProducts = createEffect((() => this.actions$.pipe(
-    ofType(SearchActionType.SET_SEARCH_TYPE_AFTER_SAVE, SearchActionType.MAKE_SEARCH),
+    ofType(SearchActionType.SET_SEARCH_TYPE_AFTER_SAVE,
+      SearchActionType.MAKE_SEARCH,
+      MapActionType.CLEAR_BROWSE_OVERLAYS,
+      ScenesActionType.SET_SELECTED_SARVIEWS_EVENT),
     tap(_ => this.mapService.clearBrowseOverlays()),
     map(_ => new SetImageBrowseProducts({}))
   )));
@@ -150,5 +148,6 @@ export class MapEffects {
       }, {} as {[product_id in string]: PinnedProduct})
     )
   ),  {dispatch: false});
+
 }
 

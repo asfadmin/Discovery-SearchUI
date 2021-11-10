@@ -84,7 +84,7 @@
       </div>
 
       <div fxFlex="" class="group-margin" *ngIf="searchType !== searchTypes.BASELINE
-      && searchType !== searchTypes.SBAS && searchType !== searchTypes.SARVIEWS_EVENTS">
+      && searchType !== searchTypes.SBAS">
         <div  fxLayout="row" fxLayoutAlign="center" class="button-group-label">
           <label>Product Browse</label>
           </div>
@@ -96,12 +96,20 @@
           matTooltip="Pin/Unpin Current Browse Image">
           <mat-icon class="control-icon">push_pin</mat-icon>
         </mat-button-toggle> -->
+          <mat-button-toggle class="control-mat-button-toggle"
+          *ngIf="searchType === searchTypes.SARVIEWS_EVENTS"
+          (click)="onUnpinAll()"
+          matTooltip="Unpin All Selected Products">
+          <mat-icon class="control-icon">push_pin</mat-icon>
+        </mat-button-toggle>
         <mat-button-toggle class="control-mat-button-toggle"
+        *ngIf="searchType !== searchTypes.SARVIEWS_EVENTS"
         (click)="onDecrementBrowseIndex()"
         matTooltip="Change selected scene browse">
         <mat-icon class="control-icon">arrow_back</mat-icon>
         </mat-button-toggle>
           <mat-button-toggle class="control-mat-button-toggle"
+          *ngIf="searchType !== searchTypes.SARVIEWS_EVENTS"
           (click)="onIncrementBrowseIndex()"
           matTooltip="Change selected scene browse index">
           <mat-icon class="control-icon">arrow_forward</mat-icon>
@@ -119,7 +127,7 @@
       </div>
       <div fxLayout="row">
         <div>
-      <mat-slider [(value)]="browseOpacity" fxFlex="" name="layerType" step="0.25" value="1" min="0.0" max="1.0" (change)="onSetOpacity()" >
+      <mat-slider fxFlex="" name="layerType" step="0.25" value="1" min="0.0" max="1.0" (input)="onSetOpacity($event)" >
       </mat-slider>
         </div>
       </div>
