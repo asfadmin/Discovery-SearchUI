@@ -540,8 +540,8 @@ export class MapService {
   }
 
   public updateBrowseOpacity(opacity: number) {
-    this.browseImageLayer.setOpacity(opacity);
-    this.pinnedProducts.setOpacity(opacity);
+    this.browseImageLayer?.setOpacity(opacity);
+    this.pinnedProducts?.setOpacity(opacity);
   }
 
 
