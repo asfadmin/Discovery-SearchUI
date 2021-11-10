@@ -36,6 +36,7 @@ export class MapEffects {
   public setSearchOverlays = createEffect(() => this.actions$.pipe(
     ofType<SetImageBrowseProducts>(ScenesActionType.SET_IMAGE_BROWSE_PRODUCTS),
     withLatestFrom(this.store$.select(getSearchType)),
+    filter(([_, searchtype]) => searchtype === models.SearchType.SARVIEWS_EVENTS),
     tap(([action, _]) => this.mapService.setPinnedProducts(action.payload)),
   ), {dispatch: false});
 
@@ -57,7 +58,12 @@ export class MapEffects {
     withLatestFrom(this.store$.select(getProducts)),
     filter(([selected, products]) => !!selected && !!products),
     filter(([selected, products]) => products[selected].browses.length > 0),
-    tap(([selected, products]) => this.mapService.setSelectedBrowse(products[selected].browses[0], products[selected].metadata.polygon)),
+    tap(([selected, products]) => {
+      const selectedProduct = products[selected];
+      if(selectedProduct.browses[0] !== '/assets/no-browse.png') {
+        this.mapService.setSelectedBrowse(selectedProduct.browses[0], selectedProduct.metadata.polygon);
+      }
+    }),
   ), {dispatch: false});
 
   public pinEventProductOnSelection = createEffect(() => this.actions$.pipe(
