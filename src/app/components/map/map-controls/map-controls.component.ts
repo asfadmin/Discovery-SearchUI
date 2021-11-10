@@ -12,8 +12,9 @@ import * as services from '@services';
 
 import { LonLat, SarviewsProduct, SearchType } from '@models';
 import { combineLatest } from 'rxjs';
-import { PinnedProduct } from '@services/browse-map.service';
+
 import { filter, startWith, tap } from 'rxjs/operators';
+import { ToggleBrowseOverlay } from '@store/map';
 
 @Component({
   selector: 'app-map-controls',
@@ -107,34 +108,13 @@ export class MapControlsComponent implements OnInit, OnDestroy {
   }
 
   public onSetOpacity() {
-    this.mapService.updateBrowseOpacity(this.browseOpacity);
+    this.store$.dispatch(new mapStore.SetBrowseOverlayOpacity(this.browseOpacity));
+    // this.mapService.updateBrowseOpacity(this.browseOpacity);
   }
 
 
-  public onPinProduct(product_id: string, pinnedProducts: {[product_id in string]: PinnedProduct}) {
-    let temp: {[product_id in string]: PinnedProduct} = JSON.parse(JSON.stringify(pinnedProducts));
-    if(!!temp[product_id]) {
-      delete temp[product_id];
-    } else {
-
-      let url: string;
-      let wkt: string;
-
-      if(this.searchType === SearchType.SARVIEWS_EVENTS) {
-        const targetProduct = this.selectedEventProducts.find(prod => prod.product_id === product_id);
-        url = targetProduct?.product_id;
-        wkt = targetProduct?.granules[0].wkt;
-      } else {
-        const targetProduct = this.selectedScene;
-        url = targetProduct?.browses[this.browseIndex];
-        wkt = targetProduct?.metadata.polygon;
-      }
-
-      temp[product_id] = {url, wkt} as PinnedProduct
-    }
-
-    // this.pinnedProducts[product_id].isPinned = !this.pinnedProducts[product_id].isPinned;
-    this.setPinnedProducts(temp);
+  public onPinProduct(product_id: string) {
+    this.store$.dispatch(new ToggleBrowseOverlay(product_id));
   }
 
   public onIncrementBrowseIndex() {
@@ -159,10 +139,6 @@ export class MapControlsComponent implements OnInit, OnDestroy {
   private getBrowseCount() {
     return this.searchType === SearchType.SARVIEWS_EVENTS
     ? this.selectedEventProducts.length : this.selectedScene.browses.length;
-  }
-
-  private setPinnedProducts(products: {[product_id in string]: PinnedProduct}) {
-    this.store$.dispatch(new sceneStore.SetImageBrowseProducts(products));
   }
 
   ngOnDestroy() {

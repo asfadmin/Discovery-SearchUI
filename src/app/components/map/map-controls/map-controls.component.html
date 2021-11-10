@@ -91,11 +91,11 @@
           <div fxLayout="row">
             <div>
         <mat-button-toggle-group fxFlex="" name="layerType">
-          <!-- <mat-button-toggle class="control-mat-button-toggle" *ngIf="(pinnedProducts$ | async) as pinnedProducts"
-          (click)="onPinProduct(currentBrowseID, pinnedProducts)"
+          <mat-button-toggle class="control-mat-button-toggle" *ngIf="(pinnedProducts$ | async) as pinnedProducts"
+          (click)="onPinProduct(currentBrowseID)"
           matTooltip="Pin/Unpin Current Browse Image">
           <mat-icon class="control-icon">push_pin</mat-icon>
-        </mat-button-toggle> -->
+        </mat-button-toggle>
         <mat-button-toggle class="control-mat-button-toggle"
         (click)="onDecrementBrowseIndex()"
         matTooltip="Change selected scene browse">

@@ -19,7 +19,7 @@ import { MapService } from './map/map.service';
 import { WktService } from './wkt.service';
 import { RangeService } from './range.service';
 import { PropertyService } from './property.service';
-import { PinnedProduct } from './browse-map.service';
+// import { PinnedProduct } from './browse-map.service';
 
 
 @Injectable({
@@ -687,18 +687,18 @@ export class UrlStateService {
   private loadPinnedProducts = (pinnedProducts: string): Action => {
     const productIDs = pinnedProducts.split(',');
 
-    const pinned = productIDs.reduce(
-      (prev, key) => {
-        const output = {} as PinnedProduct;
-        output.url = '';
-        output.wkt = '';
+    // const pinned = productIDs.reduce(
+    //   (prev, key) => {
+    //     const output = {} as PinnedProduct;
+    //     output.url = '';
+    //     output.wkt = '';
 
-        prev[key] = output;
-        return prev;
-      }, {} as {[product_id in string]: PinnedProduct}
-    );
+    //     prev[key] = output;
+    //     return prev;
+    //   }, {} as {[product_id in string]: PinnedProduct}
+    // );
 
-      return new scenesStore.SetImageBrowseProducts(pinned);
+      return new mapStore.SetBrowseOverlays(productIDs);
   }
 
   private loadIsDownloadQueueOpen = (isDownloadQueueOpen: string): Action => {

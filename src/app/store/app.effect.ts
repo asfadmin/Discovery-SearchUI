@@ -5,6 +5,7 @@ import { ScenesEffects } from './scenes';
 import { UIEffects } from './ui';
 import { UserEffects } from './user';
 import { Hyp3Effects } from './hyp3';
+import { MapEffects } from './map';
 
 export const appEffects = [
   FiltersEffects,
@@ -13,5 +14,6 @@ export const appEffects = [
   ScenesEffects,
   UIEffects,
   UserEffects,
-  Hyp3Effects
+  Hyp3Effects,
+  MapEffects,
 ];
