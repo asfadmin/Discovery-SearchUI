@@ -117,11 +117,8 @@ export class BrowseOverlayService {
   }
 
   public setPinnedProducts(pinnedProducts: {[product_id in string]: PinnedProduct}, productLayerGroup: LayerGroup) {
-    // Built in method Collection.clear() causes flickering when pinning new product,
-    // have to keep track of pinned products as work around
 
     const pinnedProductIds = Object.keys(pinnedProducts);
-    // const pinned_ids = pinnedProductIds.filter(id => pinnedProductStates[id].isPinned);
     const currentPinnedProductsIds: string[] = productLayerGroup.getLayersArray().map(layer => layer.get("layer_id"));
     const toAdd = pinnedProductIds.filter(id => !currentPinnedProductsIds.includes(id));
     const toRemove = currentPinnedProductsIds.filter(id => !pinnedProductIds.includes(id));

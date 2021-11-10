@@ -160,23 +160,7 @@ export class BrowseListComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     this.productBrowseStates = temp;
-    // console.log(product_id);
-    // let temp: {[product_id in string]: PinnedProduct} = JSON.parse(JSON.stringify(this.productBrowseStates));
-    // // temp[product_id].isPinned = !temp[product_id].isPinned;
-    // if(!!temp[product_id]) {
-    //   delete temp[product_id];
-    // } else {
-    //   const targetProductID = Object.keys(this.productBrowseStates).find(id => id === product_id);
-    //   if(!!targetProductID) {
-    //     if(this.searchtype = SearchType.SARVIEWS_EVENTS) {
-    //       this.sarviewsProducts.find(prod => prod.product_id === )
-    //     }
-    //     temp[product_id] = {url: targetProduct.files.browse_url, wkt: targetProduct.granules[0].wkt} as PinnedProduct
-    //   }
-    // }
-    // this.pinnedProducts = temp;
     this.store$.dispatch(new scenesStore.SetImageBrowseProducts(this.productBrowseStates));
-    // this.browseMap.setPinnedProducts(this.productBrowseStates);
   }
 
   public isPinned(product_id: string) {

@@ -87,29 +87,6 @@ export class ImageDialogComponent implements OnInit, AfterViewInit, OnDestroy {
       )
     );
 
-    // this.subs.add(
-    //   this.store$.select(scenesStore.getAllProducts).pipe(
-    //     first(),
-    //     withLatestFrom(this.searchType$),
-    //     filter(([_, searchtype]) => searchtype !== models.SearchType.SARVIEWS_EVENTS),
-    //     map(([products, _]) => products)
-    //   ).subscribe(
-    //     products => {
-    //       if (!!products) {
-    //         this.pinnedProducts = {};
-
-    //         this.store$.dispatch(new scenesStore.SetImageBrowseProducts(this.pinnedProducts));
-    //       }
-    //     }
-    //   )
-    // );
-
-    // this.subs.add(
-    //   this.searchType$.subscribe(
-    //     searchtype => this.searchType = searchtype
-    //   )
-    // )
-
     this.subs.add(
       this.store$.select(uiStore.getOnlyScenesWithBrowse).subscribe(
         onlyBrowses => this.onlyShowScenesWithBrowse = onlyBrowses
@@ -137,29 +114,6 @@ export class ImageDialogComponent implements OnInit, AfterViewInit, OnDestroy {
       }
     )
     );
-    // this.subs.add(
-    //   this.sarviewsEventProducts$.pipe(
-    //     first(),
-    //     withLatestFrom(this.searchType$),
-    //     filter(([_, searchtype]) => searchtype === models.SearchType.SARVIEWS_EVENTS),
-    //     map(([products, _]) => products),
-    //     withLatestFrom(this.store$.select(scenesStore.getPinnedEventBrowseIDs)),
-    //   ).subscribe(
-    //     ([products, pinned]) => {
-    //       this.sarviewsProducts = products;
-    //       if (!!this.sarviewsProducts) {
-    //         this.pinnedProducts = {};
-    //         this.sarviewsProducts.filter(prod => pinned.includes(prod.product_id)
-    //         ).forEach(prod => this.pinnedProducts[prod.product_id] = {
-    //           url: prod.files.browse_url,
-    //           wkt: prod.granules[0].wkt,
-    //         });
-
-    //         this.store$.dispatch(new scenesStore.SetImageBrowseProducts(this.pinnedProducts));
-    //       }
-    //     }
-    //   )
-    // );
 
     this.subs.add(
       this.store$.select(scenesStore.getImageBrowseProducts).subscribe(browseStates => this.pinnedProducts = browseStates)
@@ -213,18 +167,6 @@ export class ImageDialogComponent implements OnInit, AfterViewInit, OnDestroy {
         }
       )
     );
-    // this.subs.add(
-    //   this.store$.select(scenesStore.getPinnedEventBrowseIDs).pipe(
-    //     withLatestFrom(this.searchType$),
-    //     filter(([_, searchtype]) => searchtype === models.SearchType.SARVIEWS_EVENTS),
-    //     map(([products, _]) => products),
-    //     filter(products => !!products),
-    //     debounceTime(1000),
-    //     first(),
-    //   ).subscribe(_ =>
-    //     this.setPinnedProducts()
-    //   )
-    // );
   }
 
   private loadBrowseImage(scene: models.CMRProduct, browse): void {
@@ -339,46 +281,7 @@ export class ImageDialogComponent implements OnInit, AfterViewInit, OnDestroy {
 
   public onPinProduct(product_id: string) {
     this.store$.dispatch(new ToggleBrowseOverlay(product_id));
-    // let temp: {[product_id in string]: PinnedProduct} = JSON.parse(JSON.stringify(this.pinnedProducts));
-    // if(!!temp[product_id]) {
-    //   delete temp[product_id];
-    // } else {
-
-    //   let url: string;
-    //   let wkt: string;
-
-    //   if(this.searchType === models.SearchType.SARVIEWS_EVENTS) {
-    //     const targetProduct = this.sarviewsProducts.find(prod => prod.product_id === product_id);
-    //     url = targetProduct?.product_id;
-    //     wkt = targetProduct?.granules[0].wkt;
-    //   } else {
-    //     const targetProduct = this.scene;
-    //     url = targetProduct?.browses[0];
-    //     wkt = targetProduct?.metadata.polygon;
-    //   }
-
-    //   temp[product_id] = {url, wkt} as PinnedProduct
-    // }
-
-    // this.pinnedProducts = temp;
-    // let temp: {[product_id in string]: PinnedProduct} = JSON.parse(JSON.stringify(this.pinnedProducts));
-    // // temp[product_id].isPinned = !temp[product_id].isPinned;
-    // if(!!temp[product_id]) {
-    //   delete temp[product_id];
-    // } else {
-    //   const targetProduct = this.sarviewsProducts.find(prod => prod.product_id === product_id);
-    //   if(!!targetProduct) {
-    //     temp[product_id] = {url: targetProduct.files.browse_url, wkt: targetProduct.granules[0].wkt} as PinnedProduct
-    //   }
-    // }
-    // this.pinnedProducts = temp;
-    // this.pinnedProducts[product_id].isPinned = !this.pinnedProducts[product_id].isPinned;
-    // this.setPinnedProducts(temp);
   }
-
-  // private setPinnedProducts(pinnedProducts: {[product_id in string]: PinnedProduct}) {
-  //   this.store$.dispatch(new scenesStore.SetImageBrowseProducts(pinnedProducts));
-  // }
 
   ngOnDestroy() {
     this.subs.unsubscribe();
