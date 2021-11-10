@@ -84,18 +84,18 @@
       </div>
 
       <div fxFlex="" class="group-margin" *ngIf="searchType !== searchTypes.BASELINE
-      && searchType !== searchTypes.SBAS">
+      && searchType !== searchTypes.SBAS && searchType !== searchTypes.SARVIEWS_EVENTS">
         <div  fxLayout="row" fxLayoutAlign="center" class="button-group-label">
           <label>Product Browse</label>
           </div>
           <div fxLayout="row">
             <div>
         <mat-button-toggle-group fxFlex="" name="layerType">
-          <mat-button-toggle class="control-mat-button-toggle" *ngIf="(pinnedProducts$ | async) as pinnedProducts"
+          <!-- <mat-button-toggle class="control-mat-button-toggle" *ngIf="(pinnedProducts$ | async) as pinnedProducts"
           (click)="onPinProduct(currentBrowseID)"
           matTooltip="Pin/Unpin Current Browse Image">
           <mat-icon class="control-icon">push_pin</mat-icon>
-        </mat-button-toggle>
+        </mat-button-toggle> -->
         <mat-button-toggle class="control-mat-button-toggle"
         (click)="onDecrementBrowseIndex()"
         matTooltip="Change selected scene browse">
