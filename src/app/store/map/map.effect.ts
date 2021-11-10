@@ -14,6 +14,7 @@ import { getSearchType, SearchActionType, SetSearchType } from '@store/search';
 import { filter, map, tap, withLatestFrom } from 'rxjs/operators';
 import { MapActionType, SetBrowseOverlayOpacity, SetBrowseOverlays, ToggleBrowseOverlay } from '.';
 import { PinnedProduct } from '@services/browse-map.service';
+import { getSelectedDataset } from '@store/filters';
 @Injectable()
 export class MapEffects {
 
@@ -27,7 +28,7 @@ export class MapEffects {
   ));
 
   public clearPinnedProducts = createEffect((() => this.actions$.pipe(
-    ofType<SetSearchType>(SearchActionType.SET_SEARCH_TYPE_AFTER_SAVE),
+    ofType(SearchActionType.SET_SEARCH_TYPE_AFTER_SAVE, SearchActionType.MAKE_SEARCH),
     tap(_ => this.mapService.clearBrowseOverlays()),
     map(_ => new SetImageBrowseProducts({}))
   )));
@@ -45,7 +46,13 @@ export class MapEffects {
 
   public onSetSelectedScene = createEffect(() => this.actions$.pipe(
     ofType<SetSelectedScene>(ScenesActionType.SET_SELECTED_SCENE),
-    map(action => action.payload),
+    withLatestFrom(this.store$.select(getSelectedDataset)),
+    filter(([_, dataset]) =>
+      dataset.id === 'AVNIR'
+      || dataset.id === 'SENTINEL-1'
+      || dataset.id === 'SENTINEL-1 INTERFEROGRAM (BETA)'
+      || dataset.id === 'UAVSAR'),
+    map(([action, _]) => action.payload),
     filter(scene => !!scene),
     withLatestFrom(this.store$.select(getProducts)),
     filter(([selected, products]) => !!selected && !!products),
