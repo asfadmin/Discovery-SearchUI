@@ -18,7 +18,6 @@ import * as scenesStore from '@store/scenes';
 
 import * as services from '@services';
 import * as models from '@models';
-import { getSelectedSarviewsEvent } from '@store/scenes';
 
 export interface MetadataDownload {
   params: {[id: string]: string | null};
@@ -63,9 +62,8 @@ export class QueueEffects {
     ofType<MakeDownloadScriptFromSarviewsProducts>(QueueActionType.MAKE_DOWNLOAD_SCRIPT_FROM_SARVIEWS_PRODUCTS),
     map(action => action.payload),
     switchMap(products => this.bulkDownloadService.downloadSarviewsProductsScript$(products)),
-    withLatestFrom(this.store$.select(getSelectedSarviewsEvent).pipe(map(event => event?.description.replace(/\s/g, '-')))),
     map(
-      ([blob, event_description]) => FileSaver.saveAs(blob.body, `download-all-${event_description}-${this.currentDate()}.py`)
+      (blob) => FileSaver.saveAs(blob.body, `download-all-${this.currentDate()}.py`)
     )
   ), { dispatch: false });
 
