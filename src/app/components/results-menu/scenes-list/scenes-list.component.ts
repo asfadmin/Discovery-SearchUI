@@ -161,7 +161,7 @@ export class ScenesListComponent implements OnInit, OnDestroy {
           this.sarviewsEvents = events;
 
           const eventIds = events.map(event => event.event_id);
-          if (!eventIds.includes(this.selectedEvent) && eventIds.length > 0) {
+          if (!eventIds.includes(this.selectedEvent) && eventIds.length > 0 && !!this.selectedEvent) {
             this.store$.dispatch(new scenesStore.SetSelectedSarviewsEvent(eventIds[0]));
           }
         }

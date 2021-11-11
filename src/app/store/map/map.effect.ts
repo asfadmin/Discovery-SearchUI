@@ -120,26 +120,16 @@ export class MapEffects {
   public LoadBrowseOverlaysOnLoad = createEffect(() => this.actions$.pipe(
     ofType<SetBrowseOverlays>(MapActionType.SET_BROWSE_OVERLAYS),
     map(action => action.payload),
-    withLatestFrom(this.store$.select(getSearchType)),
     withLatestFrom(this.store$.select( getSelectedSarviewsEventProducts)),
-    withLatestFrom(this.store$.select( getSelectedScene)),
-    map(([[[selectedProductIds, searchType], products], scene]) => {
+    filter(([_, products]) => products.length > 0),
+    map(([selectedProductIds, products]) => {
+      return selectedProductIds.map(selectedProductId => {
+        const targetProduct = products.find(prod => prod.product_id === selectedProductId);
+        const url = targetProduct?.product_id;
+        const wkt = targetProduct?.granules[0].wkt;
 
-      if(searchType === models.SearchType.SARVIEWS_EVENTS) {
-        return selectedProductIds.map(selectedProductId => {
-          const targetProduct = products.find(prod => prod.product_id === selectedProductId);
-          const url = targetProduct?.product_id;
-          const wkt = targetProduct?.granules[0].wkt;
-
-        return { selectedProductId, product: {url, wkt} as PinnedProduct}
-        });
-      } else {
-        return selectedProductIds.map(selectedProductId => {
-        const url = scene?.browses[0];
-        const wkt = scene?.metadata.polygon;
-        return { selectedProductId, product: {url, wkt} as PinnedProduct}
-        });
-      }
+      return { selectedProductId, product: {url, wkt} as PinnedProduct}
+      });
     }),
     map(
       products => products.reduce((prev, curr) => {
