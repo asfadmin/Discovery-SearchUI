@@ -26,28 +26,32 @@
         <div *ngIf="products.length !== 0 || !(noSarviewsEvents$ | async)" class="results-menu--background h100 w100 mp0"
              fxFlex fxLayout="row">
 
-          <ng-container *ngIf="breakpoint >= breakpoints.SMALL">
+          <ng-container *ngIf="breakpoint > breakpoints.MOBILE">
             <app-desktop-results-menu class="w100 h100"
               *ngIf="
                 searchType !== SearchTypes.BASELINE &&
                 searchType !== SearchTypes.SBAS &&
                 searchType !== SearchTypes.SARVIEWS_EVENTS
               "
+              [class.small-size]="breakpoint === breakpoints.SMALL"
               [resize$]="resize$">
             </app-desktop-results-menu>
 
             <app-sarviews-results-menu class="w100 h100"
             *ngIf="searchType === SearchTypes.SARVIEWS_EVENTS"
+            [class.small-size]="breakpoint === breakpoints.SMALL"
             [resize$]="resize$">
             </app-sarviews-results-menu>
 
             <app-baseline-results-menu class="w100 h100"
               *ngIf="searchType === SearchTypes.BASELINE"
+              [class.small-size]="breakpoint === breakpoints.SMALL"
               [resize$]="resize$">
             </app-baseline-results-menu>
 
             <app-sbas-results-menu class="w100 h100"
               *ngIf="searchType === SearchTypes.SBAS"
+              [class.small-size]="breakpoint === breakpoints.SMALL"
               [resize$]="resize$">
             </app-sbas-results-menu>
           </ng-container>

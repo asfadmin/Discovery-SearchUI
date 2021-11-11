@@ -1,6 +1,3 @@
-<ng-template *ngIf="breakpoint$ | async as breakpoint">
-
-</ng-template>
 <div *ngIf="showDemWarning" class="dem-warning">
   Resampled DEM (SRTM or NED) used for RTC processing.
   <a class="more-link"
@@ -28,51 +25,58 @@
   </mat-list>
 </div>
 
-<div *ngIf="selectedSarviewEventID && !!sarviewsProducts" class="event-wrapper">
-    <div *ngIf="breakpoint$ | async as breakpoint"
-         class="event-product-map-row">
-        <mat-button-toggle-group fxFlex="" name="eventProductMapButton"
-                                 class="criteria-button-group"
-                                 [ngClass]="{'position-in-header': breakpoint > breakpoints.SMALL}"
-                                 (click)="onOpenPinnedProducts()">
-          <mat-button-toggle
-            class="control-mat-button-toggle map-button-toggle"
-            matTooltip="View selected products on map"
-          >
-            Event Products Map<mat-icon class="map-icon">map</mat-icon>
-          </mat-button-toggle>
-        </mat-button-toggle-group>
+<span *ngIf="breakpoint$ | async as breakpoint">
+  <div *ngIf="selectedSarviewEventID && !!sarviewsProducts" class="event-wrapper">
+    <div
+      class="event-product-map-row">
+      <mat-button-toggle-group fxFlex="" name="eventProductMapButton"
+                               class="criteria-button-group"
+                               [ngClass]="{'position-in-header': breakpoint > breakpoints.SMALL}"
+                               (click)="onOpenPinnedProducts()">
+        <mat-button-toggle
+          class="control-mat-button-toggle map-button-toggle"
+          matTooltip="View selected products on map"
+        >
+          Event Products Map<mat-icon class="map-icon">map</mat-icon>
+        </mat-button-toggle>
+      </mat-button-toggle-group>
     </div>
 
     <div class="event-products-wrapper">
-      <mat-selection-list multiple
-      (selectionChange)="onSelectSarviewsProduct($event)"
-      class="products-list" dense role="list">
-        <cdk-virtual-scroll-viewport [itemSize]="58" class="prod-viewport">
+      <mat-selection-list id="event-selection-list"
+                          multiple
+                          (selectionChange)="onSelectSarviewsProduct($event)"
+                          class="products-list"
+                          [class.no-scroll]="breakpoint <= breakpoints.SMALL"
+                          dense role="list">
+        <div>
           <mat-list-option [value]="prod.product_id" [selected]="!!this.selectedProducts[prod.product_id]"
-                           *cdkVirtualFor="let prod of sarviewsProducts"
+                           *ngFor="let prod of sarviewsProducts"
                            checkboxPosition="before"
-                           class="virtual-scroll prod-list-option"
+                           class="prod-viewport virtual-scroll prod-list-option"
           >
             <div class="sarview-products-list">
               <img class="prod-thumb" src="{{prod.files.browse_url}}">
               <div class="sarview-product">
-                <div style="font-weight: bold;">{{formatProductName(prod.files.product_name)}}</div>
-                <div>{{prod.files.product_size.toString() | readableSizeFromBytes }}, {{prod.job_type.replace("_", " ")}}</div>
+                <div><b>{{formatProductName(prod.files.product_name)}}</b></div>
+                <div class="sarview-product-sub">
+                  {{prod.files.product_size.toString() | readableSizeFromBytes }},
+                  {{prod.job_type.replace("_", " ")}}
+                </div>
               </div>
               <div></div>
               <div *ngIf="hyp3ableByProduct[prod.product_id] as byJobType">
                 <button mat-icon-button
-                  (click)="$event.stopPropagation()"
-                  [matMenuTriggerFor]="EventOnDemandQueue.addMenu"
-                  [matMenuTriggerData]="{ hyp3able: byJobType }"
+                        (click)="$event.stopPropagation()"
+                        [matMenuTriggerFor]="EventOnDemandQueue.addMenu"
+                        [matMenuTriggerData]="{ hyp3able: byJobType }"
                 >
                   <mat-icon
                     class="list-icon"
                     svgIcon="hyp3"
                   >
                   </mat-icon>
-              </button>
+                </button>
                 <button mat-icon-button (click)="onQueueSarviewsProduct(prod); $event.stopPropagation();"><mat-icon *ngIf="!queuedProductIds.includes(prod.product_id)">add_shopping_cart</mat-icon>
                   <mat-icon *ngIf="queuedProductIds.includes(prod.product_id)">shopping_cart</mat-icon>
                 </button>
@@ -86,12 +90,13 @@
                 <app-on-demand-add-menu #EventOnDemandQueue>
                 </app-on-demand-add-menu>
               </div>
-          </div>
-        </mat-list-option>
-      </cdk-virtual-scroll-viewport>
+            </div>
+          </mat-list-option>
+        </div>
       </mat-selection-list>
     </div>
   </div>
+</span>
 
 <div *ngIf="showUnzippedProductScreen" class="products-list zip-contents">
   <mat-list class="products-list">

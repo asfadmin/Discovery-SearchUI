@@ -252,14 +252,7 @@
 <div
   class="tool-menu"
   *ngIf="(scene || sarviewEvent) && breakpoint$ | async as breakpoint"
-  [ngStyle]="{
-    bottom:
-      breakpoint === breakpoints.SMALL
-        ? '19px'
-        : breakpoint < breakpoints.SMALL
-        ? '17px'
-        : '0px'
-  }"
+  [ngStyle]="{ bottom: breakpoint < breakpoints.SMALL ? '17px' : '0' }"
 >
   <div class="search-button-label">SEARCH:</div>
   <div *ngIf="searchType !== searchTypes.SARVIEWS_EVENTS"

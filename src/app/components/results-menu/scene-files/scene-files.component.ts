@@ -1,4 +1,4 @@
-import {Component, OnInit, OnDestroy, AfterContentInit} from '@angular/core';
+import {Component, OnInit, OnDestroy, AfterContentInit, Input} from '@angular/core';
 import { SubSink } from 'subsink';
 
 import { combineLatest } from 'rxjs';
@@ -32,6 +32,8 @@ import { ScreenSizeService } from '@services';
   styleUrls: ['./scene-files.component.scss']
 })
 export class SceneFilesComponent implements OnInit, OnDestroy, AfterContentInit {
+  @Input() isScrollable = true;
+
   public breakpoint$ = this.screenSize.breakpoint$;
   public breakpoints = models.Breakpoints;
   public copyIcon = faCopy;
@@ -264,9 +266,21 @@ export class SceneFilesComponent implements OnInit, OnDestroy, AfterContentInit 
     this.store$.dispatch(new queueStore.AddJob(job));
   }
 
-  public formatProductName(product_name: string) {
-    if (product_name.length > 18) {
-      return product_name.slice(0, 29) + '...' + product_name.slice(product_name.length - 8);
+  public formatProductName(product_name: string, desiredLen?: number) {
+    const extrasWidthPx = 260;
+    const charWidthPx = 10;
+    const divWidthPx = document.getElementById('event-selection-list').offsetWidth;
+    const defaultLen = Math.trunc((divWidthPx - extrasWidthPx) / charWidthPx);
+    // console.log('divWidthPx:', divWidthPx);
+    desiredLen = desiredLen ? desiredLen : defaultLen;
+    const tailLen = 8;
+    const pNameLen = product_name.length;
+    // console.log('desiredLen:', desiredLen);
+    // console.log('pNameLen:', pNameLen);
+    if (pNameLen > desiredLen) {
+      return product_name.slice(0, desiredLen - tailLen - 1) +
+        '...' +
+        product_name.slice(pNameLen - tailLen);
     }
     return product_name;
   }
