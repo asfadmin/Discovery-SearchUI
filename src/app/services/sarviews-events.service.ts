@@ -1,8 +1,8 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { LonLat, SarviewsEvent, SarviewsProcessedEvent, SarviewsProduct } from '@models';
-import { Observable, of } from 'rxjs';
-import { catchError, map } from 'rxjs/operators';
+import { combineLatest, Observable, of } from 'rxjs';
+import { catchError, debounceTime, map } from 'rxjs/operators';
 import { Range } from '@models';
 import { WktService } from '@services';
 import { MapService } from './map/map.service';
@@ -11,6 +11,10 @@ import MultiPolygon from 'ol/geom/MultiPolygon';
 import Polygon from 'ol/geom/Polygon';
 import * as models from '@models';
 import * as moment from 'moment';
+import { getSarviewsEvents } from '@store/scenes';
+import { Store } from '@ngrx/store';
+import { AppState } from '@store';
+import { getDateRange, getSarviewsEventActiveFilter, getSarviewsEventNameFilter, getSarviewsEventTypes, getSarviewsMagnitudeRange } from '@store/filters';
 
 @Injectable({
   providedIn: 'root'
@@ -23,6 +27,7 @@ export class SarviewsEventsService {
   constructor(private http: HttpClient,
     private wktService: WktService,
     private mapService: MapService,
+    private store$: Store<AppState>
               ) { }
 
   public getSarviewsEvents$(): Observable<SarviewsEvent[]> {
@@ -230,5 +235,161 @@ export class SarviewsEventsService {
       // } ;
       return {byJobType: output, total: output.reduce((prev, curr) => prev += curr.total, 0)};
 
+    }
+
+    public filteredSarviewsEvents$(): Observable<SarviewsEvent[]> {
+      return (
+        this.filterByEventMagnitude$(
+        this.filterSarviewsEventsByName$(
+          this.filterByEventType$(
+          this.filterByEventDate$(
+            this.filterByEventActivity$(
+                  this.store$.select(getSarviewsEvents)
+                )
+              )
+            )
+          )
+        )
+      );
+    }
+
+    public filterSarviewsEventsByName$(events$: Observable<SarviewsEvent[]>) {
+      return combineLatest(
+        [
+          events$,
+          this.store$.select(getSarviewsEventNameFilter).pipe(
+              map(nameFilter => nameFilter?.toLowerCase()),
+            )
+        ]
+      ).pipe(
+        map(([events, nameFilter]) => {
+          if (nameFilter === null || nameFilter === undefined || nameFilter === '') {
+            return events;
+          }
+
+          return events.filter(
+            event => {
+              const isQuake = event.event_type.toLowerCase() === 'quake';
+              const isVolcano = event.event_type.toLowerCase() === 'volcano';
+
+              return event.description.toLowerCase().includes(nameFilter)
+              || event.event_id.toLowerCase().includes(nameFilter)
+              || event.event_type.toLowerCase().includes(nameFilter)
+              || (!isVolcano ? (isQuake ? (event as models.SarviewsQuakeEvent).usgs_event_id?.includes(nameFilter) :
+              true)
+              : (event as models.SarviewsVolcanicEvent).smithsonian_event_id?.includes(nameFilter));
+              });
+        }
+        )
+      );
+    }
+
+    private filterByEventDate$(events$: Observable<SarviewsEvent[]>) {
+      return combineLatest([
+        events$,
+        this.store$.select(getDateRange),
+      ]
+      ).pipe(
+        debounceTime(0),
+        map(
+          ([events, dateRange]) => {
+            const range = {
+              start: moment(dateRange.start),
+              end: moment(dateRange.end)
+            };
+
+            if (dateRange.start === null && dateRange.end === null) {
+              return events;
+            }
+
+            return events.filter(scene => {
+              if (dateRange.start === null && dateRange.end !== null) {
+                return moment(scene.processing_timeframe.end) <= range.end ;
+              } else if (dateRange.start !== null && dateRange.end === null) {
+                return moment(scene.processing_timeframe.start) >= range.start ;
+              } else {
+                return (
+                  moment(scene.processing_timeframe.start) >= range.start  &&
+                  moment(scene.processing_timeframe.end) <= range.end
+                );
+              }
+            });
+          }
+
+        )
+      );
+    }
+
+    private filterByEventType$(events$: Observable<SarviewsEvent[]>) {
+      return combineLatest([
+        events$,
+        this.store$.select(getSarviewsEventTypes)
+      ]).pipe(
+        map(
+          ([events, types]) => {
+            if (types.length === 0) {
+              return events;
+            }
+
+            return events.filter(event => !!types.find(t => t === event.event_type.toLowerCase()));
+          }
+        )
+      );
+    }
+
+    private filterByEventActivity$(events$: Observable<SarviewsEvent[]>) {
+      return combineLatest([
+        events$,
+        this.store$.select(getSarviewsEventActiveFilter)
+      ]).pipe(
+        map(([events, activeOnly]) => {
+          if (!activeOnly) {
+            return events;
+          }
+
+          const currentDate = new Date();
+
+          return events.filter( event => {
+            if (!!event.processing_timeframe.end) {
+              if (currentDate <= event.processing_timeframe.end) {
+                return true;
+              }
+            } else {
+              return true;
+            }
+            return false;
+          });
+        })
+      );
+    }
+
+    private filterByEventMagnitude$(events$: Observable<SarviewsEvent[]>) {
+      return combineLatest([
+        events$,
+        this.store$.select(getSarviewsMagnitudeRange),
+      ]).pipe(
+        map(([events, magRange]) => {
+          {
+            if (!magRange.start && !magRange.end) {
+              return events;
+            } else if (magRange.start === 0 && magRange.end === 10) {
+              return events;
+            }
+
+            return events.filter(event => {
+              if (event.event_type.toLowerCase() === 'quake') {
+                const magEvent = <models.SarviewsQuakeEvent>event;
+                const start = !!magRange.start ? magRange.start : 0;
+                const end = !!magRange.end ? magRange.end : 10;
+
+                return magEvent.magnitude <= end && magEvent.magnitude >= start;
+              }
+
+              return true;
+              }
+            );
+          }
+        })
+      );
     }
 }
