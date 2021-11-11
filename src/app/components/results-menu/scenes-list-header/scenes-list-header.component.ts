@@ -85,6 +85,8 @@ export class ScenesListHeaderComponent implements OnInit, OnDestroy {
   public hyp3able = { total: 0, byJobType: [] };
   public hyp3ableEventProducts = {total: 0, byJobType: []};
 
+  private selectedEvent: models.SarviewsEvent;
+
   constructor(
     private store$: Store<AppState>,
     private mapService: MapService,
@@ -195,10 +197,20 @@ export class ScenesListHeaderComponent implements OnInit, OnDestroy {
         ids => this.pinnedEventIDs = ids
       )
     );
+
+    this.subs.add(
+      this.store$.select(scenesStore.getSelectedSarviewsEvent).subscribe(
+        event => this.selectedEvent = event
+      )
+    )
   }
 
   public onZoomToResults(): void {
-    this.mapService.zoomToResults();
+    if(this.searchType === models.SearchType.SARVIEWS_EVENTS) {
+      this.mapService.zoomToEvent(this.selectedEvent)
+    } else {
+      this.mapService.zoomToResults();
+    }
   }
 
   public onToggleS1RawData(): void {
