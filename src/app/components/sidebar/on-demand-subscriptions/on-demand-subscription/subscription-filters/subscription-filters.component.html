@@ -8,6 +8,21 @@
 
     <div *ngIf="filters.intersectsWith">
       <b>Search Area:</b> {{ showSearchAreaType(filters.intersectsWith) }}
+      <app-copy-to-clipboard
+      [value]="filters.intersectsWith"
+      [prompt]="'Copy Search Area'"
+      [toast]="false"
+      style="margin: 0 3px;"
+      class="clipboard-icon">
+    </app-copy-to-clipboard>
+    </div>
+
+    <div *ngIf="filters.relativeOrbit">
+      <b>Path:</b> {{ filters.relativeOrbit }}
+    </div>
+
+    <div *ngIf="filters.frame">
+      <b>Frame:</b> {{ filters.frame }}
     </div>
 
     <div *ngIf="filters.processingLevel">

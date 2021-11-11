@@ -62,7 +62,8 @@ export class ScenesListComponent implements OnInit, OnDestroy {
     private keyboardService: services.KeyboardService,
     private scenesService: services.ScenesService,
     private pairService: services.PairService,
-    private hyp3: services.Hyp3Service
+    private hyp3: services.Hyp3Service,
+    private eventMonitoringService: services.SarviewsEventsService,
   ) {}
 
   ngOnInit() {
@@ -120,7 +121,7 @@ export class ScenesListComponent implements OnInit, OnDestroy {
 
     this.subs.add(
       this.store$.select(scenesStore.getSelectedSarviewsEvent).pipe(
-        withLatestFrom(this.scenesService.sarviewsEvents$()),
+        withLatestFrom(this.eventMonitoringService.filteredSarviewsEvents$()),
         delay(20),
         filter(([selected, _]) => !!selected),
         tap(([selected, _]) => this.selectedEvent = selected.event_id),
@@ -154,7 +155,7 @@ export class ScenesListComponent implements OnInit, OnDestroy {
     );
 
     this.subs.add(
-      this.scenesService.sarviewsEvents$().pipe(
+      this.eventMonitoringService.filteredSarviewsEvents$().pipe(
         filter(_ => this.searchType === this.SearchTypes.SARVIEWS_EVENTS),
       ).subscribe(
         events => {

@@ -464,7 +464,7 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
       ),
       switchMap(params => {
         if (this.searchType === models.SearchType.SARVIEWS_EVENTS) {
-          return this.sarviewsService.getSarviewsEvents$().pipe(map(events => events.length));
+          return this.sarviewsService.filteredSarviewsEvents$().pipe(map(events => events.length));
         }
         return this.asfSearchApi.query<any[]>(params).pipe(
         catchError(resp => {

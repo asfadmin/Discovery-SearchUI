@@ -1,18 +1,29 @@
-.event-label {
-  color: grey;
-}
-
 .event-slider {
   flex: none;
   height: 80%;
-  margin-bottom: 25px;
+  margin-bottom: 36px;
+}
+
+.event-label {
+  display: inline-block;
+  margin-top: 5px;
+  margin-bottom: 14px;
+  font-size: 14px !important;
 }
 
 .noUi-vertical {
   width: 8px;
 }
 
+.noUi-horizontal {
+  height: 12px;
+}
+
 div.noUi-handle.noUi-handle-lower {
   width: 16px !important;
   right: -5px !important;
+}
+
+#polygonScale {
+  margin-top: 15px;
 }

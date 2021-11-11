@@ -56,8 +56,11 @@ export class CreateSubscriptionComponent implements OnInit, OnDestroy {
   }];
   public productType = 'SLC';
 
-  public flightDirectionTypes = models.flightDirections;
-  public flightDirection;
+  public flightDirectionTypes = [
+    'All',
+    ...models.flightDirections
+  ];
+  public flightDirection = 'All';
 
   public polarizations = [
     'VV+VH',
@@ -65,7 +68,7 @@ export class CreateSubscriptionComponent implements OnInit, OnDestroy {
     'VV',
     'HH',
   ];
-  public polarization;
+  public polarization = [];
   public path: number = null;
   public frame: number = null;
 
@@ -179,7 +182,7 @@ export class CreateSubscriptionComponent implements OnInit, OnDestroy {
     );
 
     this.mapService.setDrawFeature(features);
-    this.polarization = reference.metadata.polarization;
+    this.polarization = [reference.metadata.polarization];
     this.path = reference.metadata.path;
 
     this.flightDirectionTypes.forEach(flightDir => {
@@ -282,8 +285,8 @@ export class CreateSubscriptionComponent implements OnInit, OnDestroy {
       this.errors.dateError = 'End date is before start date';
     }
 
-    if (!this.polygon) {
-      this.errors.polygonError = 'Area of interest required (will use polygon from current search)';
+    if (!this.polygon && this.frame === null && this.path === null) {
+      this.errors.polygonError = 'Area of interest, path or frame required (will use polygon from current search)';
     }
 
     if (this.errors.dateError) {
@@ -346,10 +349,10 @@ export class CreateSubscriptionComponent implements OnInit, OnDestroy {
     this.hyp3.submiteSubscription$({
       subscription: sub, validate_only: this.validateOnly
     }).subscribe(_ => {
+      this.notificationService.info(this.projectName + ' subscription submitted');
       this.dialogRef.close();
     });
 
-    this.notificationService.info(this.projectName + ' subscription submitted');
   }
 
   public onNewProductType(e): void {
@@ -410,6 +413,9 @@ export class CreateSubscriptionComponent implements OnInit, OnDestroy {
       end: new Date(),
     };
 
+    const flightDir = this.flightDirection === 'All' ? null : this.flightDirection;
+    const pol = this.polarization.join(',');
+
     const params = this.filterNullKeys({
       start: moment.utc(dateRange.start).format(),
       end: moment.utc(dateRange.end).format(),
@@ -417,8 +423,8 @@ export class CreateSubscriptionComponent implements OnInit, OnDestroy {
       relativeOrbit: this.path,
       frame: this.frame,
       platform: this.subtype,
-      flightDirection: !!this.flightDirection ? this.flightDirection.toUpperCase() : null,
-      polarization: !!this.polarization ? [ this.polarization ] : null,
+      flightDirection: !!flightDir ? flightDir.toUpperCase() : null,
+      polarization: pol,
       processinglevel: this.productType,
       output: 'COUNT',
     });
@@ -431,6 +437,9 @@ export class CreateSubscriptionComponent implements OnInit, OnDestroy {
   }
 
   private getSearchParams() {
+    const flightDir = this.flightDirection === 'All' ? null : this.flightDirection;
+    const pol = this.polarization.length > 0 ? this.polarization : null;
+
     const params = {
       start: moment.utc(this.dateRange.start).format(),
       end: moment.utc(this.dateRange.end).format(),
@@ -438,8 +447,8 @@ export class CreateSubscriptionComponent implements OnInit, OnDestroy {
       relativeOrbit: !!this.path ? [this.path] : null,
       frame: !!this.frame ? [ this.frame ] : null,
       platform: this.subtype,
-      flightDirection: !!this.flightDirection ? this.flightDirection.toUpperCase() : null,
-      polarization: !!this.polarization ? [ this.polarization ] : null,
+      flightDirection: !!flightDir ? flightDir.toUpperCase() : null,
+      polarization: pol,
       processingLevel: this.productType,
     };
 
