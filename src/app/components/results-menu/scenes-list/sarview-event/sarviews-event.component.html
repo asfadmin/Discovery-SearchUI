@@ -1,4 +1,5 @@
-<button class="button-flex-row"
+<button *ngIf="breakpoint$ | async as breakpoint"
+    class="button-flex-row"
     mat-list-item
     (mouseenter)="onSetFocused()"
     (mouseleave) ="onClearFocused()"
@@ -7,21 +8,23 @@
     [class.selected]="selected"
     [ngClass]="{'mobile-size': breakpoint <= breakpoints.SMALL}">
 
-<div class="image-flex" *ngIf="breakpoint > breakpoints.SMALL">
-  <!-- <img class="list-thumbnail"
-  [src]=""
-  onerror="this.src='assets/no-thumb.png'"
-  matBadgeOverlap="false"
-  matListAvatar> -->
+  <div class="image-flex" *ngIf="breakpoint > breakpoints.SMALL">
+    <!-- <img class="list-thumbnail"
+    [src]=""
+    onerror="this.src='assets/no-thumb.png'"
+    matBadgeOverlap="false"
+    matListAvatar> -->
 
-</div>
-<mat-icon
-class="event-list-thumbnail"
-[svgIcon]="event.event_type === 'quake' ?
-'Earthquake' + (isActive() ? '' : '_inactive')
-: 'Volcano' + (isActive() ? '' : '_inactive')"
->
-</mat-icon>
+  </div>
+
+  <mat-icon
+  class="event-list-thumbnail"
+  [svgIcon]="event.event_type === 'quake' ?
+  'Earthquake' + (isActive() ? '' : '_inactive')
+  : 'Volcano' + (isActive() ? '' : '_inactive')"
+  >
+  </mat-icon>
+
   <div class="div-flex">
     <div class="div-flex-column">
       <div class="div-flex"
@@ -34,7 +37,8 @@ class="event-list-thumbnail"
         </span>
       </div>
     </div>
-    <div class="div-flex date-time" matLine>
+    <div matLine class="div-flex date-time"
+         [ngClass]="{'mobile-event-sub-text': breakpoint <= breakpoints.SMALL}">
       <span>
         {{eventIDDisplay()}} -
       </span>
@@ -49,7 +53,5 @@ class="event-list-thumbnail"
         </mat-icon>
       </div>
     </ng-container>
-
-
 
 </button>
