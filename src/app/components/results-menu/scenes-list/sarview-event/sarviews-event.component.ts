@@ -4,7 +4,7 @@ import { SarviewsEvent, SarviewsQuakeEvent, SarviewsVolcanicEvent } from '@model
 import * as models from '@models';
 import * as sceneStore from '@store/scenes';
 
-import { MapService } from '@services';
+import {MapService, ScreenSizeService} from '@services';
 import { Store } from '@ngrx/store';
 import { AppState } from '@store';
 
@@ -16,14 +16,17 @@ import { AppState } from '@store';
 export class SarviewsEventComponent implements OnInit {
   @Input() event: SarviewsEvent;
   @Input() selected: boolean;
+
   public hovered = false;
 
-  public breakpoint: models.Breakpoints;
+  public breakpoint$ = this.screenSize.breakpoint$;
   public breakpoints = models.Breakpoints;
 
-  constructor(private mapService: MapService,
+  constructor(
+    private mapService: MapService,
     private store$: Store<AppState>,
-              ) { }
+    private screenSize: ScreenSizeService,
+  ) { }
 
   ngOnInit(): void {
   }
