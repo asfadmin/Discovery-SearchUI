@@ -75,9 +75,14 @@ $thumb-size: 50px;
 }
 
 .sarview-product {
+  flex: 4 1 auto;
   align-self: center;
-  justify-self: center;
+  justify-self: flex-start;
   font-size: 16px;
+}
+
+.sarview-product-sub {
+  font-size: 14px;
 }
 
 .sarviews-button-display {
@@ -98,7 +103,6 @@ $thumb-size: 50px;
   flex-direction: row;
   justify-content: space-evenly;
   width: 100%;
-  margin-bottom: 10px;
 }
 
 .event-products-wrapper {
@@ -118,4 +122,9 @@ $thumb-size: 50px;
 .prod-thumb {
   width: $thumb-size;
   height: $thumb-size;
+  margin-right: 18px;
+}
+
+.no-scroll {
+  overflow: visible !important;
 }

@@ -38,7 +38,12 @@
 
 .app-scene-list {
   height: calc(100% - 36px);
+  //height: calc(100% - 36px);
   width: 100%;
+}
+
+.small-size {
+  height: calc(100% - 24px);
 }
 
 .mwlResizable {
