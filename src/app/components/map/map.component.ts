@@ -24,7 +24,7 @@ import * as mapStore from '@store/map';
 import * as uiStore from '@store/ui';
 
 import * as models from '@models';
-import { MapService, WktService, ScreenSizeService, ScenesService } from '@services';
+import { MapService, WktService, ScreenSizeService, ScenesService, SarviewsEventsService } from '@services';
 import * as polygonStyle from '@services/map/polygon.style';
 import { SarviewsEvent } from '@models';
 import { StyleLike } from 'ol/style/Style';
@@ -89,7 +89,8 @@ export class MapComponent implements OnInit, OnDestroy  {
     private mapService: MapService,
     private wktService: WktService,
     private screenSize: ScreenSizeService,
-    private scenesService: ScenesService
+    private scenesService: ScenesService,
+    private eventMonitoringService: SarviewsEventsService,
   ) {}
 
   ngOnInit(): void {
@@ -403,7 +404,7 @@ export class MapComponent implements OnInit, OnDestroy  {
   }
 
   private sceneSARViewsEventsLayer$(projection: string): Observable<VectorLayer> {
-    return this.scenesService.sarviewsEvents$().pipe(
+    return this.eventMonitoringService.filteredSarviewsEvents$().pipe(
       // filter(events => !!events),
       tap(events => this.sarviewsEvents = events),
       map(events => this.mapService.sarviewsEventsToFeatures(events, projection)),
