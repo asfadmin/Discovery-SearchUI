@@ -202,12 +202,12 @@ export class ScenesListHeaderComponent implements OnInit, OnDestroy {
       this.store$.select(scenesStore.getSelectedSarviewsEvent).subscribe(
         event => this.selectedEvent = event
       )
-    )
+    );
   }
 
   public onZoomToResults(): void {
-    if(this.searchType === models.SearchType.SARVIEWS_EVENTS) {
-      this.mapService.zoomToEvent(this.selectedEvent)
+    if (this.searchType === models.SearchType.SARVIEWS_EVENTS) {
+      this.mapService.zoomToEvent(this.selectedEvent);
     } else {
       this.mapService.zoomToResults();
     }
