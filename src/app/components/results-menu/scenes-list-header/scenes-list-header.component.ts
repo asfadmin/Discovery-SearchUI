@@ -34,7 +34,7 @@ export class ScenesListHeaderComponent implements OnInit, OnDestroy {
   public totalResultCount$ = this.store$.select(searchStore.getTotalResultCount);
   public numberOfScenes$ = this.store$.select(scenesStore.getNumberOfScenes);
   public numberOfProducts$ = this.store$.select(scenesStore.getNumberOfProducts);
-  public numberOfFilteredEvents$ = this.scenesService.sarviewsEvents$().pipe(
+  public numberOfFilteredEvents$ = this.eventMonitoringService.filteredSarviewsEvents$().pipe(
     filter(events => !!events),
     map(events => events.length));
   public numSarviewsScenes$ = this.store$.select(scenesStore.getNumberOfSarviewsEvents);
@@ -91,10 +91,10 @@ export class ScenesListHeaderComponent implements OnInit, OnDestroy {
     private store$: Store<AppState>,
     private mapService: MapService,
     private scenesService: ScenesService,
+    private eventMonitoringService: SarviewsEventsService,
     private pairService: PairService,
     private screenSize: ScreenSizeService,
     private hyp3: Hyp3Service,
-    private eventMonitoringService: SarviewsEventsService,
     private clipboard: ClipboardService,
     private notificationService: NotificationService,
   ) { }
