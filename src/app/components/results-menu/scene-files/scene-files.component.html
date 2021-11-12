@@ -56,7 +56,8 @@
                            class="prod-viewport virtual-scroll prod-list-option"
           >
             <div class="sarview-products-list">
-              <img class="prod-thumb" src="{{prod.files.browse_url}}">
+              <img *ngIf="breakpoint > breakpoints.MOBILE"
+                class="prod-thumb" src="{{prod.files.browse_url}}">
               <div class="sarview-product">
                 <div><b>{{formatProductName(prod.files.product_name)}}</b></div>
                 <div class="sarview-product-sub">
