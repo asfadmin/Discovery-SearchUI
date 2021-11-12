@@ -18,7 +18,8 @@
           </span>
         </div>
 
-        <div *ngIf="searchType === SearchTypes.SARVIEWS_EVENTS" class="mr-10">
+        <div *ngIf="searchType === SearchTypes.SARVIEWS_EVENTS" class="mr-10 event-count" event
+        [class.mobile-event]="breakpoint === breakpoints.MOBILE">
           {{ numberOfFilteredEvents$ | async }} Event{{ (numSarviewsScenes$ | async) === 1 ? '' : 's' }}
         </div>
 
