@@ -8,22 +8,8 @@
     [class.selected]="selected"
     [ngClass]="{'mobile-size': breakpoint <= breakpoints.SMALL}">
 
-  <div class="image-flex" *ngIf="breakpoint > breakpoints.SMALL">
-    <!-- <img class="list-thumbnail"
-    [src]=""
-    onerror="this.src='assets/no-thumb.png'"
-    matBadgeOverlap="false"
-    matListAvatar> -->
 
-  </div>
-
-  <mat-icon
-    class="event-list-thumbnail"
-    [svgIcon]="event.event_type === 'quake' ?
-    'Earthquake' + (isActive() ? '' : '_inactive')
-    : 'Volcano' + (isActive() ? '' : '_inactive')"
-  >
-  </mat-icon>
+  <img [src]="getEventIcon()" class="event-list-thumbnail">
 
   <div class="div-flex">
     <div class="div-flex-column">
