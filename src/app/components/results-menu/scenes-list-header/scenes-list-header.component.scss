@@ -9,8 +9,8 @@ $info-color: $asf-primary;
   margin-left: 5px !important;
 }
 
-.mobile-size .scene-count {
-  margin-top: -15px;
+.mobile-event {
+  margin-top: -8px;
 }
 
 .files-header .mobile-size {
@@ -128,4 +128,8 @@ $info-color: $asf-primary;
 
 .space-filler {
   width: 30px;
+}
+
+.scene-count {
+  margin-top: -16px;
 }

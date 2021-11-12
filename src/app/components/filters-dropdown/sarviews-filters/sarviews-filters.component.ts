@@ -9,11 +9,11 @@ import * as scenesStore from '@store/scenes';
 import { SubSink } from 'subsink';
 
 enum FilterPanel {
+  SEARCH = 'Search Options',
   EVENT_DESCRIPTION = 'Event Filter',
   DATE = 'Date',
   TYPE = 'Event Types',
 }
-
 
 @Component({
   selector: 'app-sarviews-filters',

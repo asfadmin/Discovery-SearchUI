@@ -1,35 +1,7 @@
 <ul class="scene-metadata" *ngIf="eventType === eventTypes.QUAKE">
-  <li>
-    <span class="v-mid">
-      <b>Magnitude </b> {{ (event | quakeEvent).magnitude }}
-    </span>
-    <mat-icon
-    [matMenuTriggerFor]="addSceneMagnitudeMenu"
-    [matMenuTriggerData]="{magnitude: (event | quakeEvent).magnitude}"
-    class="v-mid clickable">
-    settings
-    </mat-icon>
-  </li>
-  <li>
-    <span class="v-mid">
-      <b>Depth </b> {{(event | quakeEvent).depth}}
-    </span>
-  </li>
-  <li>
-    <span class="v-mid">
-      <b>USGS ID </b>
-      <a target="_blank" href="{{
-        'https://earthquake.usgs.gov/earthquakes/eventpage/' +
-        (event | quakeEvent).usgs_event_id +
-        '#executive'}}"
-      >
-        {{(event | quakeEvent).usgs_event_id}}
-      </a>
-    </span>
-  </li>
   <li *ngIf="(event | quakeEvent).processing_timeframe.start !== null">
     <span class="v-mid">
-      <b>Start Time </b> {{(event | quakeEvent).processing_timeframe.start | shortDateTime}}
+      <b>Start Time </b> • {{(event | quakeEvent).processing_timeframe.start | shortDateTime}}
     </span>
     <mat-icon
     [matMenuTriggerFor]="addSceneDateMenu"
@@ -40,31 +12,7 @@
   </li>
   <li *ngIf="(event | quakeEvent).processing_timeframe.end !== null">
     <span class="v-mid">
-      <b>End Time </b> {{(event | quakeEvent).processing_timeframe.end | shortDateTime}}
-    </span>
-    <mat-icon
-    [matMenuTriggerFor]="addSceneDateMenu"
-    [matMenuTriggerData]="{eventDate: event.processing_timeframe.end}"
-    class="v-mid clickable">
-      settings
-  </mat-icon>
-  </li>
-</ul>
-<ul class="scene-metadata" *ngIf="eventType === eventTypes.VOLCANO">
-  <li *ngIf="event.processing_timeframe.start !== null">
-    <span class="v-mid">
-      <b>Start Time </b> {{event.processing_timeframe.start | shortDateTime}}
-    </span>
-    <mat-icon
-    [matMenuTriggerFor]="addSceneDateMenu"
-    [matMenuTriggerData]="{eventDate: event.processing_timeframe.start}"
-    class="v-mid clickable">
-      settings
-  </mat-icon>
-  </li>
-  <li *ngIf="event.processing_timeframe.end !== null">
-    <span class="v-mid">
-      <b>End Time </b> {{event.processing_timeframe.end | shortDateTime}}
+      <b>Stop Time </b> •  {{(event | quakeEvent).processing_timeframe.end | shortDateTime}}
     </span>
     <mat-icon
     [matMenuTriggerFor]="addSceneDateMenu"
@@ -75,7 +23,59 @@
   </li>
   <li>
     <span class="v-mid">
-      <b>Smithsonian ID </b>
+      <b>Magnitude </b> •  {{ (event | quakeEvent).magnitude }}
+    </span>
+    <mat-icon
+    [matMenuTriggerFor]="addSceneMagnitudeMenu"
+    [matMenuTriggerData]="{magnitude: (event | quakeEvent).magnitude}"
+    class="v-mid clickable">
+    settings
+    </mat-icon>
+  </li>
+  <li>
+    <span class="v-mid">
+      <b>Depth </b> •  {{(event | quakeEvent).depth}}
+    </span>
+  </li>
+  <li>
+    <span class="v-mid">
+      <b>USGS ID </b> •
+      <a target="_blank" href="{{
+        'https://earthquake.usgs.gov/earthquakes/eventpage/' +
+        (event | quakeEvent).usgs_event_id +
+        '#executive'}}"
+      >
+        {{(event | quakeEvent).usgs_event_id}}
+      </a>
+    </span>
+  </li>
+</ul>
+<ul class="scene-metadata" *ngIf="eventType === eventTypes.VOLCANO">
+  <li *ngIf="event.processing_timeframe.start !== null">
+    <span class="v-mid">
+      <b>Start Time </b> •  {{event.processing_timeframe.start | shortDateTime}}
+    </span>
+    <mat-icon
+    [matMenuTriggerFor]="addSceneDateMenu"
+    [matMenuTriggerData]="{eventDate: event.processing_timeframe.start}"
+    class="v-mid clickable">
+      settings
+  </mat-icon>
+  </li>
+  <li *ngIf="event.processing_timeframe.end !== null">
+    <span class="v-mid">
+      <b>Stop Time </b> •  {{event.processing_timeframe.end | shortDateTime}}
+    </span>
+    <mat-icon
+    [matMenuTriggerFor]="addSceneDateMenu"
+    [matMenuTriggerData]="{eventDate: event.processing_timeframe.end}"
+    class="v-mid clickable">
+      settings
+  </mat-icon>
+  </li>
+  <li>
+    <span class="v-mid">
+      <b>Smithsonian ID </b> •
       <a target="_blank" href="{{
         'http://volcano.si.edu/volcano.cfm?vn=' +
         (event | volcanicEvent).smithsonian_event_id +

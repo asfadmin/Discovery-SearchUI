@@ -33,7 +33,8 @@
       </div>
     </div>
 
-    <div class="filters-list">
+    <div class="filters-list"
+          [class.filters-list-mobile]="breakpoint === breakpoints.MOBILE">
       <ng-container *ngIf="selectedSearchType === searchTypes.DATASET">
         <app-dataset-filters [dataset]="(dataset$ | async)">
         </app-dataset-filters>

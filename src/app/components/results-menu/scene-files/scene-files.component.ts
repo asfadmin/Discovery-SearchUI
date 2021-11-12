@@ -262,12 +262,10 @@ export class SceneFilesComponent implements OnInit, OnDestroy, AfterContentInit 
     const charWidthPx = 10;
     const divWidthPx = document.getElementById('event-selection-list').offsetWidth;
     const defaultLen = Math.trunc((divWidthPx - extrasWidthPx) / charWidthPx);
-    // console.log('divWidthPx:', divWidthPx);
     desiredLen = desiredLen ? desiredLen : defaultLen;
+    desiredLen = desiredLen < 15 ? 15 : desiredLen;
     const tailLen = 8;
     const pNameLen = product_name.length;
-    // console.log('desiredLen:', desiredLen);
-    // console.log('pNameLen:', pNameLen);
     if (pNameLen > desiredLen) {
       return product_name.slice(0, desiredLen - tailLen - 1) +
         '...' +

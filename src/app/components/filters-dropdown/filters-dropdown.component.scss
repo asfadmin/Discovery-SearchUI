@@ -14,7 +14,7 @@
   width: 900px;
   max-width: 100vw;
   max-height: calc(100vh - 32px);
-  overflow: auto;
+  overflow: hidden;
   z-index: 1000;
 }
 
@@ -30,6 +30,7 @@
   background-color: white;
   z-index: 1000;
   display: flex;
+  overflow: hidden;
   flex-direction: column;
   flex-wrap: nowrap;
   box-shadow:
@@ -66,7 +67,12 @@
     flex-grow: 1;
     overflow: auto;
     min-height: 2em;
+    max-height: calc(100vh - 170px);
     padding: 10px;
+  }
+
+  .filters-list-mobile {
+    max-height: calc(100vh - 300px);
   }
 
   .footer {

@@ -18,14 +18,9 @@
           </span>
         </div>
 
-        <div *ngIf="searchType === SearchTypes.SARVIEWS_EVENTS" class="mr-10 scene-count">
+        <div *ngIf="searchType === SearchTypes.SARVIEWS_EVENTS" class="mr-10 event-count" event
+        [class.mobile-event]="breakpoint === breakpoints.MOBILE">
           {{ numberOfFilteredEvents$ | async }} Event{{ (numSarviewsScenes$ | async) === 1 ? '' : 's' }}
-          <span style="font-size: small;">
-            <br>
-            ({{ numberOfFilteredEvents$ | async }} of
-            {{ formatNumber(numSarviewsScenes$ | async) }}
-            Event{{ (numSarviewsScenes$ | async) === 1 ? '' : 's' }})
-          </span>
         </div>
 
         <div *ngIf="searchType === SearchTypes.SBAS" class="mr-10" style="margin-top: -15px;">
