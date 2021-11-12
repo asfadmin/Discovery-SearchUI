@@ -1,6 +1,7 @@
-<mat-accordion multi>
+<mat-accordion *ngIf="breakpoint$ | async as breakpoint" multi>
 
   <mat-expansion-panel
+    *ngIf="breakpoint === breakpoints.MOBILE"
     [expanded]="defaultPanelOpenState" [disabled]="panelIsDisabled"
     (click)="selectPanel(panels.SEARCH)"
     [class.raised-section]="isSelected(panels.SEARCH)">
