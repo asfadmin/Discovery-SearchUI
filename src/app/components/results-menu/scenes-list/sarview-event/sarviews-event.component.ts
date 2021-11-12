@@ -65,7 +65,7 @@ export class SarviewsEventComponent implements OnInit {
 
   public getEventIcon(): string {
     let eventIconName = this.event.event_type === 'quake' ? 'Earthquake' : 'Volcano';
-    if(!this.isActive()) {
+    if (!this.isActive()) {
       eventIconName += '_inactive';
     }
 
