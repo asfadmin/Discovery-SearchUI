@@ -71,6 +71,10 @@
     padding: 10px;
   }
 
+  .filters-list-mobile {
+    max-height: calc(100vh - 270px);
+  }
+
   .footer {
     flex-shrink: 0;
     display: flex;
