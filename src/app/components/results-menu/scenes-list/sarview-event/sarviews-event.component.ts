@@ -7,6 +7,7 @@ import * as sceneStore from '@store/scenes';
 import { MapService } from '@services';
 import { Store } from '@ngrx/store';
 import { AppState } from '@store';
+import * as moment from 'moment';
 
 @Component({
   selector: 'app-sarviews-event',
@@ -50,13 +51,22 @@ export class SarviewsEventComponent implements OnInit {
   }
 
   public isActive(): boolean {
-    const currentDate = new Date();
+    const currentDate = moment(new Date()).startOf('day').toDate();
 
     if (!!this.event.processing_timeframe.end) {
-      return currentDate <= new Date(this.event.processing_timeframe.end);
+      return currentDate <= moment(this.event.processing_timeframe.end).endOf('day').toDate();
     }
 
     return true;
+  }
+
+  public getEventIcon(): string {
+    let eventIconName = this.event.event_type === 'quake' ? 'Earthquake' : 'Volcano';
+    if(!this.isActive()) {
+      eventIconName += '_inactive';
+    }
+
+    return '/assets/icons/' + eventIconName + '.svg';
   }
 
   public eventIcon(): string {
