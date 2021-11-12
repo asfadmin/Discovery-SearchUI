@@ -38,7 +38,7 @@
       </div>
     </div>
     <div matLine class="div-flex date-time"
-         [ngClass]="{'mobile-event-sub-text': breakpoint <= breakpoints.SMALL}">
+         [ngClass]="{'mobile-event-sub-text': breakpoint < breakpoints.SMALL}">
       <span>
         {{eventIDDisplay()}} -
       </span>
