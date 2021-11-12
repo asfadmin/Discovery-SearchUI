@@ -8,21 +8,23 @@ import { SarviewsEventActiveSelectorModule } from '@components/shared/selectors/
 import { SarviewsEventMagnitudeSelectorModule } from '@components/shared/selectors/sarviews-event-magnitude-selector';
 import { DateSelectorModule } from '@components/shared/selectors/date-selector';
 import { MatIconModule } from '@angular/material/icon';
+import {SearchTypeSelectorModule} from '@components/shared/selectors/search-type-selector';
 
 @NgModule({
   declarations: [
     SarviewsFiltersComponent
   ],
-  imports: [
-    CommonModule,
-    MatExpansionModule,
-    SarviewsEventSearchSelectorModule,
-    SarviewsEventTypeSelectorModule,
-    SarviewsEventActiveSelectorModule,
-    SarviewsEventMagnitudeSelectorModule,
-    DateSelectorModule,
-    MatIconModule,
-  ],
+    imports: [
+        CommonModule,
+        MatExpansionModule,
+        SarviewsEventSearchSelectorModule,
+        SarviewsEventTypeSelectorModule,
+        SarviewsEventActiveSelectorModule,
+        SarviewsEventMagnitudeSelectorModule,
+        DateSelectorModule,
+        MatIconModule,
+        SearchTypeSelectorModule,
+    ],
   exports: [
     SarviewsFiltersComponent
   ]
