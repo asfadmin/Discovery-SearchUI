@@ -11,7 +11,7 @@ import { AppState } from '@store';
 import { getImageBrowseProducts, getPinnedEventBrowseIDs, getProducts, getSelectedSarviewsEventProducts, getSelectedScene } from '@store/scenes';
 import { ScenesActionType, SetImageBrowseProducts, SetSelectedScene } from '@store/scenes/scenes.action';
 import { getSearchType, SearchActionType, SetSearchType } from '@store/search';
-import { filter, map, tap, withLatestFrom } from 'rxjs/operators';
+import { filter, first, map, switchMap, tap, withLatestFrom } from 'rxjs/operators';
 import { MapActionType, SetBrowseOverlayOpacity, SetBrowseOverlays, ToggleBrowseOverlay } from '.';
 import { PinnedProduct } from '@services/browse-map.service';
 import { getSelectedDataset } from '@store/filters';
@@ -45,6 +45,9 @@ export class MapEffects {
 
   public onSetSelectedScene = createEffect(() => this.actions$.pipe(
     ofType<SetSelectedScene>(ScenesActionType.SET_SELECTED_SCENE),
+    withLatestFrom(this.store$.select(getSearchType)),
+    filter(([_, searchtype]) => searchtype !== models.SearchType.SARVIEWS_EVENTS),
+    map(([selected_scene, _]) => selected_scene),
     withLatestFrom(this.store$.select(getSelectedDataset)),
     filter(([_, dataset]) =>
       dataset.id === 'AVNIR'
@@ -92,7 +95,7 @@ export class MapEffects {
     map(([[[selectedProductId, searchType], products], scene]) => {
         if(searchType === models.SearchType.SARVIEWS_EVENTS) {
           const targetProduct = products.find(prod => prod.product_id === selectedProductId);
-          const url = targetProduct?.product_id;
+          const url = targetProduct?.files.browse_url;
           const wkt = targetProduct?.granules[0].wkt;
 
           return { selectedProductId, product: {url, wkt} as PinnedProduct}
@@ -120,12 +123,20 @@ export class MapEffects {
   public LoadBrowseOverlaysOnLoad = createEffect(() => this.actions$.pipe(
     ofType<SetBrowseOverlays>(MapActionType.SET_BROWSE_OVERLAYS),
     map(action => action.payload),
-    withLatestFrom(this.store$.select( getSelectedSarviewsEventProducts)),
-    filter(([_, products]) => products.length > 0),
-    map(([selectedProductIds, products]) => {
+    first(),
+    switchMap(browseIds => this.store$.select( getSelectedSarviewsEventProducts).pipe(filter(
+      products => products.length > 0
+    ),
+    map(products => ({browseIds, products})))),
+    first(),
+    filter(val => val.products.length > 0),
+    map((data) => {
+      const selectedProductIds = data.browseIds;
+      const products = data.products;
+
       return selectedProductIds.map(selectedProductId => {
         const targetProduct = products.find(prod => prod.product_id === selectedProductId);
-        const url = targetProduct?.product_id;
+        const url = targetProduct?.files.browse_url;
         const wkt = targetProduct?.granules[0].wkt;
 
       return { selectedProductId, product: {url, wkt} as PinnedProduct}
@@ -136,7 +147,8 @@ export class MapEffects {
         prev[curr.selectedProductId] = curr.product;
         return prev;
       }, {} as {[product_id in string]: PinnedProduct})
-    )
+    ),
+    tap(products => this.store$.dispatch(new SetImageBrowseProducts(products)))
   ),  {dispatch: false});
 
 }
