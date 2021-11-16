@@ -500,7 +500,7 @@ export class MapService {
   }
 
   public setSelectedBrowse(url: string, wkt: string) {
-    if(!!this.browseImageLayer) {
+    if (!!this.browseImageLayer) {
       this.map.removeLayer(this.browseImageLayer);
     }
     this.browseImageLayer = this.browseOverlayService.createNormalImageLayer(url, wkt);
@@ -511,7 +511,7 @@ export class MapService {
     const scenesWithBrowse = scenes.filter(scene => scene.browses?.length > 0).slice(0, 10);
 
     const collection = scenesWithBrowse.reduce((prev, curr) =>
-    prev.concat(this.browseOverlayService.createNormalImageLayer(curr.browses[0], curr.metadata.polygon)), [] as ImageLayer[])
+    prev.concat(this.browseOverlayService.createNormalImageLayer(curr.browses[0], curr.metadata.polygon)), [] as ImageLayer[]);
 
     // this.browseRasterCanvas = new RasterSource({
     //   sources: collection,
@@ -523,7 +523,7 @@ export class MapService {
     // });
 
     collection.forEach(element => {
-      this.map.addLayer(element)
+      this.map.addLayer(element);
     });
     // this.map.addLayer(l);
   }
@@ -534,7 +534,7 @@ export class MapService {
 
   public clearBrowseOverlays() {
     this.pinnedProducts.getLayers().clear();
-    if(!!this.browseImageLayer) {
+    if (!!this.browseImageLayer) {
       this.map.removeLayer(this.browseImageLayer);
     }
   }

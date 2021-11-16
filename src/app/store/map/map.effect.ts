@@ -61,7 +61,7 @@ export class MapEffects {
     filter(([selected, products]) => products[selected].browses.length > 0),
     tap(([selected, products]) => {
       const selectedProduct = products[selected];
-      if(selectedProduct.browses[0] !== '/assets/no-browse.png') {
+      if (selectedProduct.browses[0] !== '/assets/no-browse.png') {
         this.mapService.setSelectedBrowse(selectedProduct.browses[0], selectedProduct.metadata.polygon);
       }
     }),
@@ -93,23 +93,23 @@ export class MapEffects {
     withLatestFrom(this.store$.select( getSelectedSarviewsEventProducts)),
     withLatestFrom(this.store$.select( getSelectedScene)),
     map(([[[selectedProductId, searchType], products], scene]) => {
-        if(searchType === models.SearchType.SARVIEWS_EVENTS) {
+        if (searchType === models.SearchType.SARVIEWS_EVENTS) {
           const targetProduct = products.find(prod => prod.product_id === selectedProductId);
           const url = targetProduct?.files.browse_url;
           const wkt = targetProduct?.granules[0].wkt;
 
-          return { selectedProductId, product: {url, wkt} as PinnedProduct}
+          return { selectedProductId, product: {url, wkt} as PinnedProduct};
         } else {
           const url = scene?.browses[0];
           const wkt = scene?.metadata.polygon;
-          return { selectedProductId, product: {url, wkt} as PinnedProduct}
+          return { selectedProductId, product: {url, wkt} as PinnedProduct};
         }
       }
     ),
     withLatestFrom(this.store$.select(getImageBrowseProducts)),
     map(([pin, pinnedProducts]) => {
-      let temp: {[product_id in string]: PinnedProduct} = JSON.parse(JSON.stringify(pinnedProducts));
-      if(!!pinnedProducts[pin.selectedProductId]) {
+      const temp: {[product_id in string]: PinnedProduct} = JSON.parse(JSON.stringify(pinnedProducts));
+      if (!!pinnedProducts[pin.selectedProductId]) {
         delete temp[pin.selectedProductId];
       } else {
         temp[pin.selectedProductId] = pin.product;
@@ -139,7 +139,7 @@ export class MapEffects {
         const url = targetProduct?.files.browse_url;
         const wkt = targetProduct?.granules[0].wkt;
 
-      return { selectedProductId, product: {url, wkt} as PinnedProduct}
+      return { selectedProductId, product: {url, wkt} as PinnedProduct};
       });
     }),
     map(

@@ -84,7 +84,7 @@ export function mapReducer(state = initState, action: MapActions): MapState {
       return {
         ...state,
         browseOverlayOpacity
-      }
+      };
     }
 
     default: {

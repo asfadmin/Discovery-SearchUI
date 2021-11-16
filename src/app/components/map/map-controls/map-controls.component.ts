@@ -35,7 +35,7 @@ export class MapControlsComponent implements OnInit, OnDestroy {
     filter(event => !!event),
   startWith(null));
 
-  public currentBrowseID: string = '';
+  public currentBrowseID = '';
 
   public searchType: models.SearchType;
   public searchTypes = models.SearchType;
@@ -65,12 +65,12 @@ export class MapControlsComponent implements OnInit, OnDestroy {
     this.subs.add(
       combineLatest([this.selectedScene$, this.selectedEvent$]).subscribe(
         ([scene, event]) => {
-          if(this.searchType === SearchType.SARVIEWS_EVENTS) {
-            if(!!event) {
+          if (this.searchType === SearchType.SARVIEWS_EVENTS) {
+            if (!!event) {
               this.currentBrowseID = event.product_id;
             }
            } else {
-             if(!!scene) {
+             if (!!scene) {
               this.currentBrowseID = scene.id;
              }
             }
@@ -122,12 +122,12 @@ export class MapControlsComponent implements OnInit, OnDestroy {
 
   public onIncrementBrowseIndex() {
     const newIndex = this.browseIndex === this.getBrowseCount() - 1 ? 0 : this.browseIndex + 1;
-    this.onUpdateBrowseIndex(newIndex)
+    this.onUpdateBrowseIndex(newIndex);
   }
 
   public onDecrementBrowseIndex() {
     const newIndex = this.browseIndex === 0 ? this.getBrowseCount() - 1 : this.browseIndex - 1;
-    this.onUpdateBrowseIndex(newIndex)
+    this.onUpdateBrowseIndex(newIndex);
   }
 
   public onUpdateBrowseIndex(newIndex: number) {
