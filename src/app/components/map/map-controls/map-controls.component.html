@@ -88,14 +88,9 @@
         <div  fxLayout="row" fxLayoutAlign="center" class="button-group-label" style="white-space: nowrap;">
           <label>Product Browse</label>
           </div>
-          <div fxLayout="row">
+          <div fxLayout="row" fxLayoutAlign="center">
             <div>
         <mat-button-toggle-group fxFlex="" name="layerType">
-          <!-- <mat-button-toggle class="control-mat-button-toggle" *ngIf="(pinnedProducts$ | async) as pinnedProducts"
-          (click)="onPinProduct(currentBrowseID)"
-          matTooltip="Pin/Unpin Current Browse Image">
-          <mat-icon class="control-icon">push_pin</mat-icon>
-        </mat-button-toggle> -->
           <mat-button-toggle class="control-mat-button-toggle"
           *ngIf="searchType === searchTypes.SARVIEWS_EVENTS"
           (click)="onUnpinAll()"
@@ -111,7 +106,7 @@
           <mat-button-toggle class="control-mat-button-toggle"
           *ngIf="searchType !== searchTypes.SARVIEWS_EVENTS"
           (click)="onIncrementBrowseIndex()"
-          matTooltip="Change selected scene browse index">
+          matTooltip="Change selected scene browse">
           <mat-icon class="control-icon">arrow_forward</mat-icon>
           </mat-button-toggle>
         </mat-button-toggle-group>
@@ -126,19 +121,13 @@
       <label>Browse Opacity</label>
       </div>
       <div fxLayout="row">
-        <div>
-      <mat-slider fxFlex="" name="layerType" step="0.25" value="1" min="0.0" max="1.0" (input)="onSetOpacity($event)" >
+      <mat-slider class="opacity-slider" name="layerType" step="0.05" value="1" min="0.0" max="1.0" (input)="onSetOpacity($event)" >
       </mat-slider>
-        </div>
       </div>
     </div>
 
     </div>
   </div>
-
-
-    <!-- <mat-slider style="height: 200px;" horizontal step="0.01" value="1.0" max="1.0" min="0.0" (input)="onSetOpacity($event);"></mat-slider> -->
-
 
   <div fxLayout="row" fxFlex class="lat-lon">
     <div fxFlex="grow"></div>
