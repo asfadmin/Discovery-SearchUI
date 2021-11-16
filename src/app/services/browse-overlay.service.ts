@@ -40,7 +40,7 @@ export class BrowseOverlayService {
       opacity: 1.0,
     });
 
-    if(layer_id !== '') {
+    if (layer_id !== '') {
       output.set('layer_id', layer_id);
     }
 
@@ -94,7 +94,7 @@ export class BrowseOverlayService {
       opacity: 1.0,
       className});
 
-    if(layer_id !== '') {
+    if (layer_id !== '') {
       Imagelayer.set('layer_id', layer_id);
     }
 
@@ -117,19 +117,19 @@ export class BrowseOverlayService {
   public setPinnedProducts(pinnedProducts: {[product_id in string]: PinnedProduct}, productLayerGroup: LayerGroup) {
 
     const pinnedProductIds = Object.keys(pinnedProducts);
-    const currentPinnedProductsIds: string[] = productLayerGroup.getLayersArray().map(layer => layer.get("layer_id"));
+    const currentPinnedProductsIds: string[] = productLayerGroup.getLayersArray().map(layer => layer.get('layer_id'));
     const toAdd = pinnedProductIds.filter(id => !currentPinnedProductsIds.includes(id));
     const toRemove = currentPinnedProductsIds.filter(id => !pinnedProductIds.includes(id));
     if (pinnedProductIds.length === 0) {
     productLayerGroup.getLayers().clear();
     } else {
       this.unpinProducts(toRemove, productLayerGroup);
-      this.pinProducts(toAdd, pinnedProducts, productLayerGroup)
+      this.pinProducts(toAdd, pinnedProducts, productLayerGroup);
     }
   }
 
   private pinProducts(layersToAdd: string[], pinnedProductStates: {[product_id in string]: PinnedProduct}, productLayerGroup: LayerGroup) {
-    const newLayers = layersToAdd.map(layer_id =>this.createNormalImageLayer(
+    const newLayers = layersToAdd.map(layer_id => this.createNormalImageLayer(
       pinnedProductStates[layer_id].url,
       pinnedProductStates[layer_id].wkt,
       'ol-layer',
@@ -142,7 +142,7 @@ export class BrowseOverlayService {
   private unpinProducts(layersToRemove: string[], productLayerGroup: LayerGroup) {
     layersToRemove.forEach(product_id => {
       const found = productLayerGroup.getLayersArray().find(layer => layer.get('layer_id') === product_id);
-      if(!!found) {
+      if (!!found) {
       productLayerGroup.getLayers().remove(found);
       }
     });

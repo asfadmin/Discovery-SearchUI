@@ -138,7 +138,7 @@ export class BrowseListComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   public onPinProduct(product_id: string) {
-    let temp: {[id in string]: PinnedProduct} = JSON.parse(JSON.stringify(this.productBrowseStates));
+    const temp: {[id in string]: PinnedProduct} = JSON.parse(JSON.stringify(this.productBrowseStates));
     if(!!temp[product_id]) {
       delete temp[product_id];
     } else {
@@ -146,7 +146,7 @@ export class BrowseListComponent implements OnInit, AfterViewInit, OnDestroy {
       let url: string;
       let wkt: string;
 
-      if(this.searchtype === models.SearchType.SARVIEWS_EVENTS) {
+      if (this.searchtype === models.SearchType.SARVIEWS_EVENTS) {
         const targetProduct = this.sarviewsProducts.find(prod => prod.product_id === product_id);
         url = targetProduct?.product_id;
         wkt = targetProduct?.granules[0].wkt;
@@ -156,7 +156,7 @@ export class BrowseListComponent implements OnInit, AfterViewInit, OnDestroy {
         wkt = targetProduct?.metadata.polygon;
       }
 
-      temp[product_id] = {url, wkt} as PinnedProduct
+      temp[product_id] = {url, wkt} as PinnedProduct;
     }
 
     this.productBrowseStates = temp;
