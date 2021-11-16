@@ -125,13 +125,14 @@ a {
 }
 
 .tool-menu {
+  z-index: 2;
   position: sticky;
-  background: $divider-bar-color;
-  bottom: 0;
   display: flex;
   justify-content: flex-start;
+  background: $divider-bar-color;
   align-items: center;
   height: 40px;
+  bottom: 0;
 
   button {
     //background: none;
