@@ -6,9 +6,7 @@ import Geometry from 'ol/geom/Geometry';
 import Polygon from 'ol/geom/Polygon';
 import ImageLayer from 'ol/layer/Image';
 import Static from 'ol/source/ImageStatic';
-import Raster
-// , { RasterOperationType }
-from 'ol/source/Raster';
+import Raster from 'ol/source/Raster';
 
 import { Coordinate } from 'ol/coordinate';
 import MultiPolygon from 'ol/geom/MultiPolygon';

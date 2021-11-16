@@ -279,11 +279,11 @@ export class SceneFilesComponent implements OnInit, OnDestroy, AfterContentInit 
   }
 
   public onSelectSarviewsProduct(selections: MatSelectionListChange) {
-    // selections.options.filter(option => option.selected).map(option => option.value);
-    // selections.options.forEach(option => this.selectedProducts[option.value] = option.selected );selections.options.filter(option => option.selected).map(option => option.value as string)
-    // const products = selections.options.filter(option => option.selected).map(option => option.value as string);
-    const deselected = selections.options.filter(option => !option.selected).map(option => option.value as string);
-    const selected = selections.options.filter(option => option.selected).map(option => option.value as string);
+    const deselected = selections.options.filter(option => !option.selected)
+      .map(option => option.value as string);
+
+    const selected = selections.options.filter(option => option.selected)
+      .map(option => option.value as string);
 
     this.selectedProducts = this.selectedProducts.filter(product => !deselected.includes(product));
     this.selectedProducts = Array.from(new Set<string>(this.selectedProducts.concat(selected)));

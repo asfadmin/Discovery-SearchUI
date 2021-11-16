@@ -411,7 +411,13 @@ export class MapService {
 
   private createNewMap(overlay): Map {
     const newMap = new Map({
-      layers: [ this.mapView.layer, this.drawService.getLayer(), this.focusLayer, this.selectedLayer, this.mapView?.gridlines, this.pinnedProducts ],
+      layers: [ this.mapView.layer,
+        this.drawService.getLayer(),
+        this.focusLayer,
+        this.selectedLayer,
+        this.mapView?.gridlines,
+        this.pinnedProducts
+      ],
       target: 'map',
       view: this.mapView.view,
       controls: [],
