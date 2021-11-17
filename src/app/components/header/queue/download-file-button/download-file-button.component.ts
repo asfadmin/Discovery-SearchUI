@@ -86,6 +86,7 @@ export class DownloadFileButtonComponent implements OnInit, AfterViewInit {
 
   public hijackDownloadClick( event: MouseEvent, hiddenID ) {
     event.preventDefault();
+    console.log(hiddenID);
     this.downloadFile(this.product, this.href);
     // const rClick = new MouseEvent('click');
     // const element = document.getElementById(hiddenID);
