@@ -26,7 +26,7 @@ import * as uiStore from '@store/ui';
 import * as models from '@models';
 import { MapService, WktService, ScreenSizeService, ScenesService, SarviewsEventsService } from '@services';
 import * as polygonStyle from '@services/map/polygon.style';
-import { SarviewsEvent } from '@models';
+import { CMRProduct, SarviewsEvent } from '@models';
 import { StyleLike } from 'ol/style/Style';
 
 enum FullscreenControls {
@@ -73,6 +73,7 @@ export class MapComponent implements OnInit, OnDestroy  {
   public searchType: models.SearchType;
   public searchTypes = models.SearchType;
 
+  public selectedScene: CMRProduct;
   public selectedSarviewEvent: SarviewsEvent;
 
   private subs = new SubSink();
@@ -95,11 +96,18 @@ export class MapComponent implements OnInit, OnDestroy  {
   ) {}
 
   ngOnInit(): void {
+    this.subs.add(
     this.mapService.selectedSarviewEvent$.pipe(
       filter(id => !!id)
     ).subscribe(
       id => this.selectedSarviewEvent = this.sarviewsEvents?.find(event => event?.event_id === id)
-    );
+    ));
+
+    this.subs.add(
+      this.store$.select(scenesStore.getSelectedScene).subscribe(
+        scene => this.selectedScene = scene
+      )
+    )
 
 
     this.subs.add(
@@ -399,8 +407,10 @@ export class MapComponent implements OnInit, OnDestroy  {
 
   private scenePolygonsLayer$(projection: string): Observable<VectorLayer> {
     return this.scenesService.scenes$().pipe(
+      map(scenes => scenes.filter(scene => scene.id !== this.selectedScene.id)),
       map(scenes => this.scenesToFeature(scenes, projection)),
-      map(features => this.featuresToSource(features, polygonStyle.scene))
+      map(features => this.featuresToSource(features, polygonStyle.scene)),
+      tap(layer => layer.set('selectable', 'true')),
     );
   }
 
@@ -463,10 +473,6 @@ export class MapComponent implements OnInit, OnDestroy  {
       }),
       style
     });
-
-    if (style !== polygonStyle.icon) {
-      layer.set('selectable', 'true');
-    }
 
     return layer;
   }

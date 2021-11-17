@@ -57,7 +57,7 @@ export class MapService {
 
   private selectHover = new Select({
     condition: pointerMove,
-    style: polygonStyle.browseHover,
+    style: polygonStyle.hover,
     layers: l => l.get('selectable') || false
   });
 

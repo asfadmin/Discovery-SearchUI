@@ -2,7 +2,6 @@ import {Circle as CircleStyle, Fill, Stroke, Style, Text} from 'ol/style.js';
 
 export const valid = new Style({
   fill: new Fill({
-    color: 'rgba(255, 255, 255, 0.2)'
   }),
   stroke: new Stroke({
     color: '#ffcc33',
@@ -31,7 +30,7 @@ export const scene = new Style({
       radius: 5
     }),
     stroke,
-    fill
+    fill,
   });
 
   export const icon = new Style({
@@ -56,8 +55,21 @@ export const omitted = new Style({
 });
 
 export const invalid = new Style({
-  fill: new Fill({
-    color: 'rgba(255, 255, 255, 0.2)'
+  text: new Text({
+    text: 'Approximate Placement Only',
+    scale: 2,
+    stroke: new Stroke({
+      color: 'rgba(0, 0, 0, 1.0)'
+    }),
+    fill: new Fill({
+      color: 'rgba(255, 255, 255, 1.0)'
+    }),
+    placement: 'line',
+    textAlign: 'start',
+    textBaseline: 'bottom',
+  overflow: true,
+  padding: [2, 5, 2, 5],
+  font: '50px'
   }),
   stroke: new Stroke({
     color: '#f44336',
@@ -100,30 +112,5 @@ export const hover = new Style({
     fill: new Fill({
       color: 'rgba(255, 255, 255, 0.4)'
     })
-  })
-});
-
-export const browseHover = new Style({
-  fill: new Fill({
-    color: 'rgba(255, 255, 255, 0.2)'
-  }),
-  stroke: new Stroke({
-    color: 'rgba(255, 255, 255, 0.2)',
-    width: 4
-  }),
-  image: new CircleStyle({
-    radius: 7,
-    fill: new Fill({
-      color: 'rgba(255, 255, 255, 0.4)'
-    })
-  }),
-  zIndex: 100,
-  text: new Text({
-    text: 'Approximate Placement Only',
-    backgroundFill: new Fill({
-      color: 'rgba(255, 255, 255, 1.0)'
-    }),
-  overflow: true,
-  font: '20px'
   })
 });
