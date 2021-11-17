@@ -30,6 +30,36 @@
       </div>
   </div>
 
+  <div *ngIf="(searchType$ | async) === searchTypes.SARVIEWS_EVENTS">
+    <div *ngIf="sarviewsEvent$ | async as event" fxLayout="row" class="dialog-header--layout">
+      <div fxFlex="auto">
+        <h3 class="mp0">
+          <span [ngClass]="{'mp0-ellipsis-mobile': breakpoint <= breakpoints.SMALL,
+                            'mp0-ellipsis': breakpoint > breakpoints.SMALL}">
+            {{ event.description }}
+          </span>
+        </h3>
+        <span class="faint-text">
+          <!-- <a *ngIf="dataset" [href]="dataset.infoUrl"
+              target="_blank" matTooltip="Dataset" class="faint-text">
+            {{ dataset.name }}
+          </a> • -->
+          <span *ngIf="breakpoint > breakpoints.MOBILE">
+            {{ event.processing_timeframe.start | fullDate }}
+          </span>
+          <span *ngIf="breakpoint === breakpoints.MOBILE">
+            {{ event.processing_timeframe.start | shortDateTime }}
+          </span>
+        </span>
+      </div>
+      <div fxFlex="35px" class="close-icon">
+        <button (click)="closeDialog()" mat-icon-button>
+          <mat-icon class="close-button">close</mat-icon>
+        </button>
+      </div>
+    </div>
+</div>
+
   <div fxLayout="row"
     [ngClass]="(breakpoint < breakpoints.SMALL) ? 'main-window-mobile' : 'main-window'">
 
