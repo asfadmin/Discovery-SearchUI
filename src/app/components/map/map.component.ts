@@ -107,7 +107,7 @@ export class MapComponent implements OnInit, OnDestroy  {
       this.store$.select(scenesStore.getSelectedScene).subscribe(
         scene => this.selectedScene = scene
       )
-    )
+    );
 
 
     this.subs.add(
