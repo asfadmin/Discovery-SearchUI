@@ -12,11 +12,8 @@ import * as uiStore from '@store/ui';
 import * as searchStore from '@store/search';
 
 import * as models from '@models';
-import {
-  // BrowseMapService,
-   ScenesService } from '@services';
+import { ScenesService } from '@services';
 import { PinnedProduct } from '@services/browse-map.service';
-// import { SearchType } from '@models';
 
 @Component({
   selector: 'app-browse-list',
@@ -51,8 +48,7 @@ export class BrowseListComponent implements OnInit, AfterViewInit, OnDestroy {
 
   constructor(
     private store$: Store<AppState>,
-    private scenesService: ScenesService,
-    // private browseMap: BrowseMapService,
+    private scenesService: ScenesService
   ) { }
 
   ngOnInit() {
@@ -115,10 +111,6 @@ export class BrowseListComponent implements OnInit, AfterViewInit, OnDestroy {
         }
       )
     );
-
-    // this.subs.add(this.store$.select(scenesStore.getPinnedEventBrowseIDs).subscribe(
-    //   ids => this.pinnedProductIds = ids
-    // ));
 
     this.subs.add(
       this.sarviewsProducts$.subscribe(

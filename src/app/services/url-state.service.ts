@@ -39,7 +39,6 @@ export class UrlStateService {
     private wktService: WktService,
     private rangeService: RangeService,
     private router: Router,
-    // private dialog: MatDialog,
     private prop: PropertyService,
   ) {
     const params = [
@@ -686,19 +685,7 @@ export class UrlStateService {
 
   private loadPinnedProducts = (pinnedProducts: string): Action => {
     const productIDs = pinnedProducts.split(',');
-
-    // const pinned = productIDs.reduce(
-    //   (prev, key) => {
-    //     const output = {} as PinnedProduct;
-    //     output.url = '';
-    //     output.wkt = '';
-
-    //     prev[key] = output;
-    //     return prev;
-    //   }, {} as {[product_id in string]: PinnedProduct}
-    // );
-
-      return new mapStore.SetBrowseOverlays(productIDs);
+    return new mapStore.SetBrowseOverlays(productIDs);
   }
 
   private loadIsDownloadQueueOpen = (isDownloadQueueOpen: string): Action => {

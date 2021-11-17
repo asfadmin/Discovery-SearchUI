@@ -97,7 +97,6 @@ export class ScenesListComponent implements OnInit, OnDestroy {
          * */
         delay(20),
         filter(([selected, _]) => !!selected),
-        // tap(_ => this.mapService.createBrowseRasterCanvas(this.scenes)),
         tap(([selected, _]) => this.selected = selected.id),
         map(([selected, scenes]) => {
           let sceneIdx = -1;
@@ -125,7 +124,6 @@ export class ScenesListComponent implements OnInit, OnDestroy {
         delay(20),
         filter(([selected, _]) => !!selected),
         tap(([selected, _]) => this.selectedEvent = selected.event_id),
-        // tap(([selected, _]) => this.selected = selected.id),
         map(([selected, events]) => {
           let sceneIdx = -1;
           events.forEach((event, idx) => {

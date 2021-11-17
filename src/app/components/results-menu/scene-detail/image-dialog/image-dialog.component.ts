@@ -20,8 +20,6 @@ import {
   // Breakpoints,
   SarviewProductGranule, SarviewsProduct } from '@models';
 import { ClipboardService } from 'ngx-clipboard';
-import { MatSliderChange } from '@angular/material/slider';
-import { ToggleBrowseOverlay } from '@store/map';
 
 @Component({
   selector: 'app-image-dialog',
@@ -38,7 +36,6 @@ export class ImageDialogComponent implements OnInit, AfterViewInit, OnDestroy {
   public masterOffsets$ = this.store$.select(scenesStore.getMasterOffsets);
   public searchType$ = this.store$.select(searchStore.getSearchType);
   public searchTypes = models.SearchType;
-  // private searchType: models.SearchType;
   public onlyShowScenesWithBrowse: boolean;
   public queuedProductIds: Set<string>;
   public scene: models.CMRProduct;
@@ -259,10 +256,6 @@ export class ImageDialogComponent implements OnInit, AfterViewInit, OnDestroy {
     this.notificationService.info( '', `Scene${content.length > 1 ? 's ' : ' '}Copied`);
   }
 
-  public onSetOpacity(event: MatSliderChange) {
-    this.browseMap.updateBrowseOpacity(event.value);
-  }
-
   public downloadSarviewsProduct(product: SarviewsProduct) {
     window.open(product.files.product_url, '_blank');
   }
@@ -273,10 +266,6 @@ export class ImageDialogComponent implements OnInit, AfterViewInit, OnDestroy {
       [this.currentSarviewsProduct.product_id]
       );
     window.open(url);
-  }
-
-  public onPinProduct(product_id: string) {
-    this.store$.dispatch(new ToggleBrowseOverlay(product_id));
   }
 
   ngOnDestroy() {

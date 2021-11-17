@@ -1,14 +1,12 @@
 import { Injectable } from '@angular/core';
 import { Coordinate } from 'ol/coordinate';
 import Feature from 'ol/Feature';
-// import { Feature } from 'ol';
 
 import WKT from 'ol/format/WKT.js';
 import Geometry from 'ol/geom/Geometry';
 import MultiPolygon from 'ol/geom/MultiPolygon';
 import Polygon from 'ol/geom/Polygon';
 import { fromLonLat, toLonLat } from 'ol/proj';
-// import Polygon from 'ol/geom/Polygon';
 
 @Injectable({
   providedIn: 'root'
