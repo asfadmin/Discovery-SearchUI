@@ -2,6 +2,7 @@ import {Circle as CircleStyle, Fill, Stroke, Style, Text} from 'ol/style.js';
 
 export const valid = new Style({
   fill: new Fill({
+    color: 'rgba(255, 255, 255, 0.2)'
   }),
   stroke: new Stroke({
     color: '#ffcc33',
