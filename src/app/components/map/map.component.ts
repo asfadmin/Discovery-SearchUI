@@ -44,6 +44,7 @@ export class MapComponent implements OnInit, OnDestroy  {
   @Output() loadUrlState = new EventEmitter<void>();
   @ViewChild('overlay', { static: true }) overlayRef: ElementRef;
   @ViewChild('map', { static: true }) mapRef: ElementRef;
+  @ViewChild('browsetooltip', {static: false}) browseDisclaimer: ElementRef;
 
   public drawMode$ = this.store$.select(mapStore.getMapDrawMode);
   public interactionMode$ = this.store$.select(mapStore.getMapInteractionMode);

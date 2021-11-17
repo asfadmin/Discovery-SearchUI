@@ -1,4 +1,4 @@
-import {Circle as CircleStyle, Fill, Stroke, Style} from 'ol/style.js';
+import {Circle as CircleStyle, Fill, Stroke, Style, Text} from 'ol/style.js';
 
 export const valid = new Style({
   fill: new Fill({
@@ -100,5 +100,30 @@ export const hover = new Style({
     fill: new Fill({
       color: 'rgba(255, 255, 255, 0.4)'
     })
+  })
+});
+
+export const browseHover = new Style({
+  fill: new Fill({
+    color: 'rgba(255, 255, 255, 0.2)'
+  }),
+  stroke: new Stroke({
+    color: 'rgba(255, 255, 255, 0.2)',
+    width: 4
+  }),
+  image: new CircleStyle({
+    radius: 7,
+    fill: new Fill({
+      color: 'rgba(255, 255, 255, 0.4)'
+    })
+  }),
+  zIndex: 100,
+  text: new Text({
+    text: 'Image Overlay may not represent final position of downloaded product',
+    backgroundFill: new Fill({
+      color: 'rgba(255, 255, 255, 1.0)'
+    }),
+  overflow: true,
+  font: '20px'
   })
 });

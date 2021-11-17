@@ -57,14 +57,14 @@ export class MapService {
 
   private selectHover = new Select({
     condition: pointerMove,
-    style: polygonStyle.hover,
+    style: polygonStyle.browseHover,
     layers: l => l.get('selectable') || false
   });
 
   private selectSarviewEventHover = new Select({
     condition: pointerMove,
     style: null,
-    layers: l => l === this.sarviewsEventsLayer || false
+    layers: l => l?.get('selectable') || false,
   });
 
   private selectedSource = new VectorSource({
@@ -441,7 +441,16 @@ export class MapService {
     this.selectSarviewEventHover.on('select', e => {
       this.map.getTargetElement().style.cursor =
         e.selected.length > 0 ? 'pointer' : '';
-    });
+
+        // this.map.forEachLayerAtPixel(e.mapBrowserEvent.pixel, f => {
+        //   if(f.get('selectable') || false) {
+        //     f
+        //     return true;
+        //   }
+        // });
+
+    }
+    );
 
     newMap.on('pointermove', e => {
       const [ lon, lat ] = proj.toLonLat(e.coordinate, this.epsg());
@@ -509,7 +518,7 @@ export class MapService {
     if (!!this.browseImageLayer) {
       this.map.removeLayer(this.browseImageLayer);
     }
-    this.browseImageLayer = this.browseOverlayService.createNormalImageLayer(url, wkt);
+    this.browseImageLayer = this.browseOverlayService.createNormalImageLayer(url, wkt, 'ol-layer', 'current-overlay');
     this.map.addLayer(this.browseImageLayer);
   }
 
