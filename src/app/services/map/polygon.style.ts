@@ -119,7 +119,7 @@ export const browseHover = new Style({
   }),
   zIndex: 100,
   text: new Text({
-    text: 'Image Overlay may not represent final position of downloaded product',
+    text: 'Approximate Placement Only',
     backgroundFill: new Fill({
       color: 'rgba(255, 255, 255, 1.0)'
     }),
