@@ -40,6 +40,8 @@ export class DownloadFileButtonComponent implements OnInit, AfterViewInit {
 
     if (typeof href !== 'undefined') {
       console.log('url', href);
+      this.url = href;
+      product = null;
       this.fileName = this.url.substring(this.url.lastIndexOf('/') + 1);
     } else {
       this.url = product.downloadUrl;
@@ -84,9 +86,11 @@ export class DownloadFileButtonComponent implements OnInit, AfterViewInit {
 
   public hijackDownloadClick( event: MouseEvent, hiddenID ) {
     event.preventDefault();
-    const rClick = new MouseEvent('click');
-    const element = document.getElementById(hiddenID);
-    element.dispatchEvent(rClick);
+    console.log(hiddenID);
+    this.downloadFile(this.product, this.href);
+    // const rClick = new MouseEvent('click');
+    // const element = document.getElementById(hiddenID);
+    // element.dispatchEvent(rClick);
   }
 
 }
