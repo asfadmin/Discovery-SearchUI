@@ -56,6 +56,7 @@ export class ScenesEffects {
     filter(event => !!event.products),
     map(processedEvent => new SetSarviewsEventProducts(!!processedEvent.products ? processedEvent.products : []))
   ));
+
   private showUnzipApiLoadError(product: CMRProduct): void {
     this.notificationService.error(
       `Error loading files for ${product.id}`,

@@ -42,23 +42,11 @@
     </div>
 
     <div fxFlex id="browse-map" fxFlex class="browse-map--size" fxLayout="row-reverse" fxLayoutAlign="end end" >
-      <div *ngIf="(searchType$ | async) === searchTypes.SARVIEWS_EVENTS" fxFlex fxLayout="column" fxLayoutAlign="start" class="ol-control ol-unselectable" style="background-color: rgba(0, 0, 0, 0) !important; z-index: 1;">
-        <div style="padding: 2px; border-radius: 4px; height: 100%; margin-bottom: 15px; margin-left: 15px; background-color: rgba(255, 255, 255, 0.4);">
-          <div (click)="onPinProduct(currentSarviewsProduct?.product_id ?? scene?.id)" style="height: 32px; padding-top: 10px; background-color: rgba(0, 60, 136, 0.5);">
-            <mat-icon style="margin-left: 11px;">push_pin</mat-icon>
-            </div>
-          </div>
-        <div style="padding: 2px; border-radius: 4px; margin-bottom: 15px; margin-left: 15px; background-color: rgba(255, 255, 255, 0.4);">
-        <div style="padding-top: 10px; background-color: rgba(0, 60, 136, 0.5);">
-        <mat-slider style="height: 200px;" vertical step="0.01" value="1.0" max="1.0" min="0.0" (input)="onSetOpacity($event);"></mat-slider>
-      </div>
-    </div>
-      </div>
     </div>
       <div *ngIf="(searchType$ | async) === searchTypes.SARVIEWS_EVENTS">
       <button
       style="position: absolute; bottom: 5px; right: 20%; margin: 15px; min-width: 200px; border-radius: 4px !important;"
-      mat-flat-button (click)="OpenProductInSarviews()">Open Pinned Products In SARVIEWS</button>
+      mat-flat-button (click)="OpenProductInSarviews()">Open Product In SARVIEWS</button>
     </div>
     <div *ngIf="isImageLoading" color="accent" class="browse-map--overlay">
       <mat-spinner></mat-spinner>
