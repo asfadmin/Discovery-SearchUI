@@ -179,7 +179,7 @@ export class MapControlsComponent implements OnInit, OnDestroy {
   }
 
   public onUpdateBrowseIndex(newIndex: number) {
-    if(!this.browseIndexingEnabled) {
+    if (!this.browseIndexingEnabled) {
       return;
     }
 
