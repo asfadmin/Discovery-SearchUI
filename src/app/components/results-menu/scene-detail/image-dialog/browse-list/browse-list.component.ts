@@ -131,7 +131,7 @@ export class BrowseListComponent implements OnInit, AfterViewInit, OnDestroy {
 
   public onPinProduct(product_id: string) {
     const temp: {[id in string]: PinnedProduct} = JSON.parse(JSON.stringify(this.productBrowseStates));
-    if(!!temp[product_id]) {
+    if (!!temp[product_id]) {
       delete temp[product_id];
     } else {
 
