@@ -79,15 +79,31 @@ export class OnDemandSubscriptionsComponent implements OnInit, OnDestroy {
   }
 
   public onRenewSubscription(sub: models.OnDemandSubscription): void {
-    const today = new Date();
-    const endDate = new Date(today.setDate(today.getDate() + 30));
-    const end = moment.utc(endDate).format();
+    let end;
+
+    if (this.expiresThisMonth(sub)) {
+      const subEnd = new Date(sub.filters.end);
+      const newEnd = new Date(subEnd.setDate(subEnd.getDate() + 30));
+      end = moment.utc(newEnd).format();
+    } else {
+      const today = new Date();
+      const endDate = new Date(today.setDate(today.getDate() + 30));
+      end = moment.utc(endDate).format();
+    }
 
     this.hyp3.editSubscription(sub.id, {end}).subscribe(
       _ => {
         this.store$.dispatch(new hyp3Store.LoadSubscriptions());
       }
     );
+  }
+
+  private expiresThisMonth(sub: models.OnDemandSubscription): boolean {
+    const today = new Date();
+    const subEnd = new Date(sub.filters.end);
+    const daysLeft = Math.max(moment(subEnd).diff(moment(today), 'days'), 0);
+
+    return daysLeft < 29;
   }
 
   public onClose() {
