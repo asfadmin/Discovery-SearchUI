@@ -407,7 +407,7 @@ export class MapComponent implements OnInit, OnDestroy  {
 
   private scenePolygonsLayer$(projection: string): Observable<VectorLayer> {
     return this.scenesService.scenes$().pipe(
-      map(scenes => scenes.filter(scene => scene.id !== this.selectedScene.id)),
+      map(scenes => scenes.filter(scene => scene.id !== this.selectedScene?.id)),
       map(scenes => this.scenesToFeature(scenes, projection)),
       map(features => this.featuresToSource(features, polygonStyle.scene)),
       tap(layer => layer.set('selectable', 'true')),

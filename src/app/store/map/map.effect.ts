@@ -45,22 +45,40 @@ export class MapEffects {
 
   public onSetSelectedScene = createEffect(() => this.actions$.pipe(
     ofType<SetSelectedScene>(ScenesActionType.SET_SELECTED_SCENE),
+    map(action => action.payload),
     withLatestFrom(this.store$.select(getSearchType)),
     filter(([_, searchtype]) => searchtype !== models.SearchType.SARVIEWS_EVENTS),
-    map(([selected_scene, _]) => selected_scene),
+    // map(([selected_scene, _]) => selected_scene),
     withLatestFrom(this.store$.select(getSelectedDataset)),
-    filter(([_, dataset]) =>
-      dataset.id === 'AVNIR'
-      || dataset.id === 'SENTINEL-1'
-      || dataset.id === 'SENTINEL-1 INTERFEROGRAM (BETA)'
-      || dataset.id === 'UAVSAR'),
-    map(([action, _]) => action.payload),
-    filter(scene => !!scene),
+    filter(([[_, searchType], dataset]) => {
+    if (searchType === SearchType.DATASET) {
+      return dataset?.id === 'AVNIR'
+      || dataset?.id === 'SENTINEL-1'
+      || dataset?.id === 'SENTINEL-1 INTERFEROGRAM (BETA)'
+      || dataset?.id === 'UAVSAR';
+    }
+    return searchType !== SearchType.BASELINE && searchType !== SearchType.SBAS;
+  }),
+    map(([[selectedSceneID, _], __]) => selectedSceneID),
+    filter(sceneID => !!sceneID),
     withLatestFrom(this.store$.select(getProducts)),
     filter(([selected, products]) => !!selected && !!products),
     filter(([selected, products]) => products[selected].browses.length > 0),
-    tap(([selected, products]) => {
-      const selectedProduct = products[selected];
+    map(([selected, products]) => products[selected]),
+    withLatestFrom(this.store$.select(getSearchType)),
+    filter(([product, searchType]) => {
+      if (searchType === SearchType.LIST) {
+        return product.dataset === 'ALOS'
+        || product.dataset === 'Sentinel-1A'
+        || product.dataset === 'Sentinel-1B'
+        || product.dataset === 'Sentinel-1 Interferogram (BETA)'
+        || product.dataset === 'UAVSAR';
+      }
+      return true;
+    }),
+    map(([product, _]) => product),
+    filter(product => product.browses.length > 0),
+    tap((selectedProduct) => {
       if (selectedProduct.browses[0] !== '/assets/no-browse.png') {
         this.mapService.setSelectedBrowse(selectedProduct.browses[0], selectedProduct.metadata.polygon);
       }
