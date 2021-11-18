@@ -51,7 +51,7 @@ export class MapEffects {
     // map(([selected_scene, _]) => selected_scene),
     withLatestFrom(this.store$.select(getSelectedDataset)),
     filter(([[_, searchType], dataset]) => {
-    if(searchType === SearchType.DATASET) {
+    if (searchType === SearchType.DATASET) {
       return dataset?.id === 'AVNIR'
       || dataset?.id === 'SENTINEL-1'
       || dataset?.id === 'SENTINEL-1 INTERFEROGRAM (BETA)'
@@ -67,7 +67,7 @@ export class MapEffects {
     map(([selected, products]) => products[selected]),
     withLatestFrom(this.store$.select(getSearchType)),
     filter(([product, searchType]) => {
-      if(searchType === SearchType.LIST) {
+      if (searchType === SearchType.LIST) {
         return product.dataset === 'ALOS'
         || product.dataset === 'Sentinel-1A'
         || product.dataset === 'Sentinel-1B'

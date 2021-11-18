@@ -43,7 +43,7 @@ export class MapControlsComponent implements OnInit, OnDestroy {
       this.store$.select(sceneStore.getSelectedSarviewsEventProducts).pipe(startWith([]))]
     ).pipe(
       map(([searchtype, selectedScene, datasetID, selectedEventProducts]) => {
-        switch(searchtype) {
+        switch (searchtype) {
           case models.SearchType.DATASET:
             return datasetID === 'AVNIR'
             || datasetID === 'SENTINEL-1'
@@ -64,7 +64,7 @@ export class MapControlsComponent implements OnInit, OnDestroy {
 
         }
       })
-    )
+    );
 
   public currentBrowseID = '';
 
