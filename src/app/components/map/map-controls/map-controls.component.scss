@@ -70,3 +70,11 @@ label {
 .slim-line {
   height: 0;
 }
+
+::ng-deep .mat-slider.mat-slider-horizontal {
+  height: 28px;
+}
+
+::ng-deep .mat-slider.mat-slider-horizontal .mat-slider-wrapper {
+  top: 50%;
+}

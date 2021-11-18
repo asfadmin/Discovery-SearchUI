@@ -12,6 +12,7 @@ export interface MapState {
   layerType: models.MapLayerTypes;
   gridLinesActive: boolean;
   isMapInitialized: boolean;
+  browseOverlayOpacity: number;
 }
 
 export const initState: MapState = {
@@ -21,6 +22,7 @@ export const initState: MapState = {
   layerType: models.MapLayerTypes.SATELLITE,
   gridLinesActive: false,
   isMapInitialized: false,
+  browseOverlayOpacity: 1.0
 };
 
 
@@ -72,6 +74,16 @@ export function mapReducer(state = initState, action: MapActions): MapState {
       return {
         ...state,
         isMapInitialized: true,
+      };
+    }
+
+    case MapActionType.SET_BROWSE_OVERLAY_OPACITY: {
+      const browseOverlayOpacity = action.payload < 0
+        ? 0 : action.payload > 1.0
+        ? 1.0 : action.payload;
+      return {
+        ...state,
+        browseOverlayOpacity
       };
     }
 

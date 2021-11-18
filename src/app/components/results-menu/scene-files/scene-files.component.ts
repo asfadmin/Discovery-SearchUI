@@ -2,7 +2,7 @@ import {Component, OnInit, OnDestroy, AfterContentInit, Input} from '@angular/co
 import { SubSink } from 'subsink';
 
 import { combineLatest } from 'rxjs';
-import { debounceTime, distinctUntilChanged, filter, map, take, withLatestFrom } from 'rxjs/operators';
+import { debounceTime, filter, map, take, withLatestFrom } from 'rxjs/operators';
 
 import { Store } from '@ngrx/store';
 import { AppState } from '@store';
@@ -39,7 +39,7 @@ export class SceneFilesComponent implements OnInit, OnDestroy, AfterContentInit 
   public copyIcon = faCopy;
   public products: models.CMRProduct[];
   public productsByProductType: {[processing_type: string]: SarviewsProduct[]} = {};
-  public selectedProducts: { [product_id in string]: boolean} = {};
+  public selectedProducts: string[];
   public sarviewsProducts: models.SarviewsProduct[];
   public queuedProductIds: string[];
   public hyp3ableByProduct: {};
@@ -98,7 +98,6 @@ export class SceneFilesComponent implements OnInit, OnDestroy, AfterContentInit 
   constructor(
     private store$: Store<AppState>,
     private hyp3: Hyp3Service,
-    private sarviewsService: SarviewsEventsService,
     private clipboard: ClipboardService,
     private notificationService: NotificationService,
     private eventMonitoringService: SarviewsEventsService,
@@ -173,27 +172,19 @@ export class SceneFilesComponent implements OnInit, OnDestroy, AfterContentInit 
 
   ngAfterContentInit() {
     this.subs.add(
-      combineLatest(
-        this.sarviewsEventProducts$.pipe(distinctUntilChanged((a, b) => a[0]?.event_id === b[0]?.event_id)),
-        this.store$.select(scenesStore.getPinnedEventBrowseIDs)
-      ).subscribe(
-        ([products, pinned_browse_ids]) => {
+      this.sarviewsEventProducts$.subscribe(
+        products => {
           this.sarviewsProducts = products;
           this.hyp3ableByProduct = this.sarviewsProducts.reduce((prev, curr) => prev = {
             ...prev,
             [curr.product_id]: [this.eventMonitoringService.hyp3able(curr)]
           }, {});
-          this.selectedSarviewsProducts = products.filter(product => pinned_browse_ids.includes(product.product_id));
-          Object.keys(this.selectedProducts).forEach(id => delete this.selectedProducts[id]);
-          products.forEach(prod => this.selectedProducts[prod.product_id] = pinned_browse_ids.includes(prod.product_id));
-
-          if (pinned_browse_ids.length > 0 && products.length > 0) {
-            if (!this.selectedProducts[pinned_browse_ids[0]]) {
-              this.onUpdatePinnedUrl();
-            }
-          }
-
         }
+      ));
+
+    this.subs.add(
+      this.store$.select(scenesStore.getPinnedEventBrowseIDs).subscribe(
+        ids => this.selectedProducts = ids
       )
     );
 
@@ -271,12 +262,10 @@ export class SceneFilesComponent implements OnInit, OnDestroy, AfterContentInit 
     const charWidthPx = 10;
     const divWidthPx = document.getElementById('event-selection-list').offsetWidth;
     const defaultLen = Math.trunc((divWidthPx - extrasWidthPx) / charWidthPx);
-    // console.log('divWidthPx:', divWidthPx);
     desiredLen = desiredLen ? desiredLen : defaultLen;
+    desiredLen = desiredLen < 15 ? 15 : desiredLen;
     const tailLen = 8;
     const pNameLen = product_name.length;
-    // console.log('desiredLen:', desiredLen);
-    // console.log('pNameLen:', pNameLen);
     if (pNameLen > desiredLen) {
       return product_name.slice(0, desiredLen - tailLen - 1) +
         '...' +
@@ -289,26 +278,24 @@ export class SceneFilesComponent implements OnInit, OnDestroy, AfterContentInit 
     window.open(product_url);
   }
 
-  public currentPinnedUrl(current_id: string): string {
-    const product_ids = Object.keys(this.selectedProducts).filter(
-      product_id => !!this.selectedProducts?.[product_id]
-    );
-
-    return this.sarviewsService.getSarviewsEventPinnedUrl(current_id, product_ids);
-  }
-
   public onSelectSarviewsProduct(selections: MatSelectionListChange) {
-    selections.options.forEach(option => this.selectedProducts[option.value] = option.selected );
-    this.onUpdatePinnedUrl();
+    const deselected = selections.options.filter(option => !option.selected)
+      .map(option => option.value as string);
+
+    const selected = selections.options.filter(option => option.selected)
+      .map(option => option.value as string);
+
+    this.selectedProducts = this.selectedProducts.filter(product => !deselected.includes(product));
+    this.selectedProducts = Array.from(new Set<string>(this.selectedProducts.concat(selected)));
+    this.onUpdatePinnedUrl(this.selectedProducts);
   }
 
-  public onUpdatePinnedUrl() {
-    const pinned = Object.keys(this.selectedProducts).reduce(
+  public onUpdatePinnedUrl(selectedProducts: string[]) {
+    const pinned = selectedProducts.reduce(
       (prev, key) => {
         const output = {} as PinnedProduct;
-        output.isPinned = this.selectedProducts[key];
         const sarviewsProduct = this.sarviewsProducts.find(prod => prod.product_id === key);
-        output.url = sarviewsProduct.files.product_url;
+        output.url = sarviewsProduct.files.browse_url;
         output.wkt = sarviewsProduct.granules[0].wkt;
 
         prev[key] = output;

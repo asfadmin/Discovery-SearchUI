@@ -29,3 +29,4 @@ export { SceneSelectService } from './scene-select.service';
 export { NotificationService } from './notification.service';
 export { OnDemandService } from './on-demand.service';
 export { SarviewsEventsService } from './sarviews-events.service';
+export { BrowseOverlayService } from './browse-overlay.service';

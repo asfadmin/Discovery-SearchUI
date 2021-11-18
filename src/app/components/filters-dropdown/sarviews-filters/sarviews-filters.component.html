@@ -1,4 +1,24 @@
-<mat-accordion multi>
+<mat-accordion *ngIf="breakpoint$ | async as breakpoint" multi>
+
+  <mat-expansion-panel
+    *ngIf="breakpoint === breakpoints.MOBILE"
+    [expanded]="defaultPanelOpenState" [disabled]="panelIsDisabled"
+    (click)="selectPanel(panels.SEARCH)"
+    [class.raised-section]="isSelected(panels.SEARCH)">
+
+    <mat-expansion-panel-header [collapsedHeight]="customCollapsedHeight" [expandedHeight]="customExpandedHeight">
+      <mat-panel-title>
+        {{ panels.SEARCH }}
+      </mat-panel-title>
+    </mat-expansion-panel-header>
+
+    <div style="display: flex; margin-top: 25px;">
+      <app-search-type-selector style="margin-right: 10px;">
+      </app-search-type-selector>
+    </div>
+
+  </mat-expansion-panel>
+
   <mat-expansion-panel
     [expanded]="defaultPanelOpenState" [disabled]="panelIsDisabled"
     (click)="selectPanel(panels.EVENT_DESCRIPTION)"
@@ -6,9 +26,10 @@
 
     <mat-expansion-panel-header [collapsedHeight]="customCollapsedHeight" [expandedHeight]="customExpandedHeight">
       <mat-panel-title>
-        Search Options
+        Event Options
       </mat-panel-title>
     </mat-expansion-panel-header>
+
     <div style="display: flex; margin-top: 25px;">
       <app-sarviews-event-active-selector></app-sarviews-event-active-selector>
     </div>

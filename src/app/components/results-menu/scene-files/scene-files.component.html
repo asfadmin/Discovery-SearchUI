@@ -43,20 +43,21 @@
     </div>
 
     <div class="event-products-wrapper">
-      <mat-selection-list id="event-selection-list"
-                          multiple
-                          (selectionChange)="onSelectSarviewsProduct($event)"
+      <cdk-virtual-scroll-viewport id="event-selection-list"
+                          itemSize="50"
+
                           class="products-list"
                           [class.no-scroll]="breakpoint <= breakpoints.SMALL"
                           dense role="list">
-        <div>
-          <mat-list-option [value]="prod.product_id" [selected]="!!this.selectedProducts[prod.product_id]"
-                           *ngFor="let prod of sarviewsProducts"
+        <mat-selection-list multiple (selectionChange)="onSelectSarviewsProduct($event)">
+          <mat-list-option [value]="prod.product_id" [selected]="!!this.selectedProducts.includes(prod.product_id)"
+                           *cdkVirtualFor="let prod of sarviewsProducts"
                            checkboxPosition="before"
                            class="prod-viewport virtual-scroll prod-list-option"
           >
             <div class="sarview-products-list">
-              <img class="prod-thumb" src="{{prod.files.browse_url}}">
+              <img *ngIf="breakpoint > breakpoints.MOBILE"
+                class="prod-thumb" src="{{prod.files.thumbnail_url}}">
               <div class="sarview-product">
                 <div><b>{{formatProductName(prod.files.product_name)}}</b></div>
                 <div class="sarview-product-sub">
@@ -92,8 +93,8 @@
               </div>
             </div>
           </mat-list-option>
-        </div>
-      </mat-selection-list>
+        </mat-selection-list>
+      </cdk-virtual-scroll-viewport>
     </div>
   </div>
 </span>

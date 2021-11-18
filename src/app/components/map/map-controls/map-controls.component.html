@@ -82,6 +82,60 @@
           <app-draw-selector></app-draw-selector>
         </div>
       </div>
+
+      <div fxFlex="" class="group-margin" *ngIf="searchType !== searchTypes.BASELINE
+      && searchType !== searchTypes.SBAS">
+        <div  fxLayout="row" fxLayoutAlign="center" class="button-group-label" style="white-space: nowrap;">
+          <label>Product Browse</label>
+          </div>
+          <div fxLayout="row" fxLayoutAlign="center">
+            <div>
+        <mat-button-toggle-group fxFlex="" name="layerType">
+          <mat-button-toggle class="control-mat-button-toggle"
+          *ngIf="searchType === searchTypes.SARVIEWS_EVENTS"
+          (click)="onUnpinAll()"
+          matTooltip="Unpin All Selected Products">
+          <mat-icon class="control-icon">push_pin</mat-icon>
+        </mat-button-toggle>
+        <mat-button-toggle class="control-mat-button-toggle"
+        *ngIf="searchType !== searchTypes.SARVIEWS_EVENTS"
+        [disabled]="!(isBrowseOverlayEnabled$ | async) || (selectedScene$ | async).browses.length < 2"
+        matTooltipDisabled="!(isBrowseOverlayEnabled$ | async) ? 'Browse Overlays for current scene dataset not available' :
+        'Current Scene only has one available browse'"
+        (click)="onDecrementBrowseIndex()"
+        matTooltip="Change selected scene browse">
+        <mat-icon class="control-icon">arrow_back</mat-icon>
+        </mat-button-toggle>
+          <mat-button-toggle class="control-mat-button-toggle"
+          [disabled]="!(isBrowseOverlayEnabled$ | async)  || (selectedScene$ | async).browses.length < 2"
+          matTooltipDisabled="!(isBrowseOverlayEnabled$ | async) ? 'Browse Overlays for current scene dataset not available' :
+            'Current Scene only has one available browse'"
+          *ngIf="searchType !== searchTypes.SARVIEWS_EVENTS"
+          (click)="onIncrementBrowseIndex()"
+          matTooltip="Change selected scene browse">
+          <mat-icon class="control-icon">arrow_forward</mat-icon>
+          </mat-button-toggle>
+        </mat-button-toggle-group>
+      </div>
+      </div>
+    </div>
+
+    <div fxFlex="" class="group-margin" *ngIf="searchType !== searchTypes.BASELINE
+    && searchType !== searchTypes.SBAS">
+
+    <div  fxLayout="row" fxLayoutAlign="center" class="button-group-label">
+      <label>Browse Opacity</label>
+      </div>
+      <div fxLayout="row">
+      <mat-slider
+      [disabled]="!(isBrowseOverlayEnabled$ | async)"
+      [matTooltip]="(isBrowseOverlayEnabled$ | async) ? 'Adjust Overlay Opacity' :
+      'Product Overlays for current scene dataset not available'"
+      class="opacity-slider" name="layerType" step="0.05" value="1" min="0.0" max="1.0" (input)="onSetOpacity($event)" >
+      </mat-slider>
+      </div>
+    </div>
+
     </div>
   </div>
 

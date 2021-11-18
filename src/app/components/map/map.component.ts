@@ -24,9 +24,9 @@ import * as mapStore from '@store/map';
 import * as uiStore from '@store/ui';
 
 import * as models from '@models';
-import { MapService, WktService, ScreenSizeService, ScenesService } from '@services';
+import { MapService, WktService, ScreenSizeService, ScenesService, SarviewsEventsService } from '@services';
 import * as polygonStyle from '@services/map/polygon.style';
-import { SarviewsEvent } from '@models';
+import { CMRProduct, SarviewsEvent } from '@models';
 import { StyleLike } from 'ol/style/Style';
 
 enum FullscreenControls {
@@ -44,6 +44,7 @@ export class MapComponent implements OnInit, OnDestroy  {
   @Output() loadUrlState = new EventEmitter<void>();
   @ViewChild('overlay', { static: true }) overlayRef: ElementRef;
   @ViewChild('map', { static: true }) mapRef: ElementRef;
+  @ViewChild('browsetooltip', {static: false}) browseDisclaimer: ElementRef;
 
   public drawMode$ = this.store$.select(mapStore.getMapDrawMode);
   public interactionMode$ = this.store$.select(mapStore.getMapInteractionMode);
@@ -72,6 +73,7 @@ export class MapComponent implements OnInit, OnDestroy  {
   public searchType: models.SearchType;
   public searchTypes = models.SearchType;
 
+  public selectedScene: CMRProduct;
   public selectedSarviewEvent: SarviewsEvent;
 
   private subs = new SubSink();
@@ -89,14 +91,22 @@ export class MapComponent implements OnInit, OnDestroy  {
     private mapService: MapService,
     private wktService: WktService,
     private screenSize: ScreenSizeService,
-    private scenesService: ScenesService
+    private scenesService: ScenesService,
+    private eventMonitoringService: SarviewsEventsService,
   ) {}
 
   ngOnInit(): void {
+    this.subs.add(
     this.mapService.selectedSarviewEvent$.pipe(
       filter(id => !!id)
     ).subscribe(
       id => this.selectedSarviewEvent = this.sarviewsEvents?.find(event => event?.event_id === id)
+    ));
+
+    this.subs.add(
+      this.store$.select(scenesStore.getSelectedScene).subscribe(
+        scene => this.selectedScene = scene
+      )
     );
 
 
@@ -397,13 +407,15 @@ export class MapComponent implements OnInit, OnDestroy  {
 
   private scenePolygonsLayer$(projection: string): Observable<VectorLayer> {
     return this.scenesService.scenes$().pipe(
+      map(scenes => scenes.filter(scene => scene.id !== this.selectedScene?.id)),
       map(scenes => this.scenesToFeature(scenes, projection)),
-      map(features => this.featuresToSource(features, polygonStyle.scene))
+      map(features => this.featuresToSource(features, polygonStyle.scene)),
+      tap(layer => layer.set('selectable', 'true')),
     );
   }
 
   private sceneSARViewsEventsLayer$(projection: string): Observable<VectorLayer> {
-    return this.scenesService.sarviewsEvents$().pipe(
+    return this.eventMonitoringService.filteredSarviewsEvents$().pipe(
       // filter(events => !!events),
       tap(events => this.sarviewsEvents = events),
       map(events => this.mapService.sarviewsEventsToFeatures(events, projection)),
@@ -461,10 +473,6 @@ export class MapComponent implements OnInit, OnDestroy  {
       }),
       style
     });
-
-    if (style !== polygonStyle.icon) {
-      layer.set('selectable', 'true');
-    }
 
     return layer;
   }

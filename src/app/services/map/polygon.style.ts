@@ -1,4 +1,4 @@
-import {Circle as CircleStyle, Fill, Stroke, Style} from 'ol/style.js';
+import {Circle as CircleStyle, Fill, Stroke, Style, Text} from 'ol/style.js';
 
 export const valid = new Style({
   fill: new Fill({
@@ -31,7 +31,7 @@ export const scene = new Style({
       radius: 5
     }),
     stroke,
-    fill
+    fill,
   });
 
   export const icon = new Style({
@@ -56,8 +56,21 @@ export const omitted = new Style({
 });
 
 export const invalid = new Style({
-  fill: new Fill({
-    color: 'rgba(255, 255, 255, 0.2)'
+  text: new Text({
+    text: 'Approximate Placement Only',
+    scale: 2,
+    stroke: new Stroke({
+      color: 'rgba(0, 0, 0, 1.0)'
+    }),
+    fill: new Fill({
+      color: 'rgba(255, 255, 255, 1.0)'
+    }),
+    placement: 'line',
+    textAlign: 'start',
+    textBaseline: 'bottom',
+  overflow: true,
+  padding: [2, 5, 2, 5],
+  font: '50px'
   }),
   stroke: new Stroke({
     color: '#f44336',

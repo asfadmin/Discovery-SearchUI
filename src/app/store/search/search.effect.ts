@@ -41,7 +41,7 @@ export class SearchEffects {
     private productService: services.ProductService,
     private hyp3Service: services.Hyp3Service,
     private sarviewsService: services.SarviewsEventsService,
-    private http: HttpClient
+    private http: HttpClient,
   ) {}
 
   public clearMapInteractionModeOnSearch = createEffect(() => this.actions$.pipe(
