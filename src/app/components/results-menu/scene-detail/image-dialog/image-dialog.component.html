@@ -40,10 +40,10 @@
           </span>
         </h3>
         <span class="faint-text">
-          <!-- <a *ngIf="dataset" [href]="dataset.infoUrl"
-              target="_blank" matTooltip="Dataset" class="faint-text">
-            {{ dataset.name }}
-          </a> • -->
+          <a [href]="getEventURL()"
+              target="_blank" [matTooltip]="(event.event_type === 'quake' ? 'USGS' : 'Smithsonian') + ' event page'" class="faint-text">
+            {{ event.event_type === 'quake' ? 'USGS' : 'Smithsonian' }}
+          </a> •
           <span *ngIf="breakpoint > breakpoints.MOBILE">
             {{ event.processing_timeframe.start | fullDate }}
           </span>
@@ -146,7 +146,10 @@
         <div *ngIf="(searchType$ | async) === searchTypes.SARVIEWS_EVENTS" class="sarviews-scene-detail">
           <ng-container>
             <div class="detail-header">Event Details</div>
-            <ul style="columns: 1; font-size: 12px;">
+            <app-event-metadata [event]="sarviewsEvent" [eventType]="eventType">
+
+            </app-event-metadata>
+            <!-- <ul style="columns: 1; font-size: 12px;">
               <li *ngIf="!!sarviewsEvent">{{sarviewsEvent.event_type === 'quake'
                 ? 'usgs id: ' + (sarviewsEvent | quakeEvent).usgs_event_id
                 : 'smithsonian id: ' + (sarviewsEvent | volcanicEvent).smithsonian_event_id}}
@@ -154,7 +157,7 @@
                  <li>
                   description: {{sarviewsEvent?.description}}
                  </li>
-            </ul>
+            </ul> -->
 
           </ng-container>
           <hr style="width: 100%;">
