@@ -5,6 +5,7 @@ import { MatDatepickerInputEvent } from '@angular/material/datepicker';
 import { Subject } from 'rxjs';
 import { tap, delay } from 'rxjs/operators';
 import { SubSink } from 'subsink';
+import * as moment from 'moment';
 
 import * as models from '@models';
 
@@ -31,6 +32,8 @@ export class OnDemandSubscriptionComponent implements OnInit, OnDestroy {
   public isEditingEndDate = false;
   public newEndDate: Date;
   public isEndError = false;
+  public isSubOutOfDate: boolean;
+  public expiresThisMonth: boolean;
 
   public subs = new SubSink();
 
@@ -50,6 +53,12 @@ export class OnDemandSubscriptionComponent implements OnInit, OnDestroy {
         this.subEndControl.setErrors(null);
       })
     );
+
+    const today = new Date();
+    const subEnd = new Date(this.subscription.filters.end);
+    this.isSubOutOfDate = today > subEnd;
+    const daysLeft = Math.max(moment(subEnd).diff(moment(today), 'days'), 0);
+    this.expiresThisMonth = daysLeft < 29;
   }
 
   public getMinDate(): Date {
@@ -92,10 +101,6 @@ export class OnDemandSubscriptionComponent implements OnInit, OnDestroy {
     if (this.newEndDate) {
       this.newEnd.emit(this.newEndDate);
     }
-  }
-
-  public isSubOutOfDate(): boolean {
-    return new Date() > new Date(this.subscription.filters.end);
   }
 
   public onToggleEnabled(): void {

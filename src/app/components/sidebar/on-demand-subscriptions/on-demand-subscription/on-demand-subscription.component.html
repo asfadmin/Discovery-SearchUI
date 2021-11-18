@@ -25,6 +25,16 @@
     </div>
 
     <div class="subscription--header-actions">
+      <span matTooltip="Extent subscription one month">
+        <button
+          (click)="onRenewSubscription()"
+          class="subscription--action"
+          [disabled]="!isSubOutOfDate && !expiresThisMonth"
+          mat-flat-button>
+          <i class="material-icons">update</i>
+        </button>
+      </span>
+
       <button
         (click)="loadOnDemandSearch()"
         class="subscription--action"
@@ -33,16 +43,8 @@
         <i class="material-icons">image_search</i>
       </button>
 
-      <button *ngIf="isSubOutOfDate()"
-        (click)="onRenewSubscription()"
-        matTooltip="Add one month to subscription"
-        class="subscription--action"
-        mat-flat-button>
-        <i class="material-icons">update</i>
-      </button>
-
       <mat-slide-toggle
-        *ngIf="!isSubOutOfDate()"
+        *ngIf="!isSubOutOfDate"
         class="subscription--action"
         (change)="onToggleEnabled()"
         [checked]="subscription.enabled">
