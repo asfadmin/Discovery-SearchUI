@@ -179,13 +179,12 @@ export const InsarGammaJobType: Hyp3JobType = {
       Include the look vector theta and phi files in the product package.
     `
   }, {
-    name: 'Include LOS Displacement',
-    apiName: 'include_los_displacement',
+    name: 'Include Displacement Maps',
+    apiName: 'include_displacement_maps',
     type: JobOptionType.CHECKBOX,
     default: false,
     info: `
-      Include a GeoTIFF in the product package containing displacement
-      values along the Line-Of-Sight (LOS).
+      Include displacement maps (line-of-sight and vertical) in the product package.
     `
   }, {
     name: 'Include Wrapped Phase',
