@@ -66,6 +66,14 @@ export class MapControlsComponent implements OnInit, OnDestroy {
       })
     );
 
+  private browseIndexingEnabled$ = combineLatest([
+    this.isBrowseOverlayEnabled$,
+    this.selectedScene$.pipe(map(scene => scene?.browses.length > 1)),
+  ]).pipe(
+    map(([overlayEnabled, multipleBrowses]) => overlayEnabled && multipleBrowses)
+  );
+
+
   public currentBrowseID = '';
 
   public searchType: models.SearchType;
@@ -76,6 +84,7 @@ export class MapControlsComponent implements OnInit, OnDestroy {
   private browseIndex = 0;
   private selectedEventProducts: SarviewsProduct[] = [];
   private selectedScene: models.CMRProduct;
+  private browseIndexingEnabled = false;
 
   constructor(
     private store$: Store<AppState>,
@@ -119,9 +128,17 @@ export class MapControlsComponent implements OnInit, OnDestroy {
 
     this.subs.add(
       this.store$.select(sceneStore.getSelectedScene)
-      .pipe(filter(event => !!event))
+      .pipe(
+        filter(event => !!event),
+        tap(_ => this.browseIndex = 0))
       .subscribe(
         event => this.selectedScene = event
+      )
+    );
+
+    this.subs.add(
+      this.browseIndexingEnabled$.subscribe(
+        isEnabled => this.browseIndexingEnabled = isEnabled
       )
     );
   }
@@ -162,6 +179,10 @@ export class MapControlsComponent implements OnInit, OnDestroy {
   }
 
   public onUpdateBrowseIndex(newIndex: number) {
+    if (!this.browseIndexingEnabled) {
+      return;
+    }
+
     this.browseIndex = newIndex;
     const [url, wkt] = this.searchType === SearchType.SARVIEWS_EVENTS
     ? [this.selectedEventProducts[this.browseIndex].files.browse_url, this.selectedEventProducts[this.browseIndex].files.browse_url]
