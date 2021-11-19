@@ -182,12 +182,17 @@
               </mat-icon>
             </div>
             </div> -->
-            <div style="font-size: 12px;" *ngFor="let granule of currentSarviewsProduct.granules; let i = index">
+            <div style="font-size: 12px;">
               <ul style="columns: 1; font-size: 12px;">
-              <li><b> {{granule.granule_name}} <i *ngIf="i > 0"> (Secondary Scene)</i></b></li>
-              <li>Date: {{granule.acquisition_date | shortDate}}</li>
-              <li>Path: {{granule.path}}</li>
-              <li>Frame: {{granule.frame}}</li>
+
+              <li *ngFor="let granule of currentSarviewsProduct.granules; let i = index;">
+                  {{(i === 0 ? 'Reference: ' : 'Secondary: ') + granule.granule_name}}
+              </li>
+
+              <!-- <li><b> {{currentSarviewsProduct.granules[0].granule_name}} <i *ngIf="i > 0"> (Secondary Scene)</i></b></li> -->
+              <!-- <li>Date: {{granule.acquisition_date | shortDate}}</li> -->
+              <li>Path: {{currentSarviewsProduct.granules[0].path}}</li>
+              <li>Frame: {{currentSarviewsProduct.granules[0].frame}}</li>
             </ul>
             </div>
           </div>
@@ -202,6 +207,7 @@
           <mat-action-list dense class="file-list">
             <button
             [matMenuTriggerFor]="action_menu"
+            *ngIf="!!currentSarviewsProduct"
              mat-list-item>
               • {{currentSarviewsProduct.job_type}}
               <mat-menu #action_menu="matMenu" xPosition="before">
