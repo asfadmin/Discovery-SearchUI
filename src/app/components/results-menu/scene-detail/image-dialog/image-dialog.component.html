@@ -163,13 +163,13 @@
           <hr style="width: 100%;">
           <ng-container >
           <div>
-          <div class="detail-header">Event Product Detail</div>
+          <div class="detail-header">Product Detail</div>
           <div style="columns: 1; font-size: 12px; word-wrap: break-word; margin-top: 15px;" *ngIf="!!currentSarviewsProduct">
             <div style="font-weight: bold;">{{currentSarviewsProduct.files.product_name}}</div>
-            <button matTooltip="Download Product" class="download-icon" mat-icon-button (click)="downloadSarviewsProduct(currentSarviewsProduct); $event.stopPropagation();">
+            <!-- <button matTooltip="Download Product" class="download-icon" mat-icon-button (click)="downloadSarviewsProduct(currentSarviewsProduct); $event.stopPropagation();">
               <mat-icon>cloud_download</mat-icon>
             </button>
-            {{currentSarviewsProduct.files.product_size.toString() | readableSizeFromBytes}}
+            {{currentSarviewsProduct.files.product_size.toString() | readableSizeFromBytes}} -->
             <div style="font-size: 12px; gap: 5px; align-items: center; margin-bottom: 10px; margin-top: 15px; display: flex; flex-direction: row; font-weight: bold;">Reference Scene{{currentSarviewsProduct.granules.length > 1 ? 's' : ''}}:
               <div>
               <mat-icon style="transform: scale(0.75);"
@@ -180,9 +180,9 @@
               </mat-icon>
             </div>
             </div>
-            <div style="font-size: 12px;" *ngFor="let granule of currentSarviewsProduct.granules">
-              <b>{{granule.granule_name}}</b>
-              <ul style="list-style-type: circle; padding-left: 15px;">
+            <div style="font-size: 12px;" *ngFor="let granule of currentSarviewsProduct.granules; let i = index">
+              <ul style="columns: 1; font-size: 12px;">
+              <li><b> {{granule.granule_name}} <i *ngIf="i > 0"> (Secondary Scene)</i></b></li>
               <li>Date: {{granule.acquisition_date | shortDate}}</li>
               <li>Path: {{granule.path}}</li>
               <li>Frame: {{granule.frame}}</li>
@@ -193,16 +193,30 @@
 
         </ng-container>
         <hr style="width: 100%;">
-        <ng-container style="min-height: calc(100% - 50px);
-        height: calc(100% - 50px);">
-          <div class="detail-header">{{ sarviewsProducts?.length }} Files</div>
-          <mat-action-list class="sarviews-product-list">
-            <button  *ngFor="let product of sarviewsProducts"
-            (click)="onNewSarviewsBrowseSelected(product)"
+        <!-- <ng-container style="min-height: calc(100% - 50px);
+        height: calc(100% - 50px);"> -->
+        <ng-container>
+          <div class="detail-header">Files</div>
+          <mat-action-list dense class="file-list">
+            <button
+            [matMenuTriggerFor]="action_menu"
+             mat-list-item>
+              • {{currentSarviewsProduct.job_type}}
+              <mat-menu #action_menu="matMenu" xPosition="before">
+                <span style="margin-right: 10px; margin-left: 10px;">
+                  <span *ngIf="currentSarviewsProduct.files.product_size === 0">Virtual</span>
+                  <span *ngIf="currentSarviewsProduct.files.product_size !== 0">
+                    {{currentSarviewsProduct.files.product_size.toString() | readableSizeFromBytes }}</span>
+                    <button matTooltip="Download Product" mat-icon-button (click)="downloadSarviewsProduct(currentSarviewsProduct); $event.stopPropagation();">
+                      <mat-icon>cloud_download</mat-icon>
+                    </button>
+                </span>
+              </mat-menu>
+            </button>
+            <!-- <button  *ngFor="let sourceScene of currentSarviewsProduct.granules"
                      mat-list-item>
-              {{ product.files.product_name.slice(0, 28) + "..." + product.files.product_name.slice(product.files.product_name.length - 8, product.files.product_name.length - 4) }}
-
-        </button>
+                     • L1 Single Look Complex (SLC) {{sourceScene.granule_name}}
+        </button> -->
           </mat-action-list>
         </ng-container>
         </div>
