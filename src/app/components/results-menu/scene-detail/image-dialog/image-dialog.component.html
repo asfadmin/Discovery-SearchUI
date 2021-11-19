@@ -165,12 +165,14 @@
           <div>
           <div class="detail-header">Product Detail</div>
           <div style="columns: 1; font-size: 12px; word-wrap: break-word; margin-top: 15px;" *ngIf="!!currentSarviewsProduct">
-            <div style="font-weight: bold;">{{currentSarviewsProduct.files.product_name}}</div>
+            <!-- <ul style="columns: 1; font-size: 12px;">
+            <li>{{currentSarviewsProduct.files.product_name}}</li>
+          </ul> -->
             <!-- <button matTooltip="Download Product" class="download-icon" mat-icon-button (click)="downloadSarviewsProduct(currentSarviewsProduct); $event.stopPropagation();">
               <mat-icon>cloud_download</mat-icon>
             </button>
             {{currentSarviewsProduct.files.product_size.toString() | readableSizeFromBytes}} -->
-            <div style="font-size: 12px; gap: 5px; align-items: center; margin-bottom: 10px; margin-top: 15px; display: flex; flex-direction: row; font-weight: bold;">Reference Scene{{currentSarviewsProduct.granules.length > 1 ? 's' : ''}}:
+            <!-- <div style="font-size: 12px; gap: 5px; align-items: center; margin-bottom: 10px; margin-top: 15px; display: flex; flex-direction: row; font-weight: bold;">Reference Scene{{currentSarviewsProduct.granules.length > 1 ? 's' : ''}}:
               <div>
               <mat-icon style="transform: scale(0.75);"
                 (click)="onCopyLink(currentSarviewsProduct.granules)"
@@ -179,7 +181,7 @@
                 file_copy
               </mat-icon>
             </div>
-            </div>
+            </div> -->
             <div style="font-size: 12px;" *ngFor="let granule of currentSarviewsProduct.granules; let i = index">
               <ul style="columns: 1; font-size: 12px;">
               <li><b> {{granule.granule_name}} <i *ngIf="i > 0"> (Secondary Scene)</i></b></li>
@@ -203,14 +205,17 @@
              mat-list-item>
               • {{currentSarviewsProduct.job_type}}
               <mat-menu #action_menu="matMenu" xPosition="before">
-                <span style="margin-right: 10px; margin-left: 10px;">
-                  <span *ngIf="currentSarviewsProduct.files.product_size === 0">Virtual</span>
                   <span *ngIf="currentSarviewsProduct.files.product_size !== 0">
                     {{currentSarviewsProduct.files.product_size.toString() | readableSizeFromBytes }}</span>
                     <button matTooltip="Download Product" mat-icon-button (click)="downloadSarviewsProduct(currentSarviewsProduct); $event.stopPropagation();">
                       <mat-icon>cloud_download</mat-icon>
                     </button>
-                </span>
+                  <button (click)="onCopyLink(currentSarviewsProduct.granules); $event.stopPropagation();"
+                  matTooltip="Copy reference scene names to clipboard"
+                  mat-icon-button>
+                  <span> Reference Scenes </span>
+                <mat-icon>file_copy</mat-icon>
+            </button>
               </mat-menu>
             </button>
             <!-- <button  *ngFor="let sourceScene of currentSarviewsProduct.granules"
