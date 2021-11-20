@@ -215,6 +215,7 @@
             </button>
             <mat-menu #event_action_menu xPosition="before">
               <button matTooltip="Download Product" mat-menu-item
+              *ngIf="!!currentSarviewsProduct"
               (click)="downloadSarviewsProduct(currentSarviewsProduct)">
                 <span *ngIf="currentSarviewsProduct.files.product_size !== 0">
                   {{currentSarviewsProduct.files.product_size.toString() | readableSizeFromBytes }}

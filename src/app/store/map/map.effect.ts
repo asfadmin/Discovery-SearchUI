@@ -63,7 +63,7 @@ export class MapEffects {
     filter(sceneID => !!sceneID),
     withLatestFrom(this.store$.select(getProducts)),
     filter(([selected, products]) => !!selected && !!products),
-    filter(([selected, products]) => products[selected].browses.length > 0),
+    filter(([selected, products]) => products[selected]?.browses.length > 0),
     map(([selected, products]) => products[selected]),
     withLatestFrom(this.store$.select(getSearchType)),
     filter(([product, searchType]) => {
