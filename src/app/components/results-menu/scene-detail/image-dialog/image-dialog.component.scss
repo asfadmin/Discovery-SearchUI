@@ -68,22 +68,6 @@ a {
       margin-left: 10px;
     }
   }
-
-  .sarviews-detail-wrapper {
-    min-width: 200px;
-    border-left-color: $asf-primary-dark;
-    border-left-style: solid;
-    border-left-width: 1px;
-    overflow: hidden;
-    background-color: $asf-primary-light;
-
-    .sarviews-scene-detail {
-      margin-left: 10px;
-      display: flex;
-      flex-direction: column;
-      height: 100%;
-    }
-  }
 }
 
 .dialog-header--layout {

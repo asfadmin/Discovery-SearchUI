@@ -85,8 +85,7 @@
     <ng-container *ngIf="breakpoint > breakpoints.MOBILE">
 
       <div *ngIf="!isShow" fxFlex="20"
-      [ngClass]="{'sarviews-detail-wrapper' : (searchType$ | async) === searchTypes.SARVIEWS_EVENTS,
-       'scene-detail-wrapper' : (searchType$ | async) !== searchTypes.SARVIEWS_EVENTS}">
+      class='scene-detail-wrapper'>
 
         <div *ngIf="(searchType$ | async) !== searchTypes.SARVIEWS_EVENTS" class="scene-detail">
 
@@ -143,14 +142,13 @@
 
         </div>
 
-        <div *ngIf="(searchType$ | async) === searchTypes.SARVIEWS_EVENTS" class="sarviews-scene-detail">
+        <div *ngIf="(searchType$ | async) === searchTypes.SARVIEWS_EVENTS" class="scene-detail">
           <ng-container>
-            <div class="detail-header">Event Details</div>
+            <div class="detail-header">Event Detail</div>
             <app-event-metadata [event]="sarviewsEvent" [eventType]="eventType">
             </app-event-metadata>
-
+            <hr>
           </ng-container>
-          <hr style="width: 100%;">
           <ng-container >
           <div>
           <div class="detail-header">Product Detail</div>
@@ -170,11 +168,11 @@
             </ul>
             </div>
         </div>
-
+        <hr>
         </ng-container>
-        <hr style="width: 100%;">
+
         <ng-container>
-          <div class="detail-header">Files</div>
+          <div class="detail-header">File</div>
           <mat-action-list dense class="file-list">
             <button
             [matMenuTriggerFor]="event_action_menu"
