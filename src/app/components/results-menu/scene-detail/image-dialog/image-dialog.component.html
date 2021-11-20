@@ -147,62 +147,32 @@
           <ng-container>
             <div class="detail-header">Event Details</div>
             <app-event-metadata [event]="sarviewsEvent" [eventType]="eventType">
-
             </app-event-metadata>
-            <!-- <ul style="columns: 1; font-size: 12px;">
-              <li *ngIf="!!sarviewsEvent">{{sarviewsEvent.event_type === 'quake'
-                ? 'usgs id: ' + (sarviewsEvent | quakeEvent).usgs_event_id
-                : 'smithsonian id: ' + (sarviewsEvent | volcanicEvent).smithsonian_event_id}}
-                 </li>
-                 <li>
-                  description: {{sarviewsEvent?.description}}
-                 </li>
-            </ul> -->
 
           </ng-container>
           <hr style="width: 100%;">
           <ng-container >
           <div>
           <div class="detail-header">Product Detail</div>
-          <div style="columns: 1; font-size: 12px; word-wrap: break-word; margin-top: 15px;" *ngIf="!!currentSarviewsProduct">
-            <!-- <ul style="columns: 1; font-size: 12px;">
-            <li>{{currentSarviewsProduct.files.product_name}}</li>
-          </ul> -->
-            <!-- <button matTooltip="Download Product" class="download-icon" mat-icon-button (click)="downloadSarviewsProduct(currentSarviewsProduct); $event.stopPropagation();">
-              <mat-icon>cloud_download</mat-icon>
-            </button>
-            {{currentSarviewsProduct.files.product_size.toString() | readableSizeFromBytes}} -->
-            <!-- <div style="font-size: 12px; gap: 5px; align-items: center; margin-bottom: 10px; margin-top: 15px; display: flex; flex-direction: row; font-weight: bold;">Reference Scene{{currentSarviewsProduct.granules.length > 1 ? 's' : ''}}:
-              <div>
-              <mat-icon style="transform: scale(0.75);"
-                (click)="onCopyLink(currentSarviewsProduct.granules)"
-                matTooltip="Copy reference scene names to clipboard"
-                class="clickable download-icon" matSuffix>
-                file_copy
-              </mat-icon>
-            </div>
-            </div> -->
-            <div style="font-size: 12px;">
-              <ul style="columns: 1; font-size: 12px;">
-              <li *ngFor="let granule of currentSarviewsProduct.granules; let i = index;">
-                {{(i === 0 ? 'Reference: ' : 'Secondary: ') + granule.granule_name}}
-            </li>
+            <div style="font-size: 12px;" *ngIf="!!currentSarviewsProduct">
+              <ul *ngFor="let granule of currentSarviewsProduct.granules; let i = index;" style="columns: 1; font-size: 12px;">
+                  <li >
+                    {{(i === 0 ? 'Reference: ' : 'Secondary: ') + granule.granule_name}}
+                </li>
+                <li >
+                  Acquisition date: {{granule.acquisition_date | shortDate}}
+              </li>
           </ul>
 
               <ul style="columns: 1; font-size: 12px;">
-              <!-- <li><b> {{currentSarviewsProduct.granules[0].granule_name}} <i *ngIf="i > 0"> (Secondary Scene)</i></b></li> -->
-              <!-- <li>Date: {{granule.acquisition_date | shortDate}}</li> -->
               <li>Path: {{currentSarviewsProduct.granules[0].path}}</li>
               <li>Frame: {{currentSarviewsProduct.granules[0].frame}}</li>
             </ul>
             </div>
-          </div>
         </div>
 
         </ng-container>
         <hr style="width: 100%;">
-        <!-- <ng-container style="min-height: calc(100% - 50px);
-        height: calc(100% - 50px);"> -->
         <ng-container>
           <div class="detail-header">Files</div>
           <mat-action-list dense class="file-list">
@@ -222,6 +192,19 @@
                 </span>
                 <mat-icon>cloud_download</mat-icon>
               </button>
+                <button (click)="onToggleQueueEventProduct(currentSarviewsProduct)"
+                *ngIf="!!currentSarviewsProduct"
+                matTooltip="{{ !queuedProductIds.has(currentSarviewsProduct.product_id) ? 'Add file to queue' : 'Remove file from queue' }}"
+                mat-menu-item>
+                  <span *ngIf="!queuedProductIds.has(currentSarviewsProduct.product_id)">
+                    Add
+                    <mat-icon >add_shopping_cart</mat-icon>
+                  </span>
+                  <span *ngIf="queuedProductIds.has(currentSarviewsProduct.product_id)">
+                    Remove
+                    <mat-icon >shopping_cart</mat-icon>
+                  </span>
+                </button>
                 <button mat-menu-item (click)="onCopyLink(currentSarviewsProduct.granules)"
                 matTooltip="Copy reference scene names to clipboard"
                 >
@@ -229,10 +212,6 @@
               <mat-icon>file_copy</mat-icon>
           </button>
             </mat-menu>
-            <!-- <button  *ngFor="let sourceScene of currentSarviewsProduct.granules"
-                     mat-list-item>
-                     • L1 Single Look Complex (SLC) {{sourceScene.granule_name}}
-        </button> -->
           </mat-action-list>
         </ng-container>
         </div>

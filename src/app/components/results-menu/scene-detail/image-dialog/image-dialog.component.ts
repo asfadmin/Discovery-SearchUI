@@ -235,6 +235,10 @@ export class ImageDialogComponent implements OnInit, AfterViewInit, OnDestroy {
     this.store$.dispatch(new queueStore.ToggleProduct(product));
   }
 
+  public onToggleQueueEventProduct(product: models.SarviewsProduct): void {
+    this.onToggleQueueProduct(this.sarviewsService.eventProductToCMRProduct(product));
+  }
+
   public toggleDisplay() {
     this.isShow = !this.isShow;
   }
