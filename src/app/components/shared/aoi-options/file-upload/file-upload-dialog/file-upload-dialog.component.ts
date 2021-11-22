@@ -71,6 +71,10 @@ export class FileUploadDialogComponent implements OnInit, OnDestroy {
       }
     }
 
+    if (this.files.size > 0) {
+      this.onUpload();
+    }
+
     ev.preventDefault();
   }
 
@@ -89,6 +93,10 @@ export class FileUploadDialogComponent implements OnInit, OnDestroy {
       if (!isNaN(parseInt(key, 10))) {
         this.addFile(files[key]);
       }
+    }
+
+    if (this.files.size > 0) {
+      this.onUpload();
     }
   }
 
@@ -153,7 +161,7 @@ export class FileUploadDialogComponent implements OnInit, OnDestroy {
 
     if (this.isValidFileType(fileName)) {
       this.files.add(file);
-      this.notificationService.info(`'${file.name}' ready to import`, 'AOI Import', { timeOut: 5000 });
+      this.notificationService.info(`Importing '${file.name}'...`, 'AOI Import', { timeOut: 5000 });
     } else {
       this.fileError$.next(FileErrors.INVALID_TYPE);
     }
