@@ -73,11 +73,11 @@
 
     <div fxFlex id="browse-map" fxFlex class="browse-map--size" fxLayout="row-reverse" fxLayoutAlign="end end" >
     </div>
-      <div *ngIf="(searchType$ | async) === searchTypes.SARVIEWS_EVENTS">
+      <!-- <div *ngIf="(searchType$ | async) === searchTypes.SARVIEWS_EVENTS">
       <button
       style="position: absolute; bottom: 5px; right: 20%; margin: 15px; min-width: 200px; border-radius: 4px !important;"
       mat-flat-button (click)="OpenProductInSarviews()">Open Product In SARVIEWS</button>
-    </div>
+    </div> -->
     <div *ngIf="isImageLoading" color="accent" class="browse-map--overlay">
       <mat-spinner></mat-spinner>
     </div>
@@ -143,17 +143,14 @@
         </div>
 
         <div *ngIf="(searchType$ | async) === searchTypes.SARVIEWS_EVENTS" class="scene-detail">
-          <ng-container>
             <div class="detail-header">Event Detail</div>
             <app-event-metadata [event]="sarviewsEvent" [eventType]="eventType">
             </app-event-metadata>
             <hr>
-          </ng-container>
           <ng-container >
-          <div>
-          <div class="detail-header">Product Detail</div>
+          <div class="detail-header">Product Details</div>
             <div style="font-size: 12px;" *ngIf="!!currentSarviewsProduct">
-              <ul *ngFor="let granule of currentSarviewsProduct.granules; let i = index;" style="columns: 1; font-size: 12px;">
+              <ul *ngFor="let granule of currentSarviewsProduct.granules; let i = index;" style="columns: 1; font-size: 12px; word-break: break-word;">
                   <li >
                     {{(i === 0 ? 'Reference: ' : 'Secondary: ') + granule.granule_name}}
                 </li>
@@ -167,7 +164,6 @@
               <li>Frame: {{currentSarviewsProduct.granules[0].frame}}</li>
             </ul>
             </div>
-        </div>
         <hr>
         </ng-container>
 
@@ -231,7 +227,7 @@
        fxLayoutAlign="end end"
        class="bottom-row">
 
-    <div *ngIf="breakpoint > breakpoints.MOBILE" fxFlex>
+    <div *ngIf="breakpoint > breakpoints.MOBILE && (searchType$ | async) !== searchTypes.SARVIEWS_EVENTS" fxFlex>
       <mat-checkbox
         (change)="setOnlyShowBrowse($event.checked)"
         [checked]="onlyShowScenesWithBrowse"
