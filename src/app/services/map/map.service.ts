@@ -359,7 +359,7 @@ export class MapService {
     this.zoomToFeature(feature);
   }
 
-  public zoomToFeature(feature): void {
+  public zoomToFeature(feature: Feature<Geometry>): void {
     const extent = feature
       .getGeometry()
       .getExtent();
