@@ -110,7 +110,6 @@ export class PairService {
         const P2StartDate = new Date(scene.metadata.date.toISOString());
         const P2StopDate = new Date(scene.metadata.stopDate.toISOString());
 
-
         if (orbitalDifference === 0) {
           return;
         }
