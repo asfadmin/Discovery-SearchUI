@@ -4,7 +4,7 @@ export enum SearchType {
   BASELINE = 'Baseline Search',
   SBAS = 'SBAS Search',
   CUSTOM_PRODUCTS = 'Custom Products',
-  SARVIEWS_EVENTS = 'SARViews Event Search',
+  SARVIEWS_EVENTS = 'Event Search',
 }
 
 export const SearchTypes = Object.keys(SearchType);
