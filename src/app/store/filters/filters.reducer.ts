@@ -856,7 +856,7 @@ export const getSbasSearch = createSelector(
     dateRange: state.dateRange,
     season: state.season,
     perpendicular: state.perpendicularRange.start,
-    thresholdOverlap: state.thresholdOverlap
+    thresholdOverlap: state.sbasOverlapThreshold
   })
 );
 

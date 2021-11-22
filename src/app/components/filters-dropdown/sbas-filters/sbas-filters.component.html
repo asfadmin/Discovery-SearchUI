@@ -88,7 +88,7 @@
 
 <mat-expansion-panel [expanded]="defaultPanelOpenState" [disabled]="panelIsDisabled"
 (click)="selectPanel(panels.OVERLAP)"
-*ngIf="areResultsLoaded && maturity !== 'prod'"
+*ngIf="areResultsLoaded"
 [class.raised-section]="isSelected(panels.OVERLAP)">
 <mat-expansion-panel-header [collapsedHeight]="customCollapsedHeight" [expandedHeight]="customExpandedHeight">
   <mat-panel-title>
