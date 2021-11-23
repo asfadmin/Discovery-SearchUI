@@ -4,7 +4,7 @@ import { Range } from './range.model';
 import { FlightDirection } from './cmr-product.model';
 import * as fromDatasets from './dataset.model';
 import { Hyp3JobStatusCode } from './hyp3.model';
-import { SarviewsEventType } from '@models';
+import { SarviewsEventType, SBASOverlap } from '@models';
 // import { SarviewsEventType } from './sarviews-event.model';
 
 export interface Search {
@@ -48,7 +48,7 @@ export interface SbasFiltersType {
   perpendicular: number;
   customPairIds: string[][];
 
-  thresholdOverlap: boolean;
+  thresholdOverlap: SBASOverlap;
 }
 
 export interface CustomProductFiltersType {
