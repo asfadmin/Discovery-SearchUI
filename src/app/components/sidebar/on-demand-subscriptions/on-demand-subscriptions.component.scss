@@ -6,6 +6,7 @@ $divider-bar-color: lighten($asf-primary-light, 8%);
   display: flex;
   flex-direction: row;
   width: 100%;
+  max-height: calc(100vh - 200px);
 }
 
 .no-saved-filters-presets h2 {
