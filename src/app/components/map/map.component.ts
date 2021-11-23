@@ -318,6 +318,7 @@ export class MapComponent implements OnInit, OnDestroy  {
 
     this.subs.add(
       this.selectedToLayer$(selectedPair$).pipe(
+        filter((pair: models.CMRProductPair) => !!pair?.[0] && !!pair?.[1]),
         map(
           (pair: models.CMRProductPair) => pair.map(
             scene => this.wktService.wktToFeature(

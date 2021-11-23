@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy, Input } from '@angular/core';
 
 import { combineLatest, Observable } from 'rxjs';
-import { tap } from 'rxjs/operators';
+import { distinctUntilChanged, tap } from 'rxjs/operators';
 
 import * as d3 from 'd3';
 import { Store } from '@ngrx/store';
@@ -34,7 +34,7 @@ export class SBASChartComponent implements OnInit, OnDestroy {
   @Input() zoomToFit$: Observable<void>;
 
   private hoveredLine;
-  private selectedPair = [null, null];
+  private selectedPair = null;
   private scenes: CMRProduct[] = [];
   private isAddingCustomPair: boolean;
   private x;
@@ -85,7 +85,10 @@ export class SBASChartComponent implements OnInit, OnDestroy {
     );
 
     this.subs.add(
-      combineLatest(scenes$, pairs$).subscribe(([scenes, pairs]) => {
+      combineLatest([
+        scenes$.pipe(distinctUntilChanged()),
+        pairs$.pipe(distinctUntilChanged())
+      ]).subscribe(([scenes, pairs]) => {
         this.scenes = scenes;
         this.pairs = pairs.pairs;
         this.customPairs = pairs.custom;
