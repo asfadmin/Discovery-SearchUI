@@ -5,7 +5,7 @@
   <div class="sbas-slider-two-wrapper">
     <div class="sbas-column-1">
       <div>
-        <span class="sbas-label">Days: </span> {{days}}
+        <span class="sbas-label">Days: </span> {{daysRange.start}} to {{daysRange.end}}
       </div>
       <div>
         <span class="sbas-label">Meters (m): </span> {{perpendicular}}
@@ -38,7 +38,7 @@
 
     <mat-form-field appearance="fill" [color]="colorControl.value" [style.width.px]=125>
       <mat-label>Days</mat-label>
-      <input [(ngModel)]="days"
+      <input [(ngModel)]="daysRange"
              matInput placeholder="Days"
              type="number" pattern="[0-9]*"
              min="0" max="60"
