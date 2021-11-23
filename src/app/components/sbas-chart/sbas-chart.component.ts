@@ -42,8 +42,8 @@ export class SBASChartComponent implements OnInit, OnDestroy {
   private xAxis;
   private yAxis;
   private currentTransform;
-  private chart: d3.Selection<SVGGElement, unknown, HTMLElement, any>;
-  private scatter: d3.Selection<SVGGElement, unknown, HTMLElement, any>;
+  private chart: d3.Selection<SVGGElement, CMRProductPair[], HTMLElement, CMRProductPair[]>;
+  private scatter: d3.Selection<SVGGElement, CMRProductPair[], HTMLElement, CMRProductPair[]>;
   private line: d3.Line<CMRProduct>;
   private pairs = [];
   private customPairs = [];
@@ -137,7 +137,7 @@ export class SBASChartComponent implements OnInit, OnDestroy {
     this.sbasChartHeightValue = sbasChart.offsetHeight - (this.margin.bottom + this.margin.top) ;
     this.widthValue = sbasChart.offsetWidth;
 
-    this.chart = d3.select('#sbasChart')
+    this.chart = d3.select<d3.BaseType, CMRProductPair[]>('#sbasChart')
       .append('svg')
         .attr('width', this.widthValue)
         .attr('height', this.heightValue)
