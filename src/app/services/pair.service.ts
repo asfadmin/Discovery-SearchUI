@@ -43,9 +43,7 @@ export class PairService {
         ),
       ),
       this.store$.select(getCustomPairs),
-      this.store$.select(getTemporalRange).pipe(
-        map(range => range.start)
-      ),
+      this.store$.select(getTemporalRange),
       this.store$.select(getPerpendicularRange).pipe(
         map(range => range.start)
       ),
@@ -69,7 +67,7 @@ export class PairService {
     );
   }
 
-  private makePairs(scenes: CMRProduct[], tempThreshold: number, perpThreshold,
+  private makePairs(scenes: CMRProduct[], tempThreshold: Range<number>, perpThreshold,
     dateRange: DateRangeState,
     season,
     overlapThreshold: SBASOverlap): CMRProductPair[] {
@@ -120,7 +118,7 @@ export class PairService {
             }
         }
 
-        if (tempDiff > tempThreshold || perpDiff > perpThreshold) {
+        if (tempDiff < tempThreshold.start || tempDiff > tempThreshold.end || perpDiff > perpThreshold) {
           return;
         }
 
