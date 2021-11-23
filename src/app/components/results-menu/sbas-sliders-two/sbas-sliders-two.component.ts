@@ -192,6 +192,6 @@ export class SbasSlidersTwoComponent implements OnInit {
         debounceTime(500),
         distinctUntilChanged()
       )
-    }
+    };
   }
 }
