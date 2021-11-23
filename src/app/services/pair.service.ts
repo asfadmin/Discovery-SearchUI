@@ -103,10 +103,16 @@ export class PairService {
         const tempDiff = scene.metadata.temporal - root.metadata.temporal;
         const perpDiff = Math.abs(scene.metadata.perpendicular - root.metadata.perpendicular);
 
+        const orbitalDifference = scene.metadata.absoluteOrbit[0] - root.metadata.absoluteOrbit[0];
+
         const P1StartDate = new Date(root.metadata.date.toISOString());
         const P1StopDate = new Date(root.metadata.stopDate.toISOString());
         const P2StartDate = new Date(scene.metadata.date.toISOString());
         const P2StopDate = new Date(scene.metadata.stopDate.toISOString());
+
+        if (orbitalDifference === 0) {
+          return;
+        }
 
         if (!!season.start && !!season.end) {
             if (!this.dayInSeason(P1StartDate, P1StopDate, P2StartDate, P2StopDate, season)) {

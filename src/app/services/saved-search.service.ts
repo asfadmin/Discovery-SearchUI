@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 
 import { Store } from '@ngrx/store';
-import { combineLatest } from 'rxjs';
+import { combineLatest, Observable } from 'rxjs';
 import { map, switchMap } from 'rxjs/operators';
 import * as uuid from 'uuid/v1';
 
@@ -48,12 +48,12 @@ export class SavedSearchService {
     }))
   );
 
-  private currentSbasSearch$ = combineLatest(
+  private currentSbasSearch$: Observable<models.SbasFiltersType> = combineLatest(
     this.store$.select(scenesStore.getFilterMaster),
     this.store$.select(scenesStore.getCustomPairIds),
     this.store$.select(filtersStore.getSbasSearch),
     this.store$.select(filtersStore.getDateRange),
-    this.store$.select(filtersStore.getSBASOverlapToggle),
+    this.store$.select(filtersStore.getSBASOverlapThreshold),
   ).pipe(
     map(([reference, customPairIds, sbasFilters, dateRange, thresholdOverlap]) => ({
       reference,
