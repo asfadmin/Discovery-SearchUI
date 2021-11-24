@@ -247,11 +247,15 @@ export class ProcessingQueueComponent implements OnInit {
           if (resp.error) {
             if (resp.error.detail === 'No authorization token provided' || resp.error.detail === 'Provided apikey is not valid') {
               this.notificationService.error('Your authorization has expired. Please sign in again.', 'Error', {
-                timeOut: 5000,
+                timeOut: 0,
+                extendedTimeOut: 0,
+                closeButton: true,
             });
             } else {
               this.notificationService.error( resp.error.detail, 'Error', {
-                timeOut: 5000,
+                timeOut: 0,
+                extendedTimeOut: 0,
+                closeButton: true,
               });
             }
           }
