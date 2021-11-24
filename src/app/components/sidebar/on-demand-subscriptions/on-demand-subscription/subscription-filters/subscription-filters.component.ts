@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 
 @Component({
   selector: 'app-subscription-filters',
@@ -7,6 +7,7 @@ import { Component, OnInit, Input } from '@angular/core';
 })
 export class SubscriptionFiltersComponent implements OnInit {
   @Input() filters;
+  @Output() loadSearch = new EventEmitter<void>();
 
   constructor() { }
 
@@ -15,5 +16,9 @@ export class SubscriptionFiltersComponent implements OnInit {
 
   public showSearchAreaType(polygon: string): string {
     return polygon.split('(')[0];
+  }
+
+  public onLoadSearch() {
+    this.loadSearch.emit();
   }
 }
