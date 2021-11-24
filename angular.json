@@ -28,7 +28,7 @@
             ],
             "styles": [
               "./node_modules/ol/ol.css",
-              "./node_modules/nouislider/distribute/nouislider.min.css",
+              "./node_modules/nouislider/dist/nouislider.css",
               "src/styles.scss",
               "./node_modules/cookieconsent/build/cookieconsent.min.css",
               "./node_modules/tippy.js/dist/tippy.css",
@@ -48,7 +48,6 @@
               "subsink",
               "chart.js",
               "file-saver",
-              "nouislider",
               "pbf",
               "uuid/v1",
               "jwt-decode",
