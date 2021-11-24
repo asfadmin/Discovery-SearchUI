@@ -12,6 +12,7 @@ import { Breakpoints, CMRProductPair, SearchType } from '@models';
 import { ScreenSizeService, DatasetForProductService } from '@services';
 
 import { SubSink } from 'subsink';
+import { map } from 'rxjs/operators';
 
 enum CardViews {
   LIST = 0,
@@ -81,7 +82,9 @@ export class SBASResultsMenuComponent implements OnInit, OnDestroy {
     );
 
     this.subs.add(
-      this.store$.select(scenesStore.getSelectedPair).subscribe(
+      this.store$.select(scenesStore.getSelectedPair).pipe(
+        map(pair => !pair?.[0] ? null : pair),
+      ).subscribe(
         (selected: CMRProductPair) => this.pair = selected
       )
     );
