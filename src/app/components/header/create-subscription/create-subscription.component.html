@@ -194,7 +194,9 @@
           <ng-template *ngIf="breakpoint !== breakpoints.MOBILE"  matStepLabel>Review</ng-template>
 
           <div *ngIf="subEstimate !== null" style="margin-bottom: 5px;">
-            Based on your search parameters, this subscription will run approximately <b>{{ subEstimate }} jobs per month</b>.
+            Based on your search parameters, this subscription will run
+            <span *ngIf="currentProducts !== null && currentProducts > 0"><b>{{ currentProducts }} jobs now</b> and</span>
+            approximately <b>{{ subEstimate }} jobs per month</b>.
           </div>
 
           <div>

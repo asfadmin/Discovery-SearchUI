@@ -1,5 +1,15 @@
 <div>
-  <div style="font-size: 18px;">Filters</div>
+  <div class="header">
+    <div style="font-size: 18px;">Filters</div>
+
+    <button mat-mini-fab
+      matTooltip="Search based on subscription filters"
+      color="primary"
+      (click)="onLoadSearch()">
+      <mat-icon>search</mat-icon>
+    </button>
+  </div>
+
   <hr />
   <div style="margin-left: 12px;">
     <div *ngIf="filters.platform">

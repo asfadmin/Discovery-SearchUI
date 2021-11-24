@@ -1,5 +1,7 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 
+import * as models from '@models';
+
 @Component({
   selector: 'app-subscription-date-range',
   templateUrl: './subscription-date-range.component.html',
@@ -18,7 +20,7 @@ export class SubscriptionDateRangeComponent implements OnInit {
   constructor() { }
 
   ngOnInit(): void {
-    this.minDate = new Date();
+    this.minDate = models.sentinel_1.date.start;
     this.maxDate = this.addDays(new Date(), 179);
   }
 

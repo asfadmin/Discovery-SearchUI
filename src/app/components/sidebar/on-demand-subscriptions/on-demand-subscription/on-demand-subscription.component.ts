@@ -21,6 +21,7 @@ export class OnDemandSubscriptionComponent implements OnInit, OnDestroy {
 
   @Output() toggleEnabled = new EventEmitter<models.OnDemandSubscription>();
   @Output() toggleExpand = new EventEmitter<string>();
+  @Output() loadSearch = new EventEmitter<models.OnDemandSubscription>();
   @Output() viewProducts = new EventEmitter<string>();
   @Output() newEnd = new EventEmitter<Date>();
   @Output() renew = new EventEmitter<models.OnDemandSubscription>();
@@ -117,6 +118,10 @@ export class OnDemandSubscriptionComponent implements OnInit, OnDestroy {
 
   public onRenewSubscription(): void {
     this.renew.emit(this.subscription);
+  }
+
+  public onLoadSearch(): void {
+    this.loadSearch.emit(this.subscription);
   }
 
   private get subEndControl() {

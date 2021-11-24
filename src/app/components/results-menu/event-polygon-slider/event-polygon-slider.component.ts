@@ -5,7 +5,7 @@ import { AppState } from '@store';
 import { getSelectedSarviewsEvent } from '@store/scenes';
 declare var wNumb: any;
 
-import noUiSlider from 'nouislider';
+import * as noUiSlider from 'nouislider';
 import { Observable, Subject } from 'rxjs';
 import { distinctUntilChanged, withLatestFrom } from 'rxjs/operators';
 import { SubSink } from 'subsink';
@@ -20,18 +20,6 @@ export class EventPolygonSliderComponent implements OnInit, OnDestroy {
   @Output() polygonScale$ = new Subject<number>();
   // @Output() polygonScale: EventEmitter<number> = new EventEmitter();
 
-  public slider;
-
-  private fullPips = {
-    mode: 'positions',
-    values: [0, 24, 49, 75, 100],
-    density: 1,
-    stepped: true,
-    format: wNumb({
-      decimals: 1,
-    })
-  };
-
   private subs = new SubSink();
 
   constructor(
@@ -39,9 +27,9 @@ export class EventPolygonSliderComponent implements OnInit, OnDestroy {
     private mapService: MapService) { }
 
   ngOnInit(): void {
-    this.slider = this.makePolygonSlider$(this.polygonScaleRef);
+    const polygonSlider = this.makePolygonSlider$(this.polygonScaleRef);
 
-    const sliderScale$: Observable<number> = this.slider.scaleValues$;
+    const sliderScale$: Observable<number> = polygonSlider.scaleValues$;
 
     this.subs.add(
       sliderScale$.pipe(
@@ -56,9 +44,9 @@ export class EventPolygonSliderComponent implements OnInit, OnDestroy {
     this.subs.unsubscribe();
   }
 
-  private makePolygonSlider$(filterRef: ElementRef): {polygonSlider: any, scaleValues$: Observable<number>} {
+  private makePolygonSlider$(filterRef: ElementRef) {
     // @ts-ignore
-    this.slider = noUiSlider.create(filterRef.nativeElement, {
+    const slider = noUiSlider.create(filterRef.nativeElement, {
       orientation: 'horizontal',
       direction: 'ltr',
       start: [1],
@@ -70,17 +58,25 @@ export class EventPolygonSliderComponent implements OnInit, OnDestroy {
         'min': 0.1,
         'max': 4
       },
-      pips: this.fullPips
+      pips: {
+        mode: noUiSlider.PipsMode.Positions,
+        values: [0, 24, 49, 75, 100],
+        density: 1,
+        stepped: true,
+        format: wNumb({
+          decimals: 1,
+        })
+      }
     });
 
-    this.slider.on('update', (value, _) => {
+    slider.on('update', (value, _) => {
       this.polygonScale$.next(+value);
     });
 
     this.polygonScale$.next(1);
 
     return {
-      polygonSlider: this.slider,
+      slider,
       scaleValues$: this.polygonScale$.asObservable().pipe(
         // debounceTime(500),
         distinctUntilChanged()
