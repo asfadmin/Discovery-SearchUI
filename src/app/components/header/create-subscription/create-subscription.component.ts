@@ -83,11 +83,13 @@ export class CreateSubscriptionComponent implements OnInit, OnDestroy {
   public processingOptionsList = [];
   public processingOptions;
 
+  public current: Date;
   public dateRange: models.Range<Date | null>;
   public projectName: string;
   public searchFilters;
   public polygon: string;
   public subEstimate: number | null = null;
+  public currentProducts: number | null = null;
 
   public breakpoint: models.Breakpoints;
   public breakpoints = models.Breakpoints;
@@ -132,10 +134,11 @@ export class CreateSubscriptionComponent implements OnInit, OnDestroy {
       this.subs.unsubscribe();
       this.dialogRef = null;
     });
+    this.current = new Date();
 
     const end = new Date();
     this.dateRange = {
-      start: new Date(),
+      start: new Date(this.current.getTime()),
       end: new Date(end.setDate(end.getDate() + 179)),
     };
 
@@ -407,10 +410,10 @@ export class CreateSubscriptionComponent implements OnInit, OnDestroy {
   }
 
   public onEstimateSubscription(): void {
-    const start = new Date();
+    const start = new Date(this.current.getTime());
     const dateRange = {
       start: new Date(start.setDate(start.getDate() - 179)),
-      end: new Date(),
+      end: new Date(this.current.getTime()),
     };
 
     const flightDir = this.flightDirection === 'All' ? null : this.flightDirection;
@@ -428,6 +431,19 @@ export class CreateSubscriptionComponent implements OnInit, OnDestroy {
       processinglevel: this.productType,
       output: 'COUNT',
     });
+
+    if (this.dateRange.start < this.current) {
+      const curr = {
+        ...params,
+        start: moment.utc(this.dateRange.start).format(),
+      };
+
+      this.subs.add(
+        this.asfApi.query(curr).subscribe(
+          estimate => this.currentProducts = <number>estimate
+        )
+      );
+    }
 
     this.subs.add(
       this.asfApi.query(params).subscribe(

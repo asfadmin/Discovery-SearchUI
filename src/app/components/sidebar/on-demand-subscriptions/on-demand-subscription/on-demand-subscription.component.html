@@ -90,7 +90,8 @@
     </div>
     <div style="margin-bottom: 22px;">
       <app-subscription-filters
-        [filters]="subscription.filters">
+        [filters]="subscription.filters"
+        (loadSearch)="onLoadSearch()">
       </app-subscription-filters>
     </div>
 

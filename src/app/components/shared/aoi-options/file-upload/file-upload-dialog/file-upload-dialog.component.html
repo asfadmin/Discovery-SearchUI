@@ -1,5 +1,5 @@
 <input (change)="onFilesAdded()"
-  class="hidden" type="file" multiple #file/>
+  class="hidden" type="file" #file/>
 
 <div
   (drop)="onFileDrop($event)"
@@ -31,7 +31,7 @@
         [disabled]="uploading"
         style="margin-right: 10px;"
         color="primary" class="add-files-btn" mat-raised-button>
-          Import Files
+          Import File
       </button>
     </div>
   </div>
