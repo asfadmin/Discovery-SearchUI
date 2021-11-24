@@ -8,7 +8,7 @@ import * as filterStore from '@store/filters';
 
 declare var wNumb: any;
 
-import noUiSlider from 'nouislider';
+import * as noUiSlider from 'nouislider';
 import { Observable, Subject } from 'rxjs';
 import { debounceTime, distinctUntilChanged, filter, map, skip } from 'rxjs/operators';
 import { ScreenSizeService } from '@services';
@@ -22,7 +22,7 @@ import { Breakpoints, SarviewsEventType } from '@models';
 export class SarviewsEventMagnitudeSelectorComponent implements OnInit, OnDestroy {
   @ViewChild('magnitudeFilter', { static: true }) magnitudeFilter: ElementRef;
   public magnitudeRange: models.Range<number> = {start: 0, end: 10};
-  public slider;
+  public slider: noUiSlider.API;
   public magSlider;
 
   public breakpoint$ = this.screenSize.breakpoint$;
@@ -37,28 +37,6 @@ export class SarviewsEventMagnitudeSelectorComponent implements OnInit, OnDestro
     map(eventTypes => {
       return eventTypes.length === 0 || eventTypes.includes(SarviewsEventType.QUAKE); }),
   );
-
-  private fullPips = {
-    mode: 'positions',
-    values: [0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100],
-    density: 1,
-    stepped: true,
-    format: wNumb({
-      decimals: 1,
-      suffix: ' mag'
-    })
-  };
-
-  private mobilePips =  {
-    mode: 'positions',
-    values: [0, 25, 50, 75, 100],
-    density: 5,
-    stepped: true,
-    format: wNumb({
-      decimals: 1,
-      suffix: ' mag'
-    })
-  };
 
   constructor(private store$: Store<AppState>,
     private screenSize: ScreenSizeService,
@@ -127,7 +105,7 @@ export class SarviewsEventMagnitudeSelectorComponent implements OnInit, OnDestro
     this.subs.unsubscribe();
   }
 
-  private makeMagnitudeSlider$(filterRef: ElementRef): {magSlider: any, magnitudeValues$: Observable<number[]>} {
+  private makeMagnitudeSlider$(filterRef: ElementRef): {magSlider: noUiSlider.API, magnitudeValues$: Observable<number[]>} {
     // @ts-ignore
     this.slider = noUiSlider.create(filterRef.nativeElement, {
       orientation: 'horizontal',
@@ -141,7 +119,16 @@ export class SarviewsEventMagnitudeSelectorComponent implements OnInit, OnDestro
         'min': 0,
         'max': 10
       },
-      pips: this.fullPips
+      pips: {
+        mode: noUiSlider.PipsMode.Positions,
+        values: [0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100],
+        density: 1,
+        stepped: true,
+        format: wNumb({
+          decimals: 1,
+          suffix: ' mag'
+        })
+      }
     });
 
     this.slider.on('update', (values: any[], _) => {
@@ -163,7 +150,16 @@ export class SarviewsEventMagnitudeSelectorComponent implements OnInit, OnDestro
     if (breakpoint === Breakpoints.MOBILE) {
       this.slider.updateOptions(
         {
-          pips: this.mobilePips,
+          pips: {
+            mode: noUiSlider.PipsMode.Positions,
+            values: [0, 25, 50, 75, 100],
+            density: 5,
+            stepped: true,
+            format: wNumb({
+              decimals: 1,
+              suffix: ' mag'
+            })
+          },
           step: 0.5
         },
         true
@@ -171,7 +167,16 @@ export class SarviewsEventMagnitudeSelectorComponent implements OnInit, OnDestro
     } else {
       this.slider.updateOptions(
         {
-          pips: this.fullPips,
+          pips: {
+            mode: noUiSlider.PipsMode.Positions,
+            values: [0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100],
+            density: 1,
+            stepped: true,
+            format: wNumb({
+              decimals: 1,
+              suffix: ' mag'
+            })
+          },
           step: 0.1
         },
         true

@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 
-import noUiSlider from 'nouislider';
+import * as noUiSlider from 'nouislider';
 import { Subject,  fromEvent, Observable} from 'rxjs';
 import { debounceTime, distinctUntilChanged, filter, map } from 'rxjs/operators';
 
@@ -103,7 +103,7 @@ export class SbasSlidersTwoComponent implements OnInit {
     this.subs.add(
       this.store$.select(filtersStore.getTemporalRange).subscribe(
         temp => {
-          this.daysRange = temp;
+          this.daysRange = {start: temp.start, end: temp.end};
           if (this.firstLoad) {
             this.slider.set([temp.start, temp.end]);
             this.firstLoad = false;
@@ -157,7 +157,7 @@ export class SbasSlidersTwoComponent implements OnInit {
   }
 
   private makeDaysSlider$(filterRef: ElementRef): {slider: any, daysValues: Observable<number[]>} {
-    // @ts-ignore
+
     this.slider = noUiSlider.create(filterRef.nativeElement, {
       orientation: 'horizontal',
       direction: 'ltr',
@@ -171,7 +171,7 @@ export class SbasSlidersTwoComponent implements OnInit {
         'max': 60
       },
       pips: {
-        mode: 'positions',
+        mode: noUiSlider.PipsMode.Positions,
         values: [0, 20, 40, 60, 80, 100],
         density: 4,
         stepped: true,
