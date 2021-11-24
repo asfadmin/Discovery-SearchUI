@@ -14,7 +14,7 @@
   <div *ngIf="filters.season.start !== null || filters.season.end !== null">
     <b>Season: </b> {{ filters.season.start }} to {{ filters.season.end }}
   </div>
-  <div *ngIf="maturity !== 'prod'">
-    <b>50% Overlap Threshold: </b> {{ filters.thresholdOverlap ? 'On' : 'Off'}}
+  <div>
+    <b>Pair Overlap Threshold: </b> {{ filters.thresholdOverlap}}
   </div>
 </div>

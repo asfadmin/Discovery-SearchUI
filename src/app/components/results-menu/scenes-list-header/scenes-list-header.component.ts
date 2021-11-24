@@ -47,6 +47,7 @@ export class ScenesListHeaderComponent implements OnInit, OnDestroy {
     map(scenes => scenes.length),
   );
   public numPairs$ = this.pairService.pairs$().pipe(
+    filter(pairs => !!pairs),
     map(pairs => pairs.pairs.length + pairs.custom.length)
   );
 

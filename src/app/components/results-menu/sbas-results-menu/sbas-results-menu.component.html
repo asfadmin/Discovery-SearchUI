@@ -32,7 +32,7 @@
     <mat-card-subtitle style="display: flex; flex-direction: row; justify-content: center; align-items: flex-start;" class="header">
     </mat-card-subtitle>
     <div class="sbas-metadata scrollable">
-      <div *ngIf="pair" style="margin: 5px; padding-bottom: 36px;">
+      <div *ngIf="!!pair" style="margin: 5px; padding-bottom: 36px;">
         <div *ngFor="let product of pair">
           <div style="margin-bottom: 4px;">
             <b class="product-name">{{ product.name }}</b>

@@ -15,7 +15,7 @@
   top: 115px;
   right: 25px;
   float: right;
-  z-index: 99 !important;
+  //z-index: 99 !important;
 }
 
 // toast style overrides
@@ -24,6 +24,7 @@
   color: $asf-background-white;
   background-color: $asf-blue;
   background-image: url("/assets/icons/check_circle_white_48dp.svg");
+  z-index: 99 !important;
 
   .toast-close-button,
   #toast-container > .toast-close-button {
@@ -40,6 +41,7 @@
   color: $asf-background-white;
   background-color: red;
   background-image: url("/assets/icons/error_white_48dp.svg");
+  z-index: 99999 !important;
 
   .toast-message {
     color: antiquewhite;
@@ -60,6 +62,7 @@
   color: $asf-primary-dark;
   background-color: $asf-background-white;
   background-image: url("/assets/icons/info_black_48dp.svg");
+  z-index: 99 !important;
 
   .toast-message {
     color: $asf-primary;
@@ -75,6 +78,7 @@
   color: $asf-primary-dark;
   background-color: $asf-warn;
   background-image: url("/assets/icons/warning_black_48dp.svg") !important;
+  z-index: 99999 !important;
 
   a {
     color: orangered;
