@@ -195,59 +195,60 @@
     </div>
   </div>
 
-  <div *ngIf="searchType === searchTypes.SARVIEWS_EVENTS">
-    <div class="browse-container w100" *ngIf="sarviewsEventHasSceneBrowses()">
-      <div class="banner" fxLayout fxLayout="row" fxLayoutAlign="center">
-        <div class="menu-items">
-          <div
-            class="fullscreen clickable"
-            (click)="onOpenImage()"
-            matTooltip="Open in Image Viewer"
-          >
-            <mat-icon>preview</mat-icon>
-          </div>
-          <a
-            class="download clickable"
-            [href]="sarviewsProducts[browseIndex].files.product_url"
-            target="_blank"
-            matTooltip="Download this image"
-          >
-            <mat-icon>download</mat-icon>
-          </a>
-        </div>
-        <div class="browse-pager" *ngIf="sarviewsProducts">
-          <span
-            [class.clickable]="browseIndex > 0"
-            (click)="browseIndex > 0 && (browseIndex = browseIndex - 1)"
-          >
-            <mat-icon>arrow_back</mat-icon>
-          </span>
-          {{ browseIndex + 1 }} / {{ sarviewsProducts.length }}
-          <span
-            [class.clickable]="browseIndex + 1 < sarviewsProducts.length"
-            (click)="
-              browseIndex + 1 < sarviewsProducts.length &&
-                (browseIndex = browseIndex + 1)
-            "
-          >
-            <mat-icon>arrow_forward</mat-icon>
-          </span>
-        </div>
-      </div>
-      <div class="img-container">
-        <img
-          class="browse-img fit-to-container"
-          [hidden]="isImageLoading"
-          [src]="sarviewsProducts[browseIndex].files.browse_url"
+
+  <div style="margin-top: 25px;" class="browse-container w100"
+  *ngIf="!!sarviewsProducts && searchType === searchTypes.SARVIEWS_EVENTS">
+    <div class="banner" fxLayout fxLayout="row" fxLayoutAlign="center">
+      <div class="menu-items">
+        <div
+          class="fullscreen clickable"
           (click)="onOpenImage()"
-          (load)="isImageLoading = false"
-          onerror="this.src='assets/no-browse.png'"
-          [class.clickable]="sarviewsEventHasSceneBrowses()"
-          alt="Sentinel1 scene browse image"
-        />
+          matTooltip="Open in Image Viewer"
+        >
+          <mat-icon>preview</mat-icon>
+        </div>
+        <a
+          class="download clickable"
+          [href]="sarviewsProducts[browseIndex].files.product_url"
+          target="_blank"
+          matTooltip="Download this image"
+        >
+          <mat-icon>download</mat-icon>
+        </a>
+      </div>
+      <div class="browse-pager" *ngIf="sarviewsProducts">
+        <span
+          [class.clickable]="browseIndex > 0"
+          (click)="browseIndex > 0 && (browseIndex = browseIndex - 1)"
+        >
+          <mat-icon>arrow_back</mat-icon>
+        </span>
+        {{ browseIndex + 1 }} / {{ sarviewsProducts.length }}
+        <span
+          [class.clickable]="browseIndex + 1 < sarviewsProducts.length"
+          (click)="
+            browseIndex + 1 < sarviewsProducts.length &&
+              (browseIndex = browseIndex + 1)
+          "
+        >
+          <mat-icon>arrow_forward</mat-icon>
+        </span>
       </div>
     </div>
+    <div class="img-container">
+      <img
+        class="browse-img fit-to-container"
+        [hidden]="isImageLoading"
+        [src]="sarviewsProducts[browseIndex].files.browse_url"
+        (click)="onOpenImage()"
+        (load)="isImageLoading = false"
+        onerror="this.src='assets/no-browse.png'"
+        [class.clickable]="!!sarviewsProducts"
+        alt="Sentinel1 scene browse image"
+      />
+    </div>
   </div>
+
 </div>
 <div
   class="tool-menu"
