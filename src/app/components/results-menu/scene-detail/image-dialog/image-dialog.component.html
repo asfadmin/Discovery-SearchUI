@@ -30,8 +30,8 @@
       </div>
   </div>
 
-  <div *ngIf="(searchType$ | async) === searchTypes.SARVIEWS_EVENTS">
-    <div *ngIf="sarviewsEvent$ | async as event" fxLayout="row" class="dialog-header--layout">
+  <div *ngIf="(searchType$ | async) === searchTypes.SARVIEWS_EVENTS && !!(sarviewsEvent$ | async)">
+    <div *ngIf="(sarviewsEvent$ | async) as event" fxLayout="row" class="dialog-header--layout">
       <div fxFlex="auto">
         <h3 class="mp0">
           <span [ngClass]="{'mp0-ellipsis-mobile': breakpoint <= breakpoints.SMALL,
@@ -41,8 +41,8 @@
         </h3>
         <span class="faint-text">
           <a [href]="getEventURL()"
-              target="_blank" [matTooltip]="(event.event_type === 'quake' ? 'USGS' : 'Smithsonian') + ' event page'" class="faint-text">
-            {{ event.event_type === 'quake' ? 'USGS' : 'Smithsonian' }}
+              target="_blank" [matTooltip]="(event?.event_type === 'quake' ? 'USGS' : 'Smithsonian') + ' event page'" class="faint-text">
+            {{ event?.event_type === 'quake' ? 'USGS' : 'Smithsonian' }}
           </a> •
           <span *ngIf="breakpoint > breakpoints.MOBILE">
             {{ event.processing_timeframe.start | fullDate }}
@@ -110,6 +110,7 @@
           <div class="detail-header">{{ products?.length }} Files</div>
           <mat-action-list dense class="file-list">
             <button  *ngFor="let product of products"
+            class="file-button-download"
                      [matMenuTriggerFor]="action_menu" mat-list-item>
               • {{ product.productTypeDisplay }}
               <mat-menu #action_menu="matMenu" xPosition="before">
@@ -177,7 +178,7 @@
         <ng-container>
           <div class="detail-header">File</div>
           <mat-action-list dense class="file-list">
-            <button
+            <button class="file-button-download"
             [matMenuTriggerFor]="event_action_menu"
             *ngIf="!!currentSarviewsProduct"
              mat-list-item>
