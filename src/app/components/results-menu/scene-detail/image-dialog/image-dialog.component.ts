@@ -111,7 +111,9 @@ export class ImageDialogComponent implements OnInit, AfterViewInit, OnDestroy {
     );
 
     this.subs.add(
-      this.sarviewsEvent$.subscribe(
+      this.sarviewsEvent$.pipe(
+        filter(event => !!event),
+      ).subscribe(
         event => {
           this.sarviewsEvent = event;
           this.eventType = event.event_type === 'quake' ? models.SarviewsEventType.QUAKE : models.SarviewsEventType.VOLCANO;

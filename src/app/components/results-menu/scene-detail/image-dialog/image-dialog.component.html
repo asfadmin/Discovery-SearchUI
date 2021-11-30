@@ -96,17 +96,35 @@
             [searchType]="searchType$|  async"
             [offsets]="masterOffsets$ | async">
           </app-scene-metadata>
+          <!-- <ng-template *ngIf="(searchType$ | async) === searchTypes.CUSTOM_PRODUCTS"> -->
+            <div style="font-size: 12px; word-break: break-word;"
+            *ngIf="(scene$ | async).metadata?.job?.job_parameters.scenes?.length > 1">
+              <ul style="margin-bottom: 0px;">
+                <li>
+                  <b><i>Secondary: </i></b> {{(scene$ | async).metadata?.job?.job_parameters.scenes[1].name}}
+                </li>
+              </ul>
+          <app-scene-metadata
+          [scene]="(scene$ | async).metadata?.job?.job_parameters.scenes[1]"
+          [dataset]="dataset"
+          [searchType]="searchType$|  async"
+          [offsets]="masterOffsets$ | async"
+        >
+        </app-scene-metadata>
+      </div>
+      <!-- </ng-template> -->
           <hr>
         <ng-container  *ngIf="(searchType$ | async) === searchTypes.CUSTOM_PRODUCTS">
           <div class="detail-header">Product Details</div>
           <ul style="columns: 1; font-size: 12px;">
-            <li *ngIf="scene.metadata.job.name">Project Name: {{scene.metadata.job.name}}</li>
+            <li *ngIf="scene.metadata.job.name"><b>Project Name:</b> {{scene.metadata.job.name}}</li>
             <li *ngFor="let param of paramsList" >
-              {{ param.name }}: {{ param.val }}
+              <b>{{ param.name }}:</b> {{ param.val }}
             </li>
           </ul>
           <hr>
         </ng-container>
+
           <div class="detail-header">{{ products?.length }} Files</div>
           <mat-action-list dense class="file-list">
             <button  *ngFor="let product of products"
