@@ -163,18 +163,12 @@
           <ng-container >
           <div class="detail-header">Product Details</div>
             <div style="font-size: 12px;" *ngIf="!!currentSarviewsProduct">
-              <ul *ngFor="let granule of currentSarviewsProduct.granules; let i = index;" style="columns: 1; font-size: 12px; word-break: break-word;">
-                  <li >
-                    {{(i === 0 ? 'Reference: ' : 'Secondary: ') + granule.granule_name}}
-                </li>
-                <li >
-                  Acquisition date: {{granule.acquisition_date | shortDate}}
-              </li>
-          </ul>
-
               <ul style="columns: 1; font-size: 12px;">
-              <li>Path: {{currentSarviewsProduct.granules[0].path}}</li>
-              <li>Frame: {{currentSarviewsProduct.granules[0].frame}}</li>
+                <li  style="margin-bottom: 5px; word-break: break-word;">
+                  <b>Product Name:</b> {{currentSarviewsProduct.files.product_name}}
+                </li>
+                <li><b>Processing Date:</b> {{currentSarviewsProduct.processing_date | shortDateTime}}</li>
+              <!-- <li>Frame: {{currentSarviewsProduct.granules[0].frame}}</li> -->
             </ul>
             </div>
         <hr>
