@@ -147,6 +147,19 @@
             <app-event-metadata [event]="sarviewsEvent" [eventType]="eventType">
             </app-event-metadata>
             <hr>
+
+            <ng-container >
+              <div class="detail-header">Scene Detail</div>
+                <div style="font-size: 12px;" *ngIf="!!currentSarviewsProduct">
+                  <app-event-product-metadata
+                  [product]="currentSarviewsProduct"
+                  >
+
+                  </app-event-product-metadata>
+                </div>
+            <hr>
+            </ng-container>
+
           <ng-container >
           <div class="detail-header">Product Details</div>
             <div style="font-size: 12px;" *ngIf="!!currentSarviewsProduct">

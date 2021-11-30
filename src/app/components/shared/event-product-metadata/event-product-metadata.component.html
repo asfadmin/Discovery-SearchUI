@@ -1,0 +1,11 @@
+<div *ngFor="let scene of scenesMetadata; let i = index;" style="margin-top: 15px;; word-break: break-word;">
+  <b>{{(i === 0 ? 'Reference: ' : 'Secondary: ')}}</b> {{scene.scene_name}}
+  <ul class="scene-metadata" >
+    <li ><b>Acquisition Date:</b> {{scene.acquisition_date| shortDateTime}}</li>
+    <li><b>Beam Mode:</b> {{scene.beamMode}}</li>
+    <li><b>Path:</b> {{scene.path}}</li>
+    <li><b>Frame:</b> {{scene.frame}}</li>
+    <li><b>Polarization:</b> {{scene.polarization}}</li>
+    <li><b>Absoulte Orbit:</b> {{scene.absolute_orbit}}</li>
+  </ul>
+</div>
