@@ -90,7 +90,7 @@
         <div *ngIf="(searchType$ | async) !== searchTypes.SARVIEWS_EVENTS" class="scene-detail">
 
           <div class="detail-header">Scene Detail</div>
-          <ul style="font-size: 12px; word-break: break-word; margin-bottom: 0px;" *ngIf="(searchType$ | async) === searchTypes.CUSTOM_PRODUCTS">
+          <ul class="on-demand-scene-names" *ngIf="(searchType$ | async) === searchTypes.CUSTOM_PRODUCTS">
             <li>
               <b>Reference: </b> {{(scene$ | async).name}}
             </li>
@@ -101,10 +101,9 @@
             [searchType]="searchType$|  async"
             [offsets]="masterOffsets$ | async">
           </app-scene-metadata>
-          <!-- <ng-template *ngIf="(searchType$ | async) === searchTypes.CUSTOM_PRODUCTS"> -->
-            <div style="font-size: 12px; word-break: break-word;"
+            <div class="on-demand-scene-names"
             *ngIf="(scene$ | async).metadata?.job?.job_parameters.scenes?.length > 1">
-              <ul style="margin-bottom: 0px;">
+              <ul>
                 <li>
                   <b>Secondary: </b> {{(scene$ | async).metadata?.job?.job_parameters.scenes[1].name}}
                 </li>
@@ -117,7 +116,6 @@
         >
         </app-scene-metadata>
       </div>
-      <!-- </ng-template> -->
           <hr>
         <ng-container  *ngIf="(searchType$ | async) === searchTypes.CUSTOM_PRODUCTS">
           <div class="detail-header">Product Details</div>
