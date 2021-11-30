@@ -78,6 +78,7 @@ export class SbasSlidersComponent implements OnInit {
       start: [300],
       behaviour: 'tap-drag',
       tooltips: false,
+      connect: 'lower',
       step: 1,
       range: {
         'min': 0,
