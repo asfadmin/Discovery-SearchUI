@@ -90,6 +90,11 @@
         <div *ngIf="(searchType$ | async) !== searchTypes.SARVIEWS_EVENTS" class="scene-detail">
 
           <div class="detail-header">Scene Detail</div>
+          <ul style="font-size: 12px; word-break: break-word; margin-bottom: 0px;" *ngIf="(searchType$ | async) === searchTypes.CUSTOM_PRODUCTS">
+            <li>
+              <b>Reference: </b> {{(scene$ | async).name}}
+            </li>
+          </ul>
           <app-scene-metadata
             [scene]="scene$ | async"
             [dataset]="dataset"
@@ -101,7 +106,7 @@
             *ngIf="(scene$ | async).metadata?.job?.job_parameters.scenes?.length > 1">
               <ul style="margin-bottom: 0px;">
                 <li>
-                  <b><i>Secondary: </i></b> {{(scene$ | async).metadata?.job?.job_parameters.scenes[1].name}}
+                  <b>Secondary: </b> {{(scene$ | async).metadata?.job?.job_parameters.scenes[1].name}}
                 </li>
               </ul>
           <app-scene-metadata
@@ -184,7 +189,7 @@
             <div style="font-size: 12px;" *ngIf="!!currentSarviewsProduct">
               <ul style="columns: 1; font-size: 12px;">
                 <li  style="margin-bottom: 5px; word-break: break-word;">
-                  <b>Product Name:</b> {{currentSarviewsProduct.files.product_name}}
+                  <b>Product Filename:</b> {{currentSarviewsProduct.files.product_name}}
                 </li>
                 <li><b>Processing Date:</b> {{currentSarviewsProduct.processing_date | shortDateTime}}</li>
               <!-- <li>Frame: {{currentSarviewsProduct.granules[0].frame}}</li> -->
