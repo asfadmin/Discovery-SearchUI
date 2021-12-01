@@ -47,7 +47,6 @@
                           itemSize="50"
 
                           class="products-list"
-                          [class.no-scroll]="breakpoint <= breakpoints.SMALL"
                           dense role="list">
         <mat-selection-list multiple (selectionChange)="onSelectSarviewsProduct($event)">
           <mat-list-option [value]="prod.product_id" [selected]="!!this.selectedProducts.includes(prod.product_id)"

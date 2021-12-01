@@ -91,7 +91,7 @@
           <div fxLayout="row" fxLayoutAlign="center">
             <div>
         <mat-button-toggle-group fxFlex="" name="layerType"
-        [disabled]="!(isBrowseOverlayEnabled$ | async)  || (selectedScene$ | async).browses.length < 2">
+        [disabled]="!(isBrowseOverlayEnabled$ | async)">
           <mat-button-toggle class="control-mat-button-toggle"
           *ngIf="searchType === searchTypes.SARVIEWS_EVENTS"
           (click)="onUnpinAll()"
@@ -103,6 +103,7 @@
         matTooltipDisabled="!(isBrowseOverlayEnabled$ | async) ? 'Browse Overlays for current scene dataset not available' :
         'Current Scene only has one available browse'"
         (click)="onDecrementBrowseIndex()"
+        [disabled]="!(browseIndexingEnabled$ | async)"
         matTooltip="Change selected scene browse">
         <mat-icon class="control-icon">arrow_back</mat-icon>
         </mat-button-toggle>
@@ -111,6 +112,7 @@
             'Current Scene only has one available browse'"
           *ngIf="searchType !== searchTypes.SARVIEWS_EVENTS"
           (click)="onIncrementBrowseIndex()"
+          [disabled]="!(browseIndexingEnabled$ | async)"
           matTooltip="Change selected scene browse">
           <mat-icon class="control-icon">arrow_forward</mat-icon>
           </mat-button-toggle>

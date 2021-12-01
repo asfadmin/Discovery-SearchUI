@@ -40,6 +40,7 @@ export class ImageDialogComponent implements OnInit, AfterViewInit, OnDestroy {
   public queuedProductIds: Set<string>;
   public scene: models.CMRProduct;
   public sarviewsEvent: models.SarviewsEvent;
+  public eventType: models.SarviewsEventType;
   public currentSarviewsProduct: models.SarviewsProduct;
   public products: models.CMRProduct[];
   public sarviewsProducts: models.SarviewsProduct[];
@@ -110,8 +111,13 @@ export class ImageDialogComponent implements OnInit, AfterViewInit, OnDestroy {
     );
 
     this.subs.add(
-      this.sarviewsEvent$.subscribe(
-        event => this.sarviewsEvent = event
+      this.sarviewsEvent$.pipe(
+        filter(event => !!event),
+      ).subscribe(
+        event => {
+          this.sarviewsEvent = event;
+          this.eventType = event.event_type === 'quake' ? models.SarviewsEventType.QUAKE : models.SarviewsEventType.VOLCANO;
+        }
       )
     );
     this.subs.add(
@@ -231,6 +237,10 @@ export class ImageDialogComponent implements OnInit, AfterViewInit, OnDestroy {
     this.store$.dispatch(new queueStore.ToggleProduct(product));
   }
 
+  public onToggleQueueEventProduct(product: models.SarviewsProduct): void {
+    this.onToggleQueueProduct(this.sarviewsService.eventProductToCMRProduct(product));
+  }
+
   public toggleDisplay() {
     this.isShow = !this.isShow;
   }
@@ -266,6 +276,16 @@ export class ImageDialogComponent implements OnInit, AfterViewInit, OnDestroy {
       [this.currentSarviewsProduct.product_id]
       );
     window.open(url);
+  }
+
+  public getEventURL() {
+    const isQuake = this.sarviewsEvent.event_type === 'quake';
+
+    if (isQuake) {
+      return this.sarviewsService.getUSGSEventUrl((this.sarviewsEvent as models.SarviewsQuakeEvent).usgs_event_id);
+    } else {
+      return this.sarviewsService.getSmithsonianURL((this.sarviewsEvent as models.SarviewsVolcanicEvent).smithsonian_event_id);
+    }
   }
 
   ngOnDestroy() {
