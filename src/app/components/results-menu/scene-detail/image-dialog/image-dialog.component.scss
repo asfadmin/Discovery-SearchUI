@@ -41,7 +41,7 @@ a {
 
   .main-window {
     position: relative;
-    height: calc(100% - 285px)
+    height: calc(100% - 285px);
   }
 
   .main-window-mobile {
@@ -201,7 +201,6 @@ a {
   margin-bottom: 0px;
 }
 
-
 .footer {
   flex-shrink: 0;
   display: flex;
@@ -212,5 +211,5 @@ a {
   border-top: 1px solid $asf-primary-dark;
   z-index: 1020;
   padding: 10px;
-  padding-top: 13.5px
+  padding-top: 13.5px;
 }

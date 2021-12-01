@@ -1,4 +1,4 @@
-<div *ngFor="let scene of scenesMetadata; let i = index;" style="margin-top: 15px;; word-break: break-word;">
+<div *ngFor="let scene of scenesMetadata; let i = index;" class="scene-metadata-container">
   <b>{{(i === 0 ? 'Reference: ' : 'Secondary: ')}}</b> {{scene.scene_name}}
   <ul class="scene-metadata" >
     <li ><b>Acquisition Date •</b> {{scene.acquisition_date| shortDateTime}}</li>

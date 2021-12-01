@@ -1,7 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import * as models from '@models';
 
-interface eventProductMetadata {
+interface IEventProductMetadata {
   path: number;
   frame: number;
   scene_name: string;
@@ -39,10 +39,10 @@ export class EventProductMetadataComponent implements OnInit {
       path: curr.path,
       frame: curr.frame
 
-    }], [] as eventProductMetadata[]);
+    }], [] as IEventProductMetadata[]);
   }
 
- public scenesMetadata: eventProductMetadata[] = [];
+ public scenesMetadata: IEventProductMetadata[] = [];
 
 
   constructor() { }
