@@ -1,14 +1,13 @@
 import { Component, OnInit, Input, OnDestroy } from '@angular/core';
 
-import { Observable } from 'rxjs';
+import { combineLatest, Observable } from 'rxjs';
 
 import { Store } from '@ngrx/store';
 import { AppState } from '@store';
 import * as scenesStore from '@store/scenes';
-import { ScenesService, ScreenSizeService } from '@services';
+import { SarviewsEventsService, ScreenSizeService } from '@services';
 import { SubSink } from 'subsink';
 import * as models from '@models';
-import { withLatestFrom } from 'rxjs/operators';
 
 @Component({
   selector: 'app-sarviews-results-menu',
@@ -20,19 +19,18 @@ export class SarviewsResultsMenuComponent implements OnInit, OnDestroy {
 
   public selectedProducts$ = this.store$.select(scenesStore.getSelectedSceneProducts);
   public selectedEventProducts$ = this.store$.select(scenesStore.getSelectedSarviewsEventProducts);
-  public scenesLength;
   public sarviewsEventsLength;
   public sarviewsProductsLength;
   public breakpoint: models.Breakpoints;
   public breakpoints = models.Breakpoints;
-  public sarviewsEvents$ = this.store$.select(scenesStore.getSarviewsEvents);
+  public sarviewsEvents$ = this.eventMonitoringService.filteredSarviewsEvents$();
 
   private subs = new SubSink();
 
   constructor(
     private store$: Store<AppState>,
     private screenSize: ScreenSizeService,
-    private scenesService: ScenesService,
+    private eventMonitoringService: SarviewsEventsService,
   ) { }
 
   ngOnInit() {
@@ -42,21 +40,27 @@ export class SarviewsResultsMenuComponent implements OnInit, OnDestroy {
       )
     );
     this.subs.add(
-      this.scenesService.scenes$().subscribe(
-        scenes => this.scenesLength = scenes.length
-      )
-    );
-    this.subs.add(
       this.sarviewsEvents$.subscribe(
-        events => this.sarviewsEventsLength = events.length
+        events => {
+          this.sarviewsEventsLength = events.length;
+
+          if(this.sarviewsEventsLength === 0) {
+            this.sarviewsProductsLength = 0;
+          }
+        }
       )
     );
     this.subs.add(
-      this.store$.select(scenesStore.getSelectedSarviewsEvent).pipe(
-        withLatestFrom(this.sarviewsEvents$),
+      combineLatest(
+        [
+          this.store$.select(scenesStore.getSelectedSarviewsEvent),
+          this.sarviewsEvents$
+        ]
       ).subscribe(
         ([selected, events]) => {
           if (selected == null && !!events) {
+            this.store$.dispatch(new scenesStore.SetSelectedSarviewsEvent(events[0]?.event_id));
+          } else if(!events?.includes(selected)) {
             this.store$.dispatch(new scenesStore.SetSelectedSarviewsEvent(events[0]?.event_id));
           }
         }
