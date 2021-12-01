@@ -12,10 +12,10 @@ interface eventProductMetadata {
 }
 
 enum Polarizations {
-   "SH" = "HH",
-   "SV" = "VV",
-   "DH" = "HH+HV",
-   "DV" = "VV+VH"
+   'SH' = 'HH',
+   'SV' = 'VV',
+   'DH' = 'HH+HV',
+   'DV' = 'VV+VH'
 }
 
 @Component({
@@ -40,7 +40,7 @@ export class EventProductMetadataComponent implements OnInit {
       frame: curr.frame
 
     }], [] as eventProductMetadata[]);
-  };
+  }
 
  public scenesMetadata: eventProductMetadata[] = [];
 
@@ -55,11 +55,11 @@ export class EventProductMetadataComponent implements OnInit {
     return sceneName.split('_')[1];
   }
 
-  private getPolarization(sceneName: string) : string{
+  private getPolarization(sceneName: string): string {
     return Polarizations[sceneName.split('_')[3].slice(2)];
   }
 
   private getOrbit(sceneName: string): number {
-    return +sceneName.split('_')[sceneName.split('_').length-3];
+    return +sceneName.split('_')[sceneName.split('_').length - 3];
   }
 }

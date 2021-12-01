@@ -281,7 +281,7 @@ export class ImageDialogComponent implements OnInit, AfterViewInit, OnDestroy {
   public getEventURL() {
     const isQuake = this.sarviewsEvent.event_type === 'quake';
 
-    if(isQuake) {
+    if (isQuake) {
       return this.sarviewsService.getUSGSEventUrl((this.sarviewsEvent as models.SarviewsQuakeEvent).usgs_event_id);
     } else {
       return this.sarviewsService.getSmithsonianURL((this.sarviewsEvent as models.SarviewsVolcanicEvent).smithsonian_event_id);
