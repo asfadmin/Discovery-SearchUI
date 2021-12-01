@@ -46,7 +46,9 @@ export class DownloadFileButtonComponent implements OnInit, AfterViewInit {
       console.log('url', href);
       this.url = href;
       product = null;
-      this.fileName = this.url.substring(this.url.lastIndexOf('/') + 1);
+      const matches = this.url.match(/([A-Z])\w+\.[a-z]+/g);
+      this.fileName = matches ? matches[matches.length - 1] : this.url.substring(this.url.lastIndexOf('/') + 1);;
+
     } else {
       this.url = product.downloadUrl;
       this.fileName = product.file;
