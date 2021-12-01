@@ -26,6 +26,7 @@ a {
 }
 
 .browse-dialog {
+  overflow: hidden;
   font-family: mat.font-family($config);
   background-color: $asf-primary-light;
   height: 100%;
@@ -40,7 +41,7 @@ a {
 
   .main-window {
     position: relative;
-    height: calc(100% - 230px);
+    height: calc(100% - 285px)
   }
 
   .main-window-mobile {
@@ -198,4 +199,18 @@ a {
   font-size: 12px;
   word-break: break-word;
   margin-bottom: 0px;
+}
+
+
+.footer {
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  position: sticky;
+  bottom: 0;
+  border-top: 1px solid $asf-primary-dark;
+  z-index: 1020;
+  padding: 10px;
+  padding-top: 13.5px
 }

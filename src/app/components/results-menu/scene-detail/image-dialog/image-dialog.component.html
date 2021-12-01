@@ -250,11 +250,10 @@
       <app-browse-list style="height: 150px;"></app-browse-list>
     </div>
   </ng-container>
-
   <div *ngIf="breakpoint$ | async as breakpoint"
        fxLayout="row"
        fxLayoutAlign="end end"
-       class="bottom-row">
+       class="bottom-row footer">
 
     <div *ngIf="breakpoint > breakpoints.MOBILE && (searchType$ | async) !== searchTypes.SARVIEWS_EVENTS" fxFlex>
       <mat-checkbox
@@ -269,9 +268,9 @@
         w/Browse Images
       </span>
     </div>
-    <!-- <div fxFlex="nogrow">
-      <button mat-stroked-button class="mini-button" (click)="closeDialog()" autofocus tabindex="1">Close</button>
-    </div> -->
+    <div fxFlex="nogrow">
+      <button mat-flat-button (click)="closeDialog()">Close</button>
+    </div>
   </div>
 
 </div>
