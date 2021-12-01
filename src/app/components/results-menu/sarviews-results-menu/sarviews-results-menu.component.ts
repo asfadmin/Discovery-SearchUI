@@ -44,7 +44,7 @@ export class SarviewsResultsMenuComponent implements OnInit, OnDestroy {
         events => {
           this.sarviewsEventsLength = events.length;
 
-          if(this.sarviewsEventsLength === 0) {
+          if (this.sarviewsEventsLength === 0) {
             this.sarviewsProductsLength = 0;
           }
         }
@@ -60,7 +60,7 @@ export class SarviewsResultsMenuComponent implements OnInit, OnDestroy {
         ([selected, events]) => {
           if (selected == null && !!events) {
             this.store$.dispatch(new scenesStore.SetSelectedSarviewsEvent(events[0]?.event_id));
-          } else if(!events?.includes(selected)) {
+          } else if (!events?.includes(selected)) {
             this.store$.dispatch(new scenesStore.SetSelectedSarviewsEvent(events[0]?.event_id));
           }
         }
