@@ -133,7 +133,6 @@ export class Hyp3Service {
 
     return this.http.get(subscriptionsUrl, { withCredentials: true }).pipe(
       map((resp: any) => {
-        console.log(resp);
         return resp.subscriptions.map((sub) => {
           return  {
             name: sub.job_specification.name,
@@ -144,7 +143,6 @@ export class Hyp3Service {
             enabled: sub.enabled
           };
         });
-        console.log(resp);
       })
     );
   }
