@@ -38,7 +38,9 @@
     <div *ngIf="showSubscriptions">
       <button
         (click)="onOpenCreateSubscription()"
-        mat-menu-item> Create Subscription...</button>
+        [disabled]="!isLoggedIn"
+        mat-menu-item> Create Subscription...
+      </button>
     </div>
   </ng-template>
 </mat-menu>

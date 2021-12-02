@@ -62,7 +62,8 @@ export class ScenesListComponent implements OnInit, OnDestroy {
     private keyboardService: services.KeyboardService,
     private scenesService: services.ScenesService,
     private pairService: services.PairService,
-    private hyp3: services.Hyp3Service
+    private hyp3: services.Hyp3Service,
+    private eventMonitoringService: services.SarviewsEventsService,
   ) {}
 
   ngOnInit() {
@@ -119,11 +120,10 @@ export class ScenesListComponent implements OnInit, OnDestroy {
 
     this.subs.add(
       this.store$.select(scenesStore.getSelectedSarviewsEvent).pipe(
-        withLatestFrom(this.scenesService.sarviewsEvents$()),
+        withLatestFrom(this.eventMonitoringService.filteredSarviewsEvents$()),
         delay(20),
         filter(([selected, _]) => !!selected),
         tap(([selected, _]) => this.selectedEvent = selected.event_id),
-        // tap(([selected, _]) => this.selected = selected.id),
         map(([selected, events]) => {
           let sceneIdx = -1;
           events.forEach((event, idx) => {
@@ -153,14 +153,14 @@ export class ScenesListComponent implements OnInit, OnDestroy {
     );
 
     this.subs.add(
-      this.scenesService.sarviewsEvents$().pipe(
+      this.eventMonitoringService.filteredSarviewsEvents$().pipe(
         filter(_ => this.searchType === this.SearchTypes.SARVIEWS_EVENTS),
       ).subscribe(
         events => {
           this.sarviewsEvents = events;
 
           const eventIds = events.map(event => event.event_id);
-          if (!eventIds.includes(this.selectedEvent) && eventIds.length > 0) {
+          if (!eventIds.includes(this.selectedEvent) && eventIds.length > 0 && !!this.selectedEvent) {
             this.store$.dispatch(new scenesStore.SetSelectedSarviewsEvent(eventIds[0]));
           }
         }

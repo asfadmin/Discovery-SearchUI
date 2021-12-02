@@ -111,10 +111,15 @@ export class DateExtremaService {
       filter(events => events.length > 0),
       map(events => events.map(event => event.processing_timeframe)),
       map(eventsDateRange => {
-        const min = eventsDateRange.map(eventRange => eventRange.start)
+        const min = eventsDateRange
+          .filter(eventRange => !!eventRange?.start)
+          .map(eventRange => eventRange.start)
           .reduce((prev, curr) => prev <= curr ? prev : curr);
-        const max = eventsDateRange.map(eventRange => eventRange.end)
-        .reduce((prev, curr) => prev > curr ? prev : curr);
+
+        const max = eventsDateRange
+          .filter(eventRange => !!eventRange?.end)
+          .map(eventRange => eventRange.end)
+          .reduce((prev, curr) => prev > curr ? prev : curr);
         const extrema: Range<Date> = {start: min, end: max};
         return extrema;
       })

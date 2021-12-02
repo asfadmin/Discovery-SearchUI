@@ -221,7 +221,9 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
         profile => {
           this.urlStateService.setDefaults(profile);
 
-          if (this.searchType !== models.SearchType.LIST && this.searchType !== models.SearchType.CUSTOM_PRODUCTS) {
+          if (this.searchType !== models.SearchType.LIST
+            && this.searchType !== models.SearchType.CUSTOM_PRODUCTS
+            && this.searchType !== models.SearchType.SARVIEWS_EVENTS) {
             const defaultFilterID = profile.defaultFilterPresets[this.searchType];
             if (!!defaultFilterID) {
               this.store$.dispatch(new userStore.LoadFiltersPreset(defaultFilterID));
@@ -245,7 +247,9 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
       this.subs.add(
       this.store$.select(userStore.getUserProfile).subscribe(
         profile => {
-          if (this.searchType !== models.SearchType.LIST && this.searchType !== models.SearchType.CUSTOM_PRODUCTS) {
+          if (this.searchType !== models.SearchType.LIST
+            && this.searchType !== models.SearchType.CUSTOM_PRODUCTS
+            && this.searchType !== models.SearchType.SARVIEWS_EVENTS) {
             const defaultFilterID = profile.defaultFilterPresets[this.searchType];
             if (!!defaultFilterID) {
               this.store$.dispatch(new userStore.LoadFiltersPreset(defaultFilterID));
@@ -382,6 +386,23 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
       'gridlines',
       this.domSanitizer.bypassSecurityTrustResourceUrl('../assets/icons/gridlines.svg')
     );
+
+    this.matIconRegistry.addSvgIcon(
+      'Earthquake_inactive',
+      this.domSanitizer.bypassSecurityTrustResourceUrl('../assets/icons/Earthquake_inactive.svg')
+    );
+    this.matIconRegistry.addSvgIcon(
+      'Earthquake',
+      this.domSanitizer.bypassSecurityTrustResourceUrl('../assets/icons/Earthquake.svg')
+    );
+    this.matIconRegistry.addSvgIcon(
+      'Volcano_inactive',
+      this.domSanitizer.bypassSecurityTrustResourceUrl('../assets/icons/Volcano_inactive.svg')
+    );
+    this.matIconRegistry.addSvgIcon(
+      'Volcano',
+      this.domSanitizer.bypassSecurityTrustResourceUrl('../assets/icons/Volcano.svg')
+    );
   }
 
   private isEmptySearch(searchState): boolean {
@@ -443,7 +464,7 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
       ),
       switchMap(params => {
         if (this.searchType === models.SearchType.SARVIEWS_EVENTS) {
-          return this.sarviewsService.getSarviewsEvents$().pipe(map(events => events.length));
+          return this.sarviewsService.filteredSarviewsEvents$().pipe(map(events => events.length));
         }
         return this.asfSearchApi.query<any[]>(params).pipe(
         catchError(resp => {

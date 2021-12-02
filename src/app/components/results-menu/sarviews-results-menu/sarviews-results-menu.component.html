@@ -15,7 +15,7 @@
     <mat-card-subtitle class="header">
     Event Detail
     </mat-card-subtitle>
-        <app-scene-detail *ngIf="scenesLength !== 0 || sarviewsEventsLength !== 0"></app-scene-detail>
+        <app-scene-detail *ngIf="sarviewsEventsLength !== 0"></app-scene-detail>
   </mat-card>
 
   <!-- FILE LIST -->
@@ -50,8 +50,18 @@
     </mat-card-subtitle>
 
     <div class="app-scene-list scroll-y scroll-x">
-            <app-scene-detail *ngIf="sarviewsEventsLength != 0" [isScrollable]="false"></app-scene-detail>
+            <app-scene-detail *ngIf="sarviewsEventsLength !== 0" [isScrollable]="false"></app-scene-detail>
           <hr/>
+
+      <app-scene-files *ngIf="sarviewsProductsLength !== 0"></app-scene-files>
+      <div *ngIf="sarviewsProductsLength === 0" class="no-event-products-container">
+        <span>
+          <p>
+            No Products Available for this Event
+          </p>
+          </span>
+      </div>
+
     </div>
   </mat-card>
 </ng-container>

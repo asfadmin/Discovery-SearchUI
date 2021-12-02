@@ -3,8 +3,8 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject, Subject } from 'rxjs';
 import { map, sampleTime } from 'rxjs/operators';
 
-import { Feature, Map } from 'ol';
-import { Vector as VectorLayer } from 'ol/layer';
+import { Collection, Feature, Map } from 'ol';
+import { Layer, Vector as VectorLayer } from 'ol/layer';
 import { Vector as VectorSource } from 'ol/source';
 import * as proj from 'ol/proj';
 import Point from 'ol/geom/Point';
@@ -27,6 +27,10 @@ import { AppState } from '@store';
 import { Icon, Style } from 'ol/style';
 import IconAnchorUnits from 'ol/style/IconAnchorUnits';
 import Geometry from 'ol/geom/Geometry';
+import ImageLayer from 'ol/layer/Image';
+import LayerGroup from 'ol/layer/Group';
+import { PinnedProduct } from '@services/browse-map.service';
+import { BrowseOverlayService } from '@services';
 
 @Injectable({
   providedIn: 'root'
@@ -38,8 +42,12 @@ export class MapService {
   private map: Map;
   private polygonLayer: VectorLayer;
   private sarviewsEventsLayer: VectorLayer;
+  private browseImageLayer: ImageLayer;
+  // private browseRasterCanvas: RasterSource;
   private gridLinesVisible: boolean;
   private sarviewsFeaturesByID: {[id: string]: Feature} = {};
+  private pinnedCollection: Collection<Layer> = new Collection<Layer>([], {unique: true});
+  private pinnedProducts: LayerGroup = new LayerGroup({layers: this.pinnedCollection});
 
   private selectClick = new Select({
     condition: click,
@@ -56,7 +64,7 @@ export class MapService {
   private selectSarviewEventHover = new Select({
     condition: pointerMove,
     style: null,
-    layers: l => l === this.sarviewsEventsLayer || false
+    layers: l => l?.get('selectable') || false,
   });
 
   private selectedSource = new VectorSource({
@@ -107,6 +115,7 @@ export class MapService {
     private legacyAreaFormat: LegacyAreaFormatService,
     private drawService: DrawService,
     private store$: Store<AppState>,
+    private browseOverlayService: BrowseOverlayService,
   ) {}
 
   public epsg(): string {
@@ -199,7 +208,6 @@ export class MapService {
         let point: Point;
         point = new Point([sarviewEvent.point.lat, sarviewEvent.point.lon]);
 
-        // point.scale(20);
         feature.set('eventPoint', point);
         feature.setGeometryName('eventPoint');
         feature.set('sarviews_id', sarviewEvent.event_id);
@@ -221,7 +229,7 @@ export class MapService {
               anchor: [0.5, 46],
               anchorXUnits: IconAnchorUnits.FRACTION,
               anchorYUnits: IconAnchorUnits.PIXELS,
-              src: `/assets/${iconName}`,
+              src: `/assets/icons/${iconName}`,
               scale: 0.1,
               offset: [0, 10]
             }),
@@ -346,10 +354,12 @@ export class MapService {
       this.epsg()
     );
 
+    this.wktService.fixPolygonAntimeridian(feature, targetEvent.wkt);
+
     this.zoomToFeature(feature);
   }
 
-  public zoomToFeature(feature): void {
+  public zoomToFeature(feature: Feature<Geometry>): void {
     const extent = feature
       .getGeometry()
       .getExtent();
@@ -363,6 +373,8 @@ export class MapService {
       wkt,
       this.epsg()
     );
+
+    this.wktService.fixPolygonAntimeridian(features, sarviewEvent.wkt);
 
     features.getGeometry().scale(radius);
     this.setDrawFeature(features);
@@ -399,7 +411,13 @@ export class MapService {
 
   private createNewMap(overlay): Map {
     const newMap = new Map({
-      layers: [ this.mapView.layer, this.drawService.getLayer(), this.focusLayer, this.selectedLayer, this.mapView?.gridlines ],
+      layers: [ this.mapView.layer,
+        this.drawService.getLayer(),
+        this.focusLayer,
+        this.selectedLayer,
+        this.mapView?.gridlines,
+        this.pinnedProducts
+      ],
       target: 'map',
       view: this.mapView.view,
       controls: [],
@@ -423,7 +441,16 @@ export class MapService {
     this.selectSarviewEventHover.on('select', e => {
       this.map.getTargetElement().style.cursor =
         e.selected.length > 0 ? 'pointer' : '';
-    });
+
+        // this.map.forEachLayerAtPixel(e.mapBrowserEvent.pixel, f => {
+        //   if(f.get('selectable') || false) {
+        //     f
+        //     return true;
+        //   }
+        // });
+
+    }
+    );
 
     newMap.on('pointermove', e => {
       const [ lon, lat ] = proj.toLonLat(e.coordinate, this.epsg());
@@ -486,5 +513,51 @@ export class MapService {
 
     return this.map;
   }
+
+  public setSelectedBrowse(url: string, wkt: string) {
+    if (!!this.browseImageLayer) {
+      this.map.removeLayer(this.browseImageLayer);
+    }
+    this.browseImageLayer = this.browseOverlayService.createNormalImageLayer(url, wkt, 'ol-layer', 'current-overlay');
+    this.map.addLayer(this.browseImageLayer);
+  }
+
+  public createBrowseRasterCanvas(scenes: models.CMRProduct[]) {
+    const scenesWithBrowse = scenes.filter(scene => scene.browses?.length > 0).slice(0, 10);
+
+    const collection = scenesWithBrowse.reduce((prev, curr) =>
+    prev.concat(this.browseOverlayService.createNormalImageLayer(curr.browses[0], curr.metadata.polygon)), [] as ImageLayer[]);
+
+    // this.browseRasterCanvas = new RasterSource({
+    //   sources: collection,
+    //   operationType: 'image' as RasterOperationType
+    // })
+
+    // const l = new ImageLayer({
+    //   source: this.browseRasterCanvas,
+    // });
+
+    collection.forEach(element => {
+      this.map.addLayer(element);
+    });
+    // this.map.addLayer(l);
+  }
+
+  public setPinnedProducts(pinnedProductStates: {[product_id in string]: PinnedProduct}) {
+    this.browseOverlayService.setPinnedProducts(pinnedProductStates, this.pinnedProducts);
+  }
+
+  public clearBrowseOverlays() {
+    this.pinnedProducts.getLayers().clear();
+    if (!!this.browseImageLayer) {
+      this.map.removeLayer(this.browseImageLayer);
+    }
+  }
+
+  public updateBrowseOpacity(opacity: number) {
+    this.browseImageLayer?.setOpacity(opacity);
+    this.pinnedProducts?.setOpacity(opacity);
+  }
+
 
 }

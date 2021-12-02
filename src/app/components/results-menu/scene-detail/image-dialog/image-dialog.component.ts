@@ -20,8 +20,6 @@ import {
   // Breakpoints,
   SarviewProductGranule, SarviewsProduct } from '@models';
 import { ClipboardService } from 'ngx-clipboard';
-import { MatSliderChange } from '@angular/material/slider';
-import { PinnedProduct } from '@services/browse-map.service';
 
 @Component({
   selector: 'app-image-dialog',
@@ -42,6 +40,7 @@ export class ImageDialogComponent implements OnInit, AfterViewInit, OnDestroy {
   public queuedProductIds: Set<string>;
   public scene: models.CMRProduct;
   public sarviewsEvent: models.SarviewsEvent;
+  public eventType: models.SarviewsEventType;
   public currentSarviewsProduct: models.SarviewsProduct;
   public products: models.CMRProduct[];
   public sarviewsProducts: models.SarviewsProduct[];
@@ -57,8 +56,6 @@ export class ImageDialogComponent implements OnInit, AfterViewInit, OnDestroy {
 
   private image: HTMLImageElement = new Image();
   private subs = new SubSink();
-
-  private pinnedProducts: {[product_id in string]: PinnedProduct} = {};
 
   constructor(
     private store$: Store<AppState>,
@@ -81,28 +78,6 @@ export class ImageDialogComponent implements OnInit, AfterViewInit, OnDestroy {
       this.store$.select(scenesStore.getSelectedSceneProducts).subscribe(
         products => {
           this.products = products;
-        }
-      )
-    );
-
-    this.subs.add(
-      this.store$.select(scenesStore.getAllProducts).pipe(
-        first(),
-        withLatestFrom(this.searchType$),
-        filter(([_, searchtype]) => searchtype !== models.SearchType.SARVIEWS_EVENTS),
-        map(([products, _]) => products)
-      ).subscribe(
-        products => {
-          if (!!products) {
-            this.pinnedProducts = {};
-            products.forEach(prod => this.pinnedProducts[prod.id] = {
-              isPinned: false,
-              url: prod.browses[0],
-              wkt: prod.metadata.polygon,
-            });
-
-            this.store$.dispatch(new scenesStore.SetImageBrowseProducts(this.pinnedProducts));
-          }
         }
       )
     );
@@ -134,37 +109,15 @@ export class ImageDialogComponent implements OnInit, AfterViewInit, OnDestroy {
       }
     )
     );
+
     this.subs.add(
-      this.sarviewsEventProducts$.pipe(
-        first(),
-        withLatestFrom(this.searchType$),
-        filter(([_, searchtype]) => searchtype === models.SearchType.SARVIEWS_EVENTS),
-        map(([products, _]) => products),
-        withLatestFrom(this.store$.select(scenesStore.getPinnedEventBrowseIDs)),
+      this.sarviewsEvent$.pipe(
+        filter(event => !!event),
       ).subscribe(
-        ([products, pinned]) => {
-          this.sarviewsProducts = products;
-          if (!!this.sarviewsProducts) {
-            this.pinnedProducts = {};
-            this.sarviewsProducts.forEach(prod => this.pinnedProducts[prod.product_id] = {
-              isPinned: pinned.includes(prod.product_id),
-              url: prod.files.browse_url,
-              wkt: prod.granules[0].wkt,
-            });
-
-            this.store$.dispatch(new scenesStore.SetImageBrowseProducts(this.pinnedProducts));
-          }
+        event => {
+          this.sarviewsEvent = event;
+          this.eventType = event.event_type === 'quake' ? models.SarviewsEventType.QUAKE : models.SarviewsEventType.VOLCANO;
         }
-      )
-    );
-
-    this.subs.add(
-      this.store$.select(scenesStore.getImageBrowseProducts).subscribe(browseStates => this.pinnedProducts = browseStates)
-    );
-
-    this.subs.add(
-      this.sarviewsEvent$.subscribe(
-        event => this.sarviewsEvent = event
       )
     );
     this.subs.add(
@@ -210,18 +163,6 @@ export class ImageDialogComponent implements OnInit, AfterViewInit, OnDestroy {
         }
       )
     );
-    this.subs.add(
-      this.store$.select(scenesStore.getPinnedEventBrowseIDs).pipe(
-        withLatestFrom(this.searchType$),
-        filter(([_, searchtype]) => searchtype === models.SearchType.SARVIEWS_EVENTS),
-        map(([products, _]) => products),
-        filter(products => !!products),
-        debounceTime(1000),
-        first(),
-      ).subscribe(_ =>
-        this.setPinnedProducts()
-      )
-    );
   }
 
   private loadBrowseImage(scene: models.CMRProduct, browse): void {
@@ -264,8 +205,11 @@ export class ImageDialogComponent implements OnInit, AfterViewInit, OnDestroy {
       }
 
       self.isImageLoading = false;
+      const [width, height] = [
+        this.naturalWidth, this.naturalHeight
+      ];
 
-      browseService.setMapBrowse(product.files.browse_url, product.granules[0].wkt );
+      browseService.setBrowse(product.files.browse_url, {width, height} );
     });
 
     this.image.src = product.files.browse_url;
@@ -293,6 +237,10 @@ export class ImageDialogComponent implements OnInit, AfterViewInit, OnDestroy {
     this.store$.dispatch(new queueStore.ToggleProduct(product));
   }
 
+  public onToggleQueueEventProduct(product: models.SarviewsProduct): void {
+    this.onToggleQueueProduct(this.sarviewsService.eventProductToCMRProduct(product));
+  }
+
   public toggleDisplay() {
     this.isShow = !this.isShow;
   }
@@ -318,31 +266,26 @@ export class ImageDialogComponent implements OnInit, AfterViewInit, OnDestroy {
     this.notificationService.info( '', `Scene${content.length > 1 ? 's ' : ' '}Copied`);
   }
 
-  public onSetOpacity(event: MatSliderChange) {
-    this.browseMap.updateBrowseOpacity(event.value);
-  }
-
   public downloadSarviewsProduct(product: SarviewsProduct) {
     window.open(product.files.product_url, '_blank');
   }
 
   public OpenProductInSarviews() {
     const url = this.sarviewsService.getSarviewsEventPinnedUrl(
-        this.sarviewsEvent.event_id,
-        [...Object.keys(this.pinnedProducts).filter(key => this.pinnedProducts[key].isPinned)]
+      this.sarviewsEvent.event_id,
+      [this.currentSarviewsProduct.product_id]
       );
     window.open(url);
   }
 
-  public onPinProduct(product_id: string) {
-    this.pinnedProducts[product_id].isPinned = !this.pinnedProducts[product_id].isPinned;
-    this.setPinnedProducts();
+  public getEventURL() {
+    const isQuake = this.sarviewsEvent.event_type === 'quake';
 
-  }
-
-  private setPinnedProducts() {
-    this.store$.dispatch(new scenesStore.SetImageBrowseProducts(this.pinnedProducts));
-    this.browseMap.setPinnedProducts(this.pinnedProducts);
+    if (isQuake) {
+      return this.sarviewsService.getUSGSEventUrl((this.sarviewsEvent as models.SarviewsQuakeEvent).usgs_event_id);
+    } else {
+      return this.sarviewsService.getSmithsonianURL((this.sarviewsEvent as models.SarviewsVolcanicEvent).smithsonian_event_id);
+    }
   }
 
   ngOnDestroy() {

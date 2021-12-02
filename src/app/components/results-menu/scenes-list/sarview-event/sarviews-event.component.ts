@@ -4,9 +4,10 @@ import { SarviewsEvent, SarviewsQuakeEvent, SarviewsVolcanicEvent } from '@model
 import * as models from '@models';
 import * as sceneStore from '@store/scenes';
 
-import { MapService } from '@services';
+import {MapService, ScreenSizeService} from '@services';
 import { Store } from '@ngrx/store';
 import { AppState } from '@store';
+import * as moment from 'moment';
 
 @Component({
   selector: 'app-sarviews-event',
@@ -16,14 +17,17 @@ import { AppState } from '@store';
 export class SarviewsEventComponent implements OnInit {
   @Input() event: SarviewsEvent;
   @Input() selected: boolean;
+
   public hovered = false;
 
-  public breakpoint: models.Breakpoints;
+  public breakpoint$ = this.screenSize.breakpoint$;
   public breakpoints = models.Breakpoints;
 
-  constructor(private mapService: MapService,
+  constructor(
+    private mapService: MapService,
     private store$: Store<AppState>,
-              ) { }
+    private screenSize: ScreenSizeService,
+  ) { }
 
   ngOnInit(): void {
   }
@@ -49,6 +53,36 @@ export class SarviewsEventComponent implements OnInit {
     }
   }
 
+  public isActive(): boolean {
+    const currentDate = moment(new Date()).startOf('day').toDate();
+
+    if (!!this.event.processing_timeframe.end) {
+      return currentDate <= moment(this.event.processing_timeframe.end).endOf('day').toDate();
+    }
+
+    return true;
+  }
+
+  public getEventIcon(): string {
+    let eventIconName = this.event.event_type === 'quake' ? 'Earthquake' : 'Volcano';
+    if (!this.isActive()) {
+      eventIconName += '_inactive';
+    }
+
+    return '/assets/icons/' + eventIconName + '.svg';
+  }
+
+  public eventIcon(): string {
+    const eventTypeIcon = this.event.event_type === 'quake' ? 'Earthquake' : 'Volcano';
+
+    if (!this.isActive()) {
+      return eventTypeIcon + '_inactive';
+    }
+
+    return eventTypeIcon;
+  }
+
+  // "Earthquake_inactive.svg
   public onZoomTo() {
     this.mapService.zoomToEvent(this.event);
   }

@@ -1,3 +1,13 @@
 ::ng-deep .mat-list-item-content {
   justify-content: space-between;
 }
+
+.event-list-thumbnail {
+  width: 26px;
+  height: auto;
+  margin-right: 18px;
+}
+
+.mobile-event-sub-text {
+  font-size: 12px !important;
+}

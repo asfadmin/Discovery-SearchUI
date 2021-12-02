@@ -6,16 +6,6 @@
     </div>
   </div>
 
-<!--  <div class="saved-searches__subhead">-->
-<!--    <div class="saved-searches__save-button">-->
-<!--      <button (click)="onCreateSubscription()"-->
-<!--              mat-raised-button-->
-<!--              color="accent">-->
-<!--        New Subscription...-->
-<!--      </button>-->
-<!--    </div>-->
-<!--  </div>-->
-
   <div class="add-button-container">
     <button mat-fab color="primary" aria-label="Create Subscription"
             matTooltip="Create Subscription"
@@ -40,6 +30,7 @@
             [isToggling]="loadingSubs.has(subscription.id)"
             (newEnd)="onNewEndDate(subscription.id, $event)"
             (renew)="onRenewSubscription($event)"
+            (loadSearch)="onLoadSearch($event)"
             (toggleEnabled)="onToggleEnabled($event)"
             (toggleExpand)="onToggleSelected($event)"
             (viewProducts)="onLoadProductsFor($event)">
@@ -63,5 +54,4 @@
       </button>
     </div>
   </div>
-
 </div>

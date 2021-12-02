@@ -12,7 +12,7 @@ import * as uiStore from '@store/ui';
 import * as searchStore from '@store/search';
 
 import * as models from '@models';
-import { BrowseMapService, ScenesService } from '@services';
+import { ScenesService } from '@services';
 import { PinnedProduct } from '@services/browse-map.service';
 
 @Component({
@@ -28,6 +28,7 @@ export class BrowseListComponent implements OnInit, AfterViewInit, OnDestroy {
     this.scenesService.scenes$()
   );
   public scenes$: Observable<models.CMRProduct[]>;
+  private scene: models.CMRProduct;
   public selectedId: string;
   public browses$ = this.store$.select(scenesStore.getSelectedSceneBrowses);
   public sarviewsProducts$ = this.store$.select(scenesStore.getSelectedSarviewsEventProducts).pipe(
@@ -47,8 +48,7 @@ export class BrowseListComponent implements OnInit, AfterViewInit, OnDestroy {
 
   constructor(
     private store$: Store<AppState>,
-    private scenesService: ScenesService,
-    private browseMap: BrowseMapService,
+    private scenesService: ScenesService
   ) { }
 
   ngOnInit() {
@@ -62,7 +62,10 @@ export class BrowseListComponent implements OnInit, AfterViewInit, OnDestroy {
 
     this.subs.add(
       this.store$.select(scenesStore.getSelectedScene).subscribe(
-        scene => this.selectedId = scene ? scene.id : null
+        scene => {
+          this.selectedId = scene ? scene.id : null;
+          this.scene = scene;
+        }
       )
     );
 
@@ -127,9 +130,33 @@ export class BrowseListComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   public onPinProduct(product_id: string) {
-    this.productBrowseStates[product_id].isPinned = !this.productBrowseStates[product_id].isPinned;
+    const temp: {[id in string]: PinnedProduct} = JSON.parse(JSON.stringify(this.productBrowseStates));
+    if (!!temp[product_id]) {
+      delete temp[product_id];
+    } else {
+
+      let url: string;
+      let wkt: string;
+
+      if (this.searchtype === models.SearchType.SARVIEWS_EVENTS) {
+        const targetProduct = this.sarviewsProducts.find(prod => prod.product_id === product_id);
+        url = targetProduct?.product_id;
+        wkt = targetProduct?.granules[0].wkt;
+      } else {
+        const targetProduct = this.scene;
+        url = targetProduct?.browses[0];
+        wkt = targetProduct?.metadata.polygon;
+      }
+
+      temp[product_id] = {url, wkt} as PinnedProduct;
+    }
+
+    this.productBrowseStates = temp;
     this.store$.dispatch(new scenesStore.SetImageBrowseProducts(this.productBrowseStates));
-    this.browseMap.setPinnedProducts(this.productBrowseStates);
+  }
+
+  public isPinned(product_id: string) {
+    return Object.keys(this.productBrowseStates).includes(product_id);
   }
 
   ngOnDestroy() {

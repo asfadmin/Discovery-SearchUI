@@ -11,16 +11,18 @@ import * as uiStore from '@store/ui';
 import * as queueStore from '@store/queue';
 import * as searchStore from '@store/search';
 import * as filtersStore from '@store/filters';
+import { faCopy } from '@fortawesome/free-solid-svg-icons';
 
 import {
   MapService, ScenesService, ScreenSizeService,
-  PairService, Hyp3Service, SarviewsEventsService
+  PairService, Hyp3Service, SarviewsEventsService, NotificationService
 } from '@services';
 
 import * as models from '@models';
 import { SubSink } from 'subsink';
 import { hyp3JobTypes, SarviewsProduct } from '@models';
 import { AddItems, AddJobs } from '@store/queue';
+import { ClipboardService } from 'ngx-clipboard';
 
 @Component({
   selector: 'app-scenes-list-header',
@@ -28,10 +30,11 @@ import { AddItems, AddJobs } from '@store/queue';
   styleUrls: ['./scenes-list-header.component.scss']
 })
 export class ScenesListHeaderComponent implements OnInit, OnDestroy {
+  public copyIcon = faCopy;
   public totalResultCount$ = this.store$.select(searchStore.getTotalResultCount);
   public numberOfScenes$ = this.store$.select(scenesStore.getNumberOfScenes);
   public numberOfProducts$ = this.store$.select(scenesStore.getNumberOfProducts);
-  public numberOfFilteredEvents$ = this.scenesService.sarviewsEvents$().pipe(
+  public numberOfFilteredEvents$ = this.eventMonitoringService.filteredSarviewsEvents$().pipe(
     filter(events => !!events),
     map(events => events.length));
   public numSarviewsScenes$ = this.store$.select(scenesStore.getNumberOfSarviewsEvents);
@@ -44,9 +47,11 @@ export class ScenesListHeaderComponent implements OnInit, OnDestroy {
     map(scenes => scenes.length),
   );
   public numPairs$ = this.pairService.pairs$().pipe(
+    filter(pairs => !!pairs),
     map(pairs => pairs.pairs.length + pairs.custom.length)
   );
 
+  public sarviewsEventProducts$ = this.store$.select(scenesStore.getSelectedSarviewsEventProducts);
 
   public selectedEventProducts$ = this.store$.select(scenesStore.getPinnedEventBrowseIDs).pipe(
     map(browseIds =>
@@ -81,14 +86,18 @@ export class ScenesListHeaderComponent implements OnInit, OnDestroy {
   public hyp3able = { total: 0, byJobType: [] };
   public hyp3ableEventProducts = {total: 0, byJobType: []};
 
+  private selectedEvent: models.SarviewsEvent;
+
   constructor(
     private store$: Store<AppState>,
     private mapService: MapService,
     private scenesService: ScenesService,
+    private eventMonitoringService: SarviewsEventsService,
     private pairService: PairService,
     private screenSize: ScreenSizeService,
     private hyp3: Hyp3Service,
-    private eventMonitoringService: SarviewsEventsService,
+    private clipboard: ClipboardService,
+    private notificationService: NotificationService,
   ) { }
 
   ngOnInit() {
@@ -189,10 +198,20 @@ export class ScenesListHeaderComponent implements OnInit, OnDestroy {
         ids => this.pinnedEventIDs = ids
       )
     );
+
+    this.subs.add(
+      this.store$.select(scenesStore.getSelectedSarviewsEvent).subscribe(
+        event => this.selectedEvent = event
+      )
+    );
   }
 
   public onZoomToResults(): void {
-    this.mapService.zoomToResults();
+    if (this.searchType === models.SearchType.SARVIEWS_EVENTS) {
+      this.mapService.zoomToEvent(this.selectedEvent);
+    } else {
+      this.mapService.zoomToResults();
+    }
   }
 
   public onToggleS1RawData(): void {
@@ -330,6 +349,46 @@ export class ScenesListHeaderComponent implements OnInit, OnDestroy {
 
   public onOpenHelp(infoUrl) {
     window.open(infoUrl);
+  }
+
+  public getProductSceneCount(products: SarviewsProduct[]) {
+    const outputList = products.reduce((prev, product) => {
+        const temp = product.granules.map(granule => granule.granule_name);
+
+        prev = prev.concat(temp);
+
+        return prev;
+
+        }, [] as string[]
+    );
+
+    return new Set(outputList).size;
+  }
+
+  public getProductDownloadUrl(products: SarviewsProduct[]) {
+    const productListStr = products.map(product => product.files.product_url);
+    this.clipboard.copyFromContent( productListStr.join('\n '));
+    const lines = products.length;
+    this.notificationService.clipboardCopyQueue(lines, false);
+  }
+
+  public onAddEventToOnDemand(product: SarviewsProduct) {
+    const job: models.QueuedHyp3Job = {
+      granules:  this.eventMonitoringService.getSourceCMRProducts(product),
+      job_type: hyp3JobTypes[product.job_type]
+      };
+
+    this.store$.dispatch(new queueStore.AddJob(job));
+  }
+
+  public copyProductSourceScenes(products: SarviewsProduct[]) {
+    const granuleNameList = products.reduce(
+      (acc, curr) => acc = acc.concat(curr.granules), [] as models.SarviewProductGranule[]
+      ).map(gran => gran.granule_name);
+    const granuleNameListSet = new Set(granuleNameList);
+
+    this.clipboard.copyFromContent( Array.from(granuleNameListSet).join(','));
+    this.notificationService.clipboardCopyIcon('', granuleNameListSet.size);
   }
 
   ngOnDestroy(): void {

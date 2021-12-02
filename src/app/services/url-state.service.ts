@@ -19,9 +19,7 @@ import { MapService } from './map/map.service';
 import { WktService } from './wkt.service';
 import { RangeService } from './range.service';
 import { PropertyService } from './property.service';
-import { PinnedProduct } from './browse-map.service';
-// import { MatDialog } from '@angular/material/dialog';
-// import { ImageDialogComponent } from '@components/results-menu/scene-detail/image-dialog';
+// import { PinnedProduct } from './browse-map.service';
 
 
 @Injectable({
@@ -41,7 +39,6 @@ export class UrlStateService {
     private wktService: WktService,
     private rangeService: RangeService,
     private router: Router,
-    // private dialog: MatDialog,
     private prop: PropertyService,
   ) {
     const params = [
@@ -395,6 +392,12 @@ export class UrlStateService {
         map(eventTypes => ({eventTypes}))
       ),
       loader: this.loadEventTypes
+    }, {
+      name: 'eventQuery',
+      source: this.store$.select(filterStore.getSarviewsEventNameFilter).pipe(
+        map(eventQuery => ({eventQuery}))
+      ),
+      loader: this.loadEventNameFilter
     }];
   }
 
@@ -682,21 +685,7 @@ export class UrlStateService {
 
   private loadPinnedProducts = (pinnedProducts: string): Action => {
     const productIDs = pinnedProducts.split(',');
-
-    const pinned = productIDs.reduce(
-      (prev, key) => {
-        const output = {} as PinnedProduct;
-        output.isPinned = true;
-        // const sarviewsProduct = this.sarviewsProducts.find(prod => prod.product_id === key)
-        output.url = '';
-        output.wkt = '';
-
-        prev[key] = output;
-        return prev;
-      }, {} as {[product_id in string]: PinnedProduct}
-    );
-
-      return new scenesStore.SetImageBrowseProducts(pinned);
+    return new mapStore.SetBrowseOverlays(productIDs);
   }
 
   private loadIsDownloadQueueOpen = (isDownloadQueueOpen: string): Action => {
@@ -705,6 +694,14 @@ export class UrlStateService {
 
   private loadIsOnDemandQueueOpen = (isOnDemandQueueOpen: string): Action => {
     return new uiStore.SetIsOnDemandQueueOpen(!!isOnDemandQueueOpen);
+  }
+
+  private loadEventNameFilter = (eventStr: string): Action => {
+    if (eventStr.length > 100) {
+      return new filterStore.SetSarviewsEventNameFilter('');
+    }
+
+    return new filterStore.SetSarviewsEventNameFilter(eventStr);
   }
 
   private loadMagnitudeRange = (rangeStr: string): Action => {
@@ -727,7 +724,7 @@ export class UrlStateService {
     return new filterStore.SetSarviewsEventTypes(eventTypes);
   }
 
-  private loadOnlyActiveEvents = (activeOnly: boolean): Action => new filterStore.SetSarviewsEventActiveFilter(activeOnly);
+  private loadOnlyActiveEvents = (activeOnly: string): Action => new filterStore.SetSarviewsEventActiveFilter(activeOnly === 'true');
 
   // private loadIsImageBrowseOpen = (isImageBrowseOpen: string): Action => {
   //   this.dialog.open(ImageDialogComponent, {

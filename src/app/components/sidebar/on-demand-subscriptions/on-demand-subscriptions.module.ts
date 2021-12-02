@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
 import { CreateSubscriptionModule } from '@components/header/create-subscription';
+import { CopyToClipboardModule } from '@components/shared/copy-to-clipboard';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
@@ -37,6 +38,7 @@ import {MatSlideToggleModule} from '@angular/material/slide-toggle';
         MatMomentDateModule,
         CreateSubscriptionModule,
         MatSlideToggleModule,
+        CopyToClipboardModule,
     ],
   exports: [
     OnDemandSubscriptionsComponent,

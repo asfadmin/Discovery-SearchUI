@@ -6,6 +6,7 @@ import { Store } from '@ngrx/store';
 import { AppState } from '@store';
 import * as queueStore from '@store/queue';
 import * as hyp3Store from '@store/hyp3';
+import * as userStore from '@store/user';
 
 import * as models from '@models';
 import { SubSink } from 'subsink';
@@ -29,6 +30,8 @@ export class OnDemandAddMenuComponent implements OnInit {
 
   @ViewChild('addMenu', {static: true}) addMenu: MatMenu;
 
+  public isLoggedIn = false;
+
   public referenceScene: CMRProduct;
   private scenes: CMRProduct[];
 
@@ -46,9 +49,16 @@ export class OnDemandAddMenuComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    this.subs.add(
+      this.store$.select(getSearchType).subscribe(
+        searchtype => this.searchType = searchtype
+      )
+    );
 
     this.subs.add(
-      this.store$.select(getSearchType).subscribe( searchtype => this.searchType = searchtype)
+      this.store$.select(userStore.getIsUserLoggedIn).subscribe(
+        isLoggedIn => this.isLoggedIn = isLoggedIn
+      )
     );
 
     this.subs.add(
