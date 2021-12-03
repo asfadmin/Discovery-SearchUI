@@ -295,8 +295,8 @@ export class UserEffects {
   private setDatasetFilters(datasetFilter: GeographicFiltersType) {
     const actions = [
       new filterStore.SetSelectedDataset(datasetFilter.selectedDataset),
-      new filterStore.SetStartDate(datasetFilter.dateRange.start),
-      new filterStore.SetEndDate(datasetFilter.dateRange.end),
+      new filterStore.SetStartDate(new Date(datasetFilter.dateRange.start)),
+      new filterStore.SetEndDate(new Date(datasetFilter.dateRange.end)),
       new filterStore.SetSeasonStart(datasetFilter.season.start),
       new filterStore.SetSeasonEnd(datasetFilter.season.end),
       new filterStore.SetPathStart(datasetFilter.pathRange.start),
@@ -317,8 +317,8 @@ export class UserEffects {
 
   private setBaselineFilters(baselineFilter: BaselineFiltersType) {
     const actions = [
-      new filterStore.SetStartDate(baselineFilter.dateRange.start),
-      new filterStore.SetEndDate(baselineFilter.dateRange.end),
+      new filterStore.SetStartDate(new Date(baselineFilter.dateRange.start)),
+      new filterStore.SetEndDate(new Date(baselineFilter.dateRange.end)),
       new filterStore.SetSeasonStart(baselineFilter.season.start),
       new filterStore.SetSeasonEnd(baselineFilter.season.end),
       new filterStore.SetTemporalRange(baselineFilter.temporalRange),
@@ -330,8 +330,8 @@ export class UserEffects {
 
   private setSBASFilters(sbasFilter: SbasFiltersType) {
     const actions = [
-      new filterStore.SetStartDate(sbasFilter.dateRange.start),
-      new filterStore.SetEndDate(sbasFilter.dateRange.end),
+      new filterStore.SetStartDate(new Date(sbasFilter.dateRange.start)),
+      new filterStore.SetEndDate(new Date(sbasFilter.dateRange.end)),
       new filterStore.SetSeasonStart(sbasFilter.season.start),
       new filterStore.SetSeasonEnd(sbasFilter.season.end),
       new filterStore.SetTemporalEnd(sbasFilter.temporal),

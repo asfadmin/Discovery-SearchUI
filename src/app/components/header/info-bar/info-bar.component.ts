@@ -11,6 +11,7 @@ import * as searchStore from '@store/search';
 import * as services from '@services';
 import * as models from '@models';
 import {Observable} from 'rxjs';
+import { filter } from 'rxjs/operators';
 
 // Declare GTM dataLayer array.
 declare global {
@@ -57,10 +58,14 @@ export class InfoBarComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
 
-    const startSub = this.store$.select(filtersStore.getStartDate).subscribe(
+    const startSub = this.store$.select(filtersStore.getStartDate).pipe(
+      filter(start => !!start),
+    ).subscribe(
       start => this.startDate = start
     );
-    const endSub = this.store$.select(filtersStore.getEndDate).subscribe(
+    const endSub = this.store$.select(filtersStore.getEndDate).pipe(
+      filter(end => !!end),
+    ).subscribe(
       end => this.endDate = end
     );
     const pathSub = this.store$.select(filtersStore.getPathRange).subscribe(

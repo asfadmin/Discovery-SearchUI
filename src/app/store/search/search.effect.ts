@@ -113,7 +113,14 @@ export class SearchEffects {
     ofType<SearchResponse>(SearchActionType.SEARCH_RESPONSE),
     switchMap(action => [
       new scenesStore.SetScenes({
-        products: action.payload.files,
+        products: action.payload.files.map(product => ({
+          ...product,
+          metadata: {
+            ...product.metadata,
+            date: Object.freeze(product.metadata.date),
+            stopDate: Object.freeze(product.metadata.stopDate)
+          }
+        })),
         searchType: action.payload.searchType
       }),
       new SetSearchAmount(action.payload.totalCount)
@@ -133,7 +140,15 @@ export class SearchEffects {
     ofType<Hyp3BatchResponse>(SearchActionType.HYP3_BATCH_RESPONSE),
     switchMap(action => [
       new scenesStore.SetScenes({
-        products: action.payload.files,
+        products: action.payload.files.map(product => ({
+          ...product,
+          metadata: {
+            ...product.metadata,
+            date: Object.freeze(product.metadata.date),
+            stopDate: Object.freeze(product.metadata.stopDate)
+          }
+        })
+        ),
         searchType: action.payload.searchType
       }),
       !!action.payload.next ? new SetNextJobsUrl(action.payload.next) : new SetNextJobsUrl(''),

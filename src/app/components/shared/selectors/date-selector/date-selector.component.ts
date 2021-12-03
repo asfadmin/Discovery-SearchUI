@@ -58,8 +58,8 @@ export class DateSelectorComponent implements OnInit, OnDestroy {
       }
     )
   );
-  public startDate$ = this.store$.select(filtersStore.getStartDate);
-  public endDate$ = this.store$.select(filtersStore.getEndDate);
+  public startDate$ = this.store$.select(filtersStore.getStartDate).pipe(filter(date => !!date));
+  public endDate$ = this.store$.select(filtersStore.getEndDate).pipe(filter(date => !!date));
   public startDate: Date = new Date();
   public endDate: Date = new Date();
 
@@ -143,7 +143,7 @@ export class DateSelectorComponent implements OnInit, OnDestroy {
     this.subs.add(
       this.startDate$.subscribe(
         start => {
-          this.startDate = start;
+          this.startDate = new Date(start);
           if (this.endDate < this.startDate && !!this.endDate) {
             const endOfDay = this.endDateFormat(this.startDate);
             this.store$.dispatch(new filtersStore.SetEndDate(endOfDay));
@@ -155,21 +155,21 @@ export class DateSelectorComponent implements OnInit, OnDestroy {
     this.subs.add(
       this.endDate$.subscribe(
         end => {
-          this.endDate = end;
+          this.endDate = new Date(end);
           if (this.startDate > this.endDate && !!this.startDate && !!this.endDate) {
-            this.store$.dispatch(new filtersStore.SetStartDate(this.endDate));
+            this.store$.dispatch(new filtersStore.SetStartDate(new Date(this.endDate)));
           }
         }
       )
     );
   }
 
-  public onStartDateChange(date): void {
-    this.store$.dispatch(new filtersStore.SetStartDate(date));
+  public onStartDateChange(date: Date): void {
+    this.store$.dispatch(new filtersStore.SetStartDate(new Date(date)));
   }
 
-  public onEndDateChange(date): void {
-    this.store$.dispatch(new filtersStore.SetEndDate(date));
+  public onEndDateChange(date: Date): void {
+    this.store$.dispatch(new filtersStore.SetEndDate(new Date(date)));
   }
 
   private endDateFormat(date: Date | moment.Moment) {
@@ -178,7 +178,8 @@ export class DateSelectorComponent implements OnInit, OnDestroy {
   }
 
   private toJSDate(date: moment.Moment) {
-    return date.toDate();
+    const m = Object.freeze(date);
+    return m.toDate();
   }
 
   ngOnDestroy() {

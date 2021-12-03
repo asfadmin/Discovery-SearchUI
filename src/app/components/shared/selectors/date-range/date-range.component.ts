@@ -85,7 +85,8 @@ export class DateRangeComponent implements OnInit, OnDestroy {
   }
 
   private toJSDate(date: moment.Moment) {
-    return date.toDate();
+    const m = Object.freeze(date);
+    return m.toDate();
   }
 
   private handleDateErrors(): void {

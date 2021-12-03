@@ -28,7 +28,7 @@ export class EventMetadataComponent implements OnInit {
   }
 
   public onSetEndDate(endDate: Date) {
-    this.store$.dispatch(new filtersStore.SetEndDate(endDate));
+    this.store$.dispatch(new filtersStore.SetEndDate(new Date(endDate)));
   }
 
   public onSetStartMagnitude(startMagnitude: number) {
