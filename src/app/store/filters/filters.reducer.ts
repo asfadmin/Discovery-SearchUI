@@ -46,7 +46,7 @@ export interface FiltersState {
 }
 
 
-export type DateRangeState = models.Range<null | string>;
+export type DateRangeState = models.Range<null | Date>;
 
 
 export const initState: FiltersState = {
@@ -139,7 +139,7 @@ export function filtersReducer(state = initState, action: FiltersActions): Filte
       return {
         ...state,
         dateRange: {
-          ...state.dateRange, start: start.toJSON()
+          ...state.dateRange, start
         }
       };
     }
@@ -150,7 +150,7 @@ export function filtersReducer(state = initState, action: FiltersActions): Filte
       return {
         ...state,
         dateRange: {
-          ...state.dateRange, end: end.toJSON()
+          ...state.dateRange, end
         }
       };
     }
@@ -509,10 +509,7 @@ export function filtersReducer(state = initState, action: FiltersActions): Filte
 
         return {
           ...state,
-          dateRange: {
-            start: filters.dateRange.start.toJSON(),
-            end: filters.dateRange.end.toJSON()
-          },
+          dateRange: filters.dateRange,
           temporalRange: filters.temporalRange,
           perpendicularRange: filters.perpendicularRange,
         };
@@ -521,10 +518,7 @@ export function filtersReducer(state = initState, action: FiltersActions): Filte
 
         return {
           ...state,
-          dateRange: {
-            start: filters.dateRange.start.toJSON(),
-            end: filters.dateRange.end.toJSON()
-          },
+          dateRange: filters.dateRange,
           temporalRange: {start: filters.temporal, end: null},
           perpendicularRange: {start: filters.perpendicular, end: null},
         };
@@ -534,10 +528,7 @@ export function filtersReducer(state = initState, action: FiltersActions): Filte
           return {
             ... state,
             jobStatuses: filters.jobStatuses,
-            dateRange: {
-              start: filters.dateRange.start.toJSON(),
-              end: filters.dateRange.end.toJSON()
-            },
+            dateRange: filters.dateRange,
             projectName: filters.projectName,
             productFilterName: filters.productFilterName
           };
@@ -546,10 +537,7 @@ export function filtersReducer(state = initState, action: FiltersActions): Filte
 
         return {
           ... state,
-          dateRange: {
-            start: filters.dateRange.start.toJSON(),
-            end: filters.dateRange.end.toJSON()
-          },
+          dateRange: filters.dateRange,
           sarviewsEventTypes: filters.sarviewsEventTypes,
           sarviewsEventNameFilter: filters.sarviewsEventNameFilter,
           sarviewsEventActiveOnly: filters.activeOnly,
@@ -582,10 +570,7 @@ export function filtersReducer(state = initState, action: FiltersActions): Filte
           ...state,
           selectedDatasetId:  filters.selectedDataset,
           maxResults: filters.maxResults,
-          dateRange: {
-            start: filters.dateRange.start.toJSON(),
-            end: filters.dateRange.end.toJSON()
-          },
+          dateRange: filters.dateRange,
           pathRange: filters.pathRange,
           frameRange: filters.frameRange,
           season: filters.season,
@@ -690,20 +675,17 @@ export const getFiltersState = createFeatureSelector<FiltersState>('filters');
 
 export const getDateRange = createSelector(
   getFiltersState,
-  (state: FiltersState) => ({
-    start: new Date(state.dateRange.start),
-    end: new Date(state.dateRange.end)
-  })
+  (state: FiltersState) => state.dateRange
 );
 
 export const getStartDate = createSelector(
   getDateRange,
-  (state) => state.start
+  (state: DateRangeState) => state.start
 );
 
 export const getEndDate = createSelector(
   getDateRange,
-  (state) => state.end
+  (state: DateRangeState) => state.end
 );
 
 export const getTemporalRange = createSelector(
@@ -841,11 +823,10 @@ export const getListSearch = createSelector(
 
 export const getGeographicSearch = createSelector(
   getFiltersState,
-  getDateRange,
-  (state: FiltersState, date) => ({
+  (state: FiltersState) => ({
     selectedDataset: state.selectedDatasetId,
     maxResults: state.maxResults,
-    dateRange: date,
+    dateRange: state.dateRange,
     pathRange: state.pathRange,
     frameRange: state.frameRange,
     season: state.season,
@@ -860,9 +841,8 @@ export const getGeographicSearch = createSelector(
 
 export const getBaselineSearch = createSelector(
   getFiltersState,
-  getDateRange,
-  (state: FiltersState, date) => ({
-    dateRange: date,
+  (state: FiltersState) => ({
+    dateRange: state.dateRange,
     season: state.season,
     temporalRange: state.temporalRange,
     perpendicularRange: state.perpendicularRange
@@ -871,10 +851,9 @@ export const getBaselineSearch = createSelector(
 
 export const getSbasSearch = createSelector(
   getFiltersState,
-  getDateRange,
-  (state: FiltersState, date) => ({
+  (state: FiltersState) => ({
     temporal: state.temporalRange.start,
-    dateRange: date,
+    dateRange: state.dateRange,
     season: state.season,
     perpendicular: state.perpendicularRange.start,
     thresholdOverlap: state.sbasOverlapThreshold
@@ -883,9 +862,8 @@ export const getSbasSearch = createSelector(
 
 export const getCustomProductSearch = createSelector(
   getFiltersState,
-  getDateRange,
-  (state: FiltersState, date) => ({
-    dateRange: date,
+  (state: FiltersState) => ({
+    dateRange: state.dateRange,
     jobStatuses: state.jobStatuses,
 
     projectName: state.projectName,

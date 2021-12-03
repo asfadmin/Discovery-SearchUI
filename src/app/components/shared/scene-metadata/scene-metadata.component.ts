@@ -8,7 +8,6 @@ import * as filtersStore from '@store/filters';
 
 import * as models from '@models';
 import { PropertyService } from '@services';
-import * as moment from 'moment';
 
 
 @Component({
@@ -51,17 +50,13 @@ export class SceneMetadataComponent implements OnInit, OnDestroy {
     this.store$.dispatch(action);
   }
 
-  public setStartDate(date: moment.Moment): void {
-    const m = Object.freeze(date);
-    const d = m.toDate();
-    const action = new filtersStore.SetStartDate(d);
+  public setStartDate(date): void {
+    const action = new filtersStore.SetStartDate(date.toDate());
     this.store$.dispatch(action);
   }
 
-  public setEndDate(date: moment.Moment): void {
-    const m = Object.freeze(date);
-    const d = m.toDate();
-    const action = new filtersStore.SetEndDate(d);
+  public setEndDate(date): void {
+    const action = new filtersStore.SetEndDate(date.toDate());
     this.store$.dispatch(action);
   }
 

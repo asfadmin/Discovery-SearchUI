@@ -500,14 +500,14 @@ export class UrlStateService {
     return;
   }
 
-  private loadStartDate = (start: string): Action => {
+  private loadStartDate = (start: string): Action | undefined => {
     const startDate = new Date(start);
 
     if (!this.isValidDate(startDate)) {
       return;
     }
 
-    return new filterStore.SetStartDate(new Date(startDate));
+    return new filterStore.SetStartDate(startDate);
   }
 
   private loadEndDate = (end: string): Action => {
@@ -517,7 +517,7 @@ export class UrlStateService {
       return;
     }
 
-    return new filterStore.SetEndDate(new Date(endDate));
+    return new filterStore.SetEndDate(endDate);
   }
 
   private loadSeasonStart = (start: string): Action => {

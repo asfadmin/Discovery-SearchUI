@@ -77,10 +77,10 @@ export class PairService {
     let endDateExtrema: Date;
 
     if (!!dateRange.start) {
-    startDateExtrema = new Date(dateRange.start.valueOf());
+    startDateExtrema = new Date(dateRange.start.toISOString());
     }
     if (!!dateRange.end) {
-      endDateExtrema = new Date(dateRange.end.valueOf());
+      endDateExtrema = new Date(dateRange.end.toISOString());
     }
 
 
