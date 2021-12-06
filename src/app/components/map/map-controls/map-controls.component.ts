@@ -11,7 +11,7 @@ import * as models from '@models';
 import * as services from '@services';
 
 import { LonLat, SarviewsProduct, SearchType } from '@models';
-import { combineLatest } from 'rxjs';
+import { combineLatest, Observable } from 'rxjs';
 
 import { filter, map, startWith, tap } from 'rxjs/operators';
 import { ToggleBrowseOverlay } from '@store/map';
@@ -36,11 +36,11 @@ export class MapControlsComponent implements OnInit, OnDestroy {
     filter(event => !!event),
   startWith(null));
 
-  public isBrowseOverlayEnabled$ = combineLatest([
+  public isBrowseOverlayEnabled$: Observable<boolean> = combineLatest([
     this.store$.select(searchStore.getSearchType),
-    this.store$.select(sceneStore.getSelectedScene).pipe(filter(scene => !!scene)),
+    this.store$.select(sceneStore.getSelectedScene),
     this.store$.select(getSelectedDatasetId),
-      this.store$.select(sceneStore.getSelectedSarviewsEventProducts).pipe(startWith([]))]
+      this.store$.select(sceneStore.getSelectedSarviewsEventProducts)]
     ).pipe(
       map(([searchtype, selectedScene, datasetID, selectedEventProducts]) => {
         switch (searchtype) {
@@ -52,21 +52,21 @@ export class MapControlsComponent implements OnInit, OnDestroy {
           case models.SearchType.SARVIEWS_EVENTS:
             return selectedEventProducts?.length > 0;
           case models.SearchType.LIST:
-            return selectedScene.dataset === 'ALOS'
-            || selectedScene.dataset === 'Sentinel-1A'
-            || selectedScene.dataset === 'Sentinel-1B'
-            || selectedScene.dataset === 'Sentinel-1 Interferogram (BETA)'
-            || selectedScene.dataset === 'UAVSAR';
+            return selectedScene?.dataset === 'ALOS'
+            || selectedScene?.dataset === 'Sentinel-1A'
+            || selectedScene?.dataset === 'Sentinel-1B'
+            || selectedScene?.dataset === 'Sentinel-1 Interferogram (BETA)'
+            || selectedScene?.dataset === 'UAVSAR';
           case models.SearchType.CUSTOM_PRODUCTS:
             return true;
           default:
             return false;
 
         }
-      })
+      }),
     );
 
-  private browseIndexingEnabled$ = combineLatest([
+  public browseIndexingEnabled$ = combineLatest([
     this.isBrowseOverlayEnabled$,
     this.selectedScene$.pipe(map(scene => scene?.browses.length > 1)),
   ]).pipe(

@@ -15,7 +15,7 @@
   max-width: 100vw;
   max-height: calc(100vh - 32px);
   overflow: hidden;
-  z-index: 1000;
+  z-index: 1020;
 }
 
 .no-pointer {
@@ -28,7 +28,7 @@
 
 .dataset-filters-card {
   background-color: white;
-  z-index: 1000;
+  z-index: 1020;
   display: flex;
   overflow: hidden;
   flex-direction: column;
@@ -50,7 +50,7 @@
     border-bottom: 1px solid $asf-primary-dark;
     font-size: 24px;
     padding: 15px;
-    z-index: 1001;
+    z-index: 1020;
   }
 
   .header-title {
@@ -84,7 +84,7 @@
     bottom: 0;
     background-color: $asf-primary-light;
     border-top: 1px solid $asf-primary-dark;
-    z-index: 1001;
+    z-index: 1020;
     padding: 10px;
   }
 }

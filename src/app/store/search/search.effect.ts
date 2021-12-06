@@ -27,7 +27,7 @@ import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import WKT from 'ol/format/WKT';
 import GeoJSON from 'ol/format/GeoJSON';
 import VectorSource from 'ol/source/Vector';
-import { getScenes } from '@store/scenes';
+import { ClearScenes, getScenes, ScenesActionType, SetSarviewsEvents } from '@store/scenes';
 import { SearchType } from '@models';
 import { Feature } from 'ol';
 import Geometry from 'ol/geom/Geometry';
@@ -67,6 +67,14 @@ export class SearchEffects {
     map(action =>
       (action.payload > 0) ? new EnableSearch() : new DisableSearch()
     )
+  ));
+
+  public setEventSearchProductsOnClear = createEffect(() => this.actions$.pipe(
+    ofType<ClearScenes>(ScenesActionType.CLEAR),
+    withLatestFrom(this.store$.select(getSearchType)),
+    filter(([_, searchtype]) => searchtype === models.SearchType.SARVIEWS_EVENTS),
+    withLatestFrom(this.sarviewsService.getSarviewsEvents$()),
+    map(([[_, __], events]) => new SetSarviewsEvents({ events }))
   ));
 
   public makeSearches = createEffect(() => this.actions$.pipe(

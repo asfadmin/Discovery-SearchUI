@@ -47,11 +47,10 @@
                           itemSize="50"
 
                           class="products-list"
-                          [class.no-scroll]="breakpoint <= breakpoints.SMALL"
                           dense role="list">
         <mat-selection-list multiple (selectionChange)="onSelectSarviewsProduct($event)">
           <mat-list-option [value]="prod.product_id" [selected]="!!this.selectedProducts.includes(prod.product_id)"
-                           *cdkVirtualFor="let prod of sarviewsProducts"
+                           *cdkVirtualFor="let prod of (sarviewsEventProducts$ | async)"
                            checkboxPosition="before"
                            class="prod-viewport virtual-scroll prod-list-option"
           >

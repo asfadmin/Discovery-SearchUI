@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 
-import noUiSlider from 'nouislider';
+import * as noUiSlider from 'nouislider';
 import { Subject } from 'rxjs';
 import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 
@@ -34,11 +34,12 @@ export class SbasSlidersComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    const [tempSlider, tempValues$] = this.makeBaselineSlider$(this.temporalFilter);
-    this.tempSlider = tempSlider;
+    const baselineSlider = this.makeBaselineSlider$(this.temporalFilter);
+
+    this.tempSlider = baselineSlider.slider;
 
     this.subs.add(
-      tempValues$.subscribe(
+      baselineSlider.values$.subscribe(
         ([start]) => {
           const action = new filtersStore.SetPerpendicularRange({ start, end: null });
           this.store$.dispatch(action);
@@ -70,20 +71,21 @@ export class SbasSlidersComponent implements OnInit {
 
   private makeBaselineSlider$(filterRef: ElementRef) {
     const values$ = new Subject<number[]>();
-    // @ts-ignore
+
     const slider = noUiSlider.create(filterRef.nativeElement, {
       orientation: 'vertical',
       direction: 'rtl',
       start: [300],
       behaviour: 'tap-drag',
       tooltips: false,
+      connect: 'lower',
       step: 1,
       range: {
         'min': 0,
         'max': 300
       },
       pips: {
-        mode: 'positions',
+        mode: noUiSlider.PipsMode.Positions,
         values: [0, 50, 100, 150, 200, 250],
         density: 4,
         stepped: true,
@@ -98,12 +100,12 @@ export class SbasSlidersComponent implements OnInit {
       values$.next(values.map(v => +v));
     });
 
-    return [
+    return {
       slider,
-      values$.asObservable().pipe(
+      values$: values$.asObservable().pipe(
         debounceTime(500),
         distinctUntilChanged()
       )
-    ];
+      };
   }
 }

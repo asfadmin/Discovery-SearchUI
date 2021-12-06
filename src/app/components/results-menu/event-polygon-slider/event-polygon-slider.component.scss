@@ -1,7 +1,6 @@
 .event-slider {
-  flex: none;
   height: 80%;
-  margin-bottom: 36px;
+  margin-bottom: 25px;
 }
 
 .event-label {
@@ -16,6 +15,11 @@
 }
 
 .noUi-horizontal {
+  height: 12px;
+}
+
+::ng-deep.noUi-pips-horizontal {
+  margin-top: 5px;
   height: 12px;
 }
 
