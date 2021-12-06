@@ -181,7 +181,11 @@ export class SceneDetailComponent implements OnInit, OnDestroy {
   }
 
   public sceneHasBrowse() {
-    return !this.scene?.browses[0].includes('no-browse');
+    return (
+      !!this.scene.browses &&
+      this.scene.browses.length > 0 &&
+      !this.scene?.browses[0].includes('no-browse')
+    );
   }
 
   public productHasSceneBrowses() {
