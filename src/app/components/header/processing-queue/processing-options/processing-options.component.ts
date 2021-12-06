@@ -51,4 +51,17 @@ export class ProcessingOptionsComponent implements OnInit {
       ...this.optionValues
     }));
   }
+
+  public onSetSubset(options): void {
+    options.forEach(option => {
+      this.optionValues = {
+        ...this.optionValues,
+        [option.apiName]: option.value
+      };
+    });
+
+    this.store$.dispatch(new hyp3Store.SetProcessingOptions({
+      ...this.optionValues
+    }));
+  }
 }
