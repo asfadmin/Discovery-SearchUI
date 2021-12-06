@@ -33,6 +33,10 @@ import { Feature } from 'ol';
 import Geometry from 'ol/geom/Geometry';
 @Injectable()
 export class SearchEffects {
+  private vectorSource = new VectorSource({
+    format: new GeoJSON(),
+  });
+
   constructor(
     private actions$: Actions,
     private store$: Store<AppState>,
@@ -356,9 +360,7 @@ export class SearchEffects {
 
     return virtualProducts;
   }
-  private vectorSource = new VectorSource({
-    format: new GeoJSON(),
-  });
+
   private findCountries(shapeString: string) {
     const parser = new WKT();
     const feature = parser.readFeature(shapeString);
