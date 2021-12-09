@@ -8,6 +8,7 @@
     <mat-label>Start Date</mat-label>
 
     <input matInput
+      name="startInput"
       formControlName="StartDateControl"
       [value]="startDate"
       matTooltip="Scene Start Date (MM/DD/YYYY)"
@@ -17,23 +18,22 @@
       [matDatepicker]="startDatePicker"
       class="clickable">
     <mat-datepicker-toggle matSuffix [for]="startDatePicker"></mat-datepicker-toggle>
-    <mat-datepicker touchUi="true"
-    [startView]="!!startDate ? 'month' : 'multi-year'" #startDatePicker></mat-datepicker>
+    <mat-datepicker touchUi="true" [startView]="!!startDate ? 'month' : 'multi-year'" #startDatePicker></mat-datepicker>
   </mat-form-field>
 
   <mat-form-field class="date-input-field"
     [class.invalid-input-animation]="isEndError">
     <mat-label>End Date</mat-label>
     <input matInput
-    formControlName="EndDateControl"
-    [value]="endDate"
+      name="endInput"
+      formControlName="EndDateControl"
+      [value]="endDate"
       (dateChange)="onEndDateChange($event)"
       [min]="minDate"
       [max]="maxDate"
       [matDatepicker]="endDatePicker"
       matTooltip="Scene End Date (MM/DD/YYYY)">
     <mat-datepicker-toggle matSuffix [for]="endDatePicker"></mat-datepicker-toggle>
-    <mat-datepicker touchUi="true"
-    [startView]="!!endDate ? 'month' : 'multi-year'" #endDatePicker></mat-datepicker>
+    <mat-datepicker touchUi="true" [startView]="!!endDate ? 'month' : 'multi-year'" #endDatePicker></mat-datepicker>
   </mat-form-field>
 </form>
