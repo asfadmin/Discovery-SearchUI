@@ -217,8 +217,7 @@ export class SceneDetailComponent implements OnInit, OnDestroy {
   public onOpenImage(): void {
     if (this.searchType === models.SearchType.SARVIEWS_EVENTS) {
       this.store$.dispatch(new scenesStore.SetSelectedSarviewProduct(this.sarviewsProducts[this.browseIndex]));
-    }
-    else if (!this.sceneHasBrowse()) {
+    } else if (!this.sceneHasBrowse()) {
       return;
     }
 
