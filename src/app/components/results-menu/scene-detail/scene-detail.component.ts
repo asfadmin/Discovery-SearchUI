@@ -89,6 +89,7 @@ export class SceneDetailComponent implements OnInit, OnDestroy {
     );
 
     const sarviewsEvent$ = this.store$.select(scenesStore.getSelectedSarviewsEvent).pipe(
+      tap(_ => this.browseIndex = 0),
       filter(selectedEvent => !!selectedEvent));
 
 
@@ -210,13 +211,12 @@ export class SceneDetailComponent implements OnInit, OnDestroy {
   }
 
   public onOpenImage(): void {
-    if (!this.sceneHasBrowse()) {
+    if (this.searchType === models.SearchType.SARVIEWS_EVENTS) {
+      this.store$.dispatch(new scenesStore.SetSelectedSarviewProduct(this.sarviewsProducts[this.browseIndex]));
+    } else if (!this.sceneHasBrowse()) {
       return;
     }
 
-    if (this.searchType === models.SearchType.SARVIEWS_EVENTS) {
-      this.store$.dispatch(new scenesStore.SetSelectedSarviewProduct(this.sarviewsProducts[this.browseIndex]));
-    }
     this.store$.dispatch(new uiStore.SetIsBrowseDialogOpen(true));
 
     const dialogRef = this.dialog.open(ImageDialogComponent, {
