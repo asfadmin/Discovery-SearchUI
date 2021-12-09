@@ -326,11 +326,19 @@ export const allScenesFrom = (scenes: {[id: string]: string[]}, products) => {
 
       const browse = group
         .map(name => products[name])
-        .filter(product => !product.browses[0].includes('no-browse.png'))
+        .filter(hasNoBrowse)
         .pop();
 
       return browse ? browse : products[group[0]];
     });
+};
+
+const hasNoBrowse = (product) => {
+  return (
+    !!product.browses &&
+    product.browses.length > 0 &&
+    !product.browses[0].includes('no-browse.png')
+  );
 };
 
 export const allScenesWithBrowse = (scenes: {[id: string]: string[]}, products) => {

@@ -194,6 +194,18 @@ export const InsarGammaJobType: Hyp3JobType = {
     info: `
       Include the wrapped phase GeoTIFF in the product package.
     `
+  }, {
+    name: 'Set MintPy Options',
+    apiName: null,
+    type: JobOptionType.SUBSET,
+    default: false,
+    optionSubset: [{
+      apiName: 'include_dem',
+      value: true
+    }],
+    info: `
+      Set options to make products compatible with MintPy.
+    `
   }]
 };
 
