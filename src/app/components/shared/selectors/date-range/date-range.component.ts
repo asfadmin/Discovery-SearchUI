@@ -41,7 +41,7 @@ export class DateRangeComponent implements OnInit, OnDestroy {
   constructor() { }
 
   ngOnInit(): void {
-    if (!!this.startDate && this.startDate != new Date(undefined)) {
+    if (!!this.startDate && this.startDate !== new Date(undefined)) {
       this.dateRangeForm.patchValue({
         StartDateControl: this.startDate
       });
