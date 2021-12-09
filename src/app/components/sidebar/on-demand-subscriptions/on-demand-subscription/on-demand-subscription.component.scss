@@ -10,31 +10,31 @@
   font-size: 18px;
 }
 
-.subscription--header {
+.subscription-header {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
 }
 
-.subscription--header-info {
+.subscription-header-info {
   display: flex;
 }
 
-.subscription--preview {
+.subscription-preview {
   display: flex;
   flex-direction: column;
 }
 
-.preview--top {
+.preview-top {
   font-weight: bold;
 }
 
-.subscription--detail {
+.subscription-detail {
   margin: 10px 10px 10px 45px;
 }
 
-.subscription--action {
+.subscription-action {
   background-color: unset !important;
 }
 
@@ -43,7 +43,7 @@
   margin-top: -2px;
 }
 
-.expand-arrow--icon {
+.expand-arrow-icon {
   font-size: 38px;
 }
 
