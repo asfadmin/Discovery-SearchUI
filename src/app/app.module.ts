@@ -89,12 +89,7 @@ export const routes = [
     FlexLayoutModule.withConfig({disableDefaultBps: true},
       CustomBreakPointsProvider.useValue),
     RouterModule.forRoot(routes, {useHash: true}),
-    StoreModule.forRoot(store.reducers, {metaReducers: store.metaReducers,
-          runtimeChecks: {
-        strictStateImmutability: false,
-        strictActionImmutability: false,
-    },
-}),
+    StoreModule.forRoot(store.reducers, {metaReducers: store.metaReducers}),
     EffectsModule.forRoot(store.appEffects),
     !environment.production ? StoreDevtoolsModule.instrument() : [],
     MatSidenavModule,
