@@ -1,11 +1,12 @@
 import { Component, OnInit, Input, Output, EventEmitter, OnDestroy } from '@angular/core';
 import { Subject } from 'rxjs';
-import { tap, delay } from 'rxjs/operators';
+import { tap, delay, map } from 'rxjs/operators';
 import * as moment from 'moment';
 import { SubSink } from 'subsink';
-import { FormGroup, FormControl  } from '@angular/forms';
+import { FormGroup, FormControl, AbstractControl  } from '@angular/forms';
 import { MatDatepickerInputEvent } from '@angular/material/datepicker';
 import { DateAdapter, NativeDateAdapter } from '@angular/material/core';
+import { NotificationService } from '@services';
 
 @Component({
   selector: 'app-date-range',
@@ -30,15 +31,20 @@ export class DateRangeComponent implements OnInit, OnDestroy {
 
   @Output() newStart = new EventEmitter<Date>();
   @Output() newEnd = new EventEmitter<Date>();
+  @Output() startDateError = new EventEmitter<void>();
+  @Output() endDateError = new EventEmitter<void>();
+
 
   public startDateErrors$ = new Subject<void>();
   public endDateErrors$ = new Subject<void>();
+  public invalidDateError$ = new Subject<AbstractControl>();
+
   public isStartError = false;
   public isEndError = false;
 
   private subs = new SubSink();
 
-  constructor() { }
+  constructor(private notificationService: NotificationService) { }
 
   ngOnInit(): void {
     if (!!this.startDate && this.startDate !== new Date(undefined)) {
@@ -65,7 +71,11 @@ export class DateRangeComponent implements OnInit, OnDestroy {
 
     if (!this.startControl.valid || !e.value) {
       date = null;
-      this.startDateErrors$.next();
+      if(e.value == null) {
+        this.invalidDateError$.next(this.startControl);
+      } else {
+        this.startDateErrors$.next();
+      }
     } else {
       const momentDate = moment(new Date(e.value)).set({h: 0});
       date = this.toJSDate(momentDate);
@@ -79,7 +89,11 @@ export class DateRangeComponent implements OnInit, OnDestroy {
 
     if (!this.endControl.valid || !e.value) {
       date = null;
-      this.endDateErrors$.next();
+      if(e.value == null) {
+        this.invalidDateError$.next(this.endControl);
+      } else {
+        this.endDateErrors$.next();
+      }
     } else {
       date = this.endDateFormat(new Date(e.value));
     }
@@ -113,6 +127,7 @@ export class DateRangeComponent implements OnInit, OnDestroy {
           this.isStartError = true;
           this.startControl.reset();
           this.startControl.setErrors({'incorrect': true});
+          this.startDateError.emit();
         }),
         delay(820),
       ).subscribe(_ => {
@@ -127,11 +142,45 @@ export class DateRangeComponent implements OnInit, OnDestroy {
           this.isEndError = true;
           this.endControl.reset();
           this.endControl.setErrors({'incorrect': true});
+          this.endDateError.emit();
         }),
         delay(820),
       ).subscribe(_ => {
         this.isEndError = false;
         this.endControl.setErrors(null);
+      })
+    );
+
+    this.subs.add(
+      this.invalidDateError$.pipe(
+        map(targetControl => ({
+          key: Object.keys(this.dateRangeForm.controls).find(key => this.dateRangeForm.controls[key] === targetControl),
+          targetControl
+        })),
+        tap(data => {
+
+          const key = data.key;
+          const control = data.targetControl;
+
+          if(key === "StartDateControl") {
+            this.isStartError = true;
+          } else if(key === "EndDateControl") {
+            this.isEndError = true;
+          }
+
+          control.reset();
+          control.setErrors({'incorrect': true});
+          // this.endDateError.emit();
+        }),
+        delay(820),
+      ).subscribe(data => {
+        if(data.key === "StartDateControl") {
+          this.isStartError = false;
+        } else if(data.key === "EndDateControl") {
+          this.isEndError = false;
+        }
+        data.targetControl.setErrors(null);
+        this.notificationService.error("Not a valid date");
       })
     );
   }
