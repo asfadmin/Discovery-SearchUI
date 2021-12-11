@@ -67,7 +67,7 @@ export class DateRangeComponent implements OnInit, OnDestroy {
 
   public onStartDateChange(e: MatDatepickerInputEvent<Date>): void {
     if (!this.startControl.valid || !e.value) {
-      if(this.isInvalidDateError(this.startControl)) {
+      if (this.isInvalidDateError(this.startControl)) {
         this.invalidDateError$.next(this.startControl);
       } else {
         this.startDateErrors$.next();
@@ -83,7 +83,7 @@ export class DateRangeComponent implements OnInit, OnDestroy {
 
   public onEndDateChange(e: MatDatepickerInputEvent<Date>): void {
     if (!this.endControl.valid || !e.value) {
-      if(this.isInvalidDateError(this.endControl)) {
+      if (this.isInvalidDateError(this.endControl)) {
         this.invalidDateError$.next(this.endControl);
       } else {
         this.endDateErrors$.next();
@@ -156,7 +156,7 @@ export class DateRangeComponent implements OnInit, OnDestroy {
           control
         })),
         tap(({name, control}) => {
-          this.notificationService.error('', "Not a valid date");
+          this.notificationService.error('', 'Not a valid date');
           this.onSetErrorState(name, false);
           this.onSetError(control);
         }),
@@ -174,9 +174,9 @@ export class DateRangeComponent implements OnInit, OnDestroy {
   }
 
   private onSetErrorState(controlName: string, value: boolean) {
-    if(controlName === "StartDateControl") {
+    if (controlName === 'StartDateControl') {
       this.isStartError = value;
-    } else if(controlName === "EndDateControl") {
+    } else if (controlName === 'EndDateControl') {
       this.isEndError = value;
     }
   }

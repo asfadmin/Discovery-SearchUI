@@ -35,14 +35,14 @@ export class SubscriptionDateRangeComponent implements OnInit {
 
   public onStartDateError(): void {
     this.notificationService.error(
-      "subscription must start on today's date or later",
-      "Invalid Start Date")
+      'subscription must start on today\'s date or later',
+      'Invalid Start Date');
   }
 
   public onEndDateError(): void {
     this.notificationService.error(
-      "subscription end date must be within 6 months of start date",
-      "Invalid End Date")
+      'subscription end date must be within 6 months of start date',
+      'Invalid End Date');
   }
 
   private addDays(date: Date, numDays: number): Date {
