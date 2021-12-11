@@ -1,7 +1,8 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { NotificationService } from '@services';
 
-// import * as models from '@models';
+import * as models from '@models';
+import * as moment from 'moment';
 
 @Component({
   selector: 'app-subscription-date-range',
@@ -21,7 +22,7 @@ export class SubscriptionDateRangeComponent implements OnInit {
   constructor(private notificationService: NotificationService) { }
 
   ngOnInit(): void {
-    this.minDate = new Date();
+    this.minDate = models.sentinel_1.date.start;
     this.maxDate = this.addDays(new Date(), 179);
   }
 
@@ -34,14 +35,17 @@ export class SubscriptionDateRangeComponent implements OnInit {
   }
 
   public onStartDateError(): void {
+    const min = new Date(this.minDate);
+    const dayBefore = moment(min.setDate(min.getDate() - 1)).format('MMMM Do YYYY');
+
     this.notificationService.error(
-      'subscription must start on today\'s date or later',
+      `subscription start date must be after ${dayBefore}`,
       'Invalid Start Date');
   }
 
   public onEndDateError(): void {
     this.notificationService.error(
-      'subscription end date must be within 6 months of start date',
+      'subscription end date must be within 6 months of current date',
       'Invalid End Date');
   }
 
