@@ -4,7 +4,7 @@ import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { Store, Action } from '@ngrx/store';
 
 import { of, forkJoin, combineLatest, Observable, EMPTY } from 'rxjs';
-import { map, withLatestFrom, switchMap, catchError, filter, first, tap } from 'rxjs/operators';
+import { map, withLatestFrom, switchMap, catchError, filter, first } from 'rxjs/operators';
 
 import { AppState } from '../app.reducer';
 import { SetSearchAmount, EnableSearch, DisableSearch, SetSearchType, SetNextJobsUrl,
@@ -31,8 +31,6 @@ import { ClearScenes, getScenes, ScenesActionType, SetSarviewsEvents } from '@st
 import { SearchType } from '@models';
 import { Feature } from 'ol';
 import Geometry from 'ol/geom/Geometry';
-import { FiltersActionType } from '@store/filters';
-import { getIsFiltersMenuOpen, getIsResultsMenuOpen } from '@store/ui';
 @Injectable()
 export class SearchEffects {
   private vectorSource = new VectorSource({
@@ -48,7 +46,6 @@ export class SearchEffects {
     private hyp3Service: services.Hyp3Service,
     private sarviewsService: services.SarviewsEventsService,
     private http: HttpClient,
-    private notificationService: services.NotificationService
   ) {}
 
   public clearMapInteractionModeOnSearch = createEffect(() => this.actions$.pipe(
