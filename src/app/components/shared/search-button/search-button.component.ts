@@ -2,7 +2,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { SubSink } from 'subsink';
 
 import { combineLatest, Subject } from 'rxjs';
-import { tap, delay } from 'rxjs/operators';
+import { tap, delay, map } from 'rxjs/operators';
 import { Store, ActionsSubject } from '@ngrx/store';
 import { ofType } from '@ngrx/effects';
 
@@ -11,6 +11,7 @@ import * as searchStore from '@store/search';
 import * as userStore from '@store/user';
 import * as uiStore from '@store/ui';
 import * as filtersStore from '@store/filters';
+// import * as scenesStore from '@store/scenes';
 
 import * as services from '@services';
 import { SidebarType, SearchType } from '@models';
@@ -35,6 +36,25 @@ export class SearchButtonComponent implements OnInit, OnDestroy {
   public canSearch$ = this.store$.select(searchStore.getCanSearch);
   public isMaxResultsLoading$ = this.store$.select(searchStore.getIsMaxResultsLoading);
   public loading$ = this.store$.select(searchStore.getIsLoading);
+  // public areResultsOutOfDate$ = combineLatest([
+  //   this.SearchParamsService.getParams(),
+  //   this.SearchParamsService.getlatestParams(),
+  //   this.store$.select(uiStore.getIsResultsMenuOpen),
+  //   this.store$.select(uiStore.getIsFiltersMenuOpen)]).pipe(
+  //   map(([current, latest, resultsOpen, filtersOpen]) => (!filtersOpen && resultsOpen) && current !== latest),
+  // )
+
+  public maxResultCount$ = this.store$.select(searchStore.getSearchAmount)
+  public currentResultCount$ = this.store$.select(searchStore.getTotalResultCount);
+  public areResultsOutOfDate$ = combineLatest([
+    this.maxResultCount$,
+    this.currentResultCount$,
+    this.store$.select(uiStore.getIsResultsMenuOpen),
+    this.store$.select(uiStore.getIsFiltersMenuOpen)
+  ]).pipe(
+    map(([current, latest, resultsOpen, filtersOpen]) => (!filtersOpen && resultsOpen) && current !== latest),
+  );
+
   public isLoggedIn = false;
   public searchError$ = new Subject<void>();
   public isSearchError = false;
@@ -50,6 +70,7 @@ export class SearchButtonComponent implements OnInit, OnDestroy {
     private store$: Store<AppState>,
     private actions$: ActionsSubject,
     private savedSearchService: services.SavedSearchService,
+    // private SearchParamsService: services.SearchParamsService,
     private dialog: MatDialog,
     private notificationService: services.NotificationService,
   ) {
