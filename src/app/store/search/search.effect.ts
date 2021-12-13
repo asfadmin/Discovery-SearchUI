@@ -193,13 +193,20 @@ export class SearchEffects {
   ));
 
   public onChangeFiltersHeader = createEffect(() => this.actions$.pipe(
-    ofType(FiltersActionType.SET_START_DATE, FiltersActionType.SET_END_DATE,
-       FiltersActionType.SET_SELECTED_DATASET, ScenesActionType.SET_MASTER, ScenesActionType.SET_FILTER_MASTER),
+    ofType(
+      FiltersActionType.SET_START_DATE,
+        FiltersActionType.SET_END_DATE,
+        FiltersActionType.SET_SELECTED_DATASET,
+        ScenesActionType.SET_MASTER,
+        ScenesActionType.SET_FILTER_MASTER,
+       ),
        withLatestFrom(this.store$.select(getIsFiltersMenuOpen)),
        withLatestFrom(this.store$.select(getIsResultsMenuOpen)),
        map(([[_, filtersOpen], resultsOpen]) => !filtersOpen && resultsOpen),
        filter(shouldNotify => shouldNotify),
-       tap(_ => this.notificationService.info("Refresh Search to show new results", "Results Out of Date"))
+       withLatestFrom(this.store$.select(getSearchType)),
+       filter(([_, searchtype]) => searchtype === models.SearchType.DATASET),
+       tap(_ => this.notificationService.info("Refresh search to show new results", "Results Out of Date"))
   ), {dispatch: false});
 
   private asfApiQuery$(): Observable<Action> {
