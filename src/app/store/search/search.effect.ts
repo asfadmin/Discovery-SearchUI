@@ -4,7 +4,7 @@ import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { Store, Action } from '@ngrx/store';
 
 import { of, forkJoin, combineLatest, Observable, EMPTY } from 'rxjs';
-import { map, withLatestFrom, switchMap, catchError, filter, first } from 'rxjs/operators';
+import { map, withLatestFrom, switchMap, catchError, filter, first, tap } from 'rxjs/operators';
 
 import { AppState } from '../app.reducer';
 import { SetSearchAmount, EnableSearch, DisableSearch, SetSearchType, SetNextJobsUrl,
@@ -31,6 +31,8 @@ import { ClearScenes, getScenes, ScenesActionType, SetSarviewsEvents } from '@st
 import { SearchType } from '@models';
 import { Feature } from 'ol';
 import Geometry from 'ol/geom/Geometry';
+import { FiltersActionType } from '@store/filters';
+import { getIsFiltersMenuOpen, getIsResultsMenuOpen } from '@store/ui';
 @Injectable()
 export class SearchEffects {
   private vectorSource = new VectorSource({
@@ -46,6 +48,7 @@ export class SearchEffects {
     private hyp3Service: services.Hyp3Service,
     private sarviewsService: services.SarviewsEventsService,
     private http: HttpClient,
+    private notificationService: services.NotificationService
   ) {}
 
   public clearMapInteractionModeOnSearch = createEffect(() => this.actions$.pipe(
@@ -188,6 +191,16 @@ export class SearchEffects {
       _ => of(new SearchError(`Error loading search results`))
     )
   ));
+
+  public onChangeFiltersHeader = createEffect(() => this.actions$.pipe(
+    ofType(FiltersActionType.SET_START_DATE, FiltersActionType.SET_END_DATE,
+       FiltersActionType.SET_SELECTED_DATASET, ScenesActionType.SET_MASTER, ScenesActionType.SET_FILTER_MASTER),
+       withLatestFrom(this.store$.select(getIsFiltersMenuOpen)),
+       withLatestFrom(this.store$.select(getIsResultsMenuOpen)),
+       map(([[_, filtersOpen], resultsOpen]) => !filtersOpen && resultsOpen),
+       filter(shouldNotify => shouldNotify),
+       tap(_ => this.notificationService.info("Refresh Search to show new results", "Results Out of Date"))
+  ), {dispatch: false});
 
   private asfApiQuery$(): Observable<Action> {
     this.logCountries();
