@@ -159,7 +159,7 @@ export class BrowseMapService {
       this.view = new View({
         projection: projection,
         center: getCenter(extent),
-        zoom: 4,
+        zoom: 1,
         minZoom: 1,
         maxZoom: 4,
       });
