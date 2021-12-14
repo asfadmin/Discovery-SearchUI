@@ -202,6 +202,9 @@ export const InsarGammaJobType: Hyp3JobType = {
     optionSubset: [{
       apiName: 'include_dem',
       value: true
+    }, {
+      apiName: 'include_look_vectors',
+      value: true
     }],
     info: `
       Set options to make products compatible with MintPy.
