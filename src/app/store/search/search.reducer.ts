@@ -123,7 +123,7 @@ export function searchReducer(state = initState, action: SearchActions): SearchS
       return {
         ...state,
         areResultsOutOfDate: action.payload
-      }
+      };
     }
 
     default: {
@@ -182,4 +182,4 @@ export const getNextHyp3JobsUrl = createSelector(
 export const getareResultsOutOfDate = createSelector(
   getSearchState,
   (state: SearchState) => state.areResultsOutOfDate
-)
+);

@@ -208,7 +208,7 @@ export class SearchEffects {
        withLatestFrom(this.store$.select(getareResultsOutOfDate)),
        filter(([[_, searchtype], outOfdate]) => !outOfdate && searchtype === models.SearchType.DATASET),
   ).pipe(
-    tap(_ => this.notificationService.info("Refresh search to show new results", "Results Out of Date")),
+    tap(_ => this.notificationService.info('Refresh search to show new results', 'Results Out of Date')),
     map(_ => new SetSearchOutOfDate(true))
   ));
 
