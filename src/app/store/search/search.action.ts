@@ -24,6 +24,7 @@ export enum SearchActionType {
   SARVIEWS_SEARCH_RESPONSE = '[Search] SARViews Search Response',
   MAKE_EVENT_PRODUCT_CMR_SEARCH = '[Search] Make a search for CMR Products with SARVIEWS Products',
   EVENT_PRODUCT_CMR_RESPONSE = '[Search] Event Monitoring CMR Search Response',
+  SET_SEARCH_OUT_OF_DATE = '[Search] Set if Search is Out of Date'
 }
 
 export class MakeSearch implements Action {
@@ -102,6 +103,12 @@ export class SetSearchTypeAfterSave implements Action {
   constructor(public payload: SearchType) {}
 }
 
+export class SetSearchOutOfDate implements Action {
+  public readonly type = SearchActionType.SET_SEARCH_OUT_OF_DATE;
+
+  constructor(public payload: boolean) {}
+}
+
 export type SearchActions =
   | MakeSearch
   | SetSearchAmount
@@ -116,4 +123,5 @@ export type SearchActions =
   | Hyp3BatchResponse
   | SetSearchType
   | SetSearchTypeAfterSave
-  | SarviewsEventsResponse;
+  | SarviewsEventsResponse
+  | SetSearchOutOfDate;
