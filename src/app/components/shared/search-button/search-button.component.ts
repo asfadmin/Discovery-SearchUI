@@ -36,29 +36,8 @@ export class SearchButtonComponent implements OnInit, OnDestroy {
   public canSearch$ = this.store$.select(searchStore.getCanSearch);
   public isMaxResultsLoading$ = this.store$.select(searchStore.getIsMaxResultsLoading);
   public loading$ = this.store$.select(searchStore.getIsLoading);
-  // public areResultsOutOfDate$ = combineLatest([
-  //   this.SearchParamsService.getParams(),
-  //   this.SearchParamsService.getlatestParams(),
-  //   this.store$.select(uiStore.getIsResultsMenuOpen),
-  //   this.store$.select(uiStore.getIsFiltersMenuOpen)]).pipe(
-  //   map(([current, latest, resultsOpen, filtersOpen]) => (!filtersOpen && resultsOpen) && current !== latest),
-  // )
 
-  public maxResultCount$ = this.store$.select(searchStore.getSearchAmount)
-  public currentResultCount$ = this.store$.select(searchStore.getTotalResultCount);
-  public areResultsOutOfDate$ = this.store$.select(searchStore.getIsResultsOutOfDate);
-  // public areResultsOutOfDate$ = combineLatest([
-  //   this.maxResultCount$,
-  //   this.currentResultCount$,
-  //   this.store$.select(uiStore.getIsResultsMenuOpen),
-  //   this.store$.select(uiStore.getIsFiltersMenuOpen),
-  // ]).pipe(
-  //   withLatestFrom(this.store$.select(getSearchType)),
-  //   map(([[current, latest, resultsOpen, filtersOpen], searchtype]) =>
-  //     searchtype === SearchType.DATASET
-  //     && (!filtersOpen && resultsOpen)
-  //     && current !== latest),
-  // );
+  public areResultsOutOfDate$ = this.store$.select(searchStore.getareResultsOutOfDate);
 
   public isLoggedIn = false;
   public searchError$ = new Subject<void>();

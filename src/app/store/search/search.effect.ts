@@ -20,7 +20,7 @@ import {
   SearchActionType,
   SearchResponse, SearchError, CancelSearch, SearchCanceled
 } from './search.action';
-import { getIsCanceled, getIsResultsOutOfDate, getSearchType } from './search.reducer';
+import { getIsCanceled, getareResultsOutOfDate, getSearchType } from './search.reducer';
 
 import * as models from '@models';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
@@ -205,7 +205,7 @@ export class SearchEffects {
        map(([[_, filtersOpen], resultsOpen]) => !filtersOpen && resultsOpen),
        filter(shouldNotify => shouldNotify),
        withLatestFrom(this.store$.select(getSearchType)),
-       withLatestFrom(this.store$.select(getIsResultsOutOfDate)),
+       withLatestFrom(this.store$.select(getareResultsOutOfDate)),
        filter(([[_, searchtype], outOfdate]) => !outOfdate && searchtype === models.SearchType.DATASET),
   ).pipe(
     tap(_ => this.notificationService.info("Refresh search to show new results", "Results Out of Date")),
