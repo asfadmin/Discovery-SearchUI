@@ -2,7 +2,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { SubSink } from 'subsink';
 
 import { combineLatest, Subject } from 'rxjs';
-import { tap, delay, map, withLatestFrom } from 'rxjs/operators';
+import { tap, delay } from 'rxjs/operators';
 import { Store, ActionsSubject } from '@ngrx/store';
 import { ofType } from '@ngrx/effects';
 
@@ -19,7 +19,6 @@ import { MatDialog } from '@angular/material/dialog';
 import { HelpComponent } from '@components/help/help.component';
 import { getFilterMaster } from '@store/scenes';
 import { SaveSearchDialogComponent } from '@components/shared/save-search-dialog';
-import { getSearchType } from '@store/search';
 
 // Declare GTM dataLayer array.
 declare global {
@@ -47,18 +46,19 @@ export class SearchButtonComponent implements OnInit, OnDestroy {
 
   public maxResultCount$ = this.store$.select(searchStore.getSearchAmount)
   public currentResultCount$ = this.store$.select(searchStore.getTotalResultCount);
-  public areResultsOutOfDate$ = combineLatest([
-    this.maxResultCount$,
-    this.currentResultCount$,
-    this.store$.select(uiStore.getIsResultsMenuOpen),
-    this.store$.select(uiStore.getIsFiltersMenuOpen),
-  ]).pipe(
-    withLatestFrom(this.store$.select(getSearchType)),
-    map(([[current, latest, resultsOpen, filtersOpen], searchtype]) =>
-      searchtype === SearchType.DATASET
-      && (!filtersOpen && resultsOpen)
-      && current !== latest),
-  );
+  public areResultsOutOfDate$ = this.store$.select(searchStore.getIsResultsOutOfDate);
+  // public areResultsOutOfDate$ = combineLatest([
+  //   this.maxResultCount$,
+  //   this.currentResultCount$,
+  //   this.store$.select(uiStore.getIsResultsMenuOpen),
+  //   this.store$.select(uiStore.getIsFiltersMenuOpen),
+  // ]).pipe(
+  //   withLatestFrom(this.store$.select(getSearchType)),
+  //   map(([[current, latest, resultsOpen, filtersOpen], searchtype]) =>
+  //     searchtype === SearchType.DATASET
+  //     && (!filtersOpen && resultsOpen)
+  //     && current !== latest),
+  // );
 
   public isLoggedIn = false;
   public searchError$ = new Subject<void>();

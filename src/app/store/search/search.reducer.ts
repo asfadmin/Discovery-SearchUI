@@ -10,6 +10,7 @@ export interface SearchState {
   isCanceled: boolean;
   searchResultsAmount: number;
   isResultsAmountLoading: boolean;
+  isResultsOutOfDate: boolean;
   canSearch: boolean;
   totalResults: null | number;
   searchType: SearchType | null;
@@ -26,6 +27,7 @@ export const initState: SearchState = {
   totalResults: null,
   searchType: SearchType.DATASET,
   nextHyp3JobUrl: null,
+  isResultsOutOfDate: false
 };
 
 export function searchReducer(state = initState, action: SearchActions): SearchState {
@@ -117,6 +119,13 @@ export function searchReducer(state = initState, action: SearchActions): SearchS
       };
     }
 
+    case SearchActionType.SET_SEARCH_OUT_OF_DATE: {
+      return {
+        ...state,
+        isResultsOutOfDate: action.payload
+      }
+    }
+
     default: {
       return state;
     }
@@ -169,3 +178,8 @@ export const getNextHyp3JobsUrl = createSelector(
   getSearchState,
   (state: SearchState) => state.nextHyp3JobUrl
 );
+
+export const getIsResultsOutOfDate = createSelector(
+  getSearchState,
+  (state: SearchState) => state.isResultsOutOfDate
+)

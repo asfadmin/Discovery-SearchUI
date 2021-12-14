@@ -8,7 +8,7 @@ import { map, withLatestFrom, switchMap, catchError, filter, first, tap } from '
 
 import { AppState } from '../app.reducer';
 import { SetSearchAmount, EnableSearch, DisableSearch, SetSearchType, SetNextJobsUrl,
-  Hyp3BatchResponse, SarviewsEventsResponse } from './search.action';
+  Hyp3BatchResponse, SarviewsEventsResponse, SetSearchOutOfDate } from './search.action';
 import * as scenesStore from '@store/scenes';
 import * as filtersStore from '@store/filters';
 import * as mapStore from '@store/map';
@@ -20,7 +20,7 @@ import {
   SearchActionType,
   SearchResponse, SearchError, CancelSearch, SearchCanceled
 } from './search.action';
-import { getIsCanceled, getSearchType } from './search.reducer';
+import { getIsCanceled, getIsResultsOutOfDate, getSearchType } from './search.reducer';
 
 import * as models from '@models';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
@@ -205,9 +205,19 @@ export class SearchEffects {
        map(([[_, filtersOpen], resultsOpen]) => !filtersOpen && resultsOpen),
        filter(shouldNotify => shouldNotify),
        withLatestFrom(this.store$.select(getSearchType)),
-       filter(([_, searchtype]) => searchtype === models.SearchType.DATASET),
-       tap(_ => this.notificationService.info("Refresh search to show new results", "Results Out of Date"))
-  ), {dispatch: false});
+       withLatestFrom(this.store$.select(getIsResultsOutOfDate)),
+       filter(([[_, searchtype], outOfdate]) => !outOfdate && searchtype === models.SearchType.DATASET),
+  ).pipe(
+    tap(_ => this.notificationService.info("Refresh search to show new results", "Results Out of Date")),
+    map(_ => new SetSearchOutOfDate(true))
+  ));
+
+  public setSearchUpToDate = createEffect(() => this.actions$.pipe(
+    ofType(SearchActionType.MAKE_SEARCH,
+      SearchActionType.SET_SEARCH_TYPE,
+      SearchActionType.SET_SEARCH_TYPE_AFTER_SAVE),
+    map(_ => new SetSearchOutOfDate(false))
+  ));
 
   private asfApiQuery$(): Observable<Action> {
     this.logCountries();
