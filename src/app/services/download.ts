@@ -45,7 +45,7 @@ export function download(
         (download: Download, event): Download => {
           console.log('download.ts download() event:', event);
           if (isHttpHeader(event)) {
-            const matches = event.url.match(/[A-Z](\w|-)+\.([a-x])+/g);
+            const matches = event.url.match(/[A-Z](\w|-)+\.([a-z])+/g);
             const newID = matches ? matches[matches.length - 1] : event.url.substring(event.url.lastIndexOf('/') + 1);
             console.log('event.url is:', event.url);
             console.log('newID is:', newID);
