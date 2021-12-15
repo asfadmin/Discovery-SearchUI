@@ -46,8 +46,8 @@ export class DownloadFileButtonComponent implements OnInit, AfterViewInit {
       console.log('url', href);
       this.url = href;
       product = null;
-      const matches = this.url.match(/([A-Z])\w+\.[a-z]+/g);
-      this.fileName = matches ? matches[matches.length - 1] : this.url.substring(this.url.lastIndexOf('/') + 1);;
+      const matches = this.url.match(/[A-Z](\w|-)+\.([a-x])+/g);
+      this.fileName = matches ? matches[matches.length - 1] : this.url.substring(this.url.lastIndexOf('/') + 1);
 
     } else {
       this.url = product.downloadUrl;
@@ -135,7 +135,7 @@ export class DownloadFileButtonComponent implements OnInit, AfterViewInit {
     event.preventDefault();
     // const rClick = new MouseEvent('click');
     // const element = document.getElementById(hiddenID);
-    console.log(hiddenID)
+    console.log(hiddenID);
     this.downloadFile( this.product, this.href );
     // element.dispatchEvent(rClick);
   }
