@@ -43,17 +43,14 @@ export class DownloadFileButtonComponent implements OnInit, AfterViewInit {
     this.dlInProgress = true;
 
     if (typeof href !== 'undefined') {
-      console.log('url', href);
       this.url = href;
       product = null;
-      const matches = this.url.match(/[A-Z](\w|-)+\.([a-z])+/g);
-      this.fileName = matches ? matches[matches.length - 1] : this.url.substring(this.url.lastIndexOf('/') + 1);
+      const downloadURL = new URL(this.url).pathname;
+      this.fileName = downloadURL.substring(downloadURL.lastIndexOf('/') + 1);
 
     } else {
       this.url = product.downloadUrl;
       this.fileName = product.file;
-      console.log('this.url', this.url);
-      console.log('this.filename', this.fileName);
     }
 
     // UAParser.js - https://www.npmjs.com/package/ua-parser-js
@@ -112,11 +109,9 @@ export class DownloadFileButtonComponent implements OnInit, AfterViewInit {
 
   private processSubscription(resp, product, headerOnly) {
     this.dFile = resp;
-    console.log('this.dFile:', this.dFile);
 
     if (resp.state === 'PENDING') {
       this.fileName = resp.id;
-      console.log('download-file-button state PENDING this.filename', this.fileName);
       if (headerOnly && this.fileName) {
         return false;
       }
