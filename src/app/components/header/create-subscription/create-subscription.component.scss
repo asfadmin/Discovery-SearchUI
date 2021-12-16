@@ -134,9 +134,9 @@ $color: $asf-primary-dark;
   justify-content: space-between;
   height: 100%;
   background-color: $asf-primary-light;
+  border-top: 1px;
   border-top-style: solid;
   border-top-color: $asf-primary-dark;
-  border-top: 1px;
 }
 
 .mat-dialog-actions {
@@ -156,9 +156,9 @@ $color: $asf-primary-dark;
   justify-content: flex-end;
   height: 100%;
   background-color: $asf-primary-light;
+  border-top: 1px;
   border-top-style: solid;
   border-top-color: $asf-primary-dark;
-  border-top: 1px;
 }
 
 .subscription-footer-item {
