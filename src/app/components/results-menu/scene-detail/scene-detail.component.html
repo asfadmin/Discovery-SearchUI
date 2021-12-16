@@ -197,7 +197,9 @@
 
 
   <div style="margin-top: 25px;" class="browse-container w100"
-  *ngIf="!!sarviewsProducts && searchType === searchTypes.SARVIEWS_EVENTS">
+  *ngIf="!!sarviewsProducts
+    && sarviewsProducts?.length > 0
+    && searchType === searchTypes.SARVIEWS_EVENTS">
     <div class="banner" fxLayout fxLayout="row" fxLayoutAlign="center">
       <div class="menu-items">
         <div
@@ -216,7 +218,7 @@
           <mat-icon>download</mat-icon>
         </a>
       </div>
-      <div class="browse-pager" *ngIf="sarviewsProducts">
+      <div class="browse-pager">
         <span
           [class.clickable]="browseIndex > 0"
           (click)="browseIndex > 0 && (browseIndex = browseIndex - 1)"

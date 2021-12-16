@@ -10,7 +10,9 @@
       (loading$ | async) ?
         'LOADING...' :
         (!(canSearch$ | async) && !(isMaxResultsLoading$ | async) ?
-          'NO RESULTS' : 'SEARCH')
+          'NO RESULTS' :
+          (areResultsOutOfDate$ | async) ? 'UPDATE' :
+          'SEARCH')
       }}
     </button>
   </mat-button-toggle>

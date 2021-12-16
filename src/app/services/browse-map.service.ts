@@ -154,18 +154,21 @@ export class BrowseMapService {
       })
     });
 
-    const view = new View({
-      projection: projection,
-      center: getCenter(extent),
-      zoom: 1,
-      minZoom: 1,
-      maxZoom: 4,
-    });
+
+    if (!this.map) {
+      this.view = new View({
+        projection: projection,
+        center: getCenter(extent),
+        zoom: 1,
+        minZoom: 1,
+        maxZoom: 4,
+      });
+    }
 
     if (this.map) {
-      this.update(view, [layer]);
+      this.update(this.view, [layer]);
     } else {
-      this.map = this.newMap(view, [layer]);
+      this.map = this.newMap(this.view, [layer]);
     }
   }
 }

@@ -61,8 +61,7 @@ $color: $asf-primary-dark;
 
 .content-top-area {
   display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
+  flex-flow: row wrap;
   padding: 0 0 0 15px;
   border-bottom: solid 1px grey;
   height: 100%;
@@ -137,7 +136,7 @@ $color: $asf-primary-dark;
   background-color: $asf-primary-light;
   border-top-style: solid;
   border-top-color: $asf-primary-dark;
-  border-top-width: 1px;
+  border-top: 1px;
 }
 
 .mat-dialog-actions {
@@ -159,7 +158,7 @@ $color: $asf-primary-dark;
   background-color: $asf-primary-light;
   border-top-style: solid;
   border-top-color: $asf-primary-dark;
-  border-top-width: 1px;
+  border-top: 1px;
 }
 
 .subscription-footer-item {
