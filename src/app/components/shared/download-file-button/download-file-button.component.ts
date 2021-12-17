@@ -3,6 +3,7 @@ import { Download } from 'ngx-operators';
 import { DownloadService } from '@services/download.service';
 import { CMRProduct } from '@models';
 import { UAParser } from 'ua-parser-js';
+import { Observable, Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-download-file-button',
@@ -16,14 +17,14 @@ export class DownloadFileButtonComponent implements OnInit, AfterViewInit {
   productDownloaded: EventEmitter<CMRProduct> = new EventEmitter<CMRProduct>();
   public dFile: Download;
   public dlInProgress = false;
+  public dlPaused = false;
   public dlComplete = false;
   public url: string;
   public fileName: string = null;
   public hiddenPrefix = 'xyxHidden-';
 
-  public observable$: any;
-  public subscription: any;
-
+  public observable$: Observable<Download>;
+  public subscription: Subscription;
 
   constructor(
     private downloadService: DownloadService,
@@ -37,7 +38,12 @@ export class DownloadFileButtonComponent implements OnInit, AfterViewInit {
 
   public downloadFile(product: CMRProduct, href?: string) {
     if (this.dlInProgress) {
+      this.subscription.unsubscribe();
+      this.dlPaused = true;
+      this.dlInProgress = false;
       return;
+    } else {
+      this.dlPaused = false;
     }
 
     this.dlInProgress = true;
@@ -53,22 +59,8 @@ export class DownloadFileButtonComponent implements OnInit, AfterViewInit {
       this.fileName = product.file;
     }
 
-    // UAParser.js - https://www.npmjs.com/package/ua-parser-js
-    // JavaScript library to detect Browser, Engine, OS, CPU, and Device type/model from User-Agent data with relatively small footprint
-    const parser = new UAParser();
-    const userAgent = parser.getResult();
-    // console.log(userAgent.browser);             // {name: "Chromium", version: "15.0.874.106"}
-    // console.log(userAgent.device);              // {model: undefined, type: undefined, vendor: undefined}
-    // console.log(userAgent.os);                  // {name: "Ubuntu", version: "11.10"}
-    // console.log(userAgent.os.version);          // "11.10"
-    // console.log(userAgent.engine.name);         // "WebKit"
-    // console.log(userAgent.cpu.architecture);    // "amd64"
+    const userAgent = new UAParser().getResult();
 
-    // const megas = window.prompt('How many MBs do you want:');
-    // url = 'https://filegen-dev.asf.alaska.edu/generate?bytes=' + megas.trim() + 'e6';
-    // url = 'https://filegen-dev.asf.alaska.edu/generate?bytes=10e6';
-
-    // if (true) {
     if (userAgent.browser.name !== 'Chrome') {
       classicDownload(this.url, this.fileName).then( () => {
         this.dlInProgress = false;
@@ -78,19 +70,6 @@ export class DownloadFileButtonComponent implements OnInit, AfterViewInit {
       return;
     }
 
-    // keep the observerble
-    //
-    // let observable$ = this.existingForm.valueChanges;
-    //
-    // start or restart
-    //
-    // let subscription = observable$.subscribe();
-    //
-    // stop
-    //
-    // subscription.unsubscribe();
-
-    // this.downloadService.download(this.url, this.fileName).subscribe(resp => {
 
     this.observable$ = this.downloadService.download(this.url, this.fileName);
     this.subscription = this.observable$.subscribe( resp => {
@@ -126,13 +105,9 @@ export class DownloadFileButtonComponent implements OnInit, AfterViewInit {
     return true;
   }
 
-  public hijackDownloadClick( event: MouseEvent, hiddenID ) {
+  public hijackDownloadClick( event: MouseEvent ) {
     event.preventDefault();
-    // const rClick = new MouseEvent('click');
-    // const element = document.getElementById(hiddenID);
-    console.log(hiddenID);
     this.downloadFile( this.product, this.href );
-    // element.dispatchEvent(rClick);
   }
 
 }
