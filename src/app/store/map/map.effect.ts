@@ -10,11 +10,12 @@ import { MapService } from '@services';
 import { AppState } from '@store';
 import { getImageBrowseProducts, getPinnedEventBrowseIDs, getProducts, getSelectedSarviewsEventProducts, getSelectedScene } from '@store/scenes';
 import { ScenesActionType, SetImageBrowseProducts, SetSelectedScene } from '@store/scenes/scenes.action';
-import { getSearchType, SearchActionType, SetSearchType } from '@store/search';
+import { getareResultsOutOfDate, getSearchType, SearchActionType, SetSearchOutOfDate, SetSearchType } from '@store/search';
 import { filter, first, map, switchMap, tap, withLatestFrom } from 'rxjs/operators';
 import { MapActionType, SetBrowseOverlayOpacity, SetBrowseOverlays, ToggleBrowseOverlay } from '.';
 import { PinnedProduct } from '@services/browse-map.service';
 import { getSelectedDataset } from '@store/filters';
+import { getIsFiltersMenuOpen, getIsResultsMenuOpen } from '@store/ui';
 @Injectable()
 export class MapEffects {
 
@@ -169,5 +170,28 @@ export class MapEffects {
     tap(products => this.store$.dispatch(new SetImageBrowseProducts(products)))
   ),  {dispatch: false});
 
+  public OnDrawNewPolygon = createEffect(() => this.actions$.pipe(
+    ofType(MapActionType.DRAW_NEW_POLYGON),
+    withLatestFrom(
+      this.store$.select(getareResultsOutOfDate),
+      this.store$.select(getSearchType),
+      this.store$.select(getIsFiltersMenuOpen),
+      this.store$.select(getIsResultsMenuOpen),
+      (_, outOfDate: boolean, searchType: models.SearchType, filtersOpen: boolean, resultsOpen: boolean) => ({
+        outOfDate,
+        searchType,
+        filtersOpen,
+        resultsOpen
+      })),
+    filter(
+      ({outOfDate}) => !outOfDate
+    ),
+    map(({searchType, filtersOpen, resultsOpen}) =>
+      searchType === models.SearchType.DATASET
+      && !filtersOpen
+      && resultsOpen
+    ),
+    map(outOfDate => new SetSearchOutOfDate(outOfDate))
+  ))
 }
 
