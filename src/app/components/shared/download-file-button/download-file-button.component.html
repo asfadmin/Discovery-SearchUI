@@ -20,7 +20,7 @@
           {{ download.progress }}
         </span>
       </template>
-      <div *ngIf="dlPaused" class="progress-spinner">
+      <div *ngIf="dlPaused && !dlComplete" class="paused-icon">
         <mat-icon>paused</mat-icon>
       </div>
     </ng-container>

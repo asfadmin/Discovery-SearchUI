@@ -98,6 +98,7 @@ export class DownloadFileButtonComponent implements OnInit, AfterViewInit {
 
     if (resp.state === 'DONE') {
       this.dlInProgress = false;
+      this.dlPaused = false;
       this.dlComplete = true;
       this.productDownloaded.emit(product);
     }
