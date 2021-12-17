@@ -12,6 +12,9 @@ import * as polygonStyle from './polygon.style';
 import * as models from '@models';
 import GeometryType from 'ol/geom/GeometryType';
 import Geometry from 'ol/geom/Geometry';
+import { Store } from '@ngrx/store';
+import { AppState } from '@store';
+import { DrawNewPolygon } from '@store/map';
 
 // Declare GTM dataLayer array.
 declare global {
@@ -35,7 +38,7 @@ export class DrawService {
   public polygon$ = new BehaviorSubject<Feature<Geometry> | null>(null);
   public isDrawing$ = new BehaviorSubject<boolean>(false);
 
-  constructor() {
+  constructor(private store$: Store<AppState>) {
     this.source = new VectorSource({
       wrapX: models.mapOptions.wrapX
     });
@@ -142,6 +145,7 @@ export class DrawService {
 
       this.isDrawing$.next(false);
       this.polygon$.next(e.feature);
+      this.store$.dispatch(new DrawNewPolygon());
     });
 
     this.snap = new Snap({source: this.source});

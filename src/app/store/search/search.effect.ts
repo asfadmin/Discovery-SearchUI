@@ -208,7 +208,6 @@ export class SearchEffects {
        withLatestFrom(this.store$.select(getareResultsOutOfDate)),
        filter(([[_, searchtype], outOfdate]) => !outOfdate && searchtype === models.SearchType.DATASET),
   ).pipe(
-    tap(_ => this.notificationService.info('Refresh search to show new results', 'Results Out of Date')),
     map(_ => new SetSearchOutOfDate(true))
   ));
 
@@ -218,6 +217,12 @@ export class SearchEffects {
       SearchActionType.SET_SEARCH_TYPE_AFTER_SAVE),
     map(_ => new SetSearchOutOfDate(false))
   ));
+
+  public onSetSearchOutOfDate = createEffect(() => this.actions$.pipe(
+    ofType<SetSearchOutOfDate>(),
+    filter(action => action.payload),
+    tap(_ => this.notificationService.info('Refresh search to show new results', 'Results Out of Date'))
+  ), {dispatch: false});
 
   private asfApiQuery$(): Observable<Action> {
     this.logCountries();
