@@ -18,7 +18,7 @@ import { PipesModule } from '@pipes';
 import { SceneMetadataModule } from '@components/shared/scene-metadata';
 import { ImageDialogComponent } from './image-dialog.component';
 import { BrowseListComponent } from './browse-list/browse-list.component';
-import {DownloadFileButtonModule} from '@components/header/queue/download-file-button/download-file-button.module';
+import {DownloadFileButtonModule} from '@components/shared/download-file-button/download-file-button.module';
 
 @NgModule({
   declarations: [ImageDialogComponent, BrowseListComponent],
