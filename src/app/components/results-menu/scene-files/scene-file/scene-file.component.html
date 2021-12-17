@@ -28,17 +28,19 @@
   </ng-container>
 
   <div [class.clickable]="!product.metadata.job" mat-line>
-    <b>
+
       <span *ngIf="product.productTypeDisplay.length > 40">
+        <b style="font-size: 14px;">Type:</b>
         {{ product.productTypeDisplay | truncate : 36 }}{{ product.productTypeDisplay | truncate : -4 : '' }}
       </span>
       <span *ngIf="product.productTypeDisplay.length <= 40">
+        <b style="font-size: 14px;">Type:</b>
         {{ product.productTypeDisplay }}
       </span>
       <span *ngIf="product.metadata.job && product.metadata.job.expiration_time">
         {{ expirationBadge(product.metadata.job.expiration_time) }}
       </span>
-    </b>
+
 
     <a *ngIf="isHovered && !product.metadata.job" class="icon-margin">
       <app-copy-to-clipboard
@@ -72,15 +74,15 @@
     </div>
 
     <div *ngIf="product.metadata.job && product.metadata.job.name" mat-line>
-      Project Name: {{ product.metadata.job.name }}
+      <b>Project Name:</b> {{ product.metadata.job.name }}
     </div>
 
     <div *ngIf="product.metadata.job" mat-line>
-      Job Submitted: {{ product.metadata.job.request_time| fullDate }}
+      <b>Job Submitted:</b> {{ product.metadata.job.request_time| fullDate }}
     </div>
 
     <div *ngFor="let param of paramsList" mat-line>
-      {{ param.name }}: {{ param.val }}
+      <b>{{ param.name }}:</b> {{ param.val }}
     </div>
 
     <app-download-file-button
