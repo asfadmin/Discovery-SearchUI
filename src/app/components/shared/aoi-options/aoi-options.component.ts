@@ -102,7 +102,7 @@ export class AoiOptionsComponent implements OnInit, OnDestroy {
     if (!didLoad) {
       this.aoiErrors$.next();
     } else {
-      if(this.searchtype === SearchType.DATASET && this.isResultsMenuOpen && !this.isFiltersMenuOpen) {
+      if (this.searchtype === SearchType.DATASET && this.isResultsMenuOpen && !this.isFiltersMenuOpen) {
         this.store$.dispatch(new SetSearchOutOfDate(true));
       }
     }

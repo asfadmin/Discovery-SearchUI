@@ -192,6 +192,6 @@ export class MapEffects {
       && resultsOpen
     ),
     map(outOfDate => new SetSearchOutOfDate(outOfDate))
-  ))
+  ));
 }
 
