@@ -219,7 +219,7 @@ export class SearchEffects {
   ));
 
   public onSetSearchOutOfDate = createEffect(() => this.actions$.pipe(
-    ofType<SetSearchOutOfDate>(),
+    ofType<SetSearchOutOfDate>(SearchActionType.SET_SEARCH_OUT_OF_DATE),
     filter(action => action.payload),
     tap(_ => this.notificationService.info('Refresh search to show new results', 'Results Out of Date'))
   ), {dispatch: false});

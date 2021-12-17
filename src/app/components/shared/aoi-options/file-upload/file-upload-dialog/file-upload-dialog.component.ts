@@ -7,6 +7,9 @@ import { SubSink } from 'subsink';
 
 import { AsfApiService, NotificationService, MapService, WktService } from '@services';
 import { HttpErrorResponse } from '@angular/common/http';
+import { Store } from '@ngrx/store';
+import { AppState } from '@store';
+import { DrawNewPolygon } from '@store/map';
 
 
 enum FileErrors {
@@ -34,7 +37,8 @@ export class FileUploadDialogComponent implements OnInit, OnDestroy {
     private mapService: MapService,
     private asfApiService: AsfApiService,
     private notificationService: NotificationService,
-    private wktService: WktService
+    private wktService: WktService,
+    private store$: Store<AppState>
   ) {}
 
   public ngOnInit(): void {
@@ -125,6 +129,7 @@ export class FileUploadDialogComponent implements OnInit, OnDestroy {
             // set wkt (resp.wkt.unwrapped)
             this.setAOI(resp.wkt.unwrapped);
             this.zoomToAOI(resp.wkt.unwrapped);
+            this.store$.dispatch(new DrawNewPolygon());
           } else if (resp.errors && resp.errors.length > 0) {
             const { report, type } = resp.errors[0];
             this.notificationService.error(report, type, { timeOut: 5000 });
