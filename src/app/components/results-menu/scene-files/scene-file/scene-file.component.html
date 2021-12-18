@@ -28,18 +28,32 @@
   </ng-container>
 
   <div [class.clickable]="!product.metadata.job" mat-line>
-
+    <b *ngIf="(searchType$ | async) !== searchTypes.CUSTOM_PRODUCTS; else customProductsDisplay">
       <span *ngIf="product.productTypeDisplay.length > 40">
-        <b style="font-size: 14px;">Type:</b>
         {{ product.productTypeDisplay | truncate : 36 }}{{ product.productTypeDisplay | truncate : -4 : '' }}
       </span>
       <span *ngIf="product.productTypeDisplay.length <= 40">
-        <b style="font-size: 14px;">Type:</b>
         {{ product.productTypeDisplay }}
       </span>
       <span *ngIf="product.metadata.job && product.metadata.job.expiration_time">
         {{ expirationBadge(product.metadata.job.expiration_time) }}
       </span>
+    </b>
+
+    <ng-template #customProductsDisplay>
+    <span *ngIf="product.productTypeDisplay.length > 40">
+      <b style="font-size: 14px;">Type:</b>
+      {{ product.productTypeDisplay | truncate : 36 }}{{ product.productTypeDisplay | truncate : -4 : '' }}
+    </span>
+    <span *ngIf="product.productTypeDisplay.length <= 40">
+      <b style="font-size: 14px;">Type:</b>
+      {{ product.productTypeDisplay }}
+    </span>
+    <span *ngIf="product.metadata.job && product.metadata.job.expiration_time">
+      {{ expirationBadge(product.metadata.job.expiration_time) }}
+    </span>
+  </ng-template>
+
 
 
     <a *ngIf="isHovered && !product.metadata.job" class="icon-margin">
