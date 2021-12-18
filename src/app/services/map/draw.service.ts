@@ -164,6 +164,7 @@ export class DrawService {
 
       this.setDrawStyle(models.DrawPolygonStyle.VALID);
       this.polygon$.next(feature);
+      this.store$.dispatch(new DrawNewPolygon());
     });
 
     return modify;

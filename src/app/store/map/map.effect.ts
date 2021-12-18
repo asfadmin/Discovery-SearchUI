@@ -177,7 +177,7 @@ export class MapEffects {
       this.store$.select(getSearchType),
       this.store$.select(getIsFiltersMenuOpen),
       this.store$.select(getIsResultsMenuOpen),
-      (_, outOfDate: boolean, searchType: models.SearchType, filtersOpen: boolean, resultsOpen: boolean) => ({
+      (_, outOfDate, searchType, filtersOpen, resultsOpen) => ({
         outOfDate,
         searchType,
         filtersOpen,
@@ -191,7 +191,7 @@ export class MapEffects {
       && !filtersOpen
       && resultsOpen
     ),
-    map(outOfDate => new SetSearchOutOfDate(outOfDate))
-  ));
+    tap(_ => this.store$.dispatch( new SetSearchOutOfDate(true)))
+  ), {dispatch: false});
 }
 
