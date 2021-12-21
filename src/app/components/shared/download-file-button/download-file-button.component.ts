@@ -74,10 +74,7 @@ export class DownloadFileButtonComponent implements OnInit, AfterViewInit {
     this.observable$ = this.downloadService.download(this.url, this.fileName);
     this.subscription = this.observable$.subscribe( resp => {
       if (!this.processSubscription(resp, product, true)) {
-        // console.log('processSubscription() unsubscribing now');
         this.subscription.unsubscribe();
-        console.log('Now subscribing with the filename from the header:', this.fileName);
-        console.log('And the url:', this.url);
         this.observable$ = this.downloadService.download(this.url, this.fileName);
         this.subscription = this.observable$.subscribe( response => this.processSubscription(response, product, false));
       }
