@@ -1,6 +1,6 @@
 import {
   HttpEvent,
-  HttpEventType,
+  HttpEventType, HttpHeaderResponse,
   HttpProgressEvent,
   HttpResponse
 } from '@angular/common/http';
@@ -9,6 +9,10 @@ import { distinctUntilChanged, scan } from 'rxjs/operators';
 
 function isHttpResponse<T>(event: HttpEvent<T>): event is HttpResponse<T> {
   return event.type === HttpEventType.Response;
+}
+
+function isHttpHeader(event: HttpEvent<unknown>): event is HttpHeaderResponse {
+  return event.type === HttpEventType.ResponseHeader;
 }
 
 function isHttpProgressEvent(
@@ -30,11 +34,26 @@ export interface Download {
 export function download(
   id: string,
   saver?: (b: Blob) => void): (source: Observable<HttpEvent<Blob>>) => Observable<Download> {
+
+  // console.log('download.ts download() id:', id);
+  // console.log('download.ts saver:', saver);
+
   return (source: Observable<HttpEvent<Blob>>) =>
     source.pipe(
       scan(
         // tslint:disable-next-line:no-shadowed-variable
         (download: Download, event): Download => {
+          // console.log('download.ts download() event:', event);
+          if (isHttpHeader(event)) {
+            const eventURL = new URL(event.url).pathname;
+            const newID = eventURL.substring(eventURL.lastIndexOf('/') + 1);
+            return {
+              progress: 0,
+              state: 'PENDING',
+              content: null,
+              id: newID
+            };
+          }
           if (isHttpProgressEvent(event)) {
             return {
               progress: event.total
@@ -53,7 +72,7 @@ export function download(
               progress: 100,
               state: 'DONE',
               content: event.body,
-              id: id
+              id: id,
             };
           }
           return download;

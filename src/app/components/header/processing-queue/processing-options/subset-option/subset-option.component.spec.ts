@@ -1,20 +1,20 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { DownloadFileButtonComponent } from './download-file-button.component';
+import { SubsetOptionComponent } from './subset-option.component';
 
-describe('DownloadFileButtonComponent', () => {
-  let component: DownloadFileButtonComponent;
-  let fixture: ComponentFixture<DownloadFileButtonComponent>;
+describe('SubsetOptionComponent', () => {
+  let component: SubsetOptionComponent;
+  let fixture: ComponentFixture<SubsetOptionComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ DownloadFileButtonComponent ]
+      declarations: [ SubsetOptionComponent ]
     })
     .compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(DownloadFileButtonComponent);
+    fixture = TestBed.createComponent(SubsetOptionComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

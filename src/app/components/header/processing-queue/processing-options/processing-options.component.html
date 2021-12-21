@@ -33,6 +33,13 @@
             [optionName]="option.name"
             [optionInfo]="option.info">
           </app-checkbox-option>
+
+          <app-subset-option
+             *ngIf="option.type === 'SUBSET'"
+            (setSubset)="onSetSubset(option.optionSubset)"
+            [optionName]="option.name"
+            [optionInfo]="option.info">
+          </app-subset-option>
         </div>
       </ng-container>
     </ng-container>

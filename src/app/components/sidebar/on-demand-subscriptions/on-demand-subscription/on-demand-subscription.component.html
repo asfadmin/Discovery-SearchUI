@@ -1,13 +1,13 @@
 <div class="subscription">
-  <div class="subscription--header">
-    <div class="subscription--header-info">
+  <div class="subscription-header">
+    <div class="subscription-header-info">
       <div (click)="onToggleExpand()" class="clickable expand-arrow">
-        <mat-icon *ngIf="!isExpanded" class="expand-arrow--icon">keyboard_arrow_right</mat-icon>
-        <mat-icon *ngIf="isExpanded" class="expand-arrow--icon">keyboard_arrow_down</mat-icon>
+        <mat-icon *ngIf="!isExpanded" class="expand-arrow-icon">keyboard_arrow_right</mat-icon>
+        <mat-icon *ngIf="isExpanded" class="expand-arrow-icon">keyboard_arrow_down</mat-icon>
       </div>
 
-      <div class="subscription--preview">
-        <div class="preview--top">
+      <div class="subscription-preview">
+        <div class="preview-top">
           {{ subscription.name }} <span>&#183;</span>
           {{ subscription.jobType.name }}
         </div>
@@ -24,11 +24,11 @@
       </div>
     </div>
 
-    <div class="subscription--header-actions">
+    <div class="subscription-header-actions">
       <span matTooltip="Extent subscription one month">
         <button
           (click)="onRenewSubscription()"
-          class="subscription--action"
+          class="subscription-action"
           [disabled]="!isSubOutOfDate && !expiresThisMonth"
           mat-flat-button>
           <i class="material-icons">update</i>
@@ -37,7 +37,7 @@
 
       <button
         (click)="loadOnDemandSearch()"
-        class="subscription--action"
+        class="subscription-action"
         matTooltip="View Processed Products"
         mat-flat-button>
         <i class="material-icons">image_search</i>
@@ -45,7 +45,7 @@
 
       <mat-slide-toggle
         *ngIf="!isSubOutOfDate"
-        class="subscription--action"
+        class="subscription-action"
         (change)="onToggleEnabled()"
         [checked]="subscription.enabled">
         <div class="t-label">
@@ -60,7 +60,7 @@
     </div>
   </div>
 
-  <div *ngIf="isExpanded" class="subscription--detail">
+  <div *ngIf="isExpanded" class="subscription-detail">
     <div *ngIf="isEditingEndDate">
 
       <form #endDateForm="ngForm"

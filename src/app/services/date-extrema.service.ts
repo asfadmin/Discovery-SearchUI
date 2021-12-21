@@ -113,14 +113,14 @@ export class DateExtremaService {
       map(eventsDateRange => {
         const min = eventsDateRange
           .filter(eventRange => !!eventRange?.start)
-          .map(eventRange => eventRange.start)
+          .map(eventRange => new Date( eventRange.start))
           .reduce((prev, curr) => prev <= curr ? prev : curr);
 
         const max = eventsDateRange
           .filter(eventRange => !!eventRange?.end)
-          .map(eventRange => eventRange.end)
+          .map(eventRange => new Date( eventRange.end))
           .reduce((prev, curr) => prev > curr ? prev : curr);
-        const extrema: Range<Date> = {start: min, end: max};
+        const extrema: Range<Date> = {start: new Date( min), end: new Date( max)};
         return extrema;
       })
     );

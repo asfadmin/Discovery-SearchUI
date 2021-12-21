@@ -193,12 +193,6 @@ export class CreateSubscriptionComponent implements OnInit, OnDestroy {
         this.flightDirection = flightDir;
       }
     });
-
-    this.s1Subtypes.forEach(subtype => {
-      if (reference.dataset === subtype.displayName) {
-        this.subtype = subtype.apiValue;
-      }
-    });
   }
 
   public onSelectionChange(): void {

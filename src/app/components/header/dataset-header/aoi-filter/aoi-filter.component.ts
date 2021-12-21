@@ -13,6 +13,7 @@ import { tap, delay } from 'rxjs/operators';
 
 import { menuAnimation, MapInteractionModeType } from '@models';
 import * as services from '@services';
+import { DrawNewPolygon } from '@store/map';
 
 @Component({
   selector: 'app-aoi-filter',
@@ -82,6 +83,8 @@ export class AoiFilterComponent implements OnInit, OnDestroy {
 
     if (!didLoad) {
       this.aoiErrors$.next();
+    } else {
+      this.store$.dispatch(new DrawNewPolygon());
     }
 
   }

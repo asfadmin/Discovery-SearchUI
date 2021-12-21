@@ -1,4 +1,5 @@
-@use '~@angular/material' as mat;
+@use "~@angular/material" as mat;
+
 @import "asf-theme";
 
 $config: mat.define-typography-config();
@@ -37,6 +38,10 @@ label {
   background-color: $info-background;
   color: $info-color;
   margin-top: -3px;
+}
+
+.lat-lon-data {
+  margin-left: 41px;
 }
 
 .group-margin {

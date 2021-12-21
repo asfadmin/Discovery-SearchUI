@@ -1,10 +1,9 @@
 <a [href]="href ?? product.downloadUrl"
-   (click)="hijackDownloadClick($event, hiddenPrefix + product.id)"
+   (click)="hijackDownloadClick($event)"
    class="link"
 >
-  <button [id]="hiddenPrefix + product.id"
-          (click)="downloadFile( product, href )"
-          [disabled]="!product.downloadUrl || dlInProgress"
+  <button
+          [disabled]="!product.downloadUrl || dlInProgress || disabled"
      mat-icon-button
      matTooltip="Download file"
      class="download-file-button"
@@ -21,6 +20,9 @@
           {{ download.progress }}
         </span>
       </template>
+      <div *ngIf="dlPaused && !dlComplete" class="paused-icon">
+        <mat-icon>paused</mat-icon>
+      </div>
     </ng-container>
 
     <ng-container *ngIf="!dFile || dlComplete">
@@ -33,7 +35,3 @@
     </ng-container>
   </button>
 </a>
-
-<a [id]="hiddenPrefix + product.id"
-   [href]="product.downloadUrl"
-   target="_blank" >
