@@ -21,7 +21,6 @@ export class DownloadFileButtonComponent implements OnInit, AfterViewInit {
   public dlComplete = false;
   public url: string;
   public fileName: string = null;
-  public hiddenPrefix = 'xyxHidden-';
 
   public observable$: Observable<Download>;
   public subscription: Subscription;
@@ -74,7 +73,7 @@ export class DownloadFileButtonComponent implements OnInit, AfterViewInit {
     this.observable$ = this.downloadService.download(this.url, this.fileName);
     this.subscription = this.observable$.subscribe( resp => {
       if (!this.processSubscription(resp, product, true)) {
-        console.log('processSubscription() unsubscribing now');
+        // console.log('processSubscription() unsubscribing now');
         this.subscription.unsubscribe();
         console.log('Now subscribing with the filename from the header:', this.fileName);
         console.log('And the url:', this.url);
@@ -119,11 +118,8 @@ async function classicDownload( url, _filename ) {
   link.style.display = 'none';
   link.href = url;
   link.setAttribute('download', '');
-  link.type = 'blob';
+  // link.type = 'blob';
   link.target = '_blank';
-  // const re = /(?:\.([^.]+))?$/;
-  // const ext = re.exec(url)[1];
-  // (ext.toUpperCase() === 'XML') ? link.target = '_blank' : link.target = '_self';
 
   // It needs to be added to the DOM so it can be clicked
   document.body.appendChild(link);

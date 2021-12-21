@@ -35,15 +35,15 @@ export function download(
   id: string,
   saver?: (b: Blob) => void): (source: Observable<HttpEvent<Blob>>) => Observable<Download> {
 
-  console.log('download.ts download() id:', id);
-  console.log('download.ts saver:', saver);
+  // console.log('download.ts download() id:', id);
+  // console.log('download.ts saver:', saver);
 
   return (source: Observable<HttpEvent<Blob>>) =>
     source.pipe(
       scan(
         // tslint:disable-next-line:no-shadowed-variable
         (download: Download, event): Download => {
-          console.log('download.ts download() event:', event);
+          // console.log('download.ts download() event:', event);
           if (isHttpHeader(event)) {
             const eventURL = new URL(event.url).pathname;
             const newID = eventURL.substring(eventURL.lastIndexOf('/') + 1);
