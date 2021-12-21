@@ -27,14 +27,14 @@ import Point from 'ol/geom/Point';
 import GeometryType from 'ol/geom/GeometryType';
 
 export interface sbasPairParams {
-  scenes: any[],
-  customPairs: CMRProduct[][],
-  temporalRange: models.Range<number>,
-  perpendicular: number,
-  dateRange: models.Range<Date>,
-  season: models.Range<number>,
-  overlap: models.SBASOverlap,
-  polygon: Feature<Geometry>,
+  scenes: any[];
+  customPairs: CMRProduct[][];
+  temporalRange: models.Range<number>;
+  perpendicular: number;
+  dateRange: models.Range<Date>;
+  season: models.Range<number>;
+  overlap: models.SBASOverlap;
+  polygon: Feature<Geometry>;
 
 }
 
@@ -133,7 +133,7 @@ export class PairService {
 
     let intersectionMethod;
 
-    if(!!aoi) {
+    if (!!aoi) {
       const geometryType = aoi.getGeometry().getType();
       intersectionMethod = this.aoiIntersectionMethod(geometryType);
     }
@@ -152,9 +152,9 @@ export class PairService {
 
     scenes.forEach((root, index) => {
 
-    if(!!aoi) {
+    if (!!aoi) {
       const rootPolygon = this.wktService.wktToFeature(root.metadata.polygon, this.mapService.epsg());
-      if(!intersectionMethod(aoi, rootPolygon)) {
+      if (!intersectionMethod(aoi, rootPolygon)) {
         return;
       }
     }
@@ -311,7 +311,7 @@ export class PairService {
 
   private aoiIntersectionMethod(geometryType: GeometryType) {
 
-    if(geometryType === 'Point') {
+    if (geometryType === 'Point') {
       return (lhs: Feature<Geometry>, rhs: Feature<Geometry>) => {
         const point = lhs.getGeometry() as Point;
         return booleanPointInPolygon(point.getCoordinates(),
@@ -320,8 +320,8 @@ export class PairService {
           'coordinates': [
             (rhs.getGeometry() as Polygon).getCoordinates()[0]
           ],
-      })
-      }
+      });
+      };
     }
 
     return (lhs: Feature<Geometry>, rhs: Feature<Geometry>) => intersect(
