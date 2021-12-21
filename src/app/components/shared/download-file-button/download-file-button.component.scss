@@ -9,10 +9,12 @@
   position: relative;
   float: right;
 }
+
 .paused-icon {
   display: grid;
   place-content: center;
 }
+
 .progress-spinner-value {
   position: absolute;
   left: 7px;
