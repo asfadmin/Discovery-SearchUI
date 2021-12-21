@@ -86,7 +86,8 @@
     <app-download-file-button
       [attr.id]="'scene_' + product.id"
       [product] = "product"
-      (productDownloaded)="prodDownloaded($event)">
+      (productDownloaded)="prodDownloaded($event)"
+      [disabled]="isExpired(product.metadata.job)">
     </app-download-file-button>
 
     <app-cart-toggle

@@ -3,7 +3,7 @@
    class="link"
 >
   <button
-          [disabled]="!product.downloadUrl || dlInProgress"
+          [disabled]="!product.downloadUrl || dlInProgress || disabled"
      mat-icon-button
      matTooltip="Download file"
      class="download-file-button"

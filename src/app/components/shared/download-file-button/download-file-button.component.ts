@@ -13,6 +13,7 @@ import { Observable, Subscription } from 'rxjs';
 export class DownloadFileButtonComponent implements OnInit, AfterViewInit {
   @Input() product: CMRProduct;
   @Input() href: string;
+  @Input() disabled: boolean;
   @Output()
   productDownloaded: EventEmitter<CMRProduct> = new EventEmitter<CMRProduct>();
   public dFile: Download;
