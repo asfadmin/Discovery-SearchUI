@@ -191,7 +191,7 @@ export class MapEffects {
       && !filtersOpen
       && resultsOpen
     ),
-    tap(_ => this.store$.dispatch( new SetSearchOutOfDate(true)))
+    tap(outOfDate => this.store$.dispatch( new SetSearchOutOfDate(outOfDate)))
   ), {dispatch: false});
 }
 
