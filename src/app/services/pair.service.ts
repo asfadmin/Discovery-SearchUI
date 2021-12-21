@@ -26,7 +26,7 @@ import booleanPointInPolygon from '@turf/boolean-point-in-polygon';
 import Point from 'ol/geom/Point';
 import GeometryType from 'ol/geom/GeometryType';
 
-export interface sbasPairParams {
+export interface SBASPairParams {
   scenes: any[];
   customPairs: CMRProduct[][];
   temporalRange: models.Range<number>;
@@ -91,11 +91,10 @@ export class PairService {
         season,
         overlap,
         polygon
-      } as sbasPairParams)).pipe(
+      } as SBASPairParams)).pipe(
       debounceTime(250),
       withLatestFrom(this.store$.select(getSearchType)),
       map(([params, searchType]) => {
-        // const [scenes, customPairs, temporal, perp, dateRange, season, sbasOverlapThreshold] = params;
 
         return searchType === SearchType.SBAS ? ({
           pairs: [...this.makePairs(params.scenes,
