@@ -64,7 +64,7 @@
         </div>
       </div>
 
-      <div *ngIf="searchType === searchTypes.DATASET" fxFlex="" class="group-margin">
+      <div *ngIf="searchType === searchTypes.DATASET || searchType === searchTypes.SBAS" fxFlex="" class="group-margin">
         <div fxLayout="row" fxLayoutAlign="center" class="button-group-label">
           <label>Area of Interest</label>
         </div>
@@ -74,7 +74,7 @@
         </div>
       </div>
 
-      <div *ngIf="searchType === searchTypes.DATASET" fxFlex="" class="group-margin">
+      <div *ngIf="searchType === searchTypes.DATASET || searchType === searchTypes.SBAS" fxFlex="" class="group-margin">
         <div fxLayout="row" fxLayoutAlign="center" class="button-group-label">
           <label>Selection Shape</label>
         </div>
