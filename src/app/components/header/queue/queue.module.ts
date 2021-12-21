@@ -23,7 +23,7 @@ import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
-import { DownloadFileButtonModule } from './download-file-button/download-file-button.module';
+import {DownloadFileButtonModule} from '@components/shared/download-file-button/download-file-button.module';
 import { DownloadAllModule } from '@components/header/queue/download-all/download-all.module';
 
 @NgModule({
