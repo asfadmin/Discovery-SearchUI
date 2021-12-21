@@ -19,9 +19,11 @@ import * as models from '@models';
 
 import { Feature } from 'ol';
 import Geometry from 'ol/geom/Geometry';
+import Polygon from 'ol/geom/Polygon';
 
 import intersect from '@turf/intersect';
-import Polygon from 'ol/geom/Polygon';
+import booleanPointInPolygon from '@turf/boolean-point-in-polygon';
+import Point from 'ol/geom/Point';
 
 export interface sbasPairParams {
   scenes: any[],
@@ -128,6 +130,37 @@ export class PairService {
       endDateExtrema = new Date(dateRange.end.toISOString());
     }
 
+    let intersectionMethod;
+
+    if(!!aoi) {
+      const geometryType = aoi.getGeometry().getType();
+
+      intersectionMethod = geometryType === 'Point' ? (lhs: Feature<Geometry>, rhs: Feature<Geometry>) => {
+        const point = lhs.getGeometry() as Point;
+        return !booleanPointInPolygon(point.getCoordinates(),
+          {
+            'type': 'Polygon',
+            'coordinates': [
+              (rhs.getGeometry() as Polygon).getCoordinates()[0]
+            ],
+        })
+        } :(lhs: Feature<Geometry>, rhs: Feature<Geometry>) => !intersect(
+          {
+            'type': 'Polygon',
+            'coordinates': [
+              (lhs.getGeometry() as Polygon).getCoordinates()[0]
+            ],
+        },
+        {
+          'type': 'Polygon',
+          'coordinates': [
+            (rhs.getGeometry() as Polygon).getCoordinates()[0]
+          ],
+        }
+      );
+    }
+
+
     const bounds = (x: string) => x.replace('POLYGON ', '').replace('((', '').replace('))', '').split(',').slice(0, 4).
     map(coord => coord.trimStart().split(' ')).
       map(coordVal => ({ lon: parseFloat(coordVal[0]), lat: parseFloat(coordVal[1])}));
@@ -143,19 +176,7 @@ export class PairService {
 
     if(!!aoi) {
       const rootPolygon = this.wktService.wktToFeature(root.metadata.polygon, this.mapService.epsg());
-      if(!intersect(
-        {
-          'type': 'Polygon',
-          'coordinates': [
-            (aoi.getGeometry() as Polygon).getCoordinates()[0]
-          ],
-      },
-      {
-        'type': 'Polygon',
-        'coordinates': [
-          (rootPolygon.getGeometry() as Polygon).getCoordinates()[0]
-        ],
-    })) {
+      if(intersectionMethod(aoi, rootPolygon)) {
         return;
       }
     }
