@@ -165,7 +165,10 @@ export class SceneFileComponent implements OnInit, OnDestroy {
   }
 
   public isExpired(job: models.Hyp3Job): boolean {
-    return this.hyp3.isExpired(job);
+    if (job) {
+      return this.hyp3.isExpired(job);
+    }
+    return false;
   }
 
   public prodDownloaded( _product ) {

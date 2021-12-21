@@ -7,7 +7,6 @@ import { SAVER, Saver } from '@services/saver.provider';
 @Injectable({providedIn: 'root'})
 export class DownloadService {
 
-  wCreds = true;
 
   constructor(
     private http: HttpClient,
@@ -17,19 +16,25 @@ export class DownloadService {
   classicResp: Observable<Download>;
 
   download(url: string, filename: string): Observable<Download> {
-    // tslint:disable-next-line:max-line-length
-    return this.http.get(url, {
-      withCredentials: this.wCreds,
+
+    const resp = this.http.get(url, {
+      withCredentials: !(new URL(url).origin.startsWith('hyp3')),
       reportProgress: true,
       observe: 'events',
       responseType: 'blob',
-    }).pipe(download(filename, blob => this.save(blob, url, filename)));
+    });
+
+
+    return resp.pipe(download(filename, blob => this.save(blob, url, filename)));
   }
+
+
 
   // blob(url: string, filename?: string): Observable<Blob> {
   blob(url: string): Observable<Blob> {
+    console.log('download.service.ts blog() url:', url);
     return this.http.get(url, {
-      withCredentials: this.wCreds,
+      withCredentials: !(new URL(url).origin.startsWith('hyp3')),
       responseType: 'blob',
     });
   }
