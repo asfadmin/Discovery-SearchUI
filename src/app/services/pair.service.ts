@@ -24,6 +24,7 @@ import Polygon from 'ol/geom/Polygon';
 import intersect from '@turf/intersect';
 import booleanPointInPolygon from '@turf/boolean-point-in-polygon';
 import Point from 'ol/geom/Point';
+import GeometryType from 'ol/geom/GeometryType';
 
 export interface sbasPairParams {
   scenes: any[],
@@ -134,30 +135,7 @@ export class PairService {
 
     if(!!aoi) {
       const geometryType = aoi.getGeometry().getType();
-
-      intersectionMethod = geometryType === 'Point' ? (lhs: Feature<Geometry>, rhs: Feature<Geometry>) => {
-        const point = lhs.getGeometry() as Point;
-        return !booleanPointInPolygon(point.getCoordinates(),
-          {
-            'type': 'Polygon',
-            'coordinates': [
-              (rhs.getGeometry() as Polygon).getCoordinates()[0]
-            ],
-        })
-        } :(lhs: Feature<Geometry>, rhs: Feature<Geometry>) => !intersect(
-          {
-            'type': 'Polygon',
-            'coordinates': [
-              (lhs.getGeometry() as Polygon).getCoordinates()[0]
-            ],
-        },
-        {
-          'type': 'Polygon',
-          'coordinates': [
-            (rhs.getGeometry() as Polygon).getCoordinates()[0]
-          ],
-        }
-      );
+      intersectionMethod = this.aoiIntersectionMethod(geometryType);
     }
 
 
@@ -176,7 +154,7 @@ export class PairService {
 
     if(!!aoi) {
       const rootPolygon = this.wktService.wktToFeature(root.metadata.polygon, this.mapService.epsg());
-      if(intersectionMethod(aoi, rootPolygon)) {
+      if(!intersectionMethod(aoi, rootPolygon)) {
         return;
       }
     }
@@ -329,5 +307,36 @@ export class PairService {
         (a, b) => b.metadata.temporal - a.metadata.temporal;
 
     return scenes.sort(sortFunc);
+  }
+
+  private aoiIntersectionMethod(geometryType: GeometryType) {
+
+    if(geometryType === 'Point') {
+      return (lhs: Feature<Geometry>, rhs: Feature<Geometry>) => {
+        const point = lhs.getGeometry() as Point;
+        return booleanPointInPolygon(point.getCoordinates(),
+        {
+          'type': 'Polygon',
+          'coordinates': [
+            (rhs.getGeometry() as Polygon).getCoordinates()[0]
+          ],
+      })
+      }
+    }
+
+    return (lhs: Feature<Geometry>, rhs: Feature<Geometry>) => intersect(
+      {
+        'type': 'Polygon',
+        'coordinates': [
+          (lhs.getGeometry() as Polygon).getCoordinates()[0]
+        ],
+      },
+    {
+      'type': 'Polygon',
+      'coordinates': [
+        (rhs.getGeometry() as Polygon).getCoordinates()[0]
+      ],
+    }
+  );
   }
 }
