@@ -1,0 +1,52 @@
+.subscription {
+  padding: 10px;
+}
+
+.subscription-disabled {
+  color: grey !important;
+}
+
+.edit-icon {
+  font-size: 18px;
+}
+
+.subscription-header {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.subscription-header-info {
+  display: flex;
+}
+
+.subscription-preview {
+  display: flex;
+  flex-direction: column;
+}
+
+.preview-top {
+  font-weight: bold;
+}
+
+.subscription-detail {
+  margin: 10px 10px 10px 45px;
+}
+
+.subscription-action {
+  background-color: unset !important;
+}
+
+.expand-arrow {
+  margin-right: 20px;
+  margin-top: -2px;
+}
+
+.expand-arrow-icon {
+  font-size: 38px;
+}
+
+.t-label {
+  width: 70px;
+}

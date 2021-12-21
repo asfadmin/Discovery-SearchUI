@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 
 import { BehaviorSubject } from 'rxjs';
 
-import { Map } from 'ol';
+import { Feature, Map } from 'ol';
 import { Vector as VectorSource } from 'ol/source';
 import { Vector as VectorLayer } from 'ol/layer';
 import { Draw, Modify, Snap } from 'ol/interaction.js';
@@ -10,6 +10,8 @@ import { createBox } from 'ol/interaction/Draw.js';
 
 import * as polygonStyle from './polygon.style';
 import * as models from '@models';
+import GeometryType from 'ol/geom/GeometryType';
+import Geometry from 'ol/geom/Geometry';
 
 // Declare GTM dataLayer array.
 declare global {
@@ -30,7 +32,7 @@ export class DrawService {
   private defaultStyle = polygonStyle.valid;
   private drawEndCallback;
 
-  public polygon$ = new BehaviorSubject<string | null>(null);
+  public polygon$ = new BehaviorSubject<Feature<Geometry> | null>(null);
   public isDrawing$ = new BehaviorSubject<boolean>(false);
 
   constructor() {
@@ -121,13 +123,13 @@ export class DrawService {
     if (drawMode === models.MapDrawModeType.BOX) {
       draw = new Draw({
         source: this.source,
-        type: 'Circle', // Actually a box...
+        type: 'Circle' as GeometryType, // Actually a box...
         geometryFunction: createBox()
       });
     } else {
       draw = new Draw({
         source: this.source,
-        type: drawMode
+        type: drawMode.valueOf() as GeometryType
       });
     }
 

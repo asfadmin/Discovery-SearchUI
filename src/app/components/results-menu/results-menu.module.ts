@@ -29,6 +29,9 @@ import { SBASChartModule } from '@components/sbas-chart/sbas-chart.module';
 import { SbasSlidersComponent } from './sbas-sliders/sbas-sliders.component';
 import { MatSliderModule } from '@angular/material/slider';
 import { SbasSlidersTwoComponent } from './sbas-sliders-two/sbas-sliders-two.component';
+import { SarviewsResultsMenuComponent } from './sarviews-results-menu/sarviews-results-menu.component';
+
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 @NgModule({
   declarations: [
@@ -40,6 +43,7 @@ import { SbasSlidersTwoComponent } from './sbas-sliders-two/sbas-sliders-two.com
     SBASResultsMenuComponent,
     SbasSlidersComponent,
     SbasSlidersTwoComponent,
+    SarviewsResultsMenuComponent,
   ],
   imports: [
     CommonModule,
@@ -63,6 +67,7 @@ import { SbasSlidersTwoComponent } from './sbas-sliders-two/sbas-sliders-two.com
     MatFormFieldModule,
     MatInputModule,
     ReactiveFormsModule,
+    FontAwesomeModule,
   ],
   exports: [ResultsMenuComponent, SbasSlidersTwoComponent, SbasSlidersComponent],
 })

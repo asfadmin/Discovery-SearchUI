@@ -1,0 +1,33 @@
+.event-slider {
+  height: 80%;
+  margin-bottom: 25px;
+}
+
+.event-label {
+  display: inline-block;
+  margin-top: 5px;
+  margin-bottom: 14px;
+  font-size: 14px !important;
+}
+
+.noUi-vertical {
+  width: 8px;
+}
+
+.noUi-horizontal {
+  height: 12px;
+}
+
+::ng-deep.noUi-pips-horizontal {
+  margin-top: 5px;
+  height: 12px;
+}
+
+div.noUi-handle.noUi-handle-lower {
+  width: 16px !important;
+  right: -5px !important;
+}
+
+#polygonScale {
+  margin-top: 15px;
+}

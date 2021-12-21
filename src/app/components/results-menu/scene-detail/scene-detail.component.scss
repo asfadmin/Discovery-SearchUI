@@ -10,6 +10,7 @@ a {
 .detail-card {
   max-width: 100%;
   border-left: lightgrey 1px solid;
+  overflow-x: hidden !important;
 }
 
 .scrollable {
@@ -124,13 +125,14 @@ a {
 }
 
 .tool-menu {
+  z-index: 2;
   position: sticky;
-  background: $divider-bar-color;
-  bottom: 0;
   display: flex;
   justify-content: flex-start;
+  background: $divider-bar-color;
   align-items: center;
   height: 40px;
+  bottom: 0;
 
   button {
     //background: none;
@@ -146,6 +148,14 @@ a {
     background-color: $asf-primary-light !important;
     color: $asf-primary !important;
   }
+}
+
+.sarivews-radius-display {
+  display: flex;
+  width: 75%;
+  margin-top: 15px;
+  margin-left: 15px;
+  // margin-left: 15px;
 }
 
 .search-button-label {

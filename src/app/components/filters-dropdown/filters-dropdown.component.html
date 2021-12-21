@@ -26,10 +26,15 @@
         <ng-container *ngIf="selectedSearchType === searchTypes.CUSTOM_PRODUCTS">
           On Demand Search
         </ng-container>
+
+        <ng-container *ngIf="selectedSearchType === searchTypes.SARVIEWS_EVENTS">
+          Event Search
+        </ng-container>
       </div>
     </div>
 
-    <div class="filters-list">
+    <div class="filters-list"
+          [class.filters-list-mobile]="breakpoint === breakpoints.MOBILE">
       <ng-container *ngIf="selectedSearchType === searchTypes.DATASET">
         <app-dataset-filters [dataset]="(dataset$ | async)">
         </app-dataset-filters>
@@ -50,6 +55,9 @@
       <ng-container *ngIf="selectedSearchType === searchTypes.CUSTOM_PRODUCTS">
         <app-custom-products-filters></app-custom-products-filters>
       </ng-container>
+      <ng-container *ngIf="selectedSearchType === searchTypes.SARVIEWS_EVENTS">
+        <app-sarviews-filters></app-sarviews-filters>
+      </ng-container>
     </div>
 
     <div class="footer">
@@ -57,7 +65,7 @@
         <app-max-results-selector class = "search-button"
           *ngIf="
              selectedSearchType !== searchTypes.BASELINE && selectedSearchType !== searchTypes.SBAS &&
-             selectedSearchType !== searchTypes.CUSTOM_PRODUCTS
+             selectedSearchType !== searchTypes.CUSTOM_PRODUCTS && selectedSearchType !== searchTypes.SARVIEWS_EVENTS
           "
           style="margin-right: 10px;">
         </app-max-results-selector>

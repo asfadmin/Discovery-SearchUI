@@ -151,6 +151,12 @@ export class UserEffects {
     map(_ => new hyp3Store.LoadUser())
   ));
 
+  public loadOnDemandSubscriptionsOnLogin = createEffect(() => this.actions$.pipe(
+    ofType<userActions.LoadSavedSearches>(userActions.UserActionType.LOGIN),
+    delay(400),
+    map(_ => new hyp3Store.LoadSubscriptions())
+  ));
+
   public loadSavedSearches = createEffect(() => this.actions$.pipe(
     ofType<userActions.LoadSavedSearches>(userActions.UserActionType.LOAD_SAVED_SEARCHES),
     withLatestFrom( this.store$.select(userReducer.getUserAuth)),
@@ -182,7 +188,8 @@ export class UserEffects {
     withLatestFrom(this.store$.select(searchStore.getSearchType)),
     filter(([filterPresetID, searchtype]) => (filterPresetID === '' || !!filterPresetID)
       && searchtype !== SearchType.LIST
-      && searchtype !== SearchType.CUSTOM_PRODUCTS),
+      && searchtype !== SearchType.CUSTOM_PRODUCTS
+      && searchtype !== SearchType.SARVIEWS_EVENTS),
     withLatestFrom(this.store$.select(userReducer.getSavedFilters)),
     map(([[presetId, searchType], userFilters]) => {
       if (presetId === '') {

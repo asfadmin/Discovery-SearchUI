@@ -17,6 +17,7 @@ export class CopyToClipboardComponent implements OnDestroy {
   @Input() value: string;
   @Input() prompt = 'Copy to clipboard';
   @Input() notification = 'Copied';
+  @Input() toast = true;
 
   @ViewChild('copyTooltip', { static: true }) copyTooltip: ElementRef;
 
@@ -30,7 +31,9 @@ export class CopyToClipboardComponent implements OnDestroy {
 
   public onCopyIconClicked(e: Event): void {
     this.clipboardService.copyFromContent(this.value);
-    this.notificationService.clipboardCopyIcon(this.prompt, this.value.split(',').length);
+    if (this.toast) {
+      this.notificationService.clipboardCopyIcon(this.prompt, this.value.split(',').length);
+    }
 
     this.subs.add(
       of((' ' + this.prompt).slice(1)).pipe(

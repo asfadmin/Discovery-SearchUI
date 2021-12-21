@@ -16,7 +16,7 @@ import { CdkVirtualScrollViewport } from '@angular/cdk/scrolling';
 
 import * as services from '@services';
 import * as models from '@models';
-import { QueuedHyp3Job } from '@models';
+import { QueuedHyp3Job, SarviewsEvent } from '@models';
 
 @Component({
   selector: 'app-scenes-list',
@@ -31,12 +31,14 @@ export class ScenesListComponent implements OnInit, OnDestroy {
   public scenes;
   public pairs;
   public jobs;
+  public sarviewsEvents: SarviewsEvent[];
 
   public numberOfQueue: {[scene: string]: number};
   public allQueued: {[scene: string]: boolean};
   public allJobNames: string[];
   public queuedJobs: QueuedHyp3Job[];
   public selected: string;
+  public selectedEvent: string;
 
   public hyp3ableByScene: {[scene: string]: {byJobType: models.Hyp3ableProductByJobType[], total: number}} = {};
 
@@ -61,6 +63,7 @@ export class ScenesListComponent implements OnInit, OnDestroy {
     private scenesService: services.ScenesService,
     private pairService: services.PairService,
     private hyp3: services.Hyp3Service,
+    private eventMonitoringService: services.SarviewsEventsService,
   ) {}
 
   ngOnInit() {
@@ -116,9 +119,50 @@ export class ScenesListComponent implements OnInit, OnDestroy {
     );
 
     this.subs.add(
+      this.store$.select(scenesStore.getSelectedSarviewsEvent).pipe(
+        withLatestFrom(this.eventMonitoringService.filteredSarviewsEvents$()),
+        delay(20),
+        filter(([selected, _]) => !!selected),
+        tap(([selected, _]) => this.selectedEvent = selected.event_id),
+        map(([selected, events]) => {
+          let sceneIdx = -1;
+          events.forEach((event, idx) => {
+            if (event.event_id === selected.event_id) {
+              sceneIdx = idx;
+            }
+          });
+          return Math.max(0, sceneIdx - 1);
+        })
+      ).subscribe(
+        idx => {
+          if (!this.selectedFromList) {
+            this.scrollTo(idx);
+          }
+
+          this.selectedFromList = false;
+        }
+      )
+    );
+
+    this.subs.add(
       sortedScenes$.pipe(debounceTime(250)).subscribe(
         scenes => {
           this.scenes = scenes;
+        }
+      )
+    );
+
+    this.subs.add(
+      this.eventMonitoringService.filteredSarviewsEvents$().pipe(
+        filter(_ => this.searchType === this.SearchTypes.SARVIEWS_EVENTS),
+      ).subscribe(
+        events => {
+          this.sarviewsEvents = events;
+
+          const eventIds = events.map(event => event.event_id);
+          if (!eventIds.includes(this.selectedEvent) && eventIds.length > 0 && !!this.selectedEvent) {
+            this.store$.dispatch(new scenesStore.SetSelectedSarviewsEvent(eventIds[0]));
+          }
         }
       )
     );

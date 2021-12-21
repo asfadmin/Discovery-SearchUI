@@ -11,7 +11,8 @@ import {
 } from '@store/scenes/scenes.reducer';
 import {
   getTemporalRange, getPerpendicularRange, getDateRange,
-  getProductTypes, getProjectName, getJobStatuses, getProductNameFilter, getSeason
+  getProductTypes, getProjectName, getJobStatuses,
+  getProductNameFilter, getSeason
 } from '@store/filters/filters.reducer';
 import { getShowS1RawData, getShowExpiredData } from '@store/ui/ui.reducer';
 import { getSearchType } from '@store/search/search.reducer';
@@ -57,6 +58,7 @@ export class ScenesService {
           this.store$.select(getScenes)
     ))))))));
   }
+
 
   public withBrowses$(scenes$: Observable<CMRProduct[]>): Observable<CMRProduct[]> {
     return scenes$.pipe(

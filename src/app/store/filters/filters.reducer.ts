@@ -38,6 +38,11 @@ export interface FiltersState {
 
   thresholdOverlap: boolean;
   sbasOverlapThreshold: SBASOverlap;
+
+  sarviewsEventTypes: models.SarviewsEventType[];
+  sarviewsEventNameFilter: string;
+  sarviewsEventActiveOnly: boolean;
+  sarviewsMagnitudeRange: models.Range<number>;
 }
 
 
@@ -91,7 +96,15 @@ export const initState: FiltersState = {
   previousFilters: null,
 
   thresholdOverlap: false,
-  sbasOverlapThreshold: SBASOverlap.HALF_OVERLAP
+  sbasOverlapThreshold: SBASOverlap.HALF_OVERLAP,
+
+  sarviewsEventTypes: [],
+  sarviewsEventNameFilter: null,
+  sarviewsEventActiveOnly: false,
+  sarviewsMagnitudeRange: {
+    start: null,
+    end: null
+  },
 };
 
 
@@ -315,7 +328,7 @@ export function filtersReducer(state = initState, action: FiltersActions): Filte
     }
 
     case FiltersActionType.SET_FILTERS_SIMILAR_TO: {
-      const metadata = action.payload.metadata;
+      const metadata = action.payload.product.metadata;
 
       return {
         ...state,
@@ -328,6 +341,7 @@ export function filtersReducer(state = initState, action: FiltersActions): Filte
           end: metadata.path
         },
         selectedMission: metadata.missionName,
+        selectedDatasetId: action.payload.dataset.id ?? 'SENTINEL-1',
       };
     }
 
@@ -518,6 +532,17 @@ export function filtersReducer(state = initState, action: FiltersActions): Filte
             projectName: filters.projectName,
             productFilterName: filters.productFilterName
           };
+      } else if (search.searchType === models.SearchType.SARVIEWS_EVENTS) {
+        const filters = <models.SarviewsFiltersType>search.filters;
+
+        return {
+          ... state,
+          dateRange: filters.dateRange,
+          sarviewsEventTypes: filters.sarviewsEventTypes,
+          sarviewsEventNameFilter: filters.sarviewsEventNameFilter,
+          sarviewsEventActiveOnly: filters.activeOnly,
+          sarviewsMagnitudeRange: filters.magnitude
+        };
       } else {
         const filters = <models.GeographicFiltersType>search.filters;
 
@@ -596,6 +621,48 @@ export function filtersReducer(state = initState, action: FiltersActions): Filte
       return {
         ...state,
         sbasOverlapThreshold: action.payload
+      };
+    }
+    case FiltersActionType.SET_SARVIEWS_EVENT_TYPES: {
+      return {
+        ...state,
+        sarviewsEventTypes: [ ... action.payload ]
+      };
+    }
+    case FiltersActionType.SET_SARVIEWS_EVENT_NAME_FILTER: {
+      return {
+        ...state,
+        sarviewsEventNameFilter: action.payload
+      };
+    }
+    case FiltersActionType.SET_SARVIEWS_EVENT_ACTIVE_FILTER: {
+      return {
+        ...state,
+        sarviewsEventActiveOnly: action.payload
+      };
+    }
+    case FiltersActionType.SET_SARVIEWS_MAGNITUDE_START: {
+      return {
+        ...state,
+        sarviewsMagnitudeRange: {...state.sarviewsMagnitudeRange, start: action.payload}
+      };
+    }
+    case FiltersActionType.SET_SARVIEWS_MAGNITUDE_END: {
+      return {
+        ...state,
+        sarviewsMagnitudeRange: {...state.sarviewsMagnitudeRange, end: action.payload}
+      };
+    }
+    case FiltersActionType.SET_SARVIEWS_MAGNITUDE_RANGE: {
+      return {
+        ...state,
+        sarviewsMagnitudeRange: action.payload
+      };
+    }
+    case FiltersActionType.CLEAR_SARVIEWS_MAGNITUDE_RANGE: {
+      return {
+        ...state,
+        sarviewsMagnitudeRange: initState.sarviewsMagnitudeRange
       };
     }
     default: {
@@ -789,7 +856,7 @@ export const getSbasSearch = createSelector(
     dateRange: state.dateRange,
     season: state.season,
     perpendicular: state.perpendicularRange.start,
-    thresholdOverlap: state.thresholdOverlap
+    thresholdOverlap: state.sbasOverlapThreshold
   })
 );
 
@@ -838,4 +905,24 @@ export const getSBASOverlapToggle = createSelector(
 export const getSBASOverlapThreshold = createSelector(
   getFiltersState,
   (state: FiltersState) => state.sbasOverlapThreshold
+);
+
+export const getSarviewsEventTypes = createSelector(
+  getFiltersState,
+  (state: FiltersState) => state.sarviewsEventTypes
+);
+
+export const getSarviewsEventNameFilter = createSelector(
+  getFiltersState,
+  (state: FiltersState) => state.sarviewsEventNameFilter
+);
+
+export const getSarviewsEventActiveFilter = createSelector(
+  getFiltersState,
+  (state: FiltersState) => state.sarviewsEventActiveOnly
+);
+
+export const getSarviewsMagnitudeRange = createSelector(
+  getFiltersState,
+  (state: FiltersState) => state.sarviewsMagnitudeRange
 );

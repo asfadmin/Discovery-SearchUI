@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 
 import { Store } from '@ngrx/store';
-import { combineLatest } from 'rxjs';
+import { combineLatest, Observable } from 'rxjs';
 import { map, switchMap } from 'rxjs/operators';
 import * as uuid from 'uuid/v1';
 
@@ -15,6 +15,7 @@ import { UpdateSearchWithFilters, UpdateSearchName, DeleteSavedSearch,
 } from '@store/user/user.action';
 
 import * as models from '@models';
+import { getSarviewsMagnitudeRange } from '@store/filters';
 
 
 @Injectable({
@@ -47,12 +48,12 @@ export class SavedSearchService {
     }))
   );
 
-  private currentSbasSearch$ = combineLatest(
+  private currentSbasSearch$: Observable<models.SbasFiltersType> = combineLatest(
     this.store$.select(scenesStore.getFilterMaster),
     this.store$.select(scenesStore.getCustomPairIds),
     this.store$.select(filtersStore.getSbasSearch),
     this.store$.select(filtersStore.getDateRange),
-    this.store$.select(filtersStore.getSBASOverlapToggle),
+    this.store$.select(filtersStore.getSBASOverlapThreshold),
   ).pipe(
     map(([reference, customPairIds, sbasFilters, dateRange, thresholdOverlap]) => ({
       reference,
@@ -78,6 +79,29 @@ export class SavedSearchService {
       ...customProductFilters
     }))
   );
+
+  private currentSarviewsEventSearch$ = combineLatest(
+    this.store$.select(filtersStore.getDateRange),
+    this.store$.select(filtersStore.getSarviewsEventTypes),
+    this.store$.select(filtersStore.getSarviewsEventNameFilter),
+    this.store$.select(filtersStore.getSarviewsEventActiveFilter),
+    this.store$.select(getSarviewsMagnitudeRange),
+    this.store$.select(scenesStore.getPinnedEventBrowseIDs),
+    this.store$.select(scenesStore.getSelectedSarviewsEvent).pipe(map(event => event?.event_id ?? '')),
+  ).pipe(
+    map(([dateRange, sarviewsEventTypes, sarviewsEventNameFilter,
+      activeOnly, magnitude, pinnedProductIDs, selectedEventID]) => ({
+      dateRange,
+      sarviewsEventTypes,
+      sarviewsEventNameFilter,
+      activeOnly,
+      magnitude,
+      pinnedProductIDs,
+      selectedEventID
+    })
+  )
+  );
+
   private searchType$ = this.store$.select(getSearchType);
 
   public currentSearch$ = this.searchType$.pipe(
@@ -87,6 +111,7 @@ export class SavedSearchService {
       [models.SearchType.BASELINE]: this.currentBaselineSearch$,
       [models.SearchType.SBAS]: this.currentSbasSearch$,
       [models.SearchType.CUSTOM_PRODUCTS]: this.currentCustomProductSearch$,
+      [models.SearchType.SARVIEWS_EVENTS]: this.currentSarviewsEventSearch$,
     })[searchType]
     )
   );

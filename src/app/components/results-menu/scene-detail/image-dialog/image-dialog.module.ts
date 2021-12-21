@@ -16,9 +16,12 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 
 import { PipesModule } from '@pipes';
 import { SceneMetadataModule } from '@components/shared/scene-metadata';
+import { EventMetadataModule } from '@components/shared/event-metadata';
+import { EventProductMetadataModule } from '@components/shared/event-product-metadata';
 import { ImageDialogComponent } from './image-dialog.component';
 import { BrowseListComponent } from './browse-list/browse-list.component';
 import {DownloadFileButtonModule} from '@components/shared/download-file-button/download-file-button.module';
+import { MatSliderModule } from '@angular/material/slider';
 
 @NgModule({
   declarations: [ImageDialogComponent, BrowseListComponent],
@@ -38,7 +41,10 @@ import {DownloadFileButtonModule} from '@components/shared/download-file-button/
         MatMenuModule,
         PipesModule,
         SceneMetadataModule,
+        EventMetadataModule,
+        EventProductMetadataModule,
         DownloadFileButtonModule,
+        MatSliderModule,
     ],
   exports: [ImageDialogComponent],
 })

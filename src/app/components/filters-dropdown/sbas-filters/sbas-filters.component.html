@@ -88,11 +88,11 @@
 
 <mat-expansion-panel [expanded]="defaultPanelOpenState" [disabled]="panelIsDisabled"
 (click)="selectPanel(panels.OVERLAP)"
-*ngIf="areResultsLoaded && maturity !== 'prod'"
+*ngIf="areResultsLoaded"
 [class.raised-section]="isSelected(panels.OVERLAP)">
 <mat-expansion-panel-header [collapsedHeight]="customCollapsedHeight" [expandedHeight]="customExpandedHeight">
   <mat-panel-title>
-    Latitudinal Overlap (Experimental)
+    Latitudinal Overlap
   </mat-panel-title>
 </mat-expansion-panel-header>
 <div style="margin-top: 20px;">

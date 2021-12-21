@@ -12,7 +12,9 @@ import * as uiStore from '@store/ui';
 import * as userStore from '@store/user';
 
 import * as models from '@models';
-import { AuthService, PropertyService, ScreenSizeService } from '@services';
+import { AuthService, MapService, PropertyService,
+   SarviewsEventsService,
+  ScreenSizeService } from '@services';
 import { ImageDialogComponent } from './image-dialog';
 
 import { DatasetForProductService } from '@services';
@@ -27,9 +29,13 @@ export class SceneDetailComponent implements OnInit, OnDestroy {
   @Input() isScrollable = true;
 
   public scene: models.CMRProduct;
+  public sarviewEvent: models.SarviewsEvent;
+  public eventTypes = models.SarviewsEventType;
+  public isActiveSarviewEvent = false;
 
   public browses$ = this.store$.select(scenesStore.getSelectedSceneBrowses);
   public jobBrowses$ = this.store$.select(scenesStore.getSelectedOnDemandProductSceneBrowses);
+  public selectedSarviewsEventProducts$ = this.store$.select(scenesStore.getSelectedSarviewsEventProducts);
   public dataset: models.Dataset;
   public searchType: models.SearchType;
   public searchTypes = models.SearchType;
@@ -44,9 +50,12 @@ export class SceneDetailComponent implements OnInit, OnDestroy {
   public browseIndex = 0;
   public detailsOpen = true;
   public masterOffsets$ = this.store$.select(scenesStore.getMasterOffsets);
+  public sarviewsEventGeoSearchRadius = 1.0;
 
   private defaultBaselineFiltersID = '';
   private defaultSBASFiltersID = '';
+
+  public sarviewsProducts: models.SarviewsProduct[] = [];
 
   private subs = new SubSink();
 
@@ -56,7 +65,9 @@ export class SceneDetailComponent implements OnInit, OnDestroy {
     public dialog: MatDialog,
     public authService: AuthService,
     public prop: PropertyService,
-    private datasetForProduct: DatasetForProductService
+    private datasetForProduct: DatasetForProductService,
+    private sarviewsService: SarviewsEventsService,
+    private mapService: MapService,
   ) {}
 
   ngOnInit() {
@@ -65,6 +76,7 @@ export class SceneDetailComponent implements OnInit, OnDestroy {
         isLoggedIn => this.isLoggedIn = isLoggedIn
       )
     );
+
 
     this.subs.add(
       this.screenSize.size$.pipe(
@@ -76,6 +88,25 @@ export class SceneDetailComponent implements OnInit, OnDestroy {
       tap(_ => this.isImageLoading = true)
     );
 
+    const sarviewsEvent$ = this.store$.select(scenesStore.getSelectedSarviewsEvent).pipe(
+      tap(_ => this.browseIndex = 0),
+      filter(selectedEvent => !!selectedEvent));
+
+
+    this.subs.add(
+      sarviewsEvent$.subscribe(event => {
+          this.sarviewEvent = event;
+          if (event.processing_timeframe) {
+            if (event.processing_timeframe.end?.getDay() === new Date().getDay() || !event.processing_timeframe.end) {
+              this.isActiveSarviewEvent = true;
+            } else {
+              this.isActiveSarviewEvent = false;
+            }
+          }
+          this.mapService.onSetSarviewsPolygon(event, this.sarviewsEventGeoSearchRadius);
+          }
+        )
+    );
     this.subs.add(
       scene$.pipe(
         tap(scene => this.scene = scene),
@@ -112,6 +143,13 @@ export class SceneDetailComponent implements OnInit, OnDestroy {
         }
       )
     );
+
+    this.subs.add(
+      this.selectedSarviewsEventProducts$.subscribe(
+        browses => this.sarviewsProducts = browses
+      )
+    );
+
   }
 
   public updateHasBaseline(): void {
@@ -144,12 +182,23 @@ export class SceneDetailComponent implements OnInit, OnDestroy {
   }
 
   public sceneHasBrowse() {
-    return !this.scene.browses[0].includes('no-browse');
+    return (
+      !!this.scene.browses &&
+      this.scene.browses.length > 0 &&
+      !this.scene?.browses[0].includes('no-browse')
+    );
   }
 
   public productHasSceneBrowses() {
     if (this.searchType === this.searchTypes.CUSTOM_PRODUCTS) {
       return this.scene.metadata.job.job_parameters.scenes.some(x => !x.browses[0].includes('no-browse'));
+    }
+    return false;
+  }
+
+  public sarviewsEventHasSceneBrowses() {
+    if (this.searchType === this.searchTypes.SARVIEWS_EVENTS) {
+      return this.sarviewsProducts?.length > 0;
     }
     return false;
   }
@@ -166,7 +215,9 @@ export class SceneDetailComponent implements OnInit, OnDestroy {
   }
 
   public onOpenImage(): void {
-    if (!this.sceneHasBrowse()) {
+    if (this.searchType === models.SearchType.SARVIEWS_EVENTS) {
+      this.store$.dispatch(new scenesStore.SetSelectedSarviewProduct(this.sarviewsProducts[this.browseIndex]));
+    } else if (!this.sceneHasBrowse()) {
       return;
     }
 
@@ -192,6 +243,9 @@ export class SceneDetailComponent implements OnInit, OnDestroy {
   }
 
   public findSimilarScenes(): void {
+    if (this.searchType === models.SearchType.SARVIEWS_EVENTS) {
+      this.makeSarviewsEventGeoSearch();
+    } else {
     const scene = this.scene;
     const shouldClear = this.searchType !== models.SearchType.DATASET;
     this.store$.dispatch(new searchStore.SetSearchType(models.SearchType.DATASET));
@@ -199,9 +253,9 @@ export class SceneDetailComponent implements OnInit, OnDestroy {
     if (shouldClear) {
       this.store$.dispatch(new searchStore.ClearSearch());
     }
-
-    this.store$.dispatch(new filtersStore.SetFiltersSimilarTo(scene));
+    this.store$.dispatch(new filtersStore.SetFiltersSimilarTo({product: scene, dataset: this.datasetForProduct.match(scene)}));
     this.store$.dispatch(new searchStore.MakeSearch());
+  }
   }
 
   public makeBaselineSearch(): void {
@@ -236,6 +290,59 @@ export class SceneDetailComponent implements OnInit, OnDestroy {
       this.scene.dataset.includes('RADARSAT-1') ||
       this.scene.dataset.includes('JERS-1')
     );
+  }
+
+  public getSarviewsURL() {
+    return this.sarviewsService.getSarviewsEventUrl(this.sarviewEvent?.event_id ?? '');
+  }
+
+  public getEventID() {
+    if (this.sarviewEvent.event_type === 'quake') {
+      return (this.sarviewEvent as models.SarviewsQuakeEvent).usgs_event_id;
+    }
+
+    return (this.sarviewEvent as models.SarviewsVolcanicEvent).smithsonian_event_id;
+  }
+
+  public makeSarviewsEventGeoSearch() {
+    const timeFrame = this.sarviewEvent.processing_timeframe;
+
+    [
+      new searchStore.SetSearchType(models.SearchType.DATASET),
+      new searchStore.ClearSearch(),
+      new filtersStore.SetSelectedDataset('SENTINEL-1'),
+    ].forEach(action => this.store$.dispatch(action));
+
+    if (!!timeFrame.start) {
+      this.store$.dispatch(new filtersStore.SetStartDate(new Date(timeFrame.start)));
+    }
+    if (!!timeFrame.end) {
+      this.store$.dispatch(new filtersStore.SetEndDate(new Date(timeFrame.end)));
+    }
+    this.mapService.onSetSarviewsPolygon(this.sarviewEvent, this.sarviewsEventGeoSearchRadius);
+
+    this.store$.dispatch(new searchStore.MakeSearch());
+  }
+
+  public onEventSearchRadiusChange(value: number) {
+    this.sarviewsEventGeoSearchRadius = value;
+    // this.mapService.onSetSarviewsPolygon(this.sarviewEvent, this.sarviewsEventGeoSearchRadius);
+  }
+
+  public makeEventListSearch() {
+    const product_ids = this.sarviewsProducts.map(product => product.granules[0].granule_name);
+
+    [
+      new searchStore.SetSearchType(models.SearchType.LIST),
+      new searchStore.ClearSearch(),
+      new filtersStore.SetSearchList(product_ids),
+    ].forEach(action => this.store$.dispatch(action));
+
+    this.store$.dispatch(new searchStore.MakeSearch());
+  }
+
+  public openInSarviews() {
+    window.open(this.getSarviewsURL());
   }
 
   ngOnDestroy() {

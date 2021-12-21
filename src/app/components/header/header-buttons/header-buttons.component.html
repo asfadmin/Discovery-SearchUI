@@ -21,10 +21,17 @@
       <button
       (click)="onOpenProcessingQueue()"
       mat-menu-item>On Demand Queue</button>
+
+      <button
+      (click)="onOpenSubscriptions()"
+      [disabled]="!isLoggedIn"
+      mat-menu-item>Subscriptions</button>
+
       <button mat-menu-item
       (click) = "onSetSearchTypeOnDemand()"
       [disabled]="!isLoggedIn">Submitted Products
       </button>
+
       <button mat-menu-item (click)="onOpenOnDemandDocs()">
         On Demand (HyP3) Docs
       </button>
@@ -90,9 +97,16 @@
       <button
       (click)="onOpenProcessingQueue()"
       mat-menu-item>On Demand Queue</button>
+
+      <button
+      (click)="onOpenSubscriptions()"
+      [disabled]="!isLoggedIn"
+      mat-menu-item>Subscriptions</button>
+
       <button mat-menu-item
       (click) = "onSetSearchTypeOnDemand()"
       [disabled]="!isLoggedIn">Submitted Products</button>
+
       <button mat-menu-item (click)="onOpenOnDemandDocs()">
         On Demand (HyP3) Docs
       </button>

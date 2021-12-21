@@ -88,11 +88,11 @@ export const RtcGammaJobType: Hyp3JobType = {
     default: false,
     info: `Include the DEM file in the product package.`
   }, {
-    name: 'Include Inc. Angle Map',
+    name: 'Include Inc. Angle Maps',
     apiName: 'include_inc_map',
     type: JobOptionType.CHECKBOX,
     default: false,
-    info: `Include the incidence angle map in the product package.`
+    info: `Include the incidence angle maps (local and ellipsoidal) in the product package.`
   }, {
     name: 'Include Scattering Area',
     apiName: 'include_scattering_area',
@@ -163,12 +163,12 @@ export const InsarGammaJobType: Hyp3JobType = {
       Include the DEM file in the product package.
     `
   }, {
-    name: 'Include Inc. Angle Map',
+    name: 'Include Inc. Angle Maps',
     apiName: 'include_inc_map',
     type: JobOptionType.CHECKBOX,
     default: false,
     info: `
-      Include the incidence angle map in the product package.
+      Include the incidence angle maps (local and ellipsoidal) in the product package.
     `
   }, {
     name: 'Include Look Vectors',
@@ -179,13 +179,12 @@ export const InsarGammaJobType: Hyp3JobType = {
       Include the look vector theta and phi files in the product package.
     `
   }, {
-    name: 'Include LOS Displacement',
-    apiName: 'include_los_displacement',
+    name: 'Include Displacement Maps',
+    apiName: 'include_displacement_maps',
     type: JobOptionType.CHECKBOX,
     default: false,
     info: `
-      Include a GeoTIFF in the product package containing displacement
-      values along the Line-Of-Sight (LOS).
+      Include displacement maps (line-of-sight and vertical) in the product package.
     `
   }, {
     name: 'Include Wrapped Phase',
@@ -194,6 +193,18 @@ export const InsarGammaJobType: Hyp3JobType = {
     default: false,
     info: `
       Include the wrapped phase GeoTIFF in the product package.
+    `
+  }, {
+    name: 'Set MintPy Options',
+    apiName: null,
+    type: JobOptionType.SUBSET,
+    default: false,
+    optionSubset: [{
+      apiName: 'include_dem',
+      value: true
+    }],
+    info: `
+      Set options to make products compatible with MintPy.
     `
   }]
 };

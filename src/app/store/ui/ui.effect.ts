@@ -48,7 +48,7 @@ export class UIEffects {
     ofType<uiActions.CloseFiltersMenu>(uiActions.UIActionType.CLOSE_FILTERS_MENU),
     withLatestFrom(this.store$.select(getSearchType)),
     map(([_, searchType]) => {
-      if (searchType !== SearchType.SBAS && searchType !== SearchType.BASELINE) {
+      if (searchType !== SearchType.SARVIEWS_EVENTS && searchType !== SearchType.SBAS && searchType !== SearchType.BASELINE) {
         this.store$.dispatch(new filtersStore.RestoreFilters());
       }
     })

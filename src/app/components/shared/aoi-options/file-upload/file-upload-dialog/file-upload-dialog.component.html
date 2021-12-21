@@ -1,5 +1,5 @@
 <input (change)="onFilesAdded()"
-  class="hidden" type="file" multiple #file/>
+  class="hidden" type="file" #file/>
 
 <div
   (drop)="onFileDrop($event)"
@@ -8,16 +8,6 @@
 
   <div fxFlex fxLayout="column">
     <div fxFlex>
-      <mat-list class="file-list">
-        <mat-list-item *ngFor="let file of files">
-          <h4 class="limit-text" mat-line>{{file.name}}</h4>
-
-          <button (click)="onRemoveFile(file)" mat-icon-button>
-            <mat-icon>close</mat-icon>
-          </button>
-        </mat-list-item>
-      </mat-list>
-
       <div [class.is-file-error]="isFileError"
         fxFlex fxLayoutAlign="center" gdAlignColumns="center"
         [class.drop-text-box]="canBeClosed">
@@ -41,13 +31,7 @@
         [disabled]="uploading"
         style="margin-right: 10px;"
         color="primary" class="add-files-btn" mat-raised-button>
-          Select Files
-      </button>
-
-      <button mat-raised-button color="primary"
-        (click)="onUpload()"
-        [disabled]="areNoFiles(files)">
-        Import
+          Import File
       </button>
     </div>
   </div>

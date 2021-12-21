@@ -3,10 +3,12 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject, Subject } from 'rxjs';
 import { map, sampleTime } from 'rxjs/operators';
 
-import { Map } from 'ol';
-import { Vector as VectorLayer } from 'ol/layer';
-import { Vector as VectorSource, Layer } from 'ol/source';
+import { Collection, Feature, Map } from 'ol';
+import { Layer, Vector as VectorLayer } from 'ol/layer';
+import { Vector as VectorSource } from 'ol/source';
 import * as proj from 'ol/proj';
+import Point from 'ol/geom/Point';
+
 import { click, pointerMove } from 'ol/events/condition';
 import Select from 'ol/interaction/Select';
 
@@ -14,20 +16,38 @@ import { WktService } from '../wkt.service';
 import { DrawService } from './draw.service';
 import { LegacyAreaFormatService } from '../legacy-area-format.service';
 import * as models from '@models';
+import * as sceneStore from '@store/scenes';
 
 import * as polygonStyle from './polygon.style';
 import * as views from './views';
-
+import { SarviewsEvent } from '@models';
+import { EventEmitter } from '@angular/core';
+import { Store } from '@ngrx/store';
+import { AppState } from '@store';
+import { Icon, Style } from 'ol/style';
+import IconAnchorUnits from 'ol/style/IconAnchorUnits';
+import Geometry from 'ol/geom/Geometry';
+import ImageLayer from 'ol/layer/Image';
+import LayerGroup from 'ol/layer/Group';
+import { PinnedProduct } from '@services/browse-map.service';
+import { BrowseOverlayService } from '@services';
 
 @Injectable({
   providedIn: 'root'
 })
 export class MapService {
+  public isDrawing$ = this.drawService.isDrawing$;
+
   private mapView: views.MapView;
   private map: Map;
-  private polygonLayer: Layer;
+  private polygonLayer: VectorLayer;
+  private sarviewsEventsLayer: VectorLayer;
+  private browseImageLayer: ImageLayer;
+  // private browseRasterCanvas: RasterSource;
   private gridLinesVisible: boolean;
-  // private gridlinesActive: boolean;
+  private sarviewsFeaturesByID: {[id: string]: Feature} = {};
+  private pinnedCollection: Collection<Layer> = new Collection<Layer>([], {unique: true});
+  private pinnedProducts: LayerGroup = new LayerGroup({layers: this.pinnedCollection});
 
   private selectClick = new Select({
     condition: click,
@@ -39,6 +59,12 @@ export class MapService {
     condition: pointerMove,
     style: polygonStyle.hover,
     layers: l => l.get('selectable') || false
+  });
+
+  private selectSarviewEventHover = new Select({
+    condition: pointerMove,
+    style: null,
+    layers: l => l?.get('selectable') || false,
   });
 
   private selectedSource = new VectorSource({
@@ -59,20 +85,23 @@ export class MapService {
     style: polygonStyle.hover
   });
 
+  private mousePositionSubject$ = new BehaviorSubject<models.LonLat>({
+    lon: 0, lat: 0
+  });
+
   public zoom$ = new Subject<number>();
   public center$ = new Subject<models.LonLat>();
   public epsg$ = new Subject<string>();
 
-  private mousePositionSubject$ = new BehaviorSubject<models.LonLat>({
-    lon: 0, lat: 0
-  });
+  public selectedSarviewEvent$: EventEmitter<string> = new EventEmitter();
+  public mapInit$: EventEmitter<Map> = new EventEmitter();
+
   public mousePosition$ = this.mousePositionSubject$.pipe(
     sampleTime(100)
   );
 
   public newSelectedScene$ = new Subject<string>();
 
-  public isDrawing$ = this.drawService.isDrawing$;
   public searchPolygon$ = this.drawService.polygon$.pipe(
     map(
       feature => feature !== null ?
@@ -85,10 +114,16 @@ export class MapService {
     private wktService: WktService,
     private legacyAreaFormat: LegacyAreaFormatService,
     private drawService: DrawService,
+    private store$: Store<AppState>,
+    private browseOverlayService: BrowseOverlayService,
   ) {}
 
   public epsg(): string {
     return this.mapView.projection.epsg;
+  }
+
+  public getEventCoordinate(sarviews_id: string): Point {
+    return this.sarviewsFeaturesByID[sarviews_id]?.getGeometry() as Point ?? null;
   }
 
   public zoomIn(): void {
@@ -101,11 +136,13 @@ export class MapService {
 
   public enableInteractions(): void {
     this.selectHover.setActive(true);
+    this.selectSarviewEventHover.setActive(true);
     this.selectClick.setActive(true);
   }
 
   public disableInteractions(): void {
     this.selectHover.setActive(false);
+    this.selectSarviewEventHover.setActive(false);
     this.selectClick.setActive(false);
   }
 
@@ -142,13 +179,71 @@ export class MapService {
   }
 
 
-  public setLayer(layer: Layer): void {
+  public setLayer(layer: VectorLayer): void {
     if (!!this.polygonLayer) {
       this.map.removeLayer(this.polygonLayer);
     }
 
     this.polygonLayer = layer;
     this.map.addLayer(this.polygonLayer);
+  }
+
+  public setEventsLayer(layer: VectorLayer): void {
+      if (!!this.sarviewsEventsLayer) {
+        this.map.removeLayer(this.sarviewsEventsLayer);
+      }
+
+      this.sarviewsEventsLayer = layer;
+      this.map.addLayer(layer);
+  }
+
+  public sarviewsEventsToFeatures(events: SarviewsEvent[], projection: string): Feature<Geometry>[] {
+    const currentDate = new Date();
+    const features = events
+      .map(sarviewEvent => {
+        const wkt = sarviewEvent.wkt;
+        const feature = this.wktService.wktToFeature(wkt, projection);
+        feature.set('filename', sarviewEvent.description);
+
+        let point: Point;
+        point = new Point([sarviewEvent.point.lat, sarviewEvent.point.lon]);
+
+        feature.set('eventPoint', point);
+        feature.setGeometryName('eventPoint');
+        feature.set('sarviews_id', sarviewEvent.event_id);
+
+        if (sarviewEvent.event_type !== 'flood') {
+          let active = false;
+          let iconName = sarviewEvent.event_type === 'quake' ? 'Earthquake_inactive.svg' : 'Volcano_inactive.svg';
+          if (!!sarviewEvent.processing_timeframe.end) {
+            if (currentDate <= new Date(sarviewEvent.processing_timeframe.end)) {
+              active = true;
+              iconName = iconName.replace('_inactive', '');
+            }
+          } else {
+            active = true;
+            iconName = iconName.replace('_inactive', '');
+          }
+          const iconStyle = new Style({
+            image: new Icon({
+              anchor: [0.5, 46],
+              anchorXUnits: IconAnchorUnits.FRACTION,
+              anchorYUnits: IconAnchorUnits.PIXELS,
+              src: `/assets/icons/${iconName}`,
+              scale: 0.1,
+              offset: [0, 10]
+            }),
+            zIndex: active ? 1 : 0
+          });
+
+          feature.setStyle(iconStyle);
+        }
+
+        this.sarviewsFeaturesByID[sarviewEvent.event_id] = feature;
+
+        return feature;
+      });
+      return features;
   }
 
   public setOverlayUpdate(updateCallback): void {
@@ -253,13 +348,43 @@ export class MapService {
     this.zoomToFeature(feature);
   }
 
-  public zoomToFeature(feature): void {
+  public zoomToEvent(targetEvent: models.SarviewsEvent): void {
+    const feature = this.wktService.wktToFeature(
+      targetEvent.wkt,
+      this.epsg()
+    );
+
+    this.wktService.fixPolygonAntimeridian(feature, targetEvent.wkt);
+
+    this.zoomToFeature(feature);
+  }
+
+  public zoomToFeature(feature: Feature<Geometry>): void {
     const extent = feature
       .getGeometry()
       .getExtent();
 
     this.zoomToExtent(extent);
   }
+
+  public onSetSarviewsPolygon(sarviewEvent: SarviewsEvent, radius: number) {
+    const wkt = sarviewEvent.wkt;
+    const features = this.wktService.wktToFeature(
+      wkt,
+      this.epsg()
+    );
+
+    this.wktService.fixPolygonAntimeridian(features, sarviewEvent.wkt);
+
+    features.getGeometry().scale(radius);
+    this.setDrawFeature(features);
+  }
+
+
+  public onMapReady(m: Map) {
+    this.mapInit$.next(m);
+  }
+
 
   private zoomToExtent(extent): void {
     this.map
@@ -277,20 +402,31 @@ export class MapService {
     this.map = (!this.map) ?
       this.createNewMap(overlay) :
       this.updatedMap();
+
+    this.map.once('postrender', () => {
+      this.onMapReady(this.map);
+    });
   }
+
 
   private createNewMap(overlay): Map {
     const newMap = new Map({
-      layers: [ this.mapView.layer, this.drawService.getLayer(), this.focusLayer, this.selectedLayer, this.mapView?.gridlines ],
+      layers: [ this.mapView.layer,
+        this.drawService.getLayer(),
+        this.focusLayer,
+        this.selectedLayer,
+        this.mapView?.gridlines,
+        this.pinnedProducts
+      ],
       target: 'map',
       view: this.mapView.view,
       controls: [],
-      overlays: [overlay],
-      loadTilesWhileAnimating: true
+      overlays: [overlay]
     });
 
     newMap.addInteraction(this.selectClick);
     newMap.addInteraction(this.selectHover);
+    newMap.addInteraction(this.selectSarviewEventHover);
     this.selectClick.on('select', e => {
       e.target.getFeatures().forEach(
         feature => this.newSelectedScene$.next(feature.get('filename'))
@@ -302,9 +438,40 @@ export class MapService {
         e.selected.length > 0 ? 'pointer' : '';
     });
 
+    this.selectSarviewEventHover.on('select', e => {
+      this.map.getTargetElement().style.cursor =
+        e.selected.length > 0 ? 'pointer' : '';
+
+        // this.map.forEachLayerAtPixel(e.mapBrowserEvent.pixel, f => {
+        //   if(f.get('selectable') || false) {
+        //     f
+        //     return true;
+        //   }
+        // });
+
+    }
+    );
+
     newMap.on('pointermove', e => {
       const [ lon, lat ] = proj.toLonLat(e.coordinate, this.epsg());
       this.mousePositionSubject$.next({ lon, lat });
+    });
+
+    newMap.on('singleclick', (evnt) => {
+      if (this.map.hasFeatureAtPixel(evnt.pixel)) {
+      this.map.forEachFeatureAtPixel(
+      evnt.pixel,
+      (feature) => {
+        const sarview_id: string = feature.get('sarviews_id');
+        if (!!sarview_id) {
+          this.selectedSarviewEvent$.next(sarview_id);
+          this.store$.dispatch(new sceneStore.SetSelectedSarviewsEvent(sarview_id));
+        }
+
+        evnt.preventDefault();
+
+        });
+      }
     });
 
     this.drawService.getLayer().setZIndex(100);
@@ -346,4 +513,51 @@ export class MapService {
 
     return this.map;
   }
+
+  public setSelectedBrowse(url: string, wkt: string) {
+    if (!!this.browseImageLayer) {
+      this.map.removeLayer(this.browseImageLayer);
+    }
+    this.browseImageLayer = this.browseOverlayService.createNormalImageLayer(url, wkt, 'ol-layer', 'current-overlay');
+    this.map.addLayer(this.browseImageLayer);
+  }
+
+  public createBrowseRasterCanvas(scenes: models.CMRProduct[]) {
+    const scenesWithBrowse = scenes.filter(scene => scene.browses?.length > 0).slice(0, 10);
+
+    const collection = scenesWithBrowse.reduce((prev, curr) =>
+    prev.concat(this.browseOverlayService.createNormalImageLayer(curr.browses[0], curr.metadata.polygon)), [] as ImageLayer[]);
+
+    // this.browseRasterCanvas = new RasterSource({
+    //   sources: collection,
+    //   operationType: 'image' as RasterOperationType
+    // })
+
+    // const l = new ImageLayer({
+    //   source: this.browseRasterCanvas,
+    // });
+
+    collection.forEach(element => {
+      this.map.addLayer(element);
+    });
+    // this.map.addLayer(l);
+  }
+
+  public setPinnedProducts(pinnedProductStates: {[product_id in string]: PinnedProduct}) {
+    this.browseOverlayService.setPinnedProducts(pinnedProductStates, this.pinnedProducts);
+  }
+
+  public clearBrowseOverlays() {
+    this.pinnedProducts.getLayers().clear();
+    if (!!this.browseImageLayer) {
+      this.map.removeLayer(this.browseImageLayer);
+    }
+  }
+
+  public updateBrowseOpacity(opacity: number) {
+    this.browseImageLayer?.setOpacity(opacity);
+    this.pinnedProducts?.setOpacity(opacity);
+  }
+
+
 }

@@ -24,6 +24,16 @@
           </app-scene>
         </div>
       </ng-container>
+      <ng-container
+      *ngIf="
+        searchType === SearchTypes.SARVIEWS_EVENTS">
+      <div *ngFor="let event of sarviewsEvents">
+        <app-sarviews-event
+          [event] = event
+          [selected] = "event.event_id === selectedEvent">
+        </app-sarviews-event>
+      </div>
+    </ng-container>
 
       <ng-container *ngIf="searchType === SearchTypes.SBAS">
         <div *cdkVirtualFor="let pair of pairs">

@@ -1,0 +1,76 @@
+<div *ngIf="(breakpoint$ | async) as breakpoint" fxLayout="row" class="breadcrumb-row">
+  <ng-container *ngIf="breakpoint !== breakpoints.MOBILE">
+    <div fxLayout="row">
+      <app-search-type-selector
+        (click)="closeAOIOptions()"
+        class="breadcrumb">
+      </app-search-type-selector>
+      <!-- <app-dataset-selector
+         [(selected)]="selectedDataset"
+         (selectedChange)="onDatasetChange($event)"
+         [datasets]="datasets"
+         fxFlex="130px"
+         (click)="closeAOIOptions()"
+         class="breadcrumb">
+      </app-dataset-selector> -->
+
+      <!-- <app-aoi-filter *ngIf="breakpoint > breakpoints.SMALL" class="breadcrumb">
+      </app-aoi-filter> -->
+    </div>
+
+    <div fxLayout.lt-md="row">
+      <div fxLayout="row">
+        <div
+        *ngIf="breakpoint === breakpoints.FULL"
+        fxFlex="175px" fxFlex.lt-lg="50"
+          class="breadcrumb">
+          <app-sarviews-event-search-selector></app-sarviews-event-search-selector>
+     </div>
+     <div
+     *ngIf="breakpoint === breakpoints.FULL"
+     fxFlex="175px" fxFlex.lt-lg="50"
+       class="breadcrumb">
+       <app-sarviews-event-type-selector></app-sarviews-event-type-selector>
+  </div>
+        <div
+           *ngIf="breakpoint === breakpoints.FULL"
+           fxFlex="300px" fxFlex.lt-lg="50"
+             class="breadcrumb">
+          <app-date-selector></app-date-selector>
+        </div>
+
+        <div fxFlex="nogrow" class="breadcrumb">
+          <button (click)="onToggleFiltersMenu()"
+                  mat-button class="additional-filters-button">
+            Filters <br> <mat-icon>more_horiz</mat-icon>
+          </button>
+        </div>
+
+        <div fxFlex="noshrink" class="breadcrumb">
+          <app-search-button></app-search-button>
+        </div>
+      </div>
+
+      <div class="icon-cluster">
+        <app-header-buttons>
+        </app-header-buttons>
+      </div>
+    </div>
+  </ng-container>
+
+  <ng-container *ngIf="breakpoint === breakpoints.MOBILE">
+    <div class="mobile-nav-bar">
+      <button
+        (click)="onToggleFiltersMenu()"
+         style="margin-left: 5px;"
+        mat-flat-button>
+        Filters
+      </button>
+
+      <div class="mobile-icon-cluster">
+        <app-header-buttons>
+        </app-header-buttons>
+      </div>
+    </div>
+  </ng-container>
+</div>

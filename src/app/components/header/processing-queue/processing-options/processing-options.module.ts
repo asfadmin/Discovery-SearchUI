@@ -13,6 +13,7 @@ import { ProcessingOptionsComponent } from './processing-options.component';
 import { ToggleOptionComponent } from './toggle-option/toggle-option.component';
 import { DropdownOptionComponent } from './dropdown-option/dropdown-option.component';
 import { CheckboxOptionComponent } from './checkbox-option/checkbox-option.component';
+import { SubsetOptionComponent } from './subset-option/subset-option.component';
 
 
 
@@ -21,7 +22,8 @@ import { CheckboxOptionComponent } from './checkbox-option/checkbox-option.compo
     ProcessingOptionsComponent,
     ToggleOptionComponent,
     DropdownOptionComponent,
-    CheckboxOptionComponent
+    CheckboxOptionComponent,
+    SubsetOptionComponent
   ],
   imports: [
     CommonModule,

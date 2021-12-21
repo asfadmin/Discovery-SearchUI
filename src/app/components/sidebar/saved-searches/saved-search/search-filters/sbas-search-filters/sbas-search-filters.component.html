@@ -1,0 +1,20 @@
+<div>
+  <div *ngIf="!!filters.reference">
+    <b>Reference: </b> {{ filters.reference }}
+  </div>
+  <div *ngIf="!!filters.customPairIds && filters.customPairIds.length !== 0">
+    <b>Custom Pairs: </b> {{ filters.customPairIds.length }}
+  </div>
+  <div *ngIf="filters.temporal !== null">
+    <b>Temporal: </b> {{ filters.temporal }}
+  </div>
+  <div *ngIf="filters.perpendicular !== null">
+    <b>Perpendicular: </b> {{ filters.perpendicular }}
+  </div>
+  <div *ngIf="filters.season.start !== null || filters.season.end !== null">
+    <b>Season: </b> {{ filters.season.start }} to {{ filters.season.end }}
+  </div>
+  <div>
+    <b>Pair Overlap Threshold: </b> {{ filters.thresholdOverlap}}
+  </div>
+</div>

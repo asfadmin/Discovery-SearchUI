@@ -5,7 +5,7 @@ import { delay, tap, catchError } from 'rxjs/operators';
 
 import { SubSink } from 'subsink';
 
-import { AsfApiService, NotificationService, MapService } from '@services';
+import { AsfApiService, NotificationService, MapService, WktService } from '@services';
 import { HttpErrorResponse } from '@angular/common/http';
 
 
@@ -34,6 +34,7 @@ export class FileUploadDialogComponent implements OnInit, OnDestroy {
     private mapService: MapService,
     private asfApiService: AsfApiService,
     private notificationService: NotificationService,
+    private wktService: WktService
   ) {}
 
   public ngOnInit(): void {
@@ -71,6 +72,10 @@ export class FileUploadDialogComponent implements OnInit, OnDestroy {
       }
     }
 
+    if (this.files.size > 0) {
+      this.onUpload();
+    }
+
     ev.preventDefault();
   }
 
@@ -89,6 +94,10 @@ export class FileUploadDialogComponent implements OnInit, OnDestroy {
       if (!isNaN(parseInt(key, 10))) {
         this.addFile(files[key]);
       }
+    }
+
+    if (this.files.size > 0) {
+      this.onUpload();
     }
   }
 
@@ -115,6 +124,7 @@ export class FileUploadDialogComponent implements OnInit, OnDestroy {
           if (resp.wkt) {
             // set wkt (resp.wkt.unwrapped)
             this.setAOI(resp.wkt.unwrapped);
+            this.zoomToAOI(resp.wkt.unwrapped);
           } else if (resp.errors && resp.errors.length > 0) {
             const { report, type } = resp.errors[0];
             this.notificationService.error(report, type, { timeOut: 5000 });
@@ -142,6 +152,10 @@ export class FileUploadDialogComponent implements OnInit, OnDestroy {
     this.mapService.loadPolygonFrom(wkt);
   }
 
+  private zoomToAOI(wkt: string) {
+    const feature = this.wktService.wktToFeature(wkt, this.mapService.epsg());
+    this.mapService.zoomToFeature(feature);
+  }
   private addFile(file): void {
     const fileName = file.name;
     const size_limit = 10e6;
@@ -153,7 +167,7 @@ export class FileUploadDialogComponent implements OnInit, OnDestroy {
 
     if (this.isValidFileType(fileName)) {
       this.files.add(file);
-      this.notificationService.info(`'${file.name}' ready to import`, 'AOI Import', { timeOut: 5000 });
+      this.notificationService.info(`Importing '${file.name}'...`, 'AOI Import', { timeOut: 5000 });
     } else {
       this.fileError$.next(FileErrors.INVALID_TYPE);
     }

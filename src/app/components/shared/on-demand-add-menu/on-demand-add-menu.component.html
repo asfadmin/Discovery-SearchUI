@@ -32,7 +32,15 @@
           {{AutoRift.name}}
           <mat-icon (click)="onOpenHelp(AutoRift.infoUrl)" class="clickable" style="margin-left: 10px;">info</mat-icon>
         </button>
-        </div>
+      </div>
+    </div>
+
+    <div *ngIf="showSubscriptions">
+      <button
+        (click)="onOpenCreateSubscription()"
+        [disabled]="!isLoggedIn"
+        mat-menu-item> Create Subscription...
+      </button>
     </div>
   </ng-template>
 </mat-menu>

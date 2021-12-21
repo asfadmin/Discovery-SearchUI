@@ -4,6 +4,8 @@ import { Range } from './range.model';
 import { FlightDirection } from './cmr-product.model';
 import * as fromDatasets from './dataset.model';
 import { Hyp3JobStatusCode } from './hyp3.model';
+import { SarviewsEventType, SBASOverlap } from '@models';
+// import { SarviewsEventType } from './sarviews-event.model';
 
 export interface Search {
   searchType: SearchType;
@@ -17,7 +19,8 @@ export type FilterType =
   GeographicFiltersType |
   BaselineFiltersType |
   CustomProductFiltersType |
-  SbasFiltersType;
+  SbasFiltersType |
+  SarviewsFiltersType;
 
 export interface ListFiltersType {
   listType: ListSearchType;
@@ -45,7 +48,7 @@ export interface SbasFiltersType {
   perpendicular: number;
   customPairIds: string[][];
 
-  thresholdOverlap: boolean;
+  thresholdOverlap: SBASOverlap;
 }
 
 export interface CustomProductFiltersType {
@@ -77,3 +80,16 @@ export interface GeographicFiltersType {
   selectedMission: null | string;
 }
 
+export interface SarviewsFiltersType {
+  sarviewsEventTypes: SarviewsEventType[];
+
+  // pathRange: Range<number | null>;
+  // frameRange: Range<number | null>;
+  // season: Range<number | null>;
+  dateRange: Range<null | Date>;
+  magnitude: Range<null | number>;
+  activeOnly: boolean;
+  sarviewsEventNameFilter: string;
+  pinnedProductIDs: string[];
+  selectedEventID: string;
+}

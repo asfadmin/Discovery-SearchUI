@@ -1,10 +1,8 @@
-import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
-import { MatDatepickerInputEvent } from '@angular/material/datepicker';
-import { NgForm } from '@angular/forms';
+import { Component, OnInit, ViewChild, OnDestroy, Input } from '@angular/core';
 import * as moment from 'moment';
 
-import { Subject, combineLatest } from 'rxjs';
-import { filter, tap, delay, map } from 'rxjs/operators';
+import { combineLatest } from 'rxjs';
+import { filter, map, withLatestFrom } from 'rxjs/operators';
 import { SubSink } from 'subsink';
 
 import { Store, ActionsSubject } from '@ngrx/store';
@@ -22,39 +20,50 @@ import { DateExtremaService } from '@services';
   styleUrls: ['./date-selector.component.scss']
 })
 export class DateSelectorComponent implements OnInit, OnDestroy {
-  @ViewChild('dateForm', { static: true }) public dateForm: NgForm;
-
-  public startDateErrors$ = new Subject<void>();
-  public endDateErrors$ = new Subject<void>();
-  public isStartError = false;
-  public isEndError = false;
+  @ViewChild('dateRange', { static: true }) public dateRange;
+  @Input() public extendEndDateBy: number;
 
   public extrema: DateRangeExtrema;
 
   private currentDate = new Date();
   private selectedDataset$ = this.store$.select(filtersStore.getSelectedDataset);
   public maxDate$ = this.selectedDataset$.pipe(
-      map(dataset => dataset.date.end),
-      map(endDate => endDate <= this.currentDate ? endDate : this.currentDate)
+    withLatestFrom(this.store$.select(searchStore.getSearchType)),
+    map(([dataset, searchType]) => {
+      if (searchType === SearchType.SARVIEWS_EVENTS) {
+        return this.extrema?.end.max;
+      }
+        return dataset.date.end;
+      }
+    ),
+    map(endDate => {
+      const date = endDate <= this.currentDate ? endDate : this.currentDate;
+
+      if (this.extendEndDateBy && !!date) {
+        const d = new Date(date.valueOf());
+        return new Date(d.setMonth(d.getMonth() + this.extendEndDateBy));
+      }
+
+      return date;
+    })
     );
+
   public minDate$ = this.selectedDataset$.pipe(
-    map(dataset => dataset.date.start ));
+    withLatestFrom(this.store$.select(searchStore.getSearchType)),
+    map(([dataset, searchType]) => {
+        if (searchType === SearchType.SARVIEWS_EVENTS) {
+          return this.extrema?.start.min;
+        }
+        return dataset.date.start;
+      }
+    )
+  );
   public startDate$ = this.store$.select(filtersStore.getStartDate);
   public endDate$ = this.store$.select(filtersStore.getEndDate);
-  public startDate: Date;
-  public endDate: Date;
+  public startDate: Date = new Date();
+  public endDate: Date = new Date();
 
   private subs = new SubSink();
-
-  private get startControl() {
-    return this.dateForm.form
-      .controls['startInput'];
-  }
-
-  private get endControl() {
-    return this.dateForm.form
-      .controls['endInput'];
-  }
 
   constructor(
     private store$: Store<AppState>,
@@ -63,12 +72,11 @@ export class DateSelectorComponent implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit() {
-    this.handleDateErrors();
 
     this.subs.add(
       this.actions$.pipe(
         filter(action => action.type === filtersStore.FiltersActionType.CLEAR_DATASET_FILTERS)
-      ).subscribe(_ => this.dateForm.reset())
+      ).subscribe(_ => this.dateRange.reset())
     );
 
     const dateExtrema$ = this.dateExtremaService.getExtrema$(
@@ -82,13 +90,18 @@ export class DateSelectorComponent implements OnInit, OnDestroy {
         this.endDate$,
     );
 
+    const sarviewsDateExtrema$ = this.dateExtremaService.getSarviewsExtrema$(
+      this.store$.select(scenesStore.getSarviewsEvents)
+    );
+
     this.subs.add(
       combineLatest([
         this.store$.select(searchStore.getSearchType),
         dateExtrema$,
         baselineDateExtrema$,
+        sarviewsDateExtrema$,
       ]
-      ).subscribe(([searchType, extrema, baselineExtrema]) => {
+      ).subscribe(([searchType, extrema, baselineExtrema, sarviewsExtrema]) => {
         if (searchType === SearchType.DATASET) {
           this.extrema = extrema;
         } else if (searchType === SearchType.CUSTOM_PRODUCTS) {
@@ -102,8 +115,27 @@ export class DateSelectorComponent implements OnInit, OnDestroy {
               max: null
             }
           };
+         } else if (searchType === SearchType.SARVIEWS_EVENTS) {
+           this.extrema = {
+             start: {
+               min: sarviewsExtrema.start,
+               max: null
+             },
+             end: {
+               min: null,
+               max: sarviewsExtrema.end
+             }
+           };
          } else {
           this.extrema = baselineExtrema;
+        }
+
+        if (this.extendEndDateBy && extrema.end.max !== null) {
+          const endMax = extrema.end.max;
+          const d = new Date(endMax.valueOf());
+          d.setDate(d.getDate() + this.extendEndDateBy);
+
+          extrema.end.max = d ;
         }
       })
     );
@@ -119,11 +151,12 @@ export class DateSelectorComponent implements OnInit, OnDestroy {
         }
       )
     );
+
     this.subs.add(
       this.endDate$.subscribe(
         end => {
           this.endDate = end;
-          if (this.startDate > this.endDate && !!this.startDate) {
+          if (this.startDate > this.endDate && !!this.startDate && !!this.endDate) {
             this.store$.dispatch(new filtersStore.SetStartDate(this.endDate));
           }
         }
@@ -131,71 +164,21 @@ export class DateSelectorComponent implements OnInit, OnDestroy {
     );
   }
 
-  public onStartDateChange(e: MatDatepickerInputEvent<moment.Moment>): void {
-
-    let date: null | Date;
-
-    if (!this.startControl.valid || !e.value) {
-      date = null;
-      this.startDateErrors$.next();
-    } else {
-      const momentDate = e.value.set({h: 0});
-      date = this.toJSDate(momentDate);
-    }
-
+  public onStartDateChange(date): void {
     this.store$.dispatch(new filtersStore.SetStartDate(date));
   }
 
-  public onEndDateChange(e: MatDatepickerInputEvent<moment.Moment>): void {
-    let date: null | Date;
-
-    if (!this.endControl.valid || !e.value) {
-      date = null;
-      this.endDateErrors$.next();
-    } else {
-      date = this.endDateFormat(e.value);
-    }
-
-      this.store$.dispatch(new filtersStore.SetEndDate(date));
+  public onEndDateChange(date): void {
+    this.store$.dispatch(new filtersStore.SetEndDate(date));
   }
 
   private endDateFormat(date: Date | moment.Moment) {
-    const endDate = moment(date).set({h: 23, m: 59, s: 59});
+    const endDate = moment(date).utc().endOf('day');
     return this.toJSDate(endDate);
   }
 
   private toJSDate(date: moment.Moment) {
     return date.toDate();
-  }
-
-  private handleDateErrors(): void {
-    this.subs.add(
-      this.startDateErrors$.pipe(
-        tap(_ => {
-          this.isStartError = true;
-          this.startControl.reset();
-          this.startControl.setErrors({'incorrect': true});
-        }),
-        delay(820),
-      ).subscribe(_ => {
-        this.isStartError = false;
-        this.startControl.setErrors(null);
-      })
-    );
-
-    this.subs.add(
-      this.endDateErrors$.pipe(
-        tap(_ => {
-          this.isEndError = true;
-          this.endControl.reset();
-          this.endControl.setErrors({'incorrect': true});
-        }),
-        delay(820),
-      ).subscribe(_ => {
-        this.isEndError = false;
-        this.endControl.setErrors(null);
-      })
-    );
   }
 
   ngOnDestroy() {

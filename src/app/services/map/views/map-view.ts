@@ -4,6 +4,7 @@ import * as proj from 'ol/proj';
 import * as customProj4 from 'ol/proj/proj4';
 
 import proj4 from 'proj4';
+import { Extent } from 'ol/extent';
 
 export class MapView {
   constructor(
@@ -19,7 +20,7 @@ export class Projection {
 }
 
 export class CustomProjection extends Projection {
-  constructor( epsg: string, projection: string, extent: number[]) {
+  constructor( epsg: string, projection: string, extent: Extent) {
     super(epsg);
 
     proj4.defs(this.epsg, projection);
