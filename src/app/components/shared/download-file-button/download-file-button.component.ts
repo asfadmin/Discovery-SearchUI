@@ -11,6 +11,7 @@ import { AppState } from '@store';
 import * as userStore from '@store/user';
 import { SubSink } from 'subsink';
 import { AuthService } from '@services/auth.service';
+import { NotificationService } from '@services/notification.service';
 
 @Component({
   selector: 'app-download-file-button',
@@ -39,7 +40,8 @@ export class DownloadFileButtonComponent implements OnInit, AfterViewInit {
   constructor(
     private downloadService: DownloadService,
     private store$: Store<AppState>,
-    private Auth: AuthService
+    private Auth: AuthService,
+    private notificationService: NotificationService
   ) {}
 
   ngOnInit(): void {
@@ -104,6 +106,12 @@ export class DownloadFileButtonComponent implements OnInit, AfterViewInit {
         this.observable$ = this.downloadService.download(this.url, this.fileName);
         this.subscription = this.observable$.subscribe( response => this.processSubscription(response, product, false));
       }
+    }, () => {
+      this.dlInProgress = false;
+      this.dlPaused = false;
+      this.dlComplete = false;
+      this.dFile = undefined;
+      this.notificationService.error('There was an error downloading the file.');
     });
   }
   private processSubscription(resp, product, headerOnly) {
