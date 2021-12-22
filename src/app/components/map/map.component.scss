@@ -114,3 +114,36 @@ button {
   margin: 10px auto;
   zoom: 160%;
 }
+
+::ng-deep.ol-overviewmap {
+  top: 0.5em;
+  right: 0.5em;
+  left:inherit !important;
+  bottom: inherit !important;
+}
+
+::ng-deep.map .ol-custom-overviewmap,
+::ng-deep.map .ol-custom-overviewmap.ol-uncollapsible {
+  right: 0;
+  top: 0;
+}
+
+::ng-deep.map .ol-custom-overviewmap:not(.ol-collapsed)  {
+  border: 1px solid black;
+}
+
+::ng-deep.map .ol-custom-overviewmap .ol-overviewmap-map {
+  border: none;
+  width: 300px;
+}
+
+::ng-deep.map .ol-custom-overviewmap .ol-overviewmap-box {
+  border: 2px solid red;
+}
+
+::ng-deep.map .ol-custom-overviewmap:not(.ol-collapsed) button{
+  bottom: auto;
+  left: auto;
+  right: 1px;
+  top: 1px;
+}

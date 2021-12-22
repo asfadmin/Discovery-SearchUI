@@ -8,6 +8,7 @@ import { Layer, Vector as VectorLayer } from 'ol/layer';
 import { Vector as VectorSource } from 'ol/source';
 import * as proj from 'ol/proj';
 import Point from 'ol/geom/Point';
+import { OverviewMap } from 'ol/control';
 
 import { click, pointerMove } from 'ol/events/condition';
 import Select from 'ol/interaction/Select';
@@ -412,6 +413,14 @@ export class MapService {
 
 
   private createNewMap(overlay): Map {
+    var overviewMap = new OverviewMap({
+      layers: [this.mapView.layer],
+      collapseLabel: '\u00BB',
+      label: '\u00AB',
+      collapsed: false,
+      className: 'ol-overviewmap ol-custom-overviewmap',
+    });
+
     const newMap = new Map({
       layers: [ this.mapView.layer,
         this.drawService.getLayer(),
@@ -422,7 +431,7 @@ export class MapService {
       ],
       target: 'map',
       view: this.mapView.view,
-      controls: [],
+      controls: [overviewMap],
       overlays: [overlay]
     });
 
