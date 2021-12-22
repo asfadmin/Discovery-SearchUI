@@ -5,6 +5,13 @@ import { CMRProduct } from '@models';
 import { UAParser } from 'ua-parser-js';
 import { Observable, Subscription } from 'rxjs';
 
+import { Store } from '@ngrx/store';
+import { AppState } from '@store';
+
+import * as userStore from '@store/user';
+import { SubSink } from 'subsink';
+import { AuthService } from '@services/auth.service';
+
 @Component({
   selector: 'app-download-file-button',
   templateUrl: './download-file-button.component.html',
@@ -26,14 +33,24 @@ export class DownloadFileButtonComponent implements OnInit, AfterViewInit {
   public observable$: Observable<Download>;
   public subscription: Subscription;
 
+  public isUserLoggedIn: boolean;
+  private subs = new SubSink();
+
   constructor(
     private downloadService: DownloadService,
+    private store$: Store<AppState>,
+    private Auth: AuthService
   ) {}
 
   ngOnInit(): void {
   }
 
   ngAfterViewInit() {
+    this.subs.add(
+      this.store$.select(userStore.getIsUserLoggedIn).subscribe(
+        isLoggedIn => this.isUserLoggedIn = isLoggedIn
+      )
+    );
   }
 
   public downloadFile(product: CMRProduct, href?: string) {
@@ -70,7 +87,16 @@ export class DownloadFileButtonComponent implements OnInit, AfterViewInit {
       return;
     }
 
+    if (!this.isUserLoggedIn) {
+      this.Auth.login$().toPromise().then(() => {
+        this.downloadFunctionality(product);
+      });
+    } else {
+      this.downloadFunctionality(product);
+    }
 
+  }
+  private downloadFunctionality(product: CMRProduct) {
     this.observable$ = this.downloadService.download(this.url, this.fileName);
     this.subscription = this.observable$.subscribe( resp => {
       if (!this.processSubscription(resp, product, true)) {
@@ -79,10 +105,7 @@ export class DownloadFileButtonComponent implements OnInit, AfterViewInit {
         this.subscription = this.observable$.subscribe( response => this.processSubscription(response, product, false));
       }
     });
-
-
   }
-
   private processSubscription(resp, product, headerOnly) {
     this.dFile = resp;
 
