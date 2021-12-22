@@ -46,7 +46,7 @@
       <cdk-virtual-scroll-viewport id="event-selection-list"
                           itemSize="50"
 
-                          class="products-list"
+                          class="products-list event-products"
                           dense role="list">
         <mat-selection-list multiple (selectionChange)="onSelectSarviewsProduct($event)">
           <mat-list-option [value]="prod.product_id" [selected]="!!this.selectedProducts.includes(prod.product_id)"
