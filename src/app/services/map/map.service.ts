@@ -49,6 +49,8 @@ export class MapService {
   private pinnedCollection: Collection<Layer> = new Collection<Layer>([], {unique: true});
   private pinnedProducts: LayerGroup = new LayerGroup({layers: this.pinnedCollection});
 
+  //potential mat-icon for map pan: control_camera
+
   private selectClick = new Select({
     condition: click,
     style: polygonStyle.hidden,
