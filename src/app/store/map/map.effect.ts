@@ -186,9 +186,9 @@ export class MapEffects {
     filter(
       ({outOfDate}) => !outOfDate
     ),
-    map(({searchType, filtersOpen, resultsOpen}) =>
-      searchType === models.SearchType.DATASET
-      && !filtersOpen
+    filter(({searchType}) => searchType === models.SearchType.DATASET),
+    map(({filtersOpen, resultsOpen}) =>
+      !filtersOpen
       && resultsOpen
     ),
     tap(_ => this.store$.dispatch( new SetSearchOutOfDate(true)))
