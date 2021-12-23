@@ -80,7 +80,7 @@ export class DownloadFileButtonComponent implements OnInit, AfterViewInit {
 
     const userAgent = new UAParser().getResult();
 
-    if (userAgent.browser.name !== 'Chrome') {
+    if (true || userAgent.browser.name !== 'Chrome') {
       classicDownload(this.url, this.fileName).then( () => {
         this.dlInProgress = false;
         this.dlComplete = true;
