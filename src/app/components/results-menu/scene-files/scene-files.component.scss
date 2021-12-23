@@ -7,6 +7,9 @@ $thumb-size: 50px;
   padding-top: 0;
   padding-bottom: 0;
   overflow-y: auto;
+}
+
+.event-products {
   height: 100%;
 }
 
@@ -20,7 +23,7 @@ $thumb-size: 50px;
   padding-top: 2px;
   padding-bottom: 5px;
   color: $asf-blue;
-  background-color: rgb(220, 220, 220);
+  background-color: rgb(220  220  220);
 }
 
 .more-link {
@@ -40,7 +43,7 @@ $thumb-size: 50px;
   line-height: 24px !important;
   background-color: $asf-primary !important;
   color: white !important;
-  border: 1px groove rgba(0, 0, 0, 0.25) !important;
+  border: 1px groove rgb(0 0 0 / 25%) !important;
   border-radius: 4px !important;
 }
 
