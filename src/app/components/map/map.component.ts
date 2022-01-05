@@ -359,11 +359,11 @@ export class MapComponent implements OnInit, OnDestroy  {
         ),
         map(([searchPolygon, features]) => {
           let polygonFeatures = features;
-          if(this.searchType === models.SearchType.SBAS && searchPolygon != null) {
+          if (this.searchType === models.SearchType.SBAS && searchPolygon != null) {
             const geometryType = searchPolygon.getGeometry().getType();
             const intersectionMethod = this.aoiIntersectionMethod(geometryType);
 
-            polygonFeatures = features.filter(feature => intersectionMethod(searchPolygon, feature))
+            polygonFeatures = features.filter(feature => intersectionMethod(searchPolygon, feature));
           }
 
           return this.scenePolygonsLayer(polygonFeatures);
