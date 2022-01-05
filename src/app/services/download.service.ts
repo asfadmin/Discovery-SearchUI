@@ -17,7 +17,7 @@ export class DownloadService {
 
   classicResp: Observable<DownloadStatus>;
 
-  download(url: string, filename: string): Observable<DownloadStatus> {
+  download(url: string, filename: string, id): Observable<DownloadStatus> {
 
     const resp = this.http.get(url, {
       withCredentials: !(new URL(url).origin.startsWith('hyp3')),
@@ -27,11 +27,12 @@ export class DownloadService {
     });
 
 
-    return resp.pipe(this.download$(filename, blob => this.save(blob, url, filename)));
+    return resp.pipe(this.download$(filename, id, blob => this.save(blob, url, filename)));
   }
 
 
   private download$(
+    filename: string,
     id: string,
     saver?: (b: Blob) => void): (source: Observable<HttpEvent<Blob>>) => Observable<DownloadStatus> {
 
@@ -48,7 +49,8 @@ export class DownloadService {
                     : file.progress,
                   state: 'IN_PROGRESS',
                   content: null,
-                  id: id,
+                  filename: filename,
+                  id: id
                 };
               }
               case (HttpEventType.ResponseHeader): {
@@ -58,7 +60,9 @@ export class DownloadService {
                   progress: 0,
                   state: 'PENDING',
                   content: null,
-                  id: newID
+                  filename: newID,
+                  id: id
+
                 };
               }
               case (HttpEventType.Response): {
@@ -69,7 +73,9 @@ export class DownloadService {
                   progress: 100,
                   state: 'DONE',
                   content: event.body,
-                  id: id,
+                  filename: filename,
+                  id: id
+
                 };
               }
               default : {
@@ -77,7 +83,7 @@ export class DownloadService {
               }
             }
           },
-          { state: 'PENDING', progress: 0, content: null, id: '' }
+          { state: 'PENDING', progress: 0, content: null, filename: '', id: '' }
         ),
         distinctUntilChanged((a, b) => a.state === b.state
           && a.progress === b.progress

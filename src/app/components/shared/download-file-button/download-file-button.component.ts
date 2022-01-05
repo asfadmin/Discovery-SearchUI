@@ -53,21 +53,21 @@ export class DownloadFileButtonComponent implements OnInit, AfterViewInit {
       this.url = this.product.downloadUrl;
       this.fileName = this.product.file;
     }
+    this.subs.add(
+      this.store$.select(queueStore.getDownloads).subscribe(
+      queueDownloads => {
+        if (queueDownloads.hasOwnProperty(this.product?.id)) {
+          this.dFile = queueDownloads[this.product.id];
+        }
+      }
+      )
+    );
   }
 
   ngAfterViewInit() {
     this.subs.add(
       this.store$.select(userStore.getIsUserLoggedIn).subscribe(
         isLoggedIn => this.isUserLoggedIn = isLoggedIn
-      )
-    );
-    this.subs.add(
-      this.store$.select(queueStore.getDownloads).subscribe(
-      queueDownloads => {
-        if (queueDownloads.hasOwnProperty(this.fileName)) {
-          this.dFile = queueDownloads[this.fileName];
-        }
-      }
       )
     );
   }
@@ -106,11 +106,11 @@ export class DownloadFileButtonComponent implements OnInit, AfterViewInit {
   }
   private downloadFunctionality(product: CMRProduct) {
     console.log(product);
-    this.observable$ = this.downloadService.download(this.url, this.fileName);
+    this.observable$ = this.downloadService.download(this.url, this.fileName, product.id);
     this.subscription = this.observable$.subscribe( resp => {
       if (!this.processSubscription(resp, product, true)) {
         this.subscription.unsubscribe();
-        this.observable$ = this.downloadService.download(this.url, this.fileName);
+        this.observable$ = this.downloadService.download(this.url, this.fileName, product.id);
         this.subscription = this.observable$.subscribe( response => this.processSubscription(response, product, false));
       }
     }, () => {
@@ -121,7 +121,7 @@ export class DownloadFileButtonComponent implements OnInit, AfterViewInit {
   private processSubscription(resp, product, headerOnly) {
     this.dFile = resp;
     if (resp.state === 'PENDING') {
-      this.fileName = resp.id;
+      this.fileName = resp.filename;
       if (headerOnly && this.fileName) {
         return false;
       }
