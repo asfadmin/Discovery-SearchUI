@@ -434,8 +434,7 @@ export class MapComponent implements OnInit, OnDestroy  {
   }
 
   private scenePolygonsLayer(features: Feature<Geometry>[]): VectorLayer {
-    // features.map(feature => )
-      var vectorLayer = this.featuresToSource(features, polygonStyle.scene);
+      const vectorLayer = this.featuresToSource(features, polygonStyle.scene);
       vectorLayer.set('selectable', 'true');
       return vectorLayer;
   }
