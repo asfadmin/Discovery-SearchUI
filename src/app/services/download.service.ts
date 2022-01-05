@@ -1,23 +1,23 @@
 import { Injectable, Inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { download, Download } from './download';
 import { Observable } from 'rxjs';
 import { SAVER, Saver } from '@services/saver.provider';
+import { DownloadStatus } from '@models/download.model';
 
+import { HttpEvent, HttpEventType } from '@angular/common/http';
+import { distinctUntilChanged, scan } from 'rxjs/operators';
 
-@Injectable({providedIn: 'root'})
+@Injectable({ providedIn: 'root' })
 export class DownloadService {
-
-
 
   constructor(
     private http: HttpClient,
     @Inject(SAVER) private save: Saver,
-    ) {    }
+  ) { }
 
-  classicResp: Observable<Download>;
+  classicResp: Observable<DownloadStatus>;
 
-  download(url: string, filename: string): Observable<Download> {
+  download(url: string, filename: string): Observable<DownloadStatus> {
 
     const resp = this.http.get(url, {
       withCredentials: !(new URL(url).origin.startsWith('hyp3')),
@@ -27,14 +27,68 @@ export class DownloadService {
     });
 
 
-    return resp.pipe(download(filename, blob => this.save(blob, url, filename)));
+    return resp.pipe(this.download$(filename, blob => this.save(blob, url, filename)));
   }
 
 
+  private download$(
+    id: string,
+    saver?: (b: Blob) => void): (source: Observable<HttpEvent<Blob>>) => Observable<DownloadStatus> {
+
+
+    return (source: Observable<HttpEvent<Blob>>) =>
+      source.pipe(
+        scan(
+          (file: DownloadStatus, event: HttpEvent<Blob>): DownloadStatus => {
+            switch (event.type) {
+              case (HttpEventType.DownloadProgress || HttpEventType.UploadProgress): {
+                return {
+                  progress: event.total
+                    ? Math.round((100 * event.loaded) / event.total)
+                    : file.progress,
+                  state: 'IN_PROGRESS',
+                  content: null,
+                  id: id,
+                };
+              }
+              case (HttpEventType.ResponseHeader): {
+                const eventURL = new URL(event.url).pathname;
+                const newID = eventURL.substring(eventURL.lastIndexOf('/') + 1);
+                return {
+                  progress: 0,
+                  state: 'PENDING',
+                  content: null,
+                  id: newID
+                };
+              }
+              case (HttpEventType.Response): {
+                if (saver) {
+                  saver(event.body);
+                }
+                return {
+                  progress: 100,
+                  state: 'DONE',
+                  content: event.body,
+                  id: id,
+                };
+              }
+              default : {
+                return file;
+              }
+            }
+          },
+          { state: 'PENDING', progress: 0, content: null, id: '' }
+        ),
+        distinctUntilChanged((a, b) => a.state === b.state
+          && a.progress === b.progress
+          && a.content === b.content
+          && a.id === b.id
+        )
+      );
+  }
 
   // blob(url: string, filename?: string): Observable<Blob> {
   blob(url: string): Observable<Blob> {
-    console.log('download.service.ts blog() url:', url);
     return this.http.get(url, {
       withCredentials: !(new URL(url).origin.startsWith('hyp3')),
       responseType: 'blob',

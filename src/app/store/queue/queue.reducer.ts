@@ -1,16 +1,20 @@
 import { createFeatureSelector, createSelector } from '@ngrx/store';
 
 import { QueueActionType, QueueActions } from './queue.action';
-import { CMRProduct, QueuedHyp3Job } from '@models';
+import { CMRProduct, QueuedHyp3Job, DownloadStatus } from '@models';
 
 export interface ProductMap {
   [id: string]: CMRProduct;
 }
 
+export interface DownloadMap {
+  [id: string]: DownloadStatus;
+}
 export interface QueueState {
   products: ProductMap;
   ids: string[];
   customJobs: QueuedHyp3Job[];
+  downloads: DownloadMap;
   duplicates: number;
 }
 
@@ -18,6 +22,7 @@ export const initState: QueueState = {
   products: {},
   ids: [],
   customJobs: [],
+  downloads: {},
   duplicates: 0
 };
 
@@ -56,6 +61,16 @@ export function queueReducer(state = initState, action: QueueActions): QueueStat
         ...state,
         products,
         ids
+      };
+    }
+
+    case QueueActionType.DOWNLOAD_PRODUCT: {
+      const newDownload = action.payload;
+      const downloads = {...state.downloads};
+      downloads[newDownload.id] = newDownload;
+      return {
+        ...state
+        , downloads
       };
     }
 
@@ -300,4 +315,9 @@ export const getQueuedJobTypes = createSelector(
 
     return (<any>Object.values(jobTypeDict));
   }
+);
+
+export const getDownloads = createSelector(
+  getQueueState,
+  (state: QueueState) => state.downloads
 );

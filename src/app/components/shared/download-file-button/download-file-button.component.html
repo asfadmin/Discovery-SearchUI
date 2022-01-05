@@ -3,16 +3,16 @@
    class="link"
 >
   <button
-          [disabled]="!product.downloadUrl || dlInProgress || disabled"
+          [disabled]="(!product?.downloadUrl && !href ) ||  disabled"
      mat-icon-button
      matTooltip="Download file"
      class="download-file-button"
   >
     <ng-container *ngIf="dFile as download">
-      <template *ngIf="dlInProgress"
+      <template *ngIf="download.state === 'IN_PROGRESS'"
                 class="progress-spinner">
         <mat-progress-spinner
-          [mode]="download.state == 'PENDING' ? 'indeterminate' : 'determinate'"
+          [mode]="download.state === 'IN_PROGRESS' ? 'determinate' : 'indeterminate'"
           [value]='download.progress'
           [diameter]="40">
         </mat-progress-spinner>
@@ -20,18 +20,16 @@
           {{ download.progress }}
         </span>
       </template>
-      <div *ngIf="dlPaused && !dlComplete" class="paused-icon">
+      <!-- <div *ngIf="dlPaused && download.state !== 'DONE'" class="paused-icon">
         <mat-icon>paused</mat-icon>
-      </div>
+      </div> -->
     </ng-container>
 
-    <ng-container *ngIf="!dFile || dlComplete">
-      <ng-container *ngIf="dlComplete">
-        <mat-icon>done</mat-icon>
-      </ng-container>
-      <ng-container *ngIf="!dlComplete">
-        <mat-icon>cloud_download</mat-icon>
-      </ng-container>
+    <ng-container *ngIf="dFile && dFile.state === 'DONE'">
+      <mat-icon>done</mat-icon>
+    </ng-container>
+    <ng-container *ngIf="!dFile">
+      <mat-icon>cloud_download</mat-icon>
     </ng-container>
   </button>
 </a>
