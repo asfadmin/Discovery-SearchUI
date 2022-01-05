@@ -444,7 +444,8 @@ export class MapComponent implements OnInit, OnDestroy  {
       // filter(events => !!events),
       tap(events => this.sarviewsEvents = events),
       map(events => this.mapService.sarviewsEventsToFeatures(events, projection)),
-      map(features => this.featuresToSource(features, polygonStyle.icon))
+      map(features => this.featuresToSource(features, polygonStyle.icon)),
+      tap(vectorLayer => vectorLayer.set('selectable_events', true))
     );
   }
 

@@ -68,7 +68,7 @@ export class MapService {
   private selectSarviewEventHover = new Select({
     condition: pointerMove,
     style: null,
-    layers: l => l?.get('selectable') || false,
+    layers: l => l?.get('selectable_events') || false,
   });
 
   private selectedSource = new VectorSource({
@@ -446,21 +446,13 @@ export class MapService {
     });
 
     this.selectHover.on('select', e => {
-      if(e.selected.length === 0) {
-        this.map.getViewport().style.cursor = 'move';
-        return;
-      }
-        this.map.forEachLayerAtPixel(e.mapBrowserEvent.pixel, f => {
-          if(f.get('selectable')) {
-            this.map.getViewport().style.cursor = 'pointer';
-            return true;
-          }
-        });
+      this.map.getViewport().style.cursor =
+      e.selected.length > 0 ? 'pointer' : 'move';
     });
 
     this.selectSarviewEventHover.on('select', e => {
-      this.map.getTargetElement().style.cursor =
-        e.selected.length > 0 ? 'pointer' : '';
+      this.map.getViewport().style.cursor =
+        e.selected.length > 0 ? 'pointer' : 'move';
     }
     );
 
