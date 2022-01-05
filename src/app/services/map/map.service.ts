@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject, Subject } from 'rxjs';
 import { map, sampleTime } from 'rxjs/operators';
 
-import { Collection, Feature, Map } from 'ol';
+import { Collection, Feature, Map, View } from 'ol';
 import { Layer, Vector as VectorLayer } from 'ol/layer';
 import { Vector as VectorSource } from 'ol/source';
 import * as proj from 'ol/proj';
@@ -32,6 +32,7 @@ import ImageLayer from 'ol/layer/Image';
 import LayerGroup from 'ol/layer/Group';
 import { PinnedProduct } from '@services/browse-map.service';
 import { BrowseOverlayService } from '@services';
+import { ViewOptions } from 'ol/View';
 
 @Injectable({
   providedIn: 'root'
@@ -413,7 +414,7 @@ export class MapService {
 
 
   private createNewMap(overlay): Map {
-    var overviewMap = new OverviewMap({
+    const overviewMap = new OverviewMap({
       layers: [this.mapView.layer],
       collapseLabel: '\u00BB',
       label: '\u00AB',
@@ -507,6 +508,20 @@ export class MapService {
   private updatedMap(): Map {
     if (this.map.getView().getProjection().getCode() !== this.mapView.projection.epsg) {
       this.map.setView(this.mapView.view);
+
+      const overviewMapViewOptions = {...this.mapView.view.getProperties()} as ViewOptions;
+      overviewMapViewOptions.center = this.map.getView().getCenter();
+
+      this.map.getControls().forEach((control) => {
+        if(control instanceof OverviewMap) {
+          const overviewMap = control.getOverviewMap();
+          overviewMap.setView(new View(overviewMapViewOptions));
+          overviewMap.getLayers().setAt(0, this.mapView.layer);
+          overviewMap.getView().setZoom(5);
+
+          // this.map.removeControl(control);
+        }
+      });
     }
 
     const layers = this.map.getLayers().getArray();
@@ -521,6 +536,7 @@ export class MapService {
 
     const mapLayers = this.map.getLayers();
     mapLayers.setAt(0, this.mapView.layer);
+
 
     return this.map;
   }
