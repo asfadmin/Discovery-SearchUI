@@ -446,21 +446,21 @@ export class MapService {
     });
 
     this.selectHover.on('select', e => {
-      this.map.getTargetElement().style.cursor =
-        e.selected.length > 0 ? 'pointer' : '';
+      if(e.selected.length === 0) {
+        this.map.getViewport().style.cursor = 'move';
+        return;
+      }
+        this.map.forEachLayerAtPixel(e.mapBrowserEvent.pixel, f => {
+          if(f.get('selectable')) {
+            this.map.getViewport().style.cursor = 'pointer';
+            return true;
+          }
+        });
     });
 
     this.selectSarviewEventHover.on('select', e => {
       this.map.getTargetElement().style.cursor =
         e.selected.length > 0 ? 'pointer' : '';
-
-        // this.map.forEachLayerAtPixel(e.mapBrowserEvent.pixel, f => {
-        //   if(f.get('selectable') || false) {
-        //     f
-        //     return true;
-        //   }
-        // });
-
     }
     );
 
