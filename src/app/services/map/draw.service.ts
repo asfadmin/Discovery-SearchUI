@@ -59,17 +59,20 @@ export class DrawService {
     map.removeInteraction(this.draw);
 
     map.once("pointermove", (_) => {
-      map.getViewport().style.cursor = 'grab'
+      map.getViewport().style.cursor = 'move'
     });
 
     if (mode === models.MapInteractionModeType.DRAW) {
       map.addInteraction(this.draw);
       map.once("pointermove", (_) => {
-        map.getViewport().style.cursor = 'crosshair'
+        map.getViewport().style.cursor = 'grab'
       });
     } else if (mode === models.MapInteractionModeType.EDIT) {
       map.addInteraction(this.snap);
       map.addInteraction(this.modify);
+      map.once("pointermove", (_) => {
+        map.getViewport().style.cursor = 'crosshair'
+      });
     }
   }
 
