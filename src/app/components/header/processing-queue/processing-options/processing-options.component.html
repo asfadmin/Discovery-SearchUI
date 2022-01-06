@@ -1,4 +1,4 @@
-<div class="processing-options">
+<div class="processing-options" xmlns="http://www.w3.org/1999/html">
   <ng-container *ngIf="selectedJobType">
     <ng-container *ngFor="let jobType of JobTypesList">
       <ng-container *ngIf="selectedJobType.id === jobType.id">
@@ -8,38 +8,55 @@
           </div>
         </ng-container>
 
-        <div class="flex-field" *ngFor="let option of jobType.options">
-          <app-dropdown-option
-             *ngIf="option.type === 'DROPDOWN'"
-            (valueChange)="onSetOptionValue(option.apiName, $event)"
-            [value]="optionValues[option.apiName]"
-            [options]="option.options"
-            [optionName]="option.name"
-            [optionInfo]="option.info">
-          </app-dropdown-option>
+        <div class="flex-row flex-start">
+          <div class="flex-field option-header">Processing Options</div>
+        </div>
+        <div>
+          <div class="flex-row flex-start">
+            <div class="flex-field" *ngFor="let option of jobType.options">
+              <app-dropdown-option
+                *ngIf="option.type === 'DROPDOWN'"
+                (valueChange)="onSetOptionValue(option.apiName, $event)"
+                [value]="optionValues[option.apiName]"
+                [options]="option.options"
+                [optionName]="option.name"
+                [optionInfo]="option.info">
+              </app-dropdown-option>
+            </div>
+          </div>
+        </div>
 
-          <app-toggle-option
-             *ngIf="option.type === 'TOGGLE'"
-            (valueChange)="onSetOptionValue(option.apiName, $event)"
-            [value]="optionValues[option.apiName]"
-            [optionName]="option.name"
-            [optionInfo]="option.info">
-          </app-toggle-option>
-
-          <app-checkbox-option
-             *ngIf="option.type === 'CHECKBOX'"
-            (valueChange)="onSetOptionValue(option.apiName, $event)"
-            [value]="optionValues[option.apiName]"
-            [optionName]="option.name"
-            [optionInfo]="option.info">
-          </app-checkbox-option>
-
-          <app-subset-option
-             *ngIf="option.type === 'SUBSET'"
-            (setSubset)="onSetSubset(option.optionSubset)"
-            [optionName]="option.name"
-            [optionInfo]="option.info">
-          </app-subset-option>
+        <div class="flex-row flex-start">
+          <div class="flex-field toggle-options">
+            <div class="option-header">Apply</div>
+            <div class="flex-field toggle-list" *ngFor="let option of jobType.options">
+              <app-toggle-option
+                *ngIf="option.type === 'TOGGLE'"
+                (valueChange)="onSetOptionValue(option.apiName, $event)"
+                [value]="optionValues[option.apiName]"
+                [optionName]="option.name"
+                [optionInfo]="option.info">
+              </app-toggle-option>
+            </div>
+          </div>
+          <div class="flex-field">
+            <div class="option-header">Include</div>
+            <div class="flex-field checkbox-list" *ngFor="let option of jobType.options">
+              <app-checkbox-option
+                *ngIf="option.type === 'CHECKBOX'"
+                (valueChange)="onSetOptionValue(option.apiName, $event)"
+                [value]="optionValues[option.apiName]"
+                [optionName]="option.name"
+                [optionInfo]="option.info">
+              </app-checkbox-option>
+              <app-subset-option
+                *ngIf="option.type === 'SUBSET'"
+                (setSubset)="onSetSubset(option.optionSubset)"
+                [optionName]="option.name"
+                [optionInfo]="option.info">
+              </app-subset-option>
+            </div>
+          </div>
         </div>
       </ng-container>
     </ng-container>

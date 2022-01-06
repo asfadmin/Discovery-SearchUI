@@ -35,6 +35,7 @@ export class ProcessingOptionsComponent implements OnInit {
       }
     );
   }
+
   public hasJobType(jobType: models.Hyp3JobType): boolean {
     return this.jobs.some(
       job => job.job_type.id === jobType.id
