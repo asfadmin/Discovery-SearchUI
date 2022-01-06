@@ -12,7 +12,7 @@
           <div class="flex-field option-header">Processing Options</div>
         </div>
         <div>
-          <div class="flex-row flex-start">
+          <div class="flex-row flex-start flex-wrap">
             <div class="flex-field" *ngFor="let option of jobType.options">
               <app-dropdown-option
                 *ngIf="option.type === 'DROPDOWN'"
@@ -26,7 +26,7 @@
           </div>
         </div>
 
-        <div class="flex-row flex-start">
+        <div class="flex-row flex-start flex-wrap">
           <div class="flex-field toggle-options">
             <div class="option-header">Apply</div>
             <div class="flex-field toggle-list" *ngFor="let option of jobType.options">
