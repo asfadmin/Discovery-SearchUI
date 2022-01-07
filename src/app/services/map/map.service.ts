@@ -568,7 +568,7 @@ export class MapService {
   public getAoiIntersectionMethod(geometryType: GeometryType) {
     if (geometryType === 'Point') {
       return this.getPointIntersection;
-    } else if(geometryType === 'LineString') {
+    } else if (geometryType === 'LineString') {
       return this.getLineIntersection;
     }
 
