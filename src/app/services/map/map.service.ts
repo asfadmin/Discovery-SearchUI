@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 
 import { BehaviorSubject, Subject } from 'rxjs';
-import { map, sampleTime } from 'rxjs/operators';
+import { map, sampleTime, tap } from 'rxjs/operators';
 
 import { Collection, Feature, Map, View } from 'ol';
 import { Layer, Vector as VectorLayer } from 'ol/layer';
@@ -38,7 +38,9 @@ import { ViewOptions } from 'ol/View';
   providedIn: 'root'
 })
 export class MapService {
-  public isDrawing$ = this.drawService.isDrawing$;
+  public isDrawing$ = this.drawService.isDrawing$.pipe(
+    tap(isDrawing => this.map.getViewport().style.cursor = isDrawing ?  "crosshair" : "default")
+  );
 
   private mapView: views.MapView;
   private map: Map;
@@ -64,6 +66,11 @@ export class MapService {
     style: polygonStyle.hover,
     layers: l => l.get('selectable') || false
   });
+
+  private searchPolygonHover = new Select({
+    condition: click,
+    layers: l => l.get('search_polygon') || false
+  })
 
   private selectSarviewEventHover = new Select({
     condition: pointerMove,
@@ -142,12 +149,14 @@ export class MapService {
     this.selectHover.setActive(true);
     this.selectSarviewEventHover.setActive(true);
     this.selectClick.setActive(true);
+    this.searchPolygonHover.setActive(true);
   }
 
   public disableInteractions(): void {
     this.selectHover.setActive(false);
     this.selectSarviewEventHover.setActive(false);
     this.selectClick.setActive(false);
+    this.searchPolygonHover.setActive(false);
   }
 
   private zoom(amount: number): void {
@@ -418,7 +427,7 @@ export class MapService {
       layers: [this.mapView.layer],
       collapseLabel: '\u00BB',
       label: '\u00AB',
-      collapsed: false,
+      collapsed: true,
       className: 'ol-overviewmap ol-custom-overviewmap',
     });
 
@@ -459,6 +468,14 @@ export class MapService {
     newMap.on('pointermove', e => {
       const [ lon, lat ] = proj.toLonLat(e.coordinate, this.epsg());
       this.mousePositionSubject$.next({ lon, lat });
+    });
+
+    newMap.on('movestart', () => {
+      newMap.getViewport().style.cursor = 'move';
+    });
+
+    newMap.on('moveend', () => {
+      newMap.getViewport().style.cursor = 'default';
     });
 
     newMap.on('singleclick', (evnt) => {
@@ -509,8 +526,7 @@ export class MapService {
           const overviewMap = control.getOverviewMap();
           overviewMap.setView(new View(overviewMapViewOptions));
           overviewMap.getLayers().setAt(0, this.mapView.layer);
-          overviewMap.getView().setZoom(5);
-
+          overviewMap.getView().setZoom(3);
           // this.map.removeControl(control);
         }
       });
