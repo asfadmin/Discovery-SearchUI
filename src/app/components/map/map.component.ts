@@ -30,10 +30,6 @@ import { CMRProduct, SarviewsEvent } from '@models';
 import { StyleLike } from 'ol/style/Style';
 import { Feature } from 'ol';
 import Geometry from 'ol/geom/Geometry';
-import intersect from '@turf/intersect';
-import Polygon from 'ol/geom/Polygon';
-import GeometryType from 'ol/geom/GeometryType';
-import booleanPointInPolygon from '@turf/boolean-point-in-polygon';
 
 enum FullscreenControls {
   MAP = 'Map',
@@ -337,6 +333,12 @@ export class MapComponent implements OnInit, OnDestroy  {
         features => this.mapService.setSelectedPair(features)
       )
     );
+
+    this.subs.add(
+      this.store$.select(mapStore.getIsOverviewMapOpen).subscribe(
+        isOpen => this.mapService.setOverviewMap(isOpen)
+      )
+    )
   }
 
   private selectedToLayer$(selected$) {
@@ -361,7 +363,7 @@ export class MapComponent implements OnInit, OnDestroy  {
           let polygonFeatures = features;
           if (this.searchType === models.SearchType.SBAS && searchPolygon != null) {
             const geometryType = searchPolygon.getGeometry().getType();
-            const intersectionMethod = this.aoiIntersectionMethod(geometryType);
+            const intersectionMethod = this.mapService.getAoiIntersectionMethod(geometryType);
 
             polygonFeatures = features.filter(feature => intersectionMethod(searchPolygon, feature));
           }
@@ -527,37 +529,6 @@ export class MapComponent implements OnInit, OnDestroy  {
 
   public closeMobileFullscreenControls() {
     this.fullscreenControl = FullscreenControls.NONE;
-  }
-
-  private aoiIntersectionMethod(geometryType: GeometryType) {
-
-    if (geometryType === 'Point') {
-      return (lhs: Feature<Geometry>, rhs: Feature<Geometry>) => {
-        const point = lhs.getGeometry() as Point;
-        return booleanPointInPolygon(point.getCoordinates(),
-        {
-          'type': 'Polygon',
-          'coordinates': [
-            (rhs.getGeometry() as Polygon).getCoordinates()[0]
-          ],
-      });
-      };
-    }
-
-    return (lhs: Feature<Geometry>, rhs: Feature<Geometry>) => intersect(
-      {
-        'type': 'Polygon',
-        'coordinates': [
-          (lhs.getGeometry() as Polygon).getCoordinates()[0]
-        ],
-      },
-    {
-      'type': 'Polygon',
-      'coordinates': [
-        (rhs.getGeometry() as Polygon).getCoordinates()[0]
-      ],
-      }
-    );
   }
 
   ngOnDestroy() {

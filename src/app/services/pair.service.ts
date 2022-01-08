@@ -19,12 +19,6 @@ import * as models from '@models';
 
 import { Feature } from 'ol';
 import Geometry from 'ol/geom/Geometry';
-import Polygon from 'ol/geom/Polygon';
-
-import intersect from '@turf/intersect';
-import booleanPointInPolygon from '@turf/boolean-point-in-polygon';
-import Point from 'ol/geom/Point';
-import GeometryType from 'ol/geom/GeometryType';
 
 export interface SBASPairParams {
   scenes: any[];
@@ -134,7 +128,7 @@ export class PairService {
 
     if (!!aoi) {
       const geometryType = aoi.getGeometry().getType();
-      intersectionMethod = this.aoiIntersectionMethod(geometryType);
+      intersectionMethod = this.mapService.getAoiIntersectionMethod(geometryType);
     }
 
 
@@ -308,34 +302,4 @@ export class PairService {
     return scenes.sort(sortFunc);
   }
 
-  private aoiIntersectionMethod(geometryType: GeometryType) {
-
-    if (geometryType === 'Point') {
-      return (lhs: Feature<Geometry>, rhs: Feature<Geometry>) => {
-        const point = lhs.getGeometry() as Point;
-        return booleanPointInPolygon(point.getCoordinates(),
-        {
-          'type': 'Polygon',
-          'coordinates': [
-            (rhs.getGeometry() as Polygon).getCoordinates()[0]
-          ],
-      });
-      };
-    }
-
-    return (lhs: Feature<Geometry>, rhs: Feature<Geometry>) => intersect(
-      {
-        'type': 'Polygon',
-        'coordinates': [
-          (lhs.getGeometry() as Polygon).getCoordinates()[0]
-        ],
-      },
-    {
-      'type': 'Polygon',
-      'coordinates': [
-        (rhs.getGeometry() as Polygon).getCoordinates()[0]
-      ],
-    }
-  );
-  }
 }

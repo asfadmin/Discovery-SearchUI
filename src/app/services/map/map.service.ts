@@ -33,6 +33,12 @@ import LayerGroup from 'ol/layer/Group';
 import { PinnedProduct } from '@services/browse-map.service';
 import { BrowseOverlayService } from '@services';
 import { ViewOptions } from 'ol/View';
+import GeometryType from 'ol/geom/GeometryType';
+import booleanPointInPolygon from '@turf/boolean-point-in-polygon';
+import intersect from '@turf/intersect';
+import lineIntersect from '@turf/line-intersect';
+import Polygon from 'ol/geom/Polygon';
+import LineString from 'ol/geom/LineString';
 
 @Injectable({
   providedIn: 'root'
@@ -52,6 +58,8 @@ export class MapService {
   private sarviewsFeaturesByID: {[id: string]: Feature} = {};
   private pinnedCollection: Collection<Layer> = new Collection<Layer>([], {unique: true});
   private pinnedProducts: LayerGroup = new LayerGroup({layers: this.pinnedCollection});
+
+  private overviewMap: OverviewMap;
 
   //potential mat-icon for map pan: control_camera
 
@@ -290,6 +298,10 @@ export class MapService {
     this.clearSelectedScene();
   }
 
+  public setOverviewMap(open: boolean) {
+    this.overviewMap.setCollapsed(!open);
+  }
+
   public setCenter(centerPos: models.LonLat): void {
     const { lon, lat } = centerPos;
 
@@ -423,7 +435,7 @@ export class MapService {
 
 
   private createNewMap(overlay): Map {
-    const overviewMap = new OverviewMap({
+    this.overviewMap = new OverviewMap({
       layers: [this.mapView.layer],
       collapseLabel: '\u00BB',
       label: '\u00AB',
@@ -441,7 +453,7 @@ export class MapService {
       ],
       target: 'map',
       view: this.mapView.view,
-      controls: [overviewMap],
+      controls: [this.overviewMap],
       overlays: [overlay]
     });
 
@@ -461,9 +473,8 @@ export class MapService {
 
     this.selectSarviewEventHover.on('select', e => {
       this.map.getViewport().style.cursor =
-        e.selected.length > 0 ? 'pointer' : 'move';
-    }
-    );
+        e.selected.length > 0 ? 'pointer' : 'default';
+    });
 
     newMap.on('pointermove', e => {
       const [ lon, lat ] = proj.toLonLat(e.coordinate, this.epsg());
@@ -521,15 +532,17 @@ export class MapService {
       const overviewMapViewOptions = {...this.mapView.view.getProperties()} as ViewOptions;
       overviewMapViewOptions.center = this.map.getView().getCenter();
 
-      this.map.getControls().forEach((control) => {
-        if(control instanceof OverviewMap) {
-          const overviewMap = control.getOverviewMap();
-          overviewMap.setView(new View(overviewMapViewOptions));
-          overviewMap.getLayers().setAt(0, this.mapView.layer);
-          overviewMap.getView().setZoom(3);
-          // this.map.removeControl(control);
-        }
-      });
+      this.overviewMap.getOverviewMap().setView(new View(overviewMapViewOptions));
+      this.overviewMap.getOverviewMap().getView().setZoom(3);
+      // this.map.getControls().forEach((control) => {
+      //   if(control instanceof OverviewMap) {
+      //     const overviewMap = control.getOverviewMap();
+      //     overviewMap.setView(new View(overviewMapViewOptions));
+      //     overviewMap.getLayers().setAt(0, this.mapView.layer);
+      //     overviewMap.getView().setZoom(3);
+      //     // this.map.removeControl(control);
+      //   }
+      // });
     }
 
     const layers = this.map.getLayers().getArray();
@@ -594,5 +607,60 @@ export class MapService {
     this.pinnedProducts?.setOpacity(opacity);
   }
 
+  public getAoiIntersectionMethod(geometryType: GeometryType) {
+    if (geometryType === 'Point') {
+      return this.getPointIntersection;
+    } else if (geometryType === 'LineString') {
+      return this.getLineIntersection;
+    }
+
+    return this.getPolygonIntersection;
+  }
+
+  private getPointIntersection(aoi: Feature<Geometry>, polygon: Feature<Geometry>): boolean {
+    const point = aoi.getGeometry() as Point;
+
+    return booleanPointInPolygon(
+      point.getCoordinates(),
+    {
+        'type': 'Polygon',
+        'coordinates': [
+          (polygon.getGeometry() as Polygon).getCoordinates()[0]
+        ],
+    });
+  }
+
+  private getLineIntersection(aoi: Feature<Geometry>, polygon: Feature<Geometry>): boolean {
+    const line = aoi.getGeometry() as LineString;
+    return lineIntersect({
+      'type': 'LineString',
+      'coordinates': [
+        ...line.getCoordinates()
+      ]
+    },
+    {
+      'type': 'Polygon',
+      'coordinates': [
+        (polygon.getGeometry() as Polygon).getCoordinates()[0]
+      ],
+    }).features.length > 0;
+  }
+
+  private getPolygonIntersection(aoi: Feature<Geometry>, polygon: Feature<Geometry>): boolean {
+    return !!intersect(
+      {
+        'type': 'Polygon',
+        'coordinates': [
+          (aoi.getGeometry() as Polygon).getCoordinates()[0]
+        ],
+      },
+    {
+      'type': 'Polygon',
+      'coordinates': [
+        (polygon.getGeometry() as Polygon).getCoordinates()[0]
+      ],
+    }
+  );
+  }
 
 }

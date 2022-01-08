@@ -1,6 +1,4 @@
 .processing-options {
-  display: flex;
-  flex-wrap: wrap;
   margin-top: 10px;
   background-color: white;
 }
@@ -11,8 +9,36 @@
 }
 
 .flex-field {
-  flex: 1 0 auto;
-  margin: 5px;
+  flex: none;
+  flex-direction: inherit !important;
+  margin: 3px 20px 3px 0;
+}
+
+.flex-row {
+  display: flex !important;
+  flex-direction: row !important;
+}
+
+.flex-wrap {
+  flex-wrap: wrap;
+}
+
+.flex-column {
+  display: flex !important;
+  flex-direction: column !important;
+}
+
+.flex-start {
+  justify-content: flex-start;
+}
+
+.toggle-options {
+  //margin-right: 20px;
+}
+
+.toggle-list,
+.checkbox-list {
+  margin-left: 10px;
 }
 
 .dropdown-option--description {
@@ -29,4 +55,9 @@
 .option-info--spacing {
   margin-left: 5px;
   color: lightgray;
+}
+
+.option-header {
+  font-weight: bold;
+  margin: 5px 0 10px;
 }

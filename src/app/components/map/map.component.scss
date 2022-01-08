@@ -137,6 +137,18 @@ button {
   width: 300px;
 }
 
+::ng-deep.map .ol-overviewmap.ol-custom-overviewmap.ol-unselectable.ol-control button {
+  visibility: hidden !important;
+}
+
+::ng-deep.map .ol-overviewmap.ol-custom-overviewmap.ol-unselectable.ol-control {
+  background:rgba(0, 0, 0, 0.0);
+}
+
+::ng-deep.map .ol-custom-overviewmap:not(.ol-collapsed) {
+  background:rgba(255, 255, 255, 0.8) !important;
+}
+
 ::ng-deep.map .ol-custom-overviewmap .ol-overviewmap-box {
   border: 2px solid red;
 }
