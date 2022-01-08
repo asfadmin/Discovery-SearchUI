@@ -14,6 +14,9 @@ import * as models from '@models';
   styleUrls: ['./layer-selector.component.scss']
 })
 export class LayerSelectorComponent implements OnInit, OnDestroy {
+  public overviewMapVisible$ = this.store$.select(mapStore.getIsOverviewMapOpen);
+  public overviewMapVisible = false;
+
   public layerTypes = models.MapLayerTypes;
   public layerType: models.MapLayerTypes;
 
@@ -27,6 +30,12 @@ export class LayerSelectorComponent implements OnInit, OnDestroy {
     this.subs.add(
       this.store$.select(mapStore.getMapLayerType).subscribe(
         layerType => this.layerType = layerType
+      )
+    );
+
+    this.subs.add(
+      this.overviewMapVisible$.subscribe(
+        isOpen => this.overviewMapVisible = isOpen
       )
     );
   }
@@ -43,6 +52,10 @@ export class LayerSelectorComponent implements OnInit, OnDestroy {
     });
 
     this.store$.dispatch(action);
+  }
+
+  public onToggleOverviewMap(isOpen: boolean): void {
+    this.store$.dispatch(new mapStore.ToggleOverviewMap(!isOpen));
   }
 
   ngOnDestroy() {

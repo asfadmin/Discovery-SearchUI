@@ -534,15 +534,7 @@ export class MapService {
 
       this.overviewMap.getOverviewMap().setView(new View(overviewMapViewOptions));
       this.overviewMap.getOverviewMap().getView().setZoom(3);
-      // this.map.getControls().forEach((control) => {
-      //   if(control instanceof OverviewMap) {
-      //     const overviewMap = control.getOverviewMap();
-      //     overviewMap.setView(new View(overviewMapViewOptions));
-      //     overviewMap.getLayers().setAt(0, this.mapView.layer);
-      //     overviewMap.getView().setZoom(3);
-      //     // this.map.removeControl(control);
-      //   }
-      // });
+      this.overviewMap.getOverviewMap().getLayers().setAt(0, this.mapView.layer);
     }
 
     const layers = this.map.getLayers().getArray();
@@ -557,7 +549,6 @@ export class MapService {
 
     const mapLayers = this.map.getLayers();
     mapLayers.setAt(0, this.mapView.layer);
-
 
     return this.map;
   }
