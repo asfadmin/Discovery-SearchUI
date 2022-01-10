@@ -53,8 +53,8 @@ button {
 
 .ol-popup {
   position: absolute;
-  -webkit-filter: drop-shadow(0 1px 4px rgba(0, 0, 0, 0.2));
-  filter: drop-shadow(0 1px 4px rgba(0, 0, 0, 0.2));
+  filter: drop-shadow(0 1px 4px rgb(0 0 0 / 20%));
+  filter: drop-shadow(0 1px 4px rgb(0 0 0 / 20%));
   bottom: 12px;
   left: -50px;
 }
@@ -105,7 +105,7 @@ button {
   bottom: 0;
   width: 100%;
   height: 100%;
-  background: rgba(0, 0, 0, 0.25);
+  background: rgb(0 0 0 / 25%);
   z-index: 1100;
   pointer-events: auto;
 }
@@ -118,7 +118,7 @@ button {
 ::ng-deep.ol-overviewmap {
   top: 0.5em;
   right: 0.5em;
-  left:inherit !important;
+  left: inherit !important;
   bottom: inherit !important;
 }
 
@@ -128,7 +128,7 @@ button {
   top: 0;
 }
 
-::ng-deep.map .ol-custom-overviewmap:not(.ol-collapsed)  {
+::ng-deep.map .ol-custom-overviewmap:not(.ol-collapsed) {
   border: 1px solid black;
 }
 
@@ -142,11 +142,11 @@ button {
 }
 
 ::ng-deep.map .ol-overviewmap.ol-custom-overviewmap.ol-unselectable.ol-control {
-  background:rgba(0, 0, 0, 0.0);
+  background: rgb(0 0 0 / 0%);
 }
 
 ::ng-deep.map .ol-custom-overviewmap:not(.ol-collapsed) {
-  background:rgba(255, 255, 255, 0.8) !important;
+  background: rgb(255 255 255 / 80%) !important;
 }
 
 ::ng-deep.map .ol-custom-overviewmap .ol-overviewmap-box {
@@ -154,7 +154,7 @@ button {
   cursor: grab;
 }
 
-::ng-deep.map .ol-custom-overviewmap:not(.ol-collapsed) button{
+::ng-deep.map .ol-custom-overviewmap:not(.ol-collapsed) button {
   bottom: auto;
   left: auto;
   right: 1px;
