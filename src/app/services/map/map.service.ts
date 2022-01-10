@@ -1,13 +1,14 @@
 import { Injectable } from '@angular/core';
 
 import { BehaviorSubject, Subject } from 'rxjs';
-import { map, sampleTime } from 'rxjs/operators';
+import { map, sampleTime, tap } from 'rxjs/operators';
 
-import { Collection, Feature, Map } from 'ol';
+import { Collection, Feature, Map, View } from 'ol';
 import { Layer, Vector as VectorLayer } from 'ol/layer';
 import { Vector as VectorSource } from 'ol/source';
 import * as proj from 'ol/proj';
 import Point from 'ol/geom/Point';
+import { OverviewMap } from 'ol/control';
 
 import { click, pointerMove } from 'ol/events/condition';
 import Select from 'ol/interaction/Select';
@@ -31,18 +32,22 @@ import ImageLayer from 'ol/layer/Image';
 import LayerGroup from 'ol/layer/Group';
 import { PinnedProduct } from '@services/browse-map.service';
 import { BrowseOverlayService } from '@services';
+import { ViewOptions } from 'ol/View';
 import GeometryType from 'ol/geom/GeometryType';
 import booleanPointInPolygon from '@turf/boolean-point-in-polygon';
 import intersect from '@turf/intersect';
 import lineIntersect from '@turf/line-intersect';
 import Polygon from 'ol/geom/Polygon';
 import LineString from 'ol/geom/LineString';
+import TileLayer from 'ol/layer/Tile';
 
 @Injectable({
   providedIn: 'root'
 })
 export class MapService {
-  public isDrawing$ = this.drawService.isDrawing$;
+  public isDrawing$ = this.drawService.isDrawing$.pipe(
+    tap(isDrawing => this.map.getViewport().style.cursor = isDrawing ?  "crosshair" : "default")
+  );
 
   private mapView: views.MapView;
   private map: Map;
@@ -54,6 +59,10 @@ export class MapService {
   private sarviewsFeaturesByID: {[id: string]: Feature} = {};
   private pinnedCollection: Collection<Layer> = new Collection<Layer>([], {unique: true});
   private pinnedProducts: LayerGroup = new LayerGroup({layers: this.pinnedCollection});
+
+  private overviewMap: OverviewMap;
+
+  //potential mat-icon for map pan: control_camera
 
   private selectClick = new Select({
     condition: click,
@@ -67,10 +76,15 @@ export class MapService {
     layers: l => l.get('selectable') || false
   });
 
+  private searchPolygonHover = new Select({
+    condition: click,
+    layers: l => l.get('search_polygon') || false
+  })
+
   private selectSarviewEventHover = new Select({
     condition: pointerMove,
     style: null,
-    layers: l => l?.get('selectable') || false,
+    layers: l => l?.get('selectable_events') || false,
   });
 
   private selectedSource = new VectorSource({
@@ -144,12 +158,14 @@ export class MapService {
     this.selectHover.setActive(true);
     this.selectSarviewEventHover.setActive(true);
     this.selectClick.setActive(true);
+    this.searchPolygonHover.setActive(true);
   }
 
   public disableInteractions(): void {
     this.selectHover.setActive(false);
     this.selectSarviewEventHover.setActive(false);
     this.selectClick.setActive(false);
+    this.searchPolygonHover.setActive(false);
   }
 
   private zoom(amount: number): void {
@@ -281,6 +297,10 @@ export class MapService {
     this.drawService.clear();
     this.clearFocusedScene();
     this.clearSelectedScene();
+  }
+
+  public setOverviewMap(open: boolean) {
+    this.overviewMap.setCollapsed(!open);
   }
 
   public setCenter(centerPos: models.LonLat): void {
@@ -416,6 +436,14 @@ export class MapService {
 
 
   private createNewMap(overlay): Map {
+    this.overviewMap = new OverviewMap({
+      layers: [this.mapView.layer],
+      collapseLabel: '\u00BB',
+      label: '\u00AB',
+      collapsed: true,
+      className: 'ol-overviewmap ol-custom-overviewmap',
+    });
+
     const newMap = new Map({
       layers: [ this.mapView.layer,
         this.drawService.getLayer(),
@@ -426,7 +454,7 @@ export class MapService {
       ],
       target: 'map',
       view: this.mapView.view,
-      controls: [],
+      controls: [this.overviewMap],
       overlays: [overlay]
     });
 
@@ -440,27 +468,26 @@ export class MapService {
     });
 
     this.selectHover.on('select', e => {
-      this.map.getTargetElement().style.cursor =
-        e.selected.length > 0 ? 'pointer' : '';
+      this.map.getViewport().style.cursor =
+      e.selected.length > 0 ? 'pointer' : 'crosshair';
     });
 
     this.selectSarviewEventHover.on('select', e => {
-      this.map.getTargetElement().style.cursor =
-        e.selected.length > 0 ? 'pointer' : '';
-
-        // this.map.forEachLayerAtPixel(e.mapBrowserEvent.pixel, f => {
-        //   if(f.get('selectable') || false) {
-        //     f
-        //     return true;
-        //   }
-        // });
-
-    }
-    );
+      this.map.getViewport().style.cursor =
+        e.selected.length > 0 ? 'pointer' : 'default';
+    });
 
     newMap.on('pointermove', e => {
       const [ lon, lat ] = proj.toLonLat(e.coordinate, this.epsg());
       this.mousePositionSubject$.next({ lon, lat });
+    });
+
+    newMap.on('movestart', () => {
+      newMap.getViewport().style.cursor = 'crosshair';
+    });
+
+    newMap.on('moveend', () => {
+      newMap.getViewport().style.cursor = 'default';
     });
 
     newMap.on('singleclick', (evnt) => {
@@ -502,6 +529,13 @@ export class MapService {
   private updatedMap(): Map {
     if (this.map.getView().getProjection().getCode() !== this.mapView.projection.epsg) {
       this.map.setView(this.mapView.view);
+
+      const overviewMapViewOptions = {...this.mapView.view.getProperties()} as ViewOptions;
+      overviewMapViewOptions.center = this.map.getView().getCenter();
+
+      this.overviewMap.getOverviewMap().setView(new View(overviewMapViewOptions));
+      this.overviewMap.getOverviewMap().getView().setZoom(3);
+      this.overviewMap.getOverviewMap().getLayers().setAt(0, this.mapView.layer);
     }
 
     const layers = this.map.getLayers().getArray();
@@ -517,6 +551,8 @@ export class MapService {
     const mapLayers = this.map.getLayers();
     mapLayers.setAt(0, this.mapView.layer);
 
+    var controlLayer = new TileLayer({source: this.mapView.layer.getSource()});
+    this.overviewMap.getOverviewMap().getLayers().setAt(0, controlLayer);
     return this.map;
   }
 
