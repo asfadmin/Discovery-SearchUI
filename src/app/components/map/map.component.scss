@@ -151,6 +151,7 @@ button {
 
 ::ng-deep.map .ol-custom-overviewmap .ol-overviewmap-box {
   border: 2px solid red;
+  cursor: grab;
 }
 
 ::ng-deep.map .ol-custom-overviewmap:not(.ol-collapsed) button{

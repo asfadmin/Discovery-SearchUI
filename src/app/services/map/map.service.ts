@@ -39,6 +39,7 @@ import intersect from '@turf/intersect';
 import lineIntersect from '@turf/line-intersect';
 import Polygon from 'ol/geom/Polygon';
 import LineString from 'ol/geom/LineString';
+import TileLayer from 'ol/layer/Tile';
 
 @Injectable({
   providedIn: 'root'
@@ -468,7 +469,7 @@ export class MapService {
 
     this.selectHover.on('select', e => {
       this.map.getViewport().style.cursor =
-      e.selected.length > 0 ? 'pointer' : 'move';
+      e.selected.length > 0 ? 'pointer' : 'crosshair';
     });
 
     this.selectSarviewEventHover.on('select', e => {
@@ -482,7 +483,7 @@ export class MapService {
     });
 
     newMap.on('movestart', () => {
-      newMap.getViewport().style.cursor = 'move';
+      newMap.getViewport().style.cursor = 'crosshair';
     });
 
     newMap.on('moveend', () => {
@@ -550,6 +551,8 @@ export class MapService {
     const mapLayers = this.map.getLayers();
     mapLayers.setAt(0, this.mapView.layer);
 
+    var controlLayer = new TileLayer({source: this.mapView.layer.getSource()});
+    this.overviewMap.getOverviewMap().getLayers().setAt(0, controlLayer);
     return this.map;
   }
 
