@@ -1,6 +1,6 @@
 <form>
   <mat-form-field class="w100">
-    <mat-label>Reference Scene</mat-label>
+    <mat-label>{{(searchType$ | async) === SearchTypes.SBAS ? '' : 'Reference'}} Scene</mat-label>
     <input
       (input)="onMasterSceneChanged($event)"
       [(ngModel)]="masterScene"
