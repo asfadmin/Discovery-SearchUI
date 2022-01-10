@@ -338,7 +338,7 @@ export class MapComponent implements OnInit, OnDestroy  {
       this.store$.select(mapStore.getIsOverviewMapOpen).subscribe(
         isOpen => this.mapService.setOverviewMap(isOpen)
       )
-    )
+    );
   }
 
   private selectedToLayer$(selected$) {

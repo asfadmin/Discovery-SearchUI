@@ -93,7 +93,7 @@ export function mapReducer(state = initState, action: MapActions): MapState {
       return {
         ...state,
         overviewMapOpen: action.payload
-      }
+      };
     }
 
     default: {
@@ -138,4 +138,4 @@ export const getIsMapInitialization = createSelector(
 export const getIsOverviewMapOpen = createSelector(
   getMapState,
   (state: MapState) => state.overviewMapOpen
-)
+);
