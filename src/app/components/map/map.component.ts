@@ -6,7 +6,7 @@ import { Store } from '@ngrx/store';
 import { Observable, combineLatest } from 'rxjs';
 import {
   map, filter, switchMap, tap,
-  withLatestFrom
+  withLatestFrom,
 } from 'rxjs/operators';
 
 import { Vector as VectorLayer} from 'ol/layer';
@@ -28,6 +28,8 @@ import { MapService, WktService, ScreenSizeService, ScenesService, SarviewsEvent
 import * as polygonStyle from '@services/map/polygon.style';
 import { CMRProduct, SarviewsEvent } from '@models';
 import { StyleLike } from 'ol/style/Style';
+import { Feature } from 'ol';
+import Geometry from 'ol/geom/Geometry';
 
 enum FullscreenControls {
   MAP = 'Map',
@@ -331,6 +333,12 @@ export class MapComponent implements OnInit, OnDestroy  {
         features => this.mapService.setSelectedPair(features)
       )
     );
+
+    this.subs.add(
+      this.store$.select(mapStore.getIsOverviewMapOpen).subscribe(
+        isOpen => this.mapService.setOverviewMap(isOpen)
+      )
+    )
   }
 
   private selectedToLayer$(selected$) {
@@ -345,8 +353,23 @@ export class MapComponent implements OnInit, OnDestroy  {
           this.setMapWith(<models.MapViewType>view, <models.MapLayerTypes>mapLayerType)
         ),
         switchMap(_ =>
-          this.scenePolygonsLayer$(this.mapService.epsg()),
+          combineLatest([
+            this.mapService.searchPolygon$.pipe(
+              map(wkt => !!wkt ? this.wktService.wktToFeature(wkt, this.mapService.epsg()) : null)),
+          this.scenesToFeatures(this.mapService.epsg()),
+          ])
         ),
+        map(([searchPolygon, features]) => {
+          let polygonFeatures = features;
+          if (this.searchType === models.SearchType.SBAS && searchPolygon != null) {
+            const geometryType = searchPolygon.getGeometry().getType();
+            const intersectionMethod = this.mapService.getAoiIntersectionMethod(geometryType);
+
+            polygonFeatures = features.filter(feature => intersectionMethod(searchPolygon, feature));
+          }
+
+          return this.scenePolygonsLayer(polygonFeatures);
+        }),
       ).subscribe(
         layer => this.mapService.setLayer(layer)
       )
@@ -406,13 +429,16 @@ export class MapComponent implements OnInit, OnDestroy  {
     return features;
   }
 
-  private scenePolygonsLayer$(projection: string): Observable<VectorLayer> {
+  private scenesToFeatures(projection: string): Observable<Feature<Geometry>[]> {
     return this.scenesService.scenes$().pipe(
       map(scenes => scenes.filter(scene => scene.id !== this.selectedScene?.id)),
-      map(scenes => this.scenesToFeature(scenes, projection)),
-      map(features => this.featuresToSource(features, polygonStyle.scene)),
-      tap(layer => layer.set('selectable', 'true')),
-    );
+      map(scenes => this.scenesToFeature(scenes, projection)));
+  }
+
+  private scenePolygonsLayer(features: Feature<Geometry>[]): VectorLayer {
+      const vectorLayer = this.featuresToSource(features, polygonStyle.scene);
+      vectorLayer.set('selectable', 'true');
+      return vectorLayer;
   }
 
   private sceneSARViewsEventsLayer$(projection: string): Observable<VectorLayer> {
@@ -420,7 +446,8 @@ export class MapComponent implements OnInit, OnDestroy  {
       // filter(events => !!events),
       tap(events => this.sarviewsEvents = events),
       map(events => this.mapService.sarviewsEventsToFeatures(events, projection)),
-      map(features => this.featuresToSource(features, polygonStyle.icon))
+      map(features => this.featuresToSource(features, polygonStyle.icon)),
+      tap(vectorLayer => vectorLayer.set('selectable_events', true))
     );
   }
 

@@ -61,10 +61,9 @@ $color: $asf-primary-dark;
 
 .content-top-area {
   display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-  padding: 0 0 0 15px;
-  border-bottom: solid 1px grey;
+  flex-flow: row wrap;
+  padding: 0 0 8px 15px;
+  border-bottom: solid 2px grey;
   height: 100%;
 }
 
@@ -135,9 +134,9 @@ $color: $asf-primary-dark;
   justify-content: space-between;
   height: 100%;
   background-color: $asf-primary-light;
+  border-top: 1px;
   border-top-style: solid;
   border-top-color: $asf-primary-dark;
-  border-top-width: 1px;
 }
 
 .mat-dialog-actions {
@@ -157,9 +156,9 @@ $color: $asf-primary-dark;
   justify-content: flex-end;
   height: 100%;
   background-color: $asf-primary-light;
+  border-top: 1px;
   border-top-style: solid;
   border-top-color: $asf-primary-dark;
-  border-top-width: 1px;
 }
 
 .subscription-footer-item {
@@ -229,6 +228,7 @@ $color: $asf-primary-dark;
   flex-direction: row;
   justify-content: center;
   margin-top: 25px;
+  margin-bottom: 25px;
 }
 
 .navigation-item {

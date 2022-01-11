@@ -12,13 +12,35 @@ import {
 import { getSearchType } from '@store/search/search.reducer';
 
 import { CMRProduct, CMRProductPair, ColumnSortDirection, Range, SBASOverlap, SearchType } from '@models';
+import { MapService } from './map/map.service';
+import { WktService } from './wkt.service';
+
+import * as models from '@models';
+
+import { Feature } from 'ol';
+import Geometry from 'ol/geom/Geometry';
+
+export interface SBASPairParams {
+  scenes: any[];
+  customPairs: CMRProduct[][];
+  temporalRange: models.Range<number>;
+  perpendicular: number;
+  dateRange: models.Range<Date>;
+  season: models.Range<number>;
+  overlap: models.SBASOverlap;
+  polygon: Feature<Geometry>;
+
+}
 
 @Injectable({
   providedIn: 'root'
 })
 export class PairService {
 
-  constructor(private store$: Store<AppState>) { }
+  constructor(
+    private store$: Store<AppState>,
+    private mapService: MapService,
+    private wktService: WktService) { }
 
   public productsFromPairs$(): Observable<CMRProduct[]> {
     return this.pairs$().pipe(
@@ -36,7 +58,7 @@ export class PairService {
   }
 
   public pairs$(): Observable<{custom: CMRProductPair[], pairs: CMRProductPair[]}> {
-    return combineLatest(
+    return combineLatest([
       this.store$.select(getScenes).pipe(
         map(
           scenes => this.temporalSort(scenes, ColumnSortDirection.INCREASING)
@@ -50,15 +72,33 @@ export class PairService {
       this.store$.select(getDateRange),
       this.store$.select(getSeason),
       this.store$.select(getSBASOverlapThreshold),
-    ).pipe(
+      this.mapService.searchPolygon$.pipe(
+        map(wkt => !!wkt ? this.wktService.wktToFeature(wkt, this.mapService.epsg()) : null)
+      ),
+      ], (scenes, customPairs, temporalRange, perpendicular, dateRange, season, overlap, polygon) =>
+      ({
+        scenes,
+        customPairs,
+        temporalRange,
+        perpendicular,
+        dateRange,
+        season,
+        overlap,
+        polygon
+      } as SBASPairParams)).pipe(
       debounceTime(250),
       withLatestFrom(this.store$.select(getSearchType)),
       map(([params, searchType]) => {
-        const [scenes, customPairs, temporal, perp, dateRange, season, sbasOverlapThreshold] = params;
 
         return searchType === SearchType.SBAS ? ({
-          pairs: [...this.makePairs(scenes, temporal, perp, dateRange, season, sbasOverlapThreshold)],
-          custom: [ ...customPairs ]
+          pairs: [...this.makePairs(params.scenes,
+            params.temporalRange,
+            params.perpendicular,
+            params.dateRange,
+            params.season,
+            params.overlap,
+            params.polygon)],
+          custom: [ ...params.customPairs ]
         }) : ({
           pairs: [],
           custom: []
@@ -69,8 +109,9 @@ export class PairService {
 
   private makePairs(scenes: CMRProduct[], tempThreshold: Range<number>, perpThreshold,
     dateRange: DateRangeState,
-    season,
-    overlapThreshold: SBASOverlap): CMRProductPair[] {
+    season: Range<number>,
+    overlapThreshold: SBASOverlap,
+    aoi: Feature<Geometry>): CMRProductPair[] {
     const pairs = [];
 
     let startDateExtrema: Date;
@@ -81,6 +122,13 @@ export class PairService {
     }
     if (!!dateRange.end) {
       endDateExtrema = new Date(dateRange.end.toISOString());
+    }
+
+    let intersectionMethod;
+
+    if (!!aoi) {
+      const geometryType = aoi.getGeometry().getType();
+      intersectionMethod = this.mapService.getAoiIntersectionMethod(geometryType);
     }
 
 
@@ -96,6 +144,13 @@ export class PairService {
     };
 
     scenes.forEach((root, index) => {
+
+    if (!!aoi) {
+      const rootPolygon = this.wktService.wktToFeature(root.metadata.polygon, this.mapService.epsg());
+      if (!intersectionMethod(aoi, rootPolygon)) {
+        return;
+      }
+    }
       for (let i = index + 1; i < scenes.length; ++i) {
         const scene = scenes[i];
         const tempDiff = scene.metadata.temporal - root.metadata.temporal;
@@ -246,4 +301,5 @@ export class PairService {
 
     return scenes.sort(sortFunc);
   }
+
 }

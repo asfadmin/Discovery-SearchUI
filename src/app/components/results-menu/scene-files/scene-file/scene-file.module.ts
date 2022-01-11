@@ -13,7 +13,7 @@ import { TruncateModule } from '@yellowspot/ng-truncate';
 import { PipesModule } from '@pipes';
 
 import { SceneFileComponent } from './scene-file.component';
-import {DownloadFileButtonModule} from '@components/header/queue/download-file-button/download-file-button.module';
+import {DownloadFileButtonModule} from '@components/shared/download-file-button/download-file-button.module';
 
 
 @NgModule({

@@ -20,7 +20,7 @@ import { EventMetadataModule } from '@components/shared/event-metadata';
 import { EventProductMetadataModule } from '@components/shared/event-product-metadata';
 import { ImageDialogComponent } from './image-dialog.component';
 import { BrowseListComponent } from './browse-list/browse-list.component';
-import {DownloadFileButtonModule} from '@components/header/queue/download-file-button/download-file-button.module';
+import {DownloadFileButtonModule} from '@components/shared/download-file-button/download-file-button.module';
 import { MatSliderModule } from '@angular/material/slider';
 
 @NgModule({

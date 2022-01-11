@@ -35,7 +35,7 @@ export class SbasSlidersTwoComponent implements OnInit {
   public tempSlider;
   public temporal: number;
   public perpendicular: number;
-  public daysRange: models.Range<number> = {start: 0, end: 48};
+  public daysRange: models.Range<number> = {start: 1, end: 48};
   public daysValues$ = new Subject<number[]>();
   public metersValues$ = new Subject<number[]>();
   public slider;
@@ -161,7 +161,7 @@ export class SbasSlidersTwoComponent implements OnInit {
     this.slider = noUiSlider.create(filterRef.nativeElement, {
       orientation: 'horizontal',
       direction: 'ltr',
-      start: [0, 48],
+      start: [1, 48],
       behaviour: 'tap-drag',
       tooltips: false,
       connect: true,

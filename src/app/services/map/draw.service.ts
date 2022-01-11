@@ -12,6 +12,9 @@ import * as polygonStyle from './polygon.style';
 import * as models from '@models';
 import GeometryType from 'ol/geom/GeometryType';
 import Geometry from 'ol/geom/Geometry';
+import { Store } from '@ngrx/store';
+import { AppState } from '@store';
+import { DrawNewPolygon } from '@store/map';
 
 // Declare GTM dataLayer array.
 declare global {
@@ -35,7 +38,7 @@ export class DrawService {
   public polygon$ = new BehaviorSubject<Feature<Geometry> | null>(null);
   public isDrawing$ = new BehaviorSubject<boolean>(false);
 
-  constructor() {
+  constructor(private store$: Store<AppState>) {
     this.source = new VectorSource({
       wrapX: models.mapOptions.wrapX
     });
@@ -57,9 +60,25 @@ export class DrawService {
 
     if (mode === models.MapInteractionModeType.DRAW) {
       map.addInteraction(this.draw);
+      map.once("pointermove", (_) => {
+        map.getViewport().style.cursor = 'grab'
+      });
     } else if (mode === models.MapInteractionModeType.EDIT) {
       map.addInteraction(this.snap);
       map.addInteraction(this.modify);
+
+    this.modify.on('modifystart', () => {
+      map.getViewport().style.cursor = 'pointer'
+    });
+
+    this.modify.on('modifyend', () => {
+      map.getViewport().style.cursor = 'default'
+    });
+
+    map.once("pointermove", (_) => {
+      map.getViewport().style.cursor = 'default'
+    });
+
     }
   }
 
@@ -142,6 +161,7 @@ export class DrawService {
 
       this.isDrawing$.next(false);
       this.polygon$.next(e.feature);
+      this.store$.dispatch(new DrawNewPolygon());
     });
 
     this.snap = new Snap({source: this.source});
@@ -160,6 +180,7 @@ export class DrawService {
 
       this.setDrawStyle(models.DrawPolygonStyle.VALID);
       this.polygon$.next(feature);
+      this.store$.dispatch(new DrawNewPolygon());
     });
 
     return modify;

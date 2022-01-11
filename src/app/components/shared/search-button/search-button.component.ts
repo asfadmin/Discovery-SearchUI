@@ -11,6 +11,7 @@ import * as searchStore from '@store/search';
 import * as userStore from '@store/user';
 import * as uiStore from '@store/ui';
 import * as filtersStore from '@store/filters';
+// import * as scenesStore from '@store/scenes';
 
 import * as services from '@services';
 import { SidebarType, SearchType } from '@models';
@@ -35,6 +36,9 @@ export class SearchButtonComponent implements OnInit, OnDestroy {
   public canSearch$ = this.store$.select(searchStore.getCanSearch);
   public isMaxResultsLoading$ = this.store$.select(searchStore.getIsMaxResultsLoading);
   public loading$ = this.store$.select(searchStore.getIsLoading);
+
+  public areResultsOutOfDate$ = this.store$.select(searchStore.getareResultsOutOfDate);
+
   public isLoggedIn = false;
   public searchError$ = new Subject<void>();
   public isSearchError = false;
@@ -50,6 +54,7 @@ export class SearchButtonComponent implements OnInit, OnDestroy {
     private store$: Store<AppState>,
     private actions$: ActionsSubject,
     private savedSearchService: services.SavedSearchService,
+    // private SearchParamsService: services.SearchParamsService,
     private dialog: MatDialog,
     private notificationService: services.NotificationService,
   ) {

@@ -2,7 +2,8 @@ import { Component, Input, Output, EventEmitter, OnInit, AfterViewInit } from '@
 import { Download } from 'ngx-operators';
 import { DownloadService } from '@services/download.service';
 import { CMRProduct } from '@models';
-// import {UAParser} from 'ua-parser-js';
+import { UAParser } from 'ua-parser-js';
+import { Observable, Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-download-file-button',
@@ -12,14 +13,18 @@ import { CMRProduct } from '@models';
 export class DownloadFileButtonComponent implements OnInit, AfterViewInit {
   @Input() product: CMRProduct;
   @Input() href: string;
+  @Input() disabled: boolean;
   @Output()
   productDownloaded: EventEmitter<CMRProduct> = new EventEmitter<CMRProduct>();
   public dFile: Download;
   public dlInProgress = false;
+  public dlPaused = false;
   public dlComplete = false;
   public url: string;
-  public fileName: string;
-  public hiddenPrefix = 'xyxHidden-';
+  public fileName: string = null;
+
+  public observable$: Observable<Download>;
+  public subscription: Subscription;
 
   constructor(
     private downloadService: DownloadService,
@@ -33,39 +38,30 @@ export class DownloadFileButtonComponent implements OnInit, AfterViewInit {
 
   public downloadFile(product: CMRProduct, href?: string) {
     if (this.dlInProgress) {
+      this.subscription.unsubscribe();
+      this.dlPaused = true;
+      this.dlInProgress = false;
       return;
+    } else {
+      this.dlPaused = false;
     }
 
     this.dlInProgress = true;
 
     if (typeof href !== 'undefined') {
-      console.log('url', href);
       this.url = href;
       product = null;
-      this.fileName = this.url.substring(this.url.lastIndexOf('/') + 1);
+      const downloadURL = new URL(this.url).pathname;
+      this.fileName = downloadURL.substring(downloadURL.lastIndexOf('/') + 1);
+
     } else {
       this.url = product.downloadUrl;
       this.fileName = product.file;
-      console.log('this.url', this.url);
     }
 
-    // UAParser.js - https://www.npmjs.com/package/ua-parser-js
-    // JavaScript library to detect Browser, Engine, OS, CPU, and Device type/model from User-Agent data with relatively small footprint
-    // const parser = new UAParser();
-    // const userAgent = parser.getResult();
-    // console.log(userAgent.browser);             // {name: "Chromium", version: "15.0.874.106"}
-    // console.log(userAgent.device);              // {model: undefined, type: undefined, vendor: undefined}
-    // console.log(userAgent.os);                  // {name: "Ubuntu", version: "11.10"}
-    // console.log(userAgent.os.version);          // "11.10"
-    // console.log(userAgent.engine.name);         // "WebKit"
-    // console.log(userAgent.cpu.architecture);    // "amd64"
+    const userAgent = new UAParser().getResult();
 
-    // const megas = window.prompt('How many MBs do you want:');
-    // url = 'https://filegen-dev.asf.alaska.edu/generate?bytes=' + megas.trim() + 'e6';
-    // url = 'https://filegen-dev.asf.alaska.edu/generate?bytes=10e6';
-
-    // if (userAgent.browser.name !== 'Chrome') {
-    if (true) {
+    if (true || userAgent.browser.name !== 'Chrome') {
       classicDownload(this.url, this.fileName).then( () => {
         this.dlInProgress = false;
         this.dlComplete = true;
@@ -74,19 +70,41 @@ export class DownloadFileButtonComponent implements OnInit, AfterViewInit {
       return;
     }
 
-    this.downloadService.download(this.url, this.fileName).subscribe(resp => {
-      this.dFile = resp;
-      if (resp.state === 'DONE') {
-        this.dlInProgress = false;
-        this.dlComplete = true;
-        this.productDownloaded.emit( product );
+
+    this.observable$ = this.downloadService.download(this.url, this.fileName);
+    this.subscription = this.observable$.subscribe( resp => {
+      if (!this.processSubscription(resp, product, true)) {
+        this.subscription.unsubscribe();
+        this.observable$ = this.downloadService.download(this.url, this.fileName);
+        this.subscription = this.observable$.subscribe( response => this.processSubscription(response, product, false));
       }
     });
+
+
   }
 
-  public hijackDownloadClick( event: MouseEvent, hiddenID ) {
+  private processSubscription(resp, product, headerOnly) {
+    this.dFile = resp;
+
+    if (resp.state === 'PENDING') {
+      this.fileName = resp.id;
+      if (headerOnly && this.fileName) {
+        return false;
+      }
+    }
+
+    if (resp.state === 'DONE') {
+      this.dlInProgress = false;
+      this.dlPaused = false;
+      this.dlComplete = true;
+      this.productDownloaded.emit(product);
+    }
+
+    return true;
+  }
+
+  public hijackDownloadClick( event: MouseEvent ) {
     event.preventDefault();
-    console.log(hiddenID);
     this.downloadFile(this.product, this.href);
     // const rClick = new MouseEvent('click');
     // const element = document.getElementById(hiddenID);
@@ -101,11 +119,8 @@ async function classicDownload( url, _filename ) {
   link.style.display = 'none';
   link.href = url;
   link.setAttribute('download', '');
-  link.type = 'blob';
+  // link.type = 'blob';
   link.target = '_blank';
-  // const re = /(?:\.([^.]+))?$/;
-  // const ext = re.exec(url)[1];
-  // (ext.toUpperCase() === 'XML') ? link.target = '_blank' : link.target = '_self';
 
   // It needs to be added to the DOM so it can be clicked
   document.body.appendChild(link);
