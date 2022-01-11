@@ -14,8 +14,8 @@
   </div>
 
   <div [ngClass]="{
-    'baseline-flex': searchType === SearchTypes.BASELINE && breakpoint > breakpoints.MEDIUM,
-    'div-flex': searchType !== SearchTypes.BASELINE || breakpoint <= breakpoints.MEDIUM }">
+    'baseline-flex': searchType === SearchTypes.BASELINE && breakpoint > breakpoints.SMALL,
+    'div-flex': searchType !== SearchTypes.BASELINE || breakpoint <= breakpoints.SMALL }">
     <div class="div-flex-column">
       <div class="div-flex"
            [title]="scene.metadata.fileName || scene.name"
