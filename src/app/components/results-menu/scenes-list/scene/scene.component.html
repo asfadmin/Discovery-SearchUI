@@ -13,7 +13,9 @@
          matListAvatar>
   </div>
 
-  <div class="div-flex">
+  <div [ngClass]="{
+    'baseline-flex': searchType === SearchTypes.BASELINE && breakpoint > breakpoints.SMALL,
+    'div-flex': searchType !== SearchTypes.BASELINE || breakpoint <= breakpoints.SMALL }">
     <div class="div-flex-column">
       <div class="div-flex"
            [title]="scene.metadata.fileName || scene.name"
@@ -100,7 +102,7 @@
 
     <ng-container *ngIf="searchType === SearchTypes.BASELINE">
       <div style="display: flex;" [ngClass]="{'mobile-size': breakpoint <= breakpoints.SMALL}">
-        <div style="display: flex; justify-content: space-evenly; width: 135px;">
+        <div style="display: flex; justify-content: space-evenly;">
           <div [ngClass]="{'mobile-baseline': breakpoint <= breakpoints.SMALL, 'metric-flex-field': true}">
             {{ withOffset(scene.metadata.perpendicular, offsets.perpendicular) }}m
           </div>
