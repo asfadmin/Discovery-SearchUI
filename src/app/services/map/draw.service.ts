@@ -60,23 +60,23 @@ export class DrawService {
 
     if (mode === models.MapInteractionModeType.DRAW) {
       map.addInteraction(this.draw);
-      map.once("pointermove", (_) => {
-        map.getViewport().style.cursor = 'grab'
+      map.once('pointermove', (_) => {
+        map.getViewport().style.cursor = 'grab';
       });
     } else if (mode === models.MapInteractionModeType.EDIT) {
       map.addInteraction(this.snap);
       map.addInteraction(this.modify);
 
     this.modify.on('modifystart', () => {
-      map.getViewport().style.cursor = 'pointer'
+      map.getViewport().style.cursor = 'pointer';
     });
 
     this.modify.on('modifyend', () => {
-      map.getViewport().style.cursor = 'default'
+      map.getViewport().style.cursor = 'default';
     });
 
-    map.once("pointermove", (_) => {
-      map.getViewport().style.cursor = 'default'
+    map.once('pointermove', (_) => {
+      map.getViewport().style.cursor = 'default';
     });
 
     }
