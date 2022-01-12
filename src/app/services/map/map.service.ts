@@ -46,7 +46,7 @@ import TileLayer from 'ol/layer/Tile';
 })
 export class MapService {
   public isDrawing$ = this.drawService.isDrawing$.pipe(
-    tap(isDrawing => this.map.getViewport().style.cursor = isDrawing ?  "crosshair" : "default")
+    tap(isDrawing => this.map.getViewport().style.cursor = isDrawing ?  'crosshair' : 'default')
   );
 
   private mapView: views.MapView;
@@ -62,7 +62,7 @@ export class MapService {
 
   private overviewMap: OverviewMap;
 
-  //potential mat-icon for map pan: control_camera
+  // potential mat-icon for map pan: control_camera
 
   private selectClick = new Select({
     condition: click,
@@ -79,7 +79,7 @@ export class MapService {
   private searchPolygonHover = new Select({
     condition: click,
     layers: l => l.get('search_polygon') || false
-  })
+  });
 
   private selectSarviewEventHover = new Select({
     condition: pointerMove,
@@ -551,7 +551,7 @@ export class MapService {
     const mapLayers = this.map.getLayers();
     mapLayers.setAt(0, this.mapView.layer);
 
-    var controlLayer = new TileLayer({source: this.mapView.layer.getSource()});
+    const controlLayer = new TileLayer({source: this.mapView.layer.getSource()});
     this.overviewMap.getOverviewMap().getLayers().setAt(0, controlLayer);
     return this.map;
   }
