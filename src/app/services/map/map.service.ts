@@ -551,7 +551,7 @@ export class MapService {
     const mapLayers = this.map.getLayers();
     mapLayers.setAt(0, this.mapView.layer);
 
-    let controlLayer = new TileLayer({source: this.mapView.layer.getSource()});
+    const controlLayer = new TileLayer({source: this.mapView.layer.getSource()});
     this.overviewMap.getOverviewMap().getLayers().setAt(0, controlLayer);
     return this.map;
   }
