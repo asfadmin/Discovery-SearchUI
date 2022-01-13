@@ -63,13 +63,15 @@
 </ng-container>
 
 <mat-card #chartCard
-          class="mp0 no-box-shadow" fxFlex="60" fxFlexFill
+          class="mp0" fxFlex="60" fxFlexFill
           [style.max-width]="chartCardMaxWidth"
           mwlResizable
           [enableGhostResize]="true"
-          [resizeEdges]="{ left: true }"
           (resizeEnd)="onResizeEnd($event)">
-
+<div
+  mwlResizeHandle
+  [resizeEdges]="{ left: true }"
+style="cursor: ew-resize; border-style: solid; color: magenta; border-width: 2px; height: 25px; width: 25px; position: absolute; left: 0; top: 50%;"></div>
   <mat-card-subtitle
     [class.medium-header]="breakpoint <= breakpoints.MEDIUM"
     class="sbas-header">
