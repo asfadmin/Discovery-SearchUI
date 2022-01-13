@@ -105,3 +105,11 @@
 .mobile-size .mat-list-base .mat-list-item {
   font-size: 14px;
 }
+
+.baseline-list-view {
+  height: calc(100% - 20px);
+}
+
+.baseline-list-view-medium  {
+  height: calc(100% - 30px);
+}
