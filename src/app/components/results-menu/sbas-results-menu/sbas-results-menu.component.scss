@@ -84,16 +84,21 @@ $info-color: $asf-primary;
   align-items: center;
   cursor: ew-resize;
   border-style: solid;
-  border-width: 1px 1px 1px 0;
-  border-top-right-radius: 10px;
-  border-bottom-right-radius: 10px;
-  border-color: $asf-primary-light;
-  color: $asf-primary-light;
-  height: 35px;
-  width: 25px;
+  border-radius: 5px;
+  border-color: #c9cac4;
+  color: #c9cac4;
   position: absolute;
   left: 0;
-  top: 50%;
+  top: 0;
+}
+
+.sbas-resize-handle-filler {
+  width: 10px;
+  height: 100%;
+  background-image: url(/assets/div-handles/vsizegrip.png);
+  background-color: #c9cac4;
+  background-position: center;
+  background-repeat: no-repeat;
 }
 
 .sbas-header {

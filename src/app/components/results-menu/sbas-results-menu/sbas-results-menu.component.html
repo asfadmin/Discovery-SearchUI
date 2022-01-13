@@ -65,16 +65,14 @@
 <mat-card #chartCard
           class="mp0" fxFlex="60" fxFlexFill
           [style.max-width]="chartCardMaxWidth"
+          style="box-shadow: none;"
           mwlResizable
           [enableGhostResize]="true"
           (resizeEnd)="onResizeEnd($event)">
 <div
   mwlResizeHandle
   [resizeEdges]="{ left: true }"
-class="chart-draggable-handle">
-<mat-icon>
-  drag_indicator
-</mat-icon>
+class="chart-draggable-handle sbas-resize-handle-filler">
 </div>
   <mat-card-subtitle
     [class.medium-header]="breakpoint <= breakpoints.MEDIUM"
