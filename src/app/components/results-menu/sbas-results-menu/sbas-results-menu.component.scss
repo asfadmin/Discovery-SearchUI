@@ -79,6 +79,23 @@ $info-color: $asf-primary;
   box-sizing: border-box; // required for the enableGhostResize option to work
 }
 
+.chart-draggable-handle {
+  display: flex;
+  align-items: center;
+  cursor: ew-resize;
+  border-style: solid;
+  border-width: 1px 1px 1px 0;
+  border-top-right-radius: 10px;
+  border-bottom-right-radius: 10px;
+  border-color: $asf-primary-light;
+  color: $asf-primary-light;
+  height: 35px;
+  width: 25px;
+  position: absolute;
+  left: 0;
+  top: 50%;
+}
+
 .sbas-header {
   display: flex;
   flex-direction: row;

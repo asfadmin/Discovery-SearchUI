@@ -71,7 +71,11 @@
 <div
   mwlResizeHandle
   [resizeEdges]="{ left: true }"
-style="cursor: ew-resize; border-style: solid; color: magenta; border-width: 2px; height: 25px; width: 25px; position: absolute; left: 0; top: 50%;"></div>
+class="chart-draggable-handle">
+<mat-icon>
+  drag_indicator
+</mat-icon>
+</div>
   <mat-card-subtitle
     [class.medium-header]="breakpoint <= breakpoints.MEDIUM"
     class="sbas-header">
