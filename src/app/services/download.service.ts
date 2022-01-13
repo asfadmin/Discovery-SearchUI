@@ -93,12 +93,5 @@ export class DownloadService {
       );
   }
 
-  // blob(url: string, filename?: string): Observable<Blob> {
-  blob(url: string): Observable<Blob> {
-    return this.http.get(url, {
-      withCredentials: !(new URL(url).origin.startsWith('hyp3')),
-      responseType: 'blob',
-    });
-  }
 }
 

@@ -1,5 +1,4 @@
 import { Component, Input, Output, EventEmitter, OnInit, AfterViewInit } from '@angular/core';
-// import { Download } from 'ngx-operators';
 import { DownloadService } from '@services/download.service';
 import { CMRProduct, DownloadStatus } from '@models';
 import { UAParser } from 'ua-parser-js';
@@ -11,7 +10,6 @@ import { AppState } from '@store';
 
 import * as userStore from '@store/user';
 import { SubSink } from 'subsink';
-import { AuthService } from '@services/auth.service';
 import { NotificationService } from '@services/notification.service';
 
 @Component({
@@ -35,13 +33,11 @@ export class DownloadFileButtonComponent implements OnInit, AfterViewInit {
   public isUserLoggedIn: boolean;
   private subs = new SubSink();
 
-  // private downloads;
   constructor(
     private downloadService: DownloadService,
     private store$: Store<AppState>,
-    private Auth: AuthService,
     private notificationService: NotificationService
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     if (typeof this.href !== 'undefined') {
@@ -55,11 +51,13 @@ export class DownloadFileButtonComponent implements OnInit, AfterViewInit {
     }
     this.subs.add(
       this.store$.select(queueStore.getDownloads).subscribe(
-      queueDownloads => {
-        if (queueDownloads.hasOwnProperty(this.product?.id)) {
-          this.dFile = queueDownloads[this.product.id];
+        queueDownloads => {
+          if (queueDownloads.hasOwnProperty(this.product?.id ?? this.fileName)) {
+            this.dFile = queueDownloads[this.product?.id ?? this.fileName];
+          } else {
+            this.dFile = null;
+          }
         }
-      }
       )
     );
   }
@@ -73,93 +71,92 @@ export class DownloadFileButtonComponent implements OnInit, AfterViewInit {
   }
 
   public downloadFile() {
-    // if (this.dFile.state === 'IN_PROGRESS') {
-      // pausing eventually
-      // this.subscription.unsubscribe();
-      // this.dlPaused = true;
-      // this.dlInProgress = false;
-    //   return;
-    // } else {
-      // this.dFile.state = 'PAUSED';
-    // }
-
+    if (this.dFile?.state === 'PENDING' || this.dFile?.state === 'IN_PROGRESS') {
+      this.subscription.unsubscribe();
+      this.store$.dispatch(new queueStore.RemoveDownloadProduct(this.dFile));
+      return;
+    }
 
 
 
     const userAgent = new UAParser().getResult();
 
     if (userAgent.browser.name !== 'Chrome') {
-      classicDownload(this.url, this.fileName).then( () => {
-        this.productDownloaded.emit( this.product );
-      });
+      this.classicDownload(this.url);
       return;
     }
 
     if (!this.isUserLoggedIn) {
-      this.Auth.login$().toPromise().then(() => {
-        this.downloadFunctionality(this.product);
-      });
+      this.notificationService.error('Downloading products requires logging in.');
     } else {
       this.downloadFunctionality(this.product);
     }
-
   }
   private downloadFunctionality(product: CMRProduct) {
-    console.log(product);
-    this.observable$ = this.downloadService.download(this.url, this.fileName, product.id);
-    this.subscription = this.observable$.subscribe( resp => {
+    this.observable$ = this.downloadService.download(this.url, this.fileName, product?.id ?? this.fileName);
+    this.subscription = this.observable$.subscribe(resp => {
       if (!this.processSubscription(resp, product, true)) {
         this.subscription.unsubscribe();
-        this.observable$ = this.downloadService.download(this.url, this.fileName, product.id);
-        this.subscription = this.observable$.subscribe( response => this.processSubscription(response, product, false));
+        this.observable$ = this.downloadService.download(this.url, this.fileName, product?.id ?? this.fileName);
+        this.subscription = this.observable$.subscribe(response => this.processSubscription(response, product, false));
       }
     }, () => {
       this.dFile = undefined;
-      this.notificationService.error('There was an error downloading the file.');
+      this.notificationService.error(
+        'There was an error downloading the file / Unable to use new download functionality for this resource.'
+      );
+      this.classicDownload(this.url);
     });
   }
   private processSubscription(resp, product, headerOnly) {
     this.dFile = resp;
+    this.store$.dispatch(new queueStore.DownloadProduct(resp));
     if (resp.state === 'PENDING') {
       this.fileName = resp.filename;
       if (headerOnly && this.fileName) {
         return false;
       }
     }
-    this.store$.dispatch(new queueStore.DownloadProduct(resp));
     if (resp.state === 'DONE') {
       this.productDownloaded.emit(product);
-      this.store$.dispatch(new queueStore.DownloadProduct(resp));
     }
 
     return true;
   }
 
-  public hijackDownloadClick( event: MouseEvent ) {
+  public hijackDownloadClick(event: MouseEvent) {
     event.preventDefault();
     this.downloadFile();
   }
+  async classicDownload(url) {
+    const link = document.createElement('a');
+    link.style.display = 'none';
+    link.href = url;
+    link.setAttribute('download', '');
+    // link.type = 'blob';
+    link.target = '_blank';
 
+    // It needs to be added to the DOM so it can be clicked
+    document.body.appendChild(link);
+    link.click();
+
+    // To make this work we need to wait
+    // a little while before removing it.
+    await timer(1000);
+    URL.revokeObjectURL(link.href);
+    link.parentNode.removeChild(link);
+    this.dFile = {
+      content: null,
+      progress: 100,
+      state: 'DONE',
+      id: this.product.id,
+      filename: this.fileName
+    };
+    this.store$.dispatch(new queueStore.DownloadProduct(this.dFile));
+
+  }
 }
 
-async function classicDownload( url, _filename ) {
-  const link = document.createElement('a');
 
-  link.style.display = 'none';
-  link.href = url;
-  link.setAttribute('download', '');
-  // link.type = 'blob';
-  link.target = '_blank';
-
-  // It needs to be added to the DOM so it can be clicked
-  document.body.appendChild(link);
-  link.click();
-
-  // To make this work we need to wait
-  // a little while before removing it.
-  await timer(1000);
-  URL.revokeObjectURL(link.href);
-  link.parentNode.removeChild(link);
-}
 
 function timer(ms) { return new Promise(res => setTimeout(res, ms)); }

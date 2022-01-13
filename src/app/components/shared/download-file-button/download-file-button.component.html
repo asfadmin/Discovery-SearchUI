@@ -5,7 +5,7 @@
   <button
           [disabled]="(!product?.downloadUrl && !href ) ||  disabled"
      mat-icon-button
-     matTooltip="Download file"
+     [matTooltip]="this.dFile?.state === 'IN_PROGRESS' ? 'Stop download' : 'Download file'"
      class="download-file-button"
   >
     <ng-container *ngIf="dFile as download">
@@ -20,9 +20,6 @@
           {{ download.progress }}
         </span>
       </template>
-      <!-- <div *ngIf="dlPaused && download.state !== 'DONE'" class="paused-icon">
-        <mat-icon>paused</mat-icon>
-      </div> -->
     </ng-container>
 
     <ng-container *ngIf="dFile && dFile.state === 'DONE'">

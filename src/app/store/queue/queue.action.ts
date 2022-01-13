@@ -26,6 +26,7 @@ export enum QueueActionType {
   DOWNLOAD_SEARCHTYPE_METADATA = '[Queue] Download Search Result Metadata',
 
   DOWNLOAD_PRODUCT = '[Queue] Download product',
+  REMOVE_DOWNLOAD_PRODUCT = '[Queue] Remove Download product',
 
   FIND_PAIR = '[Scenes] finds the closest pair to a given scene'
 }
@@ -55,6 +56,12 @@ export class ToggleProduct implements Action {
 }
 export class DownloadProduct implements Action {
   public readonly type = QueueActionType.DOWNLOAD_PRODUCT;
+
+  constructor(public payload: DownloadStatus) {}
+}
+
+export class RemoveDownloadProduct implements Action {
+  public readonly type = QueueActionType.REMOVE_DOWNLOAD_PRODUCT;
 
   constructor(public payload: DownloadStatus) {}
 }
@@ -159,4 +166,5 @@ export type QueueActions =
   | DownloadMetadata
   | DownloadSearchtypeMetadata
   | FindPair
-  | DownloadProduct;
+  | DownloadProduct
+  | RemoveDownloadProduct;

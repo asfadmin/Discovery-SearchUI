@@ -73,7 +73,14 @@ export function queueReducer(state = initState, action: QueueActions): QueueStat
         , downloads
       };
     }
-
+    case QueueActionType.REMOVE_DOWNLOAD_PRODUCT: {
+      const toRemove = action.payload;
+      const downloads = remove_product(toRemove, {...state.downloads});
+      return {
+        ...state,
+        downloads
+      };
+    }
     case QueueActionType.REMOVE_ITEM: {
       const toRemove = action.payload;
 
