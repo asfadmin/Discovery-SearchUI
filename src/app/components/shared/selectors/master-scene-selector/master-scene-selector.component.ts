@@ -4,6 +4,8 @@ import { SubSink } from 'subsink';
 import { Store } from '@ngrx/store';
 import { AppState } from '@store';
 import * as scenesStore from '@store/scenes';
+import { getSearchType } from '@store/search';
+import { SearchType } from '@models';
 
 @Component({
   selector: 'app-master-scene-selector',
@@ -11,6 +13,8 @@ import * as scenesStore from '@store/scenes';
   styleUrls: ['./master-scene-selector.component.css']
 })
 export class MasterSceneSelectorComponent implements OnInit, OnDestroy {
+  public searchType$ = this.store$.select(getSearchType);
+  public SearchTypes = SearchType;
   public masterScene: string;
   private subs = new SubSink();
 
