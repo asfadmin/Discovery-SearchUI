@@ -3,6 +3,7 @@
     (mouseleave) ="onClearFocused()"
     [class.hovered]="hovered"
     [class.selected]="isSelected"
+    [ngStyle]="{'padding-right': breakpoint > breakpoints.MEDIUM && searchType === SearchTypes.BASELINE ? '10px' : 'auto'}"
     [ngClass]="{'mobile-size': breakpoint <= breakpoints.SMALL}">
 
   <div class="image-flex" *ngIf="searchType !== SearchTypes.BASELINE || breakpoint > breakpoints.SMALL">
