@@ -469,7 +469,7 @@ export class MapService {
 
     this.selectHover.on('select', e => {
       this.map.getViewport().style.cursor =
-      e.selected.length > 0 ? 'pointer' : 'crosshair';
+      e.selected.length > 0 ? 'pointer' : 'default';
     });
 
     this.selectSarviewEventHover.on('select', e => {
