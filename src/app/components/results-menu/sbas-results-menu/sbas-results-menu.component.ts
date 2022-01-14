@@ -40,6 +40,7 @@ export class SBASResultsMenuComponent implements OnInit, OnDestroy {
 
   public listCardMaxWidth = '38%';
   public chartCardMaxWidth = '55%';
+  private minChartWidth = 25.0;
 
   public breakpoint: Breakpoints;
   public breakpoints = Breakpoints;
@@ -95,7 +96,10 @@ export class SBASResultsMenuComponent implements OnInit, OnDestroy {
       || document.documentElement.clientWidth
       || document.body.clientWidth;
     const newChartWidth = event.rectangle.width > windowWidth ? windowWidth : event.rectangle.width;
-    const newChartMaxWidth = Math.round((newChartWidth / windowWidth) * 100);
+    const newChartMaxWidth = Math.max(
+      this.minChartWidth,
+      Math.round((newChartWidth / windowWidth) * 100)
+      );
     const newListMaxWidth = 100 - newChartMaxWidth;
 
     this.listCardMaxWidth = newListMaxWidth.toString() + '%';
