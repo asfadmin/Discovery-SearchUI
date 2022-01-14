@@ -81,7 +81,7 @@ export class OnDemandAddMenuComponent implements OnInit {
   public queueAllOnDemand(products: models.CMRProduct[][], job_type: models.Hyp3JobType): void {
     const jobs: models.QueuedHyp3Job[] = products.map(product => ({
       granules: product.sort((a, b) => {
-        if(a.metadata.date < b.metadata.date) {
+        if (a.metadata.date < b.metadata.date) {
           return -1;
         }
         return 1;
@@ -116,7 +116,7 @@ export class OnDemandAddMenuComponent implements OnInit {
     const jobs: models.QueuedHyp3Job[] = products.map(product => {
       return {
       granules: [this.referenceScene, product[0]]?.sort((a, b) => {
-        if(a.metadata.date < b.metadata.date) {
+        if (a.metadata.date < b.metadata.date) {
           return -1;
         }
         return 1;

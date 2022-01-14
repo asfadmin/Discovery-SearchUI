@@ -165,7 +165,7 @@ export class Hyp3Service {
       hyp3ableProducts.forEach(product => {
         const prodType = product[0].metadata.productType;
         byProdType[prodType].push(product?.sort((a, b) => {
-          if(a.metadata.date < b.metadata.date) {
+          if (a.metadata.date < b.metadata.date) {
             return -1;
           }
           return 1;
