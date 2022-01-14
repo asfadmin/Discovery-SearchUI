@@ -61,7 +61,7 @@ export class DrawService {
     if (mode === models.MapInteractionModeType.DRAW) {
       map.addInteraction(this.draw);
       map.once('pointermove', (_) => {
-        map.getViewport().style.cursor = 'grab';
+        map.getViewport().style.cursor = 'default';
       });
     } else if (mode === models.MapInteractionModeType.EDIT) {
       map.addInteraction(this.snap);
