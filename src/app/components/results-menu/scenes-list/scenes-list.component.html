@@ -1,9 +1,12 @@
 <mat-action-list class="h100 mp0"
-[ngClass]="{'baseline-list-view': searchType === SearchTypes.BASELINE && (breakpoint$ | async) > breakpoints.MEDIUM,
-            'baseline-list-view-medium':
-            searchType === SearchTypes.BASELINE
-            && (breakpoint$ | async) <= breakpoints.MEDIUM
-            && (breakpoint$ | async) > breakpoints.MOBILE}">
+[ngClass]="{'list-view': (breakpoint$ | async) >= breakpoints.MEDIUM,
+  'baseline-list-view-medium': (breakpoint$ | async) > breakpoints.SMALL
+  && (breakpoint$ | async) <= breakpoints.MEDIUM
+  && searchType === SearchTypes.BASELINE,
+  'baseline-list-view-small': (breakpoint$ | async) === breakpoints.SMALL
+  && searchType === SearchTypes.BASELINE
+}
+">
   <cdk-virtual-scroll-viewport class="list-viewport h100" itemSize="60">
     <div *ngIf="breakpoint$ | async as breakpoint">
       <ng-container
