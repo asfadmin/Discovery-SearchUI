@@ -10,7 +10,7 @@ import { ScreenSizeService } from '@services';
 
 enum FilterPanel {
   SEARCH = 'Search Options',
-  MASTER = 'Reference Scene',
+  MASTER = 'Scene',
   FILTER1 = 'Spatial Filter',
   FILTER2 = 'Temporal Filter',
   DATE = 'Date',

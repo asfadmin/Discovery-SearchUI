@@ -85,7 +85,21 @@ export class SBASResultsMenuComponent implements OnInit, OnDestroy {
       this.store$.select(scenesStore.getSelectedPair).pipe(
         map(pair => !pair?.[0] ? null : pair),
       ).subscribe(
-        (selected: CMRProductPair) => this.pair = selected
+        (selected: CMRProductPair) => {
+          selected?.sort((a, b) => {
+            if (a.metadata.date < b.metadata.date) {
+              return -1;
+            }
+            return 1;
+          });
+
+          this.pair = selected?.map(product => ({...product,
+            metadata: {
+              ...product.metadata,
+              temporal: product.metadata.temporal - selected[0].metadata.temporal,
+              perpendicular: product.metadata.perpendicular - selected[0].metadata.perpendicular
+            }}));
+        }
       )
     );
   }
