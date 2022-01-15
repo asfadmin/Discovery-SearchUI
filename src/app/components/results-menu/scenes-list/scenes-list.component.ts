@@ -125,12 +125,7 @@ export class ScenesListComponent implements OnInit, OnDestroy {
         filter(([selected, _]) => !!selected),
         tap(([selected, _]) => this.selectedEvent = selected.event_id),
         map(([selected, events]) => {
-          let sceneIdx = -1;
-          events.forEach((event, idx) => {
-            if (event.event_id === selected.event_id) {
-              sceneIdx = idx;
-            }
-          });
+          let sceneIdx = events.findIndex(event => event.event_id === selected.event_id);
           return Math.max(0, sceneIdx - 1);
         })
       ).subscribe(
