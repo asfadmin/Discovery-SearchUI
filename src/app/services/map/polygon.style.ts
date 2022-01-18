@@ -1,4 +1,3 @@
-import { Feature } from 'ol';
 import {Circle as CircleStyle, Fill, Stroke, Style, Text} from 'ol/style.js';
 
 export const valid = new Style({
@@ -56,7 +55,7 @@ export const omitted = new Style({
   })
 });
 
-export const invalid = (_: Feature, __: number) => { return new Style({
+export const invalid = new Style({
   text: new Text({
     text: 'Approximate Placement Only',
     scale: 2,
@@ -82,7 +81,6 @@ export const invalid = (_: Feature, __: number) => { return new Style({
     })
   })
 });
-}
 
 export const hidden = new Style({
   fill: new Fill({
