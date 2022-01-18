@@ -82,7 +82,7 @@ export const invalid = (_: Feature, __: number) => { return new Style({
     })
   })
 });
-}
+};
 
 export const hidden = new Style({
   fill: new Fill({
