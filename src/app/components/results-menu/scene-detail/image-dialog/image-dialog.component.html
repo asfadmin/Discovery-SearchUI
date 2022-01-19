@@ -134,7 +134,7 @@
             class="file-button-download"
                      [matMenuTriggerFor]="action_menu" mat-list-item>
               • {{ product.productTypeDisplay }}
-              <mat-menu #action_menu="matMenu" xPosition="before">
+              <mat-menu #action_menu="matMenu" xPosition="before" >
 
                 <span style="margin-right: 10px; margin-left: 10px;">
                   <span *ngIf="product.bytes === 0">Virtual</span>
@@ -143,10 +143,10 @@
                 <app-download-file-button
                   [attr.id]="'imgV_' + product.id"
                   [product] = "product"
-                  (productDownloaded)="prodDownloaded($event)">
+                  (click)="$event.stopPropagation()">
                 </app-download-file-button>
 
-                <button (click)="onToggleQueueProduct(product)"
+                <button (click)="$event.stopPropagation(); onToggleQueueProduct(product); "
                         matTooltip="{{ !queuedProductIds.has(product.id) ? 'Add file to queue' : 'Remove file from queue' }}"
                         mat-menu-item>
             <span *ngIf="!queuedProductIds.has(product.id)">
@@ -209,11 +209,16 @@
             <mat-menu #event_action_menu xPosition="before">
               <button matTooltip="Download Product" mat-menu-item
               *ngIf="!!currentSarviewsProduct"
-              (click)="downloadSarviewsProduct(currentSarviewsProduct)">
+              >
                 <span *ngIf="currentSarviewsProduct.files.product_size !== 0">
                   {{currentSarviewsProduct.files.product_size.toString() | readableSizeFromBytes }}
                 </span>
-                <mat-icon>cloud_download</mat-icon>
+                <app-download-file-button
+                  [attr.id]="'imgV_' + currentSarviewsCMRProduct.id"
+                  [product] = "currentSarviewsCMRProduct"
+                  (click)="$event.stopPropagation()">
+                </app-download-file-button>
+
               </button>
                 <button (click)="onToggleQueueEventProduct(currentSarviewsProduct)"
                 *ngIf="!!currentSarviewsProduct"
