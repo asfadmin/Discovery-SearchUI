@@ -17,7 +17,12 @@ import { CustomizeEnvComponent } from './customize-env/customize-env.component';
 import { OnlynumberDirective } from '@directives/onlynumber.directive';
 
 @NgModule({
-  declarations: [ HeaderButtonsComponent, PreferencesComponent, CustomizeEnvComponent, OnlynumberDirective ],
+  declarations: [
+    HeaderButtonsComponent,
+    PreferencesComponent,
+    CustomizeEnvComponent,
+    OnlynumberDirective
+  ],
     imports: [
         CommonModule,
         FormsModule,

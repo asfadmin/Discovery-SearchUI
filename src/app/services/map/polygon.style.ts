@@ -66,10 +66,8 @@ export const invalid = new Style({
       color: 'rgba(255, 255, 255, 1.0)'
     }),
     placement: 'line',
-    textAlign: 'start',
     textBaseline: 'bottom',
-  overflow: true,
-  padding: [2, 5, 2, 5],
+  overflow: false,
   font: '50px'
   }),
   stroke: new Stroke({

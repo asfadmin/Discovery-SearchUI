@@ -79,7 +79,12 @@ export class BaselineResultsMenuComponent implements OnInit, OnDestroy {
 
           this.hyp3able = this.hyp3.getHyp3ableProducts([
             ...this.products.map(prod => [prod]),
-            ...this.pairs
+            ...this.pairs?.sort((a, b) => {
+              if (a.metadata.date < b.metadata.date) {
+                return -1;
+              }
+              return 1;
+            })
           ]);
         }
       )

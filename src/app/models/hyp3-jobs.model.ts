@@ -13,7 +13,7 @@ export const RtcGammaJobType: Hyp3JobType = {
   productTypes: [{
     dataset: sentinel_1,
     productTypes: [
-      'SLC', 'GRD_HD', 'GRD_HS'
+      'SLC', 'GRD_HD'
     ],
     beamModes: ['IW'],
     polarizations: [
@@ -224,7 +224,7 @@ export const AutoRift: Hyp3JobType = {
   productTypes: [{
     dataset: sentinel_1,
     productTypes: [
-      'SLC', 'GRD_HD', 'GRD_HS'
+      'SLC', 'GRD_HD'
     ],
     beamModes: ['IW'],
     polarizations: [
