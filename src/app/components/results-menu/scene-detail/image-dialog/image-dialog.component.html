@@ -1,49 +1,83 @@
-<div class="browse-dialog"
+<div class="browse-dialog">
+  <div *ngIf="(searchType$ | async) !== searchTypes.SARVIEWS_EVENTS">
+    <div
+      *ngIf="scene$ | async as scene"
+      fxLayout="row"
+      class="dialog-header--layout"
     >
-    <div *ngIf="(searchType$ | async) !== searchTypes.SARVIEWS_EVENTS">
-      <div *ngIf="scene$ | async as scene" fxLayout="row" class="dialog-header--layout">
-        <div fxFlex="auto">
-          <h3 class="mp0">
-            <span [ngClass]="{'mp0-ellipsis-mobile': breakpoint <= breakpoints.SMALL,
-                              'mp0-ellipsis': breakpoint > breakpoints.SMALL}">
-              {{ scene.name }}
-            </span>
-          </h3>
-          <span class="faint-text">
-            <a *ngIf="dataset" [href]="dataset.infoUrl"
-                target="_blank" matTooltip="Dataset" class="faint-text">
-              {{ dataset.name }}
-            </a> •
-            <span *ngIf="breakpoint > breakpoints.MOBILE">
-              {{ scene.metadata.date | fullDate }}
-            </span>
-            <span *ngIf="breakpoint === breakpoints.MOBILE">
-              {{ scene.metadata.date | shortDateTime }}
-            </span>
-          </span>
-        </div>
-        <div fxFlex="35px" class="close-icon">
-          <button (click)="closeDialog()" mat-icon-button>
-            <mat-icon class="close-button">close</mat-icon>
-          </button>
-        </div>
-      </div>
-  </div>
-
-  <div *ngIf="(searchType$ | async) === searchTypes.SARVIEWS_EVENTS && !!(sarviewsEvent$ | async)">
-    <div *ngIf="(sarviewsEvent$ | async) as event" fxLayout="row" class="dialog-header--layout">
       <div fxFlex="auto">
         <h3 class="mp0">
-          <span [ngClass]="{'mp0-ellipsis-mobile': breakpoint <= breakpoints.SMALL,
-                            'mp0-ellipsis': breakpoint > breakpoints.SMALL}">
+          <span
+            [ngClass]="{
+              'mp0-ellipsis-mobile': breakpoint <= breakpoints.SMALL,
+              'mp0-ellipsis': breakpoint > breakpoints.SMALL
+            }"
+          >
+            {{ scene.name }}
+          </span>
+        </h3>
+        <span class="faint-text">
+          <a
+            *ngIf="dataset"
+            [href]="dataset.infoUrl"
+            target="_blank"
+            matTooltip="Dataset"
+            class="faint-text"
+          >
+            {{ dataset.name }}
+          </a>
+          •
+          <span *ngIf="breakpoint > breakpoints.MOBILE">
+            {{ scene.metadata.date | fullDate }}
+          </span>
+          <span *ngIf="breakpoint === breakpoints.MOBILE">
+            {{ scene.metadata.date | shortDateTime }}
+          </span>
+        </span>
+      </div>
+      <div fxFlex="35px" class="close-icon">
+        <button (click)="closeDialog()" mat-icon-button>
+          <mat-icon class="close-button">close</mat-icon>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div
+    *ngIf="
+      (searchType$ | async) === searchTypes.SARVIEWS_EVENTS &&
+      !!(sarviewsEvent$ | async)
+    "
+  >
+    <div
+      *ngIf="sarviewsEvent$ | async as event"
+      fxLayout="row"
+      class="dialog-header--layout"
+    >
+      <div fxFlex="auto">
+        <h3 class="mp0">
+          <span
+            [ngClass]="{
+              'mp0-ellipsis-mobile': breakpoint <= breakpoints.SMALL,
+              'mp0-ellipsis': breakpoint > breakpoints.SMALL
+            }"
+          >
             {{ event.description }}
           </span>
         </h3>
         <span class="faint-text">
-          <a [href]="getEventURL()"
-              target="_blank" [matTooltip]="(event?.event_type === 'quake' ? 'USGS' : 'Smithsonian') + ' event page'" class="faint-text">
-            {{ event?.event_type === 'quake' ? 'USGS' : 'Smithsonian' }}
-          </a> •
+          <a
+            [href]="getEventURL()"
+            target="_blank"
+            [matTooltip]="
+              (event?.event_type === 'quake' ? 'USGS' : 'Smithsonian') +
+              ' event page'
+            "
+            class="faint-text"
+          >
+            {{ event?.event_type === "quake" ? "USGS" : "Smithsonian" }}
+          </a>
+          •
           <span *ngIf="breakpoint > breakpoints.MOBILE">
             {{ event.processing_timeframe.start | fullDate }}
           </span>
@@ -58,22 +92,39 @@
         </button>
       </div>
     </div>
-</div>
+  </div>
 
-  <div fxLayout="row"
-    [ngClass]="(breakpoint < breakpoints.SMALL) ? 'main-window-mobile' : 'main-window'">
-
-    <div class="thumbs" *ngIf="(browses$ | async)?.length > 1 && (searchType$ | async) !== searchTypes.SARVIEWS_EVENTS">
-      <div *ngFor="let browse of (browses$ | async)"
-           (click)="onNewBrowseSelected(scene, browse)"
-           class="clickable">
-        <img mat-card-sm-image src="{{ browse }}">
+  <div
+    fxLayout="row"
+    [ngClass]="
+      breakpoint < breakpoints.SMALL ? 'main-window-mobile' : 'main-window'
+    "
+  >
+    <div
+      class="thumbs"
+      *ngIf="
+        (browses$ | async)?.length > 1 &&
+        (searchType$ | async) !== searchTypes.SARVIEWS_EVENTS
+      "
+    >
+      <div
+        *ngFor="let browse of browses$ | async"
+        (click)="onNewBrowseSelected(scene, browse)"
+        class="clickable"
+      >
+        <img mat-card-sm-image src="{{ browse }}" />
       </div>
     </div>
 
-    <div fxFlex id="browse-map" fxFlex class="browse-map--size" fxLayout="row-reverse" fxLayoutAlign="end end" >
-    </div>
-      <!-- <div *ngIf="(searchType$ | async) === searchTypes.SARVIEWS_EVENTS">
+    <div
+      fxFlex
+      id="browse-map"
+      fxFlex
+      class="browse-map--size"
+      fxLayout="row-reverse"
+      fxLayoutAlign="end end"
+    ></div>
+    <!-- <div *ngIf="(searchType$ | async) === searchTypes.SARVIEWS_EVENTS">
       <button
       style="position: absolute; bottom: 5px; right: 20%; margin: 15px; min-width: 200px; border-radius: 4px !important;"
       mat-flat-button (click)="OpenProductInSarviews()">Open Product In SARVIEWS</button>
@@ -83,199 +134,252 @@
     </div>
 
     <ng-container *ngIf="breakpoint > breakpoints.MOBILE">
-
-      <div *ngIf="!isShow" fxFlex="20"
-      class='scene-detail-wrapper'>
-
-        <div *ngIf="(searchType$ | async) !== searchTypes.SARVIEWS_EVENTS" class="scene-detail">
-
+      <div *ngIf="!isShow" fxFlex="20" class="scene-detail-wrapper">
+        <div
+          *ngIf="(searchType$ | async) !== searchTypes.SARVIEWS_EVENTS"
+          class="scene-detail"
+        >
           <div class="detail-header">Scene Detail</div>
-          <ul class="on-demand-scene-names" *ngIf="(searchType$ | async) === searchTypes.CUSTOM_PRODUCTS">
-            <li>
-              <b>Reference: </b> {{(scene$ | async).name}}
-            </li>
+          <ul
+            class="on-demand-scene-names"
+            *ngIf="(searchType$ | async) === searchTypes.CUSTOM_PRODUCTS"
+          >
+            <li><b>Reference: </b> {{ (scene$ | async).name }}</li>
           </ul>
           <app-scene-metadata
             [scene]="scene$ | async"
             [dataset]="dataset"
-            [searchType]="searchType$|  async"
-            [offsets]="masterOffsets$ | async">
+            [searchType]="searchType$ | async"
+            [offsets]="masterOffsets$ | async"
+          >
           </app-scene-metadata>
-            <div class="on-demand-scene-names"
-            *ngIf="(scene$ | async).metadata?.job?.job_parameters.scenes?.length > 1">
-              <ul>
-                <li>
-                  <b>Secondary: </b> {{(scene$ | async).metadata?.job?.job_parameters.scenes[1].name}}
-                </li>
-              </ul>
-          <app-scene-metadata
-          [scene]="(scene$ | async).metadata?.job?.job_parameters.scenes[1]"
-          [dataset]="dataset"
-          [searchType]="searchType$|  async"
-          [offsets]="masterOffsets$ | async"
-        >
-        </app-scene-metadata>
-      </div>
-          <hr>
-        <ng-container  *ngIf="(searchType$ | async) === searchTypes.CUSTOM_PRODUCTS">
-          <div class="detail-header">Product Details</div>
-          <ul style="columns: 1; font-size: 12px;">
-            <li *ngIf="scene.metadata.job.name"><b>Project Name:</b> {{scene.metadata.job.name}}</li>
-            <li *ngFor="let param of paramsList" >
-              <b>{{ param.name }}:</b> {{ param.val }}
-            </li>
-          </ul>
-          <hr>
-        </ng-container>
+          <div
+            class="on-demand-scene-names"
+            *ngIf="
+              (scene$ | async).metadata?.job?.job_parameters.scenes?.length > 1
+            "
+          >
+            <ul>
+              <li>
+                <b>Secondary: </b>
+                {{
+                  (scene$ | async).metadata?.job?.job_parameters.scenes[1].name
+                }}
+              </li>
+            </ul>
+            <app-scene-metadata
+              [scene]="(scene$ | async).metadata?.job?.job_parameters.scenes[1]"
+              [dataset]="dataset"
+              [searchType]="searchType$ | async"
+              [offsets]="masterOffsets$ | async"
+            >
+            </app-scene-metadata>
+          </div>
+          <hr />
+          <ng-container
+            *ngIf="(searchType$ | async) === searchTypes.CUSTOM_PRODUCTS"
+          >
+            <div class="detail-header">Product Details</div>
+            <ul style="columns: 1; font-size: 12px">
+              <li *ngIf="scene.metadata.job.name">
+                <b>Project Name:</b> {{ scene.metadata.job.name }}
+              </li>
+              <li *ngFor="let param of paramsList">
+                <b>{{ param.name }}:</b> {{ param.val }}
+              </li>
+            </ul>
+            <hr />
+          </ng-container>
 
           <div class="detail-header">{{ products?.length }} Files</div>
           <mat-action-list dense class="file-list">
-            <button  *ngFor="let product of products"
-            class="file-button-download"
-                     [matMenuTriggerFor]="action_menu" mat-list-item>
+            <button
+              *ngFor="let product of products"
+              class="file-button-download"
+              [matMenuTriggerFor]="action_menu"
+              mat-list-item
+            >
               • {{ product.productTypeDisplay }}
-              <mat-menu #action_menu="matMenu" xPosition="before" >
-
-                <span style="margin-right: 10px; margin-left: 10px;">
+              <mat-menu #action_menu="matMenu" xPosition="before">
+                <span style="margin-right: 10px; margin-left: 10px">
                   <span *ngIf="product.bytes === 0">Virtual</span>
-                  <span *ngIf="product.bytes !== 0">{{product.bytes.toString() | readableSizeFromBytes }}</span>
+                  <span *ngIf="product.bytes !== 0">{{
+                    product.bytes.toString() | readableSizeFromBytes
+                  }}</span>
                 </span>
                 <app-download-file-button
                   [attr.id]="'imgV_' + product.id"
-                  [product] = "product"
-                  (click)="$event.stopPropagation()">
+                  [product]="product"
+                  (click)="$event.stopPropagation()"
+                >
                 </app-download-file-button>
 
-                <button (click)="$event.stopPropagation(); onToggleQueueProduct(product); "
-                        matTooltip="{{ !queuedProductIds.has(product.id) ? 'Add file to queue' : 'Remove file from queue' }}"
-                        mat-menu-item>
-            <span *ngIf="!queuedProductIds.has(product.id)">
-              Add
-              <mat-icon >add_shopping_cart</mat-icon>
-            </span>
+                <button
+                  (click)="
+                    $event.stopPropagation(); onToggleQueueProduct(product)
+                  "
+                  matTooltip="{{
+                    !queuedProductIds.has(product.id)
+                      ? 'Add file to queue'
+                      : 'Remove file from queue'
+                  }}"
+                  mat-menu-item
+                >
+                  <span *ngIf="!queuedProductIds.has(product.id)">
+                    Add
+                    <mat-icon>add_shopping_cart</mat-icon>
+                  </span>
                   <span *ngIf="queuedProductIds.has(product.id)">
-              Remove
-              <mat-icon >shopping_cart</mat-icon>
-            </span>
+                    Remove
+                    <mat-icon>shopping_cart</mat-icon>
+                  </span>
                 </button>
               </mat-menu>
             </button>
           </mat-action-list>
-
         </div>
 
-        <div *ngIf="(searchType$ | async) === searchTypes.SARVIEWS_EVENTS" class="scene-detail">
-            <div class="detail-header">Event Detail</div>
-            <app-event-metadata [event]="sarviewsEvent" [eventType]="eventType">
-            </app-event-metadata>
-            <hr>
+        <div
+          *ngIf="(searchType$ | async) === searchTypes.SARVIEWS_EVENTS"
+          class="scene-detail"
+        >
+          <div class="detail-header">Event Detail</div>
+          <app-event-metadata [event]="sarviewsEvent" [eventType]="eventType">
+          </app-event-metadata>
+          <hr />
 
-            <ng-container >
-              <div class="detail-header">Scene Detail</div>
-                <div style="font-size: 12px;" *ngIf="!!currentSarviewsProduct">
-                  <app-event-product-metadata
-                  [product]="currentSarviewsProduct"
-                  >
-
-                  </app-event-product-metadata>
-                </div>
-            <hr>
-            </ng-container>
-
-          <ng-container >
-          <div class="detail-header">Product Details</div>
-            <div style="font-size: 12px;" *ngIf="!!currentSarviewsProduct">
-              <ul style="columns: 1; font-size: 12px;">
-                <li  style="margin-bottom: 5px; word-break: break-word;">
-                  <b>Product Filename:</b> {{currentSarviewsProduct.files.product_name}}
-                </li>
-                <li><b>Processing Date:</b> {{currentSarviewsProduct.processing_date | shortDateTime}}</li>
-              <!-- <li>Frame: {{currentSarviewsProduct.granules[0].frame}}</li> -->
-            </ul>
+          <ng-container>
+            <div class="detail-header">Scene Detail</div>
+            <div style="font-size: 12px" *ngIf="!!currentSarviewsProduct">
+              <app-event-product-metadata [product]="currentSarviewsProduct">
+              </app-event-product-metadata>
             </div>
-        <hr>
-        </ng-container>
+            <hr />
+          </ng-container>
 
-        <ng-container>
-          <div class="detail-header">File</div>
-          <mat-action-list dense class="file-list">
-            <button class="file-button-download"
-            [matMenuTriggerFor]="event_action_menu"
-            *ngIf="!!currentSarviewsProduct"
-             mat-list-item>
-              • {{currentSarviewsProduct.job_type}}
+          <ng-container>
+            <div class="detail-header">Product Details</div>
+            <div style="font-size: 12px" *ngIf="!!currentSarviewsProduct">
+              <ul style="columns: 1; font-size: 12px">
+                <li style="margin-bottom: 5px; word-break: break-word">
+                  <b>Product Filename:</b>
+                  {{ currentSarviewsProduct.files.product_name }}
+                </li>
+                <li>
+                  <b>Processing Date:</b>
+                  {{ currentSarviewsProduct.processing_date | shortDateTime }}
+                </li>
+                <!-- <li>Frame: {{currentSarviewsProduct.granules[0].frame}}</li> -->
+              </ul>
+            </div>
+            <hr />
+          </ng-container>
 
-            </button>
-            <mat-menu #event_action_menu xPosition="before">
-              <button matTooltip="Download Product" mat-menu-item
-              *ngIf="!!currentSarviewsProduct"
-              >
-                <span *ngIf="currentSarviewsProduct.files.product_size !== 0">
-                  {{currentSarviewsProduct.files.product_size.toString() | readableSizeFromBytes }}
-                </span>
-                <app-download-file-button
-                  [attr.id]="'imgV_' + currentSarviewsCMRProduct.id"
-                  [product] = "currentSarviewsCMRProduct"
-                  (click)="$event.stopPropagation()">
-                </app-download-file-button>
-
-              </button>
-                <button (click)="onToggleQueueEventProduct(currentSarviewsProduct)"
+          <ng-container>
+            <div class="detail-header">File</div>
+            <mat-action-list dense class="file-list">
+              <button
+                class="file-button-download"
+                [matMenuTriggerFor]="event_action_menu"
                 *ngIf="!!currentSarviewsProduct"
-                matTooltip="{{ !queuedProductIds.has(currentSarviewsProduct.product_id) ? 'Add file to queue' : 'Remove file from queue' }}"
-                mat-menu-item>
-                  <span *ngIf="!queuedProductIds.has(currentSarviewsProduct.product_id)">
-                    Add
-                    <mat-icon >add_shopping_cart</mat-icon>
+                mat-list-item
+              >
+                • {{ currentSarviewsProduct.job_type }}
+              </button>
+              <mat-menu #event_action_menu xPosition="before">
+                <button
+                  matTooltip="Download Product"
+                  mat-menu-item
+                  *ngIf="!!currentSarviewsProduct"
+                >
+                  <span *ngIf="currentSarviewsProduct.files.product_size !== 0">
+                    {{
+                      currentSarviewsProduct.files.product_size.toString()
+                        | readableSizeFromBytes
+                    }}
                   </span>
-                  <span *ngIf="queuedProductIds.has(currentSarviewsProduct.product_id)">
+                  <app-download-file-button
+                    [attr.id]="'imgV_' + currentSarviewsCMRProduct.id"
+                    [product]="currentSarviewsCMRProduct"
+                    (click)="$event.stopPropagation()"
+                  >
+                  </app-download-file-button>
+                </button>
+                <button
+                  (click)="onToggleQueueEventProduct(currentSarviewsProduct)"
+                  *ngIf="!!currentSarviewsProduct"
+                  matTooltip="{{
+                    !queuedProductIds.has(currentSarviewsProduct.product_id)
+                      ? 'Add file to queue'
+                      : 'Remove file from queue'
+                  }}"
+                  mat-menu-item
+                >
+                  <span
+                    *ngIf="
+                      !queuedProductIds.has(currentSarviewsProduct.product_id)
+                    "
+                  >
+                    Add
+                    <mat-icon>add_shopping_cart</mat-icon>
+                  </span>
+                  <span
+                    *ngIf="
+                      queuedProductIds.has(currentSarviewsProduct.product_id)
+                    "
+                  >
                     Remove
-                    <mat-icon >shopping_cart</mat-icon>
+                    <mat-icon>shopping_cart</mat-icon>
                   </span>
                 </button>
-                <button mat-menu-item (click)="onCopyLink(currentSarviewsProduct.granules)"
-                matTooltip="Copy reference scene names to clipboard"
+                <button
+                  mat-menu-item
+                  (click)="onCopyLink(currentSarviewsProduct.granules)"
+                  matTooltip="Copy reference scene names to clipboard"
                 >
-                <span> Reference Scenes </span>
-              <mat-icon>file_copy</mat-icon>
-          </button>
-            </mat-menu>
-          </mat-action-list>
-        </ng-container>
+                  <span> Reference Scenes </span>
+                  <mat-icon>file_copy</mat-icon>
+                </button>
+              </mat-menu>
+            </mat-action-list>
+          </ng-container>
         </div>
-
       </div>
     </ng-container>
-
   </div>
 
-
   <ng-container *ngIf="breakpoint > breakpoints.MOBILE">
-      <div>
-      <app-browse-list style="height: 150px;"></app-browse-list>
+    <div>
+      <app-browse-list style="height: 150px"></app-browse-list>
     </div>
   </ng-container>
-  <div *ngIf="breakpoint$ | async as breakpoint"
-       fxLayout="row"
-       fxLayoutAlign="end end"
-       class="bottom-row footer">
-
-    <div *ngIf="breakpoint > breakpoints.MOBILE && (searchType$ | async) !== searchTypes.SARVIEWS_EVENTS" fxFlex>
+  <div
+    *ngIf="breakpoint$ | async as breakpoint"
+    fxLayout="row"
+    fxLayoutAlign="end end"
+    class="bottom-row footer"
+  >
+    <div
+      *ngIf="
+        breakpoint > breakpoints.MOBILE &&
+        (searchType$ | async) !== searchTypes.SARVIEWS_EVENTS
+      "
+      fxFlex
+    >
       <mat-checkbox
         (change)="setOnlyShowBrowse($event.checked)"
         [checked]="onlyShowScenesWithBrowse"
-        style="margin-right: 6px;" color="warn">
+        style="margin-right: 6px"
+        color="warn"
+      >
       </mat-checkbox>
       <span *ngIf="breakpoint > breakpoints.MOBILE">
         Only display scenes with a browse image
       </span>
-      <span *ngIf="breakpoint === breakpoints.MOBILE">
-        w/Browse Images
-      </span>
+      <span *ngIf="breakpoint === breakpoints.MOBILE"> w/Browse Images </span>
     </div>
     <div fxFlex="nogrow">
       <button mat-flat-button (click)="closeDialog()">Close</button>
     </div>
   </div>
-
 </div>
