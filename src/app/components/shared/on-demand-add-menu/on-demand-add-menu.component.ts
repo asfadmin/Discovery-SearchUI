@@ -80,7 +80,12 @@ export class OnDemandAddMenuComponent implements OnInit {
 
   public queueAllOnDemand(products: models.CMRProduct[][], job_type: models.Hyp3JobType): void {
     const jobs: models.QueuedHyp3Job[] = products.map(product => ({
-      granules: product,
+      granules: product.sort((a, b) => {
+        if (a.metadata.date < b.metadata.date) {
+          return -1;
+        }
+        return 1;
+      }),
       job_type
     }));
 
@@ -110,7 +115,12 @@ export class OnDemandAddMenuComponent implements OnInit {
     products = products.filter(prod => prod[0].id !== this.referenceScene.id);
     const jobs: models.QueuedHyp3Job[] = products.map(product => {
       return {
-      granules: [this.referenceScene, product[0]],
+      granules: [this.referenceScene, product[0]]?.sort((a, b) => {
+        if (a.metadata.date < b.metadata.date) {
+          return -1;
+        }
+        return 1;
+      }),
       job_type
     } as models.QueuedHyp3Job;
   });

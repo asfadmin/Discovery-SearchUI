@@ -47,13 +47,17 @@ export class CreateSubscriptionComponent implements OnInit, OnDestroy {
   public hyp3JobTypesList = models.hyp3JobTypesList;
   public selectedJobTypeId: string | null = models.hyp3JobTypes.RTC_GAMMA.id;
 
-  public productTypes = [{
+  public types = {
+    'GRD_HD': {
       apiValue: 'GRD_HD',
       displayName: 'L1 Detected High-Res Dual-Pol (GRD-HD)'
-  }, {
+    },
+    'SLC': {
       apiValue: 'SLC',
       displayName: 'L1 Single Look Complex (SLC)'
-  }];
+    }
+  };
+  public productTypes = ['SLC', 'GRD_HD'];
   public productType = 'SLC';
 
   public flightDirectionTypes = [
@@ -73,9 +77,9 @@ export class CreateSubscriptionComponent implements OnInit, OnDestroy {
   public frame: number = null;
 
   public s1Subtypes = [{
-      displayName: 'Sentinel-1',
-      apiValue: 'S1',
-    },
+    displayName: 'Sentinel-1',
+    apiValue: 'S1',
+  },
     ...models.sentinel_1.subtypes
   ];
   public subtype = 'S1';
@@ -123,7 +127,7 @@ export class CreateSubscriptionComponent implements OnInit, OnDestroy {
       const reference = <models.CMRProduct>this.data.referenceScene;
       this.loadOptionsFromReferenceScene(reference);
       this.selectedJobTypeId = models.hyp3JobTypes.INSAR_GAMMA.id;
-      this.jobTypeId = models.hyp3JobTypes.INSAR_GAMMA.id;
+      this.setJobType(models.hyp3JobTypes.INSAR_GAMMA.id);
     }
 
     // @ts-ignore
@@ -369,7 +373,18 @@ export class CreateSubscriptionComponent implements OnInit, OnDestroy {
   }
 
   public onNewJobType(e): void {
-    this.jobTypeId = e.value;
+    this.setJobType(e.value);
+  }
+
+  private setJobType(jobTypeId: string): void {
+    this.jobTypeId = jobTypeId;
+    const dataset = models.hyp3JobTypes[jobTypeId].productTypes[0];
+    this.productTypes = dataset.productTypes;
+    this.productType = this.productTypes[0];
+
+    this.polarizations = dataset.polarizations;
+    this.polarization = [];
+
   }
 
   public onBack(): void {

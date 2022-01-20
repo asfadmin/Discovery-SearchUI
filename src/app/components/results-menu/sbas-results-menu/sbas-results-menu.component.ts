@@ -40,6 +40,7 @@ export class SBASResultsMenuComponent implements OnInit, OnDestroy {
 
   public listCardMaxWidth = '38%';
   public chartCardMaxWidth = '55%';
+  private minChartWidth = 25.0;
 
   public breakpoint: Breakpoints;
   public breakpoints = Breakpoints;
@@ -85,7 +86,21 @@ export class SBASResultsMenuComponent implements OnInit, OnDestroy {
       this.store$.select(scenesStore.getSelectedPair).pipe(
         map(pair => !pair?.[0] ? null : pair),
       ).subscribe(
-        (selected: CMRProductPair) => this.pair = selected
+        (selected: CMRProductPair) => {
+          selected?.sort((a, b) => {
+            if (a.metadata.date < b.metadata.date) {
+              return -1;
+            }
+            return 1;
+          });
+
+          this.pair = selected?.map(product => ({...product,
+            metadata: {
+              ...product.metadata,
+              temporal: product.metadata.temporal - selected[0].metadata.temporal,
+              perpendicular: product.metadata.perpendicular - selected[0].metadata.perpendicular
+            }}));
+        }
       )
     );
   }
@@ -95,7 +110,10 @@ export class SBASResultsMenuComponent implements OnInit, OnDestroy {
       || document.documentElement.clientWidth
       || document.body.clientWidth;
     const newChartWidth = event.rectangle.width > windowWidth ? windowWidth : event.rectangle.width;
-    const newChartMaxWidth = Math.round((newChartWidth / windowWidth) * 100);
+    const newChartMaxWidth = Math.max(
+      this.minChartWidth,
+      Math.round((newChartWidth / windowWidth) * 100)
+      );
     const newListMaxWidth = 100 - newChartMaxWidth;
 
     this.listCardMaxWidth = newListMaxWidth.toString() + '%';
