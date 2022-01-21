@@ -22,7 +22,8 @@
                 [value]="optionValues[option.apiName]"
                 [options]="option.options"
                 [optionName]="option.name"
-                [optionInfo]="option.info">
+                [optionInfo]="option.info"
+                class="margin-right">
               </app-dropdown-option>
             </div>
           </div>
@@ -39,7 +40,8 @@
                 (valueChange)="onSetOptionValue(option.apiName, $event)"
                 [value]="optionValues[option.apiName]"
                 [optionName]="option.name"
-                [optionInfo]="option.info">
+                [optionInfo]="option.info"
+                class="margin-right">
               </app-toggle-option>
             </div>
           </div>
@@ -59,7 +61,8 @@
                 *ngIf="option.type === 'SUBSET'"
                 (setSubset)="onSetSubset(option.optionSubset)"
                 [optionName]="option.name"
-                [optionInfo]="option.info">
+                [optionInfo]="option.info"
+                class="margin-right">
               </app-subset-option>
             </div>
           </div>
