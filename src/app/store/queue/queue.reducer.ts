@@ -328,3 +328,7 @@ export const getDownloads = createSelector(
   getQueueState,
   (state: QueueState) => state.downloads
 );
+export const getDownloadIds = createSelector(
+  getQueueState,
+  (state: QueueState) => Object.keys(state.downloads)
+);

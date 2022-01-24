@@ -50,7 +50,9 @@ export class DownloadService {
                   state: 'IN_PROGRESS',
                   content: null,
                   filename: filename,
-                  id: id
+                  id: id,
+                  product: file.product,
+
                 };
               }
               case (HttpEventType.ResponseHeader): {
@@ -61,7 +63,8 @@ export class DownloadService {
                   state: 'PENDING',
                   content: null,
                   filename: newID,
-                  id: id
+                  id: id,
+                  product: file.product,
 
                 };
               }
@@ -74,7 +77,8 @@ export class DownloadService {
                   state: 'DONE',
                   content: event.body,
                   filename: filename,
-                  id: id
+                  id: id,
+                  product: file.product,
 
                 };
               }
@@ -83,7 +87,7 @@ export class DownloadService {
               }
             }
           },
-          { state: 'PENDING', progress: 0, content: null, filename: '', id: '' }
+          { state: 'PENDING', progress: 0, content: null, filename: '', id: '', product: null}
         ),
         distinctUntilChanged((a, b) => a.state === b.state
           && a.progress === b.progress
