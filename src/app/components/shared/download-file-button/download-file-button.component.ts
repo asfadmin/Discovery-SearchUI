@@ -56,7 +56,7 @@ export class DownloadFileButtonComponent implements OnInit, AfterViewInit {
             this.dFile = queueDownloads[this.product?.id ?? this.fileName];
           } else {
             this.dFile = null;
-            if (this.observable$) {
+            if (this.subscription) {
               this.subscription.unsubscribe();
             }
           }
@@ -75,7 +75,7 @@ export class DownloadFileButtonComponent implements OnInit, AfterViewInit {
 
   public downloadFile() {
     if (this.dFile?.state === 'PENDING' || this.dFile?.state === 'IN_PROGRESS') {
-      this.subscription.unsubscribe();
+      this.subscription?.unsubscribe();
       this.store$.dispatch(new queueStore.RemoveDownloadProduct(this.dFile));
       return;
     }
