@@ -13,11 +13,10 @@ import { CMRProduct, AsfApiOutputFormat, Breakpoints } from '@models';
 import { MatDialogRef } from '@angular/material/dialog';
 import { SubSink } from 'subsink';
 import { ResizedEvent } from 'angular-resize-event';
-import { HttpClient } from '@angular/common/http';
-import { saveAs } from 'file-saver';
 import { Observable } from 'rxjs';
-import { download, Download } from 'ngx-operators';
+import {  Download } from 'ngx-operators';
 import * as userStore from '@store/user';
+import { DownloadMap } from '@store/queue';
 // import { DownloadService } from '@services/download.service';
 
 
@@ -37,8 +36,6 @@ export class QueueComponent implements OnInit, OnDestroy {
   @Input() appQueueComponentModel: string;
 
   download$: Observable<Download>;
-  // public dFile: Download;
-  // public dlInProgress: boolean = false;
 
   public queueHasOnDemandProducts = false;
   public queueHasEventMonitoringProducts = false;
@@ -67,6 +64,8 @@ export class QueueComponent implements OnInit, OnDestroy {
   public dlQueueProgress = 0;
   public productList: HTMLCollectionOf<Element>;
 
+  public queuedDownloads$: Observable<DownloadMap> = this.store$.select(queueStore.getDownloads);
+  public downloadIDs = this.store$.select(queueStore.getDownloadIds);
   public products$ = this.store$.select(queueStore.getQueuedProducts).pipe(
     tap(products => this.areAnyProducts = products.length > 0),
     tap(products => {
@@ -94,8 +93,6 @@ export class QueueComponent implements OnInit, OnDestroy {
     private dialogRef: MatDialogRef<QueueComponent>,
     private screenSize: ScreenSizeService,
     private notificationService: NotificationService,
-    private http: HttpClient,
-    // private downloadService: DownloadService,
   ) {}
 
   ngOnInit() {
@@ -216,17 +213,9 @@ export class QueueComponent implements OnInit, OnDestroy {
     this.dlHeight = event.newHeight;
   }
 
-  public download(href) {
-    this.download$ = this.http.get(href, {
-      withCredentials: true,
-      reportProgress: true,
-      observe: 'events',
-      responseType: 'blob'
-    }).pipe(download(() => saveAs('special.nc')));
-  }
 
   public downloadAllFiles() {
-    const container = document.querySelector('#matListProducts');
+    const container: Element = document.querySelector('#matListProducts');
     this.productList = container.getElementsByClassName('download-file-button');
     this.dlQueueNumProcessed = 0;
     this.dlQueueCount = this.productList.length;

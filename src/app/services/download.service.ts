@@ -6,6 +6,7 @@ import { DownloadStatus } from '@models/download.model';
 
 import { HttpEvent, HttpEventType } from '@angular/common/http';
 import { distinctUntilChanged, scan } from 'rxjs/operators';
+import { CMRProduct } from '@models';
 
 @Injectable({ providedIn: 'root' })
 export class DownloadService {
@@ -17,7 +18,7 @@ export class DownloadService {
 
   classicResp: Observable<DownloadStatus>;
 
-  download(url: string, filename: string, id): Observable<DownloadStatus> {
+  download(url: string, filename: string, product: CMRProduct,  id): Observable<DownloadStatus> {
 
     const resp = this.http.get(url, {
       withCredentials: !(new URL(url).origin.startsWith('hyp3')),
@@ -27,13 +28,14 @@ export class DownloadService {
     });
 
 
-    return resp.pipe(this.download$(filename, id, blob => this.save(blob, url, filename)));
+    return resp.pipe(this.download$(filename, id, product, blob => this.save(blob, url, filename)));
   }
 
 
   private download$(
     filename: string,
     id: string,
+    product: CMRProduct,
     saver?: (b: Blob) => void): (source: Observable<HttpEvent<Blob>>) => Observable<DownloadStatus> {
 
 
@@ -51,8 +53,7 @@ export class DownloadService {
                   content: null,
                   filename: filename,
                   id: id,
-                  product: file.product,
-
+                  product: product,
                 };
               }
               case (HttpEventType.ResponseHeader): {
@@ -64,7 +65,7 @@ export class DownloadService {
                   content: null,
                   filename: newID,
                   id: id,
-                  product: file.product,
+                  product: product,
 
                 };
               }
@@ -78,7 +79,7 @@ export class DownloadService {
                   content: event.body,
                   filename: filename,
                   id: id,
-                  product: file.product,
+                  product: product,
 
                 };
               }

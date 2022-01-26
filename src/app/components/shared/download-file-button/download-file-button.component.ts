@@ -96,11 +96,11 @@ export class DownloadFileButtonComponent implements OnInit, AfterViewInit {
     }
   }
   private downloadFunctionality(product: CMRProduct) {
-    this.observable$ = this.downloadService.download(this.url, this.fileName, product?.id ?? this.fileName);
+    this.observable$ = this.downloadService.download(this.url, this.fileName, this?.product, product?.id ?? this.fileName);
     this.subscription = this.observable$.subscribe(resp => {
       if (!this.processSubscription(resp, product, true)) {
         this.subscription.unsubscribe();
-        this.observable$ = this.downloadService.download(this.url, this.fileName, product?.id ?? this.fileName);
+        this.observable$ = this.downloadService.download(this.url, this.fileName, this?.product, product?.id ?? this.fileName);
         this.subscription = this.observable$.subscribe(response => this.processSubscription(response, product, false));
       }
     }, () => {
