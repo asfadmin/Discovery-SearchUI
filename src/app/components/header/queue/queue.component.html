@@ -45,8 +45,6 @@
                     [class.dl-mat-dialog-content-warn]="showDemWarning"
                     [class.dl-mat-dialog-content-warn-mobile]="showDemWarning && breakpoint === breakpoints.MOBILE">
           <mat-list id="matListProducts" role="list" class="dl-list">
-          <mat-tab-group>
-            <mat-tab label="Queued Downloads">
             <ng-container *ngIf="products$ | async as products">
               <mat-list-item *ngFor="let product of products" role="listitem">
                 <div matLine
@@ -89,43 +87,12 @@
                   </button>
               </mat-list-item>
             </ng-container>
-          </mat-tab>
-          <mat-tab label="Current Downloads" [disabled]="(downloadIDs | async).length === 0"> 
-
-            <ng-container *ngIf="queuedDownloads$ | async as queuedDownloads">
-              <ng-container *ngFor="let downloadID of downloadIDs | async">
-                <mat-list-item *ngIf="queuedDownloads[downloadID].product as product">
-                  <div matLine
-                  class="item-content"
-                  [ngClass]="{'dl-list-item-mobile' : breakpoint === breakpoints.MOBILE }">
-               <b>
-                   <span *ngIf="breakpoint !== breakpoints.MOBILE">{{ product.name | truncate: 50 }}</span>
-                   <span *ngIf="breakpoint === breakpoints.MOBILE">{{ product.name | truncate: 10 }}</span>
-                   <span *ngIf="product.dataset === 'Sentinel-1B' || product.dataset === 'Sentinel-1A'"
-                     >{{ product.name.substr(product.name.length - 4) }}</span>
-                   <span *ngIf="product.dataset === 'Sentinel-1 Interferogram (BETA)'"
-                     >{{ product.name.substr(product.name.length - 11) }}</span>
-                 </b> •
-
-                 <span>
-                   <span *ngIf="product.bytes === 0">Virtual</span>
-                   <span *ngIf="product.bytes !== 0">{{product.bytes | readableSizeFromBytes }}</span>
-                 </span>
-               </div>
-               <div style="margin-top: 3px; margin-left: 32px;" matLine [ngClass]="{'dl-list-item-mobile' : breakpoint === breakpoints.MOBILE }">
-                 {{ product.productTypeDisplay }}
-               </div>
-                </mat-list-item>
-              </ng-container>
-            </ng-container>
             <ng-container *ngIf="(products$ | async).length < 1">
               <div class="dl-empty-message">
                 <br><br>
                 Your download queue is empty.
               </div>
             </ng-container>
-            </mat-tab>
-          </mat-tab-group>
 
 
         </mat-list>

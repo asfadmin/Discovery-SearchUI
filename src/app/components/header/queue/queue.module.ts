@@ -25,7 +25,6 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 import {DownloadFileButtonModule} from '@components/shared/download-file-button/download-file-button.module';
 import { DownloadAllModule } from '@components/header/queue/download-all/download-all.module';
-import { MatTabsModule } from '@angular/material/tabs';
 
 @NgModule({
   declarations: [
@@ -51,8 +50,7 @@ import { MatTabsModule } from '@angular/material/tabs';
     MatProgressBarModule,
     MatCheckboxModule,
     MatProgressSpinnerModule,
-    DownloadAllModule,
-    MatTabsModule
+    DownloadAllModule
   ],
   exports: [
     QueueComponent

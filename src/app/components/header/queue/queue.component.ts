@@ -16,7 +16,6 @@ import { ResizedEvent } from 'angular-resize-event';
 import { Observable } from 'rxjs';
 import {  Download } from 'ngx-operators';
 import * as userStore from '@store/user';
-import { DownloadMap } from '@store/queue';
 // import { DownloadService } from '@services/download.service';
 
 
@@ -64,8 +63,6 @@ export class QueueComponent implements OnInit, OnDestroy {
   public dlQueueProgress = 0;
   public productList: HTMLCollectionOf<Element>;
 
-  public queuedDownloads$: Observable<DownloadMap> = this.store$.select(queueStore.getDownloads);
-  public downloadIDs = this.store$.select(queueStore.getDownloadIds);
   public products$ = this.store$.select(queueStore.getQueuedProducts).pipe(
     tap(products => this.areAnyProducts = products.length > 0),
     tap(products => {
