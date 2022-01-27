@@ -116,7 +116,7 @@ export class QueueComponent implements OnInit, OnDestroy {
     const removedButton = this.downloadButtons.find(button => button.product === product);
     removedButton.cancelDownload();
     if (removedButton?.dFile?.state === 'IN_PROGRESS' || removedButton?.dFile?.state === 'PENDING') {
-      this.prodDownloaded(product);
+      this.prodDownloaded();
       this.dlQueueNumProcessed--;
     }
     this.productList = this.productList?.filter(button => button.product !== product);
@@ -235,7 +235,7 @@ export class QueueComponent implements OnInit, OnDestroy {
     this.dlDefaultChunkSize = this.dlDefaultChunkSize ?? 3;
   }
 
-  public prodDownloaded(_product) {
+  public prodDownloaded() {
     this.dlQueueProgress = (this.dlQueueNumProcessed / this.dlQueueCount) * 100;
     if (this.dlQueueNumProcessed < this.dlQueueCount) {
       const button = this.productList[this.dlQueueNumProcessed++];
@@ -244,7 +244,9 @@ export class QueueComponent implements OnInit, OnDestroy {
       }
     }
   }
-
+  public downloadCancelled() {
+    this.prodDownloaded();
+  }
   public limitedExportString() {
     if (this.queueHasEventMonitoringProducts && this.queueHasOnDemandProducts) {
       return 'On Demand and Event products in queue - limited export options';

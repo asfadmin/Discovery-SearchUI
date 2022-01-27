@@ -79,7 +79,8 @@
                   <app-download-file-button
                     [attr.id]="'dlq_' + product.id"
                     [product] = "product"
-                    (productDownloaded)="prodDownloaded($event)"
+                    (productDownloaded)="prodDownloaded()"
+                    (downloadCancelled)="downloadCancelled()"
                     [useNewDownload]="true">
                   </app-download-file-button>
 
