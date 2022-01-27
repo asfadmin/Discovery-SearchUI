@@ -64,7 +64,7 @@ export class QueueComponent implements OnInit, OnDestroy {
   public dlQueueNumProcessed = 0;
   public dlDefaultChunkSize = 3;
   public dlQueueProgress = 0;
-  public productList: DownloadFileButtonComponent[];
+  public productList: DownloadFileButtonComponent[] = [];
 
   public products$ = this.store$.select(queueStore.getQueuedProducts).pipe(
     tap(products => this.areAnyProducts = products.length > 0),
@@ -113,6 +113,8 @@ export class QueueComponent implements OnInit, OnDestroy {
   }
 
   public onRemoveProduct(product: CMRProduct): void {
+    this.productList = this.productList?.filter(a => a.product !== product);
+    this.dlQueueCount--;
     this.store$.dispatch(new queueStore.RemoveItem(product));
   }
 
@@ -222,9 +224,9 @@ export class QueueComponent implements OnInit, OnDestroy {
       }
     }
     this.productList = buttons;
-    this.dlQueueNumProcessed = 2;
+    this.dlQueueNumProcessed = 3;
     this.dlQueueCount = this.productList.length;
-    this.dlDefaultChunkSize = typeof this.dlDefaultChunkSize === 'undefined' ? 3 : this.dlDefaultChunkSize;
+    this.dlDefaultChunkSize = this.dlDefaultChunkSize ?? 3;
   }
 
   public prodDownloaded(_product) {
