@@ -37,7 +37,7 @@ export class QueueComponent implements OnInit, OnDestroy {
 
   download$: Observable<Download>;
 
-  @ViewChildren(DownloadFileButtonComponent) a !: QueryList<DownloadFileButtonComponent>;
+  @ViewChildren(DownloadFileButtonComponent) downloadButtons !: QueryList<DownloadFileButtonComponent>;
 
   public queueHasOnDemandProducts = false;
   public queueHasEventMonitoringProducts = false;
@@ -113,7 +113,13 @@ export class QueueComponent implements OnInit, OnDestroy {
   }
 
   public onRemoveProduct(product: CMRProduct): void {
-    this.productList = this.productList?.filter(a => a.product !== product);
+    const removedButton = this.downloadButtons.find(button => button.product === product);
+    removedButton.cancelDownload();
+    if (removedButton?.dFile?.state === 'IN_PROGRESS' || removedButton?.dFile?.state === 'PENDING') {
+      this.prodDownloaded(product);
+      this.dlQueueNumProcessed--;
+    }
+    this.productList = this.productList?.filter(button => button.product !== product);
     this.dlQueueCount--;
     this.store$.dispatch(new queueStore.RemoveItem(product));
   }
@@ -216,7 +222,7 @@ export class QueueComponent implements OnInit, OnDestroy {
   }
 
   public async downloadAllFiles() {
-    const buttons = this.a.toArray();
+    const buttons = this.downloadButtons.toArray();
     for (const button of buttons.slice(0, 3)) {
       const state = button?.dFile?.state;
       if (!state) {

@@ -73,7 +73,9 @@ export class DownloadFileButtonComponent implements OnInit, AfterViewInit {
       )
     );
   }
-
+  public cancelDownload() {
+    this.subscription?.unsubscribe();
+  }
   public downloadFile() {
 
     if (!this.useNewDownload) {
