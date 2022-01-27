@@ -1,7 +1,6 @@
-<div class="on-demand-tooltip">
-  <button (click)="onSubsetChange()"
-    [matTooltip]="optionInfo"
-    color="secondary" mat-button>
+<div class="subset-option">
+  <button mat-stroked-button (click)="onSubsetChange()"
+    [matTooltip]="optionInfo">
       {{ optionName }}
   </button>
 </div>

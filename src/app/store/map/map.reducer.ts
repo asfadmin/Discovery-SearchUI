@@ -13,6 +13,7 @@ export interface MapState {
   gridLinesActive: boolean;
   isMapInitialized: boolean;
   browseOverlayOpacity: number;
+  overviewMapOpen: boolean;
 }
 
 export const initState: MapState = {
@@ -22,7 +23,8 @@ export const initState: MapState = {
   layerType: models.MapLayerTypes.SATELLITE,
   gridLinesActive: false,
   isMapInitialized: false,
-  browseOverlayOpacity: 1.0
+  browseOverlayOpacity: 1.0,
+  overviewMapOpen: false
 };
 
 
@@ -87,6 +89,13 @@ export function mapReducer(state = initState, action: MapActions): MapState {
       };
     }
 
+    case MapActionType.TOGGLE_OVERVIEW_MAP: {
+      return {
+        ...state,
+        overviewMapOpen: action.payload
+      };
+    }
+
     default: {
       return state;
     }
@@ -124,4 +133,9 @@ export const getAreGridlinesActive = createSelector(
 export const getIsMapInitialization = createSelector(
   getMapState,
   (state: MapState) => state.isMapInitialized
+);
+
+export const getIsOverviewMapOpen = createSelector(
+  getMapState,
+  (state: MapState) => state.overviewMapOpen
 );

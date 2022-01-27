@@ -120,9 +120,9 @@
                 placeholder="File Type">
                   <mat-option
                     *ngFor="let type of productTypes"
-                    [value]="type.apiValue"
-                    [matTooltip]="type.displayName">
-                      {{type.displayName}}
+                    [value]="types[type].apiValue"
+                    [matTooltip]="types[type].displayName">
+                      {{types[type].displayName}}
                   </mat-option>
               </mat-select>
 
@@ -178,10 +178,6 @@
                 {{ polarization.length === 0 ? 'No polarization selected' : 'Polarization selected' }}
               </mat-hint>
             </mat-form-field>
-          </div>
-
-          <div style="margin-bottom: 5px;">
-            <b>Processing Options</b>
           </div>
 
           <app-processing-options

@@ -13,4 +13,15 @@
                      matTooltip="Street View" >
     <mat-icon class="control-icon">directions_car</mat-icon>
   </mat-button-toggle>
+
+  <mat-button-toggle
+  class="control-mat-button-toggle"
+  matTooltip="Overview map view"
+  (click)="onToggleOverviewMap(overviewMapVisible)">
+
+    <mat-icon class="view-btn antarctic">
+      map
+    </mat-icon>
+
+  </mat-button-toggle>
 </mat-button-toggle-group>

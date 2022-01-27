@@ -240,7 +240,7 @@ $color: $asf-primary-dark;
   height: calc(100% - #{$header-height} - #{$footer-height} - #{$bottom-offset});
   max-height: calc(100% - #{$header-height} - #{$footer-height} - #{$bottom-offset});
   width: 100%;
-  overflow-y: hidden;
+  overflow-y: auto !important;
   overflow-x: hidden;
   background-color: white;
   padding: 0;
@@ -274,8 +274,8 @@ $color: $asf-primary-dark;
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
-  padding: 0 0 0 15px;
-  border-bottom: solid 1px grey;
+  padding: 0 0 8px 15px;
+  border-bottom: solid 2px grey;
   height: 100%;
 }
 
@@ -289,7 +289,7 @@ $color: $asf-primary-dark;
   display: flex;
   flex-direction: row;
   height: 100%;
-  overflow-y: auto;
+  //overflow-y: auto;
 }
 
 .content-bottom-area-mobile {
