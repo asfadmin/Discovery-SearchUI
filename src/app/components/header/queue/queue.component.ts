@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, Input } from '@angular/core';
+import { Component, OnInit, OnDestroy, Input, QueryList, ViewChildren } from '@angular/core';
 
 import { faCopy } from '@fortawesome/free-solid-svg-icons';
 import { ClipboardService } from 'ngx-clipboard';
@@ -16,6 +16,7 @@ import { ResizedEvent } from 'angular-resize-event';
 import { Observable } from 'rxjs';
 import {  Download } from 'ngx-operators';
 import * as userStore from '@store/user';
+import { DownloadFileButtonComponent } from '@components/shared/download-file-button/download-file-button.component';
 // import { DownloadService } from '@services/download.service';
 
 
@@ -35,6 +36,8 @@ export class QueueComponent implements OnInit, OnDestroy {
   @Input() appQueueComponentModel: string;
 
   download$: Observable<Download>;
+
+  @ViewChildren(DownloadFileButtonComponent) a !: QueryList<DownloadFileButtonComponent>;
 
   public queueHasOnDemandProducts = false;
   public queueHasEventMonitoringProducts = false;
@@ -61,7 +64,7 @@ export class QueueComponent implements OnInit, OnDestroy {
   public dlQueueNumProcessed = 0;
   public dlDefaultChunkSize = 3;
   public dlQueueProgress = 0;
-  public productList: HTMLCollectionOf<Element>;
+  public productList: DownloadFileButtonComponent[];
 
   public products$ = this.store$.select(queueStore.getQueuedProducts).pipe(
     tap(products => this.areAnyProducts = products.length > 0),
@@ -210,23 +213,27 @@ export class QueueComponent implements OnInit, OnDestroy {
     this.dlHeight = event.newHeight;
   }
 
-
-  public downloadAllFiles() {
-    const container: Element = document.querySelector('#matListProducts');
-    this.productList = container.getElementsByClassName('download-file-button');
-    this.dlQueueNumProcessed = 0;
+  public async downloadAllFiles() {
+    const buttons = this.a.toArray();
+    for (const button of buttons.slice(0, 3)) {
+      const state = button?.dFile?.state;
+      if (!state) {
+        button.downloadFile();
+      }
+    }
+    this.productList = buttons;
+    this.dlQueueNumProcessed = 2;
     this.dlQueueCount = this.productList.length;
     this.dlDefaultChunkSize = typeof this.dlDefaultChunkSize === 'undefined' ? 3 : this.dlDefaultChunkSize;
-    // const biteSize = this.dlQueueCount < this.dlDefaultChunkSize ? this.dlQueueCount : this.dlDefaultChunkSize;
-    const biteSize = 3;
-    bite( biteSize, this.productList ).then( () => { this.dlQueueNumProcessed = biteSize; } );
   }
 
   public prodDownloaded(_product) {
     this.dlQueueProgress = (this.dlQueueNumProcessed / this.dlQueueCount) * 100;
     if (this.dlQueueNumProcessed < this.dlQueueCount) {
-      const el: HTMLButtonElement = this.productList[this.dlQueueNumProcessed++] as HTMLButtonElement;
-      el.click();
+      const button = this.productList[this.dlQueueNumProcessed++];
+      if (!button?.dFile?.state) {
+        button.downloadFile();
+      }
     }
   }
 
@@ -248,16 +255,3 @@ export class QueueComponent implements OnInit, OnDestroy {
     this.subs.unsubscribe();
   }
 }
-
-async function bite( biteSize: number, prodList: any ) {
-  for (let i = 0; i < biteSize; i++) {
-    await nibble( i, prodList );
-  }
-}
-async function nibble( i: number, prodList ) { // 3
-  await timer(1000);
-  const el: HTMLButtonElement = prodList[i] as HTMLButtonElement;
-  el.click();
-}
-
-function timer(ms) { return new Promise(res => setTimeout(res, ms)); }

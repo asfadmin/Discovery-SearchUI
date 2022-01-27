@@ -96,6 +96,15 @@ export class DownloadFileButtonComponent implements OnInit, AfterViewInit {
     }
   }
   private downloadFunctionality(product: CMRProduct) {
+    const initStatus: DownloadStatus = {
+      content: null,
+      progress: 0,
+      state: 'PENDING',
+      id: this.product?.id ?? this.fileName,
+      filename: '',
+      product: this?.product,
+    };
+    this.store$.dispatch(new queueStore.DownloadProduct(initStatus));
     this.observable$ = this.downloadService.download(this.url, this.fileName, this?.product, product?.id ?? this.fileName);
     this.subscription = this.observable$.subscribe(resp => {
       if (!this.processSubscription(resp, product, true)) {
