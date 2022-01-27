@@ -24,7 +24,7 @@ export class DownloadFileButtonComponent implements OnInit, AfterViewInit {
   @Input() useNewDownload: boolean;
   @Output()
   productDownloaded: EventEmitter<CMRProduct> = new EventEmitter<CMRProduct>();
-  @Output() downloadCancelled: EventEmitter<boolean> = new EventEmitter<boolean>();
+  @Output() downloadCancelled: EventEmitter<CMRProduct> = new EventEmitter<CMRProduct>();
   public dFile: DownloadStatus;
   public url: string;
   public fileName: string = null;
@@ -75,10 +75,9 @@ export class DownloadFileButtonComponent implements OnInit, AfterViewInit {
     );
   }
   public cancelDownload() {
-    this.downloadCancelled.emit(true);
     this.subscription?.unsubscribe();
     this.store$.dispatch(new queueStore.RemoveDownloadProduct(this.dFile));
-
+    this.dFile = null;
   }
   public downloadFile() {
 
@@ -88,6 +87,7 @@ export class DownloadFileButtonComponent implements OnInit, AfterViewInit {
     }
     if (this.dFile?.state === 'PENDING' || this.dFile?.state === 'IN_PROGRESS') {
       this.cancelDownload();
+      this.downloadCancelled.emit(this.product);
       return;
     }
 

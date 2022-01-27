@@ -111,16 +111,19 @@ export class QueueComponent implements OnInit, OnDestroy {
     );
 
   }
-
-  public onRemoveProduct(product: CMRProduct): void {
+  private keepGoing(product) {
     const removedButton = this.downloadButtons.find(button => button.product === product);
-    removedButton.cancelDownload();
-    if (removedButton?.dFile?.state === 'IN_PROGRESS' || removedButton?.dFile?.state === 'PENDING') {
-      this.prodDownloaded();
+    if (removedButton?.dFile?.state !== 'DONE' && removedButton.dFile) {
+      removedButton.cancelDownload();
       this.dlQueueNumProcessed--;
+      this.productList = this.productList?.filter(button => button.product !== product);
+      this.dlQueueCount--;
+      this.downloadContinue(product);
     }
-    this.productList = this.productList?.filter(button => button.product !== product);
-    this.dlQueueCount--;
+  }
+  public onRemoveProduct(product: CMRProduct): void {
+    this.keepGoing(product);
+    console.log(product);
     this.store$.dispatch(new queueStore.RemoveItem(product));
   }
 
@@ -235,7 +238,7 @@ export class QueueComponent implements OnInit, OnDestroy {
     this.dlDefaultChunkSize = this.dlDefaultChunkSize ?? 3;
   }
 
-  public prodDownloaded() {
+  public downloadContinue(_product) {
     this.dlQueueProgress = (this.dlQueueNumProcessed / this.dlQueueCount) * 100;
     if (this.dlQueueNumProcessed < this.dlQueueCount) {
       const button = this.productList[this.dlQueueNumProcessed++];
@@ -243,9 +246,6 @@ export class QueueComponent implements OnInit, OnDestroy {
         button.downloadFile();
       }
     }
-  }
-  public downloadCancelled() {
-    this.prodDownloaded();
   }
   public limitedExportString() {
     if (this.queueHasEventMonitoringProducts && this.queueHasOnDemandProducts) {
