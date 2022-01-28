@@ -1,7 +1,7 @@
 <button mat-stroked-button class="view-select-button" [matMenuTriggerFor]="viewMenu" aria-label="Map projection view">
-  <template *ngIf="view == types.ARCTIC" class="view-btn arctic"></template>
-  <template *ngIf="view == types.EQUITORIAL" class="view-btn equatorial"></template>
-  <template *ngIf="view == types.ANTARCTIC" class="view-btn antarctic"></template>
+  <template *ngIf="view == types.ARCTIC" class="view-btn view-select-icon arctic"></template>
+  <template *ngIf="view == types.EQUITORIAL" class="view-btn view-select-icon equatorial"></template>
+  <template *ngIf="view == types.ANTARCTIC" class="view-btn view-select-icon antarctic"></template>
 </button>
 
 <mat-menu #viewMenu="matMenu">
