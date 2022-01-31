@@ -56,11 +56,16 @@ export function queueReducer(state = initState, action: QueueActions): QueueStat
         remove_product(product, oldProducts);
 
       const ids = Object.keys(products);
-
+      let downloads = state.downloads;
+      if (oldProducts[action.payload.id]) {
+        const oldDownloads = {...state.downloads};
+        downloads = remove_product(product, oldDownloads);
+      }
       return {
         ...state,
         products,
-        ids
+        ids,
+        downloads
       };
     }
 
@@ -88,10 +93,12 @@ export function queueReducer(state = initState, action: QueueActions): QueueStat
 
       const ids = Object.keys(products);
 
+      const downloads = remove_product(toRemove, {...state.downloads});
       return {
         ...state,
         products,
-        ids
+        ids,
+        downloads
       };
     }
 
@@ -113,10 +120,17 @@ export function queueReducer(state = initState, action: QueueActions): QueueStat
 
       const ids = [ ...state.ids ]
         .filter(id => !toRemove.has(id));
+      let downloads = {...state.downloads};
+      toRemove.forEach(id => {
+        console.log(id);
+        downloads = remove_product(id, downloads);
+      });
 
       return {
         ...state,
-        products, ids
+        products,
+        ids,
+        downloads
       };
     }
 
@@ -125,6 +139,7 @@ export function queueReducer(state = initState, action: QueueActions): QueueStat
         ...state,
         products: {},
         ids: [],
+        downloads: {}
       };
     }
 
@@ -142,7 +157,6 @@ export function queueReducer(state = initState, action: QueueActions): QueueStat
       const customJobs = jobs.filter(
         job => !jobTypes.has(job.job_type.id)
       );
-
       return {
         ...state,
         customJobs
