@@ -11,6 +11,7 @@ import { AppState } from '@store';
 import * as userStore from '@store/user';
 import { SubSink } from 'subsink';
 import { NotificationService } from '@services/notification.service';
+import { AuthService } from '@services';
 
 @Component({
   selector: 'app-download-file-button',
@@ -38,7 +39,8 @@ export class DownloadFileButtonComponent implements OnInit, AfterViewInit {
   constructor(
     private downloadService: DownloadService,
     private store$: Store<AppState>,
-    private notificationService: NotificationService
+    private notificationService: NotificationService,
+    private authService: AuthService
   ) { }
 
   ngOnInit(): void {
@@ -101,7 +103,15 @@ export class DownloadFileButtonComponent implements OnInit, AfterViewInit {
     }
 
     if (!this.isUserLoggedIn) {
-      this.notificationService.error('Downloading products requires logging in.');
+      this.subs.add(
+        this.authService.login$().subscribe(
+          user => {
+            this.store$.dispatch(new userStore.Login(user));
+            this.downloadFunctionality(this.product);
+
+          }
+        )
+      );
     } else {
       this.downloadFunctionality(this.product);
     }
