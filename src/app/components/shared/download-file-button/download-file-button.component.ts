@@ -10,7 +10,6 @@ import { AppState } from '@store';
 
 import * as userStore from '@store/user';
 import { SubSink } from 'subsink';
-import { NotificationService } from '@services/notification.service';
 import { AuthService } from '@services';
 
 @Component({
@@ -39,7 +38,6 @@ export class DownloadFileButtonComponent implements OnInit, AfterViewInit {
   constructor(
     private downloadService: DownloadService,
     private store$: Store<AppState>,
-    private notificationService: NotificationService,
     private authService: AuthService
   ) { }
 
@@ -135,9 +133,6 @@ export class DownloadFileButtonComponent implements OnInit, AfterViewInit {
       }
     }, () => {
       this.dFile = undefined;
-      this.notificationService.error(
-        'There was an error downloading the file / Unable to use new download functionality for this resource.'
-      );
       this.classicDownload(this.url);
     });
   }
