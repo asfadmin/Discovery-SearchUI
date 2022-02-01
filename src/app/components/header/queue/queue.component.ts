@@ -65,7 +65,7 @@ export class QueueComponent implements OnInit, OnDestroy {
   public dlDefaultChunkSize = 3;
   public dlQueueProgress = 0;
   public productList: DownloadFileButtonComponent[] = [];
-
+  public isLoggedIn$ = this.store$.select(userStore.getIsUserLoggedIn);
   public products$ = this.store$.select(queueStore.getQueuedProducts).pipe(
     tap(products => this.areAnyProducts = products.length > 0),
     tap(products => {

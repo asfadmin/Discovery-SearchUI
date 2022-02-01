@@ -176,6 +176,7 @@
             <mat-menu #dataMenu="matMenu" yPosition="above">
               <app-download-all
                 (dlAllEvent)="downloadAllFiles()"
+                [disabled]="!(isLoggedIn$ | async)"
               >
               </app-download-all>
               <button mat-menu-item (click)="onMakeDownloadScript()">

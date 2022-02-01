@@ -1,8 +1,11 @@
+<div [matTooltip]="disabled ? 'Must be logged in' : 'Download all files in queue'">
 <button (click)="downloadAll()"
         mat-menu-item
-        matTooltip="Download all files in queue"
         style="text-decoration: none;"
+        [disabled]="disabled"
 >
 Download All
 </button>
+</div>
+
 

@@ -1,4 +1,4 @@
-import {Component, OnInit, Output, EventEmitter} from '@angular/core';
+import {Component, OnInit, Output, EventEmitter, Input} from '@angular/core';
 
 @Component({
   selector: 'app-download-all',
@@ -7,7 +7,7 @@ import {Component, OnInit, Output, EventEmitter} from '@angular/core';
 })
 export class DownloadAllComponent implements OnInit {
   @Output() dlAllEvent = new EventEmitter();
-
+  @Input() disabled = false;
   constructor() { }
 
   ngOnInit(): void {
