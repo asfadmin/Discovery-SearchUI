@@ -1,8 +1,5 @@
 @import "asf-theme";
 
-@use "@angular/material" as mat;
-
-$config: mat.define-typography-config();
 
 a {
   text-decoration: none;
