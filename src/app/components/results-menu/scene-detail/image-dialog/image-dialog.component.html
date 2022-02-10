@@ -180,7 +180,7 @@
             *ngIf="(searchType$ | async) === searchTypes.CUSTOM_PRODUCTS"
           >
             <div class="detail-header">Product Details</div>
-            <ul style="columns: 1; font-size: 12px">
+            <ul style="columns: 1; font-size: 12px;">
               <li *ngIf="scene.metadata.job.name">
                 <b>Project Name:</b> {{ scene.metadata.job.name }}
               </li>
@@ -201,7 +201,7 @@
             >
               • {{ product.productTypeDisplay }}
               <mat-menu #action_menu="matMenu" xPosition="before">
-                <span style="margin-right: 10px; margin-left: 10px">
+                <span style="margin-right: 10px; margin-left: 10px;">
                   <span *ngIf="product.bytes === 0">Virtual</span>
                   <span *ngIf="product.bytes !== 0">{{
                     product.bytes.toString() | readableSizeFromBytes
@@ -250,7 +250,7 @@
 
           <ng-container>
             <div class="detail-header">Scene Detail</div>
-            <div style="font-size: 12px" *ngIf="!!currentSarviewsProduct">
+            <div style="font-size: 12px;" *ngIf="!!currentSarviewsProduct">
               <app-event-product-metadata [product]="currentSarviewsProduct">
               </app-event-product-metadata>
             </div>
@@ -259,9 +259,9 @@
 
           <ng-container>
             <div class="detail-header">Product Details</div>
-            <div style="font-size: 12px" *ngIf="!!currentSarviewsProduct">
-              <ul style="columns: 1; font-size: 12px">
-                <li style="margin-bottom: 5px; word-break: break-word">
+            <div style="font-size: 12px;" *ngIf="!!currentSarviewsProduct">
+              <ul style="columns: 1; font-size: 12px;">
+                <li style="margin-bottom: 5px; word-break: break-word;">
                   <b>Product Filename:</b>
                   {{ currentSarviewsProduct.files.product_name }}
                 </li>
@@ -349,7 +349,7 @@
 
   <ng-container *ngIf="breakpoint > breakpoints.MOBILE">
     <div>
-      <app-browse-list style="height: 150px"></app-browse-list>
+      <app-browse-list style="height: 150px;"></app-browse-list>
     </div>
   </ng-container>
   <div
@@ -368,7 +368,7 @@
       <mat-checkbox
         (change)="setOnlyShowBrowse($event.checked)"
         [checked]="onlyShowScenesWithBrowse"
-        style="margin-right: 6px"
+        style="margin-right: 6px;"
         color="warn"
       >
       </mat-checkbox>
