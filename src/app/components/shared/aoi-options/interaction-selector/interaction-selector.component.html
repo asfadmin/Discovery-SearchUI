@@ -1,13 +1,7 @@
-<mat-button-toggle-group [value]="interaction"
+<mat-button-toggle-group [value]="interaction" class="interaction-toggle-group"
   name="viewSelect" aria-label="Font Style">
 
-  <mat-button-toggle
-    (click)="onDrawSelected()"
-    [value]="types.DRAW"
-    class="control-mat-button-toggle"
-    [matTooltip]="interaction === types.DRAW ? 'Stop drawing' : 'Draw new area of interest'">
-    <mat-icon class="interaction-icon">add</mat-icon>
-  </mat-button-toggle>
+  <app-draw-selector></app-draw-selector>
 
   <mat-button-toggle
     (click)="onEditSelected()"
@@ -18,16 +12,24 @@
   </mat-button-toggle>
 
   <mat-button-toggle
+    (click)="onDrawSelected()"
+    [value]="types.DRAW"
+    class="control-mat-button-toggle"
+    [matTooltip]="interaction === types.DRAW ? 'Stop drawing' : 'Draw new area of interest'">
+    <mat-icon class="interaction-icon">draw</mat-icon>
+  </mat-button-toggle>
+
+  <mat-button-toggle
     (click)="onClearSelected()"
     class="control-mat-button-toggle"
     matTooltip="Clear current area of interest"
     #clearButton>
     <mat-icon class="interaction-icon">delete</mat-icon>
   </mat-button-toggle>
-  <mat-button-toggle
-    (click)="onImportSelected()"
-    class="control-mat-button-toggle"
-    matTooltip="Import Area of Interest">
-    <mat-icon class="interaction-icon">upload</mat-icon>
-  </mat-button-toggle>
+<!--  <mat-button-toggle-->
+<!--    (click)="onImportSelected()"-->
+<!--    class="control-mat-button-toggle"-->
+<!--    matTooltip="Import Area of Interest">-->
+<!--    <mat-icon class="interaction-icon">upload</mat-icon>-->
+<!--  </mat-button-toggle>-->
 </mat-button-toggle-group>

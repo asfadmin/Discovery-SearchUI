@@ -45,7 +45,8 @@ label {
 }
 
 .group-margin {
-  margin-right: 6px;
+  margin-right: 0;
+  margin-left: 6px;
 }
 
 .control-icon {
@@ -74,6 +75,10 @@ label {
 
 .slim-line {
   height: 0;
+}
+
+.zoom-buttons {
+  margin-left: 5px;
 }
 
 ::ng-deep .mat-slider.mat-slider-horizontal {

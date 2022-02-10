@@ -23,7 +23,7 @@
         </div>
       </div>
 
-      <div fxFlex="">
+      <div fxFlex="" class="zoom-buttons">
         <div fxLayout="row" fxLayoutAlign="center" class="button-group-label">
           <label>Zoom</label>
         </div>
@@ -48,21 +48,21 @@
 
       <div *ngIf="(view$ | async) === viewTypes.EQUITORIAL" fxFlex="" class="group-margin">
         <div fxLayout="row" fxLayoutAlign="center" class="button-group-label">
-          <label>View</label>
+          <label>Layers</label>
         </div>
         <div fxLayout="row">
           <app-layer-selector></app-layer-selector>
         </div>
       </div>
 
-      <div fxFlex="" class="group-margin" [hidden]="(view$ | async) !== viewTypes.EQUITORIAL">
-        <div fxLayout="row" fxLayoutAlign="center" class="button-group-label">
-          <label>Gridlines</label>
-        </div>
-        <div fxLayout="row">
-          <app-gridlines-selector></app-gridlines-selector>
-        </div>
-      </div>
+<!--      <div fxFlex="" class="group-margin" [hidden]="(view$ | async) !== viewTypes.EQUITORIAL">-->
+<!--        <div fxLayout="row" fxLayoutAlign="center" class="button-group-label">-->
+<!--          <label>Gridlines</label>-->
+<!--        </div>-->
+<!--        <div fxLayout="row">-->
+<!--          <app-gridlines-selector></app-gridlines-selector>-->
+<!--        </div>-->
+<!--      </div>-->
 
       <div *ngIf="searchType === searchTypes.DATASET || searchType === searchTypes.SBAS" fxFlex="" class="group-margin">
         <div fxLayout="row" fxLayoutAlign="center" class="button-group-label">
@@ -74,14 +74,14 @@
         </div>
       </div>
 
-      <div *ngIf="searchType === searchTypes.DATASET || searchType === searchTypes.SBAS" fxFlex="" class="group-margin">
-        <div fxLayout="row" fxLayoutAlign="center" class="button-group-label">
-          <label>Selection Shape</label>
-        </div>
-        <div fxLayout="row">
-          <app-draw-selector></app-draw-selector>
-        </div>
-      </div>
+<!--      <div *ngIf="searchType === searchTypes.DATASET || searchType === searchTypes.SBAS" fxFlex="" class="group-margin">-->
+<!--        <div fxLayout="row" fxLayoutAlign="center" class="button-group-label">-->
+<!--          <label>Selection Shape</label>-->
+<!--        </div>-->
+<!--        <div fxLayout="row">-->
+<!--          <app-draw-selector></app-draw-selector>-->
+<!--        </div>-->
+<!--      </div>-->
 
       <div fxFlex="" class="group-margin" *ngIf="searchType !== searchTypes.BASELINE
       && searchType !== searchTypes.SBAS">
