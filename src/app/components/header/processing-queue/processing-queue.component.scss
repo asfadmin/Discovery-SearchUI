@@ -240,7 +240,7 @@ $color: $asf-primary-dark;
   height: calc(100% - #{$header-height} - #{$footer-height} - #{$bottom-offset});
   max-height: calc(100% - #{$header-height} - #{$footer-height} - #{$bottom-offset});
   width: 100%;
-  overflow-y: hidden;
+  overflow-y: auto !important;
   overflow-x: hidden;
   background-color: white;
   padding: 0;
@@ -289,7 +289,7 @@ $color: $asf-primary-dark;
   display: flex;
   flex-direction: row;
   height: 100%;
-  overflow-y: auto;
+  //overflow-y: auto;
 }
 
 .content-bottom-area-mobile {

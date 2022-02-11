@@ -274,8 +274,9 @@ export class SceneFilesComponent implements OnInit, OnDestroy, AfterContentInit 
     return product_name;
   }
 
-  public downloadProduct(product_url: string) {
-    window.open(product_url);
+  public downloadProduct(product_url) {
+    // window.open(product_url);
+    console.log(product_url);
   }
 
   public onSelectSarviewsProduct(selections: MatSelectionListChange) {
@@ -372,7 +373,37 @@ export class SceneFilesComponent implements OnInit, OnDestroy, AfterContentInit 
       this.store$.dispatch(new queueStore.AddItems([toCMRProduct]));
     }
   }
+  public getCMRProductSarviews(product: models.SarviewsProduct) {
 
+    const jobTypes = Object.values(hyp3JobTypes);
+    const jobType = jobTypes.find(t => t.id === product.job_type);
+    const productTypeDisplay = `${jobType.name}, ${jobType.productTypes[0].productTypes[0]}`;
+
+    const toCMRProduct: models.CMRProduct = {
+      name: product.files.product_name,
+      productTypeDisplay,
+      file: '',
+      id: product.product_id,
+      downloadUrl: product.files.product_url,
+      bytes: product.files.product_size,
+      browses: [product.files.browse_url],
+      thumbnail: product.files.thumbnail_url,
+      dataset: 'Sentinel-1',
+      groupId: 'SARViews',
+      isUnzippedFile: false,
+
+      metadata: {
+        date: moment(product.processing_date),
+        stopDate: moment(product.processing_date),
+        polygon: product.granules[0].wkt,
+        productType: jobType.name,
+
+      } as CMRProductMetadata
+
+
+    };
+    return toCMRProduct;
+  }
   public getProductSceneCount(products: SarviewsProduct[]) {
     const outputList = products.reduce((prev, product) => {
         const temp = product.granules.map(granule => granule.granule_name);

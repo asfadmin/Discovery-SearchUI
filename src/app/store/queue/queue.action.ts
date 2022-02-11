@@ -1,6 +1,6 @@
 import { Action } from '@ngrx/store';
 
-import { CMRProduct, AsfApiOutputFormat, QueuedHyp3Job, SarviewsProduct } from '@models';
+import { CMRProduct, AsfApiOutputFormat, QueuedHyp3Job, SarviewsProduct, DownloadStatus } from '@models';
 
 export enum QueueActionType {
   ADD_ITEMS = '[Queue] Add Items',
@@ -21,9 +21,12 @@ export enum QueueActionType {
 
   MAKE_DOWNLOAD_SCRIPT  = '[Queue] Make Bulk Download From Queue',
   MAKE_DOWNLOAD_SCRIPT_FROM_LIST = '[Queue] Make a bulk Download script from search results',
-  MAKE_DOWNLOAD_SCRIPT_FROM_SARVIEWS_PRODUCTS = 'Queue] Make a bulk Dowload Script From SARViews Event Products',
+  MAKE_DOWNLOAD_SCRIPT_FROM_SARVIEWS_PRODUCTS = '[Queue] Make a bulk Download Script From SARViews Event Products',
   DOWNLOAD_METADATA = '[Queue] Download Metadata',
   DOWNLOAD_SEARCHTYPE_METADATA = '[Queue] Download Search Result Metadata',
+
+  DOWNLOAD_PRODUCT = '[Queue] Download product',
+  REMOVE_DOWNLOAD_PRODUCT = '[Queue] Remove Download product',
 
   FIND_PAIR = '[Scenes] finds the closest pair to a given scene'
 }
@@ -51,7 +54,17 @@ export class ToggleProduct implements Action {
 
   constructor(public payload: CMRProduct) {}
 }
+export class DownloadProduct implements Action {
+  public readonly type = QueueActionType.DOWNLOAD_PRODUCT;
 
+  constructor(public payload: DownloadStatus) {}
+}
+
+export class RemoveDownloadProduct implements Action {
+  public readonly type = QueueActionType.REMOVE_DOWNLOAD_PRODUCT;
+
+  constructor(public payload: DownloadStatus) {}
+}
 export class ClearQueue implements Action {
   public readonly type = QueueActionType.CLEAR_QUEUE;
 }
@@ -152,4 +165,6 @@ export type QueueActions =
   | MakeDownloadScriptFromSarviewsProducts
   | DownloadMetadata
   | DownloadSearchtypeMetadata
-  | FindPair;
+  | FindPair
+  | DownloadProduct
+  | RemoveDownloadProduct;

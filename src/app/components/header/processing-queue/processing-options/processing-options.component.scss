@@ -1,3 +1,5 @@
+@import "asf-theme";
+
 .processing-options {
   margin-top: 10px;
   background-color: white;
@@ -11,7 +13,12 @@
 .flex-field {
   flex: none;
   flex-direction: inherit !important;
-  margin: 3px 20px 3px 0;
+  margin: 3px 0;
+}
+
+.margin-right {
+  margin-right: 20px;
+  display: inline-block;
 }
 
 .flex-row {

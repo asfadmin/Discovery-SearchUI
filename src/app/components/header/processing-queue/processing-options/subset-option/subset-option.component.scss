@@ -1,12 +1,12 @@
 @import "asf-theme";
 
 .subset-option {
-  color: $asf-primary;
+  color: $asf-blue;
 }
 
 button {
-  padding: 0;
   font-style: italic;
-  font-size: 16px !important;
-  text-decoration: underline;
+  border-color: rgb(0, 0, 0, 50%) !important;
+  //font-size: 16px !important;
+  //text-decoration: underline;
 }

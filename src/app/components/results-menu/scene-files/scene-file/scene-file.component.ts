@@ -70,7 +70,7 @@ export class SceneFileComponent implements OnInit, OnDestroy {
     this.toggle.emit();
   }
 
-  public onLoadUnzippedPoduct(): void {
+  public onLoadUnzippedProduct(): void {
     if (!this.isUserLoggedIn) {
       return;
     }
