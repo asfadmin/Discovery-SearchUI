@@ -17,6 +17,7 @@ import { Observable } from 'rxjs';
 import {  Download } from 'ngx-operators';
 import * as userStore from '@store/user';
 import { DownloadFileButtonComponent } from '@components/shared/download-file-button/download-file-button.component';
+import * as UAParser from 'ua-parser-js';
 // import { DownloadService } from '@services/download.service';
 
 
@@ -65,7 +66,11 @@ export class QueueComponent implements OnInit, OnDestroy {
   public dlDefaultChunkSize = 3;
   public dlQueueProgress = 0;
   public productList: DownloadFileButtonComponent[] = [];
-  public isLoggedIn$ = this.store$.select(userStore.getIsUserLoggedIn);
+  public isLoggedIn$ = this.store$.select(userStore.getIsUserLoggedIn).pipe(
+    map(
+      loggedIn => loggedIn && new UAParser().getBrowser().name === 'Chrome'
+    )
+  );
   public products$ = this.store$.select(queueStore.getQueuedProducts).pipe(
     tap(products => this.areAnyProducts = products.length > 0),
     tap(products => {
@@ -109,6 +114,7 @@ export class QueueComponent implements OnInit, OnDestroy {
         }
       )
     );
+
 
   }
   private keepGoing(product) {

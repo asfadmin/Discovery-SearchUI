@@ -1,4 +1,5 @@
 import {Component, OnInit, Output, EventEmitter, Input} from '@angular/core';
+import { UAParser } from 'ua-parser-js';
 
 @Component({
   selector: 'app-download-all',
@@ -8,9 +9,12 @@ import {Component, OnInit, Output, EventEmitter, Input} from '@angular/core';
 export class DownloadAllComponent implements OnInit {
   @Output() dlAllEvent = new EventEmitter();
   @Input() disabled = false;
+  public isDownloadSupported = false;
+
   constructor() { }
 
   ngOnInit(): void {
+    this.isDownloadSupported = new UAParser().getBrowser().name === 'Chrome';
   }
 
   public downloadAll(): void {
