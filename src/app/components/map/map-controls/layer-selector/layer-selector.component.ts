@@ -20,6 +20,9 @@ export class LayerSelectorComponent implements OnInit, OnDestroy {
   public layerTypes = models.MapLayerTypes;
   public layerType: models.MapLayerTypes;
 
+  public areGridlinesActive$ = this.store$.select(mapStore.getAreGridlinesActive);
+  public gridActive = false;
+
   private subs = new SubSink();
 
   constructor(
@@ -37,6 +40,12 @@ export class LayerSelectorComponent implements OnInit, OnDestroy {
       this.overviewMapVisible$.subscribe(
         isOpen => this.overviewMapVisible = isOpen
       )
+    );
+
+    this.subs.add(
+      this.areGridlinesActive$.subscribe(gridActive => {
+        this.gridActive = gridActive;
+      })
     );
   }
 
@@ -56,6 +65,10 @@ export class LayerSelectorComponent implements OnInit, OnDestroy {
 
   public onToggleOverviewMap(isOpen: boolean): void {
     this.store$.dispatch(new mapStore.ToggleOverviewMap(!isOpen));
+  }
+
+  public onToggleGridlines() {
+    this.store$.dispatch(new mapStore.SetGridlines(!this.gridActive));
   }
 
   ngOnDestroy() {

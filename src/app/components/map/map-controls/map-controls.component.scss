@@ -35,9 +35,9 @@ label {
 .lat-lon {
   font-family: mat.font-family($config);
   font-size: 12px;
-  background-color: $info-background;
-  color: $info-color;
-  margin-top: -3px;
+  background-color: $asf-primary;
+  color: $asf-primary-light;
+  //margin-top: -3px;
 }
 
 .lat-lon-data {
@@ -45,7 +45,8 @@ label {
 }
 
 .group-margin {
-  margin-right: 6px;
+  margin-right: 0;
+  margin-left: 6px;
 }
 
 .control-icon {
@@ -74,6 +75,57 @@ label {
 
 .slim-line {
   height: 0;
+}
+
+.zoom-buttons {
+  margin-left: 5px;
+}
+
+.opacity-slider-button {
+  margin: 0 0 5px;
+  padding: 0 0 0 3px;
+  color: rgb(0 0 0 / 87%);
+  background: white;
+  font-size: 14px !important;
+  height: 27px !important;
+  width: 18px !important;
+  min-width: 53px !important;
+  border-radius: 4px !important;
+  border: solid 1px rgb(0 0 0 / 12%);
+  text-align: center;
+}
+
+.opacity-slider-title {
+  text-align: center;
+  font-size: small;
+  color: $asf-primary;
+}
+
+.bottom-right {
+  color: $asf-primary;
+  position: absolute;
+  bottom: -7px;
+  right: -4px;
+  transform: rotate(-45deg);
+}
+
+::ng-deep .opacity-slider-mat-menu {
+  padding: 15px 20px 0;
+}
+
+.opacity-slider {
+  width: 275px;
+}
+
+.opacity-button-text {
+  display: inline-block;
+  position: absolute;
+  top: -4px;
+  left: 7px;
+  width: 40px;
+  color: $asf-primary;
+  text-align: center;
+  align-content: center;
 }
 
 ::ng-deep .mat-slider.mat-slider-horizontal {
