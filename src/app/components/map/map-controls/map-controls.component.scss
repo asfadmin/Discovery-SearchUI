@@ -82,16 +82,16 @@ label {
 }
 
 .opacity-slider-button {
-  margin: 0 0 5px 0;
+  margin: 0 0 5px;
   padding: 0 0 0 3px;
-  color: rgba(0, 0, 0, 0.87);
+  color: rgb(0 0 0 / 87%);
   background: white;
   font-size: 14px !important;
   height: 27px !important;
   width: 18px !important;
   min-width: 53px !important;
   border-radius: 4px !important;
-  border: solid 1px rgba(0, 0, 0, 0.12);
+  border: solid 1px rgb(0 0 0 / 12%);
   text-align: center;
 }
 
@@ -110,7 +110,7 @@ label {
 }
 
 ::ng-deep .opacity-slider-mat-menu {
-  padding: 15px 20px 0 20px;
+  padding: 15px 20px 0;
 }
 
 .opacity-slider {

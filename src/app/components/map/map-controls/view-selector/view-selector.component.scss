@@ -3,7 +3,7 @@
 .view-btn {
   background-image: url("/assets/icons/projection-icons.png");
   background-size: 90px 30px;
-  content: '';
+  content: "";
   width: 25px;
   height: 25px;
   margin-right: 15px;
@@ -29,14 +29,14 @@
 .view-select-button {
   margin: 0;
   padding: 0 0 0 10px;
-  color: rgba(0, 0, 0, 0.87);
+  color: rgb(0 0 0 / 87%);
   background: white;
   font-size: 18px !important;
   height: 27px !important;
   width: 18px !important;
   min-width: 53px !important;
   border-radius: 4px !important;
-  border: solid 1px rgba(0, 0, 0, 0.12);
+  border: solid 1px rgb(0 0 0 / 12%);
   text-align: center;
 }
 
