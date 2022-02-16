@@ -17,6 +17,7 @@ import { CopyToClipboardModule } from '@components/shared/copy-to-clipboard';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { OnDemandAddMenuModule } from '@components/shared/on-demand-add-menu';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
+import { DownloadFileButtonModule } from '@components/shared/download-file-button/download-file-button.module';
 @NgModule({
   declarations: [SceneFilesComponent],
   imports: [
@@ -36,6 +37,7 @@ import { MatButtonToggleModule } from '@angular/material/button-toggle';
     FontAwesomeModule,
     OnDemandAddMenuModule,
     MatButtonToggleModule,
+    DownloadFileButtonModule
   ],
   exports: [
     SceneFilesComponent
