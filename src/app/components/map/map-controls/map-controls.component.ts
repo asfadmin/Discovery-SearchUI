@@ -14,7 +14,7 @@ import { LonLat, SarviewsProduct, SearchType } from '@models';
 import { combineLatest, Observable } from 'rxjs';
 
 import { filter, map, startWith, tap } from 'rxjs/operators';
-import { ToggleBrowseOverlay } from '@store/map';
+import { ToggleBrowseOverlay} from '@store/map';
 import { MatSliderChange } from '@angular/material/slider';
 import { getSelectedDatasetId } from '@store/filters';
 
@@ -25,12 +25,28 @@ import { getSelectedDatasetId } from '@store/filters';
 })
 export class MapControlsComponent implements OnInit, OnDestroy {
   public view$ = this.store$.select(mapStore.getMapView);
+  public browseOverlayOpacity$ = this.store$.select(mapStore.getBrowseOverlayOpacity);
   public pinnedProducts$ = this.store$.select(sceneStore.getImageBrowseProducts);
+
+  public currentBrowseID = '';
+
+  public searchType: models.SearchType;
+  public searchTypes = models.SearchType;
+  public viewTypes = models.MapViewType;
+  public mousePos: LonLat;
+  public browseOverlayOpacity: number;
+
+  private subs = new SubSink();
+  private selectedEventProducts: SarviewsProduct[] = [];
+  private selectedScene: models.CMRProduct;
+  private browseIndex = 0;
+  private browseIndexingEnabled = false;
 
   public selectedScene$ = this.store$.select(sceneStore.getSelectedScene).pipe(
     tap(_ => this.browseIndex = 0),
     filter(scene => !!scene),
   startWith(null));
+
   public selectedEvent$ = this.store$.select(sceneStore.getSelectedSarviewsProduct).pipe(
     tap(_ => this.browseIndex = 0),
     filter(event => !!event),
@@ -73,19 +89,6 @@ export class MapControlsComponent implements OnInit, OnDestroy {
     map(([overlayEnabled, multipleBrowses]) => overlayEnabled && multipleBrowses)
   );
 
-
-  public currentBrowseID = '';
-
-  public searchType: models.SearchType;
-  public searchTypes = models.SearchType;
-  public viewTypes = models.MapViewType;
-  public mousePos: LonLat;
-  private subs = new SubSink();
-  private browseIndex = 0;
-  private selectedEventProducts: SarviewsProduct[] = [];
-  private selectedScene: models.CMRProduct;
-  private browseIndexingEnabled = false;
-
   constructor(
     private store$: Store<AppState>,
     private mapService: services.MapService,
@@ -101,6 +104,13 @@ export class MapControlsComponent implements OnInit, OnDestroy {
     this.subs.add(
       this.mapService.mousePosition$.subscribe(mp => this.mousePos = mp)
     );
+
+    this.subs.add(
+      this.store$.select(mapStore.getBrowseOverlayOpacity).subscribe(
+        browseOverlayOpacity => this.browseOverlayOpacity = browseOverlayOpacity
+      )
+    );
+
 
     this.subs.add(
       combineLatest([this.selectedScene$, this.selectedEvent$]).subscribe(

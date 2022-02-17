@@ -139,3 +139,8 @@ export const getIsOverviewMapOpen = createSelector(
   getMapState,
   (state: MapState) => state.overviewMapOpen
 );
+
+export const getBrowseOverlayOpacity = createSelector(
+  getMapState,
+  (state: MapState) => state.browseOverlayOpacity
+);
