@@ -18,8 +18,9 @@ $info-color: $asf-primary;
 .icon-bar {
   background-color: $info-background;
   padding: 0;
-  padding-right: 4px;
   pointer-events: auto;
+  height: 45px !important;
+  max-height: 45px !important;
 }
 
 .ribbon-info-top {
@@ -37,11 +38,12 @@ label {
   font-size: 12px;
   background-color: $asf-primary;
   color: $asf-primary-light;
-  //margin-top: -3px;
+  margin-top: 0;
+  max-height: 14px !important;
 }
 
 .lat-lon-data {
-  margin-left: 41px;
+  margin-left: 8px;
 }
 
 .group-margin {
@@ -63,14 +65,25 @@ label {
   color: $info-color;
 }
 
+.move-handle-div {
+  background-color: $asf-primary-light;
+  cursor: move;
+}
+
 .move-handle {
   margin-top: 16px;
   margin-left: 7px;
   margin-right: 7px;
-  color: $info-color;
+  color: $asf-primary-dark;
   cursor: move;
   width: 24px;
   height: 24px;
+}
+
+.move-handle-bottom {
+  background-color: $asf-primary;
+  height: 14px;
+  margin-top: 1px;
 }
 
 .slim-line {
@@ -126,6 +139,27 @@ label {
   color: $asf-primary;
   text-align: center;
   align-content: center;
+}
+
+.tool-bar-control {
+  cursor: pointer;
+  display: block;
+  width: 30px;
+  padding: 14px 0;
+  color: $asf-primary;
+  background-color: $asf-primary-light;
+}
+
+.tool-bar-control-bottom {
+  width: 100%;
+  margin: 3px 0;
+  height: 14px;
+  background-color: $asf-primary;
+}
+
+.visible-toggle {
+  transition: all 1.2s ease-in-out;
+  //height: 45px;
 }
 
 ::ng-deep .mat-slider.mat-slider-horizontal {
