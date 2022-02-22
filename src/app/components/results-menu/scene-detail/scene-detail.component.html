@@ -155,7 +155,7 @@
                 <span
                   class="navigation-icon"
                   [class.clickable]="browseIndex > 0"
-                  (click)="browseIndex > 0 && (browseIndex = browseIndex - 1)"
+                  (click)="onIncrementBrowseIndex()"
                 >
                   <mat-icon [class.not-clickable]="browseIndex < 1"
                     >navigate_before</mat-icon
@@ -165,10 +165,7 @@
                 <span
                   class="navigation-icon"
                   [class.clickable]="browseIndex + 1 < browses.length"
-                  (click)="
-                    browseIndex + 1 < browses.length &&
-                      (browseIndex = browseIndex + 1)
-                  "
+                  (click)=onDecrementBrowseIndex()
                 >
                   <mat-icon
                     [class.not-clickable]="browseIndex + 1 >= browses.length"
@@ -217,23 +214,31 @@
         >
           <mat-icon>download</mat-icon>
         </a>
+        <span
+        class ="clickable"
+        matTooltip="Pin this product's browse on the map"
+        (click)="onToggleSarviewsProductPin()"
+        >
+          <mat-icon>
+            push_pin
+          </mat-icon>
+        </span>
       </div>
       <div class="browse-pager">
         <span
           [class.clickable]="browseIndex > 0"
-          (click)="browseIndex > 0 && (browseIndex = browseIndex - 1)"
+          (click)="onDecrementBrowseIndex()"
         >
-          <mat-icon>arrow_back</mat-icon>
+          <mat-icon>navigate_before</mat-icon>
         </span>
         {{ browseIndex + 1 }} / {{ sarviewsProducts.length }}
         <span
           [class.clickable]="browseIndex + 1 < sarviewsProducts.length"
           (click)="
-            browseIndex + 1 < sarviewsProducts.length &&
-              (browseIndex = browseIndex + 1)
+          onIncrementBrowseIndex()
           "
         >
-          <mat-icon>arrow_forward</mat-icon>
+          <mat-icon>navigate_next</mat-icon>
         </span>
       </div>
     </div>

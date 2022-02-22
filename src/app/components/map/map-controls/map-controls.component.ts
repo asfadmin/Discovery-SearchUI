@@ -130,9 +130,9 @@ export class MapControlsComponent implements OnInit, OnDestroy {
 
     this.subs.add(
       this.store$.select(sceneStore.getSelectedSarviewsEventProducts)
-      .pipe(filter(event => !!event))
+      .pipe(filter(eventProducts => !!eventProducts))
       .subscribe(
-        event => this.selectedEventProducts = event
+        eventProducts => this.selectedEventProducts = eventProducts
       )
     );
 

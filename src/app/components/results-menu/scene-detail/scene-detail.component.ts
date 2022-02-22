@@ -18,6 +18,7 @@ import { AuthService, MapService, PropertyService,
 import { ImageDialogComponent } from './image-dialog';
 
 import { DatasetForProductService } from '@services';
+import { PinnedProduct } from '@services/browse-map.service';
 
 @Component({
   selector: 'app-scene-detail',
@@ -46,6 +47,8 @@ export class SceneDetailComponent implements OnInit, OnDestroy {
   public breakpoints = models.Breakpoints;
   public isImageLoading = false;
   public selectedProducts: models.CMRProduct[];
+  public selectedEventProducts: models.SarviewsProduct[];
+  public eventSelectedProductIds: string[];
   public hasBaseline: boolean;
   public browseIndex = 0;
   public detailsOpen = true;
@@ -74,6 +77,12 @@ export class SceneDetailComponent implements OnInit, OnDestroy {
     this.subs.add(
       this.store$.select(userStore.getIsUserLoggedIn).subscribe(
         isLoggedIn => this.isLoggedIn = isLoggedIn
+      )
+    );
+
+    this.subs.add(
+      this.store$.select(scenesStore.getPinnedEventBrowseIDs).subscribe(
+        ids => this.eventSelectedProductIds = ids
       )
     );
 
@@ -123,6 +132,14 @@ export class SceneDetailComponent implements OnInit, OnDestroy {
         this.updateHasBaseline();
         this.browseIndex = 0;
       })
+    );
+
+    this.subs.add(
+      this.selectedSarviewsEventProducts$
+      .pipe(filter(eventProducts => !!eventProducts))
+      .subscribe(
+          selectedEventProducts => this.selectedEventProducts = selectedEventProducts
+        )
     );
 
     this.subs.add(
@@ -238,6 +255,63 @@ export class SceneDetailComponent implements OnInit, OnDestroy {
     );
   }
 
+  public onIncrementBrowseIndex() {
+    if(this.browseIndex === this.getBrowseCount() - 1) {
+      return;
+    }
+    const newIndex = this.browseIndex + 1;
+    this.onUpdateBrowseIndex(newIndex);
+  }
+
+  public onDecrementBrowseIndex() {
+    if(this.browseIndex === 0) {
+      return;
+    }
+    const newIndex = this.browseIndex - 1;
+    this.onUpdateBrowseIndex(newIndex);
+  }
+
+  public onUpdateBrowseIndex(newIndex: number) {
+    this.browseIndex = newIndex;
+    const [url, wkt] = this.searchType === this.searchTypes.SARVIEWS_EVENTS
+    ? [this.selectedEventProducts[this.browseIndex].files.browse_url, this.selectedEventProducts[this.browseIndex]?.granules[0].wkt]
+    : [this.scene.browses[this.browseIndex], this.scene.metadata.polygon];
+
+    this.mapService.setSelectedBrowse(url, wkt);
+  }
+
+  public onToggleSarviewsProductPin() {
+    if(this.selectedEventProducts?.length === 0) {
+      return;
+    }
+
+    const currentProductId = this.selectedEventProducts[this.browseIndex].product_id;
+    const isPinned = this.eventSelectedProductIds.includes(currentProductId)
+
+    if(isPinned) {
+      this.eventSelectedProductIds = this.eventSelectedProductIds.filter(productId => productId !== currentProductId)
+    } else {
+      this.eventSelectedProductIds.push(currentProductId)
+    }
+    this.onUpdatePinnedUrl(this.eventSelectedProductIds);
+  }
+
+  public onUpdatePinnedUrl(selectedProducts: string[]) {
+    const pinned = selectedProducts.reduce(
+      (prev, key) => {
+        const output = {} as PinnedProduct;
+        const sarviewsProduct = this.sarviewsProducts.find(prod => prod.product_id === key);
+        output.url = sarviewsProduct.files.browse_url;
+        output.wkt = sarviewsProduct.granules[0].wkt;
+
+        prev[key] = output;
+        return prev;
+      }, {} as {[product_id in string]: PinnedProduct}
+    );
+
+    this.store$.dispatch(new scenesStore.SetImageBrowseProducts(pinned));
+  }
+
   public onSetSelectedAsMaster() {
     this.store$.dispatch(new scenesStore.SetMaster(this.scene.name));
   }
@@ -343,6 +417,11 @@ export class SceneDetailComponent implements OnInit, OnDestroy {
 
   public openInSarviews() {
     window.open(this.getSarviewsURL());
+  }
+
+  private getBrowseCount() {
+    return this.searchType === this.searchTypes.SARVIEWS_EVENTS
+    ? this.selectedEventProducts.length : this.scene.browses.length;
   }
 
   ngOnDestroy() {
