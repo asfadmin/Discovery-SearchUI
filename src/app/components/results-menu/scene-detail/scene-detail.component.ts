@@ -267,7 +267,7 @@ export class SceneDetailComponent implements OnInit, OnDestroy {
   }
 
   public onIncrementBrowseIndex() {
-    if(this.browseIndex === this.getBrowseCount() - 1) {
+    if (this.browseIndex === this.getBrowseCount() - 1) {
       return;
     }
     const newIndex = this.browseIndex + 1;
@@ -275,7 +275,7 @@ export class SceneDetailComponent implements OnInit, OnDestroy {
   }
 
   public onDecrementBrowseIndex() {
-    if(this.browseIndex === 0) {
+    if (this.browseIndex === 0) {
       return;
     }
     const newIndex = this.browseIndex - 1;
@@ -283,7 +283,7 @@ export class SceneDetailComponent implements OnInit, OnDestroy {
   }
 
   public onUpdateBrowseIndex(newIndex: number) {
-    if(!this.isBrowseOverlayEnabled) {
+    if (!this.isBrowseOverlayEnabled) {
       return;
     }
 
@@ -296,17 +296,17 @@ export class SceneDetailComponent implements OnInit, OnDestroy {
   }
 
   public onToggleSarviewsProductPin() {
-    if(this.selectedEventProducts?.length === 0) {
+    if (this.selectedEventProducts?.length === 0) {
       return;
     }
 
     const currentProductId = this.selectedEventProducts[this.browseIndex].product_id;
-    const isPinned = this.eventSelectedProductIds.includes(currentProductId)
+    const isPinned = this.eventSelectedProductIds.includes(currentProductId);
 
-    if(isPinned) {
-      this.eventSelectedProductIds = this.eventSelectedProductIds.filter(productId => productId !== currentProductId)
+    if (isPinned) {
+      this.eventSelectedProductIds = this.eventSelectedProductIds.filter(productId => productId !== currentProductId);
     } else {
-      this.eventSelectedProductIds.push(currentProductId)
+      this.eventSelectedProductIds.push(currentProductId);
     }
     this.onUpdatePinnedUrl(this.eventSelectedProductIds);
   }
