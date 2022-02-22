@@ -111,6 +111,19 @@ export class BrowseOverlayService {
     return Imagelayer;
   }
 
+  private fixPolygonAntimeridian(feature: Feature<Geometry>, wkt: string) {
+    const isMultiPolygon = wkt.includes('MULTIPOLYGON');
+    let polygonCoordinates: Coordinate[];
+    const geom = feature.getGeometry();
+    if (isMultiPolygon) {
+      polygonCoordinates = (geom as MultiPolygon).getPolygon(0).getCoordinates()[0];
+      (geom as MultiPolygon).setCoordinates([[this.wktService.fixAntimeridianCoordinates(polygonCoordinates)]]);
+    } else {
+      polygonCoordinates = (geom as Polygon).getCoordinates()[0];
+      (geom as Polygon).setCoordinates([this.wktService.fixAntimeridianCoordinates(polygonCoordinates)]);
+    }
+  }
+
   public isBrowseOverlayEnabled$: Observable<boolean> = combineLatest([
     this.store$.select(searchStore.getSearchType),
     this.store$.select(sceneStore.getSelectedScene),
@@ -138,21 +151,8 @@ export class BrowseOverlayService {
             return false;
 
         }
-      }),
-    );
-
-  private fixPolygonAntimeridian(feature: Feature<Geometry>, wkt: string) {
-    const isMultiPolygon = wkt.includes('MULTIPOLYGON');
-    let polygonCoordinates: Coordinate[];
-    const geom = feature.getGeometry();
-    if (isMultiPolygon) {
-      polygonCoordinates = (geom as MultiPolygon).getPolygon(0).getCoordinates()[0];
-      (geom as MultiPolygon).setCoordinates([[this.wktService.fixAntimeridianCoordinates(polygonCoordinates)]]);
-    } else {
-      polygonCoordinates = (geom as Polygon).getCoordinates()[0];
-      (geom as Polygon).setCoordinates([this.wktService.fixAntimeridianCoordinates(polygonCoordinates)]);
-    }
-  }
+    }),
+  );
 
   public setPinnedProducts(pinnedProducts: {[product_id in string]: PinnedProduct}, productLayerGroup: LayerGroup) {
 
