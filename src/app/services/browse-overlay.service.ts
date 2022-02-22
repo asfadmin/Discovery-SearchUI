@@ -12,13 +12,53 @@ import { Coordinate } from 'ol/coordinate';
 import MultiPolygon from 'ol/geom/MultiPolygon';
 import { PinnedProduct } from './browse-map.service';
 import LayerGroup from 'ol/layer/Group';
+import { combineLatest, Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
+
+import * as models from '@models';
+import * as searchStore from '@store/search';
+import * as sceneStore from '@store/scenes';
+import * as filtersStore from '@store/filters';
+import { Store } from '@ngrx/store';
+import { AppState } from '@store';
 
 @Injectable({
   providedIn: 'root'
 })
 export class BrowseOverlayService {
 
-  constructor(private wktService: WktService) { }
+  public isBrowseOverlayEnabled$: Observable<boolean> = combineLatest([
+    this.store$.select(searchStore.getSearchType),
+    this.store$.select(sceneStore.getSelectedScene),
+    this.store$.select(filtersStore.getSelectedDatasetId),
+      this.store$.select(sceneStore.getSelectedSarviewsEventProducts)]
+    ).pipe(
+      map(([searchtype, selectedScene, datasetID, selectedEventProducts]) => {
+        switch (searchtype) {
+          case models.SearchType.DATASET:
+            return datasetID === 'AVNIR'
+            || datasetID === 'SENTINEL-1'
+            || datasetID === 'SENTINEL-1 INTERFEROGRAM (BETA)'
+            || datasetID === 'UAVSAR';
+          case models.SearchType.SARVIEWS_EVENTS:
+            return selectedEventProducts?.length > 0;
+          case models.SearchType.LIST:
+            return selectedScene?.dataset === 'ALOS'
+            || selectedScene?.dataset === 'Sentinel-1A'
+            || selectedScene?.dataset === 'Sentinel-1B'
+            || selectedScene?.dataset === 'Sentinel-1 Interferogram (BETA)'
+            || selectedScene?.dataset === 'UAVSAR';
+          case models.SearchType.CUSTOM_PRODUCTS:
+            return true;
+          default:
+            return false;
+
+        }
+    }),
+  );
+
+  constructor(private wktService: WktService,
+    private store$: Store<AppState>) { }
 
   private createImageSource(url: string, extent: Extent) {
     return new Static({
