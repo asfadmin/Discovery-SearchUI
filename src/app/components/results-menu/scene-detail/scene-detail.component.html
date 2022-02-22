@@ -155,7 +155,7 @@
                 <span
                   class="navigation-icon"
                   [class.clickable]="browseIndex > 0"
-                  (click)="onIncrementBrowseIndex()"
+                  (click)="onDecrementBrowseIndex()"
                 >
                   <mat-icon [class.not-clickable]="browseIndex < 1"
                     >navigate_before</mat-icon
@@ -165,7 +165,7 @@
                 <span
                   class="navigation-icon"
                   [class.clickable]="browseIndex + 1 < browses.length"
-                  (click)=onDecrementBrowseIndex()
+                  (click)=onIncrementBrowseIndex()
                 >
                   <mat-icon
                     [class.not-clickable]="browseIndex + 1 >= browses.length"
@@ -229,7 +229,9 @@
           [class.clickable]="browseIndex > 0"
           (click)="onDecrementBrowseIndex()"
         >
-          <mat-icon>navigate_before</mat-icon>
+          <mat-icon
+          [class.not-clickable]="browseIndex < 1"
+          >navigate_before</mat-icon>
         </span>
         {{ browseIndex + 1 }} / {{ sarviewsProducts.length }}
         <span
@@ -238,7 +240,9 @@
           onIncrementBrowseIndex()
           "
         >
-          <mat-icon>navigate_next</mat-icon>
+          <mat-icon
+          [class.not-clickable]="browseIndex + 1 >= sarviewsProducts?.length"
+          >navigate_next</mat-icon>
         </span>
       </div>
     </div>

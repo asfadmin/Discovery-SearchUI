@@ -12,13 +12,14 @@ import * as uiStore from '@store/ui';
 import * as userStore from '@store/user';
 
 import * as models from '@models';
-import { AuthService, MapService, PropertyService,
+import { AuthService, BrowseOverlayService, MapService, PropertyService,
    SarviewsEventsService,
   ScreenSizeService } from '@services';
 import { ImageDialogComponent } from './image-dialog';
 
 import { DatasetForProductService } from '@services';
 import { PinnedProduct } from '@services/browse-map.service';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-scene-detail',
@@ -59,6 +60,9 @@ export class SceneDetailComponent implements OnInit, OnDestroy {
   private defaultSBASFiltersID = '';
 
   public sarviewsProducts: models.SarviewsProduct[] = [];
+  public isBrowseOverlayEnabled$: Observable<boolean> = this.browseOverlayService.isBrowseOverlayEnabled$;
+
+  public isBrowseOverlayEnabled = false;
 
   private subs = new SubSink();
 
@@ -71,9 +75,16 @@ export class SceneDetailComponent implements OnInit, OnDestroy {
     private datasetForProduct: DatasetForProductService,
     private sarviewsService: SarviewsEventsService,
     private mapService: MapService,
+    private browseOverlayService: BrowseOverlayService
   ) {}
 
   ngOnInit() {
+    this.subs.add(
+      this.isBrowseOverlayEnabled$.subscribe(
+        enabled => this.isBrowseOverlayEnabled = enabled
+      )
+    );
+
     this.subs.add(
       this.store$.select(userStore.getIsUserLoggedIn).subscribe(
         isLoggedIn => this.isLoggedIn = isLoggedIn
@@ -272,6 +283,10 @@ export class SceneDetailComponent implements OnInit, OnDestroy {
   }
 
   public onUpdateBrowseIndex(newIndex: number) {
+    if(!this.isBrowseOverlayEnabled) {
+      return;
+    }
+
     this.browseIndex = newIndex;
     const [url, wkt] = this.searchType === this.searchTypes.SARVIEWS_EVENTS
     ? [this.selectedEventProducts[this.browseIndex].files.browse_url, this.selectedEventProducts[this.browseIndex]?.granules[0].wkt]
