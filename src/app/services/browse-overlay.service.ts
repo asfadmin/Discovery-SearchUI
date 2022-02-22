@@ -27,6 +27,36 @@ import { AppState } from '@store';
 })
 export class BrowseOverlayService {
 
+  public isBrowseOverlayEnabled$: Observable<boolean> = combineLatest([
+    this.store$.select(searchStore.getSearchType),
+    this.store$.select(sceneStore.getSelectedScene),
+    this.store$.select(filtersStore.getSelectedDatasetId),
+      this.store$.select(sceneStore.getSelectedSarviewsEventProducts)]
+    ).pipe(
+      map(([searchtype, selectedScene, datasetID, selectedEventProducts]) => {
+        switch (searchtype) {
+          case models.SearchType.DATASET:
+            return datasetID === 'AVNIR'
+            || datasetID === 'SENTINEL-1'
+            || datasetID === 'SENTINEL-1 INTERFEROGRAM (BETA)'
+            || datasetID === 'UAVSAR';
+          case models.SearchType.SARVIEWS_EVENTS:
+            return selectedEventProducts?.length > 0;
+          case models.SearchType.LIST:
+            return selectedScene?.dataset === 'ALOS'
+            || selectedScene?.dataset === 'Sentinel-1A'
+            || selectedScene?.dataset === 'Sentinel-1B'
+            || selectedScene?.dataset === 'Sentinel-1 Interferogram (BETA)'
+            || selectedScene?.dataset === 'UAVSAR';
+          case models.SearchType.CUSTOM_PRODUCTS:
+            return true;
+          default:
+            return false;
+
+        }
+    }),
+  );
+
   constructor(private wktService: WktService,
     private store$: Store<AppState>) { }
 
@@ -123,36 +153,6 @@ export class BrowseOverlayService {
       (geom as Polygon).setCoordinates([this.wktService.fixAntimeridianCoordinates(polygonCoordinates)]);
     }
   }
-
-  public isBrowseOverlayEnabled$: Observable<boolean> = combineLatest([
-    this.store$.select(searchStore.getSearchType),
-    this.store$.select(sceneStore.getSelectedScene),
-    this.store$.select(filtersStore.getSelectedDatasetId),
-      this.store$.select(sceneStore.getSelectedSarviewsEventProducts)]
-    ).pipe(
-      map(([searchtype, selectedScene, datasetID, selectedEventProducts]) => {
-        switch (searchtype) {
-          case models.SearchType.DATASET:
-            return datasetID === 'AVNIR'
-            || datasetID === 'SENTINEL-1'
-            || datasetID === 'SENTINEL-1 INTERFEROGRAM (BETA)'
-            || datasetID === 'UAVSAR';
-          case models.SearchType.SARVIEWS_EVENTS:
-            return selectedEventProducts?.length > 0;
-          case models.SearchType.LIST:
-            return selectedScene?.dataset === 'ALOS'
-            || selectedScene?.dataset === 'Sentinel-1A'
-            || selectedScene?.dataset === 'Sentinel-1B'
-            || selectedScene?.dataset === 'Sentinel-1 Interferogram (BETA)'
-            || selectedScene?.dataset === 'UAVSAR';
-          case models.SearchType.CUSTOM_PRODUCTS:
-            return true;
-          default:
-            return false;
-
-        }
-    }),
-  );
 
   public setPinnedProducts(pinnedProducts: {[product_id in string]: PinnedProduct}, productLayerGroup: LayerGroup) {
 
