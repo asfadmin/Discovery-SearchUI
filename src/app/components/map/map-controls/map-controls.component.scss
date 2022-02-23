@@ -9,7 +9,7 @@ $info-color: $asf-primary;
 
 .position {
   z-index: 998;
-  margin-left: 5px;
+  margin-left: 0;
   top: 20px;
   width: 100%;
   height: 100%;
@@ -39,6 +39,7 @@ label {
   background-color: $asf-primary;
   color: $asf-primary-light;
   margin-top: 0;
+  padding-left: 10px;
   max-height: 14px !important;
 }
 
@@ -146,20 +147,23 @@ label {
   display: block;
   width: 30px;
   padding: 14px 0;
+  margin-left: 10px;
   color: $asf-primary;
   background-color: $asf-primary-light;
 }
 
 .tool-bar-control-bottom {
-  width: 100%;
-  margin: 3px 0;
+  width: calc(100% + 10px);
+  margin: 3px 0 0 -10px;
   height: 14px;
-  background-color: $asf-primary;
-}
+  background-color: #65665c;}
 
 .visible-toggle {
   transition: all 1.2s ease-in-out;
-  //height: 45px;
+}
+
+.tool-bar-common {
+  margin-left: 10px;
 }
 
 ::ng-deep .mat-slider.mat-slider-horizontal {

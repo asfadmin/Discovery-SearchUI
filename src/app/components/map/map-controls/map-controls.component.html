@@ -8,17 +8,8 @@
 
       <div fxLayout="row">
 
-
-        <div cdkDragHandle class="move-handle-div"  fxFlex="">
-          <svg class="move-handle" width="24px" fill="rgb(101, 102, 92)" viewBox="0 0 24 24">
-            <path d="M10 9h4V6h3l-5-5-5 5h3v3zm-1 1H6V7l-5 5 5 5v-3h3v-4zm14 2l-5-5v3h-3v4h3v3l5-5zm-9 3h-4v3H7l5 5 5-5h-3v-3z"></path>
-            <path d="M0 0h24v24H0z" fill="none"></path>
-          </svg>
-          <div class="move-handle-bottom"></div>
-        </div>
-
         <div *ngIf="showToolBar == true" fxLayout="column" class="visible-toggle">
-          <div fxLayout="row" class="icon-bar">
+          <div fxLayout="row" class="icon-bar tool-bar-common">
 
             <div fxFlex="" class="group-margin" *ngIf="searchType !== searchTypes.SARVIEWS_EVENTS">
               <div fxLayout="row" fxLayoutAlign="left" class="button-group-label">
@@ -141,8 +132,6 @@
               </div>
             </div>
 
-            <div fxFlex="20px"></div>
-
           </div>
           <div fxFlex="" class="lat-lon">
             <div fxFlex="" fxFlexAlign="end">
@@ -161,9 +150,9 @@
     </div>
     <div class="tool-bar-control"
          (click)="changeState()">
-      <div *ngIf="showToolBar == true"><mat-icon>arrow_back_ios</mat-icon></div>
-      <div *ngIf="showToolBar == false"><mat-icon>arrow_forward_ios</mat-icon></div>
-      <div class="tool-bar-control-bottom"></div>
+      <div *ngIf="showToolBar == true"><mat-icon>arrow_circle_left</mat-icon></div>
+      <div *ngIf="showToolBar == false"><mat-icon>arrow_circle_right</mat-icon></div>
+      <div class="tool-bar-control-bottom visible-toggle"></div>
     </div>
   </div>
 
