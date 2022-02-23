@@ -81,8 +81,8 @@ export class MapEffects {
     map(([product, _]) => product),
     filter(product => product.browses.length > 0),
     tap((selectedProduct: CMRProduct) => {
-      if(selectedProduct.dataset === 'ALOS') {
-        if(selectedProduct.metadata.productType !== 'RTC_LOW_RES'
+      if (selectedProduct.dataset === 'ALOS') {
+        if (selectedProduct.metadata.productType !== 'RTC_LOW_RES'
           && selectedProduct.metadata.productType !== 'RTC_HI_RES') {
             return;
           }
