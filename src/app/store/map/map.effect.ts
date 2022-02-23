@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { SearchType } from '@models';
+import { CMRProduct, SearchType } from '@models';
 
 
 import * as models from '@models';
@@ -54,6 +54,7 @@ export class MapEffects {
     filter(([[_, searchType], dataset]) => {
     if (searchType === SearchType.DATASET) {
       return dataset?.id === 'AVNIR'
+      || dataset?.id === 'ALOS'
       || dataset?.id === 'SENTINEL-1'
       || dataset?.id === 'SENTINEL-1 INTERFEROGRAM (BETA)'
       || dataset?.id === 'UAVSAR';
@@ -79,7 +80,13 @@ export class MapEffects {
     }),
     map(([product, _]) => product),
     filter(product => product.browses.length > 0),
-    tap((selectedProduct) => {
+    tap((selectedProduct: CMRProduct) => {
+      if(selectedProduct.dataset === 'ALOS') {
+        if(selectedProduct.metadata.productType !== 'RTC_LOW_RES'
+          && selectedProduct.metadata.productType !== 'RTC_HI_RES') {
+            return;
+          }
+      }
       if (selectedProduct.browses[0] !== '/assets/no-browse.png') {
         this.mapService.setSelectedBrowse(selectedProduct.browses[0], selectedProduct.metadata.polygon);
       }
