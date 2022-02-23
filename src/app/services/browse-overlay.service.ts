@@ -37,6 +37,7 @@ export class BrowseOverlayService {
         switch (searchtype) {
           case models.SearchType.DATASET:
             return datasetID === 'AVNIR'
+            || datasetID === 'ALOS'
             || datasetID === 'SENTINEL-1'
             || datasetID === 'SENTINEL-1 INTERFEROGRAM (BETA)'
             || datasetID === 'UAVSAR';
