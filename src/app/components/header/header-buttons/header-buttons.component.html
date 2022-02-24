@@ -73,10 +73,11 @@
     </button>
 
     <button
-      [matMenuTriggerFor]="appMenu"
-      matTooltip="ASF Apps"
-      class="spacing" color="basic" mat-icon-button>
-        <mat-icon class="large-icon">menu</mat-icon>
+      [matMenuTriggerFor]="helpMenu"
+      matTooltip="Help and information"
+      class="spacing nav-icon-buttons" color="basic" mat-button>
+        <mat-icon class="large-icon">menu_book</mat-icon>
+        <div class="text-under faint-text"> Help</div>
     </button>
   </ng-container>
 
@@ -139,9 +140,9 @@
     </mat-icon>
 
     <mat-icon
-      [matMenuTriggerFor]="appMenu"
+      [matMenuTriggerFor]="helpMenu"
       class="mobile-icon-spacing">
-        menu
+        menu_book
     </mat-icon>
   </ng-container>
 </div>
@@ -159,6 +160,11 @@
   <button (click)="onOpenPreferences()" mat-menu-item matSuffix>
     Preferences
   </button>
+
+  <button mat-menu-item [matMenuTriggerFor]="developerMenu" matSuffix>
+    Developer
+  </button>
+
   <hr class="menu-hr">
   <button (click)="onLogout()"
       mat-menu-item matSuffix>
@@ -166,22 +172,7 @@
   </button>
 </mat-menu>
 
-<mat-menu #appMenu="matMenu">
-
-  <button (click)="onCopy()"
-      mat-menu-item matSuffix>
-    <mat-icon>link</mat-icon>
-    Copy Search Link
-  </button>
-
-  <a (click)="onShareWithEmail()"
-      href="mailto:?subject=&body=:%20"
-      target="_blank" title="Send email"
-                      mat-menu-item matSuffix>
-    <mat-icon>email</mat-icon>
-    Share With Email
-  </a>
-
+<mat-menu #helpMenu="matMenu">
   <button mat-menu-item matSuffix (click)="onOpenHelp('toc')">
     <mat-icon>video_library</mat-icon>
     Video Tutorials
@@ -197,11 +188,6 @@
     HyP3 User Guide
   </button>
 
-  <button mat-menu-item [matMenuTriggerFor]="developerMenu">
-    <mat-icon>build</mat-icon>
-    Developer
-  </button>
-
   <hr class="menu-hr">
 
   <button mat-menu-item (click)="onOpenASFWebSite()">
@@ -212,13 +198,6 @@
   <button mat-menu-item (click)="onOpenAPIWebSite()">
     <mat-icon>web</mat-icon>
     ASF Search API
-  </button>
-
-  <hr class="menu-hr">
-
-  <button [matMenuTriggerFor]="derivedDatasets"
-      mat-menu-item>
-    Derived Datasets
   </button>
 
   <ng-container *ngIf="(breakpoint$ | async) === breakpoints.MOBILE">
@@ -247,15 +226,6 @@
       <a mat-menu-item href="https://www.openstreetmap.org/copyright" target="_blank">© OpenStreetMap contributors</a>
     </mat-menu>
   </ng-container>
-</mat-menu>
-
-<mat-menu #derivedDatasets="matMenu">
-  <a mat-menu-item (click)="onOpenDerivedDataset('/sar-data-sets/global-ice-sheet-mapping-orbiter-gismo', 'GISMO')">GISMO</a>
-  <a mat-menu-item (click)="onOpenDerivedDataset('/sar-data-sets/glacier-speed', 'Glacier Speed')">Glacier Speed</a>
-  <a mat-menu-item (click)="onOpenDerivedDataset('/sar-data-sets/international-polar-year-2007-2008', 'Polar Year')">Polar Year</a>
-  <a mat-menu-item (click)="onOpenDerivedDataset('/sar-data-sets/radarsat-antarctic-mapping-project-ramp', 'RAMP')">RAMP</a>
-  <a mat-menu-item (click)="onOpenDerivedDataset('/sar-data-sets/sea-ice-measures', 'Sea Ice MEaSUREs')">Sea Ice MEaSUREs</a>
-  <a mat-menu-item (click)="onOpenDerivedDataset('/sar-data-sets/wetlands-measures', 'Wetlands MEaSUREs')">Wetlands MEaSUREs</a>
 </mat-menu>
 
 <mat-menu #apiMaturity="matMenu">

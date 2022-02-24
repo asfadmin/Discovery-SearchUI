@@ -543,6 +543,10 @@ export function filtersReducer(state = initState, action: FiltersActions): Filte
           sarviewsEventActiveOnly: filters.activeOnly,
           sarviewsMagnitudeRange: filters.magnitude
         };
+      } else if (search.searchType === models.SearchType.DERIVED_DATASETS) {
+        // TODO: Don't make geosearch default case or handle no
+        // savable searches better
+        return {...state};
       } else {
         const filters = <models.GeographicFiltersType>search.filters;
 

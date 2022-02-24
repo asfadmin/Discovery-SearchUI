@@ -14,6 +14,7 @@ import * as filtersStore from '@store/filters';
 // import * as scenesStore from '@store/scenes';
 
 import * as services from '@services';
+import { ClipboardService } from 'ngx-clipboard';
 import { SidebarType, SearchType } from '@models';
 import { MatDialog } from '@angular/material/dialog';
 import { HelpComponent } from '@components/help/help.component';
@@ -54,7 +55,7 @@ export class SearchButtonComponent implements OnInit, OnDestroy {
     private store$: Store<AppState>,
     private actions$: ActionsSubject,
     private savedSearchService: services.SavedSearchService,
-    // private SearchParamsService: services.SearchParamsService,
+    public clipboard: ClipboardService,
     private dialog: MatDialog,
     private notificationService: services.NotificationService,
   ) {
@@ -247,6 +248,33 @@ export class SearchButtonComponent implements OnInit, OnDestroy {
       maxHeight: '100%',
     });
   }
+
+  public onCopy(): void {
+    window.dataLayer = window.dataLayer || [];
+    window.dataLayer.push({
+      'event': 'copy-search-link',
+      'copy-search-link': window.location.href
+    });
+
+    this.clipboard.copyFromContent(window.location.href);
+    this.notificationService.clipboardSearchLink();
+  }
+
+  public onShareWithEmail() {
+    const subject = `New Search - ${encodeURIComponent(document.title)}`;
+
+    window.dataLayer = window.dataLayer || [];
+    window.dataLayer.push({
+      'event': 'share-with-email',
+      'share-with-email': encodeURIComponent(document.URL)
+    });
+
+    window.open(
+      `mailto:?subject=${subject}` +
+      `&body=${encodeURIComponent(document.URL)}`
+    );
+  }
+
 
   ngOnDestroy() {
     this.subs.unsubscribe();

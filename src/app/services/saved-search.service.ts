@@ -112,6 +112,7 @@ export class SavedSearchService {
       [models.SearchType.SBAS]: this.currentSbasSearch$,
       [models.SearchType.CUSTOM_PRODUCTS]: this.currentCustomProductSearch$,
       [models.SearchType.SARVIEWS_EVENTS]: this.currentSarviewsEventSearch$,
+      [models.SearchType.DERIVED_DATASETS]: this.currentSarviewsEventSearch$,
     })[searchType]
     )
   );

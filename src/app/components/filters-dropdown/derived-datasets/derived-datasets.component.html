@@ -1,0 +1,8 @@
+<div>
+  <mat-card *ngFor="let dataset of datasets" >
+    <a (click)="onOpenDerivedDataset(dataset.url, dataset.name)"
+      class="clickable">
+        {{ dataset.name }}
+    </a>
+  </mat-card>
+</div>
