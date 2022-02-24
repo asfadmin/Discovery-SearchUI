@@ -34,6 +34,8 @@ export class MapControlsComponent implements OnInit, OnDestroy {
   public viewTypes = models.MapViewType;
   public mousePos: LonLat;
   public browseOverlayOpacity: number;
+  public showToolBar = true;
+  public toolBarWidth = 571;
 
   private subs = new SubSink();
   private selectedEventProducts: SarviewsProduct[] = [];
@@ -127,6 +129,16 @@ export class MapControlsComponent implements OnInit, OnDestroy {
 
   public onNewProjection(view: models.MapViewType): void {
     this.store$.dispatch(new mapStore.SetMapView(view));
+  }
+
+  public changeState(): void {
+    if (this.toolBarWidth === 0) {
+      this.toolBarWidth = 571;
+      this.showToolBar = true;
+    } else {
+      this.toolBarWidth = 0;
+      this.showToolBar = false;
+    }
   }
 
   public zoomIn(): void {
