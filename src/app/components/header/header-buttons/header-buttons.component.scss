@@ -41,6 +41,10 @@
   margin: 0 5px;
 }
 
+::ng-deep.mat-menu-panel {
+  max-width: 400px;
+}
+
 .mat-menu-item {
   font-weight: 400;
   height: auto;
@@ -50,20 +54,37 @@
   opacity: 20%;
 }
 
-.menu-item-content {
+.menu-item {
+  display: flex !important;
+  flex-flow: row;
+  margin: 10px;
+}
 
+.menu-item-content {
+  white-space: normal;
+  flex: 7;
 }
 
 .item-content {
   color: $asf-primary;
+  line-height: 18px;
 }
 
 .item-title {
   color: $asf-primary-dark;
-  line-height: 22px;
+  line-height: 32px;
   font-size: 18px;
 }
 
 .menu-item-aside {
-  color: $asf-primary;
+  flex: 3;
+  text-align: center;
+  align-items: center;
+}
+
+.menu-item-icon {
+  @include md-icon-size(45px);
+
+  margin-right: 0;
+  color: $asf-primary-dark;
 }
