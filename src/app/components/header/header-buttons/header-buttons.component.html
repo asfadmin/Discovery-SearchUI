@@ -55,11 +55,19 @@
     </button>
 
     <button
+      [matMenuTriggerFor]="helpMenu"
+      matTooltip="Help and information"
+      class="spacing nav-icon-buttons" color="basic" mat-button>
+      <mat-icon class="large-icon">help_outline</mat-icon>
+      <div class="text-under faint-text">Help</div>
+    </button>
+
+    <button
       *ngIf="!isLoggedIn"
       (click)="onAccountButtonClicked()"
       class="spacing nav-icon-buttons" color="basic"
       matTooltip="Login" mat-button>
-        <mat-icon class="large-icon">account_circle</mat-icon>
+      <mat-icon class="large-icon">account_circle</mat-icon>
       <div class="text-under faint-text">Sign in</div>
     </button>
 
@@ -72,13 +80,6 @@
         <div class="text-under faint-text"> {{ this.userAuth.id }} </div>
     </button>
 
-    <button
-      [matMenuTriggerFor]="helpMenu"
-      matTooltip="Help and information"
-      class="spacing nav-icon-buttons" color="basic" mat-button>
-        <mat-icon class="large-icon">menu_book</mat-icon>
-        <div class="text-under faint-text"> Help</div>
-    </button>
   </ng-container>
 
   <ng-container *ngIf="breakpoint === breakpoints.MOBILE">
@@ -125,6 +126,12 @@
     </mat-icon>
 
     <mat-icon
+      [matMenuTriggerFor]="helpMenu"
+      class="mobile-icon-spacing">
+      help_outline
+    </mat-icon>
+
+    <mat-icon
       *ngIf="!isLoggedIn"
       class="mobile-icon-spacing"
       fontSet="material-icons-outlined"
@@ -139,11 +146,6 @@
         account_circle
     </mat-icon>
 
-    <mat-icon
-      [matMenuTriggerFor]="helpMenu"
-      class="mobile-icon-spacing">
-        menu_book
-    </mat-icon>
   </ng-container>
 </div>
 
@@ -173,10 +175,21 @@
 </mat-menu>
 
 <mat-menu #helpMenu="matMenu">
-  <button mat-menu-item matSuffix (click)="onOpenHelp('toc')">
-    <mat-icon>video_library</mat-icon>
-    Video Tutorials
-  </button>
+  <div mat-menu-item matSuffix (click)="onOpenHelp('toc')">
+<!--    <ng-template *ngIf="(breakpoint$ | async) === breakpoints.MOBILE">-->
+<!--      <mat-icon>video_library</mat-icon>-->
+<!--      Video Tutorials-->
+<!--    </ng-template>-->
+<!--    <ng-template *ngIf=true>-->
+      <div class="menu-item-content">
+        <div class="item-title">Watch Our Tutorials</div>
+        <div class="item-content">
+          We have a collection of videos to help you learn and use Vertex to maximum advantage.
+        </div>
+      </div>
+      <div class="menu-item-aside"></div>
+<!--    </ng-template>-->
+  </div>
 
   <button mat-menu-item matSuffix (click)="onOpenUserGuide()">
     <mat-icon>book</mat-icon>

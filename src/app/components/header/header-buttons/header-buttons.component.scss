@@ -16,7 +16,7 @@
 }
 
 .large-icon {
-  @include md-icon-size(34px);
+  @include md-icon-size(30px);
 
   margin-right: 0;
   color: $asf-primary-dark;
@@ -43,8 +43,27 @@
 
 .mat-menu-item {
   font-weight: 400;
+  height: auto;
 }
 
 .disabled {
   opacity: 20%;
+}
+
+.menu-item-content {
+
+}
+
+.item-content {
+  color: $asf-primary;
+}
+
+.item-title {
+  color: $asf-primary-dark;
+  line-height: 22px;
+  font-size: 18px;
+}
+
+.menu-item-aside {
+  color: $asf-primary;
 }
