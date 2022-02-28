@@ -6,6 +6,7 @@ import { AppState } from '@store';
 import * as mapStore from '@store/map';
 
 import { MapDrawModeType, MapInteractionModeType } from '@models';
+import * as uiStore from '@store/ui';
 
 @Component({
   selector: 'app-draw-selector',
@@ -32,6 +33,11 @@ export class DrawSelectorComponent implements OnInit, OnDestroy {
   public onNewDrawMode(mode: MapDrawModeType): void {
     this.store$.dispatch(new mapStore.SetMapInteractionMode(MapInteractionModeType.DRAW));
     this.store$.dispatch(new mapStore.SetMapDrawMode(mode));
+  }
+
+  public onImportSelected() {
+    const action = new uiStore.OpenAOIOptions();
+    this.store$.dispatch(action);
   }
 
   public onPolygonSelected =

@@ -1,36 +1,71 @@
-<mat-button-toggle-group
-    [value]="drawMode" aria-label="Font Style">
-  <mat-button-toggle
-    (click)="onPointSelected()"
-    [value]="types.POINT"
-    class="control-mat-button-toggle"
-    matTooltip="Point draw">
+<button mat-stroked-button class="shape-select-button" [matMenuTriggerFor]="drawMenu" aria-label="Map projection view">
+  <template *ngIf="drawMode == types.POINT" class="shape-select-icon antarctic">
     <mat-icon class="draw-icon">place</mat-icon>
-  </mat-button-toggle>
-
-  <mat-button-toggle
-    (click)="onLineStringSelected()"
-    [value]="types.LINESTRING"
-    class="control-mat-button-toggle"
-    matTooltip="Line draw">
+  </template>
+  <template *ngIf="drawMode == types.LINESTRING" class="shape-select-icon equatorial">
     <mat-icon class="draw-icon">timeline</mat-icon>
-  </mat-button-toggle>
-
-  <mat-button-toggle
-    (click)="onPolygonSelected()"
-    [value]="types.POLYGON"
-    class="control-mat-button-toggle"
-    matTooltip="Polygon draw">
+  </template>
+  <template *ngIf="drawMode == types.POLYGON" class="shape-select-icon arctic">
     <svg style="width: 18px; height: 18px;" viewBox="0 0 24 24">
-        <path fill="#000000" d="M2,2V8H4.28L5.57,16H4V22H10V20.06L15,20.05V22H21V16H19.17L20,9H22V3H16V6.53L14.8,8H9.59L8,5.82V2M4,4H6V6H4M18,5H20V7H18M6.31,8H7.11L9,10.59V14H15V10.91L16.57,9H18L17.16,16H15V18.06H10V16H7.6M11,10H13V12H11M6,18H8V20H6M17,18H19V20H17" />
+      <path fill="#rgba(0, 0, 0, 0.54)"
+            d="M2,2V8H4.28L5.57,16H4V22H10V20.06L15,20.05V22H21V16H19.17L20,9H22V3H16V6.53L14.8,8H9.59L8,5.82V2M4,4H6V6H4M18,5H20V7H18M6.31,8H7.11L9,10.59V14H15V10.91L16.57,9H18L17.16,16H15V18.06H10V16H7.6M11,10H13V12H11M6,18H8V20H6M17,18H19V20H17" />
     </svg>
-  </mat-button-toggle>
-
-  <mat-button-toggle
-    (click)="onBoxSelected()"
-    [value]="types.BOX"
-    class="control-mat-button-toggle"
-    matTooltip="Box Draw">
+  </template>
+  <template *ngIf="drawMode == types.BOX" class="shape-select-icon equatorial">
     <mat-icon class="draw-icon">format_shapes</mat-icon>
-  </mat-button-toggle>
-</mat-button-toggle-group>
+  </template>
+  <span class="fa fa-caret-down bottom-right"></span>
+</button>
+
+<mat-menu #drawMenu="matMenu">
+    <button mat-menu-item
+      (click)="onPointSelected()"
+      [value]="types.POINT"
+      class="control-button mat-menu-item"
+      matTooltip="Point draw">
+      <mat-icon class="draw-icon">place</mat-icon>
+      Place a Point
+    </button>
+
+    <button mat-menu-item
+      (click)="onLineStringSelected()"
+      [value]="types.LINESTRING"
+      class="control-button mat-menu-item"
+      matTooltip="Line draw">
+      <mat-icon class="draw-icon">timeline</mat-icon>
+      Draw a Line
+    </button>
+
+    <button mat-menu-item
+      (click)="onPolygonSelected()"
+      [value]="types.POLYGON"
+      class="control-button mat-menu-item"
+      matTooltip="Polygon draw">
+      <svg viewBox="0 0 24 24" class="draw-icon" style="margin-right: 16px;" >
+        <path fill="rgba(0, 0, 0, 0.54)"
+              d="M2,2V8H4.28L5.57,16H4V22H10V20.06L15,20.05V22H21V16H19.17L20,
+                  9H22V3H16V6.53L14.8,8H9.59L8,5.82V2M4,
+                  4H6V6H4M18,5H20V7H18M6.31,8H7.11L9,10.59V14H15V10.91L16.57,
+                  9H18L17.16,16H15V18.06H10V16H7.6M11,10H13V12H11M6,18H8V20H6M17,18H19V20H17"
+        />
+      </svg>
+      Draw a Polygon
+    </button>
+
+    <button mat-menu-item
+      (click)="onBoxSelected()"
+      [value]="types.BOX"
+      class="control-button mat-menu-item"
+      matTooltip="Box Draw">
+      <mat-icon class="draw-icon">format_shapes</mat-icon>
+      Draw a box
+    </button>
+
+  <button mat-menu-item
+    (click)="onImportSelected()"
+    class="control-mat-button-toggle"
+    matTooltip="Import Area of Interest">
+    <mat-icon class="interaction-icon">upload</mat-icon>
+    Upload Geospatial File
+  </button>
+</mat-menu>

@@ -3,3 +3,7 @@
 .interaction-icon {
   @include md-icon-size($asf-ribbon-icon-size);
 }
+
+.interaction-toggle-group {
+  height: 26px !important;
+}
