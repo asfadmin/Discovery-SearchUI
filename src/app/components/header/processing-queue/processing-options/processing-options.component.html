@@ -34,15 +34,15 @@
             <div *ngIf="jobType.id != 'AUTORIFT'" class="option-header">
               Apply
             </div>
-            <div class="flex-field toggle-list" *ngFor="let option of jobType.options">
-              <app-toggle-option
+            <div class="flex-field checkbox-list" *ngFor="let option of jobType.options">
+              <app-checkbox-option
                 *ngIf="option.type === 'TOGGLE'"
                 (valueChange)="onSetOptionValue(option.apiName, $event)"
                 [value]="optionValues[option.apiName]"
                 [optionName]="option.name"
                 [optionInfo]="option.info"
                 class="margin-right">
-              </app-toggle-option>
+              </app-checkbox-option>
             </div>
           </div>
           <div class="flex-field">

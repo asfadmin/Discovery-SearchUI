@@ -16,7 +16,6 @@ import { combineLatest, Observable } from 'rxjs';
 import { filter, map, startWith, tap } from 'rxjs/operators';
 import { ToggleBrowseOverlay} from '@store/map';
 import { MatSliderChange } from '@angular/material/slider';
-import { getSelectedDatasetId } from '@store/filters';
 
 @Component({
   selector: 'app-map-controls',
@@ -35,6 +34,8 @@ export class MapControlsComponent implements OnInit, OnDestroy {
   public viewTypes = models.MapViewType;
   public mousePos: LonLat;
   public browseOverlayOpacity: number;
+  public showToolBar = true;
+  public toolBarWidth = 571;
 
   private subs = new SubSink();
   private selectedEventProducts: SarviewsProduct[] = [];
@@ -52,35 +53,7 @@ export class MapControlsComponent implements OnInit, OnDestroy {
     filter(event => !!event),
   startWith(null));
 
-  public isBrowseOverlayEnabled$: Observable<boolean> = combineLatest([
-    this.store$.select(searchStore.getSearchType),
-    this.store$.select(sceneStore.getSelectedScene),
-    this.store$.select(getSelectedDatasetId),
-      this.store$.select(sceneStore.getSelectedSarviewsEventProducts)]
-    ).pipe(
-      map(([searchtype, selectedScene, datasetID, selectedEventProducts]) => {
-        switch (searchtype) {
-          case models.SearchType.DATASET:
-            return datasetID === 'AVNIR'
-            || datasetID === 'SENTINEL-1'
-            || datasetID === 'SENTINEL-1 INTERFEROGRAM (BETA)'
-            || datasetID === 'UAVSAR';
-          case models.SearchType.SARVIEWS_EVENTS:
-            return selectedEventProducts?.length > 0;
-          case models.SearchType.LIST:
-            return selectedScene?.dataset === 'ALOS'
-            || selectedScene?.dataset === 'Sentinel-1A'
-            || selectedScene?.dataset === 'Sentinel-1B'
-            || selectedScene?.dataset === 'Sentinel-1 Interferogram (BETA)'
-            || selectedScene?.dataset === 'UAVSAR';
-          case models.SearchType.CUSTOM_PRODUCTS:
-            return true;
-          default:
-            return false;
-
-        }
-      }),
-    );
+  public isBrowseOverlayEnabled$: Observable<boolean> = this.browseOverlayService.isBrowseOverlayEnabled$;
 
   public browseIndexingEnabled$ = combineLatest([
     this.isBrowseOverlayEnabled$,
@@ -92,6 +65,7 @@ export class MapControlsComponent implements OnInit, OnDestroy {
   constructor(
     private store$: Store<AppState>,
     private mapService: services.MapService,
+    private browseOverlayService: services.BrowseOverlayService
   ) { }
 
   ngOnInit() {
@@ -130,9 +104,9 @@ export class MapControlsComponent implements OnInit, OnDestroy {
 
     this.subs.add(
       this.store$.select(sceneStore.getSelectedSarviewsEventProducts)
-      .pipe(filter(event => !!event))
+      .pipe(filter(eventProducts => !!eventProducts))
       .subscribe(
-        event => this.selectedEventProducts = event
+        eventProducts => this.selectedEventProducts = eventProducts
       )
     );
 
@@ -155,6 +129,16 @@ export class MapControlsComponent implements OnInit, OnDestroy {
 
   public onNewProjection(view: models.MapViewType): void {
     this.store$.dispatch(new mapStore.SetMapView(view));
+  }
+
+  public changeState(): void {
+    if (this.toolBarWidth === 0) {
+      this.toolBarWidth = 571;
+      this.showToolBar = true;
+    } else {
+      this.toolBarWidth = 0;
+      this.showToolBar = false;
+    }
   }
 
   public zoomIn(): void {
