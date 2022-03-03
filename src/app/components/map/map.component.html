@@ -37,34 +37,33 @@
     </div>
 
     <ng-container *ngIf="breakpoint === breakpoints.MOBILE">
-      <div (click)="closeMobileFullscreenControls()"
+      <div
         *ngIf="fullscreenControl !== fc.NONE"
-        class="mobile-controls-background"></div>
+        (click)="closeMobileFullscreenControls()"
+        class="mobile-controls-background">
+      </div>
+
       <div
         *ngIf="fullscreenControl === fc.DRAW"
-        (click)="closeMobileFullscreenControls()"
         class="mobile-map-controls-full">
         <div class="mobile-control-group">
           <app-interaction-selector></app-interaction-selector>
         </div>
-        <div class="mobile-control-group">
-          <app-draw-selector></app-draw-selector>
-        </div>
       </div>
 
       <div *ngIf="fullscreenControl === fc.MAP"
-        (click)="closeMobileFullscreenControls()"
         class="mobile-map-controls-full">
           <div class="mobile-control-group">
-            <app-view-selector *ngIf="searchType !== searchTypes.SARVIEWS_EVENTS"></app-view-selector>
+            <app-view-selector style="margin-right: 5px;" *ngIf="searchType !== searchTypes.SARVIEWS_EVENTS">
+            </app-view-selector>
+
+            <app-layer-selector *ngIf="(view$ | async) === viewTypes.EQUITORIAL">
+            </app-layer-selector>
           </div>
-          <div *ngIf="(view$ | async) === viewTypes.EQUITORIAL"
-            class="mobile-control-group">
-            <app-layer-selector></app-layer-selector>
-          </div>
-          <div [hidden]="(view$ | async) !== viewTypes.EQUITORIAL"
-          class="mobile-control-group">
-            <app-gridlines-selector></app-gridlines-selector>
+
+          <div class="mobile-control-group">
+            <app-gridlines-selector [hidden]="(view$ | async) !== viewTypes.EQUITORIAL">
+            </app-gridlines-selector>
           </div>
       </div>
     </ng-container>
