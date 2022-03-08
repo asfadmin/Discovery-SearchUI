@@ -58,11 +58,11 @@
           <div class="mobile-control-group">
             <app-view-selector *ngIf="searchType !== searchTypes.SARVIEWS_EVENTS"></app-view-selector>
           </div>
-          <div *ngIf="(view$ | async) === viewTypes.EQUITORIAL"
+          <div *ngIf="(view$ | async) === viewTypes.EQUATORIAL"
             class="mobile-control-group">
             <app-layer-selector></app-layer-selector>
           </div>
-          <div [hidden]="(view$ | async) !== viewTypes.EQUITORIAL"
+          <div [hidden]="(view$ | async) !== viewTypes.EQUATORIAL"
           class="mobile-control-group">
             <app-gridlines-selector></app-gridlines-selector>
           </div>
