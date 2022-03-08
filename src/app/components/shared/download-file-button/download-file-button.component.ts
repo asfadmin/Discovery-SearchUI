@@ -111,7 +111,9 @@ export class DownloadFileButtonComponent implements OnInit, AfterViewInit {
         )
       );
     } else {
-      this.downloadFunctionality(this.product);
+      this.downloadService.getDirectory().then(()=> {
+        this.downloadFunctionality(this.product);
+      });
     }
   }
   private downloadFunctionality(product: CMRProduct) {

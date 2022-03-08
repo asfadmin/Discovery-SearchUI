@@ -26,17 +26,31 @@ export class DownloadService {
       observe: 'events',
       responseType: 'blob',
     });
-    if (!this.dir) {
-      /* @ts-ignore:disable-next-line */
-      window.showDirectoryPicker().then(dir => {
-        this.dir = dir;
-        dir.requestPermission({ mode: 'readwrite' });
-      });
-    }
+    // if (!this.dir) {
+    //   /* @ts-ignore:disable-next-line */
+    //   window.showDirectoryPicker().then(dir => {
+    //     this.dir = dir;
+    //     dir.requestPermission({ mode: 'readwrite' });
+    //   });
+    // }
     return resp.pipe(this.download$(filename, id, product, (blob, dir) => this.save(blob, url, filename, dir)));
 
   }
-
+  async getDirectory(): Promise<void> {
+    return new Promise(resolve => {
+      if (!this.dir) {
+      /* @ts-ignore:disable-next-line */
+        window.showDirectoryPicker().then(dir => {
+          this.dir = dir;
+          dir.requestPermission({ mode: 'readwrite' }).then(()=>{
+            resolve();
+          })
+        });
+      } else {
+        resolve();
+      }
+    })
+  }
   private download$(
     filename: string,
     id: string,

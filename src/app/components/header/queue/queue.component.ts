@@ -18,6 +18,7 @@ import {  Download } from 'ngx-operators';
 import * as userStore from '@store/user';
 import { DownloadFileButtonComponent } from '@components/shared/download-file-button/download-file-button.component';
 import * as UAParser from 'ua-parser-js';
+import { DownloadService } from '@services/download.service';
 // import { DownloadService } from '@services/download.service';
 
 
@@ -98,6 +99,7 @@ export class QueueComponent implements OnInit, OnDestroy {
     private dialogRef: MatDialogRef<QueueComponent>,
     private screenSize: ScreenSizeService,
     private notificationService: NotificationService,
+    private downloadService: DownloadService
   ) {}
 
   ngOnInit() {
@@ -231,17 +233,19 @@ export class QueueComponent implements OnInit, OnDestroy {
   }
 
   public async downloadAllFiles() {
-    const buttons = this.downloadButtons.toArray();
-    for (const button of buttons.slice(0, 3)) {
-      const state = button?.dFile?.state;
-      if (!state) {
-        button.downloadFile();
+    this.downloadService.getDirectory().then(() => {
+      const buttons = this.downloadButtons.toArray();
+      for (const button of buttons.slice(0, 3)) {
+        const state = button?.dFile?.state;
+        if (!state) {
+          button.downloadFile();
+        }
       }
-    }
-    this.productList = buttons;
-    this.dlQueueNumProcessed = 3;
-    this.dlQueueCount = this.productList.length;
-    this.dlDefaultChunkSize = this.dlDefaultChunkSize ?? 3;
+      this.productList = buttons;
+      this.dlQueueNumProcessed = 3;
+      this.dlQueueCount = this.productList.length;
+      this.dlDefaultChunkSize = this.dlDefaultChunkSize ?? 3;
+    });
   }
 
   public downloadContinue(_product) {
