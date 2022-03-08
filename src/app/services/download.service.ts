@@ -18,7 +18,7 @@ export class DownloadService {
 
   classicResp: Observable<DownloadStatus>;
 
-  download(url: string, filename: string, product: CMRProduct,  id): Observable<DownloadStatus> {
+  download(url: string, filename: string, product: CMRProduct, id): Observable<DownloadStatus> {
 
     const resp = this.http.get(url, {
       withCredentials: !(new URL(url).origin.startsWith('hyp3')),
@@ -26,13 +26,13 @@ export class DownloadService {
       observe: 'events',
       responseType: 'blob',
     });
-    if(!this.dir) {
+    if (!this.dir) {
       /* @ts-ignore:disable-next-line */
-      window.showDirectoryPicker().then(dir => { 
+      window.showDirectoryPicker().then(dir => {
         this.dir = dir;
-        dir.requestPermission({mode: 'readwrite'})
+        dir.requestPermission({ mode: 'readwrite' });
       });
-    } 
+    }
     return resp.pipe(this.download$(filename, id, product, (blob, dir) => this.save(blob, url, filename, dir)));
 
   }
@@ -75,7 +75,7 @@ export class DownloadService {
                 };
               }
               case (HttpEventType.Response): {
-                if(this.dir){
+                if (this.dir) {
                   if (saver) {
                     saver(event.body, this.dir);
                   }
@@ -90,12 +90,12 @@ export class DownloadService {
 
                 };
               }
-              default : {
+              default: {
                 return file;
               }
             }
           },
-          { state: 'PENDING', progress: 0, content: null, filename: '', id: '', product: null}
+          { state: 'PENDING', progress: 0, content: null, filename: '', id: '', product: null }
         ),
         distinctUntilChanged((a, b) => a.state === b.state
           && a.progress === b.progress
