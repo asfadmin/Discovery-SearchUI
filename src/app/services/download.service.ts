@@ -10,7 +10,7 @@ import { CMRProduct } from '@models';
 
 @Injectable({ providedIn: 'root' })
 export class DownloadService {
-
+  public dir;
   constructor(
     private http: HttpClient,
     @Inject(SAVER) private save: Saver,
@@ -26,17 +26,22 @@ export class DownloadService {
       observe: 'events',
       responseType: 'blob',
     });
+    if(!this.dir) {
+      /* @ts-ignore:disable-next-line */
+      window.showDirectoryPicker().then(dir => { 
+        this.dir = dir;
+        dir.requestPermission({mode: 'readwrite'})
+      });
+    } 
+    return resp.pipe(this.download$(filename, id, product, (blob, dir) => this.save(blob, url, filename, dir)));
 
-
-    return resp.pipe(this.download$(filename, id, product, blob => this.save(blob, url, filename)));
   }
-
 
   private download$(
     filename: string,
     id: string,
     product: CMRProduct,
-    saver?: (b: Blob) => void): (source: Observable<HttpEvent<Blob>>) => Observable<DownloadStatus> {
+    saver?: (b: Blob, w: any) => void): (source: Observable<HttpEvent<Blob>>) => Observable<DownloadStatus> {
 
 
     return (source: Observable<HttpEvent<Blob>>) =>
@@ -70,8 +75,10 @@ export class DownloadService {
                 };
               }
               case (HttpEventType.Response): {
-                if (saver) {
-                  saver(event.body);
+                if(this.dir){
+                  if (saver) {
+                    saver(event.body, this.dir);
+                  }
                 }
                 return {
                   progress: 100,
