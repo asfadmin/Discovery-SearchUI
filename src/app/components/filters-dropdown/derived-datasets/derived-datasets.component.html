@@ -1,8 +1,16 @@
 <div>
   <mat-card *ngFor="let dataset of datasets" >
-    <a (click)="onOpenDerivedDataset(dataset.url, dataset.name)"
-      class="clickable">
-        {{ dataset.name }}
-    </a>
-  </mat-card>
+      <mat-card-title>{{ dataset.name }}</mat-card-title>
+      <mat-card-content>
+        <div class="description-layout">
+          <img style="width: 260px; margin-right: 16px;" [src]="dataset.picture">
+          <p>{{ dataset.description}}</p>
+        </div>
+      </mat-card-content>
+      <mat-divider inset></mat-divider>
+      <mat-card-actions>
+        <button (click)="onOpenDerivedDataset(dataset.info_url, dataset.name)" mat-button>MORE INFO</button>
+        <button (click)="onOpenDerivedDataset(dataset.download_url, dataset.name)" mat-button>DOWNLOAD</button>
+      </mat-card-actions>
+    </mat-card>
 </div>
