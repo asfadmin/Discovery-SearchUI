@@ -12,13 +12,17 @@ export function myStreamSaver (blob, _url, filename, handle) {
     handle.getFileHandle(filename, {create: true}).then(
       file => {
         file.createWritable().then(writable => {
-          blob.stream().pipeTo(writable);
+          writable.write(blob).then(() => {
+            writable.close();
+          });
         });
       }
     );
   } else if (handle.kind === 'file') {
     handle.createWritable().then(writable => {
-      blob.stream().pipeTo(writable);
+      writable.write(blob).then(() => {
+        writable.close();
+      });
     });
   }
 
