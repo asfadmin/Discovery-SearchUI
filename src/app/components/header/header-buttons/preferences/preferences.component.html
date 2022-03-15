@@ -60,6 +60,18 @@
           </mat-option>
         </mat-select>
       </mat-form-field>
+
+      <div class="section-heading">Hyp3 Backend Url</div>
+      <mat-form-field class="default-filters-presets">
+        <mat-label>URL</mat-label>
+        <input matInput
+          (input)="onChangeBackendUrl()"
+          [(ngModel)]="hyp3BackendUrl"
+          name="backendUrl" placeholder="Backend Url">
+        <button matSuffix mat-icon-button aria-label="Clear" (click)="resetHyp3Url()">
+          <mat-icon>refresh</mat-icon>
+        </button>
+      </mat-form-field>
     </form>
   </div>
 

@@ -5,20 +5,29 @@ import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import * as moment from 'moment';
 
-import { EnvironmentService } from './environment.service';
 import * as models from '@models';
 
 @Injectable({
   providedIn: 'root'
 })
 export class Hyp3Service {
+  private hyp3ApiUrl = 'https://hyp3-api.asf.alaska.edu';
+  private baseHyp3ApiUrl = 'https://hyp3-api.asf.alaska.edu';
+
   constructor(
     private http: HttpClient,
-    private env: EnvironmentService,
-  ) { }
+  ) {}
 
   public get apiUrl() {
-    return this.env.currentEnv.hyp3_api;
+    return this.hyp3ApiUrl;
+  }
+
+  public setApiUrl(url: string): void {
+    this.hyp3ApiUrl = url;
+  }
+
+  public setDefaultApiUrl(): void {
+    this.hyp3ApiUrl = this.baseHyp3ApiUrl;
   }
 
   public getUser$(): Observable<models.Hyp3User> {

@@ -29,7 +29,8 @@ const initState: UserState = {
       'Baseline Search' : '',
       'Geographic Search' : '',
       'SBAS Search' : ''
-    }
+    },
+    hyp3BackendUrl: '',
   },
   savedSearches: {
     searches: [],
