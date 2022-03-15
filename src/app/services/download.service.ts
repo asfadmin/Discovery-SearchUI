@@ -8,6 +8,7 @@ import { HttpEvent, HttpEventType } from '@angular/common/http';
 import { distinctUntilChanged, scan } from 'rxjs/operators';
 import { CMRProduct } from '@models';
 
+
 @Injectable({ providedIn: 'root' })
 export class DownloadService {
   public dir;
@@ -18,7 +19,7 @@ export class DownloadService {
 
   classicResp: Observable<DownloadStatus>;
 
-  download(url: string, filename: string, product: CMRProduct, id): Observable<DownloadStatus> {
+  download(url: string, filename: string, product: CMRProduct, id, handle?): Observable<DownloadStatus> {
 
     const resp = this.http.get(url, {
       withCredentials: !(new URL(url).origin.startsWith('hyp3')),
@@ -26,36 +27,40 @@ export class DownloadService {
       observe: 'events',
       responseType: 'blob',
     });
-    // if (!this.dir) {
-    //   /* @ts-ignore:disable-next-line */
-    //   window.showDirectoryPicker().then(dir => {
-    //     this.dir = dir;
-    //     dir.requestPermission({ mode: 'readwrite' });
-    //   });
-    // }
-    return resp.pipe(this.download$(filename, id, product, (blob, dir) => this.save(blob, url, filename, dir)));
+    handle = handle ?? this.dir;
+    return resp.pipe(this.download$(filename, id, product, (blob) => this.save(blob, url, filename, handle)));
 
   }
-  async getDirectory(): Promise<void> {
+  async getDirectory(): Promise<any> {
     return new Promise(resolve => {
       if (!this.dir) {
       /* @ts-ignore:disable-next-line */
         window.showDirectoryPicker().then(dir => {
           this.dir = dir;
-          dir.requestPermission({ mode: 'readwrite' }).then(()=>{
-            resolve();
-          })
+          dir.requestPermission({ mode: 'readwrite' }).then(() => {
+            resolve(this.dir);
+          });
         });
       } else {
-        resolve();
+        resolve(this.dir);
       }
-    })
+    });
+  }
+  async getFileHandle(filename: string): Promise<any> {
+    return new Promise(resolve => {
+      /* @ts-ignore:disable-next-line */
+      window.showSaveFilePicker({
+        suggestedName: filename
+      }).then(file => {
+        resolve(file);
+      });
+    });
   }
   private download$(
     filename: string,
     id: string,
     product: CMRProduct,
-    saver?: (b: Blob, w: any) => void): (source: Observable<HttpEvent<Blob>>) => Observable<DownloadStatus> {
+    saver?: (b: Blob) => void): (source: Observable<HttpEvent<Blob>>) => Observable<DownloadStatus> {
 
 
     return (source: Observable<HttpEvent<Blob>>) =>
@@ -89,10 +94,8 @@ export class DownloadService {
                 };
               }
               case (HttpEventType.Response): {
-                if (this.dir) {
-                  if (saver) {
-                    saver(event.body, this.dir);
-                  }
+                if (saver) {
+                  saver(event.body);
                 }
                 return {
                   progress: 100,

@@ -238,7 +238,7 @@ export class QueueComponent implements OnInit, OnDestroy {
       for (const button of buttons.slice(0, 3)) {
         const state = button?.dFile?.state;
         if (!state) {
-          button.downloadFile();
+        button.downloadFile(true);
         }
       }
       this.productList = buttons;
@@ -253,7 +253,7 @@ export class QueueComponent implements OnInit, OnDestroy {
     if (this.dlQueueNumProcessed < this.dlQueueCount) {
       const button = this.productList[this.dlQueueNumProcessed++];
       if (!button?.dFile?.state) {
-        button.downloadFile();
+        button.downloadFile(true);
       }
     }
   }

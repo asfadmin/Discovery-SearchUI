@@ -79,7 +79,18 @@ export class DownloadFileButtonComponent implements OnInit, AfterViewInit {
     this.store$.dispatch(new queueStore.RemoveDownloadProduct(this.dFile));
     this.dFile = null;
   }
-  public downloadFile() {
+  public getHandle(dir: boolean = false) {
+    if (dir) {
+      this.downloadService.getDirectory().then((handle) => {
+        this.downloadFunctionality(this.product, handle);
+      });
+    } else {
+      this.downloadService.getFileHandle(this.fileName).then(handle => {
+        this.downloadFunctionality(this.product, handle);
+      });
+    }
+  }
+  public downloadFile(dir: boolean = false) {
 
     if (!this.useNewDownload) {
       this.classicDownload(this.url);
@@ -105,18 +116,15 @@ export class DownloadFileButtonComponent implements OnInit, AfterViewInit {
         this.authService.login$().subscribe(
           user => {
             this.store$.dispatch(new userStore.Login(user));
-            this.downloadFunctionality(this.product);
-
+            this.getHandle(dir);
           }
         )
       );
     } else {
-      this.downloadService.getDirectory().then(()=> {
-        this.downloadFunctionality(this.product);
-      });
+      this.getHandle(dir);
     }
   }
-  private downloadFunctionality(product: CMRProduct) {
+  private downloadFunctionality(product: CMRProduct, handle: any) {
     const initStatus: DownloadStatus = {
       content: null,
       progress: 0,
@@ -126,7 +134,7 @@ export class DownloadFileButtonComponent implements OnInit, AfterViewInit {
       product: this?.product,
     };
     this.store$.dispatch(new queueStore.DownloadProduct(initStatus));
-    this.observable$ = this.downloadService.download(this.url, this.fileName, this?.product, product?.id ?? this.fileName);
+    this.observable$ = this.downloadService.download(this.url, this.fileName, this?.product, product?.id ?? this.fileName, handle);
     this.subscription = this.observable$.subscribe(resp => {
       if (!this.processSubscription(resp, product, true)) {
         this.subscription.unsubscribe();
