@@ -7,7 +7,7 @@ export interface DerivedDataset {
   picture: string;
 }
 
-const pictureFolder = 'assets/derived-datasets/';
+const pictureFolder = 'assets/derived-datasets';
 const asfWebsiteUrl = 'https://www.asf.alaska.edu';
 
 export const derivedDatasets: DerivedDataset[] = [{
