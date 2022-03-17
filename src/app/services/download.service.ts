@@ -7,6 +7,7 @@ import { DownloadStatus } from '@models/download.model';
 import { HttpEvent, HttpEventType } from '@angular/common/http';
 import { distinctUntilChanged, scan } from 'rxjs/operators';
 import { CMRProduct } from '@models';
+import { NotificationService } from './notification.service';
 
 
 @Injectable({ providedIn: 'root' })
@@ -15,6 +16,7 @@ export class DownloadService {
   constructor(
     private http: HttpClient,
     @Inject(SAVER) private save: Saver,
+    private notificationService: NotificationService
   ) { }
 
   classicResp: Observable<DownloadStatus>;
@@ -60,7 +62,7 @@ export class DownloadService {
     filename: string,
     id: string,
     product: CMRProduct,
-    saver?: (b: Blob) => void): (source: Observable<HttpEvent<Blob>>) => Observable<DownloadStatus> {
+    saver?: (b: Blob) => Promise<any>): (source: Observable<HttpEvent<Blob>>) => Observable<DownloadStatus> {
 
 
     return (source: Observable<HttpEvent<Blob>>) =>
@@ -95,7 +97,12 @@ export class DownloadService {
               }
               case (HttpEventType.Response): {
                 if (saver) {
-                  saver(event.body);
+                  saver(event.body).then(stuff => {
+                    console.log(stuff);
+                    if (stuff.status === 'error') {
+                      this.notificationService.error('There was an error downloading the file. Make sure that you allowed your browser to access the right files');
+                    }
+                  });
                 }
                 return {
                   progress: 100,
