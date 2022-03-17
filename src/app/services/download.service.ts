@@ -76,7 +76,6 @@ export class DownloadService {
                     ? Math.round((100 * event.loaded) / event.total)
                     : file.progress,
                   state: 'IN_PROGRESS',
-                  content: null,
                   filename: filename,
                   id: id,
                   product: product,
@@ -88,7 +87,6 @@ export class DownloadService {
                 return {
                   progress: 0,
                   state: 'PENDING',
-                  content: null,
                   filename: newID,
                   id: id,
                   product: product,
@@ -107,7 +105,6 @@ export class DownloadService {
                 return {
                   progress: 100,
                   state: 'DONE',
-                  content: event.body,
                   filename: filename,
                   id: id,
                   product: product,
@@ -119,11 +116,10 @@ export class DownloadService {
               }
             }
           },
-          { state: 'PENDING', progress: 0, content: null, filename: '', id: '', product: null }
+          { state: 'PENDING', progress: 0, filename: '', id: '', product: null }
         ),
         distinctUntilChanged((a, b) => a.state === b.state
           && a.progress === b.progress
-          && a.content === b.content
           && a.id === b.id
         )
       );

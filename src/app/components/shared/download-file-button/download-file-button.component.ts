@@ -126,7 +126,6 @@ export class DownloadFileButtonComponent implements OnInit, AfterViewInit {
   }
   private downloadFunctionality(product: CMRProduct, handle: any) {
     const initStatus: DownloadStatus = {
-      content: null,
       progress: 0,
       state: 'PENDING',
       id: this.product?.id ?? this.fileName,
@@ -184,7 +183,6 @@ export class DownloadFileButtonComponent implements OnInit, AfterViewInit {
     URL.revokeObjectURL(link.href);
     link.parentNode.removeChild(link);
     this.dFile = {
-      content: null,
       progress: 100,
       state: 'DONE',
       id: this.product.id,
