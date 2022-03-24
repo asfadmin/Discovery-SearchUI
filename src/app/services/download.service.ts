@@ -33,9 +33,9 @@ export class DownloadService {
     return resp.pipe(this.download$(filename, id, product, (blob) => this.save(blob, url, filename, handle)));
 
   }
-  async getDirectory(): Promise<any> {
+  async getDirectory( getNew= false): Promise<any> {
     return new Promise(resolve => {
-      if (!this.dir) {
+      if (!this.dir || getNew) {
       /* @ts-ignore:disable-next-line */
         window.showDirectoryPicker().then(dir => {
           this.dir = dir;

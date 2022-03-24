@@ -233,7 +233,7 @@ export class QueueComponent implements OnInit, OnDestroy {
   }
 
   public async downloadAllFiles() {
-    this.downloadService.getDirectory().then(() => {
+    this.downloadService.getDirectory(true).then(() => {
       const buttons = this.downloadButtons.toArray();
       for (const button of buttons.slice(0, 3)) {
         const state = button?.dFile?.state;
