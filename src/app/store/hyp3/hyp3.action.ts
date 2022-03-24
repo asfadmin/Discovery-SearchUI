@@ -64,7 +64,7 @@ export class SubmitJob implements Action {
   constructor(public payload: string) {}
 }
 
-export class SuccessfulJobSumbission implements Action {
+export class SuccessfulJobSubmission implements Action {
   public readonly type = Hyp3ActionType.SUCCESSFUL_JOB_SUBMISSION;
 }
 
@@ -98,5 +98,5 @@ export type Hyp3Actions =
   | ClearProcessingOptions
   | SetProcessingProjectName
   | SubmitJob
-  | SuccessfulJobSumbission
+  | SuccessfulJobSubmission
   | ErrorJobSubmission;

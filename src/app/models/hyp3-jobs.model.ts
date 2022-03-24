@@ -217,7 +217,7 @@ export const AutoRift: Hyp3JobType = {
   name: 'autoRIFT',
   infoUrl: 'https://hyp3-docs.asf.alaska.edu/products/#autorift',
   description: `
-    autoRIFT is a highly accurate and efficeint algorithm for finding the pixel
+    autoRIFT is a highly accurate and efficient algorithm for finding the pixel
     displacement between two radar images.
   `,
   numProducts: 2,

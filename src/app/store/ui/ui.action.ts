@@ -26,7 +26,7 @@ export enum UIActionType {
   SET_IS_BROWSE_DIALOG_OPEN = '[UI] Set Is Browse Dialog Open',
   SET_ONLY_SCENES_WITH_BROWSE = '[UI] Set Only Scenes With Browse',
   SET_HELP_DIALOG_TOPIC = '[UI] Set Help Dialog Topic',
-  SET_IS_DOWNLOAD_QUEUE_OPEN = '[UI] Is Downlaod Queue Open',
+  SET_IS_DOWNLOAD_QUEUE_OPEN = '[UI] Is Download Queue Open',
   SET_IS_ON_DEMAND_QUEUE_OPEN = '[UI] Is On Demand Queue Open',
 
   TOGGLE_BOTTOM_MENU = '[UI] Toggle Bottom Menu',

@@ -296,7 +296,7 @@ export class MapComponent implements OnInit, OnDestroy  {
         ([view, layerType]) => {
           this.setMapWith(<models.MapViewType>view, <models.MapLayerTypes>layerType);
           this.loadUrlState.emit();
-          this.store$.dispatch(new mapStore.MapInitialzed());
+          this.store$.dispatch(new mapStore.MapInitialized());
         }
       )
     );
@@ -343,7 +343,7 @@ export class MapComponent implements OnInit, OnDestroy  {
 
   private selectedToLayer$(selected$) {
     const scenesLayerAfterInitialization$ = this.isMapInitialized$.pipe(
-      filter(isMapInitiliazed => isMapInitiliazed),
+      filter(isMapInitialized => isMapInitialized),
       switchMap(_ => this.viewType$),
     );
 
@@ -385,7 +385,7 @@ export class MapComponent implements OnInit, OnDestroy  {
     );
 
     const selectedAfterInitialization$ = this.isMapInitialized$.pipe(
-      filter(isMapInitiliazed => isMapInitiliazed),
+      filter(isMapInitialized => isMapInitialized),
       switchMap(_ => this.viewType$),
       switchMap(_ => selected$),
     );
