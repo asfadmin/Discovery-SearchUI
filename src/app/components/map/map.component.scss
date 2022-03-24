@@ -112,6 +112,7 @@ button {
 .mobile-control-group {
   margin: 10px auto;
   zoom: 160%;
+  pointer-events: auto;
 }
 
 ::ng-deep.ol-overviewmap {

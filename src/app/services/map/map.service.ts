@@ -322,7 +322,7 @@ export class MapService {
     const view = {
       [models.MapViewType.ANTARCTIC]: views.antarctic(),
       [models.MapViewType.ARCTIC]: views.arctic(),
-      [models.MapViewType.EQUITORIAL]: layerType === models.MapLayerTypes.SATELLITE ?
+      [models.MapViewType.EQUATORIAL]: layerType === models.MapLayerTypes.SATELLITE ?
         views.equatorial() :
         views.equatorialStreet(),
     }[viewType];

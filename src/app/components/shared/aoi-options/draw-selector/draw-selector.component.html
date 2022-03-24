@@ -62,6 +62,7 @@
     </button>
 
   <button mat-menu-item
+    *ngIf="breakpoint !== breakpoints.MOBILE"
     (click)="onImportSelected()"
     class="control-mat-button-toggle"
     matTooltip="Import Area of Interest">

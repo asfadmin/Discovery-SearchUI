@@ -5,7 +5,7 @@ export enum Props {
   FRAME = 'Frame',
   FLIGHT_DIRECTION = 'Flight Direction',
   POLARIZATION = 'Polarization',
-  ABSOLUTE_ORBIT = 'Absolut Orbit',
+  ABSOLUTE_ORBIT = 'Absolute Orbit',
   MISSION_NAME = 'Mission Name',
   FLIGHT_LINE = 'Flight Line',
   OFF_NADIR_ANGLE = 'Off Nadir Angle',

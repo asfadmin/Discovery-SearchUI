@@ -34,7 +34,7 @@ export enum FiltersActionType {
 
   SET_FILTERS_SIMILAR_TO = '[Filters] Set Filters Similar To',
 
-  SET_PRODUCT_TYPES = '[Filters-Prodcut-Type] Set DATASET Product Types',
+  SET_PRODUCT_TYPES = '[Filters-Product-Type] Set DATASET Product Types',
 
   ADD_BEAM_MODE = '[Filters-Beam-Mode] Add Beam Mode',
   SET_BEAM_MODES = '[Filters-Beam-Mode] Set Dataset Beam Modes',

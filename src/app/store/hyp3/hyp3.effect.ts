@@ -7,7 +7,7 @@ import { map, switchMap, delay, catchError } from 'rxjs/operators';
 
 import { Hyp3Service, AsfApiService, NotificationService } from '@services';
 import {
-  Hyp3ActionType, SetJobs, SuccessfulJobSumbission,
+  Hyp3ActionType, SetJobs, SuccessfulJobSubmission,
   ErrorJobSubmission, SubmitJob, SetUser, ErrorLoadingUser,
   LoadSubscriptions, SetSubscriptions
 } from './hyp3.action';
@@ -47,7 +47,7 @@ export class Hyp3Effects {
   public submitJob = createEffect(() => this.actions$.pipe(
     ofType<SubmitJob>(Hyp3ActionType.SUBMIT_JOB),
     switchMap(action => this.hyp3Service.submitJob$(action.payload).pipe(
-      map(_ => new SuccessfulJobSumbission()
+      map(_ => new SuccessfulJobSubmission()
       ),
       catchError(_ => of(new ErrorJobSubmission())),
     ))
