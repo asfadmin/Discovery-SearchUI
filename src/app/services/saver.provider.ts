@@ -7,7 +7,7 @@ export type Saver = (blob: Blob, url: string, filename?: string, window?: any) =
 
 export const SAVER = new InjectionToken<Saver>('saver');
 
-export async function myStreamSaver (blob, _url, filename, handle) : Promise<any> {
+export async function myStreamSaver (blob, _url, filename, handle): Promise<any> {
   return new Promise(resolve => {
     if (handle.kind === 'directory') {
       handle.getFileHandle(filename, {create: true}).then(

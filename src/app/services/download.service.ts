@@ -95,9 +95,8 @@ export class DownloadService {
               }
               case (HttpEventType.Response): {
                 if (saver) {
-                  saver(event.body).then(stuff => {
-                    console.log(stuff);
-                    if (stuff.status === 'error') {
+                  saver(event.body).then(fileResponse => {
+                    if (fileResponse.status === 'error') {
                       this.notificationService.error('There was an error downloading the file. Make sure that you allowed your browser to access the right files');
                     }
                   });
@@ -108,7 +107,6 @@ export class DownloadService {
                   filename: filename,
                   id: id,
                   product: product,
-
                 };
               }
               default: {
