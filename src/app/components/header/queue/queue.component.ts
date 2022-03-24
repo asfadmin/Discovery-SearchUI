@@ -131,7 +131,6 @@ export class QueueComponent implements OnInit, OnDestroy {
   }
   public onRemoveProduct(product: CMRProduct): void {
     this.keepGoing(product);
-    console.log(product);
     this.store$.dispatch(new queueStore.RemoveItem(product));
   }
 
@@ -234,11 +233,11 @@ export class QueueComponent implements OnInit, OnDestroy {
 
   public async downloadAllFiles() {
     this.downloadService.getDirectory(true).then(() => {
-      const buttons = this.downloadButtons.toArray();
+      const buttons = this.downloadButtons.toArray().filter(b => !b?.dFile?.state);
       for (const button of buttons.slice(0, 3)) {
         const state = button?.dFile?.state;
         if (!state) {
-        button.downloadFile(true);
+          button.downloadFile(true);
         }
       }
       this.productList = buttons;
@@ -248,7 +247,7 @@ export class QueueComponent implements OnInit, OnDestroy {
     });
   }
 
-  public downloadContinue(_product) {
+  public downloadContinue(_product?) {
     this.dlQueueProgress = (this.dlQueueNumProcessed / this.dlQueueCount) * 100;
     if (this.dlQueueNumProcessed < this.dlQueueCount) {
       const button = this.productList[this.dlQueueNumProcessed++];
