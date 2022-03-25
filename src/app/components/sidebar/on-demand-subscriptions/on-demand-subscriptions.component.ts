@@ -54,7 +54,7 @@ export class OnDemandSubscriptionsComponent implements OnInit, OnDestroy {
     );
 
     this.subs.add(
-      this.store$.select(hyp3Store.getOnDemandSubscritpions).subscribe(
+      this.store$.select(hyp3Store.getOnDemandSubscriptions).subscribe(
         subs => this.subscriptions = subs
       )
     );

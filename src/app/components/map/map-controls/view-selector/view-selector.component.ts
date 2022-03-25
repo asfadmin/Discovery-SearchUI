@@ -44,8 +44,8 @@ export class ViewSelectorComponent implements OnInit, OnDestroy {
   public onArcticSelected =
     () => this.onNewProjection(MapViewType.ARCTIC)
 
-  public onEquitorialSelected =
-    () => this.onNewProjection(MapViewType.EQUITORIAL)
+  public onEquatorialSelected =
+    () => this.onNewProjection(MapViewType.EQUATORIAL)
 
   public onAntarcticSelected =
     () => this.onNewProjection(MapViewType.ANTARCTIC)

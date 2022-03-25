@@ -1,4 +1,4 @@
 export * from './map-view';
 export * from './arctic';
-export * from './equitorial';
+export * from './equatorial';
 export * from './antarctic';
