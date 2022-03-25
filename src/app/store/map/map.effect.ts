@@ -80,7 +80,7 @@ export class MapEffects {
         const failed = product.metadata.job?.status_code === models.Hyp3JobStatusCode.FAILED;
         const running = product.metadata.job?.status_code === models.Hyp3JobStatusCode.RUNNING;
 
-        if(failed || running) {
+        if (failed || running) {
           this.store$.dispatch(new ClearBrowseOverlays());
         }
 
