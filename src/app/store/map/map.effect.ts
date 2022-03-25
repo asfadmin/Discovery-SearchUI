@@ -17,7 +17,6 @@ import { PinnedProduct } from '@services/browse-map.service';
 import { getSelectedDataset } from '@store/filters';
 import { getIsFiltersMenuOpen, getIsResultsMenuOpen } from '@store/ui';
 import { ClearBrowseOverlays } from './map.action';
-// import { ClearBrowseOverlays } from './map.action';
 @Injectable()
 export class MapEffects {
 
