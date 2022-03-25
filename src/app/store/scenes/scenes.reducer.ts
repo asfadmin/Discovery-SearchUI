@@ -668,16 +668,16 @@ export const getNumberOfSarviewsEvents = createSelector(
 export const getSelectedSarviewsEventProducts = createSelector(
   getScenesState,
   state => {
-    if(!!state.selectedSarviewsEventProducts) {
-      let sorted = state.selectedSarviewsEventProducts.slice();
+    if (!!state.selectedSarviewsEventProducts) {
+      const sorted = state.selectedSarviewsEventProducts.slice();
       return sorted.sort((a, b) => {
-        if(a.granules[0].acquisition_date < b.granules[0].acquisition_date) {
+        if (a.granules[0].acquisition_date < b.granules[0].acquisition_date) {
           return 1;
-        } else if(a.granules[0].acquisition_date > b.granules[0].acquisition_date) {
+        } else if (a.granules[0].acquisition_date > b.granules[0].acquisition_date) {
           return -1;
         }
         return 0;
-      })
+      });
     }
     return state.selectedSarviewsEventProducts;
   }
