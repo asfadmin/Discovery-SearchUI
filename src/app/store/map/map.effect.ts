@@ -75,6 +75,8 @@ export class MapEffects {
         || product.dataset === 'Sentinel-1B'
         || product.dataset === 'Sentinel-1 Interferogram (BETA)'
         || product.dataset === 'UAVSAR';
+      } else if (searchType === SearchType.CUSTOM_PRODUCTS) {
+        return product.metadata.job?.status_code !== models.Hyp3JobStatusCode.FAILED && product.metadata.job?.status_code !== models.Hyp3JobStatusCode.RUNNING;
       }
       return true;
     }),
