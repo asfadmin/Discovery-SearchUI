@@ -16,6 +16,8 @@ import { MapActionType, SetBrowseOverlayOpacity, SetBrowseOverlays, ToggleBrowse
 import { PinnedProduct } from '@services/browse-map.service';
 import { getSelectedDataset } from '@store/filters';
 import { getIsFiltersMenuOpen, getIsResultsMenuOpen } from '@store/ui';
+import { ClearBrowseOverlays } from './map.action';
+// import { ClearBrowseOverlays } from './map.action';
 @Injectable()
 export class MapEffects {
 
@@ -68,6 +70,7 @@ export class MapEffects {
     filter(([selected, products]) => products[selected]?.browses.length > 0),
     map(([selected, products]) => products[selected]),
     withLatestFrom(this.store$.select(getSearchType)),
+    // tap(_ => this.store$.dispatch(new ClearBrowseOverlays())),
     filter(([product, searchType]) => {
       if (searchType === SearchType.LIST) {
         return product.dataset === 'ALOS'
@@ -76,7 +79,14 @@ export class MapEffects {
         || product.dataset === 'Sentinel-1 Interferogram (BETA)'
         || product.dataset === 'UAVSAR';
       } else if (searchType === SearchType.CUSTOM_PRODUCTS) {
-        return product.metadata.job?.status_code !== models.Hyp3JobStatusCode.FAILED && product.metadata.job?.status_code !== models.Hyp3JobStatusCode.RUNNING;
+        const failed = product.metadata.job?.status_code === models.Hyp3JobStatusCode.FAILED;
+        const running = product.metadata.job?.status_code === models.Hyp3JobStatusCode.RUNNING;
+
+        if(failed || running) {
+          this.store$.dispatch(new ClearBrowseOverlays());
+        }
+
+        return !failed && !running;
       }
       return true;
     }),
