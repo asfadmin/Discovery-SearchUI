@@ -69,7 +69,6 @@ export class MapEffects {
     filter(([selected, products]) => products[selected]?.browses.length > 0),
     map(([selected, products]) => products[selected]),
     withLatestFrom(this.store$.select(getSearchType)),
-    // tap(_ => this.store$.dispatch(new ClearBrowseOverlays())),
     filter(([product, searchType]) => {
       if (searchType === SearchType.LIST) {
         return product.dataset === 'ALOS'
