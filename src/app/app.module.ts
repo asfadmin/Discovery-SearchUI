@@ -12,6 +12,8 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
+import { MatTableModule } from '@angular/material/table';
+import { MatSortModule } from '@angular/material/sort';
 
 import { environment } from '@environments/environment';
 import { StoreModule } from '@ngrx/store';
@@ -93,6 +95,8 @@ export const routes = [
     EffectsModule.forRoot(store.appEffects),
     !environment.production ? StoreDevtoolsModule.instrument() : [],
     MatSidenavModule,
+    MatTableModule,
+    MatSortModule,
     SidebarModule,
     MapModule,
     ResultsMenuModule,
@@ -139,7 +143,7 @@ export const routes = [
     // { provide: Window, useValue: window },
   ],
   bootstrap: [AppComponent],
-  exports: [
+  exports: [ MatTableModule
   ]
 })
 export class AppModule {}

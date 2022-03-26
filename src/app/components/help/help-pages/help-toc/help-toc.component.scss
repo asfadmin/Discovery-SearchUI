@@ -80,3 +80,34 @@
     cursor: pointer;
   }
 }
+
+.help-table {
+  background: none;
+}
+
+.help-table-header {
+  font-size: 1.17em;
+  margin-block-start: 1em;
+  margin-block-end: 1em;
+  margin-inline-start: 0px;
+  margin-inline-end: 0px;
+  font-weight: bold;
+  color: #65665c;
+}
+
+.help-table-row {
+  height: 20px !important;
+
+  a {
+    color: $asf-blue;
+  }
+}
+
+.description {
+  padding: 0 !important;
+  border: none !important;
+}
+
+.duration {
+  text-align: right;
+}
