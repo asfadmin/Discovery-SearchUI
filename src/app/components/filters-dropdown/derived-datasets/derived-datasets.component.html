@@ -2,9 +2,21 @@
   <mat-card *ngFor="let dataset of datasets" >
       <mat-card-title>{{ dataset.name }}</mat-card-title>
       <mat-card-content>
-        <div class="description-layout">
-          <img style="width: 260px; margin-right: 16px;" [src]="dataset.picture">
-          <p>{{ dataset.description}}</p>
+        <div class="description-layout"
+          [ngClass]="{
+            'description-layout': breakpoint !== breakpoints.MOBILE,
+            'description-layout--mobile': breakpoint === breakpoints.MOBILE }">
+
+          <img (click)="onOpenDerivedDataset(dataset.info_url, dataset.name)"
+            [src]="dataset.picture"
+            class="clickable"
+            style="width: 250px; margin: 16px;">
+          <div>
+            <div style="margin-top: 16px;">
+              <b>{{ dataset.info }}</b>
+              <p>{{ dataset.description}}</p>
+            </div>
+          </div>
         </div>
       </mat-card-content>
       <mat-divider inset></mat-divider>

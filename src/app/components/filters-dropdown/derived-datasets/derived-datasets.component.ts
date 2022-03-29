@@ -1,19 +1,33 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { SubSink } from 'subsink';
 
-import { AnalyticsEvent, derivedDatasets } from '@models';
+import { ScreenSizeService } from '@services';
+import { AnalyticsEvent, derivedDatasets, Breakpoints } from '@models';
 
 @Component({
   selector: 'app-derived-datasets',
   templateUrl: './derived-datasets.component.html',
   styleUrls: ['./derived-datasets.component.scss']
 })
-export class DerivedDatasetsComponent implements OnInit {
+export class DerivedDatasetsComponent implements OnInit, OnDestroy {
   public asfWebsiteUrl = 'https://www.asf.alaska.edu';
   public datasets = derivedDatasets;
 
-  constructor() { }
+  public breakpoint: Breakpoints;
+  public breakpoints = Breakpoints;
+
+  private subs = new SubSink();
+
+  constructor(
+    private screenSize: ScreenSizeService,
+  ) { }
 
   ngOnInit(): void {
+    this.subs.add(
+      this.screenSize.breakpoint$.subscribe(
+        breakpoint => this.breakpoint = breakpoint
+      )
+    );
   }
 
   public onOpenDerivedDataset(dataset_url: string, dataset_name: string): void {
@@ -33,5 +47,9 @@ export class DerivedDatasetsComponent implements OnInit {
     });
 
     window.open(url, '_blank');
+  }
+
+  ngOnDestroy() {
+    this.subs.unsubscribe();
   }
 }
