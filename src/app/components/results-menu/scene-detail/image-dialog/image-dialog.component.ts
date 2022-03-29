@@ -30,7 +30,7 @@ import { ClipboardService } from 'ngx-clipboard';
 export class ImageDialogComponent implements OnInit, AfterViewInit, OnDestroy {
   public scene$ = this.store$.select(scenesStore.getSelectedScene);
   public browses$ = this.store$.select(scenesStore.getSelectedSceneBrowses);
-  public sarviewsEventProducts$ = this.store$.select(scenesStore.getSelectedSarviewsEventProducts);
+  public sarviewsEventProducts$ = this.sarviewsService.filteredEventProducts$();
   public sarviewsEventBrowses$ = this.store$.select(scenesStore.getSelectedSarviewsEventProductBrowses);
   public sarviewsEvent$ = this.store$.select(scenesStore.getSelectedSarviewsEvent);
   public masterOffsets$ = this.store$.select(scenesStore.getMasterOffsets);

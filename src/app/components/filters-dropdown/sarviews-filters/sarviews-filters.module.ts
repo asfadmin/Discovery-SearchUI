@@ -9,6 +9,7 @@ import { SarviewsEventMagnitudeSelectorModule } from '@components/shared/selecto
 import { DateSelectorModule } from '@components/shared/selectors/date-selector';
 import { MatIconModule } from '@angular/material/icon';
 import {SearchTypeSelectorModule} from '@components/shared/selectors/search-type-selector';
+import { EventProductsDateSelectorModule } from '@components/shared/selectors/event-products-date-selector';
 
 @NgModule({
   declarations: [
@@ -24,6 +25,7 @@ import {SearchTypeSelectorModule} from '@components/shared/selectors/search-type
         DateSelectorModule,
         MatIconModule,
         SearchTypeSelectorModule,
+        EventProductsDateSelectorModule
     ],
   exports: [
     SarviewsFiltersComponent

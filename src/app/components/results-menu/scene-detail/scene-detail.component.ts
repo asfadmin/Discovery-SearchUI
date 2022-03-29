@@ -37,7 +37,7 @@ export class SceneDetailComponent implements OnInit, OnDestroy {
 
   public browses$ = this.store$.select(scenesStore.getSelectedSceneBrowses);
   public jobBrowses$ = this.store$.select(scenesStore.getSelectedOnDemandProductSceneBrowses);
-  public selectedSarviewsEventProducts$ = this.store$.select(scenesStore.getSelectedSarviewsEventProducts);
+  public selectedSarviewsEventProducts$ = this.sarviewsService.filteredEventProducts$();
   public dataset: models.Dataset;
   public searchType: models.SearchType;
   public searchTypes = models.SearchType;

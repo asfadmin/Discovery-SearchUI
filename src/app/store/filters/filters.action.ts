@@ -82,6 +82,10 @@ export enum FiltersActionType {
   SET_SARVIEWS_MAGNITUDE_RANGE = '[Filters] Set SARViews quake event magnitude range filter',
   CLEAR_SARVIEWS_MAGNITUDE_RANGE = '[Filters] Clear SARViews quake event magnitude range',
 
+  SET_SARVIEWS_EVENT_PRODUCT_START_DATE = '[Filters] Set Event Monitoring product start date',
+  SET_SARVIEWS_EVENT_PRODUCT_END_DATE = '[Filters] Set Event Monitoring product end date'
+
+
 }
 
 export class SetSelectedDataset implements Action {
@@ -378,6 +382,18 @@ export class ClearSarviewsMagnitudeRange implements Action {
   public readonly type = FiltersActionType.CLEAR_SARVIEWS_MAGNITUDE_RANGE;
 }
 
+export class SetSarviewsEventProductStartDate implements Action {
+  public readonly type = FiltersActionType.SET_SARVIEWS_EVENT_PRODUCT_START_DATE;
+
+  constructor(public payload: Date) {}
+}
+
+export class SetSarviewsEventProductEndDate implements Action {
+  public readonly type = FiltersActionType.SET_SARVIEWS_EVENT_PRODUCT_END_DATE;
+
+  constructor(public payload: Date) {}
+}
+
 export class SetDefaultFilters implements Action {
   public readonly type = FiltersActionType.SET_DEFAULT_FILTERS;
   constructor(public payload: {
@@ -441,4 +457,6 @@ export type FiltersActions =
   | SetSarviewsMagnitudeStart
   | SetSarviewsMagnitudeEnd
   | SetSarviewsMagnitudeRange
-  | ClearSarviewsMagnitudeRange;
+  | ClearSarviewsMagnitudeRange
+  | SetSarviewsEventProductStartDate
+  | SetSarviewsEventProductEndDate;

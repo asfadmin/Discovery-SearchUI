@@ -18,7 +18,7 @@ export class SarviewsResultsMenuComponent implements OnInit, OnDestroy {
   @Input() resize$: Observable<void>;
 
   public selectedProducts$ = this.store$.select(scenesStore.getSelectedSceneProducts);
-  public selectedEventProducts$ = this.store$.select(scenesStore.getSelectedSarviewsEventProducts);
+  public selectedEventProducts$ = this.eventMonitoringService.filteredEventProducts$();
   public sarviewsEventsLength;
   public sarviewsProductsLength;
   public breakpoint: models.Breakpoints;
