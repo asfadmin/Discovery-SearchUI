@@ -5,7 +5,7 @@
   <ng-container matListIcon *ngIf="canUnzip(product)">
     <mat-icon
       *ngIf="!isUnzipLoading && !isOpen"
-      (click)="onLoadUnzippedPoduct()"
+      (click)="onLoadUnzippedProduct()"
       [matTooltip]="unzipTooltip(isUserLoggedIn, hasAccessToRestrictedData)"
       [class.clickable]="!isUnzipDisabled(isUserLoggedIn, hasAccessToRestrictedData)"
       [class.fainter-text]="isUnzipDisabled(isUserLoggedIn, hasAccessToRestrictedData)"

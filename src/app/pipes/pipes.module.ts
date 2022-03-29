@@ -7,6 +7,7 @@ import { JoinPipe } from './join.pipe';
 import { BaselineFilterPipe, SBASFilterPipe, GeographicFilterPipe, ListFilterPipe } from './filter-type.pipe';
 import { HTMLInputValuePipe } from './html-input-value.pipe';
 import { QuakePipe, VolcanoPipe } from './sarviews-event.pipe';
+import { FilterExtensionPipe } from './filter-extension.pipe';
 @NgModule({
   declarations: [
     ReadableSizeFromBytesPipe,
@@ -21,6 +22,7 @@ import { QuakePipe, VolcanoPipe } from './sarviews-event.pipe';
     HTMLInputValuePipe,
     QuakePipe,
     VolcanoPipe,
+    FilterExtensionPipe
     // floodPipe
   ],
   imports: [
@@ -39,6 +41,7 @@ import { QuakePipe, VolcanoPipe } from './sarviews-event.pipe';
     HTMLInputValuePipe,
     QuakePipe,
     VolcanoPipe,
+    FilterExtensionPipe,
     // floodPipe,
   ]
 })

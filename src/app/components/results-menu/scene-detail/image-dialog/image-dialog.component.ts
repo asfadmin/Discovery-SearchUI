@@ -49,7 +49,7 @@ export class ImageDialogComponent implements OnInit, AfterViewInit, OnDestroy {
   public isShow = false;
   public currentBrowse = null;
   public paramsList: any;
-
+  public currentSarviewsCMRProduct: models.CMRProduct;
   public breakpoint$ = this.screenSize.breakpoint$;
   public breakpoints = models.Breakpoints;
   public breakpoint: models.Breakpoints = models.Breakpoints.FULL;
@@ -197,6 +197,7 @@ export class ImageDialogComponent implements OnInit, AfterViewInit, OnDestroy {
     const browseService = this.browseMap;
     const currentProd = this.currentSarviewsProduct;
     this.currentSarviewsProduct = product;
+    this.currentSarviewsCMRProduct = this.sarviewsService.eventProductToCMRProduct(product);
     const self = this;
 
     this.image.addEventListener('load', function() {
@@ -257,8 +258,6 @@ export class ImageDialogComponent implements OnInit, AfterViewInit, OnDestroy {
     this.loadSarviewsBrowseImage(browse);
   }
 
-  public prodDownloaded( _product ) {
-  }
 
   public onCopyLink(content: SarviewProductGranule[]): void {
     const names = content.map(val => val.granule_name).join(',');
@@ -266,9 +265,6 @@ export class ImageDialogComponent implements OnInit, AfterViewInit, OnDestroy {
     this.notificationService.info( '', `Scene${content.length > 1 ? 's ' : ' '}Copied`);
   }
 
-  public downloadSarviewsProduct(product: SarviewsProduct) {
-    window.open(product.files.product_url, '_blank');
-  }
 
   public OpenProductInSarviews() {
     const url = this.sarviewsService.getSarviewsEventPinnedUrl(

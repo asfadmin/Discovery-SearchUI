@@ -22,7 +22,7 @@
       <div class="download-cart-icons" fxFlex="81px">
         <app-download-file-button
           [href]="node.url"
-          [product] = "product"
+          [product] = "productFromNode(node, product)"
           (productDownloaded)="prodDownloaded($event)">
         </app-download-file-button>
 

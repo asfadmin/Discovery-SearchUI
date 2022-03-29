@@ -19,7 +19,7 @@ export const avnir = {
     start: new Date('2006/05/16 03:36:51 UTC'),
     end: new Date('2011/04/21 20:23:36 UTC')
   },
-  infoUrl: 'https://asf.alaska.edu/data-sets/optical-data-sets/alos-avnir-2-ortho-rectified-image-product/',
+  infoUrl: 'https://asf.alaska.edu/datasets/optical-data-sets/alos-avnir-2-ortho-rectified-image-product/',
   citationUrl: 'https://www.asf.alaska.edu/how-to-cite-data/',
   frequency: 'Visible and Near Infrared',
   source: {

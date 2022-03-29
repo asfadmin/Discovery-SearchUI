@@ -1,27 +1,54 @@
-<mat-button-toggle-group class="button-group"
-                         [value]="layerType"
-                         name="layerType">
-  <mat-button-toggle class="control-mat-button-toggle"
-                     (click)="onNewLayerType(layerTypes.SATELLITE)"
-                     matTooltip="Satellite View"
-                     [value]="layerTypes.SATELLITE">
+<button mat-stroked-button class="layer-select-button" [matMenuTriggerFor]="layerMenu" aria-label="Map projection view">
+  <template *ngIf="layerType == layerTypes.SATELLITE" class="layer-btn layer-select-icon arctic">
     <mat-icon class="control-icon">terrain</mat-icon>
-  </mat-button-toggle>
-  <mat-button-toggle class="control-mat-button-toggle"
-                     (click)="onNewLayerType(layerTypes.STREET)"
-                     [value]="layerTypes.STREET"
-                     matTooltip="Street View" >
+  </template>
+  <template *ngIf="layerType == layerTypes.STREET" class="layer-btn layer-select-icon equatorial">
     <mat-icon class="control-icon">directions_car</mat-icon>
-  </mat-button-toggle>
+  </template>
+<!--  <template *ngIf="layerType == layerTypes.ANTARCTIC" class="layer-btn layer-select-icon antarctic"></template>-->
+  <span class="fa fa-caret-down bottom-right"></span>
+</button>
 
-  <mat-button-toggle
-  class="control-mat-button-toggle"
-  matTooltip="Overview map view"
-  (click)="onToggleOverviewMap(overviewMapVisible)">
+<mat-menu #layerMenu="matMenu">
 
-    <mat-icon class="view-btn antarctic">
-      map
-    </mat-icon>
+    <button mat-menu-item class="control-mat-button-toggle"
+                       (click)="onNewLayerType(layerTypes.SATELLITE)"
+                       matTooltip="Satellite Layer"
+                       [value]="layerTypes.SATELLITE">
+      <mat-icon class="control-icon">terrain</mat-icon>
+      Satellite Layer
+    </button>
 
-  </mat-button-toggle>
-</mat-button-toggle-group>
+    <button mat-menu-item class="control-mat-button-toggle"
+                       (click)="onNewLayerType(layerTypes.STREET)"
+                       [value]="layerTypes.STREET"
+                       matTooltip="Street Layer" >
+      <mat-icon class="control-icon">directions_car</mat-icon>
+      Street Layer
+    </button>
+
+  <mat-divider></mat-divider>
+
+    <button mat-menu-item
+      class="control-mat-checkbox-toggle"
+      matTooltip="Overview map view"
+      (click)="onToggleOverviewMap(overviewMapVisible)">
+
+      <mat-checkbox class="checkbox"
+                    [disabled]="true"
+                    [checked]="overviewMapVisible"></mat-checkbox>
+      Overview Map
+    </button>
+
+    <button mat-menu-item
+            class="control-mat-checkbox-toggle"
+            (click)="onToggleGridlines()"
+            matTooltip="Gridlines Overlay"
+    >
+      <mat-checkbox class="checkbox"
+                    [disabled]="true"
+                    [checked]="gridActive"></mat-checkbox>
+      Gridlines Overlay
+    </button>
+
+</mat-menu>

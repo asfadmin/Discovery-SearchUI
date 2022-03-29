@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, Input } from '@angular/core';
+import { Component, OnInit, OnDestroy, Input, QueryList, ViewChildren } from '@angular/core';
 
 import { faCopy } from '@fortawesome/free-solid-svg-icons';
 import { ClipboardService } from 'ngx-clipboard';
@@ -13,11 +13,11 @@ import { CMRProduct, AsfApiOutputFormat, Breakpoints } from '@models';
 import { MatDialogRef } from '@angular/material/dialog';
 import { SubSink } from 'subsink';
 import { ResizedEvent } from 'angular-resize-event';
-import { HttpClient } from '@angular/common/http';
-import { saveAs } from 'file-saver';
 import { Observable } from 'rxjs';
-import { download, Download } from 'ngx-operators';
+import {  Download } from 'ngx-operators';
 import * as userStore from '@store/user';
+import { DownloadFileButtonComponent } from '@components/shared/download-file-button/download-file-button.component';
+import * as UAParser from 'ua-parser-js';
 // import { DownloadService } from '@services/download.service';
 
 
@@ -37,8 +37,8 @@ export class QueueComponent implements OnInit, OnDestroy {
   @Input() appQueueComponentModel: string;
 
   download$: Observable<Download>;
-  // public dFile: Download;
-  // public dlInProgress: boolean = false;
+
+  @ViewChildren(DownloadFileButtonComponent) downloadButtons !: QueryList<DownloadFileButtonComponent>;
 
   public queueHasOnDemandProducts = false;
   public queueHasEventMonitoringProducts = false;
@@ -65,8 +65,12 @@ export class QueueComponent implements OnInit, OnDestroy {
   public dlQueueNumProcessed = 0;
   public dlDefaultChunkSize = 3;
   public dlQueueProgress = 0;
-  public productList: HTMLCollectionOf<Element>;
-
+  public productList: DownloadFileButtonComponent[] = [];
+  public isLoggedIn$ = this.store$.select(userStore.getIsUserLoggedIn).pipe(
+    map(
+      loggedIn => loggedIn && new UAParser().getBrowser().name === 'Chrome'
+    )
+  );
   public products$ = this.store$.select(queueStore.getQueuedProducts).pipe(
     tap(products => this.areAnyProducts = products.length > 0),
     tap(products => {
@@ -94,8 +98,6 @@ export class QueueComponent implements OnInit, OnDestroy {
     private dialogRef: MatDialogRef<QueueComponent>,
     private screenSize: ScreenSizeService,
     private notificationService: NotificationService,
-    private http: HttpClient,
-    // private downloadService: DownloadService,
   ) {}
 
   ngOnInit() {
@@ -113,9 +115,21 @@ export class QueueComponent implements OnInit, OnDestroy {
       )
     );
 
-  }
 
+  }
+  private keepGoing(product) {
+    const removedButton = this.downloadButtons.find(button => button.product === product);
+    if (removedButton?.dFile?.state !== 'DONE' && removedButton.dFile) {
+      removedButton.cancelDownload();
+      this.dlQueueNumProcessed--;
+      this.productList = this.productList?.filter(button => button.product !== product);
+      this.dlQueueCount--;
+      this.downloadContinue(product);
+    }
+  }
   public onRemoveProduct(product: CMRProduct): void {
+    this.keepGoing(product);
+    console.log(product);
     this.store$.dispatch(new queueStore.RemoveItem(product));
   }
 
@@ -216,34 +230,29 @@ export class QueueComponent implements OnInit, OnDestroy {
     this.dlHeight = event.newHeight;
   }
 
-  public download(href) {
-    this.download$ = this.http.get(href, {
-      withCredentials: true,
-      reportProgress: true,
-      observe: 'events',
-      responseType: 'blob'
-    }).pipe(download(() => saveAs('special.nc')));
-  }
-
-  public downloadAllFiles() {
-    const container = document.querySelector('#matListProducts');
-    this.productList = container.getElementsByClassName('download-file-button');
-    this.dlQueueNumProcessed = 0;
+  public async downloadAllFiles() {
+    const buttons = this.downloadButtons.toArray();
+    for (const button of buttons.slice(0, 3)) {
+      const state = button?.dFile?.state;
+      if (!state) {
+        button.downloadFile();
+      }
+    }
+    this.productList = buttons;
+    this.dlQueueNumProcessed = 3;
     this.dlQueueCount = this.productList.length;
-    this.dlDefaultChunkSize = typeof this.dlDefaultChunkSize === 'undefined' ? 3 : this.dlDefaultChunkSize;
-    // const biteSize = this.dlQueueCount < this.dlDefaultChunkSize ? this.dlQueueCount : this.dlDefaultChunkSize;
-    const biteSize = 3;
-    bite( biteSize, this.productList ).then( () => { this.dlQueueNumProcessed = biteSize; } );
+    this.dlDefaultChunkSize = this.dlDefaultChunkSize ?? 3;
   }
 
-  public prodDownloaded(_product) {
+  public downloadContinue(_product) {
     this.dlQueueProgress = (this.dlQueueNumProcessed / this.dlQueueCount) * 100;
     if (this.dlQueueNumProcessed < this.dlQueueCount) {
-      const el: HTMLButtonElement = this.productList[this.dlQueueNumProcessed++] as HTMLButtonElement;
-      el.click();
+      const button = this.productList[this.dlQueueNumProcessed++];
+      if (!button?.dFile?.state) {
+        button.downloadFile();
+      }
     }
   }
-
   public limitedExportString() {
     if (this.queueHasEventMonitoringProducts && this.queueHasOnDemandProducts) {
       return 'On Demand and Event products in queue - limited export options';
@@ -262,16 +271,3 @@ export class QueueComponent implements OnInit, OnDestroy {
     this.subs.unsubscribe();
   }
 }
-
-async function bite( biteSize: number, prodList: any ) {
-  for (let i = 0; i < biteSize; i++) {
-    await nibble( i, prodList );
-  }
-}
-async function nibble( i: number, prodList ) { // 3
-  await timer(1000);
-  const el: HTMLButtonElement = prodList[i] as HTMLButtonElement;
-  el.click();
-}
-
-function timer(ms) { return new Promise(res => setTimeout(res, ms)); }

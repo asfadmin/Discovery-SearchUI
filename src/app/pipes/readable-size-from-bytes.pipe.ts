@@ -5,7 +5,7 @@ import { Pipe, PipeTransform } from '@angular/core';
 })
 export class ReadableSizeFromBytesPipe implements PipeTransform {
 
-  transform(bytes: string): string {
+  transform(bytes: string | number): string {
     return this.getReadableSize(+bytes);
   }
 

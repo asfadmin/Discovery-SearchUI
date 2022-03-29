@@ -52,7 +52,7 @@ export class SetGridlines implements Action {
   constructor(public payload: boolean) {}
 }
 
-export class MapInitialzed implements Action {
+export class MapInitialized implements Action {
   public readonly type = MapActionType.MAP_INITIALIZED;
 }
 
@@ -96,7 +96,7 @@ export type MapActions =
   | SetMapDrawMode
   | SetMapInteractionMode
   | SetGridlines
-  | MapInitialzed
+  | MapInitialized
   | ToggleBrowseOverlay
   | SetBrowseOverlays
   | SetBrowseOverlayOpacity

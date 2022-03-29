@@ -111,7 +111,7 @@ export class FileContentsComponent implements OnInit, OnDestroy {
     this.store$.dispatch(new queueStore.ToggleProduct(fileProduct));
   }
 
-  public productFromNode(node, product): CMRProduct {
+  public productFromNode(node: ExampleFlatNode, product): CMRProduct {
     const extension = this.extension(node.name);
 
     const productTypeDisplay = `${this.product.productTypeDisplay} ${extension}`;

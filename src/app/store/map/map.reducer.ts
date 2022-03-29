@@ -17,7 +17,7 @@ export interface MapState {
 }
 
 export const initState: MapState = {
-  view: models.MapViewType.EQUITORIAL,
+  view: models.MapViewType.EQUATORIAL,
   drawMode: models.MapDrawModeType.BOX,
   interactionMode: models.MapInteractionModeType.DRAW,
   layerType: models.MapLayerTypes.SATELLITE,
@@ -138,4 +138,9 @@ export const getIsMapInitialization = createSelector(
 export const getIsOverviewMapOpen = createSelector(
   getMapState,
   (state: MapState) => state.overviewMapOpen
+);
+
+export const getBrowseOverlayOpacity = createSelector(
+  getMapState,
+  (state: MapState) => state.browseOverlayOpacity
 );

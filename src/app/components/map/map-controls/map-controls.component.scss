@@ -9,7 +9,7 @@ $info-color: $asf-primary;
 
 .position {
   z-index: 998;
-  margin-left: 5px;
+  margin-left: 0;
   top: 20px;
   width: 100%;
   height: 100%;
@@ -18,8 +18,9 @@ $info-color: $asf-primary;
 .icon-bar {
   background-color: $info-background;
   padding: 0;
-  padding-right: 4px;
   pointer-events: auto;
+  height: 45px !important;
+  max-height: 45px !important;
 }
 
 .ribbon-info-top {
@@ -35,17 +36,20 @@ label {
 .lat-lon {
   font-family: mat.font-family($config);
   font-size: 12px;
-  background-color: $info-background;
-  color: $info-color;
-  margin-top: -3px;
+  background-color: $asf-primary;
+  color: $asf-primary-light;
+  margin-top: 0;
+  padding-left: 10px;
+  max-height: 14px !important;
 }
 
 .lat-lon-data {
-  margin-left: 41px;
+  margin-left: 8px;
 }
 
 .group-margin {
-  margin-right: 6px;
+  margin-right: 0;
+  margin-left: 6px;
 }
 
 .control-icon {
@@ -62,18 +66,105 @@ label {
   color: $info-color;
 }
 
+.move-handle-div {
+  background-color: $asf-primary-light;
+  cursor: move;
+}
+
 .move-handle {
   margin-top: 16px;
   margin-left: 7px;
   margin-right: 7px;
-  color: $info-color;
+  color: $asf-primary-dark;
   cursor: move;
   width: 24px;
   height: 24px;
 }
 
+.move-handle-bottom {
+  background-color: $asf-primary;
+  height: 14px;
+  margin-top: 1px;
+}
+
 .slim-line {
   height: 0;
+}
+
+.zoom-buttons {
+  margin-left: 5px;
+}
+
+.opacity-slider-button {
+  margin: 0 0 5px;
+  padding: 0 0 0 3px;
+  color: rgb(0 0 0 / 87%);
+  background: white;
+  font-size: 14px !important;
+  height: 27px !important;
+  width: 18px !important;
+  min-width: 53px !important;
+  border-radius: 4px !important;
+  border: solid 1px rgb(0 0 0 / 12%);
+  text-align: center;
+}
+
+.opacity-slider-title {
+  text-align: center;
+  font-size: small;
+  color: $asf-primary;
+}
+
+.bottom-right {
+  color: $asf-primary;
+  position: absolute;
+  bottom: -7px;
+  right: -4px;
+  transform: rotate(-45deg);
+}
+
+::ng-deep .opacity-slider-mat-menu {
+  padding: 15px 20px 0;
+}
+
+.opacity-slider {
+  width: 275px;
+}
+
+.opacity-button-text {
+  display: inline-block;
+  position: absolute;
+  top: -4px;
+  left: 7px;
+  width: 40px;
+  color: $asf-primary;
+  text-align: center;
+  align-content: center;
+}
+
+.tool-bar-control {
+  cursor: pointer;
+  display: block;
+  width: 30px;
+  padding: 14px 0;
+  margin-left: 10px;
+  color: $asf-primary;
+  background-color: $asf-primary-light;
+}
+
+.tool-bar-control-bottom {
+  width: calc(100% + 10px);
+  margin: 3px 0 0 -10px;
+  height: 14px;
+  background-color: #65665c;
+}
+
+.visible-toggle {
+  transition: all 1.2s ease-in-out;
+}
+
+.tool-bar-common {
+  margin-left: 10px;
 }
 
 ::ng-deep .mat-slider.mat-slider-horizontal {

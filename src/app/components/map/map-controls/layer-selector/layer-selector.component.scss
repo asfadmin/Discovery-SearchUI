@@ -1,0 +1,42 @@
+@import "asf-theme";
+
+.layer-select-button {
+  margin: 0;
+  padding: 0 0 0 3px;
+  color: rgb(0 0 0 / 87%);
+  background: white;
+  font-size: 18px !important;
+  height: 27px !important;
+  width: 18px !important;
+  min-width: 53px !important;
+  border-radius: 4px !important;
+  border: solid 1px rgb(0 0 0 / 12%);
+  text-align: center;
+}
+
+.layer-select-icon {
+  display: inline-block;
+  margin-top: 1px;
+}
+
+.layer-menu-icon {
+  transform: translateY(6px);
+}
+
+.bottom-right {
+  color: $asf-primary;
+  position: absolute;
+  bottom: -7px;
+  right: -4px;
+  transform: rotate(-45deg);
+}
+
+.control-mat-checkbox-toggle {
+  height: 35px;
+}
+
+.checkbox {
+  margin-left: 2px;
+  margin-right: 22px;
+  cursor: pointer;
+}

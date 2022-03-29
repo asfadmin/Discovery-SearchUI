@@ -7,7 +7,7 @@
 
 .map-header {
   position: relative;
-  top: 5px;
+  top: 12px;
   width: 100vw;
   pointer-events: none;
 }
@@ -22,7 +22,6 @@
 }
 
 .map-controls {
-  padding-right: 15px;
   height: 58px;
 }
 
@@ -113,6 +112,7 @@ button {
 .mobile-control-group {
   margin: 10px auto;
   zoom: 160%;
+  pointer-events: auto;
 }
 
 ::ng-deep.ol-overviewmap {

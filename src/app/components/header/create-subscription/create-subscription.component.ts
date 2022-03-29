@@ -347,7 +347,7 @@ export class CreateSubscriptionComponent implements OnInit, OnDestroy {
       }
     };
 
-    this.hyp3.submiteSubscription$({
+    this.hyp3.submitSubscription$({
       subscription: sub, validate_only: this.validateOnly
     }).subscribe(_ => {
       this.notificationService.info(this.projectName + ' subscription submitted');

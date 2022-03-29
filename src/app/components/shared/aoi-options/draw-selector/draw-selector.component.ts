@@ -4,8 +4,10 @@ import { SubSink } from 'subsink';
 import { Store } from '@ngrx/store';
 import { AppState } from '@store';
 import * as mapStore from '@store/map';
+import * as uiStore from '@store/ui';
 
-import { MapDrawModeType, MapInteractionModeType } from '@models';
+import { ScreenSizeService } from '@services';
+import { MapDrawModeType, MapInteractionModeType, Breakpoints } from '@models';
 
 @Component({
   selector: 'app-draw-selector',
@@ -17,8 +19,12 @@ export class DrawSelectorComponent implements OnInit, OnDestroy {
   public types = MapDrawModeType;
   private subs = new SubSink();
 
+  public breakpoint: Breakpoints;
+  public breakpoints = Breakpoints;
+
   constructor(
     private store$: Store<AppState>,
+    private screenSize: ScreenSizeService,
   ) {}
 
   ngOnInit() {
@@ -27,11 +33,22 @@ export class DrawSelectorComponent implements OnInit, OnDestroy {
         drawMode => this.drawMode = drawMode
       )
     );
+
+    this.subs.add(
+      this.screenSize.breakpoint$.subscribe(
+        breakpoint => this.breakpoint = breakpoint
+      )
+    );
   }
 
   public onNewDrawMode(mode: MapDrawModeType): void {
     this.store$.dispatch(new mapStore.SetMapInteractionMode(MapInteractionModeType.DRAW));
     this.store$.dispatch(new mapStore.SetMapDrawMode(mode));
+  }
+
+  public onImportSelected() {
+    const action = new uiStore.OpenAOIOptions();
+    this.store$.dispatch(action);
   }
 
   public onPolygonSelected =
