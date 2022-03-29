@@ -4,9 +4,10 @@ import { SubSink } from 'subsink';
 import { Store } from '@ngrx/store';
 import { AppState } from '@store';
 import * as mapStore from '@store/map';
-
-import { MapDrawModeType, MapInteractionModeType } from '@models';
 import * as uiStore from '@store/ui';
+
+import { ScreenSizeService } from '@services';
+import { MapDrawModeType, MapInteractionModeType, Breakpoints } from '@models';
 
 @Component({
   selector: 'app-draw-selector',
@@ -18,14 +19,24 @@ export class DrawSelectorComponent implements OnInit, OnDestroy {
   public types = MapDrawModeType;
   private subs = new SubSink();
 
+  public breakpoint: Breakpoints;
+  public breakpoints = Breakpoints;
+
   constructor(
     private store$: Store<AppState>,
+    private screenSize: ScreenSizeService,
   ) {}
 
   ngOnInit() {
     this.subs.add(
       this.store$.select(mapStore.getMapDrawMode).subscribe(
         drawMode => this.drawMode = drawMode
+      )
+    );
+
+    this.subs.add(
+      this.screenSize.breakpoint$.subscribe(
+        breakpoint => this.breakpoint = breakpoint
       )
     );
   }

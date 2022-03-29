@@ -17,7 +17,7 @@ export interface MapState {
 }
 
 export const initState: MapState = {
-  view: models.MapViewType.EQUITORIAL,
+  view: models.MapViewType.EQUATORIAL,
   drawMode: models.MapDrawModeType.BOX,
   interactionMode: models.MapInteractionModeType.DRAW,
   layerType: models.MapLayerTypes.SATELLITE,
