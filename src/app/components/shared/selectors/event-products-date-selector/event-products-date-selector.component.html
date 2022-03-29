@@ -1,10 +1,10 @@
-<p>event-products-date-selector works! {{dateRange.start | shortDate }} - {{dateRange.end | shortDate }}</p>
+<h3>Product Date Range</h3>
 
 <app-date-range
-[minDate]="dateRange.start"
-[maxDate]="dateRange.end"
-[startDate]="dateRange.start"
-[endDate]="dateRange.end"
+[minDate]="minDate"
+[maxDate]="maxDate"
+[startDate]="startDate"
+[endDate]="endDate"
 (newStart)="onSetStartDate($event)"
 (newEnd)="onSetEndDate($event)"
 ></app-date-range>

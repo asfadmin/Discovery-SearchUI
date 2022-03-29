@@ -4,11 +4,20 @@
      class="info-bar">
 
   <div class="first-info">
-    <span *ngIf="(searchType$ | async) == searchTypes.SARVIEWS_EVENTS" class="sarviews">
+    <span *ngIf="(searchType$ | async) === searchTypes.SARVIEWS_EVENTS" class="sarviews">
       Events provided by
       <a href="https://sarviews-hazards.alaska.edu/" target="_blank" style="color: unset;">
         SARVIEWS
       </a>
+    </span>
+    <span *ngIf="(searchType$ | async) === searchTypes.SARVIEWS_EVENTS && eventProductStartDate !== null" class="sarviews">
+      <b>Product Start Date:</b> {{eventProductStartDate === null ? '' : eventProductStartDate | shortDate}}
+      <!-- <a href="https://sarviews-hazards.alaska.edu/" target="_blank" style="color: unset;">
+        SARVIEWS
+      </a> -->
+    </span>
+    <span *ngIf="(searchType$ | async) === searchTypes.SARVIEWS_EVENTS && eventProductEndDate !== null" class="sarviews">
+      <b>Product End Date:</b> {{eventProductEndDate === null ? '' :eventProductEndDate | shortDate}}
     </span>
     <span *ngIf="(breakpoint < breakpoints.FULL) && !!startDate">
       <b>Start:</b> {{ startDate | shortDate }}

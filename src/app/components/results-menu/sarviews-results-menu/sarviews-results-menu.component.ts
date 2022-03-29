@@ -8,6 +8,8 @@ import * as scenesStore from '@store/scenes';
 import { SarviewsEventsService, ScreenSizeService } from '@services';
 import { SubSink } from 'subsink';
 import * as models from '@models';
+import { map } from 'rxjs/operators';
+import { OpenFiltersMenu } from '@store/ui';
 
 @Component({
   selector: 'app-sarviews-results-menu',
@@ -19,6 +21,7 @@ export class SarviewsResultsMenuComponent implements OnInit, OnDestroy {
 
   public selectedProducts$ = this.store$.select(scenesStore.getSelectedSceneProducts);
   public selectedEventProducts$ = this.eventMonitoringService.filteredEventProducts$();
+  public unfilteredEventProductsLength$ = this.store$.select(scenesStore.getSelectedSarviewsEventProducts).pipe(map(products => products.length));
   public sarviewsEventsLength;
   public sarviewsProductsLength;
   public breakpoint: models.Breakpoints;
@@ -73,6 +76,9 @@ export class SarviewsResultsMenuComponent implements OnInit, OnDestroy {
     );
   }
 
+  public onOpenFiltersPanel() {
+    this.store$.dispatch(new OpenFiltersMenu());
+  }
   ngOnDestroy() {
     this.subs.unsubscribe();
   }
