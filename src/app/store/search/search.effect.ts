@@ -183,7 +183,8 @@ export class SearchEffects {
       new uiStore.CloseAOIOptions(),
       action.payload === models.SearchType.LIST ||
       action.payload === models.SearchType.SBAS ||
-      action.payload === models.SearchType.BASELINE ?
+      action.payload === models.SearchType.BASELINE ||
+      action.payload === models.SearchType.DERIVED_DATASETS ?
         new uiStore.OpenFiltersMenu() :
         new uiStore.CloseFiltersMenu(),
     ]),

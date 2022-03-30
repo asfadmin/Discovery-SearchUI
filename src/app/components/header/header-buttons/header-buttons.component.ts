@@ -3,7 +3,6 @@ import { SubSink } from 'subsink';
 import { HttpClient } from '@angular/common/http';
 
 import { MatDialog } from '@angular/material/dialog';
-import { ClipboardService } from 'ngx-clipboard';
 
 import { Store } from '@ngrx/store';
 import { AppState } from '@store';
@@ -15,7 +14,7 @@ import * as searchStore from '@store/search';
 import { PreferencesComponent } from './preferences/preferences.component';
 import { CustomizeEnvComponent } from './customize-env/customize-env.component';
 
-import { AuthService, AsfApiService, EnvironmentService, ScreenSizeService, NotificationService } from '@services';
+import { AuthService, AsfApiService, EnvironmentService, ScreenSizeService } from '@services';
 import { CMRProduct, Breakpoints, UserAuth, SidebarType, QueuedHyp3Job, SearchType, AnalyticsEvent } from '@models';
 
 import { collapseAnimation, rubberBandAnimation,
@@ -69,12 +68,10 @@ export class HeaderButtonsComponent implements OnInit, OnDestroy {
     public authService: AuthService,
     public env: EnvironmentService,
     public asfApiService: AsfApiService,
-    public clipboard: ClipboardService,
     private screenSize: ScreenSizeService,
     private dialog: MatDialog,
     private store$: Store<AppState>,
     private http: HttpClient,
-    private notificationService: NotificationService,
   ) {}
 
   ngOnInit() {
@@ -251,16 +248,6 @@ export class HeaderButtonsComponent implements OnInit, OnDestroy {
     this.openNewWindow(url, analyticsEvent);
   }
 
-  public onOpenDerivedDataset(dataset_path: string, dataset_name: string): void {
-    const url = this.asfWebsiteUrl + dataset_path;
-    const analyticsEvent = {
-      name: 'open-derived-dataset',
-      value: dataset_name
-    };
-
-    this.openNewWindow(url, analyticsEvent);
-  }
-
   public onOpenCustomizeEnv(): void {
     this.dialog.open(CustomizeEnvComponent, {
       width: '800px',
@@ -306,32 +293,6 @@ export class HeaderButtonsComponent implements OnInit, OnDestroy {
 
   public onOpenSubscriptions() {
     this.store$.dispatch(new uiStore.OpenSidebar(SidebarType.ON_DEMAND_SUBSCRIPTIONS));
-  }
-
-  public onCopy(): void {
-    window.dataLayer = window.dataLayer || [];
-    window.dataLayer.push({
-      'event': 'copy-search-link',
-      'copy-search-link': window.location.href
-    });
-
-    this.clipboard.copyFromContent(window.location.href);
-    this.notificationService.clipboardSearchLink();
-  }
-
-  public onShareWithEmail() {
-    const subject = `New Search - ${encodeURIComponent(document.title)}`;
-
-    window.dataLayer = window.dataLayer || [];
-    window.dataLayer.push({
-      'event': 'share-with-email',
-      'share-with-email': encodeURIComponent(document.URL)
-    });
-
-    window.open(
-      `mailto:?subject=${subject}` +
-      `&body=${encodeURIComponent(document.URL)}`
-    );
   }
 
   public isDevMode(): boolean {

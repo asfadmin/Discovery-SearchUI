@@ -285,9 +285,7 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
 
           const searchState = this.savedSearchService.getSearchState(action.payload);
 
-          if (
-            searchState
-            ) {
+          if (searchState && action.payload !== models.SearchType.DERIVED_DATASETS) {
             this.searchService.loadSearch(searchState);
 
             if (!this.isEmptySearch(searchState)) {
@@ -301,7 +299,6 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
           } else {
             this.store$.dispatch(new filterStore.SetDefaultFilters(profile?.defaultFilterPresets));
           }
-
         }
       )
     );
