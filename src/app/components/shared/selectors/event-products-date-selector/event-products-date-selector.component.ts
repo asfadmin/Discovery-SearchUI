@@ -23,8 +23,7 @@ export class EventProductsDateSelectorComponent implements OnInit {
   public maxDate = new Date();
 
   constructor(
-    private store$: Store<AppState>,
-    // private eventMonitoringService: SarviewsEventsService
+    private store$: Store<AppState>
   ) { }
 
   ngOnInit(): void {
@@ -53,12 +52,10 @@ export class EventProductsDateSelectorComponent implements OnInit {
   }
 
   public onSetStartDate(startDate: Date) {
-    // this.startDate = startDate;
     this.store$.dispatch(new SetSarviewsEventProductStartDate(new Date(startDate)));
   }
 
   public onSetEndDate(endDate: Date) {
-    // this.endDate = endDate;
     this.store$.dispatch(new SetSarviewsEventProductEndDate(new Date(endDate)));
   }
 
