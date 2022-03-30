@@ -45,13 +45,13 @@
 }
 
 .mat-card {
-  padding: 16px 16px 0 16px;
+  padding: 16px 16px 0;
   height: 75px;
 }
 
 .mat-card-step {
   display: flex;
-  margin: 0 3px 0 3px;
+  margin: 0 3px;
   cursor: pointer;
 }
 
@@ -89,8 +89,8 @@
   font-size: 1.17em;
   margin-block-start: 1em;
   margin-block-end: 1em;
-  margin-inline-start: 0px;
-  margin-inline-end: 0px;
+  margin-inline-start: 0;
+  margin-inline-end: 0;
   font-weight: bold;
   color: #65665c;
 }
