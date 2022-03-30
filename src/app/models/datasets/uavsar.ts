@@ -13,7 +13,7 @@ export const uavsar = {
   ],
   apiValue: { platform: 'UAVSAR' },
   date: { start: new Date('2008/04/28 21:10:16 UTC') },
-  infoUrl: 'https://www.asf.alaska.edu/sar-data-sets/uavsar-2/',
+  infoUrl: 'https://asf.alaska.edu/data-sets/sar-data-sets/uavsar/',
   citationUrl: 'https://asf.alaska.edu/data-sets/sar-data-sets/uavsar/#uavsar_cite',
   frequency: 'L-Band',
   source: {

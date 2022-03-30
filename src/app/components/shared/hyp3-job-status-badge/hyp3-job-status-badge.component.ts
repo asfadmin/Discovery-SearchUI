@@ -155,7 +155,7 @@ export class Hyp3JobStatusBadgeComponent implements OnInit {
       processingOptions
     });
 
-    this.hyp3.submiteJobBatch$({jobs: hyp3JobsBatch, validate_only: validateOnly}).pipe(
+    this.hyp3.submitJobBatch$({jobs: hyp3JobsBatch, validate_only: validateOnly}).pipe(
       catchError(resp => {
         if (resp.error) {
           if (resp.error.detail === 'No authorization token provided' || resp.error.detail === 'Provided apikey is not valid') {

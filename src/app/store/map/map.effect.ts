@@ -16,6 +16,7 @@ import { MapActionType, SetBrowseOverlayOpacity, SetBrowseOverlays, ToggleBrowse
 import { PinnedProduct } from '@services/browse-map.service';
 import { getSelectedDataset } from '@store/filters';
 import { getIsFiltersMenuOpen, getIsResultsMenuOpen } from '@store/ui';
+import { ClearBrowseOverlays } from './map.action';
 @Injectable()
 export class MapEffects {
 
@@ -75,6 +76,15 @@ export class MapEffects {
         || product.dataset === 'Sentinel-1B'
         || product.dataset === 'Sentinel-1 Interferogram (BETA)'
         || product.dataset === 'UAVSAR';
+      } else if (searchType === SearchType.CUSTOM_PRODUCTS) {
+        const failed = product.metadata.job?.status_code === models.Hyp3JobStatusCode.FAILED;
+        const running = product.metadata.job?.status_code === models.Hyp3JobStatusCode.RUNNING;
+
+        if (failed || running) {
+          this.store$.dispatch(new ClearBrowseOverlays());
+        }
+
+        return !failed && !running;
       }
       return true;
     }),
