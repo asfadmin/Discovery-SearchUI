@@ -14,7 +14,7 @@ import * as moment from 'moment';
 import { getSarviewsEvents, getSelectedSarviewsEventProducts } from '@store/scenes';
 import { Store } from '@ngrx/store';
 import { AppState } from '@store';
-import { getDateRange, getSarviewsEventActiveFilter, getSarviewsEventNameFilter, getSarviewsEventProductsDateRange, getSarviewsEventTypes, getSarviewsMagnitudeRange } from '@store/filters';
+import { getDateRange, getHyp3ProductTypes, getPathFrameRanges, getSarviewsEventActiveFilter, getSarviewsEventNameFilter, getSarviewsEventProductsDateRange, getSarviewsEventTypes, getSarviewsMagnitudeRange } from '@store/filters';
 
 @Injectable({
   providedIn: 'root'
@@ -255,10 +255,14 @@ export class SarviewsEventsService {
 
   public filteredEventProducts$(): Observable<SarviewsProduct[]> {
     return (
-      this.filterByProductDate$(
-        this.store$.select(getSelectedSarviewsEventProducts)
+      this.filterByProductPathFrame$(
+        this.filterByProductDate$(
+          this.filterByProductType$(
+            this.store$.select(getSelectedSarviewsEventProducts)
+            )
+          )
         )
-    )
+      )
   }
 
   private filterByProductDate$(products$: Observable<SarviewsProduct[]>) {
@@ -284,6 +288,55 @@ export class SarviewsEventsService {
 
         return true;
       }))
+    )
+  }
+
+  private filterByProductPathFrame$(products$: Observable<SarviewsProduct[]>) {
+    return combineLatest(
+      [
+        products$,
+        this.store$.select(getPathFrameRanges)
+      ]
+    ).pipe(
+      map(([products, pathAndFrame]) => {
+        return products.filter(product => {
+
+          if (pathAndFrame?.pathRange?.start !== null) {
+            if(product.granules[0].path < pathAndFrame.pathRange.start) {
+              return false;
+            }
+          }
+          if (pathAndFrame?.pathRange?.end !== null) {
+            if(product.granules[0].path > pathAndFrame.pathRange.end) {
+              return false;
+            }
+          }
+
+          if (pathAndFrame?.frameRange?.start !== null) {
+            if(product.granules[0].frame < pathAndFrame.frameRange.start) {
+              return false;
+            }
+          }
+          if (pathAndFrame?.frameRange?.end !== null) {
+            if(product.granules[0].frame > pathAndFrame.frameRange.end) {
+              return false;
+            }
+          }
+
+          return true;
+        });
+      })
+    )
+  }
+
+  private filterByProductType$(products$: Observable<SarviewsProduct[]>) {
+    return combineLatest([
+      products$,
+      this.store$.select(getHyp3ProductTypes).pipe(
+        map(jobTypes => jobTypes.map(jobType => jobType.id))
+      )
+    ]).pipe(
+      map(([products, jobTypes]) => products.filter(product => jobTypes.includes(product.job_type)))
     )
   }
 

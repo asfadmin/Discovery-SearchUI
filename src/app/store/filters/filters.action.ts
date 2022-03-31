@@ -83,8 +83,9 @@ export enum FiltersActionType {
   CLEAR_SARVIEWS_MAGNITUDE_RANGE = '[Filters] Clear SARViews quake event magnitude range',
 
   SET_SARVIEWS_EVENT_PRODUCT_START_DATE = '[Filters] Set Event Monitoring product start date',
-  SET_SARVIEWS_EVENT_PRODUCT_END_DATE = '[Filters] Set Event Monitoring product end date'
+  SET_SARVIEWS_EVENT_PRODUCT_END_DATE = '[Filters] Set Event Monitoring product end date',
 
+  SET_HYP3_PRODUCT_TYPES = '[Filters] Set Hyp3 product types filter'
 
 }
 
@@ -394,6 +395,12 @@ export class SetSarviewsEventProductEndDate implements Action {
   constructor(public payload: Date) {}
 }
 
+export class SetHyp3ProductTypes implements Action {
+  public readonly type = FiltersActionType.SET_HYP3_PRODUCT_TYPES;
+
+  constructor(public payload: string[]) {}
+}
+
 export class SetDefaultFilters implements Action {
   public readonly type = FiltersActionType.SET_DEFAULT_FILTERS;
   constructor(public payload: {
@@ -459,4 +466,5 @@ export type FiltersActions =
   | SetSarviewsMagnitudeRange
   | ClearSarviewsMagnitudeRange
   | SetSarviewsEventProductStartDate
-  | SetSarviewsEventProductEndDate;
+  | SetSarviewsEventProductEndDate
+  | SetHyp3ProductTypes;

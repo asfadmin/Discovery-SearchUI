@@ -10,6 +10,8 @@ import { DateSelectorModule } from '@components/shared/selectors/date-selector';
 import { MatIconModule } from '@angular/material/icon';
 import {SearchTypeSelectorModule} from '@components/shared/selectors/search-type-selector';
 import { EventProductsDateSelectorModule } from '@components/shared/selectors/event-products-date-selector';
+import { PathSelectorModule } from '@components/shared/selectors/path-selector';
+import { Hyp3JobTypeSelectorModule } from '@components/shared/selectors/hyp3-job-type-selector';
 
 @NgModule({
   declarations: [
@@ -25,7 +27,9 @@ import { EventProductsDateSelectorModule } from '@components/shared/selectors/ev
         DateSelectorModule,
         MatIconModule,
         SearchTypeSelectorModule,
-        EventProductsDateSelectorModule
+        EventProductsDateSelectorModule,
+        PathSelectorModule,
+        Hyp3JobTypeSelectorModule
     ],
   exports: [
     SarviewsFiltersComponent

@@ -1,0 +1,3 @@
+<mat-checkbox *ngFor="let jobType of hyp3JobTypes" [checked]="selected.includes(jobType)" (change)="onSelect($event, jobType)">
+{{jobType}}
+</mat-checkbox>

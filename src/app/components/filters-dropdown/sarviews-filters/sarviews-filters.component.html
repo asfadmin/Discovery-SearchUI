@@ -58,11 +58,26 @@
     <div style="margin-top: 20px;">
       <app-date-selector></app-date-selector>
     </div>
-    <div>
-      <app-event-products-date-selector></app-event-products-date-selector>
-    </div>
-    <!-- <div style="margin-top: 20px;">
-      <app-season-selector></app-season-selector>
-    </div> -->
   </mat-expansion-panel>
+
+  <mat-expansion-panel [expanded]="defaultPanelOpenState" [disabled]="panelIsDisabled"
+  (click)="selectPanel(panels.DATE)"
+  [class.raised-section]="isSelected(panels.DATE)">
+  <mat-expansion-panel-header [collapsedHeight]="customCollapsedHeight" [expandedHeight]="customExpandedHeight">
+    <mat-panel-title style="align-items: center;">
+      Product Filters
+      <mat-icon (click)="onOpenHelp('https://docs.asf.alaska.edu/vertex/manual/#date-filters')" class="clickable" style="margin-left: 10px;">info</mat-icon>
+    </mat-panel-title>
+  </mat-expansion-panel-header>
+
+  <div style="margin-top: 20px;">
+    <app-event-products-date-selector></app-event-products-date-selector>
+  </div>
+  <div style="margin-top: 20px;">
+    <app-path-selector></app-path-selector>
+  </div>
+  <div style="margin-top: 20px;">
+    <app-hyp3-job-type-selector></app-hyp3-job-type-selector>
+  </div>
+</mat-expansion-panel>
 </mat-accordion>

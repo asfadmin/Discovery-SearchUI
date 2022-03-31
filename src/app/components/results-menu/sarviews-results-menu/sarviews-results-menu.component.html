@@ -22,7 +22,7 @@
   <mat-card class="h100 mp0 no-left-border" fxFlex="33" fxFlexFill>
     <mat-card-subtitle class="header">
       <span>
-        {{ sarviewsProductsLength}} File{{ sarviewsProductsLength === 1 ? '' : 's'}} ({{(unfilteredEventProductsLength$ | async) - sarviewsProductsLength }} filtered)
+        {{ sarviewsProductsLength}} of {{(unfilteredEventProductsLength$ | async)}} File{{ sarviewsProductsLength === 1 ? '' : 's'}}
       </span>
     </mat-card-subtitle>
 

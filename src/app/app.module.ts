@@ -75,7 +75,7 @@ export const routes = [
 
 @NgModule({
   declarations: [
-    AppComponent,
+    AppComponent
     // OnlynumberDirective,
     // FileDownloadDirective,
   ],
