@@ -80,14 +80,6 @@
         <div class="text-under faint-text"> {{ this.userAuth.id }} </div>
     </button>
 
-    <button
-      [matMenuTriggerFor]="helpMenu"
-      matTooltip="Help and information"
-      class="spacing nav-icon-buttons" color="basic" mat-button>
-        <mat-icon class="large-icon">menu_book</mat-icon>
-        <div class="text-under faint-text"> Help</div>
-    </button>
-
   </ng-container>
 
   <ng-container *ngIf="breakpoint === breakpoints.MOBILE">
@@ -153,13 +145,6 @@
       [matMenuTriggerFor]="profileMenu">
         account_circle
     </mat-icon>
-
-    <mat-icon
-      [matMenuTriggerFor]="helpMenu"
-      class="mobile-icon-spacing">
-        menu_book
-    </mat-icon>
-
   </ng-container>
 </div>
 
@@ -187,31 +172,6 @@
     Sign out
   </button>
 </mat-menu>
-
-<mat-menu #helpMenu="matMenu">
-  <button mat-menu-item matSuffix (click)="onOpenHelp('toc')">
-    <mat-icon>video_library</mat-icon>
-    Video Tutorials
-  </button>
-
-  <button mat-menu-item matSuffix (click)="onOpenUserGuide()">
-    <mat-icon>book</mat-icon>
-    Vertex User Guide
-  </button>
-
-  <button mat-menu-item matSuffix (click)="onOpenHyP3Guide()">
-    <mat-icon>book</mat-icon>
-    HyP3 User Guide
-
-  </button>
-
-  <hr class="menu-hr">
-  <button (click)="onLogout()"
-      mat-menu-item matSuffix>
-    Sign out
-  </button>
-</mat-menu>
-
 
 <mat-menu #helpMenu="matMenu">
   <div mat-menu-item matSuffix (click)="onOpenHelp('toc')">
