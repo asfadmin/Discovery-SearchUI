@@ -120,7 +120,9 @@ export class InfoBarComponent implements OnInit, OnDestroy {
     );
 
     const eventProductType = this.store$.select(filtersStore.getHyp3ProductTypes).subscribe(
-      productTypes => this.eventProductTypes = productTypes.map(productType => productType.id).join(', ')
+      productTypes => this.eventProductTypes = productTypes
+        .map(productType => productType.id)
+        .join(', ')
     );
 
     [

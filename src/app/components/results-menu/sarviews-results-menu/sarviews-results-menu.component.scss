@@ -13,3 +13,26 @@
     }
   }
 }
+
+.more-horiz {
+  font-size: 16px !important;
+}
+
+.space-filler {
+  width: 30px;
+}
+
+.product-list-header {
+  display: flex;
+  justify-content: space-between;
+  padding-right: 15px;
+  padding-left: 15px;
+
+  span {
+    margin-right: 10px;
+  }
+
+  mat-button-toggle-group {
+    bottom: 10px;
+  }
+}
