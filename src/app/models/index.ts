@@ -24,4 +24,5 @@ export * from './sidebar.model';
 export * from './analytics-event.model';
 export * from './on-demand-subscriptions.model';
 export * from './sarviews-event.model';
+export * from './derived-datasets.model';
 export * from './download.model';

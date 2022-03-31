@@ -1,49 +1,44 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { SubSink } from 'subsink';
 
-import { AnalyticsEvent } from '@models';
+import { ScreenSizeService } from '@services';
+import { AnalyticsEvent, derivedDatasets, Breakpoints } from '@models';
+
 
 @Component({
   selector: 'app-derived-datasets',
   templateUrl: './derived-datasets.component.html',
   styleUrls: ['./derived-datasets.component.scss']
 })
-export class DerivedDatasetsComponent implements OnInit {
+export class DerivedDatasetsComponent implements OnInit, OnDestroy {
   public asfWebsiteUrl = 'https://www.asf.alaska.edu';
+  public datasets = derivedDatasets;
 
-  public datasets = [{
-      name: 'GISMO',
-      url: '/sar-data-sets/global-ice-sheet-mapping-orbiter-gismo',
-    }, {
-      name: 'Glacier Speed',
-      url: '/sar-data-sets/glacier-speed',
-    }, {
-      name: 'Polar Year',
-      url: '/sar-data-sets/international-polar-year-2007-2008',
-    }, {
-      name: 'RAMP',
-      url: '/sar-data-sets/radarsat-antarctic-mapping-project-ramp',
-    }, {
-      name: 'Sea Ice MEaSUREs',
-      url: '/sar-data-sets/sea-ice-measures',
-    }, {
-      name: 'Wetlands MEaSUREs',
-      url: '/sar-data-sets/wetlands-measures',
-    }
-  ];
+  public breakpoint: Breakpoints;
+  public breakpoints = Breakpoints;
 
-  constructor() { }
+  private subs = new SubSink();
+
+  constructor(
+    private screenSize: ScreenSizeService,
+  ) { }
 
   ngOnInit(): void {
+    this.subs.add(
+      this.screenSize.breakpoint$.subscribe(
+        breakpoint => this.breakpoint = breakpoint
+      )
+    );
   }
 
-  public onOpenDerivedDataset(dataset_path: string, dataset_name: string): void {
-    const url = this.asfWebsiteUrl + dataset_path;
+  public onOpenDerivedDataset(dataset_url: string, dataset_name: string): void {
+
     const analyticsEvent = {
       name: 'open-derived-dataset',
       value: dataset_name
     };
 
-    this.openNewWindow(url, analyticsEvent);
+    this.openNewWindow(dataset_url, analyticsEvent);
   }
 
   private openNewWindow(url, analyticsEvent: AnalyticsEvent): void {
@@ -56,4 +51,7 @@ export class DerivedDatasetsComponent implements OnInit {
     window.open(url, '_blank');
   }
 
+  ngOnDestroy() {
+    this.subs.unsubscribe();
+  }
 }

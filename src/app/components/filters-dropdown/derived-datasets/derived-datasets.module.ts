@@ -1,6 +1,8 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatMenuModule } from '@angular/material/menu';
+
+import { MatExpansionModule } from '@angular/material/expansion';
 import { MatSharedModule } from '@shared';
 
 import { DerivedDatasetsComponent } from './derived-datasets.component';
@@ -13,6 +15,7 @@ import { DerivedDatasetsComponent } from './derived-datasets.component';
   imports: [
     CommonModule,
     MatSharedModule,
+    MatExpansionModule,
     MatMenuModule,
   ],
   exports: [
