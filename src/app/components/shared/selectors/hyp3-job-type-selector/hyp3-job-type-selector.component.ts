@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { MatCheckboxChange } from '@angular/material/checkbox';
+import { MatSelectChange } from '@angular/material/select';
 import * as models from '@models';
 import { Store } from '@ngrx/store';
 import { AppState } from '@store';
@@ -27,20 +27,11 @@ export class Hyp3JobTypeSelectorComponent implements OnInit {
     )
   }
 
-  onSelect(checkboxChange: MatCheckboxChange, jobType: string) {
-    console.log(checkboxChange.checked);
-
-    let checked = this.selected;
-    if(checkboxChange.checked) {
-      checked.push(jobType);
+  onSelect(selectionChange: MatSelectChange) {
+    if((selectionChange.value as string[]).length === 0) {
+      this.store$.dispatch(new SetHyp3ProductTypes(this.hyp3JobTypes))
     } else {
-      checked = this.selected.filter(job => job !== jobType);
+      this.store$.dispatch(new SetHyp3ProductTypes(selectionChange.value))
     }
-    this.store$.dispatch(new SetHyp3ProductTypes(checked))
-    // if(checkboxChange.checked) {
-    //   this.selected.push(jobType);
-    // } else {
-    //   this.selected.
-    // }
   }
 }
