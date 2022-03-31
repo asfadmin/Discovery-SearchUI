@@ -4,6 +4,7 @@ import { SubSink } from 'subsink';
 import { ScreenSizeService } from '@services';
 import { AnalyticsEvent, derivedDatasets, Breakpoints } from '@models';
 
+
 @Component({
   selector: 'app-derived-datasets',
   templateUrl: './derived-datasets.component.html',
@@ -31,6 +32,7 @@ export class DerivedDatasetsComponent implements OnInit, OnDestroy {
   }
 
   public onOpenDerivedDataset(dataset_url: string, dataset_name: string): void {
+
     const analyticsEvent = {
       name: 'open-derived-dataset',
       value: dataset_name

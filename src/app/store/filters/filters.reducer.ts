@@ -126,10 +126,6 @@ export function filtersReducer(state = initState, action: FiltersActions): Filte
         polarizations: [],
         subtypes: [],
         selectedMission: null,
-        dateRange: {
-          start: null,
-          end: null
-        },
       };
     }
 
