@@ -192,6 +192,8 @@
     </div>
   </div>
 
+  <hr>
+
   <div mat-menu-item matSuffix (click)="onOpenUserGuide()">
     <div *ngIf="(breakpoint$ | async) === breakpoints.MOBILE">
       <mat-icon>menu_book</mat-icon>
@@ -209,8 +211,9 @@
         <mat-icon class="menu-item-icon">menu_book</mat-icon>
       </div>
     </div>
-
   </div>
+
+  <hr>
 
   <div mat-menu-item matSuffix (click)="onOpenHyP3Guide()">
     <div *ngIf="(breakpoint$ | async) === breakpoints.MOBILE">
@@ -231,6 +234,8 @@
     </div>
   </div>
 
+  <hr>
+
   <div mat-menu-item matSuffix (click)="onOpenAPIWebSite()">
     <div *ngIf="(breakpoint$ | async) === breakpoints.MOBILE">
       <mat-icon>api</mat-icon>
@@ -250,6 +255,8 @@
       </div>
     </div>
   </div>
+
+  <hr>
 
   <div mat-menu-item (click)="onOpenASFWebSite()">
     <div *ngIf="(breakpoint$ | async) === breakpoints.MOBILE">
