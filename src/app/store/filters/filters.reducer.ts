@@ -2,7 +2,7 @@ import { createFeatureSelector, createSelector } from '@ngrx/store';
 
 import { FiltersActionType, FiltersActions } from './filters.action';
 import * as models from '@models';
-import { hyp3JobTypes, SBASOverlap } from '@models';
+import { EventProductSort, EventProductSortDirection, EventProductSortType, hyp3JobTypes, SBASOverlap } from '@models';
 
 
 export interface FiltersState {
@@ -46,6 +46,7 @@ export interface FiltersState {
 
   sarviewsEventProductDateRange: DateRangeState;
   hyp3ProductTypes: string[];
+  sarviewsEventProductSorting: EventProductSort;
 }
 
 
@@ -111,6 +112,10 @@ export const initState: FiltersState = {
   sarviewsEventProductDateRange: {
     start: null,
     end: null
+  },
+  sarviewsEventProductSorting: {
+    sortType: EventProductSortType.DATE,
+    sortDirection: EventProductSortDirection.DESCENDING
   },
   hyp3ProductTypes: [hyp3JobTypes.RTC_GAMMA.id, hyp3JobTypes.INSAR_GAMMA.id, hyp3JobTypes.AUTORIFT.id]
 };
@@ -691,6 +696,12 @@ export function filtersReducer(state = initState, action: FiltersActions): Filte
         hyp3ProductTypes: action.payload
       }
     }
+    case FiltersActionType.SET_EVENT_PRODUCT_SORT: {
+      return {
+        ...state,
+        sarviewsEventProductSorting: {...action.payload}
+      }
+    }
     default: {
       return state;
     }
@@ -961,4 +972,9 @@ export const getSarviewsEventProductsDateRange = createSelector(
 export const getHyp3ProductTypes = createSelector(
   getFiltersState,
   (state: FiltersState) => state.hyp3ProductTypes.map(productType => hyp3JobTypes[productType])
-)
+);
+
+export const getSarviewsEventProductSorting = createSelector(
+  getFiltersState,
+  (state: FiltersState) => state.sarviewsEventProductSorting
+);

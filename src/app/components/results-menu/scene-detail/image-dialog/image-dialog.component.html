@@ -355,8 +355,9 @@
   <div
     *ngIf="breakpoint$ | async as breakpoint"
     fxLayout="row"
-    fxLayoutAlign="end end"
+    fxLayoutAlign="space-between end"
     class="bottom-row footer"
+    style="text-align: center;"
   >
     <div
       *ngIf="
@@ -377,6 +378,8 @@
       </span>
       <span *ngIf="breakpoint === breakpoints.MOBILE"> w/Browse Images </span>
     </div>
+    <app-event-product-sort-selector></app-event-product-sort-selector>
+
     <div fxFlex="nogrow">
       <button mat-flat-button (click)="closeDialog()">Close</button>
     </div>

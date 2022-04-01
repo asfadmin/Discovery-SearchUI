@@ -25,3 +25,4 @@ export * from './analytics-event.model';
 export * from './on-demand-subscriptions.model';
 export * from './sarviews-event.model';
 export * from './download.model';
+export * from './event-product-sort.model';

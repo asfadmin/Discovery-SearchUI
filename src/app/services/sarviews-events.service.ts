@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { LonLat, SarviewsEvent, SarviewsProcessedEvent, SarviewsProduct } from '@models';
+import { EventProductSortDirection, EventProductSortType, LonLat, SarviewsEvent, SarviewsProcessedEvent, SarviewsProduct } from '@models';
 import { combineLatest, Observable, of } from 'rxjs';
 import { catchError, debounceTime, map } from 'rxjs/operators';
 import { Range } from '@models';
@@ -14,7 +14,7 @@ import * as moment from 'moment';
 import { getSarviewsEvents, getSelectedSarviewsEventProducts } from '@store/scenes';
 import { Store } from '@ngrx/store';
 import { AppState } from '@store';
-import { getDateRange, getHyp3ProductTypes, getPathFrameRanges, getSarviewsEventActiveFilter, getSarviewsEventNameFilter, getSarviewsEventProductsDateRange, getSarviewsEventTypes, getSarviewsMagnitudeRange } from '@store/filters';
+import { getDateRange, getHyp3ProductTypes, getPathFrameRanges, getSarviewsEventActiveFilter, getSarviewsEventNameFilter, getSarviewsEventProductsDateRange, getSarviewsEventProductSorting, getSarviewsEventTypes, getSarviewsMagnitudeRange } from '@store/filters';
 
 @Injectable({
   providedIn: 'root'
@@ -255,14 +255,16 @@ export class SarviewsEventsService {
 
   public filteredEventProducts$(): Observable<SarviewsProduct[]> {
     return (
-      this.filterByProductPathFrame$(
-        this.filterByProductDate$(
-          this.filterByProductType$(
-            this.store$.select(getSelectedSarviewsEventProducts)
-            )
-          )
-        )
-      )
+      this.ProductSortOrder$(
+       this.filterByProductPathFrame$(
+         this.filterByProductDate$(
+           this.filterByProductType$(
+             this.store$.select(getSelectedSarviewsEventProducts)
+             )
+           )
+         )
+       )
+    )
   }
 
   private filterByProductDate$(products$: Observable<SarviewsProduct[]>) {
@@ -337,6 +339,47 @@ export class SarviewsEventsService {
       )
     ]).pipe(
       map(([products, jobTypes]) => products.filter(product => jobTypes.includes(product.job_type)))
+    )
+  }
+
+  private ProductSortOrder$(products$: Observable<SarviewsProduct[]>) {
+    return combineLatest([
+      products$,
+      this.store$.select(getSarviewsEventProductSorting)
+    ]).pipe(
+      map(([products, sorting]) => {
+        let sortedProducts = [].concat(products);
+        switch(sorting.sortType) {
+          case EventProductSortType.FRAME:
+            sortedProducts.sort((a, b) => {
+              if (a.granules[0].frame < b.granules[0].frame) {
+                return 1;
+              }
+              if (a.granules[0].frame > b.granules[0].frame) {
+                return -1;
+              }
+
+              return 0;
+            });
+          case EventProductSortType.PATH:
+            sortedProducts.sort((a, b) => {
+              if (a.granules[0].path < b.granules[0].path) {
+                return 1;
+              }
+              if (a.granules[0].path > b.granules[0].path) {
+                return -1;
+              }
+
+              return 0;
+            });
+        }
+
+        if (sorting.sortDirection === EventProductSortDirection.ASCENDING) {
+          sortedProducts.reverse();
+        }
+
+        return sortedProducts;
+      })
     )
   }
 

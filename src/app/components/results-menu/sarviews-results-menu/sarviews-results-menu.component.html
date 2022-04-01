@@ -21,10 +21,14 @@
   <!-- FILE LIST -->
   <mat-card class="h100 mp0 no-left-border" fxFlex="33" fxFlexFill>
     <mat-card-subtitle class="header product-list-header">
-      <span>
+      <span style="white-space: nowrap;">
         {{ sarviewsProductsLength}} of {{(unfilteredEventProductsLength$ | async)}} File{{ sarviewsProductsLength === 1 ? '' : 's'}}
       </span>
 
+      <div class="space-filler"></div>
+      <div style="display: flex; align-items: flex-end; padding-bottom: 5px;">
+      <app-event-product-sort-selector class="mr-10" name="ProductSorting"></app-event-product-sort-selector>
+    </div>
       <div class="space-filler"></div>
       <mat-button-toggle-group name="ProductFilters" class="mr-10">
         <mat-button-toggle
@@ -38,7 +42,7 @@
         </mat-button-toggle>
       </mat-button-toggle-group>
     </mat-card-subtitle>
-
+    <!-- <app-event-product-sort-selector></app-event-product-sort-selector> -->
     <div class="app-scene-list left-border">
       <app-scene-files *ngIf="sarviewsProductsLength !== 0"></app-scene-files>
       <div *ngIf="sarviewsProductsLength === 0" class="no-event-products-container" style="display: flex; flex-direction: column;align-items: center">
