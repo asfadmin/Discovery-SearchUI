@@ -46,6 +46,13 @@ export class EventProductsDateSelectorComponent implements OnInit {
         dateRange => {
           this.startDate = dateRange.start;
           this.endDate = dateRange.end;
+
+          if(!this.startDate) {
+            this.startDate = new Date(this.minDate);
+          }
+          if(!this.endDate) {
+            this.endDate = new Date();
+          }
         }
       )
     )
@@ -57,6 +64,14 @@ export class EventProductsDateSelectorComponent implements OnInit {
 
   public onSetEndDate(endDate: Date) {
     this.store$.dispatch(new SetSarviewsEventProductEndDate(new Date(endDate)));
+  }
+
+  public onStartDateError() {
+    this.onSetStartDate(this.minDate)
+  }
+
+  public onEndDateError() {
+    this.onSetEndDate(this.maxDate)
   }
 
 }

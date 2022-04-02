@@ -353,10 +353,10 @@ export class SarviewsEventsService {
           case EventProductSortType.FRAME:
             sortedProducts.sort((a, b) => {
               if (a.granules[0].frame < b.granules[0].frame) {
-                return 1;
+                return -1;
               }
               if (a.granules[0].frame > b.granules[0].frame) {
-                return -1;
+                return 1;
               }
 
               return 0;
@@ -364,10 +364,10 @@ export class SarviewsEventsService {
           case EventProductSortType.PATH:
             sortedProducts.sort((a, b) => {
               if (a.granules[0].path < b.granules[0].path) {
-                return 1;
+                return -1;
               }
               if (a.granules[0].path > b.granules[0].path) {
-                return -1;
+                return 1;
               }
 
               return 0;
