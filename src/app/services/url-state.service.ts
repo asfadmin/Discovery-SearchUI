@@ -789,11 +789,11 @@ export class UrlStateService {
 
   private loadEventProductTypes = (types: string): Action => {
     let productTypes = types.split(',')
-      .filter(type =>Object.keys(models.hyp3JobTypes)
+      .filter(type => Object.keys(models.hyp3JobTypes)
         .find(jobType => jobType === type) !== undefined);
 
-    if(productTypes?.length === 0) {
-      productTypes = Object.keys(models.hyp3JobTypes)
+    if (productTypes?.length === 0) {
+      productTypes = Object.keys(models.hyp3JobTypes);
     }
     return new filterStore.SetHyp3ProductTypes(productTypes);
   }

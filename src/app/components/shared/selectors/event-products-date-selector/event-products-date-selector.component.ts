@@ -33,8 +33,8 @@ export class EventProductsDateSelectorComponent implements OnInit {
         filter(products => products?.length > 0)
       ).subscribe(
         products => {
-          let dates = products.map(product => product.granules.map(granule => granule.acquisition_date).sort());
-          let minToMax = dates.sort((a, b) => a[0] < b[0] ? -1 : a[0] > b[0] ? 1 : 0);
+          const dates = products.map(product => product.granules.map(granule => granule.acquisition_date).sort());
+          const minToMax = dates.sort((a, b) => a[0] < b[0] ? -1 : a[0] > b[0] ? 1 : 0);
           this.dateRange = {start: new Date(minToMax[0][0]), end: new Date(minToMax[minToMax.length - 1][0])};
 
         }
