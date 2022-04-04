@@ -55,6 +55,10 @@
   </span>
 
   <mat-divider></mat-divider>
+  <button mat-menu-item
+    [matMenuTriggerFor]="shareSearchMenu">
+      Share Search
+  </button>
 
   <span
     matTooltip="Get help on how to user Vertex"
@@ -84,6 +88,23 @@
       View Filters...
     </button>
   </span>
+
+</mat-menu>
+
+<mat-menu #shareSearchMenu="matMenu">
+  <button (click)="onCopy()"
+      mat-menu-item matSuffix>
+    <mat-icon>link</mat-icon>
+    Copy Search Link
+  </button>
+
+  <a (click)="onShareWithEmail()"
+      href="mailto:?subject=&body=:%20"
+      target="_blank" title="Send email"
+                      mat-menu-item matSuffix>
+    <mat-icon>email</mat-icon>
+    Share With Email
+  </a>
 
 </mat-menu>
 

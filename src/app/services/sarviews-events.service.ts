@@ -264,7 +264,7 @@ export class SarviewsEventsService {
            )
          )
        )
-    )
+    );
   }
 
   private filterByProductDate$(products$: Observable<SarviewsProduct[]>) {
@@ -276,13 +276,13 @@ export class SarviewsEventsService {
     ).pipe(
       map(([products, dateRange]) => products.filter(prod => {
         const date = new Date(prod.granules[0].acquisition_date);
-        if(!!dateRange.start) {
+        if (!!dateRange.start) {
           if (date < dateRange.start) {
             return false;
           }
         }
 
-        if(!!dateRange.end) {
+        if (!!dateRange.end) {
           if (date > dateRange.end) {
             return false;
           }
@@ -290,7 +290,7 @@ export class SarviewsEventsService {
 
         return true;
       }))
-    )
+    );
   }
 
   private filterByProductPathFrame$(products$: Observable<SarviewsProduct[]>) {
@@ -304,23 +304,23 @@ export class SarviewsEventsService {
         return products.filter(product => {
 
           if (pathAndFrame?.pathRange?.start !== null) {
-            if(product.granules[0].path < pathAndFrame.pathRange.start) {
+            if (product.granules[0].path < pathAndFrame.pathRange.start) {
               return false;
             }
           }
           if (pathAndFrame?.pathRange?.end !== null) {
-            if(product.granules[0].path > pathAndFrame.pathRange.end) {
+            if (product.granules[0].path > pathAndFrame.pathRange.end) {
               return false;
             }
           }
 
           if (pathAndFrame?.frameRange?.start !== null) {
-            if(product.granules[0].frame < pathAndFrame.frameRange.start) {
+            if (product.granules[0].frame < pathAndFrame.frameRange.start) {
               return false;
             }
           }
           if (pathAndFrame?.frameRange?.end !== null) {
-            if(product.granules[0].frame > pathAndFrame.frameRange.end) {
+            if (product.granules[0].frame > pathAndFrame.frameRange.end) {
               return false;
             }
           }
@@ -328,7 +328,7 @@ export class SarviewsEventsService {
           return true;
         });
       })
-    )
+    );
   }
 
   private filterByProductType$(products$: Observable<SarviewsProduct[]>) {
@@ -339,7 +339,7 @@ export class SarviewsEventsService {
       )
     ]).pipe(
       map(([products, jobTypes]) => products.filter(product => jobTypes.includes(product.job_type)))
-    )
+    );
   }
 
   private ProductSortOrder$(products$: Observable<SarviewsProduct[]>) {
@@ -348,8 +348,8 @@ export class SarviewsEventsService {
       this.store$.select(getSarviewsEventProductSorting)
     ]).pipe(
       map(([products, sorting]) => {
-        let sortedProducts = [].concat(products);
-        switch(sorting.sortType) {
+        const sortedProducts = [].concat(products);
+        switch (sorting.sortType) {
           case EventProductSortType.FRAME:
             sortedProducts.sort((a, b) => {
               if (a.granules[0].frame < b.granules[0].frame) {
@@ -380,19 +380,19 @@ export class SarviewsEventsService {
 
         return sortedProducts;
       })
-    )
+    );
   }
 
   public areEventProductsFiltered$(): Observable<Boolean> {
     return combineLatest(this.filteredEventProducts$(),
       this.store$.select(getSelectedSarviewsEventProducts)).pipe(
         map(([filtered, unfiltered]) => {
-          if(!!unfiltered) {
-            return !(filtered?.length === unfiltered.length)
+          if (!!unfiltered) {
+            return !(filtered?.length === unfiltered.length);
           }
           return false;
         })
-      )
+      );
   }
 
   public filterSarviewsEventsByName$(events$: Observable<SarviewsEvent[]>) {

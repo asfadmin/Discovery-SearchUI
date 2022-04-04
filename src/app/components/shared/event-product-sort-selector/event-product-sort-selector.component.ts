@@ -33,7 +33,7 @@ export class EventProductSortSelectorComponent implements OnInit {
           this.sortDirection = sorting.sortDirection;
         }
       )
-    )
+    );
   }
 
   public onSetSortDirection(event: MatButtonToggleChange) {
@@ -43,7 +43,7 @@ export class EventProductSortSelectorComponent implements OnInit {
 
   public onSetSortType(event: MatButtonToggleChange) {
     let sortType = EventProductSortType.DATE;
-    switch(event.value) {
+    switch (event.value) {
       case EventProductSortType.PATH.valueOf():
         sortType = EventProductSortType.PATH;
         break;

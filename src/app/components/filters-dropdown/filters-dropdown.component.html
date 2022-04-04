@@ -30,6 +30,10 @@
         <ng-container *ngIf="selectedSearchType === searchTypes.SARVIEWS_EVENTS">
           Event Search
         </ng-container>
+
+        <ng-container *ngIf="selectedSearchType === searchTypes.DERIVED_DATASETS">
+          Derived Datasets
+        </ng-container>
       </div>
     </div>
 
@@ -55,23 +59,30 @@
       <ng-container *ngIf="selectedSearchType === searchTypes.CUSTOM_PRODUCTS">
         <app-custom-products-filters></app-custom-products-filters>
       </ng-container>
+
       <ng-container *ngIf="selectedSearchType === searchTypes.SARVIEWS_EVENTS">
         <app-sarviews-filters></app-sarviews-filters>
+      </ng-container>
+
+      <ng-container *ngIf="selectedSearchType === searchTypes.DERIVED_DATASETS">
+        <app-derived-datasets></app-derived-datasets>
       </ng-container>
     </div>
 
     <div class="footer">
       <ng-container>
-        <app-max-results-selector class = "search-button"
+        <app-max-results-selector class="search-button"
           *ngIf="
-             selectedSearchType !== searchTypes.BASELINE && selectedSearchType !== searchTypes.SBAS &&
-             selectedSearchType !== searchTypes.CUSTOM_PRODUCTS && selectedSearchType !== searchTypes.SARVIEWS_EVENTS
+             selectedSearchType !== searchTypes.BASELINE &&
+             selectedSearchType !== searchTypes.SBAS &&
+             selectedSearchType !== searchTypes.CUSTOM_PRODUCTS &&
+             selectedSearchType !== searchTypes.SARVIEWS_EVENTS &&
+             selectedSearchType !== searchTypes.DERIVED_DATASETS
           "
           style="margin-right: 10px;">
         </app-max-results-selector>
-        <!-- <app-save-user-filters></app-save-user-filters> -->
         <app-cancel-filter-changes></app-cancel-filter-changes>
-        <app-search-button></app-search-button>
+        <app-search-button *ngIf="selectedSearchType !== searchTypes.DERIVED_DATASETS"></app-search-button>
       </ng-container>
     </div>
   </div>

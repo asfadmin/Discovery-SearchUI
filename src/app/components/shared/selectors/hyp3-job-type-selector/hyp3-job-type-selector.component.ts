@@ -24,14 +24,14 @@ export class Hyp3JobTypeSelectorComponent implements OnInit {
       this.store$.select(getHyp3ProductTypes).subscribe(
         selected => this.selected = selected.map(prodType => prodType.id)
       )
-    )
+    );
   }
 
   onSelect(selectionChange: MatSelectChange) {
-    if((selectionChange.value as string[]).length === 0) {
-      this.store$.dispatch(new SetHyp3ProductTypes(this.hyp3JobTypes))
+    if ((selectionChange.value as string[]).length === 0) {
+      this.store$.dispatch(new SetHyp3ProductTypes(this.hyp3JobTypes));
     } else {
-      this.store$.dispatch(new SetHyp3ProductTypes(selectionChange.value))
+      this.store$.dispatch(new SetHyp3ProductTypes(selectionChange.value));
     }
   }
 }

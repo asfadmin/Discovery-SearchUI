@@ -16,7 +16,7 @@
 }
 
 .large-icon {
-  @include md-icon-size(34px);
+  @include md-icon-size(30px);
 
   margin-right: 0;
   color: $asf-primary-dark;
@@ -41,10 +41,50 @@
   margin: 0 5px;
 }
 
+::ng-deep.mat-menu-panel {
+  max-width: 400px;
+}
+
 .mat-menu-item {
   font-weight: 400;
+  height: auto;
 }
 
 .disabled {
   opacity: 20%;
+}
+
+.menu-item {
+  display: flex !important;
+  flex-flow: row;
+  margin: 10px;
+}
+
+.menu-item-content {
+  white-space: normal;
+  flex: 7;
+}
+
+.item-content {
+  color: $asf-primary;
+  line-height: 18px;
+}
+
+.item-title {
+  color: $asf-primary-dark;
+  line-height: 32px;
+  font-size: 18px;
+}
+
+.menu-item-aside {
+  flex: 3;
+  text-align: center;
+  align-items: center;
+}
+
+.menu-item-icon {
+  @include md-icon-size(45px);
+
+  margin-right: 0;
+  color: $asf-primary-dark;
 }

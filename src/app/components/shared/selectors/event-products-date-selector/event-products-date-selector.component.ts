@@ -33,13 +33,13 @@ export class EventProductsDateSelectorComponent implements OnInit {
         filter(products => products?.length > 0)
       ).subscribe(
         products => {
-          var dates = products.map(product => product.granules.map(granule => granule.acquisition_date).sort());
-          var minToMax = dates.sort((a, b) => a[0] < b[0] ? -1 : a[0] > b[0] ? 1 : 0);
-          this.dateRange = {start: new Date(minToMax[0][0]), end: new Date(minToMax[minToMax.length -1][0])}
+          let dates = products.map(product => product.granules.map(granule => granule.acquisition_date).sort());
+          let minToMax = dates.sort((a, b) => a[0] < b[0] ? -1 : a[0] > b[0] ? 1 : 0);
+          this.dateRange = {start: new Date(minToMax[0][0]), end: new Date(minToMax[minToMax.length - 1][0])};
 
         }
       )
-    )
+    );
 
     this.subs.add(
       this.store$.select(getSarviewsEventProductsDateRange).subscribe(
@@ -47,15 +47,15 @@ export class EventProductsDateSelectorComponent implements OnInit {
           this.startDate = dateRange.start;
           this.endDate = dateRange.end;
 
-          if(!this.startDate) {
+          if (!this.startDate) {
             this.startDate = new Date(this.minDate);
           }
-          if(!this.endDate) {
+          if (!this.endDate) {
             this.endDate = new Date();
           }
         }
       )
-    )
+    );
   }
 
   public onSetStartDate(startDate: Date) {
@@ -67,11 +67,11 @@ export class EventProductsDateSelectorComponent implements OnInit {
   }
 
   public onStartDateError() {
-    this.onSetStartDate(this.minDate)
+    this.onSetStartDate(this.minDate);
   }
 
   public onEndDateError() {
-    this.onSetEndDate(this.maxDate)
+    this.onSetEndDate(this.maxDate);
   }
 
 }

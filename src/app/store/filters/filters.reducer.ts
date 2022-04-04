@@ -139,10 +139,6 @@ export function filtersReducer(state = initState, action: FiltersActions): Filte
         polarizations: [],
         subtypes: [],
         selectedMission: null,
-        dateRange: {
-          start: null,
-          end: null
-        },
       };
     }
 
@@ -556,6 +552,10 @@ export function filtersReducer(state = initState, action: FiltersActions): Filte
           sarviewsEventActiveOnly: filters.activeOnly,
           sarviewsMagnitudeRange: filters.magnitude
         };
+      } else if (search.searchType === models.SearchType.DERIVED_DATASETS) {
+        // TODO: Don't make geosearch default case or handle no
+        // savable searches better
+        return {...state};
       } else {
         const filters = <models.GeographicFiltersType>search.filters;
 
@@ -682,25 +682,25 @@ export function filtersReducer(state = initState, action: FiltersActions): Filte
       return {
         ...state,
         sarviewsEventProductDateRange: {... state.sarviewsEventProductDateRange, start: action.payload}
-      }
+      };
     }
     case FiltersActionType.SET_SARVIEWS_EVENT_PRODUCT_END_DATE: {
       return {
         ...state,
         sarviewsEventProductDateRange: {... state.sarviewsEventProductDateRange, end: action.payload}
-      }
+      };
     }
     case FiltersActionType.SET_HYP3_PRODUCT_TYPES: {
       return {
         ...state,
         hyp3ProductTypes: action.payload
-      }
+      };
     }
     case FiltersActionType.SET_EVENT_PRODUCT_SORT: {
       return {
         ...state,
         sarviewsEventProductSorting: {...action.payload}
-      }
+      };
     }
     default: {
       return state;

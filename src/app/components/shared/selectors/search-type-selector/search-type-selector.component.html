@@ -1,5 +1,5 @@
 <div class="gtm-search-type-selector" fxFlex="nogrow">
-  <mat-form-field fxFlex="120px">
+  <mat-form-field fxFlex="130px">
     <mat-label>Search Type</mat-label>
     <mat-select class="gtm-search-type"
       [(ngModel)]="searchType"
@@ -14,6 +14,7 @@
         [disabled]="!isLoggedIn">
           On Demand Products
       </mat-option>
+      <mat-option [value]="searchTypes.DERIVED_DATASETS">Derived Datasets</mat-option>
     </mat-select>
   </mat-form-field>
 </div>
