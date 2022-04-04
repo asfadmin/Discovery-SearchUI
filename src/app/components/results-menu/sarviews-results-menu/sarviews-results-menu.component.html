@@ -31,16 +31,17 @@
       </span>
 
       <div class="space-filler"></div>
-      <mat-button-toggle-group name="ProductFilters" class="mr-10" style="font-size: 16px">
+      <mat-button-toggle-group name="ProductFilters" class="mr-10" style="font-size: 16px;">
         <mat-button-toggle
                           (click) = "onOpenFiltersPanel()"
                            class="control-mat-button-toggle clickable noselect"
                            [matTooltip]="'Show product filters criteria'">
                            <!-- <span> -->
                            Product Criteria
-                            <mat-icon class="more-horiz" style="
-                            font-size: 16px!important;
-                            margin-bottom: -11px;">more_horiz</mat-icon>
+                          <mat-icon class="more-horiz"
+                          style="font-size: 16px !important; margin-bottom: -11px;">
+                            more_horiz
+                          </mat-icon>
                            <!-- </span> -->
         </mat-button-toggle>
       </mat-button-toggle-group>
@@ -49,7 +50,7 @@
     <!-- <app-event-product-sort-selector></app-event-product-sort-selector> -->
     <div class="app-scene-list left-border">
       <app-scene-files *ngIf="sarviewsProductsLength !== 0"></app-scene-files>
-      <div *ngIf="sarviewsProductsLength === 0" class="no-event-products-container" style="display: flex; flex-direction: column;align-items: center">
+      <div *ngIf="sarviewsProductsLength === 0" class="no-event-products-container">
         <span>
           <p>
             No Products Available for this Event

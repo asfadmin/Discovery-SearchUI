@@ -14,7 +14,7 @@ import * as moment from 'moment';
 import { getSarviewsEvents, getSelectedSarviewsEventProducts } from '@store/scenes';
 import { Store } from '@ngrx/store';
 import { AppState } from '@store';
-import { getDateRange, getHyp3ProductTypes, getPathFrameRanges, getSarviewsEventActiveFilter, getSarviewsEventNameFilter, getSarviewsEventProductsDateRange, getSarviewsEventProductSorting, getSarviewsEventTypes, getSarviewsMagnitudeRange } from '@store/filters';
+import * as filtersStore from '@store/filters';
 
 @Injectable({
   providedIn: 'root'
@@ -271,7 +271,7 @@ export class SarviewsEventsService {
     return combineLatest(
       [
         products$,
-        this.store$.select(getSarviewsEventProductsDateRange)
+        this.store$.select(filtersStore.getSarviewsEventProductsDateRange)
       ]
     ).pipe(
       map(([products, dateRange]) => products.filter(prod => {
@@ -297,7 +297,7 @@ export class SarviewsEventsService {
     return combineLatest(
       [
         products$,
-        this.store$.select(getPathFrameRanges)
+        this.store$.select(filtersStore.getPathFrameRanges)
       ]
     ).pipe(
       map(([products, pathAndFrame]) => {
@@ -334,7 +334,7 @@ export class SarviewsEventsService {
   private filterByProductType$(products$: Observable<SarviewsProduct[]>) {
     return combineLatest([
       products$,
-      this.store$.select(getHyp3ProductTypes).pipe(
+      this.store$.select(filtersStore.getHyp3ProductTypes).pipe(
         map(jobTypes => jobTypes.map(jobType => jobType.id))
       )
     ]).pipe(
@@ -345,7 +345,7 @@ export class SarviewsEventsService {
   private ProductSortOrder$(products$: Observable<SarviewsProduct[]>) {
     return combineLatest([
       products$,
-      this.store$.select(getSarviewsEventProductSorting)
+      this.store$.select(filtersStore.getSarviewsEventProductSorting)
     ]).pipe(
       map(([products, sorting]) => {
         const sortedProducts = [].concat(products);
@@ -361,6 +361,7 @@ export class SarviewsEventsService {
 
               return 0;
             });
+            break;
           case EventProductSortType.PATH:
             sortedProducts.sort((a, b) => {
               if (a.granules[0].path < b.granules[0].path) {
@@ -372,6 +373,7 @@ export class SarviewsEventsService {
 
               return 0;
             });
+            break;
         }
 
         if (sorting.sortDirection === EventProductSortDirection.ASCENDING) {
@@ -399,7 +401,7 @@ export class SarviewsEventsService {
     return combineLatest(
       [
         events$,
-        this.store$.select(getSarviewsEventNameFilter).pipe(
+        this.store$.select(filtersStore.getSarviewsEventNameFilter).pipe(
             map(nameFilter => nameFilter?.toLowerCase()),
           )
       ]
@@ -429,7 +431,7 @@ export class SarviewsEventsService {
     private filterByEventDate$(events$: Observable<SarviewsEvent[]>) {
       return combineLatest([
         events$,
-        this.store$.select(getDateRange),
+        this.store$.select(filtersStore.getDateRange),
       ]
       ).pipe(
         debounceTime(0),
@@ -465,7 +467,7 @@ export class SarviewsEventsService {
     private filterByEventType$(events$: Observable<SarviewsEvent[]>) {
       return combineLatest([
         events$,
-        this.store$.select(getSarviewsEventTypes)
+        this.store$.select(filtersStore.getSarviewsEventTypes)
       ]).pipe(
         map(
           ([events, types]) => {
@@ -482,7 +484,7 @@ export class SarviewsEventsService {
     private filterByEventActivity$(events$: Observable<SarviewsEvent[]>) {
       return combineLatest([
         events$,
-        this.store$.select(getSarviewsEventActiveFilter)
+        this.store$.select(filtersStore.getSarviewsEventActiveFilter)
       ]).pipe(
         map(([events, activeOnly]) => {
           if (!activeOnly) {
@@ -508,7 +510,7 @@ export class SarviewsEventsService {
     private filterByEventMagnitude$(events$: Observable<SarviewsEvent[]>) {
       return combineLatest([
         events$,
-        this.store$.select(getSarviewsMagnitudeRange),
+        this.store$.select(filtersStore.getSarviewsMagnitudeRange),
       ]).pipe(
         map(([events, magRange]) => {
           {

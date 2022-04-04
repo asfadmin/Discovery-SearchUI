@@ -21,7 +21,8 @@ export class SarviewsResultsMenuComponent implements OnInit, OnDestroy {
 
   public selectedProducts$ = this.store$.select(scenesStore.getSelectedSceneProducts);
   public selectedEventProducts$ = this.eventMonitoringService.filteredEventProducts$();
-  public unfilteredEventProductsLength$ = this.store$.select(scenesStore.getSelectedSarviewsEventProducts).pipe(map(products => products.length));
+  public unfilteredEventProductsLength$ = this.store$.select(scenesStore.getSelectedSarviewsEventProducts)
+    .pipe(map(products => products.length));
   public sarviewsEventsLength;
   public sarviewsProductsLength;
   public breakpoint: models.Breakpoints;
