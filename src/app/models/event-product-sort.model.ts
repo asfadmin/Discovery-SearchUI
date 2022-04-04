@@ -1,15 +1,15 @@
 export interface EventProductSort {
-  sortType: EventProductSortType,
-  sortDirection: EventProductSortDirection
+  sortType: EventProductSortType;
+  sortDirection: EventProductSortDirection;
 }
 
 export enum EventProductSortType {
-    PATH = "path",
-    FRAME = "frame",
-    DATE = "date"
+    PATH = 'path',
+    FRAME = 'frame',
+    DATE = 'date'
 }
 
 export enum EventProductSortDirection {
-  ASCENDING = "ascending",
-  DESCENDING = "descending"
+  ASCENDING = 'ascending',
+  DESCENDING = 'descending'
 }
