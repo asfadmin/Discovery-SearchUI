@@ -37,6 +37,8 @@ export class ScenesListHeaderComponent implements OnInit, OnDestroy {
   public numberOfFilteredEvents$ = this.eventMonitoringService.filteredSarviewsEvents$().pipe(
     filter(events => !!events),
     map(events => events.length));
+  public productsHiddenByFilters$ = this.eventMonitoringService.areEventProductsFiltered$();
+
   public numSarviewsScenes$ = this.store$.select(scenesStore.getNumberOfSarviewsEvents);
   public products = [];
   public downloadableProds = [];
