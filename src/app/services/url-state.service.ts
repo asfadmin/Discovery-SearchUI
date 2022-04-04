@@ -398,7 +398,31 @@ export class UrlStateService {
         map(eventQuery => ({eventQuery}))
       ),
       loader: this.loadEventNameFilter
-    }];
+    }, {
+      name: 'productStart',
+      source: this.store$.select(filterStore.getSarviewsEventProductsDateRange).pipe(
+        map(productRange => productRange?.start),
+        map(start => ({ productStart: start === null ? '' : moment.utc( start ).format() }))
+      ),
+      loader: this.loadProductStartDate
+    },
+    {
+      name: 'productEnd',
+      source: this.store$.select(filterStore.getSarviewsEventProductsDateRange).pipe(
+        map(productRange => productRange?.end),
+        map(end => ({ productEnd: end === null ? '' : moment.utc( end ).format() }))
+      ),
+      loader: this.loadProductEndDate
+    },
+  {
+    name: 'eventProductTypes',
+    source: this.store$.select(filterStore.getHyp3ProductTypes).pipe(
+      map(productTypes => productTypes.map(productType => productType.id)),
+      map(productTypeStrings => productTypeStrings.join(',')),
+      map(productTypes => ({eventProductTypes: productTypes}))
+    ),
+     loader: this.loadEventProductTypes
+  }];
   }
 
   private mapParameters(): models.UrlParameter[] {
@@ -742,6 +766,37 @@ export class UrlStateService {
   //   // );
   //   return new uiStore.SetIsBrowseDialogOpen(!!isImageBrowseOpen);
   // }
+
+  private loadProductStartDate = (start: string): Action | undefined => {
+    const startDate = new Date(start);
+
+    if (!this.isValidDate(startDate)) {
+      return;
+    }
+
+    return new filterStore.SetSarviewsEventProductStartDate(startDate);
+  }
+
+  private loadProductEndDate = (end: string): Action => {
+    const endDate = new Date(end);
+
+    if (!this.isValidDate(endDate)) {
+      return;
+    }
+
+    return new filterStore.SetSarviewsEventProductEndDate(endDate);
+  }
+
+  private loadEventProductTypes = (types: string): Action => {
+    let productTypes = types.split(',')
+      .filter(type =>Object.keys(models.hyp3JobTypes)
+        .find(jobType => jobType === type) !== undefined);
+
+    if(productTypes?.length === 0) {
+      productTypes = Object.keys(models.hyp3JobTypes)
+    }
+    return new filterStore.SetHyp3ProductTypes(productTypes);
+  }
 
   private updateShouldSearch(): void {
     this.store$.select(scenesStore.getAreResultsLoaded).pipe(
