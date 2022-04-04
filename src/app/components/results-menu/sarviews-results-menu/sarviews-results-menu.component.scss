@@ -24,7 +24,7 @@
 
 .product-list-header {
   display: flex;
-  justify-content: space-between;
+  // justify-content: space-between;
   padding-right: 15px;
   padding-left: 15px;
 
@@ -33,6 +33,6 @@
   }
 
   mat-button-toggle-group {
-    bottom: 5px;
+    bottom: 7.5px;
   }
 }
