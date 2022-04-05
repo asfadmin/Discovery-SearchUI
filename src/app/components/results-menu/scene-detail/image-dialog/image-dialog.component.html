@@ -123,11 +123,7 @@
       class="browse-map--size"
       fxLayout="row-reverse"
       fxLayoutAlign="end end"
-    >
-  <!-- <div style="position: absolute; left: 15px; bottom: 26px; text-align: center; z-index: 999">
-    <app-event-product-sort-selector></app-event-product-sort-selector>
-  </div> -->
-  </div>
+    ></div>
     <!-- <div *ngIf="(searchType$ | async) === searchTypes.SARVIEWS_EVENTS">
       <button
       style="position: absolute; bottom: 5px; right: 20%; margin: 15px; min-width: 200px; border-radius: 4px !important;"
@@ -361,7 +357,6 @@
     fxLayout="row"
     fxLayoutAlign="end end"
     class="bottom-row footer"
-    style="text-align: center;"
   >
     <div
       *ngIf="
@@ -382,7 +377,6 @@
       </span>
       <span *ngIf="breakpoint === breakpoints.MOBILE"> w/Browse Images </span>
     </div>
-
     <div fxFlex="nogrow">
       <button mat-flat-button (click)="closeDialog()">Close</button>
     </div>

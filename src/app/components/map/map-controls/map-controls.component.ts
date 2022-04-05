@@ -65,8 +65,7 @@ export class MapControlsComponent implements OnInit, OnDestroy {
   constructor(
     private store$: Store<AppState>,
     private mapService: services.MapService,
-    private browseOverlayService: services.BrowseOverlayService,
-    private eventMonitoringService: services.SarviewsEventsService
+    private browseOverlayService: services.BrowseOverlayService
   ) { }
 
   ngOnInit() {
@@ -104,7 +103,7 @@ export class MapControlsComponent implements OnInit, OnDestroy {
     );
 
     this.subs.add(
-      this.eventMonitoringService.filteredEventProducts$()
+      this.store$.select(sceneStore.getSelectedSarviewsEventProducts)
       .pipe(filter(eventProducts => !!eventProducts))
       .subscribe(
         eventProducts => this.selectedEventProducts = eventProducts

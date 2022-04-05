@@ -12,7 +12,7 @@ import * as uiStore from '@store/ui';
 import * as searchStore from '@store/search';
 
 import * as models from '@models';
-import { SarviewsEventsService, ScenesService } from '@services';
+import { ScenesService } from '@services';
 import { PinnedProduct } from '@services/browse-map.service';
 
 @Component({
@@ -31,7 +31,7 @@ export class BrowseListComponent implements OnInit, AfterViewInit, OnDestroy {
   private scene: models.CMRProduct;
   public selectedId: string;
   public browses$ = this.store$.select(scenesStore.getSelectedSceneBrowses);
-  public sarviewsProducts$ = this.eventMonitoringService.filteredEventProducts$().pipe(
+  public sarviewsProducts$ = this.store$.select(scenesStore.getSelectedSarviewsEventProducts).pipe(
     filter(products => !!products),
     debounceTime(500));
   public sarviewsProducts: models.SarviewsProduct[];
@@ -48,8 +48,7 @@ export class BrowseListComponent implements OnInit, AfterViewInit, OnDestroy {
 
   constructor(
     private store$: Store<AppState>,
-    private scenesService: ScenesService,
-    private eventMonitoringService: SarviewsEventsService
+    private scenesService: ScenesService
   ) { }
 
   ngOnInit() {

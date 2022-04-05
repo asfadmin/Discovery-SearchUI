@@ -53,7 +53,7 @@ export class SceneFilesComponent implements OnInit, OnDestroy, AfterContentInit 
       map(event => event.event_id)
   );
 
-  public sarviewsEventProducts$ = this.eventMonitoringService.filteredEventProducts$();
+  public sarviewsEventProducts$ = this.store$.select(scenesStore.getSelectedSarviewsEventProducts);
 
   public sarviewsEventProductTypes$ = this.sarviewsEventProducts$.pipe(
     map(products => {

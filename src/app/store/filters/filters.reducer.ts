@@ -2,7 +2,7 @@ import { createFeatureSelector, createSelector } from '@ngrx/store';
 
 import { FiltersActionType, FiltersActions } from './filters.action';
 import * as models from '@models';
-import { EventProductSort, EventProductSortDirection, EventProductSortType, hyp3JobTypes, SBASOverlap } from '@models';
+import { SBASOverlap } from '@models';
 
 
 export interface FiltersState {
@@ -43,10 +43,6 @@ export interface FiltersState {
   sarviewsEventNameFilter: string;
   sarviewsEventActiveOnly: boolean;
   sarviewsMagnitudeRange: models.Range<number>;
-
-  sarviewsEventProductDateRange: DateRangeState;
-  hyp3ProductTypes: string[];
-  sarviewsEventProductSorting: EventProductSort;
 }
 
 
@@ -109,15 +105,6 @@ export const initState: FiltersState = {
     start: null,
     end: null
   },
-  sarviewsEventProductDateRange: {
-    start: null,
-    end: null
-  },
-  sarviewsEventProductSorting: {
-    sortType: EventProductSortType.DATE,
-    sortDirection: EventProductSortDirection.DESCENDING
-  },
-  hyp3ProductTypes: []
 };
 
 
@@ -401,24 +388,6 @@ export function filtersReducer(state = initState, action: FiltersActions): Filte
       };
     }
 
-    case FiltersActionType.CLEAR_EVENT_PRODUCT_DATE_RANGES: {
-      return {
-        ...state,
-        sarviewsEventProductDateRange: initState.sarviewsEventProductDateRange
-      };
-    }
-
-    case FiltersActionType.CLEAR_EVENT_FILTERS: {
-      return {
-        ...state,
-        sarviewsMagnitudeRange: initState.sarviewsMagnitudeRange,
-        sarviewsEventActiveOnly: false,
-        sarviewsEventTypes: [],
-        sarviewsEventProductDateRange: initState.sarviewsEventProductDateRange,
-        hyp3ProductTypes: []
-      };
-    }
-
     case FiltersActionType.USE_SEARCH_POLYGON: {
       return { ...state, shouldOmitSearchPolygon: false };
     }
@@ -568,11 +537,7 @@ export function filtersReducer(state = initState, action: FiltersActions): Filte
           sarviewsEventTypes: filters.sarviewsEventTypes,
           sarviewsEventNameFilter: filters.sarviewsEventNameFilter,
           sarviewsEventActiveOnly: filters.activeOnly,
-          sarviewsMagnitudeRange: filters.magnitude,
-          sarviewsEventProductDateRange: filters.sarviewsEventProductDateRange,
-          hyp3ProductTypes: filters.hyp3ProductTypes,
-          pathRange: filters.pathRange,
-          frameRange: filters.frameRange
+          sarviewsMagnitudeRange: filters.magnitude
         };
       } else if (search.searchType === models.SearchType.DERIVED_DATASETS) {
         // TODO: Don't make geosearch default case or handle no
@@ -634,7 +599,7 @@ export function filtersReducer(state = initState, action: FiltersActions): Filte
     case FiltersActionType.STORE_CURRENT_FILTERS: {
       return {
         ...state,
-        previousFilters: { ... state }
+        previousFilters: state
       };
     }
     case FiltersActionType.RESTORE_FILTERS: {
@@ -699,36 +664,6 @@ export function filtersReducer(state = initState, action: FiltersActions): Filte
         ...state,
         sarviewsMagnitudeRange: initState.sarviewsMagnitudeRange
       };
-    }
-    case FiltersActionType.SET_SARVIEWS_EVENT_PRODUCT_START_DATE: {
-      return {
-        ...state,
-        sarviewsEventProductDateRange: {... state.sarviewsEventProductDateRange, start: action.payload}
-      };
-    }
-    case FiltersActionType.SET_SARVIEWS_EVENT_PRODUCT_END_DATE: {
-      return {
-        ...state,
-        sarviewsEventProductDateRange: {... state.sarviewsEventProductDateRange, end: action.payload}
-      };
-    }
-    case FiltersActionType.SET_HYP3_PRODUCT_TYPES: {
-      return {
-        ...state,
-        hyp3ProductTypes: [ ... action.payload ]
-      };
-    }
-    case FiltersActionType.SET_EVENT_PRODUCT_SORT: {
-      return {
-        ...state,
-        sarviewsEventProductSorting: {...action.payload}
-      };
-    }
-    case FiltersActionType.CLEAR_HYP3_PRODUCT_TYPES: {
-      return {
-        ...state,
-        hyp3ProductTypes: []
-      }
     }
     default: {
       return state;
@@ -990,19 +925,4 @@ export const getSarviewsEventActiveFilter = createSelector(
 export const getSarviewsMagnitudeRange = createSelector(
   getFiltersState,
   (state: FiltersState) => state.sarviewsMagnitudeRange
-);
-
-export const getSarviewsEventProductsDateRange = createSelector(
-  getFiltersState,
-  (state: FiltersState) => state.sarviewsEventProductDateRange
-);
-
-export const getHyp3ProductTypes = createSelector(
-  getFiltersState,
-  (state: FiltersState) => state.hyp3ProductTypes.map(productType => hyp3JobTypes[productType])
-);
-
-export const getSarviewsEventProductSorting = createSelector(
-  getFiltersState,
-  (state: FiltersState) => state.sarviewsEventProductSorting
 );

@@ -22,7 +22,7 @@ import { ImageDialogComponent } from './image-dialog.component';
 import { BrowseListComponent } from './browse-list/browse-list.component';
 import {DownloadFileButtonModule} from '@components/shared/download-file-button/download-file-button.module';
 import { MatSliderModule } from '@angular/material/slider';
-import { EventProductSortSelectorModule } from '@components/shared/event-product-sort-selector/event-product-sort-selector.module';
+
 @NgModule({
   declarations: [ImageDialogComponent, BrowseListComponent],
     imports: [
@@ -45,7 +45,6 @@ import { EventProductSortSelectorModule } from '@components/shared/event-product
         EventProductMetadataModule,
         DownloadFileButtonModule,
         MatSliderModule,
-        EventProductSortSelectorModule
     ],
   exports: [ImageDialogComponent],
 })

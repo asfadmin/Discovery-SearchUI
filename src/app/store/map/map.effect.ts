@@ -6,9 +6,9 @@ import * as models from '@models';
 
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
-import { MapService, SarviewsEventsService } from '@services';
+import { MapService } from '@services';
 import { AppState } from '@store';
-import { getImageBrowseProducts, getPinnedEventBrowseIDs, getProducts, getSelectedScene } from '@store/scenes';
+import { getImageBrowseProducts, getPinnedEventBrowseIDs, getProducts, getSelectedSarviewsEventProducts, getSelectedScene } from '@store/scenes';
 import { ScenesActionType, SetImageBrowseProducts, SetSelectedScene } from '@store/scenes/scenes.action';
 import { getareResultsOutOfDate, getSearchType, SearchActionType, SetSearchOutOfDate, SetSearchType } from '@store/search';
 import { filter, first, map, switchMap, tap, withLatestFrom } from 'rxjs/operators';
@@ -22,7 +22,6 @@ export class MapEffects {
 
   public constructor(private actions$: Actions,
     private mapService: MapService,
-    private eventMonitoringService: SarviewsEventsService,
     private store$: Store<AppState>) {}
 
   public clearPinnedProducts = createEffect((() => this.actions$.pipe(
@@ -109,7 +108,7 @@ export class MapEffects {
     filter(action => action.payload === SearchType.SARVIEWS_EVENTS),
     withLatestFrom(this.store$.select(getPinnedEventBrowseIDs)),
     map(([_, browseIDs]) => browseIDs),
-    withLatestFrom(this.eventMonitoringService.filteredEventProducts$()),
+    withLatestFrom(this.store$.select(getSelectedSarviewsEventProducts)),
     map(([pinned, eventProducts]) => {
       const pinnedProducts = {};
       eventProducts.filter(prod => pinned.includes(prod.product_id)
@@ -127,7 +126,7 @@ export class MapEffects {
     ofType<ToggleBrowseOverlay>(MapActionType.TOGGLE_BROWSE_OVERLAY),
     map(action => action.payload),
     withLatestFrom(this.store$.select(getSearchType)),
-    withLatestFrom(this.eventMonitoringService.filteredEventProducts$()),
+    withLatestFrom(this.store$.select( getSelectedSarviewsEventProducts)),
     withLatestFrom(this.store$.select( getSelectedScene)),
     map(([[[selectedProductId, searchType], products], scene]) => {
         if (searchType === models.SearchType.SARVIEWS_EVENTS) {
@@ -161,7 +160,7 @@ export class MapEffects {
     ofType<SetBrowseOverlays>(MapActionType.SET_BROWSE_OVERLAYS),
     map(action => action.payload),
     first(),
-    switchMap(browseIds => this.eventMonitoringService.filteredEventProducts$().pipe(filter(
+    switchMap(browseIds => this.store$.select( getSelectedSarviewsEventProducts).pipe(filter(
       products => products.length > 0
     ),
     map(products => ({browseIds, products})))),

@@ -83,12 +83,10 @@ export interface GeographicFiltersType {
 export interface SarviewsFiltersType {
   sarviewsEventTypes: SarviewsEventType[];
 
-  pathRange: Range<number | null>;
-  frameRange: Range<number | null>;
-  hyp3ProductTypes: string[];
+  // pathRange: Range<number | null>;
+  // frameRange: Range<number | null>;
   // season: Range<number | null>;
   dateRange: Range<null | Date>;
-  sarviewsEventProductDateRange: Range<null | Date>;
   magnitude: Range<null | number>;
   activeOnly: boolean;
   sarviewsEventNameFilter: string;
