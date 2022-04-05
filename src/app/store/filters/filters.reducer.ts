@@ -568,7 +568,11 @@ export function filtersReducer(state = initState, action: FiltersActions): Filte
           sarviewsEventTypes: filters.sarviewsEventTypes,
           sarviewsEventNameFilter: filters.sarviewsEventNameFilter,
           sarviewsEventActiveOnly: filters.activeOnly,
-          sarviewsMagnitudeRange: filters.magnitude
+          sarviewsMagnitudeRange: filters.magnitude,
+          sarviewsEventProductDateRange: filters.sarviewsEventProductDateRange,
+          hyp3ProductTypes: filters.hyp3ProductTypes,
+          pathRange: filters.pathRange,
+          frameRange: filters.frameRange
         };
       } else if (search.searchType === models.SearchType.DERIVED_DATASETS) {
         // TODO: Don't make geosearch default case or handle no
