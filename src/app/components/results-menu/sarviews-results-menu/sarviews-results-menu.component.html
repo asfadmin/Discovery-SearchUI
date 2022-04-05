@@ -20,12 +20,34 @@
 
   <!-- FILE LIST -->
   <mat-card class="h100 mp0 no-left-border" fxFlex="33" fxFlexFill>
-    <mat-card-subtitle class="header">
-      <span>
-        {{ sarviewsProductsLength}} File{{ sarviewsProductsLength === 1 ? '' : 's'}}
-      </span>
-    </mat-card-subtitle>
+    <mat-card-subtitle class="header product-list-header">
+      <!-- <div class="space-filler"></div>
+      <div style="display: flex; align-items: flex-end; padding-bottom: 5px;">
+      <app-event-product-sort-selector class="mr-10" name="ProductSorting"></app-event-product-sort-selector>
+    </div> -->
 
+      <span style="white-space: nowrap;">
+        {{ sarviewsProductsLength}} of {{(unfilteredEventProductsLength$ | async)}} File{{ sarviewsProductsLength === 1 ? '' : 's'}}
+      </span>
+
+      <div class="space-filler"></div>
+      <mat-button-toggle-group name="ProductFilters" class="mr-10" style="font-size: 16px;">
+        <mat-button-toggle
+                          (click) = "onOpenFiltersPanel()"
+                           class="control-mat-button-toggle clickable noselect"
+                           [matTooltip]="'Show product filters criteria'">
+                           <!-- <span> -->
+                           Product Criteria
+                          <mat-icon class="more-horiz"
+                          style="font-size: 16px !important; margin-bottom: -11px;">
+                            more_horiz
+                          </mat-icon>
+                           <!-- </span> -->
+        </mat-button-toggle>
+      </mat-button-toggle-group>
+
+    </mat-card-subtitle>
+    <!-- <app-event-product-sort-selector></app-event-product-sort-selector> -->
     <div class="app-scene-list left-border">
       <app-scene-files *ngIf="sarviewsProductsLength !== 0"></app-scene-files>
       <div *ngIf="sarviewsProductsLength === 0" class="no-event-products-container">
@@ -34,6 +56,11 @@
             No Products Available for this Event
           </p>
           </span>
+          <span>
+          <button (click)="onOpenFiltersPanel()" mat-flat-button color="primary" *ngIf="(unfilteredEventProductsLength$ | async) > 0">
+            Edit Filters
+          </button>
+        </span>
       </div>
     </div>
   </mat-card>

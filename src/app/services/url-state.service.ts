@@ -206,6 +206,56 @@ export class UrlStateService {
         }))
       ),
       loader: this.loadPinnedProducts
+    }, {
+      name: 'magnitude',
+      source: this.store$.select(filterStore.getSarviewsMagnitudeRange).pipe(
+        map(range => this.rangeService.toStringWithNegatives(range)),
+        map(magnitudeRange => ({magnitude: magnitudeRange}))
+      ),
+      loader: this.loadMagnitudeRange
+    }, {
+      name: 'activeEvents',
+      source: this.store$.select(filterStore.getSarviewsEventActiveFilter).pipe(
+        map(activeEvents => ({activeEvents}))
+      ),
+      loader: this.loadOnlyActiveEvents
+    }, {
+      name: 'eventTypes',
+      source: this.store$.select(filterStore.getSarviewsEventTypes).pipe(
+        map(types => types.join(',')),
+        map(eventTypes => ({eventTypes}))
+      ),
+      loader: this.loadEventTypes
+    }, {
+      name: 'eventQuery',
+      source: this.store$.select(filterStore.getSarviewsEventNameFilter).pipe(
+        map(eventQuery => ({eventQuery}))
+      ),
+      loader: this.loadEventNameFilter
+    }, {
+      name: 'productStart',
+      source: this.store$.select(filterStore.getSarviewsEventProductsDateRange).pipe(
+        map(productRange => productRange?.start),
+        map(start => ({ productStart: start === null ? '' : moment.utc( start ).format() }))
+      ),
+      loader: this.loadProductStartDate
+    },
+    {
+      name: 'productEnd',
+      source: this.store$.select(filterStore.getSarviewsEventProductsDateRange).pipe(
+        map(productRange => productRange?.end),
+        map(end => ({ productEnd: end === null ? '' : moment.utc( end ).format() }))
+      ),
+      loader: this.loadProductEndDate
+    },
+    {
+      name: 'eventProductTypes',
+      source: this.store$.select(filterStore.getHyp3ProductTypes).pipe(
+        map(productTypes => productTypes.map(productType => productType.id)),
+        map(productTypeStrings => productTypeStrings.join(',')),
+        map(productTypes => ({eventProductTypes: productTypes ?? ''}))
+      ),
+       loader: this.loadEventProductTypes
     }];
   }
 
@@ -372,33 +422,7 @@ export class UrlStateService {
         map(flightDirs => ({ flightDirs }))
       ),
       loader: this.loadFlightDirections
-    }, {
-      name: 'magnitude',
-      source: this.store$.select(filterStore.getSarviewsMagnitudeRange).pipe(
-        map(range => this.rangeService.toStringWithNegatives(range)),
-        map(magnitudeRange => ({magnitude: magnitudeRange}))
-      ),
-      loader: this.loadMagnitudeRange
-    }, {
-      name: 'activeEvents',
-      source: this.store$.select(filterStore.getSarviewsEventActiveFilter).pipe(
-        map(activeEvents => ({activeEvents}))
-      ),
-      loader: this.loadOnlyActiveEvents
-    }, {
-      name: 'eventTypes',
-      source: this.store$.select(filterStore.getSarviewsEventTypes).pipe(
-        map(types => types.join(',')),
-        map(eventTypes => ({eventTypes}))
-      ),
-      loader: this.loadEventTypes
-    }, {
-      name: 'eventQuery',
-      source: this.store$.select(filterStore.getSarviewsEventNameFilter).pipe(
-        map(eventQuery => ({eventQuery}))
-      ),
-      loader: this.loadEventNameFilter
-    }];
+    }, ];
   }
 
   private mapParameters(): models.UrlParameter[] {
@@ -742,6 +766,37 @@ export class UrlStateService {
   //   // );
   //   return new uiStore.SetIsBrowseDialogOpen(!!isImageBrowseOpen);
   // }
+
+  private loadProductStartDate = (start: string): Action | undefined => {
+    const startDate = new Date(start);
+
+    if (!this.isValidDate(startDate)) {
+      return;
+    }
+
+    return new filterStore.SetSarviewsEventProductStartDate(startDate);
+  }
+
+  private loadProductEndDate = (end: string): Action => {
+    const endDate = new Date(end);
+
+    if (!this.isValidDate(endDate)) {
+      return;
+    }
+
+    return new filterStore.SetSarviewsEventProductEndDate(endDate);
+  }
+
+  private loadEventProductTypes = (types: string): Action => {
+    const productTypes = types.split(',')
+      .filter(type => Object.keys(models.hyp3JobTypes)
+        .find(jobType => jobType === type) !== undefined);
+
+    if (productTypes?.length === 0) {
+      return new filterStore.SetHyp3ProductTypes([]);
+    }
+    return new filterStore.SetHyp3ProductTypes(productTypes);
+  }
 
   private updateShouldSearch(): void {
     this.store$.select(scenesStore.getAreResultsLoaded).pipe(

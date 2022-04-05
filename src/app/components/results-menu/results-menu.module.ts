@@ -30,7 +30,7 @@ import { SbasSlidersComponent } from './sbas-sliders/sbas-sliders.component';
 import { MatSliderModule } from '@angular/material/slider';
 import { SbasSlidersTwoComponent } from './sbas-sliders-two/sbas-sliders-two.component';
 import { SarviewsResultsMenuComponent } from './sarviews-results-menu/sarviews-results-menu.component';
-
+import { EventProductSortSelectorModule } from '@components/shared/event-product-sort-selector/event-product-sort-selector.module';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 @NgModule({
@@ -68,6 +68,7 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
     MatInputModule,
     ReactiveFormsModule,
     FontAwesomeModule,
+    EventProductSortSelectorModule
   ],
   exports: [ResultsMenuComponent, SbasSlidersTwoComponent, SbasSlidersComponent],
 })

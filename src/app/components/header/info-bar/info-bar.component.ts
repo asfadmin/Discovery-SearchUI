@@ -32,6 +32,9 @@ export class InfoBarComponent implements OnInit, OnDestroy {
 
   public startDate: Date | null;
   public endDate: Date | null;
+  public eventProductStartDate: Date | null;
+  public eventProductEndDate: Date | null;
+  public eventProductTypes: string;
   public pathRange: models.Range<number | null>;
   public frameRange: models.Range<number | null>;
   public season: models.Range<number | null>;
@@ -62,6 +65,12 @@ export class InfoBarComponent implements OnInit, OnDestroy {
     );
     const endSub = this.store$.select(filtersStore.getEndDate).subscribe(
       end => this.endDate = end
+    );
+    const eventStartSub = this.store$.select(filtersStore.getSarviewsEventProductsDateRange).subscribe(
+      dates => {
+        this.eventProductStartDate = dates.start;
+        this.eventProductEndDate = dates.end;
+      }
     );
     const pathSub = this.store$.select(filtersStore.getPathRange).subscribe(
       pathRange => this.pathRange = pathRange
@@ -110,6 +119,12 @@ export class InfoBarComponent implements OnInit, OnDestroy {
       range => this.tempRange = range
     );
 
+    const eventProductType = this.store$.select(filtersStore.getHyp3ProductTypes).subscribe(
+      productTypes => this.eventProductTypes = productTypes
+        .map(productType => productType.id)
+        .join(', ')
+    );
+
     [
       startSub, endSub,
       pathSub, frameSub,
@@ -122,7 +137,9 @@ export class InfoBarComponent implements OnInit, OnDestroy {
       flightDirsSub,
       subtypeSub,
       missionSub,
-      tempSub, perpSub
+      tempSub, perpSub,
+      eventStartSub,
+      eventProductType
     ].forEach(sub => this.subs.add(sub));
 
     this.subs.add(

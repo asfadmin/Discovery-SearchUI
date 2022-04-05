@@ -35,7 +35,6 @@ export class SearchService {
       new filterStore.ClearPerpendicularRange(),
       new filterStore.ClearTemporalRange(),
       new filterStore.ClearSeason(),
-      new filterStore.ClearSarviewsMagnitudeRange(),
       new uiStore.CloseFiltersMenu(),
     ];
 
@@ -60,6 +59,10 @@ export class SearchService {
           end: null
         }
       ));
+      this.store$.dispatch(new filterStore.ClearSarviewsMagnitudeRange());
+      this.store$.dispatch(new filterStore.ClearEventProductDateRanges());
+      this.store$.dispatch(new filterStore.ClearHyp3ProductTypes());
+
     }
   }
 
