@@ -1,10 +1,4 @@
-<button
-*ngIf="!!polygon && (searchType$ | async) !== searchTypes.SARVIEWS_EVENTS"
-(click)="onClearSearchArea()"
-mat-button>
-  Clear Search Area
-</button>
-
+<button *ngIf="!!polygon" (click)="onClearSearchArea()" mat-button>Clear Search Area</button>
 <button
   *ngIf="!!savedPolygon"
   (click)="undoPolygonClear()" mat-button>
