@@ -292,7 +292,7 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
               if (action.payload !== models.SearchType.BASELINE && action.payload !== models.SearchType.SBAS) {
                 this.clearBaselineRanges();
               }
-              if(action.payload !== models.SearchType.SARVIEWS_EVENTS) {
+              if (action.payload !== models.SearchType.SARVIEWS_EVENTS) {
                 this.clearEventProductFilters();
               }
 
