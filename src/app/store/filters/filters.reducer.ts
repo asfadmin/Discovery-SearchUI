@@ -728,7 +728,7 @@ export function filtersReducer(state = initState, action: FiltersActions): Filte
       return {
         ...state,
         hyp3ProductTypes: []
-      }
+      };
     }
     default: {
       return state;
