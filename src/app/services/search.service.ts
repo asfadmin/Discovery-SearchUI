@@ -61,7 +61,7 @@ export class SearchService {
       ));
       this.store$.dispatch(new filterStore.ClearSarviewsMagnitudeRange());
       this.store$.dispatch(new filterStore.ClearEventProductDateRanges());
-      this.store$.dispatch(new filterStore.SetHyp3ProductTypes([]));
+      this.store$.dispatch(new filterStore.ClearHyp3ProductTypes());
 
     }
   }

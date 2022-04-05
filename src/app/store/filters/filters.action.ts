@@ -89,7 +89,8 @@ export enum FiltersActionType {
   SET_EVENT_PRODUCT_SORT = '[Filters] Set event product sorting order',
 
   CLEAR_EVENT_PRODUCT_DATE_RANGES = '[Filters] Clear Event Product Date Ranges',
-  CLEAR_EVENT_FILTERS = '[Filters] Clear Event Search Filters'
+  CLEAR_EVENT_FILTERS = '[Filters] Clear Event Search Filters',
+  CLEAR_HYP3_PRODUCT_TYPES = '[Filters] Clear Hyp3 product types filter',
 
 }
 
@@ -432,6 +433,12 @@ export class ClearEventProductDateRanges implements Action {
   constructor() {}
 }
 
+export class ClearHyp3ProductTypes implements Action {
+  public readonly type = FiltersActionType.CLEAR_HYP3_PRODUCT_TYPES;
+
+  constructor() {}
+}
+
 
 export type FiltersActions =
   | SetSelectedDataset
@@ -493,4 +500,5 @@ export type FiltersActions =
   | SetHyp3ProductTypes
   | SetEventProductSorting
   | ClearEventProductDateRanges
-  | ClearEventFilters;
+  | ClearEventFilters
+  | ClearHyp3ProductTypes;

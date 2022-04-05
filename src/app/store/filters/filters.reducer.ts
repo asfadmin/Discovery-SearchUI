@@ -630,7 +630,7 @@ export function filtersReducer(state = initState, action: FiltersActions): Filte
     case FiltersActionType.STORE_CURRENT_FILTERS: {
       return {
         ...state,
-        previousFilters: state
+        previousFilters: { ... state }
       };
     }
     case FiltersActionType.RESTORE_FILTERS: {
@@ -719,6 +719,12 @@ export function filtersReducer(state = initState, action: FiltersActions): Filte
         ...state,
         sarviewsEventProductSorting: {...action.payload}
       };
+    }
+    case FiltersActionType.CLEAR_HYP3_PRODUCT_TYPES: {
+      return {
+        ...state,
+        hyp3ProductTypes: []
+      }
     }
     default: {
       return state;
