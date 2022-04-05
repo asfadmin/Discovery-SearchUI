@@ -788,7 +788,7 @@ export class UrlStateService {
   }
 
   private loadEventProductTypes = (types: string): Action => {
-    let productTypes = types.split(',')
+    const productTypes = types.split(',')
       .filter(type => Object.keys(models.hyp3JobTypes)
         .find(jobType => jobType === type) !== undefined);
 

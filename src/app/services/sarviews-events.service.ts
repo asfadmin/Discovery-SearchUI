@@ -339,14 +339,14 @@ export class SarviewsEventsService {
       )
     ]).pipe(
       map(([products, jobTypes]) => {
-          if(jobTypes.length === 0) {
+          if (jobTypes.length === 0) {
             return products;
           }
 
           return products.filter(product => jobTypes.includes(product.job_type));
         }
       )
-    )
+    );
   }
 
   private ProductSortOrder$(products$: Observable<SarviewsProduct[]>) {
