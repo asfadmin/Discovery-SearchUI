@@ -405,7 +405,7 @@ export function filtersReducer(state = initState, action: FiltersActions): Filte
       return {
         ...state,
         sarviewsEventProductDateRange: initState.sarviewsEventProductDateRange
-      }
+      };
     }
 
     case FiltersActionType.CLEAR_EVENT_FILTERS: {
@@ -416,7 +416,7 @@ export function filtersReducer(state = initState, action: FiltersActions): Filte
         sarviewsEventTypes: [],
         sarviewsEventProductDateRange: initState.sarviewsEventProductDateRange,
         hyp3ProductTypes: []
-      }
+      };
     }
 
     case FiltersActionType.USE_SEARCH_POLYGON: {
