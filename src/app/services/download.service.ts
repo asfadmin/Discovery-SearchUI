@@ -9,6 +9,9 @@ import { distinctUntilChanged, scan } from 'rxjs/operators';
 import { CMRProduct } from '@models';
 import { NotificationService } from './notification.service';
 
+import { Store } from '@ngrx/store';
+import * as queueStore from '@store/queue';
+import { AppState } from '@store';
 
 @Injectable({ providedIn: 'root' })
 export class DownloadService {
@@ -16,7 +19,8 @@ export class DownloadService {
   constructor(
     private http: HttpClient,
     @Inject(SAVER) private save: Saver,
-    private notificationService: NotificationService
+    private notificationService: NotificationService,
+    private store$: Store<AppState>
   ) { }
 
   classicResp: Observable<DownloadStatus>;
@@ -94,20 +98,26 @@ export class DownloadService {
                 };
               }
               case (HttpEventType.Response): {
-                if (saver) {
-                  saver(event.body).then(fileResponse => {
-                    if (fileResponse.status === 'error') {
-                      this.notificationService.error('There was an error downloading the file. Make sure that you allowed your browser to access the right files');
-                    }
-                  });
-                }
+                saver(event.body).then(fileResponse => {
+                  if (fileResponse.status === 'error') {
+                    this.notificationService.error('There was an error downloading the file. Make sure that you allowed your browser to access the right files');
+                  }
+                  this.store$.dispatch(new queueStore.DownloadProduct({
+                    progress: 100,
+                    state: 'DONE',
+                    filename: filename,
+                    id: id,
+                    product: product,
+                  }));
+                });
                 return {
                   progress: 100,
-                  state: 'DONE',
+                  state: 'SAVING',
                   filename: filename,
                   id: id,
                   product: product,
                 };
+
               }
               default: {
                 return file;
