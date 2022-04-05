@@ -86,7 +86,10 @@ export enum FiltersActionType {
   SET_SARVIEWS_EVENT_PRODUCT_END_DATE = '[Filters] Set Event Monitoring product end date',
 
   SET_HYP3_PRODUCT_TYPES = '[Filters] Set Hyp3 product types filter',
-  SET_EVENT_PRODUCT_SORT = '[Filters] Set event product sorting order'
+  SET_EVENT_PRODUCT_SORT = '[Filters] Set event product sorting order',
+
+  CLEAR_EVENT_PRODUCT_DATE_RANGES = '[Filters] Clear Event Product Date Ranges',
+  CLEAR_EVENT_FILTERS = '[Filters] Clear Event Search Filters'
 
 }
 
@@ -417,6 +420,19 @@ export class SetDefaultFilters implements Action {
   }) {}
 }
 
+export class ClearEventFilters implements Action {
+  public readonly type = FiltersActionType.CLEAR_EVENT_FILTERS;
+
+  constructor() {}
+}
+
+export class ClearEventProductDateRanges implements Action {
+  public readonly type = FiltersActionType.CLEAR_EVENT_PRODUCT_DATE_RANGES;
+
+  constructor() {}
+}
+
+
 export type FiltersActions =
   | SetSelectedDataset
   | SetPerpendicularStart
@@ -475,4 +491,6 @@ export type FiltersActions =
   | SetSarviewsEventProductStartDate
   | SetSarviewsEventProductEndDate
   | SetHyp3ProductTypes
-  | SetEventProductSorting;
+  | SetEventProductSorting
+  | ClearEventProductDateRanges
+  | ClearEventFilters;

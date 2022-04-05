@@ -28,10 +28,10 @@ export class Hyp3JobTypeSelectorComponent implements OnInit {
   }
 
   onSelect(selectionChange: MatSelectChange) {
-    if ((selectionChange.value as string[]).length === 0) {
-      this.store$.dispatch(new SetHyp3ProductTypes(this.hyp3JobTypes));
-    } else {
+    // if ((selectionChange.value as string[]).length === 0) {
+    //   this.store$.dispatch(new SetHyp3ProductTypes(this.hyp3JobTypes));
+    // } else {
       this.store$.dispatch(new SetHyp3ProductTypes(selectionChange.value));
-    }
+    // }
   }
 }

@@ -117,7 +117,7 @@ export const initState: FiltersState = {
     sortType: EventProductSortType.DATE,
     sortDirection: EventProductSortDirection.DESCENDING
   },
-  hyp3ProductTypes: [hyp3JobTypes.RTC_GAMMA.id, hyp3JobTypes.INSAR_GAMMA.id, hyp3JobTypes.AUTORIFT.id]
+  hyp3ProductTypes: []
 };
 
 
@@ -399,6 +399,24 @@ export function filtersReducer(state = initState, action: FiltersActions): Filte
         ...state,
         searchList: []
       };
+    }
+
+    case FiltersActionType.CLEAR_EVENT_PRODUCT_DATE_RANGES: {
+      return {
+        ...state,
+        sarviewsEventProductDateRange: initState.sarviewsEventProductDateRange
+      }
+    }
+
+    case FiltersActionType.CLEAR_EVENT_FILTERS: {
+      return {
+        ...state,
+        sarviewsMagnitudeRange: initState.sarviewsMagnitudeRange,
+        sarviewsEventActiveOnly: false,
+        sarviewsEventTypes: [],
+        sarviewsEventProductDateRange: initState.sarviewsEventProductDateRange,
+        hyp3ProductTypes: []
+      }
     }
 
     case FiltersActionType.USE_SEARCH_POLYGON: {
@@ -693,7 +711,7 @@ export function filtersReducer(state = initState, action: FiltersActions): Filte
     case FiltersActionType.SET_HYP3_PRODUCT_TYPES: {
       return {
         ...state,
-        hyp3ProductTypes: action.payload
+        hyp3ProductTypes: [ ... action.payload ]
       };
     }
     case FiltersActionType.SET_EVENT_PRODUCT_SORT: {

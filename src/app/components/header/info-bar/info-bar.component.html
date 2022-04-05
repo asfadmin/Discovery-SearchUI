@@ -19,7 +19,7 @@
     <span *ngIf="(searchType$ | async) === searchTypes.SARVIEWS_EVENTS && eventProductEndDate !== null">
       <b>Product End Date:</b> {{eventProductEndDate === null ? '' :eventProductEndDate | shortDate}}
     </span>
-    <span *ngIf="(searchType$ | async) === searchTypes.SARVIEWS_EVENTS">
+    <span *ngIf="(searchType$ | async) === searchTypes.SARVIEWS_EVENTS && !!eventProductTypes">
       <b>Product Types:</b> {{eventProductTypes}}
     </span>
     <span *ngIf="(breakpoint < breakpoints.FULL) && !!startDate">
