@@ -1,6 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { MatButtonToggleChange } from '@angular/material/button-toggle';
-// import { MatSelectChange } from '@angular/material/select';
 import { EventProductSortDirection, EventProductSortType } from '@models';
 import { Store } from '@ngrx/store';
 
@@ -17,11 +15,13 @@ export class EventProductSortSelectorComponent implements OnInit {
 
   private subs = new SubSink();
 
-  sortType: EventProductSortType = EventProductSortType.DATE;
-  sortDirection: EventProductSortDirection = EventProductSortDirection.DESCENDING;
+  public sortType: EventProductSortType = EventProductSortType.DATE;
+  public sortTypeDisplay: string;
+  public sortDirection: EventProductSortDirection = EventProductSortDirection.DESCENDING;
 
-  sortTypes = Object.values(EventProductSortType);
-  sortDirections = Object.values(EventProductSortDirection);
+  public sortTypes = Object.values(EventProductSortType);
+  public sortDirections = Object.values(EventProductSortDirection);
+  public sortDescending = true;
 
   constructor(private store$: Store<AppState>) { }
 
@@ -30,20 +30,24 @@ export class EventProductSortSelectorComponent implements OnInit {
       this.store$.select(getSarviewsEventProductSorting).subscribe(
         sorting => {
           this.sortType = sorting.sortType;
+          this.sortTypeDisplay = this.sortType.valueOf();
           this.sortDirection = sorting.sortDirection;
+
+          this.sortDescending = this.sortDirection === EventProductSortDirection.DESCENDING;
         }
       )
     );
   }
 
-  public onSetSortDirection(event: MatButtonToggleChange) {
-    const sortDirection = event.value.length > 0 ? EventProductSortDirection.DESCENDING : EventProductSortDirection.ASCENDING;
-    this.store$.dispatch(new SetEventProductSorting({sortDirection, sortType: this.sortType}));
+  public onSetSortDirection() {
+    this.sortDescending = !this.sortDescending;
+    this.sortDirection = this.sortDescending ? EventProductSortDirection.DESCENDING : EventProductSortDirection.ASCENDING;
+    this.store$.dispatch(new SetEventProductSorting({sortDirection: this.sortDirection, sortType: this.sortType}));
   }
 
-  public onSetSortType(event: MatButtonToggleChange) {
+  public onSetSortType(value: string) {
     let sortType = EventProductSortType.DATE;
-    switch (event.value) {
+    switch (value) {
       case EventProductSortType.PATH.valueOf():
         sortType = EventProductSortType.PATH;
         break;

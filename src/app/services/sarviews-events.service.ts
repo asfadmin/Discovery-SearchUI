@@ -271,7 +271,7 @@ export class SarviewsEventsService {
     return combineLatest(
       [
         products$,
-        this.store$.select(filtersStore.getSarviewsEventProductsDateRange)
+        this.store$.select(filtersStore.getDateRange)
       ]
     ).pipe(
       map(([products, dateRange]) => products.filter(prod => {
@@ -449,20 +449,25 @@ export class SarviewsEventsService {
               end: moment(dateRange.end)
             };
 
+
             if (dateRange.start === null && dateRange.end === null) {
               return events;
             }
 
             return events.filter(scene => {
+              const processing_start = moment(scene.processing_timeframe.start);
+              const processing_end = moment(scene.processing_timeframe.end);
+
               if (dateRange.start === null && dateRange.end !== null) {
-                return moment(scene.processing_timeframe.end) <= range.end ;
+                return processing_start <= range.end || processing_end <= range.end ;
               } else if (dateRange.start !== null && dateRange.end === null) {
-                return moment(scene.processing_timeframe.start) >= range.start ;
+                return processing_start >= range.start || processing_end >= range.start;
               } else {
                 return (
-                  moment(scene.processing_timeframe.start) >= range.start  &&
-                  moment(scene.processing_timeframe.end) <= range.end
-                );
+                  processing_start >= range.start
+                  && processing_start <= range.end)
+                  || (processing_end <= range.end &&
+                    processing_end >= range.start);
               }
             });
           }

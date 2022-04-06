@@ -5,6 +5,7 @@ import { EventProductSortSelectorComponent } from './event-product-sort-selector
 import { MatSelectModule } from '@angular/material/select';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatIconModule } from '@angular/material/icon';
+import { MatMenuModule } from '@angular/material/menu';
 
 @NgModule({
   declarations: [
@@ -14,7 +15,8 @@ import { MatIconModule } from '@angular/material/icon';
     CommonModule,
     MatSelectModule,
     MatButtonToggleModule,
-    MatIconModule
+    MatIconModule,
+    MatMenuModule
   ],
   exports: [
     EventProductSortSelectorComponent

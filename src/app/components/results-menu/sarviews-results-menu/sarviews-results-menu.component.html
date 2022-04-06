@@ -21,14 +21,15 @@
   <!-- FILE LIST -->
   <mat-card class="h100 mp0 no-left-border" fxFlex="33" fxFlexFill>
     <mat-card-subtitle class="header product-list-header">
-      <!-- <div class="space-filler"></div>
-      <div style="display: flex; align-items: flex-end; padding-bottom: 5px;">
-      <app-event-product-sort-selector class="mr-10" name="ProductSorting"></app-event-product-sort-selector>
-    </div> -->
+
 
       <span style="white-space: nowrap;">
         {{ sarviewsProductsLength}} of {{(unfilteredEventProductsLength$ | async)}} File{{ sarviewsProductsLength === 1 ? '' : 's'}}
       </span>
+      <div class="space-filler"></div>
+      <div style="display: flex; align-items: flex-end; padding-bottom: 7px;">
+      <app-event-product-sort-selector class="mr-10" name="ProductSorting"></app-event-product-sort-selector>
+      </div>
 
       <div class="space-filler"></div>
       <mat-button-toggle-group name="ProductFilters" class="mr-10" style="font-size: 16px;">
