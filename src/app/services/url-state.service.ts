@@ -232,21 +232,6 @@ export class UrlStateService {
         map(eventQuery => ({eventQuery}))
       ),
       loader: this.loadEventNameFilter
-    }, {
-      name: 'productStart',
-      source: this.store$.select(filterStore.getSarviewsEventProductsDateRange).pipe(
-        map(productRange => productRange?.start),
-        map(start => ({ productStart: start === null ? '' : moment.utc( start ).format() }))
-      ),
-      loader: this.loadProductStartDate
-    },
-    {
-      name: 'productEnd',
-      source: this.store$.select(filterStore.getSarviewsEventProductsDateRange).pipe(
-        map(productRange => productRange?.end),
-        map(end => ({ productEnd: end === null ? '' : moment.utc( end ).format() }))
-      ),
-      loader: this.loadProductEndDate
     },
     {
       name: 'eventProductTypes',
@@ -766,26 +751,6 @@ export class UrlStateService {
   //   // );
   //   return new uiStore.SetIsBrowseDialogOpen(!!isImageBrowseOpen);
   // }
-
-  private loadProductStartDate = (start: string): Action | undefined => {
-    const startDate = new Date(start);
-
-    if (!this.isValidDate(startDate)) {
-      return;
-    }
-
-    return new filterStore.SetSarviewsEventProductStartDate(startDate);
-  }
-
-  private loadProductEndDate = (end: string): Action => {
-    const endDate = new Date(end);
-
-    if (!this.isValidDate(endDate)) {
-      return;
-    }
-
-    return new filterStore.SetSarviewsEventProductEndDate(endDate);
-  }
 
   private loadEventProductTypes = (types: string): Action => {
     const productTypes = types.split(',')

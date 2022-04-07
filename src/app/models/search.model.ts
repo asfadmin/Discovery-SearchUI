@@ -88,7 +88,6 @@ export interface SarviewsFiltersType {
   hyp3ProductTypes: string[];
   // season: Range<number | null>;
   dateRange: Range<null | Date>;
-  sarviewsEventProductDateRange: Range<null | Date>;
   magnitude: Range<null | number>;
   activeOnly: boolean;
   sarviewsEventNameFilter: string;

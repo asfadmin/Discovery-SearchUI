@@ -549,7 +549,6 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
 
   private clearEventProductFilters() {
     this.store$.dispatch(new filterStore.ClearHyp3ProductTypes());
-    this.store$.dispatch(new filtersStore.ClearEventProductDateRanges());
   }
 
   ngOnDestroy() {
