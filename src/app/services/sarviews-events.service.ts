@@ -11,6 +11,7 @@ import MultiPolygon from 'ol/geom/MultiPolygon';
 import Polygon from 'ol/geom/Polygon';
 import * as models from '@models';
 import * as moment from 'moment';
+import { extendMoment } from 'moment-range';
 import { getSarviewsEvents, getSelectedSarviewsEventProducts } from '@store/scenes';
 import { Store } from '@ngrx/store';
 import { AppState } from '@store';
@@ -23,12 +24,14 @@ export class SarviewsEventsService {
 
   private eventsUrl = `https://gm3385dq6j.execute-api.us-west-2.amazonaws.com/events`;
   private sarviewsEvents$ = this.getSarviewsEvents$();
-
+  private Moment = extendMoment(moment);
   constructor(private http: HttpClient,
     private wktService: WktService,
     private mapService: MapService,
     private store$: Store<AppState>
-              ) { }
+              ) {
+                extendMoment(moment);
+               }
 
   public getSarviewsEvents$(): Observable<SarviewsEvent[]> {
     return this.http.get<SarviewsEvent[]>(this.eventsUrl).pipe(
@@ -444,10 +447,7 @@ export class SarviewsEventsService {
         debounceTime(0),
         map(
           ([events, dateRange]) => {
-            const range = {
-              start: moment(dateRange.start),
-              end: moment(dateRange.end)
-            };
+            const range = this.Moment.range(moment(dateRange.start), moment(dateRange.end))
 
 
             if (dateRange.start === null && dateRange.end === null) {
@@ -458,16 +458,15 @@ export class SarviewsEventsService {
               const processing_start = moment(scene.processing_timeframe.start);
               const processing_end = moment(scene.processing_timeframe.end);
 
+
               if (dateRange.start === null && dateRange.end !== null) {
-                return processing_start <= range.end || processing_end <= range.end ;
+                return processing_start <= moment(dateRange.end) || processing_end <= moment(dateRange.end);
               } else if (dateRange.start !== null && dateRange.end === null) {
-                return processing_start >= range.start || processing_end >= range.start;
+                return processing_start >= moment(dateRange.start) || processing_end >= moment(dateRange.start);
               } else {
-                return (
-                  processing_start >= range.start
-                  && processing_start <= range.end)
-                  || (processing_end <= range.end &&
-                    processing_end >= range.start);
+
+                const processingRange = this.Moment.range(processing_start, processing_end)
+                return processingRange.overlaps(range);
               }
             });
           }
