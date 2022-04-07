@@ -29,27 +29,40 @@
 
 
     <mat-menu #derivedDatasetMenu="matMenu">
-      <div mat-menu-item matSuffix *ngFor="let dataset of datasets" (click)="onOpenDerivedDataset(dataset.info_url, dataset.name)">
+      <div mat-menu-item matSuffix *ngFor="let dataset of datasets">
         <div *ngIf="(breakpoint$ | async) === breakpoints.MOBILE">
           <mat-icon>video_library</mat-icon>
           {{ dataset.name }}
         </div>
         <div *ngIf="(breakpoint$ | async) != breakpoints.MOBILE" class="menu-item">
-          <div fxFlex="" class="menu-item-content">
-            <div class="item-title">{{ dataset.name }}</div>
-            <div class="item-content">
-              {{ dataset.description }}
+          <div fxFlex="70%" class="menu-item-content">
+            <div class="item-title" (click)="onOpenDerivedDataset(dataset.info_url, dataset.name)">
+              {{ dataset.name }}
             </div>
+            <div class="item-content" [ngClass]="{'limitTextHeight': isReadMore}">
+              {{ dataset.info }}
+            </div>
+            <mat-card-actions>
+              <button (click)="onOpenDerivedDataset(dataset.info_url, dataset.name)" mat-button>More Info</button>
+              <button (click)="onOpenDerivedDataset(dataset.download_url, dataset.name)" mat-button>Download</button>
+            </mat-card-actions>
+
+            <!--            <div class="item-content" [ngClass]="{'limitTextHeight': isReadMore}">-->
+<!--              {{ dataset.description }}-->
+<!--            </div>-->
+<!--            <button mat-button (click)="showText()">-->
+<!--              {{ isReadMore ? 'Read More': 'Read Less' }}-->
+<!--            </button>-->
           </div>
-          <div fxFlex="" class="menu-item-aside">
+          <div fxFlex="30%" class="menu-item-aside">
             <img [src]="dataset.picture" class="menu-item-icon">
           </div>
         </div>
         <!--      <mat-divider inset></mat-divider>-->
-        <mat-card-actions>
-          <button (click)="onOpenDerivedDataset(dataset.info_url, dataset.name)" mat-button>More Info</button>
-          <button (click)="onOpenDerivedDataset(dataset.download_url, dataset.name)" mat-button>Download</button>
-        </mat-card-actions>
+<!--        <mat-card-actions>-->
+<!--          <button (click)="onOpenDerivedDataset(dataset.info_url, dataset.name)" mat-button>More Info</button>-->
+<!--          <button (click)="onOpenDerivedDataset(dataset.download_url, dataset.name)" mat-button>Download</button>-->
+<!--        </mat-card-actions>-->
         <hr class="dataset-hr">
       </div>
     </mat-menu>

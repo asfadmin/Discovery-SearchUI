@@ -25,7 +25,7 @@
 }
 
 .mat-card-actions {
-  padding: 0 0 0 11px;
+  padding: 0;
   margin: 0;
 }
 
@@ -33,4 +33,9 @@
   font-weight: 400;
   font-style: italic;
   color: $asf-blue;
+}
+
+.limitTextHeight {
+  height: 50px;
+  overflow: hidden;
 }

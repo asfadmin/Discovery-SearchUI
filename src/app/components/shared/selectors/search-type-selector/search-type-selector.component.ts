@@ -31,6 +31,7 @@ export class SearchTypeSelectorComponent implements OnInit, OnDestroy {
   public isLoggedIn = false;
   public searchTypes = models.SearchType;
   private subs = new SubSink();
+  public isReadMore = true;
 
   constructor(
     private store$: Store<AppState>,
@@ -79,6 +80,11 @@ export class SearchTypeSelectorComponent implements OnInit, OnDestroy {
 
     window.open(url, '_blank');
   }
+
+  showText() {
+    this.isReadMore = !this.isReadMore
+  }
+
 
   ngOnDestroy() {
     this.subs.unsubscribe();
