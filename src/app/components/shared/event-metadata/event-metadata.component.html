@@ -1,6 +1,17 @@
 <ul class="scene-metadata" *ngIf="eventType === eventTypes.QUAKE">
   <li *ngIf="(event | quakeEvent).processing_timeframe.start !== null">
     <span class="v-mid">
+      <b>Event Date </b> • {{(event | quakeEvent).event_date | shortDateTime}}
+    </span>
+    <mat-icon
+    [matMenuTriggerFor]="addSceneDateMenu"
+    [matMenuTriggerData]="{eventDate: (event | quakeEvent).event_date}"
+    class="v-mid clickable">
+      settings
+  </mat-icon>
+  </li>
+  <li *ngIf="(event | quakeEvent).processing_timeframe.start !== null">
+    <span class="v-mid">
       <b>Start Time </b> • {{(event | quakeEvent).processing_timeframe.start | shortDateTime}}
     </span>
     <mat-icon

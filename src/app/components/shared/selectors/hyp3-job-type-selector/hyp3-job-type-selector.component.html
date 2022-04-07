@@ -1,0 +1,11 @@
+<mat-form-field>
+<mat-select
+[value]="selected"
+(selectionChange)="onSelect($event)"
+placeholder="Product Type"
+multiple>
+  <mat-option [value]="jobType" *ngFor="let jobType of hyp3JobTypes">
+    {{jobType}}
+  </mat-option>
+</mat-select>
+</mat-form-field>
