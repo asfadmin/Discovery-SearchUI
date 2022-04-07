@@ -170,7 +170,7 @@ export class DateSelectorComponent implements OnInit, OnDestroy {
       this.searchType$.subscribe(
         searchType => this.searchType = searchType
       )
-    )
+    );
   }
 
   public onStartDateChange(date): void {
@@ -187,13 +187,13 @@ export class DateSelectorComponent implements OnInit, OnDestroy {
   }
 
   public onStartDateError() {
-    if(this.searchType === SearchType.SARVIEWS_EVENTS) {
+    if (this.searchType === SearchType.SARVIEWS_EVENTS) {
       this.onStartDateChange(new Date(2015, 1));
     }
   }
 
   public onEndDateError() {
-    if(this.searchType === SearchType.SARVIEWS_EVENTS) {
+    if (this.searchType === SearchType.SARVIEWS_EVENTS) {
       this.onEndDateChange(moment(new Date()).endOf('day').date);
     }
   }

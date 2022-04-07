@@ -447,7 +447,7 @@ export class SarviewsEventsService {
         debounceTime(0),
         map(
           ([events, dateRange]) => {
-            const range = this.Moment.range(moment(dateRange.start), moment(dateRange.end))
+            const range = this.Moment.range(moment(dateRange.start), moment(dateRange.end));
 
 
             if (dateRange.start === null && dateRange.end === null) {
@@ -465,7 +465,7 @@ export class SarviewsEventsService {
                 return processing_start >= moment(dateRange.start) || processing_end >= moment(dateRange.start);
               } else {
 
-                const processingRange = this.Moment.range(processing_start, processing_end)
+                const processingRange = this.Moment.range(processing_start, processing_end);
                 return processingRange.overlaps(range);
               }
             });
