@@ -4,5 +4,7 @@
   [startDate]="startDate"
   [endDate]="endDate"
   (newStart)="onStartDateChange($event)"
-  (newEnd)="onEndDateChange($event)" #dateRange>
+  (newEnd)="onEndDateChange($event)"
+  (startDateError)="onStartDateError()"
+  (endDateError)="onEndDateError()" #dateRange>
 </app-date-range>
