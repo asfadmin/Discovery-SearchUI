@@ -1,0 +1,36 @@
+@import "asf-theme";
+@import "deluxe-menu";
+
+.description-layout {
+  display: flex;
+}
+
+.menu-item-icon {
+  @include md-icon-size(120px);
+
+  margin-right: 0;
+  color: $asf-primary-dark;
+}
+
+.dataset-hr {
+  padding: 0;
+}
+
+.mat-menu-item {
+  padding: 0;
+}
+
+.menu-item {
+  margin: 16px 16px 0 26px;
+}
+
+.mat-card-actions {
+  padding: 0 0 0 11px;
+  margin: 0;
+}
+
+.mat-button {
+  font-weight: 400;
+  font-style: italic;
+  color: $asf-blue;
+}
