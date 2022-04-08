@@ -154,7 +154,7 @@ export class DownloadFileButtonComponent implements OnInit, AfterViewInit {
         return false;
       }
     }
-    if (resp.state === 'DONE') {
+    if (resp.state === 'SAVING') {
       this.productDownloaded.emit(product);
     }
 
