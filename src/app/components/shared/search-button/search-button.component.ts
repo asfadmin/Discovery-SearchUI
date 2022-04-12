@@ -1,6 +1,8 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { SubSink } from 'subsink';
 
+import { CustomizeEnvComponent } from '@components/header/header-buttons/customize-env/customize-env.component';
+import { HttpClient } from '@angular/common/http';
 import { combineLatest, Subject } from 'rxjs';
 import { tap, delay } from 'rxjs/operators';
 import { Store, ActionsSubject } from '@ngrx/store';
@@ -37,6 +39,8 @@ export class SearchButtonComponent implements OnInit, OnDestroy {
   public canSearch$ = this.store$.select(searchStore.getCanSearch);
   public isMaxResultsLoading$ = this.store$.select(searchStore.getIsMaxResultsLoading);
   public loading$ = this.store$.select(searchStore.getIsLoading);
+  public commitUrl = '';
+  public maturity = this.env.maturity;
 
   public areResultsOutOfDate$ = this.store$.select(searchStore.getareResultsOutOfDate);
 
@@ -54,8 +58,10 @@ export class SearchButtonComponent implements OnInit, OnDestroy {
   constructor(
     private store$: Store<AppState>,
     private actions$: ActionsSubject,
+    public env: services.EnvironmentService,
     private savedSearchService: services.SavedSearchService,
     public clipboard: ClipboardService,
+    private http: HttpClient,
     private dialog: MatDialog,
     private notificationService: services.NotificationService,
   ) {
@@ -73,6 +79,7 @@ export class SearchButtonComponent implements OnInit, OnDestroy {
         searchType => this.searchType = searchType
       )
     );
+
     this.subs.add(
       this.store$.select(uiStore.getIsResultsMenuOpen).subscribe(
         isOpen => this.resultsMenuOpen = isOpen
@@ -109,6 +116,14 @@ export class SearchButtonComponent implements OnInit, OnDestroy {
       }
       this.isFiltersOpen = isOpen;
       }
+      )
+    );
+
+    this.subs.add(
+      this.http.get('assets/commit-hash.json').subscribe(
+        (commitData: any) => {
+          this.commitUrl = `https://github.com/asfadmin/Discovery-SearchUI/tree/${commitData.hash}`;
+        }
       )
     );
 
@@ -273,6 +288,33 @@ export class SearchButtonComponent implements OnInit, OnDestroy {
       `mailto:?subject=${subject}` +
       `&body=${encodeURIComponent(document.URL)}`
     );
+  }
+
+  public onOpenCustomizeEnv(): void {
+    this.dialog.open(CustomizeEnvComponent, {
+      width: '800px',
+      height: '1000px',
+      maxWidth: '100%',
+      maxHeight: '100%'
+    });
+  }
+
+
+  public isDevMode(): boolean {
+    return !this.env.isProd;
+  }
+
+  public onTestSelected(): void {
+    this.setMaturity('test');
+  }
+
+  public onProdSelected(): void {
+    this.setMaturity('prod');
+  }
+
+  private setMaturity(maturity: string): void {
+    this.maturity = maturity;
+    this.env.setMaturity(maturity);
   }
 
 
