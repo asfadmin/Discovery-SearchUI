@@ -16,6 +16,7 @@ export interface UserProfile {
     'Geographic Search': string,
     'SBAS Search': string
   };
+  hyp3BackendUrl: string;
 }
 
 export interface URSGroup {
