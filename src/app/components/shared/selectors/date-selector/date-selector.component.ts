@@ -26,7 +26,10 @@ export class DateSelectorComponent implements OnInit, OnDestroy {
   public extrema: DateRangeExtrema;
 
   private currentDate = new Date();
+  private searchType: SearchType;
   private selectedDataset$ = this.store$.select(filtersStore.getSelectedDataset);
+  public searchType$ = this.store$.select(searchStore.getSearchType);
+
   public maxDate$ = this.selectedDataset$.pipe(
     withLatestFrom(this.store$.select(searchStore.getSearchType)),
     map(([dataset, searchType]) => {
@@ -162,6 +165,12 @@ export class DateSelectorComponent implements OnInit, OnDestroy {
         }
       )
     );
+
+    this.subs.add(
+      this.searchType$.subscribe(
+        searchType => this.searchType = searchType
+      )
+    );
   }
 
   public onStartDateChange(date): void {
@@ -175,6 +184,18 @@ export class DateSelectorComponent implements OnInit, OnDestroy {
   private endDateFormat(date: Date | moment.Moment) {
     const endDate = moment(date).utc().endOf('day');
     return this.toJSDate(endDate);
+  }
+
+  public onStartDateError() {
+    if (this.searchType === SearchType.SARVIEWS_EVENTS) {
+      this.onStartDateChange(new Date(2015, 1));
+    }
+  }
+
+  public onEndDateError() {
+    if (this.searchType === SearchType.SARVIEWS_EVENTS) {
+      this.onEndDateChange(moment(new Date()).endOf('day').date);
+    }
   }
 
   private toJSDate(date: moment.Moment) {

@@ -9,7 +9,7 @@ export enum MapLayerTypes {
 
 export enum MapViewType {
   ARCTIC = 'arctic',
-  EQUITORIAL = 'equitorial',
+  EQUATORIAL = 'equatorial',
   ANTARCTIC = 'antarctic',
 }
 

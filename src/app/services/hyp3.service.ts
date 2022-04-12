@@ -103,7 +103,7 @@ export class Hyp3Service {
     );
   }
 
-  public submiteJobBatch$(jobBatch) {
+  public submitJobBatch$(jobBatch) {
     const submitJobUrl = `${this.apiUrl}/jobs`;
 
     return this.http.post(submitJobUrl, jobBatch, { withCredentials: true });
@@ -131,7 +131,7 @@ export class Hyp3Service {
     return this.http.patch(subscriptionUrl, edit, { withCredentials: true });
   }
 
-  public submiteSubscription$(sub) {
+  public submitSubscription$(sub) {
     const submitUrl = `${this.apiUrl}/subscriptions`;
 
     return this.http.post(submitUrl, sub, { withCredentials: true });

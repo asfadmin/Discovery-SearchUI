@@ -1,6 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 
-import { EnvironmentService, Hyp3Service, NotificationService } from '@services';
+import { EnvironmentService, Hyp3Service, NotificationService, ScenesService } from '@services';
 import { Hyp3Job, hyp3JobTypes, QueuedHyp3Job } from '@models';
 import { ConfirmationComponent } from '@components/header/processing-queue/confirmation/confirmation.component';
 import { MatDialog } from '@angular/material/dialog';
@@ -20,12 +20,14 @@ export class Hyp3JobStatusBadgeComponent implements OnInit {
   @Input() job: Hyp3Job;
   @Input() isFileDetails = true;
 
+  private jobs;
   private projectName = '';
   private validateOnly = false;
   public remaining = 0;
 
   constructor(
     private hyp3: Hyp3Service,
+    private scenesService: ScenesService,
     private dialog: MatDialog,
     private env: EnvironmentService,
     private store$: Store<AppState>,
@@ -43,6 +45,12 @@ export class Hyp3JobStatusBadgeComponent implements OnInit {
         }
 
         this.remaining = user.quota.remaining;
+      }
+    );
+
+    this.scenesService.scenes$().subscribe(
+      scenes => {
+        this.jobs = scenes.map(scene => scene.metadata.job);
       }
     );
   }
@@ -63,12 +71,7 @@ export class Hyp3JobStatusBadgeComponent implements OnInit {
     return this.hyp3.isRunning(job);
   }
 
-  public onReviewExpiredJob() {
-
-    const job_types = hyp3JobTypes;
-    const job_type = Object.keys(job_types).find(id =>
-      this.job.job_type === id as any);
-
+  private openConfirmationDialog(jobType, jobs) {
     const confirmationRef = this.dialog.open(ConfirmationComponent, {
       id: 'ConfirmProcess',
       width: '350px',
@@ -76,12 +79,9 @@ export class Hyp3JobStatusBadgeComponent implements OnInit {
       maxWidth: '350px',
       maxHeight: '500px',
       data: [{
-        jobType: job_types[job_type],
+        jobType,
         selected: true,
-        jobs: [{
-          granules: this.job.job_parameters.scenes,
-          job_type: job_types[job_type]
-        } as QueuedHyp3Job ]
+        jobs
       }]
     });
 
@@ -103,18 +103,59 @@ export class Hyp3JobStatusBadgeComponent implements OnInit {
     );
   }
 
-  public onResubmitExpiredJob(jobTypesWithQueued, validateOnly: boolean) {
+  public onReviewExpiredJobs() {
+    const job_types = hyp3JobTypes;
+    const job_type = Object.keys(job_types).find(id =>
+      this.job.job_type === id as any);
+    const jobType = job_types[job_type];
 
-    const processOptionKeys = Object.keys(this.job.job_parameters).filter(key => key !== 'granules');
+    const projectJobs = this.jobs
+      .filter(job => job.name === this.job.name && this.isExpired(job) && !this.isFailed(job))
+      .map(job => ({
+          granules: job.job_parameters.scenes,
+          job_type: jobType
+        } as QueuedHyp3Job
+    ));
+
+    this.openConfirmationDialog(
+      jobType, projectJobs
+    );
+  }
+
+  public onReviewExpiredJob() {
+    console.log(this.job.name);
+    const job_types = hyp3JobTypes;
+    const job_type = Object.keys(job_types).find(id =>
+      this.job.job_type === id as any);
+    const jobType = job_types[job_type];
+
+    const job = [{
+        granules: this.job.job_parameters.scenes,
+        job_type: jobType
+      } as QueuedHyp3Job];
+
+    this.openConfirmationDialog(
+      jobType, job
+    );
+  }
+
+  public onResubmitExpiredJob(jobTypesWithQueued, validateOnly: boolean) {
+    console.log(jobTypesWithQueued);
+    const processOptionKeys = Object.keys(this.job.job_parameters).filter(
+      key => key !== 'granules'
+    );
     const processingOptions = {};
-    processOptionKeys.forEach(key => processingOptions[key] = this.job.job_parameters[key]);
+
+    processOptionKeys.forEach(
+      key => processingOptions[key] = this.job.job_parameters[key]
+    );
 
     const hyp3JobsBatch = this.hyp3.formatJobs(jobTypesWithQueued, {
       projectName: this.projectName,
       processingOptions
     });
 
-    this.hyp3.submiteJobBatch$({jobs: hyp3JobsBatch, validate_only: validateOnly}).pipe(
+    this.hyp3.submitJobBatch$({jobs: hyp3JobsBatch, validate_only: validateOnly}).pipe(
       catchError(resp => {
         if (resp.error) {
           if (resp.error.detail === 'No authorization token provided' || resp.error.detail === 'Provided apikey is not valid') {

@@ -4,8 +4,8 @@ import { CMRProduct, UnzippedFolder, ColumnSortDirection, SearchType, CMRProduct
 import { PinnedProduct } from '@services/browse-map.service';
 
 export enum ScenesActionType {
-  SET_SCENES = '[Granuels] Set Scenes',
-  CLEAR = '[Granuels] Clear Scenes',
+  SET_SCENES = '[Granules] Set Scenes',
+  CLEAR = '[Granules] Clear Scenes',
   SET_SARVIEWS_EVENTS = '[SARViews] Set SARViews Events',
   SET_SARVIEWS_EVENT_PRODUCTS = '[SARViews] Set Selected SARViews Event Products',
 

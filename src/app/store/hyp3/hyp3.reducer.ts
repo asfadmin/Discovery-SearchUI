@@ -144,7 +144,7 @@ export const getHyp3Jobs = createSelector(
   (state: Hyp3State) => state.jobs
 );
 
-export const getOnDemandSubscritpions = createSelector(
+export const getOnDemandSubscriptions = createSelector(
   getHyp3State,
   (state: Hyp3State) => state.subscriptions
 );

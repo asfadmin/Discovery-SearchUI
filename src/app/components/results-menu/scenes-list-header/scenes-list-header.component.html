@@ -129,7 +129,7 @@
                 <mat-button-toggle-group fxFlex="" name="layerType" class="mr-10 clickable noselect ">
                   <mat-button-toggle class="control-mat-button-toggle"
                                      [matMenuTriggerFor]="QueueAllSARViewsProducts"
-                                     matTooltip="Add all products to downloads from selected event">
+                                     matTooltip="Add {{(productsHiddenByFilters$ | async) ? 'filtered' : 'all'}} products to downloads from selected event">
                     <mat-icon class="list-icon">
                       add_shopping_cart
                     </mat-icon>
@@ -213,7 +213,7 @@
                 [matMenuTriggerFor]="eventMonitoringOnDemand.addMenu"
                 [matMenuTriggerData]="{ hyp3able: hyp3ableEventProducts.byJobType }"
                 class="control-mat-button-toggle clickable noselect"
-                                   matTooltip="Add all results to On Demand queue">
+                                   matTooltip="Add {{(productsHiddenByFilters$ | async) ? 'filtered' : 'all'}} results to On Demand queue">
                   <mat-icon class="list-icon"
                     svgIcon="hyp3">
                   </mat-icon>
@@ -351,7 +351,7 @@
       <mat-menu #QueueAllSARViewsProducts="matMenu">
         <div *ngIf="sarviewsEventProducts">
           <button (click)="onQueueSarviewsProducts(sarviewsEventProducts)" mat-menu-item>
-            All Event Products ({{sarviewsEventProducts.length}} files)
+            {{(productsHiddenByFilters$ | async) ? 'Filtered' : 'All'}} Event Products ({{sarviewsEventProducts.length}} files)
           </button>
           <button (click)="onQueuePinnedSarviewsProducts()" mat-menu-item>
             Selected Event Products ({{pinnedEventIDs.length}} files)
