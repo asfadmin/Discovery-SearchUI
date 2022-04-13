@@ -16,6 +16,7 @@ export class DerivedDatasetsComponent implements OnInit, OnDestroy {
 
   public breakpoint: Breakpoints;
   public breakpoints = Breakpoints;
+  public breakpoint$ = this.screenSize.breakpoint$;
 
   private subs = new SubSink();
 
