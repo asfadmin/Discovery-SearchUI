@@ -18,6 +18,7 @@ import {  Download } from 'ngx-operators';
 import * as userStore from '@store/user';
 import { DownloadFileButtonComponent } from '@components/shared/download-file-button/download-file-button.component';
 import * as UAParser from 'ua-parser-js';
+import { DownloadService } from '@services/download.service';
 // import { DownloadService } from '@services/download.service';
 
 
@@ -98,6 +99,7 @@ export class QueueComponent implements OnInit, OnDestroy {
     private dialogRef: MatDialogRef<QueueComponent>,
     private screenSize: ScreenSizeService,
     private notificationService: NotificationService,
+    private downloadService: DownloadService
   ) {}
 
   ngOnInit() {
@@ -129,7 +131,6 @@ export class QueueComponent implements OnInit, OnDestroy {
   }
   public onRemoveProduct(product: CMRProduct): void {
     this.keepGoing(product);
-    console.log(product);
     this.store$.dispatch(new queueStore.RemoveItem(product));
   }
 
@@ -231,25 +232,27 @@ export class QueueComponent implements OnInit, OnDestroy {
   }
 
   public async downloadAllFiles() {
-    const buttons = this.downloadButtons.toArray();
-    for (const button of buttons.slice(0, 3)) {
-      const state = button?.dFile?.state;
-      if (!state) {
-        button.downloadFile();
+    this.downloadService.getDirectory(true).then(() => {
+      const buttons = this.downloadButtons.toArray().filter(b => !b?.dFile?.state);
+      for (const button of buttons.slice(0, 3)) {
+        const state = button?.dFile?.state;
+        if (!state) {
+          button.downloadFile(true);
+        }
       }
-    }
-    this.productList = buttons;
-    this.dlQueueNumProcessed = 3;
-    this.dlQueueCount = this.productList.length;
-    this.dlDefaultChunkSize = this.dlDefaultChunkSize ?? 3;
+      this.productList = buttons;
+      this.dlQueueNumProcessed = 3;
+      this.dlQueueCount = this.productList.length;
+      this.dlDefaultChunkSize = this.dlDefaultChunkSize ?? 3;
+    });
   }
 
-  public downloadContinue(_product) {
+  public downloadContinue(_product?) {
     this.dlQueueProgress = (this.dlQueueNumProcessed / this.dlQueueCount) * 100;
     if (this.dlQueueNumProcessed < this.dlQueueCount) {
       const button = this.productList[this.dlQueueNumProcessed++];
       if (!button?.dFile?.state) {
-        button.downloadFile();
+        button.downloadFile(true);
       }
     }
   }
