@@ -2,6 +2,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { SubSink } from 'subsink';
 
 import { MatDialog } from '@angular/material/dialog';
+import { HttpClient } from '@angular/common/http';
 
 import { Store } from '@ngrx/store';
 import { AppState } from '@store';
@@ -60,9 +61,12 @@ export class HeaderButtonsComponent implements OnInit, OnDestroy {
   public searchType$ = this.store$.select(searchStore.getSearchType);
   public searchTypes = SearchType;
 
+  public commitUrl = '';
+
   constructor(
     public authService: AuthService,
     public env: EnvironmentService,
+    private http: HttpClient,
     public asfApiService: AsfApiService,
     private screenSize: ScreenSizeService,
     private dialog: MatDialog,
@@ -84,6 +88,14 @@ export class HeaderButtonsComponent implements OnInit, OnDestroy {
             this.lastQProdCount = products.length;
             this.qProdState = !this.qProdState;
           }
+        }
+      )
+    );
+
+    this.subs.add(
+      this.http.get('assets/commit-hash.json').subscribe(
+        (commitData: any) => {
+          this.commitUrl = `https://github.com/asfadmin/Discovery-SearchUI/tree/${commitData.hash}`;
         }
       )
     );

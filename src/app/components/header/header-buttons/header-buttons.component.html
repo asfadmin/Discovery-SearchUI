@@ -265,6 +265,24 @@
     </div>
   </div>
 
+  <div mat-menu-item [matMenuTriggerFor]="developerMenu">
+    <div *ngIf="(breakpoint$ | async) === breakpoints.MOBILE">
+      <mat-icon>language</mat-icon>
+      Developer
+    </div>
+    <div *ngIf="(breakpoint$ | async) != breakpoints.MOBILE" class="menu-item">
+      <div fxFlex="" class="menu-item-content">
+        <div class="item-title">Statistics and Github Repository</div>
+        <div class="item-content">
+          View vertex's code repository or metrics
+        </div>
+      </div>
+      <div fxFlex="" class="menu-item-aside">
+        <mat-icon class="menu-item-icon">developer_mode</mat-icon>
+      </div>
+    </div>
+  </div>
+
   <ng-container *ngIf="(breakpoint$ | async) === breakpoints.MOBILE">
     <hr class="menu-hr">
 
@@ -292,3 +310,28 @@
     </mat-menu>
   </ng-container>
 </mat-menu>
+
+<mat-menu #developerMenu="matMenu">
+    <a mat-menu-item
+        href="https://github.com/asfadmin/Discovery-SearchUI"
+        target="_blank">
+      <mat-icon>code</mat-icon>
+      Vertex Code Repository
+    </a>
+
+    <a mat-menu-item
+        [href]="commitUrl"
+        target="_blank">
+      <mat-icon>code</mat-icon>
+      Build Commit
+    </a>
+
+    <a
+       mat-menu-item
+        href="https://cloudwatch.amazonaws.com/dashboard.html?dashboard=ASF-Discovery&context=eyJSIjoidXMtZWFzdC0xIiwiRCI6ImN3LWRiLTE1MzA4NzUzNzQ4NCIsIlUiOiJ1cy1lYXN0LTFfUDZSbVVnbldzIiwiQyI6IjYzZ2xoMHJ2dXIwajNpbjFiODM3cmJmc24iLCJJIjoidXMtZWFzdC0xOjNmOGU2Y2ZlLTA5YmQtNDQzZS04NDg1LTE4ZmJjZDdlZGUyMiIsIk8iOiJhcm46YXdzOmlhbTo6MTUzMDg3NTM3NDg0OnJvbGUvc2VydmljZS1yb2xlL0Nsb3VkV2F0Y2hEYXNoYm9hcmQtUHVibGljLVJlYWRPbmx5QWNjZXNzLUFTRi1EaXNjb3ZlcnktNTNaM1NBUDgiLCJNIjoiUHVibGljIn0%3D"
+        target="_blank">
+      <mat-icon>show_chart</mat-icon>
+      Vertex Network Activity
+    </a>
+</mat-menu>
+
