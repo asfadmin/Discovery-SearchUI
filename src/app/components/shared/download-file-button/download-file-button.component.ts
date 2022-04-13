@@ -80,15 +80,18 @@ export class DownloadFileButtonComponent implements OnInit, AfterViewInit {
     this.dFile = null;
   }
   public getHandle(dir: boolean = false) {
-    if (dir) {
-      this.downloadService.getDirectory().then((handle) => {
-        this.downloadFunctionality(this.product, handle);
-      });
-    } else {
-      this.downloadService.getFileHandle(this.fileName).then(handle => {
-        this.downloadFunctionality(this.product, handle);
-      });
-    }
+    return new Promise(resolve => {
+      if (dir) {
+        this.downloadService.getDirectory().then((handle) => {
+          resolve(handle);
+        });
+      } else {
+        this.downloadService.getFileHandle(this.fileName).then(handle => {
+          resolve(handle);
+        });
+      }
+    })
+
   }
   public downloadFile(dir: boolean = false) {
 
@@ -112,16 +115,18 @@ export class DownloadFileButtonComponent implements OnInit, AfterViewInit {
     }
 
     if (!this.isUserLoggedIn) {
-      this.subs.add(
-        this.authService.login$().subscribe(
-          user => {
-            this.store$.dispatch(new userStore.Login(user));
-            this.getHandle(dir);
-          }
-        )
-      );
+      this.getHandle(dir).then(handle => {
+        this.subs.add(
+          this.authService.login$().subscribe(
+            user => {
+              this.store$.dispatch(new userStore.Login(user));
+              this.downloadFunctionality(this.product, handle);
+            }));
+      });
     } else {
-      this.getHandle(dir);
+      this.getHandle(dir).then(handle => {
+        this.downloadFunctionality(this.product, handle);
+      });
     }
   }
   private downloadFunctionality(product: CMRProduct, handle: any) {
