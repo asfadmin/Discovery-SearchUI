@@ -82,7 +82,7 @@ export class SearchTypeSelectorComponent implements OnInit, OnDestroy {
   }
 
   showText() {
-    this.isReadMore = !this.isReadMore
+    this.isReadMore = !this.isReadMore;
   }
 
 
