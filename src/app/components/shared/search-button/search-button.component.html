@@ -55,12 +55,21 @@
   </span>
 
   <mat-divider></mat-divider>
+  <button mat-menu-item
+    [matMenuTriggerFor]="shareSearchMenu">
+      Share Search
+  </button>
 
   <span
     matTooltip="Get help on how to user Vertex"
     matTooltipPosition="after">
       <button mat-menu-item (click)="onOpenHelp('toc')">Help & Tutorials</button>
   </span>
+
+  <button *ngIf="isDevMode()" mat-menu-item [matMenuTriggerFor]="apiMaturity" matSuffix>
+    <mat-icon>swap_horizontal_circle</mat-icon>
+    Maturity
+  </button>
 </mat-menu>
 
 <mat-menu #savedFiltersMenu="matMenu">
@@ -84,6 +93,23 @@
       View Filters...
     </button>
   </span>
+
+</mat-menu>
+
+<mat-menu #shareSearchMenu="matMenu">
+  <button (click)="onCopy()"
+      mat-menu-item matSuffix>
+    <mat-icon>link</mat-icon>
+    Copy Search Link
+  </button>
+
+  <a (click)="onShareWithEmail()"
+      href="mailto:?subject=&body=:%20"
+      target="_blank" title="Send email"
+                      mat-menu-item matSuffix>
+    <mat-icon>email</mat-icon>
+    Share With Email
+  </a>
 
 </mat-menu>
 
@@ -111,4 +137,24 @@
       <button mat-menu-item [disabled]="!isLoggedIn" (click)="onOpenSearchHistory()">Search History...</button>
   </span>
 
-  </mat-menu>
+</mat-menu>
+
+<mat-menu #apiMaturity="matMenu">
+  <button [class.selected]="maturity === 'test'"
+    (click)="onTestSelected()"
+    mat-menu-item matSuffix>
+      <span>Test</span>
+  </button>
+
+  <button [class.selected]="maturity === 'prod'"
+    (click)="onProdSelected()"
+    mat-menu-item matSuffix>
+      <span>Production</span>
+  </button>
+
+  <button (click)="onOpenCustomizeEnv()" mat-menu-item matSuffix>
+    <span>
+      Customize Environments
+    </span>
+  </button>
+</mat-menu>

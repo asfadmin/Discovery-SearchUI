@@ -1,6 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { SubSink } from 'subsink';
 
+import { CustomizeEnvComponent } from '@components/header/header-buttons/customize-env/customize-env.component';
 import { combineLatest, Subject } from 'rxjs';
 import { tap, delay } from 'rxjs/operators';
 import { Store, ActionsSubject } from '@ngrx/store';
@@ -14,6 +15,7 @@ import * as filtersStore from '@store/filters';
 // import * as scenesStore from '@store/scenes';
 
 import * as services from '@services';
+import { ClipboardService } from 'ngx-clipboard';
 import { SidebarType, SearchType } from '@models';
 import { MatDialog } from '@angular/material/dialog';
 import { HelpComponent } from '@components/help/help.component';
@@ -36,6 +38,7 @@ export class SearchButtonComponent implements OnInit, OnDestroy {
   public canSearch$ = this.store$.select(searchStore.getCanSearch);
   public isMaxResultsLoading$ = this.store$.select(searchStore.getIsMaxResultsLoading);
   public loading$ = this.store$.select(searchStore.getIsLoading);
+  public maturity = this.env.maturity;
 
   public areResultsOutOfDate$ = this.store$.select(searchStore.getareResultsOutOfDate);
 
@@ -53,8 +56,9 @@ export class SearchButtonComponent implements OnInit, OnDestroy {
   constructor(
     private store$: Store<AppState>,
     private actions$: ActionsSubject,
+    public env: services.EnvironmentService,
     private savedSearchService: services.SavedSearchService,
-    // private SearchParamsService: services.SearchParamsService,
+    public clipboard: ClipboardService,
     private dialog: MatDialog,
     private notificationService: services.NotificationService,
   ) {
@@ -72,6 +76,7 @@ export class SearchButtonComponent implements OnInit, OnDestroy {
         searchType => this.searchType = searchType
       )
     );
+
     this.subs.add(
       this.store$.select(uiStore.getIsResultsMenuOpen).subscribe(
         isOpen => this.resultsMenuOpen = isOpen
@@ -247,6 +252,60 @@ export class SearchButtonComponent implements OnInit, OnDestroy {
       maxHeight: '100%',
     });
   }
+
+  public onCopy(): void {
+    window.dataLayer = window.dataLayer || [];
+    window.dataLayer.push({
+      'event': 'copy-search-link',
+      'copy-search-link': window.location.href
+    });
+
+    this.clipboard.copyFromContent(window.location.href);
+    this.notificationService.clipboardSearchLink();
+  }
+
+  public onShareWithEmail() {
+    const subject = `New Search - ${encodeURIComponent(document.title)}`;
+
+    window.dataLayer = window.dataLayer || [];
+    window.dataLayer.push({
+      'event': 'share-with-email',
+      'share-with-email': encodeURIComponent(document.URL)
+    });
+
+    window.open(
+      `mailto:?subject=${subject}` +
+      `&body=${encodeURIComponent(document.URL)}`
+    );
+  }
+
+  public onOpenCustomizeEnv(): void {
+    this.dialog.open(CustomizeEnvComponent, {
+      width: '800px',
+      height: '1000px',
+      maxWidth: '100%',
+      maxHeight: '100%'
+    });
+  }
+
+
+  public isDevMode(): boolean {
+    return !this.env.isProd;
+  }
+
+  public onTestSelected(): void {
+    this.setMaturity('test');
+  }
+
+  public onProdSelected(): void {
+    this.setMaturity('prod');
+  }
+
+  private setMaturity(maturity: string): void {
+    this.maturity = maturity;
+    this.env.setMaturity(maturity);
+  }
+
 
   ngOnDestroy() {
     this.subs.unsubscribe();

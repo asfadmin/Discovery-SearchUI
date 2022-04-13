@@ -285,15 +285,17 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
 
           const searchState = this.savedSearchService.getSearchState(action.payload);
 
-          if (
-            searchState
-            ) {
+          if (searchState && action.payload !== models.SearchType.DERIVED_DATASETS) {
             this.searchService.loadSearch(searchState);
 
             if (!this.isEmptySearch(searchState)) {
               if (action.payload !== models.SearchType.BASELINE && action.payload !== models.SearchType.SBAS) {
                 this.clearBaselineRanges();
               }
+              if (action.payload !== models.SearchType.SARVIEWS_EVENTS) {
+                this.clearEventProductFilters();
+              }
+
               this.store$.dispatch(new searchStore.MakeSearch());
             } else {
               this.store$.dispatch(new filterStore.SetDefaultFilters(profile?.defaultFilterPresets));
@@ -301,7 +303,6 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
           } else {
             this.store$.dispatch(new filterStore.SetDefaultFilters(profile?.defaultFilterPresets));
           }
-
         }
       )
     );
@@ -544,6 +545,10 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
   private clearBaselineRanges() {
     this.store$.dispatch(new filtersStore.ClearPerpendicularRange());
     this.store$.dispatch(new filtersStore.ClearTemporalRange());
+  }
+
+  private clearEventProductFilters() {
+    this.store$.dispatch(new filterStore.ClearHyp3ProductTypes());
   }
 
   ngOnDestroy() {
