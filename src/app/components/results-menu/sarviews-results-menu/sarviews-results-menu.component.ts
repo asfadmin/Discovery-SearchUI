@@ -8,6 +8,8 @@ import * as scenesStore from '@store/scenes';
 import { SarviewsEventsService, ScreenSizeService } from '@services';
 import { SubSink } from 'subsink';
 import * as models from '@models';
+import { map } from 'rxjs/operators';
+import { OpenFiltersMenu } from '@store/ui';
 
 @Component({
   selector: 'app-sarviews-results-menu',
@@ -18,7 +20,9 @@ export class SarviewsResultsMenuComponent implements OnInit, OnDestroy {
   @Input() resize$: Observable<void>;
 
   public selectedProducts$ = this.store$.select(scenesStore.getSelectedSceneProducts);
-  public selectedEventProducts$ = this.store$.select(scenesStore.getSelectedSarviewsEventProducts);
+  public selectedEventProducts$ = this.eventMonitoringService.filteredEventProducts$();
+  public unfilteredEventProductsLength$ = this.store$.select(scenesStore.getSelectedSarviewsEventProducts)
+    .pipe(map(products => products.length));
   public sarviewsEventsLength;
   public sarviewsProductsLength;
   public breakpoint: models.Breakpoints;
@@ -60,7 +64,7 @@ export class SarviewsResultsMenuComponent implements OnInit, OnDestroy {
         ([selected, events]) => {
           if (selected == null && !!events) {
             this.store$.dispatch(new scenesStore.SetSelectedSarviewsEvent(events[0]?.event_id));
-          } else if (!events?.includes(selected)) {
+          } else if (!(events?.map(ev => ev.event_id)?.includes(selected.event_id))) {
             this.store$.dispatch(new scenesStore.SetSelectedSarviewsEvent(events[0]?.event_id));
           }
         }
@@ -73,6 +77,9 @@ export class SarviewsResultsMenuComponent implements OnInit, OnDestroy {
     );
   }
 
+  public onOpenFiltersPanel() {
+    this.store$.dispatch(new OpenFiltersMenu());
+  }
   ngOnDestroy() {
     this.subs.unsubscribe();
   }

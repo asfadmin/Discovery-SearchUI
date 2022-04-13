@@ -4,7 +4,11 @@ import { AppState } from '@store';
 import * as userStore from '@store/user';
 
 import { MatDialogRef } from '@angular/material/dialog';
-import { MapLayerTypes, UserAuth, ProductType, datasetList, SearchType, SavedFilterPreset, FilterType } from '@models';
+import {
+  MapLayerTypes, UserAuth, ProductType,
+  datasetList, SearchType, SavedFilterPreset, FilterType
+} from '@models';
+import { Hyp3Service } from '@services';
 import { SubSink } from 'subsink';
 
 
@@ -20,6 +24,7 @@ export class PreferencesComponent implements OnInit, OnDestroy {
   public defaultDataset: string;
   public defaultMaxConcurrentDownloads: number;
   public defaultProductTypes: ProductType[];
+  public hyp3BackendUrl: string;
 
   public defaultGeoSearchFiltersID;
   public defaultBaselineSearchFiltersID;
@@ -49,6 +54,7 @@ export class PreferencesComponent implements OnInit, OnDestroy {
   constructor(
     private dialogRef: MatDialogRef<PreferencesComponent>,
     private store$: Store<AppState>,
+    private hyp3: Hyp3Service,
   ) { }
 
   ngOnInit() {
@@ -60,6 +66,12 @@ export class PreferencesComponent implements OnInit, OnDestroy {
           this.defaultDataset = profile.defaultDataset;
           this.selectedFiltersIDs = profile.defaultFilterPresets;
           this.defaultMaxConcurrentDownloads = profile.defaultMaxConcurrentDownloads;
+          this.hyp3BackendUrl = profile.hyp3BackendUrl;
+          if (this.hyp3BackendUrl) {
+            this.hyp3.setApiUrl(this.hyp3BackendUrl);
+          } else {
+            this.hyp3BackendUrl = this.hyp3.apiUrl;
+          }
         }
       )
     );
@@ -99,6 +111,7 @@ export class PreferencesComponent implements OnInit, OnDestroy {
   }
 
   public onClose(): void {
+    this.saveProfile();
     this.dialogRef.close();
   }
 
@@ -132,13 +145,23 @@ export class PreferencesComponent implements OnInit, OnDestroy {
     this.saveProfile();
   }
 
+  public onChangeBackendUrl(): void {
+    console.log(this.hyp3BackendUrl);
+  }
+
+  public resetHyp3Url() {
+    this.hyp3.setDefaultApiUrl();
+    this.hyp3BackendUrl = this.hyp3.apiUrl;
+  }
+
   public saveProfile(): void {
     const action = new userStore.SetProfile({
       maxResults: this.defaultMaxResults,
       mapLayer: this.defaultMapLayer,
       defaultDataset: this.defaultDataset,
       defaultMaxConcurrentDownloads: this.defaultMaxConcurrentDownloads,
-      defaultFilterPresets: this.selectedFiltersIDs
+      defaultFilterPresets: this.selectedFiltersIDs,
+      hyp3BackendUrl: this.hyp3BackendUrl,
     });
 
     this.store$.dispatch(action);

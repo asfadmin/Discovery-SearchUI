@@ -1,0 +1,30 @@
+<div style="display: flex;">
+  <div>
+    <label style="font-size: 12px;">Sort By</label>
+<mat-button-toggle-group class="sort-button">
+  <mat-button-toggle [matMenuTriggerFor]="sortType" style="min-width: 68px !important;">
+    <span>
+      {{sortTypeDisplay[0].toUpperCase() + sortTypeDisplay.slice(1)}}
+    </span>
+  </mat-button-toggle>
+</mat-button-toggle-group>
+</div>
+
+<div style="margin-left: 5px;">
+  <label style="font-size: 12px;">Order</label>
+  <mat-button-toggle-group class="sort-button">
+    <mat-button-toggle (click)="onSetSortDirection()">
+      <mat-icon>
+        {{ sortDescending ? "arrow_downward" : "arrow_upward" }}
+      </mat-icon>
+    </mat-button-toggle>
+  </mat-button-toggle-group>
+  </div>
+</div>
+
+<mat-menu #sortType="matMenu">
+  <button *ngFor="let type of sortTypes" (click)="onSetSortType(type)" mat-menu-item>
+    {{type[0].toUpperCase() + type.slice(1)}}
+  </button>
+
+</mat-menu>

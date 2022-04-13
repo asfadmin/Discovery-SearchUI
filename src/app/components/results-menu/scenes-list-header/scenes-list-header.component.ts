@@ -37,6 +37,8 @@ export class ScenesListHeaderComponent implements OnInit, OnDestroy {
   public numberOfFilteredEvents$ = this.eventMonitoringService.filteredSarviewsEvents$().pipe(
     filter(events => !!events),
     map(events => events.length));
+  public productsHiddenByFilters$ = this.eventMonitoringService.areEventProductsFiltered$();
+
   public numSarviewsScenes$ = this.store$.select(scenesStore.getNumberOfSarviewsEvents);
   public products = [];
   public downloadableProds = [];
@@ -51,7 +53,7 @@ export class ScenesListHeaderComponent implements OnInit, OnDestroy {
     map(pairs => pairs.pairs.length + pairs.custom.length)
   );
 
-  public sarviewsEventProducts$ = this.store$.select(scenesStore.getSelectedSarviewsEventProducts);
+  public sarviewsEventProducts$ = this.eventMonitoringService.filteredEventProducts$();
 
   public selectedEventProducts$ = this.store$.select(scenesStore.getPinnedEventBrowseIDs).pipe(
     map(browseIds =>
@@ -183,7 +185,7 @@ export class ScenesListHeaderComponent implements OnInit, OnDestroy {
     );
 
     this.subs.add(
-      this.store$.select(scenesStore.getSelectedSarviewsEventProducts).subscribe(
+      this.eventMonitoringService.filteredEventProducts$().subscribe(
         products => {
           this.sarviewsEventProducts = products;
           this.hyp3ableEventProducts = this.eventMonitoringService.toHyp3ableProducts(this.sarviewsEventProducts);

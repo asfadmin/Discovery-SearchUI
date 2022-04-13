@@ -32,6 +32,7 @@ export class InfoBarComponent implements OnInit, OnDestroy {
 
   public startDate: Date | null;
   public endDate: Date | null;
+  public eventProductTypes: string;
   public pathRange: models.Range<number | null>;
   public frameRange: models.Range<number | null>;
   public season: models.Range<number | null>;
@@ -110,6 +111,12 @@ export class InfoBarComponent implements OnInit, OnDestroy {
       range => this.tempRange = range
     );
 
+    const eventProductType = this.store$.select(filtersStore.getHyp3ProductTypes).subscribe(
+      productTypes => this.eventProductTypes = productTypes
+        .map(productType => productType.id)
+        .join(', ')
+    );
+
     [
       startSub, endSub,
       pathSub, frameSub,
@@ -122,7 +129,8 @@ export class InfoBarComponent implements OnInit, OnDestroy {
       flightDirsSub,
       subtypeSub,
       missionSub,
-      tempSub, perpSub
+      tempSub, perpSub,
+      eventProductType
     ].forEach(sub => this.subs.add(sub));
 
     this.subs.add(
