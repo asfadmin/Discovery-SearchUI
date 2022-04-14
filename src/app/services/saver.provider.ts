@@ -3,36 +3,39 @@ import { InjectionToken } from '@angular/core';
 // @ts-ignore
 import streamSaver from 'streamsaver';
 
-export type Saver = (blob: Blob, url: string, filename?: string) => void;
+export type Saver = (blob: Blob, url: string, filename?: string, window?: any) => Promise<any>;
 
 export const SAVER = new InjectionToken<Saver>('saver');
 
-export function myStreamSaver (blob, _url, filename) {
-
-  const fileStream = streamSaver.createWriteStream( filename, {
-    size: blob.size // Makes the percentage visible in the download
+export async function myStreamSaver (blob, _url, filename, handle): Promise<any> {
+  return new Promise(resolve => {
+    if (handle.kind === 'directory') {
+      handle.getFileHandle(filename, {create: true}).then(
+        file => {
+          const value = writeToFile(file, blob);
+          resolve(value);
+        }
+      );
+    } else if (handle.kind === 'file') {
+      const value = writeToFile(handle, blob);
+      resolve(value);
+    }
   });
-
-  const readableStream = blob.stream();
-
-  // more optimized pipe version
-  // (Safari may have pipeTo but it's useless without the WritableStream)
-  if (streamSaver.WritableStream && readableStream.pipeTo) {
-    return readableStream.pipeTo(fileStream)
-      .then(() => console.log('pipeTo fileStream done writing'));
-  }
-
-  // less optimized
-  const writer = fileStream.getWriter();
-  const reader = readableStream.body.getReader();
-  const pump = () => reader.read()
-    .then(res => readableStream.done
-      ? writer.close()
-      : writer.write(res.value).then(pump));
-  pump().then();
-
 }
-
+function writeToFile(fileHandle, blob): Promise<any> {
+  return new Promise(resolve => {
+    fileHandle.createWritable().then(writable => {
+    writable.write(blob).then(() => {
+      writable.close();
+      resolve({status: 'done'});
+    }, (err) => {
+        resolve({status: 'error', error: err});
+    });
+    }, (err) => {
+          resolve({status: 'error', error: err});
+    });
+  });
+}
 export function getSaver(): Saver {
   return myStreamSaver;
 }

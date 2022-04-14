@@ -79,7 +79,21 @@ export class DownloadFileButtonComponent implements OnInit, AfterViewInit {
     this.store$.dispatch(new queueStore.RemoveDownloadProduct(this.dFile));
     this.dFile = null;
   }
-  public downloadFile() {
+  public getHandle(dir: boolean = false) {
+    return new Promise(resolve => {
+      if (dir) {
+        this.downloadService.getDirectory().then((handle) => {
+          resolve(handle);
+        });
+      } else {
+        this.downloadService.getFileHandle(this.fileName).then(handle => {
+          resolve(handle);
+        });
+      }
+    })
+
+  }
+  public downloadFile(dir: boolean = false) {
 
     if (!this.useNewDownload) {
       this.classicDownload(this.url);
@@ -101,22 +115,22 @@ export class DownloadFileButtonComponent implements OnInit, AfterViewInit {
     }
 
     if (!this.isUserLoggedIn) {
-      this.subs.add(
-        this.authService.login$().subscribe(
-          user => {
-            this.store$.dispatch(new userStore.Login(user));
-            this.downloadFunctionality(this.product);
-
-          }
-        )
-      );
+      this.getHandle(dir).then(handle => {
+        this.subs.add(
+          this.authService.login$().subscribe(
+            user => {
+              this.store$.dispatch(new userStore.Login(user));
+              this.downloadFunctionality(this.product, handle);
+            }));
+      });
     } else {
-      this.downloadFunctionality(this.product);
+      this.getHandle(dir).then(handle => {
+        this.downloadFunctionality(this.product, handle);
+      });
     }
   }
-  private downloadFunctionality(product: CMRProduct) {
+  private downloadFunctionality(product: CMRProduct, handle: any) {
     const initStatus: DownloadStatus = {
-      content: null,
       progress: 0,
       state: 'PENDING',
       id: this.product?.id ?? this.fileName,
@@ -124,11 +138,11 @@ export class DownloadFileButtonComponent implements OnInit, AfterViewInit {
       product: this?.product,
     };
     this.store$.dispatch(new queueStore.DownloadProduct(initStatus));
-    this.observable$ = this.downloadService.download(this.url, this.fileName, this?.product, product?.id ?? this.fileName);
+    this.observable$ = this.downloadService.download(this.url, this.fileName, this?.product, product?.id ?? this.fileName, handle);
     this.subscription = this.observable$.subscribe(resp => {
       if (!this.processSubscription(resp, product, true)) {
         this.subscription.unsubscribe();
-        this.observable$ = this.downloadService.download(this.url, this.fileName, this?.product, product?.id ?? this.fileName);
+        // this.observable$ = this.downloadService.download(this.url, this.fileName, this?.product, product?.id ?? this.fileName);
         this.subscription = this.observable$.subscribe(response => this.processSubscription(response, product, false));
       }
     }, () => {
@@ -145,7 +159,7 @@ export class DownloadFileButtonComponent implements OnInit, AfterViewInit {
         return false;
       }
     }
-    if (resp.state === 'DONE') {
+    if (resp.state === 'SAVING') {
       this.productDownloaded.emit(product);
     }
 
@@ -174,7 +188,6 @@ export class DownloadFileButtonComponent implements OnInit, AfterViewInit {
     URL.revokeObjectURL(link.href);
     link.parentNode.removeChild(link);
     this.dFile = {
-      content: null,
       progress: 100,
       state: 'DONE',
       id: this.product.id,

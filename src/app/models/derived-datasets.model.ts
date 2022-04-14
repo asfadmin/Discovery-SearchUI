@@ -13,7 +13,7 @@ const asfWebsiteUrl = 'https://www.asf.alaska.edu';
 
 export const derivedDatasets: DerivedDataset[] = [{
   name: 'Global Seasonal Sentinel-1 Interferometric Coherence & Backscatter Dataset',
-  info: 'This dataset is the first-of-its-kind spatial representation of multi-seasonal, global SAR repeat-pass interferometric coherence and backscatter signatures.',
+  info: 'This dataset provides spatial representation of multi-seasonal, global interferometric coherence and backscatter signatures.',
   description: `
 This dataset is the first-of-its-kind spatial representation of multi-seasonal, global SAR repeat-pass interferometric coherence and backscatter signatures. Global coverage comprises all land masses and ice sheets from 82 degrees northern to 78 degrees southern latitude. The dataset is derived from high-resolution multi-temporal repeat-pass interferometric processing of about 205,000 Sentinel-1 Single-Look-Complex (SLC) data acquired in Interferometric Wide-Swath mode (Sentinel-1 IW mode) from 1-Dec-2019 to 30-Nov-2020.
   `,

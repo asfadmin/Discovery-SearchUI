@@ -1,8 +1,8 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { SubSink } from 'subsink';
-import { HttpClient } from '@angular/common/http';
 
 import { MatDialog } from '@angular/material/dialog';
+import { HttpClient } from '@angular/common/http';
 
 import { Store } from '@ngrx/store';
 import { AppState } from '@store';
@@ -12,7 +12,6 @@ import * as uiStore from '@store/ui';
 import * as searchStore from '@store/search';
 
 import { PreferencesComponent } from './preferences/preferences.component';
-import { CustomizeEnvComponent } from './customize-env/customize-env.component';
 
 import { AuthService, AsfApiService, EnvironmentService, ScreenSizeService } from '@services';
 import { CMRProduct, Breakpoints, UserAuth, SidebarType, QueuedHyp3Job, SearchType, AnalyticsEvent } from '@models';
@@ -41,8 +40,6 @@ declare global {
 export class HeaderButtonsComponent implements OnInit, OnDestroy {
   anio: number = new Date().getFullYear();
   public asfWebsiteUrl = 'https://www.asf.alaska.edu';
-  public maturity = this.env.maturity;
-  public commitUrl = '';
 
   public userAuth: UserAuth;
   public isLoggedIn = false;
@@ -64,25 +61,19 @@ export class HeaderButtonsComponent implements OnInit, OnDestroy {
   public searchType$ = this.store$.select(searchStore.getSearchType);
   public searchTypes = SearchType;
 
+  public commitUrl = '';
+
   constructor(
     public authService: AuthService,
     public env: EnvironmentService,
+    private http: HttpClient,
     public asfApiService: AsfApiService,
     private screenSize: ScreenSizeService,
     private dialog: MatDialog,
     private store$: Store<AppState>,
-    private http: HttpClient,
   ) {}
 
   ngOnInit() {
-    this.subs.add(
-      this.http.get('assets/commit-hash.json').subscribe(
-        (commitData: any) => {
-          this.commitUrl = `https://github.com/asfadmin/Discovery-SearchUI/tree/${commitData.hash}`;
-        }
-      )
-    );
-
     this.subs.add(
       this.store$.select(userStore.getUserAuth).subscribe(
         user => this.userAuth = user
@@ -97,6 +88,14 @@ export class HeaderButtonsComponent implements OnInit, OnDestroy {
             this.lastQProdCount = products.length;
             this.qProdState = !this.qProdState;
           }
+        }
+      )
+    );
+
+    this.subs.add(
+      this.http.get('assets/commit-hash.json').subscribe(
+        (commitData: any) => {
+          this.commitUrl = `https://github.com/asfadmin/Discovery-SearchUI/tree/${commitData.hash}`;
         }
       )
     );
@@ -248,15 +247,6 @@ export class HeaderButtonsComponent implements OnInit, OnDestroy {
     this.openNewWindow(url, analyticsEvent);
   }
 
-  public onOpenCustomizeEnv(): void {
-    this.dialog.open(CustomizeEnvComponent, {
-      width: '800px',
-      height: '1000px',
-      maxWidth: '100%',
-      maxHeight: '100%'
-    });
-  }
-
   public onOpenSavedSearches(): void {
     window.dataLayer = window.dataLayer || [];
     window.dataLayer.push({
@@ -293,23 +283,6 @@ export class HeaderButtonsComponent implements OnInit, OnDestroy {
 
   public onOpenSubscriptions() {
     this.store$.dispatch(new uiStore.OpenSidebar(SidebarType.ON_DEMAND_SUBSCRIPTIONS));
-  }
-
-  public isDevMode(): boolean {
-    return !this.env.isProd;
-  }
-
-  public onTestSelected(): void {
-    this.setMaturity('test');
-  }
-
-  public onProdSelected(): void {
-    this.setMaturity('prod');
-  }
-
-  private setMaturity(maturity: string): void {
-    this.maturity = maturity;
-    this.env.setMaturity(maturity);
   }
 
   private openNewWindow(url, analyticsEvent: AnalyticsEvent): void {

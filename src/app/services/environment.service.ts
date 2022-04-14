@@ -18,7 +18,6 @@ export interface Environment {
   banner: string;
   user_data: string;
   bulk_download: string;
-  hyp3_api: string;
   cmr_token?: string;
   cmr_provider?: string;
 }

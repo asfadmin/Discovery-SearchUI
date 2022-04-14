@@ -65,6 +65,11 @@
     matTooltipPosition="after">
       <button mat-menu-item (click)="onOpenHelp('toc')">Help & Tutorials</button>
   </span>
+
+  <button *ngIf="isDevMode()" mat-menu-item [matMenuTriggerFor]="apiMaturity" matSuffix>
+    <mat-icon>swap_horizontal_circle</mat-icon>
+    Maturity
+  </button>
 </mat-menu>
 
 <mat-menu #savedFiltersMenu="matMenu">
@@ -132,4 +137,24 @@
       <button mat-menu-item [disabled]="!isLoggedIn" (click)="onOpenSearchHistory()">Search History...</button>
   </span>
 
-  </mat-menu>
+</mat-menu>
+
+<mat-menu #apiMaturity="matMenu">
+  <button [class.selected]="maturity === 'test'"
+    (click)="onTestSelected()"
+    mat-menu-item matSuffix>
+      <span>Test</span>
+  </button>
+
+  <button [class.selected]="maturity === 'prod'"
+    (click)="onProdSelected()"
+    mat-menu-item matSuffix>
+      <span>Production</span>
+  </button>
+
+  <button (click)="onOpenCustomizeEnv()" mat-menu-item matSuffix>
+    <span>
+      Customize Environments
+    </span>
+  </button>
+</mat-menu>

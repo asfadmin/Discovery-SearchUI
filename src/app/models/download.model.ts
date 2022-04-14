@@ -1,9 +1,8 @@
 import { CMRProduct } from './cmr-product.model';
 
 export interface DownloadStatus {
-    content: Blob | null;
     progress: number;
-    state: 'PENDING' | 'IN_PROGRESS' | 'DONE';
+    state: 'PENDING' | 'IN_PROGRESS' | 'SAVING' | 'DONE';
     id: string;
     filename: string;
     product: CMRProduct;
