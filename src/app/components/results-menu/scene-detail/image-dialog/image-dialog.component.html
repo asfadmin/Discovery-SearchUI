@@ -288,7 +288,7 @@
                 *ngIf="!!currentSarviewsProduct"
                 mat-list-item
               >
-                • {{ currentSarviewsProduct.job_type }}
+                <b>• {{ currentSarviewsProduct.job_type.replace('_', ' ') }}</b>
               </button>
               <mat-menu #event_action_menu xPosition="before">
                 <button
