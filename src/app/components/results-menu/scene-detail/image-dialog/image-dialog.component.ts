@@ -20,6 +20,7 @@ import {
   // Breakpoints,
   SarviewProductGranule, SarviewsProduct } from '@models';
 import { ClipboardService } from 'ngx-clipboard';
+import { PinnedProduct } from '@services/browse-map.service';
 
 @Component({
   selector: 'app-image-dialog',
@@ -43,7 +44,8 @@ export class ImageDialogComponent implements OnInit, AfterViewInit, OnDestroy {
   public eventType: models.SarviewsEventType;
   public currentSarviewsProduct: models.SarviewsProduct;
   public products: models.CMRProduct[];
-  public sarviewsProducts: models.SarviewsProduct[];
+  public selectedEventProducts: models.SarviewsProduct[];
+  public eventSelectedProductIds: string[];
   public dataset: models.Dataset;
   public isImageLoading = false;
   public isShow = false;
@@ -129,6 +131,20 @@ export class ImageDialogComponent implements OnInit, AfterViewInit, OnDestroy {
             this.onNewSarviewsBrowseSelected(product);
           }
         }
+      )
+    );
+
+    this.subs.add(
+      this.sarviewsService.filteredEventProducts$()
+      .pipe(filter(eventProducts => !!eventProducts))
+      .subscribe(
+          selectedEventProducts => this.selectedEventProducts = selectedEventProducts
+        )
+    );
+
+    this.subs.add(
+      this.store$.select(scenesStore.getPinnedEventBrowseIDs).subscribe(
+        ids => this.eventSelectedProductIds = ids
       )
     );
   }
@@ -282,6 +298,38 @@ export class ImageDialogComponent implements OnInit, AfterViewInit, OnDestroy {
     } else {
       return this.sarviewsService.getSmithsonianURL((this.sarviewsEvent as models.SarviewsVolcanicEvent).smithsonian_event_id);
     }
+  }
+
+  public onToggleSarviewsProductPin() {
+    if (this.selectedEventProducts?.length === 0) {
+      return;
+    }
+
+    const currentProductId = this.currentSarviewsProduct.product_id;
+    const isPinned = this.eventSelectedProductIds.includes(currentProductId);
+
+    if (isPinned) {
+      this.eventSelectedProductIds = this.eventSelectedProductIds.filter(productId => productId !== currentProductId);
+    } else {
+      this.eventSelectedProductIds.push(currentProductId);
+    }
+    this.onUpdatePinnedUrl(this.eventSelectedProductIds);
+  }
+
+  public onUpdatePinnedUrl(selectedProducts: string[]) {
+    const pinned = selectedProducts.reduce(
+      (prev, key) => {
+        const output = {} as PinnedProduct;
+        const sarviewsProduct = this.selectedEventProducts.find(prod => prod.product_id === key);
+        output.url = sarviewsProduct.files.browse_url;
+        output.wkt = sarviewsProduct.granules[0].wkt;
+
+        prev[key] = output;
+        return prev;
+      }, {} as {[product_id in string]: PinnedProduct}
+    );
+
+    this.store$.dispatch(new scenesStore.SetImageBrowseProducts(pinned));
   }
 
   ngOnDestroy() {
