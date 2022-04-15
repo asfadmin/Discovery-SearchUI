@@ -302,9 +302,8 @@
                     }}
                   </span>
                   <app-download-file-button
-                    [attr.id]="'imgV_' + currentSarviewsCMRProduct.id"
                     [product]="currentSarviewsCMRProduct"
-                    (click)="$event.stopPropagation()"
+                    [url]="currentSarviewsCMRProduct.downloadUrl"
                   >
                   </app-download-file-button>
                 </button>
