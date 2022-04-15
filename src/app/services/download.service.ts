@@ -1,11 +1,11 @@
 import { Injectable, Inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Observable, throwError } from 'rxjs';
 import { SAVER, Saver } from '@services/saver.provider';
 import { DownloadStatus } from '@models/download.model';
 
 import { HttpEvent, HttpEventType } from '@angular/common/http';
-import { distinctUntilChanged, scan } from 'rxjs/operators';
+import { catchError, distinctUntilChanged, scan } from 'rxjs/operators';
 import { CMRProduct } from '@models';
 import { NotificationService } from './notification.service';
 
@@ -34,7 +34,14 @@ export class DownloadService {
       responseType: 'blob',
     });
     handle = handle ?? this.dir;
-    return resp.pipe(this.download$(filename, id, product, (blob) => this.save(blob, url, filename, handle)));
+    return resp.pipe(this.download$(filename, id, product, (blob) => this.save(blob, url, filename, handle))).pipe(
+      catchError(err => {
+        this.notificationService.error('There was an error downloading the file. This file may not support the new download functionality and will not show up in your selected location',
+        'Error downloading', {
+        });
+        return throwError(err);
+      }),
+    );
 
   }
   async getDirectory( getNew= false): Promise<any> {
