@@ -28,7 +28,7 @@ export class DownloadService {
   download(url: string, filename: string, product: CMRProduct, id, handle?): Observable<DownloadStatus> {
 
     const resp = this.http.get(url, {
-      withCredentials: !(new URL(url).origin.startsWith('hyp3')),
+      withCredentials: !(new URL(url).host.startsWith('hyp3')),
       reportProgress: true,
       observe: 'events',
       responseType: 'blob',
