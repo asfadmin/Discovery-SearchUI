@@ -90,7 +90,7 @@ export class DownloadFileButtonComponent implements OnInit, AfterViewInit {
           resolve(handle);
         });
       }
-    })
+    });
 
   }
   public downloadFile(dir: boolean = false) {
