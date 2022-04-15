@@ -288,7 +288,7 @@
                 *ngIf="!!currentSarviewsProduct"
                 mat-list-item
               >
-                • {{ currentSarviewsProduct.job_type }}
+                <b>• {{ currentSarviewsProduct.job_type.replace('_', ' ') }}</b>
               </button>
               <mat-menu #event_action_menu xPosition="before">
                 <button
@@ -342,6 +342,12 @@
                 >
                   <span> Reference Scenes </span>
                   <mat-icon>file_copy</mat-icon>
+                </button>
+                <button (click)="onToggleSarviewsProductPin()" mat-menu-item>
+                  <span>{{eventSelectedProductIds.includes(currentSarviewsProduct?.product_id) ? 'Unpin browse from map' : 'Pin browse to map'}}</span>
+                  <mat-icon>
+                    push_pin
+                  </mat-icon>
                 </button>
               </mat-menu>
             </mat-action-list>
