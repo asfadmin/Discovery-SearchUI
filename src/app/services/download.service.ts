@@ -36,8 +36,8 @@ export class DownloadService {
     handle = handle ?? this.dir;
     return resp.pipe(this.download$(filename, id, product, (blob) => this.save(blob, url, filename, handle))).pipe(
       catchError(err => {
-        this.notificationService.error('There was an error downloading the file. This file may not support the new download functionality and will not show up in your selected location',
-        'Error downloading', {
+        this.notificationService.error('This file will appear in your default downloads folder and not the location you selected',
+        'Issue Downloading', {
         });
         return throwError(err);
       }),
