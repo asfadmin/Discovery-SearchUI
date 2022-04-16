@@ -22,11 +22,11 @@ export class DownloadFileButtonComponent implements OnInit, AfterViewInit {
   @Input() href: string;
   @Input() disabled: boolean;
   @Input() useNewDownload: boolean;
-  @Input() url: string;
   @Output()
   productDownloaded: EventEmitter<CMRProduct> = new EventEmitter<CMRProduct>();
   @Output() downloadCancelled: EventEmitter<CMRProduct> = new EventEmitter<CMRProduct>();
   public dFile: DownloadStatus;
+  public url: string;
   public fileName: string = null;
 
   public observable$: Observable<DownloadStatus>;
