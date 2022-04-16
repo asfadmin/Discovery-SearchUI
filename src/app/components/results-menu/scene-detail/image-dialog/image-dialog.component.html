@@ -285,7 +285,7 @@
               <button
                 class="file-button-download"
                 [matMenuTriggerFor]="event_action_menu"
-                [matMenuTriggerData]="{prod: currentSarviewsCMRProduct}"
+                [matMenuTriggerData]="{eventProduct: currentSarviewsCMRProduct}"
                 *ngIf="!!currentSarviewsProduct"
                 mat-list-item
               >
@@ -298,7 +298,7 @@
                   mat-menu-item
                   *ngIf="!!currentSarviewsProduct"
                 >
-                <ng-template let-prod="prod" matMenuContent>
+                <ng-template let-eventProduct="eventProduct" matMenuContent>
                   <span *ngIf="currentSarviewsProduct.files.product_size !== 0">
                     {{
                       currentSarviewsProduct.files.product_size.toString()
@@ -306,8 +306,9 @@
                     }}
                   </span>
                   <app-download-file-button
-                    [product]="prod"
-                    [url]="prod.downloadUrl"
+                  [attr.id]="'imgV_' + eventProduct.id"
+                  [product]="eventProduct"
+                  (click)="$event.stopPropagation()"
                   >
                   </app-download-file-button>
                 </ng-template>
