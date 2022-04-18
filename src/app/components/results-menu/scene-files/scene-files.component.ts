@@ -360,7 +360,7 @@ export class SceneFilesComponent implements OnInit, OnDestroy, AfterContentInit 
       const toCMRProduct: models.CMRProduct = {
         name: product.files.product_name,
         productTypeDisplay,
-        file: '',
+        file: product.files.product_name,
         id: product.product_id,
         downloadUrl: product.files.product_url,
         bytes: product.files.product_size,
@@ -396,7 +396,7 @@ export class SceneFilesComponent implements OnInit, OnDestroy, AfterContentInit 
     const toCMRProduct: models.CMRProduct = {
       name: product.files.product_name,
       productTypeDisplay,
-      file: '',
+      file: product.files.product_name,
       id: product.product_id,
       downloadUrl: product.files.product_url,
       bytes: product.files.product_size,
