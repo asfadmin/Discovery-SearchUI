@@ -123,7 +123,11 @@
       class="browse-map--size"
       fxLayout="row-reverse"
       fxLayoutAlign="end end"
-    ></div>
+    >
+  <!-- <div style="position: absolute; left: 15px; bottom: 26px; text-align: center; z-index: 999">
+    <app-event-product-sort-selector></app-event-product-sort-selector>
+  </div> -->
+  </div>
     <!-- <div *ngIf="(searchType$ | async) === searchTypes.SARVIEWS_EVENTS">
       <button
       style="position: absolute; bottom: 5px; right: 20%; margin: 15px; min-width: 200px; border-radius: 4px !important;"
@@ -281,16 +285,20 @@
               <button
                 class="file-button-download"
                 [matMenuTriggerFor]="event_action_menu"
+                [matMenuTriggerData]="{eventProduct: currentSarviewsCMRProduct}"
                 *ngIf="!!currentSarviewsProduct"
                 mat-list-item
               >
-                • {{ currentSarviewsProduct.job_type }}
+                <b>• {{ currentSarviewsProduct.job_type.replace('_', ' ') }}</b>
               </button>
               <mat-menu #event_action_menu xPosition="before">
+
                 <button
+
                   mat-menu-item
                   *ngIf="!!currentSarviewsProduct"
                 >
+                <ng-template let-eventProduct="eventProduct" matMenuContent>
                   <span *ngIf="currentSarviewsProduct.files.product_size !== 0">
                     {{
                       currentSarviewsProduct.files.product_size.toString()
@@ -298,11 +306,12 @@
                     }}
                   </span>
                   <app-download-file-button
-                    [attr.id]="'imgV_' + currentSarviewsCMRProduct.id"
-                    [product]="currentSarviewsCMRProduct"
-                    (click)="$event.stopPropagation()"
+                  [attr.id]="'imgV_' + eventProduct.id"
+                  [product]="eventProduct"
+                  (click)="$event.stopPropagation()"
                   >
                   </app-download-file-button>
+                </ng-template>
                 </button>
                 <button
                   (click)="onToggleQueueEventProduct(currentSarviewsProduct)"
@@ -339,6 +348,12 @@
                   <span> Reference Scenes </span>
                   <mat-icon>file_copy</mat-icon>
                 </button>
+                <button (click)="onToggleSarviewsProductPin()" mat-menu-item>
+                  <span>{{eventSelectedProductIds.includes(currentSarviewsProduct?.product_id) ? 'Unpin browse from map' : 'Pin browse to map'}}</span>
+                  <mat-icon>
+                    push_pin
+                  </mat-icon>
+                </button>
               </mat-menu>
             </mat-action-list>
           </ng-container>
@@ -357,6 +372,7 @@
     fxLayout="row"
     fxLayoutAlign="end end"
     class="bottom-row footer"
+    style="text-align: center;"
   >
     <div
       *ngIf="
@@ -377,6 +393,7 @@
       </span>
       <span *ngIf="breakpoint === breakpoints.MOBILE"> w/Browse Images </span>
     </div>
+
     <div fxFlex="nogrow">
       <button mat-flat-button (click)="closeDialog()">Close</button>
     </div>

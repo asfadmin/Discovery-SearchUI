@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy, Input } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { SubSink } from 'subsink';
-import { map, filter, tap } from 'rxjs/operators';
+import { map, filter, tap, withLatestFrom } from 'rxjs/operators';
 import { Store } from '@ngrx/store';
 
 import { AppState } from '@store';
@@ -37,7 +37,8 @@ export class SceneDetailComponent implements OnInit, OnDestroy {
 
   public browses$ = this.store$.select(scenesStore.getSelectedSceneBrowses);
   public jobBrowses$ = this.store$.select(scenesStore.getSelectedOnDemandProductSceneBrowses);
-  public selectedSarviewsEventProducts$ = this.store$.select(scenesStore.getSelectedSarviewsEventProducts);
+  public selectedSarviewsEventProducts$ = this.sarviewsService.filteredEventProducts$();
+
   public dataset: models.Dataset;
   public searchType: models.SearchType;
   public searchTypes = models.SearchType;
@@ -63,6 +64,12 @@ export class SceneDetailComponent implements OnInit, OnDestroy {
   public isBrowseOverlayEnabled$: Observable<boolean> = this.browseOverlayService.isBrowseOverlayEnabled$;
 
   public isBrowseOverlayEnabled = false;
+
+  private selectedSarviewsProductIndex$ = this.store$.select(scenesStore.getSelectedSarviewsProduct).pipe(
+    filter(product => !!product),
+    withLatestFrom(this.selectedSarviewsEventProducts$),
+    map(([product, products]) => products.findIndex(prod => prod.product_id === product.product_id))
+  );
 
   private subs = new SubSink();
 
@@ -175,6 +182,12 @@ export class SceneDetailComponent implements OnInit, OnDestroy {
     this.subs.add(
       this.selectedSarviewsEventProducts$.subscribe(
         browses => this.sarviewsProducts = browses
+      )
+    );
+
+    this.subs.add(
+      this.selectedSarviewsProductIndex$.subscribe(
+        idx => this.onUpdateBrowseIndex(idx)
       )
     );
 

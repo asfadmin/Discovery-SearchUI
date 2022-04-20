@@ -12,12 +12,10 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 
 import { MatSharedModule } from '@shared';
-import { HeaderComponent } from './header.component';
 
 import { QueueModule } from './queue';
 import { ProcessingQueueModule } from './processing-queue';
 import { HeaderButtonsModule } from './header-buttons';
-import { InfoBarComponent } from './info-bar/info-bar.component';
 
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatSelectModule } from '@angular/material/select';
@@ -35,18 +33,23 @@ import { JobStatusSelectorModule } from '@components/shared/selectors/job-status
 import { JobProductNameSelectorModule } from '@components/shared/selectors/job-product-name-selector';
 import { SarviewsEventSearchSelectorModule } from '@components/shared/selectors/sarviews-event-search-selector';
 import { LogoModule } from '@components/header/logo/logo.module';
+
+import { HeaderComponent } from './header.component';
+import { InfoBarComponent } from './info-bar/info-bar.component';
 import { DatasetHeaderComponent } from './dataset-header/dataset-header.component';
 import { ListHeaderComponent } from './list-header/list-header.component';
+import { BaselineHeaderComponent } from './baseline-header/baseline-header.component';
+import { SarviewsHeaderComponent } from './sarviews-header/sarviews-header.component';
+import { Hyp3HeaderComponent } from './hyp3-header/hyp3-header.component';
 import { AoiFilterComponent } from './dataset-header/aoi-filter/aoi-filter.component';
 
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
-import { BaselineHeaderComponent } from './baseline-header/baseline-header.component';
 import { MasterSceneSelectorModule } from '@components/shared/selectors/master-scene-selector';
-import { Hyp3HeaderComponent } from './hyp3-header/hyp3-header.component';
 import { CreateSubscriptionModule } from './create-subscription/create-subscription.module';
 import { CiSearchModule } from './info-bar/ci-search/ci-search.module';
-import { SarviewsHeaderComponent } from './sarviews-header/sarviews-header.component';
 import { SarviewsEventTypeSelectorModule } from '@components/shared/selectors/sarviews-event-type-selector';
+import { DerivedDatasetsHeaderComponent } from './derived-datasets-header/derived-datasets-header.component';
+
 @NgModule({
   declarations: [
     HeaderComponent,
@@ -57,6 +60,7 @@ import { SarviewsEventTypeSelectorModule } from '@components/shared/selectors/sa
     BaselineHeaderComponent,
     Hyp3HeaderComponent,
     SarviewsHeaderComponent,
+    DerivedDatasetsHeaderComponent,
   ],
   imports: [
     CommonModule,

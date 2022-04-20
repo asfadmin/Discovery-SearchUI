@@ -7,6 +7,7 @@ import { MatSharedModule } from '@shared';
 import { MatSelectModule } from '@angular/material/select';
 
 import { SearchTypeSelectorComponent } from './search-type-selector.component';
+import {MatMenuModule} from '@angular/material/menu';
 
 
 @NgModule({
@@ -19,6 +20,7 @@ import { SearchTypeSelectorComponent } from './search-type-selector.component';
     FormsModule,
     MatSelectModule,
     FlexLayoutModule,
+    MatMenuModule,
   ],
   exports: [
     SearchTypeSelectorComponent,

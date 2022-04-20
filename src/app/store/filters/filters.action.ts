@@ -1,7 +1,7 @@
 import { Action } from '@ngrx/store';
 
 import * as models from '@models';
-import { SBASOverlap } from '@models';
+import { EventProductSort, SBASOverlap } from '@models';
 
 export enum FiltersActionType {
   SET_SELECTED_DATASET = '[Filters-Dataset] Set Selected Dataset',
@@ -81,6 +81,12 @@ export enum FiltersActionType {
   SET_SARVIEWS_MAGNITUDE_END = '[Filters] Set SARViews quake event magnitude range filter end',
   SET_SARVIEWS_MAGNITUDE_RANGE = '[Filters] Set SARViews quake event magnitude range filter',
   CLEAR_SARVIEWS_MAGNITUDE_RANGE = '[Filters] Clear SARViews quake event magnitude range',
+
+  SET_HYP3_PRODUCT_TYPES = '[Filters] Set Hyp3 product types filter',
+  SET_EVENT_PRODUCT_SORT = '[Filters] Set event product sorting order',
+
+  CLEAR_EVENT_FILTERS = '[Filters] Clear Event Search Filters',
+  CLEAR_HYP3_PRODUCT_TYPES = '[Filters] Clear Hyp3 product types filter',
 
 }
 
@@ -378,6 +384,18 @@ export class ClearSarviewsMagnitudeRange implements Action {
   public readonly type = FiltersActionType.CLEAR_SARVIEWS_MAGNITUDE_RANGE;
 }
 
+export class SetHyp3ProductTypes implements Action {
+  public readonly type = FiltersActionType.SET_HYP3_PRODUCT_TYPES;
+
+  constructor(public payload: string[]) {}
+}
+
+export class SetEventProductSorting implements Action {
+  public readonly type = FiltersActionType.SET_EVENT_PRODUCT_SORT;
+
+  constructor(public payload: EventProductSort) {}
+}
+
 export class SetDefaultFilters implements Action {
   public readonly type = FiltersActionType.SET_DEFAULT_FILTERS;
   constructor(public payload: {
@@ -386,6 +404,19 @@ export class SetDefaultFilters implements Action {
     'SBAS Search': string
   }) {}
 }
+
+export class ClearEventFilters implements Action {
+  public readonly type = FiltersActionType.CLEAR_EVENT_FILTERS;
+
+  constructor() {}
+}
+
+export class ClearHyp3ProductTypes implements Action {
+  public readonly type = FiltersActionType.CLEAR_HYP3_PRODUCT_TYPES;
+
+  constructor() {}
+}
+
 
 export type FiltersActions =
   | SetSelectedDataset
@@ -441,4 +472,8 @@ export type FiltersActions =
   | SetSarviewsMagnitudeStart
   | SetSarviewsMagnitudeEnd
   | SetSarviewsMagnitudeRange
-  | ClearSarviewsMagnitudeRange;
+  | ClearSarviewsMagnitudeRange
+  | SetHyp3ProductTypes
+  | SetEventProductSorting
+  | ClearEventFilters
+  | ClearHyp3ProductTypes;

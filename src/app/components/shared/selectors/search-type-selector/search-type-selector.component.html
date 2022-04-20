@@ -1,5 +1,13 @@
-<div class="gtm-search-type-selector" fxFlex="nogrow">
-  <mat-form-field fxFlex="120px">
+<div *ngIf="breakpoint$ | async as breakpoint">
+  <!--  <button-->
+  <!--    [matMenuTriggerFor]="derivedDatasetMenu"-->
+  <!--    class="spacing nav-icon-buttons" color="basic"-->
+  <!--    matTooltip="On Demand Queue"-->
+  <!--    mat-button>-->
+  <!--    <div class="text-under faint-text">Derived Datasets</div>-->
+  <!--  </button>-->
+  <div class="gtm-search-type-selector" fxFlex="nogrow">
+  <mat-form-field fxFlex="130px">
     <mat-label>Search Type</mat-label>
     <mat-select class="gtm-search-type"
       [(ngModel)]="searchType"
@@ -14,6 +22,50 @@
         [disabled]="!isLoggedIn">
           On Demand Products
       </mat-option>
+<!--      <mat-option [value]="searchTypes.DERIVED_DATASETS">Derived Datasets</mat-option>-->
+      <div class="mat-option" [matMenuTriggerFor]="derivedDatasetMenu">Derived Datasets...</div>
     </mat-select>
   </mat-form-field>
+
+
+    <mat-menu #derivedDatasetMenu="matMenu">
+      <div mat-menu-item matSuffix *ngFor="let dataset of datasets">
+        <div *ngIf="(breakpoint$ | async) === breakpoints.MOBILE">
+          <mat-icon>video_library</mat-icon>
+          {{ dataset.name }}
+        </div>
+        <div *ngIf="(breakpoint$ | async) != breakpoints.MOBILE" class="menu-item">
+          <div fxFlex="70%" class="menu-item-content">
+            <div class="item-title" (click)="onOpenDerivedDataset(dataset.info_url, dataset.name)">
+              {{ dataset.name }}
+            </div>
+            <div class="item-content" [ngClass]="{'limitTextHeight': isReadMore}">
+              {{ dataset.info }}
+            </div>
+            <mat-card-actions>
+              <button (click)="onOpenDerivedDataset(dataset.info_url, dataset.name)" mat-button>More Info</button>
+              <button (click)="onOpenDerivedDataset(dataset.download_url, dataset.name)" mat-button>Download</button>
+            </mat-card-actions>
+
+            <!--            <div class="item-content" [ngClass]="{'limitTextHeight': isReadMore}">-->
+<!--              {{ dataset.description }}-->
+<!--            </div>-->
+<!--            <button mat-button (click)="showText()">-->
+<!--              {{ isReadMore ? 'Read More': 'Read Less' }}-->
+<!--            </button>-->
+          </div>
+          <div fxFlex="30%" class="menu-item-aside">
+            <img [src]="dataset.picture" class="menu-item-icon">
+          </div>
+        </div>
+        <!--      <mat-divider inset></mat-divider>-->
+<!--        <mat-card-actions>-->
+<!--          <button (click)="onOpenDerivedDataset(dataset.info_url, dataset.name)" mat-button>More Info</button>-->
+<!--          <button (click)="onOpenDerivedDataset(dataset.download_url, dataset.name)" mat-button>Download</button>-->
+<!--        </mat-card-actions>-->
+        <hr class="dataset-hr">
+      </div>
+    </mat-menu>
+  </div>
+
 </div>

@@ -131,7 +131,6 @@ export class PairService {
       intersectionMethod = this.mapService.getAoiIntersectionMethod(geometryType);
     }
 
-
     const bounds = (x: string) => x.replace('POLYGON ', '').replace('((', '').replace('))', '').split(',').slice(0, 4).
     map(coord => coord.trimStart().split(' ')).
       map(coordVal => ({ lon: parseFloat(coordVal[0]), lat: parseFloat(coordVal[1])}));

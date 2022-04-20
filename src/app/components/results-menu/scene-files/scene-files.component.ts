@@ -1,4 +1,4 @@
-import {Component, OnInit, OnDestroy, AfterContentInit, Input} from '@angular/core';
+import {Component, OnInit, OnDestroy, AfterContentInit, Input, ViewChild} from '@angular/core';
 import { SubSink } from 'subsink';
 
 import { combineLatest } from 'rxjs';
@@ -24,6 +24,7 @@ import { PinnedProduct } from '@services/browse-map.service';
 import { ImageDialogComponent } from '../scene-detail/image-dialog';
 import { MatDialog } from '@angular/material/dialog';
 import { ScreenSizeService } from '@services';
+import { CdkVirtualScrollViewport } from '@angular/cdk/scrolling';
 
 
 @Component({
@@ -32,6 +33,7 @@ import { ScreenSizeService } from '@services';
   styleUrls: ['./scene-files.component.scss']
 })
 export class SceneFilesComponent implements OnInit, OnDestroy, AfterContentInit {
+  @ViewChild(CdkVirtualScrollViewport, {static: false}) scrollPort: CdkVirtualScrollViewport;
   @Input() isScrollable = true;
 
   public breakpoint$ = this.screenSize.breakpoint$;
@@ -53,7 +55,7 @@ export class SceneFilesComponent implements OnInit, OnDestroy, AfterContentInit 
       map(event => event.event_id)
   );
 
-  public sarviewsEventProducts$ = this.store$.select(scenesStore.getSelectedSarviewsEventProducts);
+  public sarviewsEventProducts$ = this.eventMonitoringService.filteredEventProducts$();
 
   public sarviewsEventProductTypes$ = this.sarviewsEventProducts$.pipe(
     map(products => {
@@ -94,6 +96,12 @@ export class SceneFilesComponent implements OnInit, OnDestroy, AfterContentInit 
   public selectedSarviewsProducts: SarviewsProduct[] = [];
   public selectedSarviewEventID: string;
   private subs = new SubSink();
+
+  private selectedSarviewsProductIndex$ = this.store$.select(scenesStore.getSelectedSarviewsProduct).pipe(
+    filter(product => !!product),
+    withLatestFrom(this.sarviewsEventProducts$),
+    map(([product, products]) => products.findIndex(prod => prod.product_id === product.product_id))
+  );
 
   constructor(
     private store$: Store<AppState>,
@@ -191,6 +199,12 @@ export class SceneFilesComponent implements OnInit, OnDestroy, AfterContentInit 
     this.subs.add(
       this.selectedSarviewsEventID$.subscribe(
         val => this.selectedSarviewEventID = val
+      )
+    );
+
+    this.subs.add(
+      this.selectedSarviewsProductIndex$.subscribe(
+        idx => this.scrollPort.scrollToIndex(idx)
       )
     );
   }
@@ -346,7 +360,7 @@ export class SceneFilesComponent implements OnInit, OnDestroy, AfterContentInit 
       const toCMRProduct: models.CMRProduct = {
         name: product.files.product_name,
         productTypeDisplay,
-        file: '',
+        file: product.files.product_name,
         id: product.product_id,
         downloadUrl: product.files.product_url,
         bytes: product.files.product_size,
@@ -382,7 +396,7 @@ export class SceneFilesComponent implements OnInit, OnDestroy, AfterContentInit 
     const toCMRProduct: models.CMRProduct = {
       name: product.files.product_name,
       productTypeDisplay,
-      file: '',
+      file: product.files.product_name,
       id: product.product_id,
       downloadUrl: product.files.product_url,
       bytes: product.files.product_size,
