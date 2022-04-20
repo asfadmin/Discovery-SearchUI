@@ -37,8 +37,6 @@ import * as services from '@services';
 
 import { NgcCookieConsentModule, NgcCookieConsentConfig } from 'ngx-cookieconsent';
 import { getSaver, SAVER } from '@services/saver.provider';
-// import { OnlynumberDirective } from './directives/onlynumber.directive';
-// import { FileDownloadDirective } from './directives/file-download.directive';
 
 // info about cookie consent module: https://tinesoft.github.io/ngx-cookieconsent/home
 const cookieConfig: NgcCookieConsentConfig = {
@@ -77,9 +75,7 @@ export const routes = [
 
 @NgModule({
   declarations: [
-    AppComponent
-    // OnlynumberDirective,
-    // FileDownloadDirective,
+    AppComponent,
   ],
   imports: [
     BrowserModule,
@@ -143,7 +139,7 @@ export const routes = [
     // { provide: Window, useValue: window },
   ],
   bootstrap: [AppComponent],
-  exports: [ MatTableModule
+  exports: [MatTableModule,
   ]
 })
 export class AppModule {}
