@@ -1,3 +1,23 @@
+// This component presents a info-icon or text link that opens a modal containing an iFrame displaying
+// ASF's documentation (mkDocs) at a specified page and anchor.
+//
+// * Using the component without setting values results in info-icon that opens a modal of the documentation home page.
+// * Setting the "url" value will result in the specified URL being opened.
+// * Setting a value for "text" will result in the specified text being displayed in place of the info-icon.
+// * You can apply a class to the component to change the formatting of the info-icon or text.
+//
+// USAGE EXAMPLES:
+//
+//   <app-docs-modal></app-docs-modal>
+//
+//   <app-docs-modal url="https://docs.asf.alaska.edu/vertex/manual/#date-filters">
+//   </app-docs-modal>
+//
+//    <app-docs-modal class="info-icon"
+//      text="Documentation"
+//      url="https://docs.asf.alaska.edu/vertex/manual/#date-filters">
+//    </app-docs-modal>
+
 import { Component, Input, OnInit, Inject } from '@angular/core';
 import { MatDialog, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { DomSanitizer } from '@angular/platform-browser';
@@ -24,7 +44,7 @@ export class DocsModalComponent implements OnInit {
               private _sanitizer: DomSanitizer) {}
 
   ngOnInit(): void {
-    this.docURL = this.url;
+    this.docURL = ( this.url ) ? this.url : 'https://docs.asf.alaska.edu';
     this.safeDocURL = this._sanitizer.bypassSecurityTrustResourceUrl(this.docURL);
   }
 
