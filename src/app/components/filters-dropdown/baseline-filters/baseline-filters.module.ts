@@ -10,21 +10,23 @@ import { MasterSceneSelectorModule } from '@components/shared/selectors/master-s
 import { SearchTypeSelectorModule } from '@components/shared/selectors/search-type-selector';
 import { BaselineSlidersModule } from './baseline-sliders';
 import { CopyToClipboardModule } from '@components/shared/copy-to-clipboard';
+import {DocsModalModule} from '@components/shared/docs-modal';
 
 
 @NgModule({
   declarations: [BaselineFiltersComponent],
-  imports: [
-    CommonModule,
-    MatExpansionModule,
-    MatSharedModule,
-    SeasonSelectorModule,
-    MasterSceneSelectorModule,
-    DateSelectorModule,
-    SearchTypeSelectorModule,
-    BaselineSlidersModule,
-    CopyToClipboardModule
-  ],
+    imports: [
+        CommonModule,
+        MatExpansionModule,
+        MatSharedModule,
+        SeasonSelectorModule,
+        MasterSceneSelectorModule,
+        DateSelectorModule,
+        SearchTypeSelectorModule,
+        BaselineSlidersModule,
+        CopyToClipboardModule,
+        DocsModalModule
+    ],
   exports: [
     BaselineFiltersComponent
   ]

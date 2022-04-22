@@ -1,0 +1,11 @@
+<!--<h2 mat-dialog-title>Vertex Help Manual</h2>-->
+<hr class="content-hr">
+<mat-dialog-content class="mat-typography content-container">
+    <iframe [src]="data.safeUrl" class="iframe-style"></iframe>
+</mat-dialog-content>
+<hr class="content-hr">
+<mat-dialog-actions align="end">
+  <button mat-raised-button mat-dialog-close cdkFocusInitial>Cancel</button>
+<!--  <button mat-raised-button [mat-dialog-close]="true" (click)="openDoc()">Open Manual</button>-->
+  <button mat-raised-button mat-dialog-close (click)="openDoc()">Open Manual</button>
+</mat-dialog-actions>

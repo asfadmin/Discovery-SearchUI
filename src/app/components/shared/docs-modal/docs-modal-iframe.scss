@@ -1,0 +1,27 @@
+.content-container {
+  display: flex;
+  width: 100%;
+  height: 100%;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.iframe-style {
+  flex-grow: 1;
+  border: none;
+  margin: 0;
+  padding: 0;
+}
+
+.mat-dialog-content {
+  max-height: calc(100% - 80px);
+}
+
+.mat-dialog-actions {
+  padding: 16px 0 8px;
+}
+
+.content-hr {
+  padding: 0;
+  margin: 0;
+}

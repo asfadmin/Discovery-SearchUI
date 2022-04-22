@@ -16,6 +16,7 @@ import { DatasetFiltersComponent } from './dataset-filters.component';
 import { DateSelectorModule } from '@components/shared/selectors/date-selector';
 import { DatasetSelectorModule } from '@components/shared/selectors/dataset-selector';
 import { AoiOptionsModule } from '@components/shared/aoi-options';
+import { DocsModalModule } from '@components/shared/docs-modal';
 
 @NgModule({
   declarations: [
@@ -28,7 +29,7 @@ import { AoiOptionsModule } from '@components/shared/aoi-options';
     MatSelectModule,
     MatExpansionModule,
     MatSharedModule,
-
+    DocsModalModule,
     MissionSelectorModule,
     PathSelectorModule,
     OtherSelectorModule,

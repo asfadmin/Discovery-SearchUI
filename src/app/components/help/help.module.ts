@@ -25,6 +25,7 @@ import { HelpDownloadQueueComponent } from './help-pages/help-download-queue/hel
 import { HelpExportOptionsComponent } from './help-pages/help-export-options/help-export-options.component';
 import { HelpOnDemandComponent } from './help-pages/help-on-demand/help-on-demand.component';
 import {MatInputModule} from '@angular/material/input';
+import {DocsModalModule} from '@components/shared/docs-modal';
 
 
 @NgModule({
@@ -52,7 +53,8 @@ import {MatInputModule} from '@angular/material/input';
         MatSharedModule,
         MatTableModule,
         MatSortModule,
-        MatInputModule
+        MatInputModule,
+        DocsModalModule
     ],
   exports: [
     HelpComponent

@@ -43,17 +43,12 @@
     </app-copy-to-clipboard>
     </div>
     <div>
-      <a href="https://docs.asf.alaska.edu/vertex/sbas/" target="_blank">What is SBAS?</a>
+      <app-docs-modal class="info-icon"
+                      url="https://docs.asf.alaska.edu/vertex/sbas/"
+                      text="What is SBAS?">
+      </app-docs-modal>
     </div>
   </mat-expansion-panel>
-
-
-
-
-
-
-
-
 
   <mat-expansion-panel [expanded]="defaultPanelOpenState" [disabled]="panelIsDisabled"
     (click)="selectPanel(panels.DATE)"

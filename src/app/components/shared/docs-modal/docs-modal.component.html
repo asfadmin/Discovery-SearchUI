@@ -1,0 +1,10 @@
+<div *ngIf="text; else elseBlock">
+  <a (click)="showDoc()" class="link-pointer text-link">
+    {{ text }}
+  </a>
+</div>
+<ng-template #elseBlock>
+  <a (click)="showDoc()" class="link-pointer">
+    <mat-icon>info</mat-icon>
+  </a>
+</ng-template>
