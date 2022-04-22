@@ -36,7 +36,6 @@ export class DocsModalComponent implements OnInit {
   @Input() url: string;
   @Input() text: string;
 
-  // public docURL = 'https://docs.asf.alaska.edu/vertex/manual/#date-filters';
   public docURL: string;
   public safeDocURL: any;
 
