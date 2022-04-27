@@ -22,6 +22,7 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { PipesModule } from '@pipes';
 import { SubscriptionDateRangeComponent } from './subscription-date-range/subscription-date-range.component';
 import {FlexModule} from '@angular/flex-layout';
+import {DocsModalModule} from '@components/shared/docs-modal';
 
 @NgModule({
   declarations: [
@@ -46,6 +47,7 @@ import {FlexModule} from '@angular/flex-layout';
         DateRangeModule,
         PipesModule,
         FlexModule,
+        DocsModalModule,
     ],
   exports: [
     CreateSubscriptionComponent
