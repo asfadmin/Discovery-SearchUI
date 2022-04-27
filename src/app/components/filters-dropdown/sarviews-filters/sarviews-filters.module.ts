@@ -11,6 +11,7 @@ import { MatIconModule } from '@angular/material/icon';
 import {SearchTypeSelectorModule} from '@components/shared/selectors/search-type-selector';
 import { PathSelectorModule } from '@components/shared/selectors/path-selector';
 import { Hyp3JobTypeSelectorModule } from '@components/shared/selectors/hyp3-job-type-selector';
+import {DocsModalModule} from '@components/shared/docs-modal';
 
 @NgModule({
   declarations: [
@@ -27,7 +28,8 @@ import { Hyp3JobTypeSelectorModule } from '@components/shared/selectors/hyp3-job
         MatIconModule,
         SearchTypeSelectorModule,
         PathSelectorModule,
-        Hyp3JobTypeSelectorModule
+        Hyp3JobTypeSelectorModule,
+        DocsModalModule
     ],
   exports: [
     SarviewsFiltersComponent
