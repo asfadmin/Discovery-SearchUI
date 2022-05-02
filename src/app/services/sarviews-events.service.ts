@@ -167,7 +167,7 @@ export class SarviewsEventsService {
     return {
       name: granule.granule_name,
       productTypeDisplay,
-      file: '',
+      file: product.files.product_name,
       id: product.product_id,
       downloadUrl: product.files.product_url,
       bytes: product.files.product_size,
