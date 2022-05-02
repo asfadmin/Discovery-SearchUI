@@ -205,8 +205,8 @@ export class SBASChartComponent implements OnInit, OnDestroy {
     this.zoom = d3.zoom()
       .scaleExtent([.2, 10])
       .extent([[0, 0], [this.widthValue, this.heightValue]])
-      .on('zoom', _ => {
-        this.currentTransform = d3.event.transform;
+      .on('zoom', (eve: d3.D3ZoomEvent<SVGSVGElement, unknown>) => {
+         this.currentTransform = eve.transform;
 
         this.updateChart();
       });
@@ -253,7 +253,7 @@ export class SBASChartComponent implements OnInit, OnDestroy {
         .on('mouseleave', function(_) {
           self.clearHovered();
         })
-      .on('click', pair => {
+      .on('click', (_event, pair) => {
         this.store$.dispatch(
           new scenesStore.SetSelectedPair(pair.map(product => product.id))
         );
@@ -282,20 +282,20 @@ export class SBASChartComponent implements OnInit, OnDestroy {
       .append('circle')
         .attr('cx', (d: CMRProduct) => this.x(d.metadata.date.valueOf()) )
         .attr('cy', (d: CMRProduct) => this.y(d.metadata.perpendicular) )
-        .on('click', function(p) {
+        .on('click', function(_event, p) {
           self.toggleDrawing(p, d3.select(this));
         })
-        .on('mouseover', function(p) {
+        .on('mouseover', function(_event: any, p: any) {
+          self.setHovered(d3.select(this));
           if (self.isAddingCustomPair) {
             self.setHoveredProduct(d3.select(this));
           }
           const date = p.metadata.date.toDate();
-
           tooltip
             .style('opacity', .9);
           tooltip.html(`${self.tooltipDateFormat(date)}, ${p.metadata.perpendicular} meters`)
-            .style('left', `${d3.event.pageX + 10}px`)
-            .style('top', `${d3.event.pageY - 20}px`);
+          .style('left', `${_event.pageX + 10}px`)
+          .style('top', `${_event.pageY - 20}px`);
         })
         .on('mouseleave', function(_) {
           if (self.isAddingCustomPair) {
