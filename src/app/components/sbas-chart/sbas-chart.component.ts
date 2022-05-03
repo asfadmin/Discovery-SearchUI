@@ -286,7 +286,6 @@ export class SBASChartComponent implements OnInit, OnDestroy {
           self.toggleDrawing(p, d3.select(this));
         })
         .on('mouseover', function(_event: any, p: any) {
-          self.setHovered(d3.select(this));
           if (self.isAddingCustomPair) {
             self.setHoveredProduct(d3.select(this));
           }
@@ -368,7 +367,6 @@ export class SBASChartComponent implements OnInit, OnDestroy {
       this.hoveredCircle
         .attr('fill', 'black');
     }
-
     newHovered
       .attr('fill', 'orange');
 
