@@ -5,11 +5,15 @@
     Seasonal Search
 </mat-slide-toggle>
 
-<div *ngIf="isSeasonalSearch">
-  <div>
-    <app-circle-slider></app-circle-slider>
-    <b>Season Start Day </b> <span *ngIf="start"> • {{ dayOfYearFormat(start, 'short') }}</span>
-    <div class="season-selector">
+<div *ngIf="isSeasonalSearch" class="season-selector">
+    <app-circle-slider [startValue]="this.start" [endValue]="this.end" (newStart)="onSeasonStartChange($event)" (newEnd)="onSeasonEndChange($event)" (doneSelecting)="onSeasonDoneSelecting()"></app-circle-slider>
+    <!-- <app-date-range></app-date-range> -->
+    <div class="dates">
+      <b>Season Start Day </b> <span *ngIf="start"> • {{ dayOfYearFormat(start, 'short') }}</span>
+      <b>Season End Day </b> <span *ngIf="end"> • {{ dayOfYearFormat(end, 'short') }}</span>
+    </div>
+
+    <!-- <div class="season-selector">
       <mat-slider
         (change)="onSeasonStartChange($event.value)"
         [value]="start"
@@ -31,5 +35,5 @@
         thumbLabel="true" showTicks="true"
         ></mat-slider>
     </div>
-  </div>
+  </div> -->
 </div>

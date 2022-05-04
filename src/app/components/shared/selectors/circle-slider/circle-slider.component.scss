@@ -18,10 +18,12 @@
   //   stroke-width: 1.5px;
   }
   ::ng-deep .start circle {
-      fill: #aaff00;
+      // fill: #aaff00;
   }
   ::ng-deep .dot circle.dragging {
     fill: red;
     stroke: brown;
   }
-  
+  figure {
+    display: inline-flex;
+  }

@@ -12,7 +12,7 @@ import * as filtersStore from '@store/filters';
 @Component({
   selector: 'app-season-selector',
   templateUrl: './season-selector.component.html',
-  styleUrls: ['./season-selector.component.css']
+  styleUrls: ['./season-selector.component.scss']
 })
 export class SeasonSelectorComponent implements OnInit, OnDestroy {
   public isSeasonalSearch = false;
@@ -44,11 +44,15 @@ export class SeasonSelectorComponent implements OnInit, OnDestroy {
   }
 
   public onSeasonStartChange(dayOfYear: number): void {
-    this.store$.dispatch(new filtersStore.SetSeasonStart(dayOfYear));
+    this.start = dayOfYear;
   }
 
   public onSeasonEndChange(dayOfYear: number): void {
-    this.store$.dispatch(new filtersStore.SetSeasonEnd(dayOfYear));
+    this.end = dayOfYear;
+  }
+  public onSeasonDoneSelecting() {
+    this.store$.dispatch(new filtersStore.SetSeasonEnd(this.end));
+    this.store$.dispatch(new filtersStore.SetSeasonStart(this.start));
   }
 
   public dayOfYearFormat(dayOfYear: number | null, month = 'numeric'): string {
