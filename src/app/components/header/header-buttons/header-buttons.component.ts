@@ -14,7 +14,10 @@ import * as searchStore from '@store/search';
 import { PreferencesComponent } from './preferences/preferences.component';
 
 import { AuthService, AsfApiService, EnvironmentService, ScreenSizeService } from '@services';
-import { CMRProduct, Breakpoints, UserAuth, SidebarType, QueuedHyp3Job, SearchType, AnalyticsEvent } from '@models';
+import {
+  CMRProduct, Breakpoints, UserAuth, SidebarType,
+  QueuedHyp3Job, SearchType, AnalyticsEvent, asfWebsite
+} from '@models';
 
 import { collapseAnimation, rubberBandAnimation,
          zoomInUpAnimation,  tadaAnimation, wobbleAnimation } from 'angular-animations';
@@ -39,7 +42,7 @@ declare global {
 })
 export class HeaderButtonsComponent implements OnInit, OnDestroy {
   anio: number = new Date().getFullYear();
-  public asfWebsiteUrl = 'https://www.asf.alaska.edu';
+  public asfWebsite = asfWebsite;
 
   public userAuth: UserAuth;
   public isLoggedIn = false;
@@ -218,7 +221,7 @@ export class HeaderButtonsComponent implements OnInit, OnDestroy {
   }
 
   public onOpenASFWebSite(): void {
-    const url = this.asfWebsiteUrl;
+    const url = this.asfWebsite.home;
     const analyticsEvent = {
       name: 'open-asf-web-site',
       value: url

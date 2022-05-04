@@ -306,12 +306,12 @@
     </button>
 
     <mat-menu #asfMenu="matMenu">
-      <a mat-menu-item href="https://www.asf.alaska.edu/contact" target="_blank">Contact</a>
+      <a mat-menu-item [href]="asfWebsite.contact" target="_blank">Contact</a>
       <a mat-menu-item href="https://www.alaska.edu/nondiscrimination" target="_blank">Non-Discrimination</a>
     </mat-menu>
 
     <mat-menu #copyrightMenu="matMenu">
-      <a mat-menu-item href="https://www.asf.alaska.edu/" target="_blank">© {{anio}} ASF</a>
+      <a mat-menu-item [href]="asfWebsite.home" target="_blank">© {{anio}} ASF</a>
       <a mat-menu-item href="https://www.maptiler.com/copyright/" target="_blank">© MapTiler</a>
       <a mat-menu-item href="https://www.openstreetmap.org/copyright" target="_blank">© OpenStreetMap contributors</a>
     </mat-menu>
