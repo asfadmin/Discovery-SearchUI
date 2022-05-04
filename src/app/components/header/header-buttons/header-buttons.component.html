@@ -340,5 +340,10 @@
       <mat-icon>show_chart</mat-icon>
       Vertex Network Activity
     </a>
+
+    <a *ngIf="!env.isProd" (click)="listWebsiteLinks()" mat-menu-item>
+      <mat-icon>link</mat-icon>
+      Website Links
+    </a>
 </mat-menu>
 
