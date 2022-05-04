@@ -11,6 +11,8 @@ export class CircleSliderComponent implements OnInit {
   private svg?: any;
   private width = 960;
   private height = 500;
+  private startAngle = 0;
+  private endAngle = Math.PI;
   constructor() { }
 
   ngOnInit(): void {
@@ -25,8 +27,8 @@ export class CircleSliderComponent implements OnInit {
       .attr('transform', 'translate(' + this.width / 2 + ',' + this.height / 2 + ')');
   }
   private drawSlider() {
+    const self = this;
     const circumference_r = 100;
-
     const container = this.svg.append('g');
 
     container.append('circle')
@@ -34,8 +36,8 @@ export class CircleSliderComponent implements OnInit {
       .attr('class', 'circumference');
 
     const arc = d3.arc().outerRadius(circumference_r).innerRadius(circumference_r)
-      .startAngle(0)
-      .endAngle(Math.PI);
+      .startAngle(self.startAngle)
+      .endAngle(self.endAngle);
     const thing2 = container.append('path').attr('d', arc)
       .attr('class', 'range ');
     const handle = [{
@@ -51,14 +53,15 @@ export class CircleSliderComponent implements OnInit {
         .classed('dragging', true);
     }
 
-    function getAngle(x: any, y: any) {
-      const angle = Math.atan2(y, x);
-
-      return angle;
+    function setAngles() {
+      if (self.endAngle < self.startAngle) {
+        arc.endAngle(self.startAngle);
+        arc.startAngle(self.endAngle + 2 * Math.PI);
+      } else {
+        arc.startAngle(self.startAngle);
+        arc.endAngle(self.endAngle);
+      }
     }
-    let start_angle: number;
-    let end_angle: number;
-
 
     function dragged1(event: any, d: any) {
       // simple pythagorean theorem
@@ -69,8 +72,8 @@ export class CircleSliderComponent implements OnInit {
       d3.select(this)
         .attr('cx', d.x = circumference_r * Math.cos(alpha))
         .attr('cy', d.y = event.y < 0 ? -circumference_r * Math.sin(alpha) : circumference_r * Math.sin(alpha));
-      start_angle = getAngle(event.x, event.y)  + Math.PI / 2;
-      arc.startAngle(start_angle);
+      self.startAngle =  (Math.atan2(event.y, event.x) +  Math.PI / 2);
+      setAngles();
       thing2.attr('d', arc);
     }
     function dragged2(event: any, d: any) {
@@ -82,8 +85,8 @@ export class CircleSliderComponent implements OnInit {
       d3.select(this)
         .attr('cx', d.x = circumference_r * Math.cos(alpha))
         .attr('cy', d.y = event.y < 0 ? -circumference_r * Math.sin(alpha) : circumference_r * Math.sin(alpha));
-      end_angle = getAngle(event.x, event.y) + Math.PI / 2;
-      arc.endAngle(end_angle);
+      self.endAngle =  (Math.atan2(event.y, event.x) +  Math.PI / 2);
+      setAngles();
       thing2.attr('d', arc);
     }
     function dragEnded(_d: any) {
