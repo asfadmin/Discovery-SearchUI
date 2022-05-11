@@ -11,7 +11,6 @@ import { AnalyticsEvent, derivedDatasets, Breakpoints } from '@models';
   styleUrls: ['./derived-datasets.component.scss']
 })
 export class DerivedDatasetsComponent implements OnInit, OnDestroy {
-  public asfWebsiteUrl = 'https://www.asf.alaska.edu';
   public datasets = derivedDatasets;
 
   public breakpoint: Breakpoints;
