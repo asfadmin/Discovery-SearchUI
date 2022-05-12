@@ -56,6 +56,7 @@ export class SceneDetailComponent implements OnInit, OnDestroy {
   public detailsOpen = true;
   public masterOffsets$ = this.store$.select(scenesStore.getMasterOffsets);
   public sarviewsEventGeoSearchRadius = 1.0;
+  public asfWebsite = models.asfWebsite;
 
   private defaultBaselineFiltersID = '';
   private defaultSBASFiltersID = '';
