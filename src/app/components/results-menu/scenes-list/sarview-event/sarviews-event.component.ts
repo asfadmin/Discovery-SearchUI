@@ -41,8 +41,10 @@ export class SarviewsEventComponent implements OnInit {
   }
 
   public onSetSelected() {
-    this.mapService.selectedSarviewEvent$.next(this.event.event_id);
-    this.store$.dispatch(new sceneStore.SetSelectedSarviewsEvent(this.event.event_id));
+    if (!this.selected) {
+      this.mapService.selectedSarviewEvent$.next(this.event.event_id);
+      this.store$.dispatch(new sceneStore.SetSelectedSarviewsEvent(this.event.event_id));
+    }
   }
 
   public eventIDDisplay(): string {
@@ -83,8 +85,12 @@ export class SarviewsEventComponent implements OnInit {
   }
 
   // "Earthquake_inactive.svg
-  public onZoomTo() {
+  public onZoomTo($event: Event) {
     this.mapService.zoomToEvent(this.event);
+
+    if (this.selected) {
+      $event.stopPropagation();
+    }
   }
 
 }
