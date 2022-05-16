@@ -9,7 +9,6 @@ import * as d3 from 'd3';
 export class CircleSliderComponent implements OnInit {
 
 
-  @Input() minValue  = 0;
   @Input() maxValue  = 365;
 
   @Input() startValue = 0;
@@ -34,7 +33,7 @@ export class CircleSliderComponent implements OnInit {
     this.drawSlider();
   }
   private getAngle(point) {
-    const angle = (point - 1) / 365 * 2 * Math.PI;
+    const angle = (point - 1) / this.maxValue * 2 * Math.PI;
     return angle > Math.PI * 1.5 ? angle - Math.PI * 2 : angle;
   }
   private createSvg(): void {
@@ -87,7 +86,7 @@ export class CircleSliderComponent implements OnInit {
     }
 
     function getPoint(angle) {
-      return Math.floor((angle < 0 ? angle + 2 * Math.PI : angle) / 2 / Math.PI * 365) + 1;
+      return Math.floor((angle < 0 ? angle + 2 * Math.PI : angle) / 2 / Math.PI * self.maxValue) + 1;
     }
 
     function dragged1(event: any, d: any) {

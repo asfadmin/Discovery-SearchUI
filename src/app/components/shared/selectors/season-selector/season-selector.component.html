@@ -9,31 +9,7 @@
     <app-circle-slider [startValue]="this.start" [endValue]="this.end" (newStart)="onSeasonStartChange($event)" (newEnd)="onSeasonEndChange($event)" (doneSelecting)="onSeasonDoneSelecting()"></app-circle-slider>
     <!-- <app-date-range></app-date-range> -->
     <div class="dates">
-      <b>Season Start Day </b> <span *ngIf="start"> • {{ dayOfYearFormat(start, 'short') }}</span>
-      <b>Season End Day </b> <span *ngIf="end"> • {{ dayOfYearFormat(end, 'short') }}</span>
+      <div><b>Season Start Day </b> <span *ngIf="start"> • {{ dayOfYearFormat(start, 'short') }}</span></div>
+      <div><b>Season End Day </b> <span *ngIf="end"> • {{ dayOfYearFormat(end, 'short') }}</span></div>
     </div>
-
-    <!-- <div class="season-selector">
-      <mat-slider
-        (change)="onSeasonStartChange($event.value)"
-        [value]="start"
-        [displayWith]="dayOfYearFormat"
-        min="1" max="365" step="1"
-        thumbLabel="true" showTicks="true"
-        ></mat-slider>
-    </div>
-  </div>
-
-  <div>
-    <b>Season End Day </b> <span *ngIf="end"> • {{ dayOfYearFormat(end, 'short') }}</span>
-    <div class="season-selector">
-      <mat-slider
-        (change)="onSeasonEndChange($event.value)"
-        [value]="end"
-        [displayWith]="dayOfYearFormat"
-        min="1" max="365" step="1"
-        thumbLabel="true" showTicks="true"
-        ></mat-slider>
-    </div>
-  </div> -->
 </div>

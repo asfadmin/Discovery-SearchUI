@@ -30,8 +30,8 @@ export class SeasonSelectorComponent implements OnInit, OnDestroy {
     this.subs.add(
       combineLatest(seasonStart$, seasonEnd$).pipe(
         tap(([start, end]) => {
-          this.start = start;
-          this.end = end;
+          this.start = start ? start : 1;
+          this.end = end ? end : 180;
         })
       ).subscribe(
         ([start, end]) => this.isSeasonalSearch = !!(start || end)
@@ -51,8 +51,8 @@ export class SeasonSelectorComponent implements OnInit, OnDestroy {
     this.end = dayOfYear;
   }
   public onSeasonDoneSelecting() {
-    this.store$.dispatch(new filtersStore.SetSeasonEnd(this.end));
     this.store$.dispatch(new filtersStore.SetSeasonStart(this.start));
+    this.store$.dispatch(new filtersStore.SetSeasonEnd(this.end));
   }
 
   public dayOfYearFormat(dayOfYear: number | null, month = 'numeric'): string {
