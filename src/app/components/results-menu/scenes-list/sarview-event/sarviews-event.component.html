@@ -34,7 +34,7 @@
   </div>
     <ng-container>
       <div class="scene-controls" [ngClass]="{'mobile-size': breakpoint <= breakpoints.SMALL}">
-        <mat-icon (click)="onZoomTo(); $event.stopPropagation();" class="ml-2" matTooltip="Zoom to event">
+        <mat-icon (click)="onZoomTo($event)" class="ml-2" matTooltip="Zoom to event">
           settings_overscan
         </mat-icon>
       </div>

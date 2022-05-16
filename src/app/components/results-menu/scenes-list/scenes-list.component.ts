@@ -271,8 +271,10 @@ export class ScenesListComponent implements OnInit, OnDestroy, AfterContentInit 
     map(([events, selected]) => ({selectedEvent: selected, events})),
         delay(400),
         filter(selected => !!selected.selectedEvent),
-        tap(selected => this.mapService.zoomToEvent(selected.selectedEvent)),
-        tap(selected => this.selectedEvent = selected.selectedEvent.event_id),
+        tap(selected => {
+          this.mapService.zoomToEvent(selected.selectedEvent);
+          this.selectedEvent = selected.selectedEvent.event_id
+        }),
         first(),
         map(selected => {
           const sceneIdx = selected.events.findIndex(event => event.event_id === selected.selectedEvent.event_id);
