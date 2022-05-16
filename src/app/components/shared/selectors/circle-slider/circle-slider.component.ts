@@ -34,7 +34,8 @@ export class CircleSliderComponent implements OnInit {
     this.drawSlider();
   }
   private getAngle(point) {
-    return (point - 1) / 365 * 2 * Math.PI;
+    const angle = (point - 1) / 365 * 2 * Math.PI;
+    return angle > Math.PI * 1.5 ? angle - Math.PI * 2 : angle;
   }
   private createSvg(): void {
     this.svg = d3.select('figure#slider').append('svg')
@@ -55,6 +56,8 @@ export class CircleSliderComponent implements OnInit {
     const arc = d3.arc().outerRadius(circumference_r).innerRadius(circumference_r)
       .startAngle(self.startAngle)
       .endAngle(self.endAngle);
+    setAngles();
+
     const thing2 = container.append('path').attr('d', arc)
       .attr('class', 'range ');
 
