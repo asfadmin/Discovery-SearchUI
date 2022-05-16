@@ -77,7 +77,6 @@ export class CircleSliderComponent implements OnInit {
     }
     function movePoint(target, event, d) {
       const d_from_origin = Math.sqrt(Math.pow(event.x, 2) + Math.pow(event.y, 2));
-
       const alpha = Math.acos(event.x / d_from_origin);
       d3.select(target)
         .attr('cx', d.x = circumference_r * Math.cos(alpha))
@@ -123,8 +122,8 @@ export class CircleSliderComponent implements OnInit {
       .attr('class', 'dot start')
       .selectAll('circle')
       .data([{
-        x: circumference_r * Math.cos(self.startAngle),
-        y: -circumference_r * Math.sin(self.startAngle)
+        x: circumference_r * Math.sin(self.startAngle),
+        y: -circumference_r * Math.cos(self.startAngle)
       }])
       .enter().append('circle')
       .attr('r', 10)
@@ -136,8 +135,8 @@ export class CircleSliderComponent implements OnInit {
       .attr('class', 'dot')
       .selectAll('circle')
       .data([{
-        x: circumference_r * Math.cos(self.endAngle),
-        y: -circumference_r * Math.sin(self.endAngle)
+        x: circumference_r * Math.sin(self.endAngle),
+        y: -circumference_r * Math.cos(self.endAngle)
       }])
       .enter().append('circle')
       .attr('r', 10)
