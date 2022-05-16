@@ -41,7 +41,7 @@ export class SarviewsEventComponent implements OnInit {
   }
 
   public onSetSelected() {
-    if(!this.selected) {
+    if (!this.selected) {
       this.mapService.selectedSarviewEvent$.next(this.event.event_id);
       this.store$.dispatch(new sceneStore.SetSelectedSarviewsEvent(this.event.event_id));
     }
@@ -88,7 +88,7 @@ export class SarviewsEventComponent implements OnInit {
   public onZoomTo($event: Event) {
     this.mapService.zoomToEvent(this.event);
 
-    if(this.selected) {
+    if (this.selected) {
       $event.stopPropagation();
     }
   }
