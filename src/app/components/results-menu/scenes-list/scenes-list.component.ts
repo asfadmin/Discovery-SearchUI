@@ -3,7 +3,7 @@ import {
 } from '@angular/core';
 
 import { combineLatest, Observable } from 'rxjs';
-import { tap, withLatestFrom, filter, map, delay, debounceTime, take } from 'rxjs/operators';
+import { tap, withLatestFrom, filter, map, delay, debounceTime, first } from 'rxjs/operators';
 import { SubSink } from 'subsink';
 
 import { Store } from '@ngrx/store';
@@ -271,8 +271,9 @@ export class ScenesListComponent implements OnInit, OnDestroy, AfterContentInit 
     map(([events, selected]) => ({selectedEvent: selected, events})),
         delay(400),
         filter(selected => !!selected.selectedEvent),
+        tap(selected => this.mapService.zoomToEvent(selected.selectedEvent)),
         tap(selected => this.selectedEvent = selected.selectedEvent.event_id),
-        take(1),
+        first(),
         map(selected => {
           const sceneIdx = selected.events.findIndex(event => event.event_id === selected.selectedEvent.event_id);
           return Math.max(0, sceneIdx - 1);
