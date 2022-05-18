@@ -40,7 +40,6 @@ export class CircleSliderComponent implements OnInit {
   ngOnChanges(changes: any) {
     if (changes.startValue && changes.endValue) {
       if (changes.startValue.previousValue !== undefined && changes.endValue.previousValue !== undefined) {
-        console.log('A switcharoo has occured');
         this.startAngle = this.getAngle(changes.startValue.currentValue);
         this.endAngle = this.getAngle(changes.endValue.currentValue);
         this.setAngles();
