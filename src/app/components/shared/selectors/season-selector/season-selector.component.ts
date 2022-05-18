@@ -55,21 +55,6 @@ export class SeasonSelectorComponent implements OnInit, OnDestroy {
     this.store$.dispatch(new filtersStore.SetSeasonEnd(this.end));
   }
 
-  public dayOfYearFormat(dayOfYear: number | null, month = 'numeric'): string {
-    const date = new Date();
-    date.setFullYear(2019);
-
-    date.setMonth(0);
-    date.setDate(0);
-    const timeOfFirst = date.getTime(); // this is the time in milliseconds of 1/1/YYYY
-    const dayMilli = 1000 * 60 * 60 * 24;
-    const dayNumMilli = dayOfYear * dayMilli;
-    date.setTime(timeOfFirst + dayNumMilli);
-
-    return  date.toLocaleDateString('en-US', {
-      month: <'numeric'>month, day: 'numeric'
-    });
-  }
   public swap() {
     const temp = this.start;
     const temp2 = this.end;
