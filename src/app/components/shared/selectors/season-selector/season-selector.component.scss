@@ -5,9 +5,13 @@
   display: flex;
   flex-direction: column;
   align-items: center;
+  width: 200px;
 }
 @media (max-width: 768px) {
   .season-selector {
     flex-direction: column;
+  }
+  .dates {
+    width: 100%;
   }
 }

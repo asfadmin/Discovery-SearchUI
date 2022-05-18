@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, OnInit, Output } from '@angular/core';
 import * as d3 from 'd3';
 
 @Component({
@@ -6,7 +6,7 @@ import * as d3 from 'd3';
   templateUrl: './circle-slider.component.html',
   styleUrls: ['./circle-slider.component.scss']
 })
-export class CircleSliderComponent implements OnInit {
+export class CircleSliderComponent implements OnInit, OnChanges {
 
 
   @Input() maxValue  = 365;
@@ -71,7 +71,7 @@ export class CircleSliderComponent implements OnInit {
     }
     this.arcContainer.attr('d', this.arc);
   }
-  private movePoint(target, event: {x: number, y: number}, _d?:any) {
+  private movePoint(target, event: {x: number, y: number}, _d?: any) {
     const d_from_origin = Math.sqrt(Math.pow(event.x, 2) + Math.pow(event.y, 2));
     const alpha = Math.acos(event.x / d_from_origin);
     d3.select(target)
@@ -132,7 +132,6 @@ export class CircleSliderComponent implements OnInit {
       .on('start', dragStarted)
       .on('drag', dragged2)
       .on('end', dragEnded);
-
     this.startDot = container.append('g')
       .attr('class', 'dot start')
       .selectAll('circle')
