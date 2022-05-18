@@ -10,6 +10,7 @@
     <!-- <app-date-range></app-date-range> -->
     <div class="dates">
       <div><b>Season Start Day </b> <span *ngIf="start"> • {{ dayOfYearFormat(start, 'short') }}</span></div>
+      <button mat-icon-button	 (click)="swap()" matTooltip="Swap season start and end date"><mat-icon>swap_vert</mat-icon></button	>
       <div><b>Season End Day </b> <span *ngIf="end"> • {{ dayOfYearFormat(end, 'short') }}</span></div>
     </div>
 </div>

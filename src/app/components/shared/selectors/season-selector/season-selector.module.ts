@@ -8,6 +8,7 @@ import { MatSharedModule } from '@shared';
 import { SeasonSelectorComponent } from './season-selector.component';
 import { CircleSliderModule} from '@components/shared/selectors/circle-slider/circle-slider.module';
 import { DateRangeModule } from '../date-range/date-range.module';
+import { MatButtonModule } from '@angular/material/button';
 @NgModule({
   declarations: [SeasonSelectorComponent],
   imports: [
@@ -18,7 +19,8 @@ import { DateRangeModule } from '../date-range/date-range.module';
     MatSlideToggleModule,
     MatSliderModule,
     CircleSliderModule,
-    DateRangeModule
+    DateRangeModule,
+    MatButtonModule
   ],
   exports: [SeasonSelectorComponent]
 })

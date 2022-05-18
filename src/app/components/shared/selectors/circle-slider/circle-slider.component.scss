@@ -27,3 +27,11 @@
   figure {
     display: inline-flex;
   }
+  ::ng-deep .circle-notches {
+    
+    fill: none;
+    // stroke: brown;
+    // stroke-width: 10px;
+    // stroke-dasharray: calc(313.6517333984375 / 12);
+    // stroke-dashoffset: 10px;
+  }

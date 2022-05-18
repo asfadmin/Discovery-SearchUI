@@ -24,6 +24,11 @@ export class CircleSliderComponent implements OnInit {
   private height = 250;
   private startAngle = 0;
   private endAngle = Math.PI;
+  private arc;
+  private arcContainer;
+  private circumference_r = 100;
+  private startDot;
+  private endDot;
   constructor() { }
 
   ngOnInit(): void {
@@ -31,6 +36,20 @@ export class CircleSliderComponent implements OnInit {
     this.endAngle = this.getAngle(this.endValue);
     this.createSvg();
     this.drawSlider();
+  }
+  ngOnChanges(changes: any) {
+    if (changes.startValue && changes.endValue) {
+      if (changes.startValue.previousValue !== undefined && changes.endValue.previousValue !== undefined) {
+        console.log('A switcharoo has occured');
+        this.startAngle = this.getAngle(changes.startValue.currentValue);
+        this.endAngle = this.getAngle(changes.endValue.currentValue);
+        this.setAngles();
+        this.startDot.attr('cx', this.circumference_r * Math.sin(this.startAngle));
+        this.startDot.attr('cy', -this.circumference_r * Math.cos(this.startAngle));
+        this.endDot.attr('cx', this.circumference_r * Math.sin(this.endAngle));
+        this.endDot.attr('cy', -this.circumference_r * Math.cos(this.endAngle));
+      }
+    }
   }
   private getAngle(point) {
     const angle = (point - 1) / this.maxValue * 2 * Math.PI;
@@ -43,24 +62,38 @@ export class CircleSliderComponent implements OnInit {
       .append('g')
       .attr('transform', 'translate(' + this.width / 2 + ',' + this.height / 2 + ')');
   }
+  private setAngles() {
+    if (this.endAngle < this.startAngle) {
+      this.arc.endAngle(this.startAngle);
+      this.arc.startAngle(this.endAngle + 2 * Math.PI);
+    } else {
+      this.arc.startAngle(this.startAngle);
+      this.arc.endAngle(this.endAngle);
+    }
+    this.arcContainer.attr('d', this.arc);
+  }
+  private movePoint(target, event: {x: number, y: number}, _d?:any) {
+    const d_from_origin = Math.sqrt(Math.pow(event.x, 2) + Math.pow(event.y, 2));
+    const alpha = Math.acos(event.x / d_from_origin);
+    d3.select(target)
+      .attr('cx', this.circumference_r * Math.cos(alpha))
+      .attr('cy', event.y < 0 ? -this.circumference_r * Math.sin(alpha) : this.circumference_r * Math.sin(alpha));
+  }
   private drawSlider() {
     const self = this;
-    const circumference_r = 100;
     const container = this.svg.append('g');
 
     container.append('circle')
-      .attr('r', circumference_r)
+      .attr('r', this.circumference_r)
       .attr('class', 'circumference');
-
-    const arc = d3.arc().outerRadius(circumference_r).innerRadius(circumference_r)
+    container.append('circle').attr('r', this.circumference_r).attr('class', 'circle-notches');
+    this.arc = d3.arc().outerRadius(this.circumference_r).innerRadius(this.circumference_r)
       .startAngle(self.startAngle)
       .endAngle(self.endAngle);
-    setAngles();
 
-    const thing2 = container.append('path').attr('d', arc)
+    this.arcContainer = container.append('path').attr('d', self.arc)
       .attr('class', 'range ');
-
-
+    this.setAngles();
 
     function dragStarted(event: any, _d: any) {
       event.sourceEvent.stopPropagation();
@@ -68,40 +101,21 @@ export class CircleSliderComponent implements OnInit {
         .classed('dragging', true);
     }
 
-    function setAngles() {
-      if (self.endAngle < self.startAngle) {
-        arc.endAngle(self.startAngle);
-        arc.startAngle(self.endAngle + 2 * Math.PI);
-      } else {
-        arc.startAngle(self.startAngle);
-        arc.endAngle(self.endAngle);
-      }
-    }
-    function movePoint(target, event, d) {
-      const d_from_origin = Math.sqrt(Math.pow(event.x, 2) + Math.pow(event.y, 2));
-      const alpha = Math.acos(event.x / d_from_origin);
-      d3.select(target)
-        .attr('cx', d.x = circumference_r * Math.cos(alpha))
-        .attr('cy', d.y = event.y < 0 ? -circumference_r * Math.sin(alpha) : circumference_r * Math.sin(alpha));
-    }
-
     function getPoint(angle) {
       return Math.floor((angle < 0 ? angle + 2 * Math.PI : angle) / 2 / Math.PI * self.maxValue) + 1;
     }
 
     function dragged1(event: any, d: any) {
-      movePoint(this, event, d);
-      self.startAngle =  (Math.atan2(event.y, event.x) +  Math.PI / 2);
+      self.movePoint(this, event, d);
+      self.startAngle = (Math.atan2(event.y, event.x) +  Math.PI / 2);
       self.newStart.emit(getPoint(self.startAngle));
-      setAngles();
-      thing2.attr('d', arc);
+      self.setAngles();
     }
     function dragged2(event: any, d: any) {
-      movePoint(this, event, d);
-      self.endAngle =  (Math.atan2(event.y, event.x) +  Math.PI / 2);
+      self.movePoint(this, event, d);
+      self.endAngle = (Math.atan2(event.y, event.x) +  Math.PI / 2);
       self.newEnd.emit(getPoint(self.endAngle));
-      setAngles();
-      thing2.attr('d', arc);
+      self.setAngles();
     }
     function dragEnded(_d: any) {
       d3.select(this)
@@ -120,12 +134,12 @@ export class CircleSliderComponent implements OnInit {
       .on('drag', dragged2)
       .on('end', dragEnded);
 
-    container.append('g')
+    this.startDot = container.append('g')
       .attr('class', 'dot start')
       .selectAll('circle')
       .data([{
-        x: circumference_r * Math.sin(self.startAngle),
-        y: -circumference_r * Math.cos(self.startAngle)
+        x: self.circumference_r * Math.sin(self.startAngle),
+        y: -self.circumference_r * Math.cos(self.startAngle)
       }])
       .enter().append('circle')
       .attr('r', 10)
@@ -133,12 +147,12 @@ export class CircleSliderComponent implements OnInit {
       .attr('cy', function (d: any) { return d.y; })
       .call(drag1);
 
-    container.append('g')
+    this.endDot = container.append('g')
       .attr('class', 'dot')
       .selectAll('circle')
       .data([{
-        x: circumference_r * Math.sin(self.endAngle),
-        y: -circumference_r * Math.cos(self.endAngle)
+        x: self.circumference_r * Math.sin(self.endAngle),
+        y: -self.circumference_r * Math.cos(self.endAngle)
       }])
       .enter().append('circle')
       .attr('r', 10)

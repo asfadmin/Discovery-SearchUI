@@ -70,6 +70,13 @@ export class SeasonSelectorComponent implements OnInit, OnDestroy {
       month: <'numeric'>month, day: 'numeric'
     });
   }
+  public swap() {
+    const temp = this.start;
+    const temp2 = this.end;
+
+    this.store$.dispatch(new filtersStore.SetSeasonStart(temp2));
+    this.store$.dispatch(new filtersStore.SetSeasonEnd(temp));
+  }
 
   ngOnDestroy() {
     this.subs.unsubscribe();
