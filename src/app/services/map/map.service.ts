@@ -382,7 +382,7 @@ export class MapService {
     );
     this.wktService.fixPolygonAntimeridian(feature, targetEvent.wkt);
 
-    this.map.getView().fit(feature.getGeometry().getSimplifiedGeometry(0) as SimpleGeometry,{
+    this.map.getView().fit(feature.getGeometry().getSimplifiedGeometry(0) as SimpleGeometry, {
       maxZoom: 7,
       size: this.map.getSize(),
       padding: [0, 0, 500, 0],
