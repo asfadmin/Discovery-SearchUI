@@ -1,37 +1,36 @@
+@import "asf-theme";
+
 ::ng-deep .circumference {
-    fill: none;
-    stroke: #BCBCBC;
-    stroke-width: 10px;
-  }
-  ::ng-deep .range {
-      fill: none;
-      stroke: #64685C;
-      stroke-width: 10px;
-  }
-  ::ng-deep .dot circle:hover {
-    cursor: pointer;
-  }
-  
-  ::ng-deep .dot circle {
-    fill: #64685C;
+  fill: none;
+  stroke: lighten($asf-primary, 40%);
+  stroke-width: 10px;
+}
+::ng-deep .range {
+  fill: none;
+  stroke: $asf-primary;
+  stroke-width: 10px;
+}
+::ng-deep .dot circle:hover {
+  cursor: pointer;
+}
+
+::ng-deep .dot circle {
+  fill: $asf-primary;
   //   stroke: steelblue;
   //   stroke-width: 1.5px;
-  }
-  ::ng-deep .start circle {
-      // fill: #aaff00;
-  }
-  ::ng-deep .dot circle.dragging {
-    fill: red;
-    stroke: brown;
-  }
-  figure {
-    display: inline-flex;
-  }
-  ::ng-deep .circle-notches {
-    
-    fill: none;
-    // stroke: brown;
-    // stroke-width: 10px;
-    // stroke-dasharray: calc(313.6517333984375 / 12);
-    // stroke-dashoffset: 10px;
-  }
+}
+::ng-deep .dot circle.dragging {
+  fill: darken($asf-blue, 10%);
+  stroke: darken($asf-blue, 10%);
+}
+figure {
+  display: inline-flex;
+  margin: 0;
+}
+::ng-deep .circle-notches {
+  fill: none;
+  // stroke: #a9a9a9;
+  // stroke-width: 10px;
+  // stroke-dasharray: calc(313.6517333984375 / 12);
+  // stroke-dashoffset: 10px;
+}
