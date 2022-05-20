@@ -62,7 +62,15 @@ export class SeasonSelectorComponent implements OnInit, OnDestroy {
     this.store$.dispatch(new filtersStore.SetSeasonStart(temp2));
     this.store$.dispatch(new filtersStore.SetSeasonEnd(temp));
   }
-
+  public change(which: string, amount: number) {
+    if (which === 'start') {
+      this.start += amount;
+      // this.store$.dispatch(new filtersStore.SetSeasonStart(this.start + amount));
+    } else {
+      this.end += amount;
+      // this.store$.dispatch(new filtersStore.SetSeasonEnd(this.end + amount));
+    }
+  }
   ngOnDestroy() {
     this.subs.unsubscribe();
   }

@@ -13,11 +13,8 @@
 ::ng-deep .dot circle:hover {
   cursor: pointer;
 }
-
 ::ng-deep .dot circle {
   fill: $asf-primary;
-  //   stroke: steelblue;
-  //   stroke-width: 1.5px;
 }
 ::ng-deep .dot circle.dragging {
   fill: darken($asf-blue, 10%);
@@ -27,10 +24,10 @@ figure {
   display: inline-flex;
   margin: 0;
 }
-::ng-deep .circle-notches {
-  fill: none;
-  // stroke: #a9a9a9;
-  // stroke-width: 10px;
-  // stroke-dasharray: calc(313.6517333984375 / 12);
-  // stroke-dashoffset: 10px;
+::ng-deep .notch {
+  stroke: lighten($asf-primary, 40%);
+  stroke-width: 2px;
+}
+::ng-deep .selected {
+  stroke: $asf-primary;
 }
