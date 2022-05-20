@@ -1,15 +1,17 @@
-import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges } from '@angular/core';
 import * as d3 from 'd3';
-
+import * as models from '@models';
+import { ScreenSizeService } from '@services';
+import { Subscription } from 'rxjs';
 @Component({
   selector: 'app-circle-slider',
   templateUrl: './circle-slider.component.html',
   styleUrls: ['./circle-slider.component.scss']
 })
-export class CircleSliderComponent implements OnInit, OnChanges {
+export class CircleSliderComponent implements OnInit, OnChanges, OnDestroy {
 
 
-  @Input() maxValue  = 365;
+  @Input() maxValue = 365;
 
   @Input() startValue = 0;
   @Input() endValue = 180;
@@ -29,14 +31,38 @@ export class CircleSliderComponent implements OnInit, OnChanges {
   private circumference_r = 100;
   private startDot;
   private endDot;
-  private lines: {line: any, angle: number}[] = [];
-  constructor() { }
+  private lines: { line: any, angle: number }[] = [];
+  private subs = new Subscription();
+
+
+
+  public breakpoint$ = this.screenSize.breakpoint$;
+  public breakpoints = models.Breakpoints;
+
+  constructor(
+    private screenSize: ScreenSizeService,
+  ) { }
 
   ngOnInit(): void {
     this.startAngle = this.getAngle(this.startValue);
     this.endAngle = this.getAngle(this.endValue);
     this.createSvg();
     this.drawSlider();
+    this.subs.add(
+      this.breakpoint$.subscribe(bp => {
+        console.log('obuasidvbqwoeyuvayuds')
+        if (bp === models.Breakpoints.MOBILE) {
+          this.startDot.attr('r', 15);
+          this.endDot.attr('r', 15);
+        } else {
+          this.startDot.attr('r', 10);
+          this.endDot.attr('r', 10);
+        }
+      }));
+
+  }
+  ngOnDestroy(): void {
+    this.subs.unsubscribe();
   }
   ngOnChanges(changes: SimpleChanges) {
     if (changes.startValue && changes.endValue) {
@@ -104,13 +130,13 @@ export class CircleSliderComponent implements OnInit, OnChanges {
         }
       } else if (startAngle < line.angle &&
         line.angle < endAngle) {
-          line.line.attr('class', 'notch selected');
+        line.line.attr('class', 'notch selected');
       } else {
         line.line.attr('class', 'notch');
       }
     }
   }
-  private movePoint(target, event: {x: number, y: number}, _d?: any) {
+  private movePoint(target, event: { x: number, y: number }, _d?: any) {
     const d_from_origin = Math.sqrt(Math.pow(event.x, 2) + Math.pow(event.y, 2));
     const alpha = Math.acos(event.x / d_from_origin);
     d3.select(target)
@@ -136,9 +162,9 @@ export class CircleSliderComponent implements OnInit, OnChanges {
       const outer_y = -(this.circumference_r * 1.1) * Math.cos(angle);
       const line = d3.line()([[inner_x, inner_y], [outer_x, outer_y]]);
       const line_container = container.append('path')
-      .attr('d', line)
-      .attr('class', 'notch');
-      self.lines.push({line: line_container, angle: angle});
+        .attr('d', line)
+        .attr('class', 'notch');
+      self.lines.push({ line: line_container, angle: angle });
     }
     container.append('circle')
       .attr('r', this.circumference_r)
@@ -160,20 +186,20 @@ export class CircleSliderComponent implements OnInit, OnChanges {
 
     function dragged1(event: any, d: any) {
       self.movePoint(this, event, d);
-      self.startAngle = (Math.atan2(event.y, event.x) +  Math.PI / 2);
+      self.startAngle = (Math.atan2(event.y, event.x) + Math.PI / 2);
       self.newStart.emit(self.getPoint(self.startAngle));
       self.setAngles();
     }
     function dragged2(event: any, d: any) {
       self.movePoint(this, event, d);
-      self.endAngle = (Math.atan2(event.y, event.x) +  Math.PI / 2);
+      self.endAngle = (Math.atan2(event.y, event.x) + Math.PI / 2);
       self.newEnd.emit(self.getPoint(self.endAngle));
       self.setAngles();
     }
     function dragEnded(_d: any) {
       d3.select(this)
         .classed('dragging', false);
-        self.doneSelecting.emit(true);
+      self.doneSelecting.emit(true);
     }
     const drag1 = d3.drag()
       .subject(function (d) { return d; })
