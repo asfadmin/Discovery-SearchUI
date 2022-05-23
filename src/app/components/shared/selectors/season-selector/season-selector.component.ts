@@ -41,7 +41,7 @@ export class SeasonSelectorComponent implements OnInit, OnDestroy {
   }
 
   public onToggleSeasonalOptions(event: MatSlideToggleChange): void {
-    if (!event.checked){
+    if (!event.checked) {
       this.store$.dispatch(new filtersStore.ClearSeason());
     } else {
       this.store$.dispatch(new filtersStore.SetSeasonStart(1));
@@ -70,11 +70,11 @@ export class SeasonSelectorComponent implements OnInit, OnDestroy {
   }
   public change(which: string, amount: number) {
     if (which === 'start') {
-      this.start += amount;
-      // this.store$.dispatch(new filtersStore.SetSeasonStart(this.start + amount));
+      // this.start += amount;
+      this.store$.dispatch(new filtersStore.SetSeasonStart(this.start + amount));
     } else {
-      this.end += amount;
-      // this.store$.dispatch(new filtersStore.SetSeasonEnd(this.end + amount));
+      // this.end += amount;
+      this.store$.dispatch(new filtersStore.SetSeasonEnd(this.end + amount));
     }
   }
   ngOnDestroy() {

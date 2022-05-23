@@ -7,6 +7,10 @@
   align-items: center;
   width: 200px;
 }
+.buttons {
+  display: flex;
+  justify-content: space-around;
+}
 @media (max-width: 768px) {
   .season-selector {
     flex-direction: column;
