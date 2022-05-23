@@ -50,7 +50,6 @@ export class CircleSliderComponent implements OnInit, OnChanges, OnDestroy {
     this.drawSlider();
     this.subs.add(
       this.breakpoint$.subscribe(bp => {
-        console.log('obuasidvbqwoeyuvayuds')
         if (bp === models.Breakpoints.MOBILE) {
           this.startDot.attr('r', 15);
           this.endDot.attr('r', 15);

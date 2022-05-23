@@ -7,6 +7,7 @@ import { SubSink } from 'subsink';
 import { Store } from '@ngrx/store';
 import { AppState } from '@store';
 import * as filtersStore from '@store/filters';
+import { MatSlideToggleChange } from '@angular/material/slide-toggle';
 
 
 @Component({
@@ -30,8 +31,8 @@ export class SeasonSelectorComponent implements OnInit, OnDestroy {
     this.subs.add(
       combineLatest(seasonStart$, seasonEnd$).pipe(
         tap(([start, end]) => {
-          this.start = start ? start : 1;
-          this.end = end ? end : 180;
+          this.start = start;
+          this.end = end;
         })
       ).subscribe(
         ([start, end]) => this.isSeasonalSearch = !!(start || end)
@@ -39,8 +40,13 @@ export class SeasonSelectorComponent implements OnInit, OnDestroy {
     );
   }
 
-  public onToggleSeasonalOptions(): void {
-    this.store$.dispatch(new filtersStore.ClearSeason());
+  public onToggleSeasonalOptions(event: MatSlideToggleChange): void {
+    if (!event.checked){
+      this.store$.dispatch(new filtersStore.ClearSeason());
+    } else {
+      this.store$.dispatch(new filtersStore.SetSeasonStart(1));
+      this.store$.dispatch(new filtersStore.SetSeasonEnd(180));
+    }
   }
 
   public onSeasonStartChange(dayOfYear: number): void {
