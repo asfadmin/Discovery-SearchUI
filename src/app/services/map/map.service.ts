@@ -40,6 +40,7 @@ import lineIntersect from '@turf/line-intersect';
 import Polygon from 'ol/geom/Polygon';
 import LineString from 'ol/geom/LineString';
 import TileLayer from 'ol/layer/Tile';
+import SimpleGeometry from 'ol/geom/SimpleGeometry';
 
 @Injectable({
   providedIn: 'root'
@@ -379,10 +380,14 @@ export class MapService {
       targetEvent.wkt,
       this.epsg()
     );
-
     this.wktService.fixPolygonAntimeridian(feature, targetEvent.wkt);
 
-    this.zoomToFeature(feature);
+    this.map.getView().fit(feature.getGeometry().getSimplifiedGeometry(0) as SimpleGeometry, {
+      maxZoom: 7,
+      size: this.map.getSize(),
+      padding: [0, 0, 500, 0],
+      duration: 750,
+    });
   }
 
   public zoomToFeature(feature: Feature<Geometry>): void {

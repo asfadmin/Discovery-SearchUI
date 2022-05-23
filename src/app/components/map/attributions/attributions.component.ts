@@ -7,7 +7,7 @@ import { AppState } from '@store';
 import * as uiStore from '@store/ui';
 import * as scenesStore from '@store/scenes';
 
-import { Breakpoints } from '@models';
+import { Breakpoints, asfWebsite } from '@models';
 
 @Component({
   selector: 'app-attributions',
@@ -24,6 +24,7 @@ export class AttributionsComponent {
     map(scenes => scenes.length === 0)
   );
   public breakpoints = Breakpoints;
+  public asfWebsite = asfWebsite;
 
   constructor(
     private store$: Store<AppState>,

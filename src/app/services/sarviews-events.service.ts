@@ -90,18 +90,6 @@ export class SarviewsEventsService {
     );
   }
 
-  public getSarviewsEventPinnedUrl(sarviews_url: string, product_ids: string[]) {
-    const baseUrl = this.getSarviewsEventUrl(sarviews_url);
-    const pinnedIds = product_ids.reduce((prev, curr) => {
-      return prev + curr + ',';
-    }, '?pinned=');
-    return baseUrl + pinnedIds;
-  }
-
-  public getSarviewsEventUrl(sarviews_id: string) {
-    return `https://sarviews-hazards.alaska.edu/Event/${sarviews_id}`;
-  }
-
   public getUSGSEventUrl(usgs_id: string) {
     return `https://earthquake.usgs.gov/earthquakes/eventpage/${usgs_id}#executive`;
   }
@@ -167,7 +155,7 @@ export class SarviewsEventsService {
     return {
       name: granule.granule_name,
       productTypeDisplay,
-      file: '',
+      file: product.files.product_name,
       id: product.product_id,
       downloadUrl: product.files.product_url,
       bytes: product.files.product_size,
