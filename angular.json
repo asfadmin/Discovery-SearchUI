@@ -52,7 +52,9 @@
               "uuid/v1",
               "jwt-decode",
               "css-element-queries",
-              "xml2js"
+              "xml2js",
+              "moment-range",
+              "geojson-rbush"
             ],
             "vendorChunk": true,
             "extractLicenses": false,
