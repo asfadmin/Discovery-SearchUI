@@ -83,7 +83,7 @@ a {
 }
 
 .content {
-  margin: 0 16px 16px 16px;
+  margin: 0 16px 16px;
 }
 
 .detail-item-margin {
@@ -143,7 +143,7 @@ a {
     cursor: pointer;
   }
 
-  button[disabled='true'] {
+  button[disabled="true"] {
     cursor: default;
     background-color: $asf-primary-light !important;
     color: $asf-primary !important;
@@ -169,6 +169,6 @@ a {
   margin-left: 20px;
   background-color: $asf-primary !important;
   color: white !important;
-  border: 1px groove rgba(0, 0, 0, 0.25) !important;
+  border: 1px groove rgb(0 0 0 / 25%) !important;
   border-radius: 4px !important;
 }
