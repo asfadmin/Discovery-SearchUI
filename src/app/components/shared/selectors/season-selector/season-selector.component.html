@@ -13,30 +13,31 @@
     (newStart)="onSeasonStartChange($event)"
     (newEnd)="onSeasonEndChange($event)"
     (doneSelecting)="onSeasonDoneSelecting()"
+    (swapEvent)="swap()"
   ></app-circle-slider>
   <!-- <app-date-range></app-date-range> -->
   <div class="dates">
     <div>
       <b>Season Start Day </b>
-      <span *ngIf="start"> • {{ this.start | shortDateSeason }}</span>
       <div class="buttons">
-        <button (click)="change('start', 1)" mat-flat-button>+1</button>
-        <button (click)="change('start', -1)" mat-flat-button>-1</button>
+        <button (click)="change('start', -1)" mat-button color="secondary">-1</button>
+        <div *ngIf="start">{{ this.start | shortDateSeason }}</div>
+        <button (click)="change('start', 1)" mat-button>+1</button>
       </div>
     </div>
-    <button
+    <!-- <button
       mat-icon-button
       (click)="swap()"
       matTooltip="Swap season start and end date"
     >
       <mat-icon>swap_vert</mat-icon>
-    </button>
+    </button> -->
     <div>
       <b>Season End Day </b>
-      <span *ngIf="end"> • {{ end | shortDateSeason }}</span>
       <div class="buttons">
-        <button (click)="change('end', 1)" mat-flat-button>+1</button>
-        <button (click)="change('end', -1)" mat-flat-button>-1</button>
+        <button (click)="change('end', -1)" mat-button>-1</button>
+        <div *ngIf="end">{{ end | shortDateSeason }}</div>
+        <button (click)="change('end', +1)" mat-button>+1</button>
       </div>
     </div>
   </div>
