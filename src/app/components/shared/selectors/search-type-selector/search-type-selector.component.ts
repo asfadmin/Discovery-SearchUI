@@ -10,7 +10,7 @@ import * as userStore from '@store/user';
 import * as models from '@models';
 
 import { ScreenSizeService } from '@services';
-import {AnalyticsEvent, Breakpoints, derivedDatasets} from '@models';
+import { AnalyticsEvent, Breakpoints, derivedDatasets } from '@models';
 
 // Declare GTM dataLayer array.
 declare global {

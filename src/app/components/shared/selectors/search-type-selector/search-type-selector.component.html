@@ -1,32 +1,173 @@
 <div *ngIf="breakpoint$ | async as breakpoint">
-  <!--  <button-->
-  <!--    [matMenuTriggerFor]="derivedDatasetMenu"-->
-  <!--    class="spacing nav-icon-buttons" color="basic"-->
-  <!--    matTooltip="On Demand Queue"-->
-  <!--    mat-button>-->
-  <!--    <div class="text-under faint-text">Derived Datasets</div>-->
-  <!--  </button>-->
-  <div class="gtm-search-type-selector" fxFlex="nogrow">
-  <mat-form-field fxFlex="130px">
-    <mat-label>Search Type</mat-label>
-    <mat-select class="gtm-search-type"
-      [(ngModel)]="searchType"
-      (selectionChange)="onSetSearchType($event.value)">
-      <mat-option [value]="searchTypes.DATASET">Geographic</mat-option>
-      <mat-option [value]="searchTypes.LIST">List</mat-option>
-      <mat-option [value]="searchTypes.BASELINE">Baseline</mat-option>
-      <mat-option [value]="searchTypes.SBAS">SBAS</mat-option>
-      <mat-option [value]="searchTypes.SARVIEWS_EVENTS">Event</mat-option>
-      <mat-option
-        [value]="searchTypes.CUSTOM_PRODUCTS"
-        [disabled]="!isLoggedIn">
-          On Demand Products
-      </mat-option>
-<!--      <mat-option [value]="searchTypes.DERIVED_DATASETS">Derived Datasets</mat-option>-->
-      <div class="mat-option" [matMenuTriggerFor]="derivedDatasetMenu">Derived Datasets...</div>
-    </mat-select>
-  </mat-form-field>
 
+  <div class="menu-button-wrapper">
+    <div class="button-label">Search Type</div>
+    <div>
+      <button
+        [matMenuTriggerFor]="searchTypeMenu"
+        class="button-menu-trigger" color="basic"
+        matTooltip="{{ searchType }}"
+        mat-button>
+        <div class="button-text">
+          {{ searchType }}
+          <span class="mat-select-arrow"></span>
+        </div>
+      </button>
+      <div class="hr-wrapper"><hr class="text-underline"></div>
+    </div>
+  </div>
+
+  <div class="gtm-search-type-selector" fxFlex="nogrow">
+
+    <mat-menu #searchTypeMenu="matMenu"
+              [(ngModel)]="searchType">
+      <div *ngIf="(breakpoint$ | async) === breakpoints.MOBILE">
+        <mat-form-field class="formField" [matMenuTriggerFor]="searchTypeMenu">
+          <mat-label>Search Type</mat-label>
+          <mat-select class="gtm-search-type selectOptions"
+            [(ngModel)]="searchType"
+            (selectionChange)="onSetSearchType($event.value)">
+            <mat-option [value]="searchTypes.DATASET" class="matOption">Geographic</mat-option>
+            <mat-option [value]="searchTypes.LIST">List</mat-option>
+            <mat-option [value]="searchTypes.BASELINE">Baseline</mat-option>
+            <mat-option [value]="searchTypes.SBAS">SBAS</mat-option>
+            <mat-option [value]="searchTypes.SARVIEWS_EVENTS">Event</mat-option>
+            <mat-option
+              [value]="searchTypes.CUSTOM_PRODUCTS"
+              [disabled]="!isLoggedIn">
+                On Demand Products
+            </mat-option>
+            <div class="mat-option" [matMenuTriggerFor]="derivedDatasetMenu">Derived Datasets...</div>
+          </mat-select>
+        </mat-form-field>
+      </div>
+      <div  *ngIf="(breakpoint$ | async) != breakpoints.MOBILE">
+
+        <div class="menu-item" (click)="onSetSearchType(searchTypes.DATASET)">
+          <div fxFlex="70%" class="menu-item-content">
+            <div class="item-title">
+              Geographic
+            </div>
+            <div class="item-content" [ngClass]="{'limitTextHeight': isReadMore}">
+              This is a long description about Geographic Searches...
+            </div>
+            <mat-card-actions>
+              <app-docs-modal class="info-text"
+                              text="More info"
+                              url="https://docs.asf.alaska.edu/vertex/manual/#area-of-interest-options">
+              </app-docs-modal>
+            </mat-card-actions>
+          </div>
+          <div fxFlex="30%" class="menu-item-aside">
+            <img [src]="" class="menu-item-icon">
+          </div>
+        </div>
+
+        <div class="menu-item" (click)="onSetSearchType(searchTypes.LIST)">
+          <div fxFlex="70%" class="menu-item-content">
+            <div class="item-title">
+              List
+            </div>
+            <div class="item-content" [ngClass]="{'limitTextHeight': isReadMore}">
+              This is a long description about List Searches...
+            </div>
+            <mat-card-actions>
+              <app-docs-modal class="info-text"
+                              text="More info"
+                              url="https://docs.asf.alaska.edu/vertex/manual/#area-of-interest-options">
+              </app-docs-modal>
+            </mat-card-actions>
+          </div>
+          <div fxFlex="30%" class="menu-item-aside">
+            <img [src]="" class="menu-item-icon">
+          </div>
+        </div>
+
+        <div class="menu-item" (click)="onSetSearchType(searchTypes.BASELINE)">
+          <div fxFlex="70%" class="menu-item-content">
+            <div class="item-title">
+              Baseline
+            </div>
+            <div class="item-content" [ngClass]="{'limitTextHeight': isReadMore}">
+              This is a long description about Baseline Searches...
+            </div>
+            <mat-card-actions>
+              <app-docs-modal class="info-text"
+                              text="More info"
+                              url="https://docs.asf.alaska.edu/vertex/manual/#area-of-interest-options">
+              </app-docs-modal>
+            </mat-card-actions>
+          </div>
+          <div fxFlex="30%" class="menu-item-aside">
+            <img [src]="" class="menu-item-icon">
+          </div>
+        </div>
+
+        <div class="menu-item" (click)="onSetSearchType(searchTypes.SBAS)">
+          <div fxFlex="70%" class="menu-item-content">
+            <div class="item-title">
+              SBAS
+            </div>
+            <div class="item-content" [ngClass]="{'limitTextHeight': isReadMore}">
+              This is a long description about SBAS Searches...
+            </div>
+            <mat-card-actions>
+              <app-docs-modal class="info-text"
+                              text="More info"
+                              url="https://docs.asf.alaska.edu/vertex/manual/#area-of-interest-options">
+              </app-docs-modal>
+            </mat-card-actions>
+          </div>
+          <div fxFlex="30%" class="menu-item-aside">
+            <img [src]="" class="menu-item-icon">
+          </div>
+        </div>
+
+        <div class="menu-item" (click)="onSetSearchType(searchTypes.SARVIEWS_EVENTS)">
+          <div fxFlex="70%" class="menu-item-content">
+            <div class="item-title">
+              Event
+            </div>
+            <div class="item-content" [ngClass]="{'limitTextHeight': isReadMore}">
+              This is a long description about Event Searches...
+            </div>
+            <mat-card-actions>
+              <app-docs-modal class="info-text"
+                              text="More info"
+                              url="https://docs.asf.alaska.edu/vertex/manual/#area-of-interest-options">
+              </app-docs-modal>
+            </mat-card-actions>
+          </div>
+          <div fxFlex="30%" class="menu-item-aside">
+            <img [src]="" class="menu-item-icon">
+          </div>
+        </div>
+
+        <div class="menu-item" (click)="onSetSearchType(searchTypes.CUSTOM_PRODUCTS)">
+          <div fxFlex="70%" class="menu-item-content">
+            <div class="item-title">
+              On Demand Products
+            </div>
+            <div class="item-content" [ngClass]="{'limitTextHeight': isReadMore}">
+              This is a long description about On Demand Searches...
+            </div>
+            <mat-card-actions>
+              <app-docs-modal class="info-text"
+                              text="More info"
+                              url="https://docs.asf.alaska.edu/vertex/manual/#area-of-interest-options">
+              </app-docs-modal>
+            </mat-card-actions>
+          </div>
+          <div fxFlex="30%" class="menu-item-aside">
+            <img [src]="" class="menu-item-icon">
+          </div>
+        </div>
+
+        <div class="mat-option" [matMenuTriggerFor]="derivedDatasetMenu">Derived Datasets...</div>
+
+      </div>
+
+    </mat-menu>
 
     <mat-menu #derivedDatasetMenu="matMenu">
       <div mat-menu-item matSuffix *ngFor="let dataset of datasets">
@@ -46,23 +187,11 @@
               <button (click)="onOpenDerivedDataset(dataset.info_url, dataset.name)" mat-button>More Info</button>
               <button (click)="onOpenDerivedDataset(dataset.download_url, dataset.name)" mat-button>Download</button>
             </mat-card-actions>
-
-            <!--            <div class="item-content" [ngClass]="{'limitTextHeight': isReadMore}">-->
-<!--              {{ dataset.description }}-->
-<!--            </div>-->
-<!--            <button mat-button (click)="showText()">-->
-<!--              {{ isReadMore ? 'Read More': 'Read Less' }}-->
-<!--            </button>-->
           </div>
           <div fxFlex="30%" class="menu-item-aside">
             <img [src]="dataset.picture" class="menu-item-icon">
           </div>
         </div>
-        <!--      <mat-divider inset></mat-divider>-->
-<!--        <mat-card-actions>-->
-<!--          <button (click)="onOpenDerivedDataset(dataset.info_url, dataset.name)" mat-button>More Info</button>-->
-<!--          <button (click)="onOpenDerivedDataset(dataset.download_url, dataset.name)" mat-button>Download</button>-->
-<!--        </mat-card-actions>-->
         <hr class="dataset-hr">
       </div>
     </mat-menu>
