@@ -1,6 +1,6 @@
 <div *ngIf="breakpoint$ | async as breakpoint">
 
-  <div class="menu-button-wrapper">
+  <div class="menu-button-wrapper" *ngIf="(breakpoint$ | async) != breakpoints.MOBILE">
     <div class="button-label">Search Type</div>
     <div>
       <button
@@ -41,7 +41,7 @@
           </mat-select>
         </mat-form-field>
       </div>
-      <div  *ngIf="(breakpoint$ | async) != breakpoints.MOBILE">
+      <div *ngIf="(breakpoint$ | async) != breakpoints.MOBILE">
 
         <div class="menu-item" (click)="onSetSearchType(searchTypes.DATASET)">
           <div fxFlex="70%" class="menu-item-content">
@@ -49,7 +49,8 @@
               Geographic
             </div>
             <div class="item-content" [ngClass]="{'limitTextHeight': isReadMore}">
-              This is a long description about Geographic Searches...
+              Search for data based upon a geographic location. You can place a point, draw a line, draw a polygon,
+              draw a box, or upload a geospatial file.
             </div>
             <mat-card-actions>
               <app-docs-modal class="info-text"
