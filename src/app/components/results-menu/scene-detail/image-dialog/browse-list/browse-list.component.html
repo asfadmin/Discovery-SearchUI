@@ -1,4 +1,6 @@
-<cdk-virtual-scroll-viewport orientation="horizontal" class="browse-list-viewport w100 h100" itemSize="140">
+<ng-container class="browse-list" *ngIf="searchtype !== searchTypes.SARVIEWS_EVENTS; else sarviewsScroll">
+<cdk-virtual-scroll-viewport style="height: 150px;" orientation="horizontal" class="browse-list-viewport w100 h100" itemSize="110"
+minBufferPx="10" maxBufferPx="50">
   <div *cdkVirtualFor="let scene of (scenes$ | async)"
     (click)="onNewSceneSelected(scene)"
     [class.selected]="scene.id === selectedId"
@@ -11,8 +13,32 @@
       <img [src]="scene.browses[0]"
        onerror="this.src='assets/no-browse.png'"
        class="browse-image no-drag">
-
+       <!-- <mat-checkbox [checked]="productBrowseStates[scene.id]?.isPinned" (change)="onPinProduct(scene.id);" (click)="$event.stopPropagation()">
+      </mat-checkbox> -->
       <div class="browse-image--date">{{ scene.metadata.date | shortDate }}</div>
     </div>
   </div>
+
 </cdk-virtual-scroll-viewport>
+</ng-container>
+
+<ng-template class="browse-list" #sarviewsScroll>
+<cdk-virtual-scroll-viewport style="height: 150px;" orientation="horizontal" class="browse-list-viewport w100 h100" itemSize="110"
+minBufferPx="10" maxBufferPx="50">
+<div *cdkVirtualFor="let product of sarviewsProducts"
+(click)="onNewProductSelected(product)"
+[class.selected]="product.product_id === selectedProductId"
+class="clickable">
+<div class="browse-image--container"
+     >
+
+  <img [src]="product.files.browse_url"
+   onerror="this.src='assets/no-browse.png'"
+   class="browse-image no-drag">
+   <!-- <mat-checkbox [checked]="isPinned(product.product_id)" (change)="onPinProduct(product.product_id);" (click)="$event.stopPropagation()">
+   </mat-checkbox> -->
+  <div class="browse-image--date">{{ product.granules[0].acquisition_date | shortDate }}</div>
+</div>
+</div>
+</cdk-virtual-scroll-viewport>
+</ng-template>

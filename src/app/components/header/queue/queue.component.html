@@ -10,8 +10,16 @@
       Downloads
     </h1>
     <div class="dl-subtitle">
+<!--      <mat-checkbox class="item-summary-checkbox"-->
+<!--                    [checked]=false-->
+<!--                    color=primary-->
+<!--                    [indeterminate]=[someChecked]-->
+<!--                    >-->
+<!--      </mat-checkbox>-->
+<!--      <mat-icon>cloud_download</mat-icon> {{ selectedItems.length }} of-->
       {{ numberOfProducts$ | async }} Files, {{ (totalSize$ | async) | readableSizeFromBytes }}
     </div>
+    <mat-progress-bar class="global-progress" mode="determinate" value="{{ dlQueueProgress }}"></mat-progress-bar>
   </div>
 
   <div class="feedback-div feedback-link">
@@ -36,71 +44,59 @@
 <mat-dialog-content class="dl-mat-dialog-content"
                     [class.dl-mat-dialog-content-warn]="showDemWarning"
                     [class.dl-mat-dialog-content-warn-mobile]="showDemWarning && breakpoint === breakpoints.MOBILE">
-          <mat-list role="list" class="dl-list">
+          <mat-list id="matListProducts" role="list" class="dl-list">
             <ng-container *ngIf="products$ | async as products">
-              <mat-list-item
-                *ngFor="let product of products"
-                role="listitem">
-                  <div matLine [ngClass]="{'dl-list-item-mobile' : breakpoint === breakpoints.MOBILE }">
-                    <b>
-                      <span *ngIf="breakpoint !== breakpoints.MOBILE">{{ product.name | truncate: 50 }}</span>
-                      <span *ngIf="breakpoint === breakpoints.MOBILE">{{ product.name | truncate: 10 }}</span>
-                      <span *ngIf="product.dataset === 'Sentinel-1B' || product.dataset === 'Sentinel-1A'"
-                        >{{ product.name.substr(product.name.length - 4) }}</span>
+              <mat-list-item *ngFor="let product of products" role="listitem">
+                <div matLine
+                     class="item-content"
+                     [ngClass]="{'dl-list-item-mobile' : breakpoint === breakpoints.MOBILE }">
+                  <b *ngIf="((product.metadata.fileName | filterExtension) || product.name) as fileName">
+                      <span *ngIf="breakpoint !== breakpoints.MOBILE">{{ fileName| truncate: 50 }}</span>
+                      <span *ngIf="breakpoint === breakpoints.MOBILE">{{ fileName | truncate: 10 }}</span>
+                      <ng-container *ngIf="fileName.length > (breakpoint !== breakpoints.MOBILE ? 50 : 10)">
+                        <span *ngIf="product.dataset === 'Sentinel-1B' || product.dataset === 'Sentinel-1A'"
+                        >{{ fileName.substr(fileName.length - 4) }}</span>
                       <span *ngIf="product.dataset === 'Sentinel-1 Interferogram (BETA)'"
-                        >{{ product.name.substr(product.name.length - 11) }}</span>
+                        >{{ fileName.substr(fileName.length - 11) }}</span>
+                      </ng-container>
                     </b> •
-
                     <span>
                       <span *ngIf="product.bytes === 0">Virtual</span>
                       <span *ngIf="product.bytes !== 0">{{product.bytes | readableSizeFromBytes }}</span>
                     </span>
                   </div>
-                  <div style="margin-top: 3px;" matLine [ngClass]="{'dl-list-item-mobile' : breakpoint === breakpoints.MOBILE }">
+                  <div style="margin-top: 3px; margin-left: 32px;" matLine [ngClass]="{'dl-list-item-mobile' : breakpoint === breakpoints.MOBILE }">
                     {{ product.productTypeDisplay }}
                   </div>
 
                   <app-copy-to-clipboard
-                     *ngIf="!product.isUnzippedFile && !product.metadata.job"
+                     *ngIf="!product.isUnzippedFile && !product.metadata.job && product.groupId !== 'SARViews'"
                      style="margin-right: 15px;"
                      prompt="Copy File ID"
                      [value]="product.id"
                      >
                   </app-copy-to-clipboard>
 
-                  <!-- http://local.asf.alaska.edu:4444/#/?searchType=List%20Search&listSearchType=Product&searchList=S1-GUNW-A-R-014-tops-20200513_20200419-153046-28315N_26591N-PP-e3ef-v2_0_3&resultsLoaded=true&granule=S1-GUNW-A-R-014-tops-20200513_20200419-153046-28315N_26591N-PP-e3ef-v2_0_3 -->
-                  <a [appFileDownload]="product.name"
-                     #down="fileDownload"
-                     [disabled]="!product.downloadUrl || down.busy"
-                     [href]="product.downloadUrl"
-                     target="_blank"
-                     mat-icon-button
-                     matTooltip="Download"
-                     style="text-decoration: none;"
-                  >
-                    <mat-icon>cloud_download</mat-icon>
-                  </a>
-
-<!--                <button (click)="download(product.downloadUrl)">Download</button>-->
-<!--                <mat-progress-bar-->
-<!--                  *ngIf="download$ | async as download"-->
-<!--                  [mode]="download.state == 'PENDING' ? 'buffer' : 'determinate'"-->
-<!--                  [value]="download.progress"-->
-<!--                >-->
-<!--                </mat-progress-bar>-->
+                  <app-download-file-button
+                    [attr.id]="'dlq_' + product.id"
+                    [product] = "product"
+                    (productDownloaded)="downloadContinue($event)"
+                    (downloadCancelled)="downloadContinue($event)"
+                    [useNewDownload]="true">
+                  </app-download-file-button>
 
                   <button (click)="onRemoveProduct(product)" matTooltip="Remove file" mat-icon-button>
                     <mat-icon>close</mat-icon>
                   </button>
               </mat-list-item>
             </ng-container>
-
             <ng-container *ngIf="(products$ | async).length < 1">
               <div class="dl-empty-message">
                 <br><br>
                 Your download queue is empty.
               </div>
             </ng-container>
+
 
         </mat-list>
 
@@ -146,8 +142,8 @@
             </button>
 
             <ng-container *ngIf="breakpoint > breakpoints.MOBILE && dlWidth >= dlWidthMin">
-              <span *ngIf="queueHasOnDemandProducts" class="on-demand-warning">
-                On Demand products in queue - limited export options
+              <span *ngIf="queueHasOnDemandProducts || queueHasEventMonitoringProducts" class="on-demand-warning">
+                {{limitedExportString()}}
               </span>
 
               <button mat-flat-button color="primary" [matMenuTriggerFor]="dataMenu" [disabled]="!areAnyProducts"
@@ -179,24 +175,29 @@
             </ng-container>
 
             <mat-menu #dataMenu="matMenu" yPosition="above">
+              <app-download-all
+                (dlAllEvent)="downloadAllFiles()"
+                [disabled]="!(isLoggedIn$ | async)"
+              >
+              </app-download-all>
               <button mat-menu-item (click)="onMakeDownloadScript()">
                 Download Python Script (.py)
               </button>
-              <button mat-menu-item [disabled]="queueHasOnDemandProducts" (click)="onMetalinkDownload()">
+              <button mat-menu-item [disabled]="queueHasOnDemandProducts || queueHasEventMonitoringProducts" (click)="onMetalinkDownload()">
                 Metadata (metalink)
               </button>
             </mat-menu>
 
             <mat-menu #metadataMenu="matMenu" yPosition="above">
-              <button mat-menu-item [disabled]="queueHasOnDemandProducts" (click)="onCsvDownload()">
+              <button mat-menu-item [disabled]="queueHasOnDemandProducts || queueHasEventMonitoringProducts" (click)="onCsvDownload()">
                 Metadata (csv)
               </button>
 
-              <button mat-menu-item [disabled]="queueHasOnDemandProducts" (click)="onKmlDownload()">
+              <button mat-menu-item [disabled]="queueHasOnDemandProducts || queueHasEventMonitoringProducts" (click)="onKmlDownload()">
                 Metadata (kml)
               </button>
 
-              <button mat-menu-item [disabled]="queueHasOnDemandProducts" (click)="onGeojsonDownload()">
+              <button mat-menu-item [disabled]="queueHasOnDemandProducts || queueHasEventMonitoringProducts" (click)="onGeojsonDownload()">
                 Metadata (geojson)
               </button>
             </mat-menu>

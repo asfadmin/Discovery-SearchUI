@@ -25,8 +25,9 @@ export class RangeService {
       '' : `${start}to${end}`;
   }
 
-  public toCMRString<T>(range: Range<T>): string {
-    const [start, end] = [ range.start || '', range.end || '' ];
+  public toCMRString(range: Range<number>): string {
+    const start = range.start !== null ? range.start.toString() : '';
+    const end = range.end !== null ? range.end.toString() : '';
 
     return start ?
       ((!end || start === end) ? `${start}` : `${start}-${end}`) :

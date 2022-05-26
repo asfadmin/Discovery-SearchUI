@@ -9,12 +9,14 @@ import { Store } from '@ngrx/store';
 import { AppState } from '@store';
 import * as uiStore from '@store/ui';
 import * as searchStore from '@store/search';
+import * as filterStore from '@store/filters';
 
-import { NotificationService, ScreenSizeService } from '@services';
+import { EnvironmentService, NotificationService, ScreenSizeService } from '@services';
 import { SubSink } from 'subsink';
 import * as models from '@models';
 import { Observable } from 'rxjs';
 import { areFiltersChanged } from '@store/filters';
+import { SBASOverlap } from '@models';
 
 @Component({
   selector: 'app-filters-dropdown',
@@ -31,7 +33,7 @@ import { areFiltersChanged } from '@store/filters';
   ],
 })
 export class FiltersDropdownComponent implements OnInit, OnDestroy {
-  @Input() dataset$: Observable<models.Dataset>;
+  @Input() dataset$: Observable<models.CMRProduct>;
   public isFiltersMenuOpen$ = this.store$.select(uiStore.getIsFiltersMenuOpen);
 
   public searchType$ = this.store$.select(searchStore.getSearchType);
@@ -49,6 +51,7 @@ export class FiltersDropdownComponent implements OnInit, OnDestroy {
     private store$: Store<AppState>,
     private screenSize: ScreenSizeService,
     private notificationService: NotificationService,
+    private environmentService: EnvironmentService,
   ) {}
 
   ngOnInit() {
@@ -67,6 +70,10 @@ export class FiltersDropdownComponent implements OnInit, OnDestroy {
         filtersChanged => this.areFiltersChanged = filtersChanged
       )
     );
+
+    if (this.environmentService.maturity === 'prod') {
+      this.store$.dispatch(new filterStore.SetSBASOverlapThreshold(SBASOverlap.ALL));
+    }
   }
 
   public closePanel(): void {

@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 
-import noUiSlider from 'nouislider';
-import { Subject,  fromEvent} from 'rxjs';
+import * as noUiSlider from 'nouislider';
+import { Subject,  fromEvent, Observable} from 'rxjs';
 import { debounceTime, distinctUntilChanged, filter, map } from 'rxjs/operators';
 
 import { AppState } from '@store';
@@ -35,7 +35,7 @@ export class SbasSlidersTwoComponent implements OnInit {
   public tempSlider;
   public temporal: number;
   public perpendicular: number;
-  public days: number;
+  public daysRange: models.Range<number> = {start: 1, end: 48};
   public daysValues$ = new Subject<number[]>();
   public metersValues$ = new Subject<number[]>();
   public slider;
@@ -56,7 +56,7 @@ export class SbasSlidersTwoComponent implements OnInit {
     fb: FormBuilder
   ) {
     this.meterDistanceControl = new FormControl(this.perpendicular, Validators.min(-999));
-    this.daysControl = new FormControl(this.days, Validators.min(0));
+    this.daysControl = new FormControl(this.daysRange, Validators.min(0));
 
       this.options = fb.group({
         color: this.colorControl,
@@ -68,9 +68,12 @@ export class SbasSlidersTwoComponent implements OnInit {
   ngOnInit(): void {
     this.colorControl = new FormControl('primary');
     this.meterDistanceControl = new FormControl(this.perpendicular, Validators.min(-999));
-    this.daysControl = new FormControl(this.days, Validators.min(0));
+    this.daysControl = new FormControl(this.daysRange, Validators.min(0));
 
-    const [tempSlider, daysValues$] = this.makeDaysSlider$(this.temporalFilter);
+    const daysSliderRef = this.makeDaysSlider$(this.temporalFilter);
+    const tempSlider = daysSliderRef.slider;
+    const daysValues$ = daysSliderRef.daysValues;
+
     this.tempSlider = tempSlider;
 
     fromEvent(this.meterFilter.nativeElement, 'keyup').pipe(
@@ -90,8 +93,8 @@ export class SbasSlidersTwoComponent implements OnInit {
 
     this.subs.add(
       daysValues$.subscribe(
-        ([start]) => {
-          const action = new filtersStore.SetTemporalRange({ start, end: null });
+        range => {
+          const action = new filtersStore.SetTemporalRange({ start: range[0], end: range[1] });
           this.store$.dispatch(action);
         }
       )
@@ -100,9 +103,9 @@ export class SbasSlidersTwoComponent implements OnInit {
     this.subs.add(
       this.store$.select(filtersStore.getTemporalRange).subscribe(
         temp => {
-          this.days = temp.start;
+          this.daysRange = {start: temp.start, end: temp.end};
           if (this.firstLoad) {
-            this.slider.set([this.days]);
+            this.slider.set([temp.start, temp.end]);
             this.firstLoad = false;
           }
         }
@@ -149,25 +152,26 @@ export class SbasSlidersTwoComponent implements OnInit {
   }
 
   public updateDaysOffset() {
-    this.options.controls.days.setValue(this.days);
-    this.daysValues$.next([this.days, null] );
+    this.options.controls.days.setValue(this.daysRange);
+    this.daysValues$.next([this.daysRange.start, this.daysRange.end] );
   }
 
-  private makeDaysSlider$(filterRef: ElementRef) {
-    // @ts-ignore
+  private makeDaysSlider$(filterRef: ElementRef): {slider: any, daysValues: Observable<number[]>} {
+
     this.slider = noUiSlider.create(filterRef.nativeElement, {
       orientation: 'horizontal',
       direction: 'ltr',
-      start: [48],
+      start: [1, 48],
       behaviour: 'tap-drag',
       tooltips: false,
+      connect: true,
       step: 1,
       range: {
         'min': 0,
         'max': 60
       },
       pips: {
-        mode: 'positions',
+        mode: noUiSlider.PipsMode.Positions,
         values: [0, 20, 40, 60, 80, 100],
         density: 4,
         stepped: true,
@@ -182,12 +186,12 @@ export class SbasSlidersTwoComponent implements OnInit {
       this.daysValues$.next(values.map(v => +v));
     });
 
-    return [
-      this.slider,
-      this.daysValues$.asObservable().pipe(
+    return {
+      slider: this.slider,
+      daysValues: this.daysValues$.asObservable().pipe(
         debounceTime(500),
         distinctUntilChanged()
       )
-    ];
+    };
   }
 }

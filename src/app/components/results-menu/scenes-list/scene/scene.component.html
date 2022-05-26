@@ -3,9 +3,10 @@
     (mouseleave) ="onClearFocused()"
     [class.hovered]="hovered"
     [class.selected]="isSelected"
+    [ngStyle]="{'padding-right': breakpoint > breakpoints.MEDIUM && searchType === SearchTypes.BASELINE ? '10px' : 'auto'}"
     [ngClass]="{'mobile-size': breakpoint <= breakpoints.SMALL}">
 
-  <div class="image-flex">
+  <div class="image-flex" *ngIf="searchType !== SearchTypes.BASELINE || breakpoint > breakpoints.SMALL">
     <img class="list-thumbnail"
          [src]="scene.thumbnail"
          onerror="this.src='assets/no-thumb.png'"
@@ -13,7 +14,9 @@
          matListAvatar>
   </div>
 
-  <div class="div-flex">
+  <div [ngClass]="{
+    'baseline-flex': searchType === SearchTypes.BASELINE && breakpoint > breakpoints.SMALL,
+    'div-flex': searchType !== SearchTypes.BASELINE || breakpoint <= breakpoints.SMALL }">
     <div class="div-flex-column">
       <div class="div-flex"
            [title]="scene.metadata.fileName || scene.name"
@@ -48,7 +51,7 @@
       </span>
       <span *ngIf="breakpoint === breakpoints.MOBILE || searchType === SearchTypes.BASELINE"
         matTooltip="Scene Start Time">
-        {{ scene.metadata.date | shortDate }}
+        {{ scene.metadata.date| shortDate }}
       </span>
     </div>
   </div>
@@ -61,14 +64,14 @@
 
         <mat-icon
           *ngIf="!!hyp3ableByJobType && hyp3ableByJobType.total > 0"
-          class="icon-margin"
+          class="icon-margin mobile-svg"
           [matMenuTriggerFor]="sceneAdd.addMenu"
           [matMenuTriggerData]="{ hyp3able: hyp3ableByJobType.byJobType }"
           svgIcon="hyp3">
         </mat-icon>
 
         <mat-icon *ngIf="isDownloadable(scene)"
-          (click)="onToggleScene($event, scene.groupId)"
+          (click)="onToggleScene()"
           class="icon-margin"
           matTooltip="{{
             isQueued ?
@@ -84,39 +87,39 @@
         <span class="number-queued"> {{ numQueued }} </span>
       </div>
 
-      <div *ngIf="searchType === SearchTypes.CUSTOM_PRODUCTS" style="margin-right: 10px;">
+      <div *ngIf="searchType === SearchTypes.CUSTOM_PRODUCTS" style="margin-right: 10px;" [ngClass]="{'mobile-size': breakpoint <= breakpoints.SMALL}">
       <mat-icon *ngIf="isExpired(scene.metadata.job)"
         [matMenuTriggerFor]="sceneAdd.addMenu"
         [matMenuTriggerData]="{ hyp3able: getExpiredHyp3ableObject().byJobType }"
-        class="icon-margin"
+        class="icon-margin mobile-svg"
         svgIcon="hyp3">
       </mat-icon>
       </div>
       <div *ngIf="!isDownloadable(scene)" class="scene-controls ml-2">
-        <app-hyp3-job-status-badge [job]="scene.metadata.job">
+        <app-hyp3-job-status-badge [job]="scene.metadata.job" [isFileDetails]="false">
         </app-hyp3-job-status-badge>
       </div>
     </ng-container>
 
     <ng-container *ngIf="searchType === SearchTypes.BASELINE">
       <div style="display: flex;" [ngClass]="{'mobile-size': breakpoint <= breakpoints.SMALL}">
-        <div style="display: flex; justify-content: space-evenly; width: 135px;">
-          <div class="metric-flex-field">
+        <div style="display: flex; justify-content: space-evenly;">
+          <div [ngClass]="{'mobile-baseline': breakpoint <= breakpoints.SMALL, 'metric-flex-field': true}">
             {{ withOffset(scene.metadata.perpendicular, offsets.perpendicular) }}m
           </div>
 
-            <div class="metric-flex-field">
+            <div [ngClass]="{'mobile-baseline': breakpoint <= breakpoints.SMALL, 'metric-flex-field': true}">
               {{ withOffset(scene.metadata.temporal, offsets.temporal) }}d
             </div>
             <div class="cart-flex-field">
               <mat-icon *ngIf="hyp3ableByJobType.total > 0"
                 [matMenuTriggerFor]="sceneAdd.addMenu"
                 [matMenuTriggerData]="{ hyp3able: hyp3ableByJobType.byJobType }"
-                class="icon-margin"
+                class="icon-margin mobile-svg"
                 svgIcon="hyp3">
               </mat-icon>
               <mat-icon *ngIf="isDownloadable(scene)"
-                (click)="onToggleScene($event, scene.groupId)"
+                (click)="onToggleScene()"
                 class="icon-margin"
                 matTooltip="{{
                   isQueued ?
@@ -130,7 +133,10 @@
   </div>
 </ng-container>
 
-<app-on-demand-add-menu #sceneAdd>
+<app-on-demand-add-menu
+#sceneAdd
+[isExpired]="isExpired(scene.metadata.job)"
+[expiredJobs]="scene.metadata.job">
 </app-on-demand-add-menu>
 
 </button>

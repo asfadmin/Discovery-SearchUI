@@ -1,0 +1,20 @@
+@import "asf-theme";
+$color: $asf-primary-dark;
+
+button {
+  height: 36px;
+  font-weight: 100;
+}
+
+.mat-button {
+  font-size: 16px;
+  color: $color;
+}
+
+.badge {
+  display: inline;
+  background: #c9cac4;
+  margin: 5px;
+  padding: 5px;
+  border-radius: 50px;
+}

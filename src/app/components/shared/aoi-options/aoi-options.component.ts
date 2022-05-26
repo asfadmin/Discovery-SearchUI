@@ -8,11 +8,11 @@ import { Store } from '@ngrx/store';
 
 import { AppState } from '@store';
 import * as mapStore from '@store/map';
-import { MapInteractionModeType } from '@models';
-import { MapService } from '@services';
+import { MapInteractionModeType, Breakpoints, SearchType } from '@models';
+import { MapService, ScreenSizeService } from '@services';
 import { SubSink } from 'subsink';
-
-import * as models from '@models';
+import { getSearchType, SetSearchOutOfDate } from '@store/search';
+import { getIsFiltersMenuOpen, getIsResultsMenuOpen } from '@store/ui';
 
 // Declare GTM dataLayer array.
 declare global {
@@ -22,7 +22,7 @@ declare global {
 @Component({
   selector: 'app-aoi-options',
   templateUrl: './aoi-options.component.html',
-  styleUrls: ['./aoi-options.component.css'],
+  styleUrls: ['./aoi-options.component.scss'],
 })
 export class AoiOptionsComponent implements OnInit, OnDestroy {
   @ViewChild('polygonInputForm') public polygonForm: NgForm;
@@ -32,6 +32,14 @@ export class AoiOptionsComponent implements OnInit, OnDestroy {
 
   public drawMode$ = this.store$.select(mapStore.getMapDrawMode);
   public interactionMode$ = this.store$.select(mapStore.getMapInteractionMode);
+
+  public searchType$ = this.store$.select(getSearchType);
+  public searchtype: SearchType;
+  public isResultsMenuOpen: boolean;
+  public isFiltersMenuOpen: boolean;
+
+  public breakpoint: Breakpoints;
+  public breakpoints = Breakpoints;
 
   public polygon: string;
   public interactionTypes = MapInteractionModeType;
@@ -43,6 +51,7 @@ export class AoiOptionsComponent implements OnInit, OnDestroy {
   constructor(
     private store$: Store<AppState>,
     private mapService: MapService,
+    private screenSize: ScreenSizeService,
   ) {}
 
   ngOnInit() {
@@ -61,20 +70,41 @@ export class AoiOptionsComponent implements OnInit, OnDestroy {
       )
     );
 
+    this.subs.add(
+      this.screenSize.breakpoint$.subscribe(
+        breakpoint => this.breakpoint = breakpoint
+      )
+    );
+
+    this.subs.add(
+      this.searchType$.subscribe( searchtype => this.searchtype = searchtype)
+    );
+
+    this.subs.add(
+      this.store$.select(getIsFiltersMenuOpen).subscribe(isOpen => this.isFiltersMenuOpen = isOpen)
+    );
+
+    this.subs.add(
+      this.store$.select(getIsResultsMenuOpen).subscribe(isOpen => this.isResultsMenuOpen = isOpen)
+    );
+
     this.handleAOIErrors();
   }
 
   public onFileHovered(e): void {
-    const mode = models.MapInteractionModeType.UPLOAD;
-    this.store$.dispatch(new mapStore.SetMapInteractionMode(mode));
     e.preventDefault();
   }
 
-  public onInputSearchPolygon(polygon: string): void {
+  public onInputSearchPolygon(event: Event): void {
+    const polygon = (event.target as HTMLInputElement).value;
     const didLoad = this.mapService.loadPolygonFrom(polygon);
 
     if (!didLoad) {
       this.aoiErrors$.next();
+    } else {
+      if (this.searchtype === SearchType.DATASET && this.isResultsMenuOpen && !this.isFiltersMenuOpen) {
+        this.store$.dispatch(new SetSearchOutOfDate(true));
+      }
     }
   }
 
@@ -94,6 +124,10 @@ export class AoiOptionsComponent implements OnInit, OnDestroy {
 
   public onClose(): void {
     this.close.emit();
+  }
+
+  public onOpenHelp(): void {
+    window.open('https://docs.asf.alaska.edu/vertex/manual/#area-of-interest-options');
   }
 
   private handleAOIErrors(): void {

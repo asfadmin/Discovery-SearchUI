@@ -11,7 +11,8 @@ import { ScreenSizeService } from '@services';
 enum FilterPanel {
   MASTER = 'Master',
   DATE = 'Date',
-  BASELINE = 'Baseline'
+  BASELINE = 'Baseline',
+  SEARCH = 'Search'
 }
 
 @Component({
@@ -52,6 +53,10 @@ export class BaselineFiltersComponent implements OnInit, OnDestroy {
 
   public selectPanel(panel: FilterPanel): void {
     this.selectedPanel = panel;
+  }
+
+  public onOpenHelp(url: string): void {
+    window.open(url);
   }
 
   ngOnDestroy() {

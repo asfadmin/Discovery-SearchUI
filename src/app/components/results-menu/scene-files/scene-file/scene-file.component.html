@@ -5,7 +5,7 @@
   <ng-container matListIcon *ngIf="canUnzip(product)">
     <mat-icon
       *ngIf="!isUnzipLoading && !isOpen"
-      (click)="onLoadUnzippedPoduct()"
+      (click)="onLoadUnzippedProduct()"
       [matTooltip]="unzipTooltip(isUserLoggedIn, hasAccessToRestrictedData)"
       [class.clickable]="!isUnzipDisabled(isUserLoggedIn, hasAccessToRestrictedData)"
       [class.fainter-text]="isUnzipDisabled(isUserLoggedIn, hasAccessToRestrictedData)"
@@ -28,7 +28,7 @@
   </ng-container>
 
   <div [class.clickable]="!product.metadata.job" mat-line>
-    <b>
+    <b *ngIf="(searchType$ | async) !== searchTypes.CUSTOM_PRODUCTS; else customProductsDisplay">
       <span *ngIf="product.productTypeDisplay.length > 40">
         {{ product.productTypeDisplay | truncate : 36 }}{{ product.productTypeDisplay | truncate : -4 : '' }}
       </span>
@@ -39,6 +39,22 @@
         {{ expirationBadge(product.metadata.job.expiration_time) }}
       </span>
     </b>
+
+    <ng-template #customProductsDisplay>
+    <span *ngIf="product.productTypeDisplay.length > 40">
+      <b style="font-size: 14px;">Type:</b>
+      {{ product.productTypeDisplay | truncate : 36 }}{{ product.productTypeDisplay | truncate : -4 : '' }}
+    </span>
+    <span *ngIf="product.productTypeDisplay.length <= 40">
+      <b style="font-size: 14px;">Type:</b>
+      {{ product.productTypeDisplay }}
+    </span>
+    <span *ngIf="product.metadata.job && product.metadata.job.expiration_time">
+      {{ expirationBadge(product.metadata.job.expiration_time) }}
+    </span>
+  </ng-template>
+
+
 
     <a *ngIf="isHovered && !product.metadata.job" class="icon-margin">
       <app-copy-to-clipboard
@@ -66,28 +82,29 @@
       </mat-menu>
     </button>
 
-    <div mat-line>
+    <div mat-line class="file-sub-line">
       <span *ngIf="product.bytes === 0">Virtual</span>
-      <span *ngIf="isDownloadable(product) && product.bytes !== 0">{{product.bytes | readableSizeFromBytes }}</span>
+      <span *ngIf="isDownloadable(product) && product.bytes !== 0">{{product.bytes.toString() | readableSizeFromBytes }}</span>
     </div>
 
     <div *ngIf="product.metadata.job && product.metadata.job.name" mat-line>
-      Project Name: {{ product.metadata.job.name }}
+      <b>Project Name:</b> {{ product.metadata.job.name }}
     </div>
 
     <div *ngIf="product.metadata.job" mat-line>
-      Job Submitted: {{ product.metadata.job.request_time | fullDate }}
+      <b>Job Submitted:</b> {{ product.metadata.job.request_time| fullDate }}
     </div>
 
     <div *ngFor="let param of paramsList" mat-line>
-      {{ param.name }}: {{ param.val }}
+      <b>{{ param.name }}:</b> {{ param.val }}
     </div>
 
-    <a *ngIf="isDownloadable(product)" mat-icon-button
-      [href]="product.downloadUrl" target="_blank"
-      matTooltip="Download file">
-      <mat-icon>cloud_download</mat-icon>
-    </a>
+    <app-download-file-button
+      [attr.id]="'scene_' + product.id"
+      [product] = "product"
+      (productDownloaded)="prodDownloaded($event)"
+      [disabled]="isExpired(product.metadata.job)">
+    </app-download-file-button>
 
     <app-cart-toggle
       *ngIf="isDownloadable(product)"
@@ -108,7 +125,7 @@
     <mat-menu #expiredJobs ='matMenu'>
 
     <button (click)="queueExpiredHyp3Job()" mat-menu-item>
-      Add Expired {{ product.metadata.job.job_type }} job to On Demand Queue
+      Add job
     </button>
   </mat-menu>
   </div>

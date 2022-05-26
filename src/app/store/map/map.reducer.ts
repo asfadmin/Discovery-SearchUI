@@ -10,15 +10,21 @@ export interface MapState {
   drawMode: models.MapDrawModeType;
   interactionMode: models.MapInteractionModeType;
   layerType: models.MapLayerTypes;
+  gridLinesActive: boolean;
   isMapInitialized: boolean;
+  browseOverlayOpacity: number;
+  overviewMapOpen: boolean;
 }
 
 export const initState: MapState = {
-  view: models.MapViewType.EQUITORIAL,
+  view: models.MapViewType.EQUATORIAL,
   drawMode: models.MapDrawModeType.BOX,
   interactionMode: models.MapInteractionModeType.DRAW,
   layerType: models.MapLayerTypes.SATELLITE,
+  gridLinesActive: false,
   isMapInitialized: false,
+  browseOverlayOpacity: 1.0,
+  overviewMapOpen: false
 };
 
 
@@ -59,10 +65,34 @@ export function mapReducer(state = initState, action: MapActions): MapState {
       };
     }
 
+    case MapActionType.SET_MAP_GRID_LINES: {
+      return {
+        ...state,
+        gridLinesActive: action.payload
+      };
+    }
+
     case MapActionType.MAP_INITIALIZED: {
       return {
         ...state,
         isMapInitialized: true,
+      };
+    }
+
+    case MapActionType.SET_BROWSE_OVERLAY_OPACITY: {
+      const browseOverlayOpacity = action.payload < 0
+        ? 0 : action.payload > 1.0
+        ? 1.0 : action.payload;
+      return {
+        ...state,
+        browseOverlayOpacity
+      };
+    }
+
+    case MapActionType.TOGGLE_OVERVIEW_MAP: {
+      return {
+        ...state,
+        overviewMapOpen: action.payload
       };
     }
 
@@ -95,7 +125,22 @@ export const getMapInteractionMode = createSelector(
   (state: MapState) => state.interactionMode
 );
 
+export const getAreGridlinesActive = createSelector(
+  getMapState,
+  (state: MapState) => state.gridLinesActive
+);
+
 export const getIsMapInitialization = createSelector(
   getMapState,
   (state: MapState) => state.isMapInitialized
+);
+
+export const getIsOverviewMapOpen = createSelector(
+  getMapState,
+  (state: MapState) => state.overviewMapOpen
+);
+
+export const getBrowseOverlayOpacity = createSelector(
+  getMapState,
+  (state: MapState) => state.browseOverlayOpacity
 );

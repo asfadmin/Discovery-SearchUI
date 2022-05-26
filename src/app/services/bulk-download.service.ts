@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpResponse } from '@angular/common/http';
 
 import { Observable } from 'rxjs';
 
 import { EnvironmentService } from '@services/environment.service';
-import { CMRProduct } from '@models';
+import { CMRProduct, SarviewsProduct } from '@models';
 
 @Injectable({
   providedIn: 'root'
@@ -18,17 +18,27 @@ export class BulkDownloadService {
   private get url(): string {
     return this.env.currentEnv.bulk_download;
   }
-
-  public downloadScript$(products: CMRProduct[]): Observable<any> {
+  public downloadCMRProductsScript$(products: CMRProduct[]): Observable<HttpResponse<Blob>> {
     const productsStr = products
-      .map(product => product.downloadUrl)
-      .join(',');
+    .map(product => product.downloadUrl)
+    .join(',');
+
+    return this.downloadScript$(productsStr);
+  }
+  public downloadSarviewsProductsScript$(products: SarviewsProduct[]): Observable<HttpResponse<Blob>> {
+    const productsStr = products
+    .map(product => product.files.product_url)
+    .join(',');
+
+    return this.downloadScript$(productsStr);
+  }
+  public downloadScript$(productsListStr: string) {
 
     const formData = new FormData();
-    formData.append('products', productsStr);
+    formData.append('products', productsListStr);
 
-    return this.http.post(this.url, formData, {
-      responseType: 'blob',
+    return this.http.post<Blob>(this.url, formData, {
+      responseType: 'blob' as 'json',
       observe: 'response'
     });
   }

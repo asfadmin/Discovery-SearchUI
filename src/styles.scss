@@ -7,6 +7,16 @@
   font-family: Roboto, sans-serif;
 }
 
+.cdk-overlay-container {
+  position: absolute;
+  z-index: unset;
+
+  .cdk-overlay-connected-position-bounding-box {
+    z-index: 2000;
+  }
+
+}
+
 // regular style toast
 @import '~ngx-toastr/toastr';
 
@@ -15,7 +25,7 @@
   top: 115px;
   right: 25px;
   float: right;
-  z-index: 99 !important;
+  z-index: 1099;
 }
 
 // toast style overrides
@@ -344,7 +354,7 @@ ul {
 
   .mat-dialog-container {
     background-color: $asf-primary-light;
-    padding-bottom: 20px;
+    padding-bottom: 0px;
     padding-top: 11px;
     padding-left: 12px;
     padding-right: 12px;
@@ -366,7 +376,7 @@ ul {
 
 .mat-select-panel {
   max-width: 340px !important;
-  max-height: 312px !important;
+  max-height: 364px !important;
 }
 
 .saved-searches__filter-form-mobile .mat-form-field-infix {
@@ -403,6 +413,10 @@ ul {
 
 .slider .noUi-connect {
   background: $asf-blue;
+}
+
+.slider [disabled] .noUi-connect {
+  color: grey !important;
 }
 
 // for the sbas chart
@@ -473,7 +487,7 @@ ul {
 }
 
 $background-color: $asf-primary-light;
-$d-width: 350px;
+$d-width: 600px;
 $d-height: 500px;
 
 #ConfirmProcess {
@@ -500,5 +514,60 @@ $d-height: 500px;
 .mat-pseudo-checkbox-indeterminate,
 .mat-accent .mat-pseudo-checkbox-checked,
 .mat-accent .mat-pseudo-checkbox-indeterminate {
-  background: gray;
+  background: gray !important;
+}
+
+.on-demand-tooltip {
+  font-size: 16px;
+}
+
+.content-block .mat-step-header .mat-step-icon-selected {
+  background-color: $asf-blue !important;
+  color: #fff;
+}
+
+.content-block .mat-step-header .mat-step-icon {
+  background-color: $asf-primary;
+  color: #fff;
+}
+
+.content-block .mat-step-label-selected {
+  font-size: 16px !important;
+}
+
+.content-block .mat-step-label {
+  font-size: 20px;
+}
+
+.content-block .mat-horizontal-stepper-header-container {
+  margin-bottom: 20px;
+}
+
+.event-slider {
+  .noUi-handle::after,
+  .noUi-handle::before {
+    height: 10px;
+    top: 4px;
+  }
+
+  .noUi-handle::before {
+    left: 12px;
+  }
+
+  .noUi-handle::after {
+    left: 16px;
+  }
+
+  .noUi-handle {
+    width: 30px !important;
+    height: 20px !important;
+  }
+
+  .noUi-pips {
+    font-size: 14px !important;
+  }
+
+  .noUi-value {
+    margin-top: 4px;
+  }
 }

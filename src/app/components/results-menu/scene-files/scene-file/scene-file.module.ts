@@ -13,22 +13,24 @@ import { TruncateModule } from '@yellowspot/ng-truncate';
 import { PipesModule } from '@pipes';
 
 import { SceneFileComponent } from './scene-file.component';
+import {DownloadFileButtonModule} from '@components/shared/download-file-button/download-file-button.module';
 
 
 @NgModule({
   declarations: [SceneFileComponent],
-  imports: [
-    CommonModule,
-    FontAwesomeModule,
-    MatSharedModule,
-    MatMenuModule,
-    MatChipsModule,
-    CopyToClipboardModule,
-    Hyp3JobStatusBadgeModule,
-    CartToggleModule,
-    TruncateModule,
-    PipesModule,
-  ],
+    imports: [
+        CommonModule,
+        FontAwesomeModule,
+        MatSharedModule,
+        MatMenuModule,
+        MatChipsModule,
+        CopyToClipboardModule,
+        Hyp3JobStatusBadgeModule,
+        CartToggleModule,
+        TruncateModule,
+        PipesModule,
+        DownloadFileButtonModule,
+    ],
   exports: [
     SceneFileComponent
   ]

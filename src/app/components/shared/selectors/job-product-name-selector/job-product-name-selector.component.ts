@@ -19,7 +19,7 @@ import { Breakpoints, menuAnimation } from '@models';
 })
 export class JobProductNameSelectorComponent implements OnInit, OnDestroy {
   @Input() headerView: boolean;
-  public productNameFilter: string;
+  public productNameFilter = '';
   private subs = new SubSink();
   public filteredOptionsList: string[];
   public unfilteredScenes: string[];
@@ -86,7 +86,12 @@ export class JobProductNameSelectorComponent implements OnInit, OnDestroy {
     );
   }
 
-  public onFilterProductName(productName: string): void {
+  public onFilterProductName(event: Event): void {
+    const productName = (event.target as HTMLInputElement).value;
+    this.setProductNameFilter(productName);
+  }
+
+  private setProductNameFilter(productName: string ) {
     const action = new filtersStore.SetProductNameFilter(productName);
     this.store$.dispatch(action);
   }
@@ -164,7 +169,7 @@ export class JobProductNameSelectorComponent implements OnInit, OnDestroy {
   }
 
   public onClearFilter() {
-    this.onFilterProductName('');
+    this.setProductNameFilter('');
   }
 
   ngOnDestroy(): void {

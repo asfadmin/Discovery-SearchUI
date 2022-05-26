@@ -1,9 +1,9 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { SubSink } from 'subsink';
-import { HttpClient } from '@angular/common/http';
+import { saveAs } from 'file-saver';
 
 import { MatDialog } from '@angular/material/dialog';
-import { ClipboardService } from 'ngx-clipboard';
+import { HttpClient } from '@angular/common/http';
 
 import { Store } from '@ngrx/store';
 import { AppState } from '@store';
@@ -13,13 +13,17 @@ import * as uiStore from '@store/ui';
 import * as searchStore from '@store/search';
 
 import { PreferencesComponent } from './preferences/preferences.component';
-import { CustomizeEnvComponent } from './customize-env/customize-env.component';
 
-import { AuthService, AsfApiService, EnvironmentService, ScreenSizeService, NotificationService } from '@services';
-import { CMRProduct, Breakpoints, UserAuth, SavedSearchType, QueuedHyp3Job, SearchType } from '@models';
+import { AuthService, AsfApiService, EnvironmentService, ScreenSizeService } from '@services';
+import {
+  CMRProduct, Breakpoints, UserAuth, SidebarType,
+  QueuedHyp3Job, SearchType, AnalyticsEvent,
+  asfWebsite, derivedDatasets, datasetList
+} from '@models';
 
 import { collapseAnimation, rubberBandAnimation,
          zoomInUpAnimation,  tadaAnimation, wobbleAnimation } from 'angular-animations';
+import { ThemePalette } from '@angular/material/core';
 
 // Declare GTM dataLayer array.
 declare global {
@@ -40,15 +44,16 @@ declare global {
 })
 export class HeaderButtonsComponent implements OnInit, OnDestroy {
   anio: number = new Date().getFullYear();
-  public asfWebsiteUrl = 'https://www.asf.alaska.edu';
-  public maturity = this.env.maturity;
-  public commitUrl = '';
+  public asfWebsite = asfWebsite;
 
   public userAuth: UserAuth;
   public isLoggedIn = false;
   public breakpoint$ = this.screenSize.breakpoint$;
   public breakpoints = Breakpoints;
   private subs = new SubSink();
+
+  public accentPalette: ThemePalette = 'accent' as const;
+  public primaryPalette: ThemePalette = 'primary' as const;
 
   public queuedProducts: CMRProduct[];
   public queuedCustomProducts: QueuedHyp3Job[];
@@ -61,27 +66,19 @@ export class HeaderButtonsComponent implements OnInit, OnDestroy {
   public searchType$ = this.store$.select(searchStore.getSearchType);
   public searchTypes = SearchType;
 
+  public commitUrl = '';
+
   constructor(
     public authService: AuthService,
     public env: EnvironmentService,
+    private http: HttpClient,
     public asfApiService: AsfApiService,
-    public clipboard: ClipboardService,
     private screenSize: ScreenSizeService,
     private dialog: MatDialog,
     private store$: Store<AppState>,
-    private http: HttpClient,
-    private notificationService: NotificationService,
   ) {}
 
   ngOnInit() {
-    this.subs.add(
-      this.http.get('assets/commit-hash.json').subscribe(
-        (commitData: any) => {
-          this.commitUrl = `https://github.com/asfadmin/Discovery-SearchUI/tree/${commitData.hash}`;
-        }
-      )
-    );
-
     this.subs.add(
       this.store$.select(userStore.getUserAuth).subscribe(
         user => this.userAuth = user
@@ -96,6 +93,14 @@ export class HeaderButtonsComponent implements OnInit, OnDestroy {
             this.lastQProdCount = products.length;
             this.qProdState = !this.qProdState;
           }
+        }
+      )
+    );
+
+    this.subs.add(
+      this.http.get('assets/commit-hash.json').subscribe(
+        (commitData: any) => {
+          this.commitUrl = `https://github.com/asfadmin/Discovery-SearchUI/tree/${commitData.hash}`;
         }
       )
     );
@@ -190,197 +195,136 @@ export class HeaderButtonsComponent implements OnInit, OnDestroy {
 
   public onOpenUserGuide(): void {
     const url = 'https://docs.asf.alaska.edu/vertex/manual/';
+    const analyticsEvent = {
+      name: 'open-user-guide',
+      value: url
+    };
 
-    window.dataLayer = window.dataLayer || [];
-    window.dataLayer.push({
-      'event': 'open-user-guide',
-      'open-user-guide': url
-    });
-
-    window.open(
-      url,
-      '_blank'
-    );
+    this.openNewWindow(url, analyticsEvent);
   }
   public onOpenHyP3Guide(): void {
     const url = 'https://hyp3-docs.asf.alaska.edu/';
+    const analyticsEvent = {
+      name: 'open-user-guide',
+      value: url
+    };
 
-    window.dataLayer = window.dataLayer || [];
-    window.dataLayer.push({
-      'event': 'open-user-guide',
-      'open-user-guide': url
-    });
-
-    window.open(
-      url,
-      '_blank'
-    );
+    this.openNewWindow(url, analyticsEvent);
   }
 
   public onOpenWhatsNew(): void {
     const url = 'https://docs.google.com/document/d/e/2PACX-1vSqQxPT8nhDQfbCLS8gBZ9SqSEeJy8BdSCiYVlBOXwsFwJ6_ct7pjtOqbXHo0Q3wzinzvO8bGWtHj0H/pub';
-    window.dataLayer = window.dataLayer || [];
-    window.dataLayer.push({
-      'event': 'open-whats-new',
-      'open-whats-new': url
-    });
+    const analyticsEvent = {
+      name: 'open-whats-new',
+      value: url
+    };
 
-    window.open(
-      url,
-      '_blank'
-    );
+    this.openNewWindow(url, analyticsEvent);
   }
 
   public onOpenASFWebSite(): void {
-    const url = this.asfWebsiteUrl;
+    const url = this.asfWebsite.home;
+    const analyticsEvent = {
+      name: 'open-asf-web-site',
+      value: url
+    };
 
-    window.dataLayer = window.dataLayer || [];
-    window.dataLayer.push({
-      'event': 'open-asf-web-site',
-      'open-asf-web-site': url
-    });
-
-    window.open(
-      url,
-      '_blank'
-    );
+    this.openNewWindow(url, analyticsEvent);
   }
 
   public onOpenOnDemandDocs(): void {
     const url = 'https://hyp3-docs.asf.alaska.edu/';
+    const analyticsEvent = {
+      name: 'open-hyp3-docs',
+      value: url
+    };
 
-    window.dataLayer = window.dataLayer || [];
-    window.dataLayer.push({
-      'event': 'open-hyp3-docs',
-      'open-asf-web-site': url
-    });
-
-    window.open(
-      url,
-      '_blank'
-    );
+    this.openNewWindow(url, analyticsEvent);
   }
 
   public onOpenAPIWebSite(): void {
-    const url = this.asfWebsiteUrl + '/api';
+    const url = `https://docs.asf.alaska.edu/api/basics/`;
+    const analyticsEvent = {
+      name: 'open-api-web-site',
+      value: url
+    };
 
-    window.dataLayer = window.dataLayer || [];
-    window.dataLayer.push({
-      'event': 'open-api-web-site',
-      'open-api-web-site': url
-    });
-
-    window.open(
-      url,
-      '_blank'
-    );
-  }
-
-  public onOpenDerivedDataset(dataset_path: string, dataset_name: string): void {
-    const url = this.asfWebsiteUrl + dataset_path;
-
-    window.dataLayer = window.dataLayer || [];
-    window.dataLayer.push({
-      'event': 'open-derived-dataset',
-      'open-derived-dataset': dataset_name
-    });
-
-    window.open(
-      url,
-      '_blank'
-    );
-  }
-
-  public onOpenCustomizeEnv(): void {
-    this.dialog.open(CustomizeEnvComponent, {
-      width: '800px',
-      height: '1000px',
-      maxWidth: '100%',
-      maxHeight: '100%'
-    });
+    this.openNewWindow(url, analyticsEvent);
   }
 
   public onOpenSavedSearches(): void {
-
     window.dataLayer = window.dataLayer || [];
     window.dataLayer.push({
       'event': 'open-saved-searches',
       'open-saved-searches': true
     });
 
-    this.store$.dispatch(new uiStore.SetSaveSearchOn(false));
-    this.store$.dispatch(new uiStore.SetSavedSearchType(SavedSearchType.SAVED));
-    this.store$.dispatch(new uiStore.OpenSidebar());
+    this.store$.dispatch(new uiStore.OpenSidebar(SidebarType.SAVED_SEARCHES));
   }
 
   public onOpenSavedFilters(): void {
-
     window.dataLayer = window.dataLayer || [];
     window.dataLayer.push({
       'event': 'open-saved-filters',
       'open-saved-filters': true
     });
 
-    this.store$.dispatch(new uiStore.OpenFiltersSidebar());
+    this.store$.dispatch(new uiStore.OpenSidebar(SidebarType.USER_FILTERS));
   }
 
   public onOpenSearchHistory() {
-
     window.dataLayer = window.dataLayer || [];
     window.dataLayer.push({
       'event': 'open-search-history',
       'open-search-history': true
     });
 
-    this.store$.dispatch(new uiStore.SetSaveSearchOn(false));
-    this.store$.dispatch(new uiStore.SetSavedSearchType(SavedSearchType.HISTORY));
-    this.store$.dispatch(new uiStore.OpenSidebar());
+    this.store$.dispatch(new uiStore.OpenSidebar(SidebarType.SEARCH_HISTORY));
   }
 
   public onOpenProcessingQueue() {
     this.store$.dispatch(new uiStore.SetIsOnDemandQueueOpen(true));
   }
 
-  public onCopy(): void {
-    window.dataLayer = window.dataLayer || [];
-    window.dataLayer.push({
-      'event': 'copy-search-link',
-      'copy-search-link': window.location.href
-    });
-    this.clipboard.copyFromContent(window.location.href);
-    this.notificationService.clipboardSearchLink();
+  public onOpenSubscriptions() {
+    this.store$.dispatch(new uiStore.OpenSidebar(SidebarType.ON_DEMAND_SUBSCRIPTIONS));
   }
 
-  public onShareWithEmail() {
-    const subject = `New Search - ${encodeURIComponent(document.title)}`;
+  public listWebsiteLinks() {
+    const links = new Set<string>();
 
-    window.dataLayer = window.dataLayer || [];
-    window.dataLayer.push({
-      'event': 'share-with-email',
-      'share-with-email': encodeURIComponent(document.URL)
-    });
-
-    window.open(
-      `mailto:?subject=${subject}` +
-      `&body=${encodeURIComponent(document.URL)}`
+    Object.values(asfWebsite).forEach(
+      link => links.add(link)
     );
+    datasetList.forEach(dataset => {
+      links.add(dataset.infoUrl);
+      links.add(dataset.citationUrl);
+    });
+    derivedDatasets.forEach(dataset => {
+      links.add(dataset.info_url);
+      links.add(dataset.download_url);
+    });
+
+    const linkRows = Array.from(links)
+      .filter(link => link.includes('asf.alaska.edu'))
+      .join('\n');
+
+    const pairsCSV = `ASF Website Links\n${linkRows}`;
+
+    const blob = new Blob([pairsCSV], {
+      type: 'text/csv;charset=utf-8;',
+    });
+    saveAs(blob, 'asf-website-links.csv');
   }
 
-  public isDevMode(): boolean {
-    return !this.env.isProd;
-  }
+  private openNewWindow(url, analyticsEvent: AnalyticsEvent): void {
+    window.dataLayer = window.dataLayer || [];
+    window.dataLayer.push({
+      'event': analyticsEvent.name,
+      'open-derived-dataset': analyticsEvent.value
+    });
 
-  public onTestSelected(): void {
-    this.setMaturity('test');
-  }
-
-  public onProdSelected(): void {
-    this.setMaturity('prod');
-  }
-
-  private setMaturity(maturity: string): void {
-    this.maturity = maturity;
-    this.env.setMaturity(maturity);
+    window.open(url, '_blank');
   }
 
   ngOnDestroy() {

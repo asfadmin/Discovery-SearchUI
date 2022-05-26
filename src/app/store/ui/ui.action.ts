@@ -1,10 +1,11 @@
 import { Action } from '@ngrx/store';
 
-import { Banner, SavedSearchType } from '@models';
+import { Banner, SidebarType } from '@models';
 
 export enum UIActionType {
   TOGGLE_AOI_OPTIONS = '[UI] Toggle AOI Options',
   CLOSE_AOI_OPTIONS = '[UI] Close AOI Options',
+  OPEN_AOI_OPTIONS = '[UI] Open AOI Options',
 
   TOGGLE_FILTERS_MENU = '[UI] Toggle Filters Menu',
   CLOSE_FILTERS_MENU = '[UI] Close Filters Menu',
@@ -16,16 +17,8 @@ export enum UIActionType {
   SHOW_EXPIRED_DATA = '[UI] Show Expired Data',
   HIDE_EXPIRED_DATA = '[UI] Hide Expired Data',
 
-  CLOSE_SIDEBAR = '[UI] Close Sidebar',
   OPEN_SIDEBAR = '[UI] Open Sidebar',
-
-  OPEN_FILTERS_SIDEBAR  = '[UI] Close Filters Sidebar',
-  CLOSE_FILTERS_SIDEBAR = '[UI] Open FIlters Sidebar',
-
-  SET_SAVE_SEARCH_ON = '[UI] Set Save Search On',
-  SET_SAVED_SEARCH_TYPE = '[UI] Set Saved Search Type',
-
-  SET_SAVE_FILTER_ON = '[UI] Set Save Filter On',
+  CLOSE_SIDEBAR = '[UI] Close Sidebar',
 
   START_ADDING_CUSTOM_POINT = '[UI] Start Adding Custom Point',
   STOP_ADDING_CUSTOM_POINT = '[UI] Stop Adding Custom Point',
@@ -33,7 +26,7 @@ export enum UIActionType {
   SET_IS_BROWSE_DIALOG_OPEN = '[UI] Set Is Browse Dialog Open',
   SET_ONLY_SCENES_WITH_BROWSE = '[UI] Set Only Scenes With Browse',
   SET_HELP_DIALOG_TOPIC = '[UI] Set Help Dialog Topic',
-  SET_IS_DOWNLOAD_QUEUE_OPEN = '[UI] Is Downlaod Queue Open',
+  SET_IS_DOWNLOAD_QUEUE_OPEN = '[UI] Is Download Queue Open',
   SET_IS_ON_DEMAND_QUEUE_OPEN = '[UI] Is On Demand Queue Open',
 
   TOGGLE_BOTTOM_MENU = '[UI] Toggle Bottom Menu',
@@ -53,25 +46,24 @@ export class CloseAOIOptions implements Action {
   public readonly type = UIActionType.CLOSE_AOI_OPTIONS;
 }
 
+export class OpenAOIOptions implements Action {
+  public readonly type = UIActionType.OPEN_AOI_OPTIONS;
+}
+
 export class ToggleFiltersMenu implements Action {
   public readonly type = UIActionType.TOGGLE_FILTERS_MENU;
+}
+
+export class OpenSidebar implements Action {
+  public readonly type = UIActionType.OPEN_SIDEBAR;
+
+  constructor(public payload: SidebarType) {}
 }
 
 export class CloseSidebar implements Action {
   public readonly type = UIActionType.CLOSE_SIDEBAR;
 }
 
-export class OpenSidebar implements Action {
-  public readonly type = UIActionType.OPEN_SIDEBAR;
-}
-
-export class OpenFiltersSidebar implements Action {
-  public readonly type = UIActionType.OPEN_FILTERS_SIDEBAR;
-}
-
-export class CloseFiltersSidebar implements Action {
-  public readonly type = UIActionType.CLOSE_FILTERS_SIDEBAR;
-}
 export class ShowS1RawData implements Action {
   public readonly type = UIActionType.SHOW_S1_RAW_DATA;
 }
@@ -94,23 +86,6 @@ export class StartAddingCustomPoint implements Action {
 
 export class StopAddingCustomPoint implements Action {
   public readonly type = UIActionType.STOP_ADDING_CUSTOM_POINT;
-}
-
-export class SetSaveSearchOn implements Action {
-  public readonly type = UIActionType.SET_SAVE_SEARCH_ON;
-
-  constructor(public payload: boolean) {}
-}
-
-export class SetSaveFilterOn implements Action {
-  public readonly type = UIActionType.SET_SAVE_FILTER_ON;
-
-  constructor(public payload: boolean) {}
-}
-export class SetSavedSearchType implements Action {
-  public readonly type = UIActionType.SET_SAVED_SEARCH_TYPE;
-
-  constructor(public payload: SavedSearchType) {}
 }
 
 export class CloseFiltersMenu implements Action {
@@ -182,15 +157,11 @@ export class LoadBanners implements Action {
 export type UIActions =
   | ToggleAOIOptions
   | CloseAOIOptions
+  | OpenAOIOptions
   | OpenSidebar
-  | SetSaveSearchOn
-  | SetSaveFilterOn
+  | CloseSidebar
   | StartAddingCustomPoint
   | StopAddingCustomPoint
-  | SetSavedSearchType
-  | CloseSidebar
-  | OpenFiltersSidebar
-  | CloseFiltersSidebar
   | ToggleFiltersMenu
   | CloseFiltersMenu
   | OpenFiltersMenu

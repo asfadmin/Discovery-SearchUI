@@ -192,5 +192,30 @@ button {
   color: $uaf-primary-blue;
   position: fixed;
   margin-top: -18px;
-  margin-left: 24px;
+}
+
+.progress-bar {
+  position: absolute;
+  margin-top: 23px;
+  height: 2px;
+  width: calc(100% - 43px);
+  opacity: 30%;
+}
+
+.item-checkbox {
+  margin-right: 15px;
+}
+
+.item-second-line {
+  margin-left: 20px;
+}
+
+.item-summary-checkbox {
+  margin-left: 7px;
+  margin-right: 17px;
+}
+
+.global-progress {
+  width: calc(100% + 20px);
+  left: -10px;
 }

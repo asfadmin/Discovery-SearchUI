@@ -7,12 +7,13 @@ import { SubSink } from 'subsink';
 import { Store } from '@ngrx/store';
 import { AppState } from '@store';
 import * as filtersStore from '@store/filters';
+import { MatSlideToggleChange } from '@angular/material/slide-toggle';
 
 
 @Component({
   selector: 'app-season-selector',
   templateUrl: './season-selector.component.html',
-  styleUrls: ['./season-selector.component.css']
+  styleUrls: ['./season-selector.component.scss']
 })
 export class SeasonSelectorComponent implements OnInit, OnDestroy {
   public isSeasonalSearch = false;
@@ -39,34 +40,46 @@ export class SeasonSelectorComponent implements OnInit, OnDestroy {
     );
   }
 
-  public onToggleSeasonalOptions(): void {
-    this.store$.dispatch(new filtersStore.ClearSeason());
+  public onToggleSeasonalOptions(event: MatSlideToggleChange): void {
+    if (!event.checked) {
+      this.store$.dispatch(new filtersStore.ClearSeason());
+    } else {
+      this.store$.dispatch(new filtersStore.SetSeasonStart(1));
+      this.store$.dispatch(new filtersStore.SetSeasonEnd(180));
+    }
   }
 
   public onSeasonStartChange(dayOfYear: number): void {
-    this.store$.dispatch(new filtersStore.SetSeasonStart(dayOfYear));
+    this.start = dayOfYear;
   }
 
   public onSeasonEndChange(dayOfYear: number): void {
-    this.store$.dispatch(new filtersStore.SetSeasonEnd(dayOfYear));
+    this.end = dayOfYear;
+  }
+  public onSeasonDoneSelecting() {
+    this.store$.dispatch(new filtersStore.SetSeasonStart(this.start));
+    this.store$.dispatch(new filtersStore.SetSeasonEnd(this.end));
   }
 
-  public dayOfYearFormat(dayOfYear: number | null, month = 'numeric'): string {
-    const date = new Date();
-    date.setFullYear(2019);
+  public swap() {
+    const temp = this.start;
+    const temp2 = this.end;
 
-    date.setMonth(0);
-    date.setDate(0);
-    const timeOfFirst = date.getTime(); // this is the time in milliseconds of 1/1/YYYY
-    const dayMilli = 1000 * 60 * 60 * 24;
-    const dayNumMilli = dayOfYear * dayMilli;
-    date.setTime(timeOfFirst + dayNumMilli);
-
-    return  date.toLocaleDateString('en-US', {
-      month: <'numeric'>month, day: 'numeric'
-    });
+    this.store$.dispatch(new filtersStore.SetSeasonStart(temp2));
+    this.store$.dispatch(new filtersStore.SetSeasonEnd(temp));
   }
+  public change(which: string, amount: number) {
+    let value = (which === 'start') ? this.start : this.end;
+    value += amount;
+    value = value < 1 ? 365 + value : value;
+    value = value > 365 ? value % 365 : value;
 
+    if (which === 'start') {
+      this.store$.dispatch(new filtersStore.SetSeasonStart(value));
+    } else {
+      this.store$.dispatch(new filtersStore.SetSeasonEnd(value));
+    }
+  }
   ngOnDestroy() {
     this.subs.unsubscribe();
   }

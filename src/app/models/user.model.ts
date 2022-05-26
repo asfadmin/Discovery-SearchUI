@@ -1,6 +1,5 @@
-
 import { MapLayerTypes } from './map.model';
-// import { SearchType } from '@models';
+
 export interface UserAuth {
   id: string | null;
   token: string | null;
@@ -11,11 +10,13 @@ export interface UserProfile {
   defaultDataset: string;
   mapLayer: MapLayerTypes;
   maxResults: number;
+  defaultMaxConcurrentDownloads: number;
   defaultFilterPresets: {
-    'Baseline Search' : string,
-    'Geographic Search' : string,
-    'SBAS Search' : string
-  }
+    'Baseline Search': string,
+    'Geographic Search': string,
+    'SBAS Search': string
+  };
+  hyp3BackendUrl: string;
 }
 
 export interface URSGroup {

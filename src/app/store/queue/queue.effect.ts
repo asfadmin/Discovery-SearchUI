@@ -11,9 +11,9 @@ import { AppState } from '../app.reducer';
 import {
   QueueActionType, DownloadMetadata, AddItems, RemoveItems,
   RemoveSceneFromQueue, DownloadSearchtypeMetadata,
-  AddJob, RemoveJob, AddJobs, ToggleProduct, QueueScene, FindPair, MakeDownloadScriptFromList
+  AddJob, RemoveJob, AddJobs, ToggleProduct, QueueScene, FindPair, MakeDownloadScriptFromList, MakeDownloadScriptFromSarviewsProducts
 } from './queue.action';
-import { getQueuedProducts } from './queue.reducer';
+import { getDuplicates, getQueuedProducts } from './queue.reducer';
 import * as scenesStore from '@store/scenes';
 
 import * as services from '@services';
@@ -40,7 +40,7 @@ export class QueueEffects {
     withLatestFrom(this.store$.select(getQueuedProducts)),
     map(([_, products]) => products),
     switchMap(
-      products => this.bulkDownloadService.downloadScript$(products)
+      products => this.bulkDownloadService.downloadCMRProductsScript$(products)
     ),
     map(
       req => { FileSaver.saveAs(req.body, req.headers.get('Content-Disposition').slice(20)); }
@@ -51,10 +51,19 @@ export class QueueEffects {
     ofType<MakeDownloadScriptFromList>(QueueActionType.MAKE_DOWNLOAD_SCRIPT_FROM_LIST),
     map(action => action.payload),
     switchMap(
-      (products) => this.bulkDownloadService.downloadScript$(products)
+      (products) => this.bulkDownloadService.downloadCMRProductsScript$(products)
     ),
     map(
-      blob => FileSaver.saveAs(blob, `download-all-${this.currentDate()}.py`)
+      blob => FileSaver.saveAs(blob.body, `download-all-${this.currentDate()}.py`)
+    )
+  ), { dispatch: false });
+
+  public MakeDownloadScriptFromSarviewsProductsList = createEffect(() => this.actions$.pipe(
+    ofType<MakeDownloadScriptFromSarviewsProducts>(QueueActionType.MAKE_DOWNLOAD_SCRIPT_FROM_SARVIEWS_PRODUCTS),
+    map(action => action.payload),
+    switchMap(products => this.bulkDownloadService.downloadSarviewsProductsScript$(products)),
+    map(
+      (blob) => FileSaver.saveAs(blob.body, `download-all-${this.currentDate()}.py`)
     )
   ), { dispatch: false });
 
@@ -133,7 +142,8 @@ export class QueueEffects {
 
   public addJob = createEffect(() => this.actions$.pipe(
     ofType<AddJob>(QueueActionType.ADD_JOB),
-    tap(act => this.notificationService.demandQueue(true, 1, act.payload.job_type.name)),
+    withLatestFrom(this.store$.select(getDuplicates)),
+    tap(([act, duplicates]) => this.notificationService.demandQueue(true, 1, act.payload.job_type.name, duplicates)),
   ),
     { dispatch: false }
   );
@@ -142,7 +152,11 @@ export class QueueEffects {
     ofType<AddJobs>(QueueActionType.ADD_JOBS),
     skip(1),
     map(action => action.payload),
-    tap(jobs => this.notificationService.demandQueue(true, jobs.length, jobs[0].job_type.name)),
+    withLatestFrom(this.store$.select(getDuplicates)),
+    map(([jobs, duplicates]) => {
+      const jobTypes = Array.from(jobs.reduce((types, job) => types = types.add(job.job_type.name), new Set<string>()));
+      this.notificationService.demandQueue(true, jobs.length, jobTypes.length === 1 ? jobTypes[0] : '', duplicates = duplicates);
+    }),
   ),
     { dispatch: false }
   );

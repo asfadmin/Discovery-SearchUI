@@ -1,12 +1,8 @@
 <div>
-  <mat-slide-toggle
+  <mat-slide-toggle [matTooltip]="optionInfo"
+    matTooltipClass="on-demand-tooltip"
     (change)="onValueChange($event.checked)"
     [(ngModel)]="value">
     {{ optionName }}
   </mat-slide-toggle>
-
-
-  <app-option-info class="option-info--spacing"
-    [infoText]="optionInfo">
-  </app-option-info>
 </div>

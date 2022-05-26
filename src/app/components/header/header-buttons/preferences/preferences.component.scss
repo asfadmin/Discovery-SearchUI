@@ -1,7 +1,7 @@
 @import "asf-theme";
 
 .action-controls {
-  margin-top: 15px;
+  margin-top: 25px;
   flex-shrink: 0;
   display: flex;
   flex-direction: row;
@@ -23,7 +23,7 @@
   justify-content: flex-end;
 }
 
-.dialg-header {
+.dialog-header {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
@@ -38,10 +38,18 @@
   padding-right: 24px;
 }
 
-.default-map {
-  margin-left: 30px;
+.default-dataset {
+  display: inline-block;
+  margin-right: 30px;
 }
 
-.default-filters-presets {
+.default-max-result,
+.default-max-concurrent-downloads,
+.default-filters-presets,
+.default-map {
   margin-right: 30px;
+}
+
+.section-heading {
+  margin-top: 20px;
 }

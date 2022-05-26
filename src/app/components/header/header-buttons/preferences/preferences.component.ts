@@ -4,7 +4,11 @@ import { AppState } from '@store';
 import * as userStore from '@store/user';
 
 import { MatDialogRef } from '@angular/material/dialog';
-import { MapLayerTypes, UserAuth, ProductType, datasetList, SearchType, SavedFilterPreset } from '@models';
+import {
+  MapLayerTypes, UserAuth, ProductType,
+  datasetList, SearchType, SavedFilterPreset, FilterType
+} from '@models';
+import { Hyp3Service } from '@services';
 import { SubSink } from 'subsink';
 
 
@@ -18,7 +22,9 @@ export class PreferencesComponent implements OnInit, OnDestroy {
   public defaultMaxResults: number;
   public defaultMapLayer: MapLayerTypes;
   public defaultDataset: string;
+  public defaultMaxConcurrentDownloads: number;
   public defaultProductTypes: ProductType[];
+  public hyp3BackendUrl: string;
 
   public defaultGeoSearchFiltersID;
   public defaultBaselineSearchFiltersID;
@@ -30,7 +36,7 @@ export class PreferencesComponent implements OnInit, OnDestroy {
   public userAuth: UserAuth;
 
   public searchType = SearchType;
-  public searchTypeKeys = Object.keys(this.searchType).filter(val => val !== 'LIST' && val !== 'CUSTOM_PRODUCTS')
+  public searchTypeKeys = Object.keys(this.searchType).filter(val => val !== 'LIST' && val !== 'CUSTOM_PRODUCTS');
   public selectedSearchType = SearchType.DATASET;
 
   public userFiltersBySearchType = {};
@@ -48,6 +54,7 @@ export class PreferencesComponent implements OnInit, OnDestroy {
   constructor(
     private dialogRef: MatDialogRef<PreferencesComponent>,
     private store$: Store<AppState>,
+    private hyp3: Hyp3Service,
   ) { }
 
   ngOnInit() {
@@ -58,7 +65,13 @@ export class PreferencesComponent implements OnInit, OnDestroy {
           this.defaultMapLayer = profile.mapLayer;
           this.defaultDataset = profile.defaultDataset;
           this.selectedFiltersIDs = profile.defaultFilterPresets;
-
+          this.defaultMaxConcurrentDownloads = profile.defaultMaxConcurrentDownloads;
+          this.hyp3BackendUrl = profile.hyp3BackendUrl;
+          if (this.hyp3BackendUrl) {
+            this.hyp3.setApiUrl(this.hyp3BackendUrl);
+          } else {
+            this.hyp3BackendUrl = this.hyp3.apiUrl;
+          }
         }
       )
     );
@@ -70,12 +83,18 @@ export class PreferencesComponent implements OnInit, OnDestroy {
     );
 
     this.subs.add(
-      this.store$.select(userStore.getSavedFilters).subscribe(savedFilters =>
-        {
+      this.store$.select(userStore.getSavedFilters).subscribe(savedFilters => {
           this.userFilters = savedFilters;
-          for(const searchtype in SearchType) {
-            if(searchtype !== "LIST" && searchtype !== "CUSTOM_PRODUCTS") {
-              this.userFiltersBySearchType[SearchType[searchtype]] = [];
+          for (const searchtype in SearchType) {
+            if (searchtype !== 'LIST' && searchtype !== 'CUSTOM_PRODUCTS') {
+              const defaultPreset: SavedFilterPreset = {
+                filters: {} as FilterType,
+                id: '',
+                name: 'Default',
+                searchType: searchtype[searchtype]
+              };
+
+              this.userFiltersBySearchType[SearchType[searchtype]] = [defaultPreset];
             }
           }
 
@@ -92,6 +111,7 @@ export class PreferencesComponent implements OnInit, OnDestroy {
   }
 
   public onClose(): void {
+    this.saveProfile();
     this.dialogRef.close();
   }
 
@@ -110,14 +130,28 @@ export class PreferencesComponent implements OnInit, OnDestroy {
     this.saveProfile();
   }
 
+  public onChangeDefaultMaxConcurrentDownloads(maxDownloads: number): void {
+    this.defaultMaxConcurrentDownloads = maxDownloads;
+    this.saveProfile();
+  }
+
   public onChangeDefaultFilterType(filterID: string, searchType: string): void {
     const key = SearchType[searchType];
     this.selectedFiltersIDs = {
       ... this.selectedFiltersIDs,
       [key]: filterID
-    }
+    };
 
     this.saveProfile();
+  }
+
+  public onChangeBackendUrl(): void {
+    console.log(this.hyp3BackendUrl);
+  }
+
+  public resetHyp3Url() {
+    this.hyp3.setDefaultApiUrl();
+    this.hyp3BackendUrl = this.hyp3.apiUrl;
   }
 
   public saveProfile(): void {
@@ -125,7 +159,9 @@ export class PreferencesComponent implements OnInit, OnDestroy {
       maxResults: this.defaultMaxResults,
       mapLayer: this.defaultMapLayer,
       defaultDataset: this.defaultDataset,
-      defaultFilterPresets: this.selectedFiltersIDs
+      defaultMaxConcurrentDownloads: this.defaultMaxConcurrentDownloads,
+      defaultFilterPresets: this.selectedFiltersIDs,
+      hyp3BackendUrl: this.hyp3BackendUrl,
     });
 
     this.store$.dispatch(action);

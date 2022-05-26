@@ -47,6 +47,15 @@ export class UserEffects {
     ),
     filter(resp => this.isSuccessfulResponse(resp)),
     filter(resp => this.isValidProfile(resp)),
+    map(
+      (profile: models.UserProfile) => !profile.defaultFilterPresets ? { ...profile,
+        defaultFilterPresets: {
+          'Baseline Search' : '',
+          'Geographic Search' : '',
+          'SBAS Search' : ''
+        }
+      } : profile
+    ),
     map(profile => new userActions.SetProfile(<models.UserProfile>profile))
   ));
 
@@ -142,6 +151,12 @@ export class UserEffects {
     map(_ => new hyp3Store.LoadUser())
   ));
 
+  public loadOnDemandSubscriptionsOnLogin = createEffect(() => this.actions$.pipe(
+    ofType<userActions.LoadSavedSearches>(userActions.UserActionType.LOGIN),
+    delay(400),
+    map(_ => new hyp3Store.LoadSubscriptions())
+  ));
+
   public loadSavedSearches = createEffect(() => this.actions$.pipe(
     ofType<userActions.LoadSavedSearches>(userActions.UserActionType.LOAD_SAVED_SEARCHES),
     withLatestFrom( this.store$.select(userReducer.getUserAuth)),
@@ -170,23 +185,38 @@ export class UserEffects {
     ofType<userActions.LoadFiltersPreset>(userActions.UserActionType.LOAD_FILTERS_PRESET),
     map(action => action.payload),
     withLatestFrom(this.store$.select(searchStore.getSearchType)),
-    filter(([filterPresetID, searchtype]) => filterPresetID !== ''
-      && !!filterPresetID
+    filter(([filterPresetID, searchtype]) => (filterPresetID === '' || !!filterPresetID)
       && searchtype !== SearchType.LIST
-      && searchtype !== SearchType.CUSTOM_PRODUCTS),
+      && searchtype !== SearchType.CUSTOM_PRODUCTS
+      && searchtype !== SearchType.SARVIEWS_EVENTS),
     withLatestFrom(this.store$.select(userReducer.getSavedFilters)),
-    map(([[presetId, searchType], userFilters]) => userFilters.filter(preset =>
-        preset.searchType === searchType).find(preset => preset.id === presetId)
+    map(([[presetId, searchType], userFilters]) => {
+      if (presetId === '') {
+        const defaultPreset: models.SavedFilterPreset = {
+          filters: {} as models.FilterType,
+          id: '',
+          name: 'Default',
+          searchType
+        };
+
+        return defaultPreset;
+      }
+      return userFilters.filter(preset =>
+        preset.searchType === searchType).find(preset => preset.id === presetId);
+      }
       ),
     filter(targetFilter => !!targetFilter),
     map(targetFilter => {
 
       let actions = [];
 
-      if(!!targetFilter) {
+      if (!!targetFilter) {
         this.store$.dispatch(new filterStore.ClearDatasetFilters());
         this.store$.dispatch(new filterStore.ClearPerpendicularRange());
         this.store$.dispatch(new filterStore.ClearTemporalRange());
+        if (targetFilter.id === '') {
+          return;
+        }
         switch (targetFilter.searchType) {
           case SearchType.DATASET:
             actions = this.setDatasetFilters(targetFilter.filters as GeographicFiltersType);

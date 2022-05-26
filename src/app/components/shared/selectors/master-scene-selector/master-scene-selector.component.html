@@ -1,8 +1,8 @@
 <form>
   <mat-form-field class="w100">
-    <mat-label>Reference Scene</mat-label>
+    <mat-label>Scene</mat-label>
     <input
-      (input)="onMasterSceneChanged($event.target.value)"
+      (input)="onMasterSceneChanged($event)"
       [(ngModel)]="masterScene"
       name="masterScene" matInput>
   </mat-form-field>

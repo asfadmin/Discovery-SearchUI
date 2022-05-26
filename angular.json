@@ -28,7 +28,7 @@
             ],
             "styles": [
               "./node_modules/ol/ol.css",
-              "./node_modules/nouislider/distribute/nouislider.min.css",
+              "./node_modules/nouislider/dist/nouislider.css",
               "src/styles.scss",
               "./node_modules/cookieconsent/build/cookieconsent.min.css",
               "./node_modules/tippy.js/dist/tippy.css",
@@ -48,7 +48,6 @@
               "subsink",
               "chart.js",
               "file-saver",
-              "nouislider",
               "pbf",
               "uuid/v1",
               "jwt-decode",
@@ -119,18 +118,6 @@
               "src/assets"
             ]
           }
-        },
-        "lint": {
-          "builder": "@angular-devkit/build-angular:tslint",
-          "options": {
-            "tsConfig": [
-              "src/tsconfig.app.json",
-              "src/tsconfig.spec.json"
-            ],
-            "exclude": [
-              "**/node_modules/**"
-            ]
-          }
         }
       }
     },
@@ -149,21 +136,13 @@
               "devServerTarget": "search-ui:serve:production"
             }
           }
-        },
-        "lint": {
-          "builder": "@angular-devkit/build-angular:tslint",
-          "options": {
-            "tsConfig": "e2e/tsconfig.e2e.json",
-            "exclude": [
-              "**/node_modules/**"
-            ]
-          }
         }
       }
     }
   },
   "defaultProject": "search-ui",
   "cli": {
+    "analytics": false,
     "defaultCollection": "@ngrx/schematics"
   },
   "schematics": {

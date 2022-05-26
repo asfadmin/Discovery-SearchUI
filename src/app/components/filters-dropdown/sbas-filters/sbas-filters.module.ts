@@ -11,6 +11,7 @@ import { MasterSceneSelectorModule } from '@components/shared/selectors/master-s
 import { SearchTypeSelectorModule } from '@components/shared/selectors/search-type-selector';
 import { ResultsMenuModule } from '@components/results-menu';
 import { CopyToClipboardModule } from '@components/shared/copy-to-clipboard';
+import {DocsModalModule} from '@components/shared/docs-modal';
 
 
 @NgModule({
@@ -25,7 +26,8 @@ import { CopyToClipboardModule } from '@components/shared/copy-to-clipboard';
         MasterSceneSelectorModule,
         SearchTypeSelectorModule,
         ResultsMenuModule,
-        CopyToClipboardModule
+        CopyToClipboardModule,
+        DocsModalModule
     ],
   exports: [
     SbasFiltersComponent

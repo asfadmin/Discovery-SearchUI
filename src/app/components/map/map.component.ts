@@ -12,6 +12,7 @@ import {
 import { Vector as VectorLayer} from 'ol/layer';
 import { Vector as VectorSource } from 'ol/source';
 import Overlay from 'ol/Overlay';
+import Point from 'ol/geom/Point';
 
 import tippy, {followCursor} from 'tippy.js';
 import { SubSink } from 'subsink';
@@ -23,8 +24,12 @@ import * as mapStore from '@store/map';
 import * as uiStore from '@store/ui';
 
 import * as models from '@models';
-import { MapService, WktService, ScreenSizeService, ScenesService } from '@services';
+import { MapService, WktService, ScreenSizeService, ScenesService, SarviewsEventsService } from '@services';
 import * as polygonStyle from '@services/map/polygon.style';
+import { CMRProduct, SarviewsEvent } from '@models';
+import { StyleLike } from 'ol/style/Style';
+import { Feature } from 'ol';
+import Geometry from 'ol/geom/Geometry';
 
 enum FullscreenControls {
   MAP = 'Map',
@@ -41,10 +46,12 @@ export class MapComponent implements OnInit, OnDestroy  {
   @Output() loadUrlState = new EventEmitter<void>();
   @ViewChild('overlay', { static: true }) overlayRef: ElementRef;
   @ViewChild('map', { static: true }) mapRef: ElementRef;
+  @ViewChild('browsetooltip', {static: false}) browseDisclaimer: ElementRef;
 
   public drawMode$ = this.store$.select(mapStore.getMapDrawMode);
   public interactionMode$ = this.store$.select(mapStore.getMapInteractionMode);
   public mousePosition$ = this.mapService.mousePosition$;
+  public isFiltersMenuOpen: boolean;
 
   public banners$ = this.store$.select(uiStore.getBanners);
 
@@ -62,19 +69,24 @@ export class MapComponent implements OnInit, OnDestroy  {
   public fullscreenControl = FullscreenControls.NONE;
   public fc = FullscreenControls;
 
-  private isMapInitialized$ = this.store$.select(mapStore.getIsMapInitialization);
-  private viewType$ = combineLatest(
-    this.store$.select(mapStore.getMapView),
-    this.store$.select(mapStore.getMapLayerType),
-  );
-
   public breakpoint: models.Breakpoints;
   public breakpoints = models.Breakpoints;
 
   public searchType: models.SearchType;
   public searchTypes = models.SearchType;
 
+  public selectedScene: CMRProduct;
+  public selectedSarviewEvent: SarviewsEvent;
+
   private subs = new SubSink();
+  private gridlinesActive$ = this.store$.select(mapStore.getAreGridlinesActive);
+  private isMapInitialized$ = this.store$.select(mapStore.getIsMapInitialization);
+  private viewType$ = combineLatest(
+    this.store$.select(mapStore.getMapView),
+    this.store$.select(mapStore.getMapLayerType),
+  );
+
+  private sarviewsEvents: SarviewsEvent[];
 
   constructor(
     private store$: Store<AppState>,
@@ -82,9 +94,24 @@ export class MapComponent implements OnInit, OnDestroy  {
     private wktService: WktService,
     private screenSize: ScreenSizeService,
     private scenesService: ScenesService,
+    private eventMonitoringService: SarviewsEventsService,
   ) {}
 
   ngOnInit(): void {
+    this.subs.add(
+    this.mapService.selectedSarviewEvent$.pipe(
+      filter(id => !!id)
+    ).subscribe(
+      id => this.selectedSarviewEvent = this.sarviewsEvents?.find(event => event?.event_id === id)
+    ));
+
+    this.subs.add(
+      this.store$.select(scenesStore.getSelectedScene).subscribe(
+        scene => this.selectedScene = scene
+      )
+    );
+
+
     this.subs.add(
       this.screenSize.breakpoint$.subscribe(
         breakpoint => this.breakpoint = breakpoint
@@ -153,6 +180,12 @@ export class MapComponent implements OnInit, OnDestroy  {
     );
 
     this.subs.add(
+      this.gridlinesActive$.subscribe(
+        active => this.mapService.setGridLinesActive(active)
+      )
+    );
+
+    this.subs.add(
       combineLatest(
         this.mapService.isDrawing$,
         this.drawMode$,
@@ -202,10 +235,18 @@ export class MapComponent implements OnInit, OnDestroy  {
         action => this.store$.dispatch(action)
       )
     );
+
+    this.subs.add(
+      this.store$.select(uiStore.getIsFiltersMenuOpen).subscribe(
+        isOpen => this.isFiltersMenuOpen = isOpen
+      )
+    );
   }
 
   public onFileHovered(e): void {
-    this.onNewInteractionMode(models.MapInteractionModeType.UPLOAD);
+    if (!this.isFiltersMenuOpen && this.searchType === models.SearchType.DATASET) {
+      this.store$.dispatch(new uiStore.OpenAOIOptions());
+    }
     e.preventDefault();
   }
 
@@ -255,7 +296,7 @@ export class MapComponent implements OnInit, OnDestroy  {
         ([view, layerType]) => {
           this.setMapWith(<models.MapViewType>view, <models.MapLayerTypes>layerType);
           this.loadUrlState.emit();
-          this.store$.dispatch(new mapStore.MapInitialzed());
+          this.store$.dispatch(new mapStore.MapInitialized());
         }
       )
     );
@@ -279,6 +320,7 @@ export class MapComponent implements OnInit, OnDestroy  {
 
     this.subs.add(
       this.selectedToLayer$(selectedPair$).pipe(
+        filter((pair: models.CMRProductPair) => !!pair?.[0] && !!pair?.[1]),
         map(
           (pair: models.CMRProductPair) => pair.map(
             scene => this.wktService.wktToFeature(
@@ -291,11 +333,17 @@ export class MapComponent implements OnInit, OnDestroy  {
         features => this.mapService.setSelectedPair(features)
       )
     );
+
+    this.subs.add(
+      this.store$.select(mapStore.getIsOverviewMapOpen).subscribe(
+        isOpen => this.mapService.setOverviewMap(isOpen)
+      )
+    );
   }
 
   private selectedToLayer$(selected$) {
     const scenesLayerAfterInitialization$ = this.isMapInitialized$.pipe(
-      filter(isMapInitiliazed => isMapInitiliazed),
+      filter(isMapInitialized => isMapInitialized),
       switchMap(_ => this.viewType$),
     );
 
@@ -305,15 +353,39 @@ export class MapComponent implements OnInit, OnDestroy  {
           this.setMapWith(<models.MapViewType>view, <models.MapLayerTypes>mapLayerType)
         ),
         switchMap(_ =>
-          this.scenePolygonsLayer$(this.mapService.epsg())
-        )
+          combineLatest([
+            this.mapService.searchPolygon$.pipe(
+              map(wkt => !!wkt ? this.wktService.wktToFeature(wkt, this.mapService.epsg()) : null)),
+          this.scenesToFeatures(this.mapService.epsg()),
+          ])
+        ),
+        map(([searchPolygon, features]) => {
+          let polygonFeatures = features;
+          if (this.searchType === models.SearchType.SBAS && searchPolygon != null) {
+            const geometryType = searchPolygon.getGeometry().getType();
+            const intersectionMethod = this.mapService.getAoiIntersectionMethod(geometryType);
+
+            polygonFeatures = features.filter(feature => intersectionMethod(searchPolygon, feature));
+          }
+
+          return this.scenePolygonsLayer(polygonFeatures);
+        }),
       ).subscribe(
         layer => this.mapService.setLayer(layer)
       )
     );
 
+    this.subs.add(
+      this.sceneSARViewsEventsLayer$(this.mapService.epsg()).pipe(
+        filter(layers => !!layers),
+      ).subscribe(
+        sarviewsEventsLayer =>
+          this.mapService.setEventsLayer(sarviewsEventsLayer)
+      )
+    );
+
     const selectedAfterInitialization$ = this.isMapInitialized$.pipe(
-      filter(isMapInitiliazed => isMapInitiliazed),
+      filter(isMapInitialized => isMapInitialized),
       switchMap(_ => this.viewType$),
       switchMap(_ => selected$),
     );
@@ -357,10 +429,25 @@ export class MapComponent implements OnInit, OnDestroy  {
     return features;
   }
 
-  private scenePolygonsLayer$(projection: string): Observable<VectorSource> {
+  private scenesToFeatures(projection: string): Observable<Feature<Geometry>[]> {
     return this.scenesService.scenes$().pipe(
-      map(scenes => this.scenesToFeature(scenes, projection)),
-      map(features => this.featuresToSource(features))
+      map(scenes => scenes.filter(scene => scene.id !== this.selectedScene?.id)),
+      map(scenes => this.scenesToFeature(scenes, projection)));
+  }
+
+  private scenePolygonsLayer(features: Feature<Geometry>[]): VectorLayer {
+      const vectorLayer = this.featuresToSource(features, polygonStyle.scene);
+      vectorLayer.set('selectable', 'true');
+      return vectorLayer;
+  }
+
+  private sceneSARViewsEventsLayer$(projection: string): Observable<VectorLayer> {
+    return this.eventMonitoringService.filteredSarviewsEvents$().pipe(
+      // filter(events => !!events),
+      tap(events => this.sarviewsEvents = events),
+      map(events => this.mapService.sarviewsEventsToFeatures(events, projection)),
+      map(features => this.featuresToSource(features, polygonStyle.icon)),
+      tap(vectorLayer => vectorLayer.set('selectable_events', true))
     );
   }
 
@@ -377,15 +464,43 @@ export class MapComponent implements OnInit, OnDestroy  {
     return features;
   }
 
-  private featuresToSource(features): VectorSource {
+  public sarviewsEventsToFeature(events: SarviewsEvent[], projection: string) {
+    const features = events
+      .map(sarviewEvent => {
+        const wkt = sarviewEvent.wkt;
+        const feature = this.wktService.wktToFeature(wkt, projection);
+        feature.set('filename', sarviewEvent.description);
+
+        const polygon = feature.getGeometry()[0][0].slice(0, 4);
+
+        if (polygon.length === 2) {
+          const eventPoint = new Point([polygon[0], polygon[1]]);
+          feature.set('eventPoint', eventPoint);
+          feature.setGeometryName('eventPoint');
+          return feature;
+        }
+
+        const centerLat = (polygon[0][0] + polygon[1][0] + polygon[2][0] + polygon[3][0]) / 4.0;
+        const centerLon = (polygon[0][1] + polygon[1][1] + polygon[2][1] + polygon[3][1]) / 4.0;
+        const point = new Point([centerLat, centerLon]);
+
+
+        feature.set('eventPoint', point);
+        feature.setGeometryName('eventPoint');
+
+        return feature;
+      });
+
+      return features;
+  }
+
+  private featuresToSource(features, style: StyleLike): VectorLayer {
     const layer = new VectorLayer({
       source: new VectorSource({
         features, wrapX: true
       }),
-      style: polygonStyle.scene
+      style
     });
-
-    layer.set('selectable', 'true');
 
     return layer;
   }

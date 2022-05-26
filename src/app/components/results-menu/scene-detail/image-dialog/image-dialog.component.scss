@@ -1,4 +1,5 @@
-@use '~@angular/material' as mat;
+@use "@angular/material" as mat;
+
 @import "asf-theme";
 
 $config: mat.define-typography-config();
@@ -25,6 +26,7 @@ a {
 }
 
 .browse-dialog {
+  overflow: hidden;
   font-family: mat.font-family($config);
   background-color: $asf-primary-light;
   height: 100%;
@@ -39,7 +41,7 @@ a {
 
   .main-window {
     position: relative;
-    height: calc(100% - 230px);
+    height: calc(100% - 285px);
   }
 
   .main-window-mobile {
@@ -113,10 +115,15 @@ a {
 .close-button {
   vertical-align: top !important;
   color: $asf-primary;
+  margin-bottom: 5px;
 }
 
 .file-list {
   overflow-y: auto;
+}
+
+.sarviews-product-list {
+  overflow-y: scroll;
 
   button {
     height: 25px;
@@ -148,7 +155,61 @@ a {
   z-index: 9;
 }
 
+.sarviews-thumbs {
+  // flex-direction: row;
+  // flex: 1 1 0%;
+  box-sizing: border-box;
+  position: relative;
+  bottom: 10px;
+  left: 20px;
+  z-index: 9;
+  // display: flex;
+  overflow-x: scroll;
+  width: 100%;
+  min-height: 150px;
+  // max-height: 125px;
+}
+
 .mat-card-sm-image {
   width: 50px;
   height: 50px;
+}
+
+.mat-card-md-image {
+  width: 125px;
+  height: 125px;
+}
+
+.download-icon {
+  height: 12px !important;
+  width: 12px !important;
+  margin-right: 15px;
+}
+
+.file-button-download {
+  background-color: lighten($asf-primary-light, 10%);
+  border-radius: 2px !important;
+  padding-left: 5px !important;
+  margin-bottom: 5px;
+  padding-right: 15px !important;
+  width: fit-content !important;
+}
+
+.on-demand-scene-names {
+  font-size: 12px;
+  word-break: break-word;
+  margin-bottom: 0;
+}
+
+.footer {
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  position: sticky;
+  bottom: 0;
+  border-top: 1px solid $asf-primary-dark;
+  z-index: 1020;
+  padding: 10px;
+  padding-top: 13.5px;
 }

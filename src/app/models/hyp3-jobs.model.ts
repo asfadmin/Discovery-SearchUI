@@ -4,8 +4,7 @@ import { Hyp3JobType, JobOptionType } from './hyp3-job-type.model';
 export const RtcGammaJobType: Hyp3JobType = {
   id: 'RTC_GAMMA',
   name: 'RTC GAMMA',
-  infoUrl: 'https://hyp3-docs.asf.alaska.edu/guides/rtc_product_guide/',
-  description: `
+  infoUrl: 'https://hyp3-docs.asf.alaska.edu/guides/rtc_product_guide/', description: `
     Radiometric Terrain Correction (RTC) removes geometric and radiometric
     distortions in SAR datasets and creates analysis-ready data suitable for use
     in GIS applications.
@@ -14,7 +13,7 @@ export const RtcGammaJobType: Hyp3JobType = {
   productTypes: [{
     dataset: sentinel_1,
     productTypes: [
-      'SLC', 'GRD_HD', 'GRD_HS'
+      'SLC', 'GRD_HD'
     ],
     beamModes: ['IW'],
     polarizations: [
@@ -83,25 +82,25 @@ export const RtcGammaJobType: Hyp3JobType = {
     default: false,
     info: `Apply an Enhanced Lee speckle filter.`
   }, {
-    name: 'Include DEM',
+    name: 'DEM',
     apiName: 'include_dem',
     type: JobOptionType.CHECKBOX,
     default: false,
     info: `Include the DEM file in the product package.`
   }, {
-    name: 'Include Inc. Angle Map',
+    name: 'Incidence Angle Maps',
     apiName: 'include_inc_map',
     type: JobOptionType.CHECKBOX,
     default: false,
-    info: `Include the incidence angle map in the product package.`
+    info: `Include the incidence angle maps (local and ellipsoidal) in the product package.`
   }, {
-    name: 'Include Scattering Area',
+    name: 'Scattering Area',
     apiName: 'include_scattering_area',
     type: JobOptionType.CHECKBOX,
     default: false,
     info: `Include the scattering area in the product package.`
   }, {
-    name: 'Include RGB',
+    name: 'RGB Decomposition',
     apiName: 'include_rgb',
     type: JobOptionType.CHECKBOX,
     default: false,
@@ -147,7 +146,16 @@ export const InsarGammaJobType: Hyp3JobType = {
     default: '20x4',
     info: `Number of looks to take in range and azimuth.`
   }, {
-    name: 'Include DEM',
+    name: 'Water Mask',
+    apiName: 'apply_water_mask',
+    type: JobOptionType.TOGGLE,
+    default: false,
+    info: `
+      Sets pixels over coastal and large inland waterbodies as invalid
+      for phase unwrapping.
+    `
+  }, {
+    name: 'DEM',
     apiName: 'include_dem',
     type: JobOptionType.CHECKBOX,
     default: false,
@@ -155,15 +163,15 @@ export const InsarGammaJobType: Hyp3JobType = {
       Include the DEM file in the product package.
     `
   }, {
-    name: 'Include Inc. Angle Map',
+    name: 'Incidence Angle Maps',
     apiName: 'include_inc_map',
     type: JobOptionType.CHECKBOX,
     default: false,
     info: `
-      Include the incidence angle map in the product package.
+      Include the incidence angle maps (local and ellipsoidal) in the product package.
     `
   }, {
-    name: 'Include Look Vectors',
+    name: 'Look Vectors',
     apiName: 'include_look_vectors',
     type: JobOptionType.CHECKBOX,
     default: false,
@@ -171,21 +179,35 @@ export const InsarGammaJobType: Hyp3JobType = {
       Include the look vector theta and phi files in the product package.
     `
   }, {
-    name: 'Include LOS Displacement',
-    apiName: 'include_los_displacement',
+    name: 'Displacement Maps',
+    apiName: 'include_displacement_maps',
     type: JobOptionType.CHECKBOX,
     default: false,
     info: `
-      Include a GeoTIFF in the product package containing displacement
-      values along the Line-Of-Sight (LOS).
+      Include displacement maps (line-of-sight and vertical) in the product package.
     `
   }, {
-    name: 'Include Wrapped Phase',
+    name: 'Wrapped Phase',
     apiName: 'include_wrapped_phase',
     type: JobOptionType.CHECKBOX,
     default: false,
     info: `
       Include the wrapped phase GeoTIFF in the product package.
+    `
+  }, {
+    name: 'Set MintPy Options',
+    apiName: null,
+    type: JobOptionType.SUBSET,
+    default: false,
+    optionSubset: [{
+      apiName: 'include_dem',
+      value: true
+    }, {
+      apiName: 'include_look_vectors',
+      value: true
+    }],
+    info: `
+      Set options to make products compatible with MintPy.
     `
   }]
 };
@@ -195,14 +217,14 @@ export const AutoRift: Hyp3JobType = {
   name: 'autoRIFT',
   infoUrl: 'https://hyp3-docs.asf.alaska.edu/products/#autorift',
   description: `
-    autoRIFT is a highly accurate and efficeint algorithm for finding the pixel
+    autoRIFT is a highly accurate and efficient algorithm for finding the pixel
     displacement between two radar images.
   `,
   numProducts: 2,
   productTypes: [{
     dataset: sentinel_1,
     productTypes: [
-      'SLC', 'GRD_HD', 'GRD_HS'
+      'SLC', 'GRD_HD'
     ],
     beamModes: ['IW'],
     polarizations: [

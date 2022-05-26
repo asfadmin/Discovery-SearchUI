@@ -20,12 +20,11 @@
 
 
       <div class="download-cart-icons" fxFlex="81px">
-        <a mat-icon-button
+        <app-download-file-button
           [href]="node.url"
-          target="_blank"
-          matTooltip="Download file">
-            <mat-icon>cloud_download</mat-icon>
-        </a>
+          [product] = "productFromNode(node, product)"
+          (productDownloaded)="prodDownloaded($event)">
+        </app-download-file-button>
 
         <app-cart-toggle
           (toggle)="onToggleQueueProduct(node)"

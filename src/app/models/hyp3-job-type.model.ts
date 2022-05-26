@@ -25,6 +25,7 @@ export interface Hyp3JobOption {
   info: string;
   default: any;
   options?: { apiValue: string; name: string; }[];
+  optionSubset?: { apiName: string; value: any; }[];
 }
 
 export interface Hyp3ableProductByJobType {
@@ -41,5 +42,6 @@ export interface Hyp3ableByProductType {
 export enum JobOptionType {
   DROPDOWN = 'DROPDOWN',
   TOGGLE = 'TOGGLE',
-  CHECKBOX = 'CHECKBOX'
+  CHECKBOX = 'CHECKBOX',
+  SUBSET = 'SUBSET',
 }

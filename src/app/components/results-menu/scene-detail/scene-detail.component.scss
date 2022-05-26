@@ -1,7 +1,6 @@
-@use '~@angular/material' as mat;
 @import "asf-theme";
 
-$config: mat.define-typography-config();
+$divider-bar-color: lighten($asf-primary-light, 8%);
 
 a {
   text-decoration: none;
@@ -11,6 +10,7 @@ a {
 .detail-card {
   max-width: 100%;
   border-left: lightgrey 1px solid;
+  overflow-x: hidden !important;
 }
 
 .scrollable {
@@ -41,31 +41,46 @@ a {
 }
 
 .banner {
-  background: $asf-primary-light;
-  height: 40px;
+  background: $divider-bar-color;
+  height: 30px;
   width: calc(100% + 32px);
   margin-left: -16px;
-  box-shadow: #00000038 0 7px 18px;
-  color: #606368;
+  //box-shadow: #00000038 0 7px 18px;
+  color: $asf-primary;
+
   mat-icon {
-    color: #606368;
-    margin-left: 5px;
+    color: $asf-primary;
+    margin-top: 4px;
     margin-right: 5px;
-    font-size: 24px;
+    margin-left: 5px;
+    font-size: 20px;
   }
 }
+
+.not-clickable {
+  color: $asf-primary-light !important;
+  cursor: default;
+}
+
 .browse-pager {
   display: inherit;
-  margin-right: 5%;
   align-items: center;
+  margin-right: 5%;
+  font-size: 12px;
+
+  .navigation-icon {
+    margin-right: 0;
+    margin-left: 0;
+    cursor: pointer;
+  }
 }
+
 .menu-items {
   display: inherit;
   margin-right: auto;
   margin-left: 5%;
   align-items: center;
 }
-
 
 .content {
   margin: 0 16px 16px 16px;
@@ -110,18 +125,50 @@ a {
 }
 
 .tool-menu {
+  z-index: 2;
   position: sticky;
-  bottom: 0px;
-  background: darken($asf-primary-light, 5%);
   display: flex;
-  justify-content: space-around;
+  justify-content: flex-start;
+  background: $divider-bar-color;
   align-items: center;
-  height: 35px;
+  height: 40px;
+  bottom: 0;
+
   button {
-    background: none;
-    border: none;
+    //background: none;
+    //border: none;
   }
+
   button:enabled {
     cursor: pointer;
   }
+
+  button[disabled='true'] {
+    cursor: default;
+    background-color: $asf-primary-light !important;
+    color: $asf-primary !important;
+  }
+}
+
+.sarivews-radius-display {
+  display: flex;
+  width: 75%;
+  margin-top: 15px;
+  margin-left: 15px;
+  // margin-left: 15px;
+}
+
+.search-button-label {
+  margin-left: 20px;
+  font-size: 14px;
+  font-weight: 500;
+  color: $asf-primary-dark;
+}
+
+.search-button {
+  margin-left: 20px;
+  background-color: $asf-primary !important;
+  color: white !important;
+  border: 1px groove rgba(0, 0, 0, 0.25) !important;
+  border-radius: 4px !important;
 }

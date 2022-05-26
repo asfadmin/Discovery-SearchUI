@@ -1,22 +1,29 @@
 import { createFeatureSelector, createSelector } from '@ngrx/store';
 
 import { QueueActionType, QueueActions } from './queue.action';
-import { CMRProduct, QueuedHyp3Job } from '@models';
+import { CMRProduct, QueuedHyp3Job, DownloadStatus } from '@models';
 
 export interface ProductMap {
   [id: string]: CMRProduct;
 }
 
+export interface DownloadMap {
+  [id: string]: DownloadStatus;
+}
 export interface QueueState {
   products: ProductMap;
   ids: string[];
   customJobs: QueuedHyp3Job[];
+  downloads: DownloadMap;
+  duplicates: number;
 }
 
 export const initState: QueueState = {
   products: {},
   ids: [],
   customJobs: [],
+  downloads: {},
+  duplicates: 0
 };
 
 export function queueReducer(state = initState, action: QueueActions): QueueState {
@@ -49,14 +56,36 @@ export function queueReducer(state = initState, action: QueueActions): QueueStat
         remove_product(product, oldProducts);
 
       const ids = Object.keys(products);
-
+      let downloads = state.downloads;
+      if (oldProducts[action.payload.id]) {
+        const oldDownloads = {...state.downloads};
+        downloads = remove_product(product, oldDownloads);
+      }
       return {
         ...state,
         products,
-        ids
+        ids,
+        downloads
       };
     }
 
+    case QueueActionType.DOWNLOAD_PRODUCT: {
+      const newDownload = action.payload;
+      const downloads = {...state.downloads};
+      downloads[newDownload.id] = newDownload;
+      return {
+        ...state
+        , downloads
+      };
+    }
+    case QueueActionType.REMOVE_DOWNLOAD_PRODUCT: {
+      const toRemove = action.payload;
+      const downloads = remove_product(toRemove, {...state.downloads});
+      return {
+        ...state,
+        downloads
+      };
+    }
     case QueueActionType.REMOVE_ITEM: {
       const toRemove = action.payload;
 
@@ -64,10 +93,12 @@ export function queueReducer(state = initState, action: QueueActions): QueueStat
 
       const ids = Object.keys(products);
 
+      const downloads = remove_product(toRemove, {...state.downloads});
       return {
         ...state,
         products,
-        ids
+        ids,
+        downloads
       };
     }
 
@@ -89,10 +120,17 @@ export function queueReducer(state = initState, action: QueueActions): QueueStat
 
       const ids = [ ...state.ids ]
         .filter(id => !toRemove.has(id));
+      let downloads = {...state.downloads};
+      toRemove.forEach(id => {
+        console.log(id);
+        downloads = remove_product(id, downloads);
+      });
 
       return {
         ...state,
-        products, ids
+        products,
+        ids,
+        downloads
       };
     }
 
@@ -101,6 +139,7 @@ export function queueReducer(state = initState, action: QueueActions): QueueStat
         ...state,
         products: {},
         ids: [],
+        downloads: {}
       };
     }
 
@@ -118,7 +157,6 @@ export function queueReducer(state = initState, action: QueueActions): QueueStat
       const customJobs = jobs.filter(
         job => !jobTypes.has(job.job_type.id)
       );
-
       return {
         ...state,
         customJobs
@@ -139,24 +177,31 @@ export function queueReducer(state = initState, action: QueueActions): QueueStat
 
       return {
         ...state,
-        customJobs: jobs
+        customJobs: jobs,
+        duplicates: isJobInQueue ? 1 : 0
       };
     }
 
     case QueueActionType.ADD_JOBS: {
       const jobs = [...state.customJobs];
       const new_jobs = [...action.payload];
-
+      let _duplicates = 0;
       const jobsToQueue = new_jobs.filter(new_job =>
-        !jobs.some(old_job =>
-            old_job.job_type === new_job.job_type &&
-            sameGranules(old_job.granules, new_job.granules)
+        !jobs.some(old_job => {
+          const result = old_job.job_type === new_job.job_type &&
+          sameGranules(old_job.granules, new_job.granules);
+          if (result) {
+            _duplicates += 1;
+          }
+          return result;
+        }
         )
       );
 
       return {
         ...state,
-        customJobs: [...jobs, ...jobsToQueue]
+        customJobs: [...jobs, ...jobsToQueue],
+        duplicates: _duplicates
       };
     }
 
@@ -273,6 +318,11 @@ export const getQueuedJobs = createSelector(
   (state: QueueState) => state.customJobs
 );
 
+export const getDuplicates = createSelector(
+  getQueueState,
+  (state: QueueState) => state.duplicates
+);
+
 export const getQueuedJobTypes = createSelector(
   getQueueState,
   (state: QueueState) => {
@@ -286,4 +336,13 @@ export const getQueuedJobTypes = createSelector(
 
     return (<any>Object.values(jobTypeDict));
   }
+);
+
+export const getDownloads = createSelector(
+  getQueueState,
+  (state: QueueState) => state.downloads
+);
+export const getDownloadIds = createSelector(
+  getQueueState,
+  (state: QueueState) => Object.keys(state.downloads)
 );

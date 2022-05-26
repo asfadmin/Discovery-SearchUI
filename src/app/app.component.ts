@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild, AfterViewInit } from '@angular/core';
 import { MatSidenav } from '@angular/material/sidenav';
 import { MatIconRegistry } from '@angular/material/icon';
 import { DomSanitizer } from '@angular/platform-browser';
@@ -24,16 +24,18 @@ import * as mapStore from '@store/map';
 import * as queueStore from '@store/queue';
 import * as userStore from '@store/user';
 import * as hyp3Store from '@store/hyp3';
+import * as filtersStore from '@store/filters';
 
 import * as services from '@services';
 import * as models from './models';
+import { SearchType } from './models';
 
 @Component({
   selector   : 'app-root',
   templateUrl: './app.component.html',
   styleUrls  : ['./app.component.scss']
 })
-export class AppComponent implements OnInit, OnDestroy {
+export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
   @ViewChild('sidenav', {static: true}) sidenav: MatSidenav;
 
   private queueStateKey = 'asf-queue-state-v1';
@@ -54,9 +56,6 @@ export class AppComponent implements OnInit, OnDestroy {
   public interactionTypes = models.MapInteractionModeType;
   public searchType: models.SearchType;
 
-  public isSaveSearchPanelOpen = false;
-  public isSaveFiltersPanelOpen = false;
-
   private helpTopic: string | null;
 
   private subs = new SubSink();
@@ -76,8 +75,20 @@ export class AppComponent implements OnInit, OnDestroy {
     private matIconRegistry: MatIconRegistry,
     private domSanitizer: DomSanitizer,
     private dialog: MatDialog,
-    private notificationService: services.NotificationService
+    private notificationService: services.NotificationService,
+    private sarviewsService: services.SarviewsEventsService,
+    private mapService: services.MapService
   ) {}
+
+  public ngAfterViewInit(): void {
+    this.subs.add(
+      this.store$.select(userStore.getUserProfile).pipe(
+        filter(profile => !!profile.defaultFilterPresets),
+        map(profile => profile.defaultFilterPresets)
+        ).subscribe(presets =>
+          this.store$.dispatch(new filterStore.SetDefaultFilters(presets)))
+    );
+  }
 
   public ngOnInit(): void {
     this.subs.add(
@@ -86,6 +97,7 @@ export class AppComponent implements OnInit, OnDestroy {
       )
     );
 
+    this.subs.add(
     this.store$.select(uiStore.getHelpDialogTopic).subscribe(topic => {
       const previousTopic = this.helpTopic;
       this.helpTopic = topic;
@@ -112,8 +124,10 @@ export class AppComponent implements OnInit, OnDestroy {
       ref.afterClosed().subscribe(_ => {
         this.store$.dispatch(new uiStore.SetHelpDialogTopic(null));
       });
-    });
+    })
+    );
 
+    this.subs.add(
     this.store$.select(uiStore.getIsDownloadQueueOpen).subscribe(isDownloadQueueOpen => {
       if (!isDownloadQueueOpen) {
         return;
@@ -138,8 +152,10 @@ export class AppComponent implements OnInit, OnDestroy {
           _ => this.store$.dispatch(new uiStore.SetIsDownloadQueueOpen(null))
         )
       );
-    });
+    })
+    );
 
+    this.subs.add(
     this.store$.select(uiStore.getIsOnDemandQueueOpen).subscribe(isOnDemandQueueOpen => {
       if (!isOnDemandQueueOpen) {
         return;
@@ -164,7 +180,8 @@ export class AppComponent implements OnInit, OnDestroy {
           _ => this.store$.dispatch(new uiStore.SetIsOnDemandQueueOpen(null))
         )
       );
-    });
+    })
+    );
 
     this.store$.dispatch(new uiStore.LoadBanners());
     this.subs.add(
@@ -178,28 +195,18 @@ export class AppComponent implements OnInit, OnDestroy {
     this.loadCustomProductsQueue();
     this.loadMissions();
 
-    this.store$.select(uiStore.getIsSidebarOpen).subscribe(
-      isSidebarOpen => {
-        if (isSidebarOpen) {
-          this.isSaveSearchPanelOpen = true;
-          this.sidenav.open();
-        } else {
-          this.isSaveSearchPanelOpen = false;
-          this.sidenav.close();
-        }
-      }
-    );
+    this.subs.add(
+      this.store$.select(uiStore.getSidebar).subscribe(
+        sidebar => {
+          const isSidebarOpen = sidebar !== models.SidebarType.NONE;
 
-    this.store$.select(uiStore.getIsFiltersSidebarOpen).subscribe(
-      isSidebarOpen => {
-        if (isSidebarOpen) {
-          this.isSaveFiltersPanelOpen = true;
-          this.sidenav.open();
-        } else {
-          this.isSaveFiltersPanelOpen = false;
-          this.sidenav.close();
+          if (isSidebarOpen) {
+            this.sidenav.open();
+          } else {
+            this.sidenav.close();
+          }
         }
-      }
+      )
     );
 
     this.subs.add(
@@ -214,6 +221,15 @@ export class AppComponent implements OnInit, OnDestroy {
       this.store$.select(userStore.getUserProfile).subscribe(
         profile => {
           this.urlStateService.setDefaults(profile);
+
+          if (this.searchType !== models.SearchType.LIST
+            && this.searchType !== models.SearchType.CUSTOM_PRODUCTS
+            && this.searchType !== models.SearchType.SARVIEWS_EVENTS) {
+            const defaultFilterID = profile.defaultFilterPresets[this.searchType];
+            if (!!defaultFilterID) {
+              this.store$.dispatch(new userStore.LoadFiltersPreset(defaultFilterID));
+            }
+        }
         })
     );
 
@@ -224,11 +240,24 @@ export class AppComponent implements OnInit, OnDestroy {
       ).subscribe( defaultFilters =>
         this.store$.dispatch(new filterStore.SetDefaultFilters(defaultFilters))
       )
-    )
+    );
 
     const user = this.authService.getUser();
     if (user.id) {
       this.store$.dispatch(new userStore.Login(user));
+      this.subs.add(
+      this.store$.select(userStore.getUserProfile).subscribe(
+        profile => {
+          if (this.searchType !== models.SearchType.LIST
+            && this.searchType !== models.SearchType.CUSTOM_PRODUCTS
+            && this.searchType !== models.SearchType.SARVIEWS_EVENTS) {
+            const defaultFilterID = profile.defaultFilterPresets[this.searchType];
+            if (!!defaultFilterID) {
+              this.store$.dispatch(new userStore.LoadFiltersPreset(defaultFilterID));
+          }
+        }
+      }
+      ));
     }
 
     this.subs.add(
@@ -256,13 +285,17 @@ export class AppComponent implements OnInit, OnDestroy {
 
           const searchState = this.savedSearchService.getSearchState(action.payload);
 
-          if (
-            searchState &&
-            searchState.searchType !== models.SearchType.CUSTOM_PRODUCTS
-            ) {
+          if (searchState && action.payload !== models.SearchType.DERIVED_DATASETS) {
             this.searchService.loadSearch(searchState);
 
             if (!this.isEmptySearch(searchState)) {
+              if (action.payload !== models.SearchType.BASELINE && action.payload !== models.SearchType.SBAS) {
+                this.clearBaselineRanges();
+              }
+              if (action.payload !== models.SearchType.SARVIEWS_EVENTS) {
+                this.clearEventProductFilters();
+              }
+
               this.store$.dispatch(new searchStore.MakeSearch());
             } else {
               this.store$.dispatch(new filterStore.SetDefaultFilters(profile?.defaultFilterPresets));
@@ -270,7 +303,6 @@ export class AppComponent implements OnInit, OnDestroy {
           } else {
             this.store$.dispatch(new filterStore.SetDefaultFilters(profile?.defaultFilterPresets));
           }
-
         }
       )
     );
@@ -299,7 +331,7 @@ export class AppComponent implements OnInit, OnDestroy {
       this.store$.select(searchStore.getSearchType).pipe(
         tap(searchType => this.searchType = searchType),
         tap(searchType => {
-          if (searchType === models.SearchType.CUSTOM_PRODUCTS) {
+          if (searchType === models.SearchType.CUSTOM_PRODUCTS || searchType === models.SearchType.SARVIEWS_EVENTS) {
             this.store$.dispatch(new searchStore.MakeSearch());
           }
         }),
@@ -351,6 +383,28 @@ export class AppComponent implements OnInit, OnDestroy {
       'hyp3',
       this.domSanitizer.bypassSecurityTrustResourceUrl('../assets/icons/hyp3.svg')
     );
+
+    this.matIconRegistry.addSvgIcon(
+      'gridlines',
+      this.domSanitizer.bypassSecurityTrustResourceUrl('../assets/icons/gridlines.svg')
+    );
+
+    this.matIconRegistry.addSvgIcon(
+      'Earthquake_inactive',
+      this.domSanitizer.bypassSecurityTrustResourceUrl('../assets/icons/Earthquake_inactive.svg')
+    );
+    this.matIconRegistry.addSvgIcon(
+      'Earthquake',
+      this.domSanitizer.bypassSecurityTrustResourceUrl('../assets/icons/Earthquake.svg')
+    );
+    this.matIconRegistry.addSvgIcon(
+      'Volcano_inactive',
+      this.domSanitizer.bypassSecurityTrustResourceUrl('../assets/icons/Volcano_inactive.svg')
+    );
+    this.matIconRegistry.addSvgIcon(
+      'Volcano',
+      this.domSanitizer.bypassSecurityTrustResourceUrl('../assets/icons/Volcano.svg')
+    );
   }
 
   private isEmptySearch(searchState): boolean {
@@ -359,7 +413,9 @@ export class AppComponent implements OnInit, OnDestroy {
     } else if (searchState.searchType === models.SearchType.BASELINE) {
       return !searchState.filters.filterMaster;
     } else if (searchState.searchType === models.SearchType.SBAS) {
-      return !searchState.filters.master;
+      return !searchState.filters.reference;
+    } else if (searchState.searchType === models.SearchType.SARVIEWS_EVENTS) {
+      return searchState.filters.selectedEventID !== '';
     }
 
     return false;
@@ -384,30 +440,35 @@ export class AppComponent implements OnInit, OnDestroy {
     }
   }
 
-  public onCloseSidebar(): void {
-    this.store$.dispatch(new uiStore.CloseSidebar());
-    this.store$.dispatch(new uiStore.CloseFiltersSidebar());
-  }
-
   public onLoadUrlState(): void {
     this.urlStateService.load();
   }
 
   public onClearSearch(): void {
     this.store$.dispatch(new scenesStore.ClearScenes());
+    this.store$.dispatch(new scenesStore.SetSelectedSarviewsEvent(''));
+    this.mapService.clearDrawLayer();
     this.store$.dispatch(new uiStore.CloseResultsMenu());
-
     this.searchService.clear(this.searchType);
+  }
+
+  public onCloseSidebar(): void {
+    this.store$.dispatch(new uiStore.CloseSidebar());
   }
 
   private updateMaxSearchResults(): void {
     const checkAmount = this.searchParams$.getlatestParams().pipe(
+      filter(_ => this.searchType !== SearchType.SARVIEWS_EVENTS),
       debounceTime(200),
       map(params => ({...params, output: 'COUNT'})),
       tap(_ =>
         this.store$.dispatch(new searchStore.SearchAmountLoading())
       ),
-      switchMap(params => this.asfSearchApi.query<any[]>(params).pipe(
+      switchMap(params => {
+        if (this.searchType === models.SearchType.SARVIEWS_EVENTS) {
+          return this.sarviewsService.filteredSarviewsEvents$().pipe(map(events => events.length));
+        }
+        return this.asfSearchApi.query<any[]>(params).pipe(
         catchError(resp => {
           const { error } = resp;
           if (!resp.ok || error && error.includes('VALIDATION_ERROR')) {
@@ -416,7 +477,8 @@ export class AppComponent implements OnInit, OnDestroy {
 
           return of(-1);
         })
-      )
+      );
+      }
       ),
     );
 
@@ -478,6 +540,15 @@ export class AppComponent implements OnInit, OnDestroy {
       name: 'Error',
       type: 'error'
     };
+  }
+
+  private clearBaselineRanges() {
+    this.store$.dispatch(new filtersStore.ClearPerpendicularRange());
+    this.store$.dispatch(new filtersStore.ClearTemporalRange());
+  }
+
+  private clearEventProductFilters() {
+    this.store$.dispatch(new filterStore.ClearHyp3ProductTypes());
   }
 
   ngOnDestroy() {

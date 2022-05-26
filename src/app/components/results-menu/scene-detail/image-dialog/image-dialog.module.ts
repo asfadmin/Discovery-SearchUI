@@ -16,28 +16,37 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 
 import { PipesModule } from '@pipes';
 import { SceneMetadataModule } from '@components/shared/scene-metadata';
+import { EventMetadataModule } from '@components/shared/event-metadata';
+import { EventProductMetadataModule } from '@components/shared/event-product-metadata';
 import { ImageDialogComponent } from './image-dialog.component';
 import { BrowseListComponent } from './browse-list/browse-list.component';
-
+import {DownloadFileButtonModule} from '@components/shared/download-file-button/download-file-button.module';
+import { MatSliderModule } from '@angular/material/slider';
+import { EventProductSortSelectorModule } from '@components/shared/event-product-sort-selector/event-product-sort-selector.module';
 @NgModule({
   declarations: [ImageDialogComponent, BrowseListComponent],
-  imports: [
-    CommonModule,
-    ScrollingModule,
-    FlexLayoutModule,
-    DragDropModule,
-    MatBadgeModule,
-    MatButtonModule,
-    MatIconModule,
-    MatProgressSpinnerModule,
-    MatSharedModule,
-    MatCheckboxModule,
-    MatListModule,
-    MatDialogModule,
-    MatMenuModule,
-    PipesModule,
-    SceneMetadataModule,
-  ],
+    imports: [
+        CommonModule,
+        ScrollingModule,
+        FlexLayoutModule,
+        DragDropModule,
+        MatBadgeModule,
+        MatButtonModule,
+        MatIconModule,
+        MatProgressSpinnerModule,
+        MatSharedModule,
+        MatCheckboxModule,
+        MatListModule,
+        MatDialogModule,
+        MatMenuModule,
+        PipesModule,
+        SceneMetadataModule,
+        EventMetadataModule,
+        EventProductMetadataModule,
+        DownloadFileButtonModule,
+        MatSliderModule,
+        EventProductSortSelectorModule
+    ],
   exports: [ImageDialogComponent],
 })
 export class ImageDialogModule { }

@@ -25,7 +25,7 @@
 
     <mat-expansion-panel-header [collapsedHeight]="customCollapsedHeight" [expandedHeight]="customExpandedHeight">
       <mat-panel-title>
-        Reference Scene
+        Scene
       </mat-panel-title>
     </mat-expansion-panel-header>
 
@@ -42,8 +42,9 @@
     </app-copy-to-clipboard>
     </div>
     <div>
-      <a href="https://docs.asf.alaska.edu/vertex/baseline/" target="_blank">What is Baseline?</a>
-
+      <app-docs-modal url="https://docs.asf.alaska.edu/vertex/baseline/"
+                      text="What is Baseline?">
+      </app-docs-modal>
     </div>
   </mat-expansion-panel>
 
@@ -52,8 +53,11 @@
     *ngIf="areResultsLoaded"
     [class.raised-section]="isSelected(panels.DATE)">
     <mat-expansion-panel-header [collapsedHeight]="customCollapsedHeight" [expandedHeight]="customExpandedHeight">
-      <mat-panel-title>
+      <mat-panel-title style="align-items: center;">
         Date Filters
+        <app-docs-modal class="info-icon"
+                        url="https://docs.asf.alaska.edu/vertex/manual/#date-filters">
+        </app-docs-modal>
       </mat-panel-title>
     </mat-expansion-panel-header>
 
@@ -70,8 +74,11 @@
     *ngIf="areResultsLoaded"
     [class.raised-section]="isSelected(panels.BASELINE)">
     <mat-expansion-panel-header [collapsedHeight]="customCollapsedHeight" [expandedHeight]="customExpandedHeight">
-      <mat-panel-title>
+      <mat-panel-title style="align-items: center;">
         Baseline Criteria
+        <app-docs-modal class="info-icon"
+                        url="https://docs.asf.alaska.edu/vertex/baseline/#baseline-criteria">
+        </app-docs-modal>
       </mat-panel-title>
     </mat-expansion-panel-header>
 

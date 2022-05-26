@@ -7,6 +7,7 @@ import { MatDialogRef } from '@angular/material/dialog';
 import { SubSink } from 'subsink';
 
 import * as services from '@services';
+import { asfWebsite } from '@models';
 
 @Component({
   selector: 'app-api-link-dialog',
@@ -16,34 +17,29 @@ import * as services from '@services';
 export class ApiLinkDialogComponent implements OnInit, OnDestroy {
   public amount$ = new BehaviorSubject<number>(5000);
   public format$ = new BehaviorSubject<string>('CSV');
+  public asfWebsite = asfWebsite;
 
   public format: string;
   public amount: number;
   public apiLink: string;
   private subs = new SubSink();
 
-  public formats = [
-    {
+  public formats = [{
       value: 'CSV',
       viewValue: 'CSV File'
-    },
-    {
+    }, {
       value: 'JSON',
       viewValue: 'JSON File'
-    },
-    {
+    }, {
       value: 'KML',
       viewValue: 'KML File'
-    },
-    {
+    }, {
       value: 'METALINK',
       viewValue: 'METALINK File'
-    },
-    {
+    }, {
       value: 'DOWNLOAD',
       viewValue: 'Bulk Download Script'
-    },
-    {
+    }, {
       value: 'GEOJSON',
       viewValue: 'GEOJSON File'
     },
@@ -82,8 +78,9 @@ export class ApiLinkDialogComponent implements OnInit, OnDestroy {
     );
   }
 
-  public onAmountChange(amount: string): void {
-    this.amount$.next(+amount);
+  public onAmountChange(event: Event): void {
+    const amount = (event.target as HTMLInputElement).valueAsNumber;
+    this.amount$.next(amount);
   }
 
   public onFormatChange(format: string): void {

@@ -45,9 +45,10 @@ export class FiltersEffects {
     map(action => action.payload),
     filter(defaultFilters => !!defaultFilters),
     withLatestFrom(this.store$.select(getSearchType)),
-    filter(([_, searchtype]) => searchtype !== SearchType.LIST && searchtype !== SearchType.CUSTOM_PRODUCTS),
+    filter(([_, searchtype]) => searchtype !== SearchType.LIST && searchtype !== SearchType.CUSTOM_PRODUCTS
+    && searchtype !== SearchType.SARVIEWS_EVENTS),
     map(([defaultFilters, searchtype]) => defaultFilters[searchtype]),
-    filter(targetFilterID => !!targetFilterID && targetFilterID !== ''),
+    filter(targetFilterID => targetFilterID === '' || !!targetFilterID),
     map(targetFilterID => new LoadFiltersPreset(targetFilterID))
     )
     );

@@ -96,7 +96,7 @@
             </div>
           </div>
 
-          <app-on-demand-add-menu #baselineAdd>
+          <app-on-demand-add-menu [showSubscriptions]="true" #baselineAdd>
           </app-on-demand-add-menu>
         </div>
 
@@ -161,14 +161,14 @@
         <div class="button-tabs">
           <button
             (click)="onSelectList()"
-            [class.selected]="view === Views.LIST"
+            [class.selected]="isOfCardView(Views.LIST)"
             mat-button
           >
             Scenes
           </button>
           <button
             (click)="onSelectDetail()"
-            [class.selected]="view === Views.DETAIL"
+            [class.selected]="isOfCardView(Views.DETAIL)"
             mat-button
           >
             Scene Detail
@@ -183,7 +183,7 @@
   </mat-card>
 
   <mat-card
-    *ngIf="view === Views.DETAIL"
+    *ngIf="isOfCardView(Views.DETAIL)"
     class="mp0 no-box-shadow"
     fxFlex="45"
     fxFlexFill
@@ -192,14 +192,14 @@
       <div>
         <button
           (click)="onSelectList()"
-          [class.selected]="view === Views.LIST"
+          [class.selected]="isOfCardView(Views.LIST)"
           mat-button
         >
           Scenes
         </button>
         <button
           (click)="onSelectDetail()"
-          [class.selected]="view === Views.DETAIL"
+          [class.selected]="isOfCardView(Views.DETAIL)"
           mat-button
         >
           Scene Detail

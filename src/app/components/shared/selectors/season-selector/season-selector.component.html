@@ -1,34 +1,43 @@
 <mat-slide-toggle
-  (change)="onToggleSeasonalOptions()"
+  (change)="onToggleSeasonalOptions($event)"
   [(ngModel)]="isSeasonalSearch"
-  style="margin: 10px 0;">
-    Seasonal Search
+  style="margin: 10px 0"
+>
+  Seasonal Search
 </mat-slide-toggle>
 
-<div *ngIf="isSeasonalSearch">
-  <div>
-    <b>Season Start Day </b> <span *ngIf="start"> • {{ dayOfYearFormat(start, 'short') }}</span>
-    <div class="season-selector">
-      <mat-slider
-        (change)="onSeasonStartChange($event.value)"
-        [value]="start"
-        [displayWith]="dayOfYearFormat"
-        min="1" max="365" step="1"
-        thumbLabel="true" showTicks="true"
-        ></mat-slider>
+<div *ngIf="isSeasonalSearch" class="season-selector">
+  <app-circle-slider
+    [startValue]="this.start"
+    [endValue]="this.end"
+    (newStart)="onSeasonStartChange($event)"
+    (newEnd)="onSeasonEndChange($event)"
+    (doneSelecting)="onSeasonDoneSelecting()"
+  ></app-circle-slider>
+  <!-- <app-date-range></app-date-range> -->
+  <div class="dates">
+    <div>
+      <b>Season Start Day </b>
+      <span *ngIf="start"> • {{ this.start | shortDateSeason }}</span>
+      <div class="buttons">
+        <button (click)="change('start', 1)" mat-flat-button>+1</button>
+        <button (click)="change('start', -1)" mat-flat-button>-1</button>
+      </div>
     </div>
-  </div>
-
-  <div>
-    <b>Season End Day </b> <span *ngIf="end"> • {{ dayOfYearFormat(end, 'short') }}</span>
-    <div class="season-selector">
-      <mat-slider
-        (change)="onSeasonEndChange($event.value)"
-        [value]="end"
-        [displayWith]="dayOfYearFormat"
-        min="1" max="365" step="1"
-        thumbLabel="true" showTicks="true"
-        ></mat-slider>
+    <button
+      mat-icon-button
+      (click)="swap()"
+      matTooltip="Swap season start and end date"
+    >
+      <mat-icon>swap_vert</mat-icon>
+    </button>
+    <div>
+      <b>Season End Day </b>
+      <span *ngIf="end"> • {{ end | shortDateSeason }}</span>
+      <div class="buttons">
+        <button (click)="change('end', 1)" mat-flat-button>+1</button>
+        <button (click)="change('end', -1)" mat-flat-button>-1</button>
+      </div>
     </div>
   </div>
 </div>

@@ -29,6 +29,10 @@ import { SBASChartModule } from '@components/sbas-chart/sbas-chart.module';
 import { SbasSlidersComponent } from './sbas-sliders/sbas-sliders.component';
 import { MatSliderModule } from '@angular/material/slider';
 import { SbasSlidersTwoComponent } from './sbas-sliders-two/sbas-sliders-two.component';
+import { SarviewsResultsMenuComponent } from './sarviews-results-menu/sarviews-results-menu.component';
+import { EventProductSortSelectorModule } from '@components/shared/event-product-sort-selector/event-product-sort-selector.module';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import {DocsModalModule} from '@components/shared/docs-modal';
 
 @NgModule({
   declarations: [
@@ -40,30 +44,34 @@ import { SbasSlidersTwoComponent } from './sbas-sliders-two/sbas-sliders-two.com
     SBASResultsMenuComponent,
     SbasSlidersComponent,
     SbasSlidersTwoComponent,
+    SarviewsResultsMenuComponent,
   ],
-  imports: [
-    CommonModule,
-    ResizableModule,
-    FlexLayoutModule,
-    TruncateModule,
-    MatMenuModule,
-    MatSharedModule,
-    MatTabsModule,
-    PipesModule,
-    ScenesListModule,
-    SceneFilesModule,
-    SceneDetailModule,
-    BaselineChartModule,
-    OnDemandAddMenuModule,
-    SBASChartModule,
-    MatSliderModule,
-    FormsModule,
-    SceneMetadataModule,
-    MatButtonToggleModule,
-    MatFormFieldModule,
-    MatInputModule,
-    ReactiveFormsModule,
-  ],
+    imports: [
+        CommonModule,
+        ResizableModule,
+        FlexLayoutModule,
+        TruncateModule,
+        MatMenuModule,
+        MatSharedModule,
+        MatTabsModule,
+        PipesModule,
+        ScenesListModule,
+        SceneFilesModule,
+        SceneDetailModule,
+        BaselineChartModule,
+        OnDemandAddMenuModule,
+        SBASChartModule,
+        MatSliderModule,
+        FormsModule,
+        SceneMetadataModule,
+        MatButtonToggleModule,
+        MatFormFieldModule,
+        MatInputModule,
+        ReactiveFormsModule,
+        FontAwesomeModule,
+        EventProductSortSelectorModule,
+        DocsModalModule
+    ],
   exports: [ResultsMenuComponent, SbasSlidersTwoComponent, SbasSlidersComponent],
 })
 export class ResultsMenuModule { }

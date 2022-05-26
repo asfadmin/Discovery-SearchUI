@@ -1,0 +1,87 @@
+<mat-accordion *ngIf="breakpoint$ | async as breakpoint" multi>
+
+  <mat-expansion-panel
+    *ngIf="breakpoint === breakpoints.MOBILE"
+    [expanded]="defaultPanelOpenState" [disabled]="panelIsDisabled"
+    (click)="selectPanel(panels.SEARCH)"
+    [class.raised-section]="isSelected(panels.SEARCH)">
+
+    <mat-expansion-panel-header [collapsedHeight]="customCollapsedHeight" [expandedHeight]="customExpandedHeight">
+      <mat-panel-title>
+        {{ panels.SEARCH }}
+      </mat-panel-title>
+    </mat-expansion-panel-header>
+
+    <div style="display: flex; margin-top: 25px;">
+      <app-search-type-selector style="margin-right: 10px;">
+      </app-search-type-selector>
+    </div>
+
+  </mat-expansion-panel>
+
+  <mat-expansion-panel
+    [expanded]="defaultPanelOpenState" [disabled]="panelIsDisabled"
+    (click)="selectPanel(panels.EVENT_DESCRIPTION)"
+    [class.raised-section]="isSelected(panels.EVENT_DESCRIPTION)">
+
+    <mat-expansion-panel-header [collapsedHeight]="customCollapsedHeight" [expandedHeight]="customExpandedHeight">
+      <mat-panel-title>
+        Event Filters
+      </mat-panel-title>
+    </mat-expansion-panel-header>
+
+    <div style="display: flex; margin-top: 25px;">
+      <app-sarviews-event-active-selector></app-sarviews-event-active-selector>
+    </div>
+    <div style="display: flex; margin-top: 25px;">
+      <app-sarviews-event-search-selector></app-sarviews-event-search-selector>
+    </div>
+    <div style="display: flex; margin-top: 25px;">
+      <app-sarviews-event-type-selector></app-sarviews-event-type-selector>
+    </div>
+    <div style="margin-top: 25px; margin-bottom: 25px; height: 100px;">
+      <app-sarviews-event-magnitude-selector></app-sarviews-event-magnitude-selector>
+    </div>
+
+  </mat-expansion-panel>
+
+  <mat-expansion-panel [expanded]="defaultPanelOpenState" [disabled]="panelIsDisabled"
+    (click)="selectPanel(panels.DATE)"
+    [class.raised-section]="isSelected(panels.DATE)">
+    <mat-expansion-panel-header [collapsedHeight]="customCollapsedHeight" [expandedHeight]="customExpandedHeight">
+      <mat-panel-title style="align-items: center;">
+        Date Filters
+        <app-docs-modal class="info-icon"
+                        url="https://docs.asf.alaska.edu/vertex/manual/#date-filters">
+        </app-docs-modal>
+      </mat-panel-title>
+    </mat-expansion-panel-header>
+
+    <div style="margin-top: 20px;">
+      <app-date-selector></app-date-selector>
+    </div>
+  </mat-expansion-panel>
+
+  <mat-expansion-panel [expanded]="defaultPanelOpenState" [disabled]="panelIsDisabled"
+  (click)="selectPanel(panels.DATE)"
+  [class.raised-section]="isSelected(panels.DATE)">
+  <mat-expansion-panel-header [collapsedHeight]="customCollapsedHeight" [expandedHeight]="customExpandedHeight">
+    <mat-panel-title style="align-items: center;">
+      Product Filters
+      <app-docs-modal class="info-icon"
+                      url="https://docs.asf.alaska.edu/vertex/events/#product-filters">
+      </app-docs-modal>
+    </mat-panel-title>
+  </mat-expansion-panel-header>
+
+  <!-- <div style="margin-top: 20px;">
+    <app-event-products-date-selector></app-event-products-date-selector>
+  </div> -->
+  <div style="margin-top: 20px;">
+    <app-path-selector></app-path-selector>
+  </div>
+  <div style="margin-top: 20px;">
+    <app-hyp3-job-type-selector></app-hyp3-job-type-selector>
+  </div>
+</mat-expansion-panel>
+</mat-accordion>

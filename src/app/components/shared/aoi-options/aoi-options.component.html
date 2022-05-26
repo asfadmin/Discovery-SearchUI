@@ -1,6 +1,9 @@
 <div (dragover)="onFileHovered($event)" class="layout">
   <div *ngIf="showHeader" class="header-layout mb">
-    <div><b>Options</b></div>
+    <div>
+      <b>AOI Options</b>
+      <mat-icon (click)="onOpenHelp()" class="clickable" style="margin-left: 10px;">info</mat-icon>
+    </div>
 
     <div>
       <button (click)="onClose()" matTooltip="Hide options" mat-icon-button>
@@ -10,34 +13,31 @@
   </div>
 
   <div class="aoi-input-area">
-    <form style="width: 100%;" #polygonInputForm="ngForm" (keydown.enter)="$event.preventDefault()">
-      <mat-form-field [class.invalid-input-animation]="isAOIError" class="w100" style="height: 100px;">
+    <form #polygonInputForm="ngForm"
+      (keydown.enter)="$event.preventDefault()"
+      [class.aoi-input--desktop]="breakpoint !== breakpoints.MOBILE"
+      [class.aoi-input--mobile]="breakpoint === breakpoints.MOBILE">
+
+      <mat-form-field [class.invalid-input-animation]="isAOIError" class="w100">
         <mat-label> Area of Interest • WKT </mat-label>
         <textarea
-          (change)="onInputSearchPolygon($event.target.value)"
+          (change)="onInputSearchPolygon($event)"
           [value]="polygon"
           [(ngModel)]="polygon"
           name="searchPolygonLarge"
-          cdkTextareaAutosize cdkAutosizeMinRows="3"
+          cdkTextareaAutosize cdkAutosizeMinRows="7"
           cdkAutosizeMaxRows="8"
           matInput>
         </textarea>
+        <button matSuffix mat-button
+          (click)="onClearPolygon()"
+          aria-label="Clear" >
+          Clear
+        </button>
       </mat-form-field>
     </form>
 
-    <div class="drop-text-box">
-      <div style="padding: 10px;"> Drag files here. </div>
-    </div>
-  </div>
-
-  <div class="form-layout">
-    <button (click)="onFileUpload()" mat-flat-button color="primary">
-      Import Area of Interest
-    </button>
-
-    <button (click)="onClearPolygon()" mat-flat-button matTooltip="Clear Area of Intreset">
-      Clear
-    </button>
+    <app-file-upload-dialog *ngIf="breakpoint !== breakpoints.MOBILE" style="width: 40%;"></app-file-upload-dialog>
   </div>
 </div>
 

@@ -12,6 +12,7 @@ import { Breakpoints, CMRProductPair, SearchType } from '@models';
 import { ScreenSizeService, DatasetForProductService } from '@services';
 
 import { SubSink } from 'subsink';
+import { map } from 'rxjs/operators';
 
 enum CardViews {
   LIST = 0,
@@ -39,15 +40,16 @@ export class SBASResultsMenuComponent implements OnInit, OnDestroy {
 
   public listCardMaxWidth = '38%';
   public chartCardMaxWidth = '55%';
+  private minChartWidth = 25.0;
 
   public breakpoint: Breakpoints;
   public breakpoints = Breakpoints;
   public isSelectedPairCustom: boolean;
   private subs = new SubSink();
 
-  public zoomInChart$ = new Subject();
-  public zoomOutChart$ = new Subject();
-  public zoomToFitChart$ = new Subject();
+  public zoomInChart$ = new Subject<void>();
+  public zoomOutChart$ =  new Subject<void>();
+  public zoomToFitChart$ =  new Subject<void>();
 
   constructor(
     private store$: Store<AppState>,
@@ -81,8 +83,24 @@ export class SBASResultsMenuComponent implements OnInit, OnDestroy {
     );
 
     this.subs.add(
-      this.store$.select(scenesStore.getSelectedPair).subscribe(
-        (selected: CMRProductPair) => this.pair = selected
+      this.store$.select(scenesStore.getSelectedPair).pipe(
+        map(pair => !pair?.[0] ? null : pair),
+      ).subscribe(
+        (selected: CMRProductPair) => {
+          selected?.sort((a, b) => {
+            if (a.metadata.date < b.metadata.date) {
+              return -1;
+            }
+            return 1;
+          });
+
+          this.pair = selected?.map(product => ({...product,
+            metadata: {
+              ...product.metadata,
+              temporal: product.metadata.temporal - selected[0].metadata.temporal,
+              perpendicular: product.metadata.perpendicular - selected[0].metadata.perpendicular
+            }}));
+        }
       )
     );
   }
@@ -92,7 +110,10 @@ export class SBASResultsMenuComponent implements OnInit, OnDestroy {
       || document.documentElement.clientWidth
       || document.body.clientWidth;
     const newChartWidth = event.rectangle.width > windowWidth ? windowWidth : event.rectangle.width;
-    const newChartMaxWidth = Math.round((newChartWidth / windowWidth) * 100);
+    const newChartMaxWidth = Math.max(
+      this.minChartWidth,
+      Math.round((newChartWidth / windowWidth) * 100)
+      );
     const newListMaxWidth = 100 - newChartMaxWidth;
 
     this.listCardMaxWidth = newListMaxWidth.toString() + '%';
@@ -133,6 +154,10 @@ export class SBASResultsMenuComponent implements OnInit, OnDestroy {
 
   public zoomToFit(): void {
     this.zoomToFitChart$.next();
+  }
+
+  public onOpenHelp(url: string): void {
+    window.open(url);
   }
 
   ngOnDestroy() {

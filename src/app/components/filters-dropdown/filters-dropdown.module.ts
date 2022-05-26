@@ -16,8 +16,9 @@ import { ListFiltersModule } from './list-filters';
 import { DatasetFiltersModule } from './dataset-filters';
 import { BaselineFiltersModule } from './baseline-filters';
 import { SbasFiltersModule } from './sbas-filters';
+import { DerivedDatasetsModule } from './derived-datasets';
 import { CustomProductsFiltersModule } from './custom-products-filters';
-
+import { SarviewsFiltersModule } from './sarviews-filters';
 import { SearchSelectorModule } from '@components/shared/selectors/search-selector';
 
 import { FlexLayoutModule } from '@angular/flex-layout';
@@ -35,6 +36,8 @@ import { FlexLayoutModule } from '@angular/flex-layout';
     BaselineFiltersModule,
     SbasFiltersModule,
     CustomProductsFiltersModule,
+    SarviewsFiltersModule,
+    DerivedDatasetsModule,
     SearchButtonModule,
     CancelFilterChangesModule,
     ClearButtonModule,

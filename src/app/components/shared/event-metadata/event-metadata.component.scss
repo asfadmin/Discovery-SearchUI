@@ -1,0 +1,18 @@
+@import "asf-theme";
+
+a {
+  text-decoration: none;
+  color: $uaf-primary-blue;
+}
+
+.scene-metadata {
+  font-size: 12px;
+  margin-top: 5px;
+  columns: 2;
+
+  .mat-icon {
+    @include md-icon-size(12px);
+
+    margin-left: 4px;
+  }
+}

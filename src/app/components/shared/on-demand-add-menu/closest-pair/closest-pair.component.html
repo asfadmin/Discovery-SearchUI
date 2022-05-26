@@ -6,8 +6,8 @@
 type='number'
 [max]="scenes.length - 1"
 [min]='1'
-[placeholder]="points"
-(input)="updatePairCount($event.target.value)"
+[placeholder]="points.toString()"
+(input)="updatePairCount($event)"
 (click) = "$event.stopPropagation()"/>
 </mat-form-field>
 <button

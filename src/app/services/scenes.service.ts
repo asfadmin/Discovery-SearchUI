@@ -3,7 +3,6 @@ import { Injectable } from '@angular/core';
 import { Observable, combineLatest } from 'rxjs';
 import { debounceTime, map } from 'rxjs/operators';
 import * as moment from 'moment';
-
 import { Store } from '@ngrx/store';
 import { AppState } from '@store/app.reducer';
 import {
@@ -12,7 +11,8 @@ import {
 } from '@store/scenes/scenes.reducer';
 import {
   getTemporalRange, getPerpendicularRange, getDateRange,
-  getProductTypes, getProjectName, getJobStatuses, getProductNameFilter, getSeason
+  getProductTypes, getProjectName, getJobStatuses,
+  getProductNameFilter, getSeason
 } from '@store/filters/filters.reducer';
 import { getShowS1RawData, getShowExpiredData } from '@store/ui/ui.reducer';
 import { getSearchType } from '@store/search/search.reducer';
@@ -22,6 +22,7 @@ import {
   Range, ColumnSortDirection,
   Hyp3Job, Hyp3JobStatusCode
 } from '@models';
+import { NotificationService } from './notification.service';
 
 @Injectable({
   providedIn: 'root'
@@ -29,6 +30,7 @@ import {
 export class ScenesService {
   constructor(
     private store$: Store<AppState>,
+    private notificationService: NotificationService,
   ) { }
 
   public products$(): Observable<CMRProduct[]> {
@@ -56,6 +58,7 @@ export class ScenesService {
           this.store$.select(getScenes)
     ))))))));
   }
+
 
   public withBrowses$(scenes$: Observable<CMRProduct[]>): Observable<CMRProduct[]> {
     return scenes$.pipe(
@@ -111,7 +114,12 @@ export class ScenesService {
           return scenes;
         }
 
-        return scenes.filter(scene => !scene.productTypeDisplay.includes('RAW'));
+        const filteredScenes = scenes.filter(scene => !scene.productTypeDisplay.includes('RAW'));
+
+        if (filteredScenes.length === 0 && scenes.length > 0) {
+          this.notificationService.rawDataHidden();
+        }
+        return filteredScenes;
       })
     );
   }

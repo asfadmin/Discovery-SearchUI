@@ -6,7 +6,7 @@
     <div
       id="result-div"
       class="w100"
-      [resizeEdges]="{ top: true }"
+      [resizeEdges]="{ top: !(imageViewerOpen$ | async) }"
       [ngClass]="{'mobile-size': breakpoint === breakpoints.MOBILE}"
       [style.height.px]="menuHeightPx"
       mwlResizable
@@ -16,32 +16,42 @@
       (resizeEnd)="onFinalResize()"
       (resizing)="onResizeEnd($event)">
 
-      <div *ngIf="products.length !== 0" class="resize-controls">
+      <div *ngIf="products.length !== 0 || !(noSarviewsEvents$ | async)" class="resize-controls">
         <div mwlResizeHandle class="resize-handle-filler"></div>
       </div>
 
-      <div [class.hidden]="(areNoScenes$ | async)"
+      <div [class.hidden]="(areNoScenes$ | async) && !(!(noSarviewsEvents$ | async) && searchType === SearchTypes.SARVIEWS_EVENTS)"
         class="h100" style="justify-content: center;">
 
-        <div *ngIf="products.length !== 0" class="results-menu--background h100 w100 mp0"
+        <div *ngIf="products.length !== 0 || !(noSarviewsEvents$ | async)" class="results-menu--background h100 w100 mp0"
              fxFlex fxLayout="row">
 
-          <ng-container *ngIf="breakpoint >= breakpoints.SMALL">
+          <ng-container *ngIf="breakpoint > breakpoints.MOBILE">
             <app-desktop-results-menu class="w100 h100"
               *ngIf="
                 searchType !== SearchTypes.BASELINE &&
-                searchType !== SearchTypes.SBAS
+                searchType !== SearchTypes.SBAS &&
+                searchType !== SearchTypes.SARVIEWS_EVENTS
               "
+              [class.small-size]="breakpoint === breakpoints.SMALL"
               [resize$]="resize$">
             </app-desktop-results-menu>
 
+            <app-sarviews-results-menu class="w100 h100"
+            *ngIf="searchType === SearchTypes.SARVIEWS_EVENTS"
+            [class.small-size]="breakpoint === breakpoints.SMALL"
+            [resize$]="resize$">
+            </app-sarviews-results-menu>
+
             <app-baseline-results-menu class="w100 h100"
               *ngIf="searchType === SearchTypes.BASELINE"
+              [class.small-size]="breakpoint === breakpoints.SMALL"
               [resize$]="resize$">
             </app-baseline-results-menu>
 
             <app-sbas-results-menu class="w100 h100"
               *ngIf="searchType === SearchTypes.SBAS"
+              [class.small-size]="breakpoint === breakpoints.SMALL"
               [resize$]="resize$">
             </app-sbas-results-menu>
           </ng-container>

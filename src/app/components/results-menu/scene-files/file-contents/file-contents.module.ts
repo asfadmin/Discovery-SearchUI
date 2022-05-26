@@ -10,6 +10,7 @@ import { FileNameModule } from '@components/shared/file-name';
 import { CartToggleModule } from '@components/shared/cart-toggle';
 
 import { FileContentsComponent } from './file-contents.component';
+import {DownloadFileButtonModule} from '@components/shared/download-file-button/download-file-button.module';
 
 
 
@@ -24,6 +25,7 @@ import { FileContentsComponent } from './file-contents.component';
     FileNameModule,
     CartToggleModule,
     FlexLayoutModule,
+    DownloadFileButtonModule,
   ],
   exports: [
     FileContentsComponent

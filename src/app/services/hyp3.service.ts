@@ -5,20 +5,29 @@ import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import * as moment from 'moment';
 
-import { EnvironmentService } from './environment.service';
 import * as models from '@models';
 
 @Injectable({
   providedIn: 'root'
 })
 export class Hyp3Service {
+  private hyp3ApiUrl = 'https://hyp3-api.asf.alaska.edu';
+  private baseHyp3ApiUrl = 'https://hyp3-api.asf.alaska.edu';
+
   constructor(
     private http: HttpClient,
-    private env: EnvironmentService,
-  ) { }
+  ) {}
 
   public get apiUrl() {
-    return this.env.currentEnv.hyp3_api;
+    return this.hyp3ApiUrl;
+  }
+
+  public setApiUrl(url: string): void {
+    this.hyp3ApiUrl = url;
+  }
+
+  public setDefaultApiUrl(): void {
+    this.hyp3ApiUrl = this.baseHyp3ApiUrl;
   }
 
   public getUser$(): Observable<models.Hyp3User> {
@@ -94,7 +103,7 @@ export class Hyp3Service {
     );
   }
 
-  public submiteJobBatch$(jobBatch) {
+  public submitJobBatch$(jobBatch) {
     const submitJobUrl = `${this.apiUrl}/jobs`;
 
     return this.http.post(submitJobUrl, jobBatch, { withCredentials: true });
@@ -116,6 +125,37 @@ export class Hyp3Service {
     return this.http.post(submitJobUrl, body, { withCredentials: true });
   }
 
+  public editSubscription(subId: string, edit: {enabled?: boolean, end?: string}) {
+    const subscriptionUrl = `${this.apiUrl}/subscriptions/${subId}`;
+
+    return this.http.patch(subscriptionUrl, edit, { withCredentials: true });
+  }
+
+  public submitSubscription$(sub) {
+    const submitUrl = `${this.apiUrl}/subscriptions`;
+
+    return this.http.post(submitUrl, sub, { withCredentials: true });
+  }
+
+  public getSubscriptions$(): Observable<models.OnDemandSubscription[]> {
+    const subscriptionsUrl = `${this.apiUrl}/subscriptions`;
+
+    return this.http.get(subscriptionsUrl, { withCredentials: true }).pipe(
+      map((resp: any) => {
+        return resp.subscriptions.map((sub) => {
+          return  {
+            name: sub.job_specification.name,
+            id: sub.subscription_id,
+            jobParameters: sub.job_specification,
+            jobType: models.hyp3JobTypes[sub.job_specification.job_type],
+            filters: sub.search_parameters,
+            enabled: sub.enabled
+          };
+        });
+      })
+    );
+  }
+
   public getHyp3ableProducts(products: models.CMRProduct[][]): {byJobType: models.Hyp3ableProductByJobType[]; total: number} {
     const byJobType = models.hyp3JobTypesList.map(jobType => {
       const hyp3ableProducts = products.filter(
@@ -133,7 +173,12 @@ export class Hyp3Service {
 
       hyp3ableProducts.forEach(product => {
         const prodType = product[0].metadata.productType;
-        byProdType[prodType].push(product);
+        byProdType[prodType].push(product?.sort((a, b) => {
+          if (a.metadata.date < b.metadata.date) {
+            return -1;
+          }
+          return 1;
+        }));
       });
 
       const byProductType: models.Hyp3ableByProductType[] = Object.entries(byProdType).map(([productType, prods]) => ({

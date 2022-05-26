@@ -1,10 +1,15 @@
 import { Action } from '@ngrx/store';
 
-import { CMRProduct, UnzippedFolder, ColumnSortDirection, SearchType, CMRProductPair } from '@models';
+import { CMRProduct, UnzippedFolder, ColumnSortDirection, SearchType, CMRProductPair, SarviewsEvent, SarviewsProduct } from '@models';
+import { PinnedProduct } from '@services/browse-map.service';
 
 export enum ScenesActionType {
-  SET_SCENES = '[Granuels] Set Scenes',
-  CLEAR = '[Granuels] Clear Scenes',
+  SET_SCENES = '[Granules] Set Scenes',
+  CLEAR = '[Granules] Clear Scenes',
+  SET_SARVIEWS_EVENTS = '[SARViews] Set SARViews Events',
+  SET_SARVIEWS_EVENT_PRODUCTS = '[SARViews] Set Selected SARViews Event Products',
+
+  SET_IMAGE_BROWSE_PRODUCTS = '[Products-Browse] Set product browse image view',
 
   SET_RESULTS_LOADED = '[Scenes] Set Results Loaded',
   LOAD_UNZIPPED_PRODUCT = '[Scenes] Load unzipped product',
@@ -15,6 +20,8 @@ export enum ScenesActionType {
 
   SET_SELECTED_SCENE = '[Scenes] Set Selected Scene',
   SET_SELECTED_PAIR = '[Scenes] Set Selected Pair',
+  SET_SELECTED_SARVIEWS_EVENT = '[SARViews] Set Selected SARViews Event',
+  SET_SELECTED_SARVIEW_PRODUCT = '[SARViews] Set Selected SARViews Event Product',
 
   SET_MASTER = '[Scenes-Baseline] Set Master',
   SET_FILTER_MASTER = '[Scenes-Baseline] Set Filter Master',
@@ -34,6 +41,17 @@ export class SetScenes implements Action {
   constructor(public payload: {products: CMRProduct[], searchType: SearchType} ) {}
 }
 
+export class SetSarviewsEvents implements Action {
+  public readonly type = ScenesActionType.SET_SARVIEWS_EVENTS;
+
+  constructor(public payload: {events: SarviewsEvent[]}) {}
+}
+
+export class SetSelectedSarviewsEvent implements Action {
+  public readonly type = ScenesActionType.SET_SELECTED_SARVIEWS_EVENT;
+
+  constructor(public payload: string) {}
+}
 export class ClearScenes implements Action {
   public readonly type = ScenesActionType.CLEAR;
 }
@@ -48,6 +66,12 @@ export class SetSelectedScene implements Action {
   public readonly type = ScenesActionType.SET_SELECTED_SCENE;
 
   constructor(public payload: string) {}
+}
+
+export class SetSelectedSarviewProduct implements Action {
+  public readonly type = ScenesActionType.SET_SELECTED_SARVIEW_PRODUCT;
+
+  constructor(public payload: SarviewsProduct) {}
 }
 
 export class SetSelectedPair implements Action {
@@ -132,6 +156,19 @@ export class RemoveCustomPair implements Action {
   constructor(public payload: CMRProductPair) {}
 }
 
+export class SetSarviewsEventProducts implements Action {
+  public readonly type = ScenesActionType.SET_SARVIEWS_EVENT_PRODUCTS;
+
+  constructor(public payload: SarviewsProduct[]) {}
+}
+
+export class SetImageBrowseProducts implements Action {
+  public readonly type = ScenesActionType.SET_IMAGE_BROWSE_PRODUCTS;
+
+  constructor(public payload: {[product_id in string]: PinnedProduct}) {}
+}
+
+
 export type ScenesActions =
   | SetScenes
   | ClearScenes
@@ -150,4 +187,9 @@ export type ScenesActions =
   | SetPerpendicularSortDirection
   | AddCustomPair
   | AddCustomPairs
-  | RemoveCustomPair;
+  | RemoveCustomPair
+  | SetSarviewsEvents
+  | SetSelectedSarviewsEvent
+  | SetSarviewsEventProducts
+  | SetSelectedSarviewProduct
+  | SetImageBrowseProducts;

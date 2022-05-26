@@ -12,6 +12,8 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
+import { MatTableModule } from '@angular/material/table';
+import { MatSortModule } from '@angular/material/sort';
 
 import { environment } from '@environments/environment';
 import { StoreModule } from '@ngrx/store';
@@ -22,8 +24,7 @@ import { ToastContainerModule, ToastrModule } from 'ngx-toastr';
 import * as store from './store';
 
 import { MatSharedModule } from '@shared';
-import { SavedSearchesModule } from '@components/shared/saved-searches';
-import { SaveUserFiltersModule } from '@components/shared/save-user-filters';
+import { SidebarModule } from '@components/sidebar';
 import { HeaderModule } from '@components/header';
 import { MapModule } from '@components/map';
 import { ResultsMenuModule } from '@components/results-menu';
@@ -31,10 +32,11 @@ import { BaselineChartModule } from '@components/baseline-chart';
 import { HelpModule } from './components/help';
 import { AppComponent } from './app.component';
 import { CustomBreakPointsProvider } from '@services/custom-breakpoints';
+
 import * as services from '@services';
 
 import { NgcCookieConsentModule, NgcCookieConsentConfig } from 'ngx-cookieconsent';
-// import { FileDownloadDirective } from './directives/file-download.directive';
+import { getSaver, SAVER } from '@services/saver.provider';
 
 // info about cookie consent module: https://tinesoft.github.io/ngx-cookieconsent/home
 const cookieConfig: NgcCookieConsentConfig = {
@@ -74,7 +76,6 @@ export const routes = [
 @NgModule({
   declarations: [
     AppComponent,
-    // FileDownloadDirective,
   ],
   imports: [
     BrowserModule,
@@ -84,14 +85,15 @@ export const routes = [
     MatBottomSheetModule,
     MatSharedModule,
     FlexLayoutModule.withConfig({disableDefaultBps: true},
-    CustomBreakPointsProvider.useValue),
+      CustomBreakPointsProvider.useValue),
     RouterModule.forRoot(routes, {useHash: true}),
     StoreModule.forRoot(store.reducers, {metaReducers: store.metaReducers}),
     EffectsModule.forRoot(store.appEffects),
     !environment.production ? StoreDevtoolsModule.instrument() : [],
     MatSidenavModule,
-    SavedSearchesModule,
-    SaveUserFiltersModule,
+    MatTableModule,
+    MatSortModule,
+    SidebarModule,
     MapModule,
     ResultsMenuModule,
     HeaderModule,
@@ -101,7 +103,7 @@ export const routes = [
     MatDialogModule,
     BaselineChartModule,
     HelpModule,
-    ToastrModule.forRoot( { positionClass: 'inline', preventDuplicates: true }),
+    ToastrModule.forRoot({positionClass: 'inline', preventDuplicates: true}),
     ToastContainerModule,
   ],
   providers: [
@@ -132,7 +134,12 @@ export const routes = [
     services.Hyp3Service,
     services.PairService,
     services.SceneSelectService,
+    services.OnDemandService,
+    {provide: SAVER, useFactory: getSaver},
+    // { provide: Window, useValue: window },
   ],
-  bootstrap: [ AppComponent ],
+  bootstrap: [AppComponent],
+  exports: [MatTableModule,
+  ]
 })
 export class AppModule {}

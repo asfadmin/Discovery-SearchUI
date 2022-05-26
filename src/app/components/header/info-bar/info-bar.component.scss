@@ -1,4 +1,5 @@
-@use '~@angular/material' as mat;
+@use "@angular/material" as mat;
+
 @import "asf-theme";
 
 $config: mat.define-typography-config();
@@ -32,7 +33,7 @@ div span {
   background-color: $asf-primary-light;
   color: $asf-primary-dark;
   line-height: 30px;
-  font-family: mat.font-family($custom-typography);
+  //font-family: mat.font-family($custom-typography);
   font-size: 14px;
   padding-right: 150px;
 }
@@ -46,6 +47,12 @@ div span {
   color: $uaf-primary-blue;
   font-weight: bold;
   margin-right: 10px;
+}
+
+.sarviews {
+  color: unset;
+  font-style: italic;
+  font-size: 10pt;
 }
 
 #ASF_SEARCH {

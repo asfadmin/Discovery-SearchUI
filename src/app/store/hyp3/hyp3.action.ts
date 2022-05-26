@@ -1,10 +1,13 @@
 import { Action } from '@ngrx/store';
 
-import { Hyp3Job, Hyp3User, Hyp3ProcessingOptions } from '@models';
+import { Hyp3Job, Hyp3User, Hyp3ProcessingOptions, OnDemandSubscription } from '@models';
 
 export enum Hyp3ActionType {
   LOAD_JOBS = '[Hyp3] Load Jobs',
   SET_JOBS = '[Hyp3] Set Jobs',
+
+  LOAD_SUBSCRIPTIONS = '[Hyp3] Load Subscriptions',
+  SET_SUBSCRIPTIONS = '[Hyp3] Set Subscriptions',
 
   SET_PROCESSING_OPTIONS = '[Hyp3] Set Processing Options',
   SET_PROCESSING_PROJECT_NAME = '[Hyp3] Set Processing Project Name',
@@ -30,6 +33,16 @@ export class SetJobs implements Action {
   constructor(public payload: Hyp3Job[]) {}
 }
 
+export class LoadSubscriptions implements Action {
+  public readonly type = Hyp3ActionType.LOAD_SUBSCRIPTIONS;
+}
+
+export class SetSubscriptions implements Action {
+  public readonly type = Hyp3ActionType.SET_SUBSCRIPTIONS;
+
+  constructor(public payload: OnDemandSubscription[]) {}
+}
+
 export class SetProcessingOptions implements Action {
   public readonly type = Hyp3ActionType.SET_PROCESSING_OPTIONS;
 
@@ -51,7 +64,7 @@ export class SubmitJob implements Action {
   constructor(public payload: string) {}
 }
 
-export class SuccessfulJobSumbission implements Action {
+export class SuccessfulJobSubmission implements Action {
   public readonly type = Hyp3ActionType.SUCCESSFUL_JOB_SUBMISSION;
 }
 
@@ -76,6 +89,8 @@ export class ErrorLoadingUser implements Action {
 export type Hyp3Actions =
   | LoadJobs
   | SetJobs
+  | LoadSubscriptions
+  | SetSubscriptions
   | LoadUser
   | SetUser
   | ErrorLoadingUser
@@ -83,5 +98,5 @@ export type Hyp3Actions =
   | ClearProcessingOptions
   | SetProcessingProjectName
   | SubmitJob
-  | SuccessfulJobSumbission
+  | SuccessfulJobSubmission
   | ErrorJobSubmission;

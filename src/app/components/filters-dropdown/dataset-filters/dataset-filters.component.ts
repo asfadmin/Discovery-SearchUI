@@ -14,7 +14,8 @@ enum FilterPanel {
   ADDITIONAL = 'Additional',
   CAMPAIGN = 'Campaign',
   PATH = 'Path',
-  AOI = 'Aoi'
+  AOI = 'Aoi',
+  SEARCH = 'Search'
 }
 
 @Component({
@@ -65,6 +66,10 @@ export class DatasetFiltersComponent implements OnInit, OnDestroy {
 
   public selectPanel(panel: FilterPanel): void {
     this.selectedPanel = panel;
+  }
+
+  public onOpenHelp(url: string): void {
+    window.open(url);
   }
 
   ngOnDestroy() {

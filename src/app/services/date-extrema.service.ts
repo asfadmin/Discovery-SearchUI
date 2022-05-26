@@ -1,11 +1,11 @@
 import { Injectable } from '@angular/core';
 
 import { Observable, combineLatest} from 'rxjs';
-import {map } from 'rxjs/operators';
+import {filter, map } from 'rxjs/operators';
 
 import * as moment from 'moment';
 
-import { Dataset, CMRProduct } from '@models';
+import { Dataset, CMRProduct, SarviewsEvent, Range } from '@models';
 
 @Injectable({
   providedIn: 'root'
@@ -102,6 +102,27 @@ export class DateExtremaService {
 
     return combineLatest(startMin$, startMax$, endMin$, endMax$).pipe(
       map(extrema => this.buildExtrema(...extrema)),
+    );
+  }
+
+  public getSarviewsExtrema$(events$: Observable<SarviewsEvent[]>) {
+    return events$.pipe(
+      filter(events => !!events),
+      filter(events => events.length > 0),
+      map(events => events.map(event => event.processing_timeframe)),
+      map(eventsDateRange => {
+        const min = eventsDateRange
+          .filter(eventRange => !!eventRange?.start)
+          .map(eventRange => new Date( eventRange.start))
+          .reduce((prev, curr) => prev <= curr ? prev : curr);
+
+        const max = eventsDateRange
+          .filter(eventRange => !!eventRange?.end)
+          .map(eventRange => new Date( eventRange.end))
+          .reduce((prev, curr) => prev > curr ? prev : curr);
+        const extrema: Range<Date> = {start: new Date( min), end: new Date( max)};
+        return extrema;
+      })
     );
   }
 

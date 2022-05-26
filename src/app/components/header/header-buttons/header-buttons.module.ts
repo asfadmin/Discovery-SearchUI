@@ -14,21 +14,27 @@ import { DatasetSelectorModule } from '@components/shared/selectors/dataset-sele
 import { HeaderButtonsComponent } from './header-buttons.component';
 import { PreferencesComponent } from './preferences/preferences.component';
 import { CustomizeEnvComponent } from './customize-env/customize-env.component';
+import { OnlynumberDirective } from '@directives/onlynumber.directive';
 
 @NgModule({
-  declarations: [ HeaderButtonsComponent, PreferencesComponent, CustomizeEnvComponent ],
-  imports: [
-    CommonModule,
-    FormsModule,
-    MatBadgeModule,
-    MatMenuModule,
-    MatInputModule,
-    MatDialogModule,
-    MatSharedModule,
-    MatSelectModule,
-    DatasetSelectorModule,
-    MatFormFieldModule
+  declarations: [
+    HeaderButtonsComponent,
+    PreferencesComponent,
+    CustomizeEnvComponent,
+    OnlynumberDirective
   ],
+    imports: [
+        CommonModule,
+        FormsModule,
+        MatBadgeModule,
+        MatMenuModule,
+        MatInputModule,
+        MatDialogModule,
+        MatSharedModule,
+        MatSelectModule,
+        DatasetSelectorModule,
+        MatFormFieldModule,
+    ],
   exports: [ HeaderButtonsComponent ]
 })
 export class HeaderButtonsModule { }

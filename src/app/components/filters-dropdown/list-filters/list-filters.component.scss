@@ -1,5 +1,51 @@
+@import "asf-theme";
+
 .ls-example {
   font-style: italic;
   color: grey;
   word-break: break-all;
+}
+
+.file-upload-container {
+  width: 30%;
+  margin-bottom: 20px;
+}
+
+.drop-file-area {
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-color: rgb(245, 245, 245);
+  background-position: center;
+  width: 350px;
+  height: 180px;
+  display: inline-block;
+  //border: $asf-primary-dark dashed 2px;
+  outline: 2px dashed $asf-primary;
+  outline-offset: -8px;
+}
+
+.drop-file-area-scenes {
+  background-image: url("/assets/scene_file_upload.png");
+}
+
+.drop-file-area-files {
+  background-image: url("/assets/file_upload.png");
+}
+
+.file-upload-text {
+  margin-top: 25%;
+  margin-right: 15%;
+  margin-left: 20%;
+  color: rgba(0, 0, 0, 0.54);
+  font-weight: 400;
+}
+
+.file-list-container {
+  width: 70%;
+  margin-right: 15px;
+}
+
+.input-field-container {
+  display: flex;
+  flex-direction: row;
 }

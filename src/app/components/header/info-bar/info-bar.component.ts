@@ -5,6 +5,8 @@ import { SubSink } from 'subsink';
 
 import { AppState } from '@store';
 import * as filtersStore from '@store/filters';
+import * as searchStore from '@store/search';
+
 
 import * as services from '@services';
 import * as models from '@models';
@@ -18,15 +20,19 @@ declare global {
 @Component({
   selector: 'app-info-bar',
   templateUrl: './info-bar.component.html',
-  styleUrls: ['./info-bar.component.scss']
+  styleUrls: ['./info-bar.component.scss'],
 })
 export class InfoBarComponent implements OnInit, OnDestroy {
   @Input() resize$: Observable<void>;
+  public searchType: models.SearchType = models.SearchType.DATASET;
+  public searchTypes = models.SearchType;
+  public searchType$ = this.store$.select(searchStore.getSearchType);
   public breakpoint$ = this.screenSize.breakpoint$;
   public breakpoints = models.Breakpoints;
 
   public startDate: Date | null;
   public endDate: Date | null;
+  public eventProductTypes: string;
   public pathRange: models.Range<number | null>;
   public frameRange: models.Range<number | null>;
   public season: models.Range<number | null>;
@@ -48,7 +54,6 @@ export class InfoBarComponent implements OnInit, OnDestroy {
     private store$: Store<AppState>,
     private screenSize: services.ScreenSizeService,
   ) {
-    this.showSearch();
   }
 
   ngOnInit() {
@@ -106,6 +111,12 @@ export class InfoBarComponent implements OnInit, OnDestroy {
       range => this.tempRange = range
     );
 
+    const eventProductType = this.store$.select(filtersStore.getHyp3ProductTypes).subscribe(
+      productTypes => this.eventProductTypes = productTypes
+        .map(productType => productType.id)
+        .join(', ')
+    );
+
     [
       startSub, endSub,
       pathSub, frameSub,
@@ -118,19 +129,16 @@ export class InfoBarComponent implements OnInit, OnDestroy {
       flightDirsSub,
       subtypeSub,
       missionSub,
-      tempSub, perpSub
+      tempSub, perpSub,
+      eventProductType
     ].forEach(sub => this.subs.add(sub));
 
-  }
+    this.subs.add(
+      this.store$.select(searchStore.getSearchType).subscribe(
+        searchType => this.searchType = searchType
+      )
+    );
 
-  public showSearch() {
-    const id = 'b8df7ea0-38a5-11eb-9b20-0242ac130002';
-    const ci_search = document.createElement('script');
-    ci_search.type = 'text/javascript';
-    ci_search.async = true;
-    ci_search.src = 'https://cse.expertrec.com/api/js/ci_common.js?id=' + id;
-    const s = document.getElementsByTagName('script')[0];
-    s.parentNode.insertBefore(ci_search, s);
   }
 
   ngOnDestroy() {

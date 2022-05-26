@@ -2,6 +2,7 @@ import { createFeatureSelector, createSelector } from '@ngrx/store';
 
 import { FiltersActionType, FiltersActions } from './filters.action';
 import * as models from '@models';
+import { EventProductSort, EventProductSortDirection, EventProductSortType, hyp3JobTypes, SBASOverlap } from '@models';
 
 
 export interface FiltersState {
@@ -36,6 +37,15 @@ export interface FiltersState {
   previousFilters: FiltersState;
 
   thresholdOverlap: boolean;
+  sbasOverlapThreshold: SBASOverlap;
+
+  sarviewsEventTypes: models.SarviewsEventType[];
+  sarviewsEventNameFilter: string;
+  sarviewsEventActiveOnly: boolean;
+  sarviewsMagnitudeRange: models.Range<number>;
+
+  hyp3ProductTypes: string[];
+  sarviewsEventProductSorting: EventProductSort;
 }
 
 
@@ -88,7 +98,21 @@ export const initState: FiltersState = {
 
   previousFilters: null,
 
-  thresholdOverlap: false
+  thresholdOverlap: false,
+  sbasOverlapThreshold: SBASOverlap.HALF_OVERLAP,
+
+  sarviewsEventTypes: [],
+  sarviewsEventNameFilter: null,
+  sarviewsEventActiveOnly: false,
+  sarviewsMagnitudeRange: {
+    start: null,
+    end: null
+  },
+  sarviewsEventProductSorting: {
+    sortType: EventProductSortType.DATE,
+    sortDirection: EventProductSortDirection.DESCENDING
+  },
+  hyp3ProductTypes: []
 };
 
 
@@ -110,10 +134,6 @@ export function filtersReducer(state = initState, action: FiltersActions): Filte
         polarizations: [],
         subtypes: [],
         selectedMission: null,
-        dateRange: {
-          start: null,
-          end: null
-        },
       };
     }
 
@@ -312,7 +332,7 @@ export function filtersReducer(state = initState, action: FiltersActions): Filte
     }
 
     case FiltersActionType.SET_FILTERS_SIMILAR_TO: {
-      const metadata = action.payload.metadata;
+      const metadata = action.payload.product.metadata;
 
       return {
         ...state,
@@ -325,6 +345,7 @@ export function filtersReducer(state = initState, action: FiltersActions): Filte
           end: metadata.path
         },
         selectedMission: metadata.missionName,
+        selectedDatasetId: action.payload.dataset.id ?? 'SENTINEL-1',
       };
     }
 
@@ -372,6 +393,16 @@ export function filtersReducer(state = initState, action: FiltersActions): Filte
       return {
         ...state,
         searchList: []
+      };
+    }
+
+    case FiltersActionType.CLEAR_EVENT_FILTERS: {
+      return {
+        ...state,
+        sarviewsMagnitudeRange: initState.sarviewsMagnitudeRange,
+        sarviewsEventActiveOnly: false,
+        sarviewsEventTypes: [],
+        hyp3ProductTypes: []
       };
     }
 
@@ -505,6 +536,34 @@ export function filtersReducer(state = initState, action: FiltersActions): Filte
           temporalRange: {start: filters.temporal, end: null},
           perpendicularRange: {start: filters.perpendicular, end: null},
         };
+      } else if (search.searchType === models.SearchType.CUSTOM_PRODUCTS) {
+          const filters = <models.CustomProductFiltersType>search.filters;
+
+          return {
+            ... state,
+            jobStatuses: filters.jobStatuses,
+            dateRange: filters.dateRange,
+            projectName: filters.projectName,
+            productFilterName: filters.productFilterName
+          };
+      } else if (search.searchType === models.SearchType.SARVIEWS_EVENTS) {
+        const filters = <models.SarviewsFiltersType>search.filters;
+
+        return {
+          ... state,
+          dateRange: filters.dateRange,
+          sarviewsEventTypes: filters.sarviewsEventTypes,
+          sarviewsEventNameFilter: filters.sarviewsEventNameFilter,
+          sarviewsEventActiveOnly: filters.activeOnly,
+          sarviewsMagnitudeRange: filters.magnitude,
+          hyp3ProductTypes: filters.hyp3ProductTypes,
+          pathRange: filters.pathRange,
+          frameRange: filters.frameRange
+        };
+      } else if (search.searchType === models.SearchType.DERIVED_DATASETS) {
+        // TODO: Don't make geosearch default case or handle no
+        // savable searches better
+        return {...state};
       } else {
         const filters = <models.GeographicFiltersType>search.filters;
 
@@ -561,7 +620,7 @@ export function filtersReducer(state = initState, action: FiltersActions): Filte
     case FiltersActionType.STORE_CURRENT_FILTERS: {
       return {
         ...state,
-        previousFilters: state
+        previousFilters: { ... state }
       };
     }
     case FiltersActionType.RESTORE_FILTERS: {
@@ -577,6 +636,72 @@ export function filtersReducer(state = initState, action: FiltersActions): Filte
       return {
         ...state,
         thresholdOverlap: !state.thresholdOverlap
+      };
+    }
+    case FiltersActionType.SET_SBAS_OVERLAP_THRESHOLD: {
+      return {
+        ...state,
+        sbasOverlapThreshold: action.payload
+      };
+    }
+    case FiltersActionType.SET_SARVIEWS_EVENT_TYPES: {
+      return {
+        ...state,
+        sarviewsEventTypes: [ ... action.payload ]
+      };
+    }
+    case FiltersActionType.SET_SARVIEWS_EVENT_NAME_FILTER: {
+      return {
+        ...state,
+        sarviewsEventNameFilter: action.payload
+      };
+    }
+    case FiltersActionType.SET_SARVIEWS_EVENT_ACTIVE_FILTER: {
+      return {
+        ...state,
+        sarviewsEventActiveOnly: action.payload
+      };
+    }
+    case FiltersActionType.SET_SARVIEWS_MAGNITUDE_START: {
+      return {
+        ...state,
+        sarviewsMagnitudeRange: {...state.sarviewsMagnitudeRange, start: action.payload}
+      };
+    }
+    case FiltersActionType.SET_SARVIEWS_MAGNITUDE_END: {
+      return {
+        ...state,
+        sarviewsMagnitudeRange: {...state.sarviewsMagnitudeRange, end: action.payload}
+      };
+    }
+    case FiltersActionType.SET_SARVIEWS_MAGNITUDE_RANGE: {
+      return {
+        ...state,
+        sarviewsMagnitudeRange: action.payload
+      };
+    }
+    case FiltersActionType.CLEAR_SARVIEWS_MAGNITUDE_RANGE: {
+      return {
+        ...state,
+        sarviewsMagnitudeRange: initState.sarviewsMagnitudeRange
+      };
+    }
+    case FiltersActionType.SET_HYP3_PRODUCT_TYPES: {
+      return {
+        ...state,
+        hyp3ProductTypes: [ ... action.payload ]
+      };
+    }
+    case FiltersActionType.SET_EVENT_PRODUCT_SORT: {
+      return {
+        ...state,
+        sarviewsEventProductSorting: {...action.payload}
+      };
+    }
+    case FiltersActionType.CLEAR_HYP3_PRODUCT_TYPES: {
+      return {
+        ...state,
+        hyp3ProductTypes: []
       };
     }
     default: {
@@ -770,7 +895,18 @@ export const getSbasSearch = createSelector(
     dateRange: state.dateRange,
     season: state.season,
     perpendicular: state.perpendicularRange.start,
-    thresholdOverlap: state.thresholdOverlap
+    thresholdOverlap: state.sbasOverlapThreshold
+  })
+);
+
+export const getCustomProductSearch = createSelector(
+  getFiltersState,
+  (state: FiltersState) => ({
+    dateRange: state.dateRange,
+    jobStatuses: state.jobStatuses,
+
+    projectName: state.projectName,
+    productFilterName: state.productFilterName
   })
 );
 
@@ -803,4 +939,39 @@ export const areFiltersChanged = createSelector(
 export const getSBASOverlapToggle = createSelector(
   getFiltersState,
   (state: FiltersState) => state.thresholdOverlap
+);
+
+export const getSBASOverlapThreshold = createSelector(
+  getFiltersState,
+  (state: FiltersState) => state.sbasOverlapThreshold
+);
+
+export const getSarviewsEventTypes = createSelector(
+  getFiltersState,
+  (state: FiltersState) => state.sarviewsEventTypes
+);
+
+export const getSarviewsEventNameFilter = createSelector(
+  getFiltersState,
+  (state: FiltersState) => state.sarviewsEventNameFilter
+);
+
+export const getSarviewsEventActiveFilter = createSelector(
+  getFiltersState,
+  (state: FiltersState) => state.sarviewsEventActiveOnly
+);
+
+export const getSarviewsMagnitudeRange = createSelector(
+  getFiltersState,
+  (state: FiltersState) => state.sarviewsMagnitudeRange
+);
+
+export const getHyp3ProductTypes = createSelector(
+  getFiltersState,
+  (state: FiltersState) => state.hyp3ProductTypes.map(productType => hyp3JobTypes[productType])
+);
+
+export const getSarviewsEventProductSorting = createSelector(
+  getFiltersState,
+  (state: FiltersState) => state.sarviewsEventProductSorting
 );

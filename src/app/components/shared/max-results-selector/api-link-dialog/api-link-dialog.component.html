@@ -17,7 +17,7 @@
       <mat-label>Amount</mat-label>
       <input type="number" name="amount"
       [(ngModel)]="amount"
-      (change)="onAmountChange($event.target.value)"
+      (change)="onAmountChange($event)"
       matInput>
     </mat-form-field>
 
@@ -34,7 +34,7 @@
 
     <mat-form-field class="w100">
       <mat-label>Api URL</mat-label>
-      <textarea (click)="$event.target.select()"
+      <textarea (click)="$event.target"
         name="Api URL" [readonly]="true" [(ngModel)]="apiLink" matInput
         cdkTextareaAutosize cdkAutosizeMinRows="2"
         cdkAutosizeMaxRows="5">
@@ -51,7 +51,7 @@
 </mat-dialog-content>
 
 <mat-dialog-actions style="margin-top: 15px;">
-  <a href="https://www.asf.alaska.edu/get-data/api/" target="_blank" mat-flat-button>API Docs</a>
+  <a [href]="asfWebsite.api_get_data" target="_blank" mat-flat-button>API Docs</a>
   <a [href]="apiLink" target="_blank" color="primary" mat-flat-button>
     Download Results
   </a>

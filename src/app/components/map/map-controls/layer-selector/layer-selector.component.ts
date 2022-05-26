@@ -14,8 +14,14 @@ import * as models from '@models';
   styleUrls: ['./layer-selector.component.scss']
 })
 export class LayerSelectorComponent implements OnInit, OnDestroy {
+  public overviewMapVisible$ = this.store$.select(mapStore.getIsOverviewMapOpen);
+  public overviewMapVisible = false;
+
   public layerTypes = models.MapLayerTypes;
   public layerType: models.MapLayerTypes;
+
+  public areGridlinesActive$ = this.store$.select(mapStore.getAreGridlinesActive);
+  public gridActive = false;
 
   private subs = new SubSink();
 
@@ -28,6 +34,18 @@ export class LayerSelectorComponent implements OnInit, OnDestroy {
       this.store$.select(mapStore.getMapLayerType).subscribe(
         layerType => this.layerType = layerType
       )
+    );
+
+    this.subs.add(
+      this.overviewMapVisible$.subscribe(
+        isOpen => this.overviewMapVisible = isOpen
+      )
+    );
+
+    this.subs.add(
+      this.areGridlinesActive$.subscribe(gridActive => {
+        this.gridActive = gridActive;
+      })
     );
   }
 
@@ -43,6 +61,14 @@ export class LayerSelectorComponent implements OnInit, OnDestroy {
     });
 
     this.store$.dispatch(action);
+  }
+
+  public onToggleOverviewMap(isOpen: boolean): void {
+    this.store$.dispatch(new mapStore.ToggleOverviewMap(!isOpen));
+  }
+
+  public onToggleGridlines() {
+    this.store$.dispatch(new mapStore.SetGridlines(!this.gridActive));
   }
 
   ngOnDestroy() {

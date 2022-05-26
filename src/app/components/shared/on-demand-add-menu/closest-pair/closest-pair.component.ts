@@ -72,7 +72,8 @@ export class ClosestPairComponent implements OnInit {
     this.store$.dispatch(new queueStore.AddJobs(jobs));
   }
 
-  public updatePairCount(val: number) {
+  public updatePairCount(event: Event) {
+    const val = (event.target as HTMLInputElement).valueAsNumber;
     this.points = Math.min(val, this.scenes.length - 2);
   }
 

@@ -8,6 +8,7 @@ import { MatButtonToggleModule } from '@angular/material/button-toggle';
 
 import { MatSharedModule } from '@shared';
 
+import { FileUploadModule } from './file-upload';
 import { AoiOptionsComponent } from './aoi-options.component';
 import { DrawSelectorComponent } from './draw-selector/draw-selector.component';
 import { InteractionSelectorComponent } from './interaction-selector';
@@ -26,6 +27,7 @@ import { InteractionSelectorComponent } from './interaction-selector';
     MatInputModule,
     MatMenuModule,
     MatSharedModule,
+    FileUploadModule,
   ],
   exports: [
     AoiOptionsComponent,

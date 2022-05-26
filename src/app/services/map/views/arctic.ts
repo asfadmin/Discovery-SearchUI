@@ -1,14 +1,19 @@
 import { View } from 'ol';
 import WMTSTileGrid from 'ol/tilegrid/WMTS.js';
 import { WMTS } from 'ol/source';
-import { Tile as TileLayer } from 'ol/layer';
+import { Options as WMTS_Options} from 'ol/source/WMTS';
+import { Tile as TileLayer,
+  Graticule as GraticuleLayer
+} from 'ol/layer';
 import * as proj from 'ol/proj';
+import { Stroke } from 'ol/style';
 
 import { MapView, CustomProjection } from './map-view';
+import { Extent } from 'ol/extent';
 
 
 export function arctic(): MapView  {
-  const extent = [-7295304, -7295304, 7295304, 7295304];
+  const extent: Extent = [-7295304, -7295304, 7295304, 7295304];
   const projection = new CustomProjection(
     'EPSG:3413',
     '+proj=stere +lat_0=90 +lat_ts=70 +lon_0=-45 +k=1 ' +
@@ -25,27 +30,42 @@ export function arctic(): MapView  {
     maxZoom: 6,
   });
 
-  const source = new WMTS({
+  const options: WMTS_Options = {
     url: 'https://gibs-{a-c}.earthdata.nasa.gov/wmts/epsg3413/best/wmts.cgi?TIME=2018-11-27T00:00:00Z',
     layer: 'BlueMarble_ShadedRelief_Bathymetry',
     format: 'image/jpeg',
     matrixSet: '500m',
-
+    style: 'default',
     tileGrid: new WMTSTileGrid({
       origin: [-4194304, 4194304],
       resolutions: [
         8192.0, 4096.0, 2048.0, 1024.0, 512.0, 256.0
       ],
-      matrixIds: [0, 1, 2, 3, 4, 5],
+      matrixIds: [0, 1, 2, 3, 4, 5].map(val => val.toString()),
       tileSize: 512
     })
+  };
+
+  const source = new WMTS(options);
+  const layer = new TileLayer({ source, extent });
+
+
+  const graticule = new GraticuleLayer({
+    strokeStyle: new Stroke({
+      color: 'rgba(255,120,0,0.9)',
+      width: 2,
+      lineDash: [0.5, 4],
+    }),
+    showLabels: true,
+    wrapX: false,
   });
 
-  const layer = new TileLayer({ source, extent });
+  graticule.set('name', 'gridlines');
 
   return new MapView(
     projection,
     view,
-    layer
+    layer,
+    graticule
   );
 }

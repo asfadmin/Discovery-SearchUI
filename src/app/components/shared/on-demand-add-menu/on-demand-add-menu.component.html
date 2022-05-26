@@ -10,7 +10,7 @@
 
         <mat-icon (click)="onOpenHelp(productsByJobType.jobType.infoUrl)"
           class="clickable" style="margin-left: 10px;">
-            icon
+            info
         </mat-icon>
       </button>
 
@@ -32,7 +32,15 @@
           {{AutoRift.name}}
           <mat-icon (click)="onOpenHelp(AutoRift.infoUrl)" class="clickable" style="margin-left: 10px;">info</mat-icon>
         </button>
-        </div>
+      </div>
+    </div>
+
+    <div *ngIf="showSubscriptions">
+      <button
+        (click)="onOpenCreateSubscription()"
+        [disabled]="!isLoggedIn"
+        mat-menu-item> Create Subscription...
+      </button>
     </div>
   </ng-template>
 </mat-menu>
@@ -40,17 +48,14 @@
 <mat-menu #addAllByProductType>
   <ng-template matMenuContent let-byJobType="productsByJobType">
     <div *ngFor="let prodType of byJobType.byProductType">
-      <button
-        *ngIf="prodType.products.length !== 0"
+      <button *ngIf="prodType.products.length !== 0"
         (click)="queueAllOnDemand(prodType.products, byJobType.jobType)"
         [disabled]="" mat-menu-item>
 
-        Add {{ prodType.products.length }} {{ prodType.productType }}
+        Add  {{ isExpired ? '' : prodType.products.length}} {{ isExpired ? '' : prodType.productType }}
         {{ byJobType.jobType.numProducts === 2 ? 'pair' : 'job' }}{{ prodType.products.length > 1 ? 's' : '' }}
       </button>
     </div>
-
-    <button (click)="onOpenCreateSubscription()" mat-menu-item>Create Subscription</button>
   </ng-template>
 </mat-menu>
 

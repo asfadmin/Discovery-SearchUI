@@ -1,6 +1,6 @@
 import { Action } from '@ngrx/store';
 
-import { CMRProduct, SearchType } from '@models';
+import { CMRProduct, SarviewsEvent, SearchType } from '@models';
 
 export enum SearchActionType {
   MAKE_SEARCH = '[Search] Make A Search',
@@ -19,7 +19,12 @@ export enum SearchActionType {
   SET_SEARCH_AMOUNT = '[Search] Set Search Results Amount',
   SEARCH_AMOUNT_LOADING = '[Search] Search Amount Is Loading',
   SET_SEARCH_TYPE = '[UI] Set Search Type',
-  SET_SEARCH_TYPE_AFTER_SAVE = '[UI] Set Search Type After Save'
+  SET_SEARCH_TYPE_AFTER_SAVE = '[UI] Set Search Type After Save',
+
+  SARVIEWS_SEARCH_RESPONSE = '[Search] SARViews Search Response',
+  MAKE_EVENT_PRODUCT_CMR_SEARCH = '[Search] Make a search for CMR Products with SARVIEWS Products',
+  EVENT_PRODUCT_CMR_RESPONSE = '[Search] Event Monitoring CMR Search Response',
+  SET_SEARCH_OUT_OF_DATE = '[Search] Set if Search is Out of Date'
 }
 
 export class MakeSearch implements Action {
@@ -62,6 +67,12 @@ export class SearchResponse implements Action {
   constructor(public payload: {files: CMRProduct[], totalCount: number, searchType: SearchType, next?: string}) {}
 }
 
+export class SarviewsEventsResponse implements Action {
+  public readonly type = SearchActionType.SARVIEWS_SEARCH_RESPONSE;
+
+  constructor(public payload: {events: SarviewsEvent[]}) {}
+}
+
 export class SearchError implements Action {
   public readonly type = SearchActionType.SEARCH_ERROR;
 
@@ -92,6 +103,12 @@ export class SetSearchTypeAfterSave implements Action {
   constructor(public payload: SearchType) {}
 }
 
+export class SetSearchOutOfDate implements Action {
+  public readonly type = SearchActionType.SET_SEARCH_OUT_OF_DATE;
+
+  constructor(public payload: boolean) {}
+}
+
 export type SearchActions =
   | MakeSearch
   | SetSearchAmount
@@ -105,4 +122,6 @@ export type SearchActions =
   | SetNextJobsUrl
   | Hyp3BatchResponse
   | SetSearchType
-  | SetSearchTypeAfterSave;
+  | SetSearchTypeAfterSave
+  | SarviewsEventsResponse
+  | SetSearchOutOfDate;

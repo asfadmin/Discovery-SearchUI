@@ -1,12 +1,16 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { SubSink } from 'subsink';
 
+
 import { Store } from '@ngrx/store';
 import { AppState } from '@store';
 import * as searchStore from '@store/search';
 import * as userStore from '@store/user';
 
 import * as models from '@models';
+
+import { ScreenSizeService } from '@services';
+import {AnalyticsEvent, Breakpoints, derivedDatasets} from '@models';
 
 // Declare GTM dataLayer array.
 declare global {
@@ -16,17 +20,21 @@ declare global {
 @Component({
   selector: 'app-search-type-selector',
   templateUrl: './search-type-selector.component.html',
-  styleUrls: ['./search-type-selector.component.css']
+  styleUrls: ['./search-type-selector.component.scss']
 })
 export class SearchTypeSelectorComponent implements OnInit, OnDestroy {
   public searchType: models.SearchType = models.SearchType.DATASET;
-
+  public datasets = derivedDatasets;
+  public breakpoint$ = this.screenSize.breakpoint$;
+  public breakpoints = Breakpoints;
   public isLoggedIn = false;
   public searchTypes = models.SearchType;
   private subs = new SubSink();
+  public isReadMore = true;
 
   constructor(
     private store$: Store<AppState>,
+    private screenSize: ScreenSizeService
   ) { }
 
   ngOnInit() {
@@ -51,6 +59,31 @@ export class SearchTypeSelectorComponent implements OnInit, OnDestroy {
     });
     this.store$.dispatch(new searchStore.SetSearchType(searchType));
   }
+
+  public onOpenDerivedDataset(dataset_url: string, dataset_name: string): void {
+
+    const analyticsEvent = {
+      name: 'open-derived-dataset',
+      value: dataset_name
+    };
+
+    this.openNewWindow(dataset_url, analyticsEvent);
+  }
+
+  private openNewWindow(url, analyticsEvent: AnalyticsEvent): void {
+    window.dataLayer = window.dataLayer || [];
+    window.dataLayer.push({
+      'event': analyticsEvent.name,
+      'open-derived-dataset': analyticsEvent.value
+    });
+
+    window.open(url, '_blank');
+  }
+
+  showText() {
+    this.isReadMore = !this.isReadMore;
+  }
+
 
   ngOnDestroy() {
     this.subs.unsubscribe();

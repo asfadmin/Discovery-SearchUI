@@ -5,6 +5,8 @@ import { MatDialog } from '@angular/material/dialog';
 import { Store } from '@ngrx/store';
 import { AppState } from '@store';
 import * as queueStore from '@store/queue';
+import * as hyp3Store from '@store/hyp3';
+import * as userStore from '@store/user';
 
 import * as models from '@models';
 import { SubSink } from 'subsink';
@@ -13,6 +15,7 @@ import { getSearchType } from '@store/search';
 import { CMRProduct, Hyp3ableByProductType, SearchType } from '@models';
 import { withLatestFrom } from 'rxjs/operators';
 import { CreateSubscriptionComponent } from '../../header/create-subscription';
+import { EnvironmentService } from '@services';
 
 @Component({
   selector: 'app-on-demand-add-menu',
@@ -21,8 +24,13 @@ import { CreateSubscriptionComponent } from '../../header/create-subscription';
 })
 export class OnDemandAddMenuComponent implements OnInit {
   @Input() hyp3ableProducts: models.Hyp3ableProductByJobType;
+  @Input() isExpired = false;
+  @Input() expiredJobs: models.Hyp3Job;
+  @Input() showSubscriptions = false;
 
   @ViewChild('addMenu', {static: true}) addMenu: MatMenu;
+
+  public isLoggedIn = false;
 
   public referenceScene: CMRProduct;
   private scenes: CMRProduct[];
@@ -37,12 +45,20 @@ export class OnDemandAddMenuComponent implements OnInit {
   constructor(
     private store$: Store<AppState>,
     private dialog: MatDialog,
+    public env: EnvironmentService,
   ) { }
 
   ngOnInit(): void {
+    this.subs.add(
+      this.store$.select(getSearchType).subscribe(
+        searchtype => this.searchType = searchtype
+      )
+    );
 
     this.subs.add(
-      this.store$.select(getSearchType).subscribe( searchtype => this.searchType = searchtype)
+      this.store$.select(userStore.getIsUserLoggedIn).subscribe(
+        isLoggedIn => this.isLoggedIn = isLoggedIn
+      )
     );
 
     this.subs.add(
@@ -64,7 +80,12 @@ export class OnDemandAddMenuComponent implements OnInit {
 
   public queueAllOnDemand(products: models.CMRProduct[][], job_type: models.Hyp3JobType): void {
     const jobs: models.QueuedHyp3Job[] = products.map(product => ({
-      granules: product,
+      granules: product.sort((a, b) => {
+        if (a.metadata.date < b.metadata.date) {
+          return -1;
+        }
+        return 1;
+      }),
       job_type
     }));
 
@@ -94,7 +115,12 @@ export class OnDemandAddMenuComponent implements OnInit {
     products = products.filter(prod => prod[0].id !== this.referenceScene.id);
     const jobs: models.QueuedHyp3Job[] = products.map(product => {
       return {
-      granules: [this.referenceScene, product[0]],
+      granules: [this.referenceScene, product[0]]?.sort((a, b) => {
+        if (a.metadata.date < b.metadata.date) {
+          return -1;
+        }
+        return 1;
+      }),
       job_type
     } as models.QueuedHyp3Job;
   });
@@ -103,11 +129,20 @@ export class OnDemandAddMenuComponent implements OnInit {
   }
 
   public onOpenCreateSubscription() {
-    this.dialog.open(CreateSubscriptionComponent, {
+    const ref = this.dialog.open(CreateSubscriptionComponent, {
       id: 'subscriptionQueueDialog',
       maxWidth: '100vw',
       maxHeight: '100vh',
+      data: {
+        referenceScene: this.referenceScene
+      }
     });
+
+    ref.afterClosed().subscribe(
+      _ => {
+        this.store$.dispatch(new hyp3Store.LoadSubscriptions());
+      }
+    );
   }
 
   public onOpenHelp(infoUrl) {

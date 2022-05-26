@@ -8,6 +8,8 @@ import { AppState } from '@store';
 import * as filtersStore from '@store/filters';
 
 import { MapService, WktService } from '@services';
+import { getSearchType } from '@store/search';
+import { SearchType } from '@models';
 
 @Component({
   selector: 'app-aoi-clear',
@@ -15,6 +17,9 @@ import { MapService, WktService } from '@services';
   styleUrls: ['./aoi-clear.component.css']
 })
 export class AoiClearComponent implements OnInit, OnDestroy {
+  public searchTypes = SearchType;
+  public searchType$ = this.store$.select(getSearchType);
+
   public polygon: string;
   public savedPolygon: string | null = null;
   public anyPathFrameValues = false;

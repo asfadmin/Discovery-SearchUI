@@ -43,25 +43,22 @@
     </app-copy-to-clipboard>
     </div>
     <div>
-      <a href="https://docs.asf.alaska.edu/vertex/sbas/" target="_blank">What is SBAS?</a>
+      <app-docs-modal url="https://docs.asf.alaska.edu/vertex/sbas/"
+                      text="What is SBAS?">
+      </app-docs-modal>
     </div>
   </mat-expansion-panel>
-
-
-
-
-
-
-
-
 
   <mat-expansion-panel [expanded]="defaultPanelOpenState" [disabled]="panelIsDisabled"
     (click)="selectPanel(panels.DATE)"
     *ngIf="areResultsLoaded"
     [class.raised-section]="isSelected(panels.DATE)">
     <mat-expansion-panel-header [collapsedHeight]="customCollapsedHeight" [expandedHeight]="customExpandedHeight">
-      <mat-panel-title>
+      <mat-panel-title style="align-items: center;">
         Date Filters
+        <app-docs-modal class="info-icon"
+                        url="https://docs.asf.alaska.edu/vertex/manual/#date-filters">
+        </app-docs-modal>
       </mat-panel-title>
     </mat-expansion-panel-header>
 
@@ -83,31 +80,19 @@
   <div style="margin-top: 20px;">
     <app-season-selector></app-season-selector>
   </div>
-</mat-expansion-panel>
+  </mat-expansion-panel>
 
-<mat-expansion-panel [expanded]="defaultPanelOpenState" [disabled]="panelIsDisabled"
-(click)="selectPanel(panels.OVERLAP)"
-*ngIf="areResultsLoaded && maturity !== 'prod'"
-[class.raised-section]="isSelected(panels.OVERLAP)">
-<mat-expansion-panel-header [collapsedHeight]="customCollapsedHeight" [expandedHeight]="customExpandedHeight">
-  <mat-panel-title>
-    Latitudinal Overlap (Experimental)
-  </mat-panel-title>
-</mat-expansion-panel-header>
-<div style="margin-top: 20px;">
-  <app-sbas-overlap-selector></app-sbas-overlap-selector>
-</div>
-</mat-expansion-panel>
-  <!-- <mat-expansion-panel [expanded]="defaultPanelOpenState" [disabled]="panelIsDisabled"
-    (click)="selectPanel(panels.FILTER1)"
-    *ngIf="areResultsLoaded"
-    [class.raised-section]="isSelected(panels.FILTER1)">
-    <mat-expansion-panel-header [collapsedHeight]="customCollapsedHeight" [expandedHeight]="customExpandedHeight">
-      <mat-panel-title>
-        Temporal Criteria
-      </mat-panel-title>
-    </mat-expansion-panel-header> -->
-
-    <!-- <app-baseline-sliders></app-baseline-sliders> -->
-  <!-- </mat-expansion-panel> -->
+  <mat-expansion-panel [expanded]="defaultPanelOpenState" [disabled]="panelIsDisabled"
+  (click)="selectPanel(panels.OVERLAP)"
+  *ngIf="areResultsLoaded"
+  [class.raised-section]="isSelected(panels.OVERLAP)">
+  <mat-expansion-panel-header [collapsedHeight]="customCollapsedHeight" [expandedHeight]="customExpandedHeight">
+    <mat-panel-title>
+      Latitudinal Overlap
+    </mat-panel-title>
+  </mat-expansion-panel-header>
+  <div style="margin-top: 20px;">
+    <app-sbas-overlap-selector></app-sbas-overlap-selector>
+  </div>
+  </mat-expansion-panel>
 </mat-accordion>

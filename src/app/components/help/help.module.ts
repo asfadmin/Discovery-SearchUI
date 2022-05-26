@@ -3,6 +3,9 @@ import { CommonModule } from '@angular/common';
 
 import { MatSharedModule } from '@shared';
 
+import { MatTableModule } from '@angular/material/table';
+import { MatSortModule } from '@angular/material/sort';
+
 import { HelpComponent } from './help.component';
 
 import { HelpGeoSearchComponent } from './help-pages/help-geo-search/help-geo-search.component';
@@ -21,6 +24,8 @@ import { HelpUnzippingComponent } from '@components/help/help-pages/help-unzippi
 import { HelpDownloadQueueComponent } from './help-pages/help-download-queue/help-download-queue.component';
 import { HelpExportOptionsComponent } from './help-pages/help-export-options/help-export-options.component';
 import { HelpOnDemandComponent } from './help-pages/help-on-demand/help-on-demand.component';
+import {MatInputModule} from '@angular/material/input';
+import {DocsModalModule} from '@components/shared/docs-modal';
 
 
 @NgModule({
@@ -43,10 +48,14 @@ import { HelpOnDemandComponent } from './help-pages/help-on-demand/help-on-deman
     HelpExportOptionsComponent,
     HelpOnDemandComponent,
   ],
-  imports: [
-    CommonModule,
-    MatSharedModule,
-  ],
+    imports: [
+        CommonModule,
+        MatSharedModule,
+        MatTableModule,
+        MatSortModule,
+        MatInputModule,
+        DocsModalModule
+    ],
   exports: [
     HelpComponent
   ]

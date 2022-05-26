@@ -1,4 +1,4 @@
-import {Component, OnInit, OnDestroy, Input} from '@angular/core';
+import { Component, OnInit, OnDestroy, Input, QueryList, ViewChildren } from '@angular/core';
 
 import { faCopy } from '@fortawesome/free-solid-svg-icons';
 import { ClipboardService } from 'ngx-clipboard';
@@ -13,10 +13,20 @@ import { CMRProduct, AsfApiOutputFormat, Breakpoints } from '@models';
 import { MatDialogRef } from '@angular/material/dialog';
 import { SubSink } from 'subsink';
 import { ResizedEvent } from 'angular-resize-event';
-import {HttpClient} from '@angular/common/http';
-import { saveAs } from 'file-saver';
 import { Observable } from 'rxjs';
-import { download, Download } from 'ngx-operators';
+import {  Download } from 'ngx-operators';
+import * as userStore from '@store/user';
+import { DownloadFileButtonComponent } from '@components/shared/download-file-button/download-file-button.component';
+import * as UAParser from 'ua-parser-js';
+import { DownloadService } from '@services/download.service';
+// import { DownloadService } from '@services/download.service';
+
+
+// tslint:disable-next-line:class-name
+export interface selectedItems {
+  id: string;
+  url: string;
+}
 
 @Component({
   selector: 'app-queue',
@@ -29,7 +39,10 @@ export class QueueComponent implements OnInit, OnDestroy {
 
   download$: Observable<Download>;
 
+  @ViewChildren(DownloadFileButtonComponent) downloadButtons !: QueryList<DownloadFileButtonComponent>;
+
   public queueHasOnDemandProducts = false;
+  public queueHasEventMonitoringProducts = false;
   public showDemWarning: boolean;
 
   public copyIcon = faCopy;
@@ -45,10 +58,25 @@ export class QueueComponent implements OnInit, OnDestroy {
   public dlHeight = 1000;
   public dlWidthMin = 715;
 
+  public selectedItems: selectedItems[] = [];
+  public allChecked = false;
+  public someChecked = false;
+
+  public dlQueueCount = 0;
+  public dlQueueNumProcessed = 0;
+  public dlDefaultChunkSize = 3;
+  public dlQueueProgress = 0;
+  public productList: DownloadFileButtonComponent[] = [];
+  public isLoggedIn$ = this.store$.select(userStore.getIsUserLoggedIn).pipe(
+    map(
+      loggedIn => loggedIn && new UAParser().getBrowser().name === 'Chrome'
+    )
+  );
   public products$ = this.store$.select(queueStore.getQueuedProducts).pipe(
     tap(products => this.areAnyProducts = products.length > 0),
     tap(products => {
       this.queueHasOnDemandProducts = !products.every(product => !product.metadata.job);
+      this.queueHasEventMonitoringProducts = !products.every(product => product.groupId !== 'SARViews');
       this.showDemWarning = (this.areAnyProducts) ? this.demWarning((products)) : false;
     })
   );
@@ -71,7 +99,7 @@ export class QueueComponent implements OnInit, OnDestroy {
     private dialogRef: MatDialogRef<QueueComponent>,
     private screenSize: ScreenSizeService,
     private notificationService: NotificationService,
-    private http: HttpClient,
+    private downloadService: DownloadService
   ) {}
 
   ngOnInit() {
@@ -80,9 +108,29 @@ export class QueueComponent implements OnInit, OnDestroy {
         breakpoint => this.breakpoint = breakpoint
       )
     );
-  }
 
+    this.subs.add(
+      this.store$.select(userStore.getUserProfile).subscribe(
+        profile => {
+          this.dlDefaultChunkSize = profile.defaultMaxConcurrentDownloads;
+        }
+      )
+    );
+
+
+  }
+  private keepGoing(product) {
+    const removedButton = this.downloadButtons.find(button => button.product === product);
+    if (removedButton?.dFile?.state !== 'DONE' && removedButton.dFile) {
+      removedButton.cancelDownload();
+      this.dlQueueNumProcessed--;
+      this.productList = this.productList?.filter(button => button.product !== product);
+      this.dlQueueCount--;
+      this.downloadContinue(product);
+    }
+  }
   public onRemoveProduct(product: CMRProduct): void {
+    this.keepGoing(product);
     this.store$.dispatch(new queueStore.RemoveItem(product));
   }
 
@@ -152,6 +200,21 @@ export class QueueComponent implements OnInit, OnDestroy {
     this.store$.dispatch(new queueStore.DownloadMetadata(format));
   }
 
+  public toggleItemSelected(productId, downloadUrl) {
+    const idx = this.selectedItems.findIndex( o => o.id === productId );
+    if (idx > -1) {
+      this.selectedItems.splice( idx, 1 );
+    } else {
+      this.selectedItems.push({
+        id: productId,
+        url: downloadUrl,
+      });
+    }
+    if ( this.selectedItems.length > 0 ) {
+        this.someChecked = true;
+      }
+  }
+
   public demWarning(products) {
     if (!products) {
       return false;
@@ -168,14 +231,39 @@ export class QueueComponent implements OnInit, OnDestroy {
     this.dlHeight = event.newHeight;
   }
 
-  public download(href) {
-    console.log('href:', href);
-    this.download$ = this.http.get(href, {
-      withCredentials: true,
-      reportProgress: true,
-      observe: 'events',
-      responseType: 'blob'
-    }).pipe(download(() => saveAs('special.nc')));
+  public async downloadAllFiles() {
+    this.downloadService.getDirectory(true).then(() => {
+      const buttons = this.downloadButtons.toArray().filter(b => !b?.dFile?.state);
+      for (const button of buttons.slice(0, 3)) {
+        const state = button?.dFile?.state;
+        if (!state) {
+          button.downloadFile(true);
+        }
+      }
+      this.productList = buttons;
+      this.dlQueueNumProcessed = 3;
+      this.dlQueueCount = this.productList.length;
+      this.dlDefaultChunkSize = this.dlDefaultChunkSize ?? 3;
+    });
+  }
+
+  public downloadContinue(_product?) {
+    this.dlQueueProgress = (this.dlQueueNumProcessed / this.dlQueueCount) * 100;
+    if (this.dlQueueNumProcessed < this.dlQueueCount) {
+      const button = this.productList[this.dlQueueNumProcessed++];
+      if (!button?.dFile?.state) {
+        button.downloadFile(true);
+      }
+    }
+  }
+  public limitedExportString() {
+    if (this.queueHasEventMonitoringProducts && this.queueHasOnDemandProducts) {
+      return 'On Demand and Event products in queue - limited export options';
+    } else if (this.queueHasEventMonitoringProducts) {
+      return 'Event Monitoring products in queue - limited export options';
+    } else {
+      return 'On Demand products in queue - limited export options';
+    }
   }
 
   onCloseDownloadQueue() {

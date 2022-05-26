@@ -1,4 +1,4 @@
-<ng-container *ngIf="numberOfScenes$ | async as numberOfScenes">
+<ng-container *ngIf="(numberOfScenes$ | async) > 0 || (numSarviewsScenes$ | async) > 0">
   <ng-container *ngIf="breakpoint$ | async as breakpoint">
     <div [className]="searchType === SearchTypes.BASELINE && breakpoint > breakpoints.MOBILE ?
                                         'files-header-baseline' : 'files-header mobile-size'">
@@ -9,13 +9,18 @@
         }">
 
         <div *ngIf="searchType === SearchTypes.DATASET || searchType === SearchTypes.LIST" class="mr-10 scene-count">
-          {{ numberOfScenes }} Scene{{ numberOfScenes === 1 ? '' : 's' }}
-          <span style="font-size: small;">
+          {{ numberOfScenes$ | async }} Scene{{ (numberOfScenes$ | async) === 1 ? '' : 's' }}
+          <span *ngIf="breakpoint > breakpoints.MOBILE" style="font-size: small;">
             <br>
             ({{ numberOfProducts$ | async }} of
             {{ formatNumber(totalResultCount$ | async) }}
             File{{ (numberOfProducts$ | async) === 1 ? '' : 's' }})
           </span>
+        </div>
+
+        <div *ngIf="searchType === SearchTypes.SARVIEWS_EVENTS" class="mr-10 event-count" event
+        [class.mobile-event]="breakpoint === breakpoints.MOBILE">
+          {{ numberOfFilteredEvents$ | async }} Event{{ (numSarviewsScenes$ | async) === 1 ? '' : 's' }}
         </div>
 
         <div *ngIf="searchType === SearchTypes.SBAS" class="mr-10" style="margin-top: -15px;">
@@ -96,7 +101,7 @@
             </div>
           </div>
 
-          <div fxFlex="" class="list-button-group">
+          <div fxFlex="" class="list-button-group" *ngIf="searchType !== SearchTypes.SARVIEWS_EVENTS">
             <div fxLayout="row" fxLayoutAlign="center" class="button-group-label">
               <label>Queue</label>
             </div>
@@ -106,6 +111,25 @@
                   <mat-button-toggle class="control-mat-button-toggle"
                                      [matMenuTriggerFor]="addAllProducts"
                                      matTooltip="Add all results to downloads">
+                    <mat-icon class="list-icon">
+                      add_shopping_cart
+                    </mat-icon>
+                  </mat-button-toggle>
+                </mat-button-toggle-group>
+              </div>
+            </div>
+          </div>
+
+          <div fxFlex="" class="list-button-group" *ngIf="searchType === SearchTypes.SARVIEWS_EVENTS">
+            <div fxLayout="row" fxLayoutAlign="center" class="button-group-label">
+              <label>Queue</label>
+            </div>
+            <div fxLayout="row">
+              <div>
+                <mat-button-toggle-group fxFlex="" name="layerType" class="mr-10 clickable noselect ">
+                  <mat-button-toggle class="control-mat-button-toggle"
+                                     [matMenuTriggerFor]="QueueAllSARViewsProducts"
+                                     matTooltip="Add {{(productsHiddenByFilters$ | async) ? 'filtered' : 'all'}} products to downloads from selected event">
                     <mat-icon class="list-icon">
                       add_shopping_cart
                     </mat-icon>
@@ -133,7 +157,7 @@
                   </mat-button-toggle>
                 </mat-button-toggle-group>
 
-                <app-on-demand-add-menu #listAdd>
+                <app-on-demand-add-menu [showSubscriptions]="true" #listAdd>
                 </app-on-demand-add-menu>
               </div>
             </div>
@@ -157,6 +181,97 @@
               </div>
             </div>
           </div>
+
+          <div *ngIf="searchType === SearchTypes.SARVIEWS_EVENTS" fxFlex="" class="list-button-group">
+            <div fxLayout="row" fxLayoutAlign="center" class="button-group-label">
+              <label>Export</label>
+            </div>
+            <div fxLayout="row">
+              <div>
+                <mat-button-toggle-group fxFlex="" name="layerType" class="mr-10">
+                  <mat-button-toggle class="control-mat-button-toggle clickable noselect"
+                                     [matMenuTriggerFor]="ExportAllSARViewsData"
+                                     matTooltip="Download data/metadata as">
+                    <mat-icon class="list-icon">
+                      get_app
+                    </mat-icon>
+                  </mat-button-toggle>
+                </mat-button-toggle-group>
+              </div>
+            </div>
+          </div>
+
+          <div *ngIf="searchType === SearchTypes.SARVIEWS_EVENTS && !!sarviewsEventProducts"
+          fxFlex="" class="list-button-group">
+          <div fxLayout="row" fxLayoutAlign="center" class="button-group-label">
+            <label>On Demand</label>
+          </div>
+          <div fxLayout="row">
+            <div>
+              <mat-button-toggle-group fxFlex="" name="layerType" class="mr-10">
+                <mat-button-toggle
+                [matMenuTriggerFor]="eventMonitoringOnDemand.addMenu"
+                [matMenuTriggerData]="{ hyp3able: hyp3ableEventProducts.byJobType }"
+                class="control-mat-button-toggle clickable noselect"
+                                   matTooltip="Add {{(productsHiddenByFilters$ | async) ? 'filtered' : 'all'}} results to On Demand queue">
+                  <mat-icon class="list-icon"
+                    svgIcon="hyp3">
+                  </mat-icon>
+                </mat-button-toggle>
+              </mat-button-toggle-group>
+              <app-on-demand-add-menu #eventMonitoringOnDemand>
+                <!-- <ng-template matMenuContent>
+                  <button
+                  [matMenuTriggerFor]="eventMonitoringOnDemandAllProducts"
+                  [matMenuTriggerData]="{job_types: [RTC, InSAR]}"
+                  mat-menu-item>
+                  All Event Products
+                </button>
+                  <button
+                  [mat-menu-trigger-for]="eventMonitoringOnDemandSelectedProducts"
+                  [matMenuTriggerData]="{selected_products : (selectedEventProducts$ | async)}"
+                  mat-menu-item>
+                    Selected Event Products
+                  </button>
+                </ng-template> -->
+              </app-on-demand-add-menu>
+              <mat-menu #eventMonitoringOnDemandAllProducts>
+                <ng-template matMenuContent let-jobTypes="job_types">
+                  <button (click)="addOnDemandEventProductsBySearchType(t)" mat-menu-item *ngFor="let t of jobTypes">
+                    Add {{EventMonitoringByJobType(t).length}} {{t.name === "RTC GAMMA" ? 'SLC' : t.name}} Jobs
+                    <mat-icon (click)="onOpenHelp(t.infoUrl)" class="clickable" style="margin-left: 10px;">info</mat-icon>
+                  </button>
+                </ng-template>
+              </mat-menu>
+              <mat-menu #eventMonitoringOnDemandSelectedProducts>
+                <ng-template matMenuContent let-selected="selected_products">
+                  <button [disabled]="selected.length === 0" mat-menu-item (click)="addOnDemandEventProducts(selected)">
+                    Add {{selected.length > 0 ? selected.length : ''}} Selected Job{{selected.length !== 1 ? 's' : ''}}
+                  </button>
+                </ng-template>
+              </mat-menu>
+            </div>
+          </div>
+        </div>
+
+        <div *ngIf="searchType === SearchTypes.SARVIEWS_EVENTS" fxFlex="" class="list-button-group">
+          <div fxLayout="row" fxLayoutAlign="center" class="button-group-label">
+            <label>Copy</label>
+          </div>
+          <div fxLayout="row">
+            <div>
+              <mat-button-toggle-group fxFlex="" name="layerType" class="mr-10">
+                <mat-button-toggle class="control-mat-button-toggle clickable noselect"
+                [matMenuTriggerFor]="eventMonitoringOptions"
+                [matMenuTriggerData]="{ selected: (selectedEventProducts$ | async)}"
+                matTooltip="Copy ids/urls"
+                >
+                <fa-icon class="list-icon" [icon]="copyIcon"></fa-icon>
+                </mat-button-toggle>
+              </mat-button-toggle-group>
+            </div>
+          </div>
+        </div>
 
           <div *ngIf="searchType === SearchTypes.SBAS" fxFlex="" class="list-button-group">
             <div fxLayout="row" fxLayoutAlign="center" class="button-group-label">
@@ -225,6 +340,25 @@
       </div>
       </mat-menu>
 
+      <mat-menu #ExportAllSARViewsData="matMenu">
+        <div *ngIf="sarviewsEventProducts">
+          <button (click)="onMakeSarviewsProductDownloadScript(sarviewsEventProducts)" mat-menu-item>
+            python (.py)
+          </button>
+          </div>
+      </mat-menu>
+
+      <mat-menu #QueueAllSARViewsProducts="matMenu">
+        <div *ngIf="sarviewsEventProducts">
+          <button (click)="onQueueSarviewsProducts(sarviewsEventProducts)" mat-menu-item>
+            {{(productsHiddenByFilters$ | async) ? 'Filtered' : 'All'}} Event Products ({{sarviewsEventProducts.length}} files)
+          </button>
+          <button (click)="onQueuePinnedSarviewsProducts()" mat-menu-item>
+            Selected Event Products ({{pinnedEventIDs.length}} files)
+          </button>
+          </div>
+      </mat-menu>
+
       <ng-container *ngIf="searchType === SearchTypes.BASELINE">
         <div class="header-row-right" *ngIf="breakpoint > breakpoints.MOBILE">
           <div (click)="onTogglePerpendicularSort()" class="header-column noselect clickable">
@@ -254,3 +388,41 @@
   </ng-container>
 
 </ng-container>
+
+
+<mat-menu #eventMonitoringOptions="matMenu">
+  <ng-template matMenuContent let-selectedProducts="selected">
+    <button mat-menu-item
+    [matMenuTriggerFor]="eventMonitoringIDs"
+    [matMenuTriggerData]="{selectedProducts: selectedProducts, products: (sarviewsEventProducts$ | async)}">
+    Scene IDs
+  </button>
+  <button mat-menu-item
+  [matMenuTriggerFor]="eventMonitoringUrls"
+  [matMenuTriggerData]="{selectedProducts: selectedProducts, products: (sarviewsEventProducts$ | async)}">
+    URLs
+  </button>
+</ng-template>
+</mat-menu>
+
+<mat-menu #eventMonitoringIDs="matMenu">
+  <ng-template matMenuContent let-selectedProducts="selectedProducts" let-sarviewsProducts="products">
+  <button mat-menu-item (click) = "copyProductSourceScenes(sarviewsProducts)">
+    All Products ({{getProductSceneCount(sarviewsProducts)}})
+  </button>
+  <button [disabled]="getProductSceneCount(selectedProducts) === 0" mat-menu-item (click) = "copyProductSourceScenes(selectedProducts)">
+    Selected Products ({{getProductSceneCount(selectedProducts)}})
+  </button>
+</ng-template>
+</mat-menu>
+
+<mat-menu #eventMonitoringUrls="matMenu">
+  <ng-template matMenuContent let-selectedProducts="selectedProducts" let-sarviewsProducts="products">
+    <button [disabled]="sarviewsProducts.length === 0" mat-menu-item (click) = "getProductDownloadUrl(sarviewsProducts)">
+      All Products ({{sarviewsProducts.length}})
+    </button>
+    <button [disabled]="getProductSceneCount(selectedProducts) === 0" mat-menu-item (click) = "getProductDownloadUrl(selectedProducts)">
+      Selected Products ({{selectedProducts.length}})
+    </button>
+  </ng-template>
+</mat-menu>

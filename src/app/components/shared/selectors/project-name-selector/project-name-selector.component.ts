@@ -27,6 +27,7 @@ export class ProjectNameSelectorComponent implements OnInit, OnDestroy {
   public projectNamesFiltered = [];
   public projectName = '';
   private subs = new SubSink();
+  readonly maxProjectNameLength = 100;
 
   constructor(
     private store$: Store<AppState>,
@@ -67,8 +68,13 @@ export class ProjectNameSelectorComponent implements OnInit, OnDestroy {
     );
   }
 
-  public onProjectNameChange(projectName: string): void {
-    if (projectName.length > 20) {
+  public onPNameChange(pName: string) {
+    this.onProjectNameChange(null, pName);
+  }
+
+  public onProjectNameChange(event: Event, pName?: string): void {
+    let projectName = (pName) ? pName : (event.target as HTMLInputElement).value;
+    if (projectName.length > this.maxProjectNameLength) {
       projectName = null;
       this.nameErrors$.next();
     }
@@ -82,9 +88,10 @@ export class ProjectNameSelectorComponent implements OnInit, OnDestroy {
     this.store$.dispatch(action);
   }
 
-  public onProjectNameInput(projectName: string): void {
+  public onProjectNameInput(event: Event): void {
+    let projectName = (event.target as HTMLInputElement).value;
     let filterValue: string;
-    if (projectName.length > 20) {
+    if (projectName.length > this.maxProjectNameLength) {
       projectName = null;
       this.nameErrors$.next();
       filterValue = '';
@@ -100,7 +107,7 @@ export class ProjectNameSelectorComponent implements OnInit, OnDestroy {
     this.subs.add(
       this.nameErrors$.pipe(
         tap(_ => {
-          this.notificationService.error('Project Name too long. (over 20 characters)', 'Error', {
+          this.notificationService.error(`Project Name too long. (over ${this.maxProjectNameLength} characters)`, 'Error', {
             timeOut: 5000
           });
           this.isNameError = true;

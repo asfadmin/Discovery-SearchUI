@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy, Input } from '@angular/core';
 
 import { combineLatest, Observable } from 'rxjs';
-import { tap } from 'rxjs/operators';
+import { distinctUntilChanged, map, tap } from 'rxjs/operators';
 
 import * as d3 from 'd3';
 import { Store } from '@ngrx/store';
@@ -11,7 +11,7 @@ import * as uiStore from '@store/ui';
 
 import { SubSink } from 'subsink';
 import { ScenesService, PairService } from '@services';
-import { CMRProduct } from '@models';
+import { CMRProduct, CMRProductPair } from '@models';
 
 export enum ChartDatasets {
   MASTER = 0,
@@ -34,17 +34,17 @@ export class SBASChartComponent implements OnInit, OnDestroy {
   @Input() zoomToFit$: Observable<void>;
 
   private hoveredLine;
-  private selectedPair = [null, null];
+  private selectedPair = null;
   private scenes: CMRProduct[] = [];
   private isAddingCustomPair: boolean;
-  private x;
-  private y;
+  private x: d3.ScaleTime<number, number>;
+  private y: d3.ScaleLinear<number, number>;
   private xAxis;
   private yAxis;
   private currentTransform;
-  private chart;
-  private scatter;
-  private line;
+  private chart: d3.Selection<SVGGElement, CMRProductPair[], HTMLElement, CMRProductPair[]>;
+  private scatter: d3.Selection<SVGGElement, CMRProductPair[], HTMLElement, CMRProductPair[]>;
+  private line: d3.Line<CMRProduct>;
   private pairs = [];
   private customPairs = [];
 
@@ -72,6 +72,7 @@ export class SBASChartComponent implements OnInit, OnDestroy {
     const pairs$ = this.pairService.pairs$();
 
     this.store$.select(scenesStore.getSelectedPair).pipe(
+      map(pair => !!pair?.[0] && !!pair?.[1] ? pair : null)
     ).subscribe(
       selected => this.selectedPair = selected
     );
@@ -85,7 +86,10 @@ export class SBASChartComponent implements OnInit, OnDestroy {
     );
 
     this.subs.add(
-      combineLatest(scenes$, pairs$).subscribe(([scenes, pairs]) => {
+      combineLatest([
+        scenes$.pipe(distinctUntilChanged()),
+        pairs$.pipe(distinctUntilChanged())
+      ]).subscribe(([scenes, pairs]) => {
         this.scenes = scenes;
         this.pairs = pairs.pairs;
         this.customPairs = pairs.custom;
@@ -133,7 +137,7 @@ export class SBASChartComponent implements OnInit, OnDestroy {
     this.sbasChartHeightValue = sbasChart.offsetHeight - (this.margin.bottom + this.margin.top) ;
     this.widthValue = sbasChart.offsetWidth;
 
-    this.chart = d3.select('#sbasChart')
+    this.chart = d3.select<d3.BaseType, CMRProductPair[]>('#sbasChart')
       .append('svg')
         .attr('width', this.widthValue)
         .attr('height', this.heightValue)
@@ -201,8 +205,8 @@ export class SBASChartComponent implements OnInit, OnDestroy {
     this.zoom = d3.zoom()
       .scaleExtent([.2, 10])
       .extent([[0, 0], [this.widthValue, this.heightValue]])
-      .on('zoom', _ => {
-        this.currentTransform = d3.event.transform;
+      .on('zoom', (eve: d3.D3ZoomEvent<SVGSVGElement, unknown>) => {
+         this.currentTransform = eve.transform;
 
         this.updateChart();
       });
@@ -225,9 +229,9 @@ export class SBASChartComponent implements OnInit, OnDestroy {
 
     this.zoomBox.call(this.zoom);
 
-    this.line = d3.line()
-      .x((product: any) => this.x(product.metadata.date.valueOf()))
-      .y((product: any) => this.y(product.metadata.perpendicular));
+    this.line = d3.line<CMRProduct>()
+      .x((product: CMRProduct) => this.x(product?.metadata.date.valueOf() ?? 0))
+      .y((product: CMRProduct) => this.y(product?.metadata.perpendicular ?? 0));
 
     const lines = this.scatter.append('g')
       .attr('fill', 'none')
@@ -249,7 +253,7 @@ export class SBASChartComponent implements OnInit, OnDestroy {
         .on('mouseleave', function(_) {
           self.clearHovered();
         })
-      .on('click', pair => {
+      .on('click', (_event, pair) => {
         this.store$.dispatch(
           new scenesStore.SetSelectedPair(pair.map(product => product.id))
         );
@@ -278,20 +282,19 @@ export class SBASChartComponent implements OnInit, OnDestroy {
       .append('circle')
         .attr('cx', (d: CMRProduct) => this.x(d.metadata.date.valueOf()) )
         .attr('cy', (d: CMRProduct) => this.y(d.metadata.perpendicular) )
-        .on('click', function(p) {
+        .on('click', function(_event, p) {
           self.toggleDrawing(p, d3.select(this));
         })
-        .on('mouseover', function(p) {
+        .on('mouseover', function(_event: any, p: any) {
           if (self.isAddingCustomPair) {
             self.setHoveredProduct(d3.select(this));
           }
           const date = p.metadata.date.toDate();
-
           tooltip
             .style('opacity', .9);
           tooltip.html(`${self.tooltipDateFormat(date)}, ${p.metadata.perpendicular} meters`)
-            .style('left', `${d3.event.pageX + 10}px`)
-            .style('top', `${d3.event.pageY - 20}px`);
+          .style('left', `${_event.pageX + 10}px`)
+          .style('top', `${_event.pageY - 20}px`);
         })
         .on('mouseleave', function(_) {
           if (self.isAddingCustomPair) {
@@ -347,12 +350,12 @@ export class SBASChartComponent implements OnInit, OnDestroy {
         .attr('cx', (d: CMRProduct) => newX(d.metadata.date.valueOf()) )
         .attr('cy', (d: CMRProduct) => newY(d.metadata.perpendicular) );
 
-    this.line = d3.line()
-        .x((product: any) => newX(product.metadata.date.valueOf()))
-        .y((product: any) => newY(product.metadata.perpendicular));
+    this.line = d3.line<CMRProduct>()
+        .x((product: CMRProduct) => newX(product?.metadata.date.valueOf()) ?? 0)
+        .y((product: CMRProduct) => newY(product?.metadata.perpendicular) ?? 0);
 
     this.scatter.selectAll('.base-line')
-      .attr('d', pair => this.line(pair));
+      .attr('d', (pair: CMRProductPair) => this.line(pair));
 
     if (this.selectedPair !== null && this.selectedPair[0] !== null && this.selectedPair[1] !== null) {
       this.setSelected(this.selectedPair);
@@ -364,7 +367,6 @@ export class SBASChartComponent implements OnInit, OnDestroy {
       this.hoveredCircle
         .attr('fill', 'black');
     }
-
     newHovered
       .attr('fill', 'orange');
 
@@ -456,8 +458,8 @@ export class SBASChartComponent implements OnInit, OnDestroy {
     const root = this.chart;
     const bounds = root.node().getBBox();
     const parent = root.node().parentElement;
-    const fullWidth = parent.clientWidth || parent.parentNode.clientWidth,
-      fullHeight = parent.clientHeight || parent.parentNode.clientHeight;
+    const fullWidth = parent.clientWidth || parent.clientWidth,
+      fullHeight = parent.clientHeight || parent.clientHeight;
     const width = bounds.width,
       height = bounds.height;
     const midX = bounds.x + width / 2,

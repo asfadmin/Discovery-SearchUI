@@ -30,8 +30,12 @@
     [class.raised-section]="isSelected(panels.AOI)">
 
     <mat-expansion-panel-header [collapsedHeight]="customCollapsedHeight" [expandedHeight]="customExpandedHeight">
-      <mat-panel-title>
+      <mat-panel-title style="align-items: center;">
         Area of Interest Options
+        <app-docs-modal class="info-icon"
+                        url="https://docs.asf.alaska.edu/vertex/manual/#area-of-interest-options">
+        </app-docs-modal>
+
       </mat-panel-title>
     </mat-expansion-panel-header>
 
@@ -45,8 +49,11 @@
     [class.raised-section]="isSelected(panels.DATE)"
     >
     <mat-expansion-panel-header [collapsedHeight]="customCollapsedHeight" [expandedHeight]="customExpandedHeight">
-      <mat-panel-title>
+      <mat-panel-title style="align-items: center;">
         Date Filters
+        <app-docs-modal class="info-icon"
+          url="https://docs.asf.alaska.edu/vertex/manual/#date-filters">
+        </app-docs-modal>
       </mat-panel-title>
     </mat-expansion-panel-header>
 
@@ -63,8 +70,11 @@
     [class.raised-section]="isSelected(panels.ADDITIONAL)"
     >
     <mat-expansion-panel-header [collapsedHeight]="customCollapsedHeight" [expandedHeight]="customExpandedHeight">
-      <mat-panel-title>
+      <mat-panel-title style="align-items: center;">
         Additional Filters
+        <app-docs-modal class="info-icon"
+                        url="https://docs.asf.alaska.edu/vertex/manual/#additional-filters">
+        </app-docs-modal>
       </mat-panel-title>
     </mat-expansion-panel-header>
 
@@ -79,8 +89,11 @@
     [class.raised-section]="isSelected(panels.PATH)"
     >
     <mat-expansion-panel-header [collapsedHeight]="customCollapsedHeight" [expandedHeight]="customExpandedHeight">
-      <mat-panel-title>
+      <mat-panel-title style="align-items: center;">
         Path and Frame Filters
+        <app-docs-modal class="info-icon"
+                        url="https://docs.asf.alaska.edu/vertex/manual/#path-and-frame-filters">
+        </app-docs-modal>
       </mat-panel-title>
     </mat-expansion-panel-header>
 

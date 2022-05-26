@@ -16,8 +16,7 @@
     <div fxLayout="row" class="banner-row">
       <div fxLayout="column">
         <app-banners
-          [banners]="banners$ | async"
-          (removeBanner)="removeBanner($event)">
+          [banners]="banners$ | async">
         </app-banners>
       </div>
     </div>
@@ -26,43 +25,31 @@
       [class.after-load]="isResultsMenuOpen"
       [class.before-load]="!isResultsMenuOpen"
       class="mobile-map-controls">
-      <button (click)="openDrawControl()"
-        *ngIf="searchType === searchTypes.DATASET"
-        style="margin: 4px;" color="white" mat-fab>
-        <mat-icon>edit</mat-icon>
-      </button>
-
       <button (click)="openMapControl()" style="margin: 4px;" color="white" mat-fab>
         <mat-icon>layers</mat-icon>
       </button>
     </div>
 
     <ng-container *ngIf="breakpoint === breakpoints.MOBILE">
-      <div (click)="closeMobileFullscreenControls()"
-        *ngIf="fullscreenControl !== fc.NONE"
-        class="mobile-controls-background"></div>
       <div
-        *ngIf="fullscreenControl === fc.DRAW"
+        *ngIf="fullscreenControl !== fc.NONE"
         (click)="closeMobileFullscreenControls()"
+        class="mobile-controls-background">
+      </div>
+
+      <div
+        *ngIf="fullscreenControl === fc.MAP"
         class="mobile-map-controls-full">
         <div class="mobile-control-group">
           <app-interaction-selector></app-interaction-selector>
         </div>
 
-        <div class="mobile-control-group">
-          <app-draw-selector></app-draw-selector>
-        </div>
-      </div>
-
-      <div *ngIf="fullscreenControl === fc.MAP"
-        (click)="closeMobileFullscreenControls()"
-        class="mobile-map-controls-full">
           <div class="mobile-control-group">
-            <app-view-selector></app-view-selector>
-          </div>
-          <div *ngIf="(view$ | async) === viewTypes.EQUITORIAL"
-            class="mobile-control-group">
-            <app-layer-selector></app-layer-selector>
+            <app-view-selector style="margin-right: 5px;" *ngIf="searchType !== searchTypes.SARVIEWS_EVENTS">
+            </app-view-selector>
+
+            <app-layer-selector *ngIf="(view$ | async) === viewTypes.EQUATORIAL">
+            </app-layer-selector>
           </div>
       </div>
     </ng-container>
@@ -88,3 +75,13 @@
   (mouseleave)="leaveDrawPopup()"
   id="popup" class="ol-popup" #overlay>
 </div>
+
+<div #browsetooltip style="width: 100px; height: 100px;">
+TOOLTIP
+</div>
+
+<span #overviewMapIcon>
+<mat-icon>
+  map
+</mat-icon>
+</span>

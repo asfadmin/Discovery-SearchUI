@@ -1,0 +1,16 @@
+@use "@angular/material" as mat;
+
+@import "asf-theme";
+
+$config: mat.define-typography-config();
+
+#ASF_SEARCH {
+  width: 185px;
+}
+
+.new-stuff {
+  cursor: pointer;
+  color: $uaf-primary-blue;
+  font-weight: bold;
+  margin-right: 10px;
+}

@@ -16,6 +16,8 @@ import * as userStore from '@store/user';
 import * as models from '@models';
 import * as services from '@services';
 
+import { CreateSubscriptionComponent } from '../../header/create-subscription';
+
 enum ProcessingQueueTab {
   SCENES = 'Scenes',
   OPTIONS = 'Options'
@@ -65,8 +67,8 @@ export class ProcessingQueueComponent implements OnInit {
 
   constructor(
     public authService: services.AuthService,
-    public dialog: MatDialog,
     public env: services.EnvironmentService,
+    public dialog: MatDialog,
     private dialogRef: MatDialogRef<ProcessingQueueComponent>,
     private store$: Store<AppState>,
     private hyp3: services.Hyp3Service,
@@ -165,6 +167,14 @@ export class ProcessingQueueComponent implements OnInit {
     );
   }
 
+  public openSubscriptionDialog() {
+    this.dialog.open(CreateSubscriptionComponent, {
+      id: 'subscriptionQueueDialog',
+      maxWidth: '100vw',
+      maxHeight: '100vh',
+    });
+  }
+
   public daysUntilExpiration(expiration_time: moment.Moment): string {
     const current = moment();
 
@@ -232,16 +242,20 @@ export class ProcessingQueueComponent implements OnInit {
     this.isQueueSubmitProcessing = true;
 
     from(hyp3JobRequestBatches).pipe(
-      concatMap(batch => this.hyp3.submiteJobBatch$({ jobs: batch, validate_only: validateOnly }).pipe(
+      concatMap(batch => this.hyp3.submitJobBatch$({ jobs: batch, validate_only: validateOnly }).pipe(
         catchError(resp => {
           if (resp.error) {
             if (resp.error.detail === 'No authorization token provided' || resp.error.detail === 'Provided apikey is not valid') {
               this.notificationService.error('Your authorization has expired. Please sign in again.', 'Error', {
-                timeOut: 5000,
+                timeOut: 0,
+                extendedTimeOut: 0,
+                closeButton: true,
             });
             } else {
               this.notificationService.error( resp.error.detail, 'Error', {
-                timeOut: 5000,
+                timeOut: 0,
+                extendedTimeOut: 0,
+                closeButton: true,
               });
             }
           }
@@ -288,6 +302,14 @@ export class ProcessingQueueComponent implements OnInit {
         }));
 
         this.store$.dispatch(new queueStore.RemoveJobs(successfulJobs));
+
+        const jobsInTab = this.allJobs.filter(
+          job => job.job_type.id === this.selectedJobTypeId
+        );
+
+        if (jobsInTab.length === 0) {
+          this.setNextTabIndex(models.hyp3JobTypes[this.selectedJobTypeId]);
+        }
       }
     );
   }
@@ -313,22 +335,7 @@ export class ProcessingQueueComponent implements OnInit {
 
   public onClearSingleJobQueue(jobType: models.Hyp3JobType): void {
     if (jobType.id === this.selectedJobTypeId) {
-
-      let TabIdx = this.jobTypesWithQueued.findIndex((queuedJobType) => queuedJobType.jobType === jobType);
-
-      if (this.jobTypesWithQueued.length > TabIdx + 1) {
-        ++TabIdx;
-      } else if (TabIdx > 0) {
-        --TabIdx;
-      } else {
-        TabIdx = -1;
-      }
-
-      if (TabIdx === -1) {
-        this.selectedJobTypeId = null;
-      } else {
-        this.onSetSelectedJobType(this.jobTypesWithQueued[TabIdx].jobType);
-      }
+      this.setNextTabIndex(jobType);
     }
 
     this.store$.dispatch(new queueStore.ClearProcessingQueueByJobType(new Set<string>([jobType.id])));
@@ -339,7 +346,27 @@ export class ProcessingQueueComponent implements OnInit {
     }
   }
 
-  public getTabIdIndex(id: models.Hyp3JobType) {
+  public setNextTabIndex(jobType: models.Hyp3JobType) {
+    let TabIdx = this.jobTypesWithQueued.findIndex(
+      (queuedJobType) => queuedJobType.jobType === jobType
+    );
+
+    if (this.jobTypesWithQueued.length > TabIdx + 1) {
+      ++TabIdx;
+    } else if (TabIdx > 0) {
+      --TabIdx;
+    } else {
+      TabIdx = -1;
+    }
+
+    if (TabIdx === -1) {
+      this.selectedJobTypeId = null;
+    } else {
+      this.onSetSelectedJobType(this.jobTypesWithQueued[TabIdx].jobType);
+    }
+  }
+
+  public getTabIdIndex(id: string) {
     return this.jobTypesWithQueued.findIndex((queuedJobType) => queuedJobType.jobType.id === id);
   }
 

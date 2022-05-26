@@ -1,4 +1,5 @@
-@use '~@angular/material' as mat;
+@use "@angular/material" as mat;
+
 @import "asf-theme";
 
 $config: mat.define-typography-config();
@@ -58,6 +59,7 @@ $info-color: $asf-primary;
   overflow: auto;
   height: 100%;
   border-left: solid 1px $asf-primary-light;
+  border-right: solid 2px $asf-primary-light;
 }
 
 .product-name {
@@ -67,7 +69,7 @@ $info-color: $asf-primary;
 .chart-resize-handle-left,
 .chart-resize-handle-right {
   height: 100%;
-  background-image: url('//assets/div-handles/hsizegrip.png');
+  background-image: url("//assets/div-handles/hsizegrip.png");
   background-color: $asf-primary-light;
   background-position: left;
   background-repeat: no-repeat;
@@ -75,6 +77,28 @@ $info-color: $asf-primary;
 
 .mwlResizable {
   box-sizing: border-box; // required for the enableGhostResize option to work
+}
+
+.chart-draggable-handle {
+  display: flex;
+  align-items: center;
+  cursor: ew-resize;
+  border-style: solid;
+  border-radius: 5px;
+  border-color: #c9cac4;
+  color: #c9cac4;
+  position: absolute;
+  left: 0;
+  top: 0;
+}
+
+.sbas-resize-handle-filler {
+  width: 10px;
+  height: 100%;
+  background-image: url("/assets/div-handles/vsizegrip.png");
+  background-color: #c9cac4;
+  background-position: center;
+  background-repeat: no-repeat;
 }
 
 .sbas-header {
@@ -127,4 +151,9 @@ $info-color: $asf-primary;
 label {
   font-family: mat.font-family($config);
   font-size: 11px;
+}
+
+.info-icon {
+  margin-left: 10px;
+  margin-top: 4px;
 }

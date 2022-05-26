@@ -9,8 +9,15 @@ export enum MapActionType {
   SET_MAP_VIEW = '[Map] Set Map View',
   SET_MAP_DRAW_MODE = '[Map] Set Map Draw Mode',
   SET_MAP_INTERACTION_MODE = '[Map] Set Map Interaction Mode',
-
+  SET_MAP_GRID_LINES = '[Map] Set Map Graticule Lines',
   MAP_INITIALIZED = '[Map] Map Initialized',
+
+  SET_BROWSE_OVERLAYS = '[Map] Set Browse Overlays On Map',
+  TOGGLE_BROWSE_OVERLAY = '[Map] Toggle Selected Browse Overlay',
+  SET_BROWSE_OVERLAY_OPACITY = '[Map] Set Browse Overlay Opacity',
+  CLEAR_BROWSE_OVERLAYS = '[Map] Clear All Browse Overlays On Map',
+  DRAW_NEW_POLYGON = '[Map] Set has user drawn new polygon',
+  TOGGLE_OVERVIEW_MAP = '[Map] Toggle Overview Map'
 }
 
 export class SetStreetView implements Action {
@@ -39,9 +46,48 @@ export class SetMapInteractionMode implements Action {
   constructor(public payload: models.MapInteractionModeType) {}
 }
 
-export class MapInitialzed implements Action {
+export class SetGridlines implements Action {
+  public readonly type = MapActionType.SET_MAP_GRID_LINES;
+
+  constructor(public payload: boolean) {}
+}
+
+export class MapInitialized implements Action {
   public readonly type = MapActionType.MAP_INITIALIZED;
 }
+
+export class SetBrowseOverlayOpacity implements Action {
+  public readonly type = MapActionType.SET_BROWSE_OVERLAY_OPACITY;
+
+  constructor(public payload: number) {}
+}
+
+export class ToggleBrowseOverlay implements Action {
+  public readonly type = MapActionType.TOGGLE_BROWSE_OVERLAY;
+
+  constructor(public payload: string) {}
+}
+
+export class SetBrowseOverlays implements Action {
+  public readonly type = MapActionType.SET_BROWSE_OVERLAYS;
+
+  constructor(public payload: string[]) {}
+}
+
+export class ClearBrowseOverlays implements Action {
+  public readonly type = MapActionType.CLEAR_BROWSE_OVERLAYS;
+}
+
+export class DrawNewPolygon implements Action {
+  public readonly type = MapActionType.DRAW_NEW_POLYGON;
+}
+
+export class ToggleOverviewMap implements Action {
+  public readonly type = MapActionType.TOGGLE_OVERVIEW_MAP;
+
+  constructor(public payload: boolean) {}
+}
+
 
 export type MapActions =
   | SetMapView
@@ -49,4 +95,11 @@ export type MapActions =
   | SetSatelliteView
   | SetMapDrawMode
   | SetMapInteractionMode
-  | MapInitialzed;
+  | SetGridlines
+  | MapInitialized
+  | ToggleBrowseOverlay
+  | SetBrowseOverlays
+  | SetBrowseOverlayOpacity
+  | ClearBrowseOverlays
+  | DrawNewPolygon
+  | ToggleOverviewMap;

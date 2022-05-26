@@ -1,0 +1,9 @@
+<div>
+  <div style="font-size: 18px;">Processing Options</div>
+  <hr />
+  <div style="margin-left: 16px;">
+    <div *ngFor="let param of listFrom(options)" mat-line>
+      <b>{{ param.name }}:</b> {{ param.val }}
+    </div>
+  </div>
+</div>

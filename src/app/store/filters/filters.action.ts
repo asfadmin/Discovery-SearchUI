@@ -1,6 +1,7 @@
 import { Action } from '@ngrx/store';
 
 import * as models from '@models';
+import { EventProductSort, SBASOverlap } from '@models';
 
 export enum FiltersActionType {
   SET_SELECTED_DATASET = '[Filters-Dataset] Set Selected Dataset',
@@ -33,7 +34,7 @@ export enum FiltersActionType {
 
   SET_FILTERS_SIMILAR_TO = '[Filters] Set Filters Similar To',
 
-  SET_PRODUCT_TYPES = '[Filters-Prodcut-Type] Set DATASET Product Types',
+  SET_PRODUCT_TYPES = '[Filters-Product-Type] Set DATASET Product Types',
 
   ADD_BEAM_MODE = '[Filters-Beam-Mode] Add Beam Mode',
   SET_BEAM_MODES = '[Filters-Beam-Mode] Set Dataset Beam Modes',
@@ -70,7 +71,23 @@ export enum FiltersActionType {
   STORE_CURRENT_FILTERS = '[Filters] Stores Current Filters',
 
   TOGGLE_50_PERCENT_OVERLAP = '[Filters] Toggles SBAS 50 Percent Overlap Check',
-  SET_DEFAULT_FILTERS = '[Filters] Set User Profile Default Filters'
+  SET_SBAS_OVERLAP_THRESHOLD = '[Filters] Set SBAS Pair Overlap Threshold',
+  SET_DEFAULT_FILTERS = '[Filters] Set User Profile Default Filters',
+
+  SET_SARVIEWS_EVENT_TYPES = '[Filters] Set SARViews event types',
+  SET_SARVIEWS_EVENT_NAME_FILTER = '[Filters] Set SARViews event name filter',
+  SET_SARVIEWS_EVENT_ACTIVE_FILTER = '[Filters] Set SARViews event active processing filter',
+  SET_SARVIEWS_MAGNITUDE_START = '[Filters] Set SARViews quake event magnitude range filter start',
+  SET_SARVIEWS_MAGNITUDE_END = '[Filters] Set SARViews quake event magnitude range filter end',
+  SET_SARVIEWS_MAGNITUDE_RANGE = '[Filters] Set SARViews quake event magnitude range filter',
+  CLEAR_SARVIEWS_MAGNITUDE_RANGE = '[Filters] Clear SARViews quake event magnitude range',
+
+  SET_HYP3_PRODUCT_TYPES = '[Filters] Set Hyp3 product types filter',
+  SET_EVENT_PRODUCT_SORT = '[Filters] Set event product sorting order',
+
+  CLEAR_EVENT_FILTERS = '[Filters] Clear Event Search Filters',
+  CLEAR_HYP3_PRODUCT_TYPES = '[Filters] Clear Hyp3 product types filter',
+
 }
 
 export class SetSelectedDataset implements Action {
@@ -198,7 +215,7 @@ export class ClearFrameRange implements Action {
 export class SetFiltersSimilarTo implements Action {
   public readonly type = FiltersActionType.SET_FILTERS_SIMILAR_TO;
 
-  constructor(public payload: models.CMRProduct) {}
+  constructor(public payload: {product: models.CMRProduct, dataset: models.Dataset}) {}
 }
 
 export class SetProductTypes implements Action {
@@ -321,14 +338,85 @@ export class Toggle50PercentOverlap implements Action {
   constructor() {}
 }
 
+export class SetSBASOverlapThreshold implements Action {
+  public readonly type = FiltersActionType.SET_SBAS_OVERLAP_THRESHOLD;
+
+  constructor(public payload: SBASOverlap) {}
+}
+
+export class SetSarviewsEventTypes implements Action {
+  public readonly type = FiltersActionType.SET_SARVIEWS_EVENT_TYPES;
+
+  constructor(public payload: models.SarviewsEventType[]) {}
+}
+
+export class SetSarviewsEventNameFilter implements Action {
+  public readonly type = FiltersActionType.SET_SARVIEWS_EVENT_NAME_FILTER;
+
+  constructor(public payload: string) {}
+}
+
+export class SetSarviewsEventActiveFilter implements Action {
+  public readonly type = FiltersActionType.SET_SARVIEWS_EVENT_ACTIVE_FILTER;
+
+  constructor(public payload: boolean) {}
+}
+
+export class SetSarviewsMagnitudeStart implements Action {
+  public readonly type = FiltersActionType.SET_SARVIEWS_MAGNITUDE_START;
+
+  constructor(public payload: number) {}
+}
+
+export class SetSarviewsMagnitudeEnd implements Action {
+  public readonly type = FiltersActionType.SET_SARVIEWS_MAGNITUDE_END;
+
+  constructor(public payload: number) {}
+}
+
+export class SetSarviewsMagnitudeRange implements Action {
+  public readonly type = FiltersActionType.SET_SARVIEWS_MAGNITUDE_RANGE;
+
+  constructor(public payload: models.Range<number>) {}
+}
+
+export class ClearSarviewsMagnitudeRange implements Action {
+  public readonly type = FiltersActionType.CLEAR_SARVIEWS_MAGNITUDE_RANGE;
+}
+
+export class SetHyp3ProductTypes implements Action {
+  public readonly type = FiltersActionType.SET_HYP3_PRODUCT_TYPES;
+
+  constructor(public payload: string[]) {}
+}
+
+export class SetEventProductSorting implements Action {
+  public readonly type = FiltersActionType.SET_EVENT_PRODUCT_SORT;
+
+  constructor(public payload: EventProductSort) {}
+}
+
 export class SetDefaultFilters implements Action {
   public readonly type = FiltersActionType.SET_DEFAULT_FILTERS;
   constructor(public payload: {
-    'Baseline Search' : string,
-    'Geographic Search' : string,
-    'SBAS Search' : string
+    'Baseline Search': string,
+    'Geographic Search': string,
+    'SBAS Search': string
   }) {}
 }
+
+export class ClearEventFilters implements Action {
+  public readonly type = FiltersActionType.CLEAR_EVENT_FILTERS;
+
+  constructor() {}
+}
+
+export class ClearHyp3ProductTypes implements Action {
+  public readonly type = FiltersActionType.CLEAR_HYP3_PRODUCT_TYPES;
+
+  constructor() {}
+}
+
 
 export type FiltersActions =
   | SetSelectedDataset
@@ -376,4 +464,16 @@ export type FiltersActions =
   | RestoreFilters
   | StoreCurrentFilters
   | Toggle50PercentOverlap
-  | SetDefaultFilters;
+  | SetSBASOverlapThreshold
+  | SetDefaultFilters
+  | SetSarviewsEventTypes
+  | SetSarviewsEventNameFilter
+  | SetSarviewsEventActiveFilter
+  | SetSarviewsMagnitudeStart
+  | SetSarviewsMagnitudeEnd
+  | SetSarviewsMagnitudeRange
+  | ClearSarviewsMagnitudeRange
+  | SetHyp3ProductTypes
+  | SetEventProductSorting
+  | ClearEventFilters
+  | ClearHyp3ProductTypes;

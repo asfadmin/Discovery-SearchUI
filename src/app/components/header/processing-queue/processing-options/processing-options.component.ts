@@ -35,6 +35,7 @@ export class ProcessingOptionsComponent implements OnInit {
       }
     );
   }
+
   public hasJobType(jobType: models.Hyp3JobType): boolean {
     return this.jobs.some(
       job => job.job_type.id === jobType.id
@@ -46,6 +47,19 @@ export class ProcessingOptionsComponent implements OnInit {
       ...this.optionValues,
       [apiName]: value
     };
+
+    this.store$.dispatch(new hyp3Store.SetProcessingOptions({
+      ...this.optionValues
+    }));
+  }
+
+  public onSetSubset(options): void {
+    options.forEach(option => {
+      this.optionValues = {
+        ...this.optionValues,
+        [option.apiName]: option.value
+      };
+    });
 
     this.store$.dispatch(new hyp3Store.SetProcessingOptions({
       ...this.optionValues

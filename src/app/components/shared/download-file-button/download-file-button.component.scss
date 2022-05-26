@@ -1,0 +1,32 @@
+.download-file-button {
+  text-decoration: none;
+}
+
+.progress-spinner {
+  display: block;
+  width: 40px;
+  height: 40px;
+  position: relative;
+  float: right;
+}
+
+.paused-icon {
+  display: grid;
+  place-content: center;
+}
+
+.progress-spinner-value {
+  position: absolute;
+  left: 7px;
+  text-align: center;
+  width: 25px;
+  top: 0;
+}
+
+.mat-button-disabled .mat-icon {
+  visibility: hidden;
+}
+
+.link {
+  color: unset;
+}

@@ -1,0 +1,27 @@
+@use "@angular/material" as mat;
+
+@import "asf-theme";
+
+$config: mat.define-typography-config();
+
+a {
+  text-decoration: none;
+  color: $uaf-primary-blue;
+}
+
+.scene-metadata {
+  font-size: 12px;
+  margin-top: 5px;
+  columns: 2;
+
+  .mat-icon {
+    @include md-icon-size(12px);
+
+    margin-left: 4px;
+  }
+}
+
+.scene-metadata-container {
+  margin-top: 15px;
+  word-break: break-word;
+}

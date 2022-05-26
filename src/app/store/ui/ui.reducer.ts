@@ -1,6 +1,6 @@
 import { createFeatureSelector, createSelector } from '@ngrx/store';
 
-import { Banner, SavedSearchType } from '@models';
+import { Banner, SidebarType } from '@models';
 
 import { UIActionType, UIActions } from './ui.action';
 
@@ -8,10 +8,7 @@ import { UIActionType, UIActions } from './ui.action';
 export interface UIState {
   isFiltersMenuOpen: boolean;
   isResultsMenuOpen: boolean;
-  isSidebarOpen: boolean;
-  isFiltersSidebarOpen: boolean;
-  isSaveSearchOn: boolean;
-  isSaveFilterOn: boolean;
+  sidebar: SidebarType;
   isAOIOptionsOpen: boolean;
   showS1RawData: boolean;
   showExpiredData: boolean;
@@ -20,7 +17,6 @@ export interface UIState {
   isAddingCustomPoint: boolean;
   isDownloadQueueOpen: boolean;
   isOnDemandQueueOpen: boolean;
-  savedSearchType: SavedSearchType;
   helpDialogTopic: string | null;
   banners: Banner[];
 }
@@ -28,10 +24,7 @@ export interface UIState {
 export const initState: UIState = {
   isFiltersMenuOpen: false,
   isResultsMenuOpen: false,
-  isSidebarOpen: false,
-  isFiltersSidebarOpen: false,
-  isSaveSearchOn: false,
-  isSaveFilterOn: false,
+  sidebar: SidebarType.NONE,
   isAOIOptionsOpen: false,
   showS1RawData: false,
   showExpiredData: true,
@@ -40,7 +33,6 @@ export const initState: UIState = {
   isAddingCustomPoint: false,
   isDownloadQueueOpen: false,
   isOnDemandQueueOpen: false,
-  savedSearchType: SavedSearchType.SAVED,
   helpDialogTopic: null,
   banners: [],
 };
@@ -62,31 +54,24 @@ export function uiReducer(state = initState, action: UIActions): UIState {
       };
     }
 
+    case UIActionType.OPEN_AOI_OPTIONS: {
+      return {
+        ...state,
+        isAOIOptionsOpen: true
+      };
+    }
+
     case UIActionType.OPEN_SIDEBAR: {
       return {
         ...state,
-        isSidebarOpen: true
+        sidebar: action.payload
       };
     }
 
     case UIActionType.CLOSE_SIDEBAR: {
       return {
         ...state,
-        isSidebarOpen: false
-      };
-    }
-
-    case UIActionType.OPEN_FILTERS_SIDEBAR: {
-      return {
-        ...state,
-        isFiltersSidebarOpen: true
-      };
-    }
-
-    case UIActionType.CLOSE_FILTERS_SIDEBAR: {
-      return {
-        ...state,
-        isFiltersSidebarOpen: false
+        sidebar: SidebarType.NONE
       };
     }
 
@@ -129,27 +114,6 @@ export function uiReducer(state = initState, action: UIActions): UIState {
       return {
         ...state,
         isAddingCustomPoint: false
-      };
-    }
-
-    case UIActionType.SET_SAVE_SEARCH_ON: {
-      return {
-        ...state,
-        isSaveSearchOn: action.payload,
-      };
-    }
-
-    case UIActionType.SET_SAVE_FILTER_ON: {
-      return {
-        ...state,
-        isSaveFilterOn: action.payload,
-      };
-    }
-
-    case UIActionType.SET_SAVED_SEARCH_TYPE: {
-      return {
-        ...state,
-        savedSearchType: action.payload
       };
     }
 
@@ -290,29 +254,9 @@ export const getBanners = createSelector(
   state => state.banners
 );
 
-export const getIsSidebarOpen = createSelector(
+export const getSidebar = createSelector(
   getUIState,
-  state => state.isSidebarOpen
-);
-
-export const getIsFiltersSidebarOpen = createSelector(
-  getUIState,
-  state => state.isFiltersSidebarOpen
-);
-
-export const getIsSaveSearchOn = createSelector(
-  getUIState,
-  state => state.isSaveSearchOn
-);
-
-export const getIsSaveFilterOn = createSelector(
-  getUIState,
-  state => state.isSaveFilterOn
-);
-
-export const getSaveSearchType = createSelector(
-  getUIState,
-  state => state.savedSearchType
+  state => state.sidebar
 );
 
 export const getIsAddingCustomPoint = createSelector(

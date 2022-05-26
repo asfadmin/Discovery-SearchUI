@@ -32,7 +32,7 @@
     <mat-card-subtitle style="display: flex; flex-direction: row; justify-content: center; align-items: flex-start;" class="header">
     </mat-card-subtitle>
     <div class="sbas-metadata scrollable">
-      <div *ngIf="pair" style="margin: 5px; padding-bottom: 36px;">
+      <div *ngIf="!!pair" style="margin: 5px; padding-bottom: 36px;">
         <div *ngFor="let product of pair">
           <div style="margin-bottom: 4px;">
             <b class="product-name">{{ product.name }}</b>
@@ -63,13 +63,17 @@
 </ng-container>
 
 <mat-card #chartCard
-          class="mp0 no-box-shadow" fxFlex="60" fxFlexFill
+          class="mp0" fxFlex="60" fxFlexFill
           [style.max-width]="chartCardMaxWidth"
+          style="box-shadow: none;"
           mwlResizable
           [enableGhostResize]="true"
-          [resizeEdges]="{ left: true }"
           (resizeEnd)="onResizeEnd($event)">
-
+<div
+  mwlResizeHandle
+  [resizeEdges]="{ left: true }"
+class="chart-draggable-handle sbas-resize-handle-filler">
+</div>
   <mat-card-subtitle
     [class.medium-header]="breakpoint <= breakpoints.MEDIUM"
     class="sbas-header">
@@ -159,6 +163,16 @@
                            >
           SBAS Criteria<mat-icon class="more-horiz">more_horiz</mat-icon>
         </mat-button-toggle>
+      </div>
+    </div>
+    <div fxFlex="" class = 'sbas-button-group' style="margin-left: 10px;">
+      <div fxLayout="row" fxLayoutAlign="center" class="button-group-label">
+        <label>Info</label>
+      </div>
+      <div fxLayout="row" fxLayoutAlign="center">
+        <app-docs-modal class="info-icon"
+                        url="https://docs.asf.alaska.edu/vertex/sbas/#sbas-criteria">
+        </app-docs-modal>
       </div>
     </div>
   </mat-card-subtitle>

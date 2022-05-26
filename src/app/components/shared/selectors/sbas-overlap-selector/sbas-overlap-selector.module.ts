@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatSliderModule } from '@angular/material/slider';
 import { MatSharedModule } from '@shared';
+import { MatSelectModule } from '@angular/material/select';
 
 import { SbasOverlapSelectorComponent } from './sbas-overlap-selector.component';
 
@@ -16,6 +17,7 @@ import { SbasOverlapSelectorComponent } from './sbas-overlap-selector.component'
     MatSharedModule,
     MatSlideToggleModule,
     MatSliderModule,
+    MatSelectModule,
   ],
   exports: [SbasOverlapSelectorComponent]
 })

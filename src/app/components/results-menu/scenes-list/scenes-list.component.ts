@@ -1,9 +1,9 @@
 import {
-  Component, OnInit, Input, ViewChild, ViewEncapsulation, OnDestroy
+  Component, OnInit, Input, ViewChild, ViewEncapsulation, OnDestroy, AfterContentInit
 } from '@angular/core';
 
 import { combineLatest, Observable } from 'rxjs';
-import { tap, withLatestFrom, filter, map, delay, debounceTime } from 'rxjs/operators';
+import { tap, withLatestFrom, filter, map, delay, debounceTime, first } from 'rxjs/operators';
 import { SubSink } from 'subsink';
 
 import { Store } from '@ngrx/store';
@@ -16,7 +16,7 @@ import { CdkVirtualScrollViewport } from '@angular/cdk/scrolling';
 
 import * as services from '@services';
 import * as models from '@models';
-import { QueuedHyp3Job } from '@models';
+import { QueuedHyp3Job, SarviewsEvent } from '@models';
 
 @Component({
   selector: 'app-scenes-list',
@@ -24,19 +24,21 @@ import { QueuedHyp3Job } from '@models';
   styleUrls: ['./scenes-list.component.scss'],
   encapsulation: ViewEncapsulation.None
 })
-export class ScenesListComponent implements OnInit, OnDestroy {
+export class ScenesListComponent implements OnInit, OnDestroy, AfterContentInit {
   @ViewChild(CdkVirtualScrollViewport, { static: true }) scroll: CdkVirtualScrollViewport;
   @Input() resize$: Observable<void>;
 
   public scenes;
   public pairs;
   public jobs;
+  public sarviewsEvents: SarviewsEvent[];
 
-  public numberOfQueue: {[scene: string]: [number, number]};
+  public numberOfQueue: {[scene: string]: number};
   public allQueued: {[scene: string]: boolean};
   public allJobNames: string[];
   public queuedJobs: QueuedHyp3Job[];
   public selected: string;
+  public selectedEvent: string;
 
   public hyp3ableByScene: {[scene: string]: {byJobType: models.Hyp3ableProductByJobType[], total: number}} = {};
 
@@ -61,6 +63,7 @@ export class ScenesListComponent implements OnInit, OnDestroy {
     private scenesService: services.ScenesService,
     private pairService: services.PairService,
     private hyp3: services.Hyp3Service,
+    private eventMonitoringService: services.SarviewsEventsService,
   ) {}
 
   ngOnInit() {
@@ -116,9 +119,45 @@ export class ScenesListComponent implements OnInit, OnDestroy {
     );
 
     this.subs.add(
+      this.store$.select(scenesStore.getSelectedSarviewsEvent).pipe(
+        withLatestFrom(this.eventMonitoringService.filteredSarviewsEvents$()),
+        delay(20),
+        filter(([selected, _]) => !!selected),
+        tap(([selected, _]) => this.selectedEvent = selected.event_id),
+        map(([selected, events]) => {
+          const sceneIdx = events.findIndex(event => event.event_id === selected.event_id);
+          return Math.max(0, sceneIdx - 1);
+        })
+      ).subscribe(
+        idx => {
+          if (!this.selectedFromList) {
+            this.scrollTo(idx);
+          }
+
+          this.selectedFromList = false;
+        }
+      )
+    );
+
+    this.subs.add(
       sortedScenes$.pipe(debounceTime(250)).subscribe(
         scenes => {
           this.scenes = scenes;
+        }
+      )
+    );
+
+    this.subs.add(
+      this.eventMonitoringService.filteredSarviewsEvents$().pipe(
+        filter(_ => this.searchType === this.SearchTypes.SARVIEWS_EVENTS),
+      ).subscribe(
+        events => {
+          this.sarviewsEvents = events;
+
+          const eventIds = events.map(event => event.event_id);
+          if (!eventIds.includes(this.selectedEvent) && eventIds.length > 0 && !!this.selectedEvent) {
+            this.store$.dispatch(new scenesStore.SetSelectedSarviewsEvent(eventIds[0]));
+          }
         }
       )
     );
@@ -222,6 +261,32 @@ export class ScenesListComponent implements OnInit, OnDestroy {
       ).subscribe(
         _ => this.scroll.scrollToOffset(0)
       )
+    );
+  }
+
+  ngAfterContentInit() {
+    this.subs.add(this.eventMonitoringService.filteredSarviewsEvents$().pipe(
+  filter(loaded => !!loaded),
+  withLatestFrom(this.store$.select(scenesStore.getSelectedSarviewsEvent)),
+    map(([events, selected]) => ({selectedEvent: selected, events})),
+        delay(400),
+        filter(selected => !!selected.selectedEvent),
+        tap(selected => {
+          this.mapService.zoomToEvent(selected.selectedEvent);
+          this.selectedEvent = selected.selectedEvent.event_id;
+        }),
+        first(),
+        map(selected => {
+          const sceneIdx = selected.events.findIndex(event => event.event_id === selected.selectedEvent.event_id);
+          return Math.max(0, sceneIdx - 1);
+        })
+      ).subscribe(
+        idx => {
+          if (!this.selectedFromList) {
+            this.scrollTo(idx);
+          }
+        }
+    )
     );
   }
 

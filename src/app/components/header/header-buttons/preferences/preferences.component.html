@@ -1,17 +1,20 @@
-<div class="dialg-header">
+<div class="dialog-header">
   <div mat-dialog-title>Preferences for {{ userAuth.id }}</div>
 </div>
 
 <mat-dialog-content>
   <div class="display: flex;">
     <form #preferencesForm="ngForm" onsubmit="return false">
-      <app-dataset-selector
-         [(selected)]="defaultDataset"
-         (selectedChange)="onDatasetSelectionChange($event)"
-         [datasets]="datasets">
-      </app-dataset-selector>
 
-      <mat-form-field>
+      <div class="default-dataset">
+        <app-dataset-selector
+          [(selected)]="defaultDataset"
+          (selectedChange)="onDatasetSelectionChange($event)"
+          [datasets]="datasets">
+        </app-dataset-selector>
+      </div>
+
+      <mat-form-field class="default-max-result">
         <mat-label>Default Max Result Amount</mat-label>
         <mat-select
           [(ngModel)]="defaultMaxResults"
@@ -36,7 +39,16 @@
         </mat-select>
       </mat-form-field>
 
-      <h3>Default Search Filters Presets</h3>
+<!--      <mat-form-field class="default-max-concurrent-downloads">-->
+<!--        <mat-label>Max Concurrent Downloads</mat-label>-->
+<!--        <input matInput type="number" appOnlynumber-->
+<!--               [value]="defaultMaxConcurrentDownloads"-->
+<!--               [(ngModel)]="defaultMaxConcurrentDownloads"-->
+<!--               (change)="onChangeDefaultMaxConcurrentDownloads($event.target['value'])"-->
+<!--               name="maxDownloads">-->
+<!--      </mat-form-field>-->
+
+      <div class="section-heading">Default Search Filters Presets</div>
       <mat-form-field class="default-filters-presets" *ngFor="let type of searchTypeKeys">
         <mat-label>{{type}}</mat-label>
         <mat-select
@@ -47,6 +59,18 @@
             {{ preset.name }}
           </mat-option>
         </mat-select>
+      </mat-form-field>
+
+      <div class="section-heading">HyP3 Backend Url</div>
+      <mat-form-field class="default-filters-presets">
+        <mat-label>URL</mat-label>
+        <input matInput
+          (input)="onChangeBackendUrl()"
+          [(ngModel)]="hyp3BackendUrl"
+          name="backendUrl" placeholder="Backend Url">
+        <button matSuffix mat-icon-button aria-label="Clear" (click)="resetHyp3Url()">
+          <mat-icon>refresh</mat-icon>
+        </button>
       </mat-form-field>
     </form>
   </div>

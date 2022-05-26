@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 
 import { BehaviorSubject } from 'rxjs';
 
-import { Map } from 'ol';
+import { Feature, Map } from 'ol';
 import { Vector as VectorSource } from 'ol/source';
 import { Vector as VectorLayer } from 'ol/layer';
 import { Draw, Modify, Snap } from 'ol/interaction.js';
@@ -10,6 +10,11 @@ import { createBox } from 'ol/interaction/Draw.js';
 
 import * as polygonStyle from './polygon.style';
 import * as models from '@models';
+import GeometryType from 'ol/geom/GeometryType';
+import Geometry from 'ol/geom/Geometry';
+import { Store } from '@ngrx/store';
+import { AppState } from '@store';
+import { DrawNewPolygon } from '@store/map';
 
 // Declare GTM dataLayer array.
 declare global {
@@ -30,10 +35,10 @@ export class DrawService {
   private defaultStyle = polygonStyle.valid;
   private drawEndCallback;
 
-  public polygon$ = new BehaviorSubject<string | null>(null);
+  public polygon$ = new BehaviorSubject<Feature<Geometry> | null>(null);
   public isDrawing$ = new BehaviorSubject<boolean>(false);
 
-  constructor() {
+  constructor(private store$: Store<AppState>) {
     this.source = new VectorSource({
       wrapX: models.mapOptions.wrapX
     });
@@ -55,9 +60,25 @@ export class DrawService {
 
     if (mode === models.MapInteractionModeType.DRAW) {
       map.addInteraction(this.draw);
+      map.once('pointermove', (_) => {
+        map.getViewport().style.cursor = 'default';
+      });
     } else if (mode === models.MapInteractionModeType.EDIT) {
       map.addInteraction(this.snap);
       map.addInteraction(this.modify);
+
+    this.modify.on('modifystart', () => {
+      map.getViewport().style.cursor = 'pointer';
+    });
+
+    this.modify.on('modifyend', () => {
+      map.getViewport().style.cursor = 'default';
+    });
+
+    map.once('pointermove', (_) => {
+      map.getViewport().style.cursor = 'default';
+    });
+
     }
   }
 
@@ -121,13 +142,13 @@ export class DrawService {
     if (drawMode === models.MapDrawModeType.BOX) {
       draw = new Draw({
         source: this.source,
-        type: 'Circle', // Actually a box...
+        type: 'Circle' as GeometryType, // Actually a box...
         geometryFunction: createBox()
       });
     } else {
       draw = new Draw({
         source: this.source,
-        type: drawMode
+        type: drawMode.valueOf() as GeometryType
       });
     }
 
@@ -140,6 +161,7 @@ export class DrawService {
 
       this.isDrawing$.next(false);
       this.polygon$.next(e.feature);
+      this.store$.dispatch(new DrawNewPolygon());
     });
 
     this.snap = new Snap({source: this.source});
@@ -158,6 +180,7 @@ export class DrawService {
 
       this.setDrawStyle(models.DrawPolygonStyle.VALID);
       this.polygon$.next(feature);
+      this.store$.dispatch(new DrawNewPolygon());
     });
 
     return modify;

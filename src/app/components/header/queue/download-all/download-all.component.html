@@ -1,0 +1,14 @@
+<div [matTooltip]="isDownloadSupported ? disabled ? 'Must be logged in' : 'Download all files in queue' : 'Only available in Chrome'"
+
+>
+<button (click)="downloadAll()"
+        mat-menu-item
+        style="text-decoration: none;"
+        [disabled]="disabled"
+>
+Download All
+<div class="badge">Experimental</div>
+</button>
+</div>
+
+

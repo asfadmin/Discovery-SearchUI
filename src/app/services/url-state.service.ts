@@ -3,7 +3,7 @@ import { Router, ActivatedRoute, Params } from '@angular/router';
 
 import { Store, Action } from '@ngrx/store';
 import * as moment from 'moment';
-import { filter, map, skip, debounceTime, take } from 'rxjs/operators';
+import { filter, map, skip, debounceTime, take, distinctUntilChanged } from 'rxjs/operators';
 
 import { AppState } from '@store';
 import * as scenesStore from '@store/scenes';
@@ -19,6 +19,7 @@ import { MapService } from './map/map.service';
 import { WktService } from './wkt.service';
 import { RangeService } from './range.service';
 import { PropertyService } from './property.service';
+// import { PinnedProduct } from './browse-map.service';
 
 
 @Injectable({
@@ -48,6 +49,7 @@ export class UrlStateService {
       ...this.missionParameters(),
       ...this.baselineParameters(),
       ...this.sbasParameters(),
+      ...this.eventMonitorParameters(),
     ];
 
     this.urlParamNames = params.map(param => param.name);
@@ -185,6 +187,64 @@ export class UrlStateService {
     }];
   }
 
+  private eventMonitorParameters(): models.UrlParameter[] {
+    return [{
+      name: 'eventID',
+      source: this.store$.select(scenesStore.getSelectedSarviewsEvent).pipe(
+        // filter(event => !!event),
+        map(event => ({
+          eventID: event?.event_id ?? ''
+        }))
+      ),
+      loader: this.loadEventID
+    }, {
+      name: 'pinnedProducts',
+      source: this.store$.select(scenesStore.getPinnedEventBrowseIDs).pipe(
+        distinctUntilChanged(),
+        map(ids => ({
+          pinnedProducts: ids.join(',')
+        }))
+      ),
+      loader: this.loadPinnedProducts
+    }, {
+      name: 'magnitude',
+      source: this.store$.select(filterStore.getSarviewsMagnitudeRange).pipe(
+        map(range => this.rangeService.toStringWithNegatives(range)),
+        map(magnitudeRange => ({magnitude: magnitudeRange}))
+      ),
+      loader: this.loadMagnitudeRange
+    }, {
+      name: 'activeEvents',
+      source: this.store$.select(filterStore.getSarviewsEventActiveFilter).pipe(
+        map(activeEvents => ({activeEvents}))
+      ),
+      loader: this.loadOnlyActiveEvents
+    }, {
+      name: 'eventTypes',
+      source: this.store$.select(filterStore.getSarviewsEventTypes).pipe(
+        map(types => types.join(',')),
+        map(eventTypes => ({eventTypes}))
+      ),
+      loader: this.loadEventTypes
+    }, {
+      name: 'eventQuery',
+      source: this.store$.select(filterStore.getSarviewsEventNameFilter).pipe(
+        map(eventQuery => ({eventQuery}))
+      ),
+      loader: this.loadEventNameFilter
+    },
+    {
+      name: 'eventProductTypes',
+      source: this.store$.select(filterStore.getHyp3ProductTypes).pipe(
+        map(productTypes => productTypes.map(productType => productType.id)),
+        map(productTypeStrings => productTypeStrings.join(',')),
+        map(productTypes => ({eventProductTypes: productTypes ?? ''}))
+      ),
+       loader: this.loadEventProductTypes
+    }];
+  }
+
+
   private missionParameters(): models.UrlParameter[] {
     return [{
       name: 'mission',
@@ -232,7 +292,15 @@ export class UrlStateService {
         map(isOnDemandOpen => ({ isOnDemandOpen }))
       ),
       loader: this.loadIsOnDemandQueueOpen
-    }];
+    },
+    // {
+    //   name: 'isImgBrowseOpen',
+    //   source: this.store$.select(uiStore.getIsBrowseDialogOpen).pipe(
+    //     map( isImgBrowseOpen => ({isImgBrowseOpen}))
+    //   ),
+    //   loader: this.loadIsImageBrowseOpen
+    // }
+  ];
   }
 
   private filtersParameters(): models.UrlParameter[] {
@@ -339,7 +407,7 @@ export class UrlStateService {
         map(flightDirs => ({ flightDirs }))
       ),
       loader: this.loadFlightDirections
-    }];
+    }, ];
   }
 
   private mapParameters(): models.UrlParameter[] {
@@ -532,10 +600,10 @@ export class UrlStateService {
   }
 
   private loadProductTypes = (typesStr: string): Action | undefined => {
-    const productTypes = this.prop.loadProperties(
+    const productTypes: models.DatasetProductTypes = this.prop.loadProperties(
       typesStr,
       'productTypes',
-      v => v.apiValue
+      (v: models.ProductType) => v.apiValue
     );
 
     if (!productTypes) {
@@ -622,12 +690,77 @@ export class UrlStateService {
     return new scenesStore.AddCustomPairs(pairs);
   }
 
+  private loadEventID = (event_id: string): Action => new scenesStore.SetSelectedSarviewsEvent(event_id);
+
+  private loadPinnedProducts = (pinnedProducts: string): Action => {
+    const productIDs = pinnedProducts.split(',');
+    return new mapStore.SetBrowseOverlays(productIDs);
+  }
+
   private loadIsDownloadQueueOpen = (isDownloadQueueOpen: string): Action => {
     return new uiStore.SetIsDownloadQueueOpen(!!isDownloadQueueOpen);
   }
 
   private loadIsOnDemandQueueOpen = (isOnDemandQueueOpen: string): Action => {
     return new uiStore.SetIsOnDemandQueueOpen(!!isOnDemandQueueOpen);
+  }
+
+  private loadEventNameFilter = (eventStr: string): Action => {
+    if (eventStr.length > 100) {
+      return new filterStore.SetSarviewsEventNameFilter('');
+    }
+
+    return new filterStore.SetSarviewsEventNameFilter(eventStr);
+  }
+
+  private loadMagnitudeRange = (rangeStr: string): Action => {
+    const range = rangeStr
+    .split('to')
+    .map(v => +v);
+
+  return new filterStore.SetSarviewsMagnitudeRange({
+    start: range[0],
+    end: range[1]
+  });
+  }
+
+  private loadEventTypes = (eventTypesStr: string): Action => {
+    const eventTypes: models.SarviewsEventType[] = eventTypesStr
+      .split(',')
+      .filter(direction => !Object.values(models.SarviewsEventType).includes(models.SarviewsEventType[direction]))
+      .map(direction => <models.SarviewsEventType>direction);
+
+    return new filterStore.SetSarviewsEventTypes(eventTypes);
+  }
+
+  private loadOnlyActiveEvents = (activeOnly: string): Action => new filterStore.SetSarviewsEventActiveFilter(activeOnly === 'true');
+
+  // private loadIsImageBrowseOpen = (isImageBrowseOpen: string): Action => {
+  //   this.dialog.open(ImageDialogComponent, {
+  //     width: '99%',
+  //     maxWidth: '99%',
+  //     height: '99%',
+  //     maxHeight: '99%',
+  //     panelClass: 'image-dialog'
+  //   });
+
+  //   // this.subs.add(
+  //   //   dialogRef.afterClosed().subscribe(
+  //   //     _ => this.store$.dispatch(new uiStore.SetIsBrowseDialogOpen(false))
+  //   //   )
+  //   // );
+  //   return new uiStore.SetIsBrowseDialogOpen(!!isImageBrowseOpen);
+  // }
+
+  private loadEventProductTypes = (types: string): Action => {
+    const productTypes = types.split(',')
+      .filter(type => Object.keys(models.hyp3JobTypes)
+        .find(jobType => jobType === type) !== undefined);
+
+    if (productTypes?.length === 0) {
+      return new filterStore.SetHyp3ProductTypes([]);
+    }
+    return new filterStore.SetHyp3ProductTypes(productTypes);
   }
 
   private updateShouldSearch(): void {

@@ -22,9 +22,9 @@
 </div>
 
 <div
-  *ngIf="searchType !== searchTypes.DATASET"
+  *ngIf="searchType !== searchTypes.DATASET && searchType !== searchTypes.SARVIEWS_EVENTS"
   style="padding: 2px;" class="faint-text">
-  <span [class.invisible]="searchType !== searchTypes.DATASET">
+  <span [class.invisible]="true">
     <span>
         {{ formatNumber(maxResults) }} <mat-icon
           class="faint-text clickable">arrow_drop_down</mat-icon>
@@ -34,7 +34,8 @@
 
     <span *ngIf="!isMaxResultsLoading">
       <span *ngIf="searchType !== searchTypes.SBAS
-      && searchType !== searchTypes.CUSTOM_PRODUCTS">
+            && searchType !== searchTypes.CUSTOM_PRODUCTS"
+      >
         {{ currentSearchAmount !== -1 ? formatNumber(currentSearchAmount) : '0' }}
       </span>
       <span *ngIf="searchType === searchTypes.SBAS">

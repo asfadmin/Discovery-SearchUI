@@ -7,18 +7,40 @@ import { Store } from '@ngrx/store';
 import { AppState } from '@store/app.reducer';
 import { getScenes, getCustomPairs } from '@store/scenes/scenes.reducer';
 import {
-  getTemporalRange, getPerpendicularRange, getDateRange, DateRangeState, getSeason, getSBASOverlapToggle
+  getTemporalRange, getPerpendicularRange, getDateRange, DateRangeState, getSeason, getSBASOverlapThreshold
 } from '@store/filters/filters.reducer';
 import { getSearchType } from '@store/search/search.reducer';
 
-import { CMRProduct, CMRProductPair, ColumnSortDirection, Range, SearchType } from '@models';
+import { CMRProduct, CMRProductPair, ColumnSortDirection, Range, SBASOverlap, SearchType } from '@models';
+import { MapService } from './map/map.service';
+import { WktService } from './wkt.service';
+
+import * as models from '@models';
+
+import { Feature } from 'ol';
+import Geometry from 'ol/geom/Geometry';
+
+export interface SBASPairParams {
+  scenes: any[];
+  customPairs: CMRProduct[][];
+  temporalRange: models.Range<number>;
+  perpendicular: number;
+  dateRange: models.Range<Date>;
+  season: models.Range<number>;
+  overlap: models.SBASOverlap;
+  polygon: Feature<Geometry>;
+
+}
 
 @Injectable({
   providedIn: 'root'
 })
 export class PairService {
 
-  constructor(private store$: Store<AppState>) { }
+  constructor(
+    private store$: Store<AppState>,
+    private mapService: MapService,
+    private wktService: WktService) { }
 
   public productsFromPairs$(): Observable<CMRProduct[]> {
     return this.pairs$().pipe(
@@ -36,31 +58,47 @@ export class PairService {
   }
 
   public pairs$(): Observable<{custom: CMRProductPair[], pairs: CMRProductPair[]}> {
-    return combineLatest(
+    return combineLatest([
       this.store$.select(getScenes).pipe(
         map(
           scenes => this.temporalSort(scenes, ColumnSortDirection.INCREASING)
         ),
       ),
       this.store$.select(getCustomPairs),
-      this.store$.select(getTemporalRange).pipe(
-        map(range => range.start)
-      ),
+      this.store$.select(getTemporalRange),
       this.store$.select(getPerpendicularRange).pipe(
         map(range => range.start)
       ),
       this.store$.select(getDateRange),
       this.store$.select(getSeason),
-      this.store$.select(getSBASOverlapToggle),
-    ).pipe(
+      this.store$.select(getSBASOverlapThreshold),
+      this.mapService.searchPolygon$.pipe(
+        map(wkt => !!wkt ? this.wktService.wktToFeature(wkt, this.mapService.epsg()) : null)
+      ),
+      ], (scenes, customPairs, temporalRange, perpendicular, dateRange, season, overlap, polygon) =>
+      ({
+        scenes,
+        customPairs,
+        temporalRange,
+        perpendicular,
+        dateRange,
+        season,
+        overlap,
+        polygon
+      } as SBASPairParams)).pipe(
       debounceTime(250),
       withLatestFrom(this.store$.select(getSearchType)),
       map(([params, searchType]) => {
-        const [scenes, customPairs, temporal, perp, dateRange, season, sbasOverlapToggle] = params;
 
         return searchType === SearchType.SBAS ? ({
-          pairs: [...this.makePairs(scenes, temporal, perp, dateRange, season, sbasOverlapToggle)],
-          custom: [ ...customPairs ]
+          pairs: [...this.makePairs(params.scenes,
+            params.temporalRange,
+            params.perpendicular,
+            params.dateRange,
+            params.season,
+            params.overlap,
+            params.polygon)],
+          custom: [ ...params.customPairs ]
         }) : ({
           pairs: [],
           custom: []
@@ -69,10 +107,11 @@ export class PairService {
     );
   }
 
-  private makePairs(scenes: CMRProduct[], tempThreshold: number, perpThreshold,
+  private makePairs(scenes: CMRProduct[], tempThreshold: Range<number>, perpThreshold,
     dateRange: DateRangeState,
-    season,
-    overlapToggle: boolean): CMRProductPair[] {
+    season: Range<number>,
+    overlapThreshold: SBASOverlap,
+    aoi: Feature<Geometry>): CMRProductPair[] {
     const pairs = [];
 
     let startDateExtrema: Date;
@@ -85,6 +124,12 @@ export class PairService {
       endDateExtrema = new Date(dateRange.end.toISOString());
     }
 
+    let intersectionMethod;
+
+    if (!!aoi) {
+      const geometryType = aoi.getGeometry().getType();
+      intersectionMethod = this.mapService.getAoiIntersectionMethod(geometryType);
+    }
 
     const bounds = (x: string) => x.replace('POLYGON ', '').replace('((', '').replace('))', '').split(',').slice(0, 4).
     map(coord => coord.trimStart().split(' ')).
@@ -98,15 +143,28 @@ export class PairService {
     };
 
     scenes.forEach((root, index) => {
+
+    if (!!aoi) {
+      const rootPolygon = this.wktService.wktToFeature(root.metadata.polygon, this.mapService.epsg());
+      if (!intersectionMethod(aoi, rootPolygon)) {
+        return;
+      }
+    }
       for (let i = index + 1; i < scenes.length; ++i) {
         const scene = scenes[i];
         const tempDiff = scene.metadata.temporal - root.metadata.temporal;
         const perpDiff = Math.abs(scene.metadata.perpendicular - root.metadata.perpendicular);
 
+        const orbitalDifference = scene.metadata.absoluteOrbit[0] - root.metadata.absoluteOrbit[0];
+
         const P1StartDate = new Date(root.metadata.date.toISOString());
         const P1StopDate = new Date(root.metadata.stopDate.toISOString());
         const P2StartDate = new Date(scene.metadata.date.toISOString());
         const P2StopDate = new Date(scene.metadata.stopDate.toISOString());
+
+        if (orbitalDifference === 0) {
+          return;
+        }
 
         if (!!season.start && !!season.end) {
             if (!this.dayInSeason(P1StartDate, P1StopDate, P2StartDate, P2StopDate, season)) {
@@ -114,7 +172,7 @@ export class PairService {
             }
         }
 
-        if (tempDiff > tempThreshold || perpDiff > perpThreshold) {
+        if (tempDiff < tempThreshold.start || tempDiff > tempThreshold.end || perpDiff > perpThreshold) {
           return;
         }
 
@@ -130,7 +188,7 @@ export class PairService {
             }
         }
 
-        if (overlapToggle) {
+        if (overlapThreshold === SBASOverlap.HALF_OVERLAP) {
           const p1Bounds = bounds(root.metadata.polygon);
           const p2Bounds = bounds(scene.metadata.polygon);
 
@@ -140,6 +198,27 @@ export class PairService {
             p1Center.lat > Math.max(p2Bounds[0].lat, p2Bounds[1].lat) ||
             p1Center.lat < Math.min(p2Bounds[2].lat, p2Bounds[3].lat)
           ) {
+            return;
+          }
+        } else if (overlapThreshold === SBASOverlap.ANY_OVERLAP) {
+          const p1Bounds = bounds(root.metadata.polygon);
+          const p2Bounds = bounds(scene.metadata.polygon);
+
+          const p1LowToHight = p1Bounds.sort((a, b) => a.lat < b.lat ? -1 : 1);
+          const p1Top = p1LowToHight.slice(2, p1Bounds.length);
+          const p1Bottom = p1LowToHight.slice(0, 2);
+
+          const p2LowToHight = p2Bounds.sort((a, b) => a.lat < b.lat ? -1 : 1);
+          const p2Top = p2LowToHight.slice(2, p2Bounds.length);
+          const p2Bottom = p2LowToHight.slice(0, 2);
+
+          const p1Ymin = Math.min(p1Bottom[0].lat, p1Bottom[1].lat);
+          const p1YMax = Math.max(p1Top[0].lat, p1Top[1].lat);
+
+          const p2Ymin = Math.min(p2Bottom[0].lat, p2Bottom[1].lat);
+          const p2YMax = Math.max(p2Top[0].lat, p2Top[1].lat);
+
+          if (p1YMax < p2Ymin || p1Ymin > p2YMax) {
             return;
           }
         }
@@ -221,4 +300,5 @@ export class PairService {
 
     return scenes.sort(sortFunc);
   }
+
 }

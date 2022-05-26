@@ -6,7 +6,7 @@ import * as moment from 'moment';
 import * as queueStore from '@store/queue';
 import * as searchStore from '@store/search';
 
-import { Hyp3Service } from '@services';
+import { EnvironmentService, Hyp3Service, OnDemandService } from '@services';
 import * as models from '@models';
 import { SubSink } from 'subsink';
 import { of } from 'rxjs';
@@ -45,6 +45,8 @@ export class SceneFileComponent implements OnInit, OnDestroy {
   constructor(
       private hyp3: Hyp3Service,
       private store$: Store<AppState>,
+      public env: EnvironmentService,
+      private onDemand: OnDemandService,
     ) {}
 
   ngOnInit() {
@@ -52,17 +54,23 @@ export class SceneFileComponent implements OnInit, OnDestroy {
         of(this.product).pipe(
           filter(prod => !!prod.metadata)
         ).subscribe( prod => {
-          this.paramsList = this.jobParamsToList(prod.metadata);
+
+          if (!prod.metadata.job) {
+            this.paramsList = [];
+          } else {
+            this.paramsList = this.onDemand.jobParamsToList(prod.metadata);
+          }
         }
       )
-      );
+    );
+
   }
 
   public onToggleQueueProduct(): void {
     this.toggle.emit();
   }
 
-  public onLoadUnzippedPoduct(): void {
+  public onLoadUnzippedProduct(): void {
     if (!this.isUserLoggedIn) {
       return;
     }
@@ -143,21 +151,6 @@ export class SceneFileComponent implements OnInit, OnDestroy {
     }));
   }
 
-  public jobParamsToList(metadata) {
-    if (!metadata.job) {
-      return [];
-    }
-
-    const jobType = models.hyp3JobTypes[metadata.job.job_type];
-    const options = !!jobType ? jobType.options : models.hyp3JobOptionsOrdered;
-
-    return options
-      .filter(option => metadata.job.job_parameters[option.apiName])
-      .map(option => {
-        return {name: option.name, val: metadata.job.job_parameters[option.apiName]};
-      });
-  }
-
   private expirationDays(expiration_time: moment.Moment): number {
     const current = moment.utc();
 
@@ -171,11 +164,18 @@ export class SceneFileComponent implements OnInit, OnDestroy {
     window.open(infoUrl);
   }
 
+  public isExpired(job: models.Hyp3Job): boolean {
+    if (job) {
+      return this.hyp3.isExpired(job);
+    }
+    return false;
+  }
+
+  public prodDownloaded( _product ) {
+  }
+
   ngOnDestroy() {
     this.subs.unsubscribe();
   }
 
-  public isExpired(job: models.Hyp3Job): boolean {
-    return this.hyp3.isExpired(job);
-  }
 }

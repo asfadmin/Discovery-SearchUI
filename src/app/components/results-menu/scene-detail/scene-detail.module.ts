@@ -11,10 +11,12 @@ import { PipesModule } from '@pipes';
 import { MatSharedModule } from '@shared';
 import { CopyToClipboardModule } from '@components/shared/copy-to-clipboard';
 import { SceneMetadataModule } from '@components/shared/scene-metadata';
+import { EventMetadataModule } from '@components/shared/event-metadata';
 import { ImageDialogModule } from './image-dialog';
 import { SceneDetailComponent } from './scene-detail.component';
 import {MatButtonToggleModule} from '@angular/material/button-toggle';
-
+import { MatSliderModule } from '@angular/material/slider';
+import { EventPolygonSliderModule } from './../event-polygon-slider';
 
 @NgModule({
   declarations: [SceneDetailComponent],
@@ -31,7 +33,10 @@ import {MatButtonToggleModule} from '@angular/material/button-toggle';
         CopyToClipboardModule,
         ImageDialogModule,
         SceneMetadataModule,
-        MatButtonToggleModule
+        EventMetadataModule,
+        MatButtonToggleModule,
+        MatSliderModule,
+        EventPolygonSliderModule
     ],
   exports: [SceneDetailComponent],
 })

@@ -94,17 +94,13 @@ export class PathSelectorComponent implements OnInit, OnDestroy {
     return (charCode > 31 && (charCode < 48 || charCode > 57));
   }
 
-  public onValueChanged(inputValue: string, inputType: PathFormInputType): void {
-    let val: number | null;
+  public onValueChanged(event: Event, inputType: PathFormInputType): void {
+    const inputValue = (event.target as HTMLInputElement).valueAsNumber;
 
-    if (!this.isValidNumber(inputValue)) {
-      if (inputValue !== '') {
-        this.inputErrors$.next(inputType);
-      }
+    let val: number | null = null;
 
-      val = null;
-    } else {
-      val = +inputValue;
+    if (this.isValidNumber(inputValue)) {
+      val = inputValue;
     }
 
     const action = this.getActionFor(inputType, val);
@@ -122,8 +118,8 @@ export class PathSelectorComponent implements OnInit, OnDestroy {
     return new ActionType(val);
   }
 
-  private isValidNumber(val: string): boolean {
-    return !!val && !isNaN(+val) && (+val) >= 0;
+  private isValidNumber(val: number): boolean {
+    return !isNaN(val) && val >= 0;
   }
 
   public onNewOmitPolygon(e): void {

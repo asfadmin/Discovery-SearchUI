@@ -28,6 +28,8 @@ import { DragDropModule } from '@angular/cdk/drag-drop';
 import { ProjectNameSelectorModule } from '@components/shared/selectors/project-name-selector';
 import { ConfirmationComponent } from './confirmation/confirmation.component';
 import { AngularResizedEventModule } from 'angular-resize-event';
+import { CreateSubscriptionModule } from '../../header/create-subscription';
+import {DocsModalModule} from '@components/shared/docs-modal';
 
 
 @NgModule({
@@ -36,30 +38,32 @@ import { AngularResizedEventModule } from 'angular-resize-event';
     QueueSubmitComponent,
     ConfirmationComponent
   ],
-  imports: [
-    CommonModule,
-    FormsModule,
-    FontAwesomeModule,
-    MatSharedModule,
-    MatInputModule,
-    MatChipsModule,
-    MatSelectModule,
-    MatSlideToggleModule,
-    MatProgressSpinnerModule,
-    MatProgressBarModule,
-    MatBottomSheetModule,
-    PipesModule,
-    ProjectNameSelectorModule,
-    ProcessingQueueJobsModule,
-    ProcessingOptionsModule,
-    MatDialogModule,
-    ResizableModule,
-    AngularResizedEventModule,
-    DragDropModule,
-    MatTabsModule,
-    MatMenuModule,
-    ScrollingModule,
-  ]
+    imports: [
+        CommonModule,
+        FormsModule,
+        FontAwesomeModule,
+        MatSharedModule,
+        MatInputModule,
+        MatChipsModule,
+        MatSelectModule,
+        MatSlideToggleModule,
+        MatProgressSpinnerModule,
+        MatProgressBarModule,
+        MatBottomSheetModule,
+        PipesModule,
+        ProjectNameSelectorModule,
+        ProcessingQueueJobsModule,
+        ProcessingOptionsModule,
+        MatDialogModule,
+        ResizableModule,
+        AngularResizedEventModule,
+        DragDropModule,
+        MatTabsModule,
+        MatMenuModule,
+        ScrollingModule,
+        CreateSubscriptionModule,
+        DocsModalModule
+    ]
 })
 export class ProcessingQueueModule {
   constructor(library: FaIconLibrary) {

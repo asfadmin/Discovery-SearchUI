@@ -1,136 +1,355 @@
-<div *ngIf="breakpoint$ | async as breakpoint"
+<div
+  *ngIf="breakpoint$ | async as breakpoint"
   class="detail-card scrollable"
-  [class.scrollable]="isScrollable">
-
-  <div *ngIf="scene">
+  [class.scrollable]="isScrollable"
+>
+  <div *ngIf="sarviewEvent">
     <mat-card-header>
       <mat-card-title class="detail-card-header">
-        <span>{{ scene.name }}</span>
-
+        <span>{{
+          sarviewEvent.description[0].toUpperCase() +
+            sarviewEvent.description.slice(1)
+        }}</span>
         <app-copy-to-clipboard
-          [value]="scene.name"
-          prompt="Copy scene name"
-          class="clipboard-icon"></app-copy-to-clipboard>
-
+        [value]="getEventID()"
+        [prompt]="'Copied Event ID'"
+        style="margin: 0 3px;"
+        class="clipboard-icon">
+      </app-copy-to-clipboard>
       </mat-card-title>
       <mat-card-subtitle class="subtitle">
-        <a [href]="dataset.infoUrl" target="_blank" matTooltip="Dataset" class="faint-text">
-          {{ dataset.name }} <span *ngIf="dataset.name === 'SMAP'">V{{ scene.name.slice(-1) }}</span>
-        </a> •
-        <span matTooltip="Frequency">{{ dataset.frequency }}</span>
+        <span class="faint-text">
+          SARVIEWS Event
+        </span> •
+        <span matTooltip="eventType">{{ sarviewEvent.event_type }}</span>
       </mat-card-subtitle>
     </mat-card-header>
 
-    <div class="detail-card-info">
-      <p class="faint-text accessing-text">
-        <span *ngIf="!isLoggedIn">
-          Accessing this data requires you to log in.
-        </span>
 
-        <span *ngIf="
-          dataset.id === 'RADARSAT-1' ||
-          dataset.id === 'JERS-1'
-        ">
-          JERS-1 and RADARSAT-1 datasets require a
-          <a href="https://www.asf.alaska.edu/restricted-data-access-request/" target="_blank">
-            Restricted Data Use Agreement
-          </a>
-        </span>
-      </p>
-
+    <div style="display: flex; flex-direction: column;">
     </div>
     <mat-card-content class="content">
-      <div class="w100" fxFlex fxLayout="column" fxLayoutAlign="space-between">
-        <div class="w100">
-          <details [(open)]="detailsOpen">
-            <summary class="clickable"></summary>
-            <app-scene-metadata [scene]="scene" [dataset]="dataset" [searchType]="searchType" [offsets]="masterOffsets$ | async">
-            </app-scene-metadata>
-          </details>
-          <div *ngIf="searchType === searchTypes.CUSTOM_PRODUCTS">
-            <div *ngIf="scene.metadata.job.job_parameters.scenes.length > 1">
-              <hr>
-              <span class="detail-card-header"><b>{{ scene.metadata.job.job_parameters.scenes[1].name }}</b> (<i>Secondary Scene</i>)</span>
-              <app-copy-to-clipboard
-              [value]="scene.metadata.job.job_parameters.scenes[1].name"
-              prompt="Copy secondary scene name"
-              class="clipboard-icon"></app-copy-to-clipboard>
-              <app-scene-metadata
-              [scene]="scene.metadata.job.job_parameters.scenes[1]"
-              [dataset]="dataset"
-              [searchType]="searchType"
-              [offsets]="masterOffsets$ | async">
-           </app-scene-metadata>
-            </div>
-          </div>
-        </div>
-        <div class="browse-container w100" *ngIf="sceneHasBrowse()">
-          <div class="banner" fxLayout fxLayout="row" fxLayoutAlign="center">
-            <div class="menu-items">
-              <div class="fullscreen clickable" (click)="onOpenImage();" matTooltip="Open in Image Viewer">
-                <mat-icon>preview</mat-icon>
-              </div>
-              <a class="download clickable" [href]="(browses$ | async)[0]" target="_blank" matTooltip="Download this image">
-                <mat-icon>download</mat-icon>
-              </a>
-            </div>
-            <div class="browse-pager" *ngIf="browses$ | async as browses">
-              <span 
-              [class.clickable]="browseIndex > 0"
-              (click)="browseIndex > 0 && browseIndex = browseIndex - 1" 
-              >
-              <mat-icon>arrow_back</mat-icon>
-              </span>
-               {{browseIndex+1}} / {{browses.length}} 
-              <span
-                [class.clickable]="browseIndex+1 < browses.length"
-                (click)="browseIndex+1 < browses.length && browseIndex = browseIndex + 1" 
-                 >
-                <mat-icon>arrow_forward</mat-icon>
-              </span>
-            </div>
-          </div>
-          <div 
-            class="img-container">
-            <img
-              class="browse-img fit-to-container"
-              [hidden]="isImageLoading"
-              [src]="(browses$ | async)[browseIndex]"
-              (click)="onOpenImage();"
-              (load)="isImageLoading = false"
-              onerror="this.src='assets/no-browse.png'"
-              [class.clickable]="sceneHasBrowse()"
-              alt="Sentinel1 scene browse image">
-          </div>
-        </div>
+      <div
+      class="w100"
+      fxFlex
+      fxLayout="column"
+      fxLayoutAlign="space-between">
+      <app-event-metadata
+      [event]="sarviewEvent"
+      [eventType]="sarviewEvent.event_type === 'quake' ? eventTypes.QUAKE : eventTypes.VOLCANO"
+      >
+
+      </app-event-metadata>
+      <app-event-polygon-slider (polygonScale$)="onEventSearchRadiusChange($event)">
+      </app-event-polygon-slider>
       </div>
     </mat-card-content>
   </div>
-</div>
- <div class="tool-menu" *ngIf="scene && breakpoint$ | async as breakpoint" [ngStyle]="{ 'bottom': breakpoint === breakpoints.SMALL ? '19px' : (breakpoint < breakpoints.SMALL ? '17px' : '0px')}">
-  <div>
-    Search:
+
+  <div *ngIf="searchType !== searchTypes.SARVIEWS_EVENTS">
+    <div *ngIf="scene">
+      <mat-card-header>
+        <mat-card-title class="detail-card-header">
+          <span>{{ scene.name }}</span>
+
+          <app-copy-to-clipboard
+            [value]="scene.name"
+            prompt="Copy scene name"
+            class="clipboard-icon"
+          ></app-copy-to-clipboard>
+        </mat-card-title>
+        <mat-card-subtitle class="subtitle">
+          <a
+            [href]="dataset.infoUrl"
+            target="_blank"
+            matTooltip="Dataset"
+            class="faint-text"
+          >
+            {{ dataset.name }}
+            <span *ngIf="dataset.name === 'SMAP'"
+              >V{{ scene.name.slice(-1) }}</span
+            >
+          </a>
+          •
+          <span matTooltip="Frequency">{{ dataset.frequency }}</span>
+        </mat-card-subtitle>
+      </mat-card-header>
+
+      <div class="detail-card-info">
+        <p class="faint-text accessing-text">
+          <span *ngIf="!isLoggedIn">
+            Accessing this data requires you to log in.
+          </span>
+
+          <span *ngIf="dataset.id === 'RADARSAT-1' || dataset.id === 'JERS-1'">
+            JERS-1 and RADARSAT-1 datasets require a
+            <a
+              [href]="asfWebsite.restricted_data_access"
+              target="_blank"
+            >
+              Restricted Data Use Agreement
+            </a>
+          </span>
+        </p>
+      </div>
+      <mat-card-content class="content">
+        <div
+          class="w100"
+          fxFlex
+          fxLayout="column"
+          fxLayoutAlign="space-between"
+        >
+          <div class="w100">
+            <details open (open)="onSetDetailsOpen($event)">
+              <summary class="clickable"></summary>
+              <app-scene-metadata
+                [scene]="scene"
+                [dataset]="dataset"
+                [searchType]="searchType"
+                [offsets]="masterOffsets$ | async"
+              >
+              </app-scene-metadata>
+            </details>
+            <div *ngIf="searchType === searchTypes.CUSTOM_PRODUCTS">
+              <div *ngIf="scene.metadata.job.job_parameters.scenes.length > 1">
+                <hr />
+                <span class="detail-card-header"
+                  ><b>{{ scene.metadata.job.job_parameters.scenes[1].name }}</b>
+                  (<i>Secondary Scene</i>)</span
+                >
+                <app-copy-to-clipboard
+                  [value]="scene.metadata.job.job_parameters.scenes[1].name"
+                  prompt="Copy secondary scene name"
+                  class="clipboard-icon"
+                ></app-copy-to-clipboard>
+                <app-scene-metadata
+                  [scene]="scene.metadata.job.job_parameters.scenes[1]"
+                  [dataset]="dataset"
+                  [searchType]="searchType"
+                  [offsets]="masterOffsets$ | async"
+                >
+                </app-scene-metadata>
+              </div>
+            </div>
+          </div>
+          <div class="browse-container w100" *ngIf="sceneHasBrowse()">
+            <div class="banner" fxLayout fxLayout="row" fxLayoutAlign="center">
+              <div class="menu-items">
+                <div
+                  class="fullscreen clickable"
+                  (click)="onOpenImage()"
+                  matTooltip="Open in Image Viewer"
+                >
+                  <mat-icon>preview</mat-icon>
+                </div>
+                <a
+                  class="download clickable"
+                  [href]="(browses$ | async)[0]"
+                  target="_blank"
+                  matTooltip="Download this image"
+                >
+                  <mat-icon>download</mat-icon>
+                </a>
+              </div>
+              <div class="browse-pager" *ngIf="browses$ | async as browses">
+                <span
+                  class="navigation-icon"
+                  [class.clickable]="browseIndex > 0"
+                  (click)="onDecrementBrowseIndex()"
+                >
+                  <mat-icon [class.not-clickable]="browseIndex < 1"
+                    >navigate_before</mat-icon
+                  >
+                </span>
+                {{ browseIndex + 1 }} / {{ browses.length }}
+                <span
+                  class="navigation-icon"
+                  [class.clickable]="browseIndex + 1 < browses.length"
+                  (click)=onIncrementBrowseIndex()
+                >
+                  <mat-icon
+                    [class.not-clickable]="browseIndex + 1 >= browses.length"
+                    >navigate_next</mat-icon
+                  >
+                </span>
+              </div>
+            </div>
+            <div class="img-container">
+              <img
+                class="browse-img fit-to-container"
+                [hidden]="isImageLoading"
+                [src]="(browses$ | async)[browseIndex]"
+                (click)="onOpenImage()"
+                (load)="isImageLoading = false"
+                onerror="this.src='assets/no-browse.png'"
+                [class.clickable]="sceneHasBrowse()"
+                alt="Sentinel1 scene browse image"
+              />
+            </div>
+          </div>
+        </div>
+      </mat-card-content>
+    </div>
   </div>
-  <button [disabled]="!hasBaseline" (click)="makeBaselineSearch()"
-    class="mini-toggle-button" target="_blank" matTooltip="Use this scene in the Baseline Tool for interferometry">
-    Baseline
-  </button>
 
-  <button [disabled]="!hasBaseline" (click)="makeSBASSearch()"
-    class="mini-toggle-button" target="_blank"
-    matTooltip="Use this scene in the SBAS Tool to make product pairs for interferometry">
-    SBAS
-  </button>
 
-  <button
-    [disabled]="!(
-                   ((prop.isRelevant(p.PATH, dataset) && prop.isRelevant(p.FRAME, dataset) || (dataset.id === 'UAVSAR'))))"
-    (click)="findSimilarScenes()" class="mini-toggle-button" matTooltip="Geographic search based on this scene's path/frame">
-    More Like This
-  </button>
+  <div style="margin-top: 25px;" class="browse-container w100"
+  *ngIf="!!sarviewsProducts
+    && sarviewsProducts?.length > 0
+    && searchType === searchTypes.SARVIEWS_EVENTS">
+    <div class="banner" fxLayout fxLayout="row" fxLayoutAlign="center">
+      <div class="menu-items">
+        <div
+          class="fullscreen clickable"
+          (click)="onOpenImage()"
+          matTooltip="Open in Image Viewer"
+        >
+          <mat-icon>preview</mat-icon>
+        </div>
+        <a
+          class="download clickable"
+          [href]="sarviewsProducts[browseIndex].files.product_url"
+          target="_blank"
+          matTooltip="Download this image"
+        >
+          <mat-icon>download</mat-icon>
+        </a>
+        <span
+        class ="clickable"
+        matTooltip="Pin this product's browse on the map"
+        (click)="onToggleSarviewsProductPin()"
+        >
+          <mat-icon>
+            push_pin
+          </mat-icon>
+        </span>
+      </div>
+      <div class="browse-pager">
+        <span
+          [class.clickable]="browseIndex > 0"
+          (click)="onDecrementBrowseIndex()"
+        >
+          <mat-icon
+          [class.not-clickable]="browseIndex < 1"
+          >navigate_before</mat-icon>
+        </span>
+        {{ browseIndex + 1 }} / {{ sarviewsProducts.length }}
+        <span
+          [class.clickable]="browseIndex + 1 < sarviewsProducts.length"
+          (click)="
+          onIncrementBrowseIndex()
+          "
+        >
+          <mat-icon
+          [class.not-clickable]="browseIndex + 1 >= sarviewsProducts?.length"
+          >navigate_next</mat-icon>
+        </span>
+      </div>
+    </div>
+    <div class="img-container">
+      <img
+        class="browse-img fit-to-container"
+        [hidden]="isImageLoading"
+        [src]="sarviewsProducts[browseIndex].files.browse_url"
+        (click)="onOpenImage()"
+        (load)="isImageLoading = false"
+        onerror="this.src='assets/no-browse.png'"
+        [class.clickable]="!!sarviewsProducts"
+        alt="Sentinel1 scene browse image"
+      />
+    </div>
+  </div>
+
+</div>
+<div
+  class="tool-menu"
+  *ngIf="(scene || sarviewEvent) && breakpoint$ | async as breakpoint"
+  [ngStyle]="{ bottom: searchType === searchTypes.BASELINE
+    && breakpoint <= breakpoints.MEDIUM
+    ? '20px' : breakpoint < breakpoints.SMALL ? '17px' : '0' }"
+>
+  <div class="search-button-label">SEARCH:</div>
+  <div *ngIf="searchType !== searchTypes.SARVIEWS_EVENTS"
+    [matTooltip]="
+      hasBaseline
+        ? 'Use this scene in the Baseline Tool for interferometry'
+        : 'No suitable products for this tool'
+    "
+  >
+    <button
+      mat-stroked-button
+      color="primary"
+      [disabled]="!hasBaseline"
+      (click)="makeBaselineSearch()"
+      class="mini-toggle-button search-button"
+      target="_blank"
+    >
+      Baseline
+    </button>
+  </div>
+
+  <div
+  *ngIf="searchType !== searchTypes.SARVIEWS_EVENTS"
+    [matTooltip]="
+      hasBaseline
+        ? 'Use this scene in the SBAS Tool to make product pairs for interferometry'
+        : 'No suitable products for this tool'
+    "
+  >
+    <button
+      mat-stroked-button
+      color="primary"
+      [disabled]="!hasBaseline"
+      (click)="makeSBASSearch()"
+      class="mini-toggle-button search-button"
+      target="_blank"
+    >
+      SBAS
+    </button>
+  </div>
+  <div
+  [matTooltip]="
+  searchType === searchTypes.SARVIEWS_EVENTS ? 'Geographic search based on event polygon' : !(
+    !(prop.isRelevant(p.PATH, dataset) &&
+      prop.isRelevant(p.FRAME, dataset)) ||
+    dataset?.id === 'UAVSAR'
+  ) ? 'Geographic search based on this scene\'s path/frame' : 'Not able to select similar scenes from this source'"
+  >
+    <button
+    mat-stroked-button
+    color="primary"
+    [disabled]="
+      !(
+        (prop.isRelevant(p.PATH, dataset) &&
+          prop.isRelevant(p.FRAME, dataset)) ||
+        dataset?.id === 'UAVSAR'
+      )
+    "
+    (click)="findSimilarScenes()"
+    class="mini-toggle-button search-button"
+  >
+    <span *ngIf="breakpoint === breakpoints.MOBILE">Similar</span>
+    <span *ngIf="breakpoint != breakpoints.MOBILE">{{searchType !== searchTypes.SARVIEWS_EVENTS ? 'More Like This' : 'Geographic'}}</span>
+</button>
+  </div>
+  <div
+  *ngIf="searchType === searchTypes.SARVIEWS_EVENTS"
+    matTooltip="Use this event's product scenes in list search"
+  >
+    <button
+      mat-stroked-button
+      color="primary"
+      [disabled]="sarviewsProducts.length === 0"
+      (click)="makeEventListSearch()"
+      class="mini-toggle-button search-button"
+      target="_blank"
+    >
+      List
+    </button>
+  </div>
 </div>
 
-<div *ngIf="!scene">
+<div *ngIf="!scene && !sarviewEvent">
   <div fxFlex fxLayoutAlign="center" gdAlignColumns="center">
     <span class="faint-text">No Scene Selected</span>
   </div>

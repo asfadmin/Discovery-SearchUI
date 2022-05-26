@@ -9,7 +9,7 @@
     class="full-width">
     <mat-label> Area of Interest • WKT </mat-label>
       <input
-        (change)="onInputSearchPolygon($event.target.value)"
+        (change)="onInputSearchPolygon($event)"
         [value]="polygon"
         [(ngModel)]="polygon"
         name="searchPolygon"
@@ -21,14 +21,6 @@
       [class.ghost-item]="!isHoveringAOISelector"
       class="clickable copy-icon" matSuffix>
       file_copy
-    </mat-icon>
-
-    <mat-icon
-      (click)="openAOIImport()"
-      matTooltip="Import Area of Interest"
-      class="clickable additional-aoi-toggle"
-      matSuffix>
-      save_alt
     </mat-icon>
 
     <mat-icon

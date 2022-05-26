@@ -26,8 +26,14 @@
         <app-baseline-header *ngIf="searchType === searchTypes.SBAS">
         </app-baseline-header>
 
+        <app-sarviews-header *ngIf="searchType === searchTypes.SARVIEWS_EVENTS">
+        </app-sarviews-header>
+
         <app-hyp3-header *ngIf="searchType === searchTypes.CUSTOM_PRODUCTS">
         </app-hyp3-header>
+
+        <app-derived-datasets-header *ngIf="searchType === searchTypes.DERIVED_DATASETS">
+        </app-derived-datasets-header>
 
         <app-info-bar *ngIf="breakpoint !== breakpoints.MOBILE"></app-info-bar>
       </div>

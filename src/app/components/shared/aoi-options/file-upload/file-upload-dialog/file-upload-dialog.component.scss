@@ -1,0 +1,84 @@
+@import "asf-theme";
+
+.add-files-btn {
+  float: right;
+}
+
+.limit-text {
+  display: inline-block;
+  max-width: 250px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.actions {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.container {
+  height: 100%;
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+}
+
+.drop-text-box {
+  //outline: 2px dashed rgba(0, 0, 0, 0.2);
+  //color: rgba(0, 0, 0, 0.6);
+  //outline-offset: -10px;
+}
+
+.drop-file-area {
+  background-image: url("/assets/geospatial_upload.png");
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-color: rgb(245, 245, 245);
+  background-position: center;
+  width: 350px;
+  height: 160px;
+  display: inline-block;
+  //border: $asf-primary-dark dashed 2px;
+  outline: 2px dashed $asf-primary;
+  outline-offset: -8px;
+}
+
+.is-file-error {
+  animation: shake 0.82s;
+  color: red;
+  outline-color: red;
+  transform: translate3d(0, 0, 0);
+  backface-visibility: hidden;
+  perspective: 1000px;
+}
+
+.upload-button-spacing {
+  margin: 10px 0;
+}
+
+.file-list {
+  margin-top: 10px;
+  max-height: 100px;
+  overflow: auto;
+}
+
+.loading-text {
+  margin-right: 30px;
+}
+
+.loading-spinner {
+  margin: 0 auto;
+}
+
+.loading-box {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+
+.import-formats {
+  margin-left: 10px;
+  margin-bottom: 10px;
+}

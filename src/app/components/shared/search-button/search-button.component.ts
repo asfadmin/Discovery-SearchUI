@@ -1,6 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { SubSink } from 'subsink';
 
+import { CustomizeEnvComponent } from '@components/header/header-buttons/customize-env/customize-env.component';
 import { combineLatest, Subject } from 'rxjs';
 import { tap, delay } from 'rxjs/operators';
 import { Store, ActionsSubject } from '@ngrx/store';
@@ -11,12 +12,15 @@ import * as searchStore from '@store/search';
 import * as userStore from '@store/user';
 import * as uiStore from '@store/ui';
 import * as filtersStore from '@store/filters';
+// import * as scenesStore from '@store/scenes';
 
 import * as services from '@services';
-import { SavedSearchType, SearchType } from '@models';
+import { ClipboardService } from 'ngx-clipboard';
+import { SidebarType, SearchType } from '@models';
 import { MatDialog } from '@angular/material/dialog';
 import { HelpComponent } from '@components/help/help.component';
 import { getFilterMaster } from '@store/scenes';
+import { SaveSearchDialogComponent } from '@components/shared/save-search-dialog';
 
 // Declare GTM dataLayer array.
 declare global {
@@ -34,6 +38,10 @@ export class SearchButtonComponent implements OnInit, OnDestroy {
   public canSearch$ = this.store$.select(searchStore.getCanSearch);
   public isMaxResultsLoading$ = this.store$.select(searchStore.getIsMaxResultsLoading);
   public loading$ = this.store$.select(searchStore.getIsLoading);
+  public maturity = this.env.maturity;
+
+  public areResultsOutOfDate$ = this.store$.select(searchStore.getareResultsOutOfDate);
+
   public isLoggedIn = false;
   public searchError$ = new Subject<void>();
   public isSearchError = false;
@@ -48,7 +56,9 @@ export class SearchButtonComponent implements OnInit, OnDestroy {
   constructor(
     private store$: Store<AppState>,
     private actions$: ActionsSubject,
+    public env: services.EnvironmentService,
     private savedSearchService: services.SavedSearchService,
+    public clipboard: ClipboardService,
     private dialog: MatDialog,
     private notificationService: services.NotificationService,
   ) {
@@ -66,6 +76,7 @@ export class SearchButtonComponent implements OnInit, OnDestroy {
         searchType => this.searchType = searchType
       )
     );
+
     this.subs.add(
       this.store$.select(uiStore.getIsResultsMenuOpen).subscribe(
         isOpen => this.resultsMenuOpen = isOpen
@@ -115,11 +126,6 @@ export class SearchButtonComponent implements OnInit, OnDestroy {
         (this.searchType === this.searchTypes.SBAS || this.searchType === this.searchTypes.BASELINE)) ||
         (this.searchType !== this.searchTypes.SBAS && this.searchType !== this.searchTypes.BASELINE)
       ) {
-      if (this.searchType === SearchType.BASELINE) {
-        this.clearBaselineRanges();
-      } else if (this.searchType === SearchType.SBAS) {
-        this.setBaselineRanges();
-      }
 
       this.store$.dispatch(new searchStore.MakeSearch());
 
@@ -158,29 +164,23 @@ export class SearchButtonComponent implements OnInit, OnDestroy {
     this.searchError$.next();
   }
 
-  private clearBaselineRanges() {
-    this.store$.dispatch(new filtersStore.ClearPerpendicularRange());
-    this.store$.dispatch(new filtersStore.ClearTemporalRange());
-  }
-
-  private setBaselineRanges() {
-    const days_action = new filtersStore.SetTemporalRange({ start: 48, end: null });
-    this.store$.dispatch(days_action);
-    const meters_action = new filtersStore.SetPerpendicularRange({ start: 300, end: null });
-    this.store$.dispatch(meters_action);
-  }
-
   public saveCurrentSearch(): void {
-
     window.dataLayer = window.dataLayer || [];
     window.dataLayer.push({
       'event': 'save-current-search',
       'save-current-search': true
     });
 
-    this.store$.dispatch(new uiStore.SetSavedSearchType(SavedSearchType.SAVED));
-    this.store$.dispatch(new uiStore.OpenSidebar());
-    this.store$.dispatch(new uiStore.SetSaveSearchOn(true));
+    this.dialog.open(SaveSearchDialogComponent, {
+      id: 'ConfirmProcess',
+      width: '550px',
+      height: '500px',
+      maxWidth: '550px',
+      maxHeight: '500px',
+      data: { saveType: SidebarType.SAVED_SEARCHES }
+    });
+
+    this.store$.dispatch(new uiStore.OpenSidebar(SidebarType.SAVED_SEARCHES));
   }
 
   public saveCurrentFilters(): void {
@@ -189,8 +189,17 @@ export class SearchButtonComponent implements OnInit, OnDestroy {
       'event': 'save-current-filters',
       'save-current-filters': true
     });
-    this.store$.dispatch(new uiStore.OpenFiltersSidebar());
-    this.store$.dispatch(new uiStore.SetSaveFilterOn(true));
+
+    this.dialog.open(SaveSearchDialogComponent, {
+      id: 'ConfirmProcess',
+      width: '550px',
+      height: '500px',
+      maxWidth: '550px',
+      maxHeight: '500px',
+      data: { saveType: SidebarType.USER_FILTERS }
+    });
+
+    this.store$.dispatch(new uiStore.OpenSidebar(SidebarType.USER_FILTERS));
   }
 
   public onOpenSavedSearches(): void {
@@ -201,8 +210,7 @@ export class SearchButtonComponent implements OnInit, OnDestroy {
       'open-saved-searches': true
     });
 
-    this.store$.dispatch(new uiStore.SetSavedSearchType(SavedSearchType.SAVED));
-    this.store$.dispatch(new uiStore.OpenSidebar());
+    this.store$.dispatch(new uiStore.OpenSidebar(SidebarType.SAVED_SEARCHES));
   }
 
   public onOpenSavedFilters(): void {
@@ -213,7 +221,7 @@ export class SearchButtonComponent implements OnInit, OnDestroy {
       'open-saved-filters': true
     });
 
-    this.store$.dispatch(new uiStore.OpenFiltersSidebar());
+    this.store$.dispatch(new uiStore.OpenSidebar(SidebarType.USER_FILTERS));
   }
 
   public onOpenSearchHistory(): void {
@@ -224,8 +232,7 @@ export class SearchButtonComponent implements OnInit, OnDestroy {
       'open-search-history': true
     });
 
-    this.store$.dispatch(new uiStore.SetSavedSearchType(SavedSearchType.HISTORY));
-    this.store$.dispatch(new uiStore.OpenSidebar());
+    this.store$.dispatch(new uiStore.OpenSidebar(SidebarType.SEARCH_HISTORY));
   }
 
   public onOpenHelp(helpTopic: string): void {
@@ -245,6 +252,60 @@ export class SearchButtonComponent implements OnInit, OnDestroy {
       maxHeight: '100%',
     });
   }
+
+  public onCopy(): void {
+    window.dataLayer = window.dataLayer || [];
+    window.dataLayer.push({
+      'event': 'copy-search-link',
+      'copy-search-link': window.location.href
+    });
+
+    this.clipboard.copyFromContent(window.location.href);
+    this.notificationService.clipboardSearchLink();
+  }
+
+  public onShareWithEmail() {
+    const subject = `New Search - ${encodeURIComponent(document.title)}`;
+
+    window.dataLayer = window.dataLayer || [];
+    window.dataLayer.push({
+      'event': 'share-with-email',
+      'share-with-email': encodeURIComponent(document.URL)
+    });
+
+    window.open(
+      `mailto:?subject=${subject}` +
+      `&body=${encodeURIComponent(document.URL)}`
+    );
+  }
+
+  public onOpenCustomizeEnv(): void {
+    this.dialog.open(CustomizeEnvComponent, {
+      width: '800px',
+      height: '1000px',
+      maxWidth: '100%',
+      maxHeight: '100%'
+    });
+  }
+
+
+  public isDevMode(): boolean {
+    return !this.env.isProd;
+  }
+
+  public onTestSelected(): void {
+    this.setMaturity('test');
+  }
+
+  public onProdSelected(): void {
+    this.setMaturity('prod');
+  }
+
+  private setMaturity(maturity: string): void {
+    this.maturity = maturity;
+    this.env.setMaturity(maturity);
+  }
+
 
   ngOnDestroy() {
     this.subs.unsubscribe();

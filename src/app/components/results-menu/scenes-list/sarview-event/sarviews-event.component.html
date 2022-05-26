@@ -1,0 +1,43 @@
+<button *ngIf="breakpoint$ | async as breakpoint"
+    class="button-flex-row"
+    mat-list-item
+    (mouseenter)="onSetFocused()"
+    (mouseleave) ="onClearFocused()"
+    (click) ="onSetSelected()"
+    [class.hovered]="hovered"
+    [class.selected]="selected"
+    [ngClass]="{'mobile-size': breakpoint <= breakpoints.SMALL}">
+
+
+  <img [src]="getEventIcon()" class="event-list-thumbnail">
+
+  <div class="div-flex">
+    <div class="div-flex-column">
+      <div class="div-flex"
+      [title]="event.description"
+      class="bold" matLine>
+        <span>
+          <span>
+            {{event.description}}
+          </span>
+        </span>
+      </div>
+    </div>
+    <div matLine class="div-flex date-time"
+         [ngClass]="{'mobile-event-sub-text': breakpoint < breakpoints.SMALL}">
+      <span>
+        {{eventIDDisplay()}} -
+      </span>
+      <span> {{event.processing_timeframe.start | shortDate}}
+        {{!!event.processing_timeframe.end ? 'to ' + (event.processing_timeframe.end | shortDate) : ''}}</span>
+    </div>
+  </div>
+    <ng-container>
+      <div class="scene-controls" [ngClass]="{'mobile-size': breakpoint <= breakpoints.SMALL}">
+        <mat-icon (click)="onZoomTo($event)" class="ml-2" matTooltip="Zoom to event">
+          settings_overscan
+        </mat-icon>
+      </div>
+    </ng-container>
+
+</button>

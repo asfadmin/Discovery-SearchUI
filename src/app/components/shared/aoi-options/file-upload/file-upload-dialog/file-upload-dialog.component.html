@@ -1,0 +1,38 @@
+<input (change)="onFilesAdded()"
+  class="hidden" type="file" #file/>
+
+<div
+  (drop)="onFileDrop($event)"
+  fxLayout="column" fxLayoutAlign="space-evenly stretch"
+  class="container">
+
+  <div fxFlex fxLayout="column">
+    <div fxFlex>
+      <div [class.is-file-error]="isFileError"
+        fxFlex fxLayoutAlign="center" gdAlignColumns="center"
+        [class.drop-text-box]="canBeClosed">
+
+        <div *ngIf="canBeClosed" class="drop-file-area"></div>
+
+        <div class="loading-box" *ngIf="!canBeClosed">
+          <div class="loading-text">
+            Loading files...
+          </div>
+          <div>
+            <mat-progress-spinner diameter="40" class="loading-spinner" color="primary" mode="indeterminate">
+            </mat-progress-spinner>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="actions">
+      <button (click)="addFiles()"
+        [disabled]="uploading"
+        style="margin-right: 10px;"
+        color="primary" class="add-files-btn" mat-raised-button>
+          Import File
+      </button>
+    </div>
+  </div>
+</div>

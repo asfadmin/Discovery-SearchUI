@@ -13,6 +13,7 @@ import { tap, delay } from 'rxjs/operators';
 
 import { menuAnimation, MapInteractionModeType } from '@models';
 import * as services from '@services';
+import { DrawNewPolygon } from '@store/map';
 
 @Component({
   selector: 'app-aoi-filter',
@@ -76,11 +77,14 @@ export class AoiFilterComponent implements OnInit, OnDestroy {
     this.store$.dispatch(new uiStore.CloseAOIOptions());
   }
 
-  public onInputSearchPolygon(polygon: string): void {
+  public onInputSearchPolygon(event: Event): void {
+    const polygon = (event.target as HTMLInputElement).value;
     const didLoad = this.mapService.loadPolygonFrom(polygon);
 
     if (!didLoad) {
       this.aoiErrors$.next();
+    } else {
+      this.store$.dispatch(new DrawNewPolygon());
     }
 
   }

@@ -2,89 +2,137 @@
       fxLayout="column"
       fxFill
       cdkDrag>
-
   <div fxLayout="row" class="icon-bar">
-    <div fxLayout="row" fxFlex>
-      <div cdkDragHandle class="move-handle">
-        <svg width="24px" fill="currentColor" viewBox="0 0 24 24">
-          <path d="M10 9h4V6h3l-5-5-5 5h3v3zm-1 1H6V7l-5 5 5 5v-3h3v-4zm14 2l-5-5v3h-3v4h3v3l5-5zm-9 3h-4v3H7l5 5 5-5h-3v-3z"></path>
-          <path d="M0 0h24v24H0z" fill="none"></path>
-        </svg>
-      </div>
+    <div fxLayout="column" fxFlex>
+      <div fxLayout="row">
 
-      <div fxFlex="" class="group-margin">
-        <div fxLayout="row" fxLayoutAlign="center" class="button-group-label">
-          <label>Map Projection</label>
-        </div>
+        <div *ngIf="showToolBar == true" fxLayout="column" class="visible-toggle">
+          <div fxLayout="row" class="icon-bar tool-bar-common">
 
-        <div fxLayout="row">
-          <app-view-selector fxFlex="">
-          </app-view-selector>
-        </div>
-      </div>
+            <div fxFlex="" class="group-margin" *ngIf="searchType !== searchTypes.SARVIEWS_EVENTS">
+              <div fxLayout="row" fxLayoutAlign="left" class="button-group-label">
+                <label>&nbsp;Map View</label>
+              </div>
 
-      <div fxFlex="">
-        <div fxLayout="row" fxLayoutAlign="center" class="button-group-label">
-          <label>Zoom</label>
-        </div>
-        <div fxLayout="row">
-          <div>
-            <mat-button-toggle-group fxFlex="" name="layerType">
-              <mat-button-toggle class="control-mat-button-toggle"
-                                 (click)="zoomIn()"
-                                 matTooltip="Zoom In">
-                <mat-icon class="control-icon">add</mat-icon>
-              </mat-button-toggle>
+              <div fxLayout="row">
+                <app-view-selector fxFlex="">
+                </app-view-selector>
+              </div>
+            </div>
 
-              <mat-button-toggle class="control-mat-button-toggle"
-                                 (click)="zoomOut()"
-                                 matTooltip="Zoom out">
-                <mat-icon class="control-icon">remove</mat-icon>
-              </mat-button-toggle>
-            </mat-button-toggle-group>
+            <div fxFlex="" class="zoom-buttons">
+              <div fxLayout="row" fxLayoutAlign="center" class="button-group-label">
+                <label>Zoom</label>
+              </div>
+              <div fxLayout="row">
+                <div>
+                  <mat-button-toggle-group fxFlex="" name="layerType">
+                    <mat-button-toggle class="control-mat-button-toggle"
+                                       (click)="zoomIn()"
+                                       matTooltip="Zoom In">
+                      <mat-icon class="control-icon">add</mat-icon>
+                    </mat-button-toggle>
+
+                    <mat-button-toggle class="control-mat-button-toggle"
+                                       (click)="zoomOut()"
+                                       matTooltip="Zoom out">
+                      <mat-icon class="control-icon">remove</mat-icon>
+                    </mat-button-toggle>
+                  </mat-button-toggle-group>
+                </div>
+              </div>
+            </div>
+
+            <div *ngIf="(view$ | async) === viewTypes.EQUATORIAL" fxFlex="" class="group-margin">
+              <div fxLayout="row" fxLayoutAlign="center" class="button-group-label">
+                <label>Layers</label>
+              </div>
+              <div fxLayout="row">
+                <app-layer-selector></app-layer-selector>
+              </div>
+            </div>
+
+            <div *ngIf="searchType === searchTypes.DATASET || searchType === searchTypes.SBAS" fxFlex="" class="group-margin">
+              <div fxLayout="row" fxLayoutAlign="center" class="button-group-label">
+                <label>Area of Interest</label>
+              </div>
+              <div fxLayout="row">
+                <app-interaction-selector>
+                </app-interaction-selector>
+              </div>
+            </div>
+
+            <!-- Product Browse  -->
+            <div fxFlex="" class="group-margin" *ngIf="searchType === searchTypes.SARVIEWS_EVENTS">
+                <div  fxLayout="row" fxLayoutAlign="center" class="button-group-label" style="white-space: nowrap;">
+                  <label>Product</label>
+                </div>
+                <div fxLayout="row" fxLayoutAlign="center">
+                  <div>
+                    <mat-button-toggle-group fxFlex="" name="layerType"
+                    [disabled]="!(isBrowseOverlayEnabled$ | async)">
+                      <mat-button-toggle class="control-mat-button-toggle"
+                      *ngIf="searchType === searchTypes.SARVIEWS_EVENTS"
+                      (click)="onUnpinAll()"
+                      matTooltip="Unpin All Selected Products">
+                      <mat-icon class="control-icon">push_pin</mat-icon>
+                    </mat-button-toggle>
+                    </mat-button-toggle-group>
+                </div>
+              </div>
+            </div>
+
+            <!-- Opacity Control -->
+            <div fxFlex="" class="group-margin" *ngIf="searchType !== searchTypes.BASELINE && searchType !== searchTypes.SBAS">
+              <div  fxLayout="row" fxLayoutAlign="center" class="button-group-label">
+                <label>Opacity</label>
+              </div>
+              <div fxLayout="row">
+                <button mat-stroked-button class="opacity-slider-button"
+                        [disabled]="!(isBrowseOverlayEnabled$ | async)"
+                        [matMenuTriggerFor]="opacitySlider"
+                        aria-label="Map projection view">
+                  <span class="opacity-button-text">{{ browseOverlayOpacity * 100 | number : '1.0-0' }}%</span>
+                  <span class="fa fa-caret-down bottom-right"></span>
+                </button>
+                <mat-menu #opacitySlider="matMenu" class="opacity-slider-mat-menu">
+                  <div class="opacity-slider-title">
+                    Opacity of Browse Images
+                  </div>
+                  <mat-slider thumbLabel tickInterval="0.1" step="0.05" value="1" min="0.0" max="1.0"
+                              class="opacity-slider"
+                              name="layerType"
+                              (input)="onSetOpacity($event)"
+                              [disabled]="!(isBrowseOverlayEnabled$ | async)"
+                              [matTooltip]="(isBrowseOverlayEnabled$ | async) ? 'Adjust Overlay Opacity' :
+                               'Product Overlays for current scene dataset not available'"
+                  >
+                  </mat-slider>
+                </mat-menu>
+              </div>
+            </div>
+
+          </div>
+          <div fxFlex="" class="lat-lon">
+            <div fxFlex="" fxFlexAlign="end">
+              <div fxFlex="75px" class="lat-lon-data">
+                <b>lat</b> {{ mousePos?.lat | number : '2.1-4' }}°
+              </div>
+              <div fxFlex="85px">
+                <b>lon</b> {{ mousePos?.lon | number : '2.1-4' }}°
+              </div>
+            </div>
+            <div fxFlex="grow"></div>
           </div>
         </div>
       </div>
 
-      <div *ngIf="(view$ | async) === viewTypes.EQUITORIAL" fxFlex="" class="group-margin">
-        <div fxLayout="row" fxLayoutAlign="center" class="button-group-label">
-          <label>View</label>
-        </div>
-        <div fxLayout="row">
-          <app-layer-selector></app-layer-selector>
-        </div>
-      </div>
-
-      <div *ngIf="searchType === searchTypes.DATASET" fxFlex="" class="group-margin">
-        <div fxLayout="row" fxLayoutAlign="center" class="button-group-label">
-          <label>Area of Interest</label>
-        </div>
-        <div fxLayout="row">
-          <app-interaction-selector>
-          </app-interaction-selector>
-        </div>
-      </div>
-
-      <div *ngIf="searchType === searchTypes.DATASET" fxFlex="" class="group-margin">
-        <div fxLayout="row" fxLayoutAlign="center" class="button-group-label">
-          <label>Selection Shape</label>
-        </div>
-        <div fxLayout="row">
-          <app-draw-selector></app-draw-selector>
-        </div>
-      </div>
     </div>
-  </div>
-
-  <div fxLayout="row" fxFlex class="lat-lon">
-    <div fxFlex="grow"></div>
-    <div fxFlex="" fxFlexAlign="end">
-      <div fxFlex="75px">
-        <b>lat</b> {{ mousePos?.lat | number : '2.1-4' }}°
-      </div>
-      <div fxFlex="85px">
-        <b>lon</b> {{ mousePos?.lon | number : '2.1-4' }}°
-      </div>
+    <div class="tool-bar-control"
+         (click)="changeState()">
+      <div *ngIf="showToolBar == true"><mat-icon>arrow_circle_left</mat-icon></div>
+      <div *ngIf="showToolBar == false"><mat-icon>arrow_circle_right</mat-icon></div>
+      <div class="tool-bar-control-bottom visible-toggle"></div>
     </div>
   </div>
 </div>
