@@ -44,7 +44,6 @@
     "ajv": "^6.12.6",
     "angular-animations": "^0.11.0",
     "angular-resizable-element": "^3.3.5",
-    "angular-resize-event": "^1.2.2",
     "braces": "^3.0.2",
     "chart.js": "^2.9.4",
     "chartjs-plugin-zoom": "^0.7.7",
