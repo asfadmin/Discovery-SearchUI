@@ -20,9 +20,9 @@
     <div>
       <b>Season Start Day </b>
       <div class="buttons">
-        <button (click)="change('start', -1)" mat-button color="secondary">-1</button>
         <div *ngIf="start">{{ this.start | shortDateSeason }}</div>
-        <button (click)="change('start', 1)" mat-button>+1</button>
+        <button (click)="change('start', -1)" mat-raised-button color="accent">-1</button>
+        <button (click)="change('start', 1)" mat-raised-button color="accent">+1</button>
       </div>
     </div>
     <!-- <button
@@ -35,9 +35,9 @@
     <div>
       <b>Season End Day </b>
       <div class="buttons">
-        <button (click)="change('end', -1)" mat-button>-1</button>
         <div *ngIf="end">{{ end | shortDateSeason }}</div>
-        <button (click)="change('end', +1)" mat-button>+1</button>
+        <button (click)="change('end', -1)" mat-raised-button color="accent">-1</button>
+        <button (click)="change('end', 1)" mat-raised-button color="accent">+1</button>
       </div>
     </div>
   </div>
