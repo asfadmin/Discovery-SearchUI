@@ -227,8 +227,8 @@ export class QueueComponent implements OnInit, OnDestroy {
   }
 
   public onResized(event: ResizedEvent) {
-    this.dlWidth = event.newWidth;
-    this.dlHeight = event.newHeight;
+    this.dlWidth = event.newRect.width;
+    this.dlHeight = event.newRect.height;
   }
 
   public async downloadAllFiles() {

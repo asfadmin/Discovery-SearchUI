@@ -17,7 +17,7 @@ import { QueueComponent } from './queue.component';
 import { ResizableModule } from 'angular-resizable-element';
 import { DragDropModule } from '@angular/cdk/drag-drop';
 import { MatDialogModule } from '@angular/material/dialog';
-import { AngularResizedEventModule } from 'angular-resize-event';
+import { AngularResizeEventModule } from 'angular-resize-event';
 import { FileDownloadDirective } from '@directives/file-download.directive';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatCheckboxModule } from '@angular/material/checkbox';
@@ -46,7 +46,7 @@ import { DownloadAllModule } from '@components/header/queue/download-all/downloa
     ResizableModule,
     DragDropModule,
     MatDialogModule,
-    AngularResizedEventModule,
+    AngularResizeEventModule,
     MatProgressBarModule,
     MatCheckboxModule,
     MatProgressSpinnerModule,
