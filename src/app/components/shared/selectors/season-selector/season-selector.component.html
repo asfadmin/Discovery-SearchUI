@@ -20,22 +20,15 @@
     <div>
       <b>Season Start Day </b>
       <div class="buttons">
-        <div *ngIf="start">{{ this.start | shortDateSeason }}</div>
+        <div *ngIf="start" class="date">{{ this.start | shortDateSeason }}</div>
         <button (click)="change('start', -1)" mat-raised-button color="accent">-1</button>
         <button (click)="change('start', 1)" mat-raised-button color="accent">+1</button>
       </div>
     </div>
-    <!-- <button
-      mat-icon-button
-      (click)="swap()"
-      matTooltip="Swap season start and end date"
-    >
-      <mat-icon>swap_vert</mat-icon>
-    </button> -->
     <div>
       <b>Season End Day </b>
       <div class="buttons">
-        <div *ngIf="end">{{ end | shortDateSeason }}</div>
+        <div *ngIf="end" class="date">{{ end | shortDateSeason }}</div>
         <button (click)="change('end', -1)" mat-raised-button color="accent">-1</button>
         <button (click)="change('end', 1)" mat-raised-button color="accent">+1</button>
       </div>

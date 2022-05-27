@@ -7,6 +7,9 @@
   align-items: center;
   width: 200px;
 }
+.date {
+  width: 50px;
+}
 .buttons {
   display: flex;
   justify-content: space-around;
@@ -14,7 +17,7 @@
   button {
     border-radius: 4px !important;
     min-width: 0px;
-    width: 36px;
+    width: 42px;
     line-height: 21px;
     padding: 5px;
     margin: 5px;
