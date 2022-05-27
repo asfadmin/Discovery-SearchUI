@@ -9,7 +9,7 @@ import * as scenesStore from '@store/scenes';
 import * as queueStore from '@store/queue';
 
 import { SubSink } from 'subsink';
-import {  ScenesService } from '@services';
+import { ScenesService } from '@services';
 import { criticalBaselineFor, CMRProduct } from '@models';
 import * as d3 from 'd3';
 export enum ChartDatasets {
@@ -20,6 +20,11 @@ export enum ChartDatasets {
   PRODUCTS = 4,
   MIN_CRITICAL = 5,
   MAX_CRITICAL = 6
+}
+interface Point {
+  x: number;
+  y: number;
+  id?: string;
 }
 
 @Component({
@@ -35,7 +40,7 @@ export class BaselineChartComponent implements OnInit, OnDestroy {
   private offsets = { temporal: 0, perpendicular: 0 };
   private subs = new SubSink();
 
-  private data: {x: number, y: number, id?: string}[][] = [[], [], [], [], [], [], [], []];
+  private data: Point[][] = [[], [], [], [], [], [], [], []];
   private svg;
 
   private margin = { top: 10, right: 30, bottom: 30, left: 60 };
@@ -45,6 +50,8 @@ export class BaselineChartComponent implements OnInit, OnDestroy {
 
   private x;
   private y;
+
+  private tooltip;
   constructor(
     private store$: Store<AppState>,
     private scenesService: ScenesService,
@@ -135,34 +142,39 @@ export class BaselineChartComponent implements OnInit, OnDestroy {
   // }
   private createSVG() {
     this.svg = d3.select('div#baseline').append('svg')
-    .attr('width', this.width + this.margin.left + this.margin.right)
-    .attr('height', this.height + this.margin.top  + this.margin.bottom)
-    .append('g')
-    .attr('transform', `translate(${this.margin.left}, ${this.margin.top})`)
+      .attr('width', this.width + this.margin.left + this.margin.right)
+      .attr('height', this.height + this.margin.top + this.margin.bottom)
+      .append('g')
+      .attr('transform', `translate(${this.margin.left}, ${this.margin.top})`);
 
   }
   private drawChart() {
 
     this.x = d3.scaleLinear()
-    .domain([-500, 3000])
-    .range([0, this.width]);
-  this.svg.append('g')
-    .attr('transform', `translate(0, ${this.height})`)
-    .call(d3.axisBottom(this.x));
+      .domain([-500, 3000])
+      .range([0, this.width]);
+    this.svg.append('g')
+      .attr('transform', `translate(0, ${this.height})`)
+      .call(d3.axisBottom(this.x));
     this.y = d3.scaleLinear().domain([-200, 200]).range([this.height, 0]);
     this.svg.append('g').call(d3.axisLeft(this.y));
 
+
+    this.tooltip = d3.select('body').append('div')
+    .attr('class', 'tooltip')
+    .style('opacity', 0);
+
     // add dots of products
     this.dotsContainer = this.svg.append('g')
-    .selectAll('circle')
-    .data(this.data[ChartDatasets.PRODUCTS])
-    .join()
-    .append('circle')
-    .attr('cx', d => this.x(d.x))
-    .attr('cy', d => this.y(d.y))
-    .attr('r', 5)
-    .attr('fill', '#00bcd4');
-    function handleStuff(e){
+      .selectAll('circle')
+      .data(this.data[ChartDatasets.PRODUCTS])
+      .join()
+      .append('circle')
+      .attr('cx', d => this.x(d.x))
+      .attr('cy', d => this.y(d.y))
+      .attr('r', 5)
+      .attr('fill', '#00bcd4');
+    function handleStuff(e) {
       console.log(e);
       console.log('ahhh');
     }
@@ -173,21 +185,34 @@ export class BaselineChartComponent implements OnInit, OnDestroy {
     this.data[dataset] = data;
     console.log(this.data);
     const self = this;
+
     this.dotsContainer.data(this.data[ChartDatasets.PRODUCTS]).join('circle')
-    .attr('cx', d => this.x(d.x))
-    .attr('cy', d => this.y(d.y))
-    .attr('r', 5)
-    .attr('fill', function (d) {
-      if (self.data[ChartDatasets.MASTER].length > 0 && self.data[ChartDatasets.MASTER][0]?.id === d.id) {
-        return 'black';
-      } else if (self.data[ChartDatasets.SELECTED].length > 0 && self.data[ChartDatasets.SELECTED][0]?.id === d.id) {
-        return 'red';
-      } else if (self.data[ChartDatasets.DOWNLOADS].some(p => p.id === d.id)) {
-        return 'blue';
-      } else {
-        return '#9e9e9e';
-      }
-    });
+      .attr('cx', d => this.x(d.x))
+      .attr('cy', d => this.y(d.y))
+      .attr('r', 5)
+      .attr('fill', function (d) {
+        if (self.data[ChartDatasets.MASTER].length > 0 && self.data[ChartDatasets.MASTER][0]?.id === d.id) {
+          return 'black';
+        } else if (self.data[ChartDatasets.SELECTED].length > 0 && self.data[ChartDatasets.SELECTED][0]?.id === d.id) {
+          return '#ff0000';
+        } else if (self.data[ChartDatasets.DOWNLOADS].some(p => p.id === d.id)) {
+          return '#215c8b';
+        } else {
+          return '#808080';
+        }
+      })
+      .on('mouseover', function (event, d: Point) {
+        self.tooltip
+          .style('opacity', .9);
+        self.tooltip.html(`${d.x} days, ${d.y} m`)
+        .style('left', `${event.pageX + 10}px`)
+        .style('top', `${event.pageY - 20}px`);
+      })
+      .on('mouseout', function (_d, _i) {
+        self.tooltip.transition()
+        .duration(500)
+        .style('opacity', 0);
+      });
   }
 
   private productToPoint = (product: CMRProduct) => {
@@ -203,19 +228,19 @@ export class BaselineChartComponent implements OnInit, OnDestroy {
     const buffer = (max.x - min.x) * .25;
 
     const minDataset = [
-      {x: min.x - buffer - 10, y: -this.criticalBaseline},
-      {x: max.x + buffer + 10, y: -this.criticalBaseline}
+      { x: min.x - buffer - 10, y: -this.criticalBaseline },
+      { x: max.x + buffer + 10, y: -this.criticalBaseline }
     ];
 
     const maxDataset = [
-      {x: min.x - buffer - 10, y: this.criticalBaseline},
-      {x: max.x + buffer + 10, y: this.criticalBaseline}
+      { x: min.x - buffer - 10, y: this.criticalBaseline },
+      { x: max.x + buffer + 10, y: this.criticalBaseline }
     ];
 
     return { minDataset, maxDataset };
   }
 
-  private determineMinMax(points: {x: number, y: number}[]) {
+  private determineMinMax(points: { x: number, y: number }[]) {
     const min = { x: 0, y: 0 };
     const max = { x: 0, y: 0 };
 
@@ -259,8 +284,8 @@ export class BaselineChartComponent implements OnInit, OnDestroy {
   //   );
   // }
 
-  // private setHoveredItem = (tooltip, data) => {
-  //   const dataset = data.datasets[tooltip.datasetIndex].data;
+  // private setHoveredItem = (tooltip, data: any) => {
+  //   const dataset = this.data[tooltip.datasetIndex];
 
   //   this.hoveredProductId = dataset[tooltip.index].id;
   // }
