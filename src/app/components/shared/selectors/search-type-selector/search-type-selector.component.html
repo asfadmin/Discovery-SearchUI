@@ -40,9 +40,10 @@
           </mat-select>
         </mat-form-field>
       </div>
+
       <div *ngIf="(breakpoint$ | async) != breakpoints.MOBILE">
 
-        <div class="menu-item" (click)="onSetSearchType(searchTypes.DATASET)">
+        <div class="menu-item mat-menu-item" (click)="onSetSearchType(searchTypes.DATASET)">
           <div fxFlex="70%" class="menu-item-content">
             <div class="item-title">
               Geographic
@@ -63,7 +64,7 @@
           </div>
         </div>
 
-        <div class="menu-item" (click)="onSetSearchType(searchTypes.LIST)">
+        <div class="menu-item mat-menu-item" (click)="onSetSearchType(searchTypes.LIST)">
           <div fxFlex="70%" class="menu-item-content">
             <div class="item-title">
               List
@@ -83,7 +84,7 @@
           </div>
         </div>
 
-        <div class="menu-item" (click)="onSetSearchType(searchTypes.BASELINE)">
+        <div class="menu-item mat-menu-item" (click)="onSetSearchType(searchTypes.BASELINE)">
           <div fxFlex="70%" class="menu-item-content">
             <div class="item-title">
               Baseline
@@ -103,7 +104,7 @@
           </div>
         </div>
 
-        <div class="menu-item" (click)="onSetSearchType(searchTypes.SBAS)">
+        <div class="menu-item mat-menu-item" (click)="onSetSearchType(searchTypes.SBAS)">
           <div fxFlex="70%" class="menu-item-content">
             <div class="item-title">
               SBAS
@@ -123,7 +124,7 @@
           </div>
         </div>
 
-        <div class="menu-item" (click)="onSetSearchType(searchTypes.SARVIEWS_EVENTS)">
+        <div class="menu-item mat-menu-item" (click)="onSetSearchType(searchTypes.SARVIEWS_EVENTS)">
           <div fxFlex="70%" class="menu-item-content">
             <div class="item-title">
               Event
@@ -143,7 +144,7 @@
           </div>
         </div>
 
-        <div class="menu-item" (click)="onSetSearchType(searchTypes.CUSTOM_PRODUCTS)">
+        <div class="menu-item mat-menu-item" (click)="onSetSearchType(searchTypes.CUSTOM_PRODUCTS)">
           <div fxFlex="70%" class="menu-item-content">
             <div class="item-title">
               On Demand Products
@@ -163,7 +164,10 @@
           </div>
         </div>
 
-        <div class="mat-option" [matMenuTriggerFor]="derivedDatasetMenu">Derived Datasets...</div>
+<!--        <div class="mat-option" [matMenuTriggerFor]="derivedDatasetMenu">Derived Datasets...</div>-->
+        <div mat-menu-item class="mat-option" [matMenuTriggerFor]="derivedDatasetMenu">
+          Derived Datasets...
+        </div>
 
       </div>
 

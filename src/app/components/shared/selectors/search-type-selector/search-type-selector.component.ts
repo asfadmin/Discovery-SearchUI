@@ -33,6 +33,9 @@ export class SearchTypeSelectorComponent implements OnInit, OnDestroy {
   private subs = new SubSink();
   public isReadMore = true;
 
+  showBase = false;
+  menuUp = false;
+
   constructor(
     private store$: Store<AppState>,
     private screenSize: ScreenSizeService
