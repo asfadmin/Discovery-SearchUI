@@ -165,8 +165,24 @@
         </div>
 
 <!--        <div class="mat-option" [matMenuTriggerFor]="derivedDatasetMenu">Derived Datasets...</div>-->
-        <div mat-menu-item class="mat-option" [matMenuTriggerFor]="derivedDatasetMenu">
-          Derived Datasets...
+        <div mat-menu-item class="menu-item mat-menu-item" [matMenuTriggerFor]="derivedDatasetMenu">
+          <div fxFlex="70%" class="menu-item-content">
+            <div class="item-title">
+              Derived Datasets
+            </div>
+            <div class="item-content" [ngClass]="{'limitTextHeight': isReadMore}">
+              This is a long description about Derived Datasets...
+            </div>
+            <mat-card-actions>
+              <app-docs-modal class="info-text"
+                              text="More info"
+                              url="https://docs.asf.alaska.edu/vertex/manual/#area-of-interest-options">
+              </app-docs-modal>
+            </mat-card-actions>
+          </div>
+          <div fxFlex="30%" class="menu-item-aside">
+            <img [src]="" class="menu-item-icon">
+          </div>
         </div>
 
       </div>
