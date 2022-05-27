@@ -21,6 +21,7 @@ export class CircleSliderComponent implements OnInit, OnChanges, OnDestroy {
 
   @Output() doneSelecting = new EventEmitter<boolean>();
 
+  @Output() swapEvent = new EventEmitter();
   private svg?: any;
   private width = 300;
   private height = 250;
@@ -237,5 +238,7 @@ export class CircleSliderComponent implements OnInit, OnChanges, OnDestroy {
       .attr('cy', function (d: any) { return d.y; })
       .call(drag2, true);
   }
-
+  public swap() {
+    this.swapEvent.emit();
+  }
 }

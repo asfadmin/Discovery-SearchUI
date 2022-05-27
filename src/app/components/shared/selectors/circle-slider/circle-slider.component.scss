@@ -26,8 +26,16 @@ figure {
 }
 ::ng-deep .notch {
   stroke: lighten($asf-primary, 40%);
-  stroke-width: 2px;
+  stroke-width: 1px;
 }
 ::ng-deep .selected {
   stroke: $asf-primary;
+}
+.container {
+  display: grid;
+  place-items: center;
+  button {
+    position: absolute;
+    border-radius: 50% !important;
+  }
 }
