@@ -1,6 +1,6 @@
 <div *ngIf="breakpoint$ | async as breakpoint">
 
-  <div class="menu-button-wrapper" *ngIf="(breakpoint$ | async) != breakpoints.MOBILE">
+  <div class="menu-button-wrapper">
     <div class="button-label">Search Type</div>
     <div>
       <button
@@ -19,8 +19,7 @@
 
   <div class="gtm-search-type-selector" fxFlex="nogrow">
 
-    <mat-menu #searchTypeMenu="matMenu"
-              [(ngModel)]="searchType">
+    <mat-menu #searchTypeMenu="matMenu" [(ngModel)]="searchType">
       <div *ngIf="(breakpoint$ | async) === breakpoints.MOBILE">
         <mat-form-field class="formField" [matMenuTriggerFor]="searchTypeMenu">
           <mat-label>Search Type</mat-label>
@@ -196,6 +195,6 @@
         <hr class="dataset-hr">
       </div>
     </mat-menu>
-  </div>
 
+  </div>
 </div>
