@@ -5,29 +5,46 @@
   stroke: lighten($asf-primary, 40%);
   stroke-width: 10px;
 }
+
 ::ng-deep .range {
   fill: none;
   stroke: $asf-primary;
   stroke-width: 10px;
 }
+
 ::ng-deep .dot circle:hover {
   cursor: pointer;
 }
+
 ::ng-deep .dot circle {
   fill: $asf-primary;
 }
+
 ::ng-deep .dot circle.dragging {
   fill: darken($asf-blue, 10%);
   stroke: darken($asf-blue, 10%);
 }
+
 figure {
   display: inline-flex;
   margin: 0;
 }
+
 ::ng-deep .notch {
   stroke: lighten($asf-primary, 40%);
-  stroke-width: 2px;
+  stroke-width: 1px;
 }
+
 ::ng-deep .selected {
   stroke: $asf-primary;
+}
+
+.container {
+  display: grid;
+  place-items: center;
+
+  button {
+    position: absolute;
+    border-radius: 50% !important;
+  }
 }

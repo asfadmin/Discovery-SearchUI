@@ -9,9 +9,23 @@
   width: 200px;
 }
 
+.date {
+  width: 50px;
+}
+
 .buttons {
   display: flex;
   justify-content: space-around;
+  align-items: center;
+
+  button {
+    border-radius: 4px !important;
+    min-width: 0;
+    width: 42px;
+    line-height: 21px;
+    padding: 5px;
+    margin: 5px;
+  }
 }
 
 @media (max-width: 768px) {
