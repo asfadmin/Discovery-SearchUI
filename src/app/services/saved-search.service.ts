@@ -3,7 +3,8 @@ import { Injectable } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { combineLatest, Observable } from 'rxjs';
 import { map, switchMap } from 'rxjs/operators';
-import * as uuid from 'uuid/v1';
+// import * as uuid from 'uuid/v1';
+import {v1 as uuid} from 'uuid';
 
 import { MapService } from './map/map.service';
 import { AppState } from '@store';

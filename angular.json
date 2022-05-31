@@ -49,7 +49,6 @@
               "chart.js",
               "file-saver",
               "pbf",
-              "uuid/v1",
               "jwt-decode",
               "css-element-queries",
               "xml2js",
