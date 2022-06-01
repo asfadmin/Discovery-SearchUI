@@ -47,9 +47,15 @@ export class BaselineChartComponent implements OnInit, OnDestroy {
   private width = 840 - this.margin.left - this.margin.right;
   private height = 350 - this.margin.top - this.margin.bottom;
   private dotsContainer;
+  private criticalBoxContainer;
+  private zoom;
+  private zoomBox;
+  private currentTransform;
 
   private x;
+  private xAxis;
   private y;
+  private yAxis;
 
   private tooltip;
   constructor(
@@ -91,13 +97,18 @@ export class BaselineChartComponent implements OnInit, OnDestroy {
           this.setDataset(ChartDatasets.PRODUCTS, points);
           this.setDataset(ChartDatasets.MIN_CRITICAL, minDataset);
           this.setDataset(ChartDatasets.MAX_CRITICAL, maxDataset);
-
+          this.criticalBoxContainer
+            .attr('class', 'critical-box')
+            .attr('x', this.x(this.data[ChartDatasets.MIN_CRITICAL][0].x))
+            .attr('y', this.y(this.data[ChartDatasets.MAX_CRITICAL][1].y))
+            .attr('width', this.x(this.data[ChartDatasets.MAX_CRITICAL][1].x) - this.x(this.data[ChartDatasets.MIN_CRITICAL][0].x))
+            .attr('height', this.y(this.data[ChartDatasets.MIN_CRITICAL][0].y) - this.y(this.data[ChartDatasets.MAX_CRITICAL][1].y))
+            .attr('fill', '#f2f2f2');
           if (this.isFirstLoad) {
             this.updateScales(extrema);
             this.isFirstLoad = false;
           }
 
-          // this.chart.update();
         })
     );
 
@@ -137,11 +148,9 @@ export class BaselineChartComponent implements OnInit, OnDestroy {
       })
     );
   }
-  // private handleZoom(_event) {
-  //   console.log('ahhhhhhhhhhhhhh')
-  // }
+
   private createSVG() {
-    this.svg = d3.select('div#baseline').append('svg')
+    this.svg = d3.select(this.baselineChart.nativeElement).append('svg')
       .attr('width', this.width + this.margin.left + this.margin.right)
       .attr('height', this.height + this.margin.top + this.margin.bottom)
       .append('g')
@@ -149,22 +158,38 @@ export class BaselineChartComponent implements OnInit, OnDestroy {
 
   }
   private drawChart() {
+    this.criticalBoxContainer = this.svg.append('g').append('rect');
+
+    this.zoomBox = this.svg.append('rect')
+      .attr('width', this.width)
+      .attr('height', this.height)
+      .attr('cursor', 'pointer')
+      .style('fill', 'transparent')
+      .style('pointer-events', 'all');
 
     this.x = d3.scaleLinear()
-      .domain([-500, 3000])
+      .domain([-5000, 5000])
       .range([0, this.width]);
-    this.svg.append('g')
+    this.xAxis = this.svg.append('g')
       .attr('transform', `translate(0, ${this.height})`)
       .call(d3.axisBottom(this.x));
-    this.y = d3.scaleLinear().domain([-200, 200]).range([this.height, 0]);
-    this.svg.append('g').call(d3.axisLeft(this.y));
+    this.y = d3.scaleLinear().domain([-20000, 20000]).range([this.height, 0]);
+    this.yAxis = this.svg.append('g').call(d3.axisLeft(this.y));
 
-
+    this.xAxis.call(
+      d3.axisBottom(this.x)
+        .tickSize(-this.height)
+    );
+    this.yAxis.call(
+      d3.axisLeft(this.y)
+        .tickSize(-this.width)
+    );
     this.tooltip = d3.select('body').append('div')
-    .attr('class', 'tooltip')
-    .style('opacity', 0);
+      .attr('class', 'tooltip')
+      .style('opacity', 0);
 
-    // add dots of products
+
+
     this.dotsContainer = this.svg.append('g')
       .selectAll('circle')
       .data(this.data[ChartDatasets.PRODUCTS])
@@ -174,12 +199,43 @@ export class BaselineChartComponent implements OnInit, OnDestroy {
       .attr('cy', d => this.y(d.y))
       .attr('r', 5)
       .attr('fill', '#00bcd4');
-    function handleStuff(e) {
-      console.log(e);
-      console.log('ahhh');
+
+    this.zoom = d3.zoom()
+      .scaleExtent([.2, 10])
+      .extent([[0, 0], [this.width, this.height]])
+      .on('zoom', (eve: d3.D3ZoomEvent<SVGSVGElement, unknown>) => {
+        this.currentTransform = eve.transform;
+        console.log('Hello world');
+        this.updateChart();
+      });
+
+
+
+    if (this.currentTransform) {
+      this.zoomBox.call(this.zoom.transform, this.currentTransform);
     }
-    const zoom = d3.zoom().on('zoom', handleStuff);
-    d3.select('svg').call(zoom);
+
+    this.zoomBox.call(this.zoom);
+  }
+  private updateChart() {
+    const newX = this.currentTransform.rescaleX(this.x);
+    const newY = this.currentTransform.rescaleY(this.y);
+
+    this.xAxis.call(
+      d3.axisBottom(newX)
+        .tickSize(-this.height)
+    );
+    this.yAxis.call(
+      d3.axisLeft(newY)
+        .tickSize(-this.width)
+    );
+
+    this.dotsContainer.data(this.data[ChartDatasets.PRODUCTS]).join('circle')
+    .attr('cx', d => newX(d.x))
+    .attr('cy', d => newY(d.y));
+
+    this.criticalBoxContainer.attr('x', newX(this.data[ChartDatasets.MIN_CRITICAL][0].x))
+      .attr('y', newY(this.data[ChartDatasets.MAX_CRITICAL][1].y));
   }
   private setDataset(dataset: ChartDatasets, data) {
     this.data[dataset] = data;
@@ -205,13 +261,19 @@ export class BaselineChartComponent implements OnInit, OnDestroy {
         self.tooltip
           .style('opacity', .9);
         self.tooltip.html(`${d.x} days, ${d.y} m`)
-        .style('left', `${event.pageX + 10}px`)
-        .style('top', `${event.pageY - 20}px`);
+          .style('left', `${event.pageX + 10}px`)
+          .style('top', `${event.pageY - 20}px`);
+        d3.select(this).attr('r', 10);
       })
       .on('mouseout', function (_d, _i) {
         self.tooltip.transition()
-        .duration(500)
-        .style('opacity', 0);
+          .duration(500)
+          .style('opacity', 0);
+        d3.select(this).attr('r', 5);
+      })
+      .on('click', function (_event, d: Point) {
+        const action = new scenesStore.SetSelectedScene(d.id);
+        self.store$.dispatch(action);
       });
   }
 
