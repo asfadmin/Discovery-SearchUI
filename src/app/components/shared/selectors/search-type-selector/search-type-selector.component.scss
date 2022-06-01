@@ -116,3 +116,18 @@
 .item-title {
   font-weight: bold;
 }
+
+.mobile-search-item {
+  margin: 0;
+  padding: 3px 10px;
+  height: 40px;
+  line-height: 30px;
+}
+
+.blue-link {
+  color: $uaf-primary-blue;
+}
+
+::ng-deep.mat-menu-submenu-icon {
+  visibility: hidden;
+}
