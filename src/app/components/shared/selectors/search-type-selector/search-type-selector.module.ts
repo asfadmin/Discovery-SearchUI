@@ -8,20 +8,22 @@ import { MatSelectModule } from '@angular/material/select';
 
 import { SearchTypeSelectorComponent } from './search-type-selector.component';
 import {MatMenuModule} from '@angular/material/menu';
+import {DocsModalModule} from '@components/shared/docs-modal';
 
 
 @NgModule({
   declarations: [
     SearchTypeSelectorComponent,
   ],
-  imports: [
-    CommonModule,
-    MatSharedModule,
-    FormsModule,
-    MatSelectModule,
-    FlexLayoutModule,
-    MatMenuModule,
-  ],
+    imports: [
+        CommonModule,
+        MatSharedModule,
+        FormsModule,
+        MatSelectModule,
+        FlexLayoutModule,
+        MatMenuModule,
+        DocsModalModule,
+    ],
   exports: [
     SearchTypeSelectorComponent,
   ]
