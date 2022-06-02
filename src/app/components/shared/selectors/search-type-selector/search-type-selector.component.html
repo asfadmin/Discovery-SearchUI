@@ -1,7 +1,7 @@
 <div *ngIf="breakpoint$ | async as breakpoint">
 
 <!--  <div class="menu-button-wrapper" *ngIf="(breakpoint$ | async) != breakpoints.MOBILE">-->
-  <div class="menu-button-wrapper">
+  <div class="menu-button-wrapper" [class.mobile-button-wrapper]="breakpoint === breakpoints.MOBILE">
     <div class="button-label">Search Type</div>
     <div>
       <button
