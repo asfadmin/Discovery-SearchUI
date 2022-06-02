@@ -306,12 +306,12 @@
     </button>
 
     <mat-menu #asfMenu="matMenu">
-      <a mat-menu-item href="https://www.asf.alaska.edu/contact" target="_blank">Contact</a>
+      <a mat-menu-item [href]="asfWebsite.contact" target="_blank">Contact</a>
       <a mat-menu-item href="https://www.alaska.edu/nondiscrimination" target="_blank">Non-Discrimination</a>
     </mat-menu>
 
     <mat-menu #copyrightMenu="matMenu">
-      <a mat-menu-item href="https://www.asf.alaska.edu/" target="_blank">© {{anio}} ASF</a>
+      <a mat-menu-item [href]="asfWebsite.home" target="_blank">© {{anio}} ASF</a>
       <a mat-menu-item href="https://www.maptiler.com/copyright/" target="_blank">© MapTiler</a>
       <a mat-menu-item href="https://www.openstreetmap.org/copyright" target="_blank">© OpenStreetMap contributors</a>
     </mat-menu>
@@ -333,12 +333,9 @@
       Build Commit
     </a>
 
-    <a
-       mat-menu-item
-        href="https://cloudwatch.amazonaws.com/dashboard.html?dashboard=ASF-Discovery&context=eyJSIjoidXMtZWFzdC0xIiwiRCI6ImN3LWRiLTE1MzA4NzUzNzQ4NCIsIlUiOiJ1cy1lYXN0LTFfUDZSbVVnbldzIiwiQyI6IjYzZ2xoMHJ2dXIwajNpbjFiODM3cmJmc24iLCJJIjoidXMtZWFzdC0xOjNmOGU2Y2ZlLTA5YmQtNDQzZS04NDg1LTE4ZmJjZDdlZGUyMiIsIk8iOiJhcm46YXdzOmlhbTo6MTUzMDg3NTM3NDg0OnJvbGUvc2VydmljZS1yb2xlL0Nsb3VkV2F0Y2hEYXNoYm9hcmQtUHVibGljLVJlYWRPbmx5QWNjZXNzLUFTRi1EaXNjb3ZlcnktNTNaM1NBUDgiLCJNIjoiUHVibGljIn0%3D"
-        target="_blank">
-      <mat-icon>show_chart</mat-icon>
-      Vertex Network Activity
+    <a *ngIf="!env.isProd" (click)="listWebsiteLinks()" mat-menu-item>
+      <mat-icon>link</mat-icon>
+      Website Links
     </a>
 </mat-menu>
 

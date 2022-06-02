@@ -24,7 +24,6 @@ declare global {
 })
 export class SearchTypeSelectorComponent implements OnInit, OnDestroy {
   public searchType: models.SearchType = models.SearchType.DATASET;
-  public asfWebsiteUrl = 'https://www.asf.alaska.edu';
   public datasets = derivedDatasets;
   public breakpoint$ = this.screenSize.breakpoint$;
   public breakpoints = Breakpoints;

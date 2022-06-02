@@ -1,5 +1,6 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { SubSink } from 'subsink';
+import { saveAs } from 'file-saver';
 
 import { MatDialog } from '@angular/material/dialog';
 import { HttpClient } from '@angular/common/http';
@@ -14,7 +15,11 @@ import * as searchStore from '@store/search';
 import { PreferencesComponent } from './preferences/preferences.component';
 
 import { AuthService, AsfApiService, EnvironmentService, ScreenSizeService } from '@services';
-import { CMRProduct, Breakpoints, UserAuth, SidebarType, QueuedHyp3Job, SearchType, AnalyticsEvent } from '@models';
+import {
+  CMRProduct, Breakpoints, UserAuth, SidebarType,
+  QueuedHyp3Job, SearchType, AnalyticsEvent,
+  asfWebsite, derivedDatasets, datasetList
+} from '@models';
 
 import { collapseAnimation, rubberBandAnimation,
          zoomInUpAnimation,  tadaAnimation, wobbleAnimation } from 'angular-animations';
@@ -39,7 +44,7 @@ declare global {
 })
 export class HeaderButtonsComponent implements OnInit, OnDestroy {
   anio: number = new Date().getFullYear();
-  public asfWebsiteUrl = 'https://www.asf.alaska.edu';
+  public asfWebsite = asfWebsite;
 
   public userAuth: UserAuth;
   public isLoggedIn = false;
@@ -218,7 +223,7 @@ export class HeaderButtonsComponent implements OnInit, OnDestroy {
   }
 
   public onOpenASFWebSite(): void {
-    const url = this.asfWebsiteUrl;
+    const url = this.asfWebsite.home;
     const analyticsEvent = {
       name: 'open-asf-web-site',
       value: url
@@ -283,6 +288,33 @@ export class HeaderButtonsComponent implements OnInit, OnDestroy {
 
   public onOpenSubscriptions() {
     this.store$.dispatch(new uiStore.OpenSidebar(SidebarType.ON_DEMAND_SUBSCRIPTIONS));
+  }
+
+  public listWebsiteLinks() {
+    const links = new Set<string>();
+
+    Object.values(asfWebsite).forEach(
+      link => links.add(link)
+    );
+    datasetList.forEach(dataset => {
+      links.add(dataset.infoUrl);
+      links.add(dataset.citationUrl);
+    });
+    derivedDatasets.forEach(dataset => {
+      links.add(dataset.info_url);
+      links.add(dataset.download_url);
+    });
+
+    const linkRows = Array.from(links)
+      .filter(link => link.includes('asf.alaska.edu'))
+      .join('\n');
+
+    const pairsCSV = `ASF Website Links\n${linkRows}`;
+
+    const blob = new Blob([pairsCSV], {
+      type: 'text/csv;charset=utf-8;',
+    });
+    saveAs(blob, 'asf-website-links.csv');
   }
 
   private openNewWindow(url, analyticsEvent: AnalyticsEvent): void {

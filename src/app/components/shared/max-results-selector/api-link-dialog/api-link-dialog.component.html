@@ -51,7 +51,7 @@
 </mat-dialog-content>
 
 <mat-dialog-actions style="margin-top: 15px;">
-  <a href="https://www.asf.alaska.edu/get-data/api/" target="_blank" mat-flat-button>API Docs</a>
+  <a [href]="asfWebsite.api_get_data" target="_blank" mat-flat-button>API Docs</a>
   <a [href]="apiLink" target="_blank" color="primary" mat-flat-button>
     Download Results
   </a>
