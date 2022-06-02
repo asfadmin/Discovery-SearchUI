@@ -58,6 +58,8 @@ export class BaselineChartComponent implements OnInit, OnDestroy {
   private yAxis;
 
   private tooltip;
+
+  private clipContainer;
   constructor(
     private store$: Store<AppState>,
     private scenesService: ScenesService,
@@ -99,11 +101,24 @@ export class BaselineChartComponent implements OnInit, OnDestroy {
           this.setDataset(ChartDatasets.MAX_CRITICAL, maxDataset);
           this.criticalBoxContainer
             .attr('class', 'critical-box')
-            .attr('x', this.x(this.data[ChartDatasets.MIN_CRITICAL][0].x))
-            .attr('y', this.y(this.data[ChartDatasets.MAX_CRITICAL][1].y))
-            .attr('width', this.x(this.data[ChartDatasets.MAX_CRITICAL][1].x) - this.x(this.data[ChartDatasets.MIN_CRITICAL][0].x))
-            .attr('height', this.y(this.data[ChartDatasets.MIN_CRITICAL][0].y) - this.y(this.data[ChartDatasets.MAX_CRITICAL][1].y))
             .attr('fill', '#f2f2f2');
+
+          if (this.currentTransform) {
+
+            const newX = this.currentTransform.rescaleX(this.x);
+            const newY = this.currentTransform.rescaleY(this.y);
+
+            this.dotsContainer.selectAll('circle').data(this.data[ChartDatasets.PRODUCTS]).join('circle')
+              .attr('cx', d => newX(d.x))
+              .attr('cy', d => newY(d.y));
+          } else {
+
+            this.criticalBoxContainer
+              .attr('x', this.x(this.data[ChartDatasets.MIN_CRITICAL][0].x))
+              .attr('y', this.y(this.data[ChartDatasets.MAX_CRITICAL][1].y))
+              .attr('width', this.x(this.data[ChartDatasets.MAX_CRITICAL][1].x) - this.x(this.data[ChartDatasets.MIN_CRITICAL][0].x))
+              .attr('height', this.y(this.data[ChartDatasets.MIN_CRITICAL][0].y) - this.y(this.data[ChartDatasets.MAX_CRITICAL][1].y));
+          }
           if (this.isFirstLoad) {
             this.updateScales(extrema);
             this.isFirstLoad = false;
@@ -158,14 +173,18 @@ export class BaselineChartComponent implements OnInit, OnDestroy {
 
   }
   private drawChart() {
-    this.criticalBoxContainer = this.svg.append('g').append('rect');
 
-    this.zoomBox = this.svg.append('rect')
-      .attr('width', this.width)
-      .attr('height', this.height)
-      .attr('cursor', 'pointer')
-      .style('fill', 'transparent')
-      .style('pointer-events', 'all');
+
+    this.clipContainer = this.svg.append('g')
+    .attr('clip-path', 'url(#clip)');
+    this.criticalBoxContainer = this.clipContainer.append('g').append('rect');
+
+    this.zoomBox = this.clipContainer.append('rect')
+    .attr('width', this.width)
+    .attr('height', this.height)
+    .attr('cursor', 'pointer')
+    .style('fill', 'transparent')
+    .style('pointer-events', 'all');
 
     this.x = d3.scaleLinear()
       .domain([-5000, 5000])
@@ -190,11 +209,11 @@ export class BaselineChartComponent implements OnInit, OnDestroy {
 
 
 
-    this.dotsContainer = this.svg.append('g')
+    this.dotsContainer = this.clipContainer.append('g');
+    this.dotsContainer
       .selectAll('circle')
       .data(this.data[ChartDatasets.PRODUCTS])
-      .join()
-      .append('circle')
+      .join('circle')
       .attr('cx', d => this.x(d.x))
       .attr('cy', d => this.y(d.y))
       .attr('r', 5)
@@ -205,7 +224,6 @@ export class BaselineChartComponent implements OnInit, OnDestroy {
       .extent([[0, 0], [this.width, this.height]])
       .on('zoom', (eve: d3.D3ZoomEvent<SVGSVGElement, unknown>) => {
         this.currentTransform = eve.transform;
-        console.log('Hello world');
         this.updateChart();
       });
 
@@ -216,6 +234,14 @@ export class BaselineChartComponent implements OnInit, OnDestroy {
     }
 
     this.zoomBox.call(this.zoom);
+
+    this.svg.append('defs').append('SVG:clipPath')
+      .attr('id', 'clip')
+      .append('SVG:rect')
+      .attr('width', this.width)
+      .attr('height', this.height)
+      .attr('x', 0)
+      .attr('y', 0);
   }
   private updateChart() {
     const newX = this.currentTransform.rescaleX(this.x);
@@ -230,19 +256,20 @@ export class BaselineChartComponent implements OnInit, OnDestroy {
         .tickSize(-this.width)
     );
 
-    this.dotsContainer.data(this.data[ChartDatasets.PRODUCTS]).join('circle')
-    .attr('cx', d => newX(d.x))
-    .attr('cy', d => newY(d.y));
+    this.dotsContainer.selectAll('circle').data(this.data[ChartDatasets.PRODUCTS]).join('circle')
+      .attr('cx', d => newX(d.x))
+      .attr('cy', d => newY(d.y));
 
     this.criticalBoxContainer.attr('x', newX(this.data[ChartDatasets.MIN_CRITICAL][0].x))
-      .attr('y', newY(this.data[ChartDatasets.MAX_CRITICAL][1].y));
+      .attr('y', newY(this.data[ChartDatasets.MAX_CRITICAL][1].y))
+      .attr('width', newX(this.data[ChartDatasets.MAX_CRITICAL][1].x) - newX(this.data[ChartDatasets.MIN_CRITICAL][0].x))
+      .attr('height', newY(this.data[ChartDatasets.MIN_CRITICAL][0].y) - newY(this.data[ChartDatasets.MAX_CRITICAL][1].y));
   }
   private setDataset(dataset: ChartDatasets, data) {
     this.data[dataset] = data;
-    console.log(this.data);
     const self = this;
 
-    this.dotsContainer.data(this.data[ChartDatasets.PRODUCTS]).join('circle')
+    this.dotsContainer.selectAll('circle').data(this.data[ChartDatasets.PRODUCTS]).join('circle')
       .attr('cx', d => this.x(d.x))
       .attr('cy', d => this.y(d.y))
       .attr('r', 5)
