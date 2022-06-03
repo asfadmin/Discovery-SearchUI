@@ -16,7 +16,6 @@ export enum ChartDatasets {
   MASTER = 0,
   SELECTED = 1,
   DOWNLOADS = 2,
-  WITHIN_BASELINE = 3,
   PRODUCTS = 4,
   MIN_CRITICAL = 5,
   MAX_CRITICAL = 6
@@ -40,7 +39,7 @@ export class BaselineChartComponent implements OnInit, OnDestroy {
   private offsets = { temporal: 0, perpendicular: 0 };
   private subs = new SubSink();
 
-  private data: Point[][] = [[], [], [], [], [], [], [], []];
+  private data = [[], [], [], [], [], [], [], []];
   private svg;
 
   private margin = { top: 10, right: 30, bottom: 30, left: 60 };
@@ -66,7 +65,6 @@ export class BaselineChartComponent implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit(): void {
-    // this.initChart();
     this.createSVG();
     this.drawChart();
     const products$ = this.scenesService.scenes$().pipe(
@@ -83,9 +81,9 @@ export class BaselineChartComponent implements OnInit, OnDestroy {
     );
 
     this.subs.add(
-      combineLatest(
+      combineLatest([
         products$,
-        this.store$.select(scenesStore.getSelectedScene)
+        this.store$.select(scenesStore.getSelectedScene)]
       ).subscribe(
         ([points, selected]) => {
           const extrema = this.determineMinMax(points);
@@ -99,38 +97,24 @@ export class BaselineChartComponent implements OnInit, OnDestroy {
           this.setDataset(ChartDatasets.PRODUCTS, points);
           this.setDataset(ChartDatasets.MIN_CRITICAL, minDataset);
           this.setDataset(ChartDatasets.MAX_CRITICAL, maxDataset);
-          this.criticalBoxContainer
-            .attr('class', 'critical-box')
-            .attr('fill', '#f2f2f2');
-
-          if (this.currentTransform) {
-
-            const newX = this.currentTransform.rescaleX(this.x);
-            const newY = this.currentTransform.rescaleY(this.y);
-
-            this.dotsContainer.selectAll('circle').data(this.data[ChartDatasets.PRODUCTS]).join('circle')
-              .attr('cx', d => newX(d.x))
-              .attr('cy', d => newY(d.y));
-          } else {
-
-            this.criticalBoxContainer
-              .attr('x', this.x(this.data[ChartDatasets.MIN_CRITICAL][0].x))
-              .attr('y', this.y(this.data[ChartDatasets.MAX_CRITICAL][1].y))
-              .attr('width', this.x(this.data[ChartDatasets.MAX_CRITICAL][1].x) - this.x(this.data[ChartDatasets.MIN_CRITICAL][0].x))
-              .attr('height', this.y(this.data[ChartDatasets.MIN_CRITICAL][0].y) - this.y(this.data[ChartDatasets.MAX_CRITICAL][1].y));
-          }
           if (this.isFirstLoad) {
             this.updateScales(extrema);
+            this.criticalBoxContainer
+            .attr('x', this.x(this.data[ChartDatasets.MIN_CRITICAL][0].x))
+            .attr('y', this.y(this.data[ChartDatasets.MAX_CRITICAL][1].y))
+            .attr('width', this.x(this.data[ChartDatasets.MAX_CRITICAL][1].x) - this.x(this.data[ChartDatasets.MIN_CRITICAL][0].x))
+            .attr('height', this.y(this.data[ChartDatasets.MIN_CRITICAL][0].y) - this.y(this.data[ChartDatasets.MAX_CRITICAL][1].y));
             this.isFirstLoad = false;
           }
+          this.updateChart();
 
         })
     );
 
     this.subs.add(
-      combineLatest(
+      combineLatest([
         this.store$.select(queueStore.getQueuedProductIds),
-        this.store$.select(scenesStore.getAllProducts),
+        this.store$.select(scenesStore.getAllProducts)]
       ).pipe(
         map(([queueIds, products]) => {
           const ids = new Set(queueIds);
@@ -147,9 +131,9 @@ export class BaselineChartComponent implements OnInit, OnDestroy {
     );
 
     this.subs.add(
-      combineLatest(
+      combineLatest([
         this.store$.select(scenesStore.getMasterName),
-        this.store$.select(scenesStore.getAllProducts),
+        this.store$.select(scenesStore.getAllProducts)]
       ).pipe(
         map(([masterName, products]) => products
           .filter(product => product.name === masterName)
@@ -159,7 +143,6 @@ export class BaselineChartComponent implements OnInit, OnDestroy {
         map(this.productToPoint)
       ).subscribe(point => {
         this.setDataset(ChartDatasets.MASTER, [point]);
-        // this.chart.update();
       })
     );
   }
@@ -173,26 +156,23 @@ export class BaselineChartComponent implements OnInit, OnDestroy {
 
   }
   private drawChart() {
-
-
     this.clipContainer = this.svg.append('g')
-    .attr('clip-path', 'url(#clip)');
-    this.criticalBoxContainer = this.clipContainer.append('g').append('rect');
-
+      .attr('clip-path', 'url(#clip)');
+    this.criticalBoxContainer = this.clipContainer.append('g').append('rect')
+            .attr('fill', 'lightgray');
     this.zoomBox = this.clipContainer.append('rect')
-    .attr('width', this.width)
-    .attr('height', this.height)
-    .attr('cursor', 'pointer')
-    .style('fill', 'transparent')
-    .style('pointer-events', 'all');
-
+      .attr('width', this.width)
+      .attr('height', this.height)
+      .attr('cursor', 'pointer')
+      .style('fill', 'transparent')
+      .style('pointer-events', 'all');
     this.x = d3.scaleLinear()
-      .domain([-5000, 5000])
+      .domain([-1, 3000])
       .range([0, this.width]);
     this.xAxis = this.svg.append('g')
       .attr('transform', `translate(0, ${this.height})`)
       .call(d3.axisBottom(this.x));
-    this.y = d3.scaleLinear().domain([-20000, 20000]).range([this.height, 0]);
+    this.y = d3.scaleLinear().domain([-200, 200]).range([this.height, 0]);
     this.yAxis = this.svg.append('g').call(d3.axisLeft(this.y));
 
     this.xAxis.call(
@@ -207,8 +187,6 @@ export class BaselineChartComponent implements OnInit, OnDestroy {
       .attr('class', 'tooltip')
       .style('opacity', 0);
 
-
-
     this.dotsContainer = this.clipContainer.append('g');
     this.dotsContainer
       .selectAll('circle')
@@ -220,14 +198,11 @@ export class BaselineChartComponent implements OnInit, OnDestroy {
       .attr('fill', '#00bcd4');
 
     this.zoom = d3.zoom()
-      .scaleExtent([.2, 10])
       .extent([[0, 0], [this.width, this.height]])
       .on('zoom', (eve: d3.D3ZoomEvent<SVGSVGElement, unknown>) => {
         this.currentTransform = eve.transform;
         this.updateChart();
       });
-
-
 
     if (this.currentTransform) {
       this.zoomBox.call(this.zoom.transform, this.currentTransform);
@@ -244,8 +219,8 @@ export class BaselineChartComponent implements OnInit, OnDestroy {
       .attr('y', 0);
   }
   private updateChart() {
-    const newX = this.currentTransform.rescaleX(this.x);
-    const newY = this.currentTransform.rescaleY(this.y);
+    const newX = this.currentTransform?.rescaleX(this.x) ?? this.x;
+    const newY = this.currentTransform?.rescaleY(this.y) ?? this.y;
 
     this.xAxis.call(
       d3.axisBottom(newX)
@@ -268,8 +243,8 @@ export class BaselineChartComponent implements OnInit, OnDestroy {
   private setDataset(dataset: ChartDatasets, data) {
     this.data[dataset] = data;
     const self = this;
-
-    this.dotsContainer.selectAll('circle').data(this.data[ChartDatasets.PRODUCTS]).join('circle')
+    if (dataset === ChartDatasets.PRODUCTS) {
+      this.dotsContainer.selectAll('circle').data(this.data[ChartDatasets.PRODUCTS]).join('circle')
       .attr('cx', d => this.x(d.x))
       .attr('cy', d => this.y(d.y))
       .attr('r', 5)
@@ -302,6 +277,7 @@ export class BaselineChartComponent implements OnInit, OnDestroy {
         const action = new scenesStore.SetSelectedScene(d.id);
         self.store$.dispatch(action);
       });
+    }
   }
 
   private productToPoint = (product: CMRProduct) => {
@@ -351,38 +327,24 @@ export class BaselineChartComponent implements OnInit, OnDestroy {
     return { min, max };
   }
 
-  private updateScales(_extrema) {
-    // const { min, max } = extrema;
-    // const xBuffer = (max.x - min.x) * .25;
-    // const yBuffer = (max.y - min.y) * .25;
-
-    // TODO: update the graph scales things
-
-    // this.chart.options.scales.xAxes[0].ticks.min = Math.floor((min.x - xBuffer) / 100) * 100;
-    // this.chart.options.scales.xAxes[0].ticks.max = Math.ceil((max.x + xBuffer) / 100) * 100;
-
-    // this.chart.options.scales.yAxes[0].ticks.min = Math.floor((min.y - yBuffer) / 100) * 100;
-    // this.chart.options.scales.yAxes[0].ticks.max = Math.ceil((max.y + yBuffer) / 100) * 100;
+  private updateScales(extrema: {min: {x: number, y: number}, max: {x: number, y: number}}) {
+    const { min, max } = extrema;
+    const xBuffer = Math.floor((max.x - min.x) * .25);
+    const yBuffer = Math.floor((max.y - min.y) * .25);
+    this.x = d3.scaleLinear()
+    .domain([min.x - xBuffer, max.x + xBuffer])
+    .range([0, this.width]);
+    this.y = d3.scaleLinear().domain([min.y - yBuffer, max.y + yBuffer]).range([this.height, 0]);
+    this.xAxis.call(
+      d3.axisBottom(this.x)
+        .tickSize(-this.height)
+    );
+    this.yAxis.call(
+      d3.axisLeft(this.y)
+        .tickSize(-this.width)
+    );
+    this.updateChart();
   }
-
-  // private initChart() {
-  //   this.chart = this.chartService.makeChart(
-  //     this.baselineChart.nativeElement,
-  //     this.setHoveredItem,
-  //     this.onSelectHoveredScene
-  //   );
-  // }
-
-  // private setHoveredItem = (tooltip, data: any) => {
-  //   const dataset = this.data[tooltip.datasetIndex];
-
-  //   this.hoveredProductId = dataset[tooltip.index].id;
-  // }
-
-  // private onSelectHoveredScene = () => {
-  //   const action = new scenesStore.SetSelectedScene(this.hoveredProductId);
-  //   this.store$.dispatch(action);
-  // }
 
   ngOnDestroy() {
     this.subs.unsubscribe();
