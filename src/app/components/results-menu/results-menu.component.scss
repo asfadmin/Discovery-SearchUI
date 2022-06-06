@@ -19,7 +19,7 @@
 }
 
 .results-menu--background {
-  background: rgba(238, 238, 238, 0.7);
+  background: rgb(238 238 238 / 70%);
   background: white;
   pointer-events: auto;
 }
@@ -85,7 +85,7 @@
   width: 56px;
   height: 25px;
   z-index: 9;
-  background-image: url('/assets/div-handles/hsizegrip.png');
+  background-image: url("/assets/div-handles/hsizegrip.png");
   background-color: $asf-primary-light;
   background-position: center;
   background-repeat: no-repeat;
