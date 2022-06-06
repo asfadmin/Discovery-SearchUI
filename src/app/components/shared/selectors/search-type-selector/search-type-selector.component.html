@@ -20,27 +20,8 @@
 
   <div class="gtm-search-type-selector" fxFlex="nogrow">
 
-    <mat-menu #searchTypeMenu="matMenu" [(ngModel)]="searchType">
+    <mat-menu #searchTypeMenu="matMenu" [(ngModel)]="searchType" ngDefaultControl>
       <div *ngIf="(breakpoint$ | async) === breakpoints.MOBILE">
-<!--        <mat-form-field class="formField" [matMenuTriggerFor]="searchTypeMenu">-->
-<!--          <mat-label>Search Type</mat-label>-->
-<!--          <mat-select class="gtm-search-type selectOptions"-->
-<!--            [(ngModel)]="searchType"-->
-<!--            (selectionChange)="onSetSearchType($event.value)">-->
-<!--            <mat-option [value]="searchTypes.DATASET" class="matOption">Geographic</mat-option>-->
-<!--            <mat-option [value]="searchTypes.LIST">List</mat-option>-->
-<!--            <mat-option [value]="searchTypes.BASELINE">Baseline</mat-option>-->
-<!--            <mat-option [value]="searchTypes.SBAS">SBAS</mat-option>-->
-<!--            <mat-option [value]="searchTypes.SARVIEWS_EVENTS">Event</mat-option>-->
-<!--            <mat-option-->
-<!--              [value]="searchTypes.CUSTOM_PRODUCTS"-->
-<!--              [disabled]="!isLoggedIn">-->
-<!--                On Demand Products-->
-<!--            </mat-option>-->
-<!--            <div class="mat-option" [matMenuTriggerFor]="derivedDatasetMenu">Derived Datasets...</div>-->
-<!--          </mat-select>-->
-<!--        </mat-form-field>-->
-
           <button mat-menu-item (click)="onSetSearchType(searchTypes.DATASET)" class="mat-menu-item mobile-search-item">Geographic</button>
           <button mat-menu-item (click)="onSetSearchType(searchTypes.LIST)" class="mat-menu-item mobile-search-item">List</button>
           <button mat-menu-item (click)="onSetSearchType(searchTypes.BASELINE)" class="mat-menu-item mobile-search-item">Baseline</button>
