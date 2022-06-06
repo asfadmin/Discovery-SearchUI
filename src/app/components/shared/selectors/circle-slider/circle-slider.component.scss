@@ -28,6 +28,8 @@
 figure {
   display: inline-flex;
   margin: 0;
+  grid-row: 1;
+  grid-column: 1;
 }
 
 ::ng-deep .notch {
@@ -44,7 +46,8 @@ figure {
   place-items: center;
 
   button {
-    position: absolute;
+    grid-row: 1;
+    grid-column: 1;
     border-radius: 50% !important;
   }
 }
