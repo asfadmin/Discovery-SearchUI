@@ -21,8 +21,6 @@ import {
   asfWebsite, derivedDatasets, datasetList
 } from '@models';
 
-import { collapseAnimation, rubberBandAnimation,
-         zoomInUpAnimation,  tadaAnimation, wobbleAnimation } from 'angular-animations';
 import { ThemePalette } from '@angular/material/core';
 
 // Declare GTM dataLayer array.
@@ -34,13 +32,7 @@ declare global {
   selector: 'app-header-buttons',
   templateUrl: './header-buttons.component.html',
   styleUrls: ['./header-buttons.component.scss'],
-  animations: [
-    rubberBandAnimation(),
-    collapseAnimation(),
-    zoomInUpAnimation(),
-    tadaAnimation({ duration: 1500 }),
-    wobbleAnimation()
-  ]
+  animations: []
 })
 export class HeaderButtonsComponent implements OnInit, OnDestroy {
   anio: number = new Date().getFullYear();

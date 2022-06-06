@@ -1,21 +1,39 @@
 .season-selector {
   display: flex;
 }
+
 .dates {
   display: flex;
   flex-direction: column;
   align-items: center;
   width: 200px;
 }
+
+.date {
+  width: 50px;
+}
+
 .buttons {
   display: flex;
   justify-content: space-around;
+  align-items: center;
+
+  button {
+    border-radius: 4px !important;
+    min-width: 0;
+    width: 42px;
+    line-height: 21px;
+    padding: 5px;
+    margin: 5px;
+  }
 }
+
 @media (max-width: 768px) {
   .season-selector {
     flex-direction: column;
     align-items: center;
   }
+
   .dates {
     width: 100%;
   }

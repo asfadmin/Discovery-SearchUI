@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 
-import { Actions, createEffect, Effect, ofType } from '@ngrx/effects';
+import { Actions, createEffect, ofType } from '@ngrx/effects';
 
 import { Observable } from 'rxjs';
 import { filter, map, withLatestFrom } from 'rxjs/operators';
@@ -26,19 +26,19 @@ export class FiltersEffects {
     private mapService: MapService,
   ) {}
 
-  @Effect({ dispatch: false }) setPolygonStyleWhenOmittingSearchPolygon$: Observable<void> = this.actions$.pipe(
+   setPolygonStyleWhenOmittingSearchPolygon$: Observable<void> = createEffect(() => this.actions$.pipe(
     ofType<filtersAction.OmitSearchPolygon>(filtersAction.FiltersActionType.OMIT_SEARCH_POLYGON),
     map(
       _ => this.mapService.setDrawStyle(models.DrawPolygonStyle.OMITTED)
     )
-  );
+  ), { dispatch: false });
 
-  @Effect({ dispatch: false }) setPolygonStyleWhenUsingSearchPolygon: Observable<void> = this.actions$.pipe(
+   setPolygonStyleWhenUsingSearchPolygon: Observable<void> = createEffect(() => this.actions$.pipe(
     ofType<filtersAction.UseSearchPolygon>(filtersAction.FiltersActionType.USE_SEARCH_POLYGON),
     map(
       _ => this.mapService.setDrawStyle(models.DrawPolygonStyle.VALID)
     )
-  );
+  ), { dispatch: false });
 
   public loadLoadUserProfile = createEffect(() => this.actions$.pipe(
     ofType<filtersAction.SetDefaultFilters>(filtersAction.FiltersActionType.SET_DEFAULT_FILTERS),

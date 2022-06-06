@@ -13,8 +13,6 @@ import { CMRProduct, AsfApiOutputFormat, Breakpoints } from '@models';
 import { MatDialogRef } from '@angular/material/dialog';
 import { SubSink } from 'subsink';
 import { ResizedEvent } from 'angular-resize-event';
-import { Observable } from 'rxjs';
-import {  Download } from 'ngx-operators';
 import * as userStore from '@store/user';
 import { DownloadFileButtonComponent } from '@components/shared/download-file-button/download-file-button.component';
 import * as UAParser from 'ua-parser-js';
@@ -37,7 +35,6 @@ export class QueueComponent implements OnInit, OnDestroy {
 
   @Input() appQueueComponentModel: string;
 
-  download$: Observable<Download>;
 
   @ViewChildren(DownloadFileButtonComponent) downloadButtons !: QueryList<DownloadFileButtonComponent>;
 
@@ -227,8 +224,8 @@ export class QueueComponent implements OnInit, OnDestroy {
   }
 
   public onResized(event: ResizedEvent) {
-    this.dlWidth = event.newWidth;
-    this.dlHeight = event.newHeight;
+    this.dlWidth = event.newRect.width;
+    this.dlHeight = event.newRect.height;
   }
 
   public async downloadAllFiles() {
