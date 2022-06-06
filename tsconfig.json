@@ -18,12 +18,20 @@
     }
   ],
   "compilerOptions": {
-      "baseUrl": "./",
-      "paths": {
-        "~*": [
-          "src/*"
-        ]
-      }
-    }
+    "baseUrl": "./",
+    "outDir": "./dist/search-ui",
+    "sourceMap": true,
+    "declaration": false,
+    "downlevelIteration": true,
+    "experimentalDecorators": true,
+    "moduleResolution": "node",
+    "importHelpers": true,
+    "target": "es2015",
+    "module": "es2020",
+    "lib": [
+      "es2018",
+      "dom"
+    ]
+  }
 
 }
