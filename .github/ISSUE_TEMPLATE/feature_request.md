@@ -1,11 +1,7 @@
 ---
 name: Feature request
 about: Suggest an idea for this project
-<<<<<<< HEAD
-title: "[Feature]"
-=======
 title: "[FEATURE]"
->>>>>>> test
 labels: ''
 assignees: ''
 
