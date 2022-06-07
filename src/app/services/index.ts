@@ -20,7 +20,6 @@ export { KeyboardService } from './keyboard.service';
 export { UserDataService } from './user-data.service';
 export { SavedSearchService } from './saved-search.service';
 export { UnzipApiService } from './unzip-api.service';
-export { ChartService } from './chart.service';
 export { ScenesService } from './scenes.service';
 export { SearchService } from './search.service';
 export { Hyp3Service } from './hyp3.service';
