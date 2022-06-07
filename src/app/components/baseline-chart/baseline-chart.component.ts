@@ -176,7 +176,7 @@ export class BaselineChartComponent implements OnInit, OnDestroy {
       .style('fill', 'transparent')
       .style('pointer-events', 'all');
     this.x = d3.scaleLinear()
-    .domain(this.xExtent ?? [1,100])
+    .domain(this.xExtent ?? [1, 100])
       .range([0, this.width]);
     this.xAxis = this.svg.append('g')
       .attr('transform', `translate(0, ${this.height})`)
@@ -218,6 +218,9 @@ export class BaselineChartComponent implements OnInit, OnDestroy {
       .attr('height', this.height)
       .attr('x', 0)
       .attr('y', 0);
+      if (this.data[ChartDatasets.MIN_CRITICAL].length > 0) {
+        this.updateChart();
+      }
   }
   private updateChart() {
     const newX = this.currentTransform?.rescaleX(this.x) ?? this.x;
