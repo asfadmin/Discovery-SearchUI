@@ -56,6 +56,9 @@ export class BaselineChartComponent implements OnInit, OnDestroy {
   private y;
   private yAxis;
 
+  private xExtent;
+  private yExtent;
+
   private tooltip;
 
   private clipContainer;
@@ -65,6 +68,7 @@ export class BaselineChartComponent implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit(): void {
+
     this.createSVG();
     const products$ = this.scenesService.scenes$().pipe(
       tap(products => products.map(
@@ -144,8 +148,14 @@ export class BaselineChartComponent implements OnInit, OnDestroy {
       })
     );
   }
-
+  public onResized() {
+    this.createSVG();
+  }
   private createSVG() {
+    if (this.svg) {
+      d3.selectAll('#baseline-chart > svg').remove();
+    }
+    this.height = this.baselineChart.nativeElement.offsetHeight - this.margin.top - this.margin.bottom;
     this.svg = d3.select(this.baselineChart.nativeElement).append('svg')
       .attr('width', this.width + this.margin.left + this.margin.right)
       .attr('height', this.height + this.margin.top + this.margin.bottom)
@@ -154,6 +164,7 @@ export class BaselineChartComponent implements OnInit, OnDestroy {
     this.drawChart();
   }
   private drawChart() {
+    this.currentTransform = undefined;
     this.clipContainer = this.svg.append('g')
       .attr('clip-path', 'url(#clip)');
     this.criticalBoxContainer = this.clipContainer.append('g').append('rect')
@@ -165,11 +176,13 @@ export class BaselineChartComponent implements OnInit, OnDestroy {
       .style('fill', 'transparent')
       .style('pointer-events', 'all');
     this.x = d3.scaleLinear()
+    .domain(this.xExtent ?? [1,100])
       .range([0, this.width]);
     this.xAxis = this.svg.append('g')
       .attr('transform', `translate(0, ${this.height})`)
       .call(d3.axisBottom(this.x));
     this.y = d3.scaleLinear()
+    .domain(this.yExtent ?? [1, 100])
       .range([this.height, 0]);
     this.yAxis = this.svg.append('g').call(d3.axisLeft(this.y));
 
@@ -187,15 +200,7 @@ export class BaselineChartComponent implements OnInit, OnDestroy {
       .style('opacity', 0);
 
     this.dotsContainer = this.clipContainer.append('g');
-    this.dotsContainer
-      .selectAll('circle')
-      .data(this.data[ChartDatasets.PRODUCTS])
-      .join('circle')
-      .attr('cx', d => this.x(d.x))
-      .attr('cy', d => this.y(d.y))
-      .attr('r', 5)
-      .attr('fill', '#00bcd4');
-
+    this.updateCircles();
     this.zoom = d3.zoom()
       .extent([[0, 0], [this.width, this.height]])
       .on('zoom', (eve: d3.D3ZoomEvent<SVGSVGElement, unknown>) => {
@@ -203,9 +208,6 @@ export class BaselineChartComponent implements OnInit, OnDestroy {
         this.updateChart();
       });
 
-    if (this.currentTransform) {
-      this.zoomBox.call(this.zoom.transform, this.currentTransform);
-    }
 
     this.zoomBox.call(this.zoom);
 
@@ -239,55 +241,60 @@ export class BaselineChartComponent implements OnInit, OnDestroy {
       .attr('width', newX(this.data[ChartDatasets.MAX_CRITICAL][1].x) - newX(this.data[ChartDatasets.MIN_CRITICAL][0].x))
       .attr('height', newY(this.data[ChartDatasets.MIN_CRITICAL][0].y) - newY(this.data[ChartDatasets.MAX_CRITICAL][1].y));
   }
+  private updateCircles() {
+    const self = this;
+
+    const transformedY = this.currentTransform?.rescaleY(this.y) ?? this.y;
+    const transformedX = this.currentTransform?.rescaleX(this.x) ?? this.x;
+    this.dotsContainer.selectAll('circle').data(this.data[ChartDatasets.PRODUCTS]).join('circle')
+      .attr('cx', d => transformedX(d.x))
+      .attr('cy', d => transformedY(d.y))
+      .attr('r', (d) => {
+        if (d.id === this.data[ChartDatasets.SELECTED][0].id) {
+          return 10;
+        }
+        return 5;
+      })
+      .attr('fill', function (d) {
+        if (self.data[ChartDatasets.MASTER].length > 0 && self.data[ChartDatasets.MASTER][0]?.id === d.id) {
+          return 'black';
+        } else if (self.data[ChartDatasets.SELECTED].length > 0 && self.data[ChartDatasets.SELECTED][0]?.id === d.id) {
+          return '#ff0000';
+        } else if (self.data[ChartDatasets.DOWNLOADS].some(p => p.id === d.id)) {
+          return '#215c8b';
+        } else {
+          return '#808080';
+        }
+      })
+      .on('mouseover', function (event, d: Point) {
+        self.tooltip
+          .style('opacity', .9);
+        self.tooltip.html(`${d.x} days, ${d.y} m`)
+          .style('left', `${event.pageX + 10}px`)
+          .style('top', `${event.pageY - 20}px`);
+        d3.select(this).attr('r', 10);
+      })
+      .on('mouseout', function (_event, d) {
+        self.tooltip.transition()
+          .duration(500)
+          .style('opacity', 0);
+        if (d.id === self.data[ChartDatasets.SELECTED][0].id) {
+          d3.select(this).attr('r', 10);
+        } else {
+          d3.select(this).attr('r', 5);
+        }
+      })
+      .on('click', function (_event, d: Point) {
+        const action = new scenesStore.SetSelectedScene(d.id);
+        self.store$.dispatch(action);
+      });
+  }
   private setDataset(dataset: ChartDatasets, data) {
     this.data[dataset] = data;
-    const self = this;
     if (dataset === ChartDatasets.PRODUCTS || dataset === ChartDatasets.DOWNLOADS) {
-      const transformedY = this.currentTransform?.rescaleY(this.y) ?? this.y;
-      const transformedX = this.currentTransform?.rescaleX(this.x) ?? this.x;
-      this.dotsContainer.selectAll('circle').data(this.data[ChartDatasets.PRODUCTS]).join('circle')
-        .attr('cx', d => transformedX(d.x))
-        .attr('cy', d => transformedY(d.y))
-        .attr('r', (d) => {
-          if (d.id === this.data[ChartDatasets.SELECTED][0].id) {
-            return 10;
-          }
-          return 5;
-        })
-        .attr('fill', function (d) {
-          if (self.data[ChartDatasets.MASTER].length > 0 && self.data[ChartDatasets.MASTER][0]?.id === d.id) {
-            return 'black';
-          } else if (self.data[ChartDatasets.SELECTED].length > 0 && self.data[ChartDatasets.SELECTED][0]?.id === d.id) {
-            return '#ff0000';
-          } else if (self.data[ChartDatasets.DOWNLOADS].some(p => p.id === d.id)) {
-            return '#215c8b';
-          } else {
-            return '#808080';
-          }
-        })
-        .on('mouseover', function (event, d: Point) {
-          self.tooltip
-            .style('opacity', .9);
-          self.tooltip.html(`${d.x} days, ${d.y} m`)
-            .style('left', `${event.pageX + 10}px`)
-            .style('top', `${event.pageY - 20}px`);
-          d3.select(this).attr('r', 10);
-        })
-        .on('mouseout', function (_event, d) {
-          self.tooltip.transition()
-            .duration(500)
-            .style('opacity', 0);
-          if (d.id === self.data[ChartDatasets.SELECTED][0].id) {
-            d3.select(this).attr('r', 10);
-          } else {
-            d3.select(this).attr('r', 5);
-          }
-        })
-        .on('click', function (_event, d: Point) {
-          const action = new scenesStore.SetSelectedScene(d.id);
-          self.store$.dispatch(action);
-        });
+      this.updateCircles();
     }
+    // this.updateChart();
   }
 
   private productToPoint = (product: CMRProduct) => {
@@ -341,10 +348,12 @@ export class BaselineChartComponent implements OnInit, OnDestroy {
     const { min, max } = extrema;
     const xBuffer = Math.floor((max.x - min.x) * .25);
     const yBuffer = Math.floor((max.y - min.y) * .25);
+    this.xExtent = [min.x - xBuffer, max.x + xBuffer];
     this.x = d3.scaleLinear()
-      .domain([min.x - xBuffer, max.x + xBuffer])
+      .domain(this.xExtent)
       .range([0, this.width]);
-    this.y = d3.scaleLinear().domain([min.y - yBuffer, max.y + yBuffer]).range([this.height, 0]);
+      this.yExtent = [min.y - yBuffer, max.y + yBuffer];
+    this.y = d3.scaleLinear().domain(this.yExtent).range([this.height, 0]);
     this.xAxis.call(
       d3.axisBottom(this.x)
         .tickSize(-this.height)
