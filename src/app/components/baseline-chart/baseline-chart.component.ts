@@ -66,7 +66,6 @@ export class BaselineChartComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.createSVG();
-    this.drawChart();
     const products$ = this.scenesService.scenes$().pipe(
       tap(products => products.map(
         product => this.criticalBaseline = criticalBaselineFor(product)
@@ -100,10 +99,10 @@ export class BaselineChartComponent implements OnInit, OnDestroy {
           if (this.isFirstLoad) {
             this.updateScales(extrema);
             this.criticalBoxContainer
-            .attr('x', this.x(this.data[ChartDatasets.MIN_CRITICAL][0].x))
-            .attr('y', this.y(this.data[ChartDatasets.MAX_CRITICAL][1].y))
-            .attr('width', this.x(this.data[ChartDatasets.MAX_CRITICAL][1].x) - this.x(this.data[ChartDatasets.MIN_CRITICAL][0].x))
-            .attr('height', this.y(this.data[ChartDatasets.MIN_CRITICAL][0].y) - this.y(this.data[ChartDatasets.MAX_CRITICAL][1].y));
+              .attr('x', this.x(this.data[ChartDatasets.MIN_CRITICAL][0].x))
+              .attr('y', this.y(this.data[ChartDatasets.MAX_CRITICAL][1].y))
+              .attr('width', this.x(this.data[ChartDatasets.MAX_CRITICAL][1].x) - this.x(this.data[ChartDatasets.MIN_CRITICAL][0].x))
+              .attr('height', this.y(this.data[ChartDatasets.MIN_CRITICAL][0].y) - this.y(this.data[ChartDatasets.MAX_CRITICAL][1].y));
             this.isFirstLoad = false;
           }
           this.updateChart();
@@ -125,7 +124,6 @@ export class BaselineChartComponent implements OnInit, OnDestroy {
       ).subscribe(
         points => {
           this.setDataset(ChartDatasets.DOWNLOADS, points);
-          // this.chart.update();
         }
       )
     );
@@ -153,13 +151,13 @@ export class BaselineChartComponent implements OnInit, OnDestroy {
       .attr('height', this.height + this.margin.top + this.margin.bottom)
       .append('g')
       .attr('transform', `translate(${this.margin.left}, ${this.margin.top})`);
-
+    this.drawChart();
   }
   private drawChart() {
     this.clipContainer = this.svg.append('g')
       .attr('clip-path', 'url(#clip)');
     this.criticalBoxContainer = this.clipContainer.append('g').append('rect')
-            .attr('fill', 'lightgray');
+      .attr('fill', '#f2f2f2');
     this.zoomBox = this.clipContainer.append('rect')
       .attr('width', this.width)
       .attr('height', this.height)
@@ -167,12 +165,12 @@ export class BaselineChartComponent implements OnInit, OnDestroy {
       .style('fill', 'transparent')
       .style('pointer-events', 'all');
     this.x = d3.scaleLinear()
-      .domain([-1, 3000])
       .range([0, this.width]);
     this.xAxis = this.svg.append('g')
       .attr('transform', `translate(0, ${this.height})`)
       .call(d3.axisBottom(this.x));
-    this.y = d3.scaleLinear().domain([-200, 200]).range([this.height, 0]);
+    this.y = d3.scaleLinear()
+      .range([this.height, 0]);
     this.yAxis = this.svg.append('g').call(d3.axisLeft(this.y));
 
     this.xAxis.call(
@@ -183,6 +181,7 @@ export class BaselineChartComponent implements OnInit, OnDestroy {
       d3.axisLeft(this.y)
         .tickSize(-this.width)
     );
+
     this.tooltip = d3.select('body').append('div')
       .attr('class', 'tooltip')
       .style('opacity', 0);
@@ -243,40 +242,51 @@ export class BaselineChartComponent implements OnInit, OnDestroy {
   private setDataset(dataset: ChartDatasets, data) {
     this.data[dataset] = data;
     const self = this;
-    if (dataset === ChartDatasets.PRODUCTS) {
+    if (dataset === ChartDatasets.PRODUCTS || dataset === ChartDatasets.DOWNLOADS) {
+      const transformedY = this.currentTransform?.rescaleY(this.y) ?? this.y;
+      const transformedX = this.currentTransform?.rescaleX(this.x) ?? this.x;
       this.dotsContainer.selectAll('circle').data(this.data[ChartDatasets.PRODUCTS]).join('circle')
-      .attr('cx', d => this.x(d.x))
-      .attr('cy', d => this.y(d.y))
-      .attr('r', 5)
-      .attr('fill', function (d) {
-        if (self.data[ChartDatasets.MASTER].length > 0 && self.data[ChartDatasets.MASTER][0]?.id === d.id) {
-          return 'black';
-        } else if (self.data[ChartDatasets.SELECTED].length > 0 && self.data[ChartDatasets.SELECTED][0]?.id === d.id) {
-          return '#ff0000';
-        } else if (self.data[ChartDatasets.DOWNLOADS].some(p => p.id === d.id)) {
-          return '#215c8b';
-        } else {
-          return '#808080';
-        }
-      })
-      .on('mouseover', function (event, d: Point) {
-        self.tooltip
-          .style('opacity', .9);
-        self.tooltip.html(`${d.x} days, ${d.y} m`)
-          .style('left', `${event.pageX + 10}px`)
-          .style('top', `${event.pageY - 20}px`);
-        d3.select(this).attr('r', 10);
-      })
-      .on('mouseout', function (_d, _i) {
-        self.tooltip.transition()
-          .duration(500)
-          .style('opacity', 0);
-        d3.select(this).attr('r', 5);
-      })
-      .on('click', function (_event, d: Point) {
-        const action = new scenesStore.SetSelectedScene(d.id);
-        self.store$.dispatch(action);
-      });
+        .attr('cx', d => transformedX(d.x))
+        .attr('cy', d => transformedY(d.y))
+        .attr('r', (d) => {
+          if (d.id === this.data[ChartDatasets.SELECTED][0].id) {
+            return 10;
+          }
+          return 5;
+        })
+        .attr('fill', function (d) {
+          if (self.data[ChartDatasets.MASTER].length > 0 && self.data[ChartDatasets.MASTER][0]?.id === d.id) {
+            return 'black';
+          } else if (self.data[ChartDatasets.SELECTED].length > 0 && self.data[ChartDatasets.SELECTED][0]?.id === d.id) {
+            return '#ff0000';
+          } else if (self.data[ChartDatasets.DOWNLOADS].some(p => p.id === d.id)) {
+            return '#215c8b';
+          } else {
+            return '#808080';
+          }
+        })
+        .on('mouseover', function (event, d: Point) {
+          self.tooltip
+            .style('opacity', .9);
+          self.tooltip.html(`${d.x} days, ${d.y} m`)
+            .style('left', `${event.pageX + 10}px`)
+            .style('top', `${event.pageY - 20}px`);
+          d3.select(this).attr('r', 10);
+        })
+        .on('mouseout', function (_event, d) {
+          self.tooltip.transition()
+            .duration(500)
+            .style('opacity', 0);
+          if (d.id === self.data[ChartDatasets.SELECTED][0].id) {
+            d3.select(this).attr('r', 10);
+          } else {
+            d3.select(this).attr('r', 5);
+          }
+        })
+        .on('click', function (_event, d: Point) {
+          const action = new scenesStore.SetSelectedScene(d.id);
+          self.store$.dispatch(action);
+        });
     }
   }
 
@@ -327,13 +337,13 @@ export class BaselineChartComponent implements OnInit, OnDestroy {
     return { min, max };
   }
 
-  private updateScales(extrema: {min: {x: number, y: number}, max: {x: number, y: number}}) {
+  private updateScales(extrema: { min: { x: number, y: number }, max: { x: number, y: number } }) {
     const { min, max } = extrema;
     const xBuffer = Math.floor((max.x - min.x) * .25);
     const yBuffer = Math.floor((max.y - min.y) * .25);
     this.x = d3.scaleLinear()
-    .domain([min.x - xBuffer, max.x + xBuffer])
-    .range([0, this.width]);
+      .domain([min.x - xBuffer, max.x + xBuffer])
+      .range([0, this.width]);
     this.y = d3.scaleLinear().domain([min.y - yBuffer, max.y + yBuffer]).range([this.height, 0]);
     this.xAxis.call(
       d3.axisBottom(this.x)
