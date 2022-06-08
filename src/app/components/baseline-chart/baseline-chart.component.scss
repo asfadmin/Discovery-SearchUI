@@ -7,3 +7,22 @@
   margin: 0 16px 16px 16px;
   height: calc(100% - 80px);
 }
+#baseline-chart {
+  height: calc(100% - 2cm);
+}
+ul {
+  display: flex;
+  justify-content: center;
+  margin: 0.5em;
+  height: 1em;
+  li {
+    display: flex;
+    align-items: center;
+  }
+}
+.box {
+  width: 1em;
+  height: 1em;
+  border: 1px solid black;
+  margin: 0.5em;
+}
