@@ -42,7 +42,7 @@ export class BaselineChartComponent implements OnInit, OnDestroy {
   private data = [[], [], [], [], [], [], [], []];
   private svg;
 
-  private margin = { top: 10, right: 30, bottom: 30, left: 60 };
+  private margin = { top: 10, right: 30, bottom: 60, left: 60 };
   private width = 840 - this.margin.left - this.margin.right;
   private height = 350 - this.margin.top - this.margin.bottom;
   private dotsContainer;
@@ -196,7 +196,7 @@ export class BaselineChartComponent implements OnInit, OnDestroy {
         .tickSize(-this.width)
     );
 
-    this.svg.append('text').attr('transform', `translate(${this.width / 2}, ${this.height + this.margin.bottom - 5})`).style('text-anchor', 'middle').text('Temporal (days)');
+    this.svg.append('text').attr('transform', `translate(${this.width / 2}, ${this.height + this.margin.bottom - 20})`).style('text-anchor', 'middle').text('Temporal (days)');
     this.svg.append('text').attr('transform', `rotate(-90)`).attr('y', -this.margin.left + 20).attr('x', -this.height / 2).style('text-anchor', 'middle').text('Perpendicular (m)');
 
     this.tooltip = d3.select('body').append('div')
