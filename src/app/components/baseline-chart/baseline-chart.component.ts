@@ -196,6 +196,9 @@ export class BaselineChartComponent implements OnInit, OnDestroy {
         .tickSize(-this.width)
     );
 
+    this.svg.append('text').attr('transform', `translate(${this.width / 2}, ${this.height + this.margin.bottom - 5})`).style('text-anchor', 'middle').text('Temporal (days)');
+    this.svg.append('text').attr('transform', `rotate(-90)`).attr('y', -this.margin.left + 20).attr('x', -this.height / 2).style('text-anchor', 'middle').text('Perpendicular (m)');
+
     this.tooltip = d3.select('body').append('div')
       .attr('class', 'tooltip')
       .style('opacity', 0);
