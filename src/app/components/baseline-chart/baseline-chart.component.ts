@@ -154,6 +154,7 @@ export class BaselineChartComponent implements OnInit, OnDestroy {
   private createSVG() {
     if (this.svg) {
       d3.selectAll('#baseline-chart > svg').remove();
+      d3.selectAll('.tooltip').remove();
     }
     this.height = this.baselineChart.nativeElement.offsetHeight - this.margin.top - this.margin.bottom;
     this.width = this.baselineChart.nativeElement.offsetWidth - this.margin.left - this.margin.right;

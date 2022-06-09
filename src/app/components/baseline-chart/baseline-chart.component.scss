@@ -30,3 +30,14 @@ ul {
   border: 1px solid black;
   margin: 0.5em;
 }
+
+@media (max-width: 500px) {
+  ul {
+    font-size: 0.8em;
+  }
+}
+@media (max-width: 340px) {
+  ul {
+    font-size: 0.6em;
+  }
+}
