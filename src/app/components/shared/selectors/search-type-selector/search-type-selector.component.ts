@@ -1,6 +1,7 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
 import { SubSink } from 'subsink';
 
+import { MatMenuTrigger } from '@angular/material/menu';
 
 import { Store } from '@ngrx/store';
 import { AppState } from '@store';
@@ -23,6 +24,8 @@ declare global {
   styleUrls: ['./search-type-selector.component.scss']
 })
 export class SearchTypeSelectorComponent implements OnInit, OnDestroy {
+  @ViewChild(MatMenuTrigger) trigger: MatMenuTrigger;
+
   public searchType: models.SearchType = models.SearchType.DATASET;
   public datasets = derivedDatasets;
   public breakpoint$ = this.screenSize.breakpoint$;
@@ -85,6 +88,11 @@ export class SearchTypeSelectorComponent implements OnInit, OnDestroy {
 
   showText() {
     this.isReadMore = !this.isReadMore;
+  }
+
+  public onOpenDocs(event) {
+    this.trigger.closeMenu();
+    event.stopPropagation();
   }
 
 
