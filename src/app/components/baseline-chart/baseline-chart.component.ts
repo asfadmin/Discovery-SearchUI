@@ -182,20 +182,11 @@ export class BaselineChartComponent implements OnInit, OnDestroy {
       .range([0, this.width]);
     this.xAxis = this.svg.append('g')
       .attr('transform', `translate(0, ${this.height})`)
-      .call(d3.axisBottom(this.x));
     this.y = d3.scaleLinear()
     .domain(this.yExtent ?? [1, 100])
       .range([this.height, 0]);
-    this.yAxis = this.svg.append('g').call(d3.axisLeft(this.y));
+    this.yAxis = this.svg.append('g');
 
-    this.xAxis.call(
-      d3.axisBottom(this.x)
-        .tickSize(-this.height)
-    );
-    this.yAxis.call(
-      d3.axisLeft(this.y)
-        .tickSize(-this.width)
-    );
 
     this.svg.append('text').attr('transform', `translate(${this.width / 2}, ${this.height + this.margin.bottom - 20})`).style('text-anchor', 'middle').text('Temporal (days)');
     this.svg.append('text').attr('transform', `rotate(-90)`).attr('y', -this.margin.left + 20).attr('x', -this.height / 2).style('text-anchor', 'middle').text('Perpendicular (m)');
@@ -230,15 +221,17 @@ export class BaselineChartComponent implements OnInit, OnDestroy {
   private updateChart() {
     const newX = this.currentTransform?.rescaleX(this.x) ?? this.x;
     const newY = this.currentTransform?.rescaleY(this.y) ?? this.y;
-
+    const smallChart = this.width > 400;
     this.xAxis.call(
       d3.axisBottom(newX)
         .tickSize(-this.height)
-    );
+        .ticks(smallChart ? 10 : 5,'s')
+    )
     this.yAxis.call(
       d3.axisLeft(newY)
         .tickSize(-this.width)
-    );
+        .ticks(smallChart ? 10 : 5,'s')
+    )
 
     this.dotsContainer.selectAll('circle').data(this.data[ChartDatasets.PRODUCTS]).join('circle')
       .attr('cx', d => newX(d.x))
