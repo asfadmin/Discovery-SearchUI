@@ -181,7 +181,7 @@ export class BaselineChartComponent implements OnInit, OnDestroy {
     .domain(this.xExtent ?? [1, 100])
       .range([0, this.width]);
     this.xAxis = this.svg.append('g')
-      .attr('transform', `translate(0, ${this.height})`)
+      .attr('transform', `translate(0, ${this.height})`);
     this.y = d3.scaleLinear()
     .domain(this.yExtent ?? [1, 100])
       .range([this.height, 0]);
@@ -225,13 +225,13 @@ export class BaselineChartComponent implements OnInit, OnDestroy {
     this.xAxis.call(
       d3.axisBottom(newX)
         .tickSize(-this.height)
-        .ticks(smallChart ? 10 : 5,'s')
-    )
+        .ticks(smallChart ? 10 : 5, 's')
+    );
     this.yAxis.call(
       d3.axisLeft(newY)
         .tickSize(-this.width)
-        .ticks(smallChart ? 10 : 5,'s')
-    )
+        .ticks(smallChart ? 10 : 5, 's')
+    );
 
     this.dotsContainer.selectAll('circle').data(this.data[ChartDatasets.PRODUCTS]).join('circle')
       .attr('cx', d => newX(d.x))
