@@ -27,7 +27,10 @@
           <button mat-menu-item (click)="onSetSearchType(searchTypes.BASELINE)" class="mat-menu-item mobile-search-item">Baseline</button>
           <button mat-menu-item (click)="onSetSearchType(searchTypes.SBAS)" class="mat-menu-item mobile-search-item">SBAS</button>
           <button mat-menu-item (click)="onSetSearchType(searchTypes.SARVIEWS_EVENTS)" class="mat-menu-item mobile-search-item">Event</button>
-          <button mat-menu-item (click)="onSetSearchType(searchTypes.CUSTOM_PRODUCTS)" [disabled]="!isLoggedIn" class="mat-menu-item mobile-search-item">On Demand Products</button>
+          <button mat-menu-item (click)="onSetSearchType(searchTypes.CUSTOM_PRODUCTS)"
+            [disabled]="!isLoggedIn" class="mat-menu-item mobile-search-item">
+            On Demand Products
+          </button>
       </div>
 
       <div *ngIf="(breakpoint$ | async) != breakpoints.MOBILE">
@@ -40,7 +43,7 @@
             <div class="item-content" [ngClass]="{'limitTextHeight': isReadMore}">
               Geographic search allows you to search for data based upon a geographic location.
             </div>
-            <mat-card-actions>
+            <mat-card-actions (click)="onOpenDocs($event)">
               <app-docs-modal class="info-text"
                               text="More info"
                               url="https://docs.asf.alaska.edu/vertex/manual/#geographic-search-options">
@@ -62,7 +65,7 @@
             <div class="item-content" [ngClass]="{'limitTextHeight': isReadMore}">
               List search allows you to enter or upload a list of scene or file names.
             </div>
-            <mat-card-actions>
+            <mat-card-actions (click)="onOpenDocs($event)">
               <app-docs-modal class="info-text"
                               text="More info"
                               url="https://docs.asf.alaska.edu/vertex/manual/#list-search-options">
@@ -85,7 +88,7 @@
               Baseline search provides visualization of perpendicular and temporal baseline data for a chosen
               reference scene.
             </div>
-            <mat-card-actions>
+            <mat-card-actions (click)="onOpenDocs($event)">
               <app-docs-modal class="info-text"
                               text="More info"
                               url="https://docs.asf.alaska.edu/vertex/manual/#baseline-search-options">
@@ -108,7 +111,7 @@
               SBAS search provides perpendicular and temporal baseline data, as well as scene pairs, for a chosen
               reference scene.
             </div>
-            <mat-card-actions>
+            <mat-card-actions (click)="onOpenDocs($event)">
               <app-docs-modal class="info-text"
                               text="More info"
                               url="https://docs.asf.alaska.edu/vertex/manual/#sbas-search-options">
@@ -130,7 +133,7 @@
             <div class="item-content" [ngClass]="{'limitTextHeight': isReadMore}">
               Event search harnesses the capabilities of SAR processing to monitor natural disasters.
             </div>
-            <mat-card-actions>
+            <mat-card-actions (click)="onOpenDocs($event)">
               <app-docs-modal class="info-text"
                               text="More info"
                               url="https://docs.asf.alaska.edu/vertex/manual/#event-search-options">
@@ -144,7 +147,9 @@
 
         <hr class="dataset-hr">
 
-        <div class="menu-item mat-menu-item" (click)="onSetSearchType(searchTypes.CUSTOM_PRODUCTS)">
+        <div class="menu-item mat-menu-item"
+          (click)="onSetSearchType(searchTypes.CUSTOM_PRODUCTS)"
+          [ngClass]="{'disable-search-type' : !isLoggedIn}">
           <div fxFlex="70%" class="menu-item-content">
             <div class="item-title">
               On Demand Products
@@ -152,10 +157,11 @@
             <div class="item-content" [ngClass]="{'limitTextHeight': isReadMore}">
               On Demand search allows you to view your submitted On Demand jobs.
             </div>
-            <mat-card-actions>
-              <app-docs-modal class="info-text"
-                              text="More info"
-                              url="https://docs.asf.alaska.edu/vertex/manual/#on-demand-products-search-options">
+            <mat-card-actions (click)="onOpenDocs($event)">
+              <app-docs-modal
+                 class="info-text"
+                 text="More info"
+                 url="https://docs.asf.alaska.edu/vertex/manual/#on-demand-products-search-options">
               </app-docs-modal>
             </mat-card-actions>
           </div>
@@ -174,12 +180,12 @@
             <div class="item-content" [ngClass]="{'limitTextHeight': isReadMore}">
               Derived datasets contain a collection of datasets available to view and download.
             </div>
-            <mat-card-actions>
-              <app-docs-modal class="info-text"
-                              text="More info"
-                              url="https://docs.asf.alaska.edu/vertex/manual/#area-of-interest-options">
-              </app-docs-modal>
-            </mat-card-actions>
+            <!--<mat-card-actions (click)="onOpenDocs($event)">-->
+              <!--<app-docs-modal class="info-text"-->
+                              <!--text="More info"-->
+                              <!--url="https://docs.asf.alaska.edu/vertex/manual/#area-of-interest-options">-->
+              <!--</app-docs-modal>-->
+            <!--</mat-card-actions>-->
           </div>
           <div fxFlex="30%" class="menu-item-aside">
             <span class="material-icons-outlined menu-item-icon">dataset_linked</span>
