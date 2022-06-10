@@ -38,3 +38,25 @@ export class ShortDateTimePipe implements PipeTransform {
     return dateUtc.format('MM/DD/YY, HH:mm:ss') + 'Z';
   }
 }
+
+@Pipe({
+  name: 'shortDateSeason'
+})
+export class ShortDateSeasonPipe implements PipeTransform {
+  transform(dayOfYear: number): string {
+    const date = new Date();
+    date.setFullYear(2019);
+
+    date.setMonth(0);
+    date.setDate(0);
+    const timeOfFirst = date.getTime(); // this is the time in milliseconds of 1/1/YYYY
+    const dayMilli = 1000 * 60 * 60 * 24;
+    const dayNumMilli = dayOfYear * dayMilli;
+    date.setTime(timeOfFirst + dayNumMilli);
+
+    return  date.toLocaleDateString('en-US', {
+      month: <'numeric'>'short', day: 'numeric'
+    });
+  }
+}
+

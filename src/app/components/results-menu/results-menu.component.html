@@ -6,18 +6,18 @@
     <div
       id="result-div"
       class="w100"
-      [resizeEdges]="{ top: !(imageViewerOpen$ | async) }"
+
       [ngClass]="{'mobile-size': breakpoint === breakpoints.MOBILE}"
       [style.height.px]="menuHeightPx"
       mwlResizable
       [validateResize]="validate"
       [enableGhostResize]="true"
-      [resizeCursorPrecision]="20"
+
       (resizeEnd)="onFinalResize()"
       (resizing)="onResizeEnd($event)">
 
       <div *ngIf="products.length !== 0 || !(noSarviewsEvents$ | async)" class="resize-controls">
-        <div mwlResizeHandle class="resize-handle-filler"></div>
+        <div mwlResizeHandle [resizeEdges]="{ top: !(imageViewerOpen$ | async) }" class="resize-handle-filler"></div>
       </div>
 
       <div [class.hidden]="(areNoScenes$ | async) && !(!(noSarviewsEvents$ | async) && searchType === SearchTypes.SARVIEWS_EVENTS)"

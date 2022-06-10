@@ -27,7 +27,7 @@ import { ResizableModule } from 'angular-resizable-element';
 import { DragDropModule } from '@angular/cdk/drag-drop';
 import { ProjectNameSelectorModule } from '@components/shared/selectors/project-name-selector';
 import { ConfirmationComponent } from './confirmation/confirmation.component';
-import { AngularResizedEventModule } from 'angular-resize-event';
+import { AngularResizeEventModule } from 'angular-resize-event';
 import { CreateSubscriptionModule } from '../../header/create-subscription';
 import {DocsModalModule} from '@components/shared/docs-modal';
 
@@ -56,7 +56,7 @@ import {DocsModalModule} from '@components/shared/docs-modal';
         ProcessingOptionsModule,
         MatDialogModule,
         ResizableModule,
-        AngularResizedEventModule,
+        AngularResizeEventModule,
         DragDropModule,
         MatTabsModule,
         MatMenuModule,

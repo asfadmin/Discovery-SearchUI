@@ -395,10 +395,6 @@ export class SceneDetailComponent implements OnInit, OnDestroy {
     );
   }
 
-  public getSarviewsURL() {
-    return this.sarviewsService.getSarviewsEventUrl(this.sarviewEvent?.event_id ?? '');
-  }
-
   public getEventID() {
     if (this.sarviewEvent.event_type === 'quake') {
       return (this.sarviewEvent as models.SarviewsQuakeEvent).usgs_event_id;
@@ -442,10 +438,6 @@ export class SceneDetailComponent implements OnInit, OnDestroy {
     ].forEach(action => this.store$.dispatch(action));
 
     this.store$.dispatch(new searchStore.MakeSearch());
-  }
-
-  public openInSarviews() {
-    window.open(this.getSarviewsURL());
   }
 
   private getBrowseCount() {

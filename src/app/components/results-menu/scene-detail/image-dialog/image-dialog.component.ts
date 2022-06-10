@@ -281,15 +281,6 @@ export class ImageDialogComponent implements OnInit, AfterViewInit, OnDestroy {
     this.notificationService.info( '', `Scene${content.length > 1 ? 's ' : ' '}Copied`);
   }
 
-
-  public OpenProductInSarviews() {
-    const url = this.sarviewsService.getSarviewsEventPinnedUrl(
-      this.sarviewsEvent.event_id,
-      [this.currentSarviewsProduct.product_id]
-      );
-    window.open(url);
-  }
-
   public getEventURL() {
     const isQuake = this.sarviewsEvent.event_type === 'quake';
 

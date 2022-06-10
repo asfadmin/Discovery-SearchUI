@@ -18,9 +18,9 @@
       </app-copy-to-clipboard>
       </mat-card-title>
       <mat-card-subtitle class="subtitle">
-        <a [href]="getSarviewsURL()" target="_blank" matTooltip="SARVIEWS Event Page" class="faint-text">
+        <span class="faint-text">
           SARVIEWS Event
-        </a> •
+        </span> •
         <span matTooltip="eventType">{{ sarviewEvent.event_type }}</span>
       </mat-card-subtitle>
     </mat-card-header>
@@ -345,21 +345,6 @@
       target="_blank"
     >
       List
-    </button>
-  </div>
-  <div
-  *ngIf="searchType === searchTypes.SARVIEWS_EVENTS"
-    matTooltip="Open this event on SARVIEWS"
-  >
-    <button
-      mat-stroked-button
-      color="primary"
-      [disabled]="!sarviewEvent"
-      (click)="openInSarviews()"
-      class="mini-toggle-button search-button"
-      target="_blank"
-    >
-      SARVIEWS
     </button>
   </div>
 </div>

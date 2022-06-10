@@ -128,7 +128,6 @@ export const routes = [
     services.UserDataService,
     services.SavedSearchService,
     services.UnzipApiService,
-    services.ChartService,
     services.ScenesService,
     services.SearchService,
     services.Hyp3Service,

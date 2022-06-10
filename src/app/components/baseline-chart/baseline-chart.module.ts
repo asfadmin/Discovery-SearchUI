@@ -4,6 +4,7 @@ import { CommonModule } from '@angular/common';
 import { MatSharedModule } from '@shared';
 
 import { BaselineChartComponent } from './baseline-chart.component';
+import { AngularResizeEventModule } from 'angular-resize-event';
 
 
 
@@ -11,7 +12,8 @@ import { BaselineChartComponent } from './baseline-chart.component';
   declarations: [BaselineChartComponent],
   imports: [
     CommonModule,
-    MatSharedModule
+    MatSharedModule,
+    AngularResizeEventModule
   ],
   exports: [
     BaselineChartComponent,
