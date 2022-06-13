@@ -41,7 +41,7 @@ export class SeasonSelectorComponent implements OnInit, OnDestroy {
     );
     this.subs.add(
       this.startDate$.pipe(
-        debounceTime(300)
+        debounceTime(500)
       ).subscribe(
         (startDate) => {
           const action = new filtersStore.SetSeasonStart(startDate);
@@ -51,7 +51,7 @@ export class SeasonSelectorComponent implements OnInit, OnDestroy {
     );
     this.subs.add(
       this.endDate$.pipe(
-        debounceTime(300)
+        debounceTime(500)
       ).subscribe(
         (endDate) => {
           const action = new filtersStore.SetSeasonEnd(endDate);
@@ -97,7 +97,7 @@ export class SeasonSelectorComponent implements OnInit, OnDestroy {
 
     if (which === 'start') {
       this.start = value;
-      this.endDate$.next(value);
+      this.startDate$.next(value);
     } else {
       this.end = value;
       this.endDate$.next(value);
