@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 
-import { combineLatest } from 'rxjs';
-import { tap } from 'rxjs/operators';
+import { combineLatest, Subject } from 'rxjs';
+import { debounceTime, tap } from 'rxjs/operators';
 import { SubSink } from 'subsink';
 
 import { Store } from '@ngrx/store';
@@ -21,7 +21,8 @@ export class SeasonSelectorComponent implements OnInit, OnDestroy {
   public start: number;
   public end: number;
   private subs = new SubSink();
-
+  private endDate$ = new Subject<number>();
+  private startDate$ = new Subject<number>();
   constructor(private store$: Store<AppState>) { }
 
   ngOnInit() {
@@ -36,6 +37,26 @@ export class SeasonSelectorComponent implements OnInit, OnDestroy {
         })
       ).subscribe(
         ([start, end]) => this.isSeasonalSearch = !!(start || end)
+      )
+    );
+    this.subs.add(
+      this.startDate$.pipe(
+        debounceTime(300)
+      ).subscribe(
+        (startDate) => {
+          const action = new filtersStore.SetSeasonStart(startDate);
+          this.store$.dispatch(action);
+        }
+      )
+    );
+    this.subs.add(
+      this.endDate$.pipe(
+        debounceTime(300)
+      ).subscribe(
+        (endDate) => {
+          const action = new filtersStore.SetSeasonEnd(endDate);
+          this.store$.dispatch(action);
+        }
       )
     );
   }
@@ -75,11 +96,14 @@ export class SeasonSelectorComponent implements OnInit, OnDestroy {
     value = value > 365 ? value % 365 : value;
 
     if (which === 'start') {
-      this.store$.dispatch(new filtersStore.SetSeasonStart(value));
+      this.start = value;
+      this.endDate$.next(value);
     } else {
-      this.store$.dispatch(new filtersStore.SetSeasonEnd(value));
+      this.end = value;
+      this.endDate$.next(value);
     }
   }
+
   ngOnDestroy() {
     this.subs.unsubscribe();
   }
