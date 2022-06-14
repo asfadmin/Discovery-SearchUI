@@ -290,6 +290,7 @@ export class SBASChartComponent implements OnInit, OnDestroy {
             self.setHoveredProduct(d3.select(this));
           }
           const date = p.metadata.date.toDate();
+          tooltip.interrupt();
           tooltip
             .style('opacity', .9);
           tooltip.html(`${self.tooltipDateFormat(date)}, ${p.metadata.perpendicular} meters`)
