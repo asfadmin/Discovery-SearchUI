@@ -237,9 +237,7 @@ export class BaselineChartComponent implements OnInit, OnDestroy {
       .attr('height', newY(this.data[ChartDatasets.MIN_CRITICAL][0].y) - newY(this.data[ChartDatasets.MAX_CRITICAL][1].y));
 
       if(this.hoveredElement) {
-        const aaa = this.hoveredElement.getBoundingClientRect();
-        this.tooltip.style('left', `${aaa.x + 10}px`)
-        .style('top', `${aaa.y - 20}px`);
+        this.updateTooltip();
       }
   }
   private updateCircles() {
@@ -267,15 +265,14 @@ export class BaselineChartComponent implements OnInit, OnDestroy {
           return '#808080';
         }
       })
-      .on('mouseover', function (event, d: Point) {
+      .on('mouseover', function (_event, d: Point) {
         self.hoveredElement = this;
         self.tooltip.interrupt();
         self.tooltip
           .style('opacity', .9);
-        self.tooltip.html(`${d.x} days, ${d.y} m`)
-          .style('left', `${event.pageX + 10}px`)
-          .style('top', `${event.pageY - 20}px`);
         d3.select(this).attr('r', 10);
+        self.tooltip.html(`${d.x} days, ${d.y} m`)
+        self.updateTooltip();
       })
       .on('mouseout', function (_event, d) {
         self.hoveredElement = null;
@@ -293,12 +290,17 @@ export class BaselineChartComponent implements OnInit, OnDestroy {
         self.store$.dispatch(action);
       });
   }
+  private updateTooltip() {
+    const bounding = this.hoveredElement.getBoundingClientRect();
+    let a = bounding.x > document.body.clientWidth - 90;
+    this.tooltip.style('left', `${bounding.x + (a ? -120 : 20)}px`)
+    .style('top', `${bounding.y - 10}px`);
+  }
   private setDataset(dataset: ChartDatasets, data) {
     this.data[dataset] = data;
     if (dataset === ChartDatasets.PRODUCTS || dataset === ChartDatasets.DOWNLOADS) {
       this.updateCircles();
     }
-    // this.updateChart();
   }
 
   private productToPoint = (product: CMRProduct) => {
