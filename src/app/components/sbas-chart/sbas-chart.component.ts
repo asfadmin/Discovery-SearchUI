@@ -49,11 +49,12 @@ export class SBASChartComponent implements OnInit, OnDestroy {
   private customPairs = [];
 
   private zoom;
-  private zoomBox;
 
   private queuedProduct;
   private queuedCircle;
   private hoveredCircle;
+  private tooltip;
+  private hoveredElement;
 
   private margin;
   private widthValue;
@@ -109,10 +110,10 @@ export class SBASChartComponent implements OnInit, OnDestroy {
     );
 
     this.zoomOut$.subscribe(_ => {
-      this.zoomBox.transition().call(this.zoom.scaleBy, .5);
+      this.scatter.transition().call(this.zoom.scaleBy, .5);
     });
     this.zoomIn$.subscribe(_ => {
-      this.zoomBox.transition().call(this.zoom.scaleBy, 2);
+      this.scatter.transition().call(this.zoom.scaleBy, 2);
     });
     this.zoomToFit$.subscribe(_ => {
       this.zoomToFit(0);
@@ -148,7 +149,7 @@ export class SBASChartComponent implements OnInit, OnDestroy {
     const tooltip = d3.select('body').append('div')
       .attr('class', 'tooltip')
       .style('opacity', 0);
-
+    this.tooltip = tooltip;
     this.chart.append('text')
       .attr('class', 'x label')
       .attr('text-anchor', 'end')
@@ -216,7 +217,7 @@ export class SBASChartComponent implements OnInit, OnDestroy {
       .extent( [ [0, 0], [this.widthValue, this.heightValue] ] )
       .on('end', this.updateChart);
 
-    this.zoomBox = this.scatter.append('rect')
+    this.scatter.append('rect')
       .attr('width', this.widthValue)
       .attr('height', this.heightValue - (this.margin.bottom + this.margin.top))
       .attr('cursor', 'pointer')
@@ -224,10 +225,10 @@ export class SBASChartComponent implements OnInit, OnDestroy {
       .style('pointer-events', 'all');
 
     if (this.currentTransform) {
-      this.zoomBox.call(this.zoom.transform, this.currentTransform);
+      this.scatter.call(this.zoom.transform, this.currentTransform);
     }
 
-    this.zoomBox.call(this.zoom);
+    this.scatter.call(this.zoom);
 
     this.line = d3.line<CMRProduct>()
       .x((product: CMRProduct) => this.x(product?.metadata.date.valueOf() ?? 0))
@@ -289,13 +290,13 @@ export class SBASChartComponent implements OnInit, OnDestroy {
           if (self.isAddingCustomPair) {
             self.setHoveredProduct(d3.select(this));
           }
+          self.hoveredElement = this;
           const date = p.metadata.date.toDate();
           tooltip.interrupt();
           tooltip
             .style('opacity', .9);
           tooltip.html(`${self.tooltipDateFormat(date)}, ${p.metadata.perpendicular} meters`)
-          .style('left', `${_event.pageX + 10}px`)
-          .style('top', `${_event.pageY - 20}px`);
+          self.updateTooltip();
         })
         .on('mouseleave', function(_) {
           if (self.isAddingCustomPair) {
@@ -361,6 +362,9 @@ export class SBASChartComponent implements OnInit, OnDestroy {
     if (this.selectedPair !== null && this.selectedPair[0] !== null && this.selectedPair[1] !== null) {
       this.setSelected(this.selectedPair);
     }
+    if (this.hoveredElement) {
+      this.updateTooltip();
+    }
   }
 
   private setHoveredProduct(newHovered): void {
@@ -373,7 +377,12 @@ export class SBASChartComponent implements OnInit, OnDestroy {
 
     this.hoveredCircle = newHovered;
   }
-
+  private updateTooltip() {
+    const bounding = this.hoveredElement.getBoundingClientRect();
+    let a = bounding.x > document.body.clientWidth - 200;
+    this.tooltip.style('left', `${bounding.x + (a ? -150 : 20)}px`)
+    .style('top', `${bounding.y - 10}px`);
+  }
   private clearHoveredProduct(): void {
     this.hoveredCircle
       .attr('fill', 'black');
@@ -472,10 +481,11 @@ export class SBASChartComponent implements OnInit, OnDestroy {
       .translate(translate[0], translate[1])
       .scale(scale);
 
-    this.zoomBox
+    this.scatter
       .transition()
       .duration(transitionDuration || 0) // milliseconds
       .call(this.zoom.transform, transform);
+
   }
 
   private tooltipDateFormat(date) {
