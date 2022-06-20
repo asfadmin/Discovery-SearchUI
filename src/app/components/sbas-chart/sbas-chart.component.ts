@@ -295,7 +295,7 @@ export class SBASChartComponent implements OnInit, OnDestroy {
           tooltip.interrupt();
           tooltip
             .style('opacity', .9);
-          tooltip.html(`${self.tooltipDateFormat(date)}, ${p.metadata.perpendicular} meters`)
+          tooltip.html(`${self.tooltipDateFormat(date)}, ${p.metadata.perpendicular} meters`);
           self.updateTooltip();
         })
         .on('mouseleave', function(_) {
@@ -379,7 +379,7 @@ export class SBASChartComponent implements OnInit, OnDestroy {
   }
   private updateTooltip() {
     const bounding = this.hoveredElement.getBoundingClientRect();
-    let a = bounding.x > document.body.clientWidth - 200;
+    const a = bounding.x > document.body.clientWidth - 200;
     this.tooltip.style('left', `${bounding.x + (a ? -150 : 20)}px`)
     .style('top', `${bounding.y - 10}px`);
   }
