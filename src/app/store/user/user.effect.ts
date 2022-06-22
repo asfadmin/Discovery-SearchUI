@@ -184,7 +184,6 @@ export class UserEffects {
   public loadSavedFiltersOfSearchType = createEffect(() => this.actions$.pipe(
     ofType<userActions.LoadFiltersPreset>(userActions.UserActionType.LOAD_FILTERS_PRESET),
     map(action => action.payload),
-    filter(filterPresetID => filterPresetID !== '' && filterPresetID !== undefined),
     withLatestFrom(this.store$.select(searchStore.getSearchType)),
     filter(([filterPresetID, searchtype]) => (filterPresetID === '' || !!filterPresetID)
       && searchtype !== SearchType.LIST
