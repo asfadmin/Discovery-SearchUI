@@ -236,7 +236,7 @@ export class BaselineChartComponent implements OnInit, OnDestroy {
       .attr('width', newX(this.data[ChartDatasets.MAX_CRITICAL][1].x) - newX(this.data[ChartDatasets.MIN_CRITICAL][0].x))
       .attr('height', newY(this.data[ChartDatasets.MIN_CRITICAL][0].y) - newY(this.data[ChartDatasets.MAX_CRITICAL][1].y));
 
-      if(this.hoveredElement) {
+      if (this.hoveredElement) {
         this.updateTooltip();
       }
   }
@@ -271,7 +271,7 @@ export class BaselineChartComponent implements OnInit, OnDestroy {
         self.tooltip
           .style('opacity', .9);
         d3.select(this).attr('r', 10);
-        self.tooltip.html(`${d.x} days, ${d.y} m`)
+        self.tooltip.html(`${d.x} days, ${d.y} m`);
         self.updateTooltip();
       })
       .on('mouseout', function (_event, d) {
@@ -292,7 +292,7 @@ export class BaselineChartComponent implements OnInit, OnDestroy {
   }
   private updateTooltip() {
     const bounding = this.hoveredElement.getBoundingClientRect();
-    let a = bounding.x > document.body.clientWidth - 90;
+    const a = bounding.x > document.body.clientWidth - 90;
     this.tooltip.style('left', `${bounding.x + (a ? -120 : 20)}px`)
     .style('top', `${bounding.y - 10}px`);
   }
