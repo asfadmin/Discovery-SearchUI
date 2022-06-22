@@ -48,7 +48,6 @@ export class BaselineChartComponent implements OnInit, OnDestroy {
   private dotsContainer;
   private criticalBoxContainer;
   private zoom;
-  private zoomBox;
   private currentTransform;
 
   private x;
@@ -61,6 +60,7 @@ export class BaselineChartComponent implements OnInit, OnDestroy {
 
   private tooltip;
 
+  private hoveredElement;
   private clipContainer;
   constructor(
     private store$: Store<AppState>,
@@ -171,12 +171,6 @@ export class BaselineChartComponent implements OnInit, OnDestroy {
       .attr('clip-path', 'url(#clip)');
     this.criticalBoxContainer = this.clipContainer.append('g').append('rect')
       .attr('fill', '#f2f2f2');
-    this.zoomBox = this.clipContainer.append('rect')
-      .attr('width', this.width)
-      .attr('height', this.height)
-      .attr('cursor', 'pointer')
-      .style('fill', 'transparent')
-      .style('pointer-events', 'all');
     this.x = d3.scaleLinear()
     .domain(this.xExtent ?? [1, 100])
       .range([0, this.width]);
@@ -205,7 +199,7 @@ export class BaselineChartComponent implements OnInit, OnDestroy {
       });
 
 
-    this.zoomBox.call(this.zoom);
+    this.clipContainer.call(this.zoom);
 
     this.svg.append('defs').append('SVG:clipPath')
       .attr('id', 'clip')
@@ -241,6 +235,10 @@ export class BaselineChartComponent implements OnInit, OnDestroy {
       .attr('y', newY(this.data[ChartDatasets.MAX_CRITICAL][1].y))
       .attr('width', newX(this.data[ChartDatasets.MAX_CRITICAL][1].x) - newX(this.data[ChartDatasets.MIN_CRITICAL][0].x))
       .attr('height', newY(this.data[ChartDatasets.MIN_CRITICAL][0].y) - newY(this.data[ChartDatasets.MAX_CRITICAL][1].y));
+
+      if (this.hoveredElement) {
+        this.updateTooltip();
+      }
   }
   private updateCircles() {
     const self = this;
@@ -267,15 +265,17 @@ export class BaselineChartComponent implements OnInit, OnDestroy {
           return '#808080';
         }
       })
-      .on('mouseover', function (event, d: Point) {
+      .on('mouseover', function (_event, d: Point) {
+        self.hoveredElement = this;
+        self.tooltip.interrupt();
         self.tooltip
           .style('opacity', .9);
-        self.tooltip.html(`${d.x} days, ${d.y} m`)
-          .style('left', `${event.pageX + 10}px`)
-          .style('top', `${event.pageY - 20}px`);
         d3.select(this).attr('r', 10);
+        self.tooltip.html(`${d.x} days, ${d.y} m`);
+        self.updateTooltip();
       })
       .on('mouseout', function (_event, d) {
+        self.hoveredElement = null;
         self.tooltip.transition()
           .duration(500)
           .style('opacity', 0);
@@ -290,12 +290,17 @@ export class BaselineChartComponent implements OnInit, OnDestroy {
         self.store$.dispatch(action);
       });
   }
+  private updateTooltip() {
+    const bounding = this.hoveredElement.getBoundingClientRect();
+    const a = bounding.x > document.body.clientWidth - 90;
+    this.tooltip.style('left', `${bounding.x + (a ? -120 : 20)}px`)
+    .style('top', `${bounding.y - 10}px`);
+  }
   private setDataset(dataset: ChartDatasets, data) {
     this.data[dataset] = data;
     if (dataset === ChartDatasets.PRODUCTS || dataset === ChartDatasets.DOWNLOADS) {
       this.updateCircles();
     }
-    // this.updateChart();
   }
 
   private productToPoint = (product: CMRProduct) => {
