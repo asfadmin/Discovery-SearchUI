@@ -123,8 +123,7 @@ export class FileContentsComponent implements OnInit, OnDestroy {
       name: node.name,
       productTypeDisplay,
       isUnzippedFile: true,
-      metadata: { ...this.product.metadata },
-      file: `${this.product.file}_${node.name}`
+      metadata: { ...this.product.metadata }
     };
   }
 
