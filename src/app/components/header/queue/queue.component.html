@@ -50,7 +50,7 @@
                 <div matLine
                      class="item-content"
                      [ngClass]="{'dl-list-item-mobile' : breakpoint === breakpoints.MOBILE }">
-                  <b *ngIf="((product.metadata.fileName | filterExtension) || product.name) as fileName">
+                  <b *ngIf="(((product.metadata.fileName || product.file) | filterExtension)) as fileName">
                       <span *ngIf="breakpoint !== breakpoints.MOBILE">{{ fileName| truncate: 50 }}</span>
                       <span *ngIf="breakpoint === breakpoints.MOBILE">{{ fileName | truncate: 10 }}</span>
                       <ng-container *ngIf="fileName.length > (breakpoint !== breakpoints.MOBILE ? 50 : 10)">
