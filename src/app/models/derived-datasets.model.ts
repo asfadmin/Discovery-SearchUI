@@ -19,7 +19,7 @@ This dataset is the first-of-its-kind spatial representation of multi-seasonal, 
   `,
   info_url: `${asfWebsite.home}/datasets/derived/global-seasonal-sentinel-1-interferometric-coherence-and-backscatter-dataset/`,
   download_url: `${asfWebsite.home}/datasets/derived/global-seasonal-sentinel-1-interferometric-coherence-and-backscatter-dataset/`,
-  picture: `assets/no-thumb.png`,
+  picture: `${pictureFolder}/global_winter.jpg`,
 }, {
   name: 'GISMO',
   info: 'The Global Ice-Sheet Mapping Observatory (GISMO) project mapped flight lines over the Greenland ice sheet.',
