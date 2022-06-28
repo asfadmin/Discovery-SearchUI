@@ -1,6 +1,6 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import * as uuid from 'uuid/v1';
+import {v1 as uuid} from 'uuid';
 
 import { combineLatest } from 'rxjs';
 import { map } from 'rxjs/operators';

@@ -1,5 +1,7 @@
-<div class="chart-wrapper">
-  <div class="chart-canvas">
-    <canvas id="baselineChart" #baselineChart></canvas>
-  </div>
-</div>
+<ul>
+    <li><div class="box" style="background: black;"></div>Reference</li>
+    <li><div class="box" style="background: red;"></div>Selected</li>
+    <li><div class="box" style="background: #215c8b;"></div>Downloads</li>
+    <li><div class="box" style="background: #f2f2f2;"></div>Critical Baseline</li>
+</ul>
+<div #baselineChart id="baseline-chart" (resized)="onResized()"></div>

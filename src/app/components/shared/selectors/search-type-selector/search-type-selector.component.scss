@@ -137,3 +137,7 @@
   visibility: hidden;
 }
 
+.disable-search-type {
+  pointer-events: none;
+  opacity: 0.5;
+}

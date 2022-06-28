@@ -53,7 +53,7 @@ export class AuthService {
       'scrollbars=yes, width=600, height= 600'
     );
 
-    const loginWindowClosed = new Subject();
+    const loginWindowClosed = new Subject<void>();
 
     return interval(500).pipe(
       takeUntil(loginWindowClosed),

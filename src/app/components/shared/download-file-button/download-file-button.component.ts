@@ -49,7 +49,10 @@ export class DownloadFileButtonComponent implements OnInit, AfterViewInit {
       this.fileName = downloadURL.substring(downloadURL.lastIndexOf('/') + 1);
     } else {
       this.url = this.product.downloadUrl;
-      this.fileName = this.product.file;
+      this.fileName = this.product.metadata.fileName ?? this.product.file;
+      if(this.product.productTypeDisplay.endsWith('GeoTIFF') && !this.fileName.endsWith('tif')){
+        this.fileName += '.tif';
+      }
     }
     this.subs.add(
       this.store$.select(queueStore.getDownloads).subscribe(

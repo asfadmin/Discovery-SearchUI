@@ -31,11 +31,14 @@ export class ProductService {
         }
 
         const thumbnail = (g.t ? g.t.replace('{gn}', g.gn) : g.t) || (!browses[0].includes('no-browse') ? browses[0].replace('{gn}', g.gn) : '/assets/no-thumb.png');
-
+        let filename = g.fn.replace('{gn}', g.gn);
+        if( !filename.includes(g.gn)){
+          filename = `${g.gn}-${filename}`;
+        }
         return ({
           name: g.gn,
           productTypeDisplay: g.ptd || g.gn,
-          file: g.fn.replace('{gn}', g.gn),
+          file: filename,
           id: g.pid.replace('{gn}', g.gn),
           downloadUrl: g.du.replace('{gn}', g.gn),
           bytes: g.s * 1000000,
