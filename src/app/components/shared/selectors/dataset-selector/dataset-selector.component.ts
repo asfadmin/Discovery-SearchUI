@@ -1,6 +1,8 @@
-import { Component, Input, Output, EventEmitter } from '@angular/core';
+import {Component, Input, Output, EventEmitter, ViewChild} from '@angular/core';
 
 import * as models from '@models';
+import { ScreenSizeService } from '@services';
+import { MatMenuTrigger } from '@angular/material/menu';
 
 // Declare GTM dataLayer array.
 declare global {
@@ -16,6 +18,15 @@ export class DatasetSelectorComponent {
   @Input() datasets: models.Dataset[];
   @Input() selected: string;
   @Output() selectedChange = new EventEmitter<string>();
+  @ViewChild(MatMenuTrigger) trigger: MatMenuTrigger;
+
+  public breakpoint$ = this.screenSize.breakpoint$;
+  public breakpoints = models.Breakpoints;
+  public isReadMore = true;
+
+  constructor(
+    private screenSize: ScreenSizeService,
+  ) {}
 
   public onSelectionChange(dataset: string): void {
     window.dataLayer = window.dataLayer || [];
@@ -25,4 +36,10 @@ export class DatasetSelectorComponent {
     });
     this.selectedChange.emit(dataset);
   }
+
+  public onOpenDocs(event) {
+    this.trigger.closeMenu();
+    event.stopPropagation();
+  }
+
 }

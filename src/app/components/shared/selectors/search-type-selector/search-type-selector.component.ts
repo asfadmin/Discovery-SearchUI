@@ -35,9 +35,6 @@ export class SearchTypeSelectorComponent implements OnInit, OnDestroy {
   private subs = new SubSink();
   public isReadMore = true;
 
-  showBase = false;
-  menuUp = false;
-
   constructor(
     private store$: Store<AppState>,
     private screenSize: ScreenSizeService
@@ -86,15 +83,10 @@ export class SearchTypeSelectorComponent implements OnInit, OnDestroy {
     window.open(url, '_blank');
   }
 
-  showText() {
-    this.isReadMore = !this.isReadMore;
-  }
-
   public onOpenDocs(event) {
     this.trigger.closeMenu();
     event.stopPropagation();
   }
-
 
   ngOnDestroy() {
     this.subs.unsubscribe();

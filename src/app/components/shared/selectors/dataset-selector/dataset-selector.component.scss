@@ -1,0 +1,163 @@
+@import "asf-theme";
+@import "deluxe-menu";
+
+.description-layout {
+  display: flex;
+}
+
+.menu-item-icon {
+  @include md-icon-size(100px);
+
+  margin-right: 0;
+  color: $asf-primary-dark;
+}
+
+.dataset-hr {
+  padding: 0;
+}
+
+.mat-menu-item {
+  padding: 0;
+}
+
+.menu-item {
+  margin: 0;
+}
+
+.menu-item-inner {
+  display: flex;
+  margin: 5px 15px;
+}
+
+.mat-card-actions {
+  padding: 0;
+  margin: 0;
+}
+
+.mat-button {
+  font-weight: 400;
+  font-style: italic;
+  color: $asf-blue;
+}
+
+.limitTextHeight {
+  height: 55px;
+  overflow: hidden;
+}
+
+.formField {
+  flex: 130px;
+}
+
+.selectOptions {
+  width: 230px;
+}
+
+.option-description {
+  text-wrap: normal;
+}
+
+.matOption {
+  height: auto !important;
+}
+
+.button-label {
+  color: rgba(0, 0, 0, 0.6);
+  font-size: 14px;
+  font-weight: 400;
+  transform:
+    translateY(-1.2812em)
+    scale(0.75)
+    perspective(100px)
+    tranlatez(0.0011px);
+}
+
+.button-menu-trigger {
+  padding: 0;
+}
+
+.button-text {
+  font-size: 16px;
+  font-weight: 400;
+  color: black;
+  text-align: left;
+  font-style: normal;
+  padding: 0;
+  margin: 0;
+  line-height: 29px;
+}
+
+.menu-button-wrapper {
+  display: block;
+}
+
+.hr-wrapper {
+  height: 1px;
+  transform: matrix(1, 0, 0, 1.0001, 0, 0);
+}
+
+.text-underline {
+  border: none;
+  height: 1px;
+  color: rgba(0, 0, 0, 0.42); /* old IE */
+  background-color: rgba(0, 0, 0, 0.42); /* Modern Browsers */
+}
+
+.mat-select-arrow {
+  width: 0;
+  height: 0;
+  border-left: 5px solid transparent;
+  border-right: 5px solid transparent;
+  border-top: 5px solid;
+  margin: 0 4px 3px 10px;
+  display: inline-flex;
+}
+
+.info-text {
+  font-style: italic;
+  font-size: 14px;
+  line-height: 30px;
+  margin: 5px 0 15px 0;
+}
+
+.item-title {
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+.mobile-search-item {
+  margin: 0;
+  padding: 3px 10px;
+  height: 40px;
+  line-height: 30px;
+}
+
+.blue-link {
+  color: $uaf-primary-blue;
+}
+
+.mobile-button-wrapper {
+  transform: scale(0.82);
+  margin-top: -6px;
+}
+
+::ng-deep.mat-menu-submenu-icon {
+  visibility: hidden;
+}
+
+.disable-search-type {
+  pointer-events: none;
+  opacity: 0.5;
+}
+
+::ng-deep.dataset__subName {
+  top: -10px !important;
+}
+
+.dataset-list {
+
+}
+
+.dataset-item {
+  margin: 16px 16px;
+}

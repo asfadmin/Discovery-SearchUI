@@ -46,4 +46,7 @@ export const ers = {
     displayName: 'ERS-2',
     apiValue: 'E2',
   }],
+  platformDesc: 'Primarily SAR imagery within the ASF and the McMurdo, Antarctica, station masks. ' +
+    'Data is suitable for interferometry.',
+  platformIcon: '/assets/icons/satellite_alt_black_48dp.svg',
 };
