@@ -184,7 +184,16 @@ export class UrlStateService {
         }))
       ),
       loader: this.loadSbasPairs
-    }];
+    },
+  {
+    name: 'selectedPair',
+    source: this.store$.select(scenesStore.getSelectedPairIds).pipe(
+      map(a => ({
+          selectedPair: a?.join(',')
+      })
+    )),
+    loader: this.loadSbasSelected
+  }];
   }
 
   private eventMonitorParameters(): models.UrlParameter[] {
@@ -689,7 +698,10 @@ export class UrlStateService {
 
     return new scenesStore.AddCustomPairs(pairs);
   }
-
+  private loadSbasSelected = (pair: string): Action => {
+    const pairIds = pair.split(',');
+    return new scenesStore.SetSelectedPair(pairIds);
+  }
   private loadEventID = (event_id: string): Action => new scenesStore.SetSelectedSarviewsEvent(event_id);
 
   private loadPinnedProducts = (pinnedProducts: string): Action => {
