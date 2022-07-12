@@ -25,12 +25,7 @@ enum Polarizations {
 })
 export class EventProductMetadataComponent implements OnInit {
   @Input() set product(value: models.SarviewsProduct) {
-    this.scenesMetadata = value.granules.map(
-      scene => ({
-        ...scene,
-        granule_name: scene.granule_name.replace('__', '_')
-      })
-    ).reduce((prev, curr) => [...prev, {
+    this.scenesMetadata = value.granules.reduce((prev, curr) => [...prev, {
       scene_name: curr.granule_name,
       beamMode: this.getBeamMode(curr.granule_name),
       polarization: this.getPolarization(curr.granule_name),
