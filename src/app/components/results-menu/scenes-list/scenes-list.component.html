@@ -46,6 +46,7 @@
       <ng-container *ngIf="searchType === SearchTypes.SBAS">
         <div *cdkVirtualFor="let pair of pairs">
           <app-pair
+            (togglePair)="onPairSelected($event)"
             [pair]="pair.pair"
             [hyp3able]="pair.hyp3able">
           </app-pair>

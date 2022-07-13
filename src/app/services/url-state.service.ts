@@ -747,22 +747,6 @@ export class UrlStateService {
 
   private loadOnlyActiveEvents = (activeOnly: string): Action => new filterStore.SetSarviewsEventActiveFilter(activeOnly === 'true');
 
-  // private loadIsImageBrowseOpen = (isImageBrowseOpen: string): Action => {
-  //   this.dialog.open(ImageDialogComponent, {
-  //     width: '99%',
-  //     maxWidth: '99%',
-  //     height: '99%',
-  //     maxHeight: '99%',
-  //     panelClass: 'image-dialog'
-  //   });
-
-  //   // this.subs.add(
-  //   //   dialogRef.afterClosed().subscribe(
-  //   //     _ => this.store$.dispatch(new uiStore.SetIsBrowseDialogOpen(false))
-  //   //   )
-  //   // );
-  //   return new uiStore.SetIsBrowseDialogOpen(!!isImageBrowseOpen);
-  // }
 
   private loadEventProductTypes = (types: string): Action => {
     const productTypes = types.split(',')

@@ -264,15 +264,25 @@ export class ScenesListComponent implements OnInit, OnDestroy, AfterContentInit 
     );
 
     this.subs.add(
-      combineLatest([
-      this.store$.select(scenesStore.getSelectedPair), this.pairService.pairs$()]).subscribe(data => {
-        const selectedPair = data[0];
-        const pairs = [...data[1].pairs, ...data[1].custom]
-        if(pairs.length > 0 && data[0]) {
-          let idx = pairs.findIndex(pair => pair[0] === selectedPair[0] && pair[1] === selectedPair[1]);
-          this.scrollTo(idx);
+      this.store$.select(scenesStore.getSelectedPair).pipe(
+        withLatestFrom(this.pairService.pairs$()),
+        delay(20),
+        filter(([selected, _]) => !!selected),
+        map(([selected, pairs]) => {
+          let pairsCombined = [...pairs.pairs, ...pairs.custom] 
+          const sceneIdx = pairsCombined.findIndex(pair => pair[0] === selected[0] && pair[1] === selected[1]);
+          return Math.max(0, sceneIdx - 1);
+        })
+      ).subscribe(
+        idx => {
+          if (!this.selectedFromList) {
+            this.scrollTo(idx);
+          }
+
+          this.selectedFromList = false;
         }
-      }));
+      )
+    );
 
   }
 
@@ -309,6 +319,10 @@ export class ScenesListComponent implements OnInit, OnDestroy, AfterContentInit 
   public onSceneSelected(id: string): void {
     this.selectedFromList = true;
     this.store$.dispatch(new scenesStore.SetSelectedScene(id));
+  }
+  public onPairSelected(pair: string[]) {
+    this.selectedFromList = true;
+    this.store$.dispatch(new scenesStore.SetSelectedPair(pair));
   }
 
   public onToggleScene(groupId: string): void {

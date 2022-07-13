@@ -415,7 +415,6 @@ export class SBASChartComponent implements OnInit, OnDestroy {
     this.selectedPair = pair;
 
     this.scatter.select('.selected-line').remove();
-
     this.scatter.append('path')
       .attr('class', 'selected-line')
       .attr('stroke', 'red')
