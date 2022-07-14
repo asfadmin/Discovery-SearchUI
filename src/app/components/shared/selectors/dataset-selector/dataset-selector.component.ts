@@ -3,6 +3,7 @@ import {Component, Input, Output, EventEmitter, ViewChild} from '@angular/core';
 import * as models from '@models';
 import { ScreenSizeService } from '@services';
 import { MatMenuTrigger } from '@angular/material/menu';
+import {DateRange} from '@models';
 
 // Declare GTM dataLayer array.
 declare global {
@@ -32,9 +33,30 @@ export class DatasetSelectorComponent {
     window.dataLayer = window.dataLayer || [];
     window.dataLayer.push({
       'event': 'dataset-selected',
-      'dataset': dataset
+      'dataset': dataset,
     });
     this.selectedChange.emit(dataset);
+  }
+
+  public datasetNameLookup(datasetId: string): string {
+    let datasetName = '';
+    this.datasets.forEach( (dataset) => {
+      if (dataset.id === datasetId) {
+        datasetName = dataset.name;
+      }
+    });
+    return datasetName;
+  }
+
+  public prettyDateRange(dateRange: DateRange): string {
+    const { start, end } = dateRange;
+
+    const startYear = start.getFullYear();
+    const endYear = (!end) ? 'Present' : end.getFullYear();
+
+    return startYear === endYear ?
+      `${startYear}`.trim() :
+      `${startYear} to ${endYear}`.trim();
   }
 
   public onOpenDocs(event) {
