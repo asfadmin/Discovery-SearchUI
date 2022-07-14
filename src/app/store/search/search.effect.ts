@@ -27,7 +27,7 @@ import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import WKT from 'ol/format/WKT';
 import GeoJSON from 'ol/format/GeoJSON';
 import VectorSource from 'ol/source/Vector';
-import { ClearScenes, getScenes, ScenesActionType, SetSarviewsEvents } from '@store/scenes';
+import { ClearScenes, getAreResultsLoaded, getScenes, ScenesActionType, SetSarviewsEvents } from '@store/scenes';
 import { SearchType } from '@models';
 import { Feature } from 'ol';
 import Geometry from 'ol/geom/Geometry';
@@ -187,6 +187,7 @@ export class SearchEffects {
       action.payload === models.SearchType.DERIVED_DATASETS ?
         new uiStore.OpenFiltersMenu() :
         new uiStore.CloseFiltersMenu(),
+        new SetSearchOutOfDate(false)
     ]),
     catchError(
       _ => of(new SearchError(`Error loading search results`))
@@ -207,7 +208,8 @@ export class SearchEffects {
        filter(shouldNotify => shouldNotify),
        withLatestFrom(this.store$.select(getSearchType)),
        withLatestFrom(this.store$.select(getareResultsOutOfDate)),
-       filter(([[_, searchtype], outOfdate]) => !outOfdate && searchtype === models.SearchType.DATASET),
+       withLatestFrom(this.store$.select(getAreResultsLoaded)),
+       filter(([[[_, searchtype], outOfdate], loaded]) => !outOfdate && searchtype === models.SearchType.DATASET && loaded),
   ).pipe(
     map(_ => new SetSearchOutOfDate(true))
   ));
