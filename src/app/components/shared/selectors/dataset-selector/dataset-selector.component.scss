@@ -10,7 +10,7 @@ $light-grey: rgba(0, 0, 0, 0.6);
 .menu-item-icon {
   @include md-icon-size(100px);
   font-size: 24px !important;
-  height: 0 !important;
+  height: 47px !important;
   margin-right: 0;
   color: $asf-primary-dark;
 }

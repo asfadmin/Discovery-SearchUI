@@ -61,9 +61,9 @@
                     <div class="dataset-date-range">
                       {{ prettyDateRange(dataset.date) }}
                     </div>
-                    <span class="material-icons-outlined menu-item-icon">
+                    <div class="material-icons-outlined menu-item-icon">
                       <img src="{{ dataset.platformIcon }}" width="53" height="53">
-                    </span>
+                    </div>
                     <div *ngIf="dataset.source !== null" class="dataset-source">
                       <a href="{{ dataset.source.url }}" target="_blank">
                         {{ dataset.source.name }}
