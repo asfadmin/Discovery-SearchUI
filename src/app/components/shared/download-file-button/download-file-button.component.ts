@@ -50,7 +50,7 @@ export class DownloadFileButtonComponent implements OnInit, AfterViewInit {
     } else {
       this.url = this.product.downloadUrl;
       this.fileName = this.product.metadata.fileName ?? this.product.file;
-      if(this.product.productTypeDisplay.endsWith('GeoTIFF') && !this.fileName.endsWith('tif')){
+      if (this.product.productTypeDisplay.endsWith('GeoTIFF') && !this.fileName.endsWith('tif')) {
         this.fileName += '.tif';
       }
     }
