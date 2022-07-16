@@ -263,8 +263,6 @@ export class UserEffects {
 
       return search;
     });
-
-    return [];
   }
 
   private loadIfDate(date: string | null): Date | null {

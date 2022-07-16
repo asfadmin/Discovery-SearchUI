@@ -5,12 +5,13 @@ import { delay, tap, catchError } from 'rxjs/operators';
 
 import { SubSink } from 'subsink';
 
-import { AsfApiService, NotificationService, MapService, WktService } from '@services';
+import { AsfApiService, NotificationService, MapService, WktService, ScreenSizeService } from '@services';
 import { HttpErrorResponse } from '@angular/common/http';
 import { Store } from '@ngrx/store';
 import { AppState } from '@store';
 import { DrawNewPolygon } from '@store/map';
 
+import * as models from '@models';
 
 enum FileErrors {
   TOO_LARGE = 'Too large',
@@ -33,11 +34,15 @@ export class FileUploadDialogComponent implements OnInit, OnDestroy {
   public isFileError = false;
   private subs = new SubSink();
 
+  public breakpoints = models.Breakpoints;
+  public breakpoint$ = this.screenSize.breakpoint$;
+
   constructor(
     private mapService: MapService,
     private asfApiService: AsfApiService,
     private notificationService: NotificationService,
     private wktService: WktService,
+    private screenSize: ScreenSizeService,
     private store$: Store<AppState>
   ) {}
 
