@@ -246,6 +246,9 @@ export class SceneDetailComponent implements OnInit, OnDestroy {
   }
 
   public hasBaselineProductType(): boolean {
+    if (this.dataset.id === 'ALOS') {
+      return false;
+    }
     if (!this.selectedProducts || this.dataset.id !== models.sentinel_1.id) {
       return true;
     } else {
