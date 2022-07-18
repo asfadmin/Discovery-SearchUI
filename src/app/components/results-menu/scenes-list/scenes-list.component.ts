@@ -130,6 +130,7 @@ export class ScenesListComponent implements OnInit, OnDestroy, AfterContentInit 
         })
       ).subscribe(
         idx => {
+          console.log('aaaihavsdibqwebuiqwbeoqwoubh')
           if (!this.selectedFromList) {
             this.scrollTo(idx);
           }
@@ -299,7 +300,28 @@ export class ScenesListComponent implements OnInit, OnDestroy, AfterContentInit 
       }),
       first(),
       map(selected => {
+        
         const sceneIdx = selected.events.findIndex(event => event.event_id === selected.selectedEvent.event_id);
+        return Math.max(0, sceneIdx - 1);
+      })
+    ).subscribe(
+      idx => {
+        if (!this.selectedFromList) {
+          this.scrollTo(idx);
+        }
+      }
+    )
+    );
+    this.subs.add(this.pairService.pairs$().pipe(
+      filter(loaded => !!loaded),
+      withLatestFrom(this.store$.select(scenesStore.getSelectedPair)),
+      map(([pairs, selected]) => ({ selectedPair: selected, pairs })),
+      delay(400),
+      filter(selected => !!selected.selectedPair),
+      first(),
+      map(selected => {
+        let pairsCombined = [...selected.pairs.pairs, ...selected.pairs.custom] 
+        const sceneIdx = pairsCombined.findIndex(pair => pair[0] === selected.selectedPair[0] && pair[1] === selected.selectedPair[1]);
         return Math.max(0, sceneIdx - 1);
       })
     ).subscribe(
