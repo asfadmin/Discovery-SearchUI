@@ -15,6 +15,9 @@ import { MapService } from './map/map.service';
 import { RangeService } from './range.service';
 
 import * as models from '@models';
+import { DrawService } from './map/draw.service';
+
+import {transform} from 'ol/proj';
 
 @Injectable({
   providedIn: 'root'
@@ -24,6 +27,7 @@ export class SearchParamsService {
     private store$: Store<AppState>,
     private mapService: MapService,
     private rangeService: RangeService,
+    private drawService: DrawService
   ) { }
 
   public getParams(): Observable<any> {
@@ -34,7 +38,7 @@ export class SearchParamsService {
       withLatestFrom(this.listParam$()),
       withLatestFrom(this.filterSearchParams$()),
       map(
-        ([[[searchType, baselineParams], listParam], filterParams ]) => {
+        ([[[searchType, baselineParams], listParam], filterParams]) => {
           switch (searchType) {
             case models.SearchType.LIST: {
               return listParam;
@@ -67,7 +71,7 @@ export class SearchParamsService {
       this.filterSearchParams$()
     ).pipe(
       map(
-        ([searchType, listParam, baselineParams, filterParams ]) => {
+        ([searchType, listParam, baselineParams, filterParams]) => {
           switch (searchType) {
             case models.SearchType.LIST: {
               return listParam;
@@ -113,7 +117,7 @@ export class SearchParamsService {
     ).pipe(
       map((params: any[]) => params
         .reduce(
-          (total, param) =>  ({...total, ...param}),
+          (total, param) => ({ ...total, ...param }),
           {})
       )
     );
@@ -143,10 +147,27 @@ export class SearchParamsService {
   private searchPolygon$() {
     return combineLatest(
       this.mapService.searchPolygon$.pipe(startWith(null)),
-      this.store$.select(filterStore.getShouldOmitSearchPolygon)
+      this.store$.select(filterStore.getShouldOmitSearchPolygon),
+      this.drawService.polygon$
     ).pipe(
-      map(([polygon, shouldOmitGeoRegion]) => shouldOmitGeoRegion ? null : polygon),
-      map(polygon => ({ intersectsWith: polygon }))
+      map(([polygon, shouldOmitGeoRegion, asdf]) => shouldOmitGeoRegion ? null : { polygon: polygon, thing: asdf }),
+      map(polygon => {
+        let feature = polygon.thing;
+        let points = feature?.getGeometry().getCoordinates();
+
+        if (points && points[0].length === 5) {
+          points = points[0].slice(0,4);
+          let extent = [...points[0], ...points[2]];
+          if(JSON.stringify(feature.getGeometry().getExtent()) === JSON.stringify(extent)){
+            points = points.map((x) => transform(x, 'EPSG:3857', 'EPSG:4326'));
+            points = [...points[0], ...points[2]];
+            return {bbox: points.join(',')};
+          }
+        }
+
+
+        return { intersectsWith: polygon };
+      })
     );
   }
 
@@ -157,9 +178,10 @@ export class SearchParamsService {
     ).pipe(
       map(([dataset, subtypes]) => {
         return subtypes.length > 0 ?
-          { platform: subtypes
-            .map(subtype => subtype.apiValue)
-            .join(',')
+          {
+            platform: subtypes
+              .map(subtype => subtype.apiValue)
+              .join(',')
           } :
           { ...dataset.apiValue };
       })
@@ -170,7 +192,7 @@ export class SearchParamsService {
     return this.store$.select(filterStore.getDateRange).pipe(
       map(range => {
         return [range.start, range.end]
-          .map(date => !!date ? moment.utc( date ).format() : date);
+          .map(date => !!date ? moment.utc(date).format() : date);
       }),
       map(([start, end]) => ({ start, end })),
     );
@@ -181,7 +203,7 @@ export class SearchParamsService {
       map(range => {
         return [range.start, range.end];
       }),
-      map(([start, end]) => ({ season: start && end ? `${start},${end}` : null}))
+      map(([start, end]) => ({ season: start && end ? `${start},${end}` : null }))
     );
   }
 
@@ -204,7 +226,7 @@ export class SearchParamsService {
       map(types => types.map(type => type.apiValue)),
       map(
         types => Array.from(new Set(types))
-        .join(',')
+          .join(',')
       ),
       map(types => ({ processinglevel: types }))
     );
@@ -214,7 +236,7 @@ export class SearchParamsService {
     return this.store$.select(filterStore.getBeamModes).pipe(
       map(
         types => Array.from(new Set(types))
-        .join(',')
+          .join(',')
       ),
       map(beamModes => ({ beamSwath: beamModes }))
     );
@@ -224,7 +246,7 @@ export class SearchParamsService {
     return this.store$.select(filterStore.getPolarizations).pipe(
       map(
         polarizations => Array.from(new Set(polarizations))
-        .join(',')
+          .join(',')
       ),
       map(polarization => ({ polarization })),
     );
