@@ -166,7 +166,7 @@ export class SearchParamsService {
         }
 
 
-        return { intersectsWith: polygon };
+        return { intersectsWith: polygon.polygon };
       })
     );
   }
