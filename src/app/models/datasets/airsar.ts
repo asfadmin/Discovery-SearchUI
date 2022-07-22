@@ -50,4 +50,7 @@ export const airsar = {
     'Full'
   ],
   subtypes: [],
+  platformDesc: 'AIRSAR was an all-weather imaging tool able to penetrate through clouds and collect data at night. The longer wavelengths ' +
+    'could also penetrate into the forest canopy and...',
+  platformIcon: '/assets/icons/flight_black_48dp.svg',
 };

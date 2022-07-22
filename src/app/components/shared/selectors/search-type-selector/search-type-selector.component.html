@@ -5,7 +5,7 @@
     <div class="button-label">Search Type</div>
     <div>
       <button
-        [matMenuTriggerFor]="searchTypeMenu"
+        [matMenuTriggerFor]="searchTypeMenu" (onMenuOpen)="onSearchTypeMenuOpen()"
         class="button-menu-trigger" color="basic"
         matTooltip="{{ searchType }}"
         mat-button>
@@ -20,7 +20,7 @@
 
   <div class="gtm-search-type-selector" fxFlex="nogrow">
 
-    <mat-menu #searchTypeMenu="matMenu" [(ngModel)]="searchType" ngDefaultControl>
+    <mat-menu #searchTypeMenu="matMenu" [(ngModel)]="searchType" id="searchMenu">
       <div *ngIf="(breakpoint$ | async) === breakpoints.MOBILE">
           <button mat-menu-item (click)="onSetSearchType(searchTypes.DATASET)" class="mat-menu-item mobile-search-item">Geographic</button>
           <button mat-menu-item (click)="onSetSearchType(searchTypes.LIST)" class="mat-menu-item mobile-search-item">List</button>
@@ -35,113 +35,124 @@
 
       <div *ngIf="(breakpoint$ | async) != breakpoints.MOBILE">
 
-        <div class="menu-item mat-menu-item" (click)="onSetSearchType(searchTypes.DATASET)">
-          <div fxFlex="70%" class="menu-item-content">
-            <div class="item-title">
-              Geographic
+        <div id="firstItem" class="menu-item mat-menu-item" aria-selected="true"
+             (click)="onSetSearchType(searchTypes.DATASET)">
+          <div class="menu-item-inner">
+            <div fxFlex="75%" class="menu-item-content">
+              <div class="item-title">
+                Geographic
+              </div>
+              <div class="item-content" [ngClass]="{'limitTextHeight': isReadMore}">
+                Geographic search allows you to search for data based upon a geographic location.
+              </div>
+              <mat-card-actions (click)="onOpenDocs($event)">
+                <app-docs-modal class="info-text"
+                                text="More info"
+                                url="https://docs.asf.alaska.edu/vertex/manual/#geographic-search-options">
+                </app-docs-modal>
+              </mat-card-actions>
             </div>
-            <div class="item-content" [ngClass]="{'limitTextHeight': isReadMore}">
-              Geographic search allows you to search for data based upon a geographic location.
+            <div fxFlex="25%" class="menu-item-aside">
+              <span class="material-icons-outlined menu-item-icon">travel_explore</span>
             </div>
-            <mat-card-actions (click)="onOpenDocs($event)">
-              <app-docs-modal class="info-text"
-                              text="More info"
-                              url="https://docs.asf.alaska.edu/vertex/manual/#geographic-search-options">
-              </app-docs-modal>
-            </mat-card-actions>
-          </div>
-          <div fxFlex="30%" class="menu-item-aside">
-            <span class="material-icons-outlined menu-item-icon">travel_explore</span>
           </div>
         </div>
 
         <hr class="dataset-hr">
 
         <div class="menu-item mat-menu-item" (click)="onSetSearchType(searchTypes.LIST)">
-          <div fxFlex="70%" class="menu-item-content">
-            <div class="item-title">
-              List
+          <div class="menu-item-inner">
+            <div fxFlex="75%" class="menu-item-content">
+              <div class="item-title">
+                List
+              </div>
+              <div class="item-content" [ngClass]="{'limitTextHeight': isReadMore}">
+                List search allows you to enter or upload a list of scene or file names.
+              </div>
+              <mat-card-actions (click)="onOpenDocs($event)">
+                <app-docs-modal class="info-text"
+                                text="More info"
+                                url="https://docs.asf.alaska.edu/vertex/manual/#list-search-options">
+                </app-docs-modal>
+              </mat-card-actions>
             </div>
-            <div class="item-content" [ngClass]="{'limitTextHeight': isReadMore}">
-              List search allows you to enter or upload a list of scene or file names.
+            <div fxFlex="25%" class="menu-item-aside">
+              <span class="material-icons-outlined menu-item-icon">list</span>
             </div>
-            <mat-card-actions (click)="onOpenDocs($event)">
-              <app-docs-modal class="info-text"
-                              text="More info"
-                              url="https://docs.asf.alaska.edu/vertex/manual/#list-search-options">
-              </app-docs-modal>
-            </mat-card-actions>
-          </div>
-          <div fxFlex="30%" class="menu-item-aside">
-            <span class="material-icons-outlined menu-item-icon">list</span>
           </div>
         </div>
 
         <hr class="dataset-hr">
 
         <div class="menu-item mat-menu-item" (click)="onSetSearchType(searchTypes.BASELINE)">
-          <div fxFlex="70%" class="menu-item-content">
-            <div class="item-title">
-              Baseline
+          <div class="menu-item-inner">
+            <div fxFlex="75%" class="menu-item-content">
+              <div class="item-title">
+                Baseline
+              </div>
+              <div class="item-content" [ngClass]="{'limitTextHeight': isReadMore}">
+                Baseline search provides visualization of perpendicular and temporal baseline data for a chosen
+                reference scene.
+              </div>
+              <mat-card-actions (click)="onOpenDocs($event)">
+                <app-docs-modal class="info-text"
+                                text="More info"
+                                url="https://docs.asf.alaska.edu/vertex/manual/#baseline-search-options">
+                </app-docs-modal>
+              </mat-card-actions>
             </div>
-            <div class="item-content" [ngClass]="{'limitTextHeight': isReadMore}">
-              Baseline search provides visualization of perpendicular and temporal baseline data for a chosen
-              reference scene.
+            <div fxFlex="25%" class="menu-item-aside">
+              <img src="assets/icons/baseline-chart.jpg" class="menu-item-icon">
             </div>
-            <mat-card-actions (click)="onOpenDocs($event)">
-              <app-docs-modal class="info-text"
-                              text="More info"
-                              url="https://docs.asf.alaska.edu/vertex/manual/#baseline-search-options">
-              </app-docs-modal>
-            </mat-card-actions>
-          </div>
-          <div fxFlex="30%" class="menu-item-aside">
-            <img src="assets/icons/baseline-chart.jpg" class="menu-item-icon">
           </div>
         </div>
 
         <hr class="dataset-hr">
 
         <div class="menu-item mat-menu-item" (click)="onSetSearchType(searchTypes.SBAS)">
-          <div fxFlex="70%" class="menu-item-content">
-            <div class="item-title">
-              SBAS
+          <div class="menu-item-inner">
+            <div fxFlex="75%" class="menu-item-content">
+              <div class="item-title">
+                SBAS
+              </div>
+              <div class="item-content" [ngClass]="{'limitTextHeight': isReadMore}">
+                SBAS search provides perpendicular and temporal baseline data, as well as scene pairs, for a chosen
+                reference scene.
+              </div>
+              <mat-card-actions (click)="onOpenDocs($event)">
+                <app-docs-modal class="info-text"
+                                text="More info"
+                                url="https://docs.asf.alaska.edu/vertex/manual/#sbas-search-options">
+                </app-docs-modal>
+              </mat-card-actions>
             </div>
-            <div class="item-content" [ngClass]="{'limitTextHeight': isReadMore}">
-              SBAS search provides perpendicular and temporal baseline data, as well as scene pairs, for a chosen
-              reference scene.
+            <div fxFlex="25%" class="menu-item-aside">
+              <img src="assets/icons/sbas-chart.jpg" class="menu-item-icon">
             </div>
-            <mat-card-actions (click)="onOpenDocs($event)">
-              <app-docs-modal class="info-text"
-                              text="More info"
-                              url="https://docs.asf.alaska.edu/vertex/manual/#sbas-search-options">
-              </app-docs-modal>
-            </mat-card-actions>
-          </div>
-          <div fxFlex="30%" class="menu-item-aside">
-            <img src="assets/icons/sbas-chart.jpg" class="menu-item-icon">
           </div>
         </div>
 
         <hr class="dataset-hr">
 
         <div class="menu-item mat-menu-item" (click)="onSetSearchType(searchTypes.SARVIEWS_EVENTS)">
-          <div fxFlex="70%" class="menu-item-content">
-            <div class="item-title">
-              Event
+          <div class="menu-item-inner">
+            <div fxFlex="75%" class="menu-item-content">
+              <div class="item-title">
+                Event
+              </div>
+              <div class="item-content" [ngClass]="{'limitTextHeight': isReadMore}">
+                Event search harnesses the capabilities of SAR processing to monitor natural disasters.
+              </div>
+              <mat-card-actions (click)="onOpenDocs($event)">
+                <app-docs-modal class="info-text"
+                                text="More info"
+                                url="https://docs.asf.alaska.edu/vertex/manual/#event-search-options">
+                </app-docs-modal>
+              </mat-card-actions>
             </div>
-            <div class="item-content" [ngClass]="{'limitTextHeight': isReadMore}">
-              Event search harnesses the capabilities of SAR processing to monitor natural disasters.
+            <div fxFlex="25%" class="menu-item-aside">
+              <span class="material-icons-outlined menu-item-icon">volcano</span>
             </div>
-            <mat-card-actions (click)="onOpenDocs($event)">
-              <app-docs-modal class="info-text"
-                              text="More info"
-                              url="https://docs.asf.alaska.edu/vertex/manual/#event-search-options">
-              </app-docs-modal>
-            </mat-card-actions>
-          </div>
-          <div fxFlex="30%" class="menu-item-aside">
-            <span class="material-icons-outlined menu-item-icon">volcano</span>
           </div>
         </div>
 
@@ -150,45 +161,49 @@
         <div class="menu-item mat-menu-item"
           (click)="onSetSearchType(searchTypes.CUSTOM_PRODUCTS)"
           [ngClass]="{'disable-search-type' : !isLoggedIn}">
-          <div fxFlex="70%" class="menu-item-content">
-            <div class="item-title">
-              On Demand Products
+          <div class="menu-item-inner">
+            <div fxFlex="75%" class="menu-item-content">
+              <div class="item-title">
+                On Demand Products
+              </div>
+              <div class="item-content" [ngClass]="{'limitTextHeight': isReadMore}">
+                On Demand search allows you to view your submitted On Demand jobs.
+              </div>
+              <mat-card-actions (click)="onOpenDocs($event)">
+                <app-docs-modal
+                  class="info-text"
+                  text="More info"
+                  url="https://docs.asf.alaska.edu/vertex/manual/#on-demand-products-search-options">
+                </app-docs-modal>
+              </mat-card-actions>
             </div>
-            <div class="item-content" [ngClass]="{'limitTextHeight': isReadMore}">
-              On Demand search allows you to view your submitted On Demand jobs.
+            <div fxFlex="25%" class="menu-item-aside">
+              <img src="assets/asf-logos/HyP3-graphic-only.png" class="menu-item-icon">
             </div>
-            <mat-card-actions (click)="onOpenDocs($event)">
-              <app-docs-modal
-                 class="info-text"
-                 text="More info"
-                 url="https://docs.asf.alaska.edu/vertex/manual/#on-demand-products-search-options">
-              </app-docs-modal>
-            </mat-card-actions>
-          </div>
-          <div fxFlex="30%" class="menu-item-aside">
-            <img src="assets/asf-logos/HyP3-graphic-only.png" class="menu-item-icon">
           </div>
         </div>
 
         <hr class="dataset-hr">
 
         <div mat-menu-item class="menu-item mat-menu-item" [matMenuTriggerFor]="derivedDatasetMenu">
-          <div fxFlex="70%" class="menu-item-content">
-            <div class="item-title">
-              Derived Datasets
-            </div>
-            <div class="item-content" [ngClass]="{'limitTextHeight': isReadMore}">
-              Derived datasets contain a collection of datasets available to view and download.
-            </div>
-            <!--<mat-card-actions (click)="onOpenDocs($event)">-->
+          <div class="menu-item-inner">
+            <div fxFlex="75%" class="menu-item-content">
+              <div class="item-title">
+                Derived Datasets
+              </div>
+              <div class="item-content" [ngClass]="{'limitTextHeight': isReadMore}">
+                Derived datasets contain a collection of datasets available to view and download.
+              </div>
+              <!--<mat-card-actions (click)="onOpenDocs($event)">-->
               <!--<app-docs-modal class="info-text"-->
-                              <!--text="More info"-->
-                              <!--url="https://docs.asf.alaska.edu/vertex/manual/#area-of-interest-options">-->
+              <!--text="More info"-->
+              <!--url="https://docs.asf.alaska.edu/vertex/manual/#area-of-interest-options">-->
               <!--</app-docs-modal>-->
-            <!--</mat-card-actions>-->
-          </div>
-          <div fxFlex="30%" class="menu-item-aside">
-            <span class="material-icons-outlined menu-item-icon">dataset_linked</span>
+              <!--</mat-card-actions>-->
+            </div>
+            <div fxFlex="25%" class="menu-item-aside">
+              <span class="material-icons-outlined menu-item-icon">dataset_linked</span>
+            </div>
           </div>
         </div>
 
@@ -197,29 +212,31 @@
     </mat-menu>
 
     <mat-menu #derivedDatasetMenu="matMenu">
-      <div mat-menu-item matSuffix *ngFor="let dataset of datasets">
+      <div mat-menu-item matSuffix *ngFor="let dataset of datasets; last as isLast">
         <div *ngIf="(breakpoint$ | async) === breakpoints.MOBILE">
           <mat-icon>video_library</mat-icon>
           {{ dataset.name }}
         </div>
         <div *ngIf="(breakpoint$ | async) != breakpoints.MOBILE" class="menu-item">
-          <div fxFlex="70%" class="menu-item-content">
-            <div class="item-title" (click)="onOpenDerivedDataset(dataset.info_url, dataset.name)">
-              {{ dataset.name }}
+          <div class="menu-item-inner">
+            <div fxFlex="75%" class="menu-item-content">
+              <div class="item-title" (click)="onOpenDerivedDataset(dataset.info_url, dataset.name)">
+                {{ dataset.name }}
+              </div>
+              <div class="item-content" [ngClass]="{'limitTextHeight': isReadMore}">
+                {{ dataset.info }}
+              </div>
+              <mat-card-actions>
+                <button class="blue-link" (click)="onOpenDerivedDataset(dataset.info_url, dataset.name)" mat-button>More Info</button>
+                <button class="blue-link" (click)="onOpenDerivedDataset(dataset.download_url, dataset.name)" mat-button>Download</button>
+              </mat-card-actions>
             </div>
-            <div class="item-content" [ngClass]="{'limitTextHeight': isReadMore}">
-              {{ dataset.info }}
+            <div fxFlex="25%" class="menu-item-aside">
+              <img [src]="dataset.picture" class="menu-item-icon">
             </div>
-            <mat-card-actions>
-              <button class="blue-link" (click)="onOpenDerivedDataset(dataset.info_url, dataset.name)" mat-button>More Info</button>
-              <button class="blue-link" (click)="onOpenDerivedDataset(dataset.download_url, dataset.name)" mat-button>Download</button>
-            </mat-card-actions>
-          </div>
-          <div fxFlex="30%" class="menu-item-aside">
-            <img [src]="dataset.picture" class="menu-item-icon">
           </div>
         </div>
-        <hr class="dataset-hr">
+        <hr *ngIf="!isLast" class="dataset-hr">
       </div>
     </mat-menu>
 
