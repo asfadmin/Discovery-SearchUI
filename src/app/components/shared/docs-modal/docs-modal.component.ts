@@ -48,20 +48,29 @@ export class DocsModalComponent implements OnInit {
   }
 
   public showDoc() {
-    const dialogRef = this.dialog.open(DocsModalIframeComponent, {
-      width: '80vw', // sets width of dialog
-      height: '80vh', // sets width of dialog
-      maxWidth: '100vw', // overrides default width of dialog
-      maxHeight: '100vh', // overrides default height of dialog
-      data: {
-        rawUrl: this.docURL,
-        safeUrl: this.safeDocURL,
-      },
-    });
+    if (this.isAsfUrl(this.url)) {
+      const dialogRef = this.dialog.open(DocsModalIframeComponent, {
+        width: '80vw', // sets width of dialog
+        height: '80vh', // sets width of dialog
+        maxWidth: '100vw', // overrides default width of dialog
+        maxHeight: '100vh', // overrides default height of dialog
+        data: {
+          rawUrl: this.docURL,
+          safeUrl: this.safeDocURL,
+        },
+      });
 
-    dialogRef.afterClosed().subscribe(result => {
-      console.log(`Dialog result: ${result}`);
-    });
+      dialogRef.afterClosed().subscribe(result => {
+        console.log(`Dialog result: ${result}`);
+      });
+    } else {
+      window.open(this.url, "_blank");
+    }
+  }
+
+  public isAsfUrl(url: string): boolean {
+    let domain = (new URL(url)).hostname.replace('www.','');
+    return domain.includes('asf.alaska.edu');
   }
 }
 

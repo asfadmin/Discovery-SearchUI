@@ -3,7 +3,7 @@ import {Component, Input, Output, EventEmitter, ViewChild} from '@angular/core';
 import * as models from '@models';
 import { ScreenSizeService } from '@services';
 import { MatMenuTrigger } from '@angular/material/menu';
-import {DateRange} from '@models';
+import { DateRange } from '@models';
 
 // Declare GTM dataLayer array.
 declare global {
