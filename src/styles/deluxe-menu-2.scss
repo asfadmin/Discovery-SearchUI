@@ -1,13 +1,13 @@
-@import "asf-theme";
-@import "deluxe-menu";
-@import "deluxe-menu-2";
+$light-grey: rgba(0, 0, 0, 0.6);
 
 .description-layout {
   display: flex;
 }
 
 .menu-item-icon {
-  @include md-icon-size(70px);
+  @include md-icon-size(100px);
+  font-size: 24px !important;
+  height: 47px !important;
   margin-right: 0;
   color: $asf-primary-dark;
 }
@@ -18,13 +18,17 @@
 
 .mat-menu-item {
   padding: 0;
+  line-height: 0;
 }
 
-//.menu-item {
-//  display: flex;
-//  margin: 5px 5px 5px 15px;
-//  //margin: 16px 16px 0 26px;
-//}
+.menu-item {
+  margin: 0;
+}
+
+.menu-item-inner {
+  display: flex;
+  margin: 5px 5px 5px 15px;
+}
 
 .mat-card-actions {
   padding: 0;
@@ -38,7 +42,7 @@
 }
 
 .limitTextHeight {
-  height: 37px;
+  height: 55px;
   overflow: hidden;
 }
 
@@ -113,10 +117,13 @@
 .info-text {
   font-style: italic;
   font-size: 14px;
+  line-height: 30px;
+  margin: 5px 0 15px 0;
 }
 
 .item-title {
   font-weight: bold;
+  margin-bottom: 5px;
 }
 
 .mobile-search-item {
@@ -142,4 +149,51 @@
 .disable-search-type {
   pointer-events: none;
   opacity: 0.5;
+}
+
+::ng-deep.dataset__subName {
+  line-height: 12px;
+}
+
+.dataset-list {
+
+}
+
+.dataset-item {
+  margin: 16px 16px;
+}
+
+.dataset-light-text {
+  font-size: 12px;
+  font-style: normal;
+}
+
+.push-right {
+  float: right;
+  text-align: right;
+}
+
+.dataset-date-range {
+  color: $light-grey;
+  font-weight: bold;
+  line-height: 30px;
+  font-size: 14px;
+  margin: 0;
+  padding: 0;
+}
+
+.dataset-source {
+  color: $uaf-primary-blue;
+  padding-top: 22px;
+  font-size: 12px;
+
+  a {
+    color: $uaf-primary-blue !important;
+  }
+}
+
+.hyp3-icon {
+  width: 15px;
+  height: 15px;
+  margin-top: -7px;
 }

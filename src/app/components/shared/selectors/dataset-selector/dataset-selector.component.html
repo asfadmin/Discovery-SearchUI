@@ -16,65 +16,67 @@
     </div>
   </div>
 
-  <mat-menu #platformMenu="matMenu" [(ngModel)]="selected" ngDefaultControl>
+  <div class="gtm-search-type-selector" fxFlex="nogrow">
+    <mat-menu #platformMenu="matMenu" [(ngModel)]="selected" ngDefaultControl>
 
-    <div *ngIf="(breakpoint$ | async) === breakpoints.MOBILE">
-      <div class="dataset-list">
-        <div *ngFor="let dataset of datasets"
-             [class.selected]="dataset.id === selected">
-          <button mat-menu-item (click)="onSelectionChange(dataset.id)" class="mat-menu-item mobile-search-item">
-            <app-dataset [dataset]="dataset">
-              {{ dataset.name }}
-            </app-dataset>
-          </button>
+      <div *ngIf="(breakpoint$ | async) === breakpoints.MOBILE">
+        <div class="dataset-list">
+          <div *ngFor="let dataset of datasets"
+               [class.selected]="dataset.id === selected">
+            <button mat-menu-item (click)="onSelectionChange(dataset.id)" class="mat-menu-item mobile-search-item">
+              <app-dataset [dataset]="dataset">
+                {{ dataset.name }}
+              </app-dataset>
+            </button>
+          </div>
         </div>
       </div>
-    </div>
 
-    <div *ngIf="(breakpoint$ | async) !== breakpoints.MOBILE">
-      <div class="dataset-list">
-            <div *ngFor="let dataset of datasets; last as isLast">
-              <div class="menu-item mat-menu-item" (click)="onSelectionChange(dataset.id)">
-                <div class="menu-item-inner">
-                  <div fxFlex="80%" class="menu-item-content">
-                    <div class="item-title">
-                      {{ dataset.name }}
-                      <span class="dataset-light-text">
-                        <span *ngIf="dataset.id == 'SENTINEL-1'" matTooltip="Suitable for On Demand Processing (HyP3)">
+      <div *ngIf="(breakpoint$ | async) !== breakpoints.MOBILE">
+        <div class="dataset-list">
+          <div *ngFor="let dataset of datasets; last as isLast">
+            <div class="menu-item mat-menu-item" (click)="onSelectionChange(dataset.id)">
+              <div class="menu-item-inner">
+                <div fxFlex="80%" class="menu-item-content">
+                  <div class="item-title">
+                    {{ dataset.name }}
+                    <span class="dataset-light-text">
+                        <span *ngIf="dataset.id == 'SENTINEL-1'" matTooltip="Available for On Demand Processing (HyP3)">
                           <mat-icon class="hyp3-icon" svgIcon="hyp3"></mat-icon>
                         </span>
                         <span *ngIf="dataset.beta"><em> (beta) </em></span>
                         <div *ngIf="dataset.subName" class="dataset__subName faint-text">{{ dataset.subName }}</div>
                       </span>
-                    </div>
-                    <div class="item-content" [ngClass]="{'limitTextHeight': isReadMore}">
-                      {{ dataset.platformDesc }}
-                    </div>
-                    <mat-card-actions (click)="onOpenDocs($event)">
-                      <app-docs-modal class="info-text"
-                                      text="More info"
-                                      url="{{ dataset.infoUrl }}">
-                      </app-docs-modal>
-                    </mat-card-actions>
                   </div>
-                  <div fxFlex="20%" class="menu-item-aside">
-                    <div class="dataset-date-range">
-                      {{ prettyDateRange(dataset.date) }}
-                    </div>
-                    <div class="material-icons-outlined menu-item-icon">
-                      <img src="{{ dataset.platformIcon }}" width="53" height="53">
-                    </div>
-                    <div *ngIf="dataset.source !== null" class="dataset-source">
-                      <a href="{{ dataset.source.url }}" target="_blank">
-                        {{ dataset.source.name }}
-                      </a>
-                    </div>
+                  <div class="item-content" [ngClass]="{'limitTextHeight': isReadMore}">
+                    {{ dataset.platformDesc }}
+                  </div>
+                  <mat-card-actions (click)="onOpenDocs($event)">
+                    <app-docs-modal class="info-text"
+                                    text="More info"
+                                    url="{{ dataset.infoUrl }}">
+                    </app-docs-modal>
+                  </mat-card-actions>
+                </div>
+                <div fxFlex="20%" class="menu-item-aside">
+                  <div class="dataset-date-range">
+                    {{ prettyDateRange(dataset.date) }}
+                  </div>
+                  <div class="material-icons-outlined menu-item-icon">
+                    <img src="{{ dataset.platformIcon }}" width="53" height="53">
+                  </div>
+                  <div *ngIf="dataset.source !== null" class="dataset-source">
+                    <a href="{{ dataset.source.url }}" target="_blank">
+                      {{ dataset.source.name }}
+                    </a>
                   </div>
                 </div>
               </div>
-              <hr *ngIf="!isLast" class="dataset-hr">
             </div>
+            <hr *ngIf="!isLast" class="dataset-hr">
+          </div>
+        </div>
       </div>
-    </div>
-  </mat-menu>
+    </mat-menu>
+  </div>
 </div>
