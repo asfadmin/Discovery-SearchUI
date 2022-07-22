@@ -1,4 +1,4 @@
-$light-grey: rgba(0, 0, 0, 0.6);
+$light-grey: rgb(0 0 0 / 60%);
 
 .description-layout {
   display: flex;
@@ -6,6 +6,7 @@ $light-grey: rgba(0, 0, 0, 0.6);
 
 .menu-item-icon {
   @include md-icon-size(100px);
+
   font-size: 24px !important;
   height: 47px !important;
   margin-right: 0;
@@ -63,7 +64,7 @@ $light-grey: rgba(0, 0, 0, 0.6);
 }
 
 .button-label {
-  color: rgba(0, 0, 0, 0.6);
+  color: rgb(0 0 0 / 60%);
   font-size: 14px;
   font-weight: 400;
   transform:
@@ -100,8 +101,8 @@ $light-grey: rgba(0, 0, 0, 0.6);
 .text-underline {
   border: none;
   height: 1px;
-  color: rgba(0, 0, 0, 0.42); /* old IE */
-  background-color: rgba(0, 0, 0, 0.42); /* Modern Browsers */
+  color: rgb(0 0 0 / 42%); /* old IE */
+  background-color: rgb(0 0 0 / 42%); /* Modern Browsers */
 }
 
 .mat-select-arrow {
@@ -118,7 +119,7 @@ $light-grey: rgba(0, 0, 0, 0.6);
   font-style: italic;
   font-size: 14px;
   line-height: 30px;
-  margin: 5px 0 15px 0;
+  margin: 5px 0 15px;
 }
 
 .item-title {
@@ -160,7 +161,7 @@ $light-grey: rgba(0, 0, 0, 0.6);
 }
 
 .dataset-item {
-  margin: 16px 16px;
+  margin: 16px;
 }
 
 .dataset-light-text {
