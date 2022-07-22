@@ -32,7 +32,7 @@ export class ProductService {
 
         const thumbnail = (g.t ? g.t.replace('{gn}', g.gn) : g.t) || (!browses[0].includes('no-browse') ? browses[0].replace('{gn}', g.gn) : '/assets/no-thumb.png');
         let filename = g.fn.replace('{gn}', g.gn);
-        if( !filename.includes(g.gn)){
+        if ( !filename.includes(g.gn)) {
           filename = `${g.gn}-${filename}`;
         }
         return ({
