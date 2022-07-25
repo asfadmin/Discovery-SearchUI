@@ -39,7 +39,7 @@
         {{ currentSearchAmount !== -1 ? formatNumber(currentSearchAmount) : '0' }}
       </span>
       <span *ngIf="searchType === searchTypes.SBAS">
-        {{ sbasProducts.length !== -1 ? formatNumber(sbasProducts.length) : '0' }}
+        {{ sbasProducts?.length !== -1 ? formatNumber(sbasProducts?.length) : '0' }}
       </span>
       <span *ngIf="searchType === searchTypes.CUSTOM_PRODUCTS">
         {{ numberOfScenes !== 0 ? formatNumber(numberOfScenes): '0' }}

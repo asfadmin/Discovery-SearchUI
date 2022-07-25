@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, Input } from '@angular/core';
+import { Component, OnInit, OnDestroy, Input, Output, EventEmitter } from '@angular/core';
 
 import { Store } from '@ngrx/store';
 import { AppState } from '@store';
@@ -16,6 +16,8 @@ import * as models from '@models';
 export class PairComponent implements OnInit, OnDestroy {
   @Input() pair;
   @Input() hyp3able;
+
+  @Output() togglePair = new EventEmitter();
   public hovered = false;
 
   public selectedPair: string[];
@@ -34,8 +36,9 @@ export class PairComponent implements OnInit, OnDestroy {
   }
 
   public onPairSelected(pair): void {
-    const action = new scenesStore.SetSelectedPair(pair.map(p => p.id));
-    this.store$.dispatch(action);
+    // const action = new scenesStore.SetSelectedPair(pair.map(p => p.id));
+    this.togglePair.emit(pair.map(p => p.id));
+    // this.store$.dispatch(action);
   }
 
   public onSetHovered(): void {
