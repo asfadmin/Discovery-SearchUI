@@ -161,6 +161,15 @@ export class SearchParamsService {
           if(JSON.stringify(feature.getGeometry().getExtent()) === JSON.stringify(extent)){
             points = points.map((x) => transform(x, 'EPSG:3857', 'EPSG:4326'));
             points = [...points[0], ...points[2]];
+            points = points.map(value => {
+              if (value > 180) {
+                value = value % 360 - 360;
+              }
+              if (value < -180) {
+                value = value % 360 + 360;
+              }
+              return value;
+            })
             return {bbox: points.join(',')};
           }
         }
