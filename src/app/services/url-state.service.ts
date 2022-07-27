@@ -184,7 +184,16 @@ export class UrlStateService {
         }))
       ),
       loader: this.loadSbasPairs
-    }];
+    },
+  {
+    name: 'selectedPair',
+    source: this.store$.select(scenesStore.getSelectedPairIds).pipe(
+      map(a => ({
+          selectedPair: a?.join(',')
+      })
+    )),
+    loader: this.loadSbasSelected
+  }];
   }
 
   private eventMonitorParameters(): models.UrlParameter[] {
@@ -689,7 +698,10 @@ export class UrlStateService {
 
     return new scenesStore.AddCustomPairs(pairs);
   }
-
+  private loadSbasSelected = (pair: string): Action => {
+    const pairIds = pair.split(',');
+    return new scenesStore.SetSelectedPair(pairIds);
+  }
   private loadEventID = (event_id: string): Action => new scenesStore.SetSelectedSarviewsEvent(event_id);
 
   private loadPinnedProducts = (pinnedProducts: string): Action => {
@@ -735,22 +747,6 @@ export class UrlStateService {
 
   private loadOnlyActiveEvents = (activeOnly: string): Action => new filterStore.SetSarviewsEventActiveFilter(activeOnly === 'true');
 
-  // private loadIsImageBrowseOpen = (isImageBrowseOpen: string): Action => {
-  //   this.dialog.open(ImageDialogComponent, {
-  //     width: '99%',
-  //     maxWidth: '99%',
-  //     height: '99%',
-  //     maxHeight: '99%',
-  //     panelClass: 'image-dialog'
-  //   });
-
-  //   // this.subs.add(
-  //   //   dialogRef.afterClosed().subscribe(
-  //   //     _ => this.store$.dispatch(new uiStore.SetIsBrowseDialogOpen(false))
-  //   //   )
-  //   // );
-  //   return new uiStore.SetIsBrowseDialogOpen(!!isImageBrowseOpen);
-  // }
 
   private loadEventProductTypes = (types: string): Action => {
     const productTypes = types.split(',')
