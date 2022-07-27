@@ -51,7 +51,7 @@
                   <div class="item-content" [ngClass]="{'limitTextHeight': isReadMore}">
                     {{ dataset.platformDesc }}
                   </div>
-                  <mat-card-actions (click)="onOpenDocs($event)">
+                  <mat-card-actions (click)="onOpenDocs($event, dataset.id)">
                     <app-docs-modal class="info-text"
                                     text="More info"
                                     url="{{ dataset.infoUrl }}">

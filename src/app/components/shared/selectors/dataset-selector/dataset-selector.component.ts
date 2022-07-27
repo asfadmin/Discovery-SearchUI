@@ -59,8 +59,9 @@ export class DatasetSelectorComponent {
       `${startYear} to ${endYear}`.trim();
   }
 
-  public onOpenDocs(event) {
+  public onOpenDocs(event, dataset: string) {
     this.trigger.closeMenu();
+    this.onSelectionChange(dataset);
     event.stopPropagation();
   }
 
