@@ -130,7 +130,7 @@ export class ScenesListComponent implements OnInit, OnDestroy, AfterContentInit 
         })
       ).subscribe(
         idx => {
-          console.log('aaaihavsdibqwebuiqwbeoqwoubh')
+          console.log('aaaihavsdibqwebuiqwbeoqwoubh');
           if (!this.selectedFromList) {
             this.scrollTo(idx);
           }
@@ -270,7 +270,7 @@ export class ScenesListComponent implements OnInit, OnDestroy, AfterContentInit 
         delay(20),
         filter(([selected, _]) => !!selected),
         map(([selected, pairs]) => {
-          let pairsCombined = [...pairs.pairs, ...pairs.custom] 
+          const pairsCombined = [...pairs.pairs, ...pairs.custom];
           const sceneIdx = pairsCombined.findIndex(pair => pair[0] === selected[0] && pair[1] === selected[1]);
           return Math.max(0, sceneIdx - 1);
         })
@@ -300,7 +300,7 @@ export class ScenesListComponent implements OnInit, OnDestroy, AfterContentInit 
       }),
       first(),
       map(selected => {
-        
+
         const sceneIdx = selected.events.findIndex(event => event.event_id === selected.selectedEvent.event_id);
         return Math.max(0, sceneIdx - 1);
       })
@@ -320,7 +320,7 @@ export class ScenesListComponent implements OnInit, OnDestroy, AfterContentInit 
       filter(selected => !!selected.selectedPair),
       first(),
       map(selected => {
-        let pairsCombined = [...selected.pairs.pairs, ...selected.pairs.custom] 
+        const pairsCombined = [...selected.pairs.pairs, ...selected.pairs.custom];
         const sceneIdx = pairsCombined.findIndex(pair => pair[0] === selected.selectedPair[0] && pair[1] === selected.selectedPair[1]);
         return Math.max(0, sceneIdx - 1);
       })

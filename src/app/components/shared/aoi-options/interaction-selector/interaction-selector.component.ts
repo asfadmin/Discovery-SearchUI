@@ -9,6 +9,7 @@ import * as uiStore from '@store/ui';
 
 import { MapInteractionModeType } from '@models';
 import * as services from '@services';
+import * as models from '@models';
 
 @Component({
   selector: 'app-interaction-selector',
@@ -19,11 +20,16 @@ export class InteractionSelectorComponent implements OnInit, OnDestroy {
   @ViewChild('clearButton') clearButton: MatButtonToggle;
   public interaction: MapInteractionModeType;
   public types = MapInteractionModeType;
+
+  public breakpoints = models.Breakpoints;
+  public breakpoint$ = this.screenSize.breakpoint$;
+
   private subs = new SubSink();
 
   constructor(
     private store$: Store<AppState>,
     private mapService: services.MapService,
+    private screenSize: services.ScreenSizeService
   ) {}
 
   ngOnInit() {
