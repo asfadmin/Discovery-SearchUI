@@ -7,7 +7,7 @@
   && searchType === SearchTypes.BASELINE
 }
 ">
-  <cdk-virtual-scroll-viewport class="list-viewport h100" itemSize="60">
+  <cdk-virtual-scroll-viewport class="list-viewport h100" [itemSize]="searchType === SearchTypes.SBAS ? 48 : 60">
     <div *ngIf="breakpoint$ | async as breakpoint">
       <ng-container
         *ngIf="
@@ -46,6 +46,7 @@
       <ng-container *ngIf="searchType === SearchTypes.SBAS">
         <div *cdkVirtualFor="let pair of pairs">
           <app-pair
+            (togglePair)="onPairSelected($event)"
             [pair]="pair.pair"
             [hyp3able]="pair.hyp3able">
           </app-pair>

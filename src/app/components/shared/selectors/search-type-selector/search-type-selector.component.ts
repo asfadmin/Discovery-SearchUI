@@ -1,7 +1,7 @@
-import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
+import {Component, OnInit, OnDestroy, ViewChild, Input, ElementRef} from '@angular/core';
 import { SubSink } from 'subsink';
 
-import { MatMenuTrigger } from '@angular/material/menu';
+import {MatMenu, MatMenuTrigger} from '@angular/material/menu';
 
 import { Store } from '@ngrx/store';
 import { AppState } from '@store';
@@ -25,6 +25,9 @@ declare global {
 })
 export class SearchTypeSelectorComponent implements OnInit, OnDestroy {
   @ViewChild(MatMenuTrigger) trigger: MatMenuTrigger;
+  @ViewChild(MatMenu) searchMenu: MatMenu;
+  @ViewChild('firstItem') firstItem: ElementRef;
+  @Input() selected: string;
 
   public searchType: models.SearchType = models.SearchType.DATASET;
   public datasets = derivedDatasets;
@@ -34,9 +37,6 @@ export class SearchTypeSelectorComponent implements OnInit, OnDestroy {
   public searchTypes = models.SearchType;
   private subs = new SubSink();
   public isReadMore = true;
-
-  showBase = false;
-  menuUp = false;
 
   constructor(
     private store$: Store<AppState>,
@@ -86,15 +86,23 @@ export class SearchTypeSelectorComponent implements OnInit, OnDestroy {
     window.open(url, '_blank');
   }
 
-  showText() {
-    this.isReadMore = !this.isReadMore;
-  }
-
   public onOpenDocs(event) {
     this.trigger.closeMenu();
     event.stopPropagation();
   }
 
+  public onSearchTypeMenuOpen() {
+    console.log('menu opened:', this.searchMenu);
+    console.log('setting focus');
+    const panelId = this.searchMenu.panelId;
+    document.getElementById(panelId).focus();
+    setTimeout(() => {
+        this.searchMenu.focusFirstItem();
+        this.searchMenu.resetActiveItem();
+        document.getElementById('firstItem').focus();
+        document.getElementById(panelId).focus();
+      }, 10 );
+  }
 
   ngOnDestroy() {
     this.subs.unsubscribe();
