@@ -99,7 +99,7 @@ export class SearchTypeSelectorComponent implements OnInit, OnDestroy {
     setTimeout(() => {
         this.searchMenu.focusFirstItem();
         this.searchMenu.resetActiveItem();
-        document.getElementById("firstItem").focus();
+        document.getElementById('firstItem').focus();
         document.getElementById(panelId).focus();
       }, 10 );
   }

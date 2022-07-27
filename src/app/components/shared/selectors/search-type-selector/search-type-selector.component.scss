@@ -8,6 +8,7 @@
 
 .menu-item-icon {
   @include md-icon-size(70px);
+
   margin-right: 0;
   color: $asf-primary-dark;
 }
@@ -59,7 +60,7 @@
 }
 
 .button-label {
-  color: rgba(0, 0, 0, 0.6);
+  color: rgb(0 0 0 / 60%);
   font-size: 14px;
   font-weight: 400;
   transform:
@@ -96,8 +97,8 @@
 .text-underline {
   border: none;
   height: 1px;
-  color: rgba(0, 0, 0, 0.42); /* old IE */
-  background-color: rgba(0, 0, 0, 0.42); /* Modern Browsers */
+  color: rgb(0 0 0 / 42%); /* old IE */
+  background-color: rgb(0 0 0 / 42%); /* Modern Browsers */
 }
 
 .mat-select-arrow {

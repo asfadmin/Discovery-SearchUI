@@ -64,12 +64,12 @@ export class DocsModalComponent implements OnInit {
         console.log(`Dialog result: ${result}`);
       });
     } else {
-      window.open(this.url, "_blank");
+      window.open(this.url, '_blank');
     }
   }
 
   public isAsfUrl(url: string): boolean {
-    let domain = (new URL(url)).hostname.replace('www.','');
+    const domain = (new URL(url)).hostname.replace('www.', '');
     return domain.includes('asf.alaska.edu');
   }
 }
