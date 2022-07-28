@@ -13,24 +13,26 @@ import { CopyToClipboardModule } from '@components/shared/copy-to-clipboard';
 import { NgxCsvParserModule } from 'ngx-csv-parser';
 
 import { ListFiltersComponent } from './list-filters.component';
+import {DocsModalModule} from '@components/shared/docs-modal';
 
 @NgModule({
   declarations: [
     ListFiltersComponent
   ],
-  imports: [
-    CommonModule,
-    MatExpansionModule,
-    SearchTypeSelectorModule,
+    imports: [
+        CommonModule,
+        MatExpansionModule,
+        SearchTypeSelectorModule,
 
-    FormsModule,
-    CopyToClipboardModule,
-    NgxCsvParserModule,
-    MatFormFieldModule,
-    MatInputModule,
-    MatButtonToggleModule,
-    MatSharedModule,
-  ],
+        FormsModule,
+        CopyToClipboardModule,
+        NgxCsvParserModule,
+        MatFormFieldModule,
+        MatInputModule,
+        MatButtonToggleModule,
+        MatSharedModule,
+        DocsModalModule,
+    ],
   exports: [
     ListFiltersComponent
   ]
