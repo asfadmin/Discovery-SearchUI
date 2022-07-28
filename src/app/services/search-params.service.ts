@@ -17,7 +17,6 @@ import { RangeService } from './range.service';
 import * as models from '@models';
 import { DrawService } from './map/draw.service';
 
-import {transform} from 'ol/proj';
 
 @Injectable({
   providedIn: 'root'
@@ -152,16 +151,21 @@ export class SearchParamsService {
     ).pipe(
       map(([polygon, shouldOmitGeoRegion, asdf]) => shouldOmitGeoRegion ? null : { polygon: polygon, thing: asdf }),
       map(polygon => {
-        const feature = polygon.thing;
+        let feature = polygon.thing;
         let points = feature?.getGeometry().getCoordinates();
 
         if (points && points[0].length === 5) {
-          points = points[0].slice(0, 4);
-          const extent = [...points[0], ...points[2]];
-          if (JSON.stringify(feature.getGeometry().getExtent()) === JSON.stringify(extent)) {
-            points = points.map((x) => transform(x, 'EPSG:3857', 'EPSG:4326'));
-            points = [...points[0], ...points[2]];
-            points = points.map(value => {
+          const clonedFeature = feature.clone();
+          const clonedProperties = JSON.parse(JSON.stringify(feature.getProperties()));
+          clonedProperties.geometry = clonedFeature.getGeometry();
+          clonedFeature.setProperties(clonedProperties, true);
+          feature = clonedFeature;
+          let geo = feature.getGeometry();
+          geo.transform(this.mapService.epsg(), 'EPSG:4326');
+          points = geo.getCoordinates()[0].slice(0,4);
+          let extent = [...points[0], ...points[2]];
+          if(JSON.stringify(geo.getExtent()) === JSON.stringify(extent)){
+            extent = extent.map(value => {
               if (value > 180) {
                 value = value % 360 - 360;
               }
@@ -170,7 +174,7 @@ export class SearchParamsService {
               }
               return value;
             });
-            return {bbox: points.join(',')};
+            return {bbox: extent.join(',')};
           }
         }
 
