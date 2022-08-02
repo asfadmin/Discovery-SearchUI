@@ -160,11 +160,11 @@ export class SearchParamsService {
           clonedProperties.geometry = clonedFeature.getGeometry();
           clonedFeature.setProperties(clonedProperties, true);
           feature = clonedFeature;
-          let geo = feature.getGeometry();
+          const geo = feature.getGeometry();
           geo.transform(this.mapService.epsg(), 'EPSG:4326');
-          points = geo.getCoordinates()[0].slice(0,4);
+          points = geo.getCoordinates()[0].slice(0, 4);
           let extent = [...points[0], ...points[2]];
-          if(JSON.stringify(geo.getExtent()) === JSON.stringify(extent)){
+          if (JSON.stringify(geo.getExtent()) === JSON.stringify(extent)) {
             extent = extent.map(value => {
               if (value > 180) {
                 value = value % 360 - 360;
