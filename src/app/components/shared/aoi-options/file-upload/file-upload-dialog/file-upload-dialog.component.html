@@ -2,6 +2,7 @@
   class="hidden" type="file" #file/>
 
 <div
+  *ngIf="(breakpoint$ | async) > breakpoints.MOBILE; else mobileUploadButton"
   (drop)="onFileDrop($event)"
   fxLayout="column" fxLayoutAlign="space-evenly stretch"
   class="container">
@@ -36,3 +37,14 @@
     </div>
   </div>
 </div>
+<ng-template #mobileUploadButton>
+<mat-button-toggle
+matTooltip="Upload AOI via file"
+class="control-mat-button-toggle mobile-upload-button"
+[disabled]="uploading"
+(click)="addFiles()">
+        <mat-icon>
+          file_upload
+        </mat-icon>
+</mat-button-toggle>
+</ng-template>

@@ -103,4 +103,7 @@ export const sentinel_1 = {
     displayName: 'Sentinel-1B',
     apiValue: 'SB',
   }],
+  platformDesc: 'Sentinel-1 includes twin satellites that each carry C-band synthetic aperture radar (SAR), ' +
+    'together providing all-weather, day-and-night imagery of Earth’s surface.',
+  platformIcon: '/assets/icons/satellite_alt_black_48dp.svg',
 };

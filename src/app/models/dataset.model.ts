@@ -20,6 +20,8 @@ export interface Dataset {
     url: string | null;
   } | null;
   properties: Props[];
+  platformDesc: string;
+  platformIcon: string;
 }
 
 export enum MissionDataset {

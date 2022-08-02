@@ -33,16 +33,16 @@ export class ScenesListComponent implements OnInit, OnDestroy, AfterContentInit 
   public jobs;
   public sarviewsEvents: SarviewsEvent[];
 
-  public numberOfQueue: {[scene: string]: number};
-  public allQueued: {[scene: string]: boolean};
+  public numberOfQueue: { [scene: string]: number };
+  public allQueued: { [scene: string]: boolean };
   public allJobNames: string[];
   public queuedJobs: QueuedHyp3Job[];
   public selected: string;
   public selectedEvent: string;
 
-  public hyp3ableByScene: {[scene: string]: {byJobType: models.Hyp3ableProductByJobType[], total: number}} = {};
+  public hyp3ableByScene: { [scene: string]: { byJobType: models.Hyp3ableProductByJobType[], total: number } } = {};
 
-  public offsets = {temporal: 0, perpendicular: 0};
+  public offsets = { temporal: 0, perpendicular: 0 };
   public selectedFromList = false;
   public hoveredSceneName: string | null = null;
   public hoveredPairNames: string | null = null;
@@ -64,7 +64,7 @@ export class ScenesListComponent implements OnInit, OnDestroy, AfterContentInit 
     private pairService: services.PairService,
     private hyp3: services.Hyp3Service,
     private eventMonitoringService: services.SarviewsEventsService,
-  ) {}
+  ) { }
 
   ngOnInit() {
     this.keyboardService.init();
@@ -77,11 +77,11 @@ export class ScenesListComponent implements OnInit, OnDestroy, AfterContentInit 
 
     this.store$.select(queueStore.getQueuedJobs).subscribe(jobs => {
       const flattened: string[] = [];
-        for (const job of jobs) {
-          for (const product of job.granules) {
-            flattened.push(product.name);
-          }
+      for (const job of jobs) {
+        for (const product of job.granules) {
+          flattened.push(product.name);
         }
+      }
 
       this.queuedJobs = jobs;
       this.allJobNames = flattened;
@@ -130,6 +130,7 @@ export class ScenesListComponent implements OnInit, OnDestroy, AfterContentInit 
         })
       ).subscribe(
         idx => {
+          console.log('aaaihavsdibqwebuiqwbeoqwoubh');
           if (!this.selectedFromList) {
             this.scrollTo(idx);
           }
@@ -207,7 +208,7 @@ export class ScenesListComponent implements OnInit, OnDestroy, AfterContentInit 
       debounceTime(0),
       map(([queueProducts, searchScenes]) => {
 
-        const queuedProductGroups: {[id: string]: string[]} = queueProducts.reduce((total, product) => {
+        const queuedProductGroups: { [id: string]: string[] } = queueProducts.reduce((total, product) => {
           const scene = total[product.groupId] || [];
 
           total[product.groupId] = [...scene, product.id];
@@ -231,11 +232,11 @@ export class ScenesListComponent implements OnInit, OnDestroy, AfterContentInit 
       queueScenes$.pipe(
         map(
           scenes => Object.entries(scenes)
-          .reduce((total, [scene, amt]) => {
-            total[scene] = `${amt[0]}/${amt[1]}`;
+            .reduce((total, [scene, amt]) => {
+              total[scene] = `${amt[0]}/${amt[1]}`;
 
-            return total;
-          }, {})
+              return total;
+            }, {})
         )).subscribe(numberOfQueue => this.numberOfQueue = numberOfQueue)
     );
 
@@ -243,11 +244,11 @@ export class ScenesListComponent implements OnInit, OnDestroy, AfterContentInit 
       queueScenes$.pipe(
         map(
           scenes => Object.entries(scenes)
-          .reduce((total, [scene, amt]) => {
-            total[scene] = amt[0] >= amt[1];
+            .reduce((total, [scene, amt]) => {
+              total[scene] = amt[0] >= amt[1];
 
-            return total;
-          }, {})
+              return total;
+            }, {})
         )).subscribe(allQueued => this.allQueued = allQueued)
     );
 
@@ -262,22 +263,15 @@ export class ScenesListComponent implements OnInit, OnDestroy, AfterContentInit 
         _ => this.scroll.scrollToOffset(0)
       )
     );
-  }
 
-  ngAfterContentInit() {
-    this.subs.add(this.eventMonitoringService.filteredSarviewsEvents$().pipe(
-  filter(loaded => !!loaded),
-  withLatestFrom(this.store$.select(scenesStore.getSelectedSarviewsEvent)),
-    map(([events, selected]) => ({selectedEvent: selected, events})),
-        delay(400),
-        filter(selected => !!selected.selectedEvent),
-        tap(selected => {
-          this.mapService.zoomToEvent(selected.selectedEvent);
-          this.selectedEvent = selected.selectedEvent.event_id;
-        }),
-        first(),
-        map(selected => {
-          const sceneIdx = selected.events.findIndex(event => event.event_id === selected.selectedEvent.event_id);
+    this.subs.add(
+      this.store$.select(scenesStore.getSelectedPair).pipe(
+        withLatestFrom(this.pairService.pairs$()),
+        delay(20),
+        filter(([selected, _]) => !!selected),
+        map(([selected, pairs]) => {
+          const pairsCombined = [...pairs.pairs, ...pairs.custom];
+          const sceneIdx = pairsCombined.findIndex(pair => pair[0] === selected[0] && pair[1] === selected[1]);
           return Math.max(0, sceneIdx - 1);
         })
       ).subscribe(
@@ -285,7 +279,57 @@ export class ScenesListComponent implements OnInit, OnDestroy, AfterContentInit 
           if (!this.selectedFromList) {
             this.scrollTo(idx);
           }
+
+          this.selectedFromList = false;
         }
+      )
+    );
+
+  }
+
+  ngAfterContentInit() {
+    this.subs.add(this.eventMonitoringService.filteredSarviewsEvents$().pipe(
+      filter(loaded => !!loaded),
+      withLatestFrom(this.store$.select(scenesStore.getSelectedSarviewsEvent)),
+      map(([events, selected]) => ({ selectedEvent: selected, events })),
+      delay(400),
+      filter(selected => !!selected.selectedEvent),
+      tap(selected => {
+        this.mapService.zoomToEvent(selected.selectedEvent);
+        this.selectedEvent = selected.selectedEvent.event_id;
+      }),
+      first(),
+      map(selected => {
+
+        const sceneIdx = selected.events.findIndex(event => event.event_id === selected.selectedEvent.event_id);
+        return Math.max(0, sceneIdx - 1);
+      })
+    ).subscribe(
+      idx => {
+        if (!this.selectedFromList) {
+          this.scrollTo(idx);
+        }
+      }
+    )
+    );
+    this.subs.add(this.pairService.pairs$().pipe(
+      filter(loaded => !!loaded),
+      withLatestFrom(this.store$.select(scenesStore.getSelectedPair)),
+      map(([pairs, selected]) => ({ selectedPair: selected, pairs })),
+      delay(400),
+      filter(selected => !!selected.selectedPair),
+      first(),
+      map(selected => {
+        const pairsCombined = [...selected.pairs.pairs, ...selected.pairs.custom];
+        const sceneIdx = pairsCombined.findIndex(pair => pair[0] === selected.selectedPair[0] && pair[1] === selected.selectedPair[1]);
+        return Math.max(0, sceneIdx - 1);
+      })
+    ).subscribe(
+      idx => {
+        if (!this.selectedFromList) {
+          this.scrollTo(idx);
+        }
+      }
     )
     );
   }
@@ -297,6 +341,10 @@ export class ScenesListComponent implements OnInit, OnDestroy, AfterContentInit 
   public onSceneSelected(id: string): void {
     this.selectedFromList = true;
     this.store$.dispatch(new scenesStore.SetSelectedScene(id));
+  }
+  public onPairSelected(pair: string[]) {
+    this.selectedFromList = true;
+    this.store$.dispatch(new scenesStore.SetSelectedPair(pair));
   }
 
   public onToggleScene(groupId: string): void {

@@ -19,7 +19,10 @@ export const airsar = {
   frequency: 'L-Band, P-Band, or C-Band',
   infoUrl: 'https://www.asf.alaska.edu/sar-data/airsar/',
   citationUrl: 'https://asf.alaska.edu/data-sets/sar-data-sets/airsar/#airsar_cite',
-  source: null,
+  source: {
+    name: 'NASA/JPL',
+    url: 'https://www.jpl.nasa.gov'
+  },
   productTypes: [{
     apiValue: 'CTIF',
     displayName: 'C-Band JPG'
@@ -50,4 +53,7 @@ export const airsar = {
     'Full'
   ],
   subtypes: [],
+  platformDesc: 'AIRSAR was an all-weather imaging tool able to penetrate through clouds and collect data at night. The longer wavelengths ' +
+    'could also penetrate into the forest canopy and...',
+  platformIcon: '/assets/icons/flight_black_48dp.svg',
 };

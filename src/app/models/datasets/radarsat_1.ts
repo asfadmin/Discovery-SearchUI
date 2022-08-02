@@ -23,7 +23,7 @@ export const radarsat_1 = {
   frequency: 'C-Band',
   source: {
     name: 'CSA',
-    url: null
+    url: 'https://www.asc-csa.gc.ca/eng/'
   },
   infoUrl: 'https://asf.alaska.edu/data-sets/sar-data-sets/radarsat-1/',
   citationUrl: 'https://asf.alaska.edu/data-sets/sar-data-sets/radarsat-1/#radarsat1_cite',
@@ -43,4 +43,7 @@ export const radarsat_1 = {
     'HH'
   ],
   subtypes: [],
+  platformDesc: 'RADARSAT-1 synthetic aperture radar (SAR), was a powerful microwave instrument. It ' +
+    'captured high quality SAR images of the Earth night and day and in all-weather conditions.',
+  platformIcon: '/assets/icons/satellite_alt_black_48dp.svg',
 };

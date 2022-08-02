@@ -45,7 +45,7 @@ export class DatasetFiltersComponent implements OnInit, OnDestroy {
   constructor(
     public prop: PropertyService,
     private store$: Store<AppState>,
-    private screenSize: ScreenSizeService
+    private screenSize: ScreenSizeService,
   ) {}
 
   ngOnInit() {

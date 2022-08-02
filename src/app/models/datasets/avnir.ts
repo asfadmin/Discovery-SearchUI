@@ -35,4 +35,7 @@ export const avnir = {
   beamModes: ['OBS'],
   polarizations: [],
   subtypes: [],
+  platformDesc: 'Advanced Visible and Near-Infrared Radiometer (AVNIR)-2 images have removed distortions caused by the sensor and terrain. ' +
+    'This allows the overlay of geospatial...',
+  platformIcon: '/assets/icons/satellite_alt_black_48dp.svg',
 };
