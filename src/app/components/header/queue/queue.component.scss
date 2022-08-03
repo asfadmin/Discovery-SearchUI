@@ -219,3 +219,21 @@ button {
   width: calc(100% + 20px);
   left: -10px;
 }
+
+.docs-div {
+  position: absolute;
+  top: 42px;
+  right: 130px;
+  text-align: right;
+  float: right;
+  cursor: pointer;
+}
+
+.header-link {
+  font-size: 18px;
+
+  a {
+    text-decoration: underline;
+    color: $uaf-primary-blue;
+  }
+}

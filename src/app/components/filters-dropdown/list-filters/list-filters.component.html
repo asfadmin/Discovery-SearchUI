@@ -24,8 +24,13 @@
       [class.raised-section]="isSelected(panels.LIST)">
 
       <mat-expansion-panel-header [collapsedHeight]="customCollapsedHeight" [expandedHeight]="customExpandedHeight">
-        <mat-panel-title>
+        <mat-panel-title class="panel-title">
           Search List Input
+          <div class="asf-manual-link">
+            <app-docs-modal
+              url="https://docs.asf.alaska.edu/vertex/manual/#downloads-queue">
+            </app-docs-modal>
+          </div>
         </mat-panel-title>
       </mat-expansion-panel-header>
 

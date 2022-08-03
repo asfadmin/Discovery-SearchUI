@@ -25,33 +25,35 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 import {DownloadFileButtonModule} from '@components/shared/download-file-button/download-file-button.module';
 import { DownloadAllModule } from '@components/header/queue/download-all/download-all.module';
+import {DocsModalModule} from '@components/shared/docs-modal';
 
 @NgModule({
   declarations: [
     QueueComponent,
     FileDownloadDirective
   ],
-  imports: [
-    CommonModule,
-    MatMenuModule,
-    ScrollingModule,
-    TruncateModule,
-    ClipboardModule,
-    DownloadFileButtonModule,
-    FontAwesomeModule,
-    CopyToClipboardModule,
-    MatSharedModule,
-    PipesModule,
-    FlexLayoutModule,
-    ResizableModule,
-    DragDropModule,
-    MatDialogModule,
-    AngularResizeEventModule,
-    MatProgressBarModule,
-    MatCheckboxModule,
-    MatProgressSpinnerModule,
-    DownloadAllModule
-  ],
+    imports: [
+        CommonModule,
+        MatMenuModule,
+        ScrollingModule,
+        TruncateModule,
+        ClipboardModule,
+        DownloadFileButtonModule,
+        FontAwesomeModule,
+        CopyToClipboardModule,
+        MatSharedModule,
+        PipesModule,
+        FlexLayoutModule,
+        ResizableModule,
+        DragDropModule,
+        MatDialogModule,
+        AngularResizeEventModule,
+        MatProgressBarModule,
+        MatCheckboxModule,
+        MatProgressSpinnerModule,
+        DownloadAllModule,
+        DocsModalModule
+    ],
   exports: [
     QueueComponent
   ]

@@ -10,20 +10,20 @@
       Downloads
     </h1>
     <div class="dl-subtitle">
-<!--      <mat-checkbox class="item-summary-checkbox"-->
-<!--                    [checked]=false-->
-<!--                    color=primary-->
-<!--                    [indeterminate]=[someChecked]-->
-<!--                    >-->
-<!--      </mat-checkbox>-->
-<!--      <mat-icon>cloud_download</mat-icon> {{ selectedItems.length }} of-->
       {{ numberOfProducts$ | async }} Files, {{ (totalSize$ | async) | readableSizeFromBytes }}
     </div>
     <mat-progress-bar class="global-progress" mode="determinate" value="{{ dlQueueProgress }}"></mat-progress-bar>
   </div>
 
-  <div class="feedback-div feedback-link">
+  <div class="feedback-div header-link">
     <a href="javascript:feedback.showForm();" onfocus="this.blur()"> <i class="fa fa-comments-o"></i> Feedback</a>
+  </div>
+
+  <div class="docs-div header-link">
+    <app-docs-modal class="text-link"
+                    text="Docs"
+                    url="https://docs.asf.alaska.edu/vertex/manual/#downloads-queue">
+    </app-docs-modal>
   </div>
 
   <div class="dl-close-x" (click)="onCloseDownloadQueue()">
