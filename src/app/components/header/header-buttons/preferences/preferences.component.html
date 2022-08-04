@@ -1,11 +1,12 @@
 <div class="dialog-header">
-  <div mat-dialog-title>Preferences for {{ userAuth.id }}</div>
+  <div mat-dialog-title class="dialog-title-overrides">Preferences For {{ userAuth.id }}</div>
 </div>
 
 <mat-dialog-content>
   <div class="display: flex;">
     <form #preferencesForm="ngForm" onsubmit="return false">
 
+      <div class="section-heading">Default Search Presets</div>
       <div class="default-dataset">
         <app-dataset-selector
           [(selected)]="defaultDataset"
@@ -39,15 +40,6 @@
         </mat-select>
       </mat-form-field>
 
-<!--      <mat-form-field class="default-max-concurrent-downloads">-->
-<!--        <mat-label>Max Concurrent Downloads</mat-label>-->
-<!--        <input matInput type="number" appOnlynumber-->
-<!--               [value]="defaultMaxConcurrentDownloads"-->
-<!--               [(ngModel)]="defaultMaxConcurrentDownloads"-->
-<!--               (change)="onChangeDefaultMaxConcurrentDownloads($event.target['value'])"-->
-<!--               name="maxDownloads">-->
-<!--      </mat-form-field>-->
-
       <div class="section-heading">Default Search Filters Presets</div>
       <mat-form-field class="default-filters-presets" *ngFor="let type of searchTypeKeys">
         <mat-label>{{type}}</mat-label>
@@ -61,13 +53,13 @@
         </mat-select>
       </mat-form-field>
 
-      <div class="section-heading">HyP3 Backend Url</div>
+      <div class="section-heading">Default HyP3 Presets</div>
       <mat-form-field class="default-filters-presets">
-        <mat-label>URL</mat-label>
+        <mat-label>API URL</mat-label>
         <input matInput
           (input)="onChangeBackendUrl()"
           [(ngModel)]="hyp3BackendUrl"
-          name="backendUrl" placeholder="Backend Url">
+          name="backendUrl">
         <button matSuffix mat-icon-button aria-label="Clear" (click)="resetHyp3Url()">
           <mat-icon>refresh</mat-icon>
         </button>
@@ -79,7 +71,7 @@
 
 <mat-dialog-actions class="action-controls">
   <div class="feedback-link">
-    <a href="javascript:feedback.showForm();"> <i class="fa fa-comments-o"></i> Feedback</a>
+    <a href="javascript:feedback.showForm();"> <mat-icon>comment</mat-icon> Feedback</a>
   </div>
   <div class="done-button">
     <button (click)="onClose()" color="primary" mat-flat-button>
