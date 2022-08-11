@@ -450,6 +450,7 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
     this.mapService.clearDrawLayer();
     this.store$.dispatch(new uiStore.CloseResultsMenu());
     this.searchService.clear(this.searchType);
+    this.store$.dispatch(new searchStore.SetSearchOutOfDate(false));
   }
 
   public onCloseSidebar(): void {

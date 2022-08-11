@@ -8,7 +8,7 @@ import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
 import { MapService, SarviewsEventsService } from '@services';
 import { AppState } from '@store';
-import { getImageBrowseProducts, getPinnedEventBrowseIDs, getProducts, getSelectedScene } from '@store/scenes';
+import { getAreResultsLoaded, getImageBrowseProducts, getPinnedEventBrowseIDs, getProducts, getSelectedScene } from '@store/scenes';
 import { ScenesActionType, SetImageBrowseProducts, SetSelectedScene } from '@store/scenes/scenes.action';
 import { getareResultsOutOfDate, getSearchType, SearchActionType, SetSearchOutOfDate, SetSearchType } from '@store/search';
 import { filter, first, map, switchMap, tap, withLatestFrom } from 'rxjs/operators';
@@ -209,7 +209,12 @@ export class MapEffects {
       !filtersOpen
       && resultsOpen
     ),
-    tap(_ => this.store$.dispatch( new SetSearchOutOfDate(true)))
+    withLatestFrom(this.store$.select(getAreResultsLoaded)),
+    tap(([loaded, _]) => { 
+        if(loaded) {
+          return this.store$.dispatch(new SetSearchOutOfDate(true));
+        }
+      })
   ), {dispatch: false});
 }
 
