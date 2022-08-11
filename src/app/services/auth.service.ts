@@ -27,11 +27,10 @@ export class AuthService {
   ) {
     this.bc = new BroadcastChannel('asf-vertex');
     this.bc.onmessage = (_event: MessageEvent) => {
-      let user = this.getUser();
-      if(!user.id){
+      const user = this.getUser();
+      if (!user.id) {
         this.store$.dispatch(new userStore.Logout());
-      }
-      else {
+      } else {
         this.store$.dispatch(new userStore.Login(user));
       }
     };
@@ -81,7 +80,7 @@ export class AuthService {
             user = this.getUser();
             this.bc.postMessage({
               event : 'login'
-            })
+            });
           }
         } catch (e) {
         }
@@ -110,7 +109,7 @@ export class AuthService {
         this.bc.postMessage({
           event : 'logout'
         });
-        return this.getUser()}),
+        return this.getUser(); }),
         catchError(_ => {
           this.notificationService.error('Trouble logging out', 'Error', {
             timeOut: 5000,
