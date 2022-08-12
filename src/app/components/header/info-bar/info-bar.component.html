@@ -5,10 +5,7 @@
 
   <div class="first-info">
     <span *ngIf="(searchType$ | async) === searchTypes.CUSTOM_PRODUCTS">
-      <span *ngIf="hyp3BaseUrl !== hyp3BackendUrl">
-        <mat-icon class="hyp3-icon" svgIcon="hyp3"></mat-icon>
-        <b>HyP3 API:</b> {{ hyp3BackendUrl }}
-      </span>
+      <app-hyp3-url></app-hyp3-url>
     </span>
     <span *ngIf="(searchType$ | async) === searchTypes.SARVIEWS_EVENTS && !!eventProductTypes">
       <b>Product Types:</b> {{eventProductTypes}}

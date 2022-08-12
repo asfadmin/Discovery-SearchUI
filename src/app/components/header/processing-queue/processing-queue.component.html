@@ -6,7 +6,7 @@
   cdkDragBoundary=".cdk-global-overlay-wrapper">
 
   <div class="pq-card-title-group">
-    <div>
+    <div style="display: flex">
       <div class="on-demand-branding">
         <mat-icon
            class="on-demand-icon"
@@ -18,11 +18,23 @@
       </div>
 
       <ng-container *ngIf="breakpoint !== breakpoints.MOBILE">
-        <div class="on-demand-text">
-          On Demand
+        <div class="branding-block">
+          <div class="hyp3-url">
+            <app-hyp3-url></app-hyp3-url>
+          </div>
+          <div class="on-demand-text">
+            On Demand
+          </div>
+          <div class="on-demand-subtitle">
+            powered by HyP3
+          </div>
         </div>
-        <div class="on-demand-subtitle">
-          powered by HyP3
+      </ng-container>
+      <ng-container *ngIf="breakpoint === breakpoints.MOBILE">
+        <div class="branding-block">
+          <div class="hyp3-url hyp3-url-mobile">
+            <app-hyp3-url></app-hyp3-url>
+          </div>
         </div>
       </ng-container>
     </div>

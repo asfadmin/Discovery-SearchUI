@@ -29,3 +29,15 @@ $divider-bar-color: lighten($asf-primary-light, 8%);
 .subscription-disabled {
   color: grey !important;
 }
+
+.header-overrides {
+  flex-direction: column !important;
+  align-items: flex-start !important;
+  height: fit-content !important;
+  padding: 15px !important;
+}
+
+.api-url {
+  display: flex;
+  font-size: 12px;
+}

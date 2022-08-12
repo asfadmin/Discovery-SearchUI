@@ -30,6 +30,7 @@ import { ConfirmationComponent } from './confirmation/confirmation.component';
 import { AngularResizeEventModule } from 'angular-resize-event';
 import { CreateSubscriptionModule } from '../../header/create-subscription';
 import {DocsModalModule} from '@components/shared/docs-modal';
+import {Hyp3UrlModule} from '@components/shared/hyp3-url/hyp3-url.module';
 
 
 @NgModule({
@@ -62,7 +63,8 @@ import {DocsModalModule} from '@components/shared/docs-modal';
         MatMenuModule,
         ScrollingModule,
         CreateSubscriptionModule,
-        DocsModalModule
+        DocsModalModule,
+        Hyp3UrlModule
     ]
 })
 export class ProcessingQueueModule {

@@ -7,7 +7,6 @@ import { AppState } from '@store';
 import * as filtersStore from '@store/filters';
 import * as searchStore from '@store/search';
 
-
 import * as services from '@services';
 import * as models from '@models';
 import { Observable } from 'rxjs';
