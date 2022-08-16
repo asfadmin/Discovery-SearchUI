@@ -1,7 +1,7 @@
 <div mat-dialog-title
   class="queue">
   <div class="pq-card-title-group">
-    <div>
+    <div style="display: flex;">
       <div class="on-demand-branding">
         <mat-icon
            class="on-demand-icon"
@@ -13,11 +13,23 @@
       </div>
 
       <ng-container *ngIf="breakpoint !== breakpoints.MOBILE">
-        <div class="on-demand-text">
-          Create Subscription
+        <div class="branding-block">
+          <div class="hyp3-url">
+            <app-hyp3-url></app-hyp3-url>
+          </div>
+          <div class="on-demand-text">
+            Create Subscription
+          </div>
+          <div class="on-demand-subtitle">
+            powered by HyP3
+          </div>
         </div>
-        <div class="on-demand-subtitle">
-          powered by HyP3
+      </ng-container>
+      <ng-container *ngIf="breakpoint === breakpoints.MOBILE">
+        <div class="branding-block">
+          <div class="hyp3-url">
+            <app-hyp3-url></app-hyp3-url>
+          </div>
         </div>
       </ng-container>
     </div>
@@ -27,7 +39,7 @@
   </div>
 
   <div class="feedback-div header-link">
-    <a href="javascript:feedback.showForm();" onfocus="this.blur()"> <i class="fa fa-comments-o"></i> Feedback</a>
+    <a href="javascript:feedback.showForm();" onfocus="this.blur()"> <mat-icon>comment</mat-icon> Feedback</a>
   </div>
 
   <div class="docs-div header-link">

@@ -49,6 +49,7 @@ import { CreateSubscriptionModule } from './create-subscription/create-subscript
 import { CiSearchModule } from './info-bar/ci-search/ci-search.module';
 import { SarviewsEventTypeSelectorModule } from '@components/shared/selectors/sarviews-event-type-selector';
 import { DerivedDatasetsHeaderComponent } from './derived-datasets-header/derived-datasets-header.component';
+import {Hyp3UrlModule} from '@components/shared/hyp3-url/hyp3-url.module';
 
 @NgModule({
   declarations: [
@@ -98,7 +99,8 @@ import { DerivedDatasetsHeaderComponent } from './derived-datasets-header/derive
     CreateSubscriptionModule,
     CiSearchModule,
     SarviewsEventSearchSelectorModule,
-    SarviewsEventTypeSelectorModule
+    SarviewsEventTypeSelectorModule,
+    Hyp3UrlModule
   ],
   exports: [
     HeaderComponent

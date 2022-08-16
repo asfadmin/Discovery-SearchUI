@@ -22,12 +22,20 @@ export class Hyp3Service {
     return this.hyp3ApiUrl;
   }
 
+  public get baseUrl() {
+    return this.baseHyp3ApiUrl;
+  }
+
   public setApiUrl(url: string): void {
     this.hyp3ApiUrl = url;
   }
 
   public setDefaultApiUrl(): void {
     this.hyp3ApiUrl = this.baseHyp3ApiUrl;
+  }
+
+  public isDefaultApi(): boolean {
+    return (this.hyp3ApiUrl === this.baseHyp3ApiUrl);
   }
 
   public getUser$(): Observable<models.Hyp3User> {

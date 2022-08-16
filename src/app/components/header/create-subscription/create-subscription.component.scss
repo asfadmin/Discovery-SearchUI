@@ -105,7 +105,7 @@ $color: $asf-primary-dark;
 
 .feedback-div {
   position: absolute;
-  top: 56px;
+  top: 53px;
   right: 16px;
   text-align: right;
   float: right;
@@ -115,7 +115,7 @@ $color: $asf-primary-dark;
 .docs-div {
   position: absolute;
   top: 56px;
-  right: 130px;
+  right: 140px;
   text-align: right;
   float: right;
   cursor: pointer;
@@ -188,20 +188,15 @@ $color: $asf-primary-dark;
 }
 
 .on-demand-text {
-  display: inline-block;
   vertical-align: middle;
   margin-top: -16px;
 }
 
 .on-demand-subtitle {
-  margin-top: -42px;
   font-style: italic;
-  margin-left: 85px;
   font-size: 14px;
-  margin-bottom: 17px;
   color: #65665c;
-  display: block;
-  position: absolute;
+  margin-top: -15px;
 }
 
 .sub-option {
@@ -239,4 +234,20 @@ $color: $asf-primary-dark;
   display: flex;
   justify-content: space-between;
   width: 100%;
+}
+
+.hyp3-url {
+  height: 32px;
+  font-size: 12px;
+  margin: -4px 0 6px 0;
+  color: #65665c;
+}
+
+.hyp3-url-mobile {
+  margin: 17px 0 0 0;
+}
+
+.branding-block {
+  display: flex;
+  flex-direction: column;
 }

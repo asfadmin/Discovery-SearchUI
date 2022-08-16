@@ -120,7 +120,6 @@ $color: $asf-primary-dark;
 }
 
 .on-demand-text {
-  display: inline-block;
   vertical-align: middle;
   margin-top: -16px;
 }
@@ -197,8 +196,8 @@ $color: $asf-primary-dark;
 
 .docs-div {
   position: absolute;
-  top: 53px;
-  right: 130px;
+  top: 56px;
+  right: 140px;
   text-align: right;
   float: right;
   cursor: pointer;
@@ -223,14 +222,10 @@ $color: $asf-primary-dark;
 }
 
 .on-demand-subtitle {
-  margin-top: -42px;
   font-style: italic;
-  margin-left: 75px;
   font-size: 14px;
-  margin-bottom: 17px;
   color: #65665c;
-  display: block;
-  position: absolute;
+  margin-top: -15px;
 }
 
 .mat-dialog-content {
@@ -399,4 +394,20 @@ $color: $asf-primary-dark;
 
 .job-type--button {
   margin-right: 5px;
+}
+
+.hyp3-url {
+  height: 32px;
+  font-size: 12px;
+  margin: -4px 0 6px 0;
+  color: #65665c;
+}
+
+.hyp3-url-mobile {
+  margin: 17px 0 0 0;
+}
+
+.branding-block {
+  display: flex;
+  flex-direction: column;
 }
