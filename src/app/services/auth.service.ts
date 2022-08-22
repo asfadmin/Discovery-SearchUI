@@ -25,16 +25,18 @@ export class AuthService {
     private notificationService: NotificationService,
     private store$: Store<AppState>,
   ) {
-    this.bc = new BroadcastChannel('asf-vertex');
-    this.bc.onmessage = (_event: MessageEvent) => {
-      let user = this.getUser();
-      if(!user.id){
-        this.store$.dispatch(new userStore.Logout());
-      }
-      else {
-        this.store$.dispatch(new userStore.Login(user));
-      }
-    };
+    if(typeof BroadcastChannel !== "undefined"){
+      this.bc = new BroadcastChannel('asf-vertex');
+      this.bc.onmessage = (_event: MessageEvent) => {
+        let user = this.getUser();
+        if(!user.id){
+          this.store$.dispatch(new userStore.Logout());
+        }
+        else {
+          this.store$.dispatch(new userStore.Login(user));
+        }
+      };
+    }
   }
   public get authUrl() {
     return this.env.currentEnv.auth;
