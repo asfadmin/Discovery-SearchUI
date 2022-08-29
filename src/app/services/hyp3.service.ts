@@ -1,11 +1,13 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 
-import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { Observable, of } from 'rxjs';
+import { catchError, map } from 'rxjs/operators';
 import * as moment from 'moment';
 
 import * as models from '@models';
+
+import { NotificationService } from './notification.service';
 
 @Injectable({
   providedIn: 'root'
@@ -16,6 +18,7 @@ export class Hyp3Service {
 
   constructor(
     private http: HttpClient,
+    private notifcationService: NotificationService
   ) {}
 
   public get apiUrl() {
@@ -92,9 +95,14 @@ export class Hyp3Service {
 
   public getJobsByUrl$(url: string): Observable<{hyp3Jobs: models.Hyp3Job[], next: string}> {
     return this.http.get(url, { withCredentials: true }).pipe(
+      catchError((err: HttpErrorResponse) => {
+        if (err.status === 0) {
+          this.notifcationService.onHyp3APIURLError()
+        }
+        return of({})
+      }),
       map((resp: any) => {
         if (!resp.jobs) {
-          // TODO: Notify user when there is an error
           return {hyp3Jobs: [], next: ''};
         }
 

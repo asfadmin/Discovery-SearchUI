@@ -5,13 +5,21 @@ import { ActiveToast, IndividualConfig, ToastrService } from 'ngx-toastr';
 import * as uiStore from '@store/ui';
 import { AppState } from '@store';
 import { Store } from '@ngrx/store';
-import { take } from 'rxjs/operators';
+import { take, first } from 'rxjs/operators';
+
+import * as userStore from '@store/user';
+import { PreferencesComponent } from '@components/header/header-buttons/preferences/preferences.component';
+import { MatDialog } from '@angular/material/dialog';
+
 @Injectable({
   providedIn: 'root'
 })
 export class NotificationService {
 
-  constructor(private toastr: ToastrService, private store$: Store<AppState>) {}
+  constructor(
+    private toastr: ToastrService,
+    private store$: Store<AppState>,
+    private dialog: MatDialog) {}
 
   // Custom toastr config example, toastClass styling in styles.scss
   private toastOptions: Partial<IndividualConfig> = {
@@ -124,5 +132,33 @@ export class NotificationService {
 
   public error(message: string, title = '', options: Partial<IndividualConfig> = {}): ActiveToast<any> {
     return this.toastr.warning(message, title, {...options, ...this.toastOptions});
+  }
+
+  public onHyp3APIURLError(): ActiveToast<any> {
+    const toast = this.error(
+      `There was a problem with your preferred HyP3 API URL, click to open preferences.`,
+      "HyP3 API ERROR",
+    {timeOut: 500000, enableHtml: true}
+    )
+    toast.onTap.pipe(first()).subscribe(_ => this.onOpenPreferences())
+    return toast
+  }
+
+  private onOpenPreferences(): void {
+    window.dataLayer = window.dataLayer || [];
+    window.dataLayer.push({
+      'event': 'open-preferences',
+      'open-preferences': true
+    });
+
+    const dialogRef = this.dialog.open(PreferencesComponent, {
+      maxWidth: '100%',
+      maxHeight: '100%',
+    });
+
+      dialogRef.afterClosed().pipe(first()).subscribe(
+        _ => this.store$.dispatch(new userStore.SaveProfile())
+      );
+    // );
   }
 }
