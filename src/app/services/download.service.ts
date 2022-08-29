@@ -42,7 +42,6 @@ export class DownloadService {
         return throwError(err);
       }),
     );
-
   }
   async getDirectory( getNew= false): Promise<any> {
     return new Promise(resolve => {
