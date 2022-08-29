@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 
 import { fromEvent, combineLatest } from 'rxjs';
-import { withLatestFrom } from 'rxjs/operators';
+import { filter, map, withLatestFrom } from 'rxjs/operators';
 
 import { Store } from '@ngrx/store';
 import { AppState } from '@store';
@@ -27,13 +27,17 @@ export class KeyboardService {
     );
 
     fromEvent(document, 'keydown').pipe(
-      withLatestFrom(combineLatest(
-        scenesSorted$,
-        this.scenesService.withBrowses$(scenesSorted$),
-        this.store$.select(scenesStore.getSelectedScene),
-        this.store$.select(uiStore.getOnlyScenesWithBrowse),
-        this.store$.select(uiStore.getIsBrowseDialogOpen)
-      ))
+      withLatestFrom(this.store$.select(uiStore.getIsPreferenceMenuOpen)),
+      filter(([_, arePreferencesOpen]) => !arePreferencesOpen),
+      map(([e, _]) => e),
+      withLatestFrom(combineLatest([
+          scenesSorted$,
+          this.scenesService.withBrowses$(scenesSorted$),
+          this.store$.select(scenesStore.getSelectedScene),
+          this.store$.select(uiStore.getOnlyScenesWithBrowse),
+          this.store$.select(uiStore.getIsBrowseDialogOpen),
+        ])
+      ),
     ).subscribe(([e, [ scenes, scenesWithBrowses, selected, onlyScenesWithBrowse, isBrowseDialogOpen ]]) => {
       const { key } = <KeyboardEvent>e;
       const withBrowse = isBrowseDialogOpen && onlyScenesWithBrowse;

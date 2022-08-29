@@ -1,16 +1,20 @@
 import { Injectable } from '@angular/core';
 
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { of } from 'rxjs';
-import { map, catchError, switchMap, withLatestFrom } from 'rxjs/operators';
+import { of, first } from 'rxjs';
+import { map, catchError, switchMap, withLatestFrom, tap } from 'rxjs/operators';
 import * as uiActions from './ui.action';
+import * as uiStore from '@store/ui';
 import * as filtersStore from '@store/filters';
+import * as userStore from '@store/user';
 import { getSearchType } from '@store/search/search.reducer';
 
 import { BannerApiService } from '../../services/banner-api.service';
 import { Store } from '@ngrx/store';
 import { AppState } from '@store';
 import { SearchType } from '@models';
+import { PreferencesComponent } from '@components/header/header-buttons/preferences/preferences.component';
+import { MatDialog } from '@angular/material/dialog';
 
 @Injectable()
 export class UIEffects {
@@ -19,6 +23,7 @@ export class UIEffects {
     private bannerApi: BannerApiService,
     private actions$: Actions,
     private store$: Store<AppState>,
+    private dialog: MatDialog
   ) {}
 
   loadBanners = createEffect(() => this.actions$.pipe(
@@ -58,4 +63,30 @@ export class UIEffects {
   ),
   { dispatch: false }
   );
+
+  openPreferencesMenu = createEffect(() => this.actions$.pipe(
+    ofType<uiActions.OpenPreferenceMenu>(uiActions.UIActionType.OPEN_PREFERENCE_MENU),
+    tap(    _ => {window.dataLayer = window.dataLayer || [];
+      window.dataLayer.push({
+        'event': 'open-preferences',
+        'open-preferences': true
+      });
+
+      const dialogRef = this.dialog.open(PreferencesComponent, {
+        maxWidth: '100%',
+        maxHeight: '100%'
+      });
+
+      dialogRef.afterClosed().pipe(
+        first()
+      ).subscribe(
+          _ => {
+            this.store$.dispatch(new userStore.SaveProfile());
+            this.store$.dispatch(new uiStore.ClosePreferenceMenu());
+        })
+      })
+    ),
+    {dispatch: false}
+  );
+
 }

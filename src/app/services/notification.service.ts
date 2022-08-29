@@ -7,9 +7,9 @@ import { AppState } from '@store';
 import { Store } from '@ngrx/store';
 import { take, first } from 'rxjs/operators';
 
-import * as userStore from '@store/user';
-import { PreferencesComponent } from '@components/header/header-buttons/preferences/preferences.component';
-import { MatDialog } from '@angular/material/dialog';
+// import * as userStore from '@store/user';
+// import { PreferencesComponent } from '@components/header/header-buttons/preferences/preferences.component';
+// import { MatDialog } from '@angular/material/dialog';
 
 @Injectable({
   providedIn: 'root'
@@ -19,7 +19,8 @@ export class NotificationService {
   constructor(
     private toastr: ToastrService,
     private store$: Store<AppState>,
-    private dialog: MatDialog) {}
+    // private dialog: MatDialog
+    ) {}
 
   // Custom toastr config example, toastClass styling in styles.scss
   private toastOptions: Partial<IndividualConfig> = {
@@ -140,25 +141,7 @@ export class NotificationService {
       "HyP3 API ERROR",
     {timeOut: 500000, enableHtml: true}
     )
-    toast.onTap.pipe(first()).subscribe(_ => this.onOpenPreferences())
+    toast.onTap.pipe(first()).subscribe(_ => this.store$.dispatch(new uiStore.OpenPreferenceMenu()))
     return toast
-  }
-
-  private onOpenPreferences(): void {
-    window.dataLayer = window.dataLayer || [];
-    window.dataLayer.push({
-      'event': 'open-preferences',
-      'open-preferences': true
-    });
-
-    const dialogRef = this.dialog.open(PreferencesComponent, {
-      maxWidth: '100%',
-      maxHeight: '100%',
-    });
-
-      dialogRef.afterClosed().pipe(first()).subscribe(
-        _ => this.store$.dispatch(new userStore.SaveProfile())
-      );
-    // );
   }
 }
