@@ -99,7 +99,14 @@ export class Hyp3Service {
   public getJobsByUrl$(url: string): Observable<{hyp3Jobs: models.Hyp3Job[], next: string}> {
     return this.http.get(url, { withCredentials: true }).pipe(
       catchError((err: HttpErrorResponse) => {
-        this.onHyp3APIUrlError(err.status);
+        if (this.apiUrl === this.baseUrl) {
+          this.notifcationService.error(
+            "There was a problem connecting to the HyP3 API",
+            `HyP3 API ${err.status} Error`
+          );
+        } else {
+          this.onHyp3APIUrlError(err.status);
+        }
         return of({});
       }),
       map((resp: any) => {
