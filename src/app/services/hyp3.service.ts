@@ -1,13 +1,15 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 
-import { Observable, of } from 'rxjs';
-import { catchError, map } from 'rxjs/operators';
+import { Observable, of, first, catchError, map } from 'rxjs';
 import * as moment from 'moment';
 
 import * as models from '@models';
+import * as uiStore from '@store/ui';
 
 import { NotificationService } from './notification.service';
+import { Store } from '@ngrx/store';
+import { AppState } from '@store';
 
 @Injectable({
   providedIn: 'root'
@@ -18,7 +20,8 @@ export class Hyp3Service {
 
   constructor(
     private http: HttpClient,
-    private notifcationService: NotificationService
+    private notifcationService: NotificationService,
+    private store$: Store<AppState>,
   ) {}
 
   public get apiUrl() {
@@ -96,10 +99,8 @@ export class Hyp3Service {
   public getJobsByUrl$(url: string): Observable<{hyp3Jobs: models.Hyp3Job[], next: string}> {
     return this.http.get(url, { withCredentials: true }).pipe(
       catchError((err: HttpErrorResponse) => {
-        if (err.status === 0) {
-          this.notifcationService.onHyp3APIURLError()
-        }
-        return of({})
+        this.onHyp3APIUrlError(err.status);
+        return of({});
       }),
       map((resp: any) => {
         if (!resp.jobs) {
@@ -275,5 +276,18 @@ export class Hyp3Service {
     const expiration = moment.duration(expiration_time.diff(current));
 
     return Math.floor(expiration.asDays());
+  }
+
+  private onHyp3APIUrlError(status_code: Number) {
+    let error_code = status_code !== 0 ? status_code.toString() : 'Uknown';
+    let title = `HyP3 API URL ${error_code} Error`;
+    let message = `There was a problem with your preferred HyP3 API URL, click to open preferences.`;
+
+    const toast = this.notifcationService.error(
+    message,
+    title,
+  {timeOut: 500000, enableHtml: true});
+
+    toast.onTap.pipe(first()).subscribe(_ => this.store$.dispatch(new uiStore.OpenPreferenceMenu()));
   }
 }

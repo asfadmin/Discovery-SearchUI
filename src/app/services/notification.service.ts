@@ -5,11 +5,7 @@ import { ActiveToast, IndividualConfig, ToastrService } from 'ngx-toastr';
 import * as uiStore from '@store/ui';
 import { AppState } from '@store';
 import { Store } from '@ngrx/store';
-import { take, first } from 'rxjs/operators';
-
-// import * as userStore from '@store/user';
-// import { PreferencesComponent } from '@components/header/header-buttons/preferences/preferences.component';
-// import { MatDialog } from '@angular/material/dialog';
+import { take } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -133,15 +129,5 @@ export class NotificationService {
 
   public error(message: string, title = '', options: Partial<IndividualConfig> = {}): ActiveToast<any> {
     return this.toastr.warning(message, title, {...options, ...this.toastOptions});
-  }
-
-  public onHyp3APIURLError(): ActiveToast<any> {
-    const toast = this.error(
-      `There was a problem with your preferred HyP3 API URL, click to open preferences.`,
-      "HyP3 API ERROR",
-    {timeOut: 500000, enableHtml: true}
-    )
-    toast.onTap.pipe(first()).subscribe(_ => this.store$.dispatch(new uiStore.OpenPreferenceMenu()))
-    return toast
   }
 }
