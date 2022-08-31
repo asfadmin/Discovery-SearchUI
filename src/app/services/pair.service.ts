@@ -89,7 +89,6 @@ export class PairService {
       debounceTime(250),
       withLatestFrom(this.store$.select(getSearchType)),
       map(([params, searchType]) => {
-
         return searchType === SearchType.SBAS ? ({
           pairs: [...this.makePairs(params.scenes,
             params.temporalRange,
@@ -116,14 +115,12 @@ export class PairService {
 
     let startDateExtrema: Date;
     let endDateExtrema: Date;
-
     if (!!dateRange.start) {
     startDateExtrema = new Date(dateRange.start.toISOString());
     }
     if (!!dateRange.end) {
       endDateExtrema = new Date(dateRange.end.toISOString());
     }
-
     let intersectionMethod;
 
     if (!!aoi) {
@@ -163,28 +160,26 @@ export class PairService {
         const P2StopDate = new Date(scene.metadata.stopDate.toISOString());
 
         if (orbitalDifference === 0) {
-          return;
+          continue;
         }
 
         if (!!season.start && !!season.end) {
             if (!this.dayInSeason(P1StartDate, P1StopDate, P2StartDate, P2StopDate, season)) {
-              return;
+              continue;
             }
         }
-
         if (tempDiff < tempThreshold.start || tempDiff > tempThreshold.end || perpDiff > perpThreshold) {
-          return;
+          continue;
         }
-
         if (startDateExtrema !== null) {
           if (P1StartDate < startDateExtrema || P2StartDate < startDateExtrema) {
-            return;
+            continue;
           }
         }
 
         if (endDateExtrema !== null) {
           if ( P1StopDate > endDateExtrema || P2StopDate > endDateExtrema) {
-              return;
+            continue;
             }
         }
 
@@ -198,7 +193,7 @@ export class PairService {
             p1Center.lat > Math.max(p2Bounds[0].lat, p2Bounds[1].lat) ||
             p1Center.lat < Math.min(p2Bounds[2].lat, p2Bounds[3].lat)
           ) {
-            return;
+            continue;
           }
         } else if (overlapThreshold === SBASOverlap.ANY_OVERLAP) {
           const p1Bounds = bounds(root.metadata.polygon);
@@ -219,7 +214,7 @@ export class PairService {
           const p2YMax = Math.max(p2Top[0].lat, p2Top[1].lat);
 
           if (p1YMax < p2Ymin || p1Ymin > p2YMax) {
-            return;
+            continue;
           }
         }
 
