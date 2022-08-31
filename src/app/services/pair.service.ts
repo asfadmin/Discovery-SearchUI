@@ -173,7 +173,7 @@ export class PairService {
         }
         if (startDateExtrema !== null) {
           if (P1StartDate < startDateExtrema || P2StartDate < startDateExtrema) {
-            continue;
+            return;
           }
         }
 
