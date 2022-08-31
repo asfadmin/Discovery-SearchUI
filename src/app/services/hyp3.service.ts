@@ -101,7 +101,7 @@ export class Hyp3Service {
       catchError((err: HttpErrorResponse) => {
         if (this.apiUrl === this.baseUrl) {
           this.notifcationService.error(
-            "There was a problem connecting to the HyP3 API",
+            'There was a problem connecting to the HyP3 API',
             `HyP3 API ${err.status} Error`
           );
         } else {
@@ -286,9 +286,9 @@ export class Hyp3Service {
   }
 
   private onHyp3APIUrlError(status_code: Number) {
-    let error_code = status_code !== 0 ? status_code.toString() : 'Uknown';
-    let title = `HyP3 API URL ${error_code} Error`;
-    let message = `There was a problem with your preferred HyP3 API URL, click to open preferences.`;
+    const error_code = status_code !== 0 ? status_code.toString() : 'Uknown';
+    const title = `HyP3 API URL ${error_code} Error`;
+    const message = `There was a problem with your preferred HyP3 API URL, click to open preferences.`;
 
     const toast = this.notifcationService.error(
     message,

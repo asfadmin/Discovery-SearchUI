@@ -83,7 +83,7 @@ export class UIEffects {
           _ => {
             this.store$.dispatch(new userStore.SaveProfile());
             this.store$.dispatch(new uiStore.ClosePreferenceMenu());
-        })
+        });
       })
     ),
     {dispatch: false}

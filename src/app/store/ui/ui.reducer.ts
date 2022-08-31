@@ -165,14 +165,14 @@ export function uiReducer(state = initState, action: UIActions): UIState {
       return {
         ...state,
         isPreferenceMenuOpen: true
-      }
+      };
     }
 
     case UIActionType.CLOSE_PREFERENCE_MENU: {
       return {
         ...state,
         isPreferenceMenuOpen: false
-      }
+      };
     }
 
     case UIActionType.SET_ONLY_SCENES_WITH_BROWSE: {
