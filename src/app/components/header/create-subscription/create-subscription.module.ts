@@ -23,6 +23,7 @@ import { PipesModule } from '@pipes';
 import { SubscriptionDateRangeComponent } from './subscription-date-range/subscription-date-range.component';
 import {FlexModule} from '@angular/flex-layout';
 import {DocsModalModule} from '@components/shared/docs-modal';
+import {Hyp3UrlModule} from '@components/shared/hyp3-url/hyp3-url.module';
 
 @NgModule({
   declarations: [
@@ -48,6 +49,7 @@ import {DocsModalModule} from '@components/shared/docs-modal';
         PipesModule,
         FlexModule,
         DocsModalModule,
+        Hyp3UrlModule,
     ],
   exports: [
     CreateSubscriptionComponent

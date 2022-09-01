@@ -18,13 +18,25 @@ import { NotificationService } from './notification.service';
   providedIn: 'root'
 })
 export class AuthService {
+  private bc: BroadcastChannel;
   constructor(
     private env: EnvironmentService,
     private http: HttpClient,
     private notificationService: NotificationService,
     private store$: Store<AppState>,
-  ) {}
-
+  ) {
+    if (typeof BroadcastChannel !== 'undefined') {
+      this.bc = new BroadcastChannel('asf-vertex');
+      this.bc.onmessage = (_event: MessageEvent) => {
+        const user = this.getUser();
+        if (!user.id) {
+          this.store$.dispatch(new userStore.Logout());
+        } else {
+          this.store$.dispatch(new userStore.Login(user));
+        }
+      };
+    }
+  }
   public get authUrl() {
     return this.env.currentEnv.auth;
   }
@@ -68,6 +80,9 @@ export class AuthService {
           if (loginWindow.location.host === window.location.host) {
             loginWindow.close();
             user = this.getUser();
+            this.bc.postMessage({
+              event : 'login'
+            });
           }
         } catch (e) {
         }
@@ -92,7 +107,11 @@ export class AuthService {
         responseType: 'text',
         withCredentials: true
       }).pipe(
-        map(_ => this.getUser()),
+        map(_ => {
+        this.bc.postMessage({
+          event : 'logout'
+        });
+        return this.getUser(); }),
         catchError(_ => {
           this.notificationService.error('Trouble logging out', 'Error', {
             timeOut: 5000,
@@ -150,6 +169,6 @@ export class AuthService {
       .map(([name, val]) => ({[name]: val}))
       .reduce(
         (allCookies, cookie) => ({ ...allCookies, ...cookie })
-      );
-  }
+        );
+      }
 }

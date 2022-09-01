@@ -28,12 +28,12 @@
   flex-direction: row;
   justify-content: space-between;
   background-color: $asf-primary-light;
-  margin-top: -24px;
-  margin-bottom: 15px;
+  height: 40px;
+  font-size: 22px !important;
+  margin-top: -27px;
   margin-right: -24px;
   margin-left: -24px;
-  padding-top: 14px;
-  padding-bottom: 0;
+  padding-top: 13px;
   padding-left: 24px;
   padding-right: 24px;
 }
@@ -51,5 +51,11 @@
 }
 
 .section-heading {
-  margin-top: 20px;
+  margin: 20px 0 10px 0;
+  font-weight: 500;
+}
+
+.dialog-title-overrides {
+  font-size: 24px;
+  font-weight: 400;
 }

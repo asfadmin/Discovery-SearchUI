@@ -29,7 +29,7 @@ import { HeaderModule } from '@components/header';
 import { MapModule } from '@components/map';
 import { ResultsMenuModule } from '@components/results-menu';
 import { BaselineChartModule } from '@components/baseline-chart';
-import { HelpModule } from './components/help';
+import { HelpModule } from '@components/help';
 import { AppComponent } from './app.component';
 import { CustomBreakPointsProvider } from '@services/custom-breakpoints';
 
@@ -138,7 +138,6 @@ export const routes = [
     // { provide: Window, useValue: window },
   ],
   bootstrap: [AppComponent],
-  exports: [MatTableModule,
-  ]
+    exports: [MatTableModule]
 })
 export class AppModule {}

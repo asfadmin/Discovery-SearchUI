@@ -11,7 +11,6 @@ import {
 import { Hyp3Service } from '@services';
 import { SubSink } from 'subsink';
 
-
 @Component({
   selector: 'app-preferences',
   templateUrl: './preferences.component.html',
@@ -143,10 +142,6 @@ export class PreferencesComponent implements OnInit, OnDestroy {
     };
 
     this.saveProfile();
-  }
-
-  public onChangeBackendUrl(): void {
-    console.log(this.hyp3BackendUrl);
   }
 
   public resetHyp3Url() {

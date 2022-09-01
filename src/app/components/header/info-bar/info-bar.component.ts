@@ -7,10 +7,10 @@ import { AppState } from '@store';
 import * as filtersStore from '@store/filters';
 import * as searchStore from '@store/search';
 
-
 import * as services from '@services';
 import * as models from '@models';
-import {Observable} from 'rxjs';
+import { Observable } from 'rxjs';
+import * as userStore from '@store/user';
 
 // Declare GTM dataLayer array.
 declare global {
@@ -50,9 +50,15 @@ export class InfoBarComponent implements OnInit, OnDestroy {
 
   private subs = new SubSink();
 
+  public hyp3Default = this.hyp3.isDefaultApi();
+  public hyp3Url = this.hyp3.apiUrl;
+  public hyp3BaseUrl = this.hyp3.baseUrl;
+  public hyp3BackendUrl: string;
+
   constructor(
     private store$: Store<AppState>,
     private screenSize: services.ScreenSizeService,
+    private hyp3: services.Hyp3Service,
   ) {
   }
 
@@ -136,6 +142,19 @@ export class InfoBarComponent implements OnInit, OnDestroy {
     this.subs.add(
       this.store$.select(searchStore.getSearchType).subscribe(
         searchType => this.searchType = searchType
+      )
+    );
+
+    this.subs.add(
+      this.store$.select(userStore.getUserProfile).subscribe(
+        profile => {
+          this.hyp3BackendUrl = profile.hyp3BackendUrl;
+          if (this.hyp3BackendUrl) {
+            this.hyp3.setApiUrl(this.hyp3BackendUrl);
+          } else {
+            this.hyp3BackendUrl = this.hyp3.apiUrl;
+          }
+        }
       )
     );
 

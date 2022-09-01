@@ -2,7 +2,6 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { SubSink } from 'subsink';
 import { saveAs } from 'file-saver';
 
-import { MatDialog } from '@angular/material/dialog';
 import { HttpClient } from '@angular/common/http';
 
 import { Store } from '@ngrx/store';
@@ -11,8 +10,6 @@ import * as queueStore from '@store/queue';
 import * as userStore from '@store/user';
 import * as uiStore from '@store/ui';
 import * as searchStore from '@store/search';
-
-import { PreferencesComponent } from './preferences/preferences.component';
 
 import { AuthService, AsfApiService, EnvironmentService, ScreenSizeService } from '@services';
 import {
@@ -66,7 +63,6 @@ export class HeaderButtonsComponent implements OnInit, OnDestroy {
     private http: HttpClient,
     public asfApiService: AsfApiService,
     private screenSize: ScreenSizeService,
-    private dialog: MatDialog,
     private store$: Store<AppState>,
   ) {}
 
@@ -163,22 +159,7 @@ export class HeaderButtonsComponent implements OnInit, OnDestroy {
   }
 
   public onOpenPreferences(): void {
-    window.dataLayer = window.dataLayer || [];
-    window.dataLayer.push({
-      'event': 'open-preferences',
-      'open-preferences': true
-    });
-
-    const dialogRef = this.dialog.open(PreferencesComponent, {
-      maxWidth: '100%',
-      maxHeight: '100%'
-    });
-
-    this.subs.add(
-      dialogRef.afterClosed().subscribe(
-        _ => this.store$.dispatch(new userStore.SaveProfile())
-      )
-    );
+    this.store$.dispatch(new uiStore.OpenPreferenceMenu());
   }
 
   public onOpenHelp(helpSelection: string): void {

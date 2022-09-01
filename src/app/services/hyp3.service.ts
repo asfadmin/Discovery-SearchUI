@@ -1,11 +1,15 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 
-import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { Observable, of, first, catchError, map } from 'rxjs';
 import * as moment from 'moment';
 
 import * as models from '@models';
+import * as uiStore from '@store/ui';
+
+import { NotificationService } from './notification.service';
+import { Store } from '@ngrx/store';
+import { AppState } from '@store';
 
 @Injectable({
   providedIn: 'root'
@@ -16,10 +20,16 @@ export class Hyp3Service {
 
   constructor(
     private http: HttpClient,
+    private notifcationService: NotificationService,
+    private store$: Store<AppState>,
   ) {}
 
   public get apiUrl() {
     return this.hyp3ApiUrl;
+  }
+
+  public get baseUrl() {
+    return this.baseHyp3ApiUrl;
   }
 
   public setApiUrl(url: string): void {
@@ -28,6 +38,10 @@ export class Hyp3Service {
 
   public setDefaultApiUrl(): void {
     this.hyp3ApiUrl = this.baseHyp3ApiUrl;
+  }
+
+  public isDefaultApi(): boolean {
+    return (this.hyp3ApiUrl === this.baseHyp3ApiUrl);
   }
 
   public getUser$(): Observable<models.Hyp3User> {
@@ -84,9 +98,19 @@ export class Hyp3Service {
 
   public getJobsByUrl$(url: string): Observable<{hyp3Jobs: models.Hyp3Job[], next: string}> {
     return this.http.get(url, { withCredentials: true }).pipe(
+      catchError((err: HttpErrorResponse) => {
+        if (this.apiUrl === this.baseUrl) {
+          this.notifcationService.error(
+            'There was a problem connecting to the HyP3 API',
+            `HyP3 API ${err.status} Error`
+          );
+        } else {
+          this.onHyp3APIUrlError(err.status);
+        }
+        return of({});
+      }),
       map((resp: any) => {
         if (!resp.jobs) {
-          // TODO: Notify user when there is an error
           return {hyp3Jobs: [], next: ''};
         }
 
@@ -259,5 +283,18 @@ export class Hyp3Service {
     const expiration = moment.duration(expiration_time.diff(current));
 
     return Math.floor(expiration.asDays());
+  }
+
+  private onHyp3APIUrlError(status_code: Number) {
+    const error_code = status_code !== 0 ? status_code.toString() : 'Uknown';
+    const title = `HyP3 API URL ${error_code} Error`;
+    const message = `There was a problem with your preferred HyP3 API URL, click to open preferences.`;
+
+    const toast = this.notifcationService.error(
+    message,
+    title,
+  {timeOut: 500000, enableHtml: true});
+
+    toast.onTap.pipe(first()).subscribe(_ => this.store$.dispatch(new uiStore.OpenPreferenceMenu()));
   }
 }

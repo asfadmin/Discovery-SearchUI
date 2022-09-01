@@ -3,7 +3,7 @@ export enum SearchType {
   LIST = 'List Search',
   BASELINE = 'Baseline Search',
   SBAS = 'SBAS Search',
-  CUSTOM_PRODUCTS = 'Custom Products',
+  CUSTOM_PRODUCTS = 'On Demand',
   SARVIEWS_EVENTS = 'Event Search',
   DERIVED_DATASETS = 'Derived Datasets',
 }

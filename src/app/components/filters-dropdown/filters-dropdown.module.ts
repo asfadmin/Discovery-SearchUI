@@ -22,6 +22,7 @@ import { SarviewsFiltersModule } from './sarviews-filters';
 import { SearchSelectorModule } from '@components/shared/selectors/search-selector';
 
 import { FlexLayoutModule } from '@angular/flex-layout';
+import {DocsModalModule} from '@components/shared/docs-modal';
 
 @NgModule({
   imports: [
@@ -46,6 +47,7 @@ import { FlexLayoutModule } from '@angular/flex-layout';
     FlexLayoutModule,
 
     SearchSelectorModule,
+    DocsModalModule,
   ],
   declarations: [
     FiltersDropdownComponent,

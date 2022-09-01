@@ -212,7 +212,8 @@
     </mat-menu>
 
     <mat-menu #derivedDatasetMenu="matMenu">
-      <div mat-menu-item matSuffix *ngFor="let dataset of datasets; last as isLast">
+      <div mat-menu-item matSuffix *ngFor="let dataset of datasets; last as isLast"
+      (click)="onOpenDerivedDataset(dataset.info_url, dataset.name); $event.stopPropagation();">
         <div *ngIf="(breakpoint$ | async) === breakpoints.MOBILE">
           <mat-icon>video_library</mat-icon>
           {{ dataset.name }}
@@ -232,7 +233,7 @@
               </mat-card-actions>
             </div>
             <div fxFlex="25%" class="menu-item-aside">
-              <img [src]="dataset.picture" class="menu-item-icon">
+              <img [src]="dataset.picture" (click)="onOpenDerivedDataset(dataset.info_url, dataset.name)" class="menu-item-icon">
             </div>
           </div>
         </div>

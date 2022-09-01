@@ -8,6 +8,7 @@ import { UIActionType, UIActions } from './ui.action';
 export interface UIState {
   isFiltersMenuOpen: boolean;
   isResultsMenuOpen: boolean;
+  isPreferenceMenuOpen: boolean;
   sidebar: SidebarType;
   isAOIOptionsOpen: boolean;
   showS1RawData: boolean;
@@ -24,6 +25,7 @@ export interface UIState {
 export const initState: UIState = {
   isFiltersMenuOpen: false,
   isResultsMenuOpen: false,
+  isPreferenceMenuOpen: false,
   sidebar: SidebarType.NONE,
   isAOIOptionsOpen: false,
   showS1RawData: false,
@@ -159,6 +161,20 @@ export function uiReducer(state = initState, action: UIActions): UIState {
       };
     }
 
+    case UIActionType.OPEN_PREFERENCE_MENU: {
+      return {
+        ...state,
+        isPreferenceMenuOpen: true
+      };
+    }
+
+    case UIActionType.CLOSE_PREFERENCE_MENU: {
+      return {
+        ...state,
+        isPreferenceMenuOpen: false
+      };
+    }
+
     case UIActionType.SET_ONLY_SCENES_WITH_BROWSE: {
       return {
         ...state,
@@ -287,4 +303,9 @@ export const getIsDownloadQueueOpen = createSelector(
 export const getIsOnDemandQueueOpen = createSelector(
   getUIState,
   state => state.isOnDemandQueueOpen
+);
+
+export const getIsPreferenceMenuOpen = createSelector(
+  getUIState,
+  state => state.isPreferenceMenuOpen
 );
