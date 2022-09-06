@@ -229,7 +229,7 @@ export class QueueComponent implements OnInit, OnDestroy {
       return false;
     }
     return products.filter(product => product.metadata.productType !== null).
-    some(product => product.dataset === 'JERS-1' || product.dataset === '')
+    some(product => product.dataset === 'JERS-1' || product.dataset === 'RADARSAT-1')
   }
   public onResized(event: ResizedEvent) {
     this.dlWidth = event.newRect.width;
