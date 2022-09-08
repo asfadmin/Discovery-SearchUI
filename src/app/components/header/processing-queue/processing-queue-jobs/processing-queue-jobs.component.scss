@@ -35,7 +35,7 @@
   display: flex;
   flex-wrap: wrap;
   margin-top: 25px;
-  background-color: white;
+  background-color: $asf-background-white;
 }
 
 .mat-list-base .mat-list-item,
@@ -99,6 +99,6 @@
 }
 
 .pair-expansion-panel-header {
-  background: white !important;
+  background: $asf-background-white !important;
   border-style: none !important;
 }

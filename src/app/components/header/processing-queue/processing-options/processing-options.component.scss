@@ -2,11 +2,11 @@
 
 .processing-options {
   margin-top: 10px;
-  background-color: white;
+  background-color: $asf-background-white;
 }
 
 .no-processing-options {
-  color: #c9cac4;
+  color: #c9cac4; // TODO: check this
   padding-left: 15px;
 }
 

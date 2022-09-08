@@ -21,8 +21,8 @@ $color: $asf-primary-dark;
 }
 
 [mat-dialog-title] {
-  background: #369;
-  color: #fff;
+  background: #369; // TODO: check this
+  color: $light-primary-text;
   cursor: move;
   text-align: center;
 }
@@ -85,7 +85,7 @@ $color: $asf-primary-dark;
 
 .list-filter {
   border-bottom: solid grey 1px;
-  background: white;
+  background: $asf-background-white;
   height: 60px;
 }
 
@@ -153,7 +153,7 @@ $color: $asf-primary-dark;
   width: 100%;
   text-align: left;
   background-color: adjust-color($asf-primary-light, $lightness: +7%);
-  border-top-color: #3d3e38;
+  border-top-color: #3d3e38; // TODO: check this
   border-top-width: 1px;
   border-top-style: solid;
 }
@@ -172,7 +172,7 @@ $color: $asf-primary-dark;
   border-bottom-style: solid;
   border-bottom-color: $asf-primary-dark;
   border-bottom-width: 1px;
-  background: white;
+  background: $asf-background-white;
   z-index: 10;
   display: flex;
   justify-content: space-between;
@@ -224,7 +224,7 @@ $color: $asf-primary-dark;
 .on-demand-subtitle {
   font-style: italic;
   font-size: 14px;
-  color: #65665c;
+  color: $dark-secondary-text;
   margin-top: -15px;
 }
 
@@ -237,7 +237,7 @@ $color: $asf-primary-dark;
   width: 100%;
   overflow-y: auto !important;
   overflow-x: hidden;
-  background-color: white;
+  background-color: $asf-background-white;
   padding: 0;
   margin: 0;
 
@@ -352,11 +352,11 @@ $color: $asf-primary-dark;
   justify-content: center;
   width: 100%;
   min-height: 300px;
-  border-color: red;
+  border-color: $asf-warn;
   border-style: solid;
   font-size: 25px;
   font-weight: bold;
-  color: red;
+  color: $asf-warn;
   background-color: grey;
 }
 
@@ -400,7 +400,7 @@ $color: $asf-primary-dark;
   height: 32px;
   font-size: 12px;
   margin: -4px 0 6px 0;
-  color: #65665c;
+  color: $dark-secondary-text;
 }
 
 .hyp3-url-mobile {

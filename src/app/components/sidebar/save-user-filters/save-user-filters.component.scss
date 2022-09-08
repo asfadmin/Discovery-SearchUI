@@ -31,19 +31,19 @@
 .saved-filters-presets__content {
   max-height: 100%;
   overflow-y: auto;
-  background-color: white;
+  background-color: $asf-background-white;
 }
 
 .saved-filters-presets__content-mobile {
   max-height: 100%;
   overflow-y: auto;
-  background-color: white;
+  background-color: $asf-background-white;
   width: 100%;
 }
 
 .saved-filters-presets-row:nth-child(even) {
-  //background-color: lighten($asf-primary-light, 10%) !important;
-  background-color: #e0eded !important;
+  background-color: darken($asf-primary-light, 10%) !important;
+  // background-color: #e0eded !important;
 }
 
 .saved-filters-presets__header {
@@ -81,7 +81,7 @@
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
-  background-color: white;
+  background-color: $asf-background-white;
   padding-top: 15px;
   padding-left: 15px;
   padding-right: 15px;

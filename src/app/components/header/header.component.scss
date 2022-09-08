@@ -13,7 +13,7 @@
 $config: mat.define-typography-config();
 
 .breadcrumb-list {
-  background-color: white;
+  background-color: $asf-background-white;
 }
 
 .breadcrumb-filter {
@@ -69,7 +69,7 @@ $config: mat.define-typography-config();
 }
 
 .selected {
-  background-color: #ccc;
+  background-color: $asf-primary;
 }
 
 .justify-right {

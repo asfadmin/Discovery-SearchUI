@@ -17,8 +17,8 @@ $color: $asf-primary-dark;
 }
 
 [mat-dialog-title] {
-  background: #369;
-  color: #fff;
+  background: #369; // TODO: check this
+  color: $light-primary-text;
   cursor: move;
   text-align: center;
 }
@@ -48,7 +48,7 @@ $color: $asf-primary-dark;
   width: 100%;
   overflow-y: hidden;
   overflow-x: hidden;
-  background-color: white;
+  background-color: $asf-background-white;
   padding: 0;
   margin: 0;
 
@@ -167,7 +167,7 @@ $color: $asf-primary-dark;
 
 .validate-toggle {
   margin-top: 22px;
-  color: grey;
+  color: $dark-secondary-text;
 }
 
 .validate-only {
@@ -195,7 +195,7 @@ $color: $asf-primary-dark;
 .on-demand-subtitle {
   font-style: italic;
   font-size: 14px;
-  color: #65665c;
+  color: $dark-secondary-text;
   margin-top: -15px;
 }
 
@@ -204,7 +204,7 @@ $color: $asf-primary-dark;
 }
 
 .step-error {
-  color: red;
+  color: $asf-warn;
 }
 
 .close-x {
@@ -240,7 +240,7 @@ $color: $asf-primary-dark;
   height: 32px;
   font-size: 12px;
   margin: -4px 0 6px 0;
-  color: #65665c;
+  color: $dark-secondary-text;
 }
 
 .hyp3-url-mobile {

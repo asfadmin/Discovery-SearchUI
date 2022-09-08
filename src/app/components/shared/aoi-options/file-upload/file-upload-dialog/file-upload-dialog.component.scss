@@ -24,17 +24,12 @@
   flex-direction: column;
 }
 
-.drop-text-box {
-  //outline: 2px dashed rgba(0, 0, 0, 0.2);
-  //color: rgba(0, 0, 0, 0.6);
-  //outline-offset: -10px;
-}
 
 .drop-file-area {
   background-image: url("/assets/geospatial_upload.png");
   background-size: contain;
   background-repeat: no-repeat;
-  background-color: rgb(245, 245, 245);
+  background-color: rgb(245, 245, 245); // TODO: look at this
   background-position: center;
   width: 350px;
   height: 160px;
@@ -46,8 +41,8 @@
 
 .is-file-error {
   animation: shake 0.82s;
-  color: red;
-  outline-color: red;
+  color: $asf-warn;
+  outline-color: $asf-warn;
   transform: translate3d(0, 0, 0);
   backface-visibility: hidden;
   perspective: 1000px;

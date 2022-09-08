@@ -1,3 +1,4 @@
+@import 'asf-theme';
 .list-viewport {
   overflow-y: auto;
 }
@@ -11,7 +12,7 @@
 }
 
 .selected .ml-2 {
-  color: red;
+  color: $asf-warn;
 }
 
 .scene-controls {

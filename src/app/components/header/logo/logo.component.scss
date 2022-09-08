@@ -3,7 +3,7 @@
 
 %card-base {
   background-color: $asf-primary;
-  color: white;
+  color: $dark-primary-text;
   border-radius: 0;
 }
 
@@ -22,9 +22,9 @@
 }
 
 .logo-card {
-  background-color: #c9cac4;
+  background-color: #c9cac4; // TODO: check this
   padding: 0 8px 0 0 !important;
-  color: white;
+  color: $asf-background-white;
 
   .header {
     font-size: 20px;
@@ -58,7 +58,7 @@ $icon-size: 36px;
 
 .menu-toggle-button {
   background-color: $asf-primary;
-  color: white;
+  color: $light-primary-text;
   box-shadow: none !important;
   cursor: pointer;
   border: none;

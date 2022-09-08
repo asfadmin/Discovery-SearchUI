@@ -89,7 +89,7 @@ $info-color: $asf-primary;
 
 .list-button {
   border: darkgrey 1px solid;
-  background: white;
+  background: $asf-background-white;
   color: inherit;
   padding: 0 0 0 5px;
   margin: 0 5px 0 0;
@@ -123,7 +123,7 @@ $info-color: $asf-primary;
 }
 
 .control-mat-button-toggle {
-  background-color: white;
+  background-color: $asf-background-white;
 }
 
 .space-filler {

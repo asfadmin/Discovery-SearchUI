@@ -31,13 +31,13 @@
 .saved-searches__content {
   max-height: calc(100vh - 350px);
   overflow-y: auto;
-  background-color: white;
+  background-color: $asf-background-white;
 }
 
 .saved-searches__content-mobile {
   max-height: calc(100vh - 350px);
   overflow-y: auto;
-  background-color: white;
+  background-color: $asf-background-white;
   width: 100%;
 }
 
@@ -80,7 +80,7 @@
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
-  background-color: white;
+  background-color: $asf-background-white;
   padding-top: 15px;
   padding-left: 15px;
   padding-right: 15px;

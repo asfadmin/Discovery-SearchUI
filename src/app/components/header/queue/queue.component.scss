@@ -101,7 +101,7 @@ $color: $asf-primary-dark;
 }
 
 .more-link {
-  color: red;
+  color: $asf-warn;
 }
 
 button {
@@ -113,19 +113,9 @@ button {
   grid-template-columns: auto auto;
   display: grid;
   font-size: 14px;
-  color: #fff;
+  color: $light-primary-text;
   justify-content: center;
   margin: 10px;
-
-  .save {
-    background-color: #e37b00;
-    margin-left: 2px;
-  }
-
-  .close {
-    background-color: #747578;
-    margin-right: 2px;
-  }
 }
 
 .button-clipboard-mobile {
@@ -145,7 +135,7 @@ button {
 .dl-mat-dialog-content {
   height: calc(100% - #{$header-height} - #{$footer-height} - #{$idk-pad});
   max-height: calc(100% - #{$header-height} - #{$footer-height} - #{$idk-pad});
-  background-color: white;
+  background-color: $asf-background-white;
   padding: 0;
   margin: 0;
 }
