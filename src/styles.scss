@@ -157,11 +157,14 @@
 }
 
 .faint-text {
-  color: rgba(0, 0, 0, 0.6);
+  color: $dark-secondary-text;
+  // color: rgba(0, 0, 0, 0.6);
 }
 
 .fainter-text {
-  color: rgba(0, 0, 0, 0.4);
+  color: $dark-secondary-text;
+
+  // color: rgba(0, 0, 0, 0.4);
 }
 
 .v-mid {
@@ -169,6 +172,7 @@
 }
 
 .active-btn {
+
   background-color: rgba(0, 0, 0, 0.07);
 }
 
@@ -523,12 +527,15 @@ $d-height: 500px;
 
 .content-block .mat-step-header .mat-step-icon-selected {
   background-color: $asf-blue !important;
-  color: #fff;
+  color: $dark-primary-text;
+}
+.mat-menu {
+  background: $asf-background-white;
 }
 
 .content-block .mat-step-header .mat-step-icon {
   background-color: $asf-primary;
-  color: #fff;
+  color: $light-primary-text;
 }
 
 .content-block .mat-step-label-selected {
@@ -541,6 +548,9 @@ $d-height: 500px;
 
 .content-block .mat-horizontal-stepper-header-container {
   margin-bottom: 20px;
+}
+.mat-button-toggle { 
+  background: #424242;
 }
 
 .event-slider {

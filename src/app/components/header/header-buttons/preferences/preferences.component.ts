@@ -161,7 +161,10 @@ export class PreferencesComponent implements OnInit, OnDestroy {
 
     this.store$.dispatch(action);
   }
-
+  public toggleTheme() {
+    let body = document.getElementsByTagName("body")[0];
+    body.classList.toggle('dark-theme');
+  }
   ngOnDestroy() {
     this.subs.unsubscribe();
   }

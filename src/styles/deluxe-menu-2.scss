@@ -10,7 +10,7 @@ $light-grey: rgb(0 0 0 / 60%);
   font-size: 24px !important;
   height: 47px !important;
   margin-right: 0;
-  color: $asf-primary-dark;
+  color: $dark-primary-text;
 }
 
 .dataset-hr {
@@ -64,7 +64,8 @@ $light-grey: rgb(0 0 0 / 60%);
 }
 
 .button-label {
-  color: rgb(0 0 0 / 60%);
+  // color: rgb(0 0 0 / 60%);
+  color: $dark-secondary-text;
   font-size: 14px;
   font-weight: 400;
   transform:
@@ -81,7 +82,7 @@ $light-grey: rgb(0 0 0 / 60%);
 .button-text {
   font-size: 16px;
   font-weight: 400;
-  color: black;
+  color: $dark-primary-text;
   text-align: left;
   font-style: normal;
   padding: 0;
@@ -101,8 +102,8 @@ $light-grey: rgb(0 0 0 / 60%);
 .text-underline {
   border: none;
   height: 1px;
-  color: rgb(0 0 0 / 42%); /* old IE */
-  background-color: rgb(0 0 0 / 42%); /* Modern Browsers */
+  color: $dark-secondary-text; //rgb(0 0 0 / 42%); /* old IE */
+  background-color: $dark-secondary-text; //rgb(0 0 0 / 42%); /* Modern Browsers */
 }
 
 .mat-select-arrow {
@@ -175,7 +176,7 @@ $light-grey: rgb(0 0 0 / 60%);
 }
 
 .dataset-date-range {
-  color: $light-grey;
+  color: $dark-secondary-text;
   font-weight: bold;
   line-height: 30px;
   font-size: 14px;

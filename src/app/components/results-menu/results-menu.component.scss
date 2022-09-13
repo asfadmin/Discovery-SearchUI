@@ -19,8 +19,7 @@
 }
 
 .results-menu--background {
-  background: rgb(238 238 238 / 70%);
-  background: white;
+  background: $asf-primary-dark;//rgb(238 238 238 / 70%);
   pointer-events: auto;
 }
 
@@ -31,8 +30,9 @@
   font-weight: 400;
   font-size: 16px;
   text-align: center;
-  background-color: $asf-primary-light;
-  color: $asf-primary-dark;
+  // this background needs fixed
+  background-color: lighten($asf-primary-light, 30%);
+  color: $dark-primary-text;
   border-left: none;
 }
 
@@ -86,7 +86,7 @@
   height: 25px;
   z-index: 9;
   background-image: url("/assets/div-handles/hsizegrip.png");
-  background-color: $asf-primary-light;
+  background-color: lighten($asf-primary-light, 50%);
   background-position: center;
   background-repeat: no-repeat;
   cursor: ns-resize;

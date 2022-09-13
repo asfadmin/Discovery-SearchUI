@@ -22,7 +22,7 @@
 }
 
 .logo-card {
-  background-color: #c9cac4; // TODO: check this
+  background-color: $asf-primary-light; // TODO: check this
   padding: 0 8px 0 0 !important;
   color: $asf-background-white;
 
@@ -58,7 +58,7 @@ $icon-size: 36px;
 
 .menu-toggle-button {
   background-color: $asf-primary;
-  color: $light-primary-text;
+  color: $dark-primary-text;
   box-shadow: none !important;
   cursor: pointer;
   border: none;
