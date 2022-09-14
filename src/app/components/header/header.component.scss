@@ -11,9 +11,10 @@
 }
 
 $config: mat.define-typography-config();
-
 .breadcrumb-list {
-  background-color: $asf-background-white;
+  @include themify($themes) {
+    background-color: themed('background-white');
+  }
 }
 
 .breadcrumb-filter {
@@ -69,6 +70,9 @@ $config: mat.define-typography-config();
 }
 
 .selected {
+  @include themify($themes) {
+    background-color: themed('primary');
+  }
   background-color: $asf-primary;
 }
 

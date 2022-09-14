@@ -163,7 +163,13 @@ export class PreferencesComponent implements OnInit, OnDestroy {
   }
   public toggleTheme() {
     let body = document.getElementsByTagName("body")[0];
-    body.classList.toggle('dark-theme');
+    if(body.classList.contains('theme-dark')) {
+      body.classList.remove('theme-dark');
+      body.classList.add('theme-light');
+    } else {
+      body.classList.remove('theme-light');
+      body.classList.add('theme-dark');
+    }
   }
   ngOnDestroy() {
     this.subs.unsubscribe();

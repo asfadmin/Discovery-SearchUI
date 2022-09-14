@@ -11,7 +11,6 @@
 @include mat.core();
 
 
-
 //$custom-typography: mat.define-typography-config(
 //  $font-family: 'Roboto, sans-serif',
 //  $headline: mat.define-typography-level(32px, 48px, 700),
@@ -29,13 +28,9 @@ button,
   border-radius: 0 !important;
   //font-size: 14px;
 }
-.light-theme {
-  // Define the palettes for your theme using the Material Design palettes available in palette.scss
-// (imported above). For each palette, you can optionally specify a default, lighter, and darker
-// hue. Available color palettes: https://material.io/design/color/
-
-}
 $asf-app-primary: mat.define-palette($mat-asf-primary, 700, 400, 900);
+$asf-app-dark-primary: mat.define-palette($mat-dark-asf-primary, 700, 400, 900);
+
 $asf-app-accent:  mat.define-palette(mat.$red-palette, 300, 100, 400);
 $asf-app-blue:  mat.define-palette($mat-asf-blue, 700, 400, 900);
 
@@ -52,6 +47,7 @@ $asf-light-theme: mat.define-light-theme($asf-app-primary, $asf-app-accent);
 
 // Create your Sass color vars (will be available in all the project)
 $asf-primary: mat.get-color-from-palette($asf-app-primary);
+$asf-dark-primary: mat.get-color-from-palette($asf-app-dark-primary);
 $asf-accent: mat.get-color-from-palette($asf-app-accent);
 $asf-warn: mat.get-color-from-palette($asf-app-warn);
 $asf-err: mat.get-color-from-palette($asf-app-err);
@@ -68,26 +64,84 @@ $asf-background-white: lighten($asf-primary, 80%);
   width: $size !important;
 }
 
-body {
-  --text-color: #222;
-  --primary-light: $asf-primary-light;
-  --bkg-color: #fff;
-  --btn-txt-color: white;
-  --btn-bg-color: rgb(11, 88, 160);
+$themes: (
+  light: (
+    background-white: lighten($asf-primary, 80%),
+
+    dark-primary-text: rgba(black, 0.87),
+    dark-secondary-text: rgba(black, 0.54),
+    dark-disabled-text: rgba(black, 0.38),
+    dark-dividers: rgba(black, 0.12),
+    dark-focused: rgba(black, 0.12),
+    light-primary-text: white,
+    light-secondary-text: rgba(white, 0.7),
+    light-disabled-text: rgba(white, 0.5),
+    light-dividers: rgba(white, 0.12),
+    light-focused: rgba(white, 0.12),
+
+    primary: mat.get-color-from-palette($asf-app-primary),
+    accent: mat.get-color-from-palette($asf-app-accent),
+    warn: mat.get-color-from-palette($asf-app-warn),
+    err: mat.get-color-from-palette($asf-app-err),
+    blue: mat.get-color-from-palette($asf-app-blue),
+    primary-light: lighten($asf-primary, 5%),
+    primary-dark: darken($asf-primary, 15%),
+  ),
+  dark: (
+    light-primary-text: white,
+    light-secondary-text: rgba(black, 0.54),
+    light-disabled-text: rgba(black, 0.38),
+    light-dividers: rgba(black, 0.12),
+    light-focused: rgba(black, 0.12),
+    dark-primary-text: rgb(183, 183, 183),
+    dark-secondary-text: rgba(183, 183, 183, 0.7),
+    dark-disabled-text: rgba(183, 183, 183, 0.5),
+    dark-dividers: rgba(white, 0.12),
+    dark-focused: rgba(white, 0.12),
+
+
+    primary: mat.get-color-from-palette($asf-app-dark-primary),
+    accent: mat.get-color-from-palette($asf-app-accent),
+    warn: mat.get-color-from-palette($asf-app-warn),
+    err: mat.get-color-from-palette($asf-app-err),
+    blue: mat.get-color-from-palette($asf-app-blue),
+    primary-light: lighten($asf-primary, 5%),
+    primary-dark: darken($asf-primary, 15%),
+
+
+    background-white: darken($asf-dark-primary, 15%),
+  ),
+);
+
+@mixin themify($themes: $themes) {
+  @each $theme, $map in $themes {
+
+    :host-context(.theme-#{$theme}) & {
+      $theme-map: () !global;
+      @each $key, $submap in $map {
+        $value: map-get(map-get($themes, $theme), '#{$key}');
+        $theme-map: map-merge($theme-map, ($key: $value)) !global;
+      }
+
+      @content;
+      $theme-map: null !global;
+    }
+
+  }
 }
-body.dark-theme {
-  --text-color: #eee;
-  --bkg-color: #252222;
-  --btn-txt-color: rgb(46, 43, 43);
-  --btn-bg-color: rgb(20, 211, 195);
+@function themed($key) {
+  @return map-get($theme-map, $key);
 }
 
 body {
-  background: var(--bkg-color);
+ @include themify($themes) {
+  color: themed('textColor');
+ }
 }
 
 
-.dark-theme {
+
+.theme-dark {
 
   $light-primary-text: white;
   $light-secondary-text: rgba(black, 0.54);
@@ -125,5 +179,5 @@ body {
   .md-icon{
     color: $dark-primary-text;
   }
-  color: $dark-primary-text;
+  // color: $dark-primary-text;
 }
